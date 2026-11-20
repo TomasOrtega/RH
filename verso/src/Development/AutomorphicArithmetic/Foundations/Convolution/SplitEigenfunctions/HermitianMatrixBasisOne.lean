@@ -15,23 +15,23 @@ private noncomputable def hm (D : Dat ℚ E) (ξ : Fin 4 → ℚ) : Matrix (Fin 
   !![mm D (ξ 1) 0, mm D (ξ 2) (ξ 3); mm D (ξ 2) (-ξ 3), mm D (ξ 0) 0]
 
 /- English proof (translation)
-Simplify using `[mm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mm_base (D : Dat ℚ E) (u : ℚ) : mm D u 0 = algebraMap ℚ E u := by simp [mm]
 
 /- English proof (translation)
-The claim follows from `D.σ.commutes u`.
+A detailed English derivation is pending.
 -/
 private theorem σ_alg (D : Dat ℚ E) (u : ℚ) : D.σ (algebraMap ℚ E u) = algebraMap ℚ E u := D.σ.commutes u
 
 /- English proof (translation)
-Simplify using `only [mm, map_add, map_mul, σ_alg, D.conj, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem σ_mm (D : Dat ℚ E) (u t : ℚ) : D.σ (mm D u t) = mm D u (-t) := by
   simp only [mm, map_add, map_mul, σ_alg, D.conj, map_neg]; ring
 
 /- English proof (translation)
-Establish `h` using `D.sq`. Simplify using `only [mm, map_sub, map_mul, map_pow, map_neg, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem mm_mul (D : Dat ℚ E) (u t : ℚ) :
     mm D u t * mm D u (-t) = algebraMap ℚ E (u ^ 2 - D.δ * t ^ 2) := by
@@ -39,11 +39,11 @@ private theorem mm_mul (D : Dat ℚ E) (u t : ℚ) :
   simp only [mm, map_sub, map_mul, map_pow, map_neg, ← h]; ring
 
 /- English proof (translation)
-Establish `h0 : (0 : A ℚ) = rt (0 : ℚ)` using `(map_zero _).symm`. Establish `hn : -(rt (ξ 3) : A ℚ) = rt (-ξ 3)` using `(map_neg _ _).symm`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Express the relevant statement in the definitionally equal form `D.mkE (rt (ξ 1)) 0 = rt (mm D (ξ 1) 0)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h0, D.mkE_rt]`. Both sides reduce to the same expression. Conclude with `D.mkE_rt _ _`. Express the relevant statement in the definitionally equal form `D.mkE (rt (ξ 2)) (-rt (ξ 3)) = rt (mm D (ξ 2) (-ξ 3))`. Rewrite using `[hn, D.mkE_rt]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `D.mkE (rt (ξ 0)) 0 = rt (mm D (ξ 0) 0)`. Rewrite using `[h0, D.mkE_rt]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem herm_rp (D : Dat ℚ E) (ξ : Fin 4 → ℚ) :
     D.herm (rp ξ) = (hm D ξ).map (algebraMap E (A E)) := by
@@ -60,13 +60,13 @@ private theorem herm_rp (D : Dat ℚ E) (ξ : Fin 4 → ℚ) :
     rw [h0, D.mkE_rt]; rfl
 
 /- English proof (translation)
-Use `haveI := AdeleBaseChange.nontrivial_adeleRing E`. Establish `inj : Function.Injective fun X : Matrix (Fin 2) (Fin 2) E => X.map (algebraMap E (A E))` using `Matrix.map_injective (algebraMap E (A E)).injective`. Establish `hγ : ((gl (ratS E γ)) : Matrix (Fin 2) (Fin 2) (A E)) = γ.1.map (algebraMap E (A E))`. Use extensionality with `i j`. Conclude with `ratS_apply γ i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hs : D.star2 ((gl (ratS E γ)) : Matrix (Fin 2) (Fin 2) (A E)) = ((γ.1.map D.σ)ᵀ).map (algebraMap E (A E))`. Use extensionality with `i j`. Rewrite using `[D.conjTransposeGal_apply, hγ]`. Conclude with `D.bar_rt _`. Establish `hact : D.herm (D.act (gl (ratS E γ)) (rp ξ)) = (γ.1 * hm D ξ * (γ.1.map D.σ)ᵀ).map (algebraMap E (A E))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[D.herm_act, hs, herm_rp, hγ, Matrix.map_mul, Matrix.map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `inj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(γ.1 * hm D ξ * (γ.1.map D.σ)ᵀ).map (algebraMap E (A E)) = (hm D η).map (algebraMap E (A E))`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hact, h, herm_rp]`. Introduce `h`. Apply `D.herm_injective` to reduce the goal to its premises. Rewrite using `[hact, h, herm_rp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_iff (D : Dat ℚ E) (γ : SpecialLinearGroup (Fin 2) E) (ξ η : Fin 4 → ℚ) :
     D.act (gl (ratS E γ)) (rp ξ) = rp η ↔ γ.1 * hm D ξ * (γ.1.map D.σ)ᵀ = hm D η := by
@@ -93,14 +93,14 @@ private theorem act_iff (D : Dat ℚ E) (γ : SpecialLinearGroup (Fin 2) E) (ξ 
     rw [hact, h, herm_rp]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hm, mm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem hermitianMatrix_basisOne (D : Dat ℚ E) (r : ℚ) : hm D ![0, r, 0, 0] = !![algebraMap ℚ E r, 0; 0, 0] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [hm, mm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem prod_pow_unitVector_val (D : Dat ℚ E) (g : Matrix (Fin 2) (Fin 2) E) (R : E) :
     g * !![R, 0; 0, 0] * (g.map D.σ)ᵀ =
@@ -109,7 +109,7 @@ private theorem prod_pow_unitVector_val (D : Dat ℚ E) (g : Matrix (Fin 2) (Fin
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Rewrite using `[prod_pow_unitVector_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem prod_low (D : Dat ℚ E) (w R : E) :
     (!![1, 0; w, 1] : Matrix (Fin 2) (Fin 2) E) * !![R, 0; 0, 0] * ((!![1, 0; w, 1] : Matrix (Fin 2) (Fin 2) E).map D.σ)ᵀ =
@@ -119,28 +119,28 @@ private theorem prod_low (D : Dat ℚ E) (w R : E) :
   fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Establish `h` using `D.neg (algebraMap ℚ ℝ)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem δ_neg (D : Dat ℚ E) : D.δ < 0 := by
   have h := D.neg (algebraMap ℚ ℝ)
   simpa using h
 
 /- English proof (translation)
-Establish `hq' : ξ 2 ^ 2 - D.δ * ξ 3 ^ 2 = ξ 1 * ξ 0`. Establish `: ξ 2 ^ 2 - D.δ * ξ 3 ^ 2 - ξ 1 * ξ 0 = 0` using `hq`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hx : ξ 1 = 0`. Establish `hδ` using `δ_neg D`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `hq'` using `[hx, zero_mul]`. Establish `h3 : ξ 3 = 0`. Assume the negation of the conclusion as `h`. Establish `: 0 < ξ 3 ^ 2` using `by positivity`. Use polynomial arithmetic with `[sq_nonneg (ξ 2)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : ξ 2 = 0`. Rewrite `hq'` using `[h3]`. Simplify using `using hq'`. Establish `hy : ξ 0 ≠ 0` using `fun hy => h0 (by`. Apply the tactic sequence `ext i; fin_cases i <;> simp [hy, hx, h2, h3])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨⟨!![0, -1; 1, 0], by simp [Matrix.det_fin_two]⟩, ξ 0, hy, ((act_iff D _ _ _).2 ?_).symm⟩` and prove the remaining obligations. Rewrite using `[hermitianMatrix_basisOne, prod_pow_unitVector_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hm, mm, hx, h2, h3]`. Establish `hx' : algebraMap ℚ E (ξ 1) ≠ 0` using `by simpa using hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨w, hw, hσ⟩ : ∃ w : E, w * algebraMap ℚ E (ξ 1) = mm D (ξ 2) (-ξ 3) ∧ D.σ w * algebraMap ℚ E (ξ 1) = mm D (ξ 2) (ξ 3)` from `⟨mm D (ξ 2) (-ξ 3) / algebraMap ℚ E (ξ 1), div_mul_cancel₀ _ hx', by`. Rewrite using `[map_div₀, σ_mm, σ_alg, neg_neg, div_mul_cancel₀ _ hx']⟩`. Use `⟨⟨!![1, 0; w, 1], by simp [Matrix.det_fin_two]⟩, ξ 1, hx, ((act_iff D _ _ _).2 ?_).symm⟩` and prove the remaining obligations. Establish `hmul` using `mm_mul D (ξ 2) (ξ 3)`. Rewrite `hmul` using `[hq', map_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `!![1, 0; w, 1] * _ * _ = _`. Rewrite using `[hermitianMatrix_basisOne, prod_low, hm, mm_base, mm_base]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `algebraMap ℚ E (ξ 1) * D.σ w = mm D (ξ 2) (ξ 3)`. Rewrite using `[mul_comm]`. Conclude with `hσ`. Conclude with `hw`. Express the relevant statement in the definitionally equal form `w * algebraMap ℚ E (ξ 1) * D.σ w = algebraMap ℚ E (ξ 0)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hw]`. Apply `mul_left_cancel₀ hx'` to reduce the goal to its premises. Take the linear combination `mm D (ξ 2) (-ξ 3) * hσ + hmul`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem rank_one (D : Dat ℚ E) (ξ : Fin 4 → ℚ) (h0 : ξ ≠ 0) (hq : qr D.δ ξ = 0) :
     ∃ (γ : SpecialLinearGroup (Fin 2) E) (r : ℚ), r ≠ 0 ∧ rp ξ = D.act (gl (ratS E γ)) (rp ![0, r, 0, 0]) := by
@@ -186,21 +186,21 @@ private theorem rank_one (D : Dat ℚ E) (ξ : Fin 4 → ℚ) (h0 : ξ ≠ 0) (h
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ D`. Use `⟨fun γ => ?_, fun ξ h0 hq => rank_one D ξ h0 hq, fun γ r r' hr h => ?_, fun γ hγ => ?_, fun u r => ?_⟩` and prove the remaining obligations. Take `⟨N, -, hN⟩` from `actRat ℚ E D (Matrix.SpecialLinearGroup.toGL γ)`. Use `⟨Matrix.toLin'OfInv (M := (N⁻¹ : GL (Fin 4) ℚ).val) (M' := N.val) (by simp) (by simp), fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[gl_ratS, hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h` using `[act_iff, hermitianMatrix_basisOne, hermitianMatrix_basisOne, prod_pow_unitVector_val]`. Establish `h11` using `congrFun (congrFun h 1) 1`. Simplify `h11` using `[hr]`. Use `set a := D.b.repr (γ.1 0 0) 0 set t := D.b.repr (γ.1 0 0) 1`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `ha : γ.1 0 0 = mm D a t`. Establish `h` using `D.b.sum_repr (γ.1 0 0)`. Rewrite `h` using `[Fin.sum_univ_two, D.b0, D.b1]`. Rewrite using `[mm, ← h]`. Simplify using `[a, t, Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet : γ.1 0 0 * γ.1 1 1 = 1`. Establish `h` using `γ.2`. Rewrite `h` using `[Matrix.det_fin_two]`. Establish `h10 : γ.1 1 0 = 0` using `hγ`. Simplify `h` using `[h10]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hne : γ.1 0 0 ≠ 0` using `left_ne_zero_of_mul_eq_one hdet`. Establish `hnorm : γ.1 0 0 * D.σ (γ.1 0 0) = algebraMap ℚ E (a ^ 2 - D.δ * t ^ 2)`. Rewrite using `[ha, σ_mm, mm_mul]`. Use `⟨a ^ 2 - D.δ * t ^ 2, fun hc => ?_, fun r => ?_⟩` and prove the remaining obligations. Rewrite `hnorm` using `[hc, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_ne_zero hne (by simpa using hne)) hnorm`. Use `(act_iff D _ _ _).2 ?_` and prove the remaining obligations. Establish `h10 : γ.1 1 0 = 0` using `hγ`. Establish `h00 : γ.1 0 0 * algebraMap ℚ E r * D.σ (γ.1 0 0) = algebraMap ℚ E ((a ^ 2 - D.δ * t ^ 2) * r)`. Rewrite using `[map_mul, ← hnorm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hermitianMatrix_basisOne, hermitianMatrix_basisOne, prod_pow_unitVector_val, h10, h00]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Take `⟨a, b, rfl⟩` from `D.exists_mkE u`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[D.act_nU]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [rp]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.orb1 :
     Orb1 := by

@@ -16,7 +16,7 @@ namespace GlobalTheory.ChartTrans
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[GlobalTheory.FormalCalc.pderiv_subst (gt_hasSubst V hV), Fintype.sum_prod_type]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_ev {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (f : PS k m d)
     (v : Fin n × Fin d) :
@@ -25,39 +25,39 @@ theorem pderiv_ev {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (f
   rw [GlobalTheory.FormalCalc.pderiv_subst (gt_hasSubst V hV), Fintype.sum_prod_type]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FormalCalc.subst_sum' (gt_hasSubst V hV) s f`.
+A detailed English derivation is pending.
 -/
 theorem ev_sum {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) {α : Type} (s : Finset α)
     (f : α → PS k m d) : ev V (∑ a ∈ s, f a) = ∑ a ∈ s, ev V (f a) :=
   GlobalTheory.FormalCalc.subst_sum' (gt_hasSubst V hV) s f
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[MvPowerSeries.subst_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_C {m n : ℕ} (V : Fin m → Pt k n d) (r : k) : ev V (C r : PS k m d) = C r := by
   unfold ev
   rw [MvPowerSeries.subst_C]
 
 /- English proof (translation)
-Rewrite using `[gt_ev_mul V hV, ev_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_C_mul {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (r : k) (f : PS k m d) :
     ev V (C r * f) = C r * ev V f := by
   rw [gt_ev_mul V hV, ev_C]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vec1 {m n : ℕ} (V : Fin m → Pt k n d) (a : Pt k m d) :
     (fun j => evP V (![a] j)) = ![evP V a] := by
   funext j; fin_cases j; rfl
 
 /- English proof (translation)
-Establish `e : f = C (constantCoeff f) + (f - C (constantCoeff f))` using `by ring`. Establish `h0 : constantCoeff (f - C (constantCoeff f)) = 0` using `by simp`. Use `conv_lhs => rw [e]`. Rewrite using `[gt_ev_add _ (single_point_zero_constant gp_zero₂), ev_C]`. Establish `h2 : ev ![(0 : Pt k n d)] (f - C (constantCoeff f)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (fun p : Fin 1 × Fin d => (![(0 : Pt k n d)] p.1) p.2) _ = 0`. Establish `e : (fun p : Fin 1 × Fin d => (![(0 : Pt k n d)] p.1) p.2) = 0`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MvPowerSeries.subst_zero_of_constantCoeff_zero h0`. Rewrite using `[h2, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ev_at_zero {n : ℕ} (f : PS k 1 d) : ev ![(0 : Pt k n d)] f = C (constantCoeff f) := by
   have e : f = C (constantCoeff f) + (f - C (constantCoeff f)) := by ring
@@ -73,15 +73,15 @@ theorem ev_at_zero {n : ℕ} (f : PS k 1 d) : ev ![(0 : Pt k n d)] f = C (consta
   rw [h2, add_zero]
 
 /- English proof (translation)
-The claim follows from `pair_points_zero_constant (gp_pt 0) gp_zero₂`.
+A detailed English derivation is pending.
 -/
 theorem axis_GP : ∀ j, GP ((![pt k (n := 1) d 0, 0] : Fin 2 → Pt k 1 d) j) :=
   pair_points_zero_constant (gp_pt 0) gp_zero₂
 
 /- English proof (translation)
-Establish `hF1 : ∀ j, GP ((![F] : Fin 1 → Pt k 2 d) j)` using `single_point_zero_constant hF`. Establish `hS : ∀ h : PS k 1 d, ev (n` using `1) ![pt k (n := 1) d 0, 0] (ev (n := 2) ![F] h) = h := by`. Introduce `h`. Rewrite using `[gt_ev_ev' _ _ axis_GP hF1, vec1]`. Establish `: evP ![pt k (n` using `1) d 0, 0] F = pt k (n := 1) d 0 := funext hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, gt_ev_pt_self]`. Unfold `Dof`. Simplify using `only [pderiv_ev _ hF1, Fin.sum_univ_one, ev_sum _ axis_GP, gt_ev_mul _ axis_GP, hS, Finset.mul_sum, Finset.sum_mul, Matrix.cons_val_zero]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -104,11 +104,11 @@ theorem dof_eq (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i) = 0)
   ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `pderiv k (a, i) (ev ![pt k (n := 2) d b] (φ l)) = _`. Rewrite using `[pderiv_ev _ (single_point_zero_constant (gp_pt b)), Fin.sum_univ_one]`. Simplify using `only [Matrix.cons_val_zero, pt]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[pderiv_X_of_ne (by simpa using hj), mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_X_of_ne (fun h' => h (congrArg Prod.fst h').symm), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_comp_pt (φ : Pt k 1 d) (a b : Fin 2) (i l : Fin d) :
     pderiv k (a, i) (comp1 φ (pt k (n := 2) d b) l) =
@@ -127,13 +127,13 @@ theorem pderiv_comp_pt (φ : Pt k 1 d) (a b : Fin 2) (i l : Fin d) :
     rw [pderiv_X_of_ne (fun h' => h (congrArg Prod.fst h').symm), mul_zero]
 
 /- English proof (translation)
-Establish `hΦ : ∀ j, GP (![comp1 φ (pt k (n` using `2) d 0), comp1 φ (pt k (n := 2) d 1)] j) := pair_points_zero_constant (gp_comp1 φ _ hφ (gp_pt 0)) (gp_comp1 φ _ hφ (gp_pt 1))`. Establish `hK : ∀ K : PS k 2 d, ev (n` using `1) ![pt k (n := 1) d 0, 0] (ev ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] K) = ev ![φ] (ev (n := 1) ![pt k (n := 1) d 0, 0] K) := by`. Introduce `K`. Rewrite using `[gt_ev_ev' _ _ axis_GP hΦ, eval_pair_points, evP_comp1 _ axis_GP φ _ (gp_pt 0), evP_comp1 _ axis_GP φ _ (gp_pt 1), evP_pt _ axis_GP, evP_pt _ axis_GP, gt_ev_ev' _ _ (single_point_zero_constant hφ) axis_GP, eval_pair_points, evP_pt _ (single_point_zero_constant hφ), evP_zero _ (si …`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[gt_comp1_pt_right, gt_comp1_zero φ hφ]`. Establish `hL : ∀ l, ev (n` using `1) ![pt k (n := 1) d 0, 0] (ev ![pt k (n := 2) d 1] (pderiv k ((0 : Fin 1), i) (φ l))) = C (dLin φ l i) := by`. Introduce `l`. Rewrite using `[gt_ev_ev' _ _ axis_GP (single_point_zero_constant (gp_pt 1)), vec1, evP_pt _ axis_GP]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ev_at_zero, ← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using `[dLin]`. Rewrite using `[pderiv_ev _ hΦ, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, pderiv_comp_pt]`. Simplify using `only [one_ne_zero, if_false, if_true, mul_zero, Finset.sum_const_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[ev_sum _ axis_GP]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[gt_ev_mul _ axis_GP, hK, hL, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem axis_pderiv_comp (φ : Pt k 1 d) (hφ : GP φ) (H : PS k 2 d) (i : Fin d) :
     ev (n := 1) ![pt k (n := 1) d 0, 0] (pderiv k ((1 : Fin 2), i)
@@ -166,15 +166,15 @@ theorem axis_pderiv_comp (φ : Pt k 1 d) (hφ : GP φ) (H : PS k 2 d) (i : Fin d
   rw [gt_ev_mul _ axis_GP, hK, hL, mul_comm]
 
 /- English proof (translation)
-Establish `hφ : GP φ` using `hinv.1`. Establish `hφi : GP φi` using `hinv.2.1`. Establish `h0 : GP (comp1 φ (pt k (n` using `2) d 0)) := gp_comp1 φ _ hφ (gp_pt 0)`. Establish `h1 : GP (comp1 φ (pt k (n` using `2) d 1)) := gp_comp1 φ _ hφ (gp_pt 1)`. Establish `hΦ` using `pair_points_zero_constant h0 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `gp_addOf F hF _ _ h0 h1`. Establish `eF : transF F φ φi = comp1 φi (addOf F (comp1 φ (pt k (n` using `2) d 0)) (comp1 φ (pt k (n := 2) d 1))) := rfl`. Establish `hF' : GP (transF F φ φi)` using `eF ▸ gp_comp1 φi _ hφi hA`. Establish `hax : addOf F φ 0 = φ`. Establish `e1 : addOf F (pt k (n` using `1) d 0) 0 = pt k (n := 1) d 0 := funext hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (evP ![φ]) e1`. Rewrite `e2` using `[evP_addOf _ (single_point_zero_constant hφ) _ _ _ (gp_pt 0) gp_zero₂, evP_pt _ (single_point_zero_constant hφ), evP_zero _ (single_point_zero_constant hφ)]`. Then use the resulting hypothesis. Establish `hu' : evP ![pt k (n` using `1) d 0, 0] (transF F φ φi) = pt k (n := 1) d 0 := by`. Rewrite using `[eF, evP_comp1 _ axis_GP _ _ hA, evP_addOf _ axis_GP _ _ _ h0 h1, evP_comp1 _ axis_GP φ _ (gp_pt 0), evP_comp1 _ axis_GP φ _ (gp_pt 1), evP_pt _ axis_GP, evP_pt _ axis_GP]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[gt_comp1_pt_right, gt_comp1_zero φ hφ, hax, hinv.2.2.2]`. Establish `key : ev (n` using `2) ![transF F φ φi] (ev (n := 1) ![φ] g) = ev ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] (ev (n := 2) ![F] g) := by`. Rewrite using `[gt_ev_ev' _ _ (single_point_zero_constant hF') (single_point_zero_constant hφ), vec1, gt_ev_ev' _ _ hΦ (single_point_zero_constant hF), vec1]`. Establish `: evP ![transF F φ φi] φ = evP ![comp1 φ (pt k (n` using `2) d 0), comp1 φ (pt k (n := 2) d 1)] F := gt_comp_inv hinv _ hA`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dof_eq _ hF' (congrFun hu'), dof_eq F hF hu, key, ev_sum _ (single_point_zero_constant hφ)]`. Simplify using `only [axis_pderiv_comp φ hφ, ev_C_mul _ (single_point_zero_constant hφ)]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -218,13 +218,13 @@ theorem dof_transF (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i) = 0
   ring
 
 /- English proof (translation)
-Introduce `k _ d F hF hu φ φi hinv ι _ u P g`. Establish `hφ : GP φ` using `hinv.1`. Establish `hit : ∀ (v : Fin d → k) (n : ℕ) (g : PS k 1 d), (Dof (transF F φ φi) v)^[n] (ev (n` using `1) ![φ] g) = ev (n := 1) ![φ] ((Dof F ((dLin φ).mulVec v))^[n] g) := by`. Introduce `v n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro g`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `g`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, dof_transF F hF hu φ φi hinv, ih]`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmon : ∀ m : ι →₀ ℕ, DmonOf (transF F φ φi) u m (ev (n` using `1) ![φ] g) = ev (n := 1) ![φ] (DmonOf F (fun l => (dLin φ).mulVec (u l)) m g) := by`. Introduce `m`. Unfold `DmonOf`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Consider the case `cons a L ih => rw [List.foldr_cons, List.foldr_cons, ih, hit]`. Unfold `DpolyOf`. Rewrite using `[ev_sum _ (single_point_zero_constant hφ)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[ev_C_mul _ (single_point_zero_constant hφ), hmon]`.
+Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem transPolySt : TransPolySt := by
   intro k _ d F hF hu φ φi hinv ι _ u P g

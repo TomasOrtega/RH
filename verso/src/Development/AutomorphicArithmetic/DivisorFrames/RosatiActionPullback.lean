@@ -10,13 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 /- English proof (translation)
-Set `Φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left` to `(lift (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushPt gp.1.w (fst A' A')) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushPt gp.1.w (snd A' A'))).left`. Establish `f₁ : (fst A' A').left ≫ Φ = Φ₂ ≫ (fst A A).left` using `(congrArg (fun q => q.left) (lift_fst (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushPt gp.1.w (fst A' A')) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushPt gp.1.w (snd A' A')))).symm`. Establish `f₂ : (snd A' A').left ≫ Φ = Φ₂ ≫ (snd A A).left` using `(congrArg (fun q => q.left) (lift_snd (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushPt gp.1.w (fst A' A')) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushPt gp.1.w (snd A' A')))).symm`. Establish `f₃ : (fst A' A' ≫ a').left ≫ Φ = Φ₂ ≫ (fst A A ≫ a).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ha, ← Category.assoc, f₁, Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f₄ : (snd A' A' ≫ b').left ≫ Φ = Φ₂ ≫ (snd A A ≫ b).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hb, ← Category.assoc, f₂, Category.assoc]`. Establish `hψ : ∀ i, Out.rosatiφ A' a' b' i ≫ Φ = Φ₂ ≫ Out.rosatiφ A a b i` using `fun i => by fin_cases i exacts [ArcPull.mul_push gp Φ₂ f₃ f₂, f₃, f₂, ArcPull.mul_push gp Φ₂ f₁ f₄, f₁, f₄]`. Establish `w₂ : Φ₂ ≫ (A ⊗ A).hom = (A' ⊗ A').hom ≫ f`. Rewrite using `[← Over.w (fst A A), ← Category.assoc, ← f₁, Category.assoc, gp.1.w, ← Category.assoc, Over.w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Take `⟨U, hU, t, ht⟩` from `hr (f s)`. Use `⟨f ⁻¹ᵁ U, hU, ?_⟩` and prove the remaining obligations. Establish `le' : (A' ⊗ A').hom ⁻¹ᵁ (f ⁻¹ᵁ U) ≤ Φ₂ ⁻¹ᵁ ((A ⊗ A).hom ⁻¹ᵁ U)` using `fun y hy => (congrArg (fun q => q y ∈ U) w₂).mpr hy`. Establish `hι : Φ₂.resLE _ _ le' ≫ ((A ⊗ A).hom ⁻¹ᵁ U).ι = ((A' ⊗ A').hom ⁻¹ᵁ (f ⁻¹ᵁ U)).ι ≫ Φ₂` using `Scheme.Hom.resLE_comp_ι Φ₂ le'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gen_chartPull (chartPullLinComb L Φ _ _ _ (Φ₂.resLE _ _ le') fun k => ?_) t ht` and prove the remaining obligations. Rewrite using `[Category.assoc, hψ, ← Category.assoc, ← hι, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rosatiAdj_pull {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] [IsCommMonObj A]
     [IsCommMonObj A'] {f : S' ⟶ S} {Φ : A'.left ⟶ A.left} {L : LB A.left}
@@ -51,9 +51,9 @@ private theorem rosatiAdj_pull {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [
   rw [Category.assoc, hψ, ← Category.assoc, ← hι, Category.assoc]
 
 /- English proof (translation)
-Introduce `O _ c S S' f P j hj`. Establish `hc` using `P.isAb.comm`. Establish `hc'` using `(StrictPull.polPull P f).isAb.comm`. Set `j' : OAct O (StrictPull.polPull P f).A` to `OAct.pullback f P.A j`. Establish `h : IsActPull j' j f (pullback.fst P.A.hom f)` using `exists_isActPull f j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨StrictPull.polPull P f, j', pullback.fst P.A.hom f, h, fun a => ?_⟩` and prove the remaining obligations. Conclude with `rosatiAdj_pull (A' := (StrictPull.polPull P f).A) h.1 (h.2 a) (h.2 (c a)) (hj a)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.rosati_action_pullback :
     ∀ (O : Type) [CommRing O] (c : O →+* O) (S S' : Scheme.{0}) (f : S' ⟶ S) (P : Out.PolAV S) (j : OAct O P.A),

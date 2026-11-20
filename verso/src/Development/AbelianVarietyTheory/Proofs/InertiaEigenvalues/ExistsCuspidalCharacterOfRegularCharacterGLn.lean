@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.GreenRegular
 
 /- English proof (translation)
-Establish `h1 : g ^ d ≡ 1 [MOD g ^ d - 1]` using `Nat.modEq_sub (Nat.one_le_pow _ _ hg)`. Use `conv_lhs => rw [← Nat.div_add_mod m d, pow_add, pow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pow_modEq_pow_mod {g : ℕ} (d : ℕ) (hg : 0 < g) (m : ℕ) : g ^ m ≡ g ^ (m % d) [MOD g ^ d - 1] := by
   have h1 : g ^ d ≡ 1 [MOD g ^ d - 1] := Nat.modEq_sub (Nat.one_le_pow _ _ hg)
@@ -29,7 +29,7 @@ theorem pow_modEq_pow_mod {g : ℕ} (d : ℕ) (hg : 0 < g) (m : ℕ) : g ^ m ≡
     _ = g ^ (m % d) := by rw [one_pow, one_mul]
 
 /- English proof (translation)
-The claim follows from `Finset.filter_congr fun i _ => ⟨fun h' => ((h.symm.mul_right _).trans h'), fun h' => ((h.mul_right _).trans h')⟩`.
+A detailed English derivation is pending.
 -/
 theorem filter_modEq_congr {g d a b l : ℕ} (h : a ≡ b [MOD g ^ d - 1]) :
     ((Finset.range d).filter fun i => a * g ^ i ≡ l [MOD g ^ d - 1]) =
@@ -38,11 +38,11 @@ theorem filter_modEq_congr {g d a b l : ℕ} (h : a ≡ b [MOD g ^ d - 1]) :
     ⟨fun h' => ((h.symm.mul_right _).trans h'), fun h' => ((h.mul_right _).trans h')⟩
 
 /- English proof (translation)
-Use `Finset.card_le_card_of_injOn (fun i => (i + c) % d) ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at hi ⊢`. Use `⟨Nat.mod_lt _ hd, ?_⟩` and prove the remaining obligations. Use `((pow_modEq_pow_mod d hg (i + c)).symm.mul_left a).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_add, mul_comm (g ^ i), ← mul_assoc]`. Conclude with `hi.2`. Introduce `i hi j hj hij`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at hi hj`. Establish `h1 : i + c ≡ j + c [MOD d]` using `hij`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Nat.ModEq.add_right_cancel' c h1`. Rewrite `h2` using `[Nat.ModEq, Nat.mod_eq_of_lt hi.1, Nat.mod_eq_of_lt hj.1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem card_filter_le_shift {g d : ℕ} (hg : 0 < g) (hd : 0 < d) (a c l : ℕ) :
     ((Finset.range d).filter fun i => a * g ^ c * g ^ i ≡ l [MOD g ^ d - 1]).card ≤
@@ -61,9 +61,9 @@ theorem card_filter_le_shift {g d : ℕ} (hg : 0 < g) (hd : 0 < d) (a c l : ℕ)
     rwa [Nat.ModEq, Nat.mod_eq_of_lt hi.1, Nat.mod_eq_of_lt hj.1] at h2
 
 /- English proof (translation)
-Use `le_antisymm (card_filter_le_shift hg hd a c l) ?_` and prove the remaining obligations. Establish `e : a ≡ a * g ^ c * g ^ (d - c) [MOD g ^ d - 1]`. Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[filter_modEq_congr e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `card_filter_le_shift hg hd (a * g ^ c) (d - c) l`.
+A detailed English derivation is pending.
 -/
 theorem card_filter_shift {g d : ℕ} (hg : 0 < g) (hd : 0 < d) (a c l : ℕ) (hc : c ≤ d) :
     ((Finset.range d).filter fun i => a * g ^ c * g ^ i ≡ l [MOD g ^ d - 1]).card =
@@ -81,59 +81,53 @@ end GlobalTheory.GreenRegular
 namespace GlobalTheory.GreenRegular
 
 /- English proof (translation)
-Introduce `g _ d hd K _ _ hK`. Establish `hgp : g.Prime` using `Fact.out`. Establish `hg : 0 < g` using `hgp.pos`. Establish `hcF : Nat.card (ZMod g) = g` using `Nat.card_zmod g`. Use `haveI : FiniteDimensional (ZMod g) K := Module.finite_of_finrank_pos (by rw [hK]; exact hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`. Use `letI : Fintype K := Fintype.ofFinite K`. Establish `hcardK : Fintype.card K = g ^ d`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, hK]`. Establish `hcardU : Nat.card Kˣ = g ^ d - 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_units, hcardK]`. Establish `hN0 : 0 < g ^ d - 1`. Use `Nat.one_lt_pow hd.ne' hgp.one_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨θ₀, hθ₀⟩` from `GlobalTheory.T.exists_teichmuller_map_algebraicClosure_finiteField (ZMod g)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι : K →ₐ[ZMod g] AlgebraicClosure (ZMod g)` to `IsAlgClosed.lift`. Set `lam : Kˣ →* ℂˣ` to `(Units.map θ₀).comp (Units.map (ι : K →* AlgebraicClosure (ZMod g)))`. Establish `hlam : ∀ u : Kˣ, ((lam u : ℂˣ) : ℂ) = θ₀ (ι (u : K))` using `fun u => rfl`. Establish `hlam_inj : Function.Injective lam`. Introduce `u v h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'` using `congrArg Units.val h`. Rewrite `h'` using `[hlam, hlam]`. Conclude with `Units.ext (ι.injective (hθ₀ _ _ ((map_ne_zero ι).2 u.ne_zero) ((map_ne_zero ι).2 v.ne_zero) h'))`. Take `⟨γ, hγ⟩` from `IsCyclic.exists_generator (α := Kˣ)`. Establish `hprim : IsPrimitiveRoot (lam γ) (g ^ d - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcardU, ← orderOf_eq_card_of_forall_mem_zpowers hγ, ← orderOf_injective lam hlam_inj γ]`. Conclude with `IsPrimitiveRoot.orderOf _`. Establish `hmod : ∀ u : Kˣ, u ^ (g ^ d - 1) = 1` using `fun u => by`. Rewrite using `[← hcardU]`. Conclude with `pow_card_eq_one'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpow_eq : ∀ a b : ℕ, lam ^ a = lam ^ b ↔ a ≡ b [MOD g ^ d - 1]`. Introduce `a b`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg (fun f : Kˣ →* ℂˣ => f γ) h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MonoidHom.pow_apply] at h1`. Rewrite `h1` using `[pow_eq_pow_iff_modEq, ← hprim.eq_orderOf]`. Then use the resulting hypothesis. Introduce `h`. Use `MonoidHom.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, MonoidHom.pow_apply, pow_eq_pow_iff_modEq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Nat.ModEq.of_dvd (orderOf_dvd_of_pow_eq_one (by rw [← map_pow, hmod, map_one])) h`. Establish `hpow : ∀ θ : Kˣ →* ℂˣ, ∃ k, θ = lam ^ k`. Introduce `θ`. Establish `h1 : θ γ ^ (g ^ d - 1) = 1` using `by rw [← map_pow, hmod, map_one]`. Use `haveI : NeZero (g ^ d - 1) := ⟨hN0.ne'⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1' : ((θ γ : ℂˣ) : ℂ) ^ (g ^ d - 1) = 1` using `by rw [← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Take `⟨k, -, hk0⟩` from `(IsPrimitiveRoot.coe_units_iff.2 hprim).eq_pow_of_pow_eq_one h1'`. Establish `hk : lam γ ^ k = θ γ` using `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hk0)`. Use `⟨k, MonoidHom.ext fun u => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl⟩` from `Subgroup.mem_zpowers_iff.1 (hγ u)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zpow, map_zpow, MonoidHom.pow_apply, hk]`. Set `kOf : (Kˣ →* ℂˣ) → ℕ` to `fun θ => (hpow θ).choose`. Establish `hkOf : ∀ θ, θ = lam ^ kOf θ` using `fun θ => (hpow θ).choose_spec`. Establish `hreg : ∀ θ, IsRegularChar g d θ → ∀ i : ℕ, 0 < i → i < d → ¬ kOf θ * Nat.card (ZMod g) ^ i ≡ kOf θ [MOD Nat.card (ZMod g) ^ d - 1]`. Introduce `θ hθ i hi hid hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hc` using `[hcF]`. Establish `e : θ ^ g ^ i = θ ^ g ^ 0`. Rewrite using `[hkOf θ, ← pow_mul, ← pow_mul, pow_zero, mul_one]`. Conclude with `(hpow_eq _ _).2 hc`. Conclude with `absurd (hθ i 0 hid hd e) hi.ne'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hadd : ∀ k, IsAdditive (rootSum θ₀ k)` using `fun k => (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow (ZMod g) θ₀ k).1`. Establish `hfr : 0 < Module.finrank (ZMod g) (Fin d → ZMod g)` using `by rw [Module.finrank_fin_fun]; exact hd`. Use `⟨fun θ x => (-1) ^ (d - 1) * psi (rootSum θ₀ (kOf θ)) (Fin d → ZMod g) (Matrix.toLin' (x : Matrix (Fin d) (Fin d) (ZMod g))), fun θ hθ => ⟨?_, ?_, ?_⟩, fun θ θ' hθ hθ' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ParamLabel.isCusp_psi θ₀ hθ₀ hd (hreg θ hθ)`. Use `show (-1) ^ (d - 1) * psi _ _ (Matrix.toLin' ((1 : Gn g d) : Matrix (Fin d) (Fin d) (ZMod g))) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `GlobalTheory.T.invariantSubspaceMobiusInverse_one_prod_Ico (ZMod g) (Fin d → ZMod g) (rootSum θ₀ (kOf θ)) (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow (ZMod g) θ₀ (kOf θ)).2 hfr`. Rewrite using `[Units.val_one, Matrix.toLin'_one, ← Module.End.one_eq_id, h1, Module.finrank_fin_fun, hcF, show ((-1 : ℂ)) ^ (d - 1) = ∏ i ∈ Finset.Ico 1 d, (-1 : ℂ) by rw [Finset.prod_const, Nat.card_Ico], ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => by ring`. Introduce `y hy z hz show (-1) ^ (d - 1) * psi _ _ _ = _`. Establish `h` using `GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_of_irreducible (ZMod g) (Fin d → ZMod g) _ (hadd (kOf θ)) (Matrix.toLin' (y : Mt g d)) (by rw [Matrix.charpoly_toLin']; exact hy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, Matrix.charpoly_toLin']`. Use `congr 1`. Establish `hz' : aeval (ι (z : K)) (y : Mt g d).charpoly = 0` using `by rw [aeval_algHom_apply, hz, map_zero]`. Establish `hnd : (y : Mt g d).charpoly.natDegree = d` using `by simp`. Express the relevant statement in the definitionally equal form `((Formalism.CyclotomicNorms.rootsBar _).map _).sum = _`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.GreenExists.rootsBar_eq hy hz', hnd, Multiset.map_map, Finset.sum_eq_multiset_sum]`. Use `congr 1`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [hkOf θ]`. Use `show θ₀ (ι ↑z ^ g ^ i) ^ kOf θ = _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, hlam, Units.val_pow_eq_pow_val, map_pow ι]`. Establish `hsign : ((-1 : ℂ) ^ (d - 1)) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`. Establish `hunit : ∀ G : Module.End (ZMod g) (Fin d → ZMod g), IsUnit G → ∃ x : Gn g d, Matrix.toLin' (x : Mt g d) = G`. Introduce `G hG`. Establish `hM : IsUnit (LinearMap.toMatrix' G)` using `hG.map (LinearMap.toMatrixAlgEquiv' : Module.End (ZMod g) (Fin d → ZMod g) ≃ₐ[ZMod g] Mt g d)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨hM.unit, by rw [IsUnit.unit_spec, Matrix.toLin'_toMatrix']⟩`. Establish `hxU : ∀ x : Gn g d, IsUnit (Matrix.toLin' (x : Mt g d))` using `fun x => x.isUnit.map (Matrix.toLinAlgEquiv' : Mt g d ≃ₐ[ZMod g] Module.End (ZMod g) (Fin d → ZMod g))`. Establish `heqU : ∀ k k' : ℕ, (∀ x : Gn g d, psi (rootSum θ₀ k) (Fin d → ZMod g) (Matrix.toLin' (x : Mt g d)) = psi (rootSum θ₀ k') (Fin d → ZMod g) (Matrix.toLin' (x : Mt g d))) → ∀ l : ℕ, ipGL (psi (rootSum θ₀ k) (Fin d → ZMod g)) (fun G => rootSum θ₀ l (LinearMap.charpoly G)) = ipGL (psi …`. Introduce `k k' h l`. Use `finsum_mem_congr rfl fun G hG => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `hunit G hG`. Rewrite using `[h x]`. Establish `hgram : ∀ k l : ℕ, ipGL (psi (rootSum θ₀ k) (Fin d → ZMod g)) (fun G => rootSum θ₀ l (LinearMap.charpoly G)) = glCard (ZMod g) d * (((Finset.range d).filter fun i => k * g ^ i ≡ l [MOD g ^ d - 1]).card : ℂ)`. Introduce `k l`. Establish `h` using `GlobalTheory.T.invertibleEndInnerProduct_rootPowerSum_mobius (ZMod g) (Fin d → ZMod g) θ₀ hθ₀ hfr k l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Module.finrank_fin_fun, hcF]`. Then use the resulting hypothesis. Establish `hGL : glCard (ZMod g) d ≠ 0`. Unfold `glCard`. Conclude with `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hτ`. Establish `hx : ∀ x : Gn g d, psi (rootSum θ₀ (kOf θ)) (Fin d → ZMod g) (Matrix.toLin' (x : Mt g d)) = psi (rootSum θ₀ (kOf θ')) (Fin d → ZMod g) (Matrix.toLin' (x : Mt g d))` using `fun x => mul_left_cancel₀ hsign (congrFun hτ x)`. Establish `e1` using `heqU _ _ hx (kOf θ')`. Rewrite `e1` using `[hgram, hgram]`. Establish `h2` using `mul_left_cancel₀ hGL e1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : 0 ∈ (Finset.range d).filter fun i => kOf θ' * g ^ i ≡ kOf θ' [MOD g ^ d - 1]`. Rewrite using `[Finset.mem_filter, Finset.mem_range, pow_zero, mul_one]`. Conclude with `⟨hd, Nat.ModEq.refl _⟩`. Establish `hne : ((Finset.range d).filter fun i => kOf θ * g ^ i ≡ kOf θ' [MOD g ^ d - 1]).Nonempty`. Rewrite using `[← Finset.card_pos]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.pos_of_ne_zero fun h0 => ?_` and prove the remaining obligations. Establish `h3` using `(Finset.card_pos.2 ⟨0, hmem⟩).ne'`. Rewrite `h2` using `[h0, Nat.cast_zero]`. Conclude with `h3 (by exact_mod_cast h2.symm)`. Take `⟨i, hi⟩` from `hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hi` using `[Finset.mem_filter, Finset.mem_range]`. Use `⟨i, hi.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hkOf θ', hkOf θ, ← pow_mul]`. Conclude with `((hpow_eq _ _).2 hi.2).symm`. Introduce and unpack `⟨i, hi, hθi⟩`.
-
-Establish `hk : kOf θ' ≡ kOf θ * g ^ i [MOD g ^ d - 1]`. Rewrite using `[← hpow_eq, pow_mul, ← hkOf θ, ← hkOf θ']`. Conclude with `hθi`. Use function extensionality and compare the values at `x`. Use `congrArg (fun t : ℂ => (-1 : ℂ) ^ (d - 1) * t) ?_` and prove the remaining obligations.
-
-Establish `hcl : ∀ k : ℕ, IsClassFn (psi (rootSum θ₀ k) (Fin d → ZMod g))` using `fun k e G => GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_linearEquiv_conj (ZMod g) _ _ _ e G`. Establish `hexp` using `fun k : ℕ => GlobalTheory.T.primitiveClassFunction_expansion_rootSums (ZMod g) (Fin d → ZMod g) θ₀ hθ₀ _ (hcl k) (GlobalTheory.T.isPrimitiveEndClassFunction_invariantSubspaceMobiusInverse (ZMod g) (Fin d → ZMod g) _ (hadd k)) hfr _ (hxU x)`. Establish `e1` using `hexp (kOf θ)`. Establish `e2` using `hexp (kOf θ')`. Rewrite `e1`, `e2` using `[Module.finrank_fin_fun, hcF]`.
-
-Establish `hsum : ∀ l : ℕ, ipGL (psi (rootSum θ₀ (kOf θ)) (Fin d → ZMod g)) (fun G => rootSum θ₀ l (LinearMap.charpoly G)) = ipGL (psi (rootSum θ₀ (kOf θ')) (Fin d → ZMod g)) (fun G => rootSum θ₀ l (LinearMap.charpoly G))`. Introduce `l`. Rewrite using `[hgram, hgram, filter_modEq_congr hk, card_filter_shift hg hd _ _ _ hi.le]`. Rewrite `e1` using `[Finset.sum_congr rfl fun l _ => by rw [hsum l]]`. Conclude with `mul_left_cancel₀ (mul_ne_zero hGL (Nat.cast_ne_zero.2 hd.ne')) (e1.trans e2.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cusp_of_regular : ∀ (g : ℕ) [Fact g.Prime] (d : ℕ), 0 < d → ∀ (K : Type) [Field K] [Algebra (ZMod g) K],
     Module.finrank (ZMod g) K = d → ∃ τ : (Kˣ →* ℂˣ) → Gn g d → ℂ,

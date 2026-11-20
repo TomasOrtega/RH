@@ -7,7 +7,7 @@ noncomputable section
 namespace GenFrameSpan
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply, Matrix.mul_apply, Finset.prod_univ_sum, Fintype.piFinset_univ, Matrix.submatrix_apply, id, Finset.smul_sum, Finset.mul_sum, Finset.prod_mul_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun f _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Units.smul_def, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_mul_rect {R : Type*} [CommRing R] {k n : ℕ}
     (A : Matrix (Fin k) (Fin n) R) (B : Matrix (Fin n) (Fin k) R) :
@@ -20,17 +20,15 @@ theorem det_mul_rect {R : Type*} [CommRing R] {k n : ℕ}
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hf : Function.Injective f`. Use `right set s := Finset.univ.image f with hs`. Establish `hcard : s.card = p`. Rewrite using `[hs, Finset.card_image_of_injective _ hf, Finset.card_univ, Fintype.card_fin]`. Set `J` to `s.orderEmbOfFin hcard`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ i, f i ∈ Set.range J`. Introduce `i`. Rewrite using `[Finset.range_orderEmbOfFin]`. Simplify using `[hs]`. Use `choose g hg using hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hginj : Function.Injective g`. Introduce `a b h`. Apply `hf` to reduce the goal to its premises. Rewrite using `[← hg a, ← hg b, h]`. Set `σ : Equiv.Perm (Fin p)` to `Equiv.ofBijective g (Finite.injective_iff_bijective.1 hginj)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨J, (Equiv.Perm.sign σ : ℤ), ?_⟩` and prove the remaining obligations. Establish `e : M.submatrix id f = (M.submatrix id J).submatrix id σ`. Use extensionality with `a b`. Simplify using `[σ, hg]`. Rewrite using `[e, Matrix.det_permute']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `try norm_cast`. Use `left`. Rewrite `hf` using `[Function.Injective]`. Use `push_neg at hf`. Take `⟨i, j, hij, hne⟩` from `hf`.
-
-Conclude with `Matrix.det_zero_of_column_eq hne (fun a => by simp [hij])`.
+A detailed English derivation is pending.
 -/
 theorem det_submatrix_fun {R : Type*} [CommRing R] {p n : ℕ} (M : Matrix (Fin p) (Fin n) R)
     (f : Fin p → Fin n) :

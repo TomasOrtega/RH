@@ -20,11 +20,9 @@ namespace GlobalTheory.OpenOmega
 variable {p : ℕ} {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {GG : PDivGroup p R}
 
 /- English proof (translation)
-Establish `h2` using `congrArg Over.Hom.left hz`. Simplify using `only [Over.comp_left] at h2`. Use `ext1`. Simplify using `only [Over.comp_left]`. Express the relevant statement in the definitionally equal form `(zeroSec R M).left ≫ z.left = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Establish `hu : (toUnit (Over.mk (spMap (algebraMap R R)))).left = 𝟙 (Sp R)`. Rewrite using `[Over.toUnit_left]`. Conclude with `Spec.map_id _`. Express the relevant statement in the definitionally equal form `_ = (toUnit (Over.mk (spMap (algebraMap R R)))).left ≫ η[G].left`.
-
-Use `erw [hu]`. Conclude with `(Category.id_comp _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem spOver_fst_comp {M : Type} [AddCommGroup M] [Module R M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M]
     (z : SpAlg R (TrivSqZeroExt R M) ⟶ G) (hz : zeroSec R M ≫ z = η[G]) :
@@ -42,9 +40,9 @@ theorem spOver_fst_comp {M : Type} [AddCommGroup M] [Module R M] [Module Rᵐᵒ
   exact (Category.id_comp _).symm
 
 /- English proof (translation)
-Establish `h` using `θ.nat n (TrivSqZeroExt R M) R (TrivSqZeroExt.fstHom R R M) z ⟨1, one_pow _⟩ (spOver_fst_comp z.1 hz).symm`. Rewrite using `[← h]`. Establish `h1` using `θ.pt_one n R (Fact.out : p.Prime).ne_zero`. Use extensionality with `a`. Establish `h2` using `congrArg (fun f : WithConv (GG.A n →ₐ[R] R) => f.ofConv a) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fst_comp_pt [Fact p.Prime] (θ : TorsionMap G GG) (n : ℕ) {M : Type} [AddCommGroup M] [Module R M]
     [Module Rᵐᵒᵖ M] [IsCentralScalar R M] (z : Tors G (p ^ n) (TrivSqZeroExt R M)) (hz : zeroSec R M ≫ z.1 = η[G]) :
@@ -71,7 +69,7 @@ def univPt (θ : TorsionMap G GG) (n : ℕ) (hs : PtSurj θ n) : Tors G (p ^ n) 
   Classical.choose (hs _ (univ GG n) (fst_comp_univ n))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hs _ (univ GG n) (fst_comp_univ n))`.
+A detailed English derivation is pending.
 -/
 theorem univPt_spec (θ : TorsionMap G GG) (n : ℕ) (hs : PtSurj θ n) :
     zeroSec R (Cot R (GG.A n)) ≫ (univPt θ n hs).1 = η[G] ∧ θ.pt n _ (univPt θ n hs) = univ GG n :=

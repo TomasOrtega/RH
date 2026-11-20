@@ -13,9 +13,9 @@ open NumberField IsDedekindDomain Formalism.L2.Host GlobalTheory.CuspRep GlobalT
 namespace GlobalTheory.CuspRep.UnitaryParam
 
 /- English proof (translation)
-Introduce `E _ _ _ a π H hH hpos hinv w B hB`. Take `⟨x, hx⟩` from `GlobalTheory.LFun.HasSatGL.exists_vec hB`. Use `GlobalTheory.LFun.UnitaryParam.map_star_eq_map_inv E w a π.V (π.locRep w) x B ?_ hx` and prove the remaining obligations. Use `⟨H.flip, fun v u => ?_, fun v hv => ?_, fun g v u => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.flip_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(hH u v).symm`. Simplify `hpos v hv` using `only [LinearMap.flip_apply]`. Simplify using `only [LinearMap.flip_apply]`. Conclude with `hinv _ u v`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_star_eq_map_inv_of_form : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a) (H : π.V →ₗ⋆[ℂ] π.V →ₗ[ℂ] ℂ), (∀ φ ψ, starRingEnd ℂ (H φ ψ) = H ψ φ) → (∀ φ, φ ≠ 0 → 0 < (H φ φ).re) → (∀ k φ ψ, H (π.op (.fin k) φ) (π.op (.fin k) ψ) = H φ ψ) → ∀ (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ), GlobalTheory.LFun.HasSatGL w (π.locRep w) B → B.map star = B.map (·⁻¹) := by
   intro E _ _ _ a π H hH hpos hinv w B hB

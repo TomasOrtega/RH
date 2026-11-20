@@ -5,7 +5,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 /- English proof (translation)
-Establish `hz : ζ = (ζ.re : ℂ) + (ζ.im : ℂ) * Complex.I` using `(Complex.re_add_im ζ).symm`. Establish `hs : star ζ = (ζ.re : ℂ) - (ζ.im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Take the linear combination `(-(Complex.I / 2) * D1 + (Complex.I ^ 2 / 2) * DI) * hz + ((Complex.I / 2) * D1 + (Complex.I ^ 2 / 2) * DI) * hs + ((ζ.re : ℂ) * DI - (ζ.im : ℂ) * D1) * Complex.I_sq`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rot_alg (ζ D1 DI : ℂ) : -(ζ.im : ℂ) * D1 + (ζ.re : ℂ) * DI =
     Complex.I * (ζ * ((1 / 2 : ℂ) * (D1 + -Complex.I * DI)) - star ζ * ((1 / 2 : ℂ) * (D1 + Complex.I * DI))) := by
@@ -16,17 +16,17 @@ theorem rot_alg (ζ D1 DI : ℂ) : -(ζ.im : ℂ) * D1 + (ζ.re : ℂ) * DI =
     ((Complex.I / 2) * D1 + (Complex.I ^ 2 / 2) * DI) * hs + ((ζ.re : ℂ) * DI - (ζ.im : ℂ) * D1) * Complex.I_sq
 
 /- English proof (translation)
-Introduce `r u x hu`. Establish `h1 : HasDerivAt (fun φ : ℝ => Complex.exp ((φ : ℂ) * Complex.I)) (Complex.exp ((((0 : ℝ) : ℂ)) * Complex.I) * (1 * Complex.I)) 0` using `((hasDerivAt_id (0 : ℝ)).ofReal_comp.mul_const Complex.I).cexp`. Establish `h2 : HasDerivAt (fun φ : ℝ => x.2 * Complex.exp ((φ : ℂ) * Complex.I)) (x.2 * Complex.I) 0`. Establish `h3` using `h1.const_mul x.2`. Simplify using `using h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hγ : HasDerivAt (fun φ : ℝ => ((x.1, x.2 * Complex.exp ((φ : ℂ) * Complex.I)) : MA.E r)) ((0 : Fin r → ℂ), x.2 * Complex.I) 0` using `by first`. Consider the case `exact (hasDerivAt_const (0 : ℝ) x.1).prodMk h2`. Consider the case `exact (hasDerivAt_const (0 : ℝ) x.1).prod h2`. Establish `hx : x = ((x.1, x.2 * Complex.exp ((((0 : ℝ) : ℂ)) * Complex.I)) : MA.E r)` using `by simp`. Establish `hc` using `hu.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ hx`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdir1 : MA.dirE (M.vz (r` using `r)) = ((0 : Fin r → ℂ), (1 : ℂ)) := by simp [MA.dirE, M.vz]`. Establish `hdir2 : MA.dirE (M.vzb (r` using `r)) = ((0 : Fin r → ℂ), (1 : ℂ)) := by simp [MA.dirE, M.vzb]`. Establish `hw1 : MA.wirt M.vz u x = (1 / 2 : ℂ) * (fderiv ℝ u x ((0 : Fin r → ℂ), (1 : ℂ)) + -Complex.I * fderiv ℝ u x ((0 : Fin r → ℂ), Complex.I))`. Rewrite using `[MA.wirt, hdir1]`. Simplify using `[M.vz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hw2 : MA.wirt M.vzb u x = (1 / 2 : ℂ) * (fderiv ℝ u x ((0 : Fin r → ℂ), (1 : ℂ)) + Complex.I * fderiv ℝ u x ((0 : Fin r → ℂ), Complex.I))`. Rewrite using `[MA.wirt, hdir2]`. Simplify using `[M.vzb]`. Establish `key : Complex.I * (x.2 * MA.wirt M.vz u x - star x.2 * MA.wirt M.vzb u x) = fderiv ℝ u x ((0 : Fin r → ℂ), x.2 * Complex.I)`. Rewrite using `[hw1, hw2, ← rot_alg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ((0 : Fin r → ℂ), x.2 * Complex.I) = x.2.re • ((0 : Fin r → ℂ), Complex.I) + (-x.2.im) • ((0 : Fin r → ℂ), (1 : ℂ))`. Use `Prod.ext (by simp) ?_` and prove the remaining obligations. Simplify using `only [Prod.smul_snd, Prod.snd_add, Complex.real_smul, mul_one]`. Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[hv, map_add, map_smul, map_smul, Complex.real_smul, Complex.real_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `hc`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rotation_wirtinger_holds : GTRRWirt := by
   intro r u x hu

@@ -11,13 +11,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `Γ k _ _ _ _ N N' ρ ρ' hρ hρ' hcp c ⟨v, hv0, hv⟩`. Establish `hN : N = N'`. Establish `h` using `congrArg Polynomial.natDegree (hcp 1)`. Simplify `h` using `[cp, Matrix.charpoly_natDegree_eq_dim]`. Substitute `hN` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Take `⟨P, hP⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix ρ ρ' hρ hρ' (fun g => hcp g)`. Use `⟨(P : Matrix (Fin N) (Fin N) k).mulVec v, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hv0` to reduce the goal to its premises. Use `congrArg (((P⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k).mulVec) h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec, Matrix.mulVec_zero]`. Conclude with `this`. Introduce `g`. Establish `hg : ρ g * P = P * ρ' g`. Rewrite using `[hP g]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Establish `hm : (ρ g : Matrix (Fin N) (Fin N) k) * P = P * ρ' g`. Rewrite using `[← Units.val_mul, hg, Units.val_mul]`. Rewrite using `[Matrix.mulVec_mulVec, hm, ← Matrix.mulVec_mulVec, hv g, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.eigTransfer_holds :
     EigTransfer := by

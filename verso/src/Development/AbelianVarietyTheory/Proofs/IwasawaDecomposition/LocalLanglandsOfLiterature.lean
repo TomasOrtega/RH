@@ -19,7 +19,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.Mem.LiteralAutomorphy
 
 /- English proof (translation)
-Introduce `L A`. Establish `hL : GlobalTheory.Published.LocalLanglandsGL` using `GlobalTheory.T.local_langlands_of_published L.llc L.conv L.dzc L.dzi L.brauer L.chev A.art L.exh L.multi L.cos L.zel L.geo L.bz`. Use `⟨hL, ?_⟩` and prove the remaining obligations. Establish `hG : GlobalTheory.GLq.Green` using `GlobalTheory.GreenBridge.green_of_regular L.green`. Conclude with `{ what₂ := GlobalTheory.T.published_inputs_combined L.bz L.bern L.geo L.disj L.mp L.theta A.js A.fin A.ctemp L.temp L.seg A.gk A.gal A.car A.pur A.coh A.art A.chA A.chW A.berger GlobalTheory.Published.chebotarevDegreeOne' hL decay := A.decay hc := A.hc greenC := hG green := hG ze …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem localLanglandsGL_and_prN_of_lit : LitLoc → LitAut → GlobalTheory.Published.LocalLanglandsGL ∧ PrN := by
   intro L A

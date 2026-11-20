@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnVal
 
 /- English proof (translation)
-Unfold `I2.polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h` using `e.iteratedFDerivWithin_comp_right G (s := Set.univ) uniqueDiffOn_univ (x := x) (Set.mem_univ _) (Multiset.card (Finsupp.toMultiset m))`. Rewrite `h` using `[Set.preimage_univ, iteratedFDerivWithin_univ, iteratedFDerivWithin_univ]`. Establish `h' : (fun z => G (e z)) = G ∘ e` using `rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h', h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem polyDeriv_comp_linear_equiv {σ V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [NormedAddCommGroup W] [NormedSpace ℂ W] (e : V ≃L[ℂ] W) (P : MvPolynomial σ ℂ) (u : σ → V)
@@ -34,25 +34,25 @@ theorem polyDeriv_comp_linear_equiv {σ V W : Type} [NormedAddCommGroup V] [Norm
   rfl
 
 /- English proof (translation)
-Simplify using `[I2.Hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lintor_hf_neg_right {J : Type} [Fintype J] (v w : EuclideanSpace ℂ J) :
     I2.Hf v (-w) = -I2.Hf v w := by
   simp [I2.Hf]
 
 /- English proof (translation)
-Simplify using `[I2.Hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lintor_hf_neg_left {J : Type} [Fintype J] (v w : EuclideanSpace ℂ J) :
     I2.Hf (-v) w = -I2.Hf v w := by
   simp [I2.Hf]
 
 /- English proof (translation)
-Introduce `E _ _ _ X g ψ Hm θ hH _ n N a Io P u`. Set `e : (Fin n → Fin g → ℂ) ≃L[ℂ] (Fin n → I2.Vsp X.dim)` to `ContinuousLinearEquiv.piCongrRight fun _ => ψ.toContinuousLinearEquiv`. Establish `he : ∀ z, e z = fun b => ψ (z b)` using `fun _ => rfl`. Establish `key` using `polyDeriv_comp_linear_equiv e P u (X.U (N ^ 2) (fun b => -ψ (a b)) (I2.s0 X ((N : ℂ) • LinearMap.id) fun v => θ (ψ.symm (v 0)))) 0`. Rewrite `key` using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans ?_ key` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[he]`. Simplify using `only [fock, I2.PT.U, I2.s0, I2.HC, lintor_hf_neg_right, lintor_hf_neg_left, hH, neg_neg, Finset.prod_mul_distrib, ← Complex.exp_sum, Pi.sub_apply, sub_neg_eq_add, LinearMap.smul_apply, LinearMap.id_apply, ← map_add, ← map_smul, LinearEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Simplify using `only [Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_div, mul_neg]`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem polyDeriv_prod_fock_eq_translate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (X : I2.PT E) (g : ℕ) (ψ : (Fin g → ℂ) ≃ₗ[ℂ] I2.Vsp X.dim) (Hm : Matrix (Fin g) (Fin g) ℂ) (θ : (Fin g → ℂ) → ℂ), (∀ z w, I2.Hf (ψ z) (ψ w) = hermForm Hm z w) → Differentiable ℂ θ → ∀ (n N : ℕ) (a : Fin n → Fin g → ℂ) (Io : Type) (P : MvPolynomial Io ℂ) (u : Io → Fin n → Fin g → ℂ), I2.polyDeriv P u (fun z => ∏ b, fock Hm ((N : ℤ) ^ 2) (a b) (fun w => θ ((N : ℂ) • w)) (z b)) 0 = I2.polyDeriv P (fun ℓ b => ψ (u ℓ b)) (X.U (N ^ 2) (fun b => -ψ (a b)) (I2.s0 X ((N : ℂ) • LinearMap.id) fun v => θ (ψ.symm (v 0)))) 0 := by
   intro E _ _ _ X g ψ Hm θ hH _ n N a Io P u

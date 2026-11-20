@@ -24,7 +24,7 @@ variable [IsDiscreteRep A]
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_eq_id _ _ (by ext; rfl) (fun _ => rfl) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyMapAlong_resSubgroupOfHom_comp (n : ℕ) :
     cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe h).symm.toMonoidHom
@@ -60,7 +60,7 @@ theorem cohomologyCoresLE_eq {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[cohomologyResLE_eq_cohomologyRes_comp, cohomologyCoresLE, Category.assoc, cohomologyMapAlong_resSubgroupOfHom_comp_assoc]`. Conclude with `cohomologyRes_comp_cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype C) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyResLE_comp_cohomologyCoresLE {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ) :
     cohomologyResLE C (show (V : Subgroup G) ≤ U from h) n ≫ cohomologyCoresLE C h n =
@@ -70,7 +70,7 @@ theorem cohomologyResLE_comp_cohomologyCoresLE {U V : OpenSubgroup G} (h : V ≤
   exact cohomologyRes_comp_cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype C) n
 
 /- English proof (translation)
-Use `congrArg (fun φ => φ.hom x) (cohomologyResLE_comp_cohomologyCoresLE C h n)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cohomologyCoresLE_cohomologyResLE {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ)
     (x : cohomology (Rep.res (U : Subgroup G).subtype C) n) :

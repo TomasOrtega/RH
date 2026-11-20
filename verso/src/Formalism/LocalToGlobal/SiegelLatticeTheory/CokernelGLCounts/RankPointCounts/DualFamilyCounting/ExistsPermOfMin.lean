@@ -13,7 +13,7 @@ open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt
 def cntGe {n : ℕ} (e : Fin n → ℕ) (v : ℕ) : ℕ := (Finset.univ.filter fun i => v ≤ e i).card
 
 /- English proof (translation)
-Unfold `cntGe`. Rewrite using `[Finset.card_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cntGe_succ {n : ℕ} (e : Fin n → ℕ) (v : ℕ) :
     cntGe e (v + 1) + ∑ i, min (e i) v = ∑ i, min (e i) (v + 1) := by
@@ -23,9 +23,9 @@ theorem cntGe_succ {n : ℕ} (e : Fin n → ℕ) (v : ℕ) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Consider the cases of `v with`. Consider the case `zero => simp [cntGe]`. Consider the case `succ w`. Establish `h1` using `cntGe_succ e w`. Establish `h2` using `cntGe_succ e' w`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[H w, H (w + 1)]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cntGe_eq {n : ℕ} (e e' : Fin n → ℕ) (H : ∀ j, ∑ i, min (e i) j = ∑ i, min (e' i) j) (v : ℕ) :
     cntGe e v = cntGe e' v := by
@@ -38,9 +38,9 @@ theorem cntGe_eq {n : ℕ} (e e' : Fin n → ℕ) (H : ∀ j, ∑ i, min (e i) j
     omega
 
 /- English proof (translation)
-Establish `key : cntGe e v = (Finset.univ.filter fun i => e i = v).card + cntGe e (v + 1)`. Unfold `cntGe`. Simplify using `only [Finset.card_filter]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> omega`. Use linear arithmetic over natural numbers and integers.
+Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_eq_val {n : ℕ} (e : Fin n → ℕ) (v : ℕ) :
     (Finset.univ.filter fun i => e i = v).card = cntGe e v - cntGe e (v + 1) := by
@@ -53,9 +53,9 @@ theorem card_eq_val {n : ℕ} (e : Fin n → ℕ) (v : ℕ) :
   omega
 
 /- English proof (translation)
-Establish `hc : ∀ v, (Finset.univ.filter fun i => e i = v).card = (Finset.univ.filter fun i => e' i = v).card`. Introduce `v`. Rewrite using `[card_eq_val, card_eq_val, cntGe_eq e e' H, cntGe_eq e e' H]`. Use `⟨Equiv.ofFiberEquiv (f := e) (g := e') fun v => Fintype.equivOfCardEq ?_, fun i => Equiv.ofFiberEquiv_map _ i⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hc v` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem exists_perm_of_min {n : ℕ} (e e' : Fin n → ℕ) (H : ∀ j, ∑ i, min (e i) j = ∑ i, min (e' i) j) :
     ∃ σ : Equiv.Perm (Fin n), ∀ i, e' (σ i) = e i := by
@@ -74,7 +74,7 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hb`. Establish `hr : Set.range (b ∘ σ) = Set.range b` using `σ.surjective.range_comp b`. Use `⟨fun i => h1 _, ?_, fun i j hij => h3 _ _ (σ.injective.ne hij), fun i => h4 _, fun i => h5 _⟩` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isJordanIn_perm {h : V →ₗ⋆[K] V →ₗ[K] K} {X : Submodule K V} {L : Submodule (𝓞 K) V}
     {𝔭 : Ideal (𝓞 F)} {b : Fin (finrank K X) → V} {a : Fin (finrank K X) → 𝓞 F}
@@ -88,11 +88,11 @@ theorem isJordanIn_perm {h : V →ₗ⋆[K] V →ₗ[K] K} {X : Submodule K V} {
   exact h2
 
 /- English proof (translation)
-Introduce `x hx hxy`. Apply `hnd` to reduce the goal to its premises. Introduce `v`. Establish `hv : v ∈ U ⊔ orthK h U` using `by rw [hUW.sup_eq_top]; exact Submodule.mem_top`. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.mp hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, hxy w hw, add_zero]`. Establish `h1 : h u x = 0`. Establish `hx'` using `hx`. Simplify using `only [orthK, Submodule.mem_iInf, LinearMap.mem_ker] at hx'`. Conclude with `hx' u hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs.eq u x, h1, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem nondegOn_orth {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd : Nondeg h)
     {U : Submodule K V} (hUW : IsCompl U (orthK h U)) : NondegOn h (orthK h U) := by
@@ -109,11 +109,9 @@ theorem nondegOn_orth {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd : 
   rw [← hs.eq u x, h1, map_zero]
 
 /- English proof (translation)
-Introduce `x hx y hy`. Rewrite using `[← Formalism.HermitianLattices.Ext.L3.LocF.iInf_locF (K := K) (F := F) (1 : Submodule (𝓞 K) K), Submodule.mem_iInf]`. Introduce and unpack `⟨𝔭, h𝔭⟩`. Establish `hne` using `hfib 𝔭 h𝔭`. Unfold `fibP at hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨⟨Λ, _, hdual, _, hΛT⟩⟩` from `(Nat.card_ne_zero.1 hne).1`. Establish `hsub : ∀ z ∈ T, z ∈ Λ` using `fun z hz => (Submodule.mem_inf.1 (hΛT.symm ▸ Formalism.HermitianLattices.Ext.L3.LocF.le_locF 𝔭 T hz : z ∈ Λ ⊓ (orthK h U).restrictScalars (𝓞 K))).1`. Establish `hyd : y ∈ dualF h 𝔭 Λ`. Rewrite using `[hdual]`. Conclude with `hsub y hy`.
-
-Conclude with `hyd x (hsub x hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_fib (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd : Nondeg h)
     {U : Submodule K V} (hUc : IsCompl U (orthK h U)) {M T : Submodule (𝓞 K) V} (hM : IsLatIn U M)
@@ -135,11 +133,11 @@ theorem integral_of_fib (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs
   exact hyd x (hsub x hx)
 
 /- English proof (translation)
-Introduce `𝔭 h𝔭`. Establish `hT₀ : IsLatIn (orthK h U) (Λ₀ ⊓ (orthK h U).restrictScalars (𝓞 K))` using `isLatIn_cut hΛ₀.1 _`. Establish `hrefl : SameGenusFix (F` using `F) h U (Λ₀ ⊓ (orthK h U).restrictScalars (𝓞 K)) (Λ₀ ⊓ (orthK h U).restrictScalars (𝓞 K)) := fun 𝔮 _ => ⟨1, (isomFix h U).one_mem, by ext z; simp [Formalism.HermitianLatticesTheory.gmap]⟩`. Establish `hfib₀ : ∀ 𝔮 : Ideal (𝓞 F), 𝔮.IsMaximal → fibP h U 𝔮 M (Λ₀ ⊓ (orthK h U).restrictScalars (𝓞 K)) ≠ 0` using `fun 𝔮 h𝔮 => fibP_ne_zero_of_genus hF hs hnd hUc hM hΛ₀ hrefl h𝔮`. Establish `hint` using `integral_of_fib hF hs hnd hUc hM hT hfib`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint₀` using `integral_of_fib hF hs hnd hUc hM hT₀ hfib₀`. Establish `hnd'` using `nondegOn_orth hs hnd hUc`. Take `⟨b, a, hb⟩` from `(h1 K F V hK hF h hs).1 (orthK h U) _ hnd' hT₀ hint₀ 𝔭 h𝔭`. Take `⟨b', a', hb'⟩` from `(h1 K F V hK hF h hs).1 (orthK h U) T hnd' hT hint 𝔭 h𝔭`. Take `⟨e₀⟩` from `((h6 K F V hK hF h hs hnd U hUc M _ hM hT₀ 𝔭 h𝔭).1 (hfib₀ 𝔭 h𝔭)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `((h6 K F V hK hF h hs hnd U hUc M T hM hT 𝔭 h𝔭).1 (hfib 𝔭 h𝔭)).1`. Establish `hmin` using `h2 K F V V hK hF h h hs hs (orthK h U) (orthK h U) _ T hT₀ hT 𝔭 h𝔭 b a b' a' hb hb' ⟨e₀.symm.trans e⟩`. Take `⟨σ, hσ⟩` from `exists_perm_of_min (fun i => vF 𝔭 (a i)) (fun i => vF 𝔭 (a' i)) hmin`. Conclude with `hI K F V hK hF h hs hnd U hUc hpos _ T hT₀ hT 𝔭 h𝔭 b a (b' ∘ σ) (a' ∘ σ) hb (isJordanIn_perm hb' σ) (fun i => (hσ i).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem genus_of_fib (h1 : JordanExists) (h2 : JordanInv) (h6 : GlueLoc) (hI : IsomFixOfExp)
     (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)

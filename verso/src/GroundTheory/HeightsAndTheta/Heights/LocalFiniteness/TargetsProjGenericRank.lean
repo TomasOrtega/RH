@@ -17,19 +17,19 @@ import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PPtsPosPartProjIndep
 set_option maxSynthPendingDepth 1
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsPosPartProjIndep.proof GroundTheory.Heights₂.Heights.AutoClose.PtsSheetSimpleNull GroundTheory.Heights₂.Heights.AutoClose.PtsSheetOnlyNull GroundTheory.Heights₂.Heights.PtsPosPartLocal.proof GroundTheory.Heights₂.Heights.PtsPosDensMeasurable.proo …`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.PtsPosPartProjIndep : GroundTheory.Heights₂.Heights.PtsPosPartProjIndep.Statement :=
   @GroundTheory.Heights₂.Heights.PtsPosPartProjIndep.proof GroundTheory.Heights₂.Heights.AutoClose.PtsSheetSimpleNull GroundTheory.Heights₂.Heights.AutoClose.PtsSheetOnlyNull GroundTheory.Heights₂.Heights.PtsPosPartLocal.proof GroundTheory.Heights₂.Heights.PtsPosDensMeasurable.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.DefectAverage.proof GroundTheory.Heights₂.Heights.AutoClose.MahlerAverageSplit GroundTheory.Heights₂.Heights.AutoClose.CycleAverage`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.DefectAverage : GroundTheory.Heights₂.Heights.DefectAverage.Statement :=
   @GroundTheory.Heights₂.Heights.DefectAverage.proof GroundTheory.Heights₂.Heights.AutoClose.MahlerAverageSplit GroundTheory.Heights₂.Heights.AutoClose.CycleAverage
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.proof GroundTheory.Heights₂.Heights.AutoClose.ConeSliceSheetParam GroundTheory.Heights₂.Heights.AutoClose.ConeMapArea`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.ConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement :=
   @GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.proof GroundTheory.Heights₂.Heights.AutoClose.ConeSliceSheetParam GroundTheory.Heights₂.Heights.AutoClose.ConeMapArea

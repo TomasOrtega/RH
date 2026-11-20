@@ -12,9 +12,9 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hAR hTD hEC D i r ρ π dc ep e' c0 cB hA hG2 hL hD hπ`. Take `⟨hJ, hRow⟩` from `EmbeddingTypes.jump_and_length_of_admitted i r ρ π dc e' c0 cB hA hL hD hπ`. Take `⟨g1, -, g3, g4, g578, g5x, g6, -, a51, -, -, hBK, hLc, -, -, hTB, unr, ct, -, dcm, -, tie, -, font, -, fin, -⟩` from `hA`. Establish `g5 : TruncatedSeriesCountingIdentities.admG5 i r` using `Formalism.MainNotions.N.K.SplitLatticeDiagonal.admG5_of_adm51_admG5 i r ρ π hπ a51 g578`. Establish `g2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π` using `hG2 hL.2.2.2.1 hL.2.2.2.2 hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hJ, hRow, fun hs hsha _ => ?_⟩` and prove the remaining obligations. Establish `hthm` using `GlobalTheory.T.globalLatticeIndexTheorem_of_lengthBoundAtPlaces hAR hTD hEC D i r ρ π dc (EmbeddingTypes.lenRowSplit i dc e' c0) (fun _ => e') cB g1 g2 g3 g4 g5 g5x g6 hBK.1 hBK.2 ct dcm font fin tie a51 unr (EmbeddingTypes.admissible_length_of_local i r ρ π dc hD.2 e' c0 hRow) h …`. Conclude with `EmbeddingTypes.length_bound_of_theorem i ρ π dc hD.2 e' c0 cB hJ hthm hL.2.2.2.1 hL.2.2.2.2 hπ hs hsha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem splitCase_bound_at_point_of_admitted_items : GlobalTheory.Published.GlobalArtinReciprocity → Formalism.GaloisCohomology.LocalTateDualityK →
     Formalism.GaloisCohomology.LocalEulerCharK → ∀ (D : D7) (i : D.nd.Loc)

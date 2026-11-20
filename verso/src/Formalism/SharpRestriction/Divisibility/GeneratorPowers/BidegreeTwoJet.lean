@@ -21,9 +21,9 @@ def zV (pG : IsPowGrp G' G n) (xT : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ G) (m : �
   pG.lim.lift (Fan.mk _ fun i => homAt (𝟙 (Sp V)) (jetCopy (S := V) d m i) ≫ xT m)
 
 /- English proof (translation)
-Simplify using `only [spMap, thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← Ideal.Quotient.mk_algebraMap, ← Ideal.Quotient.mk_algebraMap, jetCoef, Ideal.Quotient.lift_mk]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[MvPolynomial.algebraMap_eq]`.
+Simplify using the standard rewrite rules.
 -/
 lemma jet_square (I : Ideal V) (e m : ℕ) :
     spMap (jetCoef (Ideal.Quotient.mk (I ^ (e + 1))) (Fin n × Fin d) m) ≫ spMap (algebraMap V (Jet V (Fin n × Fin d) m)) =

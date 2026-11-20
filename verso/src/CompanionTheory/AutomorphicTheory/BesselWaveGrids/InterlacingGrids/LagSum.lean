@@ -5,7 +5,7 @@ namespace GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid
 open Finset
 
 /- English proof (translation)
-The claim follows from `|∏ i ∈ (univ : Finset (Fin (d + 1))).erase j, (y j - y i)⁻¹| ≤ (1 / 5 : ℝ) ^ d := by rw [abs_prod] have hcard : ((univ : Finset (Fin (d + 1))).erase j).card = d := by rw [Finset.card_erase_of_mem (mem_univ j)]; simp calc ∏ i ∈ (univ : Finset (Fin (d + 1))).erase j, |(y j - y i)⁻¹ …`.
+A detailed English derivation is pending.
 -/
 theorem lag_abs_term_le {d : ℕ} (y : Fin (d + 1) → ℝ) (h : ∀ i j, i ≠ j → 5 ≤ |y i - y j|)
     (j : Fin (d + 1)) :
@@ -24,9 +24,9 @@ theorem lag_abs_term_le {d : ℕ} (y : Fin (d + 1) → ℝ) (h : ∀ i j, i ≠ 
     _ = (1 / 5 : ℝ) ^ d := by rw [Finset.prod_const, hcard]
 
 /- English proof (translation)
-Establish `hn : (d : ℝ) + 1 ≤ 5 ^ d`. Establish `: d + 1 ≤ 5 ^ d` using `Nat.lt_pow_self (by norm_num)`. Conclude with `this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, div_pow, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 1 := by`. Rewrite using `[div_le_one (by positivity)]`. Conclude with `hn`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lag_abs_sum_le_one {d : ℕ} (y : Fin (d + 1) → ℝ) (h : ∀ i j, i ≠ j → 5 ≤ |y i - y j|) :
     ∑ j, |∏ i ∈ (univ : Finset (Fin (d + 1))).erase j, (y j - y i)⁻¹| ≤ 1 := by

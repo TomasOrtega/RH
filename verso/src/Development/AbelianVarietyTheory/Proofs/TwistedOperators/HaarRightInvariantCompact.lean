@@ -10,17 +10,15 @@ open scoped Pointwise
 namespace GlobalTheory.CompactRight
 
 /- English proof (translation)
-Use `set c := Measure.haarScalarFactor (Measure.map (· * k) μ) μ with hc`. Establish `hmapEq : Measure.map (· * k) μ = c • μ` using `Measure.isMulLeftInvariant_eq_smul _ μ`. Take `⟨V, hVc, hV1⟩` from `exists_compact_mem_nhds (1 : G)`. Use `set S : Set G := V * (K : Set G) with hS`. Establish `hScpt : IsCompact S` using `hVc.mul hK`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVsubS : V ⊆ S`. Introduce `v hv`. Conclude with `Set.mem_mul.2 ⟨v, hv, 1, K.one_mem, mul_one v⟩`. Establish `hSpre : (· * k) ⁻¹' S = S`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_preimage, hS, Set.mem_mul, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, a, ha, hva⟩`. Use `⟨v, hv, a * k⁻¹, K.mul_mem ha (K.inv_mem hk), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hva, mul_inv_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨v, hv, a, ha, hva⟩`. Conclude with `⟨v, hv, a * k, K.mul_mem ha hk, by rw [← mul_assoc, hva]⟩`. Establish `hSpos : μ S ≠ 0` using `(lt_of_lt_of_le (Measure.measure_pos_of_mem_nhds (μ := μ) hV1) (measure_mono hVsubS)).ne'`. Establish `hSfin : μ S ≠ ⊤` using `hScpt.measure_lt_top.ne`. Establish `hmapS : Measure.map (· * k) μ S = μ S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (· * k) = (MeasurableEquiv.mulRight k : G → G) from rfl, MeasurableEquiv.map_apply]`. Conclude with `congrArg μ hSpre`. Establish `hcOne : c = 1`. Establish `hcEq : (c : ENNReal) * μ S = 1 * μ S`. Establish `hcS` using `hmapS`.
-
-Rewrite `hcS` using `[hmapEq, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[one_mul]`. Conclude with `hcS`. Conclude with `(ENNReal.mul_left_inj hSpos hSfin).1 hcEq` after adjusting the coercions. Rewrite using `[hmapEq, hcOne, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_right_eq_of_mem_compact {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]

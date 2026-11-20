@@ -4,17 +4,15 @@ open Module
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set H := (Ideal.span {t ^ (r + 1)}).toAddSubgroup with hH`. Use `set K := (Ideal.span {t ^ r}).toAddSubgroup with hK`. Establish `hHK : H ≤ K`. Introduce `x hx`. Simplify using `only [hH, hK, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton] at hx ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_dvd_pow t (Nat.le_succ r)).trans hx`. Establish `e1 : Nat.card (O ⧸ Ideal.span {t ^ (r + 1)}) = H.index` using `rfl`. Establish `e2 : Nat.card (O ⧸ Ideal.span {t ^ r}) = K.index` using `rfl`. Establish `e3 : Nat.card (O ⧸ Ideal.span {t}) = (Ideal.span {t}).toAddSubgroup.index` using `rfl`. Rewrite using `[e1, e2, e3, ← AddSubgroup.relIndex_mul_index hHK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Set `φ : O →+ K` to `{ toFun := fun x => ⟨t ^ r * x, by`. Simplify using `only [hK, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton]`. Conclude with `dvd_mul_right _ _⟩`. Use the proof step `map_zero' := by ext; simp`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `map_add' := by intro x y; ext; simp [mul_add] }`. Establish `hφ : Function.Surjective φ`. Introduce and unpack `⟨y, hy⟩`. Establish `hy' : y ∈ Ideal.span {t ^ r}` using `hy`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton.mp hy'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a, rfl⟩`. Establish `hc : (H.addSubgroupOf K).comap φ = (Ideal.span {t}).toAddSubgroup`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf, hH, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton]`. Express the relevant statement in the definitionally equal form `t ^ (r + 1) ∣ t ^ r * x ↔ t ∣ x`.
-
-Rewrite using `[pow_succ]`. Conclude with `mul_dvd_mul_iff_left (pow_ne_zero r ht)`. Rewrite using `[AddSubgroup.relIndex, ← hc, AddSubgroup.index_comap_of_surjective _ hφ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_span_pow_succ_eq_mul_domain (O : Type) [CommRing O] [IsDomain O] (t : O) (ht : t ≠ 0)
     (r : ℕ) :
@@ -52,9 +50,9 @@ theorem card_quot_span_pow_succ_eq_mul_domain (O : Type) [CommRing O] [IsDomain 
   rw [AddSubgroup.relIndex, ← hc, AddSubgroup.index_comap_of_surjective _ hφ]
 
 /- English proof (translation)
-Introduce `O _ _ t ht _ r`. Proceed by induction on `r with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, Ideal.span_singleton_one]`. Conclude with `Nat.card_unique`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ r ih`. Rewrite using `[card_quot_span_pow_succ_eq_mul_domain O t ht r, ih, pow_succ, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_span_pow :
     ∀ (O : Type) [CommRing O] [IsDomain O] (t : O), t ≠ 0 → Finite (O ⧸ Ideal.span {t}) →

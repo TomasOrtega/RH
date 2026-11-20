@@ -26,13 +26,13 @@ def subquotientMk (A B : Subrepresentation ρ) :
   quotientMk _ _
 
 /- English proof (translation)
-The claim follows from `quotientMk_surjective _ _`.
+A detailed English derivation is pending.
 -/
 theorem subquotientMk_surjective (A B : Subrepresentation ρ) : Surjective (subquotientMk A B) :=
   quotientMk_surjective _ _
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+A detailed English derivation is pending.
 -/
 theorem subquotientMk_eq_zero_iff (A B : Subrepresentation ρ) (b : B.toSubmodule) :
     subquotientMk A B b = 0 ↔ (b : V) ∈ A :=
@@ -44,7 +44,7 @@ def subrepInclusionOfLE {A B : Subrepresentation ρ} (h : A ≤ B) :
     fun _ => LinearMap.ext fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `a b hab` and use `by have := congrArg (Subtype.val : B.toSubmodule → V) hab exact Subtype.ext this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subrepInclusionOfLE_injective {A B : Subrepresentation ρ} (h : A ≤ B) :
     Injective (subrepInclusionOfLE h) :=
@@ -53,7 +53,7 @@ theorem subrepInclusionOfLE_injective {A B : Subrepresentation ρ} (h : A ≤ B)
     exact Subtype.ext this
 
 /- English proof (translation)
-Introduce `b`. Rewrite using `[subquotientMk_eq_zero_iff]`. Conclude with `⟨fun hb => ⟨⟨b, hb⟩, rfl⟩, by rintro ⟨a, rfl⟩; exact a.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exact_subrepInclusionOfLE_subquotientMk {A B : Subrepresentation ρ} (h : A ≤ B) :
     Exact (subrepInclusionOfLE h) (subquotientMk A B) := by
@@ -62,19 +62,15 @@ theorem exact_subrepInclusionOfLE_subquotientMk {A B : Subrepresentation ρ} (h 
   exact ⟨fun hb => ⟨⟨b, hb⟩, rfl⟩, by rintro ⟨a, rfl⟩; exact a.2⟩
 
 /- English proof (translation)
-Use `set T := A.toSubmodule.comap B.toSubmodule.subtype`. Take `⟨b₀, hb₀B, hb₀A⟩` from `SetLike.exists_of_lt h.lt`. Establish `hmk : ∀ b : B.toSubmodule, Submodule.Quotient.mk (p` using `T) b = 0 ↔ (b : V) ∈ A := fun b => Submodule.Quotient.mk_eq_zero _`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun hbt => ?_⟩, eq_bot_or_eq_top := fun Z => ?_ }` and prove the remaining obligations. Establish `: Submodule.Quotient.mk (p` using `T) ⟨b₀, hb₀B⟩ ∈ (⊥ : Subrepresentation (subquotientRep A B)) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbt]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hb₀A ((hmk _).1 ((Submodule.mem_bot ℂ).1 this))`. Set `Z' : Subrepresentation ρ` to `⟨(Z.toSubmodule.comap T.mkQ).map B.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨b, hb, rfl⟩`.
+Check the elementary cases of the proposition. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨B.toRepresentation g b, Z.apply_mem_toSubmodule g hb, rfl⟩⟩`. Establish `hAZ : A ≤ Z'` using `fun a ha => ⟨⟨a, h.le ha⟩, by show Submodule.Quotient.mk (p := T) _ ∈ Z.toSubmodule`. Rewrite using `[(hmk _).2 ha]`. Conclude with `Z.toSubmodule.zero_mem, rfl⟩`. Establish `hZB : Z' ≤ B`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨b, -, rfl⟩`. Conclude with `b.2`. Establish `hmem : ∀ b : B.toSubmodule, (b : V) ∈ Z' → Submodule.Quotient.mk (p` using `T) b ∈ Z := by`. Introduce and unpack `b ⟨b', hb', hbb'⟩`. Rewrite using `[show b = b' from Subtype.ext hbb'.symm]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hb'`. Break down `h.eq_or_eq hAZ hZB with hZ | hZ` into its components or cases. Use `left`. Use `Subrepresentation.toSubmodule_injective (eq_bot_iff.2 fun q hq => ?_)` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Submodule.mkQ_surjective T q`.
-
-Establish `: (b : V) ∈ Z'` using `⟨b, hq, rfl⟩`. Rewrite `this` using `[hZ]`. Conclude with `(Submodule.mem_bot ℂ).2 ((hmk b).2 this)`. Use `right`. Use `Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun q _ => ?_)` and prove the remaining obligations.
-
-Take `⟨b, rfl⟩` from `Submodule.mkQ_surjective T q`. Conclude with `hmem b (by rw [hZ]; exact b.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_subquotientRep {A B : Subrepresentation ρ} (h : A ⋖ B) :
     (subquotientRep A B).IsIrreducible := by
@@ -115,7 +111,7 @@ theorem isIrreducible_subquotientRep {A B : Subrepresentation ρ} (h : A ⋖ B) 
     exact hmem b (by rw [hZ]; exact b.2)
 
 /- English proof (translation)
-Use `h.wellFoundedLT` as an intermediate fact. Use `h.wellFoundedGT` as an intermediate fact. Take `⟨a, h0, k, hk, hcov⟩` from `exists_covBy_seq_of_wellFoundedLT_wellFoundedGT_of_le (bot_le : (⊥ : Subrepresentation ρ) ≤ ⊤)`. Conclude with `⟨k, a, h0, hk, hcov⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasFiniteLength.exists_compositionSeries (h : HasFiniteLength ρ) :
     ∃ (k : ℕ) (S : ℕ → Subrepresentation ρ), S 0 = ⊥ ∧ S k = ⊤ ∧ ∀ j < k, S j ⋖ S (j + 1) := by
@@ -129,11 +125,11 @@ variable {W U : Type*} [AddCommGroup W] [Module ℂ W] [AddCommGroup U] [Module 
   {α : Representation ℂ G W} {γ : Representation ℂ G U}
 
 /- English proof (translation)
-Set `f'` to `Representation.IntertwiningMap.equivLinearMapAsModule α ρ f`. Set `g'` to `Representation.IntertwiningMap.equivLinearMapAsModule ρ γ g`. Establish `hf' : Injective f'` using `hf`. Establish `hr : IsFiniteLength (MonoidAlgebra ℂ G) (LinearMap.range g')` using `IsFiniteLength.of_injective hC (LinearMap.range g').injective_subtype`. Establish `hex : Exact f' g'.rangeRestrict`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `: g'.rangeRestrict y = 0 ↔ g y = 0` using `⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩`. Rewrite using `[this]`. Conclude with `hfg y`. Establish `hlen` using `Module.length_eq_add_of_exact f' g'.rangeRestrict hf' g'.surjective_rangeRestrict hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HasFiniteLength, ← Module.length_ne_top_iff, hlen]`. Conclude with `WithTop.add_ne_top.2 ⟨Module.length_ne_top_iff.2 hA, Module.length_ne_top_iff.2 hr⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_exact (f : Representation.IntertwiningMap α ρ)
     (g : Representation.IntertwiningMap ρ γ) (hf : Injective f) (hfg : Exact f g)
@@ -169,9 +165,7 @@ variable {β : Fin n → ℕ} {W W' W'' : Type*} [AddCommGroup W] [Module ℂ W]
   {σ' : Representation ℂ (levi F n β) W'} {σ'' : Representation ℂ (levi F n β) W''}
 
 /- English proof (translation)
-Take `⟨h1, K, hK, hφK⟩` from `hφ`. Use `⟨fun p g => ?_, K, hK, fun k hk g => ?_⟩` and prove the remaining obligations. Use `show f (φ ((p : GL (Fin n) F) * g)) = inflateTwist F n β σ' p (f (φ g))`. Rewrite using `[h1 p g, inflateTwist_apply, inflateTwist_apply, map_smul, Representation.IntertwiningMap.isIntertwining]`. Use `show f (φ (g * k)) = f (φ g)`.
-
-Rewrite using `[hφK k hk g]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mem_parabolicIndSpace (f : Representation.IntertwiningMap σ σ')
     {φ : GL (Fin n) F → W} (hφ : φ ∈ parabolicIndSpace F n β σ) :
@@ -201,16 +195,14 @@ theorem coe_parabolicIndMap_apply (f : Representation.IntertwiningMap σ σ')
       f ((φ : GL (Fin n) F → W) x) := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (funext fun x => hf (congrFun (congrArg Subtype.val h) x))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem parabolicIndMap_injective (f : Representation.IntertwiningMap σ σ') (hf : Injective f) :
     Injective (parabolicIndMap f) := fun _ _ h =>
   Subtype.ext (funext fun x => hf (congrFun (congrArg Subtype.val h) x))
 
 /- English proof (translation)
-Use `choose ψ hψ using hφ`. Take `⟨h1, K, hK, hφK⟩` from `φ.2`. Use `⟨⟨ψ, fun p x => hf ?_, K, hK, fun k hk x => hf ?_⟩, Subtype.ext (funext hψ)⟩` and prove the remaining obligations. Use `show f (ψ ((p : GL (Fin n) F) * x)) = f (inflateTwist F n β σ p (ψ x))`. Rewrite using `[hψ, h1 p x, inflateTwist_apply, inflateTwist_apply, map_smul, Representation.IntertwiningMap.isIntertwining, hψ]`.
-
-Rewrite using `[hψ, hψ, hφK k hk x]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_parabolicIndMap_eq (f : Representation.IntertwiningMap σ σ') (hf : Injective f)
     (φ : parabolicIndSpace F n β σ') (hφ : ∀ x, ∃ y, f y = (φ : GL (Fin n) F → W') x) :
@@ -224,9 +216,9 @@ theorem exists_parabolicIndMap_eq (f : Representation.IntertwiningMap σ σ') (h
   · rw [hψ, hψ, hφK k hk x]
 
 /- English proof (translation)
-Introduce `φ`. Prove the components needed by the constructor for the conclusion. Introduce `hφ`. Conclude with `exists_parabolicIndMap_eq f hf φ fun x => (hfg _).1 (congrFun (congrArg Subtype.val hφ) x)`. Introduce and unpack `⟨ψ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Conclude with `(hfg _).2 ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exact_parabolicIndMap (f : Representation.IntertwiningMap σ σ')
     (g : Representation.IntertwiningMap σ' σ'') (hf : Injective f) (hfg : Exact f g) :
@@ -241,20 +233,20 @@ theorem exact_parabolicIndMap (f : Representation.IntertwiningMap σ σ')
     exact (hfg _).2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Introduce `φ` and use `exists_parabolicIndMap_eq f hf.1 φ fun _ => hf.2 _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem parabolicIndMap_surjective (f : Representation.IntertwiningMap σ σ') (hf : Bijective f) :
     Surjective (parabolicIndMap f) := fun φ =>
   exists_parabolicIndMap_eq f hf.1 φ fun _ => hf.2 _
 
 /- English proof (translation)
-Take `⟨k, S, h0, hk, hcov⟩` from `hfl.exists_compositionSeries`. Establish `key : ∀ j ≤ k, HasFiniteLength (parabolicInd F n β (S j).toRepresentation)`. Introduce `j hj`. Proceed by induction on `j with`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hS0 : ∀ v, v ∈ (S 0).toSubmodule → v = 0` using `fun v hv => by`. Rewrite `hv` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 hv`. Establish `: Subsingleton (S 0).toSubmodule` using `⟨fun a b => Subtype.ext ((hS0 _ a.2).trans (hS0 _ b.2).symm)⟩`. Use `subsingleton_indSpace (blockUpper F n β) (inflateTwist F n β (S 0).toRepresentation)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `hasFiniteLength_of_subsingleton`. Consider the case `succ j ih`. Establish `hcj` using `hcov j (by omega)`. Use `isIrreducible_subquotientRep hcj` as an intermediate fact. Conclude with `hasFiniteLength_of_exact (parabolicIndMap (subrepInclusionOfLE hcj.le)) (parabolicIndMap (subquotientMk (S j) (S (j + 1)))) (parabolicIndMap_injective _ (subrepInclusionOfLE_injective hcj.le)) (exact_parabolicIndMap _ _ (subrepInclusionOfLE_injective hcj.le) (exact_subrepInclusio …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Use `hasFiniteLength_of_surjective (parabolicIndMap (subrepInclusion (S k))) (parabolicIndMap_surjective _ ⟨fun a b hab => Subtype.ext hab, fun v => ⟨⟨v, ?_⟩, rfl⟩⟩) (key k le_rfl)` and prove the remaining obligations. Rewrite using `[hk]`. Discharge the goal by the elementary cases of `trivial`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_parabolicInd_of_factors {W₀ : Type u} [AddCommGroup W₀] [Module ℂ W₀]
     {σ₀ : Representation ℂ (levi F n β) W₀} (hσ : IsSmooth σ₀) (hfl : HasFiniteLength σ₀)
@@ -298,15 +290,15 @@ section Jacquet
 variable {V : Type u} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) F) V}
 
 /- English proof (translation)
-Take `⟨k, S, h0, hk, hcov⟩` from `hfl.exists_compositionSeries`. Establish `key : ∀ j ≤ k, HasFiniteLength (jacquetRep F n β (S j).toRepresentation)`. Introduce `j hj`. Proceed by induction on `j with`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hS0 : ∀ v, v ∈ (S 0).toSubmodule → v = 0` using `fun v hv => by`. Rewrite `hv` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 hv`. Establish `: Subsingleton (S 0).toSubmodule` using `⟨fun a b => Subtype.ext ((hS0 _ a.2).trans (hS0 _ b.2).symm)⟩`. Establish `: Subsingleton (JacquetModule F n β (S 0).toRepresentation)` using `⟨fun a b => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Representation.Coinvariants.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Representation.Coinvariants.mk_surjective _ b`. Rewrite using `[Subsingleton.elim a b]⟩`. Conclude with `hasFiniteLength_of_subsingleton`. Consider the case `succ j ih`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcj` using `hcov j (by omega)`. Use `isIrreducible_subquotientRep hcj` as an intermediate fact. Establish `hs : ∀ i, IsSmooth (S i).toRepresentation` using `fun i => isSmooth_subrep hπ _`. Establish `hq : IsSmooth (subquotientRep (S j) (S (j + 1)))` using `isSmooth_quotient (hs _) _ _`. Conclude with `hasFiniteLength_of_exact (jacquetMap F n β (subrepInclusionOfLE hcj.le)) (jacquetMap F n β (subquotientMk (S j) (S (j + 1)))) (jacquetMap_injective (hs _) (hs _) _ (subrepInclusionOfLE_injective hcj.le) β) (exact_jacquetMap (hs _) hq _ _ (exact_subrepInclusionOfLE_subquotientMk h …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Use `hasFiniteLength_of_surjective (jacquetMap F n β (subrepInclusion (S k))) (jacquetMap_surjective _ (fun v => ⟨⟨v, ?_⟩, rfl⟩) β) (key k le_rfl)` and prove the remaining obligations. Rewrite using `[hk]`. Discharge the goal by the elementary cases of `trivial`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_jacquetRep_of_factors (hπ : IsSmooth π) (hfl : HasFiniteLength π)
     (β : Fin n → ℕ)

@@ -30,13 +30,13 @@ def skewA (σ : E →ₐ[F] E) (j : ℕ) : AddSubgroup (Matrix (Fin j) (Fin j) (
     rw [e, ← neg_add, ha, neg_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_skewA {σ : E →ₐ[F] E} {j : ℕ} {c : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)} :
     c ∈ skewA σ j ↔ c + cT (sigR (AF F) σ) c = 0 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_skewA]`. Apply the tactic sequence `ext i k; fin_cases i <;> fin_cases k <;> simp [cT]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (σ : E →ₐ[F] E) : (Matrix.of ![![0, 1], ![-1, 0]] : Matrix (Fin 2) (Fin 2) (AF F ⊗[F] E)) ∈ skewA σ 2 := by
   rw [mem_skewA]

@@ -7,23 +7,21 @@ open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ χ hsd hadd h0 L L' hLc hLo hL'c hL'o hdual`. Take `⟨hH, hinv⟩` from `hsd`. Use `set Φ : V → ℂ := (L : Set V).indicator (fun _ => (1 : ℂ)) with hΦ`. Establish `hclopen : IsClopen (L : Set V)` using `⟨AddSubgroup.isClosed_of_isOpen L hLo, hLo⟩`. Establish `hcont : Continuous Φ` using `hclopen.continuous_indicator continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsupp : HasCompactSupport Φ` using `HasCompactSupport.intro hLc (fun x hx => Set.indicator_of_notMem hx _)`. Establish `htr : (fun y => ∫ x, Φ x * χ x y ∂μ) = (L' : Set V).indicator (fun _ => ((μ.real (L : Set V) : ℝ) : ℂ))`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ L'`. Rewrite using `[Set.indicator_of_mem (show y ∈ (L' : Set V) from hy)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun x => Φ x * χ x y) = Φ`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ L`. Rewrite using `[(hdual y).1 hy x hx, mul_one]`. Simplify using `[hΦ, Set.indicator_of_notMem (show x ∉ (L : Set V) from hx)]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hΦ, integral_indicator_const _ hLo.measurableSet]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show y ∉ (L' : Set V) from hy)]`. Establish `hy'` using `mt (hdual y).2 hy`. Use `push Not at hy'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x0, hx0, hne⟩` from `hy'`. Establish `h1` using `integral_add_left_eq_self (μ := μ) (fun x => Φ x * χ x y) x0`. Establish `h2 : (fun x => Φ (x0 + x) * χ (x0 + x) y) = fun x => χ x0 y * (Φ x * χ x y)`. Use function extensionality and compare the values at `x`. Establish `: Φ (x0 + x) = Φ x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : x ∈ L`. Simplify using `[hΦ, Set.indicator_of_mem (show x ∈ (L : Set V) from hx), Set.indicator_of_mem (show x0 + x ∈ (L : Set V) from L.add_mem hx0 hx)]`. Establish `hx' : x0 + x ∉ L` using `fun h => hx ((L.add_mem_cancel_left hx0).1 h)`. Simplify using `[hΦ, Set.indicator_of_notMem (show x ∉ (L : Set V) from hx), Set.indicator_of_notMem (show x0 + x ∉ (L : Set V) from hx')]`. Rewrite using `[this, hadd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2, integral_const_mul]`. Establish `h3 : (χ x0 y - 1) * ∫ x, Φ x * χ x y ∂μ = 0` using `by rw [sub_mul, h1]; ring`. Conclude with `(mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hne)`. Establish `hint : Integrable (fun y => ∫ x, Φ x * χ x y ∂μ) μ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[htr, integrable_indicator_iff hL'o.measurableSet]`. Conclude with `integrableOn_const hL'c.measure_lt_top.ne`. Establish `key` using `hinv Φ hcont hsupp hint 0`. Simplify using `only [h0, mul_one, neg_zero] at key`. Rewrite `key` using `[htr, integral_indicator_const _ hL'o.measurableSet, hΦ, Set.indicator_of_mem (show (0 : V) ∈ (L : Set V) from L.zero_mem)]`.
-
-Rewrite `key` using `[Complex.real_smul, mul_comm]`. Conclude with `key` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_real_mul_real_dual_eq_one :
     ∀ (V : Type) [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) (χ : V → V → ℂ), SelfDual μ χ → (∀ x x' y, χ (x + x') y = χ x y * χ x' y) → (∀ y, χ y 0 = 1) → ∀ L L' : AddSubgroup V, IsCompact (L : Set V) → IsOpen (L : Set V) → IsCompact (L' : Set V) → IsOpen (L' : Set V) → (∀ y, y ∈ L' ↔ ∀ x ∈ L, χ x y = 1) → μ.real (L : Set V) * μ.real (L' : Set V) = 1 := by

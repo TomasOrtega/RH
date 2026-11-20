@@ -29,7 +29,7 @@ private def conjRep (π : TR.CuspSub E a) : TR.CuspSub E a where
 end UpperTheory.V.Af.Gk
 
 /- English proof (translation)
-Introduce `F _ _ _ a π`. Conclude with `⟨conjRep π, (conjFn F a).submoduleMap π.V, fun o φ => Subtype.ext (act_conjFn o φ.1).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Af.Gk.conjSub :
     UpperTheory.V.Af.Gk.ConjSub := by

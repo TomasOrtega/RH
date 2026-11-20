@@ -6,7 +6,7 @@ open Matrix
 namespace LateralTheory.CohomologicalPurity.MatPf
 
 /- English proof (translation)
-Establish `: ∀ i, ∃ c : Fin d → A, ∑ j, c j * y j = x i` using `fun i => (Ideal.mem_span_range_iff_exists_fun).1 (h (Ideal.subset_span ⟨i, rfl⟩))`. Use `choose c hc using this`. Conclude with `⟨Matrix.of c, funext fun i => by simp [mulVec, dotProduct, hc]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gens {d : ℕ} {A : Type} [CommRing A] (x y : Fin d → A)
     (h : Ideal.span (Set.range x) ≤ Ideal.span (Set.range y)) :
@@ -17,7 +17,7 @@ theorem gens {d : ℕ} {A : Type} [CommRing A] (x y : Fin d → A)
   exact ⟨Matrix.of c, funext fun i => by simp [mulVec, dotProduct, hc]⟩
 
 /- English proof (translation)
-Establish `: (1 - N' * N) *ᵥ x = 0`. Rewrite using `[sub_mulVec, one_mulVec, ← mulVec_mulVec, ← hy, ← hx, sub_self]`. Rewrite using `[add_mulVec, ← mulVec_mulVec, this, mulVec_zero, add_zero, hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem red {d : ℕ} {A : Type} [CommRing A] (x y : Fin d → A) (N N' T : Matrix (Fin d) (Fin d) A)
     (hy : y = N *ᵥ x) (hx : x = N' *ᵥ y) : y = (N + T * (1 - N' * N)) *ᵥ x := by
@@ -26,11 +26,11 @@ theorem red {d : ℕ} {A : Type} [CommRing A] (x y : Fin d → A) (N N' T : Matr
   rw [add_mulVec, ← mulVec_mulVec, this, mulVec_zero, add_zero, hy]
 
 /- English proof (translation)
-Introduce `d A _ x y hxy p`. Take `⟨N, hN⟩` from `gens y x hxy.ge`. Take `⟨N', hN'⟩` from `gens x y hxy.le`. Set `f` to `Ideal.Quotient.mk p.asIdeal`. Take `⟨T₀, hT₀⟩` from `hD d (A ⧸ p.asIdeal) (f.mapMatrix N) (f.mapMatrix (1 - N' * N)) (f.mapMatrix N') (by rw [← map_mul, ← map_add, add_sub_cancel, map_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `choose T hT using fun i j => Ideal.Quotient.mk_surjective (I := p.asIdeal) (T₀ i j)`. Use `⟨N + Matrix.of T * (1 - N' * N), ?_, red x y N N' _ hN hN'⟩` and prove the remaining obligations. Introduce `hm`. Apply `hT₀` to reduce the goal to its premises. Establish `h1 : f.mapMatrix (Matrix.of T) = T₀` using `by ext i j; simp [f, hT]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `RingHom.map_det f (N + Matrix.of T * (1 - N' * N))` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, h1, (Ideal.Quotient.eq_zero_iff_mem).2 hm]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_dom (hD : ∀ (d : ℕ) (D : Type) [CommRing D] [IsDomain D] (N E N' : Matrix (Fin d) (Fin d) D),
     N' * N + E = 1 → ∃ T : Matrix (Fin d) (Fin d) D, (N + T * E).det ≠ 0) : LateralTheory.CohomologicalPurity.Cl.LeafMat := by
@@ -50,19 +50,19 @@ theorem glue_dom (hD : ∀ (d : ℕ) (D : Type) [CommRing D] [IsDomain D] (N E N
   exact this.symm
 
 /- English proof (translation)
-Set `n` to `Matrix.toLin' N`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (LinearMap.range n)`. Take `⟨K', hK⟩` from `Submodule.exists_isCompl (LinearMap.ker n)`. Establish `hr : Module.finrank k (LinearMap.ker n) = Module.finrank k C`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker n`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hC`. Use linear arithmetic over natural numbers and integers. Set `e` to `LinearEquiv.ofFinrankEq _ _ hr`. Set `t : (Fin d → k) →ₗ[k] (Fin d → k)` to `C.subtype ∘ₗ e.toLinearMap ∘ₗ Submodule.linearProjOfIsCompl _ _ hK`. Use `⟨LinearMap.toMatrix' t, fun s hs hdet => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv0, hv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 hdet`. Apply `hv0` to reduce the goal to its premises. Establish `hE : E = 1 - N' * N` using `by rw [← h]; abel`. Rewrite `hv` using `[add_mulVec, ← mulVec_mulVec, smul_mulVec, LinearMap.toMatrix'_mulVec]`. Establish `htC : ∀ w, t w ∈ C` using `fun w => (e _).2`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnv : n v = 0`. Establish `hm : n v ∈ C`. Establish `: n v = -(s • t (E *ᵥ v))` using `eq_neg_of_add_eq_zero_left (by simpa [n] using hv)`. Rewrite using `[this]`. Conclude with `C.neg_mem (C.smul_mem s (htC _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.disjoint_def.1 hC.disjoint) _ (LinearMap.mem_range_self n v) hm`. Establish `hNv : N *ᵥ v = 0` using `by simpa [n] using hnv`. Establish `hw : E *ᵥ v = v`. Rewrite using `[hE, sub_mulVec, one_mulVec, ← mulVec_mulVec, hNv, mulVec_zero, sub_zero]`. Rewrite `hv` using `[hw, hNv, zero_add, smul_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htv : t v = 0` using `hv.resolve_left hs`. Establish `hker : v ∈ LinearMap.ker n` using `hnv`. Establish `hp : Submodule.linearProjOfIsCompl _ _ hK v = ⟨v, hker⟩` using `Submodule.linearProjOfIsCompl_apply_left hK ⟨v, hker⟩`. Establish `: e ⟨v, hker⟩ = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `htv` as an intermediate fact. Simplify using `only [t, LinearMap.comp_apply, hp] at this`. Simplify using `using this`. Use `congrArg Subtype.val (e.map_eq_zero_iff.1 this)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fld {d : ℕ} {k : Type} [Field k] (N E N' : Matrix (Fin d) (Fin d) k) (h : N' * N + E = 1) :
     ∃ T : Matrix (Fin d) (Fin d) k, ∀ s : k, s ≠ 0 → (N + (s • T) * E).det ≠ 0 := by
@@ -105,11 +105,11 @@ theorem fld {d : ℕ} {k : Type} [Field k] (N E N' : Matrix (Fin d) (Fin d) k) (
   simpa using this
 
 /- English proof (translation)
-Set `g` to `algebraMap D (FractionRing D)`. Take `⟨T, hT⟩` from `fld (g.mapMatrix N) (g.mapMatrix E) (g.mapMatrix N') (by rw [← map_mul, ← map_add, h, map_one])`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors D) (fun ij : Fin d × Fin d => T ij.1 ij.2)`. Use `choose T' hT' using fun i j => hb (i, j)`. Establish `h1 : g.mapMatrix (Matrix.of T') = g b • T`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[g, hT', Algebra.smul_def]`. Establish `hne : g b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Use `⟨Matrix.of T', fun h0 => hT (g b) hne ?_⟩` and prove the remaining obligations. Use `RingHom.map_det g (N + Matrix.of T' * E)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, map_zero, map_add, map_mul, h1]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem dom (d : ℕ) (D : Type) [CommRing D] [IsDomain D] (N E N' : Matrix (Fin d) (Fin d) D)
     (h : N' * N + E = 1) : ∃ T : Matrix (Fin d) (Fin d) D, (N + T * E).det ≠ 0 := by
@@ -131,6 +131,6 @@ theorem dom (d : ℕ) (D : Type) [CommRing D] [IsDomain D] (N E N' : Matrix (Fin
 end LateralTheory.CohomologicalPurity.MatPf
 
 /- English proof (translation)
-The claim follows from `LateralTheory.CohomologicalPurity.MatPf.glue_dom LateralTheory.CohomologicalPurity.MatPf.dom`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.CohomologicalPurity.Cl.LeafMat_of : LateralTheory.CohomologicalPurity.Cl.LeafMat := LateralTheory.CohomologicalPurity.MatPf.glue_dom LateralTheory.CohomologicalPurity.MatPf.dom

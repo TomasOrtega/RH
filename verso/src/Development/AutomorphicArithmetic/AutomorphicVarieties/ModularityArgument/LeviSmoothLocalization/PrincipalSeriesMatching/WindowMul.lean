@@ -14,7 +14,7 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 namespace UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
 /- English proof (translation)
-Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast Nat.pos_of_ne_zero hq`. Establish `ha : (0 : ℝ) < (q : ℝ) ^ a` using `Real.rpow_pos_of_pos hq0 a`. Rewrite using `[norm_mul, hy, show t + a - 1 / 2 = (t - 1 / 2) + a by ring, show t + a + 1 / 2 = (t + 1 / 2) + a by ring, Real.rpow_add hq0, Real.rpow_add hq0]`. Conclude with `⟨mul_lt_mul_of_pos_right hx.1 ha, mul_lt_mul_of_pos_right hx.2 ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private lemma window_mul (q : ℕ) (hq : q ≠ 0) (t a : ℝ) (x y : ℂ)
     (hy : ‖y‖ = (q : ℝ) ^ a)
@@ -27,13 +27,13 @@ private lemma window_mul (q : ℕ) (hq : q ≠ 0) (t a : ℝ) (x y : ℂ)
   exact ⟨mul_lt_mul_of_pos_right hx.1 ha, mul_lt_mul_of_pos_right hx.2 ha⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ χ`. Take `⟨a, ha⟩` from `charAbs K χ`. Use `⟨a, fun n hn π t v hw => ?_⟩` and prove the remaining obligations. Establish `hq : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v.ne_bot`. Take `⟨⟨s, hs⟩, -, hπ, -, -⟩` from `suppFacts K n hn π v`. Take `⟨⟨s₁, hs₁⟩, huniq, hπ', -, -⟩` from `suppFacts K n hn (π.twist χ) v`. Take `⟨s₂, hs₂, -, hchars, hmap⟩` from `suppTw K n hn π v χ s hs`. Use `⟨?_, fun s' hs' ζ hζ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hπ' s₂ hs₂).1).2 fun y hy => ?_` and prove the remaining obligations. Establish `hy' : y.1 ∈ s₂.map Sigma.fst` using `Multiset.mem_map_of_mem _ hy`. Rewrite `hy'` using `[hmap]`. Take `⟨x, hx, hxy⟩` from `Multiset.mem_map.1 hy'`. Rewrite using `[← hxy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((hπ s hs).1).1 hw.1 x hx`. Rewrite `hζ` using `[huniq s' s₂ hs' hs₂]`. Take `⟨ξ, hξ, rfl⟩` from `(hchars ζ).1 hζ`. Simplify `window_mul _ hq t a _ _ (ha v).2 (hw.2 s hs ξ hξ)` using `[MonoidHom.mul_apply, Units.val_mul]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem winTw : WinTw := by
   intro K _ _ _ χ

@@ -21,9 +21,9 @@ variable {g : ℕ} [Fact g.Prime] {N : ℕ}
 def levGen (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (hN : 0 < N) : Lev g N := ⟨false, 0, 0, by omega, ψ, hψ, fun _ => 1⟩
 
 /- English proof (translation)
-Simplify using `only [Lev.Mem, IsUp, levGen, Formalism.MainNotions.ArithmeticCylinders.IsUniUp, Bool.false_eq_true, false_implies, and_true]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ a b`. Conclude with `⟨h2 a b, fun h => h ▸ h1 a⟩`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fun a => (h a a).2 rfl, fun a b hb => (h a b).1 hb⟩`.
+Supply the required witnesses or components.
 -/
 theorem levGen_mem_iff (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (hN : 0 < N) (x : GG g N) :
     (levGen ψ hψ hN).Mem x ↔ Formalism.MainNotions.ArithmeticCylinders.IsUniUp (x : Matrix (Fin N) (Fin N) (ZMod g)) := by
@@ -35,11 +35,11 @@ theorem levGen_mem_iff (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (hN : 0 < N)
     exact ⟨fun a => (h a a).2 rfl, fun a b hb => (h a b).1 hb⟩
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ArithmeticCylinders.entN`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨a + 1, h.2⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `e`. Conclude with `hb (Fin.ext e)`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `e`. Conclude with `h ⟨a.2, e ▸ b.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem inner_sum (M : Matrix (Fin N) (Fin N) (ZMod g)) (a : Fin N) :
     (∑ b : Fin N, if (b : ℕ) = a + 1 then M a b else 0) = Formalism.MainNotions.ArithmeticCylinders.entN M a (a + 1) := by
@@ -53,9 +53,9 @@ theorem inner_sum (M : Matrix (Fin N) (Fin N) (ZMod g)) (a : Fin N) :
     rw [if_neg]; intro e; exact h ⟨a.2, e ▸ b.2⟩
 
 /- English proof (translation)
-Simplify using `only [Lev.chi, Lev.Edge, levGen, Bool.false_eq_true, if_false, Units.val_one, one_mul]`. Use `congr 1`. Rewrite using `[Finset.sum_congr rfl fun a _ => inner_sum (x : Matrix (Fin N) (Fin N) (ZMod g)) a, Fin.sum_univ_eq_sum_range (fun i => Formalism.MainNotions.ArithmeticCylinders.entN (x : Matrix (Fin N) (Fin N) (ZMod g)) i (i + 1)) N]`. Take `⟨m, rfl⟩ : ∃ m, N = m + 1` from `⟨N - 1, by omega⟩`. Rewrite using `[Finset.sum_range_succ, Nat.add_sub_cancel]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: Formalism.MainNotions.ArithmeticCylinders.entN (x : Matrix (Fin (m + 1)) (Fin (m + 1)) (ZMod g)) m (m + 1) = 0`. Unfold `Formalism.MainNotions.ArithmeticCylinders.entN`. Rewrite using `[dif_neg]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, add_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem levGen_chi (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (hN : 0 < N) (x : GG g N) :
     (levGen ψ hψ hN).chi x =
@@ -71,9 +71,9 @@ theorem levGen_chi (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (hN : 0 < N) (x 
   rw [this, add_zero]
 
 /- English proof (translation)
-Establish `hc : Nat.card {u // (levGen ψ hψ hN).Mem u} = (Finset.univ.filter fun u : GG g N => Formalism.MainNotions.ArithmeticCylinders.IsUniUp (u : Matrix (Fin N) (Fin N) (ZMod g))).card`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `u`. Simplify using `[levGen_mem_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Lev.e, eps, hc, levGen_chi, levGen_mem_iff, Formalism.MainNotions.ArithmeticCylinders.eU, Formalism.MainNotions.ArithmeticCylinders.eDat]`. Simplify using `[MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.single_apply, div_eq_inv_mul, Fintype.card_subtype]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_eU (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (hN : 0 < N) (x : GG g N) :
     (Formalism.MainNotions.ArithmeticCylinders.eU g N ψ).coeff x = (levGen ψ hψ hN).e x := by
@@ -87,19 +87,19 @@ theorem coeff_eU (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (hN : 0 < N) (x : 
 end Generic
 
 /- English proof (translation)
-Introduce `g _ N hN V ψ hψ hw`. Set `Lv` to `levGen ψ hψ hN`. Establish `hrk : (GlobalTheory.BadShare.rk V.ρ Lv.e : ℂ) = wh ψ (fun x => V.character x)`. Rewrite using `[GlobalTheory.BadShare.Basic.rk_eq_sum_trace V.ρ (GlobalTheory.BadShare.Basic.isProj_e Lv).1]`. Unfold `wh tr`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_eU ψ hψ hN]`. Both sides reduce to the same expression. Establish `hpos : GlobalTheory.BadShare.rk V.ρ Lv.e ≠ 0` using `fun h => hw (by rw [← hrk, h]; simp)`. Establish `hne : LinearMap.range (GlobalTheory.BadShare.op V.ρ Lv.e) ≠ ⊥`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hpos` to reduce the goal to its premises. Unfold `GlobalTheory.BadShare.rk`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨y, rfl⟩` from `hx`. Use `⟨Lv, rfl, _, hx0, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hm : Lv.Mem u` using `⟨hu, fun h => absurd h (by simp [Lv, levGen])⟩`. Establish `key : ∀ γ, Lv.e (u⁻¹ * γ) = Lv.chi u * Lv.e γ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ`. Simplify using `only [GlobalTheory.BadShare.Lev.e, GlobalTheory.BadShare.eps]`. Distinguish the cases in `hγ : Lv.Mem γ`. Establish `h2 : Lv.Mem (u⁻¹ * γ)` using `GlobalTheory.BadShare.Basic.mem_mul Lv (GlobalTheory.BadShare.Basic.mem_inv Lv hm) hγ`. Rewrite using `[if_pos h2, if_pos hγ, GlobalTheory.BadShare.Basic.chi_mul Lv (GlobalTheory.BadShare.Basic.mem_inv Lv hm) hγ, GlobalTheory.BadShare.Basic.chi_inv Lv hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.BadShare.Basic.chi_ne Lv u` as an intermediate fact. Use `GlobalTheory.BadShare.Basic.chi_ne Lv γ` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `h2 : ¬ Lv.Mem (u⁻¹ * γ)` using `fun h => hγ (by simpa using GlobalTheory.BadShare.Basic.mem_mul Lv hm h)`. Rewrite using `[if_neg h2, if_neg hγ, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `[GlobalTheory.BadShare.op, map_mul, Module.End.mul_apply]`. Use `_ = ∑ γ, Lv.e (u⁻¹ * γ) • V.ρ γ y := Fintype.sum_equiv (Equiv.mulLeft u) _ _ fun γ => by simp`. Use `_ = Lv.chi u • GlobalTheory.BadShare.op V.ρ Lv.e y := by`. Simplify using `[key, GlobalTheory.BadShare.op, Finset.smul_sum, mul_smul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genericOfWh : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), 0 < N → ∀ (V : FDRep ℂ (GlobalTheory.BadShare.GG g N))
     (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 → wh ψ (fun x => V.character x) ≠ 0 → GlobalTheory.BadShare.IsGeneric V.ρ := by
@@ -137,7 +137,7 @@ theorem genericOfWh : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), 0 < N → ∀ (V :
         simp [key, GlobalTheory.BadShare.op, Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Unfold `wh tr`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wh_mul_const {g : ℕ} [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (χ : Gn g n → ℂ) (c : ℂ) :
     wh ψ (fun x => χ x * c) = wh ψ χ * c := by
@@ -146,22 +146,22 @@ theorem wh_mul_const {g : ℕ} [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) {n : �
   exact Finset.sum_congr rfl fun x _ => by ring
 
 /- English proof (translation)
-Unfold `wh tr Formalism.MainNotions.ArithmeticCylinders.eU Formalism.MainNotions.ArithmeticCylinders.eDat`. Simplify using `[Formalism.MainNotions.ArithmeticCylinders.IsUniUp]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem wh_zero_one {g : ℕ} [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) : wh ψ (fun _ : Gn g 0 => (1 : ℂ)) = 1 := by
   unfold wh tr Formalism.MainNotions.ArithmeticCylinders.eU Formalism.MainNotions.ArithmeticCylinders.eDat
   simp [Formalism.MainNotions.ArithmeticCylinders.IsUniUp]
 
 /- English proof (translation)
-Introduce `g _ ψ hψ L`. Proceed by induction on `L with`. Consider the case `nil => intro _`. Conclude with `wh_zero_one ψ`. Consider the case `cons p L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hL`. Establish `hp` using `hL p List.mem_cons_self`. Establish `ihL` using `ih fun q hq => hL q (List.mem_cons_of_mem _ hq)`. Establish `hcl : IsClass (hcL L (degL L))` using `(GlobalTheory.charDec _ _).2.2.1 (GlobalTheory.gl_list_product_perm_char g L [] _ rfl (fun q hq => by`. Take `⟨-, ⟨V, -, hV⟩, -⟩` from `(hL q (List.mem_cons_of_mem _ hq)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨V, hV⟩)).1`. Establish `hpc : IsClass p.2` using `GlobalTheory.GLq.isClass_of_isIrr hp.1.2.1`. Rewrite using `[hcL_cons, hc, GlobalTheory.GLq.WhMul.wh_hcT g ψ hψ p.1 (degL L) _ (by simp [degL])]`. Establish `: (fun x => wh ψ (fun y => p.2 x * hcL L (degL L) y)) = fun x => p.2 x`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1 : (fun y => p.2 x * hcL L (degL L) y) = fun y => hcL L (degL L) y * p.2 x`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, wh_mul_const, ihL, one_mul]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.GLq.wh_cusp_eq_one g ψ hψ p.1 p.2 hp.1 hp.2`. Introduce `y x z`. Simplify using `only [hpc x z]`. Introduce `x y z`. Simplify using `only [hcl y z]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem whHcL : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 → ∀ L : List (Pc g),
     (∀ p ∈ L, IsCusp p.2 ∧ p.2 1 = ∏ i ∈ Finset.Ico 1 p.1, ((g : ℂ) ^ i - 1)) → wh ψ (hcL L (degL L)) = 1 := by
@@ -191,23 +191,23 @@ theorem whHcL : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ), ψ ≠
       simp only [hcl y z]
 
 /- English proof (translation)
-Introduce `g _ f Q hQ hf`. Establish `hg1 : 1 < g` using `(Fact.out : g.Prime).one_lt`. Establish `hdpos : ∀ p ∈ Q, 0 < p.2.1`. Introduce `p hp`. Establish `hm : p.1 ∈ UniqueFactorizationMonoid.normalizedFactors f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hf]`. Conclude with `Multiset.mem_coe.2 (List.mem_map_of_mem hp)`. Rewrite using `[(hQ p hp).1]`. Conclude with `(UniqueFactorizationMonoid.irreducible_of_normalized_factor _ hm).natDegree_pos`. Establish `hd` using `GlobalTheory.GLq.HcDeg.hc_degree g (Q.map Prod.snd) _ rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((Q.map Prod.snd).map fun p => ∏ i ∈ Finset.Icc 1 p.1, ((g : ℂ) ^ i - 1)) = Q.map fun p => p.2.2 1 * ((g : ℂ) ^ p.1.natDegree - 1)`. Rewrite using `[List.map_map]`. Use `List.map_congr_left fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`. Rewrite using `[(hQ p hp).2, ← (hQ p hp).1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.Ico_add_one_right_eq_Icc, Finset.prod_Ico_succ_top (hdpos p hp)]`. Establish `e2 : (GlobalTheory.BadShare.torusCard g f : ℂ) = (Q.map fun p => (g : ℂ) ^ p.1.natDegree - 1).prod`. Unfold `GlobalTheory.BadShare.torusCard GlobalTheory.BadShare.degType`. Rewrite using `[← hf, Multiset.map_coe, Multiset.map_coe, Multiset.prod_coe, Nat.cast_list_prod, List.map_map, List.map_map, List.map_map]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (by omega))]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ((Q.map Prod.snd).map fun p => p.2 1) = Q.map fun p => p.2.2 1`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Establish `hne : (Q.map fun p => p.2.2 1).prod ≠ 0`. Introduce `h`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[List.prod_eq_zero_iff]`. Take `⟨p, hp, h0⟩` from `List.mem_map.1 h`. Rewrite `h0` using `[(hQ p hp).2, Finset.prod_eq_zero_iff]`. Take `⟨i, hi, h1⟩` from `h0`. Establish `hi1 : 1 ≤ i` using `(Finset.mem_Ico.1 hi).1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (g : ℂ) ^ i = 1` using `sub_eq_zero.1 h1`. Establish `h2 : ((g ^ i : ℕ) : ℂ) = ((1 : ℕ) : ℂ)` using `by push_cast; exact this`. Establish `h3` using `Nat.cast_injective h2`. Establish `h4 : 1 < g ^ i` using `Nat.one_lt_pow (by omega) hg1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[e1, List.prod_map_mul, e3, GlobalTheory.GLq.HcDeg.prod_Icc_eq_range]`. Rewrite using `[e2]`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← hd]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem degHcL : ∀ (g : ℕ) [Fact g.Prime] (f : (ZMod g)[X]) (Q : List ((ZMod g)[X] × Pc g)),
     (∀ p ∈ Q, p.2.1 = p.1.natDegree ∧ p.2.2 1 = ∏ i ∈ Finset.Ico 1 p.2.1, ((g : ℂ) ^ i - 1)) →
@@ -260,17 +260,15 @@ theorem degHcL : ∀ (g : ℕ) [Fact g.Prime] (f : (ZMod g)[X]) (Q : List ((ZMod
   ring
 
 /- English proof (translation)
-Introduce `g _ Q Q' n hc hinj hnd h1 h2 he`. Establish `hc1 : ∀ p ∈ Q.map Prod.snd, IsCusp p.2` using `fun p hp => by`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`. Conclude with `hc q (List.mem_append_left _ hq)`. Establish `hc2 : ∀ p ∈ Q'.map Prod.snd, IsCusp p.2` using `fun p hp => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`. Conclude with `hc q (List.mem_append_right _ hq)`. Establish `hnd2 : (Q.map Prod.snd).Nodup`. Use `List.Nodup.map_on (fun x hx y hy hxy => Prod.ext ?_ hxy) (List.Nodup.of_map _ hnd)` and prove the remaining obligations. Conclude with `hinj x (List.mem_append_left _ hx) y (List.mem_append_left _ hy) hxy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hip` using `(GlobalTheory.GLq.IpCuspProd.ip_hcL_cusp g _ (Q'.map Prod.snd) n h1 h2 hc1 hc2)`. Establish `hperm : (Q.map Prod.snd).Perm (Q'.map Prod.snd)`. Assume the negation of the conclusion as `hp`. Establish `a` using `hip.1 hp`. Rewrite `a` using `[← he, hip.2 hnd2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_ne_zero a`. Set `h : Pc g → (ZMod g)[X]` to `fun s => if hs : ∃ p ∈ Q ++ Q', p.2 = s then hs.choose.1 else 0`. Establish `hh : ∀ p ∈ Q ++ Q', h p.2 = p.1`. Introduce `p hp`. Establish `hs : ∃ q ∈ Q ++ Q', q.2 = p.2` using `⟨p, hp, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [h, dif_pos hs]`. Conclude with `hinj _ hs.choose_spec.1 p hp hs.choose_spec.2`. Establish `k1 : Q.map Prod.fst = (Q.map Prod.snd).map h`. Rewrite using `[List.map_map]`. Conclude with `List.map_congr_left fun p hp => (hh p (List.mem_append_left _ hp)).symm`.
-
-Establish `k2 : Q'.map Prod.fst = (Q'.map Prod.snd).map h`. Rewrite using `[List.map_map]`. Conclude with `List.map_congr_left fun p hp => (hh p (List.mem_append_right _ hp)).symm`. Rewrite using `[k1, k2]`. Conclude with `Multiset.coe_eq_coe.2 (hperm.map h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labelsOfEq : ∀ (g : ℕ) [Fact g.Prime] (Q Q' : List ((ZMod g)[X] × Pc g)) (n : ℕ),
     (∀ p ∈ Q ++ Q', IsCusp p.2.2) → (∀ p ∈ Q ++ Q', ∀ q ∈ Q ++ Q', p.2 = q.2 → p.1 = q.1) →
@@ -307,7 +305,7 @@ theorem labelsOfEq : ∀ (g : ℕ) [Fact g.Prime] (Q Q' : List ((ZMod g)[X] × P
   exact Multiset.coe_eq_coe.2 (hperm.map h)
 
 /- English proof (translation)
-Rewrite using `[← UniqueFactorizationMonoid.normalize_normalized_factor P hP]`. Conclude with `monic_normalize (UniqueFactorizationMonoid.irreducible_of_normalized_factor P hP).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monic_of_factor {g : ℕ} [Fact g.Prime] {f P : (ZMod g)[X]}
     (hP : P ∈ UniqueFactorizationMonoid.normalizedFactors f) : P.Monic := by
@@ -315,7 +313,7 @@ theorem monic_of_factor {g : ℕ} [Fact g.Prime] {f P : (ZMod g)[X]}
   exact monic_normalize (UniqueFactorizationMonoid.irreducible_of_normalized_factor P hP).ne_zero
 
 /- English proof (translation)
-Establish `hm : (UniqueFactorizationMonoid.normalizedFactors f).prod.Monic`. Use `monic_multiset_prod_of_monic (UniqueFactorizationMonoid.normalizedFactors f) id fun P hP => monic_of_factor hP` as an intermediate fact. Rewrite `this` using `[Multiset.map_id]`. Then use the resulting hypothesis. Conclude with `eq_of_monic_of_associated hm hf (UniqueFactorizationMonoid.prod_normalizedFactors hf.ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem prod_factors_of_monic {g : ℕ} [Fact g.Prime] {f : (ZMod g)[X]} (hf : f.Monic) :
     (UniqueFactorizationMonoid.normalizedFactors f).prod = f := by
@@ -326,7 +324,7 @@ theorem prod_factors_of_monic {g : ℕ} [Fact g.Prime] {f : (ZMod g)[X]} (hf : f
   exact eq_of_monic_of_associated hm hf (UniqueFactorizationMonoid.prod_normalizedFactors hf.ne_zero)
 
 /- English proof (translation)
-Establish `hi` using `UniqueFactorizationMonoid.irreducible_of_normalized_factor P hP`. Use `⟨monic_of_factor hP, hi, fun h => h0 ?_, rfl⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hP`. Rewrite using `[hc, mul_coeff_zero, h, zero_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPrimeLab_of_factor {g : ℕ} [Fact g.Prime] {f : (ZMod g)[X]} (h0 : f.coeff 0 ≠ 0) {P : (ZMod g)[X]}
     (hP : P ∈ UniqueFactorizationMonoid.normalizedFactors f) : IsPrimeLab P.natDegree P := by
@@ -336,47 +334,43 @@ theorem isPrimeLab_of_factor {g : ℕ} [Fact g.Prime] {f : (ZMod g)[X]} (h0 : f.
     rw [hc, mul_coeff_zero, h, zero_mul]
 
 /- English proof (translation)
-Introduce `hG g _ N`. Take `⟨L⟩` from `GlobalTheory.GLq.LabelModel.inhab g`. Establish `H : ∀ d, ∃ τ : (ZMod g)[X] → Gn g d → ℂ, 0 < d → (∀ P, IsPrimeLab d P → IsCuspOf L P (τ P) ∧ τ P 1 = ∏ i ∈ Finset.Ico 1 d, ((g : ℂ) ^ i - 1)) ∧ (∀ P P', IsPrimeLab d P → IsPrimeLab d P' → τ P = τ P' → P = P')`. Introduce `d`. Distinguish the cases in `hd : 0 < d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨τ, h1, h2, -⟩` from `hG.green g L d hd`. Conclude with `⟨τ, fun _ => ⟨h1, h2⟩⟩`. Conclude with `⟨fun _ _ => 0, fun h => absurd h hd⟩`. Use `choose τ hτ using H`. Set `Q : (ZMod g)[X] → List ((ZMod g)[X] × Pc g)` to `fun f => (UniqueFactorizationMonoid.normalizedFactors f).toList.map fun P => (P, ⟨P.natDegree, τ P.natDegree P⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun f => hcL ((Q f).map Prod.snd) N, fun hN => ?_⟩` and prove the remaining obligations. Establish `hfst : ∀ f, (((Q f).map Prod.fst : List _) : Multiset _) = UniqueFactorizationMonoid.normalizedFactors f`. Introduce `f`. Simplify using `[Q, Function.comp_def]`. Establish `hmemQ : ∀ f, ∀ p ∈ Q f, p.1 ∈ UniqueFactorizationMonoid.normalizedFactors f ∧ p.2 = ⟨p.1.natDegree, τ p.1.natDegree p.1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f p hp`. Simplify using `only [Q, List.mem_map, Multiset.mem_toList] at hp`. Take `⟨P, hP, rfl⟩` from `hp`. Conclude with `⟨hP, rfl⟩`. Establish `hpos : ∀ {P : (ZMod g)[X]} {d}, IsPrimeLab d P → 0 < d` using `fun h => h.2.2.2 ▸ h.2.1.natDegree_pos`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : ∀ f ∈ GlobalTheory.BadShare.sqSet g N, ∀ p ∈ Q f, p.2.1 = p.1.natDegree ∧ IsCusp p.2.2 ∧ p.2.2 1 = ∏ i ∈ Finset.Ico 1 p.2.1, ((g : ℂ) ^ i - 1) ∧ IsPrimeLab p.1.natDegree p.1`. Introduce `f hf p hp`. Take `⟨h1, h2⟩` from `hmemQ f p hp`. Establish `hl` using `isPrimeLab_of_factor (GlobalTheory.BadShare.mem_sqSet.1 hf).2.2.2 h1`. Take `⟨⟨-, hc, -⟩, hd⟩` from `(hτ _ (hpos hl)).1 p.1 hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `⟨rfl, hc, hd, hl⟩`. Establish `hdeg : ∀ f ∈ GlobalTheory.BadShare.sqSet g N, degL ((Q f).map Prod.snd) = N`. Introduce `f hf`. Take `⟨hm, hn, -, -⟩` from `GlobalTheory.BadShare.mem_sqSet.1 hf`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : degL ((Q f).map Prod.snd) = (((Q f).map Prod.fst).map natDegree).sum`. Unfold `degL`. Simplify using `[Q, List.map_map, Function.comp_def]`. Rewrite using `[e1, ← Multiset.sum_coe, ← Multiset.map_coe, hfst, ← hn]`. Use `conv_rhs => rw [← prod_factors_of_monic hm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[natDegree_multiset_prod_of_monic _ fun P hP => monic_of_factor hP]`. Establish `hinj : ∀ f ∈ GlobalTheory.BadShare.sqSet g N, ∀ f' ∈ GlobalTheory.BadShare.sqSet g N, ∀ p ∈ Q f ++ Q f', ∀ q ∈ Q f ++ Q f', p.2 = q.2 → p.1 = q.1`. Introduce `f hf f' hf' p hp q hq he`. Establish `hp' : ∃ F ∈ GlobalTheory.BadShare.sqSet g N, p ∈ Q F`. Break down `List.mem_append.1 hp with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [⟨f, hf, h⟩, ⟨f', hf', h⟩]`. Establish `hq' : ∃ F ∈ GlobalTheory.BadShare.sqSet g N, q ∈ Q F`. Break down `List.mem_append.1 hq with h | h` into its components or cases. Use `exacts [⟨f, hf, h⟩, ⟨f', hf', h⟩]`. Take `⟨F, hF, hpF⟩` from `hp'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨F', hF', hqF⟩` from `hq'`. Establish `lp` using `(hQ F hF p hpF).2.2.2`. Establish `lq` using `(hQ F' hF' q hqF).2.2.2`. Rewrite `he` using `[(hmemQ F p hpF).2, (hmemQ F' q hqF).2]`. Take `⟨h1, h2⟩` from `Sigma.mk.inj_iff.1 he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : HEq (τ p.1.natDegree q.1) (τ q.1.natDegree q.1)` using `by rw [h1]`. Establish `h4 : τ p.1.natDegree p.1 = τ p.1.natDegree q.1` using `eq_of_heq (h2.trans h3.symm)`. Conclude with `(hτ _ (hpos lp)).2 p.1 q.1 lp (h1 ▸ lq) h4`. Establish `hnd : ∀ f ∈ GlobalTheory.BadShare.sqSet g N, ((Q f).map Prod.fst).Nodup`. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Multiset.coe_nodup, hfst]`. Conclude with `(UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors (GlobalTheory.BadShare.mem_sqSet.1 hf).1.ne_zero).1 (GlobalTheory.BadShare.mem_sqSet.1 hf).2.2.1`. Establish `ψne : (ZMod.stdAddChar (N` using `g)) ≠ 1 := fun h1 => by`. Establish `h2 : (ZMod.stdAddChar (N` using `g)) 1 = ZMod.stdAddChar (N := g) 0 := by rw [h1]; simp`. Conclude with `one_ne_zero (ZMod.injective_stdAddChar h2)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun f hf f' hf' he => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ p ∈ Q f ++ Q f', IsCusp p.2.2` using `fun p hp => by`. Break down `List.mem_append.1 hp with h | h` into its components or cases. Use `exacts [(hQ f hf p h).2.1, (hQ f' hf' p h).2.1]`. Use `labelsOfEq g (Q f) (Q f') N hc (hinj f hf f' hf') (hnd f hf) (hdeg f hf) (hdeg f' hf') he` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `this` using `[hfst, hfst]`. Rewrite using `[← prod_factors_of_monic (GlobalTheory.BadShare.mem_sqSet.1 hf).1, this, prod_factors_of_monic (GlobalTheory.BadShare.mem_sqSet.1 hf').1]`. Establish `hcL' : ∀ p ∈ (Q f).map Prod.snd, IsCusp p.2`. Introduce `p hp`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hQ f hf q hq).2.1`. Establish `hch : IsChar (hcL ((Q f).map Prod.snd) N)` using `(GlobalTheory.gl_list_product_perm_char g _ [] N (hdeg f hf).symm fun p hp => by`. Take `⟨-, ⟨V, -, hV⟩, -⟩` from `hcL' p hp`. Conclude with `⟨V, hV⟩).1`. Establish `hnd' : ((Q f).map Prod.snd).Nodup`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hnd f hf` as an intermediate fact. Rewrite `this`, the goal using `[List.nodup_iff_injective_get]`. Introduce `i j hij`. Establish `hi : i.1 < (Q f).length` using `by simpa using i.2`. Establish `hj : j.1 < (Q f).length` using `by simpa using j.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hinj f hf f hf ((Q f).get ⟨i, hi⟩) (List.mem_append_left _ (List.get_mem _ _)) ((Q f).get ⟨j, hj⟩) (List.mem_append_left _ (List.get_mem _ _)) (by simpa using hij)`. Use `@this ⟨i, by simpa using hi⟩ ⟨j, by simpa using hj⟩ (by simpa using e)` as an intermediate fact. Conclude with `Fin.ext (by simpa using congrArg Fin.val this)`. Establish `hip` using `(GlobalTheory.GLq.IpCuspProd.ip_hcL_cusp g _ _ N (hdeg f hf) (hdeg f hf) hcL' hcL').2 hnd'`. Take `⟨V, hVs, hV⟩` from `(GlobalTheory.charDec _ _).2.2.2.1 hch hip`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hVc : V.character = hcL ((Q f).map Prod.snd) N` using `funext hV`. Use `⟨V, hVs, hVc, ?_, ?_⟩` and prove the remaining obligations. Use `genericOfWh g N hN V _ ψne ?_` and prove the remaining obligations. Establish `hw` using `whHcL g _ ψne ((Q f).map Prod.snd) fun p hp => by`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(hQ f hf q hq).2.1, (hQ f hf q hq).2.2.1⟩`. Rewrite `hw` using `[hdeg f hf]`. Establish `: (fun x => V.character x) = hcL ((Q f).map Prod.snd) N` using `hVc`. Rewrite using `[this, hw]`. Conclude with `one_ne_zero`.
-
-Establish `hd` using `degHcL g f (Q f) (fun p hp => ⟨(hQ f hf p hp).1, (hQ f hf p hp).2.2.1⟩) (hfst f)`. Rewrite `hd` using `[hdeg f hf, ← hVc, FDRep.char_one]`. Apply `Nat.cast_injective (R := ℂ)` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul, hd, Nat.cast_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (Fact.out : g.Prime).pos)]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem green_series : GlobalTheory.Published.GreenCuspidal → GlobalTheory.Published.GreenSeriesSt := by
   intro hG g _ N

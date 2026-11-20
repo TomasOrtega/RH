@@ -4,7 +4,7 @@ import Mathlib
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.exists_integral_inv_one_add_prime_mul) | (exact GlobalTheory.exists_integral_inv_one_add_prime_mul) | (intros; apply GlobalTheory.exists_integral_inv_one_add_prime_mul <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_integral_inv_one_add_prime_mul_padic : ∀ (ℓ : ℕ) [Fact ℓ.Prime] (S : Type) [CommRing S] [Algebra ℤ_[ℓ] S] (s : S), IsIntegral ℤ_[ℓ] s → ∃ r : S, (1 + (ℓ : S) * s) * r = 1 ∧ IsIntegral ℤ_[ℓ] r := by
   first | (exact @GlobalTheory.exists_integral_inv_one_add_prime_mul) | (exact GlobalTheory.exists_integral_inv_one_add_prime_mul) | (intros; apply GlobalTheory.exists_integral_inv_one_add_prime_mul  <;> assumption)

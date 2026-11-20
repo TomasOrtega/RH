@@ -11,7 +11,7 @@ set_option autoImplicit false
 namespace GlobalTheory.AbCoh.FieldSq
 
 /- English proof (translation)
-Introduce `k _ hk B _ g hab hsm`. Use `letI : Field k := hk.toField`. Take `⟨-, -, hw, hn, ha⟩` from `GlobalTheory.T.abelianVariety_structureSheaf_cohomology_anyField k B g hab hsm`. Conclude with `⟨ha, hn, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem axes_noPrim_wedge : (∀ (k : Type) [CommRing k], IsField k → ∀ (B : Over (Sp k)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → AxesVanishingStructureSheafDegOne B ∧ NoPrimitiveStructureSheafH2 B ∧ WedgeO (OAff B.hom)) := by
   intro k _ hk B _ g hab hsm

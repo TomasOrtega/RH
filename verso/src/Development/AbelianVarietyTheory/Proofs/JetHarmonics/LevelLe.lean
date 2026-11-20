@@ -7,7 +7,7 @@ open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryB
 namespace GlobalTheory.RowBudgets
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.LevelsOrbits.levelBound k l hk hl`. Establish `e : RF.i0 k l = Formalism.L2.FormalSeriesBounds.i0 k l` using `rfl`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma level_le (k l : ℕ) (hk : 1 ≤ k) (hl : 5 ≤ l) :
     ((RF.i0 k l : ℕ) : ℝ) ≤ 3 + 2 * Real.log k := by
@@ -17,33 +17,33 @@ lemma level_le (k l : ℕ) (hk : 1 ≤ k) (hl : 5 ≤ l) :
   linarith
 
 /- English proof (translation)
-Introduce `r f n m nW T l k b L A hm hmn hnr hf hT hk hL hkL hW`. Establish `hm' : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hmn' : (m : ℝ) ≤ n` using `by exact_mod_cast hmn`. Establish `hnr' : (n : ℝ) ≤ r` using `by exact_mod_cast hnr`. Establish `hf' : (2 : ℝ) ≤ f` using `by exact_mod_cast hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT' : (1 : ℝ) ≤ T` using `by exact_mod_cast hT`. Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hlog : 0 ≤ Real.log k` using `Real.log_nonneg (by exact_mod_cast hk1)`. Establish `hn' : (1 : ℝ) ≤ n` using `hm'.trans hmn'`. Establish `hr' : (1 : ℝ) ≤ r` using `hn'.trans hnr'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : (0 : ℝ) < T * f * (n : ℝ) ^ 3 * L` using `by positivity`. Take `⟨Y, hY⟩ : ∃ Y : ℝ, Y = f * (n : ℝ) ^ 3 * L / m` from `⟨_, rfl⟩`. Establish `hYm : Y * m = f * (n : ℝ) ^ 3 * L` using `by rw [hY]; field_simp`. Establish `hW' : 10 * ((r : ℝ) * f) + 10 * L * (r * f * Y) ≤ nW`. Use `le_of_eq_of_le ?_ hW` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hY]`. Expand and normalize the polynomial expressions, which then agree. Establish `hYL : L ≤ Y`. Rewrite using `[hY, le_div_iff₀ (by positivity)]`. Establish `h1 : (m : ℝ) ≤ (n : ℝ) ^ 3` using `hmn'.trans (le_self_pow₀ hn' (by norm_num))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (n : ℝ) ^ 3 ≤ f * (n : ℝ) ^ 3` using `le_mul_of_one_le_left (by positivity) (by linarith)`. Establish `h3` using `mul_le_mul_of_nonneg_right (h1.trans h2) (show 0 ≤ L by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrf : (0 : ℝ) ≤ r * f` using `by positivity`. Establish `hP : (0 : ℝ) ≤ r * f * Y` using `mul_nonneg hrf (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPL : 3 * (r * f * Y) ≤ L * (r * f * Y)` using `mul_le_mul_of_nonneg_right hL hP`. Use `⟨?_, fun hl => ?_, fun hl hb h => ?_, fun hl h hA => ?_⟩` and prove the remaining obligations. Establish `: (8 * r * f : ℝ) ≤ nW` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `h1 : ((RF.i0 k l : ℕ) : ℝ) ≤ 3 * Y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `level_le k l hk1 hl` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ((RF.i0 k l : ℕ) : ℝ) * n ≤ 3 * Y * r` using `mul_le_mul h1 hnr' (by positivity) (by linarith)`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 (show (0 : ℝ) ≤ f by positivity)`. Establish `: (f * (((RF.i0 k l : ℕ) : ℝ) * n) + 2 * r * f : ℝ) ≤ nW` using `by linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hl' : (3 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hq : (0 : ℝ) < T * ((l : ℝ) - 1)` using `mul_pos (by linarith) (by linarith)`. Rewrite `h` using `[div_le_iff₀ hD]`. Establish `hbY : b ≤ l * T * Y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `le_of_mul_le_mul_left (a := (m : ℝ)) ?_ (by linarith)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hTY : (0 : ℝ) ≤ T * Y` using `mul_nonneg (by linarith) (by linarith)`. Establish `hz : 3 * b / (T * ((l : ℝ) - 1)) ≤ 6 * Y`. Rewrite using `[div_le_iff₀ hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `mul_le_mul_of_nonneg_right hl' hTY` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `⟨⌈3 * b / (T * ((l : ℝ) - 1))⌉₊, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `(Nat.ceil_lt_add_one (show 0 ≤ 3 * b / (T * ((l : ℝ) - 1)) by positivity)).le`. Establish `h2` using `mul_le_mul_of_nonneg_left (h1.trans (add_le_add_left hz 1)) hrf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (4 * r * (⌈3 * b / (T * ((l : ℝ) - 1))⌉₊ : ℝ) * f : ℝ) ≤ nW` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `h1` using `Nat.le_ceil (3 * b / (T * ((l : ℝ) - 1)))`. Rewrite `h1` using `[div_le_iff₀ hq]`. Establish `h2 : (x : ℝ) ≤ (⌈3 * b / (T * ((l : ℝ) - 1))⌉₊ : ℝ) * ((l : ℝ) - 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `le_of_mul_le_mul_left (a := (T : ℝ)) ?_ (by linarith)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ((l : ℝ) - 1) = ((l - 1 : ℕ) : ℝ)`. Rewrite using `[Nat.cast_sub (by omega)]; simp`. Generalize the expression as in `⌈3 * b / (T * ((l : ℝ) - 1))⌉₊ = s at h2 ⊢`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Conclude with `h2` after adjusting the coercions. Establish `hl' : (0 : ℝ) < l` using `by exact_mod_cast hl`. Rewrite `h` using `[lt_div_iff₀ hD]`. Rewrite using `[le_div_iff₀ hl']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : (m : ℝ) * b ≤ m * A` using `mul_le_mul_of_nonneg_left hA (by linarith)`. Establish `h2 : l * (T * f * (n : ℝ) ^ 3 * Real.log k) ≤ l * (T * f * (n : ℝ) ^ 3 * L)` using `by gcongr`. Establish `h3` using `mul_le_mul_of_nonneg_left (h2.trans (h.le.trans h1)) hlog`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (r f n m nW T l k : ℕ) (b L A : ℝ), 1 ≤ m → m ≤ n → n ≤ r → 2 ≤ f → 1 ≤ T → n + 1 = k → 3 ≤ L → Real.log k ≤ L → 10 * (r : ℝ) * (f + (f : ℝ) ^ 2 * (n : ℝ) ^ 3 * L ^ 2 / m) ≤ nW →
   8 * r * f ≤ nW ∧ (5 ≤ l → f * (RF.i0 k l * n) + 2 * r * f ≤ nW) ∧

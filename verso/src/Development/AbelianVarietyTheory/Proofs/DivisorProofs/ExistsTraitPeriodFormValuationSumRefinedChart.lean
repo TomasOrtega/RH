@@ -24,21 +24,19 @@ namespace GlobalTheory.Poinc.ChartTraitForm
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.UT GlobalTheory.ArcPull GlobalTheory.PullLinear in
 
 /- English proof (translation)
-Establish `hP : PolBaseChangeSt` using `polBaseChange_holds`. Establish `hU : UnifBaseChangeSt` using `GlobalTheory.UnifPullGuards.unifBaseChange_holds`. Establish `hψ : PsiOnExistsSt` using `psiOnExists`. Establish `sq : spMap (fracMap hg) ≫ jK R = jK R' ≫ spMap g` using `(fracMap_sq hg).symm.trans (Category.id_comp _)`. Take `⟨A', gA, pA, dA, mA, tA⟩` from `hP _ _ (spMap (fracMap hg)) A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `gpA : IsGrpPullback A'.A A.A (spMap (fracMap hg)) gA` using `⟨pA, fun T x y x₀ y₀ hx hy => by`. Establish `e₁ : x₀ = Out.toBase pA.w x` using `Over.OverMorphism.ext hx`. Establish `e₂ : y₀ = Out.toBase pA.w y` using `Over.OverMorphism.ext hy`. Rewrite using `[e₁, e₂, ← mA]`. Use the proof step `rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `gpG` using `ThetaBaseChange.grp_generic U.toUnifPre`. Establish `gp' : IsGrpPullback ((Over.pullback (jK R')).obj ((Over.pullback (specOf g)).obj G)) G (spMap (fracMap hg) ≫ jK R) (pullback.fst ((Over.pullback (specOf g)).obj G).hom (jK R') ≫ pullback.fst G.hom (spMap g))` using `((isGrpPullback_pullback ((Over.pullback (specOf g)).obj G) (jK R')).comp (isGrpPullback_pullback G (spMap g))).congr sq.symm rfl`. Take `⟨eA, mE, heA⟩` from `grpPullback_iso gp' (gpA.comp gpG)`. Establish `hgi : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbc : (Iso.refl ((Over.pullback (specOf g)).obj G)).hom.left ≫ pullback.fst G.hom (specOf g) = pullback.fst G.hom (spMap g)` using `Category.id_comp _`. Establish `wA : LBIso (A'.L.pull eA.hom.left) (U.LG.L.pull (pullback.fst ((Over.pullback (specOf g)).obj G).hom (jK R') ≫ (Iso.refl ((Over.pullback (specOf g)).obj G)).hom.left ≫ pullback.fst G.hom (specOf g)))`. Use `LBIso.trans (pull_isLB A'.isLB _) (pull_isLB (pull_isLB A.isLB gA) eA.hom.left) (pull_isLB U.LG.isLB _) ((LBIso.symm tA).chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull A'.L _ _ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (A.L.pull gA) _ …` and prove the remaining obligations. Use `LBIso.chartPull (h := eA.hom.left ≫ gA ≫ U.gen.inv.left) (chartPullLinComb A.L gA (fun _ => eA.hom.left) (fun _ => U.gen.hom.left) _ _ fun _ => ?_) (chartPullSame U.LG.L _ (fun _ => pullback.fst G.hom (jK R)) _ _ fun _ => ?_) U.ext` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hgi, Category.comp_id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbc, ← heA]`. Simplify using `only [Category.assoc]`. Establish `he : eSec ((Over.pullback (specOf g)).obj G) ≫ (Iso.refl ((Over.pullback (specOf g)).obj G)).hom.left ≫ pullback.fst G.hom (specOf g) = specOf g ≫ eSec G`. Rewrite using `[hbc]`. Conclude with `(cubeMapOf (isGrpPullback_pullback G (spMap g))).e_comm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hr : (rigPullOf (G` using `G) (G' := (Over.pullback (specOf g)).obj G) _ (specOf g) he U.LG.L U.LG.rig).IsGen := LBxP.isGen_pullAlong U.LG.L _ (specOf g) (fun _ : PUnit => eSec G) (fun _ => 1) (fun _ => eSec ((Over.pullback (specOf g)).obj G)) (fun _ => he) U.LG.rig U.LG.rigGen`. Set `L' : RigLB ((Over.pullback (specOf g)).obj G)` to `⟨U.LG.L.pull ((Iso.refl ((Over.pullback (specOf g)).obj G)).hom.left ≫ pullback.fst G.hom (specOf g)), rigPullOf (G := G) (G' := (Over.pullback (specOf g)).obj G) _ (specOf g) he U.LG.L U.LG.rig, pull_isLB U.LG.isLB _, hr⟩`. Take `⟨Wo, hWo, hψ⟩` from `hψ R I hR D`. Establish `hgen : (specOf g).base (genericPoint (Spec (CommRingCat.of R'))) ∈ Wo`. Establish `: (specOf g).base (genericPoint (Spec (CommRingCat.of R'))) = genericPoint (Spec (CommRingCat.of R))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]`. Conclude with `PrimeSpectrum.ext (Ideal.comap_bot_of_injective g hg)`. Rewrite using `[this]`. Conclude with `hWo`. Establish `mR : IsMonHom (Iso.refl ((Over.pullback (specOf g)).obj G)).hom` using `by show IsMonHom (𝟙 _); infer_instance`.
-
-Take `⟨D', hD, U', -⟩` from `hU R R' I I' hR hR' g hI D A G hG U Wo hψ hgen ((Over.pullback (specOf g)).obj G) (Iso.refl _) mR A' dA eA mE wA L' (idIso _) he (idIso_isGen L'.isLB) (fun p => hr p.1 p.2)`. Conclude with `⟨D', hD, A', U', gA, gpA, LBIso.symm tA⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pull {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {I : Ideal R} {I' : Ideal R'}
     (hR : AdmBase R I) (hR' : AdmBase R' I') (g : R →+* R') (hg : Function.Injective g) (hI : I.map g ≤ I')
@@ -99,13 +97,11 @@ theorem exists_pull {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDom
   exact ⟨D', hD, A', U', gA, gpA, LBIso.symm tA⟩
 
 /- English proof (translation)
-Introduce `y`. Take `⟨u, n, hn, hc⟩` from `h (hD.xe y)`. Take `⟨u', hc'⟩` from `GlobalTheory.PelCoordPull.psiCoord_pull hD y _ hc`. Establish `h₁ : Associated (ϖ ^ ∑ k, a k * n k) (u' * κ (u * ∏ i, r i ^ n i))`. Use `Associated.symm ((associated_unit_mul_left _ _ u'.isUnit).trans ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_prod, ← Finset.prod_pow_eq_pow_sum]`. Use `(associated_unit_mul_left _ _ (u.isUnit.map κ)).trans (Associated.prod _ _ _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_pow, pow_mul]`. Conclude with `(ha i).pow_pow`. Take `⟨v, hv⟩` from `h₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, ![∑ k, a k * n k], fun i => ?_, ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Matrix.cons_val_zero, hβ, hn]`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[Fin.prod_univ_one, Matrix.cons_val_zero, Matrix.cons_val_zero, mul_comm, hv]`. Conclude with `hc'`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonomial_pull {R W : Type} [CommRing R] [IsDomain R] [CommRing W] [IsDomain W] [IsLocalRing W] {κ : R →+* W}
     {D : DegPre R} {D' : DegPre W} (hD : IsPullDeg κ D D') {m : ℕ} {r : Fin m → R}
@@ -132,21 +128,17 @@ theorem isMonomial_pull {R W : Type} [CommRing R] [IsDomain R] [CommRing W] [IsD
     exact hc'
 
 /- English proof (translation)
-Introduce `o _ ζ g n F S j V _ _ _ Q ξ hUO m t δ R' _ _ _ ρ r D e hR' hρ hρf _ hr ht hδ hRef hmon W _ _ _ hW κ hκ hκl`. Take `⟨G', _, _, A, U, y', α, α₂, hG, hy, hα, hsq, hL⟩` from `hUO.2 R' ρ hR' hρ hρf D e hRef`. Establish `h0 : CharZero R'` using `hR'.2.2.2`. Establish `hW0 : CharZero W` using `charZero_of_injective_ringHom hκ`. Take `⟨D', hD, A', U', gA, gpA, tA⟩` from `exists_pull (I := maximalIdeal R') (I' := maximalIdeal W) ⟨hR'.1, inferInstance, hR'.2.1, hR'.2.2.1⟩ ⟨inferInstance, inferInstance, inferInstance, hW⟩ κ hκ (Ideal.map_le_iff_le_comap.2 fun a ha => map_nonunit κ a ha) hG U`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β₂, hβ₂, hΛ⟩` from `GlobalTheory.Mum.lbIso_lam_pull_of_isGrpPullback _ _ _ A.A A'.A gA gpA`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Establish `hr0 : ∀ k, κ (r k) ≠ 0` using `fun k h => ht k (hρ (hκ (by rw [← hr, map_pow, h]; simp)))`. Use `choose a u hu using fun k => IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (hr0 k) hϖ`. Establish `ha : ∀ k, Associated (κ (r k)) (ϖ ^ a k)` using `fun k => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Conclude with `associated_unit_mul_left _ _ (u k).isUnit`. Set `e' : D'.toPre.X ≃+ Q.X` to `hD.xe.trans e`. Set `β : LinearMap.BilinForm ℤ D'.toPre.X` to `∑ k, ((2 * a k : ℕ) : ℤ) • pull e'.toIntLinearEquiv.toLinearMap (δ k)`. Establish `hβ : ∀ x y, β x y = ∑ k, ((2 * a k : ℕ) : ℤ) * δ k (e' x) (e' y)` using `fun x y => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [β, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression. Establish `sq : spMap (GlobalTheory.ArcPull.fracMap hκ) ≫ jK R' = jK W ≫ spMap κ` using `(GlobalTheory.ArcPull.fracMap_sq hκ).symm.trans (Category.id_comp _)`. Set `T : Trait F` to `{ V := W, complete := hW, ϖ := ϖ, irr := hϖ, y := spMap (GlobalTheory.ArcPull.fracMap hκ) ≫ y' G := (Over.pullback (spMap κ)).obj G', semi := IsSemiAbelian.pullback _ G' hG, D := D', A := A', U := U' α := gA ≫ α, α₂ := β₂ ≫ α₂, cart := gpA.comp hα sq := ⟨by rw [Category.assoc, hs …`. Use symmetry as in `:= fun x y => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ, hβ]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hδ]`. Use `mono := isMonomial_pull hD hmon ha β fun y => by`. Rewrite using `[hβ]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: ((2 : ℤ) • pull e.toIntLinearEquiv.toLinearMap (δ k)) (hD.xe y) (hD.xe y) = 2 * δ k (e' y) (e' y)` using `rfl`. Rewrite using `[this]`. Use `push_cast`. Use `ring }`. Use `⟨T, RingHom.id W, fun k => 2 * a k, e', Function.bijective_id, ?_, fun k => ?_, hβ⟩` and prove the remaining obligations.
-
-Use `show jK W ≫ spMap (RingHom.id W) ≫ spMap κ ≫ spMap ρ ≫ ξ = (spMap (GlobalTheory.ArcPull.fracMap hκ) ≫ y') ≫ j`. Establish `: spMap (RingHom.id W) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[this, Category.id_comp, Category.assoc, hy, ← Category.assoc (spMap (GlobalTheory.ArcPull.fracMap hκ)), sq, Category.assoc]`. Use `show Associated (κ (ρ (t k))) (ϖ ^ (2 * a k))`. Rewrite using `[← hr, map_pow, mul_comm, pow_mul]`.
-
-Conclude with `(ha k).pow_pow`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trait : ∀ {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) (S : Scheme.{0}) (j : F.X ⟶ S)
     (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (Q : Data V) (ξ : Sp V ⟶ S), UnifOver F j ξ Q →

@@ -16,7 +16,7 @@ variable {R B P : Type} [CommRing R] [CommRing B] [Algebra R B] [CommRing P] [Al
   (v : Derivation R P P) {α : B →+* P} (h : SemiHom (RingHom.id R) α)
 
 /- English proof (translation)
-Proceed by induction on `x using indDR with`. Consider the case `h b => rw [h.mDR_algebraMap, ctr_algebraMap]`. Consider the case `hd b => rw [h.mDR_ι, h.m1_D, ctr_ι, Derivation.liftKaehlerDifferential_comp_D, hv, map_zero]`. Consider the case `hm x y hx hy => rw [map_mul, ctr_mul, hx, hy, zero_mul, mul_zero, add_zero]`. Consider the case `ha x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ctr_mDR_of_kill (hv : ∀ b, v (α b) = 0) (x : DR R B) : ctr v (h.mDR x) = 0 := by
   induction x using indDR with
@@ -26,22 +26,22 @@ theorem ctr_mDR_of_kill (hv : ∀ b, v (α b) = 0) (x : DR R B) : ctr v (h.mDR x
   | ha x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Rewrite using `[lie_apply, ctr_mDR_of_kill v h hv, map_zero, zero_add, ← h.mDR_dDR, ctr_mDR_of_kill v h hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_mDR_of_kill (hv : ∀ b, v (α b) = 0) (x : DR R B) : lie v (h.mDR x) = 0 := by
   rw [lie_apply, ctr_mDR_of_kill v h hv, map_zero, zero_add, ← h.mDR_dDR, ctr_mDR_of_kill v h hv]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, lie_mul, lie_algebraMap, lie_mDR_of_kill v h hv, mul_zero, add_zero, ← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_smul_mDR (hv : ∀ b, v (α b) = 0) (p : P) (x : DR R B) :
     lie v (p • h.mDR x) = v p • h.mDR x := by
   rw [Algebra.smul_def, lie_mul, lie_algebraMap, lie_mDR_of_kill v h hv, mul_zero, add_zero, ← Algebra.smul_def]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih]`. Distinguish the cases in `hk : k ≤ n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hk, lie_smul_mDR v h hv]`. Distinguish the cases in `hk' : k + 1 ≤ n`. Rewrite using `[if_pos hk', show n - k = (n - (k + 1)) + 1 by omega, hs]`. Rewrite using `[if_neg hk', show n - k = 0 by omega, he0]`. Rewrite using `[if_neg hk, if_neg (by omega), zero_smul, map_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_pow_smul_mDR (hv : ∀ b, v (α b) = 0) (e : ℕ → P) (he0 : v (e 0) = 0)
     (hs : ∀ n, v (e (n + 1)) = e n) (x : DR R B) (n k : ℕ) :
@@ -60,7 +60,7 @@ theorem lie_pow_smul_mDR (hv : ∀ b, v (α b) = 0) (e : ℕ → P) (he0 : v (e 
 end Gen
 
 /- English proof (translation)
-Establish `h0` using `Int.alternating_sum_range_choose (n := n + 1)`. Rewrite `h0` using `[Finset.sum_range_succ']`. Simplify using `only [pow_succ, Nat.choose_zero_right, pow_zero, Nat.cast_one, mul_one, if_neg (Nat.succ_ne_zero n)] at h0`. Establish `: ∑ k ∈ Finset.range (n + 1), (-1 : ℤ) ^ k * -1 * ((n + 1).choose (k + 1) : ℤ) = -∑ k ∈ Finset.range (n + 1), (-1 : ℤ) ^ k * ((n + 1).choose (k + 1) : ℤ)`. Rewrite using `[← Finset.sum_neg_distrib]; exact Finset.sum_congr rfl fun _ _ ↦ by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -75,11 +75,11 @@ theorem alt_sum_choose_succ (n : ℕ) :
   linarith
 
 /- English proof (translation)
-Simplify using `only [mul_ite, mul_zero]`. Rewrite using `[← Finset.sum_filter, show (Finset.range N).filter (· ≤ n) = Finset.range (n + 1) by`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use the proof step `omega]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ k ∈ Finset.range (n + 1), (-1 : Q.P) ^ k * Q.e (k + 1) * Q.e (n - k) = (((-1 : ℤ) ^ k * ((n + 1).choose (k + 1) : ℤ) : ℤ) : Q.P) * Q.e (n + 1)`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_range]`. Rewrite using `[mul_assoc, Q.e_mul, show k + 1 + (n - k) = n + 1 by omega]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl key, ← Finset.sum_mul, ← Int.cast_sum, alt_sum_choose_succ, Int.cast_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_e_mul {B : Type} [CommRing B] (Q : PDPoly B) (N n : ℕ) (hn : n < N) :
     ∑ k ∈ Finset.range N, ((-1) ^ k * Q.e (k + 1)) * (if k ≤ n then Q.e (n - k) else 0) = Q.e (n + 1) := by
@@ -95,11 +95,11 @@ theorem sum_e_mul {B : Type} [CommRing B] (Q : PDPoly B) (N n : ℕ) (hn : n < N
   rw [Finset.sum_congr rfl key, ← Finset.sum_mul, ← Int.cast_sum, alt_sum_choose_succ, Int.cast_one, one_mul]
 
 /- English proof (translation)
-Introduce `R B _ _ _ J δ Q _ _ η v h _ hB hs _ N n α`. Establish `he0 : v (Q.e 0) = 0` using `by rw [Q.e_zero]; exact v.map_one_eq_zero`. Use `⟨?_, fun hn ↦ ?_⟩` and prove the remaining obligations. Unfold `hot`. Use `Finset.sum_eq_zero fun k _ ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, ctr_mDR_of_kill v h hB, smul_zero, map_zero, smul_zero]`. Establish `hc : ctr v (Q.e n • (ι1 (D R Q.P (Q.e 1)) * h.mDR α)) = Q.e n • h.mDR α`. Rewrite using `[map_smul, ctr_ι_mul, Derivation.liftKaehlerDifferential_comp_D, hs 0, Q.e_zero, one_smul, ctr_mDR_of_kill v h hB, mul_zero, sub_zero]`. Unfold `hot`. Simplify using `only [hc, lie_pow_smul_mDR v h hB Q.e he0 hs, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_smul, sum_e_mul Q N n hn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hot_values : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (J : Ideal B) (δ : DividedPowers J) (Q : PDPoly B) [Algebra R Q.P] [IsScalarTower R B Q.P] (η : DividedPowers (Q.ext J)) (v : Derivation R Q.P Q.P) (h : SemiHom (RingHom.id R) (algebraMap B Q.P)), Q.IsStd δ η → (∀ b, v (algebraMap B Q.P b) = 0) → (∀ n, v (Q.e (n + 1)) = Q.e n) → (∀ n, ∀ a ∈ Q.ext J, v (η.dpow (n + 1) a) = η.dpow n a * v a) → ∀ (N n : ℕ) (α : DR R B), hot v Q.e N (Q.e n • h.mDR α) = 0 ∧ (n < N → hot v Q.e N (Q.e n • (ι1 (D R Q.P (Q.e 1)) * h.mDR α)) = Q.e (n + 1) • h.mDR α) := by
   intro R B _ _ _ J δ Q _ _ η v h _ hB hs _ N n α

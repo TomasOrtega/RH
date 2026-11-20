@@ -26,7 +26,7 @@ theorem coe_openSubgroup (F : FiniteSubfield) :
   rfl
 
 /- English proof (translation)
-The claim follows from `fun _ hx ↦ IntermediateField.fixingSubgroup_le (show F.1 ≤ E.1 from h) hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem openSubgroup_le {F E : FiniteSubfield} (h : F ≤ E) : E.openSubgroup ≤ F.openSubgroup :=
   fun _ hx ↦ IntermediateField.fixingSubgroup_le (show F.1 ≤ E.1 from h) hx
@@ -91,7 +91,7 @@ theorem abstractSymbol_apply (c : IdeleClassGroup K.1) :
   rfl
 
 /- English proof (translation)
-Establish `e : (reciprocityEquiv K L).symm (normClass K L c) = Abelianization.of (QuotientGroup.mk (s` using `(L.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)).subgroupOf K.openSubgroup) g) := by`. Rewrite using `[MulEquiv.symm_apply_eq, ClassFieldData.reciprocityAbEquiv_of]`. Conclude with `h.symm`. Rewrite using `[abstractSymbol_apply, e, Abelianization.map_of]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem abstractSymbol_eq_of_reciprocity (c : IdeleClassGroup K.1) (g : K.1.fixingSubgroup)
     (h : classFieldTheory.toClassFieldData.reciprocity (openSubgroup_le hKL.out)
@@ -114,7 +114,7 @@ section Layers
 variable (K L : FiniteSubfield)
 
 /- English proof (translation)
-Rewrite using `[← fixingSubgroup_zhatField, ← IntermediateField.fixingSubgroup_sup]`. Conclude with `IntermediateField.fixingSubgroup_le hL`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_ker_degree_le_of_le_sup_zhatField (hL : L.1 ≤ K.1 ⊔ zhatField) :
     K.1.fixingSubgroup ⊓ degree.ker ≤ L.1.fixingSubgroup := by
@@ -122,7 +122,7 @@ theorem inf_ker_degree_le_of_le_sup_zhatField (hL : L.1 ≤ K.1 ⊔ zhatField) :
   exact IntermediateField.fixingSubgroup_le hL
 
 /- English proof (translation)
-The claim follows from `normal_of_unramified (d := degree) (IntermediateField.fixingSubgroup_le (show K.1 ≤ L.1 from hKL)) (inf_ker_degree_le_of_le_sup_zhatField K L hL)`.
+A detailed English derivation is pending.
 -/
 theorem normal_of_le_sup_zhatField (hKL : K ≤ L) (hL : L.1 ≤ K.1 ⊔ zhatField) :
     (L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal :=
@@ -133,11 +133,11 @@ theorem normal_of_le_sup_zhatField (hKL : K ≤ L) (hL : L.1 ≤ K.1 ⊔ zhatFie
 variable [Fact (K ≤ L)] [(L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal]
 
 /- English proof (translation)
-Use `⟨⟨fun σ τ ↦ ?_⟩⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `restrictHom_surjective (F := K) (E := L) σ`. Take `⟨h, rfl⟩` from `restrictHom_surjective (F := K) (E := L) τ`. Establish `hk : (h * g)⁻¹ * (g * h) ∈ (restrictHom (F` using `K) (E := L)).ker := by`. Rewrite using `[ker_restrictHom, Subgroup.mem_subgroupOf]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `inf_ker_degree_le_of_le_sup_zhatField K L hL ⟨((h * g)⁻¹ * (g * h)).2, MonoidHom.mem_ker.2 ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Rewrite using `[mul_comm (degree (h : ℚ̄ ≃ₐ[ℚ] ℚ̄)) (degree (g : ℚ̄ ≃ₐ[ℚ] ℚ̄))]`. Conclude with `inv_mul_cancel _`. Rewrite `hk` using `[MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_mul]`. Conclude with `hk.symm`.
+A detailed English derivation is pending.
 -/
 theorem isMulCommutative_of_le_sup_zhatField (hL : L.1 ≤ K.1 ⊔ zhatField) :
     IsMulCommutative (L.1 ≃ₐ[K.1] L.1) := by

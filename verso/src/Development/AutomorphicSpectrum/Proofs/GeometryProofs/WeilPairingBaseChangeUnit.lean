@@ -18,7 +18,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `gm_pull r V.ι z ⊤ trivial a`.
+A detailed English derivation is pending.
 -/
 private theorem gm_unitRes' {S : Scheme} {T : Over S} (V : T.left.Opens) {Z : Scheme}
     (r : Z ⟶ (Out.overRes V).left) (z : Z) (a : (↑(T.left.presheaf.obj (Opposite.op ⊤)))ˣ) :
@@ -26,7 +26,7 @@ private theorem gm_unitRes' {S : Scheme} {T : Over S} (V : T.left.Opens) {Z : Sc
   gm_pull r V.ι z ⊤ trivial a
 
 /- English proof (translation)
-Use `ext`. Use `show (Scheme.ΓSpecIso (CommRingCat.of M)).inv.hom (j c) = (Spec.map (CommRingCat.ofHom j)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c)`. Conclude with `congrArg (fun g => g.hom (c : k)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem unitOn_units_map {k M : Type} [Field k] [Field M] (j : k →+* M) (c : kˣ) :
     unitOn (Units.map j.toMonoidHom c) = Units.map (spMap j).appTop.hom (unitOn c) := by
@@ -36,25 +36,23 @@ private theorem unitOn_units_map {k M : Type} [Field k] [Field M] (j : k →+* M
   exact congrArg (fun g => g.hom (c : k)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j))
 
 /- English proof (translation)
-Introduce `X G _ _ L hL k M _ _ j q q' hq n x y x' y' hx hy c c' h1 h2`. Set `p' : (Over.mk q').left` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum M)`. Take `⟨V', hpV', -, H2⟩` from `h2 p'`. Take `⟨V, hpV, ⟨θx₀, θy₀, hθx₀, hθy₀⟩, H1'⟩` from `h1 ((spMap j).base p')`. Establish `H1` using `H1' θx₀ θy₀ hθx₀ hθy₀`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ I : Ideal k, I.IsPrime → I = ⊥` using `fun I _ => Ideal.eq_bot_of_prime I`. Establish `hall : ∀ z : (Over.mk q).left, z ∈ V`. Introduce `z`. Establish `hz : z = (spMap j).base p'`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(key z.asIdeal z.isPrime).trans (key _ ((spMap j).base p').isPrime).symm`. Rewrite using `[hz]`. Conclude with `hpV`. Set `τ : (Out.overRes V').left ⟶ (Out.overRes V).left` to `IsOpenImmersion.lift V.ι (V'.ι ≫ spMap j) (by`. Rewrite using `[Scheme.Opens.range_ι]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hall _)`. Establish `hτι : τ ≫ V.ι = V'.ι ≫ spMap j` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hτ : τ ≫ (Out.overRes V).hom = (Out.overRes V').hom ≫ 𝟙 X`. Express the relevant statement in the definitionally equal form `τ ≫ (V.ι ≫ q) = (V'.ι ≫ q') ≫ 𝟙 X`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hτι, hq]`. Simplify using the standard rewrite rules. Use `haveI : IsMonHom (Iso.refl G).hom := by show IsMonHom (𝟙 G) infer_instance`. Establish `hp : IsGrpPullback G G (𝟙 X) (𝟙 G.left)` using `(isGrpPullback_of_iso (Iso.refl G)).congr rfl (by simp)`. Take `⟨w, hw⟩ : LBIso L (L.pull (𝟙 G.left))` from `LBIso.chartPull (chartPullId L) (chartPullPull L (𝟙 _) (𝟙 _) rfl) (GlobalTheory.PolBaseChange.lbIso_refl hL)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hxpt : τ ≫ θx₀.pt.left = (Out.overResι V' ≫ x').left ≫ 𝟙 G.left`. Rewrite using `[hθx₀]`. Express the relevant statement in the definitionally equal form `τ ≫ (V.ι ≫ x.left) = (V'.ι ≫ x'.left) ≫ 𝟙 G.left`. Rewrite using `[hx, Category.comp_id, ← Category.assoc τ, hτι, Category.assoc]`. Establish `hypt : τ ≫ θy₀.pt.left = (Out.overResι V' ≫ y').left ≫ 𝟙 G.left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hθy₀]`. Express the relevant statement in the definitionally equal form `τ ≫ (V.ι ≫ y.left) = (V'.ι ≫ y'.left) ≫ 𝟙 G.left`. Rewrite using `[hy, Category.comp_id, ← Category.assoc τ, hτι, Category.assoc]`. Take `⟨θx, hθx, hPx⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_theta_move hp τ hτ hL hL w hw n (Out.overResι V' ≫ x') θx₀ hxpt`. Take `⟨θy, hθy, hPy⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_theta_move hp τ hτ hL hL w hw n (Out.overResι V' ≫ y') θy₀ hypt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgm : ∀ (Z : Scheme) (r : Z ⟶ (Out.overRes V').left) (z : Z), gm (r ≫ τ) z ⊤ (Out.unitRes V (unitOn c)) = gm r z ⊤ (Out.unitRes V' (unitOn (Units.map j.toMonoidHom c)))`. Introduce `Z r z`. Rewrite using `[gm_unitRes', gm_unitRes', unitOn_units_map]`. Use `erw [gm_pull (r ≫ V'.ι) (spMap j) z ⊤ trivial (unitOn c)]`. Rewrite using `[Category.assoc, hτι, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `HC` using `ReciprocityTheory.ChartRestriction.G.H1.commIsOf_move hp τ hτ hL hL w n θx₀ θy₀ θx θy (by rw [hθx]; exact hxpt) (by rw [hθy]; exact hypt) hPx hPy _ _ hgm H1`. Establish `HC2` using `H2 θx θy hθx hθy`. Establish `heq` using `ReciprocityTheory.ChartRestriction.G.H1.commIsOf_unique hL θx θy _ _ HC2 HC`. Set `pt : (Out.overRes V').left` to `⟨p', hpV'⟩`. Establish `e` using `(gm_unitRes' V' (𝟙 (Out.overRes V').left) pt (unitOn c')).symm.trans ((congrArg (gm (𝟙 (Out.overRes V').left) pt ⊤) heq).trans (gm_unitRes' V' (𝟙 (Out.overRes V').left) pt _))`.
-
-Establish `e'` using `(gm_val (𝟙 (Out.overRes V').left ≫ V'.ι) pt ⊤ trivial (unitOn c')).symm.trans ((congrArg Units.val e).trans (gm_val (𝟙 (Out.overRes V').left ≫ V'.ι) pt ⊤ trivial _))`. Apply `Units.ext` to reduce the goal to its premises. Use `(RingHom.injective (((Out.overRes V').left.presheaf.germ ((TopologicalSpace.Opens.map (𝟙 (Out.overRes V').left ≫ V'.ι).base).obj ⊤) pt trivial).hom.comp (((𝟙 (Out.overRes V').left ≫ V'.ι).app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of M)).inv.hom))) ?_` and prove the remaining obligations. Establish `e''` using `by simpa [unitOn] using e'`. Conclude with `e''`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weilIs_fieldExt : ∀ {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsCommMonObj G] (L : LB G.left), L.IsLB → ∀ (k M : Type) [Field k] [Field M] (j : k →+* M) (q : Sp k ⟶ X) (q' : Sp M ⟶ X), q' = spMap j ≫ q → ∀ (n : ℤ) (x y : Over.mk q ⟶ G) (x' y' : Over.mk q' ⟶ G), x'.left = spMap j ≫ x.left → y'.left = spMap j ≫ y.left → ∀ (c : kˣ) (c' : Mˣ), Out.WeilIs G L n x y (unitOn c) → Out.WeilIs G L n x' y' (unitOn c') → c' = Units.map j.toMonoidHom c := by
   intro X G _ _ L hL k M _ _ j q q' hq n x y x' y' hx hy c c' h1 h2

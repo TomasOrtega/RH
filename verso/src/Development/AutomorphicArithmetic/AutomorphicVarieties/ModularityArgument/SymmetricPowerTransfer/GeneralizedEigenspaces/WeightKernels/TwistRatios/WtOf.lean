@@ -11,7 +11,7 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Simplify using `only [infOfWeight, Multiset.map_map, Function.comp_def, Fin.univ_val_map]`. Simplify using `[List.ofFn_succ]`. Rewrite using `[← Multiset.cons_coe, Multiset.coe_singleton]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem infOfWeight_reflect_eq_weights (lam : DomWeight 2) : (infOfWeight lam).map (fun z => (((2 : ℕ) : ℂ) - 1) / 2 - z) = ({-lam.w 0, 1 - lam.w 1} : Multiset ℤ).map (fun k : ℤ => (k : ℂ)) := by
   simp only [infOfWeight, Multiset.map_map, Function.comp_def, Fin.univ_val_map]
@@ -21,11 +21,11 @@ private theorem infOfWeight_reflect_eq_weights (lam : DomWeight 2) : (infOfWeigh
   ring
 
 /- English proof (translation)
-Introduce `m b lam h`. Rewrite `h` using `[infOfWeight_reflect_eq_weights]`. Establish `hz : ({b, b + m} : Multiset ℤ) = {-lam.w 0, 1 - lam.w 1}` using `Multiset.map_injective Int.cast_injective h`. Establish `hanti : lam.w 1 ≤ lam.w 0` using `lam.anti (by decide)`. Establish `hs` using `congrArg Multiset.sum hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at hs`. Establish `hb : b ∈ ({-lam.w 0, 1 - lam.w 1} : Multiset ℤ)`. Rewrite using `[← hz]`. Simplify using the standard rewrite rules. Simplify using `at hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases hb with hb | hb <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.wtOf :
     ∀ (m : ℕ) (b : ℤ) (lam : DomWeight 2), ({b, b + m} : Multiset ℤ).map (fun k : ℤ => (k : ℂ)) = (infOfWeight lam).map (fun z => (((2 : ℕ) : ℂ) - 1) / 2 - z) → lam.w 0 - lam.w 1 = (m : ℤ) - 1 := by

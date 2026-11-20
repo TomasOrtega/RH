@@ -119,14 +119,14 @@ theorem single_apply (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)�
     (single v x : Af E) w = Function.update (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E)) v x w := rfl
 
 /- English proof (translation)
-Rewrite using `[single_apply]`. Use `Function.update_self _ _ _` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 @[simp] theorem single_self (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)ˣ) : (single v x : Af E) v = x := by
   classical
   rw [single_apply]; convert Function.update_self _ _ _
 
 /- English proof (translation)
-Introduce `w hw` and use `by classical rw [single_apply]; convert Function.update_of_ne hw _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppAt_single (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)ˣ) : SuppAt v (single v x) := fun w hw => by
   classical
@@ -155,9 +155,9 @@ Both sides reduce to the same expression.
     (coord v y : v.adicCompletion E) = (y : Af E) v := rfl
 
 /- English proof (translation)
-Use extensionality with `: 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Use `show (y : Af E) w = (single v _ : Af E) w`. Distinguish the cases in `hw : w = v`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hw` using the available equality. Rewrite using `[single_self, coe_coord]`. Rewrite using `[h w hw, suppAt_single v _ w hw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SuppAt.eq_single {v : HeightOneSpectrum (𝓞 E)} {y : (Af E)ˣ} (h : SuppAt v y) : y = single v (coord v y) := by
   ext : 1
@@ -169,7 +169,7 @@ theorem SuppAt.eq_single {v : HeightOneSpectrum (𝓞 E)} {y : (Af E)ˣ} (h : Su
   · rw [h w hw, suppAt_single v _ w hw]
 
 /- English proof (translation)
-Use `conv_lhs => rw [h.eq_single]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem SuppAt.finPart_eq {v : HeightOneSpectrum (𝓞 E)} {y : (Af E)ˣ} (h : SuppAt v y) (χ : HChar E) :
     finPart χ y = χ.loc v (coord v y) := by
@@ -177,9 +177,9 @@ theorem SuppAt.finPart_eq {v : HeightOneSpectrum (𝓞 E)} {y : (Af E)ˣ} (h : S
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h y hy h1 h2`. Rewrite using `[hy.finPart_eq]`. Conclude with `h _ h1 h2`. Introduce `h x hx hx'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← finPart_single]`. Conclude with `h _ (suppAt_single v x) (by rw [single_self]; exact hx) (by rw [single_self]; exact hx')`.
+A detailed English derivation is pending.
 -/
 theorem levelLe_iff_finPart (χ : HChar E) (v : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
     χ.LevelLe v n ↔ ∀ y : (Af E)ˣ, SuppAt v y → Valued.v ((y : Af E) v) = 1 →
@@ -193,7 +193,7 @@ theorem levelLe_iff_finPart (χ : HChar E) (v : HeightOneSpectrum (𝓞 E)) (n :
     exact h _ (suppAt_single v x) (by rw [single_self]; exact hx) (by rw [single_self]; exact hx')
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨suppAt_single v _, by rw [unifAt, single_self]; exact unif_spec v⟩`.
+Supply the required witnesses or components.
 -/
 theorem unifAt_spec (v : HeightOneSpectrum (𝓞 E)) :
     SuppAt v (unifAt v) ∧ Valued.v ((unifAt v : Af E) v) = WithZero.exp (-1 : ℤ) :=
@@ -205,9 +205,9 @@ Both sides reduce to the same expression.
 theorem finPart_unifAt (χ : HChar E) (v : HeightOneSpectrum (𝓞 E)) : finPart χ (unifAt v) = χ.val v := rfl
 
 /- English proof (translation)
-Establish `hu : IsUnitAt v (coord v y * (atFin v (unif v) ^ n)⁻¹)`. Establish `h2` using `unif_spec v`. Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, coe_coord, hn, h2, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3` using `h _ hu`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one, map_zpow]`. Rewrite using `[hy.finPart_eq, h3]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_eq_val_zpow {χ : HChar E} {v : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt v) {y : (Af E)ˣ} (hy : SuppAt v y)
     {n : ℤ} (hn : Valued.v ((y : Af E) v) = WithZero.exp (-n)) : finPart χ y = χ.val v ^ n := by
@@ -233,11 +233,9 @@ Both sides reduce to the same expression.
 @[simp] theorem finPart_inv (χ : HChar E) (y : (Af E)ˣ) : finPart χ⁻¹ y = (finPart χ y)⁻¹ := rfl
 
 /- English proof (translation)
-Use `symm`. Unfold `Formalism.L2.Host.infDiag`. Rewrite using `[MonoidHom.finset_prod_apply]`. Establish `: ∀ w, ((infIdele E w).comp (atInf w)) k = Units.map (MonoidHom.inl (InfiniteAdeleRing E) (Af E)) (Units.map (by classical exact MonoidHom.mulSingle (fun w : InfinitePlace E => w.Completion) w) (atInf w k))` using `fun w => rfl`. Simplify using `only [this]`.
+Use symmetry to reverse the relation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ (map_prod (Units.map (MonoidHom.inl (InfiniteAdeleRing E) (Af E))) _ _)` and prove the remaining obligations. Use `show Units.map (MonoidHom.inl (InfiniteAdeleRing E) (Af E)) _ = _`. Use `congr 1`. Use extensionality with `: 1`. Rewrite using `[Units.coe_prod]`.
-
-Conclude with `(Finset.univ_prod_mulSingle (fun w : InfinitePlace E => algebraMap E w.Completion (k : E))).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infDiag_eq (k : Eˣ) : infDiag k =
     Units.map (MonoidHom.inl (InfiniteAdeleRing E) (Af E))
@@ -259,11 +257,9 @@ theorem infDiag_eq (k : Eˣ) : infDiag k =
   exact (Finset.univ_prod_mulSingle (fun w : InfinitePlace E => algebraMap E w.Completion (k : E))).symm
 
 /- English proof (translation)
-Rewrite using `[← χ.2.2 k]`. Use `show χ.1 _ * χ.1 (infDiag k) = _`. Rewrite using `[← map_mul, infDiag_eq]`. Use `congr 1`. Use extensionality with `: 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Prod.ext` to reduce the goal to its premises. Use `show 1 * _ = _`. Rewrite using `[one_mul]`. Both sides reduce to the same expression. Use `show _ * 1 = _`.
-
-Rewrite using `[mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finPart_mul_inf (χ : HChar E) (k : Eˣ) :
     finPart χ (Units.map (algebraMap E (Af E)).toMonoidHom k) * χ.inf k = 1 := by
@@ -279,15 +275,15 @@ theorem finPart_mul_inf (χ : HChar E) (k : Eˣ) :
     rw [mul_one]; rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem hasInf_iff_two_mul (χ : HChar E) (φ : I → E →+* ℂ) (m : I → ℤ) :
     HasInf χ φ m ↔ χ.HasInf φ (fun i => 2 * m i) := Iff.rfl
 
 /- English proof (translation)
-Use `forall_congr' fun k => ?_` and prove the remaining obligations. Establish `: ∀ i, (φ i (k : E) / starRingEnd ℂ (φ i (k : E))) ^ m i = (φ i (k : E) / ((‖φ i (k : E)‖ : ℝ) : ℂ)) ^ (2 * m i)` using `fun i => by`. Establish `h1 : φ i k ≠ 0` using `by simp`. Rewrite using `[zpow_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[zpow_two, div_mul_div_comm, ← sq ((‖φ i (k : E)‖ : ℝ) : ℂ), ← Complex.mul_conj', mul_div_mul_left _ _ h1]`. Simplify using `only [this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hasInfRatio_iff (χ : HChar E) (φ : I → E →+* ℂ) (m : I → ℤ) :
     HasInfRatio χ φ m ↔
@@ -302,11 +298,11 @@ theorem hasInfRatio_iff (χ : HChar E) (φ : I → E →+* ℂ) (m : I → ℤ) 
   simp only [this]
 
 /- English proof (translation)
-Set `k' : (maximalRealSubfield E)ˣ` to `Units.mk0 ⟨k, hk⟩ (fun h0 => k.ne_zero (congrArg Subtype.val h0))`. Establish `hkk : k = upF (maximalRealSubfield E) k'` using `Units.ext rfl`. Establish `h1 : χ.inf k = ∏ w : InfinitePlace E, χ.locInf w (atInf w k)` using `by show χ.1 (infDiag k) = _`. Unfold `Formalism.L2.Host.infDiag`. Rewrite using `[MonoidHom.finset_prod_apply, map_prod]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, ← Finset.prod_fiberwise Finset.univ (fun w : InfinitePlace E => w.comap (algebraMap (maximalRealSubfield E) E))]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `h2` using `h.2 w k'`. Unfold `Formalism.L2.Host.HChar.resInf at h2`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h2` using `[MonoidHom.finset_prod_apply]`. Rewrite using `[hkk]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Unfold `Formalism.L2.Host.aboveInf`. Reduce the equality to equality of the corresponding arguments.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
 Both sides reduce to the same expression.
 -/
@@ -331,27 +327,27 @@ theorem TrivOnF.inf_eq_one {χ : HChar E} (h : TrivOnF χ) (k : Eˣ) (hk : (k : 
   · rfl
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((h n').1 ((h' n').2 le_rfl)) ((h' n).1 ((h n).2 le_rfl))`.
+A detailed English derivation is pending.
 -/
 theorem ExpAt.unique {χ : HChar E} {v : HeightOneSpectrum (𝓞 E)} {n n' : ℕ} (h : ExpAt χ v n) (h' : ExpAt χ v n') : n = n' :=
   le_antisymm ((h n').1 ((h' n').2 le_rfl)) ((h' n).1 ((h n).2 le_rfl))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => (χ.unrAt_iff v).2 ((h 0).2 le_rfl), fun h m => ⟨fun _ => Nat.zero_le m, fun _ x hx _ => h x hx⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem expAt_zero_iff (χ : HChar E) (v : HeightOneSpectrum (𝓞 E)) : ExpAt χ v 0 ↔ χ.UnrAt v :=
   ⟨fun h => (χ.unrAt_iff v).2 ((h 0).2 le_rfl), fun h m => ⟨fun _ => Nat.zero_le m, fun _ x hx _ => h x hx⟩⟩
 
 /- English proof (translation)
-Introduce `hu` and use `hn (h.unique ((expAt_zero_iff χ v).2 hu))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExpAt.not_unrAt {χ : HChar E} {v : HeightOneSpectrum (𝓞 E)} {n : ℕ} (h : ExpAt χ v n) (hn : n ≠ 0) : ¬ χ.UnrAt v :=
   fun hu => hn (h.unique ((expAt_zero_iff χ v).2 hu))
 
 /- English proof (translation)
-Establish `key : ∀ (v : HeightOneSpectrum (𝓞 E)) (n : ℕ), ¬ v.asIdeal ^ (n + 1) ∣ 𝔣 ↔ multiplicity v.asIdeal 𝔣 ≤ n` using `fun v n => by`. Establish `hf : FiniteMultiplicity v.asIdeal 𝔣` using `FiniteMultiplicity.of_prime_left v.prime h𝔣`. Rewrite using `[hf.pow_dvd_iff_le_multiplicity]`. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h v n`. Rewrite using `[h.2 v n, key]`. Introduce `h`. Conclude with `⟨h𝔣, fun v n => by rw [key]; exact h v n⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isCond_iff_expAt (χ : HChar E) {𝔣 : Ideal (𝓞 E)} (h𝔣 : 𝔣 ≠ ⊥) :
     χ.IsCond 𝔣 ↔ ∀ v, ExpAt χ v (multiplicity v.asIdeal 𝔣) := by
@@ -367,9 +363,9 @@ theorem isCond_iff_expAt (χ : HChar E) {𝔣 : Ideal (𝓞 E)} (h𝔣 : 𝔣 �
     exact ⟨h𝔣, fun v n => by rw [key]; exact h v n⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.EntireFunctionHalfPlane.entire_eq_of_eqOn_halfPlane`. Consider the case `exact _root_.GlobalTheory.EntireFunctionHalfPlane.entire_eq_of_eqOn_halfPlane`. Consider the case `(apply _root_.GlobalTheory.EntireFunctionHalfPlane.entire_eq_of_eqOn_halfPlane <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.EntireFunctionHalfPlane.entire_eq_of_eqOn_halfPlane <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.EntireFunctionHalfPlane.entire_eq_of_eqOn_halfPlane <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EntireFunctionHalfPlane.entire_eq_of_eqOn_halfPlane ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem entire_eq_of_halfPlane {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Differentiable ℂ g) (a : ℝ)
     (h : ∀ s : ℂ, a < s.re → f s = g s) : f = g := by
@@ -382,13 +378,13 @@ theorem entire_eq_of_halfPlane {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (
   | (intros; exact _root_.GlobalTheory.EntireFunctionHalfPlane.entire_eq_of_eqOn_halfPlane ..)
 
 /- English proof (translation)
-The claim follows from `entire_eq_of_halfPlane hf.1 hg.1 1 fun s hs => (hf.2 s hs).unique (hg.2 s hs)`.
+A detailed English derivation is pending.
 -/
 theorem IsHeckeL.unique {χ : HChar E} {f g : ℂ → ℂ} (hf : IsHeckeL χ f) (hg : IsHeckeL χ g) : f = g :=
   entire_eq_of_halfPlane hf.1 hg.1 1 fun s hs => (hf.2 s hs).unique (hg.2 s hs)
 
 /- English proof (translation)
-The claim follows from `entire_eq_of_halfPlane hf.1 hg.1 (1 - (k : ℝ) / 2) fun s hs => (hf.2 s (by linarith)).unique (hg.2 s (by linarith))`.
+A detailed English derivation is pending.
 -/
 theorem IsLatSum.unique {φ : I → E →+* ℂ} {k : ℕ} {κ : I → ℕ} {L : Set E} {f g : ℂ → ℂ}
     (hf : IsLatSum φ k κ L f) (hg : IsLatSum φ k κ L g) : f = g :=
@@ -396,7 +392,7 @@ theorem IsLatSum.unique {φ : I → E →+* ℂ} {k : ℕ} {κ : I → ℕ} {L :
     (hf.2 s (by linarith)).unique (hg.2 s (by linarith))
 
 /- English proof (translation)
-Take `⟨_, S, hS, rfl⟩` from `h`. Take `⟨_, S', hS', rfl⟩` from `h'`. Establish `: S = S'` using `funext fun q => (hS q).unique (hS' q)`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsToricSum.unique {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} {c : Ideal (OF E)} {χ : HChar E}
     {T T' : ℂ} (h : IsToricSum φ s κ c χ T) (h' : IsToricSum φ s κ c χ T') : T = T' := by
@@ -406,15 +402,15 @@ theorem IsToricSum.unique {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} {c
   rw [this]
 
 /- English proof (translation)
-Establish `hc : ∀ a : OF E, algebraMap (OF E) E a = algebraMap (𝓞 E) E (algebraMap (OF E) (𝓞 E) a)` using `fun a => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Break down `hx with ⟨a, rfl⟩ | ⟨b, hb, rfl⟩` into its components or cases. Conclude with `⟨a, 0, zero_mem _, by simp⟩`. Conclude with `⟨0, b, hb, by simp⟩`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp⟩`. Consider the case `one => exact ⟨1, 0, zero_mem _, by simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, b, hb, rfl⟩` from `hx`. Take `⟨a', b', hb', rfl⟩` from `hy`. Conclude with `⟨a + a', b + b', add_mem hb hb', by simp only [map_add]; ring⟩`. Consider the case `neg x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨a, b, hb, rfl⟩` from `hx`. Conclude with `⟨-a, -b, neg_mem hb, by simp only [map_neg]; ring⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, b, hb, rfl⟩` from `hx`. Take `⟨a', b', hb', rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a * a', algebraMap (OF E) (𝓞 E) a * b' + (algebraMap (OF E) (𝓞 E) a' + b') * b, add_mem (Ideal.mul_mem_left _ _ hb') (Ideal.mul_mem_left _ _ hb), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, hc]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨a, b, hb, rfl⟩`. Conclude with `add_mem (Subring.subset_closure (Or.inl ⟨a, rfl⟩)) (Subring.subset_closure (Or.inr ⟨b, hb, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_orderC {c : Ideal (OF E)} {x : E} : x ∈ orderC c ↔
     ∃ (a : OF E) (b : 𝓞 E), b ∈ Ideal.map (algebraMap (OF E) (𝓞 E)) c ∧
@@ -446,38 +442,38 @@ theorem mem_orderC {c : Ideal (OF E)} {x : E} : x ∈ orderC c ↔
     exact add_mem (Subring.subset_closure (Or.inl ⟨a, rfl⟩)) (Subring.subset_closure (Or.inr ⟨b, hb, rfl⟩))
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inl ⟨a, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_orderC (c : Ideal (OF E)) (a : OF E) : algebraMap (OF E) E a ∈ orderC c :=
   Subring.subset_closure (Or.inl ⟨a, rfl⟩)
 
 /- English proof (translation)
-Introduce `_ hx` and use `by obtain ⟨a, b, hb, rfl⟩ := mem_orderC.1 hx exact mem_orderC.2 ⟨a, b, Ideal.map_mono h hb, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem orderC_mono {c c' : Ideal (OF E)} (h : c' ≤ c) : orderC c' ≤ orderC c := fun _ hx => by
   obtain ⟨a, b, hb, rfl⟩ := mem_orderC.1 hx
   exact mem_orderC.2 ⟨a, b, Ideal.map_mono h hb, rfl⟩
 
 /- English proof (translation)
-The claim follows from `closure_mono (Set.image_mono (orderC_mono h))`.
+A detailed English derivation is pending.
 -/
 theorem hatO_mono {c c' : Ideal (OF E)} (h : c' ≤ c) : hatO c' ≤ hatO c :=
   closure_mono (Set.image_mono (orderC_mono h))
 
 /- English proof (translation)
-The claim follows from `Submonoid.units_mono (fun _ hx => hatO_mono h hx)`.
+A detailed English derivation is pending.
 -/
 theorem hatOUnits_mono {c c' : Ideal (OF E)} (h : c' ≤ c) : hatOUnits c' ≤ hatOUnits c :=
   Submonoid.units_mono (fun _ hx => hatO_mono h hx)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_hatOUnits {c : Ideal (OF E)} {u : (Af E)ˣ} :
     u ∈ hatOUnits c ↔ (u : Af E) ∈ hatO c ∧ (↑u⁻¹ : Af E) ∈ hatO c := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Subring.le_topologicalClosure _ ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_hatO {c : Ideal (OF E)} {x : E} (hx : x ∈ orderC c) : algebraMap E (Af E) x ∈ hatO c :=
   Subring.le_topologicalClosure _ ⟨x, hx, rfl⟩
@@ -492,20 +488,20 @@ Both sides reduce to the same expression.
     picMap h (QuotientGroup.mk y) = QuotientGroup.mk y := rfl
 
 /- English proof (translation)
-Introduce `q` and use `by obtain ⟨y, rfl⟩ := QuotientGroup.mk_surjective q exact ⟨QuotientGroup.mk y, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem picMap_surjective {c c' : Ideal (OF E)} (h : c' ≤ c) : Function.Surjective (picMap h) := fun q => by
   obtain ⟨y, rfl⟩ := QuotientGroup.mk_surjective q
   exact ⟨QuotientGroup.mk y, rfl⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lattice {c : Ideal (OF E)} {y : (Af E)ˣ} {x : E} :
     x ∈ lattice c y ↔ algebraMap E (Af E) x * (↑y⁻¹ : Af E) ∈ hatO c := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_lattice, map_mul, mul_assoc]`. Conclude with `mul_mem (algebraMap_mem_hatO ha) hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_lattice {c : Ideal (OF E)} {y : (Af E)ˣ} {a x : E} (ha : a ∈ orderC c) (hx : x ∈ lattice c y) :
     a * x ∈ lattice c y := by
@@ -526,7 +522,7 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_latticeSub (c : Ideal (OF E)) (y : (Af E)ˣ) : (latticeSub c y : Set E) = lattice c y := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_lattice, mem_lattice, mul_inv, Units.val_mul, ← mul_assoc]`. Use `⟨fun h => ?_, fun h => mul_mem h hu.2⟩` and prove the remaining obligations. Use `mul_mem h (mem_hatOUnits.1 hu).1` as an intermediate fact. Rewrite `this` using `[mul_assoc, Units.inv_mul, mul_one]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lattice_mul_unit {c : Ideal (OF E)} (y : (Af E)ˣ) {u : (Af E)ˣ} (hu : u ∈ hatOUnits c) :
     lattice c (y * u) = lattice c y := by
@@ -537,9 +533,9 @@ theorem lattice_mul_unit {c : Ideal (OF E)} (y : (Af E)ˣ) {u : (Af E)ˣ} (hu : 
   rwa [mul_assoc, Units.inv_mul, mul_one] at this
 
 /- English proof (translation)
-Rewrite using `[mem_lattice, mem_lattice]`. Establish `: algebraMap E (Af E) ((a : E) * x) * (↑(Units.map (algebraMap E (Af E)).toMonoidHom a * y)⁻¹ : Af E) = algebraMap E (Af E) x * (↑y⁻¹ : Af E)`. Rewrite using `[mul_inv, ← map_inv, Units.val_mul, map_mul]`. Establish `h1 : algebraMap E (Af E) (a : E) * (↑(Units.map (algebraMap E (Af E)).toMonoidHom a⁻¹) : Af E) = 1` using `by show algebraMap E (Af E) (a : E) * algebraMap E (Af E) ((a⁻¹ : Eˣ) : E) = 1`. Rewrite using `[← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take the linear combination `(algebraMap E (Af E) x * (↑y⁻¹ : Af E)) * h1`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_lattice_princ (c : Ideal (OF E)) (y : (Af E)ˣ) (a : Eˣ) (x : E) :
     (a : E) * x ∈ lattice c (Units.map (algebraMap E (Af E)).toMonoidHom a * y) ↔ x ∈ lattice c y := by
@@ -554,7 +550,7 @@ theorem mul_mem_lattice_princ (c : Ideal (OF E)) (y : (Af E)ˣ) (a : Eˣ) (x : E
   rw [this]
 
 /- English proof (translation)
-Take `⟨x, hx, h0, hq⟩` from `q.2`. Take `⟨u, hu⟩ : (unitRel (E` from `E)).r x q.1.out := Quotient.exact (hq.trans (Quotient.out_eq _).symm)`. Rewrite using `[hu]`. Use `⟨mul_mem_lattice (algebraMap_mem_orderC c _) hx, mul_ne_zero ?_ h0⟩` and prove the remaining obligations. Conclude with `(u.isUnit.map (algebraMap (OF E) E)).ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem out_mem_lattice {c : Ideal (OF E)} {y : (Af E)ˣ} (q : modUnits (lattice c y)) :
     q.1.out ∈ lattice c y ∧ q.1.out ≠ 0 := by
@@ -565,7 +561,7 @@ theorem out_mem_lattice {c : Ideal (OF E)} {y : (Af E)ˣ} (q : modUnits (lattice
   exact (u.isUnit.map (algebraMap (OF E) E)).ne_zero
 
 /- English proof (translation)
-Unfold `term`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (norm_nonneg _) (norm_nonneg _)]`. Simplify using `only [map_mul, mul_inv, mul_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -579,9 +575,9 @@ theorem term_mul (φ : I → E →+* ℂ) (k : ℕ) (κ : I → ℕ) (σ : ℂ) 
   ring
 
 /- English proof (translation)
-Rewrite using `[(hasInfRatio_iff χ φ _).1 h a]`. Unfold `term`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `h1 : φ i a ≠ 0` using `by simp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : starRingEnd ℂ (φ i a) ≠ 0` using `by simp`. Rewrite using `[← Nat.cast_add]`. Simplify using `only [mul_zero, Complex.cpow_zero, mul_one, zpow_natCast, inv_pow, div_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_mul_inf {χ : HChar E} {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ}
     (h : HasInfRatio χ φ fun i => (κ i : ℤ) + s) (a : Eˣ) :
@@ -598,9 +594,9 @@ theorem term_mul_inf {χ : HChar E} {φ : I → E →+* ℂ} {s : ℕ} {κ : I �
   ring
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `unifAt_spec v`. Unfold `modF`. Rewrite using `[finprod_eq_single _ v]`. Rewrite using `[h2, WithZero.log_exp]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `w hw`. Rewrite using `[h1 w hw]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem modF_unifAt (v : HeightOneSpectrum (𝓞 E)) : modF (unifAt v) = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)⁻¹ := by
   obtain ⟨h1, h2⟩ := unifAt_spec v
@@ -618,9 +614,9 @@ theorem cmValueConst_eq (E : Type) [Field E] [NumberField E] (d k : ℕ) (κ : I
       (2 * Real.pi / Real.sqrt d) ^ (∑ i, κ i) := rfl
 
 /- English proof (translation)
-Rewrite using `[cmValueConst_eq]`. Establish `h1 : (0 : ℝ) < |(discr (maximalRealSubfield E) : ℝ)|` using `abs_pos.2 (by exact_mod_cast discr_ne_zero _)`. Establish `h2 : (0 : ℝ) < k` using `by exact_mod_cast hk`. Establish `h3 : (0 : ℝ) < d` using `by exact_mod_cast hd`. Use `mul_pos (mul_pos (Real.rpow_pos_of_pos h1 _) (Finset.prod_pos fun i _ => Real.Gamma_pos_of_pos (by positivity))) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem cmValueConst_pos (E : Type) [Field E] [NumberField E] {d k : ℕ} (hd : 0 < d) (hk : 1 ≤ k) (κ : I → ℕ) : 0 < C0 E d k κ := by
   rw [cmValueConst_eq]
@@ -632,7 +628,7 @@ theorem cmValueConst_pos (E : Type) [Field E] [NumberField E] {d k : ℕ} (hd : 
   positivity
 
 /- English proof (translation)
-Rewrite using `[latDisc, ← latticeCurve_Δ]`. Conclude with `latticeCurve_Δ_ne_zero Λ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latDisc_ne_zero (Λ : PeriodPair) : latDisc Λ ≠ 0 := by
   rw [latDisc, ← latticeCurve_Δ]
@@ -645,7 +641,7 @@ theorem beta_eq (E : Type) [Field E] [NumberField E] (d s : ℕ) (κ : I → ℕ
     beta E d s κ Λ T = ((C0 E d (2 * s) κ : ℂ) * T) ^ 12 / latDisc Λ ^ (2 * s * Fintype.card I + 2 * ∑ i, κ i) := rfl
 
 /- English proof (translation)
-Establish `h : (1 : HChar E).UnrAt v` using `fun _ _ => rfl`. Establish `h' : (1 : HChar E).val v = 1` using `rfl`. Simplify using `[eulerFactor, h, h']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (s : ℂ) (v : HeightOneSpectrum (𝓞 E)) :
     eulerFactor (1 : HChar E) s v = (1 - ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-s))⁻¹ := by
@@ -654,9 +650,9 @@ example (s : ℂ) (v : HeightOneSpectrum (𝓞 E)) :
   simp [eulerFactor, h, h']
 
 /- English proof (translation)
-Rewrite using `[mem_orderC]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, -, rfl⟩`. Conclude with `⟨algebraMap (OF E) (𝓞 E) a + b, by rw [map_add]; rfl⟩`. Introduce and unpack `⟨b, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨0, b, by simp [Ideal.map_top], by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (x : E) : x ∈ orderC (⊤ : Ideal (OF E)) ↔ ∃ b : 𝓞 E, x = algebraMap (𝓞 E) E b := by
   rw [mem_orderC]
@@ -667,7 +663,7 @@ example (x : E) : x ∈ orderC (⊤ : Ideal (OF E)) ↔ ∃ b : 𝓞 E, x = alge
     exact ⟨0, b, by simp [Ideal.map_top], by simp⟩
 
 /- English proof (translation)
-Simplify using `[term, h, pow_succ]`.
+Simplify using the standard rewrite rules.
 -/
 example (φ : E →+* ℂ) (x : E) (h : φ x = Complex.I) :
     term (fun _ : Unit => φ) 2 (fun _ => 1) 0 x = 1 ∧ term (fun _ : Unit => φ) 2 (fun _ => 0) 0 x = -1 := by

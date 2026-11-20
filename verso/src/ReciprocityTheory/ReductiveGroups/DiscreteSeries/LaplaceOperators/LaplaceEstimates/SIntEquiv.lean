@@ -39,17 +39,15 @@ def biEquiv (a b : Mat k r) (ha : IsUnit a.det) (hb : IsUnit b.det) : Mt k r ≃
     exact hc.measurable
 
 /- English proof (translation)
-Take `⟨hz, hT, -, hHC, hW, hN⟩` from `hB`. Establish `hπ : Formalism.MainNotions.S.IsURepOn (UWset k r z) π` using `hcTypeW_uRep k r z u Vp π hz hT hHC`. Establish `hMP` using `Mult1.S0.A.shift_measurePreserving Mult1.haarUniqueSF' Formalism.FourierDecayAlt.P.weyl_subgroup_closed Formalism.FourierDecayAlt.P.weyl_haar_exists Formalism.FourierDecayAlt.P.unipotent_radical_closed Formalism.FourierDecayAlt.P.unipotent_haar_exists Formalism.FourierDecayAlt.P. …`. Establish `hd` using `TransportGeo.uh_det hh₀.1`. Establish `hdm` using `TransportGeo.uh_det hm₀.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e` to `MeasurableEquiv.prodCongr (biEquiv (1 : Mat k r) h₀ (by simp) hd) (biEquiv h₀⁻¹ (h₀ * m₀) (TransportGeo.uh_det (TransportGeo.uh_inv hh₀.1)) (TransportGeo.uh_det (TransportGeo.uh_mul hh₀.1 hm₀.1)))`. Establish `he : (fun p : Mt k r × Mt k r => Prod.mk (α` using `Mt k r) (β := Mt k r) (Matrix.of p.1 * h₀ : Mat k r) (h₀⁻¹ * Matrix.of p.2 * h₀ * m₀ : Mat k r)) = e := by`. Use function extensionality and compare the values at `p`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (Matrix.of p.1 * h₀ : Mat k r) = 1 * Matrix.of p.1 * h₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_mul]`. Conclude with `Matrix.mul_assoc _ h₀ m₀`. Establish `: SigmaFinite μW` using `hW.1`. Establish `: SigmaFinite μN` using `hN.1`. Establish `hWae : ∀ᵐ y ∂μW, Matrix.of y ∈ UWset k r z` using `by rw [ae_iff]; simpa using hW.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNae : ∀ᵐ y ∂μN, Matrix.of y ∈ Nset k r` using `by rw [ae_iff]; simpa using hN.2.2.1`. Establish `hae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`. Use `set F : Mt k r × Mt k r → Vp := fun p => f (Matrix.of p.1 * Matrix.of p.2 * g) • chiInv (Formalism.MainNotions.S.psiGen k r z c) π (Matrix.of p.1) (Matrix.of p.2) ξ with hF`. Set `L : Vp →ₗᵢ[ℂ] Vp` to `⟨(π h₀ : Vp →ₗ[ℂ] Vp), hπ.2.1 h₀ hh₀⟩`. Establish `h1 : sInt μW μN (Formalism.MainNotions.S.psiGen k r z c) π f ξ (h₀ * m₀ * g) = ∫ p, Formalism.MainNotions.S.psiGen k r z c m₀ • L (F (e p)) ∂(μW.prod μN)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `sInt`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Rewrite using `[← he]`. Conclude with `Mult1.S0.A.integrand_shift Formalism.FourierDecayAlt.P.weyl_subgroup_closed Formalism.FourierDecayAlt.P.unipotent_radical_closed Formalism.QuantumDeterminants.unitary_weyl_normal_holds hz c hπ f ξ hh₀ hm₀ hp.1 hp.2`.
-
-Rewrite `hMP` using `[he]`. Rewrite using `[h1, integral_smul, L.integral_comp_comm (fun p => F (e p)), hMP.integral_comp' F]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sInt_equiv {u : Fin k → ℝ} {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} {Vp : Type}
     [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp] {π : Mat k r → (Vp →L[ℂ] Vp)}

@@ -7,31 +7,29 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe17.norm_sum_lt s f hC h`.
+A detailed English derivation is pending.
 -/
 private theorem norm_sum_lt' {F ι : Type} [NormedField F] [IsUltrametricDist F] (s : Finset ι) (f : ι → F) {C : ℝ}
     (hC : 0 < C) (h : ∀ i ∈ s, ‖f i‖ < C) : ‖∑ i ∈ s, f i‖ < C :=
   _root_.UpperTheory.Reformulated.B.Qe17.norm_sum_lt s f hC h
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi6.det_ne_zero t ht E hE`.
+A detailed English derivation is pending.
 -/
 private theorem det_ne_zero' {F : Type} [NormedField F] [IsUltrametricDist F] {m : ℕ} (t : F) (ht : ‖t‖ = 1)
     (E : Matrix (Fin m) (Fin m) F) (hE : ∀ a b, ‖E a b‖ < 1) : (t • (1 : Matrix (Fin m) (Fin m) F) + E).det ≠ 0 :=
   _root_.UpperTheory.Reformulated.B.Qi6.det_ne_zero t ht E hE
 
 /- English proof (translation)
-Establish `hi₀ : ∀ g a b, ‖(ρ₀ g : Matrix (Fin m) (Fin m) F) a b‖ ≤ 1` using `fun g a b => by`. Establish `e : (ρ₀ g : Matrix (Fin m) (Fin m) F) a b = (ρ g : Matrix (Fin m) (Fin m) F) a b + -((ρ g : Matrix (Fin m) (Fin m) F) a b - (ρ₀ g : Matrix (Fin m) (Fin m) F) a b)` using `by ring`. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hi g a b) (by rw [norm_neg]; exact (hc g a b).le))`. Use `set M : Matrix (Fin m) (Fin m) F := ∑ g, (ρ₀ g⁻¹ : Matrix (Fin m) (Fin m) F) * ρ g with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : M = (Fintype.card Γ : F) • (1 : Matrix (Fin m) (Fin m) F) + ∑ g, (ρ₀ g⁻¹ : Matrix (Fin m) (Fin m) F) * ((ρ g : Matrix (Fin m) (Fin m) F) - ρ₀ g)`. Establish `e : ∀ g, (ρ₀ g⁻¹ : Matrix (Fin m) (Fin m) F) * ρ g = 1 + (ρ₀ g⁻¹ : Matrix (Fin m) (Fin m) F) * ((ρ g : Matrix (Fin m) (Fin m) F) - ρ₀ g)` using `fun g => by`. Rewrite using `[Matrix.mul_sub, ← Units.val_mul (ρ₀ g⁻¹) (ρ₀ g), ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[hM, Finset.sum_congr rfl fun g _ => e g, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : M.det ≠ 0`. Rewrite using `[hsplit]`. Use `det_ne_zero' _ hΓ _ fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sum_apply]`. Use `norm_sum_lt' _ _ one_pos fun g _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply]`. Use `norm_sum_lt' _ _ one_pos fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Matrix.sub_apply]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hi₀ _ _ _) (norm_nonneg _) (hc g k b)`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero M hdet, fun h => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show M * _ = _ * M`. Rewrite using `[hM, Finset.sum_mul, Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight h) _ _ fun g => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight]`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul (ρ₀ h), ← map_mul, map_mul ρ, Units.val_mul, ← Matrix.mul_assoc]`.
-
-Use `congr 4`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem conj_of_close {F Γ : Type} [NormedField F] [IsUltrametricDist F] [Group Γ] [Fintype Γ] {m : ℕ}
     (hΓ : ‖(Fintype.card Γ : F)‖ = 1) (ρ ρ₀ : Γ →* GL (Fin m) F)
@@ -71,25 +69,23 @@ private theorem conj_of_close {F Γ : Type} [NormedField F] [IsUltrametricDist F
   group
 
 /- English proof (translation)
-Introduce `Ω _ _ _ K _ _ _ l hl c N _ e ψ D U g₁ _ r h A hA`. Take `⟨-, -, -, -, -, hk0, -, -, -, hK, -⟩` from `dat_facts D`. Set `H : Subgroup (G ℚ Ω)` to `Ine (F := ℚ) A ⊓ D.η.ker`. Set `i : H →* D.η.ker` to `Subgroup.inclusion inf_le_right`. Set `χ : H →* c.Oˣ` to `(Chr.dirG ℚ Ω ψ).comp H.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ρ : H →* GL (Fin 3) (PadicAlgCl l)` to `(glPart D.η r h.mult).comp i`. Set `ρ₀ : H →* GL (Fin 3) (PadicAlgCl l)` to `(glPart D.η (r0 D.η D.ΨQ) (hasSimilitudeFactor_diagonalRepr _ _)).comp i`. Establish `hkill : ∀ g : H, g ∈ χ.ker → (g : G ℚ Ω) ∈ D.Kill` using `fun g hg => (hK g).2 ⟨A, hA, g.2.1, g.2.2, hg⟩`. Establish `hρ : χ.ker ≤ ρ.ker` using `fun g hg => by show (r g).left = 1`. Rewrite using `[h.kill g (hkill g hg)]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hρ₀ : χ.ker ≤ ρ₀.ker` using `fun g hg => by show tor _ (D.ΨQ g) = 1`. Establish `h1 : tor _ (D.Ψ g) = 1` using `congrArg SemidirectProduct.left (hk0 g (hkill g hg))`. Establish `h2 : D.Ψ g = 1`. Establish `: (tor _ (D.Ψ g) : Matrix (Fin 3) (Fin 3) c.O) 0 0 = 1` using `by rw [h1]; simp`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[tor_val]`. Apply `Units.ext` to reduce the goal to its premises. Simplify `this` using `[wt1]`. Establish `h3 : D.ΨQ g = 1`. Unfold `Dat.ΨQ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[MonoidHom.comp_apply, h2, map_one]`. Rewrite using `[h3, map_one]`. Establish `hfin : Finite χ.range`. Establish `: χ.range ≤ ψ.toUnitHom.range`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, rfl⟩`. Establish `h2 : Finite ψ.toUnitHom.range` using `Finite.of_surjective _ ψ.toUnitHom.rangeRestrict_surjective`. Conclude with `Finite.of_injective _ (Subgroup.inclusion_injective this)`. Establish `hfinQ : Finite (H ⧸ χ.ker)` using `Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange χ).symm.toEquiv`. Use `letI : Fintype (H ⧸ χ.ker) := Fintype.ofFinite _`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hpow : ∀ x : H ⧸ χ.ker, x ^ orderOf ψ = 1` using `fun x => by`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff, MonoidHom.mem_ker, map_pow]`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((ψ.toUnitHom (Chr.cls ℚ Ω N g) ^ orderOf ψ : c.Oˣ) : c.O) = 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply_coe, pow_orderOf_eq_one, MulChar.one_apply_coe]`. Establish `hnd : ¬ l ∣ Fintype.card (H ⧸ χ.ker)` using `fun hd => by`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card l hd`. Conclude with `D.gd.ord (hx.symm.dvd.trans (orderOf_dvd_of_pow_eq_one (hpow x)))`. Establish `hnorm : ‖(Fintype.card (H ⧸ χ.ker) : PadicAlgCl l)‖ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap']`. Conclude with `Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd hl.out).2 hnd)`. Take `⟨M, hM⟩` from `conj_of_close hnorm (QuotientGroup.lift _ ρ hρ) (QuotientGroup.lift _ ρ₀ hρ₀) (fun x a b => by`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Conclude with `h.int g a b)`.
-
-Use the proof step `(fun x a b => by`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Conclude with `h.red g a b)`. Conclude with `⟨M, fun g hg hη => hM (QuotientGroup.mk (⟨g, hg, hη⟩ : H))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.pt_inertia_away :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

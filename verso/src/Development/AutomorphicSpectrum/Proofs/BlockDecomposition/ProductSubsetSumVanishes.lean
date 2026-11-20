@@ -7,9 +7,9 @@ noncomputable def subsetPoly {R : Type*} [CommRing R] (r : ℕ) (M : Multiset R)
   ((M.powersetCard r).map fun S => X - C S.sum).prod
 
 /- English proof (translation)
-Unfold `subsetPoly`. Rewrite using `[Polynomial.map_multiset_prod, Multiset.powersetCard_map, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `S _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : f S.sum = (S.map f).sum` using `map_multiset_sum f S`. Simplify using `only [Function.comp_apply, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem subsetPoly_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (r : ℕ)
     (M : Multiset R) : (subsetPoly r M).map f = subsetPoly r (M.map f) := by
@@ -22,7 +22,7 @@ theorem subsetPoly_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (
   simp only [Function.comp_apply, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, h]
 
 /- English proof (translation)
-Unfold `subsetPoly`. Rewrite using `[Polynomial.eval_multiset_prod, Multiset.map_map]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_subsetPoly {R : Type*} [CommRing R] (r : ℕ) (M : Multiset R) (a : R) :
     (subsetPoly r M).eval a = ((M.powersetCard r).map fun S => a - S.sum).prod := by
@@ -35,7 +35,7 @@ noncomputable def evalCoef {R : Type*} [CommRing R] (n : ℕ) (P : R[X]) :
   MvPolynomial.eval₂Hom (Int.castRingHom R) fun j => P.coeff (n - (j + 1))
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `k`. Simplify using `[evalCoef]`. Introduce `j`. Simplify using `[evalCoef, coeff_map]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem evalCoef_comp {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (n : ℕ) (P : R[X]) :
     f.comp (evalCoef n P) = evalCoef n (P.map f) := by
@@ -44,7 +44,7 @@ theorem evalCoef_comp {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (n
   · intro j; simp [evalCoef, coeff_map]
 
 /- English proof (translation)
-Take `⟨l, rfl⟩` from `Quot.exists_rep M`. Establish `h' : l.length = n` using `h`. Substitute `h'` using the available equality. Use `⟨l.get, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map, List.ofFn_get]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -62,23 +62,23 @@ def IsUniv (n r : ℕ) (Φ : (MvPolynomial (Fin n) ℤ)[X]) : Prop :=
     Φ.map (evalCoef n (M.map fun x => X + C x).prod) = subsetPoly r M
 
 /- English proof (translation)
-Set `M₀ : Multiset (MvPolynomial (Fin n) ℤ)` to `Finset.univ.val.map MvPolynomial.X`. Set `f : MvPolynomial (Fin n) ℤ →+* MvPolynomial (Fin n) ℤ` to `(MvPolynomial.aeval fun i : Fin n => MvPolynomial.esymm (Fin n) ℤ (i + 1)).toRingHom`. Establish `hsym : ∀ k, (subsetPoly r M₀).coeff k ∈ Set.range f`. Introduce `k`. Establish `hs : ((subsetPoly r M₀).coeff k).IsSymmetric`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `e`. Establish `hM : M₀.map (MvPolynomial.rename e : _ →ₐ[ℤ] _).toRingHom = M₀`. Establish `: M₀ = (Finset.univ.val.map e).map MvPolynomial.X`. Rewrite using `[Multiset.map_univ_val_equiv]`. Use `conv_rhs => rw [this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [M₀, Multiset.map_map]`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `i _`. Simplify using the standard rewrite rules. Use `subsetPoly_map (MvPolynomial.rename e : _ →ₐ[ℤ] _).toRingHom r M₀` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hM]`. Use `conv_rhs => rw [← this]`. Rewrite using `[coeff_map]`. Both sides reduce to the same expression. Take `⟨q, hq⟩` from `(MvPolynomial.esymmAlgEquiv (Fin n) ℤ (Fintype.card_fin n)).surjective ⟨_, hs⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨q, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hq` as an intermediate fact. Conclude with `(MvPolynomial.esymmAlgHom_apply q).symm.trans this`. Take `⟨Φ, hΦ⟩` from `(mem_lifts _).1 ((lifts_iff_coeff_lifts _).2 hsym)`. Use `⟨Φ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `R _ M hM`. Take `⟨x, rfl⟩` from `exists_fin_enum M n hM`. Set `g : MvPolynomial (Fin n) ℤ →+* R` to `(MvPolynomial.aeval x : _ →ₐ[ℤ] R).toRingHom`. Establish `h1 : M₀.map g = Finset.univ.val.map x`. Simplify using `only [M₀, Multiset.map_map]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `i _`. Simplify using `[g]`. Establish `h2 : g.comp f = evalCoef n ((Finset.univ.val.map x).map fun x => X + C x).prod`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Simplify using `[evalCoef]`. Introduce `j`. Establish `hj` using `j.2`. Establish `hcard : Multiset.card (Finset.univ.val.map x) = n` using `hM`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, evalCoef, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X]`. Rewrite using `[Multiset.prod_X_add_C_coeff _ (by omega), hcard, show n - (n - ((j : ℕ) + 1)) = j + 1 by omega]`. Simplify using `[f, g, MvPolynomial.aeval_esymm_eq_multiset_esymm]`. Rewrite using `[← h2, ← Polynomial.map_map, hΦ, subsetPoly_map, h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUniv (n r : ℕ) : ∃ Φ, IsUniv n r Φ := by
   classical
@@ -130,9 +130,9 @@ theorem exists_isUniv (n r : ℕ) : ∃ Φ, IsUniv n r Φ := by
   rw [← h2, ← Polynomial.map_map, hΦ, subsetPoly_map, h1]
 
 /- English proof (translation)
-Establish `h : (M.map fun x => X + C x).prod = ((M.map Neg.neg).map fun x => X - C x).prod`. Rewrite using `[Multiset.map_map]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `x _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[h, natDegree_multiset_prod_X_sub_C_eq_card, Multiset.card_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem natDegree_prod_X_add_C {R : Type*} [CommRing R] [Nontrivial R] (M : Multiset R) :
     ((M.map fun x => X + C x).prod).natDegree = Multiset.card M := by
@@ -145,9 +145,9 @@ theorem natDegree_prod_X_add_C {R : Type*} [CommRing R] [Nontrivial R] (M : Mult
   rw [h, natDegree_multiset_prod_X_sub_C_eq_card, Multiset.card_map]
 
 /- English proof (translation)
-Use `⟨P.roots.map Neg.neg, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [(IsAlgClosed.splits P).eq_prod_roots_of_monic hP]`. Rewrite using `[Multiset.map_map]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Simplify using `[sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_roots_of_monic {K : Type*} [Field K] [IsAlgClosed K] (P : K[X]) (hP : P.Monic) :
     ∃ α : Multiset K, P = (α.map fun x => X + C x).prod := by
@@ -160,17 +160,17 @@ theorem exists_roots_of_monic {K : Type*} [Field K] [IsAlgClosed K] (P : K[X]) (
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `[Multiset.esymm, Multiset.powersetCard_one, Multiset.map_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem esymm_one_eq_sum {R : Type*} [CommRing R] (M : Multiset R) : M.esymm 1 = M.sum := by
   simp [Multiset.esymm, Multiset.powersetCard_one, Multiset.map_map]
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `exists_roots_of_monic P hP`. Take `⟨β, hβ⟩` from `exists_roots_of_monic Q hQ`. Establish `hαc : Multiset.card α = r` using `by rw [← hd, hα, natDegree_prod_X_add_C]`. Establish `hβc : Multiset.card β = Q.natDegree` using `by rw [hβ, natDegree_prod_X_add_C]`. Use `⟨α + β, by rw [Multiset.card_add, hαc, hβc], ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Multiset.map_add, Multiset.prod_add, ← hα, ← hβ]`. Establish `hc : P.coeff (r - 1) = α.sum`. Rewrite using `[hα, Multiset.prod_X_add_C_coeff _ (by omega), hαc, show r - (r - 1) = 1 by omega, esymm_one_eq_sum]`. Rewrite using `[eval_subsetPoly, hc]`. Apply `Multiset.prod_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Multiset.mem_map]`. Conclude with `⟨α, Multiset.mem_powersetCard.2 ⟨Multiset.le_add_right _ _, hαc⟩, sub_self _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem eval_field {K : Type*} [Field K] [IsAlgClosed K] (r : ℕ) (hr : 0 < r) (P Q : K[X])
     (hP : P.Monic) (hQ : Q.Monic) (hd : P.natDegree = r) :
@@ -191,9 +191,9 @@ theorem eval_field {K : Type*} [Field K] [IsAlgClosed K] (r : ℕ) (hr : 0 < r) 
     exact ⟨α, Multiset.mem_powersetCard.2 ⟨Multiset.le_add_right _ _, hαc⟩, sub_self _⟩
 
 /- English proof (translation)
-Set `K` to `AlgebraicClosure (FractionRing U)`. Set `ι : U →+* K` to `(algebraMap (FractionRing U) K).comp (algebraMap U (FractionRing U))`. Establish `hι : Function.Injective ι` using `(algebraMap (FractionRing U) K).injective.comp (IsFractionRing.injective U (FractionRing U))`. Establish `hdQ : (Q.map ι).natDegree = Q.natDegree` using `hQ.natDegree_map ι`. Take `⟨M, hc, hM, he⟩` from `eval_field r hr (P.map ι) (Q.map ι) (hP.map ι) (hQ.map ι) (by rw [hP.natDegree_map ι, hd])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `hι` to reduce the goal to its premises. Rewrite using `[map_zero, ← eval_map_apply, Polynomial.map_map, evalCoef_comp, Polynomial.map_mul, hM, ← coeff_map, hΦ K M (by rw [hc, hdQ, hn])]`. Conclude with `he`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_domain {U : Type} [CommRing U] [IsDomain U] (r : ℕ) (hr : 0 < r) (P Q : U[X])
     (hP : P.Monic) (hQ : Q.Monic) (hd : P.natDegree = r) {n : ℕ} (hn : n = r + Q.natDegree) {Φ} (hΦ : IsUniv n r Φ) :
@@ -214,13 +214,13 @@ noncomputable def gen {S : Type*} [CommRing S] (d : ℕ) (c : Fin d → S) : Pol
   Polynomial.X ^ d + ∑ i : Fin d, Polynomial.C (c i) * Polynomial.X ^ (i : ℕ)
 
 /- English proof (translation)
-The claim follows from `monic_X_pow_add (degree_sum_fin_lt c)`.
+A detailed English derivation is pending.
 -/
 theorem gen_monic {S : Type*} [CommRing S] (d : ℕ) (c : Fin d → S) : (gen d c).Monic :=
   monic_X_pow_add (degree_sum_fin_lt c)
 
 /- English proof (translation)
-Rewrite using `[gen, natDegree_add_eq_left_of_degree_lt, natDegree_X_pow]`. Rewrite using `[degree_X_pow]`. Conclude with `degree_sum_fin_lt c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_natDegree {S : Type*} [CommRing S] [Nontrivial S] (d : ℕ) (c : Fin d → S) :
     (gen d c).natDegree = d := by
@@ -229,14 +229,14 @@ theorem gen_natDegree {S : Type*} [CommRing S] [Nontrivial S] (d : ℕ) (c : Fin
   exact degree_sum_fin_lt c
 
 /- English proof (translation)
-Simplify using `[gen, Polynomial.map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gen_map {S T : Type*} [CommRing S] [CommRing T] (f : S →+* T) (d : ℕ) (c : Fin d → S) :
     (gen d c).map f = gen d (fun i => f (c i)) := by
   simp [gen, Polynomial.map_sum]
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Use `conv_lhs => rw [hP.as_sum]`. Rewrite using `[gen, Fin.sum_univ_eq_sum_range (fun i => C (P.coeff i) * X ^ i)]`.
+Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_gen {T : Type*} [CommRing T] (P : T[X]) (hP : P.Monic) (d : ℕ) (hd : P.natDegree = d) :
     P = gen d (fun i => P.coeff i) := by
@@ -245,13 +245,11 @@ theorem eq_gen {T : Type*} [CommRing T] (P : T[X]) (hP : P.Monic) (d : ℕ) (hd 
   rw [gen, Fin.sum_univ_eq_sum_range (fun i => C (P.coeff i) * X ^ i)]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `hm : Multiset.card m = r + B.natDegree`. Rewrite using `[← natDegree_prod_X_add_C, ← h, hA.natDegree_mul hB, hd]`. Take `⟨Φ, hΦ⟩` from `exists_isUniv (r + B.natDegree) r`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `U` to `MvPolynomial (Fin r ⊕ Fin B.natDegree) ℤ`. Set `g : U →+* R` to `MvPolynomial.eval₂Hom (Int.castRingHom R) (Sum.elim (fun i => A.coeff i) (fun j => B.coeff j))`. Set `A₀ : U[X]` to `gen r fun i => MvPolynomial.X (Sum.inl i)`. Set `B₀ : U[X]` to `gen B.natDegree fun j => MvPolynomial.X (Sum.inr j)`. Establish `hA₀ : A₀.map g = A` using `(gen_map _ _ _).trans ((congrArg (gen r) (funext fun i => MvPolynomial.eval₂_X _ _ _)).trans (eq_gen A hA r hd).symm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB₀ : B₀.map g = B` using `(gen_map _ _ _).trans ((congrArg (gen _) (funext fun j => MvPolynomial.eval₂_X _ _ _)).trans (eq_gen B hB _ rfl).symm)`. Establish `hBd : B₀.natDegree = B.natDegree` using `gen_natDegree _ _`. Establish `key` using `eval_domain r hr A₀ B₀ (gen_monic _ _) (gen_monic _ _) (gen_natDegree _ _) (by rw [hBd]) hΦ`. Use `congrArg g key` as an intermediate fact. Rewrite `this` using `[map_zero, ← eval_map_apply, Polynomial.map_map, evalCoef_comp, Polynomial.map_mul, hA₀, hB₀, ← coeff_map, hA₀, h, hΦ R m hm, eval_subsetPoly]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_sub_subset_sum_eq_zero (R : Type) [CommRing R] (r : ℕ) (m : Multiset R) (A B : R[X])
     (hr : 0 < r) (hA : A.Monic) (hB : B.Monic) (hd : A.natDegree = r)
@@ -282,9 +280,9 @@ theorem prod_sub_subset_sum_eq_zero (R : Type) [CommRing R] (r : ℕ) (m : Multi
   exact this
 
 /- English proof (translation)
-Establish `key` using `prod_sub_subset_sum_eq_zero R r (m.map (algebraMap ℂ R)) A B hr hA hB hd (by rw [Multiset.map_map]; exact h)`. Rewrite `key` using `[Multiset.powersetCard_map, Multiset.map_map]`. Rewrite using `[← key]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `S _`. Simplify using `[map_multiset_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem prod_sub_subset_sum_eq_zero_complex (R : Type) [CommRing R] [Algebra ℂ R] (r : ℕ)
     (m : Multiset ℂ) (A B : R[X]) (hr : 0 < r) (hA : A.Monic) (hB : B.Monic)

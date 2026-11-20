@@ -7,7 +7,7 @@ namespace UpperTheory.V.Af.BA.ResolutionExactness
 variable {Γ : Type} [Group Γ]
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `h.apply_apply_eq_zero x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem comp_zero_of {A B C : Rep.{0} ℂ Γ} {f : A ⟶ B} {g : B ⟶ C}
     (h : Function.Exact f.hom g.hom) : f ≫ g = 0 := by
@@ -15,7 +15,7 @@ private theorem comp_zero_of {A B C : Rep.{0} ℂ Γ} {f : A ⟶ B} {g : B ⟶ C
   exact h.apply_apply_eq_zero x
 
 /- English proof (translation)
-Conclude with `(forget₂ (Rep ℂ Γ) (ModuleCat ℂ)).reflects_exact_of_faithful _ ((ShortComplex.moduleCat_exact_iff _).2 fun x hx => (h x).1 hx)`.
+A detailed English derivation is pending.
 -/
 private theorem exact_of {A B C : Rep.{0} ℂ Γ} {f : A ⟶ B} {g : B ⟶ C} (w : f ≫ g = 0)
     (h : Function.Exact f.hom g.hom) : (ShortComplex.mk f g w).Exact := by
@@ -24,19 +24,17 @@ private theorem exact_of {A B C : Rep.{0} ℂ Γ} {f : A ⟶ B} {g : B ⟶ C} (w
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `Γ _ X d ε hX hε h0 hd`. Establish `hdd : ∀ p, d (p + 1) ≫ d p = 0` using `fun p => comp_zero_of (hd p)`. Set `K : ChainComplex (Rep ℂ Γ) ℕ` to `ChainComplex.of X d hdd`. Establish `hK : ∀ j, K.d (j + 1) j = d j` using `fun j => by simp [K]`. Establish `hK0 : K.d 1 0 ≫ ε = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hK 0]`. Conclude with `comp_zero_of h0`. Set `π : K ⟶ (ChainComplex.single₀ (Rep ℂ Γ)).obj (Rep.trivial ℂ Γ ℂ)` to `(ChainComplex.toSingle₀Equiv _ _).symm ⟨ε, hK0⟩`. Establish `hπ0 : π.f 0 = ε` using `by simp [π]`. Set `P : ProjectiveResolution (Rep.trivial ℂ Γ ℂ)` to `{ complex := K projective := hX π := π quasiIso := ⟨fun n => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `n with`. Consider the case `zero`. Rewrite using `[ChainComplex.quasiIsoAt₀_iff, ShortComplex.quasiIso_iff_of_zeros']`. Use `⟨exact_of _ ?_, ?_⟩` and prove the remaining obligations. Use `show Function.Exact (K.d 1 0).hom (π.f 0).hom`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hπ0, hK 0]`. Conclude with `h0`. Use `show Epi (π.f 0)`. Rewrite using `[hπ0, Rep.epi_iff_surjective]`. Conclude with `hε`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals rfl`. Consider the case `succ m`. Rewrite using `[quasiIsoAt_iff_exactAt']`. Rewrite using `[HomologicalComplex.exactAt_iff' _ (m + 2) (m + 1) m (by simp) (by simp)]`. Use `exact_of _ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `show Function.Exact (K.d (m + 2) (m + 1)).hom (K.d (m + 1) m).hom`. Rewrite using `[hK, hK]`. Conclude with `hd m`. Apply `ChainComplex.exactAt_succ_single_obj⟩ }` to reduce the goal to its premises. Use `⟨P, fun p => ⟨Iso.refl _⟩, fun e he0 he => ?_⟩` and prove the remaining obligations.
-
-Use `⟨ChainComplex.ofHom (X := K) (Y := K) e (fun i => by rw [hK]; exact he i), ?_, fun p hp => hp⟩` and prove the remaining obligations. Apply `(ChainComplex.toSingle₀Equiv _ _).injective` to reduce the goal to its premises. Use `ext1`. Simplify using `[P, hπ0, he0]`.
+A detailed English derivation is pending.
 -/
 private theorem main : UpperTheory.V.Af.BA.ResOf := by
   intro Γ _ X d ε hX hε h0 hd
@@ -82,7 +80,7 @@ private theorem main : UpperTheory.V.Af.BA.ResOf := by
 end UpperTheory.V.Af.BA.ResolutionExactness
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Af.BA.ResolutionExactness.main`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.repResolution_exists :
     UpperTheory.V.Af.BA.ResOf :=

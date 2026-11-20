@@ -9,7 +9,7 @@ open Finset MvPolynomial
 namespace UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Introduce `τ τ' h`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (NumberField.RingOfIntegers E)) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma resO_injective {E K : Type} [Field E] [NumberField E] [Field K] :
     Function.Injective (resO : (E →+* K) → (NumberField.RingOfIntegers E →+* K)) := by
@@ -17,9 +17,9 @@ private lemma resO_injective {E K : Type} [Field E] [NumberField E] [Field K] :
   exact IsLocalization.ringHom_ext (nonZeroDivisors (NumberField.RingOfIntegers E)) h
 
 /- English proof (translation)
-Introduce `h`. Apply `hN` to reduce the goal to its premises. Establish `h1 : τ (algebraMap (NumberField.RingOfIntegers E) E N) = 0` using `h`. Establish `h2 : algebraMap (NumberField.RingOfIntegers E) E N = 0`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `NumberField.RingOfIntegers.coe_injective (by simpa using h2)`.
+A detailed English derivation is pending.
 -/
 private lemma resO_ne_zero {E K : Type} [Field E] [NumberField E] [Field K] (τ : E →+* K)
     {N : NumberField.RingOfIntegers E} (hN : N ≠ 0) : resO τ N ≠ 0 := by
@@ -31,7 +31,7 @@ private lemma resO_ne_zero {E K : Type} [Field E] [NumberField E] [Field K] (τ 
   exact NumberField.RingOfIntegers.coe_injective (by simpa using h2)
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (eval (fun _ : σ => (0 : K))) h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private lemma one_sub_ne_zero {K σ : Type} [Field K] (p : σ) (b : K) :
     (1 - X p * C b : MvPolynomial σ K) ≠ 0 := by
@@ -40,23 +40,21 @@ private lemma one_sub_ne_zero {K σ : Type} [Field K] (p : σ) (b : K) :
   simp at this
 
 /- English proof (translation)
-Introduce `hI E K _ _ _ _ n lam`. Distinguish the cases in `hE : IsEmpty (E →+* K)`. Use `⟨0, fun k _ N hN B => ?_⟩` and prove the remaining obligations. Use `⟨Finsupp.single (fun _ => N) 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `α hα s`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hα' : α = fun _ => N`. Simplify using `using Finsupp.support_single_subset hα`. Substitute `hα'` using the available equality. Conclude with `⟨hN, dvd_rfl, fun τ => hE.elim τ⟩`. Introduce `R _ _ _ g`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.sum_single_index (by simp)]`. Simplify using `[Finset.univ_eq_empty]`. Rewrite `hE` using `[not_isEmpty_iff]`. Take `⟨τ₀⟩` from `hE`. Take `⟨k₀, hk⟩` from `hI (NumberField.RingOfIntegers E) K (E →+* K) resO resO_injective n (fun τ => MvPolynomial.map (algebraMap ℚ K) (GroundTheory.Heights₂.Heights.RestTerms.schur (Fin n) (lam τ))) (fun τ => (GroundTheory.Heights₂.Heights.RestTerms.Schur.schur_isSymmetric _).map _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k₀, fun k hkk N hN B => ?_⟩` and prove the remaining obligations. Set `Q : MvPolynomial ((E →+* K) × Fin k) K` to `∏ p, (X p * ∏ b ∈ B, (1 - X p * C b))`. Establish `hQ : Q ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr fun p _ => mul_ne_zero (X_ne_zero p) ?_` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun b _ => one_sub_ne_zero p b`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hsum⟩` from `hk k hkk N (fun t => resO_ne_zero t hN) (fun _ => 0) Q hQ`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Introduce `α hα s`. Take `⟨hdvd, hev⟩` from `hc α hα`. Establish `hfac : ∀ p : (E →+* K) × Fin k, pt resO α p ≠ 0 ∧ ∀ b ∈ B, 1 - pt resO α p * b ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Establish `h0 : eval (pt resO α) (X p * ∏ b ∈ B, (1 - X p * C b)) ≠ 0`. Introduce `h`. Apply `hev` to reduce the goal to its premises. Conclude with `(map_prod (eval (pt resO α)) _ _).trans (Finset.prod_eq_zero (Finset.mem_univ p) h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_mul, eval_X, map_prod, map_sub, map_one, eval_C] at h0`. Use `⟨left_ne_zero_of_mul h0, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `(Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul h0)) b hb`. Use `⟨?_, by simpa using hdvd s, fun τ b hb => (hfac (τ, s)).2 b hb⟩` and prove the remaining obligations. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(hfac (τ₀, s)).1` to reduce the goal to its premises. Simplify using `[pt, h0]`. Introduce `R _ _ _ g`. Establish `hR` using `hsum R g`. Use `letI : IsScalarTower ℚ K R := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`.
-
-Rewrite using `[hR]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `MvPolynomial.aeval_map_algebraMap _ _ _`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem interpNF_of : Interp → InterpNF := by
   intro hI E K _ _ _ _ n lam

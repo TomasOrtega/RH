@@ -23,7 +23,7 @@ variable [TopologicalSpace G] {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e :
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
 /- English proof (translation)
-Unfold `Top`. Establish `: ∀ k : KR n, (∫ x, F (g * ι ((k : GR n) * a * nb x * b)) * ψ x) = 0` using `fun k => hG.Λsing F hF hinv hl ψ hψ nb hnb g ((k : GR n) * a) b`. Simplify using `only [this, mul_zero, integral_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem top_sing [MeasurableSpace (KR n)] (μ : Measure (KR n)) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ)
     {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n} {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψ : IsSingTest ψ)
@@ -35,9 +35,9 @@ theorem top_sing [MeasurableSpace (KR n)] (μ : Measure (KR n)) (hG : GlobData �
   simp only [this, mul_zero, integral_zero]
 
 /- English proof (translation)
-Take `⟨x0, y, S, r, hr, hg, hsp⟩` from `hG.split g`. Use `⟨y, S, r, hr, fun z w => ?_⟩` and prove the remaining obligations. Establish `h1` using `hsp (y * w)`. Establish `e1 : g * ι w = x0 * ι (y * w)` using `by rw [hg, map_mul, mul_assoc]`. Rewrite using `[e1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hz]`. Rewrite using `[h1.1, h1.2 1, hL.vac, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hr.le (hLoc_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hz_split (hL : LocData ε c t p q e sL ρ) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) (g : G) :
     ∃ (y : GR n) (K : ℂ) (r : ℝ), 0 < r ∧ ∀ (z : ℂ) (w : GR n), hz Ht sec s₀ z (g * ι w) =
@@ -52,11 +52,11 @@ theorem hz_split (hL : LocData ε c t p q e sL ρ) (hG : GlobData ε c sL ρ G P
   ring
 
 /- English proof (translation)
-Take `⟨y, K, r, hr, hsp⟩` from `hz_split hL hG g`. Establish `e1 : ∀ (k : KR n) x, hz Ht sec s₀ z (g * ι ((k : GR n) * a * nb x * b)) * ψ x = (K * (r : ℂ) ^ (z - s₀)) * ((((hLoc (y * (k : GR n) * a * nb x * b) : ℝ) : ℂ) ^ (z - s₀) * F0 p q e (y * (k : GR n) * a * nb x * b)) * ψ x)`. Introduce `k x`. Rewrite using `[hsp]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : hz Ht sec s₀ z g = K * (r : ℂ) ^ (z - s₀) * (((hLoc y : ℝ) : ℂ) ^ (z - s₀) * F0 p q e y)`. Use `hsp z 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one, mul_one]`. Then use the resulting hypothesis. Unfold `Top`. Repeatedly rewrite using `[e1, MeasureTheory.integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `e3 : ∀ k : KR n, (F0 p q e (k : GR n))⁻¹ * (K * (r : ℂ) ^ (z - s₀) * ∫ x, (((hLoc (y * (k : GR n) * a * nb x * b) : ℝ) : ℂ) ^ (z - s₀) * F0 p q e (y * (k : GR n) * a * nb x * b)) * ψ x) = (K * (r : ℂ) ^ (z - s₀)) * ((F0 p q e (k : GR n))⁻¹ * ∫ x, (((hLoc (y * (k : GR n) * a * nb …` using `fun k => by ring`. Repeatedly rewrite using `[e3, MeasureTheory.integral_const_mul, hceig, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem top_hz [MeasurableSpace (KR n)] (μ : Measure (KR n)) (hL : LocData ε c t p q e sL ρ)
     (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n}

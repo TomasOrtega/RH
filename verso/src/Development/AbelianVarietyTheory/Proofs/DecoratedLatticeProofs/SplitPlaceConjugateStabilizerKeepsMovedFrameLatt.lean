@@ -14,14 +14,14 @@ namespace GlobalTheory.LocMod.StMoves
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `i j` and use `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hA i l) (hB l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_mul {m n p : Type} [Fintype n] {A : Matrix m n k} {B : Matrix n p k} (hA : ∀ i j, A i j ∈ 𝒪[k])
     (hB : ∀ i j, B i j ∈ 𝒪[k]) : ∀ i j, (A * B) i j ∈ 𝒪[k] := fun i j =>
   Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hA i l) (hB l j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [submatrix_apply, one_apply] split_ifs exacts [Subring.one_mem _, Subring.zero_mem _]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_one_sub {m a b : Type} [DecidableEq m] (f : a → m) (g' : b → m) :
     ∀ i j, ((1 : Matrix m m k).submatrix f g') i j ∈ 𝒪[k] := fun i j => by
@@ -30,16 +30,16 @@ theorem int_one_sub {m a b : Type} [DecidableEq m] (f : a → m) (g' : b → m) 
   exacts [Subring.one_mem _, Subring.zero_mem _]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul (S : HSp D) (a b : GA D S) : mt S (a * b) = mt S a * mt S b := by simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Establish `hm : ∀ N : Matrix (Fin n) (Fin n) R, (N.map toE).map π = N.map pr` using `fun N => Matrix.ext fun _ _ => hmap _`. Establish `eq2 : mg.map pr * Fβ.submatrix id e.symm = Fβ.submatrix id e.symm * I.map π`. Rewrite using `[← hmv, ← Matrix.map_mul, ← Matrix.mul_assoc, hg1, Matrix.mul_assoc, Matrix.map_mul, ← hm (mh * b), Matrix.map_mul, hb, hfin, Matrix.map_mul, ← hb, hm, ← Matrix.mul_assoc, ← Matrix.map_mul]`. Establish `eq1 : Fβ = Fβ.submatrix id e.symm * (1 : Matrix Y Y k).submatrix e.symm id`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `eq3 : Fγ * Fβ.submatrix id e.symm = (1 : Matrix Y Y k).submatrix id e.symm`. Rewrite using `[← hγβ]`. Conclude with `Matrix.submatrix_mul_equiv Fγ Fβ id (Equiv.refl _) e.symm`. Use `conv_lhs => rw [eq1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc Fγ, ← Matrix.mul_assoc _ (Fβ.submatrix id e.symm), eq2, ← eq3]`. Simplify using `only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem alg_frame {n : ℕ} {Y R A' : Type} [Fintype Y] [DecidableEq Y] [CommRing R] [CommRing A'] (pr : R →+* k) (toE : R →+* A')
     (π : A' →+* k) (hmap : ∀ x, π (toE x) = pr x) (mg mt' mh b : Matrix (Fin n) (Fin n) R) (βv I : Matrix (Fin n) (Fin n) A')
@@ -60,13 +60,13 @@ theorem alg_frame {n : ℕ} {Y R A' : Type} [Fintype Y] [DecidableEq Y] [CommRin
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨Y0, hY0⟩` from `hg`. Take `⟨π, h1, -, h3, -⟩` from `GlobalTheory.LocMod.LevBack.exists_chart q hq`. Establish `hb' : (β.val.map (GlobalTheory.AdelicLatMove.finEmb D)).map (toEAf D) = β.val` using `Matrix.ext fun _ _ => GlobalTheory.LocMod.LevBack.toEAf_finEmb _`. Establish `hmv : (mt S t * β.val.map (GlobalTheory.AdelicLatMove.finEmb D)).map q.pr = F.β.submatrix id e.symm` using `hM _ hb'`. Establish `hZi : ∀ i j, ((Formalism.L2.DIV.intGL D.host.F D.host.E S.rank Y0).val.map π) i j ∈ 𝒪[k]` using `fun i j => h3 (Y0.val i j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : ∀ N : Matrix (Fin S.rank) (Fin S.rank) (AE D), (N.map (toEAf D)).map π = N.map q.pr` using `fun N => Matrix.ext fun _ _ => h1 _`. Establish `hfin : Lev.finE S (t⁻¹ * g * t) * β = β * Formalism.L2.DIV.intGL D.host.F D.host.E S.rank Y0`. Rewrite using `[← hY0]`. Simplify using `[Formalism.L2.DIV.frGL]`. Establish `hfin' : (mt S (t⁻¹ * g * t)).map (toEAf D) * β.val = β.val * (Formalism.L2.DIV.intGL D.host.F D.host.E S.rank Y0).val`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg Units.val hfin` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.val_mul]`. Then use the resulting hypothesis. Establish `hg1 : mt S g * mt S t = mt S t * mt S (t⁻¹ * g * t)`. Rewrite using `[← mt_mul, ← mt_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Rewrite using `[alg_frame q.pr (toEAf D) π h1 (mt S g) (mt S t) (mt S (t⁻¹ * g * t)) (β.val.map (GlobalTheory.AdelicLatMove.finEmb D)) β.val (Formalism.L2.DIV.intGL D.host.F D.host.E S.rank Y0).val F.β F.γ e F.γβ hb' hmv hg1 hfin']`. Conclude with `int_mul (int_mul (int_one_sub _ _) hZi) (int_one_sub _ _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_mem_St (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (hq : Formalism.L2.NTheta.IsIdemAt q.e PP)
     (S : HSp D) {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k S.rank Y)
@@ -97,17 +97,15 @@ theorem int_of_mem_St (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DI
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q PP hq S L hL Y _ _ F hF t β e hM g hg`. Take `⟨gl, h1, h2⟩` from `GlobalTheory.GlEmbed.exists_gl D k q S Y F.β F.γ F.βγ F.γβ`. Establish `hlat : (⟨F.β, F.γ, F.βγ, F.γβ, gl, h1, h2⟩ : GlobalTheory.FinPl.Frame q S Y).IsLat L (GlobalTheory.StepData.latOf 1)` using `fun x => by`. Rewrite using `[GlobalTheory.StepData.mem_latOf_one]`. Conclude with `hF x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.T.stabilizes_selfDual_iff_frame_matrix_stabilizes D k q S Y _ L _ hL hlat g).2 ?_` and prove the remaining obligations. Establish `hA : ∀ i j, (GlobalTheory.SeeSaw.coordHom S q.pr F.β F.γ F.βγ F.γβ g).val i j ∈ 𝒪[k]` using `int_of_mem_St q hq S F t β e hM g hg`. Establish `hAi : ∀ i j, ((GlobalTheory.SeeSaw.coordHom S q.pr F.β F.γ F.βγ F.γβ g)⁻¹).val i j ∈ 𝒪[k]`. Rewrite using `[← map_inv]`. Use `int_of_mem_St q hq S F t β e hM g⁻¹ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: t⁻¹ * g⁻¹ * t = (t⁻¹ * g * t)⁻¹` using `by group`. Rewrite using `[this, map_inv]`. Conclude with `Subgroup.inv_mem _ hg`. Establish `hK : GlobalTheory.SeeSaw.coordHom S q.pr F.β F.γ F.βγ F.γβ g ∈ GlobalTheory.StepData.stabLat 1`. Rewrite using `[GlobalTheory.StepData.mem_stabLat, inv_one, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `GlobalTheory.StepData.mem_KO.2 ⟨hA, hAi⟩`. Establish `hs` using `GlobalTheory.StepData.mem_stabLat_iff.1 hK`. Use `set A := GlobalTheory.SeeSaw.coordHom S q.pr F.β F.γ F.βγ F.γβ g`. Use extensionality with `y`. Use `conv_rhs => rw [← hs]`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(∃ x, x ∈ GlobalTheory.StepData.latOf 1 ∧ A • x = y) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(GlobalTheory.StepData.mulVec_mem_latOf A).2 hx`. Introduce `hy`.
-
-Use `⟨A⁻¹ • y, (GlobalTheory.StepData.mulVec_mem_latOf A).1 ?_, smul_inv_smul _ _⟩` and prove the remaining obligations. Establish `: A.val *ᵥ (A⁻¹ • y) = y` using `smul_inv_smul A y`. Rewrite using `[this]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem moves_of_mem_St : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E}, Formalism.L2.NTheta.IsIdemAt q.e PP → ∀ (S : HSp D) (L : GlobalTheory.FinPl.Lat S), IsSelfDualC S L → ∀ {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k S.rank Y), (∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((F.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV S L (· = q.v)) → ∀ (t : GA D S) (β : GL (Fin S.rank) (Lev.EAf D)) (e : Y ≃ Fin S.rank), GlobalTheory.LocMod.MovedTo (GlobalTheory.LocMod.ofSplit q) S t β (F.β.submatrix id e.symm) → ∀ g : GA D S, Lev.finE S (t⁻¹ * g * t) ∈ Formalism.L2.DIV.St β → GlobalTheory.FinPl.Moves S g L L (· = q.v) := by
   intro D k _ _ _ _ q PP hq S L hL Y _ _ F hF t β e hM g hg

@@ -18,7 +18,7 @@ section Pull
 variable {E E' : Type} [Field E] [Field E'] (e : E ≃+* E')
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_osmul (c : 𝓞 E) (a : E) : e (c • a) = RingOfIntegers.mapRingEquiv e c • e a := by
   rw [Algebra.smul_def, Algebra.smul_def, map_mul]
@@ -36,21 +36,21 @@ def pull (I : Submodule (𝓞 E') E') : Submodule (𝓞 E) E where
     exact I.smul_mem _ ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_pull (I : Submodule (𝓞 E') E') (x : E) : x ∈ pull e I ↔ e x ∈ I := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_pull, mem_pull, e.apply_symm_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_pull (I : Submodule (𝓞 E') E') : pull e.symm (pull e I) = I := by
   ext x
   rw [mem_pull, mem_pull, e.apply_symm_apply]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_pull, Submodule.mem_one, Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩`. Conclude with `⟨RingOfIntegers.mapRingEquiv e.symm r, by rw [← e.symm_apply_apply x, ← hr]; rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨RingOfIntegers.mapRingEquiv e r, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem pull_one : pull e 1 = 1 := by
   ext x
@@ -62,11 +62,11 @@ theorem pull_one : pull e 1 = 1 := by
     exact ⟨RingOfIntegers.mapRingEquiv e r, rfl⟩
 
 /- English proof (translation)
-Take `⟨J, hJ, hIJ⟩` from `hI`. Use `⟨pull e J, fun x => by rw [mem_pull, mem_pull, hJ, h], le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mul_le]`. Introduce `x hx y hy`. Rewrite using `[← pull_one e, mem_pull, map_mul, ← hIJ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mul_mem_mul hx hy`. Rewrite using `[Submodule.one_le]`. Establish `h1 : ∀ z ∈ I * J, e.symm z ∈ pull e I * pull e J`. Introduce `z hz`. Use `Submodule.mul_induction_on hz (fun a ha b hb => ?_) fun a b ha hb => by rw [map_add]; exact add_mem ha hb` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `Submodule.mul_mem_mul (by simpa [mem_pull] using ha) (by simpa [mem_pull] using hb)`. Simplify using `using h1 1 (hIJ ▸ Submodule.mem_one.2 ⟨1, map_one _⟩)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pull_norm (c : E → E) (c' : E' → E') (h : ∀ x, e (c x) = c' (e x)) {I : Submodule (𝓞 E') E'}
     (hI : ∃ J : Submodule (𝓞 E') E', (∀ x, x ∈ J ↔ c' x ∈ I) ∧ I * J = 1) :
@@ -89,17 +89,17 @@ def pushP (P : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum (𝓞 E') :=
   HeightOneSpectrum.comap (RingOfIntegers.mapRingEquiv e.symm : 𝓞 E' →+* 𝓞 E) (RingOfIntegers.mapRingEquiv e.symm).surjective P
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_pushP (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E') :
     r ∈ (pushP e P).asIdeal ↔ RingOfIntegers.mapRingEquiv e.symm r ∈ P.asIdeal := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Use `⟨RingOfIntegers.mapRingEquiv e s, ?_, by rwa [mem_pull, map_osmul] at h⟩` and prove the remaining obligations. Introduce `hm`. Establish `h2 : RingOfIntegers.mapRingEquiv e.symm (RingOfIntegers.mapRingEquiv e s) = s` using `RingOfIntegers.ext (e.symm_apply_apply _)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hs (h2 ▸ (mem_pushP e P _).1 hm)`. Introduce and unpack `⟨s, hs, h⟩`. Use `⟨RingOfIntegers.mapRingEquiv e.symm s, hs, ?_⟩` and prove the remaining obligations. Use `map_osmul e.symm s (e x)` as an intermediate fact. Rewrite `this` using `[e.symm_apply_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[mem_pull, ← this, e.apply_symm_apply]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_localization_pullback (P : HeightOneSpectrum (𝓞 E)) (I : Submodule (𝓞 E') E') (x : E) :
     x ∈ localization₂ P.asIdeal (pull e I) ↔ e x ∈ localization₂ (pushP e P).asIdeal I := by
@@ -123,11 +123,11 @@ section Vp
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Establish `h0 : (((conjPrime₂ P).asIdeal : FractionalIdeal (𝓞 E)⁰ E)) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (conjPrime₂ P).ne_bot`. Unfold `CharacterValuation.vpIdeal`. Rewrite using `[FractionalIdeal.mem_coe, ← div_eq_mul_inv, FractionalIdeal.mem_div_iff_of_ne_zero h0]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨y, hy, rfl⟩)` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Conclude with `(FractionalIdeal.mem_coeIdeal _).1 this`. Introduce `h y hy`. Take `⟨z, hz, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Conclude with `(FractionalIdeal.mem_coeIdeal _).2 (h z hz)`.
+A detailed English derivation is pending.
 -/
 theorem mem_vpIdeal (P : HeightOneSpectrum (𝓞 E)) (x : E) : x ∈ CharacterValuation.vpIdeal P ↔
     ∀ y ∈ (conjPrime₂ P).asIdeal, ∃ z ∈ P.asIdeal, algebraMap (𝓞 E) E z = algebraMap (𝓞 E) E y * x := by
@@ -145,16 +145,16 @@ theorem mem_vpIdeal (P : HeightOneSpectrum (𝓞 E)) (x : E) : x ∈ CharacterVa
     exact (FractionalIdeal.mem_coeIdeal _).2 (h z hz)
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(mem_vpIdeal P (x 0)).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem vpLat_eq (P : HeightOneSpectrum (𝓞 E)) : ScalarCharacterTwist.vpLat P = CharacterValuation.vpLat P := by
   ext x
   exact (mem_vpIdeal P (x 0)).symm
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_vpIdeal]`. Introduce `y hy`. Rewrite `hy` using `[conjP_conjP]`. Take `⟨z, hz, e⟩` from `h (cO E y) (by rwa [mem_conjP, cO_cO])`. Use `⟨cO E z, by rwa [mem_conjP, cO_cO], ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[algebraMap_cO, e, star_mul', algebraMap_cO, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mem_vpIdeal {P : HeightOneSpectrum (𝓞 E)} {x : E} (h : x ∈ CharacterValuation.vpIdeal P) : star x ∈ CharacterValuation.vpIdeal (conjPrime₂ P) := by
   rw [mem_vpIdeal] at h ⊢
@@ -165,9 +165,9 @@ theorem star_mem_vpIdeal {P : HeightOneSpectrum (𝓞 E)} {x : E} (h : x ∈ Cha
   rw [algebraMap_cO, e, star_mul', algebraMap_cO, star_star]
 
 /- English proof (translation)
-Use `⟨CharacterValuation.vpIdeal (conjPrime₂ P), fun x => ⟨fun h => ?_, fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Use `star_mem_vpIdeal h` as an intermediate fact. Rewrite `this` using `[conjP_conjP]`. Then use the resulting hypothesis. Use `star_mem_vpIdeal h` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h0 : (((conjPrime₂ P).asIdeal : FractionalIdeal (𝓞 E)⁰ E)) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (conjPrime₂ P).ne_bot`. Establish `h1 : ((P.asIdeal : FractionalIdeal (𝓞 E)⁰ E)) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 P.ne_bot`. Unfold `CharacterValuation.vpIdeal`. Rewrite using `[conjP_conjP, ← FractionalIdeal.coe_mul, mul_mul_mul_comm, ← mul_inv, mul_comm ((conjPrime₂ P).asIdeal : FractionalIdeal (𝓞 E)⁰ E), mul_inv_cancel₀ (mul_ne_zero h1 h0), FractionalIdeal.coe_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem normOne_vpIdeal (P : HeightOneSpectrum (𝓞 E)) : NormOne (CharacterValuation.vpIdeal P) := by
   refine ⟨CharacterValuation.vpIdeal (conjPrime₂ P), fun x => ⟨fun h => ?_, fun h => ?_⟩, ?_⟩
@@ -182,14 +182,14 @@ theorem normOne_vpIdeal (P : HeightOneSpectrum (𝓞 E)) : NormOne (CharacterVal
       mul_inv_cancel₀ (mul_ne_zero h1 h0), FractionalIdeal.coe_one]
 
 /- English proof (translation)
-The claim follows from `self_dual_rank_one_lattice (normOne_vpIdeal P)`.
+A detailed English derivation is pending.
 -/
 theorem isSdLat_vpLat (P : HeightOneSpectrum (𝓞 E)) : IsSdLat (CharacterValuation.vpLat P) := self_dual_rank_one_lattice (normOne_vpIdeal P)
 
 omit [StarRing E] in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isFrames_iff {n : ℕ} {SB : Finset (HeightOneSpectrum (𝓞 E))} (N : Submodule (𝓞 E) (Sp E n)) (fr : Frs E n SB) :
     CharacterValuation.IsFrames N fr ↔ ScalarCharacterTwist.FrOf N fr := Iff.rfl
@@ -202,7 +202,7 @@ variable {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ)
 
 omit [NumberField K] in
 /- English proof (translation)
-Unfold `desc`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_desc {z : ℂ} (h : ∃ k, σ k = z) : σ (desc σ z) = z := by
   unfold desc
@@ -211,12 +211,12 @@ theorem sig_desc {z : ℂ} (h : ∃ k, σ k = z) : σ (desc σ z) = z := by
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `σ.injective (sig_desc σ ⟨k, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem desc_sig (k : K) : desc σ (σ k) = k := σ.injective (sig_desc σ ⟨k, rfl⟩)
 
 /- English proof (translation)
-Establish `h0 : (eW w : ℚ) ≠ 0` using `by exact_mod_cast (eW_pos w).ne'`. Rewrite using `[ScalarCharacterTwist.hasVal_vp_iff, CharacterValuation.val_vp, ordE_prime w hp h, Int.cast_natCast, div_eq_iff h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasVal_iff [StarRing K] (w : HeightOneSpectrum (𝓞 K)) {p : ℕ} (hp : p.Prime) (h : ((p : ℕ) : 𝓞 K) ∈ w.asIdeal) (k : K) (r : ℚ) :
     ScalarCharacterTwist.HasVal_vp σ w (σ k) r ↔ k ≠ 0 ∧ CharacterValuation.val_vp w p k = r := by
@@ -224,7 +224,7 @@ theorem hasVal_iff [StarRing K] (w : HeightOneSpectrum (𝓞 K)) {p : ℕ} (hp :
   rw [ScalarCharacterTwist.hasVal_vp_iff, CharacterValuation.val_vp, ordE_prime w hp h, Int.cast_natCast, div_eq_iff h0]
 
 /- English proof (translation)
-The claim follows from `ScalarCharacterTwist.unitAtW_iff σ w k`.
+A detailed English derivation is pending.
 -/
 theorem unit_iff (w : HeightOneSpectrum (𝓞 K)) (k : K) : ScalarCharacterTwist.UnitAtW σ w (σ k) ↔ CharacterValuation.UnitAt w k :=
   ScalarCharacterTwist.unitAtW_iff σ w k
@@ -236,9 +236,9 @@ section Chi
 variable {D : D7} {X : Fields} (s : Seam D X) {χ : TaylorLogMetric.IdE D → ℂ}
 
 /- English proof (translation)
-Establish `: s.iE '' (I : Set X.E) = (pull s.iE.symm I : Set D.host.E)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[mem_pull]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hy`. Conclude with `⟨_, hy, s.iE.apply_symm_apply y⟩`. Rewrite using `[CharacterValuation.idTo, this, Submodule.span_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem idTo_eq (I : Submodule (𝓞 X.E) X.E) : CharacterValuation.idTo s I = pull s.iE.symm I := by
   have : s.iE '' (I : Set X.E) = (pull s.iE.symm I : Set D.host.E) := by
@@ -251,13 +251,13 @@ theorem idTo_eq (I : Submodule (𝓞 X.E) X.E) : CharacterValuation.idTo s I = p
   rw [CharacterValuation.idTo, this, Submodule.span_eq]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `using hx`. Consider the case `zero`. Use `N.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `map_zero _`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Use `N.add_mem ha hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `map_add _ _ _`. Consider the case `smul c a _ ha`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `N.smul_mem (RingOfIntegers.mapRingEquiv s.iE.symm c) ha using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `map_osmul s.iE.symm c (a i)`. Introduce `hy`. Conclude with `Submodule.subset_span ⟨_, hy, funext fun i => s.iE.apply_symm_apply _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_lat {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (y : Fin n → D.host.E) :
     y ∈ s.lat N ↔ (fun i => s.iE.symm (y i)) ∈ N := by
@@ -283,15 +283,15 @@ theorem mem_lat {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (y : Fin n → D
     exact Submodule.subset_span ⟨_, hy, funext fun i => s.iE.apply_symm_apply _⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[TaylorLogMetric.detId, Submodule.span_le]`. Introduce and unpack `_ ⟨A, hA, rfl⟩`. Use `Submodule.subset_span ⟨A.map s.iE.symm, fun v hv => ?_, (s.iE.symm : D.host.E →+* X.E).map_det A⟩` and prove the remaining obligations. Establish `h1` using `(mem_lat s N _).1 (hA (fun i => s.iE (v i)) fun i _ => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hv i (Set.mem_univ _)` as an intermediate fact. Rewrite `this` using `[← pull_one s.iE]`. Conclude with `this)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct]`. Establish `: detI N ≤ pull s.iE (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D n) (s.lat N))`. Rewrite using `[detI, Submodule.span_le]`. Introduce and unpack `_ ⟨A, hA, rfl⟩`. Use `Submodule.subset_span ⟨A.map s.iE, fun v hv => (mem_lat s N _).2 ?_, (s.iE : X.E →+* D.host.E).map_det A⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hA (fun i => s.iE.symm (v i)) fun i _ => by`. Use `hv i (Set.mem_univ _)` as an intermediate fact. Rewrite `this` using `[← pull_one s.iE.symm]`. Conclude with `this`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Introduce `y hy`. Simplify `this hy` using `[mem_pull]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem detId_lat {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) :
     TaylorLogMetric.detId D (StandardLatticesGL3.stdL D n) (s.lat N) = pull s.iE.symm (detI N) := by
@@ -323,19 +323,19 @@ theorem detId_lat {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) :
 variable {s}
 
 /- English proof (translation)
-The claim follows from `pull_norm s.iE.symm D.host.conj star (fun x => by rw [RingEquiv.symm_apply_eq, hs.2, s.iE.apply_symm_apply]) h`.
+A detailed English derivation is pending.
 -/
 theorem normOne_idealPreimageUnderRingEquiv (hs : s.Ok) {I : Submodule (𝓞 X.E) X.E} (h : NormOne I) : TaylorLogMetric.N1 D (pull s.iE.symm I) :=
   pull_norm s.iE.symm D.host.conj star (fun x => by rw [RingEquiv.symm_apply_eq, hs.2, s.iE.apply_symm_apply]) h
 
 /- English proof (translation)
-The claim follows from `pull_norm s.iE star D.host.conj hs.2 h`.
+A detailed English derivation is pending.
 -/
 theorem normOne_pull (hs : s.Ok) {I : TaylorLogMetric.IdE D} (h : TaylorLogMetric.N1 D I) : NormOne (pull s.iE I) :=
   pull_norm s.iE star D.host.conj hs.2 h
 
 /- English proof (translation)
-Rewrite using `[detId_lat]`. Conclude with `normOne_idealPreimageUnderRingEquiv hs (normOne_detI hN)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normOne_detIdeal_transportedLattice (hs : s.Ok) {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} (hN : IsSdLat N) :
     TaylorLogMetric.N1 D (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D n) (s.lat N)) := by
@@ -343,11 +343,11 @@ theorem normOne_detIdeal_transportedLattice (hs : s.Ok) {n : ℕ} {N : Submodule
   exact normOne_idealPreimageUnderRingEquiv hs (normOne_detI hN)
 
 /- English proof (translation)
-Establish `h'` using `h`. Take `⟨J, hJ, hIJ⟩` from `h`. Establish `hc : ∀ x, D.host.conj (D.host.conj x) = x` using `fun x => by`. Take `⟨y, rfl⟩` from `s.iE.surjective x`. Rewrite using `[← hs.2, ← hs.2, star_star]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hχ.1 I J h' ⟨I, fun x => by rw [hJ, hc], by rw [mul_comm, hIJ]⟩`. Establish `h2` using `hχ.2 (letI := D.host.cmStar; 1)`. Introduce `h0`. Rewrite `h1` using `[hIJ, h0, zero_mul, Submodule.one_eq_span]`. Establish `h3` using `h1.symm.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `at h3`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_ne_zero (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) {I : TaylorLogMetric.IdE D} (h : TaylorLogMetric.N1 D I) : χ I ≠ 0 := by
   have h' := h
@@ -363,34 +363,34 @@ theorem chi_ne_zero (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) {I : TaylorLo
   simp at h3
 
 /- English proof (translation)
-The claim follows from `sig_desc _ (hK _ (normOne_detIdeal_transportedLattice hs hN))`.
+A detailed English derivation is pending.
 -/
 theorem sig_chiDet (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} (hN : IsSdLat N) :
     s.σ₀ (CharacterValuation.chiDet s χ N) = χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D n) (s.lat N)) :=
   sig_desc _ (hK _ (normOne_detIdeal_transportedLattice hs hN))
 
 /- English proof (translation)
-Introduce `h` and use `chi_ne_zero hs hχ (normOne_detIdeal_transportedLattice hs hN) (by rw [← sig_chiDet hs hK hN, h, map_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chiDet_ne_zero (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : CharacterValuation.ChiInK s χ) {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)}
     (hN : IsSdLat N) : CharacterValuation.chiDet s χ N ≠ 0 := fun h =>
   chi_ne_zero hs hχ (normOne_detIdeal_transportedLattice hs hN) (by rw [← sig_chiDet hs hK hN, h, map_zero])
 
 /- English proof (translation)
-Rewrite using `[CharacterValuation.chiDet, detId_lat, det_ideal_rank_one_lattice]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem char_det_rank_one_lattice (I : Submodule (𝓞 X.E) X.E) : CharacterValuation.chiDet s χ (lat1 I) = CharacterValuation.chiK s χ (pull s.iE.symm I) := by
   rw [CharacterValuation.chiDet, detId_lat, det_ideal_rank_one_lattice]
 
 /- English proof (translation)
-Rewrite using `[CharacterValuation.chiVp, idTo_eq]`. Conclude with `(char_det_rank_one_lattice _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiVp_eq (P : HeightOneSpectrum (𝓞 X.E)) : CharacterValuation.chiVp s χ P = CharacterValuation.chiDet s χ (CharacterValuation.vpLat P) := by
   rw [CharacterValuation.chiVp, idTo_eq]
   exact (char_det_rank_one_lattice _).symm
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_zpow₀, map_zpow₀, sig_chiDet hs hK hN, sig_chiDet hs hK hN']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chiFac_eq (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) {a b : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)}
     (hN : IsSdLat N) (hN' : IsSdLat N') : Base.chiFac χ a b (s.lat N) (s.lat N') =
@@ -407,13 +407,13 @@ variable {D : D7} {Z : Dat} {s : Seam D Z.X} {χ : TaylorLogMetric.IdE D → ℂ
   {mu : Tup Z.X.F Z.X.E Z.X.K S} {cst : LocCst Z.X (rowSG Z.Pr sel mu)}
 
 /- English proof (translation)
-The claim follows from `(sig_chiDet hs hK hN).symm`.
+A detailed English derivation is pending.
 -/
 theorem sig_chiDet' (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) {n : ℕ} {N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)} (hN : IsSdLat N) :
     ScalarCharacterTwist.chiDet s χ N = s.σ₀ (CharacterValuation.chiDet s χ N) := (sig_chiDet hs hK hN).symm
 
 /- English proof (translation)
-Rewrite using `[ScalarCharacterTwist.rhoJ, CharacterValuation.rho, map_mul, map_zpow₀, sig_chiDet' hs hK hN]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rhoJ_eq (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) (i : ℕ) {n : ℕ} {N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)} (hN : IsSdLat N)
     (fr : Frs Z.X.E n (rowSG Z.Pr sel mu)) :
@@ -422,7 +422,7 @@ theorem rhoJ_eq (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) (i : ℕ) {n :
   rfl
 
 /- English proof (translation)
-Rewrite using `[ScalarCharacterTwist.rhoJ', CharacterValuation.rho', map_mul, map_zpow₀, map_inv₀, sig_chiDet' hs hK hN]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rhoJ'_eq (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) (i : ℕ) {n : ℕ} {N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)} (hN : IsSdLat N)
     (fr : Frs Z.X.E n (rowSG Z.Pr sel mu)) :
@@ -431,14 +431,14 @@ theorem rhoJ'_eq (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) (i : ℕ) {n 
   rfl
 
 /- English proof (translation)
-Rewrite using `[vpLat_eq, chiVp_eq, sig_chiDet' hs hK (isSdLat_vpLat P)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chiDet_vp (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) (P : HeightOneSpectrum (𝓞 Z.X.E)) :
     ScalarCharacterTwist.chiDet s χ (ScalarCharacterTwist.vpLat P) = s.σ₀ (CharacterValuation.chiVp s χ P) := by
   rw [vpLat_eq, chiVp_eq, sig_chiDet' hs hK (isSdLat_vpLat P)]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `hZ.primes.piT_norm u`. Rewrite `h1` using `[h, zero_mul]`. Conclude with `(hZ.primes.T_prime u).ne_zero (by exact_mod_cast h1.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piT_ne_zero (hZ : Z.Ok) (u : Z.Pr.Word) : Z.Pr.piT u ≠ 0 := by
   intro h
@@ -447,7 +447,7 @@ theorem piT_ne_zero (hZ : Z.Ok) (u : Z.Pr.Word) : Z.Pr.piT u ≠ 0 := by
   exact (hZ.primes.T_prime u).ne_zero (by exact_mod_cast h1.symm)
 
 /- English proof (translation)
-Rewrite using `[← hZ.primes.piT_norm u]`. Conclude with `Ideal.mul_mem_right _ _ (decoFin_mem_of_mem_divs hP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_mem (hZ : Z.Ok) {u : Z.Pr.Word} {P : HeightOneSpectrum (𝓞 Z.X.E)} (hP : P ∈ Z.Pr.vT u) :
     ((Z.Pr.T u : ℕ) : 𝓞 Z.X.E) ∈ P.asIdeal := by
@@ -455,20 +455,18 @@ theorem T_mem (hZ : Z.Ok) {u : Z.Pr.Word} {P : HeightOneSpectrum (𝓞 Z.X.E)} (
   exact Ideal.mul_mem_right _ _ (decoFin_mem_of_mem_divs hP)
 
 /- English proof (translation)
-Rewrite using `[← map_mul, hZ.primes.piT_norm u, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem T_eq (hZ : Z.Ok) (u : Z.Pr.Word) (τ : Z.X.Tau) :
     ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) = Z.X.embO τ (Z.Pr.piT u) * Z.X.embO τ (Z.X.conjO (Z.Pr.piT u)) := by
   rw [← map_mul, hZ.primes.piT_norm u, map_natCast]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨τ₀⟩ : Nonempty Z.X.Tau` from `Fintype.card_pos_iff.1 hZ.fields.f_pos`. Establish `hT : ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal`. Rewrite using `[T_eq hZ u τ₀]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (h τ₀)`. Take `⟨τ, h1 | h1⟩` from `GlobalTheory.exists_comap_eq_or_eq_conj Z.X hZ.fieldsConditions _ (hZ.primes.T_prime u) w P hT (T_mem hZ hP)`. Conclude with `⟨hT, τ, h1⟩`. Establish `h2 : Z.Pr.piT u ∈ (pullW τ w).asIdeal` using `h τ`. Rewrite `h2` using `[show pullW τ w = conjPrime₂ P from h1]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd h2 (conj_piT_notMem hZ.primes u ⟨P, hP⟩)`. Introduce and unpack `⟨_, τ, h⟩ τ'`. Establish `h2 : Z.Pr.piT u ∈ (pullW τ w).asIdeal`. Rewrite using `[show pullW τ w = P from h]`. Conclude with `decoFin_mem_of_mem_divs hP`.
-
-Establish `h3 : Z.X.embO τ' (Z.Pr.piT u) = Z.X.embO τ (Z.Pr.piT u)` using `RingOfIntegers.ext (hZ.primes.piT_Kq u τ' τ)`. Rewrite using `[h3]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seenC_iff (hZ : Z.Ok) {u : Z.Pr.Word} {P : HeightOneSpectrum (𝓞 Z.X.E)} (hP : P ∈ Z.Pr.vT u) (w : HeightOneSpectrum (𝓞 Z.X.K)) :
     seenC Z.Pr u w ↔ ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal ∧ ∃ τ, SeesP w τ P := by
@@ -492,15 +490,13 @@ theorem seenC_iff (hZ : Z.Ok) {u : Z.Pr.Word} {P : HeightOneSpectrum (𝓞 Z.X.E
     exact h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨τ₀⟩ : Nonempty Z.X.Tau` from `Fintype.card_pos_iff.1 hZ.fields.f_pos`. Establish `hT : ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal`. Rewrite using `[T_eq hZ u τ₀]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (h τ₀)`. Take `⟨τ, h1 | h1⟩` from `GlobalTheory.exists_comap_eq_or_eq_conj Z.X hZ.fieldsConditions _ (hZ.primes.T_prime u) w P hT (T_mem hZ hP)`. Establish `h2 : Z.X.conjO (Z.Pr.piT u) ∈ (pullW τ w).asIdeal` using `h τ`. Rewrite `h2` using `[show pullW τ w = P from h1]`. Conclude with `absurd h2 (conj_piT_notMem hZ.primes u ⟨P, hP⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hT, τ, h1⟩`. Introduce and unpack `⟨_, τ, h⟩ τ'`. Establish `h2 : cO Z.X.E (Z.Pr.piT u) ∈ (pullW τ w).asIdeal`. Rewrite using `[show pullW τ w = conjPrime₂ P from h, mem_conjP, cO_cO]`. Conclude with `decoFin_mem_of_mem_divs hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h3 : Z.X.embO τ' (Z.X.conjO (Z.Pr.piT u)) = Z.X.embO τ (Z.X.conjO (Z.Pr.piT u))`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Z.X.emb τ' (star (Z.Pr.piT u : Z.X.E)) = Z.X.emb τ (star (Z.Pr.piT u : Z.X.E))`. Rewrite using `[hZ.fields.emb_star, hZ.fields.emb_star, hZ.primes.piT_Kq u τ' τ]`. Rewrite using `[h3]`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seenBarC_iff (hZ : Z.Ok) {u : Z.Pr.Word} {P : HeightOneSpectrum (𝓞 Z.X.E)} (hP : P ∈ Z.Pr.vT u) (w : HeightOneSpectrum (𝓞 Z.X.K)) :
     seenBarC Z.Pr u w ↔ ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal ∧ ∃ τ, SeesPbar w τ P := by
@@ -527,11 +523,11 @@ theorem seenBarC_iff (hZ : Z.Ok) {u : Z.Pr.Word} {P : HeightOneSpectrum (𝓞 Z.
     exact h2
 
 /- English proof (translation)
-Use `forall₂_congr fun P hP => ?_` and prove the remaining obligations. Establish `h0 : CharacterValuation.chiVp s χ P ≠ 0`. Rewrite using `[chiVp_eq]`. Conclude with `chiDet_ne_zero hs hχ hK (isSdLat_vpLat P)`. Establish `hT` using `hZ.primes.T_prime u`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chiDet_vp hs hK, ScalarCharacterTwist.modOne_iff]`. Use `and_congr Iff.rfl (and_congr (forall₂_congr fun w _ => (unit_iff _ w _).symm) ⟨fun h => ⟨fun w hw => ?_, fun w hw => ?_⟩, ?_⟩)` and prove the remaining obligations. Take `⟨h1, τ, h2⟩` from `(seenC_iff hZ hP w).1 hw`. Conclude with `(hasVal_iff _ w hT h1 _ _).2 ⟨h0, (h w h1 τ).1 h2⟩`. Take `⟨h1, τ, h2⟩` from `(seenBarC_iff hZ hP w).1 hw`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `(hasVal_iff _ w hT h1 _ _).2 ⟨h0, (h w h1 τ).2 h2⟩`. Introduce and unpack `⟨h1, h2⟩ w hw τ`. Conclude with `⟨fun h => ((hasVal_iff _ w hT hw _ _).1 (h1 w ((seenC_iff hZ hP w).2 ⟨hw, τ, h⟩))).2, fun h => ((hasVal_iff _ w hT hw _ _).1 (h2 w ((seenBarC_iff hZ hP w).2 ⟨hw, τ, h⟩))).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem partA_iff (hZ : Z.Ok) (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : CharacterValuation.ChiInK s χ) (u : Z.Pr.Word) :
     CharacterValuation.PartA Z s χ u ↔ ScalarCharacterTwist.PartA s χ u := by
@@ -551,16 +547,16 @@ theorem partA_iff (hZ : Z.Ok) (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK
       fun h => ((hasVal_iff _ w hT hw _ _).1 (h2 w ((seenBarC_iff hZ hP w).2 ⟨hw, τ, h⟩))).2⟩
 
 /- English proof (translation)
-Introduce `P hP` and use `ordDet_of_std (h P (T_mem hZ hP))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem detUnit_of_stdOver (hZ : Z.Ok) {u : Z.Pr.Word} {n : ℕ} {N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)}
     (h : CharacterValuation.StdOver (Z.Pr.T u) N) : ScalarCharacterTwist.DetUnitAt (Z.Pr.vT u) N :=
   fun P hP => ordDet_of_std (h P (T_mem hZ hP))
 
 /- English proof (translation)
-Introduce `P hP`. Apply `standard_rank_one_lattice_of_det hN.1` to reduce the goal to its premises. Rewrite `hP` using `[← hZ.primes.piT_norm u]`. Break down `P.isPrime.mem_or_mem hP with h1 | h1` into its components or cases. Conclude with `h P ((mem_divs (piT_ne_zero hZ u) P).2 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `ordDet_conj hN (h (conjPrime₂ P) ((mem_divs (piT_ne_zero hZ u) _).2 h1))` as an intermediate fact. Rewrite `this` using `[conjP_conjP]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stdOver_of_detUnit (hZ : Z.Ok) {u : Z.Pr.Word} {n : ℕ} {N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)} (hN : IsSdLat N)
     (h : ScalarCharacterTwist.DetUnitAt (Z.Pr.vT u) N) : CharacterValuation.StdOver (Z.Pr.T u) (lat1 (detI N)) := by
@@ -573,7 +569,7 @@ theorem stdOver_of_detUnit (hZ : Z.Ok) {u : Z.Pr.Word} {n : ℕ} {N : Submodule 
     rwa [conjP_conjP] at this
 
 /- English proof (translation)
-Unfold `muOff`. Simplify using `only [order_det_rank_one_lattice _ hN.1]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mu_offset_rank_one_lattice (SB : Finset (HeightOneSpectrum (𝓞 Z.X.E))) (mU : HeightOneSpectrum (𝓞 Z.X.E) → Z.X.Kˣ) {n : ℕ}
     {N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)} (hN : IsSdLat N) : muOff sel SB mU (lat1 (detI N)) = muOff sel SB mU N := by
@@ -581,7 +577,7 @@ theorem mu_offset_rank_one_lattice (SB : Finset (HeightOneSpectrum (𝓞 Z.X.E))
   simp only [order_det_rank_one_lattice _ hN.1]
 
 /- English proof (translation)
-Unfold `CharacterValuation.muInv muInvDet`. Simplify using `only [mu_offset_rank_one_lattice _ _ hN, det_detFr]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mu_inverse_rank_one_lattice (i : ℕ) {n : ℕ} {N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)} (hN : IsSdLat N) (fr : Frs Z.X.E n (rowSG Z.Pr sel mu)) :
     CharacterValuation.muInv Z sel mu cst i (lat1 (detI N)) (fun P => detFr (fr P)) = CharacterValuation.muInv Z sel mu cst i N fr := by
@@ -589,14 +585,14 @@ theorem mu_inverse_rank_one_lattice (i : ℕ) {n : ℕ} {N : Submodule (𝓞 Z.X
   simp only [mu_offset_rank_one_lattice _ _ hN, det_detFr]
 
 /- English proof (translation)
-Rewrite using `[char_det_rank_one_lattice, CharacterValuation.chiDet, detId_lat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chiDet_detI {n : ℕ} (N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)) :
     CharacterValuation.chiDet s χ (lat1 (detI N)) = CharacterValuation.chiDet s χ N := by
   rw [char_det_rank_one_lattice, CharacterValuation.chiDet, detId_lat]
 
 /- English proof (translation)
-Unfold `CharacterValuation.UnitAt at *`. Rewrite using `[map_mul, map_zpow₀, map_zpow₀, hx, hy, one_zpow, one_zpow, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_chiF {w : HeightOneSpectrum (𝓞 Z.X.K)} {x y : Z.X.K} (hx : CharacterValuation.UnitAt w x) (hy : CharacterValuation.UnitAt w y) (a b : ℤ) :
     CharacterValuation.UnitAt w (x ^ a * y ^ b) := by
@@ -604,14 +600,14 @@ theorem unit_chiF {w : HeightOneSpectrum (𝓞 Z.X.K)} {x y : Z.X.K} (hx : Chara
   rw [map_mul, map_zpow₀, map_zpow₀, hx, hy, one_zpow, one_zpow, one_mul]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv₀, hx, hy, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_scal {w : HeightOneSpectrum (𝓞 Z.X.K)} {x y : Z.X.K} (hx : w.valuation Z.X.K x = 1) (hy : w.valuation Z.X.K y = 1) :
     w.valuation Z.X.K (x * y⁻¹) = 1 := by
   rw [map_mul, map_inv₀, hx, hy, inv_one, one_mul]
 
 /- English proof (translation)
-Use `choose f hf using fun P : SB => exists_isFr P.1 hN.1`. Conclude with `⟨f, hf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frames (SB : Finset (HeightOneSpectrum (𝓞 Z.X.E))) {n : ℕ} {N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)} (hN : IsSdLat N) :
     ∃ fr : Frs Z.X.E n SB, ScalarCharacterTwist.FrOf N fr := by
@@ -619,9 +615,9 @@ theorem exists_frames (SB : Finset (HeightOneSpectrum (𝓞 Z.X.E))) {n : ℕ} {
   exact ⟨f, hf⟩
 
 /- English proof (translation)
-Introduce `w hw i N fr N' fr' hN hN' hf hf' h1 h1'`. Take `⟨a1, -, -, a4, a5⟩` from `h w hw i _ N fr hN hf fun P hP => ordDet_of_std (h1 P hP)`. Take `⟨b1, -, -, b4, b5⟩` from `h w hw i _ N' fr' hN' hf' fun P hP => ordDet_of_std (h1' P hP)`. Use `⟨?_, a4, b4, a5, b5, unit_scal a5 b5⟩` and prove the remaining obligations. Rewrite `a1` using `[sig_chiDet' hs hK hN, unit_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b1` using `[sig_chiDet' hs hK hN', unit_iff]`. Rewrite using `[ScalarCharacterTwist.chiFJ, chiFac_eq hs hK hN hN', unit_iff]`. Conclude with `unit_chiF a1 b1 _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partBStd_of_partB (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) {u : Z.Pr.Word} (h : ScalarCharacterTwist.PartB s χ sel mu cst u) :
     ScalarCharacterTwist.PartBStd s χ sel mu cst u := by
@@ -635,11 +631,11 @@ theorem partBStd_of_partB (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) {u :
   exact unit_chiF a1 b1 _ _
 
 /- English proof (translation)
-Establish `core : ∀ (n : ℕ) (N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)), IsSdLat N → ScalarCharacterTwist.DetUnitAt (Z.Pr.vT u) N → CharacterValuation.UnitAt w (CharacterValuation.chiDet s χ N)` using `fun n N hN hd => by`. Take `⟨fr, hf⟩` from `exists_frames (rowSG Z.Pr sel mu) hN`. Use `(h w hw ⟨0, lt_of_lt_of_le two_pos Z.R.two_le_m⟩ n N fr hN hf hd).1` as an intermediate fact. Rewrite `this` using `[sig_chiDet' hs hK hN, unit_iff]`. Then use the resulting hypothesis. Use `⟨fun I hI hT => ?_, fun n N hN hd => core n N hN (detUnit_of_stdOver hZ hd), fun a b N N' _ _ hN hN' hd hd' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `core 1 _ (self_dual_rank_one_lattice (normOne_pull hs hI)) fun P hP => ordDet_of_std (standard_rank_one_lattice_of_local (by` as an intermediate fact. Use extensionality with `x`. Rewrite using `[mem_localization_pullback, hT _ (by rw [mem_pushP, map_natCast]; exact T_mem hZ hP), ← mem_localization_pullback, pull_one]))`. Rewrite `this` using `[char_det_rank_one_lattice, pull_pull]`. Then use the resulting hypothesis. Rewrite using `[CharacterValuation.chiFK, chiFac_eq hs hK hN hN', desc_sig]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unit_chiF (core a N hN (detUnit_of_stdOver hZ hd)) (core b N' hN' (detUnit_of_stdOver hZ hd')) _ _`.
+A detailed English derivation is pending.
 -/
 theorem partBChi_of_partB (hZ : Z.Ok) (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) {u : Z.Pr.Word} (h : ScalarCharacterTwist.PartB s χ sel mu cst u)
     (w : HeightOneSpectrum (𝓞 Z.X.K)) (hw : ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal) : CharacterValuation.PartBChi Z s χ u w := by
@@ -657,17 +653,17 @@ theorem partBChi_of_partB (hZ : Z.Ok) (hs : s.Ok) (hK : CharacterValuation.ChiIn
     exact unit_chiF (core a N hN (detUnit_of_stdOver hZ hd)) (core b N' hN' (detUnit_of_stdOver hZ hd')) _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hB : ScalarCharacterTwist.PartB s χ sel mu cst u`. Introduce `w hw i n N fr hN hf hd`. Establish `hN1` using `self_dual_rank_one_lattice (normOne_detI hN)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd1` using `stdOver_of_detUnit hZ hN hd`. Establish `a1` using `(h w hw).1.2.1 1 _ hN1 hd1`. Take `⟨a2, a3⟩` from `((h w hw).2 i).1 1 _ hN1 hd1`. Take `⟨a3, a4, a5⟩` from `a3 (fun P => detFr (fr P)) fun P => isFr_detFr (hf P)`. Rewrite `a4` using `[CharacterValuation.rho, mu_inverse_rank_one_lattice _ hN, chiDet_detI]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a5` using `[CharacterValuation.rho', mu_inverse_rank_one_lattice _ hN, chiDet_detI]`. Rewrite `a1` using `[chiDet_detI]`. Rewrite `a2` using `[mu_offset_rank_one_lattice _ _ hN]`. Rewrite `a3` using `[mu_inverse_rank_one_lattice _ hN]`. Rewrite using `[sig_chiDet' hs hK hN, rhoJ_eq hs hK _ hN, rhoJ'_eq hs hK _ hN, unit_iff, unit_iff, unit_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a1, a4, a5, a2, a3⟩`. Conclude with `⟨hB, partBStd_of_partB hs hK hB⟩`. Introduce and unpack `⟨h, -⟩ w hw`. Use `⟨partBChi_of_partB hZ hs hK h w hw, fun i => ⟨fun n N hN hd => ⟨?_, fun fr hf => ?_⟩, ?_⟩⟩` and prove the remaining obligations. Take `⟨fr, hf⟩` from `exists_frames (rowSG Z.Pr sel mu) hN`.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(h w hw i n N fr hN hf (detUnit_of_stdOver hZ hd)).2.2.2.1`. Take `⟨-, a2, a3, -, a5⟩` from `h w hw i n N fr hN hf (detUnit_of_stdOver hZ hd)`. Rewrite `a2` using `[rhoJ_eq hs hK _ hN, unit_iff]`. Rewrite `a3` using `[rhoJ'_eq hs hK _ hN, unit_iff]`. Conclude with `⟨a5, a2, a3⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b N fr N' fr' hN hN' hd hd' hf hf'`. Conclude with `unit_scal (h w hw i a N fr hN hf (detUnit_of_stdOver hZ hd)).2.2.2.2 (h w hw i b N' fr' hN' hf' (detUnit_of_stdOver hZ hd')).2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem partB_iff (hZ : Z.Ok) (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) (u : Z.Pr.Word) :
     (∀ w : HeightOneSpectrum (𝓞 Z.X.K), ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal →
@@ -703,11 +699,11 @@ theorem partB_iff (hZ : Z.Ok) (hs : s.Ok) (hK : CharacterValuation.ChiInK s χ) 
         (h w hw i b N' fr' hN' hf' (detUnit_of_stdOver hZ hd')).2.2.2.2
 
 /- English proof (translation)
-Use `forall₂_congr fun w hw => forall_congr' fun i => forall₂_congr fun P _ => forall₂_congr fun τ _ => ?_` and prove the remaining obligations. Establish `hT` using `hZ.primes.T_prime u`. Establish `h0 : CharacterValuation.chiVp s χ P ≠ 0`. Rewrite using `[chiVp_eq]`. Conclude with `chiDet_ne_zero hs hχ hK (isSdLat_vpLat P)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ScalarCharacterTwist.sPrime Z i τ = CharacterValuation.sPrime Z i τ` using `rfl`. Establish `e2 : ScalarCharacterTwist.sExp Z i τ = CharacterValuation.sPlain Z i τ` using `rfl`. Rewrite using `[chiDet_vp hs hK, vpLat_eq, rhoJ_eq hs hK _ (isSdLat_vpLat P), rhoJ'_eq hs hK _ (isSdLat_vpLat P), e1, e2]`. Simplify using `only [hasVal_iff _ w hT hw]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a1, a2, a3, a4⟩ r ⟨-, rfl⟩`. Conclude with `⟨⟨a1, a3⟩, a2, a4⟩`. Introduce `h`. Take `⟨⟨a1, a3⟩, a2, a4⟩` from `h _ ⟨h0, rfl⟩`. Conclude with `⟨a1, a2, a3, a4⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem partC_iff (hZ : Z.Ok) (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : CharacterValuation.ChiInK s χ) (u : Z.Pr.Word) :
     (∀ w : HeightOneSpectrum (𝓞 Z.X.K), ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal → ∀ i : Fin Z.R.m, CharacterValuation.PartC Z s χ sel mu cst u w i) ↔
@@ -729,7 +725,7 @@ theorem partC_iff (hZ : Z.Ok) (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK
     exact ⟨a1, a2, a3, a4⟩
 
 /- English proof (translation)
-Use `forall_congr' fun i => forall₃_congr fun n N fr => forall₂_congr fun hN _ => ?_` and prove the remaining obligations. Rewrite using `[rhoJ_eq hs hK _ hN, rhoJ'_eq hs hK _ hN, sig_chiDet' hs hK hN, ← map_mul, ← map_zpow₀, s.σ₀.injective.eq_iff]`. Conclude with `and_iff_right (chiDet_ne_zero hs hχ hK hN)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partD_iff (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : CharacterValuation.ChiInK s χ) :
     (∀ i : Fin Z.R.m, CharacterValuation.PartD Z s χ sel mu cst i.1) ↔ ScalarCharacterTwist.PartD s χ sel mu cst := by
@@ -738,7 +734,7 @@ theorem partD_iff (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : Character
   exact and_iff_right (chiDet_ne_zero hs hχ hK hN)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h v hv => ⟨fun h1 => h.1 v h1 hv, fun k h1 => h.2 k v h1 hv⟩, fun h => ⟨fun v h1 hv => (h v hv).1 h1, fun k v h1 hv => (h v hv).2 k h1⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem unram_iff (u : Z.Pr.Word) :
     (CharacterValuation.UnramOver (mu : Chr Z.X.F Z.X.E Z.X.K) (Z.Pr.T u) ∧ ∀ k, CharacterValuation.UnramOver (mu : Chr Z.X.F Z.X.E Z.X.K) (Z.Pr.g k)) ↔
@@ -747,9 +743,9 @@ theorem unram_iff (u : Z.Pr.Word) :
     fun h => ⟨fun v h1 hv => (h v hv).1 h1, fun k v h1 hv => (h v hv).2 k h1⟩⟩
 
 /- English proof (translation)
-Establish `: ∀ v : HeightOneSpectrum (𝓞 X.F), ∃ P : HeightOneSpectrum (𝓞 X.E), P.asIdeal.under (𝓞 X.F) = v.asIdeal`. Introduce `v`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, h⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 X.E) v.asIdeal (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (FaithfulSMul.algebraMap_injective (𝓞 X.F) (𝓞 X.E))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_le)`. Conclude with `⟨⟨Q, hQ.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hQ (RingOfIntegers.not_isField _)⟩, h⟩`. Use `choose f hf using this`. Conclude with `⟨f, hf⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isSel (X : Fields) : ∃ sel, IsSel X sel := by
   have : ∀ v : HeightOneSpectrum (𝓞 X.F), ∃ P : HeightOneSpectrum (𝓞 X.E), P.asIdeal.under (𝓞 X.F) = v.asIdeal := by
@@ -763,17 +759,15 @@ theorem exists_isSel (X : Fields) : ∃ sel, IsSel X sel := by
   exact ⟨f, hf⟩
 
 /- English proof (translation)
-Introduce `_ hv` and use `absurd (fun _ _ => rfl) hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrTG_one (u : Z.Pr.Word) : ScalarCharacterTwist.UnrTG (1 : Tup Z.X.F Z.X.E Z.X.K S) u :=
   fun _ hv => absurd (fun _ _ => rfl) hv
 
 /- English proof (translation)
-Use `choose f hf using GlobalTheory.TameVal.locK_mem_coeff Z hZ m0 eta h`. Establish `hq : ∀ P : HeightOneSpectrum (𝓞 Z.X.E), ((Formalism.L2.Col.qOf P : ℕ) : Z.X.E) ≠ 0` using `fun P => by`. Establish `: Ideal.absNorm P.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `this` after adjusting the coercions. Use `⟨⟨fun _ _ => 1, fun _ => 1, fun _ => 1, fun j P => if h : j - 1 < Z.R.m then (f ⟨j - 1, h⟩ P.1 (Units.mk0 _ (hq P.1)))⁻¹ * (((qVal (mu : Chr Z.X.F Z.X.E Z.X.K) P.1)⁻¹ : Z.X.Kˣ) : Z.X.K) else 0, 0, 0, 0, false⟩, fun i hi P _ qu hqu => ?_⟩` and prove the remaining obligations. Take `rfl : qu = Units.mk0 _ (hq P.1)` from `Units.ext hqu`. Establish `hi' : i + 1 - 1 < Z.R.m` using `hi`. Simplify using `only [dif_pos hi']`.
-
-Rewrite using `[map_mul, map_inv₀, hf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_cst (hZ : Z.Ok) {m0 : Fin Z.R.m → Formalism.L2.Host.HChar Z.X.E} {eta : Formalism.L2.Host.HChar Z.X.E}
     (h : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).e j) m0 eta)
@@ -808,13 +802,13 @@ def CharValuationsInK : Prop :=
       ScalarCharacterTwist.PartB s χ sel mu cst u ∧ ScalarCharacterTwist.PartBStd s χ sel mu cst u ∧ ScalarCharacterTwist.PartC s χ sel mu cst u ∧ ScalarCharacterTwist.PartD s χ sel mu cst
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h Z hZ D s hs hσ χ hχ hK u`. Take `⟨h1, h2, h3⟩` from `h Z D s χ u hZ hs hσ hχ hK`. Use `⟨(partA_iff hZ hs hχ hK u).1 h1, fun sel hsel S mu hmu m0 eta ht cst hc => ?_⟩` and prove the remaining obligations. Establish `h4` using `h3 m0 eta ht sel hsel S mu ((unram_iff u).2 hmu).1 ((unram_iff u).2 hmu).2 cst hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5` using `(partB_iff hZ hs hK u).1 fun w hw => ⟨h2 w hw, fun i => ((h4 i).1 w hw).1⟩`. Conclude with `⟨h5.1, h5.2, (partC_iff hZ hs hχ hK u).1 fun w hw i => ((h4 i).1 w hw).2, (partD_iff hs hχ hK).1 fun i => (h4 i).2⟩`. Introduce `h Z D s χ u hZ hs hσ hχ hK`. Take `⟨h1, h2⟩` from `h Z hZ D s hs hσ χ hχ hK u`. Use `⟨(partA_iff hZ hs hχ hK u).2 h1, ?_, fun m0 eta ht sel hsel S mu hT hg cst hc i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m0, eta, ht⟩` from `hZ.hecke`. Take `⟨sel, hsel⟩` from `exists_isSel Z.X`. Take `⟨cst, hc⟩` from `exists_cst hZ ht sel (1 : Tup Z.X.F Z.X.E Z.X.K ∅)`. Conclude with `partBChi_of_partB hZ hs hK (h2 sel hsel ∅ 1 (unrTG_one u) m0 eta ht cst hc).1`. Take `⟨b1, b2, b3, b4⟩` from `h2 sel hsel S mu ((unram_iff u).1 ⟨hT, hg⟩) m0 eta ht cst hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun w hw => ⟨((partB_iff hZ hs hK u).2 ⟨b1, b2⟩ w hw).2 i, (partC_iff hZ hs hχ hK u).2 b3 w hw i⟩, (partD_iff hs hχ hK).2 b4 i⟩`.
+A detailed English derivation is pending.
 -/
 theorem charValAtT_iff : CharacterValuation.CharValAtT ↔ CharValuationsInK := by
   constructor
@@ -836,7 +830,7 @@ theorem charValAtT_iff : CharacterValuation.CharValAtT ↔ CharValuationsInK := 
         (partD_iff hs hχ hK).2 b4 i⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ u hZ hs hχ hK => ⟨partA_iff hZ hs hχ hK u, fun _ _ _ _ => ⟨unram_iff u, partB_iff hZ hs hK u, partC_iff hZ hs hχ hK u, partD_iff hs hχ hK⟩⟩, charValAtT_iff, fun h => charValAtT_iff.2 fun Z hZ D s hs hσ χ hχ _ => h Z hZ D s hs hσ χ hχ⟩`.
+Supply the required witnesses or components.
 -/
 theorem typings_agree :
     (∀ (Z : Dat) (D : D7) (s : Seam D Z.X) (χ : TaylorLogMetric.IdE D → ℂ) (u : Z.Pr.Word), Z.Ok → s.Ok → TaylorLogMetric.IsChi D χ → CharacterValuation.ChiInK s χ →

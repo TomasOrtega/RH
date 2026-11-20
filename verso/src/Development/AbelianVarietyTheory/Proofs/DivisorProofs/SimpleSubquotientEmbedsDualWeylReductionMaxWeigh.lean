@@ -22,39 +22,35 @@ namespace GlobalTheory.HighWtEmb
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `O _ _ _ _ N ι _ _ lam ϖ hϖ hlam hBC hC Gm _ _ hS hSQ w hw hJ hmax`. Take `⟨z₀, hz₀, hfix⟩` from `hJ`. Take `⟨φ, hφ0, hφc, hφp⟩` from `GlobalTheory.T.exists_weightForm_on_simple_subquotient O N ι lam ϖ hϖ Gm hSQ w z₀ hz₀ hfix`. Take `⟨Pz, hPc, hPg, hPp, hPn, hPz0⟩` from `GlobalTheory.T.exists_matrixCoefficientPoly_simpleSubquotient O N ι lam ϖ hϖ hlam hC Gm hSQ w hmax φ z₀ hφ0 hfix hφc hφp`. Establish `hmuA : ∀ τ, Antitone (res N (GlobalTheory.HighWt.extW N w τ))` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.HighWt.res_extW]`. Conclude with `hw τ`. Establish `hle : (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N (GlobalTheory.HighWt.extW N w))) ≤ LinearMap.ker (redT O N (GlobalTheory.HighWt.extW N w) ϖ)`. Use `Submodule.smul_le.2 fun r hr n _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Rewrite using `[Algebra.smul_def, MvPolynomial.algebraMap_apply, Ideal.Quotient.algebraMap_eq, map_mul, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self ϖ), mul_zero, map_zero, zero_mul]`. Use `set L := (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N (GlobalTheory.HighWt.extW N w))).liftQ (redT O N (GlobalTheory.HighWt.extW N w) ϖ) hle with hL`. Establish `hLmk : ∀ y, L (Submodule.Quotient.mk y) = redT O N (GlobalTheory.HighWt.extW N w) ϖ y` using `fun y => rfl`. Establish `hLinj : Function.Injective L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.ker_eq_bot, hL, Submodule.ker_liftQ_eq_bot]`. Introduce `y hy`. Conclude with `GlobalTheory.T.mem_smul_top_of_dualWeylTensorReduction_eq_zero O N ι (GlobalTheory.HighWt.extW N w) ϖ hϖ hmuA hBC y hy`. Establish `hsurj : ∀ z, ∃ q, L q = Pz z`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Pz z ∈ nabK (O ⧸ Ideal.span {ϖ}) N (fun τ => res N (GlobalTheory.HighWt.extW N w τ))`. Establish `e : (fun τ => res N (GlobalTheory.HighWt.extW N w τ)) = w` using `funext fun τ => GlobalTheory.HighWt.res_extW N w τ`. Rewrite using `[e]`. Use `haveI : (Ideal.span {ϖ}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hϖ`. Use `letI : Field (O ⧸ Ideal.span {ϖ}) := Ideal.Quotient.field _`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `GlobalTheory.T.mem_dualWeylProductSpan_of_factorwise_dualWeyl (O ⧸ Ideal.span {ϖ}) N ι w (Pz z) (hPn z)`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_lift_dualWeylTensorReduction O N ι (GlobalTheory.HighWt.extW N w) ϖ hϖ hmuA hBC _ h1`. Conclude with `⟨Submodule.Quotient.mk y, hy⟩`. Use `choose q hq using hsurj`. Establish `hsm : ∀ (a : alg O N lam) (z : Gm), Pz z = 0 → Pz (a • z) = 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, ha⟩`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Introduce `z hz`. Break down `hx with ⟨g, rfl⟩ | ⟨τ, v, hp⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (⟨grp O N lam g, Algebra.subset_adjoin (Or.inl ⟨g, rfl⟩)⟩ : alg O N lam) = grpA O N lam g` using `rfl`. Rewrite using `[e, hPg, hz, map_zero]`. Rewrite using `[hPp τ v _ hp, hz, map_zero]`. Consider the case `algebraMap c`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (⟨algebraMap O _ c, Subalgebra.algebraMap_mem _ c⟩ : alg O N lam) = algebraMap O (alg O N lam) c` using `rfl`. Rewrite using `[e, hPc, hz, mul_zero]`. Consider the case `add x y hx hy ihx ihy`. Introduce `z hz`. Establish `e : (⟨x + y, Subalgebra.add_mem _ hx hy⟩ : alg O N lam) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[e, add_smul, map_add, ihx z hz, ihy z hz, add_zero]`. Consider the case `mul x y hx hy ihx ihy`. Introduce `z hz`. Establish `e : (⟨x * y, Subalgebra.mul_mem _ hx hy⟩ : alg O N lam) = ⟨x, hx⟩ * ⟨y, hy⟩` using `rfl`. Rewrite using `[e, mul_smul]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `ihx _ (ihy z hz)`. Set `K : Submodule (alg O N lam) Gm` to `{ carrier := {z | Pz z = 0} add_mem' := fun {a b} ha hb => by simp only [Set.mem_setOf_eq, map_add] at *; rw [ha, hb, add_zero] zero_mem' := by simp smul_mem' := fun a z hz => hsm a z hz }`. Establish `hK : K = ⊥` using `by haveI : IsSimpleOrder (Submodule (alg O N lam) Gm) := (isSimpleModule_iff _ _).1 hS`. Break down `IsSimpleOrder.eq_bot_or_eq_top K with h | h` into its components or cases. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `: z₀ ∈ K` using `h ▸ Submodule.mem_top`. Conclude with `hPz0 this`. Set `ψ : Gm →+ NablaT O N (GlobalTheory.HighWt.extW N w) ⧸ (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N (GlobalTheory.HighWt.extW N w)))` to `{ toFun := q map_zero' := hLinj (by rw [hq, map_zero, map_zero]) map_add' := fun a b => hLinj (by rw [hq, map_add, map_add, hq, hq]) }`. Use `⟨ψ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab`. Establish `h1 : Pz (a - b) = 0`. Rewrite using `[map_sub, ← hq a, ← hq b]`. Conclude with `sub_eq_zero.2 (congrArg L hab)`. Establish `h2 : a - b ∈ K` using `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hK, Submodule.mem_bot]`. Conclude with `sub_eq_zero.1 h2`. Introduce `c z`. Apply `hLinj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `L (q _) = L (c • q z)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, hPc, LinearMap.map_smul, hq, Algebra.smul_def, MvPolynomial.algebraMap_apply, Ideal.Quotient.algebraMap_eq]`. Introduce `g z y hzy`. Apply `hLinj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `L (q _) = _`. Establish `hzy' : q z = Submodule.Quotient.mk y` using `hzy`.
-
-Rewrite using `[hq, hLmk, GlobalTheory.T.dualWeylTensorReduction_intertwines_group_action, hPg, ← hq z, hzy', hLmk]`. Introduce `τ v a a' ha ha' z y hzy`. Apply `hLinj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `L (q _) = _`. Establish `hzy' : q z = Submodule.Quotient.mk y` using `hzy`.
-
-Rewrite using `[hq, hLmk, GlobalTheory.T.dualWeylTensorReduction_weightProjector O N ι _ ϖ τ v a' ha', hPp τ v a ha, ← hq z, hzy', hLmk]`.
+A detailed English derivation is pending.
 -/
 theorem embeds_of_maxWeight : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ) (ϖ : O), Irreducible ϖ → (∀ τ, Antitone (res N (lam τ))) → GlobalTheory.HighWt.BaseChange → GlobalTheory.HighWt.CoefIn O N lam → ∀ (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm], IsSimpleModule (alg O N lam) Gm → SubQ O N lam ϖ Gm → ∀ w : ι → Fin N → ℕ, (∀ τ, Antitone (w τ)) → GlobalTheory.HighWt.JointWt O N lam Gm w → (∀ w' : ι → Fin N → ℕ, GlobalTheory.HighWt.JointWt O N lam Gm w' → GlobalTheory.HighWt.pot N w' ≤ GlobalTheory.HighWt.pot N w) → Embeds O N lam (GlobalTheory.HighWt.extW N w) ϖ Gm := by
   intro O _ _ _ _ N ι _ _ lam ϖ hϖ hlam hBC hC Gm _ _ hS hSQ w hw hJ hmax

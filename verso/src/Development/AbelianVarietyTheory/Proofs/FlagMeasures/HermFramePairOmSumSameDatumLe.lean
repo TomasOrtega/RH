@@ -24,11 +24,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.DegCnt.OmCount
 
 /- English proof (translation)
-Rewrite using `[← ENNReal.tsum_set_one S, ← ENNReal.tsum_set_const, ← ENNReal.tsum_fiberwise (fun _ : S => (1 : ℝ≥0∞)) (fun x : S => (⟨f x, hA x x.2⟩ : A))]`. Use `ENNReal.tsum_le_tsum fun a => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_set_one]`. Break down `Set.eq_empty_or_nonempty ((fun x : S => (⟨f x, hA x x.2⟩ : A)) ⁻¹' {a}) with h | ⟨x, hx⟩` into its components or cases. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `le_trans (ENat.toENNReal_le.2 ?_) (hc x x.2)` and prove the remaining obligations. Use `Set.encard_le_encard_of_injOn (f := Subtype.val) ?_ Subtype.val_injective.injOn` and prove the remaining obligations. Introduce `y hy`. Use `⟨y.2, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (⟨f y, hA y y.2⟩ : A) = a` using `hy`. Establish `h2 : (⟨f x, hA x x.2⟩ : A) = a` using `hx`. Conclude with `congrArg Subtype.val (h1.trans h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem encard_le_of_fibres {α β : Type*} (S : Set α) (A : Set β) (f : α → β) (c : ℝ≥0∞)
     (hA : ∀ x ∈ S, f x ∈ A)
@@ -49,13 +49,11 @@ theorem encard_le_of_fibres {α β : Type*} (S : Set α) (A : Set β) (f : α �
     exact congrArg Subtype.val (h1.trans h2.symm)
 
 /- English proof (translation)
-Use `set T : Set (MulAction.orbitRel.Quotient G α) := {o | Q o.out} with hT`. Establish `h1 : (∑' o : MulAction.orbitRel.Quotient G α, if Q o.out then w o.out else 0) ≤ ∑' _ : T, B`. Rewrite using `[tsum_subtype T (fun _ => B)]`. Use `ENNReal.tsum_le_tsum fun o => ?_` and prove the remaining obligations. Distinguish the cases in `ho : Q o.out`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ho, Set.indicator_of_mem (show o ∈ T from ho)]`. Conclude with `(h _ ho).1`. Rewrite using `[if_neg ho]`. Conclude with `zero_le`. Use `h1.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ENNReal.tsum_set_const]`. Use `gcongr`. Establish `h2 : T ⊆ (fun x : α => (Quotient.mk (MulAction.orbitRel G α) x)) '' S`. Introduce `o ho`. Take `⟨s, hs⟩` from `(h _ ho).2`.
-
-Use `⟨_, hs, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← Quotient.out_eq o]`. Conclude with `Quotient.sound ⟨s, rfl⟩`. Conclude with `(Set.encard_le_encard h2).trans (Set.encard_image_le _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tsum_orbits_le {G α : Type*} [Group G] [MulAction G α] (Q : α → Prop) (w : α → ℝ≥0∞) (S : Set α)
     (B : ℝ≥0∞) (h : ∀ x, Q x → w x ≤ B ∧ ∃ s : G, s • x ∈ S) :
@@ -86,21 +84,19 @@ variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCo
   [Module R V] [IsScalarTower R K V]
 
 /- English proof (translation)
-Establish `hsp : Submodule.span K (A : Set V) ≤ W` using `Submodule.span_le.2 hA`. Establish `hdW : dual H A ≤ rs R W` using `fun y hy => hsp ((mem_dual_iff H A y).1 hy).1`. Establish `hAd : A ≤ dual H A` using `fun y hy => (mem_dual_iff H A y).2 ⟨Submodule.subset_span hy, fun x hx => (isIntegralLat_iff H A).1 hint y hy x hx⟩`. Establish `hspan : Submodule.span K ((A ⊔ rs R I : Submodule R V) : Set V) = Submodule.span K (A : Set V) ⊔ I`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.span_le]`. Establish `: A ⊔ rs R I ≤ rs R (Submodule.span K (A : Set V) ⊔ I)` using `sup_le (fun x hx => Submodule.mem_sup_left (Submodule.subset_span hx)) (fun x hx => Submodule.mem_sup_right hx)`. Conclude with `this`. Conclude with `sup_le (Submodule.span_mono fun x hx => Submodule.mem_sup_left hx) (fun x hx => Submodule.subset_span (Submodule.mem_sup_right hx))`. Establish `hd : dual H (A ⊔ rs R I) = dual H A ⊔ (A ⊔ rs R I)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← sup_assoc, sup_eq_left.2 hAd]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨hy1, hy2⟩` from `(mem_dual_iff H _ y).1 hy`. Rewrite `hy1` using `[hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, i, hi, rfl⟩` from `Submodule.mem_sup.1 hy1`. Use `Submodule.add_mem_sup ((mem_dual_iff H A a).2 ⟨ha, fun x hx => ?_⟩) hi` and prove the remaining obligations. Use `hy2 x (Submodule.mem_sup_left hx)` as an intermediate fact. Rewrite `this` using `[map_add, LinearMap.add_apply, h2 x (Submodule.mem_sup_left (hA hx)) i hi, add_zero]`. Then use the resulting hypothesis. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, i, hi, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨ha1, ha2⟩` from `(mem_dual_iff H A a).1 ha`. Use `(mem_dual_iff H _ _).2 ⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hspan]`. Conclude with `Submodule.add_mem_sup ha1 hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a', ha', i', hi', rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add, h1 (a + i) (Submodule.add_mem_sup (hsp ha1) hi) i' hi', add_zero, map_add, LinearMap.add_apply, h2 a' (Submodule.mem_sup_left (hA ha')) i hi, add_zero]`. Conclude with `ha2 a' ha'`. Establish `hinf : (A ⊔ rs R I) ⊓ dual H A = A`. Rewrite using `[sup_inf_assoc_of_le _ hAd, sup_eq_left]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `: x ∈ W ⊓ I` using `⟨hdW hx.2, hx.1⟩`. Rewrite `this` using `[hWI, Submodule.mem_bot]`. Rewrite using `[this]`. Conclude with `A.zero_mem`.
-
-Unfold `idx`. Rewrite using `[hd, Submodule.sup_toAddSubgroup (dual H A), AddSubgroup.relIndex_sup_right, ← AddSubgroup.inf_relIndex_right]`. Use `congr 1`. Conclude with `congrArg Submodule.toAddSubgroup hinf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem idx_dual_sup (H : HermSpace K V) (W I : Submodule K V) (A : Submodule R V) (hA : A ≤ rs R W)
     (hWI : W ⊓ I = ⊥) (h1 : ∀ x ∈ W ⊔ I, ∀ y ∈ I, H.B x y = 0) (h2 : ∀ x ∈ W ⊔ I, ∀ y ∈ I, H.B y x = 0)
@@ -153,13 +149,13 @@ theorem idx_dual_sup (H : HermSpace K V) (W I : Submodule K V) (A : Submodule R 
 end
 
 /- English proof (translation)
-Use `set M := Db * Del * NT with hM`. Establish `hM1 : Db * NT ≤ M` using `by rw [hM]; nlinarith [mul_nonneg (sub_nonneg.2 hDel) (mul_nonneg (zero_le_one.trans hDb) (zero_le_one.trans hNT))]`. Establish `hM2 : Del * NT ≤ M` using `by rw [hM]; nlinarith [mul_nonneg (sub_nonneg.2 hDb) (mul_nonneg (zero_le_one.trans hDel) (zero_le_one.trans hNT))]`. Establish `hM3 : Del ≤ M` using `le_trans (le_mul_of_one_le_right (by linarith) hNT) hM2`. Establish `hM4 : 1 ≤ M` using `hDel.trans hM3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : n ≤ M ^ 2` using `hn.trans (by gcongr)`. Establish `hx' : x ≤ M ^ 2` using `hx.trans (by gcongr)`. Establish `hic : 0 ≤ i ^ c` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_add hi, Real.rpow_natCast, mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (i * b) ^ k * i ^ c * (((M ^ 2) ^ (12 * r + 50)) ^ (2 * (2 * r + 1) ^ 2) * (M ^ 2) ^ (2 * r + 1) * M ^ r * (M ^ 2) ^ (2 * (3 * (12 * r + 50) + 11) * (2 * r + 1) ^ 2)) := by`. Establish `: 0 ≤ Del` using `by linarith`. Use `gcongr`. Use `_ ≤ _ := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Put the polynomial expressions in normal form.
 
-Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Simplify using `only [← pow_mul, ← pow_add]`. Use `pow_le_pow_right₀ hM4 ?_` and prove the remaining obligations. Put the polynomial expressions in normal form. Use polynomial arithmetic with `[Nat.zero_le r, Nat.zero_le (r ^ 2), Nat.zero_le (r ^ 3)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem numeric (r k : ℕ) (i b c n Db Del NT x : ℝ) (hi : 0 < i) (hb : 0 ≤ b) (hn0 : 0 ≤ n) (hx0 : 0 ≤ x)
     (hDb : 1 ≤ Db) (hDel : 1 ≤ Del) (hNT : 1 ≤ NT) (hn : n ≤ (Db * NT) ^ 2) (hx : x ≤ (Del * NT) ^ 2) :
@@ -194,9 +190,9 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨-, hS, -, -⟩` from `GlobalTheory.T.commonUnipotent_stabiliser_preserves_terms_and_datum K V H hK r N g Λ hg hΛ s hs`. Take `⟨-, -, -, -, hRef, -⟩` from `GlobalTheory.T.hermFramePair_innerLattices_unimodular_primitive K V H hK r N g Λ hg hΛ`. Take `⟨-, -, -, -, hnil⟩` from `GlobalTheory.T.hermFramePairCommonUnipotentStabiliser_summary K V H hK r N`. Establish `hL : Submodule.IsLattice K Λ` using `((isUnimod_iff H Λ).1 hΛ.1.1).1`. Unfold `NF.om NF.Gam`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hS.1]`. Conclude with `(Unimod.invVol_smul K V N.R (2 * r + 1) hnil Λ _ hL hRef).2 s hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r) {g : ℕ} {Λ : Submodule (𝓞 K) V} (hg : 1 ≤ g)
     (hΛ : N.IsTerm g Λ) {s : V ≃ₗ[K] V} (hs : s ∈ N.R) : N.om (s • Λ) = N.om Λ := by
@@ -209,11 +205,9 @@ theorem om_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r
   exact (Unimod.invVol_smul K V N.R (2 * r + 1) hnil Λ _ hL hRef).2 s hs
 
 /- English proof (translation)
-Take `⟨hTh, -, -, -, -, -, -, ⟨M, -, hM⟩, hsp⟩` from `GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ hg hΛ`. Take `⟨⟨⟨⟨M', hM', hL⟩, -⟩, -⟩, -⟩` from `GlobalTheory.T.hermFramePair_innerLattices_unimodular_primitive K V H hK r N g Λ hg hΛ`. Establish `h0 : latLa N.F N.F' Λ (g : 𝓞 K) ≤ flagPairDefinitePartLattice N.F N.F' Λ` using `fun x hx => hx.1.2`. Establish `hI : rs (𝓞 K) (II N.F N.F') ≤ latLa N.F N.F' Λ (g : 𝓞 K)` using `le_trans (by rw [hM]; exact le_sup_right) hTh`. Use `⟨⟨latLa N.F N.F' Λ (g : 𝓞 K) ⊓ M', ?_, ?_⟩, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsNoetherian (𝓞 K) M' := isNoetherian_of_fg_of_noetherian _ hM'`. Conclude with `isNoetherian_submodule.1 this _ inf_le_right`. Rewrite using `[inf_sup_assoc_of_le _ hI, ← hL]`. Conclude with `(inf_eq_left.2 (h0.trans inf_le_left)).symm`. Conclude with `Submodule.span_le.2 fun x hx => (h0 hx).2`.
-
-Rewrite using `[← hsp]`. Conclude with `Submodule.span_mono hTh`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatMod_latLa (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r) {g : ℕ} {Λ : Submodule (𝓞 K) V} (hg : 1 ≤ g)
     (hΛ : N.IsTerm g Λ) :
@@ -231,9 +225,9 @@ theorem isLatMod_latLa (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N :
   · rw [← hsp]; exact Submodule.span_mono hTh
 
 /- English proof (translation)
-Take `⟨-, hlift, -⟩` from `GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N`. Rewrite using `[h, sup_inf_assoc_of_le _ inf_le_right, eq_comm, sup_eq_left]`. Introduce `x hx`. Establish `: x ∈ N.Wt ⊓ II N.F N.F'` using `⟨hx.2, hx.1⟩`. Rewrite `this` using `[hlift.2.1, Submodule.mem_bot]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_Wt_of_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r) {Λ : Submodule (𝓞 K) V} (h : N.Split Λ) :
     Λ ⊓ rs (𝓞 K) N.Wt = latTh N.F N.F' Λ ⊓ rs (𝓞 K) N.Wt := by
@@ -245,23 +239,21 @@ theorem inf_Wt_of_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N 
   rw [this]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Take `⟨-, hlift, -, -, -, -, hw, -, hPD, -⟩` from `GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N`. Take `⟨-, -, -, -, hgi, -, hdel, hlat⟩` from `GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ hg hΛ`. Establish `h1 : ∀ x ∈ N.Wt ⊔ II N.F N.F', ∀ y ∈ II N.F N.F', H.B x y = 0`. Introduce `x hx y hy`. Rewrite `hx` using `[← hw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mem_perp_iff H _ x).1 hx y (Submodule.mem_sup_left (Submodule.mem_sup_left hy.1))`. Establish `h2 : ∀ x ∈ N.Wt ⊔ II N.F N.F', ∀ y ∈ II N.F N.F', H.B y x = 0`. Introduce `x hx y hy`. Rewrite using `[← H.herm, h1 x hx y hy, star_zero]`. Establish `hintΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, H.B x y ∈ (1 : Submodule (𝓞 K) K)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y hy`. Establish `hu : dual H Λ = Λ` using `hΛ.1.1.2`. Rewrite `hx` using `[← hu]`. Conclude with `((mem_dual_iff H Λ x).1 hx).2 y hy`. Establish `hintA : IsIntegralLat H (Λ ⊓ rs (𝓞 K) N.Wt)` using `(isIntegralLat_iff H _).2 fun x hx y hy => hintΛ x hx.1 y hy.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hintT : IsIntegralLat H (latTh N.F N.F' Λ)`. Rewrite using `[h]`. Use `(isIntegralLat_iff H _).2 fun x hx y hy => ?_` and prove the remaining obligations. Take `⟨a, ha, i, hi, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨a', ha', i', hi', rfl⟩` from `Submodule.mem_sup.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, h1 (a + i) (Submodule.add_mem_sup ha.2 hi) i' hi', add_zero, map_add, LinearMap.add_apply, h2 a' (Submodule.mem_sup_left ha'.2) i hi, add_zero]`. Conclude with `hintΛ a ha.1 a' ha'.1`. Establish `hrad : ∀ x ∈ wSp N.F N.F', (∀ y ∈ wSp N.F N.F', H.B x y = 0) ↔ x ∈ II N.F N.F'`. Rewrite using `[hw]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun hx0 => ?_, fun hxI y hy => h2 y hy x hxI⟩` and prove the remaining obligations. Take `⟨a, ha, i, hi, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `haa` using `hx0 a (Submodule.mem_sup_left ha)`. Rewrite `haa` using `[map_add, LinearMap.add_apply, h2 a (Submodule.mem_sup_left ha) i hi, add_zero]`. Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `ha0 : a = 0`. Assume the negation of the conclusion as `hne`. Use `hPD τ ⟨a, ha⟩ (fun h => hne (congrArg Subtype.val h))` as an intermediate fact. Establish `e : GlobalTheory.Mass.hRes H.B.flip N.Wt ⟨a, ha⟩ ⟨a, ha⟩ = H.B a a` using `rfl`. Rewrite `this` using `[e, haa]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `at this`. Rewrite using `[ha0, zero_add]`. Conclude with `hi`. Establish `hd` using `(DelScale.main K V H hK _ _ _ _ (by rw [hw]; exact le_sup_right) hrad hlat hlat).2.2.2 hintT`. Rewrite using `[← idx_dual_sup H N.Wt (II N.F N.F') _ inf_le_right hlift.2.1 h1 h2 hintA, ← h, ← hd.2, hdel]`.
-
-Establish `: 0 ≤ N.NT` using `by unfold NF.NT; positivity`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idx_dual_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r) {g : ℕ} {Λ : Submodule (𝓞 K) V} (hg : 1 ≤ g)
     (hΛ : N.IsTerm g Λ) (h : N.Split Λ) :
@@ -313,35 +305,29 @@ theorem idx_dual_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF
 end
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ i b`. Take `⟨𝔠, hcn, hDb, hDel, hQ⟩` from `GlobalTheory.T.exists_star_stable_ideal_absorbing_minors K V H hK r N g Λ hg hΛ`. Use `hQ _ fun c0 c1 c2 c3 => ?_` and prove the remaining obligations. Take `⟨-, -, hcompl, hrk, -, -, -, -, -, hT, -⟩` from `GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N`. Establish `hrkPi : Module.finrank K (perp H N.Wt) = 2 * r + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Submodule.finrank_add_eq_of_isCompl hcompl` as an intermediate fact. Unfold `NF.Pi at this`. Use linear arithmetic over natural numbers and integers. Establish `hNT : 1 ≤ N.NT` using `one_le_pow₀ (by exact_mod_cast hT)`. Use `set S : Set (Submodule (𝓞 K) V) := {Λ' | (N.IsTerm g Λ' ∧ N.SameDat g Λ Λ' ∧ N.iI g Λ' = i ∧ N.bI Λ' = b) ∧ N.Split Λ' ∧ N.Near (𝔠 ^ (12 * r + 50)) Λ'} with hS`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B : ℝ := (b : ℝ) ^ Module.finrank K N.Wt * N.Del ^ r * (Ideal.absNorm 𝔠 : ℝ) ^ (2 * (3 * (12 * r + 50) + 11) * (2 * r + 1) ^ 2) with hB`. Establish `hQs : ∀ Λ', (N.IsTerm g Λ' ∧ N.SameDat g Λ Λ' ∧ N.iI g Λ' = i ∧ N.bI Λ' = b) → ∀ s ∈ N.R, (N.IsTerm g (s • Λ') ∧ N.SameDat g Λ (s • Λ') ∧ N.iI g (s • Λ') = i ∧ N.bI (s • Λ') = b)`. Introduce and unpack `Λ' ⟨h1, h2, h3, h4⟩ s hs`. Take `⟨k1, k2, k3, k4⟩` from `GlobalTheory.T.commonUnipotent_stabiliser_preserves_terms_and_datum K V H hK r N g Λ' hg h1 s hs`. Use `⟨k1, ⟨k2.1.trans h2.1, k2.2.1.trans h2.2.1, k2.2.2.trans h2.2.2⟩, ?_, k4.trans h4⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← h3]`. Unfold `NF.iI latLa`. Rewrite using `[k3, k2.2.2]`. Establish `step1 : N.omSum (fun Λ' => N.IsTerm g Λ' ∧ N.SameDat g Λ Λ' ∧ N.iI g Λ' = i ∧ N.bI Λ' = b) ≤ ((S.encard : ℕ∞) : ℝ≥0∞) * ENNReal.ofReal B`. Use `tsum_orbits_le (G := N.R) (fun Λ' => N.IsTerm g Λ' ∧ N.SameDat g Λ Λ' ∧ N.iI g Λ' = i ∧ N.bI Λ' = b) (fun Λ' => ENNReal.ofReal (N.om Λ')) S _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `Λ' h`. Take `⟨s, hs, hsp⟩` from `GlobalTheory.T.hermFramePair_exists_unipotent_split_lattice K V H hK r N g Λ' hg h.1`. Establish `h'` using `hQs Λ' h s hs`. Take `⟨t, ht, hsp', hnear⟩` from `GlobalTheory.T.hermFramePairNormalForm_exists_conj_near_reference K V H hK r N g _ hg h'.1 𝔠 c0 c1 c2 c3 hsp`. Establish `h''` using `hQs _ h' t ht.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ENNReal.ofReal_le_ofReal ?_, ⟨t, ht.1⟩ * ⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← om_smul hK N hg h.1 hs, ← om_smul hK N hg h'.1 ht.1, hB, ← h''.2.2.2]`. Conclude with `GlobalTheory.T.splitTermWeight_le_near_referenceLattice K V H hK r N g _ hg h''.1 𝔠 c0 c1 c2 c3 _ hsp' hnear`. Rewrite using `[mul_smul]`. Conclude with `⟨h'', hsp', hnear⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `step1.trans ?_` and prove the remaining obligations. Break down `Set.eq_empty_or_nonempty S with hE | ⟨Λ₀, hΛ₀⟩` into its components or cases. Rewrite using `[hE]`. Simplify using the standard rewrite rules. Establish `hi : 1 ≤ i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hΛ₀.1.2.2.1]`. Conclude with `(GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ₀ hg hΛ₀.1.1).2.2.1`. Establish `hTh` using `GlobalTheory.T.card_sublattices_definiteQuotient_normalForm_le K V H hK r N _ i hi (isLatMod_latLa hK N hg hΛ)`. Establish `hP` using `GlobalTheory.T.encard_lattices_near_reference_lattice_le K V H hK r N (𝔠 ^ (12 * r + 50)) (pow_ne_zero _ c0)`. Establish `step2` using `encard_le_of_fibres S ({Th : Submodule (𝓞 K) V | rs (𝓞 K) (II N.F N.F') ≤ Th ∧ Th ≤ latLa N.F N.F' Λ (g : 𝓞 K) ∧ idx (latLa N.F N.F' Λ (g : 𝓞 K)) Th = i} ×ˢ {P : Submodule (𝓞 K) V | 𝔠 ^ (12 * r + 50) • N.P0 ≤ P ∧ 𝔠 ^ (12 * r + 50) • P ≤ N.P0}) (fun Λ' => (latTh N.F N.F' Λ', Λ' ⊓ …`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `rotate_left`. Introduce and unpack `Λ' ⟨⟨h1, h2, h3, h4⟩, h5, h6⟩`. Establish `e : latLa N.F N.F' Λ' (g : 𝓞 K) = latLa N.F N.F' Λ (g : 𝓞 K)`. Unfold `latLa`. Rewrite using `[h2.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨?_, ?_, ?_⟩, h6⟩` and prove the remaining obligations. Use `show _ ≤ latTh N.F N.F' Λ'`. Rewrite using `[h5]`. Conclude with `le_sup_right`. Rewrite using `[← e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ' hg h1).1`. Rewrite using `[← e]`. Conclude with `h3`. Introduce and unpack `Λ' ⟨⟨h1, h2, h3, h4⟩, h5, h6⟩`. Establish `hgl` using `GlobalTheory.T.encard_unimodular_hermGluings_le K V H hK N.Wt (Λ' ⊓ rs (𝓞 K) N.Wt) (Λ' ⊓ rs (𝓞 K) N.Pi) _ hcompl rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans (ENat.toENNReal_le.2 (Set.encard_le_encard ?_)) (hgl.trans ?_)` and prove the remaining obligations. Introduce and unpack `Λ'' ⟨⟨⟨k1, -⟩, k5, -⟩, k⟩`. Use `⟨k1.1.1, ?_, (Prod.ext_iff.1 k).2⟩` and prove the remaining obligations. Rewrite using `[inf_Wt_of_split hK N k5, inf_Wt_of_split hK N h5]`. Conclude with `congrArg (· ⊓ rs (𝓞 K) N.Wt) (Prod.ext_iff.1 k).1`.
-
-Rewrite using `[hrkPi, ENNReal.ofReal_pow (by positivity), ← ENNReal.ofReal_natCast] gcongr`. Conclude with `idx_dual_le hK N hg h1 h5`. Rewrite `step2` using `[Set.encard_prod, ENat.toENNReal_mul]`. Establish `hipos : (0 : ℝ) < i` using `by exact_mod_cast hi`. Establish `hDel0 : 0 ≤ N.Del` using `by linarith`.
-
-Establish `hP' : (Ideal.absNorm (𝔠 ^ (12 * r + 50)) : ℝ≥0∞) ^ (2 * (2 * r + 1) ^ 2) = ENNReal.ofReal (((Ideal.absNorm 𝔠 : ℝ) ^ (12 * r + 50)) ^ (2 * (2 * r + 1) ^ 2))`. Rewrite using `[ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_natCast, map_pow, Nat.cast_pow]`. Rewrite `hP` using `[hP']`. Use `le_trans (mul_le_mul_left (step2.trans (mul_le_mul_left (mul_le_mul' hTh hP) _)) _) ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`.
-
-Conclude with `ENNReal.ofReal_le_ofReal (numeric r _ i b (cf K) _ N.Db N.Del N.NT _ hipos (by positivity) (by positivity) (by positivity) hDb hDel hNT hcn le_rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → ∀ i b : ℕ, N.omSum (fun Λ' => N.IsTerm g Λ' ∧ N.SameDat g Λ Λ' ∧ N.iI g Λ' = i ∧ N.bI Λ' = b) ≤ ENNReal.ofReal (((i : ℝ) * b) ^ Module.finrank K N.Wt * (i : ℝ) ^ cf K * (N.Db * N.Del * N.NT) ^ (10000 * (r + 1) ^ 3)) := by
   intro K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ i b

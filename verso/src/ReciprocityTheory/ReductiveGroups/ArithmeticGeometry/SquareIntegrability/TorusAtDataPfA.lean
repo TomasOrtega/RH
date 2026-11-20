@@ -13,14 +13,14 @@ variable (X : Data E r) (τ : X.Ψ) (e : Fin r → Fin r → ℂ)
   (he : ∀ a b, hermC τ.1 X.Gm (e a) (e b) = if a = b then ((sgn X.p0 a : ℝ) : ℂ) else 0)
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sgn; split_ifs <;> push_cast <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_sq (a : Fin r) : ((sgn X.p0 a : ℝ) : ℂ) * ((sgn X.p0 a : ℝ) : ℂ) = 1 := by
   unfold sgn; split_ifs <;> push_cast <;> norm_num
 
 include he in
 /- English proof (translation)
-Rewrite using `[hermC_sum_left]`. Simplify using `only [hermC_smul_left, he, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_sum (β : Fin r → ℂ) (s : Finset (Fin r)) (c : Fin r) :
     hermC τ.1 X.Gm (∑ a ∈ s, β a • e a) (e c) =
@@ -31,9 +31,9 @@ theorem pair_sum (β : Fin r → ℂ) (s : Finset (Fin r)) (c : Fin r) :
 
 include he in
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h1` using `pair_sum X τ e he g Finset.univ i`. Rewrite `h1` using `[hg, hermC_zero_left, if_pos (Finset.mem_univ i)]`. Establish `h2` using `sgn_sq X i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem e_linInd : LinearIndependent ℂ e := by
   rw [Fintype.linearIndependent_iff]
@@ -47,7 +47,7 @@ theorem e_linInd : LinearIndependent ℂ e := by
 
 include he in
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin r) with h | h` into its components or cases. Conclude with `Subsingleton.elim _ _`. Conclude with `(e_linInd X τ e he).span_eq_top_of_card_eq_finrank (by simp)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem e_span : Submodule.span ℂ (Set.range e) = ⊤ := by
   rcases isEmpty_or_nonempty (Fin r) with h | h
@@ -56,9 +56,9 @@ theorem e_span : Submodule.span ℂ (Set.range e) = ⊤ := by
 
 include he in
 /- English proof (translation)
-Establish `hu : u ∈ Submodule.span ℂ (Set.range e)` using `by rw [e_span X τ e he]; trivial`. Take `⟨β, hβ⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hu`. Establish `hc : ∀ a : Fin r, ((sgn X.p0 a : ℝ) : ℂ) * hermC τ.1 X.Gm u (e a) = β a`. Introduce `a`. Rewrite using `[← hβ, pair_sum X τ e he β Finset.univ a, if_pos (Finset.mem_univ a)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hc]`. Conclude with `hβ.symm`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand (u : Fin r → ℂ) :
     u = ∑ a : Fin r, (((sgn X.p0 a : ℝ) : ℂ) * hermC τ.1 X.Gm u (e a)) • e a := by
@@ -75,7 +75,7 @@ theorem expand (u : Fin r → ℂ) :
 
 include he in
 /- English proof (translation)
-Establish `hx` using `expand X τ e he u`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hermC_sum_right, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_right, map_mul, Complex.conj_ofReal, mul_assoc, Complex.conj_mul', ← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem self_pair (u : Fin r → ℂ) :
     (hermC τ.1 X.Gm u u).re = ∑ a : Fin r, sgn X.p0 a * ‖hermC τ.1 X.Gm u (e a)‖ ^ 2 := by
@@ -101,16 +101,16 @@ variable (X : Data E r) (τ : X.Ψ) (e : Fin r → Fin r → ℂ)
   (hind : LinearIndependent ℂ (X.colP x τ))
 
 /- English proof (translation)
-Simplify using `[sgn, Fin.coe_castLE, a.isLt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgn_castLE (a : Fin X.p0) : ((sgn X.p0 (Fin.castLE X.p0_le a : ℕ) : ℝ) : ℂ) = 1 := by
   simp [sgn, Fin.coe_castLE, a.isLt]
 
 include he in
 /- English proof (translation)
-Take `⟨β, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hy`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `symm`. Rewrite using `[hermC_sum_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hermC_smul_left, he, Fin.castLE_inj, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ c), sgn_castLE, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj (y : Fin r → ℂ)
     (hy : y ∈ Submodule.span ℂ (Set.range fun a : Fin X.p0 => e (Fin.castLE X.p0_le a))) :
@@ -125,17 +125,17 @@ theorem proj (y : Fin r → ℂ)
 
 include he hflag hind in
 /- English proof (translation)
-Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Take `⟨w, hw⟩ : ∃ w : Fin r → ℂ, w = ∑ b : Fin X.p0, conj (v b) • X.colP x τ b` from `⟨_, rfl⟩`. Establish `h1 : ∀ a, hermC τ.1 X.Gm (X.colP x τ a) w = 0`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha` using `congrFun hv a`. Simplify using `only [Matrix.mulVec, dotProduct, Data.gramPos_apply, Pi.zero_apply] at ha`. Rewrite using `[hw, hermC_sum_right]`. Simplify using `only [hermC_smul_right, Complex.conj_conj]`. Rewrite using `[← ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Establish `h2 : ∀ a, hermC τ.1 X.Gm w (X.colP x τ a) = 0` using `fun a => by`. Rewrite using `[← hermC_conj τ.1 X.Gm_herm (X.colP x τ a) w, h1, map_zero]`. Establish `h3 : ∀ y ∈ Submodule.span ℂ (Set.range fun a : Fin X.p0 => X.colP x τ a), hermC τ.1 X.Gm w y = 0`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hy`. Simplify using `[hermC_sum_right, hermC_smul_right, h2]`. Establish `hwf : w ∈ Submodule.span ℂ (Set.range fun a : Fin X.p0 => e (Fin.castLE X.p0_le a))`. Rewrite using `[hflag, hw]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw0 : w = 0`. Rewrite using `[proj X τ e he w hwf]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[h3 _ (by rw [← hflag]; exact Submodule.subset_span ⟨a, rfl⟩), zero_smul]`. Establish `hz` using `Fintype.linearIndependent_iff.mp hind (fun b => conj (v b)) (hw ▸ hw0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Simplify using `using hz b`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gramPos_det_ne : (X.gramPos x τ).det ≠ 0 := by
   intro hdet
@@ -170,17 +170,17 @@ theorem gramPos_det_ne : (X.gramPos x τ).det ≠ 0 := by
 
 include he hflag hind in
 /- English proof (translation)
-Establish `hdet` using `gramPos_det_ne X τ e he x hflag hind`. Establish `hG : (X.gramPos x τ)⁻¹ * X.gramPos x τ = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet)`. Establish `hA : ∀ d, hermC τ.1 X.Gm (X.ppos x τ u) (X.colP x τ d) = hermC τ.1 X.Gm u (X.colP x τ d)`. Introduce `d`. Rewrite using `[Data.ppos_eq, hermC_sum_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hermC_smul_left, ← Data.gramPos_apply]`. Establish `hs : ∑ a : Fin X.p0, (∑ b : Fin X.p0, hermC τ.1 X.Gm u (X.colP x τ b) * (X.gramPos x τ)⁻¹ b a) * X.gramPos x τ a d = ∑ b : Fin X.p0, hermC τ.1 X.Gm u (X.colP x τ b) * ((X.gramPos x τ)⁻¹ * X.gramPos x τ) b d`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`. Rewrite using `[hs, hG]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`. Establish `hmemC : ∀ y ∈ Submodule.span ℂ (Set.range fun a : Fin X.p0 => X.colP x τ a), hermC τ.1 X.Gm (X.ppos x τ u) y = hermC τ.1 X.Gm u y`. Introduce `y hy`. Take `⟨δ, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hy`. Simplify using `only [hermC_sum_right, hermC_smul_right, hA]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp : X.ppos x τ u ∈ Submodule.span ℂ (Set.range fun a : Fin X.p0 => e (Fin.castLE X.p0_le a))`. Rewrite using `[hflag, Data.ppos_eq]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Establish `hpe` using `proj X τ e he (X.ppos x τ u) hp`. Establish `hcoef : ∀ a : Fin X.p0, hermC τ.1 X.Gm (X.ppos x τ u) (e (Fin.castLE X.p0_le a)) = hermC τ.1 X.Gm u (e (Fin.castLE X.p0_le a))` using `fun a => hmemC _ (by rw [← hflag]; exact Submodule.subset_span ⟨a, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hpe` using `[hcoef]`. Establish `h1 : X.posPart x τ u = (hermC τ.1 X.Gm (X.ppos x τ u) u).re`. Rewrite using `[Data.hermC_ppos_self]`. Both sides reduce to the same expression. Rewrite using `[h1, hpe, hermC_sum_left, Complex.re_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_left, ← hermC_conj τ.1 X.Gm_herm u (e (Fin.castLE X.p0_le a)), Complex.mul_conj', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+A detailed English derivation is pending.
 -/
 theorem posPart_eq (u : Fin r → ℂ) :
     X.posPart x τ u = ∑ a : Fin X.p0, ‖hermC τ.1 X.Gm u (e (Fin.castLE X.p0_le a))‖ ^ 2 := by
@@ -222,11 +222,11 @@ theorem posPart_eq (u : Fin r → ℂ) :
 
 include he hflag hind in
 /- English proof (translation)
-Use `set t : Fin r → ℝ := fun b => ‖hermC τ.1 X.Gm u (e b)‖ ^ 2 with ht`. Establish `hsplit : ∑ b : Fin r, (if (b : ℕ) < X.p0 then t b else 0) = ∑ a : Fin X.p0, t (Fin.castLE X.p0_le a)`. Rewrite using `[← Finset.sum_filter]`. Conclude with `Finset.sum_bij' (fun b hb => ⟨b, (Finset.mem_filter.mp hb).2⟩) (fun a _ => Fin.castLE X.p0_le a) (fun _ _ => Finset.mem_univ _) (fun a _ => by simp [Finset.mem_filter, a.isLt]) (fun _ _ => rfl) (fun _ _ => rfl) (fun _ _ => rfl)`. Establish `hsg : ∑ b : Fin r, sgn X.p0 b * t b = 2 * ∑ b : Fin r, (if (b : ℕ) < X.p0 then t b else 0) - ∑ b : Fin r, t b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `unfold sgn; split_ifs <;> ring`. Unfold `Data.maj`. Rewrite using `[posPart_eq X τ e he x hflag hind u, self_pair X τ e he u]`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `2 * ∑ a : Fin X.p0, t (Fin.castLE X.p0_le a) - ∑ b : Fin r, sgn X.p0 b * t b = ∑ b : Fin r, t b`. Rewrite using `[hsg, hsplit]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem maj_eq_sum (u : Fin r → ℂ) :
     X.maj x τ u = ∑ b : Fin r, ‖hermC τ.1 X.Gm u (e b)‖ ^ 2 := by

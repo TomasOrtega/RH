@@ -18,9 +18,9 @@ namespace GlobalTheory.Core.Rk.OrthIsom
 open scoped TensorProduct
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT σ (β' * β⁻¹).1 * J * (β' * β⁻¹).1 = J`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT σ (β.1 * (β⁻¹).1) * J * (β.1 * (β⁻¹).1) := by`.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [Units.mul_inv, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_inv_mem_UJ {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (J : Matrix (Fin n) (Fin n) R)
     (β β' : GL (Fin n) R) (h : Formalism.UG.cT σ β'.1 * J * β'.1 = Formalism.UG.cT σ β.1 * J * β.1) :
@@ -34,7 +34,7 @@ theorem mul_inv_mem_UJ {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (J : M
     _ = J := by rw [Units.mul_inv, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[h, h', Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_iff_of_frames {R : Type} [CommRing R] {n : ℕ} (S : Subring R) (β β' : GL (Fin n) R)
     (H H' : Set (Fin n → R)) (h : ∀ y, y ∈ H ↔ ∀ i, ((β⁻¹).val *ᵥ y) i ∈ S)
@@ -47,9 +47,9 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {n : ℕ} (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Establish `h` using `Formalism.UG.Final.BCMem _ _ (Fin n) (Formalism.UG.sigR σ R) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ) (Algebra.TensorProduct.comm F R E).symm.toAlgHom.toRingHom (RingHom.ext fun x => ?_) (J.map (Formalism.UG.inclE R)) g hg`. Conclude with `h`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a x => rfl`.
+A detailed English derivation is pending.
 -/
 theorem swap_symm_mem_HR (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
     (g : GL (Fin n) (E ⊗[F] R)) (hg : g ∈ Formalism.UG.UPts σ J R) :
@@ -64,7 +64,7 @@ theorem swap_symm_mem_HR (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
   | tmul a x => rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(Algebra.TensorProduct.comm F R E).apply_symm_apply (g.val i j)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem swap_mulVec (g : GL (Fin n) (E ⊗[F] R)) (z : Fin n → R ⊗[F] E) :
     (fun i => Algebra.TensorProduct.comm F R E
@@ -83,7 +83,7 @@ section Swap
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use `⟨GlobalTheory.PrincInLevel.swap_mem_hatL Λ z, fun h => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ h`. Simplify using `only [AlgEquiv.symm_apply_apply] at h1`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_latHat_iff_swap (Λ : Submodule (𝓞 E) (Fin n → E)) (z : Fin n → Af F ⊗[F] E) :
     z ∈ Formalism.MainNotions.StandardLattice.latHat F E (Λ : Set (Fin n → E)) ↔
@@ -94,7 +94,7 @@ theorem mem_latHat_iff_swap (Λ : Submodule (𝓞 E) (Fin n → E)) (z : Fin n �
   exact h1
 
 /- English proof (translation)
-Use `⟨_, swap_symm_mem_HR (Af F) σ J g hg, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_latHat_iff_swap, mem_latHat_iff_swap, swap_mulVec]`. Conclude with `h _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_swap (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (Λ Λ' : Submodule (𝓞 E) (Fin n → E))
     (g : GL (Fin n) (E ⊗[F] Af F)) (hg : g ∈ Formalism.UG.UPts σ J (Af F))
@@ -108,9 +108,9 @@ theorem exists_of_swap (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (Λ �
 end Swap
 
 /- English proof (translation)
-Introduce `D A L L' hL hL'`. Take `⟨β, e, hβ⟩` from `GlobalTheory.AdIsom.exists_orth hL`. Take `⟨β', e', hβ'⟩` from `GlobalTheory.AdIsom.exists_orth hL'`. Use `exists_of_swap D.sp.cm.sig A.gram L L' (β' * β⁻¹) (mul_inv_mem_UJ _ _ β β' (hβ'.trans hβ.symm)) ?_` and prove the remaining obligations. Rewrite using `[e, e']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_iff_of_frames (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.OA D) β β' _ _ (GlobalTheory.AdIsom.mem_hat_lat β) (GlobalTheory.AdIsom.mem_hat_lat β')`.
+A detailed English derivation is pending.
 -/
 theorem exists_unitary_latHat : ∀ (D : D7) (A : HSp D) (L L' : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)),
     IsSelfDualC A L → IsSelfDualC A L' →

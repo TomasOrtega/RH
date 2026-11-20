@@ -16,9 +16,9 @@ section Vec
 variable {Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (T T' : E)
 
 /- English proof (translation)
-Simplify using `only [Matrix.vecMul, dotProduct, Fintype.sum_sum_type, gramC, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.of_apply, Matrix.transpose_apply]`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecMul_gramC_inl (x : Ix r → E) (b : Fin (r + 1)) :
     Matrix.vecMul x (gramC cj Z T T') (Sum.inl b) =
@@ -30,9 +30,9 @@ theorem vecMul_gramC_inl (x : Ix r → E) (b : Fin (r + 1)) :
   · simp [hb]
 
 /- English proof (translation)
-Simplify using `only [Matrix.vecMul, dotProduct, Fintype.sum_sum_type, gramC, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Matrix.of_apply]`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecMul_gramC_inr (x : Ix r → E) (b : Fin (r + 1)) :
     Matrix.vecMul x (gramC cj Z T T') (Sum.inr b) =
@@ -46,7 +46,7 @@ theorem vecMul_gramC_inr (x : Ix r → E) (b : Fin (r + 1)) :
 end Vec
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_single_apply' {Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (j i : Fin (r + 1)) (v : E) :
     Z.mulVec (Pi.single j v) i = Z i j * v := by
@@ -60,7 +60,7 @@ variable (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
 
 include hG in
 /- English proof (translation)
-Unfold `cG`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hG, Matrix.vecMul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecMul_cG (Y : Ix r → O) :
     Matrix.vecMul (cG O cj Z T T' Y) (gramC cj (Z.map O.subtype) T T') = fun j => (Y j : E) := by
@@ -70,7 +70,7 @@ theorem vecMul_cG (Y : Ix r → O) :
 include hG in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Establish `h` using `congrFun (vecMul_cG O cj Z T T' hG Y) (Sum.inl b)`. Rewrite `h` using `[vecMul_gramC_inl]`. Rewrite using `[← h]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inl_eq (Y : Ix r → O) :
     (fun j => (Y (Sum.inl j) : E)) = (Z.map O.subtype).mulVec (fun a => cG O cj Z T T' Y (Sum.inr a)) -
@@ -84,7 +84,7 @@ theorem inl_eq (Y : Ix r → O) :
 include hG in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Establish `h` using `congrFun (vecMul_cG O cj Z T T' hG Y) (Sum.inr b)`. Rewrite `h` using `[vecMul_gramC_inr]`. Rewrite using `[← h]`. Simplify using `[Pi.single_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inr_eq (Y : Ix r → O) :
     (fun j => (Y (Sum.inr j) : E)) =
@@ -99,7 +99,7 @@ theorem inr_eq (Y : Ix r → O) :
 include hu hG in
 
 /- English proof (translation)
-Rewrite using `[lamC, inl_eq O cj Z T T' hG Y, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec, Pi.sub_apply, mulVec_single_apply']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_cG (Y : Ix r → O) :
     lamC (Z.map O.subtype) (fun j => (Y (Sum.inl j) : E)) =
@@ -111,9 +111,9 @@ theorem lam_cG (Y : Ix r → O) :
 include hu hG in
 
 /- English proof (translation)
-Rewrite using `[inr_eq O cj Z T T' hG Y]`. Establish `h1` using `lamStarC_mulVec cj (Z.map O.subtype) hu (fun a => cG O cj Z T T' Y (Sum.inl a))`. Simplify using `only [lamStarC, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib] at h1 ⊢`. Rewrite using `[h1]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamS_cG (Y : Ix r → O) :
     lamStarC cj (Z.map O.subtype) (fun j => (Y (Sum.inr j) : E)) =
@@ -129,25 +129,23 @@ theorem lamS_cG (Y : Ix r → O) :
 include hcj hu hG in
 
 /- English proof (translation)
-Use `set Ze := Z.map O.subtype with hZe`. Use `set c := cG O cj Z T T' Y with hc`. Establish `hf : formC O cj Ze T T' Y W = ∑ j, c j * cj (W j : E)`. Simplify using `only [formC, hc, cG, Matrix.vecMul, dotProduct, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∑ b, c (Sum.inr b) * cj (W (Sum.inr b) : E) = bRaw O cj Z (fun j => Y (Sum.inl j)) (fun j => W (Sum.inr j)) + T * c (Sum.inl (Fin.last r)) * cj (lamStarC cj Ze (fun j => (W (Sum.inr j) : E)))`. Establish `hPy : Ze⁻¹.mulVec (fun j => (Y (Sum.inl j) : E)) = (fun a => c (Sum.inr a)) - Ze⁻¹.mulVec (Pi.single (Fin.last r) (T * c (Sum.inl (Fin.last r))))`. Rewrite using `[inl_eq O cj Z T T' hG Y, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`. Establish `hB : bRaw O cj Z (fun j => Y (Sum.inl j)) (fun j => W (Sum.inr j)) = ∑ j, cj (W (Sum.inr j) : E) * (c (Sum.inr j) - Ze⁻¹ j (Fin.last r) * (T * c (Sum.inl (Fin.last r))))`. Unfold `bRaw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hZe, hPy]`. Simplify using `only [Pi.sub_apply, mulVec_single_apply']`. Establish `hL : cj (lamStarC cj Ze (fun j => (W (Sum.inr j) : E))) = ∑ j, Ze⁻¹ j (Fin.last r) * cj (W (Sum.inr j) : E)`. Simplify using `only [lamStarC, map_sum, map_mul, hcj]`. Rewrite using `[hB, hL, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hB' : ∑ a, c (Sum.inl a) * cj (W (Sum.inl a) : E) = cj (bRaw O cj Z (fun j => W (Sum.inl j)) (fun j => Y (Sum.inr j))) + T' * c (Sum.inr (Fin.last r)) * cj (lamC Ze (fun j => (W (Sum.inl j) : E)))` using `by set pw := Ze⁻¹.mulVec (fun j => (W (Sum.inl j) : E)) with hpw`. Establish `h2 : Ze.mulVec pw = fun j => (W (Sum.inl j) : E)`. Rewrite using `[hpw, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`. Establish `hw : ∀ a, cj (W (Sum.inl a) : E) = ∑ k, cj (Ze a k) * cj (pw k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Use `congrFun h2 a` as an intermediate fact. Rewrite using `[← this]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Establish `hy' : ∀ k, ∑ a, c (Sum.inl a) * cj (Ze a k) = (Y (Sum.inr k) : E) + if k = Fin.last r then T' * c (Sum.inr (Fin.last r)) else 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `k`. Use `congrFun (inr_eq O cj Z T T' hG Y) k` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.single_apply] at this`. Rewrite using `[this, sub_add_cancel]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : lamC Ze (fun j => (W (Sum.inl j) : E)) = pw (Fin.last r)` using `rfl`. Establish `hb : cj (bRaw O cj Z (fun j => W (Sum.inl j)) (fun j => Y (Sum.inr j))) = ∑ k, (Y (Sum.inr k) : E) * cj (pw k)`. Unfold `bRaw`. Rewrite using `[← hZe, ← hpw]`. Simplify using `only [map_sum, map_mul, hcj]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hw, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => by ring`. Use `_ = ∑ k, cj (pw k) * ((Y (Sum.inr k) : E) + if k = Fin.last r then T' * c (Sum.inr (Fin.last r)) else 0) := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hy']`. Use `_ = _ := by`. Rewrite using `[hb, hl]`. Simplify using `only [mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 1`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf, Fintype.sum_sum_type, hA, hB']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem formC_eqG (Y W : Ix r → O) :
     formC O cj (Z.map O.subtype) T T' Y W =
@@ -234,23 +232,21 @@ variable (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
 include hcj hu hG in
 
 /- English proof (translation)
-Use `set Ze := Z.map O.subtype with hZe`. Use `set P := Ze⁻¹ with hP`. Set `c : Ix r → E` to `Sum.elim (fun a => cj (P (Fin.last r) a) * (T' * d)) (fun a => P a (Fin.last r) * (T * d'))`. Establish `hZP : Ze * P = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hPZ : P * Ze = 1` using `Matrix.nonsing_inv_mul _ hu`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc0 : Matrix.vecMul c (gramC cj Ze T T') = 0`. Use function extensionality and compare the values at `i`. Break down `i with b | b` into its components or cases. Rewrite using `[vecMul_gramC_inl]`. Establish `e1` using `congrFun (congrFun hZP b) (Fin.last r)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `: ∑ a, c (Sum.inr a) * Ze b a = (∑ a, Ze b a * P a (Fin.last r)) * (T * d')`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => by simp only [c, Sum.elim_inr]; ring`. Rewrite using `[this, e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [c, Sum.elim_inl, Pi.zero_apply]`. Distinguish the cases in `hb : b = Fin.last r`. Simplify using `only [hb, if_true]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hb]`. Rewrite using `[vecMul_gramC_inr]`. Establish `e1` using `congrFun (congrFun hPZ (Fin.last r)) b`. Rewrite `e1` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `: ∑ a, c (Sum.inl a) * cj (Ze a b) = cj (∑ a, P (Fin.last r) a * Ze a b) * (T' * d)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => by simp only [c, Sum.elim_inl, map_mul]; ring`. Rewrite using `[this, e1]`. Simplify using `only [c, Sum.elim_inr, Pi.zero_apply]`. Distinguish the cases in `hb : b = Fin.last r`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [hb, if_true, map_one]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hb, Ne.symm hb]`. Establish `hc : c = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: c = Matrix.vecMul (Matrix.vecMul c (gramC cj Ze T T')) (gramC cj Ze T T')⁻¹`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hG, Matrix.vecMul_one]`. Rewrite using `[this, hc0, Matrix.zero_vecMul]`. Establish `ed : d = c (Sum.inr (Fin.last r))` using `by simp only [c, Sum.elim_inr]; rw [h1]`. Establish `ed' : d' = c (Sum.inl (Fin.last r))` using `by simp only [c, Sum.elim_inl]; rw [h2]`.
-
-Rewrite `ed`, `ed'` using `[hc]`. Conclude with `⟨ed, ed'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem uniq_core (d d' : E)
     (h1 : d = (Z.map O.subtype)⁻¹ (Fin.last r) (Fin.last r) * (T * d'))
@@ -299,7 +295,7 @@ theorem uniq_core (d d' : E)
 
 include hcj hu hG in
 /- English proof (translation)
-Use `set κ := (Z.map O.subtype)⁻¹ (Fin.last r) (Fin.last r)`. Use `(uniq_core O cj hcj Z hu T T' hG (κ * (T * u)) u rfl ?_).2` and prove the remaining obligations. Take the linear combination `h`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eta_nzd (u : E)
     (h : (1 - T * T' * ((Z.map O.subtype)⁻¹ (Fin.last r) (Fin.last r) *
@@ -311,7 +307,7 @@ theorem eta_nzd (u : E)
 end Uniq
 
 /- English proof (translation)
-Rewrite `hl` using `[lam_cG O cj Z₂ hu₂ T T' hG₂, lam_cG O cj Z₁ hu₁ T T' hG₁, ← hκ]`. Rewrite `hl'` using `[lamS_cG O cj Z₂ hu₂ T T' hG₂, lamS_cG O cj Z₁ hu₁ T T' hG₁, ← hκ]`. Take `⟨h1, h2⟩` from `uniq_core O cj hcj Z₂ hu₂ T T' hG₂ (cG O cj Z₂ T T' Y₂ (Sum.inr (Fin.last r)) - cG O cj Z₁ T T' Y₁ (Sum.inr (Fin.last r))) (cG O cj Z₂ T T' Y₂ (Sum.inl (Fin.last r)) - cG O cj Z₁ T T' Y₁ (Sum.inl (Fin.last r))) (by linear_combination hl) (by linear_combination hl')`. Conclude with `⟨sub_eq_zero.1 h2, sub_eq_zero.1 h1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cG_transfer (hcj : ∀ x, cj (cj x) = x) (Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (hu₁ : IsUnit (Z₁.map O.subtype).det) (hu₂ : IsUnit (Z₂.map O.subtype).det) (T T' : E)

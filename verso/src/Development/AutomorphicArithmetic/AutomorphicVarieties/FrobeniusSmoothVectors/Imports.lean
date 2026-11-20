@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ hF`. Establish `hs : ∀ g : F.G0, ((F.star g : F.G0) : F.Γ) = F.c * (g : F.Γ)⁻¹ * F.c⁻¹` using `fun g => by`. Simplify using `[Frame.star, Frame.conj, MulAut.conjNormal_apply, mul_assoc]`. Establish `hc : F.c⁻¹ = F.c` using `inv_eq_of_mul_eq_one_right hF.c_sq`. Use `⟨fun g => ?_, fun g h => ?_, fun g => ?_, ?_, fun {n} {K} _ ρ g i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hs, hs, hc]`. Simplify using `only [_root_.mul_inv_rev, inv_inv, hc]`. Combine the equalities or inequalities in the displayed calculation. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Subgroup.coe_mul, hs, _root_.mul_inv_rev, hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs, map_mul, map_mul, map_inv, map_inv, hF.Ψ_c]`. Simplify using the standard rewrite rules. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun g : F.G0 => ((F.star g : F.G0) : F.Γ)) = fun g : F.G0 => F.c * (g : F.Γ)⁻¹ * F.c⁻¹` using `funext hs`. Express the relevant statement in the definitionally equal form `Continuous (fun g : F.G0 => ((F.star g : F.G0) : F.Γ))`. Rewrite using `[this]`. Conclude with `(continuous_const.mul continuous_subtype_val.inv).mul continuous_const`. Rewrite using `[ρ.pol]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Jmat, Matrix.transpose_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, one_mul]`. Establish `h : ∀ a : Fin n, (j = a.rev) ↔ (a = j.rev)` using `fun a => by`. Apply the tactic sequence `constructor <;> rintro rfl <;> simp`. Simplify using `[h]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.star :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}, F.Ok C₀ → (∀ g : F.G0, F.star (F.star g) = g) ∧ (∀ g h : F.G0, F.star (g * h) = F.star h * F.star g) ∧ (∀ g : F.G0, F.Ψ (F.star g) = (F.Ψ g)⁻¹) ∧ Continuous F.star ∧ ∀ {n : ℕ} {K : Type} [CommRing K] (ρ : NRep F n K) (g : F.G0) (i j : Fin n), ρ.r (F.star g) i j = ρ.r g j.rev i.rev := by

@@ -19,11 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeckeFamRead
 
 /- English proof (translation)
-Introduce `hL hD hT hR`. Establish `hrat` using `GlobalTheory.HeckeFamRead.rat_side hT (GlobalTheory.T.heckeTransform_cuspForms_reads_cosetSum hD hR) GlobalTheory.T.exists_rationalHecke_read_as_cosetSums`. Establish `ev : ∀ {Q : Ctx → Prop}, Ev Q → StepW Start fun K _ _ _ _ => Q K` using `fun h => Step.of_evG ((evG_of_ev h).imp fun _ _ _ _ _ H _ _ _ _ _ _ _ _ _ => H)`. Establish `hId : StepW Start Start` using `StepW.of_all fun _ _ _ _ _ _ _ h => h`. Use `((hId.and (ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev)).and (ev GlobalTheory.Mem.StdSize.vstd_size_ev)).trans (StepW.of_all fun K B f T w hO _ H => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P x _ i`. Take `⟨hHo, -⟩` from `H.1.2 (w.st x.o.Z) hO`. Take `⟨hStd, hSize⟩` from `H.2 (w.st x.o.Z) hO`. Establish `hfin : Finite (TupU w.I (usedOf w.I T P.Wt))`. Establish `hs : ({τ | τ = (mu0F (X` using `B.fields) (tuOf w.I (usedOf w.I T P.Wt))).1 ∨ τ ∈ tuOf w.I (usedOf w.I T P.Wt)} : Set _).Finite := (Set.finite_singleton _).union (tuOf w.I (usedOf w.I T P.Wt)).finite_toSet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs.to_subtype`. Conclude with `hrat (Dof x) (GlobalTheory.TwInputs.RealSide.ofPins x.m.z.geo x.m.z.pins x.m.intersectionNumber_baseChange x.m.inGeo hfin hHo hStd hSize) i`.
+A detailed English derivation is pending.
 -/
 theorem rationalHecke_allSt : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.Published.CuspRapidDecay → GlobalTheory.IndefiniteRowSideFullHecke.SplitOffDetection.HeckeTransform → GlobalTheory.HeckeSupSt.HeckeReadTie → StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x → ∀ i : Fin (Dof x).R.m, GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.RationalHecke x.m.z.R.toRealDat i := by
   intro hL hD hT hR

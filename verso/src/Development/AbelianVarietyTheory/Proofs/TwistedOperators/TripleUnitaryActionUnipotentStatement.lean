@@ -16,7 +16,7 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LocActV.finite_point_acts_placewise` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTripleUnitaryActionUnipotent.lean&line=26#L26)
 -/

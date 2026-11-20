@@ -13,7 +13,7 @@ def Adapted (A : FractionalIdeal (𝓞 F)⁰ F) (g : SL(2, F)) : Prop :=
   g 0 0 ∈ A⁻¹ ∧ g 0 1 ∈ A⁻¹ ∧ g 1 0 ∈ A ∧ g 1 1 ∈ A
 
 /- English proof (translation)
-Establish `h : x * y ∈ A * A⁻¹` using `FractionalIdeal.mul_mem_mul hx hy`. Rewrite `h` using `[mul_inv_cancel₀ hA, FractionalIdeal.mem_one_iff]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_mem {A : FractionalIdeal (𝓞 F)⁰ F} (hA : A ≠ 0) {x y : F} (hx : x ∈ A)
     (hy : y ∈ A⁻¹) : ∃ z : 𝓞 F, (z : F) = x * y := by
@@ -22,11 +22,11 @@ theorem integral_of_mem {A : FractionalIdeal (𝓞 F)⁰ F} (hA : A ≠ 0) {x y 
   exact h
 
 /- English proof (translation)
-Establish `h1 : (1 : F) ∈ A * A⁻¹`. Rewrite using `[mul_inv_cancel₀ hA]`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, by simp⟩`. Establish `h2 : A * A⁻¹ = FractionalIdeal.spanSingleton _ p * A⁻¹ + FractionalIdeal.spanSingleton _ q * A⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Use `_ = _ := add_mul _ _ _`. Rewrite `h1` using `[h2, ← FractionalIdeal.mem_coe, FractionalIdeal.coe_add, Submodule.add_eq_sup, Submodule.mem_sup]`. Take `⟨s, hs, t, ht, hst⟩` from `h1`. Take `⟨s', hs', rfl⟩` from `FractionalIdeal.mem_singleton_mul.1 (FractionalIdeal.mem_coe.1 hs)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t', ht', rfl⟩` from `FractionalIdeal.mem_singleton_mul.1 (FractionalIdeal.mem_coe.1 ht)`. Use `⟨t', ht', -s', ?_, ?_⟩` and prove the remaining obligations. Conclude with `FractionalIdeal.mem_coe.1 (neg_mem (FractionalIdeal.mem_coe.2 hs'))`. Take the linear combination `hst`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_bezout {A : FractionalIdeal (𝓞 F)⁰ F} (hA : A ≠ 0) {p q : F}
     (h : A = FractionalIdeal.spanSingleton _ p + FractionalIdeal.spanSingleton _ q) :
@@ -49,9 +49,9 @@ theorem exists_bezout {A : FractionalIdeal (𝓞 F)⁰ F} (hA : A ≠ 0) {p q : 
   · linear_combination hst
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, hab⟩` from `exists_bezout hA h`. Establish `hp : p ∈ A`. Rewrite using `[h, ← FractionalIdeal.mem_coe, FractionalIdeal.coe_add, Submodule.add_eq_sup]`. Conclude with `Submodule.mem_sup_left (FractionalIdeal.mem_coe.2 (FractionalIdeal.mem_spanSingleton_self _ _))`. Establish `hq : q ∈ A`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ← FractionalIdeal.mem_coe, FractionalIdeal.coe_add, Submodule.add_eq_sup]`. Conclude with `Submodule.mem_sup_right (FractionalIdeal.mem_coe.2 (FractionalIdeal.mem_spanSingleton_self _ _))`. Use `⟨⟨!![a, b; p, q], by simpa [Matrix.det_fin_two] using hab⟩, ?_, by simp, by simp⟩` and prove the remaining obligations. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> simpa`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_adapted {A : FractionalIdeal (𝓞 F)⁰ F} (hA : A ≠ 0) {p q : F}
     (h : A = FractionalIdeal.spanSingleton _ p + FractionalIdeal.spanSingleton _ q) :
@@ -69,19 +69,19 @@ theorem exists_adapted {A : FractionalIdeal (𝓞 F)⁰ F} (hA : A ≠ 0) {p q :
   refine ⟨?_, ?_, ?_, ?_⟩ <;> simpa
 
 /- English proof (translation)
-Take `⟨r0, r1, r2, r3⟩` from `hr`. Take `⟨g0, g1, g2, g3⟩` from `hg`. Take `⟨z1, e1⟩` from `integral_of_mem hA r3 g0`. Take `⟨z2, e2⟩` from `integral_of_mem hA r3 g1`. Take `⟨z3, e3⟩` from `integral_of_mem hA r2 g0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z4, e4⟩` from `integral_of_mem hA r2 g1`. Take `⟨z5, e5⟩` from `integral_of_mem hA g2 r1`. Take `⟨z6, e6⟩` from `integral_of_mem hA g3 r1`. Take `⟨z7, e7⟩` from `integral_of_mem hA g2 r0`. Take `⟨z8, e8⟩` from `integral_of_mem hA g3 r0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hinv : ((r⁻¹ * g : SL(2, F)) : Matrix (Fin 2) (Fin 2) F) = !![r 1 1, -r 0 1; -r 1 0, r 0 0] * (g : Matrix (Fin 2) (Fin 2) F)`. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.SL2_inv_expl]`. Both sides reduce to the same expression. Rewrite using `[hinv]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨z1 - z5, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, RingOfIntegers.map_mk, Matrix.mul_apply, Fin.sum_univ_two]`. Move the coercions through the operations in `[e1, e5]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨z2 - z6, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `[e2, e6]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨z7 - z3, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `[e7, e3]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨z8 - z4, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `[e8, e4]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_inv_mul {A : FractionalIdeal (𝓞 F)⁰ F} (hA : A ≠ 0) {r g : SL(2, F)}
     (hr : Adapted A r) (hg : Adapted A g) (i j : Fin 2) :
@@ -121,23 +121,21 @@ theorem integral_inv_mul {A : FractionalIdeal (𝓞 F)⁰ F} (hA : A ≠ 0) {r g
     ring
 
 /- English proof (translation)
-Take `⟨x, y, hx, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.1 h`. Establish `hxF : (x : F) ≠ 0` using `by simpa using hx`. Establish `hyF : (y : F) ≠ 0` using `by simpa using hy`. Use `⟨(x : F) / (y : F), div_ne_zero hxF hyF, ?_, ?_⟩` and prove the remaining obligations. Establish `hn` using `congrArg Ideal.absNorm hxy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hn` using `[map_mul, map_mul, Ideal.absNorm_span_singleton, Ideal.absNorm_span_singleton]`. Establish `key : ∀ w : 𝓞 F, (((Algebra.norm ℤ w).natAbs : ℕ) : ℝ) = |((Algebra.norm ℚ (w : F) : ℚ) : ℝ)|`. Introduce `w`. Rewrite using `[← Algebra.coe_norm_int]`. Simplify using `[Nat.cast_natAbs]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmul : Algebra.norm ℚ (x : F) = Algebra.norm ℚ (y : F) * Algebra.norm ℚ ((x : F) / (y : F))`. Rewrite using `[← map_mul, mul_div_cancel₀ _ hyF]`. Establish `hnR : (((Algebra.norm ℤ x).natAbs : ℕ) : ℝ) * (Ideal.absNorm (I : Ideal (𝓞 F)) : ℝ) = (((Algebra.norm ℤ y).natAbs : ℕ) : ℝ) * (Ideal.absNorm (J : Ideal (𝓞 F)) : ℝ)`. Conclude with `hn` after adjusting the coercions. Rewrite `hnR` using `[key, key, hmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : |((Algebra.norm ℚ (y : F) : ℚ) : ℝ)| ≠ 0`. Establish `: Algebra.norm ℚ (y : F) ≠ 0` using `Algebra.norm_ne_zero_iff.2 hyF`. Simplify using `using this`. Establish `hI1 : (1 : ℝ) ≤ (Ideal.absNorm (I : Ideal (𝓞 F)) : ℝ)`. Establish `: Ideal.absNorm (I : Ideal (𝓞 F)) ≠ 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `nonZeroDivisors.ne_zero I.2`. Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Use `set t := |((Algebra.norm ℚ ((x : F) / (y : F)) : ℚ) : ℝ)| with ht`. Establish `h3 : t * (Ideal.absNorm (I : Ideal (𝓞 F)) : ℝ) = (Ideal.absNorm (J : Ideal (𝓞 F)) : ℝ)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ hb` to reduce the goal to its premises. Rewrite using `[← hnR]`. Use `push_cast`. Rewrite using `[abs_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht0 : 0 ≤ t` using `abs_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Establish `hF` using `congrArg (fun K : Ideal (𝓞 F) => (K : FractionalIdeal (𝓞 F)⁰ F)) hxy`. Simplify using `only [FractionalIdeal.coeIdeal_mul, FractionalIdeal.coeIdeal_span_singleton] at hF`. Rewrite `hF` using `[hI, Ideal.span_insert, FractionalIdeal.coeIdeal_sup, FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.coeIdeal_span_singleton]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← RingOfIntegers.coe_eq_algebraMap] at hF`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton, inv_mul_cancel₀ hyF, FractionalIdeal.spanSingleton_one, one_mul]`. Use `_ = FractionalIdeal.spanSingleton _ (y : F)⁻¹ * (FractionalIdeal.spanSingleton _ (x : F) * (FractionalIdeal.spanSingleton _ (c : F) + FractionalIdeal.spanSingleton _ (d : F))) := by`. Rewrite using `[hF]`.
-
-Use `_ = _ := by`. Simplify using `only [mul_add, FractionalIdeal.spanSingleton_mul_spanSingleton]`. Apply the tactic sequence `congr 2 <;> field_simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_scale (J I : (Ideal (𝓞 F))⁰) (h : ClassGroup.mk0 I = ClassGroup.mk0 J)
     {c d : 𝓞 F} (hI : (I : Ideal (𝓞 F)) = Ideal.span {c, d}) :
@@ -203,23 +201,21 @@ end GlobalTheory.CompanionTheory.SW.Core.RowCompletion
 open nonZeroDivisors GlobalTheory.CompanionTheory.SW.Core.RowCompletion in
 
 /- English proof (translation)
-Introduce `F _ _`. Set `J : ClassGroup (𝓞 F) → (Ideal (𝓞 F))⁰` to `fun g => (ClassGroup.mk0_surjective g).choose`. Establish `hJ : ∀ g, ClassGroup.mk0 (J g) = g` using `fun g => (ClassGroup.mk0_surjective g).choose_spec`. Set `A : ClassGroup (𝓞 F) → FractionalIdeal (𝓞 F)⁰ F` to `fun g => ((J g : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F)`. Establish `hA : ∀ g, A g ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g`. Simplify `nonZeroDivisors.ne_zero (J g).2` using `[A]`. Set `r : ClassGroup (𝓞 F) → SL(2, F)` to `fun g => if h : ∃ r, Adapted (A g) r then h.choose else 1`. Establish `hr : ∀ g, (∃ r, Adapted (A g) r) → Adapted (A g) (r g)`. Introduce `g h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [r, dif_pos h]`. Conclude with `h.choose_spec`. Use `⟨Finset.univ.image r, ∑ g, (Ideal.absNorm (J g : Ideal (𝓞 F)) : ℝ), ?_⟩` and prove the remaining obligations. Introduce `c d hcd`. Establish `hI : Ideal.span {c, d} ∈ (Ideal (𝓞 F))⁰`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1 : c ∈ Ideal.span {c, d}` using `Ideal.subset_span (by simp)`. Establish `h2 : d ∈ Ideal.span {c, d}` using `Ideal.subset_span (by simp)`. Rewrite `h1`, `h2` using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hcd with h | h` into its components or cases. Conclude with `h (by simpa using h1)`. Conclude with `h (by simpa using h2)`. Set `g` to `ClassGroup.mk0 ⟨Ideal.span {c, d}, hI⟩`. Take `⟨l, hl0, hln, hlA⟩` from `exists_scale (F := F) (J g) ⟨Ideal.span {c, d}, hI⟩ (hJ g).symm rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨l, hl0, hln.trans ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun g => (Ideal.absNorm (J g : Ideal (𝓞 F)) : ℝ)) (fun _ _ => by positivity) (Finset.mem_univ g)`. Introduce `u`. Establish `hu : FractionalIdeal.spanSingleton (𝓞 F)⁰ ((u : 𝓞 F) : F) = 1`. Use `FractionalIdeal.coeIdeal_span_singleton (S := (𝓞 F)⁰) (P := F) (u : 𝓞 F)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.span_singleton_eq_top.2 u.isUnit]`. Simplify using `using this.symm`. Establish `hAu : A g = FractionalIdeal.spanSingleton _ (((u : 𝓞 F) : F) * l * (c : F)) + FractionalIdeal.spanSingleton _ (((u : 𝓞 F) : F) * l * (d : F))`. Establish `: A g = FractionalIdeal.spanSingleton (𝓞 F)⁰ ((u : 𝓞 F) : F) * A g` using `by rw [hu, one_mul]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ * ((J g : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = _`. Rewrite using `[hlA, mul_add, FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.spanSingleton_mul_spanSingleton, mul_assoc, mul_assoc]`. Take `⟨γ, hγ, h10, h11⟩` from `exists_adapted (hA g) hAu`. Establish `hrg` using `hr g ⟨γ, hγ⟩`. Use `⟨r g, Finset.mem_image_of_mem _ (Finset.mem_univ g), (r g)⁻¹ * γ, integral_inv_mul (hA g) hrg hγ, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mul_inv_cancel_left]`. Conclude with `h10`. Rewrite using `[mul_inv_cancel_left]`. Conclude with `h11`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.Core.exists_finset_row_completion :
     ∀ (F : Type) [Field F] [NumberField F], ∃ (s : Finset SL(2, F)) (C : ℝ), ∀ c d : 𝓞 F, (c ≠ 0 ∨ d ≠ 0) → ∃ l : F, l ≠ 0 ∧ |((Algebra.norm ℚ l : ℚ) : ℝ)| ≤ C ∧ ∀ u : (𝓞 F)ˣ, ∃ r ∈ s, ∃ k : SL(2, F), (∀ i j, ∃ z : 𝓞 F, (z : F) = k i j) ∧ (r * k) 1 0 = ((u : 𝓞 F) : F) * l * (c : F) ∧ (r * k) 1 1 = ((u : 𝓞 F) : F) * l * (d : F) := by

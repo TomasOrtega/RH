@@ -3,33 +3,29 @@ import Mathlib
 open Polynomial Matrix IsLocalRing TensorProduct
 
 /- English proof (translation)
-Introduce `K E _ _ _ σ _ _ d _ _ _ e hmul horth hst hsum`. Set `f : (∀ s, Matrix (d s) (d s) K) → E` to `fun M => ∑ s, ∑ i, ∑ k, M s i k • e s i k`. Establish `hadd : ∀ M N, f (M + N) = f M + f N`. Introduce `M N`. Simplify using `only [f, Pi.add_apply, Matrix.add_apply, add_smul, Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsmul : ∀ (c : K) M, f (c • M) = c • f M`. Introduce `c M`. Simplify using `only [f, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`. Establish `key : ∀ (N : ∀ s, Matrix (d s) (d s) K) s i j (a : K), (a • e s i j) * f N = ∑ k, (a * N s j k) • e s i k`. Introduce `N s i j a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [f]`. Rewrite using `[Finset.mul_sum, Finset.sum_eq_single s]`. Rewrite using `[Finset.mul_sum, Finset.sum_eq_single j]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_mul_smul_comm, hmul]`. Introduce `l _ hl`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, horth s i j l k (Ne.symm hl), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `t _ ht`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, hst s t i j l k (Ne.symm ht), smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : ∀ M N, f (M * N) = f M * f N`. Introduce `M N`. Establish `: f M * f N = ∑ s, ∑ i, ∑ j, ∑ k, (M s i j * N s j k) • e s i k` using `by show (∑ s, ∑ i, ∑ k, M s i k • e s i k) * f N = _`. Simplify using `only [Finset.sum_mul, key]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [f, Pi.mul_apply, Matrix.mul_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Finset.sum_comm`. Establish `h1 : f 1 = 1`. Simplify using `only [f, Pi.one_apply, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hsum`. Set `L : (∀ s, Matrix (d s) (d s) K) →ₗ[K] E` to `{ toFun := f, map_add' := hadd, map_smul' := hsmul }`. Use `⟨AlgHom.ofLinearMap L h1 hm, ?_⟩` and prove the remaining obligations. Introduce `s i k`. Use `show f (Pi.single s (Matrix.single i k 1)) = e s i k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f]`. Rewrite using `[Finset.sum_eq_single s]`. Rewrite using `[Pi.single_eq_same]`. Simplify using `only [Matrix.single_apply, ite_smul, one_smul, zero_smul]`. Rewrite using `[Finset.sum_eq_single i]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`. Conclude with `fun h => hb h.2.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
-
-Conclude with `fun h => hb h.1.symm`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `t _ ht`. Simplify using `[Pi.single_eq_of_ne ht]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.alghom_of_units :
     ∀ {K E : Type} [CommRing K] [Ring E] [Algebra K E] {σ : Type} [Fintype σ] [DecidableEq σ] (d : σ → Type) [∀ s, Fintype (d s)] [∀ s, DecidableEq (d s)] [∀ s, Nonempty (d s)] (e : ∀ s, d s → d s → E), (∀ s i j k, e s i j * e s j k = e s i k) → (∀ s i j k l, j ≠ k → e s i j * e s k l = 0) → (∀ s t i j k l, s ≠ t → e s i j * e t k l = 0) → ∑ s, ∑ i, e s i i = 1 → ∃ j : (∀ s, Matrix (d s) (d s) K) →ₐ[K] E, ∀ s i k, j (Pi.single s (single i k 1)) = e s i k := by

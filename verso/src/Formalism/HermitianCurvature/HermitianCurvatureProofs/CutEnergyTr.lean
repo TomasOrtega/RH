@@ -9,18 +9,18 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEnBetaFrame
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-The claim follows from `En.besselFoldBuilt_of En.coefficient_vector_in_L2_class`.
+A detailed English derivation is pending.
 -/
 theorem En.bessel_folding_at_built_place : En.BesselFoldBuilt := En.besselFoldBuilt_of En.coefficient_vector_in_L2_class
 
 /- English proof (translation)
-The claim follows from `En.energyTr_of_parts En.folding_reversal_holds En.admissible_length_holds En.bessel_folding_at_built_place En.L2_bound_at_built_place_holds h`.
+A detailed English derivation is pending.
 -/
 theorem energyTr_of_betaFrame (h : En.BetaFrame) : EnergyTr :=
   En.energyTr_of_parts En.folding_reversal_holds En.admissible_length_holds En.bessel_folding_at_built_place En.L2_bound_at_built_place_holds h
 
 /- English proof (translation)
-The claim follows from `energyTr_of_betaFrame En.beta_frame_identity_holds`.
+A detailed English derivation is pending.
 -/
 theorem energy_trace_identity_holds : EnergyTr := energyTr_of_betaFrame En.beta_frame_identity_holds
 

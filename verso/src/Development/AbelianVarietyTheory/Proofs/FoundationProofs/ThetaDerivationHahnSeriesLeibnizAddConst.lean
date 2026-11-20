@@ -14,13 +14,13 @@ theorem theta_coeff {Ω : Type} [Field Ω] [Algebra ℚ Ω] (s : ℚ) (φ : Hahn
     (theta s φ).coeff r = algebraMap ℚ Ω (s * r) * φ.coeff r := rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ s P Q`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Establish `h1 : (theta s P).support ⊆ P.support` using `fun t ht h => ht (by simp [theta_coeff, h])`. Establish `h2 : (theta s Q).support ⊆ Q.support` using `fun t ht h => ht (by simp [theta_coeff, h])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[HahnSeries.coeff_add, HahnSeries.coeff_mul_left' P.isPWO_support h1, HahnSeries.coeff_mul_right' Q.isPWO_support h2, theta_coeff, HahnSeries.coeff_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations. Use `(Finset.mem_addAntidiagonal.1 hij).2.2` as an intermediate fact. Rewrite using `[← this, theta_coeff, theta_coeff, mul_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `r`. Simplify using `[theta_coeff, mul_add]`. Introduce `c`. Use extensionality with `r`. Rewrite using `[theta_coeff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : r = 0`. Simplify using `[h]`. Simplify using `[HahnSeries.C_apply, HahnSeries.coeff_single_of_ne h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem theta_leibniz_add_const :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] (s : ℚ) (P Q : HahnSeries ℚ Ω),

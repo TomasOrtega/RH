@@ -13,9 +13,9 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Simplify using `only [Nat.mul_zero, pow_zero, pow_one]`. Express the relevant statement in the definitionally equal form `(Scheme.Hom.appTop (𝟙 G.left)).hom f = f`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Consider the case `succ j ih`. Establish `e : (show G ⟶ G from F ^ (m * (j + 1))).left = (show G ⟶ G from F ^ m).left ≫ (show G ⟶ G from F ^ (m * j)).left`. Rewrite using `[Nat.mul_succ, pow_add]`. Both sides reduce to the same expression. Rewrite using `[e, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, ih, map_pow, h, ← pow_mul, ← pow_add, Nat.mul_succ, add_comm]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem appTop_pow_mul {S : Scheme.{0}} {G : Over S} (F : End G) (q m : ℕ) (f : Γ(G.left, ⊤))
     (h : (show G ⟶ G from F ^ m).left.appTop.hom f = f ^ (q ^ m)) (j : ℕ) :
@@ -33,7 +33,7 @@ theorem appTop_pow_mul {S : Scheme.{0}} {G : Over S} (F : End G) (q m : ℕ) (f 
       ← pow_mul, ← pow_add, Nat.mul_succ, add_comm]
 
 /- English proof (translation)
-Establish `: IsAffine (splitTorusAff ZU X).left` using `inferInstanceAs (IsAffine (Spec _))`. Establish `: IsAffine (Spec ZU.{0})` using `inferInstance`. Conclude with `inferInstanceAs (IsAffine (pullback (splitTorusAff ZU X).hom (toZ (Sp k))))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAffine_splitTorus (k : Type) [Field k] (X : Type) [AddCommGroup X] :
     IsAffine (splitTorus (Sp k) X).left := by
@@ -42,19 +42,19 @@ theorem isAffine_splitTorus (k : Type) [Field k] (X : Type) [AddCommGroup X] :
   exact inferInstanceAs (IsAffine (pullback (splitTorusAff ZU X).hom (toZ (Sp k))))
 
 /- English proof (translation)
-Introduce `k _ X _ _ _ F q hF`. Use `isAffine_splitTorus k X` as an intermediate fact. Establish `key : ∀ χ : X, ∃ m : ℕ, 1 ≤ m ∧ (show splitTorus (Sp k) X ⟶ splitTorus (Sp k) X from F ^ m).left.appTop.hom (charUnit (Sp k) X χ).val = (charUnit (Sp k) X χ).val ^ (q ^ m)`. Introduce `χ`. Take `⟨m, hm, h, hh⟩` from `hF.2 ⊤ (isAffineOpen_top _) (charUnit (Sp k) X χ).val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← hh, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Use `choose n0 hn1 hn using key`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := X)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ x ∈ s, n0 x, Nat.succ_le_of_lt (Finset.prod_pos fun x _ => hn1 x), fun l => ?_⟩` and prove the remaining obligations. Set `e` to `splitTorusPointsEquiv (Sp k) X (splitTorus (Sp k) X)`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_pow]`. Establish `hgen : ∀ χ ∈ s, e (show splitTorus (Sp k) X ⟶ splitTorus (Sp k) X from F ^ ((∏ x ∈ s, n0 x) * l)) (Multiplicative.ofAdd χ) = (e (𝟙 _) ^ (q ^ ((∏ x ∈ s, n0 x) * l))) (Multiplicative.ofAdd χ)`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `χ hχ`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem n0 hχ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, hc, Nat.mul_assoc, appTop_pow_mul F q _ _ (hn χ)]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `hx : x.toAdd ∈ Submodule.span ℤ (s : Set X)` using `by rw [hs]; trivial`. Generalize the expression as in `e (show splitTorus (Sp k) X ⟶ splitTorus (Sp k) X from F ^ ((∏ x ∈ s, n0 x) * l)) = a at hgen ⊢`. Generalize the expression as in `(e (𝟙 _) ^ (q ^ ((∏ x ∈ s, n0 x) * l))) = b at hgen ⊢`. Express the relevant statement in the definitionally equal form `a (Multiplicative.ofAdd x.toAdd) = b (Multiplicative.ofAdd x.toAdd)`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `x.toAdd = w at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hgen y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2 => rw [ofAdd_add, map_mul, map_mul, h1, h2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul n y _ h => rw [ofAdd_zsmul, map_zpow, map_zpow, h]`.
+A detailed English derivation is pending.
 -/
 theorem frobG_splitTorus_pow :
     ∀ (k : Type) [Field k] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (F : End (splitTorus (Sp k) X)) (q : ℕ), FrobG (splitTorus (Sp k) X) F q → ∃ m, 1 ≤ m ∧ ∀ l, (show splitTorus (Sp k) X ⟶ splitTorus (Sp k) X from F ^ (m * l)) = (𝟙 (splitTorus (Sp k) X)) ^ (q ^ (m * l)) := by

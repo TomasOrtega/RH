@@ -18,7 +18,7 @@ variable {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [IsDomain 
   [Algebra R K] [IsFractionRing R K]
 
 /- English proof (translation)
-Establish `h : ∀ x : 𝓞 K, algebraMap (𝓞 K) K x ∈ (algebraMap R K).range` using `fun x => IsIntegrallyClosed.isIntegral_iff.1 (x.isIntegral_coe.tower_top (A := R))`. Set `e` to `RingEquiv.ofBijective (algebraMap R K).rangeRestrict ⟨fun a b hab => IsFractionRing.injective R K (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective _⟩`. Use `⟨e.symm.toRingHom.comp ((algebraMap (𝓞 K) K).codRestrict _ h), fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.apply_symm_apply ⟨_, h x⟩)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ringHom : ∃ f : 𝓞 K →+* R, ∀ x, algebraMap R K (f x) = algebraMap (𝓞 K) K x := by
   have h : ∀ x : 𝓞 K, algebraMap (𝓞 K) K x ∈ (algebraMap R K).range := fun x =>
@@ -29,15 +29,15 @@ theorem exists_ringHom : ∃ f : 𝓞 K →+* R, ∀ x, algebraMap R K (f x) = a
   exact congrArg Subtype.val (e.apply_symm_apply ⟨_, h x⟩)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hu : ∀ u : Rˣ, 𝔭.valuation K (algebraMap R K u) = 1` using `fun u => by`. Use `eq_one_of_one_le_mul_left (hR (u : R)) (hR (u⁻¹ : Rˣ)) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `hlt : 𝔭.valuation K (algebraMap R K ϖ) ≠ 1` using `fun h1 => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hall : ∀ s : R, s ≠ 0 → 𝔭.valuation K (algebraMap R K s) = 1` using `fun s hs => by`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hs hϖ`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, hu, h1, one_pow, _root_.mul_one]`. Take `⟨π, hπ⟩` from `𝔭.valuation_exists_uniformizer K`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) π`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `ha : a = 0`. Rewrite `hπ` using `[ha, map_zero, zero_div, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Rewrite `hπ` using `[map_div₀, hall a ha, hall b (nonZeroDivisors.ne_zero hb), div_one, ← WithZero.exp_zero, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h0 : r ≠ 0`. Introduce and unpack `rfl`. Rewrite `hr` using `[map_zero, map_zero]`. Conclude with `zero_ne_one hr`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hr` using `[map_mul, map_mul, map_pow, map_pow, hu, _root_.one_mul]`. Take `rfl | hn` from `Nat.eq_zero_or_pos n`. Simplify using the standard rewrite rules. Conclude with `absurd ((pow_eq_one_iff_of_nonneg zero_le hn.ne').1 hr) hlt`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_of_valuation_eq_one (𝔭 : HeightOneSpectrum (𝓞 K))
     (hR : ∀ r : R, 𝔭.valuation K (algebraMap R K r) ≤ 1) {r : R} (hr : 𝔭.valuation K (algebraMap R K r) = 1) :
@@ -69,9 +69,9 @@ theorem isUnit_of_valuation_eq_one (𝔭 : HeightOneSpectrum (𝓞 K))
   · exact absurd ((pow_eq_one_iff_of_nonneg zero_le hn.ne').1 hr) hlt
 
 /- English proof (translation)
-Use `(isLocalization_iff _ _).2 ⟨fun s => isUnit_of_valuation_eq_one 𝔭 hR ?_, fun r => ?_, fun {x y} h => ⟨1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `𝔭.valuation_eq_one_iff_notMem.2 s.2`. Take `⟨n, d, h⟩` from `𝔭.exists_primeCompl_mul_eq_of_integer _ (hR r)`. Use `⟨(n, d), IsFractionRing.injective R K ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, h]`. Use `congrArg (algebraMap R K) h` as an intermediate fact. Rewrite `this` using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[IsFractionRing.injective (𝓞 K) K this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalization [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) R K] (𝔭 : HeightOneSpectrum (𝓞 K))
     (hR : ∀ r : R, 𝔭.valuation K (algebraMap R K r) ≤ 1) : IsLocalization 𝔭.asIdeal.primeCompl R := by
@@ -88,13 +88,11 @@ theorem isLocalization [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) R K] (𝔭 :
 end Alg
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `grpPullback_iso hψ (isGrpPullback_pullback G _)`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso hψ' (isGrpPullback_pullback G' _)`. Set `f` to `a.symm ≪≫ b`. Establish `hf : IsMonHom f.hom`. Express the relevant statement in the definitionally equal form `IsMonHom (a.inv ≫ b.hom)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Take `⟨F, ⟨hF, eF⟩, -⟩` from `h T K G G' hG hG' f.hom hf`. Take `⟨F', ⟨hF', eF'⟩, -⟩` from `h T K G' G hG' hG f.inv inferInstance`. Use `⟨⟨F, F', (h T K G G hG hG (𝟙 _) inferInstance).unique ⟨inferInstance, ?_⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩, (h T K G' G' hG' hG' (𝟙 _) inferInstance).unique ⟨inferInstance, ?_⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩⟩, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[Functor.map_comp, eF, eF']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f.hom_inv_id`. Rewrite using `[Functor.map_comp, eF, eF']`. Conclude with `f.inv_hom_id`. Establish `A : ((Over.pullback (spMap (algebraMap T K))).map F).left ≫ pullback.fst G'.hom _ = pullback.fst G.hom _ ≫ F.left` using `pullback.lift_fst _ _ _`. Express the relevant statement in the definitionally equal form `ψ ≫ F.left = ψ'`.
-
-Rewrite using `[← ha', Category.assoc, ← A, eF, ← hb', ← Category.assoc, ← Over.comp_left]`. Use `congr 2`. Conclude with `a.hom_inv_id_assoc _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_iso_of_models (h : HomExtDvr) (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T]
     [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G']
@@ -126,7 +124,7 @@ theorem exists_iso_of_models (h : HomExtDvr) (T K : Type) [CommRing T] [IsDomain
     exact a.hom_inv_id_assoc _
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `e : x = algebraMap R _ x.fst + algebraMap R _ x.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Use `conv_lhs => rw [e, map_add, map_mul, h₁, h₁, h₂]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eq_dualMapR {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (F : DualNumber R →+* DualNumber R')
     (h₁ : ∀ a, F (algebraMap R _ a) = algebraMap R' _ (f a)) (h₂ : F DualNumber.eps = DualNumber.eps) :
@@ -144,19 +142,17 @@ namespace GlobalTheory.CM
 open LocModelLie
 
 /- English proof (translation)
-Introduce `hE K _ _ P F hg rig hr th hth 𝔭 a M ⟨R, _, _, _, _, _, y, th', hth', v', hv', hR, _, hM, ψ, _, _, hgg, Φ, hψ, _, _, _, hΦ₁, hΦ₂, hv⟩`. Take `⟨f, hf⟩` from `exists_ringHom (K := K) (R := R)`. Use `letI : Algebra (𝓞 K) R := f.toAlgebra`. Use `haveI : IsScalarTower (𝓞 K) R K := IsScalarTower.of_algebraMap_eq fun x => (hf x).symm`. Use `haveI := isLocalization 𝔭 hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `rfl` from `eq_dualMapR _ Φ hΦ₁ hΦ₂`. Express the relevant statement in the definitionally equal form `F.P₀.g = y.P.g at hgg`. Express the relevant statement in the definitionally equal form `IsGrpPullback F.P₀.A y.P.A (spMap (algebraMap R K)) ψ at hψ`. Establish `hc : spMap (algebraMap (𝓞 K) K) = spMap (algebraMap R K) ≫ spMap (algebraMap (𝓞 K) R)`. Rewrite using `[IsScalarTower.algebraMap_eq (𝓞 K) R K]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Spec.map_comp (CommRingCat.ofHom _) (CommRingCat.ofHom _)`. Establish `hF` using `F.fib.2.1.congr hc rfl`. Establish `hp` using `isGrpPullback_pullback P.A (spMap (algebraMap (𝓞 K) R))`. Set `ψ'` to `hp.1.lift F.φ (F.P₀.A.hom ≫ spMap (algebraMap R K)) (by rw [hF.1.w, Category.assoc])`. Establish `hψ' : ψ' ≫ pullback.fst _ _ = F.φ` using `hp.1.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he, hψe⟩` from `exists_iso_of_models hE R K y.P.A _ (isSemiAbelian_of_isAbelianScheme _ y.P.isAb) (IsSemiAbelian.pullback _ _ (isSemiAbelian_of_isAbelianScheme _ P.isAb)) F.P₀.A hψ (IsGrpPullback.cancel hp (hF.congr rfl hψ'.symm) (hp.1.lift_snd _ _ _))`. Establish `hb : IsLieBasis fun i : Fin F.P₀.g => y.v (i.cast hgg)`. Establish `: ∀ (n : ℕ) (h : n = y.P.g), IsLieBasis fun i : Fin n => y.v (i.cast h)`. Introduce and unpack `_ rfl`. Conclude with `y.basis`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `this _ _`. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.lieLattice_localization_modelLieAlgebra K P F R 𝔭.asIdeal.primeCompl y.P.A (e.hom.left ≫ pullback.fst _ _) ψ _ v' M (((isGrpPullback_of_iso e).comp hp).congr (Category.id_comp _) rfl) hψ ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ pullback.fst _ _) hψe).tran …`. Use `⟨h₁, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `h₂ c hc`. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples_of_finite 𝔭.asIdeal.primeCompl b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨s, s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `hs i`. Establish `: (s : 𝓞 K) • algebraMap R K (b i) • M i = t • M i`.
-
-Establish `e : algebraMap (𝓞 K) K t = algebraMap (𝓞 K) K s * algebraMap R K (b i)`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 K) R K t, ht, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[← algebraMap_smul K t, e, mul_smul, algebraMap_smul K (s : 𝓞 K)]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieLat_of_isLocalModel : HomExtDvr → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P) (hg rig hr th hth) (𝔭 : HeightOneSpectrum (𝓞 K)) (a : K) (M : Matrix (Fin F.P₀.g) (Fin F.P₀.g) K), KeyPow.IsLocalModel (F.key hg rig hr th hth) 𝔭 a M → (∀ i, ∃ s : 𝓞 K, s ∉ 𝔭.asIdeal ∧ s • M i ∈ F.lieLat) ∧ ∀ c ∈ F.lieLat, ∃ s : 𝓞 K, s ∉ 𝔭.asIdeal ∧ s • c ∈ Submodule.span (𝓞 K) (Set.range fun i => M i) := by
   intro hE K _ _ P F hg rig hr th hth 𝔭 a M

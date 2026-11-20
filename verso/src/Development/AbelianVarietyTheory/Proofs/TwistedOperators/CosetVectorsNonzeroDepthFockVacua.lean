@@ -29,32 +29,32 @@ variable {D : D7} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank →
   {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.smul_apply, smul_eq_mul] rw [mul_left_comm, hu i j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_smul {e : AE D} {u : WO S T} (hu : IsHalf e u) (z : AE D) : IsHalf e (z • u) := fun i j => by
   simp only [Matrix.smul_apply, smul_eq_mul]
   rw [mul_left_comm, hu i j]
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.add_apply, mul_add, hu i j, hv i j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_add {e : AE D} {u v : WO S T} (hu : IsHalf e u) (hv : IsHalf e v) : IsHalf e (u + v) := fun i j => by
   simp only [Matrix.add_apply, mul_add, hu i j, hv i j]
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.sub_apply, mul_sub, hu i j, hv i j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_sub {e : AE D} {u v : WO S T} (hu : IsHalf e u) (hv : IsHalf e v) : IsHalf e (u - v) := fun i j => by
   simp only [Matrix.sub_apply, mul_sub, hu i j, hv i j]
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, he]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_idem {e : AE D} (he : e * e = e) (u : WO S T) : IsHalf e (e • u) := fun i j => by
   simp only [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, he]
 
 /- English proof (translation)
-Introduce `i j` and use `by refine Ideal.mem_inf.2 ⟨?_, ?_⟩ · rw [RingHom.mem_ker, ← hu i j, map_mul, hinf, zero_mul] · refine Submodule.mem_iInf _ |>.2 fun w => ?_ exact absurd trivial w.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_of_isHalf {e : AE D} (hinf : infPart D e = 0) {u : WO S T} (hu : IsHalf e u) : MxAt (fun _ => True) u :=
   fun i j => by
@@ -64,11 +64,11 @@ theorem mxAt_of_isHalf {e : AE D} (hinf : infPart D e = 0) {u : WO S T} (hu : Is
       exact absurd trivial w.2
 
 /- English proof (translation)
-Establish `key : ∀ (t v : WO S T), IsHalf e v → v ∈ hatMx (𝔪 • homLat ΛS ΛT) → t ∈ cosSet e κ → t + v ∈ cosSet e κ`. Introduce and unpack `t v hv hvm ⟨ht, x₀, hx₀, hd⟩`. Use `⟨isHalf_add ht hv, x₀, hx₀, ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_right_comm]`. Conclude with `add_mem hd hvm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `cosInd`. Distinguish the cases in `h : t ∈ cosSet e κ`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (key t u hu hm h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Establish `hn : IsHalf e (-u)` using `fun i j => by simp only [Matrix.neg_apply, mul_neg, hu i j]`. Simplify using `using key (t + u) (-u) hn (neg_mem hm) h'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cosInd_add {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (κ : Cos ΛS ΛT 𝔪) {u : WO S T} (hu : IsHalf e u)
     (hm : u ∈ hatMx (𝔪 • homLat ΛS ΛT)) (t : WO S T) : cosInd e κ (t + u) = cosInd e κ t := by
@@ -90,7 +90,7 @@ theorem cosInd_add {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (κ : Cos ΛS ΛT �
 variable {ψ : AddChar (AF D.host.F) ℂ} {e : AE D} {Λ : AddSubgroup (WO S T)} {c : ℂ} {f₀ Φ f : WO S T → ℂ}
 
 /- English proof (translation)
-Take `⟨⟨Tm, hT⟩, hall⟩` from `h`. Rewrite using `[hall Tm hT, ← hT.trans Φ hΦ u hu]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `hinv t`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem heisO_fix_trans (h : IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c f₀ Φ f) (hΦ : IsSBHalf e Λ Φ) {u : WO S T}
     (hu : IsHalf e u) (hinv : ∀ t, Φ (t + u) = Φ t) : heisO ψ S T u f = f := by
@@ -101,9 +101,9 @@ theorem heisO_fix_trans (h : IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c f�
   exact hinv t
 
 /- English proof (translation)
-Take `⟨⟨Tm, hT⟩, hall⟩` from `h`. Rewrite using `[hall Tm hT, ← hT.modul Φ hΦ y hy]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Distinguish the cases in `h0 : Φ t = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0, mul_zero]`. Rewrite using `[hinv t h0, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_fix_modul (h : IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c f₀ Φ f) (hΦ : IsSBHalf e Λ Φ) {y : WO S T}
     (hy : IsHalf (cA D e) y) (hinv : ∀ t, Φ t ≠ 0 → ψ (symplO S T t y) = 1) : heisO ψ S T y f = f := by
@@ -123,27 +123,25 @@ variable {D : D7} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank →
   {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Establish `e1 : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `e2 : e * cA D e = 0` using `he.2`. Establish `c1 : cA D e * cA D e = cA D e` using `by rw [← map_mul, e1]`. Establish `c2 : cA D e * e = 0` using `by rw [mul_comm, e2]`. Establish `hinf : infPart D e = 0` using `GlobalTheory.PlaceDatum.infPart_idemSum he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSB` using `GlobalTheory.GridWeil.isSBHalf_cosInd hS hT h𝔪 e1 hinf κ`. Establish `ann : ∀ x ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True), MxAt (fun _ => True) x → ∀ y ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True), ψ (symplO S T x y) = 1` using `fun x hx hx' => (GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ S T ΛS ΛT hS hT (fun _ => True) x hx').1 hx`. Establish `hA : ∀ v, IsHalf e v → v ∈ hatMx (𝔪 • homLat ΛS ΛT) → heisO ψ S T v f = f` using `fun v hv hm => heisO_fix_trans h hSB hv (cosInd_add κ hv hm)`. Establish `hB : ∀ v, IsHalf (cA D e) v → v ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) → heisO ψ S T v f = f` using `fun v hv hm => heisO_fix_modul h hSB hv fun t ht => by`. Establish `htc : t ∈ cosSet e κ` using `Set.mem_of_indicator_ne_zero ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ann t (hcos t htc) (mxAt_of_isHalf hinf htc.1) v hm`. Establish `hC : ∀ r : WO S T, (∀ i j, e * r i j = 0 ∧ cA D e * r i j = 0) → heisO ψ S T r f₀ = f₀ → heisO ψ S T r f = f` using `fun r hr h0 => GlobalTheory.Hk3.heisO_fix_thetaAt_off ψ S T e _ 1 f₀ _ f h r hr h0`. Establish `hoff : ∀ u : WO S T, ∀ i j, e * (u - e • u - cA D e • u) i j = 0 ∧ cA D e * (u - e • u - cA D e • u) i j = 0` using `fun u i j => by`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(u i j)) * e1 + (-(u i j)) * e2`. Take the linear combination `(-(u i j)) * c2 + (-(u i j)) * c1`. Establish `hdec : ∀ u : WO S T, u = e • u + (cA D e • u + (u - e • u - cA D e • u))` using `fun u => by abel`. Establish `dbl : ∀ a b r : WO S T, IsHalf e a → a ∈ hatMx (𝔪 • homLat ΛS ΛT) → a ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) → IsHalf (cA D e) b → b ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) → r ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) → (∀ i j, e * r i j = 0 …`. Introduce `a b r hae ham hal hbe hbl hrl hr0`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : 2 • (a + (b + r)) = (a + a) + (b + b + (r + r))` using `by rw [two_nsmul]; abel`. Establish `hph : ψ (symplOH S T (a + a) (b + b + (r + r))) = 1`. Rewrite using `[GlobalTheory.SplitScalar.symplOH_add_left, GlobalTheory.SplitScalar.symplOH_add_self]`. Conclude with `ann a hal (mxAt_of_isHalf hinf hae) _ (add_mem (add_mem hbl hbl) (add_mem hrl hrl))`. Establish `hbr : symplO S T (b + b) (r + r) = 0` using `GlobalTheory.Hk3.symplO_half_off S T (isHalf_add hbe hbe) fun i j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.DualPairCheck.cA_cA, Matrix.add_apply, mul_add, (hr0 i j).1, add_zero]`. Establish `hrr : heisO ψ S T (r + r) f = f` using `hC _ (fun i j => by`. Simplify using `only [Matrix.add_apply, mul_add, (hr0 i j).1, (hr0 i j).2, add_zero, and_self])`. Use the proof step `(by rw [← two_nsmul]; exact hf₀.1 r hrl)`. Establish `hbb : heisO ψ S T (b + b) f = f` using `hB _ (isHalf_add hbe hbe) (add_mem hbl hbl)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `haa : heisO ψ S T (a + a) f = f` using `hA _ (isHalf_add hae hae) (add_mem ham ham)`. Establish `key` using `GlobalTheory.SplitScalar.heisO_heisO ψ S T (a + a) (b + b + (r + r)) f`. Rewrite `key` using `[hph, one_smul, GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T hbr, hrr, hbb, haa]`. Rewrite using `[h2, ← key]`. Establish `sng : ∀ e' : AE D, IsSplitIdem D e' → ∀ a b r : WO S T, IsHalf e a → a ∈ hatMx (𝔪 • homLat ΛS ΛT) → IsHalf (cA D e) b → b ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) → r ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) → (∀ i j, e * r i j = 0 ∧ cA D e * r i j = 0) → …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `e' he' a b r hae ham hbe hbl hrl hr0 ha' hb' hr'`. Establish `horth : ∀ x y : WO S T, IsHalf e' x → IsHalf e' y → symplO S T x y = 0` using `fun x y hx hy => GlobalTheory.Hk3.symplO_half_off S T hx fun i j => by`. Rewrite using `[← hy i j, ← mul_assoc, mul_comm (cA D e'), he'.2.1, zero_mul]`. Rewrite using `[GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (horth _ _ ha' (isHalf_add hb' hr')), GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (horth _ _ hb' hr'), hC r hr0 (hf₀.2 e' he' r hrl hr'), hB b hbe hbl, hA a hae ham]`. Use `⟨fun u hu => ?_, fun e' he' u hu hu' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hu1, hu2⟩` from `hΓ u hu`. Establish `ha` using `GlobalTheory.PlaceModelSum.idem_smul_latO e1 hu1`. Establish `hb` using `GlobalTheory.PlaceModelSum.idem_smul_latO c1 hu1`. Rewrite using `[hdec u]`. Conclude with `dbl _ _ _ (isHalf_idem e1 u) hu2 ha (isHalf_idem c1 u) hb (sub_mem (sub_mem hu1 ha) hb) (hoff u)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hu1, hu2⟩` from `hΓ u hu`. Establish `ha` using `GlobalTheory.PlaceModelSum.idem_smul_latO e1 hu1`. Establish `hb` using `GlobalTheory.PlaceModelSum.idem_smul_latO c1 hu1`. Establish `hae : IsHalf e' (e • u)` using `isHalf_smul hu' e`. Establish `hbe : IsHalf e' (cA D e • u)` using `isHalf_smul hu' _`.
-
-Rewrite using `[hdec u]`. Conclude with `sng e' he' _ _ _ (isHalf_idem e1 u) hu2 (isHalf_idem c1 u) hb (sub_mem (sub_mem hu1 ha) hb) (hoff u) hae hbe (isHalf_sub (isHalf_sub hu' hae) hbe)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatVac_of_cos (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
     {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥)
@@ -232,9 +230,9 @@ end GlobalTheory.CosDep
 namespace GlobalTheory.CosDep
 
 /- English proof (translation)
-Take `⟨x₀, rfl⟩` from `Submodule.Quotient.mk_surjective _ κ`. Introduce `h0`. Establish `hmem : e • (x₀.1 : Matrix (Fin m) (Fin n) D.host.E).map (incA D) ∈ cosSet e (Submodule.Quotient.mk x₀ : Cos Λ Λ' 𝔪)` using `⟨fun i j => by simp only [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, he], x₀, rfl, by rw [sub_self]; exact zero_mem _⟩`. Use `congrFun h0 (e • (x₀.1 : Matrix (Fin m) (Fin n) D.host.E).map (incA D))` as an intermediate fact. Unfold `cosInd at this`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[Set.indicator_of_mem hmem]`. Conclude with `one_ne_zero this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosInd_ne_zero {D : D7} {m n : ℕ} {e : AE D} (he : e * e = e) {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} {𝔪 : Ideal (𝓞 D.host.E)} (κ : Cos Λ Λ' 𝔪) : cosInd e κ ≠ 0 := by
@@ -250,13 +248,13 @@ theorem cosInd_ne_zero {D : D7} {m n : ℕ} {e : AE D} (he : e * e = e) {Λ : Su
 end GlobalTheory.CosDep
 
 /- English proof (translation)
-Introduce `D hoff T L μ₀ hL sc G W M _ i hi κ`. Take `⟨e, he, hcos⟩` from `W.cosVec_is`. Establish `h` using `hcos i hi κ`. Take `⟨hS, hT⟩` from `GlobalTheory.CosetRow.selfDual_chi hL G i hi`. Establish `hv` using `(W.vac_is i hi).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hinf : infPart D e = 0` using `GlobalTheory.PlaceDatum.infPart_idemSum he`. Establish `hSB` using `GlobalTheory.GridWeil.isSBHalf_cosInd hS hT (G.pl.modul_ne_bot sc) e1 hinf κ`. Use `⟨?_, ⟨GlobalTheory.RowTheta.isThetaFunO_cosVec W i hi κ, ?_⟩, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨⟨Tm, hTm⟩, hall⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hall Tm hTm]`. Establish `hne : W.vac i ≠ 0`. Introduce and unpack `h0`. Take `⟨⟨p, hp⟩, hall'⟩` from `hv.norm`. Use `hall' p hp` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Simplify using `[nrm2] at this`. Conclude with `GlobalTheory.PlaceModelInj.placeModel_ne_zero D W.ψ _ _ _ _ e _ _ Tm W.ψ_std hS hT e1 he.2 hinf hTm hne hSB (GlobalTheory.CosDep.cosInd_ne_zero e1 κ)`. Conclude with `GlobalTheory.CosDep.isLatVac_of_cos W.ψ_std hS hT he (G.pl.modul_ne_bot sc) κ (fun t ht => GlobalTheory.T.mem_completedHomLattice_of_mem_latticeHomCoset hS he (GlobalTheory.AAUnit.exists_valuation_one_element_at_grid_places hoff hL G) κ ht) hv.lat h fun u hu => ⟨hu.1, hu.2 e he⟩`. Conclude with `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt W.ψ_std.1.1 W.θ_is hinf (GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).conj.infPart_eq h hv.theta (GlobalTheory.RowTheta.isThetaFunO_cosVec W i hi κ) (hv.fock τ)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CosDep.cosVec_dep : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ κ, W.cosVec i κ ≠ 0 ∧ Dep W (.chi i 0) (W.cosVec i κ) ∧ ∀ τ, IsFockVacAt (heisO W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0))) W.θ τ (cplxO (G.cartS W.cart (.chi i 0) τ) (G.onT W.cart (.chi i 0) τ)) (W.cosVec i κ) := by
   intro D hoff T L μ₀ hL sc G W M _ i hi κ

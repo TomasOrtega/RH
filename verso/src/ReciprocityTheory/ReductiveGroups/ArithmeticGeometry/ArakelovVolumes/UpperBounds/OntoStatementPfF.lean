@@ -14,7 +14,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r)
 
 /- English proof (translation)
-Establish `h` using `norm_sub_le a (a - b)`. Rewrite `h` using `[sub_sub_cancel]`. Use polynomial arithmetic with `[sq_nonneg (‖a‖ - ‖a - b‖), norm_nonneg b, norm_nonneg a, norm_nonneg (a - b)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sq_sub_le (a b : ℂ) : ‖b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖a - b‖ ^ 2 := by
   have h := norm_sub_le a (a - b)
@@ -22,9 +22,9 @@ theorem sq_sub_le (a b : ℂ) : ‖b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖a - b�
   nlinarith [sq_nonneg (‖a‖ - ‖a - b‖), norm_nonneg b, norm_nonneg a, norm_nonneg (a - b)]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Set.mem_diff, Set.mem_inter_iff, Set.mem_setOf_eq, Om1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, hB h1, h2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, -, h2⟩`. Conclude with `⟨h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem ball_diff_eq {g1 : V (nd X) → ℂ} {z : V (nd X)} {ρ : ℝ} (hB : ball z ρ ⊆ OmF X x0) :
     ball z ρ \ {y | g1 y = 0} = ball z ρ ∩ Om1 X x0 g1 := by
@@ -37,35 +37,29 @@ theorem ball_diff_eq {g1 : V (nd X) → ℂ} {z : V (nd X)} {ρ : ℝ} (hB : bal
     exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨ε, hε, hεB⟩` from `Metric.isOpen_iff.1 (isOpen_OmF (X := X) (x0 := x0)) z hz`. Use `set ρ := ε / 2 with hρ`. Establish `hρ0 : 0 < ρ` using `by positivity`. Establish `hKsub : closedBall z ρ ⊆ OmF X x0` using `(closedBall_subset_ball (by linarith)).trans hεB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBsub : ball z ρ ⊆ OmF X x0` using `ball_subset_closedBall.trans hKsub`. Establish `hKc : IsCompact (closedBall z ρ)` using `isCompact_closedBall z ρ`. Establish `hzK : z ∈ closedBall z ρ` using `mem_closedBall_self hρ0.le`. Use `⟨ρ, hρ0, hBsub, ?_⟩` and prove the remaining obligations. Rewrite using `[ball_diff_eq X x0 hBsub]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M0, hM0⟩` from `hKc.exists_bound_of_continuousOn (hF0.mono hKsub)`. Establish `hgc : ContinuousOn (fun y => c * Real.exp (-phla X la (cpt X x0 y))) (closedBall z ρ)` using `(continuousOn_const.mul (expPhla_cont (X := X) (x0 := x0) la)).mono hKsub`. Take `⟨y1, -, hy1⟩` from `hKc.exists_isMinOn ⟨z, hzK⟩ hgc`. Use `set w0 := c * Real.exp (-phla X la (cpt X x0 y1)) with hw0`. Establish `hw0p : 0 < w0` using `by positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdc : ContinuousOn (densF X x0) (closedBall z ρ)` using `(densF_continuousOn (X := X) (x0 := x0)).mono hKsub`. Take `⟨y2, hy2K, hy2⟩` from `hKc.exists_isMinOn ⟨z, hzK⟩ hdc`. Use `set d0 := densF X x0 y2 with hd0`. Establish `hd0p : 0 < d0` using `densF_pos (X := X) (x0 := x0) (hKsub hy2K)`. Establish `hkc : ContinuousOn (kaF X x0 bb) (closedBall z ρ)` using `fun y hy => (ka_contDiffAt (X := X) (x0 := x0) bb (hKsub hy)).continuousAt.continuousWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k1, hk1⟩` from `hKc.exists_bound_of_continuousOn hkc`. Use `set kmax := max k1 1 with hkmax`. Establish `hka : ∀ y ∈ closedBall z ρ, 0 < kaF X x0 bb y ∧ kaF X x0 bb y ≤ kmax` using `fun y hy => by`. Establish `hp : 0 < kaF X x0 bb y` using `Real.exp_pos _`. Use `⟨hp, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hk1 y hy` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs, abs_of_pos hp]`. Conclude with `this.trans (le_max_left _ _)`. Establish `hOm1o : IsOpen (Om1 X x0 g1)` using `hg1.continuousOn.isOpen_inter_preimage (isOpen_OmF (X := X) (x0 := x0)) isOpen_compl_singleton`. Establish `hOm1m : MeasurableSet (Om1 X x0 g1)` using `hOm1o.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hOm1s : Om1 X x0 g1 ⊆ OmF X x0` using `fun y hy => hy.1`. Use `set dd : V (nd X) → ℝ≥0∞ := fun y => ENNReal.ofReal (densF X x0 y) with hdd`. Use `set h : V (nd X) → ℝ≥0∞ := fun y => ENNReal.ofReal (‖F0 y - F' y‖ ^ 2 / kaF X x0 bb y) * W (cpt X x0 y) with hh`. Establish `hJ' : ∫⁻ y in Om1 X x0 g1, dd y * h y < ⊤`. Establish `e : ∫⁻ y in Om1 X x0 g1, h y ∂muF X x0 = ∫⁻ y in Om1 X x0 g1, dd y * h y`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[muF, restrict_withDensity hOm1m, Measure.restrict_restrict hOm1m, Set.inter_eq_left.2 hOm1s]`. Conclude with `lintegral_withDensity_eq_lintegral_mul_non_measurable₀ _ (((densF_continuousOn (X := X) (x0 := x0)).mono hOm1s).aemeasurable hOm1m).ennreal_ofReal (ae_of_all _ fun _ => ENNReal.ofReal_lt_top) h`. Rewrite using `[← e]`. Conclude with `hJ`. Use `set Cst : ℝ := 2 * kmax / (w0 * d0) with hCst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ y ∈ ball z ρ ∩ Om1 X x0 g1, ENNReal.ofReal (‖F' y‖ ^ 2) ≤ ENNReal.ofReal (2 * M0 ^ 2) + ENNReal.ofReal Cst * (dd y * h y)`. Introduce and unpack `y ⟨hyB, -⟩`. Establish `hyK : y ∈ closedBall z ρ` using `ball_subset_closedBall hyB`. Establish `hyF : y ∈ OmF X x0` using `hKsub hyK`. Take `⟨hk0, hkle⟩` from `hka y hyK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdy : d0 ≤ densF X x0 y` using `hy2 hyK`. Establish `hwy : w0 ≤ c * Real.exp (-phla X la (cpt X x0 y))` using `hy1 hyK`. Establish `hW : ENNReal.ofReal w0 ≤ W (cpt X x0 y)` using `(ENNReal.ofReal_le_ofReal hwy).trans (hWL _ hyF)`. Establish `hq : 0 ≤ ‖F0 y - F' y‖ ^ 2` using `by positivity`. Establish `hM2 : ‖F0 y‖ ^ 2 ≤ M0 ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) (hM0 y hyK) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq` using `sq_sub_le (F0 y) (F' y)`. Establish `f1 : 1 ≤ kmax / kaF X x0 bb y` using `(one_le_div hk0).2 hkle`. Establish `f2 : 1 ≤ densF X x0 y / d0` using `(one_le_div hd0p).2 hdy`. Establish `hdens : 0 ≤ densF X x0 y` using `hd0p.le.trans hdy`. Establish `hCst0 : 0 ≤ Cst` using `by positivity`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hreal : 2 * ‖F0 y - F' y‖ ^ 2 ≤ Cst * densF X x0 y * (‖F0 y - F' y‖ ^ 2 / kaF X x0 bb y) * w0`. Establish `e : Cst * densF X x0 y * (‖F0 y - F' y‖ ^ 2 / kaF X x0 bb y) * w0 = 2 * ‖F0 y - F' y‖ ^ 2 * ((kmax / kaF X x0 bb y) * (densF X x0 y / d0))`. Rewrite using `[hCst]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
-
-Establish `f3 : 1 ≤ (kmax / kaF X x0 bb y) * (densF X x0 y / d0)` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (mul_nonneg (mul_nonneg hCst0 hdens) (div_nonneg hq hk0.le)), ENNReal.ofReal_mul (mul_nonneg hCst0 hdens), ENNReal.ofReal_mul hCst0]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal Cst * (dd y * h y) := by show _ ≤ ENNReal.ofReal Cst * (ENNReal.ofReal (densF X x0 y) * (ENNReal.ofReal (‖F0 y - F' y‖ ^ 2 / kaF X x0 bb y) * W (cpt X x0 y))) gcongr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left measurable_const, lintegral_const, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, Measure.restrict_apply_univ]`. Use `_ < ⊤ := by`.
-
-Apply `ENNReal.add_lt_top.2 ⟨?_, ?_⟩` to reduce the goal to its premises. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top ((measure_mono Set.inter_subset_left).trans_lt measure_ball_lt_top)`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top ((lintegral_mono_set Set.inter_subset_right).trans_lt hJ')`.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem localRepresentationL2 {la : Wt X.Ψ r} {W : Frame X.Ψ r → ℝ≥0∞} {c : ℝ} (hc : 0 < c)
     (hWL : ∀ x ∈ X.dom, ENNReal.ofReal (c * Real.exp (-phla X la x)) ≤ W x) {bb : ℝ}

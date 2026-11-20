@@ -6,31 +6,29 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 namespace GlobalTheory.ZonalBi
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N _ _ μK _ hK ψ hψ κ₀ hκ₀ m`. Establish `hKo : IsOpen (KO k (Fin N) : Set (GL (Fin N) k))` using `GlobalTheory.SplitFlip.isOpen_KO`. Establish `hKc : IsCompact (KO k (Fin N) : Set (GL (Fin N) k))` using `GlobalTheory.SplitFlip.isCompact_KO`. Establish `hKcl : IsClosed (KO k (Fin N) : Set (GL (Fin N) k))` using `Subgroup.isClosed_of_isOpen _ hKo`. Establish `hKfr : frontier (KO k (Fin N) : Set (GL (Fin N) k)) = ∅` using `(IsClopen.frontier_eq ⟨hKcl, hKo⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKm : MeasurableSet (KO k (Fin N) : Set (GL (Fin N) k))` using `hKo.measurableSet`. Establish `hψc : Continuous ψ`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `hmem : (fun y => g⁻¹ * y) ⁻¹' (KO k (Fin N) : Set (GL (Fin N) k)) ∈ nhds g` using `(hKo.preimage (continuous_const_mul g⁻¹)).mem_nhds (by simp [one_mem])`. Establish `hev : ∀ᶠ y in nhds g, ψ y = ψ g` using `by filter_upwards [hmem] with y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hψ g (g⁻¹ * y) hy` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Conclude with `tendsto_nhds_of_eventually_eq hev`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `set ν : Measure (GL (Fin N) k) := Measure.map (· * κ₀) μK with hν set c := Measure.haarScalarFactor ν μK with hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `L : ∀ f : GL (Fin N) k → ℝ, Continuous f → HasCompactSupport f → ∫ x, f x ∂ν = ∫ x, f x ∂(c • μK)` using `fun f hf hs => Measure.integral_isMulLeftInvariant_eq_smul_of_hasCompactSupport ν μK hf hs`. Establish `hpre : (· * κ₀) ⁻¹' (KO k (Fin N) : Set (GL (Fin N) k)) = KO k (Fin N)`. Use extensionality with `x`. Simplify using `[Subgroup.mul_mem_cancel_right _ hκ₀]`. Establish `hc1 : c = 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `L ((KO k (Fin N) : Set (GL (Fin N) k)).indicator 1) (continuous_indicator (by simp [hKfr]) continuous_one.continuousOn) (HasCompactSupport.intro hKc fun x hx => by simp [hx])`. Rewrite `h1` using `[integral_indicator_one hKm, integral_indicator_one hKm]`. Simplify using `only [Measure.real, hν, Measure.map_apply (measurable_mul_const κ₀) hKm, hpre, Measure.smul_apply, hK] at h1`. Simplify using `using h1.symm`. Use `set F : GL (Fin N) k → ℂ := (KO k (Fin N) : Set (GL (Fin N) k)).indicator fun x => ψ (x * m) with hFdef`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : Continuous F` using `continuous_indicator (by simp [hKfr]) (hψc.comp (continuous_mul_const m)).continuousOn`. Establish `hFs : HasCompactSupport F` using `HasCompactSupport.intro hKc fun x hx => by simp [F, hx]`. Establish `e1 : zonalInt μK ψ (κ₀ * m) = ∫ x, F (x * κ₀) ∂μK`. Unfold `zonalInt`. Rewrite using `[← integral_indicator hKm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ KO k (Fin N)`. Establish `hx' : x * κ₀ ∈ KO k (Fin N)` using `mul_mem hx hκ₀`. Rewrite using `[hFdef, Set.indicator_of_mem (SetLike.mem_coe.2 hx), Set.indicator_of_mem (SetLike.mem_coe.2 hx'), mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : x * κ₀ ∉ KO k (Fin N)` using `fun h => hx ((Subgroup.mul_mem_cancel_right _ hκ₀).1 h)`. Rewrite using `[hFdef, Set.indicator_of_notMem (fun h => hx (SetLike.mem_coe.1 h)), Set.indicator_of_notMem (fun h => hx' (SetLike.mem_coe.1 h))]`. Establish `e2 : zonalInt μK ψ m = ∫ x, F x ∂μK`. Unfold `zonalInt`. Rewrite using `[← integral_indicator hKm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ∫ x, F (x * κ₀) ∂μK = ∫ x, F x ∂ν` using `(integral_map (measurable_mul_const κ₀).aemeasurable hF.aestronglyMeasurable).symm`. Establish `hIν : Integrable F ν` using `hF.integrable_of_hasCompactSupport hFs`. Establish `hIμ : Integrable F μK` using `hF.integrable_of_hasCompactSupport hFs`. Establish `Lre` using `L (fun x => (F x).re) (Complex.continuous_re.comp hF) (hFs.comp_left Complex.zero_re)`. Establish `Lim` using `L (fun x => (F x).im) (Complex.continuous_im.comp hF) (hFs.comp_left Complex.zero_im)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `Lre`, `Lim` using `[hc1, one_smul]`. Establish `e4 : ∫ x, F x ∂ν = ∫ x, F x ∂μK`. Apply `Complex.ext` to reduce the goal to its premises. Establish `a` using `integral_re hIν`. Establish `b` using `integral_re hIμ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [RCLike.re_to_complex] at a b`. Rewrite using `[← a, ← b, Lre]`. Establish `a` using `integral_im hIν`. Establish `b` using `integral_im hIμ`. Simplify using `only [RCLike.im_to_complex] at a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← a, ← b, Lim]`. Rewrite using `[e1, e3, e4, e2]`. Unfold `zonalInt`. Use `congr 1`. Use function extensionality and compare the values at `κ`.
-
-Rewrite using `[← mul_assoc, hψ _ _ hκ₀]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zonalInt_biInvariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL (Fin N) k)] (μK : Measure (GL (Fin N) k)) [μK.IsHaarMeasure], μK (KO k (Fin N)) = 1 → ∀ ψ : GL (Fin N) k → ℂ, (∀ g, ∀ x ∈ KO k (Fin N), ψ (g * x) = ψ g) → ∀ κ ∈ KO k (Fin N), ∀ m, zonalInt μK ψ (κ * m) = zonalInt μK ψ m ∧ zonalInt μK ψ (m * κ) = zonalInt μK ψ m := by
   intro k _ _ _ _ N _ _ μK _ hK ψ hψ κ₀ hκ₀ m

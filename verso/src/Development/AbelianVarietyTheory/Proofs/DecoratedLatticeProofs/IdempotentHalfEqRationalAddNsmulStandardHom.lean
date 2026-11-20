@@ -15,9 +15,9 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.AdForm.DenseHalf
 
 /- English proof (translation)
-Introduce `D S T e P he M hM w hw`. Take `⟨z, v, hv, hvh, h⟩` from `GlobalTheory.AdForm.exists_rat_half_approx S T e P he M hM w`. Use `⟨z, -v, neg_mem hv, fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.neg_apply, mul_neg, hvh i j]`. Establish `hw' : e • w = w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, hw i j]`. Rewrite using `[h, hw', smul_neg]`. Normalize the expressions using the abelian group laws.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem half_eq_rat_add_nsmul : ∀ {D : D7} (S T : HSp D) (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e P → ∀ M : ℕ, 0 < M → ∀ w : WO S T, IsHalf e w → ∃ (z : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (v : WO S T), v ∈ stdHom S T ∧ IsHalf e v ∧ w = z.map (fun r => e * incA D r) + M • v := by
   intro D S T e P he M hM w hw

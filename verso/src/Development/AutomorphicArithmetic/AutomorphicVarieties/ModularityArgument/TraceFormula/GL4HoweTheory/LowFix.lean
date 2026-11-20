@@ -4,9 +4,9 @@ open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory
 
 open Topology Filter in
 /- English proof (translation)
-Use `Units.isEmbedding_val_mk' (f := fun A : Matrix (Fin n) (Fin n) E => A⁻¹) ?_ ?_` and prove the remaining obligations. Introduce `A hA`. Use `(continuousAt_matrix_inv A ?_).continuousWithinAt` and prove the remaining obligations. Establish `hd : A.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det A).1 hA).ne_zero`. Rewrite using `[Ring.inverse_eq_inv']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuousAt_inv₀ hd`. Introduce `u`. Conclude with `(Matrix.coe_units_inv u).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem lowFix_emb (E : Type) [Field E] [TopologicalSpace E] [IsTopologicalDivisionRing E] (n : ℕ) :
     IsEmbedding (Units.val : GL (Fin n) E → Matrix (Fin n) (Fin n) E) := by
@@ -21,7 +21,7 @@ private theorem lowFix_emb (E : Type) [Field E] [TopologicalSpace E] [IsTopologi
 
 open Topology Filter in
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff W).1 hW`. Take `⟨m, hm⟩` from `exists_pow_lt₀ hγ δ`. Conclude with `⟨m, fun x hx => hδ (lt_of_le_of_lt hx hm)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem lowFix_ball (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
     (γ : ValueGroupWithZero E) (hγ : γ < 1) (W : Set E) (hW : W ∈ nhds (0 : E)) :
@@ -32,25 +32,23 @@ private theorem lowFix_ball (E : Type) [Field E] [ValuativeRel E] [TopologicalSp
 
 open Topology Filter in
 /- English proof (translation)
-Introduce `E _ _ _ _ n ϖ hϖ d U hU`. Establish `hlt : valuation E (ϖ : E) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `hpos : 0 < valuation E (ϖ : E)` using `zero_lt_iff.2 (by simp)`. Rewrite `hU` using `[(lowFix_emb E n).nhds_eq_comap, Filter.mem_comap]`. Take `⟨T, hT, hTU⟩` from `hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc : Continuous (fun A : Fin n → Fin n → E => (Matrix.of A + 1 : Matrix (Fin n) (Fin n) E))` using `Continuous.add (f := fun A : Fin n → Fin n → E => (Matrix.of A : Matrix (Fin n) (Fin n) E)) continuous_id continuous_const`. Establish `h0 : (fun A : Fin n → Fin n → E => (Matrix.of A + 1 : Matrix (Fin n) (Fin n) E)) ⁻¹' T ∈ nhds (0 : Fin n → Fin n → E)`. Use `hc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify using `using hT`. Establish `key : ∃ m : ℕ, ∀ A : Fin n → Fin n → E, (∀ i j, valuation E (A i j) ≤ valuation E (ϖ : E) ^ m) → Matrix.of A + 1 ∈ T`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h0` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, htI⟩` from `h0`. Establish `h1 : ∀ i, ∃ s : Fin n → Set E, (∀ j, s j ∈ nhds (0 : E)) ∧ Set.pi Set.univ s ⊆ t i`. Introduce `i`. Use `ht i` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[nhds_pi, Filter.mem_pi']`. Take `⟨J, s, hs, hsJ⟩` from `this`. Conclude with `⟨s, hs, fun x hx => hsJ fun j _ => hx j (Set.mem_univ _)⟩`. Use `choose s hs hst using h1`. Establish `hW : (⋂ i, ⋂ j, s i j) ∈ nhds (0 : E)` using `Filter.iInter_mem.2 fun i => Filter.iInter_mem.2 fun j => hs i j`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `lowFix_ball E _ hlt _ hW`. Use `⟨m, fun A hA => htI fun i _ => hst i fun j _ => ?_⟩` and prove the remaining obligations. Use `hm _ (hA i j)` as an intermediate fact. Simplify using `only [Set.mem_iInter] at this`. Conclude with `this i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `key`. Use `⟨max (m : ℤ) |d|, fun a ha b hb hlow => hTU ?_⟩` and prove the remaining obligations. Establish `ham : (m : ℤ) ≤ a` using `le_trans (le_max_left _ _) ha`. Establish `had : |d| ≤ a` using `le_trans (le_max_right _ _) ha`. Establish `hc0 : 0 ≤ 2 * a - d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_abs_self d` as an intermediate fact. Use `abs_nonneg d` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hm (fun i j => (b : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j) (by` as an intermediate fact. Introduce `i j`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `lt_or_ge i j with hij | hij` into its components or cases. Simplify using `[hlow i j hij, Matrix.one_apply_ne hij.ne]`. Use `le_trans (hb i j) ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, ← zpow_natCast]`. Use `zpow_le_zpow_right_of_le_one₀ hpos hlt.le ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hji : ((j : ℕ) : ℤ) ≤ ((i : ℕ) : ℤ)` using `by exact_mod_cast hij`. Use `mul_nonneg hc0 (sub_nonneg.2 hji)` as an intermediate fact. Use the proof step `omega)`. Establish `e : (Matrix.of (fun i j => (b : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j) + 1 : Matrix (Fin n) (Fin n) E) = (b : Matrix (Fin n) (Fin n) E)`. Use extensionality with `i j`.
-
-Simplify using the standard rewrite rules. Rewrite `this` using `[e]`. Conclude with `this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.L4.lowFix :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (ϖ : Eˣ), valuation E (ϖ : E) = uniformizer E → ∀ (d : ℤ) (U : Set (GL (Fin n) E)), U ∈ nhds (1 : GL (Fin n) E) →

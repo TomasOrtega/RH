@@ -12,7 +12,7 @@ noncomputable section
 namespace RootPointConjugation
 
 /- English proof (translation)
-Simplify using `only [aeval_monomial, Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_mul_monomial {σ A : Type*} [CommRing A] (s : A) (x : σ → A) (μ : σ →₀ ℕ) (c : ℤ) :
     aeval (fun i => s * x i) (monomial μ c) = s ^ (μ.sum fun _ e => e) * aeval x (monomial μ c) := by
@@ -21,7 +21,7 @@ theorem aeval_mul_monomial {σ A : Type*} [CommRing A] (s : A) (x : σ → A) (�
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun μ hμ => by rw [← mul_assoc, pow_sub_mul_pow _ (hS μ hμ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_homog {σ A : Type*} [CommRing A] (S : Finset (σ →₀ ℕ)) (N : ℕ)
     (hS : ∀ μ ∈ S, (μ.sum fun _ e => e) ≤ N) (s : A) (g : (σ →₀ ℕ) → A) :
@@ -30,13 +30,13 @@ theorem sum_homog {σ A : Type*} [CommRing A] (S : Finset (σ →₀ ℕ)) (N : 
   exact Finset.sum_congr rfl fun μ hμ => by rw [← mul_assoc, pow_sub_mul_pow _ (hS μ hμ)]
 
 /- English proof (translation)
-Establish `hS : ∀ μ ∈ Q.support, (μ.sum fun _ e => e) ≤ Q.totalDegree` using `fun μ hμ => le_totalDegree hμ`. Use `set H : MRing (plBlocks f j m) := ∑ μ ∈ Q.support, X ⟨τ, plAnchor j m⟩ ^ (Q.totalDegree - μ.sum fun _ e => e) * rename (Sigma.mk τ) (monomial μ (coeff μ Q)) with hH`. Establish `hmem : H ∈ rootPointIdeal ζ` using `by show mConeMap (rootCoord ζ) H = 0`. Establish `hC : ∀ P : MvPolynomial (PlIdx j m) ℤ, aeval (fun I => (C (rootCoord ζ ⟨τ, I⟩) : MvPolynomial (Fin f) ℂ)) P = C (aeval (fun I => rootCoord ζ ⟨τ, I⟩) P)`. Introduce `P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `induction P using MvPolynomial.induction_on <;> simp_all`. Establish `hcomp : (fun p => C (rootCoord ζ p) * (X p.1 : MvPolynomial (Fin f) ℂ)) ∘ Sigma.mk τ = fun I => X τ * C (rootCoord ζ ⟨τ, I⟩)`. Use function extensionality and compare the values at `I`. Simplify using `[mul_comm]`. Establish `ha : rootCoord ζ ⟨τ, plAnchor j m⟩ = 1` using `anchor_minor j m (ζ τ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : ∀ (μ : PlIdx j m →₀ ℕ) (c : ℤ), aeval (fun I => X τ * (C (rootCoord ζ ⟨τ, I⟩) : MvPolynomial (Fin f) ℂ)) (monomial μ c) = X τ ^ (μ.sum fun _ e => e) * aeval (fun I => C (rootCoord ζ ⟨τ, I⟩)) (monomial μ c)` using `fun μ c => aeval_mul_monomial _ _ μ c`. Simplify using `only [hH, mConeMap, map_sum, map_mul, map_pow, aeval_X, aeval_rename, hcomp, hsc, hC, ha, map_one, one_mul]`. Rewrite using `[sum_homog _ _ hS, ← map_sum, ← map_sum, ← as_sum, hQ, map_zero, mul_zero]`. Establish `hE` using `hz.2 H hmem`. Rewrite `hE` using `[eval_map, ← algebraMap_int_eq, ← aeval_def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp2 : z ∘ Sigma.mk τ = fun I => z ⟨τ, plAnchor j m⟩ * u I` using `funext hu`. Simplify using `only [hH, map_sum, map_mul, map_pow, aeval_X, aeval_rename, hcomp2, aeval_mul_monomial] at hE`. Rewrite `hE` using `[sum_homog _ _ hS, ← map_sum, ← as_sum]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem homog_vanish {f j m : ℕ} (ζ : Fin f → Matrix (Fin j) (Fin m) ℂ)
     (z : (Σ _ : Fin f, PlIdx j m) → ℂ) (hz : z ∈ mcPts (rootPointIdeal ζ)) (τ : Fin f)
@@ -76,7 +76,7 @@ def colAB {j m : ℕ} (a : Fin j) (b : Fin m) (c : Fin j) : Fin (j + m) :=
   if c = a then Fin.natAdd j b else Fin.castAdd m c
 
 /- English proof (translation)
-Introduce `c d h`. Apply the tactic sequence `by_cases hc : c = a <;> by_cases hd : d = a <;>`. Apply the tactic sequence `simp_all [colAB, Fin.ext_iff] <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colAB_injective {j m : ℕ} (a : Fin j) (b : Fin m) : Function.Injective (colAB a b) := by
   intro c d h
@@ -87,13 +87,11 @@ def idxAB {j m : ℕ} (a : Fin j) (b : Fin m) : PlIdx j m :=
   ⟨Finset.univ.map ⟨colAB a b, colAB_injective a b⟩, by simp⟩
 
 /- English proof (translation)
-Use `set I := idxAB a b`. Establish `hmem : ∀ c, colAB a b c ∈ I.1` using `fun c => by simp [I, idxAB]`. Set `e' : Fin j → Fin j` to `fun c => (I.1.orderIsoOfFin I.2).symm ⟨colAB a b c, hmem c⟩`. Establish `he' : ∀ c, I.1.orderEmbOfFin I.2 (e' c) = colAB a b c` using `fun c => by`. Rewrite using `[← Finset.coe_orderIsoOfFin_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[e']`. Establish `hinj : Function.Injective e'` using `fun c d h => colAB_injective a b (by rw [← he', ← he', h])`. Set `e` to `Equiv.ofBijective e' (Finite.injective_iff_bijective.mp hinj)`. Use `⟨(Equiv.Perm.sign e : ℤ), fun R _ Z => ?_⟩` and prove the remaining obligations. Establish `hsub : (colsOf (onePipe Z) I).submatrix id e = (1 : Matrix (Fin j) (Fin j) R).updateCol a (fun r => Z r b)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r c`. Simplify using `only [submatrix_apply, colsOf, id, e, Equiv.ofBijective_apply, he', updateCol_apply, onePipe, of_apply, colAB]`. Apply the tactic sequence `split_ifs <;> simp [Fin.append_left, Fin.append_right]`. Use `Matrix.det_permute' e (colsOf (onePipe Z) I)` as an intermediate fact. Rewrite `this` using `[hsub, ← cramer_apply, cramer_one]`.
-
-Conclude with `this`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_eq_minor {j m : ℕ} (a : Fin j) (b : Fin m) :
     ∃ s : ℤ, ∀ (R : Type) [CommRing R] (Z : Matrix (Fin j) (Fin m) R),
@@ -118,9 +116,9 @@ theorem entry_eq_minor {j m : ℕ} (a : Fin j) (b : Fin m) :
   exact this
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `r c`. Simplify using `only [RingHom.mapMatrix_apply, map_apply, colsOf, submatrix_apply, onePipe, of_apply, id]`. Generalize the expression as in `I.1.orderEmbOfFin I.2 c = x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Use `Fin.addCases (fun c' => ?_) (fun b => ?_) x` and prove the remaining obligations. Apply the tactic sequence `simp only [Fin.append_left, one_apply]; split_ifs <;> simp`. Simplify using `[Fin.append_right]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem map_minor {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {j m : ℕ}
     (Z : Matrix (Fin j) (Fin m) R) (I : PlIdx j m) :
@@ -139,17 +137,15 @@ end RootPointConjugation
 open RootPointConjugation in
 
 /- English proof (translation)
-Introduce `f j m ζ hζ z hz τ`. Establish `h0 : z ⟨τ, plAnchor j m⟩ ≠ 0` using `h f j m ζ hζ z hz τ`. Use `set u : PlIdx j m → ℂ := fun I => z ⟨τ, I⟩ / z ⟨τ, plAnchor j m⟩`. Establish `hu : ∀ I, z ⟨τ, I⟩ = z ⟨τ, plAnchor j m⟩ * u I` using `fun I => by simp [u, mul_div_cancel₀ _ h0]`. Establish `hker : ∀ Q : MvPolynomial (PlIdx j m) ℤ, aeval (fun I => rootCoord ζ ⟨τ, I⟩) Q = 0 → aeval u Q = 0` using `fun Q hQ => (mul_eq_zero.mp (homog_vanish ζ z hz τ u hu Q hQ)).resolve_left (pow_ne_zero _ h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose s hs using fun a b => entry_eq_minor (j := j) (m := m) a b`. Set `E : Matrix (Fin j) (Fin m) (MvPolynomial (PlIdx j m) ℤ)` to `Matrix.of fun a b => C (s a b) * X (idxAB a b)`. Establish `hE : E.map (aeval fun I => rootCoord ζ ⟨τ, I⟩) = ζ τ`. Use extensionality with `a b`. Simplify using `[E, rootCoord, ← hs a b ℂ (ζ τ)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨E.map (aeval u), fun a b => ?_, fun I => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hk1⟩` from `hζ τ a b`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `hq` using `hker (E a b ^ k - 1) (by`. Rewrite using `[map_sub, map_pow, map_one, ← hk1, ← hE]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use the proof step `simp)`. Simplify `hq` using `[sub_eq_zero]`. Establish `hq` using `hker (X I - (colsOf (onePipe E) I).det) (by`. Rewrite using `[map_sub, aeval_X]`. Use `map_minor (aeval fun I => rootCoord ζ ⟨τ, I⟩).toRingHom E I` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Rewrite using `[this, hE]`. Conclude with `sub_eq_zero.mpr rfl)`. Rewrite `hq` using `[map_sub, aeval_X, sub_eq_zero]`. Use `map_minor (aeval u).toRingHom E I` as an intermediate fact.
-
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Rewrite using `[hu I, hq, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RootPointConj.proof (h : RootAnchorNonzero.Statement) : RootPointConj.Statement := by
   intro f j m ζ hζ z hz τ

@@ -16,7 +16,7 @@ variable {R : Type} [CommRing R] {d : ℕ}
 def NoConst {m n : ℕ} (a : Fin m → Pt R n d) : Prop := ∀ j i, constantCoeff (a j i) = 0
 
 /- English proof (translation)
-Apply `hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce and unpack `⟨j, i⟩`. Conclude with `ha j i`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem NoConst.hasSubst {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) :
     HasSubst (fun p : Fin m × Fin d => a p.1 p.2) := by
@@ -25,7 +25,7 @@ theorem NoConst.hasSubst {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) :
   exact ha j i
 
 /- English proof (translation)
-Introduce `j i`. Rewrite using `[Fin.fin_one_eq_zero j]`. Conclude with `ha i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noConst_one {n : ℕ} {a : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0) :
     NoConst (![a] : Fin 1 → Pt R n d) := by
@@ -34,7 +34,7 @@ theorem noConst_one {n : ℕ} {a : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 
   exact ha i
 
 /- English proof (translation)
-Introduce `j i`. Use `fin_cases j`. Conclude with `ha i`. Conclude with `hb i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem noConst_two {n : ℕ} {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) : NoConst (![a, b] : Fin 2 → Pt R n d) := by
@@ -44,14 +44,14 @@ theorem noConst_two {n : ℕ} {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) 
   · exact hb i
 
 /- English proof (translation)
-Unfold `pt`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cc_pt {n : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt R d j i) = 0 := by
   unfold pt
   simp
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[GlobalTheory.FormalCalc.constantCoeff_subst_of_zero ha.hasSubst (fun p => ha p.1 p.2)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cc_ev {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (f : PS R m d) :
     constantCoeff (ev a f) = constantCoeff f := by
@@ -60,7 +60,7 @@ theorem cc_ev {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (f : PS R m 
   rfl
 
 /- English proof (translation)
-Unfold `ev pt`. Conclude with `subst_X ha.hasSubst (j, i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ev_pt {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (j : Fin m) (i : Fin d) :
     ev a (pt R d j i) = a j i := by
@@ -68,7 +68,7 @@ theorem ev_pt {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (j : Fin m) 
   exact subst_X ha.hasSubst (j, i)
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[← coe_substAlgHom ha.hasSubst, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_zero {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) :
     ev a (0 : PS R m d) = 0 := by
@@ -76,7 +76,7 @@ theorem ev_zero {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) :
   rw [← coe_substAlgHom ha.hasSubst, map_zero]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[← coe_substAlgHom ha.hasSubst]`. Conclude with `map_mul _ f g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_mul {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (f g : PS R m d) :
     ev a (f * g) = ev a f * ev a g := by
@@ -85,7 +85,7 @@ theorem ev_mul {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (f g : PS R
   exact map_mul _ f g
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[← coe_substAlgHom ha.hasSubst]`. Conclude with `map_add _ f g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_add {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (f g : PS R m d) :
     ev a (f + g) = ev a f + ev a g := by
@@ -94,7 +94,7 @@ theorem ev_add {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (f g : PS R
   exact map_add _ f g
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[← coe_substAlgHom ha.hasSubst]`. Conclude with `map_sum _ f s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_sum {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) {κ : Type} (s : Finset κ)
     (f : κ → PS R m d) : ev a (∑ k ∈ s, f k) = ∑ k ∈ s, ev a (f k) := by
@@ -103,14 +103,14 @@ theorem ev_sum {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) {κ : Type}
   exact map_sum _ f s
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[subst_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_C {m n : ℕ} (a : Fin m → Pt R n d) (r : R) : ev a (C r : PS R m d) = C r := by
   unfold ev
   rw [subst_C]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[subst_comp_subst_apply ha.hasSubst hb.hasSubst]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_ev {l m n : ℕ} {a : Fin l → Pt R m d} {b : Fin m → Pt R n d} (hb : NoConst b)
     (ha : NoConst a) (f : PS R l d) :
@@ -119,9 +119,9 @@ theorem ev_ev {l m n : ℕ} {a : Fin l → Pt R m d} {b : Fin m → Pt R n d} (h
   rw [subst_comp_subst_apply ha.hasSubst hb.hasSubst]
 
 /- English proof (translation)
-Establish `hX : (fun p : Fin 1 × Fin d => (![pt R d 0] : Fin 1 → Pt R 1 d) p.1 p.2) = X`. Use function extensionality and compare the values at `p`. Break down `p with ⟨j, i⟩` into its components or cases. Rewrite using `[Fin.fin_one_eq_zero j]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `ev`. Rewrite using `[hX, subst_self]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_id (f : PS R 1 d) : ev (n := 1) ![pt R d 0] f = f := by
   have hX : (fun p : Fin 1 × Fin d => (![pt R d 0] : Fin 1 → Pt R 1 d) p.1 p.2) = X := by
@@ -134,7 +134,7 @@ theorem ev_id (f : PS R 1 d) : ev (n := 1) ![pt R d 0] f = f := by
   rfl
 
 /- English proof (translation)
-Unfold `ev`. Use `show subst (0 : Fin m × Fin d → PS R n d) f = _`. Rewrite using `[subst_zero_eq_C_constantCoeff]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_const {m n : ℕ} (f : PS R m d) :
     ev (fun _ _ => (0 : PS R n d)) f = C (constantCoeff f) := by
@@ -144,7 +144,7 @@ theorem ev_const {m n : ℕ} (f : PS R m d) :
   simp
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[GlobalTheory.FormalCalc.pderiv_subst ha.hasSubst, Fintype.sum_prod_type]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_ev {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (f : PS R m d)
     (v : Fin n × Fin d) :
@@ -153,7 +153,7 @@ theorem pderiv_ev {m n : ℕ} {a : Fin m → Pt R n d} (ha : NoConst a) (f : PS 
   rw [GlobalTheory.FormalCalc.pderiv_subst ha.hasSubst, Fintype.sum_prod_type]
 
 /- English proof (translation)
-Introduce `j i`. Use `fin_cases j`. Conclude with `cc_pt 0 i`. Conclude with `map_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem germPointsNoConstantTerm_first_zero : NoConst (![pt R (n := 1) d 0, 0] : Fin 2 → Pt R 1 d) := by
   intro j i
@@ -162,11 +162,9 @@ theorem germPointsNoConstantTerm_first_zero : NoConst (![pt R (n := 1) d 0, 0] :
   · exact map_zero _
 
 /- English proof (translation)
-Establish `hs : NoConst (![pt R (n` using `2) d 1, pt R (n := 2) d 0] : Fin 2 → Pt R 2 d) := noConst_two (cc_pt 1) (cc_pt 0)`. Establish `hfam : (fun j i => ev (n` using `1) ![pt R d 0, 0] ((![pt R (n := 2) d 1, pt R (n := 2) d 0] : Fin 2 → Pt R 2 d) j i)) = (![0, pt R d 0] : Fin 2 → Pt R 1 d) := by`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Use `show ev (n := 1) ![pt R d 0, 0] (pt R d 1 i) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[ev_pt germPointsNoConstantTerm_first_zero]`. Both sides reduce to the same expression. Use `show ev (n := 1) ![pt R d 0, 0] (pt R d 0 i) = pt R d 0 i`. Rewrite using `[ev_pt germPointsNoConstantTerm_first_zero]`. Both sides reduce to the same expression.
-
-Rewrite using `[← G.comm c, ev_ev germPointsNoConstantTerm_first_zero hs, hfam]`. Conclude with `G.unit c`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formalGroupLaw_ev_second_zero (G : FGLaw R d) (c : Fin d) :
     ev (n := 1) ![pt R d 0, 0] (G.F c) = pt R (n := 1) d 0 c := by
@@ -187,9 +185,9 @@ theorem formalGroupLaw_ev_second_zero (G : FGLaw R d) (c : Fin d) :
   exact G.unit c
 
 /- English proof (translation)
-Establish `hX : (fun p : Fin 2 × Fin d => (![pt R (n` using `2) d 0, pt R (n := 2) d 1] : Fin 2 → Pt R 2 d) p.1 p.2) = X := by`. Use function extensionality and compare the values at `p`. Break down `p with ⟨j, i⟩` into its components or cases. Apply the tactic sequence `fin_cases j <;> rfl`. Unfold `ev`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[hX, subst_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ev_xy_eq (f : PS R 2 d) :
     ev (n := 2) (![pt R (n := 2) d 0, pt R (n := 2) d 1] : Fin 2 → Pt R 2 d) f = f := by
@@ -203,16 +201,16 @@ private theorem ev_xy_eq (f : PS R 2 d) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Conclude with `ev_xy_eq (G.F c)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem add_pt (G : FGLaw R d) : G.add (pt R (n := 2) d 0) (pt R (n := 2) d 1) = G.F := by
   funext c
   exact ev_xy_eq (G.F c)
 
 /- English proof (translation)
-Establish `hx : NoConst (![pt R (n` using `2) d 0] : Fin 1 → Pt R 2 d) := noConst_one (cc_pt 0)`. Establish `hfam : (fun j i => ev (n` using `1) ![pt R d 0, 0] ((![pt R (n := 2) d 0] : Fin 1 → Pt R 2 d) j i)) = (![pt R d 0] : Fin 1 → Pt R 1 d) := by`. Use function extensionality and compare the values at `j i`. Rewrite using `[Fin.fin_one_eq_zero j]`. Use `show ev (n := 1) ![pt R d 0, 0] (pt R d 0 i) = pt R d 0 i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev_pt germPointsNoConstantTerm_first_zero]`. Both sides reduce to the same expression. Rewrite using `[ev_ev germPointsNoConstantTerm_first_zero hx, hfam, ev_id]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_ev_restrict_axis_first_point (h : PS R 1 d) : ev (n := 1) ![pt R d 0, 0] (ev (n := 2) ![pt R d 0] h) = h := by
   have hx : NoConst (![pt R (n := 2) d 0] : Fin 1 → Pt R 2 d) := noConst_one (cc_pt 0)
@@ -226,9 +224,9 @@ theorem germ_ev_restrict_axis_first_point (h : PS R 1 d) : ev (n := 1) ![pt R d 
   rw [ev_ev germPointsNoConstantTerm_first_zero hx, hfam, ev_id]
 
 /- English proof (translation)
-Establish `hy : NoConst (![pt R (n` using `2) d 1] : Fin 1 → Pt R 2 d) := noConst_one (cc_pt 1)`. Establish `hfam : (fun j i => ev (n` using `1) ![pt R d 0, 0] ((![pt R (n := 2) d 1] : Fin 1 → Pt R 2 d) j i)) = fun _ _ => (0 : PS R 1 d) := by`. Use function extensionality and compare the values at `j i`. Rewrite using `[Fin.fin_one_eq_zero j]`. Use `show ev (n := 1) ![pt R d 0, 0] (pt R d 1 i) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev_pt germPointsNoConstantTerm_first_zero]`. Both sides reduce to the same expression. Rewrite using `[ev_ev germPointsNoConstantTerm_first_zero hy, hfam, ev_const]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_ev_restrict_axis_second_point (h : PS R 1 d) :
     ev (n := 1) ![pt R d 0, 0] (ev (n := 2) ![pt R d 1] h) = C (constantCoeff h) := by
@@ -243,7 +241,7 @@ theorem germ_ev_restrict_axis_second_point (h : PS R 1 d) :
   rw [ev_ev germPointsNoConstantTerm_first_zero hy, hfam, ev_const]
 
 /- English proof (translation)
-Establish `hfam : (fun j i => ev (n` using `1) ![pt R d 0, 0] ((![G.F] : Fin 1 → Pt R 2 d) j i)) = (![pt R d 0] : Fin 1 → Pt R 1 d) := by`. Use function extensionality and compare the values at `j i`. Rewrite using `[Fin.fin_one_eq_zero j]`. Conclude with `formalGroupLaw_ev_second_zero G i`. Rewrite using `[ev_ev germPointsNoConstantTerm_first_zero (noConst_one G.const), hfam, ev_id]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_ev_restrict_axis_groupLaw (G : FGLaw R d) (h : PS R 1 d) :
     ev (n := 1) ![pt R d 0, 0] (ev (n := 2) ![G.F] h) = h := by
@@ -255,9 +253,9 @@ theorem germ_ev_restrict_axis_groupLaw (G : FGLaw R d) (h : PS R 1 d) :
   rw [ev_ev germPointsNoConstantTerm_first_zero (noConst_one G.const), hfam, ev_id]
 
 /- English proof (translation)
-Establish `hx : NoConst (![pt R (n` using `2) d 0] : Fin 1 → Pt R 2 d) := noConst_one (cc_pt 0)`. Rewrite using `[pderiv_ev hx]`. Use `Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero j]`. Use `show _ * pderiv R ((1 : Fin 2), i) (X ((0 : Fin 2), k)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_X_of_ne (by simp), mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem pderiv_second_of_ev_first_point (h : PS R 1 d) (i : Fin d) :
     pderiv R ((1 : Fin 2), i) (ev (n := 2) ![pt R d 0] h) = 0 := by
@@ -269,9 +267,9 @@ theorem pderiv_second_of_ev_first_point (h : PS R 1 d) (i : Fin d) :
   rw [pderiv_X_of_ne (by simp), mul_zero]
 
 /- English proof (translation)
-Establish `hy : NoConst (![pt R (n` using `2) d 1] : Fin 1 → Pt R 2 d) := noConst_one (cc_pt 1)`. Rewrite using `[pderiv_ev hy, Fin.sum_univ_one, Finset.sum_eq_single i]`. Use `show _ * pderiv R ((1 : Fin 2), i) (X ((1 : Fin 2), i)) = _`. Rewrite using `[pderiv_X_self, mul_one]`. Introduce `k _ hk show _ * pderiv R ((1 : Fin 2), i) (X ((1 : Fin 2), k)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_X_of_ne (by simp [hk]), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dy_y (h : PS R 1 d) (i : Fin d) :
     pderiv R ((1 : Fin 2), i) (ev (n := 2) ![pt R d 1] h) =
@@ -287,7 +285,7 @@ theorem dy_y (h : PS R 1 d) (i : Fin d) :
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using `[dLin]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_pderiv (φ : Pt R 1 d) (b i : Fin d) :
     constantCoeff (pderiv R ((0 : Fin 1), i) (φ b)) = dLin φ b i := by
@@ -302,11 +300,9 @@ private theorem comp1_apply_eq_ev {n : ℕ} (φ : Pt R 1 d) (ψ : Pt R n d) (b :
   rfl
 
 /- English proof (translation)
-Establish `hx : NoConst (![pt R (n` using `2) d 0] : Fin 1 → Pt R 2 d) := noConst_one (cc_pt 0)`. Establish `hy : NoConst (![pt R (n` using `2) d 1] : Fin 1 → Pt R 2 d) := noConst_one (cc_pt 1)`. Establish `hxy : NoConst (![comp1 φ (pt R (n` using `2) d 0), comp1 φ (pt R (n := 2) d 1)] : Fin 2 → Pt R 2 d) := noConst_two (fun b => (cc_ev hx (φ b)).trans (hφ b)) (fun b => (cc_ev hy (φ b)).trans (hφ b))`. Rewrite using `[ev_ev germPointsNoConstantTerm_first_zero hxy, ev_ev (noConst_one hφ) germPointsNoConstantTerm_first_zero]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j b`. Use `fin_cases j`. Use `show ev (n := 1) ![pt R d 0, 0] (ev (n := 2) ![pt R (n := 2) d 0] (φ b)) = ev (n := 1) ![φ] (pt R d 0 b)`. Rewrite using `[germ_ev_restrict_axis_first_point, ev_pt (noConst_one hφ)]`. Both sides reduce to the same expression.
-
-Use `show ev (n := 1) ![pt R d 0, 0] (ev (n := 2) ![pt R (n := 2) d 1] (φ b)) = ev (n := 1) ![φ] (0 : PS R 1 d)`. Rewrite using `[germ_ev_restrict_axis_second_point, hφ b, map_zero, ev_zero (noConst_one hφ)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_swap_of_constantCoeff_eq_zero (φ : Pt R 1 d) (hφ : ∀ i, constantCoeff (φ i) = 0) (g : PS R 2 d) :
     ev (n := 1) ![pt R d 0, 0]
@@ -330,11 +326,11 @@ private theorem ev_swap_of_constantCoeff_eq_zero (φ : Pt R 1 d) (hφ : ∀ i, c
     rw [germ_ev_restrict_axis_second_point, hφ b, map_zero, ev_zero (noConst_one hφ)]
 
 /- English proof (translation)
-Establish `hF : NoConst (![G.F] : Fin 1 → Pt R 2 d)` using `noConst_one G.const`. Establish `hx : NoConst (![pt R (n` using `2) d 0] : Fin 1 → Pt R 2 d) := noConst_one (cc_pt 0)`. Establish `hy : NoConst (![pt R (n` using `2) d 1] : Fin 1 → Pt R 2 d) := noConst_one (cc_pt 1)`. Establish `hxy : NoConst (![comp1 φ (pt R (n` using `2) d 0), comp1 φ (pt R (n := 2) d 1)] : Fin 2 → Pt R 2 d) := noConst_two (fun b => (cc_ev hx (φ b)).trans (hφ b)) (fun b => (cc_ev hy (φ b)).trans (hφ b))`. Establish `key : ev (n` using `1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), i) (ev (n := 2) ![G.F] (φ a))) = ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), i) (ev (n := 2) ![comp1 φ (pt R (n := 2) d 0), comp1 φ (pt R (n := 2) d 1)] (G.F a))) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrFun hom a`. Rewrite `h2` using `[add_pt]`. Conclude with `congrArg (fun g => ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), i) g)) h2`. Rewrite `key` using `[pderiv_ev hF, pderiv_ev hxy, Fin.sum_univ_one, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, comp1_apply_eq_ev, pderiv_second_of_ev_first_point, dy_y, mul_zero, Finset.sum_const_zero, zero_add] at key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ev_sum germPointsNoConstantTerm_first_zero, ev_mul germPointsNoConstantTerm_first_zero, germ_ev_restrict_axis_groupLaw, ev_swap_of_constantCoeff_eq_zero φ hφ, germ_ev_restrict_axis_second_point, cc_pderiv] at key`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem jac_endo (G : FGLaw R d) (φ : Pt R 1 d) (hφ : ∀ i, constantCoeff (φ i) = 0)
     (hom : comp1 φ (G.add (pt R (n := 2) d 0) (pt R (n := 2) d 1)) =
@@ -370,11 +366,11 @@ private theorem dof_eq_sum_C_mul_ev (F : Fin d → PS R 2 d) (u : Fin d → R) (
   rfl
 
 /- English proof (translation)
-Introduce `R _ d G φ hφ hom u f`. Establish `h1 : NoConst (![φ] : Fin 1 → Pt R 1 d)` using `noConst_one hφ`. Rewrite using `[dof_eq_sum_C_mul_ev, dof_eq_sum_C_mul_ev, ev_sum h1]`. Simplify using `only [pderiv_ev h1, Fin.sum_univ_one, Matrix.cons_val_zero, ev_mul h1, ev_sum h1, ev_C, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `step : ∀ i, ∑ x, C (u i) * ev (n` using `1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), i) (G.F x)) * (ev (n := 1) ![φ] (pderiv R ((0 : Fin 1), c) f) * pderiv R ((0 : Fin 1), x) (φ c)) = C (u i) * ev (n := 1) ![φ] (pderiv R ((0 : Fin 1), c) f) * ∑ x, pderiv R ((0 : Fin 1), x) (φ c) * ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 …`. Introduce `i`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [Finset.sum_comm]`. Simplify using `only [step, jac_endo G φ hφ hom c, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `conv_lhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun i _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem dof_comp_endo : ∀ (R : Type) [CommRing R] (d : ℕ) (G : FGLaw R d) (φ : Pt R 1 d),
     (∀ i, constantCoeff (φ i) = 0) →

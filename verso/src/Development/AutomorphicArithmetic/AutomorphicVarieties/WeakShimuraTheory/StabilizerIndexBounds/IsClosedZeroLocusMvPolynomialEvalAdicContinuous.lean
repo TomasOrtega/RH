@@ -6,27 +6,23 @@ open IsLocalRing Polynomial Matrix UpperTheory.V
 
 open Filter Topology in
 /- English proof (translation)
-Introduce `G A κ ι _ _ _ _ _ _ j _ a ha f`. Use `letI : Algebra A κ := j.toAlgebra`. Set `L : (f.support → A) →ₗ[A] κ` to `{ toFun := fun v => ∑ d : f.support, f.coeff d.1 * j (v d) map_add' := fun x y => by`. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∑ d : f.support, f.coeff d.1 * j (c * x d) = j c * ∑ d : f.support, f.coeff d.1 * j (x d)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `ring }`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Set `m : G → f.support → A` to `fun g d => ∏ i ∈ d.1.support, a i g ^ d.1 i`. Establish `hL : ∀ g, L (m g) = MvPolynomial.eval (fun s => j (a s g)) f` using `fun g => by`. Rewrite using `[MvPolynomial.eval_eq, ← Finset.sum_coe_sort]`. Express the relevant statement in the definitionally equal form `∑ d : f.support, f.coeff d.1 * j (m g d) = _`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [m, map_prod, map_pow]`. Set `K` to `LinearMap.ker L`. Establish `hK` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := (f.support → A) ⧸ K) (maximalIdeal A) (maximalIdeal.isMaximal A).ne_top`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : K.mkQ (m x) ≠ 0` using `fun h => hx (by`. Establish `h2 : L (m x) = 0` using `(Submodule.Quotient.mk_eq_zero K).1 h`. Rewrite `h2` using `[hL]`. Conclude with `h2)`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, K.mkQ (m x) ∉ (maximalIdeal A ^ N • ⊤ : Submodule A ((f.support → A) ⧸ K)) := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hx'` to reduce the goal to its premises. Rewrite using `[← Submodule.mem_bot A, ← hK]`. Conclude with `(Submodule.mem_iInf _).2 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ y in 𝓝 x, ∀ d, m x d - m y d ∈ maximalIdeal A ^ N`. Rewrite using `[eventually_all]`. Introduce `d`. Establish `h1 : ∀ᶠ y in 𝓝 x, ∀ i ∈ d.1.support, Ideal.Quotient.mk (maximalIdeal A ^ N) (a i y) = Ideal.Quotient.mk (maximalIdeal A ^ N) (a i x)`. Rewrite using `[eventually_all_finset]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Conclude with `(ha i N).eventually_eq x`. Use `filter_upwards [h1] with y hy`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Simplify using `only [m, map_prod, map_pow]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i hi => by rw [hy i hi]`. Use `filter_upwards [hev] with y hy hy0`. Apply `hN` to reduce the goal to its premises. Establish `h0 : K.mkQ (m y) = 0` using `(Submodule.Quotient.mk_eq_zero K).2 (by`. Express the relevant statement in the definitionally equal form `L (m y) = 0`.
-
-Rewrite using `[hL]`. Conclude with `hy0)`. Establish `h1 : K.mkQ (m x) = K.mkQ (m x - m y)` using `by rw [map_sub, h0, sub_zero]`. Rewrite using `[h1, pi_eq_sum_univ' (m x - m y), map_sum]`. Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul (hy s) Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.isClosed_zeroLocus_mvPolynomial_eval_adicContinuous :
     ∀ (G A κ ι : Type) [TopologicalSpace G] [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A] [Field κ]

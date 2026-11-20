@@ -6,27 +6,25 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `G H _ _ Γ C lam hyp`. Establish `key : ∀ (r γ₁ γ₂ : G), γ₁ ∈ Γ → γ₂ ∈ Γ → ∀ c₁ c₂ : C, γ₁ * r * c₁ = γ₂ * r * c₂ → lam c₁ = lam c₂`. Introduce `r γ₁ γ₂ h1 h2 c₁ c₂ h`. Establish `h' : γ₂⁻¹ * γ₁ * r = r * ((c₂ * c₁⁻¹ : C) : G)`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `hyp r _ (Γ.mul_mem (Γ.inv_mem h2) h1) _ h'`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h3.symm`. Take `⟨R, hR⟩ : ∃ R : G → Set G, ∀ g x, x ∈ R g ↔ ∃ γ ∈ Γ, ∃ c : C, x = γ * g * c` from `⟨fun g => {x | ∃ γ ∈ Γ, ∃ c : C, x = γ * g * c}, fun _ _ => Iff.rfl⟩`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hself : ∀ g, g ∈ R g` using `fun g => (hR g g).2 ⟨1, Γ.one_mem, 1, by simp⟩`. Establish `hsub : ∀ g g', g' ∈ R g → R g' ⊆ R g`. Introduce `g g' hg x hx`. Take `⟨γ, hγ, c, e⟩` from `(hR g g').1 hg`. Take `⟨γ', hγ', c', e'⟩` from `(hR g' x).1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hR g x).2 ⟨γ' * γ, Γ.mul_mem hγ' hγ, c * c', by rw [e', e, Subgroup.coe_mul]; group⟩`. Establish `hsymm : ∀ g g', g' ∈ R g → g ∈ R g'`. Introduce `g g' hg`. Take `⟨γ, hγ, c, e⟩` from `(hR g g').1 hg`. Conclude with `(hR g' g).2 ⟨γ⁻¹, Γ.inv_mem hγ, c⁻¹, by rw [e, Subgroup.coe_inv]; group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨rep, hrep⟩ : ∃ rep : G → G, ∀ g, rep g = Classical.epsilon (· ∈ R g)` from `⟨_, fun _ => rfl⟩`. Establish `hrepR : ∀ g g', g' ∈ R g → rep g' = rep g`. Introduce `g g' hg`. Establish `hRR : R g' = R g` using `Set.Subset.antisymm (hsub g g' hg) (hsub g' g (hsymm g g' hg))`. Rewrite using `[hrep, hrep, hRR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdec : ∀ g, ∃ c : C, ∃ γ ∈ Γ, g = γ * rep g * c`. Introduce `g`. Establish `hm : rep g ∈ R g`. Rewrite using `[hrep]`. Conclude with `Classical.epsilon_spec ⟨g, hself g⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨γ, hγ, c, e⟩` from `(hR g _).1 hm`. Conclude with `⟨c⁻¹, γ⁻¹, Γ.inv_mem hγ, by rw [e, Subgroup.coe_inv]; group⟩`. Set `ℓ : G → H` to `fun g => lam (Classical.choose (hdec g))`. Establish `hℓ : ∀ g γ, γ ∈ Γ → ∀ c : C, g = γ * rep g * c → ℓ g = lam c`. Introduce `g γ hγ c e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ0, h0, e0⟩` from `Classical.choose_spec (hdec g)`. Conclude with `key (rep g) γ0 γ h0 hγ _ _ (e0.symm.trans e)`. Use `⟨ℓ, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ g`. Take `⟨c0, γ0, h0, e0⟩` from `hdec g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hr : rep (γ * g) = rep g` using `hrepR g _ ((hR g _).2 ⟨γ, hγ, 1, by simp⟩)`. Rewrite using `[hℓ g γ0 h0 c0 e0]`. Apply `hℓ (γ * g) (γ * γ0) (Γ.mul_mem hγ h0) c0` to reduce the goal to its premises. Rewrite using `[hr]`. Use `conv_lhs => rw [e0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [mul_assoc]`. Introduce `g c`. Take `⟨c0, γ0, h0, e0⟩` from `hdec g`. Establish `hr : rep (g * c) = rep g` using `hrepR g _ ((hR g _).2 ⟨1, Γ.one_mem, c, by simp⟩)`. Rewrite using `[hℓ g γ0 h0 c0 e0, ← map_mul]`.
-
-Apply `hℓ (g * c) γ0 h0 (c0 * c)` to reduce the goal to its premises. Rewrite using `[hr, Subgroup.coe_mul]`. Use `conv_lhs => rw [e0]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.ellGrp_pf :
     UpperTheory.Gal.Gen.EllGrp := by

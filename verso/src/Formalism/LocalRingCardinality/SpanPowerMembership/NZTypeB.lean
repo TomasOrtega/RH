@@ -9,16 +9,16 @@ open Polynomial Formalism.CyclotomicNorms Formalism.CyclotomicNorms.CycleTypeFin
 variable {g : ℕ} [hg : Fact g.Prime]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem one_lt_pow_g {d : ℕ} (hd : 1 ≤ d) : 2 ≤ g ^ d := by
   calc 2 ≤ g := hg.out.two_le
     _ ≤ g ^ d := Nat.le_self_pow (by omega) g
 
 /- English proof (translation)
-Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hg.out]`. Introduce `h`. Establish `h2 : g ∣ g ^ d` using `dvd_pow_self g (by omega)`. Establish `h3` using `Nat.dvd_sub h2 h`. Establish `h4 : g ^ d - (g ^ d - 1) = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `one_lt_pow_g (g := g) hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h3` using `[h4]`. Conclude with `hg.out.one_lt.ne' (Nat.dvd_one.1 h3)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_n (d : ℕ) (hd : 1 ≤ d) : Nat.Coprime (g ^ d - 1) g := by
   rw [Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hg.out]
@@ -32,9 +32,9 @@ theorem coprime_n (d : ℕ) (hd : 1 ≤ d) : Nat.Coprime (g ^ d - 1) g := by
   exact hg.out.one_lt.ne' (Nat.dvd_one.1 h3)
 
 /- English proof (translation)
-Use `haveI : Fintype (GaloisField g d) := Fintype.ofFinite _`. Take `⟨x, hx⟩` from `IsCyclic.exists_generator (α := (GaloisField g d)ˣ)`. Set `φ : GaloisField g d →ₐ[ZMod g] Fbar g` to `IsAlgClosed.lift`. Use `⟨Units.map φ.toRingHom.toMonoidHom x, ?_⟩` and prove the remaining obligations. Rewrite using `[orderOf_injective (Units.map φ.toRingHom.toMonoidHom) (Units.map_injective φ.toRingHom.injective) x, orderOf_eq_card_of_forall_mem_zpowers hx, Nat.card_eq_fintype_card, Fintype.card_units]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `first`. Consider the case `exact GaloisField.card g d (by omega)`. Consider the case `(rw [← Nat.card_eq_fintype_card]; exact GaloisField.card g d (by omega))`. Consider the case `simpa [Nat.card_eq_fintype_card] using GaloisField.card g d (by omega)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_gen (d : ℕ) (hd : 1 ≤ d) : ∃ u : (Fbar g)ˣ, orderOf u = g ^ d - 1 := by
   classical
@@ -54,7 +54,7 @@ variable {d : ℕ} (hd : 1 ≤ d) (u : (Fbar g)ˣ) (hu : orderOf u = g ^ d - 1)
 
 include hd hu in
 /- English proof (translation)
-Use `one_lt_pow_g (g := g) hd` as an intermediate fact. Rewrite using `[show g ^ d = g ^ d - 1 + 1 by omega, pow_succ, ← hu, pow_orderOf_eq_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_gd : u ^ (g ^ d) = u := by
   have := one_lt_pow_g (g := g) hd
@@ -62,7 +62,7 @@ theorem pow_gd : u ^ (g ^ d) = u := by
 
 include hd hu in
 /- English proof (translation)
-Rewrite using `[pow_add, mul_comm, pow_mul, pow_gd hd u hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_g_add (j : ℕ) : u ^ (g ^ (j + d)) = u ^ (g ^ j) := by
   rw [pow_add, mul_comm, pow_mul, pow_gd hd u hu]
@@ -70,11 +70,11 @@ theorem pow_g_add (j : ℕ) : u ^ (g ^ (j + d)) = u ^ (g ^ j) := by
 include hd hu in
 
 /- English proof (translation)
-Rewrite `h` using `[pow_eq_pow_iff_modEq, hu]`. Establish `hle : g ^ i * a ≤ g ^ j * a` using `Nat.mul_le_mul_right a (Nat.pow_le_pow_right hg.out.pos hij)`. Establish `h1 : g ^ d - 1 ∣ g ^ j * a - g ^ i * a` using `(Nat.modEq_iff_dvd' hle).1 h`. Establish `hp : 1 ≤ g ^ (j - i)` using `Nat.one_le_pow _ _ hg.out.pos`. Establish `hgj : g ^ j = g ^ i * g ^ (j - i)` using `by rw [← pow_add, Nat.add_sub_cancel' hij]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : g ^ j * a - g ^ i * a = g ^ i * (a * (g ^ (j - i) - 1))`. Rewrite using `[hgj]`. Establish `hle2 : a ≤ a * g ^ (j - i)` using `Nat.le_mul_of_pos_right a hp`. Use `zify [hp, hle, hle2, hgj ▸ hle]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `((coprime_n d hd).pow_right i).dvd_mul_left.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_pow_eq {i j a : ℕ} (hij : i ≤ j) (h : u ^ (g ^ i * a) = u ^ (g ^ j * a)) :
     g ^ d - 1 ∣ a * (g ^ (j - i) - 1) := by
@@ -93,13 +93,13 @@ theorem dvd_of_pow_eq {i j a : ℕ} (hij : i ≤ j) (h : u ^ (g ^ i * a) = u ^ (
 
 include hd hu in
 /- English proof (translation)
-Break down `le_total i j with hij | hij` into its components or cases. Assume the negation of the conclusion as `hne`. Establish `hlt : i < j` using `lt_of_le_of_ne hij hne`. Establish `hdv` using `dvd_of_pow_eq hd u hu (a := 1) hij (by simpa using h)`. Rewrite `hdv` using `[one_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : 1 < g ^ (j - i)` using `Nat.one_lt_pow (by omega) hg.out.one_lt`. Establish `h2 : g ^ (j - i) < g ^ d` using `Nat.pow_lt_pow_right hg.out.one_lt (by omega)`. Use `Nat.le_of_dvd (by omega) hdv` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hlt : j < i` using `lt_of_le_of_ne hij (Ne.symm hne)`. Establish `hdv` using `dvd_of_pow_eq hd u hu (a := 1) hij (by simpa using h.symm)`. Rewrite `hdv` using `[one_mul]`. Establish `h1 : 1 < g ^ (i - j)` using `Nat.one_lt_pow (by omega) hg.out.one_lt`. Establish `h2 : g ^ (i - j) < g ^ d` using `Nat.pow_lt_pow_right hg.out.one_lt (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.le_of_dvd (by omega) hdv` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem orbit_inj {i j : ℕ} (hi : i < d) (hj : j < d) (h : u ^ (g ^ i) = u ^ (g ^ j)) : i = j := by
   rcases le_total i j with hij | hij
@@ -123,12 +123,12 @@ theorem orbit_inj {i j : ℕ} (hi : i < d) (hj : j < d) (h : u ^ (g ^ i) = u ^ (
 def orbQ (d : ℕ) (u : (Fbar g)ˣ) : (Fbar g)[X] := ∏ i ∈ Finset.range d, (X - C ((u : Fbar g) ^ (g ^ i)))
 
 /- English proof (translation)
-The claim follows from `monic_prod_of_monic _ _ fun i _ => monic_X_sub_C _`.
+A detailed English derivation is pending.
 -/
 theorem orbQ_monic : (orbQ d u).Monic := monic_prod_of_monic _ _ fun i _ => monic_X_sub_C _
 
 /- English proof (translation)
-Rewrite using `[orbQ, natDegree_prod_of_monic _ _ (fun i _ => monic_X_sub_C _)]`. Simplify using `only [natDegree_X_sub_C, Finset.sum_const, Finset.card_range, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orbQ_natDegree : (orbQ d u).natDegree = d := by
   rw [orbQ, natDegree_prod_of_monic _ _ (fun i _ => monic_X_sub_C _)]
@@ -136,9 +136,9 @@ theorem orbQ_natDegree : (orbQ d u).natDegree = d := by
 
 include hd hu in
 /- English proof (translation)
-Establish `hf : ∀ i, (X - C ((u : Fbar g) ^ g ^ i)).map (frobenius (Fbar g) g) = X - C ((u : Fbar g) ^ g ^ (i + 1))` using `fun i => by`. Simplify using `only [Polynomial.map_sub, map_X, map_C, frobenius_def, ← pow_mul, pow_succ]`. Establish `hd' : (u : Fbar g) ^ g ^ d = u`. Use `congrArg Units.val (pow_gd hd u hu)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `orbQ`. Rewrite using `[Polynomial.map_prod]`. Repeatedly rewrite using `[hf]`. Apply `mul_right_cancel₀ (X_sub_C_ne_zero ((u : Fbar g) ^ g ^ 0))` to reduce the goal to its premises. Rewrite using `[← Finset.prod_range_succ' (fun i => X - C ((u : Fbar g) ^ g ^ i)), Finset.prod_range_succ, hd', pow_zero, pow_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbQ_frob : (orbQ d u).map (frobenius (Fbar g) g) = orbQ d u := by
   have hf : ∀ i, (X - C ((u : Fbar g) ^ g ^ i)).map (frobenius (Fbar g) g) =
@@ -156,17 +156,15 @@ theorem orbQ_frob : (orbQ d u).map (frobenius (Fbar g) g) = orbQ d u := by
 
 include hd hu in
 /- English proof (translation)
-Establish `frob_fixed : ∀ y : Fbar g, y ^ g = y → y ∈ Set.range (algebraMap (ZMod g) (Fbar g))`. Introduce `y hy`. Assume the negation of the conclusion as `hy'`. Establish `hf0 : (X ^ g - X : (Fbar g)[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero _ hg.out.one_lt`. Establish `hsub : insert y (Finset.univ.image (algebraMap (ZMod g) (Fbar g))) ⊆ (X ^ g - X : (Fbar g)[X]).roots.toFinset`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Rewrite using `[Multiset.mem_toFinset, mem_roots hf0, IsRoot, eval_sub, eval_pow, eval_X, sub_eq_zero]`. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Conclude with `hy`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ZMod.pow_card]`. Establish `hny : y ∉ Finset.univ.image (algebraMap (ZMod g) (Fbar g))` using `fun h => by`. Take `⟨c, -, hc⟩` from `Finset.mem_image.1 h`. Conclude with `hy' ⟨c, hc⟩`. Establish `hc` using `Finset.card_le_card hsub`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[Finset.card_insert_of_notMem hny, Finset.card_image_of_injective _ (algebraMap (ZMod g) (Fbar g)).injective, Finset.card_univ, ZMod.card]`. Establish `h2` using `(Multiset.toFinset_card_le _).trans (card_roots' (X ^ g - X : (Fbar g)[X]))`. Rewrite `h2` using `[FiniteField.X_pow_card_sub_X_natDegree_eq _ hg.out.one_lt]`. Use linear arithmetic over natural numbers and integers. Establish `hc : ∀ n, (orbQ d u).coeff n ∈ Set.range (algebraMap (ZMod g) (Fbar g))` using `fun n => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrArg (fun p => p.coeff n) (orbQ_frob hd u hu)`. Simplify using `only [coeff_map, frobenius_def] at h`. Conclude with `frob_fixed _ h`. Establish `hl : orbQ d u ∈ Polynomial.lifts (algebraMap (ZMod g) (Fbar g))` using `(lifts_iff_coeff_lifts _).2 hc`. Take `⟨P, hPmap, hPdeg, hPmonic⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (orbQ_monic u)`.
-
-Conclude with `⟨P, hPmap, hPdeg.trans (orbQ_natDegree u), hPmonic⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_orbP : ∃ P : (ZMod g)[X], P.map (algebraMap (ZMod g) (Fbar g)) = orbQ d u ∧
     P.natDegree = d ∧ P.Monic := by
@@ -201,7 +199,7 @@ theorem exists_orbP : ∃ P : (ZMod g)[X], P.map (algebraMap (ZMod g) (Fbar g)) 
   exact ⟨P, hPmap, hPdeg.trans (orbQ_natDegree u), hPmonic⟩
 
 /- English proof (translation)
-Establish `h0` using `(orbQ_monic (d := d) u).ne_zero`. Unfold `orbQ at h0 ⊢`. Rewrite using `[roots_prod _ _ h0]`. Simplify using `only [roots_X_sub_C, Multiset.mem_bind, Finset.mem_val, Finset.mem_range, Multiset.mem_singleton]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_roots_orbQ {y : Fbar g} : y ∈ (orbQ d u).roots ↔ ∃ i < d, y = (u : Fbar g) ^ (g ^ i) := by
   have h0 := (orbQ_monic (d := d) u).ne_zero
@@ -213,7 +211,7 @@ variable {P : (ZMod g)[X]} (hP : P.map (algebraMap (ZMod g) (Fbar g)) = orbQ d u
 
 include hP in
 /- English proof (translation)
-Rewrite using `[rootsBar, hP]`. Conclude with `mem_roots_orbQ u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_rootsBar_P {y : Fbar g} : y ∈ rootsBar P ↔ ∃ i < d, y = (u : Fbar g) ^ (g ^ i) := by
   rw [rootsBar, hP]
@@ -222,25 +220,23 @@ theorem mem_rootsBar_P {y : Fbar g} : y ∈ rootsBar P ↔ ∃ i < d, y = (u : F
 include hd hu hP in
 
 /- English proof (translation)
-Establish `hq0' : q ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hq0`. Establish `hqm : q.map (algebraMap (ZMod g) (Fbar g)) ≠ 0` using `Polynomial.map_ne_zero hq0'`. Establish `hPm : P.map (algebraMap (ZMod g) (Fbar g)) ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hP]`. Conclude with `(orbQ_monic u).ne_zero`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_root (q.map (algebraMap (ZMod g) (Fbar g))) (by`. Rewrite using `[degree_map]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hq0 (natDegree_eq_of_degree_eq_some h))`. Establish `hyP : y ∈ rootsBar P`. Rewrite using `[rootsBar, mem_roots hPm]`. Conclude with `hy.dvd (Polynomial.map_dvd _ hq)`. Take `⟨i, hi, rfl⟩` from `(mem_rootsBar_P u hP).1 hyP`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : (frobenius (Fbar g) g).comp (algebraMap (ZMod g) (Fbar g)) = algebraMap (ZMod g) (Fbar g)` using `RingHom.ext fun c => by simp [frobenius_def, ← map_pow, ZMod.pow_card]`. Establish `hfrob : ∀ z, (q.map (algebraMap (ZMod g) (Fbar g))).IsRoot z → (q.map (algebraMap (ZMod g) (Fbar g))).IsRoot (z ^ g)`. Introduce `z hz`. Simplify using `only [IsRoot, eval_map] at hz ⊢`. Establish `h` using `Polynomial.hom_eval₂ q (algebraMap (ZMod g) (Fbar g)) (frobenius (Fbar g) g) z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hcomp, hz, map_zero, frobenius_def]`. Conclude with `h.symm`. Establish `hiter : ∀ k, (q.map (algebraMap (ZMod g) (Fbar g))).IsRoot ((u : Fbar g) ^ g ^ (i + k))`. Introduce `k`. Proceed by induction on `k with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `zero => simpa using hy`. Consider the case `succ k ih`. Establish `h` using `hfrob _ ih`. Rewrite `h` using `[← pow_mul, ← pow_succ]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hall : ∀ j < d, (q.map (algebraMap (ZMod g) (Fbar g))).IsRoot ((u : Fbar g) ^ g ^ j)`. Introduce `j hj`. Establish `h1` using `hiter (d - i + j)`. Establish `h2 : i + (d - i + j) = j + d` using `by omega`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `congrArg Units.val (pow_g_add hd u hu j)`. Simplify using `only [Units.val_pow_eq_pow_val] at h3`. Rewrite `h1` using `[h3]`. Then use the resulting hypothesis. Establish `hsub : (Finset.range d).image (fun j => (u : Fbar g) ^ g ^ j) ⊆ (q.map (algebraMap (ZMod g) (Fbar g))).roots.toFinset` using `fun z hz => by`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Multiset.mem_toFinset, mem_roots hqm]`. Conclude with `hall j (Finset.mem_range.1 hj)`. Establish `hinj : Set.InjOn (fun j => (u : Fbar g) ^ g ^ j) (Finset.range d)` using `fun a ha b hb hab => orbit_inj hd u hu (Finset.mem_range.1 ha) (Finset.mem_range.1 hb) (Units.ext (by simpa using hab))`. Establish `hc` using `Finset.card_le_card hsub`. Rewrite `hc` using `[Finset.card_image_of_injOn hinj, Finset.card_range]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem le_natDegree_of_dvd {q : (ZMod g)[X]} (hq : q ∣ P) (hq0 : q.natDegree ≠ 0) : d ≤ q.natDegree := by
   classical
@@ -299,13 +295,13 @@ theorem le_natDegree_of_dvd {q : (ZMod g)[X]} (hq : q ∣ P) (hq0 : q.natDegree 
 
 include hd hu hP in
 /- English proof (translation)
-Establish `hP0 : P ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hPd`. Use linear arithmetic over natural numbers and integers. Use `⟨fun h => ?_, fun a b hab => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `natDegree_eq_zero_of_isUnit h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hne push_neg at hne`. Establish `hab' : a * b ≠ 0` using `hab ▸ hP0`. Establish `ha0 : a ≠ 0` using `left_ne_zero_of_mul hab'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0` using `right_ne_zero_of_mul hab'`. Establish `ha : a.natDegree ≠ 0` using `fun h => hne.1 (isUnit_iff_degree_eq_zero.2 ((degree_eq_iff_natDegree_eq ha0).2 h))`. Establish `hb : b.natDegree ≠ 0` using `fun h => hne.2 (isUnit_iff_degree_eq_zero.2 ((degree_eq_iff_natDegree_eq hb0).2 h))`. Establish `h1` using `le_natDegree_of_dvd hd u hu hP (Dvd.intro b hab.symm) ha`. Establish `h2` using `le_natDegree_of_dvd hd u hu hP (Dvd.intro_left a hab.symm) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : P.natDegree = a.natDegree + b.natDegree` using `by rw [hab, natDegree_mul ha0 hb0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem irreducible_P (hPd : P.natDegree = d) : Irreducible P := by
   have hP0 : P ≠ 0 := by
@@ -331,9 +327,9 @@ theorem irreducible_P (hPd : P.natDegree = d) : Irreducible P := by
 
 include hP in
 /- English proof (translation)
-Introduce `h0`. Establish `hPm : P.map (algebraMap (ZMod g) (Fbar g)) ≠ 0`. Rewrite using `[hP]`. Conclude with `(orbQ_monic u).ne_zero`. Establish `h0r : (0 : Fbar g) ∈ rootsBar P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rootsBar, mem_roots hPm, IsRoot.def, ← coeff_zero_eq_eval_zero, coeff_map, h0, map_zero]`. Take `⟨i, -, hi⟩` from `(mem_rootsBar_P u hP).1 h0r`. Conclude with `pow_ne_zero _ u.ne_zero hi.symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coeff_zero_P : P.coeff 0 ≠ 0 := by
   intro h0

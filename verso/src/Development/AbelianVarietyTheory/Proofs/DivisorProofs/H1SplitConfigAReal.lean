@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.IndLine
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ φ' hφ hφ'`. Break down `GlobalTheory.T.config_a_induction_theta_lift hK F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ φ' hφ hφ' with h | ⟨c, hc⟩` into its components or cases. Use `left`. Use `GlobalTheory.T.h1_split_config_a_gaussian hK F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ' φ hφ' hφ 0 (fun x hx => by rw [h x hx, zero_smul])` as an intermediate fact. Rewrite using `[this, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the second alternative.
 
-Conclude with `Or.inr ⟨c, GlobalTheory.T.h1_split_config_a_gaussian hK F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ φ' hφ hφ' c hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem indLineInf_alpha : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

@@ -26,7 +26,7 @@ theorem biComb_eq_lOp_rOp (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ) (C :
     biComb ψ A S A' c c' C = lOp ψ A S A' c (rOp ψ A S A' c' C) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Simplify using `only [lOp, rOp, comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lOp_rOp (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ) (C : WO A S → WO S A' → ℂ) :
     lOp ψ A S A' c (rOp ψ A S A' c' C) = rOp ψ A S A' c' (lOp ψ A S A' c C) := by
@@ -37,7 +37,7 @@ theorem lOp_rOp (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ) (C : WO A S �
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Conclude with `congrFun (h fun u'' => C u'' v).symm u`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lOp_lOp (c d e : WO A S →₀ ℂ) (h : ∀ f, comb ψ A S e f = comb ψ A S c (comb ψ A S d f))
     (C : WO A S → WO S A' → ℂ) : lOp ψ A S A' c (lOp ψ A S A' d C) = lOp ψ A S A' e C := by
@@ -45,7 +45,7 @@ theorem lOp_lOp (c d e : WO A S →₀ ℂ) (h : ∀ f, comb ψ A S e f = comb �
   exact congrFun (h fun u'' => C u'' v).symm u
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Conclude with `(h (C u)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rOp_rOp (c d e : WO S A' →₀ ℂ) (h : ∀ f, comb ψ S A' e f = comb ψ S A' c (comb ψ S A' d f))
     (C : WO A S → WO S A' → ℂ) : rOp ψ A S A' c (rOp ψ A S A' d C) = rOp ψ A S A' e C := by
@@ -53,7 +53,7 @@ theorem rOp_rOp (c d e : WO S A' →₀ ℂ) (h : ∀ f, comb ψ S A' e f = comb
   exact (h (C u)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Conclude with `congrFun (h fun u'' => C u'' v) u`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lOp_comm (c d : WO A S →₀ ℂ) (h : ∀ f, comb ψ A S c (comb ψ A S d f) = comb ψ A S d (comb ψ A S c f))
     (C : WO A S → WO S A' → ℂ) : lOp ψ A S A' c (lOp ψ A S A' d C) = lOp ψ A S A' d (lOp ψ A S A' c C) := by
@@ -61,7 +61,7 @@ theorem lOp_comm (c d : WO A S →₀ ℂ) (h : ∀ f, comb ψ A S c (comb ψ A 
   exact congrFun (h fun u'' => C u'' v) u
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Conclude with `h (C u)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rOp_comm (c d : WO S A' →₀ ℂ) (h : ∀ f, comb ψ S A' c (comb ψ S A' d f) = comb ψ S A' d (comb ψ S A' c f))
     (C : WO A S → WO S A' → ℂ) : rOp ψ A S A' c (rOp ψ A S A' d C) = rOp ψ A S A' d (rOp ψ A S A' c C) := by
@@ -69,7 +69,7 @@ theorem rOp_comm (c d : WO S A' →₀ ℂ) (h : ∀ f, comb ψ S A' c (comb ψ 
   exact h (C u)
 
 /- English proof (translation)
-Simplify using `only [biComb_eq_lOp_rOp]`. Rewrite using `[← lOp_rOp ψ A S A' d c', lOp_lOp ψ A S A' c d e hl, rOp_rOp ψ A S A' c' d' e' hr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem biComb_comp (c d e : WO A S →₀ ℂ) (c' d' e' : WO S A' →₀ ℂ)
     (hl : ∀ f, comb ψ A S e f = comb ψ A S c (comb ψ A S d f))
@@ -79,7 +79,7 @@ theorem biComb_comp (c d e : WO A S →₀ ℂ) (c' d' e' : WO S A' →₀ ℂ)
   rw [← lOp_rOp ψ A S A' d c', lOp_lOp ψ A S A' c d e hl, rOp_rOp ψ A S A' c' d' e' hr]
 
 /- English proof (translation)
-Simplify using `only [biComb_eq_lOp_rOp]`. Rewrite using `[← lOp_rOp ψ A S A' d c', lOp_comm ψ A S A' c d hl, rOp_comm ψ A S A' c' d' hr, lOp_rOp ψ A S A' c d']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem biComb_comm (c d : WO A S →₀ ℂ) (c' d' : WO S A' →₀ ℂ)
     (hl : ∀ f, comb ψ A S c (comb ψ A S d f) = comb ψ A S d (comb ψ A S c f))
@@ -89,7 +89,7 @@ theorem biComb_comm (c d : WO A S →₀ ℂ) (c' d' : WO S A' →₀ ℂ)
   rw [← lOp_rOp ψ A S A' d c', lOp_comm ψ A S A' c d hl, rOp_comm ψ A S A' c' d' hr, lOp_rOp ψ A S A' c d']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h0 : symplOH T T' w 0 = 0` using `by simp [symplOH, symplO, hO]`. Simplify using `[comb, heisO, h0]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem comb_single_zero (T T' : HSp D) (f : WO T T' → ℂ) : comb ψ T T' (Finsupp.single 0 1) f = f := by
   classical
@@ -100,7 +100,7 @@ theorem comb_single_zero (T T' : HSp D) (f : WO T T' → ℂ) : comb ψ T T' (Fi
 end Ops
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[h i (by simp), ih (fun j hj => h j (by simp [hj]))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_foldr {α ι : Type} (F : α → α) (H : ι → α → α) (l : List ι) (h : ∀ i ∈ l, ∀ x, F (H i x) = H i (F x))
     (x : α) : F (l.foldr H x) = l.foldr H (F x) := by
@@ -111,7 +111,7 @@ theorem comm_foldr {α ι : Type} (F : α → α) (H : ι → α → α) (l : Li
     rw [h i (by simp), ih (fun j hj => h j (by simp [hj]))]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hx`. Consider the case `cons i l ih => exact h i (by simp) _ (ih fun j hj => h j (by simp [hj]))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_mem {α ι : Type} (H : ι → α → α) (s : Set α) (l : List ι) (h : ∀ i ∈ l, ∀ x ∈ s, H i x ∈ s) (x : α)
     (hx : x ∈ s) : l.foldr H x ∈ s := by
@@ -124,21 +124,21 @@ section Lists
 variable {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Use `⟨Finsupp.single 0 1, Finsupp.single 0 1, ?_, ?_, fun C => ?_⟩` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw` using `[Finsupp.mem_support_single]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hw.1]`. Conclude with `zero_mem _`. Introduce `w hw`. Rewrite `hw` using `[Finsupp.mem_support_single]`. Rewrite using `[hw.1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `zero_mem _`. Use function extensionality and compare the values at `u v`. Simplify using `only [List.foldr_nil, biComb, comb_single_zero]`. Consider the case `cons i l ih`. Take `⟨e0, e0', hs, hs', hc⟩` from `ih`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hcs, hcf⟩` from `(GlobalTheory.HeisComb.main D ψ A S).1 (e₁ i) e0`. Take `⟨c', hcs', hcf'⟩` from `(GlobalTheory.HeisComb.main D ψ S A').1 (e₂ i) e0'`. Use `⟨c, c', ?_, ?_, fun C => ?_⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨x, hx, y, hy, rfl⟩` from `hcs w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `add_mem (AddSubmonoid.subset_closure ?_) (AddSubmonoid.closure_mono ?_ (hs y hy))` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨i, by simp, hx⟩`. Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz ⊢`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨j, hj, hz⟩` from `hz`. Conclude with `⟨j, List.mem_cons_of_mem _ hj, hz⟩`. Introduce `w hw`. Take `⟨x, hx, y, hy, rfl⟩` from `hcs' w hw`. Use `add_mem (AddSubmonoid.subset_closure ?_) (AddSubmonoid.closure_mono ?_ (hs' y hy))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨i, by simp, hx⟩`. Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz ⊢`. Take `⟨j, hj, hz⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨j, List.mem_cons_of_mem _ hj, hz⟩`. Rewrite using `[List.foldr_cons, ← hc]`. Conclude with `(biComb_comp ψ A S A' _ _ _ _ _ _ hcf hcf' C).symm`.
+A detailed English derivation is pending.
 -/
 theorem prodList {ι' : Type} (e₁ : ι' → WO A S →₀ ℂ) (e₂ : ι' → WO S A' →₀ ℂ) (l : List ι') :
     ∃ (e : WO A S →₀ ℂ) (e' : WO S A' →₀ ℂ),
@@ -184,17 +184,17 @@ theorem prodList {ι' : Type} (e₁ : ι' → WO A S →₀ ℂ) (e₂ : ι' →
       exact (biComb_comp ψ A S A' _ _ _ _ _ _ hcf hcf' C).symm
 
 /- English proof (translation)
-Proceed by induction on `l generalizing C with`. Consider the case `nil => simp`. Consider the case `cons i l ih`. Rewrite `hl` using `[List.nodup_cons]`. Establish `ih'` using `ih hl.2 (fun a ha b hb hab => horth a (by simp [ha]) b (by simp [hb]) hab) (fun a ha => hloc a (by simp [ha])) (fun a ha b hb hab => hstab a (by simp [ha]) b (by simp [hb]) hab)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ j ∈ l, i ≠ j` using `fun j hj h => hl.1 (h ▸ hj)`. Establish `hEE : ∀ j ∈ l, ∀ Y, biComb ψ A S A' (e₁ i) (e₂ i) (biComb ψ A S A' (e₁ j) (e₂ j) Y) = biComb ψ A S A' (e₁ j) (e₂ j) (biComb ψ A S A' (e₁ i) (e₂ i) Y)`. Introduce `j hj Y`. Take `⟨h1, h2⟩` from `horth i (by simp) j (by simp [hj]) (hne j hj)`. Conclude with `biComb_comm ψ A S A' _ _ _ _ ((GlobalTheory.HeisComb.main D ψ A S).2.1 _ _ fun x hx y hy => h1 x (Or.inl hx) y hy) ((GlobalTheory.HeisComb.main D ψ S A').2.1 _ _ fun x hx y hy => h2 x (Or.inl hx) y hy) Y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGE : ∀ j ∈ l, ∀ Y, biComb ψ A S A' (e₁ i) (e₂ i) (biComb ψ A S A' (g₁ j) (g₂ j) Y) = biComb ψ A S A' (g₁ j) (g₂ j) (biComb ψ A S A' (e₁ i) (e₂ i) Y)`. Introduce `j hj Y`. Take `⟨h1, h2⟩` from `horth j (by simp [hj]) i (by simp) (hne j hj).symm`. Conclude with `(biComb_comm ψ A S A' _ _ _ _ ((GlobalTheory.HeisComb.main D ψ A S).2.1 (g₁ j) (e₁ i) fun x hx y hy => h1 x (Or.inr hx) y hy) ((GlobalTheory.HeisComb.main D ψ S A').2.1 (g₂ j) (e₂ i) fun x hx y hy => h2 x (Or.inr hx) y hy) Y).symm`. Establish `hEL` using `comm_foldr (biComb ψ A S A' (e₁ i) (e₂ i)) (fun j C => biComb ψ A S A' (e₁ j) (e₂ j) C) l hEE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGL` using `comm_foldr (biComb ψ A S A' (e₁ i) (e₂ i)) (fun j C => biComb ψ A S A' (g₁ j) (g₂ j) C) l hGE`. Establish `hCi : C ∈ Cl i` using `hC i (by simp)`. Establish `hstabL : l.foldr (fun j C => biComb ψ A S A' (e₁ j) (e₂ j) C) C ∈ Cl i` using `foldr_mem _ (Cl i) l (fun j hj Y hY => hstab i (by simp) j (by simp [hj]) (hne j hj) Y hY) C hCi`. Take `⟨-, ihC⟩` from `ih' C (fun j hj => hC j (by simp [hj]))`. Take `⟨ihV2, -⟩` from `ih' (biComb ψ A S A' (e₁ i) (e₂ i) C) (fun j hj => hstab j (by simp [hj]) i (by simp) (hne j hj).symm C (hC j (by simp [hj])))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons]`. Break down `List.mem_cons.1 hj with h | hj` into its components or cases. Substitute `h` using the available equality. Conclude with `(hloc _ (by simp) _ hstabL).1`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEL]`. Conclude with `ihV2 j hj`. Simplify using `only [List.foldr_cons]`. Rewrite using `[← hGL, ← ihC]`. Conclude with `(hloc i (by simp) C hCi).2`.
+A detailed English derivation is pending.
 -/
 theorem keyList {ι' : Type} (e₁ g₁ : ι' → WO A S →₀ ℂ) (e₂ g₂ : ι' → WO S A' →₀ ℂ)
     (Cl Vl : ι' → Set (WO A S → WO S A' → ℂ)) (l : List ι') (hl : l.Nodup)
@@ -250,7 +250,7 @@ theorem keyList {ι' : Type} (e₁ g₁ : ι' → WO A S →₀ ℂ) (e₂ g₂ 
 end Lists
 
 /- English proof (translation)
-Introduce `D ψ A S A' ι' P l X e₁ g₁ e₂ g₂ Cl Vl hl horth hX hloc hstab`. Take `⟨e, e', hs, hs', hc⟩` from `prodList ψ A S A' e₁ e₂ l`. Use `⟨e, e', hs, hs', fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `keyList ψ A S A' e₁ g₁ e₂ g₂ Cl Vl l hl horth hloc hstab (X p) fun i hi => hX i hi p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (ι' P : Type) (l : List ι') (X : P → WO A S → WO S A' → ℂ) (e₁ g₁ : ι' → WO A S →₀ ℂ) (e₂ g₂ : ι' → WO S A' →₀ ℂ) (Cl Vl : ι' → Set (WO A S → WO S A' → ℂ)), l.Nodup → (∀ i ∈ l, ∀ i' ∈ l, i ≠ i' → (∀ x, x ∈ (e₁ i).support ∨ x ∈ (g₁ i).support → ∀ y ∈ (e₁ i').support, symplO A S x y = 0) ∧ ∀ x, x ∈ (e₂ i).support ∨ x ∈ (g₂ i).support → ∀ y ∈ (e₂ i').support, symplO S A' x y = 0) → (∀ i ∈ l, ∀ p, X p ∈ Cl i) → (∀ i ∈ l, ∀ C ∈ Cl i, biComb ψ A S A' (e₁ i) (e₂ i) C ∈ Vl i ∧ C = biComb ψ A S A' (g₁ i) (g₂ i) (biComb ψ A S A' (e₁ i) (e₂ i) C)) → (∀ i ∈ l, ∀ i' ∈ l, i ≠ i' → ∀ C ∈ Cl i, biComb ψ A S A' (e₁ i') (e₂ i') C ∈ Cl i) → ∃ (e : WO A S →₀ ℂ) (e' : WO S A' →₀ ℂ), (∀ w ∈ e.support, w ∈ AddSubmonoid.closure (⋃ i ∈ l, ((e₁ i).support : Set (WO A S)))) ∧ (∀ w ∈ e'.support, w ∈ AddSubmonoid.closure (⋃ i ∈ l, ((e₂ i).support : Set (WO S A')))) ∧ ∀ p, (∀ i ∈ l, biComb ψ A S A' e e' (X p) ∈ Vl i) ∧ X p = l.foldr (fun i C => biComb ψ A S A' (g₁ i) (g₂ i) C) (biComb ψ A S A' e e' (X p)) := by
   intro D ψ A S A' ι' P l X e₁ g₁ e₂ g₂ Cl Vl hl horth hX hloc hstab

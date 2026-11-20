@@ -4,11 +4,9 @@ open ValuativeRel
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ _ _ K _ _ _`. Use `letI nK : NontriviallyNormedField K := spectralNorm.nontriviallyNormedField F K`. Use `haveI : IsUltrametricDist K := IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm (isNonarchimedean_spectralNorm (K := F) (L := K))`. Use `letI rel : ValuativeRel K := ValuativeRel.ofValuation (NormedField.valuation (K := K))`. Use `⟨rel, inferInstance, ?_, fun x y => Iff.rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : ProperSpace F := .of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`. Establish `hc : (NormedField.valuation (K` using `K)).Compatible := Valuation.Compatible.ofValuation _`. Use `{ toIsValuativeTopology := ?_, toLocallyCompactSpace := ?_, toIsNontrivial := ?_ }` and prove the remaining obligations. Conclude with `IsValuativeTopology.of_mem_nhds_zero_iff_vle (NormedField.valuation (K := K)) (fun {s} => (NormedField.toValued (K := K)).is_topological_valuation s)`. Use `letI : NormedSpace F K := spectralNorm.normedSpace F K haveI : ProperSpace K := FiniteDimensional.proper F K infer_instance`.
-
-Rewrite using `[isNontrivial_iff_isNontrivial (NormedField.valuation (K := K))] infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isNonarchimedeanLocalField_spectralNorm :
     ∀ (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [CompleteSpace F]

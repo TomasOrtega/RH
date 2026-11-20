@@ -5,15 +5,15 @@ namespace ReciprocityTheory.Cheb
 open Filter Topology Set Complex
 
 /- English proof (translation)
-Rewrite using `[isDiscrete_iff_forall_mem_exists_isOpen]`. Introduce `y hy`. Use `⟨Metric.ball y 1, Metric.isOpen_ball, ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Simplify using `only [mem_inter_iff, Metric.mem_ball, mem_ofPred_eq, mem_singleton_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hwc⟩`. Establish `hexp : Complex.exp w = Complex.exp y` using `hwc.trans hy.symm`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.mp hexp`. Assume the negation of the conclusion as `hne`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Simplify using `using hn`. Establish `hd : dist w y = |(n : ℝ)| * (2 * Real.pi)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[dist_eq_norm, hn, add_sub_cancel_left, norm_mul, Complex.norm_intCast]`. Simplify using `[Complex.norm_I, abs_of_pos Real.pi_pos]`. Establish `h1 : (1 : ℝ) ≤ |(n : ℝ)|` using `by exact_mod_cast Int.one_le_abs hn0`. Use `Real.pi_gt_three` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce and unpack `rfl`. Conclude with `⟨Metric.mem_ball_self one_pos, hy⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isDiscrete_exp_fiber (c : ℂ) : IsDiscrete {w : ℂ | Complex.exp w = c} := by
   rw [isDiscrete_iff_forall_mem_exists_isOpen]
@@ -40,23 +40,21 @@ theorem isDiscrete_exp_fiber (c : ℂ) : IsDiscrete {w : ℂ | Complex.exp w = c
     exact ⟨Metric.mem_ball_self one_pos, hy⟩
 
 /- English proof (translation)
-Establish `hslitB : ∀ z ∈ Metric.closedBall (1 : ℂ) (1 / 2), z ∈ slitPlane`. Introduce `z hz`. Rewrite `hz` using `[Metric.mem_closedBall, dist_eq_norm]`. Use `Complex.abs_re_le_norm (z - 1)` as an intermediate fact. Rewrite `this` using `[Complex.sub_re, Complex.one_re]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mem_slitPlane_iff.mpr (Or.inl (by linarith [(abs_le.mp (this.trans hz)).1]))`. Take `⟨B, hB⟩` from `(isCompact_closedBall (1 : ℂ) (1 / 2)).exists_bound_of_continuousOn (f := Complex.log) (fun z hz => (continuousAt_clog (hslitB z hz)).continuousWithinAt)`. Establish `hlim' : Tendsto (fun s => Complex.exp (abelian₂ s) / L1) (𝓝[>] 1) (𝓝 1)`. Simplify `hlim.div_const L1` using `[div_self hL1]`. Establish `hev` using `hlim'.eventually (Metric.closedBall_mem_nhds (1 : ℂ) (by norm_num : (0 : ℝ) < 1 / 2))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu1, hu⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.mp hev`. Establish `hu1 : (1 : ℝ) < u` using `hu1`. Use `set t : ℝ := min ((1 + u) / 2) 2 with ht`. Establish `ht1 : 1 < t` using `lt_min (by linarith) (by norm_num)`. Establish `htu : t < u` using `lt_of_le_of_lt (min_le_left _ _) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht2 : t ≤ 2` using `min_le_right _ _`. Establish `hSsub : Ioc 1 t ⊆ Ioc (1 : ℝ) 2` using `Ioc_subset_Ioc_right ht2`. Establish `hball : ∀ s ∈ Ioc 1 t, Complex.exp (abelian₂ s) / L1 ∈ Metric.closedBall (1 : ℂ) (1 / 2)` using `fun s hs => hu ⟨hs.1, lt_of_le_of_lt hs.2 htu⟩`. Use `set g : ℝ → ℂ := fun s => abelian₂ s - Complex.log (Complex.exp (abelian₂ s) / L1) with hg`. Establish `hgc : ContinuousOn g (Ioc 1 t)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `h1 : ContinuousWithinAt abelian₂ (Ioc 1 t) s` using `(hcont s (hSsub hs)).mono hSsub`. Establish `h2 : ContinuousWithinAt (fun s => Complex.exp (abelian₂ s) / L1) (Ioc 1 t) s` using `(Complex.continuous_exp.continuousAt.comp_continuousWithinAt h1).div_const L1`. Establish `h3 : ContinuousWithinAt (fun s => Complex.log (Complex.exp (abelian₂ s) / L1)) (Ioc 1 t) s` using `(continuousAt_clog (hslitB _ (hball s hs))).comp_continuousWithinAt (f := fun s => Complex.exp (abelian₂ s) / L1) h2`. Conclude with `h1.sub h3`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmaps : MapsTo g (Ioc 1 t) {w : ℂ | Complex.exp w = L1}`. Introduce `s _`. Establish `hne : Complex.exp (abelian₂ s) / L1 ≠ 0` using `div_ne_zero (Complex.exp_ne_zero _) hL1`. Simplify using `only [mem_ofPred_eq, hg, Complex.exp_sub, Complex.exp_log hne]`. Clear denominators, using `[Complex.exp_ne_zero]` for the nonvanishing conditions.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨c, -, hc⟩` from `isPreconnected_Ioc.eqOn_const_of_mapsTo (isDiscrete_exp_fiber L1) hgc hmaps ⟨Complex.log L1, Complex.exp_log hL1⟩`. Take `⟨C2, hC2⟩` from `(isCompact_Icc : IsCompact (Icc t 2)).exists_bound_of_continuousOn (hcont.mono (Icc_subset_Ioc_iff ht2 |>.mpr ⟨ht1, le_rfl⟩))`. Use `⟨max (‖c‖ + B) C2, fun s hs => ?_⟩` and prove the remaining obligations. Break down `le_or_gt s t with hst | hst` into its components or cases. Establish `hs' : s ∈ Ioc 1 t` using `⟨hs.1, hst⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hgs : g s = c` using `hc hs'`. Establish `hL : abelian₂ s = c + Complex.log (Complex.exp (abelian₂ s) / L1)`. Rewrite using `[← hgs, hg]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `(hC2 s ⟨hst.le, hs.2⟩).trans (le_max_right _ _)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bounded_of_tendsto_exp {abelian₂ : ℝ → ℂ} {L1 : ℂ} (hcont : ContinuousOn abelian₂ (Ioc 1 2))
     (hL1 : L1 ≠ 0) (hlim : Tendsto (fun s => Complex.exp (abelian₂ s)) (𝓝[>] 1) (𝓝 L1)) :
@@ -117,7 +115,7 @@ theorem bounded_of_tendsto_exp {abelian₂ : ℝ → ℂ} {L1 : ℂ} (hcont : Co
   · exact (hC2 s ⟨hst.le, hs.2⟩).trans (le_max_right _ _)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `bounded_of_tendsto_exp (hf.mono Set.Ioc_subset_Ioi_self) hL h`. Conclude with `⟨C, Filter.mem_of_superset (Ioc_mem_nhdsGT one_lt_two) hC⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bdd_of_exp_tendsto (f : ℝ → ℂ) (hf : ContinuousOn f (Set.Ioi 1)) (L1 : ℂ) (hL : L1 ≠ 0)
     (h : Tendsto (fun s => Complex.exp (f s)) (𝓝[>] 1) (𝓝 L1)) :

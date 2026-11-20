@@ -11,11 +11,11 @@ namespace GlobalTheory.CompanionTheory.OntoForms
 open exteriorPower
 
 /- English proof (translation)
-Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty => intro v hv; exact h v fun j => hv j (by simp)`. Consider the case `insert i U hi ih`. Introduce `v hv`. Establish `ih'` using `ih (fun j hj => hS j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : Submodule.span R (S i) ≤ P.comap (m.toLinearMap v i)`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Use `ih' _ fun j hj => ?_` and prove the remaining obligations. Distinguish the cases in `hji : j = i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hji` using the available equality. Simplify using `using hx`. Rewrite using `[Function.update_of_ne hji]; exact hv j (by simp [hji, hj])`. Establish `h3 : v i ∈ P.comap (m.toLinearMap v i)` using `hle (by rw [hS i (Finset.mem_insert_self _ _)]; trivial)`. Simplify using `using h3`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_of_span {R M X ι : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup X]
     [Module R X] [DecidableEq ι] (m : MultilinearMap R (fun _ : ι => M) X) (P : Submodule R X)
@@ -39,15 +39,15 @@ theorem mem_of_span {R M X ι : Type*} [CommRing R] [AddCommGroup M] [Module R M
     simpa using h3
 
 /- English proof (translation)
-Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty`. Introduce `u u' h1 _`. Establish `: u = u'` using `funext fun k => h1 k (by simp)`. Simplify using `[this]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `insert i U hi ih`. Introduce `u u' h1 h2`. Establish `e : m u - m (Function.update u i (u' i)) = m (Function.update u i (u i - u' i))`. Rewrite using `[MultilinearMap.map_update_sub, Function.update_eq_self]`. Establish `a1 : m u - m (Function.update u i (u' i)) ∈ P`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]; exact hP _ i (by simpa using h2 i)`. Establish `a2 : m (Function.update u i (u' i)) - m u' ∈ P`. Use `ih _ _ (fun k hk => ?_) (fun k => ?_)` and prove the remaining obligations. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hki]; exact h1 k (by simp [hki, hk])`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne hki]`. Conclude with `h2 k`. Simplify using `using P.add_mem a1 a2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sub_mem_of_congr {R M X ι : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup X] [Module R X] [DecidableEq ι] (m : MultilinearMap R (fun _ : ι => M) X)
@@ -75,15 +75,15 @@ theorem sub_mem_of_congr {R M X ι : Type*} [CommRing R] [AddCommGroup M] [Modul
     simpa using P.add_mem a1 a2
 
 /- English proof (translation)
-Establish `hk : ∀ c c' : R, algebraMap R S c = algebraMap R S c' → ∀ q : Q, c • q = c' • q`. Introduce `c c' h q`. Use `hI (c - c') (by simp [h]) q` as an intermediate fact. Rewrite `this` using `[sub_smul, sub_eq_zero]`. Then use the resulting hypothesis. Set `σ` to `Function.surjInv hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Establish `hσ : ∀ b, algebraMap R S (σ b) = b` using `Function.surjInv_eq hs`. Use `⟨{ smul := fun b q => σ b • q one_smul := fun q => ?_ mul_smul := fun b b' q => ?_ smul_zero := fun b => smul_zero _ smul_add := fun b q q' => smul_add _ _ _ add_smul := fun b b' q => ?_ zero_smul := fun q => ?_ }, fun c q => ?_⟩` and prove the remaining obligations. Use `case refine_1 =>`. Express the relevant statement in the definitionally equal form `σ (b * b') • q = σ b • σ b' • q`. Rewrite using `[← mul_smul]; exact hk _ _ (by simp [hσ]) q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `case refine_2 =>`. Express the relevant statement in the definitionally equal form `σ 1 • q = q`. Rewrite using `[hk (σ 1) 1 (by simp [hσ]), one_smul]`. Use `case refine_3 =>`. Express the relevant statement in the definitionally equal form `σ (b + b') • q = σ b • q + σ b' • q`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← add_smul]; exact hk _ _ (by simp [hσ]) q`. Use `case refine_4 =>`. Express the relevant statement in the definitionally equal form `σ 0 • q = 0`. Rewrite using `[hk (σ 0) 0 (by simp [hσ]), zero_smul]`. Use `case refine_5 =>`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `σ (algebraMap R S c) • q = c • q`. Conclude with `hk _ _ (by simp [hσ]) q`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem exists_module {R S Q : Type*} [CommRing R] [CommRing S] [Algebra R S]
     (hs : Function.Surjective (algebraMap R S)) [AddCommGroup Q] [Module R Q]
@@ -119,23 +119,21 @@ theorem exists_module {R S Q : Type*} [CommRing R] [CommRing S] [Algebra R S]
     exact hk _ _ (by simp [hσ]) q
 
 /- English proof (translation)
-Set `s` to `Function.surjInv hf`. Establish `hs' : ∀ x, f (s x) = x` using `Function.surjInv_eq hf`. Establish `cong : ∀ u u' : Fin a → M, (∀ k, f (u k) = f (u' k)) → p (ιMulti A a u) = p (ιMulti A a u')`. Introduce `u u' h`. Rewrite using `[← sub_eq_zero, ← map_sub, ← LinearMap.mem_ker]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem_of_congr (ιMulti A a (M := M)).toMultilinearMap (LinearMap.ker p) (LinearMap.ker f) (fun v k hv => hp v k hv) Finset.univ u u' (by simp) (fun k => by simp [h k])`. Establish `hcomp : ∀ (v : Fin a → N) (i : Fin a) (y : N), (fun k => s (Function.update v i y k)) = Function.update (fun k => s (v k)) i (s y)` using `fun v i y => funext fun k => Function.apply_update (fun _ => s) v i y k`. Set `F : N [⋀^Fin a]→ₗ[B] Q` to `{ toFun := fun v => p (ιMulti A a fun k => s (v k)) map_update_add' := by`. Introduce `inst v i x y`. Take `rfl : inst = instDecidableEqFin a` from `Subsingleton.elim _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `p (ιMulti A a fun k => s (Function.update v i (x + y) k)) = p (ιMulti A a fun k => s (Function.update v i x k)) + p (ιMulti A a fun k => s (Function.update v i y k))`. Rewrite using `[hcomp, hcomp, hcomp, ← map_add, ← AlternatingMap.map_update_add]`. Use `cong _ _ fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hs']`. Simplify using `[Function.update_of_ne hki]`. Use the proof step `map_update_smul' := by`. Introduce `inst v i b x`. Take `rfl : inst = instDecidableEqFin a` from `Subsingleton.elim _ _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨c, rfl⟩` from `hs b`. Express the relevant statement in the definitionally equal form `p (ιMulti A a fun k => s (Function.update v i (algebraMap A B c • x) k)) = algebraMap A B c • p (ιMulti A a fun k => s (Function.update v i x k))`. Rewrite using `[hcomp, hcomp, algebraMap_smul, algebraMap_smul, ← map_smul, ← AlternatingMap.map_update_smul]`. Use `cong _ _ fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hki : k = i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hki` using the available equality. Simplify using `[hs']`. Simplify using `[Function.update_of_ne hki]`. Use the proof step `map_eq_zero_of_eq' := by`. Introduce `v i j h hij`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `p (ιMulti A a fun k => s (v k)) = 0`. Rewrite using `[(ιMulti A a (M := M)).map_eq_zero_of_eq (fun k => s (v k)) (congrArg s h) hij, map_zero] }`. Set `ψ : ⋀[B]^a N →ₗ[B] Q` to `alternatingMapLinearEquiv F`. Establish `hψ : (ψ.restrictScalars A) ∘ₗ T = p`. Use `exteriorPower.linearMap_ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `v`. Simplify using `only [LinearMap.compAlternatingMap_apply, LinearMap.comp_apply, LinearMap.restrictScalars_apply, hT]`. Express the relevant statement in the definitionally equal form `ψ (ιMulti B a fun k => f (v k)) = _`. Rewrite using `[alternatingMapLinearEquiv_apply_ιMulti]`. Conclude with `cong _ _ fun k => hs' _`.
-
-Use `LinearMap.congr_fun hψ ω` as an intermediate fact. Simplify `this.symm` using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_map {A B M N Q : Type*} [CommRing A] [CommRing B] [Algebra A B]
     (hs : Function.Surjective (algebraMap A B)) [AddCommGroup M] [Module A M] [AddCommGroup N]
@@ -199,13 +197,13 @@ theorem eq_zero_of_map {A B M N Q : Type*} [CommRing A] [CommRing B] [Algebra A 
   simpa [h0] using this.symm
 
 /- English proof (translation)
-Rewrite using `[KaehlerDifferential.ker_map_of_surjective K A B hs]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Set `σ` to `Function.surjInv hs`. Establish `hσ : ∀ b, algebraMap A B (σ b) = b` using `Function.surjInv_eq hs`. Establish `hd : ∀ b, algebraMap A B (Finsupp.mapDomain (algebraMap A B) c b) = 0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Use `DFunLike.congr_fun (LinearMap.mem_ker.mp hc) b` as an intermediate fact. Simplify using `using this`. Establish `e2 : Finsupp.linearCombination A (fun b => KaehlerDifferential.D K A (σ b)) (Finsupp.mapDomain (algebraMap A B) c) ∈ L`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun b _ => h2 _ (hd b) _`. Establish `e1 : Finsupp.linearCombination A (KaehlerDifferential.D K A) c - Finsupp.linearCombination A (fun b => KaehlerDifferential.D K A (σ b)) (Finsupp.mapDomain (algebraMap A B) c) ∈ L`. Rewrite using `[Finsupp.linearCombination_mapDomain, Finsupp.linearCombination_apply, Finsupp.linearCombination_apply, Finsupp.sum, Finsupp.sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_sub, ← map_sub]`. Conclude with `L.smul_mem _ (h1 _ (by simp [hσ]))`. Simplify using `using L.add_mem e1 e2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ker_le (K A B : Type*) [CommRing K] [CommRing A] [CommRing B] [Algebra K A] [Algebra K B]
     [Algebra A B] [IsScalarTower K A B] (hs : Function.Surjective (algebraMap A B))
@@ -238,11 +236,9 @@ theorem ker_le (K A B : Type*) [CommRing K] [CommRing A] [CommRing B] [Algebra K
   simpa using L.add_mem e1 e2
 
 /- English proof (translation)
-Establish `hQ : ∀ c : A, algebraMap A B c = 0 → ∀ q : (⋀[A]^a M) ⧸ P, c • q = 0`. Introduce `c hc q`. Take `⟨ω', rfl⟩` from `P.mkQ_surjective q`. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hI c hc ω'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨inst, hinst⟩` from `exists_module hs hQ`. Use `letI := inst`. Use `haveI : IsScalarTower A B ((⋀[A]^a M) ⧸ P) := .of_algebraMap_smul hinst`. Establish `h` using `eq_zero_of_map hs f hf a P.mkQ (fun v k hv => by`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
-
-Conclude with `hP v k hv) T hT ω h0`. Rewrite `h` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_map_eq_zero {A B M N : Type*} [CommRing A] [CommRing B] [Algebra A B]
     (hs : Function.Surjective (algebraMap A B)) [AddCommGroup M] [Module A M] [AddCommGroup N]
@@ -269,7 +265,7 @@ theorem mem_of_map_eq_zero {A B M N : Type*} [CommRing A] [CommRing B] [Algebra 
 variable {K A : Type} [CommRing K] [CommRing A] [Algebra K A] {a : ℕ}
 
 /- English proof (translation)
-Simplify using `[form, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_form (c g₀ : A) (g : Fin a → A) : c • form K g₀ g = form K (c * g₀) g := by
   simp [form, mul_smul]
@@ -277,17 +273,13 @@ theorem smul_form (c g₀ : A) (g : Fin a → A) : c • form K g₀ g = form K 
 variable (K A a) in
 
 /- English proof (translation)
-Use `set S := Submodule.span K {ω : Om K A a | ∃ g₀ g, ω = form K g₀ g} with hS`. Establish `hsm : ∀ (c : A) x, x ∈ S → c • x ∈ S`. Introduce `c x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g₀, g, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨c * g₀, g, smul_form c g₀ g⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `S.add_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `smul k x _ hx => rw [smul_comm]`. Conclude with `S.smul_mem k hx`. Set `S' : Submodule A (Om K A a)` to `{ carrier := S add_mem' := S.add_mem zero_mem' := S.zero_mem smul_mem' := hsm }`. Establish `hι : ∀ v, ιMulti A a v ∈ S'` using `fun v => mem_of_span (ιMulti A a (M := Ω[A⁄K])).toMultilinearMap S' (fun _ => Set.range (KaehlerDifferential.D K A)) Finset.univ (fun _ _ => KaehlerDifferential.span_range_derivation K A) (fun v hv => by choose g hg using hv`. Establish `hv' : v = fun k => KaehlerDifferential.D K A (g k)` using `funext fun k => (hg k).symm`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Substitute `hv'` using the available equality. Conclude with `Submodule.subset_span ⟨1, g, by simp [form]⟩)`. Use `v (by simp)`. Establish `hle : Submodule.span A (Set.range (ιMulti A a (M` using `Ω[A⁄K]))) ≤ S' := by`. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hι v`. Rewrite `hle` using `[ιMulti_span]`. Rewrite using `[eq_top_iff]`. Introduce `ω _`.
-
-Conclude with `hle (Submodule.mem_top (x := ω))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_forms : Submodule.span K {ω : Om K A a | ∃ g₀ g, ω = form K g₀ g} = ⊤ := by
   classical
@@ -326,11 +318,11 @@ theorem span_forms : Submodule.span K {ω : Om K A a | ∃ g₀ g, ω = form K g
   exact hle (Submodule.mem_top (x := ω))
 
 /- English proof (translation)
-Establish `hω : ω ∈ Submodule.span K {ω : Om K A a | ∃ g₀ g, ω = form K g₀ g}`. Rewrite using `[span_forms]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem x h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Take `⟨g₀, g, rfl⟩` from `h`. Rewrite using `[smul_form]`. Conclude with `Submodule.subset_span ⟨_, g, Or.inl (I.mul_mem_right _ hc), rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul k x _ hx`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_of_tower_mem _ k hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_relOm (I : Ideal A) {c : A} (hc : c ∈ I) (ω : Om K A a) :
     c • ω ∈ relOm K I a := by
@@ -348,13 +340,13 @@ theorem smul_mem_relOm (I : Ideal A) {c : A} (hc : c ∈ I) (ω : Om K A a) :
     exact Submodule.smul_of_tower_mem _ k hx
 
 /- English proof (translation)
-Use `mem_of_span (ιMulti A a (M := Ω[A⁄K])).toMultilinearMap (relOm K I a) (fun j => {x | ∃ g, x = KaehlerDifferential.D K A g ∧ (j = k → g = i)}) (Finset.univ.erase k) (fun j hj => ?_) (fun v hv => ?_) v (fun j hj => ?_)` and prove the remaining obligations. Establish `hjk : j ≠ k` using `(Finset.mem_erase.mp hj).1`. Establish `: {x | ∃ g, x = KaehlerDifferential.D K A g ∧ (j = k → g = i)} = Set.range (KaehlerDifferential.D K A)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨g, rfl, -⟩`. Conclude with `⟨g, rfl⟩`. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g, rfl, fun h => absurd h hjk⟩`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `KaehlerDifferential.span_range_derivation K A`. Use `choose g hg hg' using hv`. Establish `hv' : v = fun k => KaehlerDifferential.D K A (g k)` using `funext hg`. Substitute `hv'` using the available equality. Conclude with `Submodule.subset_span ⟨1, g, Or.inr ⟨k, by rw [hg' k rfl]; exact hi⟩, by simp [form]⟩`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Establish `hjk : j = k` using `by simpa using hj`. Substitute `hjk` using the available equality. Conclude with `⟨i, hv, fun _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem iota_mem_relOm_of_D (I : Ideal A) {i : A} (hi : i ∈ I) (k : Fin a) (v : Fin a → Ω[A⁄K])
     (hv : v k = KaehlerDifferential.D K A i) : ιMulti A a v ∈ relOm K I a := by
@@ -379,7 +371,7 @@ theorem iota_mem_relOm_of_D (I : Ideal A) {i : A} (hi : i ∈ I) (k : Fin a) (v 
     exact ⟨i, hv, fun _ => rfl⟩
 
 /- English proof (translation)
-Establish `hle` using `ker_le K A B hs ((relOm K I a).comap ((ιMulti A a (M := Ω[A⁄K])).toMultilinearMap.toLinearMap v k)) (fun i hi => iota_mem_relOm_of_D I (hI i hi) k _ (by simp)) (fun c hc w => by`. Simplify using `only [Submodule.mem_comap, map_smul]`. Conclude with `smul_mem_relOm I (hI c hc) _)`. Establish `h` using `hle (LinearMap.mem_ker.mpr hv)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem iota_mem_relOm {B : Type} [CommRing B] [Algebra K B] [Algebra A B] [IsScalarTower K A B]
     (hs : Function.Surjective (algebraMap A B)) (I : Ideal A)
@@ -395,23 +387,21 @@ theorem iota_mem_relOm {B : Type} [CommRing B] [Algebra K B] [Algebra A B] [IsSc
   simpa using h
 
 /- English proof (translation)
-Introduce `K A B _ _ _ _ _ a`. Use `⟨span_forms K A a, fun φ => ?_⟩` and prove the remaining obligations. Use `letI : Algebra A B := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K A B := IsScalarTower.of_algHom φ`. Set `T : Om K A a →ₗ[A] Om K B a` to `exteriorPower.alternatingMapLinearEquiv { ((exteriorPower.ιMulti B a (M := Ω[B⁄K])).toMultilinearMap.restrictScalars A).compLinearMap fun _ => KaehlerDifferential.map K K A B with map_eq_zero_of_eq' := fun v i j h hij => (exteriorPower.ιMulti B a (M := Ω[B⁄K])).map_eq_zero_of_eq …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hTo : ∀ ω, omMap φ a ω = T ω` using `fun _ => rfl`. Establish `hT : ∀ v, T (ιMulti A a v) = ιMulti B a fun k => KaehlerDifferential.map K K A B (v k)` using `fun v => alternatingMapLinearEquiv_apply_ιMulti _ _`. Establish `hφ : ∀ x, algebraMap A B x = φ x` using `fun _ => rfl`. Establish `hs : Function.Surjective φ → Function.Surjective (algebraMap A B)` using `fun h => h`. Establish `h2 : ∀ g₀ (g : Fin a → A), omMap φ a (form K g₀ g) = form K (φ g₀) fun k => φ (g k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g₀ g`. Establish `e : (fun k => KaehlerDifferential.map K K A B (KaehlerDifferential.D K A (g k))) = fun k => KaehlerDifferential.D K B (φ (g k))`. Use function extensionality and compare the values at `fun k => KaehlerDifferential.map_D K K A B (g k)`. Rewrite using `[hTo]`. Unfold `form`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, hT, e, ← hφ g₀, algebraMap_smul]`. Establish `h3 : ∀ (c : A) ω, omMap φ a (c • ω) = φ c • omMap φ a ω`. Introduce `c ω`. Rewrite using `[hTo, hTo, map_smul, ← hφ c, algebraMap_smul]`. Use `⟨h2, h3, fun hsurj => ⟨?_, fun ω => ⟨fun h0 => ?_, fun hω => ?_⟩⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← span_forms K B a, Submodule.span_le]`. Introduce and unpack `_ ⟨g₀, g, rfl⟩`. Take `⟨c₀, rfl⟩` from `hsurj g₀`. Use `choose c hc using fun k => hsurj (g k)`. Use `⟨form K c₀ c, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Simplify using `only [hc]`. Conclude with `mem_of_map_eq_zero (hs hsurj) (KaehlerDifferential.map K K A B) (KaehlerDifferential.map_surjective_of_surjective K K A B (hs hsurj)) a _ (fun v k hv => iota_mem_relOm (hs hsurj) _ (fun c hc => RingHom.mem_ker.mpr hc) v k hv) (fun c hc ω => smul_mem_relOm _ (RingHom.mem_ker.mpr h …`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem x h`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨g₀, g, h, rfl⟩` from `h`. Rewrite using `[h2]`. Break down `h with h | ⟨k, hk⟩` into its components or cases. Rewrite using `[RingHom.mem_ker.mp h]`. Simplify using `[form]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : φ (g k) = 0` using `RingHom.mem_ker.mp hk`. Unfold `form`. Rewrite using `[(ιMulti B a (M := Ω[B⁄K])).map_coord_zero k (by simp [hk']), smul_zero]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`.
-
-Consider the case `smul c x _ hx => rw [h3, hx, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem formLaws : FormLaws := by
   intro K A B _ _ _ _ _ a

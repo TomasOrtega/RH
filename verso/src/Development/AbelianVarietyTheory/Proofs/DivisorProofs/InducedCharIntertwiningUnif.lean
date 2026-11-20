@@ -21,23 +21,23 @@ open Matrix GlobalTheory.RankFibre
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[e2, blocks, stdSum, finSigmaFinEquiv_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blockIndex_zero (a a' : ℕ) (i : Fin a) : e2 a a' ⟨0, i⟩ = blocks a a' ⟨false, i⟩ := by
   ext
   simp [e2, blocks, stdSum, finSigmaFinEquiv_apply]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[e2, blocks, stdSum, finSigmaFinEquiv_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blockIndex_one (a a' : ℕ) (j : Fin a') : e2 a a' ⟨1, j⟩ = blocks a a' ⟨true, j⟩ := by
   ext
   simp [e2, blocks, stdSum, finSigmaFinEquiv_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_parab_iff, mem_parab_two]`. Prove the components needed by the constructor for the conclusion. Introduce `h j i`. Use `h 1 0 j i (by decide)` as an intermediate fact. Rewrite `this` using `[blockIndex_zero, blockIndex_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h c d i j hdc`. Establish `hc : c = 1` using `Fin.ext (by have := c.isLt; have : d.val < c.val := hdc; omega)`. Establish `hd : d = 0` using `Fin.ext (by have : d.val < c.val := hdc; have := c.isLt; omega)`. Substitute `hc hd` using the available equality. Conclude with `(congrArg₂ (fun x y => (p : Matrix (Fin (a + a')) (Fin (a + a')) k) x y) (blockIndex_one a a' i) (blockIndex_zero a a' j)).trans (h i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_parabolic_two_blocks_iff (a a' : ℕ) (p : GL (Fin (a + a')) k) :
     p ∈ parab k (e2 a a') ↔ p ∈ parab k (blocks a a') := by
@@ -54,7 +54,7 @@ theorem mem_parabolic_two_blocks_iff (a a' : ℕ) (p : GL (Fin (a + a')) k) :
       (blockIndex_zero a a' j)).trans (h i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [leviProj_apply]`. Conclude with `congrArg₂ (fun x y => (p : Matrix (Fin (a + a')) (Fin (a + a')) k) x y) (blockIndex_zero a a' i) (blockIndex_zero a a' j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviProj_two_blocks_zero (a a' : ℕ) (p : GL (Fin (a + a')) k) (h1 : p ∈ parab k (e2 a a'))
     (h2 : p ∈ parab k (blocks a a')) :
@@ -64,7 +64,7 @@ theorem leviProj_two_blocks_zero (a a' : ℕ) (p : GL (Fin (a + a')) k) (h1 : p 
   exact congrArg₂ (fun x y => (p : Matrix (Fin (a + a')) (Fin (a + a')) k) x y) (blockIndex_zero a a' i) (blockIndex_zero a a' j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [leviProj_apply]`. Conclude with `congrArg₂ (fun x y => (p : Matrix (Fin (a + a')) (Fin (a + a')) k) x y) (blockIndex_one a a' i) (blockIndex_one a a' j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviProj_two_blocks_one (a a' : ℕ) (p : GL (Fin (a + a')) k) (h1 : p ∈ parab k (e2 a a'))
     (h2 : p ∈ parab k (blocks a a')) :
@@ -74,27 +74,25 @@ theorem leviProj_two_blocks_one (a a' : ℕ) (p : GL (Fin (a + a')) k) (h1 : p �
   exact congrArg₂ (fun x y => (p : Matrix (Fin (a + a')) (Fin (a + a')) k) x y) (blockIndex_one a a' i) (blockIndex_one a a' j)
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modular_exponent_two_blocks_zero (a a' : ℕ) : modExp (fun c : Fin 2 => Fin (![a, a'] c)) 0 = a' := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modular_exponent_two_blocks_one (a a' : ℕ) : modExp (fun c : Fin 2 => Fin (![a, a'] c)) 1 = -(a : ℤ) := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h0` using `leviProj_two_blocks_zero a a' p h1 h2`. Establish `h1'` using `leviProj_two_blocks_one a a' p h1 h2`. Use `set l := leviProj k (e2 a a') ⟨p, h1⟩`. Use `set lb := leviProj k (blocks a a') ⟨p, h2⟩`. Establish `hlb : lb = leviTwo k (Fin a) (Fin a') (lb false, lb true)` using `((leviTwo k (Fin a) (Fin a')).apply_symm_apply _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : deltaHalf k (fun c : Fin 2 => Fin (![a, a'] c)) l = absPow k ((a' : ℂ) / 2) (GeneralLinearGroup.det (lb false)) * absPow k (-(a : ℂ) / 2) (GeneralLinearGroup.det (lb true))`. Rewrite using `[deltaHalf_apply, Fin.prod_univ_two, modular_exponent_two_blocks_zero, modular_exponent_two_blocks_one]`. Rewrite using `[← h0, ← h1']`. Use `push_cast`. Rewrite using `[neg_div]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `ht : GlobalTheory.ThK.DetProd.twoDet a a' (ν * β) β l = (ν * β) (GeneralLinearGroup.det (lb false)) * β (GeneralLinearGroup.det (lb true))`. Rewrite using `[← h0, ← h1']`. Both sides reduce to the same expression. Establish `hp : parChar ν β a a' ⟨p, h2⟩ = deltaHalf k (Two (Fin a) (Fin a')) lb * (ν * β) (GeneralLinearGroup.det (lb false)) * β (GeneralLinearGroup.det (lb true))` using `rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hδ` using `deltaHalf_two (k := k) (lb false, lb true)`. Rewrite `hδ` using `[← hlb]`. Simplify using `only [Fintype.card_fin] at hδ`. Rewrite using `[hd, ht, hp, hδ]`. Simplify using `only [Units.val_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem char_eq (ν β : kˣ →* ℂˣ) (a a' : ℕ) (p : GL (Fin (a + a')) k) (h1 : p ∈ parab k (e2 a a'))
     (h2 : p ∈ parab k (blocks a a')) :
@@ -129,11 +127,11 @@ theorem char_eq (ν β : kˣ →* ℂˣ) (a a' : ℕ) (p : GL (Fin (a + a')) k) 
   ring
 
 /- English proof (translation)
-Use `⟨?_, fun p g => ?_⟩` and prove the remaining obligations. Establish `hs` using `F.2`. Establish `he : {g : GL (Fin (a + a')) k | rightReg ℂ (GL (Fin (a + a')) k) ℂ g F.1.1 = F.1.1} = {g | ind (parab k (e2 a a')) ((twist (ofChar (GlobalTheory.ThK.DetProd.twoDet a a' (ν * β) β)) (deltaHalf k (fun c : Fin 2 => Fin (![a, a'] c)))).comp (leviProj k (e2 a a'))) g F.1 = F.1}`. Use extensionality with `g`. Conclude with `⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use `show IsOpen {g : GL (Fin (a + a')) k | rightReg ℂ (GL (Fin (a + a')) k) ℂ g F.1.1 = F.1.1}`. Rewrite using `[he]`. Conclude with `hs`. Establish `h1` using `(mem_parabolic_two_blocks_iff a a' p.1).2 p.2`. Use `F.1.2 ⟨p.1, h1⟩ g` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, twist_apply, ofChar_apply, smul_eq_mul] at this`. Rewrite using `[ofChar_apply, ← char_eq ν β a a' p.1 h1 p.2]`. Use `this.trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem val_mem_indScal (ν β : kˣ →* ℂˣ) (a a' : ℕ)
     (F : IndSp (k := k) (e2 a a') (ofChar (GlobalTheory.ThK.DetProd.twoDet a a' (ν * β) β))) :
@@ -156,13 +154,11 @@ theorem val_mem_indScal (ν β : kˣ →* ℂˣ) (a a' : ℕ)
     ring
 
 /- English proof (translation)
-Establish `hlaw : f ∈ indSpace (parab k (e2 a a')) ((twist (ofChar (GlobalTheory.ThK.DetProd.twoDet a a' (ν * β) β)) (deltaHalf k (fun c : Fin 2 => Fin (![a, a'] c)))).comp (leviProj k (e2 a a')))`. Introduce `p g`. Establish `h2` using `(mem_parabolic_two_blocks_iff a a' p.1).1 p.2`. Use `hf.2 ⟨p.1, h2⟩ g` as an intermediate fact. Rewrite `this` using `[ofChar_apply, ← char_eq ν β a a' p.1 p.2 h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, twist_apply, ofChar_apply, smul_eq_mul]`. Use `this.trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨⟨f, hlaw⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `hs : IsOpen {g : GL (Fin (a + a')) k | rightReg ℂ (GL (Fin (a + a')) k) ℂ g f = f}` using `hf.1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he : {g : GL (Fin (a + a')) k | rightReg ℂ (GL (Fin (a + a')) k) ℂ g f = f} = {g | ind (parab k (e2 a a')) ((twist (ofChar (GlobalTheory.ThK.DetProd.twoDet a a' (ν * β) β)) (deltaHalf k (fun c : Fin 2 => Fin (![a, a'] c)))).comp (leviProj k (e2 a a'))) g ⟨f, hlaw⟩ = ⟨f, hlaw⟩}`. Use extensionality with `g`. Conclude with `⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩`. Use `show IsOpen {g | ind (parab k (e2 a a')) ((twist (ofChar (GlobalTheory.ThK.DetProd.twoDet a a' (ν * β) β)) (deltaHalf k (fun c : Fin 2 => Fin (![a, a'] c)))).comp (leviProj k (e2 a a'))) g ⟨f, hlaw⟩ = ⟨f, hlaw⟩}`. Rewrite using `[← he]`.
-
-Conclude with `hs`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_indScal (ν β : kˣ →* ℂˣ) (a a' : ℕ) {f : GL (Fin (a + a')) k → ℂ}
     (hf : f ∈ indScal ν β a a') :
@@ -191,49 +187,45 @@ theorem exists_of_mem_indScal (ν β : kˣ →* ℂˣ) (a a' : ℕ) {f : GL (Fin
 open GlobalTheory.SplitFlip in
 
 /- English proof (translation)
-Introduce `HB k _ _ _ _ a a' ν β hνs hνu hβs hβu ϖ hϖ hνϖ W _ _ R L hL1 hL2`. Use `borelize k`. Establish `hLc : ∀ z ∈ coinv ν β a (a + a'), L z = 0`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨g, Ψ, hΨ, rfl⟩` from `hx`. Rewrite using `[map_sub, hL1 g Ψ hΨ, sub_self]`. Consider the case `zero => exact map_zero L`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`. Establish `hR0 : ∀ h, R h 0 = 0`. Introduce `h`. Establish `h0 : omA ν β 1 h (0 : Matrix (Fin a) (Fin (a + a')) k → ℂ) = 0`. Use function extensionality and compare the values at `Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[omA]`. Use `hL2 h 0 (GlobalTheory.WeilM.SB _).zero_mem` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`. Establish `hS0 : ∀ (h : GL (Fin (a + a')) k) (Φ : Matrix (Fin a) (Fin (a + a')) k → ℂ), Φ ∈ fullRankSB k a (a + a') → omA ν β 1 h Φ ∈ fullRankSB k a (a + a')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h Φ hΦ`. Use `⟨omA_mem_SB ν β 1 h hΦ.1, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `hr : (((1 : GL (Fin a) k)⁻¹).val * Y * (invT h).val).rank ≠ a`. Rewrite using `[inv_one, Units.val_one, Matrix.one_mul, Matrix.rank_mul_eq_left_of_isUnit_det _ _ (Matrix.isUnits_det_units (invT h))]` and apply the resulting hypothesis. Simplify using `only [omA, hΦ.2 _ hr, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ Φ ∈ fullRankSB k a (a + a'), ∀ x : GL (Fin (a + a')) k, MeasureTheory.Integrable (fun g : GL (Fin a) k => omA ν β 1 x Φ (g.val * X0 k finSumFinEquiv) * (ν (gdet g) : ℂ) * apow (gdet g) (((a + a' : ℕ) : ℂ) / 2)) (haarVol (GlobalTheory.SplitWeil.KO k (Fin a)))` using `fun Φ hΦ x => GlobalTheory.T.integrable_full_rank_fibre k a a' ν hνs _ (hS0 x Φ hΦ)`. Establish `hadd : ∀ Φ ∈ fullRankSB k a (a + a'), ∀ Ψ ∈ fullRankSB k a (a + a'), fibre ν β a a' (Φ + Ψ) = fibre ν β a a' Φ + fibre ν β a a' Ψ`. Introduce `Φ hΦ Ψ hΨ`. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `fibre`. Rewrite using `[← MeasureTheory.integral_add (hint Φ hΦ x) (hint Ψ hΨ x)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [omA, Pi.add_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsmul : ∀ (c : ℂ) (Φ : Matrix (Fin a) (Fin (a + a')) k → ℂ), fibre ν β a a' (c • Φ) = c • fibre ν β a a' Φ`. Introduce `c Φ`. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `fibre`. Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [omA, Pi.smul_apply, smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hind : ∀ Ψ ∈ fullRankSB k a (a + a'), fibre ν β a a' Ψ ∈ indScal ν β a a'`. Introduce `Ψ hΨ`. Use `⟨?_, GlobalTheory.T.fibre_mem_induced_space k a a' ν β Ψ⟩` and prove the remaining obligations. Establish `hle : GlobalTheory.RankFibre.stabSub ((GlobalTheory.SplitFlip.repA ν β).comp (MonoidHom.inr (GL (Fin a) k) (GL (Fin (a + a')) k))) Ψ ≤ GlobalTheory.RankFibre.stabSub (rightReg ℂ (GL (Fin (a + a')) k) ℂ) (fibre ν β a a' Ψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h hh`. Establish `hh' : omA ν β 1 h Ψ = Ψ` using `hh`. Use `show rightReg ℂ (GL (Fin (a + a')) k) ℂ h (fibre ν β a a' Ψ) = fibre ν β a a' Ψ`. Use function extensionality and compare the values at `x`. Use `show fibre ν β a a' Ψ (x * h) = fibre ν β a a' Ψ x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← fibre_omA, hh']`. Conclude with `Subgroup.isOpen_mono hle (GlobalTheory.T.isOpen_stabilizer_schwartzBruhat k a (a + a') ν β hβs Ψ hΨ.1)`. Set `Z : fullRankSB k a (a + a') →ₗ[ℂ] (GL (Fin (a + a')) k → ℂ)` to `{ toFun := fun Φ => fibre ν β a a' Φ.1 map_add' := fun Φ Ψ => hadd Φ.1 Φ.2 Ψ.1 Ψ.2 map_smul' := fun c Φ => hsmul c Φ.1 }`. Set `Lr : fullRankSB k a (a + a') →ₗ[ℂ] W` to `L ∘ₗ (fullRankSB k a (a + a')).subtype`. Establish `hker : LinearMap.ker Z ≤ LinearMap.ker Lr`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Φ hΦ`. Rewrite `hΦ`, the goal using `[LinearMap.mem_ker]`. Conclude with `hLc _ (GlobalTheory.T.fibre_zero_mem_coinvariants k a a' ν β hνs hβs Φ.1 Φ.2 hΦ)`. Set `Lbar : LinearMap.range Z →ₗ[ℂ] W` to `((LinearMap.ker Z).liftQ Lr hker) ∘ₗ (Z.quotKerEquivRange.symm : LinearMap.range Z →ₗ[ℂ] _)`. Establish `hLbar : ∀ Φ : fullRankSB k a (a + a'), Lbar ⟨Z Φ, LinearMap.mem_range_self Z Φ⟩ = L Φ.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `Φ`. Establish `e : (⟨Z Φ, LinearMap.mem_range_self Z Φ⟩ : LinearMap.range Z) = Z.quotKerEquivRange (Submodule.Quotient.mk Φ)` using `rfl`. Simplify using `only [Lbar, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[e, LinearEquiv.symm_apply_apply, Submodule.liftQ_apply]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hMle : LinearMap.range Z ≤ indScal ν β a a'`. Introduce and unpack `_ ⟨Φ, rfl⟩`. Conclude with `hind Φ.1 Φ.2`. Establish `hMst : ∀ f ∈ LinearMap.range Z, ∀ h : GL (Fin (a + a')) k, (fun x => f (x * h)) ∈ LinearMap.range Z`. Introduce and unpack `_ ⟨Φ, rfl⟩ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨⟨omA ν β 1 h Φ.1, hS0 h Φ.1 Φ.2⟩, funext fun x => fibre_omA ν β a a' h Φ.1 x⟩`. Establish `hstep1 : ∀ Ψ ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + a')) k), ∃ Φ : fullRankSB k a (a + a'), L Ψ = L Φ.1`. Introduce `Ψ hΨ`. Take `⟨Φ₀, hΦ₀, hr, hd⟩` from `GlobalTheory.T.schwartzBruhat_rank_deficient_reduction k a (a + a') (Nat.le_add_right a a') ν β hνs hνu ϖ hϖ hνϖ Ψ hΨ`. Use `⟨⟨Φ₀, hΦ₀, hr⟩, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hLc _ hd` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Break down `GlobalTheory.T.induced_scalar_irreducible HB k a a' ν β hνs hνu hβs hβu (LinearMap.range Z) hMle hMst with h0 | hT` into its components or cases. Use `⟨0, fun h y => by simp [hR0], fun Ψ hΨ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Take `⟨Φ, hΦ⟩` from `hstep1 Ψ hΨ`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΦ, LinearMap.zero_apply]`. Establish `hm : Z Φ ∈ LinearMap.range Z` using `LinearMap.mem_range_self Z Φ`. Rewrite `hm` using `[h0, Submodule.mem_bot]`. Conclude with `hker (LinearMap.mem_ker.2 hm)`. Set `V : IndSp (k` to `k) (e2 a a') (ofChar (GlobalTheory.ThK.DetProd.twoDet a a' (ν * β) β)) →ₗ[ℂ] (GL (Fin (a + a')) k → ℂ) := Submodule.subtype _ ∘ₗ Submodule.subtype _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Set `j` to `LinearMap.codRestrict (LinearMap.range Z) V (fun F => hT (val_mem_indScal ν β a a' F))`. Use `⟨Lbar ∘ₗ j, fun h y => ?_, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Take `⟨Φ, hΦ⟩` from `(j y).2`. Establish `e1 : j y = ⟨Z Φ, LinearMap.mem_range_self Z Φ⟩` using `Subtype.ext hΦ.symm`. Establish `e2' : j (detInd a a' (ν * β) β h y) = ⟨Z ⟨omA ν β 1 h Φ.1, hS0 h Φ.1 Φ.2⟩, LinearMap.mem_range_self _ _⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show y.1.1 (x * h) = fibre ν β a a' (omA ν β 1 h Φ.1) x`. Rewrite using `[fibre_omA]`. Conclude with `(congrFun hΦ (x * h)).symm`.
-
-Use `show Lbar (j _) = R h (Lbar (j y))`. Rewrite using `[e1, e2', hLbar, hLbar]`. Conclude with `hL2 h Φ.1 Φ.2.1`. Take `⟨Φ, hΦ⟩` from `hstep1 Ψ hΨ`. Take `⟨y, hy⟩` from `exists_of_mem_indScal ν β a a' (hind Φ.1 Φ.2)`.
-
-Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `e1 : j y = ⟨Z Φ, LinearMap.mem_range_self Z Φ⟩` using `Subtype.ext hy`. Use `show L Ψ = Lbar (j y)`. Rewrite using `[e1, hLbar, hΦ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_through_detInd : GlobalTheory.Published.BernsteinUnitaryProductIrreducible →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a a' : ℕ)

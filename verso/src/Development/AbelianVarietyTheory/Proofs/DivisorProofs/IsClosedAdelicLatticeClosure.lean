@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), CompactSpace (v.adicCompletionIntegers F : Set (v.adicCompletion F)) := fun v => GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Establish `h` using `isCompact_range (RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := Filter.cofinite)).continuous`. Rewrite `h` using `[RestrictedProduct.range_structureMap]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_integralFinite :
     IsCompact {b : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), b.1 v ∈ v.adicCompletionIntegers F} := by
@@ -42,11 +42,9 @@ def intAd : AddSubgroup (AF F) where
     · rw [map_neg]; exact neg_mem (ha' v)
 
 /- English proof (translation)
-Establish `e : (intAd F : Set (AF F)) = (({0} : Set (InfiniteAdeleRing F)) ×ˢ {b : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), b.1 v ∈ v.adicCompletionIntegers F} : Set _)`. Use extensionality with `a`. Simplify using `only [SetLike.mem_coe, Set.mem_prod, Set.mem_singleton_iff, Set.mem_setOf_eq]`. Use `show (evI F a = 0 ∧ ∀ v, evFin F v a ∈ v.adicCompletionIntegers F) ↔ _`. Establish `h1 : evI F a = 0 ↔ a.1 = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [evI]`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff`. Rewrite using `[h1]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `isCompact_singleton.prod (isCompact_integralFinite F)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intAd : IsCompact (intAd F : Set (AF F)) := by
   have e : (intAd F : Set (AF F)) = (({0} : Set (InfiniteAdeleRing F)) ×ˢ
@@ -62,50 +60,44 @@ theorem isCompact_intAd : IsCompact (intAd F : Set (AF F)) := by
   exact isCompact_singleton.prod (isCompact_integralFinite F)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incV, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_add {E : Type} [Field E] [NumberField E] [Algebra F E] {n : ℕ} (x y : Fin n → E) :
     incV F (x + y) = incV F x + incV F y := by
   funext i; simp [incV, map_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_zero {E : Type} [Field E] [NumberField E] [Algebra F E] {n : ℕ} :
     incV F (0 : Fin n → E) = 0 := by
   funext i; simp [incV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incV, map_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_zsmul {E : Type} [Field E] [NumberField E] [Algebra F E] {n : ℕ} (m : ℤ) (x : Fin n → E) :
     incV F (m • x) = m • incV F x := by
   funext i; simp [incV, map_zsmul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n X hL`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Take `⟨s, hs⟩` from `Submodule.FG.restrictScalars (R := ℤ) hL.fg`. Set `ψ : (s → AF F) →+ (Fin n → AE F E)` to `{ toFun := fun c => ∑ i, c i • incV F (i : Fin n → E) map_zero' := by simp map_add' := fun c d => by simp [add_smul, Finset.sum_add_distrib] }`. Set `P : AddSubgroup (s → AF F)` to `AddSubgroup.pi Set.univ (fun _ => intAd F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hψc : Continuous ψ` using `continuous_finset_sum _ fun i _ => by show Continuous fun c : s → AF F => c i • incV F (i : Fin n → E)`. Conclude with `(continuous_apply i : Continuous fun c : s → AF F => c i).smul (continuous_const : Continuous fun _ : s → AF F => incV F (i : Fin n → E))`. Establish `hPc : IsCompact (P : Set (s → AF F))`. Establish `: (P : Set (s → AF F)) = Set.pi Set.univ (fun _ => (intAd F : Set (AF F)))`. Use extensionality with `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[P, AddSubgroup.mem_pi]`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_intAd F`. Establish `hsL : ∀ i ∈ s, i ∈ X.L` using `fun i hi => by`. Establish `: i ∈ Submodule.span ℤ (s : Set (Fin n → E))` using `Submodule.subset_span hi`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hs]`. Conclude with `this`. Establish `key : ∀ x ∈ Submodule.span ℤ (s : Set (Fin n → E)), ∀ a ∈ intAd F, a • incV F x ∈ P.map ψ`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Consider the case `mem y hy`. Introduce `a ha`. Use `⟨Pi.single ⟨y, hy⟩ a, ?_, ?_⟩` and prove the remaining obligations. Introduce `i _`. Distinguish the cases in `h : i = ⟨y, hy⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Substitute `h` using the available equality. Simplify using `using ha`. Simplify using `[Pi.single_apply, h, zero_mem]`. Simplify using `[ψ, Pi.single_apply, ite_smul]`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a _`. Rewrite using `[incV_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ ih ih'`. Introduce `a ha`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[incV_add, smul_add]`. Conclude with `add_mem (ih a ha) (ih' a ha)`. Consider the case `smul m y _ ih`. Introduce `a ha`. Rewrite using `[incV_zsmul, smul_comm, ← smul_assoc]`.
-
-Conclude with `ih (m • a) (zsmul_mem ha m)`. Establish `heq : latHat X = P.map ψ`. Apply `le_antisymm` to reduce the goal to its premises. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha0, hav, x, hx, rfl⟩`.
-
-Establish `hx' : x ∈ Submodule.span ℤ (s : Set (Fin n → E))` using `by rw [hs]; exact hx`. Conclude with `key x hx' a ⟨ha0, hav⟩`. Introduce and unpack `z ⟨c, hc, rfl⟩`. Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ⟨c i, (hc i trivial).1, (hc i trivial).2, i, hsL i i.2, rfl⟩`. Rewrite using `[heq, AddSubgroup.coe_map]`.
-
-Conclude with `(hPc.image hψc).isClosed`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_latHat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (X : Spc F E n), X.L.IsLattice E → IsClosed ((latHat X : AddSubgroup (Fin n → AE F E)) : Set (Fin n → AE F E)) := by

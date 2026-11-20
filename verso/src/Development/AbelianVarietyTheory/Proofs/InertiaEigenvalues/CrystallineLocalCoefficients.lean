@@ -15,7 +15,7 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.DualTwistCrys
 
 /- English proof (translation)
-The claim follows from `((D.loc_tie i w hw).2.1 D.R.nV (r x) (hR x).1).1.1 (((hCr w hw).1 h0 h1 x).1)`.
+A detailed English derivation is pending.
 -/
 theorem crys_bridge (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hR : GoodR D.nd i r) (hCr : SumRepresentations.At.G2 D.nd D.naut i r) (h0 : D.nd.l i ≠ D.host.g 0)
@@ -25,14 +25,14 @@ theorem crys_bridge (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (
   ((D.loc_tie i w hw).2.1 D.R.nV (r x) (hR x).1).1.1 (((hCr w hw).1 h0 h1 x).1)
 
 /- English proof (translation)
-The claim follows from `hChi w hw C.LL C.le`.
+A detailed English derivation is pending.
 -/
 theorem crys_chi (D : D7) (i : D.nd.Loc) (hChi : GlobalTheory.PtCore.ChiOneE D i) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) :
     IsCrys (Br.PD D.loc D.nbr i w hw) (Formalism.WeaklyAdmissibleFiltrations.charRep (TruncatedSeriesCountingIdentities.chi1C C)⁻¹) := hChi w hw C.LL C.le
 
 /- English proof (translation)
-Use `D.nd.lPrime i` as an intermediate fact. Use `C.LL.2` as an intermediate fact. Use `(D.nbr i w hw).Kw.2` as an intermediate fact. Establish `h2` using `(GlobalTheory.splits_of_conjugates_mem _ (D.nbr i w hw).Kw C.LL (fun τ y => C.le ((D.nbr i w hw).LL_split τ y)) inferInstance).2`. Rewrite using `[Nat.card_eq_fintype_card, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_emb (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) :
@@ -46,7 +46,7 @@ theorem card_emb (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
   rw [Nat.card_eq_fintype_card, h2]
 
 /- English proof (translation)
-Use `D.nd.lPrime i` as an intermediate fact. Use `C.LL.2` as an intermediate fact. Use `(GlobalTheory.TwistRepCrys.isCrys_and_multV_twist (D.nd.l i) (D.loc _) (D.locA _) (D.locT _) (D.nbr i w hw).Kw C.LL _ (matRep (TruncatedSeriesCountingIdentities.locC C (rO D.nd i r x))) _ (matRep (twistM (TruncatedSeriesCountingIdentities.locC C (rO D.nd i r x)) (TruncatedSeriesC …` and prove the remaining obligations. Rewrite using `[LinearEquiv.refl_apply, LinearEquiv.refl_apply, GlobalTheory.TateDualCrys.matRep_apply, GlobalTheory.TateDualCrys.matRep_apply]`. Conclude with `Matrix.smul_mulVec _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_crys (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
@@ -65,7 +65,7 @@ theorem twist_crys (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (F
   exact Matrix.smul_mulVec _ _ _
 
 /- English proof (translation)
-Use `D.nd.lPrime i` as an intermediate fact. Conclude with `GlobalTheory.CrysCoef.isCrys_inclusion (D.nd.l i) (D.loc _) (D.nbr i w hw).Kw (D.nbr i w hw).LL C.LL C.le _ _ hcw`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem crys_coef (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
@@ -76,7 +76,7 @@ theorem crys_coef (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fi
   exact GlobalTheory.CrysCoef.isCrys_inclusion (D.nd.l i) (D.loc _) (D.nbr i w hw).Kw (D.nbr i w hw).LL C.LL C.le _ _ hcw
 
 /- English proof (translation)
-Use `D.nd.lPrime i` as an intermediate fact. Conclude with `(GlobalTheory.TateDualCrys.tateDual (D.locT _) (D.nbr i w hw).Kw C.LL (card_emb D i w hw C) _ _ (GlobalTheory.TateDualCrys.loc_rDuO D i w hw C.LL C.le r x) htw).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dual_crys (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
@@ -88,7 +88,7 @@ theorem dual_crys (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fi
     (GlobalTheory.TateDualCrys.loc_rDuO D i w hw C.LL C.le r x) htw).1
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.AmbientDual.twist_locC]`. Conclude with `twist_crys D i r w hw C x hchi hcC`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_crys (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
@@ -100,7 +100,7 @@ theorem tw_crys (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin 
   exact twist_crys D i r w hw C x hchi hcC
 
 /- English proof (translation)
-Introduce `_ D i r hR hCr h0 h1 hChi w hw C x` and use `dual_crys D i r w hw C x (tw_crys D i r w hw C x (crys_chi D i hChi w hw C) (crys_coef D i r w hw C x (crys_bridge D i r hR hCr h0 h1 w hw x)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.FontaineBcris → ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r → SumRepresentations.At.G2 D.nd D.naut i r → D.nd.l i ≠ D.host.g 0 → D.nd.l i ≠ D.host.g 1 → GlobalTheory.PtCore.ChiOneE D i → ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (x : D.nd.X i), IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rDuO D.nd i r x))) :=
   fun _ D i r hR hCr h0 h1 hChi w hw C x =>

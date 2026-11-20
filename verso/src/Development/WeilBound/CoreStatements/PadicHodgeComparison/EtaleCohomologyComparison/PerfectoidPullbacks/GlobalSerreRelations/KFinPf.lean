@@ -14,7 +14,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.de_rham_finite_and_filtration_bounded locGr_h locVan_h polyTf_h globSerreSt_h globVanSt_h k_iso_pf gr_aff_pf gr_cech_fin_pf`.
+A detailed English derivation is pending.
 -/
 theorem k_fin_pf : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [IsProper q] [Smooth q] (j : ℕ),
     FiniteDimensional K (HdR q j) ∧ ∀ x ∈ FilR q j (j + 1), x = 0 :=

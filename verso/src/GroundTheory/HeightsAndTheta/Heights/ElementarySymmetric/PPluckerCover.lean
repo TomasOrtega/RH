@@ -17,9 +17,9 @@ section Wedge
 variable {Ω E : Type} [Field Ω] [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Establish `hv : ∀ (v : E) (χ : E →ₗ[Ω] Ω), χ v = e.repr v 0 * χ (e 0) + e.repr v 1 * χ (e 1)`. Introduce `v χ`. Establish `h` using `e.sum_repr v`. Rewrite `h` using `[Fin.sum_univ_two]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hv u ψ, hv u ψ', hv w ψ, hv w ψ']`. Unfold `T.detE`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wedge_eq (e : Module.Basis (Fin 2) Ω E) (ψ ψ' : E →ₗ[Ω] Ω) (u w : E) :
     ψ u * ψ' w - ψ w * ψ' u = (ψ (e 0) * ψ' (e 1) - ψ (e 1) * ψ' (e 0)) * T.detE e u w := by
@@ -40,7 +40,7 @@ section Chart
 variable {Ω : Type} [Field Ω] {ι : Type} (x : ι → Ω) (i : ι)
 
 /- English proof (translation)
-Establish `: f ^ n' * y = f ^ (n' - n) * (f ^ n * y)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hn]`. Rewrite using `[this]`. Conclude with `mul_mem (pow_mem hf _) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_mem_of_le {f y : Ω} (hf : f ∈ chartRing ℤ x i) {n n' : ℕ}
     (h : f ^ n * y ∈ chartRing ℤ x i) (hn : n ≤ n') : f ^ n' * y ∈ chartRing ℤ x i := by
@@ -50,11 +50,11 @@ theorem pow_mul_mem_of_le {f y : Ω} (hf : f ∈ chartRing ℤ x i) {n n' : ℕ}
   exact mul_mem (pow_mem hf _) h
 
 /- English proof (translation)
-Set `F : Fin K → chartRing ℤ x i` to `fun l => ⟨f l, hf l⟩`. Establish `h1 : Ideal.span (Set.range F) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`. Use `⟨fun l => ⟨c l, hc l⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify `hs` using `[F]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `Ideal.span_pow_eq_top _ h1 T`. Rewrite `h2` using `[← Set.range_comp]`. Establish `h3 : (1 : chartRing ℤ x i) ∈ Ideal.span (Set.range ((fun y => y ^ T) ∘ F))`. Rewrite using `[h2]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Take `⟨d, hd⟩` from `Ideal.mem_span_range_iff_exists_fun.1 h3`. Use `⟨fun l => d l, fun l => (d l).2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hd` as an intermediate fact. Simplify `this` using `[F]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pu_pow {K : ℕ} (f c : Fin K → Ω) (hf : ∀ l, f l ∈ chartRing ℤ x i)
     (hc : ∀ l, c l ∈ chartRing ℤ x i) (hs : ∑ l, c l * f l = 1) (T : ℕ) :
@@ -76,7 +76,7 @@ theorem pu_pow {K : ℕ} (f c : Fin K → Ω) (hf : ∀ l, f l ∈ chartRing ℤ
 variable {E : Type} [AddCommGroup E] [Module Ω E] {r : ℕ}
 
 /- English proof (translation)
-Use `(hloc _).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Break down `eq_or_ne q' q with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[h]`. Simplify using `[Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem frame_gen (B : ChartBundle ℤ x r E) {f : Ω} (bb : Fin r → E)
     (hloc : ∀ e, (∃ n : ℕ, f ^ n • e ∈ B.lat i) ↔
@@ -90,31 +90,27 @@ theorem frame_gen (B : ChartBundle ℤ x r E) {f : Ω} (bb : Fin r → E)
   · simp [Pi.single_apply]
 
 /- English proof (translation)
-Use `set Rg := chartRing ℤ x i`. Set `β : Fin K → Module.Basis (Fin r) Ω E` to `fun l => Module.Basis.mk (hli l) (hsp l).ge`. Establish `hβ : ∀ l q, β l q = bb l q` using `fun l q => Module.Basis.mk_apply _ _ _`. Establish `key : ∀ l, ∀ v ∈ B.lat i, ∀ q, ∃ n : ℕ, f l ^ n * (β l).repr v q ∈ Rg`. Introduce `l v hv q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hva⟩` from `(hloc l v).1 ⟨0, by simpa using hv⟩`. Establish `: (β l).repr v = a`. Rewrite using `[hva]`. Repeatedly rewrite using `[← hβ]`. Conclude with `(β l).repr_sum_self a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[this]`. Conclude with `ha q`. Use `choose nn hnn using fun l => frame_gen x i B (bb l) (hloc l)`. Set `g : Fin K × Fin r → E` to `fun p => f p.1 ^ nn p.1 p.2 • bb p.1 p.2`. Set `L : Submodule Rg E` to `Submodule.span Rg (Set.range g)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `smulR : ∀ (a : Ω), a ∈ Rg → ∀ v : E, v ∈ L → a • v ∈ L` using `fun a ha v hv => by`. Use `L.smul_mem (⟨a, ha⟩ : Rg) hv` as an intermediate fact. Rewrite `this` using `[Subalgebra.smul_def]`. Then use the resulting hypothesis. Establish `loc : ∀ v ∈ B.lat i, ∀ l', ∃ T : ℕ, f l' ^ T • v ∈ L`. Introduce `v hv l'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, hva⟩` from `(hloc l' v).1 ⟨0, by simpa using hv⟩`. Use `choose m hm using ha`. Use `⟨∑ q, (m q + nn l' q), ?_⟩` and prove the remaining obligations. Rewrite using `[hva, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hle : m q + nn l' q ≤ ∑ q, (m q + nn l' q)` using `Finset.single_le_sum (f := fun q => m q + nn l' q) (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)`. Establish `h2 : nn l' q ≤ ∑ q, (m q + nn l' q)` using `by omega`. Establish `: f l' ^ (∑ q, (m q + nn l' q)) • a q • bb l' q = (f l' ^ (∑ q, (m q + nn l' q) - nn l' q) * a q) • g (l', q)`. Simplify using `only [g, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← pow_sub_mul_pow (f l') h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `smulR _ (pow_mul_mem_of_le x i (hf l') (hm q) (by omega)) _ (Submodule.subset_span ⟨(l', q), rfl⟩)`. Establish `cover : ∀ v ∈ B.lat i, v ∈ L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Use `choose T hT using loc v hv`. Take `⟨d, hd, hds⟩` from `pu_pow x i f c hf hc hs (∑ l', T l')`. Establish `hv' : v = ∑ l', d l' • (f l' ^ (∑ l', T l') • v)`. Repeatedly rewrite using `[smul_smul, ← Finset.sum_smul, hds, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hv']`. Use `Submodule.sum_mem _ fun l' _ => smulR _ (hd l') _ ?_` and prove the remaining obligations. Establish `hle : T l' ≤ ∑ l', T l'` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ l')`. Rewrite using `[← pow_sub_mul_pow (f l') hle, mul_smul]`. Conclude with `smulR _ (pow_mem (hf l') _) _ (hT l')`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose mg hmg using fun (p : Fin K × Fin r) q => key l (g p) (hnn p.1 p.2) q`. Use `⟨∑ p, ∑ q, mg p q, fun v hv q => ?_⟩` and prove the remaining obligations. Establish `ind : ∀ y ∈ L, f l ^ (∑ p, ∑ q, mg p q) * (β l).repr y q ∈ Rg`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem y hy`. Take `⟨p, rfl⟩` from `hy`. Establish `h1 : mg p q ≤ ∑ q, mg p q` using `Finset.single_le_sum (f := fun q => mg p q) (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)`. Establish `h2 : ∑ q, mg p q ≤ ∑ p, ∑ q, mg p q` using `Finset.single_le_sum (f := fun p => ∑ q, mg p q) (fun _ _ => Nat.zero_le _) (Finset.mem_univ p)`. Conclude with `pow_mul_mem_of_le x i (hf l) (hmg p q) (h1.trans h2)`.
-
-Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add, Finsupp.add_apply, mul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy`.
-
-Rewrite using `[Subalgebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_left_comm]`. Conclude with `mul_mem a.2 hy`. Conclude with `ind v (cover v hv)`.
+A detailed English derivation is pending.
 -/
 theorem frame_bound (B : ChartBundle ℤ x r E) {K : ℕ} (f c : Fin K → Ω) (hf : ∀ l, f l ∈ chartRing ℤ x i)
     (hc : ∀ l, c l ∈ chartRing ℤ x i) (hs : ∑ l, c l * f l = 1) (bb : Fin K → Fin r → E)
@@ -194,27 +190,23 @@ theorem frame_bound (B : ChartBundle ℤ x r E) {K : ℕ} (f c : Fin K → Ω) (
   exact ind v (cover v hv)
 
 /- English proof (translation)
-Use `set Rg := chartRing ℤ x i`. Use `set J := Submodule.span Rg (Set.range fun t : κ × κ × ν => (x i)⁻¹ ^ 3 * (φ t.1 (e 0) * φ t.2.1 (e 1) - φ t.1 (e 1) * φ t.2.1 (e 0)) * δ t.2.2)`. Establish `smulR : ∀ (a : Ω), a ∈ Rg → ∀ v : Ω, v ∈ J → a * v ∈ J` using `fun a ha v hv => by`. Use `J.smul_mem (⟨a, ha⟩ : Rg) hv` as an intermediate fact. Rewrite `this` using `[Subalgebra.smul_def, smul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n0, hn0⟩` from `hgenb 0`. Take `⟨n1, hn1⟩` from `hgenb 1`. Establish `hpad0 : f ^ (n0 + n1) • bb 0 ∈ B.lat i`. Rewrite using `[show f ^ (n0 + n1) • bb 0 = f ^ n1 • (f ^ n0 • bb 0) by rw [smul_smul, ← pow_add, add_comm]]`. Conclude with `B.stable i _ (pow_mem hf _) _ hn0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpad1 : f ^ (n0 + n1) • bb 1 ∈ B.lat i`. Rewrite using `[show f ^ (n0 + n1) • bb 1 = f ^ n0 • (f ^ n1 • bb 1) by rw [smul_smul, ← pow_add]]`. Conclude with `B.stable i _ (pow_mem hf _) _ hn1`. Use `set β := Module.Basis.mk hli hsp.ge`. Establish `hb : ∀ q, bb q = β q` using `fun q => (Module.Basis.mk_apply _ _ _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ψ : Fin 2 → E →ₗ[Ω] Ω` to `fun q => f ^ M • β.coord q`. Establish `hψ : ∀ q, ψ q ∈ T.dualLat B i` using `fun q v hv => by`. Simplify `hM v hv q` using `[ψ]`. Take `⟨c0, hc0, h0⟩` from `hgen _ (hψ 0)`. Take `⟨c1, hc1, h1⟩` from `hgen _ (hψ 1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `set u := f ^ (n0 + n1) • bb 0`. Use `set w := f ^ (n0 + n1) • bb 1`. Establish `hval : ψ 0 u * ψ 1 w - ψ 0 w * ψ 1 u = f ^ (2 * M + 2 * (n0 + n1))`. Simplify using `only [ψ, u, w, hb, LinearMap.smul_apply, map_smul, Module.Basis.coord_apply, Module.Basis.repr_self, smul_eq_mul, Finsupp.single_apply]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hspan : ∀ k m, ∀ t ∈ Submodule.span Rg (Set.range fun l => (x i)⁻¹ * δ l), (x i)⁻¹ ^ 2 * (φ k (e 0) * φ m (e 1) - φ k (e 1) * φ m (e 0)) * t ∈ J`. Introduce `k m t ht`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem y hy`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨l, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨(k, m, l), ?_⟩` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z _ _ hy hz => rw [mul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, mul_left_comm]`. Conclude with `smulR _ a.2 _ hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ψ 0 u * ψ 1 w - ψ 0 w * ψ 1 u ∈ J`. Rewrite using `[h0, h1]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul_sum]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Establish `key` using `wedge_eq e (φ k) (φ m) u w`. Establish `: c0 k * ((x i)⁻¹ * φ k u) * (c1 m * ((x i)⁻¹ * φ m w)) - c0 k * ((x i)⁻¹ * φ k w) * (c1 m * ((x i)⁻¹ * φ m u)) = (c0 k * c1 m) * ((x i)⁻¹ ^ 2 * (φ k (e 0) * φ m (e 1) - φ k (e 1) * φ m (e 0)) * T.detE e u w)`. Take the linear combination `(c0 k * c1 m * (x i)⁻¹ ^ 2) * key`.
-
-Rewrite using `[this]`. Conclude with `smulR _ (mul_mem (hc0 k) (hc1 m)) _ (hspan k m _ (hdet u hpad0 w hpad1))`. Conclude with `⟨_, hval ▸ hmem⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chart_rel (B : ChartBundle ℤ x 2 E) (e : Module.Basis (Fin 2) Ω E) {κ ν : Type} [Fintype κ]
     (φ : κ → E →ₗ[Ω] Ω) (δ : ν → Ω)
@@ -301,14 +293,14 @@ Both sides reduce to the same expression.
 theorem yyc_base (i : S.ι) : yyc S ⟨.base, i⟩ = algebraMap S.Ω S.Φ (S.x i) := rfl
 
 /- English proof (translation)
-Rewrite using `[map_pow, aeval_X, yyc_base, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_Xpow (i : S.ι) (d : ℕ) :
     aeval (yyc S) (X ⟨.base, i⟩ ^ d : MRing S.YIdx) = algebraMap S.Ω S.Φ (S.x i ^ d) := by
   rw [map_pow, aeval_X, yyc_base, map_pow]
 
 /- English proof (translation)
-Use `(isWeightedHomogeneous_X ℤ (wt S) (⟨.base, i⟩ : Σ k, S.YIdx k)).pow d` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Xpow_homog (i : S.ι) (d : ℕ) :
     IsWeightedHomogeneous (wt S) (X ⟨.base, i⟩ ^ d : MRing S.YIdx) (Pi.single .base d) := by
@@ -318,7 +310,7 @@ theorem Xpow_homog (i : S.ι) (d : ℕ) :
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_smul_base (n d : ℕ) : n • (Pi.single .base d : T.YBlk → ℕ) = Pi.single .base (n * d) := by
   funext k
@@ -326,24 +318,24 @@ theorem single_smul_base (n d : ℕ) : n • (Pi.single .base d : T.YBlk → ℕ
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `(weightedHomogeneousSubmodule ℤ (wt S) m).sub_mem hp hq`.
+A detailed English derivation is pending.
 -/
 theorem homog_sub {p q : MRing S.YIdx} {m : T.YBlk → ℕ} (hp : IsWeightedHomogeneous (wt S) p m)
     (hq : IsWeightedHomogeneous (wt S) q m) : IsWeightedHomogeneous (wt S) (p - q) m :=
   (weightedHomogeneousSubmodule ℤ (wt S) m).sub_mem hp hq
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Use `⟨1, X ⟨.base, j⟩, isWeightedHomogeneous_X ℤ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_X, yyc_base, pow_one, div_mul_cancel₀ _ hx]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `algebraMap n`. Use `⟨0, C n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_zero]`. Conclude with `isWeightedHomogeneous_C _ _`. Simplify using the standard rewrite rules.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨d1, P1, h1, e1⟩` from `hy`. Take `⟨d2, P2, h2, e2⟩` from `hz`. Use `⟨d1 + d2, P1 * X ⟨.base, i⟩ ^ d2 + P2 * X ⟨.base, i⟩ ^ d1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsWeightedHomogeneous.add (h1.mul (Xpow_homog S i d2)) ?_` and prove the remaining obligations. Rewrite using `[add_comm]`. Conclude with `h2.mul (Xpow_homog S i d1)`. Rewrite using `[map_add, map_mul, map_mul, aeval_Xpow, aeval_Xpow, e1, e2, ← map_mul, ← map_mul, ← map_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `mul y z _ _ hy hz`. Take `⟨d1, P1, h1, e1⟩` from `hy`. Take `⟨d2, P2, h2, e2⟩` from `hz`. Use `⟨d1 + d2, P1 * P2, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_add]`. Conclude with `h1.mul h2`. Rewrite using `[map_mul, e1, e2, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem homogenize (i : S.ι) (hx : S.x i ≠ 0) {a : S.Ω} (ha : a ∈ chartRing ℤ S.x i) :
     ∃ (d : ℕ) (P : MRing S.YIdx), IsWeightedHomogeneous (wt S) P (Pi.single .base d) ∧
@@ -380,9 +372,9 @@ theorem homogenize (i : S.ι) (hx : S.x i ≠ 0) {a : S.Ω} (ha : a ∈ chartRin
       ring
 
 /- English proof (translation)
-Use `choose d P hP eP using fun t => homogenize S i hx (ha t)`. Use `⟨∑ t, d t, fun t => X ⟨.base, i⟩ ^ (∑ t, d t - d t) * P t, fun t => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hle : d t ≤ ∑ t, d t` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ t)`. Use `(Xpow_homog S i (∑ t, d t - d t)).mul (hP t)` as an intermediate fact. Rewrite `this` using `[← Pi.single_add, Nat.sub_add_cancel hle]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hle : d t ≤ ∑ t, d t` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ t)`. Rewrite using `[map_mul, aeval_Xpow, eP t, ← map_mul]`. Use `congr 1`. Rewrite using `[← pow_sub_mul_pow (S.x i) hle]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem homogenize_fam (i : S.ι) (hx : S.x i ≠ 0) {α : Type} [Fintype α] (a : α → S.Ω)
     (ha : ∀ t, a t ∈ chartRing ℤ S.x i) :
@@ -401,9 +393,9 @@ theorem homogenize_fam (i : S.ι) (hx : S.x i ≠ 0) {α : Type} [Fintype α] (a
     ring
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.eval (fun _ => (1 : Φ))).comp (T.multiConeMap c) = (aeval c).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using `[T.multiConeMap]`. Introduce `q`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[T.multiConeMap]`. Use `RingHom.congr_fun h p` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, RingHom.mem_ker.1 hp, map_zero]`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_of_mem_ker {K : Type} {ι : K → Type} {Φ : Type} [Field Φ] (c : (Σ k, ι k) → Φ) {p : MRing ι}
     (hp : p ∈ RingHom.ker (T.multiConeMap c)) : aeval c p = 0 := by
@@ -421,9 +413,9 @@ def blk0 : T.YBlk → T.WBlk
   | .line => .line0
 
 /- English proof (translation)
-Establish `h : (T.multiConeMap c).comp (rename (T.yyEmb 0) : MRing S.YIdx →ₐ[ℤ] MRing S.WIdx).toRingHom = (rename blk0 : MvPolynomial T.YBlk Φ →ₐ[Φ] MvPolynomial T.WBlk Φ).toRingHom.comp (T.multiConeMap (c ∘ T.yyEmb 0))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using `[T.multiConeMap]`. Introduce and unpack `⟨b, j⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `cases b <;> simp [T.multiConeMap, T.yyEmb, blk0]`. Conclude with `RingHom.congr_fun h s`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem multiConeMap_rename0 {Φ : Type} [Field Φ] (c : (Σ k, S.WIdx k) → Φ) (s : MRing S.YIdx) :
     T.multiConeMap c (rename (T.yyEmb 0) s) = rename blk0 (T.multiConeMap (c ∘ T.yyEmb 0) s) := by
@@ -437,7 +429,7 @@ theorem multiConeMap_rename0 {Φ : Type} [Field Φ] (c : (Σ k, S.WIdx k) → Φ
   exact RingHom.congr_fun h s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨b, j⟩` from `q`. Apply the tactic sequence `cases b <;> simp [T.yyEmb, T.wwCoord, T.yyCoord]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wwCoord_comp : T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1) ∘ T.yyEmb 0 = yyc S := by
   funext q
@@ -445,7 +437,7 @@ theorem wwCoord_comp : T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1) ∘ T.yyEmb 0
   cases b <;> simp [T.yyEmb, T.wwCoord, T.yyCoord]
 
 /- English proof (translation)
-Use `show rename (T.yyEmb 0) r ∈ RingHom.ker (T.multiConeMap (T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1)))`. Rewrite using `[RingHom.mem_ker, multiConeMap_rename0, wwCoord_comp, DiagRAux.multiConeMap_of_homog _ r b hr, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_mem_WW (r : MRing S.YIdx) (b : T.YBlk → ℕ) (hr : IsMultiHomog r b) (h0 : aeval (yyc S) r = 0) :
     rename (T.yyEmb 0) r ∈ S.WW := by
@@ -454,11 +446,11 @@ theorem rename_mem_WW (r : MRing S.YIdx) (b : T.YBlk → ℕ) (hr : IsMultiHomog
   simp
 
 /- English proof (translation)
-Establish `h0` using `aeval_of_mem_ker _ (hF.2 i l k m)`. Establish `hh : aeval (T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1)) S.h ≠ 0` using `(DiagRAux.not_mem_ker_iff_aeval_ne _ S.h _ S.h_deg).1 S.h_nmem`. Establish `ha : S.a 1 - S.a 0 ≠ 0` using `sub_ne_zero.2 fun h => absurd (S.indep.injective h) (by decide)`. Establish `hren : aeval (T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1)) (rename (T.yyEmb 0) (F i l k m)) = aeval (yyc S) (F i l k m)`. Rewrite using `[aeval_rename, wwCoord_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg` using `S.quot`. Rewrite `h0` using `[map_sub, map_mul, map_mul, map_mul, map_mul, map_pow, hren, hg, aeval_X, aeval_X]`. Simplify using `only [ProjectiveLineBundle.pluckerWW, map_sub, map_mul, aeval_X, T.wwCoord, T.lineVal, T.diagSec] at h0`. Apply `mul_left_cancel₀ (mul_ne_zero ha hh)` to reduce the goal to its premises. Simplify using `only [map_mul, map_sub, map_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `h0`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem F_value (N : ℕ) (F : S.ι → S.ν → S.κ → S.κ → MRing S.YIdx) (hF : S.IsPluckerRel N F)
     (i : S.ι) (l : S.ν) (k m : S.κ) :
@@ -482,7 +474,7 @@ def Good (r : MRing S.YIdx) : Prop :=
   ∃ b : T.YBlk → ℕ, IsMultiHomog r b ∧ b .line = 0 ∧ rename (T.yyEmb 0) r ∈ S.WW
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Pi.single .base d, (isMultiHomog_iff_weighted r _).2 hr, by simp, rename_mem_WW S r _ ((isMultiHomog_iff_weighted r _).2 hr) h0⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_of {r : MRing S.YIdx} {d : ℕ} (hr : IsWeightedHomogeneous (wt S) r (Pi.single .base d))
     (h0 : aeval (yyc S) r = 0) : Good S r :=
@@ -496,37 +488,33 @@ section Local
 variable {D : ℕ} (S : ProjectiveLineBundle D)
 
 /- English proof (translation)
-Distinguish the cases in `hx : S.x i = 0`. Use `⟨{X ⟨.base, i⟩}, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Rewrite `hr` using `[Finset.mem_singleton]`. Substitute `hr` using the available equality.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `good_of S (d := 1) (isWeightedHomogeneous_X ℤ _ _) (by rw [aeval_X, yyc_base, hx, map_zero])`. Introduce `w hw _`. Simplify using `using hw _ (Finset.mem_singleton_self _)`. Take `⟨K, f, c, hf, hc, hs, hloc⟩` from `S.B.frame i hx`. Use `choose bb hli hsp hloc' using hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrel : ∀ l, ∃ n : ℕ, f l ^ n ∈ Submodule.span (chartRing ℤ S.x i) (Set.range fun t : S.κ × S.κ × S.ν => (S.x i)⁻¹ ^ 3 * (S.φ t.1 (S.e 0) * S.φ t.2.1 (S.e 1) - S.φ t.1 (S.e 1) * S.φ t.2.1 (S.e 0)) * S.δ t.2.2)`. Introduce `l`. Take `⟨M, hM⟩` from `frame_bound S.x i S.B f c hf hc hs bb hli hsp hloc' l`. Conclude with `chart_rel S.x i S.B S.e S.φ S.δ (S.dualGen i hx) (S.detGen i hx).2 (hf l) (bb l) (hli l) (hsp l) (frame_gen S.x i S.B (bb l) (hloc' l)) M hM`. Use `choose n hn using hrel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcoef : ∀ l, ∃ C : S.κ × S.κ × S.ν → S.Ω, (∀ t, C t ∈ chartRing ℤ S.x i) ∧ f l ^ n l = ∑ t, C t * ((S.x i)⁻¹ ^ 3 * (S.φ t.1 (S.e 0) * S.φ t.2.1 (S.e 1) - S.φ t.1 (S.e 1) * S.φ t.2.1 (S.e 0)) * S.δ t.2.2)`. Introduce `l`. Take `⟨C, hC⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hn l)`. Use `⟨fun t => C t, fun t => (C t).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hC]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Subalgebra.smul_def, smul_eq_mul]`. Use `choose C hC hCeq using hcoef`. Take `⟨Df, Pf, hPf⟩` from `homogenize_fam S i hx f hf`. Take `⟨Dc, Pc, hPc⟩` from `homogenize_fam S i hx c hc`. Use `choose E Q hQ using fun l => homogenize_fam S i hx (C l) (hC l)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFh : ∀ l k m, IsWeightedHomogeneous (wt S) (F i l k m) (Pi.single .base (N + 3))` using `fun l k m => (isMultiHomog_iff_weighted _ _).1 (hF.1 i l k m)`. Set `r0 : MRing S.YIdx` to `X ⟨.base, i⟩ ^ (Dc + Df) - ∑ l, Pc l * Pf l`. Set `rl : Fin K → MRing S.YIdx` to `fun l => X ⟨.base, i⟩ ^ (E l + N + 3) * Pf l ^ n l - ∑ t, X ⟨.base, i⟩ ^ (n l * Df) * Q l t * F i t.2.2 t.1 t.2.1`. Establish `hr0 : Good S r0`. Use `good_of S (d := Dc + Df) ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `homog_sub S (Xpow_homog S i _) (IsWeightedHomogeneous.sum _ _ _ fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.single_add]`. Conclude with `(hPc l).1.mul (hPf l).1`. Establish `hΩ : S.x i ^ (Dc + Df) - ∑ l, (c l * S.x i ^ Dc) * (f l * S.x i ^ Df) = 0`. Establish `: ∑ l, (c l * S.x i ^ Dc) * (f l * S.x i ^ Df) = (∑ l, c l * f l) * S.x i ^ (Dc + Df)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Rewrite using `[this, hs]`. Expand and normalize the polynomial expressions, which then agree. Use `congrArg (algebraMap S.Ω S.Φ) hΩ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [r0, map_sub, map_sum, map_mul, aeval_Xpow, (hPc _).2, (hPf _).2, map_zero] at this ⊢`. Simplify `this` using `[map_pow]`. Establish `hrl : ∀ l, Good S (rl l)`. Introduce `l`. Use `good_of S (d := E l + N + 3 + n l * Df) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `homog_sub S ?_ (IsWeightedHomogeneous.sum _ _ _ fun t _ => ?_)` and prove the remaining obligations. Use `(Xpow_homog S i (E l + N + 3)).mul ((hPf l).1.pow (n l))` as an intermediate fact. Rewrite `this` using `[single_smul_base, ← Pi.single_add]`. Then use the resulting hypothesis. Establish `hdeg : Pi.single .base (n l * Df) + Pi.single .base (E l) + Pi.single .base (N + 3) = (Pi.single .base (E l + N + 3 + n l * Df) : T.YBlk → ℕ)`. Rewrite using `[← Pi.single_add, ← Pi.single_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hdeg]`. Conclude with `((Xpow_homog S i _).mul (hQ l t).1).mul (hFh _ _ _)`. Establish `hΩ : S.x i ^ (E l + N + 3) * (f l * S.x i ^ Df) ^ n l - ∑ t, S.x i ^ (n l * Df) * (C l t * S.x i ^ E l) * ((S.φ t.1 (S.e 0) * S.φ t.2.1 (S.e 1) - S.φ t.1 (S.e 1) * S.φ t.2.1 (S.e 0)) * S.δ t.2.2 * S.x i ^ N) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[mul_pow, hCeq l, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `congrArg (algebraMap S.Ω S.Φ) hΩ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ePf : ∀ l, aeval (yyc S) (Pf l) = algebraMap S.Ω S.Φ (f l * S.x i ^ Df)` using `fun l => (hPf l).2`. Establish `eQ : ∀ t, aeval (yyc S) (Q l t) = algebraMap S.Ω S.Φ (C l t * S.x i ^ E l)` using `fun t => (hQ l t).2`. Simplify using `only [rl, map_sub, map_sum, map_mul, map_pow, aeval_X, yyc_base, ePf, eQ, F_value S N F hF, map_zero] at this ⊢`. Simplify `this` using `[map_pow]`. Use `⟨insert r0 (Finset.univ.image rl), ?_, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `r hr`. Break down `Finset.mem_insert.1 hr with rfl | hr` into its components or cases. Conclude with `hr0`. Take `⟨l, -, rfl⟩` from `Finset.mem_image.1 hr`. Conclude with `hrl l`.
-
-Introduce `w hw hFw`. Assume the negation of the conclusion as `hwi`. Establish `hPl : ∀ l, eval w (map (Int.castRingHom ℂ) (Pf l)) = 0`. Introduce `l`. Establish `h` using `hw (rl l) (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (Finset.mem_univ l)))`.
-
-Simplify using `only [rl, map_sub, map_mul, map_pow, map_sum, map_X, eval_X, hFw, mul_zero, Finset.sum_const_zero, sub_zero] at h`. Conclude with `eq_zero_of_pow_eq_zero ((mul_eq_zero.1 h).resolve_left (pow_ne_zero _ hwi))`. Establish `h` using `hw r0 (Finset.mem_insert_self _ _)`. Simplify using `only [r0, map_sub, map_mul, map_pow, map_sum, map_X, eval_X, hPl, mul_zero, Finset.sum_const_zero, sub_zero] at h`. Conclude with `hwi (eq_zero_of_pow_eq_zero h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem local_rel (N : ℕ) (F : S.ι → S.ν → S.κ → S.κ → MRing S.YIdx) (hF : S.IsPluckerRel N F) (i : S.ι) :
     ∃ s : Finset (MRing S.YIdx), (∀ r ∈ s, Good S r) ∧
@@ -632,13 +620,13 @@ end PluckerAffineCover
 open PluckerAffineCover in
 
 /- English proof (translation)
-Introduce `D S N F hF`. Use `choose s hs hsw using fun i => local_rel S N F hF i`. Set `A` to `Finset.univ.biUnion s`. Establish `hA : ∀ r ∈ A, Good S r`. Introduce `r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.1 hr`. Conclude with `hs i r hi`. Use `choose! b hb using hA`. Use `⟨A.card, fun j => (A.equivFin.symm j : MRing S.YIdx), fun j => b (A.equivFin.symm j), fun j => (hb _ (A.equivFin.symm j).2).1, fun j => (hb _ (A.equivFin.symm j).2).2.1, fun j => (hb _ (A.equivFin.symm j).2).2.2, ?_⟩` and prove the remaining obligations. Introduce `w hw hr`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hF0`. Simplify using `only [not_exists, ne_eq, not_not] at hF0`. Take `⟨i, hi⟩` from `hw .base`. Apply `hi` to reduce the goal to its premises. Use `hsw i w (fun r hr' => ?_) (fun l k m => hF0 i l k m)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hrA : r ∈ A` using `Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hr'⟩`. Use `hr (A.equivFin ⟨r, hrA⟩)` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem PluckerCover.proof : PluckerCover.Statement := by
   intro D S N F hF

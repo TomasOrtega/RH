@@ -12,7 +12,7 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.Dens
 open Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `h : (starRingEnd ℂ) (χ a) = χ⁻¹ a` using `MulChar.star_apply' χ a`. Rewrite using `[h, ← MulChar.mul_apply, mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma char_mul_conj_self {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (a : ZMod M) :
     χ a * (starRingEnd ℂ) (χ a) = (1 : DirichletCharacter ℂ M) a := by
@@ -20,7 +20,7 @@ lemma char_mul_conj_self {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (a
   rw [h, ← MulChar.mul_apply, mul_inv_cancel]
 
 /- English proof (translation)
-Establish `h : (starRingEnd ℂ) (χ' a) = χ'⁻¹ a` using `MulChar.star_apply' χ' a`. Rewrite using `[h, ← MulChar.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma char_mul_conj {M : ℕ} [NeZero M] (χ χ' : DirichletCharacter ℂ M) (a : ZMod M) :
     χ a * (starRingEnd ℂ) (χ' a) = (χ * χ'⁻¹) a := by
@@ -28,33 +28,33 @@ lemma char_mul_conj {M : ℕ} [NeZero M] (χ χ' : DirichletCharacter ℂ M) (a 
   rw [h, ← MulChar.mul_apply]
 
 /- English proof (translation)
-Take `⟨hl, hu, hi⟩` from `hp`. Take `⟨hl', hu', hi'⟩` from `hp'`. Establish `hU0 : (0 : ℝ) < U` using `by exact_mod_cast hU`. Establish `hU1 : (1 : ℝ) ≤ U` using `by exact_mod_cast hU`. Establish `hM0 : (0 : ℝ) ≤ (M : ℝ)` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : ℂ := (p.2 - (σ : ℂ)) + (starRingEnd ℂ) (p'.2 - (σ : ℂ)) with hw`. Establish `hwre : w.re = p.2.re + p'.2.re - 2 * σ`. Simplify using `only [hw, add_re, sub_re, ofReal_re, conj_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwim : w.im = p.2.im - p'.2.im`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hw, add_im, sub_im, ofReal_im, conj_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw0 : 0 ≤ w.re` using `by rw [hwre]; linarith`. Establish `hw1 : w.re ≤ 1` using `by rw [hwre]; linarith`. Establish `hwn : ‖w‖ ≤ 1 + 2 * T`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Complex.norm_le_abs_re_add_abs_im w).trans ?_` and prove the remaining obligations. Rewrite using `[abs_of_nonneg hw0, hwim]`. Establish `: |p.2.im - p'.2.im| ≤ |p.2.im| + |p'.2.im|` using `abs_sub _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : 4 * ((M : ℝ) + 1) * (1 + ‖w‖) ≤ 4 * ((M : ℝ) + 1) * (2 + 2 * T)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 + ‖w‖ ≤ 2 + 2 * T` using `by linarith`. Use `gcongr`. Establish `hB0 : 0 ≤ 4 * ((M : ℝ) + 1) * (2 + 2 * T)` using `by positivity`. Establish `hq0 : 0 ≤ 4 * (U : ℝ) * (1 / |p.2.im - p'.2.im|)` using `by positivity`. Distinguish the cases in `h1 : p' = p`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos h1, if_pos (by rw [h1])]`. Establish `hdiag : ‖∑ n ∈ Ioc U (2 * U), p.1 (n : ZMod M) * (starRingEnd ℂ) (p'.1 (n : ZMod M)) * (n : ℂ) ^ (-w)‖ ≤ U`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `: ∀ n ∈ Ioc U (2 * U), ‖p.1 (n : ZMod M) * (starRingEnd ℂ) (p'.1 (n : ZMod M)) * (n : ℂ) ^ (-w)‖ ≤ 1`. Introduce `n hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn1 : 1 ≤ n` using `by have := (mem_Ioc.1 hn).1; omega`. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj]`. Establish `a1 : ‖p.1 (n : ZMod M)‖ ≤ 1` using `DirichletCharacter.norm_le_one _ _`. Establish `a2 : ‖p'.1 (n : ZMod M)‖ ≤ 1` using `DirichletCharacter.norm_le_one _ _`. Establish `a3 : ‖(n : ℂ) ^ (-w)‖ ≤ 1` using `norm_natCast_cpow_neg_le_one hn1 hw0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(sum_le_sum this).trans ?_` and prove the remaining obligations. Rewrite using `[sum_const, Nat.card_Ioc, nsmul_eq_mul, mul_one]`. Conclude with `(by omega : 2 * U - U ≤ U)` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1]`. Distinguish the cases in `h2 : p'.1 = p.1`. Rewrite using `[if_pos h2]`. Establish `hgap : 1 ≤ |p.2.im - p'.2.im|` using `hsp (fun h => h1 h.symm) h2.symm`. Establish `him : w.im ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hwim]`. Introduce `h0`. Rewrite `hgap` using `[h0, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsame` using `pair_same_bound M w hw0 hw1 him U hU`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : ∑ n ∈ Ioc U (2 * U), p.1 (n : ZMod M) * (starRingEnd ℂ) (p'.1 (n : ZMod M)) * (n : ℂ) ^ (-w) = ∑ n ∈ Ioc U (2 * U), (1 : DirichletCharacter ℂ M) (n : ZMod M) * (n : ℂ) ^ (-w)`. Use `sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[h2, char_mul_conj_self]`. Rewrite using `[heq]`. Establish `hUp : (U : ℝ) ^ (1 - w.re) ≤ U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hdiv : 4 * (U : ℝ) ^ (1 - w.re) / |w.im| ≤ 4 * (U : ℝ) * (1 / |p.2.im - p'.2.im|)`. Rewrite using `[hwim, mul_one_div]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[if_neg h2]`. Establish `hne : p.1 * p'.1⁻¹ ≠ 1`. Introduce `h`. Conclude with `h2 (mul_inv_eq_one.1 h).symm`. Establish `hcross` using `pair_cross_bound M (p.1 * p'.1⁻¹) hne w hw0 U hU`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `heq : ∑ n ∈ Ioc U (2 * U), p.1 (n : ZMod M) * (starRingEnd ℂ) (p'.1 (n : ZMod M)) * (n : ℂ) ^ (-w) = ∑ n ∈ Ioc U (2 * U), (p.1 * p'.1⁻¹) (n : ZMod M) * (n : ℂ) ^ (-w)`. Use `sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[char_mul_conj]`. Rewrite using `[heq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma offdiag_term {M : ℕ} [NeZero M] (σ T : ℝ) (U : ℕ) (hU : 1 ≤ U) (hT : 2 ≤ T) (hσ : 1 / 2 ≤ σ)
     (p p' : DirichletCharacter ℂ M × ℂ)
@@ -141,23 +141,21 @@ lemma offdiag_term {M : ℕ} [NeZero M] (σ T : ℝ) (U : ℕ) (hU : 1 ≤ U) (h
       linarith
 
 /- English proof (translation)
-Introduce `M _ S σ T U hU hT hσ hS hsp p hp`. Establish `hU0 : (0 : ℝ) ≤ U` using `by positivity`. Establish `hM0 : (0 : ℝ) ≤ (M : ℝ)` using `by positivity`. Establish `hterm` using `fun p' (hp' : p' ∈ S) => offdiag_term σ T U hU hT hσ p p' (hS p hp) (hS p' hp') (hsp p hp p' hp')`. Use `(sum_le_sum hterm).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sum_add_distrib, sum_add_distrib, sum_const, nsmul_eq_mul, sum_ite_eq' S p, if_pos hp, ← sum_filter, ← mul_sum]`. Use `set Fib : Finset (DirichletCharacter ℂ M × ℂ) := S.filter (fun p' => p'.1 = p.1) with hFib`. Use `set P : Finset ℝ := Fib.image (fun p' => p'.2.im) with hP`. Establish `hinj : Set.InjOn (fun p' : DirichletCharacter ℂ M × ℂ => p'.2.im) (Fib : Set _)`. Introduce `a ha b hb hab`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha'` using `mem_filter.1 (mem_coe.1 ha)`. Establish `hb'` using `mem_filter.1 (mem_coe.1 hb)`. Assume the negation of the conclusion as `hne`. Use `hsp a ha'.1 b hb'.1 hne (ha'.2.trans hb'.2.symm)` as an intermediate fact. Simplify using `only at hab`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[hab, sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpF : p ∈ Fib` using `mem_filter.2 ⟨hp, rfl⟩`. Establish `htP : p.2.im ∈ P` using `mem_image_of_mem _ hpF`. Establish `hsp'` using `(zero_spacing P T (by linarith) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `mem_image.1 hx`. Conclude with `(hS a (mem_filter.1 ha).1).2.2)`. Use the proof step `(by`. Introduce `x hx y hy hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, rfl⟩` from `mem_image.1 hx`. Take `⟨b, hb, rfl⟩` from `mem_image.1 hy`. Establish `ha'` using `mem_filter.1 ha`. Establish `hb'` using `mem_filter.1 hb`. Conclude with `hsp a ha'.1 b hb'.1 (fun h => hxy (by rw [h])) (ha'.2.trans hb'.2.symm))).2 _ htP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsumeq : ∑ p' ∈ Fib, 1 / |p.2.im - p'.2.im| = ∑ x ∈ P.erase p.2.im, 1 / |p.2.im - x|`. Rewrite using `[← add_zero (∑ x ∈ P.erase p.2.im, 1 / |p.2.im - x|)]`. Establish `h0 : (0 : ℝ) = 1 / |p.2.im - p.2.im|` using `by simp`. Rewrite using `[h0, sum_erase_add P _ htP, hP, sum_image hinj]`. Rewrite using `[hsumeq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc0 : (0 : ℝ) ≤ S.card` using `by positivity`. Establish `hB0 : 0 ≤ ((M : ℝ) + 1) * (2 + 2 * T)` using `by positivity`. Establish `h1 : 4 * (U : ℝ) * ∑ x ∈ P.erase p.2.im, 1 / |p.2.im - x| ≤ 4 * (U : ℝ) * (2 * (1 + Real.log (2 * T + 1)))` using `by gcongr`. Establish `h2 : (S.card : ℝ) * (4 * ((M : ℝ) + 1) * (2 + 2 * T)) ≤ (S.card : ℝ) * (8 * ((M : ℝ) + 1) * (2 + 2 * T))`. Apply `mul_le_mul_of_nonneg_left _ hc0` to reduce the goal to its premises.
-
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem off_diagonal_bound : Offdiag := by
   intro M _ S σ T U hU hT hσ hS hsp p hp
@@ -210,7 +208,7 @@ theorem off_diagonal_bound : Offdiag := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `Complex.cpow_conj (n : ℂ) (-z) (by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm)`. Rewrite `h` using `[map_neg]`. Rewrite using `[h, Complex.conj_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma conj_natCast_cpow_neg' (n : ℕ) (z : ℂ) :
     (starRingEnd ℂ) ((n : ℂ) ^ (-z)) = (n : ℂ) ^ (-(starRingEnd ℂ) z) := by
@@ -219,33 +217,31 @@ lemma conj_natCast_cpow_neg' (n : ℕ) (z : ℂ) :
   rw [h, Complex.conj_natCast]
 
 /- English proof (translation)
-Introduce `α S f ρ Y N U σ θ G K hU hθ hσ hG hK hf hρ hoff hlarge hsmall`. Use `set b : ℕ → ℂ := fun n => mco Y N n * (n : ℂ) ^ (-(σ : ℂ)) with hb`. Use `set v : α → ℕ → ℂ := fun p n => f p n * (n : ℂ) ^ (-(ρ p - (σ : ℂ))) with hv`. Establish `hU0 : (0 : ℝ) < U` using `by exact_mod_cast hU`. Establish `hbv : ∀ p, ∀ n ∈ Ioc U (2 * U), b n * v p n = mco Y N n * f p n * (n : ℂ) ^ (-ρ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p n hn`. Establish `hn0 : (n : ℂ) ≠ 0`. Use `(mem_Ioc.1 hn).1; exact_mod_cast (by omega : n ≠ 0)` as an intermediate fact. Establish `: (n : ℂ) ^ (-(σ : ℂ)) * (n : ℂ) ^ (-(ρ p - (σ : ℂ))) = (n : ℂ) ^ (-ρ p)`. Rewrite using `[← Complex.cpow_add _ _ hn0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hb, hv]`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ p, ∑ n ∈ Ioc U (2 * U), b n * v p n = blkD Y N U (f p) (ρ p)`. Introduce `p`. Unfold `blkD`. Conclude with `sum_congr rfl (hbv p)`. Establish `heq : ∀ p p', ∑ n ∈ Ioc U (2 * U), v p n * (starRingEnd ℂ) (v p' n) = ∑ n ∈ Ioc U (2 * U), f p n * (starRingEnd ℂ) (f p' n) * (n : ℂ) ^ (-((ρ p - (σ : ℂ)) + (starRingEnd ℂ) (ρ p' - (σ : ℂ))))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `p p'`. Use `sum_congr rfl (fun n hn => ?_)` and prove the remaining obligations. Establish `hn0 : (n : ℂ) ≠ 0`. Use `(mem_Ioc.1 hn).1; exact_mod_cast (by omega : n ≠ 0)` as an intermediate fact. Simplify using `only [hv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, conj_natCast_cpow_neg']`. Establish `: (n : ℂ) ^ (-(ρ p - (σ : ℂ))) * (n : ℂ) ^ (-(starRingEnd ℂ) (ρ p' - (σ : ℂ))) = (n : ℂ) ^ (-((ρ p - (σ : ℂ)) + (starRingEnd ℂ) (ρ p' - (σ : ℂ))))`. Rewrite using `[← Complex.cpow_add _ _ hn0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΔ : ∀ p ∈ S, ∑ p' ∈ S, ‖∑ n ∈ Ioc U (2 * U), v p n * (starRingEnd ℂ) (v p' n)‖ ≤ (U : ℝ) * G + (S.card : ℝ) * K`. Introduce `p hp`. Simplify using `only [heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hoff p hp`. Establish `hΔ0 : (0 : ℝ) ≤ (U : ℝ) * G + (S.card : ℝ) * K` using `by positivity`. Establish `hmain` using `duality_inequality α ℕ S (Ioc U (2 * U)) b v _ hΔ0 hΔ`. Simplify using `only [hsum] at hmain`. Use `set a : ℝ := 2 * (U : ℝ) ^ (1 - 2 * σ) * (1 + Real.log (2 * U)) ^ 3 with ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hbn : ∑ n ∈ Ioc U (2 * U), ‖b n‖ ^ 2 ≤ a`. Use `le_trans (le_of_eq ?_) (coefficient_block_bound Y N U σ hU hσ)` and prove the remaining obligations. Use `sum_congr rfl (fun n hn => ?_)` and prove the remaining obligations. Establish `hn1 : 0 < n` using `by have := (mem_Ioc.1 hn).1; omega`. Simplify using `only [hb, norm_mul, norm_natCast_cpow_of_pos hn1, neg_re, ofReal_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlow : (S.card : ℝ) * θ ^ 2 ≤ ∑ p ∈ S, ‖blkD Y N U (f p) (ρ p)‖ ^ 2`. Establish `: ∀ p ∈ S, θ ^ 2 ≤ ‖blkD Y N U (f p) (ρ p)‖ ^ 2`. Introduce `p hp`. Conclude with `pow_le_pow_left₀ hθ.le (hlarge p hp) 2`. Establish `h` using `sum_le_sum this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h` using `[sum_const, nsmul_eq_mul]`. Conclude with `h`. Establish `haU : a * U = 2 * (U : ℝ) ^ (2 - 2 * σ) * (1 + Real.log (2 * U)) ^ 3`. Establish `: (U : ℝ) ^ (2 - 2 * σ) = (U : ℝ) ^ (1 - 2 * σ) * (U : ℝ) ^ (1 : ℝ)`. Rewrite using `[← Real.rpow_add hU0]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Real.rpow_one, ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (S.card : ℝ) * θ ^ 2 ≤ a * ((U : ℝ) * G + (S.card : ℝ) * K)` using `hlow.trans (hmain.trans (mul_le_mul_of_nonneg_right hbn hΔ0))`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hS0 : (0 : ℝ) ≤ S.card` using `by positivity`. Establish `h2 : (S.card : ℝ) * θ ^ 2 ≤ 2 * (a * U) * G`. Use `mul_le_mul_of_nonneg_left hsmall hS0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hθ2 : 0 < θ ^ 2` using `by positivity`.
-
-Rewrite using `[le_div_iff₀ hθ2]`. Rewrite `h2` using `[haU]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dyadic_block_count : BlockCnt := by
   intro α S f ρ Y N U σ θ G K hU hθ hσ hG hK hf hρ hoff hlarge hsmall

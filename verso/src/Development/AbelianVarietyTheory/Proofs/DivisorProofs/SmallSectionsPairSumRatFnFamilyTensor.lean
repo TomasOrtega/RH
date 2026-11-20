@@ -15,13 +15,13 @@ noncomputable section
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `k _ X _ p P J f w hf`. Establish `e (c : (P.L.tens P.A).B.ι) (j : J) : f j * (((P.r c.1 * P.r' c.2 : X.functionFieldˣ)) : X.functionField) = P.loc 1 1 (f j) c.1 c.2`. Simplify using `only [Pair.loc, Units.val_mul, zpow_one]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun c => P.r c.1 * P.r' c.2, GlobalTheory.PtHtComb.isRatSec_tens P.hr P.hr', ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x c hc j`. Rewrite using `[e]`. Conclude with `(hf j).1 x c.1 c.2 hc.1 hc.2`. Introduce `σ y c hc j`. Take `⟨hc₁, hc₂⟩` from `mem_ptsIn_inf.1 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `nu_eq k X p P 1 1 (f j) (hf j).1 σ y c.1 c.2 hc₁ hc₂`. Establish `hb` using `(hf j).2 σ y`. Rewrite `hb` using `[h]`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `_ * Real.exp (-((P.L.φ σ).φ c.1 y + (P.A.φ σ).φ c.2 y) / 2) ≤ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hb`.
+A detailed English derivation is pending.
 -/
 theorem smallFam_pair_tens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k), ∀ (P : Pair p) (J : Type) (f : J → X.functionField) (w : J → ℝ), (∀ j, f j ∈ P.Bl 1 1 (Real.exp (-w j))) → SmallFam (P.L.tens P.A) f w := by
   intro k _ X _ p P J f w hf

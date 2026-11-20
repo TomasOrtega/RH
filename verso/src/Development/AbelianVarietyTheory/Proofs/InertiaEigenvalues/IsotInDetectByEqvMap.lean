@@ -8,53 +8,45 @@ attribute [local instance] GlobalTheory.TypeRec.factG Formalism.BasicNotions.Hos
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D n A _ _ ρ C π y hy hy0`. Set `St : Submodule ℂ A → Prop` to `fun K => ∀ h, ∀ x ∈ K, ρ h x ∈ K`. Establish `rangeSt : ∀ Φ : π.S →ₗ[ℂ] A, principalLevelFrame.IsEqvA ρ π Φ → St (LinearMap.range Φ)`. Introduce and unpack `Φ hΦ h _ ⟨f, rfl⟩`. Conclude with `⟨_, hΦ h f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `rangeLe : ∀ Φ : π.S →ₗ[ℂ] A, principalLevelFrame.IsEqvA ρ π Φ → LinearMap.range Φ ≤ C → LinearMap.range Φ ≤ principalLevelFrame.isotIn (D` using `D) ρ C π := fun Φ hΦ hC => le_iSup₂ (f := fun (Ψ : π.S →ₗ[ℂ] A) (_ : principalLevelFrame.IsEqvA ρ π Ψ ∧ LinearMap.range Ψ ≤ C) => LinearMap.range Ψ) Φ ⟨hΦ, hC⟩`. Establish `supSt : ∀ K1 K2 : Submodule ℂ A, St K1 → St K2 → St (K1 ⊔ K2)`. Introduce `K1 K2 h1 h2 h x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup (h1 h a ha) (h2 h b hb)`. Establish `atom : ∀ K : Submodule ℂ A, St K → ∀ Φ : π.S →ₗ[ℂ] A, principalLevelFrame.IsEqvA ρ π Φ → LinearMap.range Φ ≤ K ∨ ∀ f, Φ f ∈ K → f = 0`. Introduce `K hK Φ hΦ`. Break down `π.irr ((K.comap Φ).map π.S.subtype) (by` into its components or cases. Introduce and unpack `_ ⟨f, -, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `f.2)`. Use the proof step `(by`. Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Use `⟨⟨NG.rt D.host.E n h f, π.stable h f f.2⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show Φ _ ∈ K`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hΦ h f]`. Conclude with `hK h _ hf) with h0 | h1`. Use `right`. Introduce `f hf`. Establish `: (f : GAf D.host.E n → ℂ) ∈ (K.comap Φ).map π.S.subtype` using `⟨f, hf, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite `this` using `[h0]`. Conclude with `Subtype.ext ((Submodule.mem_bot ℂ).1 this)`. Use `left`. Introduce and unpack `_ ⟨f, rfl⟩`. Establish `: (f : GAf D.host.E n → ℂ) ∈ (K.comap Φ).map π.S.subtype` using `by rw [h1]; exact f.2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f', hf', he⟩` from `this`. Establish `: f' = f` using `Subtype.ext he`. Substitute `this` using the available equality. Conclude with `hf'`. Take `⟨K, hKmax⟩` from `zorn_le₀ {K : Submodule ℂ A | K ≤ principalLevelFrame.isotIn (D := D) ρ C π ∧ St K ∧ y ∉ K} (by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c hc hch`. Break down `c.eq_empty_or_nonempty with rfl | hne` into its components or cases. Use `⟨⊥, ⟨bot_le, fun h x hx => ?_, fun h => hy0 ((Submodule.mem_bot ℂ).1 h)⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[(Submodule.mem_bot ℂ).1 hx, map_zero]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨sSup c, ⟨sSup_le fun K hK => (hc hK).1, ?_, ?_⟩, fun K hK => le_sSup hK⟩` and prove the remaining obligations. Introduce `h x hx`. Establish `: sSup c ≤ (sSup c).comap (ρ h)` using `sSup_le fun K hK z hz => le_sSup hK ((hc hK).2.1 h z hz)`. Conclude with `this hx`. Introduce `hyc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨K, hK, hyK⟩` from `(Submodule.mem_sSup_of_directed hne hch.directedOn).1 hyc`. Conclude with `(hc hK).2.2 hyK)`. Take `⟨⟨hKN, hKSt, hyK⟩, hKm⟩` from `hKmax`. Establish `grow : ∀ K' : Submodule ℂ A, K' ≤ principalLevelFrame.isotIn (D` using `D) ρ C π → St K' → K ≤ K' → ¬ K' ≤ K → y ∈ K' := fun K' h1 h2 h3 h4 => by`. Assume the negation of the conclusion as `hyK'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h4 (hKm ⟨h1, h2, hyK'⟩ h3)`. Choose the witnesses or unpack the hypotheses as in `⟨Φ, ⟨hΦ, hΦC⟩, hΦK⟩ : ∃ Φ : π.S →ₗ[ℂ] A, (principalLevelFrame.IsEqvA ρ π Φ ∧ LinearMap.range Φ ≤ C) ∧ ¬ LinearMap.range Φ ≤ K := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hyK ((iSup₂_le fun Φ hΦ => hcon Φ hΦ : principalLevelFrame.isotIn (D := D) ρ C π ≤ K) hy)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΦK' : ∀ f, Φ f ∈ K → f = 0` using `(atom K hKSt Φ hΦ).resolve_left hΦK`. Establish `hyK2 : y ∈ K ⊔ LinearMap.range Φ` using `grow _ (sup_le hKN (rangeLe Φ hΦ hΦC)) (supSt _ _ hKSt (rangeSt Φ hΦ)) le_sup_left (fun h => hΦK (le_sup_right.trans h))`. Establish `hN2 : principalLevelFrame.isotIn (D` using `D) ρ C π ≤ K ⊔ LinearMap.range Φ := by`. Use `iSup₂_le fun Φ' hΦ' => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hnot`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(atom _ (supSt _ _ hKSt (rangeSt Φ hΦ)) Φ' hΦ'.1).resolve_left hnot`. Establish `hyK3 : y ∈ K ⊔ LinearMap.range Φ'` using `grow _ (sup_le hKN (rangeLe Φ' hΦ'.1 hΦ'.2)) (supSt _ _ hKSt (rangeSt Φ' hΦ'.1)) le_sup_left (fun h => hnot ((le_sup_right.trans h).trans le_sup_left))`. Take `⟨k, hk, _, ⟨f', rfl⟩, hsum⟩` from `Submodule.mem_sup.1 hyK3`. Establish `hf' : f' = 0` using `h3 f' (by`. Establish `: Φ' f' = y - k` using `by rw [← hsum]; abel`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hyK2 (Submodule.mem_sup_left hk))`. Apply `hyK` to reduce the goal to its premises. Rewrite using `[← hsum, hf', map_zero, add_zero]`. Conclude with `hk`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Ψ : (K × π.S) →ₗ[ℂ] A` to `K.subtype.coprod Φ`. Establish `hΨ : Function.Injective Ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨k, f⟩ h0`. Simplify using `only [Ψ, LinearMap.coprod_apply, Submodule.subtype_apply] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hneg : Φ f = -(k : A)` using `eq_neg_iff_add_eq_zero.2 (by rw [add_comm]; exact h0)`. Establish `hf : f = 0` using `hΦK' f (by rw [hneg]; exact K.neg_mem k.2)`. Substitute `hf` using the available equality. Rewrite `h0` using `[map_zero, add_zero]`. Establish `hk : k = 0` using `Subtype.ext h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Substitute `hk` using the available equality. Both sides reduce to the same expression. Set `E` to `LinearEquiv.ofInjective Ψ hΨ`. Set `q0 : LinearMap.range Ψ →ₗ[ℂ] π.S` to `(LinearMap.snd ℂ K π.S).comp E.symm.toLinearMap`. Take `⟨g, hg⟩` from `LinearMap.exists_extend q0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq0 : ∀ (k : K) (f : π.S), g (k + Φ f) = f`. Introduce `k f`. Establish `hmem : (k : A) + Φ f ∈ LinearMap.range Ψ` using `⟨(k, f), rfl⟩`. Establish `h1` using `LinearMap.congr_fun hg ⟨_, hmem⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h1`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1]`. Establish `h2 : (⟨_, hmem⟩ : LinearMap.range Ψ) = E (k, f)` using `Subtype.ext (by simp only [E, LinearEquiv.ofInjective_apply]; rfl)`. Use `show (E.symm _).2 = f`. Rewrite using `[h2, LinearEquiv.symm_apply_apply]`. Establish `dec : ∀ z ∈ principalLevelFrame.isotIn (D` using `D) ρ C π, ∃ (k : K) (f : π.S), z = k + Φ f := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Take `⟨a, ha, _, ⟨f, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 (hN2 hz)`. Conclude with `⟨⟨a, ha⟩, f, rfl⟩`. Use `⟨π.S.subtype ∘ₗ g, ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, f, rfl⟩` from `dec y hy`.
-
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, hq0]`. Introduce `hf`. Establish `: f = 0` using `Subtype.ext hf`. Substitute `this` using the available equality. Apply `hyK` to reduce the goal to its premises.
-
-Rewrite using `[map_zero, add_zero]`. Conclude with `k.2`. Introduce `z hz`. Take `⟨k, f, rfl⟩` from `dec z hz`. Use `⟨by simp [hq0], fun h => ?_⟩` and prove the remaining obligations.
-
-Establish `: ρ h ((k : A) + Φ f) = ((⟨ρ h k, hKSt h k k.2⟩ : K) : A) + Φ ⟨NG.rt D.host.E n h f, π.stable h f f.2⟩`. Rewrite using `[map_add, hΦ h f]`. Establish `e1` using `hq0 ⟨ρ h k, hKSt h k k.2⟩ ⟨NG.rt D.host.E n h f, π.stable h f f.2⟩`. Establish `e2` using `hq0 k f`. Rewrite using `[this, LinearMap.comp_apply, LinearMap.comp_apply, e1, e2]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isotIn_detect_by_eqv_map : ∀ (D : D7) {n : ℕ} (A : Type) [AddCommGroup A] [Module ℂ A] (ρ : GAf D.host.E n →* Module.End ℂ A) (C : Submodule ℂ A) (π : NG.FinTyp D.host.E n) (y : A), y ∈ principalLevelFrame.isotIn ρ C π → y ≠ 0 → ∃ q : A →ₗ[ℂ] (GAf D.host.E n → ℂ), q y ≠ 0 ∧ ∀ z ∈ principalLevelFrame.isotIn ρ C π, q z ∈ π.S ∧ ∀ h, q (ρ h z) = NG.rt D.host.E n h (q z) := by
   intro D n A _ _ ρ C π y hy hy0

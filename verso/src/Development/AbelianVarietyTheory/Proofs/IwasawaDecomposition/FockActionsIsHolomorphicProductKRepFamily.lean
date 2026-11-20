@@ -16,7 +16,7 @@ section Diff
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z : E} {n : ℕ}
 
 /- English proof (translation)
-Conclude with `(HasFDerivAt.finset_prod fun i hi => (h i hi).hasFDerivAt).differentiableAt`.
+A detailed English derivation is pending.
 -/
 theorem diff_prod {ι : Type} (s : Finset ι) {f : ι → E → ℂ} (h : ∀ i ∈ s, DifferentiableAt ℂ (f i) z) :
     DifferentiableAt ℂ (fun w => ∏ i ∈ s, f i w) z := by
@@ -27,13 +27,13 @@ def EntryDiff (M : E → Matrix (Fin n) (Fin n) ℂ) (z : E) : Prop :=
   ∀ i j, DifferentiableAt ℂ (fun w => M w i j) z
 
 /- English proof (translation)
-Introduce `_ _` and use `differentiableAt_const _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntryDiff.const (A : Matrix (Fin n) (Fin n) ℂ) : EntryDiff (fun _ : E => A) z :=
   fun _ _ => differentiableAt_const _
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `DifferentiableAt.fun_sum fun σ _ => (differentiableAt_const _).mul ?_` and prove the remaining obligations. Conclude with `diff_prod _ fun i _ => h _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem EntryDiff.det {M : E → Matrix (Fin n) (Fin n) ℂ} (h : EntryDiff M z) :
     DifferentiableAt ℂ (fun w => (M w).det) z := by
@@ -42,13 +42,13 @@ theorem EntryDiff.det {M : E → Matrix (Fin n) (Fin n) ℂ} (h : EntryDiff M z)
   exact diff_prod _ fun i _ => h _ _
 
 /- English proof (translation)
-Introduce `i j` and use `h j i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntryDiff.transpose {M : E → Matrix (Fin n) (Fin n) ℂ} (h : EntryDiff M z) :
     EntryDiff (fun w => (M w)ᵀ) z := fun i j => h j i
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply]`. Conclude with `(DifferentiableAt.fun_sum fun k _ => (differentiableAt_const _).mul (h _ _)).add (differentiableAt_const _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem EntryDiff.affine {M : E → Matrix (Fin n) (Fin n) ℂ} (h : EntryDiff M z) (A B : Matrix (Fin n) (Fin n) ℂ) :
     EntryDiff (fun w => A * M w + B) z := by
@@ -57,9 +57,9 @@ theorem EntryDiff.affine {M : E → Matrix (Fin n) (Fin n) ℂ} (h : EntryDiff M
   exact (DifferentiableAt.fun_sum fun k _ => (differentiableAt_const _).mul (h _ _)).add (differentiableAt_const _)
 
 /- English proof (translation)
-Introduce `i j`. Establish `hd : (M z).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply]`. Use `(h.det.inv hd).mul (EntryDiff.det ?_)` and prove the remaining obligations. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`. Conclude with `differentiableAt_const _`. Conclude with `h _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem EntryDiff.inv {M : E → Matrix (Fin n) (Fin n) ℂ} (h : EntryDiff M z) (hu : IsUnit (M z)) :
     EntryDiff (fun w => (M w)⁻¹) z := by
@@ -74,7 +74,7 @@ theorem EntryDiff.inv {M : E → Matrix (Fin n) (Fin n) ℂ} (h : EntryDiff M z)
   · exact h _ _
 
 /- English proof (translation)
-The claim follows from `h.det.zpow (Or.inl hd)`.
+A detailed English derivation is pending.
 -/
 theorem EntryDiff.zpow_det {M : E → Matrix (Fin n) (Fin n) ℂ} (h : EntryDiff M z) (hd : (M z).det ≠ 0) (x : ℤ) :
     DifferentiableAt ℂ (fun w => (M w).det ^ x) z :=
@@ -84,7 +84,7 @@ def CoeffDiff {σ : Type} (F : E → MvPolynomial σ ℂ) (z : E) : Prop :=
   ∀ d, DifferentiableAt ℂ (fun w => (F w).coeff d) z
 
 /- English proof (translation)
-Introduce `d`. Simplify using `only [MvPolynomial.coeff_mul]`. Conclude with `DifferentiableAt.fun_sum fun k _ => (hF _).mul (hG _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CoeffDiff.mul {σ : Type} {F G : E → MvPolynomial σ ℂ} (hF : CoeffDiff F z) (hG : CoeffDiff G z) :
     CoeffDiff (fun w => F w * G w) z := by
@@ -94,11 +94,9 @@ theorem CoeffDiff.mul {σ : Type} {F G : E → MvPolynomial σ ℂ} (hF : CoeffD
   exact DifferentiableAt.fun_sum fun k _ => (hF _).mul (hG _)
 
 /- English proof (translation)
-Proceed by induction on `y using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [MvPolynomial.aeval_C]`. Conclude with `fun _ => differentiableAt_const _`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Introduce `d`. Simplify using `only [map_add, MvPolynomial.coeff_add]`. Conclude with `(hp d).add (hq d)`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`.
-
-Conclude with `hp.mul (hF v)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CoeffDiff.aeval {σ : Type} {F : E → σ → MvPolynomial σ ℂ} (hF : ∀ v, CoeffDiff (fun w => F w v) z)
     (y : MvPolynomial σ ℂ) : CoeffDiff (fun w => MvPolynomial.aeval (F w) y) z := by
@@ -115,7 +113,7 @@ theorem CoeffDiff.aeval {σ : Type} {F : E → σ → MvPolynomial σ ℂ} (hF :
     exact hp.mul (hF v)
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.DIV.fockL_apply, Formalism.L2.DIV.fockS]`. Conclude with `DifferentiableAt.fun_sum fun k _ => ((differentiableAt_const _).mul (hF _)).mul (differentiableAt_const _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CoeffDiff.fock {σ : Type} {F : E → MvPolynomial σ ℂ} (hF : CoeffDiff F z) (x : MvPolynomial σ ℂ) :
     DifferentiableAt ℂ (fun w => Formalism.L2.DIV.fockL x (F w)) z := by
@@ -125,11 +123,11 @@ theorem CoeffDiff.fock {σ : Type} {F : E → MvPolynomial σ ℂ} (hF : CoeffDi
 end Diff
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hf`. Establish `e : Formalism.L2.DIV.fockL f f = ((∑ m ∈ f.support, ‖f.coeff m‖ ^ 2 * (Formalism.L2.DIV.mfact m : ℝ) : ℝ) : ℂ)`. Rewrite using `[Formalism.L2.DIV.fockL_apply]`. Unfold `Formalism.L2.DIV.fockS`. Use `push_cast`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.conj_mul']`. Both sides reduce to the same expression. Rewrite `h` using `[e, Complex.ofReal_eq_zero]`. Use `ne_of_gt (Finset.sum_pos (fun m hm => mul_pos (pow_pos (norm_pos_iff.mpr (MvPolynomial.mem_support_iff.mp hm)) 2) ?_) (MvPolynomial.support_nonempty.mpr hf)) h` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_pos fun k _ => Nat.factorial_pos _` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem fockL_aniso {σ : Type} (f : MvPolynomial σ ℂ) (h : Formalism.L2.DIV.fockL f f = 0) : f = 0 := by
   by_contra hf
@@ -153,7 +151,7 @@ open GlobalTheory.Dec GlobalTheory.JointHarm Formalism.REAL
 variable {m : ℕ} {ε : Fin m → Bool}
 
 /- English proof (translation)
-Rewrite using `[Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_mul_self : Jm ε * Jm ε = 1 := by
   rw [Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -162,9 +160,9 @@ theorem Jm_mul_self : Jm ε * Jm ε = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[detP, detM, ← Matrix.det_mul]`. Use `congr 1`. Establish `h1` using `Jm_mul_self (ε := ε)`. Establish `h2 : k * Jm ε = Jm ε * k` using `hk.2`. Establish `h3 : ∀ x, Jm ε * (Jm ε * x) = x` using `fun x => by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ∀ x, k * (Jm ε * x) = Jm ε * (k * x)` using `fun x => by rw [← Matrix.mul_assoc, h2, Matrix.mul_assoc]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc, Matrix.one_mul, Matrix.mul_one, h1, h2, h3, h4]`. Use `module`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detPlus_mul_detMinus {k : Matrix (Fin m) (Fin m) ℂ} (hk : k ∈ KC ε) : detP ε k * detM ε k = k.det := by
   rw [detP, detM, ← Matrix.det_mul]
@@ -178,20 +176,20 @@ theorem detPlus_mul_detMinus {k : Matrix (Fin m) (Fin m) ℂ} (hk : k ∈ KC ε)
   module
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 hk).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_ne {k : Matrix (Fin m) (Fin m) ℂ} (hk : IsUnit k) : k.det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).1 hk).ne_zero
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isUnit_one, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_KC : (1 : Matrix (Fin m) (Fin m) ℂ) ∈ KC ε := ⟨isUnit_one, by simp⟩
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hk.1`. Use `⟨(Matrix.isUnit_transpose _).2 (Matrix.isUnit_nonsing_inv_iff.2 hk.1), ?_⟩` and prove the remaining obligations. Establish `hJ : (Jm ε)ᵀ = Jm ε` using `Matrix.diagonal_transpose _`. Establish `h2 : k * Jm ε = Jm ε * k` using `hk.2`. Establish `: Jm ε * k⁻¹ = k⁻¹ * Jm ε`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hJ, ← Matrix.transpose_mul, ← Matrix.transpose_mul, this]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem invT_mem_KC {k : Matrix (Fin m) (Fin m) ℂ} (hk : k ∈ KC ε) : (k⁻¹)ᵀ ∈ KC ε := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 hk.1
@@ -204,7 +202,7 @@ theorem invT_mem_KC {k : Matrix (Fin m) (Fin m) ℂ} (hk : k ∈ KC ε) : (k⁻�
   rw [← hJ, ← Matrix.transpose_mul, ← Matrix.transpose_mul, this]
 
 /- English proof (translation)
-Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `using hg`. Simplify `one_mem_KC` using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulSingle_mem_KC {ι : Type} [DecidableEq ι] {ε : ι → Fin m → Bool} {τ : ι} {g : Matrix (Fin m) (Fin m) ℂ}
     (hg : g ∈ KC (ε τ)) (τ' : ι) : (Pi.mulSingle τ g : ι → Matrix (Fin m) (Fin m) ℂ) τ' ∈ KC (ε τ') := by
@@ -213,7 +211,7 @@ theorem mulSingle_mem_KC {ι : Type} [DecidableEq ι] {ε : ι → Fin m → Boo
   · simpa [h] using one_mem_KC
 
 /- English proof (translation)
-Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulSingle_conjTranspose {ι : Type} [DecidableEq ι] (τ τ' : ι) (g : Matrix (Fin m) (Fin m) ℂ) :
     ((Pi.mulSingle τ g : ι → Matrix (Fin m) (Fin m) ℂ) τ')ᴴ =
@@ -223,9 +221,9 @@ theorem mulSingle_conjTranspose {ι : Type} [DecidableEq ι] (τ τ' : ι) (g : 
   · simp [h]
 
 /- English proof (translation)
-Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Introduce `i j`. Simplify using `only [Pi.mulSingle_eq_same, Matrix.of_apply]`. Use `fun_prop`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.mulSingle_eq_of_ne h]`. Conclude with `EntryDiff.const _`.
+A detailed English derivation is pending.
 -/
 theorem entryDiff_mulSingle {ι : Type} [DecidableEq ι] (τ τ' : ι) (z : Fin m → Fin m → ℂ) :
     EntryDiff (fun g : Fin m → Fin m → ℂ => (Pi.mulSingle τ (Matrix.of g) : ι → Matrix (Fin m) (Fin m) ℂ) τ') z := by
@@ -240,9 +238,9 @@ theorem entryDiff_mulSingle {ι : Type} [DecidableEq ι] (τ τ' : ι) (z : Fin 
 open scoped Classical in
 
 /- English proof (translation)
-Use `⟨h0, h1, hm, fun τ => ⟨h0, ?_, fun a ha' b hb => ?_, fun g hg x y => ?_, fun x y z hz => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Pi.mulSingle_one, h1]`. Simplify using `only [Pi.mulSingle_mul]`. Conclude with `hm _ _ (mulSingle_mem_KC ha') (mulSingle_mem_KC hb)`. Rewrite using `[ha _ (mulSingle_mem_KC hg)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulSingle_conjTranspose]`. Conclude with `(hd (fun g => Pi.mulSingle τ (Matrix.of g)) z (mulSingle_mem_KC hz) (fun τ' => entryDiff_mulSingle τ τ' z) x y).differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem isHolFam_of {ι P : Type} [AddCommGroup P] [Module ℂ P] {ε : ι → Fin m → Bool}
     {B : P →ₗ⋆[ℂ] P →ₗ[ℂ] ℂ} {ϖ : (ι → Matrix (Fin m) (Fin m) ℂ) → Module.End ℂ P}
@@ -268,11 +266,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct InnerProductSpace Classical
 
 /- English proof (translation)
-Simplify using `only [fact, LinearMap.smul_apply, map_smul, smul_eq_mul, AlgHom.toLinearMap_apply]`. Use `DifferentiableAt.mul ?_ (CoeffDiff.fock (CoeffDiff.aeval (fun v => ?_) y) x)` and prove the remaining obligations. Unfold `fchar`. Use `diff_prod _ fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `det_ne (hk τ).1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[← detPlus_mul_detMinus (hk τ)]`. Conclude with `((((dk τ).affine _ _).zpow_det (left_ne_zero_of_mul h) _).mul (((dk τ).affine _ _).zpow_det (right_ne_zero_of_mul h) _)).mul ((du τ).zpow_det (det_ne (hu τ)) _)`. Introduce `d`. Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_C_mul]`. Use `DifferentiableAt.fun_sum fun a _ => DifferentiableAt.fun_sum fun b _ => DifferentiableAt.mul ?_ (differentiableAt_const _)` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `(dk _ _ _).mul ((du _).inv (hu _) _ _)`. Conclude with `((dk _).inv (hk _).1 _ _).mul (du _ _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fact_diff {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z : E} {D : D7} {m n : ℕ}
     (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.what₂.Tau → ℤ)
@@ -299,19 +295,19 @@ theorem fact_diff {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z : E} 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D m n ε x₁ x₂ x₃`. Take `⟨h1, hm, ha⟩` from `GlobalTheory.T.fockPolynomialAction_one_mul_adjoint D m n ε x₁ x₂ x₃`. Establish `hU : ∀ τ, IsUnit ((1 : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) τ)` using `fun _ => isUnit_one`. Establish `hK : ∀ τ, (1 : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) τ ∈ GlobalTheory.Dec.KC (ε τ)` using `fun _ => one_mem_KC`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `isHolFam_of fockL_aniso ?_ (fun a b ha' hb => ?_) (fun a ha' x y => ?_) (fun a z hz da x y => ?_)` and prove the remaining obligations. Rewrite using `[← h1, factK]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[factK, factK, factK, ← hm _ _ _ _ (fun τ => invT_mem_KC (ha' τ)) (fun τ => invT_mem_KC (hb τ)) hU hU, mul_one]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `[Matrix.mul_inv_rev]`. Rewrite using `[factK, factK, ha _ _ (fun τ => invT_mem_KC (ha' τ)) hU]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (fun τ => (((a τ)⁻¹)ᵀ)ᴴ) = fun τ => (((a τ)ᴴ)⁻¹)ᵀ`. Use function extensionality and compare the values at `τ`. Rewrite using `[← Matrix.conjTranspose_nonsing_inv]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e2 : (fun τ => ((1 : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) τ)ᴴ) = 1`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Conclude with `fact_diff ε x₁ x₂ x₃ (k := fun w τ => ((a w τ)⁻¹)ᵀ) (u := fun _ => 1) (fun τ => invT_mem_KC (hz τ)) hU (fun τ => ((da τ).inv (hz τ).1).transpose) (fun τ => EntryDiff.const _) x y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isHolFam_of fockL_aniso h1 (fun a b ha' hb => ?_) (fun a ha' x y => ?_) (fun a z hz da x y => ?_)` and prove the remaining obligations. Rewrite using `[factU, factU, factU, ← hm _ _ _ _ hK hK (fun τ => (ha' τ).1) (fun τ => (hb τ).1), mul_one]`. Rewrite using `[factU, factU, ha _ _ hK (fun τ => (ha' τ).1)]`. Establish `e2 : (fun τ => ((1 : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) τ)ᴴ) = 1`. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e2]`. Conclude with `fact_diff ε x₁ x₂ x₃ (k := fun _ => 1) (u := a) hK (fun τ => (hz τ).1) (fun τ => EntryDiff.const _) da x y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (m n : ℕ) (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.what₂.Tau → ℤ),
     IsHolFam ε fockL (factK n ε x₁ x₂ x₃) ∧ IsHolFam (fun _ => allPos n) fockL (factU (n := n) ε x₁ x₂ x₃) := by

@@ -63,9 +63,9 @@ private theorem pointwiseSup_ideal {Y : Scheme.{u}} {ι : Sort v} (J : ι → Y.
     (U : Y.affineOpens) : (iSupIdealSheaf J).ideal U = ⨆ i, (J i).ideal U := rfl
 
 /- English proof (translation)
-Establish `h : (⨆ i, J i) ≤ iSupIdealSheaf J`. Use `iSup_le fun i => Scheme.IdealSheafData.le_def.mpr fun V => ?_` and prove the remaining obligations. Rewrite using `[pointwiseSup_ideal J V]`. Conclude with `le_iSup (fun i' => (J i').ideal V) i`. Establish `h2` using `Scheme.IdealSheafData.le_def.mp h U`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[pointwiseSup_ideal J U]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem ideal_iSup_le_iSup_ideal {Y : Scheme.{u}} {ι : Sort v} (J : ι → Y.IdealSheafData)
     (U : Y.affineOpens) : (⨆ i, J i).ideal U ≤ ⨆ i, (J i).ideal U := by
@@ -77,7 +77,7 @@ private theorem ideal_iSup_le_iSup_ideal {Y : Scheme.{u}} {ι : Sort v} (J : ι 
   rwa [pointwiseSup_ideal J U] at h2
 
 /- English proof (translation)
-Use `Scheme.IdealSheafData.le_def.mpr fun U => ?_` and prove the remaining obligations. Establish `e1 : (F * A).ideal U = F.ideal U * A.ideal U` using `rfl`. Establish `e2 : (F * B).ideal U = F.ideal U * B.ideal U` using `rfl`. Rewrite using `[e1, e2]`. Conclude with `Ideal.mul_mono le_rfl (Scheme.IdealSheafData.le_def.mp h U)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idealSheafData_mul_le_mul_left {Y : Scheme.{u}} (F : Y.IdealSheafData)
     {A B : Y.IdealSheafData} (h : A ≤ B) : F * A ≤ F * B := by
@@ -88,7 +88,7 @@ private theorem idealSheafData_mul_le_mul_left {Y : Scheme.{u}} (F : Y.IdealShea
   exact Ideal.mul_mono le_rfl (Scheme.IdealSheafData.le_def.mp h U)
 
 /- English proof (translation)
-Use `Scheme.IdealSheafData.le_def.mpr fun U => ?_` and prove the remaining obligations. Use `le_trans (@logDerivIdeal_mono k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U) _ _ (ideal_iSup_le_iSup_ideal J U)) ?_` and prove the remaining obligations. Use `le_trans (@logDerivIdeal_iSup_le k _ _ _ (sectionsAlgebra k p U.1) ι (P.ideal U) (fun i => (J i).ideal U)) ?_` and prove the remaining obligations. Conclude with `iSup_le fun i => Scheme.IdealSheafData.le_def.mp (le_iSup (fun i' => logDerivIdealSheaf k p P (J i')) i) U`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem logDerivIdealSheaf_iSup_le (k : Type u) [CommRing k] [IsNoetherianRing k]
     {Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k))
@@ -104,9 +104,9 @@ theorem logDerivIdealSheaf_iSup_le (k : Type u) [CommRing k] [IsNoetherianRing k
     Scheme.IdealSheafData.le_def.mp (le_iSup (fun i' => logDerivIdealSheaf k p P (J i')) i) U
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => exact le_rfl`. Consider the case `succ r ih`. Establish `h1 : logDerivIdealSheafIterate k p P (r + 1) (⨆ i, J i) ≤ ⨆ i, logDerivIdealSheaf k p P (logDerivIdealSheafIterate k p P r (J i))`. Rewrite using `[logDerivIdealSheafIterate_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (logDerivIdealSheaf_mono k p P ih) (logDerivIdealSheaf_iSup_le k p P (fun i => logDerivIdealSheafIterate k p P r (J i)))`. Use `h1.trans (iSup_le fun i => le_iSup_of_le i ?_)` and prove the remaining obligations. Conclude with `le_of_eq (logDerivIdealSheafIterate_succ k p P r (J i)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem logDerivIdealSheafIterate_iSup_le (k : Type u) [CommRing k] [IsNoetherianRing k]
     {Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k))
@@ -126,7 +126,7 @@ theorem logDerivIdealSheafIterate_iSup_le (k : Type u) [CommRing k] [IsNoetheria
       exact le_of_eq (logDerivIdealSheafIterate_succ k p P r (J i)).symm
 
 /- English proof (translation)
-Use `le_trans (logDerivIdealSheafIterate_iSup_le k p P r (fun l => ⨆ _ : l ≤ n, J l)) ?_` and prove the remaining obligations. Use `iSup_le fun l => ?_` and prove the remaining obligations. Use `le_trans (logDerivIdealSheafIterate_iSup_le k p P r (fun _ : l ≤ n => J l)) ?_` and prove the remaining obligations. Conclude with `iSup_le fun h => le_iSup_of_le l (le_iSup_of_le h le_rfl)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem logDerivIdealSheafIterate_biSup_le (k : Type u) [CommRing k] [IsNoetherianRing k]
     {Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k))
@@ -141,7 +141,7 @@ theorem logDerivIdealSheafIterate_biSup_le (k : Type u) [CommRing k] [IsNoetheri
   exact iSup_le fun h => le_iSup_of_le l (le_iSup_of_le h le_rfl)
 
 /- English proof (translation)
-The claim follows from `smooth_comp_of_isBlowupAlongIdealSheaf hsnc hπ derivIdealSheafIterate k (π ≫ p) n (K' 0) ≤ ⨆ l, ⨆ _ : l ≤ n, logDerivIdealSheafIterate k (π ≫ p) (Blowup.strictTransform π Z H) (n - l) (K' l) := by have hsm : AlgebraicGeometry.Smooth (π ≫ p) := smooth_comp_of_isBlowupAlongIdealShe …`.
+A detailed English derivation is pending.
 -/
 theorem derivIdealSheafIterate_le_biSup_logDerivIdealSheafIterate_of_blowup
     (k : Type u) [Field k] [CharZero k] {X X₁ : Scheme.{u}}

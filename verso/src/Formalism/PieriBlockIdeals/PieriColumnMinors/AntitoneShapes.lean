@@ -6,17 +6,17 @@ namespace Formalism.CohomologicalDescent.LC
 open Formalism.CohomologicalDescent.Symmetrization Formalism.CohomologicalDescent.BinaryFormsExample
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a b ha hb hbp`. Establish `hj : a.val + 1 < n` using `by have := b.isLt; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb' : b = ⟨a.val + 1, hj⟩` using `Fin.ext (by simpa using hb)`. Rewrite using `[hb']; exact h a hj ha (by omega)`. Consider the case `succ d ih`. Introduce `a b ha hb hbp`. Establish `hc : a.val + d + 1 < n` using `by have := b.isLt; omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcb : (⟨a.val + d + 1, hc⟩ : Fin n).val + 1 < n` using `by have := b.isLt; simp only; omega`. Establish `hb' : b = ⟨(⟨a.val + d + 1, hc⟩ : Fin n).val + 1, hcb⟩` using `Fin.ext (by simp only; omega)`. Establish `h1 : permY K (Equiv.swap a ⟨a.val + d + 1, hc⟩) u = - u` using `ih a ⟨a.val + d + 1, hc⟩ ha rfl (by simp only; omega)`. Establish `h2 : permY K (Equiv.swap ⟨a.val + d + 1, hc⟩ b) u = - u`. Rewrite using `[hb']; exact h ⟨a.val + d + 1, hc⟩ hcb (by simp only; omega) (by simp only; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hac : a ≠ ⟨a.val + d + 1, hc⟩`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hab : a ≠ b`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e : Equiv.swap a b = Equiv.swap ⟨a.val + d + 1, hc⟩ b * Equiv.swap a ⟨a.val + d + 1, hc⟩ * Equiv.swap ⟨a.val + d + 1, hc⟩ b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[Equiv.swap_mul_swap_mul_swap hac hab, Equiv.swap_comm]`. Rewrite using `[e, permOnTensor_mul, permOnTensor_mul]`. Simplify using `only [Module.End.mul_apply, h1, h2, map_neg, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lcb_transp {K R P M : Type*} [CommRing K] [AddCommGroup M] [Module K M] {n : ℕ} (i p : ℕ) (u : Tens R P M n)
     (h : ∀ (j : Fin n) (hj : j.val + 1 < n), i ≤ j.val → j.val < i + p →
@@ -49,29 +49,27 @@ theorem lcb_transp {K R P M : Type*} [CommRing K] [AddCommGroup M] [Module K M] 
     simp only [Module.End.mul_apply, h1, h2, map_neg, neg_neg]
 
 /- English proof (translation)
-Introduce `K R P M _ _ _ _ _ _ _ _ n i hi u h`. Establish `htr` using `lcb_transp (K := K) i (Fintype.card P) u h`. Establish `hex : ∀ x : Fin n → P, ∃ ab : Fin n × Fin n, i ≤ ab.1.val ∧ ab.1.val < ab.2.val ∧ ab.2.val ≤ i + Fintype.card P ∧ x ab.1 = x ab.2`. Introduce `x`. Establish `hcard : Fintype.card P < Fintype.card (Fin (Fintype.card P + 1))` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨s, t, hst, hx⟩` from `Fintype.exists_ne_map_eq_of_card_lt (fun s : Fin (Fintype.card P + 1) => x ⟨i + s.val, by have := s.isLt; omega⟩) hcard`. Establish `hs` using `s.isLt`. Establish `ht` using `t.isLt`. Establish `hst' : s.val ≠ t.val` using `fun e => hst (Fin.ext e)`. Break down `lt_or_gt_of_ne hst' with hlt | hlt` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨(⟨i + s.val, by omega⟩, ⟨i + t.val, by omega⟩), by simp only; omega, by simp only; omega, by simp only; omega, hx⟩`. Conclude with `⟨(⟨i + t.val, by omega⟩, ⟨i + s.val, by omega⟩), by simp only; omega, by simp only; omega, by simp only; omega, hx.symm⟩`. Use `choose pr hpr using hex`. Use function extensionality and compare the values at `m`. Rewrite using `[toSym_apply_sum_fiber]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `xs : (Fin n → R × P) → Fin n → P` to `fun g s => (g s).2`. Set `inv : (Fin n → R × P) → (Fin n → R × P)` to `fun g => g ∘ Equiv.swap (pr (xs g)).1 (pr (xs g)).2`. Establish `hxs : ∀ g, xs (inv g) = xs g`. Introduce `g`. Use function extensionality and compare the values at `s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, h4⟩` from `hpr (xs g)`. Use `show (g (Equiv.swap (pr (xs g)).1 (pr (xs g)).2 s)).2 = (g s).2`. Distinguish the cases in `hs1 : s = (pr (xs g)).1`. Rewrite using `[hs1, Equiv.swap_apply_left]`. Conclude with `h4.symm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hs2 : s = (pr (xs g)).2`. Rewrite using `[hs2, Equiv.swap_apply_right]`. Conclude with `h4`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hs1 hs2]`. Establish `hu : ∀ g, u g + u (inv g) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `g`. Take `⟨h1, h2, h3, h4⟩` from `hpr (xs g)`. Establish `key` using `congrFun (htr ((pr (xs g)).2.val - (pr (xs g)).1.val - 1) (pr (xs g)).1 (pr (xs g)).2 h1 (by omega) h3) g`. Rewrite `key` using `[permSecond_apply]`. Establish `e : (fun s => ((g (Equiv.swap (pr (xs g)).1 (pr (xs g)).2 s)).1, (g s).2)) = inv g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Use `congrFun (hxs g) s` as an intermediate fact. Conclude with `Prod.ext rfl this.symm`. Rewrite `key` using `[e]`. Rewrite using `[key]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Use `show _ = (0 : M)`. Use `Finset.sum_involution (fun g _ => inv g) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `g _`. Conclude with `hu g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g _ hne heq`. Apply `hne` to reduce the goal to its premises. Establish `h0` using `hu g`. Rewrite `h0` using `[heq]`. Establish `h2 : (2 : K) • u g = 0` using `by rw [two_smul]; exact h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `(smul_eq_zero.mp h2).resolve_left two_ne_zero`. Introduce `g hg`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hg ⊢`. Use `show cont (g ∘ _) = m`. Rewrite using `[content_comp_perm_eq]`.
-
-Conclude with `hg`. Introduce `g _ show (inv g) ∘ Equiv.swap (pr (xs (inv g))).1 (pr (xs (inv g))).2 = g`. Rewrite using `[hxs g]`. Use function extensionality and compare the values at `s`. Simplify using `[inv]`.
+A detailed English derivation is pending.
 -/
 theorem antitone_shapes : Anti := by
   intro K R P M _ _ _ _ _ _ _ _ n i hi u h
@@ -137,9 +135,9 @@ theorem antitone_shapes : Anti := by
     simp [inv]
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a b hb; have : a = b := Fin.ext (by omega); rw [this]`. Consider the case `succ d ih`. Introduce `a b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : a.val + d < n` using `by have := b.isLt; omega`. Establish `hc' : (⟨a.val + d, hc⟩ : Fin n).val + 1 < n` using `by have := b.isLt; simp only; omega`. Establish `hb' : b = ⟨(⟨a.val + d, hc⟩ : Fin n).val + 1, hc'⟩` using `Fin.ext (by simp only; omega)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem lcb_mono {n : ℕ} (col : Fin n → ℕ) (h : ∀ (j : Fin n) (hj : j.val + 1 < n), col j ≤ col ⟨j.val + 1, hj⟩) :
     ∀ (d : ℕ) (a b : Fin n), b.val = a.val + d → col a ≤ col b := by
@@ -155,13 +153,13 @@ theorem lcb_mono {n : ℕ} (col : Fin n → ℕ) (h : ∀ (j : Fin n) (hj : j.va
       _ ≤ col b := by rw [hb']; exact h _ hc'
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _ h`. Rewrite `h` using `[hp.start]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ m ih`. Introduce `hm h`. Distinguish the cases in `h' : j0 < κ m a`. Conclude with `ih (by omega) h'`. Establish `hs` using `hp.step ⟨m, by omega⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : κ (m + 1) a = κ m a + (Pi.single (ρ ⟨m, by omega⟩) 1 : Fin q → ℕ) a`. Use `congrFun hs a` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `hr : ρ ⟨m, by omega⟩ = a`. Use `⟨⟨m, by omega⟩, hr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs'` using `[hr, Pi.single_eq_same]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite `hs'` using `[Pi.single_eq_of_ne (Ne.symm hr)]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lcb_ivt {q n : ℕ} {lam2 tau : Fin q → ℕ} {κ : ℕ → Fin q → ℕ} {ρ : Fin n → Fin q}
     (hp : IsPath n lam2 tau κ ρ) (a : Fin q) (j0 : ℕ) (h0 : lam2 a ≤ j0) :
@@ -184,17 +182,17 @@ theorem lcb_ivt {q n : ℕ} {lam2 tau : Fin q → ℕ} {κ : ℕ → Fin q → �
         omega
 
 /- English proof (translation)
-Introduce `q n lam2 tau κ ρ hp hmono p j0 hlen`. Unfold `LD.colLen at hlen`. Use `set S : Finset (Fin n) := Finset.univ.filter (fun l => colSeq κ ρ l = j0) with hS`. Establish `hmem : ∀ l, l ∈ S ↔ colSeq κ ρ l = j0`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hS]`. Establish `hsub : (Finset.univ.filter fun a : Fin q => lam2 a ≤ j0 ∧ j0 < tau a) ⊆ S.image ρ`. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha`. Take `⟨l, hl1, hl2⟩` from `lcb_ivt hp a j0 ha.1 n le_rfl (by rw [hp.stop]; exact ha.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_image.mpr ⟨l, ?_, hl1⟩` and prove the remaining obligations. Rewrite using `[hmem]`. Unfold `colSeq`. Rewrite using `[hl1]`. Conclude with `hl2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hcard : p < S.card`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : S.Nonempty` using `Finset.card_pos.mp (by omega)`. Establish `hi : colSeq κ ρ (S.min' hne) = j0` using `(hmem _).mp (Finset.min'_mem S hne)`. Establish `hi' : colSeq κ ρ (S.max' hne) = j0` using `(hmem _).mp (Finset.max'_mem S hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIcc : S ⊆ Finset.Icc (S.min' hne) (S.max' hne)` using `fun l hl => Finset.mem_Icc.mpr ⟨Finset.min'_le S l hl, Finset.le_max' S l hl⟩`. Establish `hc2 : S.card ≤ (S.max' hne).val + 1 - (S.min' hne).val`. Use `Finset.card_le_card hIcc` as an intermediate fact. Rewrite `this` using `[Fin.card_Icc]`. Then use the resulting hypothesis. Use `⟨(S.min' hne).val, by have := (S.max' hne).isLt; omega, fun l h1 h2 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1` using `lcb_mono _ hmono (l.val - (S.min' hne).val) (S.min' hne) l (by omega)`. Establish `m2` using `lcb_mono _ hmono ((S.max' hne).val - l.val) l (S.max' hne) (by omega)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem monotone_run : MonoRun := by
   intro q n lam2 tau κ ρ hp hmono p j0 hlen

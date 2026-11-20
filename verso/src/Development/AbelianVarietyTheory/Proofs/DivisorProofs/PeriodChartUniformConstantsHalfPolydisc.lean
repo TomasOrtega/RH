@@ -8,7 +8,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram GlobalTheory.HermFr
 namespace GlobalTheory.UnifConsts
 
 /- English proof (translation)
-The claim follows from `|x ⬝ᵥ A *ᵥ x| ≤ E * Fintype.card m * (x ⬝ᵥ x) := by have h1 : x ⬝ᵥ A *ᵥ x = ∑ j, ∑ k, x j * A j k * x k := by simp [dotProduct, mulVec, Finset.mul_sum, mul_assoc] rw [h1] calc |∑ j, ∑ k, x j * A j k * x k| ≤ ∑ j, ∑ k, |x j * A j k * x k| := (Finset.abs_sum_le_sum_abs _ _).trans ( …`.
+A detailed English derivation is pending.
 -/
 theorem quad_abs_le {m : Type} [Fintype m] (A : Matrix m m ℝ) (E : ℝ)
     (hE : ∀ j k, |A j k| ≤ E) (x : m → ℝ) :
@@ -38,27 +38,25 @@ theorem quad_abs_le {m : Type} [Fintype m] (A : Matrix m m ℝ) (E : ℝ)
         ring
 
 /- English proof (translation)
-Use `set S : Set (X × (ι → ℝ)) := K ×ˢ Metric.sphere 0 1`. Establish `hS : IsCompact S` using `hK.prod (isCompact_sphere 0 1)`. Establish `hq : ContinuousOn (fun p : X × (ι → ℝ) => p.2 ⬝ᵥ F p.1 *ᵥ p.2) S`. Simplify using `only [dotProduct, mulVec]`. Use `continuousOn_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousOn.mul (continuous_apply j |>.comp continuous_snd).continuousOn ?_` and prove the remaining obligations. Use `continuousOn_finset_sum _ fun k _ => ?_` and prove the remaining obligations. Use `ContinuousOn.mul ?_ (continuous_apply k |>.comp continuous_snd).continuousOn` and prove the remaining obligations. Conclude with `(hF j k).comp continuous_fst.continuousOn (fun p hp => hp.1)`. Establish `hyy : ∀ y : ι → ℝ, y ⬝ᵥ y ≤ Fintype.card ι * ‖y‖ ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `y`. Simplify using `only [dotProduct]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_le_pi_norm y i` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[abs_nonneg (y i), sq_abs (y i)]`. Use `_ = _ := by simp`. Establish `hscale : ∀ z y, y ≠ 0 → (‖y‖⁻¹ • y) ⬝ᵥ F z *ᵥ (‖y‖⁻¹ • y) = (‖y‖ ^ 2)⁻¹ * (y ⬝ᵥ F z *ᵥ y)`. Introduce `z y _`. Simplify using `[mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmem : ∀ z ∈ K, ∀ y : ι → ℝ, y ≠ 0 → (z, ‖y‖⁻¹ • y) ∈ S`. Introduce `z hz y hy`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Simplify using `[norm_smul, norm_ne_zero_iff.2 hy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hne : S.Nonempty`. Take `⟨p, hp, hmin⟩` from `hS.exists_isMinOn hne hq`. Establish `hp2 : p.2 ≠ 0`. Introduce `h0`. Use `hp.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[h0] at this`. Establish `hm : 0 < p.2 ⬝ᵥ F p.1 *ᵥ p.2`. Simplify using `using (hP p.1 hp.1).dotProduct_mulVec_pos hp2`. Establish `hcard : 0 < (Fintype.card ι : ℝ)`. Establish `: Nonempty ι`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hι`. Rewrite `hι` using `[not_nonempty_iff]`. Conclude with `hp2 (Subsingleton.elim _ _)`. Conclude with `Fintype.card_pos` after adjusting the coercions. Use `⟨(p.2 ⬝ᵥ F p.1 *ᵥ p.2) / Fintype.card ι, div_pos hm hcard, fun z hz y => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `h1` using `hmin (hmem z hz y hy)`. Simplify using `only [Set.mem_setOf_eq] at h1`. Rewrite `h1` using `[hscale z y hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : 0 < ‖y‖ ^ 2` using `by positivity`. Establish `h2 : (p.2 ⬝ᵥ F p.1 *ᵥ p.2) * ‖y‖ ^ 2 ≤ y ⬝ᵥ F z *ᵥ y`. Rewrite `h1` using `[le_inv_mul_iff₀ hn, mul_comm]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Use `⟨1, one_pos, fun z hz y => ?_⟩` and prove the remaining obligations.
-
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Conclude with `absurd ⟨_, hmem z hz y hy⟩ hne`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uniform_posDef {X : Type} [TopologicalSpace X] {ι : Type} [Fintype ι] {K : Set X}
     (hK : IsCompact K) (F : X → Matrix ι ι ℝ) (hF : ∀ j k, ContinuousOn (fun z => F z j k) K)
@@ -135,19 +133,19 @@ noncomputable def blockEquiv (g rk : ℕ) :
   (Equiv.sumCongr (Fintype.equivFin _).symm (Fintype.equivFin _).symm).trans (Equiv.sumCompl _)
 
 /- English proof (translation)
-The claim follows from `((Fintype.equivFin {j : Fin g // j.val < rk}).symm i).2`.
+A detailed English derivation is pending.
 -/
 theorem blockEquiv_inl (g rk : ℕ) (i) : (blockEquiv g rk (Sum.inl i)).val < rk :=
   ((Fintype.equivFin {j : Fin g // j.val < rk}).symm i).2
 
 /- English proof (translation)
-The claim follows from `((Fintype.equivFin {j : Fin g // ¬ j.val < rk}).symm i).2`.
+A detailed English derivation is pending.
 -/
 theorem blockEquiv_inr (g rk : ℕ) (i) : ¬ (blockEquiv g rk (Sum.inr i)).val < rk :=
   ((Fintype.equivFin {j : Fin g // ¬ j.val < rk}).symm i).2
 
 /- English proof (translation)
-Use extensionality with `(i | i) (j | j)`. Simplify using the standard rewrite rules. Simplify using `[hS _ _ (Or.inr (not_lt.1 (blockEquiv_inr g rk j)))]`. Simplify using `[hS _ _ (Or.inl (not_lt.1 (blockEquiv_inr g rk i))), hY]`. Simplify using `[hS _ _ (Or.inl (not_lt.1 (blockEquiv_inr g rk i)))]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem submatrix_blockEquiv {g rk : ℕ} (Y S : Matrix (Fin g) (Fin g) ℝ) (T : ℝ)
     (hY : ∀ j k, Y j k = Y k j) (hS : ∀ j k, (rk ≤ j.val ∨ rk ≤ k.val) → S j k = 0) :
@@ -169,57 +167,47 @@ end GlobalTheory.UnifConsts
 namespace GlobalTheory.UnifConsts
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun i _ => mul_self_nonneg (x i)`.
+A detailed English derivation is pending.
 -/
 theorem dot_self_nonneg {m : Type} [Fintype m] (x : m → ℝ) : 0 ≤ x ⬝ᵥ x :=
   Finset.sum_nonneg fun i _ => mul_self_nonneg (x i)
 
 /- English proof (translation)
-Introduce `n a g rk τ₀ B hS h`. Establish `hopen : IsOpen (polydisc n 1)`. Simplify using `only [polydisc, Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_lt (by fun_prop) continuous_const`. Use `set K := Metric.closedBall (0 : Fin n → ℂ) (1 / 2) with hKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKc : IsCompact K` using `isCompact_closedBall _ _`. Establish `hK1 : K ⊆ polydisc n 1` using `fun z hz k => lt_of_le_of_lt ((norm_le_pi_norm z k).trans (mem_closedBall_zero_iff.1 hz)) (by norm_num)`. Establish `hhalf : polydisc n (1 / 2) ⊆ K` using `fun z hz => mem_closedBall_zero_iff.2 ((pi_norm_le_iff_of_nonneg (by norm_num)).2 fun k => (hz k).le)`. Establish `hcont : ∀ j k, ContinuousOn (fun z => τ₀ z j k) K` using `fun j k => (h.holo j k).continuousOn.mono hK1`. Take `⟨E', hE'⟩` from `hKc.exists_bound_of_continuousOn (f := fun z => fun j k => τ₀ z j k) (continuousOn_pi.2 fun j => continuousOn_pi.2 fun k => hcont j k)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E := max E' 0`. Establish `hE0 : 0 ≤ E` using `le_max_right _ _`. Establish `hYE : ∀ z ∈ K, ∀ j k, |(τ₀ z j k).im| ≤ E` using `fun z hz j k => (abs_im_le_norm _).trans ((norm_le_pi_norm (fun k => τ₀ z j k) k).trans ((norm_le_pi_norm (fun j k => τ₀ z j k) j).trans ((hE' z hz).trans (le_max_left _ _))))`. Establish `hcd : ∀ j k, ContinuousOn (fun z => fderiv ℂ (fun x => τ₀ x j k) z) K` using `fun j k => (((ReciprocityTheory.AnForm.Osgood.osgood n _ _ hopen (h.holo j k)).contDiffOn (n := 1) hopen.uniqueDiffOn).continuousOn_fderiv_of_isOpen hopen le_rfl).mono hK1`. Take `⟨M', hM'⟩` from `hKc.exists_bound_of_continuousOn (f := fun z => fun j k => fderiv ℂ (fun x => τ₀ x j k) z) (continuousOn_pi.2 fun j => continuousOn_pi.2 fun k => hcd j k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set M := max M' 0`. Establish `hderiv : ∀ z ∈ K, ∀ (j k : Fin g) (ξ : Fin n → ℂ), ‖fderiv ℂ (fun x => τ₀ x j k) z ξ‖ ≤ M * ‖ξ‖` using `fun z hz j k ξ => ((fderiv ℂ (fun x => τ₀ x j k) z).le_opNorm ξ).trans (mul_le_mul_of_nonneg_right ((norm_le_pi_norm (fun k => fderiv ℂ (fun x => τ₀ x j k) z) k).trans ((norm_le_pi_norm (fun j k => fderiv ℂ (fun x => τ₀ x j k) z) j).trans ((hM' z hz).trans (le_max_left _ _)))) (n …`. Establish `hBsymm : ∀ i j k, (B i k j : ℝ) = B i j k` using `fun i j k => by`. Simplify using `using (h.psd i).isHermitian.apply j k`. Use `set S : Matrix (Fin g) (Fin g) ℝ := ∑ i, (B i).map (Int.cast : ℤ → ℝ) with hSdef`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSapp : ∀ j k, S j k = ∑ i, (B i j k : ℝ)` using `fun j k => by`. Simplify using `[S, Matrix.sum_apply]`. Establish `hSsymm : ∀ j k, S j k = S k j` using `fun j k => by`. Rewrite using `[hSapp, hSapp]`. Conclude with `Finset.sum_congr rfl fun i _ => (hBsymm i j k).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hSsupp : ∀ j k, (rk ≤ j.val ∨ rk ≤ k.val) → S j k = 0` using `fun j k hjk => by`. Rewrite using `[hSapp]`. Simplify using `[h.supp _ j k hjk]`. Establish `hYsymm : ∀ z ∈ polydisc n 1, ∀ j k, (τ₀ z).map Complex.im j k = (τ₀ z).map Complex.im k j` using `fun z hz j k => by`. Simplify using `[(h.symm z hz).apply j k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e := blockEquiv g rk`. Establish `hkk : Fintype.card {j : Fin g // j.val < rk} ≤ g` using `(Fintype.card_subtype_le _).trans (by simp)`. Establish `hll : Fintype.card {j : Fin g // ¬ j.val < rk} ≤ g` using `(Fintype.card_subtype_le _).trans (by simp)`. Establish `hquad : ∀ (A : Matrix (Fin g) (Fin g) ℝ) (x : Fin g → ℝ), (x ∘ e) ⬝ᵥ (A.submatrix e e) *ᵥ (x ∘ e) = x ⬝ᵥ A *ᵥ x` using `fun A x => by`. Rewrite using `[submatrix_mulVec_equiv, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id, comp_equiv_dotProduct_comp_equiv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ∀ x : Fin g → ℝ, (x ∘ e) ⬝ᵥ (x ∘ e) = x ⬝ᵥ x` using `fun x => comp_equiv_dotProduct_comp_equiv _ _ _`. Use `set C₀ : ℝ := E * g`. Establish `hC₀ : 0 ≤ C₀` using `by positivity`. Establish `ha_bd : ∀ z ∈ K, ∀ x, |x ⬝ᵥ ((τ₀ z).map Complex.im).submatrix (e ∘ Sum.inl) (e ∘ Sum.inl) *ᵥ x| ≤ C₀ * (x ⬝ᵥ x)` using `fun z hz x => by`. Use `(quad_abs_le _ E (fun j k => hYE z hz _ _) x).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.card_fin]`. Use `dot_self_nonneg x` as an intermediate fact. Establish `: (Fintype.card {j : Fin g // j.val < rk} : ℝ) ≤ g` using `by exact_mod_cast hkk`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left this hE0) (dot_self_nonneg x)`. Establish `hb_bd : ∀ z ∈ K, ∀ y, (((τ₀ z).map Complex.im).submatrix (e ∘ Sum.inl) (e ∘ Sum.inr) *ᵥ y) ⬝ᵥ (((τ₀ z).map Complex.im).submatrix (e ∘ Sum.inl) (e ∘ Sum.inr) *ᵥ y) ≤ C₀ ^ 2 * (y ⬝ᵥ y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz y`. Use `set bM := ((τ₀ z).map Complex.im).submatrix (e ∘ Sum.inl) (e ∘ Sum.inr)`. Rewrite using `[show (bM *ᵥ y) ⬝ᵥ (bM *ᵥ y) = y ⬝ᵥ (bMᵀ * bM) *ᵥ y by`. Rewrite using `[← mulVec_mulVec, dotProduct_mulVec y, vecMul_transpose]]`. Use `(le_abs_self _).trans ((quad_abs_le _ (Fintype.card {j : Fin g // j.val < rk} * E ^ 2) ?_ y).trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `j k`. Rewrite using `[mul_apply]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, sq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_mul (hYE z hz _ _) (hYE z hz _ _) (abs_nonneg _) hE0`. Use `_ = _ := by simp`. Rewrite using `[Fintype.card_fin]`. Use `dot_self_nonneg y` as an intermediate fact. Establish `h1 : (Fintype.card {j : Fin g // j.val < rk} : ℝ) * Fintype.card {j : Fin g // ¬ j.val < rk} ≤ g * g` using `by exact_mod_cast Nat.mul_le_mul hkk hll`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (Fintype.card {j : Fin g // j.val < rk} * E ^ 2 * Fintype.card {j : Fin g // ¬ j.val < rk} : ℝ) ≤ C₀ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `gcongr`. Establish `hinjr : Function.Injective (fun i : Fin (Fintype.card {j : Fin g // ¬ j.val < rk}) => (⟨e (Sum.inr i), not_lt.1 (blockEquiv_inr g rk i)⟩ : {j : Fin g // rk ≤ j.val}))`. Introduce `i j hij`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h'` using `Subtype.ext_iff.1 hij`. Simplify using `only at h'`. Conclude with `Sum.inr_injective (e.injective h')`. Take `⟨c₀, hc₀, hdc⟩` from `uniform_posDef hKc (fun z => ((τ₀ z).map Complex.im).submatrix (e ∘ Sum.inr) (e ∘ Sum.inr)) (fun j k => Complex.continuous_im.comp_continuousOn (hcont _ _)) (fun z hz => (h.abelian z (hK1 hz)).submatrix hinjr)`. Establish `hinjl : Function.Injective (fun i : Fin (Fintype.card {j : Fin g // j.val < rk}) => (⟨e (Sum.inl i), blockEquiv_inl g rk i⟩ : {j : Fin g // j.val < rk}))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Establish `h'` using `Subtype.ext_iff.1 hij`. Simplify using `only at h'`. Conclude with `Sum.inl_injective (e.injective h')`. Establish `hSmap : S = (∑ i, B i).map (Int.cast : ℤ → ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `j k`. Rewrite using `[hSapp]`. Simplify using `[Matrix.sum_apply]`. Take `⟨b₀, hb₀, hbc⟩` from `uniform_posDef (X := Unit) isCompact_univ (fun _ => S.submatrix (e ∘ Sum.inl) (e ∘ Sum.inl)) (fun j k => continuousOn_const) (fun _ _ => by rw [hSmap]; exact h.toric.submatrix hinjl)`. Use `set T₀ : ℝ := (1 + C₀ + C₀ ^ 2 / c₀) / b₀`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT₀ : 0 < T₀` using `by positivity`. Use `set c₁ : ℝ := ((1 + C₀ / c₀) ^ 2 * max 1 (1 / c₀))⁻¹`. Establish `hc₁ : 0 < c₁` using `by positivity`. Use `set Es : ℝ := ‖fun j k => S j k‖`. Establish `hSE : ∀ j k, |S j k| ≤ Es` using `fun j k => (norm_le_pi_norm (fun k => S j k) k).trans (norm_le_pi_norm (fun j k => S j k) j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `set Eb : ℝ := ‖fun i j k => (B i j k : ℝ)‖`. Establish `hBE : ∀ i j k, |(B i j k : ℝ)| ≤ Eb` using `fun i j k => (norm_le_pi_norm (fun k => (B i j k : ℝ)) k).trans ((norm_le_pi_norm (fun j k => (B i j k : ℝ)) j).trans (norm_le_pi_norm (fun i j k => (B i j k : ℝ)) i))`. Use `⟨T₀, c₁, (E + T₀ * Es) * g, M, Eb * g, hT₀, hc₁, le_max_right _ _, by positivity, ?_, ?_⟩` and prove the remaining obligations. Introduce `i x`. Use `(le_abs_self _).trans ((quad_abs_le _ Eb (fun j k => by simpa using hBE i j k) x).trans ?_)` and prove the remaining obligations.
-
-Simplify using the standard rewrite rules. Introduce `z hz`. Establish `hzK` using `hhalf hz`. Establish `hz1` using `hK1 hzK`. Use `⟨?_, ?_, ?_, hderiv z hzK⟩` and prove the remaining obligations.
-
-Use `IsSymm.ext fun j k => ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.smul_apply]`. Rewrite using `[hYsymm z hz1, hSsymm]`. Introduce `x`. Rewrite using `[← hquad, ← hnorm, submatrix_blockEquiv _ _ _ (hYsymm z hz1) hSsupp]`.
-
-Use `hS _ _ _ _ _ _ C₀ c₀ b₀ hC₀ hc₀ hb₀ ?_ ?_ ?_ (ha_bd z hzK) (hb_bd z hzK) (hdc z hzK) (hbc () (Set.mem_univ _)) (x ∘ e)` and prove the remaining obligations. Conclude with `IsSymm.ext fun j k => hYsymm z hz1 _ _`. Conclude with `IsSymm.ext fun j k => hYsymm z hz1 _ _`. Conclude with `IsSymm.ext fun j k => hSsymm _ _`. Introduce `x`.
-
-Use `(le_abs_self _).trans ((quad_abs_le _ (E + T₀ * Es) (fun j k => ?_) x).trans ?_)` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_apply]`. Use `(abs_add_le _ _).trans (add_le_add (hYE z hzK j k) ?_)` and prove the remaining obligations. Rewrite using `[abs_mul, abs_of_pos hT₀]`. Conclude with `mul_le_mul_of_nonneg_left (hSE j k) hT₀.le`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uniform_consts : ∀ (n a g rk : ℕ) (τ₀ : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ), (∀ (k l : ℕ) (a bt : Matrix (Fin k) (Fin k) ℝ) (b : Matrix (Fin k) (Fin l) ℝ) (d : Matrix (Fin l) (Fin l) ℝ) (C₀ c₀ b₀ : ℝ), 0 ≤ C₀ → 0 < c₀ → 0 < b₀ → a.IsSymm → d.IsSymm → bt.IsSymm → (∀ x, |x ⬝ᵥ a.mulVec x| ≤ C₀ * (x ⬝ᵥ x)) → (∀ y, (b.mulVec y) ⬝ᵥ (b.mulVec y) ≤ C₀ ^ 2 * (y ⬝ᵥ y)) → (∀ y, c₀ * (y ⬝ᵥ y) ≤ y ⬝ᵥ d.mulVec y) → (∀ x, b₀ * (x ⬝ᵥ x) ≤ x ⬝ᵥ bt.mulVec x) → ∀ z : Fin k ⊕ Fin l → ℝ, ((1 + C₀ / c₀) ^ 2 * max 1 (1 / c₀))⁻¹ * (z ⬝ᵥ z) ≤ z ⬝ᵥ (Matrix.fromBlocks (a + ((1 + C₀ + C₀ ^ 2 / c₀) / b₀) • bt) b b.transpose d).mulVec z) → IsPeriodChart rk τ₀ B → ∃ T₀ c₁ C₁ M β : ℝ, 0 < T₀ ∧ 0 < c₁ ∧ 0 ≤ M ∧ 0 ≤ β ∧ (∀ i (x : Fin g → ℝ), x ⬝ᵥ ((B i).map (Int.cast : ℤ → ℝ)) *ᵥ x ≤ β * (x ⬝ᵥ x)) ∧ ∀ z ∈ polydisc n (1 / 2), ((τ₀ z).map Complex.im + T₀ • ∑ i, (B i).map (Int.cast : ℤ → ℝ)).IsSymm ∧ (∀ x, c₁ * (x ⬝ᵥ x) ≤ x ⬝ᵥ ((τ₀ z).map Complex.im + T₀ • ∑ i, (B i).map (Int.cast : ℤ → ℝ)) *ᵥ x) ∧ (∀ x, x ⬝ᵥ ((τ₀ z).map Complex.im + T₀ • ∑ i, (B i).map (Int.cast : ℤ → ℝ)) *ᵥ x ≤ C₁ * (x ⬝ᵥ x)) ∧ ∀ (j k : Fin g) (ξ : Fin n → ℂ), ‖fderiv ℂ (fun x => τ₀ x j k) z ξ‖ ≤ M * ‖ξ‖ := by
   intro n a g rk τ₀ B hS h

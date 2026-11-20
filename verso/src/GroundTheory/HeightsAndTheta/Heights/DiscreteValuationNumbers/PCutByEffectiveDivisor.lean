@@ -12,11 +12,11 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Take `⟨bf, bg, hf, hg, hb⟩` from `hD.degrees`. Use `IsVerticalDivisor.of_unit_off_special ⟨bf, bg, ?_, hg, hb⟩ ?_ hD.den_not_mem ?_` and prove the remaining obligations. Establish `h0 : IsMultiHomog (C ϖ ^ n : MRing ι O) 0`. Rewrite using `[← map_pow]`. Conclude with `isWeightedHomogeneous_C _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h0.mul hf` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Conclude with `hH.mul_notMem (fun h => hϖ (hH.mem_of_pow_mem n h)) hD.num_not_mem`. Introduce `W hW hHW hrel hϖW`. Take `⟨u, v, hu, hv, huv⟩` from `hD.unit_off_special W hW hHW hrel hϖW`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨u, C ϖ ^ n * v, hu, hW.mul_notMem (fun h => hϖW (hW.mem_of_pow_mem n h)) hv, ?_⟩` and prove the remaining obligations. Establish `e : u * (C ϖ ^ n * f) - C ϖ ^ n * v * g = C ϖ ^ n * (u * f - v * g)` using `by ring`. Rewrite using `[e]`. Conclude with `H.mul_mem_left _ huv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsVerticalDivisor.uniformiser_pow_mul {K : Type*} [DecidableEq K] {ι : K → Type*}
     {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {H : Ideal (MRing ι O)}
@@ -39,9 +39,9 @@ theorem IsVerticalDivisor.uniformiser_pow_mul {K : Type*} [DecidableEq K] {ι : 
     exact H.mul_mem_left _ huv
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hH L`. Take `⟨n, hEff⟩` from `h4 O ϖ hϖ K ι P (d + 1) hP b f g hD`. Establish `hH' : ∀ H, divCycle P s H ≠ 0 → (C ϖ : MRing ι O) ∉ H → IsVerticalDivisor H ϖ b (C ϖ ^ n * f) g`. Introduce `H hsH hϖH`. Use `(le_and_isRelevant_of_divCycle_ne_zero hsH).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hH H hsH hϖH).uniformiser_pow_mul hϖH n`. Establish `e1` using `h1 O ϖ hϖ K ι P d hP b (C ϖ ^ n * f) g hEff c s hs hsP hH' L`. Establish `e2` using `h2 O ϖ hϖ K ι P d hP c s hs hsP L`. Conclude with `h3 O ϖ hϖ K ι P d hP b f g hD c s hs hsP hH L n e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CutByEffectiveDivisor.proof (h1 : EffectiveCase.Statement.{u})
     (h2 : UniformiserCase.Statement.{u}) (h3 : ShiftByUniformiser.Statement.{u})

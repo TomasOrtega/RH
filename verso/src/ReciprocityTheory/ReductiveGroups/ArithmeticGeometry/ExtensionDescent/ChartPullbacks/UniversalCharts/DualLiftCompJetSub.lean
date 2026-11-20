@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `first`. Consider the case `(show MvPolynomial.aeval (fun _ : κ => (0 : R)) (MvPolynomial.X j) = 0 simp)`. Consider the case `simp [jetAug, zR, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.lift_mk]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem jetAug_zR_lemma {κ : Type} {m : ℕ} (j : κ) : jetAug R κ m (zR m j) = 0 := by
   first
@@ -22,7 +22,7 @@ private theorem jetAug_zR_lemma {κ : Type} {m : ℕ} (j : κ) : jetAug R κ m (
   | simp [jetAug, zR, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.lift_mk]
 
 /- English proof (translation)
-Rewrite using `[RingHom.mem_ker, map_sum]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, jetAug_zR_lemma i, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_smul_zR_mem {a : ℕ} (m : ℕ) (c : Fin a → R) :
     ∑ i, c i • zR (R := R) m i ∈ RingHom.ker (jetAug R (Fin a) m) := by
@@ -31,7 +31,7 @@ theorem sum_smul_zR_mem {a : ℕ} (m : ℕ) (c : Fin a → R) :
   rw [map_smul, jetAug_zR_lemma i, smul_zero]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sum_single {a : ℕ} (c : Fin a → R) : ∑ i, c i • Pi.single i (1 : R) = c := by
   ext k
@@ -42,14 +42,14 @@ def jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (m : ℕ) : J
     (fun k => ∑ i, T (Pi.single i 1) k • zR m i) (fun k => sum_smul_zR_mem m _)
 
 /- English proof (translation)
-Rewrite using `[jetSub, jetLift_zR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jetSub_zR {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (m : ℕ) (k : Fin b) :
     jetSub T m (zR m k) = ∑ i, T (Pi.single i 1) k • zR m i := by
   rw [jetSub, jetLift_zR]
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Conclude with `h j`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem jet_ext_lemma_2 {κ : Type} {m : ℕ} {A : Type} [CommRing A] [Algebra R A]
     {f g : JetR R κ m →ₐ[R] A} (h : ∀ j, f (zR m j) = g (zR m j)) : f = g := by
@@ -59,7 +59,7 @@ private theorem jet_ext_lemma_2 {κ : Type} {m : ℕ} {A : Type} [CommRing A] [A
   exact h j
 
 /- English proof (translation)
-Apply `jet_ext_lemma_2` to reduce the goal to its premises. Introduce `k`. Rewrite using `[jetSub_zR]`. Simplify using `[Pi.single_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jetSub_id {a : ℕ} (m : ℕ) : jetSub (R := R) (LinearMap.id : (Fin a → R) →ₗ[R] (Fin a → R)) m = AlgHom.id R _ := by
   apply jet_ext_lemma_2
@@ -68,9 +68,9 @@ theorem jetSub_id {a : ℕ} (m : ℕ) : jetSub (R := R) (LinearMap.id : (Fin a �
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Apply `jet_ext_lemma_2` to reduce the goal to its premises. Introduce `k`. Rewrite using `[AlgHom.comp_apply, jetSub_zR, jetSub_zR, map_sum]`. Repeatedly rewrite using `[map_smul, jetSub_zR, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Use `conv_rhs => rw [LinearMap.comp_apply, ← sum_single (S (Pi.single j 1))]`. Simplify using `[map_sum, map_smul, Finset.sum_apply, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetSub_comp {a b c : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (S : (Fin c → R) →ₗ[R] (Fin a → R)) (m : ℕ) :
     (jetSub S m).comp (jetSub T m) = jetSub (T.comp S) m := by
@@ -86,7 +86,7 @@ theorem jetSub_comp {a b c : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (S
   simp [map_sum, map_smul, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Apply `jet_ext_lemma_2` to reduce the goal to its premises. Introduce `k`. Rewrite using `[AlgHom.comp_apply, jetSub_zR, jetAug_zR_lemma]`. Conclude with `RingHom.mem_ker.mp (sum_smul_zR_mem m _)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetAug_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (m : ℕ) :
     (jetAug R (Fin a) m).comp (jetSub T m) = jetAug R (Fin b) m := by
@@ -108,7 +108,7 @@ private theorem zero_zR_lemma_4 {κ : Type} (m : ℕ) (j : κ) :
     jetZeroR R κ m (zR m j) = zR 0 j := rfl
 
 /- English proof (translation)
-Apply `jet_ext_lemma_2` to reduce the goal to its premises. Introduce `k`. Simplify using `only [AlgHom.comp_apply, jetSub_zR, trunc_zR_lemma_3, map_sum, map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem trunc_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (m : ℕ) :
     (jetTruncR R (Fin a) m).comp (jetSub T (m + 1)) = (jetSub T m).comp (jetTruncR R (Fin b) m) := by
@@ -117,7 +117,7 @@ theorem trunc_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)
   simp only [AlgHom.comp_apply, jetSub_zR, trunc_zR_lemma_3, map_sum, map_smul]
 
 /- English proof (translation)
-Apply `jet_ext_lemma_2` to reduce the goal to its premises. Introduce `k`. Simplify using `only [AlgHom.comp_apply, jetSub_zR, zero_zR_lemma_4, map_sum, map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem zero_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (m : ℕ) :
     (jetZeroR R (Fin a) m).comp (jetSub T m) = (jetSub T 0).comp (jetZeroR R (Fin b) m) := by
@@ -126,7 +126,7 @@ theorem zero_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R))
   simp only [AlgHom.comp_apply, jetSub_zR, zero_zR_lemma_4, map_sum, map_smul]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (map_sum (TrivSqZeroExt.inrHom R R) f s).symm`. Consider the case `(induction s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, ih, TrivSqZeroExt.inr_add])`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem sum_inr_lemma_5 {I : Type} (s : Finset I) (f : I → R) :
     ∑ i ∈ s, (TrivSqZeroExt.inr (f i) : DualNumber R) = TrivSqZeroExt.inr (∑ i ∈ s, f i) := by
@@ -137,9 +137,9 @@ private theorem sum_inr_lemma_5 {I : Type} (s : Finset I) (f : I → R) :
      | cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, ih, TrivSqZeroExt.inr_add])
 
 /- English proof (translation)
-Apply `jet_ext_lemma_2` to reduce the goal to its premises. Introduce `k`. Simplify using `only [AlgHom.comp_apply, jetSub_zR, map_sum, map_smul, dualLift_zR]`. Repeatedly rewrite using `[← TrivSqZeroExt.inr_smul, sum_inr_lemma_5]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [← sum_single c]`. Simplify using `[map_sum, map_smul, Finset.sum_apply, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualLift_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (c : Fin a → R) :
     (dualLift c).comp (jetSub T 1) = dualLift (T c) := by
@@ -154,19 +154,17 @@ theorem dualLift_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b →
 variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
 
 /- English proof (translation)
-Use `⟨fun m => ?_, fun m => ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (jetTruncR R (Fin d) m) ≫ spMap (jetSub T.toLinearMap (m + 1)) ≫ x (m + 1) = spMap (jetSub T.toLinearMap m) ≫ x m`. Rewrite using `[← Category.assoc, spMap_comp, trunc_comp_jetSub, ← spMap_comp, Category.assoc, hx.1 m]`. Use `show spMap (jetZeroR R (Fin d) m) ≫ spMap (jetSub T.toLinearMap m) ≫ x m = 1`. Rewrite using `[← Category.assoc, spMap_comp, zero_comp_jetSub, ← spMap_comp, Category.assoc, hx.2.1 m, comp_one']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `A _ _ aug m hA y hy`. Take `⟨ψ, ⟨hψ1, hψ2⟩, hψu⟩` from `hx.2.2 A aug m hA y hy`. Establish `e1 : (jetSub T.symm.toLinearMap m).comp (jetSub T.toLinearMap m) = AlgHom.id R _`. Rewrite using `[jetSub_comp]`. Establish `h0 : T.toLinearMap.comp T.symm.toLinearMap = LinearMap.id`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `v : 1`. Simplify using the standard rewrite rules. Rewrite using `[h0, jetSub_id]`. Establish `e2 : (jetSub T.toLinearMap m).comp (jetSub T.symm.toLinearMap m) = AlgHom.id R _`. Rewrite using `[jetSub_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h0 : T.symm.toLinearMap.comp T.toLinearMap = LinearMap.id`. Use extensionality with `v : 1`. Simplify using the standard rewrite rules. Rewrite using `[h0, jetSub_id]`. Use `⟨ψ.comp (jetSub T.symm.toLinearMap m), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AlgHom.comp_assoc, hψ1, jetAug_comp_jetSub]`. Use `show y = spMap (ψ.comp (jetSub T.symm.toLinearMap m)) ≫ spMap (jetSub T.toLinearMap m) ≫ x m`. Rewrite using `[← Category.assoc, spMap_comp, AlgHom.comp_assoc, e1, AlgHom.comp_id]`. Conclude with `hψ2`. Introduce and unpack `φ ⟨hφ1, hφ2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ2' : y = spMap φ ≫ spMap (jetSub T.toLinearMap m) ≫ x m` using `hφ2`. Establish `hφ : φ.comp (jetSub T.toLinearMap m) = ψ`. Apply `hψu` to reduce the goal to its premises. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, hφ1, jetAug_comp_jetSub]`.
-
-Rewrite using `[hφ2', ← Category.assoc, spMap_comp]`. Rewrite using `[← hφ, AlgHom.comp_assoc, e2, AlgHom.comp_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnivChart_sub {n d : ℕ} {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ G} (hx : IsUnivChart G n x)
     (T : (Fin d → R) ≃ₗ[R] (Fin n → R)) :

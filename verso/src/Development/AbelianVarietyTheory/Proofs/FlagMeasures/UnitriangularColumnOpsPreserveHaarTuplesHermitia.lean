@@ -8,7 +8,7 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.UnitriTuple
 
 /- English proof (translation)
-Establish `: IsTopologicalAddGroup G` using `IsModuleTopology.topologicalAddGroup k G`. Set `e₀ : G ≃ₗ[k] (Fin (Module.finrank k G) → k)` to `(Module.finBasis k G).equivFun`. Set `e : G ≃ₜ (Fin (Module.finrank k G) → k)` to `{ e₀.toEquiv with continuous_toFun := IsModuleTopology.continuous_of_linearMap e₀.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e₀.symm.toLinearMap }`. Set `K₀` to `IsUltrametricDist.closedBall_openAddSubgroup (Fin (Module.finrank k G) → k) one_pos`. Conclude with `⟨K₀.toAddSubgroup.comap e₀.toLinearMap.toAddMonoidHom, K₀.isOpen.preimage e.continuous, e.isCompact_preimage.2 (isCompact_closedBall (0 : Fin (Module.finrank k G) → k) 1)⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_compactOpen (k G : Type*) [NormedField k] [IsUltrametricDist k] [ProperSpace k]
     [AddCommGroup G] [Module k G] [Module.Finite k G] [TopologicalSpace G] [IsModuleTopology k G] :
@@ -24,31 +24,29 @@ theorem exists_compactOpen (k G : Type*) [NormedField k] [IsUltrametricDist k] [
     e.isCompact_preimage.2 (isCompact_closedBall (0 : Fin (Module.finrank k G) → k) 1)⟩
 
 /- English proof (translation)
-Establish `hpow : ∀ (f : Module.End ℤ G), Continuous f → ∀ j : ℕ, Continuous (f ^ j : Module.End ℤ G)` using `fun f hf j => by rw [Module.End.coe_pow]; exact hf.iterate j`. Establish `hnegc : Continuous (-N : Module.End ℤ G)`. Establish `: ⇑(-N : Module.End ℤ G) = fun x => -(N x)` using `rfl`. Rewrite using `[this]`. Conclude with `hNc.neg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hN`. Set `B : AddSubgroup G` to `⨅ j : ℕ, K.comap (N ^ j).toAddMonoidHom`. Establish `hB : ∀ x, x ∈ B ↔ ∀ j : ℕ, (N ^ j) x ∈ K` using `fun x => by`. Simplify using `[B, AddSubgroup.mem_iInf]`. Establish `hBo : IsOpen (B : Set G)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (B : Set G) = ⋂ j ∈ Finset.range m, (N ^ j : Module.End ℤ G) ⁻¹' (K : Set G)`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, hB, Set.mem_iInter, Set.mem_preimage, Finset.mem_range]`. Use `⟨fun h j _ => h j, fun h j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j < m`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h j hj`. Rewrite using `[pow_eq_zero_of_le (not_lt.1 hj) hm]`. Conclude with `K.zero_mem`. Rewrite using `[this]`. Conclude with `isOpen_biInter_finset fun j _ => hKo.preimage (hpow N hNc j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBc : IsCompact (B : Set G)` using `hKc.of_isClosed_subset (B.isClosed_of_isOpen hBo) fun x hx => by`. Simplify using `using (hB x).1 hx 0`. Establish `hNB : ∀ x ∈ B, N x ∈ B` using `fun x hx => (hB _).2 fun j => by`. Rewrite using `[← Module.End.mul_apply, ← pow_succ]`. Conclude with `(hB x).1 hx _`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `hNp : ∀ (j : ℕ), ∀ x ∈ B, ((-N) ^ j) x ∈ B` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[pow_succ', Module.End.mul_apply, LinearMap.neg_apply]`. Conclude with `B.neg_mem (hNB _ (ih x hx))`. Establish `hm' : (-N) ^ m = 0` using `by rw [neg_pow, hm, mul_zero]`. Establish `h1 : (∑ j ∈ Finset.range m, (-N) ^ j) * (1 + N) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `geom_sum_mul_neg (-N) m` as an intermediate fact. Rewrite `this` using `[hm', sub_zero, sub_neg_eq_add]`. Then use the resulting hypothesis. Establish `h2 : (1 + N) * (∑ j ∈ Finset.range m, (-N) ^ j) = 1`. Use `mul_neg_geom_sum (-N) m` as an intermediate fact. Rewrite `this` using `[hm', sub_zero, sub_neg_eq_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinv : Continuous (∑ j ∈ Finset.range m, (-N) ^ j : Module.End ℤ G)`. Establish `: ⇑(∑ j ∈ Finset.range m, (-N) ^ j : Module.End ℤ G) = fun x => ∑ j ∈ Finset.range m, ((-N) ^ j : Module.End ℤ G) x`. Use function extensionality and compare the values at `fun x => LinearMap.sum_apply _ _ _`. Rewrite using `[this]`. Conclude with `continuous_finset_sum _ fun j _ => hpow _ hnegc j`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Set `L : G ≃ₜ+ G` to `{ toFun := fun x => x + N x invFun := (∑ j ∈ Finset.range m, (-N) ^ j : Module.End ℤ G) left_inv := fun x => LinearMap.congr_fun h1 x right_inv := fun x => LinearMap.congr_fun h2 x map_add' := fun x y => by rw [map_add]; abel continuous_toFun := continuous_id.add hNc continuous_i …`. Establish `hLB : L ⁻¹' (B : Set G) = B`. Use extensionality with `x`. Use `⟨fun hx => ?_, fun hx => B.add_mem hx (hNB x hx)⟩` and prove the remaining obligations. Establish `: x = (∑ j ∈ Finset.range m, (-N) ^ j : Module.End ℤ G) (L x)` using `(L.left_inv x).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, LinearMap.sum_apply]`. Conclude with `B.sum_mem fun j _ => hNp j _ hx`. Express the relevant statement in the definitionally equal form `μ.map L = μ`. Establish `: (μ.map L).IsAddHaarMeasure` using `L.isAddHaarMeasure_map μ`. Establish `h3` using `Measure.isAddLeftInvariant_eq_smul (μ.map L) μ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : μ.map L B = μ B`. Rewrite using `[Measure.map_apply (show Continuous L from L.continuous).measurable hBo.measurableSet, hLB]`. Establish `h5 : μ B ≠ 0` using `(hBo.measure_pos μ ⟨0, B.zero_mem⟩).ne'`. Establish `h6 : μ B ≠ ⊤` using `hBc.measure_lt_top.ne`. Establish `h7 : Measure.addHaarScalarFactor (μ.map L) μ = 1`.
-
-Rewrite `h4` using `[h3, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Use `(ENNReal.mul_left_inj h5 h6).1 (h4.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[h3, h7, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem map_add_nilpotent_of_compactOpen {G : Type*} [AddCommGroup G] [TopologicalSpace G]
     [IsTopologicalAddGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
@@ -128,7 +126,7 @@ theorem map_add_nilpotent_of_compactOpen {G : Type*} [AddCommGroup G] [Topologic
   rw [h3, h7, one_smul]
 
 /- English proof (translation)
-Use `GlobalTheory.UnitriHaar.nilpotent_of_strict _ fun i j h => ?_` and prove the remaining obligations. Break down `(not_lt.1 h).eq_or_lt with rfl | h` into its components or cases. Simplify using `[h1]`. Simplify using `[h0 i j h, Matrix.one_apply_ne h.ne']`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sub_one_pow {R : Type*} [CommRing R] {a : ℕ} (u : Matrix (Fin a) (Fin a) R)
     (h1 : ∀ i, u i i = 1) (h0 : ∀ i j, j < i → u i j = 0) : (u - 1) ^ a = 0 := by
@@ -144,9 +142,9 @@ def colOp {R : Type*} [CommRing R] {a n : ℕ} (w : Matrix (Fin a) (Fin a) R) :
   map_smul' r X := by funext b; simp [Finset.smul_sum, smul_comm r]
 
 /- English proof (translation)
-Proceed by induction on `j generalizing b with`. Consider the case `zero => simp [Matrix.one_apply]`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, pow_succ]`. Express the relevant statement in the definitionally equal form `∑ c, w c b • (((colOp (n := n) w ^ j) X) c) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [ih, Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by rw [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colOp_pow {R : Type*} [CommRing R] {a n : ℕ} (w : Matrix (Fin a) (Fin a) R) (j : ℕ)
     (X : Fin a → Fin n → R) (b : Fin a) :
@@ -163,47 +161,43 @@ theorem colOp_pow {R : Type*} [CommRing R] {a n : ℕ} (w : Matrix (Fin a) (Fin 
 open GlobalTheory.GaugeEx in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ n J _ v a u h1 h0`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `⟨fun μ hμ => ?_, fun ν hν φ hφ => ?_⟩` and prove the remaining obligations. Set `N` to `colOp (n := n) (u - 1)`. Establish `hN : IsNilpotent N` using `⟨a, LinearMap.ext fun X => funext fun b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[colOp_pow, sub_one_pow u h1 h0]`. Use the proof step `simp⟩`. Establish `hN' : IsNilpotent (N.restrictScalars (Fv F v) : Module.End (Fv F v) _)`. Take `⟨m, hm⟩` from `hN`. Use `⟨m, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hm x` as an intermediate fact. Rewrite `this`, the goal using `[Module.End.pow_apply]`. Conclude with `this`. Establish `h2` using `GlobalTheory.UnitriHaar.map_add_nilpotent μ _ hN'`. Establish `hx : (fun (X : Fin a → Fin n → Fv F v ⊗[F] E) b => ∑ c, u c b • X c) = fun X => X + N.restrictScalars (Fv F v) X`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `X b`. Express the relevant statement in the definitionally equal form `_ = X b + ∑ c, (u - 1) c b • X c`. Simplify using `[sub_smul, Finset.sum_sub_distrib, Matrix.one_apply]`. Rewrite using `[hx]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hTR : IsTopologicalRing (Fv F v)` using `inferInstance`. Set `Ev` to `Fv F v ⊗[F] E`. Establish `: LocallyCompactSpace (Matrix (Fin a) (Fin a) Ev)` using `inferInstanceAs (LocallyCompactSpace (Fin a → Fin a → Ev))`. Establish `: SecondCountableTopology (Matrix (Fin a) (Fin a) Ev)` using `inferInstanceAs (SecondCountableTopology (Fin a → Fin a → Ev))`. Establish `: BorelSpace (HermR (Fv F v) σ a)` using `⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hc : IsClosed (HermR (Fv F v) σ a : Set (Matrix (Fin a) (Fin a) Ev))`. Establish `: (HermR (Fv F v) σ a : Set (Matrix (Fin a) (Fin a) Ev)) = ⋂ i, ⋂ j, {S | sigR (Fv F v) σ (S j i) = S i j}`. Use extensionality with `S`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq ?_ ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.AdelicUnitaryTop.continuous_sigR (Fv F v) σ).comp (continuous_id.matrix_elem j i)`. Conclude with `continuous_id.matrix_elem i j`. Establish `: LocallyCompactSpace (HermR (Fv F v) σ a)` using `hc.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (HermR (Fv F v) σ a)` using `hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Take `⟨K₀, hK₀o, hK₀c⟩` from `exists_compactOpen (Fv F v) (Fin a → Fin a → Ev)`. Set `K : AddSubgroup (HermR (Fv F v) σ a)` to `AddSubgroup.comap (HermR (Fv F v) σ a).subtype K₀`. Establish `hKo : IsOpen (K : Set (HermR (Fv F v) σ a))` using `hK₀o.preimage continuous_subtype_val`. Establish `hKc : IsCompact (K : Set (HermR (Fv F v) σ a))` using `hc.isClosedEmbedding_subtypeVal.isCompact_preimage hK₀c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A : Matrix (Fin a) (Fin a) Ev := (u.map (sigR (Fv F v) σ)).transpose with hA`. Establish `hS1 : ∀ i, (u.map (sigR (Fv F v) σ)) i i = 1` using `fun i => by simp [h1]`. Establish `hS0 : ∀ i j, j < i → (u.map (sigR (Fv F v) σ)) i j = 0` using `fun i j h => by simp [h0 i j h]`. Establish `hAn : (A - 1) ^ a = 0`. Use `sub_one_pow _ hS1 hS0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h3 : A - 1 = (u.map (sigR (Fv F v) σ) - 1).transpose`. Rewrite using `[Matrix.transpose_sub, Matrix.transpose_one]`. Rewrite using `[h3, ← Matrix.transpose_pow, this, Matrix.transpose_zero]`. Establish `hun : (u - 1) ^ a = 0` using `sub_one_pow u h1 h0`. Set `La : Module.End Ev (Matrix (Fin a) (Fin a) Ev)` to `LinearMap.mulLeft Ev A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `Ru : Module.End Ev (Matrix (Fin a) (Fin a) Ev)` to `LinearMap.mulRight Ev u`. Establish `hLR : Commute La Ru` using `LinearMap.commute_mulLeft_right A u`. Establish `hLn : IsNilpotent (La - 1)`. Establish `: La - 1 = LinearMap.mulLeft Ev (A - 1)` using `by ext1 S; simp [La, sub_mul]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a, by rw [LinearMap.pow_mulLeft, hAn, LinearMap.mulLeft_zero_eq_zero]⟩`. Establish `hRn : IsNilpotent (Ru - 1)`. Establish `: Ru - 1 = LinearMap.mulRight Ev (u - 1)` using `by ext1 S; simp [Ru, mul_sub]`. Rewrite using `[this]`. Conclude with `⟨a, by rw [LinearMap.pow_mulRight, hun, LinearMap.mulRight_zero_eq_zero]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTn : IsNilpotent (La * Ru - 1)`. Establish `: La * Ru - 1 = (La - 1) * Ru + (Ru - 1)` using `by noncomm_ring`. Rewrite using `[this]`. Establish `c1 : Commute (La - 1) Ru` using `hLR.sub_left (Commute.one_left _)`. Establish `c2 : Commute ((La - 1) * Ru) (Ru - 1)` using `Commute.mul_left (c1.sub_right (Commute.one_right _)) ((Commute.refl Ru).sub_right (Commute.one_right _))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `c2.isNilpotent_add (c1.isNilpotent_mul_right hLn) hRn`. Establish `hadd : ∀ S S', φ (S + S') = φ S + φ S'` using `fun S S' => Subtype.ext (by`. Rewrite using `[AddSubgroup.coe_add, hφ, hφ, hφ, AddSubgroup.coe_add, mul_add, add_mul])`. Set `N₀ : HermR (Fv F v) σ a →+ HermR (Fv F v) σ a` to `AddMonoidHom.mk' (fun S => φ S - S) fun S S' => by rw [hadd]; abel`. Set `N : Module.End ℤ (HermR (Fv F v) σ a)` to `N₀.toIntLinearMap`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hNa : ∀ S, ((N S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) Ev) = (La * Ru - 1) (S : Matrix (Fin a) (Fin a) Ev)` using `fun S => by`. Express the relevant statement in the definitionally equal form `((φ S - S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) Ev) = _`. Rewrite using `[AddSubgroup.coe_sub, hφ]`. Simplify using `[La, Ru, mul_assoc]`. Establish `hNp : ∀ (j : ℕ) S, (((N ^ j) S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) Ev) = ((La * Ru - 1) ^ j) (S : Matrix (Fin a) (Fin a) Ev)` using `fun j => by`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `j with`. Consider the case `zero => intro S`. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `S`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, hNa, ih]`. Establish `hN : IsNilpotent N`. Take `⟨m, hm⟩` from `hTn`. Use `⟨m, LinearMap.ext fun S => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hNp, hm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hNc : Continuous N`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `: (Subtype.val ∘ ⇑N) = fun S : HermR (Fv F v) σ a => A * (S : Matrix (Fin a) (Fin a) Ev) * u - (S : Matrix (Fin a) (Fin a) Ev)`. Use function extensionality and compare the values at `fun S => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((N S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) Ev) = _`. Rewrite using `[hNa]`. Simplify using `[La, Ru, mul_assoc]`. Rewrite using `[this]`. Conclude with `((continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const).sub continuous_subtype_val`.
-
-Establish `h2` using `map_add_nilpotent_of_compactOpen ν K hKo hKc N hNc hN`. Establish `hx : φ = fun S => S + N S` using `funext fun S => by`. Express the relevant statement in the definitionally equal form `φ S = S + (φ S - S)`. Normalize the expressions using the abelian group laws. Rewrite using `[hx]`.
-
-Conclude with `h2`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitri_haar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (a : ℕ) (u : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)), (∀ i, u i i = 1) → (∀ i j, j < i → u i j = 0) → (∀ μ : Measure (Fin a → Fin n → Fv F v ⊗[F] E), μ.IsAddHaarMeasure → μ.map (fun X b => ∑ c, u c b • X c) = μ) ∧ ∀ ν : Measure (HermR (Fv F v) σ a), ν.IsAddHaarMeasure → ∀ φ : HermR (Fv F v) σ a → HermR (Fv F v) σ a, (∀ S, (φ S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = (u.map (sigR (Fv F v) σ)).transpose * (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) * u) → ν.map φ = ν := by
   intro F E _ _ _ _ _ σ _ n J _ v a u h1 h0

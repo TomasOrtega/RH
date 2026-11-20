@@ -31,7 +31,7 @@ def _root_.Formalism.IndefR.Links.reErr {K : Type} [Field K] [NumberField K] [St
     (X : CxData Am) (e : type_of% X.err0) : CxData Am := { X with err0 := e }
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem partAt_withErr (e i p v) : (R.withErr e).PartAt F i p v ↔ R.PartAt F i p v := by
   exact Iff.rfl
@@ -45,7 +45,7 @@ theorem zs_withErr (e) : ((R.withErr e).toCx3 F).zs = (R.toCx3 F).zs := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use the proof step `cases_type* RealDat3.WeakCharacterisation RealDat.BaseW RealDat.IsGrp RealDat.IsFam RealDat.IsModels RealDat.IsChainW RealDat.IsThPW RealDat3.IsInert RealDat3.IsScal RealDat3.IsTup`. Apply the tactic sequence `repeat' (first | assumption | constructor)`.
+A detailed English derivation is pending.
 -/
 theorem weak_characterisation_with_error (h : R.WeakCharacterisation F) (e) : (R.withErr e).WeakCharacterisation F := by
   cases_type* RealDat3.WeakCharacterisation RealDat.BaseW RealDat.IsGrp RealDat.IsFam RealDat.IsModels RealDat.IsChainW RealDat.IsThPW RealDat3.IsInert RealDat3.IsScal RealDat3.IsTup
@@ -85,11 +85,11 @@ Both sides reduce to the same expression.
 theorem toCx3_updS (kap lam) : (R.updS kap lam).toCx3 F = reScal (R.toCx3 F) (fun _ => kap) lam := rfl
 
 /- English proof (translation)
-Take `⟨hb, hl⟩` from `h`. Take `⟨-, hl'⟩` from `h'`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Establish `hxx : (l : ℂ) • x = (l' : ℂ) • x` using `(hl x hx).symm.trans (hl' x hx)`. Establish `hc : (l : ℂ) = (l' : ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Apply `hx0` to reduce the goal to its premises. Establish `hne' : (l : ℂ) - (l' : ℂ) ≠ 0` using `sub_ne_zero.mpr hne`. Establish `h0 : ((l : ℂ) - (l' : ℂ)) • x = 0` using `by rw [sub_smul, hxx, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ hne', one_smul]`. Use `_ = 0 := by rw [h0, smul_zero]`. Conclude with `hc` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_eigenvalue_unique {i t p} (l l' : ℝ) (h : R.Eig0 i t p l) (h' : R.Eig0 i t p l') : l = l' := by
   obtain ⟨hb, hl⟩ := h
@@ -107,9 +107,9 @@ theorem base_eigenvalue_unique {i t p} (l l' : ℝ) (h : R.Eig0 i t p l) (h' : R
   exact_mod_cast hc
 
 /- English proof (translation)
-Take `⟨⟨x, hx, hm⟩, hs⟩` from `h`. Take `⟨-, hs'⟩` from `h'`. Establish `e1` using `hs x hx x`. Establish `e2` using `hs' x hx x`. Establish `hc : ((l : ℝ) : ℂ) = ((l' : ℝ) : ℂ)` using `mul_right_cancel₀ hm (e1.symm.trans e2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem eigOff_unique {i p v} (l l' : ℝ) (h : R.EigOff F i p v l) (h' : R.EigOff F i p v l') : l = l' := by
   obtain ⟨⟨x, hx, hm⟩, hs⟩ := h
@@ -120,13 +120,13 @@ theorem eigOff_unique {i p v} (l l' : ℝ) (h : R.EigOff F i p v l) (h' : R.EigO
   exact_mod_cast hc
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem partAt_updS (kap lam i p v) : (R.updS kap lam).PartAt F i p v ↔ PartX F.cr (R.toCx3 F) false i p v := by
   exact Iff.rfl
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem sim_updS (kap lam i p v l) : SimX F.cr ((R.updS kap lam).toCx3 F) false i p v l ↔ SimX F.cr (R.toCx3 F) false i p v l := by
   exact Iff.rfl
@@ -142,23 +142,21 @@ end RealDat3
 open Classical in
 
 /- English proof (translation)
-Establish `hcan : ∀ {N : Type} [AddCommGroup N] [Module ℂ N] {a b : ℂ} {x : N}, x ≠ 0 → a • x = b • x → a = b`. Introduce `N _ _ a b x hx h`. Assume the negation of the conclusion as `hne`. Apply `hx` to reduce the goal to its premises. Establish `hne' : a - b ≠ 0` using `sub_ne_zero.mpr hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h0 : (a - b) • x = 0` using `by rw [sub_smul, h, sub_self]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨lam, hlam⟩ : ∃ lam : Fin D.R.m → T → A3.fam3.base3.Ix → InfinitePlace D.what₂.LL → ℝ, ∀ i t p v, lam i t p v = if v = A3.A.v0 then (if h : ∃ l, R.Eig0 i t p l then h.choose else Real.exp ((F.Zsc (R.toCx3 F).zs).l6m i)) else (if h : ∃ l, R.EigOff F i p v l then h.choose else Real …` from `⟨_, fun _ _ _ _ => rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨kap, hkap⟩ : ∃ kap : ℝ, ∀ κ : ℝ, Lift.IsKap D.R.m (fun t => R.Th t ∘ₗ LinearMap.adjoint (R.Th t)) R.EEp3 (R.updS 0 lam).lamN κ → (∃ t p, R.EEp3 p ≠ ⊥ ∧ ∏ j ∈ Finset.Icc 1 D.R.m, (R.updS 0 lam).lamN t j p ≠ 0) → kap = κ := by`. Distinguish the cases in `hex : ∃ κ : ℝ, Lift.IsKap D.R.m (fun t => R.Th t ∘ₗ LinearMap.adjoint (R.Th t)) R.EEp3 (R.updS 0 lam).lamN κ ∧ (∃ t p, R.EEp3 p ≠ ⊥ ∧ ∏ j ∈ Finset.Icc 1 D.R.m, (R.updS 0 lam).lamN t j p ≠ 0)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨κ0, hk0, -⟩` from `hex`. Use `⟨κ0, fun κ hk hnd => ?_⟩` and prove the remaining obligations. Take `⟨t, p, hE, hP⟩` from `hnd`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hE`. Establish `e` using `hcan hx0 ((hk0 t p x hx).symm.trans (hk t p x hx))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : κ0 * ∏ j ∈ Finset.Icc 1 D.R.m, (R.updS 0 lam).lamN t j p = κ * ∏ j ∈ Finset.Icc 1 D.R.m, (R.updS 0 lam).lamN t j p` using `by exact_mod_cast e`. Conclude with `mul_right_cancel₀ hP e'`. Conclude with `⟨0, fun κ hk hnd => absurd ⟨κ, hk, hnd⟩ hex⟩`. Use `⟨kap, lam, ⟨?_, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `i t p l hb hl`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hE : R.Eig0 i t p l` using `⟨hb, hl⟩`. Use `show lam i t p A3.A.v0 = l`. Rewrite using `[hlam, if_pos rfl, dif_pos ⟨l, hE⟩]`. Conclude with `RealDat3.base_eigenvalue_unique (R := R) _ _ (Exists.choose_spec _) hE`. Introduce `κ hk hnd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hkap κ hk hnd`. Introduce `i p v l hv hP hS`. Establish `hPX : PartX F.cr (R.toCx3 F) false i p v` using `(RealDat3.partAt_updS kap lam i p v).1 hP`. Establish `hSX : SimX F.cr (R.toCx3 F) false i p v l` using `(RealDat3.sim_updS kap lam i p v l).1 hS`. Establish `hE : R.EigOff F i p v l` using `⟨hPX, hSX⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `show lam i A3.A.μ0 p v = l`. Rewrite using `[hlam, if_neg hv, dif_pos ⟨l, hE⟩]`. Conclude with `RealDat3.eigOff_unique (R := R) _ _ (Exists.choose_spec _) hE`. Introduce `i t p hb show lam i t p A3.A.v0 = Real.exp ((F.Zsc ((R.updS kap lam).toCx3 F).zs).l6m i)`. Rewrite using `[RealDat3.zs_updS, hlam, if_pos rfl, dif_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨l, hl⟩`. Conclude with `hl.1 hb`. Introduce `i p v hv hnP show lam i A3.A.μ0 p v = Real.exp ((F.Zsc ((R.updS kap lam).toCx3 F).zs).l6m i)`. Rewrite using `[RealDat3.zs_updS, hlam, if_neg hv, dif_neg]`. Introduce and unpack `⟨l, hl⟩`.
-
-Conclude with `hnP ((RealDat3.partAt_updS kap lam i p v).2 hl.1)`. Introduce `i t p v hv show lam i t p v = lam i A3.A.μ0 p v`. Rewrite using `[hlam, hlam, if_neg hv, if_neg hv]`.
+A detailed English derivation is pending.
 -/
 theorem scalars_exist (R : RealDat3 D A3 Ks) : ∃ kap lam, (R.updS kap lam).IsScal F := by
 

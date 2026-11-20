@@ -14,11 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AmpleFiniteBase
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ _ _ _ _ _ _ ρ hinj hfin G _ G' _ π hG h L hL hA`. Use `hG.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Establish `hF : IsFinite (spMap ρ)` using `(IsFinite.SpecMap_iff _).2 hfin`. Establish `hS : Surjective (spMap ρ)` using `⟨hfin.to_isIntegral.comap_surjective hinj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsFinite π` using `MorphismProperty.of_isPullback (P := @IsFinite) h.1.flip hF`. Establish `hs : Surjective π` using `MorphismProperty.of_isPullback (P := @Surjective) h.1.flip hS`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `hN : GlobalTheory.IsNormalScheme G.left` using `isNormalScheme_of_smooth G.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.NormalDescent.isAmpleLB_of_pull G.left G'.left π ⟨⟩ (fun x => ⟨hN.1 x, hN.2 x⟩) inferInstance hs.surj L hL hA`.
+A detailed English derivation is pending.
 -/
 theorem isAmpleLB_of_pull : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [IsLocalRing R] [CommRing R'] [IsDomain R'] [IsNoetherianRing R'] [IsIntegrallyClosed R'] [IsLocalRing R'] (ρ : R →+* R'), Function.Injective ρ → ρ.Finite → ∀ (G : Over (Sp R)) [GrpObj G] (G' : Over (Sp R')) [GrpObj G'] (π : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G (spMap ρ) π → ∀ L : LB G.left, L.IsLB → IsAmpleLB (L.pull π) → IsAmpleLB L := by
   intro R R' _ _ _ _ _ _ _ _ _ _ ρ hinj hfin G _ G' _ π hG h L hL hA

@@ -20,9 +20,9 @@ open GlobalTheory.CompanionTheory.GL2Factorization
 namespace GlobalTheory.CompanionTheory.GL2Factorization.EmRCont
 
 /- English proof (translation)
-Establish `hd : (!![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) ℝ).det ≠ 0`. Establish `h0 : h.val.det ≠ 0` using `(Matrix.isUnits_det_units h).ne_zero`. Rewrite `h0` using `[Matrix.det_fin_two]`. Rewrite using `[Matrix.det_fin_three]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `hh`. Apply `h0` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `GL2LocalData.emR`. Rewrite using `[dif_pos hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -43,7 +43,7 @@ theorem val_emR (h : GL (Fin 2) ℝ) :
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, val_emR, val_emR, val_emR]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Fin.sum_univ_three, Units.val_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem emR_mul (g h : GL (Fin 2) ℝ) : GL2LocalData.emR (g * h) = GL2LocalData.emR g * GL2LocalData.emR h := by
   apply Units.ext
@@ -53,7 +53,7 @@ theorem emR_mul (g h : GL (Fin 2) ℝ) : GL2LocalData.emR (g * h) = GL2LocalData
     simp [Matrix.mul_apply, Fin.sum_univ_two, Fin.sum_univ_three, Units.val_mul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_emR]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem emR_one : GL2LocalData.emR (1 : GL (Fin 2) ℝ) = 1 := by
   apply Units.ext
@@ -62,13 +62,13 @@ theorem emR_one : GL2LocalData.emR (1 : GL (Fin 2) ℝ) = 1 := by
   fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← emR_mul, inv_mul_cancel, emR_one])`.
+A detailed English derivation is pending.
 -/
 theorem emR_inv (g : GL (Fin 2) ℝ) : GL2LocalData.emR g⁻¹ = (GL2LocalData.emR g)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← emR_mul, inv_mul_cancel, emR_one])
 
 /- English proof (translation)
-Establish `c : ∀ i j, Continuous fun h : GL (Fin 2) ℝ => h.val i j` using `fun i j => Units.continuous_val.matrix_elem i j`. Establish `e : (fun h : GL (Fin 2) ℝ => (GL2LocalData.emR h).val) = fun h => !![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1]` using `funext val_emR`. Rewrite using `[e]`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> first | exact c _ _ | exact continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_emR_val : Continuous fun h : GL (Fin 2) ℝ => (GL2LocalData.emR h).val := by
   have c : ∀ i j, Continuous fun h : GL (Fin 2) ℝ => h.val i j :=
@@ -80,9 +80,9 @@ theorem continuous_emR_val : Continuous fun h : GL (Fin 2) ℝ => (GL2LocalData.
   fin_cases i <;> fin_cases j <;> simp <;> first | exact c _ _ | exact continuous_const
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨continuous_emR_val, ?_⟩` and prove the remaining obligations. Establish `e : (fun h : GL (Fin 2) ℝ => (((GL2LocalData.emR h)⁻¹ : GL (Fin 3) ℝ) : Matrix (Fin 3) (Fin 3) ℝ)) = (fun h : GL (Fin 2) ℝ => (GL2LocalData.emR h).val) ∘ fun h => h⁻¹`. Use function extensionality and compare the values at `h`. Simplify using `only [Function.comp, emR_inv]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_emR_val.comp continuous_inv`.
+A detailed English derivation is pending.
 -/
 theorem continuous_emR : Continuous GL2LocalData.emR := by
   refine Units.continuous_iff.2 ⟨continuous_emR_val, ?_⟩

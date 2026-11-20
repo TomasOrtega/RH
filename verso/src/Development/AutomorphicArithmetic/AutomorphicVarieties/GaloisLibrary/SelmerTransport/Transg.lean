@@ -13,7 +13,7 @@ variable {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [IsTopolo
   [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.Gal.ContAction`. Establish `hq` using `(QuotientGroup.isOpenQuotientMap_mk (N := N)).prodMap (IsOpenQuotientMap.id (X := Representation.invariants (σ.comp N.subtype)))`. Rewrite using `[← hq.continuous_comp_iff]`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `hσ.comp (f := fun p : Γ × Representation.invariants (σ.comp N.subtype) => (p.1, (p.2 : M))) (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem transg_cont (σ : Representation R Γ M) (hσ : ContAction σ) (N : Subgroup Γ) [N.Normal] :
     ContAction (σ.quotientToInvariants N) := by
@@ -26,25 +26,21 @@ private theorem transg_cont (σ : Representation R Γ M) (hσ : ContAction σ) (
     (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))
 
 /- English proof (translation)
-Set `A : TRep R Γ` to `{ V := M, rho := σ, cont := hσ }`. Set `Q : TRep R (Γ ⧸ N)` to `{ V := Representation.invariants (σ.comp N.subtype), rho := σ.quotientToInvariants N, cont := transg_cont σ hσ N }`. Set `P : Pair Q A` to `⟨QuotientGroup.mk' N, Submodule.subtype _, QuotientGroup.continuous_mk, continuous_subtype_val, fun _ _ => rfl⟩`. Establish `hP : IsInvRep A N Q P`. Use `⟨rfl, Topology.IsEmbedding.subtypeVal, fun m => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show m ∈ LinearMap.range (Submodule.subtype _) ↔ _`. Rewrite using `[Submodule.range_subtype]`. Conclude with `⟨fun h g hg => h ⟨g, hg⟩, fun h g => h g.1 g.2⟩`. Take `⟨a₀, a₁, a₂, ha⟩` from `exists_isLow A`. Take `⟨n₀, n₁, n₂, hn⟩` from `exists_isLow (A.resSub N)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q₀, q₁, q₂, hq⟩` from `exists_isLow Q`. Use `haveI : DiscreteTopology A.V := ‹DiscreteTopology M›`. Set `I : Submodule R ((A.resSub N).H 1)` to `(conjRep σ N).invariants.comap n₁.toLinearMap`. Take `⟨tg, htg, -⟩` from `fiveTerm_holds R Γ A N hN Q P hP I (by`. Introduce `x`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx s c h1 h2`. Apply `n₁.injective` to reduce the goal to its premises. Rewrite using `[(lowNat_holds R N N _ _ c _ _ _ _ _ _ hn hn).2.1]`. Take `⟨φ, u, hφ, hu, he⟩` from `c`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : φ = conjHom N s` from `MonoidHom.ext fun g => Subtype.ext (h1 g)`. Take `rfl : u = σ s` from `LinearMap.ext h2`. Conclude with `hx s`. Introduce `hx s`. Set `c : Pair (A.resSub N) (A.resSub N)` to `⟨conjHom N s, σ s, continuous_conjHom N s, continuous_of_discreteTopology (α := M), fun u (m : M) => by show σ s (σ (s⁻¹ * u * s) m) = σ u (σ s m)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Simplify using `[mul_assoc]⟩`. Establish `e` using `congrArg n₁ (hx s c (fun _ => rfl) fun _ => rfl)`. Rewrite `e` using `[(lowNat_holds R N N _ _ c _ _ _ _ _ _ hn hn).2.1]`. Conclude with `e)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `k : (conjRep σ N).invariants →ₗ[R] I` to `{ toFun := fun x => ⟨n₁.symm x.1, fun s => by`. Establish `e` using `n₁.apply_symm_apply x.1`. Conclude with `(congrArg (conjRep σ N s) e).trans ((x.2 s).trans e.symm)⟩`. Use the proof step `map_add' := fun x y => Subtype.ext (n₁.symm.map_add x.1 y.1)`. Use the proof step `map_smul' := fun r x => Subtype.ext (n₁.symm.map_smul r x.1) }`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨q₂.toLinearMap.comp (tg.comp k), fun x => ?_⟩` and prove the remaining obligations. Establish `hr` using `(lowNat_holds R Γ N _ _ (Pair.res A N.subtype continuous_subtype_val) _ _ _ _ _ _ ha hn).2.1`. Use `(q₂.map_eq_zero_iff.trans (htg (k x))).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Use `⟨a₁ y, ?_⟩` and prove the remaining obligations.
-
-Establish `e` using `congrArg n₁ hy`. Rewrite `e` using `[hr]`. Conclude with `e.trans (n₁.apply_symm_apply x.1)`. Introduce and unpack `⟨y, hy⟩`. Use `⟨a₁.symm y, n₁.injective ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hr, LinearEquiv.apply_symm_apply]`. Conclude with `hy.trans (n₁.apply_symm_apply x.1).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transg_top [DiscreteTopology M] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ]
     (σ : Representation R Γ M) (hσ : ContAction σ) (N : Subgroup Γ) [N.Normal] (hN : IsClosed (N : Set Γ)) :
@@ -108,17 +104,15 @@ end
 end UpperTheory.V.Base
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ _ _ _ hρ U' U _ h hU hU'`. Use `haveI : CompactSpace U := isCompact_iff_compactSpace.1 hU.isCompact`. Set `σ : Representation R U M` to `ρ.comp U.subtype`. Establish `hσ : ContAction σ` using `hρ.comp (f := fun p : U × M => ((p.1 : G), p.2)) ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`. Take `⟨tg, htg⟩` from `transg_top σ hσ (U'.subgroupOf U) (hU'.preimage continuous_subtype_val)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `j : H1U ρ U' →ₗ[R] H1U σ (U'.subgroupOf U)` to `pairH1DecompositionMap _ _ (Subgroup.subgroupOfEquivOfLe h).toMonoidHom ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) LinearMap.id continuous_id fun _ _ => rfl`. Set `j' : H1U σ (U'.subgroupOf U) →ₗ[R] H1U ρ U'` to `pairH1DecompositionMap _ _ (Subgroup.subgroupOfEquivOfLe h).symm.toMonoidHom ((continuous_subtype_val.subtype_mk _).subtype_mk _) LinearMap.id continuous_id fun _ _ => rfl`. Establish `h1 : ∀ x, j' (j x) = x` using `fun x => by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : ∀ y, j (resU ρ h y) = resH1 σ (U'.subgroupOf U).subtype continuous_subtype_val y` using `fun x => by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression. Establish `h3 : ∀ (g : U) x, conjRep σ (U'.subgroupOf U) g (j x) = j (conjRep ρ U' g x)` using `fun g x => by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `k : invariantsUnderSubgroupH1 ρ U U' →ₗ[R] (conjRep σ (U'.subgroupOf U)).invariants` to `(j.comp (Submodule.subtype _)).codRestrict _ fun x g => (h3 g x.1).trans (congrArg j (x.2 g))`. Establish `hk : ∀ x : invariantsUnderSubgroupH1 ρ U U', tg (k x) = 0 ↔ x.1 ∈ LinearMap.range (resU ρ h)` using `fun x => by`. Use `(htg (k x)).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨y, by rw [← h1 (resU ρ h y), h2, hy]; exact h1 x.1⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, (h2 y).symm.trans (congrArg j hy)⟩`. Use `⟨Submodule.liftQ _ (tg.comp k) fun x hx => (hk x).2 hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot]`.
-
-Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ fun x hx => (hk x).1 hx`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.transg :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

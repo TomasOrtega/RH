@@ -9,45 +9,39 @@ set_option maxHeartbeats 1000000
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut GlobalTheory.UseLoc Module TensorProduct GlobalTheory.UseLoc.Cases UpperTheory.KN
 
 /- English proof (translation)
-Set `ψ : ↥Y →+ Q` to `AddMonoidHom.mk' (fun y => θ (φ0 y)) (fun u v => by rw [map_add, hθa])`. Establish `hψ : ∀ (c : O) (y : ↥Y), ψ (c • y) = f c • ψ y` using `fun c y => by`. Express the relevant statement in the definitionally equal form `θ (φ0 (c • y)) = f c • θ (φ0 y)`. Rewrite using `[map_smul, hθs]`. Establish `heq : ∀ g (y : ↥Y), ψ ⟨_, hst g y.1 y.2⟩ = actQ g (ψ y)` using `fun g y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `θ (φ0 ⟨_, hst g y.1 y.2⟩) = actQ g (θ (φ0 y))`. Rewrite using `[hφ0, hθe]`. Set `ι : (Fin a → Fin n → FractionRing O) → (Fin a → Fin n → LL)` to `fun y j m => fK (y j m)`. Establish `hι : ι = fun y j m => fK (y j m)` using `rfl`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : ↥(Submodule.span O' (ι '' (Y : Set _))) →ₗ[O'] Q, ∀ y : ↥Y, φ ⟨ι y.1, Submodule.subset_span ⟨y.1, y.2, rfl⟩⟩ = ψ y := by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `H` using `UpperTheory.KN.exists_linearMap_span_baseChange_of_semilinear f fK Y ψ hinj hf hY hψ`. Conclude with `H`. Establish `hact : ∀ g y, actN LL (fun j => N (x j)) g (ι y) = ι (fun j => (A g j).mulVec (y j))`. Introduce `g y`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `hA g j (y j)`. Establish `hadd : ∀ g u v, actN LL (fun j => N (x j)) g (u + v) = actN LL (fun j => N (x j)) g u + actN LL (fun j => N (x j)) g v`. Introduce `g u v`. Use function extensionality and compare the values at `j`. Simplify using `[actN, Matrix.mulVec_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsmul : ∀ g (c : O') u, actN LL (fun j => N (x j)) g (c • u) = c • actN LL (fun j => N (x j)) g u`. Introduce `g c u`. Use function extensionality and compare the values at `j`. Simplify using `[actN, Matrix.mulVec_smul]`. Establish `hzero : ∀ g, actN LL (fun j => N (x j)) g 0 = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `g`. Use function extensionality and compare the values at `j`. Simplify using `[actN]`. Establish `hst' : ∀ g, ∀ y ∈ Submodule.span O' (ι '' (Y : Set _)), actN LL (fun j => N (x j)) g y ∈ Submodule.span O' (ι '' (Y : Set _))`. Introduce `g u hu`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨y, hy, rfl⟩` from `hu`. Rewrite using `[hact]`. Conclude with `Submodule.subset_span ⟨_, hst g y hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [hzero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add u v _ _ hu hv => rw [hadd]`. Conclude with `Submodule.add_mem _ hu hv`. Consider the case `smul c u _ hu => rw [hsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.smul_mem _ c hu`. Establish `hEE : ∀ g, actN LL (fun j => N (x j)) g (ι E) - ι E = ι (fun j => (A g j).mulVec (E j) - E j)`. Introduce `g`. Rewrite using `[hact]`. Use function extensionality and compare the values at `j m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[hι]`. Establish `hE' : ∀ g, actN LL (fun j => N (x j)) g (ι E) - ι E ∈ Submodule.span O' (ι '' (Y : Set _))`. Introduce `g`. Rewrite using `[hEE]`. Conclude with `Submodule.subset_span ⟨_, hE g, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfg : (Submodule.span O' (ι '' (Y : Set _))).FG`. Take `⟨S, hS, hSY⟩` from `Submodule.fg_def.1 hY`. Use `Submodule.fg_def.2 ⟨ι '' S, hS.image _, le_antisymm (Submodule.span_mono (Set.image_mono ?_)) ?_⟩` and prove the remaining obligations. Rewrite using `[← hSY]`. Conclude with `Submodule.subset_span`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite `hy` using `[← hSY]`. Express the relevant statement in the definitionally equal form `ι y ∈ Submodule.span O' (ι '' S)`. Proceed by induction on `hy using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mem u hu => exact Submodule.subset_span ⟨u, hu, rfl⟩`. Consider the case `zero`. Establish `: ι 0 = 0` using `by funext j m; simp [hι]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add u v _ _ hu hv`. Establish `: ι (u + v) = ι u + ι v` using `by funext j m; simp [hι]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hu hv`. Consider the case `smul c u _ hu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ι (c • u) = f c • ι u`. Use function extensionality and compare the values at `j m`. Express the relevant statement in the definitionally equal form `fK (c • u j m) = f c • fK (u j m)`. Simplify using `only [Algebra.smul_def, map_mul, hf]`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hu`. Use `⟨a, x, ι E, _, hfg, hst', hE', φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Set `L : (Fin a → Fin n → LL) →ₗ[O'] (Fin a → Fin n → LL)` to `{ toFun := actN LL (fun j => N (x j)) g, map_add' := hadd g, map_smul' := hsmul g }`. Establish `key : φ ∘ₗ L.restrict (hst' g) = actQ g ∘ₗ φ`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Submodule.linearMap_eq_iff_of_eq_span _ _ rfl]`. Introduce and unpack `⟨_, y, hy, rfl⟩`. Establish `h1` using `hφ ⟨y, hy⟩`. Establish `h2` using `hφ ⟨_, hst g y hy⟩`. Establish `h3` using `heq g ⟨y, hy⟩`.
-
-Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, h1, ← h3, ← h2]`. Use `congr 1`. Conclude with `Subtype.ext (hact g y)`. Introduce `y`. Conclude with `LinearMap.congr_fun key y`.
-
-Introduce `g`. Establish `h2` using `hφ ⟨_, hE g⟩`. Express the relevant statement in the definitionally equal form `ψ ⟨_, hE g⟩ = _`. Rewrite using `[← h2]`. Use `congr 1`.
-
-Conclude with `Subtype.ext (hEE g).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem cutPres_gen {G O O' LL Q X : Type} [Group G] [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     [CommRing O'] [Field LL] [Algebra O' LL] [AddCommGroup Q] [Module O' Q] (f : O →+* O')
@@ -159,7 +153,7 @@ private theorem cutPres_gen {G O O' LL Q X : Type} [Group G] [CommRing O] [IsDom
     exact Subtype.ext (hEE g).symm
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Pass.LocDirect.loc_mulVec i w hw M g v`. Use function extensionality and compare the values at `m`. Rewrite using `[RingHom.comp_apply, ← congrFun h m, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cutPres_mulVec {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ}
@@ -174,7 +168,7 @@ private theorem cutPres_mulVec {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (�
   rfl
 
 /- English proof (translation)
-Rewrite using `[RingHom.comp_apply, Br.toLLK_alg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cutPres_alg {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (c : D.nd.O i) :
@@ -184,7 +178,7 @@ private theorem cutPres_alg {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞
   rfl
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `h : (fun m => ((IntermediateField.inclusion C.le).toRingHom.comp (Br.toLLK (D.nbr i w hw))) (c • u m)) = ((incO C.le).comp (D.nbr i w hw).eO.toRingHom) c • (fun m => ((IntermediateField.inclusion C.le).toRingHom.comp (Br.toLLK (D.nbr i w hw))) (u m))`. Use function extensionality and compare the values at `m`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, Algebra.smul_def, map_mul, cutPres_alg]`. Conclude with `congrArg (Submodule.Quotient.mk (p := stdG ↥(OL C.LL) ↥C.LL.1 k)) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cutPres_smul {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ} (c : D.nd.O i)
@@ -200,7 +194,7 @@ private theorem cutPres_smul {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (�
   exact congrArg (Submodule.Quotient.mk (p := stdG ↥(OL C.LL) ↥C.LL.1 k)) h
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `congrArg (Submodule.Quotient.mk (p := stdG ↥(OL C.LL) ↥C.LL.1 k)) (cutPres_mulVec C M g u).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem cutPres_act {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ}
@@ -211,7 +205,7 @@ private theorem cutPres_act {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞
   exact congrArg (Submodule.Quotient.mk (p := stdG ↥(OL C.LL) ↥C.LL.1 k)) (cutPres_mulVec C M g u).symm
 
 /- English proof (translation)
-The claim follows from `(congrArg (liftQ C.le k) ((Br.phi (D.nbr i w hw) k).map_add p q)).trans ((liftQ C.le k).map_add _ _)`.
+A detailed English derivation is pending.
 -/
 private theorem cutPres_add {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ} (p q : KOG (D.nd.O i) k) :
@@ -220,7 +214,7 @@ private theorem cutPres_add {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞
   (congrArg (liftQ C.le k) ((Br.phi (D.nbr i w hw) k).map_add p q)).trans ((liftQ C.le k).map_add _ _)
 
 /- English proof (translation)
-Introduce `D i r w hw C k M z hz`. Take `⟨a, x, -, E, Y, hY, hst, hE, φ, hφ, rfl⟩` from `hz`. Establish `H` using `cutPres_gen (Q := (Fin k → ↥C.LL.1) ⧸ stdG ↥(OL C.LL) ↥C.LL.1 k) ((incO C.le).comp (D.nbr i w hw).eO.toRingHom) ((IntermediateField.inclusion C.le).toRingHom.comp (Br.toLLK (D.nbr i w hw))) (fun x => locOC C (rTwO D.nd i r x)) (fun g => actD (latC C (locOC C M)) g) x (fun g j => …`. Conclude with `H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.hasPres_cutCocycle_localCoefficient :
     ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))

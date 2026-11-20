@@ -10,7 +10,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SA
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `show IsClosed {g : B.Mat k r | Matrix.conjTranspose g * Hpk k r * g = Hpk k r}`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem gv_isClosed (k r : ℕ) : IsClosed (B.GV k r) := by
   show IsClosed {g : B.Mat k r | Matrix.conjTranspose g * Hpk k r * g = Hpk k r}
@@ -18,11 +18,9 @@ theorem gv_isClosed (k r : ℕ) : IsClosed (B.GV k r) := by
     continuous_const
 
 /- English proof (translation)
-Establish `hinv : ContinuousAt (fun A : B.Mat k r => A⁻¹) 1`. Use `continuousAt_matrix_inv _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_one]`. Conclude with `NormedRing.inverse_continuousAt (1 : ℂˣ)`. Establish `c11 : Continuous fun p : B.SS k r => (Matrix.of p.1.1 : B.Mat k r)` using `continuous_fst.comp continuous_fst`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c12 : Continuous fun p : B.SS k r => (Matrix.of p.1.2 : B.Mat k r)` using `continuous_snd.comp continuous_fst`. Establish `c21 : Continuous fun p : B.SS k r => (Matrix.of p.2.1 : B.Mat k r)` using `continuous_fst.comp continuous_snd`. Establish `c22 : Continuous fun p : B.SS k r => (Matrix.of p.2.2 : B.Mat k r)` using `continuous_snd.comp continuous_snd`. Establish `i1 : ContinuousAt (fun p : B.SS k r => (Matrix.of p.1.1 : B.Mat k r)⁻¹) oneP` using `ContinuousAt.comp_of_eq hinv c11.continuousAt rfl`. Establish `i2 : ContinuousAt (fun p : B.SS k r => (Matrix.of p.1.2 : B.Mat k r)⁻¹) oneP` using `ContinuousAt.comp_of_eq hinv c12.continuousAt rfl`.
-
-Use `show ContinuousAt (fun p : B.SS k r => (Matrix.of p.1.1 : B.Mat k r)⁻¹ * (Matrix.of p.1.2 : B.Mat k r)⁻¹ * g * (Matrix.of p.2.2 : B.Mat k r) * (Matrix.of p.2.1 : B.Mat k r)) oneP`. Conclude with `(((i1.mul i2).mul continuousAt_const).mul c22.continuousAt).mul c21.continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sgs_continuousAt_oneP {k r : ℕ} (g : B.Mat k r) :
     ContinuousAt (fun p : B.SS k r => B.sgs p g) oneP := by
@@ -43,41 +41,35 @@ theorem sgs_continuousAt_oneP {k r : ℕ} (g : B.Mat k r) :
   exact (((i1.mul i2).mul continuousAt_const).mul c22.continuousAt).mul c21.continuousAt
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ D K hK hKQ`. Take `⟨φ₀, hφ₀s, hφ₀n, hφ₀c, hφ₀O, hφ₀K⟩` from `hB k r Wp Wq D K hK hKQ`. Establish `hφ₀cont : Continuous φ₀` using `hφ₀s.continuous`. Use `set I : B.Mat k r → ℝ := fun g => ∫ p, φ₀ (B.sgs p g) ∂D.μSS with hIdef`. Establish `hgqOm : ∀ q ∈ JF.QDom k r D.z D.z', B.gq D q ∈ JF.Om k r D.z D.z'` using `fun q hq => Formalism.FourierDecayAlt.P.big_cell_domain k r Wp Wq D q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hposI : ∀ g ∈ JF.Om k r D.z D.z', 0 < φ₀ g → 0 < I g`. Introduce `g hg hφg`. Establish `hint` using `hN k r Wp Wq D φ₀ hφ₀cont hφ₀c g hg`. Rewrite using `[hIdef]`. Use `(integral_pos_iff_support_of_nonneg (fun p => hφ₀n _) hint).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hca : ContinuousAt (fun p : B.SS k r => φ₀ (B.sgs p g)) oneP` using `hφ₀cont.continuousAt.comp (sgs_continuousAt_oneP g)`. Establish `hev : ∀ᶠ p in 𝓝 (oneP : B.SS k r), 0 < φ₀ (B.sgs p g)`. Use `hca.eventually (lt_mem_nhds ?_)` and prove the remaining obligations. Use `show 0 < φ₀ (B.sgs oneP g)`. Rewrite using `[sgs_oneP]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hφg`. Take `⟨O, hOsub, hOo, hO1⟩` from `mem_nhds_iff.1 hev`. Conclude with `lt_of_lt_of_le (hP k r Wp Wq D O hOo hO1) (measure_mono fun p hp => (ne_of_gt (hOsub hp)))`. Establish `hcont : ContinuousOn (fun q => I (B.gq D q)) K`. Introduce `q₀ hq₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq₀D` using `hKQ hq₀`. Take `⟨U, I', hUo, hgU, hI'U, hII'⟩` from `hS k r Wp Wq D φ₀ hφ₀s hφ₀c hφ₀O _ (hgqOm q₀ hq₀D)`. Establish `hgqc : ContinuousAt (fun q => B.gq D q) q₀` using `((Formalism.FourierDecayAlt.P.BigCellOpenDomain.gq_contDiffOn D 0).continuousOn).continuousAt ((Formalism.FourierDecayAlt.P.BigCellOpenDomain.qdom_open D.z D.z').mem_nhds hq₀D)`. Establish `hev : (fun q => I (B.gq D q)) =ᶠ[𝓝 q₀] fun q => I' (B.gq D q)`. Establish `h1 : ∀ᶠ q in 𝓝 q₀, B.gq D q ∈ U` using `hgqc.preimage_mem_nhds (hUo.mem_nhds hgU)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2 : ∀ᶠ q in 𝓝 q₀, q ∈ JF.QDom k r D.z D.z'` using `(Formalism.FourierDecayAlt.P.BigCellOpenDomain.qdom_open D.z D.z').mem_nhds hq₀D`. Use `filter_upwards [h1, h2] with q hq1 hq2`. Conclude with `hII' _ hq1 (hgqOm q hq2).1`. Establish `hI'c : ContinuousAt I' (B.gq D q₀)` using `(hI'U.continuousOn).continuousAt (hUo.mem_nhds hgU)`. Conclude with `((ContinuousAt.comp_of_eq hI'c hgqc rfl).congr hev.symm).continuousWithinAt`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c₀, hc₀, hc₀K⟩ : ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ q ∈ K, c₀ ≤ I (B.gq D q) := by`. Break down `K.eq_empty_or_nonempty with hKe | hKne` into its components or cases. Conclude with `⟨1, one_pos, fun q hq => by simp [hKe] at hq⟩`. Take `⟨q₁, hq₁, hmin⟩` from `hK.exists_isMinOn hKne hcont`. Conclude with `⟨I (B.gq D q₁), hposI _ (hgqOm q₁ (hKQ hq₁)) (hφ₀K q₁ hq₁), fun q hq => hmin hq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `set s : ℝ → ℝ := fun t => Real.smoothTransition ((t - c₀ / 2) / (c₀ / 2)) with hsdef`. Use `set σ : ℝ → ℝ := fun t => s t * t + (1 - s t) * (c₀ / 2) with hσdef`. Establish `hc2 : 0 < c₀ / 2` using `by linarith`. Establish `hσlb : ∀ t, c₀ / 2 ≤ σ t`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : 0 ≤ s t` using `Real.smoothTransition.nonneg _`. Distinguish the cases in `ht : c₀ / 2 ≤ t`. Use `show c₀ / 2 ≤ s t * t + (1 - s t) * (c₀ / 2)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hz : s t = 0` using `Real.smoothTransition.zero_of_nonpos (div_nonpos_of_nonpos_of_nonneg (by linarith) hc2.le) show c₀ / 2 ≤ s t * t + (1 - s t) * (c₀ / 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz]`. Simplify using the standard rewrite rules. Establish `hσpos : ∀ t, σ t ≠ 0` using `fun t => (lt_of_lt_of_le hc2 (hσlb t)).ne'`. Establish `hσid : ∀ t, c₀ ≤ t → σ t = t`. Introduce `t ht`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : s t = 1` using `Real.smoothTransition.one_of_one_le (by rw [le_div_iff₀ hc2]; linarith)`. Use `show s t * t + (1 - s t) * (c₀ / 2) = t`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hσs : ContDiff ℝ ∞ σ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : ContDiff ℝ ∞ s` using `Real.smoothTransition.contDiff.comp ((contDiff_id.sub contDiff_const).div_const _)`. Conclude with `(hs.mul contDiff_id).add ((contDiff_const.sub hs).mul contDiff_const)`. Set `φ : B.Mat k r → ℂ` to `fun g => if g ∈ B.GV k r then ((φ₀ g * (σ (I g))⁻¹ : ℝ) : ℂ) else 0`. Establish `hφ0 : ∀ g, g ∉ tsupport φ₀ → φ g = 0`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `: φ₀ g = 0` using `image_eq_zero_of_notMem_tsupport hg`. Simplify using `[φ, this]`. Use `⟨φ, ?_, ⟨tsupport φ₀ ∩ B.GV k r, hφ₀c.isCompact.inter_right (gv_isClosed k r), fun g hg => ⟨hg.2, hφ₀O hg.1⟩, fun g hg => ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Distinguish the cases in `hO : g₀ ∈ Q.OmPlus k r D.z D.z'`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, I', hUo, hgU, hI'U, hII'⟩` from `hS k r Wp Wq D φ₀ hφ₀s hφ₀c hφ₀O g₀ ⟨hg₀, hO⟩`. Use `⟨U, fun g => ((φ₀ g * (σ (I' g))⁻¹ : ℝ) : ℂ), hUo, hgU, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ContDiffOn ℝ ∞ (fun g => φ₀ g * (σ (I' g))⁻¹) U` using `hφ₀s.contDiffOn.mul ((hσs.comp_contDiffOn hI'U).inv fun g _ => hσpos _)`. Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn h1`. Introduce `g hg hgG show (if g ∈ B.GV k r then ((φ₀ g * (σ (∫ p, φ₀ (B.sgs p g) ∂D.μSS))⁻¹ : ℝ) : ℂ) else 0) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hgG, hII' g hg hgG]`. Use `⟨(tsupport φ₀)ᶜ, fun _ => 0, (isClosed_tsupport _).isOpen_compl, fun h => hO (hφ₀O h), contDiffOn_const, fun g hg _ => hφ0 g hg⟩` and prove the remaining obligations. Distinguish the cases in `hgG : g ∈ B.GV k r`. Conclude with `hφ0 g fun h => hg ⟨h, hgG⟩`. Simplify using `[φ, hgG]`.
-
-Introduce `p₀ hp₀ q hq`. Establish `hgq` using `hgqOm q (hKQ hq)`. Establish `hg` using `Formalism.FourierDecayAlt.P.PositiveOrbitOpen.sgs_Om D hp₀ hgq`. Establish `hIg : I (B.sgs p₀ (B.gq D q)) = I (B.gq D q)` using `hI k r Wp Wq D φ₀ hφ₀cont p₀ hp₀ _`. Establish `hIpos : 0 < I (B.gq D q)` using `lt_of_lt_of_le hc₀ (hc₀K q hq)`.
-
-Establish `hae : ∀ᵐ p ∂D.μSS, φ (B.sgs p (B.sgs p₀ (B.gq D q))) = ((φ₀ (B.sgs p (B.sgs p₀ (B.gq D q))) * (I (B.gq D q))⁻¹ : ℝ) : ℂ)` using `by filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS D] with p hp`. Establish `hG : B.sgs p (B.sgs p₀ (B.gq D q)) ∈ B.GV k r` using `Formalism.FourierDecayAlt.P.PositiveOrbitOpen.sgs_GV D hp hg.1`. Establish `hIp : I (B.sgs p (B.sgs p₀ (B.gq D q))) = I (B.gq D q)`. Rewrite using `[← hIg]`. Conclude with `hI k r Wp Wq D φ₀ hφ₀cont p hp _`.
-
-Simplify using `only [φ, if_pos hG, hIp, hσid _ (hc₀K q hq)]`. Rewrite using `[integral_congr_ae hae, integral_complex_ofReal, integral_mul_const]`. Express the relevant statement in the definitionally equal form `(((I (B.sgs p₀ (B.gq D q))) * (I (B.gq D q))⁻¹ : ℝ) : ℂ) = 1`. Rewrite using `[hIg, mul_inv_cancel₀ hIpos.ne', Complex.ofReal_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgCutoff_of_parts (hB : ACBump) (hI : ACInv) (hN : ACInt) (hP : ACHaarPos) (hS : ACSmooth) :
     Formalism.FourierDecayAlt.P.JFxI.AvgCutoff := by

@@ -17,11 +17,9 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts
 namespace GlobalTheory.OneMapRef.FinDatum
 
 /- English proof (translation)
-Introduce `q b`. Take `⟨⟨a, ha, h1, h2⟩, j, hj⟩` from `h q b`. Take `⟨m, rfl⟩` from `hN`. Use `⟨⟨a, ha, h1, ?_⟩, j, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h3` using `zsmul_mem h2 (ε : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h3` using `[smul_sub, LinearMap.smul_apply, smul_comm (l.M : E)⁻¹, smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]`. Conclude with `h3`. Take `⟨u, hu, e⟩` from `hj s hs`. Use `⟨(ε : ℤ) • m • u, zsmul_mem (nsmul_mem hu m) _, ?_⟩` and prove the remaining obligations. Use `show s • (ε : ℤ) • Y q b = _`.
-
-Rewrite using `[smul_comm s, e, smul_comm (2 * l.M), smul_smul (2 * l.M), mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRoots_sign {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {r n N : ℕ} {L : Lt E r} {mk : Dw.La →ₗ[𝓞 E] (Fin r → E)} (ε : ℤˣ) (hN : l.M ∣ N)
@@ -43,9 +41,9 @@ theorem isRoots_sign {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Take `⟨hr, g, e, F, ik, φ, th, h, h', -⟩` from `hT.adPin _ hj _ T.toCore.good_σ₀`. Establish `hV` using `hT.spaceW _ hj _ T.toCore.good_σ₀`. Establish `key : ∀ (V : HSp D) (hr : V.rank = D.R.r), V = Wc D i → LatEmb V (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ T.iota ((i : ℕ) + 1)) → LatIsom V (T.Q.Dw ((i : ℕ) + 1)).EF (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ T.iota ((i : ℕ) + 1)) → LatEmb (Wc D i) …`. Introduce and unpack `V hr rfl h h'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h, h'⟩`. Conclude with `key _ hr hV h h'`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lat_iotaW (T : CoreJ D) (hT : LawsJ T) (i : Fin D.R.m) :
     LatEmb (Wc D i) (iotaW T i) ∧ LatIsom (Wc D i) (T.Q.Dw ((i : ℕ) + 1)).EF (iotaW T i) := by
@@ -62,7 +60,7 @@ theorem lat_iotaW (T : CoreJ D) (hT : LawsJ T) (i : Fin D.R.m) :
   exact key _ hr hV h h'
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Unfold `GlobalTheory.AdTh.latR`. Rewrite using `[← LinearMap.range_comp]`. Both sides reduce to the same expression.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latR_range {E : Type} [Field E] [NumberField E] {m r : ℕ} (hr : m = r) {La : Type} [AddCommGroup La]
     [Module (𝓞 E) La] (ι : La →ₗ[𝓞 E] (Fin r → E)) :
@@ -73,7 +71,7 @@ theorem latR_range {E : Type} [Field E] [NumberField E] {m r : ℕ} (hr : m = r)
   rfl
 
 /- English proof (translation)
-Use `⟨one_mem _, 0, ∅, ⟨⟨fun _ => 0, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩, zero_mul _⟩, fun _ h => absurd h (Finset.notMem_empty _), fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[show Formalism.L2.Theta.mt V 1 = 1 from rfl, sub_self, Matrix.zero_apply, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitOffBad_one (V : HSp D) : SplitOffBad V 0 1 := by
   refine ⟨one_mem _, 0, ∅, ⟨⟨fun _ => 0, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩, zero_mul _⟩,
@@ -81,7 +79,7 @@ theorem splitOffBad_one (V : HSp D) : SplitOffBad V 0 1 := by
   rw [show Formalism.L2.Theta.mt V 1 = 1 from rfl, sub_self, Matrix.zero_apply, mul_zero]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Conclude with `⟨rfl, (GlobalTheory.VacSign.isFinOf_iff _ _).2 rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem isFinOf_finR (S T : HSp D) {r : ℕ} (hr : T.rank = r) (y : Matrix (Fin S.rank) (Fin r) D.host.E) :
     GlobalTheory.AdTh.colsR hr (y.submatrix id (Fin.cast hr))ᵀ = y ∧
@@ -90,7 +88,7 @@ theorem isFinOf_finR (S T : HSp D) {r : ℕ} (hr : T.rank = r) (y : Matrix (Fin 
   exact ⟨rfl, (GlobalTheory.VacSign.isFinOf_iff _ _).2 rfl⟩
 
 /- English proof (translation)
-Introduce `j _`. Take `⟨a, ha⟩` from `Submodule.mem_one.1 (h j trivial)`. Conclude with `Submodule.mem_one.2 ⟨H.bar a, (H.bar_eq a).trans (congrArg star ha)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_std_star (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) {n : ℕ} (v : Fin n → D.host.E)
     (h : v ∈ Formalism.L2.Pj.stdLat D.host.E n) : (fun j => star (v j)) ∈ Formalism.L2.Pj.stdLat D.host.E n := by
@@ -99,9 +97,9 @@ theorem mem_std_star (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.ho
   exact Submodule.mem_one.2 ⟨H.bar a, (H.bar_eq a).trans (congrArg star ha)⟩
 
 /- English proof (translation)
-Establish `hrep : (Submodule.Quotient.mk (levRep q) : LevQ Dw l) = q` using `Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)`. Rewrite using `[← hrep, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Establish `hM : (l.M : 𝓞 E) ∈ l.Mb` using `Ideal.mul_le_left (l.prod.ge (Ideal.subset_span rfl))`. Establish `e : s • levRep q = (l.M : 𝓞 E) • z - (cSep l - 1) • s • levRep q`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← hz, sub_smul, one_smul, smul_comm s, sub_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `sub_mem (Submodule.smul_mem_smul hM trivial) (Submodule.smul_mem_smul (LevelPairing.cSep_spec _).2 trivial)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_smul_rep {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} (q : LevQ Dw l) (s : 𝓞 E) (z : Dw.La) (hz : s • (cSep l • levRep q) = l.M • z) :
@@ -118,23 +116,19 @@ theorem smul_eq_zero_of_smul_rep {E : Type} [Field E] [NumberField E] [IsCMField
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce and unpack `D G _ _ Pl0 T0 A T _ R F κ v₀ hR ⟨tie⟩ i`. Distinguish the cases in `hstd : VStd D i`. Use `swap`. Conclude with `⟨1, fun Tp tup O hP => absurd hP.lift.std hstd⟩`. Take `⟨hι, hiso⟩` from `lat_iotaW T tie.laws i`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ⟩` from `GlobalTheory.T.lattice_isometry_sign_second D G Pl0 T0 A _ R F hR i hstd _ _ _ hι hiso`. Use `⟨-δ, fun Tp tup O hP t k => ?_⟩` and prove the remaining obligations. Establish `hw : ∀ q, inC O.c' (O.w t k q) = GlobalTheory.AdTh.hatC (O.dδ t).l₂ (fun x => inC O.c' (O.φ t x)) q` using `fun q => (congrArg (inC (O.dδ t).c₂) (hP.w t k q)).trans (GlobalTheory.AdTh.PairModel.hatC_phiHat (O.dδ t).c₂ _ q)`. Establish `hφ : PhiIs R i (RingHom.id ℂ) (tup t) (iotaW T i) (Mfr (O.dδ t).l₂ • ⊤) fun x => inC O.c' (O.φ t x)` using `(hP.tuple t).phi`. Take `⟨h1, h2, h3⟩` from `(hP.tuple t).half`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hMb : (O.dδ t).l₂.Mb = T.Q.l.Mb * (O.dδ t).I` using `(hP.cov t).1.2.2.2.1`. Establish `hPg : ∀ PP ∈ R.Pg, (∏ PP ∈ R.Pg, PP.asIdeal) ≤ PP.asIdeal` using `fun PP h => Ideal.prod_le_inf.trans (Finset.inf_le h)`. Establish `hQ : ∀ PP ∈ R.Q (tup t), (∏ PP ∈ R.Q (tup t), PP.asIdeal) ≤ PP.asIdeal` using `fun PP h => Ideal.prod_le_inf.trans (Finset.inf_le h)`. Use `⟨fun q hq b s hs => ?_, fun N _ hN Y hY => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `GlobalTheory.HatInt.smul_eq_of_hatC_ne_zero D G Pl0 T0 A _ R i _ _ _ _ _ _ hφ q (by rw [← hw]; exact (map_ne_zero _).2 hq) s (fun PP h => h.elim (fun h => hPg PP h (Ideal.mul_le_left hs)) fun h => hQ PP h (Ideal.mul_le_right hs)) b`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `smul_eq_zero_of_smul_rep _ s z hz`. Establish `hl : ∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q (tup t) → (O.dδ t).l₂.Mb ≤ PP.asIdeal ∧ ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun PP h => ⟨by`. Rewrite using `[hMb]`. Conclude with `h.elim (fun h => Ideal.mul_le_left.trans (h1.le.trans (hPg PP h))) fun h => Ideal.mul_le_right.trans (h2 PP h), h3 PP h⟩`. Establish `hY'` using `isRoots_sign (-δ) hN hY`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL : GlobalTheory.AdTh.latR (rank_Wc i) (latG (Wc D i) 1) = LinearMap.range (T.iota ((i : ℕ) + 1))`. Rewrite using `[← hι.2]`. Conclude with `latR_range _ _`. Rewrite `hY'` using `[← hL]`. Establish `h` using `hδ (tup t) (O.dδ t).l₂ _ hφ hl 0 (O.dδ t).l₂.M 1 1 ⟨Formalism.L2.Pj.stdLat D.host.E _⟩ (T.iota ((i : ℕ) + 1)) (fun PP _ => by simp) (splitOffBad_one _) ?_ ⟨1, Nat.coprime_one_left _, Submodule.smul_le_right, Submodule.smul_le_right⟩ ⟨(O.dδ t).l₂.odd, dvd_rfl, le_inf Submodule.smu …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[show ((1, 1) : GA D (Vc D i) × GA D (Wc D i)) = 1 from rfl, map_one, Module.End.one_apply, Module.End.one_apply]`. Simplify using `only [hw]`. Conclude with `h`. Introduce `v`. Rewrite using `[show FWT.fin (Vc D i) 1 = 1 from map_one _, hstd.2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨mem_std_star T.Q.H v, fun h => ?_⟩` and prove the remaining obligations. Establish `h'` using `mem_std_star T.Q.H _ h`. Simplify using `only [star_star] at h'`. Conclude with `h'`. Introduce `a _`.
-
-Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, nsmul_zero, Units.val_one, Matrix.one_mulVec]`. Conclude with `sub_self _`. Introduce `q`. Use `⟨(isFinOf_finR _ _ _ _).1.trans ?_, (isFinOf_finR _ _ _ _).2⟩` and prove the remaining obligations.
-
-Rewrite using `[smul_smul, Units.val_neg, mul_neg, ← Units.val_mul, Int.units_mul_self, Units.val_one, neg_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaVector_eq_sum_translates : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m), ∃ ε : ℤˣ, ∀ (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∀ (t : Tp) (k : O.Cl' t), (∀ q, O.w t k q ≠ 0 → ∀ b, ∀ s ∈ (∏ PP ∈ R.Pg, PP.asIdeal) * ∏ PP ∈ R.Q (tup t), PP.asIdeal, s • q b = 0) ∧ ∀ N : ℕ, 0 < N → (O.dδ t).l₂.M ∣ N → ∀ Y : (Fin (Vc D i).rank → LevQ (T.Q.Dw ((i : ℕ) + 1)) (O.dδ t).l₂) → Matrix (Fin (Vc D i).rank) (Fin D.R.r) D.host.E, IsRoots (O.dδ t).l₂ (LinearMap.range (T.iota ((i : ℕ) + 1))) ((ε : ℤ) • T.iota ((i : ℕ) + 1)) N Y → R.vP i (tup t) = ((Nat.card (Fin (Vc D i).rank → LevQ (T.Q.Dw ((i : ℕ) + 1)) (O.dδ t).l₂) : ℕ) : ℂ)⁻¹ • ∑ᶠ q, inC O.c' (O.w t k q) • heisO R.ψ (Vc D i) (Wc D i) (finR (Vc D i) (rank_Wc i) (-(Y q))) (R.vacP i) := by
   rintro D G _ _ Pl0 T0 A T _ R F κ v₀ hR ⟨tie⟩ i

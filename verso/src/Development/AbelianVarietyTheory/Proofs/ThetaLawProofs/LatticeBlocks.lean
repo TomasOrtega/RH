@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.KeyPow
 
 /- English proof (translation)
-Establish `h : (Matrix.of fun p q => if (e.symm p).1 = (e.symm q).1 then M (e.symm p).2 (e.symm q).2 else 0 : Matrix (Fin G) (Fin G) R) = Matrix.reindex ((Equiv.prodComm _ _).trans e) ((Equiv.prodComm _ _).trans e) (Matrix.blockDiagonal fun _ : Fin j => M)`. Use extensionality with `p q`. Simplify using `[Matrix.blockDiagonal_apply]`. Rewrite using `[h, Matrix.det_reindex_self, Matrix.det_blockDiagonal]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_blocks {j g G : ℕ} {R : Type*} [CommRing R] (e : Fin j × Fin g ≃ Fin G)
     (M : Matrix (Fin g) (Fin g) R) :
@@ -31,11 +31,11 @@ theorem det_blocks {j g G : ℕ} {R : Type*} [CommRing R] (e : Fin j × Fin g �
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h choose m n h using h`. Use `⟨fun p => m (e.symm p).1 (e.symm p).2, fun p => n (e.symm p).1 (e.symm p).2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨⟨i, k⟩, rfl⟩` from `e.surjective p`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `h₁` using `congrFun (ThetaPow.mulVec_blocks e τ (fun p => (n (e.symm p).1 (e.symm p).2 : ℂ)) i) k`. Establish `h₂` using `congrFun (h i) k`. Simplify using `only [Equiv.symm_apply_apply, Pi.add_apply] at h₁ h₂ ⊢`. Rewrite using `[h₁, h₂]`. Introduce and unpack `⟨m, n, rfl⟩ i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨fun k => m (e (i, k)), fun k => n (e (i, k)), ?_⟩` and prove the remaining obligations. Rewrite using `[← ThetaPow.mulVec_blocks e τ (fun p => (n p : ℂ)) i]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lattice_blocks {j g G : ℕ} (e : Fin j × Fin g ≃ Fin G) (τ : Matrix (Fin g) (Fin g) ℂ) (z : Fin G → ℂ) :
     (∀ i, ∃ m n : Fin g → ℤ, (fun k => z (e (i, k))) = (fun k => (m k : ℂ)) + τ.mulVec (fun k => (n k : ℂ))) ↔
@@ -58,11 +58,11 @@ theorem lattice_blocks {j g G : ℕ} (e : Fin j × Fin g ≃ Fin G) (τ : Matrix
     rfl
 
 /- English proof (translation)
-Introduce and unpack `x y j τ M a b c hp ⟨u, hs, hd, hΛ, hr, hf, hv⟩`. Take `⟨e, u', hΛ', hr', hf', hv'⟩` from `GlobalTheory.T.exists_holomorphicUniformisation_powerThetaKeyDatum x y j u _ ((2 * Real.pi * Complex.I : ℂ)⁻¹ • M) hp hr hf hv`. Take `⟨hs', hd', hθ⟩` from `thetaChar_blockDiagonal j _ τ a b _ e hs hd`. Use `⟨e, _, _, det_blocks e M, u', hs', hd', fun z => ?_, hr', ?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ', ← lattice_blocks]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `forall_congr' fun i => hΛ _`. Use `hf' using 2 with z` and compare the differences between its conclusion and the goal. Rewrite using `[hθ, Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules. Use `hv' p using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q`. Simplify using `only [Pi.smul_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem normalAt_pow : ∀ (x y : KeyIn ℂ) (j : ℕ) (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℝ) (c : ℂ), GlobalTheory.KeyPow.IsKeyPow y x j → GlobalTheory.KeyPow.NormalAt x τ M (fun k => (a k : ℂ)) (fun k => (b k : ℂ)) c → ∃ (e : Fin j × Fin x.P.g ≃ Fin y.P.g) (τ' M' : Matrix (Fin y.P.g) (Fin y.P.g) ℂ), M'.det = M.det ^ j ∧ GlobalTheory.KeyPow.NormalAt y τ' M' (fun p => (a (e.symm p).2 : ℂ)) (fun p => (b (e.symm p).2 : ℂ)) (c ^ j) := by
   rintro x y j τ M a b c hp ⟨u, hs, hd, hΛ, hr, hf, hv⟩

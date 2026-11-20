@@ -72,19 +72,19 @@ Both sides reduce to the same expression.
 theorem zE_apply (x : ℤ_[l]) : zE l E x = algebraMap ℚ_[l] E (x : ℚ_[l]) := rfl
 
 /- English proof (translation)
-Rewrite using `[zE_apply, norm_algebraMap']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_zE (x : ℤ_[l]) : ‖zE l E x‖ = ‖x‖ := by
   rw [zE_apply, norm_algebraMap']; rfl
 
 /- English proof (translation)
-The claim follows from `(algebraMap ℚ_[l] E).injective.comp Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem zE_injective : Function.Injective (zE l E) :=
   (algebraMap ℚ_[l] E).injective.comp Subtype.val_injective
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (zE l E), map_ne_zero_iff _ (zE_injective l E)]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_ne_zero : (l : E) ≠ 0 := by
   rw [← map_natCast (zE l E), map_ne_zero_iff _ (zE_injective l E)]
@@ -105,7 +105,7 @@ def Oi : Subring E where
     rw [norm_neg]; exact ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Oi {x : E} : x ∈ Oi l E ↔ ‖x‖ ≤ 1 := Iff.rfl
 
@@ -130,22 +130,20 @@ Both sides reduce to the same expression.
 @[simp] theorem fac_red {m n : ℕ} (h : m ≤ n) (x : Oi l E) : fac l E h (red l E n x) = red l E m x := rfl
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 theorem red_surjective (n : ℕ) : Function.Surjective (red l E n) := Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Rewrite using `[red, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_eq_zero_iff_dvd (n : ℕ) (x : Oi l E) : red l E n x = 0 ↔ (l : Oi l E) ^ n ∣ x := by
   rw [red, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Establish `ha' : (a : E) ≠ 0` using `fun h => ha (Subtype.ext h)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[Subring.coe_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) y.2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨⟨x / a, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[mem_Oi, norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`. Use `show (x : E) = a * (x / a)`.
-
-Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem dvd_iff_norm_le {a x : Oi l E} (ha : a ≠ 0) : a ∣ x ↔ ‖(x : E)‖ ≤ ‖(a : E)‖ := by
   have ha' : (a : E) ≠ 0 := fun h => ha (Subtype.ext h)
@@ -160,27 +158,25 @@ theorem dvd_iff_norm_le {a x : Oi l E} (ha : a ≠ 0) : a ∣ x ↔ ‖(x : E)�
       field_simp
 
 /- English proof (translation)
-Introduce `h` and use `l_ne_zero l E (by simpa using congrArg Subtype.val h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lO_ne_zero : (l : Oi l E) ≠ 0 := fun h => l_ne_zero l E (by simpa using congrArg Subtype.val h)
 
 /- English proof (translation)
-Rewrite using `[red_eq_zero_iff_dvd, dvd_iff_norm_le l E (pow_ne_zero _ (lO_ne_zero l E))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem red_eq_zero_iff (n : ℕ) (x : Oi l E) : red l E n x = 0 ↔ ‖(x : E)‖ ≤ ‖(l : E)‖ ^ n := by
   rw [red_eq_zero_iff_dvd, dvd_iff_norm_le l E (pow_ne_zero _ (lO_ne_zero l E))]
   simp
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, red_eq_zero_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_eq_iff (n : ℕ) (x y : Oi l E) : red l E n x = red l E n y ↔ ‖(x : E) - y‖ ≤ ‖(l : E)‖ ^ n := by
   rw [← sub_eq_zero, ← map_sub, red_eq_zero_iff]; rfl
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hp : 0 < ‖(l : E)‖ ^ n` using `pow_pos (norm_pos_iff.2 (l_ne_zero l E)) n`. Use `filter_upwards [Metric.closedBall_mem_nhds x hp] with y hy`. Rewrite using `[red_eq_iff, ← dist_eq_norm]`.
-
-Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_red' (n : ℕ) : IsLocallyConstant (red l E n) := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -205,7 +201,7 @@ variable [FiniteDimensional ℚ_[l] E]
 
 include l in
 /- English proof (translation)
-The claim follows from `FiniteDimensional.proper ℚ_[l] E`.
+A detailed English derivation is pending.
 -/
 theorem properSpace : ProperSpace E := FiniteDimensional.proper ℚ_[l] E
 

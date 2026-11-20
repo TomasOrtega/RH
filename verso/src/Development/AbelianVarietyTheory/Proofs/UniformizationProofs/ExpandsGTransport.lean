@@ -23,22 +23,20 @@ section Generic
 variable {X X' Y Y' Y₁ Y₁' Z : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Simplify using `only [gs_eq _ _ _ h, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gs_sum_lemma {Y Z : Scheme.{0}} (f : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : f z ∈ U) {n : ℕ}
     (a : Fin n → Γ(Y, U)) : gs f z U (∑ i, a i) = ∑ i, gs f z U (a i) := by
   simp only [gs_eq _ _ _ h, map_sum]
 
 /- English proof (translation)
-Unfold `GeneratorPullback.SecLin LB.Coh at H`. Use `set j₁ : K' → L.ι := fun κ => J (r ≫ φ₁ κ) with hj₁`. Use `set j₂ : K → L.ι := fun κ => J ((r ≫ h) ≫ φ κ) with hj₂`. Establish `hsum : ∀ k, Sum.elim j₁ j₂ k = J (r ≫ Sum.elim φ₁ (fun k => h ≫ φ k) k)`. Introduce and unpack `(a | a)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [Sum.elim_inr, j₂, Category.assoc]`. Establish `E` using `H j₁ j₂ fun k₁ k₂ e => by rw [hsum, hsum, e]`. Establish `m₁ : r z ∈ L.wchart φ₁ j₁` using `hJ.mem φ₁ r`. Establish `m₂ : r z ∈ L.wchart (fun k => h ≫ φ k) j₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun k => J (r ≫ h ≫ φ k)) = j₂` using `funext fun k => by simp only [j₂, Category.assoc]`. Conclude with `e ▸ hJ.mem (fun k => h ≫ φ k) r`. Establish `m₃ : (r ≫ h) z ∈ L.wchart φ j₂` using `hJ.mem φ (r ≫ h)`. Establish `hV : r z ∈ L.wchart φ₁ j₁ ⊓ L.wchart (fun k => h ≫ φ k) j₂` using `⟨m₁, m₂⟩`. Use `(sval_of s₁ r z J j₁ (fun _ => rfl)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `((gs_res r z inf_le_left hV _).symm.trans (congrArg (gs r z _) E)).trans ?_` and prove the remaining obligations. Rewrite using `[gs_sum_lemma r z _ hV]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_mul r z _ hV, sval_of (s i) (r ≫ h) z J j₂ (fun _ => rfl)]`. Use `congr 1`.
-
-Simplify using `only [resTop]`. Conclude with `gs_res r z le_top hV _`. Rewrite using `[gs_res r z _ hV]`. Conclude with `gs_pull r h z _ m₃ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secLin_val {φ₁ : K' → (Y₁ ⟶ X)} {ε₁ : K' → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)} {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {n : ℕ} {s : Fin n → LB.Sec (LB.LinComb L φ ε)} {h : Y₁ ⟶ Y} {c : Fin n → Γ(Y₁, ⊤)}
@@ -70,23 +68,21 @@ theorem secLin_val {φ₁ : K' → (Y₁ ⟶ X)} {ε₁ : K' → ℤ} {s₁ : LB
     exact gs_pull r h z _ m₃ _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FieldBaseChange.secLin_iff_val hL']`. Introduce `y J' hJ'`. Take `⟨J, hJ, -⟩` from `exists_good L hL y (Empty.elim : Empty → (Y₁' ⟶ X)) Empty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `key` using `secLin_val hS Θ y hJ`. Take `⟨p, hp⟩ : ∃ p : K → L.ι, p = fun κ => J (Θ ≫ φ₁ κ)` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩ : ∃ q : K → L'.ι, q = fun κ => J' (𝟙 Y₁' ≫ φ₁' κ)` from `⟨_, rfl⟩`. Establish `eJ : ∀ ψ ψ' : Y₁' ⟶ X, ψ = ψ' → ψ' y ∈ L.U (J ψ)` using `fun ψ ψ' e => e ▸ hJ ψ`. Establish `eJ' : ∀ ψ ψ' : Y₁' ⟶ X', ψ = ψ' → ψ' y ∈ L'.U (J' ψ)` using `fun ψ ψ' e => e ▸ hJ' ψ`. Establish `mp : ∀ κ, F ((φ₁' κ) ((𝟙 Y₁' : Y₁' ⟶ Y₁') y)) ∈ L.U (p κ)` using `fun κ => by`. Rewrite using `[hp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eJ _ (𝟙 Y₁' ≫ φ₁' κ ≫ F) (by simp only [Category.id_comp, hφ, hφ', Category.assoc, reassoc_of% hsq, hc])`. Establish `mq : ∀ κ, (φ₁' κ) ((𝟙 Y₁' : Y₁' ⟶ Y₁') y) ∈ L'.U (q κ)` using `fun κ => by`. Rewrite using `[hq]`. Conclude with `hJ' _`. Establish `mp' : ∀ κ, F ((φ' κ) (h' y)) ∈ L.U (p κ)` using `fun κ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp]`. Conclude with `eJ _ (h' ≫ φ' κ ≫ F) (by simp only [hφ, reassoc_of% hsq, hc])`. Establish `mq' : ∀ κ, (φ' κ) (h' y) ∈ L'.U (q κ)` using `fun κ => by`. Rewrite using `[hq]`. Conclude with `eJ' _ (h' ≫ φ' κ) (by simp only [Category.id_comp, hφ'])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `H₁ Y₁' (𝟙 Y₁') y p q mp mq`. Establish `e2` using `fun i => H i Y₁' h' y p q mp' mq'`. Establish `k1 : sval s₁ Θ y J = gs (𝟙 Y₁' ≫ Θ) y (L.wchart φ₁ p) (s₁.f p)`. Rewrite using `[Category.id_comp]`. Conclude with `sval_of s₁ Θ y J p (fun κ => by simp only [hp])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : ∀ i, sval (s i) (Θ ≫ h) y J = gs (h' ≫ Φ) y (L.wchart φ p) ((s i).f p)` using `fun i => by`. Rewrite using `[← hsq]`. Conclude with `sval_of (s i) (Θ ≫ h) y J p (fun κ => by simp only [hp, hφ, Category.assoc])`. Establish `hA : sval s₁' (𝟙 Y₁') y J' = gs (𝟙 Y₁') y (L'.wchart φ₁' q) (s₁'.f q)` using `sval_of s₁' (𝟙 Y₁') y J' q (fun κ => by simp only [hq])`. Establish `hB : ∀ i, sval (s' i) (𝟙 Y₁' ≫ h') y J' = gs h' y (L'.wchart φ' q) ((s' i).f q)` using `fun i => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sval_of (s' i) (𝟙 Y₁' ≫ h') y J' q (fun κ => by simp only [hq, hφ', Category.id_comp]), Category.id_comp]`. Establish `hu : (∏ κ, gw w (𝟙 Y₁' ≫ φ₁' κ) y (p κ) (q κ) ^ ε κ) = ∏ κ, gw w (h' ≫ φ' κ) y (p κ) (q κ) ^ ε κ`. Simplify using `only [Category.id_comp, hφ']`. Rewrite `key` using `[k1, e1, hu]`. Simplify using `only [k2, e2] at key`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Simplify using `only [hB]`. Use `(Units.mul_right_inj (∏ κ, gw w (h' ≫ φ' κ) y (p κ) (q κ) ^ ε κ)).mp (key.trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hcc i y, Category.id_comp]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem secLin_transport (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L' (L.pull F))
     (φ₁ : K → (Y₁ ⟶ X)) (φ₁' : K → (Y₁' ⟶ X')) (φ : K → (Y ⟶ X)) (φ' : K → (Y' ⟶ X')) (ε : K → ℤ)
@@ -160,9 +156,9 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
   {D : DegPre R} {D' : DegPre R'}
 
 /- English proof (translation)
-Unfold `DegPre.famφ DegPre.famφB`. Apply the tactic sequence `fin_cases κ <;> dsimp`. Simplify using the standard rewrite rules. Use `show _ = (D.prB F).left ≫ _`. Rewrite using `[← Over.comp_left]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `padd`. Rewrite using `[CartesianMonoidalCategory.comp_lift_assoc, Category.comp_id, CartesianMonoidalCategory.comp_toUnit_assoc]`. Rewrite using `[pullback.condition, Category.assoc]`. Rewrite using `[pullback.condition, Category.assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famφ_eq (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (α : D.X) (κ : Fin 4) :
     DegPre.famφ D F α κ = (DegPre.prB D F).left ≫ D.famφB α κ := by
@@ -178,15 +174,15 @@ theorem famφ_eq (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F
   · rw [pullback.condition, Category.assoc]
 
 /- English proof (translation)
-Take `⟨G1, G2⟩` from `pull_grp hD`. Establish `he` using `hD.he`. Unfold `eSec at he`. Establish `k2 : (toUnit D'.P.A ≫ D'.c x).left ≫ (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) = (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) ≫ (toUnit D.P.A ≫ D.c (hD.xe x)).left` using `by dsimp`. Rewrite using `[← Category.assoc _ D.P.A.hom, G1.w, Category.assoc, Category.assoc, hD.c_pr x]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `k3 : (toUnit D'.P.A ≫ η).left ≫ (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) = (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) ≫ (toUnit D.P.A ≫ η).left` using `by dsimp`. Rewrite using `[← Category.assoc _ D.P.A.hom, G1.w, Category.assoc, Category.assoc, he]`. Set `x₀ : Over.mk (D'.P.A.hom ≫ spMap φ) ⟶ D.P.A` to `Over.homMk (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) G1.w`. Establish `h1` using `G2 D'.P.A (𝟙 _) (toUnit _ ≫ D'.c x) x₀ (x₀ ≫ toUnit D.P.A ≫ D.c (hD.xe x)) (Category.id_comp _).symm k2.symm`. Establish `h2 : x₀ * (x₀ ≫ toUnit D.P.A ≫ D.c (hD.xe x)) = x₀ ≫ padd D.P.A (𝟙 _) (toUnit D.P.A ≫ D.c (hD.xe x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Unfold `padd`. Rewrite using `[Hom.mul_def, CartesianMonoidalCategory.comp_lift_assoc, Category.comp_id]`. Establish `h3 : (𝟙 D'.P.A) * (toUnit _ ≫ D'.c x) = padd D'.P.A (𝟙 _) (toUnit _ ≫ D'.c x)`. Unfold `padd`. Rewrite using `[Hom.mul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, h3, Over.comp_left]`. Unfold `DegPre.famφB`. Use `fin_cases κ`. Simplify using the standard rewrite rules. Conclude with `h1.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `k2`. Conclude with `k3`.
+A detailed English derivation is pending.
 -/
 theorem famφB_pull (hD : IsPullDeg φ D D') (x : D'.X) (κ : Fin 4) :
     D'.famφB x κ ≫ (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) =
@@ -231,13 +227,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ExpGTrans in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ I I' φ D D' hD A A' G _ _ G' _ _ bc hbc U U' wL hwL hthick F _ _ _ hF Θ hΘ1 hΘ2 Ξ hΞ1 hΞ2 k σ σ' s s' hσ hs hE`. Unfold `UnifPre.ExpandsG at hE ⊢`. Take `⟨n, c, σs, fs, hAt, hσlin, hslin⟩` from `hE`. Establish `exG` using `fun i => (GlobalTheory.SecPull.existsUnique_secPull G.left G'.left G.left G'.left U.LG.L U'.LG.L (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) U.LG.isLB U'.LG.isLB wL hwL (Fin 1) (fun _ => 𝟙 G'.left) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ)) (bc.hom.left ≫ pullback.fst G.hom (specOf …`. Use `choose σ's hσ' using exG`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `exD` using `fun i (x : D'.toPre.X) => (GlobalTheory.SecPull.existsUnique_secPull D.toPre.P.A.left D'.toPre.P.A.left D.toPre.P.A.left D'.toPre.P.A.left D.toPre.P.L D'.toPre.P.L (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf φ)) D.toPre.P.isLB D'.toPre.P.isLB hD.w hD.w_gen (Fin 4) (D'.t …`. Use `choose f's hf' using exD`. Use `⟨n, c, σ's, f's, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i e`. Take `⟨hh, hh1⟩` from `hthick e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `expandsAt_transport R R' I I' D D' A A' G G' U U' _ hD.w hD.xe _ wL hD.w_gen hwL (fun x κ => famφB_pull hD x κ) e e k hh hh1 (σs i) (σ's i) (fs i) (f's i) (hσ' i) (hf' i) (hAt i e)`. Use `secLin_transport U.LG.isLB U'.LG.isLB wL _ _ _ _ _ _ _ Ξ _ (fun _ => (Category.comp_id _).symm) (fun _ => (Category.comp_id _).symm) (fun _ => by rw [Category.id_comp, Category.comp_id]) hΞ2 _ _ ?_ _ _ _ _ hσ (fun i => hσ' i) hσlin` and prove the remaining obligations. Introduce `i y`. Rewrite using `[GlobalTheory.FieldBaseChange.gs_scal, GlobalTheory.FieldBaseChange.gs_scal, Category.assoc, hΞ1]`. Introduce `α'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `secLin_transport D.toPre.P.isLB D'.toPre.P.isLB hD.w _ _ _ _ _ _ _ Θ _ (fun κ => famφ_eq D.toPre F (hD.xe α') κ) (fun κ => famφ_eq D'.toPre F α' κ) (fun κ => famφB_pull hD α' κ) hΘ2 _ _ ?_ _ _ _ _ (hs α') (fun i => hf' i α') (hslin (hD.xe α'))` and prove the remaining obligations. Introduce `i y`. Rewrite using `[GlobalTheory.FieldBaseChange.gs_scal, GlobalTheory.FieldBaseChange.gs_scal, Category.assoc, hΘ1]`.
+A detailed English derivation is pending.
 -/
 theorem expandsG_transport : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain
     R'] (I : Ideal R) (I' : Ideal R') (φ : R →+* R') (D : DegData R I) (D' : DegData R' I') (hD

@@ -19,7 +19,7 @@ section Alg
 variable {K K' : Type} [Field K] [Field K'] {R : Subring K} {R' : Subring K'} {σ τ : Type} [Fintype σ] [Fintype τ]
 
 /- English proof (translation)
-Take `⟨α, hα, rfl⟩` from `h`. Conclude with `⟨fun s => φ (α s), fun s => hφ _ (hα s), by simp only [map_sum, map_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lc_map (φ : K →+* K') (hφ : ∀ a ∈ R, φ a ∈ R') {g : σ → K} {a : K} (h : Lc R g a) :
     Lc R' (fun s => φ (g s)) (φ a) := by
@@ -27,11 +27,11 @@ theorem lc_map (φ : K →+* K') (hφ : ∀ a ∈ R, φ a ∈ R') {g : σ → K}
   exact ⟨fun s => φ (α s), fun s => hφ _ (hα s), by simp only [map_sum, map_mul]⟩
 
 /- English proof (translation)
-Take `⟨h0, h1, β, hβ, hη⟩` from `h`. Use `⟨h0, fun s => ?_, ?_⟩` and prove the remaining obligations. Take `⟨α, hα, e⟩` from `hf s`. Rewrite using `[e, Finset.sum_div]`. Conclude with `sum_mem fun t _ => by rw [mul_div_assoc]; exact R.mul_mem (hα t) (h1 t)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose γ hγ e using hg`. Use `⟨fun s => ∑ t, β t * γ t s, fun s => sum_mem fun t _ => R.mul_mem (hβ t) (hγ t s), ?_⟩` and prove the remaining obligations. Rewrite using `[hη]`. Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[e t, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem gen_of_lc {f : σ → K} {g : τ → K} {η : K} (h : Gen R g η) (hf : ∀ s, Lc R g (f s))
     (hg : ∀ t, Lc R f (g t)) : Gen R f η := by
@@ -54,7 +54,7 @@ end Alg
 section Sch
 
 /- English proof (translation)
-Rewrite using `[SmallSec.fnMap_fnOf j hη h (e h'), ← fnOf_resG e h']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fnMap_fnOf_appLE {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (j : Y ⟶ X)
     (hη : j (genericPoint Y) ⤳ genericPoint X) {U : X.Opens} {V : Y.Opens} (e : V ≤ j ⁻¹ᵁ U)
@@ -66,16 +66,16 @@ theorem fnMap_fnOf_appLE {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (j : Y
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Rewrite using `[Scheme.mem_basicOpen X (U := ⊤) _ x (show x ∈ (⊤ : X.Opens) from trivial), map_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ov_iff {p : ℕ} {x : X} : Ov p x ↔ x ∉ X.basicOpen (p : Γ(X, ⊤)) := by
   rw [Scheme.mem_basicOpen X (U := ⊤) _ x (show x ∈ (⊤ : X.Opens) from trivial), map_natCast]
   rfl
 
 /- English proof (translation)
-Use `choose s a hs ha using h2`. Establish `e1 : ∀ᶠ z in 𝓝 x, ∀ i s, RegAt z (f x i s)` using `eventually_all.2 fun i => eventually_all.2 fun s => eventually_regAt (h1 i s)`. Establish `e2 : ∀ᶠ z in 𝓝 x, ∀ i, RegAt z ((p : X.functionField) ^ a i / f x i (s i))` using `eventually_all.2 fun i => eventually_regAt (ha i)`. Take `⟨O, hO, hOo, hxO⟩` from `mem_nhds_iff.1 (e1.and (e2.and h3))`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUO⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxO hOo`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U, hU, hxU, fun z hz => (hO (hUO hz)).1, fun i => ⟨s i, a i, hs i, fun z hz => (hO (hUO hz)).2.1 i⟩, fun z hz => (hO (hUO hz)).2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_affine_nbhd {p : ℕ} {κ σ : Type} [Fintype κ] [Fintype σ] (f : X → κ → σ → X.functionField) (x : X)
     (h1 : ∀ i s, RegAt x (f x i s))
@@ -103,29 +103,25 @@ namespace GlobalTheory.LatChain
 open GlobalTheory.LatChain.Principal
 
 /- English proof (translation)
-Introduce `F _ _ Y V p hp κ σ _ _ f H`. Use `haveI : IsLocallyNoetherian V.X := V.ar.isLocallyNoetherian`. Use `haveI : IsNoetherian V.X := V.ar.isNoetherian`. Establish `hloc : ∀ x : {x : V.X // Ov p x}, ∃ U : V.X.Opens, IsAffineOpen U ∧ x.1 ∈ U ∧ (∀ z ∈ U, ∀ i s, RegAt z (f x.1 i s)) ∧ (∀ i, ∃ (s : σ) (a : ℕ), f x.1 i s ≠ 0 ∧ ∀ z ∈ U, RegAt z ((p : V.X.functionField) ^ a / f x.1 i s)) ∧ ∀ z ∈ U, Ov p z → ∀ i s, Lc (loc z) (f x.1 i) (f z i s) ∧ L …` using `fun x => exists_affine_nbhd f x.1 (H x.1 x.2).1 (H x.1 x.2).2.1 (H x.1 x.2).2.2`. Use `choose U hUa hxU hreg hpa hLc using hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : IsCompact {x : V.X | Ov p x}`. Establish `e : {x : V.X | Ov p x} = (V.X.basicOpen (p : Γ(V.X, ⊤)) : Set V.X)ᶜ` using `Set.ext fun x => ov_iff`. Rewrite using `[e]`. Conclude with `(V.X.basicOpen _).isOpen.isClosed_compl.isCompact`. Take `⟨t, ht⟩` from `hC.elim_finite_subcover (fun x => (U x : Set V.X)) (fun x => (U x).isOpen) fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, hxU _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsec : ∀ (l : {x : V.X // Ov p x}) (i : κ) (s : σ), ∃ c : Γ(V.X, U l), fnOf (U l) (gen_mem (hxU l)) c = f l.1 i s` using `fun l i s => exists_fnOf_eq _ fun z hz => hreg l z hz i s`. Use `choose c hc using hsec`. Set `e` to `Fintype.equivFin (↥t × κ)`. Set `eσ` to `Fintype.equivFin σ`. Establish `hrad : ∀ (l : {x : V.X // Ov p x}) (i : κ), (p : Γ(V.X, U l)) ∈ (Ideal.span (Set.range fun k : Fin (Fintype.card σ) => c l i (eσ.symm k))).radical`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `l i`. Take `⟨s, a, hs0, hpa'⟩` from `hpa l i`. Take `⟨b, hb⟩` from `exists_fnOf_eq (gen_mem (hxU l)) hpa'`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h1 : (p : Γ(V.X, U l)) ^ a = b * c l i s` using `fnOf_injective _ (gen_mem (hxU l)) (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hb, hc, map_pow, map_natCast, div_mul_cancel₀ _ hs0])`. Rewrite using `[h1]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨eσ s, by simp⟩)`. Take `⟨J, hJs, hJ⟩` from `GlobalTheory.Principalise.exists_idealSheaf_principalises V.X p _ (fun j => U (e.symm j).1.1) (fun _ => Fintype.card σ) (fun j k => c (e.symm j).1.1 (e.symm j).2 (eσ.symm k)) (fun j => hUa _) (fun j => hrad _ _)`. Take `⟨V', Z, b, ν, hE, hcomp, hLies⟩` from `GlobalTheory.T.exists_blowup_effective_cartier_cover F Y V p hp.ne_zero J hJs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπ` using `GlobalTheory.T.cover_morphism_generic_point_specializes F Y V V' (ν ≫ b) hLies`. Use `⟨V', ν ≫ b, hπ, hcomp, hLies, fun x' hx' i => ?_⟩` and prove the remaining obligations. Establish `hz : Ov p ((ν ≫ b) x')` using `hx'.map (ν ≫ b)`. Take `⟨l, hlt, hzl⟩ : ∃ l ∈ t, (ν ≫ b) x' ∈ U l` from `by simpa using ht hz`. Take `⟨j, hj⟩ : ∃ j, e.symm j = (⟨l, hlt⟩, i)` from `⟨e _, e.symm_apply_apply _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : (ν ≫ b) x' ∈ U (e.symm j).1.1` using `by rw [hj]; exact hzl`. Establish `hi : (e.symm j).2 = i` using `by rw [hj]`. Take `⟨W0, hW, hxW, -, k, hdiv⟩` from `hJ Z V'.X b ν hE x' j hmem`. Establish `hgW : genericPoint V'.X ∈ W0` using `gen_mem hxW`. Establish `hval : ∀ s, SmallSec.fnMap (ν ≫ b) hπ (f (e.symm j).1.1.1 (e.symm j).2 s) = fnOf W0 hgW (((ν ≫ b).appLE _ W0 hW).hom (c (e.symm j).1.1 (e.symm j).2 s))` using `fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hc, fnMap_fnOf_appLE _ hπ hW (gen_mem (hxU _)) hgW]`. Establish `hd : ∀ s, ((ν ≫ b).appLE _ W0 hW).hom (c (e.symm j).1.1 (e.symm j).2 (eσ.symm k)) ∣ ((ν ≫ b).appLE _ W0 hW).hom (c (e.symm j).1.1 (e.symm j).2 s)` using `fun s => by`. Use `hdiv (eσ s)` as an intermediate fact. Simplify using `only [Equiv.symm_apply_apply] at this`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose d hd using hd`. Take `⟨η, hη⟩ : ∃ η, η = fnOf W0 hgW (((ν ≫ b).appLE _ W0 hW).hom (c (e.symm j).1.1 (e.symm j).2 (eσ.symm k)))` from `⟨_, rfl⟩`. Establish `hfac : ∀ s, SmallSec.fnMap (ν ≫ b) hπ (f (e.symm j).1.1.1 (e.symm j).2 s) = η * fnOf W0 hgW (d s)` using `fun s => by`. Rewrite using `[hval, hd, map_mul, hη]`. Take `⟨s0, a0, hs0, -⟩` from `hpa (e.symm j).1.1 (e.symm j).2`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : η ≠ 0` using `fun h0 => hs0 ((SmallSec.fnMap (ν ≫ b) hπ).injective (by rw [hfac, h0, zero_mul, map_zero]))`. Establish `hgen : Gen (loc x') (fun s => SmallSec.fnMap (ν ≫ b) hπ (f (e.symm j).1.1.1 (e.symm j).2 s)) η`. Use `⟨hne, fun s => ?_, fun s => if s = eσ.symm k then 1 else 0, fun s => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hfac, mul_div_cancel_left₀ _ hne]`.
-
-Conclude with `mem_loc.2 (regAt_fnOf hxW hgW _)`. Simplify using `only split_ifs exacts [one_mem _, zero_mem _]`. Simplify using `only [ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hval, hη]`. Establish `hφ` using `map_mem_loc (ν ≫ b) hπ x'`.
-
-Establish `hgen' : Gen (loc x') (fun s => SmallSec.fnMap (ν ≫ b) hπ (f ((ν ≫ b) x') (e.symm j).2 s)) η` using `gen_of_lc hgen (fun s => lc_map _ hφ (hLc (e.symm j).1.1 _ hmem hz (e.symm j).2 s).1) (fun s => lc_map _ hφ (hLc (e.symm j).1.1 _ hmem hz (e.symm j).2 s).2)`. Rewrite `hgen'` using `[hi]`. Conclude with `⟨η, hgen'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cover_gen_of_lc : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (p : ℕ), p.Prime →
     ∀ (κ σ : Type) [Fintype κ] [Fintype σ] (f : V.X → κ → σ → V.X.functionField), (∀ x, Ov p x →

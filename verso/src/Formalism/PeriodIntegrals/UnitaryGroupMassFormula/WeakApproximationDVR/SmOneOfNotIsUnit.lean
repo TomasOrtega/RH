@@ -13,13 +13,13 @@ def Sm (Q : Type*) [Field Q] [Algebra W Q] (ϖ : W) (k : ℤ) (q : Q) : Prop :=
 variable {ϖ : W}
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective W Q)).mpr hϖ.ne_zero`.
+A detailed English derivation is pending.
 -/
 lemma alg_ne_zero (hϖ : Irreducible ϖ) : algebraMap W Q ϖ ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective W Q)).mpr hϖ.ne_zero
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `ha`. Take `⟨d, rfl⟩` from `hb`. Use `⟨c * d, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_add₀ (alg_ne_zero hϖ), map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma Sm.mul (hϖ : Irreducible ϖ) {k l : ℤ} {a b : Q} (ha : Sm Q ϖ k a) (hb : Sm Q ϖ l b) :
     Sm Q ϖ (k + l) (a * b) := by
@@ -30,7 +30,7 @@ lemma Sm.mul (hϖ : Irreducible ϖ) {k l : ℤ} {a b : Q} (ha : Sm Q ϖ k a) (hb
   ring
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `ha`. Take `⟨d, rfl⟩` from `hb`. Conclude with `⟨c + d, by rw [map_add]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma Sm.add {k : ℤ} {a b : Q} (ha : Sm Q ϖ k a) (hb : Sm Q ϖ k b) : Sm Q ϖ k (a + b) := by
   obtain ⟨c, rfl⟩ := ha
@@ -38,35 +38,35 @@ lemma Sm.add {k : ℤ} {a b : Q} (ha : Sm Q ϖ k a) (hb : Sm Q ϖ k b) : Sm Q ϖ
   exact ⟨c + d, by rw [map_add]; ring⟩
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `ha`. Conclude with `⟨-c, by rw [map_neg]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma Sm.neg {k : ℤ} {a : Q} (ha : Sm Q ϖ k a) : Sm Q ϖ k (-a) := by
   obtain ⟨c, rfl⟩ := ha
   exact ⟨-c, by rw [map_neg]; ring⟩
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `ha.add hb.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Sm.sub {k : ℤ} {a b : Q} (ha : Sm Q ϖ k a) (hb : Sm Q ϖ k b) : Sm Q ϖ k (a - b) := by
   rw [sub_eq_add_neg]; exact ha.add hb.neg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma Sm.zero (k : ℤ) : Sm Q ϖ k (0 : Q) := ⟨0, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨w, by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma Sm.alg (w : W) : Sm Q ϖ 0 (algebraMap W Q w) := ⟨w, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma Sm.one : Sm Q ϖ 0 (1 : Q) := ⟨1, by simp⟩
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `ha`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.2 h)`. Use `⟨ϖ ^ n * c, ?_⟩` and prove the remaining obligations. Establish `: k = l + (n : ℤ)` using `by omega`. Rewrite using `[this, zpow_add₀ (alg_ne_zero hϖ), zpow_natCast, map_mul, map_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -80,9 +80,9 @@ lemma Sm.mono (hϖ : Irreducible ϖ) {k l : ℤ} {a : Q} (ha : Sm Q ϖ k a) (h :
   ring
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simpa using (Sm.one (ϖ := ϖ) (Q := Q))`. Consider the case `succ r ih`. Use `ih.mul hϖ ha` as an intermediate fact. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma Sm.pow (hϖ : Irreducible ϖ) {k : ℤ} {a : Q} (ha : Sm Q ϖ k a) (r : ℕ) :
     Sm Q ϖ (k * r) (a ^ r) := by
@@ -95,7 +95,7 @@ lemma Sm.pow (hϖ : Irreducible ϖ) {k : ℤ} {a : Q} (ha : Sm Q ϖ k a) (r : �
     push_cast; ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩; exact ⟨c, by simp⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `Sm.alg c`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma sm_zero_iff {q : Q} : Sm Q ϖ 0 q ↔ q ∈ Set.range (algebraMap W Q) := by
   constructor
@@ -103,7 +103,7 @@ lemma sm_zero_iff {q : Q} : Sm Q ϖ 0 q ↔ q ∈ Set.range (algebraMap W Q) := 
   · rintro ⟨c, rfl⟩; exact Sm.alg c
 
 /- English proof (translation)
-Rewrite `hw` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `hw`. Conclude with `⟨c, by rw [zpow_one, map_mul]; ring⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma sm_one_of_mem (hϖ : Irreducible ϖ) {w : W} (hw : w ∈ IsLocalRing.maximalIdeal W) :
     Sm Q ϖ 1 (algebraMap W Q w) := by
@@ -113,18 +113,18 @@ lemma sm_one_of_mem (hϖ : Irreducible ϖ) {w : W} (hw : w ∈ IsLocalRing.maxim
   exact ⟨c, by rw [zpow_one, map_mul]; ring⟩
 
 /- English proof (translation)
-The claim follows from `sm_one_of_mem hϖ ((IsLocalRing.mem_maximalIdeal _).mpr hw)`.
+A detailed English derivation is pending.
 -/
 lemma sm_one_of_not_isUnit (hϖ : Irreducible ϖ) {w : W} (hw : ¬ IsUnit w) :
     Sm Q ϖ 1 (algebraMap W Q w) :=
   sm_one_of_mem hϖ ((IsLocalRing.mem_maximalIdeal _).mpr hw)
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `by rintro rfl; exact hq ⟨0, by simp⟩`. Use `⟨hq0, ?_⟩` and prove the remaining obligations. Break down `ValuationRing.isInteger_or_isInteger W q with ⟨w, hw⟩ | ⟨w, hw⟩` into its components or cases. Conclude with `absurd ⟨w, hw⟩ hq`. Use `hw ▸ sm_one_of_not_isUnit hϖ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, rfl⟩`. Apply `hq` to reduce the goal to its premises. Use `⟨((u⁻¹ : Wˣ) : W), ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap W Q (u : W) * algebraMap W Q ((u⁻¹ : Wˣ) : W) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hw]`. Clear denominators, using `at h1` for the nonvanishing conditions. Conclude with `h1`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma big_of_not_mem (hϖ : Irreducible ϖ) {q : Q} (hq : q ∉ Set.range (algebraMap W Q)) :
     q ≠ 0 ∧ Sm Q ϖ 1 q⁻¹ := by
@@ -143,9 +143,9 @@ lemma big_of_not_mem (hϖ : Irreducible ϖ) {q : Q} (hq : q ∉ Set.range (algeb
     exact h1
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := W) q`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hb0 hϖ`. Use `⟨-(n : ℤ), a * ((u : W)), ?_⟩` and prove the remaining obligations. Establish `hbQ : algebraMap W Q b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective W Q)).mpr hb0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu' : algebraMap W Q b * algebraMap W Q (u : W) = algebraMap W Q ϖ ^ n`. Rewrite using `[← map_mul, hu, map_pow]`. Rewrite using `[zpow_neg, zpow_natCast, ← hu', map_mul]`. Establish `hU : algebraMap W Q (u : W) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective W Q)).mpr u.ne_zero`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 lemma sm_exists (hϖ : Irreducible ϖ) (q : Q) : ∃ k : ℤ, Sm Q ϖ k q := by
   obtain ⟨a, b, hb, rfl⟩ := IsFractionRing.div_surjective (A := W) q
@@ -161,11 +161,11 @@ lemma sm_exists (hϖ : Irreducible ϖ) (q : Q) : ∃ k : ℤ, Sm Q ϖ k q := by
   field_simp
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `ht`. Establish `hm : -(ϖ * c) ∈ nonunits W`. Rewrite using `[← IsLocalRing.mem_maximalIdeal, Ideal.neg_mem_iff]`. Conclude with `Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal _).mpr hϖ.not_isUnit)`. Take `⟨u, hu⟩` from `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : (1 : Q) + algebraMap W Q ϖ ^ (1 : ℤ) * algebraMap W Q c = algebraMap W Q (u : W)`. Rewrite using `[hu, zpow_one, sub_neg_eq_add, map_add, map_one, map_mul]`. Establish `hU : algebraMap W Q (u : W) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective W Q)).mpr u.ne_zero`. Use `⟨he ▸ hU, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((u⁻¹ : Wˣ) : W), ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap W Q (u : W) * algebraMap W Q ((u⁻¹ : Wˣ) : W) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[zpow_zero, one_mul]`. Conclude with `(eq_inv_of_mul_eq_one_right h1).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma one_add_of_sm (hϖ : Irreducible ϖ) {t : Q} (ht : Sm Q ϖ 1 t) :
     1 + t ≠ 0 ∧ Sm Q ϖ 0 (1 + t)⁻¹ := by
@@ -187,16 +187,16 @@ lemma one_add_of_sm (hϖ : Irreducible ϖ) {t : Q} (ht : Sm Q ϖ 1 t) :
   exact (eq_inv_of_mul_eq_one_right h1).symm
 
 /- English proof (translation)
-Use `sm_one_of_not_isUnit (Q := Q) hϖ hp` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma sm_natCast (hϖ : Irreducible ϖ) {p : ℕ} (hp : ¬ IsUnit (p : W)) : Sm Q ϖ 1 (p : Q) := by
   have := sm_one_of_not_isUnit (Q := Q) hϖ hp
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Establish `hpW : ((p : W) ^ N) ≠ 0`. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Introduce `h`. Apply `hp` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap W Q), h, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hpW hϖ`. Use `⟨n, fun q ⟨c, hc⟩ => ⟨(u : W) * c, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hc, zpow_natCast, ← map_pow, ← hu, ← map_natCast (algebraMap W Q), ← map_pow, ← map_mul, ← map_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma exists_sm_target (hϖ : Irreducible ϖ) {p : ℕ} (hp : (p : Q) ≠ 0) (N : ℕ) :
     ∃ n : ℕ, ∀ q : Q, Sm Q ϖ n q → ∃ c : W, q = (p : Q) ^ N * algebraMap W Q c := by
@@ -211,7 +211,7 @@ lemma exists_sm_target (hϖ : Irreducible ϖ) {p : ℕ} (hp : (p : Q) ≠ 0) (N 
     ← map_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `h1` using `((sm_natCast (Q := Q) hϖ hp).pow hϖ N).mul hϖ (Sm.alg c)`. Rewrite using `[h, add_sub_cancel_left]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma sm_of_density (hϖ : Irreducible ϖ) {p : ℕ} (hp : ¬ IsUnit (p : W)) {y x : Q} {N : ℕ}
     {c : W} (h : y = x + (p : Q) ^ N * algebraMap W Q c) : Sm Q ϖ N (y - x) := by
@@ -220,11 +220,11 @@ lemma sm_of_density (hϖ : Irreducible ϖ) {p : ℕ} (hp : ¬ IsUnit (p : W)) {y
   simpa using h1
 
 /- English proof (translation)
-Establish `ht : Sm Q ϖ r (q⁻¹ ^ r)` using `by simpa using h.pow hϖ r`. Establish `ht1 : Sm Q ϖ 1 (q⁻¹ ^ r)` using `ht.mono hϖ (by exact_mod_cast hr)`. Take `⟨h1, h2⟩` from `one_add_of_sm hϖ ht1`. Establish `hid : 1 + q ^ r = q ^ r * (1 + q⁻¹ ^ r)`. Rewrite using `[mul_add, mul_one, ← mul_pow, mul_inv_cancel₀ h0, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hqr : q ^ r ≠ 0` using `pow_ne_zero _ h0`. Use `⟨hid ▸ mul_ne_zero hqr h1, ?_⟩` and prove the remaining obligations. Use `ht.mul hϖ h2` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hid, mul_inv, inv_pow]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 lemma big_one_add_pow (hϖ : Irreducible ϖ) {q : Q} (h0 : q ≠ 0) (h : Sm Q ϖ 1 q⁻¹) {r : ℕ}
     (hr : 1 ≤ r) : 1 + q ^ r ≠ 0 ∧ Sm Q ϖ r (1 + q ^ r)⁻¹ := by
@@ -241,7 +241,7 @@ lemma big_one_add_pow (hϖ : Irreducible ϖ) {q : Q} (h0 : q ≠ 0) (h : Sm Q ϖ
   rw [hid, mul_inv, inv_pow]
 
 /- English proof (translation)
-Establish `ht : Sm Q ϖ r (q ^ r)` using `by simpa using h.pow hϖ r`. Take `⟨h1, h2⟩` from `one_add_of_sm hϖ (ht.mono hϖ (by exact_mod_cast hr))`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Simplify using `using ht.mul hϖ h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma small_one_add_pow (hϖ : Irreducible ϖ) {q : Q} (h : Sm Q ϖ 1 q) {r : ℕ} (hr : 1 ≤ r) :
     1 + q ^ r ≠ 0 ∧ Sm Q ϖ r (q ^ r * (1 + q ^ r)⁻¹) := by
@@ -251,7 +251,7 @@ lemma small_one_add_pow (hϖ : Irreducible ϖ) {q : Q} (h : Sm Q ϖ 1 q) {r : �
   simpa using ht.mul hϖ h2
 
 /- English proof (translation)
-The claim follows from `ha.mono hϖ (Int.self_le_toNat k)`.
+A detailed English derivation is pending.
 -/
 lemma Sm.of_toNat (hϖ : Irreducible ϖ) {k : ℤ} {a : Q} (ha : Sm Q ϖ (k.toNat : ℤ) a) :
     Sm Q ϖ k a :=

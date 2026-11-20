@@ -15,23 +15,21 @@ namespace GlobalTheory.CotDim
 open TensorProduct KaehlerDifferential
 
 /- English proof (translation)
-Use `letI : Algebra A ℂ := e.toAlgebra`. Use `haveI : IsScalarTower ℂ A ℂ := IsScalarTower.of_algebraMap_eq fun c => (he c).symm`. Take `⟨b⟩` from `hb`. Establish `hs : Function.Surjective (algebraMap A ℂ)` using `fun c => ⟨algebraMap ℂ A c, he c⟩`. Establish `key : ∀ (c : ℂ) (w : Ω[A⁄ℂ]), (1 : ℂ) ⊗ₜ[A] (c • w) = c • ((1 : ℂ) ⊗ₜ[A] w)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c w`. Rewrite using `[← algebraMap_smul A c w, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul']`. Use `congr 1`. Rewrite using `[Algebra.smul_def, mul_one, smul_eq_mul, mul_one]`. Conclude with `he c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : A →ₗ[ℂ] ℂ ⊗[A] Ω[A⁄ℂ]` to `{ toFun := fun a => (1 : ℂ) ⊗ₜ[A] D ℂ A a map_add' := fun a b => by rw [map_add, TensorProduct.tmul_add] map_smul' := fun c a => by rw [(D ℂ A).map_smul c a, key]; rfl }`. Establish `hφ : ∀ x : RingHom.ker (algebraMap A ℂ), φ x = kerCotangentToTensor ℂ A ℂ ((RingHom.ker (algebraMap A ℂ)).toCotangent x)` using `fun x => (kerCotangentToTensor_toCotangent ℂ A ℂ x).symm`. Establish `hinj` using `GlobalTheory.SmoothTangent.kerCotangentToTensor_injective ℂ A ℂ hs`. Establish `hsurj : ∀ v, ∃ x : RingHom.ker (algebraMap A ℂ), φ x = v`. Introduce `v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `(exact_kerCotangentToTensor_mapBaseChange ℂ A ℂ hs v).mp (Subsingleton.elim _ _)`. Take `⟨x, rfl⟩` from `Ideal.toCotangent_surjective _ y`. Conclude with `⟨x, (hφ x).trans hy⟩`. Establish `hker : ∀ x : RingHom.ker (algebraMap A ℂ), φ x = 0 → (x : A) ∈ RingHom.ker e ^ 2`. Introduce `x hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[hφ, ← map_zero (kerCotangentToTensor ℂ A ℂ), hinj.eq_iff, Ideal.toCotangent_eq_zero]`. Conclude with `hx`. Use `choose g hg using fun j => hsurj (b j)`. Establish `hmemg : ∀ c : Fin d → ℂ, ∑ j, c j • (g j : A) ∈ RingHom.ker (algebraMap A ℂ)` using `fun c => Ideal.sum_mem _ fun j _ => by rw [Algebra.smul_def]; exact Ideal.mul_mem_left _ _ (g j).2`. Establish `hφg : ∀ c : Fin d → ℂ, φ (∑ j, c j • (g j : A)) = ∑ j, c j • b j` using `fun c => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul, hg]`. Use `⟨fun j => g j, fun j => (g j).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use `⟨fun j => b.repr (φ a) j, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : a - ∑ j, b.repr (φ a) j • (g j : A) ∈ RingHom.ker (algebraMap A ℂ)` using `Ideal.sub_mem _ ha (hmemg _)`. Use `hker ⟨_, hmem⟩ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (a - _) = 0`. Rewrite using `[map_sub, hφg, b.sum_repr, sub_self]`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : φ (∑ j, c j • (g j : A)) = 0`. Establish `h1` using `hφ ⟨_, hmemg c⟩`. Rewrite `h1` using `[(Ideal.toCotangent_eq_zero _ _).2 hc, map_zero]`. Conclude with `h1`. Rewrite `h0` using `[hφg]`.
-
-Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent c h0 i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_basis_mod_sq {A : Type} [CommRing A] [Algebra ℂ A] (e : A →+* ℂ)
     (he : ∀ c : ℂ, e (algebraMap ℂ A c) = c) (d : ℕ)
@@ -95,11 +93,9 @@ namespace GlobalTheory.CotDim
 open TensorProduct KaehlerDifferential
 
 /- English proof (translation)
-Use `letI : Algebra A ℂ := e.toAlgebra`. Use `haveI : IsScalarTower ℂ A ℂ := IsScalarTower.of_algebraMap_eq fun c => (he c).symm`. Set `et : Localization.Away t →+* ℂ` to `IsLocalization.Away.lift t (isUnit_iff_ne_zero.2 ht)`. Use `letI : Algebra (Localization.Away t) ℂ := et.toAlgebra`. Use `haveI : IsScalarTower A (Localization.Away t) ℂ := IsScalarTower.of_algebraMap_eq fun a => (IsLocalization.Away.lift_eq t (isUnit_iff_ne_zero.2 ht) a).symm`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : Nontrivial (Localization.Away t) := et.domain_nontrivial`. Use `haveI : Algebra.FormallyEtale A (Localization.Away t) := Algebra.FormallyEtale.of_isLocalization (Submonoid.powers t)`. Use `haveI : Algebra.IsStandardSmooth ℂ (Localization.Away t) := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth d`. Establish `hr` using `Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (R := ℂ) (S := Localization.Away t) d`. Use `haveI : Module.Finite (Localization.Away t) Ω[Localization.Away t⁄ℂ] := Module.finite_of_rank_eq_nat hr`.
-
-Set `b0` to `Module.finBasisOfFinrankEq (Localization.Away t) Ω[Localization.Away t⁄ℂ] (Module.finrank_eq_of_rank_eq hr)`. Set `b1 : Module.Basis (Fin d) ℂ (ℂ ⊗[Localization.Away t] Ω[Localization.Away t⁄ℂ])` to `b0.baseChange ℂ`. Set `E1 : ℂ ⊗[Localization.Away t] (Localization.Away t ⊗[A] Ω[A⁄ℂ]) ≃ₗ[ℂ] ℂ ⊗[Localization.Away t] Ω[Localization.Away t⁄ℂ]` to `TensorProduct.AlgebraTensorModule.congr (LinearEquiv.refl ℂ ℂ) (tensorKaehlerEquivOfFormallyEtale ℂ A (Localization.Away t))`. Set `E2` to `TensorProduct.AlgebraTensorModule.cancelBaseChange A (Localization.Away t) ℂ ℂ Ω[A⁄ℂ]`. Conclude with `⟨(b1.map E1.symm).map E2⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_basis_fibre {A : Type} [CommRing A] [Algebra ℂ A] (e : A →+* ℂ)
     (he : ∀ c : ℂ, e (algebraMap ℂ A c) = c) (d : ℕ) (t : A) (ht : e t ≠ 0)
@@ -132,13 +128,11 @@ theorem nonempty_basis_fibre {A : Type} [CommRing A] [Algebra ℂ A] (e : A →+
 end GlobalTheory.CotDim
 
 /- English proof (translation)
-Introduce `X p d _ U hU y hy e`. Establish `he : ∀ c : ℂ, e (algebraMap ℂ (Sec p U) c) = c` using `fun c => by`. Conclude with `(CxPts.ev_eq hy _).symm.trans (CxPts.ev_algX hy c)`. Establish `h` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension d) p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Take `⟨s, hs, h⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, hts, ht⟩ : ∃ t : Sec p U, t ∈ s ∧ e t ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hle : Ideal.span (↑s : Set Γ(X, U)) ≤ RingHom.ker (e : Γ(X, U) →+* ℂ)` using `Ideal.span_le.2 fun t ht => hcon t ht`. Establish `h1 : (1 : Γ(X, U)) ∈ RingHom.ker (e : Γ(X, U) →+* ℂ)` using `hle (by rw [hs]; exact Submodule.mem_top)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : e 1 = 0` using `h1`. Rewrite `h2` using `[map_one]`. Conclude with `one_ne_zero h2`. Establish `h₁` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).symm.commRingCatIsoToRingEquiv (@h t hts (Localization.Away t) _ (inferInstance : Algebra (Sec p U) (Localization.Away t)) (by exact (inferInstance : IsLocalization (Submonoid.powers …`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension d ℂ (Localization.Away (t : Sec p U)) := by`.
-
-Rewrite using `[← RingHom.isStandardSmoothOfRelativeDimension_algebraMap, IsScalarTower.algebraMap_eq ℂ (Sec p U) (Localization.Away (t : Sec p U))]`. Use `first`. Consider the case `exact h₁`. Consider the case `(convert h₁ using 1 <;> rfl)`. Conclude with `GlobalTheory.CotDim.exists_basis_mod_sq e he d (GlobalTheory.CotDim.nonempty_basis_fibre e he d t ht)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CotDim.exists_cotangent_basis : ∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d p]
     (U : X.Opens), IsAffineOpen U → ∀ (y : CxPts p (RingHom.id ℂ)) (hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) U),

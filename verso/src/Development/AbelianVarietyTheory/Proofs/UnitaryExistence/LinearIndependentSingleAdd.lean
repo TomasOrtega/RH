@@ -18,33 +18,29 @@ namespace GlobalTheory.CuspExist
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use `set s : Fin r → E := fun a => if (a : ℕ) < X.p0 then (1 : E) else -1 with hs`. Establish `hs0 : ∀ a, s a ≠ 0` using `fun a => by`. Apply the tactic sequence `simp only [hs]; split_ifs <;> simp`. Establish `hscc : ∀ a, cc (s a) = s a` using `fun a => by`. Apply the tactic sequence `simp only [hs]; split_ifs <;> simp [cc]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hsτ : ∀ (τ : E →+* ℂ) a, τ (s a) = ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)` using `fun τ a => by`. Apply the tactic sequence `simp only [hs, sgn]; split_ifs <;> simp`. Establish `hS0 : (Matrix.diagonal s).det ≠ 0`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun a _ => hs0 a`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSh : ∀ a b, cc (Matrix.diagonal s a b) = Matrix.diagonal s b a`. Introduce `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `using hscc a`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]`. Simplify using `[cc]`. Use `set d : E := X.Gm.det / (Matrix.diagonal s).det with hd`. Establish `hd0 : d ≠ 0` using `div_ne_zero X.Gm_det hS0`. Establish `hdcc : cc d = d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1` using `GlobalTheory.Published.cc_det_of_herm X.Gm_herm`. Establish `h2` using `GlobalTheory.Published.cc_det_of_herm hSh`. Unfold `cc at h1 h2 ⊢`. Rewrite using `[hd, map_div₀, h1, h2]`. Establish `hdet : (Matrix.diagonal fun a : Fin r => s a * (if a = k then d else 1)).det = X.Gm.det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_diagonal, Finset.prod_mul_distrib, Finset.prod_ite_eq', if_pos (Finset.mem_univ _), ← Matrix.det_diagonal, hd]`. Clear the denominators using the available nonvanishing facts. Use `⟨d, GlobalTheory.Published.Landherr.of_signature H X.Gm_herm ?_ X.Gm_det (hdet ▸ X.Gm_det) (X.Ψ : Set (E →+* ℂ)) (fun τ => ?_) (fun τ hτ => ⟨X.p0, X.signature ⟨τ, hτ⟩, ?_⟩) ⟨1, ?_⟩⟩` and prove the remaining obligations. Introduce `a b`. Distinguish the cases in `h : a = b`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Substitute `h` using the available equality. Establish `h1` using `hscc a`. Unfold `cc at h1 hdcc ⊢`. Rewrite using `[Matrix.diagonal_apply_eq, map_mul, h1]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `split_ifs`. Conclude with `hdcc`. Conclude with `map_one _`. Rewrite using `[Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]`. Simplify using `[cc]`.
+Prove the second alternative. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : ComplexEmbedding.conjugate τ ∈ X.Ψ`. Conclude with `Or.inr h`. Conclude with `Or.inl ((X.cmType τ).mpr h)`. Take `⟨Q, hQ, hg⟩` from `X.signature ⟨τ, hτ⟩`. Establish `hpos : 0 < (τ d).re`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.Published.Landherr.re_det_div_pos X.Gm_det τ ⟨Q, hQ, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Published.gram_eq, hg, Matrix.diagonal_map (map_zero τ)]`. Simplify using `only [hsτ]`. Establish `hre : ((τ d).re : ℂ) = τ d`. Rewrite using `[← Complex.conj_eq_iff_re, ← GlobalTheory.Published.embedding_cc, hdcc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set t : ℝ := (Real.sqrt (τ d).re)⁻¹ with ht`. Establish `ht0 : t ≠ 0` using `inv_ne_zero (Real.sqrt_pos.mpr hpos).ne'`. Establish `htt : (t : ℂ) * τ d * t = 1`. Rewrite using `[← hre, mul_right_comm, ← Complex.ofReal_mul, ← Complex.ofReal_mul, ht, ← mul_inv, Real.mul_self_sqrt hpos.le, inv_mul_cancel₀ hpos.ne', Complex.ofReal_one]`. Use `⟨Matrix.diagonal fun a => if a = k then (t : ℂ) else 1, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Matrix.det_diagonal, Finset.prod_ite_eq', if_pos (Finset.mem_univ _)]`. Conclude with `ht0` after adjusting the coercions. Rewrite using `[GlobalTheory.Published.gram_eq, Matrix.diagonal_transpose, Matrix.diagonal_map (map_zero τ), Matrix.diagonal_map (map_zero _), Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
-
-Rewrite using `[map_mul, hsτ]`. Use `split_ifs`. Rewrite using `[Complex.conj_ofReal]`. Take the linear combination `((sgn X.p0 (a : ℕ) : ℝ) : ℂ) * htt`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hdet, div_self X.Gm_det]`. Simplify using `[cc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_congr_diagonal (H : GlobalTheory.Published.Landherr) (X : Data E r) (k : Fin r) :
     ∃ (d : E) (P : Matrix (Fin r) (Fin r) E), P.det ≠ 0 ∧
@@ -122,7 +118,7 @@ theorem exists_congr_diagonal (H : GlobalTheory.Published.Landherr) (X : Data E 
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg a`. Use `congrFun hg (i a)` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, Pi.single_apply, hij, hi.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linearIndependent_single_add {ρ : ℕ} {i j : Fin ρ → Fin r} (hi : Function.Injective i)
     (hij : ∀ a b, i a ≠ j b) :
@@ -134,9 +130,9 @@ theorem linearIndependent_single_add {ρ : ℕ} {i j : Fin ρ → Fin r} (hi : F
   simpa [Finset.sum_apply, Pi.single_apply, hij, hi.eq_iff] using this
 
 /- English proof (translation)
-Establish `hji : ∀ a b, j a ≠ i b` using `fun a b => (hij b a).symm`. Rewrite using `[GlobalTheory.Published.LandherrSt.herm_eq, add_dotProduct, single_dotProduct, single_dotProduct, Matrix.mulVec_diagonal, Matrix.mulVec_diagonal]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify `hg a` using `[cc, Pi.single_apply, hij, hji]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[cc, hij, hji, hi.eq_iff, hj.eq_iff, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_diagonal_single_add {ρ : ℕ} {i j : Fin ρ → Fin r} (hi : Function.Injective i)
     (hj : Function.Injective j) (hij : ∀ a b, i a ≠ j b) (g : Fin r → E)
@@ -153,21 +149,21 @@ theorem herm_diagonal_single_add {ρ : ℕ} {i j : Fin ρ → Fin r} (hi : Funct
   · simp [cc, hij, hji, hi.eq_iff, hj.eq_iff, h]
 
 /- English proof (translation)
-Introduce `HN E _ _ _ r ρ X h1 h2 h3`. Establish `H` using `GlobalTheory.Published.landherr_of_landherrSt (GlobalTheory.LocalQuad.landherrSt_of_hasseNormSt HN)`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : Fin r, (k : ℕ) + ρ < X.p0 ∨ X.p0 + ρ ≤ k := by`. Distinguish the cases in `h : ρ < X.p0`. Conclude with `⟨⟨0, by omega⟩, Or.inl (by simpa using h)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨⟨r - 1, by omega⟩, Or.inr (by simp only; omega)⟩`. Take `⟨d, P, hP, hG⟩` from `exists_congr_diagonal H X k`. Set `i : Fin ρ → Fin r` to `fun a => ⟨X.p0 - 1 - a, by have := a.2; omega⟩`. Set `j : Fin ρ → Fin r` to `fun a => ⟨X.p0 + a, by have := a.2; omega⟩`. Establish `hi : Function.Injective i` using `fun a b h => by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Simplify using `only [i, Fin.mk.injEq] at h`. Conclude with `Fin.ext (by omega)`. Establish `hj : Function.Injective j` using `fun a b h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [j, Fin.mk.injEq] at h`. Conclude with `Fin.ext (by omega)`. Establish `hij : ∀ a b, i a ≠ j b` using `fun a b h => by`. Use `a.2` as an intermediate fact. Simplify using `only [i, j, Fin.mk.injEq] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨⟨fun a => P *ᵥ (Pi.single (i a) 1 + Pi.single (j a) 1), ?_, fun a b => ?_⟩⟩` and prove the remaining obligations. Use `(linearIndependent_single_add (E := E) hi hij).map' (Matrix.toLin' P) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `Matrix.mulVec_injective_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det P).mpr (isUnit_iff_ne_zero.mpr hP))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.Published.LandherrSt.herm_mulVec, ← hG]`. Use `herm_diagonal_single_add hi hj hij _ (fun c => ?_) a b` and prove the remaining obligations. Use `c.2` as an intermediate fact. Establish `e1 : i c ≠ k` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [i] at this`. Use linear arithmetic over natural numbers and integers. Establish `e2 : j c ≠ k` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [j] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `e3 : (i c : ℕ) < X.p0` using `by simp only [i]; omega`. Establish `e4 : ¬ (j c : ℕ) < X.p0` using `by simp only [j]; omega`. Simplify using `only [if_pos e3, if_neg e4, if_neg e1, if_neg e2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nonempty_cuspFD : GlobalTheory.Published.HasseNormSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (X : Data E r), ρ ≤ X.p0 → ρ + X.p0 ≤ r → 2 * ρ < r → Nonempty (FJ.CuspFD X ρ) := by
   intro HN E _ _ _ r ρ X h1 h2 h3

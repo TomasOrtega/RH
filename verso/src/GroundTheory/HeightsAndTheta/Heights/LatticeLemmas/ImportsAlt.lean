@@ -10,23 +10,23 @@ namespace GroundTheory.Heights₂.Heights.LatticeLemmas
 universe u v
 
 /- English proof (translation)
-The claim follows from `LocalGlobalIndex.proof`.
+A detailed English derivation is pending.
 -/
 theorem LocalGlobalIndex.full : LocalGlobalIndex.Statement.{u, v} := LocalGlobalIndex.proof
 
 /- English proof (translation)
-The claim follows from `LocalLatticeIndex.proof`.
+A detailed English derivation is pending.
 -/
 theorem LocalLatticeIndex.full : LocalLatticeIndex.Statement.{u, v} := LocalLatticeIndex.proof
 
 /- English proof (translation)
-The claim follows from `LocalIndex.proof LocalGlobalIndex.full LocalLatticeIndex.full`.
+A detailed English derivation is pending.
 -/
 theorem LocalIndex.full : LocalIndex.Statement.{u, v} :=
   LocalIndex.proof LocalGlobalIndex.full LocalLatticeIndex.full
 
 /- English proof (translation)
-The claim follows from `LocalChange.full_of_localIndex LocalIndex.full`.
+A detailed English derivation is pending.
 -/
 theorem LocalChange.full : LocalChange.Statement.{u, v} :=
   LocalChange.full_of_localIndex LocalIndex.full

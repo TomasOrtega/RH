@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 theorem emb_val (κ : UK n) : (emb κ).val = κ.1 := rfl
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Use `⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Use `show Continuous fun κ : UK n => star κ.1`. Conclude with `continuous_subtype_val.star`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_emb : Continuous (emb : UK n → G n) := by
   rw [Units.continuous_iff]
@@ -54,7 +54,7 @@ theorem continuous_emb : Continuous (emb : UK n → G n) := by
   exact continuous_subtype_val.star
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompactRight.map_mul_right_eq_of_mem_compact μ emb.range (by rw [MonoidHom.coe_range]; exact isCompact_range continuous_emb) _ ⟨κ, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_emb {_ : MeasurableSpace (G n)} [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (κ : UK n) : Measure.map (· * emb κ) μ = μ :=
@@ -62,7 +62,7 @@ theorem map_mul_emb {_ : MeasurableSpace (G n)} [BorelSpace (G n)] (μ : Measure
     (by rw [MonoidHom.coe_range]; exact isCompact_range continuous_emb) _ ⟨κ, rfl⟩
 
 /- English proof (translation)
-Use `conv_rhs => rw [← map_mul_emb μ κ]`. Conclude with `((MeasurableEquiv.mulRight (emb κ)).measurableEmbedding.integral_map H).symm`.
+A detailed English derivation is pending.
 -/
 theorem integral_mul_emb {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {_ : MeasurableSpace (G n)}
     [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (H : G n → V) (κ : UK n) :
@@ -71,19 +71,19 @@ theorem integral_mul_emb {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {
   exact ((MeasurableEquiv.mulRight (emb κ)).measurableEmbedding.integral_map H).symm
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem val_mem (y : G n) : y.val ∈ GLs n :=
   ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
 /- English proof (translation)
-The claim follows from `isOpen_ne.preimage (continuous_id.matrix_det)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) :=
   isOpen_ne.preimage (continuous_id.matrix_det)
 
 /- English proof (translation)
-Establish `: (fun y : Mat n => y⁻¹) = fun y => (y.det)⁻¹ • y.adjugate`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[this]`. Conclude with `(continuous_id.matrix_det.continuousOn.inv₀ fun y hy => hy).smul continuous_id.matrix_adjugate.continuousOn`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_inv : ContinuousOn (fun y : Mat n => y⁻¹) (GLs n) := by
   have : (fun y : Mat n => y⁻¹) = fun y => (y.det)⁻¹ • y.adjugate := by
@@ -93,9 +93,9 @@ theorem continuousOn_inv : ContinuousOn (fun y : Mat n => y⁻¹) (GLs n) := by
     continuous_id.matrix_adjugate.continuousOn
 
 /- English proof (translation)
-Establish `h : ContinuousOn (fun y : Mat n => 1 + ∑ a, ∑ b, (‖y a b‖ ^ 2 + ‖y⁻¹ a b‖ ^ 2)) (GLs n)`. Use `continuousOn_const.add (continuousOn_finset_sum _ fun a _ => continuousOn_finset_sum _ fun b _ => ?_)` and prove the remaining obligations. Use `ContinuousOn.add ?_ ?_` and prove the remaining obligations. Conclude with `((continuous_id.matrix_elem a b).norm.pow 2).continuousOn`. Conclude with `(((continuous_id.matrix_elem a b).comp_continuousOn continuousOn_inv).norm).pow 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h.log fun y _ => ?_` and prove the remaining obligations. Establish `: 0 ≤ ∑ a, ∑ b, (‖y a b‖ ^ 2 + ‖y⁻¹ a b‖ ^ 2)` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => by positivity`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem continuousOn_lg : ContinuousOn (lg : Mat n → ℝ) (GLs n) := by
   have h : ContinuousOn (fun y : Mat n => 1 + ∑ a, ∑ b, (‖y a b‖ ^ 2 + ‖y⁻¹ a b‖ ^ 2)) (GLs n) := by
@@ -109,7 +109,7 @@ theorem continuousOn_lg : ContinuousOn (lg : Mat n → ℝ) (GLs n) := by
   positivity
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hS.bddAbove_image (continuousOn_lg.mono hG)`. Use `⟨R, fun y hy hlt => hf y hy fun hyS => ?_⟩` and prove the remaining obligations. Conclude with `absurd (hR (Set.mem_image_of_mem _ hyS)) (not_le.2 hlt)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cpt_of {V : Type} [Zero V] {S : Set (Mat n)} (hS : IsCompact S) (hG : S ⊆ GLs n) {f : Mat n → V}
     (hf : ∀ y ∈ GLs n, y ∉ S → f y = 0) : Cpt f := by
@@ -118,13 +118,11 @@ theorem cpt_of {V : Type} [Zero V] {S : Set (Mat n)} (hS : IsCompact S) (hG : S 
   exact absurd (hR (Set.mem_image_of_mem _ hyS)) (not_le.2 hlt)
 
 /- English proof (translation)
-Use `haveI : CompactSpace C := isCompact_iff_compactSpace.1 hC`. Set `φ : C → G n` to `fun c => Matrix.GeneralLinearGroup.mkOfDetNeZero c.1 (hs c.2)`. Establish `hφ : Continuous φ`. Rewrite using `[Units.continuous_iff]`. Use `⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Continuous fun c : C => (c.1)⁻¹` using `continuousOn_iff_continuous_restrict.1 (continuousOn_inv.mono hs)`. Use `this.congr fun c => ?_` and prove the remaining obligations. Conclude with `(Matrix.coe_units_inv (φ c)).symm`. Establish `he : {y : G n | y.val ∈ C} = Set.range φ`. Use extensionality with `y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨⟨y.val, hy⟩, Units.ext rfl⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `c.2`.
-
-Rewrite using `[he]`. Conclude with `isCompact_range hφ`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_preimage_val {C : Set (Mat n)} (hC : IsCompact C) (hs : C ⊆ GLs n) :
     IsCompact {y : G n | y.val ∈ C} := by
@@ -148,7 +146,7 @@ theorem isCompact_preimage_val {C : Set (Mat n)} (hC : IsCompact C) (hs : C ⊆ 
   exact isCompact_range hφ
 
 /- English proof (translation)
-Simplify using `using congrArg Subtype.val (mul_inv_cancel κ)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_inv_val (κ : UK n) : κ.1 * (κ⁻¹ : UK n).1 = 1 := by
   simpa using congrArg Subtype.val (mul_inv_cancel κ)
@@ -163,7 +161,7 @@ section Sec
 variable (E : KMod n)
 
 /- English proof (translation)
-The claim follows from `E.cont.clm_apply continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orbit (v : E.V) : Continuous fun κ : UK n => E.ρ κ v :=
   E.cont.clm_apply continuous_const
@@ -174,7 +172,7 @@ variable {E}
 variable {β : Mat n → ℝ} {v : E.V}
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiff.sum fun l _ => (contDiff_pi.1 (contDiff_pi.1 contDiff_fst i) l).mul (contDiff_pi.1 (contDiff_pi.1 contDiff_snd l) j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_mul : ContDiff ℝ ∞ fun p : Mat n × Mat n => p.1 * p.2 := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
@@ -183,7 +181,7 @@ theorem contDiff_mul : ContDiff ℝ ∞ fun p : Mat n × Mat n => p.1 * p.2 := b
     (contDiff_pi.1 (contDiff_pi.1 contDiff_fst i) l).mul (contDiff_pi.1 (contDiff_pi.1 contDiff_snd l) j)
 
 /- English proof (translation)
-Establish `hΨ : ContDiff ℝ ∞ (fun z : Mat n × (Mat n × E.V) => β (z.1 * z.2.1) • z.2.2)` using `(hβ.comp (contDiff_mul.comp (contDiff_fst.prodMk contDiff_snd.fst))).smul contDiff_snd.snd`. Conclude with `GlobalTheory.CompanionTheory.ParSmooth.contDiff_integral_comp_compact (nu n) _ hΨ (fun κ : UK n => (κ.1, E.ρ κ v)) (continuous_subtype_val.prodMk (continuous_orbit E v))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_sec (hβ : ContDiff ℝ ∞ β) : ContDiff ℝ ∞ (sec E β v) := by
   have hΨ : ContDiff ℝ ∞ (fun z : Mat n × (Mat n × E.V) => β (z.1 * z.2.1) • z.2.2) :=
@@ -192,7 +190,7 @@ theorem contDiff_sec (hβ : ContDiff ℝ ∞ β) : ContDiff ℝ ∞ (sec E β v)
     (continuous_subtype_val.prodMk (continuous_orbit E v))
 
 /- English proof (translation)
-The claim follows from `((hβ.comp (continuous_const.matrix_mul continuous_subtype_val)).smul ha).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_avg (hβ : Continuous β) (y : Mat n) (a : UK n → E.V) (ha : Continuous a) :
     Integrable (fun κ : UK n => β (y * κ.1) • a κ) (nu n) :=
@@ -200,9 +198,9 @@ theorem integrable_avg (hβ : Continuous β) (y : Mat n) (a : UK n → E.V) (ha 
     (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Unfold `sec`. Establish `h1 : ∫ κ : UK n, β (y * k'.1 * κ.1) • E.ρ κ v ∂nu n = ∫ κ : UK n, (fun κ' : UK n => β (y * κ'.1) • E.ρ (k'⁻¹ * κ') v) (k' * κ) ∂nu n`. Use `integral_congr_ae (Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `[mul_assoc]`. Rewrite using `[h1, integral_mul_left_eq_self (fun κ' : UK n => β (y * κ'.1) • E.ρ (k'⁻¹ * κ') v) k', ← ContinuousLinearMap.integral_comp_comm _ (integrable_avg hβ y _ (continuous_orbit E v))]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `[map_mul, ContinuousLinearMap.map_smul_of_tower]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sec_mul (hβ : Continuous β) (y : Mat n) (k' : UK n) :
     sec E β v (y * k'.1) = E.ρ k'⁻¹ (sec E β v y) := by
@@ -217,9 +215,9 @@ theorem sec_mul (hβ : Continuous β) (y : Mat n) (k' : UK n) :
   simp [map_mul, ContinuousLinearMap.map_smul_of_tower]
 
 /- English proof (translation)
-Unfold `sec`. Establish `: ∀ κ : UK n, β (y * κ.1) = 0` using `fun κ => by`. Assume the negation of the conclusion as `h`. Use `hy ?_` and prove the remaining obligations. Establish `h2` using `hU _ (hs (subset_tsupport _ h)) κ⁻¹`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[mul_assoc, mul_inv_val, mul_one]`. Then use the resulting hypothesis. Simplify using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 -/
 theorem sec_eq_zero {U : Set (Mat n)} (hU : ∀ y ∈ U, ∀ k₂ : UK n, y * k₂.1 ∈ U) (hs : tsupport β ⊆ U)
     {y : Mat n} (hy : y ∉ U) : sec E β v y = 0 := by
@@ -232,11 +230,11 @@ theorem sec_eq_zero {U : Set (Mat n)} (hU : ∀ y ∈ U, ∀ k₂ : UK n, y * k�
   simp [this]
 
 /- English proof (translation)
-Set `S : Set (Mat n)` to `(fun p : Mat n × UK n => p.1 * (p.2⁻¹ : UK n).1) '' (tsupport β ×ˢ Set.univ)`. Establish `hcont : Continuous fun p : Mat n × UK n => p.1 * (p.2⁻¹ : UK n).1` using `continuous_fst.matrix_mul (continuous_subtype_val.comp (continuous_inv.comp continuous_snd))`. Establish `hS : IsCompact S` using `(hc.isCompact.prod isCompact_univ).image hcont`. Use `cpt_of hS ?_ fun y _ hy => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨hp, -⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hUG (hU _ (hs hp) _)`. Unfold `sec`. Establish `: ∀ κ : UK n, β (y * κ.1) = 0` using `fun κ => by`. Assume the negation of the conclusion as `h`. Use `hy ⟨(y * κ.1, κ), ⟨subset_tsupport _ h, Set.mem_univ _⟩, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[mul_assoc, mul_inv_val, mul_one]`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cpt_sec {U : Set (Mat n)} (hU : ∀ y ∈ U, ∀ k₂ : UK n, y * k₂.1 ∈ U) (hUG : U ⊆ GLs n)
     (hc : HasCompactSupport β) (hs : tsupport β ⊆ U) : Cpt (sec E β v) := by
@@ -265,14 +263,14 @@ def hf (β : Mat n → ℝ) (k : Mat n → (E.V →L[ℂ] E.V)) (v : E.V) : G n 
   fun y => β y.val • k y.val v
 
 /- English proof (translation)
-The claim follows from `(hβ.comp Units.continuous_val).smul ((hk.comp_continuous Units.continuous_val val_mem).clm_apply continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hf (hβ : Continuous β) (hk : ContinuousOn k (GLs n)) : Continuous (hf β k v) :=
   (hβ.comp Units.continuous_val).smul
     ((hk.comp_continuous Units.continuous_val val_mem).clm_apply continuous_const)
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (isCompact_preimage_val hc.isCompact hs) fun y hy => ?_` and prove the remaining obligations. Establish `: β y.val = 0` using `image_eq_zero_of_notMem_tsupport hy`. Simplify using `[hf, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem compact_hf (hc : HasCompactSupport β) (hs : tsupport β ⊆ GLs n) : HasCompactSupport (hf β k v) := by
   refine HasCompactSupport.intro (isCompact_preimage_val hc.isCompact hs) fun y hy => ?_
@@ -280,7 +278,7 @@ theorem compact_hf (hc : HasCompactSupport β) (hs : tsupport β ⊆ GLs n) : Ha
   simp [hf, this]
 
 /- English proof (translation)
-Unfold `sec`. Rewrite using `[one_mul, ← ContinuousLinearMap.integral_comp_comm _ (integrable_avg hβ y.val _ (continuous_orbit E v))]`. Use `integral_congr_ae (Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `only [hf, Units.val_mul, emb_val]`. Rewrite using `[hr _ (val_mem y), ContinuousLinearMap.map_smul_of_tower]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -295,9 +293,9 @@ theorem apply_sec (hβ : Continuous β)
   rfl
 
 /- English proof (translation)
-Establish `hcont : Continuous (Function.uncurry fun (y : G n) (κ : UK n) => H (y * emb κ))` using `hH.comp (continuous_fst.mul (continuous_emb.comp continuous_snd))`. Use `hcont.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Establish `hm : Continuous fun p : G n × UK n => (p.1 * (emb p.2)⁻¹, p.2)` using `(continuous_fst.mul ((continuous_emb.comp continuous_snd).inv)).prodMk continuous_snd`. Use `HasCompactSupport.intro ((hc.isCompact.prod isCompact_univ).image hm) fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hp ⟨(p.1 * emb p.2, p.2), ⟨subset_tsupport _ h, Set.mem_univ _⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem integrable_prod {_ : MeasurableSpace (G n)} [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     {H : G n → E.V} (hH : Continuous H) (hc : HasCompactSupport H) :
@@ -313,9 +311,9 @@ theorem integrable_prod {_ : MeasurableSpace (G n)} [BorelSpace (G n)] (μ : Mea
   simp
 
 /- English proof (translation)
-Establish `hH` using `continuous_hf (v := v) hβ hk`. Establish `hC` using `compact_hf (k := k) (v := v) hc hs`. Unfold `act`. Repeatedly rewrite using `[apply_sec hβ hr]`. Rewrite using `[integral_integral_swap (integrable_prod μ hH hC)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[integral_mul_emb μ (hf β k v)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_sec {_ : MeasurableSpace (G n)} [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (hβ : Continuous β) (hc : HasCompactSupport β) (hs : tsupport β ⊆ GLs n)
@@ -330,25 +328,23 @@ theorem act_sec {_ : MeasurableSpace (G n)} [BorelSpace (G n)] (μ : Measure (G 
   simp
 
 /- English proof (translation)
-Introduce `n _ _ μ _ E k U hU hUG hUK hk hr hact y₀ hy₀`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[ContinuousLinearMap.zero_apply]`. Use `set w := k y₀ v with hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `ℓ : E.V →L[ℝ] ℝ` to `Complex.reCLM ∘L ((innerSL ℂ w).restrictScalars ℝ)`. Establish `hℓ : ∀ x, ℓ x = (⟪w, x⟫_ℂ).re` using `fun x => rfl`. Establish `hℓw : 0 < ℓ w`. Establish `h2 : (⟪w, w⟫_ℂ).re = ‖w‖ ^ 2` using `inner_self_eq_norm_sq (𝕜 := ℂ) w`. Rewrite using `[hℓ, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_pos (norm_pos_iff.2 hne) 2`. Establish `hg : ContinuousAt (fun y => ℓ (k y v)) y₀`. Establish `h1 : ContinuousAt k y₀` using `hk.continuousAt (isOpen_GLs.mem_nhds (hUG hy₀))`. Conclude with `ℓ.continuous.continuousAt.comp (h1.clm_apply continuousAt_const)`. Establish `hs : U ∩ {y | 0 < ℓ (k y v)} ∈ 𝓝 y₀` using `inter_mem (hU.mem_nhds hy₀) (hg.eventually (lt_mem_nhds hℓw))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨β, hts, hcs, hsm, hrg, h1⟩` from `exists_contDiff_tsupport_subset (n := ⊤) hs`. Establish `hsm' : ContDiff ℝ ∞ β` using `hsm`. Establish `hβ : Continuous β` using `hsm'.continuous`. Establish `hsU : tsupport β ⊆ U` using `hts.trans Set.inter_subset_left`. Establish `hsG` using `hsU.trans hUG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : sec E β v ∈ CE E` using `⟨(contDiff_sec hsm').contDiffOn, fun g _ κ => sec_mul hβ g κ⟩`. Establish `h0` using `hact _ hmem (cpt_sec hUK hUG hcs hsU) fun y _ hy => sec_eq_zero hUK hsU hy`. Rewrite `h0` using `[act_sec μ hβ hcs hsG hk hr]`. Establish `hνpos : (nu n).real Set.univ ≠ 0`. Rewrite using `[Measure.real, ENNReal.toReal_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(isOpen_univ.measure_pos _ Set.univ_nonempty).ne', measure_ne_top _ _⟩`. Establish `hI : ∫ y, hf β k v y ∂μ = 0` using `(smul_eq_zero.1 h0).resolve_left hνpos`. Establish `hH` using `continuous_hf (v := v) hβ hk`. Establish `hC` using `compact_hf (k := k) (v := v) hcs hsG`. Establish `hzero : ∫ y, ℓ (hf β k v y) ∂μ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousLinearMap.integral_comp_comm _ (hH.integrable_of_hasCompactSupport hC), hI, map_zero]`. Establish `hpos : 0 < ∫ y, ℓ (hf β k v y) ∂μ`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := Matrix.GeneralLinearGroup.mkOfDetNeZero y₀ (hUG hy₀)) (ℓ.continuous.comp hH) (hC.comp_left (map_zero ℓ)) (fun y => ?_) ?_` and prove the remaining obligations. Establish `e : ℓ (hf β k v y) = β y.val * ℓ (k y.val v)`. Simplify using `only [hf]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_smul, smul_eq_mul]`. Use `show 0 ≤ ℓ (hf β k v y)`. Rewrite using `[e]`. Distinguish the cases in `hb : β y.val = 0`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : 0 ≤ β y.val` using `(hrg (Set.mem_range_self _)).1`. Conclude with `mul_nonneg h2 (hts (subset_tsupport _ hb)).2.le`. Establish `e : ℓ (hf β k v (Matrix.GeneralLinearGroup.mkOfDetNeZero y₀ (hUG hy₀))) = ℓ w`. Establish `hv : (Matrix.GeneralLinearGroup.mkOfDetNeZero y₀ (hUG hy₀)).val = y₀` using `rfl`. Simplify using `only [hf, hv, h1, one_smul, hw]`.
-
-Conclude with `e ▸ hℓw.ne'`. Conclude with `hpos.ne' hzero`.
+A detailed English derivation is pending.
 -/
 theorem main : PositivityTheory.RgBcC.KerUniq := by
   intro n _ _ μ _ E k U hU hUG hUK hk hr hact y₀ hy₀

@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `ι s P hP h`. Use `choose! a ha using h`. Conclude with `⟨∏ i ∈ s, a i, Finset.prod_pos fun i hi => (ha i hi).1, fun i hi => hP i _ _ (ha i hi).2 (Finset.dvd_prod_of_mem a hi)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qm7.exists_common_multiple.{u_2} :
     ∀ {ι : Type u_2} (s : Finset ι)

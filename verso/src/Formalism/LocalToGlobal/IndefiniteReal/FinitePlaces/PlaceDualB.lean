@@ -16,9 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨Ideal.absNorm (Ideal.span {b}), ?_, ?_⟩` and prove the remaining obligations. Establish `: Ideal.absNorm (Ideal.span {b}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hb`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {b}))`. Conclude with `⟨c, by rw [← hc, mul_comm]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nat_eq_mul {K : Type} [Field K] [NumberField K] (b : 𝓞 K) (hb : b ≠ 0) :
     ∃ m : ℕ, 1 ≤ m ∧ ∃ c : 𝓞 K, (m : 𝓞 K) = b * c := by
@@ -30,9 +30,9 @@ theorem exists_nat_eq_mul {K : Type} [Field K] [NumberField K] (b : 𝓞 K) (hb 
     exact ⟨c, by rw [← hc, mul_comm]⟩
 
 /- English proof (translation)
-Take `⟨⟨a, b⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 K)) e`. Take `⟨m, hm, c, hc⟩` from `exists_nat_eq_mul (b : 𝓞 K) (nonZeroDivisors.ne_zero b.2)`. Use `⟨m, hm, a * c, ?_⟩` and prove the remaining obligations. Establish `h1 : (m : K) = algebraMap (𝓞 K) K b * algebraMap (𝓞 K) K c`. Rewrite using `[← map_mul, ← hc, map_natCast]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at h`. Rewrite using `[map_mul, h1, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_nat_mul_mem {K : Type} [Field K] [NumberField K] (e : K) :
     ∃ m : ℕ, 1 ≤ m ∧ (m : K) * e ∈ (algebraMap (𝓞 K) K).range := by
@@ -46,15 +46,15 @@ theorem exists_nat_mul_mem {K : Type} [Field K] [NumberField K] (e : K) :
   ring
 
 /- English proof (translation)
-Establish `hfin : {v : HeightOneSpectrum (𝓞 F) | t v ∉ v.adicCompletionIntegers F}.Finite` using `Filter.eventually_cofinite.1 t.2`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ m : ℕ, 1 ≤ m ∧ (m : v.adicCompletion F) * t v ∈ v.adicCompletionIntegers F`. Introduce `v`. Take `⟨b, hb, hbt⟩` from `HeightOneSpectrum.adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v (t v)`. Take `⟨m, hm, c, hc⟩` from `exists_nat_eq_mul b (nonZeroDivisors.ne_zero hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `h1 : (m : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) b * algebraMap (𝓞 F) (v.adicCompletion F) c`. Rewrite using `[← map_mul, ← hc, map_natCast]`. Rewrite using `[h1, show algebraMap (𝓞 F) (v.adicCompletion F) b * algebraMap (𝓞 F) (v.adicCompletion F) c * t v = t v * algebraMap (𝓞 F) (v.adicCompletion F) b * algebraMap (𝓞 F) (v.adicCompletion F) c by ring]`. Conclude with `mul_mem hbt ((HeightOneSpectrum.coe_mem_adicCompletionIntegers (v := v) c))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose mv hmv hmt using hloc`. Use `⟨∏ v ∈ hfin.toFinset, mv v, Finset.one_le_prod' fun v _ => hmv v, fun v => ?_⟩` and prove the remaining obligations. Establish `hev : evalV F v (((∏ w ∈ hfin.toFinset, mv w : ℕ) : Af F) * t) = ((∏ w ∈ hfin.toFinset, mv w : ℕ) : v.adicCompletion F) * t v`. Rewrite using `[map_mul, map_natCast]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hev]`. Distinguish the cases in `hv : v ∈ hfin.toFinset`. Rewrite using `[← Finset.mul_prod_erase _ _ hv]`. Use `push_cast`. Establish `e1 : ((mv v : v.adicCompletion F) * ∏ i ∈ hfin.toFinset.erase v, (mv i : v.adicCompletion F)) * t v = (∏ i ∈ hfin.toFinset.erase v, (mv i : v.adicCompletion F)) * ((mv v : v.adicCompletion F) * t v)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `mul_mem (prod_mem fun w _ => natCast_mem _ _) (hmt v)`. Establish `ht : t v ∈ v.adicCompletionIntegers F` using `by simpa using hv`. Conclude with `mul_mem (natCast_mem _ _) ht`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_intAf {F : Type} [Field F] [NumberField F] (t : Af F) :
     ∃ m : ℕ, 1 ≤ m ∧ (m : Af F) * t ∈ intAf F := by
@@ -92,13 +92,11 @@ theorem exists_nat_mul_intAf {F : Type} [Field F] [NumberField F] (t : Af F) :
     exact mul_mem (natCast_mem _ _) ht
 
 /- English proof (translation)
-Establish `hne : D.host.ccK ≠ ⊥` using `D.host.ccK_ne_bot`. Use `⟨Ideal.absNorm D.host.ccK, Nat.pos_of_ne_zero fun h => hne (Ideal.absNorm_eq_zero_iff.1 h), ?_⟩` and prove the remaining obligations. Establish `h1 : ((Ideal.absNorm D.host.ccK : 𝓞 D.host.K)) ∈ D.host.ccK` using `Ideal.absNorm_mem _`. Establish `h2 : ((Ideal.absNorm D.host.ccK : 𝓞 D.host.E)) ∈ D.host.ccE`. Use `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) h1` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Conclude with `this`. Establish `hb : D.host.𝔟 ≠ ⊥`. Introduce `h`. Establish `h2` using `D.host.𝔟_spec.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h]`. Simplify using `at h2`. Establish `h3 : ((Ideal.absNorm D.host.ccK : D.host.E)) ∈ ((D.host.ccE : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) * ((D.host.𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))⁻¹)`. Establish `hm` using `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal_of_mem (S := nonZeroDivisors (𝓞 D.host.E)) (P := D.host.E) h2)) (FractionalIdeal.one_mem_inv_coe_ideal (K := D.host.E) hb)`. Simplify using `using hm`.
-
-Conclude with `h3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma exists_nat_mem_AA : ∃ N : ℕ, 0 < N ∧ ((N : D.host.E)) ∈ (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) := by
   have hne : D.host.ccK ≠ ⊥ := D.host.ccK_ne_bot
@@ -122,7 +120,7 @@ lemma exists_nat_mem_AA : ∃ N : ℕ, 0 < N ∧ ((N : D.host.E)) ∈ (D.host.AA
   exact h3
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Rd4.exists_nat_smul_mem hΛ x`.
+A detailed English derivation is pending.
 -/
 lemma exists_nat_smul_mem {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hΛ : Submodule.IsLattice D.host.E Λ) (x : Fin n → D.host.E) :
@@ -135,23 +133,23 @@ variable {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E
   {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma one_mem_intAf : (1 : Af D.host.F) ∈ intAf D.host.F := fun v => by
   rw [map_one]; exact one_mem _
 
 /- English proof (translation)
-Take `⟨NT, hNT, ht⟩` from `exists_nat_smul_mem hT.1 (Pi.single i (1 : D.host.E))`. Use `set w : Fin S.rank → D.host.E := Matrix.vecMul (Pi.single j (1 : D.host.E)) S.gram⁻¹ with hw`. Take `⟨NS, hNS, hs⟩` from `exists_nat_smul_mem hS.1 (star w)`. Use `⟨NT, NS, hNT, hNS, fun α hα a ha => ?_⟩` and prove the remaining obligations. Establish `hrow : ∀ j', ∑ k, star (((NS : D.host.E) • star w) k) * S.gram k j' = (NS : D.host.E) * (if j = j' then 1 else 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j'`. Establish `h1 : ∀ k, star (((NS : D.host.E) • star w) k) = (NS : D.host.E) * w k` using `fun k => by`. Simplify using `[Pi.smul_apply, star_smul, star_natCast]`. Repeatedly rewrite using `[h1, mul_assoc, ← Finset.mul_sum]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h2 : ∑ k, w k * S.gram k j' = (Matrix.vecMul w S.gram) j'` using `rfl`. Rewrite using `[h2, hw, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne S)), Matrix.vecMul_one, Pi.single_apply]`. Distinguish the cases in `h : j = j'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`. Use `AddSubgroup.subset_closure ⟨α, hα, fun _ h => absurd trivial h, a, ha, _, hs, _, ht, ?_⟩` and prove the remaining obligations. Use extensionality with `i' j'`. Rewrite using `[Matrix.of_apply, hrow j', Matrix.single_apply]`. Simplify using `only [Pi.smul_apply, Pi.single_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hi : i = i' <;> by_cases hj : j = j'`. Substitute `hi` using the available equality. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Use `push_cast`.
+Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Simplify using `[hi, hj]`. Simplify using `[hi, Ne.symm hi]`. Simplify using `[hi, Ne.symm hi]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma gen_single (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) (i : Fin T.rank) (j : Fin S.rank) :
     ∃ NT NS : ℕ, 0 < NT ∧ 0 < NS ∧ ∀ α ∈ intAf D.host.F, ∀ a ∈ D.host.AA,
@@ -187,15 +185,15 @@ lemma gen_single (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) (i : Fin T.ra
 abbrev fI (D : D7) : AE D := algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 1)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [mul_zero]) (by show α * 1 = α; rw [mul_one])`.
+A detailed English derivation is pending.
 -/
 lemma pairA_mul_one (α : Af D.host.F) : pairA D.host.F 0 α * pairA D.host.F 0 1 = pairA D.host.F 0 α :=
   Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [mul_zero]) (by show α * 1 = α; rw [mul_one])
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, ⟨α, rfl, -, -⟩, h3⟩` from `h`. Establish `he : e' = e' * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)`. Rewrite using `[← h3, mul_add, h1, h2, add_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = e' := by rw [pairA_mul_one, ← he]`.
+A detailed English derivation is pending.
 -/
 lemma splitIdem_mul_fI {e' : AE D} (h : IsSplitIdem D e') : e' * fI D = e' := by
   obtain ⟨h1, h2, v, ε, ⟨α, rfl, -, -⟩, h3⟩ := h
@@ -207,11 +205,9 @@ lemma splitIdem_mul_fI {e' : AE D} (h : IsSplitIdem D e') : e' * fI D = e' := by
     _ = e' := by rw [pairA_mul_one, ← he]
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Establish `h1 : (∑ PP ∈ P, es PP) * fI D = ∑ PP ∈ P, es PP`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun PP hPP => splitIdem_mul_fI (hes PP hPP).1`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : cA D (fI D) = fI D` using `by show cA D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 1)) = _`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `show (Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) D.sp.cm.sig) (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma idemSum_mul_fI {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) :
     e * fI D = e ∧ cA D e * fI D = cA D e := by
@@ -238,7 +234,7 @@ variable {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E
   {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Rewrite using `[fI, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Use `congr 1`. Conclude with `Prod.ext (by show a.1 * 0 = 0; rw [mul_zero]) (by show a.2 * 1 = sndA D.host.F a; rw [mul_one]; rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma tmul_fI (a : AF D.host.F) (z : D.host.E) :
     (a ⊗ₜ[D.host.F] z) * fI D = pairA D.host.F 0 (sndA D.host.F a) ⊗ₜ[D.host.F] z := by
@@ -248,9 +244,9 @@ lemma tmul_fI (a : AF D.host.F) (z : D.host.E) :
   exact Prod.ext (by show a.1 * 0 = 0; rw [mul_zero]) (by show a.2 * 1 = sndA D.host.F a; rw [mul_one]; rfl)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_smul]`. Use `_ = (m • pairA D.host.F 0 β) ⊗ₜ[D.host.F] (M • z) := by`. Rewrite using `[← TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `_ = _ := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Prod.ext (by show (m • (0 : Ainf D.host.F)) = 0; rw [smul_zero]) (by show m • β = (m : Af D.host.F) * β; rw [nsmul_eq_mul])`. Rewrite using `[nsmul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 lemma nsmul_pairA_tmul (m M : ℕ) (β : Af D.host.F) (z : D.host.E) :
     (m * M) • (pairA D.host.F 0 β ⊗ₜ[D.host.F] z) =
@@ -266,9 +262,9 @@ lemma nsmul_pairA_tmul (m M : ℕ) (β : Af D.host.F) (z : D.host.E) :
         · rw [nsmul_eq_mul]
 
 /- English proof (translation)
-Take `⟨k₁, hk₁, m₁⟩` from `ha`. Take `⟨k₂, hk₂, m₂⟩` from `hb`. Use `⟨k₁ * k₂, Nat.mul_pos hk₁ hk₂, ?_⟩` and prove the remaining obligations. Establish `e : (k₁ * k₂) • (a + b) = k₂ • (k₁ • a) + k₁ • (k₂ • b)`. Rewrite using `[smul_add, ← mul_smul, ← mul_smul, mul_comm k₂ k₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `add_mem (L.nsmul_mem m₁ _) (L.nsmul_mem m₂ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma natMul_add {A : Type*} [AddCommGroup A] {L : AddSubgroup A} {a b : A}
     (ha : ∃ k : ℕ, 0 < k ∧ k • a ∈ L) (hb : ∃ k : ℕ, 0 < k ∧ k • b ∈ L) : ∃ k : ℕ, 0 < k ∧ k • (a + b) ∈ L := by
@@ -281,7 +277,7 @@ lemma natMul_add {A : Type*} [AddCommGroup A] {L : AddSubgroup A} {a b : A}
   exact add_mem (L.nsmul_mem m₁ _) (L.nsmul_mem m₂ _)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ (fun m : A => ∃ k : ℕ, 0 < k ∧ k • m ∈ L) (fun _ _ => natMul_add) ⟨1, one_pos, by simp⟩ h`.
+A detailed English derivation is pending.
 -/
 lemma natMul_sum {A ι : Type*} [AddCommGroup A] {L : AddSubgroup A} (s : Finset ι) (f : ι → A)
     (h : ∀ i ∈ s, ∃ k : ℕ, 0 < k ∧ k • f i ∈ L) : ∃ k : ℕ, 0 < k ∧ k • (∑ i ∈ s, f i) ∈ L :=
@@ -289,15 +285,15 @@ lemma natMul_sum {A ι : Type*} [AddCommGroup A] {L : AddSubgroup A} (s : Finset
     ⟨1, one_pos, by simp⟩ h
 
 /- English proof (translation)
-Take `⟨NT, NS, hNT, hNS, hgen⟩` from `gen_single (ΛS := ΛS) (ΛT := ΛT) hS hT i j`. Take `⟨N₀, hN₀, hAA⟩` from `exists_nat_mem_AA (D := D)`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `tmul a z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[tmul_fI]`. Take `⟨m, hm, hmβ⟩` from `exists_nat_mul_intAf (sndA D.host.F a)`. Take `⟨M, hM, o, ho⟩` from `exists_nat_mul_mem (z / ((NT * NS : ℕ) : D.host.E))`. Establish `hd : ((NT * NS : ℕ) : D.host.E) ≠ 0`. Conclude with `(Nat.mul_pos hNT hNS).ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (o : D.host.E) * (N₀ : D.host.E) ∈ D.host.AA`. Use `Submodule.smul_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) o hAA` as an intermediate fact. Simplify `this` using `[Algebra.smul_def]`. Establish `hmem` using `hgen _ hmβ _ ha`. Use `⟨m * (N₀ * M), Nat.mul_pos hm (Nat.mul_pos hN₀ (by omega)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_single, nsmul_pairA_tmul m (N₀ * M)]`. Use `hmem using 3` and compare the differences between its conclusion and the goal. Establish `ho' : (o : D.host.E) = (M : D.host.E) * (z / ((NT * NS : ℕ) : D.host.E))` using `ho`. Rewrite using `[ho']`. Clear the denominators using the available nonvanishing facts.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add y₁ y₂ h₁ h₂`. Use `natMul_add h₁ h₂` as an intermediate fact. Rewrite `this` using `[← Matrix.single_add, ← add_mul]`. Then use the resulting hypothesis.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma single_mul_fI_mem (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) (i : Fin T.rank) (j : Fin S.rank)
     (y : AE D) : ∃ k : ℕ, 0 < k ∧ k • Matrix.single i j (y * fI D) ∈ latAll S T ΛS ΛT := by
@@ -328,11 +324,9 @@ lemma single_mul_fI_mem (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) (i : F
     rwa [← Matrix.single_add, ← add_mul] at this
 
 /- English proof (translation)
-Introduce `ψ _ S T ΛS ΛT hS hT P e he e₁ he₁ x hx`. Establish `hf : e₁ * fI D = e₁`. Break down `he₁ with rfl | rfl` into its components or cases. Conclude with `(idemSum_mul_fI he).1`. Conclude with `(idemSum_mul_fI he).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hxf : ∀ i j, x i j * fI D = x i j` using `fun i j => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hQ : ∀ i j, ∃ k : ℕ, 0 < k ∧ k • Matrix.single i j (x i j) ∈ latAll S T ΛS ΛT` using `fun i j => by`. Use `single_mul_fI_mem hS hT i j (x i j)` as an intermediate fact. Rewrite `this` using `[hxf]`. Then use the resulting hypothesis.
-
-Rewrite using `[Matrix.matrix_eq_sum_single x]`. Conclude with `natMul_sum _ _ fun i _ => natMul_sum _ _ fun j _ => hQ i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeLatDualV (D : D7) : PlaceLatDualV D := by
   classical
@@ -359,19 +353,17 @@ variable {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E
   {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Introduce `w` and use `by rw [map_mul]; exact mul_mem (ha w) (ha' w)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma intAf_mul' {a a' : Af D.host.F} (ha : a ∈ intAf D.host.F) (ha' : a' ∈ intAf D.host.F) :
     a * a' ∈ intAf D.host.F := fun w => by rw [map_mul]; exact mul_mem (ha w) (ha' w)
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, o, rfl⟩` from `hx`. Proceed by induction on `hz' using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨a', ha', o', rfl⟩` from `hy`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `AddSubgroup.subset_closure ⟨a * a', intAf_mul' ha ha', o * o', by push_cast; rfl⟩`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ hy hy' => rw [mul_add]`. Conclude with `add_mem hy hy'`. Consider the case `neg y _ hy => rw [mul_neg]`. Conclude with `neg_mem hy`. Consider the case `zero => rw [zero_mul]`.
-
-Conclude with `zero_mem _`. Consider the case `add x x' _ _ hx hx' => rw [add_mul]`. Conclude with `add_mem hx hx'`. Consider the case `neg x _ hx => rw [neg_mul]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma intAE_mul' {z z' : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) (hz' : z' ∈ intAE D) :
     z * z' ∈ intAE D := by
@@ -393,36 +385,36 @@ lemma intAE_mul' {z z' : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D
 def IntF (y : AE D) : Prop := y * fI D = y ∧ finPart D y ∈ intAE D
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_mul _, by rw [map_zero]; exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 lemma intF_zero : IntF (0 : AE D) := ⟨zero_mul _, by rw [map_zero]; exact zero_mem _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [add_mul, h.1, h'.1], by rw [map_add]; exact add_mem h.2 h'.2⟩`.
+Supply the required witnesses or components.
 -/
 lemma intF_add {y y' : AE D} (h : IntF y) (h' : IntF y') : IntF (y + y') :=
   ⟨by rw [add_mul, h.1, h'.1], by rw [map_add]; exact add_mem h.2 h'.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [neg_mul, h.1], by rw [map_neg]; exact neg_mem h.2⟩`.
+Supply the required witnesses or components.
 -/
 lemma intF_neg {y : AE D} (h : IntF y) : IntF (-y) :=
   ⟨by rw [neg_mul, h.1], by rw [map_neg]; exact neg_mem h.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [mul_assoc, h'.1], by rw [map_mul]; exact intAE_mul' h.2 h'.2⟩`.
+Supply the required witnesses or components.
 -/
 lemma intF_mul {y y' : AE D} (h : IntF y) (h' : IntF y') : IntF (y * y') :=
   ⟨by rw [mul_assoc, h'.1], by rw [map_mul]; exact intAE_mul' h.2 h'.2⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ IntF (fun _ _ => intF_add) intF_zero h`.
+A detailed English derivation is pending.
 -/
 lemma intF_sum {ι : Type*} (s : Finset ι) (f : ι → AE D) (h : ∀ i ∈ s, IntF (f i)) : IntF (∑ i ∈ s, f i) :=
   Finset.sum_induction _ IntF (fun _ _ => intF_add) intF_zero h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [smul_mul_assoc, h.1], by rw [map_nsmul]; exact AddSubgroup.nsmul_mem _ h.2 k⟩`.
+Supply the required witnesses or components.
 -/
 lemma intF_nsmul {y : AE D} (h : IntF y) (k : ℕ) : IntF (k • y) :=
   ⟨by rw [smul_mul_assoc, h.1], by rw [map_nsmul]; exact AddSubgroup.nsmul_mem _ h.2 k⟩
@@ -437,7 +429,7 @@ lemma finite_embedding_tensor_tmul (β : Af D.host.F) (y : D.host.E) :
     finiteEmbeddingTensor D (β ⊗ₜ[D.host.F] y) = pairA D.host.F 0 β ⊗ₜ[D.host.F] y := rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [zero_mul, map_zero, map_zero]`. Consider the case `tmul a z => rw [tmul_fI]`. Both sides reduce to the same expression. Consider the case `add y y' h h' => rw [add_mul, h, h', map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 lemma mul_fI_eq (y : AE D) : y * fI D = finiteEmbeddingTensor D (finPart D y) := by
   induction y using TensorProduct.induction_on with
@@ -446,13 +438,13 @@ lemma mul_fI_eq (y : AE D) : y * fI D = finiteEmbeddingTensor D (finPart D y) :=
   | add y y' h h' => rw [add_mul, h, h', map_add, map_add]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `tmul β z`. Take `⟨m, hm, hβ⟩` from `exists_nat_mul_intAf β`. Take `⟨M, hM, o, ho⟩` from `exists_nat_mul_mem z`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m * M, Nat.mul_pos hm hM, ?_⟩` and prove the remaining obligations. Establish `e : (m * M) • (β ⊗ₜ[D.host.F] z) = ((m : Af D.host.F) * β) ⊗ₜ[D.host.F] ((o : 𝓞 D.host.E) : D.host.E)`. Establish `ho' : ((o : 𝓞 D.host.E) : D.host.E) = (M : D.host.E) * z` using `ho`. Rewrite using `[ho', mul_smul, ← TensorProduct.tmul_smul, TensorProduct.smul_tmul', nsmul_eq_mul, nsmul_eq_mul]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.subset_closure ⟨_, hβ, o, rfl⟩`. Consider the case `add w w' h h'`. Take `⟨k, hk, m⟩` from `h`. Take `⟨k', hk', m'⟩` from `h'`. Use `⟨k * k', Nat.mul_pos hk hk', ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (k * k') • (w + w') = k' • (k • w) + k • (k' • w')`. Rewrite using `[smul_add, ← mul_smul, ← mul_smul, mul_comm k' k]`. Rewrite using `[e]`. Conclude with `add_mem (AddSubgroup.nsmul_mem _ m _) (AddSubgroup.nsmul_mem _ m' _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_nat_mul_intAE (w : Af D.host.F ⊗[D.host.F] D.host.E) : ∃ k : ℕ, 0 < k ∧ k • w ∈ intAE D := by
   induction w using TensorProduct.induction_on with
@@ -476,14 +468,14 @@ lemma exists_nat_mul_intAE (w : Af D.host.F ⊗[D.host.F] D.host.E) : ∃ k : �
     exact add_mem (AddSubgroup.nsmul_mem _ m _) (AddSubgroup.nsmul_mem _ m' _)
 
 /- English proof (translation)
-Take `⟨k, hk, h⟩` from `exists_nat_mul_intAE (finPart D y)`. Conclude with `⟨k, hk, by rw [smul_mul_assoc, hy], by rw [map_nsmul]; exact h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_nat_intF {y : AE D} (hy : y * fI D = y) : ∃ k : ℕ, 0 < k ∧ IntF (k • y) := by
   obtain ⟨k, hk, h⟩ := exists_nat_mul_intAE (finPart D y)
   exact ⟨k, hk, by rw [smul_mul_assoc, hy], by rw [map_nsmul]; exact h⟩
 
 /- English proof (translation)
-Use `choose k hk hPk using h`. Use `⟨∏ i, k i, Finset.prod_pos fun i _ => hk i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Conclude with `hP i _ _ (hPk i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma uniform_nat {ι : Type*} [Fintype ι] (P : ι → ℕ → Prop) (hP : ∀ i k m, P i k → P i (m * k))
     (h : ∀ i, ∃ k, 0 < k ∧ P i k) : ∃ k, 0 < k ∧ ∀ i, P i k := by
@@ -496,21 +488,19 @@ lemma uniform_nat {ι : Type*} [Fintype ι] (P : ι → ℕ → Prop) (hP : ∀ 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨N₀, hN₀, hAA⟩` from `exists_nat_mem_AA (D := D)`. Establish `hsingle : ∀ ij : Fin T.rank × Fin S.rank, ∃ c, 0 < c ∧ ∀ y : AE D, IntF y → c • Matrix.single ij.1 ij.2 y ∈ latAll S T ΛS ΛT`. Introduce and unpack `⟨i, j⟩`. Take `⟨NT, NS, hNT, hNS, hgen⟩` from `gen_single (ΛS := ΛS) (ΛT := ΛT) hS hT i j`. Use `⟨N₀ * (NT * NS), Nat.mul_pos hN₀ (Nat.mul_pos hNT hNS), fun y hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy' : y = finiteEmbeddingTensor D (finPart D y)` using `by rw [← mul_fI_eq, hy.1]`. Rewrite using `[hy']`. Establish `key : ∀ w ∈ intAE D, (N₀ * (NT * NS)) • Matrix.single i j (finiteEmbeddingTensor D w) ∈ latAll S T ΛS ΛT`. Introduce `w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨α, hα, o, rfl⟩` from `hx`. Establish `ha : (o : D.host.E) * (N₀ : D.host.E) ∈ D.host.AA`. Use `Submodule.smul_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) o hAA` as an intermediate fact. Simplify `this` using `[Algebra.smul_def]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hm` using `hgen α hα _ ha`. Establish `heq : (N₀ * (NT * NS)) • Matrix.single i j (finiteEmbeddingTensor D (α ⊗ₜ[D.host.F] ((o : 𝓞 D.host.E) : D.host.E))) = Matrix.single i j (pairA D.host.F 0 α ⊗ₜ[D.host.F] ((o : D.host.E) * (N₀ : D.host.E) * ((NT * NS : ℕ) : D.host.E)))`. Rewrite using `[Matrix.smul_single, finite_embedding_tensor_tmul, ← TensorProduct.tmul_smul, nsmul_eq_mul]`. Use `congr 2`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `hm`. Consider the case `zero => rw [map_zero, Matrix.single_zero, smul_zero]`. Conclude with `zero_mem _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x x' _ _ h h' => rw [map_add, Matrix.single_add, smul_add]`. Conclude with `add_mem h h'`. Consider the case `neg x _ h`. Establish `e : Matrix.single i j (-(finiteEmbeddingTensor D x)) = -Matrix.single i j (finiteEmbeddingTensor D x)`. Apply the tactic sequence `ext a b; simp only [Matrix.single_apply, Matrix.neg_apply]; split_ifs <;> simp`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_neg, e, smul_neg]`. Conclude with `neg_mem h`. Conclude with `key _ hy.2`. Take `⟨c, hc, hcP⟩` from `uniform_nat (fun (ij : Fin T.rank × Fin S.rank) c => ∀ y : AE D, IntF y → c • Matrix.single ij.1 ij.2 y ∈ latAll S T ΛS ΛT) (fun ij k m h y hy => by rw [mul_smul]; exact AddSubgroup.nsmul_mem _ (h y hy) m) hsingle`. Use `⟨c, hc, fun Z hZ => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Matrix.matrix_eq_sum_single Z, Finset.smul_sum]`. Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Conclude with `AddSubgroup.sum_mem _ fun j _ => hcP (i, j) _ (hZ i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lower (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) :
     ∃ c : ℕ, 0 < c ∧ ∀ Z : WO S T, (∀ i j, IntF (Z i j)) → c • Z ∈ latAll S T ΛS ΛT := by
@@ -563,20 +553,20 @@ variable {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E
   {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-The claim follows from `mul_mem (natCast_mem _ m) hx`.
+A detailed English derivation is pending.
 -/
 lemma natCast_mul_range {x : D.host.E} (hx : x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) (m : ℕ) :
     (m : D.host.E) * x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range :=
   mul_mem (natCast_mem _ m) hx
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hΛ.fg`. Take `⟨c, hc, hcP⟩` from `uniform_nat (fun (gi : ↥s × Fin n) c => (c : D.host.E) * (gi.1 : Fin n → D.host.E) gi.2 ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) (fun gi k m h => by push_cast; rw [mul_assoc]; exact natCast_mul_range h m) (fun gi => by`. Take `⟨m, hm, h⟩` from `exists_nat_mul_mem ((gi.1 : Fin n → D.host.E) gi.2)`. Conclude with `⟨m, hm, h⟩)`. Use `⟨c, hc, fun t ht => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ht` using `[← hs]`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx => exact fun i => hcP (⟨x, hx⟩, i)`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add x y _ _ hx hy => intro i`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `add_mem (hx i) (hy i)`. Consider the case `smul o x _ hx`. Introduce `i`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def, mul_left_comm]`. Conclude with `mul_mem ⟨o, rfl⟩ (hx i)`.
+A detailed English derivation is pending.
 -/
 lemma lattice_denom {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (hΛ : Submodule.IsLattice D.host.E Λ) :
     ∃ c : ℕ, 0 < c ∧ ∀ t ∈ Λ, ∀ i, (c : D.host.E) * t i ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -600,9 +590,9 @@ lemma lattice_denom {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.
     exact mul_mem ⟨o, rfl⟩ (hx i)
 
 /- English proof (translation)
-Take `⟨o, rfl⟩` from `hx`. Establish `hi : IsIntegral ℤ (star ((o : 𝓞 D.host.E) : D.host.E))`. Use `(RingOfIntegers.isIntegral_coe o).map (starRingEnd D.host.E).toIntAlgHom` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 
-Conclude with `⟨⟨_, hi⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma star_range {x : D.host.E} (hx : x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) :
     star x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -614,11 +604,11 @@ lemma star_range {x : D.host.E} (hx : x ∈ (algebraMap (𝓞 D.host.E) D.host.E
   exact ⟨⟨_, hi⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨b, hb, hint⟩` from `D.host.AA.isFractional`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨m, hm, c, hc⟩` from `exists_nat_eq_mul b hb0`. Use `⟨m, hm, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hint a ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hy' : (y : D.host.E) = (b : D.host.E) * a` using `by rw [← Algebra.smul_def]; exact hy`. Use `⟨c * y, ?_⟩` and prove the remaining obligations. Establish `hc' : (m : D.host.E) = (b : D.host.E) * (c : D.host.E)`. Use `congrArg (fun z : 𝓞 D.host.E => (z : D.host.E)) hc` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [map_mul]`. Use `show (c : D.host.E) * (y : D.host.E) = _`. Rewrite using `[hy', hc']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma AA_denom' : ∃ d : ℕ, 0 < d ∧ ∀ a ∈ D.host.AA, (d : D.host.E) * a ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
   obtain ⟨b, hb, hint⟩ := D.host.AA.isFractional
@@ -636,7 +626,7 @@ lemma AA_denom' : ∃ d : ℕ, 0 < d ∧ ∀ a ∈ D.host.AA, (d : D.host.E) * a
   rw [hy', hc']; ring
 
 /- English proof (translation)
-The claim follows from `have h := uniform_nat (fun (ij : Fin m × Fin n) d => (d : D.host.E) * G ij.1 ij.2 ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) (fun ij k d h => by push_cast; rw [mul_assoc]; exact natCast_mul_range h d) (fun ij => by obtain ⟨d, hd, h⟩ := exists_nat_mul_mem (G ij.1 ij.2); exact ⟨d, …`.
+A detailed English derivation is pending.
 -/
 lemma matrix_denom {m n : ℕ} (G : Matrix (Fin m) (Fin n) D.host.E) :
     ∃ d : ℕ, 0 < d ∧ ∀ i j, (d : D.host.E) * G i j ∈ (algebraMap (𝓞 D.host.E) D.host.E).range :=
@@ -648,7 +638,7 @@ lemma matrix_denom {m n : ℕ} (G : Matrix (Fin m) (Fin n) D.host.E) :
   ⟨d, hd, fun i j => hP (i, j)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [tmul_fI]; rfl, AddSubgroup.subset_closure ⟨α, hα, o, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 lemma intF_gen {α : Af D.host.F} (hα : α ∈ intAf D.host.F) (o : 𝓞 D.host.E) :
     IntF (pairA D.host.F 0 α ⊗ₜ[D.host.F] ((o : 𝓞 D.host.E) : D.host.E)) :=
@@ -657,21 +647,19 @@ lemma intF_gen {α : Af D.host.F} (hα : α ∈ intAf D.host.F) (o : 𝓞 D.host
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨d₀, hd₀, hAA⟩` from `AA_denom' (D := D)`. Take `⟨cT, hcT, hT'⟩` from `lattice_denom hT.1`. Take `⟨cS, hcS, hS'⟩` from `lattice_denom hS.1`. Take `⟨dG, hdG, hG⟩` from `matrix_denom S.gram`. Use `⟨d₀ * cT * (cS * dG), by positivity, fun t ht => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `ht using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨α, hα, -, a, ha, s, hs, t₀, ht₀, rfl⟩` from `hx`. Introduce `i j`. Establish `hint : ((d₀ * cT * (cS * dG) : ℕ) : D.host.E) * (a * t₀ i * ∑ k, star (s k) * S.gram k j) ∈ (algebraMap (𝓞 D.host.E) D.host.E).range`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ((d₀ * cT * (cS * dG) : ℕ) : D.host.E) * (a * t₀ i * ∑ k, star (s k) * S.gram k j) = ((d₀ : D.host.E) * a) * ((cT : D.host.E) * t₀ i) * ∑ k, star ((cS : D.host.E) * s k) * ((dG : D.host.E) * S.gram k j)`. Simplify using `only [star_mul, star_natCast, Finset.mul_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Use `mul_mem (mul_mem (hAA a ha) (hT' t₀ ht₀ i)) (sum_mem fun k _ => mul_mem ?_ (hG k j))` and prove the remaining obligations. Conclude with `star_range (hS' s hs k)`. Take `⟨o, ho⟩` from `hint`. Establish `e2 : ((d₀ * cT * (cS * dG)) • (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t₀ i * ∑ k, star (s k) * S.gram k j) : WO S T)) i j = pairA D.host.F 0 α ⊗ₜ[D.host.F] ((o : 𝓞 D.host.E) : D.host.E)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, Matrix.of_apply, ← TensorProduct.tmul_smul, nsmul_eq_mul]`. Use `congr 1`. Conclude with `ho.symm`. Rewrite using `[e2]`. Conclude with `intF_gen hα o`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => intro i j`. Rewrite using `[smul_zero]`. Conclude with `intF_zero`. Consider the case `add x y _ _ hx hy`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, Matrix.add_apply]`. Conclude with `intF_add (hx i j) (hy i j)`. Consider the case `neg x _ hx`. Introduce `i j`. Rewrite using `[smul_neg, Matrix.neg_apply]`.
-
-Conclude with `intF_neg (hx i j)`.
+A detailed English derivation is pending.
 -/
 lemma upper (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) :
     ∃ c : ℕ, 0 < c ∧ ∀ t ∈ latAll S T ΛS ΛT, ∀ i j, IntF ((c • t) i j) := by

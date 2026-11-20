@@ -15,19 +15,17 @@ noncomputable section
 namespace GlobalTheory.NormSign
 
 /- English proof (translation)
-Establish `hli : LinearIndependent K ![(1 : L), t]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s c hsc`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [zero_smul, add_zero, smul_eq_zero, one_ne_zero, or_false] at hsc`. Conclude with `⟨hsc, rfl⟩`. It suffices to derive a contradiction. Establish `ht : t = algebraMap K L (-s / c)`. Rewrite `hsc` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc' : algebraMap K L c ≠ 0` using `(map_ne_zero _).2 hc`. Rewrite using `[map_div₀, map_neg, eq_div_iff hc']`. Take the linear combination `hsc`. Establish `h2 : σ t = t` using `by rw [ht, hσK]`. Rewrite `h2` using `[hσt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (2 : L) * t = 0` using `by linear_combination -h2`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Establish `h2' : (2 : L) = algebraMap K L 2` using `(map_ofNat (algebraMap K L) 2).symm`. Rewrite `h` using `[h2']`. Conclude with `two_ne_zero ((map_eq_zero _).1 h)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `ht0 h`. Set `e : Module.Basis (Fin 2) K L` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hrank])`. Establish `e0 : e 0 = 1` using `by simp [e]`. Establish `e1 : e 1 * e 1 = algebraMap K L δ` using `by simp [e, htt]`. Establish `hu : IsUnit (algebraMap K (v.adicCompletion K) h)` using `(map_ne_zero _).2 h0 |>.isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FiniteDimensional K L := Module.finite_of_finrank_pos (by omega)`. Establish `hm : hu.unit ∈ GlobalTheory.QuadSymbol.normGroup K L (v.adicCompletion K)`. Rewrite using `[GlobalTheory.QuadSymbol.mem_normGroup_iff]`. Take `⟨z, hz⟩` from `hz`. Conclude with `⟨z, by rw [hz]; rfl⟩`.
-
-Take `⟨x, y, hxy⟩` from `(GlobalTheory.QuadSymbol.mem_normGroup_iff_form e e0 e1).1 hm`. Conclude with `⟨x, y, by rw [← hxy]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem form_of_norm {K L : Type} [Field K] [NumberField K] [Field L] [Algebra K L]
     (hrank : Module.finrank K L = 2) (σ : L →+* L) (hσK : ∀ x : K, σ (algebraMap K L x) = algebraMap K L x)
@@ -70,9 +68,9 @@ theorem form_of_norm {K L : Type} [Field K] [NumberField K] [Field L] [Algebra K
   exact ⟨x, y, by rw [← hxy]; rfl⟩
 
 /- English proof (translation)
-Take `⟨ι, hι, -⟩` from `GlobalTheory.AdeleBaseChange.exists_tensor_finiteAdele_equiv ℚ K`. Take `⟨e, -⟩` from `GlobalTheory.NormLevelCompare.exists_adele_equiv`. Set `g : FiniteAdeleRing (𝓞 ℚ) ℚ →ₐ[ℚ] AfP p` to `((AfP.restr p).comp (e : FiniteAdeleRing (𝓞 ℚ) ℚ →+* FiniteAdeleRing ℤ ℚ)).toRatAlgHom`. Set `m : FiniteAdeleRing (𝓞 ℚ) ℚ ⊗[ℚ] K →ₐ[ℚ] AfP p ⊗[ℚ] K` to `Algebra.TensorProduct.map g (AlgHom.id ℚ K)`. Use `⟨m.toRingHom.comp ι.symm.toRingHom, fun k => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ι.symm (algebraMap K _ k) = 1 ⊗ₜ k` using `by rw [← hι, RingEquiv.symm_apply_apply]`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, this]`. Simplify using `[m]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_toAfP (K : Type) [Field K] [NumberField K] (p : ℕ) :
     ∃ Φ : FiniteAdeleRing (𝓞 K) K →+* AfP p ⊗[ℚ] K, ∀ k : K, Φ (algebraMap K _ k) = 1 ⊗ₜ k := by
@@ -88,39 +86,35 @@ theorem exists_toAfP (K : Type) [Field K] [NumberField K] (p : ℕ) :
   simp [m]
 
 /- English proof (translation)
-Introduce `M _ _ σ hσ hconj ε ε' hεε' hεc p _`. Establish `hinv : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨φ⟩ : Nonempty (M →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hconj, hconj, Complex.conj_conj]`. Set `σe : M ≃ₐ[ℚ] M` to `{ σ.toRatAlgHom with invFun := σ, left_inv := hinv, right_inv := hinv }`. Establish `hσe : ∀ x, σe x = σ x` using `fun _ => rfl`. Establish `hσe2 : σe ^ 2 = 1`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[pow_two, AlgEquiv.mul_apply, hσe, hσe, hinv]`. Both sides reduce to the same expression. Establish `hσe1 : σe ≠ 1`. Introduce `h`. Apply `hσ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Use `congrArg (fun f : M ≃ₐ[ℚ] M => f x) h` as an intermediate fact. Simplify `this` using `[hσe]`. Establish `hσinv : σe⁻¹ = σe` using `inv_eq_of_mul_eq_one_right (by rw [← pow_two, hσe2])`. Set `K` to `IntermediateField.fixedField (Subgroup.zpowers σe)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hmem : ∀ x : M, x ∈ K ↔ σ x = x`. Introduce `x`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h σe (Subgroup.mem_zpowers σe)`. Introduce `h f hf`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hf`. Use `clear hf`. Proceed by induction on `k using Int.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ n ih => rw [_root_.zpow_add_one, AlgEquiv.mul_apply, hσe, h, ih]`. Consider the case `pred n ih => rw [_root_.zpow_sub_one, AlgEquiv.mul_apply, hσinv, hσe, h, ih]`. Establish `hrank : Module.finrank K M = 2`. Rewrite using `[IntermediateField.finrank_fixedField_eq_card, Nat.card_zpowers]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `orderOf_eq_prime hσe2 hσe1`. Establish `hσK : ∀ x : K, σ (algebraMap K M x) = algebraMap K M x` using `fun x => (hmem _).1 x.2`. Take `⟨h, h0, hε, hε', hpos, hloc⟩` from `GlobalTheory.T.exists_base_element_negative_at_two_embeddings K M hrank σ hσ hσK hconj ε ε' hεε' hεc`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, σ s ≠ s := by`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `hσ (RingHom.ext hc)`. Use `set t := s - σ s with ht`. Establish `hσt : σ t = -t` using `by rw [ht, map_sub, hinv]; ring`. Establish `ht0 : t ≠ 0` using `sub_ne_zero.2 (Ne.symm hs)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `htK : t * t ∈ K` using `(hmem _).2 (by rw [map_mul, hσt]; ring)`. Set `δ : K` to `⟨t * t, htK⟩`. Establish `htt : t * t = algebraMap K M δ` using `rfl`. Establish `hδ0 : δ ≠ 0`. Introduce `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Apply `ht0` to reduce the goal to its premises. Establish `: t * t = 0` using `by rw [htt, hd, map_zero]`. Conclude with `mul_self_eq_zero.1 this`. Establish `hform` using `fun v => form_of_norm hrank σ hσK ht0 hσt htt v h0 (hloc v)`. Take `⟨x, y, hxy⟩` from `GlobalTheory.T.exists_finiteAdele_sq_sub_mul_sq_eq_of_local K δ h hδ0 h0 hform`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨Φ, hΦ⟩` from `exists_toAfP K p`. Set `j : AfP p ⊗[ℚ] K →ₐ[ℚ] AfP p ⊗[ℚ] M` to `Algebra.TensorProduct.map (AlgHom.id ℚ (AfP p)) (IsScalarTower.toAlgHom ℚ K M)`. Set `S : AfP p ⊗[ℚ] M →ₐ[ℚ] AfP p ⊗[ℚ] M` to `Algebra.TensorProduct.map (AlgHom.id ℚ (AfP p)) σ.toRatAlgHom`. Establish `hSj' : ∀ w, S (j w) = j w`. Introduce `w`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a k => show a ⊗ₜ σ (algebraMap K M k) = a ⊗ₜ algebraMap K M k`. Rewrite using `[hσK]`. Consider the case `add w w' hw hw' => rw [map_add, map_add, hw, hw']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set X := j (Φ x) with hX`. Use `set Y := j (Φ y) with hY`. Use `set T : AfP p ⊗[ℚ] M := 1 ⊗ₜ t with hT`. Establish `hST : S T = -T` using `by simp [S, T, hσt, TensorProduct.tmul_neg]`. Establish `hTT : T * T = j (Φ (algebraMap K _ δ))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hΦ, hT, Algebra.TensorProduct.tmul_mul_tmul, mul_one, htt]`. Simplify using `[j]`. Establish `hkey : (X + Y * T) * S (X + Y * T) = 1 ⊗ₜ (algebraMap K M h)`. Rewrite using `[map_add, map_mul, hX, hY, hSj', hSj', hST]`. Establish `: (j (Φ x) + j (Φ y) * T) * (j (Φ x) + j (Φ y) * -T) = j (Φ (x ^ 2 - algebraMap K _ δ * y ^ 2))`.
-
-Rewrite using `[map_sub, map_mul, map_pow, map_pow, map_sub, map_mul, map_pow, map_pow, ← hTT]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hxy, hΦ]`. Simplify using `[j]`. Establish `hunit : IsUnit (X + Y * T)`.
-
-Establish `ha : IsUnit ((1 : AfP p) ⊗ₜ[ℚ] (algebraMap K M h))` using `((map_ne_zero (algebraMap K M)).2 h0).isUnit.map (Algebra.TensorProduct.includeRight : M →ₐ[ℚ] AfP p ⊗[ℚ] M)`. Rewrite `ha` using `[← hkey]`. Conclude with `isUnit_of_mul_isUnit_left ha`. Conclude with `⟨algebraMap K M h, (map_ne_zero _).2 h0, hσK h, hε, hε', hpos, hunit.unit, hkey⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_neg_two_norm_away : ∀ (M : Type) [Field M] [NumberField M] (σ : M →+* M), σ ≠ RingHom.id M → (∀ (φ : M →+* ℂ) (x : M), φ (σ x) = (starRingEnd ℂ) (φ x)) → ∀ ε ε' : M →+* ℂ, ε ≠ ε' → ε ≠ ComplexEmbedding.conjugate ε' → ∀ (p : ℕ) [Fact p.Prime], ∃ a : M, a ≠ 0 ∧ σ a = a ∧ (ε a).re < 0 ∧ (ε' a).re < 0 ∧ (∀ φ : M →+* ℂ, φ ≠ ε → φ ≠ ComplexEmbedding.conjugate ε → φ ≠ ε' → φ ≠ ComplexEmbedding.conjugate ε' → 0 < (φ a).re) ∧ ∃ u : (AfP p ⊗[ℚ] M)ˣ, (u : AfP p ⊗[ℚ] M) * Algebra.TensorProduct.map (AlgHom.id ℚ (AfP p)) σ.toRatAlgHom u = 1 ⊗ₜ a := by
   intro M _ _ σ hσ hconj ε ε' hεε' hεc p _

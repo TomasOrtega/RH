@@ -6,9 +6,9 @@ open Formalism.BasicNotions Classical
 namespace GlobalTheory.KFiMu0
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[← (M.emb_basis j).2]`. Conclude with `Submodule.span_mono (by rintro _ ⟨a, rfl⟩; exact ⟨_, rfl⟩)`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← (M.emb_basis j).2, ← (M.lat j).b.sum_repr x, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fi_eq_range' {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRing LL] {embLL : LL →+* ℂ} {Pl : Rows.Places LL}
     {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R} {C : ColumnChain R Tau hc} {A : ColumnsAtT R C} {P : PeriodMap R C}
@@ -23,11 +23,11 @@ theorem fi_eq_range' {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRi
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `k : ∀ j, j ≤ R.m → M.Fi j = M'.Fi j` using `fun j hj => by`. Rewrite using `[fi_eq_range', fi_eq_range']`. Use `congr 1`. Use extensionality with `φ`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨e j hj x, eq_of_heq (he j hj x)⟩`. Introduce and unpack `⟨y, rfl⟩`. Take `⟨x, rfl⟩` from `(e j hj).surjective y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, (eq_of_heq (he j hj x)).symm⟩`. Introduce `φ hφ`. Rewrite `hφ` using `[k _ hi.le]`. Rewrite using `[k _ hi]`. Conclude with `H φ hφ`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carries_one {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRing LL] {embLL : LL →+* ℂ} {Pl : Rows.Places LL}
     {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R} {C C' : ColumnChain R Tau hc} (h : C' = C)
@@ -53,7 +53,7 @@ theorem carries_one {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRin
   exact H φ hφ
 
 /- English proof (translation)
-Introduce `D T u i hi H` and use `carries_one (D.memberColumns_twistedChain_base u) (D.fm u) (T.fm u D.what₂.mu0) (T.eMu0 u) (T.eMu0_emb u) i hi H`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem memberForms_stable_of_reference_tuple : ∀ (D : D7) (T : TwForms D) (u : D.what₂.Word), ∀ i < D.R.m,
     (∀ φ ∈ (T.fm u D.what₂.mu0).Fi i, (D.chTw u D.what₂.mu0).K i φ ∈ (T.fm u D.what₂.mu0).Fi (i + 1)) →

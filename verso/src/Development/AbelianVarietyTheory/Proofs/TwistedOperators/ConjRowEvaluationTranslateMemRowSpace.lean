@@ -20,29 +20,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.RowEvalHH in
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h hLev hGrp hMod hHost hιE t c v₀ ht hLM hc hv S hS φ hφ`. Take `⟨hDS, -, -, -, -, hloc⟩` from `GlobalTheory.T.discreteSeries_testData_large_gaps_integrable X hHost`. Take `⟨hinj, hran⟩` from `Formalism.L2.SG.Closed.RowsBij_holds X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec X.B.e X.B.Re X.B.Re_spec X.B.H X.B.σ X.dv X.B.w (fun v => (X.ds v).2.2.1) (fun v => (X.ds v).2.2.2.1) (fun v => (hDS v).2.2.2) (fun v => (X.low v).1) hloc X.Rph X.Rph_spec X.B.Hs X.B.σs X.B. …`. Set `u : (∀ τ, ↥(Wsub R X c τ)) → X.B.Hs` to `fun y => tensT X (fun τ => (y τ : X.B.H (X.pl.symm τ)))`. Take `⟨f, K, hfe, hfn⟩` from `GlobalTheory.T.conjTranslatedRowEvaluation_multilinear_norm_sq R F X h hLev hGrp hMod t c ht S hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hfi` using `GlobalTheory.T.inner_multilinearMap_eq_mul_prod_inner f K hfn`. Establish `hgram : ∀ a b, ⟪evF R X h t c S a, evF R X h t c S b⟫_ℂ = (K : ℂ) * ⟪u a, u b⟫_ℂ`. Introduce `a b`. Rewrite using `[← hfe a, ← hfe b, hfi a b, tensT_inner]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hdense : Dense (Submodule.span ℂ (Set.range u) : Set X.B.Hs)` using `GlobalTheory.T.dense_span_tensor_of_dense_subspaces' (tensT X) (Wsub R X c) (tensT_inner X) (tensT_dense X) (Wsub_dense R X c)`. Take `⟨Aop, hA⟩` from `GlobalTheory.T.exists_clm_of_gram_eq_smul' u (evF R X h t c S) K hgram hdense`. Establish `hHom : Aop ∈ X.B.I.HomS X.B.σs X.B.μf X.B.fund X.B.R`. Introduce `g`. Apply `ContinuousLinearMap.ext_on hdense` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨y', hy1, hy2⟩` from `GlobalTheory.T.conjTranslatedRowEvaluation_intertwines_realGroup R F X h hLev hGrp hMod hHost hιE t c ht hc S hS g y`. Simplify using `only [ContinuousLinearMap.coe_comp', Function.comp_apply]`. Express the relevant statement in the definitionally equal form `Aop (X.B.σs g (u y)) = X.B.R (g, 1) (Aop (u y))`. Rewrite using `[← hy1]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Aop (u y') = _`. Rewrite using `[hA, hA, hy2]`. Establish `hRe : X.B.Re.comp Aop = Aop`. Apply `ContinuousLinearMap.ext_on hdense` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Simplify using `only [ContinuousLinearMap.coe_comp', Function.comp_apply]`. Rewrite using `[hA]`. Conclude with `GlobalTheory.T.conj_translatedRowEvaluation_levelProjector_fixed R F X h hLev hGrp hMod hHost hιE t c ht hLM S hS y`. Establish `heHom : Aop ∈ X.B.I.eHom X.B.σs X.B.μf X.B.fund X.B.R X.B.Re` using `Submodule.mem_map.2 ⟨Aop, hHom, hRe⟩`. Set `y₀ : ∀ τ, ↥(Wsub R X c τ)` to `fun τ => ⟨c τ (v₀ τ), Submodule.mem_map_of_mem (v₀ τ).2⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu0 : u y₀ = X.B.tens X.B.w`. Establish `: (fun τ => ((y₀ τ : ↥(Wsub R X c τ)) : X.B.H (X.pl.symm τ))) = fun τ => X.B.w (X.pl.symm τ)`. Use function extensionality and compare the values at `τ`. Conclude with `hv τ`. Express the relevant statement in the definitionally equal form `tensT X _ = _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, tensT_w]`. Establish `hvec : vecOf R X c y₀ = v₀`. Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(c τ).symm_apply_apply (v₀ τ)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c', -, hnorm⟩` from `GlobalTheory.T.translatedRowEvaluation_squareIntegrable_norm R F X h hLev hGrp hMod t ht`. Establish `hunit : ∀ τ, ‖((v₀ τ : (MP R).H τ))‖ = 1`. Introduce `τ`. Rewrite using `[← (c τ).norm_map, hv τ]`. Conclude with `(X.low _).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `⟨hmem, -, -⟩` from `hnorm v₀ hunit S hS`. Establish `hval : Aop (X.B.tens X.B.w) = star φ`. Rewrite using `[← hu0, hA]`. Unfold `evF`. Rewrite using `[hvec, dif_pos hmem]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `congr 1`. Conclude with `(Lp.ext (hφ.trans hmem.coeFn_toLp.symm)).symm`. Establish `hmemHH : star φ ∈ Formalism.L2.SG.RowsDef.HH X.B.I X.B.μf X.B.fund X.B.Re X.Rph`. Rewrite using `[← hran]`. Conclude with `⟨⟨Aop, heHom⟩, hval⟩`.
-
-Conclude with `hmemHH`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowEvalHH.conj_eval_mem_HH : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → HostHyp D → (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (t : GA D (Yc D 0)) (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)) (v₀ : (MP R).Vec), t ∈ GfC (Yc D 0) → LevelMatchA R F X h t → (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (D.sp.Y 0) τ), ∀ w, c τ ((MP R).rep τ g w) = X.B.σ (X.pl.symm τ) (uMat ((iotaX X h (atTau R.θ (D.sp.Y 0) τ g)).1 (X.pl.symm τ))) (c τ w)) → (∀ τ, c τ (v₀ τ : (MP R).H τ) = X.B.w (X.pl.symm τ)) → ∀ S ∈ EP R F, ∀ φ : L2X X, φ =ᵐ[muX X] (fun x => ev (MP R) v₀ S (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)) → star φ ∈ HHX X := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h hLev hGrp hMod hHost hιE t c v₀ ht hLM hc hv S hS φ hφ

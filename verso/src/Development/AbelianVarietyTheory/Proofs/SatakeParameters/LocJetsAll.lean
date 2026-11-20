@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FourthPowerTh
 namespace GlobalTheory.ThLoc
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LocJets.jetsOdd, LocJets.jetsTwo, LocJets.shape⟩`.
+Supply the required witnesses or components.
 -/
 theorem locJets_all :
     Formalism.L2.Th1.GD.IntOpLoc ∧ Formalism.L2.Th1.GD.IntOpTwoLoc ∧

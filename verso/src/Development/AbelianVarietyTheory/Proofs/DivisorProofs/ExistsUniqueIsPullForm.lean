@@ -31,11 +31,11 @@ open CatCoh
 variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}}
 
 /- English proof (translation)
-Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s'`. Establish `hcov` using `_root_.GlobalTheory.CechDR.pair_cover_affine φ s'`. Establish `hdir` using `_root_.GlobalTheory.CechDR.exists_pair_below_two φ s'`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s') (pairFst φ) H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s') (pairFst φ) H hcov hdir`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s') (pairFst φ) H hcov hdir`. Establish `hs1` using `_root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s' (pairFst φ) hcov`. Establish `hg1` using `_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s' (pairFst φ) hcov hdir`. Establish `hs2` using `_root_.GlobalTheory.CechDR.twoForm_sep_of_basis s' (pairFst φ) hcov`. Establish `b1 : Function.Bijective (pairRes φ s').pull1` using `⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bg` using `_root_.GlobalTheory.restrict_glob1_bijective _ _ hs1 hg1`. Conclude with `⟨b1, bg, _root_.GlobalTheory.CechDR.pullHyp1_restrict_injective _ _ b1.1 (_root_.GlobalTheory.compat_family_extend _ _ hs hg) bg.1, _root_.GlobalTheory.CechDR.pullHyp1_restrict_surjective _ _ b1.2 (_root_.GlobalTheory.cocycle_one_forms_coboundary_of_restrict _ _ hs1 hg1) bg.2 hs2 …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pairRes_bijective (φ : X' ⟶ X) (s' : X' ⟶ Sp R') :
     Function.Bijective (pairRes φ s').pull1 ∧ Function.Bijective (pullGlob1 (pairRes φ s')) ∧
@@ -58,21 +58,21 @@ theorem pairRes_bijective (φ : X' ⟶ X) (s' : X' ⟶ Sp R') :
 variable {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {σ : R →+* R'} {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ)
 
 /- English proof (translation)
-Take `⟨c', hc, hu⟩` from `(pairRes_bijective φ s').2.2.existsUnique (pullHyp1 (pairPull h) c)`. Conclude with `⟨c', hc.symm, fun y hy ↦ hu y hy.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_isPull1 (c : HH1 s) : ∃! c', IsPull1 h c c' := by
   obtain ⟨c', hc, hu⟩ := (pairRes_bijective φ s').2.2.existsUnique (pullHyp1 (pairPull h) c)
   exact ⟨c', hc.symm, fun y hy ↦ hu y hy.symm⟩
 
 /- English proof (translation)
-Take `⟨c', hc, hu⟩` from `(pairRes_bijective φ s').1.existsUnique ((pairPull h).pull1 c)`. Conclude with `⟨c', hc.symm, fun y hy ↦ hu y hy.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_isPullO (c : HO1 s) : ∃! c', IsPullO h c c' := by
   obtain ⟨c', hc, hu⟩ := (pairRes_bijective φ s').1.existsUnique ((pairPull h).pull1 c)
   exact ⟨c', hc.symm, fun y hy ↦ hu y hy.symm⟩
 
 /- English proof (translation)
-Take `⟨ω', hω, hu⟩` from `(pairRes_bijective φ s').2.1.existsUnique (pullGlob1 (pairPull h) ω)`. Conclude with `⟨ω', hω.symm, fun y hy ↦ hu y hy.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_isPullForm (ω : GlobForm s) : ∃! ω', IsPullForm h ω ω' := by
   obtain ⟨ω', hω, hu⟩ := (pairRes_bijective φ s').2.1.existsUnique (pullGlob1 (pairPull h) ω)
@@ -97,37 +97,37 @@ def pullForm : GlobForm s →ₛₗ[σ] GlobForm s' :=
   (pairResEquivForm φ s').symm.toLinearMap.comp (pullGlob1 (pairPull h))
 
 /- English proof (translation)
-The claim follows from `((pairResEquiv1 φ s').apply_symm_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isPull1_pullHH1 (c : HH1 s) : IsPull1 h c (pullHH1 h c) :=
   ((pairResEquiv1 φ s').apply_symm_apply _).symm
 
 /- English proof (translation)
-The claim follows from `((pairResEquivO φ s').apply_symm_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isPullO_pullHO1 (c : HO1 s) : IsPullO h c (pullHO1 h c) :=
   ((pairResEquivO φ s').apply_symm_apply _).symm
 
 /- English proof (translation)
-The claim follows from `((pairResEquivForm φ s').apply_symm_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isPullForm_pullForm (ω : GlobForm s) : IsPullForm h ω (pullForm h ω) :=
   ((pairResEquivForm φ s').apply_symm_apply _).symm
 
 /- English proof (translation)
-The claim follows from `(existsUnique_isPull1 h c).unique e (isPull1_pullHH1 h c)`.
+A detailed English derivation is pending.
 -/
 theorem IsPull1.eq_pullHH1 {c : HH1 s} {c' : HH1 s'} (e : IsPull1 h c c') : c' = pullHH1 h c :=
   (existsUnique_isPull1 h c).unique e (isPull1_pullHH1 h c)
 
 /- English proof (translation)
-The claim follows from `(existsUnique_isPullO h c).unique e (isPullO_pullHO1 h c)`.
+A detailed English derivation is pending.
 -/
 theorem IsPullO.eq_pullHO1 {c : HO1 s} {c' : HO1 s'} (e : IsPullO h c c') : c' = pullHO1 h c :=
   (existsUnique_isPullO h c).unique e (isPullO_pullHO1 h c)
 
 /- English proof (translation)
-The claim follows from `(existsUnique_isPullForm h ω).unique e (isPullForm_pullForm h ω)`.
+A detailed English derivation is pending.
 -/
 theorem IsPullForm.eq_pullForm {ω : GlobForm s} {ω' : GlobForm s'} (e : IsPullForm h ω ω') :
     ω' = pullForm h ω :=

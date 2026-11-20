@@ -11,41 +11,35 @@ local notation "gPt" p:max => spMap (ValuationSubring.subtype (OO p))
 namespace GlobalTheory.GenericConnected
 
 /- English proof (translation)
-Set `F : Finset A ⥤ CommRingCat.{0}` to `{ obj s := .of (Algebra.adjoin R (s : Set A)) map {s t} h := CommRingCat.ofHom (Subalgebra.inclusion (Algebra.adjoin_mono (Finset.coe_subset.mpr h.le))).toRingHom }`. Set `cF : Cocone F` to `{ pt := .of A := { app s := CommRingCat.ofHom (Algebra.adjoin R (s : Set A)).val.toRingHom } }`. Establish `: ReflectsFilteredColimits (forget CommRingCat.{0})` using `⟨fun _ ↦ reflectsColimitsOfShape_of_reflectsIsomorphisms⟩`. Establish `hcF : IsColimit cF` using `isColimitOfReflects (forget _) (Types.FilteredColimit.isColimitOf' _ _ (fun x ↦ by`. Set `x' : A` to `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `⟨({x'} : Finset A), (⟨x', Algebra.subset_adjoin (by simp)⟩ : Algebra.adjoin R (({x'} : Finset A) : Set A)), rfl⟩)`. Use the proof step `(fun i x y hxy ↦ ⟨i, 𝟙 i, congrArg _ (Subtype.ext hxy)⟩))`. Set `G : (Finset A)ᵒᵖ ⥤ Scheme.{0}` to `F.op ⋙ Scheme.Spec`. Set `cG : Cone G` to `Scheme.Spec.mapCone cF.op`. Establish `hcG : IsLimit cG` using `isLimitOfPreserves Scheme.Spec hcF.op`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `a (s : (Finset A)ᵒᵖ) : G.obj s ⟶ Spec (.of R)` to `Spec.map (CommRingCat.ofHom (algebraMap R (Algebra.adjoin R (s.unop : Set A))))`. Establish `ha {s t : (Finset A)ᵒᵖ} (f : s ⟶ t) : G.map f ≫ a t = a s`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `ha' (s : (Finset A)ᵒᵖ) : cG.π.app s ≫ a s = Spec.map (CommRingCat.ofHom (algebraMap R A))`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `e (s : (Finset A)ᵒᵖ) : G.obj s ⟶ S` to `a s ≫ j`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι {s t : (Finset A)ᵒᵖ} (f : s ⟶ t) : G.map f ≫ e t = e s`. Express the relevant statement in the definitionally equal form `G.map f ≫ a t ≫ j = a s ≫ j`. Rewrite using `[← Category.assoc, ha]`. Establish `hι' (s : (Finset A)ᵒᵖ) : cG.π.app s ≫ e s = Spec.map (CommRingCat.ofHom (algebraMap R A)) ≫ j`. Express the relevant statement in the definitionally equal form `cG.π.app s ≫ a s ≫ j = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ha']`. Apply the tactic sequence `let D : (Finset A)ᵒᵖ ⥤ Scheme.{0} := { obj s := pullback p (e s) map {s t} f := pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ G.map f) (by rw [Category.assoc, hι, pullback.condition]) map_id s := by apply pullback.hom_ext <;> simp map_comp f f' := by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, pullback.lift_fst, pullback.lift_fst]`. Rewrite using `[pullback.lift_snd, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, G.map_comp, Category.assoc] }`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `α : D ⟶ G` to `{ app s := pullback.snd p (e s) naturality s t f := pullback.lift_snd _ _ _ }`. Set `π (s : (Finset A)ᵒᵖ) : Y ⟶ pullback p (e s)` to `pullback.lift g (q ≫ cG.π.app s) (by rw [Category.assoc, hι', H.w])`. Set `cD : Cone D` to `{ pt := Y π := { app := π naturality s t f := by`. Express the relevant statement in the definitionally equal form `𝟙 Y ≫ π t = π s ≫ pullback.lift _ _ _`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp, Category.assoc, pullback.lift_fst, pullback.lift_fst, pullback.lift_fst]`. Rewrite using `[Category.id_comp, Category.assoc, pullback.lift_snd, pullback.lift_snd, pullback.lift_snd_assoc, Category.assoc, cG.w f] } }`. Establish `hπ (s : (Finset A)ᵒᵖ) : IsPullback (π s) q (pullback.snd p (e s)) (cG.π.app s)`. Use `IsPullback.of_right (h₁₂ := pullback.fst p (e s)) (v₁₃ := p) (h₂₂ := e s) ?_ (pullback.lift_snd _ _ _) (.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[hι', pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `H`. Establish `hcD : IsLimit cD` using `isLimitOfIsPullbackOfIsConnected α cD cG { hom := q, w s := (pullback.lift_snd _ _ _).symm } hπ hcG`. Establish `hG (s : (Finset A)ᵒᵖ) : IsAffine (G.obj s)` using `inferInstanceAs (IsAffine (Spec _))`. Establish `{s t : (Finset A)ᵒᵖ} (f : s ⟶ t) : IsAffineHom (D.map f)`. Establish `: IsPullback (D.map f) (pullback.snd p (e s)) (pullback.snd p (e t)) (G.map f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsPullback.of_right (h₁₂ := pullback.fst p (e t)) (v₁₃ := p) (h₂₂ := e t) ?_ (pullback.lift_snd _ _ _) (.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[hι, pullback.lift_fst]`. Conclude with `.of_hasPullback _ _`. Conclude with `MorphismProperty.of_isPullback this.flip inferInstance`. Establish `hcpt (s : (Finset A)ᵒᵖ) : CompactSpace (D.obj s)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd p (e s))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hft (s : (Finset A)ᵒᵖ) : LocallyOfFiniteType (a s)`. Establish `: Algebra.FiniteType R (Algebra.adjoin R (s.unop : Set A))` using `Algebra.FiniteType.adjoin_of_finite s.unop.finite_toSet`. Conclude with `HasRingHomProperty.Spec_iff.mpr (RingHom.finiteType_algebraMap.mpr this)`. Establish `hnoeth (s : (Finset A)ᵒᵖ) : TopologicalSpace.NoetherianSpace (D.obj s)`. Establish `: IsLocallyNoetherian (D.obj s)` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.snd p (e s) ≫ a s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherian (D.obj s)` using `{}`. Use `infer_instance`. Establish `hw {s t : (Finset A)ᵒᵖ} (f : s ⟶ t) (W : (D.obj t).Opens) : cD.π.app s ⁻¹ᵁ D.map f ⁻¹ᵁ W = cD.π.app t ⁻¹ᵁ W`. Rewrite using `[← Scheme.Hom.comp_preimage, cD.w]`. Establish `: QuasiCompact q` using `MorphismProperty.of_isPullback H inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: CompactSpace Y` using `QuasiCompact.compactSpace_of_compactSpace q`. Establish `hsup' : (U : Set Y) ∪ V = Set.univ` using `by simpa using congr(($hsup : Set Y))`. Establish `hinf' : (U : Set Y) ∩ V = ∅` using `by simpa using congr(($hinf : Set Y))`. Establish `hUV : IsCompl (U : Set Y) V` using `⟨Set.disjoint_iff_inter_eq_empty.2 hinf', codisjoint_iff.2 hsup'⟩`. Establish `hUc : IsCompact (U : Set Y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[hUV.eq_compl]`. Conclude with `V.2.isClosed_compl.isCompact`. Establish `hVc : IsCompact (V : Set Y)`. Rewrite using `[hUV.symm.eq_compl]`. Conclude with `U.2.isClosed_compl.isCompact`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i₁, U₁, -, hU₁⟩` from `exists_preimage_eq D cD hcD U hUc`. Take `⟨i₂, V₁, -, hV₁⟩` from `exists_preimage_eq D cD hcD V hVc`. Set `f₁` to `IsCofiltered.minToLeft i₁ i₂`. Set `f₂` to `IsCofiltered.minToRight i₁ i₂`. Take `⟨i₃, f₃, h₃⟩` from `exists_map_eq_top D cD hcD (D.map f₁ ⁻¹ᵁ U₁ ⊔ D.map f₂ ⁻¹ᵁ V₁) (by`.
-
-Rewrite using `[Scheme.Hom.preimage_sup, hw, hw, hU₁, hV₁]`. Conclude with `hsup)`. Take `⟨i₄, f₄, h₄⟩` from `exists_map_preimage_le_map_preimage D cD hcD (U := D.map f₃ ⁻¹ᵁ D.map f₁ ⁻¹ᵁ U₁ ⊓ D.map f₃ ⁻¹ᵁ D.map f₂ ⁻¹ᵁ V₁) (V := ⊥) (TopologicalSpace.NoetherianSpace.isCompact _) (by`. Rewrite using `[Scheme.Hom.preimage_inf, hw, hw, hw, hw, hU₁, hV₁]`. Conclude with `hinf.le.trans bot_le)`.
-
-Use `⟨G.obj i₄, a i₄, hft _, hG _, cG.π.app i₄, π i₄, D.map f₄ ⁻¹ᵁ D.map f₃ ⁻¹ᵁ D.map f₁ ⁻¹ᵁ U₁, D.map f₄ ⁻¹ᵁ D.map f₃ ⁻¹ᵁ D.map f₂ ⁻¹ᵁ V₁, ha' _, (hπ _).w, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `congr(D.map f₄ ⁻¹ᵁ $h₃)` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.preimage_sup, Scheme.Hom.preimage_sup]`. Conclude with `this`. Rewrite `h₄` using `[Scheme.Hom.preimage_inf]`.
-
-Conclude with `le_bot_iff.1 h₄`. Conclude with `((hw f₄ _).trans ((hw f₃ _).trans (hw f₁ U₁))).trans hU₁`. Conclude with `((hw f₄ _).trans ((hw f₃ _).trans (hw f₂ V₁))).trans hV₁`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_spread {X Y S : Scheme.{0}} {R A : Type} [CommRing R] [CommRing A]
     [IsNoetherianRing R] [Algebra R A] (j : Spec (.of R) ⟶ S) {p : X ⟶ S} [QuasiCompact p]
@@ -182,7 +176,7 @@ theorem exists_spread {X Y S : Scheme.{0}} {R A : Type} [CommRing R] [CommRing A
   · exact ((hw f₄ _).trans ((hw f₃ _).trans (hw f₂ V₁))).trans hV₁
 
 /- English proof (translation)
-Use `by_contra! H`. Take `⟨V, hV, -, hd⟩` from `exists_isAffineOpen_disjoint_image_of_isConstructible_of_disjoint_dense T S t C Sg hC hSg (Set.disjoint_left.2 (by rintro _ ⟨y, hy, rfl⟩; exact H y hy))`. Conclude with `Set.disjoint_left.1 hd h (((genericPoint_spec S).mem_open_set_iff V.isOpen).mpr (by simpa using hV))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_mem_of_genericPoint_mem {T S : Scheme.{0}} [IsIntegral S] [IsNoetherian S]
     (t : T ⟶ S) [LocallyOfFiniteType t] [QuasiCompact t] {C : Set T} {Sg : Set S}
@@ -196,11 +190,11 @@ theorem exists_mem_of_genericPoint_mem {T S : Scheme.{0}} [IsIntegral S] [IsNoet
     (((genericPoint_spec S).mem_open_set_iff V.isOpen).mpr (by simpa using hV))
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨u, hu, hu'⟩, v, hv, hv'⟩`. Establish `: ConnectedSpace ((pullback.snd f t).fiber y)` using `h.geometrically_connectedSpace _ _ _ (isPullback_fiberToSpecResidueField_of_isPullback (.of_hasPullback f t) y)`. Establish `hc : _root_.IsPreconnected (pullback.snd f t ⁻¹' {y})`. Rewrite using `[← Scheme.Hom.range_fiberι, ← Set.image_univ]`. Conclude with `isPreconnected_univ.image _ (Scheme.Hom.fiberι _ _).continuous.continuousOn`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsup' : (U : Set ↥(pullback f t)) ∪ V = Set.univ`. Simplify using `using congr(($hsup : Set ↥(pullback f t)))`. Establish `hinf' : (U : Set ↥(pullback f t)) ∩ V = ∅`. Simplify using `using congr(($hinf : Set ↥(pullback f t)))`. Take `⟨z, -, hz⟩` from `hc U V U.2 V.2 (hsup' ▸ Set.subset_univ _) ⟨u, hu', hu⟩ ⟨v, hv', hv⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[hinf']`. Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_image_inter {X T S : Scheme.{0}} (f : X ⟶ S) (t : T ⟶ S) (y : T)
     (h : GeometricallyConnected (f.fiberToSpecResidueField (t y)))
@@ -228,27 +222,23 @@ namespace GlobalTheory
 open GenericConnected in
 
 /- English proof (translation)
-Introduce `X S _ _ f _ _ Sg hSg hc`. Use `⟨fun K _ y Z fst snd h ↦ ?_⟩` and prove the remaining obligations. Establish `H : IsPullback (fst ≫ f.fiberι _) snd f (y ≫ S.fromSpecResidueField (genericPoint S))` using `h.paste_horiz (.of_hasPullback f (S.fromSpecResidueField (genericPoint S)))`. Establish `hy (z : Spec (.of K)) : (y ≫ S.fromSpecResidueField (genericPoint S)) z = genericPoint S`. Rewrite using `[Scheme.Hom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(S.range_fromSpecResidueField _).le ⟨_, rfl⟩`. Generalize the expression as in `y ≫ S.fromSpecResidueField (genericPoint S) = k at H hy`. Generalize the expression as in `fst ≫ f.fiberι _ = g at H`. Establish `hne : Nonempty Z`. Establish `h1 : genericPoint S ∈ f '' Set.univ`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Take `⟨x, hx, hx'⟩` from `exists_mem_of_genericPoint_mem (𝟙 S) (C := (f '' Set.univ)ᶜ) (f.isConstructible_image .univ).compl hSg ⟨_, h0, rfl⟩`. Use `hc x hx'` as an intermediate fact. Establish `: ConnectedSpace (f.fiber x)` using `GeometricallyConnected.connectedSpace_of_subsingleton (f.fiberToSpecResidueField x)`. Take `⟨w⟩ : Nonempty (f.fiber x)` from `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hx ⟨_, trivial, (f.range_fiberι x).le ⟨w, rfl⟩⟩`. Take `⟨x, -, hx⟩` from `h1`. Take `⟨z, -⟩` from `Scheme.exists_preimage_of_isPullback H x (default : PrimeSpectrum K) (hx.trans (hy _).symm)`. Conclude with `⟨z⟩`. It suffices to establish `PreconnectedSpace Z from ⟨hne⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨fun U V hU hV hUV ⟨u, _, hu⟩ ⟨v, _, hv⟩ ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hemp`. Take `⟨_, ⟨W, hW : IsAffineOpen W, rfl⟩, hηW, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint S)) isOpen_univ`. Establish `: IsNoetherianRing Γ(S, W)` using `IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Establish `hr : Set.range k ⊆ Set.range hW.fromSpec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hW.range_fromSpec, hy]`. Conclude with `hηW`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift hW.fromSpec k hr)`. Establish `hk : Spec.map φ ≫ hW.fromSpec = k` using `by rw [hφ, IsOpenImmersion.lift_fac]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `algebraize [φ.hom]`. Take `⟨T, a, _, _, b, π, U', V', hb, hπ, hsup, hinf, hU', hV'⟩` from `exists_spread (R := Γ(S, W)) (A := K) hW.fromSpec (p := f) (g := g) (q := snd) (by`. Rewrite `H` using `[← hk]`. Conclude with `H) ⟨U, hU⟩ ⟨V, hV⟩`. Use the proof step `(by ext; simpa using hUV trivial)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(by ext z; simpa using fun h1 h2 ↦ hemp ⟨z, trivial, h1, h2⟩)`. Set `t : T ⟶ S` to `a ≫ hW.fromSpec`. Establish `: IsLocallyNoetherian T` using `LocallyOfFiniteType.isLocallyNoetherian t`. Establish `: IsNoetherian T` using `{}`. Establish `: QuasiCompact t` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsLocallyNoetherian (pullback f t)` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.snd f t)`. Establish `: CompactSpace ↥(pullback f t)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd f t)`. Establish `: IsNoetherian (pullback f t)` using `{}`. Establish `hcons (O : (pullback f t).Opens) : Topology.IsConstructible (pullback.snd f t '' O)` using `(pullback.snd f t).isConstructible_image (IsRetrocompact.isConstructible O.2 fun _ _ _ ↦ TopologicalSpace.NoetherianSpace.isCompact _)`. Establish `hmem (O : (pullback f t).Opens) (z : Z) (hz : z ∈ π ⁻¹ᵁ O) : b (default : PrimeSpectrum K) ∈ pullback.snd f t '' O`.
-
-Use `⟨π z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hπ, Scheme.Hom.comp_apply]`. Use `congr 1`. Conclude with `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Take `⟨x, hx, hx'⟩` from `exists_mem_of_genericPoint_mem t ((hcons U').inter (hcons V')) hSg ⟨b (default : PrimeSpectrum K), ⟨hmem U' u (hU' ▸ hu), hmem V' v (hV' ▸ hv)⟩, by`.
-
-Establish `hbt : b ≫ t = k` using `by rw [← Category.assoc, hb]; exact hk`. Conclude with `(Scheme.Hom.comp_apply b t _).symm.trans ((congr($hbt _)).trans (hy _))⟩`. Conclude with `not_mem_image_inter f t x (hc _ hx') U' V' hsup hinf hx`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_genericFibre_of_dense :
     ∀ (X S : Scheme.{0}) [IsIntegral S] [IsNoetherian S] (f : X ⟶ S) [LocallyOfFiniteType f] [QuasiCompact f] (Sg : Set S), Dense Sg → (∀ x ∈ Sg, GeometricallyConnected (f.fiberToSpecResidueField x)) → GeometricallyConnected (f.fiberToSpecResidueField (genericPoint S)) := by

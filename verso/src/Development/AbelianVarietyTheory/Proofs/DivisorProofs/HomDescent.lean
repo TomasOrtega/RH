@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AlgClosedDescent
 
 /- English proof (translation)
-Introduce `k₀ K _ _ _ _ B B' _ _ hB hB' f hf`. Establish `hP : IsAbelianScheme (B ⊗ B')` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hB hB'`. Set `i : B ⟶ B ⊗ B'` to `lift (𝟙 B) 1`. Set `j : B' ⟶ B ⊗ B'` to `lift 1 (𝟙 B')`. Establish `hi : IsMonHom i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsMonHom (1 : B ⟶ B')`. Rewrite using `[Hom.one_def]`. Use `infer_instance`. Use `infer_instance`. Establish `hj : IsMonHom j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsMonHom (1 : B' ⟶ B)`. Rewrite using `[Hom.one_def]`. Use `infer_instance`. Use `infer_instance`. Take `⟨F₀, ⟨hF₀, hF⟩, -⟩` from `endo_descent (K := K) (B ⊗ B') hP ((Over.pullback (spMap (algebraMap k₀ K))).map (fst B B') ≫ f ≫ (Over.pullback (spMap (algebraMap k₀ K))).map j) inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (Over.pullback (spMap (algebraMap k₀ K))).map (i ≫ F₀ ≫ snd B B') = f`. Rewrite using `[Functor.map_comp, Functor.map_comp, hF]`. Simplify using `only [Category.assoc]`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp_assoc, lift_fst, lift_snd, CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`. Conclude with `⟨i ≫ F₀ ≫ snd B B', ⟨inferInstance, key⟩, fun f₁ hf₁ => ActDescent.pullback_map_injective (spMap (algebraMap k₀ K)) B B' (hf₁.2.trans key.symm)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hom_descent : ∀ (k₀ K : Type) [Field k₀] [IsAlgClosed k₀] [Field K] [Algebra k₀ K] (B B' : Over (Sp k₀)) [GrpObj B] [GrpObj B'], IsAbelianScheme B → IsAbelianScheme B' → ∀ f : (Over.pullback (spMap (algebraMap k₀ K))).obj B ⟶ (Over.pullback (spMap (algebraMap k₀ K))).obj B', IsMonHom f → ∃! f₀ : B ⟶ B', IsMonHom f₀ ∧ (Over.pullback (spMap (algebraMap k₀ K))).map f₀ = f := by
   intro k₀ K _ _ _ _ B B' _ _ hB hB' f hf

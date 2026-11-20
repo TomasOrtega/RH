@@ -21,13 +21,13 @@ noncomputable section
 namespace GlobalTheory.InvHermSiegel
 
 /- English proof (translation)
-Establish `a0 : ∀ w, B 0 w = 0` using `fun w => by`. Use `hl 1 0 0 w` as an intermediate fact. Simplify using `only [one_smul, add_zero, one_mul] at this`. Take the linear combination `-this`. Establish `a1 : ∀ v v' w, B (v + v') w = B v w + B v' w` using `fun v v' w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `using hl 1 v v' w`. Establish `a2 : ∀ (a : ℂ) v w, B (a • v) w = a * B v w` using `fun a v w => by`. Simplify `hl a v 0 w` using `[a0]`. Establish `b1 : ∀ v v' w, B w (v + v') = B w v + B w v'` using `fun v v' w => by`. Rewrite using `[hh, a1, star_add, ← hh, ← hh]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b2 : ∀ (a : ℂ) v w, B w (a • v) = star a * B w v` using `fun a v w => by`. Rewrite using `[hh, a2, star_mul', ← hh]`. Simplify using `only [a1, b1, a2, b2]`. Establish `hI : star Complex.I = -Complex.I` using `by simp [Complex.star_def]`. Rewrite using `[hI]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Simplify using `only [show Complex.I ^ 3 = -Complex.I by rw [pow_succ, Complex.I_sq]; ring, Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sesq_polar {W : Type*} [AddCommGroup W] [Module ℂ W] (B : W → W → ℂ)
     (hl : ∀ (a : ℂ) v v' w, B (a • v + v') w = a * B v w + B v' w)
@@ -54,7 +54,7 @@ theorem sesq_polar {W : Type*} [AddCommGroup W] [Module ℂ W] (B : W → W → 
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [tauU, symPart, Matrix.of_apply]`. Rewrite using `[h.apply i j]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tauU_symPart {g : ℕ} {A : Matrix (Fin g) (Fin g) ℂ} (h : A.IsSymm) :
     tauU (symPart A) = A := by
@@ -64,7 +64,7 @@ theorem tauU_symPart {g : ℕ} {A : Matrix (Fin g) (Fin g) ℂ} (h : A.IsSymm) :
   ring
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Establish `hu : ∀ a b, u.1 a b = u.1 b a` using `u.2`. Simplify using `only [symPart, tauU, Matrix.of_apply]`. Rewrite using `[hu j i]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -77,14 +77,14 @@ theorem symPart_tauU {g : ℕ} (u : symMat g) : symPart (tauU u) = u := by
   ring
 
 /- English proof (translation)
-Establish `hu : ∀ a b, u.1 a b = u.1 b a` using `u.2`. Conclude with `Matrix.IsSymm.ext fun i j => hu j i`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tauU_isSymm {g : ℕ} (u : symMat g) : (tauU u).IsSymm := by
   have hu : ∀ a b, u.1 a b = u.1 b a := u.2
   exact Matrix.IsSymm.ext fun i j => hu j i
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Simplify using `only [symPart, Submodule.coe_add, Submodule.coe_smul, Pi.add_apply, Pi.smul_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symPart_add_smul {g : ℕ} (a : ℂ) (Z Z' : Matrix (Fin g) (Fin g) ℂ) :
     symPart (a • Z + Z') = a • symPart Z + symPart Z' := by
@@ -95,14 +95,14 @@ theorem symPart_add_smul {g : ℕ} (a : ℂ) (Z Z' : Matrix (Fin g) (Fin g) ℂ)
   ring
 
 /- English proof (translation)
-The claim follows from `hA.map (Complex.ofRealHom.mapMatrix (m := Fin g))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_map {g : ℕ} {A : Matrix (Fin g) (Fin g) ℝ} (hA : IsUnit A) :
     IsUnit (A.map (fun t : ℝ => (t : ℂ))) :=
   hA.map (Complex.ofRealHom.mapMatrix (m := Fin g))
 
 /- English proof (translation)
-Rewrite using `[← Matrix.transpose_map]`. Conclude with `Matrix.map_mul (f := Complex.ofRealHom)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_transpose {g : ℕ} (A : Matrix (Fin g) (Fin g) ℝ) :
     (A * Aᵀ).map (fun t : ℝ => (t : ℂ)) = A.map (fun t : ℝ => (t : ℂ)) * (A.map (fun t : ℝ => (t : ℂ)))ᵀ := by
@@ -110,13 +110,13 @@ theorem map_mul_transpose {g : ℕ} (A : Matrix (Fin g) (Fin g) ℝ) :
   exact Matrix.map_mul (f := Complex.ofRealHom)
 
 /- English proof (translation)
-The claim follows from `tauU_symPart ((Matrix.isSymm_one).smul _)`.
+A detailed English derivation is pending.
 -/
 theorem tauU_i (g : ℕ) : tauU (symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ))) = Complex.I • 1 :=
   tauU_symPart ((Matrix.isSymm_one).smul _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem im_i (g : ℕ) : ((Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ)).map fun t => (t.im : ℂ)) = 1 := by
   ext i j
@@ -125,11 +125,9 @@ theorem im_i (g : ℕ) : ((Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ)).map f
   · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Use `show IsSiegel (tauU _)`. Rewrite using `[tauU_i]`. Use `⟨(Matrix.isSymm_one).smul _, ?_⟩` and prove the remaining obligations. Establish `: ((Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ)).map Complex.im) = 1`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`. Rewrite using `[this]`.
-
-Conclude with `Matrix.PosDef.one`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem i_mem (g : ℕ) : symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ)) ∈ siegel g := by
   show IsSiegel (tauU _)
@@ -144,9 +142,9 @@ theorem i_mem (g : ℕ) : symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ
   exact Matrix.PosDef.one
 
 /- English proof (translation)
-Establish `hc : Zᴴ = Z.map star`. Rewrite using `[Matrix.conjTranspose, hZ.eq]`. Establish `hr : star ((Z * Zᴴ).trace) = (Z * Zᴴ).trace`. Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Unfold `sdens`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[im_i, inv_one, Matrix.one_mul, Matrix.mul_one, ← hc]`. Conclude with `Complex.conj_eq_iff_re.1 hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sdens_i {g : ℕ} (Z : Matrix (Fin g) (Fin g) ℂ) (hZ : Z.IsSymm) :
     ((sdens (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ)) Z : ℝ) : ℂ) = (Z * Zᴴ).trace := by
@@ -159,31 +157,27 @@ theorem sdens_i {g : ℕ} (Z : Matrix (Fin g) (Fin g) ℂ) (hZ : Z.IsSymm) :
   exact Complex.conj_eq_iff_re.1 hr
 
 /- English proof (translation)
-Introduce `g F hF hinv`. Use `set s₀ : symMat g := symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ)) with hs₀`. Establish `hs₀m : s₀ ∈ siegel g` using `i_mem g`. Take `⟨⟨t, ht⟩, B, hl, hh, hB⟩` from `hF.2 s₀ hs₀m`. Establish `hBinv : ∀ (k : Matrix.unitaryGroup (Fin g) ℂ) (x y : symMat g), B (symPart (k.1 * tauU x * k.1ᵀ)) (symPart (k.1 * tauU y * k.1ᵀ)) = B x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k x y`. Take `⟨γ, hγ0, hD⟩` from `GlobalTheory.T.exists_symplectic_fixing_i_with_derivative g k`. Use `set D := fderiv ℂ (actB γ) s₀ with hDdef`. Establish `hQ : ∀ z, B (D z) (D z) = B z z`. Introduce `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrFun (hinv γ s₀ hs₀m z) Finset.univ`. Rewrite `e` using `[hγ0, hB, hB]`. Conclude with `mul_left_cancel₀ Complex.I_ne_zero e`. Rewrite using `[← hD, ← hD, sesq_polar B hl hh (D x) (D y), sesq_polar B hl hh x y]`. Establish `h1 : D x + D y = D (x + y)` using `(map_add D x y).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : D x + Complex.I • D y = D (x + Complex.I • y)` using `by rw [map_add, map_smul]`. Rewrite using `[h1, h2, hQ, hQ, hQ, hQ]`. Take `⟨c, hc⟩` from `GlobalTheory.unitary_invariant_hermitian_form_symm_eq_smul_trace g (fun Z W => B (symPart Z) (symPart W)) (fun a Z Z' W => by simp only [symPart_add_smul]; exact hl _ _ _ _) (fun Z W => hh _ _) (fun k Z W hZ hW => by`. Use `hBinv k (symPart Z) (symPart W)` as an intermediate fact. Rewrite using `[tauU_symPart hZ, tauU_symPart hW] at this)` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hB2 : ∀ u : symMat g, B u u = ((c * sdens (tauU s₀) (tauU u) : ℝ) : ℂ)`. Introduce `u`. Use `hc (tauU u) (tauU u) (tauU_isSymm u) (tauU_isSymm u)` as an intermediate fact. Simplify using `only [symPart_tauU] at this`. Rewrite using `[this, Complex.ofReal_mul, hs₀, tauU_i, sdens_i _ (tauU_isSymm u)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨t, c, fun s hs v => ?_⟩` and prove the remaining obligations. Take `⟨hsym, hpos⟩` from `(hs : IsSiegel (tauU s))`. Use `set Y := (tauU s).map Complex.im`. Use `set X := (tauU s).map Complex.re`. Establish `hX : X.IsSymm` using `by show ((tauU s).map Complex.re)ᵀ = _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.transpose_map, hsym.eq]`. Take `⟨A, hA, hAA⟩` from `GlobalTheory.T.pos_def_eq_mul_transpose g Y hpos`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.siegel_action_formula_and_derivative g A X hA hX`. Use `set A' := A.map (fun t : ℝ => (t : ℂ)) with hA'`. Establish `hτ : A' * tauU s₀ * A'ᵀ + X.map (fun t : ℝ => (t : ℂ)) = tauU s`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs₀, tauU_i, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hA', ← map_mul_transpose, hAA]`. Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [Y, X]`. Establish `hγs : actB γ s₀ = s`. Rewrite using `[(hγ s₀ 0).1, hτ, symPart_tauU]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : IsUnit A'.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (isUnit_map hA)`. Use `set W := tauU v`. Use `set P := A'⁻¹`. Establish `hW : Wᵀ = W` using `(tauU_isSymm v).eq`. Establish `hPW : (P * W * Pᵀ).IsSymm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hW, Matrix.IsSymm, Matrix.transpose_mul, Matrix.transpose_transpose, (tauU_isSymm v).eq, Matrix.mul_assoc]`. Use `set u := symPart (P * W * Pᵀ)`. Establish `hAu : A' * tauU u * A'ᵀ = W`. Rewrite using `[tauU_symPart hPW]`. Establish `e1 : A' * P = 1` using `Matrix.mul_nonsing_inv _ hU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : Pᵀ * A'ᵀ = 1` using `by rw [← Matrix.transpose_mul, e1, Matrix.transpose_one]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, e1, Matrix.one_mul, Matrix.mul_assoc, e2, Matrix.mul_one]`. Establish `hDu : fderiv ℂ (actB γ) s₀ u = v`. Rewrite using `[(hγ s₀ u).2, hAu, symPart_tauU]`. Establish `e` using `hinv γ s₀ hs₀m u`.
-
-Rewrite `e` using `[hγs, hDu]`. Rewrite using `[e]`. Use `⟨ht u, ?_⟩` and prove the remaining obligations. Establish `hsd : sdens (tauU s) W = sdens (tauU s₀) (tauU u)`. Rewrite using `[← hτ, ← hAu]`.
-
-Conclude with `GlobalTheory.T.siegel_density_invariant_affine g A X _ _ hA`. Rewrite using `[hB, hB2 u, hsd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invHermFun_eq_const_and_smul_sdens : ∀ (g : ℕ) (F : symMat g → symMat g → Ext (1 + 1)), IsHermFun g F →
     (∀ γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g, IsInvFun F γ) → ∃ t l : ℝ, ∀ s ∈ siegel g, ∀ v : symMat g,

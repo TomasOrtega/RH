@@ -4,11 +4,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Forma
 
 open Pointwise in
 /- English proof (translation)
-Establish `key : ∀ y : Ω, (g • A).valuation y < 1 ↔ A.valuation (g⁻¹ y) < 1`. Introduce `y`. Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Simplify using `[AlgEquiv.smul_def, map_inv₀]`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : σ • g • A = g • A` using `hσ.1 show (g⁻¹ * σ * g) • A = A`. Rewrite using `[mul_smul, mul_smul, hs, inv_smul_smul]`. Establish `hx' : (g • A).valuation (g x) ≤ 1`. Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `hx` using `[AlgEquiv.smul_def]`. Establish `h` using `hσ.2 (g x) hx'`. Rewrite `h` using `[key]`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `[map_sub, map_pow, AlgEquiv.mul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 private theorem frob_back {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A : ValuationSubring Ω} {q : ℕ}
     {g σ : G F Ω} (hσ : IsFrob (F := F) (g • A) q σ) : IsFrob (F := F) A q (g⁻¹ * σ * g) := by
@@ -32,9 +32,9 @@ private theorem frob_back {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Al
     simp [map_sub, map_pow, AlgEquiv.mul_apply]
 
 /- English proof (translation)
-Use `⟨Subgroup.mul_mem _ (Subgroup.inv_mem _ hσ.1) hτ.1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : A.valuation (τ x - σ x) < 1`. Establish `h` using `Valuation.map_sub_lt A.valuation (hτ.2 x hx) (hσ.2 x hx)`. Rewrite `h` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hd : σ⁻¹ ∈ Dec (F` using `F) A := Subgroup.inv_mem _ hσ.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[← valuation_apply_lt_one_iff hd]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Simplify using `[map_sub, AlgEquiv.mul_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 private theorem frob_ine {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A : ValuationSubring Ω} {q : ℕ}
     {σ τ : G F Ω} (hσ : IsFrob (F := F) A q σ) (hτ : IsFrob (F := F) A q τ) : σ⁻¹ * τ ∈ Ine (F := F) A := by
@@ -48,13 +48,13 @@ private theorem frob_ine {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
   simp [map_sub, AlgEquiv.mul_apply]
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n ι ρ w hI`. Take `⟨A₀, hA₀⟩` from `exists_isPlaceOver Ω w`. Take `⟨σ₀, hσ₀⟩` from `exists_isFrob (F := F) hA₀`. Use `set p := ((ρ σ₀⁻¹ : GL (Fin n) (PadicAlgCl l)) : Matrix (Fin n) (Fin n) (PadicAlgCl l)).charpoly.map ι.toRingHom with hp`. Use `⟨p.roots, fun A hA => ⟨hI A hA, fun σ hσ => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpm : p.Monic` using `(Matrix.charpoly_monic _).map _`. Rewrite using `[prod_multiset_X_sub_C_of_monic_of_roots_card_eq hpm IsAlgClosed.card_roots_eq_natDegree]`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver hA₀ hA`. Establish `hb` using `frob_back hσ`. Establish `h1` using `hI A₀ hA₀ _ (frob_ine hσ₀ hb)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_inv]`. Establish `h2 : ρ (g⁻¹ * σ * g) = ρ σ₀` using `(inv_mul_eq_one.mp h1).symm`. Establish `h3 : ρ σ⁻¹ = ρ g * ρ σ₀⁻¹ * (ρ g)⁻¹`. Establish `e : σ⁻¹ = g * (g⁻¹ * σ * g)⁻¹ * g⁻¹` using `by group`. Rewrite using `[e, map_mul, map_mul, map_inv, map_inv, h2, map_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, h3, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pu.frobEigEx :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ} (ι : PadicAlgCl l ≃+* ℂ) (ρ : G F Ω →* GL (Fin n) (PadicAlgCl l)) (w : HeightOneSpectrum (𝓞 F)), (∀ A : ValuationSubring Ω, IsPlaceOver A w → ∀ s ∈ Ine (F := F) A, ρ s = 1) → ∃ b, Af.FrobEig ι ρ w b := by

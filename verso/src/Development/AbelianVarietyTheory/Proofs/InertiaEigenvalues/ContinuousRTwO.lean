@@ -13,7 +13,7 @@ section
 variable (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `show (D.nbr i w hw).toLL ((((chiU D.nd i 1)⁻¹ (decS D.nd w (Br.iota D.nbr i w hw g)) : (D.nd.O i)ˣ) : D.nd.O i) * rO D.nd i r x (decS D.nd w (Br.iota D.nbr i w hw g)) a b) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem loc_rTwO (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (x : D.nd.X i) :
     Br.loc D.nbr i w hw (rTwO D.nd i r x) =
@@ -31,7 +31,7 @@ theorem matRep_loc_rO (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)
     matRep (Br.loc D.nbr i w hw (rO D.nd i r x)) = (D.nbr i w hw).rep ((r x).comp (decS D.nd w)) := rfl
 
 /- English proof (translation)
-Use `⟨LinearEquiv.refl _ _, fun g v => ?_⟩` and prove the remaining obligations. Rewrite using `[loc_rTwO]`. Express the relevant statement in the definitionally equal form `((((Br.locChi D.nbr i w hw (D.nd.chi i 1))⁻¹ g : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw) • Br.loc D.nbr i w hw (rO D.nd i r x) g).mulVec v = _`. Conclude with `Matrix.smul_mulVec _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem isTwistRep_loc (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (x : D.nd.X i) :
     IsTwistRep (Br.locChi D.nbr i w hw (D.nd.chi i 1))⁻¹ (matRep (Br.loc D.nbr i w hw (rO D.nd i r x)))
@@ -43,7 +43,7 @@ theorem isTwistRep_loc (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i
   exact Matrix.smul_mulVec _ _ _
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : GE D.nd => ((D.nd.chi i 1 g⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)` using `(D.nd.chi_cont i 1).comp continuous_inv`. Use `(h1.smul hc).congr fun g => ?_` and prove the remaining obligations. Simplify using `[rTwO, twistM, rO]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem continuous_rTwO (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (x : D.nd.X i)
     (hc : Continuous (fun g => ((r x g : GL (Fin D.R.nV) (D.nd.O i)) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)))) :
@@ -58,9 +58,9 @@ end
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D hT i w hw r x K' h hN hF hS Sig0 c hcont hpot hit hχpot hχit`. Establish `hcO : Continuous fun g => rO D.nd i r x g` using `hcont`. Establish `hcT` using `continuous_rTwO D i r x hcont`. Rewrite `hpot`, `hit` using `[← matRep_loc_rO]`. Conclude with `(hT (D.nd.l i) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL h hN hF hS (GlobalTheory.PotDual.bundle _ _ (Br.loc D.nbr i w hw (rO D.nd i r x)) (GlobalTheory.PotDual.continuous_loc D i w hw _ hcO)) (GlobalTheory.PotDual.bundle _ _ (Br.loc D.nbr i w hw (rTwO D.nd i r x)) (GlobalTheory.Pot …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_image]`. Conclude with `⟨fun ⟨a, ha, e⟩ => ⟨a, ha, e.symm⟩, fun ⟨a, ha, e⟩ => ⟨a, ha, e.symm⟩⟩)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twist_potCrys : ∀ (D : D7), PcrisTensorL D.loc → ∀ (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i))

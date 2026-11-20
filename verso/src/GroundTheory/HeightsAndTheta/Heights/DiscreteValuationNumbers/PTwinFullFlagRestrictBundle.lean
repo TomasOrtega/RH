@@ -17,9 +17,9 @@ variable {x : (Σ k, ι k) → Ω} {Q : Ideal (MRingOver (kap O) ι)} [Q.IsPrime
 variable {N : ℕ} {V : Type*} [AddCommGroup V] [Module Ω V] {B : ChartBundle O (mseg x) N V}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `_`. Establish `he : e ∈ Submodule.span (FractionRing (MRingOver (kap O) ι ⧸ Q)) (Set.range b)` using `hsp ▸ Submodule.mem_top`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 he`. Conclude with `⟨a, fun q => ⟨1, by simp⟩, ha.symm⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `_`. Conclude with `⟨1, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem frame_zero {s : ∀ k, ι k} {b : Fin N → resFibre O x Q B}
     (hsp : Submodule.span (FractionRing (MRingOver (kap O) ι ⧸ Q)) (Set.range b) = ⊤) (e : resFibre O x Q B) :
@@ -36,9 +36,9 @@ theorem frame_zero {s : ∀ k, ι k} {b : Fin N → resFibre O x Q B}
     exact ⟨1, by simp⟩
 
 /- English proof (translation)
-Establish `h : rs x Q (∑ l, c l * f l) = ∑ l, rs x Q (c l) * rs x Q (f l)`. Rewrite using `[rs_sum hPQ _ _ fun l _ => mul_mem (chartRing_sub hPQ hs (hc l)).1 (chartRing_sub hPQ hs (hf l)).1]`. Conclude with `Finset.sum_congr rfl fun l _ => rs_mul hPQ (chartRing_sub hPQ hs (hc l)).1 (chartRing_sub hPQ hs (hf l)).1`. Rewrite `h` using `[hsum, rs_one hPQ]`. Use `⟨h.symm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Simplify using `[hne] at h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cover_rs (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k} (hs : mseg (genPt (kap O) Q) s ≠ 0)
     {k : ℕ} {f c : Fin k → Ω} (hf : ∀ l, f l ∈ chartRing O (mseg x) s) (hc : ∀ l, c l ∈ chartRing O (mseg x) s)
@@ -78,11 +78,9 @@ def resBundle (hPQ : redIdeal O (mcIdeal O x) ≤ Q) :
   overlap := fun _ _ hs ht _ he => resLat_overlap hPQ hs ht he
 
 /- English proof (translation)
-Take `⟨hw0, ⟨n, hn⟩, ⟨n', hn'⟩⟩` from `hw`. Establish `h1` using `mem_locAlg_of_pow_mul hPQ hs hf hf0 hn`. Establish `h2` using `mem_locAlg_of_pow_mul hPQ hs hf hf0 hn'`. Establish `h3 : rs x Q w * rs x Q w⁻¹ = 1` using `by rw [← rs_mul hPQ h1 h2, mul_inv_cancel₀ hw0, rs_one hPQ]`. Establish `h4 : rs x Q w ≠ 0` using `left_ne_zero_of_mul_eq_one h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfl` using `(chartRing_sub hPQ hs hf).1`. Use `⟨h1, h2, h4, h4, ⟨n, ?_⟩, ⟨n', ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← rs_pow hPQ hfl, ← rs_mul hPQ (pow_mem hfl n) h1]`. Conclude with `(chartRing_sub hPQ hs hn).2`. Rewrite using `[← (inv_mem_of_rs_ne_zero hPQ h1 h4).2, ← rs_pow hPQ hfl, ← rs_mul hPQ (pow_mem hfl n') h2]`.
-
-Conclude with `(chartRing_sub hPQ hs hn').2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_res (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k} (hs : mseg (genPt (kap O) Q) s ≠ 0) {f w : Ω}
     (hf : f ∈ chartRing O (mseg x) s) (hf0 : rs x Q f ≠ 0) (hw : IsUnitOn O (mseg x) s f w) :
@@ -101,7 +99,7 @@ theorem unit_res (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k} (hs : 
     exact (chartRing_sub hPQ hs hn').2
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (Finset.prod_ne_zero_iff.1 hs k (Finset.mem_univ k))`.
+A detailed English derivation is pending.
 -/
 theorem chartMon_ne_zero {F : Type*} [Field F] (y : (Σ k, ι k) → F) {s : ∀ k, ι k} (hs : mseg y s ≠ 0)
     (m : K → ℤ) : chartMon y s m ≠ 0 :=
@@ -110,9 +108,9 @@ theorem chartMon_ne_zero {F : Type*} [Field F] (y : (Σ k, ι k) → F) {s : ∀
 def lowSet (j : Fin (N + 1)) : Set (Fin N) := {q | (q : ℕ) < j}
 
 /- English proof (translation)
-Establish `e : b '' lowSet j = Set.range (b ∘ Fin.castLE (Fin.is_le j))`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`. Conclude with `⟨⟨q, hq⟩, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨q, rfl⟩`. Conclude with `⟨_, show ((Fin.castLE (Fin.is_le j) q : Fin N) : ℕ) < j from q.2, rfl⟩`. Rewrite using `[e, finrank_span_eq_card (hb.comp _ (Fin.castLE_injective _)), Fintype.card_fin]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_span_low {F E : Type*} [Field F] [AddCommGroup E] [Module F E] {b : Fin N → E}
     (hb : LinearIndependent F b) (j : Fin (N + 1)) :
@@ -129,59 +127,51 @@ theorem finrank_span_low {F E : Type*} [Field F] [AddCommGroup E] [Module F E] {
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `choose s₀ hs₀' using hrel`. Establish `hs₀ : mseg (genPt (kap O) Q) s₀ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => by`. Introduce `h`. Apply `hs₀' k` to reduce the goal to its premises. Rewrite using `[← aeval_genPt_eq_zero_iff, aeval_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨k₀, f₀, c₀, hf₀, hc₀, hsum₀, hl₀⟩` from `fl.frame s₀ (mseg_ne_zero hPQ hs₀)`. Take `⟨-, l₀, hl₀0⟩` from `cover_rs hPQ hs₀ hf₀ hc₀ hsum₀`. Take `⟨b₀, hb₀, hsp₀, hlat₀, hw₀⟩` from `hl₀ l₀`. Use `choose w₀ hw₀u hw₀v using hw₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbM` using `frame_mem_stalk hPQ hs₀ (hf₀ l₀) hl₀0 hlat₀`. Take `⟨li₀, sp₀⟩` from `frame_res_basis hPQ hs₀ (hf₀ l₀) hl₀0 hlat₀ hb₀ hsp₀`. Take `⟨b₀', hb₀'⟩ : ∃ g : Fin N → resFibre O x Q B, g = fun q => resMap O x Q B ⟨b₀ q, hbM q⟩` from `⟨_, rfl⟩`. Rewrite `li₀`, `sp₀` using `[← hb₀']`. Establish `hw₀r : ∀ i, rs x Q (w₀ i) ≠ 0` using `fun i => (unit_res hPQ hs₀ (hf₀ l₀) hl₀0 (hw₀u i)).2.2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcm₀ : ∀ i, chartMon (genPt (kap O) Q) s₀ (fl.deg i) ≠ 0` using `fun i => chartMon_ne_zero _ hs₀ _`. Take `⟨gen', hgen'⟩ : ∃ g : Fin N → resFibre O x Q B, ∀ i, g i = (rs x Q (w₀ i) * chartMon (genPt (kap O) Q) s₀ (fl.deg i))⁻¹ • b₀' i` from `⟨_, fun i => rfl⟩`. Establish `hb₀V : ∀ (q : Fin N) (j : Fin (N + 1)), (q : ℕ) < j → b₀ q ∈ fl.Vs j`. Introduce `q j hqj`. Establish `hle : q.succ ≤ j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.le_def, Fin.val_succ]`. Conclude with `hqj`. Establish `h1 : b₀ q = (b₀ q - (w₀ q * chartMon x s₀ (fl.deg q)) • fl.gen q) + (w₀ q * chartMon x s₀ (fl.deg q)) • fl.gen q` using `by abel`. Rewrite using `[h1]`. Conclude with `add_mem (fl.mono (le_trans (show q.castSucc < q.succ from Fin.castSucc_lt_succ).le hle) (hw₀v q)) (Submodule.smul_mem _ _ (fl.mono hle (fl.gen_mem q)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation.
 
-Set `bas : Module.Basis (Fin N) Ω V` to `Module.Basis.mk hb₀ (by rw [hsp₀])`. Establish `hbas : ⇑bas = b₀` using `funext fun q => Module.Basis.mk_apply _ _ q`. Use `haveI : FiniteDimensional Ω V := Module.Finite.of_basis bas`. Establish `hVs : ∀ j, fl.Vs j = Submodule.span Ω (b₀ '' lowSet j)`. Introduce `j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `symm`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Conclude with `hb₀V q j hq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[finrank_span_low hb₀ j, fl.dim j]`. Establish `hres : ∀ j, resSub O x Q B (fl.Vs j) = Submodule.span _ (b₀' '' lowSet j)`. Introduce `j`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[resSub, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Take `⟨a, ha, hma⟩` from `stalk_coords hPQ hs₀ (hf₀ l₀) hl₀0 hlat₀ m.2`. Rewrite using `[resMap_sum hPQ hs₀ (hf₀ l₀) hl₀0 hlat₀ ha m hma]`. Establish `hrep : bas.equivFun m = a`. Rewrite using `[hma, show ∑ q, a q • b₀ q = bas.equivFun.symm a by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.equivFun_symm_apply, hbas], LinearEquiv.apply_symm_apply]`. Establish `hsupp : ∀ q : Fin N, ¬ ((q : ℕ) < j) → a q = 0`. Introduce `q hq`. Establish `hm' : (m : V) ∈ Submodule.span Ω (bas '' lowSet j)`. Rewrite using `[hbas, ← hVs j]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`. Rewrite `hm'` using `[Module.Basis.mem_span_image]`. Rewrite using `[← hrep, Module.Basis.equivFun_apply]`. Assume the negation of the conclusion as `hne`. Conclude with `hq (hm' (Finsupp.mem_support_iff.2 hne))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Distinguish the cases in `hq : (q : ℕ) < j`. Rewrite `*` using `[hb₀']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨q, hq, rfl⟩)`. Rewrite using `[hsupp q hq, rs_zero hPQ, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_mem _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Rewrite using `[hb₀']`. Conclude with `Submodule.subset_span ⟨⟨b₀ q, hbM q⟩, hb₀V q j hq, rfl⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ Vs := fun j => resSub O x Q B (fl.Vs j) mono := fun i j h => Submodule.span_mono (Set.image_mono fun m hm => fl.mono h hm) dim := fun j => by rw [hres j, finrank_span_low li₀ j] top := ?_ deg := fl.deg gen := gen' gen_mem := fun i => ?_ frame := ?_ }, rfl, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[hres, show lowSet (Fin.last N) = Set.univ from Set.eq_univ_of_forall fun q => q.2, Set.image_univ]`. Conclude with `sp₀`. Rewrite using `[hres, hgen']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, show (i : ℕ) < i.succ by simp, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `s hs`. Take `⟨k, f, c, hf, hc, hsum, hl⟩` from `fl.frame s (mseg_ne_zero hPQ hs)`. Take `⟨hsum', -, -⟩` from `cover_rs hPQ hs hf hc hsum`. Use `⟨k, fun l => rs x Q (f l), fun l => rs x Q (c l), fun l => (chartRing_sub hPQ hs (hf l)).2, fun l => (chartRing_sub hPQ hs (hc l)).2, hsum', fun l => ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : rs x Q (f l) = 0`. Establish `hu : ∀ i, chartMon (genPt (kap O) Q) s (fl.deg i) * (rs x Q (w₀ i) * chartMon (genPt (kap O) Q) s₀ (fl.deg i))⁻¹ ≠ 0` using `fun i => mul_ne_zero (chartMon_ne_zero _ hs _) (inv_ne_zero (mul_ne_zero (hw₀r i) (hcm₀ i)))`. Establish `hbu : (fun i => chartMon (genPt (kap O) Q) s (fl.deg i) • gen' i) = fun i => (Units.mk0 _ (hu i) : (FractionRing (MRingOver (kap O) ι ⧸ Q))ˣ) • b₀' i`. Use function extensionality and compare the values at `i`. Rewrite using `[hgen', smul_smul, Units.smul_def, Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent (FractionRing (MRingOver (kap O) ι ⧸ Q)) (fun i => chartMon (genPt (kap O) Q) s (fl.deg i) • gen' i)`. Rewrite using `[hbu]`. Conclude with `li₀.units_smul fun i => Units.mk0 _ (hu i)`. Establish `hsp : Submodule.span (FractionRing (MRingOver (kap O) ι ⧸ Q)) (Set.range fun i => chartMon (genPt (kap O) Q) s (fl.deg i) • gen' i) = ⊤`. Rewrite using `[eq_top_iff, ← sp₀, Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Establish `e : b₀' i = (Units.mk0 _ (hu i))⁻¹ • (chartMon (genPt (kap O) Q) s (fl.deg i) • gen' i)`. Rewrite using `[congrFun hbu i, smul_smul, inv_mul_cancel, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨_, hli, hsp, fun e => ?_, fun i => ⟨1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `frame_zero hsp e`. Rewrite using `[h0]`. Conclude with `⟨one_ne_zero, ⟨1, by simp⟩, ⟨1, by simp⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[one_mul, sub_self]`. Conclude with `zero_mem _`. Take `⟨b, hb, hsp, hlat, hw⟩` from `hl l`. Establish `hbM'` using `frame_mem_stalk hPQ hs (hf l) h0 hlat`. Take `⟨li, sp⟩` from `frame_res_basis hPQ hs (hf l) h0 hlat hb hsp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, li, sp, frame_res_lat hPQ hs (hf l) h0 hlat, fun i => ?_⟩` and prove the remaining obligations. Take `⟨w, hwu, hwv⟩` from `hw i`. Take `⟨hw1, -, -, hw4⟩` from `unit_res hPQ hs (hf l) h0 hwu`. Take `⟨hw01, hw02, hw03, -⟩` from `unit_res hPQ hs₀ (hf₀ l₀) hl₀0 (hw₀u i)`. Take `⟨hcm1, hcm2⟩` from `chartMon_ratio (x := x) hPQ hs hs₀ (fl.deg i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨rs x Q w, hw4, ?_⟩` and prove the remaining obligations. Establish `hx0 : chartMon x s₀ (fl.deg i) ≠ 0` using `chartMon_ne_zero x (mseg_ne_zero hPQ hs₀) _`. Establish `hw00 : w₀ i ≠ 0` using `(hw₀u i).1`. Take `⟨u, hu_def⟩ : ∃ u : Ω, u = w * (w₀ i)⁻¹ * (chartMon x s (fl.deg i) / chartMon x s₀ (fl.deg i))` from `⟨_, rfl⟩`. Establish `hu : u ∈ locAlg x Q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hu_def]`. Conclude with `mul_mem (mul_mem hw1 hw02) hcm1`. Establish `hu' : u * (w₀ i * chartMon x s₀ (fl.deg i)) = w * chartMon x s (fl.deg i)`. Rewrite using `[hu_def]`. Clear the denominators using the available nonvanishing facts.
-
-Establish `hmem : b i - u • b₀ i ∈ fl.Vs i.castSucc`. Establish `e : b i - u • b₀ i = (b i - (w * chartMon x s (fl.deg i)) • fl.gen i) - u • (b₀ i - (w₀ i * chartMon x s₀ (fl.deg i)) • fl.gen i)`. Rewrite using `[smul_sub u, smul_smul, hu']`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
-
-Conclude with `sub_mem hwv (Submodule.smul_mem _ _ (hw₀v i))`. Establish `hS : b i - u • b₀ i ∈ stalk O x Q B` using `sub_mem (hbM' i) (smul_mem_stalk hPQ hu (hbM i))`. Establish `hres' : resMap O x Q B ⟨b i - u • b₀ i, hS⟩ = resMap O x Q B ⟨b i, hbM' i⟩ - rs x Q u • b₀' i`. Rewrite using `[hb₀', ← resMap_smul hPQ hu ⟨b₀ i, hbM i⟩, ← map_sub]`. Both sides reduce to the same expression.
-
-Establish `hru : rs x Q u • b₀' i = (rs x Q w * chartMon (genPt (kap O) Q) s (fl.deg i)) • gen' i`. Rewrite using `[hgen', smul_smul]`. Use `congr 1`. Rewrite using `[hu_def, rs_mul hPQ (mul_mem hw1 hw02) hcm1, rs_mul hPQ hw1 hw02, (inv_mem_of_rs_ne_zero hPQ hw01 hw03).2, hcm2]`. Use `hw₀r i` as an intermediate fact.
-
-Use `hcm₀ i` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `resMap O x Q B ⟨b i, hbM' i⟩ - (rs x Q w * chartMon (genPt (kap O) Q) s (fl.deg i)) • gen' i ∈ resSub O x Q B (fl.Vs i.castSucc)`. Rewrite using `[← hru, ← hres']`. Conclude with `Submodule.subset_span ⟨_, hmem, rfl⟩`.
+Clear the denominators using the available nonvanishing facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_resFlag (hPQ : redIdeal O (mcIdeal O x) ≤ Q) (hrel : IsRelevant Q) (fl : FullFlag O x B) :
     ∃ fl' : FullFlag (kap O) (genPt (kap O) Q) (resBundle B hPQ),

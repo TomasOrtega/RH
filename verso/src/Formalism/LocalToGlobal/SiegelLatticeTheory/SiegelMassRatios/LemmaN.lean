@@ -54,15 +54,13 @@ def LemmaNcGlob : Prop :=
     β = 1
 
 /- English proof (translation)
-Take `⟨htg, ht2, hc, htd, hidx⟩` from `hQ`. Set `S : Finset Q` to `((Finset.range (orderOf y)).image (fun k => y ^ k)).filter (· ≠ 1)`. Establish `hUo : IsOpen ((S : Set Q)ᶜ)` using `(S.finite_toSet.isClosed).isOpen_compl`. Establish `h1U : (1 : Q) ∈ ((S : Set Q)ᶜ)` using `by simp [S]`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hUo h1U`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hidx H`. Use `⟨k, ?_⟩` and prove the remaining obligations. Set `Hs : Subgroup Q` to `(H.toOpenSubgroup : Subgroup Q)`. Establish `: Hs.Normal` using `H.isNormal'`. Establish `hdvd : orderOf (QuotientGroup.mk' Hs y) ∣ p ^ k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hk, Subgroup.index]`. Conclude with `orderOf_dvd_natCard _`. Use `dvd_trans (orderOf_dvd_of_pow_eq_one ?_) hdvd` and prove the remaining obligations. Establish `hm : QuotientGroup.mk' Hs y ^ orderOf (QuotientGroup.mk' Hs y) = 1` using `pow_orderOf_eq_one _`. Rewrite `hm` using `[← map_pow, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `set m := orderOf (QuotientGroup.mk' Hs y)`. Rewrite `hm`, the goal using `[← pow_mod_orderOf]`. Assume the negation of the conclusion as `hne`. Establish `hmem : y ^ (m % orderOf y) ∈ (S : Set Q)`. Simplify using `only [S, Finset.coe_filter, Finset.mem_image, Finset.mem_range, Set.mem_ofPred_eq]`.
-
-Conclude with `⟨⟨m % orderOf y, Nat.mod_lt _ hy.orderOf_pos, rfl⟩, hne⟩`. Conclude with `hH hm hmem`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orderOf_dvd_of_isProP {p : ℕ} {Q : Type} [Group Q] [TopologicalSpace Q]
     (hQ : IsProP p Q) {y : Q} (hy : IsOfFinOrder y) : ∃ k : ℕ, orderOf y ∣ p ^ k := by
@@ -91,7 +89,7 @@ theorem orderOf_dvd_of_isProP {p : ℕ} {Q : Type} [Group Q] [TopologicalSpace Q
   exact hH hm hmem
 
 /- English proof (translation)
-Establish `hcop : Nat.Coprime (g₁ ^ a) (g₂ ^ b)` using `Nat.coprime_pow_primes a b hg₁ hg₂ hne`. Establish `h1 : orderOf β = 1` using `Nat.eq_one_of_dvd_coprimes hcop ha hb`. Conclude with `orderOf_eq_one_iff.mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_dvd_two_primes {G : Type} [Group G] {β : G} {g₁ g₂ a b : ℕ}
     (hg₁ : g₁.Prime) (hg₂ : g₂.Prime) (hne : g₁ ≠ g₂)
@@ -101,11 +99,9 @@ theorem eq_one_of_dvd_two_primes {G : Type} [Group G] {β : G} {g₁ g₂ a b : 
   exact orderOf_eq_one_iff.mp h1
 
 /- English proof (translation)
-Introduce `Γ _ β hfin g₁ g₂ hg₁ hg₂ hne _ _ Q₁ _ _ hQ₁ Q₂ _ _ hQ₂ f₁ f₂ i₁ i₂`. Establish `hf₁ : IsOfFinOrder (f₁ β)`. Rewrite using `[← orderOf_pos_iff, orderOf_injective f₁ i₁ β]`. Conclude with `hfin.orderOf_pos`. Establish `hf₂ : IsOfFinOrder (f₂ β)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← orderOf_pos_iff, orderOf_injective f₂ i₂ β]`. Conclude with `hfin.orderOf_pos`. Take `⟨a, ha⟩` from `orderOf_dvd_of_isProP hQ₁ hf₁`. Take `⟨b, hb⟩` from `orderOf_dvd_of_isProP hQ₂ hf₂`. Rewrite `ha` using `[orderOf_injective f₁ i₁ β]`.
-
-Rewrite `hb` using `[orderOf_injective f₂ i₂ β]`. Conclude with `eq_one_of_dvd_two_primes hg₁ hg₂ hne ha hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lemmaNc : LemmaNc := by
   intro Γ _ β hfin g₁ g₂ hg₁ hg₂ hne _ _ Q₁ _ _ hQ₁ Q₂ _ _ hQ₂ f₁ f₂ i₁ i₂
@@ -120,11 +116,11 @@ theorem lemmaNc : LemmaNc := by
   exact eq_one_of_dvd_two_primes hg₁ hg₂ hne ha hb
 
 /- English proof (translation)
-Establish `hP : (span {(g : ℤ)}).IsPrime`. Rewrite using `[Ideal.span_singleton_prime (by exact_mod_cast hg.ne_zero)]`. Conclude with `Nat.prime_iff_prime_int.mp hg`. Establish `hker : (⊥ : Ideal (𝓞 E)).comap (algebraMap ℤ (𝓞 E)) ≤ span {(g : ℤ)}`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot, eq_intCast, Int.cast_eq_zero]`. Simplify using `[hx]`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (span {(g : ℤ)}) ⊥ hker`. Use `⟨Q, hQ, ?_⟩` and prove the remaining obligations. Establish `: ((g : ℤ)) ∈ Q.comap (algebraMap ℤ (𝓞 E))` using `by rw [hQc]; exact mem_span_singleton_self _`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_over (E : Type) [Field E] [NumberField E] {g : ℕ} (hg : g.Prime) :
     ∃ PP : Ideal (𝓞 E), PP.IsPrime ∧ (g : 𝓞 E) ∈ PP := by
@@ -141,7 +137,7 @@ theorem exists_prime_over (E : Type) [Field E] [NumberField E] {g : ℕ} (hg : g
   simpa using this
 
 /- English proof (translation)
-Establish `: Module.IsTorsionFree (𝓞 E) V` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 E) E V`. Take `⟨a, ha⟩` from `h₁.exists_pow_eq_one hw₁ hL.fg hL.span_eq_top hg₁ hgw₁ hfin`. Take `⟨b, hb⟩` from `h₂.exists_pow_eq_one hw₂ hL.fg hL.span_eq_top hg₂ hgw₂ hfin`. Conclude with `eq_one_of_dvd_two_primes hg₁ hg₂ hne (orderOf_dvd_of_pow_eq_one ha) (orderOf_dvd_of_pow_eq_one hb)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lemmaNcGlob_of_exists (E V : Type) [Field E] [NumberField E] [AddCommGroup V] [Module E V]
     [FiniteDimensional E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] (L : Submodule (𝓞 E) V)
@@ -157,7 +153,7 @@ theorem lemmaNcGlob_of_exists (E V : Type) [Field E] [NumberField E] [AddCommGro
     (orderOf_dvd_of_pow_eq_one hb)
 
 /- English proof (translation)
-Introduce `E V _ _ _ _ _ _ _ L hL β hfin g₁ g₂ hg₁ hg₂ hne _ _ h₁ h₂`. Take `⟨P₁, hP₁, hg₁P⟩` from `exists_prime_over E hg₁`. Take `⟨P₂, hP₂, hg₂P⟩` from `exists_prime_over E hg₂`. Conclude with `lemmaNcGlob_of_exists E V L hL β hfin hg₁ hg₂ hne hP₁.ne_top hP₂.ne_top hg₁P hg₂P (h₁ P₁ hP₁ hg₁P) (h₂ P₂ hP₂ hg₂P)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lemmaNcGlob : LemmaNcGlob := by
   intro E V _ _ _ _ _ _ _ L hL β hfin g₁ g₂ hg₁ hg₂ hne _ _ h₁ h₂
@@ -167,13 +163,13 @@ theorem lemmaNcGlob : LemmaNcGlob := by
     (h₁ P₁ hP₁ hg₁P) (h₂ P₂ hP₂ hg₂P)
 
 /- English proof (translation)
-Establish `hv : Valued.v (((p : ℕ) : OP E P) : P.adicCompletion E) < 1`. Establish `h1` using `P.valuedAdicCompletion_eq_valuation (K := E) ((p : ℕ) : 𝓞 E)`. Establish `h2` using `(P.valuation_lt_one_iff_mem (K := E) ((p : ℕ) : 𝓞 E)).mpr hp`. Simplify using `only [map_natCast] at h1 h2`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[h1]`. Conclude with `h2`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`. Establish `hmul : ((u.val : OP E P) : P.adicCompletion E) * ((u.inv : OP E P) : P.adicCompletion E) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun x : OP E P => (x : P.adicCompletion E)) u.val_inv` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hinv : Valued.v ((u.inv : OP E P) : P.adicCompletion E) ≤ 1` using `u.inv.2`. Rewrite `hmul` using `[hu]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Valued.v hmul` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`. Establish `hlt` using `mul_lt_one_of_lt_of_le hv hinv`. Rewrite `hlt` using `[this]`. Conclude with `lt_irrefl _ hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_maximalIdeal {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
     {p : ℕ} (hp : (p : 𝓞 E) ∈ P.asIdeal) :
@@ -199,17 +195,15 @@ theorem natCast_mem_maximalIdeal {E : Type} [Field E] [NumberField E] (P : Heigh
   exact lt_irrefl _ hlt
 
 /- English proof (translation)
-Introduce `E _ _ p hp h3 hun P hpP N β hfin hnil`. Take `⟨r, hr⟩` from `hnil`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: β = 1` using `Subsingleton.elim _ _`. Simplify using `[this]`. Establish `: Nonempty (Fin N)` using `⟨⟨0, hN⟩⟩`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hpK : ((p : ℕ) : IsLocalRing.ResidueField (OP E P)) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (IsLocalRing.residue (OP E P))]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (natCast_mem_maximalIdeal P hpP)`. Establish `: CharP (IsLocalRing.ResidueField (OP E P)) p` using `(CharP.charP_iff_prime_eq_zero hp).mpr hpK`. Use `set u := red (β : Matrix (Fin N) (Fin N) (OP E P)) with hu`. Establish `hpow : u ^ p ^ r = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (u - 1) ^ p ^ r = u ^ p ^ r - 1`. Rewrite using `[sub_pow_char_pow_of_commute _ _ (Commute.one_right u), one_pow]`. Establish `h2 : (u - 1) ^ p ^ r = 0`. Establish `hle : r ≤ p ^ r` using `(Nat.lt_pow_self hp.one_lt).le`. Rewrite using `[← Nat.add_sub_cancel' hle, pow_add, hr, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Conclude with `(sub_eq_zero.mp h1.symm)`. Establish `hred : red ((β ^ p ^ r : GL (Fin N) (OP E P)) : Matrix (Fin N) (Fin N) (OP E P)) = 1`. Rewrite using `[← hpow, hu, Units.val_pow_eq_pow_val]`. Conclude with `map_pow ((IsLocalRing.residue (OP E P)).mapMatrix) _ _`.
-
-Establish `h1` using `ha E p hp h3 hun P hpP N (β ^ p ^ r) hfin.pow hred`. Take `⟨t, -, ht⟩` from `(Nat.dvd_prime_pow hp).mp (orderOf_dvd_of_pow_eq_one h1)`. Conclude with `⟨t, ht⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lemmaNb_of_lemmaNa (ha : LemmaNa) : LemmaNb := by
   intro E _ _ p hp h3 hun P hpP N β hfin hnil

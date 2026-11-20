@@ -9,17 +9,15 @@ namespace GlobalTheory.SatakeWeyl
 open Classical in
 
 /- English proof (translation)
-Establish `hS : ∀ (T : X → Prop) [DecidablePred T], (∑ᶠ x, if T x then f x else 0) = ∑ x ∈ hf.toFinset, if T x then f x else 0`. Introduce `T _`. Use `finsum_eq_sum_of_support_subset _ fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support]`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx (by simp [h0])`. Establish `hfin : ∀ x, (Function.support fun y => if R y x then f x else 0).Finite`. Introduce `x`. Use `Set.Subsingleton.finite fun y hy y' hy' => hu x y y' ?_ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h; exact hy (by simp [h])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h; exact hy' (by simp [h])`. Simplify using `only [hS]`. Prove the components needed by the constructor for the conclusion. Use `(hf.biUnion fun x _ => hfin x).subset fun y hy => ?_` and prove the remaining obligations. Take `⟨x, hx, hx'⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hy`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mem_biUnion (hf.mem_toFinset.1 hx) hx'`. Rewrite using `[finsum_sum_comm _ _ fun x _ => hfin x]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : Q x`. Take `⟨y, hy⟩` from `(hQ x).1 hx`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[finsum_eq_single _ y, if_pos hx, if_pos hy]`. Introduce `y' hy'`. Conclude with `if_neg fun h => hy' (hu x y' y h hy)`. Rewrite using `[if_neg hx]`. Use `symm`.
-
-Conclude with `finsum_eq_zero_of_forall_eq_zero fun y => if_neg fun h => hx ((hQ x).2 ⟨y, h⟩)`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem finsum_partition {X Y : Type} (f : X → ℂ) (Q : X → Prop) (R : Y → X → Prop)
     (hf : (Function.support f).Finite) (hQ : ∀ x, Q x ↔ ∃ y, R y x)
@@ -55,19 +53,17 @@ theorem finsum_partition {X Y : Type} (f : X → ℂ) (Q : X → Prop) (R : Y �
       exact finsum_eq_zero_of_forall_eq_zero fun y => if_neg fun h => hx ((hQ x).2 ⟨y, h⟩)
 
 /- English proof (translation)
-Introduce `G A _ _ K N N' ι h g hf hle hN hdec hK hconj`. Establish `key` using `finsum_partition (fun x : G ⧸ K => h x.out) (fun x => ∃ u ∈ N, ∃ k ∈ K, x.out = g * u * k) (fun (y : A ⧸ K.comap ι) x => ∃ u ∈ N', ∃ k ∈ K, x.out = g * ι y.out * u * k) hf ?_ ?_`. Unfold `cellSum`. Use `key` and compare the differences between its conclusion and the goal. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, k, hk, e⟩`. Take `⟨a, u', hu', rfl⟩` from `hdec u hu`. Take `⟨⟨u₀, hu₀⟩, e₀⟩` from `QuotientGroup.mk_out_eq_mul (K.comap ι) a`. Use `⟨QuotientGroup.mk a, ι u₀⁻¹ * u' * (ι u₀⁻¹)⁻¹, hconj _ _ hu', ι u₀⁻¹ * k, K.mul_mem (by rw [map_inv]; exact K.inv_mem hu₀) hk, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, e₀]`. Simplify using `only [map_mul, map_inv]`. Use `group`. Introduce and unpack `⟨y, u, hu, k, hk, e⟩`. Conclude with `⟨ι y.out * u, N.mul_mem (hN _) (hle hu), k, hk, by rw [e]; group⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x y y' ⟨u₁, hu₁, k₁, hk₁, e₁⟩ ⟨u₂, hu₂, k₂, hk₂, e₂⟩`. Establish `e : ι y.out * u₁ * k₁ = ι y'.out * u₂ * k₂`. Apply `mul_left_cancel (a := g)` to reduce the goal to its premises. Use `e₁.symm.trans e₂` as an intermediate fact. Simplify `this` using `only [mul_assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set b := y'.out⁻¹ * y.out with hb`. Establish `hb' : ι b ∈ K`. Use `hK b (ι b⁻¹ * u₂⁻¹ * (ι b⁻¹)⁻¹ * u₁) (N'.mul_mem (hconj _ _ (N'.inv_mem hu₂)) hu₁) ?_` and prove the remaining obligations. Establish `: ι b * (ι b⁻¹ * u₂⁻¹ * (ι b⁻¹)⁻¹ * u₁) = k₂ * k₁⁻¹`. Establish `e' : ι y.out * u₁ = ι y'.out * u₂ * k₂ * k₁⁻¹` using `by rw [← e]; group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hb, map_mul, map_inv]`. Use `group`. Use `_ = _ := by rw [e']; group`. Rewrite using `[this]`.
-
-Conclude with `K.mul_mem hk₂ (K.inv_mem hk₁)`. Rewrite using `[← QuotientGroup.out_eq' y, ← QuotientGroup.out_eq' y']`. Conclude with `(QuotientGroup.eq.2 hb').symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descent : GlobalTheory.SatakeWeyl.Descent := by
   intro G A _ _ K N N' ι h g hf hle hN hdec hK hconj

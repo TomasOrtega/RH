@@ -7,11 +7,11 @@ open scoped Real MatrixGroups Modular
 namespace GlobalTheory.CompanionTheory.CuspDecay
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h.bound`. Take `⟨n₀, hn₀⟩` from `eventually_atTop.mp hC`. Use `⟨|C| + ∑ m ∈ Finset.range n₀, ‖a m‖ / (m : ℝ) ^ e, fun n hn ↦ ?_⟩` and prove the remaining obligations. Establish `hpos : 0 < (n : ℝ) ^ e` using `Real.rpow_pos_of_pos (by exact_mod_cast hn) e`. Establish `hS : ∀ m ∈ Finset.range n₀, 0 ≤ ‖a m‖ / (m : ℝ) ^ e` using `fun m _ ↦ div_nonneg (norm_nonneg _) (Real.rpow_nonneg (Nat.cast_nonneg m) e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0` using `Finset.sum_nonneg hS`. Break down `lt_or_ge n n₀ with h1 | h1` into its components or cases. Establish `h2` using `Finset.single_le_sum hS (Finset.mem_range.mpr h1)`. Establish `h3 : ‖a n‖ = ‖a n‖ / (n : ℝ) ^ e * (n : ℝ) ^ e` using `by field_simp`. Rewrite using `[h3]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (by linarith [abs_nonneg C]) hpos.le`. Establish `h2` using `hn₀ n h1`. Rewrite `h2` using `[Real.norm_of_nonneg hpos.le]`. Use `h2.trans (mul_le_mul_of_nonneg_right ?_ hpos.le)` and prove the remaining obligations. Combine the linear relations using `[le_abs_self C]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_bound_of_isBigO {a : ℕ → ℂ} {e : ℝ}
     (h : a =O[atTop] fun n : ℕ ↦ (n : ℝ) ^ e) :
@@ -34,15 +34,15 @@ theorem exists_bound_of_isBigO {a : ℕ → ℂ} {e : ℝ}
     linarith [le_abs_self C]
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `hO.bound`. Rewrite `hD` using `[atImInfty, eventually_comap, eventually_atTop]`. Take `⟨A₀, hA⟩` from `hD`. Use `set A := max A₀ 1 with hAdef`. Establish `hA1 : 1 ≤ A` using `le_max_right _ _`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨|D| + |C| * A ^ |e| * Real.exp A, fun τ hτ ↦ ?_⟩` and prove the remaining obligations. Establish `hy : 0 < τ.im` using `τ.im_pos`. Establish `hE : 0 < Real.exp (-τ.im)` using `Real.exp_pos _`. Establish `hAe : 0 ≤ |C| * A ^ |e| * Real.exp A` using `by positivity`. Break down `le_total A τ.im with h1 | h1` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2` using `hA τ.im ((le_max_left _ _).trans h1) τ rfl`. Rewrite `h2` using `[Real.norm_of_nonneg (Real.exp_pos _).le]`. Establish `h3 : Real.exp (-2 * π * τ.im) ≤ Real.exp (-τ.im)`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use polynomial arithmetic with `[Real.pi_gt_three]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (τ.im ^ e)⁻¹ ≤ A ^ |e|`. Rewrite using `[← Real.rpow_neg hy.le]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : 1 ≤ Real.exp A * Real.exp (-τ.im)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_add]`. Conclude with `Real.one_le_exp (by linarith)`. Establish `hAp : 0 ≤ A ^ |e|` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_exp_bound {f : ℍ → ℂ} {e C : ℝ}
     (hO : f =O[atImInfty] fun τ ↦ Real.exp (-2 * π * τ.im))
@@ -87,15 +87,13 @@ theorem exists_exp_bound {f : ℍ → ℂ} {e C : ℝ}
       _ ≤ _ := mul_le_mul_of_nonneg_right (by linarith [abs_nonneg D]) hE.le
 
 /- English proof (translation)
-Establish `hΓ : (1 : ℝ) ∈ (Gamma1 N : Subgroup (GL (Fin 2) ℝ)).strictPeriods`. Simplify using the standard rewrite rules. Establish `hcoef : ∀ m, a m = (qExpansion 1 f).coeff m`. Use `ModularFormClass.qExpansion_coeff_unique (Γ := (Gamma1 N : Subgroup (GL (Fin 2) ℝ))) (k := k) one_pos hΓ fun τ ↦ ?_` and prove the remaining obligations. Use `ha τ using 3 with n` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[smul_eq_mul, Function.Periodic.qParam, ← Complex.exp_nat_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcoef]`. Conclude with `CuspFormClass.qExpansion_coeff_zero (Γ := (Gamma1 N : Subgroup (GL (Fin 2) ℝ))) (k := k) f one_pos hΓ`. Establish `h` using `CuspFormClass.qExpansion_isBigO (Γ := (Gamma1 N : Subgroup (GL (Fin 2) ℝ))) (k := k) f`. Establish `hw : (Gamma1 N : Subgroup (GL (Fin 2) ℝ)).strictWidthInfty = 1` using `by simp`. Rewrite `h` using `[hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha' : a = fun n ↦ (qExpansion 1 f).coeff n` using `funext hcoef`. Rewrite `h` using `[← ha']`. Conclude with `exists_bound_of_isBigO h`. Take `⟨C, hC⟩` from `CuspFormClass.exists_bound (Γ := (Gamma1 N : Subgroup (GL (Fin 2) ℝ))) (k := k) f`. Establish `hO` using `CuspFormClass.exp_decay_atImInfty (Γ := (Gamma1 N : Subgroup (GL (Fin 2) ℝ))) (k := k) (h := 1) f one_pos hΓ`.
-
-Simplify using `only [Nat.cast_one, div_one] at hO`. Conclude with `exists_exp_bound (by simpa using hO) hC`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_and_decay {N : ℕ} [NeZero N] {k : ℤ} {F : Type*} [FunLike F ℍ ℂ]
     [CuspFormClass F (Gamma1 N : Subgroup (GL (Fin 2) ℝ)) k] (f : F) (a : ℕ → ℂ)

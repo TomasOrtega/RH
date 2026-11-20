@@ -23,7 +23,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {u : Pr.Word}
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `Function.ne_iff.1 hx`. Rewrite `hx` using `[xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h (b.some_get (by omega)).symm]`. Establish `h1` using `Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) P (Finset.mem_univ _)`. Rewrite `h1` using `[hh _ P hP]`. Conclude with `oneYbSym_of_m Ch sel mu cst h.symm hs P hP _ _ h1 l`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_of_xiAt {n : ℕ} (h : n + 2 = R.m) (hs : cst.sharp = true) (hh : ∀ (al : L.β n) P, P.1 ∈ Pr.vGs → L.h n al P = 1)
     {b : Idx sel mu L n} {b' : Idx sel mu L (n + 1)} {p : PtAt R sel mu cst u n} {p' : PtAt R sel mu cst u (n + 1)}
@@ -47,7 +47,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 variable {B : Base} {X : PreX B.toPre} {I : TC B X}
 
 /- English proof (translation)
-Establish `h` using `I.twistPrimes_reference_tuple_eq_empty`. Unfold `ColIn.Q at h`. Unfold `twQOff`. Rewrite using `[h]`. Conclude with `Finset.empty_sdiff _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reference_tuple_off_primes_empty : twQOff (Pr := B.primes X) I.sel (I.tup I.mu0) = ∅ := by
   have h := I.twistPrimes_reference_tuple_eq_empty
@@ -57,9 +57,9 @@ theorem reference_tuple_off_primes_empty : twQOff (Pr := B.primes X) I.sel (I.tu
   exact Finset.empty_sdiff _
 
 /- English proof (translation)
-Distinguish the cases in `hi : i < B.R.m`. Establish `e : ∀ al al' : (I.idx I.mu0).β i, al = al'`. Rewrite using `[(ht I.mu0).2]`. Conclude with `twSt_subsingleton reference_tuple_off_primes_empty i`. Rewrite using `[← b.of_get hi hi, ← b'.of_get hi hi, e (b.get hi) (b'.get hi)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b.eq_top (not_lt.1 hi), b'.eq_top (not_lt.1 hi)]`.
+A detailed English derivation is pending.
 -/
 theorem idx_eq (ht : I.IsTw) (i : ℕ) (b b' : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) i) : b = b' := by
   by_cases hi : i < B.R.m
@@ -73,21 +73,19 @@ open GlobalTheory.GO.ChSrc (trueWt nuEnd sS sD polFn fnPol) in
 open Formalism.L2.Forms (fnOf shiftOf ValC) in
 
 /- English proof (translation)
-Take `⟨P, hP, rfl⟩` from `hf`. Rewrite `hP` using `[ValTie.cspan_eq]`. Establish `hN : R.N i < R.N (i + 1)` using `by unfold Ranks.N; rw [add_mul]; omega`. Establish `hV : jetMap J (nuEnd hc i) P ∈ Formalism.L2.DIV.VV ℂ (trueWt hc (i + 1))`. Use `GlobalTheory.JetPoint.jetMap_mem hN.le _ _ _ (fun ap => ?_) J` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.SubstMem.substAdj_sharp_mem ℂ X.Tau _ _ hN _ _ (sD hc i) (sS hc i) _ ⟨fun τ a => ?_, fun τ j hj => GlobalTheory.GO.ChSrc.trueWt_new hc hi τ j (not_lt.mpr hj), GlobalTheory.GO.ChSrc.nuEnd_cast hc hi⟩ ap _ hP` and prove the remaining obligations. Use `GlobalTheory.GO.ChSrc.trueWt_old hc hi τ (Fin.castLE hN.le a) a.2` as an intermediate fact. Simplify using `only [Fin.val_castLE, Fin.eta] at this`. Use linear arithmetic over natural numbers and integers. Establish `ap : ∀ {n : ℕ} (s : X.Tau → ℤ) (Q : Formalism.L2.DIV.Pol ℂ X.Tau n) (y : Fr X.emb σ n), fnOf (Gr X.emb σ n) s 1 Q y = (∏ τ, (y.1 τ).det ^ s τ) * MvPolynomial.eval (fun v => y.1 v.1 v.2.1 v.2.2) Q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `n s Q y`. Simplify using `[fnOf]`. Establish `h1 : (I.chain X.emb σ h hc).sharp i (fnOf (Gr X.emb σ (R.N i)) (shiftOf (trueWt hc i)) 1 P) = polFn X σ _ (P * ∏ τ, frDet ℂ (R.N i) τ ^ nuEnd hc i τ)`. Use function extensionality and compare the values at `(y : Fr X.emb σ (R.N i))`. Establish `hd : ∀ τ, MvPolynomial.eval (fun v : X.Tau × Fin (R.N i) × Fin (R.N i) => y.1 v.1 v.2.1 v.2.2) (frDet ℂ (R.N i) τ) = (y.1 τ).det` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[frDet, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Use `show (∏ τ, (y.1 τ).det ^ (I.chain X.emb σ h hc).sSharp i τ) * fnOf (Gr X.emb σ (R.N i)) (shiftOf (trueWt hc i)) 1 P y = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ap, GlobalTheory.GO.ChSrc.polFn_apply, map_mul, map_prod, ← mul_assoc, ← Finset.prod_mul_distrib, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, hd, ← zpow_natCast, GlobalTheory.GO.ChSrc.nuEnd_cast hc hi, zpow_add₀ (isUnit_det_fr y τ).ne_zero, (GlobalTheory.LvT.Built.KMap.sSharp_eq I σ h hc hi τ).1, mul_comm]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : jetMap J 0 (P * ∏ τ, frDet ℂ (R.N i) τ ^ nuEnd hc i τ) = jetMap J (nuEnd hc i) P`. Simplify using `[jetMap]`. Use `⟨(I.rho i c * I.rho' i c') • jetMap J (nuEnd hc i) P, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ValTie.cspan_eq]`. Conclude with `Submodule.smul_mem _ _ hV`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `(y : Fr X.emb σ (R.N (i + 1)))`. Use `show _ = (I.rho i c * I.rho' i c') * ((∏ τ, (y.1 τ).det ^ (I.chain X.emb σ h hc).sDiv i τ)⁻¹ * polFn X σ _ (I.jet i c c' (fnPol X σ _ ((I.chain X.emb σ h hc).sharp i (fnOf (Gr X.emb σ (R.N i)) (shiftOf (trueWt hc i)) 1 P)))) y)`. Rewrite using `[h1, GlobalTheory.GO.ChSrc.fnPol_polFn, e, h2, ap, MvPolynomial.smul_eval, GlobalTheory.GO.ChSrc.polFn_apply, mul_left_comm, ← Finset.prod_inv_distrib]`. Use `congr 2`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[(GlobalTheory.LvT.Built.KMap.sSharp_eq I σ h hc hi τ).2, ← zpow_neg, ← GlobalTheory.GO.ChSrc.trueWt_detShift_succ hc hi]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kmap_mem_valC {X : Fields} {R : Ranks} (I : ChainIn X.E X.K X.Tau R) (σ : X.K →+* ℂ) (h : I.Ok) (hc : X.Tau → HCParam R) {i : ℕ}
     (hi : i < R.m) (c : (I.S i).Cl) (c' : (I.S (i + 1)).Cl) (J : (DVar X.Tau (R.N i) (R.N (i + 1)) →₀ ℕ) → ℂ)
@@ -140,7 +138,7 @@ theorem kmap_mem_valC {X : Fields} {R : Ranks} (I : ChainIn X.E X.K X.Tau R) (σ
   rfl
 
 /- English proof (translation)
-The claim follows from `kmap_mem_valC (X := B.fields) (I.chIn u a) B.embLL (l.ch u a) (B.hcW u) hi c c' _ rfl f hf`.
+A detailed English derivation is pending.
 -/
 theorem kmap_val (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i < B.R.m)
     (c : (I.stp u a i).Cl) (c' : (I.stp u a (i + 1)).Cl) (f : Fr B.fields.emb B.embLL (B.R.N i) → ℂ)
@@ -149,9 +147,9 @@ theorem kmap_val (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (hi
   kmap_mem_valC (X := B.fields) (I.chIn u a) B.embLL (l.ch u a) (B.hcW u) hi c c' _ rfl f hf
 
 /- English proof (translation)
-Introduce `φ hφ c'`. Set `_` to `(I.chain l u I.mu0).clsFin i`. Establish `hK : (I.chain l u I.mu0).K i φ c' = ∑ c, (I.chain l u I.mu0).wt i c • (I.chain l u I.mu0).Kmap i c c' (φ c)` using `rfl`. Rewrite using `[hK]`. Use `⟨Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (kmap_val I l u I.mu0 i hi c c' _ (hφ c).1), fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, GlobalTheory.T.stabilizer_form_value_step I h hP ht l Z u i hi c c' g _ (hφ c).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem K_mem_Fi (I : TC B X) (h : I.Ok) (hP : TC.Pins B X) (ht : I.IsTw) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (i : ℕ)
     (hi : i < B.R.m) : ∀ φ ∈ (I.stp u I.mu0 i).Fi B.fields.emb B.embLL (lamT (B.hcW u) i),

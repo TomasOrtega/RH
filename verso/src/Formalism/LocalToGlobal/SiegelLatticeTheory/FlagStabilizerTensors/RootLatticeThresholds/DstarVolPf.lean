@@ -50,9 +50,9 @@ def VolMeasOf : Prop :=
     IsVolMeas D (VS D) (D.R.k + D.R.rS) (D.R.rS + 1) (muVI D μf)
 
 /- English proof (translation)
-Introduce `μf _ _ hK`. Establish `h1 : ∀ (v : InfinitePlace D.host.F) (i : Fin (D.R.k + D.R.rS)), (frOf D).ε v ((Formalism.L2.SG.InstExistsPf.eSgn D).symm (Sum.inl i)) = true` using `fun v i => by`. Use `Formalism.L2.SG.InstExistsPf.eSgn_isLeft D ((Formalism.L2.SG.InstExistsPf.eSgn D).symm (Sum.inl i))` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ (v : InfinitePlace D.host.F) (j : Fin (D.R.rS + 1)), (frOf D).ε v ((Formalism.L2.SG.InstExistsPf.eSgn D).symm (Sum.inr j)) = false` using `fun v j => by`. Use `Formalism.L2.SG.InstExistsPf.eSgn_isLeft D ((Formalism.L2.SG.InstExistsPf.eSgn D).symm (Sum.inr j))` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`. Conclude with `Formalism.L2.S.S7.ZsCovMeas.isVolMeas_muV (frOf D) hcd (lv_eq D) (fun _ => (Formalism.L2.SG.InstExistsPf.eSgn D).symm) h1 h2 (fun v => (D.s.cdScale_pos _ _).ne') μf hK`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volMeasOf_of (hcd : cdScaleTie D) : VolMeasOf D := by
   intro μf _ _ hK
@@ -70,14 +70,14 @@ theorem volMeasOf_of (hcd : cdScaleTie D) : VolMeasOf D := by
     h1 h2 (fun v => (D.s.cdScale_pos _ _).ne') μf hK
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cdScale_cast {n m : ℕ} (h : n = m) (ε : Fin n → Bool) :
     D.s.cdScale n ε = D.s.cdScale m (fun i => ε (Fin.cast h.symm i)) := by
   subst h; rfl
 
 /- English proof (translation)
-Rewrite using `[cdScale_cast D ((Formalism.L2.SG.InstExistsPf.rank_eq D).trans (dimS_eq D.R).symm)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cdScale_epsV :
     D.s.cdScale (VS D).rank (Formalism.L2.SG.InstExistsPf.epsV D) = D.s.cdScale (2 * D.R.rS + D.R.k + 1) (epsSH D.R) := by
@@ -89,9 +89,9 @@ section Gen
 variable {I : Formalism.MainNotions.S.AutInst} (hb : AdBridgeIso I)
 
 /- English proof (translation)
-Establish `hGF` using `Formalism.L2.SG.Closed.AdBridgeGF_holds I (toHA I hb) (toHA_isBridge I hb)`. Establish `hrat : ∀ h : HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J, h ∈ ratHA I ↔ h ∈ HFinIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J` using `fun h => Iff.rfl`. Rewrite using `[← hrat, ← hGF, Formalism.MainNotions.LeviCoordinates.rr_mem_GF]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Rewrite using `[← (toHA I hb).injective hyx]` and apply the resulting hypothesis.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_rr_iff' (x : I.GA) :
     x ∈ Formalism.MainNotions.LeviCoordinates.rr_GF I ↔ toHA I hb x ∈ HFinIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J := by
@@ -106,13 +106,9 @@ theorem mem_rr_iff' (x : I.GA) :
     rwa [← (toHA I hb).injective hyx]
 
 /- English proof (translation)
-Use `haveI hBor : BorelSpace (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J) := ⟨rfl⟩`. Use `haveI : (I.muA μf).IsHaarMeasure := Formalism.L2.SG.PoincareInHH.Cut.muA_isHaar' I μf`. Use `haveI : (I.muA μf).IsMulLeftInvariant := inferInstance`. Establish `hfd0 : IsFundamentalDomain (Formalism.MainNotions.LeviCoordinates.rr_GF I) fund (I.muA μf)` using `Formalism.MainNotions.LeviCoordinates.rr_isFD ⟨hf.1, hf.2.1, hf.2.2⟩`. Set `Γ : Subgroup (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J)` to `HFinIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e` to `(toHA I hb).toHomeomorph.toMeasurableEquiv`. Set `eΓ : Γ ≃ Formalism.MainNotions.LeviCoordinates.rr_GF I` to `{ toFun := fun g => ⟨(toHA I hb).symm (g : HA _ _ _), (mem_rr_iff' hb _).2 (by rw [ContinuousMulEquiv.apply_symm_apply]; exact g.2)⟩ invFun := fun x => ⟨toHA I hb x, (mem_rr_iff' hb _).1 x.2⟩ left_inv := fun g => Subtype.ext (ContinuousMulEquiv.apply_symm_apply _ _) right_inv := …`. Establish `hqmp : Measure.QuasiMeasurePreserving e.toEquiv.symm ((I.muA μf).map e) (I.muA μf)`. Use `(MeasurePreserving.quasiMeasurePreserving ⟨e.symm.measurable, ?_⟩)` and prove the remaining obligations. Conclude with `e.map_symm_map`.
-
-Establish `hfd : IsFundamentalDomain Γ (e '' fund) ((I.muA μf).map e)`. Use `hfd0.image_of_equiv e.toEquiv hqmp eΓ fun g x => ?_` and prove the remaining obligations. Use `show e ((eΓ g : I.GA) * x) = (g : HA _ _ _) * e x`. Use `show toHA I hb ((toHA I hb).symm g * x) = (g : HA _ _ _) * toHA I hb x`. Rewrite using `[map_mul, ContinuousMulEquiv.apply_symm_apply]`.
-
-Conclude with `hfd.mono hν`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFD_image (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] (fund : Set I.GA)
     (hf : I.IsFundDom (I.muA μf) fund) (ν : Measure (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J))
@@ -143,37 +139,31 @@ theorem isFD_image (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] (f
 end Gen
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Establish `hKc : IsCompact (IV D).Kset` using `Formalism.L2.SG.Closed.AutKCompact_holds (IV D)`. Establish `hKo : IsOpen (IV D).Kset`. Establish `h` using `(IV D).topf_open 1 le_rfl`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨hx, fun y hy => ⟨_, Formalism.L2.SG.Pf.unitaryCongruence.K_sub_mv _ hx hy, by simp⟩⟩`. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx.1`. Establish `hpos : 0 < μf (IV D).Kset` using `hKo.measure_pos μf ⟨1, Formalism.L2.SG.Pf.unitaryCongruence.K_one _⟩`. Establish `hfin : μf (IV D).Kset < ⊤` using `hKc.measure_lt_top`. Use `set c := μf (IV D).Kset with hc`. Set `μ' : Measure (IV D).Gf` to `c⁻¹ • μf`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : μ'.IsHaarMeasure := Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 hfin.ne) (ENNReal.inv_ne_top.2 hpos.ne')`. Establish `hfs : ∀ n, μ' (spanningSets μf n) < ⊤` using `fun n => by show (c⁻¹ • μf) _ < ⊤`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 hpos) (measure_spanningSets_lt_top μf n)`. Use `haveI : SigmaFinite μ' := ⟨⟨{ set := spanningSets μf, set_mem := fun _ => Set.mem_univ _, finite := hfs, spanning := iUnion_spanningSets μf }⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK1 : μ' (IV D).Kset = 1` using `by show (c⁻¹ • μf) (IV D).Kset = 1`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ← hc, ENNReal.inv_mul_cancel hpos.ne' hfin.ne]`. Establish `hV` using `hVM μ' hK1`. Establish `hsig : (VS D).SigOK` using `D.sp.Y_sig 0`. Establish `hsv : ∀ τ, (VS D).sig τ = (D.R.k + D.R.rS, D.R.rS + 1)` using `fun τ => D.sp.baseSpace_signature_eq τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hall⟩` from `hVol (VS D) _ _ hsig hsv`. Take `⟨-, hfd⟩` from `hall _ hV`. Set `hb : AdBridgeIso (IV D)` to `(Formalism.L2.SG.Closed.adelic_isomorphism_statement (IV D)).1`. Establish `hbrg : Formalism.IndefR.Eqv.UI.brg (frOf D) = toHA (IV D) hb` using `rfl`. Establish `hμA : (IV D).muA μ' = c⁻¹ • (IV D).muA μf` using `by show (Measure.pi fun v => Formalism.REAL.muG ((IV D).ε v)).prod (c⁻¹ • μf) = c⁻¹ • (Measure.pi fun v => Formalism.REAL.muG ((IV D).ε v)).prod μf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Measure.prod_smul_right _`. Establish `hν : muVI D μ' ≪ ((IV D).muA μf).map (toHA (IV D) hb)`. Unfold `muVI`. Rewrite using `[hbrg, hμA, Measure.map_smul]`. Conclude with `(Measure.smul_absolutelyContinuous).trans Measure.smul_absolutelyContinuous`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hFD` using `isFD_image hb μf fund hf (muVI D μ') hν`. Establish `key : muVI D μ' (toHA (IV D) hb '' fund) = ENNReal.ofReal (D.vol (VS D))` using `hfd _ hFD`. Use `haveI : BorelSpace (HAd (IV D)) := ⟨rfl⟩`. Set `e` to `(toHA (IV D) hb).toHomeomorph.toMeasurableEquiv`. Establish `hmeas : Measurable (toHA (IV D) hb)` using `(toHA (IV D) hb).continuous.measurable`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : MeasurableSet (toHA (IV D) hb '' fund)` using `(e.measurableSet_image).2 hf.1`. Establish `hmap : muVI D μ' (toHA (IV D) hb '' fund) = cdProdI D * (c⁻¹ * (IV D).muA μf fund)`. Unfold `muVI`. Rewrite using `[Measure.smul_apply, smul_eq_mul, hbrg, hμA]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `erw [Measure.map_apply hmeas hS]`. Rewrite using `[Set.preimage_image_eq _ (toHA (IV D) hb).injective, Measure.smul_apply, smul_eq_mul]`. Establish `hA0 : (IV D).muA μf fund ≠ 0` using `by haveI : ((IV D).muA μf).IsHaarMeasure := Formalism.L2.SG.PoincareInHH.Cut.muA_isHaar' (IV D) μf`. Establish `hfd0 : IsFundamentalDomain (Formalism.MainNotions.LeviCoordinates.rr_GF (IV D)) fund ((IV D).muA μf)` using `Formalism.MainNotions.LeviCoordinates.rr_isFD ⟨hf.1, hf.2.1, hf.2.2⟩`. Conclude with `hfd0.measure_ne_zero (NeZero.ne _)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcd0 : cdProdI D ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => by simpa using (D.s.cdScale_pos _ _).ne'`. Establish `hci0 : c⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.2 hfin.ne`. Use `replace key := hmap.symm.trans key`. Establish `hAT : (IV D).muA μf fund ≠ ⊤`. Introduce `hT`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `key` using `[hT, ENNReal.mul_top hci0, ENNReal.mul_top hcd0]`. Conclude with `ENNReal.ofReal_ne_top key.symm`. Establish `hL0 : cdProdI D * (c⁻¹ * (IV D).muA μf fund) ≠ 0` using `mul_ne_zero hcd0 (mul_ne_zero hci0 hA0)`. Establish `hvpos : 0 < D.vol (VS D)`. Assume the negation of the conclusion as `hle`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_neg at hle`. Rewrite `key` using `[ENNReal.ofReal_of_nonpos hle]`. Conclude with `hL0 key`. Establish `hR` using `congrArg ENNReal.toReal key`. Rewrite `hR` using `[ENNReal.toReal_ofReal hvpos.le, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_inv]`.
-
-Establish `hcdR : (cdProdI D).toReal = ∏ _v : InfinitePlace D.host.F, (D.s.cdScale (2 * D.R.rS + D.R.k + 1) (epsSH D.R) : ℝ)`. Unfold `cdProdI`. Rewrite using `[ENNReal.toReal_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `show ((D.s.cdScale (VS D).rank (Formalism.L2.SG.InstExistsPf.epsV D) : ENNReal)).toReal = _`.
-
-Rewrite using `[cdScale_epsV]`. Both sides reduce to the same expression. Rewrite `hR` using `[hcdR]`. Use `show ((IV D).muA μf fund).toReal / c.toReal * ∏ _v : InfinitePlace D.host.F, (D.s.cdScale (2 * D.R.rS + D.R.k + 1) (epsSH D.R) : ℝ) = D.vol (VS D)`. Rewrite using `[← hR]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem covol_gen (hVM : VolMeasOf D) (hVol : VolTie D) (I : Formalism.MainNotions.S.AutInst)
     (hI : I = Formalism.IndefR.Eqv.UI.instV (frOf D)) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf]
@@ -269,14 +259,14 @@ section Record
 variable {D}
 
 /- English proof (translation)
-The claim follows from `covol_gen D (volMeasOf_of D hcd) hVol X.B.I (h.trans (instOf_eq D)) X.B.μf X.B.fund X.B.fund_spec`.
+A detailed English derivation is pending.
 -/
 theorem dstarVolV_of (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (hVol : VolTie D)
     (hcd : cdScaleTie D) : Formalism.L2.SG.Pf.RowDictPf.DstarVolV X :=
   covol_gen D (volMeasOf_of D hcd) hVol X.B.I (h.trans (instOf_eq D)) X.B.μf X.B.fund X.B.fund_spec
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.RowDictPf.dstarVol_of X hT (dstarVolV_of X h hVol hcd)`.
+A detailed English derivation is pending.
 -/
 theorem dstarVol_holds (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (hVol : VolTie D)
     (hcd : cdScaleTie D) (hT : dsigTie D) : Formalism.L2.SG.Pf.RowDictPf.DstarVol X :=

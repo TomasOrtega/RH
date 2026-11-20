@@ -19,9 +19,9 @@ variable {N : ℕ} [NeZero N] {k : ℤ}
 
 omit [NeZero N] in
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_strictPeriods_iff]`. Use `⟨ModularGroup.T, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ModularGroup.T ∈ Gamma0 N`. Rewrite using `[Gamma0_mem]`. Simplify using `[ModularGroup.T]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> (change ((ModularGroup.T : Matrix (Fin 2) (Fin 2) ℤ) _ _ : ℝ) = _`. Simplify using `[ModularGroup.T, Matrix.GeneralLinearGroup.upperRightHom])`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_strictPeriods_Gamma0 :
     (1 : ℝ) ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)).strictPeriods := by
@@ -38,9 +38,9 @@ theorem one_mem_strictPeriods_Gamma0 :
 variable (p : ℕ) [NeZero p]
 
 /- English proof (translation)
-Establish `hdet` using `det_toReal_classicalUpper p j`. Establish `hpos : 0 < (toReal (classicalUpper p j)).det.val` using `by rw [hdet]; exact natCast_pos_real p`. Rewrite using `[slash_apply, σ_of_det_pos hpos, hdet]`. Establish `hden : denom (toReal (classicalUpper p j)) τ = p`. Simplify using `[denom, toReal_apply, coe_classicalUpper]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hden]`. Establish `hp : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne p)`. Simplify using `only [abs_of_pos (natCast_pos_real p)]`. Use `push_cast`. Rewrite using `[_root_.zpow_neg, zpow_sub_one₀ hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -60,7 +60,7 @@ theorem slash_classicalUpper_apply (f : ℍ → ℂ) (j : ℤ) (τ : ℍ) :
   field_simp
 
 /- English proof (translation)
-Establish `hdet` using `det_toReal_classicalUpper p j`. Establish `hpos : 0 < (toReal (classicalUpper p j)).det.val` using `by rw [hdet]; exact natCast_pos_real p`. Rewrite using `[UpperHalfPlane.coe_smul_of_det_pos hpos]`. Simplify using `[num, denom, toReal_apply, coe_classicalUpper]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_classicalUpper_smul (j : ℤ) (τ : ℍ) :
     ((toReal (classicalUpper p j) • τ : ℍ) : ℂ) = (τ + j) / p := by
@@ -70,9 +70,9 @@ theorem coe_classicalUpper_smul (j : ℤ) (τ : ℍ) :
   simp [num, denom, toReal_apply, coe_classicalUpper]
 
 /- English proof (translation)
-Establish `hdet` using `det_toReal_heckeAlpha p`. Establish `hpos : 0 < (toReal (heckeAlpha p)).det.val` using `by rw [hdet]; exact natCast_pos_real p`. Rewrite using `[slash_apply, σ_of_det_pos hpos, hdet]`. Establish `hden : denom (toReal (heckeAlpha p)) τ = 1`. Simplify using `[denom, toReal_apply, heckeAlpha, coe_upperHecke]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hden, _root_.one_zpow, mul_one]`. Simplify using `only [abs_of_pos (natCast_pos_real p)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem slash_heckeAlpha_apply (f : ℍ → ℂ) (τ : ℍ) :
     (f ∣[k] toReal (heckeAlpha p)) τ = (p : ℂ) ^ (k - 1) * f (toReal (heckeAlpha p) • τ) := by
@@ -87,7 +87,7 @@ theorem slash_heckeAlpha_apply (f : ℍ → ℂ) (τ : ℍ) :
   ring
 
 /- English proof (translation)
-Establish `hdet` using `det_toReal_heckeAlpha p`. Establish `hpos : 0 < (toReal (heckeAlpha p)).det.val` using `by rw [hdet]; exact natCast_pos_real p`. Rewrite using `[UpperHalfPlane.coe_smul_of_det_pos hpos]`. Simplify using `[num, denom, toReal_apply, heckeAlpha, coe_upperHecke]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_heckeAlpha_smul (τ : ℍ) : ((toReal (heckeAlpha p) • τ : ℍ) : ℂ) = p * τ := by
   have hdet := det_toReal_heckeAlpha p
@@ -96,13 +96,11 @@ theorem coe_heckeAlpha_smul (τ : ℍ) : ((toReal (heckeAlpha p) • τ : ℍ) :
   simp [num, denom, toReal_apply, heckeAlpha, coe_upperHecke]
 
 /- English proof (translation)
-Establish `hp : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne p)`. Use `set ζ : ℂ := Complex.exp (2 * π * I / p)`. Establish `hζ : IsPrimitiveRoot ζ p` using `Complex.isPrimitiveRoot_exp p (NeZero.ne p)`. Establish `e : ∀ j : ℕ, Complex.exp (2 * π * I * ((j : ℂ) * m) / p) = (ζ ^ m) ^ j`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => (ζ ^ m) ^ j) p]`. Use `split_ifs with h`. Rewrite using `[(hζ.pow_eq_one_iff_dvd m).2 h]`. Simplify using the standard rewrite rules. Establish `h1 : ζ ^ m ≠ 1` using `fun h' => h ((hζ.pow_eq_one_iff_dvd m).1 h')`.
-
-Rewrite using `[geom_sum_eq h1, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow, sub_self, zero_div]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_exp_mul_div (m : ℕ) :
     ∑ j : Fin p, Complex.exp (2 * π * I * ((j : ℕ) * m : ℂ) / p) = if p ∣ m then (p : ℂ) else 0 := by
@@ -126,7 +124,7 @@ theorem sum_exp_mul_div (m : ℕ) :
 local notation "𝕢₁" => Function.Periodic.qParam 1
 
 /- English proof (translation)
-Rewrite using `[coe_classicalUpper_smul, Function.Periodic.qParam, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qParam_one_pow_smul_classicalUpper (j : ℕ) (τ : ℍ) (m : ℕ) :
     𝕢₁ ((toReal (classicalUpper p (j : ℤ)) • τ : ℍ) : ℂ) ^ m =
@@ -137,7 +135,7 @@ theorem qParam_one_pow_smul_classicalUpper (j : ℕ) (τ : ℍ) (m : ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[coe_heckeAlpha_smul, Function.Periodic.qParam, Function.Periodic.qParam, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qParam_one_pow_smul_heckeAlpha (τ : ℍ) (m : ℕ) :
     𝕢₁ ((toReal (heckeAlpha p) • τ : ℍ) : ℂ) ^ m = 𝕢₁ (τ : ℂ) ^ (m * p) := by
@@ -153,29 +151,27 @@ def heckeCoeff (N p : ℕ) (k : ℤ) (a : ℕ → ℂ) (n : ℕ) : ℂ :=
 variable [Fact p.Prime]
 
 /- English proof (translation)
-Use `set a : ℕ → ℂ := fun m => (qExpansion 1 f).coeff m`. Establish `hf : ∀ z : ℍ, HasSum (fun m => a m * 𝕢₁ (z : ℂ) ^ m) (f z)` using `fun z => ModularForm.hasSum_qExpansion f one_pos one_mem_strictPeriods_Gamma0 z`. Establish `hpinj : Function.Injective fun n : ℕ => n * p` using `fun x y h => Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero (NeZero.ne p)) h`. Establish `hU : HasSum (fun n => a (n * p) * 𝕢₁ (τ : ℂ) ^ n) (∑ j : Fin p, ((f : ℍ → ℂ) ∣[k] toReal (classicalUpper p ((j : ℕ) : ℤ))) τ)`. Establish `h1 : HasSum (fun m => ∑ j : Fin p, (p : ℂ)⁻¹ * (a m * 𝕢₁ ((toReal (classicalUpper p ((j : ℕ) : ℤ)) • τ : ℍ) : ℂ) ^ m)) (∑ j : Fin p, ((f : ℍ → ℂ) ∣[k] toReal (classicalUpper p ((j : ℕ) : ℤ))) τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hasSum_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[slash_classicalUpper_apply]`. Conclude with `(hf _).mul_left _`. Establish `h2 : (fun m => ∑ j : Fin p, (p : ℂ)⁻¹ * (a m * 𝕢₁ ((toReal (classicalUpper p ((j : ℕ) : ℤ)) • τ : ℍ) : ℂ) ^ m)) = fun m => if p ∣ m then a m * Complex.exp (2 * π * I * (τ : ℂ) * m / p) else 0`. Use function extensionality and compare the values at `m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[qParam_one_pow_smul_classicalUpper]`. Establish `: ∀ j : Fin p, (p : ℂ)⁻¹ * (a m * (Complex.exp (2 * π * I * (τ : ℂ) * m / p) * Complex.exp (2 * π * I * (((j : ℕ) : ℂ) * m) / p))) = ((p : ℂ)⁻¹ * a m * Complex.exp (2 * π * I * (τ : ℂ) * m / p)) * Complex.exp (2 * π * I * (((j : ℕ) : ℂ) * m) / p)` using `fun j => by ring`. Repeatedly rewrite using `[this]`. Rewrite using `[← Finset.mul_sum, sum_exp_mul_div]`. Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne p)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Rewrite using `[← hpinj.hasSum_iff (fun m hm => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `hm ⟨c, mul_comm c p⟩)] at h1`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Function.comp_apply, dvd_mul_left, if_true]`. Use `congr 1`. Rewrite using `[Function.Periodic.qParam, ← Complex.exp_nat_mul]`. Use `congr 1`. Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne p)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hL : HasSum (fun n => (if p ∣ N then 0 else if p ∣ n then (p : ℂ) ^ (k - 1) * a (n / p) else 0) * 𝕢₁ (τ : ℂ) ^ n) ((if p ∣ N then 0 else (f : ℍ → ℂ) ∣[k] toReal (heckeAlpha p)) τ)` using `by split_ifs with hpN`. Simplify using the standard rewrite rules. Establish `h1 : HasSum (fun m => (p : ℂ) ^ (k - 1) * (a m * 𝕢₁ (τ : ℂ) ^ (m * p))) (((f : ℍ → ℂ) ∣[k] toReal (heckeAlpha p)) τ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[slash_heckeAlpha_apply]`. Use `(hf (toReal (heckeAlpha p) • τ)).mul_left ((p : ℂ) ^ (k - 1))` as an intermediate fact. Simplify `this` using `only [qParam_one_pow_smul_heckeAlpha]`. Rewrite using `[← hpinj.hasSum_iff (f := fun n => (if p ∣ n then (p : ℂ) ^ (k - 1) * a (n / p) else 0) * 𝕢₁ (τ : ℂ) ^ n) (fun m hm => by`. Rewrite using `[if_neg, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `hm ⟨c, mul_comm c p⟩)]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [Function.comp_apply, dvd_mul_left, if_true, Nat.mul_div_cancel _ (Nat.pos_of_ne_zero (NeZero.ne p))]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (fun n => heckeCoeff N p k a n * 𝕢₁ (τ : ℂ) ^ n) = fun n => a (n * p) * 𝕢₁ (τ : ℂ) ^ n + (if p ∣ N then 0 else if p ∣ n then (p : ℂ) ^ (k - 1) * a (n / p) else 0) * 𝕢₁ (τ : ℂ) ^ n`. Use function extensionality and compare the values at `n`. Simplify using `only [heckeCoeff]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : heckeCusp N p k f τ = (∑ j : Fin p, ((f : ℍ → ℂ) ∣[k] toReal (classicalUpper p ((j : ℕ) : ℤ))) τ) + ((if p ∣ N then 0 else (f : ℍ → ℂ) ∣[k] toReal (heckeAlpha p)) τ)`. Rewrite using `[coe_heckeCusp]`. Unfold `heckeOp`. Rewrite using `[Pi.add_apply, Finset.sum_apply]`. Rewrite using `[e1, e2]`.
-
-Conclude with `hU.add hL`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_heckeCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (τ : ℍ) :
     HasSum (fun n => heckeCoeff N p k (fun m => (qExpansion 1 f).coeff m) n * 𝕢₁ (τ : ℂ) ^ n)
@@ -257,7 +253,7 @@ theorem hasSum_heckeCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
   exact hU.add hL
 
 /- English proof (translation)
-The claim follows from `(ModularFormClass.qExpansion_coeff_unique one_pos one_mem_strictPeriods_Gamma0 (f := heckeCusp N p k f) (fun τ => by simpa only [smul_eq_mul] using hasSum_heckeCusp p f τ) n).symm`.
+A detailed English derivation is pending.
 -/
 theorem qExpansion_coeff_heckeCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (n : ℕ) :
     (qExpansion 1 (heckeCusp N p k f)).coeff n =
@@ -266,7 +262,7 @@ theorem qExpansion_coeff_heckeCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2
     (f := heckeCusp N p k f) (fun τ => by simpa only [smul_eq_mul] using hasSum_heckeCusp p f τ) n).symm
 
 /- English proof (translation)
-The claim follows from `(ModularFormClass.qExpansion_coeff_unique one_pos one_mem_strictPeriods_Gamma0 (f := f) (fun τ => by simpa only [smul_eq_mul] using hb τ) n).symm`.
+A detailed English derivation is pending.
 -/
 theorem qExpansion_coeff_eq_of_hasSum (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) {b : ℕ → ℂ}
     (hb : ∀ τ : ℍ, HasSum (fun n => b n * 𝕢₁ (τ : ℂ) ^ n) (f τ)) (n : ℕ) :
@@ -275,16 +271,16 @@ theorem qExpansion_coeff_eq_of_hasSum (f : CuspForm (Gamma0 N : Subgroup (GL (Fi
     (fun τ => by simpa only [smul_eq_mul] using hb τ) n).symm
 
 /- English proof (translation)
-The claim follows from `ModularForm.hasSum_qExpansion f one_pos one_mem_strictPeriods_Gamma0 τ`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_qExpansion_cusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (τ : ℍ) :
     HasSum (fun n => (qExpansion 1 f).coeff n * 𝕢₁ (τ : ℂ) ^ n) (f τ) :=
   ModularForm.hasSum_qExpansion f one_pos one_mem_strictPeriods_Gamma0 τ
 
 /- English proof (translation)
-Use `qExpansion_coeff_eq_of_hasSum (g - c • f) (b := fun m => (qExpansion 1 g).coeff m - c * (qExpansion 1 f).coeff m) (fun τ => ?_) n` and prove the remaining obligations. Use `(hasSum_qExpansion_cusp g τ).sub ((hasSum_qExpansion_cusp f τ).mul_left c)` as an intermediate fact. Establish `e1 : (fun m => ((qExpansion 1 g).coeff m - c * (qExpansion 1 f).coeff m) * 𝕢₁ (τ : ℂ) ^ m) = fun m => (qExpansion 1 g).coeff m * 𝕢₁ (τ : ℂ) ^ m - c * ((qExpansion 1 f).coeff m * 𝕢₁ (τ : ℂ) ^ m)`. Use function extensionality and compare the values at `m`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : (g - c • f) τ = g τ - c * f τ` using `rfl`. Rewrite using `[e1, e2]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qExpansion_coeff_sub_smul (f g : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (c : ℂ) (n : ℕ) :
     (qExpansion 1 (⇑(g - c • f) : ℍ → ℂ)).coeff n = (qExpansion 1 g).coeff n - c * (qExpansion 1 f).coeff n := by
@@ -300,7 +296,7 @@ theorem qExpansion_coeff_sub_smul (f g : CuspForm (Gamma0 N : Subgroup (GL (Fin 
   exact this
 
 /- English proof (translation)
-Use extensionality with `τ`. Use `hasSum_qExpansion_cusp f τ` as an intermediate fact. Simplify using `only [h, zero_mul] at this`. Rewrite using `[this.unique hasSum_zero]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_zero_of_qExpansion_coeff (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (h : ∀ n, (qExpansion 1 f).coeff n = 0) : f = 0 := by
@@ -311,19 +307,17 @@ theorem eq_zero_of_qExpansion_coeff (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 
   rfl
 
 /- English proof (translation)
-Use `eq_zero_of_qExpansion_coeff f fun n => ?_` and prove the remaining obligations. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Use `interval_cases n`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `CuspFormClass.qExpansion_coeff_zero f one_pos one_mem_strictPeriods_Gamma0`. Conclude with `h1`. Use `set p := n.minFac`. Establish `hp : p.Prime` using `Nat.minFac_prime (by omega)`. Establish `: Fact p.Prime` using `⟨hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Use `set m := n / p`. Establish `hnm : n = m * p` using `(Nat.div_mul_cancel (Nat.minFac_dvd n)).symm`. Establish `hm : m < n` using `Nat.div_lt_self (by omega) hp.one_lt`. Establish `hmp : m / p < n` using `lt_of_le_of_lt (Nat.div_le_self m p) hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key` using `qExpansion_coeff_heckeCusp p f m`. Rewrite `key` using `[hf p]`. Establish `hsm : (qExpansion 1 (⇑(ev p • f) : ℍ → ℂ)).coeff m = ev p * (qExpansion 1 f).coeff m`. Use `qExpansion_coeff_eq_of_hasSum (ev p • f) (b := fun j => ev p * (qExpansion 1 f).coeff j) (fun τ => ?_) m` and prove the remaining obligations. Use `(hasSum_qExpansion_cusp f τ).mul_left (ev p)` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (fun j => ev p * (qExpansion 1 f).coeff j * 𝕢₁ (τ : ℂ) ^ j) = fun j => ev p * ((qExpansion 1 f).coeff j * 𝕢₁ (τ : ℂ) ^ j)`. Use function extensionality and compare the values at `j`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (ev p • f) τ = ev p * f τ` using `rfl`. Rewrite using `[e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Rewrite `key` using `[hsm, ih m hm, mul_zero]`. Unfold `heckeCoeff at key`. Simplify using `only at key`. Rewrite `key` using `[ih (m / p) hmp]`.
-
-Simplify using `only [mul_zero, ite_self, add_zero] at key`. Rewrite using `[hnm]`. Conclude with `key.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_eigen_of_coeff_one (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (ev : ℕ → ℂ)
     (hf : ∀ (p : ℕ) [Fact p.Prime], heckeCusp N p k f = ev p • f)
@@ -365,7 +359,7 @@ theorem eq_zero_of_eigen_of_coeff_one (f : CuspForm (Gamma0 N : Subgroup (GL (Fi
       exact key.symm
 
 /- English proof (translation)
-Use `set c := (qExpansion 1 g).coeff 1`. Establish `h` using `eq_zero_of_eigen_of_coeff_one (g - c • f) ev (fun p _ => by`. Rewrite using `[map_sub, map_smul, hf p, hg p, smul_sub, smul_comm])`. Use the proof step `(by rw [qExpansion_coeff_sub_smul, hf1, mul_one, sub_self])`. Conclude with `sub_eq_zero.1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_smul_of_eigen (f g : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (ev : ℕ → ℂ)
     (hf : ∀ (p : ℕ) [Fact p.Prime], heckeCusp N p k f = ev p • f)

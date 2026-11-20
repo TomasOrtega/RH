@@ -19,11 +19,11 @@ variable {S Z : Scheme.{0}} {G₀ : Over S} {G : Over Z} {L₀ : LB G₀.left} {
   {π : Z ⟶ S} {N : ℕ} {w : LB.Iso L (L₀.pull F)}
 
 /- English proof (translation)
-Establish `w₀ : (snd T₀ G₀).left ≫ G₀.hom = (((fst T₀ G₀).left ≫ v) ≫ T.hom) ≫ π`. Rewrite using `[Category.assoc, Category.assoc, ← hu, reassoc_of% hvu, Over.w, Over.w]`. Take `⟨Ψ, c₁, c₂⟩ : ∃ Ψ : (T₀ ⊗ G₀).left ⟶ (T ⊗ G).left, Ψ ≫ (fst T G).left = (fst T₀ G₀).left ≫ v ∧ Ψ ≫ (snd T G).left = hF.lift _ _ w₀` from `⟨pullback.lift ((fst T₀ G₀).left ≫ v) (hF.lift _ _ w₀) (hF.lift_snd _ _ w₀).symm, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `c₃ : Ψ ≫ (snd T G).left ≫ F = (snd T₀ G₀).left`. Rewrite using `[reassoc_of% c₂, hF.lift_fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Ψ, c₁, c₃, FramePull.prod_ext ?_ ?_, FramePull.prod_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, a₁, reassoc_of% c₁, hvu, Category.id_comp, Category.comp_id]`. Rewrite using `[Category.assoc, a₂, c₃, Category.id_comp]`. Rewrite using `[Category.assoc, c₁, reassoc_of% a₁, huv, Category.id_comp, Category.comp_id]`. Rewrite using `[Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hF.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, c₃, a₂]`. Rewrite using `[Category.assoc, Category.assoc, reassoc_of% c₂, hF.lift_snd, reassoc_of% a₁, reassoc_of% huv, Over.w, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_cmp_inv (hF : IsPullback F G.hom G₀.hom π) {T : Over Z} {T₀ : Over S} {u : T.left ⟶ T₀.left}
     {v : T₀.left ⟶ T.left} (huv : u ≫ v = 𝟙 _) (hvu : v ≫ u = 𝟙 _) (hu : u ≫ T₀.hom = T.hom ≫ π)
@@ -50,15 +50,13 @@ theorem exists_cmp_inv (hF : IsPullback F G.hom G₀.hom π) {T : Over Z} {T₀ 
         reassoc_of% huv, Over.w, Over.w]
 
 /- English proof (translation)
-Establish `hu : 𝟙 V ≫ (Over.mk χ₀).hom = (Over.mk χ).hom ≫ π` using `(Category.id_comp _).trans hχ`. Take `⟨Φ', b₁, b₂⟩` from `exists_cmp hF (T := Over.mk χ) (T₀ := Over.mk χ₀) (𝟙 V) hu`. Take `⟨Ψ, c₁, c₃, i₁, i₂⟩` from `exists_cmp_inv hF (T := Over.mk χ) (T₀ := Over.mk χ₀) (u := 𝟙 V) (v := 𝟙 V) (Category.id_comp _) (Category.id_comp _) hu b₁ b₂`. Establish `hc` using `cmp_comm (h := h) (h₀ := h₀) a₁ a₂ b₁ b₂ ((Category.id_comp _).trans e)`. Use `replace b₁ : Φ' ≫ (fst (Over.mk χ₀) G₀).left = (fst (Over.mk χ) G).left := b₁.trans (Category.comp_id _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `replace c₁ : Ψ ≫ (fst (Over.mk χ) G).left = (fst (Over.mk χ₀) G₀).left := c₁.trans (Category.comp_id _)`. Introduce `s₀`. Take `⟨s, hs⟩` from `exists_thr_down hw hL₀ hL b₂ s₀`. Use `(existsUnique_congr fun c => ?_).2 (H s)` and prove the remaining obligations. Rewrite using `[FramePull.lin_iff, FramePull.lin_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H W r z J hJ`. Take `⟨J₀, hJ₀⟩` from `exists_good' hL₀ z`. Use `H W (r ≫ Φ') z J₀ hJ₀` as an intermediate fact. Rewrite `this` using `[Category.assoc r Φ' (fst (Over.mk χ₀) G₀).left, b₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(lin_at_iff hc hb hs r z hJ₀ hJ _).1 this`. Introduce `H W r z J₀ hJ₀`. Take `⟨J, hJ⟩` from `exists_good' hL z`. Use `(lin_at_iff hc hb hs (r ≫ Ψ) z hJ₀ hJ _).2 (H W (r ≫ Ψ) z J hJ)` as an intermediate fact. Rewrite `this` using `[Category.assoc r Ψ Φ', i₁, Category.comp_id, Category.assoc r Ψ, c₁]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_up (hF : IsPullback F G.hom G₀.hom π) (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {V : Scheme.{0}}
     {χ : V ⟶ Z} {χ₀ : V ⟶ S} (hχ : χ₀ = χ ≫ π) {T : Over Z} {T₀ : Over S} {h : Over.mk χ ⟶ T} {h₀ : Over.mk χ₀ ⟶ T₀}
@@ -91,11 +89,11 @@ theorem basis_up (hF : IsPullback F G.hom G₀.hom π) (hw : w.IsGen) (hL₀ : L
     exact this
 
 /- English proof (translation)
-Introduce `hL _ Z G₀ _ L₀ hL₀ K _ x A φ w gp hw k hk`. Take `⟨U, hU, b, hb⟩` from `PolFrames.exists_local_basisAlong k hL.secBaseChange A hk (IsLocalRing.closedPoint K)`. Take `rfl : U = ⊤` from `eq_top_of_closedPoint_mem U hU`. Establish `huv : (⊤ : (Sp K).Opens).ι ≫ (Sp K).topIso.inv = 𝟙 _` using `(Sp K).topIso.hom_inv_id`. Establish `hvu : (Sp K).topIso.inv ≫ (⊤ : (Sp K).Opens).ι = 𝟙 _` using `(Sp K).topIso.inv_hom_id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Φ, a₁, a₂⟩` from `exists_cmp gp.1 (T := Over.mk (⊤ : (Sp K).Opens).ι) (T₀ := Over.mk x) (⊤ : (Sp K).Opens).ι rfl`. Take `⟨Ψ, -, c₃, -, i₂⟩` from `exists_cmp_inv gp.1 (T := Over.mk (⊤ : (Sp K).Opens).ι) (T₀ := Over.mk x) huv hvu rfl a₁ a₂`. Use `choose τ hτ using fun i => exists_thr_up hw hL₀ A.isLB c₃ i₂ (b i)`. Use `⟨_, τ, fun K' _ ga x' h => ?_⟩` and prove the remaining obligations. Establish `e : spMap ga = (spMap ga ≫ (Sp K).topIso.inv) ≫ (⊤ : (Sp K).Opens).ι`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hvu, Category.comp_id]`. Conclude with `basis_up gp.1 hw hL₀ A.isLB (h.symm.trans (congrArg (· ≫ x) e)) e a₁ a₂ hτ (hb K' (spMap ga ≫ (Sp K).topIso.inv))`.
+A detailed English derivation is pending.
 -/
 theorem exists_allBasis : Laws → Laws2 → ∀ (Z : Scheme.{0}) (G₀ : Over Z) [GrpObj G₀] (L₀ : LB G₀.left), L₀.IsLB → ∀ (K : Type) [Field K] (x : Sp K ⟶ Z) (A : PolAV (Sp K)) (φ : A.A.left ⟶ G₀.left) (w : LB.Iso A.L (L₀.pull φ)), IsGrpPullback A.A G₀ x φ → w.IsGen → ∀ k : ℕ, 1 ≤ k → ∃ (r : ℕ) (τ : Fin r → LB.Sec (LPow G₀ L₀ (k : ℤ) (Over.mk x))), AllBasis G₀ L₀ k x τ := by
   intro hL _ Z G₀ _ L₀ hL₀ K _ x A φ w gp hw k hk

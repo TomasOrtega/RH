@@ -42,7 +42,7 @@ theorem sumMap_apply {V N ι : Type} [NormedAddCommGroup V] [InnerProductSpace �
     sumMap φ x = ∑ j, φ j (x j) := rfl
 
 /- English proof (translation)
-Introduce `a b hab x y`. Simplify using `only [PiLp.inner_apply, tensAct_apply, inner_add_left, inner_add_right, sum_inner, inner_sum, inner_smul_left, inner_smul_right, Finset.sum_add_distrib, hE a b hab]`. Use `congr 1`. Rewrite using `[Finset.sum_comm, ← hA a b hab]`. Simplify using `[Matrix.conjTranspose_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kunit_tensAct {V ι : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [Fintype ι] {n : ℕ}
     (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (A : Fin n → Fin n → Matrix ι ι ℂ)
@@ -56,25 +56,25 @@ theorem kunit_tensAct {V ι : Type} [NormedAddCommGroup V] [InnerProductSpace �
   simp [Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Use `set K : Fin n → Fin n → Module.End ℂ (PiLp 2 (fun _ : ι => V)) := fun a b => tensAct (E a b) (A a b) with hK`. Establish `hKu : KUnit ε K` using `kunit_tensAct ε E A hE hA`. Establish `hint : ∀ a b, ε a = ε b → ∀ x, F a b (sumMap φ x) = sumMap φ (K a b x)`. Introduce `a b hab x`. Simplify using `only [hK, sumMap_apply, tensAct_apply, map_sum, map_add, map_smul, hφ a b hab, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Establish `hcas : ∀ x, sumMap φ (CasK ε K x) = CasK ε F (sumMap φ x)`. Introduce `x`. Simplify using `only [CasK, LinearMap.sum_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hab`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[hint b a hab.symm, hint a b hab]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbound : ∀ x, (⟪x, CasK ε K x⟫_ℂ).re ≤ (c + s) ^ 2 * ‖x‖ ^ 2`. Introduce `x`. Rewrite using `[(GlobalTheory.T.casK_isSymmetric_and_inner_re_eq _ n ε K hKu).2 x]`. Establish `h` using `GlobalTheory.T.sum_norm_add_sq_le_add_sq_mul V (Fin n × Fin n × ι) (fun p => if ε p.1 = ε p.2.1 then E p.1 p.2.1 (x p.2.2) else 0) (fun p => if ε p.1 = ε p.2.1 then ∑ j, A p.1 p.2.1 p.2.2 j • x j else 0) c s (‖x‖ ^ 2) hc hs (by positivity) ?_ ?_`. Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hab`. Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[PiLp.norm_sq_eq_of_L2, Finset.mul_sum]`. Use `le_trans (le_of_eq ?_) (Finset.sum_le_sum fun i _ => hb (x i))` and prove the remaining obligations. Simplify using `only [Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_comm (s := (univ : Finset ι))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := (univ : Finset ι))]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[PiLp.norm_sq_eq_of_L2]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (le_of_eq ?_) (hAs (fun i => x i))` and prove the remaining obligations. Simplify using `only [Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨LinearMap.range (sumMap φ), inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a b hab _ ⟨x, rfl⟩`. Conclude with `⟨K a b x, (hint a b hab x).symm⟩`. Use `⟨WithLp.toLp 2 (Pi.single j w), ?_⟩` and prove the remaining obligations. Rewrite using `[sumMap_apply, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `i _ hi`. Simplify using `[Pi.single_eq_of_ne hi]`. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `GlobalTheory.T.re_inner_le_on_image_of_intertwining' _ N (sumMap φ) (CasK ε K) (CasK ε F) _ (GlobalTheory.T.casK_isSymmetric_and_inner_re_eq _ n ε K hKu).1 (GlobalTheory.T.casK_isSymmetric_and_inner_re_eq _ n ε F hF).1 hcas hbound x`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem core (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n : ℕ)
     (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (N ι : Type) [NormedAddCommGroup N]
@@ -142,15 +142,15 @@ theorem core (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [Finite
       (GlobalTheory.T.casK_isSymmetric_and_inner_re_eq _ n ε F hF).1 hcas hbound x
 
 /- English proof (translation)
-Introduce `M _ _ n ε E N ι _ _ _ _ F φ A c s hE hF hc hs hA hAs hφ w hw j`. Take `⟨S, hfd, hst, hwS, hb⟩` from `hw`. Set `E' : Fin n → Fin n → Module.End ℂ S` to `fun a b => if h : ε a = ε b then (E a b).restrict (hst a b h) else 0`. Establish `hE' : ∀ a b, ε a = ε b → ∀ x : S, (E' a b x : M) = E a b x`. Introduce `a b h x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[E', h]`. Use `core S n ε E' N ι F (fun i => (φ i).comp S.subtype) A c s ?_ hF hc hs hA ?_ ?_ ?_ ⟨w, hwS⟩ j` as an intermediate fact. Conclude with `this`. Introduce `a b h x y`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, hE' a b h, hE' b a h.symm, hE a b h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h` using `hAs (fun i => (x i : M))`. Simplify `h` using `only [Submodule.coe_norm, Submodule.coe_sum, Submodule.coe_smul]`. Introduce `a b h i x`. Simplify using `[hE' a b h, hφ a b h]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h` using `hb x x.2`. Rewrite `h` using `[(GlobalTheory.T.casK_isSymmetric_and_inner_re_eq _ n ε E hE).2]`. Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hab`. Rewrite using `[← hE' a b hab]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem casKLe_tensor_operator : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (N ι : Type) [NormedAddCommGroup N] [InnerProductSpace ℂ N] [Fintype ι] [DecidableEq ι] (F : Fin n → Fin n → Module.End ℂ N) (φ : ι → M →ₗ[ℂ] N) (A : Fin n → Fin n → Matrix ι ι ℂ) (c s : ℝ), KUnit ε E → KUnit ε F → 0 ≤ c → 0 ≤ s → (∀ a b, ε a = ε b → (A a b).conjTranspose = A b a) → (∀ x : ι → M, ∑ a, ∑ b, (if ε a = ε b then ∑ i, ‖∑ j, A a b i j • x j‖ ^ 2 else 0) ≤ s ^ 2 * ∑ j, ‖x j‖ ^ 2) → (∀ a b, ε a = ε b → ∀ j w, F a b (φ j w) = φ j (E a b w) + ∑ i, A a b i j • φ i w) → ∀ w, CasKLe ε E c w → ∀ j, CasKLe ε F (c + s) (φ j w) := by
   intro M _ _ n ε E N ι _ _ _ _ F φ A c s hE hF hc hs hA hAs hφ w hw j

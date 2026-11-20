@@ -10,13 +10,13 @@ def frameEquiv (D m : ℕ) : FrameIdx D m ≃ Fin D ⊕ (Fin m ⊕ Fin D) :=
     (ofLex.trans (Equiv.sumCongr (Equiv.refl _) OrderDual.ofDual)))
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `toLex.surjective p`. Take `⟨q, rfl⟩` from `toLex.surjective q`. Apply the tactic sequence `rcases p with a | u <;> rcases q with c | v`. Establish `h : c < a` using `Sum.Lex.inl_lt_inl_iff.1 hqp`. Simplify `hb h` using `[frameEquiv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `absurd hqp Sum.Lex.not_inr_lt_inl`. Simplify using `[frameEquiv]`. Establish `h : v < u` using `Sum.Lex.inr_lt_inr_iff.1 hqp`. Take `⟨u, rfl⟩` from `toLex.surjective u`. Take `⟨v, rfl⟩` from `toLex.surjective v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases u with a | u <;> rcases v with c | v`. Establish `h' : c < a` using `Sum.Lex.inl_lt_inl_iff.1 h`. Simplify `ht h'` using `[frameEquiv]`. Conclude with `absurd h Sum.Lex.not_inr_lt_inl`. Simplify using `[frameEquiv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : v < u` using `Sum.Lex.inr_lt_inr_iff.1 h`. Establish `h'' : OrderDual.ofDual u < OrderDual.ofDual v` using `h'`. Simplify `hb' _ _ h''` using `[frameEquiv]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem block_zero {D m : ℕ} (b b' : Matrix (Fin D) (Fin D) ℂ) (t : Matrix (Fin m) (Fin m) ℂ)
     (hb : b.BlockTriangular id) (ht : t.BlockTriangular id)
@@ -42,17 +42,17 @@ theorem block_zero {D m : ℕ} (b b' : Matrix (Fin D) (Fin D) ℂ) (t : Matrix (
       simpa [frameEquiv] using hb' _ _ h''
 
 /- English proof (translation)
-Establish `hGC : Gᴴ * C = 0`. Use `congrArg conjTranspose hCG` as an intermediate fact. Simplify `this` using `[conjTranspose_mul]`. Establish `hHC : Hᴴ * C = 0`. Use `congrArg conjTranspose hCH` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[conjTranspose_mul]`. Establish `hHG : Hᴴ * G = 0`. Use `congrArg conjTranspose hGH` as an intermediate fact. Simplify `this` using `[conjTranspose_mul]`. Use `set E : Matrix (Fin n) (Fin D ⊕ (Fin m ⊕ Fin D)) ℂ := fromCols C (fromCols G H) with hEdef`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hE : Eᴴ * E = 1`. Rewrite using `[hEdef, conjTranspose_fromCols_eq_fromRows_conjTranspose, conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul_fromCols, fromRows_mul, fromRows_mul, mul_fromCols, mul_fromCols, mul_fromCols, fromRows_fromCols_eq_fromBlocks, hCC, hCG, hCH, hGC, hGG, hGH, hHC, hHG, hHH, f …`. Establish `hT : Fintype.card (FrameIdx D m) = n`. Rewrite using `[← hcard]`. Simplify using `[Fintype.card_congr (frameEquiv D m)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `g : Fin n ≃ Fin D ⊕ (Fin m ⊕ Fin D)` to `(Fintype.orderIsoFinOfCardEq (FrameIdx D m) hT).toEquiv.trans (frameEquiv D m)`. Use `⟨E.submatrix id g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff'] show (E.submatrix id g)ᴴ * E.submatrix id g = 1`. Rewrite using `[conjTranspose_submatrix, ← submatrix_mul _ _ g id g Function.bijective_id, hE, submatrix_one_equiv]`. Introduce `s b b' t h1 h2 h3 hb ht hb'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : s * E = E * fromBlocks b 0 0 (fromBlocks t 0 0 b')`. Rewrite using `[hEdef, mul_fromCols, mul_fromCols, h1, h2, h3, fromCols_mul_fromBlocks, fromCols_mul_fromBlocks]`. Simplify using the standard rewrite rules. Establish `hΔ : Eᴴ * s * E = fromBlocks b 0 0 (fromBlocks t 0 0 b')`. Rewrite using `[Matrix.mul_assoc, hs, ← Matrix.mul_assoc, hE, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : (E.submatrix id g)ᴴ * s * E.submatrix id g = (fromBlocks b 0 0 (fromBlocks t 0 0 b')).submatrix g g`. Rewrite using `[← hΔ, submatrix_mul _ _ g id g Function.bijective_id, submatrix_mul _ _ g id id Function.bijective_id, submatrix_id_id, conjTranspose_submatrix]`. Rewrite using `[hM]`. Introduce `x y hxy`. Conclude with `block_zero b b' t hb ht hb' _ _ ((Fintype.orderIsoFinOfCardEq (FrameIdx D m) hT).lt_iff_lt.2 hxy)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unitary_of_blocks {n D m : ℕ} (C H : Matrix (Fin n) (Fin D) ℂ)
     (G : Matrix (Fin n) (Fin m) ℂ)
@@ -105,17 +105,17 @@ theorem unitary_of_blocks {n D m : ℕ} (C H : Matrix (Fin n) (Fin D) ℂ)
     exact block_zero b b' t hb ht hb' _ _ ((Fintype.orderIsoFinOfCardEq (FrameIdx D m) hT).lt_iff_lt.2 hxy)
 
 /- English proof (translation)
-Introduce `n D m J J' C R hJJ hJh hCC hCJC hRR hJR hCR hsum U₀ hU₀`. Establish `hU : U₀ᴴ * U₀ = 1` using `(Matrix.mem_unitaryGroup_iff').1 hU₀`. Establish `hRC : Rᴴ * C = 0`. Use `congrArg conjTranspose hCR` as an intermediate fact. Simplify `this` using `[conjTranspose_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hRJ : Rᴴ * J = J'ᴴ * Rᴴ`. Use `congrArg conjTranspose hJR` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJh]`. Establish `t1 : trace (C * Cᴴ) = (D : ℂ)`. Rewrite using `[trace_mul_comm, hCC, trace_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `t2 : trace (J * C * Cᴴ * J) = (D : ℂ)`. Rewrite using `[trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJJ, Matrix.one_mul, t1]`. Establish `t3 : trace (R * Rᴴ) = (m : ℂ)`. Rewrite using `[trace_mul_comm, hRR, trace_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hcard : D + (m + D) = n`. Establish `h` using `congrArg trace hsum`. Rewrite `h` using `[trace_add, trace_add, t1, t2, t3, trace_one]`. Simplify using `only [Fintype.card_fin] at h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h' : ((D + D + m : ℕ) : ℂ) = (n : ℂ)` using `by push_cast; exact h`. Establish `h'' : D + D + m = n` using `by exact_mod_cast h'`. Use linear arithmetic over natural numbers and integers. Use `unitary_of_blocks C (J * C) (R * U₀) hCC ?_ ?_ ?_ ?_ ?_ hcard` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, hCR, Matrix.zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, hCJC]`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc Rᴴ, hRR, Matrix.one_mul, hU]`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc Rᴴ, hRJ, Matrix.mul_assoc, hRC]`. Simplify using the standard rewrite rules. Rewrite using `[conjTranspose_mul, hJh, Matrix.mul_assoc, ← Matrix.mul_assoc J, hJJ, Matrix.one_mul, hCC]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitary_adapted_triangularises : ∀ {n D m : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     (J' : Matrix (Fin m) (Fin m) ℂ) (C : Matrix (Fin n) (Fin D) ℂ) (R : Matrix (Fin n) (Fin m) ℂ),

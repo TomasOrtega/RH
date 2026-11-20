@@ -20,7 +20,7 @@ def restr (φ : InvFun ℤ) : InvFun O where
 variable {O} {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[(restr O φ).eval_eq hr]`. Conclude with `φ.eval_comp (r := r.restrictScalars ℤ) hr B`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_restr [Module.Finite ℤ X] (φ : InvFun ℤ) (B : X → X → ℝ) : (restr O φ).eval X B = φ.eval X B := by
   obtain ⟨n, r, hr⟩ := Module.Finite.exists_fin' O X
@@ -37,15 +37,15 @@ def classMin (M : ℕ) {n : ℕ} (B : (Fin n → ℤ) → (Fin n → ℤ) → �
   sInf {x | ∃ a : Fin n → ℤ, redV M a = y ∧ B a a = x}
 
 /- English proof (translation)
-Introduce `y` and use `⟨fun i => ((y i).val : ℤ), funext fun i => by simp [redV]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem redV_surjective (M n : ℕ) : Function.Surjective (redV M (n := n)) := fun y =>
   ⟨fun i => ((y i).val : ℤ), funext fun i => by simp [redV]⟩
 
 /- English proof (translation)
-Establish `key : ∀ i, ((M : ℤ) + 1) ∣ a i - a' i` using `fun i => by`. Use `congrFun h i` as an intermediate fact. Establish `h2` using `(ZMod.intCast_eq_intCast_iff_dvd_sub (a' i) (a i) (M + 1)).1 this.symm`. Simplify using `using h2`. Use `choose d hd using key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Conclude with `⟨d, funext fun i => by simp [← hd i]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_add_of_redV_eq {M n : ℕ} {a a' : Fin n → ℤ} (h : redV M a = redV M a') :
     ∃ d : Fin n → ℤ, a = a' + ((M : ℤ) + 1) • d := by
@@ -57,9 +57,9 @@ theorem exists_eq_add_of_redV_eq {M n : ℕ} {a a' : Fin n → ℤ} (h : redV M 
   exact ⟨d, funext fun i => by simp [← hd i]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h0 : (((M : ℤ) : ZMod (M + 1)) + ((1 : ℤ) : ZMod (M + 1))) = 0`. Use `ZMod.natCast_self (M + 1)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Simplify using `only [redV, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Int.cast_add, Int.cast_mul]`. Rewrite using `[h0, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redV_add_smul {M n : ℕ} (a d : Fin n → ℤ) : redV M (a + ((M : ℤ) + 1) • d) = redV M a := by
   funext i
@@ -71,7 +71,7 @@ theorem redV_add_smul {M n : ℕ} (a d : Fin n → ℤ) : redV M (a + ((M : ℤ)
   rw [h0, zero_mul, add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[redV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem redV_add {M n : ℕ} (a b : Fin n → ℤ) : redV M (a + b) = redV M a + redV M b := by
   funext i; simp [redV]
@@ -90,7 +90,7 @@ def redMap (M : ℕ) {n m : ℕ} (r : (Fin n → ℤ) →ₗ[ℤ] (Fin m → ℤ
     rw [hd, map_add, map_smul, redV_add_smul, map_add, redV_add]
 
 /- English proof (translation)
-Establish `h0` using `(redV_surjective M n (redV M a)).choose_spec`. Take `⟨d, hd⟩` from `exists_eq_add_of_redV_eq h0`. Express the relevant statement in the definitionally equal form `redV M (r (redV_surjective M n (redV M a)).choose) = _`. Rewrite using `[hd, map_add, map_smul, redV_add_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem redMap_redV (M : ℕ) {n m : ℕ} (r : (Fin n → ℤ) →ₗ[ℤ] (Fin m → ℤ)) (a : Fin n → ℤ) :
     redMap M r (redV M a) = redV M (r a) := by
@@ -100,7 +100,7 @@ theorem redMap_redV (M : ℕ) {n m : ℕ} (r : (Fin n → ℤ) →ₗ[ℤ] (Fin 
   rw [hd, map_add, map_smul, redV_add_smul]
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨b, rfl⟩ := redV_surjective M m y obtain ⟨a, rfl⟩ := hr b exact ⟨_, redMap_redV M r a⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem redMap_surjective (M : ℕ) {n m : ℕ} {r : (Fin n → ℤ) →ₗ[ℤ] (Fin m → ℤ)} (hr : Function.Surjective r) :
     Function.Surjective (redMap M r) := fun y => by
@@ -109,11 +109,11 @@ theorem redMap_surjective (M : ℕ) {n m : ℕ} {r : (Fin n → ℤ) →ₗ[ℤ]
   exact ⟨_, redMap_redV M r a⟩
 
 /- English proof (translation)
-Unfold `classMin`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨r a, (redMap_redV M r a).symm, rfl⟩`. Introduce and unpack `⟨b, hb, rfl⟩`. Take `⟨a, rfl⟩` from `redV_surjective M n y`. Rewrite `hb` using `[redMap_redV]`. Take `⟨d, hd⟩` from `exists_eq_add_of_redV_eq hb`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, rfl⟩` from `hr d`. Use `⟨a + ((M : ℤ) + 1) • e, redV_add_smul _ _, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_smul, ← hd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem classMin_comp (M : ℕ) {n m : ℕ} {r : (Fin n → ℤ) →ₗ[ℤ] (Fin m → ℤ)} (hr : Function.Surjective r)
     (B : (Fin m → ℤ) → (Fin m → ℤ) → ℝ) (y : Fin n → ZMod (M + 1)) :
@@ -133,15 +133,15 @@ theorem classMin_comp (M : ℕ) {n m : ℕ} {r : (Fin n → ℤ) →ₗ[ℤ] (Fi
     simp only [map_add, map_smul, ← hd]
 
 /- English proof (translation)
-Establish `hfib : ∀ y' : A', (Finset.univ.filter fun y => f y = y').card = (Finset.univ.filter fun y => f y = 0).card`. Introduce `y'`. Take `⟨a, rfl⟩` from `hf y'`. Use `Finset.card_bij (fun y _ => y - a) (fun y hy => ?_) (fun _ _ _ _ h => sub_left_injective h) fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hy]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hz`. Conclude with `⟨z + a, by simp [hz], by simp⟩`. Use `set k := (Finset.univ.filter fun y => f y = 0).card with hk`. Establish `hsum : ∀ g : A' → ℝ, ∑ y, g (f y) = k * ∑ y, g y` using `fun g => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_fiberwise Finset.univ f, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => g y') (fun y hy => by rw [(Finset.mem_filter.1 hy).2]), Finset.sum_const, hfib, nsmul_eq_mul]`. Establish `hc : (Fintype.card A : ℝ) = k * Fintype.card A'`. Simplify using `using hsum fun _ => 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hA : (Fintype.card A' : ℝ) ≠ 0`. Establish `: Nonempty A'` using `⟨0⟩`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Establish `hA' : (Fintype.card A : ℝ) ≠ 0`. Establish `: Nonempty A` using `⟨0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Establish `hk0 : (k : ℝ) ≠ 0` using `fun h => hA' (by rw [hc, h, zero_mul])`. Rewrite using `[hsum, hc]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mean_comp {A A' : Type} [AddCommGroup A] [AddCommGroup A'] [Fintype A] [Fintype A'] (f : A →+ A')
     (hf : Function.Surjective f) (g : A' → ℝ) :
@@ -199,13 +199,11 @@ def fineMean (M : ℕ) : InvFun ℤ where
     simp
 
 /- English proof (translation)
-Establish `h0 : classMin 1 (fun a b : Fin 1 → ℤ => ((a 0 * b 0 : ℤ) : ℝ)) (fun _ => 0) = 0`. Use `IsLeast.csInf_eq ⟨⟨0, funext fun i => by simp [redV], by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨a, -, rfl⟩`. Use `show (0 : ℝ) ≤ ((a 0 * a 0 : ℤ) : ℝ)`. Conclude with `mul_self_nonneg (a 0)` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : classMin 1 (fun a b : Fin 1 → ℤ => ((a 0 * b 0 : ℤ) : ℝ)) (fun _ => 1) = 1`. Use `IsLeast.csInf_eq ⟨⟨1, funext fun i => by simp [redV], by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨a, ha, rfl⟩`. Establish `h2 : a 0 ≠ 0` using `fun h => by`. Use `congrFun ha 0` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[redV, h] at this`. Establish `: (1 : ℤ) ≤ a 0 * a 0` using `mul_self_pos.2 h2`. Use `show (1 : ℝ) ≤ ((a 0 * a 0 : ℤ) : ℝ)`. Conclude with `this` after adjusting the coercions. Establish `hs : ∀ f : (Fin 1 → ZMod (1 + 1)) → ℝ, ∑ y, f y = f (fun _ => 0) + f (fun _ => 1)` using `fun f => by`.
-
-Rewrite using `[← (Equiv.funUnique (Fin 1) (ZMod (1 + 1))).symm.sum_comp f]`. Conclude with `Fin.sum_univ_two _`. Use `show ((((1 : ℕ) : ℝ) + 1) ^ 1)⁻¹ * ∑ y, classMin 1 _ y - _ = _`. Rewrite using `[hs, h0, h1]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 example : (fineMean 1).toFun 1 (fun a b => ((a 0 * b 0 : ℤ) : ℝ)) = 1 / 2 := by
   have h0 : classMin 1 (fun a b : Fin 1 → ℤ => ((a 0 * b 0 : ℤ) : ℝ)) (fun _ => 0) = 0 := by
@@ -236,7 +234,7 @@ section Base
 def fineDen (g : ℕ) (𝓜 : Finset ℕ) : ℕ := ∏ M ∈ 𝓜, (M + 1) ^ g
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun _ _ => by positivity`.
+A detailed English derivation is pending.
 -/
 theorem fineDen_pos (g : ℕ) (𝓜 : Finset ℕ) : 0 < fineDen g 𝓜 := Finset.prod_pos fun _ _ => by positivity
 
@@ -250,7 +248,7 @@ def baseFun (D : ℕ) (φ : InvFun ℤ) (𝓜 : Finset ℕ) : InvFun O where
 variable {O}
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[(baseFun O D φ 𝓜).eval_eq hr]`. Establish `h : ∀ ψ : InvFun ℤ, (restr O ψ).toFun n (fun a b => B (r a) (r b)) = ψ.eval X B` using `fun ψ => ψ.eval_comp (r := r.restrictScalars ℤ) hr B`. Simplify using `only [baseFun, h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem eval_baseFun {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Finite ℤ X] (D : ℕ) (φ : InvFun ℤ)
     (𝓜 : Finset ℕ) (B : X → X → ℝ) :
@@ -262,7 +260,7 @@ theorem eval_baseFun {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X
   simp only [baseFun, h]
 
 /- English proof (translation)
-Set `e : (Fin n → O) ≃ₗ[ℤ] (Fin n → O)` to `AddEquiv.toIntLinearEquiv (AddEquiv.piCongrRight fun _ => σ.toAddEquiv)`. Conclude with `φ.eval_equiv e B`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem restr_twist (φ : InvFun ℤ) (σ : O ≃+* O) (n : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ) :
     (restr O φ).toFun n (fun a b => B (fun i => σ (a i)) (fun i => σ (b i))) = (restr O φ).toFun n B := by
@@ -271,7 +269,7 @@ theorem restr_twist (φ : InvFun ℤ) (σ : O ≃+* O) (n : ℕ) (B : (Fin n →
   exact φ.eval_equiv e B
 
 /- English proof (translation)
-Simplify using `only [baseFun, restr_twist]`.
+Simplify using the standard rewrite rules.
 -/
 theorem baseFun_twist (D : ℕ) (φ : InvFun ℤ) (𝓜 : Finset ℕ) (σ : O ≃+* O) (n : ℕ)
     (B : (Fin n → O) → (Fin n → O) → ℝ) :
@@ -318,13 +316,13 @@ def IsPolyFan (bar : O → O) (q : ℕ) (φ : InvFun O) : Prop :=
 variable {bar φ X}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.mem, h.nonneg, h.linear, h.strict⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCone.isCell {γ : Fin m → LinearMap.BilinForm ℤ X} (h : IsCone bar φ γ) : IsCell bar φ γ :=
   ⟨h.mem, h.nonneg, h.linear, h.strict⟩
 
 /- English proof (translation)
-The claim follows from `h.homog superadd := h.superadd integral := h.integral pos := h.pos finite := by obtain ⟨S, hS, h1⟩ := h.finite refine ⟨S, hS, fun B hB => ?_⟩ obtain ⟨m, γ, c, hγ, hc, rfl⟩ := h.cover B hB obtain ⟨e, he⟩ := h1 m γ hγ refine ⟨e, m, _, c, (hγ.pull_equiv e).isCell, he, hc, LinearMap. …`.
+A detailed English derivation is pending.
 -/
 theorem IsPolFanOn.isPolyFanOn (h : IsPolFanOn bar φ X) : IsPolyFanOn bar φ X where
   homog := h.homog
@@ -340,17 +338,17 @@ theorem IsPolFanOn.isPolyFanOn (h : IsPolFanOn bar φ X) : IsPolyFanOn bar φ X 
     simp [LinearMap.sum_apply]
 
 /- English proof (translation)
-The claim follows from `isPolFanOn_minVal_int.isPolyFanOn`.
+A detailed English derivation is pending.
 -/
 theorem isPolyFanOn_minVal_int : IsPolyFanOn id (InvFun.minVal ℤ) ℤ := isPolFanOn_minVal_int.isPolyFanOn
 
 /- English proof (translation)
-Introduce `X _ _ _ _ hX` and use `(isPolFan_minVal_one X hX).isPolyFanOn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPolyFan_minVal_one : IsPolyFan id 1 (InvFun.minVal ℤ) := fun X _ _ _ _ hX => (isPolFan_minVal_one X hX).isPolyFanOn
 
 /- English proof (translation)
-The claim follows from `isCone_mulForm.isCell`.
+A detailed English derivation is pending.
 -/
 example : IsCell id (InvFun.minVal ℤ) ![mulForm] := isCone_mulForm.isCell
 

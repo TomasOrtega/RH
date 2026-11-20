@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.LGPrim
 
 /- English proof (translation)
-The claim follows from `|N * (q⁻¹) ^ (2 * M - 1) - 1| ≤ 1 / q ^ (M - 1) + 1 / q ^ (2 * M - 1) := by obtain ⟨m, rfl⟩ : ∃ m, M = m + 1 := ⟨M - 1, by omega⟩ have e1 : 2 * (m + 1) - 1 = 2 * m + 1 := by omega have e2 : m + 1 - 1 = m := by omega rw [e1] at h ⊢ rw [e2] have hQ : q ^ (2 * m + 1) = q ^ (m + 1) * …`.
+A detailed English derivation is pending.
 -/
 theorem real_bound (q N Nf : ℝ) (hq : 0 < q) (M : ℕ) (hM : 1 ≤ M)
     (h : |Nf - q ^ (2 * M - 1)| ≤ q ^ M) (h1 : N ≤ Nf) (h2 : Nf ≤ N + 1) :
@@ -38,7 +38,7 @@ theorem real_bound (q N Nf : ℝ) (hq : 0 < q) (M : ℕ) (hM : 1 ≤ M)
   exact habs
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_dotProduct]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec f B x i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_quad {R S ι : Type} [CommRing R] [CommRing S] [Fintype ι] (f : R →+* S)
     (B : Matrix ι ι R) (x : ι → R) :
@@ -55,15 +55,15 @@ local notation "𝓴" => IsLocalRing.ResidueField (HeightOneSpectrum.adicComplet
 local notation "res" => IsLocalRing.residue (HeightOneSpectrum.adicCompletionIntegers F v)
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : Valued.v (a : Fv F v) ≤ 1` using `a.2`. Use `lt_of_le_of_ne h1 fun h2 => h ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha0 : (a : Fv F v) ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, map_zero]`. Conclude with `zero_ne_one h2`. Establish `hinv : (a : Fv F v)⁻¹ ∈ v.adicCompletionIntegers F` using `by show Valued.v ((a : Fv F v)⁻¹) ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv₀, h2, inv_one]`. Use `IsUnit.of_mul_eq_one (⟨(a : Fv F v)⁻¹, hinv⟩ : v.adicCompletionIntegers F) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (a : Fv F v) * (a : Fv F v)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ ha0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h hu`. Take `⟨b, hb⟩` from `hu.exists_right_inv`. Establish `h3 : Valued.v ((a : Fv F v) * (b : Fv F v)) = 1`. Establish `: (a : Fv F v) * (b : Fv F v) = 1` using `congrArg Subtype.val hb`. Rewrite using `[this, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul]`. Establish `hb1 : Valued.v (b : Fv F v) ≤ 1` using `b.2`. Establish `h4 : Valued.v (a : Fv F v) * Valued.v (b : Fv F v) < 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd h3 (ne_of_lt h4)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem res_eq_zero_iff (a : 𝒪) : res a = 0 ↔ Valued.v (a : Fv F v) < 1 := by
   rw [IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
@@ -95,7 +95,7 @@ theorem res_eq_zero_iff (a : 𝒪) : res a = 0 ↔ Valued.v (a : Fv F v) < 1 := 
     exact absurd h3 (ne_of_lt h4)
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, res_eq_zero_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_eq_iff (a b : 𝒪) : res a = res b ↔ Valued.v ((a : Fv F v) - b) < 1 := by
   rw [← sub_eq_zero, ← map_sub, res_eq_zero_iff]
@@ -104,22 +104,20 @@ theorem res_eq_iff (a b : 𝒪) : res a = res b ↔ Valued.v ((a : Fv F v) - b) 
 def lift (y : 𝓴) : 𝒪 := Function.surjInv IsLocalRing.residue_surjective y
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq _ y`.
+A detailed English derivation is pending.
 -/
 theorem res_lift (y : 𝓴) : res (lift y) = y := Function.surjInv_eq _ y
 
 def lf {ι : Type} (y : ι → 𝓴) : ι → Fv F v := fun i => (lift (y i) : 𝒪)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, i₀, hi₀⟩`. Use `⟨fun i => res ⟨x i, hx i⟩, ?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `(res_eq_zero_iff (⟨x i₀, hx i₀⟩ : 𝒪)).1 (congrFun h0 i₀)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd hi₀ (ne_of_lt h1)`. Conclude with `(res_eq_iff (⟨x i, hx i⟩ : 𝒪) (lift _)).1 (res_lift _).symm`. Introduce and unpack `⟨y, hy, h⟩`. Establish `hx : ∀ i, x i ∈ 𝒪`. Introduce `i`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : x i = (x i - lf y i) + lf y i` using `by ring`. Use `show Valued.v (x i) ≤ 1`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ (h i).le (lift (y i)).2`. Use `⟨hx, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hy`. Use `⟨i, le_antisymm (hx i) (not_lt.1 fun hlt => hi ?_)⟩` and prove the remaining obligations. Establish `e : res (⟨x i, hx i⟩ : 𝒪) = y i`. Rewrite using `[(res_eq_iff (⟨x i, hx i⟩ : 𝒪) (lift (y i))).2 (h i), res_lift]`. Rewrite using `[← e]`.
-
-Conclude with `(res_eq_zero_iff _).2 hlt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cover {ι : Type} (x : ι → Fv F v) :
     ((∀ i, x i ∈ 𝒪) ∧ ∃ i, Valued.v (x i) = 1) ↔
@@ -147,9 +145,9 @@ theorem cover {ι : Type} (x : ι → Fv F v) :
     exact (res_eq_zero_iff _).2 hlt
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h1` using `Valuation.map_sub_lt _ (h' i) (h i)`. Establish `e : (x i - lf y' i) - (x i - lf y i) = lf y i - lf y' i` using `by ring`. Rewrite `h1` using `[e]`. Establish `h2` using `(res_eq_iff (lift (y i)) (lift (y' i))).2 h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[res_lift, res_lift]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_of_close {ι : Type} (x : ι → Fv F v) (y y' : ι → 𝓴)
     (h : ∀ i, Valued.v (x i - lf y i) < 1) (h' : ∀ i, Valued.v (x i - lf y' i) < 1) : y = y' := by
@@ -163,11 +161,11 @@ theorem eq_of_close {ι : Type} (x : ι → Fv F v) (y y' : ι → 𝓴)
 abbrev phi : 𝒪 →+* Fv F v := ValuationSubring.subtype _
 
 /- English proof (translation)
-Use `⟨c * ((lift ∘ y) ⬝ᵥ (BO *ᵥ (lift ∘ y))), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `map_quad phi BO (lift ∘ y)`. Establish `h2 : (phi : 𝒪 →+* Fv F v) (c * ((lift ∘ y) ⬝ᵥ (BO *ᵥ (lift ∘ y)))) = phi c * phi ((lift ∘ y) ⬝ᵥ (BO *ᵥ (lift ∘ y)))` using `map_mul _ _ _`. Rewrite `h2` using `[h1]`. Establish `h3 : phi c = (2 : Fv F v)⁻¹` using `hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[h3]`. Conclude with `h2`. Rewrite using `[map_mul, hr, map_quad]`. Establish `: (⇑res ∘ lift ∘ y) = y`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `res_lift _`. Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem res_Q {ι : Type} [Fintype ι] (c : 𝒪) (hc : (c : Fv F v) = 2⁻¹) (hr : res c = 2⁻¹)
     (BO : Matrix ι ι 𝒪) (y : ι → 𝓴) :
@@ -187,61 +185,53 @@ theorem res_Q {ι : Type} [Fintype ι] (c : 𝒪) (hc : (c : Fv F v) = 2⁻¹) (
     rw [this]
 
 /- English proof (translation)
-Establish `hLoc` using `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI : SecondCountableTopology (Fv F v) := hLoc.2.2.1`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨-, -, -, hcard⟩` from `GlobalTheory.T.standard_local_haar_properties F v lam hlam`. Establish `hq0 : Ideal.absNorm v.asIdeal ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Use `haveI : Finite 𝓴 := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq0)`. Use `letI : Fintype 𝓴 := Fintype.ofFinite _`. Establish `hcardk : Fintype.card 𝓴 = Ideal.absNorm v.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `hcard`. Take `⟨BO, rfl⟩ : ∃ BO : Matrix ι ι 𝒪, BO.map phi = B` from `⟨Matrix.of fun i j => ⟨B i j, hBint i j⟩, by ext i j; rfl⟩`. Establish `h20 : (2 : Fv F v) ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h2` using `[h0, map_zero]`. Conclude with `zero_ne_one h2`. Set `c : 𝒪` to `⟨2⁻¹, by show Valued.v ((2 : Fv F v)⁻¹) ≤ 1; rw [map_inv₀, h2, inv_one]⟩`. Establish `hc : (c : Fv F v) = 2⁻¹` using `rfl`. Establish `hc2 : c * 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `e : (phi : 𝒪 →+* Fv F v) (c * 2) = phi c * phi 2` using `map_mul _ _ _`. Establish `e2 : (phi : 𝒪 →+* Fv F v) 2 = 2` using `map_ofNat _ 2`. Establish `e3 : phi c = (2 : Fv F v)⁻¹` using `hc`. Rewrite `e` using `[e2, e3, inv_mul_cancel₀ h20]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e`. Establish `hr1 : res c * 2 = 1`. Use `congrArg res hc2` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, map_ofNat]`. Then use the resulting hypothesis. Establish `hr : res c = 2⁻¹` using `eq_inv_of_mul_eq_one_left hr1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hchar : ringChar 𝓴 ≠ 2`. Introduce `h`. Establish `h0 : (2 : 𝓴) = 0`. Use `ringChar.Nat.cast_ringChar (R := 𝓴)` as an intermediate fact. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Rewrite `hr1` using `[h0, mul_zero]`. Conclude with `zero_ne_one hr1`. Establish `hBO : BO.IsSymm`. Conclude with `Matrix.IsSymm.ext fun i j => Subtype.ext (congrFun (congrFun hBs i) j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hBks : (BO.map res).IsSymm` using `hBO.map _`. Establish `hBkdet : (BO.map res).det ≠ 0`. Introduce `h0`. Establish `e : res BO.det = (BO.map res).det` using `RingHom.map_det res BO`. Rewrite `h0` using `[← e]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(res_eq_zero_iff _).1 h0`. Establish `e2 : ((BO.det : 𝒪) : Fv F v) = (BO.map phi).det` using `RingHom.map_det phi BO`. Rewrite `h3` using `[e2, hBdet]`. Conclude with `lt_irrefl _ h3`. Use `set sb : 𝓴 := res (⟨s, hs⟩ : 𝒪) with hsb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hcount` using `GlobalTheory.T.finite_field_quadratic_form_point_count 𝓴 hchar ι M hM hM1 (BO.map res) hBks hBkdet sb`. Set `qk : (ι → 𝓴) → 𝓴` to `fun y => (2 : 𝓴)⁻¹ * (y ⬝ᵥ ((BO.map res) *ᵥ y))`. Set `Fl : Finset (ι → 𝓴)` to `Finset.univ.filter fun y => qk y = sb`. Set `T : Finset (ι → 𝓴)` to `Fl.filter fun y => y ≠ 0`. Establish `hN : Nat.card {x : ι → 𝓴 // (2 : 𝓴)⁻¹ * (x ⬝ᵥ ((BO.map res) *ᵥ x)) = sb} = Fl.card` using `Nat.subtype_card Fl (fun x => by simp [Fl, qk])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hcount` using `[hN, hcardk]`. Establish `hle1 : T.card ≤ Fl.card` using `Finset.card_filter_le _ _`. Establish `hle2 : Fl.card ≤ T.card + 1`. Establish `hsub : Fl ⊆ insert 0 T`. Introduce `y hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : y = 0`. Simplify using `[h0]`. Conclude with `Finset.mem_insert_of_mem (Finset.mem_filter.2 ⟨hy, h0⟩)`. Conclude with `(Finset.card_le_card hsub).trans (Finset.card_insert_le _ _)`. Establish `hqpos : (0 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hq0`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨(T.card : ℝ≥0) * ((Ideal.absNorm v.asIdeal : ℝ≥0)⁻¹) ^ (2 * M - 1), ?_, fun A hA hAs => ?_⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `real_bound _ _ (Fl.card : ℝ) hqpos M hM1 hcount (by exact_mod_cast hle1) (by exact_mod_cast hle2)`. Use `set Qf : (ι → Fv F v) → Fv F v := fun x => (2 : Fv F v)⁻¹ * (x ⬝ᵥ ((BO.map phi) *ᵥ x)) with hQf`. Establish `hQc : Continuous Qf`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `continuous_const.mul ?_` and prove the remaining obligations. Conclude with `continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id)`. Set `P : (ι → 𝓴) → Set (ι → Fv F v)` to `fun y => {x | (∀ i, Valued.v (x i - lf y i) < 1) ∧ Qf x ∈ A}`. Set `T0 : Finset (ι → 𝓴)` to `Finset.univ.filter fun y => y ≠ 0`. Establish `hS : {x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (∃ i, Valued.v (x i) = 1) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ ((BO.map phi) *ᵥ x)) ∈ A} = ⋃ y ∈ T0, P y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h3, h4⟩`. Take `⟨y, hy, h⟩` from `(cover x).1 ⟨h1, h3⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨y, Finset.mem_filter.2 ⟨Finset.mem_univ _, hy⟩, h, h4⟩`. Introduce and unpack `⟨y, hy, h, h4⟩`. Take `⟨h1, h3⟩` from `(cover x).2 ⟨y, (Finset.mem_filter.1 hy).2, h⟩`. Conclude with `⟨h1, h3, h4⟩`. Establish `hball : MeasurableSet {a : Fv F v | Valued.v a < 1}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(Valued.isOpen_ball (Fv F v) 1).measurableSet`. Simplify `h` using `[Valuation.restrict_lt_iff_lt_embedding]`. Establish `hmeas : ∀ y ∈ T0, MeasurableSet (P y)`. Introduce `y _`. Establish `e : P y = (⋂ i, (fun x : ι → Fv F v => x i - lf y i) ⁻¹' {a | Valued.v a < 1}) ∩ Qf ⁻¹' A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `x`. Simplify using `[P]`. Rewrite using `[e]`. Use `(MeasurableSet.iInter fun i => ?_).inter (hQc.measurable hA)` and prove the remaining obligations. Conclude with `((continuous_apply i).sub continuous_const).measurable hball`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdisj : Set.PairwiseDisjoint (↑T0) P`. Introduce `y _ y' _ hne`. Conclude with `Set.disjoint_left.2 fun x hx hx' => hne (eq_of_close x y y' hx.1 hx'.1)`. Establish `hclass : ∀ y ∈ T0, (Measure.pi fun _ : ι => lam) (P y) = if qk y = sb then ((Ideal.absNorm v.asIdeal : ℝ≥0∞)⁻¹ ^ (2 * M - 1)) * lam A else 0`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hy0 : y ≠ 0` using `(Finset.mem_filter.1 hy).2`. Take `⟨hint, hprim⟩` from `(cover (lf y)).2 ⟨y, hy0, fun i => by simp⟩`. Take `⟨a, haQ, har⟩` from `res_Q c hc hr BO y`. Establish `key` using `GlobalTheory.T.primitive_vector_quadratic_level_measure F v lam hlam h2 ι (BO.map phi) hBs hBint hBdet (lf y) hint hprim A hA`. Establish `hkey : (Measure.pi fun _ : ι => lam) (P y) = _` using `key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hkey, hM]`. Establish `hcl : Valued.v (s - Qf (lf y)) < 1 ↔ qk y = sb`. Use `res_eq_iff (⟨s, hs⟩ : 𝒪) a` as an intermediate fact. Rewrite `this` using `[har]`. Rewrite using `[show Qf (lf y) = (a : Fv F v) from haQ.symm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨fun h => (this.2 h).symm, fun h => this.1 h.symm⟩`. Use `split_ifs with he`. Establish `hlt` using `hcl.2 he`. Establish `: A ∩ {s' | Valued.v (s' - (2 : Fv F v)⁻¹ * (lf y ⬝ᵥ ((BO.map phi) *ᵥ lf y))) < 1} = A`. Use `Set.inter_eq_left.2 fun z hz => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h5 : Valued.v (z - s) < 1` using `hAs hz`. Establish `h6` using `Valuation.map_add_lt _ h5 hlt`. Establish `e : z - s + (s - Qf (lf y)) = z - Qf (lf y)` using `by ring`. Rewrite `h6` using `[e]`. Conclude with `h6`.
-
-Rewrite using `[this]`. Establish `: A ∩ {s' | Valued.v (s' - (2 : Fv F v)⁻¹ * (lf y ⬝ᵥ ((BO.map phi) *ᵥ lf y))) < 1} = ∅`. Use `Set.eq_empty_iff_forall_notMem.2 fun z hz => he (hcl.1 ?_)` and prove the remaining obligations. Establish `h5 : Valued.v (z - s) < 1` using `hAs hz.1`. Establish `h6 : Valued.v (z - Qf (lf y)) < 1` using `hz.2`.
-
-Establish `h7` using `Valuation.map_sub_lt _ h6 h5`. Establish `e : z - Qf (lf y) - (z - s) = s - Qf (lf y)` using `by ring`. Rewrite `h7` using `[e]`. Conclude with `h7`. Rewrite using `[this, measure_empty, mul_zero]`.
-
-Rewrite using `[hS, measure_biUnion_finset hdisj hmeas, Finset.sum_congr rfl hclass, ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `hT : T0.filter (fun y => qk y = sb) = T`. Use extensionality with `y`. Simplify using `[T0, T, Fl, and_comm]`. Rewrite using `[hT]`.
-
-Establish `hq0' : (Ideal.absNorm v.asIdeal : ℝ≥0) ≠ 0` using `by exact_mod_cast hq0`. Move the coercions through the operations in `[ENNReal.coe_inv hq0']`. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v (2 : Fv F v) = 1)
     (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι (Fv F v)) (hBs : B.IsSymm)
@@ -402,7 +392,7 @@ theorem core (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v (2 : 
     rw [mul_assoc]
 
 /- English proof (translation)
-Introduce `F _ _ v lam hlam h2 ι _ _ B hBs hBint hBdet M hM hM1 s hs`. Conclude with `core lam hlam h2 ι B hBs hBint hBdet M hM hM1 s hs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem density_primitive : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → Valued.v (2 : Fv F v) = 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι (Fv F v)), B.IsSymm → (∀ i j, B i j ∈ v.adicCompletionIntegers F) → Valued.v B.det = 1 → ∀ M : ℕ, Fintype.card ι = 2 * M → 1 ≤ M → ∀ s : Fv F v, s ∈ v.adicCompletionIntegers F → ∃ D : ℝ≥0, |(D : ℝ) - 1| ≤ 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1) + 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ (2 * M - 1) ∧ ∀ A : Set (Fv F v), MeasurableSet A → A ⊆ {z | Valued.v (z - s) < 1} → (Measure.pi fun _ : ι => lam) {x | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (∃ i, Valued.v (x i) = 1) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} = (D : ℝ≥0∞) * lam A := by
   intro F _ _ v lam hlam h2 ι _ _ B hBs hBint hBdet M hM hM1 s hs

@@ -29,11 +29,9 @@ noncomputable section
 namespace GlobalTheory.CycPair
 
 /- English proof (translation)
-Introduce `k _ X p σ M s δ hδ y`. Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `(GlobalTheory.T.smoothWeightedLineBundle_logSectionNorm_properties k X p σ M s).2.2.1 y`. Use `⟨W, ι, inferInstance, g, fun w => Real.log (F w + δ), O ∩ F ⁻¹' Set.Ioi (-δ), h₁, h₄.continuousOn.isOpen_inter_preimage h₂ isOpen_Ioi, ⟨h₃, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `M.φ.nsq_nonneg (secVal p σ s) y`. Rewrite `h0` using `[h₅.eq_of_nhds]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_of_lt_of_le (neg_neg_of_pos hδ) h0`. Use `((h₄.mono Set.inter_subset_left).add contDiffOn_const).log fun w hw => ?_` and prove the remaining obligations. Establish `: -δ < F w` using `hw.2`. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [h₅] with z hz`.
-
-Rewrite using `[hz]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cInfAt_log_nsq_add : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (M : MLine p σ) (s : M.B.Sec) (δ : ℝ), 0 < δ → ∀ y, CInfAt (fun y => Real.log (M.φ.nsq (secVal p σ s) y + δ)) y := by
   intro k _ X p σ M s δ hδ y
@@ -50,9 +48,9 @@ theorem cInfAt_log_nsq_add : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X
     rw [hz]
 
 /- English proof (translation)
-Introduce `k _ X p σ hp e L A u hu f hA hU`. Establish `hc` using `GlobalTheory.T.smoothWeightedLineBundle_isometry_calculus k X X p p σ (𝟙 X) (Category.id_comp p)`. Establish `hpart` using `GlobalTheory.T.mixedChernFormSignedPartMeasure_eq_of_isometric_projOver k X p σ hp (e + 1) (Fin.cons (A.addFn u hu) L) (Fin.cons (A.tens (MLine.ofFun u hu)) L) (Fin.cases (hc.2.2.2.2.1 A u hu) fun i => hc.1 (L i))`. Establish `h` using `GlobalTheory.T.mixedChernIntegral_additive_in_factor k X p σ hp (e + 1) (Fin.cons A L) 0 A (MLine.ofFun u hu) f`. Simplify using `only [Fin.update_cons_zero] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h'` using `h hA hU`. Rewrite using `[← h'.2]`. Establish `h1` using `h'.1`. Simplify using `only [Intg, Mix.int, hpart] at h1 ⊢`. Conclude with `⟨h1, trivial⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem int_cons_addFn : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ), IsProjOver p → ∀ (e : ℕ) (L : Fin e → MLine p σ) (A : MLine p σ) (u : CxPts p σ → ℝ) (hu : ∀ y, CInfAt u y) (f : CxPts p σ → ℝ), Intg (Fin.cons A L : Fin (e + 1) → MLine p σ) f → Intg (Fin.cons (MLine.ofFun u hu) L : Fin (e + 1) → MLine p σ) f → Intg (Fin.cons (A.addFn u hu) L : Fin (e + 1) → MLine p σ) f ∧ Mix.int (Fin.cons (A.addFn u hu) L : Fin (e + 1) → MLine p σ) f = Mix.int (Fin.cons A L : Fin (e + 1) → MLine p σ) f + Mix.int (Fin.cons (MLine.ofFun u hu) L : Fin (e + 1) → MLine p σ) f := by
   intro k _ X p σ hp e L A u hu f hA hU
@@ -68,11 +66,11 @@ theorem int_cons_addFn : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶
   exact ⟨h1, trivial⟩
 
 /- English proof (translation)
-Introduce `F _ X _ p σ hp D L hL M s hs δ hδ h₁ h₂`. Use `haveI : SecondCountableTopology (CxPts p σ) := CxPts.secondCountableTopology_of_isProjOver σ hp`. Establish `hneg` using `GlobalTheory.T.mixedChernFormSignedPartMeasure_neg_eq_zero_semiPositive F X p σ D L hL`. Establish `hnull` using `GlobalTheory.T.mixedChernFormSignedPartMeasure_compl_open_genericPoint_eq_zero F X p σ σ.injective hp D L 1 _ hs`. Establish `hpos` using `(GlobalTheory.T.smoothWeightedLineBundle_logSectionNorm_properties F X p σ M s).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Mix.int, hneg, integral_zero_measure, sub_zero]`. Rewrite using `[← integral_div]`. Use `integral_mono_ae h₁.1 (h₂.1.div_const 2) ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ y ∂part L 1, y ∈ ptsIn p σ (nonzeroLocus s)` using `hnull`. Use `filter_upwards [hae] with y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `(hpos y).2 hy`. Use `Real.log_le_log h0 (le_add_of_nonneg_right hδ.le)` as an intermediate fact. Simplify using `only [MLine.logSec]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem int_logSec_le : ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp F) (σ : F →+* ℂ), IsProjOver p → ∀ (D : ℕ) (L : Fin D → MLine p σ), (∀ i, (L i).φ.SemiPosReg D) → ∀ (M : MLine p σ) (s : M.B.Sec), genericPoint X ∈ nonzeroLocus s → ∀ δ : ℝ, 0 < δ → Intg L (M.logSec s) → Intg L (fun y => Real.log (M.φ.nsq (secVal p σ s) y + δ)) → Mix.int L (M.logSec s) ≤ Mix.int L (fun y => Real.log (M.φ.nsq (secVal p σ s) y + δ)) / 2 := by
   intro F _ X _ p σ hp D L hL M s hs δ hδ h₁ h₂
@@ -91,32 +89,32 @@ theorem int_logSec_le : ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X]
   linarith
 
 /- English proof (translation)
-The claim follows from `(h z (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)).resolve_left fun h' => notMem_supp_divOfSec.2 h' (CartierDiv.mem_supp_of_mult_ne_zero hz)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_mult_divOfSec_ne_zero {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {A : LB X} (hA : A.IsLB) (s : A.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (U : X.Opens) (h : ∀ z : X, Order.coheight z = 1 → z ∈ nonzeroLocus s ∨ z ∈ U) (z : X) (hz : (divOfSec hA s hs).mult z ≠ 0) : z ∈ U :=
   (h z (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)).resolve_left fun h' =>
     notMem_supp_divOfSec.2 h' (CartierDiv.mem_supp_of_mult_ne_zero hz)
 
 /- English proof (translation)
-Introduce `hP F _ X _ _ p σ e hproj hdim L M N s hs t ht hcod hL hN`. Set `δ : ℕ → ℝ` to `fun n => 1 / ((n : ℝ) + 1)`. Establish `hδ : ∀ n, 0 < δ n` using `fun n => by positivity`. Set `v : ℕ → CxPts p σ → ℝ` to `fun n y => Real.log (N.φ.nsq (secVal p σ t) y + δ n)`. Set `u : ℕ → CxPts p σ → ℝ` to `fun m y => Real.log (M.φ.nsq (secVal p σ s) y + δ m)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hv : ∀ n y, CInfAt (v n) y` using `fun n => cInfAt_log_nsq_add F X p σ N t (δ n) (hδ n)`. Establish `hu : ∀ m y, CInfAt (u m) y` using `fun m => cInfAt_log_nsq_add F X p σ M s (δ m) (hδ m)`. Establish `cu : ∀ m, Continuous (u m)` using `fun m => continuous_iff_continuousAt.2 fun y => (hu m y).continuousAt`. Establish `fin : ∀ (L' : Fin (e + 1) → MLine p σ) (f : CxPts p σ → ℝ), Continuous f → Intg L' f` using `fun L' => (GlobalTheory.T.mixedChernMeasure_finite_integrable_projective hP F X p σ (e + 1) hproj hdim L').2`. Establish `lint : ∀ L' : Fin (e + 1) → MLine p σ, Intg L' (M.logSec s)` using `fun L' => GlobalTheory.T.log_norm_section_integrable_mixedChern_projective hP F X p σ (e + 1) hproj hdim L' M s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `supS : ∀ z, (divOfSec M.φ.isLB s hs).mult z ≠ 0 → z ∈ nonzeroLocus t` using `mem_of_mult_divOfSec_ne_zero M.φ.isLB s hs _ hcod`. Establish `supT : ∀ z, (divOfSec N.φ.isLB t ht).mult z ≠ 0 → z ∈ nonzeroLocus s` using `mem_of_mult_divOfSec_ne_zero N.φ.isLB t ht _ fun z hz => (hcod z hz).symm`. Establish `key : ∀ m n, Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) (M.logSec s) + Mix.int (Fin.cons (MLine.ofFun (v n) (hv n)) L : Fin (e + 1) → MLine p σ) (M.logSec s) ≤ (Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) (u m) + Mix.int (Fin.cons (MLine.ofFun (u m) (hu m)) L : Fin (e …`. Introduce `m n`. Take `⟨-, h1⟩` from `int_cons_addFn F X p σ hproj e L N (v n) (hv n) (M.logSec s) (lint _) (lint _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h2⟩` from `int_cons_addFn F X p σ hproj e L N (v n) (hv n) (u m) (fin _ _ (cu m)) (fin _ _ (cu m))`. Establish `hsp : ∀ i, ((Fin.cons (N.addFn (v n) (hv n)) L : Fin (e + 1) → MLine p σ) i).φ.SemiPosReg (e + 1)` using `Fin.cases (GlobalTheory.T.semiPos_add_log_normSq_section_add_pos F X p σ (e + 1) N hN t (δ n) (hδ n)).2 hL`. Establish `h3` using `int_logSec_le F X p σ hproj (e + 1) _ hsp M s hs (δ m) (hδ m) (lint _) (fin _ _ (cu m))`. Establish `h4` using `GlobalTheory.T.mixedIntegral_ddc_pairing_symm_projective hP F X p σ e hproj hdim L (v n) (u m) (hv n) (hu m)`. Rewrite using `[← h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h3.trans (le_of_eq ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Mix.int _ (u m) / 2 = _`. Rewrite using `[h2, h4]`. Establish `ps : ∀ n, 2 * Mix.int (Fin.cons (MLine.ofFun (v n) (hv n)) L : Fin (e + 1) → MLine p σ) (M.logSec s) = ∑ᶠ z, ((divOfSec M.φ.isLB s hs).mult z : ℝ) * cycInt L (v n) z - Mix.int (Fin.cons M L : Fin (e + 1) → MLine p σ) (v n)` using `fun n => GlobalTheory.T.poincareLelong_formula_section_projective hP F X p σ e hproj hdim L M s hs (v n) (hv n)`. Establish `pt : ∀ m, 2 * Mix.int (Fin.cons (MLine.ofFun (u m) (hu m)) L : Fin (e + 1) → MLine p σ) (N.logSec t) = ∑ᶠ z, ((divOfSec N.φ.isLB t ht).mult z : ℝ) * cycInt L (u m) z - Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) (u m)` using `fun m => GlobalTheory.T.poincareLelong_formula_section_projective hP F X p σ e hproj hdim L N t ht (u m) (hu m)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `limT` using `GlobalTheory.T.tendsto_regularisedLogNorm_mixedMeasure_divisors hP F X p σ e hproj hdim N t`. Establish `limS` using `GlobalTheory.T.tendsto_regularisedLogNorm_mixedMeasure_divisors hP F X p σ e hproj hdim M s`. Establish `l1 : Tendsto (fun n => ∑ᶠ z, ((divOfSec M.φ.isLB s hs).mult z : ℝ) * cycInt L (v n) z) atTop (𝓝 (2 * ∑ᶠ z, ((divOfSec M.φ.isLB s hs).mult z : ℝ) * cycInt L (N.logSec t) z))` using `limT.2 L _ supS`. Establish `l2 : Tendsto (fun n => Mix.int (Fin.cons M L : Fin (e + 1) → MLine p σ) (v n)) atTop (𝓝 (2 * Mix.int (Fin.cons M L : Fin (e + 1) → MLine p σ) (N.logSec t)))` using `limT.1 ht _`. Establish `l3 : ∀ m, Tendsto (fun n => Mix.int (Fin.cons (MLine.ofFun (u m) (hu m)) L : Fin (e + 1) → MLine p σ) (v n)) atTop (𝓝 (2 * Mix.int (Fin.cons (MLine.ofFun (u m) (hu m)) L : Fin (e + 1) → MLine p σ) (N.logSec t)))` using `fun m => limT.1 ht _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l4 : Tendsto (fun m => ∑ᶠ z, ((divOfSec N.φ.isLB t ht).mult z : ℝ) * cycInt L (u m) z) atTop (𝓝 (2 * ∑ᶠ z, ((divOfSec N.φ.isLB t ht).mult z : ℝ) * cycInt L (M.logSec s) z))` using `limS.2 L _ supT`. Establish `step : ∀ m, side N L (M.logSec s) (N.logSec t) (divOfSec M.φ.isLB s hs) - Mix.int (Fin.cons M L : Fin (e + 1) → MLine p σ) (N.logSec t) ≤ (∑ᶠ z, ((divOfSec N.φ.isLB t ht).mult z : ℝ) * cycInt L (u m) z) / 2`. Introduce `m`. Establish `lim1 : Tendsto (fun n => Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) (M.logSec s) + Mix.int (Fin.cons (MLine.ofFun (v n) (hv n)) L : Fin (e + 1) → MLine p σ) (M.logSec s)) atTop (𝓝 (side N L (M.logSec s) (N.logSec t) (divOfSec M.φ.isLB s hs) - Mix.int (Fin.cons M L : Fin (e …`. Establish `e1 : (fun n => Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) (M.logSec s) + Mix.int (Fin.cons (MLine.ofFun (v n) (hv n)) L : Fin (e + 1) → MLine p σ) (M.logSec s)) = fun n => Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) (M.logSec s) + (∑ᶠ z, ((divOfSec M.φ.isLB s hs).mult …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun n => by rw [← ps n]; ring`. Rewrite using `[e1]`. Use `tendsto_const_nhds.add ((l1.sub l2).div_const 2) using 2` and compare the differences between its conclusion and the goal. Simplify using `only [side]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `lim2` using `(tendsto_const_nhds (x := Mix.int (Fin.cons N L : Fin (e + 1) → MLine p σ) (u m))).add (l3 m)`. Establish `h` using `le_of_tendsto_of_tendsto' lim1 (lim2.div_const 2) (key m)`. Use `pt m` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `ge_of_tendsto' (l4.div_const 2) step`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [side] at h ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem side_le : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (e : ℕ), IsProjOver p → topologicalKrullDim X = (e + 1 : ℕ) → ∀ (L : Fin e → MLine p σ) (M N : MLine p σ) (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (t : N.B.Sec) (ht : genericPoint X ∈ nonzeroLocus t), (∀ z : X, Order.coheight z = 1 → z ∈ nonzeroLocus s ∨ z ∈ nonzeroLocus t) → (∀ i, (L i).φ.SemiPosReg (e + 1)) → N.φ.SemiPosReg (e + 1) → side N L (M.logSec s) (N.logSec t) (divOfSec M.φ.isLB s hs) ≤ side M L (N.logSec t) (M.logSec s) (divOfSec N.φ.isLB t ht) := by
   intro hP F _ X _ _ p σ e hproj hdim L M N s hs t ht hcod hL hN

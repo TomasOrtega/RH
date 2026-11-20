@@ -25,7 +25,7 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.DetHT.AnyLev
 
 /- English proof (translation)
-Establish `hF : FnAlgClosed Xo c` using `GlobalTheory.ShFam.GeomComp.fnAlgClosed_of_curveOver Xo c hpq h1 hC`. Take `⟨U, hL⟩` from `GlobalTheory.FlatCore.Model.exists_laws Dw l Xo c hpq hA hg hF h1`. Take `⟨s⟩` from `GlobalTheory.FlatCore.archEx_always E H Dw l Xo c _ U _ hL Zc τ`. Use `⟨s.sig, s.sig_mem, fun la => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.FlatCore.htConst_always hP hP.q2 hP.q3 hP.q4 E H Dw l Xo c _ U _ hL Zc τ s la`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem at_one (hP : GlobalTheory.CovTop.Hypotheses2) (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)
@@ -47,13 +47,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n)
 
 /- English proof (translation)
-Use `⟨fun p q φ u u' hm => ?_, fun p t u u' hb => ?_⟩` and prove the remaining obligations. Use `letI := algDn d p.R`. Use `letI := algDn d q.R`. Take `⟨y, hy⟩` from `below_exists d hO hK (S := p.R) (fun _ => rfl) u`. Take `⟨y', hy'⟩` from `below_exists d hO hK (S := q.R) (fun _ => rfl) u'`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `φc : p.R →ₐ[c.F] q.R` to `⟨φ.toRingHom, fun a => φ.commutes (d.eF a)⟩`. Take `⟨w, hw⟩` from `GlobalTheory.TransferCompare.frBC_framed Xo c p.R q.R φc y`. Establish `hw' : FrOver d u' w` using `GlobalTheory.FrameLift.frOver_map d (ψ := φc) (ψ₂ := φ) rfl hy hw hm`. Take `rfl : y' = w` from `GlobalTheory.ClassSumCompare.frUnder_unique d hy' hw'`. Use `show pullRule d f q u' = φ (pullRule d f p u)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullRule_eq d f q u' y' hy', pullRule_eq d f p u y hy]`. Conclude with `GlobalTheory.SupLawProbe.evR_map (GlobalTheory.TransferCompare.evalWD_framed Xo c) f hf.1 φc y (GlobalTheory.TransferCompare.allTest_framed Xo c p.R y) y' hw`. Use `letI := algDn d p.R`. Take `⟨y, hy⟩` from `below_exists d hO hK (S := p.R) (fun _ => rfl) u`. Take `⟨y', hy'⟩` from `below_exists d hO hK (S := p.R) (fun _ => rfl) u'`.
-
-Use `show pullRule d f p u' = _ * pullRule d f p u`. Rewrite using `[pullRule_eq d f p u' y' hy', pullRule_eq d f p u y hy]`. Conclude with `GlobalTheory.evR_frBor_of_mem_secZ GlobalTheory.abelianSchemeLaws_all.1.secBaseChange Xo c e hf p.R t y y' (frBor_down d hy hy' hb)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullRule_mem_secZ (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l ≤ KA d.l₂) {e : Ix Dw → ℤ}
     {f : Rul Xo c} (hf : f ∈ secZ Xo c e) : pullRule d f ∈ secZ d.Xo₂ d.c₂ e := by
@@ -78,13 +76,11 @@ theorem pullRule_mem_secZ (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l �
     exact GlobalTheory.evR_frBor_of_mem_secZ GlobalTheory.abelianSchemeLaws_all.1.secBaseChange Xo c e hf p.R t y y' (frBor_down d hy hy' hb)
 
 /- English proof (translation)
-Establish `key : ∀ (p : TRing d.c₂.F) (φ : p.R →ₐ[d.c₂.F] k) (u : FrPt d.Xo₂ d.c₂ p.R), FrMap φ u y₂ → φ (pullRule d f p u) = evR Xo c f y`. Introduce `p φ u hu`. Use `letI := algDn d p.R`. Take `⟨z, hz⟩` from `below_exists d hO hK (S := p.R) (fun _ => rfl) u`. Set `φc : p.R →ₐ[c.F] k` to `⟨φ.toRingHom, fun a => (φ.commutes (d.eF a)).trans (hc a)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨w, hw⟩` from `GlobalTheory.TransferCompare.frBC_framed Xo c p.R k φc z`. Establish `hw' : FrOver d y₂ w` using `GlobalTheory.FrameLift.frOver_map d (ψ := φc) (ψ₂ := φ) rfl hz hw hu`. Take `rfl : y = w` from `GlobalTheory.ClassSumCompare.frUnder_unique d hy hw'`. Rewrite using `[pullRule_eq d f p u z hz]`. Conclude with `(GlobalTheory.SupLawProbe.evR_map (GlobalTheory.TransferCompare.evalWD_framed Xo c) f hf φc z (GlobalTheory.TransferCompare.allTest_framed Xo c p.R z) y hw).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT` using `GlobalTheory.TransferCompare.allTest_framed d.Xo₂ d.c₂ k y₂`. Establish `e : evR d.Xo₂ d.c₂ (pullRule d f) y₂ = hT.choose_spec.choose (pullRule d f hT.choose hT.choose_spec.choose_spec.choose)`. Unfold `evR evalAt`. Rewrite using `[dif_pos hT]`. Rewrite using `[e]`.
-
-Conclude with `key _ _ _ hT.choose_spec.choose_spec.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_pullRule_nat (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l ≤ KA d.l₂) {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
@@ -115,9 +111,9 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0}
   [StarRing (𝓞 E)]
 
 /- English proof (translation)
-Take `⟨h0, G, t', m₁, m₂, π, φ, h1, h2, h3, h4, h5, h6⟩` from `h`. Take `⟨m', e₁⟩` from `LiftBaseChange.exists_comp' d.m m₁ x e.symm`. Use `⟨h0, G, t', m', m₂, π, φ, h1, h2, h3, h4, by rw [e₁, ← Category.assoc, h5], ?_⟩` and prove the remaining obligations. Take `⟨w, hw, -⟩` from `d.m.lin`. Establish `i : LBIso (d.Xo₂.univ.t.PP.L.pull ψ) (Xo.univ.t.PP.L.pull (ψ ≫ d.m.φ))` using `LBIso.chartPull (Geo.Tor.chartPullPull _ ψ ψ rfl) (chartPullSame Xo.univ.t.PP.L _ _ _ ψ fun _ => rfl) (⟨w, hw⟩ : LBIso d.Xo₂.univ.t.PP.L (Xo.univ.t.PP.L.pull d.m.φ))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `LBIso.trans P.A.isLB (LB.isLB_pull d.Xo₂.univ.t.PP.isLB _) (LB.isLB_pull Xo.univ.t.PP.isLB _) h6 i`.
+A detailed English derivation is pending.
 -/
 theorem pointOver_down {P : Point p v O (𝓞 E)} {V F : Type} [CommRing V] [Field F] [Algebra V F]
     {x₂ : Sp F ⟶ d.Xo₂.X} {x : Sp F ⟶ Xo.X} (e : x₂ ≫ d.r = x) {k : F →+* C} {kO : V →+* O}
@@ -137,9 +133,9 @@ variable [Algebra c.F C] [Algebra d.c₂.F C] [IsAlgClosed C] [CharZero C] [Alge
 omit [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 
 /- English proof (translation)
-Establish `e : embAt d.c₂ C τ = embAt c C τ` using `RingHom.ext fun a => by`. Unfold `embAt`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← hc]`. Conclude with `congrArg _ (Subtype.ext rfl)`. Unfold `htLat embInt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem htLat_eq (hc : ∀ a : c.F, algebraMap d.c₂.F C (d.eF a) = algebraMap c.F C a) (P : Point p v O (𝓞 E))
     (τ : E →+* ℂ) : htLat d.c₂ P τ = htLat c P τ := by
@@ -151,11 +147,11 @@ theorem htLat_eq (hc : ∀ a : c.F, algebraMap d.c₂.F C (d.eF a) = algebraMap 
   rw [e]
 
 /- English proof (translation)
-Take `⟨t, hb, ht⟩` from `h.exists_frBor`. Take `⟨ex, -, pm, q₁, q₂, q₃⟩` from `frBor_down d hz hy hb`. Take `⟨g, a, x, ⟨h1, h2, -⟩, hg, -, hL, hB⟩` from `h`. Use `⟨g, t none, x, ⟨ex, fun τ i => ?_, pm, q₁, ?_, q₃⟩, hg, ht, fun τ j => ?_, fun τ => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.FrameLift.comb_iff d.m hz.1 (fun j => (z₂.tan τ j).1) (g τ i) (h1 ▸ (y₂.tan τ i).1)).1 (h2 τ i)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[funext (hz.2.1 τ), hy.2.1]`. Conclude with `this`. Rewrite using `[q₂, show spMap (RingHom.id C) = 𝟙 _ from Spec.map_id _]`. Conclude with `(Category.comp_id _).symm`. Take `⟨xG, u', k₁, k₂, k₃⟩` from `hL τ j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨xG, u', k₁, by rw [← Category.assoc, k₂, hz.2.1], k₃⟩`. Rewrite using `[← htLat_eq d hc]`. Conclude with `hB τ`.
+A detailed English derivation is pending.
 -/
 theorem isHTChange_down (hc : ∀ a : c.F, algebraMap d.c₂.F C (d.eF a) = algebraMap c.F C a) {P : Point p v O (𝓞 E)}
     {ψ : P.A.A.left ⟶ d.Xo₂.univ.t.G.left} {z₂ y₂ : FrPt d.Xo₂ d.c₂ C} {z y : FrPt Xo c C} (hz : FrOver d z₂ z)
@@ -175,9 +171,9 @@ theorem isHTChange_down (hc : ∀ a : c.F, algebraMap d.c₂.F C (d.eF a) = alge
     exact hB τ
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Use `letI := io₂.toAlgebra`. Take `⟨-, kO, P, ψ, z₂, h1, h2, h3⟩` from `h`. Take `⟨y, hy⟩` from `below_exists d hO hK hc y₂`. Take `⟨z, hz⟩` from `GlobalTheory.TransferCompare.frBC_framed Xo c T.Fr C k b.1`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz' : FrOver d z₂ z` using `GlobalTheory.FrameLift.frOver_map d (ψ := k) (ψ₂ := k₂) hk hb hz h2`. Use `⟨y, hy, GlobalTheory.TransferCompare.allTest_framed Xo c C y, kO, P, ψ ≫ d.m.φ, z, ?_, hz, isHTChange_down d hc hz' hy h3⟩` and prove the remaining obligations. Rewrite using `[← hk]`. Conclude with `pointOver_down d hb.1 h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHTFrame_down (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l ≤ KA d.l₂)
     (hc : ∀ a : c.F, algebraMap d.c₂.F C (d.eF a) = algebraMap c.F C a) {T : CDVR} {io : c.F →+* T.Fr}
@@ -207,9 +203,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n)
 
 /- English proof (translation)
-Establish `e : ptF y = ptF y₂ ≫ rF`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e₁, ptF, ptF, pullback.lift_fst, pullback.lift_fst_assoc, hy.1]`. Rewrite using `[Category.assoc, e₂, ptF, ptF, pullback.lift_snd, pullback.lift_snd_assoc, ← LiftBaseChange.spMap_comp']`. Conclude with `congrArg spMap (RingHom.ext fun a => (hc a).symm)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[e]`. Conclude with `hZ ⟨_, h s, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liesOn_down (rF : d.Xo₂.XF d.c₂ ⟶ Xo.XF c)
     (e₁ : rF ≫ pullback.fst _ _ = pullback.fst _ _ ≫ d.r)
@@ -229,13 +225,13 @@ theorem liesOn_down (rF : d.Xo₂.XF d.c₂ ⟶ Xo.XF c)
   exact hZ ⟨_, h s, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨T, io₂, e, b₂, ho, ⟨halg, hon⟩, p, hp, ha₂, k₂, y₂, hy₂, rfl⟩`. Use `letI := io₂.toAlgebra`. Set `io : c.F →+* T.Fr` to `io₂.comp (d.eF : c.F →+* d.c₂.F)`. Use `letI := io.toAlgebra`. Use `letI : Algebra c.F ℂ_[p] := algDn d ℂ_[p]`.
+Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Take `⟨b, hb⟩` from `below_exists d hO hK (S := T.Fr) (fun _ => rfl) b₂.1`. Set `bI : IntFr Xo c T io` to `⟨b, GlobalTheory.TransferCompare.allTest_framed Xo c T.Fr b, GlobalTheory.CoverDown.integral_below d T _ io₂ (fun _ => rfl) b b₂.1 hb b₂.2.2⟩`. Set `k : T.Fr →ₐ[c.F] ℂ_[p]` to `⟨k₂.toRingHom, fun a => k₂.commutes (d.eF a)⟩`. Use `letI := H.starRing`. Take `⟨y, hy, hF⟩` from `isHTFrame_down d hO hK (C := ℂ_[p]) (fun _ => rfl) (b := bI) (k := k) hb rfl hy₂`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ⟨T, io, e, bI, ⟨ho.1, fun a => (ho.2 (d.eF a)).trans (by rw [hla])⟩, ⟨halg, liesOn_down d rF e₁ e₂ hZ (fun _ => rfl) hb hon⟩, p, hp, inferInstance, k, y, hF, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show val_vw la₂ p _ _ = val_vw la p _ _`. Rewrite using `[evR_pullRule_nat d hO hK hf (fun _ => rfl) y₂ y hy]`. Establish `hp' : vLa la₂ (p : d.c₂.F) = vLa la (p : c.F)` using `by rw [← hla, map_natCast]`. Unfold `val_vw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp']`.
+A detailed English derivation is pending.
 -/
 theorem htValOn_down (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l ≤ KA d.l₂) (rF : d.Xo₂.XF d.c₂ ⟶ Xo.XF c)
     (e₁ : rF ≫ pullback.fst _ _ = pullback.fst _ _ ≫ d.r)
@@ -266,17 +262,17 @@ theorem htValOn_down (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l ≤ KA
 end Transfer
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hpq hg h1 hC Zc τ`. Set `l₀ : Level H` to `{ l with A := 1, A_pos := Nat.one_pos }`. Establish `hd : l₀.Dvd l` using `⟨dvd_rfl, le_rfl, one_dvd _⟩`. Establish `hM : l₀.M' ∣ l.M'` using `Nat.lcm_dvd (Nat.dvd_lcm_left _ _) (one_dvd _)`. Establish `hK : KA l₀ ≤ KA l` using `GlobalTheory.Models.RankZero.KA_le_of_eq_one rfl l`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < l.M'` using `GlobalTheory.LevelExist.M'_pos l`. Set `c₀ : Coeff l₀` to `{ F := c.F fin := c.fin conj := c.conj zeta_mem := by`. Take `⟨e, he⟩` from `GlobalTheory.LevelExist.zeta_eq_pow_of_dvd hpos hM`. Rewrite using `[he]`. Conclude with `pow_mem c.zeta_mem e`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le := hK.trans c.le }`. Establish `hC₀ : GlobalTheory.CompRat.CurveOver H c₀.F l₀.M'`. Take `⟨k, hk⟩` from `hM`. Use `GlobalTheory.IndefiniteRowSideFullHecke.FieldTwistConditions.curveOver_of_mul (k := k) ?_ (hk ▸ hC)` and prove the remaining obligations. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨Xo₀⟩` from `GlobalTheory.Moduli.moduli_scheme_exists E H Dw l₀ hpq`. Take `⟨r, jK, m, hj, hr, -, -, -, hcF⟩` from `(GlobalTheory.moduliScheme_levelMaps_heckePoints.2 E H Dw hpq).1 l₀ l Xo₀ Xo hd`. Take `⟨rF, e₁, e₂, -⟩` from `hcF c₀ c rfl`. Set `d : DeltaDat Xo₀ c₀ 0` to `⟨1, ⊤, l, Xo, c, rfl, r, m, fun _ _ _ _ => 0, 0, 0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hO : GlobalTheory.ClsVal.Cmp.OverBase d` using `fun h => by`. Rewrite using `[← GlobalTheory.ClsVal.Cmp.eq_incl h jK hj]`. Conclude with `hr`. Take `⟨Z₀, hZ₀, hZ⟩` from `exists_mem_irreducibleComponents_subset_of_isIrreducible _ (Zc.2.1.image rF rF.continuous.continuousOn)`. Take `⟨f, hf, hρ⟩` from `at_one hP E H Dw l₀ Xo₀ c₀ hpq rfl hg h1 hC₀ ⟨Z₀, hZ₀⟩ τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.CovPull.pullRule d f, pullRule_mem_secZ d hO hK hf, fun la => ?_⟩` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `hρ la`. Use `⟨ρ, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨w₀, hw₀, e⟩` from `htValOn_down d hO hK rF e₁ e₂ (Z₂ := Zc) (Z := ⟨Z₀, hZ₀⟩) hZ (la₂ := la) (la := la) (fun _ => rfl) hf.1 w hw`. Conclude with `e.trans (hρ w₀ hw₀)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem anyLev (hP : GlobalTheory.CovTop.Hypotheses2) : AnyLevSt := by
   intro E _ _ _ H Dw l Xo c hpq hg h1 hC Zc τ

@@ -15,23 +15,23 @@ def Yb {p q : ℕ} (M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) : Matrix
   M.toBlocks₁₂ * M.toBlocks₂₂⁻¹
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₁₂, toBlocks₁₁, toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₂_mul {p q : ℕ} (g M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     (g * M).toBlocks₁₂ = g.toBlocks₁₁ * M.toBlocks₁₂ + g.toBlocks₁₂ * M.toBlocks₂₂ := by
   ext i j; simp [toBlocks₁₂, toBlocks₁₁, toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₁₂, toBlocks₂₁, toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₂₂_mul {p q : ℕ} (g M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     (g * M).toBlocks₂₂ = g.toBlocks₂₁ * M.toBlocks₁₂ + g.toBlocks₂₂ * M.toBlocks₂₂ := by
   ext i j; simp [toBlocks₁₂, toBlocks₂₁, toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Establish `hu : IsUnit M.toBlocks₂₂.det` using `isUnit_iff_ne_zero.mpr hM`. Establish `h12 : M.toBlocks₁₂ = Yb M * M.toBlocks₂₂`. Rewrite using `[Yb, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`. Establish `e1 : (g * M).toBlocks₁₂ = (g.toBlocks₁₁ * Yb M + g.toBlocks₁₂) * M.toBlocks₂₂`. Rewrite using `[toBlocks₁₂_mul, h12, Matrix.add_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (g * M).toBlocks₂₂ = (g.toBlocks₂₁ * Yb M + g.toBlocks₂₂) * M.toBlocks₂₂`. Rewrite using `[toBlocks₂₂_mul, h12, Matrix.add_mul, Matrix.mul_assoc]`. Rewrite using `[Yb, e1, e2, Matrix.mul_inv_rev, mob, Matrix.mul_assoc, ← Matrix.mul_assoc M.toBlocks₂₂, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Yb_mul {p q : ℕ} (g M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (hM : M.toBlocks₂₂.det ≠ 0) :
     Yb (g * M) = mob g (Yb M) := by
@@ -46,9 +46,9 @@ theorem Yb_mul {p q : ℕ} (g M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ
     Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hu : IsUnit b.toBlocks₂₂.det` using `isUnit_iff_ne_zero.mpr hb2`. Establish `h0 : ∀ a j, b (Sum.inl a) (Sum.inr j) = 0` using `fun a j => by`. Simplify `congrFun (congrFun hb a) j` using `[toBlocks₁₂]`. Establish `e1 : (M * b).toBlocks₁₂ = M.toBlocks₁₂ * b.toBlocks₂₂`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[toBlocks₁₂, toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type, h0]`. Establish `e2 : (M * b).toBlocks₂₂ = M.toBlocks₂₂ * b.toBlocks₂₂`. Use extensionality with `i j`. Simplify using `[toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type, h0]`. Rewrite using `[Yb, Yb, e1, e2, Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc b.toBlocks₂₂, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Yb_mul_right {p q : ℕ} (M b : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (hb : b.toBlocks₁₂ = 0)
     (hb2 : b.toBlocks₂₂.det ≠ 0) : Yb (M * b) = Yb M := by
@@ -63,9 +63,9 @@ theorem Yb_mul_right {p q : ℕ} (M b : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin 
     Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[h.1.posDef_iff_eigenvalues_pos]`. Introduce `i`. Break down `(h.eigenvalues_nonneg i).lt_or_eq with h1 | h1` into its components or cases. Conclude with `h1`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hd` to reduce the goal to its premises. Rewrite using `[h.1.det_eq_prod_eigenvalues]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by rw [← h1]; simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_of_psd_det {n : Type*} [Fintype n] [DecidableEq n] {M : Matrix n n ℂ} (h : M.PosSemidef)
     (hd : M.det ≠ 0) : M.PosDef := by
@@ -77,11 +77,11 @@ theorem posDef_of_psd_det {n : Type*} [Fintype n] [DecidableEq n] {M : Matrix n 
     exact Finset.prod_eq_zero (Finset.mem_univ i) (by rw [← h1]; simp)
 
 /- English proof (translation)
-Establish `: Invertible (1 : Matrix m m ℂ)` using `invertibleOne`. Establish `: Invertible (1 : Matrix n n ℂ)` using `invertibleOne`. Establish `h1 : (fromBlocks (1 : Matrix m m ℂ) Y Yᴴ (1 : Matrix n n ℂ)).PosSemidef`. Rewrite using `[Matrix.PosDef.fromBlocks₁₁ Y 1 Matrix.PosDef.one]`. Simplify using `using h.posSemidef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : (1 - Y * Yᴴ).PosSemidef`. Use `(Matrix.PosDef.fromBlocks₂₂ 1 Y Matrix.PosDef.one).mp h1` as an intermediate fact. Simplify using `using this`. Use `posDef_of_psd_det h2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_one_sub_mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h.det_pos).ne'`.
+A detailed English derivation is pending.
 -/
 theorem posDef_swap {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (Y : Matrix m n ℂ) (h : (1 - Yᴴ * Y).PosDef) : (1 - Y * Yᴴ).PosDef := by
@@ -100,13 +100,13 @@ def eT (X : Data E r) : Fin (r - X.p0) ⊕ Fin X.p0 ≃ Fin r :=
   (Equiv.sumComm _ _).trans (finSumFinEquiv.trans (finCongr (by have := X.p0_le; omega)))
 
 /- English proof (translation)
-Use `ext`. Simplify using `[eT, ExF.qI]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eT_inl (X : Data E r) (j : Fin (r - X.p0)) : eT X (Sum.inl j) = ExF.qI X j := by
   ext; simp [eT, ExF.qI]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[eT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eT_inr (X : Data E r) (i : Fin X.p0) : eT X (Sum.inr i) = Fin.castLE X.p0_le i := by
   ext; simp [eT]
@@ -115,33 +115,33 @@ def tl (X : Data E r) (M : Matrix (Fin r) (Fin r) ℂ) :
     Matrix (Fin (r - X.p0) ⊕ Fin X.p0) (Fin (r - X.p0) ⊕ Fin X.p0) ℂ := M.submatrix (eT X) (eT X)
 
 /- English proof (translation)
-Rewrite using `[tl, tl, tl, Matrix.submatrix_mul_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tl_mul (X : Data E r) (M N : Matrix (Fin r) (Fin r) ℂ) : tl X (M * N) = tl X M * tl X N := by
   rw [tl, tl, tl, Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[tl, toBlocks₂₂, ExF.n1, eT_inr]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tl_nM₂₂ (X : Data E r) (z : V (nd X)) (τ : X.Ψ) : (tl X (ExF.nM X z τ)).toBlocks₂₂ = ExF.n1 X z τ := by
   ext i j; simp [tl, toBlocks₂₂, ExF.n1, eT_inr]
 
 /- English proof (translation)
-Use extensionality with `j i`. Simplify using `[tl, toBlocks₁₂, ExF.Wm, eT_inl, eT_inr]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tl_nM₁₂ (X : Data E r) (z : V (nd X)) (τ : X.Ψ) : (tl X (ExF.nM X z τ)).toBlocks₁₂ = ExF.Wm X z τ := by
   ext j i; simp [tl, toBlocks₁₂, ExF.Wm, eT_inl, eT_inr]
 
 /- English proof (translation)
-Rewrite using `[ExF.Zt, Matrix.transpose_transpose, Yb, tl_nM₁₂, tl_nM₂₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Yb_tl_nM (X : Data E r) (z : V (nd X)) (τ : X.Ψ) : Yb (tl X (ExF.nM X z τ)) = (ExF.Zt X z τ)ᵀ := by
   rw [ExF.Zt, Matrix.transpose_transpose, Yb, tl_nM₁₂, tl_nM₂₂]
 
 /- English proof (translation)
-Use extensionality with `j i`. Simplify using `only [tl, toBlocks₁₂, Matrix.of_apply, Matrix.submatrix_apply, eT_inl, eT_inr, Matrix.zero_apply]`. Apply `(hb τ).2` to reduce the goal to its premises. Use `show (i : ℕ) < X.p0 + (j : ℕ)`. Use `i.isLt` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem tl_bor₁₂ (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : X.Ψ) :
     (tl X (mat b τ)).toBlocks₁₂ = 0 := by
@@ -152,9 +152,9 @@ theorem tl_bor₁₂ (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (
   have := i.isLt; omega
 
 /- English proof (translation)
-Establish `ht : (tl X (mat b τ)).toBlocks₂₂.BlockTriangular id`. Introduce `i j hij`. Simplify using `only [tl, toBlocks₂₂, Matrix.of_apply, Matrix.submatrix_apply, eT_inr]`. Conclude with `(hb τ).2 _ _ (show (Fin.castLE X.p0_le j : ℕ) < Fin.castLE X.p0_le i from hij)`. Rewrite using `[Matrix.det_of_isUpperTriangular ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Simplify using `only [tl, toBlocks₂₂, Matrix.of_apply, Matrix.submatrix_apply, eT_inr]`. Conclude with `FrameDegreeData.bdiag_ne X hb τ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tl_bor₂₂ (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : X.Ψ) :
     (tl X (mat b τ)).toBlocks₂₂.det ≠ 0 := by
@@ -179,14 +179,14 @@ def gm (X : Data E r) (x0 : Frame X.Ψ r) (γ : GL (Fin r) E) (τ : X.Ψ) :
   tl X ((mat x0 τ)⁻¹ * (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x0 τ)
 
 /- English proof (translation)
-Rewrite using `[Mx, Mx, ← tl_mul, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Mx_rmul (X : Data E r) (x0 x b : Frame X.Ψ r) (τ : X.Ψ) :
     Mx X x0 (rmul x b) τ = Mx X x0 x τ * tl X (mat b τ) := by
   rw [Mx, Mx, ← tl_mul, Matrix.mul_assoc]; rfl
 
 /- English proof (translation)
-Unfold `kap`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Mx_rmul, Yb_mul_right _ _ (tl_bor₁₂ X hb τ) (tl_bor₂₂ X hb τ)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_rmul (X : Data E r) (x0 x : Frame X.Ψ r) (bb : ℝ) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
     kap X x0 bb (rmul x b) = kap X x0 bb x := by
@@ -195,7 +195,7 @@ theorem kap_rmul (X : Data E r) (x0 x : Frame X.Ψ r) (bb : ℝ) {b : Frame X.Ψ
   rw [Mx_rmul, Yb_mul_right _ _ (tl_bor₁₂ X hb τ) (tl_bor₂₂ X hb τ)]
 
 /- English proof (translation)
-Establish `hu : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X ho τ)`. Rewrite using `[Mx, ExF.mat_cpt, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mx_cpt (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (z : V (nd X)) (τ : X.Ψ) :
     Mx X x0 (cpt X x0 z) τ = tl X (ExF.nM X z τ) := by
@@ -203,7 +203,7 @@ theorem Mx_cpt (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (z : V (nd 
   rw [Mx, ExF.mat_cpt, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hu : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X ho τ)`. Rewrite using `[Mx, Mx, gm, ← tl_mul]`. Use `congr 1`. Rewrite using `[Matrix.mul_assoc _ (mat x0 τ), ← Matrix.mul_assoc (mat x0 τ), Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Mx_lact (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (γ : GL (Fin r) E) (x : Frame X.Ψ r)
     (τ : X.Ψ) : Mx X x0 (lact γ x) τ = gm X x0 γ τ * Mx X x0 x τ := by
@@ -214,9 +214,9 @@ theorem Mx_lact (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (γ : GL (
     Matrix.one_mul, Matrix.mul_assoc]; rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_one_sub_mul_comm]`. Establish `: (Zᵀ)ᴴ * Zᵀ = (Z * Zᴴ)ᵀ`. Rewrite using `[Matrix.transpose_mul]`. Use `congr 1`. Rewrite using `[this, show (1 : Matrix (Fin p) (Fin p) ℂ) - (Z * Zᴴ)ᵀ = (1 - Z * Zᴴ)ᵀ by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_sub, Matrix.transpose_one], Matrix.det_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_one_sub_tr {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ) :
     (1 - Zᵀ * (Zᵀ)ᴴ).det = (1 - Z * Zᴴ).det := by
@@ -227,11 +227,11 @@ theorem det_one_sub_tr {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ) :
     rw [Matrix.transpose_sub, Matrix.transpose_one], Matrix.det_transpose]
 
 /- English proof (translation)
-Establish `hpos : ∀ τ, 0 < (ExF.Am X z τ).det` using `fun τ => ((ExF.mem_OmF_iff X x0 ho z).1 hz τ).det_pos`. Establish `hfac : ∀ τ, dpow (Yb (Mx X x0 (cpt X x0 z) τ)) bb = ‖(ExF.Am X z τ).det‖ ^ bb`. Introduce `τ`. Rewrite using `[Mx_cpt X ho, Yb_tl_nM, dpow, det_one_sub_tr, ExF.norm_of_pos (hpos τ)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[kap, Finset.prod_congr rfl (fun τ _ => hfac τ), kaF, ExF.rhF_eq_sum X x0 ho z]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_sum]`. Use `congr 1`. Rewrite using `[neg_mul_neg, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => mul_comm _ _`. Use `_ = ∏ τ, ‖(ExF.Am X z τ).det‖ ^ bb := Finset.prod_congr rfl fun τ _ => (Real.rpow_def_of_pos (norm_pos_iff.2 (hpos τ).ne') bb).symm`.
+A detailed English derivation is pending.
 -/
 theorem kaF_eq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (bb : ℝ) {z : V (nd X)}
     (hz : z ∈ OmF X x0) : kaF X x0 bb z = kap X x0 bb (cpt X x0 z) := by
@@ -248,9 +248,9 @@ theorem kaF_eq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (bb : ℝ) 
         Finset.prod_congr rfl fun τ _ => (Real.rpow_def_of_pos (norm_pos_iff.2 (hpos τ).ne') bb).symm
 
 /- English proof (translation)
-Apply `posDef_swap` to reduce the goal to its premises. Establish `h` using `((ExF.mem_OmF_iff X x0 ho z).1 hz τ).transpose`. Establish `: ((ExF.Zt X z τ)ᵀ)ᴴ * (ExF.Zt X z τ)ᵀ = (ExF.Zt X z τ * (ExF.Zt X z τ)ᴴ)ᵀ`. Rewrite using `[Matrix.transpose_mul]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this, show (1 : Matrix (Fin X.p0) (Fin X.p0) ℂ) - (ExF.Zt X z τ * (ExF.Zt X z τ)ᴴ)ᵀ = (1 - ExF.Zt X z τ * (ExF.Zt X z τ)ᴴ)ᵀ by rw [Matrix.transpose_sub, Matrix.transpose_one]]; exact h`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem posDef_Zt (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {z : V (nd X)}
     (hz : z ∈ OmF X x0) (τ : X.Ψ) : (1 - (ExF.Zt X z τ)ᵀ * ((ExF.Zt X z τ)ᵀ)ᴴ).PosDef := by
@@ -268,9 +268,9 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `c d`. Establish `h` using `(X.Γ_stab γ hγ).1 (Pi.single c 1) (Pi.single d 1)`. Simplify using `only [herm, Matrix.mulVec_single_one] at h`. Establish `h2 : (∑ a, ∑ b, (Pi.single c (1 : E) : Fin r → E) a * X.Gm a b * cc ((Pi.single d (1 : E) : Fin r → E) b)) = X.Gm c d` using `by simp [Pi.single_apply, cc]`. Rewrite using `[← h2, ← h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem herm_mat (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) :
     (γ : Matrix (Fin r) (Fin r) E)ᵀ * X.Gm * (γ : Matrix (Fin r) (Fin r) E).map cc = X.Gm := by
@@ -285,9 +285,9 @@ theorem herm_mat (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) :
   rfl
 
 /- English proof (translation)
-Establish `hc : ((γ : Matrix (Fin r) (Fin r) E).map τ.1).map (starRingEnd ℂ) = ((γ : Matrix (Fin r) (Fin r) E).map cc).map τ.1`. Use extensionality with `a b`. Simplify using `[cc, NumberField.IsCMField.complexEmbedding_complexConj]`. Establish `key : ((γ : Matrix (Fin r) (Fin r) E).map τ.1)ᵀ * X.Gm.map τ.1 * ((γ : Matrix (Fin r) (Fin r) E).map τ.1).map (starRingEnd ℂ) = X.Gm.map τ.1`. Rewrite using `[hc, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, herm_mat X hγ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FrameDegreeData.gram_eq, FrameDegreeData.gram_eq, Matrix.transpose_mul, Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [key]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_lact_mat (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (τ : X.Ψ)
     (M : Matrix (Fin r) (Fin r) ℂ) :
@@ -307,7 +307,7 @@ theorem gram_lact_mat (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (τ
     _ = _ := by rw [key]
 
 /- English proof (translation)
-Unfold `dmin`. Rewrite using `[show mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ from rfl, gram_lact_mat X hγ]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem dmin_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x : Frame X.Ψ r) (τ : X.Ψ)
     (i : Fin (r + 1)) : dmin X.Gm (lact γ x) τ i = dmin X.Gm x τ i := by
@@ -315,9 +315,9 @@ theorem dmin_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x : Fr
   rw [show mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ from rfl, gram_lact_mat X hγ]
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨?_, fun i => by rw [dmin_lact X hγ]; exact (hx τ).2 i⟩` and prove the remaining obligations. Rewrite using `[show mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ from rfl, Matrix.det_mul]`. Use `mul_ne_zero ?_ (hx τ).1` and prove the remaining obligations. Establish `hd : ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det = τ.1 (γ : Matrix (Fin r) (Fin r) E).det`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hd]`. Conclude with `(map_ne_zero τ.1).2 (Matrix.GeneralLinearGroup.det_ne_zero γ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_dom (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     lact γ x ∈ X.dom := by
@@ -331,7 +331,7 @@ theorem lact_dom (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Fra
   exact (map_ne_zero τ.1).2 (Matrix.GeneralLinearGroup.det_ne_zero γ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((a : Matrix (Fin r) (Fin r) E).map τ.1 * ((b : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) : Matrix (Fin r) (Fin r) ℂ) = ((a * b : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_lact (X : Data E r) (a b : GL (Fin r) E) (x : Frame X.Ψ r) :
     lact a (lact b x) = lact (a * b) x := by
@@ -341,7 +341,7 @@ theorem lact_lact (X : Data E r) (a b : GL (Fin r) E) (x : Frame X.Ψ r) :
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ : Matrix (Fin r) (Fin r) ℂ) = x τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lact_one (X : Data E r) (x : Frame X.Ψ r) : lact (1 : GL (Fin r) E) x = x := by
   funext τ
@@ -349,7 +349,7 @@ theorem lact_one (X : Data E r) (x : Frame X.Ψ r) : lact (1 : GL (Fin r) E) x =
   rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x0 τ) * mat (nmat X z) τ : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x0 τ * mat (nmat X z) τ)`. Rewrite using `[Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_lact (X : Data E r) (γ : GL (Fin r) E) (x0 : Frame X.Ψ r) (z : V (nd X)) :
     cpt X (lact γ x0) z = lact γ (cpt X x0 z) := by
@@ -359,7 +359,7 @@ theorem cpt_lact (X : Data E r) (γ : GL (Fin r) E) (x0 : Frame X.Ψ r) (z : V (
   rw [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `τ` and use `by rw [show mat (lact γ x0) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x0 τ from rfl, gram_lact_mat X hγ] exact ho τ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isOrth_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) :
     IsOrth X (lact γ x0) := fun τ => by
@@ -367,7 +367,7 @@ theorem isOrth_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x0 :
   exact ho τ
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [OmF, Set.mem_ofPred_eq, cpt_lact]`. Use `⟨fun h => ?_, lact_dom X hγ⟩` and prove the remaining obligations. Use `lact_dom X (X.Γ.inv_mem hγ) h` as an intermediate fact. Rewrite `this` using `[lact_lact, inv_mul_cancel, lact_one]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem OmF_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x0 : Frame X.Ψ r) :
     OmF X (lact γ x0) = OmF X x0 := by
@@ -378,7 +378,7 @@ theorem OmF_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x0 : Fr
   rwa [lact_lact, inv_mul_cancel, lact_one] at this
 
 /- English proof (translation)
-Establish `hd : (fun z => ENNReal.ofReal (densF X (lact γ x0) z)) = fun z => ENNReal.ofReal (densF X x0 z)`. Use function extensionality and compare the values at `z`. Simplify using `only [densF, cpt_lact, dmin_lact X hγ]`. Rewrite using `[muF, muF, OmF_lact X hγ, hd]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem muF_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x0 : Frame X.Ψ r) :
     muF X (lact γ x0) = muF X x0 := by
@@ -387,11 +387,11 @@ theorem muF_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x0 : Fr
   rw [muF, muF, OmF_lact X hγ, hd]
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with j | i <;> rcases b with j' | i'`. Apply the tactic sequence `simp only [tl, Matrix.submatrix_apply, eT_inl, Jf, Matrix.neg_apply, Matrix.fromBlocks_apply₁₁, Matrix.diagonal_apply, Matrix.one_apply, ExF.qI, Fin.ext_iff, Nat.add_left_cancel_iff] split_ifs <;> simp [sgn]`. Simplify using `only [tl, Matrix.submatrix_apply, eT_inl, eT_inr, Jf, Matrix.neg_apply, Matrix.fromBlocks_apply₁₂, Matrix.diagonal_apply, ExF.qI, Fin.ext_iff, Fin.coe_castLE, Matrix.zero_apply, neg_zero]`. Rewrite using `[if_neg]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `i'.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [tl, Matrix.submatrix_apply, eT_inl, eT_inr, Jf, Matrix.neg_apply, Matrix.fromBlocks_apply₂₁, Matrix.diagonal_apply, ExF.qI, Fin.ext_iff, Fin.coe_castLE, Matrix.zero_apply, neg_zero]`. Rewrite using `[if_neg]`. Use `i.isLt` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `simp only [tl, Matrix.submatrix_apply, eT_inr, Jf, Matrix.neg_apply, Matrix.fromBlocks_apply₂₂, Matrix.diagonal_apply, Matrix.neg_apply, Matrix.one_apply, Fin.ext_iff, Fin.coe_castLE, neg_neg] split_ifs with h <;> simp [sgn, i.isLt]`.
+Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tl_D (X : Data E r) :
     tl X (Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) = -Jf (r - X.p0) X.p0 := by
@@ -411,15 +411,13 @@ theorem tl_D (X : Data E r) :
     split_ifs with h <;> simp [sgn, i.isLt]
 
 /- English proof (translation)
-Use `set A := (γ : Matrix (Fin r) (Fin r) E).map τ.1 with hA`. Use `set x := mat x0 τ with hx`. Use `set m := x⁻¹ * A * x with hm`. Use `set D := Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) with hD`. Establish `hu : IsUnit x.det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X ho τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxm : x * m = A * x`. Rewrite using `[hm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Establish `h1 : mᵀ * D * m.map (starRingEnd ℂ) = D`. Use `FrameDegreeData.gram_mul τ.1 X.Gm x m` as an intermediate fact. Rewrite `this` using `[hxm, gram_lact_mat X hγ, ho τ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `h2 : mᴴ * D * m = D`. Use `congrArg (fun M => M.map (starRingEnd ℂ)) h1` as an intermediate fact. Establish `e1 : (mᵀ).map (starRingEnd ℂ) = mᴴ` using `by ext; simp [Matrix.conjTranspose_apply]`. Establish `e2 : D.map (starRingEnd ℂ) = D`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Apply the tactic sequence `ext a b; simp only [hD, Matrix.map_apply, Matrix.diagonal_apply]; split_ifs <;> simp`. Establish `e3 : (m.map (starRingEnd ℂ)).map (starRingEnd ℂ) = m` using `by ext; simp`. Simplify using `only [Matrix.map_mul] at this`. Rewrite `this` using `[e1, e2, e3]`. Then use the resulting hypothesis. Establish `h3 : (tl X m)ᴴ * tl X D * tl X m = tl X D`.
-
-Rewrite using `[show (tl X m)ᴴ = tl X mᴴ from Matrix.conjTranspose_submatrix _ _ _, ← tl_mul, ← tl_mul, h2]`. Rewrite `h3` using `[hD, tl_D, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_upq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ)
     (τ : X.Ψ) : IsUpq (gm X x0 γ τ) := by

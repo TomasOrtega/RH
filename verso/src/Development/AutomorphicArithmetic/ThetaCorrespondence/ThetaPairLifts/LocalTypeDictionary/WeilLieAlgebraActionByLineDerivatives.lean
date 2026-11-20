@@ -20,17 +20,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.WeilM
 section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨hb, hg, hc, hw, -⟩` from `h`. Use `choose A hA hAθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hg.hV.sig w) (hg.hV.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hg.hW.sig w) (hg.hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolStabInf.incM_map_piInf, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolStabInf.incM_map_piInf]`. Conclude with `hC w`. Establish `fr : Framed B.emb (incM F G.V.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD` using `GlobalTheory.T.archHeisenbergDerivatives_exist`. Establish `hvl` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hD`. Establish `hfe` using `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hD`. Establish `hsec` using `_root_.GlobalTheory.T.real_lift_lie_second_order hPr hD hfe hvl (_root_.GlobalTheory.T.weil_lie_algebra_scalar_action hPr hD hvl)`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C hb.cm hb.std fr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws GlobalTheory.RealLift.actsLaws hD hvl F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hw`. Establish `hW2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C Φ _ X.β B.mβ hb.cm hb.std fr hΦ hwp.1 hc.expβ`. Establish `hL` using `GlobalTheory.RealLift.actsLaws`. Establish `mem : ∀ T, Φ T ∈ G.M.Pol B.ψ B.emb` using `fun T => hr ▸ LinearMap.mem_range_self Φ T`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `γ hγ f hf`. Rewrite `hf` using `[← hr]`. Take `⟨T, rfl⟩` from `hf`. Take `⟨Yg, -, hY⟩` from `GlobalTheory.T.oneParamSubgroup_generators_exist F E σ (Fin (a + a')) _ _ B.emb (incM F G.W.J) Complex.I C hb.cm hC1 γ hγ`. Establish `h2` using `(hL F _ (Φ T) _ (Φ T)).1 _ (fun t => map_zero _) (hW2 γ hγ Yg hY T)`.
-
-Conclude with `⟨_, mem _, h2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_derivation_action_weil (hPr : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om') :
@@ -63,7 +61,7 @@ theorem exists_derivation_action_weil (hPr : _root_.GlobalTheory.FunPr.ThetaLoca
   have h2 := (hL F _ (Φ T) _ (Φ T)).1 _ (fun t => map_zero _) (hW2 γ hγ Yg hY T)
   exact ⟨_, mem _, h2⟩
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.T.thetaSum_pure_line_differentiable hPr F E σ B a a' G X om om' h γ hγ f hf f₁ hA φ hSB hev u`.
+A detailed English derivation is pending.
 -/
 theorem thetaSum_weil_hasDerivAt (hPr : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om')
@@ -76,21 +74,19 @@ theorem thetaSum_weil_hasDerivAt (hPr : _root_.GlobalTheory.FunPr.ThetaLocalInpu
       (thetaSum F (G.M.co.rho B.ψ u (pure f₁ φ))) 0 :=
   _root_.GlobalTheory.T.thetaSum_pure_line_differentiable hPr F E σ B a a' G X om om' h γ hγ f hf f₁ hA φ hSB hev u
 /- English proof (translation)
-Establish `hψ : IsStd B.ψ` using `h.base.std`. Establish `hM` using `h.geo.hM`. Establish `hsch : ∀ p, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), om p Φ ∈ schA F (Fin a × Fin (a + a'))` using `fun p Φ hΦ => (IsUWeilPair.isUSplitting h.weil).pres p Φ hΦ`. Establish `hAD` using `GlobalTheory.SquareAgree.HeisDeriv.algD_le_schA G.M B.ψ B.emb hM`. Establish `hrs : ∀ u, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), G.M.co.rho B.ψ u Φ ∈ schA F (Fin a × Fin (a + a'))` using `fun u Φ hΦ => GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hψ u Φ hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero`. Use `⟨0, zero_mem _, fun x => ?_, fun u => ?_⟩` and prove the remaining obligations. Simplify using `using hasDerivAt_const (0 : ℝ) (0 : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [map_zero, GlobalTheory.SquareAgree.CoinvPass.rho_zero']`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℂ)` using `[thetaSum]`. Consider the case `add a₁ b₁ ha₁ hb₁ ha hb`. Take `⟨a₂, ha₂, hpa, hta⟩` from `ha`. Take `⟨b₂, hb₂, hpb, htb⟩` from `hb`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a₂ + b₂, add_mem ha₂ hb₂, fun x => ?_, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(hpa x).add (hpb x)`. Establish `e : (fun t : ℝ => thetaSum F (G.M.co.rho B.ψ u (om (1, γ (Multiplicative.ofAdd t)) (a₁ + b₁)))) = fun t => thetaSum F (G.M.co.rho B.ψ u (om (1, γ (Multiplicative.ofAdd t)) a₁)) + thetaSum F (G.M.co.rho B.ψ u (om (1, γ (Multiplicative.ofAdd t)) b₁))`. Use function extensionality and compare the values at `t`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, GlobalTheory.SquareAgree.CoinvPass.rho_add', thetaSum_add F (hrs u _ (hsch _ _ (hAD ha₁))) (hrs u _ (hsch _ _ (hAD hb₁)))]`. Rewrite using `[e, GlobalTheory.SquareAgree.CoinvPass.rho_add', thetaSum_add F (hrs u _ (hAD ha₂)) (hrs u _ (hAD hb₂))]`. Conclude with `(hta u).add (htb u)`. Consider the case `smul c a₁ ha₁ ha`. Take `⟨a₂, ha₂, hpa, hta⟩` from `ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨c • a₂, Submodule.smul_mem _ c ha₂, fun x => ?_, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hpa x).const_mul c`. Simplify using `only [map_smul, GlobalTheory.SquareAgree.CoinvPass.rho_smul', GlobalTheory.SquareAgree.HeisDeriv.thetaSum_smul]`. Conclude with `(hta u).const_mul c`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `mem Φ hΦ`. Take `⟨f, φ, hf, hSB, hev, rfl⟩` from `hΦ`. Take `⟨f₁, hf₁, hA⟩` from `_root_.GlobalTheory.SquareAgree.MaxLie.exists_derivation_action_weil hPr h γ hγ f hf`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hev.and hM.std).mono fun v hv => hv.1.trans hv.2`. Use `⟨pure f₁ φ, Submodule.subset_span ⟨f₁, φ, hf₁, hSB, hev, rfl⟩, fun x => ?_, fun u => ?_⟩` and prove the remaining obligations.
-
-Conclude with `hA _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ hSB hstd) x`. Conclude with `_root_.GlobalTheory.SquareAgree.MaxLie.thetaSum_weil_hasDerivAt hPr h γ hγ f hf f₁ hA φ hSB hev u`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_line_derivative_maxLie (hPr : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om')
@@ -144,13 +140,11 @@ theorem exists_line_derivative_maxLie (hPr : _root_.GlobalTheory.FunPr.ThetaLoca
     · exact _root_.GlobalTheory.SquareAgree.MaxLie.thetaSum_weil_hasDerivAt hPr h γ hγ f hf f₁ hA φ hSB hev u
 end Gen
 /- English proof (translation)
-Introduce `hPr D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ _hTr hO hT Pi rf rl p p' _hm N hN τ Y hY ΦD hΦD Φ hD`. Establish `hψB` using `hO.psi`. Substitute `hψB` using the available equality. Take `⟨γ, hγ, hγt⟩` from `GlobalTheory.KapXLine.exists_line D θ X τ Y hθ hY e Γ.W hO.JX`. Take `⟨Ψ, hΨ, hpt, hth⟩` from `_root_.GlobalTheory.SquareAgree.MaxLie.exists_line_derivative_maxLie hPr hT γ hγ ΦD (hN.1 hΦD)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΨN : Ψ ∈ N` using `hN.2.2.2 γ hγ ΦD hΦD Ψ hΨ hpt`. Take `⟨Φ₁, hΦ₁, hD₁⟩` from `hO.algA' Ψ hΨ`. Use `⟨Ψ, hΨN, Φ₁, hΦ₁, hD₁, fun z => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `cA.surjective z`. Establish `key : (fun t : ℝ => ωA (1, oneP θ X τ Y t) Φ (cA u)) = fun t => thetaSum D.host.F (Γ.M.co.rho Bs.ψ u (om (1, γ (Multiplicative.ofAdd t)) ΦD))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Establish `k` using `(hO.weilA ΦD Φ hD 1 (oneP θ X τ Y t)).2 u`. Rewrite `k` using `[GlobalTheory.LocWeilAct.conjU_one', ← hγt t]`. Conclude with `k.symm`. Use `show HasDerivAt (fun t : ℝ => ωA (1, oneP θ X τ Y t) Φ (cA u)) (Φ₁ (cA u)) 0`.
-
-Rewrite using `[key, ← hD₁.2 u]`. Conclude with `hth u`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximal_lie_subalgebra_acts : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
@@ -198,7 +192,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.MaxLie.maximal_lie_subalgebra_acts | exact _root_.GlobalTheory.SquareAgree.MaxLie.maximal_lie_subalgebra_acts | (intros; apply _root_.GlobalTheory.SquareAgree.MaxLie.maximal_lie_subalgebra_acts <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weil_lie_algebra_action_by_line_derivatives : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

@@ -14,57 +14,51 @@ namespace GlobalTheory.CM.PureHom
 open PureTriple
 
 /- English proof (translation)
-Introduce `E _ _ _ H ρ A B p q hρ hA hB n hn ψ hψ`. Establish `hT : ThetaUnifAV` using `thetaUnifAV_all`. Establish `hL : Out.Laws` using `abelianSchemeLaws_all.1`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _` using `Spec.map_id _`. Establish `hdA` using `hA ℂ (RingHom.id ℂ) Function.injective_id`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdB` using `hB ℂ (RingHom.id ℂ) Function.injective_id`. Rewrite `hdA`, `hdB` using `[hid]`. Simplify using `only [RingHom.id_apply] at hdA hdB`. Establish `hsq : ∀ τ : 𝓞 E →+* ℂ, τ H.rt ^ 2 = -(H.d : ℂ)` using `fun τ => by`. Rewrite using `[← map_pow, H.rt_sq, map_neg, map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (T : PAT H (Sp ℂ)) (a b : ℕ), (∀ τ : 𝓞 E →+* ℂ, (τ H.rt = ρ → LieMult T.t.act (𝟙 (Sp ℂ)) τ a) ∧ (τ H.rt ≠ ρ → LieMult T.t.act (𝟙 (Sp ℂ)) τ b)) → ∃ a' b' : ℕ, a' + b' = a + b ∧ ∀ τ : 𝓞 E →+* ℂ, (τ H.rt = H.rt0 → LieMult T.t.act (𝟙 (Sp ℂ)) τ a') ∧ (τ H.rt ≠ H.rt0 → LieMult …`. Introduce `T a b hd`. Distinguish the cases in `h0 : ρ = H.rt0`. Conclude with `⟨a, b, rfl, h0 ▸ hd⟩`. Establish `h1` using `(sq_eq_sq_iff_eq_or_eq_neg.1 (hρ.trans H.sqrt_neg_disc_sq.symm)).resolve_left h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h2 : ∀ τ : 𝓞 E →+* ℂ, τ H.rt ≠ H.rt0 → τ H.rt = ρ` using `fun τ h => ((sq_eq_sq_iff_eq_or_eq_neg.1 ((hsq τ).trans H.sqrt_neg_disc_sq.symm)).resolve_left h).trans h1.symm`. Conclude with `⟨b, a, add_comm b a, fun τ => ⟨fun h => (hd τ).2 fun h' => h0 (h'.symm.trans h), fun h => (hd τ).1 (h2 τ h)⟩⟩`. Take `⟨pA, qA, hpqA, hdetA⟩` from `key A 1 0 hdA`. Take `⟨pB, qB, hpqB, hdetB⟩` from `key B p q hdB`. Take `⟨gA, tyA, htyA⟩` from `AllClasses.exists_isTypeFn H pA qA`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨gB, tyB, htyB⟩` from `AllClasses.exists_isTypeFn H pB qB`. Take `⟨uA, HA, χA, -, hAH, -⟩` from `PureType.exists_isThetaUnif hT A.pol`. Take `⟨uB, HB, χB, -, hBH, -⟩` from `PureType.exists_isThetaUnif hT B.pol`. Take `⟨DA, PeA, FA, hpA, hqA, hPA, hFA, -, hactA⟩` from `exists_datum_period hT hL A htyA hdetA uA hAH`. Take `⟨DB, PeB, FB, hpB, hqB, hPB, hFB, -, hactB⟩` from `exists_datum_period hT hL B htyB hdetB uB hBH`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, hA2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT A.pol _ uA HA χA hAH`. Take `⟨-, -, -, -, hB1, hB2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT B.pol _ uB HB χB hBH`. Use `choose Ψ hΨ hΨΛ using fun i => (HomLinear.exists_linear_of_isMonHom A.t.G B.t.G A.ab B.ab _ _ _ _ uA uB hB1 hB2 (ψ i) (hψ i).isMonHom).imp fun _ h => And.intro h.1 h.2.1`. Set `GA : 𝓞 E → (Fin A.pol.g → ℂ) →ₗ[ℂ] (Fin A.pol.g → ℂ)` to `fun s => FA.toLinearMap ∘ₗ diagMul tyA (s : E) ∘ₗ FA.symm.toLinearMap`. Set `GB : 𝓞 E → (Fin B.pol.g → ℂ) →ₗ[ℂ] (Fin B.pol.g → ℂ)` to `fun s => FB.toLinearMap ∘ₗ diagMul tyB (s : E) ∘ₗ FB.symm.toLinearMap`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hGA : ∀ s z, uA.ex (GA s z) = uA.ex z ≫ A.t.act.act s` using `fun s z => by`. Establish `e` using `hactA s (FA.symm z)`. Rewrite `e` using `[FA.apply_symm_apply]`. Conclude with `e`. Establish `hGB : ∀ s z, uB.ex (GB s z) = uB.ex z ≫ B.t.act.act s` using `fun s z => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hactB s (FB.symm z)`. Rewrite `e` using `[FB.apply_symm_apply]`. Conclude with `e`. Establish `hGPA : ∀ s a, GA s (FA (PeA a)) = FA (PeA (s • a))` using `fun s a => by`. Simplify using `only [GA, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [diagMul, LinearMap.coe_mk, AddHom.coe_mk, hPA.1]`. Establish `hGPB : ∀ s b, GB s (FB (PeB b)) = FB (PeB (s • b))` using `fun s b => by`. Simplify using `only [GB, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [diagMul, LinearMap.coe_mk, AddHom.coe_mk, hPB.1]`. Establish `hGAc : ∀ r s z, GA r (GA s z) = GA s (GA r z)` using `fun r s z => by`. Simplify using `only [GA, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [diagMul, LinearMap.coe_mk, AddHom.coe_mk]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGBinj : ∀ r : 𝓞 E, r ≠ 0 → ∀ z, GB r z = 0 → z = 0` using `fun r hr z hz => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : (r : E) ≠ 0` using `by exact_mod_cast hr`. Establish `e : diagMul tyB (r : E) (FB.symm z) = 0`. Use `congrArg FB.symm hz` as an intermediate fact. Simplify `this` using `[GB]`. Establish `e' : FB.symm z = 0` using `funext fun k => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun e k` as an intermediate fact. Simplify using `only [diagMul, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply, mul_eq_zero] at this`. Conclude with `this.resolve_left ((map_ne_zero (tyB k)).2 hr')`. Simplify using `using congrArg FB e'`. Establish `hcomm : ∀ i s z, Ψ i (GA s z) = GB s (Ψ i z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i s z`. Use `haveI := (hψ i).isMonHom`. Use `haveI := A.t.act.hom s`. Establish `e` using `linear_lift_unique uA uB hA2 hB1 (A.t.act.act s ≫ ψ i) (F := Ψ i ∘ₗ GA s) (F' := GB s ∘ₗ Ψ i) (fun z => by rw [LinearMap.comp_apply, hΨ, hGA, Category.assoc]) (fun z => by rw [LinearMap.comp_apply, hGB, hΨ, (hψ i).comm, Category.assoc])`. Conclude with `LinearMap.congr_fun e z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `DA.fin` as an intermediate fact. Use `DA.proj` as an intermediate fact. Use `DB.fin` as an intermediate fact. Use `DB.proj` as an intermediate fact. Establish `hrkA : Module.finrank (𝓞 E) DA.La = 1` using `by rw [DA.rank, hpA, hqA, hpqA]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Nontrivial DA.La := Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [hrkA]; exact one_pos)`. Take `⟨a, ha⟩` from `exists_ne (0 : DA.La)`. Establish `hb : ∀ i, ∃ b : DB.La, Ψ i (FA (PeA a)) = FB (PeB b)` using `fun i => by`. Establish `hm : Ψ i (FA (PeA a)) ∈ uB.Λ` using `hΨΛ i _ ((hFA _).2 ⟨a, rfl⟩)`. Take `⟨b, hb⟩` from `AddMonoidHom.mem_range.1 ((hFB (FB.symm _)).1 (by rwa [FB.apply_symm_apply]))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨b, by rw [hb, FB.apply_symm_apply]⟩`. Use `choose b hb using hb`. Establish `hrkB : Module.finrank (𝓞 E) DB.La = p + q` using `by rw [DB.rank, hpB, hqB, hpqB]`. Establish `hni : ¬ LinearIndependent (𝓞 E) b` using `fun hi => by`. Use `hi.fintype_card_le_finrank` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Fintype.card_fin, hrkB]`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hx, i₀, hi₀⟩` from `Fintype.not_linearIndependent_iff.1 hni`. Use `⟨x, fun h => hi₀ (by rw [h]; rfl), ?_⟩` and prove the remaining obligations. Set `Θ : (Fin A.pol.g → ℂ) →ₗ[ℂ] (Fin B.pol.g → ℂ)` to `∑ i, Ψ i ∘ₗ GA (x i)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΘ : ∀ z, Θ z = ∑ i, Ψ i (GA (x i) z)` using `fun z => by`. Simplify using `only [Θ, LinearMap.sum_apply, LinearMap.comp_apply]`. Establish `hΘa : Θ (FA (PeA a)) = 0`. Rewrite using `[hΘ]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hcomm, hb, hGPB]`. Use `_ = 0 := by rw [← map_sum, ← map_sum, hx, map_zero, map_zero]`. Establish `hΘc : ∀ s z, Θ (GA s z) = GB s (Θ z)` using `fun s z => by`. Rewrite using `[hΘ, hΘ, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hGAc, hcomm]`. Establish `hΘl : ∀ a', Θ (FA (PeA a')) = 0` using `fun a' => by`. Take `⟨r, s, hr, e⟩` from `CMLat.exists_smul_eq_smul hrkA ha a'`. Use `hGBinj r hr _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hΘc, hGPA, e, ← hGPA, hΘc, hΘa, map_zero]`. Establish `hΘ0 : Θ.restrictScalars ℝ = 0`. Use `LinearMap.ext_on uA.full fun z hz => ?_` and prove the remaining obligations. Take `⟨a', ha'⟩` from `AddMonoidHom.mem_range.1 ((hFA (FA.symm z)).1 (by rwa [FA.apply_symm_apply]))`. Establish `ez : z = FA (PeA a')` using `by rw [ha', FA.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[ez]`. Conclude with `hΘl a'`. Establish `hΘz : ∀ z, Θ z = 0` using `fun z => LinearMap.congr_fun hΘ0 z`. Establish `hs : Smooth A.t.G.hom` using `A.ab.smooth`. Establish `hp : IsProper B.t.G.hom` using `B.ab.proper`.
-
-Establish `hr : IsReduced A.t.G.left` using `isReduced_of_smooth_complex _ A.t.G.hom hs`. Use `ComplexPoints.over_hom_ext_of_complexPoints fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `uA.ex_onto y`. Establish `hpr : ∀ s : Finset (Fin n), uA.ex z ≫ ∏ i ∈ s, (A.t.act.act (x i) ≫ ψ i) = uB.ex (∑ i ∈ s, Ψ i (GA (x i) z))`. Introduce `s`.
-
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.sum_empty, comp_one]`. Conclude with `((uB.ker 0).2 uB.Λ.zero_mem).symm`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, comp_mul, ih, uB.ex_add, hΨ, hGA, Category.assoc]`.
-
-Rewrite using `[hpr, ← hΘ, hΘz, comp_one]`. Conclude with `(uB.ker 0).2 uB.Λ.zero_mem`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prod_act_comp_eq_one_of_pure : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ρ : ℂ) (A B : PAT H (Sp ℂ)) (p q : ℕ), ρ ^ 2 = -(H.d : ℂ) →
     HasType H A.t.act ρ 1 0 → HasType H B.t.act ρ p q → ∀ (n : ℕ), p + q < n → ∀ ψ : Fin n → (A.t.G ⟶ B.t.G),

@@ -12,18 +12,18 @@ open scoped TensorProduct
 section LocGen
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨s, hs, h⟩ => ⟨s, hs, h⟩, fun ⟨s, hs, h⟩ => ⟨s, hs, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem rlv_mem_locP {R W : Type} [CommRing R] [AddCommGroup W] [Module R W] (P : Ideal R) [P.IsPrime]
     (L : Submodule R W) (x : W) : x ∈ Formalism.HermitianLatticesTheory.localization₂ P L ↔ ∃ s : R, s ∉ P ∧ s • x ∈ L :=
   ⟨fun ⟨s, hs, h⟩ => ⟨s, hs, h⟩, fun ⟨s, hs, h⟩ => ⟨s, hs, h⟩⟩
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `(rlv_mem_locP P M x).1 (hP ((rlv_mem_locP P L x).2 ⟨1, P.ne_top_iff_one.1 (Ideal.IsPrime.ne_top inferInstance), by rw [one_smul]; exact hx⟩))`. Take `⟨t, ht, htx⟩` from `(rlv_mem_locP Q M x).1 (hQ ((rlv_mem_locP Q L x).2 ⟨1, Q.ne_top_iff_one.1 (Ideal.IsPrime.ne_top inferInstance), by rw [one_smul]; exact hx⟩))`. Distinguish the cases in `hsQ : s ∈ Q`. Distinguish the cases in `htP : t ∈ P`. Use `⟨s + t, fun h => hs ?_, fun h => ht ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using P.sub_mem h htP`. Simplify using `using Q.sub_mem h hsQ`. Rewrite using `[add_smul]`. Conclude with `M.add_mem hsx htx`. Conclude with `⟨t, htP, ht, htx⟩`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨s, hs, hsQ, hsx⟩`.
+A detailed English derivation is pending.
 -/
 theorem rlv_two {R W : Type} [CommRing R] [AddCommGroup W] [Module R W] (P Q : Ideal R) [P.IsPrime] [Q.IsPrime]
     {L M : Submodule R W} (hP : Formalism.HermitianLatticesTheory.localization₂ P L ≤ Formalism.HermitianLatticesTheory.localization₂ P M)
@@ -47,11 +47,9 @@ section LatS
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap (𝓞 F) (v.adicCompletionIntegers F) r)`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal, mem_maximal_ideal_completion_iff]`. Conclude with `hr`. Take `⟨w, hw⟩` from `hu.exists_left_inv`. Use `⟨(1 : E) ⊗ₜ[F] ((w : v.adicCompletion F)), Subring.subset_closure (Or.inr ⟨w, rfl⟩), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `h1 : ((w : v.adicCompletionIntegers F) : v.adicCompletion F) * (algebraMap F (v.adicCompletion F) (r : F)) = 1`. Use `congrArg (fun x : v.adicCompletionIntegers F => (x : v.adicCompletion F)) hw` as an intermediate fact. Conclude with `this`. Rewrite using `[h1]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rlv_unit (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) (hr : r ∉ v.asIdeal) :
     ∃ s ∈ intV E v, s * ((1 : E) ⊗ₜ[F] (algebraMap F (v.adicCompletion F) (r : F))) = 1 := by
@@ -66,9 +64,9 @@ theorem rlv_unit (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) (hr : r ∉ v.asI
   rw [h1]; rfl
 
 /- English proof (translation)
-Establish `e1 : (algebraMap (𝓞 F) (𝓞 E) r) • y = (r : F) • y`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Use `show ((r : F) • y) ⊗ₜ[F] (1 : v.adicCompletion F) = (y ⊗ₜ[F] (1 : v.adicCompletion F)) * _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`.
+A detailed English derivation is pending.
 -/
 theorem rlv_incl_smul (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) (y : E) :
     inclE (F := F) (v.adicCompletion F) ((algebraMap (𝓞 F) (𝓞 E) r) • y) =
@@ -80,11 +78,11 @@ theorem rlv_incl_smul (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) (y : E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨r, hr, hrx⟩` from `h x hx`. Take `⟨s, hs, hsr⟩` from `rlv_unit (E := E) v r hr`. Establish `hm : (fun i => inclE (F` using `F) (v.adicCompletion F) (((algebraMap (𝓞 F) (𝓞 E) r) • x) i)) ∈ latS (F := F) (v.adicCompletion F) (intV E v) M := Submodule.subset_span ⟨_, hrx, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `(latS (F := F) (v.adicCompletion F) (intV E v) M).smul_mem ⟨s, hs⟩ hm`. Establish `e : (fun i => inclE (F` using `F) (v.adicCompletion F) (x i)) = (⟨s, hs⟩ : intV E v) • (fun i => inclE (F := F) (v.adicCompletion F) (((algebraMap (𝓞 F) (𝓞 E) r) • x) i)) := by`. Use function extensionality and compare the values at `i`. Use `show inclE (F := F) (v.adicCompletion F) (x i) = s * inclE (F := F) (v.adicCompletion F) (((algebraMap (𝓞 F) (𝓞 E) r) • x) i)`. Rewrite using `[Pi.smul_apply, rlv_incl_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `show (fun i => inclE (F := F) (v.adicCompletion F) (x i)) ∈ (latS (F := F) (v.adicCompletion F) (intV E v) M : Set _)`. Rewrite using `[e]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlv_latS_mono (v : HeightOneSpectrum (𝓞 F)) {n : Type} [Fintype n] [DecidableEq n]
     {L M : Submodule (𝓞 E) (n → E)}
@@ -109,13 +107,13 @@ theorem rlv_latS_mono (v : HeightOneSpectrum (𝓞 F)) {n : Type} [Fintype n] [D
   rw [e]; exact h2
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨y, hy, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨γ *ᵥ y, ⟨y, hy, rfl⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ _`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb`. Establish `e : (γ.map (inclE (F` using `F) (v.adicCompletion F))) *ᵥ (a • b) = a • ((γ.map (inclE (F := F) (v.adicCompletion F))) *ᵥ b) := by`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, Finset.smul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show _ * ((a : E ⊗[F] v.adicCompletion F) * b j) = (a : E ⊗[F] v.adicCompletion F) * (_ * b j)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a hb`.
+A detailed English derivation is pending.
 -/
 theorem rlv_latS_mulLat {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (γ : Matrix (Fin n) (Fin n) E)
     (L : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E ⊗[F] v.adicCompletion F)
@@ -146,9 +144,9 @@ section LatS2
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Apply `rlv_latS_mono` to reduce the goal to its premises. Introduce `x hx`. Take `⟨a, haP, haQ, hax⟩` from `rlv_two P Q hP hQ hx`. Take `⟨r, hr, b, hb⟩` from `hN a haP haQ`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb, mul_smul]`. Conclude with `M.smul_mem b hax`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlv_locV (v : HeightOneSpectrum (𝓞 F)) {n : Type} [Fintype n] [DecidableEq n] (P Q : Ideal (𝓞 E)) [P.IsPrime] [Q.IsPrime]
     (hN : ∀ a : 𝓞 E, a ∉ P → a ∉ Q → ∃ r : 𝓞 F, r ∉ v.asIdeal ∧ ∃ b : 𝓞 E, algebraMap (𝓞 F) (𝓞 E) r = b * a)
@@ -164,7 +162,7 @@ theorem rlv_locV (v : HeightOneSpectrum (𝓞 F)) {n : Type} [Fintype n] [Decida
   exact M.smul_mem b hax
 
 /- English proof (translation)
-Rewrite using `[mulVec_mulVec, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one φ φ.map_zero φ.map_one, one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rlv_map_inv_mul {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n] (φ : A →+* B) (g : GL n A)
     (w : n → B) : ((g⁻¹ : GL n A) : Matrix n n A).map φ *ᵥ ((g : Matrix n n A).map φ *ᵥ w) = w := by
@@ -172,9 +170,9 @@ theorem rlv_map_inv_mul {A B : Type} [CommRing A] [CommRing B] {n : Type} [Finty
     Matrix.map_one φ φ.map_zero φ.map_one, one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mulLat, Submodule.mem_map, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]` and apply the resulting hypothesis.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce `hx`. Conclude with `⟨(g : Matrix (Fin n) (Fin n) E) *ᵥ x, ⟨x, hx, rfl⟩, by`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem rlv_mulLat_inv {n : ℕ} (g : GL (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) :
     mulLat ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) (mulLat (g : Matrix (Fin n) (Fin n) E) L) = L := by
@@ -188,11 +186,9 @@ theorem rlv_mulLat_inv {n : ℕ} (g : GL (Fin n) E) (L : Submodule (𝓞 E) (Fin
       rw [mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr.loc_fwd v y⁻¹ (fun u hu => (hy u).1 hu) x hx`. Introduce `hx`. Establish `h1 : ∀ u ∈ Formalism.L2.GlobalTheoryTheory.Comp.hat F Lb, (y : Matrix n n _) *ᵥ u ∈ Formalism.L2.GlobalTheoryTheory.Comp.hat F L`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Apply `(hy _).2` to reduce the goal to its premises. Rewrite using `[mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]`. Conclude with `hu`. Establish `h2` using `Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr.loc_fwd v y h1 _ hx`.
-
-Rewrite `h2` using `[mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, one_mulVec]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem rlv_yloc (v : HeightOneSpectrum (𝓞 F)) {n : Type} [Fintype n] [DecidableEq n] {L Lb : Submodule (𝓞 E) (n → E)}
     (y : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -213,13 +209,13 @@ theorem rlv_yloc (v : HeightOneSpectrum (𝓞 F)) {n : Type} [Fintype n] [Decida
     rwa [mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, one_mulVec] at h2
 
 /- English proof (translation)
-Introduce `x`. Establish `hG : ((bc (prV (E` using `E) v) (y1⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) g * y2) : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ x = ((bc (prV (E := E) v) y1⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ (((g : Matrix (Fin n) (Fin n) E).map (inclE (F := F) (v.adicCompletion F))) *ᵥ (((bc (p …`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, ← mulVec_mulVec, ← mulVec_mulVec]`. Both sides reduce to the same expression. Rewrite using `[hG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hY2 : ∀ w, w ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) Lb ↔ ((bc (prV (E := E) v) y2 : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ w ∈ latS (F := F) (v.adicCompletion F) (intV E v) L2 := by`. Introduce `w`. Rewrite using `[rlv_yloc v y2 hy2, mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(rlv_yloc v y1 hy1 _).1 (hle ?_)` and prove the remaining obligations. Conclude with `rlv_latS_mulLat v _ L2 _ ((hY2 x).1 hx)`. Introduce `hx`. Establish `h1` using `(rlv_yloc v y1 hy1 _).2 hx`. Establish `h2` using `rlv_latS_mulLat v ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) _ _ (hge h1)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[rlv_mulLat_inv, rlv_map_inv_mul]`. Conclude with `(hY2 x).2 h2`.
+A detailed English derivation is pending.
 -/
 theorem rlv_stab {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) {Lb L1 L2 : Submodule (𝓞 E) (Fin n → E)}
     (y1 y2 : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -262,9 +258,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n : ℕ} {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
 /- English proof (translation)
-Establish `hκ` using `(S.U_eq _).1 κ.2`. Establish `hκ'` using `(S.U_eq _).1 κ'.2`. Rewrite using `[S.U_eq]`. Use `⟨mul_mem (mul_mem (mul_mem η.2 hκ.1) η'.2) hκ'.1, fun v' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : v' = v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Conclude with `hv`. Rewrite using `[map_mul, map_mul, map_mul, hη v' h, hη' v' h, one_mul, mul_one]`. Conclude with `mul_mem (hκ.2 v') (hκ'.2 v')`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlv_mem_U (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
     (η η' : UPts σ J (FiniteAdeleRing (𝓞 F) F))
@@ -281,7 +277,7 @@ theorem rlv_mem_U (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 
     exact mul_mem (hκ.2 v') (hκ'.2 v')
 
 /- English proof (translation)
-Establish `e1 : η * κ = y⁻¹ * g * y'` using `by rw [mul_assoc y⁻¹, h1]; group`. Establish `e2 : η' * κ' = y'⁻¹ * g' * y''` using `by rw [mul_assoc y'⁻¹, h2]; group`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem rlv_comp_eq {G : Type} [Group G] (y y' y'' η κ η' κ' g g' : G)
     (h1 : g * y' = y * η * κ) (h2 : g' * y'' = y' * η' * κ') :
@@ -298,9 +294,9 @@ section Chain
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mulLat, Submodule.mem_map, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨g' *ᵥ y, ⟨y, hy, rfl⟩, by rw [mulVec_mulVec]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨z, hz, by rw [mulVec_mulVec]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem rlv_mulLat_mul {n : ℕ} (g g' : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) :
     mulLat (g * g') L = mulLat g (mulLat g' L) := by
@@ -313,9 +309,9 @@ theorem rlv_mulLat_mul {n : ℕ} (g g' : Matrix (Fin n) (Fin n) E) (L : Submodul
     exact ⟨z, hz, by rw [mulVec_mulVec]⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `(rlv_mem_locP _ _ _).1 hx`. Take `⟨m, hm, hme⟩` from `Submodule.mem_map.1 hsx`. Take `⟨t, ht, htm⟩` from `(rlv_mem_locP _ _ _).1 (h ((rlv_mem_locP _ _ _).2 ⟨1, P.ne_top_iff_one.1 (Ideal.IsPrime.ne_top inferInstance), by rw [one_smul]; exact hm⟩))`. Use `(rlv_mem_locP _ _ _).2 ⟨t * s, fun hts => (Ideal.IsPrime.mem_or_mem inferInstance hts).elim ht hs, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_map.2 ⟨t • m, htm, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply] at hme ⊢`. Rewrite using `[Matrix.mulVec_smul, hme, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rlv_locP_mulLat_le {n : ℕ} (P : Ideal (𝓞 E)) [P.IsPrime] (g : Matrix (Fin n) (Fin n) E)
     {M N : Submodule (𝓞 E) (Fin n → E)} (h : Formalism.HermitianLatticesTheory.localization₂ P M ≤ Formalism.HermitianLatticesTheory.localization₂ P N) :
@@ -331,7 +327,7 @@ theorem rlv_locP_mulLat_le {n : ℕ} (P : Ideal (𝓞 E)) [P.IsPrime] (g : Matri
   rw [Matrix.mulVec_smul, hme, mul_smul]
 
 /- English proof (translation)
-Rewrite using `[rlv_mulLat_mul]`. Conclude with `le_antisymm ((rlv_locP_mulLat_le P g h2.le).trans h1.le) (h1.ge.trans (rlv_locP_mulLat_le P g h2.ge))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlv_chainP {n : ℕ} (P : Ideal (𝓞 E)) [P.IsPrime] (g g' : Matrix (Fin n) (Fin n) E)
     {A B C : Submodule (𝓞 E) (Fin n → E)}
@@ -352,17 +348,15 @@ def rlvQ (A : AtTTied u) (v : (D.mem u).A.vT) : Ideal (𝓞 D.host.E) :=
 instance (A : AtTTied u) (v : (D.mem u).A.vT) : (rlvQ A v).IsPrime := Ideal.IsPrime.comap _
 
 /- English proof (translation)
-Take `⟨b, hb⟩ : ∃ b : 𝓞 D.host.E, b = RingOfIntegers.mapRingHom (sigD D : D.host.E →+* D.host.E) a` from `⟨_, rfl⟩`. Establish `hbE : (b : D.host.E) = sigD D (a : D.host.E)` using `by rw [hb]; rfl`. Establish `hσσ : ∀ x, sigD D (sigD D x) = x` using `fun x => by rw [forms_involution_eq_host_conj, forms_involution_eq_host_conj, host_conj_involutive]`. Establish `hfix : ((b : D.host.E) * (a : D.host.E)) ∈ (algebraMap D.host.F D.host.E).range`. Set `_` to `D.host.cmStar`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← D.sp.cm.fixed]`. Use `show sigD D ((b : D.host.E) * (a : D.host.E)) = (b : D.host.E) * (a : D.host.E)`. Rewrite using `[map_mul, hbE, hσσ, mul_comm]`. Take `⟨r0, hr0⟩` from `hfix`. Establish `hr0i : IsIntegral ℤ r0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsIntegral ℤ (algebraMap D.host.F D.host.E r0)`. Rewrite using `[hr0]`. Conclude with `RingOfIntegers.isIntegral_coe (b * a)`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ D.host.F D.host.E) (algebraMap D.host.F D.host.E).injective).1 h1`. Take `⟨r, hrr⟩ : ∃ r : 𝓞 D.host.F, (r : D.host.F) = r0` from `⟨⟨r0, hr0i⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r = b * a`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show algebraMap D.host.F D.host.E (r : D.host.F) = (b : D.host.E) * (a : D.host.E)`. Rewrite using `[hrr, hr0]`. Use `⟨r, ?_, b, hr⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `ha' : A.res v a ≠ 0` using `fun h => ha (RingHom.mem_ker.2 h)`. Establish `hb' : A.res v b ≠ 0`. Introduce `h`. Apply `hq` to reduce the goal to its premises. Use `show RingOfIntegers.mapRingHom (sigD D : D.host.E →+* D.host.E) a ∈ A.Pv v`.
-
-Rewrite using `[← hb]`. Conclude with `RingHom.mem_ker.2 h`. Rewrite using `[A.res_v v, hr, map_mul]`. Conclude with `mul_ne_zero hb' ha'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlv_norm (A : AtTTied u) (v : (D.mem u).A.vT) (a : 𝓞 D.host.E) (ha : a ∉ A.Pv v) (hq : a ∉ rlvQ A v) :
     ∃ r : 𝓞 D.host.F, r ∉ (A.eV v).1.asIdeal ∧ ∃ b : 𝓞 D.host.E, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r = b * a := by
@@ -400,7 +394,7 @@ theorem rlv_norm (A : AtTTied u) (v : (D.mem u).A.vT) (a : 𝓞 D.host.E) (ha : 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hN` using `rlv_norm Tf.atT v`. Conclude with `rlv_stab (Tf.atT.eV v).1 ((Tf.cls i hi).y c).1 ((Tf.cls i hi).y c2).1 ((Tf.cls i hi).y_lat c) ((Tf.cls i hi).y_lat c2) g (rlv_locV (Tf.atT.eV v).1 (Tf.atT.Pv v) (rlvQ Tf.atT v) hN hP.le hQ.le) (rlv_locV (Tf.atT.eV v).1 (Tf.atT.Pv v) (rlvQ Tf.atT v) hN hP.ge hQ.ge)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rlv_stabT (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c c2 : (D.mem u).C.cls i)
     (g : GL (Fin (D.R.N i)) D.host.E)
@@ -420,11 +414,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hκ` using `((Tf.cls i hi).lev.U_eq _).1 κ.2`. Establish `hκ'` using `((Tf.cls i hi).lev.U_eq _).1 κ'.2`. Establish `hU : η.1 * κ.1 * η'.1 * κ'.1 ∈ UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `mul_mem (mul_mem (mul_mem η.2 hκ.1) η'.2) hκ'.1`. Establish `heq` using `rlv_comp_eq ((Tf.cls i hi).y c).1 ((Tf.cls i hi).y c1).1 ((Tf.cls i hi).y c2).1 η.1 κ.1 η'.1 κ'.1 (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1) (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ'.1) hrel hrel'`. Rewrite `heq` using `[← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `rlv_mem_U (Tf.cls i hi).lev (Tf.atT.eV v).1 η η' hsup hsup' κ κ'` to reduce the goal to its premises. Rewrite using `[(Tf.cls i hi).lev.UlocAlt _ (Tf.atT.eV v).2]`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨Formalism.UG.P.afsplit_bc_mem _ _ _ _ hU, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hs` using `rlv_stabT Tf i hi v c c2 (γ.1 * γ'.1) hP hQ`. Rewrite `hs` using `[← heq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hs`. Rewrite using `[heq]`. Conclude with `hF`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlv_comp_mem (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c c1 c2 : (D.mem u).C.cls i)
     (γ γ' : UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi))
@@ -535,7 +529,7 @@ def RDnLocV (Tf : FormsTied D u) : Prop :=
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `i hi v c z hz γ η κ hsup hrel hl1 hl2 hfun`. Take `⟨e, he1, he2⟩` from `h i hi v c z hz γ η κ hsup hrel hl1 hl2 hfun`. Use `⟨e, he1, fun γ' η' κ' hsup' hrel' hl1' hfun' => ?_⟩` and prove the remaining obligations. Take `⟨hP, hQ, hF⟩` from `he2 γ' η' κ' hsup' hrel' hl1' hfun'`. Conclude with `rlv_comp_mem Tf i hi v _ _ _ γ γ' η η' κ κ' hsup hsup' hrel hrel' hP hQ hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rupLocM_of_V (Tf : FormsTied D u) (h : RUpLocV Tf) : RUpLocM Tf := by
   intro i hi v c z hz γ η κ hsup hrel hl1 hl2 hfun
@@ -547,7 +541,7 @@ theorem rupLocM_of_V (Tf : FormsTied D u) (h : RUpLocV Tf) : RUpLocM Tf := by
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'`. Take `⟨e, he1, he2⟩` from `h i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'`. Use `⟨e, he1, fun z hz γ η κ hsup hrel hl1 hl2 hfun => ?_⟩` and prove the remaining obligations. Take `⟨hP, hQ, hF⟩` from `he2 z hz γ η κ hsup hrel hl1 hl2 hfun`. Conclude with `rlv_comp_mem Tf i hi v _ _ _ γ' γ η' η κ' κ hsup' hsup hrel' hrel hP hQ hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rdnLocM_of_V (Tf : FormsTied D u) (h : RDnLocV Tf) : RDnLocM Tf := by
   intro i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'
@@ -559,7 +553,7 @@ theorem rdnLocM_of_V (Tf : FormsTied D u) (h : RDnLocV Tf) : RDnLocM Tf := by
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `rlv_chainP _ γ.1.1 γ'.1.1 hl1 hl1'`.
+A detailed English derivation is pending.
 -/
 theorem rlv_upDn_dualP (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c c1 c2 : (D.mem u).C.cls i)
     (γ γ' : UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi))
@@ -571,7 +565,7 @@ theorem rlv_upDn_dualP (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (v : (D
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `rlv_chainP _ γ'.1.1 γ.1.1 hl1' hl1`.
+A detailed English derivation is pending.
 -/
 theorem rlv_dnUp_latP (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c c2 c3 : (D.mem u).C.cls i)
     (γ' γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi))

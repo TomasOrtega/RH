@@ -13,23 +13,21 @@ def Fits {D : D7} (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (k : (T.U j σ
     Xx.Λ = Submodule.span (𝓞 D.host.E) {v | ∃ a ∈ D.host.AA, ∃ u ∈ Xx.L', v = a • u}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(T.dict j σ 1).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_nonempty {D : D7} (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) : Nonempty (T.U j σ).Comp :=
   ⟨(T.dict j σ 1).1⟩
 
 /- English proof (translation)
-Introduce `u hu`. Establish `key : ∀ b ∈ A⁻¹, ∀ x ∈ Submodule.span (𝓞 E) {v | ∃ a ∈ A, ∃ u ∈ L₂, v = a • u}, b • x ∈ L₂`. Introduce `b hb x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, w, hw, rfl⟩` from `hv`. Establish `: b * a ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)`. Rewrite using `[← inv_mul_cancel₀ hA]`. Conclude with `FractionalIdeal.mul_mem_mul hb ha`. Take `⟨z, hz⟩` from `(FractionalIdeal.mem_one_iff _).1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, ← hz, algebraMap_smul]`. Conclude with `L₂.smul_mem z hw`. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c v _ hv => rw [smul_comm]`. Conclude with `L₂.smul_mem c hv`. Establish `h1 : (1 : E) ∈ A⁻¹ * A`. Rewrite using `[inv_mul_cancel₀ hA]`. Conclude with `FractionalIdeal.one_mem_one _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ c ∈ A⁻¹ * A, c • u ∈ L₂`. Introduce `c hc`. Use `FractionalIdeal.mul_induction_on hc (C := fun c => c • u ∈ L₂) ?_ ?_` and prove the remaining obligations. Introduce `b hb a ha`. Rewrite using `[mul_smul]`.
-
-Conclude with `key b hb _ (h (Submodule.subset_span ⟨a, ha, u, hu, rfl⟩))`. Introduce `x y hx hy`. Rewrite using `[add_smul]`. Conclude with `add_mem hx hy`. Simplify using `using this 1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem le_of_span_le {E : Type} [Field E] [NumberField E] {r : ℕ}
     (A : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hA : A ≠ 0) (L₁ L₂ : Submodule (𝓞 E) (Fin r → E))
@@ -62,7 +60,7 @@ theorem le_of_span_le {E : Type} [Field E] [NumberField E] {r : ℕ}
   simpa using this 1 h1
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `GlobalTheory.LatticeData.absNorm_ccK_mem D`. Rewrite `h1` using `[h, FractionalIdeal.mem_zero_iff]`. Conclude with `D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 (by exact_mod_cast h1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   intro h
@@ -71,11 +69,11 @@ theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   exact D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 (by exact_mod_cast h1))
 
 /- English proof (translation)
-Establish `e : X.toData = Y.toData` using `hX.1.trans hY.1.symm`. Establish `eΛ : X.Λ = Y.Λ` using `congrArg Data.Λ e`. Use `⟨le_antisymm (le_of_span_le _ (AA_ne_zero D) _ _ ?_) (le_of_span_le _ (AA_ne_zero D) _ _ ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[← hX.2.2, ← hY.2.2, eΛ]`. Rewrite using `[← hX.2.2, ← hY.2.2, eΛ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty X.Ψ := by`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Distinguish the cases in `e : τ ∈ X.Ψ`. Conclude with `⟨⟨τ, e⟩⟩`. Conclude with `⟨⟨_, not_not.1 (fun e' => e ((X.cmType τ).2 e'))⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `h1` using `X.ξ0_abs τ`. Establish `h2` using `Y.ξ0_abs ⟨τ.1, (congrArg Data.Ψ e : X.Ψ = Y.Ψ) ▸ τ.2⟩`. Rewrite `h1` using `[show X.ξ0 = Y.ξ0 from congrArg Data.ξ0 e]`. Simplify using `only at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lattice_and_constant_unique {D : D7} (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (k : (T.U j σ).Comp)
     (X Y : DataX D.host.E D.R.r) (hX : Fits T j σ k X) (hY : Fits T j σ k Y) : X.L' = Y.L' ∧ X.k0 = Y.k0 := by
@@ -96,9 +94,9 @@ theorem lattice_and_constant_unique {D : D7} (T : Core D) (j : ℕ) (σ : T.Q.c.
     linarith
 
 /- English proof (translation)
-Use `⟨{ X with NA := (B + 1) * X.NA NC := (B + 1) * X.NC NA_pos := Nat.mul_pos (by omega) X.NA_pos NC_pos := Nat.mul_pos (by omega) X.NC_pos NA_sub := fun x hx => ?_ NC_sub := fun x hx => ?_ }, hX, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (X.NA_sub x hx) _`. Rewrite using `[Nat.cast_mul, mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (X.NC_sub x hx) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `X.NA_pos show B < (B + 1) * X.NA` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `X.NC_pos show B < (B + 1) * X.NC` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem indices_unbounded {D : D7} (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (k : (T.U j σ).Comp)
     (X : DataX D.host.E D.R.r) (hX : Fits T j σ k X) (B : ℕ) :
@@ -122,13 +120,11 @@ theorem indices_unbounded {D : D7} (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* �
     nlinarith
 
 /- English proof (translation)
-Take `⟨Xx, h1, h2, h3, h4, -⟩` from `GlobalTheory.LatticeData.exists_dataX_of_hasPrinc D T h j hj σ hσ (GlobalTheory.PrincCore.hasPrinc_core D T h j hj σ hσ) k`. Use `⟨{ Xx with NA := Ideal.absNorm D.host.𝔟 NC := Ideal.absNorm D.host.ccK NA_pos := Nat.pos_of_ne_zero fun e => GlobalTheory.LatticeData.halfDifferent_ne_bot D (Ideal.absNorm_eq_zero_iff.1 e) NC_pos := Nat.pos_of_ne_zero fun e => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 e) NA_ …` and prove the remaining obligations. Rewrite `hx` using `[h3]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, u, hu, rfl⟩` from `hv`. Take `⟨z, hz⟩` from `GlobalTheory.LatticeData.absNorm_mul_mem_one D ha`. Rewrite using `[smul_smul, ← hz, algebraMap_smul]`. Conclude with `Xx.L'.smul_mem z hu`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`. Consider the case `smul c v _ hv => rw [smul_comm]`. Conclude with `Xx.L'.smul_mem c hv`. Rewrite using `[h3]`.
-
-Conclude with `Submodule.subset_span ⟨_, GlobalTheory.LatticeData.absNorm_ccK_mem D, x, hx, rfl⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holds_by_value (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ)
     (hσ : GoodEmb T.Q.c σ) (k : (T.U j σ).Comp) :
@@ -157,15 +153,15 @@ theorem holds_by_value (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (hj : In
     exact Submodule.subset_span ⟨_, GlobalTheory.LatticeData.absNorm_ccK_mem D, x, hx, rfl⟩
 
 /- English proof (translation)
-Establish `hfr` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.finrank_E D`. Establish `hsq` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.absNorm_bb_sq_le D`. Establish `hN : 0 < Ideal.absNorm D.host.𝔟` using `Nat.pos_of_ne_zero fun e => GlobalTheory.LatticeData.halfDifferent_ne_bot D (Ideal.absNorm_eq_zero_iff.1 e)`. Establish `hf0 : 0 < D.R.f`. Establish `: 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hfd : fdeg D.host.E = D.R.f` using `by unfold fdeg; omega`. Establish `hd : 0 < dE D.host.E`. Unfold `dE; exact abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`. Establish `hfR : (0 : ℝ) < D.R.f` using `by exact_mod_cast hf0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e : (fdeg D.host.E : ℝ) * Real.log (ReciprocityTheory.ChartRestriction.G.FD.rdE D.host.E) = Real.log (dE D.host.E) / 2`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.rdE`. Rewrite using `[Real.log_rpow hd, hfd, hfr]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Establish `hle : ((Ideal.absNorm D.host.𝔟 : ℕ) : ℝ) ^ 2 ≤ dE D.host.E`. Establish `: ((Ideal.absNorm D.host.𝔟 : ℕ) : ℝ) ^ 2 ≤ ((discr D.host.E).natAbs : ℝ)` using `by exact_mod_cast hsq`. Rewrite `this` using `[Nat.cast_natAbs, Int.cast_abs]`. Conclude with `this`. Establish `hNR : (0 : ℝ) < (Ideal.absNorm D.host.𝔟 : ℕ)` using `by exact_mod_cast hN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_log (by positivity) hle` as an intermediate fact. Rewrite `this` using `[Real.log_pow]`. Rewrite using `[e]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_absNorm_le (D : D7) :
     Real.log (Ideal.absNorm D.host.𝔟 : ℕ) ≤ (fdeg D.host.E : ℝ) * Real.log (ReciprocityTheory.ChartRestriction.G.FD.rdE D.host.E) := by
@@ -197,7 +193,7 @@ theorem log_absNorm_le (D : D7) :
   linarith
 
 /- English proof (translation)
-Take `⟨X, hF, hk, hA, hC⟩` from `holds_by_value D T h j hj σ hσ k`. Conclude with `⟨X, hF, hk, by rw [hA]; exact log_absNorm_le D, hC⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem holds_without_rows (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ)
     (hσ : GoodEmb T.Q.c σ) (k : (T.U j σ).Comp) :
@@ -208,9 +204,9 @@ theorem holds_without_rows (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (hj 
   exact ⟨X, hF, hk, by rw [hA]; exact log_absNorm_le D, hC⟩
 
 /- English proof (translation)
-Introduce `h _ hj large₂ w hrows _ σ hσ k`. Take `⟨X, ⟨h1, h2, h3⟩, -, hA, hC⟩` from `holds_by_value D T.toCore h j hj σ hσ k`. Use `⟨X, h1, h2, ?_, ?_, h3⟩` and prove the remaining obligations. Rewrite using `[hA]`. Conclude with `log_absNorm_le D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC]`. Conclude with `hrows.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange (D : D7) (T : Top D) (j : ℕ) : Formalism.L2.Pj.QAt.DataXOfModelSt T j := by
   intro h _ hj large₂ w hrows _ σ hσ k
@@ -220,7 +216,7 @@ theorem intersectionNumber_baseChange (D : D7) (T : Top D) (j : ℕ) : Formalism
   · rw [hC]; exact hrows.2.2.2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Real.log_le_iff_le_exp (by exact_mod_cast X.NA_pos)).1 hA, (Real.log_le_iff_le_exp (by exact_mod_cast X.NC_pos)).1 hC⟩`.
+Supply the required witnesses or components.
 -/
 theorem indices_bounded {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : DataX E r) (a b : ℝ)
     (hA : Real.log X.NA ≤ a) (hC : Real.log X.NC ≤ b) : (X.NA : ℝ) ≤ Real.exp a ∧ (X.NC : ℝ) ≤ Real.exp b :=

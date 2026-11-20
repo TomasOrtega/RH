@@ -12,21 +12,21 @@ noncomputable section
 def en {n : ℕ} (v : Fin n → ℂ) : ℝ := ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))‖
 
 /- English proof (translation)
-Conclude with `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 lemma en_nonneg {n : ℕ} (v : Fin n → ℂ) : 0 ≤ en v := by
   exact norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun j _ => sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 private lemma nsq_nonneg_unipotent_moves {n : ℕ} (v : Fin n → ℂ) : 0 ≤ nsq v :=
   Finset.sum_nonneg fun j _ => sq_nonneg _
 
 /- English proof (translation)
-Establish `e : en v = Real.sqrt (nsq v)`. Unfold `en nsq`. Use `first`. Consider the case `(rw [EuclideanSpace.norm_eq]; rfl)`. Consider the case `(rw [EuclideanSpace.norm_eq]; simp)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [EuclideanSpace.norm_eq]`. Rewrite using `[e, Real.sq_sqrt (nsq_nonneg_unipotent_moves v)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma en_sq {n : ℕ} (v : Fin n → ℂ) : en v ^ 2 = nsq v := by
   have e : en v = Real.sqrt (nsq v) := by
@@ -38,7 +38,7 @@ lemma en_sq {n : ℕ} (v : Fin n → ℂ) : en v ^ 2 = nsq v := by
   rw [e, Real.sq_sqrt (nsq_nonneg_unipotent_moves v)]
 
 /- English proof (translation)
-Unfold `en nsq`. Use `first`. Consider the case `(rw [EuclideanSpace.norm_eq]; rfl)`. Consider the case `(rw [EuclideanSpace.norm_eq]; simp)`. Consider the case `simp [EuclideanSpace.norm_eq]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma en_eq_sqrt {n : ℕ} (v : Fin n → ℂ) : en v = Real.sqrt (nsq v) := by
   unfold en nsq
@@ -48,7 +48,7 @@ lemma en_eq_sqrt {n : ℕ} (v : Fin n → ℂ) : en v = Real.sqrt (nsq v) := by
     | simp [EuclideanSpace.norm_eq]
 
 /- English proof (translation)
-Unfold `en`. Use `first`. Consider the case `(rw [WithLp.toLp_add]; exact norm_add_le _ _)`. Consider the case `exact norm_add_le _ _`. Consider the case `simpa using norm_add_le (WithLp.toLp 2 u : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma en_add_le {n : ℕ} (u v : Fin n → ℂ) : en (u + v) ≤ en u + en v := by
   unfold en
@@ -58,7 +58,7 @@ lemma en_add_le {n : ℕ} (u v : Fin n → ℂ) : en (u + v) ≤ en u + en v := 
     | simpa using norm_add_le (WithLp.toLp 2 u : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)
 
 /- English proof (translation)
-Unfold `en`. Use `first`. Consider the case `(rw [WithLp.toLp_sub]; exact norm_sub_le _ _)`. Consider the case `exact norm_sub_le _ _`. Consider the case `simpa using norm_sub_le (WithLp.toLp 2 u : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma en_sub_le {n : ℕ} (u v : Fin n → ℂ) : en (u - v) ≤ en u + en v := by
   unfold en
@@ -68,7 +68,7 @@ lemma en_sub_le {n : ℕ} (u v : Fin n → ℂ) : en (u - v) ≤ en u + en v := 
     | simpa using norm_sub_le (WithLp.toLp 2 u : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)
 
 /- English proof (translation)
-Rewrite `h` using `[en_eq_sqrt, Real.sqrt_eq_zero (nsq_nonneg_unipotent_moves d)]`. Establish `hs : ∀ j ∈ Finset.univ, ‖d j‖ ^ 2 = 0` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg ‖d j‖)).mp h`. Use function extensionality and compare the values at `j`. Use `hs j (Finset.mem_univ j)` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma eq_zero_of_en {n : ℕ} (d : Fin n → ℂ) (h : en d = 0) : d = 0 := by
   rw [en_eq_sqrt, Real.sqrt_eq_zero (nsq_nonneg_unipotent_moves d)] at h
@@ -79,13 +79,13 @@ lemma eq_zero_of_en {n : ℕ} (d : Fin n → ℂ) (h : en d = 0) : d = 0 := by
   simpa using this
 
 /- English proof (translation)
-Conclude with `lt_of_le_of_ne (en_nonneg v) (fun h => hv (eq_zero_of_en v h.symm))`.
+A detailed English derivation is pending.
 -/
 lemma en_pos {n : ℕ} {v : Fin n → ℂ} (hv : v ≠ 0) : 0 < en v := by
   exact lt_of_le_of_ne (en_nonneg v) (fun h => hv (eq_zero_of_en v h.symm))
 
 /- English proof (translation)
-Rewrite using `[en_eq_sqrt, en_eq_sqrt]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma en_le_of_nsq {m n : ℕ} (u : Fin m → ℂ) (v : Fin n → ℂ) {c : ℝ} (hc : 0 ≤ c)
     (h : nsq u ≤ c ^ 2 * nsq v) : en u ≤ c * en v := by
@@ -94,11 +94,11 @@ lemma en_le_of_nsq {m n : ℕ} (u : Fin m → ℂ) (v : Fin n → ℂ) {c : ℝ}
     _ = c * Real.sqrt (nsq v) := by rw [Real.sqrt_mul (sq_nonneg c), Real.sqrt_sq hc]
 
 /- English proof (translation)
-Unfold `Data.opN`. Apply `Real.sSup_le _ hc` to reduce the goal to its premises. Introduce and unpack `t ⟨v, hv, rfl⟩`. Establish `h1` using `h v`. Rewrite `h1` using `[en_eq_sqrt, en_eq_sqrt]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < Real.sqrt (nsq v)`. Use `en_pos hv` as an intermediate fact. Rewrite `this` using `[en_eq_sqrt]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `Real.sqrt (nsq (A *ᵥ v)) / Real.sqrt (nsq v) ≤ c`. Rewrite using `[div_le_iff₀ hpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 lemma opN_le {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) {c : ℝ} (hc : 0 ≤ c)
     (h : ∀ v, en (A *ᵥ v) ≤ c * en v) : Data.opN A ≤ c := by
@@ -115,7 +115,7 @@ lemma opN_le {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) {c : ℝ} (hc : 0 ≤ 
   exact h1
 
 /- English proof (translation)
-Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im]`. Use `first`. Consider the case `(rw [Complex.sq_norm, Complex.normSq_apply]; ring)`. Consider the case `(rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply]; ring)`. Consider the case `(simp [Complex.sq_abs, Complex.normSq_apply]; ring)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma re_conj_mul (w : ℂ) (s : ℝ) : (conj w * (w * (s : ℂ))).re = s * ‖w‖ ^ 2 := by
   simp only [Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im,
@@ -130,7 +130,7 @@ section Blocks
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `h : X.p0 + (r - X.p0) = r` using `by have := X.p0_le; omega`. Establish `e : ∑ j, f j = ∑ i : Fin (X.p0 + (r - X.p0)), f (Fin.cast h i)` using `(Fintype.sum_equiv (finCongr h) (fun i => f (Fin.cast h i)) f (fun _ => rfl)).symm`. Rewrite using `[e, Fin.sum_univ_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma sum_splitR (f : Fin r → ℝ) :
     ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) + ∑ m : Fin (r - X.p0), f (nI X m) := by
@@ -153,14 +153,14 @@ def blkB (K : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin (r - X.p0)) (Fin X.p0) �
   Matrix.of fun m b => K (nI X m) (Fin.castLE X.p0_le b)
 
 /- English proof (translation)
-Unfold `nsq`. Conclude with `sum_splitR X (fun j => ‖w j‖ ^ 2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma nsq_split (w : Fin r → ℂ) : nsq w = nsq (top X w) + nsq (bot X w) := by
   unfold nsq
   exact sum_splitR X (fun j => ‖w j‖ ^ 2)
 
 /- English proof (translation)
-Rewrite using `[en_eq_sqrt, en_eq_sqrt]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `h0` using `nsq_nonneg_unipotent_moves (bot X w)`. Rewrite using `[nsq_split X w]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma en_top_le (w : Fin r → ℂ) : en (top X w) ≤ en w := by
   rw [en_eq_sqrt, en_eq_sqrt]
@@ -170,7 +170,7 @@ lemma en_top_le (w : Fin r → ℂ) : en (top X w) ≤ en w := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[en_eq_sqrt, en_eq_sqrt]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `h0` using `nsq_nonneg_unipotent_moves (top X w)`. Rewrite using `[nsq_split X w]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma en_bot_le (w : Fin r → ℂ) : en (bot X w) ≤ en w := by
   rw [en_eq_sqrt, en_eq_sqrt]
@@ -180,13 +180,13 @@ lemma en_bot_le (w : Fin r → ℂ) : en (bot X w) ≤ en w := by
   linarith
 
 /- English proof (translation)
-Establish `h : X.p0 + (r - X.p0) = r` using `by have := X.p0_le; omega`. Establish `e : ∑ j, f j * ext X d j = ∑ i : Fin (X.p0 + (r - X.p0)), f (Fin.cast h i) * ext X d (Fin.cast h i)` using `(Fintype.sum_equiv (finCongr h) (fun i => f (Fin.cast h i) * ext X d (Fin.cast h i)) (fun j => f j * ext X d j) (fun _ => rfl)).symm`. Rewrite using `[e, Fin.sum_univ_add]`. Establish `h1 : ∀ a : Fin X.p0, ext X d (Fin.cast h (Fin.castAdd (r - X.p0) a)) = d a`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `ext`. Use `split_ifs with ha`. Both sides reduce to the same expression. Conclude with `absurd a.isLt ha`. Establish `h2 : ∀ m : Fin (r - X.p0), ext X d (Fin.cast h (Fin.natAdd X.p0 m)) = 0`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `m`. Unfold `ext`. Use `split_ifs with hm`. Establish `e2 : ((Fin.cast h (Fin.natAdd X.p0 m) : Fin r) : ℕ) = X.p0 + (m : ℕ)` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [h1, h2, mul_zero, Finset.sum_const_zero, add_zero]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma sum_mul_ext (f : Fin r → ℂ) (d : Fin X.p0 → ℂ) :
     ∑ j, f j * ext X d j = ∑ b, f (Fin.castLE X.p0_le b) * d b := by
@@ -213,7 +213,7 @@ lemma sum_mul_ext (f : Fin r → ℂ) (d : Fin X.p0 → ℂ) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Conclude with `sum_mul_ext X (fun j => K (Fin.castLE X.p0_le a) j) d`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma top_mulVec_ext (K : Matrix (Fin r) (Fin r) ℂ) (d : Fin X.p0 → ℂ) :
     top X (K *ᵥ ext X d) = blkA X K *ᵥ d := by
@@ -221,7 +221,7 @@ lemma top_mulVec_ext (K : Matrix (Fin r) (Fin r) ℂ) (d : Fin X.p0 → ℂ) :
   exact sum_mul_ext X (fun j => K (Fin.castLE X.p0_le a) j) d
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Conclude with `sum_mul_ext X (fun j => K (nI X m) j) d`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma bot_mulVec_ext (K : Matrix (Fin r) (Fin r) ℂ) (d : Fin X.p0 → ℂ) :
     bot X (K *ᵥ ext X d) = blkB X K *ᵥ d := by
@@ -229,7 +229,7 @@ lemma bot_mulVec_ext (K : Matrix (Fin r) (Fin r) ℂ) (d : Fin X.p0 → ℂ) :
   exact sum_mul_ext X (fun j => K (nI X m) j) d
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Simplify using `only [blkA, Data.lowBlock, Matrix.of_apply, Matrix.one_apply, Fin.ext_iff, Fin.coe_castLE]`. Apply the tactic sequence `split_ifs <;> first | omega | rfl | simp`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma blkA_low (Z : X.Coord) (τ : X.Ψ) : blkA X (X.lowBlock Z τ) = 1 := by
   ext a b
@@ -239,9 +239,9 @@ lemma blkA_low (Z : X.Coord) (τ : X.Ψ) : blkA X (X.lowBlock Z τ) = 1 := by
   split_ifs <;> first | omega | rfl | simp
 
 /- English proof (translation)
-Use extensionality with `m b`. Establish `hb` using `b.isLt`. Establish `hne : X.p0 + (m : ℕ) ≠ (b : ℕ)` using `by omega`. Use `first`. Consider the case `simp [blkB, Data.lowBlock, nI, Fin.ext_iff, hne, hb]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [blkB, Data.lowBlock, Matrix.of_apply, Fin.ext_iff, Fin.coe_castLE, nI] split_ifs <;> first | (simp_all; done) | omega | (congr 1 <;> ext <;> simp))`.
+A detailed English derivation is pending.
 -/
 lemma blkB_low (Z : X.Coord) (τ : X.Ψ) : blkB X (X.lowBlock Z τ) = Matrix.of (Z τ) := by
   ext m b
@@ -259,7 +259,7 @@ section Frames
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Distinguish the cases in `h : (i : ℕ) < X.p0`. Conclude with `Or.inl ⟨⟨i, h⟩, Fin.ext rfl⟩`. Use `Or.inr ⟨⟨(i : ℕ) - X.p0, by have := i.isLt; omega⟩, Fin.ext ?_⟩ show (i : ℕ) = X.p0 + ((i : ℕ) - X.p0)` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 -/
 lemma fin_split (i : Fin r) :
     (∃ a : Fin X.p0, i = Fin.castLE X.p0_le a) ∨ ∃ m : Fin (r - X.p0), i = nI X m := by
@@ -270,7 +270,7 @@ lemma fin_split (i : Fin r) :
     omega
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(funext k; simp [col, Matrix.mul_apply, Matrix.mulVec, dotProduct])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma col_mul (P Q : Matrix (Fin r) (Fin r) ℂ) (j : Fin r) : col (P * Q) j = P *ᵥ col Q j := by
   first
@@ -278,13 +278,13 @@ lemma col_mul (P Q : Matrix (Fin r) (Fin r) ℂ) (j : Fin r) : col (P * Q) j = P
     | (funext k; simp [col, Matrix.mul_apply, Matrix.mulVec, dotProduct])
 
 /- English proof (translation)
-Establish `key : ∀ b, w b = ∑ a, A⁻¹ a b • u a`. Introduce `b`. Establish `hinv : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hA`. Establish `hc : ∀ c, ∑ a, A⁻¹ a b * A c a = (1 : Matrix (Fin p) (Fin p) ℂ) c b`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hinv, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Repeatedly rewrite using `[h, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, hc, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[h a]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[key b]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma span_cols_eq {p : ℕ} (u w : Fin p → Fin r → ℂ) (A : Matrix (Fin p) (Fin p) ℂ)
     (hA : IsUnit A.det) (h : ∀ a, u a = ∑ b, A b a • w b) :
@@ -311,7 +311,7 @@ lemma span_cols_eq {p : ℕ} (u w : Fin p → Fin r → ℂ) (A : Matrix (Fin p)
     exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private lemma sum_four_comm_unipotent_moves {M : Type*} [AddCommMonoid M] {n : ℕ} (F : Fin n → Fin n → Fin n → Fin n → M) :
     ∑ a, ∑ b, ∑ j, ∑ k, F a b j k = ∑ j, ∑ k, ∑ a, ∑ b, F a b j k := by
@@ -324,11 +324,11 @@ private lemma sum_four_comm_unipotent_moves {M : Type*} [AddCommMonoid M] {n : �
         Finset.sum_congr rfl fun j _ => Finset.sum_comm
 
 /- English proof (translation)
-Establish `e1 : ∀ a b, (M *ᵥ c) a * τ (G a b) * conj ((M *ᵥ d) b) = ∑ j, ∑ k, M a j * c j * τ (G a b) * (conj (M b k) * conj (d k))`. Introduce `a b`. Rewrite using `[show (M *ᵥ c) a = ∑ j, M a j * c j from rfl, show (M *ᵥ d) b = ∑ k, M b k * d k from rfl, map_sum, Finset.sum_mul, Finset.sum_mul_sum]`. Simplify using `only [map_mul]`. Establish `e2 : ∀ j k, c j * gram τ G M j k * conj (d k) = ∑ a, ∑ b, c j * (M a j * τ (G a b) * conj (M b k)) * conj (d k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j k`. Rewrite using `[show gram τ G M j k = ∑ a, ∑ b, M a j * τ (G a b) * conj (M b k) from rfl, Finset.mul_sum, Finset.sum_mul]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Unfold `hermC`. Simplify using `only [e1, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_four_comm_unipotent_moves]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hermC_mulVec_mulVec_eq_sum_gram' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) (c d : Fin r → ℂ) :
@@ -352,7 +352,7 @@ private lemma hermC_mulVec_mulVec_eq_sum_gram' (τ : E →+* ℂ) (G : Matrix (F
     Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `first`. Consider the case `simp [col, Matrix.mulVec, dotProduct, Pi.single_apply]`. Consider the case `simp [col, Matrix.mulVec_single_one]`. Consider the case `(rw [Matrix.mulVec_single_one]; rfl)`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma col_eq_mulVec_single (M : Matrix (Fin r) (Fin r) ℂ) (j : Fin r) :
     col M j = M *ᵥ Pi.single j 1 := by
@@ -363,7 +363,7 @@ private lemma col_eq_mulVec_single (M : Matrix (Fin r) (Fin r) ℂ) (j : Fin r) 
     | (rw [Matrix.mulVec_single_one]; rfl)
 
 /- English proof (translation)
-Rewrite using `[hermC_mulVec_mulVec_eq_sum_gram', ho τ]`. Use `first`. Consider the case `simp only [Matrix.diagonal_apply, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Consider the case `simp [Matrix.diagonal_apply]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma hermC_mat_mulVec_eq_sum_sgn_of_isOrtho {x : Frame X.Ψ r} (ho : X.IsOrtho x) (τ : X.Ψ) (c d : Fin r → ℂ) :
     hermC τ.1 X.Gm (mat x τ *ᵥ c) (mat x τ *ᵥ d) =
@@ -375,19 +375,19 @@ private lemma hermC_mat_mulVec_eq_sum_sgn_of_isOrtho {x : Frame X.Ψ r} (ho : X.
     | simp [Matrix.diagonal_apply]
 
 /- English proof (translation)
-Establish `hgp : X.gramPos x τ = 1`. Use extensionality with `a b`. Simplify using `[Data.gramPos, ho τ, Matrix.diagonal_apply, Matrix.one_apply, sgn, Fin.ext_iff]`. Establish `hcol : ∀ j, hermC τ.1 X.Gm (mat x τ *ᵥ c) (col (mat x τ) j) = c j * ((sgn X.p0 j : ℝ) : ℂ)`. Introduce `j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[col_eq_mulVec_single, hermC_mat_mulVec_eq_sum_sgn_of_isOrtho X ho]`. Simplify using `[Pi.single_apply]`. Establish `hpos : X.posPart x τ (mat x τ *ᵥ c) = ∑ a : Fin X.p0, ‖c (Fin.castLE X.p0_le a)‖ ^ 2`. Unfold `Data.posPart`. Rewrite using `[hgp, inv_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hcol, Matrix.one_apply, mul_ite, ite_mul, mul_one, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hs : ((sgn X.p0 (Fin.castLE X.p0_le a : ℕ) : ℝ) : ℂ) = 1` using `by simp [sgn]`. Rewrite using `[hs, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show c (Fin.castLE X.p0_le a) * conj (c (Fin.castLE X.p0_le a)) = conj (c (Fin.castLE X.p0_le a)) * (c (Fin.castLE X.p0_le a) * ((1 : ℝ) : ℂ)) by`. Simplify using `[mul_comm], re_conj_mul, one_mul]`. Establish `hh : (hermC τ.1 X.Gm (mat x τ *ᵥ c) (mat x τ *ᵥ c)).re = ∑ j : Fin r, sgn X.p0 j * ‖c j‖ ^ 2`. Rewrite using `[hermC_mat_mulVec_eq_sum_sgn_of_isOrtho X ho, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show c j * ((sgn X.p0 j : ℝ) : ℂ) * conj (c j) = conj (c j) * (c j * ((sgn X.p0 j : ℝ) : ℂ)) by ring, re_conj_mul]`. Unfold `Data.maj`. Rewrite using `[hpos, hh, sum_splitR X (fun j => sgn X.p0 j * ‖c j‖ ^ 2)]`. Unfold `nsq`. Rewrite using `[sum_splitR X (fun j => ‖c j‖ ^ 2)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ a : Fin X.p0, sgn X.p0 (Fin.castLE X.p0_le a : ℕ) = 1` using `fun a => by simp [sgn]`. Establish `h2 : ∀ m : Fin (r - X.p0), sgn X.p0 (nI X m : ℕ) = -1` using `fun m => by`. Unfold `sgn`. Rewrite using `[if_neg]`. Use `show ¬ (X.p0 + (m : ℕ) < X.p0)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [h1, h2, one_mul, neg_one_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma maj_ortho {x : Frame X.Ψ r} (ho : X.IsOrtho x) (τ : X.Ψ) (c : Fin r → ℂ) :
     X.maj x τ (mat x τ *ᵥ c) = nsq c := by
@@ -431,9 +431,9 @@ lemma maj_ortho {x : Frame X.Ψ r} (ho : X.IsOrtho x) (τ : X.Ψ) (c : Fin r →
   ring
 
 /- English proof (translation)
-Unfold `nsq`. Rewrite using `[Finset.sum_mul]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Establish `h1 : ‖(W *ᵥ v) i‖ ≤ ∑ j, ‖W i j‖ * ‖v j‖`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => ‖W i j‖) (fun j => ‖v j‖)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private lemma nsq_mulVec_le_sum_norm_sq_mul_nsq {m n : ℕ} (W : Matrix (Fin m) (Fin n) ℂ) (v : Fin n → ℂ) :
     nsq (W *ᵥ v) ≤ (∑ i, ∑ j, ‖W i j‖ ^ 2) * nsq v := by
@@ -450,15 +450,13 @@ private lemma nsq_mulVec_le_sum_norm_sq_mul_nsq {m n : ℕ} (W : Matrix (Fin m) 
     _ ≤ _ := h2
 
 /- English proof (translation)
-Distinguish the cases in `hv : v = 0`. Substitute `hv` using the available equality. Simplify using `[en_eq_sqrt, nsq, Matrix.mulVec_zero]`. Establish `hpos` using `en_pos hv`. Establish `hF : 0 ≤ ∑ i, ∑ j, ‖W i j‖ ^ 2` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ u, en (W *ᵥ u) ≤ Real.sqrt (∑ i, ∑ j, ‖W i j‖ ^ 2) * en u` using `fun u => en_le_of_nsq _ _ (Real.sqrt_nonneg _) (by rw [Real.sq_sqrt hF]; exact nsq_mulVec_le_sum_norm_sq_mul_nsq W u)`. Establish `hmem : en (W *ᵥ v) / en v ∈ {t | ∃ v : Fin n → ℂ, v ≠ 0 ∧ t = Real.sqrt (∑ i, ‖Matrix.mulVec W v i‖ ^ 2) / Real.sqrt (∑ j, ‖v j‖ ^ 2)}` using `⟨v, hv, by rw [en_eq_sqrt, en_eq_sqrt]; rfl⟩`. Establish `hbdd : BddAbove {t | ∃ v : Fin n → ℂ, v ≠ 0 ∧ t = Real.sqrt (∑ i, ‖Matrix.mulVec W v i‖ ^ 2) / Real.sqrt (∑ j, ‖v j‖ ^ 2)}`. Use `⟨Real.sqrt (∑ i, ∑ j, ‖W i j‖ ^ 2), ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨u, hu, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `hC u`. Establish `hup` using `en_pos hu`. Rewrite `h1` using `[en_eq_sqrt, en_eq_sqrt]`. Rewrite `hup` using `[en_eq_sqrt]`. Express the relevant statement in the definitionally equal form `Real.sqrt (nsq (W *ᵥ u)) / Real.sqrt (nsq u) ≤ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[div_le_iff₀ hup]`. Conclude with `h1`. Establish `h2` using `le_csSup hbdd hmem`. Rewrite `h2` using `[div_le_iff₀ hpos]`. Unfold `Data.opN`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma en_mulVec_le_opN_mul_en {m n : ℕ} (W : Matrix (Fin m) (Fin n) ℂ) (v : Fin n → ℂ) :
     en (W *ᵥ v) ≤ Data.opN W * en v := by
@@ -490,55 +488,51 @@ private lemma en_mulVec_le_opN_mul_en {m n : ℕ} (W : Matrix (Fin m) (Fin n) �
     exact h2
 
 /- English proof (translation)
-Establish `hker : ∀ c : Fin r → ℂ, mat x0 τ *ᵥ c = 0 → c = 0`. Introduce `c hMc`. Establish `h0 : nsq c = nsq (0 : Fin r → ℂ)`. Rewrite using `[← maj_ortho X ho τ c, ← maj_ortho X ho τ 0, hMc, Matrix.mulVec_zero]`. Apply `eq_zero_of_en c` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[en_eq_sqrt, h0]`. Simplify using `[nsq]`. Establish `hMu : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr fun h0 => by`. Take `⟨c, hc, hMc⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Conclude with `hc (hker c hMc)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hMMi : mat x0 τ * (mat x0 τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hMu`. Take `⟨N', hN'⟩ : ∃ N' : Matrix (Fin r) (Fin r) ℂ, N' = (mat x0 τ)⁻¹ * nτ * mat x0 τ` from `⟨_, rfl⟩`. Establish `hMN : mat x0 τ * N' = nτ * mat x0 τ`. Rewrite using `[hN', ← mul_assoc, ← mul_assoc, hMMi, one_mul]`. Establish `hN1 : ∀ c, en ((N' - 1) *ᵥ c) ≤ η * en c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Apply `en_le_of_nsq _ _ hη` to reduce the goal to its premises. Establish `hMN1 : mat x0 τ * (N' - 1) = (nτ - 1) * mat x0 τ`. Rewrite using `[mul_sub, mul_one, hMN, sub_mul, one_mul]`. Rewrite using `[← maj_ortho X ho τ ((N' - 1) *ᵥ c), ← maj_ortho X ho τ c, Matrix.mulVec_mulVec, hMN1, ← Matrix.mulVec_mulVec]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hn (mat x0 τ *ᵥ c)`. Establish `hZτ : Data.opN (Matrix.of (Z1 τ)) ≤ z`. Establish `hb : BddAbove (Set.range fun τ' : X.Ψ => Data.opN (Matrix.of (Z1 τ')))` using `(Set.finite_range _).bddAbove`. Conclude with `(le_ciSup hb τ).trans hZ1`. Establish `hsplit : ∀ w : Fin r → ℂ, en w ≤ en (top X w) + en (bot X w)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `w`. Rewrite using `[en_eq_sqrt w]`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[nsq_split X w, ← en_sq (top X w), ← en_sq (bot X w)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg (en_nonneg (top X w)) (en_nonneg (bot X w))]`. Use `_ = en (top X w) + en (bot X w) := Real.sqrt_sq (add_nonneg (en_nonneg _) (en_nonneg _))`. Take `⟨K, hK⟩ : ∃ K : Matrix (Fin r) (Fin r) ℂ, K = N' * X.lowBlock Z1 τ` from `⟨_, rfl⟩`. Establish `hyt : ∀ d, top X (X.lowBlock Z1 τ *ᵥ ext X d) = d` using `fun d => by`. Rewrite using `[top_mulVec_ext, blkA_low, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyb : ∀ d, bot X (X.lowBlock Z1 τ *ᵥ ext X d) = Matrix.of (Z1 τ) *ᵥ d` using `fun d => by`. Rewrite using `[bot_mulVec_ext, blkB_low]`. Establish `hyen : ∀ d, en (X.lowBlock Z1 τ *ᵥ ext X d) ≤ (1 + z) * en d` using `fun d => by`. Establish `h1` using `hsplit (X.lowBlock Z1 τ *ᵥ ext X d)`. Rewrite `h1` using `[hyt, hyb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2` using `en_mulVec_le_opN_mul_en (Matrix.of (Z1 τ)) d`. Establish `h3` using `mul_le_mul_of_nonneg_right hZτ (en_nonneg d)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKd : ∀ d, K *ᵥ ext X d = X.lowBlock Z1 τ *ᵥ ext X d + (N' - 1) *ᵥ (X.lowBlock Z1 τ *ᵥ ext X d)` using `fun d => by`. Rewrite using `[hK, ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hed : ∀ d, en ((N' - 1) *ᵥ (X.lowBlock Z1 τ *ᵥ ext X d)) ≤ η * (1 + z) * en d` using `fun d => by`. Establish `h1` using `hN1 (X.lowBlock Z1 τ *ᵥ ext X d)`. Establish `h2` using `mul_le_mul_of_nonneg_left (hyen d) hη`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htadd : ∀ u v : Fin r → ℂ, top X (u + v) = top X u + top X v` using `fun _ _ => rfl`. Establish `hbadd : ∀ u v : Fin r → ℂ, bot X (u + v) = bot X u + bot X v` using `fun _ _ => rfl`. Establish `hAe : ∀ d, blkA X K *ᵥ d = d + top X ((N' - 1) *ᵥ (X.lowBlock Z1 τ *ᵥ ext X d))` using `fun d => by rw [← top_mulVec_ext, hKd, htadd, hyt]`. Establish `hBe : ∀ d, blkB X K *ᵥ d = Matrix.of (Z1 τ) *ᵥ d + bot X ((N' - 1) *ᵥ (X.lowBlock Z1 τ *ᵥ ext X d))` using `fun d => by rw [← bot_mulVec_ext, hKd, hbadd, hyb]`. Establish `hs0 : 0 ≤ η * (1 + z)` using `mul_nonneg hη (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAl : ∀ d, (1 - η * (1 + z)) * en d ≤ en (blkA X K *ᵥ d)` using `fun d => by`. Establish `h1` using `en_top_le X ((N' - 1) *ᵥ (X.lowBlock Z1 τ *ᵥ ext X d))`. Establish `h2` using `hed d`. Establish `hd : d = blkA X K *ᵥ d - top X ((N' - 1) *ᵥ (X.lowBlock Z1 τ *ᵥ ext X d))`. Rewrite using `[hAe d]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Normalize the expressions using the abelian group laws. Establish `h3` using `en_sub_le (blkA X K *ᵥ d) (top X ((N' - 1) *ᵥ (X.lowBlock Z1 τ *ᵥ ext X d)))`. Rewrite `h3` using `[← hd]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hBu : ∀ d, en (blkB X K *ᵥ d) ≤ (z + η * (1 + z)) * en d` using `fun d => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hBe d]`. Establish `h1` using `en_add_le (Matrix.of (Z1 τ) *ᵥ d) (bot X ((N' - 1) *ᵥ (X.lowBlock Z1 τ *ᵥ ext X d)))`. Establish `h2` using `en_mulVec_le_opN_mul_en (Matrix.of (Z1 τ)) d`. Establish `h3` using `mul_le_mul_of_nonneg_right hZτ (en_nonneg d)`. Establish `h4` using `en_bot_le X ((N' - 1) *ᵥ (X.lowBlock Z1 τ *ᵥ ext X d))`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `hed d`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1s : 0 < 1 - η * (1 + z)` using `by linarith`. Establish `hAu : IsUnit (blkA X K).det` using `isUnit_iff_ne_zero.mpr fun h0 => by`. Take `⟨d, hd, hAd⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hAl d`. Rewrite `h1` using `[hAd]`. Establish `h2 : en (0 : Fin X.p0 → ℂ) = 0`. Rewrite using `[en_eq_sqrt]`. Simplify using `[nsq]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h2]`. Establish `h3` using `en_pos hd`. Use polynomial arithmetic with `[mul_pos h1s h3]`. Use `⟨blkB X K * (blkA X K)⁻¹, ?_, fun Z hZW => ?_⟩` and prove the remaining obligations. Apply `opN_le _ (div_nonneg (by linarith) h1s.le)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Establish `hAd : blkA X K *ᵥ ((blkA X K)⁻¹ *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hAu, Matrix.one_mulVec]`. Establish `hWv : (blkB X K * (blkA X K)⁻¹) *ᵥ v = blkB X K *ᵥ ((blkA X K)⁻¹ *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hWv]`. Establish `hB` using `hBu ((blkA X K)⁻¹ *ᵥ v)`. Establish `hA` using `hAl ((blkA X K)⁻¹ *ᵥ v)`. Rewrite `hA` using `[hAd]`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ h1s]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzs : 0 ≤ z + η * (1 + z)` using `by linarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hA hzs, mul_le_mul_of_nonneg_left hB h1s.le]`. Establish `hMK : nτ * (mat x0 τ * X.lowBlock Z1 τ) = mat x0 τ * K`. Rewrite using `[hK, ← mul_assoc (mat x0 τ), hMN, mul_assoc]`. Establish `hcol : ∀ (i : Fin r) (a : Fin X.p0), K i (Fin.castLE X.p0_le a) = ∑ b, X.lowBlock Z τ i (Fin.castLE X.p0_le b) * blkA X K b a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i a`. Break down `fin_split X i with ⟨i', rfl⟩ | ⟨m, rfl⟩` into its components or cases. Establish `h1 : (blkA X (X.lowBlock Z τ) * blkA X K) i' a = blkA X K i' a`. Rewrite using `[blkA_low, Matrix.one_mul]`. Rewrite `h1` using `[Matrix.mul_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1.symm`. Establish `h2 : (blkB X (X.lowBlock Z τ) * blkA X K) m a = blkB X K m a`. Rewrite using `[blkB_low, hZW, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hAu, Matrix.mul_one]`. Rewrite `h2` using `[Matrix.mul_apply]`. Conclude with `h2.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `span_cols_eq _ _ (blkA X K) hAu (fun a => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show col (nτ * (mat x0 τ * X.lowBlock Z1 τ)) (Fin.castLE X.p0_le a) i = (∑ b, blkA X K b a • col (mat x0 τ * X.lowBlock Z τ) (Fin.castLE X.p0_le b)) i`. Establish `lhs : col (mat x0 τ * K) (Fin.castLE X.p0_le a) i = ∑ b, ∑ k, mat x0 τ i k * (X.lowBlock Z τ k (Fin.castLE X.p0_le b) * blkA X K b a)` using `by show (mat x0 τ * K) i (Fin.castLE X.p0_le a) = _`. Rewrite using `[Matrix.mul_apply]`.
-
-Simplify using `only [hcol, Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Establish `rhs : (∑ b, blkA X K b a • col (mat x0 τ * X.lowBlock Z τ) (Fin.castLE X.p0_le b)) i = ∑ b, ∑ k, blkA X K b a * (mat x0 τ i k * X.lowBlock Z τ k (Fin.castLE X.p0_le b))`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
-
-Use `show blkA X K b a * (mat x0 τ * X.lowBlock Z τ) i (Fin.castLE X.p0_le b) = _`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Rewrite using `[hMK, lhs, rhs]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma graph_tau {x0 : Frame X.Ψ r} (hx0 : x0 ∈ X.dom) (ho : X.IsOrtho x0) (τ : X.Ψ)
     (nτ : Matrix (Fin r) (Fin r) ℂ) (Z1 : X.Coord) {η z : ℝ} (hη : 0 ≤ η) (hz : 0 ≤ z)
@@ -701,11 +695,11 @@ namespace UnipMove
 open ReciprocityTheory.ChartRestriction.G.FD NumberField
 
 /- English proof (translation)
-Unfold `SGraph`. Introduce `r X x0 hx0 ho n Z1 η z hη hz hZ1 hs hn`. Establish `hg` using `fun τ => GraphH.graph_tau X hx0 ho τ (n τ) Z1 hη hz hZ1 hs (hn τ)`. Use `choose W hW1 hW2 using hg`. Use `⟨(fun τ => W τ : X.Coord), ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Conclude with `hW2 τ (fun τ => W τ) rfl`. Unfold `Data.zN`. Apply `Real.iSup_le` to reduce the goal to its premises. Introduce `τ`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hW1 τ`. Establish `h1 : 0 ≤ η * (1 + z)` using `mul_nonneg hη (by linarith)`. Apply `div_nonneg` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sGraph {E : Type} [Field E] [NumberField E] [IsCMField E] : SGraph E := by
   unfold SGraph

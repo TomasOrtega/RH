@@ -15,11 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HalfPt
 
 /- English proof (translation)
-Use `haveI : IsAffine X := isAffine_of_isAffineHom f`. Set `ψ : CommRingCat.of R ⟶ Γ(X, ⊤)` to `Spec.preimage (X.isoSpec.inv ≫ f)`. Establish `hψ : Spec.map ψ = X.isoSpec.inv ≫ f` using `Spec.map_preimage _`. Use `⟨Γ(X, ⊤), inferInstance, ψ.hom, X.isoSpec.inv, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hs : Surjective (Spec.map ψ)` using `by rw [hψ]; infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DenseRange (PrimeSpectrum.comap ψ.hom)` using `hs.1.denseRange`. Rewrite `hd` using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, nilradical_eq_zero]`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Simplify using `using hd hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hf : IsFinite (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Conclude with `(IsFinite.SpecMap_iff ψ).1 hf`. Conclude with `hψ.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_spec_of_finite_surjective {R : Type} [CommRing R] [IsDomain R] {X : Scheme.{0}} (f : X ⟶ Sp R)
     [IsFinite f] [Surjective f] :
@@ -44,17 +44,15 @@ end GlobalTheory.HalfPt
 namespace GlobalTheory.HalfPt
 
 /- English proof (translation)
-Introduce `R _ _ _ B _ _ a hCN hAb`. Use `haveI : IsNoetherianRing R := hCN.1`. Take `⟨hfin, -⟩` from `GlobalTheory.T.isFinite_and_flat_mul_abelianScheme (Sp R) B hAb 2 (by norm_num)`. Establish `hsurj` using `GlobalTheory.T.semiAbelian_mul_nat_surjective (Sp R) B (GlobalTheory.isSemiAbelian_of_isAbelianScheme B hAb) 2 two_ne_zero`. Set `m : B.left ⟶ B.left` to `((𝟙 B) ^ 2 : B ⟶ B).left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s : Sp R ⟶ B.left` to `a.left`. Use `haveI : IsFinite m := hfin`. Use `haveI : Surjective m := hsurj`. Use `haveI : IsFinite (pullback.snd m s) := inferInstance`. Use `haveI : Surjective (pullback.snd m s) := inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, _, φ, g, hinj, hφf, hg⟩` from `exists_spec_of_finite_surjective (pullback.snd m s)`. Take `⟨R', _, _, _, ρ, σ, hCN', hρi, hρf, hρl, hσ⟩` from `GlobalTheory.T.exists_complete_normal_local_cover_of_finite_hom R C φ hCN hinj hφf`. Establish `hsB : s ≫ B.hom = 𝟙 (Sp R)` using `Over.w a`. Establish `hmB : m ≫ B.hom = B.hom` using `Over.w ((𝟙 B) ^ 2 : B ⟶ B)`. Establish `hfst : pullback.fst m s ≫ B.hom = pullback.snd m s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hmB, ← Category.assoc, pullback.condition, Category.assoc, hsB, Category.comp_id]`. Establish `hρ : spMap σ ≫ spMap φ = spMap ρ`. Rewrite using `[← hσ, spMap, spMap, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Set `c : Over.mk (spMap ρ) ⟶ B` to `Over.homMk (spMap σ ≫ g ≫ pullback.fst m s) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hfst, hg, hρ])`. Use `⟨R', inferInstance, inferInstance, inferInstance, ρ, c, hCN', hρi, hρf, hρl, ?_⟩` and prove the remaining obligations. Establish `hc : c ^ 2 = c ≫ (𝟙 B) ^ 2` using `by rw [comp_pow, Category.comp_id]`. Rewrite using `[hc]`. Use `ext`.
-
-Simplify using `only [c, Over.comp_left, Over.homMk_left, Category.assoc]`. Use `show spMap σ ≫ g ≫ pullback.fst m s ≫ m = _`. Rewrite using `[pullback.condition, ← Category.assoc g, hg, ← Category.assoc, hρ]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_half_point : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (B : Over (Sp R)) [GrpObj B] [IsCommMonObj B] (a : 𝟙_ (Over (Sp R)) ⟶ B), IsCN R → IsAbelianScheme B → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (b : Over.mk (spMap ρ) ⟶ B), IsCN R' ∧ Function.Injective ρ ∧ ρ.Finite ∧ IsLocalHom ρ ∧ b ^ 2 = toUnit _ ≫ a := by
   intro R _ _ _ B _ _ a hCN hAb

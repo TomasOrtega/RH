@@ -38,9 +38,9 @@ variable {P}
 omit [P.IsPrime] in
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, Ideal.mem_pointwise_smul_iff_inv_smul_mem, Ideal.mem_pointwise_smul_iff_inv_smul_mem, Ideal.mem_comap]`. Establish `: (g : ℚ̄ ≃ₐ[ℚ] ℚ̄)⁻¹ • algebraMap (𝓞 E.1) (𝓞 ℚ̄) a = algebraMap (𝓞 E.1) (𝓞 ℚ̄) ((restrictHom (E` using `E) g)⁻¹ • a) := by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[← map_inv]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((g : ℚ̄ ≃ₐ[ℚ] ℚ̄)⁻¹) ((a : E.1) : ℚ̄) = ((restrictHom (E := E) g⁻¹ (a : E.1) : E.1) : ℚ̄)`. Rewrite using `[coe_restrictHom_apply]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_smul {F E : FiniteSubfield} [Fact (F ≤ E)]
     [(E.1.fixingSubgroup.subgroupOf F.1.fixingSubgroup).Normal] (g : F.1.fixingSubgroup) :
@@ -59,7 +59,7 @@ theorem comap_smul {F E : FiniteSubfield} [Fact (F ≤ E)]
   rw [this]
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff, placeBelow_asIdeal, ← comap_smul, MulAction.mem_stabilizer_iff.1 hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictHom_mem_stabilizer {F E : FiniteSubfield} [Fact (F ≤ E)]
     [(E.1.fixingSubgroup.subgroupOf F.1.fixingSubgroup).Normal] (g : F.1.fixingSubgroup)
@@ -68,11 +68,9 @@ theorem restrictHom_mem_stabilizer {F E : FiniteSubfield} [Fact (F ≤ E)]
   rw [MulAction.mem_stabilizer_iff, placeBelow_asIdeal, ← comap_smul, MulAction.mem_stabilizer_iff.1 hg]
 
 /- English proof (translation)
-Establish `h : (((τ⁻¹ : F.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) • P).comap (algebraMap (𝓞 E.1) (𝓞 ℚ̄)) = P.comap (algebraMap (𝓞 E.1) (𝓞 ℚ̄))`. Rewrite using `[comap_smul, map_inv]`. Conclude with `MulAction.mem_stabilizer_iff.1 (inv_mem hτ)`. Take `⟨σ, hσP, hστ⟩` from `Cyclotomic.exists_mem_stabilizer_of_comap_eq E.1 P τ h`. Establish `hσF : σ ∈ F.1.fixingSubgroup`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Rewrite using `[hστ x ((Fact.out : F ≤ E) hx)]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff F.1 _).1 τ.2 x hx`. Use `⟨⟨σ, hσF⟩, hσP, AlgEquiv.ext fun x ↦ Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[coe_restrictHom_apply, coe_restrictHom_apply]`. Conclude with `hστ x x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_stabilizer_restrictHom_eq {F E : FiniteSubfield} [Fact (F ≤ E)]
     [(E.1.fixingSubgroup.subgroupOf F.1.fixingSubgroup).Normal] (τ : F.1.fixingSubgroup)
@@ -96,9 +94,9 @@ theorem exists_mem_stabilizer_restrictHom_eq {F E : FiniteSubfield} [Fact (F ≤
 variable (P)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap (𝓞 K.1) (𝓞 ℚ̄))` using `fun a b hab ↦ RingOfIntegers.ext (Subtype.ext (congrArg (fun z : 𝓞 ℚ̄ ↦ (z : ℚ̄)) hab))`. Take `⟨Q, -, hQ, hQv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := 𝓞 ℚ̄) v.asIdeal ⊥ (by rw [Ideal.comap_bot_of_injective _ hinj]; exact bot_le)`. Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hQv, Ideal.comap_bot_of_injective _ hinj]`. Conclude with `⟨Q, hQ, hQ0, HeightOneSpectrum.ext hQv⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_placeBelow_eq (K : FiniteSubfield) (v : HeightOneSpectrum (𝓞 K.1)) :
     ∃ (P : Ideal (𝓞 ℚ̄)) (_ : P.IsPrime) (hP : P ≠ ⊥), placeBelow P hP K = v := by
@@ -115,7 +113,7 @@ theorem exists_placeBelow_eq (K : FiniteSubfield) (v : HeightOneSpectrum (𝓞 K
 include hP in
 
 /- English proof (translation)
-Establish `: Algebra.IsIntegral ℤ (𝓞 ℚ̄)` using `inferInstanceAs (Algebra.IsIntegral ℤ (integralClosure ℤ ℚ̄))`. Establish `hI : (P.comap (algebraMap ℤ (𝓞 ℚ̄))).IsPrime` using `Ideal.comap_isPrime _ _`. Break down `Ideal.isPrime_int_iff.1 hI with h | ⟨p, hp, h⟩` into its components or cases. Conclude with `absurd (Ideal.eq_bot_of_comap_eq_bot h) hP`. Conclude with `⟨p, hp, ⟨h.symm⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_liesOver_prime : ∃ p : ℕ, p.Prime ∧ P.LiesOver (Ideal.span {(p : ℤ)}) := by
   have : Algebra.IsIntegral ℤ (𝓞 ℚ̄) := inferInstanceAs (Algebra.IsIntegral ℤ (integralClosure ℤ ℚ̄))

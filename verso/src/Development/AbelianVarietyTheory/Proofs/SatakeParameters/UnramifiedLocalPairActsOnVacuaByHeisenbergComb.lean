@@ -15,25 +15,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Hk3
 
 /- English proof (translation)
-Introduce `L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP φ hφ`. Set `V : Submodule ℂ M` to `{ carrier := {s | LocVac ρ s} add_mem' := by intro a b ha hb u hu; simp [ha u hu, hb u hu] zero_mem' := by intro u _; simp smul_mem' := by intro c a ha u hu; simp [ha u hu] }`. Set `T : (Matrix (Fin n') (Fin n) L →₀ V) →ₗ[ℂ] M` to `Finsupp.lsum ℂ (fun x => ρ x ∘ₗ V.subtype)`. Set `T' : (Matrix (Fin n') (Fin n) L →₀ V) →ₗ[ℂ] M` to `Finsupp.lsum ℂ (fun x => ρ x ∘ₗ φ ∘ₗ V.subtype)`. Establish `hT : ∀ d, T d = d.sum fun x v => ρ x (v : M)` using `fun d => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT' : ∀ d, T' d = d.sum fun x v => ρ x (φ (v : M))` using `fun d => rfl`. Establish `hker : LinearMap.ker T ≤ LinearMap.ker T'`. Introduce `d hd`. Rewrite `hd`, the goal using `[LinearMap.mem_ker]`. Establish `key` using `GlobalTheory.T.vacuumTranslate_relation_map_preserving_vacua L ϖ σ q δ n n' JS JT ψ M ρ ω hP φ hφ (d.mapRange V.subtype (map_zero _)) (fun x => by rw [Finsupp.mapRange_apply]; exact (d x).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[Finsupp.sum_mapRange_index (fun x => map_zero _), Finsupp.sum_mapRange_index (fun x => by simp)]`. Conclude with `key hd`. Establish `hsurj : Function.Surjective T`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hP.span, Submodule.span_le]`. Introduce and unpack `w ⟨x, s, hs, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨Finsupp.single x ⟨s, hs⟩, by rw [hT, Finsupp.sum_single_index (by simp)]⟩`. Set `B : Module.End ℂ M` to `(LinearMap.ker T).liftQ T' hker ∘ₗ (T.quotKerEquivOfSurjective hsurj).symm.toLinearMap`. Establish `hB : ∀ d, B (T d) = T' d`. Introduce `d`. Establish `: (T.quotKerEquivOfSurjective hsurj).symm (T d) = Submodule.Quotient.mk d`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [B, LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`. Use `⟨B, fun y => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Set `c : Matrix (Fin n') (Fin n) L → ℂ` to `fun x => ψ ((locH σ δ JS JT y x + σ (locH σ δ JS JT y x)) / 2)`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Sh : (Matrix (Fin n') (Fin n) L →₀ V) →ₗ[ℂ] (Matrix (Fin n') (Fin n) L →₀ V)` to `Finsupp.lsum ℂ (fun x => c x • Finsupp.lsingle (y + x))`. Establish `h1 : ρ y ∘ₗ T = T ∘ₗ Sh`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `x v`. Simplify using `only [LinearMap.comp_apply, Sh, T, Finsupp.lsum_single, LinearMap.smul_apply, Finsupp.lsingle_apply, map_smul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype]`. Rewrite using `[← Module.End.mul_apply, hP.rho_mul]`. Both sides reduce to the same expression. Establish `h2 : ρ y ∘ₗ T' = T' ∘ₗ Sh`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x v`. Simplify using `only [LinearMap.comp_apply, Sh, T', Finsupp.lsum_single, LinearMap.smul_apply, Finsupp.lsingle_apply, map_smul]`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype]`. Rewrite using `[← Module.End.mul_apply, hP.rho_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`. Take `⟨d, rfl⟩` from `hsurj m`. Establish `e1` using `LinearMap.congr_fun h1 d`. Establish `e2` using `LinearMap.congr_fun h2 d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply] at e1 e2`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, e1, hB, hB, e2]`. Establish `: T (Finsupp.single 0 ⟨s, hs⟩) = s`. Rewrite using `[hT, Finsupp.sum_single_index (by simp), hP.rho_zero]; rfl`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem locPair_extend_vac : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) × Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →* Module.End ℂ M), LocPair ϖ σ q δ JS JT ψ ρ ω → ∀ φ : M →ₗ[ℂ] M, (∀ s, LocVac ρ s → LocVac ρ (φ s)) → ∃ B : Module.End ℂ M, (∀ x, B * ρ x = ρ x * B) ∧ ∀ s, LocVac ρ s → B s = φ s := by
   intro L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP φ hφ
@@ -95,53 +95,51 @@ theorem locPair_extend_vac : ∀ (L : Type) [Field L] [CharZero L] [Valued L (Wi
       _ = φ s := by rw [hB, hT', Finsupp.sum_single_index (by simp), hP.rho_zero]; rfl
 
 /- English proof (translation)
-Introduce `L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP p`. Distinguish the cases in `h0 : ∃ s0, LocVac ρ s0 ∧ s0 ≠ 0`. Use `swap`. Use `⟨0, fun s hs => ?_⟩` and prove the remaining obligations. Establish `: s = 0` using `by by_contra h; exact h0 ⟨s, hs, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules. Take `⟨s0, hs0, hs0ne⟩` from `h0`. Set `N : Subgroup (Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) × Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L))` to `{ carrier := {p | ∀ B : Module.End ℂ M, (∀ x, B * ρ x = ρ x * B) → ω p * B = B * ω p} one_mem' := by intro B _; simp mul_mem' := by`. Introduce `a b ha hb B hB`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, mul_assoc, hb B hB, ← mul_assoc, ha B hB, mul_assoc]`. Use the proof step `inv_mem' := by`. Introduce `a ha B hB`. Establish `h1 : ω a⁻¹ * ω a = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `h2 : ω a * ω a⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hN : N.Normal`. Prove the components needed by the constructor for the conclusion. Introduce `a ha g B hB`. Establish `h1 : ω g⁻¹ * ω g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ω g * ω g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hB' : ∀ x, (ω g⁻¹ * B * ω g) * ρ x = ρ x * (ω g⁻¹ * B * ω g)`. Introduce `x`. Establish `hn` using `hP.norm g.1 g.2 x`. Use `set y := (((g.2 : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x * (((g.1 : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hn' : ω g * ρ x = ρ y * ω g` using `hn`. Establish `hinv : ω g⁻¹ * ρ y = ρ x * ω g⁻¹`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `ha'` using `ha _ hB'`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = ω g * (ω g⁻¹ * B * ω g) * ω a * ω g⁻¹ := by rw [mul_assoc (ω g) (ω a), ha']; noncomm_ring`. Use `_ = (ω g * ω g⁻¹) * B * (ω g * ω a * ω g⁻¹) := by noncomm_ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `_ = B * ω (g * a * g⁻¹) := by rw [h2, one_mul, map_mul, map_mul]`. Establish `hInt : ∀ (g : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L)) (h : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L)), (g : GL (Fin n) L) ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) → (h : GL (Fin n') L) ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) → (g, h) ∈ N`. Introduce `g h hg hh B hB`. Apply `LinearMap.ext_on hP.span` to reduce the goal to its premises. Introduce and unpack `w ⟨x, s, hs, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBs : ∀ u : Matrix (Fin n') (Fin n) L, (∀ i j, u i j ∈ Formalism.UG.intL L) → ρ u (B s) = B s`. Introduce `u hu`. Use `congrArg (fun F => F s) (hB u)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[← this, hs u hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hn` using `hP.norm g h x`. Establish `e1` using `congrArg (fun F => F (B s)) hn`. Establish `e2` using `congrArg (fun F => F s) hn`. Establish `e3` using `congrArg (fun F => F s) (hB x)`. Establish `e4` using `congrArg (fun F => F s) (hB (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x * (((g : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Module.End.mul_apply] at e1 e2 e3 e4 ⊢`. Rewrite using `[e3, e1, hP.fix g h hg hh _ hBs, e2, hP.fix g h hg hh _ hs, e4]`. Establish `hTop : N = ⊤`. Establish `hS` using `GlobalTheory.T.normal_subgroup_containing_hyperspecial_eq_top_unramifiedUnitary L ϖ σ q n JS hP.unr hP.odd hP.intS hP.hermS (N.comap (MonoidHom.inl _ _)) (hN.comap _) (fun g hg => Subgroup.mem_comap.mpr (hInt g 1 hg (by simpa using (Formalism.UG.GLint (Fin n') (Formalism.UG.intL …`. Establish `hT` using `GlobalTheory.T.normal_subgroup_containing_hyperspecial_eq_top_unramifiedUnitary L ϖ σ q n' JT hP.unr hP.odd hP.intT hP.hermT (N.comap (MonoidHom.inr _ _)) (hN.comap _) (fun h hh => Subgroup.mem_comap.mpr (hInt 1 h (by simpa using (Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)) …`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨g, h⟩ -`. Establish `hg : (g, (1 : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L))) ∈ N`. Establish `: g ∈ N.comap (MonoidHom.inl _ _)` using `by rw [hS]; trivial`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hh : ((1 : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L)), h) ∈ N`. Establish `: h ∈ N.comap (MonoidHom.inr _ _)` using `by rw [hT]; trivial`. Simplify using `using this`. Use `N.mul_mem hg hh` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hpN : p ∈ N` using `by rw [hTop]; trivial`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ M, f s0 = 1 := by`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ s0).not.mpr hs0ne` as an intermediate fact. Use `push_neg at this`. Take `⟨f, hf⟩` from `this`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(f s0)⁻¹ • f, by simp [hf]⟩`. Establish `hline : ∀ t, LocVac ρ t → ∀ m, LocVac ρ (f.smulRight t m)`. Introduce `t ht m u hu`. Simplify using `[ht u hu]`. Take `⟨B0, hB0, hB0v⟩` from `locPair_extend_vac L ϖ σ q δ n n' JS JT ψ M ρ ω hP (f.smulRight s0) (fun m _ => hline s0 hs0 m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Establish `hspan : ∀ m : M, ∃ c : Matrix (Fin n') (Fin n) L →₀ ℂ, B0 m = c.sum fun x z => z • ρ x s0`. Introduce `m`. Establish `hm : m ∈ Submodule.span ℂ {w | ∃ x s, (∀ u : Matrix (Fin n') (Fin n) L, (∀ i j, u i j ∈ Formalism.UG.intL L) → ρ u s = s) ∧ w = ρ x s}`. Rewrite using `[hP.span]`. Discharge the goal by the elementary cases of `trivial`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, s, hs, rfl⟩` from `hw`. Use `⟨Finsupp.single x (f s), ?_⟩` and prove the remaining obligations. Use `congrArg (fun F => F s) (hB0 x)` as an intermediate fact.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[this, hB0v s hs]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ca, hca⟩` from `ha`. Take `⟨cb, hcb⟩` from `hb`. Use `⟨ca + cb, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hca, hcb, Finsupp.sum_add_index']`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `x z z'`. Rewrite using `[add_smul]`. Consider the case `smul a b _ hb`. Take `⟨cb, hcb⟩` from `hb`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨a • cb, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hcb, Finsupp.sum_smul_index' (h := fun x z => z • ρ x s0) (fun _ => zero_smul ℂ _), Finsupp.smul_sum]`. Simplify using `[Finsupp.sum, Finset.smul_sum, smul_smul]`. Take `⟨c, hc⟩` from `hspan (ω p s0)`. Establish `hps0 : ω p s0 = c.sum fun x z => z • ρ x s0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun F => F s0) (hpN B0 hB0)`. Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[← hc, ← e, hB0v s0 hs0]`. Simplify using `[hf]`. Use `⟨c, fun s hs => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨Bs, hBs, hBsv⟩` from `locPair_extend_vac L ϖ σ q δ n n' JS JT ψ M ρ ω hP (f.smulRight s) (fun m _ => hline s hs m)`. Establish `e1 : Bs s0 = s` using `by rw [hBsv s0 hs0]; simp [hf]`. Establish `e` using `congrArg (fun F => F s0) (hpN Bs hBs)`. Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[← e1, e, hps0, map_finsuppSum]`.
-
-Use `Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Use `congrArg (fun F => F s0) (hBs x)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[map_smul, this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locPair_act_vac_comb : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) × Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →* Module.End ℂ M), LocPair ϖ σ q δ JS JT ψ ρ ω → ∀ p, ∃ c : Matrix (Fin n') (Fin n) L →₀ ℂ, ∀ s, LocVac ρ s → ω p s = c.sum fun x z => z • ρ x s := by
   intro L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP p

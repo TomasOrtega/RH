@@ -5,9 +5,9 @@ namespace PI.GTNum
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[sum_range_succ]`. Establish `h1` using `ih (fun i hi => h i (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h n (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sum_range_le_tele (n : ℕ) (a t : ℕ → ℤ) (h : ∀ i < n, a i ≤ t i - t (i + 1)) :
     ∑ i ∈ range n, a i ≤ t 0 - t n := by
@@ -20,7 +20,7 @@ theorem sum_range_le_tele (n : ℕ) (a t : ℕ → ℤ) (h : ∀ i < n, a i ≤ 
     linarith
 
 /- English proof (translation)
-Rewrite using `[Finset.card_erase_of_mem hx, Int.card_Icc]`. Establish `h1 : 1 ≤ (min b (a + c) + 1 - a).toNat` using `by omega`. Rewrite using `[Nat.cast_sub h1, Int.toNat_of_nonneg (by omega)]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_erase_Icc_min (a b c x : ℤ) (hab : a ≤ b) (hc : 0 ≤ c)
     (hx : x ∈ Icc a (min b (a + c))) :
@@ -32,7 +32,7 @@ theorem card_erase_Icc_min (a b c x : ℤ) (hab : a ≤ b) (hc : 0 ≤ c)
   omega
 
 /- English proof (translation)
-The claim follows from `|∏ x ∈ s, f x| ≤ ∏ x ∈ s, b x := by rw [abs_prod] exact Finset.prod_le_prod (fun x _ => abs_nonneg _) h`.
+A detailed English derivation is pending.
 -/
 theorem abs_prod_le_prod {α : Type*} (s : Finset α) (f b : α → ℤ) (h : ∀ x ∈ s, |f x| ≤ b x) :
     |∏ x ∈ s, f x| ≤ ∏ x ∈ s, b x := by
@@ -40,21 +40,21 @@ theorem abs_prod_le_prod {α : Type*} (s : Finset α) (f b : α → ℤ) (h : �
   exact Finset.prod_le_prod (fun x _ => abs_nonneg _) h
 
 /- English proof (translation)
-The claim follows from `|∏ x ∈ s, f x| ≤ B ^ s.card := by simpa [Finset.prod_const] using abs_prod_le_prod s f (fun _ => B) h`.
+A detailed English derivation is pending.
 -/
 theorem abs_prod_le_pow {α : Type*} (s : Finset α) (f : α → ℤ) (B : ℤ) (h : ∀ x ∈ s, |f x| ≤ B) :
     |∏ x ∈ s, f x| ≤ B ^ s.card := by
   simpa [Finset.prod_const] using abs_prod_le_prod s f (fun _ => B) h
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_pow_eq_pow_sum, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_pow_pow {α : Type*} (s : Finset α) (B : ℤ) (m : ℕ) (e : α → ℕ) :
     ∏ x ∈ s, (B ^ m) ^ e x = B ^ (m * ∑ x ∈ s, e x) := by
   rw [Finset.prod_pow_eq_pow_sum, ← pow_mul]
 
 /- English proof (translation)
-The claim follows from `|v - (i : ℤ) - s + (j : ℤ)| ≤ 2 * (S - L) + ((n + 1 : ℕ) : ℤ) := by rw [abs_le] push_cast constructor <;> omega`.
+A detailed English derivation is pending.
 -/
 theorem abs_factor_le (v s L S : ℤ) (i j n : ℕ) (hi : i < n) (hj : j < n)
     (hv1 : L ≤ v) (hv2 : v ≤ S + (S - L)) (hs1 : L ≤ s) (hs2 : s ≤ S) :

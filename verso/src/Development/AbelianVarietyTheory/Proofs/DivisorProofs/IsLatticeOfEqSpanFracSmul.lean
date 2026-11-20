@@ -8,13 +8,11 @@ open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNo
 namespace GlobalTheory.ColRows
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, haI, ha0⟩ : ∃ a ∈ I, a ≠ (0 : K) := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hI (FractionalIdeal.eq_zero_iff.2 hc)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : V →ₗ[𝓞 K] V` to `(LinearMap.lsmul K V a).restrictScalars (𝓞 K)`. Establish `hf : Function.Injective f` using `fun x y hxy => smul_right_injective V ha0 hxy`. Establish `hle : N.map f ≤ M`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[h]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨a, haI, y, hy, rfl⟩`. Establish `hfg : (N.map f).FG` using `Submodule.FG.of_le hM.fg hle`. Conclude with `Submodule.fg_of_fg_map_injective f hf hfg`. Rewrite using `[eq_top_iff, ← hM.span_eq_top, Submodule.span_le, h]`. Introduce `x hx`.
-
-Establish `: Submodule.span (𝓞 K) {x | ∃ a ∈ I, ∃ y ∈ N, x = (a : K) • y} ≤ (Submodule.span K (N : Set V)).restrictScalars (𝓞 K)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, _, y, hy, rfl⟩`. Conclude with `Submodule.smul_mem (Submodule.span K (N : Set V)) b (Submodule.subset_span hy)`. Conclude with `this hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isLattice_of_eq_span_frac_smul {K V : Type} [Field K] [NumberField K] [AddCommGroup V]
     [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
@@ -44,9 +42,9 @@ theorem isLattice_of_eq_span_frac_smul {K V : Type} [Field K] [NumberField K] [A
     exact this hx
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective ((e : W →ₗ[K] V).restrictScalars (𝓞 K)) e.injective ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_comap_eq_of_surjective (f := (e : W →ₗ[K] V).restrictScalars (𝓞 K)) e.surjective]`. Conclude with `hN.fg`. Apply `Submodule.map_injective_of_injective (f := (e : W →ₗ[K] V)) e.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range, ← hN.span_eq_top]`. Use `congr 1`. Conclude with `Set.image_preimage_eq _ e.surjective`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isLattice_comap_equiv {K V W : Type} [Field K] [NumberField K] [AddCommGroup V]
     [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup W]
@@ -64,9 +62,9 @@ theorem isLattice_comap_equiv {K V W : Type} [Field K] [NumberField K] [AddCommG
     exact Set.image_preimage_eq _ e.surjective
 
 /- English proof (translation)
-Introduce `D L hdef u hL d e`. Establish `hI : Formalism.BasicNotions.DV.Iu D L u ≠ 0`. Unfold `Formalism.BasicNotions.DV.Iu`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `w _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zpow_ne_zero _ (FractionalIdeal.coeIdeal_ne_zero.2 (D.plEq w).ne_bot)`. Conclude with `isLattice_comap_equiv e _ (isLattice_of_eq_span_frac_smul (Formalism.BasicNotions.DV.Iu D L u) hI _ _ (hdef u) hL)`.
+A detailed English derivation is pending.
 -/
 theorem nuLat_comap_isLattice : ∀ (D : D7) (L : SizeData₂ D), Formalism.BasicNotions.DV.NprimeDef D L → ∀ u, Submodule.IsLattice D.what₂.LL (D.div.Nu u).L → ∀ (d : ℕ) (e : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V), Submodule.IsLattice D.what₂.LL ((L.NuLat u).comap ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL))) := by
   intro D L hdef u hL d e

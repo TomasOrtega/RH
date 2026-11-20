@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.Et Gl
 universe u v
 
 /- English proof (translation)
-Use `IsPullback.of_bot (v₂₁ := pullback.snd p c) (v₂₂ := p) (h₃₁ := c) ?_ ?_ (IsPullback.of_hasPullback p c)` and prove the remaining obligations. Rewrite using `[pullback.lift_snd]`. Conclude with `IsPullback.of_hasPullback (s ≫ p) c`. Rewrite using `[pullback.lift_fst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sq_bc {T Y S B : Scheme.{0}} (s : T ⟶ Y) (p : Y ⟶ S) (c : B ⟶ S) :
     IsPullback (pullback.fst (s ≫ p) c)
@@ -19,9 +19,7 @@ private theorem sq_bc {T Y S B : Scheme.{0}} (s : T ⟶ Y) (p : Y ⟶ S) (c : B 
   · rw [pullback.lift_fst]
 
 /- English proof (translation)
-Introduce `hb k L _ _ H θ O _ _ C D`. Use `haveI : Smooth C.p := C.smooth`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Smooth (pullback.snd C.p (UpperTheory.Gal.Int.Geo.gen O k)) infer_instance`. Conclude with `GlobalTheory.ProjSpace.isProjOver_pullback_snd (algebraMap O k) C.proj`.
-
-Introduce `g`. Conclude with `⟨D.d g, hb.1 _ _ _ _ _ (sq_bc (D.s g) C.p (UpperTheory.Gal.Int.Geo.gen O k)) (D.fet g)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.jLowNice :
     FEtBasic → PositivityTheory.AutomorphicGaloisHodgeTate.G8.LowNice := by

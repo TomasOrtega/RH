@@ -12,19 +12,19 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Take `⟨c₃, hc₃⟩` from `orbJ_domL`. Use `set A : ℝ := max 0 (c₃ * ((r : ℝ) + 1) ^ 2 * ((r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) + 1)) with hAdef`. Establish `hγ` using `h'.choose_spec.1`. Establish `hZ` using `h'.choose_spec.2.1`. Establish `hGq` using `Formalism.FourierDecayAlt.P.ptG_spec k r Bs.z Bs.z' q h'.choose h.1 hZ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < Gf k r Bs.z Bs.z' h'.choose` using `hGq ▸ h.2`. Take `⟨hmono, hd⟩` from `Formalism.FourierDecayAlt.P.Dx2.VV.ptMatN_monoP' q (r + 1) h.1.2 h.1.1`. Establish `hrel` using `Formalism.FourierDecayAlt.P.relevant_points_holds k r Wp Wq Bs q h'.choose h.1 hγ hZ`. Establish `hZm` using `hZ.trans hmono`. Take `⟨θ, maj, hθ, hθL, hθp, hmaj, hdom⟩` from `hc₃ k r Wp Wq Bs h'.choose _ _ A hγ hd hZm hpos (le_max_right _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG : Formalism.FourierDecayAlt.P.Dx2.Rad.Good Bs h'.choose _ _` using `⟨Formalism.FourierDecayAlt.P.Dx2.Rad.exists_rho Bs hγ hpos hd hZm, Formalism.FourierDecayAlt.P.Dx2.Rad.u_inj Bs hγ hpos hd hZm, fun ρ hρ => Formalism.FourierDecayAlt.P.Dx2.Rad.u_lstg Bs hγ hpos hd hZm hρ⟩`. Establish `hR` using `Formalism.FourierDecayAlt.P.Dx2.Rad.haar_good Bs hγ hd hG`. Use `⟨fun x => θ (x, 0), fun F hF => ?_⟩` and prove the remaining obligations. Take `⟨cF, hcF0, hb⟩` from `Formalism.FourierDecayAlt.P.PBN.gN_bound Bs hF A (le_max_left _ _)`. Establish `hbnd : ∀ᵐ p ∂Bs.μSS, θ p * ‖F (B.sgs p h'.choose)‖ ≤ cF * maj p` using `hdom F cF hcF0 (fun p hp => hb _ (Formalism.FourierDecayAlt.P.B7.sgs_mem Bs hp hγ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFc : ContinuousOn F (B.GV k r)` using `Formalism.FourierDecayAlt.P.B5.ckOn_continuousOn hF.1`. Establish `hm : AEStronglyMeasurable (D.orbIntegrand Bs h'.choose F) Bs.μSS` using `Formalism.FourierDecayAlt.P.PBE.integrand_aesm' Bs (U := B.GV k r) (fun p hp => Formalism.FourierDecayAlt.P.B7.sgs_mem Bs hp hγ) hFc`. Establish `hi : Integrable (fun p => θ p • D.orbIntegrand Bs h'.choose F p) Bs.μSS`. Use `Integrable.mono' (hmaj.const_mul cF) (hθ.1.aestronglyMeasurable.smul hm) ?_` and prove the remaining obligations. Use `filter_upwards [hbnd, Formalism.FourierDecayAlt.P.Dx2.OrbJ.ae_inSS Bs] with p hp hs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[norm_smul, Real.norm_of_nonneg (hθ.2.1 p)]`. Unfold `D.orbIntegrand`. Rewrite using `[norm_smul, Formalism.FourierDecayAlt.P.B7.norm_xi, one_mul]`. Conclude with `(mul_le_mul_of_nonneg_left (Formalism.FourierDecayAlt.P.B7.norm_rho_le Bs hs F h'.choose) (hθ.2.1 p)).trans hp`. Establish `hR'` using `inner_int Bs h'.choose hγ θ hθL hθp maj hmaj cF hFc hbnd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Take `⟨hint, heq⟩` from `fub Bs h'.choose θ hθL F hi hR'`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Unfold `D.vecV`. Rewrite using `[dif_pos h, dif_pos h']`. Establish `hex : ∃ θ', D.IsNormCut Bs h'.choose (D.muR Bs h'.choose (h.1.2 ▸ D.ptPerm q)) θ' ∧ Integrable (fun p => θ' p • D.orbIntegrand Bs h'.choose F p) Bs.μSS` using `⟨θ, hθ, hi⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `D.orbJ`. Rewrite using `[dif_pos hex]`. Use `(Formalism.FourierDecayAlt.P.orbital_integral_indep_choice k r Wp Wq Bs h'.choose _ hrel hR F _ θ hex.choose_spec.1 hθ hex.choose_spec.2 hi).trans heq` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem vecV_split [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq)
     (ν' : Fin (2 * r + k + 1) → ℂ) (m₀ : B.Mat k r) (q : C.LPt)

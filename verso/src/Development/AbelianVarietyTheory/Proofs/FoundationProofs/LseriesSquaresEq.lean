@@ -4,9 +4,9 @@ open Complex Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Break down `eq_or_ne d 0 with rfl | hd` into its components or cases. Simplify using the standard rewrite rules. Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd`. Rewrite using `[LSeries.term_of_ne_zero (mul_ne_zero hd hd), LSeries.term_of_ne_zero hd]`. Simplify using `only [Nat.sqrt_eq, if_true]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.cast_mul, natCast_mul_natCast_cpow, ← cpow_add _ _ hd', ← cpow_natCast, mul_div_assoc, ← cpow_sub _ _ hd', div_eq_mul_inv, ← cpow_neg]`. Use `congr 2`. Establish `h3 : 1 ≤ 3 * e` using `by omega`. Move the coercions through the operations in `[Nat.cast_sub h3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lseriesSquares_term (e : ℕ) (c : ℕ → ℂ) (s : ℝ) (he : 1 ≤ e) (d : ℕ) :
     LSeries.term (fun n : ℕ => if Nat.sqrt n * Nat.sqrt n = n then
@@ -25,17 +25,15 @@ theorem lseriesSquares_term (e : ℕ) (c : ℕ → ℂ) (s : ℝ) (he : 1 ≤ e)
   ring
 
 /- English proof (translation)
-Introduce `e χ ψ θ s he hs hb`. Establish `hinj : Function.Injective (fun d : ℕ => d * d)` using `fun a b h => Nat.mul_self_inj.mp h`. Establish `hterm` using `lseriesSquares_term e (fun n => χ n * ψ n * θ n) s he`. Use `set f : ℕ → ℂ := fun n : ℕ => if Nat.sqrt n * Nat.sqrt n = n then χ (Nat.sqrt n) * ψ (Nat.sqrt n) * θ (Nat.sqrt n) * (Nat.sqrt n : ℂ) ^ (3 * e - 1) else 0 with hf`. Establish `hzero : ∀ n, n ∉ Set.range (fun d : ℕ => d * d) → LSeries.term f (((2 * (e : ℝ) + s : ℝ)) : ℂ) n = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Establish `hn' : ¬ (Nat.sqrt n * Nat.sqrt n = n)` using `fun h => hn ⟨_, h⟩`. Rewrite using `[LSeries.term_def]`. Use `split_ifs`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hf, hn']`. Establish `hsum : LSeriesSummable (fun n => χ n * ψ n * θ n) ((e + 1 : ℕ) + 2 * s)`. Use `LSeriesSummable_of_bounded_of_one_lt_re (m := 1) (fun n _ => ?_) ?_` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hb n`. Rewrite using `[norm_mul, norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_one₀ (mul_le_one₀ h1 (norm_nonneg _) h2) (norm_nonneg _) h3`. Establish `: (0 : ℝ) ≤ e` using `Nat.cast_nonneg e`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `(hinj.summable_iff hzero).mp ?_` and prove the remaining obligations. Conclude with `(show Summable _ from hsum).congr fun d => (hterm d).symm`. Unfold `LSeries`. Rewrite using `[← hinj.tsum_eq (fun n hn => by`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hn (hzero n h))]`. Conclude with `tsum_congr hterm`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem lseriesSquares_eq : ∀ (e : ℕ) (χ ψ θ : ℕ → ℂ) (s : ℝ), 1 ≤ e → 0 < s → (∀ n, ‖χ n‖ ≤ 1 ∧ ‖ψ n‖ ≤ 1 ∧ ‖θ n‖ ≤ 1) → LSeriesSummable (fun n : ℕ => if Nat.sqrt n * Nat.sqrt n = n then χ (Nat.sqrt n) * ψ (Nat.sqrt n) * θ (Nat.sqrt n) * (Nat.sqrt n : ℂ) ^ (3 * e - 1) else 0) (((2 * (e : ℝ) + s : ℝ)) : ℂ) ∧ LSeries (fun n : ℕ => if Nat.sqrt n * Nat.sqrt n = n then χ (Nat.sqrt n) * ψ (Nat.sqrt n) * θ (Nat.sqrt n) * (Nat.sqrt n : ℂ) ^ (3 * e - 1) else 0) (((2 * (e : ℝ) + s : ℝ)) : ℂ) = LSeries (fun n => χ n * ψ n * θ n) ((e + 1 : ℕ) + 2 * s) := by
   intro e χ ψ θ s he hs hb

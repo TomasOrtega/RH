@@ -10,19 +10,19 @@ namespace PositivityTheory.ThKF.Unit
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
 
 /- English proof (translation)
-Use `choose σ hσ using fun i => (K i).mkQ.exists_rightInverse_of_surjective (K i).range_mkQ`. Establish `hd : ∀ i x, x - σ i ((K i).mkQ x) ∈ K i` using `fun i x => by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Use `show (K i).mkQ _ = 0`. Rewrite using `[map_sub, ← LinearMap.comp_apply (K i).mkQ (σ i), hσ, LinearMap.id_apply, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ (f : ∀ i, V i) (S : Finset ι), tprod ℂ f - tprod ℂ (fun i => if i ∈ S then σ i ((K i).mkQ (f i)) else f i) ∈ R`. Introduce `f S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j S hj ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : ∀ i, V i` to `fun i => if i ∈ S then σ i ((K i).mkQ (f i)) else f i`. Establish `e1 : g = Function.update g j (f j)`. Rewrite using `[eq_comm, Function.update_eq_self_iff]`. Simplify using `[g, hj]`. Establish `e2 : (fun i => if i ∈ insert j S then σ i ((K i).mkQ (f i)) else f i) = Function.update g j (σ j ((K j).mkQ (f j)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[g, h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hR (Function.update g j (f j - σ j ((K j).mkQ (f j)))) j (by simpa using hd j (f j))`. Rewrite `h3` using `[MultilinearMap.map_update_sub, ← e1, ← e2]`. Establish `h4` using `R.add_mem (show tprod ℂ f - tprod ℂ g ∈ R from ih) h3`. Rewrite `h4` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `h2 : ∀ x, x - map σ (map (fun i => (K i).mkQ) x) ∈ R` using `fun x => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c f`. Rewrite using `[map_smul, map_smul, ← smul_sub, map_tprod, map_tprod]`. Simplify using `using R.smul_mem c (h1 f Finset.univ)`. Consider the case `add x y hx hy => rw [map_add, map_add, add_sub_add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `R.add_mem hx hy`. Introduce `x hx`. Use `h2 x` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.1 hx, map_zero, sub_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ker_le (K : ∀ i, Submodule ℂ (V i)) (R : Submodule ℂ (⨂[ℂ] i, V i)) (hR : ∀ (f : ∀ i, V i) i, f i ∈ K i → tprod ℂ f ∈ R) :
     LinearMap.ker (map fun i => (K i).mkQ) ≤ R := by
@@ -59,17 +59,17 @@ theorem ker_le (K : ∀ i, Submodule ℂ (V i)) (R : Submodule ℂ (⨂[ℂ] i, 
   rwa [LinearMap.mem_ker.1 hx, map_zero, sub_zero] at this
 
 /- English proof (translation)
-Set `q : ∀ i, A i → Module.End ℂ (V i ⧸ K i)` to `fun i a => (K i).mapQ (K i) (act i a) (h2 i a)`. Set `π` to `map fun i => (K i).mkQ`. Establish `hk` using `ker_le K R hR`. Use `PositivityTheory.KReal.tensorIrr ι A (fun i => V i ⧸ K i) q (fun i => (rank_quotient_le _).trans (hr i)) (fun i => Submodule.Quotient.nontrivial_iff.2 (h1 i)) (fun i N hN => by` as an intermediate fact. Break down `h3 i (N.comap (K i).mkQ) (fun x hx => by simp [(Submodule.Quotient.mk_eq_zero _).2 hx]) (fun a x hx => hN a _ hx) with e | e` into its components or cases.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Or.inl (eq_bot_iff.2 fun y hy => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(K i).mkQ_surjective y`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (e ▸ hy : x ∈ K i)`. Use `Or.inr (eq_top_iff.2 fun y _ => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(K i).mkQ_surjective y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `(e ▸ Submodule.mem_top : x ∈ N.comap (K i).mkQ))`. Use the proof step `(P.map π) (by`. Introduce and unpack `i a _ ⟨x, hx, rfl⟩`. Use `⟨_, hP i a x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, ← map_comp, ← map_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Simplify using `[Function.update_of_ne h])`. Break down `this with e | e` into its components or cases. Conclude with `Or.inl fun x hx => hk ((Submodule.eq_bot_iff _).1 e _ ⟨x, hx, rfl⟩)`. Use `Or.inr (eq_top_iff.2 fun x _ => ?_)` and prove the remaining obligations.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨y, hy, e'⟩ : π x ∈ P.map π` from `e ▸ Submodule.mem_top`. Establish `: x - y ∈ P` using `hRP (hk (show π (x - y) = 0 by rw [map_sub, e', sub_self]))`. Simplify using `using P.add_mem this hy`.
+A detailed English derivation is pending.
 -/
 theorem tens_max {A : ι → Type} (act : ∀ i, A i → Module.End ℂ (V i)) (K : ∀ i, Submodule ℂ (V i))
     (hr : ∀ i, Module.rank ℂ (V i) ≤ Cardinal.aleph0) (h1 : ∀ i, K i ≠ ⊤) (h2 : ∀ i a, ∀ x ∈ K i, act i a x ∈ K i)

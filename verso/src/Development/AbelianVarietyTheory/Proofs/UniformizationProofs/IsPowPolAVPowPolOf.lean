@@ -70,7 +70,7 @@ Both sides reduce to the same expression.
 @[simp] theorem powPol_g (P : PolAV S) (j : ℕ) : (powPol P j).g = j * P.g := rfl
 
 /- English proof (translation)
-Introduce `_ P j` and use `⟨powPol P j, isPowPolAV_powPol P j, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_powPolAV : ∀ (S : Scheme.{0}) (P : PolAV S) (j : ℕ),
     ∃ (P' : PolAV S) (_ : IsPowPolAV P' P j), P'.g = j * P.g :=

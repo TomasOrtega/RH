@@ -33,7 +33,7 @@ def imA : AddSubgroup (AE F E) where
     rw [ha]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => show Algebra.TensorProduct.map _ _ (Algebra.TensorProduct.map _ _ (a ⊗ₜ[F] x)) = a ⊗ₜ[F] x`. Simplify using `[hσ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem cA_cA (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -44,16 +44,14 @@ theorem cA_cA (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : cA σ (cA σ z) = z :=
     simp [hσ]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_imA {z : AE F E} : z ∈ imA σ ↔ cA σ z = -z := Iff.rfl
 
 variable (F E) in
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
-
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Conclude with `⟨inferInstance, e.isClosedEmbedding.locallyCompactSpace, e.secondCountableTopology, e.isEmbedding.t2Space⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem topAE : IsTopologicalRing (AE F E) ∧ LocallyCompactSpace (AE F E) ∧ SecondCountableTopology (AE F E) ∧
     T2Space (AE F E) := by
@@ -67,7 +65,7 @@ theorem topAE : IsTopologicalRing (AE F E) ∧ LocallyCompactSpace (AE F E) ∧ 
   exact ⟨inferInstance, e.isClosedEmbedding.locallyCompactSpace, e.secondCountableTopology, e.isEmbedding.t2Space⟩
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI := (topAE F E).1`. Conclude with `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cA : Continuous (cA σ) := by
   haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
@@ -75,7 +73,7 @@ theorem continuous_cA : Continuous (cA σ) := by
   exact IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap
 
 /- English proof (translation)
-Take `⟨h1, -, -, h4⟩` from `topAE F E`. Use `haveI := h1`. Conclude with `isClosed_eq (continuous_cA σ) continuous_neg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isClosed_imA : IsClosed (imA σ : Set (AE F E)) := by
   obtain ⟨h1, -, -, h4⟩ := topAE F E
@@ -83,11 +81,9 @@ theorem isClosed_imA : IsClosed (imA σ : Set (AE F E)) := by
   exact isClosed_eq (continuous_cA σ) continuous_neg
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `topAE F E`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → AE F E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (GL (Fin n) (AE F E)) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin n) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : T2Space (GL (Fin n) (AE F E)) := Units.isEmbedding_embedProduct.t2Space`. Establish `hs : Continuous (cA σ)` using `continuous_cA σ`. Establish `hc : IsClosed (UG (cA σ) (incM F J) : Set (GL (Fin n) (AE F E)))`.
-
-Establish `hv : Continuous fun g : GL (Fin n) (AE F E) => (g : Matrix (Fin n) (Fin n) (AE F E))` using `Units.continuous_val`. Conclude with `isClosed_eq ((hv.matrix_transpose.matrix_mul continuous_const).matrix_mul (hv.matrix_map hs)) continuous_const`. Conclude with `⟨inferInstance, hc.isClosedEmbedding_subtypeVal.locallyCompactSpace, hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology, inferInstanceAs (T2Space (UG (cA σ) (incM F J)))⟩`.
+A detailed English derivation is pending.
 -/
 theorem topUA {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     IsTopologicalGroup (UA σ J) ∧ LocallyCompactSpace (UA σ J) ∧ SecondCountableTopology (UA σ J) ∧

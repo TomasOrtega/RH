@@ -25,20 +25,20 @@ section General
 variable {X Y Y' W W' : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Rewrite using `[← gs_pull ρ r z U h, gs_stalkMap ρ z _ h, gs_pull (𝟙 _) r (ρ z) U h, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_comp (ρ : W' ⟶ W) (r : W ⟶ Y) (z : W') (U : Y.Opens) (h : r (ρ z) ∈ U) (a : Γ(Y, U)) :
     gs (ρ ≫ r) z U a = (ρ.stalkMap z).hom (gs r (ρ z) U a) := by
   rw [← gs_pull ρ r z U h, gs_stalkMap ρ z _ h, gs_pull (𝟙 _) r (ρ z) U h, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[gs_eq r z ⊤ trivial, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_one (r : W ⟶ Y) (z : W) : gs r z ⊤ 1 = 1 := by
   rw [gs_eq r z ⊤ trivial, map_one, map_one]
 
 /- English proof (translation)
-Rewrite using `[sval_of s (ρ ≫ r) z J (fun k => J (ρ ≫ r ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `gs_comp ρ r z _ (Set.mem_iInter.2 fun k => hJ (ρ ≫ r ≫ φ k)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sval_comp {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (ρ : W' ⟶ W) (r : W ⟶ Y) (z : W')
     {J : (W' ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -47,7 +47,7 @@ theorem sval_comp {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinCom
   exact gs_comp ρ r z _ (Set.mem_iInter.2 fun k => hJ (ρ ≫ r ≫ φ k)) _
 
 /- English proof (translation)
-Take `rfl : (fun k => h ≫ φ k) = φ'` from `funext e`. Conclude with `⟨DVR.pullSec L φ ε s h, fun W r z J hJ => DVR.SectionScalarValuation.sval_pullSec φ ε s h r z hJ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pull {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y)
     {φ' : K → (Y' ⟶ X)} (e : ∀ k, h ≫ φ k = φ' k) : ∃ s' : LB.Sec (LB.LinComb L φ' ε),
@@ -56,9 +56,9 @@ theorem exists_pull {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinC
   exact ⟨DVR.pullSec L φ ε s h, fun W r z J hJ => DVR.SectionScalarValuation.sval_pullSec φ ε s h r z hJ⟩
 
 /- English proof (translation)
-Establish `: u.f = t.f` using `funext fun j => by`. Use `hκ (LB.wchart L φ j) (fn_ext fun y hy => ?_)` and prove the remaining obligations. Use `choose I hI using fun χ : Y' ⟶ X => exists_chart hL (χ y)`. Use `(gs_pull (𝟙 Y') κ y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 Y') κ y _ hy _).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Conclude with `(sec_trans u κ y hy (Good.mem hI φ κ)).trans ((congrArg _ (h y I hI)).trans (sec_trans t κ y hy (Good.mem hI φ κ)).symm)`. Consider the cases of `u`. Consider the cases of `t`. Consider the cases of `this`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sec_ext_of_inj (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (κ : Y' ⟶ Y) (hκ : ∀ U : Y.Opens, Function.Injective (κ.app U).hom)
@@ -83,9 +83,9 @@ abbrev sv {T : Over S} (s : LB.Sec (LPow G L (N : ℤ) T)) {W : Scheme.{0}} (r :
   sval (L := L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) s r z J
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H W r z J hJ`. Establish `e` using `congrArg (r.stalkMap z).hom (H (r z) (fun ψ => J (r ≫ ψ)) (fun ψ => hJ (r ≫ ψ)))`. Rewrite `e` using `[map_sum]`. Use `((congrArg (fun q => sv s q z J) (Category.comp_id r).symm).trans (sval_comp _ r _ z hJ)).trans (e.trans (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, ← gs_comp r _ z ⊤ trivial]`. Conclude with `congrArg _ (sval_comp _ r _ z hJ).symm`. Introduce `H z J hJ`. Simplify `H _ (𝟙 _) z J hJ` using `only [Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lin_iff {T T' : Over S} (h : T' ⟶ T) {n : ℕ} (b : Fin n → LB.Sec (LPow G L (N : ℤ) T))
     (c : Fin n → Γ(T'.left, ⊤)) (s : LB.Sec (LPow G L (N : ℤ) T')) :
@@ -106,21 +106,21 @@ def IsPull {T T' : Over S} (u : T' ⟶ T) (s : LB.Sec (LPow G L (N : ℤ) T)) (s
   ∀ (W : Scheme.{0}) (r : W ⟶ (T' ⊗ G).left) (z : W) (J), Good L z J → sv s' r z J = sv s (r ≫ (u ▷ G).left) z J
 
 /- English proof (translation)
-The claim follows from `exists_pull (L := L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) s (u ▷ G).left (φ' := fun _ : Fin 1 => (snd T' G).left) (fun _ => by rw [← Over.comp_left, whiskerRight_snd])`.
+A detailed English derivation is pending.
 -/
 theorem exists_isPull {T T' : Over S} (u : T' ⟶ T) (s : LB.Sec (LPow G L (N : ℤ) T)) : ∃ s', IsPull u s s' :=
   exists_pull (L := L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) s (u ▷ G).left
     (φ' := fun _ : Fin 1 => (snd T' G).left) (fun _ => by rw [← Over.comp_left, whiskerRight_snd])
 
 /- English proof (translation)
-Introduce `W r z J hJ` and use `by rw [(lin_iff _ _ _ _).1 H W r z J hJ, Fin.sum_univ_one, gs_one, _root_.one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPull_of_lin {T T' : Over S} {u : T' ⟶ T} {s : LB.Sec (LPow G L (N : ℤ) T)} {s' : LB.Sec (LPow G L (N : ℤ) T')}
     (H : Lin G L N u (fun _ : Fin 1 => s) (fun _ => 1) s') : IsPull u s s' := fun W r z J hJ => by
   rw [(lin_iff _ _ _ _).1 H W r z J hJ, Fin.sum_univ_one, gs_one, _root_.one_mul]
 
 /- English proof (translation)
-Introduce `W r z J hJ` and use `by rw [H W _ z J hJ, Category.assoc, ← Over.comp_left, ← comp_whiskerRight, he, id_whiskerRight, Over.id_left, Category.comp_id]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsPull.retract {T T' : Over S} {p : T' ⟶ T} {e : T ⟶ T'} (he : e ≫ p = 𝟙 T)
     {s : LB.Sec (LPow G L (N : ℤ) T)} {s' : LB.Sec (LPow G L (N : ℤ) T')} (H : IsPull p s s') : IsPull e s' s :=
@@ -129,9 +129,9 @@ theorem IsPull.retract {T T' : Over S} {p : T' ⟶ T} {e : T ⟶ T'} (he : e ≫
       Category.comp_id]
 
 /- English proof (translation)
-Rewrite `H`, the goal using `[lin_iff]`. Introduce `W r z J hJ`. Rewrite using `[hs W r z J hJ, H W _ z J hJ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hb i W _ z J hJ, id_whiskerRight, id_whiskerRight, Over.id_left, Over.id_left, Category.comp_id, Category.comp_id, Category.assoc, ← Over.comp_left, whiskerRight_fst, Over.comp_left, ← Category.assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· * _) (gs_pull _ u.left z ⊤ trivial _).symm`.
+A detailed English derivation is pending.
 -/
 theorem lin_pull {T T' : Over S} (u : T' ⟶ T) {n : ℕ} {b : Fin n → LB.Sec (LPow G L (N : ℤ) T)}
     {b' : Fin n → LB.Sec (LPow G L (N : ℤ) T')} {s s'} (hb : ∀ i, IsPull u (b i) (b' i)) (hs : IsPull u s s')
@@ -146,9 +146,9 @@ theorem lin_pull {T T' : Over S} (u : T' ⟶ T) {n : ℕ} {b : Fin n → LB.Sec 
   exact congrArg (· * _) (gs_pull _ u.left z ⊤ trivial _).symm
 
 /- English proof (translation)
-Introduce `s`. Take `⟨s', hs⟩` from `exists_isPull p s`. Take `⟨c, hc, hu⟩` from `H s'`. Use `⟨_, lin_pull e (fun i => (hb i).retract he) (hs.retract he) hc, fun c' hc' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu _ (lin_pull p hb hs hc')]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Establish `: p.left.appTop ≫ e.left.appTop = 𝟙 _`. Rewrite using `[← Scheme.Hom.comp_appTop, ← Over.comp_left, he, Over.id_left, Scheme.Hom.id_appTop]`. Conclude with `(congrArg (fun q => q.hom (c' i)) this).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_of_retract {T T' : Over S} {p : T' ⟶ T} {e : T ⟶ T'} (he : e ≫ p = 𝟙 T) {n : ℕ}
     {b : Fin n → LB.Sec (LPow G L (N : ℤ) T)} {b' : Fin n → LB.Sec (LPow G L (N : ℤ) T')}
@@ -164,7 +164,7 @@ theorem basis_of_retract {T T' : Over S} {p : T' ⟶ T} {e : T ⟶ T'} (he : e �
   exact (congrArg (fun q => q.hom (c' i)) this).symm
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := (snd T G).left) (v₁₃ := G.hom) (h₂₂ := T.hom) ?_ ?_ (IsPullback.of_hasPullback T.hom G.hom).flip` and prove the remaining obligations. Rewrite using `[← Over.comp_left, whiskerRight_snd, Over.w]`. Conclude with `(IsPullback.of_hasPullback T'.hom G.hom).flip`. Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whisker_isPullback {T T' : Over S} (u : T' ⟶ T) :
     IsPullback (u ▷ G).left (fst T' G).left (fst T G).left u.left := by
@@ -175,19 +175,17 @@ theorem whisker_isPullback {T T' : Over S} (u : T' ⟶ T) :
   · rw [← Over.comp_left, whiskerRight_fst, Over.comp_left]
 
 /- English proof (translation)
-Set `K` to `FractionRing R`. Establish `: CharZero K` using `charZero_of_injective_algebraMap (IsFractionRing.injective R K)`. Set `C : K →+* PowerSeries K` to `PowerSeries.C`. Establish `hV : CDvr (PowerSeries K)` using `⟨inferInstance, by rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance, charZero_of_injective_ringHom (f := C) C.injective⟩`. Establish `hh : spMap ((algebraMap (PowerSeries K) (FractionRing (PowerSeries K))).comp C) ≫ x = jK (PowerSeries K) ≫ spMap C ≫ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨b', hb', hs⟩` from `H (PowerSeries K) hV (C.comp (algebraMap R K)) ((algebraMap (PowerSeries K) (FractionRing (PowerSeries K))).comp C) (fun _ => rfl) (spMap C ≫ x) hh`. Set `p : Over.mk (spMap C ≫ x) ⟶ Over.mk x` to `Over.homMk (spMap C) rfl`. Establish `hcc : spMap (PowerSeries.constantCoeff (R` using `K)) ≫ spMap C = 𝟙 _ := by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, PowerSeries.constantCoeff_comp_C, CommRingCat.ofHom_id, Spec.map_id]`. Set `e : Over.mk x ⟶ Over.mk (spMap C ≫ x)` to `Over.homMk (spMap (PowerSeries.constantCoeff (R := K))) (by show _ ≫ spMap C ≫ x = x; rw [← Category.assoc, hcc, Category.id_comp])`. Use `basis_of_retract (p := p) (e := e) (Over.OverMorphism.ext hcc) (fun i => ?_) hb'` and prove the remaining obligations. Take `⟨s, h₁, h₂⟩` from `hs i`. Take `⟨f', hf'⟩` from `exists_isPull p (f i)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `κ : Over.mk (jK (PowerSeries K) ≫ spMap C ≫ x) ⟶ Over.mk (spMap C ≫ x)` to `Over.homMk (jK (PowerSeries K)) rfl`. Establish `: IsDominant (jK (PowerSeries K))` using `DVR.isDominant_jK`. Establish `: IsSchemeTheoreticallyDominant κ.left` using `IsSchemeTheoreticallyDominant.of_isDominant (jK (PowerSeries K))`. Establish `: QuasiCompact κ.left` using `inferInstanceAs (QuasiCompact (jK (PowerSeries K)))`. Establish `: Flat (fst (Over.mk (spMap C ≫ x)) G).left` using `inferInstanceAs (Flat (pullback.fst (spMap C ≫ x) G.hom))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSchemeTheoreticallyDominant (κ ▷ G).left` using `IsSchemeTheoreticallyDominant.of_isPullback (whisker_isPullback κ).flip`. Establish `: QuasiCompact (κ ▷ G).left` using `MorphismProperty.of_isPullback (whisker_isPullback κ).flip inferInstance`. Establish `: f' = b' i` using `sec_ext_of_inj (φ := fun _ : Fin 1 => (snd (Over.mk (spMap C ≫ x)) G).left) (ε := fun _ => (N : ℤ)) hL (κ ▷ G).left (κ ▷ G).left.app_injective fun y J hJ => by`. Establish `a₁` using `isPull_of_lin h₁ _ (𝟙 _) y J hJ`. Establish `a₂` using `isPull_of_lin h₂ _ (𝟙 _) y J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a₁`, `a₂` using `[Category.id_comp]`. Use `(hf' _ _ y J hJ).trans (Eq.trans ?_ (a₁.symm.trans a₂))` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← comp_whiskerRight]`. Use `congr 3`. Conclude with `Over.OverMorphism.ext (Spec.map_comp _ _).symm`.
-
-Conclude with `this ▸ hf'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem basis_of_isFrame [Flat G.hom] (hL : L.IsLB) {R : Type} [CommRing R] [IsDomain R] [CharZero R]
     (x : Sp (FractionRing R) ⟶ S) {n : ℕ} (f : Fin n → LB.Sec (LPow G L (N : ℤ) (Over.mk x)))
@@ -244,7 +242,7 @@ def TransportedAlt (w : LB.Iso L (L₀.pull F)) {T : Over Z} {T₀ : Over S} (Φ
 variable {w : LB.Iso L (L₀.pull F)}
 
 /- English proof (translation)
-Establish `hψ : ∀ _ : Fin 1, (snd T G).left ≫ F = Φ ≫ (snd T₀ G₀).left` using `fun _ => hΦ.symm`. Take `⟨a, ha⟩` from `exists_secThrough (φ' := fun _ : Fin 1 => (snd T G).left) (φ := fun _ : Fin 1 => (snd T₀ G₀).left) (ε := fun _ => (N : ℤ)) hw hL₀ hL hψ t`. Conclude with `⟨a, fun W r z J₀ J h₀ h => (ha.sval hψ r h₀ h).trans (by rw [Fin.prod_univ_one])⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_thr_down (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {T : Over Z} {T₀ : Over S}
     {Φ : (T ⊗ G).left ⟶ (T₀ ⊗ G₀).left} (hΦ : Φ ≫ (snd T₀ G₀).left = (snd T G).left ≫ F)
@@ -255,9 +253,9 @@ theorem exists_thr_down (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {T : Ov
   exact ⟨a, fun W r z J₀ J h₀ h => (ha.sval hψ r h₀ h).trans (by rw [Fin.prod_univ_one])⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_sec_up (φ' := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) ((isGen_iff w).1 hw) hL₀ hL a`. Establish `H : SecThrough w (fun _ : Fin 1 => (snd T G).left) (fun _ => (snd T G).left ≫ F) (fun _ => (N : ℤ)) a t (𝟙 _)` using `fun Z r z p q hp hq => by`. Rewrite using `[Category.comp_id]`. Conclude with `ht Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)`. Take `⟨t', ht'⟩` from `exists_pull t Ψ (φ' := fun _ : Fin 1 => (snd T₀ G₀).left) (fun _ => hΨ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t', fun W r z J₀ J h₀ hJ => (ht' W _ z J₀ h₀).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h]`. Conclude with `(H.sval (fun _ => (Category.id_comp _).symm) r h₀ hJ).trans (by rw [Fin.prod_univ_one])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_thr_up (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {T : Over Z} {T₀ : Over S}
     {Φ : (T ⊗ G).left ⟶ (T₀ ⊗ G₀).left} {Ψ : (T₀ ⊗ G₀).left ⟶ (T ⊗ G).left}
@@ -275,7 +273,7 @@ theorem exists_thr_up (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {T : Over
   exact (H.sval (fun _ => (Category.id_comp _).symm) r h₀ hJ).trans (by rw [Fin.prod_univ_one])
 
 /- English proof (translation)
-Establish `e : ∀ i, sv (b₀ i) ((r ≫ Φ') ≫ (h₀ ▷ G₀).left) z J₀ = (wVal w z J₀ J (r ≫ (snd T' G).left) ^ (N : ℤ)).val * sv (b i) (r ≫ (h ▷ G).left) z J` using `fun i => by`. Rewrite using `[Category.assoc, hc, ← Category.assoc, hb i W _ z J₀ J hJ₀ hJ, Category.assoc, ← Over.comp_left, whiskerRight_snd]`. Rewrite using `[hs W r z J₀ J hJ₀ hJ]`. Simplify using `only [e, mul_left_comm (c _), ← Finset.mul_sum]`. Conclude with `Units.mul_right_inj _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_at_iff {T T' : Over Z} {T₀ T₀' : Over S} {h : T' ⟶ T} {h₀ : T₀' ⟶ T₀}
     {Φ : (T ⊗ G).left ⟶ (T₀ ⊗ G₀).left} {Φ' : (T' ⊗ G).left ⟶ (T₀' ⊗ G₀).left}
@@ -295,7 +293,7 @@ theorem lin_at_iff {T T' : Over Z} {T₀ T₀' : Over S} {h : T' ⟶ T} {h₀ : 
   exact Units.mul_right_inj _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pullback.lift ((fst T G).left ≫ u) ((snd T G).left ≫ F) (by rw [Category.assoc, hu, Category.assoc, hF.w, ← Category.assoc, Over.w, ← Category.assoc, Over.w]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_cmp (hF : IsPullback F G.hom G₀.hom π) {T : Over Z} {T₀ : Over S} (u : T.left ⟶ T₀.left)
     (hu : u ≫ T₀.hom = T.hom ≫ π) : ∃ Φ : (T ⊗ G).left ⟶ (T₀ ⊗ G₀).left,
@@ -305,14 +303,14 @@ theorem exists_cmp (hF : IsPullback F G.hom G₀.hom π) {T : Over Z} {T₀ : Ov
     pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem prod_ext {T₀ : Over S} {W : Scheme.{0}} {a b : W ⟶ (T₀ ⊗ G₀).left}
     (h₁ : a ≫ (fst T₀ G₀).left = b ≫ (fst T₀ G₀).left) (h₂ : a ≫ (snd T₀ G₀).left = b ≫ (snd T₀ G₀).left) : a = b :=
   pullback.hom_ext h₁ h₂
 
 /- English proof (translation)
-Apply `prod_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← Over.comp_left, whiskerRight_fst, Over.comp_left, reassoc_of% b₁, e, Category.assoc, a₁, ← Category.assoc (h ▷ G).left, ← Over.comp_left, whiskerRight_fst, Over.comp_left, Category.assoc]`. Rewrite using `[Category.assoc, ← Over.comp_left, whiskerRight_snd, b₂, Category.assoc, a₂, ← Category.assoc (h ▷ G).left, ← Over.comp_left, whiskerRight_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmp_comm {T T' : Over Z} {T₀ T₀' : Over S} {h : T' ⟶ T} {h₀ : T₀' ⟶ T₀}
     {Φ : (T ⊗ G).left ⟶ (T₀ ⊗ G₀).left} {Φ' : (T' ⊗ G).left ⟶ (T₀' ⊗ G₀).left} {u : T.left ⟶ T₀.left}
@@ -327,9 +325,9 @@ theorem cmp_comm {T T' : Over Z} {T₀ T₀' : Over S} {h : T' ⟶ T} {h₀ : T�
       ← Category.assoc (h ▷ G).left, ← Over.comp_left, whiskerRight_snd]
 
 /- English proof (translation)
-Rewrite `H`, the goal using `[lin_iff]`. Introduce `W r z J hJ`. Take `⟨J₀, hJ₀⟩` from `exists_good' hL₀ z`. Use `H W (r ≫ Φ') z J₀ hJ₀` as an intermediate fact. Simplify using `only [gs_one] at this ⊢`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(lin_at_iff hc (fun _ : Fin 1 => hb) hs r z hJ₀ hJ (fun _ => 1)).1 this`.
+A detailed English derivation is pending.
 -/
 theorem lin_one_down (hL₀ : L₀.IsLB) {T T' : Over Z} {T₀ T₀' : Over S} {h : T' ⟶ T} {h₀ : T₀' ⟶ T₀}
     {Φ : (T ⊗ G).left ⟶ (T₀ ⊗ G₀).left} {Φ' : (T' ⊗ G).left ⟶ (T₀' ⊗ G₀).left}
@@ -345,17 +343,17 @@ theorem lin_one_down (hL₀ : L₀.IsLB) {T T' : Over Z} {T₀ T₀' : Over S} {
   exact (lin_at_iff hc (fun _ : Fin 1 => hb) hs r z hJ₀ hJ (fun _ => 1)).1 this
 
 /- English proof (translation)
-Establish `w₀ : (snd (Over.mk (χ ≫ π)) G₀).left ≫ G₀.hom = ((fst (Over.mk (χ ≫ π)) G₀).left ≫ χ) ≫ π`. Rewrite using `[Category.assoc]`. Conclude with `pullback.condition.symm`. Take `⟨Ψ, c₁, c₂⟩ : ∃ Ψ : (Over.mk (χ ≫ π) ⊗ G₀).left ⟶ (Over.mk χ ⊗ G).left, Ψ ≫ (fst (Over.mk χ) G).left = (fst (Over.mk (χ ≫ π)) G₀).left ∧ Ψ ≫ (snd (Over.mk χ) G).left = hF.lift _ _ w₀` from `⟨pullback.lift (fst (Over.mk (χ ≫ π)) G₀).left (hF.lift _ _ w₀) (hF.lift_snd _ _ w₀).symm, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `c₃ : Ψ ≫ (snd (Over.mk χ) G).left ≫ F = (snd (Over.mk (χ ≫ π)) G₀).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% c₂, hF.lift_fst]`. Establish `i₁ : Ψ ≫ Φ = 𝟙 _` using `prod_ext (by rw [Category.assoc, a₁, c₁, Category.id_comp]) (by rw [Category.assoc, a₂, c₃, Category.id_comp])`. Establish `i₂ : Φ ≫ Ψ = 𝟙 _` using `prod_ext (by rw [Category.assoc, c₁, a₁, Category.id_comp]) (by`. Rewrite using `[Category.id_comp]`. Apply `hF.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, c₃, a₂]`. Rewrite using `[Category.assoc, Category.assoc, reassoc_of% c₂, hF.lift_snd, reassoc_of% a₁]`. Conclude with `pullback.condition)`. Establish `hc : Φ ≫ (𝟙 (Over.mk (χ ≫ π)) ▷ G₀).left = (𝟙 (Over.mk χ) ▷ G).left ≫ Φ`. Rewrite using `[id_whiskerRight, id_whiskerRight, Over.id_left, Over.id_left, Category.comp_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `s`. Take `⟨s₀, hs⟩` from `exists_thr_up hw hL₀ hL c₃ i₂ s`. Use `(existsUnique_congr fun c => ?_).1 (H s₀)` and prove the remaining obligations. Rewrite using `[lin_iff, lin_iff]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `H W r z J hJ`. Take `⟨J₀, hJ₀⟩` from `exists_good' hL₀ z`. Use `H W (r ≫ Φ) z J₀ hJ₀` as an intermediate fact. Rewrite `this` using `[Category.assoc r Φ (fst (Over.mk (χ ≫ π)) G₀).left, a₁]`. Conclude with `(lin_at_iff hc hb hs r z hJ₀ hJ _).1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `H W r z J₀ hJ₀`. Take `⟨J, hJ⟩` from `exists_good' hL z`. Use `(lin_at_iff hc hb hs (r ≫ Ψ) z hJ₀ hJ _).2 (H W (r ≫ Ψ) z J hJ)` as an intermediate fact. Rewrite `this` using `[Category.assoc r Ψ Φ, i₁, Category.comp_id, Category.assoc r Ψ, c₁]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_down (hF : IsPullback F G.hom G₀.hom π) (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {V : Scheme.{0}}
     (χ : V ⟶ Z) {Φ : (Over.mk χ ⊗ G).left ⟶ (Over.mk (χ ≫ π) ⊗ G₀).left}
@@ -399,11 +397,11 @@ theorem basis_down (hF : IsPullback F G.hom G₀.hom π) (hw : w.IsGen) (hL₀ :
     exact this
 
 /- English proof (translation)
-Take `⟨Φ, a₁, a₂⟩` from `exists_cmp hF (T := Over.mk x) (T₀ := Over.mk x₁) (spMap gam) hx.symm`. Use `choose f hf using fun i => exists_thr_down hw hL₀ hL a₂ (f₁ i)`. Use `⟨f, fun W _ _ _ hW φ gam' hg' χ h => ?_⟩` and prove the remaining obligations. Establish `e : spMap (gam'.comp gam) = spMap gam' ≫ spMap gam` using `Spec.map_comp _ _`. Establish `h₀ : spMap (gam'.comp gam) ≫ x₁ = jK W ≫ χ ≫ π`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Category.assoc, ← hx, reassoc_of% h]`. Take `⟨b₀, hb₀, hs⟩` from `H W hW (φ.comp g) (gam'.comp gam) (fun r => (congrArg gam' (hg r)).trans (hg' _)) (χ ≫ π) h₀`. Take `⟨Φ₁, b₁, b₂⟩` from `exists_cmp hF (T := Over.mk χ) (T₀ := Over.mk (χ ≫ π)) (𝟙 (Sp W)) (Category.id_comp _)`. Take `⟨Φ₂, c₁, c₂⟩` from `exists_cmp hF (T := Over.mk (jK W ≫ χ)) (T₀ := Over.mk (jK W ≫ χ ≫ π)) (𝟙 (Sp (FractionRing W))) ((Category.id_comp _).trans (Category.assoc _ _ _).symm)`. Use `choose b hb using fun i => exists_thr_down hw hL₀ hL b₂ (b₀ i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨b, basis_down hF hw hL₀ hL χ (b₁.trans (Category.comp_id _)) b₂ hb hb₀, fun i => ?_⟩` and prove the remaining obligations. Take `⟨s₀, k₁, k₂⟩` from `hs i`. Take `⟨s, hs⟩` from `exists_thr_down hw hL₀ hL c₂ s₀`. Conclude with `⟨s, lin_one_down hL₀ (cmp_comm a₁ a₂ c₁ c₂ ((Category.id_comp _).trans e)) (hf i) hs k₁, lin_one_down hL₀ (cmp_comm b₁ b₂ c₁ c₂ ((Category.id_comp _).trans (Category.comp_id _).symm)) (hb i) hs k₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isFrame (hF : IsPullback F G.hom G₀.hom π) (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB)
     {R₁ R : Type} [CommRing R₁] [IsDomain R₁] [CommRing R] [IsDomain R] (g : R₁ →+* R)
@@ -431,7 +429,7 @@ theorem exists_isFrame (hF : IsPullback F G.hom G₀.hom π) (hw : w.IsGen) (hL�
 end TwoBases
 
 /- English proof (translation)
-Introduce `_ _ E _ _ _ H S Z t₀ t π m R₁ R _ _ _ _ _ g gam hg x₁ x hx _ N n f₁ hf₁`. Take `⟨w, hw, -⟩` from `m.lin`. Take `⟨f, hf⟩` from `exists_isFrame m.cart.1 hw t₀.PP.isLB t.PP.isLB g gam hg x₁ x hx f₁ hf₁`. Use `t.semi.smooth` as an intermediate fact. Conclude with `⟨f, hf, basis_of_isFrame t.PP.isLB x f hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem frame_pull : Laws → Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S Z : Scheme.{0}) (t₀ : SAB H S) (t : SAB H Z) (π : Z ⟶ S) (_ : SABMap t t₀ π) (R₁ R : Type) [CommRing R₁] [IsDomain R₁] [CommRing R] [IsDomain R] [CharZero R] (g : R₁ →+* R) (gam : FractionRing R₁ →+* FractionRing R), (∀ r, gam (algebraMap R₁ _ r) = algebraMap R _ (g r)) → ∀ (x₁ : Sp (FractionRing R₁) ⟶ S) (x : Sp (FractionRing R) ⟶ Z), x ≫ π = spMap gam ≫ x₁ → PolAt t₀ x₁ → ∀ (N n : ℕ) (f₁ : Fin n → LB.Sec (LPow t₀.G t₀.PP.L (N : ℤ) (Over.mk x₁))), IsFrame t₀.G t₀.PP.L N x₁ f₁ → ∃ f : Fin n → LB.Sec (LPow t.G t.PP.L (N : ℤ) (Over.mk x)), IsFrame t.G t.PP.L N x f ∧ BasisAlong t.G t.PP.L N (𝟙 _) f := by
   intro _ _ E _ _ _ H S Z t₀ t π m R₁ R _ _ _ _ _ g gam hg x₁ x hx _ N n f₁ hf₁

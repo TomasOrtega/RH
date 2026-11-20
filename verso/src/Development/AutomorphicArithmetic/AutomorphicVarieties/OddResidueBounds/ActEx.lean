@@ -4,17 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Stic
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ N _ hf`. Take `⟨f⟩` from `hf`. Use `haveI : NeZero (N : ℚ) := ⟨by exact_mod_cast NeZero.ne N⟩`. Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ`. Use `letI : Algebra E (CyclotomicField N ℚ) := f.toRingHom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsScalarTower ℚ E (CyclotomicField N ℚ) := IsScalarTower.of_algebraMap_eq' f.comp_algebraMap.symm`. Use `haveI : IsAbelianGalois ℚ (CyclotomicField N ℚ) := IsCyclotomicExtension.isAbelianGalois {N} ℚ (CyclotomicField N ℚ)`. Use `haveI : IsAbelianGalois ℚ E := IsAbelianGalois.tower_bot ℚ E (CyclotomicField N ℚ)`. Use `haveI : Algebra.IsAlgebraic E (CyclotomicField N ℚ) := Algebra.IsAlgebraic.tower_top (K := ℚ) E`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Set `g : CyclotomicField N ℚ →ₐ[E] Ω` to `IsAlgClosed.lift`. Use `⟨(AlgEquiv.restrictNormalHom E).comp (IsCyclotomicExtension.Rat.galEquivZMod N (CyclotomicField N ℚ)).symm.toMonoidHom, ?_⟩` and prove the remaining obligations. Introduce `b σ hσ x`. Use `set τ := (IsCyclotomicExtension.Rat.galEquivZMod N (CyclotomicField N ℚ)).symm b with hτ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hζ` using `IsCyclotomicExtension.zeta_spec N ℚ (CyclotomicField N ℚ)`. Establish `key : ∀ y : CyclotomicField N ℚ, σ (g y) = g (τ y)`. Establish `hcomp : (σ.toRingHom.comp (g : CyclotomicField N ℚ →+* Ω)).toRatAlgHom = ((g : CyclotomicField N ℚ →+* Ω).comp (τ : CyclotomicField N ℚ →+* CyclotomicField N ℚ)).toRatAlgHom`. Apply `(hζ.powerBasis ℚ).algHom_ext` to reduce the goal to its premises. Simplify using `only [IsPrimitiveRoot.powerBasis_gen, RingHom.toRatAlgHom_apply, RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, AlgHom.coe_toRingHom]`.
-
-Establish `h1 : (g (IsCyclotomicExtension.zeta N ℚ (CyclotomicField N ℚ))) ^ N = 1`. Rewrite using `[← map_pow, hζ.pow_eq_one, map_one]`. Express the relevant statement in the definitionally equal form `σ (g (IsCyclotomicExtension.zeta N ℚ (CyclotomicField N ℚ))) = g (τ (IsCyclotomicExtension.zeta N ℚ (CyclotomicField N ℚ)))`. Rewrite using `[hσ _ h1, IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq N _ τ hζ.pow_eq_one, map_pow, hτ, MulEquiv.apply_symm_apply]`. Introduce `y`.
-
-Conclude with `congrArg (fun φ => φ y) hcomp`. Express the relevant statement in the definitionally equal form `σ (algebraMap E Ω x) = algebraMap E Ω ((AlgEquiv.restrictNormal τ E) x)`. Rewrite using `[← g.commutes x, ← g.commutes, AlgEquiv.restrictNormal_commutes, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.actEx :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N], Nonempty (E →ₐ[ℚ] CyclotomicField N ℚ) → ∃ ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E), IsCycAct Ω N ρ := by

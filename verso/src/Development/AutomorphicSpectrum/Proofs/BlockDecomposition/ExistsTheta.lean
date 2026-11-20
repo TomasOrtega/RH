@@ -24,11 +24,9 @@ open CrystallineSemistableComparison.Onto
 variable {K : Type} [Field K] {n d : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ S, ∃ (θ : R0 K n d S →ₐ[K] C.R S) (hθ : ∀ b, θ (poly n K S b) = toR C S (phi C b)), IsBaseChange (Aa C) (thetaLin C θ hθ)`. Introduce `S`. Break down `S.eq_empty_or_nonempty with rfl | ⟨k, hk⟩` into its components or cases. Conclude with `GlobalTheory.T.chart_empty_base_change C`. Take `⟨θ₁, h₁, hu, hb⟩` from `GlobalTheory.T.chart_singleton_base_change C k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.T.chart_extend_base_change C S k hk θ₁ h₁ hu hb`. Use `choose θ hθ bc using key`. Use `⟨θ, hθ, ?_, bc⟩` and prove the remaining obligations. Introduce `S T h y`. Use `GlobalTheory.T.chart_base_change_map_unique C ((C.res h).comp (θ S)) ((θ T).comp (incl (cone_mono h))) (fun b => by rw [AlgHom.comp_apply, hθ, res_toR]) (fun b => by rw [AlgHom.comp_apply, incl_poly h, hθ]) (θ T) (hθ T) (bc T)` as an intermediate fact.
-
-Conclude with `DFunLike.congr_fun this y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_theta {A : Type} [CommRing A] [Algebra K A] (C : ChartRings K A n d) :
     ∃ (θ : ∀ S, R0 K n d S →ₐ[K] C.R S) (hθ : ∀ S b, θ S (poly n K S b) = toR C S (phi C b)),
@@ -49,9 +47,9 @@ theorem exists_theta {A : Type} [CommRing A] [Algebra K A] (C : ChartRings K A n
   exact DFunLike.congr_fun this y
 
 /- English proof (translation)
-Introduce `hu`. Establish `hneg : ∀ j, g (Sum.inr j) ≤ 0` using `fun j => by`. Establish `: j ∈ Tset g D` using `hu ▸ Finset.mem_univ j`. Break down `(Finset.mem_filter.1 this).2 with h | h` into its components or cases. Conclude with `h.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h.1.le`. Establish `: tdeg g ≤ 0` using `Finset.sum_nonpos fun j _ => hneg j`. Use `h.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem Tset_ne_univ (g : Gam n d) (D : Finset (E n d)) (h : good g D) : Tset g D ≠ Finset.univ := by
   intro hu
@@ -65,19 +63,19 @@ theorem Tset_ne_univ (g : Gam n d) (D : Finset (E n d)) (h : good g D) : Tset g 
   omega
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `GlobalTheory.T.monomial_forms_basis (K := K) (n := n) (d := d) a`. Use `GlobalTheory.T.finset_system_injective_extension (K := K) b (fun p => good p.1 p.2.1) (fun p => Tset p.1 p.2.1) (fun p h => Tset_ne_univ _ _ h) _ _ (fun S => ((omMap (K := K) (incl (le_top : (cone S : AddSubmonoid (Gam n d)) ≤ ⊤)) a).toAddMonoidHom).comp (relOm K (I0 n K S) a).su …` and prove the remaining obligations. Introduce `S x y hxy`. Conclude with `Subtype.ext (GlobalTheory.T.cone_forms_map_injective S a hxy)`. Introduce `S S' h x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `omMap _ a (omMap _ a (x : Om K (R0 K n d S) a)) = omMap _ a (x : Om K (R0 K n d S) a)`. Rewrite using `[omMap_comp, incl_comp]`. Introduce `S w`. Establish `hset : (b '' {l | good l.1 l.2.1 ∧ Tset l.1 l.2.1 ⊆ S}) = {w | ∃ (g : Gam n d) (D : {D : Finset (E n d) // D.card = a}), good g D.1 ∧ Tset g D.1 ⊆ S ∧ w = monW K g D}`. Use extensionality with `w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Conclude with `⟨p.1, p.2, hp.1, hp.2, hb p⟩`. Introduce and unpack `⟨g, D, h1, h2, rfl⟩`. Conclude with `⟨(g, D), ⟨h1, h2⟩, hb _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `GlobalTheory.T.relative_forms_map_mem_span S a _ x.2`. Introduce `hw`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨g, D, h1, h2, rfl⟩` from `hw`. Take `⟨ω, hω, e⟩` from `GlobalTheory.T.monomial_form_in_relative_image (K := K) S a g D h1 h2`. Conclude with `⟨⟨ω, hω⟩, e⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', rfl⟩` from `hx`. Take `⟨y', rfl⟩` from `hy`. Conclude with `⟨x' + y', map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c x _ hx`. Take `⟨x', rfl⟩` from `hx`. Conclude with `⟨c • x', map_smul (omMap (K := K) (incl (le_top : (cone S : AddSubmonoid (Gam n d)) ≤ ⊤)) a) c _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem model_ex (a : ℕ) : ExP (fun S : Finset (Fin d) => relOm K (I0 n K S) a)
     (fun {S T} h => relMap (incl (cone_mono h)) (cone_ideal_map_mono (S := S) (T := T) h) a) := by
@@ -119,17 +117,17 @@ theorem model_ex (a : ℕ) : ExP (fun S : Finset (Fin d) => relOm K (I0 n K S) a
         exact ⟨c • x', map_smul (omMap (K := K) (incl (le_top : (cone S : AddSubmonoid (Gam n d)) ≤ ⊤)) a) c _⟩
 
 /- English proof (translation)
-Introduce `K _ _ A _ _ n d hd C a P e he`. Take `⟨θ, hθ, nat, bc⟩` from `exists_theta C`. Use `haveI := etale_Aa C`. Establish `h1` using `model_ex (K := K) (n := n) (d := d) a`. Establish `h2 : ExP (fun S => relA C S a) (fun {S T} h => relMap (C.res h) (res_mem_I C (S` using `S) (T := T) h) a) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.finset_system_scalar_tower_ext (B := Bp K n d) (A := Aa C) (fun S => relOm K (I0 n K S) a) (fun S => relA C S a) _ ?_ _ ?_ (fun S => psi C (θ S) (hθ S) a) (fun S => GlobalTheory.T.chart_forms_base_change C (θ S) (hθ S) (bc S) a) ?_ h1` and prove the remaining obligations. Introduce `S T h`. Use `⟨map_add _, fun b ω => Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `omMap (incl (cone_mono h)) a ((b • ω : relOm K (I0 n K S) a) : Om K (R0 K n d S) a) = ((b • relMap (incl (cone_mono h)) (cone_ideal_map_mono h) a ω : relOm K (I0 n K T) a) : Om K (R0 K n d T) a)`. Establish `e1 : ∀ (U : Finset (Fin d)) (ω' : relOm K (I0 n K U) a), ((b • ω' : relOm K (I0 n K U) a) : Om K (R0 K n d U) a) = poly n K U b • (ω' : Om K (R0 K n d U) a)` using `fun U ω' => (algebraMap_smul (R0 K n d U) b (ω' : Om K (R0 K n d U) a)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e1, omMap_smul, incl_poly h]`. Both sides reduce to the same expression. Introduce `S T h`. Use `⟨map_add _, fun c y => Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `omMap (C.res h) a (toR C S c • (y : relOm K (C.I S) a).1) = toR C T c • omMap (C.res h) a (y : relOm K (C.I S) a).1`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[omMap_smul]`. Conclude with `congrArg (· • omMap (C.res h) a (y : relOm K (C.I S) a).1) (res_toR C h c)`. Introduce `S T h ω`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `omMap (C.res h) a (omMap (θ S) a (ω : Om K (R0 K n d S) a)) = omMap (θ T) a (omMap (incl (cone_mono h)) a (ω : Om K (R0 K n d S) a))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (C.res h).comp (θ S) = (θ T).comp (incl (cone_mono h))` using `AlgHom.ext fun y => nat h y`. Rewrite using `[omMap_comp, omMap_comp, e2]`. Use `GlobalTheory.T.pm_exactness_of_exP P (GlobalTheory.T.exP_of_compatible_equiv _ _ (fun {S T} h => relMap (C.res h) (res_mem_I C (S := S) (T := T) h) a) _ (fun S => ((e S).symm.toAddEquiv : relA C S a ≃+ P.M S)) ?_ h2)` and prove the remaining obligations. Introduce `S T h x`. Apply `(e T).injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Use `he h ((e S).symm x)` as an intermediate fact. Simplify using `only [LinearEquiv.apply_symm_apply] at this`. Establish `h3` using `LinearEquiv.apply_symm_apply (e T) (relMap (C.res h) (res_mem_I C h) a x)`. Conclude with `(congrArg Subtype.val h3).trans this.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem h4a : ChartFormsCechExact := by
   intro K _ _ A _ _ n d hd C a P e he

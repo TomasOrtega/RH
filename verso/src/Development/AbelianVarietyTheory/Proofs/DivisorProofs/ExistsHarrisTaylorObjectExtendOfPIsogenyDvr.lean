@@ -8,11 +8,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.ES.IsogDVR
 
 /- English proof (translation)
-Introduce `p _ D R _ b N _ _ c V K _ _ _ _ _ _ v o o₀ o₀' m ψ₀ h`. Establish `hc` using `h.pos`. Take `⟨-, hhom, -, -, -, ψ', hhom', h1, h2⟩` from `id h`. Take `⟨hf, hfl⟩` from `GlobalTheory.IsogFiniteFlat.isFinite_and_flat_of_quasiInverse _ o₀.A o₀'.A o₀.ab o₀'.ab ψ₀ ψ' c hc.ne' hhom hhom' h1 h2`. Establish `hsc : Surjective (ψ'.left ≫ ψ₀.left)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, h2]`. Conclude with `GlobalTheory.AbelianLimit.surjective_pow o₀'.A o₀'.ab c hc`. Establish `hs : Surjective ψ₀.left` using `Surjective.of_comp ψ'.left ψ₀.left`. Establish `hcomm` using `o.ab.comm`. Take `⟨B, _, φB, hB, hφB⟩` from `exists_model V K o.A o.ab o₀.A o₀'.A m.φ ψ₀ c m.cart o₀'.ab hc (fun T x hx => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: x ≫ ψ₀ ≫ ψ' = 1` using `by rw [← Category.assoc, hx, MonObj.one_comp]`. Rewrite using `[h1, MonObj.comp_pow, Category.comp_id] at this)` and apply the resulting hypothesis. Conclude with `exists_obj V K v _ rfl o₀' B φB hB hφB`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_obj_extend_of_isPIsog : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (c : ℕ) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (v : Sp V ⟶ Sp R) (o : Obj b N v) (oK o₁ : Obj b N (spMap (algebraMap V K) ≫ v)) (m : ObjMap oK o (spMap (algebraMap V K))) (ψ : oK.A ⟶ o₁.A), IsPIsog c oK o₁ ψ → ∃ o' : Obj b N v, Nonempty (ObjMap o₁ o' (spMap (algebraMap V K))) := by
   intro p _ D R _ b N _ _ c V K _ _ _ _ _ _ v o o₀ o₀' m ψ₀ h

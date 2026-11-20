@@ -15,11 +15,11 @@ open GlobalTheory.RowEx MeasureTheory
 noncomputable section
 namespace GlobalTheory.MovedAlg
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX t N hN g hg g' hg' hs hs'`. Establish `hψ : ∀ u v : WO (GlobalTheory.Grid.neg A) WW, u.map (infPart D) = 0 → v.map (infPart D) = 0 → IsAlgebraic ℚ (W.ψ (symplOH (GlobalTheory.Grid.neg A) WW u v))` using `fun u v hu hv => GlobalTheory.T.isAlgebraic_stdChar_halfSymplectic_realPart_zero hX.is.isVac.1 _ _ u v hu hv`. Establish `hmul : ∀ p q : GA D A × GA D WW, IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t p X.vac) → IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t q X.vac) → IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (p * q) X.vac)`. Introduce and unpack `⟨x, h⟩ q hp hq`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `om_algComb hX hψ t x h hp hq`. Establish `hone : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t 1 X.vac)`. Rewrite using `[map_one, Module.End.one_apply]`. Use `⟨1, fun _ => 1, fun _ => 0, fun _ => isAlgebraic_one, fun _ => by simp, ?_⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.SplitScalar.heisO_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hW : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (1, g') X.vac)` using `GlobalTheory.T.unitary_induction_on_splitPlaceSupport WW N (fun h => IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (1, h) X.vac)) hone (fun x y hx hy => by simpa using hmul _ _ hx hy) (fun e P hP' hN' x hx hsx => _root_.GlobalTheory.T.split_place_vacuum_algebraic hP hI …`. Establish `hA : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (g, 1) X.vac)` using `GlobalTheory.T.unitary_induction_on_splitPlaceSupport A N (fun x => IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (x, 1) X.vac)) hone (fun x y hx hy => by simpa using hmul _ _ hx hy) (fun e P hP' hN' x hx hsx => _root_.GlobalTheory.T.split_source_vector_algebraic hP hI …`. Use `hmul _ _ hA hW` as an intermediate fact. Simplify using `only [Prod.mk_mul_mk, mul_one, one_mul] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem support_split_algebraic_combination : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -67,7 +67,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedAlg.support_split_algebraic_combination | exact _root_.GlobalTheory.MovedAlg.support_split_algebraic_combination | (intros; apply _root_.GlobalTheory.MovedAlg.support_split_algebraic_combination <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.moved_support_theta_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

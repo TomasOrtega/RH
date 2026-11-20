@@ -13,13 +13,13 @@ private noncomputable abbrev serNatI (R₀ κ : Type) [CommRing R₀] (N : ℕ) 
   Ideal.span (Set.range fun j : κ => (MvPolynomial.X j : MvPolynomial κ R₀) ^ N)
 
 /- English proof (translation)
-Use `Submodule.span_induction ?_ ?_ ?_ ?_ hq` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩ m hm`. Simplify using `only [MvPolynomial.coeff_X_pow]`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `using hm j`. Introduce `m _`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy m hm`. Rewrite using `[MvPolynomial.coeff_add, hx m hm, hy m hm, add_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `r x _ hx m hm`. Rewrite using `[smul_eq_mul, MvPolynomial.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Rewrite using `[hx p.2, mul_zero]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: p.1 + p.2 = m` using `by simpa using hp`. Establish `h2` using `hm j`. Rewrite `h2` using `[← this, Finsupp.add_apply]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma serNat_coeff {R₀ κ : Type} [CommRing R₀] [DecidableEq κ] {N : ℕ}
     {q : MvPolynomial κ R₀} (hq : q ∈ serNatI R₀ κ N) :
@@ -44,7 +44,7 @@ private lemma serNat_coeff {R₀ κ : Type} [CommRing R₀] [DecidableEq κ] {N 
     omega
 
 /- English proof (translation)
-Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span ⟨j, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma serNat_nil {R₀ κ : Type} [CommRing R₀] (N : ℕ) (j : κ) :
     (Ideal.Quotient.mk (serNatI R₀ κ N) (MvPolynomial.X j)) ^ N = 0 := by
@@ -52,17 +52,17 @@ private lemma serNat_nil {R₀ κ : Type} [CommRing R₀] (N : ℕ) (j : κ) :
   exact Ideal.subset_span ⟨j, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq`. Simplify using `only [map_add, MvPolynomial.coeff_add, add_mul, Finset.sum_add_distrib, hp, hq]`. Consider the case `monomial m r`. Rewrite using `[MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : ∀ j, m j < N`. Rewrite using `[Finset.sum_eq_single (fun j => (⟨m j, hm j⟩ : Fin N))]`. Rewrite using `[MvPolynomial.coeff_monomial, if_pos]`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `e _ he`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg, map_zero, zero_mul]`. Introduce `h`. Apply `he` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[h]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push Not at hm`. Take `⟨j, hj⟩` from `hm`. Rewrite using `[Finset.prod_eq_zero (f := fun i => a i ^ m i) (Finset.mem_univ j) (pow_eq_zero_of_le hj (ha j)), mul_zero]`. Introduce `e _`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hm` to reduce the goal to its premises. Introduce `j`. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma serNat_aeval {R₀ κ : Type} [CommRing R₀] [Fintype κ] [DecidableEq κ]
     {S : Type} [CommRing S] [Algebra R₀ S] {N : ℕ} {a : κ → S} (ha : ∀ i, a i ^ N = 0)
@@ -99,21 +99,19 @@ private lemma serNat_aeval {R₀ κ : Type} [CommRing R₀] [Fintype κ] [Decida
         simp [h]
 
 /- English proof (translation)
-Introduce `hE R₀ _ κ _ _ c hc`. Use `choose p hp using fun N : ℕ => Ideal.Quotient.mk_surjective (I := serNatI R₀ κ N) (c (MvPolynomial κ R₀ ⧸ serNatI R₀ κ N) (fun j => Ideal.Quotient.mk (serNatI R₀ κ N) (MvPolynomial.X j)))`. Establish `key : ∀ (N : ℕ) (S : Type) [CommRing S] [Algebra R₀ S] (a : κ → S), (∀ i, a i ^ N = 0) → c S a = MvPolynomial.aeval a (p N)`. Introduce `N S _ _ a ha`. Set `φ : (MvPolynomial κ R₀ ⧸ serNatI R₀ κ N) →ₐ[R₀] S` to `Ideal.Quotient.liftₐ (serNatI R₀ κ N) (MvPolynomial.aeval a) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `: serNatI R₀ κ N ≤ RingHom.ker (MvPolynomial.aeval (R` using `R₀) a) := by`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `[RingHom.mem_ker, ha j]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this hx)`. Establish `hφ : ∀ x, φ (Ideal.Quotient.mk (serNatI R₀ κ N) x) = MvPolynomial.aeval a x` using `fun x => rfl`. Establish `h` using `hc _ S φ (fun j => Ideal.Quotient.mk (serNatI R₀ κ N) (MvPolynomial.X j)) (fun j => ⟨N, serNat_nil N j⟩)`. Rewrite `h` using `[← hp N, hφ]`. Simplify using `only [hφ, MvPolynomial.aeval_X] at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h.symm`. Establish `compat : ∀ N M : ℕ, N ≤ M → ∀ m : κ →₀ ℕ, (∀ j, m j < N) → MvPolynomial.coeff m (p M) = MvPolynomial.coeff m (p N)`. Introduce `N M h m hm`. Establish `h1` using `key M _ (fun j => Ideal.Quotient.mk (serNatI R₀ κ N) (MvPolynomial.X j)) (fun j => pow_eq_zero_of_le h (serNat_nil N j))`. Establish `h2 : MvPolynomial.aeval (R` using `R₀) (fun j => Ideal.Quotient.mk (serNatI R₀ κ N) (MvPolynomial.X j)) = Ideal.Quotient.mkₐ R₀ (serNatI R₀ κ N) := by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `j`. Simplify using the standard rewrite rules. Rewrite `h1` using `[← hp N, h2, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq]`. Establish `h3` using `serNat_coeff h1 m hm`. Rewrite `h3` using `[MvPolynomial.coeff_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h3.symm`. Use `⟨fun m => MvPolynomial.coeff m (p (Finset.univ.sup m + 1)), ?_⟩` and prove the remaining obligations. Introduce `S _ _ a ha`. Use `choose n hn using ha`. Establish `hN : ∀ i, a i ^ (Finset.univ.sup n) = 0` using `fun i => pow_eq_zero_of_le (Finset.le_sup (f := n) (Finset.mem_univ i)) (hn i)`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Generalize the expression as in `Finset.univ.sup n = N at hN`. Use `Eq.trans ?_ ((hE _ S a).1 N hN).symm` and prove the remaining obligations. Rewrite using `[key N S a hN, serNat_aeval hN]`. Unfold `tEval`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
-
-Use `congr 2`. Use `set m : κ →₀ ℕ := Finsupp.equivFunOnFinite.symm fun i => (e i : ℕ) with hm`. Express the relevant statement in the definitionally equal form `_ = MvPolynomial.coeff m (p (Finset.univ.sup m + 1))`. Rewrite using `[← compat N (max N (Finset.univ.sup m + 1)) (le_max_left _ _) m (fun j => by simp [hm]), compat _ _ (le_max_right _ _) m (fun j => Nat.lt_succ_of_le (Finset.le_sup (f := m) (Finset.mem_univ j)))]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_series_of_natural_on_nilpotent :
   (∀ {R₀ : Type} [CommRing R₀] {κ : Type} [Fintype κ] [DecidableEq κ] (f : MvPowerSeries κ R₀) (S : Type) [CommRing S] [Algebra R₀ S] (a : κ → S),

@@ -9,7 +9,7 @@ open GlobalTheory.LBDescent
 open TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LBDescent.exists_tensorSquare_equiv_sections | exact GlobalTheory.LBDescent.exists_tensorSquare_equiv_sections | (intros; apply GlobalTheory.LBDescent.exists_tensorSquare_equiv_sections <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_tensorSquare_equiv_fibreSquare_sections : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (V₀ : Y.Opens), IsAffineOpen V₀ →
     ∀ (h : pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀ ≤ pullback.snd f f ⁻¹ᵁ f ⁻¹ᵁ V₀),

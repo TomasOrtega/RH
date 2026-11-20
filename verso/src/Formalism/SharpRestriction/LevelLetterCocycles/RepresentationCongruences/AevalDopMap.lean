@@ -18,7 +18,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hπ`. Establish `ha : W.π₀ • a = (u : W.EE) • a` using `by rw [hu, algebraMap_smul]`. Establish `hb : W.π₀ • b = (u : W.EE) • b` using `by rw [hu, algebraMap_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem π₀_cancel (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T : LocLat G Qp LL O}
     {a b : W.DD T} (h : W.π₀ • a = W.π₀ • b) : a = b := by
@@ -30,7 +30,7 @@ private theorem π₀_cancel (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀))
     _ = b := by rw [smul_smul, Units.inv_mul, one_smul]
 
 /- English proof (translation)
-The claim follows from `π₀_cancel W hπ ((hd x).trans h)`.
+A detailed English derivation is pending.
 -/
 theorem dop_eq (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat G Qp LL O)
     (dop : W.DD T →ₗ[O] W.DD T) (hd : ∀ y, W.π₀ • dop y = W.γ T y - y) {x y : W.DD T}
@@ -38,7 +38,7 @@ theorem dop_eq (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat G
   π₀_cancel W hπ ((hd x).trans h)
 
 /- English proof (translation)
-Take `⟨y, hy, hxy⟩` from `hgN x hx`. Rewrite using `[dop_eq W hπ T dop hd hxy]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dop_pres (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat G Qp LL O) (i : ZMod n)
     (dop : W.DD T →ₗ[O] W.DD T) (hd : ∀ y, W.π₀ • dop y = W.γ T y - y)
@@ -49,9 +49,9 @@ theorem dop_pres (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat
   exact hy
 
 /- English proof (translation)
-Apply `π₀_cancel W hπ` to reduce the goal to its premises. Establish `hs : ∀ z : W.DD T₁, W.π₀ • W.map F z = W.map F (W.π₀ • z)` using `fun z => by`. Rewrite using `[← algebraMap_smul W.EE W.π₀ (W.map F z), ← map_smul, algebraMap_smul]`. Rewrite using `[hs, hd₁, hd₂, map_sub]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `W.map_γ F W.gam y`.
+A detailed English derivation is pending.
 -/
 theorem dop_map (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L)
@@ -66,11 +66,11 @@ theorem dop_map (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ :
   exact W.map_γ F W.gam y
 
 /- English proof (translation)
-Establish `hO : ∀ (c : O) (v : W.DD T₁), W.map F (c • v) = c • W.map F v`. Introduce `c v`. Rewrite using `[← algebraMap_smul (LetA O n) c v, ← algebraMap_smul W.EE (algebraMap O (LetA O n) c) v, map_smul, algebraMap_smul, algebraMap_smul]`. Establish `hc : ∀ k : ℕ, ∀ y : W.DD T₁, W.map F ((dop₁ ^ k) y) = (dop₂ ^ k) (W.map F y)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `y`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, dop_map W hπ F dop₁ hd₁ dop₂ hd₂, ih]`. Rewrite using `[Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hO, hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_dop_map (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L)
@@ -94,7 +94,7 @@ theorem aeval_dop_map (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ 
   rw [LinearMap.smul_apply, LinearMap.smul_apply, hO, hc]
 
 /- English proof (translation)
-Unfold `InImg at hz ⊢`. Take `⟨x₁, hx₁, rfl⟩` from `hz`. Conclude with `⟨dop₁ x₁, dop_pres W hπ T₁ i dop₁ hd₁ hgN₁ hx₁, dop_map W hπ F dop₁ hd₁ dop₂ hd₂ x₁⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dop_inImg (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (i : ZMod n)
@@ -107,7 +107,7 @@ theorem dop_inImg (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂
   exact ⟨dop₁ x₁, dop_pres W hπ T₁ i dop₁ hd₁ hgN₁ hx₁, dop_map W hπ F dop₁ hd₁ dop₂ hd₂ x₁⟩
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.InNΔi at *`. Conclude with `⟨(W.NΔ T).add_mem hx.1 hy.1, (W.Nl T i).add_mem hx.2 hy.2⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private theorem nΔi_add' {T : LocLat G Qp LL O} {i : ZMod n} {x y : W.DD T}
     (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x) (hy : Formalism.MainNotions.LiftingTheory.InNΔi W T i y) :
@@ -116,7 +116,7 @@ private theorem nΔi_add' {T : LocLat G Qp LL O} {i : ZMod n} {x y : W.DD T}
   exact ⟨(W.NΔ T).add_mem hx.1 hy.1, (W.Nl T i).add_mem hx.2 hy.2⟩
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.InNΔi at *`. Use `⟨(W.NΔ T).smul_mem c hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n) c x]`. Conclude with `(W.Nl T i).smul_mem _ hx.2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nΔi_smulO' {T : LocLat G Qp LL O} {i : ZMod n} (c : O) {x : W.DD T}
     (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x) : Formalism.MainNotions.LiftingTheory.InNΔi W T i (c • x) := by
@@ -126,13 +126,11 @@ private theorem nΔi_smulO' {T : LocLat G Qp LL O} {i : ZMod n} (c : O) {x : W.D
   exact (W.Nl T i).smul_mem _ hx.2
 
 /- English proof (translation)
-Establish `hpow : ∀ k : ℕ, ∀ x, Formalism.MainNotions.LiftingTheory.InNΔi W T i x → Formalism.MainNotions.LiftingTheory.InNΔi W T i ((dop ^ k) x)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x hx`. Rewrite using `[pow_zero, Module.End.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Consider the case `succ k ih`. Introduce `x hx`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `dop_pres W hπ T i dop hd hgN (ih x hx)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]`. Use `Finset.sum_induction _ (Formalism.MainNotions.LiftingTheory.InNΔi W T i) (fun a b ha hb => nΔi_add' W ha hb) ?_ ?_` and prove the remaining obligations. Unfold `Formalism.MainNotions.LiftingTheory.InNΔi`. Conclude with `⟨(W.NΔ T).zero_mem, (W.Nl T i).zero_mem⟩`. Introduce `k _`.
-
-Rewrite using `[LinearMap.smul_apply]`. Conclude with `nΔi_smulO' W _ (hpow k x hx)`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nΔi_aeval (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat G Qp LL O)
     (i : ZMod n) (dop : W.DD T →ₗ[O] W.DD T) (hd : ∀ y, W.π₀ • dop y = W.γ T y - y)
@@ -156,7 +154,7 @@ private theorem nΔi_aeval (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (
     exact nΔi_smulO' W _ (hpow k x hx)
 
 /- English proof (translation)
-Unfold `InImg at hz ⊢`. Take `⟨x₁, hx₁, rfl⟩` from `hz`. Conclude with `⟨aeval dop₁ p x₁, nΔi_aeval W hπ T₁ i dop₁ hd₁ hgN₁ p hx₁, aeval_dop_map W hπ F dop₁ hd₁ dop₂ hd₂ p x₁⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem aeval_inImg (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (i : ZMod n)

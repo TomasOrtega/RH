@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Introduce `Γ k _ _ κ U hU hu y hy hb`. Take `⟨u, huU, hu1⟩` from `hu`. Take `⟨b, hb⟩` from `hb`. Use `⟨b, fun s => ?_⟩` and prove the remaining obligations. Establish `hc : s * u * s⁻¹ * u⁻¹ ∈ U`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `hU` to reduce the goal to its premises. Use `Subgroup.commutator_mem_commutator (Subgroup.mem_top s) (Subgroup.mem_top u)` as an intermediate fact. Rewrite `this` using `[commutatorElement_def]`. Conclude with `this`. Establish `hv : s * u * s⁻¹ ∈ U`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `U.mul_mem hc huU` as an intermediate fact. Simplify using `using this`. Establish `hκ : κ (s * u * s⁻¹) = κ u`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (κ s) (κ u), mul_inv_cancel_right]`. Establish `h1` using `hy s u`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hy (s * u * s⁻¹) s`. Rewrite `h2` using `[inv_mul_cancel_right, hb _ hv, hκ]`. Rewrite `h1` using `[hb u huU]`. Establish `hne : ((κ u : k) - 1) ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hu1` to reduce the goal to its premises. Use `ext`. Simplify using `using sub_eq_zero.mp h`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `h1 - h2`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.st_res :
     ∀ (Γ k : Type) [Group Γ] [Field k] (κ : Γ →* kˣ) (U : Subgroup Γ), commutator Γ ≤ U → (∃ u ∈ U, κ u ≠ 1) → ∀ y : Γ → k, (∀ s t, y (s * t) = y s + κ s * y t) → (∃ b, ∀ s ∈ U, y s = κ s * b - b) → ∃ b, ∀ s, y s = κ s * b - b := by

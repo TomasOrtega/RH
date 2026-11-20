@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InstAddCommGroup
 open GlobalTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SmGL.Exponents ValuativeRel
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SmGL.Exponents.jhMult_leviChar_cellFunctor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FJordanHolderMultiplicityLeviCharGeometricLemmaCe.lean&line=52#L52)
 -/

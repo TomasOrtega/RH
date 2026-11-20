@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.MaxWeightGL1EqOne
 namespace GlobalTheory.ConjugateIntersectionMembership
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LKLoc.locPart, Subgroup.mem_inf, Subgroup.mem_map]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨x⁻¹ * g * x, h, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[MulAut.conj_apply, mul_assoc]`. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem mem_inter_conj_iff {H : Type} [Group H] {T L : Subgroup H} {x g : H} :
     g ∈ GlobalTheory.LKLoc.locPart T L x ↔ g ∈ T ∧ x⁻¹ * g * x ∈ L := by

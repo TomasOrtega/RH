@@ -15,33 +15,31 @@ noncomputable section
 namespace GlobalTheory.HeckeValueId
 
 /- English proof (translation)
-Substitute `hu hu'` using the available equality. Establish `hCk : ψp.ker = C` using `hk.2.2.2.2.2.1`. Take `⟨gam, h, hg1, hg2, -, hex⟩` from `GlobalTheory.HeckeLift.exists_linearMap_of_isHkIsog E H Dw l Xo _ g _ F i₁ i₂ Pm Pm' p C ψ ψp hP hP' hp hC2 hk`. Establish `eadd` using `F.ex_add i₁ Pm hP`. Establish `eadd'` using `F.ex_add i₂ Pm' hP'`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eker` using `F.ex_ker i₁ Pm hP`. Establish `eker'` using `F.ex_ker i₂ Pm' hP'`. Establish `hspan : Submodule.span ℝ (Pm.range : Set (Fin g → ℂ)) = ⊤`. Rewrite using `[AddMonoidHom.coe_range]`. Conclude with `hP.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsmul : ∀ (d : ℂ) z w, hermForm (d • Hm) z w = d * hermForm Hm z w` using `fun d z w => by`. Simplify using `only [hermForm, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`. Take `⟨M, hM⟩ : ∃ M : Matrix (Fin g) (Fin g) ℂ, ∀ z, M *ᵥ z = h z` from `⟨LinearMap.toMatrix' h.toLinearMap, fun z => by rw [LinearMap.toMatrix'_mulVec]; rfl⟩`. Establish `hpR : ((p : ℂ) ^ 2) = (((p : ℝ) ^ 2 : ℝ) : ℂ)` using `by push_cast; ring`. Establish `hHH : ∀ z w, hermForm Hm' (h z) (h w) = ((p : ℂ) ^ 2) * hermForm Hm z w`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.UnitFrameGen.hermForm_eq_of_im _ hspan (((p : ℂ) ^ 2) • Hm) Hm' M (by`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨a', rfl⟩`. Rewrite using `[hM, hM, ← hg2, ← hg2, him', hg1, hsmul, hpR, Complex.im_ofReal_mul, him]`. Use `push_cast`. Use the proof step `ring)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z w`. Rewrite using `[← hM, ← hM, key, hsmul]`. Establish `hpow : ∀ (m : ℕ) w, F.ex i₁ Pm (m • w) = F.ex i₁ Pm w ^ m` using `fun m w => by`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, pow_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `(eker 0).2 ⟨0, map_zero Pm⟩`. Consider the case `succ m ih => rw [succ_nsmul, eadd, ih, pow_succ]`. Establish `hL : ∀ a ∈ Pm.range, h a ∈ Pm'.range`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨gam a, hg2 a⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhol` using `GlobalTheory.ClassUniq.isHolTo_ex F i₁ Pm hP`. Establish `hhol'` using `GlobalTheory.ClassUniq.isHolTo_ex F i₂ Pm' hP'`. Establish `hfr` using `GlobalTheory.T.heckeIsogeny_appellHumbertFrame_pull_eq_transition_mul E H Dw l Xo (F.u i₁ Pm) (F.u i₂ Pm') p ψp b g Pm.range Pm'.range (F.ex i₁ Pm) (F.ex i₂ Pm') h hspan hhol hhol' eadd (fun a ha => (eker a).2 ha) hex hL hb0 hbt hbr (hbh g _ hhol) Hm χl fr hH hd hn hc h0 (by rint …`. Use `choose wm hwm using fun m => F.ex_onto i₁ Pm hP (cr m)`. Establish `hwmΛ : ∀ m, ∃ b', h (wm m) = Pm' b'` using `fun m => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e1 : F.ex i₂ Pm' (h (wm m)) = 1`. Rewrite using `[hex, hwm, ← MonoidHom.mem_ker, hCk]`. Conclude with `hr.1 m`. Take `⟨b', hb'⟩` from `(eker' _).1 e1`. Conclude with `⟨b', hb'.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h, wm, fun a => ⟨gam a, (hg2 a).symm⟩, hHH, hwmΛ, fun w => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB (F.ex i₂ Pm' (h w)).left`. Use `⟨j, hj, ?_⟩` and prove the remaining obligations. Establish `hjz : ⊤ ≤ (ψp (F.ex i₁ Pm w)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `by rw [← hex]; exact hj`. Use `choose jm hjm using fun m => GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB ((cr m * F.ex i₁ Pm w) ^ p).left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum` using `hbv (F.ex i₁ Pm w) j jm hjz hjm`. Establish `e1` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 (Over.mk (F.u i₂ Pm'))) (ψp (F.ex i₁ Pm w)))`. Establish `e2` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 (Over.mk (F.u i₂ Pm'))) (ψp (F.ex i₁ Pm w)))`. Rewrite `hsum`, `e1`, `e2` using `[← hex]`. Rewrite `hsum` using `[hv' j (h w) _ e1 e2 hj]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.mul_assoc, hsum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hq : cr m * F.ex i₁ Pm w = F.ex i₁ Pm (w + wm m)` using `by rw [← hwm, ← eadd, add_comm]`. Establish `hpw : F.ex i₁ Pm (w + wm m) ^ p = F.ex i₁ Pm ((p : ℂ) • (w + wm m))`. Rewrite using `[Nat.cast_smul_eq_nsmul, hpow]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hjm'` using `hjm m`. Rewrite `hjm'`, the goal using `[hq, hpw]`. Establish `f1` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 (Over.mk (F.u i₁ Pm))) (F.ex i₁ Pm ((p : ℂ) • (w + wm m))))`. Establish `f2` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 (Over.mk (F.u i₁ Pm))) (F.ex i₁ Pm ((p : ℂ) • (w + wm m))))`. Rewrite using `[hv (jm m) _ _ f1 f2 hjm']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b', hb'⟩` from `hwmΛ m`. Establish `hjw : ⊤ ≤ (F.ex i₂ Pm' (h (w + wm m))).left ⁻¹ᵁ Xo.univ.t.PP.L.U j`. Rewrite using `[map_add, eadd', hb', (eker' _).2 ⟨b', rfl⟩, _root_.mul_one]`. Conclude with `hj`. Establish `hf` using `hfr (w + wm m) j (jm m) hjw hjm'`.
-
-Rewrite `hf` using `[map_add]`. Rewrite using `[hf]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem core (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (P : Ideal (𝓞 E)) (p i : ℕ)
@@ -184,13 +182,13 @@ theorem core (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw
   rw [hf]; ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U _ _ P p i k k' x x' C z t hA hK hz hb g e F ik Pm Pm' hP hP' hu hu' Hm χl fr θ hH _ him hd hn hc h0 ha hv Hm' χl' fr' θ' _ _ him' hd' _ hc' h0' ha' hv'`. Take `⟨ψ, ψp, n, cr, b, hk, hr, hb0, hbt, hbr, hbh, hbv⟩` from `GlobalTheory.T.heckeThetaTrace_values_at_complexPoints E H Dw l Xo c σ p (U.un k x) z C hz`. Establish `hcard : n = Ideal.absNorm P ^ i`. Use `letI := fieldCAt σ`. Use `haveI := algClosedCAt σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Substitute using the available equality.
 
-Conclude with `GlobalTheory.ThetaTrace.card_reps hA.2.2.1.pos hK hr`. Substitute `hcard` using the available equality. Take `⟨hzx, -, hbc⟩` from `hb`. Establish `hS : Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _` using `by simp [spMap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbc' : GlobalTheory.Frames.SecBC (RingHom.id ℂ) (Formalism.L2.PjFree.toC (t none : CAt σ)) (U.un k' x').x z.x (U.un k' x').s z.s`. Take `⟨pm, p1, p2, p3⟩` from `hbc`. Conclude with `⟨pm, p1, by rw [hid]; exact p2.trans (Category.comp_id _).symm, p3⟩`. Establish `hv'' : ∀ j w (pt : Sp ℂ ⟶ Gx z.x), pt ≫ Formalism.L2.PjFree.gxFst z.x = (F.ex (ik k') Pm' w).left → pt ≫ Formalism.L2.PjFree.gxSnd z.x = 𝟙 (Sp ℂ) → ⊤ ≤ (F.ex (ik k') Pm' w).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → valAt' pt ((PPx z.x).U (fun _ => j)) (z.s.f (fun _ => j)) = Formalism.L2.PjFr …`. Introduce `j w pt e1 e2 hj`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw0' : (F.ex (ik k') Pm' w).left ≫ Xo.univ.t.G.hom = ((U.un k' x').x : Sp ℂ ⟶ Xo.X)` using `(Over.w (F.ex (ik k') Pm' w)).trans hu'.symm`. Conclude with `GlobalTheory.ThetaPtChg.val_of_secBC hS (Xo := Xo) _ _ hzx _ _ _ hbc' (Over.homMk (F.ex (ik k') Pm' w).left hw0') j _ _ (fun pt' h1 h2 => hv' j w pt' h1 h2 hj) (fun pt' h1 h2 => by`. Take `rfl : pt' = pt` from `Limits.pullback.hom_ext (h2.trans e2.symm) (h1.trans e1.symm)`. Use the proof step `rfl)`. Conclude with `core E H Dw l Xo c σ P p i (U.un k x).x z.x (U.un k x).s z.s C ψ ψp cr b _ hA.2.2.1 (fun a ha => GlobalTheory.HkPts.pow_eq_one hA.2.2.2.1 hK ha) hk hr hb0 hbt hbr hbh hbv g e F (ik k) (ik k') Pm Pm' hP hP' hu (hzx.trans hu') Hm χl fr θ hH him hd hn hc h0 ha hv Hm' χl' fr' θ' him' …`.
+A detailed English derivation is pending.
 -/
 theorem hecke_theta_value_identity : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U →
   ∀ (P : Ideal (𝓞 E)) (p i : ℕ) (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom) (C : Subgroup (Over.mk (U.un k x).x ⟶ Xo.univ.t.G)) (z : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ),

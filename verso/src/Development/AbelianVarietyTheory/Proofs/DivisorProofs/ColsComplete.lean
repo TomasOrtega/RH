@@ -5,29 +5,29 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.ColComplete
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `m hm u hu`. Use `⟨id, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun i : Fin N => if (i : ℕ) < m then u i else Pi.single (id i) (1 : C)) = u`. Use function extensionality and compare the values at `i; rw [if_pos (by omega)]`. Rewrite using `[this]`. Substitute `hm` using the available equality. Simplify using `using hu`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Introduce `m hm u hu`. Establish `hmN : m < N` using `by omega`. Establish `hW : Submodule.span C (Set.range (fun i : Fin m => u (Fin.castLE (by omega) i))) ≠ ⊤`. Introduce `h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `finrank_span_eq_card hu`. Rewrite `h1` using `[h, finrank_top]`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j : Fin N, Pi.single j (1:C) ∉ Submodule.span C (Set.range (fun i : Fin m => u (Fin.castLE (by omega) i))) := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hW` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← (Pi.basisFun C (Fin N)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hc j`. Set `m' : Fin N` to `⟨m, hmN⟩`. Set `u'` to `Function.update u m' (Pi.single j 1)`. Establish `hu' : LinearIndependent C (fun i : Fin (m+1) => u' (Fin.castLE (by omega) i))`. Establish `: (fun i : Fin (m+1) => u' (Fin.castLE (by omega) i)) = Fin.snoc (fun i : Fin m => u (Fin.castLE (by omega) i)) (Pi.single j (1:C))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Establish `: (Fin.castLE (by omega) (Fin.last m) : Fin N) = m'` using `by ext; simp [m']`. Simplify using `only [Fin.snoc_last, u', this, Function.update_self]`. Establish `: (Fin.castLE (by omega) (Fin.castSucc i) : Fin N) ≠ m'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[m'] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Fin.snoc_castSucc, u', Function.update_of_ne this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, linearIndependent_fin_snoc]`. Conclude with `⟨hu, hj⟩`. Take `⟨g', hg'⟩` from `ih (m+1) (by omega) u' hu'`. Use `⟨Function.update g' m' j, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hg' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Break down `lt_trichotomy (i : ℕ) m with hi | hi | hi` into its components or cases. Establish `hne : i ≠ m'` using `by intro h; rw [h] at hi; simp [m'] at hi`. Rewrite using `[if_pos hi, if_pos (by omega)]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [u', Function.update_of_ne hne]`. Establish `he : i = m'` using `by ext; simp [m', hi]`. Rewrite using `[if_neg (by omega), if_pos (by omega)]`. Substitute `he` using the available equality. Simplify using `only [u', Function.update_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : i ≠ m'` using `by intro h; rw [h] at hi; simp [m'] at hi`. Rewrite using `[if_neg (by omega), if_neg (by omega), Function.update_of_ne hne]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extend_std {C : Type} [Field C] (N : ℕ) :
     ∀ n m : ℕ, (h : m + n = N) → ∀ u : Fin N → (Fin N → C),
@@ -92,13 +92,13 @@ theorem extend_std {C : Type} [Field C] (N : ℕ) :
       rw [if_neg (by omega), if_neg (by omega), Function.update_of_ne hne]
 
 /- English proof (translation)
-Introduce `C _ N β`. Establish `hr : β.rank ≤ N` using `by simpa using β.rank_le_card_width`. Use `⟨hr, ?_⟩` and prove the remaining obligations. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' C β.col`. Use `haveI : Finite κ := hli.finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = β.rank`. Rewrite using `[β.rank_eq_finrank_span_cols, ← hsp, finrank_span_eq_card hli]`. Set `e : Fin β.rank ≃ κ` to `(Fintype.equivFinOfCardEq hcard).symm`. Set `k : Fin N → Fin N` to `fun i => if h : (i:ℕ) < β.rank then a (e ⟨i, h⟩) else i`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `extend_std N (N - β.rank) β.rank (by omega) (fun i => β *ᵥ Pi.single (k i) 1) (by`. Establish `: (fun i : Fin β.rank => β *ᵥ Pi.single (k (Fin.castLE (by omega) i)) (1:C)) = (β.col ∘ a) ∘ e`. Use function extensionality and compare the values at `i`. Simplify using `[k, Matrix.mulVec_single_one]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hli.comp e e.injective)`. Use `⟨k, g, ?_⟩` and prove the remaining obligations. Rewrite using `[← isUnit_iff_ne_zero, ← Matrix.isUnit_iff_isUnit_det, ← Matrix.linearIndependent_rows_iff_isUnit]`. Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 theorem cols_complete : ∀ (C : Type) [Field C] (N : ℕ) (β : Matrix (Fin N) (Fin N) C),
     β.rank ≤ N ∧ ∃ k k' : Fin N → Fin N,

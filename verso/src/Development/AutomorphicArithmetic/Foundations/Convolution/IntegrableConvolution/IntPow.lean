@@ -18,9 +18,9 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ} (ν : Measure (archGroup
   {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep (archGroup K n) H)
 
 /- English proof (translation)
-Take `⟨g', h1, -, h2⟩` from `UpperTheory.ConvolutionTheory.Tf.homConv (archGroup K n) (archGroup K n) (MonoidHom.id _) continuous_id ν ν f e`. Establish `hgg : g = g'`. Use extensionality with `x`. Rewrite using `[hg, h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Substitute `hgg` using the available equality. Rewrite using `[h2 H π]`. Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.mul_apply, UnitaryRep.integrated_ccToL1_apply, UnitaryRep.compHom_apply]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem int_cv (f e g : TI K n) (hg : ∀ x, g x = cv ν f e x) :
     π.integrated ν (UnitaryRep.ccToL1 ν g) =
@@ -39,9 +39,9 @@ private theorem int_cv (f e g : TI K n) (hg : ∀ x, g x = cv ν f e x) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨a, fun _ => rfl, by simp⟩`. Consider the case `succ k ih`. Take `⟨c, hc, hT⟩` from `ih`. Take `⟨h1, h2, -⟩` from `UpperTheory.ConvolutionTheory.L1.cvBasic (archGroup K n) ν a c a a.continuous a.hasCompactSupport c.continuous c.hasCompactSupport a.continuous a.hasCompactSupport`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfun : (c : archGroup K n → ℂ) = cvPow ν a k` using `funext hc`. Use `⟨⟨⟨cv ν a c, h1⟩, h2⟩, fun g => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cv ν a c g = cv ν a (cvPow ν a k) g`. Rewrite using `[hfun]`. Rewrite using `[int_cv ν π a c _ (fun _ => rfl), hT, pow_succ' _ (k + 1)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem int_pow (a : TI K n) (k : ℕ) :
     ∃ c : TI K n, (∀ g, c g = cvPow ν a k g) ∧
@@ -63,13 +63,13 @@ end
 end UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Introduce `K _ _ n ν _ b a aF m ha haF hb H _ _ _ π`. Take `⟨-, hinv⟩` from `(UpperTheory.ConvolutionTheory.Tf.unimod K n).1 ν`. Set `bs : TI K n` to `⟨⟨fun x => conj (b x⁻¹), Complex.continuous_conj.comp (b.continuous.comp continuous_inv)⟩, (b.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)).comp_left (g := fun z => conj z) (map_zero _)⟩`. Take `⟨hadj, hnorm, -⟩` from `UpperTheory.ConvolutionTheory.Tf.adjInt (archGroup K n) H π ν b bs (fun _ => rfl)`. Establish `hT : π.integrated ν (UnitaryRep.ccToL1 ν a) = π.integrated ν (UnitaryRep.ccToL1 ν b) * star (π.integrated ν (UnitaryRep.ccToL1 ν b))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.star_eq_adjoint, hadj]`. Conclude with `int_cv ν π b bs a ha`. Establish `hb1 : ‖π.integrated ν (UnitaryRep.ccToL1 ν b)‖ ≤ 1` using `hnorm.trans hb`. Take `⟨c, hc, hcT⟩` from `int_pow ν π a m`. Establish `hcF : c = aF`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Rewrite using `[hc, haF]`. Use `⟨hT, ?_, ?_, hcF ▸ hcT⟩` and prove the remaining obligations. Rewrite using `[hT]`. Conclude with `mul_star_self_nonneg _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hT]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.sqOp :
     UpperTheory.ConvolutionTheory.L1.SqOp := by

@@ -19,9 +19,9 @@ def retol {B : Base} {C : Cols B} {W : RowsRest B C} (V : DivStage B C W) (η : 
   { V with div := { V.div with etaF := η } }
 
 /- English proof (translation)
-Take `⟨W₀, h1, h2, h3⟩` from `StagesInhab.exists_rows B D`. Set `W` to `reweight W₀ kb ks`. Establish `hc : ∀ u i, Nonempty (((ColsModel.cols B).mem u).C.cls i)` using `fun u _ => ⟨(1 : Tau B.R → (ZMod (B.T u))ˣ)⟩`. Take `⟨L⟩` from `locStage_inhabited`. Take `⟨N, -⟩` from `GaloisStage.exists_nStage_adapt B _ W L`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, -⟩` from `DivInhab.exists_divStage B _ (GaloisStage.adapt W)`. Take `⟨S, hS, hl, -⟩` from `SStageInhab.exists_sStage B _ (GaloisStage.adapt W) Del hD gap letter hinj hu (fun u x _ y _ => (StagesInhab.ipC_conj B u y x).symm) (fun u x _ h => StagesInhab.ipC_pos B u x h) (show W₀.Drows ≤ W₀.Dall by omega)`. Take `⟨G, -, hG⟩` from `(GJInhab.inhabited_stage B (ColsModel.cols B)).2.2 (hc _ _) (hc _ _)`. Conclude with `⟨_, GaloisStage.adapt W, retol V η, S, N, G, hS, hl, rfl, rfl, rfl, fun _ _ _ => rfl, fun _ _ _ => rfl, h1, h2, h3, hc, hG⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_stages_blocks (B : Base) (Del : ℚ) (letter : B.Word → Fin (B.R.k - 2) → Bool) (η : ℝ) (D : ℕ)
     (hD : 0 < Del) (hinj : Function.Injective letter)
@@ -49,9 +49,7 @@ theorem exists_stages_blocks (B : Base) (Del : ℚ) (letter : B.Word → Fin (B.
     h1, h2, h3, hc, hG⟩
 
 /- English proof (translation)
-Take `⟨C₀, W₀, V₀, S₀, N₀, G₀, -⟩` from `exists_stages_blocks B Del letter η D hD hinj gap hu (fun _ _ _ => 0) (fun _ _ _ => 0)`. Take `⟨kb, ks, hk⟩` from `DV.exists_blocks (assemble B C₀ W₀ V₀ S₀ N₀ G₀)`. Take `⟨C, W, V, S, N, G, a1, -, a2, a3, a4, a5, a6, a7⟩` from `exists_stages_blocks B Del letter η D hD hinj gap hu kb ks`. Use `⟨⟨B, C, W, V, S, N, G⟩, rfl, a1, a2, fun j _ _ τ => ⟨fun i => ?_, fun c => ?_⟩, fun w j => ?_, a7⟩` and prove the remaining obligations. Conclude with `(congrArg (fun f => ((f j τ i : ℤ) : ℚ)) a3).trans ((hk j τ).1 i)`.
-
-Conclude with `(congrArg (fun f => ((f j τ c : ℤ) : ℚ)) a4).trans ((hk j τ).2 c)`. Conclude with `congrArg₂ (· + ·) (congrArg₂ (· + ·) (a5 _ _ _) (a5 _ _ _)) (a6 _ _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_stages_kapDef (B : Base) (Del : ℚ) (letter : B.Word → Fin (B.R.k - 2) → Bool) (η : ℝ) (D : ℕ)
     (hD : 0 < Del) (hinj : Function.Injective letter)
@@ -73,7 +71,7 @@ theorem exists_stages_kapDef (B : Base) (Del : ℚ) (letter : B.Word → Fin (B.
   · exact congrArg₂ (· + ·) (congrArg₂ (· + ·) (a5 _ _ _) (a5 _ _ _)) (a6 _ _ _)
 
 /- English proof (translation)
-Introduce `B Del letter η hD _ hinj gap hu`. Take `⟨X, h1, h2, h3, h4, h5, -⟩` from `exists_stages_kapDef B Del letter η 1 hD hinj gap hu`. Conclude with `⟨X, h1, h2, h3, h4, fun w _ j _ _ => h5 w j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_stages_prescribed : ∀ (B : Base) (Del : ℚ) (letter : B.Word → Fin (B.R.k - 2) → Bool) (η : ℝ), 0 < Del → 0 < η → Function.Injective letter → (∀ w τ (l : ℕ) (h : l + 1 < B.R.k - 1), (B.hcW w τ).v ⟨l, by omega⟩ - (B.hcW w τ).v ⟨l + 1, h⟩ = 4 * Del) → (∀ w τ (l : ℕ) (h : l < B.R.k - 2), (B.hcW w τ).u ⟨l + 1, by omega⟩ = (B.hcW w τ).v ⟨l, by omega⟩ - 1 / 2 - (if letter w ⟨l, h⟩ then Del else 0)) → ∃ X : Stages, X.B = B ∧ X.toD7.s.Del = Del ∧ X.toD7.div.etaF = η ∧ DV.KapDef X.toD7 ∧ ∀ w, X.toD7.what₂.muAt w = X.toD7.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ X.toD7.R.m → X.toD7.what₂.Aj j w = 0 := by
   intro B Del letter η hD _ hinj gap hu

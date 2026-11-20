@@ -25,9 +25,9 @@ Both sides reduce to the same expression.
 theorem thL_coeff (a : Lau p) (r : ℤ) : (thL a).coeff r = (r : ℤ_[p]) * a.coeff r := rfl
 
 /- English proof (translation)
-Use extensionality with `r`. Establish `hs : (thL a).support ⊆ a.support` using `fun i hi h => hi (by simp [thL_coeff, h])`. Establish `ht : (thL b).support ⊆ b.support` using `fun i hi h => hi (by simp [thL_coeff, h])`. Rewrite using `[HahnSeries.coeff_add, thL_coeff, HahnSeries.coeff_mul, HahnSeries.coeff_mul_left' a.isPWO_support hs, HahnSeries.coeff_mul_right' b.isPWO_support ht, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hij` using `[Finset.mem_addAntidiagonal]`. Rewrite using `[thL_coeff, thL_coeff, ← hij.2.2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thL_mul (a b : Lau p) : thL (a * b) = thL a * b + a * thL b := by
   ext r
@@ -42,16 +42,16 @@ theorem thL_mul (a b : Lau p) : thL (a * b) = thL a * b + a * thL b := by
   ring
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[thL_coeff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem thL_neg (a : Lau p) : thL (-a) = -thL a := by
   ext r
   simp [thL_coeff]
 
 /- English proof (translation)
-Set `σ` to `Fintype.equivFin ι`. Use `⟨Fintype.card ι, e ∘ σ.symm, a ∘ σ.symm, fun t => he _, fun r => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc r]`. Conclude with `(Equiv.sum_comp σ.symm (fun t => e t * zp Ω ((a t).coeff r))).symm`. Rewrite using `[hx]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Equiv.sum_comp σ.symm (fun t => e t * ψ (algebraMap (Lau p) (O0 p) (a t)))).symm`. Rewrite using `[hx']`. Conclude with `(Equiv.sum_comp σ.symm (fun t => e t * ψ (algebraMap (Lau p) (O0 p) (thL (a t))))).symm`.
+A detailed English derivation is pending.
 -/
 theorem ev_of_fintype {ι : Type} [Fintype ι] (ψ : O0 p →+* Ω) (c : ℤ → Ω) (x x' : Ω) (e : ι → Ω)
     (a : ι → Lau p) (he : ∀ t, IsInt p (e t) ∧ IsAlgZp p (e t))
@@ -65,7 +65,7 @@ theorem ev_of_fintype {ι : Type} [Fintype ι] (ψ : O0 p →+* Ω) (c : ℤ →
   · rw [hx']; exact (Equiv.sum_comp σ.symm (fun t => e t * ψ (algebraMap (Lau p) (O0 p) (thL (a t))))).symm
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[h r, HahnSeries.coeff_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, HahnSeries.map_coeff]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem repr {d : ℕ} (e : Fin d → Ω) (a : Fin d → Lau p) (C : HahnSeries ℤ Ω)
     (h : ∀ r, C.coeff r = ∑ t, e t * zp Ω ((a t).coeff r)) :
@@ -77,9 +77,9 @@ theorem repr {d : ℕ} (e : Fin d → Ω) (a : Fin d → Lau p) (C : HahnSeries 
   rfl
 
 /- English proof (translation)
-Use `letI : Algebra ℤ_[p] Ω := ((algebraMap (O0 p) Ω).comp (algebraMap ℤ_[p] (O0 p))).toAlgebra`. Use `haveI : IsScalarTower ℤ_[p] (O0 p) Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `key : ∀ z : Ω, IsAlgZp p z ↔ IsAlgebraic ℤ_[p] z`. Introduce `z`. Simplify using `only [IsAlgZp, IsAlgebraic, Polynomial.aeval_map_algebraMap]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, `hy`, the goal using `[key]`. Conclude with `hx.mul hy`.
+A detailed English derivation is pending.
 -/
 theorem isAlgZp_mul {x y : Ω} (hx : IsAlgZp p x) (hy : IsAlgZp p y) : IsAlgZp p (x * y) := by
   letI : Algebra ℤ_[p] Ω := ((algebraMap (O0 p) Ω).comp (algebraMap ℤ_[p] (O0 p))).toAlgebra
@@ -90,7 +90,7 @@ theorem isAlgZp_mul {x y : Ω} (hx : IsAlgZp p x) (hy : IsAlgZp p y) : IsAlgZp p
   exact hx.mul hy
 
 /- English proof (translation)
-Take `⟨P, hP, h⟩` from `hx`. Conclude with `⟨P, hP, by rw [Polynomial.aeval_algHom_apply, h, map_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAlgZp_gal (g : Gal p Ω) {x : Ω} (hx : IsAlgZp p x) : IsAlgZp p (g x) := by
   obtain ⟨P, hP, h⟩ := hx
@@ -103,35 +103,31 @@ namespace GlobalTheory.Glue.EvRing
 open GlobalTheory.K5.Basic in
 
 /- English proof (translation)
-Introduce `p hp Ω _ _ _ T n ψ hreb`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `C D x x' y y' ⟨d, e, a, he, hc, hx, hx'⟩ ⟨d', f, b, hf, hd, hy, hy'⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `ev_of_fintype (ι := Fin d × Fin d') ψ _ _ _ (fun ts => e ts.1 * f ts.2) (fun ts => a ts.1 * b ts.2) (fun ts => ⟨IsIntegral.mul (he _).1 (hf _).1, isAlgZp_mul (he _).2 (hf _).2⟩) (fun r => ?_) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[repr e a C hc, repr f b D hd, Finset.sum_mul_sum, HahnSeries.coeff_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[HahnSeries.coeff_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[show HahnSeries.C (e t) * (a t).map (zpH p Ω).toNonUnitalRingHom * (HahnSeries.C (f s) * (b s).map (zpH p Ω).toNonUnitalRingHom) = HahnSeries.C (e t * f s) * (a t * b s).map (zpH p Ω).toNonUnitalRingHom by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.map_mul, map_mul]`. Use the proof step `ring]`. Rewrite using `[HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, HahnSeries.map_coeff]`. Both sides reduce to the same expression. Rewrite using `[hx, hy, Finset.sum_mul_sum, Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx, hx', hy, hy', Finset.sum_mul_sum, Finset.sum_mul_sum, ← Finset.sum_add_distrib, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [thL_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `refine ev_of_fintype (ι := Fin d ⊕ Fin d') ψ _ _ _ (Sum.elim e f) (Sum.elim a b) (by rintro (t | t) <;> simp [he, hf]) (fun r => ?_) ?_ ?_`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[Fintype.sum_sum_type, hc, hd]`. Simplify using `[Fintype.sum_sum_type, hx, hy]`. Simplify using `[Fintype.sum_sum_type, hx', hy']`. Apply the tactic sequence `refine ev_of_fintype (ι := Fin d ⊕ Fin d') ψ _ _ _ (Sum.elim e f) (Sum.elim a fun s => -b s) (by rintro (t | t) <;> simp [he, hf]) (fun r => ?_) ?_ ?_`. Simplify using `[Fintype.sum_sum_type, hc, hd, zp_eq, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Fintype.sum_sum_type, hx, hy, sub_eq_add_neg]`. Simplify using `[Fintype.sum_sum_type, hx', hy', thL_neg, sub_eq_add_neg]`. Introduce and unpack `c x x' ⟨d, e, a, he, hc, hx, hx'⟩`. Establish `hq : IsIntegral (O0 p) (T.qq n)` using `IsIntegral.of_pow (pow_pos hp.out.pos n) (by rw [qq_pow]; exact isIntegral_algebraMap)`. Establish `hmem : ∀ y, ψ y ∈ Algebra.adjoin (O0 p) {T.qq n}` using `fun y => by`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ψ y ∈ ψ.range` using `⟨y, rfl⟩`. Rewrite `this` using `[hreb.rng]`. Conclude with `this`. Establish `hint : ∀ y, IsInt p (ψ y)` using `fun y => adjoin_le_integralClosure hq (hmem y)`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Conclude with `IsIntegral.sum _ fun t _ => IsIntegral.mul (he t).1 (hint _)`. Rewrite using `[hx']`. Conclude with `IsIntegral.sum _ fun t _ => IsIntegral.mul (he t).1 (hint _)`. Use `⟨∑ t, HahnSeries.C (e t) * (a t).map (zpH p Ω).toNonUnitalRingHom, funext fun r => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hc r, HahnSeries.coeff_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, HahnSeries.map_coeff]`. Both sides reduce to the same expression. Use `⟨_, ev_of_fintype ψ _ x' _ e (fun t => thL (a t)) he (fun r => ?_) hx' rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hc r, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[thL_coeff, zp_eq, zp_eq, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Introduce `e0 hi ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `ev_of_fintype ψ _ _ _ (fun t => e0 * e t) a (fun t => ⟨IsIntegral.mul hi (he t).1, isAlgZp_mul ha (he t).2⟩) (fun r => ?_) ?_ ?_` and prove the remaining obligations. Rewrite using `[hc r, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Rewrite using `[hx, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Introduce `g hg`. Establish `hfix : ∀ y, g (ψ y) = ψ y` using `fun y => (AlgHom.eqOn_adjoin_iff (φ := (g : Ω →ₐ[O0 p] Ω)) (ψ := AlgHom.id (O0 p) Ω) (s := {T.qq n})).2 (by intro z hz; rw [Set.mem_singleton_iff] at hz; subst hz; exact hg) (hmem y)`. Use `ev_of_fintype ψ _ _ _ (fun t => g (e t)) a (fun t => ⟨isInt_gal g (he t).1, isAlgZp_gal g (he t).2⟩) (fun r => ?_) ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[hc r, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `congr 1`. Conclude with `g.commutes _`.
-
-Rewrite using `[hx, map_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by rw [map_mul, hfix]`. Rewrite using `[hx', map_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by rw [map_mul, hfix]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_ring : ∀ (p : ℕ) [Fact p.Prime], ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ (T : GlobalTheory.K5.Tower p Ω) (n : ℕ), ∀ (ψ : O0 p →+* Ω), IsReb T n ψ →

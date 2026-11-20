@@ -9,7 +9,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA
 open Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-The claim follows from `jAdjTrQQ_of_leaves quadratic_assembly_holds h1 h7 h11 h12 h13 smooth_forms_stability_holds`.
+A detailed English derivation is pending.
 -/
 theorem jAdjTrQQ_of_open (h1 : JDHatOpQQ) (h7 : JABddOpQQ) (h11 : JAStarOp) (h12 : JAGroupAdj) (h13 : JALocCC) :
     JAdjTrQQ :=

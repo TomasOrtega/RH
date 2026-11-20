@@ -6,7 +6,7 @@ namespace GlobalTheory.CompanionTheory.GapOpLower
 open Finset
 
 /- English proof (translation)
-Simplify using `only [map_sum, LinearMap.sum_apply, Complex.re_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_sesq_sum {V ι : Type} [AddCommGroup V] [Module ℂ V] (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
     (s t : Finset ι) (f : ι → V) :
@@ -15,9 +15,9 @@ theorem re_sesq_sum {V ι : Type} [AddCommGroup V] [Module ℂ V] (B : V →ₗ[
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `h` using `Finset.card_filter_add_card_filter_not (s := (univ : Finset α)) (fun a => a ≠ 0)`. Establish `h0 : ((univ : Finset α).filter (fun a => ¬ a ≠ 0)).card = 1`. Establish `: (univ : Finset α).filter (fun a => ¬ a ≠ 0) = {0}`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, card_singleton]`. Rewrite `h` using `[h0, card_univ]`. Rewrite using `[← h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_filter_ne_zero {α : Type} [Fintype α] [Zero α] :
     (((univ : Finset α).filter (fun a => a ≠ 0)).card : ℝ) = (Fintype.card α : ℝ) - 1 := by
@@ -30,13 +30,11 @@ theorem card_filter_ne_zero {α : Type} [Fintype α] [Zero α] :
   rw [← h]; push_cast; ring
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun s : k => s • a)` using `smul_left_injective k ha`. Rewrite using `[← Finset.sum_image (f := D) (g := fun s : k => s • a) hinj.injOn]`. Use `symm`. Use `Finset.sum_subset ?_ ?_` and prove the remaining obligations. Introduce `b hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp hb`. Simplify using `only [mem_filter, mem_univ, true_and] at hs ⊢`. Conclude with `smul_ne_zero hs ha`. Introduce `b hb hb'`. Use `hD b ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Apply `hb'` to reduce the goal to its premises. Use `Finset.mem_image.mpr ⟨s, ?_, hs.symm⟩` and prove the remaining obligations. Simplify using `only [mem_filter, mem_univ, true_and] at hb ⊢`. Introduce and unpack `rfl`.
-
-Conclude with `hb (by simpa using hs)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sum_line {k : Type} [Field k] [Fintype k] {n : ℕ} (a : Fin (n + 1) → k) (ha : a ≠ 0)
     (D : (Fin (n + 1) → k) → ℝ) (hD : ∀ b, (∀ s : k, b ≠ s • a) → D b = 0) :
@@ -60,17 +58,17 @@ theorem sum_line {k : Type} [Field k] [Fintype k] {n : ℕ} (a : Fin (n + 1) →
     exact hb (by simpa using hs)
 
 /- English proof (translation)
-Use `set q : ℝ := (Fintype.card k : ℝ) with hq`. Establish `hZ : ∑ b, N b * R b = ∑ b ∈ (univ : Finset (Fin (n + 1) → k)).filter (fun b => b ≠ 0), N b * R b`. Use `symm`. Use `Finset.sum_subset (filter_subset _ _) ?_` and prove the remaining obligations. Introduce `b _ hb`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: b = 0` using `by simpa using hb`. Simplify using `[this, hN0]`. Establish `hD` using `sum_line a ha (fun b => (q * N b - q ^ n) * R b) (fun b hb => by show (q * N b - q ^ n) * R b = 0; rw [hNo b hb]; ring)`. Establish `hterm : ∀ s ∈ (univ : Finset k).filter (fun s => s ≠ 0), (q * N (s • a) - q ^ n) * R (s • a) = (if s = 1 then q ^ (n + 1) * c else 0) - q ^ n * c`. Introduce `s hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `s0 : s ≠ 0` using `by simpa using hs`. Rewrite using `[hR s s0]`. Distinguish the cases in `h : s = 1`. Substitute `h` using the available equality. Rewrite using `[one_smul, hNa]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hNs s h]`. Simplify using `[h]`. Establish `h1mem : (1 : k) ∈ (univ : Finset k).filter (fun s => s ≠ 0)` using `by simp`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hD` using `[Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, Finset.sum_ite_eq', if_pos h1mem, Finset.sum_const, nsmul_eq_mul, card_filter_ne_zero]`. Establish `hsplit : q * ∑ b ∈ (univ : Finset (Fin (n + 1) → k)).filter (fun b => b ≠ 0), N b * R b = q ^ n * ∑ b ∈ (univ : Finset (Fin (n + 1) → k)).filter (fun b => b ≠ 0), R b + ∑ b ∈ (univ : Finset (Fin (n + 1) → k)).filter (fun b => b ≠ 0), (q * N b - q ^ n) * R b`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ, hsplit, hD]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem row_identity {k : Type} [Field k] [Fintype k] {n : ℕ} (a : Fin (n + 1) → k) (ha : a ≠ 0)
     (N R : (Fin (n + 1) → k) → ℝ) (c : ℝ)
@@ -116,11 +114,9 @@ theorem row_identity {k : Type} [Field k] [Fintype k] {n : ℕ} (a : Fin (n + 1)
   ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a ⬝ᵥ x = 1`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[ha, Finset.sum_filter]`. Simplify using `[ha]`. Use `_ = ∑ a, ∑ x : Fin (n + 1) → k, ∑ b, if (a ⬝ᵥ x = 1 ∧ b ⬝ᵥ x = 1) then R a b else 0 := Finset.sum_comm`. Use `_ = ∑ a, ∑ b, ∑ x : Fin (n + 1) → k, if (a ⬝ᵥ x = 1 ∧ b ⬝ᵥ x = 1) then R a b else 0 := Finset.sum_congr rfl fun a _ => Finset.sum_comm`. Use `_ = _ := by`.
-
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_expand {k : Type} [Field k] [Fintype k] {n : ℕ}
     (R : (Fin (n + 1) → k) → (Fin (n + 1) → k) → ℝ) :
@@ -148,37 +144,35 @@ theorem sum_expand {k : Type} [Field k] [Fintype k] {n : ℕ}
         rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `k _ _ n V _ _ B w c A hpos h1 h2 hw hc hA`. Establish `hq1 : (1 : ℝ) < (Fintype.card k : ℝ)` using `by exact_mod_cast Fintype.one_lt_card`. Use `set q : ℝ := (Fintype.card k : ℝ) with hq`. Establish `hq0 : q ≠ 0` using `by linarith`. Set `N : (Fin (n + 1) → k) → (Fin (n + 1) → k) → ℝ` to `fun a b => ((univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = 1 ∧ b ⬝ᵥ x = 1)).card : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `R : (Fin (n + 1) → k) → (Fin (n + 1) → k) → ℝ` to `fun a b => (B (w a) (w b)).re`. Set `Z : Finset (Fin (n + 1) → k)` to `univ.filter (fun b => b ≠ 0)`. Establish `hZc : (Z.card : ℝ) = q ^ (n + 1) - 1`. Establish `h` using `card_filter_ne_zero (α := Fin (n + 1) → k)`. Establish `hc' : (Fintype.card (Fin (n + 1) → k) : ℝ) = q ^ (n + 1)` using `by simp [hq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hc']`. Rewrite using `[← h]`. Simplify using `only [Z]`. Use `congr!`. Establish `hrow : ∀ a, a ≠ 0 → q * ∑ b, N a b * R a b = q ^ n * ∑ b ∈ Z, R a b + q ^ n * c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Use `row_identity a ha (N a) (R a) c ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[N]`. Establish `h` using `h1 a ha`. Establish `: N a a = ((univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = 1)).card : ℝ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [N, and_self]`. Rewrite using `[this]`. Conclude with `h` after adjusting the coercions. Introduce `s hs`. Establish `: univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = 1 ∧ (s • a) ⬝ᵥ x = 1) = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.filter_eq_empty_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `x - ⟨hx, hx'⟩`. Rewrite `hx'` using `[smul_dotProduct, hx]`. Conclude with `hs (by simpa using hx')`. Simplify using `only [N, this, card_empty, Nat.cast_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `b hb`. Establish `h` using `h2 a b ha hb`. Establish `h' : q ^ 2 * N a b = q ^ (n + 1)`. Simplify using `only [N]`. Rewrite using `[hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h` after adjusting the coercions. Apply `mul_left_cancel₀ hq0` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← pow_two, h', pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [R, hw a ha s hs, hc a ha]`. Establish `hleft : ∑ x : Fin (n + 1) → k, ∑ a ∈ univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), ∑ b ∈ univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), R a b = (q ^ (n + 1) - 1) * A`. Establish `hZ : ∑ x ∈ Z, ∑ a ∈ univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), ∑ b ∈ univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), R a b = ∑ x : Fin (n + 1) → k, ∑ a ∈ univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), ∑ b ∈ univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), …`. Use `Finset.sum_subset (filter_subset _ _) ?_` and prove the remaining obligations. Introduce `x _ hx`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0 : x = 0` using `by simpa [Z] using hx`. Substitute `hx0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[← hZ]`. Establish `hconst : ∀ x ∈ Z, ∑ a ∈ univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), ∑ b ∈ univ.filter (fun a : Fin (n + 1) → k => a ⬝ᵥ x = 1), R a b = A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx0 : x ≠ 0` using `by simpa [Z] using hx`. Rewrite using `[← hA x hx0, re_sesq_sum]`. Rewrite using `[Finset.sum_congr rfl hconst, Finset.sum_const, nsmul_eq_mul, hZc]`. Establish `hright : q * ∑ a, ∑ b, N a b * R a b = q ^ n * ∑ a ∈ Z, ∑ b ∈ Z, R a b + (q ^ (n + 1) - 1) * (q ^ n * c)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hZ : ∑ a ∈ Z, ∑ b, N a b * R a b = ∑ a, ∑ b, N a b * R a b`. Use `Finset.sum_subset (filter_subset _ _) ?_` and prove the remaining obligations. Introduce `a _ ha`. Establish `ha0 : a = 0` using `by simpa [Z] using ha`. Substitute `ha0` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `[N]`. Rewrite using `[← hZ, Finset.mul_sum, Finset.sum_congr rfl (fun a ha => hrow a (by simpa [Z] using ha)), Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, nsmul_eq_mul, hZc]`. Establish `hP : 0 ≤ ∑ a ∈ Z, ∑ b ∈ Z, R a b`. Use `hpos (∑ a ∈ Z, w a)` as an intermediate fact. Rewrite `this` using `[re_sesq_sum]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hmain : q * ((q ^ (n + 1) - 1) * A) = q ^ n * ∑ a ∈ Z, ∑ b ∈ Z, R a b + (q ^ (n + 1) - 1) * (q ^ n * c)`. Rewrite using `[← hleft, sum_expand R]`. Conclude with `hright`. Establish `hQ : 0 < q ^ (n + 1) - 1`. Establish `: 1 < q ^ (n + 1)` using `one_lt_pow₀ hq1 (Nat.succ_ne_zero n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqn : 0 ≤ q ^ n` using `by positivity`. Establish `hfin : 0 ≤ (q ^ (n + 1) - 1) * (q * A - q ^ n * c)`. Establish `: (q ^ (n + 1) - 1) * (q * A - q ^ n * c) = q ^ n * ∑ a ∈ Z, ∑ b ∈ Z, R a b`. Take the linear combination `hmain`.
-
-Rewrite using `[this]`. Conclude with `mul_nonneg hqn hP`. Use `nonneg_of_mul_nonneg_right hfin hQ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lower_from_counts : ∀ (k : Type) [Field k] [Fintype k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
   (w : (Fin (n + 1) → k) → V) (c A : ℝ),

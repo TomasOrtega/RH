@@ -69,7 +69,7 @@ Both sides reduce to the same expression.
 theorem coe_bddRep (V : HSp D) (g : GA D V) (f : bddAut V) : (bddRep V g f : GA D V → ℂ) = rTr V g f := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun _ _ _ => rfl, ‖c‖, fun _ => le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem const_mem_bddAut (V : HSp D) (c : ℂ) : (fun _ => c) ∈ bddAut V :=
   ⟨continuous_const, fun _ _ _ => rfl, ‖c‖, fun _ => le_rfl⟩
@@ -84,7 +84,7 @@ def levDatum (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank
 
 open Classical in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isLevelVec_iff {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ} {ΛS : Set (Fin S.rank → D.host.E)} {ΛT : Set (Fin T.rank → D.host.E)}
@@ -96,7 +96,7 @@ theorem isLevelVec_iff {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : H
   Iff.rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (N : ℕ) (z : ℂˣ) :
     KerGL (r := 0) w N z fun _ => 1 := fun _ _ _ _ _ _ _ _ _ => by simp

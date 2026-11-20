@@ -22,9 +22,9 @@ def PotOff (A : FinHolAtlas e X) (Z : Set X) (P : LocPot X) : Prop :=
     A.HoloOn W G ∧ ∀ z ∈ W ∩ P.U x ∩ P.U x', P.φ x z - P.φ x' z = (G z).re
 
 /- English proof (translation)
-Take `⟨θ, u, rfl, hθ, -, -, hu, -⟩` from `h`. Use `⟨fun x j => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Conclude with `((hθ.1 x j).mono fun y hy => ⟨hy.1, hy.2.1.1⟩).add ((hu j).mono fun y hy => ⟨hy.1, hy.2.2⟩)`. Take `⟨W, hW, hyW, G, hG, hGe⟩` from `hθ.2 x x' y ⟨hy.1.1, hy.2.1⟩`. Use `⟨W, hW, hyW, G, hG, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hGe z ⟨⟨hz.1.1, hz.1.2.1⟩, hz.2.1⟩` as an intermediate fact. Use `show (θ.φ x z + u z) - (θ.φ x' z + u z) = _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem potOff_of_listForm {A : FinHolAtlas e X} {Z : Set X} {r : X → ℝ} {Om : LocPot X} {K : ℝ} {T : LocPot X}
     (h : ListForm A Z r Om K T) : PotOff A Z T := by
@@ -38,7 +38,7 @@ theorem potOff_of_listForm {A : FinHolAtlas e X} {Z : Set X} {r : X → ℝ} {Om
     linarith
 
 /- English proof (translation)
-The claim follows from `((hP.1 x j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm ((P.isOpen_U x).inter hZ.isOpen_compl)).mem_nhds ⟨hy, hU, hyZ⟩)).of_le (WithTop.coe_le_coe.2 le_top)`.
+A detailed English derivation is pending.
 -/
 theorem PotOff.smoothAt {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {P : LocPot X} (hP : PotOff A Z P)
     (x : X) (j : Fin A.n) {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (hU : (A.chart j).symm y ∈ P.U x)
@@ -48,11 +48,11 @@ theorem PotOff.smoothAt {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {P :
     (WithTop.coe_le_coe.2 le_top)
 
 /- English proof (translation)
-Unfold `locDens`. Apply `maDens_congr_hessC` to reduce the goal to its premises. Introduce `i`. Take `⟨W, hWo, hyW, G, hG, hGeq⟩` from `(hΦ i).2 ((A.chart j).symm y) x ((A.chart j).symm y) ⟨(Φ i).mem_U _, hx i⟩`. Establish `hVo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (W ∩ (Φ i).U ((A.chart j).symm y) ∩ (Φ i).U x))` using `(A.chart j).isOpen_inter_preimage_symm ((hWo.inter ((Φ i).isOpen_U _)).inter ((Φ i).isOpen_U x))`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyV : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (W ∩ (Φ i).U ((A.chart j).symm y) ∩ (Φ i).U x)` using `⟨hy, ⟨⟨hyW, (Φ i).mem_U _⟩, hx i⟩⟩`. Establish `h1 : (fun y' => (Φ i).φ ((A.chart j).symm y) ((A.chart j).symm y')) =ᶠ[nhds y] (fun w => ((Φ i).φ x ∘ (A.chart j).symm) w + ((G ∘ (A.chart j).symm) w).re)` using `by filter_upwards [hVo.mem_nhds hyV] with w hw`. Use `hGeq ((A.chart j).symm w) hw.2` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hessCGerm _ _ _ h1]`. Conclude with `ReciprocityTheory.AnForm.A.hessC_add_re_analytic _ _ _ ((hΦ i).smoothAt hZ x j hy (hx i) hyZ) (hG j y ⟨hy, hyW⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dens_base {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {Φ : Fin e → LocPot X}
     (hΦ : ∀ i, PotOff A Z (Φ i)) (j : Fin A.n) {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target)
@@ -81,9 +81,9 @@ theorem dens_base {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {Φ : Fin 
     ((hΦ i).smoothAt hZ x j hy (hx i) hyZ) (hG j y ⟨hy, hyW⟩)
 
 /- English proof (translation)
-Introduce `y0 hy0`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Establish `hVo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' ((⋂ i, (Φ i).U ((A.chart j).symm y0)) ∩ Zᶜ))` using `(A.chart j).isOpen_inter_preimage_symm ((isOpen_iInter_of_finite fun i => (Φ i).isOpen_U _).inter hZ.isOpen_compl)`. Establish `hy0V : y0 ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' ((⋂ i, (Φ i).U ((A.chart j).symm y0)) ∩ Zᶜ)` using `⟨hy0.1, Set.mem_iInter.2 fun i => (Φ i).mem_U _, hy0.2⟩`. Establish `heq : maDens (fun i y' => (Φ i).φ ((A.chart j).symm y0) ((A.chart j).symm y')) =ᶠ[nhds y0] locDens A Φ j` using `by filter_upwards [hVo.mem_nhds hy0V] with y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(dens_base hZ hΦ j hy.1 hy.2.2 _ (fun i => Set.mem_iInter.1 hy.2.1 i)).symm`. Use `ContinuousAt.congr ?_ heq` and prove the remaining obligations. Use `(maDens_continuousOn _ _ hVo fun i => ?_).continuousAt (hVo.mem_nhds hy0V)` and prove the remaining obligations. Conclude with `(((hΦ i).1 _ j).of_le (WithTop.coe_le_coe.2 le_top)).mono fun y hy => ⟨hy.1, Set.mem_iInter.1 hy.2.1 i, hy.2.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dens_cont {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {Φ : Fin e → LocPot X}
     (hΦ : ∀ i, PotOff A Z (Φ i)) (j : Fin A.n) :
@@ -107,13 +107,13 @@ theorem dens_cont {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {Φ : Fin 
     fun y hy => ⟨hy.1, Set.mem_iInter.1 hy.2.1 i, hy.2.2⟩
 
 /- English proof (translation)
-Establish `hτ : AnalyticAt ℂ (A.chart k ∘ (A.chart j).symm) y` using `A.holo j k y ⟨hy, hyk⟩`. Establish `hsk : (A.chart k).symm (A.chart k ((A.chart j).symm y)) = (A.chart j).symm y` using `(A.chart k).left_inv hyk`. Establish `htk : A.chart k ((A.chart j).symm y) ∈ (A.chart k).target` using `(A.chart k).map_source hyk`. Establish `hL : locDens A Φ k (A.chart k ((A.chart j).symm y)) = maDens (fun i y' => (Φ i).φ ((A.chart j).symm y) ((A.chart k).symm y')) (A.chart k ((A.chart j).symm y))`. Simplify using `only [locDens, hsk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsm : ∀ i, ContDiffAt ℝ 2 (fun y' => (Φ i).φ ((A.chart j).symm y) ((A.chart k).symm y')) ((A.chart k ∘ (A.chart j).symm) y)` using `fun i => (hΦ i).smoothAt hZ ((A.chart j).symm y) k htk (by rw [Function.comp_apply, hsk]; exact (Φ i).mem_U _) (by rw [Function.comp_apply, hsk]; exact hyZ)`. Establish `hcomp` using `ReciprocityTheory.AnForm.A.maDens_comp (fun i y' => (Φ i).φ ((A.chart j).symm y) ((A.chart k).symm y')) (A.chart k ∘ (A.chart j).symm) y hτ hsm`. Rewrite `hcomp` using `[ReciprocityTheory.AnForm.A.det_jacC, Complex.normSq_eq_norm_sq]`. Establish `key : locDens A Φ j y = maDens (fun i => (fun y' => (Φ i).φ ((A.chart j).symm y) ((A.chart k).symm y')) ∘ (A.chart k ∘ (A.chart j).symm)) y`. Unfold `locDens`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `maDens_congr_hessC` to reduce the goal to its premises. Introduce `i`. Apply `hessCGerm` to reduce the goal to its premises. Establish `hWo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source)` using `(A.chart j).isOpen_inter_preimage_symm (A.chart k).open_source`. Use `filter_upwards [hWo.mem_nhds (show y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source from ⟨hy, hyk⟩)] with w hw`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[(A.chart k).left_inv hw.2]`. Rewrite using `[hL, key]`. Conclude with `hcomp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dens_chart {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {Φ : Fin e → LocPot X}
     (hΦ : ∀ i, PotOff A Z (Φ i)) (j k : Fin A.n) (y : Fin e → ℂ) (hy : y ∈ (A.chart j).target)
@@ -154,7 +154,7 @@ theorem dens_chart {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {Φ : Fin
   exact hcomp
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.AnForm.A.maDens_nonneg_of_posSemidef _ y fun i => hessC_posSemidef_of_levi _ y ((hΦ i).smoothAt hZ _ j hy ((Φ i).mem_U _) hyZ) (hp i j y hy hyZ)`.
+A detailed English derivation is pending.
 -/
 theorem dens_nonneg {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {Φ : Fin e → LocPot X}
     (hΦ : ∀ i, PotOff A Z (Φ i)) (hp : ∀ i, PshOff A Z (Φ i)) (j : Fin A.n) {y : Fin e → ℂ}
@@ -163,21 +163,19 @@ theorem dens_nonneg {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {Φ : Fi
     hessC_posSemidef_of_levi _ y ((hΦ i).smoothAt hZ _ j hy ((Φ i).mem_U _) hyZ) (hp i j y hy hyZ)
 
 /- English proof (translation)
-Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Use `set P := hne.some with hP`. Establish `hO : ∀ j, IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ)` using `fun j => (A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl`. Use `⟨∑ j, ((volume.restrict ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ)).withDensity fun y => ENNReal.ofReal (P.χ j ((A.chart j).symm y) * locDens A Φ j y)).map (A.chart j).symm, fun g hg hg0 => ?_⟩` and prove the remaining obligations. Establish `key` using `fun j => map_withDensity_integrable_integral (w := fun y => P.χ j ((A.chart j).symm y) * locDens A Φ j y) (hO j) ((A.chart j).continuousOn_symm.mono Set.inter_subset_left) (((chi_comp_continuousOn P j).mono Set.inter_subset_left).mul (dens_cont hZ hΦ j)) (fun y hy => mul_nonneg ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ j, ∀ y ∈ (A.chart j).target \ ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ), g ((A.chart j).symm y) = 0` using `fun j y hy => hg0 _ (by`. Assume the negation of the conclusion as `h`. Conclude with `hy.2 ⟨hy.1, h⟩)`. Rewrite using `[integrable_finsetSum_measure]`. Use `⟨⟨fun h j _ => (key j).1.2 ?_, fun h => ?_⟩, fun h => ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `((integrableOn_weight A P Φ g h j).mono_set Set.inter_subset_left).congr_fun (fun y _ => ?_) (hO j).measurableSet` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hD : DIChartDens A (fun j y => if (A.chart j).symm y ∈ Z then 0 else locDens A Φ j y)`. Introduce `a b z hz hz2`. Simplify using `only [(A.chart b).left_inv hz2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `split_ifs with h'`. Simplify using the standard rewrite rules. Conclude with `dens_chart hZ hΦ a b z hz hz2 h'`. Establish `h2` using `dI_target_of_weights A P hD g (fun j => ?_)`. Introduce `j K hK hKc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `((h2 j).mono_set hK).congr_fun (fun y _ => ?_) hKc.measurableSet` and prove the remaining obligations. Distinguish the cases in `h' : (A.chart j).symm y ∈ Z`. Simplify using `[hg0 _ h']`. Simplify using `[h']`. Use `IntegrableOn.of_forall_sdiff_eq_zero (s := (A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ) ?_ (A.chart j).open_target.measurableSet (fun y hy => by simp [hz j y hy])` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `((key j).1.1 (h j (Finset.mem_univ j))).congr_fun (fun y hy => ?_) (hO j).measurableSet` and prove the remaining obligations. Establish `h' : (A.chart j).symm y ∉ Z` using `hy.2`. Simplify using `only [h', if_false]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_finsetSum_measure h, mInt_eq_integralWith A Φ hne]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `integralWith`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(key j).2, setIntegral_eq_of_subset_of_forall_sdiff_eq_zero (A.chart j).open_target.measurableSet (Set.inter_subset_left (t := (A.chart j).symm ⁻¹' Zᶜ)) (fun y hy => by simp [hz j y hy])]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_measure [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
     {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z) {Φ : Fin e → LocPot X}
@@ -232,13 +230,13 @@ theorem exists_measure [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSp
     ring
 
 /- English proof (translation)
-Take `⟨-, -, hOm, hpos, -, hr, -⟩` from `hb`. Establish `hpsh : IsPsh A Om` using `fun x j y hy w => by`. Distinguish the cases in `hw : w = 0`. Simplify using `[hw, levi]`. Conclude with `(hpos x j y hy w hw).le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `aux : ∀ θ : LocPot X, IsPotential A θ → IsPsh A (Om.rsmul K + θ) → IsPsh A (Om.rsmul K' + θ)`. Introduce `θ hθ h x j y hy w`. Establish `h1` using `isPshAdd A _ _ (isPotentialRsmul A (K' - K) Om hOm) (isPotentialAdd A _ _ (isPotentialRsmul A K Om hOm) hθ) (isPshRsmul A (K' - K) Om (by linarith) hOm hpsh) h x j y ⟨hy.1, hy.2.1, hy.2⟩ w`. Establish `h2 : (Om.rsmul (K' - K) + (Om.rsmul K + θ)).φ x = (Om.rsmul K' + θ).φ x`. Use function extensionality and compare the values at `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show (K' - K) * Om.φ x z + (K * Om.φ x z + θ.φ x z) = K' * Om.φ x z + θ.φ x z`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Take `⟨θ, u, hT, hθ, h1, h2, hu, hb, h3⟩` from `h`. Use `⟨θ, u, hT, hθ, aux θ hθ h1, aux _ (isPotentialRsmul A _ θ hθ) h2, hu, fun x hx => ⟨?_, (hb x hx).2⟩, h3⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : 0 ≤ Real.log (r x)` using `Real.log_nonneg ((Real.one_le_exp zero_le_one).trans (hr x hx))`. Use `mul_le_mul_of_nonneg_right hK hl` as an intermediate fact. Combine the linear relations using `[(hb x hx).1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem listForm_mono {A : FinHolAtlas e X} {Z : Set X} {r : X → ℝ} {Om : LocPot X} (hb : IsBd A Z r Om)
     {K K' : ℝ} (hK : K ≤ K') {T : LocPot X} (h : ListForm A Z r Om K T) : ListForm A Z r Om K' T := by
@@ -264,11 +262,9 @@ theorem listForm_mono {A : FinHolAtlas e X} {Z : Set X} {r : X → ℝ} {Om : Lo
   linarith [(hb x hx).1]
 
 /- English proof (translation)
-Establish `hc : ContinuousOn r Zᶜ`. Introduce `x hx`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Take `⟨j, hj⟩` from `A.cover x`. Establish `h2 : ContinuousAt (r ∘ (A.chart j).symm) (A.chart j x)` using `(hr j).continuousOn.continuousAt (((A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl).mem_nhds ⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : ContinuousAt ((r ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `h2.comp ((A.chart j).continuousAt hj)`. Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with z hz`. Simplify using `[(A.chart j).left_inv hz]`. Rewrite using `[← Set.piecewise_eq_indicator]`.
-
-Conclude with `hc.measurable_piecewise continuousOn_const hZ.isOpen_compl.measurableSet`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_off [MeasurableSpace X] [BorelSpace X] {A : FinHolAtlas e X} {Z : Set X} (hZ : IsClosed Z)
     {r : X → ℝ} (hr : A.SmoothOn Zᶜ r) : Measurable (Zᶜ.indicator r) := by
@@ -288,39 +284,35 @@ theorem measurable_off [MeasurableSpace X] [BorelSpace X] {A : FinHolAtlas e X} 
   exact hc.measurable_piecewise continuousOn_const hZ.isOpen_compl.measurableSet
 
 /- English proof (translation)
-Introduce `e X _ _ _ A Z r Om hb K`. Use `borelize X`. Take `⟨C, hC⟩` from `GlobalTheory.T.mixed_integral_cutoff_log_decay e X A Z r Om hb (max K 1) (le_max_right _ _)`. Use `set c : ℝ := ∑' k : ℕ, ((k : ℝ) + 2) ^ (e + 1) / 2 ^ k with hc`. Establish `hc0 : 0 ≤ c` using `tsum_nonneg fun k => by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨max C (max C 0 * c), fun T hT => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hC T fun i => listForm_mono hb (le_max_left _ _) (hT i)`. Establish `hZ : IsClosed Z` using `hb.1`. Establish `hre : ∀ x, x ∉ Z → Real.exp 1 ≤ r x` using `hb.2.2.2.2.2.1`. Establish `hm : Measurable (Zᶜ.indicator r)` using `measurable_off hZ hb.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨μ, hμ⟩` from `exists_measure hZ (fun i => potOff_of_listForm (hT i)) (fun i => by obtain ⟨_, _, h⟩ := hT i; exact h.2.2.2.2.2.2.2)`. Establish `hset : ∀ R : ℝ, Real.exp 1 ≤ R → {x | R ≤ Zᶜ.indicator r x} = {x | R ≤ r x} ∩ Zᶜ`. Introduce `R hR`. Establish `hR0 : 0 < R` using `(Real.exp_pos 1).trans_le hR`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : x ∈ Z`. Simplify using `[hx, hR0]`. Simplify using `[hx]`. Establish `hms : ∀ R : ℝ, MeasurableSet {x | R ≤ Zᶜ.indicator r x}` using `fun R => measurableSet_le measurable_const hm`. Establish `hcut0 : ∀ (S : Set X) (f : X → ℝ), ∀ x ∈ Z, cut Z S f x = 0` using `fun S f x hx => Set.indicator_of_notMem (fun h => h.2 hx) _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huniv : ∀ f : X → ℝ, cut Z Set.univ f = cut Z {x | Real.exp 1 ≤ r x} f`. Introduce `f`. Unfold `cut`. Use `congr 1`. Use extensionality with `x`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun h => ⟨hre x h.2, h.2⟩, fun h => ⟨trivial, h.2⟩⟩`. Establish `hm1 : ∀ R : ℝ, Real.exp 1 ≤ R → Measurable (cut Z {x | R ≤ r x} fun _ => (1 : ℝ))` using `fun R hR => by`. Unfold `cut`. Rewrite using `[← hset R hR]`. Conclude with `measurable_const.indicator (hms R)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi1 : Integrable (cut Z {x | Real.exp 1 ≤ r x} fun _ => (1 : ℝ)) μ` using `(hμ _ (hm1 _ le_rfl) (hcut0 _ _)).1.1 (huniv _ ▸ h1)`. Establish `hiR : ∀ R : ℝ, Real.exp 1 ≤ R → Integrable (cut Z {x | R ≤ r x} fun _ => (1 : ℝ)) μ` using `fun R hR => by`. Use `hi1.mono (hm1 R hR).aestronglyMeasurable (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Unfold `cut`. Establish `hs : {x | R ≤ r x} ∩ Zᶜ ⊆ {x | Real.exp 1 ≤ r x} ∩ Zᶜ` using `fun y hy => ⟨hR.trans hy.1, hy.2⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `norm_indicator_le_of_subset hs _ _`. Establish `hmass : ∀ ρ : ℝ, Real.exp 1 ≤ ρ → μ {x | ρ ≤ Zᶜ.indicator r x} ≤ ENNReal.ofReal (max C 0 * Real.log ρ ^ e / ρ)`. Introduce `ρ hρ`. Establish `hρ0 : 0 < ρ` using `(Real.exp_pos 1).trans_le hρ`. Establish `hl : 0 ≤ Real.log ρ` using `Real.log_nonneg ((Real.one_le_exp zero_le_one).trans hρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `(hμ _ (hm1 ρ hρ) (hcut0 _ _)).2 (hiR ρ hρ)`. Establish `e2` using `h3 ρ hρ`. Establish `hI` using `hiR ρ hρ`. Rewrite `e2` using `[e1]`. Unfold `cut at e2 hI`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e2`, `hI` using `[← hset ρ hρ]`. Establish `hfin : μ {x | ρ ≤ Zᶜ.indicator r x} ≠ ⊤`. Rewrite `hI` using `[integrable_indicator_iff (hms ρ), integrableOn_const_iff]`. Simplify `hI` using `[lt_top_iff_ne_top]`. Rewrite `e2` using `[integral_indicator (hms ρ)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [integral_const, MeasurableSet.univ, measureReal_restrict_apply, Set.univ_inter, smul_eq_mul, mul_one] at e2`. Rewrite using `[← ENNReal.ofReal_toReal hfin]`. Use `ENNReal.ofReal_le_ofReal (e2.trans ?_)` and prove the remaining obligations. Use `gcongr`. Conclude with `le_max_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : ∀ R : ℝ, Real.exp 1 ≤ R → MIntegrable A T (cut Z {x | R ≤ r x} fun x => Real.log (r x)) ∧ mInt A T (cut Z {x | R ≤ r x} fun x => Real.log (r x)) ≤ max C 0 * c * Real.log R ^ (e + 1) / R`. Introduce `R hR`. Establish `hR0 : 0 < R` using `(Real.exp_pos 1).trans_le hR`. Establish `hR1 : 1 ≤ R` using `(Real.one_le_exp zero_le_one).trans hR`. Establish `hl : 0 ≤ Real.log R` using `Real.log_nonneg hR1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hs` using `GlobalTheory.T.tail_log_integral_bound_of_distribution X μ _ e (max C 0) R hm (le_max_right _ _) hR fun ρ hρ => hmass ρ (hR.trans hρ)`. Establish `heq : (cut Z {x | R ≤ r x} fun x => Real.log (r x)) = {x | R ≤ Zᶜ.indicator r x}.indicator fun x => Real.log (Zᶜ.indicator r x)`. Rewrite using `[hset R hR]`. Unfold `cut`. Use `Set.indicator_congr fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.indicator_of_mem hx.2]`. Establish `hmg : Measurable (cut Z {x | R ≤ r x} fun x => Real.log (r x))`. Rewrite using `[heq]`. Conclude with `hm.log.indicator (hms R)`. Establish `hnn : 0 ≤ᵐ[μ.restrict {x | R ≤ Zᶜ.indicator r x}] fun x => Real.log (Zᶜ.indicator r x)` using `ae_restrict_of_forall_mem (hms R) fun x hx => Real.log_nonneg (hR1.trans hx)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hio : IntegrableOn (fun x => Real.log (Zᶜ.indicator r x)) {x | R ≤ Zᶜ.indicator r x} μ` using `⟨hm.log.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal hnn).2 (hs.trans_lt ENNReal.ofReal_lt_top)⟩`. Establish `hig : Integrable (cut Z {x | R ≤ r x} fun x => Real.log (r x)) μ`. Rewrite using `[heq]`. Conclude with `(integrable_indicator_iff (hms R)).2 hio`. Use `⟨(hμ _ hmg (hcut0 _ _)).1.2 hig, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[(hμ _ hmg (hcut0 _ _)).2 hig, heq, integral_indicator (hms R)]`. Rewrite `hs` using `[← ofReal_integral_eq_lintegral_ofReal hio hnn]`. Establish `h0 : 0 ≤ max C 0` using `le_max_right _ _`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 hs`. Use `⟨huniv _ ▸ (hlog _ le_rfl).1, h2.trans (le_max_left _ _), fun R hR => (hlog R hR).2.trans ?_⟩` and prove the remaining obligations.
-
-Establish `hR0 : 0 < R` using `(Real.exp_pos 1).trans_le hR`. Establish `hl : 0 ≤ Real.log R` using `Real.log_nonneg ((Real.one_le_exp zero_le_one).trans hR)`. Use `gcongr`. Conclude with `le_max_right _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tail : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (Z : Set X)
     (r : X → ℝ) (Om : LocPot X), IsBd A Z r Om → ∀ K : ℝ, ∃ C : ℝ, Tail A Z r Om K C := by

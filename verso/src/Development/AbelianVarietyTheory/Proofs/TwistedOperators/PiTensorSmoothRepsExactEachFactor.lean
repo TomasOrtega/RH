@@ -22,9 +22,9 @@ def piTensorHom {α : Type} {Γ : α → Type} [∀ i, Group (Γ i)] [∀ i, Top
     exact LinearMap.congr_fun ((f a).isIntertwining' (g a)) (x a)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.add_apply, PiTensorProduct.map_tprod, LinearMap.id_apply]`. Establish `hx : ∀ w : ∀ a, Y a →ₗ[ℂ] Y a, (∀ a, a ≠ i → w a = LinearMap.id) → (fun a => w a (x a)) = Function.update x i (w i (x i))`. Introduce `w hw`. Use function extensionality and compare the values at `a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne ha, hw a ha, LinearMap.id_apply]`. Rewrite using `[hx u hu, hx v hv, ← MultilinearMap.map_update_add, ← LinearMap.add_apply, h, LinearMap.id_apply, Function.update_eq_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem piTensorMap_add_eq_id {α : Type} [DecidableEq α] {Y : α → Type} [∀ a, AddCommGroup (Y a)]
     [∀ a, Module ℂ (Y a)] (i : α) (u v : ∀ a, Y a →ₗ[ℂ] Y a) (hu : ∀ a, a ≠ i → u a = LinearMap.id)
@@ -46,27 +46,25 @@ theorem piTensorMap_add_eq_id {α : Type} [DecidableEq α] {Y : α → Type} [�
     LinearMap.id_apply, Function.update_eq_self]
 
 /- English proof (translation)
-Introduce `α _ _ Γ _ _ A i B B₁ B₂ ι p hι hp hpι hker`. Establish `key : ∀ a, ∃ (f : (Function.update A i B₁ a).ρ.IntertwiningMap (Function.update A i B a).ρ) (g : (Function.update A i B a).ρ.IntertwiningMap (Function.update A i B₂ a).ρ) (s : (Function.update A i B a).V →ₗ[ℂ] (Function.update A i B₁ a).V) (t : (Function.update A i B₂ a).V →ₗ[ℂ] …`. Introduce `a`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Function.update_self, Function.update_self, Function.update_self]`. Take `⟨t, ht⟩` from `p.toLinearMap.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hp)`. Take `⟨s₀, hs₀⟩` from `ι.toLinearMap.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hι)`. Establish `hs₀' : ∀ u, s₀ (ι u) = u` using `fun u => LinearMap.congr_fun hs₀ u`. Establish `ht' : ∀ z, p (t z) = z` using `fun z => LinearMap.congr_fun ht z`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ι, p, s₀ ∘ₗ (LinearMap.id - t ∘ₗ p.toLinearMap), t, ?_, ht, fun h => absurd rfl h, fun _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `u`. Simplify using `[hpι, hs₀']`. Use extensionality with `y`. Take `⟨u, hu⟩` from `hker (y - t (p y)) (by simp [ht'])`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply, Representation.IntertwiningMap.coe_toLinearMap]`. Rewrite using `[← hu, hs₀', hu, sub_add_cancel]`. Use extensionality with `u`. Simplify using `[hpι]`. Rewrite using `[Function.update_of_ne ha, Function.update_of_ne ha, Function.update_of_ne ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Representation.IntertwiningMap.id _, Representation.IntertwiningMap.id _, LinearMap.id, LinearMap.id, by ext; rfl, by ext; rfl, fun _ => ⟨by ext; rfl, by ext; rfl⟩, fun h => absurd h ha⟩`. Use `choose f g s t hsf hgt hne heq using key`. Establish `hF : ∀ x, piTensorHom f x = PiTensorProduct.map (fun a => (f a).toLinearMap) x` using `fun _ => rfl`. Establish `hG : ∀ x, piTensorHom g x = PiTensorProduct.map (fun a => (g a).toLinearMap) x` using `fun _ => rfl`. Establish `hSF : PiTensorProduct.map s ∘ₗ PiTensorProduct.map (fun a => (f a).toLinearMap) = LinearMap.id`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PiTensorProduct.map_comp, funext hsf, PiTensorProduct.map_id]`. Establish `hGT : PiTensorProduct.map (fun a => (g a).toLinearMap) ∘ₗ PiTensorProduct.map t = LinearMap.id`. Rewrite using `[← PiTensorProduct.map_comp, funext hgt, PiTensorProduct.map_id]`. Establish `hsum : PiTensorProduct.map (fun a => (f a).toLinearMap) ∘ₗ PiTensorProduct.map s + PiTensorProduct.map t ∘ₗ PiTensorProduct.map (fun a => (g a).toLinearMap) = LinearMap.id`. Rewrite using `[← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `piTensorMap_add_eq_id i _ _ (fun a ha => (hne a ha).1) (fun a ha => (hne a ha).2) (heq i rfl).1`. Establish `hGF : PiTensorProduct.map (fun a => (g a).toLinearMap) ∘ₗ PiTensorProduct.map (fun a => (f a).toLinearMap) = 0`. Rewrite using `[← PiTensorProduct.map_comp]`. Use extensionality with `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, PiTensorProduct.map_tprod, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `MultilinearMap.map_coord_zero _ i (by rw [(heq i rfl).2, LinearMap.zero_apply])`. Use `⟨piTensorHom f, piTensorHom g, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Use `congrArg (PiTensorProduct.map s) hxy` as an intermediate fact. Rewrite `this` using `[hF, hF]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Simplify using `using (LinearMap.congr_fun hSF x).symm.trans (this.trans (LinearMap.congr_fun hSF y))`. Introduce `z`. Conclude with `⟨PiTensorProduct.map t z, by rw [hG]; exact LinearMap.congr_fun hGT z⟩`. Introduce `u`. Rewrite using `[hG, hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `LinearMap.congr_fun hGF u`. Introduce `v hv`. Use `⟨PiTensorProduct.map s v, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[hG]`. Use `LinearMap.congr_fun hsum v` as an intermediate fact.
-
-Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, hv, map_zero, add_zero, LinearMap.id_apply] at this`. Rewrite using `[hF]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piTensor_exact_position : ∀ (α : Type) [Fintype α] [DecidableEq α] (Γ : α → Type) [∀ i, Group (Γ i)] [∀ i, TopologicalSpace (Γ i)] (A : ∀ i, GlobalTheory.SmGL.SmRep (Γ i)) (i : α) (B B₁ B₂ : GlobalTheory.SmGL.SmRep (Γ i)) (ι : B₁.ρ.IntertwiningMap B.ρ) (p : B.ρ.IntertwiningMap B₂.ρ), Function.Injective ι → Function.Surjective p → (∀ u, p (ι u) = 0) → (∀ v, p v = 0 → ∃ u, ι u = v) → ∃ (ι' : (GlobalTheory.SmGL.piTensor fun a => (Function.update A i B₁ a).ρ).IntertwiningMap (GlobalTheory.SmGL.piTensor fun a => (Function.update A i B a).ρ)) (p' : (GlobalTheory.SmGL.piTensor fun a => (Function.update A i B a).ρ).IntertwiningMap (GlobalTheory.SmGL.piTensor fun a => (Function.update A i B₂ a).ρ)), Function.Injective ι' ∧ Function.Surjective p' ∧ (∀ u, p' (ι' u) = 0) ∧ (∀ v, p' v = 0 → ∃ u, ι' u = v) := by
   intro α _ _ Γ _ _ A i B B₁ B₂ ι p hι hp hpι hker

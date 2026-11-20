@@ -15,9 +15,9 @@ open GroundTheory.Global GJMatrix
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Unfold `AutomorphicForm.height`. Establish `h1 : ∀ w' ∈ (Finset.univ : Finset (InfinitePlace K)), 1 ≤ AutomorphicForm.locHeight (Reduction.infAt w' g) ^ w'.mult` using `fun w' _ => one_le_pow₀ (AutomorphicForm.one_le_locHeight _)`. Apply the tactic sequence `have hmult : w.mult ≠ 0 := by unfold InfinitePlace.mult; split_ifs <;> norm_num`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ w)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_mul_of_one_le_right (zero_le_one.trans (h1 w (Finset.mem_univ w))) (Finset.one_le_prod fun w' hw' => h1 w' (Finset.mem_of_mem_erase hw'))`. Use `_ ≤ _ := le_mul_of_one_le_right (zero_le_one.trans (AutomorphicForm.one_le_prod_locHeight g)) (AutomorphicForm.one_le_finprod_locHeight g)`.
+A detailed English derivation is pending.
 -/
 theorem locHeight_infAt_le_height (g : AdelicGLn.AdelicGL K n) (w : InfinitePlace K) :
     AutomorphicForm.locHeight (Reduction.infAt w g) ≤ AutomorphicForm.height g := by
@@ -37,7 +37,7 @@ theorem locHeight_infAt_le_height (g : AdelicGLn.AdelicGL K n) (w : InfinitePlac
           (AutomorphicForm.one_le_finprod_locHeight g)
 
 /- English proof (translation)
-Rewrite using `[← Reduction.infAt_apply]`. Conclude with `(AutomorphicForm.norm_apply_le_locHeight _ i j).trans (locHeight_infAt_le_height g w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_apply_fst_le_height (g : AdelicGLn.AdelicGL K n) (i j : Fin n)
     (w : InfinitePlace K) :
@@ -46,7 +46,7 @@ theorem norm_apply_fst_le_height (g : AdelicGLn.AdelicGL K n) (i j : Fin n)
   exact (AutomorphicForm.norm_apply_le_locHeight _ i j).trans (locHeight_infAt_le_height g w)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem infNorm_le_height (g : AdelicGLn.AdelicGL K n) :
     infNorm (g : Matrix (Fin n) (Fin n) 𝔸[K]) ≤
@@ -58,7 +58,7 @@ theorem infNorm_le_height (g : AdelicGLn.AdelicGL K n) :
     _ = _ := by simp [Finset.sum_const, Finset.card_univ]; ring
 
 /- English proof (translation)
-Establish `h1` using `infNorm_le_height g`. Establish `h2` using `AutomorphicForm.one_le_height g`. Use polynomial arithmetic with `[show (0 : ℝ) ≤ n * n * Fintype.card (InfinitePlace K) by positivity]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_infNorm_le_height (g : AdelicGLn.AdelicGL K n) :
     1 + infNorm (g : Matrix (Fin n) (Fin n) 𝔸[K]) ≤
@@ -68,16 +68,16 @@ theorem one_add_infNorm_le_height (g : AdelicGLn.AdelicGL K n) :
   nlinarith [show (0 : ℝ) ≤ n * n * Fintype.card (InfinitePlace K) by positivity]
 
 /- English proof (translation)
-The claim follows from `continuous_finMat.comp Units.continuous_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finMat_coe : Continuous fun g : AdelicGLn.AdelicGL K n =>
     finMat (g : Matrix (Fin n) (Fin n) 𝔸[K]) :=
   continuous_finMat.comp Units.continuous_val
 
 /- English proof (translation)
-Rewrite using `[Reduction.coe_diagUnits]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[finMat_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Matrix.diagonal_apply_eq, Matrix.one_apply_eq]`. Use `RestrictedProduct.ext _ _ fun v => ?_` and prove the remaining obligations. Conclude with `Reduction.posIdele_finite (K := K) (ρ i) (hρ i) v`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finMat_diagUnits_posIdele (ρ : Fin n → ℝ) (hρ : ∀ i, 0 < ρ i) :
     finMat ((Reduction.diagUnits n fun i => Reduction.posIdele (K := K) (ρ i) (hρ i) :
@@ -94,7 +94,7 @@ theorem finMat_diagUnits_posIdele (ρ : Fin n → ℝ) (hρ : ∀ i, 0 < ρ i) :
     rfl
 
 /- English proof (translation)
-Establish `h : finMat (a : Matrix (Fin n) (Fin n) 𝔸[K]) * finMat ((a⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = 1`. Rewrite using `[← finMat_mul, Units.mul_inv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `h` using `[ha, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finMat_coe_inv_of_finMat_eq_one {a : AdelicGLn.AdelicGL K n}
     (ha : finMat (a : Matrix (Fin n) (Fin n) 𝔸[K]) = 1) :
@@ -106,11 +106,9 @@ theorem finMat_coe_inv_of_finMat_eq_one {a : AdelicGLn.AdelicGL K n}
   rwa [ha, one_mul] at h
 
 /- English proof (translation)
-Use `set Kc : Set (AdelicGLn.AdelicGL K n) := ((Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) : Set (AdelicGLn.AdelicGL K n))`. Establish `hK : IsCompact Kc` using `Reduction.isCompact_maxCompact`. Use `set f₁ : AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n → Matrix (Fin n) (Fin n) 𝔸ᶠ[K] := fun p => finMat (p.1 : Matrix (Fin n) (Fin n) 𝔸[K]) * finMat (p.2 : Matrix (Fin n) (Fin n) 𝔸[K])`. Use `set f₂ : AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n → Matrix (Fin n) (Fin n) 𝔸ᶠ[K] := fun p => finMat ((p.2⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * finMat ((p.1⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])`. Establish `hc₁ : Continuous f₁` using `(continuous_finMat_coe.comp continuous_fst).matrix_mul (continuous_finMat_coe.comp continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hc₂ : Continuous f₂` using `(continuous_finMat_coe.comp (continuous_snd.inv)).matrix_mul (continuous_finMat_coe.comp (continuous_fst.inv))`. Use `⟨f₁ '' (ω ×ˢ Kc) ∪ f₂ '' (ω ×ˢ Kc), ((hω.prod hK).image hc₁).union ((hω.prod hK).image hc₂), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, a, ⟨r, hr, -, rfl⟩, k, hk, rfl⟩` from `hx`. Establish `ha` using `finMat_diagUnits_posIdele (K := K) r hr`. Use `⟨Or.inl ⟨(b, k), ⟨hb, hk⟩, ?_⟩, Or.inr ⟨(b, k), ⟨hb, hk⟩, ?_⟩⟩` and prove the remaining obligations.
-
-Simplify using `only [f₁, Units.val_mul, finMat_mul, ha, Matrix.mul_one]`. Simplify using `only [f₂, mul_inv_rev, Units.val_mul, finMat_mul, finMat_coe_inv_of_finMat_eq_one ha, Matrix.one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_finMat_siegelSet {ω : Set (AdelicGLn.AdelicGL K n)} (hω : IsCompact ω)
     (t : ℝ) : ∃ Q : Set (Matrix (Fin n) (Fin n) 𝔸ᶠ[K]), IsCompact Q ∧
@@ -138,17 +136,15 @@ theorem exists_isCompact_finMat_siegelSet {ω : Set (AdelicGLn.AdelicGL K n)} (h
       Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨C₁, hC₁, I, hmaj⟩` from `exists_majorant hΦ M`. Take `⟨Q, hQ, hQmem⟩` from `exists_isCompact_finMat_siegelSet (K := K) (n := n) hω t₀`. Take `⟨S, hS0, hS⟩` from `exists_tsum_twistedWeight_le hQ I hM`. Use `set c : ℝ := 1 + n * n * Fintype.card (InfinitePlace K) with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C₁ * c ^ (2 * M) * S, by positivity, fun x hx y hy t => ?_⟩` and prove the remaining obligations. Take `⟨hsum, hle⟩` from `hS x y (hQmem x hx).1 (hQmem y hy).2`. Establish `hpt` using `norm_le_twistedWeight hC₁ hmaj t x y`. Use `set m := (max 1 (centralScale (K := K) n t)⁻¹) ^ M with hm`. Establish `hm0 : 0 ≤ m` using `pow_nonneg (zero_le_one.trans (le_max_left _ _)) M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs'` using `hsum.mul_left (C₁ * m)`. Establish `hsum' : Summable (fun ξ : Matrix (Fin n) (Fin n) K => ‖Φ (((Reduction.centralSection K n t * x⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * (y : Matrix (Fin n) (Fin n) 𝔸[K]))‖)` using `hs'.of_nonneg_of_le (fun _ => norm_nonneg _) hpt`. Use `⟨hsum', ?_⟩` and prove the remaining obligations. Establish `hx1` using `one_add_infNorm_le_height (K := K) x`. Establish `hy1` using `one_add_infNorm_le_height (K := K) (y⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy1` using `[AutomorphicForm.height_inv]`. Establish `hxh` using `AutomorphicForm.one_le_height x`. Establish `hyh` using `AutomorphicForm.one_le_height y`. Establish `h0x : 0 ≤ 1 + infNorm (x : Matrix (Fin n) (Fin n) 𝔸[K])`. Combine the linear relations using `[infNorm_nonneg (x : Matrix (Fin n) (Fin n) 𝔸[K])]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h0y : 0 ≤ 1 + infNorm ((y⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])`. Combine the linear relations using `[infNorm_nonneg ((y⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (mul_nonneg h0x h0y) (mul_le_mul hx1 hy1 h0y (by positivity)) M) hS0) (mul_nonneg hC₁ hm0)` and prove the remaining obligations. Use `_ = C₁ * c ^ (2 * M) * S * m * (AutomorphicForm.height x * AutomorphicForm.height y) ^ M := by`.
-
-Rewrite using `[show c * AutomorphicForm.height x * (c * AutomorphicForm.height y) = c ^ 2 * (AutomorphicForm.height x * AutomorphicForm.height y) by ring, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_tsum_norm_le_siegel {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) {ω : Set (AdelicGLn.AdelicGL K n)} (hω : IsCompact ω)
@@ -208,7 +204,7 @@ theorem exists_tsum_norm_le_siegel {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
         ring
 
 /- English proof (translation)
-Rewrite using `[mul_inv_rev, ← map_inv]`. Simplify using `only [Units.val_mul, coe_diagonal, ratMat_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_mul_ratMat_mul_reindex (t : {r : ℝ // 0 < r}) (x y : AdelicGLn.AdelicGL K n)
     (γ₁ γ₂ : GL (Fin n) K) (ξ : Matrix (Fin n) (Fin n) K) :
@@ -231,9 +227,9 @@ def reindexEquiv (γ₁ γ₂ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K ≃ Mat
     simp only [Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one, Units.inv_mul_cancel_left]
 
 /- English proof (translation)
-Use `set f : Matrix (Fin n) (Fin n) K → ℝ := fun ξ => ‖Φ (((Reduction.centralSection K n t * x⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * (y : Matrix (Fin n) (Fin n) 𝔸[K]))‖ with hf`. Establish `h : (fun ξ : Matrix (Fin n) (Fin n) K => ‖Φ (((Reduction.centralSection K n t * (AdelicGLn.diagonal K n γ₁ * x)⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * ((AdelicGLn.diagonal K n γ₂ * y : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))‖) = f …`. Use function extensionality and compare the values at `ξ`. Simplify using `only [Function.comp_apply, hf, coe_mul_ratMat_mul_reindex]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `⟨(reindexEquiv γ₁ γ₂).summable_iff, (reindexEquiv γ₁ γ₂).tsum_eq f⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem summable_tsum_reindex (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ) (t : {r : ℝ // 0 < r})
     (x y : AdelicGLn.AdelicGL K n) (γ₁ γ₂ : GL (Fin n) K) :
@@ -265,7 +261,7 @@ theorem summable_tsum_reindex (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ) (t :
   exact ⟨(reindexEquiv γ₁ γ₂).summable_iff, (reindexEquiv γ₁ γ₂).tsum_eq f⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `CuspidalSpectrum.exists_norm_le_height_pow_neg_siegel hψ hω hωB ht₀ N`. Use `⟨C, fun x hx hx1 => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, a, ⟨r, hr, hcond, rfl⟩, k, hk, rfl⟩` from `hx`. Conclude with `hC b hb r hr hcond k hk _ hx1 rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_norm_le_of_mem_siegelSet {ψ : AdelicGLn.AdelicGL K n → ℂ}
     (hψ : ψ ∈ AutomorphicForm.cuspForms K n) {ω : Set (AdelicGLn.AdelicGL K n)} (hω : IsCompact ω)
@@ -279,11 +275,9 @@ theorem exists_norm_le_of_mem_siegelSet {ψ : AdelicGLn.AdelicGL K n → ℂ}
   exact hC b hb r hr hcond k hk _ hx1 rfl
 
 /- English proof (translation)
-Use `set e : ℝ := ((n * Module.finrank ℚ K : ℝ))⁻¹ with he`. Establish `he0 : 0 ≤ e` using `inv_nonneg.2 (by positivity)`. Establish `ht0 : (0 : ℝ) ≤ (t : ℝ)⁻¹` using `inv_nonneg.2 t.2.le`. Establish `h1 : (centralScale (K` using `K) n t)⁻¹ = ((t : ℝ)⁻¹) ^ e := by`. Rewrite using `[centralScale, Real.inv_rpow t.2.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : max 1 (((t : ℝ)⁻¹) ^ e) = (max 1 (t : ℝ)⁻¹) ^ e`. Distinguish the cases in `h : 1 ≤ (t : ℝ)⁻¹`. Rewrite using `[max_eq_right h, max_eq_right (Real.one_le_rpow h he0)]`. Use `push Not at h`. Rewrite using `[max_eq_left h.le, Real.one_rpow, max_eq_left (Real.rpow_le_one ht0 h.le he0)]`.
-
-Rewrite using `[h1, h2, ← Real.rpow_natCast, ← Real.rpow_mul (zero_le_one.trans (le_max_left _ _)), mul_comm]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem max_one_centralScale_inv_pow (t : {r : ℝ // 0 < r}) (M : ℕ) :
     (max 1 (centralScale (K := K) n t)⁻¹) ^ M =
@@ -301,17 +295,15 @@ theorem max_one_centralScale_inv_pow (t : {r : ℝ // 0 < r}) (M : ℕ) :
   rw [h1, h2, ← Real.rpow_natCast, ← Real.rpow_mul (zero_le_one.trans (le_max_left _ _)), mul_comm]
 
 /- English proof (translation)
-Take `⟨ω, hω, hωB, t₀, ht₀, hsieg⟩` from `Reduction.exists_siegelSet (K := K) n`. Use `set M : ℕ := Module.finrank ℝ (Fin n × Fin n → mixedEmbedding.mixedSpace K) + 1 with hM`. Take `⟨C, hC, hbound⟩` from `exists_tsum_norm_le_siegel hΦ hω t₀ (M := M) (by omega)`. Take `⟨C₁, hC₁⟩` from `exists_norm_le_of_mem_siegelSet h₁ hω hωB ht₀ M`. Take `⟨C₂, hC₂⟩` from `exists_norm_le_of_mem_siegelSet h₂ hω hωB ht₀ M`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max C₂ 0 * max C₁ 0 * C, (M : ℝ) * ((n * Module.finrank ℚ K : ℝ))⁻¹, by positivity, fun x hx y hy t => ?_⟩` and prove the remaining obligations. Take `⟨γ₁, hγ₁⟩` from `hsieg x`. Take `⟨γ₂, hγ₂⟩` from `hsieg y`. Establish `hγ₁1 : AdelicGLn.diagonal K n γ₁ * x ∈ Reduction.normOneGL K n` using `mul_mem (Reduction.rationalGL_le_normOneGL ⟨γ₁, rfl⟩) hx`. Establish `hγ₂1 : AdelicGLn.diagonal K n γ₂ * y ∈ Reduction.normOneGL K n` using `mul_mem (Reduction.rationalGL_le_normOneGL ⟨γ₂, rfl⟩) hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hsum, hle⟩` from `hbound _ hγ₁ _ hγ₂ t`. Take `⟨hiff, heq⟩` from `summable_tsum_reindex Φ t x y γ₁ γ₂`. Use `⟨hiff.1 hsum, ?_⟩` and prove the remaining obligations. Rewrite using `[← heq, ← h₂.1.isLeftInvariant γ₁ x, ← h₁.1.isLeftInvariant γ₂ y, ← max_one_centralScale_inv_pow]`. Use `set x' := AdelicGLn.diagonal K n γ₁ * x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y' := AdelicGLn.diagonal K n γ₂ * y`. Establish `hx'` using `hC₂ x' hγ₁ hγ₁1`. Establish `hy'` using `hC₁ y' hγ₂ hγ₂1`. Establish `hhx` using `AutomorphicForm.height_pos x'`. Establish `hhy` using `AutomorphicForm.height_pos y'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := (max 1 (centralScale (K := K) n t)⁻¹) ^ M`. Establish `hm0 : 0 ≤ m` using `pow_nonneg (zero_le_one.trans (le_max_left _ _)) M`. Use `set T := ∑' ξ : Matrix (Fin n) (Fin n) K, ‖Φ (((Reduction.centralSection K n t * x'⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * (y' : Matrix (Fin n) (Fin n) 𝔸[K]))‖`. Establish `hT0 : 0 ≤ T` using `tsum_nonneg fun _ => norm_nonneg _`. Establish `hpx : ‖ψ₂ x'‖ ≤ max C₂ 0 * (AutomorphicForm.height x' ^ M)⁻¹` using `hx'.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (inv_nonneg.2 (pow_nonneg hhx.le _)))`.
-
-Establish `hpy : ‖ψ₁ y'‖ ≤ max C₁ 0 * (AutomorphicForm.height y' ^ M)⁻¹` using `hy'.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (inv_nonneg.2 (pow_nonneg hhy.le _)))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_bound_tsum {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) {ψ₁ ψ₂ : AdelicGLn.AdelicGL K n → ℂ}
@@ -368,17 +360,15 @@ theorem exists_bound_tsum {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
         field_simp
 
 /- English proof (translation)
-Take `⟨ω, hω, hωB, t₀, ht₀, hsieg⟩` from `Reduction.exists_siegelSet (K := K) n`. Use `set M : ℕ := Module.finrank ℝ (Fin n × Fin n → mixedEmbedding.mixedSpace K) + 1 with hM`. Take `⟨C, hC, hbound⟩` from `exists_tsum_norm_le_siegel hΦ hω t₀ (M := M) (by omega)`. Take `⟨C₁, hC₁⟩` from `exists_norm_le_of_mem_siegelSet hψ hω hωB ht₀ M`. Take `⟨s, y₁, -, rfl⟩` from `CuspidalSpectrum.exists_centralSection_mul_mem_normOneGL y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ₁, hγ₁⟩` from `hsieg y₁⁻¹`. Use `set x' := AdelicGLn.diagonal K n γ₁ * y₁⁻¹`. Use `set m := (max 1 (centralScale (K := K) n s)⁻¹) ^ M`. Establish `hm0 : 0 ≤ m` using `pow_nonneg (zero_le_one.trans (le_max_left _ _)) M`. Use `⟨max C₁ 0 * C * m * AutomorphicForm.height x' ^ M, fun g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ₂, hγ₂⟩` from `hsieg g`. Establish `hγ₂1 : AdelicGLn.diagonal K n γ₂ * g ∈ Reduction.normOneGL K n` using `mul_mem (Reduction.rationalGL_le_normOneGL ⟨γ₂, rfl⟩) hg`. Establish `hy : Reduction.centralSection K n s * y₁ = Reduction.centralSection K n s * (y₁⁻¹)⁻¹`. Rewrite using `[inv_inv]`. Rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hsum, hle⟩` from `hbound _ hγ₁ _ hγ₂ s`. Take `⟨hiff, heq⟩` from `summable_tsum_reindex Φ s y₁⁻¹ g γ₁ γ₂`. Use `⟨hiff.1 hsum, ?_⟩` and prove the remaining obligations. Rewrite using `[← heq, ← hψ.1.isLeftInvariant γ₂ g]`. Use `set g' := AdelicGLn.diagonal K n γ₂ * g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg'` using `hC₁ g' hγ₂ hγ₂1`. Establish `hhg` using `AutomorphicForm.height_pos g'`. Establish `hhx` using `AutomorphicForm.height_pos x'`. Establish `hpg : ‖ψ g'‖ ≤ max C₁ 0 * (AutomorphicForm.height g' ^ M)⁻¹` using `hg'.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (inv_nonneg.2 (pow_nonneg hhg.le _)))`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_bound_tsum_one {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) {ψ : AdelicGLn.AdelicGL K n → ℂ}
@@ -428,7 +418,7 @@ def reindexGL (γ₁ γ₂ : GL (Fin n) K) : GL (Fin n) K ≃ GL (Fin n) K :=
   (Equiv.mulLeft γ₁⁻¹).trans (Equiv.mulRight γ₂)
 
 /- English proof (translation)
-Simplify using `only [reindexGL, Equiv.trans_apply, Equiv.coe_mulLeft, Equiv.coe_mulRight, map_mul, map_inv, mul_inv_rev, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem centralSection_mul_reindex (t : {r : ℝ // 0 < r}) (x y : AdelicGLn.AdelicGL K n)
     (γ₁ γ₂ γ : GL (Fin n) K) :
@@ -439,33 +429,31 @@ theorem centralSection_mul_reindex (t : {r : ℝ // 0 < r}) (x y : AdelicGLn.Ade
     mul_inv_rev, mul_assoc]
 
 /- English proof (translation)
-Use `set d := Module.finrank ℚ K with hd`. Establish `hd1 : 1 ≤ d` using `Module.finrank_pos`. Use `set M' : ℕ := ⌈N * (n * d)⌉₊ with hM'`. Take `⟨C₁, hC₁, I, hmaj⟩` from `exists_majorant hΦ (M + M')`. Take `⟨c₀, hc₀, hc₀le⟩` from `exists_le_infNorm_of_isInBox (K := K) hn I`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, hQmem⟩` from `exists_isCompact_finMat_siegelSet (K := K) (n := n) hω t₀`. Take `⟨S, hS0, hS⟩` from `exists_tsum_twistedWeight_le hQ I hM`. Use `set c : ℝ := 1 + n * n * Fintype.card (InfinitePlace K) with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`. Use `⟨C₁ * (c₀ ^ M')⁻¹ * c ^ (2 * M) * S, by positivity, fun x hx hx1 y hy hy1 t ht => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hsum, hle⟩` from `hS x y (hQmem x hx).1 (hQmem y hy).2`. Take `⟨a, ha1, ha2, hmul⟩` from `exists_centralSection_mul_eq (K := K) (n := n) t`. Use `set ρ := centralScale (K := K) n t with hρ`. Establish `hρ1 : 1 ≤ ρ` using `Real.one_le_rpow ht (inv_nonneg.2 (by positivity))`. Establish `hpt : ∀ γ : GL (Fin n) K, ‖Φ ((Reduction.centralSection K n t * x⁻¹ * AdelicGLn.diagonal K n γ * y : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])‖ ≤ C₁ * ((ρ * c₀) ^ M')⁻¹ * twistedWeight I M x y (γ : Matrix (Fin n) (Fin n) K)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `γ`. Use `set W := ((x⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat (γ : Matrix (Fin n) (Fin n) K) * (y : Matrix (Fin n) (Fin n) 𝔸[K]) with hW`. Establish `heq : ((Reduction.centralSection K n t * x⁻¹ * AdelicGLn.diagonal K n γ * y : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = a • W`. Rewrite using `[hW, ← hmul]`. Simplify using `only [Units.val_mul, coe_diagonal, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hWG : ((x⁻¹ * AdelicGLn.diagonal K n γ * y : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = W`. Rewrite using `[hW]`. Simplify using `only [Units.val_mul, coe_diagonal]`. Rewrite using `[heq]`. Use `(hmaj _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[infNorm_smul ha1, isInBox_smul_iff ha2]`. Unfold `twistedWeight`. Rewrite using `[← hW]`. Distinguish the cases in `hbox : IsInBox I W`. Rewrite using `[if_pos hbox, mul_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdet : (Reduction.detModule K n (x⁻¹ * AdelicGLn.diagonal K n γ * y) : ℝ) = 1`. Establish `hmem : x⁻¹ * AdelicGLn.diagonal K n γ * y ∈ Reduction.normOneGL K n` using `mul_mem (mul_mem (inv_mem hx1) (Reduction.rationalGL_le_normOneGL ⟨γ, rfl⟩)) hy1`. Rewrite using `[Reduction.mem_normOneGL_iff_detModule.1 hmem]`. Both sides reduce to the same expression. Establish `hw` using `hc₀le _ hdet (by rw [hWG]; exact hbox)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hw` using `[hWG]`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (inv_one_add_mul_pow_add_le hρ1 hc₀ hw M M') hC₁`. Simplify using `only [if_neg hbox, mul_zero, le_refl]`. Establish `hsumγ : Summable fun γ : GL (Fin n) K => twistedWeight I M x y (γ : Matrix (Fin n) (Fin n) K)` using `hsum.comp_injective (fun _ _ h => Units.ext h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs'` using `hsumγ.mul_left (C₁ * ((ρ * c₀) ^ M')⁻¹)`. Establish `hsum'` using `hs'.of_nonneg_of_le (fun _ => norm_nonneg _) hpt`. Use `⟨hsum', ?_⟩` and prove the remaining obligations. Establish `hρN : ((ρ * c₀) ^ M')⁻¹ ≤ (c₀ ^ M')⁻¹ * (t : ℝ) ^ (-N)`. Rewrite using `[mul_pow, mul_inv, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left ?_ (inv_nonneg.2 (pow_nonneg hc₀.le _))` and prove the remaining obligations. Rewrite using `[Real.rpow_neg t.2.le]`. Use `inv_anti₀ (Real.rpow_pos_of_pos t.2 _) ?_` and prove the remaining obligations. Rewrite using `[hρ, centralScale, ← Real.rpow_natCast, ← Real.rpow_mul t.2.le]`. Use `Real.rpow_le_rpow_of_exponent_le ht ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnd : (0 : ℝ) < n * d` using `by positivity`. Rewrite using `[inv_mul_eq_div, le_div_iff₀ hnd]`. Conclude with `Nat.le_ceil _`. Establish `hx1'` using `one_add_infNorm_le_height (K := K) x`. Establish `hy1'` using `one_add_infNorm_le_height (K := K) (y⁻¹)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy1'` using `[AutomorphicForm.height_inv]`. Establish `h0x : 0 ≤ 1 + infNorm (x : Matrix (Fin n) (Fin n) 𝔸[K])`. Combine the linear relations using `[infNorm_nonneg (x : Matrix (Fin n) (Fin n) 𝔸[K])]`. Establish `h0y : 0 ≤ 1 + infNorm ((y⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])`. Combine the linear relations using `[infNorm_nonneg ((y⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hxh` using `AutomorphicForm.one_le_height x`. Establish `hyh` using `AutomorphicForm.one_le_height y`. Establish `hρc : 0 < ρ * c₀` using `mul_pos (zero_lt_one.trans_le hρ1) hc₀`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (mul_nonneg h0x h0y) (mul_le_mul hx1' hy1' h0y (by positivity)) M) hS0) (by positivity)` and prove the remaining obligations.
-
-Use `_ = C₁ * (c₀ ^ M')⁻¹ * c ^ (2 * M) * S * (t : ℝ) ^ (-N) * (AutomorphicForm.height x * AutomorphicForm.height y) ^ M := by`. Rewrite using `[show c * AutomorphicForm.height x * (c * AutomorphicForm.height y) = c ^ 2 * (AutomorphicForm.height x * AutomorphicForm.height y) by ring, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_decay_siegel (hn : 0 < n) {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) {ω : Set (AdelicGLn.AdelicGL K n)} (hω : IsCompact ω)
@@ -579,19 +567,17 @@ theorem exists_decay_siegel (hn : 0 < n) {Φ : Matrix (Fin n) (Fin n) 𝔸[K] �
         ring
 
 /- English proof (translation)
-Take `⟨ω, hω, hωB, t₀, ht₀, hsieg⟩` from `Reduction.exists_siegelSet (K := K) n`. Use `set M : ℕ := Module.finrank ℝ (Fin n × Fin n → mixedEmbedding.mixedSpace K) + 1 with hM`. Take `⟨C, hC, hbound⟩` from `exists_decay_siegel hn hΦ hω t₀ (M := M) (by omega) N`. Take `⟨C₁, hC₁⟩` from `exists_norm_le_of_mem_siegelSet h₁ hω hωB ht₀ M`. Take `⟨C₂, hC₂⟩` from `exists_norm_le_of_mem_siegelSet h₂ hω hωB ht₀ M`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max C₂ 0 * max C₁ 0 * C, by positivity, fun x hx y hy t ht => ?_⟩` and prove the remaining obligations. Take `⟨γ₁, hγ₁⟩` from `hsieg x`. Take `⟨γ₂, hγ₂⟩` from `hsieg y`. Establish `hγ₁1 : AdelicGLn.diagonal K n γ₁ * x ∈ Reduction.normOneGL K n` using `mul_mem (Reduction.rationalGL_le_normOneGL ⟨γ₁, rfl⟩) hx`. Establish `hγ₂1 : AdelicGLn.diagonal K n γ₂ * y ∈ Reduction.normOneGL K n` using `mul_mem (Reduction.rationalGL_le_normOneGL ⟨γ₂, rfl⟩) hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hsum, hle⟩` from `hbound _ hγ₁ hγ₁1 _ hγ₂ hγ₂1 t ht`. Use `set f : GL (Fin n) K → ℝ := fun γ => ‖Φ ((Reduction.centralSection K n t * x⁻¹ * AdelicGLn.diagonal K n γ * y : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])‖ with hf`. Establish `hre : (fun γ : GL (Fin n) K => ‖Φ ((Reduction.centralSection K n t * (AdelicGLn.diagonal K n γ₁ * x)⁻¹ * AdelicGLn.diagonal K n γ * (AdelicGLn.diagonal K n γ₂ * y) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])‖) = f ∘ reindexGL γ₁ γ₂`. Use function extensionality and compare the values at `γ`. Simplify using `only [Function.comp_apply, hf, centralSection_mul_reindex]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hsum`, `hle` using `[hre]`. Use `⟨(reindexGL γ₁ γ₂).summable_iff.1 hsum, ?_⟩` and prove the remaining obligations. Establish `hteq : tsum (f ∘ ⇑(reindexGL γ₁ γ₂)) = tsum f` using `(reindexGL γ₁ γ₂).tsum_eq f`. Rewrite `hle` using `[hteq]`. Rewrite using `[← h₂.1.isLeftInvariant γ₁ x, ← h₁.1.isLeftInvariant γ₂ y]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x' := AdelicGLn.diagonal K n γ₁ * x`. Use `set y' := AdelicGLn.diagonal K n γ₂ * y`. Establish `hx'` using `hC₂ x' hγ₁ hγ₁1`. Establish `hy'` using `hC₁ y' hγ₂ hγ₂1`. Establish `hhx` using `AutomorphicForm.height_pos x'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhy` using `AutomorphicForm.height_pos y'`. Establish `htN : 0 ≤ (t : ℝ) ^ (-N)` using `(Real.rpow_pos_of_pos t.2 _).le`. Establish `hpx : ‖ψ₂ x'‖ ≤ max C₂ 0 * (AutomorphicForm.height x' ^ M)⁻¹` using `hx'.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (inv_nonneg.2 (pow_nonneg hhx.le _)))`. Establish `hpy : ‖ψ₁ y'‖ ≤ max C₁ 0 * (AutomorphicForm.height y' ^ M)⁻¹` using `hy'.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (inv_nonneg.2 (pow_nonneg hhy.le _)))`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_decay_tsum (hn : 0 < n) {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) {ψ₁ ψ₂ : AdelicGLn.AdelicGL K n → ℂ}

@@ -11,7 +11,7 @@ open UpperTheory.Gal.CertificateRingHomMap
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_lev (S : Finset (Plc E)) (Kw : (w : Plc E) → Subgroup (GLw n w)) (k : GUf E n) :
     k ∈ lev S Kw ↔ (sim k ∈ ZU ∧ ∀ w ∈ S, comp w k ∈ Kw w) ∧
@@ -19,11 +19,9 @@ private theorem mem_lev (S : Finset (Plc E)) (Kw : (w : Plc E) → Subgroup (GLw
   simp only [lev, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap]
 
 /- English proof (translation)
-Take `⟨V, hV⟩` from `π`. Establish `h1` using `hV.1`. Establish `hv : ∀ v : W.Sp, f.1 v ∈ V` using `fun v => by`. Use `(Submodule.mem_iInf _).1 hf v` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `UpperTheory.isOpen_stabilizer_linear_map (fun u : GlobalTheory.UnitaryBC.finU E n => GlobalTheory.UnitaryBC.RU E n u.1) f.1 (fun v => by`. Take `⟨-, -, h, -⟩` from `h1 _ (hv v)`. Conclude with `h)`. Use `key using 2 with u` and compare the differences between its conclusion and the goal. Use extensionality with `u`.
-
-Conclude with `Subtype.ext_iff`.
+Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem isOpen_stab (π : GlobalTheory.DefU.AutSub E n) (W : GlobalTheory.DefU.Wt E n)
     (f : GlobalTheory.DefU.algForms W) (hf : f ∈ π.finPart W) :
@@ -43,9 +41,9 @@ private theorem isOpen_stab (π : GlobalTheory.DefU.AutSub E n) (W : GlobalTheor
 
 open Classical in
 /- English proof (translation)
-Rewrite `hk` using `[mem_lev]`. Take `⟨⟨h1, h2⟩, h3⟩` from `hk`. Establish `hw : comp w k ∈ GlobalTheory.LFun.KGL w n` using `h3 w ⟨Finset.notMem_erase _ _, fun h => hc (Finset.mem_of_mem_erase h)⟩`. Use `⟨hw, (mem_lev _ _ _).2 ⟨⟨h1, fun v hv => ?_⟩, fun v hv => h3 v ⟨fun h => hv.1 (Finset.mem_of_mem_erase h), fun h => hv.2 (Finset.mem_of_mem_erase h)⟩⟩⟩` and prove the remaining obligations. Distinguish the cases in `e : v = w`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hw`. Rewrite using `[Function.update_of_ne e]`. Conclude with `h2 v (Finset.mem_erase.2 ⟨e, hv⟩)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lev_erase_le (S : Finset (Plc E)) (Kw : (w : Plc E) → Subgroup (GLw n w)) (w : Plc E)
     (hc : cj w ∉ S) (k : GUf E n) (hk : k ∈ lev (S.erase w) Kw) :
@@ -67,21 +65,19 @@ end UpperTheory.Reformulated.B.Grk2
 
 open UpperTheory.Gal.CertificateRingHomMap in
 /- English proof (translation)
-Introduce `hN hS hT hL E _ _ _ n π W hne Up hUp w₀ hw₀ hU₀ J χ hJo hJc hJ`. Take `⟨f₀, hf₀, hf₀ne⟩` from `(Submodule.ne_bot_iff _).1 hne`. Set `O : Subgroup (GlobalTheory.UnitaryBC.finU E n)` to `{ carrier := {u | GlobalTheory.DefU.algRep W u f₀ = f₀} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Take `⟨S₀, Kw, hsh₀, hO⟩` from `hN E n O (isOpen_stab π W f₀ hf₀) Up hUp w₀ hw₀ hU₀`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨S, ⟨hsh, f, hf, hfne, hfix⟩, hgood⟩` from `UpperTheory.exists_good_without_bad (fun S : Finset (Plc E) => Shape Up w₀ S Kw ∧ ∃ f ∈ π.finPart W, f ≠ 0 ∧ ∀ u : GlobalTheory.UnitaryBC.finU E n, ofU u ∈ lev S Kw → GlobalTheory.DefU.algRep W u f = f) (fun w => GlobalTheory.UnitaryBC.IsSplitAt w ∧ w ≠ w₀ ∧ HasType π.V w (Global …`. Introduce and unpack `S w ⟨⟨s1, s2, s3, s4, s5⟩, f, hf, hfne, hfix⟩ hwS ⟨hw, hww, hty⟩`. Establish `hc` using `(s5 w hwS hw).2`. Take `⟨f', hf', hf'ne, hf'e⟩` from `hS E n π W f hf hfne S Kw w hw hwS hc hfix _ 1 (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2 hty`. Use `⟨⟨Finset.mem_erase.2 ⟨hww.symm, s1⟩, fun v hv => s2 v (Finset.mem_of_mem_erase hv), fun v hv => s3 v (Finset.mem_of_mem_erase hv), fun v hv => s4 v (Finset.mem_of_mem_erase hv), fun v hv h => ⟨(s5 v (Finset.mem_of_mem_erase hv) h).1, fun h' => (s5 v (Finset.mem_of_mem_erase hv) h …` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, b⟩` from `lev_erase_le S Kw w hc _ hu`. Simplify using `using hf'e u b a)`. Use `S₀ ⟨hsh₀, f₀, hf₀, hf₀ne, hO⟩`. Take `⟨s1, s2, s3, s4, s5⟩` from `hsh`. Take `⟨f', hf', hf'ne, hf'e⟩` from `hS E n π W f hf hfne S Kw w₀ hw₀ s1 (s5 w₀ s1 hw₀).2 hfix J χ hJc hJ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨S, Function.update Kw w₀ J, ⟨s1, fun v hv => ?_, fun v hv => ?_, fun v hv e => ?_, s5⟩, Function.update_self _ _ _, fun w hw hap hsat => ?_, f', hf', hf'ne, hf'e⟩` and prove the remaining obligations. Distinguish the cases in `e : v = w₀`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hJo`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne e]`. Conclude with `s2 v hv`. Distinguish the cases in `e : v = w₀`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hJc`. Rewrite using `[Function.update_of_ne e]`. Conclude with `s3 v hv`. Rewrite using `[Function.update_of_ne e]`. Conclude with `s4 v hv e`.
-
-Take `⟨t1, t2⟩` from `(hT E n π w hw).1 hsat`. Take `⟨a1, a2⟩` from `((hL E n w₀ hw₀).2.1 w).1 hap`. Take `⟨-, -, -, b1, b2, -⟩` from `hL E n w hw`. Use `⟨fun h => hgood w h ⟨hw, a1, t1⟩, fun h => hgood _ h ⟨b1, fun e => a2 ?_, t2⟩⟩` and prove the remaining obligations. Rewrite using `[← e, b2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Grk2.pVecU_of :
     UpperTheory.Gal.CertificateRingHomMap.NbhdU → UpperTheory.Gal.CertificateRingHomMap.StepAt → UpperTheory.Gal.CertificateRingHomMap.SphType → UpperTheory.Gal.CertificateRingHomMap.LocComm → UpperTheory.Gal.CertificateRingHomMap.VecU := by

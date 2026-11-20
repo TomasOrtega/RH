@@ -7,20 +7,20 @@ open NumberField Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposit
 namespace PI.UnitaryGroupMassFormula.HostFieldFacts
 
 /- English proof (translation)
-Introduce `R H z hz`. Conclude with `H.der.norm_mu z hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem roots : PI.EtaHostFacts.Roots := by
   intro R H z hz
   exact H.der.norm_mu z hz
 
 /- English proof (translation)
-Introduce `R H`. Establish `hfix : ∀ x : H.E, x ∈ H.F ↔ H.conj x = x` using `fun x => H.conjE_mem_hostF_iff x`. Establish `hcc : ∀ (φ : H.E →+* ℂ) (x : H.E), φ (H.conj x) = starRingEnd ℂ (φ x)` using `fun φ x => H.conjE_apply φ x`. Set `c : H.E →ₐ[H.F] H.E` to `{ (H.conj : H.E →+* H.E) with commutes' := fun a => (hfix _).1 a.2 }`. Use `⟨c, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Apply `H.φ₀.injective` to reduce the goal to its premises. Use `show H.φ₀ (H.conj (H.conj x)) = H.φ₀ x`. Rewrite using `[hcc, hcc]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `⟨⟨x, (hfix x).2 hx⟩, rfl⟩`. Introduce `φ x`. Conclude with `hcc φ x`. Use `show H.conj H.sqrtMinusD = -H.sqrtMinusD`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `H.gal_sqd H.conj`. Establish `hg : H.gal H.conj = R.toFrame.cc` using `H.gal.apply_symm_apply _`. Use `show H.conj H.sqd = -H.sqd`. Rewrite using `[h, hg]`. Simplify using `[Formalism.HC.Frame.cc, c0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj : PI.EtaHostFacts.Conj := by
   intro R H

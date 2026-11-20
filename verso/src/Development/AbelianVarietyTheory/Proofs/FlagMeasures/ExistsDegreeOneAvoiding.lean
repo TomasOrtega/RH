@@ -8,9 +8,9 @@ open NumberField Polynomial
 namespace GlobalTheory.LargeSplitPrime
 
 /- English proof (translation)
-Take `⟨θ, d, hd, -, hden⟩` from `GlobalTheory.SW.SplitPrime.exists_prim_den N`. Distinguish the cases in `hθ : θ = 0`. Use `GlobalTheory.SW.SplitPrime.exists_degree_one (1 : 𝓞 N) one_ne_zero d hd (fun a => ?_) m hm` and prove the remaining obligations. Take `⟨g, hg⟩` from `hden a`. Use `⟨C (g.coeff 0), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg, hθ, aeval_C, aeval_def, eval₂_at_zero]`. Conclude with `GlobalTheory.SW.SplitPrime.exists_degree_one θ hθ d hd hden m hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_degree_one_avoiding (N : Type) [Field N] [NumberField N] (m : ℤ) (hm : m ≠ 0) :
     ∃ P : Ideal (𝓞 N), P.IsMaximal ∧ (m : 𝓞 N) ∉ P ∧ Function.Surjective (Int.castRingHom (𝓞 N ⧸ P)) := by
@@ -23,11 +23,11 @@ theorem exists_degree_one_avoiding (N : Type) [Field N] [NumberField N] (m : ℤ
   · exact GlobalTheory.SW.SplitPrime.exists_degree_one θ hθ d hd hden m hm
 
 /- English proof (translation)
-Establish `hp' : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `: P.LiesOver (Ideal.span {(p : ℤ)})` using `(Ideal.liesOver_span_iff hP.ne_top hp').mpr (by simpa using h1)`. Establish `: Q.LiesOver (Ideal.span {(p : ℤ)})` using `(Ideal.liesOver_span_iff hQ.ne_top hp').mpr (by simpa using h2)`. Take `⟨σ, hσ⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(p : ℤ)}) P Q (N ≃ₐ[ℚ] N)`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨t, ht⟩` from `hs (Ideal.Quotient.mk P (σ⁻¹ • a))`. Establish `h3 : (t : 𝓞 N) - σ⁻¹ • a ∈ P`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, ← ht]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4 : σ • ((t : 𝓞 N) - σ⁻¹ • a) ∈ Q` using `hσ ▸ Ideal.smul_mem_pointwise_smul σ _ _ h3`. Establish `h5 : σ • (t : 𝓞 N) = t` using `map_intCast (MulSemiringAction.toRingHom _ _ σ) t`. Rewrite `h4` using `[smul_sub, smul_inv_smul, h5]`. Conclude with `⟨t, by simpa using Ideal.Quotient.eq.2 h4⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem surjective_of_conj {N : Type} [Field N] [NumberField N] [IsGalois ℚ N] {p : ℕ} (hp : p.Prime)
     (P Q : Ideal (𝓞 N)) [hP : P.IsMaximal] [hQ : Q.IsMaximal] (h1 : (p : 𝓞 N) ∈ P) (h2 : (p : 𝓞 N) ∈ Q)
@@ -48,19 +48,17 @@ theorem surjective_of_conj {N : Type} [Field N] [NumberField N] [IsGalois ℚ N]
   exact ⟨t, by simpa using Ideal.Quotient.eq.2 h4⟩
 
 /- English proof (translation)
-Set `N : Type` to `IntermediateField.normalClosure ℚ E (AlgebraicClosure E)`. Use `haveI : NumberField N := { to_charZero := inferInstance, to_finiteDimensional := inferInstance }`. Use `haveI : IsAlgClosure ℚ (AlgebraicClosure E) := IsAlgClosure.ofAlgebraic ℚ E (AlgebraicClosure E)`. Use `haveI : Normal ℚ N := normalClosure.normal ℚ E (AlgebraicClosure E)`. Use `haveI : IsGalois ℚ N := IsGalois.mk`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨P, hP, hm, hs⟩` from `exists_degree_one_avoiding N ((m.factorial : ℤ) * discr E) (mul_ne_zero (by exact_mod_cast m.factorial_ne_zero) (discr_ne_zero E))`. Establish `hp` using `GlobalTheory.SW.SplitPrime.absNorm_prime P hP hs`. Establish `hnd : ¬ ((Ideal.absNorm P : ℕ) : ℤ) ∣ (m.factorial : ℤ) * discr E`. Introduce and unpack `⟨c, hc⟩`. Apply `hm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hc]`. Use `push_cast`. Conclude with `P.mul_mem_right _ (Ideal.absNorm_mem P)`. Use `⟨_, hp, ?_, fun P' hP' hmem => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `hnd (Dvd.dvd.mul_right (by exact_mod_cast Nat.dvd_factorial hp.pos (not_lt.1 h)) _)`. Take `⟨Q, hQ, hQo⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 N) P'`. Establish `hQm : ((Ideal.absNorm P : ℕ) : 𝓞 N) ∈ Q`. Use `(Ideal.mem_of_liesOver Q P' _).1 hmem` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsQ` using `surjective_of_conj hp P Q (Ideal.absNorm_mem P) hQm hs`. Establish `hs' : Function.Surjective (Int.castRingHom (𝓞 E ⧸ P'))`. Introduce `x`. Take `⟨t, ht⟩` from `hsQ (algebraMap (𝓞 E ⧸ P') (𝓞 N ⧸ Q) x)`. Use `⟨t, FaithfulSMul.algebraMap_injective (𝓞 E ⧸ P') (𝓞 N ⧸ Q) ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ht]`. Simplify using the standard rewrite rules. Establish `hq` using `GlobalTheory.SW.SplitPrime.absNorm_prime P' hP' hs'`. Assume the negation of the conclusion as `hne`. Establish `hco : IsCoprime ((Ideal.absNorm P' : ℕ) : 𝓞 E) ((Ideal.absNorm P : ℕ) : 𝓞 E)` using `((Nat.coprime_primes hq hp).2 hne).cast`.
-
-Take `⟨a, b, hab⟩` from `hco`. Conclude with `hP'.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ P'.add_mem (P'.mul_mem_left _ (Ideal.absNorm_mem P')) (P'.mul_mem_left _ hmem)))`. Conclude with `GlobalTheory.Mem.RaySplit.not_mem_sq hp hmem ((GlobalTheory.Mem.RaySplit.not_dvd_discr_iff_ramificationIdx E hp).1 (fun h => hnd (h.mul_left _)) P' hP'.isPrime hmem)`.
+A detailed English derivation is pending.
 -/
 theorem exists_splitsCompl (E : Type) [Field E] [NumberField E] (m : ℕ) :
     ∃ p : ℕ, p.Prime ∧ m < p ∧ Formalism.MainNotions.S.SplitsCompl E p := by

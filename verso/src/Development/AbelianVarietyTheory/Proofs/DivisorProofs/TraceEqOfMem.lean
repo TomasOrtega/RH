@@ -18,7 +18,7 @@ namespace GlobalTheory.PsCo.PcEF
 open GlobalTheory.PsCo.PcEG
 
 /- English proof (translation)
-Establish `hle : LinearMap.range (B : H →ₗ[ℂ] H) ≤ L` using `by rintro _ ⟨x, rfl⟩; exact hB x`. Use `Submodule.finiteDimensional_of_le hle` as an intermediate fact. Rewrite using `[← hc.2, (hasTrace_of_finiteRank B).2, finRankTrace_eq _ L hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_of_mem {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (B : H →L[ℂ] H)
     (L : Submodule ℂ H) [FiniteDimensional ℂ L] (hB : ∀ x, (B : H →ₗ[ℂ] H) x ∈ L) {c : ℂ} (hc : HasTrace B c) :
@@ -28,13 +28,13 @@ theorem trace_eq_of_mem {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
   rw [← hc.2, (hasTrace_of_finiteRank B).2, finRankTrace_eq _ L hB]
 
 /- English proof (translation)
-Establish `hDer` using `isDerivedOn_smE hσ`. Take `⟨d, hd⟩` from `hI n ε P`. Take `⟨L, hLf, hLK, hLr⟩` from `hR n ε H σ hσ hirr d`. Take `⟨cas, hcas⟩` from `hCS n ε H σ hσ hirr`. Take `⟨Y, hYf, hle, hYP, hYD, hG, hK⟩` from `hY n ε H σ _ _ hσ hDer cas hcas L hLf hLK`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hBL, htr⟩` from `hd H σ _ _ hσ hDer L hLK hLr Y hle hYP hG hK B hB`. Take `⟨Z, hZf, hZK, Γ, hZY, hZD, hZtr⟩` from `hS n ε H σ _ _ hσ hDer Y hYD hG hK`. Establish `hLH : FiniteDimensional ℂ (L.map (smD ε σ).subtype)` using `Module.Finite.map _ _`. Establish `h1` using `(trace_eq_of_mem B _ hBL hc).trans htr`. Take `⟨Φ, hΦ0, hΦ⟩` from `hA n ε W T (TSub Z) (tOp hDer hZK) Γ hT.2.1 (tOp_isURepOn hDer hZK hσ) (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Apply `hc0` to reduce the goal to its premises. Rewrite using `[h1, ← h0]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[hZtr (toMK k) k.2, hP (toMK k) k.2])`. Take `⟨z, hzZ, hz0, hz⟩` from `hH n ε H σ _ _ hσ hDer Z hZK _ W T hT Φ hΦ0 hΦ`. Take `⟨hSf, hSk⟩` from `hC n ε _ (smE ε σ) Z hZf fun a b hab y hy => diagE_mem_of_wK hσ hDer Z hZf hZK hab hy`. Take `⟨V, hV, hV0, hVc⟩` from `hAlg n ε lam h3 _ (smE ε σ) hDer.glRep (isInfUnitary_of_isDerivedOn hσ hDer) z hz0 (hYP (hZY hzZ)) hz (hCas n ε lam _ _ hDer.glRep z hz (hZD z hzZ)) _ hSf hSk fun s => Submodule.subset_span ⟨s, z, hzZ, rfl⟩`. Conclude with `hE n ε lam hstd H σ hσ hirr V hV hV0 hVc X D hD`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem equiv_of_index (hR : RangeFD) (hY : BuildY) (hS : StrKer) (hI : StrIdx) (hA : AvgMap) (hH : HWVec)
     (hC : CoordFD) (hCas : CasCoord) (hAlg : AlgDatum) (hE : DatumEquiv) (hCS : CompanionTheory.D.gk.HC.CasScal)
@@ -71,19 +71,17 @@ theorem equiv_of_index (hR : RangeFD) (hY : BuildY) (hS : StrKer) (hI : StrIdx) 
   exact hE n ε lam hstd H σ hσ hirr V hV hV0 hVc X D hD
 
 /- English proof (translation)
-Distinguish the cases in `hpq : pOf ε = 0 ∨ qOf ε = 0`. Take `⟨hpd, hs, hX⟩` from `hCp n ε lam hpq`. Take `⟨hfd, hT⟩` from `hX X D hD`. Use `⟨X, inferInstance, inferInstance, hfd, D, hT, fun P hP B c hB hc => ?_⟩` and prove the remaining obligations. Establish `hemb : Topology.IsEmbedding (fun k : KG ε => toMK k)` using `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)` using `inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Establish `: SecondCountableTopology (KG ε)` using `hemb.isInducing.secondCountableTopology`. Establish `hcont : Continuous fun k : KG ε => ev (toMK k) P * physDet ε (toMK k)`. Simplify using `only [hpd, mul_one]`. Use `(MvPolynomial.continuous_eval P).comp (continuous_pi fun p => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Break down `p with p | p` into its components or cases. Conclude with `(continuous_apply p.2).comp ((continuous_apply p.1).comp hemb.continuous)`. Conclude with `continuous_star.comp ((continuous_apply p.2).comp ((continuous_apply p.1).comp hemb.continuous))`. Establish `h1` using `trace_integral_restrict (μ := muK ε) (⊤ : Submodule ℂ X) hcont (fun k => D (toMK k)) (fun v => (hT.2.1.2.2 v).comp_continuous hemb.continuous fun k => k.2) (fun _ _ _ => trivial) B hB (fun _ _ => trivial)`. Rewrite using `[trace_eq_of_mem B ⊤ (fun _ => trivial) hc, h1, hs, pow_zero, ← hSch n ε _ X D hT]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hpd, mul_one, hP (toMK k) k.2, trK]`. Use `congr 1`. Conclude with `LinearMap.trace_restrict_eq_of_forall_mem ⊤ _ fun _ => trivial`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨W, i1, i2, i3, T, h1, h2, h3, h4⟩` from `supTrace n ε lam h X D hD hHC hh hthr (by omega) (by omega)`. Use `⟨W, i1, i2, i3, T, ⟨h1, h2, h3⟩, fun P hP B c hB hc => ?_⟩` and prove the remaining obligations. Take `⟨hf, htr⟩` from `h4 P B hB`. Rewrite using `[trace_eq_of_mem B _ (fun x => LinearMap.mem_range_self _ x) hc, htr]`. Establish `h5` using `hSch n ε _ W T ⟨h1, h2, h3⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_one ((-1 : ℂ) ^ sDeg ε), mul_assoc, one_mul, ← h5]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hP (toMK k) k.2]`.
-
-Both sides reduce to the same expression.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_type (hCp : CptCase) (hSch : SchurOne)
     {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} (hHC : Formalism.QuantumDeterminants.IsHCParam lam) {h : ℝ} (hh : GapAtLeast ε lam h)
@@ -131,23 +129,23 @@ theorem exists_type (hCp : CptCase) (hSch : SchurOne)
     rfl
 
 /- English proof (translation)
-Introduce `r hr ε lam hg X _ _ D hD`. Use `hD.1` as an intermediate fact. Take `⟨hHC, hstd, h3, h, hh, hthr⟩` from `hGap r hr ε lam hg`. Take `⟨W, _, _, _, T, hT, hidx⟩` from `exists_type hCp hSch hHC hh hthr hD`. Establish `hcoef` using `hCP r ε W T hT.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hP⟩` from `hTP r ε W T hcoef`. Use `replace hP : ∀ k ∈ Formalism.REAL.Kset ε, conj (trK T k) = ev k P := hP`. Take `⟨Q, hQ⟩` from `hOm r ε`. Take `⟨M, R, hRb, hRe⟩` from `hBF r ε (MvPolynomial.C ((-1 : ℂ) ^ sDeg ε) * P * Q)`. Establish `hsq : ((-1 : ℂ) ^ sDeg ε) * (-1) ^ sDeg ε = 1` using `by rw [← mul_pow]; simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : ∀ k ∈ Formalism.REAL.Kset ε, ev k (topP ε M R) = (-1) ^ sDeg ε * (ev k P * physDet ε k)`. Introduce `k hk`. Rewrite using `[topP, map_mul, ← hRe k hk, ← hQ k hk, map_mul, map_mul, show ev k (MvPolynomial.C _) = _ from MvPolynomial.eval_C _]`. Expand and normalize the polynomial expressions, which then agree. Establish `hscale : ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (A : KG ε → (H →L[ℂ] H)) (B : H →L[ℂ] H) (c : ℂ), (∀ v, B v = ∫ k : KG ε, ev (toMK k) (topP ε M R) • A k v ∂(muK ε)) → HasTrace B c → (∀ v, (((-1 : ℂ) ^ sDeg ε) • B) v = ∫ k : KG ε, (ev (toMK k …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H _ _ _ A B c hB hc`. Use `⟨fun v => ?_, ⟨hc.1.smul _, by rw [trace_smul, hc.2]⟩⟩` and prove the remaining obligations. Rewrite using `[_root_.smul_apply, hB, ← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htop (toMK k) k.2, smul_smul, ← mul_assoc, hsq, one_mul]`. Use `⟨M, R, hRb, fun k k' => ?_, fun θ hθ => ?_, fun B c hB hc => ?_, fun U _ _ _ π hπ hi hne B c hB hc => ?_⟩` and prove the remaining obligations. Rewrite using `[htop _ (k'⁻¹ * k * k').2, htop _ k.2, ← hP _ (k'⁻¹ * k * k').2, ← hP _ k.2, (hCl r ε k k').1, (hCl r ε k k').2 W T hT.2.1]`. Take `⟨Λ, m, hΛ, hdom, hm, hsh⟩` from `hGa r ε _ hHC`. Establish `hk : Matrix.diagonal (tor θ) ∈ Kset ε` using `diag_mem_Kset' ε θ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hT` using `[hΛ]`. Take `⟨T₀, hT₀⟩` from `hTK r ε _ W T hT hcoef`. Establish `hw` using `ReciprocityTheory.ChartRestriction.TR.Weyl.weyl r ε Λ hdom T₀ (HW.torepK ε hk) (tor θ) rfl`. Rewrite `hw` using `[hT₀]`. Establish `h1` using `hTor r ε _ Λ m hm hsh θ hθ _ hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(-1) ^ sDeg ε * trK T (Matrix.diagonal (tor θ)) = _ at h1`. Express the relevant statement in the definitionally equal form `ev (Matrix.diagonal (tor θ)) _ = _`. Establish `h2` using `congrArg conj h1`. Rewrite `h2` using `[map_mul, map_mul, map_pow, map_neg, map_one]`. Rewrite using `[htop _ hk, ← hP _ hk, ← (hPT r ε θ).2, ← mul_assoc, h2]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨h1, h2⟩` from `hscale X (fun k => D (toMK k)) B c hB hc`. Establish `h4` using `hidx P hP _ _ h1 h2`. Establish `h5` using `congrArg (fun x => (-1 : ℂ) ^ sDeg ε * x) h4`. Simplify `h5` using `only [← mul_assoc, hsq, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc0`. Take `⟨σ, hσ, hirr, hσπ⟩` from `hM r ε U π hπ hi`. Take `⟨h1, h2⟩` from `hscale U (fun k => π k) B c hB hc`. Take `⟨A, hAe⟩` from `equiv_of_index hR hY hS hI hA hH hC hCas hAlg hE hCS hstd h3 hT hP hσ hirr _ (fun w => by rw [h1 w]; simp only [toMK, hσπ]) h2 (mul_ne_zero (pow_ne_zero _ (by norm_num)) hc0) hD`. Conclude with `hne ⟨A, fun g v => by rw [← hσπ g]; exact hAe _ g.2 v⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stKData_of (hBF : BlockForm) (hOm : OmDet) (hCP : CoefPoly) (hTP : TrPoly) (hCl : ClassFn) (hGa : GaInt)
     (hTK : ToKType) (hPT : PhysTor) (hTor : TorusId) (hA : AvgMap) (hSch : SchurOne) (hR : RangeFD) (hY : BuildY)

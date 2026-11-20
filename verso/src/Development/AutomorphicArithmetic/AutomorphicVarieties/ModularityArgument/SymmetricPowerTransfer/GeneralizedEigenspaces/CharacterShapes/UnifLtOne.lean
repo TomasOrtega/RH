@@ -21,7 +21,7 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Rewrite using `[GlAx.unif_spec]`. Conclude with `ValuativeRel.uniformizer_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unif_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     valuation k (unif k : k) < 1 := by
@@ -40,9 +40,7 @@ private def coneS : Subsemigroup (Dat.Par F) where
     exact (mul_le_of_le_one_right' (h2.le.trans h3)).trans_lt h1
 
 /- English proof (translation)
-Introduce `h`. Establish `hp : A.Cone fun v => unif (Kv v) ^ 3` using `fun v _ => by`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_lt_pow_right_of_lt_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (Units.ne_zero _))) (unif_lt_one _) (by norm_num)`. Use `congrFun h ⟨_, hp⟩` as an intermediate fact.
-
-Conclude with `Finset.prod_ne_zero_iff.2 (fun v _ => ((expoEq (Kv v) (a v)).2.2 2 _).1 _) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exS_ne (a : Chs F) : (fun p : coneS A => A.exS a p.1) ≠ 0 := by
   intro h
@@ -53,7 +51,7 @@ private theorem exS_ne (a : Chs F) : (fun p : coneS A => A.exS a p.1) ≠ 0 := b
   exact Finset.prod_ne_zero_iff.2 (fun v _ => ((expoEq (Kv v) (a v)).2.2 2 _).1 _) this
 
 /- English proof (translation)
-Establish `h` using `elEx F Δ A hA`. Establish `h2` using `(h.2.1 (SD.dS t)).exists`. Conclude with `h2.elim fun g hg => ⟨⟨g, h.2.2.2.2 g t hg⟩, hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem elS (hA : A.Ok) (t : Dat.Par F) : ∃ g : SA Δ, A.IsElD g (SD.dS t) := by
   have h := elEx F Δ A hA
@@ -63,7 +61,7 @@ private theorem elS (hA : A.Ok) (t : Dat.Par F) : ∃ g : SA Δ, A.IsElD g (SD.d
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `elS A hA t`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[(sOps F Δ A hA V ch x B hx hB).2.1 t g ht hg φ]`. Conclude with `hE t g ht hg`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eigS (hA : A.Ok) (ch : F → ℂ) (x : DA Δ) (B : Base (SU Δ) (SA Δ) V) (hx : A.dat.Off x) (hB : A.dat.IsBS ch x B)
     (a : Chs F) (φ : B.Forms) (hE : A.EigS B.U φ.1 a) (t : Dat.Par F) (ht : A.Cone t) :
@@ -74,9 +72,9 @@ private theorem eigS (hA : A.Ok) (ch : F → ℂ) (x : DA Δ) (B : Base (SU Δ) 
   exact hE t g ht hg
 
 /- English proof (translation)
-Establish `hW` using `fun i => baseS F Δ D hD V B.W ch hB.tr (y i)`. Use `⟨fun i => if i = 0 then B else (hW i).choose, fun i => ?_, by simp⟩` and prove the remaining obligations. Distinguish the cases in `h : i = 0`. Substitute `h` using the available equality. Simplify using `using hB`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [h, ↓reduceIte]`. Conclude with `(hW i).choose_spec.1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bases (D : Dat Δ) (hD : D.Ok) (ch : F → ℂ) {n : ℕ} (y : Fin (n + 1) → DA Δ) (B : Base (SU Δ) (SA Δ) V)
     (hB : D.IsBS ch (y 0) B) : ∃ B' : Fin (n + 1) → Base (SU Δ) (SA Δ) V, (∀ i, D.IsBS ch (y i) (B' i)) ∧ B' 0 = B := by
@@ -90,13 +88,13 @@ private theorem bases (D : Dat Δ) (hD : D.Ok) (ch : F → ℂ) {n : ℕ} (y : F
     exact (hW i).choose_spec.1
 
 /- English proof (translation)
-Introduce `F _ _ Δ A hA VG VS VK _ _ _ _ _ _ _ _ _ ch BG s x BS BK hG hx hS hK a φ hφ h0 hE`. Establish `hD` using `(datOk F Δ A hA).1`. Establish `hC` using `(datOk F Δ A hA).2.1`. Use `(tFId0 F Δ A.dat hD x hx).elim fun n H => H.elim fun y H => H.elim fun c₁ H => H.elim fun c₂ H => ?_` and prove the remaining obligations. Establish `hy` using `H.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(bases A.dat hD ch y BS (H.1 ▸ hS)).elim fun B' hB => ?_` and prove the remaining obligations. Establish `hB'` using `hB.1`. Establish `e0` using `hB.2`. Substitute `e0` using the available equality. Use `haveI : FiniteDimensional ℂ BG.Forms := Tf.formsFin _ _ _ BG (finG F Δ A.dat hD VG ch BG s hG).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : FiniteDimensional ℂ BK.Forms := Tf.formsFin _ _ _ BK (finK F Δ A.dat hD VK ch BK hK).1`. Use `haveI : ∀ i, FiniteDimensional ℂ (B' i).Forms := fun i => Tf.formsFin _ _ _ (B' i) (finS F Δ A.dat hD VS ch (y i) (B' i) (hB' i)).1`. Use `(gOpsEx F Δ A hA VG ch BG s hG).elim fun u hu => hu.elim fun Θ hu => ?_` and prove the remaining obligations. Use `(gSpec F Δ A hA VG BG s u Θ hu).elim fun I h => h.elim fun X h => h.elim fun b h => h.elim fun β h => ?_` and prove the remaining obligations. Establish `k` using `kSpec F Δ A hA VK ch BK hK`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the first alternative.
 
-Establish `key` using `posSpec (coneS A) BK.Forms I (Fin (n + 1)) (fun i => (B' i).Forms) (fun i p => (Base.Tw.one (B' i)).R (A.dat.FSx p.1 (y i))) (fun p => (Base.Tw.one BK).R (A.dat.FK p.1)) (fun i p q => (sOps F Δ A hA VS ch (y i) (B' i) (hy i) (hB' i)).2.2 p.1 q.1 p.2 q.2) (fun p q => k.1 p.1 q.1 p …`. Use `key.elim (fun e => e.elim fun i e => ?_) fun e => e.elim fun v e => ?_` and prove the remaining obligations. Conclude with `Or.inl (h.2.2 i e.1 e.2.1 a fun t ht => congrFun e.2.2 ⟨t, ht⟩)`. Conclude with `Or.inr ⟨v.1, v.2, fun h => e.1 (Subtype.ext h), k.2 a v fun t ht => e.2 ⟨t, ht⟩⟩`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.specF : SpecF := by
   intro F _ _ Δ A hA VG VS VK _ _ _ _ _ _ _ _ _ ch BG s x BS BK hG hx hS hK a φ hφ h0 hE

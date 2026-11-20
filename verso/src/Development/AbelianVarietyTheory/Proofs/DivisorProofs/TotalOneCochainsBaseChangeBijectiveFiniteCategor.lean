@@ -19,7 +19,7 @@ private def piSL {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {J :
   map_smul' r x := by funext i; simp [map_smulₛₗ]
 
 /- English proof (translation)
-The claim follows from `liftSemi_pi_bijective R R' J M M' f _ (fun _ _ ↦ rfl) hf`.
+A detailed English derivation is pending.
 -/
 private theorem piSL_bij {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {J : Type} [Finite J]
     {M M' : J → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)] [∀ i, AddCommGroup (M' i)]
@@ -28,9 +28,9 @@ private theorem piSL_bij {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
   liftSemi_pi_bijective R R' J M M' f _ (fun _ _ ↦ rfl) hf
 
 /- English proof (translation)
-Introduce `R R' _ _ _ C _ _ _ F F' α hn hs h`. Set `a : ∀ T : C, F.obj T →ₛₗ[algebraMap R R'] F'.obj T` to `fun T ↦ { toFun := α T, map_add' := map_add (α T), map_smul' := hs T }`. Establish `ha : ∀ T, Function.Bijective (liftSemi (a T))` using `fun T ↦ h T (a T) fun _ ↦ rfl`. Establish `hsh : ∀ T, SemiHom (algebraMap R R') (α T)` using `fun T ↦ semiHom_coef (⟨𝟭 C, α, hn, hs⟩ : CoefMap (algebraMap R R') F F') T`. Use `GlobalTheory.T.liftBaseChange_prod_bijective_semilinear R R' _ _ _ _ (piSL fun T : C ↦ piSL fun T' : C ↦ piSL fun _ : T ⟶ T' ↦ a T') (piSL fun T : C ↦ (hsh T).m1) _ (fun _ ↦ rfl) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `piSL_bij _ fun T ↦ piSL_bij _ fun T' ↦ piSL_bij _ fun _ ↦ ha T'`. Conclude with `piSL_bij _ fun T ↦ GlobalTheory.T.bijective_liftSemi_of_semilinear_hom R R' _ _ (α T) (hsh T) (a T) (fun _ ↦ rfl) (ha T)`.
+A detailed English derivation is pending.
 -/
 theorem liftSemi_pullTot1_bijective : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (C : Type) [Category.{0} C] [Finite C] [∀ T T' : C, Finite (T ⟶ T')] (F : C ⥤ CommAlgCat.{0} R) (F' : C ⥤ CommAlgCat.{0} R') (α : ∀ T : C, F.obj T →+* F'.obj T) (hn : ∀ {T T' : C} (φ : T ⟶ T') (b : F.obj T), α T' (mp F φ b) = mp F' φ (α T b)) (hs : ∀ (T : C) (r : R) (b : F.obj T), α T (r • b) = algebraMap R R' r • α T b), (∀ (T : C) (f : F.obj T →ₛₗ[algebraMap R R'] F'.obj T), (∀ b, f b = α T b) → Function.Bijective (liftSemi f)) → Function.Bijective (liftSemi (pullTot1 (⟨𝟭 C, α, hn, hs⟩ : CoefMap (algebraMap R R') F F'))) := by
   intro R R' _ _ _ C _ _ _ F F' α hn hs h

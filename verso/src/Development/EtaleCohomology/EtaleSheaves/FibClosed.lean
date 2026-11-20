@@ -12,7 +12,7 @@ def FibClosed : Prop := Hyp → ∀ (q : ℕ) (i : ℤ) (A : Type) [CommRing A] 
   Eqv _ (sch.map (pullback.map (c ≫ p) (cpt A) p (cpt A) c (𝟙 _) (𝟙 _) (by simp) (by simp))) (tw q i)
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `qcqs_of p`. Take `⟨_, _⟩` from `qcqs_of (c ≫ p)`. Establish `: IsIntegral Z` using `hZ.1`. Establish `: ConnectedSpace Z` using `inferInstance`. Conclude with `eqv_of H.a9 _ (h0 H q c hS this (unit_of hq p) i) (fun n hn => hA H q Z hZ (unit_of hq (c ≫ p)) n i hn) (fun n hn => hA H q S hS (unit_of hq p) n i hn)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem total (H : Hyp) (h0 : HZero) (hA : AICAcyc) (q : ℕ) (i : ℤ) (A : Type) [CommRing A] [IsLocalRing A] (hq : IsUnit (q : A))
     {Z S : Scheme.{0}} (c : Z ⟶ S) (p : S ⟶ Spec (CommRingCat.of A)) [QuasiCompact p] [QuasiSeparated p] [QuasiCompact c]
@@ -25,13 +25,13 @@ theorem total (H : Hyp) (h0 : HZero) (hA : AICAcyc) (q : ℕ) (i : ℤ) (A : Typ
     (fun n hn => hA H q Z hZ (unit_of hq (c ≫ p)) n i hn) (fun n hn => hA H q S hS (unit_of hq p) n i hn)
 
 /- English proof (translation)
-Introduce `H q i A _ _ hq Z S c p _ _ _ _ _ hZ hS hB`. Establish `ec` using `total H h0 hA q i A hq c p hZ hS`. Establish `em` using `hF0 H q i A hq c p hZ hS hB`. Establish `sq : pullback.map (c ≫ p) (cpt A) p (cpt A) c (𝟙 _) (𝟙 _) (by simp) (by simp) ≫ pullback.fst p (cpt A) = pullback.fst (c ≫ p) (cpt A) ≫ c` using `pullback.lift_fst _ _ _`. Establish `key : ∀ n x, pull _ (sch.map (pullback.fst (c ≫ p) (cpt A))) (tw q i) n (pull _ (sch.map c) (tw q i) n x) = pull _ (sch.map (pullback.map (c ≫ p) (cpt A) p (cpt A) c (𝟙 _) (𝟙 _) (by simp) (by simp))) (tw q i) n (pull _ (sch.map (pullback.fst p (cpt A))) (tw q i) n x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n x`. Rewrite using `[← pull_comp, ← pull_comp, ← Functor.map_comp, ← Functor.map_comp, sq]`. Establish `fe : ∀ n, (pull _ (sch.map (pullback.fst (c ≫ p) (cpt A))) (tw q i) n) ∘ (pull _ (sch.map c) (tw q i) n) = (pull _ (sch.map (pullback.map (c ≫ p) (cpt A) p (cpt A) c (𝟙 _) (𝟙 _) (by simp) (by simp))) (tw q i) n) ∘ (pull _ (sch.map (pullback.fst p (cpt A))) (tw q i) n)` using `fun n => funext (key n)`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Function.Bijective ((pull _ (sch.map (pullback.fst (c ≫ p) (cpt A))) (tw q i) n) ∘ (pull _ (sch.map c) (tw q i) n))` using `(h n).comp (ec n)`. Rewrite `h1` using `[fe n]`. Conclude with `(Function.Bijective.of_comp_iff' (em n) _).1 h1`. Introduce `h n`. Establish `h1 : Function.Bijective ((pull _ (sch.map (pullback.map (c ≫ p) (cpt A) p (cpt A) c (𝟙 _) (𝟙 _) (by simp) (by simp))) (tw q i) n) ∘ (pull _ (sch.map (pullback.fst p (cpt A))) (tw q i) n))` using `(em n).comp (h n)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← fe n]`. Conclude with `(Function.Bijective.of_comp_iff _ (ec n)).1 h1`.
+A detailed English derivation is pending.
 -/
 theorem Fib_of (hF0 : FibClosed) (h0 : HZero) (hA : AICAcyc) : Fib := by
   intro H q i A _ _ hq Z S c p _ _ _ _ _ hZ hS hB

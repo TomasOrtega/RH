@@ -14,7 +14,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLo
 open GlobalTheory.Mem.Chr (finPartI)
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isFin_finPart {L : Type} [Field L] [NumberField L] (a : Ideles L) : IsFinIdele (finPartI L a) := fun _ => rfl
 

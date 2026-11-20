@@ -19,7 +19,7 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.OriginCohom
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩ : ∃ φ : R →+* O, inst = φ.toAlgebra` from `⟨algebraMap R O, Algebra.algebra_ext _ _ fun _ => rfl⟩`. Conclude with `⟨LinearEquiv.refl _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_extendScalars_equiv {R : Type} (O : Type) [CommRing R] [CommRing O]
     [inst : Algebra R O] (M : ModuleCat.{0} R) :
@@ -29,7 +29,7 @@ theorem nonempty_extendScalars_equiv {R : Type} (O : Type) [CommRing R] [CommRin
   exact ⟨LinearEquiv.refl _ _⟩
 
 /- English proof (translation)
-Use `ModuleCat.preservesFiniteLimits_extendScalars_of_flat (RingHom.flat_algebraMap_iff.2 (inferInstance : Module.Flat R O))` as an intermediate fact. Establish `: (ModuleCat.extendScalars.{0, 0, 0} (algebraMap R O)).IsLeftAdjoint` using `(ModuleCat.extendRestrictScalarsAdj (algebraMap R O)).isLeftAdjoint`. Take `⟨e⟩` from `nonempty_extendScalars_equiv O (C.homology n)`. Conclude with `⟨((C.sc n).mapHomologyIso (ModuleCat.extendScalars.{0, 0, 0} (algebraMap R O))).toLinearEquiv ≪≫ₗ e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_homology_extendScalars_equiv {R : Type} (O : Type) [CommRing R] [CommRing O]
     [Algebra R O] [Module.Flat R O] (C : CochainComplex (ModuleCat.{0} R) ℕ) (n : ℕ) :
@@ -44,25 +44,19 @@ theorem nonempty_homology_extendScalars_equiv {R : Type} (O : Type) [CommRing R]
     (ModuleCat.extendScalars.{0, 0, 0} (algebraMap R O))).toLinearEquiv ≪≫ₗ e⟩
 
 /- English proof (translation)
-Establish `: Module.Flat R O` using `IsLocalization.flat O (RingHom.ker χ₀).primeCompl`. Establish `hX (p : ℕ) : Nonempty (C'.X p ≃ₗ[O] O ⊗[R] C.X p)`. Take `⟨e₁⟩` from `nonempty_extendScalars_equiv O (C.X p)`. Conclude with `⟨((HomologicalComplex.eval _ _ p).mapIso e.symm).toLinearEquiv ≪≫ₗ e₁⟩`. Establish `hH (p : ℕ) : Nonempty (C'.homology p ≃ₗ[O] O ⊗[R] C.homology p)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨e₁⟩` from `nonempty_homology_extendScalars_equiv O C p`. Conclude with `⟨(HomologicalComplex.homologyMapIso e.symm p).toLinearEquiv ≪≫ₗ e₁⟩`. Take `⟨E, φ, hE0, hEfin, -, hEproj, hφ, -, hφ'⟩` from `exists_finite_projective_complex_quasiIso.{0, 0} C' g (fun p hp => by`. Take `⟨e₁⟩` from `hX p`. Use `ModuleCat.isZero_iff_subsingleton.1 (hz p hp)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ModuleCat.isZero_iff_subsingleton.2 e₁.toEquiv.subsingleton)`. Use the proof step `(fun p => by`. Take `⟨e₁⟩` from `hX p`. Use `hflat p` as an intermediate fact. Conclude with `Module.Flat.of_linearEquiv e₁)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun p => by`. Take `⟨e₁⟩` from `hH p`. Use `hfin p` as an intermediate fact. Conclude with `Module.Finite.equiv e₁.symm)`. Establish `hfree (p : ℕ) : Module.Free O (E.X p) ∧ Module.Finite O (E.X p)`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hEfin p` as an intermediate fact. Use `hEproj p` as an intermediate fact. Conclude with `⟨Module.free_of_flat_of_isLocalRing, inferInstance⟩`. Establish `hEH (p : ℕ) : Nonempty (E.homology p ≃ₗ[O] O ⊗[R] C.homology p)`. Take `⟨e₁⟩` from `hH p`.
+Supply the required witnesses or components. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(asIso (HomologicalComplex.homologyMap φ p)).toLinearEquiv ≪≫ₗ e₁⟩`. Establish `hlen (p : ℕ)`. Use `letI : Module K (C.homology p) := Module.compHom _ (algebraMap K R)`. Use `haveI : IsScalarTower K R (C.homology p) := ⟨fun a r z => by rw [Algebra.smul_def, mul_smul]; rfl⟩`. Use `haveI := hfin p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use the proof step `PointSupport.finiteLength_and_finrank_eq_length K R χ₀ O (C.homology p) fun χ hχ => hsupp χ hχ p`. Take `⟨h₁, h₂⟩` from `homology_of_free_complex_of_isFiniteLength O g hg E hfree hE0 (fun p => by`. Take `⟨e₁⟩` from `hEH p`. Conclude with `(hlen p).1.of_injective (f := e₁.toLinearMap) e₁.injective)`. Use the proof step `(hq E φ hfree hφ')`.
-
-Take `⟨e₁⟩` from `hEH n`. Take `⟨-, h₃, h₄⟩` from `hlen n`. Use `⟨h₃, ?_⟩` and prove the remaining obligations. Rewrite `h₄` using `[← e₁.length_eq]`. Use `split_ifs with hn`.
-
-Substitute `hn` using the available equality. Rewrite `h₄` using `[h₂]`. Conclude with `h₄` after adjusting the coercions. Use `ModuleCat.isZero_iff_subsingleton.1 (h₁ n hn)` as an intermediate fact. Rewrite `h₄` using `[Module.length_eq_zero]`.
-
-Conclude with `h₄` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_homology (K : Type) [Field K] [IsAlgClosed K] (R : Type) [CommRing R] [Algebra K R]
     [Algebra.FiniteType K R] (χ₀ : R →ₐ[K] K) (O : Type) [CommRing O] [Algebra R O]
@@ -135,7 +129,7 @@ theorem finrank_homology (K : Type) [Field K] [IsAlgClosed K] (R : Type) [CommRi
     exact_mod_cast h₄
 
 /- English proof (translation)
-Establish `hc (V : Y.Opens) (r : K) : cst f₀ V r = cst f V (a r)`. Rewrite using `[← appLE_cst (π := 𝟙 Y) ((Category.id_comp f₀).trans w) (le_rfl : V ≤ 𝟙 Y ⁻¹ᵁ V) r]`. Conclude with `(rs_self le_rfl _).symm`. Set `e : secCube f₀ M D ≅ secCube f M D ⋙ ModuleCat.restrictScalars a` to `Cube.isoMk (fun s => { toFun := fun x => x invFun := fun x => x left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl map_smul' := fun r x => congrArg (fun u : Γ(Y, ⨅ i ∈ s, D i) => u • (id x : SecOn M (⨅ i ∈ s, D i))) (hc (⨅ i ∈ s, D i) r) }) fun _ _ => r …`. Conclude with `⟨(HomologicalComplex.homologyMapIso ((cechFunctor κ K).mapIso e ≪≫ (cechRestrictScalarsIso a (secCube f M D)).symm) n ≪≫ ((cechLB f M D).sc n).mapHomologyIso (ModuleCat.restrictScalars a)).toLinearEquiv⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_homology_restrictScalars_equiv {K R : Type} [CommRing K] [CommRing R]
     (a : K →+* R) {Y : Scheme.{0}} (f : Y ⟶ Spec (CommRingCat.of R))
@@ -163,7 +157,7 @@ theorem nonempty_homology_restrictScalars_equiv {K R : Type} [CommRing K] [CommR
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullLinComb L φ (fun _ : PUnit => ψ) (fun _ => ψ ≫ φ) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm) (chartPullId _) (PolBaseChange.lbIso_refl (pull_isLB hL _))`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_pull_comp {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (φ : Y ⟶ X)
     (ψ : Z ⟶ Y) : LBIso ((L.pull φ).pull ψ) (L.pull (ψ ≫ φ)) :=
@@ -172,25 +166,23 @@ theorem lbIso_pull_pull_comp {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (φ :
     (PolBaseChange.lbIso_refl (pull_isLB hL _))
 
 /- English proof (translation)
-Introduce `K _ _ P R _ t Y π f H ht ⟨p, q, hpq⟩ D hD hc n`. Establish `hsm : Smooth P.A.hom` using `P.isAb.smooth`. Establish `hpr : IsProper P.A.hom` using `P.isAb.proper`. Set `φ : CommRingCat.of K ⟶ CommRingCat.of R` to `Spec.preimage (t ≫ P.A.hom)`. Set `_ : Algebra K R` to `φ.hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ : t ≫ P.A.hom = Spec.map (CommRingCat.ofHom (algebraMap K R))` using `(Spec.map_preimage _).symm`. Establish `hft : LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap K R)))` using `hφ ▸ inferInstance`. Establish `: Algebra.FiniteType K R` using `RingHom.finiteType_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 hft)`. Set `o : Spec (CommRingCat.of K) ⟶ P.A.left` to `η[P.A].left`. Establish `ho : o ≫ P.A.hom = 𝟙 _` using `Over.w η[P.A]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : Set.range o ⊆ Set.range t`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨p, hpq.trans (congrArg o (Subsingleton.elim _ _))⟩`. Set `c : CommRingCat.of R ⟶ CommRingCat.of K` to `Spec.preimage (IsOpenImmersion.lift t o hr)`. Establish `hco : Spec.map c ≫ t = o`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_preimage, IsOpenImmersion.lift_fac]`. Establish `hcφ : CommRingCat.ofHom (algebraMap K R) ≫ c = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, ← hφ, ← Category.assoc, hco, ho, Spec.map_id]`. Set `χ₀ : R →ₐ[K] K` to `⟨c.hom, fun r => congrArg (fun u => u.hom r) hcφ⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hmax : (RingHom.ker χ₀).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ fun r => ⟨algebraMap K R r, χ₀.commutes r⟩`. Establish `hprime : (RingHom.ker c.hom).IsPrime` using `hmax.isPrime`. Set `O` to `Localization.AtPrime (RingHom.ker χ₀)`. Establish `hloc : IsLocalization.AtPrime O (RingHom.ker c.hom)` using `inferInstanceAs (IsLocalization.AtPrime O (RingHom.ker χ₀))`. Take `⟨hreg, hdim⟩` from `isRegularLocalRing_and_ringKrullDim_eq_of_polAV K P R t (RingHom.ker χ₀) O ht`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hflat, hfin, hsupp⟩` from `MumfordSupport.cohomology_finite_and_vanishes_off_origin K P R t Y π f H ht _ D hD hc`. Establish `hF : (translDiff P.A P.L (𝟙 P.A)).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `hsep₀ : IsSeparated (fst P.A P.A).left` using `inferInstanceAs (IsSeparated (pullback.fst P.A.hom P.A.hom))`. Establish `hsep : IsSeparated f` using `MorphismProperty.of_isPullback H hsep₀`. Establish `: IsSeparated (terminal.from Y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← terminal.comp_from f]`. Use `infer_instance`. Establish `hDs (s : Finset (Fin (P.g + 1))) (hs : s.Nonempty) : IsAffineOpen (⨅ i ∈ s, D i)` using `IsAffineOpen.biInf _ (Finset.finite_toSet _) hs fun i _ => hD i`. Set `j` to `Spec.map (CommRingCat.ofHom (algebraMap R O))`. Establish `H'` using `IsPullback.of_hasPullback f j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `lbIso_pull_pull_comp hF π (pullback.fst f j)`. Set `e` to `cechLBBaseChangeIso (LB.isLB_pull hF π) H' hDs ≪≫ cechLBCongr _ _ (LB.isLB_pull (LB.isLB_pull hF π) _) (LB.isLB_pull hF _) w hw`. Take `⟨h₁, h₂⟩` from `finrank_homology K R χ₀ O P.g hdim _ (fun p hp => isZero_cechLB_X _ _ _ (by rw [Fintype.card_fin]; exact hp)) hflat hfin (fun χ hχ => hsupp χ.toRingHom (by`. Rewrite using `[Category.assoc, hφ, ← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Conclude with `χ.commutes r)`. Use the proof step `(fun h => hχ (by`. Establish `h' : CommRingCat.ofHom χ.toRingHom = c` using `Spec.map_injective ((cancel_mono t).1 (h.trans hco.symm))`. Use extensionality with `r`.
-
-Conclude with `congrArg (fun u => u.hom r) h'))) _ e`. Use the proof step `(fun E ψ hE hψ => GlobalTheory.MumfordLocal.coker_dualMap_equiv_residueField_of_origin K P R t c.hom O (j ≫ t) _ (pullback.fst f j ≫ π) (pullback.snd f j) (H'.paste_horiz H) ht hco rfl _ _ E ψ (fun i => isAffineOpen_preimage_of_isPullback H' (hD i)) (by rw [← Scheme.Hom.preimage_ …`. Take `⟨e₀⟩` from `nonempty_homology_restrictScalars_equiv (algebraMap K R) f (f ≫ t ≫ P.A.hom) (by rw [hφ]) ((translDiff P.A P.L (𝟙 P.A)).pull π) D n`. Conclude with `⟨Module.Finite.equiv e₀.symm, e₀.finrank_eq.trans h₂⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_cechLB_homology :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ P.A.left) (Y : Scheme.{0}) (π : Y ⟶ (P.A ⊗ P.A).left) (f : Y ⟶ Spec (CommRingCat.of R)), IsPullback π f (fst P.A P.A).left t → IsOpenImmersion t → (∃ p q, t p = η[P.A].left q) → ∀ D : Fin (P.g + 1) → Y.Opens, (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → ∀ n, Module.Finite K ((cechLB (f ≫ t ≫ P.A.hom) ((translDiff P.A P.L (𝟙 P.A)).pull π) D).homology n) ∧ Module.finrank K ((cechLB (f ≫ t ≫ P.A.hom) ((translDiff P.A P.L (𝟙 P.A)).pull π) D).homology n) = if n = P.g then 1 else 0 := by

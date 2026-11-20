@@ -6,19 +6,19 @@ open IsDiscreteValuationRing (addVal)
 open scoped Pointwise TensorProduct Topology
 
 /- English proof (translation)
-Introduce `O _ _ _`. Establish `key : ∀ (x y : O⟦X⟧) (n : ℕ), x ≡ y [SMOD (maximalIdeal O⟦X⟧) ^ n • (⊤ : Submodule O⟦X⟧ O⟦X⟧)] ↔ ∀ i, coeff i x - coeff i y ∈ maximalIdeal O ^ (n - i)`. Introduce `x y n`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, mem_max_pow]`. Simplify using `only [map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations. Introduce `x hx`. Use extensionality with `i`. Apply `eq_of_sub_mem_pow (maximalIdeal O)` to reduce the goal to its premises. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(key x 0 (n + i)).1 (hx (n + i)) i`. Simplify using `using h`. Introduce `f hf`. Establish `hc : ∀ i, ∃ L : O, ∀ n, coeff i (f (n + i)) - L ∈ maximalIdeal O ^ n`. Introduce `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := maximalIdeal O) (M := O) (fun m => coeff i (f (m + i))) (by`. Introduce `m n hmn`. Establish `h` using `(key _ _ (m + i)).1 (hf (Nat.add_le_add_right hmn i)) i`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Simplify using `using h)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `hL n`. Rewrite `h` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Conclude with `h`. Use `choose L hL using hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨PowerSeries.mk L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Introduce `i`. Rewrite using `[coeff_mk]`. Break down `le_or_gt i n with hin | hin` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `hL i (n - i)`. Rewrite `h` using `[Nat.sub_add_cancel hin]`. Then use the resulting hypothesis. Rewrite using `[Nat.sub_eq_zero_of_le hin.le, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.abelian₂.adicComplete :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsAdicComplete (maximalIdeal O) O],

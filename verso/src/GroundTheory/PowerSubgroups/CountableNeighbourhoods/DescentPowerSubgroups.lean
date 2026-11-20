@@ -3,11 +3,11 @@ import Mathlib
 namespace GroundTheory.Variant₂.N1
 
 /- English proof (translation)
-Establish `hmem : ∀ n : ℕ, (σ ^ n) x ∈ p.rootSet Ω` using `fun n => by`. Rewrite using `[Polynomial.mem_rootSet_of_ne hp, Polynomial.aeval_algHom_apply, hx, map_zero]`. Establish `: Finite (p.rootSet Ω)` using `(Polynomial.rootSet_finite p Ω).to_subtype`. Set `f : ℕ → p.rootSet Ω` to `fun n => ⟨(σ ^ n) x, hmem n⟩`. Take `⟨i, j, hne, hij⟩` from `Finite.exists_ne_map_eq_of_infinite f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `key : (σ ^ i) x = (σ ^ j) x` using `congrArg Subtype.val hij`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Use `⟨j - i, Nat.sub_pos_of_lt h, ?_⟩` and prove the remaining obligations. Apply `(σ ^ i).injective` to reduce the goal to its premises. Rewrite using `[← AlgEquiv.mul_apply, ← pow_add, Nat.add_sub_cancel' h.le, key]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨i - j, Nat.sub_pos_of_lt h, ?_⟩` and prove the remaining obligations. Apply `(σ ^ j).injective` to reduce the goal to its premises. Rewrite using `[← AlgEquiv.mul_apply, ← pow_add, Nat.add_sub_cancel' h.le, key]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_apply_eq_self_of_aeval_eq_zero {K : Type*} [Field K] {Ω : Type*} [Field Ω]
     [Algebra K Ω] (σ : Gal(Ω/K)) {p : Polynomial K} (hp : p ≠ 0) {x : Ω}

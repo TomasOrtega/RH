@@ -12,14 +12,14 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 variable {k : ℕ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Dx2.MN.castM_rfl, Dx2.Tower.castV_rfl, Dx2.Tower.castV_rfl]` and apply the resulting hypothesis.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem om_cast {a b : ℕ} (h : a = b) (v v' : Fin (2 * a + k + 1) → ℂ) (g : B.Mat k a) (hg : g ∈ JF.Om k a v v') :
     D.castM h g ∈ JF.Om k b (D.castV h v) (D.castV h v') := by
   subst h; rwa [Dx2.MN.castM_rfl, Dx2.Tower.castV_rfl, Dx2.Tower.castV_rfl]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [U.lowV, liftVec]`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`. Use `ext`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -30,23 +30,21 @@ theorem lowV_lift (ρ : ℕ) (v : Fin (2 * ρ + k + 1) → ℂ) : U.lowV k 1 ρ 
   congr 1; ext; simp
 
 /- English proof (translation)
-Introduce `k ρ z0 z0' hz0 hz0' c hc γ hγ hγO`. Apply `om_cast` to reduce the goal to its premises. Use `set Z : Matrix (Fin 1) (Fin 1) ℂ := Matrix.of fun _ _ => c with hZd`. Establish `hZdet : Z.det = c` using `by rw [Matrix.det_unique]; rfl`. Establish `hz` using `Qx4.lift_inWb hz0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz'` using `Qx4.lift_inWb hz0'`. Establish `hZ : Zhat k (1 + ρ) (liftVec k 1 ρ z0) (liftVec k 1 ρ z0') (U.mMap k 1 ρ Z γ) = Matrix.reindex (Ux3.eC 1 ρ) (Ux3.eC 1 ρ) (Matrix.fromBlocks Z 0 0 (Zhat k ρ z0 z0' γ))`. Unfold `U.mMap`. Rewrite using `[Ux3.z_hat_of_block3 _ _ hz hz', Formalism.QuantumDeterminants.Zhat_eq, lowV_lift, lowV_lift]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[← Matrix.mul_assoc, Ux3.wMat_mul_self]`. Use `⟨(Formalism.FourierDecayAlt.P.slice_membership k 1 ρ).1 Z γ (by rw [hZdet]; exact hc) hγ, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Take `⟨lv, hlv⟩` from `l`. Break down `Nat.eq_zero_or_pos lv with h0 | hpos` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Unfold `Dmin`. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `one_ne_zero`. Take `⟨l', rfl⟩ : ∃ l', lv = 1 + l'` from `⟨lv - 1, by omega⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hl' : l' ≤ ρ` using `by simp only at hl; omega`. Unfold `Dmin`. Rewrite using `[hZ, Ux3.minor_blocks Z _ l' (by omega) (by omega), hZdet]`. Use `mul_ne_zero hc ?_` and prove the remaining obligations. Conclude with `hγO.1 ⟨l', by omega⟩ hl'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Dmin k (1 + ρ) (liftVec k 1 ρ z0) (liftVec k 1 ρ z0') (U.mMap k 1 ρ Z γ) (Fin.last _) = Z.det * Dmin k ρ z0 z0' γ (Fin.last _)`. Unfold `Dmin`. Rewrite using `[hZ]`. Conclude with `Ux3.minor_blocks _ _ (ρ + 1) le_rfl _`. Establish `h0 : Dmin k (1 + ρ) (liftVec k 1 ρ z0) (liftVec k 1 ρ z0') (U.mMap k 1 ρ Z γ) ⟨1 + ρ, by omega⟩ = Z.det * Dmin k ρ z0 z0' γ ⟨ρ, by omega⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Dmin`. Rewrite using `[hZ]`. Conclude with `Ux3.minor_blocks _ _ ρ (by omega) _`. Establish `ht : Tz k (1 + ρ) (liftVec k 1 ρ z0) = Tz k ρ z0` using `by rw [Ux3.tz_low _ hz, lowV_lift]`. Establish `ht' : Tz k (1 + ρ) (liftVec k 1 ρ z0') = Tz k ρ z0'` using `by rw [Ux3.tz_low _ hz', lowV_lift]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : Gf k (1 + ρ) (liftVec k 1 ρ z0) (liftVec k 1 ρ z0') (U.mMap k 1 ρ Z γ) = Complex.normSq c * Gf k ρ z0 z0' γ`. Unfold `Gf`. Rewrite using `[h1, h0, ht, ht', hZdet, Complex.normSq_mul, Complex.normSq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hG]`.
-
-Conclude with `mul_pos (Complex.normSq_pos.2 hc) hγO.2`.
+A detailed English derivation is pending.
 -/
 theorem mcOm : MCOm := by
   intro k ρ z0 z0' hz0 hz0' c hc γ hγ hγO
@@ -95,7 +93,7 @@ theorem mcOm : MCOm := by
     exact mul_pos (Complex.normSq_pos.2 hc) hγO.2
 
 /- English proof (translation)
-The claim follows from `jfStep_of mcOm`.
+A detailed English derivation is pending.
 -/
 theorem jfStep : JFStep := jfStep_of mcOm
 

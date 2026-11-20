@@ -18,14 +18,14 @@ def oneAt (w : HeightOneSpectrum (𝓞 F)) (a : E ⊗[F] w.adicCompletion F) : A
   Formalism.UG.P.afsplitIE w a + (1 - Formalism.UG.P.afsplitEps E w)
 
 /- English proof (translation)
-Rewrite using `[oneAt, map_add, map_sub, map_one, Formalism.UG.P.afsplit_prV_IE, Formalism.UG.P.afsplit_prV_eps, sub_self, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prV_oneAt_self (w : HeightOneSpectrum (𝓞 F)) (a : E ⊗[F] w.adicCompletion F) :
     prV (E := E) w (oneAt w a) = a := by
   rw [oneAt, map_add, map_sub, map_one, Formalism.UG.P.afsplit_prV_IE, Formalism.UG.P.afsplit_prV_eps, sub_self, add_zero]
 
 /- English proof (translation)
-Rewrite using `[oneAt, map_add, map_sub, map_one, Formalism.UG.P.afsplit_prV_IE_ne w w' h, Formalism.UG.P.afsplit_prV_eps_ne w w' h, sub_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prV_oneAt_ne (w w' : HeightOneSpectrum (𝓞 F)) (h : w' ≠ w) (a : E ⊗[F] w.adicCompletion F) :
     prV (E := E) w' (oneAt w a) = 1 := by
@@ -33,14 +33,14 @@ theorem prV_oneAt_ne (w w' : HeightOneSpectrum (𝓞 F)) (h : w' ≠ w) (a : E �
     sub_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Conclude with `Formalism.UG.P.afsplit_inj _ fun w => by rw [map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_prV {x y : AfE F E} (h : ∀ w : HeightOneSpectrum (𝓞 F), prV (E := E) w x = prV (E := E) w y) : x = y := by
   rw [← sub_eq_zero]
   exact Formalism.UG.P.afsplit_inj _ fun w => by rw [map_sub, h, sub_self]
 
 /- English proof (translation)
-The claim follows from `ext_prV fun w' => by by_cases h : w' = w · subst h; rw [map_mul, prV_oneAt_self, prV_oneAt_self, prV_oneAt_self] · rw [map_mul, prV_oneAt_ne w w' h, prV_oneAt_ne w w' h, prV_oneAt_ne w w' h, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem oneAt_mul (w : HeightOneSpectrum (𝓞 F)) (a b : E ⊗[F] w.adicCompletion F) :
     oneAt w a * oneAt w b = oneAt w (a * b) := ext_prV fun w' => by
@@ -49,7 +49,7 @@ theorem oneAt_mul (w : HeightOneSpectrum (𝓞 F)) (a b : E ⊗[F] w.adicComplet
   · rw [map_mul, prV_oneAt_ne w w' h, prV_oneAt_ne w w' h, prV_oneAt_ne w w' h, one_mul]
 
 /- English proof (translation)
-The claim follows from `ext_prV fun w' => by by_cases h : w' = w · subst h; rw [prV_oneAt_self, map_one] · rw [prV_oneAt_ne w w' h, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem oneAt_one (w : HeightOneSpectrum (𝓞 F)) : oneAt (E := E) w 1 = 1 := ext_prV fun w' => by
   by_cases h : w' = w
@@ -57,7 +57,7 @@ theorem oneAt_one (w : HeightOneSpectrum (𝓞 F)) : oneAt (E := E) w 1 = 1 := e
   · rw [prV_oneAt_ne w w' h, map_one]
 
 /- English proof (translation)
-Rewrite using `[oneAt, oneAt, map_add, map_sub, map_one, Formalism.UG.P.afsplit_sigR_IE, Formalism.UG.P.afsplit_sigR_eps]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_oneAt (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)) (a : E ⊗[F] w.adicCompletion F) :
     sigR σ (FiniteAdeleRing (𝓞 F) F) (oneAt w a) = oneAt w (sigR σ (w.adicCompletion F) a) := by
@@ -76,17 +76,15 @@ theorem oneAtU_coe (w : HeightOneSpectrum (𝓞 F)) (a : (E ⊗[F] w.adicComplet
 end OneAt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n p G A J _ H v`. Establish `hp0 : (p : (A.pl v).1.adicCompletion F) ≠ 0`. Rewrite using `[← map_natCast (algebraMap F ((A.pl v).1.adicCompletion F))]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Set `c : ((A.pl v).1.adicCompletion F × (A.pl v).1.adicCompletion F)ˣ` to `⟨((p : (A.pl v).1.adicCompletion F), (p : (A.pl v).1.adicCompletion F)⁻¹), ((p : (A.pl v).1.adicCompletion F)⁻¹, (p : (A.pl v).1.adicCompletion F)), Prod.ext (mul_inv_cancel₀ hp0) (inv_mul_cancel₀ hp0), Prod.ext (inv_mul_cancel₀ hp0) (mul_inv_cancel₀ hp0)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a : (E ⊗[F] (A.pl v).1.adicCompletion F)ˣ` to `Units.map (A.spl v).symm.toMonoidHom c`. Establish `ha : A.spl v (a : E ⊗[F] (A.pl v).1.adicCompletion F) = ((p : (A.pl v).1.adicCompletion F), (p : (A.pl v).1.adicCompletion F)⁻¹)` using `by show A.spl v ((A.spl v).symm _) = _`. Rewrite using `[RingEquiv.apply_symm_apply]`. Use `⟨oneAtU (A.pl v).1 a, ?_, fun w' hw' => prV_oneAt_ne _ w' hw' _, ?_⟩` and prove the remaining obligations. Rewrite using `[U1, MonoidHom.mem_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show oneAt (A.pl v).1 (a : E ⊗[F] (A.pl v).1.adicCompletion F) * sigR σ (FiniteAdeleRing (𝓞 F) F) (oneAt (A.pl v).1 (a : E ⊗[F] (A.pl v).1.adicCompletion F)) = 1`. Rewrite using `[sigR_oneAt, oneAt_mul, ← oneAt_one (E := E) (A.pl v).1]`. Use `congr 1`. Apply `(A.spl v).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, H.sig v, ha, map_one]`. Use `show (((p : (A.pl v).1.adicCompletion F), (p : (A.pl v).1.adicCompletion F)⁻¹) * ((p : (A.pl v).1.adicCompletion F)⁻¹, (p : (A.pl v).1.adicCompletion F)) : (A.pl v).1.adicCompletion F × (A.pl v).1.adicCompletion F) = 1`. Conclude with `Prod.ext (mul_inv_cancel₀ hp0) (inv_mul_cancel₀ hp0)`. Use `(G.P.setting v).frac_alt` as an intermediate fact. Establish `hp` using `(G.P.setting v).p_unif`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `ordP_eq (Qq := G.P.Qq v) hp 1 1`. Establish `h2 : phiA A v (oneAtU (A.pl v).1 a : AfE F E) = (p : G.P.Qq v)`. Simplify using `only [phiA, RingHom.comp_apply, oneAtU_coe, prV_oneAt_self]`. Use `show (A.eQ v).symm ((A.spl v (a : E ⊗[F] (A.pl v).1.adicCompletion F)).1) = _`. Rewrite using `[ha, map_natCast]`.
-
-Unfold `ordA`. Rewrite using `[h2]`. Simplify using `using h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_unif : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n p : ℕ) (G : GAtP p) (A : LocAt F E n G) (J : Matrix (Fin n) (Fin n) E) [Fact p.Prime],

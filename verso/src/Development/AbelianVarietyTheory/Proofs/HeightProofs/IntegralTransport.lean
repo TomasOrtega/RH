@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `: V.frame.equivFun.symm v = 0`. Apply `V.nondeg.2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Establish `hx : x = ∑ i, V.frame.repr x i • V.frame i` using `(V.frame.sum_repr x).symm`. Rewrite using `[hx, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ∑ j, V.gram i j * v j = 0` using `congr_fun h0 i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : V.hT (V.frame i) (V.frame.equivFun.symm v) = ∑ j, V.gram i j * v j`. Rewrite using `[Module.Basis.equivFun_symm_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, h2, h1, smul_zero]`. Conclude with `V.frame.equivFun.symm.map_eq_zero_iff.1 this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
   intro h
@@ -44,9 +44,9 @@ theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
 variable {V : HSp D}
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det c.rel`. Rewrite `h` using `[Matrix.det_mul]`. Establish `h2 : (V.gram.map (cE D)).det ≠ 0`. Use `(cE D).map_det V.gram` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `(map_ne_zero _).2 (gram_det_ne V)`. Use `IsUnit.mk0 _ fun h0 => h2 ?_` and prove the remaining obligations. Rewrite using `[← h, h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjDat_unit (c : ConjDat V) : IsUnit c.P.det := by
   have h := congrArg Matrix.det c.rel
@@ -60,7 +60,7 @@ theorem conjDat_unit (c : ConjDat V) : IsUnit c.P.det := by
   rw [← h, h0, mul_zero]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem ga_ext {g h : GA D V} (e : mt V g = mt V h) : g = h :=
   Subtype.ext (Units.ext e)
@@ -86,13 +86,13 @@ def invIsom (s : ConjIsom V) : ConjIsom V where
 abbrev cG (D : D7) (n : ℕ) : GL (Fin n) (AE D) →* GL (Fin n) (AE D) := Matrix.GeneralLinearGroup.map (cA D)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `cA_cA _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cG_cG {n : ℕ} (g : GL (Fin n) (AE D)) : cG D n (cG D n g) = g := by
   ext i j; exact cA_cA _
 
 /- English proof (translation)
-Establish `: Matrix.GeneralLinearGroup.map (incA D) (Matrix.GeneralLinearGroup.map (cE D) s.P) = cG D _ s.PA`. Use extensionality with `i j`. Conclude with `(cA_inc _).symm`. Rewrite using `[← this, ← map_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem invIsom_PA (s : ConjIsom V) : (invIsom s).PA = (cG D _ s.PA)⁻¹ := by
   have : Matrix.GeneralLinearGroup.map (incA D) (Matrix.GeneralLinearGroup.map (cE D) s.P) = cG D _ s.PA := by
@@ -133,7 +133,7 @@ def ofDat (c : ConjDat V) : ConjIsom V where
   iso := c.rel
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `matHom V ((ofDat c).aut g) = matHom V (c.aut g)`. Rewrite using `[matHom_aut, mul_inv_eq_iff_eq_mul]`. Conclude with `Units.ext (c.aut_mt g).symm`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofDat_aut (c : ConjDat V) (g : GA D V) : (ofDat c).aut g = c.aut g := by
   apply Subtype.ext
@@ -142,7 +142,7 @@ theorem ofDat_aut (c : ConjDat V) (g : GA D V) : (ofDat c).aut g = c.aut g := by
   exact Units.ext (c.aut_mt g).symm
 
 /- English proof (translation)
-Consider the cases of `s`. Consider the cases of `t`. Reduce the equality to equality of the corresponding arguments. Conclude with `Units.ext h`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isom_ext {s t : ConjIsom V} (h : s.P.val = t.P.val) : s = t := by
   cases s; cases t
@@ -160,13 +160,13 @@ def conjEquiv (V : HSp D) : ConjDat V ≃ ConjIsom V where
   right_inv := fun s => isom_ext rfl
 
 /- English proof (translation)
-Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`. Establish `hτ : ∀ x : D.host.E, τ (star x) = starRingEnd ℂ (τ x)` using `fun x => IsCMField.complexEmbedding_complexConj D.host.E τ x`. Establish `hre : ∀ a : Ainf D.host.F, starRingEnd ℂ (θ (a ⊗ₜ[D.host.F] (1 : D.host.E))) = θ (a ⊗ₜ[D.host.F] (1 : D.host.E))`. Introduce `a`. Use `DenseRange.induction_on (NumberField.InfiniteAdeleRing.denseRange_algebraMap D.host.F) a (isClosed_eq (Complex.continuous_conj.comp h.2) h.2) fun f => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (algebraMap D.host.F (Ainf D.host.F) f) ⊗ₜ[D.host.F] (1 : D.host.E) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] (algebraMap D.host.F D.host.E f)`. Conclude with `(Algebra.TensorProduct.includeLeft (R := D.host.F) (S := D.host.F) (A := Ainf D.host.F) (B := D.host.E)).commutes f |>.trans ((Algebra.TensorProduct.includeRight (R := D.host.F) (A := Ainf D.host.F) (B := D.host.E)).commutes f).symm`. Use `erw [e, h.1, ← hτ]`. Rewrite using `[(D.sp.cm.fixed _).2 ⟨f, rfl⟩]`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`. Consider the case `tmul a x`. Establish `e : ∀ y : D.host.E, a ⊗ₜ[D.host.F] y = (a ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] y)`. Introduce `y`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e2 : sigR (Ainf D.host.F) D.sp.cm.sig (a ⊗ₜ[D.host.F] x) = a ⊗ₜ[D.host.F] (star x)` using `rfl`. Rewrite using `[e2, e (star x), e x, map_mul, map_mul, map_mul, hre, h.1, h.1, hτ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_conj {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ} (h : IsInfEmb τ θ)
     (z : Ainf D.host.F ⊗[D.host.F] D.host.E) :
@@ -197,7 +197,7 @@ theorem th_conj {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.host.F] D.ho
     rw [e2, e (star x), e x, map_mul, map_mul, map_mul, hre, h.1, h.1, hτ]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem infPart_cA (x : AE D) : infPart D (cA D x) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D x) := by
   induction x using TensorProduct.induction_on with
@@ -206,7 +206,7 @@ theorem infPart_cA (x : AE D) : infPart D (cA D x) = sigR (Ainf D.host.F) D.sp.c
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finPart_cA (x : AE D) : finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
   induction x using TensorProduct.induction_on with
@@ -215,11 +215,11 @@ theorem finPart_cA (x : AE D) : finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hk' : Formalism.UG.bc (finPart D) (matHom V k) = 1` using `hk`. Establish `h2 : Formalism.UG.bc (finPart D) (cG D _ (matHom V k)) = 1`. Apply `Units.ext` to reduce the goal to its premises. Establish `h3 : (mt V k).map (finPart D) = 1` using `congrArg Units.val hk'`. Establish `h4 : ((mt V k).map (cA D)).map (finPart D) = ((mt V k).map (finPart D)).map (sigR (Af D.host.F) D.sp.cm.sig)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i j`. Conclude with `finPart_cA _`. Express the relevant statement in the definitionally equal form `((mt V k).map (cA D)).map (finPart D) = 1`. Rewrite using `[h4, h3, Matrix.map_one _ (map_zero _) (map_one _)]`. Express the relevant statement in the definitionally equal form `Formalism.UG.bc (finPart D) (matHom V (s.aut k)) = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[matHom_aut, map_mul, map_mul, h2, map_inv, mul_one, mul_inv_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem aut_mem_GinfC (s : ConjIsom V) {k : GA D V} (hk : k ∈ GinfC V) : s.aut k ∈ GinfC V := by
   have hk' : Formalism.UG.bc (finPart D) (matHom V k) = 1 := hk

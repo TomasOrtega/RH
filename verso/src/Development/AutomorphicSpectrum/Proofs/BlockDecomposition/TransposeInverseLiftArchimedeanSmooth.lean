@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.UnfoldingAlt.LiftTV
 
 /- English proof (translation)
-Simplify using `using GlobalTheory.T.archSmooth_comp_transposeInv F F.2 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem arch_ti (F : archSmooth ℚ 3) : IsArchSmooth (fun g : G3 => (F : G3 → ℂ) (ti g)) := by
   simpa using GlobalTheory.T.archSmooth_comp_transposeInv F F.2 1
@@ -37,19 +37,19 @@ Both sides reduce to the same expression.
 theorem S_apply (F : archSmooth ℚ 3) (g : G3) : (S F : G3 → ℂ) g = (F : G3 → ℂ) (ti g) := rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.transposeInv_properties.1 _ _ g h).1`.
+A detailed English derivation is pending.
 -/
 theorem ti_mul (g h : G3) : ti (g * h) = ti g * ti h :=
   (GlobalTheory.T.transposeInv_properties.1 _ _ g h).1
 
 /- English proof (translation)
-The claim follows from `funext (GlobalTheory.T.whittaker_transform_properties.1 W)`.
+A detailed English derivation is pending.
 -/
 theorem tr_eq (W : G3 → ℂ) : tr W = fun g => W (w3 * ti (dia dl3) * ti g) :=
   funext (GlobalTheory.T.whittaker_transform_properties.1 W)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_map.2 ⟨W.1, W.2, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tr_mem {V : Submodule ℂ (G3 → ℂ)} (W : V) : tr W.1 ∈ tV V :=
   Submodule.mem_map.2 ⟨W.1, W.2, rfl⟩
@@ -61,29 +61,29 @@ def U' {V : Submodule ℂ (G3 → ℂ)} (U : V →ₗ[ℂ] archSmooth ℚ 3) : t
   S ∘ₗ U ∘ₗ (e V).symm.toLinearMap
 
 /- English proof (translation)
-Simplify using `[U']`.
+Simplify using the standard rewrite rules.
 -/
 theorem U'_e {V : Submodule ℂ (G3 → ℂ)} (U : V →ₗ[ℂ] archSmooth ℚ 3) (W : V) :
     U' U (e V W) = S (U W) := by
   simp [U']
 
 /- English proof (translation)
-The claim follows from `U'_e U W`.
+A detailed English derivation is pending.
 -/
 theorem U'_tr {V : Submodule ℂ (G3 → ℂ)} (U : V →ₗ[ℂ] archSmooth ℚ 3) (W : V) (h : tr W.1 ∈ tV V) :
     U' U ⟨tr W.1, h⟩ = S (U W) :=
   U'_e U W
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(e V).symm X, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_e {V : Submodule ℂ (G3 → ℂ)} (X : tV V) : ∃ W : V, X = e V W :=
   ⟨(e V).symm X, by simp⟩
 
 /- English proof (translation)
-Use `FourierWhittaker.IsUSmooth.continuous (n := 3) (K := ℚ) ⟨(U W).2, ?_, (hU.1 W).1⟩` and prove the remaining obligations. Take `⟨O, hO⟩` from `hV.level W.1 W.2`. Use `⟨O, fun g u hu => ?_⟩` and prove the remaining obligations. Establish `h` using `hU.2.1 W (finEmb ℚ 3 u) g`. Establish `e : (⟨fun x => W.1 (x * finEmb ℚ 3 u), hV.stable _ W.2 _⟩ : V) = W` using `Subtype.ext (funext fun x => hO x u hu)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_lift {V : Submodule ℂ (G3 → ℂ)} (hV : WhA V) (U : V →ₗ[ℂ] archSmooth ℚ 3)
     (hU : IsLiftU V hV U) (W : V) : Continuous (U W : G3 → ℂ) := by
@@ -97,7 +97,7 @@ theorem continuous_lift {V : Submodule ℂ (G3 → ℂ)} (hV : WhA V) (U : V →
   exact h.symm
 
 /- English proof (translation)
-Introduce `γ g`. Use `show φ (ti (dia γ * g)) = φ (ti g)`. Rewrite using `[ti_mul, GlobalTheory.T.transposeInv_properties.2.1 γ]`. Conclude with `h (ti γ) (ti g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_ti {φ : G3 → ℂ} (h : IsLeftInvariant φ) : IsLeftInvariant (fun g : G3 => φ (ti g)) := by
   intro γ g
@@ -106,25 +106,23 @@ theorem left_ti {φ : G3 → ℂ} (h : IsLeftInvariant φ) : IsLeftInvariant (fu
   exact h (ti γ) (ti g)
 
 /- English proof (translation)
-Introduce `V hV U hU`. Establish `hV'` using `GlobalTheory.T.whittaker_space_transpose_inverse V hV`. Use `⟨hV', LiftTV.U' U, ⟨?_, ?_, ?_⟩, fun W => ⟨tr_mem W, ?_⟩⟩` and prove the remaining obligations. Introduce `X`. Take `⟨W, rfl⟩` from `exists_e X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4⟩` from `hU.1 W`. Rewrite using `[U'_e]`. Use `⟨left_ti h1, GlobalTheory.T.moderateGrowth_comp_transposeInv _ h2, GlobalTheory.T.cuspidal_comp_transposeInv _ h1 h3, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `GlobalTheory.T.whittaker_comp_transposeInv _ h1 (continuous_lift hV U hU W) g` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[h4]`. Conclude with `this`. Introduce `X h g`. Take `⟨W, rfl⟩` from `exists_e X`. Establish `hW' : (fun x => W.1 (x * ti h)) ∈ V` using `hV.stable _ W.2 _`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : (fun x => (e V W).1 (x * h)) = tr (fun x => W.1 (x * ti h))`. Use function extensionality and compare the values at `fun x => GlobalTheory.T.whittaker_transform_properties.2.1 W.1 h x`. Establish `hel : (⟨fun x => (e V W).1 (x * h), hV'.stable _ (e V W).2 h⟩ : tV V) = e V ⟨fun x => W.1 (x * ti h), hW'⟩` using `Subtype.ext hfun`. Rewrite using `[hel, U'_e, U'_e, S_apply, S_apply, hU.2.1 W (ti h) (ti g), ti_mul]`. Introduce `X i j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨W, rfl⟩` from `exists_e X`. Establish `hWa : IsArchSmooth W.1` using `hV.arch W.1 W.2`. Establish `hc` using `GlobalTheory.T.archSmooth_comp_transposeInv W.1 hWa (w3 * ti (dia dl3))`. Establish `hl : ((EA j i ⟨W.1, hWa⟩ : archSmooth ℚ 3) : G3 → ℂ) ∈ V` using `hV.lie _ W.2 j i`. Use `set W2 : V := ⟨_, hl⟩ with hW2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hel : (⟨_, hV'.lie _ (e V W).2 i j⟩ : tV V) = e V (-W2)`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `a1 : (⟨(e V W).1, hV'.arch _ (e V W).2⟩ : archSmooth ℚ 3) = ⟨_, hc⟩` using `Subtype.ext (tr_eq W.1)`. Simplify using `only [a1]`. Rewrite using `[GlobalTheory.T.lie_action_comp_transposeInv ⟨W.1, hWa⟩ _ i j hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Use `show _ = tr (-W2.1) g`. Rewrite using `[GlobalTheory.T.whittaker_transform_properties.1]`. Both sides reduce to the same expression. Rewrite using `[hel, U'_e, U'_e, map_neg]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3 : U W2 = EA j i (U W)` using `hU.2.2 W j i`. Rewrite using `[h3]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hb` using `GlobalTheory.T.archSmooth_comp_transposeInv (U W) (U W).2 1`. Establish `b1 : S (U W) = ⟨fun g : G3 => (U W : G3 → ℂ) (1 * ti g), hb⟩` using `Subtype.ext (funext fun g => by simp [S_apply])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[b1, GlobalTheory.T.lie_action_comp_transposeInv (U W) 1 i j]`. Use function extensionality and compare the values at `g`. Simplify using `[S_apply]`. Use `U'_tr U W (tr_mem W)` as an intermediate fact. Rewrite using `[this]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Submodule ℂ (G3 → ℂ)) (hV : WhA V) (U : V →ₗ[ℂ] archSmooth ℚ 3), IsLiftU V hV U →
   ∃ (hV' : WhA (tV V)) (U' : tV V →ₗ[ℂ] archSmooth ℚ 3), IsLiftU (tV V) hV' U' ∧

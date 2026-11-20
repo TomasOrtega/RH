@@ -13,11 +13,11 @@ section Model
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hx' : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re` using `hx`. Establish `hd : ∀ τ i, dmin X.Gm x τ i ≠ 0`. Introduce `τ i h0`. Use `(hx' τ).2 i` as an intermediate fact. Rewrite `this` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Unfold `Data.pnorm at h`. Break down `mul_eq_zero.1 h with h1 | h1` into its components or cases. Conclude with `norm_eq_zero.1 h1`. It suffices to derive a contradiction.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ne_of_gt ?_) h1` and prove the remaining obligations. Use `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos ?_ _` and prove the remaining obligations. Conclude with `norm_pos_iff.2 (div_ne_zero (hd τ _) (hd τ _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pnorm_dom (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r)
     (hx : x ∈ X.dom) (h : X.pnorm la P x = 0) : P x = 0 := by
@@ -36,7 +36,7 @@ theorem eq_zero_of_pnorm_dom (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r �
     exact norm_pos_iff.2 (div_ne_zero (hd τ _) (hd τ _))
 
 /- English proof (translation)
-Unfold `Data.pnorm`. Rewrite using `[h, norm_zero, zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pnorm_of_eq_zero (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) (h : P x = 0) :
     X.pnorm la P x = 0 := by
@@ -53,13 +53,11 @@ def RdDomInj : Prop :=
     (∀ k, ∀ x ∈ ((U σ).X k).dom, rdU (U σ) f k x = 0) → f = 0
 
 /- English proof (translation)
-Introduce `a n hd σ hσ f hf h0`. Use `h a n hd σ hσ f hf fun k x hx => ?_` and prove the remaining obligations. Establish `hfin` using `supE_cusp_ne_top hσ hf`. Establish `hE : supE (U σ).X (laU (U σ) a n) (rdU (U σ) f) = 0`. Unfold `supN at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Break down `ENNReal.toReal_eq_zero_iff _ |>.1 h0 with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd h1 hfin`. Establish `hle` using `le_iSup (fun p : FPt (U σ).X => ENNReal.ofReal (((U σ).X p.1).pnorm (laU (U σ) a n p.1) (rdU (U σ) f p.1) p.2)) ⟨k, ⟨x, hx⟩⟩`. Establish `hle' : ENNReal.ofReal (((U σ).X k).pnorm (laU (U σ) a n k) (rdU (U σ) f k) x) ≤ 0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: supE (U σ).X (laU (U σ) a n) (rdU (U σ) f) = ⨆ p : FPt (U σ).X, ENNReal.ofReal (((U σ).X p.1).pnorm (laU (U σ) a n p.1) (rdU (U σ) f p.1) p.2)` using `rfl`. Rewrite `hle` using `[← this, hE]`. Conclude with `hle`. Establish `hp : ((U σ).X k).pnorm (laU (U σ) a n k) (rdU (U σ) f k) x = 0`. Use `le_antisymm (ENNReal.ofReal_eq_zero.1 (le_antisymm hle' zero_le)) ?_` and prove the remaining obligations.
-
-Unfold `Data.pnorm`. Conclude with `mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _)`. Conclude with `eq_zero_of_pnorm_dom _ _ _ x hx hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem supDef_of (h : RdDomInj Xo c U) : SupDef Xo c U := by
   intro a n hd σ hσ f hf h0
@@ -99,9 +97,9 @@ def AeDom : Prop :=
 variable {U σ V dict mu}
 
 /- English proof (translation)
-Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP => exact hm la P hP`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `aestronglyMeasurable_const`. Consider the case `add P Q _ _ h1 h2 => rw [map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `h1.add h2`. Consider the case `smul a P _ h1 => rw [map_smul, map_smul]`. Conclude with `h1.const_smul a`.
+A detailed English derivation is pending.
 -/
 theorem aesm_of_holSub (hm : AdelMeas U σ V dict mu) (la : ∀ k, Wt ((U σ).X k).Ψ r) {P : FDSec (U σ).X}
     (hP : P ∈ holSub (U σ).X la) : AEStronglyMeasurable (onQ V (adel V dict mu P)) (muQ1 V) := by
@@ -112,11 +110,9 @@ theorem aesm_of_holSub (hm : AdelMeas U σ V dict mu) (la : ∀ k, Wt ((U σ).X 
   | smul a P _ h1 => rw [map_smul, map_smul]; exact h1.const_smul a
 
 /- English proof (translation)
-Introduce `a n _ f`. Establish `hhol : rdU (U σ) (f : Rul Xo c) ∈ holSub (U σ).X (laU (U σ) a n)` using `((mem_cusp Xo c U a n f).1 f.2).2 σ hσ`. Establish `hfin` using `supE_cusp_ne_top hσ f.2`. Use `show MemLp (onQ V (adel V dict mu (rdU (U σ) (f : Rul Xo c)))) 2 (muQ1 V)`. Use `MemLp.of_bound (aesm_of_holSub hm _ hhol) (supN (U σ).X (laU (U σ) a n) (rdU (U σ) (f : Rul Xo c))) (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set g := q.out`. Use `show ‖mu g * rdU (U σ) (f : Rul Xo c) (dict g).1 (dict g).2‖ ≤ _`. Rewrite using `[norm_mul, hmu.2.1 g, one_mul, ← pnorm_eq_of_unit ((U σ).X (dict g).1) (laU (U σ) a n (dict g).1) (rdU (U σ) (f : Rul Xo c) (dict g).1) (dict g).2 (hmu.2.2.2 g)]`. Use `show _ ≤ (supE (U σ).X (laU (U σ) a n) (rdU (U σ) (f : Rul Xo c))).toReal`. Rewrite using `[← ENNReal.ofReal_le_iff_le_toReal hfin]`.
-
-Conclude with `le_iSup (fun p : FPt (U σ).X => ENNReal.ofReal (((U σ).X p.1).pnorm (laU (U σ) a n p.1) (rdU (U σ) (f : Rul Xo c) p.1) p.2)) ⟨(dict g).1, ⟨(dict g).2, hd g⟩⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cusp_L2_of_measurable (hσ : GoodEmb c σ) (hd : ∀ g, (dict g).2 ∈ ((U σ).X (dict g).1).dom)
     (hmu : MuUnit V dict mu) (hm : AdelMeas U σ V dict mu) : CuspL2 U σ V dict mu := by
@@ -137,11 +133,11 @@ theorem cusp_L2_of_measurable (hσ : GoodEmb c σ) (hd : ∀ g, (dict g).2 ∈ (
     (rdU (U σ) (f : Rul Xo c) p.1) p.2)) ⟨(dict g).1, ⟨(dict g).2, hd g⟩⟩
 
 /- English proof (translation)
-Introduce `a n hdom f h0`. Establish `hhol : rdU (U σ) (f : Rul Xo c) ∈ holSub (U σ).X (laU (U σ) a n)` using `((mem_cusp Xo c U a n f).1 f.2).2 σ hσ`. Establish `hz : (h a n hdom f).toLp _ = 0` using `norm_eq_zero.1 h0`. Establish `hz' : jFn V σ (rdC U σ a n) dict mu f =ᵐ[muQ1 V] 0` using `(MemLp.coeFn_toLp (h a n hdom f)).symm.trans (Lp.eq_zero_iff_ae_eq_zero.1 hz)`. Establish `hv` using `hae (laU (U σ) a n) (rdU (U σ) (f : Rul Xo c)) hhol hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : supE (U σ).X (laU (U σ) a n) (rdU (U σ) (f : Rul Xo c)) = 0`. Use `le_antisymm (iSup_le fun p => ?_) zero_le` and prove the remaining obligations. Rewrite using `[pnorm_of_eq_zero _ _ _ _ (hv p.1 p.2 p.2.2), ENNReal.ofReal_zero]`. Establish `hN : supN (U σ).X (laU (U σ) a n) (rdU (U σ) (f : Rul Xo c)) = 0`. Unfold `supN`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hE, ENNReal.toReal_zero]`. Conclude with `Subtype.ext (hsup a n hdom σ hσ f f.2 hN)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l2Def_of_cusp (hσ : GoodEmb c σ) (hsup : SupDef Xo c U) (hae : AeDom U σ V dict mu)
     (h : CuspL2 U σ V dict mu) : L2DefiniteCuspForms U σ V dict mu h := by
@@ -161,7 +157,7 @@ theorem l2Def_of_cusp (hσ : GoodEmb c σ) (hsup : SupDef Xo c U) (hae : AeDom U
   exact Subtype.ext (hsup a n hdom σ hσ f f.2 hN)
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem dict_dom_of {Comp : Type} {X : Comp → Data E r} {V : HSp D} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {Kf : Subgroup (GA D V)} {th} {hr}

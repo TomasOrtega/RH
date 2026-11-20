@@ -17,13 +17,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 namespace GlobalTheory.TorsionForm
 
 /- English proof (translation)
-Unfold `SymplecticInv`. Introduce `E _ _ _ g n B τ M γ j h hτ hD β b hb T hT`. Take `⟨F, hH, hM⟩` from `hT`. Take `⟨D₁, hD₁, hK⟩` from `hH`. Establish `hu : IsUnit (den γ (τ b))` using `GlobalTheory.T.period_map_moebius_denom_unit B τ γ hD.1 b hb`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨F, ⟨_, GlobalTheory.T.fundamental_domain_symplectic_preimage M γ D₁ hD₁, fun u hu' => ?_⟩, hM⟩` and prove the remaining obligations. Take `⟨K, hKK, hF⟩` from `hK u hu'`. Use `⟨kerConj n (den γ (τ b)) K, GlobalTheory.T.period_datum_curvature_integral_change B τ M γ j h β b u D₁ K hτ hD hb hKK, ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`. Use `congrArg phi ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← GlobalTheory.T.integral_symplectic_preimage_eq γ D₁]`. Use `congrArg (fun f : Fl g → Ext (n + n) => ∫ x in (fun x : Fl g => x ᵥ* (γ⁻¹).mat) ⁻¹' D₁, f x) (funext fun x => ?_)` and prove the remaining obligations. Establish `hc : (den γ (τ b))ᴴ * ((den γ (τ b))⁻¹)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hu), Matrix.conjTranspose_one]`. Use `show _ = strN (m := n + n) (kerConj n (den γ (τ b)) K 1 (per (τ b) x) (per (τ b) x))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kerConj, GlobalTheory.T.period_vector_moebius_transform γ (τ b) x hu]`. Conclude with `(GlobalTheory.T.fiber_conjugation_strip_invariant _ _ hc _).symm`.
+A detailed English derivation is pending.
 -/
 theorem symplecticInv : SymplecticInv := by
   unfold SymplecticInv

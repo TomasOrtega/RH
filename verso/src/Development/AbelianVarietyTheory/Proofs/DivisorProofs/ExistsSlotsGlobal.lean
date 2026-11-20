@@ -22,11 +22,11 @@ open NumberField PowerSeries Formalism.WeaklyAdmissibleFiltrations Formalism.Bas
 namespace GlobalTheory.WachPlace
 
 /- English proof (translation)
-Establish `h0 : A.map (algebraMap F⟦X⟧ (LaurentSeries F)) = 0`. Unfold `lrank Matrix.rank at h`. Establish `hr` using `Submodule.finrank_eq_zero.mp h`. Establish `hB` using `LinearMap.range_eq_bot.mp hr`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (LinearMap.congr_fun hB (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVecLin_apply]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun (congrFun h0 i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[LaurentSeries.coe_algebraMap]`. Conclude with `HahnSeries.ofPowerSeries_injective (this.trans (map_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_lrank {F : Type} [Field F] {a b : ℕ} (A : Mx F⟦X⟧ a b) (h : lrank A = 0) : A = 0 := by
   have h0 : A.map (algebraMap F⟦X⟧ (LaurentSeries F)) = 0 := by
@@ -49,7 +49,7 @@ variable {D : D7} {HW : HWOf D.loc} (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.lo
 
 include F Cm in
 /- English proof (translation)
-Establish `hn : Module.finrank ↥(OL LL) ↥(latOf r hr.1).L.T = n`. Rewrite using `[Module.finrank_eq_card_basis (basisOf r hr.1), Fintype.card_fin]`. Conclude with `GlobalTheory.T.exists_invariant_wachModule_basis_of_nonneg_jumps D HW F Cm l K LL hA (latOf r hr.1) U n hr.2 hU hn γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame {n : ℕ} {r : ↥(GK K) →* GL (Fin n) ↥(OL LL)} {U : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Multiset ℤ}
     (hr : MatGood (D.loc l) ((HW l).W K 1 LL hA.2.2).emb r U) (hU : ∀ i, ∀ u ∈ U i, 0 ≤ u) (γ : ((HW l).W K 1 LL hA.2.2).Gam) :
@@ -61,9 +61,9 @@ theorem exists_frame {n : ℕ} {r : ↥(GK K) →* GL (Fin n) ↥(OL LL)} {U : Z
 
 include F Cm in
 /- English proof (translation)
-Use `⟨?_, hb.2.2.2 i, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.frobeniusMatrix_cofactor_eq_q_pow_frame D HW F Cm l K LL hA (latOf r hr.1) (fun i => Finset.univ.val.map (U i)) n h γ b N hr.2 (fun i v hv => ?_) hb i` and prove the remaining obligations. Take `⟨a, -, rfl⟩` from `Multiset.mem_map.mp hv`. Conclude with `hU i a`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ha0, hal⟩` from `Finset.mem_Ioo.mp ha`. Establish `hprim : IsPrimitiveRoot (ζ ^ a) l` using `hζ.pow_of_coprime a (Nat.coprime_comm.mp ((Fact.out : l.Prime).coprime_iff_not_dvd.mpr (Nat.not_dvd_of_pos_of_lt ha0 hal)))`. Conclude with `GlobalTheory.T.frobeniusMatrix_frame_at_primitiveRoot_factor D HW F Cm l K LL hA (latOf r hr.1) n U γ b N (u : ℤ_[l]) c (ζ ^ a) (jj a) hr.2 (fun i a => (hU i a).1) hb hγ hu hprim (hjj a ha) i`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem latAt_of_frame {n h : ℕ} {r : ↥(GK K) →* GL (Fin n) ↥(OL LL)} {U : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Fin n → ℤ}
     (hr : MatGood (D.loc l) ((HW l).W K 1 LL hA.2.2).emb r fun i => Finset.univ.val.map (U i)) (hU : ∀ i a, 0 ≤ U i a ∧ U i a ≤ h)
@@ -86,7 +86,7 @@ theorem latAt_of_frame {n h : ℕ} {r : ↥(GK K) →* GL (Fin n) ↥(OL LL)} {U
       (fun i a => (hU i a).1) hb hγ hu hprim (hjj a ha) i
 
 /- English proof (translation)
-Use `show stdMap LL n ((Pi.basisFun ↥(OL LL) (Fin n)) k) = _`. Rewrite using `[Pi.basisFun_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coe_basisOf_eq_stdMap_single {n : ℕ} (r : ↥(GK K) →* GL (Fin n) ↥(OL LL)) (hr : Cont r) (k : Fin n) :
     ((basisOf r hr k : ↥(latOf r hr).L.T) : (latOf r hr).V) = stdMap LL n (Pi.single k 1) := by
@@ -95,9 +95,9 @@ private theorem coe_basisOf_eq_stdMap_single {n : ℕ} (r : ↥(GK K) →* GL (F
 
 include F in
 /- English proof (translation)
-Take `⟨A, hA1, hA2⟩` from `GlobalTheory.T.exists_wachModule_map_matrix_reduction_comm (HW l) K LL hA (latOf r hr.1) (latOf r' hr'.1) n n' γ b b' N N' u un (homOf hr.1 hr'.1 a ha) hr.2.1 hr'.2.1 hb hb' hγ hun`. Use `⟨A, hA1, hA2, fun i => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.rank_reduced_letter_matrix_eq_rank_mod_maximal D HW F l K LL hA (latOf r hr.1) (latOf r' hr'.1) n n' b b' (homOf hr.1 hr'.1 a ha) A (basisOf r hr.1) (basisOf r' hr'.1) a hr.2.1 hr'.2.1 hA1 (fun k => ?_) i` and prove the remaining obligations. Simplify using `only [coe_basisOf_eq_stdMap_single]`. Use `show (a.map (algebraMap ↥(OL LL) ↥LL.1)).mulVec (stdMap LL n (Pi.single k 1)) = ∑ m, ((a m k : ↥(OL LL)) : ↥LL.1) • stdMap LL n' (Pi.single m 1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[stdMap_mulVec]`. Use function extensionality and compare the values at `j`. Rewrite using `[stdMap_apply, Finset.sum_apply, Finset.sum_eq_single j (fun m _ hm => by simp [stdMap_apply, Pi.single_apply, Ne.symm hm]) (by simp)]`. Simplify using `[stdMap_apply, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mapMat {n n' : ℕ} {r : ↥(GK K) →* GL (Fin n) ↥(OL LL)} {r' : ↥(GK K) →* GL (Fin n') ↥(OL LL)}
     {U U' : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Multiset ℤ} (hr : MatGood (D.loc l) ((HW l).W K 1 LL hA.2.2).emb r U) (hr' : MatGood (D.loc l) ((HW l).W K 1 LL hA.2.2).emb r' U')
@@ -124,7 +124,7 @@ theorem exists_mapMat {n n' : ℕ} {r : ↥(GK K) →* GL (Fin n) ↥(OL LL)} {r
   simp [stdMap_apply, Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hc : ∀ v : Fin n → ↥LL.1, (homOf hr hr'' a'' ha'').f v = (homOf hr' hr'' a' ha').f ((homOf hr hr' a ha).f v)`. Introduce `v`. Use `show (a''.map (algebraMap ↥(OL LL) ↥LL.1)).mulVec v = (a'.map (algebraMap ↥(OL LL) ↥LL.1)).mulVec ((a.map (algebraMap ↥(OL LL) ↥LL.1)).mulVec v)`. Rewrite using `[e, Matrix.map_mul, Matrix.mulVec_mulVec]`. Rewrite using `[GlobalTheory.T.wachModuleMapMatrix_comp_mul (HW l) K LL hA (latOf r hr) (latOf r' hr') (latOf r'' hr'') n n' n'' b b' b'' (homOf hr hr' a ha) (homOf hr' hr'' a' ha') (homOf hr hr'' a'' ha'') A A' A'' h h' h'' hc i, Matrix.map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapMat_mul {n n' n'' : ℕ} {r : ↥(GK K) →* GL (Fin n) ↥(OL LL)} {r' : ↥(GK K) →* GL (Fin n') ↥(OL LL)}
     {r'' : ↥(GK K) →* GL (Fin n'') ↥(OL LL)} {hr : Cont r} {hr' : Cont r'} {hr'' : Cont r''}
@@ -148,23 +148,15 @@ include F Cm in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `(GlobalTheory.T.wachRingFacts_unramified_levelOne (HW l) K LL hA).2.2.2.1 u`. Establish `hU0 : ∀ i, ∀ v ∈ Finset.univ.val.map (U i), 0 ≤ v` using `fun i v hv => by`. Take `⟨a, -, rfl⟩` from `Multiset.mem_map.mp hv`. Conclude with `(hU i a).1`. Establish `hone : ∀ w : ℤ, (Finset.univ.val.map fun _ : Fin 1 => w) = {w}` using `fun w => by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ' : ∀ s, MatGood (D.loc l) ((HW l).W K 1 LL hA.2.2).emb (ψ s) (fun i => Finset.univ.val.map fun _ : Fin 1 => wt s i)` using `fun s => by`. Simplify `hψ s` using `only [hone]`. Establish `hψ0 : ∀ s i, ∀ v ∈ Finset.univ.val.map (fun _ : Fin 1 => wt s i), 0 ≤ v` using `fun s i v hv => by`. Rewrite `hv` using `[hone, Multiset.mem_singleton]`. Rewrite using `[hv]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hwt s i).1`. Establish `hrk : ∀ k, MatGood (D.loc l) ((HW l).W K 1 LL hA.2.2).emb (x.rk k) (fun i => Finset.univ.val.map (U i))` using `fun k => GlobalTheory.T.isContinuousCrystallineMatrixRep_of_intertwines_det_ne_zero (D.loc l) K LL _ n _ r (x.rk k) _ (x.a k) hr (hx.1 k).1 (hx.1 k).2.1`. Establish `hr2 : ∀ s, MatGood (D.loc l) ((HW l).W K 1 LL hA.2.2).emb (x.r2 s) (fun i => Finset.univ.val.map (U i) + {wt s i})` using `fun s => GlobalTheory.T.matGood_of_block_extension_twist (D.loc l) (D.locA l) (D.locT l) K LL _ n _ r (ψ s) (x.r2 s) _ _ (x.B s) (x.C s) hr (hψ s) (hx.2.2 s).1 (hx.2.2 s).2.2.1 (hx.2.2 s).2.2.2.2.2.2.2.2.2.2`. Establish `hr20 : ∀ s i, ∀ v ∈ Finset.univ.val.map (U i) + {wt s i}, 0 ≤ v` using `fun s i v hv => by`. Break down `Multiset.mem_add.mp hv with hv | hv` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU0 i v hv`. Rewrite `hv` using `[Multiset.mem_singleton]`. Rewrite using `[hv]`. Conclude with `(hwt s i).1`. Take `⟨b0, N0, hb0⟩` from `exists_frame F Cm hA hr hU0 γ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose bk Nk hbk using fun k : Fin (R + 1) => exists_frame F Cm hA (hrk k) hU0 γ`. Use `choose bψ Nψ hbψ using fun s : Fin t => exists_frame F Cm hA (hψ' s) (hψ0 s) γ`. Use `choose b2 N2 hb2 using fun s : Fin t => exists_frame F Cm hA (hr2 s) (hr20 s) γ`. Use `choose Aa hAa1 hAa2 hAa3 using fun k : Fin (R + 1) => exists_mapMat F hA (hrk k) hr (hbk k) hb0 hγ hun (hx.1 k).1`. Use `choose Ab hAb1 hAb2 hAb3 using fun k : Fin R => exists_mapMat F hA (hrk k.castSucc) (hrk k.succ) (hbk k.castSucc) (hbk k.succ) hγ hun (hx.2.1 k).1`.
-
-Use `choose AB hAB1 hAB2 hAB3 using fun s : Fin t => exists_mapMat F hA (hr2 s) hr (hb2 s) hb0 hγ hun (hx.2.2 s).1`. Use `choose AB' hAB'1 hAB'2 hAB'3 using fun s : Fin t => exists_mapMat F hA (hr2 s) (hrk (rs s).succ) (hb2 s) (hbk (rs s).succ) hγ hun (hx.2.2 s).2.1`. Use `choose AC hAC1 hAC2 hAC3 using fun s : Fin t => exists_mapMat F hA (hr2 s) (hψ' s) (hb2 s) (hbψ s) hγ hun (hx.2.2 s).2.2.1`. Use `choose AE hAE1 hAE2 hAE3 using fun s : Fin t => exists_mapMat F hA (hrk (rs s).castSucc) (hr2 s) (hbk (rs s).castSucc) (hb2 s) hγ hun (hx.2.2 s).2.2.2.1`. Use `choose AZ hAZ1 hAZ2 hAZ3 using fun s : Fin t => exists_mapMat F hA (hrk (rs s).castSucc) (hψ' s) (hbk (rs s).castSucc) (hbψ s) hγ hun (a := 0) (fun g => by simp)`.
-
-Use `⟨N0, Nψ, fun i => { Pk := fun k => ((Nk k).P i).map (PowerSeries.map (residue ↥(OL LL))) Dk := fun k => ((Nk k).D i).map (PowerSeries.map (residue ↥(OL LL))) A := fun k => (Aa k i).map (PowerSeries.map (residue ↥(OL LL))) Bb := fun k => (Ab k i).map (PowerSeries.map (residue ↥(OL …` and prove the remaining obligations. Conclude with `latAt_of_frame F Cm hA hr hU hb0 hγ hu hζ hjj i`. Conclude with `latAt_of_frame F Cm hA (hψ' s) (fun i _ => hwt s i) (hbψ s) hγ hu hζ hjj i`. Use `⟨fun k => ⟨hAa2 k i, (hAa3 k i).trans (hx.1 k).2.2⟩, fun k => ?_, fun s => ⟨hAB2 s i, hAC2 s i, ?_, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `mapMat_mul hA (hAb1 k) (hAa1 k.succ) (hAa1 k.castSucc) (hx.2.1 k).2 i`.
-
-Conclude with `(mapMat_mul hA (hAE1 s) (hAB1 s) (hAa1 (rs s).castSucc) (hx.2.2 s).2.2.2.2.1.symm i).symm`. Establish `h0` using `mapMat_mul hA (hAE1 s) (hAC1 s) (hAZ1 s) (hx.2.2 s).2.2.2.2.2.1.symm i`. Establish `hz` using `eq_zero_of_lrank _ ((hAZ3 s i).trans (by simp))`. Conclude with `h0.symm.trans hz`. Conclude with `mapMat_mul hA (hAB'1 s) (hAa1 (rs s).succ) (hAB1 s) (hx.2.2 s).2.2.2.2.2.2.1 i`.
-
-Conclude with `(hAE3 s i).trans (hx.2.2 s).2.2.2.2.2.2.2.1`. Conclude with `(hAC3 s i).trans (hx.2.2 s).2.2.2.2.2.2.2.2.1`. Conclude with `(hAB'3 s i).trans (hx.2.2 s).2.2.2.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem exists_positions {n t h R : ℕ} {r : ↥(GK K) →* GL (Fin n) ↥(OL LL)} {ψ : Fin t → ↥(GK K) →* GL (Fin 1) ↥(OL LL)}
     {U : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Fin n → ℤ} {wt : Fin t → ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℤ}
@@ -250,19 +242,19 @@ theorem exists_positions {n t h R : ℕ} {r : ↥(GK K) →* GL (Fin n) ↥(OL L
 end Functor
 
 /- English proof (translation)
-Use `choose ι' σ' κ x hκ hcomm hmem hrel using h`. Distinguish the cases in `hne : Nonempty X`. Take `⟨x₀⟩` from `hne`. Take `⟨r, hr, hrσ⟩ : ∃ r : ι → ι, (∀ i, σ.SameCycle (r i) i) ∧ ∀ i, r (σ i) = r i` from `⟨fun i => (Quotient.mk'' i : Quotient (Equiv.Perm.SameCycle.setoid σ)).out, fun i => by exact Quotient.mk_out' (s₁ := Equiv.Perm.SameCycle.setoid σ) i, fun i => congrArg Quotient.out (Quotient.sound' (Equiv.Perm.sameCycle_apply_left.2 (Equiv.Perm.SameCycle.refl σ i)))⟩`. Establish `hpow : ∀ k (m : ℤ) j, (σ ^ m) (κ k j) = κ k ((σ' k ^ m) j)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k m`. Proceed by induction on `m using Int.induction_on with`. Consider the case `zero => intro j`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[zpow_add_one, zpow_add_one, Equiv.Perm.mul_apply, Equiv.Perm.mul_apply, ← hcomm, ih]`. Consider the case `pred m ih`. Introduce `j`. Rewrite using `[zpow_sub_one, zpow_sub_one, Equiv.Perm.mul_apply, Equiv.Perm.mul_apply, ← ih]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Equiv.Perm.inv_eq_iff_eq, ← hcomm, ← Equiv.Perm.mul_apply, mul_inv_cancel, Equiv.Perm.one_apply]`. Establish `hin : ∀ i, ∃ j, κ (r i) j = i` using `fun i => by`. Take `⟨m, hm⟩` from `hr i`. Take `⟨j₀, hj₀⟩` from `hmem (r i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(σ' (r i) ^ m) j₀, by rw [← hpow, hj₀, hm]⟩`. Use `⟨fun i => Function.extend (κ (r i)) (x (r i)) (fun _ => x₀) i, fun i => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hin i`. Establish `e1` using `(hκ (r i)).extend_apply (x (r i)) (fun _ => x₀) j`. Establish `e2` using `(hκ (r i)).extend_apply (x (r i)) (fun _ => x₀) (σ' (r i) j)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[hj]`. Rewrite `e2` using `[hcomm, hj]`. Establish `h3` using `hrel (r i) j`. Rewrite `h3` using `[hj]`. Use `show Rel i (Function.extend (κ (r i)) (x (r i)) (fun _ => x₀) i) (Function.extend (κ (r (σ i))) (x (r (σ i))) (fun _ => x₀) (σ i))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrσ i, e1, e2]`. Conclude with `h3`. Establish `hι : IsEmpty ι` using `⟨fun i => by obtain ⟨j, -⟩ := hmem i; exact hne ⟨x i j⟩⟩`. Conclude with `⟨fun i => (hι.false i).elim, fun i => (hι.false i).elim⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem glue_orbits {ι X : Type} (σ : Equiv.Perm ι) (Rel : ι → X → X → Prop)
     (h : ∀ i₀, ∃ (ι' : Type) (σ' : Equiv.Perm ι') (κ : ι' → ι) (x : ι' → X), Function.Injective κ ∧
@@ -315,9 +307,9 @@ namespace GlobalTheory.WachPlace
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨D⟩` from `GlobalTheory.MemLoc.record_nonempty`. Take `⟨HW, F, ⟨Cm⟩, -⟩` from `GlobalTheory.HWL.exists_hw_fon_cmp_ties hBS D.loc D.locA D.locT`. Take `⟨xg, hxg⟩` from `glue_orbits (X := (Mx (↥(OL LL))⟦X⟧ n n × Mx (↥(OL LL))⟦X⟧ n n × Mx ↥(OL LL) n n) × (Fin t → Mx (↥(OL LL))⟦X⟧ 1 1 × Mx (↥(OL LL))⟦X⟧ 1 1 × Mx ↥(OL LL) 1 1) × Slot (ResidueField ↥(OL LL)) n t R) σ (fun τ d d' => LatAt l d.1.1 d.1.2.1 d.1.2.2 h u (J τ) (OL LL).val.toRingHom jj ∧ (∀ …`. Take `⟨K, hA, ι, κ, hκ, hκσ, hi₀, hMG⟩` from `GlobalTheory.T.exists_unramifiedLocalSituation_of_embedding (D.loc l) (D.locA l) (D.locT l) (HW l) E Ω hl hd σ hσ LL hz hE i₀`. Take `⟨N, Nψ, y, hy⟩` from `exists_positions F Cm hA (U := fun i => J (κ i)) (wt := fun s i => wt s (κ i)) (hMG n r _ hr) (fun i a => hJ (κ i) a) (fun s => hMG 1 (ψ s) _ (hψ s)) (fun s i => hwt s (κ i)) (hx.res ι) hu hun hζ hjj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ZMod (Module.finrank ℚ_[l] ↥(K0 K)), Equiv.subRight 1, κ, fun j => ((N.P j, N.D j, N.Th j), fun s => ((Nψ s).P j, (Nψ s).D j, (Nψ s).Th j), y j), hκ, fun j => hκσ j, hi₀, fun j => hy j⟩)`. Conclude with `⟨⟨fun i => (xg i).1.1, fun i => (xg i).1.2.1, fun i => (xg i).1.2.2⟩, fun s => ⟨fun i => ((xg i).2.1 s).1, fun i => ((xg i).2.1 s).2.1, fun i => ((xg i).2.1 s).2.2⟩, fun i => (xg i).2.2, (latN_iff l _ h u J _ jj).2 fun i => (hxg i).1, fun s => (latN_iff l _ h u _ _ jj).2 fun i => …`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_positions_global (hBS : GlobalTheory.Published.BhattScholzeCrystallineLattices) {E Ω : Type} [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (hd : ¬ (l : ℤ) ∣ NumberField.discr E)

@@ -23,15 +23,15 @@ namespace GlobalTheory.PullEveryLevel
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Take `⟨u, hu, hc, hr⟩` from `h`. Establish `hL` using `U.LG.isLB`. Use `⟨fun y J => (val u (𝟙 _) y J).val, fun y J hJ => ?_, fun m t => ?_⟩` and prove the remaining obligations. Use `(secRel_iff hL _ _ _ _ _ _ _ _ _ _).1 hr _ (𝟙 _) y J hJ` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨v, hv, hvv⟩` from `exists_gen hL (φ' := ![gK, endK f ≫ gK]) (ε' := ![((m * k * N : ℕ) : ℤ), -((m * k : ℕ) : ℤ)]) (fun W _ h => by`. Simplify using `[Fin.prod_univ_two, _root_.mul_assoc])`. Use the proof step `(GeneratorPullback.powGen U.LG.L _ _ u m) (powGen_isGen_of_isGen u hu m)`. Take `⟨t', ht'⟩` from `exists_sec hL (φ' := fun _ : Fin 1 => gK) (ε' := fun _ => ((m * k * N : ℕ) : ℤ)) (fun W _ h => by`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Fin.prod_univ_one, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one])`. Use the proof step `(pullMulSec t (endK f) v hv)`. Establish `key : ∀ y J, Good U.LG.L y J → sval t' (𝟙 _) y J = sval t (𝟙 _ ≫ endK f) y J * (val v (𝟙 _) y J).val` using `fun y J hJ => by`. Rewrite using `[ht' _ _ y J hJ, sval_pullMulSec _ _ _ _ _ y hJ]`. Use `⟨t', ⟨v, hv, ?_, (secRel_iff hL _ _ _ _ _ _ _ _ _ _).2 key⟩, fun y J hJ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `corr_of_val hL fun z J hJ => ?_` and prove the remaining obligations. Establish `e` using `val_corr hJ hc (𝟙 _)`. Rewrite `e` using `[val_pull hJ, val_pull hJ, val_pow]`. Rewrite using `[val_pull hJ, val_pull hJ, val_pow, hvv _ _ z J hJ, val_pow, e, ← pow_mul]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key y J hJ, Category.id_comp, hvv _ _ y J hJ, val_pow, Units.val_pow_eq_pow_val]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pull_pow {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {D : DegData V (maximalIdeal V)} {A : PolAV (Spec (CommRingCat.of (FractionRing V)))}
@@ -77,15 +77,15 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {t : Geo.Tor.SAB H (Spec (CommRingCat.of V))}
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨uΨ, huΨ, -, -⟩` from `P.w0`. Establish `hM : P.D.toPre.P.L.IsLB` using `P.D.toPre.P.isLB`. Take `⟨F', hF'⟩` from `exists_pullAl P.D (FractionRing V) hM P.oD H.w0 uΨ huΨ a N hN hN0 k F (pullSecs_fe' P.D (FractionRing V) hLaws.globalFns hM P.oD H.w0 P.w0 uΨ huΨ a N hN hN0 k F)`. Take `⟨s'', hs'', -⟩` from `(P.U.expand (k * N) (Nat.mul_pos hk hN0)).2 F'`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hpow⟩` from `exists_pull_pow P.U _ k N s s' hs'`. Establish `hint` using `(GlobalTheory.unifPre_genericFibre_surjective_appTop_and_isIntegral hLaws.globalFns V _ _ _ _ P.U.toUnifPre).2`. Establish `e : s'' = s'`. Use `SecOps.sec_ext (sec_ext_val P.U.LG.isLB fun y J hJ => ?_)` and prove the remaining obligations. Establish `hm : ∀ m : ℕ, 4 ≤ m → sval s'' (𝟙 _) y J ^ m = sval s' (𝟙 _) y J ^ m` using `fun m hm => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmk : 4 ≤ m * k` using `le_trans hm (Nat.le_mul_of_pos_right m hk)`. Take `⟨τ, hτ⟩` from `GlobalTheory.GenericGenerated.exists_secK_isUnit hLaws.ample V _ _ _ _ P.U.toUnifPre (m * k) hmk _ (endK (t.act.act a)) y J hJ`. Take `⟨τ', hτ', hv⟩` from `hpow m τ`. Take `⟨T, hT, -⟩` from `(P.U.expand (m * k) (by omega)).1 τ`. Take `⟨T', hT', hTT⟩` from `GlobalTheory.PullExpansion.expands_pull_of_four_le hLaws V E H t P a N hN hN0 (m * k) hmk τ T hT τ' hτ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `g` using `GlobalTheory.GenericCross.main hLaws V E H t P a N hN hN0 k s F s'' F' hs hs'' hF' (m * k) τ T τ' T' hT hT' hTT m 1 (by ring) y J hJ`. Rewrite `g` using `[pow_one, pow_one, hv y J hJ]`. Use `hτ.mul_right_cancel (g.trans ?_)` and prove the remaining obligations. Rewrite using `[hc y J hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `GlobalTheory.PullLevelOne.eq_of_pow_four_five (hm 4 le_rfl) (hm 5 (by norm_num))`. Conclude with `⟨F', e ▸ hs'', hF'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem expands_pull_every_level (hLaws : Laws) (P : Geo.Tor.PELUnif (maximalIdeal V) t)
     (a : NumberField.RingOfIntegers E) (N : ℕ)

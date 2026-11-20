@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.RealEmbeddingLemmaSecond
 
 /- English proof (translation)
-Introduce `d1 m n M N`. Use extensionality with `i j`. Simplify using `[d1, Matrix.map_apply, Matrix.sub_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem main :
     (let d1 : {m n : Type} → Matrix m n ℝ → Matrix m n ℂ :=

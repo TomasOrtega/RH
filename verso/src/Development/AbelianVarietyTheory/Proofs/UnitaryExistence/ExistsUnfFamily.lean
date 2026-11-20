@@ -30,7 +30,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UnifFamily
 
 /- English proof (translation)
-Use `choose P _ hP using X.signature`. Conclude with `⟨fun τ => P τ, ((GlobalTheory.UnitFrames.unit_frame_eq_orthonormal_mul_triangular E r X.p0 X.Ψ X.Gm X.Gm_herm).2.1 (fun τ => P τ) hP).1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dom_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : FD.Data E r) :
     X.dom.Nonempty := by
@@ -39,13 +39,13 @@ theorem dom_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ
     X.Gm_herm).2.1 (fun τ => P τ) hP).1⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hpq`. Establish `hB : Out.SecBaseChangeSt` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hT : Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Take `⟨ξ₀, hcc, hne, him⟩` from `GlobalTheory.IsUnfEx.exists_xi H`. Establish `hcc' : cc (-ξ₀) = -(-ξ₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `cc at hcc ⊢`. Rewrite using `[map_neg, hcc]`. Take `⟨Gm, φ, hφ⟩` from `GlobalTheory.exists_herm_coord_of_datum E H Dw (-ξ₀) hcc' (neg_ne_zero.2 hne) (Dw.p + Dw.q) rfl`. Establish `key : ∀ σ : c.F →+* ℂ, ∃ U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U ∧ Nonempty U.Comp ∧ (∀ k, (U.X k).dom.Nonempty) ∧ (∀ k la γ, (U.X k).χ la γ = 1) ∧ ∀ k x, FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (U.un k x) := by`. Introduce `σ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hσ : Formalism.L2.PjFree.GoodEmb c σ`. Take `⟨U, h1, h2, h3, -, h5, -⟩` from `GlobalTheory.T.exists_frameUniformisation_prescribedSpace GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.T.hasse_norm_theorem_quadratic_extension hB hT E H Dw l Xo c σ (Dw.p + Dw.q) ξ₀ Gm φ hpq hσ hcc him hφ`. Conclude with `⟨U, fun _ => ⟨h1, h2, fun k => dom_nonempty _, h3, h5⟩⟩`. Take `⟨U, -⟩` from `GlobalTheory.T.exists_uniformisationData_nonempty_component E H Dw l Xo c hpq σ`. Conclude with `⟨U, fun h => absurd h hσ⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose U hU using key`. Establish `h₀ : Formalism.L2.PjFree.GoodEmb c (c.F.val : c.F →+* ℂ)`. Conclude with `rfl`. Use `⟨U, hU, GlobalTheory.T.cuspForms_dominantWeight_finiteDimensional hB E H Dw l Xo c _ U _ h₀ (hU _ h₀).1, GlobalTheory.CuspProduct.cuspMul_holds E H Dw l Xo c _ U, GlobalTheory.T.supNorm_definite_on_cuspForms_goodEmbedding E H Dw l Xo c _ U (fun σ h => (hU σ h).1), fun hg => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.Reg.sCharts_and_transfer_of_good_level GlobalTheory.T.compactifiedModuli_partOne GlobalTheory.T.exists_moduli_scheme_polarized_abelian_level E H Dw l Xo c hpq hg).2.1 _ U`.
+Establish an intermediate fact. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unf_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∃ U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q), (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ) ∧ Nonempty (U σ).Comp ∧ (∀ k, ((U σ).X k).dom.Nonempty) ∧ (∀ k la γ, ((U σ).X k).χ la γ = 1) ∧ ∀ k x, FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ((U σ).un k x)) ∧ Formalism.L2.PjFree.CuspFD Xo c U ∧ Formalism.L2.PjFree.CuspMul Xo c U ∧ Formalism.L2.PjFree.SupDef Xo c U ∧ ((∀ p : ℕ, p.Prime → l.GoodAt p) → Formalism.L2.PjFree.regular₂ Xo c U) := by
   intro E _ _ _ H Dw l Xo c hpq

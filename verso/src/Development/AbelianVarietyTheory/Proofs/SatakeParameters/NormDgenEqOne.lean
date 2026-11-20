@@ -7,9 +7,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNoti
 namespace GlobalTheory.EigenGenerator
 
 /- English proof (translation)
-Introduce `D cD hD p _ lm hp τ`. Take `⟨M, hMnf, hM, hs⟩` from `hD`. Take `⟨s, hsc, hsp⟩` from `hs τ`. Establish `hh` using `D.host.hyp`. Unfold `Formalism.FrobeniusOrbits.HostHyp at hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2 : p ∉ D.host.small` using `hp ▸ UpperTheory.Small.d_not_mem D.host`. Establish `hq : p ≠ D.host.q` using `by omega`. Rewrite using `[← hsc]`. Conclude with `norm_generator_eq_one D p lm h2 hq M hM τ s hsp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_dgen_eq_one : ∀ (D : D7) (cD : D.what₂.Tau → ℂ), Formalism.L2.Ker.IsDgen D cD → ∀ (p : ℕ) [Fact p.Prime] (lm : Qbar →+* ℂ_[p]), p = D.host.d → ∀ τ, ‖lamC lm (cD τ)‖ = 1 := by
   intro D cD hD p _ lm hp τ

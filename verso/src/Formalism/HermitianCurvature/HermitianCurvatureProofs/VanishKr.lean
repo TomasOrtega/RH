@@ -14,11 +14,11 @@ variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨V, hV, K, hK, hVK⟩` from `hP y hy`. Use `⟨interior V, isOpen_interior, mem_interior_iff_mem_nhds.2 hV, K, hK, fun g hg hgG x hx hxK => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.P.PBG.kr_eq]`. Rewrite using `[← integral_zero (Mt k n × Mt k n) (Wq →L[ℂ] Wp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.PBG.ae_inR B0] with ξ hξ`. Rewrite using `[Formalism.FourierDecayAlt.P.PBG.rho_pR]`. Establish `hG : sE Bj e x * g * Matrix.of ξ.2 * Matrix.of ξ.1 ∈ B.GV k n` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (sE_GV Bj e x) hgG) hξ.2.1) hξ.1.1`. Establish `hC` using `hVK g (interior_subset hg) hgG x hx hxK ξ hξ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hH _ hG hC]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vanish_kr (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     {H : B.Mat k n → (Wq →L[ℂ] Wp)} {Cs : Set (B.Mat k n)} (hH : ∀ g ∈ B.GV k n, g ∉ Cs → H g = 0)

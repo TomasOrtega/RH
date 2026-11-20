@@ -5,67 +5,63 @@ open CategoryTheory Limits MvPolynomial
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Set `γ` to `eval₂Hom (ψ.comp p) (Function.update y j (ψ (s j)))`. Set `Z : Fin D → MvPolynomial (Fin D) A` to `Function.update X j 1`. Set `α' : MvPolynomial (ULift.{0} (Fin D)) A →+* E` to `eval₂Hom p (fun k => s k.down)`. Set `β' : MvPolynomial (ULift.{0} (Fin D)) A →+* MvPolynomial (Fin D) A` to `eval₂Hom C (fun k => X j * Z k.down)`. Establish `hα' : α'.Etale`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : α' = (eval₂Hom p s).comp (MvPolynomial.renameEquiv A Equiv.ulift).toRingEquiv.toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[α']`. Introduce `k`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[α']`. Rewrite using `[e1]`. Conclude with `RingHom.Etale.respectsIso.2 _ _ hφ`. Establish `hker : ∀ q ∈ Ideal.span (insert (X j - 1 : MvPolynomial (Fin D) E) (Set.range fun k => C (s k) - C (s j) * X k)), eval₂Hom ψ y q = 0`. Introduce `q hq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[← ker]`. Conclude with `hq`. Establish `hyj : y j = 1`. Establish `h0` using `hker _ (Ideal.subset_span (Set.mem_insert _ _))`. Simplify using `only [map_sub, eval₂Hom_X', map_one] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_eq_zero.1 h0`. Establish `hyk : ∀ k, ψ (s k) = ψ (s j) * y k`. Introduce `k`. Establish `h0` using `hker _ (Ideal.subset_span (Set.mem_insert_of_mem _ ⟨k, rfl⟩))`. Simplify using `only [map_sub, map_mul, eval₂Hom_C, eval₂Hom_X'] at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.1 h0`. Establish `hγX : ∀ k, k ≠ j → γ (X k) = y k`. Introduce `k hk`. Simplify using `[γ, Function.update_of_ne hk]`. Establish `hγXj : γ (X j) = ψ (s j)` using `by simp [γ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hγZ : ∀ k, γ (X j * Z k) = ψ (s k)`. Introduce `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[Z, hγXj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hγXj]`. Simplify using `only [Z, Function.update_of_ne hk]`. Rewrite using `[hγX k hk, hyk k]`. Establish `hcompat : ∀ t, ψ (α' t) = γ (β' t)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h0 : ψ.comp α' = γ.comp β'`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[α', β', γ]`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Simplify using `only [RingHom.comp_apply, α', β', eval₂Hom_X']`. Conclude with `(hγZ k.down).symm`. Conclude with `RingHom.congr_fun h0 t`. Use `letI : Algebra (MvPolynomial (ULift.{0} (Fin D)) A) E := α'.toAlgebra`. Use `letI : Algebra (MvPolynomial (ULift.{0} (Fin D)) A) (MvPolynomial (Fin D) A) := β'.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI : Algebra (MvPolynomial (ULift.{0} (Fin D)) A) B := (γ.comp β').toAlgebra`. Establish `hbc` using `RingHom.Etale.isStableUnderBaseChange.tensorProduct (MvPolynomial (Fin D) A) (R := MvPolynomial (ULift.{0} (Fin D)) A) (S := E) hα'`. Set `fA : MvPolynomial (Fin D) A →ₐ[MvPolynomial (ULift.{0} (Fin D)) A] B` to `{ γ with commutes' := fun _ => rfl }`. Set `gA : E →ₐ[MvPolynomial (ULift.{0} (Fin D)) A] B` to `{ ψ with commutes' := fun t => hcompat t }`. Set `F` to `(Algebra.TensorProduct.lift fA gA (fun _ _ => Commute.all _ _)).toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : ∀ a e, F (TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) a e) = γ a * ψ e`. Introduce `a e`. Simplify using `[F, fA, gA]`. Establish `hT : ∀ t, TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (1 : MvPolynomial (Fin D) A) (α' t) = TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (β' t) (1 : E)`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : α' t = t • (1 : E)`. Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Establish `h2 : β' t = t • (1 : MvPolynomial (Fin D) A)`. Rewrite using `[Algebra.smul_def, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1, h2, TensorProduct.smul_tmul]`. Establish `hTs : ∀ k, TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (1 : MvPolynomial (Fin D) A) (s k) = TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (X j * Z k) (1 : E)`. Introduce `k`. Simplify `hT (X ⟨k⟩)` using `[α', β']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `G0 : MvPolynomial (Fin D) E →+* TensorProduct (MvPolynomial (ULift.{0} (Fin D)) A) (MvPolynomial (Fin D) A) E` to `eval₂Hom (Algebra.TensorProduct.includeRight : E →ₐ[MvPolynomial (ULift.{0} (Fin D)) A] TensorProduct (MvPolynomial (ULift.{0} (Fin D)) A) (MvPolynomial (Fin D) A) E).toRingHom (fun k => TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (Z k) (1 : E))`. Establish `hG0C : ∀ e, G0 (C e) = TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (1 : MvPolynomial (Fin D) A) e`. Introduce `e`. Simplify using `[G0]`. Establish `hG0X : ∀ k, G0 (X k) = TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (Z k) (1 : E)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Simplify using `[G0]`. Establish `hG0 : RingHom.ker (eval₂Hom ψ y) ≤ RingHom.ker G0`. Rewrite using `[ker, Ideal.span_le]`. Introduce and unpack `q (rfl | ⟨k, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, map_sub, map_one, hG0X]`. Simplify using `[Z, Algebra.TensorProduct.one_def]`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, map_sub, map_mul, hG0C, hG0C, hG0X, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, hTs k]`. Establish `h3 : TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (Z k) (s j) = TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (Z k) (1 : E) * TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (1 : MvPolynomial (Fin D) A) (s j)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h3, hTs j, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using `[Z, mul_comm]`. Set `G : B →+* TensorProduct (MvPolynomial (ULift.{0} (Fin D)) A) (MvPolynomial (Fin D) A) E` to `(Ideal.Quotient.lift _ G0 (fun q hq => hG0 hq)).comp (RingHom.quotientKerEquivOfSurjective surj).symm.toRingHom`. Establish `hG : ∀ q, G (eval₂Hom ψ y q) = G0 q`. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h4 : (RingHom.quotientKerEquivOfSurjective surj).symm (eval₂Hom ψ y q) = Ideal.Quotient.mk _ q`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show Ideal.Quotient.lift _ G0 (fun q hq => hG0 hq) ((RingHom.quotientKerEquivOfSurjective surj).symm (eval₂Hom ψ y q)) = G0 q`. Rewrite using `[h4]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Establish `hGψ : ∀ e, G (ψ e) = TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) (1 : MvPolynomial (Fin D) A) e`. Introduce `e`. Rewrite using `[← eval₂Hom_C ψ y e, hG, hG0C]`. Establish `hFG : F.comp G = RingHom.id B`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h5 : F.comp G0 = eval₂Hom ψ y`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `e`. Rewrite using `[RingHom.comp_apply, hG0C, hF, map_one, one_mul, eval₂Hom_C]`. Introduce `k`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.comp_apply, hG0X, hF, map_one, mul_one, eval₂Hom_X']`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[Z, hyj]`. Simplify using `only [Z, Function.update_of_ne hk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hγX k hk`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `b`. Take `⟨q, rfl⟩` from `surj b`. Rewrite using `[RingHom.comp_apply, hG, RingHom.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `RingHom.congr_fun h5 q`. Establish `hGγ : ∀ a, G (γ a) = TensorProduct.tmul (MvPolynomial (ULift.{0} (Fin D)) A) a (1 : E)`. Establish `h6 : G.comp γ = Algebra.TensorProduct.includeLeftRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h7` using `hT (C c)`. Simplify using `only [α', β', eval₂Hom_C] at h7`. Simplify using `only [RingHom.comp_apply, Algebra.TensorProduct.includeLeftRingHom_apply]`. Simplify using `only [γ, eval₂Hom_C, RingHom.comp_apply]`. Rewrite using `[hGψ, h7]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Simplify using `only [RingHom.comp_apply, Algebra.TensorProduct.includeLeftRingHom_apply]`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Rewrite using `[hγXj, hGψ, hTs]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `[Z]`. Rewrite using `[hγX k hk, ← eval₂Hom_X' ψ y k, hG, hG0X]`. Simplify using `only [Z, Function.update_of_ne hk]`. Introduce `a`. Conclude with `RingHom.congr_fun h6 a`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hGF : G.comp F = RingHom.id _`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `tmul a e`. Rewrite using `[RingHom.comp_apply, hF, map_mul, RingHom.id_apply, hGγ, hGψ, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Consider the case `add x y hx hy`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
-
-Set `e` to `RingEquiv.ofRingHom F G hFG hGF`. Establish `h8` using `RingHom.Etale.respectsIso.1 _ e hbc`. Use `h8 using 1` and compare the differences between its conclusion and the goal. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`.
-
-Use `show γ x = F (algebraMap _ _ x)`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, hF, map_one, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem etale_chart {A E B : Type} [CommRing A] [CommRing E] [CommRing B] {D : ℕ}
     (p : A →+* E) (ψ : E →+* B) (s : Fin D → E) (y : Fin D → B) (j : Fin D)
@@ -247,7 +243,7 @@ end UpperTheory.Gal.KunnethLefschetz.G
 
 open UpperTheory.Gal.DifferentialFormSections in
 /- English proof (translation)
-Introduce `R _ Z W π D c b j`. Conclude with `UpperTheory.Gal.KunnethLefschetz.G.etale_chart _ _ c.s (b.y j) j (dCoord R Z D c) (b.surj j) (b.ker j)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.bCoord :
     UpperTheory.Gal.KunnethLefschetz.G.BCoord := by

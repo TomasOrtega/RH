@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.TwistNorm
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `(chiInf_expU ω _).trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[show (fun _ : InfinitePlace E => (t : ℂ)) = t • (1 : Cinf E) from funext fun _ => by simp, map_smul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_expId (ω : HChar E) (t : ℝ) :
     ((ω.1 (GlobalTheory.DiscChar.expId E t) : ℂˣ) : ℂ) = Complex.exp (t * dchi ω 1) := by
@@ -22,15 +22,15 @@ theorem val_expId (ω : HChar E) (t : ℝ) :
   simp
 
 /- English proof (translation)
-Introduce `φ _ t g` and use `by rw [Subsingleton.elim (splitCentre E 0 t * g) g]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isNormalised_rank_zero (π : CuspSub E 0) : IsNormalised π := fun φ _ t g => by
   rw [Subsingleton.elim (splitCentre E 0 t * g) g]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨ψ, hψ, rfl⟩ t g`. Express the relevant statement in the definitionally equal form `ψ.1 (splitCentre E a t * g) * (chiDet a ν (splitCentre E a t * g) : ℂˣ) = ψ.1 g * (chiDet a ν g : ℂˣ)`. Establish `h1 : ψ.1 (splitCentre E a t * g) = Complex.exp (t * dchi ω 1) * ψ.1 g`. Rewrite using `[GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_eq_scalar, hω.apply hψ]`. Conclude with `congrArg (· * ψ.1 g) (val_expId ω t)`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_mul, Units.val_mul, hν, mul_mul_mul_comm, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isNormalised_twist {π : CuspSub E a} {ω ν : HChar E} (hω : π.HasCentral ω)
     (hν : ∀ t : ℝ, ((chiDet a ν (splitCentre E a t) : ℂˣ) : ℂ) = Complex.exp (-(t * dchi ω 1))) :
@@ -43,9 +43,9 @@ theorem isNormalised_twist {π : CuspSub E a} {ω ν : HChar E} (hω : π.HasCen
   rw [h1, map_mul, Units.val_mul, hν, mul_mul_mul_comm, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ a π`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Conclude with `⟨π, 1, isNormalised_rank_zero π, π.twist_one.symm⟩`. Take `⟨ω, hω⟩` from `Central.exists_hasCentral E a π`. Take `⟨ν, hν⟩` from `GlobalTheory.SplitCentreChar.exists_hChar_splitCentre E a ha (dchi ω 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨π.twist ν, ν⁻¹, isNormalised_twist hω hν, ?_⟩` and prove the remaining obligations. Rewrite using `[← CuspSub.twist_mul, mul_inv_cancel, CuspSub.twist_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_twist_normalised : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}, ∀ (π : CuspSub E a),
     ∃ (π₀ : CuspSub E a) (χ : HChar E), IsNormalised π₀ ∧ π = π₀.twist χ := by

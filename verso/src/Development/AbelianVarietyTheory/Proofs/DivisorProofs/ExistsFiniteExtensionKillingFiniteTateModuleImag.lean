@@ -10,15 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbVarRedCut
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ A _ _ hA l _ I hI`. Establish `key : ∀ s : Module.End ℤ_[l] (Tate l (ptOver K Ω ⟶ A)), ∃ F : Finset Ω, ∀ σ : Ω ≃ₐ[K] Ω, galTate A l σ = s → (∀ a ∈ F, σ a = a) → s = 1`. Introduce `s`. Distinguish the cases in `hs : s = 1`. Conclude with `⟨∅, fun _ _ _ => hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hex : ∃ (t : Tate l (ptOver K Ω ⟶ A)) (n : ℕ), (s t).lev n ≠ t.lev n`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hs (LinearMap.ext fun t => Tate.ext fun n => h t n)`. Take `⟨t, n, htn⟩` from `hex`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, hF⟩` from `GlobalTheory.T.exists_finset_fixing_point_locallyFiniteType K Ω A hA (t.lev n)`. Use `⟨F, fun σ hσ hfix => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Apply `htn` to reduce the goal to its premises. Rewrite using `[← hσ, lev_galTate]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hF σ hfix`. Use `choose F hF using key`. Use `⟨IntermediateField.adjoin K ((hI.toFinset.biUnion F : Finset Ω) : Set Ω), ?_, ?_⟩` and prove the remaining obligations. Conclude with `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Introduce `σ hσ hfix`.
-
-Use `hF (galTate A l σ) σ rfl fun a ha => hfix a (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations. Rewrite using `[Finset.mem_coe]`. Conclude with `Finset.mem_biUnion.2 ⟨_, hI.mem_toFinset.2 ⟨σ, hσ, rfl⟩, ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finiteDimensional_galTate_eq_one : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], LocallyOfFiniteType A.hom →

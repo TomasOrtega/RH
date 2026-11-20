@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValueDoubleExa
 open Formalism.BasicNotions
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.allBijective_all | exact GlobalTheory.FinPl.allBijective_all | (intros; apply GlobalTheory.FinPl.allBijective_all <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.epsilonFourierProduct_bijective_gluedPlaces : ∀ D : D7, GlobalTheory.FinPl.AllBijective D := by
   first | exact @GlobalTheory.FinPl.allBijective_all | exact GlobalTheory.FinPl.allBijective_all | (intros; apply GlobalTheory.FinPl.allBijective_all <;> assumption)

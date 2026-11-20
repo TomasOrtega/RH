@@ -18,15 +18,15 @@ noncomputable def presOf {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {s
       rw [he] }
 
 /- English proof (translation)
-Set `E : MvPolynomial (Fin n) R ≃ₐ[R] MvPolynomial ι R` to `renameEquiv R e`. Use `⟨n, (aeval P.val).comp E.toAlgHom, fun i => E.symm (P.relation (f i)), ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨x, hx⟩` from `P.toGenerators.algebraMap_surjective y`. Use `⟨E.symm x, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show aeval P.val (E (E.symm x)) = y`. Rewrite using `[E.apply_symm_apply, ← hx, Algebra.Generators.algebraMap_eq]`. Both sides reduce to the same expression. Establish `h1 : Set.range (fun i => E.symm (P.relation (f i))) = E.symm '' Set.range P.relation`. Rewrite using `[← Set.range_comp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f.surjective.range_comp (⇑E.symm ∘ P.relation)`. Rewrite using `[h1, ← Ideal.map_span, P.span_range_relation_eq_ker, Algebra.Generators.ker_eq_ker_aeval_val]`. Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hx`. Use `⟨E x, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker]`. Simplify using `using hx`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hy` using `[RingHom.mem_ker]`. Simplify using `using hy`.
+A detailed English derivation is pending.
 -/
 theorem square_of_pres {R T ι σ : Type} [CommRing R] [CommRing T] [Algebra R T] {n : ℕ}
     (P : Algebra.Presentation R T ι σ) (e : Fin n ≃ ι) (f : Fin n ≃ σ) :
@@ -55,7 +55,7 @@ theorem square_of_pres {R T ι σ : Type} [CommRing R] [CommRing T] [Algebra R T
       simpa using hy
 
 /- English proof (translation)
-Introduce `k B A _ _ _ _ _ _ _`. Introduce and unpack `⟨t, φ, g, hφ, hg⟩ ⟨d, ψ, h, hψ, hh⟩`. Set `P` to `presOf φ g hφ hg`. Set `Q` to `presOf ψ h hψ hh`. Conclude with `square_of_pres (Q.comp P) finSumFinEquiv.symm finSumFinEquiv.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem tower : ∀ (k B A : Type) [CommRing k] [CommRing B] [CommRing A] [Algebra k B] [Algebra k A] [Algebra B A] [IsScalarTower k B A], (∃ (s : ℕ) (φ : MvPolynomial (Fin s) k →ₐ[k] B) (g : Fin s → MvPolynomial (Fin s) k), Function.Surjective φ ∧ RingHom.ker φ = Ideal.span (Set.range g)) → (∃ (s : ℕ) (φ : MvPolynomial (Fin s) B →ₐ[B] A) (g : Fin s → MvPolynomial (Fin s) B), Function.Surjective φ ∧ RingHom.ker φ = Ideal.span (Set.range g)) → (∃ (s : ℕ) (φ : MvPolynomial (Fin s) k →ₐ[k] A) (g : Fin s → MvPolynomial (Fin s) k), Function.Surjective φ ∧ RingHom.ker φ = Ideal.span (Set.range g)) := by
   intro k B A _ _ _ _ _ _ _

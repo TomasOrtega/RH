@@ -28,7 +28,7 @@ namespace GlobalTheory.HeightParts.BdHtProof
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[show a + (n + 1) = (a + n) + 1 by omega, Finset.sum_Icc_succ_top (by omega), ih, Finset.sum_range_succ]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -42,7 +42,7 @@ theorem sum_Icc_shift (f : ℕ → ℝ) (a n : ℕ) :
     omega
 
 /- English proof (translation)
-Proceed by induction on `b, h using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ b hab ih => rw [Finset.sum_Ico_succ_top hab, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_Ico_telescope (lam : ℕ → ℝ) {a b : ℕ} (h : a ≤ b) :
     ∑ i ∈ Ico a b, (lam i - lam (i + 1)) = lam a - lam b := by
@@ -51,9 +51,9 @@ theorem sum_Ico_telescope (lam : ℕ → ℝ) {a b : ℕ} (h : a ≤ b) :
   | succ b hab ih => rw [Finset.sum_Ico_succ_top hab, ih]; ring
 
 /- English proof (translation)
-Establish `e` using `sum_Icc_shift (fun l => if h : l - 1 < N then g ⟨l - 1, h⟩ else 0) 0 N`. Simplify using `only [zero_add] at e`. Rewrite using `[e, ← Fin.sum_univ_eq_sum_range (fun k => if h : 1 + k - 1 < N then g ⟨1 + k - 1, h⟩ else 0) N]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : 1 + (i : ℕ) - 1 = i` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hi, dif_pos i.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_fin_eq_Icc {N : ℕ} (g : Fin N → ℝ) :
     ∑ i, g i = ∑ l ∈ Icc 1 N, (if h : l - 1 < N then g ⟨l - 1, h⟩ else 0) := by
@@ -65,13 +65,13 @@ theorem sum_fin_eq_Icc {N : ℕ} (g : Fin N → ℝ) :
   simp only [hi, dif_pos i.2]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.weight_abel_decomposition N j lam x hj hjN]`. Establish `c1 : ∑ i ∈ Ico 1 j, (lam i - lam (i + 1)) * (-B) ≤ ∑ i ∈ Ico 1 j, (lam i - lam (i + 1)) * -(∑ l ∈ Icc 1 i, x l)` using `Finset.sum_le_sum fun i hi => by`. Simplify using `only [Finset.mem_Ico] at hi`. Conclude with `mul_le_mul_of_nonneg_left (h1 i hi.1 hi.2.le) (sub_nonneg.2 (hmon i hi.1 (by omega)))`. Establish `c2 : (lam j - lam (j + 1)) * (-B) ≤ (lam j - lam (j + 1)) * -(∑ l ∈ Icc 1 j, x l)` using `mul_le_mul_of_nonneg_left (h1 j hj le_rfl) (sub_nonneg.2 (hmon j hj hjN))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3 : ∑ i ∈ Ioo j N, (lam i - lam (i + 1)) * (-B) ≤ ∑ i ∈ Ioo j N, (lam i - lam (i + 1)) * ∑ l ∈ Icc (i + 1) N, x l` using `Finset.sum_le_sum fun i hi => by`. Simplify using `only [Finset.mem_Ioo] at hi`. Conclude with `mul_le_mul_of_nonneg_left (h2 i hi.1 hi.2) (sub_nonneg.2 (hmon i (by omega) hi.2))`. Establish `hI : Ioo j N = Ico (j + 1) N` using `by ext i; simp only [Finset.mem_Ioo, Finset.mem_Ico]; omega`. Rewrite `c1` using `[← Finset.sum_mul, sum_Ico_telescope lam hj]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `c3` using `[← Finset.sum_mul, hI, sum_Ico_telescope lam (show j + 1 ≤ N by omega)]`. Establish `l1` using `abs_le.1 (hlam 1 le_rfl (by omega))`. Establish `lN` using `abs_le.1 (hlam N (by omega) le_rfl)`. Establish `t4 : |lam (j + 1) * ∑ l ∈ Icc 1 N, x l| ≤ 2 * C₂`. Rewrite using `[abs_mul]; exact mul_le_mul (hlam _ (by omega) (by omega)) hF (abs_nonneg _) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t5` using `le_abs_self (lam (j + 1) * ∑ l ∈ Icc 1 N, x l)`. Establish `t6 : (lam 1 - lam N) * B ≤ 4 * B` using `mul_le_mul_of_nonneg_right (by linarith) hB`. Rewrite using `[hI]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem abel_lower (N j : ℕ) (lam x : ℕ → ℝ) (hj : 1 ≤ j) (hjN : j < N)
     (hmon : ∀ i, 1 ≤ i → i < N → lam (i + 1) ≤ lam i) (hlam : ∀ i, 1 ≤ i → i ≤ N → |lam i| ≤ 2)
@@ -111,61 +111,55 @@ namespace GlobalTheory.HeightParts.BdHtProof
 open Finset GlobalTheory.ShFam GlobalTheory.ShFam.Pad ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `hP2 hPH hSW hLS D O hcore hN A T H hR`. Use `choose Cc hCc using GlobalTheory.T.abelian_height_bounded_below hP2 hPH D O hcore`. Take `⟨B0, hB0⟩` from `(Set.finite_range Cc).bddAbove`. Use `set C0 : ℝ := max B0 0 with hC0def`. Establish `hAlow : ∀ y : Pt O.s, -C0 ≤ H.hA y` using `fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hR.ht.hA y]`. Establish `h1 : ∀ c, Cc c ≤ C0` using `fun c => (hB0 ⟨c, rfl⟩).trans (le_max_left _ _)`. Conclude with `(neg_le_neg (h1 _)).trans (hCc _ _ (HtTieRead.isClosed_basePt O y))`. Take `⟨C1, hC1, hSt⟩` from `GlobalTheory.T.lie_slope_point_bound hP2 hPH hLS (GlobalTheory.T.point_bound_statement hP2 hPH (GlobalTheory.T.torus_saturated_statement hP2)) (GlobalTheory.T.omega_comparison_statement hP2 hPH) D O hcore hN A T H hR`. Take `⟨C2, hFl⟩` from `GlobalTheory.T.flat_height_statement hP2 hPH hSW D O hcore hN A T H hR`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDual` using `GlobalTheory.T.dual_line_height_neg D O hcore`. Use `set nT : ℝ := (Fintype.card D.what₂.Tau : ℝ) with hnT`. Establish `hnT0 : 0 ≤ nT` using `Nat.cast_nonneg _`. Use `set C : ℝ := max (max 1 C0) (max C1 (4 * nT * C1 + 2 * nT * |C2|)) with hCdef`. Establish `hCa : 1 ≤ C` using `(le_max_left _ _).trans (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hCb : C0 ≤ C` using `(le_max_right _ _).trans (le_max_left _ _)`. Establish `hCc1 : C1 ≤ C` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `hCd : 4 * nT * C1 + 2 * nT * |C2| ≤ C` using `(le_max_right _ _).trans (le_max_right _ _)`. Use `⟨C, hCa, fun y => (neg_le_neg hCb).trans (hAlow y), fun u hu hnu y hy => ?_⟩` and prove the remaining obligations. Take `⟨hAy, hsteps⟩` from `hSt y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨v, hv⟩ : ∃ v : D.what₂.Tau → Fin O.N → ℝ, v = u` from `⟨u, rfl⟩`. Establish `hdom : ∀ τ (a b : Fin O.N), a ≤ b → v τ b ≤ v τ a` using `fun τ a b h => by rw [hv]; exact hu τ a b h`. Establish `hbd : ∀ τ (i : Fin O.N), |v τ i| ≤ 2` using `fun τ i => by`. Rewrite using `[hv]`. Use `(norm_le_pi_norm (u τ) i).trans ((norm_le_pi_norm u τ).trans hnu)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.norm_eq_abs]`. Then use the resulting hypothesis. Rewrite using `[← hv]`. Use `clear hu hnu`. Establish `hp : O.S.Dw.p = O.j` using `O.S.p_eq`. Establish `hpq : O.S.Dw.p + O.S.Dw.q = O.N` using `O.S.rank_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj1` using `O.indef.1`. Establish `hjN` using `O.indef.2`. Establish `mτ : ∀ τ : D.what₂.Tau, O.S.Dw.mult (DV.tauEmb D τ) = O.S.Dw.p` using `fun τ => by`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult`. Rewrite using `[if_pos (O.A.cm τ)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mc : ∀ τ : D.what₂.Tau, O.S.Dw.mult (conjEmb (DV.tauEmb D τ)) = O.S.Dw.q` using `fun τ => by`. Use `GlobalTheory.ShFam.Hor.PerBasis.mult_conj_add_mult O.S.Dw (DV.tauEmb D τ)` as an intermediate fact. Rewrite `this` using `[mτ τ]`. Use linear arithmetic over natural numbers and integers. Use `set c := compPt O.s y with hc`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set z := basePt O.Φ y with hz`. Establish `hzc : IsClosed ({z} : Set (O.var c).X)` using `HtTieRead.isClosed_basePt O y`. Use `set xx : D.what₂.Tau → ℕ → ℝ := fun τ l => if h : l - 1 < O.N then (O.root0 c ∅ (τ, ⟨l - 1, h⟩)).ht z else 0 with hxx`. Use `set lam : D.what₂.Tau → ℕ → ℝ := fun τ l => if h : l - 1 < O.N then v τ ⟨l - 1, h⟩ else 0 with hlam`. Establish `E0 : H.h0 v y = ∑ τ, -(∑ l ∈ Icc 1 O.N, lam τ l * xx τ l)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[hR.ht.h0 v y]`. Unfold `Setup.htWt`. Rewrite using `[Fintype.sum_prod_type, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[sum_fin_eq_Icc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [hlam, hxx]`. Apply the tactic sequence `split_ifs <;> first | rfl | (simp <;> rfl)`. Establish `hF : ∀ τ, |∑ l ∈ Icc 1 O.N, xx τ l| ≤ C2`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Establish `h` using `(hFl τ y).1`. Use `erw [hR.ht.h0] at h`. Unfold `Setup.htWt at h`. Rewrite `h` using `[Fintype.sum_prod_type, Finset.sum_eq_single τ, abs_neg, sum_fin_eq_Icc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(le_of_eq ?_).trans h` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [hxx]`. Apply the tactic sequence `split_ifs <;> first | rfl | (simp <;> rfl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `τ' _ h'`. Simplify using `[h']`. Simplify using the standard rewrite rules. Establish `S1 : ∀ τ, ∀ i, i ≤ O.j → -(∑ l ∈ Icc 1 i, xx τ l) = stepHt O (ref0 O) y (DV.tauEmb D τ) i`. Introduce `τ i hi`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `sum_Icc_shift (xx τ) 0 i`. Simplify using `only [zero_add] at e`. Rewrite using `[e]`. Unfold `stepHt`. Use `congr 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_range]`. Establish `h1 : 1 + k - 1 < O.N` using `by omega`. Establish `e1 : 1 + k - 1 = k` using `by omega`. Establish `h2 : k < O.S.Dw.p` using `by omega`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hxx, dif_pos h1, Setup.root0, Setup.adl0, rootSym, Fin.val_mk, e1, if_pos h2]`. Both sides reduce to the same expression. Establish `S2 : ∀ τ, ∀ i, O.j < i → i < O.N → ∑ l ∈ Icc (i + 1) O.N, xx τ l = stepHt O (ref0 O) y (conjEmb (DV.tauEmb D τ)) (O.N - i)`. Introduce `τ i hi hiN`. Establish `e` using `sum_Icc_shift (xx τ) i (O.N - i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[show i + (O.N - i) = O.N by omega]`. Rewrite using `[e, ← Finset.sum_range_reflect (fun k => xx τ (i + 1 + k)) (O.N - i)]`. Unfold `stepHt`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Rewrite `hk` using `[Finset.mem_range]`. Establish `h1 : i + 1 + (O.N - i - 1 - k) - 1 < O.N` using `by omega`. Establish `e1 : i + 1 + (O.N - i - 1 - k) - 1 = O.N - 1 - k` using `by omega`. Establish `h2 : ¬ (O.N - 1 - k < O.S.Dw.p)` using `by omega`. Establish `h3 : k < O.S.Dw.mult (conjEmb (DV.tauEmb D τ))` using `by rw [mc τ]; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : O.S.Dw.p + O.S.Dw.q - 1 - (O.N - 1 - k) = k` using `by omega`. Simplify using `only [hxx, dif_pos h1, Setup.root0, Setup.adl0, rootSym, Fin.val_mk, e1, if_neg h2, h4]`. Conclude with `hDual c z hzc _ _ h3`. Establish `hB0' : 0 ≤ C1 * Real.log (2 + C1 + H.hA y) + C1`. Establish `: 0 ≤ Real.log (2 + C1 + H.hA y)` using `Real.log_nonneg (by linarith)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Check the signs of the components of the expression. Establish `per : ∀ τ, -(4 * (C1 * Real.log (2 + C1 + H.hA y) + C1)) - 2 * C2 ≤ -(∑ l ∈ Icc 1 O.N, lam τ l * xx τ l)`. Introduce `τ`. Use `abel_lower O.N O.j (lam τ) (xx τ) hj1 hjN ?_ ?_ _ C2 hB0' (hF τ) ?_ ?_` and prove the remaining obligations. Introduce `i hi hiN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : i + 1 - 1 < O.N` using `by omega`. Establish `h2 : i - 1 < O.N` using `by omega`. Simplify using `only [hlam, dif_pos h1, dif_pos h2]`. Conclude with `hdom τ _ _ (by rw [Fin.mk_le_mk]; omega)`. Introduce `i hi hiN`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : i - 1 < O.N` using `by omega`. Simplify using `only [hlam, dif_pos h2]`. Conclude with `hbd τ _`. Introduce `i hi hij`. Rewrite using `[S1 τ i hij]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hsteps (DV.tauEmb D τ) i (by rw [mτ τ]; omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i hi hiN`. Rewrite using `[S2 τ i hi hiN]`. Use `hsteps (conjEmb (DV.tauEmb D τ)) (O.N - i) (by rw [mc τ]; omega)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : nT * (-(4 * (C1 * Real.log (2 + C1 + H.hA y) + C1)) - 2 * C2) ≤ H.h0 v y`. Rewrite using `[E0]`. Use `Finset.sum_le_sum (s := Finset.univ) fun τ _ => per τ` as an intermediate fact. Rewrite `this` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
-
-Rewrite using `[hnT]`. Conclude with `this`. Establish `hL1 : 0 ≤ Real.log (2 + C1 + H.hA y)` using `Real.log_nonneg (by linarith)`. Establish `hL : Real.log (2 + C1 + H.hA y) ≤ Real.log (2 + C + H.hA y)` using `Real.log_le_log (by linarith) (by linarith)`. Establish `a1 : 4 * nT * C1 ≤ C` using `by nlinarith [abs_nonneg C2]`.
-
-Establish `a2 : 0 ≤ 4 * nT * C1` using `by positivity`. Establish `e1 : 4 * nT * C1 * Real.log (2 + C1 + H.hA y) ≤ C * Real.log (2 + C + H.hA y)` using `(mul_le_mul_of_nonneg_left hL a2).trans (mul_le_mul_of_nonneg_right a1 (hL1.trans hL))`. Establish `e2 : 2 * nT * C2 ≤ 2 * nT * |C2|`. Use `le_abs_self C2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → LieSlope → HtBdSt := by
   intro hP2 hPH hSW hLS D O hcore hN A T H hR
@@ -318,6 +312,6 @@ theorem main : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWei
 end GlobalTheory.HeightParts.BdHtProof
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HeightParts.BdHtProof.main`.
+A detailed English derivation is pending.
 -/
 example : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → LieSlope → HtBdSt := GlobalTheory.HeightParts.BdHtProof.main

@@ -17,21 +17,17 @@ noncomputable section
 namespace GlobalTheory.LiftLevel.OffTens
 
 /- English proof (translation)
-Introduce `D S T Pg Q e he L y hy`. Take `⟨σ, hσ, hσ0, hσ1⟩` from `GlobalTheory.IdemSumFinAdele.exists_finAdele_of_idemSum D _ e he`. Establish `hf : 1 - e - cA D e = 1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ)` using `by rw [hσ]; ring`. Establish `hW : finW S T y = GlobalTheory.LiftLevel.TrOff.gm S T 1 y` using `rfl`. Rewrite using `[hf, hW, GlobalTheory.LiftLevel.TrOff.partAt_gm, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hO : ∀ (c : 𝓞 D.host.F), ∀ z ∈ tens (stdL D.host.E S.rank) (GlobalTheory.LiftLevel.liftI Pg Q • L), (algebraMap D.host.F D.host.E (c : D.host.F)) • z ∈ tens (stdL D.host.E S.rank) (GlobalTheory.LiftLevel.liftI Pg Q • L)` using `fun c z hz => GlobalTheory.Ker.HatLat.smul_mem_tens _ _ (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c) hz`. Establish `hγ : (1 - σ) ∈ intAf D.host.F`. Introduce `w`. Rewrite using `[map_sub, map_one]`. Distinguish the cases in `hw : ∃ PP ∈ Pg ∪ Q, HeightOneSpectrum.under (𝓞 D.host.F) PP = w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨PP, hPP, rfl⟩` from `hw`. Rewrite using `[hσ1 PP hPP, sub_self]`. Conclude with `zero_mem _`. Use `push_neg at hw`. Rewrite using `[hσ0 w hw, sub_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `GlobalTheory.LatVac.one_mem_intAf _ w`. Use `GlobalTheory.HatPoint.mem_hatA_of_div D S T _ hO _ hγ _ fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : ∃ PP ∈ Pg ∪ Q, HeightOneSpectrum.under (𝓞 D.host.F) PP = w`. Use `left`. Take `⟨PP, hPP, rfl⟩` from `hw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[map_sub, map_one, hσ1 PP hPP, sub_self]`. Use `right push_neg at hw`. Establish `hex : ∀ PP ∈ Pg ∪ Q, ∃ s : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s ∈ PP.asIdeal ∧ s ∉ w.asIdeal`. Introduce `PP hPP`. Assume the negation of the conclusion as `hcon`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hcon`. Apply `hw PP hPP` to reduce the goal to its premises. Establish `hle : (HeightOneSpectrum.under (𝓞 D.host.F) PP).asIdeal ≤ w.asIdeal` using `fun s hs => hcon s hs`. Conclude with `HeightOneSpectrum.ext ((HeightOneSpectrum.isMaximal _).eq_of_le w.isPrime.ne_top hle)`. Use `choose! tf htf1 htf2 using hex`.
-
-Use `⟨∏ PP ∈ Pg ∪ Q, tf PP, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submonoid.prod_mem w.asIdeal.primeCompl fun c hc => htf2 c hc : _)`. Establish `hmem : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (∏ PP ∈ Pg ∪ Q, tf PP) ∈ GlobalTheory.LiftLevel.liftI Pg Q`. Rewrite using `[map_prod]`. Conclude with `Ideal.prod_mem_prod fun PP hPP => GlobalTheory.TrOffShift.algebraMap_mem_conjI (D := D) _ _ (htf1 PP hPP)`.
-
-Conclude with `GlobalTheory.LiftLevel.smul_mem_tens (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (∏ PP ∈ Pg ∪ Q, tf PP)) (fun u hu => Submodule.smul_mem_smul hmem hu) hy`.
+A detailed English derivation is pending.
 -/
 theorem partAt_finW_off_mem_hatA : ∀ (D : D7) (S T : HSp D) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e (Pg ∪ Q) → ∀ (L : Lt D.host.E T.rank) (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E), y ∈ tens (stdL D.host.E S.rank) L → GlobalTheory.LiftLevel.partAt (1 - e - cA D e) (finW S T y) ∈ hatA S T (tens (stdL D.host.E S.rank) (GlobalTheory.LiftLevel.liftI Pg Q • L)) := by
   intro D S T Pg Q e he L y hy

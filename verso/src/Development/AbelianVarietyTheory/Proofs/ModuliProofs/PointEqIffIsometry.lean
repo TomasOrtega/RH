@@ -17,25 +17,23 @@ namespace GlobalTheory.UnifPoint
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}} {g : ℕ}
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_pointEquiv m.cart`. Establish `hiso : LBIso t₁.PP.L (t.PP.L.pull m.cm.F)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Use `⟨fun z => β.symm (e z), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Establish `h1` using `hβ (β.symm (e z))`. Rewrite `h1` using `[MulEquiv.apply_symm_apply]`. Conclude with `h1.symm`. Introduce `z w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [he.1 z w, map_mul]`. Introduce `x`. Take `⟨z, hz⟩` from `he.2.1 (β x)`. Conclude with `⟨z, by simp [hz]⟩`. Use `⟨fun z => ?_, fun a z => ?_, fun k a a₂ c hk hc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MulEquiv.map_eq_one_iff]`. Conclude with `hr.1 z`. Apply `β.injective` to reduce the goal to its premises. Rewrite using `[MulEquiv.apply_symm_apply, hr.2.1 a z]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hβ, Over.comp_left, Over.comp_left, Category.assoc, m.act a, ← Category.assoc, ← hβ, MulEquiv.apply_symm_apply]`. Establish `H` using `hr.2.2 k a a₂ c hk hc`. Establish `hL : t.PP.L.IsLB` using `t.PP.isLB`. Establish `hL₁ : t₁.PP.L.IsLB` using `t₁.PP.isLB`. Set `T : Over (Sp ℂ)` to `𝟙_ (Over (Sp ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hy : y = T.hom ≫ y` using `(Category.id_comp y).symm`. Set `lift : (Over.mk y ⟶ t.G) → (Over.mk (T.hom ≫ y) ⟶ t.G)` to `fun x => Over.homMk x.left (by simp [T])`. Rewrite using `[GlobalTheory.weilIs_grpPullback_of_comm S (Sp ℂ) t.G t₁.G y m.cm.F t.PP.L t₁.PP.L hL hL₁ m.cart hiso T (k : ℤ) _ _ (lift (e ((k : ℂ)⁻¹ • P a))) (lift (e ((k : ℂ)⁻¹ • P a₂))) (unitOn c) (by rw [← hβ, MulEquiv.apply_symm_apply]; rfl) (by rw [← hβ, MulEquiv.apply_symm_apply]; rfl)]`. Conclude with `weilIs_congr hy rfl rfl H`. Introduce `g₀ u`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : {z | β (u.ex z) = 1}.Countable`. Use `u.discrete` as an intermediate fact. Establish `: Countable u.Λ` using `(TopologicalSpace.separableSpace_iff_countable).mp inferInstance`. Establish `h2 : {z | β (u.ex z) = 1} = (u.Λ : Set (Fin g₀ → ℂ))`. Use extensionality with `z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq, MulEquiv.map_eq_one_iff, SetLike.mem_coe]`. Conclude with `u.ker z`. Rewrite using `[h2]`. Conclude with `Set.countable_coe_iff.mp this`. Establish `hhol : IsHolTo Set.univ (fun z => (β (u.ex z)).left)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Unfold `IsHolTo`. Introduce `U f`. Establish `h1` using `u.hol (m.cm.F ⁻¹ᵁ U) ((m.cm.F.app U).hom f)`. Simplify using `only [hβ, Set.mem_univ, true_and]`. Conclude with `h1`.
-
-Take `⟨h, hh⟩` from `exists_linearEquiv_of_period hP he hr.1 (e₀ := fun z => β (u.ex z)) (fun z w => by simp only [u.ex_add, map_mul]) (β.surjective.comp u.ex_onto) hhol hc`. Conclude with `⟨h, fun z => by rw [MulEquiv.symm_apply_eq]; exact hh z⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fibre_unif {t : SAB H S} {y : Sp ℂ ⟶ S} {t₁ : SAB H (Sp ℂ)} (m : SABMap t₁ t y)
     {D : Datum H} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P)
@@ -97,7 +95,7 @@ theorem exists_fibre_unif {t : SAB H S} {y : Sp ℂ ⟶ S} {t₁ : SAB H (Sp ℂ
     exact ⟨h, fun z => by rw [MulEquiv.symm_apply_eq]; exact hh z⟩
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_pointEquiv m.cart`. Apply `β.injective` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hβ, hβ]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_left_comp_sabMap_phi_eq {S : Scheme.{0}} {t₁ : SAB H (Sp ℂ)} {t : SAB H S} {y : Sp ℂ ⟶ S}
     (m : SABMap t₁ t y) {x x' : 𝟙_ (Over (Sp ℂ)) ⟶ t₁.G} (h : x.left ≫ m.φ = x'.left ≫ m.φ) : x = x' := by
@@ -108,7 +106,7 @@ private theorem eq_of_left_comp_sabMap_phi_eq {S : Scheme.{0}} {t₁ : SAB H (Sp
   exact h
 
 /- English proof (translation)
-Rewrite using `[Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem comp_left_eq_toUnit_comp_left {X : Scheme.{0}} (y : Sp ℂ ⟶ X) {G : Over X} (s : 𝟙_ (Over X) ⟶ G) :
     y ≫ s.left = (toUnit (Over.mk y) ≫ s).left := by
@@ -116,31 +114,29 @@ private theorem comp_left_eq_toUnit_comp_left {X : Scheme.{0}} (y : Sp ℂ ⟶ X
   congr 1
 
 /- English proof (translation)
-Introduce `hT hLaws hA hW hBC hComp hAb hMod E _ _ _ H D l Xo σ g ty hpq hρ hty D' D'' t t' P P' y y' e e' hy hy'`. Take `⟨hys, hP, hexp, hker, hact, hweil, heta, hetaA⟩` from `hy`. Take `⟨hys', hP', hexp', hker', hact', hweil', heta', hetaA'⟩` from `hy'`. Establish `hx : IsExp e` using `hexp`. Establish `hx' : IsExp e'` using `hexp'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ReadsPeriods Xo.univ.t unitOn D' ty P e` using `⟨hker, hact, hweil⟩`. Establish `hr' : ReadsPeriods Xo.univ.t unitOn D'' ty P' e'` using `⟨hker', hact', hweil'⟩`. Establish `hM : 0 < l.M`. Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Apply the tactic sequence `obtain ⟨gam, h, hEF, hPh, heh⟩ := exists_isometry hP hP' hx hx' hr hr'`. Use `⟨gam, h, hEF, fun a ha => ?_, fun a => ?_, hPh⟩` and prove the remaining obligations. Rewrite using `[← div_eq_iff hP'.2.1 hx'.1 hker' hM, ← heta' a ha, heta a ha, ← heh, map_smul, hPh]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← div_eq_iff hP'.2.1 hx'.1 hker' l.A_pos, ← hetaA' a, hetaA a, ← heh, map_smul, hPh]`. Introduce and unpack `⟨gam, h, hEF, hMl, hAl, hPh⟩`. Set `b : Base l ℂ` to `baseOfEmb σ`. Take `⟨o₁, ⟨m₁⟩⟩` from `hBC E H D l (KA l) ℂ (baseKA l) b σ Xo.X (Sp ℂ) Xo.s (𝟙 _) y rfl rfl (by simp [hys]) Xo.univ`. Take `⟨o₂, ⟨m₂⟩⟩` from `hBC E H D l (KA l) ℂ (baseKA l) b σ Xo.X (Sp ℂ) Xo.s (𝟙 _) y' rfl rfl (by simp [hys']) Xo.univ`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₁, he₁, ha₁, hs₁, hr₁, hu₁⟩` from `exists_fibre_unif m₁.toSABMap hP hx hr`. Take `⟨e₂, he₂, ha₂, hs₂, hr₂, hu₂⟩` from `exists_fibre_unif m₂.toSABMap hP' hx' hr'`. Establish `p₁` using `hAb E H D l ℂ b (Sp ℂ) (𝟙 _) o₁`. Establish `p₂` using `hAb E H D l ℂ b (Sp ℂ) (𝟙 _) o₂`. Take `⟨m, hm⟩` from `exists_sabMap hT hLaws.globalFns hA hW o₁ o₂ p₁ p₂ hP hP' ha₁ hs₁ hs₂ hr₁ hr₂ hu₁ hu₂ gam h hEF hPh`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `shift : ∀ (n : ℕ), 0 < n → ∀ (a : D.La) (x : D''.La), gam (t a) = t' a + n • x → e₂ (h ((n : ℂ)⁻¹ • P (t a))) = e₂ ((n : ℂ)⁻¹ • P' (t' a))`. Introduce `n hn a x hgx`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `h1 : e₂ ((n : ℂ)⁻¹ • P' (n • x)) = 1`. Rewrite using `[hr₂.1, AddMonoidHom.mem_range]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hn', one_smul]`. Rewrite using `[map_smul, ← hPh, hgx, map_add, smul_add, ha₂, h1, _root_.mul_one]`. Establish `eta₁ : ∀ a, o₁.eta a = e₁ ((l.M : ℂ)⁻¹ • P (t a)) ∨ a ∉ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ha : a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)`. Use `left`. Use `eq_of_left_comp_sabMap_phi_eq m₁.toSABMap ?_` and prove the remaining obligations. Conclude with `((m₁.eta a).trans ((comp_left_eq_toUnit_comp_left y _).trans (congrArg Over.Hom.left (heta a ha)))).trans (he₁ _).symm`. Conclude with `Or.inr ha`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `eta₂ : ∀ a, o₂.eta a = e₂ ((l.M : ℂ)⁻¹ • P' (t' a)) ∨ a ∉ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)`. Introduce `a`. Distinguish the cases in `ha : a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)`. Use `left`. Use `eq_of_left_comp_sabMap_phi_eq m₂.toSABMap ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((m₂.eta a).trans ((comp_left_eq_toUnit_comp_left y' _).trans (congrArg Over.Hom.left (heta' a ha)))).trans (he₂ _).symm`. Conclude with `Or.inr ha`. Establish `etaA₁ : ∀ a, o₁.etaA a = e₁ ((l.A : ℂ)⁻¹ • P (t a))` using `fun a => eq_of_left_comp_sabMap_phi_eq m₁.toSABMap (((m₁.etaA a).trans ((comp_left_eq_toUnit_comp_left y _).trans (congrArg Over.Hom.left (hetaA a)))).trans (he₁ _).symm)`. Establish `etaA₂ : ∀ a, o₂.etaA a = e₂ ((l.A : ℂ)⁻¹ • P' (t' a))` using `fun a => eq_of_left_comp_sabMap_phi_eq m₂.toSABMap (((m₂.etaA a).trans ((comp_left_eq_toUnit_comp_left y' _).trans (congrArg Over.Hom.left (hetaA' a)))).trans (he₂ _).symm)`. Take `⟨mo⟩` from `exists_objMap o₁ o₂ m (fun a ha => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hgx⟩` from `hMl a ha`. Rewrite using `[(eta₁ a).resolve_right (not_not_intro ha), (eta₂ a).resolve_right (not_not_intro ha), hm, shift l.M hM a x hgx])`. Use the proof step `(fun a => by`. Take `⟨x, hgx⟩` from `hAl a`. Rewrite using `[etaA₁ a, etaA₂ a, hm, shift l.A l.A_pos a x hgx])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m₃, -⟩` from `((hComp E H D l (KA l) ℂ ℂ (baseKA l) b b Xo.X (Sp ℂ) (Sp ℂ) Xo.s (𝟙 _) (𝟙 _) Xo.univ o₂ o₁).2 y' (𝟙 _) m₂).1 mo`. Take `⟨f₀, -, huniq⟩` from `hMod E H D l Xo ℂ b σ (Sp ℂ) (𝟙 _) o₁ inferInstance rfl rfl`. Establish `k₁` using `huniq y ⟨by simp [hys], ⟨m₁⟩⟩`. Establish `k₂` using `huniq (𝟙 _ ≫ y') ⟨by simp [hys'], ⟨m₃⟩⟩`. Rewrite `k₂` using `[Category.id_comp]`.
-
-Conclude with `k₁.trans k₂.symm`.
+A detailed English derivation is pending.
 -/
 theorem point_eq_iff_isometry : ThetaUnifAV → Out.Laws → (∀ (P P' : Out.PolAV (Sp ℂ)) (g : ℕ) (u
     : HolUnif P.A P.L g) (u' : HolUnif P'.A P'.L g) (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g →

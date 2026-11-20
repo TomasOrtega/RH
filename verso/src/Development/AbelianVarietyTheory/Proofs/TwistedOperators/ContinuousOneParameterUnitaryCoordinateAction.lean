@@ -10,13 +10,11 @@ open scoped Matrix Classical SchwartzMap
 namespace GlobalTheory.ArchLine
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M γ hγ v`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin n) (Fin d) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin n → Fin d → AE F E))`. Establish `hγc : Continuous fun t : ℝ => γ (Multiplicative.ofAdd t)` using `hγ.1.comp continuous_ofAdd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Continuous fun t : ℝ => (mat (γ (Multiplicative.ofAdd t)))ᵀ` using `((Units.continuous_val.comp continuous_subtype_val).comp hγc).matrix_transpose`. Establish `he : Continuous M.co.e` using `IsModuleTopology.continuous_of_linearMap M.co.e.toLinearMap`. Establish `hev : Continuous (evI F)`. Express the relevant statement in the definitionally equal form `Continuous fun a : AF F => InfiniteAdeleRing.ringEquiv_mixedSpace F a.1`. Use `Continuous.comp ?_ continuous_fst` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`. Establish `hl : Continuous (locV : (Fin n × Fin d → AF F) → _)` using `continuous_pi fun i => hev.comp (continuous_apply i)`.
-
-Use `show Continuous fun t : ℝ => (locV (M.co.e (mat (1 : UA σ X.J) * M.co.e.symm (liftV v.1, liftV v.2) * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).1, locV (M.co.e (mat (1 : UA σ X.J) * M.co.e.symm (liftV v.1, liftV v.2) * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).2)`. Conclude with `((hl.comp continuous_fst).prodMk (hl.comp continuous_snd)).comp (he.comp (continuous_const.matrix_mul hm))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archAct_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ}

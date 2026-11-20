@@ -23,7 +23,7 @@ def dInv (ϖ : L) (n : ℕ) (k : Fin (n / 2)) (j : Fin n) : L :=
   if j = lo n k then ϖ⁻¹ else if j = (lo n k).rev then ϖ else 1
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [lo, Fin.val_rev] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lo_ne_rev (n : ℕ) (k : Fin (n / 2)) : lo n k ≠ (lo n k).rev := by
   intro h
@@ -32,9 +32,9 @@ theorem lo_ne_rev (n : ℕ) (k : Fin (n / 2)) : lo n k ≠ (lo n k).rev := by
   omega
 
 /- English proof (translation)
-Unfold `tMat`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [dTor, Fin.ext_iff, lo, Fin.val_rev, Pi.single_apply]`. Establish `hk` using `k.isLt`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi` using `i.isLt`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | simp_all | skip`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tMat_single (ϖ : L) (n : ℕ) (k : Fin (n / 2)) :
     tMat ϖ n (n / 2) (Pi.single k 1) = diagonal (dTor ϖ n k) := by
@@ -47,11 +47,11 @@ theorem tMat_single (ϖ : L) (n : ℕ) (k : Fin (n / 2)) :
   split_ifs <;> first | rfl | (exfalso; omega) | simp_all | skip
 
 /- English proof (translation)
-Establish `hne` using `lo_ne_rev n k`. Unfold `dTor`. Distinguish the cases in `h1 : j = lo n k`. Substitute `h1` using the available equality. Simplify using `[hne.symm, hσϖ, hϖ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : j = (lo n k).rev`. Substitute `h2` using the available equality. Simplify using `[hne, hne.symm, hσϖ, hϖ]`. Establish `h3 : j.rev ≠ lo n k` using `fun h => h2 (by rw [← h, Fin.rev_rev])`. Establish `h4 : j.rev ≠ (lo n k).rev` using `fun h => h1 (Fin.rev_injective h)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h1, h2, h3, h4]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dTor_mul {σ : L →+* L} {ϖ : L} (hσϖ : σ ϖ = ϖ) (hϖ : ϖ ≠ 0) {n : ℕ} (k : Fin (n / 2)) (j : Fin n) :
     dTor ϖ n k j * σ (dTor ϖ n k j.rev) = 1 := by
@@ -66,7 +66,7 @@ theorem dTor_mul {σ : L →+* L} {ϖ : L} (hσϖ : σ ϖ = ϖ) (hϖ : ϖ ≠ 0)
   simp [h1, h2, h3, h4]
 
 /- English proof (translation)
-Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Unfold `dInv dTor`. Apply the tactic sequence `split_ifs <;> simp [hϖ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dInv_mul_dTor {ϖ : L} (hϖ : ϖ ≠ 0) {n : ℕ} (k : Fin (n / 2)) :
     diagonal (dInv ϖ n k) * diagonal (dTor ϖ n k) = 1 := by
@@ -77,7 +77,7 @@ theorem dInv_mul_dTor {ϖ : L} (hϖ : ϖ ≠ 0) {n : ℕ} (k : Fin (n / 2)) :
   split_ifs <;> simp [hϖ]
 
 /- English proof (translation)
-Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Unfold `dInv dTor`. Apply the tactic sequence `split_ifs <;> simp [hϖ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dTor_mul_dInv {ϖ : L} (hϖ : ϖ ≠ 0) {n : ℕ} (k : Fin (n / 2)) :
     diagonal (dTor ϖ n k) * diagonal (dInv ϖ n k) = 1 := by
@@ -88,7 +88,7 @@ theorem dTor_mul_dInv {ϖ : L} (hϖ : ϖ ≠ 0) {n : ℕ} (k : Fin (n / 2)) :
   split_ifs <;> simp [hϖ]
 
 /- English proof (translation)
-Establish `: ∀ i j, (x * diagonal d) i j * σ ((y * diagonal d) i.rev j.rev) = x i j * σ (y i.rev j.rev)`. Introduce `i j`. Rewrite using `[mul_diagonal, mul_diagonal, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [pairing, this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 -/
 theorem pairing_mul_diagonal {σ : L →+* L} {δ : L} {ψ : AddChar L ℂ} {n n' : ℕ} (d : Fin n → L)
     (hd : ∀ j, d j * σ (d j.rev) = 1) (x y : Matrix (Fin n') (Fin n) L) :
@@ -111,17 +111,17 @@ def latT (ϖ : L) (n n' : ℕ) (k : Fin (n / 2)) : Submodule (intL L) (Matrix (F
     exact (intMat L (Fin n') (Fin n)).smul_mem r hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latT {ϖ : L} {n n' : ℕ} {k : Fin (n / 2)} {x : Matrix (Fin n') (Fin n) L} :
     x ∈ latT ϖ n n' k ↔ x * diagonal (dTor ϖ n k) ∈ intMat L (Fin n') (Fin n) := Iff.rfl
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[mem_latT, h]`. Prove the components needed by the constructor for the conclusion. Introduce `hx b hb`. Rewrite using `[← pairing_mul_diagonal _ (dTor_mul hσϖ hϖ k)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx _ hb`. Introduce `hx a ha`. Establish `hb : a * diagonal (dInv ϖ n k) ∈ latT ϖ n n' k`. Rewrite using `[mem_latT, Matrix.mul_assoc, dInv_mul_dTor hϖ, Matrix.mul_one]`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hx _ hb` as an intermediate fact. Rewrite `this` using `[← pairing_mul_diagonal _ (dTor_mul hσϖ hϖ k), Matrix.mul_assoc, dInv_mul_dTor hϖ, Matrix.mul_one]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem selfDual_latT {σ : L →+* L} {δ : L} {ψ : AddChar L ℂ} {ϖ : L} (hσϖ : σ ϖ = ϖ) (hϖ : ϖ ≠ 0) {n n' : ℕ}
     (k : Fin (n / 2)) (h : SelfDual (pairing σ δ ψ) (intMat L (Fin n') (Fin n))) :
@@ -140,7 +140,7 @@ theorem selfDual_latT {σ : L →+* L} {δ : L} {ψ : AddChar L ℂ} {ϖ : L} (h
     exact this
 
 /- English proof (translation)
-Establish `hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hU.2.2.2.1`. Rewrite using `[mem_intL, map_mul, hϖ]`. Distinguish the cases in `hz : Valued.v z = 0`. Simplify using `[hz]`. Rewrite using `[← WithZero.exp_log hz, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp, WithZero.exp_lt_exp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -162,7 +162,7 @@ variable (L) in
 abbrev ResF : Type := OV L ⧸ IsLocalRing.maximalIdeal (OV L)
 
 /- English proof (translation)
-The claim follows from `hU.2.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem card_resF {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) : Nat.card (ResF L) = q ^ 2 :=
   hU.2.2.2.2.2.2
@@ -170,7 +170,7 @@ theorem card_resF {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) 
 def liftO (c : ResF L) : OV L := if c = 0 then 0 else Function.surjInv Ideal.Quotient.mk_surjective c
 
 /- English proof (translation)
-Unfold `liftO`. Use `split_ifs with h`. Rewrite using `[map_zero, h]`. Conclude with `Function.surjInv_eq _ c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_liftO (c : ResF L) : Ideal.Quotient.mk (IsLocalRing.maximalIdeal (OV L)) (liftO c) = c := by
   unfold liftO
@@ -181,17 +181,17 @@ theorem mk_liftO (c : ResF L) : Ideal.Quotient.mk (IsLocalRing.maximalIdeal (OV 
 def liftR (c : ResF L) : L := (liftO c : L)
 
 /- English proof (translation)
-Simplify using `[liftR, liftO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftR_zero : liftR (0 : ResF L) = 0 := by simp [liftR, liftO]
 
 /- English proof (translation)
-The claim follows from `(liftO c).2`.
+A detailed English derivation is pending.
 -/
 theorem liftR_mem (c : ResF L) : liftR c ∈ intL L := (liftO c).2
 
 /- English proof (translation)
-Establish `e : ϖ * (z - ϖ⁻¹ * liftR c) = (((⟨ϖ * z, hz⟩ : OV L) - liftO c : OV L) : L)`. Rewrite using `[mul_sub, ← mul_assoc, mul_inv_cancel₀ hϖ, one_mul]`. Both sides reduce to the same expression. Rewrite using `[mem_intL_iff_mul hU, e, ← Valuation.mem_maximalIdeal_iff, ← Ideal.Quotient.eq, mk_liftO, eq_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_mem_iff {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (hϖ : ϖ ≠ 0) {z : L} (hz : ϖ * z ∈ intL L)
     (c : ResF L) : z - ϖ⁻¹ * liftR c ∈ intL L ↔ c = Ideal.Quotient.mk (IsLocalRing.maximalIdeal (OV L)) (⟨ϖ * z, hz⟩ : OV L) := by
@@ -201,13 +201,11 @@ theorem sub_mem_iff {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q
   rw [mem_intL_iff_mul hU, e, ← Valuation.mem_maximalIdeal_iff, ← Ideal.Quotient.eq, mk_liftO, eq_comm]
 
 /- English proof (translation)
-Establish `h1 : ∀ y : Fin N → F, (if ∀ r : Fin N, m ≤ r.val → y r = 0 then (1 : ℂ) else 0) = ∏ r : Fin N, (if m ≤ r.val then (if y r = 0 then (1 : ℂ) else 0) else 1)`. Introduce `y`. Use `split_ifs with h`. Use `(Finset.prod_eq_one fun r _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `hr : m ≤ r.val`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hr, if_pos (h r hr)]`. Rewrite using `[if_neg hr]`. Use `push_neg at h`. Take `⟨r, hr, hy⟩` from `h`. Conclude with `(Finset.prod_eq_zero (Finset.mem_univ r) (by rw [if_pos hr, if_neg hy])).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[h1]`. Rewrite using `[← Fintype.prod_sum (fun (r : Fin N) (c : F) => if m ≤ r.val then (if c = 0 then (1 : ℂ) else 0) else 1)]`. Establish `h2 : ∀ r : Fin N, ∑ c : F, (if m ≤ r.val then (if c = 0 then (1 : ℂ) else 0) else 1) = if m ≤ r.val then 1 else (Fintype.card F : ℂ)`. Introduce `r`. Apply the tactic sequence `split_ifs <;> simp`.
-
-Repeatedly rewrite using `[h2]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => if m ≤ i then (1 : ℂ) else (Fintype.card F : ℂ)) N, ← Finset.prod_range_mul_prod_Ico _ hm, Finset.prod_congr rfl (fun i hi => if_neg (by simp only [Finset.mem_range] at hi; omega)), Finset.prod_const, Finset.card_range, Finset.prod_eq_one (f …`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_sum_vanish {F : Type} [Fintype F] [Zero F] [DecidableEq F] (N m : ℕ) (hm : m ≤ N) :
     ∑ y : Fin N → F, (if ∀ r : Fin N, m ≤ r.val → y r = 0 then (1 : ℂ) else 0) = (Fintype.card F : ℂ) ^ m := by
@@ -235,11 +233,11 @@ theorem card_sum_vanish {F : Type} [Fintype F] [Zero F] [DecidableEq F] (N m : �
     Finset.card_range, Finset.prod_eq_one (fun i hi => if_pos (by simp only [Finset.mem_Ico] at hi; omega)), mul_one]
 
 /- English proof (translation)
-Establish `hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hU.2.2.2.1`. Establish `hne` using `lo_ne_rev n k`. Unfold `dInv`. Distinguish the cases in `h1 : j = lo n k`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hi : Valued.v ϖ⁻¹ = WithZero.exp (1 : ℤ)` using `by rw [map_inv₀, hϖ, ← WithZero.exp_neg, neg_neg]`. Rewrite using `[if_pos rfl, if_pos rfl, Valuation.map_add_eq_of_lt_right, hi]`. Rewrite using `[hi, map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Distinguish the cases in `h2' : j = (lo n k).rev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg h1, if_pos h2', if_neg h1, Valuation.map_add_eq_of_lt_left, map_one]`. Rewrite using `[hϖ, map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Rewrite using `[if_neg h1, if_neg h2', if_neg h1, one_add_one_eq_two, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_one_add_dInv {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (h2 : Valued.v (2 : L) = 1) {n : ℕ}
     (k : Fin (n / 2)) (j : Fin n) :
@@ -258,9 +256,9 @@ theorem val_one_add_dInv {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ
   · rw [if_neg h1, if_neg h2', if_neg h1, one_add_one_eq_two, h2]
 
 /- English proof (translation)
-Establish `key : ∀ (w : WithZero (Multiplicative ℤ)) (h : w ≠ 0), w = WithZero.exp (1 : ℤ) → -Multiplicative.toAdd (WithZero.unzero h) = -1`. Introduce and unpack `_ h rfl`. Both sides reduce to the same expression. Unfold `ordL`. Rewrite using `[dif_neg (by rw [hx]; exact WithZero.exp_ne_zero)]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem ordL_of_val {x : L} (hx : Valued.v x = WithZero.exp (1 : ℤ)) : ordL x = -1 := by
   have key : ∀ (w : WithZero (Multiplicative ℤ)) (h : w ≠ 0), w = WithZero.exp (1 : ℤ) →
@@ -271,17 +269,15 @@ theorem ordL_of_val {x : L} (hx : Valued.v x = WithZero.exp (1 : ℤ)) : ordL x 
   exact key _ _ hx
 
 /- English proof (translation)
-Establish `hd : 1 + diagonal (dInv ϖ n k) = diagonal (fun j => 1 + dInv ϖ n k j)`. Rewrite using `[← diagonal_one, diagonal_add]`. Establish `hv` using `val_one_add_dInv hU h2 k`. Establish `hc0 : ∀ j, 1 + dInv ϖ n k j ≠ 0` using `fun j h => by`. Use `hv j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h, map_zero]`. Use `split_ifs at this with h'`. Conclude with `WithZero.exp_ne_zero this.symm`. Conclude with `zero_ne_one this`. Establish `hvdet : Valued.v (1 + diagonal (dInv ϖ n k)).det = WithZero.exp (1 : ℤ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hd, det_diagonal, map_prod]`. Repeatedly rewrite using `[hv]`. Simplify using `[Finset.prod_ite_eq']`. Use `⟨fun h => by rw [h, map_zero] at hvdet; exact WithZero.exp_ne_zero hvdet.symm, ?_, ordL_of_val hvdet⟩` and prove the remaining obligations. Rewrite using `[hd, Matrix.inv_eq_right_inv (B := diagonal (fun j => (1 + dInv ϖ n k j)⁻¹))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[diagonal_apply]`. Use `split_ifs with hij`. Rewrite using `[mem_intL, map_inv₀, hv] split_ifs`. Rewrite using `[← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Evaluate the numerical expressions. Rewrite using `[inv_one]`. Conclude with `zero_mem _`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `j`. Conclude with `mul_inv_cancel₀ (hc0 j)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cayley_dInv {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (h2 : Valued.v (2 : L) = 1) {n : ℕ}
     (k : Fin (n / 2)) :
@@ -319,11 +315,9 @@ def fT (ϖ : L) (n n' : ℕ) (k : Fin (n / 2)) (y : Fin n' → ResF L) : Matrix 
   fun r j => if j = lo n k then ϖ⁻¹ * liftR (y r) else 0
 
 /- English proof (translation)
-Rewrite using `[mem_latT]`. Introduce `r j`. Rewrite using `[mul_diagonal]`. Unfold `fT dTor`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, ← mul_assoc, mul_inv_cancel₀ hϖ, one_mul]`. Conclude with `liftR_mem _`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`. Rewrite using `[zero_mul]`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fT_mem {ϖ : L} (hϖ : ϖ ≠ 0) {n n' : ℕ} (k : Fin (n / 2)) (y : Fin n' → ResF L) :
     fT ϖ n n' k y ∈ latT ϖ n n' k := by
@@ -337,19 +331,17 @@ theorem fT_mem {ϖ : L} (hϖ : ϖ ≠ 0) {n n' : ℕ} (k : Fin (n / 2)) (y : Fin
   · rw [zero_mul]; exact zero_mem _
 
 /- English proof (translation)
-Introduce `b hb`. Establish `hb' : ∀ r j, b r j * dTor ϖ n k j ∈ intL L` using `fun r j => by`. Use `hb r j` as an intermediate fact. Rewrite `this` using `[mul_diagonal]`. Then use the resulting hypothesis. Establish `hϖi : ϖ ∈ intL L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[mem_intL, hU.2.2.2.1]; exact le_of_lt (by rw [← WithZero.coe_one, WithZero.coe_lt_coe]; decide)`. Establish `hlo : ∀ r, ϖ * b r (lo n k) ∈ intL L` using `fun r => by`. Use `hb' r (lo n k)` as an intermediate fact. Unfold `dTor at this`. Rewrite `this` using `[if_pos rfl, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hother : ∀ r j, j ≠ lo n k → b r j ∈ intL L` using `fun r j hj => by`. Use `hb' r j` as an intermediate fact. Unfold `dTor at this`. Rewrite `this` using `[if_neg hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs at this with h`. Establish `e : b r j = b r j * ϖ⁻¹ * ϖ` using `by rw [mul_assoc, inv_mul_cancel₀ hϖ, mul_one]`. Rewrite using `[e]`. Conclude with `mul_mem this hϖi`. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `⟨fun r => Ideal.Quotient.mk (IsLocalRing.maximalIdeal (OV L)) (⟨ϖ * b r (lo n k), hlo r⟩ : OV L), ?_, ?_⟩` and prove the remaining obligations. Introduce `r j show b r j - fT ϖ n n' k _ r j ∈ intL L`. Unfold `fT`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `(sub_mem_iff hU hϖ (hlo r) _).2 rfl`. Rewrite using `[sub_zero]`. Conclude with `hother r j h`. Introduce `y hy`. Use function extensionality and compare the values at `r`.
-
-Use `hy r (lo n k)` as an intermediate fact. Express the relevant statement in the definitionally equal form `b r (lo n k) - fT ϖ n n' k y r (lo n k) ∈ intL L at this`. Unfold `fT at this`. Rewrite `this` using `[if_pos rfl]`. Conclude with `(sub_mem_iff hU hϖ (hlo r) _).1 this`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fT_unique {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (hϖ : ϖ ≠ 0) {n n' : ℕ} (k : Fin (n / 2)) :
     ∀ b ∈ latT ϖ n n' k, ∃! y : Fin n' → ResF L, b - fT ϖ n n' k y ∈ intMat L (Fin n') (Fin n) := by
@@ -388,33 +380,31 @@ theorem fT_unique {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) 
     exact (sub_mem_iff hU hϖ (hlo r) _).1 this
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hS hC ℓ hℓs hℓinv hℓ0 k t ht`. Establish `hU` using `hS.1.unr`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => by`. Use `hU.2.2.2.1` as an intermediate fact. Rewrite `this` using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.zero_ne_coe this`. Establish `hσϖ : σ ϖ = ϖ` using `hU.2.2.1`. Establish `hH` using `hS.isHeis`. Establish `hSD` using `hS.selfDual`. Establish `hSD' : SelfDual (pairing σ δ ψ) (latT ϖ n n' k)` using `selfDual_latT hσϖ hϖ0 k hSD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htinv : (((t : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = diagonal (dInv ϖ n k)`. Rewrite using `[Matrix.coe_units_inv, show ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = _ from ht, tMat_single]`. Conclude with `Matrix.inv_eq_right_inv (dTor_mul_dInv hϖ0 k)`. Establish `hfixv : Fixes ρ (latT ϖ n n' k) (ω (t, 1) s)`. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hn` using `hS.1.norm t 1 (b * diagonal (dTor ϖ n k))`. Simplify using `only [OneMemClass.coe_one, Units.val_one, Matrix.one_mul] at hn`. Rewrite `hn` using `[htinv, Matrix.mul_assoc, dTor_mul_dInv hϖ0 k, Matrix.mul_one]`. Use `congrArg (fun f => f s) hn` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `this.symm.trans (congrArg _ (hS.fixes _ hb))` and prove the remaining obligations. Take `⟨e, he1, he⟩` from `GlobalTheory.T.exists_heisenbergInvariant_linearForm_isotropic_vacuum hH _ hSD s hS.2.1 hS.fixes hS.2.2.2 _ (fun a ha b hb => (hSD a).1 ha b hb)`. Establish `hev : e (ω (t, 1) s) = ((-1) ^ n' * (q : ℂ) ^ n') ^ (-1 : ℤ)`. Take `⟨hdet, hint, hord⟩` from `cayley_dInv hU hS.v_two k`. Establish `hg : (t⁻¹ : GU σ n).1.1 = diagonal (dInv ϖ n k)` using `htinv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hC e he t⁻¹ (by rw [hg]; exact hdet) (by rw [hg]; exact hint)` as an intermediate fact. Rewrite `this` using `[hg, hord, he1, mul_one]`. Simplify using `using this`. Use `haveI : Finite (ResF L) := Nat.finite_of_card_ne_zero (by rw [card_resF hU]; have := hU.2.2.2.2.2.1; positivity)`. Use `letI : Fintype (ResF L) := Fintype.ofFinite _`.
+Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hsum, hidx⟩` from `(sumOp_transversal hH _ _ hSD').1 s hS.fixes (Fin n' → ResF L) (fT ϖ n n' k) (fT_mem hϖ0 k) (fT_unique hU hϖ0 k)`. Establish `hidx0 : idx (intMat L (Fin n') (Fin n)) (latT ϖ n n' k) ≠ 0` using `by rw [hidx]; exact Fintype.card_ne_zero`. Establish `hv` using `(GlobalTheory.T.heisenbergQuotientOpSum_vacuum_commensurable_selfDualLattice hH _ hSD s hS.2.1 hS.fixes hS.2.2.2 _ hSD' hidx0).2 e he1 he _ hfixv`. Establish `hterm : ∀ y : Fin n' → ResF L, ℓ (ρ (fT ϖ n n' k y) s) = if ∀ r : Fin n', n' / 2 ≤ r.val → y r = 0 then 1 else 0`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `split_ifs with hy`. Rewrite using `[hℓinv _ ?_ s, hℓs]`. Introduce `r c`. Establish `h0 : n' / 2 ≤ r.val → fT ϖ n n' k y r c = 0` using `fun hr => by`. Unfold `fT`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `split_ifs`. Rewrite using `[hy r hr, liftR_zero, mul_zero]`. Both sides reduce to the same expression. Use `⟨fun hr => h0 (by omega), fun hr _ => by rw [h0 hr]; exact zero_mem _⟩` and prove the remaining obligations. Use `push_neg at hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨r, hr, hyr⟩` from `hy`. Use `hℓ0 _ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, ha, hxa⟩`. Establish `h1` using `hxa r (lo n k)`. Establish `h2 : a r (lo n k) = 0` using `(ha r (lo n k)).1 (Or.inr ⟨hr, by simp [lo]⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `fT ϖ n n' k y r (lo n k) - a r (lo n k) ∈ intL L at h1`. Rewrite `h1` using `[h2, sub_zero]`. Unfold `fT at h1`. Rewrite `h1` using `[if_pos rfl]`. Establish `h3` using `(sub_mem_iff hU hϖ0 (z := 0) (by rw [mul_zero]; exact zero_mem _) (y r)).1 (by rw [zero_sub]; exact neg_mem h1)`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hyr (h3.trans ((Ideal.Quotient.eq_zero_iff_mem).2 ((Valuation.mem_maximalIdeal_iff _ _).2 (by simp))))`. Rewrite using `[hv, map_smul, hsum, map_sum, hev, smul_eq_mul]`. Repeatedly rewrite using `[hterm]`. Establish `hc : (∑ y : Fin n' → ResF L, (if ∀ r : Fin n', n' / 2 ≤ r.val → y r = 0 then (1 : ℂ) else 0)) = ((Fintype.card (ResF L) : ℕ) : ℂ) ^ (n' / 2)`. Use `card_sum_vanish (F := ResF L) n' (n' / 2) (Nat.div_le_self _ _)` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hc` using `[Fintype.card_eq_nat_card, card_resF hU]`. Rewrite using `[hc]`. Establish `hq : (q : ℂ) ≠ 0` using `by have := hU.2.2.2.2.2.1; exact_mod_cast (by omega : q ≠ 0)`. Establish `h1 : ((-1 : ℂ) ^ n')⁻¹ = (-1) ^ n'` using `by rw [← inv_pow, inv_neg, inv_one]`. Rewrite using `[_root_.zpow_neg_one, zpow_sub₀ hq, show (2 * ((n' / 2 : ℕ) : ℤ)) = ((2 * (n' / 2) : ℕ) : ℤ) by push_cast; ring, zpow_natCast, zpow_natCast, mul_inv, h1, pow_mul]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem value_torus_first : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) (n n' : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : GU σ n × GU σ n' →* Module.End ℂ M) (s : M), IsStd ϖ σ q δ ψ ρ ω s → CayleyRule q n' ρ (ω.comp (MonoidHom.inl _ _)) s → ∀ ℓ : M →ₗ[ℂ] ℂ, ℓ s = 1 → (∀ a ∈ mixLat L n' n, ∀ v, ℓ (ρ a v) = ℓ v) → (∀ x, (¬ ∃ a ∈ mixLat L n' n, x - a ∈ intMat L (Fin n') (Fin n)) → ℓ (ρ x s) = 0) → ∀ (k : Fin (n / 2)) (t : GU σ n), t.1.1 = tMat ϖ n (n / 2) (Pi.single k 1) → ℓ (ω (t, 1) s) = (-1) ^ n' * (q : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n') := by
   intro L _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hS hC ℓ hℓs hℓinv hℓ0 k t ht

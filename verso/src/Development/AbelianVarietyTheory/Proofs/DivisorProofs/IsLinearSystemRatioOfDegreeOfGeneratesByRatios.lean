@@ -42,9 +42,9 @@ def sameDegQuot (ev : V →ₗ[K] Ω) : IntermediateField K Ω where
       rwa [show x⁻¹ * (x * q) = q by field_simp]
 
 /- English proof (translation)
-Rewrite using `[ratioField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `a ⟨v, w, rfl⟩`. Distinguish the cases in `hw : ev w = 0`. Rewrite using `[hw, div_zero]`. Conclude with `(sameDegQuot ev).zero_mem`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, ev w, by simp, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ hw, pow_one]`. Conclude with `LinearMap.mem_range_self ev v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratioField_le_sameDegQuot (ev : V →ₗ[K] Ω) : ratioField ev ≤ sameDegQuot ev := by
   rw [ratioField, IntermediateField.adjoin_le_iff]
@@ -56,11 +56,11 @@ theorem ratioField_le_sameDegQuot (ev : V →ₗ[K] Ω) : ratioField ev ≤ same
     exact LinearMap.mem_range_self ev v
 
 /- English proof (translation)
-Introduce and unpack `⟨hev, htop⟩ τ t`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, ev w ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hev (LinearMap.ext h)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem : t / ev w ^ τ ∈ sameDegQuot ev`. Apply `ratioField_le_sameDegQuot ev` to reduce the goal to its premises. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨e, q, hq, hq0, hp⟩` from `hmem`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨e, q, hq, hq0, ?_⟩` and prove the remaining obligations. Establish `: t * q = (t / ev w ^ τ * q) * ev w ^ τ`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, add_comm, pow_add]`. Conclude with `Submodule.mul_mem_mul hp (Submodule.pow_mem_pow _ (LinearMap.mem_range_self ev w) τ)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRatio_of_genRatios (K V Ω : Type) [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω]
     (ev : V →ₗ[K] Ω) : GenRatios ev → ∀ (τ : ℕ) (t : Ω), IsRatio ev τ t := by

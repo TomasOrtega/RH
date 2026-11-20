@@ -25,7 +25,7 @@ def PLLocalStatement : Prop :=
             (v ∘ Subtype.val) - mInt A (Fin.cons L Φ) v
 
 /- English proof (translation)
-The claim follows from `PLAux.pl_global`.
+A detailed English derivation is pending.
 -/
 theorem poincareLelong : PoincareLelongStatement := PLAux.pl_global
 

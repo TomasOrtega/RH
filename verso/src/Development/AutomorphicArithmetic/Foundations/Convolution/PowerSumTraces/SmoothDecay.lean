@@ -11,9 +11,9 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h` using `((UpperTheory.ConvolutionTheory.Tf.tensApply K n hn 0 e).2.2.2.2 (0 : ℂ)).1`. Simplify using `using h`. Consider the case `insert i s hi ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, (UpperTheory.ConvolutionTheory.Tf.tensApply K n hn (f i) e).2.2.1, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tens_sum_left {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 < n) {ι : Type} (s : Finset ι)
     (f : ι → TI K n) (e : TF K n) : tens (∑ i ∈ s, f i) e = ∑ i ∈ s, tens (f i) e := by
@@ -26,9 +26,9 @@ private theorem tens_sum_left {K : Type} [Field K] [NumberField K] {n : ℕ} (hn
     rw [Finset.sum_insert hi, Finset.sum_insert hi, (UpperTheory.ConvolutionTheory.Tf.tensApply K n hn (f i) e).2.2.1, ih]
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ a ha`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `UpperTheory.cuspDecay_of_rank_zero K μ a`. Take `⟨U, hU, m, F, e, hF, he, rfl⟩` from `UpperTheory.exists_sum_tens_of_isLeftSmooth K n hn a ha`. Use `UpperTheory.cuspDecay_finset_sum K n μ (Fin m) _ fun j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `ν : Measure (archGroup K n)` to `Measure.haar`. Take `⟨ι, _, κ, γ, hκ, hFj⟩` from `UpperTheory.exists_sum_conv_real_smoothT K n ν (F j) (hF j)`. Rewrite using `[hFj, tens_sum_left hn Finset.univ (fun i => conv ν (κ i) (γ i)) (e j)]`. Conclude with `UpperTheory.cuspDecay_finset_sum K n μ ι _ fun i => UpperTheory.cuspDecay_tens_conv_real_smoothT K n hn μ ν (κ i) (γ i) (e j) U hU (hκ i).1 (hκ i).2 (he j)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.C.smoothDecay :
     UpperTheory.ConvolutionTheory.C.SmoothDecay := by

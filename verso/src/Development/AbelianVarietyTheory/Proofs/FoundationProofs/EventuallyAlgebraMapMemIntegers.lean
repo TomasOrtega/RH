@@ -11,16 +11,16 @@ open NumberField IsDedekindDomain Filter Formalism.MainNotions.GlobalTheoryTheor
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(algebraMap F (Af F) a).2`.
+A detailed English derivation is pending.
 -/
 theorem eventually_algebraMap_mem_integers (a : F) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, algebraMap F (Fv F v) a ∈ v.adicCompletionIntegers F :=
   (algebraMap F (Af F) a).2
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic ℤ E` using `IsFractionRing.comap_isAlgebraic_iff.2 (inferInstance : Algebra.IsAlgebraic ℚ E)`. Take `⟨d, hd, hi⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) e).exists_integral_multiple`. Establish `hd' : (d : F) ≠ 0` using `Int.cast_ne_zero.2 hd`. Use `filter_upwards [eventually_algebraMap_mem_integers (d : F)⁻¹] with v hv`. Establish `h` using `tmul_mem_intLoc hv (⟨d • e, hi⟩ : 𝓞 E)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = _ ⊗ₜ[F] (d • e)`. Rewrite using `[← Int.cast_smul_eq_zsmul F, ← TensorProduct.smul_tmul, Algebra.smul_def, ← map_mul, mul_inv_cancel₀ hd', map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_one_tmul_mem_intLoc (e : E) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, (1 : Fv F v) ⊗ₜ[F] e ∈ intLoc F E v := by
@@ -34,9 +34,9 @@ theorem eventually_one_tmul_mem_intLoc (e : E) :
   rw [← Int.cast_smul_eq_zsmul F, ← TensorProduct.smul_tmul, Algebra.smul_def, ← map_mul, mul_inv_cancel₀ hd', map_one]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact Eventually.of_forall fun v => by rw [map_zero]; exact zero_mem _`. Consider the case `add y z hy hz => filter_upwards [hy, hz] with v h h' using by rw [map_add]; exact add_mem h h'`. Consider the case `tmul a e => filter_upwards [a.2, eventually_one_tmul_mem_intLoc (F := F) e] with v h h'`. Use `mul_mem (tmul_mem_intLoc (a := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v a) h (1 : 𝓞 E)) h'` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eventually_map_evalV_mem_intLoc (z : Af F ⊗[F] E) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite,
@@ -50,13 +50,13 @@ theorem eventually_map_evalV_mem_intLoc (z : Af F ⊗[F] E) :
     simpa using this
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Set `c` to `RingOfIntegers.basis E`. Establish `h1 : ∀ k, ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ y ∈ intLoc F E v, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F` using `fun k => by filter_upwards [eventually_all.2 fun j => eventually_algebraMap_mem_integers (b.repr (c j : E) k)] with v hv y hy`. Use `intLoc_induction (p := fun y => (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F) (fun a ha x => ?_) (by simp) (fun y z h h' => by simpa using add_mem h h') (fun y h => by simpa using h) hy` and prove the remaining obligations. Establish `e : b.repr (x : E) k = ∑ j, c.repr x j • b.repr (c j : E) k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e' : (x : E) = ∑ j, c.repr x j • (c j : E)` using `by conv_lhs => rw [← c.sum_repr x]`. Simplify using the standard rewrite rules. Simplify using `only [e', map_sum, map_zsmul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply]`. Simplify using `only [Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, e, map_sum, map_zsmul]`. Conclude with `mul_mem ha (sum_mem fun j _ => zsmul_mem (hv j) _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `A : Fin (Module.finrank F E) → Af F` to `fun k => ⟨fun v => (Algebra.TensorProduct.basis (Fv F v) b).repr (z v) k, by filter_upwards [h1 k, hz] with v h h' using h _ h'⟩`. Use `⟨(Algebra.TensorProduct.basis (Af F) b).equivFun.symm A, fun v => ?_⟩` and prove the remaining obligations. Apply `(Algebra.TensorProduct.basis (Fv F v) b).repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[GlobalTheory.LatticeLocalGlobal.repr_map, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_map_evalV_eq (z : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v ⊗[F] E)
     (hz : ∀ᶠ v in cofinite, z v ∈ intLoc F E v) :
@@ -87,11 +87,11 @@ theorem exists_map_evalV_eq (z : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v ⊗[
   rfl
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Eventually.of_forall fun v => tmul_mem_latLoc (one_mem _) hx`. Consider the case `zero => exact Eventually.of_forall fun v => tmul_mem_latLoc (one_mem _) L.zero_mem`. Consider the case `add x y _ _ hx hy => filter_upwards [hx, hy] with v h h'`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `add_mem h h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `TensorProduct.tmul_add _ _ _`. Consider the case `smul c x _ hx => filter_upwards [hx, eventually_one_tmul_mem_intLoc (F := F) c] with v h h'`. Use `(latLoc F L v).smul_mem ⟨_, h'⟩ h using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `_ = (1 : Fv F v) ⊗ₜ[F] c * (1 : Fv F v) ⊗ₜ[F] x i`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eventually_one_tmul_mem_latLoc {L : Submodule (𝓞 E) (Fin n → E)}
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (x : Fin n → E) :
@@ -113,15 +113,13 @@ theorem eventually_one_tmul_mem_latLoc {L : Submodule (𝓞 E) (Fin n → E)}
     simp
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hL`. Use `filter_upwards [(eventually_all_finset s).2 fun x _ => eventually_one_tmul_mem_latLoc (F := F) hL' x] with v hv y hy`. Establish `h1 : ∀ x ∈ Submodule.span (𝓞 E) (s : Set (Fin n → E)), (fun i => (1 : Fv F v) ⊗ₜ[F] x i) ∈ latLoc F L' v`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact hv x hx`. Consider the case `zero => exact tmul_mem_latLoc (one_mem _) L'.zero_mem`. Consider the case `add x y _ _ h h'`. Use `add_mem h h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Treat this case separately. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Conclude with `TensorProduct.tmul_add _ _ _`. Consider the case `smul c x _ h`. Use `(latLoc F L' v).smul_mem ⟨_, tmul_mem_intLoc (one_mem _) c⟩ h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(1 : Fv F v) ⊗ₜ[F] ((c : E) * x i) = (1 : Fv F v) ⊗ₜ[F] (c : E) * (1 : Fv F v) ⊗ₜ[F] x i`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `latLoc_induction (p := fun y => y ∈ latLoc F L' v) (fun a ha x hx => ?_) (zero_mem _) (fun _ _ => add_mem) (fun _ => neg_mem) hy` and prove the remaining obligations. Use `(latLoc F L' v).smul_mem ⟨_, tmul_mem_intLoc ha 1⟩ (h1 x hx) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `_ = a ⊗ₜ[F] ((1 : 𝓞 E) : E) * (1 : Fv F v) ⊗ₜ[F] x i`.
-
-Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eventually_latLoc_le {L L' : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG)
     (hL' : Submodule.span E (L' : Set (Fin n → E)) = ⊤) :
@@ -152,7 +150,7 @@ theorem eventually_latLoc_le {L L' : Submodule (𝓞 E) (Fin n → E)} (hL : L.F
 variable (F) in
 
 /- English proof (translation)
-Use `filter_upwards [eventually_latLoc_le (F := F) hL.fg hL'.span_eq_top, eventually_latLoc_le (F := F) hL'.fg hL.span_eq_top] with v h h' using le_antisymm h h'`.
+A detailed English derivation is pending.
 -/
 theorem eventually_latLoc_eq (L L' : Submodule (𝓞 E) (Fin n → E)) [hL : Submodule.IsLattice E L]
     [hL' : Submodule.IsLattice E L'] :
@@ -163,11 +161,11 @@ theorem eventually_latLoc_eq (L L' : Submodule (𝓞 E) (Fin n → E)) [hL : Sub
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `⟨Submodule.fg_pi fun _ => ?_, eq_top_iff.2 fun y _ => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map _`. Rewrite using `[← Finset.univ_sum_single y]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (Pi.single i 1 : Fin n → E) ∈ stdLattice E n` using `fun j _ => ⟨Pi.single (M := fun _ => 𝓞 E) i 1 j, by`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Submodule.smul_mem _ (y i) (Submodule.subset_span h1) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_stdLattice : Submodule.IsLattice E (stdLattice E n) := by
   refine ⟨Submodule.fg_pi fun _ => ?_, eq_top_iff.2 fun y _ => ?_⟩
@@ -188,11 +186,11 @@ omit [NumberField E] in
 variable {σ J} in
 
 /- English proof (translation)
-Establish `h1 : ∀ k ∈ stabLoc σ J (stdLattice E n) v, ∀ i j, (matHom _ σ J k).1 i j ∈ intLoc F E v` using `fun k hk i j => by`. Use `mem_latLoc_stdLattice.1 ((mem_stabLoc.1 hk (Pi.single j 1)).1 (mem_latLoc_stdLattice.2 fun l => by` as an intermediate fact. Distinguish the cases in `e : l = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[e])) i`. Simplify using `using this`. Establish `h2 : ∀ M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), (∀ i j, M i j ∈ intLoc F E v) → ∀ y ∈ latLoc F (stdLattice E n) v, M *ᵥ y ∈ latLoc F (stdLattice E n) v` using `fun M hM y hy => mem_latLoc_stdLattice.2 fun i => show ∑ j, M i j * y j ∈ _ from sum_mem fun j _ => mul_mem (hM i j) (mem_latLoc_stdLattice.1 hy j)`. Use `⟨fun hk => ⟨h1 k hk, h1 _ (inv_mem hk)⟩, fun h => mem_stabLoc.2 fun y => ⟨h2 _ h.1 y, fun hy => ?_⟩⟩` and prove the remaining obligations. Use `h2 _ h.2 _ hy` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_stabLoc_stdLattice_iff {v : HeightOneSpectrum (𝓞 F)} {k : GLoc σ J v} :
     k ∈ stabLoc σ J (stdLattice E n) v ↔ (∀ i j, (matHom _ σ J k).1 i j ∈ intLoc F E v) ∧
@@ -212,7 +210,7 @@ theorem mem_stabLoc_stdLattice_iff {v : HeightOneSpectrum (𝓞 F)} {k : GLoc σ
   rwa [Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Use `filter_upwards [eventually_latLoc_eq F L L'] with v h`. Rewrite using `[stabLoc, stabLoc, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_stabLoc_eq (L L' : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L]
     [Submodule.IsLattice E L'] :
@@ -223,7 +221,7 @@ theorem eventually_stabLoc_eq (L L' : Submodule (𝓞 E) (Fin n → E)) [Submodu
 variable (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L]
 
 /- English proof (translation)
-Use `isLattice_stdLattice (E := E) (n := n)` as an intermediate fact. Use `filter_upwards [eventually_stabLoc_eq σ J L (stdLattice E n), eventually_all.2 fun i => eventually_all.2 fun j => eventually_map_evalV_mem_intLoc ((matHom _ σ J g).1 i j), eventually_all.2 fun i => eventually_all.2 fun j => eventually_map_evalV_mem_intLoc ((matHom _ σ J g⁻¹).1 i …`. Rewrite using `[h, mem_stabLoc_stdLattice_iff, ← map_inv]`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_projFinLoc_mem_stabLoc (g : GFin σ J) :
     ∀ᶠ v in cofinite, projFinLoc σ J v g ∈ stabLoc σ J L v := by
@@ -236,21 +234,21 @@ theorem eventually_projFinLoc_mem_stabLoc (g : GFin σ J) :
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Simplify using `using eventually_projFinLoc_mem_stabLoc σ J L (projFin σ J g)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eventually_proj_mem_stabLoc (g : GAd σ J) : ∀ᶠ v in cofinite, proj σ J v g ∈ stabLoc σ J L v := by
   simpa using eventually_projFinLoc_mem_stabLoc σ J L (projFin σ J g)
 
 /- English proof (translation)
-Use `existsUnique_of_exists_of_unique ?_ fun g h hg hh => GFin_ext σ J fun v => (hg v).trans (hh v).symm` and prove the remaining obligations. Use `isLattice_stdLattice (E := E) (n := n)` as an intermediate fact. Establish `h0 : ∀ᶠ v in cofinite, (∀ i j, (matHom _ σ J (x v)).1 i j ∈ intLoc F E v) ∧ ∀ i j, (matHom _ σ J (x v)⁻¹).1 i j ∈ intLoc F E v` using `by filter_upwards [eventually_stabLoc_eq σ J L (stdLattice E n), hx] with v h h'`. Rewrite `h'` using `[h, mem_stabLoc_stdLattice_iff]`. Then use the resulting hypothesis. Use `choose A hA using fun i j => exists_map_evalV_eq (fun v => (matHom _ σ J (x v)).1 i j) (h0.mono fun v h => h.1 i j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Use `choose B hB using fun i j => exists_map_evalV_eq (fun v => (matHom _ σ J (x v)⁻¹).1 i j) (h0.mono fun v h => h.2 i j)`. Set `φ : ∀ v, Af F ⊗[F] E →+* Fv F v ⊗[F] E` to `fun v => (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E)).toRingHom`. Establish `hext : ∀ M N : Matrix (Fin n) (Fin n) (Af F ⊗[F] E), (∀ v, M.map (φ v) = N.map (φ v)) → M = N` using `fun M N h => Matrix.ext fun i j => GlobalTheory.LatticeLocalGlobal.ext_components _ _ fun v => congrFun₂ (h v) i j`. Establish `hA' : ∀ v, (Matrix.of A).map (φ v) = (matHom _ σ J (x v)).1` using `fun v => Matrix.ext fun i j => hA i j v`. Establish `hB' : ∀ v, (Matrix.of B).map (φ v) = (matHom _ σ J (x v)⁻¹).1` using `fun v => Matrix.ext fun i j => hB i j v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Establish `hσ : ∀ v z, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (φ v z) = φ v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ z)` using `fun v z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [φ, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hJ : ∀ v, (JR (Af F) J).map (φ v) = JR (Fv F v) J` using `fun v => by ext r s; simp [φ, JR, inclR]`. Set `u : GL (Fin n) (Af F ⊗[F] E)` to `⟨Matrix.of A, Matrix.of B, hext _ _ fun v => by`. Rewrite using `[Matrix.map_mul, hA', hB', map_inv, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)],`. Use `hext _ _ fun v => by`. Rewrite using `[Matrix.map_mul, hA', hB', map_inv, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : u ∈ HR (Af F) σ J` using `hext _ _ fun v => by`. Express the relevant statement in the definitionally equal form `(cT _ (Matrix.of A) * _ * Matrix.of A).map _ = _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_map _ _ _ (hσ v), hA', hJ]`. Conclude with `(x v).2`. Conclude with `⟨⟨u, hu⟩, fun v => matHom_injective _ σ J (Units.ext (hA' v))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_projFinLoc_eq (x : ∀ v, GLoc σ J v) (hx : ∀ᶠ v in cofinite, x v ∈ stabLoc σ J L v) :
     ∃! g : GFin σ J, ∀ v, projFinLoc σ J v g = x v := by

@@ -5,11 +5,9 @@ namespace GlobalTheory.ComapPrimeExistence
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Establish `hp` using `w.isPrime`. Use `⟨⟨w.asIdeal.comap (RingOfIntegers.mapRingHom φ), Ideal.comap_isPrime _ _, ?_⟩, fun r => Ideal.mem_comap⟩` and prove the remaining obligations. Introduce `h`. Establish `hn : Ideal.absNorm w.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.ne_bot`. Establish `hmem : ((Ideal.absNorm w.asIdeal : ℕ) : RingOfIntegers E) ∈ w.asIdeal.comap (RingOfIntegers.mapRingHom φ)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.absNorm_mem _`. Rewrite `hmem` using `[h, Ideal.mem_bot]`.
-
-Conclude with `hn (Nat.cast_eq_zero.mp hmem)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comap_prime {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (φ : E →+* K) (w : HeightOneSpectrum (RingOfIntegers K)) :

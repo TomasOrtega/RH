@@ -16,9 +16,9 @@ namespace GlobalTheory.PsCo.PolyAvg
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum, map_sum]`. Use `totalDegree_finsetSum_le fun s hs => ?_` and prove the remaining obligations. Rewrite using `[bind₁_monomial]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (le_totalDegree hs)` and prove the remaining obligations. Use `(Finset.sum_le_sum fun i _ => (totalDegree_pow _ _).trans (Nat.mul_le_mul_left _ (hg i))).trans ?_` and prove the remaining obligations. Simplify using `[Finsupp.sum]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem totalDegree_bind_le {α β : Type} (g : α → MvPolynomial β ℂ) (hg : ∀ i, (g i).totalDegree ≤ 1)
     (Q : MvPolynomial α ℂ) : (bind₁ g Q).totalDegree ≤ Q.totalDegree := by
@@ -35,9 +35,9 @@ theorem totalDegree_bind_le {α β : Type} (g : α → MvPolynomial β ℂ) (hg 
   simp [Finsupp.sum]
 
 /- English proof (translation)
-Set `f : (Fin n × Fin n) ⊕ (Fin n × Fin n) → Poly n` to `Sum.elim (fun x => ∑ c, C (a x.1 c) * X (Sum.inl (c, x.2))) (fun x => ∑ c, C (star (a x.1 c)) * X (Sum.inr (c, x.2)))`. Use `⟨bind₁ f P, totalDegree_bind_le f ?_ P, fun g => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (x | x) <;>`. Use `totalDegree_finsetSum_le fun l _ => (totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X, totalDegree_C]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ev (a * g) = (ev g).comp (bind₁ f : Poly n →ₐ[ℂ] Poly n).toRingHom`. Use `MvPolynomial.ringHom_ext (fun r => ?_) ?_` and prove the remaining obligations. Simplify using `[ev]`. Apply the tactic sequence `rintro (x | x) <;> simp [ev, f, Matrix.mul_apply]`. Rewrite using `[h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -61,11 +61,11 @@ def varWt : (Fin n × Fin n) ⊕ (Fin n × Fin n) → Fin n → ℝ :=
 def monWt (s : (Fin n × Fin n) ⊕ (Fin n × Fin n) →₀ ℕ) : Fin n → ℝ := fun a => ∑ i, (s i : ℝ) * varWt i a
 
 /- English proof (translation)
-Establish `h1 : (∑ a, monWt s a * θ a : ℝ) = ∑ i, (s i : ℝ) * ∑ a, varWt i a * θ a`. Simplify using `only [monWt, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`. Rewrite using `[h1]`. Simplify using `only [ev, eval_monomial, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp), Complex.ofReal_sum, Finset.sum_mul, Complex.exp_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_natCast, mul_assoc, Complex.exp_nat_mul, ← mul_pow]`. Use `congr 1`. Break down `i with x | x` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[varWt, Pi.single_apply, ite_mul]`. Simplify using `[varWt, Pi.single_apply, ite_mul, ← Complex.exp_conj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_diag_monomial (θ : Fin n → ℝ) (g : Mat n) (s : (Fin n × Fin n) ⊕ (Fin n × Fin n) →₀ ℕ) :
     ev (Matrix.diagonal (fun a => Complex.exp (-((θ a : ℂ) * Complex.I))) * g) (monomial s 1) =
@@ -85,15 +85,13 @@ theorem ev_diag_monomial (θ : Fin n → ℝ) (g : Mat n) (s : (Fin n × Fin n) 
   · simp [varWt, Pi.single_apply, ite_mul, ← Complex.exp_conj]
 
 /- English proof (translation)
-The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.continuous.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toMK (ε : Fin n → Bool) : Continuous fun k : KG ε => toMK k :=
   (Formalism.REAL.isClosedEmbeddingMatrix n ε).1.continuous.comp continuous_subtype_val
 
 /- English proof (translation)
-Use `(MvPolynomial.continuous_eval P).comp (continuous_pi ?_)` and prove the remaining obligations. Introduce and unpack `(x | x)`. Simplify using `only [Sum.elim_inl]`. Use `fun_prop`. Simplify using `only [Sum.elim_inr]`.
-
-Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_ev (P : Poly n) : Continuous fun g : Mat n => ev g P := by
   refine (MvPolynomial.continuous_eval P).comp (continuous_pi ?_)
@@ -102,7 +100,7 @@ theorem continuous_ev (P : Poly n) : Continuous fun g : Mat n => ev g P := by
   · simp only [Sum.elim_inr]; fun_prop
 
 /- English proof (translation)
-The claim follows from `(k : Formalism.REAL.UJ ε).2`.
+A detailed English derivation is pending.
 -/
 theorem toMK_mem (ε : Fin n → Bool) (k : KG ε) : toMK k ∈ UJset ε := (k : Formalism.REAL.UJ ε).2
 
@@ -116,7 +114,7 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
 
 omit [CompleteSpace H] in
 /- English proof (translation)
-Establish `h : Continuous fun k : KG ε => ev (toMK k) P • σ (toMK k) u` using `((continuous_ev P).comp (continuous_toMK ε)).smul ((hσ.2.2 u).comp_continuous (continuous_toMK ε) (toMK_mem ε))`. Conclude with `h.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_avg (hσ : IsURepOn (UJset ε) σ) (u : H) (P : Poly n) :
     Integrable (fun k : KG ε => ev (toMK k) P • σ (toMK k) u) (muK ε) := by
@@ -135,7 +133,7 @@ def avg (hσ : IsURepOn (UJset ε) σ) (u : H) : Poly n →ₗ[ℂ] H where
     simp [ev, smul_eq_C_mul, mul_smul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `σ (toMK g) (∫ k : KG ε, ev (toMK k) P • σ (toMK k) u ∂(muK ε)) = _`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (integrable_avg hσ u P), ← integral_mul_left_eq_self (fun k : KG ε => ev (toMK g⁻¹ * toMK k) P • σ (toMK k) u) g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← toMK_mul, inv_mul_cancel_left, toMK_mul, hσ.1.2 _ (toMK_mem ε g) _ (toMK_mem ε k), map_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -150,11 +148,11 @@ theorem apply_avg (hσ : IsURepOn (UJset ε) σ) (u : H) (P : Poly n) (g : KG ε
   rfl
 
 /- English proof (translation)
-Introduce `θ hθ`. Rewrite `hθ` using `[← Formalism.REAL.range_toMK]`. Take `⟨g, hg⟩` from `hθ`. Simplify using `only at hg`. Establish `hinv : toMK g⁻¹ = Matrix.diagonal (fun a => Complex.exp (-((θ a : ℂ) * Complex.I)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : toMK g * Matrix.diagonal (fun a => Complex.exp (-((θ a : ℂ) * Complex.I))) = 1`. Rewrite using `[hg, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : toMK g⁻¹ * toMK g = 1` using `by rw [← toMK_mul, inv_mul_cancel]; rfl`. Rewrite using `[← Matrix.mul_one (toMK g⁻¹), ← h1, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[← hg, apply_avg, hinv]`. Simplify using `only [ev_diag_monomial, mul_smul]`. Rewrite using `[integral_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -178,19 +176,19 @@ theorem isWtOn_avg (hσ : IsURepOn (UJset ε) σ) (u : H) (s : (Fin n × Fin n) 
   rfl
 
 /- English proof (translation)
-Introduce `n ε d`. Use `⟨monWt '' {s | s.degree ≤ d}, (Finsupp.finite_of_degree_le d).image _, ?_⟩` and prove the remaining obligations. Introduce `H _ _ _ σ hσ u`. Use `⟨(restrictTotalDegree _ ℂ d).map (avg hσ u), inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg v ⟨P, hP, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `hg` using `[← Formalism.REAL.range_toMK]`. Take `⟨g, rfl⟩` from `hg`. Take `⟨Q, hQ, hQ'⟩` from `exists_translate (toMK g⁻¹) P`. Use `⟨Q, (mem_restrictTotalDegree _ _ _).2 (hQ.trans ((mem_restrictTotalDegree _ _ _).1 hP)), ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[apply_avg]`. Simplify using `only [hQ']`. Both sides reduce to the same expression. Introduce `P hP`. Conclude with `⟨P, (mem_restrictTotalDegree _ _ _).2 hP, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `μ v ⟨P, hP, rfl⟩ hv hw`. Assume the negation of the conclusion as `hμ`. Apply `hv` to reduce the goal to its premises. Establish `hP' : P.totalDegree ≤ d` using `(mem_restrictTotalDegree _ _ _).1 hP`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ)]`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : avg hσ u P = ∑ s ∈ P.support, coeff s P • avg hσ u (monomial s 1)` using `by conv_lhs => rw [P.as_sum, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, smul_monomial, smul_eq_mul, mul_one]`. Generalize the expression as in `avg hσ u P = v at e hw`. Establish `: inner ℂ v (∑ s ∈ P.support, coeff s P • avg hσ u (monomial s 1)) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[inner_sum]`. Use `Finset.sum_eq_zero fun s hs => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, ReciprocityTheory.ChartRestriction.DS.kfin_wt_orth hσ hw (isWtOn_avg hσ u s), mul_zero]`. Introduce and unpack `rfl`. Conclude with `hμ ⟨s, (le_totalDegree hs).trans hP', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← e]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem polyAvg : ∀ (n : ℕ) (ε : Fin n → Bool) (d : ℕ), ∃ A : Set (Fin n → ℝ), A.Finite ∧ ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), ReciprocityTheory.ChartRestriction.DS.IsURepOn (ReciprocityTheory.ChartRestriction.DS.UJset ε) σ → ∀ u : H, ∃ S : Submodule ℂ H, FiniteDimensional ℂ S ∧ Formalism.MainNotions.S.IsKStableOn ε σ S ∧ (∀ P : GlobalTheory.PsCo.Pc1.Poly n, P.totalDegree ≤ d → ∫ k : Formalism.REAL.KG ε, GlobalTheory.PsCo.Pc1.ev (Formalism.REAL.toMK k) P • σ (Formalism.REAL.toMK k) u ∂(Formalism.REAL.muK ε) ∈ S) ∧ ∀ (μ : Fin n → ℝ) (s : H), s ∈ S → s ≠ 0 → Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ μ s → μ ∈ A := by
   intro n ε d

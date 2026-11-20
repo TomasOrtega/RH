@@ -29,7 +29,7 @@ open UpperHalfPlane hiding I in
 open scoped Real in
 
 /- English proof (translation)
-Rewrite using `[← _root_.GlobalTheory.latticeCurve_Δ]`. Conclude with `_root_.GlobalTheory.latticeCurve_Δ_ne_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.disc_ne_zero (τ : ℍ) :
     (_root_.GlobalTheory.periodPairOfTau τ).g₂ ^ 3 - 27 * (_root_.GlobalTheory.periodPairOfTau τ).g₃ ^ 2
@@ -41,7 +41,7 @@ open Complex Polynomial in
 open UpperHalfPlane hiding I in
 open scoped Real in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.jLat, WeierstrassCurve.j, Units.val_inv_eq_inv_val, WeierstrassCurve.coe_Δ', _root_.GlobalTheory.latticeCurve_c₄, _root_.GlobalTheory.latticeCurve_Δ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.jLat_eq (τ : ℍ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.jLat τ = 1728 * (_root_.GlobalTheory.periodPairOfTau τ).g₂ ^ 3 /
@@ -57,13 +57,13 @@ open UpperHalfPlane hiding I in
 open scoped Real in
 
 /- English proof (translation)
-Establish `hpos` using `τ.im_pos`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> rw [_root_.GlobalTheory.mem_lattice_periodPairOfTau] <;>`. Apply the tactic sequence `rintro ⟨m, n, h⟩ <;> have him := congrArg Complex.im h <;> have hre := congrArg Complex.re h <;>`. Simplify using `at him hre`. Break down `him with hm' | hm` into its components or cases.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hm'` using the available equality. Establish `h1 : (((2 * n - 1 : ℤ)) : ℝ) = 0` using `by push_cast at hre ⊢; linarith`. Establish `h2 : 2 * n - 1 = 0` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h0 : (((2 * m - 1 : ℤ)) : ℝ) * τ.im = 0` using `by push_cast; linarith`. Break down `mul_eq_zero.1 h0 with hm | hm` into its components or cases. Establish `h2 : 2 * m - 1 = 0` using `by exact_mod_cast hm`. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h0 : (((2 * m - 1 : ℤ)) : ℝ) * τ.im = 0` using `by push_cast; linarith`. Break down `mul_eq_zero.1 h0 with hm | hm` into its components or cases. Establish `h2 : 2 * m - 1 = 0` using `by exact_mod_cast hm`. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.halfPeriods_notMem (τ : ℍ) :
     (1 / 2 : ℂ) ∉ (_root_.GlobalTheory.periodPairOfTau τ).lattice ∧
@@ -115,9 +115,9 @@ open UpperHalfPlane hiding I in
 open scoped Real in
 
 /- English proof (translation)
-Establish `hη : ModularForm.eta τ ≠ 0` using `ModularForm.eta_ne_zero τ.2`. Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, mul_div_cancel_left₀ _ hη, ← pow_mul]`. Rewrite using `[h2, mul_div_cancel_left₀ _ hη, ← pow_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, mul_div_cancel_left₀ _ hη, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.ThetaWeber.pow_twelve {τ : ℍ}
     (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.ThetaWeber τ) :
@@ -132,7 +132,7 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.ThetaW
   · rw [h3, mul_div_cancel_left₀ _ hη, ← pow_mul]
 
 /- English proof (translation)
-Simplify using `[thetaConst, jacobiTheta_eq_jacobiTheta₂]`.
+Simplify using the standard rewrite rules.
 -/
 example (τ : ℍ) : thetaConst 0 0 τ = jacobiTheta τ := by
   simp [thetaConst, jacobiTheta_eq_jacobiTheta₂]

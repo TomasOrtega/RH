@@ -8,9 +8,9 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 namespace GlobalTheory.CompanionTheory.LamGap
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => if i < m then 1 else 0) N, Finset.sum_boole]`. Establish `hf : (Finset.range N).filter (fun i => i < m) = Finset.range m`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hf, Finset.card_range, Nat.cast_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_lt_indicator (N m : ℕ) (h : m ≤ N) :
     (∑ i : Fin N, if (i : ℕ) < m then 1 else 0) = m := by
@@ -22,9 +22,9 @@ theorem sum_lt_indicator (N m : ℕ) (h : m ≤ N) :
   rw [hf, Finset.card_range, Nat.cast_id]
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => if m ≤ i then 1 else 0) N, Finset.sum_boole]`. Establish `hf : (Finset.range N).filter (fun i => m ≤ i) = Finset.Ico m N`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hf, Nat.card_Ico, Nat.cast_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_ge_indicator (N m : ℕ) (h : m ≤ N) :
     (∑ i : Fin N, if m ≤ (i : ℕ) then 1 else 0) = N - m := by
@@ -36,9 +36,9 @@ theorem sum_ge_indicator (N m : ℕ) (h : m ≤ N) :
   rw [hf, Nat.card_Ico, Nat.cast_id]
 
 /- English proof (translation)
-Establish `hii : (i : ℕ) < (i' : ℕ)` using `h`. Establish `key : Zls.lamOf g i - Zls.lamOf g i' = ((∑ j : Fin (N - 1), if (i : ℕ) ≤ (j : ℕ) ∧ (j : ℕ) < (i' : ℕ) then g j else 0 : ℕ) : ℤ)`. Simplify using `only [Zls.lamOf]`. Rewrite using `[← Finset.sum_sub_distrib, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp_all <;> omega`. Rewrite using `[key, Int.toNat_natCast]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamOf_sub {N : ℕ} (g : Fin (N - 1) → ℕ) (i i' : Fin N) (h : i < i') :
     (Zls.lamOf g i - Zls.lamOf g i').toNat
@@ -53,11 +53,11 @@ theorem lamOf_sub {N : ℕ} (g : Fin (N - 1) → ℕ) (i i' : Fin N) (h : i < i'
   rw [key, Int.toNat_natCast]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Establish `a1 : ((i : ℕ) < j + 1) ↔ (i : ℕ) ≤ j` using `by omega`. Establish `a2 : (j + 1 ≤ (i' : ℕ)) ↔ j < (i' : ℕ)` using `by omega`. Simplify using `only [a1, a2]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp_all`. Use `_ = c * ((∑ i : Fin N, if (i : ℕ) < j + 1 then 1 else 0) * (∑ i' : Fin N, if j + 1 ≤ (i' : ℕ) then 1 else 0)) := by`. Rewrite using `[Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = c * ((j + 1) * (N - (j + 1))) := by`. Rewrite using `[sum_lt_indicator N (j + 1) hj, sum_ge_indicator N (j + 1) hj]`.
+A detailed English derivation is pending.
 -/
 theorem gap_count (N : ℕ) (c j : ℕ) (hj : j + 1 ≤ N) :
     (∑ i : Fin N, ∑ i' : Fin N, if (i : ℕ) ≤ j ∧ j < (i' : ℕ) then c else 0)
@@ -79,13 +79,13 @@ theorem gap_count (N : ℕ) (c j : ℕ) (hj : j + 1 ≤ N) :
         rw [sum_lt_indicator N (j + 1) hj, sum_ge_indicator N (j + 1) hj]
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Zls.lamOf]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `hab' : (a : ℕ) ≤ (b : ℕ)` using `hab`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `step : ∀ i i' : Fin N, (if i < i' then (Zls.lamOf g i - Zls.lamOf g i').toNat else 0) = ∑ j : Fin (N - 1), if (i : ℕ) ≤ (j : ℕ) ∧ (j : ℕ) < (i' : ℕ) then g j else 0`. Introduce `i i'`. Use `split_ifs with hlt`. Conclude with `lamOf_sub g i i' hlt`. Use `symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `hn : ¬ ((i : ℕ) < (i' : ℕ))` using `hlt`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `gap_count N (g j) j (by have := j.isLt; omega)`.
+A detailed English derivation is pending.
 -/
 theorem lamOf_antitone_gap_sum (N : ℕ) (g : Fin (N - 1) → ℕ) :
     Antitone (Zls.lamOf g) ∧

@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 /- English proof (translation)
-Establish `h1 : (A - P + S).re ≤ ‖A - P + S‖` using `by first`. Consider the case `exact Complex.re_le_norm _`. Consider the case `exact Complex.re_le_abs _`. Simplify using `only [Complex.add_re, Complex.sub_re] at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem dhReBound (A P S : ℂ) (E : ℝ) (h : ‖A - P + S‖ ≤ E) : S.re ≤ P.re - A.re + E := by
   have h1 : (A - P + S).re ≤ ‖A - P + S‖ := by
@@ -18,9 +18,9 @@ theorem dhReBound (A P S : ℂ) (E : ℝ) (h : ‖A - P + S‖ ≤ E) : S.re ≤
   linarith
 
 /- English proof (translation)
-Establish `hMr : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hta` using `abs_nonneg t`. Establish `hpos : 0 < (M : ℝ) * (|t| + 2)` using `by positivity`. Establish `h1 : (M : ℝ) * (|t| + 2) ≤ (M : ℝ) * (T + 2)` using `by nlinarith`. Establish `h2 : (M : ℝ) * (T + 2) ≤ ((M : ℝ) * T) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ (M : ℝ) - 3) (by linarith : (0 : ℝ) ≤ T - 2), mul_nonneg (by linarith : (0 : ℝ) ≤ (M : ℝ)) (by linarith : (0 : ℝ) ≤ T - 2)]`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem logMulAbsAddTwoLeTwoMulLog (M : ℕ) (T t : ℝ) (hM : 3 ≤ M) (hT : 2 ≤ T) (ht : |t| ≤ T) :
     Real.log ((M : ℝ) * (|t| + 2)) ≤ 2 * Real.log ((M : ℝ) * T) := by
@@ -36,7 +36,7 @@ theorem logMulAbsAddTwoLeTwoMulLog (M : ℕ) (T t : ℝ) (hM : 3 ≤ M) (hT : 2 
     _ = 2 * Real.log ((M : ℝ) * T) := by rw [Real.log_pow]; norm_num
 
 /- English proof (translation)
-Establish `hMr : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hx : (6 : ℝ) ≤ M * T` using `by nlinarith`. Establish `he` using `Real.exp_one_lt_d9`. Establish `h1 : Real.exp 1 ≤ (M : ℝ) * T` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem dhLogOne (M : ℕ) (T : ℝ) (hM : 3 ≤ M) (hT : 2 ≤ T) : 1 ≤ Real.log ((M : ℝ) * T) := by
   have hMr : (3 : ℝ) ≤ M := by exact_mod_cast hM
@@ -47,23 +47,23 @@ theorem dhLogOne (M : ℕ) (T : ℝ) (hM : 3 ≤ M) (hT : 2 ≤ T) : 1 ≤ Real.
     _ ≤ Real.log ((M : ℝ) * T) := Real.log_le_log (Real.exp_pos 1) h1
 
 /- English proof (translation)
-Establish `hδ : 0 < 1 - β₁` using `by linarith`. Establish `hare : (s - 1).re = η` using `by rw [hs]; simp`. Establish `hbre : (s - β₁).re = η + (1 - β₁)` using `by rw [hs]; simp; ring`. Establish `hna : η ≤ ‖s - 1‖` using `hare ▸ Complex.re_le_norm (s - 1)`. Establish `hnb : η ≤ ‖s - β₁‖` using `le_trans (by linarith) (hbre ▸ Complex.re_le_norm (s - β₁))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : s - 1 ≠ 0` using `fun h => by rw [h, norm_zero] at hna; linarith`. Establish `hb0 : s - β₁ ≠ 0` using `fun h => by rw [h, norm_zero] at hnb; linarith`. Establish `hba : (s - β₁) - (s - 1) = ((1 - β₁ : ℝ) : ℂ)` using `by push_cast; ring`. Establish `hid : 1 / (s - 1) ^ (k + 1) - 1 / (s - β₁) ^ (k + 1) = ((s - β₁) - (s - 1)) * (∑ i ∈ Finset.range (k + 1), (s - β₁) ^ i * (s - 1) ^ (k + 1 - 1 - i)) / ((s - 1) ^ (k + 1) * (s - β₁) ^ (k + 1))`. Rewrite using `[mul_comm ((s - β₁) - (s - 1)), geom_sum₂_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hsum : ‖∑ i ∈ Finset.range (k + 1), (s - β₁) ^ i * (s - 1) ^ (k + 1 - 1 - i)‖ ≤ ((k + 1 : ℕ) : ℝ) * (‖s - 1‖ ^ (k + 1) * ‖s - β₁‖ ^ (k + 1) / η ^ (k + 2))`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_mul, norm_pow, norm_pow, le_div_iff₀ (by positivity)]`. Establish `e1 : η ^ (k + 2) = η ^ (i + 1) * η ^ (k + 1 - i)` using `by rw [← pow_add]; congr 1; omega`. Establish `e2 : ‖s - 1‖ ^ (k + 1) = ‖s - 1‖ ^ (k + 1 - 1 - i) * ‖s - 1‖ ^ (i + 1)`. Rewrite using `[← pow_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Establish `e3 : ‖s - β₁‖ ^ (k + 1) = ‖s - β₁‖ ^ i * ‖s - β₁‖ ^ (k + 1 - i)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[e1, e2, e3]`. Establish `p1 : η ^ (i + 1) ≤ ‖s - 1‖ ^ (i + 1)` using `pow_le_pow_left₀ hη.le hna _`. Establish `p2 : η ^ (k + 1 - i) ≤ ‖s - β₁‖ ^ (k + 1 - i)` using `pow_le_pow_left₀ hη.le hnb _`. Establish `p12` using `mul_le_mul p1 p2 (by positivity) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `_ = ((k + 1 : ℕ) : ℝ) * (‖s - 1‖ ^ (k + 1) * ‖s - β₁‖ ^ (k + 1) / η ^ (k + 2)) := by`. Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `hfinal : ‖1 / (s - 1) ^ (k + 1) - 1 / (s - β₁) ^ (k + 1)‖ ≤ ((k : ℝ) + 1) * (1 - β₁) / η ^ (k + 2)`. Rewrite using `[hid, norm_div, norm_mul, hba, Complex.norm_real, Real.norm_of_nonneg hδ.le, norm_mul, norm_pow, norm_pow]`. Establish `hpos : 0 < ‖s - 1‖ ^ (k + 1) * ‖s - β₁‖ ^ (k + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_pos_iff.mpr ha0` as an intermediate fact. Use `norm_pos_iff.mpr hb0` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[div_le_div_iff₀ hpos (by positivity)]`. Establish `h3` using `mul_le_mul_of_nonneg_left hsum hδ.le`.
+Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h3`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Establish `hre : (1 / (s - 1) ^ (k + 1) - 1 / (s - β₁) ^ (k + 1)).re ≤ ‖1 / (s - 1) ^ (k + 1) - 1 / (s - β₁) ^ (k + 1)‖` using `Complex.re_le_norm _`. Conclude with `hre.trans hfinal`.
+Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dhPair (η γ β₁ : ℝ) (hη : 0 < η) (hβ1 : β₁ < 1) (k : ℕ) (s : ℂ)
     (hs : s = ((1 + η : ℝ) : ℂ) + γ * I) :
@@ -122,11 +122,11 @@ theorem dhPair (η γ β₁ : ℝ) (hη : 0 < η) (hβ1 : β₁ < 1) (k : ℕ) (
   exact hre.trans hfinal
 
 /- English proof (translation)
-Establish `e : ∀ (F : Multiset ℂ) (b : ℂ), b ∈ F → ((F.erase b).map g).sum = (F.map g).sum - g b`. Introduce `F b hb`. Rewrite using `[← Multiset.sum_map_erase hb]`. Normalize the expressions using the abelian group laws. Simplify using `only [Multiset.map_add, Multiset.sum_add, e _ _ h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases hc3 : c3 <;> by_cases hc4 : c4`. Simplify using `only [if_pos hc3, if_pos hc4, e _ _ (h3 hc3), e _ _ (h4 hc4)]`. Normalize the expressions using the abelian group laws. Simplify using `only [if_pos hc3, if_neg hc4, e _ _ (h3 hc3)]`. Normalize the expressions using the abelian group laws.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [if_neg hc3, if_pos hc4, e _ _ (h4 hc4)]`. Normalize the expressions using the abelian group laws. Simplify using `only [if_neg hc3, if_neg hc4]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem dhAssemble {β : Type*} [AddCommGroup β] (F1 F2 F3 F4 : Multiset ℂ) (b2 b3 b4 : ℂ)
     (c3 c4 : Prop) [Decidable c3] [Decidable c4] (h2 : b2 ∈ F2) (h3 : c3 → b3 ∈ F3) (h4 : c4 → b4 ∈ F4)
@@ -151,7 +151,7 @@ theorem dhAssemble {β : Type*} [AddCommGroup β] (F1 F2 F3 F4 : Multiset ℂ) (
     abel
 
 /- English proof (translation)
-Unfold `dhFam at hx`. Rewrite `hx` using `[Multiset.mem_bind]`. Take `⟨ρ, hρ, hx⟩` from `hx`. Rewrite using `[Multiset.eq_of_mem_replicate hx, Complex.sub_re, hs]`. Combine the linear relations using `[hZ ρ hρ]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem dhFam_re (Z : Finset ℂ) (m : ℂ → ℕ) (s x : ℂ) (η : ℝ) (hZ : ∀ ρ ∈ Z, ρ.re < 1)
     (hs : s.re = 1 + η) (hx : x ∈ dhFam Z m s) : η ≤ x.re := by
@@ -162,7 +162,7 @@ theorem dhFam_re (Z : Finset ℂ) (m : ℂ → ℕ) (s x : ℂ) (η : ℝ) (hZ :
   linarith [hZ ρ hρ]
 
 /- English proof (translation)
-Use `split_ifs at h`. Conclude with `Multiset.mem_of_mem_erase h`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem dhMemIte (F : Multiset ℂ) (c : Prop) [Decidable c] (b x : ℂ) (h : x ∈ (if c then F.erase b else F)) :
     x ∈ F := by
@@ -171,7 +171,7 @@ theorem dhMemIte (F : Multiset ℂ) (c : Prop) [Decidable c] (b x : ℂ) (h : x 
   · exact h
 
 /- English proof (translation)
-Unfold `dhFam`. Rewrite using `[Multiset.map_bind, Multiset.sum_bind, Finset.sum_eq_multiset_sum]`. Use `congr 1`. Use `Multiset.map_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Simplify using `[Multiset.map_replicate, Multiset.sum_replicate, div_eq_mul_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem dhFamPow (Z : Finset ℂ) (m : ℂ → ℕ) (s : ℂ) (k : ℕ) :
     ((dhFam Z m s).map (fun x => 1 / x ^ (k + 1))).sum = ∑ ρ ∈ Z, (m ρ : ℂ) / (s - ρ) ^ (k + 1) := by

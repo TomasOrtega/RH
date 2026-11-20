@@ -17,9 +17,9 @@ def coeLin : (𝓞 L →ₗ[ℤ] ℂ) →ₗ[ℂ] (𝓞 L → ℂ) where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun σ : L →+* ℂ => ((σ.comp (algebraMap (𝓞 L) L)).toMonoidHom : 𝓞 L →* ℂ))`. Introduce `σ τ h`. Apply `IsFractionRing.ringHom_ext (A := 𝓞 L)` to reduce the goal to its premises. Introduce `x`. Conclude with `DFunLike.congr_fun h x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(linearIndependent_monoidHom (𝓞 L) ℂ).comp _ hinj`. Apply `LinearIndependent.of_comp (coeLin L)` to reduce the goal to its premises. Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem embLin_linIndep : LinearIndependent ℂ (embLin L) := by
   have hinj : Function.Injective
@@ -33,15 +33,15 @@ theorem embLin_linIndep : LinearIndependent ℂ (embLin L) := by
   exact h1
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_linearMap_self, NumberField.RingOfIntegers.rank, NumberField.Embeddings.card]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_lin : Module.finrank ℂ (𝓞 L →ₗ[ℤ] ℂ) = Fintype.card (L →+* ℂ) := by
   rw [Module.finrank_linearMap_self, NumberField.RingOfIntegers.rank, NumberField.Embeddings.card]
 
 /- English proof (translation)
-Establish `hspan` using `(embLin_linIndep L).span_eq_top_of_card_eq_finrank' (finrank_lin L).symm`. Set `f : 𝓞 L →ₗ[ℤ] ℂ` to `((Complex.ofRealHom : ℝ →+* ℂ).toAddMonoidHom.comp α).toIntLinearMap`. Establish `hf : f ∈ Submodule.span ℂ (Set.range (embLin L))`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hf`. Use `⟨c, fun x => ?_⟩` and prove the remaining obligations. Establish `hx` using `LinearMap.congr_fun hc x`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] at hx`. Conclude with `hx.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_span (α : 𝓞 L →+ ℝ) :
     ∃ c : (L →+* ℂ) → ℂ, ∀ x : 𝓞 L, (α x : ℂ) = ∑ σ, c σ * σ (algebraMap (𝓞 L) L x) := by
@@ -57,11 +57,11 @@ theorem emb_span (α : 𝓞 L →+ ℝ) :
   exact hx.symm
 
 /- English proof (translation)
-Set `e : Matrix (Fin n) (Fin r) (𝓞 L) →+ Additive (Multiplicative (Matrix (Fin n) (Fin r) (𝓞 L)))` to `{ toFun := fun m => Additive.ofMul (Multiplicative.ofAdd m) map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hc : ∀ i j, ∃ c : (L →+* ℂ) → ℂ, ∀ y : 𝓞 L, ((α.comp (e.comp (Matrix.singleAddMonoidHom i j))) y : ℂ) = ∑ σ, c σ * σ (algebraMap (𝓞 L) L y)` using `fun i j => emb_span L _`. Use `choose c hc using hc`. Use `⟨fun j => c j.1 j.2.1 j.2.2, fun x => ?_⟩` and prove the remaining obligations. Establish `lhs : (α x : ℂ) = ∑ i, ∑ j, ((α.comp (e.comp (Matrix.singleAddMonoidHom i j))) (Multiplicative.toAdd (Additive.toMul x) i j) : ℂ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x = e (Multiplicative.toAdd (Additive.toMul x))` using `rfl`. Use `conv_lhs => rw [hx, Matrix.matrix_eq_sum_single (Multiplicative.toAdd (Additive.toMul x))]`. Simplify using `only [map_sum, Complex.ofReal_sum]`. Both sides reduce to the same expression. Rewrite using `[lhs]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `hc i j _`.
+A detailed English derivation is pending.
 -/
 theorem mat_span (n r : ℕ) (α : Additive (Multiplicative (Matrix (Fin n) (Fin r) (𝓞 L))) →+ ℝ) :
     ∃ c : Fin n × Fin r × (L →+* ℂ) → ℂ, ∀ x,

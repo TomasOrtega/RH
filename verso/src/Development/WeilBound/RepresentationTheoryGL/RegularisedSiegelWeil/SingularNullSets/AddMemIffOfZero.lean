@@ -18,18 +18,18 @@ open GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef (testT boxA fouA intF)
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hab with h | h <;> subst h <;> simp [h0]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem add_mem_iff_of_zero {X : Type} [AddCommGroup X] {P : Set X} (h0 : (0 : X) ∈ P) {a b : X} (hab : a = 0 ∨ b = 0) :
     a + b ∈ P ↔ a ∈ P ∧ b ∈ P := by
   rcases hab with h | h <;> subst h <;> simp [h0]
 
 /- English proof (translation)
-Establish `hz : ∀ v, h.2 v = 0 ∨ y.2 v = 0` using `fun v => by`. Distinguish the cases in `hv : v ∈ S`. Conclude with `Or.inr (ker_snd hε hy hv)`. Conclude with `Or.inl (fix_snd hε hh hv)`. Establish `hadd : ∀ v, (sndA F (h + y)) v = h.2 v + y.2 v` using `fun v => rfl`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. Establish an intermediate fact.
 
-Simplify using `only [boxA, Set.mem_ofPred_eq, hadd]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨fun v hv => ((add_mem_iff_of_zero (hU v) (hz v)).1 (h1 v hv)).1, fun v hv => ((add_mem_iff_of_zero (zero_mem _) (hz v)).1 (h2 v hv)).1⟩, ⟨fun v hv => ((add_mem_iff_of_zero (hU v) (hz v)).1 (h1 v hv)).2, fun v hv => ((add_mem_iff_of_zero (zero_mem _) (hz v)).1 (h2 v hv)).2⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨h1, h2⟩, ⟨h3, h4⟩⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun v hv => (add_mem_iff_of_zero (hU v) (hz v)).2 ⟨h1 v hv, h3 v hv⟩, fun v hv => (add_mem_iff_of_zero (zero_mem _) (hz v)).2 ⟨h2 v hv, h4 v hv⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem box_split {S S' : Finset (HeightOneSpectrum (𝓞 F))} (hSS : S ⊆ S') {ε : AF F} (hε : IsIdF S ε)
     (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (hU : ∀ v, (0 : Fv F v) ∈ U v) {h y : AF F} (hh : ε * h = h)
@@ -55,7 +55,7 @@ def tR (ρ : Ainf F → ℝ) (S : Finset (HeightOneSpectrum (𝓞 F))) (U : ∀ 
   ρ (fstA F y) * (boxA S U).indicator (fun _ => (1 : ℝ)) (sndA F y)
 
 /- English proof (translation)
-Simplify using `only [testT, tR, Set.indicator]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem testT_eq (ρ : Ainf F → ℝ) (S : Finset (HeightOneSpectrum (𝓞 F))) (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v))
     (y : AF F) : testT ρ S U y = ((tR ρ S U y : ℝ) : ℂ) := by
@@ -63,7 +63,7 @@ theorem testT_eq (ρ : Ainf F → ℝ) (S : Finset (HeightOneSpectrum (𝓞 F)))
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (hρ _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _)`.
+A detailed English derivation is pending.
 -/
 theorem tR_nonneg {ρ : Ainf F → ℝ} (hρ : ∀ y, 0 ≤ ρ y) (S : Finset (HeightOneSpectrum (𝓞 F)))
     (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (y : AF F) : 0 ≤ tR ρ S U y :=
@@ -73,11 +73,11 @@ def bR (S : Finset (HeightOneSpectrum (𝓞 F))) (U : ∀ v : HeightOneSpectrum 
   (boxA S U).indicator (fun _ => (1 : ℝ)) (sndA F y)
 
 /- English proof (translation)
-Establish `hf : fstA F (h + y) = fstA F h`. Rewrite using `[map_add, fst_eq y, ker_fst hε hy, add_zero]`. Establish `hb` using `box_split hSS hε U hU hh hy`. Unfold `tR bR`. Rewrite using `[hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : sndA F h ∈ boxA S' U <;> by_cases h2 : sndA F y ∈ boxA S' U`. Rewrite using `[Set.indicator_of_mem (hb.2 ⟨h1, h2⟩), Set.indicator_of_mem h1, Set.indicator_of_mem h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem (fun h' => h2 (hb.1 h').2), Set.indicator_of_notMem h2]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Set.indicator_of_notMem (fun h' => h1 (hb.1 h').1), Set.indicator_of_notMem h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem (fun h' => h1 (hb.1 h').1), Set.indicator_of_notMem h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tR_split {S S' : Finset (HeightOneSpectrum (𝓞 F))} (hSS : S ⊆ S') {ε : AF F} (hε : IsIdF S ε) (ρ : Ainf F → ℝ)
     (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (hU : ∀ v, (0 : Fv F v) ∈ U v) {h y : AF F} (hh : ε * h = h)

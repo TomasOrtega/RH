@@ -10,9 +10,9 @@ namespace RestTerms
 open MvPolynomial Finset
 
 /- English proof (translation)
-Introduce `f N Φ`. Unfold `flagIntegral`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Establish `hdeg : α.degree = topDegree f N`. Rewrite using `[Finsupp.degree_eq_weight_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 f N (mem_support_iff.mp hα)`. Rewrite using `[coeff_homogeneousComponent, if_pos hdeg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagIntegralTopComponent.proof (h1 : FlagVandermondeHomogeneous.Statement) :
     FlagIntegralTopComponent.Statement := by

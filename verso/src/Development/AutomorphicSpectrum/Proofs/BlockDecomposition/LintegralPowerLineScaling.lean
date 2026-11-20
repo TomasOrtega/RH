@@ -7,15 +7,15 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch GlobalTheory.CompanionTheo
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.HuaInt
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hint : Integrable (fun t : ℝ => (1 + t ^ 2) ^ (-s))`. Establish `h0` using `integrable_rpow_neg_one_add_norm_sq (E := ℝ) (μ := volume) (r := 2 * s) (by simp; linarith)`. Establish `e : -(2 * s) / 2 = -s` using `by ring`. Simplify `h0` using `[Real.norm_eq_abs, sq_abs, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨∫⁻ t, ENNReal.ofReal ((1 + t ^ 2) ^ (-s)), hint.lintegral_lt_top.ne, ?_⟩` and prove the remaining obligations. Introduce `a ha m`. Establish `hF : Measurable fun d : ℝ => ENNReal.ofReal ((a ^ 2 + d ^ 2) ^ (-s))` using `by fun_prop`. Rewrite using `[lintegral_sub_right_eq_self (fun d : ℝ => ENNReal.ofReal ((a ^ 2 + d ^ 2) ^ (-s))) m]`. Establish `hpt : ∀ t : ℝ, ENNReal.ofReal ((a ^ 2 + (a * t) ^ 2) ^ (-s)) = ENNReal.ofReal (a ^ ((2 : ℕ) * -s : ℝ)) * ENNReal.ofReal ((1 + t ^ 2) ^ (-s))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), show a ^ 2 + (a * t) ^ 2 = a ^ 2 * (1 + t ^ 2) by ring, Real.mul_rpow (by positivity) (by positivity), ← Real.rpow_natCast a 2, ← Real.rpow_mul ha.le]`. Establish `hpow : a ^ (1 - 2 * s) = a * a ^ ((2 : ℕ) * -s : ℝ)`. Rewrite using `[show (1 - 2 * s) = 1 + ((2 : ℕ) * -s : ℝ) by push_cast; ring, Real.rpow_add ha, Real.rpow_one]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Real.smul_map_volume_mul_left ha.ne']`. Use `_ = ENNReal.ofReal |a| * ∫⁻ t, ENNReal.ofReal ((a ^ 2 + (a * t) ^ 2) ^ (-s)) := by`. Rewrite using `[lintegral_smul_measure, lintegral_map hF (measurable_const_mul a), smul_eq_mul]`. Use `_ = ENNReal.ofReal a * (ENNReal.ofReal (a ^ ((2 : ℕ) * -s : ℝ)) * ∫⁻ t, ENNReal.ofReal ((1 + t ^ 2) ^ (-s))) := by`. Rewrite using `[abs_of_pos ha]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hpt]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `_ = _ := by`. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul ha.le, ← hpow, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_sq_add_sq_rpow_neg :
     ∀ s : ℝ, 1 / 2 < s → ∃ C : ENNReal, C ≠ ⊤ ∧ ∀ a : ℝ, 0 < a → ∀ m : ℝ,

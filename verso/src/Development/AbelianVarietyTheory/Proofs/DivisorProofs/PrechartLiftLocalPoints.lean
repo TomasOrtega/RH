@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Introduce `R _ G _ _ N q c B _ _ _ x h`. Establish `hx : Set.range x.1.left ⊆ c.W`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `h1 : x.1.left (IsLocalRing.closedPoint B) ∈ c.W`. Establish `h2` using `h ⟨IsLocalRing.closedPoint (IsLocalRing.ResidueField B), rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (spOver (IsScalarTower.toAlgHom R B (IsLocalRing.ResidueField B))).left (IsLocalRing.closedPoint (IsLocalRing.ResidueField B)) = IsLocalRing.closedPoint B` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue B)`. Rewrite using `[← h3]`. Conclude with `h2`. Establish `h4 : x.1.left y ⤳ x.1.left (IsLocalRing.closedPoint B)` using `(IsLocalRing.specializes_closedPoint y).map x.1.left.continuous`. Conclude with `h4.mem_open c.W.isOpen h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ψ, -, hψ⟩` from `(c.bij B).surjOn hx`. Conclude with `⟨ψ, hψ⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_of_residue : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (q : PrimeSpectrum R) (c : PreChart G N q) (B : Type) [CommRing B] [IsLocalRing B] [Algebra R B] (x : Tors G N B), Set.range (torsMap (IsScalarTower.toAlgHom R B (IsLocalRing.ResidueField B)) x).1.left ⊆ c.W → ∃ ψ : c.C →ₐ[R] B, torsMap ψ c.j = x := by
   intro R _ G _ _ N q c B _ _ _ x h

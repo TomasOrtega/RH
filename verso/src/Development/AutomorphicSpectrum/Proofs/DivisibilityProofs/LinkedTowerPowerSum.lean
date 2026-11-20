@@ -10,13 +10,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Introduce `Ψ _ _ N T II hII hprop φ hL`. Introduce `B₀ B hB₀ hB c τ k hk1 hkN Q hQ`. Take `⟨M, R, S, hS, hMc, hRc, hMPP, hRPP, hgeo, hch, hloc⟩` from `hL B₀ B hB₀ hB c`. Establish `hstep` using `GlobalTheory.T.limit_height_constant_shift Ψ N M R.model II hMc hRc (toA (pk τ k * Q)) (∑ p ∈ S, Real.log (p : ℕ) * M.geoFun (toA (bracket T.j (φ p) p k τ * Q))) (fun t ht => GlobalTheory.T.power_sum_height_change_model Ψ N M R II hII S T.j φ hch hloc t ht τ k hk1 hkN Q hQ)`. Rewrite `hstep` using `[hMPP, hRPP]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hstep]`. Use `congr 1`. Establish `hSeq : S.map ⟨(fun p : Nat.Primes => (p : ℕ)), Nat.Primes.coe_nat_injective⟩ = (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ T.bad)`. Use extensionality with `n`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_Ioc, Function.Embedding.coeFn_mk]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Establish `h` using `(hS p).1 hp`. Conclude with `⟨⟨h.1, h.2.1⟩, p.2, h.2.2⟩`. Introduce and unpack `⟨⟨h1, h2⟩, hpr, hbad⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨n, hpr⟩, (hS _).2 ⟨h1, h2, hbad⟩, rfl⟩`. Rewrite using `[← hSeq, Finset.sum_map, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = T.vol c * deltaTerm T.j (p : ℕ) τ (fun n => (φ (p : ℕ) ^ (n + 1)) (Sum.inl τ)) k Q`. Rewrite using `[hgeo, hprop.2.1, ← log_mul_degFl_bracket_mul Ψ N T.j p k p.2.two_le hk1 (φ p) τ Q]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

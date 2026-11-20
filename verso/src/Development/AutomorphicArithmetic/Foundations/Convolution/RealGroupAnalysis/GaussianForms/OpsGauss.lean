@@ -9,21 +9,21 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
 /- English proof (translation)
-Introduce `F _ _ δ η O hδ hη hidx t`. Take `⟨b, hb⟩ : ∃ b : (A F)ˣ, b = -t⁻¹` from `⟨_, rfl⟩`. Establish `hbc : -((t⁻¹ : (A F)ˣ) : A F) = (b : A F)` using `by simp [hb]`. Establish `htb : -(((b⁻¹ : (A F)ˣ) : A F)) = (t : A F)` using `by simp [hb]`. Rewrite using `[hbc, ← hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun φ => Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`. Establish `hL : (O.W (O.N (t : A F) (O.W φ))).1 v = ft4 δ (fun y => ψ ((t : A F) * q4 δ y) * ft4 δ φ.1 y) v`. Rewrite using `[O.W_apply]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[O.N_apply, O.W_apply]`. Establish `hR : (O.N (b : A F) (O.M b (O.W (O.N (b : A F) φ)))).1 v = ((η b : ℂˣ) : ℂ) * ((ab b ^ 2 : ℝ) : ℂ) * Pc δ (b : A F) φ.1 v`. Rewrite using `[O.N_apply, O.M_apply, O.W_apply, (pcMem F δ).1]`. Establish `: (fun y => (O.N (b : A F) φ).1 y) = fun x => ψ ((b : A F) * q4 δ x) * φ.1 x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun y => O.N_apply _ _ _`. Establish `h2 : (O.N (b : A F) φ).1 = fun x => ψ ((b : A F) * q4 δ x) * φ.1 x` using `this`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hG` using `gaussOp F δ hδ b _ (hidx b) φ v`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hη2 : ((η b : ℂˣ) : ℂ) ^ 2 = 1`. Use `congrArg (fun u : ℂˣ => (u : ℂ)) (hη b)` as an intermediate fact. Simplify using `using this`. Establish `hab : ab b ≠ 0`. Establish `: 0 < ab b` using `(IdeleGroup.ideleModule F b).2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.ne'`. Establish `habc : ((ab b : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hab`. Establish `hfn : (fun y => ψ (-(((b⁻¹ : (A F)ˣ) : A F) * q4 δ y)) * ft4 δ φ.1 y) = fun y => ψ ((t : A F) * q4 δ y) * ft4 δ φ.1 y`. Use function extensionality and compare the values at `y`. Rewrite using `[← htb, neg_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hG` using `[hfn]`. Rewrite using `[hL, hR, hG]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hη2]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.opsGauss :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F) (η : (A F)ˣ →* ℂˣ) (O : Ops δ η), δ ≠ 0 → (∀ a, η a ^ 2 = 1) →

@@ -13,9 +13,9 @@ section General
 variable {R M : Type} [CommRing R] [IsDomain R] [AddCommGroup M] [Module R M] [Module.Finite R M]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_linearIndependent_of_le_finrank (R := R) (M := M) hr.ge`. Establish `h1` using `(Submodule.span R (Set.range v)).finrank_quotient_add_finrank`. Rewrite `h1` using `[finrank_span_eq_card hv, Fintype.card_fin, hr]`. Establish `h2 : Module.IsTorsion R (M ⧸ Submodule.span R (Set.range v))` using `Module.finrank_eq_zero_iff_isTorsion.1 (by omega)`. Take `⟨c, hc, hc0⟩` from `Submodule.annihilator_top_inter_nonZeroDivisors h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨v, c, nonZeroDivisors.ne_zero hc0, fun m => ?_⟩` and prove the remaining obligations. Establish `h3` using `Submodule.mem_annihilator.1 hc (Submodule.Quotient.mk m) trivial`. Rewrite `h3` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨s, hs⟩` from `h3`. Conclude with `⟨s, hs.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_span_smul_mem {r : ℕ} (hr : Module.finrank R M = r) :
     ∃ (v : Fin r → M) (c : R), c ≠ 0 ∧ ∀ m : M, ∃ s : Fin r → R, c • m = ∑ i, s i • v i := by
@@ -33,9 +33,9 @@ theorem exists_span_smul_mem {r : ℕ} (hr : Module.finrank R M = r) :
   exact ⟨s, hs.symm⟩
 
 /- English proof (translation)
-Establish `h1` using `A.finrank_quotient_add_finrank`. Establish `h2 : Module.finrank R B ≤ Module.finrank R (M ⧸ A)`. Use `LinearMap.finrank_le_finrank_of_injective (f := A.mkQ ∘ₗ B.subtype) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (Submodule.disjoint_def.1 h _ ((Submodule.Quotient.mk_eq_zero A).1 hb) b.2)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_add_le_of_disjoint {A B : Submodule R M} (h : Disjoint A B) :
     Module.finrank R A + Module.finrank R B ≤ Module.finrank R M := by
@@ -52,7 +52,7 @@ end General
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Introduce `h` and use `by have h0 : H.rt0 = 0 := by linear_combination h / 2 have := H.sqrt_neg_disc_sq rw [h0] at this exact H.d_prime.ne_zero (by simpa using this)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rt0_ne_neg (H : Host E) : H.rt0 ≠ -H.rt0 := fun h => by
   have h0 : H.rt0 = 0 := by linear_combination h / 2
@@ -61,13 +61,13 @@ theorem rt0_ne_neg (H : Host E) : H.rt0 ≠ -H.rt0 := fun h => by
   exact H.d_prime.ne_zero (by simpa using this)
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h1 : τ (H.rt : E) ^ 2 = -(H.d : ℂ)`. Use `congrArg (fun x : 𝓞 E => τ (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (h1.trans hρ.symm) with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨τ, h⟩`. Use `⟨(starRingEnd ℂ).comp τ, ?_⟩` and prove the remaining obligations. Establish `hre : ρ.re = 0`. Establish `e1` using `congrArg Complex.re hρ`. Establish `e2` using `congrArg Complex.im hρ`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Simplify using `[pow_two] at e1 e2`. Establish `e3 : ρ.re * ρ.im = 0` using `by linarith`. Break down `mul_eq_zero.1 e3 with e | e` into its components or cases. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[e]`. Use polynomial arithmetic with `[mul_self_nonneg ρ.re]`. Rewrite using `[RingHom.comp_apply, h]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_embedding (H : Host E) {ρ : ℂ} (hρ : ρ ^ 2 = -(H.d : ℂ)) : ∃ τ : E →+* ℂ, τ (H.rt : E) = ρ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -93,17 +93,17 @@ theorem exists_embedding (H : Host E) {ρ : ℂ} (hρ : ρ ^ 2 = -(H.d : ℂ)) :
 variable {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty Pe)
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Take `⟨v, c, hc, hv⟩` from `exists_span_smul_mem (R := 𝓞 E) (M := PureType.lat hP ρ) rfl`. Set `pr : (Fin g → ℂ) →ₗ[ℂ] ({i // ty i = τ} → ℂ)` to `LinearMap.funLeft ℂ ℂ Subtype.val`. Establish `hsm : ∀ (s : 𝓞 E) (a : D.La), pr (Pe (s • a)) = τ (s : E) • pr (Pe a)` using `fun s a => by`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [pr, LinearMap.funLeft_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hP.1, i.2]`. Set `W : Submodule ℂ ({i // ty i = τ} → ℂ)` to `Submodule.span ℂ (Set.range fun i => pr (Pe (v i)))`. Establish `h1 : ∀ a : PureType.lat hP ρ, pr (Pe a) ∈ W` using `fun a => by`. Take `⟨s, hs⟩` from `hv a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc' : τ (c : E) ≠ 0` using `by simpa using hc`. Rewrite using `[← W.smul_mem_iff hc', ← hsm, ← Submodule.coe_smul, hs, Submodule.coe_sum, map_sum, map_sum]`. Use `W.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hsm]`. Conclude with `W.smul_mem _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ a : D.La, pr (Pe a) ∈ W` using `fun a => by`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 (hs a)`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hy0 : pr (Pe y) = 0` using `funext fun i => hy i (by rw [i.2, hτ]; exact hne)`. Rewrite using `[← W.smul_mem_iff hn', Nat.cast_smul_eq_nsmul, ← map_nsmul, ← map_nsmul, ← hxy, map_add, map_add, hy0, add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1 ⟨x, hx⟩`. Establish `h3 : W = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `w -`. Take `⟨z, rfl⟩` from `LinearMap.funLeft_surjective_of_injective ℂ ℂ (Subtype.val : {i // ty i = τ} → Fin g) Subtype.val_injective w`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : z ∈ Submodule.span ℝ (Set.range Pe)` using `by rw [hP.2.2.2.1]; trivial`. Establish `: Submodule.span ℝ (Set.range Pe) ≤ (W.comap pr).restrictScalars ℝ` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact h2 a)`. Conclude with `this hz`. Establish `h4` using `finrank_le_of_span_eq_top h3`. Simplify `h4` using `[Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_le_finrank_lat {ρ ρ' : ℂ} (hne : ρ ≠ ρ') {n : ℕ} (hn : 0 < n)
     (hs : ∀ a : D.La, n • a ∈ PureType.lat hP ρ ⊔ PureType.lat hP ρ') {τ : E →+* ℂ} (hτ : τ (H.rt : E) = ρ) :
@@ -144,9 +144,9 @@ theorem card_le_finrank_lat {ρ ρ' : ℂ} (hne : ρ ≠ ρ') {n : ℕ} (hn : 0 
   simpa [Nat.card_eq_fintype_card] using h4
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Establish `hne` using `rt0_ne_neg H`. Take `⟨τ, hτ⟩` from `exists_embedding H H.sqrt_neg_disc_sq`. Take `⟨τ', hτ'⟩` from `exists_embedding H (ρ := -H.rt0) (by rw [neg_sq, H.sqrt_neg_disc_sq])`. Establish `h1` using `card_le_finrank_lat hP hne hn hs hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `card_le_finrank_lat hP hne.symm hn (fun a => sup_comm (PureType.lat hP H.rt0) _ ▸ hs a) hτ'`. Rewrite `h1` using `[(ht τ).1 hτ]`. Rewrite `h2` using `[(ht τ').2 (by rw [hτ']; exact hne.symm)]`. Establish `h3` using `finrank_add_le_of_disjoint (PureType.disjoint_lat hP hne)`. Rewrite `h3` using `[D.rank]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/

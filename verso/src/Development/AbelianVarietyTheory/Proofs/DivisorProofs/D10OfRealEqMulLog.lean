@@ -9,7 +9,7 @@ open scoped Real ContDiff
 namespace GlobalTheory.TorsionForm.FlatAcyc.DivId
 
 /- English proof (translation)
-Simplify using `only [d10, fderiv_fun_sum hF, ContinuousLinearMap.sum_apply, Finset.smul_sum, ← Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem d10_sum_scalar {g : ℕ} {ι : Type} (s : Finset ι) {F : ι → (Fin g → ℂ) → ℂ}
     {P : Fin g → ℂ} (hF : ∀ i ∈ s, DifferentiableAt ℝ (F i) P) (v : Fin g → ℂ) :
@@ -18,7 +18,7 @@ theorem d10_sum_scalar {g : ℕ} {ι : Type} (s : Finset ι) {F : ι → (Fin g 
     ← Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Rewrite using `[dz_mul_leibniz (differentiableAt_const c) hF]`. Simplify using `[d10]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d10_const_mul {g : ℕ} (c : ℂ) {F : (Fin g → ℂ) → ℂ}
     {P : Fin g → ℂ} (hF : DifferentiableAt ℝ F P) (v : Fin g → ℂ) :
@@ -27,7 +27,7 @@ theorem d10_const_mul {g : ℕ} (c : ℂ) {F : (Fin g → ℂ) → ℂ}
   simp [d10]
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ (fun z' => (H z' : ℂ)) z = Complex.ofRealCLM.comp (fderiv ℝ H z)` using `(Complex.ofRealCLM.hasFDerivAt.comp z hH.hasFDerivAt).fderiv`. Establish `h2 : fderiv ℝ (fun z' => (Real.log (H z') : ℂ)) z = Complex.ofRealCLM.comp ((H z)⁻¹ • fderiv ℝ H z)` using `(Complex.ofRealCLM.hasFDerivAt.comp z (hH.hasFDerivAt.log h0)).fderiv`. Establish `h0' : (H z : ℂ) ≠ 0` using `by exact_mod_cast h0`. Simplify using `only [d10, h1, h2, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Complex.ofRealCLM_apply, Complex.ofReal_mul, Complex.ofReal_inv]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem d10_ofReal_eq_mul_log {g : ℕ} {H : (Fin g → ℂ) → ℝ} {z : Fin g → ℂ}
     (hH : DifferentiableAt ℝ H z) (h0 : H z ≠ 0) (v : Fin g → ℂ) :
@@ -43,7 +43,7 @@ theorem d10_ofReal_eq_mul_log {g : ℕ} {H : (Fin g → ℂ) → ℝ} {z : Fin g
   field_simp
 
 /- English proof (translation)
-Establish `h` using `(contDiff_infty_iff_fderiv.1 hu).2`. Establish `h1 : ∀ w : Fin g → ℂ, DifferentiableAt ℝ (fun z' => fderiv ℝ u z' w) z` using `fun w => ((h.clm_apply contDiff_const).differentiable (by simp)) z`. Simplify using `only [d01, smul_eq_mul]`. Conclude with `((h1 _).add ((h1 _).const_mul _)).const_mul _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_d01 {g : ℕ} {u : (Fin g → ℂ) → ℂ} (hu : ContDiff ℝ ∞ u)
     (v z : Fin g → ℂ) : DifferentiableAt ℝ (fun z' => d01 u z' v) z := by
@@ -54,11 +54,11 @@ theorem differentiableAt_d01 {g : ℕ} {u : (Fin g → ℂ) → ℂ} (hu : ContD
   exact ((h1 _).add ((h1 _).const_mul _)).const_mul _
 
 /- English proof (translation)
-Introduce `g G H hH hpos u hu z`. Establish `hHd : DifferentiableAt ℝ H z` using `(hH.differentiable (by simp)) z`. Establish `hud : DifferentiableAt ℝ u z` using `(hu.differentiable (by simp)) z`. Establish `hHc : DifferentiableAt ℝ (fun z' => (H z' : ℂ)) z` using `Complex.ofRealCLM.differentiableAt.comp z hHd`. Establish `huc : DifferentiableAt ℝ (fun z' => starRingEnd ℂ (u z')) z` using `Complex.conjCLE.toContinuousLinearMap.differentiableAt.comp z hud`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ a c, DifferentiableAt ℝ (fun z' => G a c * d01 u z' (ev c)) z` using `fun a c => (differentiableAt_d01 hu _ z).const_mul _`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hs : DifferentiableAt ℝ (fun z' => ∑ c, G a c * d01 u z' (ev c)) z` using `DifferentiableAt.fun_sum fun c _ => hterm a c`. Rewrite using `[dz_mul_leibniz (φ := fun z' => (H z' : ℂ) * starRingEnd ℂ (u z')) (hHc.mul huc) hs, dz_mul_leibniz hHc huc, dz_conj_eq_conj_dbar hud, d10_ofReal_eq_mul_log hHd (hpos z).ne', d10_sum_scalar _ (fun c _ => hterm a c)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[d10_const_mul _ (differentiableAt_d01 hu _ z)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem divergence_identity : ∀ {g : ℕ} (G : Matrix (Fin g) (Fin g) ℂ) (H : (Fin g → ℂ) → ℝ), ContDiff ℝ ∞ H → (∀ z, 0 < H z) → ∀ (u : (Fin g → ℂ) → ℂ), ContDiff ℝ ∞ u → ∀ z : Fin g → ℂ, ∑ a, d10 (fun z' => (H z' : ℂ) * starRingEnd ℂ (u z') * ∑ c, G a c * d01 u z' (ev c)) z (ev a) = (H z : ℂ) * starRingEnd ℂ (u z) * (∑ a, ∑ c, G a c * (d10 (fun z' => d01 u z' (ev c)) z (ev a) + d10 (fun z' => (Real.log (H z') : ℂ)) z (ev a) * d01 u z (ev c))) + (H z : ℂ) * ∑ a, ∑ c, G a c * (starRingEnd ℂ (d01 u z (ev a)) * d01 u z (ev c)) := by
   intro g G H hH hpos u hu z

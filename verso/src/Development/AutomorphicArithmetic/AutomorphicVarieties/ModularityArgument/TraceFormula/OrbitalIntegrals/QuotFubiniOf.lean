@@ -28,132 +28,132 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 namespace UpperTheory.V.Z.Tf.Orb
 
 /- English proof (translation)
-The claim follows from `gLTop`.
+A detailed English derivation is pending.
 -/
 theorem gLTop_of : GLTop := gLTop
 
 /- English proof (translation)
-The claim follows from `extCont`.
+A detailed English derivation is pending.
 -/
 theorem extCont_of : ExtCont := extCont
 
 /- English proof (translation)
-The claim follows from `centComm`.
+A detailed English derivation is pending.
 -/
 theorem centComm_of : CentComm := centComm
 
 /- English proof (translation)
-The claim follows from `twCent extCont_of gLTop_of centComm_of`.
+A detailed English derivation is pending.
 -/
 theorem twCent_of : TwCent := twCent extCont_of gLTop_of centComm_of
 
 /- English proof (translation)
-The claim follows from `unimod gLTop_of`.
+A detailed English derivation is pending.
 -/
 theorem unimod_of : Unimod := unimod gLTop_of
 
 /- English proof (translation)
-The claim follows from `finPres`.
+A detailed English derivation is pending.
 -/
 theorem finPres_of : FinPres := finPres
 
 /- English proof (translation)
-The claim follows from `haarComm`.
+A detailed English derivation is pending.
 -/
 theorem haarComm_of : HaarComm := haarComm
 
 /- English proof (translation)
-The claim follows from `haarConj`.
+A detailed English derivation is pending.
 -/
 theorem haarConj_of : HaarConj := haarConj
 
 /- English proof (translation)
-The claim follows from `quotIndep`.
+A detailed English derivation is pending.
 -/
 theorem quotIndep_of : QuotIndep := quotIndep
 
 /- English proof (translation)
-The claim follows from `quotConj haarComm_of quotIndep_of`.
+A detailed English derivation is pending.
 -/
 theorem quotConj_of : QuotConj := quotConj haarComm_of quotIndep_of
 
 /- English proof (translation)
-The claim follows from `quotScale quotIndep_of`.
+A detailed English derivation is pending.
 -/
 theorem quotScale_of : QuotScale := quotScale quotIndep_of
 
 /- English proof (translation)
-The claim follows from `normEx`.
+A detailed English derivation is pending.
 -/
 theorem normEx_of : NormEx := normEx
 
 /- English proof (translation)
-The claim follows from `quotMass`.
+A detailed English derivation is pending.
 -/
 theorem quotMass_of : QuotMass := quotMass
 
 /- English proof (translation)
-The claim follows from `quotInt quotMass_of`.
+A detailed English derivation is pending.
 -/
 theorem quotInt_of : QuotInt := quotInt quotMass_of
 
 /- English proof (translation)
-The claim follows from `quotPos quotIndep_of quotInt_of quotMass_of`.
+A detailed English derivation is pending.
 -/
 theorem quotPos_of : QuotPos := quotPos quotIndep_of quotInt_of quotMass_of
 
 /- English proof (translation)
-The claim follows from `quotRight quotIndep_of`.
+A detailed English derivation is pending.
 -/
 theorem quotRight_of : QuotRight := quotRight quotIndep_of
 
 /- English proof (translation)
-The claim follows from `quotFubini quotMass_of`.
+A detailed English derivation is pending.
 -/
 theorem quotFubini_of : QuotFubini := quotFubini quotMass_of
 
 /- English proof (translation)
-The claim follows from `convTest`.
+A detailed English derivation is pending.
 -/
 theorem convTest_of : ConvTest := convTest
 
 /- English proof (translation)
-The claim follows from `absComm quotFubini_of quotRight_of finPres_of`.
+A detailed English derivation is pending.
 -/
 theorem absComm_of : AbsComm := absComm quotFubini_of quotRight_of finPres_of
 
 /- English proof (translation)
-The claim follows from `untwist`.
+A detailed English derivation is pending.
 -/
 theorem untwist_of : Untwist := untwist
 
 /- English proof (translation)
-The claim follows from `twOrbFin gLTop_of extCont_of twCent_of h haarComm_of normEx_of quotInt_of quotPos_of`.
+A detailed English derivation is pending.
 -/
 theorem twOrbFin_of (h : OrbProper) : TwOrbFin := twOrbFin gLTop_of extCont_of twCent_of h haarComm_of normEx_of quotInt_of quotPos_of
 
 /- English proof (translation)
-The claim follows from `orbFin (twOrbFin_of h) untwist_of`.
+A detailed English derivation is pending.
 -/
 theorem orbFin_of (h : OrbProper) : OrbFin := orbFin (twOrbFin_of h) untwist_of
 
 /- English proof (translation)
-The claim follows from `twOrbLin (twOrbFin_of h)`.
+A detailed English derivation is pending.
 -/
 theorem twOrbLin_of (h : OrbProper) : TwOrbLin := twOrbLin (twOrbFin_of h)
 
 /- English proof (translation)
-The claim follows from `orbLin (twOrbLin_of h) untwist_of`.
+A detailed English derivation is pending.
 -/
 theorem orbLin_of (h : OrbProper) : OrbLin := orbLin (twOrbLin_of h) untwist_of
 
 /- English proof (translation)
-The claim follows from `twOrbComm gLTop_of extCont_of twCent_of h haarComm_of unimod_of absComm_of`.
+A detailed English derivation is pending.
 -/
 theorem twOrbComm_of (h : OrbProper) : TwOrbComm := twOrbComm gLTop_of extCont_of twCent_of h haarComm_of unimod_of absComm_of
 
 /- English proof (translation)
-The claim follows from `orbComm (twOrbComm_of h) untwist_of`.
+A detailed English derivation is pending.
 -/
 theorem orbComm_of (h : OrbProper) : OrbComm := orbComm (twOrbComm_of h) untwist_of
 

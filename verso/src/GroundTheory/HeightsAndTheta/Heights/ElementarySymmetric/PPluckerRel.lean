@@ -16,7 +16,7 @@ section Homog
 variable {K : Type*} [DecidableEq K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `m hm k`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem homog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
@@ -28,16 +28,16 @@ theorem homog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg :
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Introduce `m hm`. Simplify using `at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem homog_zero (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
   intro m hm
   simp at hm
 
 /- English proof (translation)
-Introduce `m hm k`. Establish `hm0 : m = 0`. Assume the negation of the conclusion as `h`. Conclude with `(mem_support_iff.1 hm) (by rw [coeff_C, if_neg (Ne.symm h)])`. Substitute `hm0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem homog_C (r : ℤ) (b : K) : IsMultiHomog (C r : MRing ι) (Pi.single b 0) := by
   classical
@@ -56,7 +56,7 @@ def wedgeVal (k m : S.κ) : S.Ω :=
   S.φ k (S.e 0) * S.φ m (S.e 1) - S.φ k (S.e 1) * S.φ m (S.e 0)
 
 /- English proof (translation)
-Establish `h` using `congrArg ψ (S.e.sum_repr u)`. Rewrite `h` using `[Fin.sum_univ_two, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq (ψ : S.E →ₗ[S.Ω] S.Ω) (u : S.E) :
     ψ u = S.e.repr u 0 * ψ (S.e 0) + S.e.repr u 1 * ψ (S.e 1) := by
@@ -65,7 +65,7 @@ theorem apply_eq (ψ : S.E →ₗ[S.Ω] S.Ω) (u : S.E) :
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[apply_eq S (S.φ k) u, apply_eq S (S.φ m) w, apply_eq S (S.φ k) w, apply_eq S (S.φ m) u]`. Simplify using `only [wedgeVal, T.detE]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wedge_mul_detE (k m : S.κ) (u w : S.E) :
     wedgeVal S k m * T.detE S.e u w = S.φ k u * S.φ m w - S.φ k w * S.φ m u := by
@@ -74,15 +74,15 @@ theorem wedge_mul_detE (k m : S.κ) (u w : S.E) :
   ring
 
 /- English proof (translation)
-It suffices to establish `h : ∀ y ∈ Submodule.span (chartRing ℤ S.x i) {d | ∃ u ∈ S.B.lat i, ∃ w ∈ S.B.lat i, d = S.x i * T.detE S.e u w}, ∃ a ∈ chartRing ℤ S.x i, wedgeVal S k m * y = S.x i ^ 3 * a from h _ ((S.detGen i hi).1 l)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨u, hu, w, hw, rfl⟩` from `hy`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, ha₁, e₁⟩` from `(mem_lineLat S.x 1 i _).1 (S.dualSec i hi k u hu)`. Take `⟨a₂, ha₂, e₂⟩` from `(mem_lineLat S.x 1 i _).1 (S.dualSec i hi m w hw)`. Take `⟨a₃, ha₃, e₃⟩` from `(mem_lineLat S.x 1 i _).1 (S.dualSec i hi k w hw)`. Take `⟨a₄, ha₄, e₄⟩` from `(mem_lineLat S.x 1 i _).1 (S.dualSec i hi m u hu)`. Use `⟨a₁ * a₂ - a₃ * a₄, sub_mem (mul_mem ha₁ ha₂) (mul_mem ha₃ ha₄), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `wedge_mul_detE S k m u w`. Rewrite `h` using `[← e₁, ← e₂, ← e₃, ← e₄]`. Take the linear combination `(S.x i) * h`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hya⟩` from `hy`. Take `⟨b, hb, hzb⟩` from `hz`. Conclude with `⟨a + b, add_mem ha hb, by rw [mul_add, hya, hzb, mul_add]⟩`. Consider the case `smul r y _ hy`. Take `⟨a, ha, hya⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨(r : S.Ω) * a, mul_mem r.2 ha, ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Take the linear combination `(r : S.Ω) * hya`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wedge_mul_delta (i : S.ι) (hi : S.x i ≠ 0) (l : S.ν) (k m : S.κ) :
     ∃ a ∈ chartRing ℤ S.x i, wedgeVal S k m * S.δ l = S.x i ^ 3 * a := by
@@ -121,30 +121,30 @@ theorem coord_base (j : S.ι) :
   rfl
 
 /- English proof (translation)
-The claim follows from `rename_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem rename_X_base (j : S.ι) :
     (rename (T.yyEmb 0) (X ⟨T.YBlk.base, j⟩ : MRing S.YIdx) : MRing S.WIdx) = X ⟨T.WBlk.base, j⟩ :=
   rename_X _ _
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Use `⟨1, X ⟨T.YBlk.base, j⟩, exHomog_X _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rename_X_base]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `exHomog_X (ι := S.WIdx) T.WBlk.base j`. Rewrite using `[rename_X_base, aeval_X, coord_base]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Consider the case `algebraMap r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, C r, homog_C _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rename_C]`. Conclude with `homog_C _ _`. Simplify using the standard rewrite rules. Consider the case `add y z _ _ hy hz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d₁, Q₁, h₁, h₁', e₁⟩` from `hy`. Take `⟨d₂, Q₂, h₂, h₂', e₂⟩` from `hz`. Use `⟨d₁ + d₂, Q₁ * X ⟨T.YBlk.base, i⟩ ^ d₂ + Q₂ * X ⟨T.YBlk.base, i⟩ ^ d₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `homog_add ?_ ?_` and prove the remaining obligations. Use `exHomog_mul h₁ (exHomog_pow (exHomog_X (ι := S.YIdx) T.YBlk.base i) d₂) using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply the tactic sequence `funext b; cases b <;> simp`. Use `exHomog_mul h₂ (exHomog_pow (exHomog_X (ι := S.YIdx) T.YBlk.base i) d₁) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `funext b; cases b <;> simp [add_comm]`. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, rename_X_base]`. Use `homog_add ?_ ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `exHomog_mul h₁' (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.base i) d₂) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `funext b; cases b <;> simp`. Use `exHomog_mul h₂' (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.base i) d₁) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `funext b; cases b <;> simp [add_comm]`. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, rename_X_base, map_add, map_mul, map_mul, map_pow, map_pow, aeval_X, e₁, e₂, coord_base]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul y z _ _ hy hz`. Take `⟨d₁, Q₁, h₁, h₁', e₁⟩` from `hy`. Take `⟨d₂, Q₂, h₂, h₂', e₂⟩` from `hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨d₁ + d₂, Q₁ * Q₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `exHomog_mul h₁ h₂ using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `funext b; cases b <;> simp`. Rewrite using `[map_mul]`. Use `exHomog_mul h₁' h₂' using 1` and compare the differences between its conclusion and the goal.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `funext b; cases b <;> simp`. Rewrite using `[map_mul, map_mul, e₁, e₂]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chart_form (i : S.ι) (hi : S.x i ≠ 0) {a : S.Ω} (ha : a ∈ chartRing ℤ S.x i) :
     ∃ (d : ℕ) (Q : MRing S.YIdx), IsMultiHomog Q (Pi.single T.YBlk.base d) ∧
@@ -198,11 +198,11 @@ theorem chart_form (i : S.ι) (hi : S.x i ≠ 0) {a : S.Ω} (ha : a ∈ chartRin
       ring
 
 /- English proof (translation)
-Distinguish the cases in `hi : S.x i = 0`. Use `⟨0, 0, homog_zero _, homog_zero _, ?_⟩` and prove the remaining obligations. Simplify using `[hi]`. Take `⟨a, ha, hpa⟩` from `wedge_mul_delta S i hi l k m`. Take `⟨d, Q, hQ, hQ', hv⟩` from `chart_form S i hi ha`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨d, Q * X ⟨T.YBlk.base, i⟩ ^ 4, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `exHomog_mul hQ (exHomog_pow (exHomog_X (ι := S.YIdx) T.YBlk.base i) 4) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `funext b; cases b <;> simp`. Rewrite using `[map_mul, map_pow, rename_X_base]`. Use `exHomog_mul hQ' (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.base i) 4) using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply the tactic sequence `funext b; cases b <;> simp`. Rewrite using `[map_mul, map_pow, rename_X_base, map_mul, map_pow, aeval_X, hv, coord_base, hpa]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem key (i : S.ι) (l : S.ν) (k m : S.κ) :
     ∃ (d : ℕ) (Q : MRing S.YIdx), IsMultiHomog Q (Pi.single T.YBlk.base (d + 4)) ∧
@@ -229,21 +229,19 @@ end PluckerRelations
 open PluckerRelations in
 
 /- English proof (translation)
-Introduce `D S`. Use `choose d Q hQ hQ' hv using PluckerRelations.key S`. Use `set N : ℕ := (Finset.univ.sup fun t : S.ι × S.ν × S.κ × S.κ => d t.1 t.2.1 t.2.2.1 t.2.2.2) + 1 with hN`. Establish `hle : ∀ i l k m, d i l k m + 1 ≤ N` using `fun i l k m => by`. Use `Finset.le_sup (f := fun t : S.ι × S.ν × S.κ × S.κ => d t.1 t.2.1 t.2.2.1 t.2.2.2) (Finset.mem_univ (i, l, k, m))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Use `⟨N, fun i l k m => Q i l k m * X ⟨T.YBlk.base, i⟩ ^ (N - (d i l k m + 1)), fun i l k m => ?_, fun i l k m => ?_⟩` and prove the remaining obligations. Establish `h` using `hle i l k m`. Use `exHomog_mul (hQ i l k m) (exHomog_pow (exHomog_X (ι := S.YIdx) T.YBlk.base i) (N - (d i l k m + 1))) using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `funext b; cases b <;> simp; omega`. Establish `h` using `hle i l k m`. Establish `hRF : IsMultiHomog (rename (T.yyEmb 0) (Q i l k m * X ⟨T.YBlk.base, i⟩ ^ (N - (d i l k m + 1))) : MRing S.WIdx) (Pi.single T.WBlk.base (N + 3))`. Rewrite using `[map_mul, map_pow, rename_X_base]`. Use `exHomog_mul (hQ' i l k m) (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.base i) (N - (d i l k m + 1))) using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `funext b; cases b <;> simp; omega`. Establish `hpl : IsMultiHomog (S.pluckerWW k m) (Pi.single T.WBlk.line0 1 + Pi.single T.WBlk.line1 1)` using `exHomog_sub (exHomog_mul (exHomog_X (ι := S.WIdx) T.WBlk.line0 k) (exHomog_X (ι := S.WIdx) T.WBlk.line1 m)) (exHomog_mul (exHomog_X (ι := S.WIdx) T.WBlk.line0 m) (exHomog_X (ι := S.WIdx) T.WBlk.line1 k))`. Establish `hP : IsMultiHomog (S.g * rename (T.yyEmb 0) (Q i l k m * X ⟨T.YBlk.base, i⟩ ^ (N - (d i l k m + 1))) - S.h * S.pluckerWW k m * X ⟨.det, l⟩ * X ⟨.base, i⟩ ^ N) (T.wwDeg S.n 1 + Pi.single T.WBlk.base (N + 3))`. Use `exHomog_sub (exHomog_mul S.g_deg hRF) ?_` and prove the remaining obligations. Use `exHomog_mul (exHomog_mul (exHomog_mul S.h_deg hpl) (exHomog_X (ι := S.WIdx) T.WBlk.det l)) (exHomog_pow (exHomog_X (ι := S.WIdx) T.WBlk.base i) N) using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `funext b; cases b <;> simp [T.wwDeg] <;> omega`. Establish `hF : aeval (T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1)) (rename (T.yyEmb 0) (Q i l k m * X ⟨T.YBlk.base, i⟩ ^ (N - (d i l k m + 1)))) = algebraMap S.Ω S.Φ (S.x i ^ N * (wedgeVal S k m * S.δ l))`. Rewrite using `[map_mul, map_pow, rename_X_base, map_mul, map_pow, aeval_X, hv, coord_base, ← map_pow, ← map_mul]`. Use `congr 1`. Use `conv_rhs => rw [← Nat.sub_add_cancel h, pow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpv : aeval (T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1)) (S.pluckerWW k m) = (S.a 1 - S.a 0) * algebraMap S.Ω S.Φ (wedgeVal S k m)`. Simplify using `only [ProjectiveLineBundle.pluckerWW, map_sub, map_mul, aeval_X, T.wwCoord, T.lineVal, wedgeVal]`. Expand and normalize the polynomial expressions, which then agree. Use `show _ ∈ RingHom.ker (T.multiConeMap (T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1)))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker, DiagRAux.multiConeMap_of_homog _ _ _ hP]`. It suffices to establish `h0 : aeval (T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1)) (S.g * rename (T.yyEmb 0) (Q i l k m * X ⟨T.YBlk.base, i⟩ ^ (N - (d i l k m + 1))) - S.h * S.pluckerWW k m * X ⟨.det, l⟩ * X ⟨.base, i⟩ ^ N) = 0 by`. Rewrite using `[h0, C_0, zero_mul]`. Rewrite using `[map_sub, map_mul (aeval _) S.g, hF]`. Simplify using `only [map_mul, map_pow, aeval_X, hpv, S.quot]`.
-
-Simplify using `only [T.wwCoord, T.diagSec]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem PluckerRel.proof : PluckerRel.Statement := by
   intro D S

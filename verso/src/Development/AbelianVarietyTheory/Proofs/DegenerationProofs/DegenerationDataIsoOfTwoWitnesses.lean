@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.WitnessData
 
 /- English proof (translation)
-Establish `pe : ∀ k, pt k z = Φ (pt' k z)` using `fun k => congrArg (fun g => g z) (hc k).symm`. Use `choose j hj using fun k => exists_chart hM₀ (φ (Φ (pt' k z)))`. Establish `a` using `T.prod (ε := ε) (h' := 𝟙 _) (fun k => (hc k).trans (Category.id_comp _).symm) _ (𝟙 _) z j p q hj hp hq`. Simplify using `only [Category.id_comp] at a`. Establish `b` using `((genRel_iff w t t₀ x z).1 h).2 p j (fun k => by rw [pe]; exact hj k) (fun k => by rw [pe]; exact hp k)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b'` using `((genRel_iff w' t' t₀ x z).1 h').2 q j hj hq`. Establish `e` using `Units.ext (b.trans b'.symm)`. Rewrite `e` using `[a, _root_.mul_assoc]`. Conclude with `mul_left_cancel e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_of_genRel {F : Type} [Field F] {B B' B₀ : Scheme.{0}} {M : LB B} {M' : LB B'} {M₀ : LB B₀} {K : Type}
     [Fintype K] {ε : K → ℤ} {φ : B ⟶ B₀} {Φ : B' ⟶ B} {w : LB.Iso M (M₀.pull φ)} {wD : LB.Iso M' (M.pull Φ)}
@@ -39,9 +39,9 @@ theorem value_of_genRel {F : Type} [Field F] {B B' B₀ : Scheme.{0}} {M : LB B}
   exact mul_left_cancel e
 
 /- English proof (translation)
-Establish `: QuasiCompact (spMap i)` using `inferInstanceAs (QuasiCompact (Spec.map _))`. Establish `: IsDominant (spMap i)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 i.injective).le.trans bot_le)⟩`. Establish `: IsReduced (Sp K)` using `inferInstanceAs (IsReduced (Spec _))`. Use `IsSchemeTheoreticallyDominant.of_isDominant (spMap i)` as an intermediate fact. Establish `e : pullU (spMap i) V a = pullU (spMap i) V b` using `unit_ext fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gm_pull (𝟙 _) _ z V hz, gm_pull (𝟙 _) _ z V hz, Category.id_comp]`. Conclude with `h z hz`. Conclude with `Units.ext ((spMap i).app_injective V (congrArg Units.val e))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_ext_field {K F : Type} [Field K] [Field F] (i : K →+* F) {V : (Sp K).Opens} {a b : Γ(Sp K, V)ˣ}
     (h : ∀ z, spMap i z ∈ V → gm (spMap i) z V a = gm (spMap i) z V b) : a = b := by
@@ -56,13 +56,13 @@ theorem unit_ext_field {K F : Type} [Field K] [Field F] (i : K →+* F) {V : (Sp
   exact Units.ext ((spMap i).app_injective V (congrArg Units.val e))
 
 /- English proof (translation)
-Establish `hc : g ≫ (toUnit (TW W) ≫ D.c y).left = D'.xK x ≫ Φ`. Rewrite using `[hx]`. Use `show g ≫ W.ι ≫ (D.c y).left = jK R ≫ (D.c y).left`. Rewrite using `[← Category.assoc, hg]`. Take `⟨b, -, vb⟩` from `exists_gen D.P.isLB (K' := PUnit) (φ' := fun _ => D'.xK x ≫ Φ) (ε' := fun _ => -1) (fun U _ h => Finset.prod_congr rfl fun _ _ => congrArg (fun q => h q ^ (-1 : ℤ)) hc) (LB.pullGen D.P.L _ _ (ψW.psi y) g) (DVR.pullGen_isGen _ _ _ _ (ψW.psi_gen y) g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, fun jN jL => ?_, corr_of_val D.P.isLB fun z J hJ => vb _ _ z J hJ⟩` and prove the remaining obligations. Establish `hW : jFK (R` using `R) F ≫ jK R = (jFK (R := R) F ≫ g) ≫ W.ι := by rw [Category.assoc, hg]`. Take `⟨lam, l₁, l₂⟩ : ∃ lam : Sp F ⟶ (jK R ⁻¹ᵁ W).toScheme, lam ≫ (jK R ⁻¹ᵁ W).ι = jFK (R` from `R) F ∧ lam ≫ (jK R ∣_ W) = jFK (R := R) F ≫ g := ⟨(isPullback_morphismRestrict (jK R) W).lift _ _ hW.symm, (isPullback_morphismRestrict (jK R) W).lift_snd _ _ _, (isPullback_morphismRestrict (jK R) W).lift_fst _ _ _⟩`. Use `unit_ext_field (algebraMap (FractionRing R) F) fun z hz => ?_` and prove the remaining obligations. Establish `hp : Φ (D'.xK x (jFK (R` using `R) F z)) ∈ D.P.L.U (jN PUnit.unit) := mem_pull.1 hz.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : D'.xK x (jFK (R` using `R) F z) ∈ D'.P.L.U jL := hz.2`. Take `⟨J, hJ, eJ⟩` from `exists_good D.P.L D.P.isLB z (fun _ : PUnit => jFK (R := R) F ≫ D'.xK x ≫ Φ) jN (fun _ _ _ => rfl) (fun _ => hp)`. Establish `v : val b (jFK (R` using `R) F) z J = val (D.psi y) (jFK (R := R) F) z J := by`. Establish `e` using `val_corr hJ (ψW.psi_eq y) lam`. Rewrite `e` using `[val_pull hJ, val_pull hJ, l₁, l₂]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(vb _ _ z J hJ).trans ((val_pull hJ _ _ _).trans e)`. Rewrite `v` using `[val_of b _ z J jN eJ, val_of (D.psi y) _ z J jN (fun k => by rw [← eJ k, hx])]`. Use `(gm_res _ z _ hz _).trans (v.trans ((H z (jN PUnit.unit) jL hp hq).trans (Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res _ z _ hz _))))))` and prove the remaining obligations. Conclude with `(map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull _ _ z _ hz _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_psi_pull {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {Φ : D'.P.A.left ⟶ D.P.A.left}
     (w : LB.Iso D'.P.L (D.P.L.pull Φ)) {W : (Spec (CommRingCat.of R)).Opens} (ψW : PsiOn D W)
@@ -105,7 +105,7 @@ theorem exists_psi_pull {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {
   exact (map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull _ _ z _ hz _))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsOpenImmersion.lift Wo.ι (jK R) (by rintro _ ⟨y, rfl⟩ rw [Scheme.Opens.range_ι] have hy : jK R y = genericPoint (Spec (CommRingCat.of R)) := by rw [genericPoint_eq_bot_of_affine] apply PrimeSpectrum.ext show Ideal.comap (algebraMap R (FractionRing R)) (PrimeSpectrum.asIdeal y) …`.
+Supply the required witnesses or components.
 -/
 theorem exists_generic_lift {R : Type} [CommRing R] [IsDomain R] {Wo : (Spec (CommRingCat.of R)).Opens}
     (hWo : genericPoint (Spec (CommRingCat.of R)) ∈ Wo) : ∃ g : (TK R).left ⟶ (TW Wo).left, g ≫ Wo.ι = jK R :=
@@ -122,21 +122,19 @@ theorem exists_generic_lift {R : Type} [CommRing R] [IsDomain R] {Wo : (Spec (Co
     rw [hy]; exact hWo), IsOpenImmersion.lift_fac _ _ _⟩
 
 /- English proof (translation)
-Establish `hs` using `specOf_id R`. Establish `hsf : specOf (RingHom.id R) ≫ spMap f = spMap f` using `by rw [hs, Category.id_comp]`. Take `⟨e, e_hom, hφ⟩` from `grpPullback_iso s1' (((isGrpPullback_pullback D.P.A (specOf (RingHom.id R))).comp s1).congr hsf rfl)`. Set `Φ` to `e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R))`. Use `replace hφ : Φ ≫ φ = φ' := (Category.assoc _ _ _).trans hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Substitute using the available equality.
 
-Substitute `hφ` using the available equality. Establish `gp : IsGrpPullback D'.P.A D.P.A (specOf (RingHom.id R)) Φ` using `((isGrpPullback_of_iso e).comp (isGrpPullback_pullback D.P.A (specOf (RingHom.id R)))).congr (Category.id_comp _) rfl`. Establish `hE : eSec D'.P.A ≫ Φ = specOf (RingHom.id R) ≫ eSec D.P.A` using `(cubeMapOf gp).e_comm`. Establish `hw : Φ ≫ D.P.A.hom = D'.P.A.hom` using `by rw [gp.1.w, hs, Category.comp_id]`. Establish `g0` using `(isGen_iff w).1 s2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g'` using `(isGen_iff w').1 s2'`. Take `⟨wD, T⟩` from `exists_cancel D₀.P.isLB w w' g0 g' D.P.isLB D'.P.isLB`. Set `xe : D'.X ≃+ D.X` to `ε'.symm.trans ε`. Establish `hxe : ∀ y, xe (ε' y) = ε y` using `fun y => congrArg ε (ε'.symm_apply_apply y)`. Establish `hc : ∀ y, (D'.c (ε' y)).left ≫ Φ = (D.c (ε y)).left` using `fun y => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `s1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, s5' y, s5 y]`. Rewrite using `[Category.assoc, hw, Over.w, Over.w]`. Take `⟨g, hg⟩` from `exists_generic_lift hWo`. Use `⟨⟨e, e_hom, wD, (isGen_iff wD).2 (T.pgen_cancel D₀.P.isLB g0 g'), hE, ?_, xe, fun x => ?_, Wo, ψW, g, by rw [hg, hs, Category.comp_id], fun x => ?_⟩, hxe, w', rfl, HEq.rfl, T⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `r₀` using `(maps_iff w _ (fun _ => eSec D₀.P.A) _ D.rig D₀.rig (spMap f) _ (rigPull_le φ (spMap f) he D₀.P.L) (fun _ => rfl)).1 s3`. Establish `r₁` using `(maps_iff w' _ (fun _ => eSec D₀.P.A) _ D'.rig D₀.rig (spMap f) _ (rigPull_le (Φ ≫ φ) (spMap f) he' D₀.P.L) (fun _ => rfl)).1 s3'`. Rewrite `r₁` using `[← hsf]`. Conclude with `(maps_iff wD _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf (RingHom.id R)) _ (rigPull_le Φ (specOf (RingHom.id R)) hE D.P.L) (fun _ => rfl)).2 (T.pmaps_cancel D₀.P.isLB (fun _ => hE) r₀ r₁)`. Take `⟨y, rfl⟩` from `ε'.surjective x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hxe]`. Conclude with `(hc y).trans ((Category.id_comp _).symm.trans (congrArg (· ≫ _) hs.symm))`. Take `⟨y, rfl⟩` from `ε'.surjective x`. Rewrite using `[hxe]`. Establish `hx : D'.xK (ε' y) ≫ Φ = D.xK (ε y)` using `(Category.assoc _ _ _).trans (congrArg (jK R ≫ ·) (hc y))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `exists_psi_pull wD ψW hg hx F fun z p q hp hq => ?_` and prove the remaining obligations. Establish `v` using `value_of_genRel T D₀.P.isLB (fun _ => (Category.assoc _ _ _).trans (congrArg (jFK (R := R) F ≫ ·) hx)) (k y) (k' y) z (fun _ => p) (fun _ => q) (fun _ => hp) (fun _ => hq)`. Establish `hp' : D.xK (ε y) (jFK (R` using `R) F z) ∈ D.P.L.U p := (congrArg (fun h => h (jFK (R := R) F z) ∈ D.P.L.U p) hx).mp hp`. Establish `a₁` using `gm_pullGen D.P.L _ _ (D.psi (ε y)) (jFK (R := R) F) (𝟙 _) z (fun _ => p) (Set.mem_iInter.2 fun _ => hp')`. Establish `a₂` using `gm_pullGen D'.P.L _ _ (D'.psi (ε' y)) (jFK (R := R) F) (𝟙 _) z (fun _ => q) (Set.mem_iInter.2 fun _ => hq)`.
-
-Rewrite `a₁`, `a₂` using `[Category.id_comp]`. Rewrite `v` using `[Fintype.prod_unique]`. Conclude with `a₁.symm.trans (v.trans (congrArg _ a₂))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPullDeg_pre {O' R : Type} [CommRing O'] [IsDomain O'] [CommRing R] [IsDomain R] {f : O' →+* R}
     {D₀ : DegPre O'} {D D' : DegPre R} {φ : D.P.A.left ⟶ D₀.P.A.left} {φ' : D'.P.A.left ⟶ D₀.P.A.left}
@@ -211,11 +209,11 @@ theorem exists_isPullDeg_pre {O' R : Type} [CommRing O'] [IsDomain O'] [CommRing
     exact a₁.symm.trans (v.trans (congrArg _ a₂))
 
 /- English proof (translation)
-Establish `a : e.left ≫ pullback.snd B.hom i = B'.hom` using `Over.w e`. Establish `hw : (e.left ≫ pullback.fst B.hom i) ≫ B.hom = B'.hom`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, a, hi, Category.comp_id]`. Establish `e₁ : x'.left ≫ e.left ≫ pullback.fst B.hom i = (e.left ≫ pullback.fst B.hom i) ≫ x.left`. Apply `hφ.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, ← hφ', h', Category.assoc, h, ← Category.assoc, ← hφ']`. Rewrite using `[Category.assoc, hw, Over.w, Category.assoc, Over.w, hw]`. Establish `e₂ : ((Over.pullback i).map x).left ≫ pullback.fst B.hom i = pullback.fst _ _ ≫ x.left` using `pullback.lift_fst _ _ _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (x'.left ≫ e.left) ≫ _ = (e.left ≫ ((Over.pullback i).map x).left) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, e₂, ← Category.assoc e.left]`. Conclude with `e₁`. Conclude with `(Over.w (x' ≫ e)).trans (Over.w (e ≫ (Over.pullback i).map x)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_of_pullback {S S₀ : Scheme.{0}} {B B' : Over S} {B₀ : Over S₀} {f : S ⟶ S₀} {i : S ⟶ S} (hi : i = 𝟙 S)
     {φ : B.left ⟶ B₀.left} (hφ : IsPullback φ B.hom B₀.hom f) (e : B' ⟶ (Over.pullback i).obj B)
@@ -239,9 +237,9 @@ theorem comm_of_pullback {S S₀ : Scheme.{0}} {B B' : Over S} {B₀ : Over S₀
   · exact (Over.w (x' ≫ e)).trans (Over.w (e ≫ (Over.pullback i).map x)).symm
 
 /- English proof (translation)
-Introduce `_ _ h5 E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a R _ _ _ _ I f u hR _ hf χ χ' W W'`. Take `⟨s1, s2, s3, s4, s5, s6⟩` from `W.spec`. Take `⟨s1', s2', s3', s4', s5', s6'⟩` from `W'.spec`. Take `⟨Wo, hWo, ⟨ψW⟩⟩` from `h5.psiOnExists R I hR W.P.D`. Set `F` to `AlgebraicClosure (FractionRing R)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hi : Function.Injective (((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R))).comp f)` using `((algebraMap (FractionRing R) F).injective.comp (IsFractionRing.injective R _)).comp hf`. Use `letI : Algebra (FractionRing O') F := (IsFractionRing.lift (K := FractionRing O') hi).toAlgebra`. Establish `hF : ∀ x, algebraMap (FractionRing O') F (algebraMap O' _ x) = algebraMap (FractionRing R) F (algebraMap R _ (f x))` using `fun x => IsFractionRing.lift_algebraMap hi x`. Take `⟨hD, h₁, w', h₂, h₃, h₄⟩` from `exists_isPullDeg_pre W.he W'.he W.e.toAddEquiv W'.e.toAddEquiv s1 s1' s2 s2' s3 s3' s5 s5' F _ (s6 F _ hF rfl).1 (s6' F _ hF rfl).1 hWo ψW`. Conclude with `⟨hD, h₁, fun x => comm_of_pullback (specOf_id R) s1.1 hD.e.hom h₂ (s4 x) (s4' x), w', h₂, h₃, h₄⟩`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem witness_data_iso : Laws → Laws2 → Laws5 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (O' : Type) [CommRing O'] [IsDomain O'] [CharZero O'] (b : c.V W₀ →+* O') (a : ArcIn D l (c.V W₀).subtype O' b) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R] (I : Ideal R) (f : O' →+* R) (u : R), AdmBase R I → I ≠ ⊤ → Function.Injective f → ∀ (χ χ' : Sp R ⟶ Y.X) (W : ArcWit Y a I f u χ) (W' : ArcWit Y a I f u χ'), ∃ hD : IsPullDeg (RingHom.id R) W.P.D.toPre W'.P.D.toPre, (∀ y, hD.xe (W'.e y) = W.e y) ∧ (∀ x, (letI := H.starRing; W'.P.oD.onB.act x ≫ hD.e.hom = hD.e.hom ≫ (Over.pullback (specOf (RingHom.id R))).map (W.P.oD.onB.act x))) ∧ ∃ w' : LB.Iso W'.P.D.toPre.P.L (a.D₀.P.L.pull ((hD.e.hom.left ≫ pullback.fst W.P.D.toPre.P.A.hom (specOf (RingHom.id R))) ≫ W.φ)), W'.φ = (hD.e.hom.left ≫ pullback.fst W.P.D.toPre.P.A.hom (specOf (RingHom.id R))) ≫ W.φ ∧ HEq W'.w w' ∧ Tri W.w hD.w w' := by
   intro _ _ h5 E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a R _ _ _ _ I f u hR _ hf χ χ' W W'

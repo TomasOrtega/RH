@@ -18,7 +18,7 @@ def bSub (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : Submodule k (Matrix (Fi
   smul_mem' c x hx a ha := by rw [mul_smul_comm, smul_mul_assoc, hx a ha]
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite using `[← mul_assoc, hx a ha, mul_assoc, hy a ha, ← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_bz {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x y : Matrix (Fin n) (Fin n) k} (hx : x ∈ Bz Z)
     (hy : y ∈ Bz Z) : x * y ∈ Bz Z := by
@@ -52,31 +52,27 @@ def algZ : @RingHom k (RZ Z) _ (crZ Z hZ).toNonAssocSemiring :=
 end Inst
 
 /- English proof (translation)
-Use `letI : CommRing (RZ Z) := crZ Z hZ`. Use `letI : Algebra k (RZ Z) := (algZ Z hZ).toAlgebra`. Use `letI : Module (RZ Z) (Fin n → k) := Module.compHom (Fin n → k) ((Matrix.toLinAlgEquiv' (R := k) (n := Fin n)).toRingEquiv.toRingHom.comp (valZ Z hZ))`. Establish `hsmul : ∀ (r : RZ Z) (v : Fin n → k), r • v = (valZ Z hZ r) *ᵥ v` using `fun r v => rfl`. Establish `hval : ∀ (c : k) (r : RZ Z), valZ Z hZ (c • r) = c • valZ Z hZ r`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c r`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `show algebraMap k (Matrix (Fin n) (Fin n) k) c * valZ Z hZ r = _`. Rewrite using `[Algebra.smul_def]`. Use `haveI : IsScalarTower k (RZ Z) (Fin n → k) := ⟨fun c r v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hsmul, hsmul, hval, Matrix.smul_mulVec]⟩`. Set `L : RZ Z →ₗ[k] Matrix (Fin n) (Fin n) k` to `{ toFun := valZ Z hZ map_add' := map_add _ map_smul' := hval }`. Establish `hLinj : Function.Injective L` using `fun a b h => Subtype.ext h`. Use `haveI : Module.Finite k (RZ Z) := Module.Finite.of_injective L hLinj`. Use `haveI : IsArtinianRing (RZ Z) := IsArtinianRing.of_finite k (RZ Z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsReduced (RZ Z) := hZ.2`. Take `⟨τ0, hc, hnd, hnil⟩` from `exists_tau (k := k) (R := RZ Z) (V := Fin n → k)`. Establish `hcomm : ∀ x ∈ Bz Z, ∀ r : RZ Z, x * valZ Z hZ r = valZ Z hZ r * x` using `fun x hx r => (hx _ (show Z from r).2).symm`. Set `ψ : bSub Z →ₗ[k] ((Fin n → k) →ₗ[RZ Z] (Fin n → k))` to `{ toFun := fun x => { toFun := fun v => x.1 *ᵥ v map_add' := fun v w => Matrix.mulVec_add _ _ _ map_smul' := fun r v => by show x.1 *ᵥ (valZ Z hZ r *ᵥ v) = valZ Z hZ r *ᵥ (x.1 *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hcomm x.1 x.2 r] }`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_add' := fun x y => LinearMap.ext fun v => by show (x.1 + y.1) *ᵥ v = x.1 *ᵥ v + y.1 *ᵥ v`. Conclude with `Matrix.add_mulVec _ _ _`. Use the proof step `map_smul' := fun c x => LinearMap.ext fun v => by show (c • x.1) *ᵥ v = c • (x.1 *ᵥ v)`. Conclude with `Matrix.smul_mulVec _ _ _ }`. Establish `hψ : ∀ (x : bSub Z) (v : Fin n → k), ψ x v = x.1 *ᵥ v` using `fun x v => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hψmul : ∀ x (hx : x ∈ Bz Z) y (hy : y ∈ Bz Z), ψ ⟨x * y, mul_mem_bz hx hy⟩ = ψ ⟨x, hx⟩ * ψ ⟨y, hy⟩`. Introduce `x hx y hy`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hψ, hψ, hψ, Matrix.mulVec_mulVec]`. Take `⟨τ, hτ⟩` from `LinearMap.exists_extend (τ0.comp ψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτx : ∀ x (hx : x ∈ Bz Z), τ x = τ0 (ψ ⟨x, hx⟩)` using `fun x hx => LinearMap.congr_fun hτ ⟨x, hx⟩`. Use `⟨τ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite using `[hτx _ (mul_mem_bz hx hy), hτx _ (mul_mem_bz hy hx), hψmul x hx y hy, hψmul y hy x hx, hc]`. Introduce `x hx H`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : ∀ g : (Fin n → k) →ₗ[RZ Z] (Fin n → k), ∃ y : bSub Z, ψ y = g`. Introduce `g`. Set `y` to `LinearMap.toMatrix' (g.restrictScalars k)`. Establish `hy : ∀ v, y *ᵥ v = g v` using `fun v => LinearMap.toMatrix'_mulVec _ _`. Establish `hyB : y ∈ Bz Z`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a ha`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hy, hy]`. Conclude with `(g.map_smul (show RZ Z from (⟨a, ha⟩ : Z)) v).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨⟨y, hyB⟩, LinearMap.ext fun v => hy v⟩`. Establish `h0 : ψ ⟨x, hx⟩ = 0` using `hnd _ fun g => by`. Take `⟨y, rfl⟩` from `hsurj g`. Rewrite using `[← hψmul x hx y.1 y.2, ← hτx]`. Conclude with `H y.1 y.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, map_zero, LinearMap.zero_apply, ← hψ ⟨x, hx⟩, h0, LinearMap.zero_apply]`. Introduce and unpack `x ⟨hx, m, hm⟩`. Rewrite using `[hτx x hx]`.
-
-Apply `hnil` to reduce the goal to its premises. Use `⟨m, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `hpow : ∀ j : ℕ, (ψ ⟨x, hx⟩ ^ j) v = (x ^ j) *ᵥ v`. Introduce `j`. Proceed by induction on `j with`.
-
-Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, hψ, Matrix.mulVec_mulVec, pow_succ']`. Rewrite using `[hpow, hm, LinearMap.zero_apply, Matrix.zero_mulVec]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceForm_core (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) :
     ∃ τ : Matrix (Fin n) (Fin n) k →ₗ[k] k,
@@ -164,7 +160,7 @@ theorem traceForm_core (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z)
     rw [hpow, hm, LinearMap.zero_apply, Matrix.zero_mulVec]
 
 /- English proof (translation)
-Introduce `_ Z hZ` and use `traceForm_core Z hZ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem traceForm (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     TraceForm k := fun _ Z hZ => traceForm_core Z hZ

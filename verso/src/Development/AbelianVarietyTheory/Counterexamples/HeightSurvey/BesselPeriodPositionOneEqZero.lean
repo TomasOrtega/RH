@@ -28,7 +28,7 @@ def emb (X : ThetaX D) (t j : ℕ) : (X.Xs t j).V →ₗ[D.host.E] (X.Ys t j).V 
   if (⟨X.Xs t j, X.Ys t j, X.iXYs t j⟩ : Tri D) = tri0 D then -X.iXYs t j else X.iXYs t j
 
 /- English proof (translation)
-Introduce `x y`. Unfold `emb`. Use `split_ifs`. Simplify using `using X.iXYs_isom t j hj x y`. Conclude with `X.iXYs_isom t j hj x y`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem emb_isom (X : ThetaX D) (t j : ℕ) (hj : j < D.R.m) : HSpace.IsIsomEmb (X.Xs t j) (X.Ys t j) (emb X t j) := by
   intro x y
@@ -38,17 +38,15 @@ theorem emb_isom (X : ThetaX D) (t j : ℕ) (hj : j < D.R.m) : HSpace.IsIsomEmb 
   · exact X.iXYs_isom t j hj x y
 
 /- English proof (translation)
-Unfold `emb`. Use `split_ifs with h`. Introduce `h'`. Establish `h2` using `h'.trans h.symm`. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, true_and] at h2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : ∀ x, X.iXYs t j x = 0`. Introduce `x`. Establish `h3 : -X.iXYs t j x = X.iXYs t j x` using `by simpa using LinearMap.congr_fun h2 x`. Establish `h4 : (2 : D.host.E) • X.iXYs t j x = 0`. Rewrite using `[two_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `nth_rewrite 1 [← h3]`. Conclude with `neg_add_cancel _`. Conclude with `(smul_eq_zero.1 h4).resolve_left two_ne_zero`. Establish `hz : ∀ x : (X.Xs t j).V, x = 0`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(X.Xs t j).nondeg.1 x fun y => ?_` and prove the remaining obligations. Rewrite using `[← X.iXYs_isom t j hj x y, h0, h0]`. Simplify using the standard rewrite rules. Establish `hr : (X.Xs t j).rank = 0`. Rewrite using `[← (X.Xs t j).rank_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: Subsingleton (X.Xs t j).V` using `⟨fun a b => (hz a).trans (hz b).symm⟩`. Conclude with `Module.finrank_zero_of_subsingleton`. Use `X.Xs_rank t j hj.le` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem emb_ne (X : ThetaX D) (t j : ℕ) (hj : j < D.R.m) :
     (⟨X.Xs t j, X.Ys t j, emb X t j⟩ : Tri D) ≠ tri0 D := by
@@ -137,7 +135,7 @@ def cutAll {X : ThetaX D} {Ap : TH.ProvA} (H : AllTied D X Ap) : AllTied D (cut 
   prov := H.prov
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun q => emb_ne X t j hj q.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem cut_empty (X : ThetaX D) (t j : ℕ) (hj : j < D.R.m) :
     IsEmpty ((cut X).Pos ((cut X).Xs t j) ((cut X).Ys t j) ((cut X).iXYs t j)) :=

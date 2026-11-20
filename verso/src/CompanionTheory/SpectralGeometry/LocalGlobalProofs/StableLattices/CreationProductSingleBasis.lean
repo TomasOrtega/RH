@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Chains
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Use `show (if f ∈ A then CompanionTheory.D.LK.sg f A • (Pi.single S w : Cn n V) (A.erase f) else 0) = _`. Distinguish the cases in `hA : A = insert f S`. Substitute `hA` using the available equality. Rewrite using `[if_pos (Finset.mem_insert_self f S), Finset.erase_insert h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply]`. Establish `hr : (CompanionTheory.D.LK.sg f (insert f S) • (Pi.single (insert f S) w : Cn n V)) A = 0`. Simplify using `[Pi.single_apply, hA]`. Rewrite using `[hr]`. Use `split_ifs with hf`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hne : A.erase f ≠ S` using `fun he => hA (by rw [← he, Finset.insert_erase hf])`. Simplify using `[Pi.single_apply, hne]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cre_single {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (f : Pos n) (S : Finset (Pos n)) (w : V)
     (h : f ∉ S) :
@@ -38,20 +38,20 @@ theorem cre_single {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (f : Pos
     · rfl
 
 /- English proof (translation)
-Use `delta CompanionTheory.D.LK.sg`. Conclude with `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem sg_ne_zero {n : ℕ} (f : Pos n) (A : Finset (Pos n)) : CompanionTheory.D.LK.sg f A ≠ 0 := by
   delta CompanionTheory.D.LK.sg
   exact pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)
 
 /- English proof (translation)
-Introduce `n V _ _ l S w`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ _`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Consider the case `cons a l ih`. Introduce `hnd hS`. Take `⟨c, hc, hcl⟩` from `ih hnd.of_cons (fun i hi => hS i (by simp [hi]))`. Establish `ha : a ∉ S ∪ l.toFinset`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_union, not_or, List.mem_toFinset]`. Conclude with `⟨hS a (by simp), (List.nodup_cons.1 hnd).1⟩`. Use `⟨c * CompanionTheory.D.LK.sg a (insert a (S ∪ l.toFinset)), mul_ne_zero hc (sg_ne_zero _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.prod_cons]`. Use `show cre a (((l.map cre).prod : Module.End ℂ (Cn n V)) (Pi.single S w : Cn n V)) = _`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcl, map_smul, cre_single a _ w ha, smul_smul, List.toFinset_cons, Finset.union_insert]`.
+A detailed English derivation is pending.
 -/
 theorem prod_cre_single : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (l : List (Pos n)) (S : Finset (Pos n)) (w : V),
     l.Nodup → (∀ i ∈ l, i ∉ S) → ∃ c : ℂ, c ≠ 0 ∧

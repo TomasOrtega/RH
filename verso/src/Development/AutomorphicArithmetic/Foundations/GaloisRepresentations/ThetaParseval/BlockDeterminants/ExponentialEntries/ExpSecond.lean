@@ -17,7 +17,7 @@ private def derR {n d : ℕ} (Y : Mat d 0) : Derivation ℂ (PP n d) (PP n d) :=
   ∑ a : Ix n 0, ∑ c : Ix d 0, ∑ e : Ix d 0, Y c e • (X (a, c) : PP n d) • pderiv (a, e)
 
 /- English proof (translation)
-Unfold `derR`. Simplify using `only [der_sum_apply, Derivation.smul_apply, pderiv_X, Pi.single_apply, Prod.mk.injEq]`. Simplify using `[ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem derR_X {n d : ℕ} (Y : Mat d 0) (b : Ix n 0) (f : Ix d 0) :
     derR (n := n) Y (X (b, f)) = ∑ c, Y c f • (X (b, c) : PP n d) := by
@@ -26,9 +26,7 @@ private theorem derR_X {n d : ℕ} (Y : Mat d 0) (b : Ix n 0) (f : Ix d 0) :
   simp [ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Break down `a with a | a` into its components or cases. Break down `c with c | c` into its components or cases. Break down `e with e | e` into its components or cases. Simplify using `[FockH1Action.omE, FockH1Action.raiB, FockH1Action.lowB, FockH1Action.linePos]`. Conclude with `e.elim0`.
-
-Conclude with `c.elim0`. Conclude with `a.elim0`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem om_eq {n d : ℕ} (a : Ix n 0) (c e : Ix d 0) :
     FockH1Action.omE (p := n) (q := 0) (r := d) (s := 0) (a, c) (a, e) =
@@ -42,11 +40,11 @@ private theorem om_eq {n d : ℕ} (a : Ix n 0) (c e : Ix d 0) :
   · exact a.elim0
 
 /- English proof (translation)
-Use `show FockH1Action.fockAct2 n 0 d 0 Y = _`. Rewrite using `[PI.WFJM.fockAct2_eq]`. Simplify using `only [om_eq, smul_add, Finset.sum_add_distrib]`. Use `congr 1`. Use `LinearMap.ext fun p => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [derR, Derivation.coeFn_coe, der_sum_apply, Derivation.smul_apply, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, LinearMap.mulLeft_apply, smul_eq_mul]`. Simplify using `only [Prod.mk.injEq, true_and, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ, smul_smul, ← Finset.sum_smul]`. Establish `hcard : Fintype.card (FockH1Action.Ix n 0) = n` using `by simp [FockH1Action.Ix]`. Rewrite using `[hcard, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, ← Finset.sum_mul, Matrix.trace]`. Simplify using `only [Matrix.diag]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem fock_second_action_eq_derivation {n d : ℕ} (Y : Mat d 0) :
     fockAct2 n 0 d 0 Y = (derR Y).toLinearMap + (((n : ℂ) / 2) * Y.trace) • 1 := by
@@ -66,7 +64,7 @@ private theorem fock_second_action_eq_derivation {n d : ℕ} (Y : Mat d 0) :
     ring
 
 /- English proof (translation)
-Establish `hgm : (g : Matrix (Fin d) (Fin d) ℂ) = (NormedSpace.exp Y).submatrix (Equiv.sumEmpty (Fin d) (Fin 0)).symm (Equiv.sumEmpty (Fin d) (Fin 0)).symm`. Use extensionality with `a b`. Simplify using `[hg]`. Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, hgm, Matrix.det_submatrix_equiv_self, GlobalTheory.DetSqrtCover.det_exp, Complex.exp_int_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem det_of_block {d : ℕ} (Y : Mat d 0) (g : GL (Fin d) ℂ)
     (hg : ∀ a b, g.1 a b = NormedSpace.exp Y (Sum.inl a) (Sum.inl b)) (c : ℤ) :
@@ -83,13 +81,13 @@ private theorem det_of_block {d : ℕ} (Y : Mat d 0) (g : GL (Fin d) ℂ)
 end UpperTheory.TP.RP.Der
 
 /- English proof (translation)
-Introduce `n d Y g c κ hg hc`. Establish `hF : fockAct2 n 0 d 0 Y + (κ * Y.trace) • 1 = (UpperTheory.TP.RP.Der.derR (n` using `n) Y).toLinearMap + ((c : ℂ) * Y.trace) • 1 := by`. Rewrite using `[UpperTheory.TP.RP.Der.fock_second_action_eq_derivation, add_assoc, ← add_smul]`. Use `congr 2`. Take the linear combination `(-(Y.trace / 2)) * hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hA : (act2 c g : Module.End ℂ (PP n d)) = Complex.exp ((c : ℂ) * Y.trace) • (rightSub (n` using `n) (g : Matrix (Fin d) (Fin d) ℂ)).toLinearMap := by`. Unfold `act2`. Rewrite using `[UpperTheory.TP.RP.Der.det_of_block Y g hg c]`. Rewrite using `[hF, hA]`. Apply `UpperTheory.TP.RP.Der.isExp_shift` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `UpperTheory.TP.RP.Der.isExp_of_gens` to reduce the goal to its premises. Introduce and unpack `⟨b, f⟩`. Establish `key` using `UpperTheory.TP.RP.Der.good_lin (UpperTheory.TP.RP.Der.derR (n := n) Y) Y (fun e => (MvPolynomial.X (b, e) : PP n d)) (fun e => UpperTheory.TP.RP.Der.derR_X Y b e) f`. Use `key using 1` and compare the differences between its conclusion and the goal. Break down `b with b | b` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `f with f | f` into its components or cases. Simplify using `[rightSub, xv, hg, Fintype.sum_sum_type, MvPolynomial.smul_eq_C_mul]`. Conclude with `f.elim0`. Conclude with `b.elim0`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.TP.RP.expSecond :
     ∀ {n d : ℕ} (Y : Mat d 0) (g : GL (Fin d) ℂ) (c : ℤ) (κ : ℂ), (∀ a b, g.1 a b = NormedSpace.exp Y (Sum.inl a) (Sum.inl b)) →

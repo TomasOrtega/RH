@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 open MvPolynomial Finset
 
 /- English proof (translation)
-Unfold `liePowerSum lowerPowerSum`. Use `split_ifs`. Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_X ℚ (e.1, i)).neg.pow m`. Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (isHomogeneous_X ℚ (e.1, i)).pow m`.
+A detailed English derivation is pending.
 -/
 theorem liePowerSum_isHomogeneous (d : IndexData) (m : ℕ) (e : Emb d) :
     (liePowerSum d m e).IsHomogeneous m := by
@@ -24,13 +24,13 @@ theorem liePowerSum_isHomogeneous (d : IndexData) (m : ℕ) (e : Emb d) :
     simpa using (isHomogeneous_X ℚ (e.1, i)).pow m
 
 /- English proof (translation)
-Introduce `d vol p φ F Q Q' hQ hQ'`. Unfold `rest₂`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Take `⟨hk2, hkN⟩` from `Finset.mem_Icc.mp hk`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use function extensionality and compare the values at `n`. Unfold `restSeries`. Establish `hG` using `liePowerSum_isHomogeneous d (k - 1) ((φ ^ (n + 1)) (τ, false))`. Establish `h` using `RestTerms.RestTermWellDefined.full d.f d.N F Q Q' hQ hQ' k (by omega) hkN τ _ hG`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `RestTerms.restTerm at h`. Establish `e : ∀ R : ℕ → Fin d.f → XPoly d, (k : ℚ) * intFl d (liePowerSum d (k - 1) ((φ ^ (n + 1)) (τ, false)) * R k τ) = flagNormalisation d.f d.N * ((k : ℚ) * RestTerms.flagIntegral d.f d.N (liePowerSum d (k - 1) ((φ ^ (n + 1)) (τ, false)) * R k τ))`. Introduce `R`. Simplify using `only [intFl, LinearMap.smul_apply, flagIntegralLin, LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e Q, e Q', h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem RestPWellDefined.proof : RestPWellDefined.Statement := by
   intro d vol p φ F Q Q' hQ hQ'
@@ -54,7 +54,7 @@ theorem RestPWellDefined.proof : RestPWellDefined.Statement := by
   rw [e Q, e Q', h]
 
 /- English proof (translation)
-The claim follows from `RestPWellDefined.proof`.
+A detailed English derivation is pending.
 -/
 theorem RestPWellDefined.full : RestPWellDefined.Statement := RestPWellDefined.proof
 

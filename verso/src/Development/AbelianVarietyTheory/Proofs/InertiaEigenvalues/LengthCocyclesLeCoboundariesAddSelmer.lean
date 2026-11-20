@@ -8,15 +8,13 @@ namespace GlobalTheory.Cut.SelClass
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module GlobalTheory.Pass GlobalTheory.Cut
 
 /- English proof (translation)
-Set `ψ : ↥C →ₗ[R] ReciprocityTheory.Gal.H1 rho` to `((ReciprocityTheory.Gal.B1 rho).comap (ReciprocityTheory.Gal.Z1 rho).subtype).mkQ ∘ₗ Submodule.inclusion hC`. Establish `hker : ∀ x : ↥C, ψ x = 0 → (x : Γ → M) ∈ ReciprocityTheory.Gal.B1 rho`. Introduce `x hx`. Establish `h` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Simplify using `using h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hrange : LinearMap.range ψ ≤ S`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hS x.1 x.2`. Set `K` to `LinearMap.ker ψ.rangeRestrict`. Establish `hsplit` using `Module.length_eq_add_of_exact K.subtype ψ.rangeRestrict (Submodule.subtype_injective _) ψ.surjective_rangeRestrict (LinearMap.exact_subtype_ker_map _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j : ↥K →ₗ[R] ↥(C ⊓ ReciprocityTheory.Gal.B1 rho)` to `LinearMap.codRestrict (C ⊓ ReciprocityTheory.Gal.B1 rho) (C.subtype ∘ₗ K.subtype) (fun x => by`. Use `⟨x.1.2, hker x.1 ?_⟩` and prove the remaining obligations. Establish `hx : ψ.rangeRestrict x.1 = 0` using `x.2`. Conclude with `congrArg Subtype.val hx)`. Establish `hj : Function.Injective j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `h` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (Subtype.ext h)`. Establish `hK` using `Module.length_le_of_injective j hj`. Establish `hI` using `Module.length_le_of_injective (Submodule.inclusion hrange) (Submodule.inclusion_injective hrange)`.
-
-Rewrite using `[hsplit]`. Conclude with `add_le_add hK hI`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_le_cob_add {R : Type} [CommRing R] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     {M : Type} [AddCommGroup M] [Module R M] [TopologicalSpace M]
@@ -57,13 +55,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Unfold `Br.selG GaloisCohomology.SelAll GaloisCohomology.bkCond Br.LlG Sel`. Use `(Submodule.mem_iInf _).2 fun v => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`. Simplify using `only`. Use `split_ifs with h1 h2 h3`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Replace the relevant objects with their definitions.
 
-Unfold `Br.bkG`. Use `Submodule.mem_map.2 ⟨_, ?_, rfl⟩` and prove the remaining obligations. Conclude with `hl v h2`. Conclude with `Submodule.mem_top`. Conclude with `Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hv : v ∉ placesOver E l` using `h1`. Unfold `GaloisCohomology.unrAt H1ur`. Rewrite using `[LinearMap.mem_ker]`. Unfold `ReciprocityTheory.Gal.resH1`. Rewrite using `[Submodule.mapQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`.
-
-Use `(ReciprocityTheory.Gal.B1 _).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `hu v hv h3 _ g.2`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mk_mem_selG {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (A : Formalism.GaloisCohomology.Places E Ω)
     (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] [TopologicalSpace O]
@@ -99,11 +95,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D i ρ π C hC hfin hine`. Unfold `lenCob`. Use `length_le_cob_add _ C hC _ (fun f hf => ?_)` and prove the remaining obligations. Unfold `Br.selPi`. Use `mk_mem_selG D.nd.plOm (D.nd.l i) (D.loc (D.nd.l i)) (D.nbr i) _ (WpO D.nd i ρ π) ⟨f, hC hf⟩ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Conclude with `hfin f hf w hw`. Introduce `v hv hSig g hg`. Establish `hSv : v ∉ D.nd.S i` using `fun h => hSig (Or.inl h)`. Establish `hQv : v ∉ D.nd.Q i` using `fun h => hSig (Or.inr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : LinearMap.funLeft (D.nd.O i) (KOG (D.nd.O i) D.R.r) Subtype.val f ∈ resIne i C v` using `Submodule.mem_map_of_mem hf`. Rewrite `hmem` using `[hine v hv hSv hQv, Submodule.mem_bot]`. Conclude with `congrFun hmem ⟨g, hg⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (C : Submodule (D.nd.O i) (GE D.nd → KOG (D.nd.O i) D.R.r)), C ≤ Z1 (WKG (WpO D.nd i ρ π)) → (∀ f ∈ C, IsFinL i (WpO D.nd i ρ π) f) → (∀ v, v ∉ placesOver D.host.E (D.nd.l i) → v ∉ D.nd.S i → v ∉ D.nd.Q i → resIne i C v = ⊥) → Module.length (D.nd.O i) ↥C ≤ lenCob i (WpO D.nd i ρ π) (C) + Module.length (D.nd.O i) ↥(Br.selPi D.loc D.nbr i ρ π) := by
   intro D i ρ π C hC hfin hine

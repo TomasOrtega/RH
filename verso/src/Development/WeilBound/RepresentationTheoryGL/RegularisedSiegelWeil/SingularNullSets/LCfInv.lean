@@ -16,14 +16,14 @@ namespace PositivityTheory.Rg.Rsw.L.LCfInv
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [fam, hH, hφ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fam_mul {H : G D n → ℝ≥0} {φ : G D n → ℂ} {u : G D n} (hH : ∀ g, H (g * u) = H g)
     (hφ : ∀ g, φ (g * u) = φ g) (s₁ z : ℂ) (g : G D n) : fam H φ s₁ z (g * u) = fam H φ s₁ z g := by
   simp only [fam, hH, hφ]
 
 /- English proof (translation)
-Unfold `eisS GlobalTheory.Eis.cosetSum`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.Eis.term, ← mul_assoc, hf]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eisS_mul {f : G D n → ℂ} {u : G D n} (hf : ∀ g, f (g * u) = f g) (g : G D n) :
     eisS f (g * u) = eisS f g := by
@@ -32,9 +32,9 @@ theorem eisS_mul {f : G D n → ℂ} {u : G D n} (hf : ∀ g, f (g * u) = f g) (
   simp only [GlobalTheory.Eis.term, ← mul_assoc, hf]
 
 /- English proof (translation)
-Establish `ah : AnalyticOnNhd ℂ (E · (g * u)) U` using `(hc.hol (g * u)).analyticOnNhd hc.isOpen`. Establish `ag : AnalyticOnNhd ℂ (E · g) U` using `(hc.hol g).analyticOnNhd hc.isOpen`. Take `⟨τ, hτ⟩` from `hc.right.1`. Establish `hx : ((max τ σ + 1 : ℝ) : ℂ) ∈ rightOf (max τ σ)` using `by simp`. Establish `hxU : ((max τ σ + 1 : ℝ) : ℂ) ∈ U` using `hτ (rightOf_subset (le_max_left _ _) hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ev : (E · (g * u)) =ᶠ[𝓝 ((max τ σ + 1 : ℝ) : ℂ)] (E · g)` using `by filter_upwards [(isOpen_rightOf (max τ σ)).mem_nhds hx] with w hw`. Establish `hw' : σ < w.re` using `lt_of_le_of_lt (le_max_right _ _) hw`. Simplify using `only [hc.eq w hw', eisS_mul (fam_mul hH hφ s₀ w)]`. Conclude with `fun z hz => ah.eqOn_of_preconnected_of_eventuallyEq ag hc.right.isPreconnected hxU ev hz`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem E_mul {H : G D n → ℝ≥0} {φ : G D n → ℂ} {s₀ : ℂ} {U : Set ℂ} {d : Polynomial ℂ} {E : ℂ → G D n → ℂ} {σ : ℝ}
     (hc : IsCont H φ s₀ U d E σ) {u : G D n} (hH : ∀ g, H (g * u) = H g) (hφ : ∀ g, φ (g * u) = φ g) (g : G D n) :
@@ -56,9 +56,9 @@ namespace PositivityTheory.Rg.Rsw.L
 
 open LCfInv in
 /- English proof (translation)
-Introduce `D n H s₀ φ U d E σ hc ε hε u hH hφ k g`. Unfold `cf`. Use `congr 1`. Use `circleIntegral.integral_congr hε.1.le fun z hz => ?_` and prove the remaining obligations. Establish `hzU : z ∈ U` using `hε.2.1 (Metric.sphere_subset_closedBall hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [E_mul hc hH hφ g z hzU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cfInv : CfInv := by
   intro D n H s₀ φ U d E σ hc ε hε u hH hφ k g

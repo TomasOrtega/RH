@@ -16,14 +16,14 @@ open scoped Classical
 namespace GlobalTheory.LogPole
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Rewrite using `[← FlagMod.spMap_ev z (isAffineOpen_top _) h, ← FlagMod.spMap_ev z' (isAffineOpen_top _) h']`. Use `congr 2`. Conclude with `RingHom.ext e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sp_ext_ev {R S : Type} [CommRing R] [CommRing S] {z z' : Sp S ⟶ Sp R} (h : ⊤ ≤ z ⁻¹ᵁ ⊤)
     (h' : ⊤ ≤ z' ⁻¹ᵁ ⊤) (e : ∀ a, ev z ⊤ h a = ev z' ⊤ h' a) : z = z' := by
@@ -32,7 +32,7 @@ theorem sp_ext_ev {R S : Type} [CommRing R] [CommRing S] {z z' : Sp S ⟶ Sp R} 
   exact RingHom.ext e
 
 /- English proof (translation)
-Establish `e` using `FlagMod.ev_spMap f (𝟙 (Sp R)) ⊤ h₀ (by simpa using h)`. Rewrite using `[FlagMod.ev_congr (Category.comp_id (spMap f)).symm ⊤ h (by simpa using h), e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_spMap_top {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (h : ⊤ ≤ (spMap f) ⁻¹ᵁ ⊤)
     (h₀ : ⊤ ≤ (𝟙 (Sp R)) ⁻¹ᵁ ⊤) (a : Γ(Sp R, ⊤)) : ev (spMap f) ⊤ h a = f (ev (𝟙 (Sp R)) ⊤ h₀ a) := by
@@ -45,23 +45,21 @@ end GlobalTheory.LogPole
 open GlobalTheory.LogPole in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF U D K _ _ P₀ hU`. Use `set φ := ev (frX P₀ ≫ TF.Y.j) U.1 hU with hφ`. Apply the tactic sequence `let θ : Γ(TF.Y.X, U.1) →+* DualNumber K := { toFun := fun r => TrivSqZeroExt.inl (φ r) + TrivSqZeroExt.inr (φ (D.1 r)) map_one' := by ext <;> simp map_mul' := fun a b => by`. Use `ext`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Derivation.leibniz, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `map_zero' := by ext <;> simp`. Apply the tactic sequence `map_add' := fun a b => by ext <;> simp <;> ring }`. Establish `hθ : ∀ r, θ r = TrivSqZeroExt.inl (φ r) + TrivSqZeroExt.inr (φ (D.1 r))` using `fun _ => rfl`.
+Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `z : Sp (DualNumber K) ⟶ TF.Y.X` to `spMap θ ≫ U.2.fromSpec`. Establish `hred : spMap (FlagTan.red c K).toRingHom ≫ z = frX P₀ ≫ TF.Y.j`. Establish `e : (FlagTan.red c K).toRingHom.comp θ = φ` using `RingHom.ext fun r => by simp [hθ]`. Rewrite using `[← Category.assoc, spMap_comp_spMap', e]`. Conclude with `FlagMod.spMap_ev _ U.2 hU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : Set.range z ⊆ Set.range TF.Y.j`. Establish `h1 : ⊤ ≤ z ⁻¹ᵁ TF.Y.j.opensRange` using `le_preimage_of_dualNumber _ z _ (by rw [hred]; rintro s -; exact ⟨frX P₀ s, rfl⟩)`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `h1 (Set.mem_univ s)`. Set `y'` to `IsOpenImmersion.lift TF.Y.j z hint`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : y' ≫ TF.Y.j = z` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hzU : ⊤ ≤ z ⁻¹ᵁ U.1` using `FlagMod.le_preimage_comp (spMap θ) (FlagMod.tau_le U.2 le_rfl)`. Establish `hU' : ⊤ ≤ (y' ≫ TF.Y.j) ⁻¹ᵁ U.1` using `by rw [hy']; exact hzU`. Establish `hevz : ev z U.1 hzU = θ` using `FlagMod.ev_spMap_tau U.2 θ hzU`. Establish `hjs : TF.Y.j ≫ TF.Y.s = pullback.snd _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, TF.Y.jQ_over]`. Conclude with `(congrArg (_ ≫ ·) (Spec.map_id _)).trans (Category.comp_id _)`. Establish `htop : ∀ {S : Type} [CommRing S] (w : Sp S ⟶ Sp c.F), ⊤ ≤ w ⁻¹ᵁ ⊤` using `fun _ => fun _ _ => trivial`. Establish `hUs : U.1 ≤ TF.Y.s ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Use `⟨y', hU', ?_, ?_, fun r => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : y' ≫ pullback.snd _ _ = z ≫ TF.Y.s` using `by rw [← hjs, ← Category.assoc, hy']`. Rewrite using `[e1]`. Use `sp_ext_ev (htop _) (htop _) fun a => ?_` and prove the remaining obligations. Rewrite using `[← FlagMod.ev_appLE z TF.Y.s hUs hzU (htop _) a, hevz, hθ]`. Establish `hc : (TF.Y.s.appLE ⊤ U.1 hUs).hom a = constFn TF.Y.s U.1 ((Scheme.ΓSpecIso (CommRingCat.of c.F)).hom.hom a)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [constFn]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hD : D.1 ((TF.Y.s.appLE ⊤ U.1 hUs).hom a) = 0` using `by rw [hc]; exact D.2.1 _`. Rewrite using `[hD, map_zero, TrivSqZeroExt.inr_zero, add_zero, hφ, FlagMod.ev_appLE (frX P₀ ≫ TF.Y.j) TF.Y.s hUs hU (htop _) a, FlagMod.ev_congr (show (frX P₀ ≫ TF.Y.j) ≫ TF.Y.s = spMap (algebraMap c.F K) by`.
-
-Rewrite using `[Category.assoc, hjs, FlagMod.frX_snd]) ⊤ (htop _) (htop _),`. Use `ev_spMap_top _ (htop _) (fun _ _ => trivial), ev_spMap_top _ (htop _) (fun _ _ => trivial), TrivSqZeroExt.algebraMap_eq_inl']`. Rewrite using `[← cancel_mono TF.Y.j, Category.assoc, hy', hred]`. Rewrite using `[FlagMod.ev_congr hy' U.1 hU' hzU, hevz]`. Conclude with `hθ r`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LogPole.exists_tanPt_of_logDer : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (U : TF.Y.X.affineOpens) (D : LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U) (K : Type) [Field K] [Algebra c.F K] (P₀ : FrPt Xo c K) (hU : ⊤ ≤ (frX P₀ ≫ TF.Y.j) ⁻¹ᵁ U.1), ∃ (y' : Sp (DualNumber K) ⟶ Xo.XF c) (hU' : ⊤ ≤ (y' ≫ TF.Y.j) ⁻¹ᵁ U.1), y' ≫ pullback.snd _ _ = spMap (algebraMap c.F (DualNumber K)) ∧ spMap (FlagTan.red c K).toRingHom ≫ y' = frX P₀ ∧ ∀ r, ev (y' ≫ TF.Y.j) U.1 hU' r = TrivSqZeroExt.inl (ev (frX P₀ ≫ TF.Y.j) U.1 hU r) + TrivSqZeroExt.inr (ev (frX P₀ ≫ TF.Y.j) U.1 hU (D.1 r)) := by
   intro E _ _ _ H Dw l Xo c TF U D K _ _ P₀ hU

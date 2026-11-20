@@ -17,21 +17,17 @@ noncomputable section
 namespace GlobalTheory.ThetaChange
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP M₁ hM₁ e hE hbij`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Establish `hrk : Module.finrank F E = 2` using `hP.base.cm.2.2.1`. Take `⟨Φr, hΦr⟩` from `GlobalTheory.RatCoord.ratEquiv F E σ n d X W M B.ψ hP.good hrk`. Take `⟨lθ, hlθ, hlθ'⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin n × Fin d)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcomp` using `GlobalTheory.EvAdm.comp_mem_adm F E σ B n d n d X W X W M M₁ 1 1 ∅ e hP.good hM₁ hE lθ hlθ`. Establish `hinc1 : ∀ k : ℕ, incM F (1 : Matrix (Fin k) (Fin k) E) = 1`. Introduce `k`. Unfold `incM`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.schwartz_functional_archimedean_factor F B.ψ hstd (Fin n × Fin d) (fun Φ => thetaSum F (e Φ)) (fun Φ hΦ Ψ hΨ => by`. Simplify using `only [map_add]`. Conclude with `GlobalTheory.WeilM.thetaSum_add F (hE.maps Φ hΦ) (hE.maps Ψ hΨ))`. Use the proof step `(fun c Φ _ => by simp only [map_smul]; exact GlobalTheory.WeilM.thetaSum_smul F c (e Φ))`. Use the proof step `(fun g hg => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T, hT⟩` from `hcomp g hg`. Use `⟨T, fun f => ?_⟩` and prove the remaining obligations. Establish `hm : pureA F f g ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Rewrite using `[← hlθ' _ (hE.maps _ hm)]`. Conclude with `hT f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun a b Φ hΦ => by set x := Φr.symm (a, b) with hx`. Establish `hxe : M.co.e (incM F x) = ((fun i => algebraMap F (AF F) (a i)), (fun i => algebraMap F (AF F) (b i)))`. Rewrite using `[hΦr x, hx, LinearEquiv.apply_symm_apply]`. Establish `h1 : schr B.ψ ((fun i => algebraMap F (AF F) (a i)), (fun i => algebraMap F (AF F) (b i))) Φ = M.co.rho B.ψ (incM F (1 : Matrix (Fin n) (Fin n) E) * incM F x * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ) Φ`. Rewrite using `[hinc1, hinc1, Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `show _ = schr B.ψ (M.co.e (incM F x)) Φ`. Rewrite using `[hxe]`. Rewrite using `[h1, hE.Heisenberg₂ _ Φ hΦ]`. Take `⟨y, z, hyz⟩` from `hM₁.rat x`. Use `show thetaSum F (schr B.ψ (M₁.co.e (incM F x)) (e Φ)) = _`.
-
-Rewrite using `[hyz]`. Conclude with `GlobalTheory.ThetaQuasiRat.thetaSum_schr_rat F B.ψ (fun a => hstd.2.1 a) y z (e Φ))`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨φ₀, hφ₀, hne⟩` from `GlobalTheory.ThetaSumNe.exists_mem_schA_thetaSum_ne_zero F (Fin n × Fin d)`.
-
-Take `⟨Φ, hΦ, rfl⟩` from `hbij.surjOn hφ₀`. Conclude with `hne (by rw [hc Φ hΦ, zero_mul])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ M₁ : Model σ X W, M₁.IsGood B.ψ → ∀ e : Fn F n d →ₗ[ℂ] Fn F n d, IsEv B M M₁ 1 1 ∅ e → Set.BijOn e (schA F (Fin n × Fin d) : Set _) (schA F (Fin n × Fin d) : Set _) → ∃ c₀ : ℂ, c₀ ≠ 0 ∧ ∀ Φ ∈ schA F (Fin n × Fin d), thetaSum F (e Φ) = c₀ * thetaSum F Φ := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP M₁ hM₁ e hE hbij

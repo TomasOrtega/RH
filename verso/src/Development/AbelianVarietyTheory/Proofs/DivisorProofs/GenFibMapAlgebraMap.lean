@@ -15,7 +15,7 @@ def genFibMap {T E O : Type} [CommRing T] [CommRing E] [CommRing O] [Algebra T E
     exact ⟨t, ht, (ψ.commutes t).symm⟩)
 
 /- English proof (translation)
-Simplify using `[genFibMap, IsLocalization.map_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genFibMap_algebraMap {T E O : Type} [CommRing T] [CommRing E] [CommRing O] [Algebra T E]
     [Algebra T O] (ψ : E →ₐ[T] O) (e : E) :
@@ -23,7 +23,7 @@ theorem genFibMap_algebraMap {T E O : Type} [CommRing T] [CommRing E] [CommRing 
   simp [genFibMap, IsLocalization.map_eq]
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid E (nonZeroDivisors T)) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem genFib_ringHom_ext {T E C : Type} [CommRing T] [CommRing E] [CommRing C] [Algebra T E]
     {f g : GenFib T E →+* C} (h : ∀ e : E, f (algebraMap E _ e) = g (algebraMap E _ e)) : f = g :=

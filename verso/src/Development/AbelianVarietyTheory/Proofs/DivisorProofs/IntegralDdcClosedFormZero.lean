@@ -17,13 +17,13 @@ open scoped ComplexOrder
 namespace GlobalTheory.CxFormStokes
 
 /- English proof (translation)
-Introduce `M _ _ _ _ _ _ n A η Z hη hZ hdZ _`. Establish `hdη` using `GlobalTheory.T.isForm_dbar' A η hη`. Establish `hγ` using `GlobalTheory.T.isForm_mul_of_isForm_of_isForm A _ _ hdη hZ`. Take `⟨hγ', hdel⟩` from `GlobalTheory.T.isForm_smul_del_smul A GlobalTheory.HermFrame.kappa _ hγ`. Establish `e1 : A.ddc η * Z = A.del (GlobalTheory.HermFrame.kappa • (A.dbar η * Z))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hdel, GlobalTheory.T.del_mul_of_del_eq_zero' A _ _ hdη hZ hdZ, GlobalTheory.CxForm.HolAtlas.ddc, smul_mul_assoc]`. Rewrite using `[e1]`. Use `set γ := GlobalTheory.HermFrame.kappa • (A.dbar η * Z)`. Take `⟨N, c, χ, hχs, hχt, hχ1⟩` from `GlobalTheory.T.exists_finite_smooth_partition_unity_holAtlas A`. Establish `hf : ∀ j, A.IsForm (A.fn (χ j) * γ)` using `fun j => GlobalTheory.T.isForm_mul_of_isForm_of_isForm A _ _ (A.isForm_fn (hχs j)) hγ'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : γ = ∑ j, A.fn (χ j) * γ`. Rewrite using `[← Finset.sum_mul]`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.mul_apply, GlobalTheory.CxForm.HolAtlas.fn, ← map_sum]`. Rewrite using `[show (∑ j, ((χ j x.pt : ℝ) : ℂ)) = 1 by exact_mod_cast hχ1 x.pt, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, GlobalTheory.T.holAtlas_del_finset_sum A _ hf, GlobalTheory.T.holAtlas_integral_fin_sum_compact A _ fun j => GlobalTheory.T.holAtlas_isForm_del A _ (hf j)]`. Conclude with `Finset.sum_eq_zero fun j _ => GlobalTheory.T.integral_del_chartSupported_mul_form_eq_zero A γ (χ j) (c j) hγ' (hχs j) (hχt j)`.
+A detailed English derivation is pending.
 -/
 theorem integral_ddc_mul_eq_zero : ∀ {M : Type} [TopologicalSpace M] [CompactSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M]
     [BorelSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (η Z : A.Fld), A.IsForm η → A.IsForm Z → A.del Z = 0 →

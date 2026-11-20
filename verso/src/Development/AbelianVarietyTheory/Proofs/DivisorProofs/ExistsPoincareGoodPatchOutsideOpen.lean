@@ -11,15 +11,13 @@ set_option autoImplicit false
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `F _ σ X m E O H hG y hy`. Take `⟨e, S, hholo, hys, hy0, hcomp, A, hA, c, N, hev⟩` from `hG y hy`. Establish `h1 : ∀ᶠ z in 𝓝 y, z ∈ ptsIn X.str σ O → GoodBound S c N (fun v => H A (e.symm v) ()) (e z)` using `(eventually_nhdsWithin_iff.1 hev).mono fun z hz hzO => hz hzO ()`. Establish `h2 : ∀ᶠ z in 𝓝 y, A ∈ E.S (under z)` using `GlobalTheory.T.adaptedFrame_eventually_near_complexPoint E hA`. Establish `h3 : ∀ᶠ z in 𝓝 y, z ∈ e.source` using `e.open_source.mem_nhds hys`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ∀ᶠ z in 𝓝 y, ∀ a ∈ S, ‖e z a‖ ≤ 1 / 2`. Use `(Filter.eventually_all_finset S).2 fun a ha => ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun z => e z a) y` using `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin X.dim => ℂ) a).continuous.comp (PiLp.continuous_ofLp 2 _)).continuousAt.comp (e.continuousAt hys)`. Establish `h0 : e y a = 0` using `hy0 a ha`. Establish `: ∀ᶠ z in 𝓝 y, e z a ∈ Metric.ball (0 : ℂ) (1 / 2)` using `hc.preimage_mem_nhds (by rw [h0]; exact Metric.ball_mem_nhds _ (by norm_num))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.mono fun z hz => le_of_lt (by simpa using hz)`. Take `⟨W, hW, hWo, hyW⟩` from `eventually_nhds_iff.1 (h1.and (h2.and (h3.and h4)))`. Use `⟨e, S, A, W, c, hyW, ?_⟩` and prove the remaining obligations. Use `exact`. Use the proof step `{ holo := hholo isOpen := hWo sub := fun z hz => (hW z hz).2.2.1 frame := fun z hz => (hW z hz).2.1 small := fun z hz => (hW z hz).2.2.2 mem := fun z hz => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hcomp z (hW z hz).2.2.1` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `hzO a ha h`. Conclude with `(this.2 ⟨a, ha, h⟩) hzO`. Introduce `hne`.
-
-Assume the negation of the conclusion as `hzO`. Take `⟨a, ha, h⟩` from `this.1 hzO`. Conclude with `hne a ha h`. Use `form := fun z hz hzO a i j => ((hW z hz).1 hzO).form a i j`. Use `dbar := fun z hz hzO a b i j => ((hW z hz).1 hzO).dbar a b i j }`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_goodPatch : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ}
     (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens)

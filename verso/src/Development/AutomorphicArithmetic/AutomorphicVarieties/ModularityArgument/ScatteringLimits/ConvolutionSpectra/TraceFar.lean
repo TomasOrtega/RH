@@ -15,9 +15,9 @@ section
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hP, -, -, hL⟩` from `projLaws M`. Establish `x1` using `DFunLike.congr_fun ((hP _ _ (measurableSet_Ioi (a := T)) (measurableSet_Ioi (a := T))).2.2.2.2 r).1 h`. Establish `y1 : (fun x : ℝ => x + r) ⁻¹' Ioi T = Ioi (T - r)` using `by ext x; simp [sub_lt_iff_lt_add]`. Establish `x2` using `(hP _ _ (measurableSet_Ioi (a := T)) (measurableSet_Ioi (a := T - r))).1`. Rewrite `x2` using `[inter_eq_right.2 (Ioi_subset_Ioi (by linarith))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `x1` using `[y1, ← x2]`. Simplify using `only [ContinuousLinearMap.comp_apply] at x1`. Rewrite using `[x1]`. Conclude with `DFunLike.congr_fun (hL T T (by linarith)).2.2.2.2.2.1 _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem k1 {T : ℝ} (hT : M.T₀ ≤ T) {r : ℝ} (hr : r ≤ 0) (h : H) : M.abelian₂ T T (M.F.U r (M.P (Ioi T) h)) = 0 := by
   obtain ⟨-, -, -, -, hP, -, -, hL⟩ := projLaws M
@@ -31,9 +31,9 @@ private theorem k1 {T : ℝ} (hT : M.T₀ ≤ T) {r : ℝ} (hr : r ≤ 0) (h : H
   exact DFunLike.congr_fun (hL T T (by linarith)).2.2.2.2.2.1 _
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hP, -, -, hL⟩` from `projLaws M`. Establish `x1` using `DFunLike.congr_fun ((hP _ _ (measurableSet_Ioi (a := T + δ)) (measurableSet_Ioi (a := T))).2.2.2.2 r).2 h`. Establish `y1 : (fun x : ℝ => x - r) ⁻¹' Ioi (T + δ) = Ioi (T + δ + r)` using `by ext x; simp [lt_sub_iff_add_lt]`. Establish `x2 : M.P' (Ioi T) ∘L M.P' (Ioi (T + δ + r)) = M.P' (Ioi T ∩ Ioi (T + δ + r))` using `((projLaws M.swap).2.2.2.2.1 _ _ (measurableSet_Ioi (a := T)) (measurableSet_Ioi (a := T + δ + r))).1`. Rewrite `x2` using `[inter_eq_right.2 (Ioi_subset_Ioi (by linarith))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `x1` using `[y1, ← x2]`. Simplify using `only [ContinuousLinearMap.comp_apply] at x1`. Rewrite using `[x1]`. Conclude with `DFunLike.congr_fun (hL T T (by linarith)).2.2.2.2.2.2.2.1 _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem k2 {T δ : ℝ} (hT : M.T₀ ≤ T) {r : ℝ} (hr : -δ ≤ r) (h : H) : M.abelian₂ T T (M.F.U r (M.P' (Ioi (T + δ)) h)) = 0 := by
   obtain ⟨-, -, -, -, hP, -, -, hL⟩ := projLaws M
@@ -48,9 +48,9 @@ private theorem k2 {T δ : ℝ} (hT : M.T₀ ≤ T) {r : ℝ} (hr : -δ ≤ r) (
   exact DFunLike.congr_fun (hL T T (by linarith)).2.2.2.2.2.2.2.1 _
 
 /- English proof (translation)
-Take `⟨i, e⟩` from `((avSpec M.F).2.2.2 _ (avApprox.2.1 ψ _ _ hψ).2.1).1 h`. Rewrite using `[e, ← A.integral_comp_comm i]`. Use `integral_eq_zero_of_ae (Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Distinguish the cases in `hr : r ∈ Icc (-δ) 0`. Simplify using `[hA r hr.1 hr.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hψ.supp r hr]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem k3 {ψ : ℝ → ℝ} {δ : ℝ} (hψ : Bump ψ (-δ) 0) (A : H →L[ℂ] H) (h : H)
     (hA : ∀ r, -δ ≤ r → r ≤ 0 → A (M.F.U r h) = 0) : A (M.F.av (fun t => (ψ t : ℂ)) h) = 0 := by
@@ -62,7 +62,7 @@ private theorem k3 {ψ : ℝ → ℝ} {δ : ℝ} (hψ : Bump ψ (-δ) 0) (A : H 
   · simp [hψ.supp r hr]
 
 /- English proof (translation)
-Use `((projLaws M.swap).2.2.2.2.1 _ _ (measurableSet_Ioc (a := T) (b := T + ρ)) (measurableSet_Ioi (a := T + ρ))).2.2.2.1 (Ioc_disjoint_Ioi le_rfl)` as an intermediate fact. Rewrite `this` using `[Ioc_union_Ioi_eq_Ioi (by linarith)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem k4 {T ρ : ℝ} (hρ : 0 ≤ ρ) : M.P' (Ioi T) = M.P' (Ioc T (T + ρ)) + M.P' (Ioi (T + ρ)) := by
   have := ((projLaws M.swap).2.2.2.2.1 _ _ (measurableSet_Ioc (a := T) (b := T + ρ)) (measurableSet_Ioi (a := T + ρ))).2.2.2.1
@@ -70,18 +70,18 @@ private theorem k4 {T ρ : ℝ} (hρ : 0 ≤ ρ) : M.P' (Ioi T) = M.P' (Ioc T (T
   rwa [Ioc_union_Ioi_eq_Ioi (by linarith)] at this
 
 /- English proof (translation)
-Use `show h = h - M.P (Ioi T) h - M.P' (Ioi T) h + _ + _`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem k5 (T : ℝ) (h : H) : h = M.abelian₂ T T h + M.P (Ioi T) h + M.P' (Ioi T) h := by
   show h = h - M.P (Ioi T) h - M.P' (Ioi T) h + _ + _
   abel
 
 /- English proof (translation)
-Take `⟨hs, hi, -⟩` from `avApprox.2.1 ψ _ _ hψ`. Take `⟨b1, b2, b3, b4, -⟩` from `bandHS M.swap _ _ (convAdj κ hk).1 (carLaws M X κ hk hX).2.1 (fun t => (ψ (-t) : ℂ)) a b (Complex.continuous_ofReal.comp (hψ.cont.comp continuous_neg)) ((hs.comp_homeomorph (Homeomorph.neg ℝ)).comp_left (g := fun x : ℝ => (x : ℂ)) rfl) hab`. Establish `e : M.swap.F.av (fun t => (ψ (-t) : ℂ)) = M.F.av fun t => (ψ t : ℂ)`. Use `((avSpec M.F).2.2.2 _ hi.comp_neg).2.2.2.1` as an intermediate fact. Simplify using `only [neg_neg] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Rewrite `b3`, `b4` using `[e]`. Take `⟨p1, p2, -⟩` from `(projLaws M.swap).2.2.2.2.1 _ _ (measurableSet_Ioc (a := a) (b := b)) (measurableSet_Ioc (a := a) (b := b))`. Rewrite `p1` using `[inter_self]`. Establish `e2 : M.P' (Ioc a b) ∘L X = ContinuousLinearMap.adjoint (ContinuousLinearMap.adjoint X ∘L M.swap.P (Ioc a b))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.adjoint_adjoint, p2.adjoint_eq]`. Both sides reduce to the same expression. Use `⟨b3, e2 ▸ b1.adjoint, b4.trans ?_, by rw [e2, hsNorm_adjoint, b2], p1⟩` and prove the remaining obligations. Use `integral_neg_eq_self (fun x => ψ x ^ 2) volume` as an intermediate fact. Simplify using `[this]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem k6 {X : H →L[ℂ] H} {κ : ℝ → V →L[ℂ] W} (hk : Ker κ) (hX : M.Carries X κ) {ψ : ℝ → ℝ} {δ : ℝ} (hψ : Bump ψ (-δ) 0)
     {a b : ℝ} (hab : a ≤ b) :
@@ -108,25 +108,21 @@ private theorem k6 {X : H →L[ℂ] H} {κ : ℝ → V →L[ℂ] W} (hk : Ker κ
 end
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M X κ hk hX ψ δ T hψ hT htc`. Take `⟨ρ₀, hρ₀⟩` from `hk.2.isCompact.isBounded.subset_closedBall 0`. Establish `hρ : ∀ t, max ρ₀ 0 < |t| → κ t = 0` using `fun t ht => image_eq_zero_of_notMem_tsupport fun h => by`. Use `hρ₀ h` as an intermediate fact. Rewrite `this` using `[mem_closedBall_zero_iff, Real.norm_eq_abs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear relations using `[le_max_left ρ₀ 0]`. Use `set ρ := max ρ₀ 0`. Establish `r0 : 0 ≤ ρ` using `le_max_right _ _`. Take `⟨h1, h2, -, -, h3⟩` from `k6 M hk hX hψ (a := T) (b := T + ρ) (by linarith)`. Take `⟨-, -, l0, -, ln, -, l2, -⟩` from `(projLaws M).2.2.2.2.2.2.2 T T (by linarith)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `set Λ := M.abelian₂ T T`. Use `set Ψ := M.F.av (fun t => (ψ t : ℂ))`. Use `set E := M.P' (Ioc T (T + ρ))`. Set `Z : H →L[ℂ] H` to `Ψ ∘L (Λ ∘L X ∘L Λ) + ((Ψ ∘L E) ∘L (E ∘L X)) ∘L Λ`. Establish `hZ : IsTraceClass Z` using `(htc.comp_left Ψ).add ((isTraceClass_comp h1 h2).comp_right Λ)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ t, 0 ≤ t → Λ ∘L M.F.U (-t) ∘L (Ψ ∘L X) ∘L Λ = (Λ ∘L M.F.U (-t)) ∘L Z` using `fun t ht => by`. Use extensionality with `h`. Establish `a1 : (Λ ∘L M.F.U (-t)) (Ψ (M.P (Ioi T) (X (Λ h)))) = 0` using `k3 M hψ _ _ fun r _ hr => by`. Rewrite using `[ContinuousLinearMap.comp_apply, ← M.F.add]; exact k1 M hT (by linarith) _`. Establish `a2 : M.P' (Ioi (T + ρ)) (X (Λ h)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `DFunLike.congr_fun ((carLaws M X κ hk hX).2.2 ρ T hρ) (Λ h)` as an intermediate fact. Establish `l : M.P (Ioi T) (Λ h) = 0` using `DFunLike.congr_fun l2 h`. Simplify `this` using `[l]`. Establish `a3 : E (E (X (Λ h))) = E (X (Λ h))` using `DFunLike.congr_fun h3 _`. Use `show (Λ ∘L M.F.U (-t)) (Ψ (X (Λ h))) = (Λ ∘L M.F.U (-t)) (Ψ (Λ (X (Λ h))) + Ψ (E (E (X (Λ h)))))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `conv_lhs => rw [k5 M T (X (Λ h)), k4 M r0, ContinuousLinearMap.add_apply, a2, add_zero, map_add, map_add, map_add, map_add, a1, add_zero]`. Rewrite using `[a3, map_add]`. Prove the components needed by the constructor for the conclusion. Use `key 0 le_rfl` as an intermediate fact. Establish `e : M.F.U (-0) = 1` using `by ext h; simpa using M.F.zero h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[e]`. Conclude with `this ▸ hZ.comp_left _`. Establish `t` using `trWeak atTop (fun a : ℝ => Λ ∘L M.F.U (-(2 * a))) 0 Z hZ (fun a => ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun h => by`. Rewrite using `[ContinuousLinearMap.comp_apply]`. Conclude with `(Λ.le_opNorm _).trans (by rw [M.F.norm]; gcongr)) (fun x y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `sa` using `((projLaws M).2.2.2.2.2.2.2 T T (by linarith)).2.2.2.1`. Use `((projLaws M).1 y (Λ x)).2.comp (tendsto_neg_atTop_atBot.comp (tendsto_id.const_mul_atTop two_pos))` as an intermediate fact. Simplify using `only [ContinuousLinearMap.zero_apply, inner_zero_right]`. Conclude with `this.congr fun a => sa.isSymmetric.apply_clm _ _)`. Establish `z : trace ((0 : H →L[ℂ] H) ∘L Z) = 0`.
-
-Use `trace_smul 0 hZ` as an intermediate fact. Simplify using `using this`. Rewrite `t` using `[z]`. Use `t.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (0 : ℝ)] with a ha`.
-
-Rewrite using `[key _ (by linarith)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.traceFar :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (X : H →L[ℂ] H) (κ : ℝ → V →L[ℂ] W), Ker κ → M.Carries X κ → ∀ (ψ : ℝ → ℝ) (δ T : ℝ), Bump ψ (-δ) 0 → M.T₀ ≤ T → IsTraceClass (M.abelian₂ T T ∘L X ∘L M.abelian₂ T T) →

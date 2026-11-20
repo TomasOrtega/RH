@@ -9,25 +9,25 @@ noncomputable section
 namespace GlobalTheory.Core.Rk
 
 /- English proof (translation)
-Introduce `D u L C' Cl Cg cb Cu cT CT h`. Take `⟨-, -, hH, hN, -⟩` from `h`. Take `⟨hL1, -, hmf, hfk, -, -, -, -, -, -, -, hg0, -, hg1, -⟩` from `hH`. Take `⟨-, -, -, -, -, -, -, -, hT, hdu, -⟩` from `hN`. Establish `hm : 2 ≤ D.R.m` using `D.R.two_le_m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm4 : 16 ≤ D.R.m ^ 4`. Combine the equalities or inequalities in the displayed calculation. Establish `hf16 : 16 ≤ D.R.f` using `le_trans hm4 hmf`. Establish `hk16 : 16 ≤ D.R.k` using `le_trans hf16 hfk`. Establish `hmR : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfR : (16 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf16`. Establish `hkR : (16 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk16`. Establish `hL : (1 : ℝ) ≤ L` using `hL1.le`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hm5 : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `mfL`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul hm5 hfR (by norm_num) (by positivity)) hL (by norm_num) (by positivity)` to reduce the goal to its premises. Establish `hb : (1 : ℝ) ≤ Real.exp L` using `Real.one_le_exp (by linarith)`.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hkg : ∀ g : ℝ, ((D.R.k : ℝ) * Real.exp L) ^ 8 ≤ g → (D.R.k : ℝ) ^ 8 ≤ g` using `fun g hg => le_trans (pow_le_pow_left₀ (by positivity) (le_mul_of_one_le_right (by positivity) hb) 8) hg`. Establish `h0 : D.R.k ^ 8 ≤ D.host.g 0` using `by exact_mod_cast hkg _ hg0`. Establish `h1 : D.R.k ^ 8 ≤ D.host.g 1` using `by exact_mod_cast hkg _ hg1`. Use `set N := (D.host.g 0 * D.host.g 1) ^ 2 with hNdef`. Establish `hk8 : 4 * D.R.f ≤ D.R.k ^ 8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hkpos : 1 ≤ D.R.k ^ 8` using `Nat.one_le_pow _ _ (by omega)`. Establish `hgg : D.R.k ^ 8 ≤ D.host.g 0 * D.host.g 1` using `le_trans h0 (Nat.le_mul_of_pos_right _ (by omega))`. Establish `hNge : D.host.g 0 * D.host.g 1 ≤ N`. Rewrite using `[hNdef, sq]; exact Nat.le_mul_of_pos_right _ (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN4 : 4 * D.R.f ≤ N` using `le_trans hk8 (le_trans hgg hNge)`. Establish `hN2 : 2 ≤ N` using `by omega`. Take `⟨-, hmod⟩` from `hT u`. Rewrite `hmod` using `[Nat.one_mod_eq_one.mpr (by omega)]`. Establish `hTp` using `(D.mem u).A.T_prime`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hTp.two_le`. Establish `hdiv` using `Nat.div_add_mod ((D.mem u).A.T) N`. Rewrite `hdiv` using `[hmod]`. Establish `hq : (D.mem u).A.T / N ≠ 0`. Introduce `hq0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdiv` using `[hq0]`. Use linear arithmetic over natural numbers and integers. Establish `: N ≤ N * ((D.mem u).A.T / N)` using `Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hq)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[d0_eq]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hdu u`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem hd_numbers : ∀ (D : D7) (u : D.what₂.Word) (L C' Cl Cg cb Cu cT CT : ℝ), HD D L C' Cl Cg cb Cu cT CT →
     5 ≤ mfL D L ∧ 4 * D.R.f + 1 ≤ (D.mem u).A.T ∧ 0 < d0 D u ∧ 5 ≤ (D.R.f : ℝ) * D.R.k * L := by

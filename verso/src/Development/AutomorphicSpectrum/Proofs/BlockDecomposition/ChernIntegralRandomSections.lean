@@ -14,16 +14,16 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.FSCrofton
 
 /- English proof (translation)
-Unfold `gW`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_gW (d : ℕ) (α : Type) [Fintype α] : Measurable (gW d α) := by
   unfold gW
   fun_prop
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin m), (((⋃ t ∈ s, B t).encard : ℕ∞) : ℝ≥0∞) = ∑ t ∈ s, (((B t).encard : ℕ∞) : ℝ≥0∞)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, Finset.set_biUnion_insert, Set.encard_union_eq, ENat.toENNReal_add, ih]`. Conclude with `Set.disjoint_iUnion₂_right.2 fun t ht => h (fun e => ha (e ▸ ht))`. Simplify using `using key Finset.univ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem encard_iUnion_fin {X : Type} {m : ℕ} (B : Fin m → Set X)
     (h : Pairwise (Function.onFun Disjoint B)) :
@@ -41,41 +41,37 @@ theorem encard_iUnion_fin {X : Type} {m : ℕ} (B : Fin m → Set X)
   simpa using key Finset.univ
 
 /- English proof (translation)
-Introduce `Y Δ L r hL n b hb _`. Use `CxPts.compactSpace (RingHom.id ℂ) Y.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver (RingHom.id ℂ) Y.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver (σ := RingHom.id ℂ) Y.isProjOver` as an intermediate fact. Use `set φ := Weight.fsBasis Y.str (RingHom.id ℂ) hL b hb 1 (by simp) with hφdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : φ.IsCInf` using `Weight.isCInf_fsBasis hL b hb _ _`. Establish `hneg : φ.chernPart Y.dim (-1) = 0` using `Weight.chernPart_neg_eq_zero hφ (Weight.semiPosReg_fsBasis hL b hb _ _)`. Establish `hint` using `GlobalTheory.Published.ChernDegreeComplexModel.integrable Y φ hφ`. Establish `hfin : φ.chernPart Y.dim 1 Set.univ ≠ ⊤`. Establish `h1` using `hint.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[IntegrableOn, Measure.restrict_univ, integrable_const_iff]`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `absurd h1 one_ne_zero`. Conclude with `((isFiniteMeasure_iff _).1 (by simpa using h1)).ne`. Set `ι` to `AlgChart Y.str (RingHom.id ℂ) Y.dim × L.ι × Fin n`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S : ι → Set (CxPts Y.str (RingHom.id ℂ))` to `fun t => t.1.e.source ∩ (ptsIn Y.str (RingHom.id ℂ) (L.U t.2.1) ∩ ptsIn Y.str (RingHom.id ℂ) (nonzeroLocus (b t.2.2)))`. Establish `hSo : ∀ t, IsOpen (S t)` using `fun t => t.1.e.open_source.inter ((isOpen_ptsIn _).inter (isOpen_ptsIn _))`. Establish `hSc : (⋃ t, S t) = Set.univ`. Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (D := Y.dim) (p := Y.str) (σ := RingHom.id ℂ) y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `exists_mem_ptsIn hb y`. Conclude with `Set.mem_iUnion.2 ⟨⟨c, pick hL y, j⟩, hc, mem_pick hL y, hj⟩`. Take `⟨m, l, A, hdis, hun, hsub, hσ⟩` from `GlobalTheory.T.sigma_compact_disjoint_refinement _ ι S hSo hSc`. Use `set G : ℝ≥0∞ := ENNReal.ofReal (Real.pi ^ (Y.dim * n)) with hG`. Establish `hGpos : G ≠ 0`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hG, Ne, ENNReal.ofReal_eq_zero, not_le]`. Check the signs of the components of the expression. Establish `hGtop : G ≠ ⊤` using `ENNReal.ofReal_ne_top`. Set `Z : (Fin Y.dim → Fin n → ℂ) → Set (CxPts Y.str (RingHom.id ℂ))` to `fun C => {y | ∀ (k : Fin Y.dim) (i : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i) → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i y = 0}`. Set `P : Fin m → (Fin Y.dim → Fin n → ℂ) → Set (CxPts Y.str (RingHom.id ℂ))` to `fun t C => {y | y ∈ A t ∧ ∀ (k : Fin Y.dim) (i : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i) → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i y = 0}`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hpiece : ∀ t, Measurable (fun C => (((P t C).encard : ℕ∞) : ℝ≥0∞)) ∧ ∫⁻ C, gW Y.dim (Fin n) C * (((P t C).encard : ℕ∞) : ℝ≥0∞) = G * φ.chernPart Y.dim 1 (A t)` using `fun t => GlobalTheory.T.measurable_local_zero_count Y L hL n b hb (l t).1 (l t).2.1 (l t).2.2 (A t) (fun y hy => (hsub t hy).1) (fun y hy => (hsub t hy).2.1) (fun y hy => (secVal_ne_zero_iff _ (hsub t hy).2.1).2 (hsub t hy).2.2) (hσ t)`. Establish `hZ : ∀ C, (((Z C).encard : ℕ∞) : ℝ≥0∞) = ∑ t, (((P t C).encard : ℕ∞) : ℝ≥0∞)`. Introduce `C`. Rewrite using `[← encard_iUnion_fin]`. Use `congr 2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, P, Z, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨t, ht⟩` from `Set.mem_iUnion.1 (hun ▸ Set.mem_univ y)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨t, ht, h⟩`. Introduce and unpack `⟨t, -, h⟩`. Conclude with `h`. Introduce `s t hst`. Conclude with `(hdis hst).mono (fun y hy => hy.1) (fun y hy => hy.1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNm : Measurable fun C => (((Z C).encard : ℕ∞) : ℝ≥0∞)`. Simplify using `only [hZ]`. Conclude with `Finset.measurable_fun_sum _ fun t _ => (hpiece t).1`. Establish `hAm : ∀ t, MeasurableSet (A t)` using `fun t => by`. Take `⟨K, hK, e⟩` from `hσ t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← e]`. Conclude with `MeasurableSet.iUnion fun i => (hK i).measurableSet`. Establish `hmass : φ.chernPart Y.dim 1 Set.univ = ∑ t, φ.chernPart Y.dim 1 (A t)`. Rewrite using `[← hun, measure_iUnion hdis hAm, tsum_fintype]`. Establish `hgm` using `measurable_gW Y.dim (Fin n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hsum : ∫⁻ C, gW Y.dim (Fin n) C * (((Z C).encard : ℕ∞) : ℝ≥0∞) = G * φ.chernPart Y.dim 1 Set.univ`. Simplify using `only [hZ, Finset.mul_sum]`. Rewrite using `[lintegral_finset_sum Finset.univ (f := fun t C => gW Y.dim (Fin n) C * (((P t C).encard : ℕ∞) : ℝ≥0∞)) fun t _ => hgm.mul (hpiece t).1, hmass, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => (hpiece t).2`. Set `μ : Measure (Fin Y.dim → Fin n → ℂ)` to `G⁻¹ • volume.withDensity (gW Y.dim (Fin n))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlin : ∀ f : (Fin Y.dim → Fin n → ℂ) → ℝ≥0∞, Measurable f → ∫⁻ C, f C ∂μ = G⁻¹ * ∫⁻ C, gW Y.dim (Fin n) C * f C`. Introduce `f hf`. Rewrite using `[lintegral_smul_measure, lintegral_withDensity_eq_lintegral_mul _ hgm hf]`. Both sides reduce to the same expression. Establish `hprob : IsProbabilityMeasure μ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_⟩` and prove the remaining obligations. Establish `h1` using `hlin (fun _ => 1) measurable_const`. Simplify using `only [lintegral_one, mul_one] at h1`. Rewrite using `[h1, GlobalTheory.T.gaussian_weight_total_mass, Fintype.card_fin]`. Conclude with `ENNReal.inv_mul_cancel hGpos hGtop`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ∫⁻ C, (((Z C).encard : ℕ∞) : ℝ≥0∞) ∂μ = φ.chernPart Y.dim 1 Set.univ`. Rewrite using `[hlin _ hNm, hsum, ← mul_assoc, ENNReal.inv_mul_cancel hGpos hGtop, one_mul]`. Use `⟨μ, hprob, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(withDensity_absolutelyContinuous _ _).smul_left _`. Establish `hcast : ∀ C, ((Z C).ncard : ℝ) = ((((Z C).encard : ℕ∞) : ℝ≥0∞)).toReal`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `C`. Rewrite using `[Set.ncard]`. Consider the cases of `h : (Z C).encard with`. Consider the case `top => simp`. Consider the case `coe a => simp`.
-
-Establish `hae : ∀ᵐ C ∂μ, (((Z C).encard : ℕ∞) : ℝ≥0∞) < ⊤` using `ae_lt_top hNm (by rw [hN]; exact hfin)`. Establish `e` using `integral_toReal hNm.aemeasurable hae`. Rewrite `e` using `[hN]`. Simplify using `only [Z] at hcast e`. Simplify using `only [hcast]`.
-
-Rewrite using `[e, Weight.chernInt, hneg]`. Simplify using `[Measure.real]`.
+A detailed English derivation is pending.
 -/
 theorem crofton : ∀ (Y : Var ℂ) (Δ : Y.Dv) (L : LB Y.X) (r : L.ι → Y.Fnˣ) (hL : L.IsLB) (n : ℕ) (b : Fin n → L.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤), Presents Δ L r → ∃ μ : Measure (Fin Y.dim → Fin n → ℂ), IsProbabilityMeasure μ ∧ μ ≪ volume ∧ (Weight.fsBasis Y.str (RingHom.id ℂ) hL b hb 1 (by simp)).chernInt Y.dim Set.univ (fun _ => 1) = ∫ C, (({y : CxPts Y.str (RingHom.id ℂ) | ∀ (k : Fin Y.dim) (i : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i) → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i y = 0}).ncard : ℝ) ∂μ := by
   intro Y Δ L r hL n b hb _

@@ -18,9 +18,9 @@ namespace A5
 
 open scoped Classical in
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [Set.mem_setOf_eq, Finset.coe_filter, Set.Finite.mem_toFinset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, hI⟩`. Conclude with `⟨hb, (mem_bId_iff (ne_zero_of_mem_boxSet hb) v).mp hI⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hb, hv⟩`. Conclude with `⟨hb, (mem_bId_iff (ne_zero_of_mem_boxSet hb) v).mpr hv⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem coe_filter_box (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (T : ℝ)
     (v : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} →₀ ℕ) :
@@ -36,7 +36,7 @@ theorem coe_filter_box (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
 
 open scoped Classical in
 /- English proof (translation)
-The claim follows from `|T ^ (-((Formalism.HermitianLatticesTheory.fDeg K * finrank K V : ℕ) : ℤ)) * ∑ n ∈ (boxSet_finite hK hF T).toFinset.filter (fun n => v ≤ valF n), (Ideal.absNorm (Ideal.span {n}) : ℝ) ^ (finrank K V - 1) * ∏ 𝔭 ∈ S, aLoc h L 𝔭 n| ≤ C / nrm (fun 𝔭 => (Ideal.absNorm 𝔭.1 : ℝ)) v := by …`.
+A detailed English derivation is pending.
 -/
 theorem dominated (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -106,19 +106,17 @@ end A5
 
 open A5 in
 /- English proof (translation)
-Use `set S : Finset {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} := (finite_vd_ne_zero (F := F) hK hF hs hd hL hLi).toFinset with hSdef`. Establish `hS : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, vd h L 𝔭.1 ≠ 0 → 𝔭 ∈ S` using `fun 𝔭 h𝔭 => (Set.Finite.mem_toFinset _).mpr h𝔭`. Take `⟨C, hC⟩` from `dominated hK hF hs hd hL hLi hm S`. Use `set c0 : ℝ := (finrank K V : ℝ) ^ (-(Formalism.HermitianLatticesTheory.fDeg K : ℤ)) / Real.sqrt ((2 * Formalism.HermitianLatticesTheory.vInv K) ^ Formalism.HermitianLatticesTheory.fDeg K) with hc0`. Establish `main` using `tendsto_weighted_tprod (q := fun 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} => (Ideal.absNorm 𝔭.1 : ℝ)) (fun 𝔭 => by exact_mod_cast two_le_absNorm 𝔭.2) summable_inv_absNorm_sq S (ρ := roL h L S) (roL_zero hK hF hs hd hL hLi hm hS) (fun 𝔭 h𝔭 j => by simp [roL, h𝔭]) (roL_diff hK hF hs hd …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `main.congr fun j => ?_` and prove the remaining obligations. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (boxSet_finite hK hF ((j : ℝ) ^ 2))]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `hb : n ∈ boxSet K F ((j : ℝ) ^ 2)` using `(Set.Finite.mem_toFinset _).mp hn`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[singS_eq hK hF hs hd hL hLi hm hS (ne_zero_of_mem_boxSet hb), mul_assoc]`. Introduce `v hv`. Establish `ht` using `tendsto_sum_box_ideal hK hF hs hd hL hLi hm S hS (bId_ne_bot v) (fun 𝔭 h𝔭 => bId_sup_eq_top (Finset.disjoint_right.mp hv h𝔭))`. Rewrite `ht` using `[coe_filter_box hK hF, finsum_mem_coe_finset]`. Rewrite `ht` using `[absNorm_bId]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : c0 * (∏ 𝔭 ∈ S, (eFac K (finrank K V) 𝔭.1)⁻¹) / nrm (fun 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} => (Ideal.absNorm 𝔭.1 : ℝ)) v = c0 / nrm (fun 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} => (Ideal.absNorm 𝔭.1 : ℝ)) v * ∏ 𝔭 ∈ S, (eFac K (finrank K V) 𝔭.1)⁻¹` using `by ring`. Rewrite using `[he]`. Conclude with `ht`. Use `filter_upwards [eventually_ge_atTop 1] with j hj v`. Use `hC _ ?_ v` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ (j : ℝ)` using `by exact_mod_cast hj`. Use the polynomial consequences of the given equalities and inequalities. Introduce `S' hS'`. Establish `ht` using `tendsto_sum_box_ideal hK hF hs hd hL hLi hm S' (fun 𝔭 h𝔭 => hS' (hS 𝔭 h𝔭)) (b := ⊤) (by simp) (fun 𝔭 _ => by simp)`. Simplify using `only [Submodule.mem_top, and_true, Ideal.absNorm_top, Nat.cast_one, div_one] at ht`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ht.congr fun j => ?_` and prove the remaining obligations. Establish `hset : {n : 𝓞 F | n ∈ boxSet K F ((j : ℝ) ^ 2)} = boxSet K F ((j : ℝ) ^ 2)` using `rfl`. Rewrite using `[hset, finsum_mem_eq_finite_toFinset_sum _ (boxSet_finite hK hF ((j : ℝ) ^ 2))]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations.
-
-Establish `hb : n ∈ boxSet K F ((j : ℝ) ^ 2)` using `(Set.Finite.mem_toFinset _).mp hn`. Rewrite using `[mul_assoc, ← prod_aLoc hK hF hs hd hL hLi hS hS' (ne_zero_of_mem_boxSet hb)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tendsto_singS_sum (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}

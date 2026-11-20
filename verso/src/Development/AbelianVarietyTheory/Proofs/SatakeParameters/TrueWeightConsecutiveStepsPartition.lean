@@ -12,9 +12,9 @@ namespace GlobalTheory.KerWtStep
 open Formalism.MainNotions.GL3Columns
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `R.t_odd`. Establish `h2 : j * (R.t + 1) = 2 * (j * (c + 1))` using `by rw [hc]; ring`. Rewrite using `[h2, Nat.mul_div_cancel_left _ two_pos]`. Use `push_cast`. Rewrite using `[hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem half_cast (R : Ranks) (j : ℕ) :
     (((j * (R.t + 1) / 2 : ℕ) : ℤ) : ℚ) = (j : ℚ) * ((R.t : ℚ) + 1) / 2 := by
@@ -29,13 +29,13 @@ theorem half_cast (R : Ranks) (j : ℕ) :
 variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {Pm : PeriodMap D.R C}
 
 /- English proof (translation)
-Establish `h1` using `M.lam_eq j hj τ r`. Establish `h2` using `lamNo_eq D u τ j r r.2`. Use `show (((M.lam j τ).w r - ((j * (D.R.t + 1) / 2 : ℕ) : ℤ) : ℤ) : ℚ) = _`. Use `push_cast`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `half_cast D.R j`. Move the coercions through the operations in `at h3`. Rewrite using `[h3]`. Unfold `lamNo at h2`. It suffices to establish `e : (if h : r.1 < D.R.k then hcToWeightQ (D.hcW u τ).u ⟨r.1, h⟩ else -wG D.R ((D.hcW u τ).e ⟨(r.1 - D.R.k) / (D.R.t + 1), D.R.blk_lt hj r h⟩) ((r.1 - D.R.k) / (D.R.t + 1) + 1)) = (if r.1 < D.R.k then lamZ D u τ r else -wJ D u τ ((r.1 - D.R.k) / (D.R.t + 1))) by`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Use `split_ifs with hk`. Simplify using `only [hcToWeightQ, rhoVec, lamZ, dif_pos hk]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [wJ, eJ, dif_pos (D.R.blk_lt hj r hk)]`.
+A detailed English derivation is pending.
 -/
 theorem lamTG_w (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A Pm) (j : ℕ) (hj : j ≤ D.R.m)
     (τ : D.what₂.Tau) (r : Fin (D.R.N j)) : (((lamTG M j τ).w r : ℤ) : ℚ) = lamTr D u τ j r := by
@@ -59,40 +59,38 @@ theorem lamTG_w (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D
   · simp only [wJ, eJ, dif_pos (D.R.blk_lt hj r hk)]
 
 /- English proof (translation)
-The claim follows from `dif_pos hN`.
+A detailed English derivation is pending.
 -/
 theorem detShift_eq {N : ℕ} (l : DomWeight N) (hN : 0 < N) : l.detShift = l.w ⟨N - 1, by omega⟩ := dif_pos hN
 
 /- English proof (translation)
-Introduce `D u C A Pm M i hi`. Establish `hN` using `D.R.N_pos i`. Establish `hlt : D.R.N i < D.R.N (i + 1)` using `by unfold Ranks.N; rw [Nat.succ_mul]; omega`. Establish `hS : ∀ τ, (C.sSharp i τ : ℚ) = sJ' D u τ i` using `fun τ => ((wtRec_thm D u τ i hi).1 C).1`. Establish `hD : ∀ τ, (C.sDiv i τ : ℚ) = sJ D u τ i` using `fun τ => ((wtRec_thm D u τ i hi).1 C).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnu : ∀ τ r, r < D.R.N i → DV.nuRow D u (i + 1) τ r = ((nuTr D u τ i r : ℚ) : ℝ)` using `fun τ => (wtRec_thm D u τ i hi).2`. Establish `wi` using `fun τ (r : Fin (D.R.N i)) => lamTG_w M i hi.le τ r`. Establish `wi1` using `fun τ (r : Fin (D.R.N (i + 1))) => lamTG_w M (i + 1) hi τ r`. Establish `ds0` using `fun τ => detShift_eq (lamTG M i τ) hN`. Establish `ds1` using `fun τ => detShift_eq (lamTG M (i + 1) τ) (D.R.N_pos (i + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `anti0 : ∀ τ (r : Fin (D.R.N i)), (lamTG M i τ).w ⟨D.R.N i - 1, by omega⟩ ≤ (lamTG M i τ).w r` using `fun τ r => (lamTG M i τ).anti (show r ≤ ⟨D.R.N i - 1, by omega⟩ from Fin.le_def.2 (by simp; omega))`. Establish `dq1 : ∀ τ, (((lamTG M (i + 1) τ).detShift : ℤ) : ℚ) = -sJ D u τ i`. Introduce `τ`. Rewrite using `[ds1, wi1]`. Simplify using `only [lamTr, if_neg (show ¬ (D.R.N (i + 1) - 1 < D.R.N i) by omega), if_pos (show D.R.N (i + 1) - 1 < D.R.N (i + 1) by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpos : ∀ τ, 0 < (lamTG M i τ).detShift + C.sSharp i τ`. Introduce `τ`. Establish `h` using `RowWeightLemmas.nuRow_last_pos D u i hi τ`. Rewrite `h` using `[hnu τ _ (by omega)]`. Establish `e : (((lamTG M i τ).detShift + C.sSharp i τ : ℤ) : ℚ) = nuTr D u τ i (D.R.N i - 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ds0]`. Use `push_cast`. Rewrite using `[wi, hS]`. Both sides reduce to the same expression. Establish `h' : (0 : ℚ) < nuTr D u τ i (D.R.N i - 1)` using `by exact_mod_cast h`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h'` using `[← e]`. Conclude with `h'` after adjusting the coercions. Use `⟨fun τ => ((lamTG M i τ).detShift + C.sSharp i τ).toNat, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ r`. Establish `key : DV.nuRow D u (i + 1) τ r = ((((lamTG M i τ).w r + C.sSharp i τ : ℤ)) : ℝ)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnu τ r r.2]`. Establish `e : ((((lamTG M i τ).w r + C.sSharp i τ : ℤ)) : ℚ) = nuTr D u τ i r` using `by push_cast; rw [wi, hS]; rfl`. Rewrite using `[← e, Rat.cast_intCast]`. Unfold `nuT`. Rewrite using `[key, ← Int.floor_toNat, Int.floor_intCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a` using `anti0 τ r`. Establish `d` using `ds0 τ`. Establish `p` using `hpos τ`. Unfold `DomWeight.natW`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `τ`. Conclude with `(Int.toNat_of_nonneg (hpos τ).le).symm`. Introduce `τ r`. Unfold `DomWeight.natW extNu`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : r.1 < D.R.N i`. Rewrite using `[dif_pos h]`. Establish `e : (lamTG M (i + 1) τ).w r - (lamTG M (i + 1) τ).detShift = (lamTG M i τ).w ⟨r.1, h⟩ + C.sSharp i τ`. Establish `: (((lamTG M (i + 1) τ).w r - (lamTG M (i + 1) τ).detShift : ℤ) : ℚ) = (((lamTG M i τ).w ⟨r.1, h⟩ + C.sSharp i τ : ℤ) : ℚ)`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[wi1, dq1, wi, hS]`. Simplify using `only [lamTr, if_pos h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a` using `anti0 τ ⟨r.1, h⟩`. Establish `d` using `ds0 τ`. Establish `p` using `hpos τ`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dif_neg h]`. Establish `e : (lamTG M (i + 1) τ).w r - (lamTG M (i + 1) τ).detShift = 0`. Establish `: (((lamTG M (i + 1) τ).w r - (lamTG M (i + 1) τ).detShift : ℤ) : ℚ) = ((0 : ℤ) : ℚ)`. Use `push_cast`. Rewrite using `[wi1, dq1]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lamTr, if_neg h, if_pos r.2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Rewrite using `[e]`. Both sides reduce to the same expression.
-
-Introduce `τ`. Establish `: (((lamTG M (i + 1) τ).detShift : ℤ) : ℚ) = ((-C.sDiv i τ : ℤ) : ℚ)` using `by push_cast; rw [dq1, hD]`. Conclude with `this` after adjusting the coercions.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trueWt_step : ∀ (D : D7) (u : D.what₂.Word) (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) (A : ColumnsAtT D.R C) (Pm : PeriodMap D.R C)
     (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A Pm) (i : ℕ), i < D.R.m →

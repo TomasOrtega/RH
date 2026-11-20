@@ -15,12 +15,12 @@ variable (l : ℕ) {W : Type} [CommRing W] (ρ : ℝ≥0)
 def shiftX (s : W⟦X⟧) : W⟦X⟧ := PowerSeries.mk fun n => coeff (n + 1) s
 
 /- English proof (translation)
-The claim follows from `coeff_mk _ _`.
+A detailed English derivation is pending.
 -/
 theorem coeff_shiftX (s : W⟦X⟧) (n : ℕ) : coeff n (shiftX s) = coeff (n + 1) s := coeff_mk _ _
 
 /- English proof (translation)
-Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[coeff_succ_X_mul, coeff_shiftX, map_sub, coeff_C]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem X_mul_shiftX (s : W⟦X⟧) : X * shiftX s = s - C (coeff 0 s) := by
   ext n
@@ -29,7 +29,7 @@ theorem X_mul_shiftX (s : W⟦X⟧) : X * shiftX s = s - C (coeff 0 s) := by
   · rw [coeff_succ_X_mul, coeff_shiftX, map_sub, coeff_C]; simp
 
 /- English proof (translation)
-Use extensionality with `n`. Use `congrArg (coeff (n + 1)) h` as an intermediate fact. Rewrite `this` using `[coeff_succ_X_mul, map_zero]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_zero_of_X_mul_eq_zero {t : W⟦X⟧} (h : X * t = 0) : t = 0 := by
   ext n
@@ -37,7 +37,7 @@ theorem eq_zero_of_X_mul_eq_zero {t : W⟦X⟧} (h : X * t = 0) : t = 0 := by
   rwa [coeff_succ_X_mul, map_zero] at this
 
 /- English proof (translation)
-Take `⟨c, s, hs⟩` from `IsLocalization.Away.surj (l : W⟦X⟧) y`. Conclude with `⟨c, s, by rw [← hs, mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, mul_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rep (y : PreDisc l (X : W⟦X⟧) ρ) : ∃ (c : ℕ) (s : W⟦X⟧),
     y = algebraMap _ _ s * IsLocalization.Away.invSelf (S := PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ c := by
@@ -45,7 +45,7 @@ theorem exists_rep (y : PreDisc l (X : W⟦X⟧) ρ) : ∃ (c : ℕ) (s : W⟦X�
   exact ⟨c, s, by rw [← hs, mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, mul_one]⟩
 
 /- English proof (translation)
-Rewrite using `[aPre_apply, map_mul, phi_alg, map_pow, phi_inv, ← map_pow, coeff_mul_C, coeff_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aPre_rep (n c : ℕ) (s : W⟦X⟧) :
     aPre l ρ n (algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) s *
@@ -55,11 +55,11 @@ theorem aPre_rep (n c : ℕ) (s : W⟦X⟧) :
   rw [aPre_apply, map_mul, phi_alg, map_pow, phi_inv, ← map_pow, coeff_mul_C, coeff_map]
 
 /- English proof (translation)
-Take `⟨c, t, rfl⟩` from `exists_rep l ρ z`. Establish `hu : IsUnit (IsLocalization.Away.invSelf (S` using `PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧)) := IsUnit.of_mul_eq_one_right (algebraMap _ _ (l : W⟦X⟧)) (IsLocalization.Away.mul_invSelf _)`. Rewrite `h` using `[← mul_assoc, ← map_mul]`. Establish `h2 : algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) (X * t) = 0` using `(hu.pow c).mul_left_eq_zero.1 h`. Take `⟨⟨m, hm⟩, hm'⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (l : W⟦X⟧)) _ _).1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hm`. Establish `h3 : (l : W⟦X⟧) ^ k * t = 0` using `eq_zero_of_X_mul_eq_zero (by rw [mul_left_comm]; exact hm')`. Establish `h4 : algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) t = 0`. Establish `h5` using `congrArg (algebraMap _ (PreDisc l (X : W⟦X⟧) ρ)) h3`. Rewrite `h5` using `[map_mul, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[map_pow]`. Conclude with `((IsLocalization.Away.algebraMap_isUnit (S := PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧)).pow k).mul_right_eq_zero.1 h5`. Rewrite using `[h4, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_X_mul (z : PreDisc l (X : W⟦X⟧) ρ)
     (h : algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) (X : W⟦X⟧) * z = 0) : z = 0 := by
@@ -83,7 +83,7 @@ abbrev c0 (y : PreDisc l (X : W⟦X⟧) ρ) : PreDisc l (X : W⟦X⟧) ρ :=
   preMap l (0 : W) 1 (X : W⟦X⟧) ρ C (aPre l ρ 0 y)
 
 /- English proof (translation)
-Rewrite using `[c0, aPre_rep, map_mul, preMap_alg, map_pow, preMap_inv, ← mul_assoc, ← map_mul, X_mul_shiftX, map_sub, sub_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem X_mul_rep (c : ℕ) (s : W⟦X⟧) :
     algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) (X : W⟦X⟧) * (algebraMap _ _ (shiftX s) *
@@ -98,7 +98,7 @@ def dFun (y : PreDisc l (X : W⟦X⟧) ρ) : PreDisc l (X : W⟦X⟧) ρ :=
     IsLocalization.Away.invSelf (S := PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ (exists_rep l ρ y).choose
 
 /- English proof (translation)
-Establish `hy` using `(exists_rep l ρ y).choose_spec.choose_spec`. Rewrite using `[dFun, X_mul_rep, ← hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem X_mul_dFun (y : PreDisc l (X : W⟦X⟧) ρ) :
     algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) (X : W⟦X⟧) * dFun l ρ y = y - c0 l ρ y := by
@@ -106,14 +106,14 @@ theorem X_mul_dFun (y : PreDisc l (X : W⟦X⟧) ρ) :
   rw [dFun, X_mul_rep, ← hy]
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 (eq_zero_of_X_mul l ρ _ (by rw [mul_sub, X_mul_dFun, h, sub_self]))`.
+A detailed English derivation is pending.
 -/
 theorem dFun_eq (y z : PreDisc l (X : W⟦X⟧) ρ)
     (h : algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) (X : W⟦X⟧) * z = y - c0 l ρ y) : dFun l ρ y = z :=
   sub_eq_zero.1 (eq_zero_of_X_mul l ρ _ (by rw [mul_sub, X_mul_dFun, h, sub_self]))
 
 /- English proof (translation)
-The claim follows from `dFun_eq l ρ _ _ (X_mul_rep l ρ c s)`.
+A detailed English derivation is pending.
 -/
 theorem dFun_rep (c : ℕ) (s : W⟦X⟧) :
     dFun l ρ (algebraMap _ _ s * IsLocalization.Away.invSelf (S := PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ c) =
@@ -130,14 +130,14 @@ Both sides reduce to the same expression.
 theorem DPre_apply (y : PreDisc l (X : W⟦X⟧) ρ) : DPre l ρ y = dFun l ρ y := rfl
 
 /- English proof (translation)
-Take `⟨c, s, rfl⟩` from `exists_rep l ρ y`. Rewrite using `[DPre_apply, dFun_rep, aPre_rep, aPre_rep, coeff_shiftX]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem aPre_DPre (n : ℕ) (y : PreDisc l (X : W⟦X⟧) ρ) : aPre l ρ n (DPre l ρ y) = aPre l ρ (n + 1) y := by
   obtain ⟨c, s, rfl⟩ := exists_rep l ρ y
   rw [DPre_apply, dFun_rep, aPre_rep, aPre_rep, coeff_shiftX]
 
 /- English proof (translation)
-Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hρ : (0 : ℝ) < ρ` using `by exact_mod_cast hρ0`. Use `norm_le_of_aPre l ρ hρ0 hρ1 _ _ (by positivity) fun n => ?_` and prove the remaining obligations. Rewrite using `[aPre_DPre, inv_mul_eq_div, le_div_iff₀ hρ, mul_assoc, ← pow_succ]`. Conclude with `norm_aPre_le l ρ hl hρ1.le y (n + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_DPre_le [Fact l.Prime] (hρ0 : 0 < ρ) (hρ1 : ρ < 1) (y : PreDisc l (X : W⟦X⟧) ρ) :
     ‖DPre l ρ y‖ ≤ (ρ : ℝ)⁻¹ * ‖y‖ := by
@@ -148,17 +148,17 @@ theorem norm_DPre_le [Fact l.Prime] (hρ0 : 0 < ρ) (hρ1 : ρ < 1) (y : PreDisc
   exact norm_aPre_le l ρ hl hρ1.le y (n + 1)
 
 /- English proof (translation)
-The claim follows from `AddMonoidHomClass.continuous_of_bound _ _ (norm_DPre_le l ρ hρ0 hρ1)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_DPre [Fact l.Prime] (hρ0 : 0 < ρ) (hρ1 : ρ < 1) : Continuous (DPre l ρ (W := W)) :=
   AddMonoidHomClass.continuous_of_bound _ _ (norm_DPre_le l ρ hρ0 hρ1)
 
 /- English proof (translation)
-Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Set `A0` to `(aPre l ρ 0 (W := W)).completion (continuous_aPre l ρ hl hρ0 hρ1.le 0)`. Set `D` to `(DPre l ρ (W := W)).completion (continuous_DPre l ρ hρ0 hρ1)`. Establish `hA : ∀ y, A0 (ofPre l (X : W⟦X⟧) ρ y) = ofPre l (0 : W) 1 (aPre l ρ 0 y)` using `fun y => AddMonoidHom.completion_coe _ _ y`. Establish `hD : ∀ y, D (ofPre l (X : W⟦X⟧) ρ y) = ofPre l (X : W⟦X⟧) ρ (DPre l ρ y)` using `fun y => AddMonoidHom.completion_coe _ _ y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκc : Continuous κ` using `AddMonoidHomClass.continuous_of_bound _ 1 fun y => (hκ.norm_le y).trans (one_mul _).ge`. Establish `e : κ.comp (ofPre l (0 : W) 1) = (ofPre l (X : W⟦X⟧) ρ).comp (preMap l (0 : W) 1 (X : W⟦X⟧) ρ C)` using `IsLocalization.ringHom_ext (Submonoid.powers (l : W)) (RingHom.ext fun a => by`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[preMap_alg]`. Conclude with `hκ.ext a)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A0 x, D x, ?_⟩` and prove the remaining obligations. Use `(denseRange_ofPre l (X : W⟦X⟧) ρ).induction_on x (isClosed_eq continuous_id ((hκc.comp (AddMonoidHom.continuous_completion _ _)).add (continuous_const.mul (AddMonoidHom.continuous_completion _ _)))) fun y => ?_` and prove the remaining obligations. Rewrite using `[hA, hD, show κ (ofPre l (0 : W) 1 (aPre l ρ 0 y)) = _ from RingHom.congr_fun e _, RingHom.comp_apply, show toDisc l (X : W⟦X⟧) ρ X = ofPre l (X : W⟦X⟧) ρ (algebraMap _ _ X) from rfl, ← map_mul, ← map_add, DPre_apply, X_mul_dFun]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_const_add_X_mul [Fact l.Prime] (hρ0 : 0 < ρ) (hρ1 : ρ < 1)
     (κ : Disc l (0 : W) 1 →+* Disc l (X : W⟦X⟧) ρ) (hκ : IsDiscMap (C : W →+* W⟦X⟧) κ)
@@ -191,7 +191,7 @@ end GlobalTheory.BSP.DiscSer
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ _ _ ρ hρ0 hρ1 κ hκ x` and use `DiscSer.exists_const_add_X_mul l ρ hρ0 hρ1 κ hκ x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_const_add_X_mul_disc : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ρ : ℝ≥0), 0 < ρ → ρ < 1 →
     ∀ (κ : Disc l (0 : Wq l bk.a) 1 →+* bk.DS ρ), IsDiscMap (C : Wq l bk.a →+* bk.S) κ →

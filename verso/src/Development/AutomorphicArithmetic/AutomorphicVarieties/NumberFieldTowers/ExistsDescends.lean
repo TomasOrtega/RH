@@ -24,13 +24,11 @@ section Step0
 variable {l : ℕ} [Fact l.Prime] {L₀ : Type} [Field L₀] [NumberField L₀] {Ω : Type} [Field Ω] [Algebra L₀ Ω] [IsAlgClosure L₀ Ω]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed L₀`. Use `haveI : FiniteDimensional L₀ L₁ := Module.Finite.of_restrictScalars_finite ℚ L₀ L₁`. Set `j : L₁ →ₐ[L₀] Ω` to `IsAlgClosed.lift`. Use `letI : Algebra L₁ Ω := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower L₀ L₁ Ω := IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.IsAlgebraic L₀ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosure L₁ Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := L₀) L₁⟩`. Take `⟨D⟩` from `Formalism.GaloisCohomology.ldataExists L₁ Ω l`. Establish `hμ₁ : HasMuQ l L₁`. Take `⟨ζ, hζ⟩` from `hμ`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, hζ.map_of_injective (algebraMap L₀ L₁).injective⟩`. Establish `hU` using `(layerUniq L₀ Ω l hμ).2.1 m L₁ hL`. Take `⟨Φ, -⟩` from `desc L₀ L₁ Ω l D e ⊤ he ((muQ L₁ Ω l).2.2.2.1 hμ₁).2 (by rw [hU, cycU_levU])`. Establish `hg` using `((layerGen L₀ Ω l hμ).2 γ hγ).2.2 m`. Rewrite `hg` using `[← hU]`.
-
-Rewrite using `[← shaLen_eq_shaInv D, shaLen, Φ.length_eq, (shaDGen L₀ Ω l l ⊤ _ e _ isClosed_univ le_top hg).2, ← map_pow]`. Conclude with `(cokerDual l _ _ _ fun x φ => by`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, LinearMap.sub_apply, map_sub, xTw_apply_apply]`. Use the proof step `rfl).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step0 (hμ : HasMuQ l L₀) {γ : G L₀ Ω} (hγ : IsGen l ⊤ γ) {e : ℤ} (he : e ≠ 0) (m : ℕ) (L₁ : Type) [Field L₁]
     [NumberField L₁] [Algebra L₀ L₁] (hL : IsLayer l m L₀ L₁) :
@@ -57,7 +55,7 @@ theorem step0 (hμ : HasMuQ l L₀) {γ : G L₀ Ω} (hγ : IsGen l ⊤ γ) {e :
 variable (l L₀ Ω) in
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `(genGal L₀ L₀ Ω l).2.2 ((muQ L₀ Ω l).2.2.2.1 hμ).2`. Rewrite `hγ` using `[galOf_self]`. Conclude with `⟨γ, hγ, ((layerGen L₀ Ω l hμ).2 γ hγ).1, ((muQ L₀ Ω l).1 _).2 le_rfl, fun e he m L₁ _ _ _ hL => step0 hμ hγ (by omega) m L₁ hL⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_descends (hμ : HasMuQ l L₀) : ∃ γ : G L₀ Ω, IsGen l ⊤ γ ∧
     PropA.IsLevel l (cycZ L₀ Ω l γ : ℤ_[l]ˣ) (cZero l L₀) ∧ (∃ ζ : L₀, IsPrimitiveRoot ζ (l ^ cZero l L₀)) ∧
@@ -70,14 +68,14 @@ theorem exists_descends (hμ : HasMuQ l L₀) : ∃ γ : G L₀ Ω, IsGen l ⊤ 
 
 variable (l L₀) in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.mu, h.pos, (genIff L₀ _ l l ⊤ R isClosed_univ).1 h.gen⟩, fun h => ⟨((muQ L₀ (AlgebraicClosure L₀) l).2.2.2.1 h.1).1, h.1, h.2.1, (genIff L₀ _ l l ⊤ R isClosed_univ).2 h.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTower_iff (R : ℕ) : IsTower l L₀ R ↔ HasMuQ l L₀ ∧ 1 ≤ R ∧ rankN l L₀ l ≤ R :=
   ⟨fun h => ⟨h.mu, h.pos, (genIff L₀ _ l l ⊤ R isClosed_univ).1 h.gen⟩, fun h =>
     ⟨((muQ L₀ (AlgebraicClosure L₀) l).2.2.2.1 h.1).1, h.1, h.2.1, (genIff L₀ _ l l ⊤ R isClosed_univ).2 h.2.2⟩⟩
 
 /- English proof (translation)
-The claim follows from `(isTower_iff l L₀ R).2 ⟨hμ, hR, by rw [← rankBase.1 k L₀ Ω l l U hU] exact (rankXRk k Ω l l U R).2 (h.of_one l)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isTower_of_xRk (k : Type) [Field k] [NumberField k] [Algebra k L₀] [Algebra k Ω] [IsScalarTower k L₀ Ω]
     [IsAlgClosure k Ω] (hμ : HasMuQ l L₀) {R : ℕ} (hR : 1 ≤ R) {U : Subgroup (G k Ω)}

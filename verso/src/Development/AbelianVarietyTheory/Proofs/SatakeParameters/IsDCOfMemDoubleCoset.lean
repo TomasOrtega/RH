@@ -8,9 +8,9 @@ namespace GlobalTheory.HkB
 open Formalism.IndefR.Bridge
 
 /- English proof (translation)
-Take `⟨k₁, k₂, rfl⟩` from `hx`. Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Take `⟨u, v, rfl⟩` from `hA.1 a ha`. Conclude with `⟨u * k₁, k₂ * v, by simp [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨u, v, rfl⟩`. Conclude with `hA.2 _ ⟨u * k₁⁻¹, k₂⁻¹ * v, by simp [mul_assoc]⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isDC_of_mem_doubleCoset {G : Type} [Group G] {J : Subgroup G} {x x' : G} {A : Finset G}
     (hA : IsDC J x' A) (hx : ∃ k₁ k₂ : J, x' = (k₁ : G) * x * k₂) : IsDC J x A := by
@@ -23,9 +23,9 @@ theorem isDC_of_mem_doubleCoset {G : Type} [Group G] {J : Subgroup G} {x x' : G}
     exact hA.2 _ ⟨u * k₁⁻¹, k₂⁻¹ * v, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Establish `hF' : F ∈ AdForms (1 : G →* G) (1 : G →* Module.End ℂ W) J χ`. Introduce `γ h k`. Simplify using `using hF k h`. Use `⟨dcOp_eq_of_isDC _ _ hχ hA (isDC_of_mem_doubleCoset hA' hx) hAL hAL' hF', fun k h => ?_⟩` and prove the remaining obligations. Establish `h1` using `LocSplit.dcOp_mem (1 : G →* G) (1 : G →* Module.End ℂ W) hs hχ hA hAL hF' 1 h k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dcOp_eq_and_level {G W : Type} [Group G] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     (J L : Subgroup G) (χ : J →* ℂˣ) (x x' : G) (A A' : Finset G) (F : G → W)

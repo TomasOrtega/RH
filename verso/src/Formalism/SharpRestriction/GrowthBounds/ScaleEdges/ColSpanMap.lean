@@ -21,7 +21,7 @@ Both sides reduce to the same expression.
 theorem incl_apply {k : ℕ} (y : Fin k → W) (i : Fin k) : incl W Qq k y i = algebraMap W Qq (y i) := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun h i`. Rewrite `h1` using `[incl_apply, incl_apply]`. Conclude with `IsFractionRing.injective W Qq h1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incl_inj [IsFractionRing W Qq] (k : ℕ) : Function.Injective (incl W Qq k) := by
   intro x y h
@@ -31,7 +31,7 @@ theorem incl_inj [IsFractionRing W Qq] (k : ℕ) : Function.Injective (incl W Qq
   exact IsFractionRing.injective W Qq h1
 
 /- English proof (translation)
-Unfold `colSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem colSpan_map {k : ℕ} (M : Matrix (Fin k) (Fin k) W) :
     colSpan W (M.map (algebraMap W Qq)) =
@@ -41,13 +41,13 @@ theorem colSpan_map {k : ℕ} (M : Matrix (Fin k) (Fin k) W) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix (Fin k) (Fin k) Qq) = (1 : Matrix (Fin k) (Fin k) W).map (algebraMap W Qq)` using `(Matrix.map_one _ (map_zero _) (map_one _)).symm`. Rewrite using `[h1, colSpan_map, LinearMap.range_eq_map]`. Use `congr 1`. Rewrite using `[← (Pi.basisFun W (Fin k)).span_eq]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.one_apply, Pi.single_apply]`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.one_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colSpan_one (k : ℕ) :
     colSpan W (1 : Matrix (Fin k) (Fin k) Qq) = LinearMap.range (incl W Qq k) := by
@@ -70,21 +70,17 @@ theorem colSpan_one (k : ℕ) :
     simp [Matrix.one_apply, Pi.single_apply]
 
 /- English proof (translation)
-Use `haveI : Module.Free W N := Module.Free.of_basis (Submodule.basisOfPid (Pi.basisFun W (Fin k)) N).2`. Establish `hfin : Module.finrank W N = k`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Set `f : (Fin k → W) →ₗ[W] N` to `LinearMap.codRestrict N ((p : W) • LinearMap.id) (fun c => by simpa using hpN c)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Establish `h2` using `congrArg Subtype.val hxy`. Simplify using `only [f, LinearMap.codRestrict_apply, LinearMap.smul_apply, LinearMap.id_apply] at h2`. Conclude with `smul_right_injective (Fin k → W) hp0 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3` using `LinearMap.finrank_le_finrank_of_injective hinj`. Simplify using `using h3`. Set `b' : Module.Basis (Fin k) W N` to `Module.finBasisOfFinrankEq W N hfin`. Set `M : Matrix (Fin k) (Fin k) W` to `fun i c => (b' c : Fin k → W) i`. Establish `hspan : Submodule.span W (Set.range fun c => (b' c : Fin k → W)) = N`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (Submodule.map N.subtype) b'.span_eq`. Rewrite `h1` using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`. Conclude with `h1`. Set `A : Matrix (Fin k) (Fin k) W` to `fun c i => b'.repr ⟨(p : W) • Pi.single i 1, hpN _⟩ c`. Establish `hMA : M * A = (p : W) • (1 : Matrix (Fin k) (Fin k) W)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `a i`. Establish `hx` using `congrArg (fun v : N => (v : Fin k → W) a) (b'.sum_repr ⟨(p : W) • Pi.single i 1, hpN _⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply] at hx`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, ← hx]`. Conclude with `Finset.sum_congr rfl (fun c _ => by simp only [M, A]; ring)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdetM : M.det ≠ 0`. Introduce `h0`. Establish `h4` using `congrArg Matrix.det hMA`. Rewrite `h4` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Conclude with `pow_ne_zero k hp0 h4.symm`.
-
-Use `⟨M.map (algebraMap W Qq), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective W Qq)).mpr hdetM`. Rewrite using `[colSpan_map]`. Use `congr 1`.
-
-Conclude with `hspan.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lattice_of [IsPrincipalIdealRing W] [IsFractionRing W Qq] (p k : ℕ) (hp0 : (p : W) ≠ 0)
     (N : Submodule W (Fin k → W)) (hpN : ∀ x, (p : W) • x ∈ N) : IsLattice W (N.map (incl W Qq k)) := by
@@ -129,11 +125,11 @@ theorem lattice_of [IsPrincipalIdealRing W] [IsFractionRing W Qq] (p k : ℕ) (h
     exact hspan.symm
 
 /- English proof (translation)
-Substitute `hT` using the available equality. Use `Nat.card_congr (Submodule.Quotient.equiv N _ (LinearEquiv.ofInjective (incl W Qq k) (incl_inj k)) ?_).toEquiv.symm` and prove the remaining obligations. Use extensionality with `⟨y, hy⟩`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, hxy⟩`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Subtype.val hxy`. Simplify `h1` using `[LinearEquiv.ofInjective_apply]`. Introduce and unpack `⟨x, hx, hxy⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hxy` using `[LinearEquiv.ofInjective_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_quot [IsFractionRing W Qq] (k : ℕ) (T : Submodule W (Fin k → Qq))
     (hT : T = LinearMap.range (incl W Qq k)) (N : Submodule W (Fin k → W)) :
@@ -163,16 +159,16 @@ def psi {r K : ℕ} (I : Ideal W) (A : Fin r → Fin K → W) : (Fin (r + K) →
     (Submodule.mkQ I) ∘ₗ (LinearMap.proj (Fin.castAdd K i) + ∑ c, A i c • LinearMap.proj (Fin.natAdd r c))
 
 /- English proof (translation)
-Simplify using `[psi, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_apply {r K : ℕ} (I : Ideal W) (A : Fin r → Fin K → W) (y : Fin (r + K) → W) (i : Fin r) :
     psi I A y i = Ideal.Quotient.mk I (y (Fin.castAdd K i) + ∑ c, A i c * y (Fin.natAdd r c)) := by
   simp [psi, LinearMap.sum_apply]
 
 /- English proof (translation)
-Introduce `z`. Use `choose f hf using fun i => Ideal.Quotient.mk_surjective (I := I) (z i)`. Use `⟨Fin.append f 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[psi_apply, Fin.append_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.append_right, hf]`.
+A detailed English derivation is pending.
 -/
 theorem psi_surj {r K : ℕ} (I : Ideal W) (A : Fin r → Fin K → W) : Function.Surjective (psi I A) := by
   intro z
@@ -183,7 +179,7 @@ theorem psi_surj {r K : ℕ} (I : Ideal W) (A : Fin r → Fin K → W) : Functio
   simp [Fin.append_right, hf]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker, map_smul]`. Use function extensionality and compare the values at `i`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (psi I A x i)`. Rewrite using `[Pi.smul_apply, ← hy, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.mpr ha, zero_mul, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_smul {r K : ℕ} (I : Ideal W) (a : W) (ha : a ∈ I) (A : Fin r → Fin K → W) (x : Fin (r + K) → W) :
     a • x ∈ LinearMap.ker (psi I A) := by
@@ -194,11 +190,11 @@ theorem psi_smul {r K : ℕ} (I : Ideal W) (a : W) (ha : a ∈ I) (A : Fin r →
     Ideal.Quotient.eq_zero_iff_mem.mpr ha, zero_mul, Pi.zero_apply]
 
 /- English proof (translation)
-Establish `key : ∀ Z : Fin r → Fin K → W, ∀ i', psi I Z (Fin.append (fun i'' => -A i'' c) (Pi.single c 1)) i' = Ideal.Quotient.mk I (-A i' c + Z i' c)`. Introduce `Z i'`. Rewrite using `[psi_apply, Fin.append_left]`. Use `congr 1`. Simplify using `[Fin.append_right, Pi.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hA : Fin.append (fun i'' => -A i'' c) (Pi.single c 1) ∈ LinearMap.ker (psi I A)`. Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `i'`. Rewrite using `[key, Pi.zero_apply]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hA` using `[h, LinearMap.mem_ker]`. Establish `h1` using `congrFun hA i`. Rewrite `h1` using `[key, Pi.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[eq_comm, Ideal.Quotient.eq]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -226,21 +222,19 @@ theorem psi_ker_inj {r K : ℕ} (I : Ideal W) (A B : Fin r → Fin K → W)
 end Psi
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS k r hrk`. Take `⟨K, rfl⟩ : ∃ K, k = r + K` from `⟨k - r, by omega⟩`. Use `haveI := hS.frac_alt`. Use `set I : Ideal W := Ideal.span {(p : W)} with hI`. Establish `hpI : (p : W) ∈ I` using `Ideal.mem_span_singleton_self _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (p : W) ≠ 0` using `hS.p_unif.ne_zero`. Establish `hcard : Nat.card (W ⧸ I) = p ^ n'` using `hS.res_card`. Use `haveI : Finite (W ⧸ I) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ hS.prime.ne_zero)`. Use `haveI : Fintype (W ⧸ I) := Fintype.ofFinite _`. Use `choose lift hlift using (Ideal.Quotient.mk_surjective (I := I))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ed : (Fin r → Fin K → W ⧸ I) → Edge W Qq (r + K)` to `fun A => ⟨(LinearMap.ker (psi I (fun i c => lift (A i c)))).map (incl W Qq (r + K)), colSpan W (1 : Matrix (Fin (r + K)) (Fin (r + K)) Qq)⟩`. Establish `hinj : Function.Injective ed`. Introduce `A B hAB`. Establish `h1` using `congrArg Edge.src hAB`. Establish `h2` using `Submodule.map_injective_of_injective (incl_inj (W := W) (Qq := Qq) (r + K)) h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i c`. Establish `h3` using `psi_ker_inj I _ _ h2 i c`. Rewrite `h3` using `[hlift, hlift]`. Then use the resulting hypothesis. Use `⟨Finset.univ.image ed, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨A, -, rfl⟩` from `Finset.mem_image.mp he`. Use `⟨⟨?_, ?_, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `lattice_of (Qq := Qq) p (r + K) hp0 _ (fun x => psi_smul I (p : W) hpI _ x)`. Conclude with `⟨1, by simp, rfl⟩`. Use `show _ ≤ colSpan W (1 : Matrix (Fin (r + K)) (Fin (r + K)) Qq)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[colSpan_one]`. Conclude with `LinearMap.map_le_range`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ colSpan W (1 : Matrix (Fin (r + K)) (Fin (r + K)) Qq) at hx`. Rewrite `hx` using `[colSpan_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hx`. Conclude with `Submodule.mem_map.mpr ⟨(p : W) • y, psi_smul I (p : W) hpI _ y, map_smul _ _ _⟩`. Use `(card_quot (r + K) _ (colSpan_one (r + K)) _).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.card_congr (LinearMap.quotKerEquivOfSurjective _ (psi_surj I _)).toEquiv]`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_fun, Fintype.card_fin, ← Nat.card_eq_fintype_card, hcard, ← pow_mul]`.
-
-Rewrite using `[Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fun, Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, ← Nat.card_eq_fintype_card, hcard, Nat.add_sub_cancel_left, ← pow_mul, ← pow_mul]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem manyEdges : ManyEdges := by
   classical

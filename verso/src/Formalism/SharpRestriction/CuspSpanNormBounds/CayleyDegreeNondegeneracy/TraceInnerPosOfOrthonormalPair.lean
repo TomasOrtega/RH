@@ -14,11 +14,9 @@ section Alg
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Use `choose r hr0 hr using ha`. Establish `htr : ((Algebra.trace ℚ K a : ℚ) : ℝ) = ∑ σ : K →ₐ[ℚ] ℂ, r σ`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := K) ℂ (x := a)`. Rewrite using `[show ((((Algebra.trace ℚ K a : ℚ) : ℝ)) : ℂ) = algebraMap ℚ ℂ (Algebra.trace ℚ K a) by simp, h1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `Finset.sum_congr rfl fun σ _ => hr σ`. Rewrite using `[htr]`. Establish `hφ : φ a = ((r φ.toRatAlgHom : ℝ) : ℂ)` using `hr φ.toRatAlgHom`. Rewrite using `[hφ, Complex.norm_of_nonneg (hr0 _)]`.
-
-Conclude with `Finset.single_le_sum (fun σ _ => hr0 σ) (Finset.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_embedding_le_trace (a : K) (ha : ∀ σ : K →ₐ[ℚ] ℂ, ∃ r : ℝ, 0 ≤ r ∧ σ a = (r : ℂ)) (φ : K →+* ℂ) :
     ‖φ a‖ ≤ ((Algebra.trace ℚ K a : ℚ) : ℝ) := by
@@ -36,7 +34,7 @@ theorem norm_embedding_le_trace (a : K) (ha : ∀ σ : K →ₐ[ℚ] ℂ, ∃ r 
   exact Finset.single_le_sum (fun σ _ => hr0 σ) (Finset.mem_univ _)
 
 /- English proof (translation)
-The claim follows from `|(Matrix.of fun j j' : Free.ChooseBasisIndex ℤ (𝓞 K) => ((Algebra.trace ℚ K (star (integralBasis K j) * integralBasis K j') : ℚ) : ℝ)).det| = |(discr K : ℝ)| := by classical set B := integralBasis K with hB let s : K →ₗ[ℚ] K := (starRingEnd K).toRatAlgHom.toLinearMap have hs : ∀ …`.
+A detailed English derivation is pending.
 -/
 theorem abs_det_trace_form_eq_discr (hK : IsCMUnram K) :
     |(Matrix.of fun j j' : Free.ChooseBasisIndex ℤ (𝓞 K) =>
@@ -85,7 +83,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {V : Type} [AddCommGr
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, he]`. Simplify using `[Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_sum_orthonormal_pair (h : V →ₗ⋆[K] V →ₗ[K] K) (e : Fin 2 → V)
     (he : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (a c : Fin 2 → K) :
@@ -96,7 +94,7 @@ theorem inner_sum_orthonormal_pair (h : V →ₗ⋆[K] V →ₗ[K] K) (e : Fin 2
   ring
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span K (Set.range e)` using `hsp ▸ Submodule.mem_top`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx`. Conclude with `⟨a, ha.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coords_basis_fin_two (e : Fin 2 → V) (hli : LinearIndependent K e) (hsp : Submodule.span K (Set.range e) = ⊤) (x : V) :
     ∃ a : Fin 2 → K, x = ∑ i, a i • e i := by
@@ -105,9 +103,9 @@ theorem exists_coords_basis_fin_two (e : Fin 2 → V) (hli : LinearIndependent K
   exact ⟨a, ha.symm⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `exists_coords_basis_fin_two e hli hsp x`. Rewrite using `[inner_sum_orthonormal_pair h e he a a]`. Use `⟨∑ i, ‖σ (a i)‖ ^ 2, by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Establish `hst` using `hK.2.1 (σ : K →+* ℂ) (a i)`. Simplify using `only [RingHom.coe_coe] at hst`. Rewrite using `[hst, Complex.conj_mul']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_inner_self_nonneg (hK : IsCMUnram K) (h : V →ₗ⋆[K] V →ₗ[K] K) (e : Fin 2 → V) (hli : LinearIndependent K e)
     (hsp : Submodule.span K (Set.range e) = ⊤) (he : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (x : V)
@@ -124,17 +122,17 @@ theorem conj_inner_self_nonneg (hK : IsCMUnram K) (h : V →ₗ⋆[K] V →ₗ[K
   rw [hst, Complex.conj_mul']
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `exists_coords_basis_fin_two e hli hsp x`. Rewrite using `[inner_sum_orthonormal_pair h e he a a]`. Establish `hi : ∃ i, a i ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Simplify using `[hne]`. Take `⟨i, hi⟩` from `hi`. Establish `htr : ((Algebra.trace ℚ K (∑ i, star (a i) * a i) : ℚ) : ℝ) = ∑ σ : K →ₐ[ℚ] ℂ, ∑ i, ‖σ (a i)‖ ^ 2`. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := K) ℂ (x := ∑ i, star (a i) * a i)`. Rewrite using `[show ((((Algebra.trace ℚ K (∑ i, star (a i) * a i) : ℚ) : ℝ)) : ℂ) = algebraMap ℚ ℂ (Algebra.trace ℚ K (∑ i, star (a i) * a i)) by simp, h1]`. Use `push_cast`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Establish `hst` using `hK.2.1 (σ : K →+* ℂ) (a j)`. Simplify using `only [RingHom.coe_coe] at hst`. Rewrite using `[hst, Complex.conj_mul']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hreal : (0 : ℝ) < ((Algebra.trace ℚ K (∑ i, star (a i) * a i) : ℚ) : ℝ)`. Rewrite using `[htr]`. Apply `Finset.sum_pos' (fun σ _ => Finset.sum_nonneg fun j _ => by positivity)` to reduce the goal to its premises. Use `⟨IsAlgClosed.lift, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Apply `Finset.sum_pos' (fun j _ => by positivity)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `hne : (IsAlgClosed.lift : K →ₐ[ℚ] ℂ) (a i) ≠ 0` using `(map_ne_zero _).2 hi`. Conclude with `pow_pos (norm_pos_iff.2 hne) 2`. Conclude with `hreal` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trace_inner_pos_of_orthonormal_pair (hK : IsCMUnram K) (h : V →ₗ⋆[K] V →ₗ[K] K) (e : Fin 2 → V) (hli : LinearIndependent K e)
     (hsp : Submodule.span K (Set.range e) = ⊤) (he : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (x : V)
@@ -179,31 +177,27 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {V : Type} [AddCommGr
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Set `v : Free.ChooseBasisIndex ℤ (𝓞 K) × Fin 2 → EuclideanSpace ℝ (Fin N)` to `fun p => ι (integralBasis K p.1 • e p.2)`. Set `A : Matrix (Free.ChooseBasisIndex ℤ (𝓞 K)) (Free.ChooseBasisIndex ℤ (𝓞 K)) ℝ` to `Matrix.of fun j j' => ((Algebra.trace ℚ K (star (integralBasis K j) * integralBasis K j') : ℚ) : ℝ)`. Establish `hAdet : |A.det| = |(discr K : ℝ)|` using `abs_det_trace_form_eq_discr hK`. Establish `hspan : zmap ι (Submodule.span (𝓞 K) (Set.range e)) = Submodule.span ℤ (Set.range v)`. Apply `le_antisymm` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `w ⟨x, hx, rfl⟩`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 hx`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← (RingOfIntegers.basis K).sum_repr (c i), Finset.sum_smul, map_sum]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc, map_zsmul]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(k, i), ?_⟩)` and prove the remaining obligations. Simplify using `only [v, integralBasis_apply, algebraMap_smul]`. Rewrite using `[Submodule.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Establish `hmem : integralBasis K k • e i ∈ Submodule.span (𝓞 K) (Set.range e)`. Rewrite using `[integralBasis_apply, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `AddSubgroup.mem_map_of_mem ι hmem`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hG : Matrix.gram ℝ v = Matrix.blockDiagonal (fun _ : Fin 2 => A)`. Use extensionality with `⟨k, i⟩ ⟨k', i'⟩`. Rewrite using `[Matrix.gram_apply, Matrix.blockDiagonal_apply]`. Simplify using `only [v, A, hι, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, he, Matrix.of_apply]`. Use `split_ifs with hii`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hii]`. Conclude with `congrArg _ (mul_comm _ _)`. Simplify using `[hii]`. Establish `hdetG : (Matrix.gram ℝ v).det = A.det * A.det`. Rewrite using `[hG, Matrix.det_blockDiagonal, Fin.prod_univ_two]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hA0 : A.det ≠ 0`. Introduce `h0`. Rewrite `hAdet` using `[h0, abs_zero]`. Conclude with `NumberField.discr_ne_zero K (by exact_mod_cast (abs_eq_zero.1 hAdet.symm))`. Establish `hli' : LinearIndependent ℝ v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hmv : Matrix.mulVec (Matrix.gram ℝ v) g = 0`. Use extensionality with `p`. Establish `hp` using `congrArg (fun w => inner ℝ (v p) w) hg`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [inner_sum, inner_smul_right, inner_zero_right] at hp`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.gram_apply, Pi.zero_apply]`. Rewrite using `[← hp]`. Conclude with `Finset.sum_congr rfl fun q _ => mul_comm _ _`. Establish `h0` using `Matrix.eq_zero_of_mulVec_eq_zero (by rw [hdetG]; exact mul_ne_zero hA0 hA0) hmv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `p`. Conclude with `congrFun h0 p`. Establish `hsp' : ⊤ ≤ Submodule.span ℝ (Set.range v)`. Establish `htop : Submodule.span ℝ ((zmap ι (Submodule.span (𝓞 K) (Set.range e)) : Submodule ℤ _) : Set (EuclideanSpace ℝ (Fin N))) = ⊤` using `IsZLattice.span_top`. Rewrite `htop` using `[hspan, Submodule.span_span_of_tower]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `htop.ge`. Set `bb` to `Module.Basis.mk hli' hsp'`. Establish `hbb : ⇑bb = v` using `Module.Basis.coe_mk hli' hsp'`. Establish `hcovG` using `Formalism.E.covolumeEqSqrtDetGram (EuclideanSpace ℝ (Fin N)) (Free.ChooseBasisIndex ℤ (𝓞 K) × Fin 2) bb`. Rewrite `hcovG` using `[hbb]`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hspan, hcovG, hdetG, Real.sqrt_mul_self_eq_abs, hAdet]`. Establish `h1` using `Module.finrank_eq_card_basis bb`. Rewrite `h1` using `[finrank_euclideanSpace_fin, Fintype.card_prod, Fintype.card_fin]`. Establish `h2` using `Module.finrank_eq_card_basis (integralBasis K)`.
-
-Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem covolume_trace_lattice (hK : IsCMUnram K) (h : V →ₗ⋆[K] V →ₗ[K] K) (e : Fin 2 → V) (hli : LinearIndependent K e)
     (hsp : Submodule.span K (Set.range e) = ⊤) (he : ∀ i j, h (e i) (e j) = if i = j then 1 else 0)
@@ -287,15 +281,15 @@ section Mink
 open MeasureTheory
 
 /- English proof (translation)
-Establish `hpi : (2 : ℝ) < Real.pi` using `by linarith [Real.pi_gt_three]`. Establish `e1 : Real.sqrt (2 * n * rd) ^ (2 * n) = (2 * n * rd) ^ n`. Rewrite using `[pow_mul, Real.sq_sqrt (by positivity)]`. Establish `e2 : √Real.pi ^ (2 * n) = Real.pi ^ n`. Rewrite using `[pow_mul, Real.sq_sqrt Real.pi_pos.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : Real.Gamma (((2 * n : ℕ) : ℝ) / 2 + 1) = (n.factorial : ℝ)`. Rewrite using `[show (((2 * n : ℕ) : ℝ) / 2 + 1) = (n : ℝ) + 1 by push_cast; ring, Real.Gamma_nat_eq_factorial]`. Rewrite using `[e1, e2, e3, mul_pow, mul_pow, hrd]`. Establish `hf : (n.factorial : ℝ) ≤ (n : ℝ) ^ n` using `by exact_mod_cast Nat.factorial_le_pow n`. Establish `hfpos : (0 : ℝ) < n.factorial` using `by exact_mod_cast Nat.factorial_pos n`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `h2pi : (2 : ℝ) ^ n < Real.pi ^ n` using `pow_lt_pow_left₀ hpi (by norm_num) (by omega)`. Establish `k1 : (2 : ℝ) ^ n * n.factorial < Real.pi ^ n * (n : ℝ) ^ n`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_div_assoc, lt_div_iff₀ hfpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `q1 : Δ * 2 ^ (2 * n) * n.factorial = (Δ * 2 ^ n) * (2 ^ n * n.factorial)`. Rewrite using `[two_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `q2 : 2 ^ n * (n : ℝ) ^ n * Δ * Real.pi ^ n = (Δ * 2 ^ n) * (Real.pi ^ n * (n : ℝ) ^ n)` using `by ring`. Rewrite using `[q1, q2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_mul_of_pos_left k1 (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem minkowski_discriminant_ineq (n : ℕ) (hn : 1 ≤ n) (Δ rd : ℝ) (hΔ : 0 < Δ) (hrd : rd ^ n = Δ) (hrd0 : 0 < rd) :
     Δ * 2 ^ (2 * n) < Real.sqrt (2 * n * rd) ^ (2 * n) * (√Real.pi ^ (2 * n) / Real.Gamma (((2 * n : ℕ) : ℝ) / 2 + 1)) := by
@@ -322,13 +316,11 @@ theorem minkowski_discriminant_ineq (n : ℕ) (hn : 1 ≤ n) (Δ rd : ℝ) (hΔ 
   exact mul_lt_mul_of_pos_left k1 (by positivity)
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩`. Set `b` to `Module.Free.chooseBasis ℤ Λ`. Establish `hF` using `ZLattice.isAddFundamentalDomain b (volume : Measure (EuclideanSpace ℝ (Fin N)))`. Establish `hcov` using `ZLattice.covolume_eq_measure_fundamentalDomain Λ volume hF`. Establish `hfin : volume (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ Λ)) ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top.ne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Countable Λ.toAddSubgroup := Countable.of_equiv _ b.equivFun.toEquiv.symm`. Establish `hc0 : 0 ≤ ZLattice.covolume Λ` using `by rw [hcov]; exact measureReal_nonneg`. Establish `hvolF : volume (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ Λ)) = ENNReal.ofReal (ZLattice.covolume Λ)`. Rewrite using `[hcov, measureReal_def, ENNReal.ofReal_toReal hfin]`. Establish `hq : 0 < R ^ N * (√Real.pi ^ N / Real.Gamma ((N : ℝ) / 2 + 1))` using `lt_of_le_of_lt (mul_nonneg hc0 (by positivity)) hvol`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx0, hxs⟩` from `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure (L := Λ.toAddSubgroup) (s := Metric.ball (0 : EuclideanSpace ℝ (Fin N)) R) hF (fun x hx => by simpa using hx) (convex_ball 0 R) (by`. Rewrite using `[EuclideanSpace.volume_ball, finrank_euclideanSpace_fin, Fintype.card_fin, hvolF]`. Establish `h2 : (2 : ENNReal) ^ N = ENNReal.ofReal (2 ^ N)`. Rewrite using `[ENNReal.ofReal_pow (by norm_num)]; simp`. Rewrite using `[h2, ← ENNReal.ofReal_mul hc0, ← ENNReal.ofReal_pow hR, ← ENNReal.ofReal_mul (by positivity)]`.
-
-Conclude with `(ENNReal.ofReal_lt_ofReal_iff hq).2 hvol)`. Conclude with `⟨x, x.2, fun h => hx0 (Subtype.ext h), by simpa using hxs⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_short_vector_minkowski (N : ℕ) (hN : 1 ≤ N) (Λ : Submodule ℤ (EuclideanSpace ℝ (Fin N))) [DiscreteTopology Λ] [IsZLattice ℝ Λ]
     (R : ℝ) (hR : 0 ≤ R)
@@ -359,19 +351,17 @@ theorem exists_short_vector_minkowski (N : ℕ) (hN : 1 ≤ N) (Λ : Submodule �
 end Mink
 
 /- English proof (translation)
-Introduce `V _ _ _ _ h L hsymm hL M hM`. Take `⟨e, hli, hsp, rfl, he⟩` from `hL`. Use `haveI : FiniteDimensional K V := Module.Finite.of_basis (Module.Basis.mk hli hsp.ge)`. Establish `hpos : ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ K (h x x)` using `fun x hx => trace_inner_pos_of_orthonormal_pair hK h e hli hsp he x hx`. Take `⟨N, ι, hι, -, hlat⟩` from `Formalism.HermitianLatticesTheory.final_traceReal K V h hsymm hpos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLlat : Submodule.IsLattice K (Submodule.span (𝓞 K) (Set.range e))` using `⟨Submodule.fg_span (Set.finite_range e), by rw [Submodule.span_span_of_tower]; exact hsp⟩`. Take `⟨iL1, iL2⟩` from `hlat _ hLlat`. Take `⟨familyMassRatio, familyMassSecondLine⟩` from `hlat M hM.1`. Establish `hcov` using `Formalism.HermitianLatticesTheory.final_genusCovol K V h hsymm hpos N ι hι _ M hLlat hM`. Take `⟨hcL, hN⟩` from `covolume_trace_lattice hK h e hli hsp he N ι hι`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Use `set n := Module.finrank ℚ K with hn_def`. Substitute `hN` using the available equality. Establish `hn : 1 ≤ n` using `Module.finrank_pos`. Establish `hΔ : 0 < |(discr K : ℝ)|` using `abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero K))`. Establish `hrd0 : 0 < rootDiscriminant K` using `Real.rpow_pos_of_pos hΔ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrdn : rootDiscriminant K ^ n = |(discr K : ℝ)|`. Rewrite using `[rootDiscriminant, ← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _), ← hn_def, one_div, inv_mul_cancel₀ (Nat.cast_ne_zero.2 (by omega)), Real.rpow_one]`. Establish `hB0 : 0 ≤ 2 * (n : ℝ) * rootDiscriminant K` using `mul_nonneg (by positivity) hrd0.le`. Take `⟨v, hvM, hv0, hvR⟩` from `exists_short_vector_minkowski (2 * n) (by omega) (zmap ι M) (Real.sqrt (2 * n * rootDiscriminant K)) (Real.sqrt_nonneg _) (by rw [hcov, hcL]; exact minkowski_discriminant_ineq n hn _ _ hΔ hrdn hrd0)`. Take `⟨x, hxM, rfl⟩` from `hvM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv0 (map_zero ι)`. Use `⟨x, hxM, hx0, fun φ => ?_⟩` and prove the remaining obligations. Establish `h1` using `norm_embedding_le_trace (h x x) (conj_inner_self_nonneg hK h e hli hsp he x) φ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((Algebra.trace ℚ K (h x x) : ℚ) : ℝ) = ‖ι x‖ ^ 2`. Rewrite using `[← hι x x, real_inner_self_eq_norm_sq]`. Establish `h3 : ‖ι x‖ ^ 2 < 2 * n * rootDiscriminant K`. Use `pow_lt_pow_left₀ hvR (norm_nonneg _) two_ne_zero` as an intermediate fact. Rewrite `this` using `[Real.sq_sqrt hB0]`. Then use the resulting hypothesis.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem short_vector_every_place (K : Type) [Field K] [NumberField K] [StarRing K] (hK : IsCMUnram K) :
     ShortVectorEveryPlace K (2 * (finrank ℚ K : ℝ) * rootDiscriminant K) := by

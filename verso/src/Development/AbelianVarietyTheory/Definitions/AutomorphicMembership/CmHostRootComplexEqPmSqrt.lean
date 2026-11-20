@@ -81,14 +81,14 @@ structure IsRecTor (T : TorModel Y) : Prop where
   stable : IsStable T
 
 /- English proof (translation)
-The claim follows from `h.antisymm (closure_minimal (by rintro _ ⟨x, hx, rfl⟩; exact T.BD_pos x hx) T.BD.idealSheaf.support.isClosed)`.
+A detailed English derivation is pending.
 -/
 theorem IsHoriz.support_eq {T : TorModel Y} (h : IsHoriz T) :
     (T.BD.idealSheaf.support : Set T.Z.X) = closure (genι T.Z '' (genBd T.Z : Set (gen T.Z))) :=
   h.antisymm (closure_minimal (by rintro _ ⟨x, hx, rfl⟩; exact T.BD_pos x hx) T.BD.idealSheaf.support.isClosed)
 
 /- English proof (translation)
-Introduce `r ν _ _ hr _ _`. Establish `e : ∀ (R : Type) [CommRing R], spMap (RingEquiv.refl R).toRingHom = 𝟙 _` using `fun R _ => Spec.map_id (CommRingCat.of R)`. Take `⟨ρ, mu, h1, h2, h3, -⟩` from `h (RingEquiv.refl _) (RingEquiv.refl _) (RingEquiv.refl _) r ((TwMap.reflEquiv _ _ _).symm ν) rfl (fun _ _ => rfl) (fun _ => rfl) (by rw [e, Category.comp_id, hr])`. Conclude with `⟨ρ, TwMap.reflEquiv _ _ _ mu, by rw [h1, e, Category.comp_id], h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsStable.levelActs {T : TorModel Y} (h : IsStable T) : T.Z.LevelActs := by
   intro r ν _ _ hr _ _
@@ -99,7 +99,7 @@ theorem IsStable.levelActs {T : TorModel Y} (h : IsStable T) : T.Z.LevelActs := 
   exact ⟨ρ, TwMap.reflEquiv _ _ _ mu, by rw [h1, e, Category.comp_id], h2, h3⟩
 
 /- English proof (translation)
-Use `GlobalTheory.CechPic.isLB_dual (GlobalTheory.FlagMod.isLB_of_ev _ (eq_top_iff.2 fun x _ => ?_) fun i j k _ _ z => GlobalTheory.FlagMod.ev_detChg_mul i j k z)` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (h.ample.isLB.cover.ge (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i.1 PUnit.unit, LB.wchart_le _ _ _ PUnit.unit hi.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsRecTor.isLB_detOm {T : TorModel Y} (h : IsRecTor T) : (GlobalTheory.FlagMod.detOm T.Z).IsLB := by
   refine GlobalTheory.CechPic.isLB_dual (GlobalTheory.FlagMod.isLB_of_ev _ (eq_top_iff.2 fun x _ => ?_)
@@ -108,7 +108,7 @@ theorem IsRecTor.isLB_detOm {T : TorModel Y} (h : IsRecTor T) : (GlobalTheory.Fl
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨i.1 PUnit.unit, LB.wchart_le _ _ _ PUnit.unit hi.1⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `(((GlobalTheory.EffCartierData.zero Y.X).mem_support_iff PUnit.unit (x := x) trivial).1 hx (by change x ∈ Y.X.basicOpen (1 : Γ(Y.X, ⊤)) simp [Scheme.basicOpen_one]; trivial)).elim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (Y : Model Xo c β) (h : Function.Surjective Y.jQ) : IsHoriz (TorModel.ofNoBoundary Y h) := fun x hx =>
   (((GlobalTheory.EffCartierData.zero Y.X).mem_support_iff PUnit.unit (x := x) trivial).1 hx (by
@@ -139,7 +139,7 @@ structure Sys (Xo : ∀ l : Level H, Moduli Dw l) : Type 1 where
     ∀ i, (Y p W hp hW i).SplitFibres ∧ (Y p W hp hW i).N3 ∧ (Y p W hp hW i).N4
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.compactifiedModuli_partOne.2 E H Dw h Xo).elim fun Y hY => ⟨⟨Y, hY.1⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_sys (h : 1 ≤ Dw.p + Dw.q) (Xo : ∀ l : Level H, Moduli Dw l) : Nonempty (Sys Xo) :=
   (GlobalTheory.T.compactifiedModuli_partOne.2 E H Dw h Xo).elim fun Y hY => ⟨⟨Y, hY.1⟩⟩
@@ -186,13 +186,13 @@ def UnfFam.U (u : UnfFam Xo c N ξ) (σ : c.F →+* ℂ) : Formalism.L2.PjFree.U
   if h : Formalism.L2.PjFree.GoodEmb c σ then u.good σ h else noUnf Xo c σ N
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem UnfFam.U_eq (u : UnfFam Xo c N ξ) {σ : c.F →+* ℂ} (h : Formalism.L2.PjFree.GoodEmb c σ) : u.U σ = u.good σ h :=
   dif_pos h
 
 /- English proof (translation)
-Rewrite using `[UnfFam.U, dif_neg h]`. Conclude with `inferInstanceAs (IsEmpty PEmpty)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UnfFam.isEmpty_comp (u : UnfFam Xo c N ξ) {σ : c.F →+* ℂ} (h : ¬ Formalism.L2.PjFree.GoodEmb c σ) :
     IsEmpty (u.U σ).Comp := by
@@ -203,7 +203,7 @@ def UnfFam.supAt (u : UnfFam Xo c N ξ) (x : ℝ) (σ : c.F →+* ℂ) (a : (E �
   Formalism.L2.PjFree.supC Xo c u.U x (Formalism.L2.PjFree.goodOf c σ) a n f
 
 /- English proof (translation)
-Take `⟨U', hU, -⟩` from `GlobalTheory.UnifFamily.exists_unf_family E H Dw l Xo c (h.1 ▸ hN)`. Take `⟨-, ⟨k⟩, hd, -⟩` from `hU σ hσ`. Take `⟨x, hx⟩` from `hd k`. Take `⟨k', -⟩` from `h.2.2.1 ((U' σ).un k ⟨x, hx⟩)`. Conclude with `⟨k'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_comp_of_isUnf {σ : c.F →+* ℂ} (hσ : Formalism.L2.PjFree.GoodEmb c σ) {U : Formalism.L2.PjFree.Unf Xo c σ N}
     (h : Formalism.L2.PjFree.IsUnf U) (hN : 1 ≤ N) : Nonempty U.Comp := by
@@ -214,7 +214,7 @@ theorem nonempty_comp_of_isUnf {σ : c.F →+* ℂ} (hσ : Formalism.L2.PjFree.G
   exact ⟨k'⟩
 
 /- English proof (translation)
-Rewrite using `[u.U_eq h]`. Conclude with `⟨u.law σ h, nonempty_comp_of_isUnf h (u.law σ h) hN, u.chi σ h, fun k x => @GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E _ _ _ H Dw l Xo c (CAt σ) _ (inferInstanceAs (_root_.IsReduced ℂ)) _ _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem UnfFam.unf (u : UnfFam Xo c N ξ) (hN : 1 ≤ N) (σ : c.F →+* ℂ) (h : Formalism.L2.PjFree.GoodEmb c σ) :
     Formalism.L2.PjFree.IsUnf (u.U σ) ∧ Nonempty (u.U σ).Comp ∧ (∀ k la γ, ((u.U σ).X k).χ la γ = 1) ∧
@@ -225,7 +225,7 @@ theorem UnfFam.unf (u : UnfFam Xo c N ξ) (hN : 1 ≤ N) (σ : c.F →+* ℂ) (h
       (inferInstanceAs (_root_.IsReduced ℂ)) _ _⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : Formalism.L2.PjFree.GoodEmb c σ`. Use `revert k`. Rewrite using `[u.U_eq h]`. Conclude with `u.xi σ h`. Conclude with `(u.isEmpty_comp h).elim k`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UnfFam.xi_eq (u : UnfFam Xo c N ξ) (σ : c.F →+* ℂ) (k : (u.U σ).Comp) : ((u.U σ).X k).ξ0 = ξ := by
   by_cases h : Formalism.L2.PjFree.GoodEmb c σ
@@ -235,9 +235,9 @@ theorem UnfFam.xi_eq (u : UnfFam Xo c N ξ) (σ : c.F →+* ℂ) (k : (u.U σ).C
   · exact (u.isEmpty_comp h).elim k
 
 /- English proof (translation)
-Establish `hξ' : ReciprocityTheory.ChartRestriction.G.FD.cc (-ξ) = -(-ξ)`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.cc at hξ ⊢`. Rewrite using `[map_neg, hξ]`. Take `⟨Gm, φ, hφ⟩` from `GlobalTheory.exists_herm_coord_of_datum E H Dw (-ξ) hξ' (neg_ne_zero.2 h0) N hN.symm`. Establish `key` using `fun σ hσ => GlobalTheory.T.exists_frameUniformisation_prescribedSpace GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.QNorm.hasseNormSt GlobalTheory.abelianSchemeLaws_all.1.secBaseChange GlobalTheory.abelianSchemeLaws_all.2.secTwist E H Dw l Xo c σ N ξ Gm φ (hN ▸ h1) hσ hξ …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose U hU using key`. Conclude with `⟨⟨U, fun σ h => (hU σ h).1, fun σ h => (hU σ h).2.2.1, fun σ h k => ((hU σ h).2.2.2.1 k).2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_unfFam (Xo : Moduli Dw l) (c : Coeff l) (hN : Dw.p + Dw.q = N) (h1 : 1 ≤ N)
     (hξ : ReciprocityTheory.ChartRestriction.G.FD.cc ξ = -ξ) (h0 : ξ ≠ 0)
@@ -275,13 +275,13 @@ def ambD (D : D7) : Amb D := ⟨hostOfRecord D, rfl, rfl, rfl⟩
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[A.rt_eq, A.cmHost_rootComplex_eq_pm_sqrt, tauEmb_sqrt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Amb.cm (A : Amb D) (t : D.what₂.Tau) : DV.tauEmb D t (A.H.rt : D.host.E) = A.H.rt0 := by
   rw [A.rt_eq, A.cmHost_rootComplex_eq_pm_sqrt, tauEmb_sqrt]
 
 /- English proof (translation)
-Take `⟨H, h1, h2, h3⟩` from `A`. Take `rfl : H = hostOfRecord D` from `host_ext h1 (RingOfIntegers.ext h2) h3`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem Amb.eq_ambD (A : Amb D) : A = ambD D := by
   obtain ⟨H, h1, h2, h3⟩ := A
@@ -289,7 +289,7 @@ theorem Amb.eq_ambD (A : Amb D) : A = ambD D := by
   rfl
 
 /- English proof (translation)
-Rewrite `hτ` using `[A.rt_eq, A.cmHost_rootComplex_eq_pm_sqrt]`. Establish `h` using `xi0_embedding_im_pos D τ ((mem_cm_type_iff D τ).2 hτ)`. Rewrite `h` using `[if_pos (GlobalTheory.Member.Inhab.sqrt_im_pos D), Int.cast_one, one_mul]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Amb.im_neg_xi_neg (A : Amb D) (τ : D.host.E →+* ℂ) (hτ : τ (A.H.rt : D.host.E) = A.H.rt0) :
     (τ (-D.host.xi0)).im < 0 := by
@@ -299,9 +299,9 @@ theorem Amb.im_neg_xi_neg (A : Amb D) (τ : D.host.E →+* ℂ) (hτ : τ (A.H.r
   simpa using h
 
 /- English proof (translation)
-Unfold `xiR`. Establish `hs : ∀ σ : D.host.E →+* ℂ, ‖σ D.host.sqrtMinusD‖ ^ 2 = ‖(D.host.d : ℂ)‖` using `fun σ => by`. Rewrite using `[← norm_pow, ← map_pow, D.host.sqrtMinusD_sq, map_neg, map_natCast, norm_neg]`. Establish `hn : ‖τ D.host.sqrtMinusD‖ = ‖D.host.φ₀ D.host.sqrtMinusD‖` using `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 ((hs τ).trans (hs _).symm)`. Rewrite using `[show D.host.xi0 = -1 / ((Ideal.absNorm D.host.ccK : D.host.E) * D.host.sqrtMinusD) from rfl]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul, hn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_embedding_xi_zero (D : D7) (τ : D.host.E →+* ℂ) : ‖τ D.host.xi0‖ = xiR D := by
   unfold xiR
@@ -313,7 +313,7 @@ theorem norm_embedding_xi_zero (D : D7) (τ : D.host.E →+* ℂ) : ‖τ D.host
   simp only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul, hn]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ShFam.nonempty_unfFam Xo c hN h1 (by unfold ReciprocityTheory.ChartRestriction.G.FD.cc; rw [map_neg, conj_xi0_alt]) (neg_ne_zero.2 (cmHost_imaginaryGenerator_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D)) A.im_neg_xi_neg`.
+A detailed English derivation is pending.
 -/
 theorem Amb.nonempty_unfFam (A : Amb D) {Dw : Datum A.H} {l : Level A.H} (Xo : Moduli Dw l) (c : Coeff l) {N : ℕ}
     (hN : Dw.p + Dw.q = N) (h1 : 1 ≤ N) : Nonempty (UnfFam Xo c N (-D.host.xi0)) :=
@@ -344,9 +344,9 @@ def Lv.σ₀ {A : Amb D} (κ : Lv A) : κ.c.F →+* ℂ := κ.c.F.val.toRingHom
 def fieldLL (D : D7) : IntermediateField ℚ ℂ := D.what₂.embLL.toRatAlgHom.fieldRange
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `⟨κ.e.symm ⟨z, hz⟩, (κ.e_emb _).symm.trans (congrArg Subtype.val (κ.e.apply_symm_apply ⟨z, hz⟩))⟩`. Introduce and unpack `⟨x, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(κ.e_emb x) ▸ (κ.e x).2`.
+A detailed English derivation is pending.
 -/
 theorem Lv.F_eq {A : Amb D} (κ : Lv A) : κ.c.F = fieldLL D := by
   ext z
@@ -380,9 +380,9 @@ def coeffOf (A : Amb D) (l : Level A.H) (K : IntermediateField ℚ ℂ) (hK : Fi
     exact this ▸ pow_mem hz k
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, rfl⟩`. Conclude with `⟨κ.good, κ.F_eq ▸ κ.c.zeta_mem, κ.F_eq ▸ κ.curve⟩`. Introduce and unpack `⟨hg, hz, hc⟩`. Set `e` to `AlgEquiv.ofInjectiveField D.what₂.embLL.toRatAlgHom`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Conclude with `⟨⟨l, hg, coeffOf A l (fieldLL D) (LinearEquiv.finiteDimensional e.toLinearEquiv) (FO_le D) hz, e.toRingEquiv, fun _ => rfl, hc⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lv_iff (A : Amb D) (l : Level A.H) :
     (∃ κ : Lv A, κ.l = l) ↔ (∀ p : ℕ, p.Prime → l.GoodAt p) ∧ IsLargeFor A l.M' := by
@@ -411,7 +411,7 @@ structure Sig (A : Amb D) (N j : ℕ) : Type 1 where
   tor : TorSys sys
 
 /- English proof (translation)
-Establish `hX` using `fun l => GlobalTheory.Moduli.moduli_scheme_exists _ A.H Dw l (by omega)`. Take `⟨s, ⟨t⟩⟩` from `h fun l => (hX l).some`. Conclude with `⟨⟨Dw, hp, hq, hN, _, s, t⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sig (A : Amb D) {N j : ℕ} (hN : 2 ≤ N) (Dw : Datum A.H) (hp : Dw.p = j) (hq : Dw.p + Dw.q = N)
     (h : ∀ Xo : ∀ l : Level A.H, Moduli Dw l, SysEx Xo) : ∃ S : Sig A N j, S.Dw = Dw := by
@@ -420,7 +420,7 @@ theorem exists_sig (A : Amb D) {N j : ℕ} (hN : 2 ≤ N) (Dw : Datum A.H) (hp :
   exact ⟨⟨Dw, hp, hq, hN, _, s, t⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CompRat.exists_splitLat_of_signature _ A.H p q (GlobalTheory.RankOneDatum.exists_datum_of_rt D A.H A.rt_eq A.cmHost_rootComplex_eq_pm_sqrt)).imp fun _ h => ⟨h.1, h.2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem Amb.exists_datum (A : Amb D) (p q : ℕ) : ∃ Dw : Datum A.H, Dw.p = p ∧ Dw.q = q :=
   (GlobalTheory.CompRat.exists_splitLat_of_signature _ A.H p q
@@ -431,7 +431,7 @@ structure FinalTheorems {A : Amb D} {N j : ℕ} (S : Sig A N j) (κ : Lv A) : Ty
   unif : UnfFam (S.Xo κ.l) κ.c N (-D.host.xi0)
 
 /- English proof (translation)
-The claim follows from `(A.nonempty_unfFam (S.Xo κ.l) κ.c S.rank_eq (one_le_two.trans S.two_le)).map FinalTheorems.mk`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_src_of_sig {A : Amb D} {N j : ℕ} (S : Sig A N j) (κ : Lv A) : Nonempty (FinalTheorems S κ) :=
   (A.nonempty_unfFam (S.Xo κ.l) κ.c S.rank_eq (one_le_two.trans S.two_le)).map FinalTheorems.mk
@@ -453,17 +453,17 @@ variable (s : FinalTheorems S κ)
 abbrev Comp : Type := (s.U κ.σ₀).Comp
 
 /- English proof (translation)
-The claim follows from `S.tor.glob κ.l κ.c κ.good`.
+A detailed English derivation is pending.
 -/
 theorem glob : IsGlob S.sys.Y κ.good s.Ygl := S.tor.glob κ.l κ.c κ.good
 
 /- English proof (translation)
-The claim follows from `S.tor.isRec κ.l κ.c κ.good`.
+A detailed English derivation is pending.
 -/
 theorem isRec : IsRecTor s.T := S.tor.isRec κ.l κ.c κ.good
 
 /- English proof (translation)
-The claim follows from `s.unif.unf (one_le_two.trans S.two_le) σ h`.
+A detailed English derivation is pending.
 -/
 theorem unf (σ : κ.c.F →+* ℂ) (h : Formalism.L2.PjFree.GoodEmb κ.c σ) :
     Formalism.L2.PjFree.IsUnf (s.U σ) ∧ Nonempty (s.U σ).Comp ∧ (∀ k la γ, ((s.U σ).X k).χ la γ = 1) ∧
@@ -471,30 +471,30 @@ theorem unf (σ : κ.c.F →+* ℂ) (h : Formalism.L2.PjFree.GoodEmb κ.c σ) :
   s.unif.unf (one_le_two.trans S.two_le) σ h
 
 /- English proof (translation)
-The claim follows from `s.unif.xi_eq σ k`.
+A detailed English derivation is pending.
 -/
 theorem xi_eq (σ : κ.c.F →+* ℂ) (k : (s.U σ).Comp) : ((s.U σ).X k).ξ0 = -D.host.xi0 := s.unif.xi_eq σ k
 
 /- English proof (translation)
-Rewrite using `[s.xi_eq, map_neg, norm_neg, norm_embedding_xi_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xiAbs (σ : κ.c.F →+* ℂ) (k : (s.U σ).Comp) (τ : D.host.E →+* ℂ) : ‖τ ((s.U σ).X k).ξ0‖ = xiR D := by
   rw [s.xi_eq, map_neg, norm_neg, norm_embedding_xi_zero]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Reg.genFrEx_and_genFromTest _ A.H S.Dw κ.l (S.Xo κ.l) κ.c).1`.
+A detailed English derivation is pending.
 -/
 theorem gen : GenFrEx s.Xo κ.c := (GlobalTheory.Reg.genFrEx_and_genFromTest _ A.H S.Dw κ.l (S.Xo κ.l) κ.c).1
 
 /- English proof (translation)
-The claim follows from `GeomComp.fnAlgClosed_of_curveOver _ _ ((one_le_two.trans S.two_le).trans S.rank_eq.ge) (GlobalTheory.RankOneDatum.exists_datum_of_rt D A.H A.rt_eq A.cmHost_rootComplex_eq_pm_sqrt) κ.curve`.
+A detailed English derivation is pending.
 -/
 theorem geo : FnAlgClosed s.Xo κ.c :=
   GeomComp.fnAlgClosed_of_curveOver _ _ ((one_le_two.trans S.two_le).trans S.rank_eq.ge)
     (GlobalTheory.RankOneDatum.exists_datum_of_rt D A.H A.rt_eq A.cmHost_rootComplex_eq_pm_sqrt) κ.curve
 
 /- English proof (translation)
-The claim follows from `S.tor.trans _ _ _ _ _ _ b h hb`.
+A detailed English derivation is pending.
 -/
 theorem trans {κ₂ : Lv A} (s₂ : FinalTheorems S κ₂) (h : κ.l.Dvd κ₂.l) (b : 𝓞 κ.c.F →+* 𝓞 κ₂.c.F)
     (hb : ∀ x, (((b x : 𝓞 κ₂.c.F) : κ₂.c.F) : ℂ) = ((x : κ.c.F) : ℂ)) : IsTorTrans s.T s₂.T b :=
@@ -510,7 +510,7 @@ def IsDatOf {A : Amb D} (S : letI := D.host.cmStar; HSpace D.host.E) (Dw : Datum
     ∀ x y, ((Dw.EF x y : ℤ) : ℚ) = -Algebra.trace ℚ D.host.E (D.host.xi0 * S.hD (φ x) (φ y))
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `x y`. Establish `hh : IsCMField.complexConj D.host.E (S.hT x y) = S.hT y x` using `LinearMap.isSymm_def.1 S.herm x y`. Rewrite using `[← Formalism.L2.Pj.trace_cc D (D.host.xi0 * S.hT x y), map_mul (IsCMField.complexConj D.host.E), conj_xi0_alt, hh, neg_mul, map_neg]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem neg_trace_hD (S : letI := D.host.cmStar; HSpace D.host.E) :
     letI := D.host.cmStar
@@ -523,7 +523,7 @@ theorem neg_trace_hD (S : letI := D.host.cmStar; HSpace D.host.E) :
   rfl
 
 /- English proof (translation)
-Take `⟨φ, h1, h2, h3⟩` from `h`. Use `⟨hp, hq, φ, 1, h1, h2, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[h3, neg_trace_hD]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsDatOf.isDatW {A : Amb D} {j : ℕ} {Dw : Datum A.H} (h : IsDatOf (letI := D.host.cmStar; D.sp.W j) Dw)
     (hp : Dw.p = (D.R.sigW j).1) (hq : Dw.q = (D.R.sigW j).2) : IsDatW D j Dw := by
@@ -533,9 +533,9 @@ theorem IsDatOf.isDatW {A : Amb D} {j : ℕ} {Dw : Datum A.H} (h : IsDatOf (letI
   simp
 
 /- English proof (translation)
-Rewrite using `[A.eq_ambD]`. Establish `hI` using `datInt_holds D j`. Use `⟨datumOf D j hI ⟨efW_unimod_holds D j _, latW_rank D j hj, datDom_holds D j hj _⟩, ⟨(latW D j).subtype, Submodule.injective_subtype _, Submodule.range_subtype _, fun x y => ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[neg_trace_hD]`. Use `show ((sgnW D j * intForm (efQ D j) hI x y : ℤ) : ℚ) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Member.Inhab.sgnW_eq_one D j hj, one_mul]`. Conclude with `intForm_cast (efQ D j) hI x y`.
+A detailed English derivation is pending.
 -/
 theorem exists_isDatOf_of_inR (A : Amb D) {j : ℕ} (hj : InR D j) :
     ∃ Dw : Datum A.H, IsDatOf (letI := D.host.cmStar; D.sp.W j) Dw ∧ Dw.p = (D.R.sigW j).1 ∧ Dw.q = (D.R.sigW j).2 := by
@@ -591,7 +591,7 @@ def Pinned (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K)) (c : ℕ) : Prop :
   F.κg.l.Mb = ∏ k, (pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) ∧ F.κs.l.A = 15 ^ c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨F.κs_M.1 ▸ dvd_rfl, F.κs_M.2.le, F.κg_A ▸ one_dvd _⟩`.
+Supply the required witnesses or components.
 -/
 theorem κg_dvd_κs : F.κg.l.Dvd F.κs.l := ⟨F.κs_M.1 ▸ dvd_rfl, F.κs_M.2.le, F.κg_A ▸ one_dvd _⟩
 
@@ -607,14 +607,14 @@ def par : Par D where
   eO := F.eO
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨A.d_eq, A.rt_eq, A.cmHost_rootComplex_eq_pm_sqrt, A.cm⟩, ⟨F.κg_M, F.κg_A⟩, F.eO_emb, F.dat⟩`.
+Supply the required witnesses or components.
 -/
 theorem pins : F.par.Pins := ⟨⟨A.d_eq, A.rt_eq, A.cmHost_rootComplex_eq_pm_sqrt, A.cm⟩, ⟨F.κg_M, F.κg_A⟩, F.eO_emb, F.dat⟩
 
 /- English proof (translation)
-Introduce `z hz`. Use `haveI := F.cs.fin`. Use `haveI : NumberField F.cs.F := {}`. Take `⟨x, y, -, h⟩` from `IsFractionRing.div_surjective (A := 𝓞 F.cs.F) (⟨z, hz⟩ : F.cs.F)`. Establish `key : ∀ x : 𝓞 F.cs.F, ((x : F.cs.F) : ℂ) ∈ κ.c.F` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[κ.F_eq, ← F.eO_emb]`. Conclude with `⟨_, rfl⟩`. Establish `e : z = ((x : F.cs.F) : ℂ) / ((y : F.cs.F) : ℂ)` using `(congrArg Subtype.val h).symm`. Conclude with `e ▸ div_mem (key x) (key y)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cs_le (κ : Lv A) : F.cs.F ≤ κ.c.F := by
   intro z hz
@@ -631,7 +631,7 @@ def Ts (N j : ℕ) (hN : 2 ≤ N) (hj : j ≤ N) : TorModel ((F.sig N j hN hj).t
   (F.sig N j hN hj).tor.T F.κg.l F.cs F.κg.good
 
 /- English proof (translation)
-The claim follows from `(F.sig N j hN hj).tor.trans _ _ _ _ _ _ b h hb`.
+A detailed English derivation is pending.
 -/
 theorem trans_Ts (N j : ℕ) (hN : 2 ≤ N) (hj : j ≤ N) (κ : Lv A) (h : F.κg.l.Dvd κ.l) (b : 𝓞 F.cs.F →+* 𝓞 κ.c.F)
     (hb : ∀ x, (((b x : 𝓞 κ.c.F) : κ.c.F) : ℂ) = ((x : F.cs.F) : ℂ)) :
@@ -642,7 +642,7 @@ def Upar (j : ℕ) (σ : F.par.c.F →+* ℂ) : Unf (F.par.Xo j) F.par.c σ D.R.
   { Comp := ((F.Us j).U σ).Comp, fin := ((F.Us j).U σ).fin, X := ((F.Us j).U σ).X, un := ((F.Us j).U σ).un }
 
 /- English proof (translation)
-Use `⟨((F.Us j).unf (one_le_two.trans (Formalism.L2.Geo.two_le_r D)) σ hσ).1, fun k τ => ?_⟩` and prove the remaining obligations. Establish `: ((F.Upar j σ).X k).ξ0 = -D.host.xi0` using `(F.Us j).xi_eq σ k`. Rewrite using `[this, map_neg, norm_neg, norm_embedding_xi_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem upar_spec (j : ℕ) (σ : F.par.c.F →+* ℂ) (hσ : GoodEmb F.par.c σ) :
     IsUnf (F.Upar j σ) ∧ ∀ k (τ : D.host.E →+* ℂ), ‖τ ((F.Upar j σ).X k).ξ0‖ = xiR D := by
@@ -653,11 +653,11 @@ theorem upar_spec (j : ℕ) (σ : F.par.c.F →+* ℂ) (hσ : GoodEmb F.par.c σ
 end SrcFam
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ j, InR D j ∧ N = D.R.r ∧ i = (D.R.sigW j).1`. Take `⟨j, hj, rfl, rfl⟩` from `h`. Take `⟨Dw, h1, h2, h3⟩` from `exists_isDatOf_of_inR A hj`. Use `⟨Dw, h2, by rw [h2, h3, Formalism.L2.Geo.sigW_sum D hj.1 hj.2], fun j' hj' _ e => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : j = j' := by`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hj.1` as an intermediate fact. Use `hj'.1` as an intermediate fact. Simplify using `only [Ranks.sigW] at e`. Use linear arithmetic over natural numbers and integers. Conclude with `h1.isDatW h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨Dw, h1, h2⟩` from `A.exists_datum i (N - i)`. Conclude with `⟨Dw, h1, by omega, fun j hj e e' => (h ⟨j, hj, e, e'⟩).elim⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_datum_tied (A : Amb D) {N i : ℕ} (hi : i ≤ N) : ∃ Dw : Datum A.H, Dw.p = i ∧ Dw.p + Dw.q = N ∧
     ∀ j, InR D j → N = D.R.r → i = (D.R.sigW j).1 → IsDatW D j Dw := by
@@ -677,13 +677,13 @@ theorem exists_datum_tied (A : Amb D) {N i : ℕ} (hi : i ≤ N) : ∃ Dw : Datu
 open Formalism.L2.Geo (datW datW_N datW_j) in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨l, ⟨hM, hA⟩, hMb⟩ : ∃ l : Level A.H, (l.M = D.host.g 0 * D.host.g 1 ∧ l.A = 1) ∧ l.Mb = ∏ k, (pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) := by`. Rewrite using `[A.eq_ambD]`. Conclude with `levelPb_exists D pb hpb`. Establish `good : ∀ l' : Level A.H, l'.M = D.host.g 0 * D.host.g 1 → ∀ p : ℕ, p.Prime → l'.GoodAt p` using `fun l' h p _ => GlobalTheory.PinNum.goodAt_of_two_primes l' (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne h p`. Establish `hM' : l.M' = D.host.g 0 * D.host.g 1` using `by rw [Level.M', hM, hA, Nat.lcm_one_right]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨κg, rfl⟩` from `(exists_lv_iff A l).2 ⟨good l hM, hM' ▸ hg⟩`. Take `⟨κs, hκs⟩` from `(exists_lv_iff A { κg.l with A := 15 ^ ex, A_pos := by positivity }).2 ⟨good _ hM, by rw [Level.M']; exact hM ▸ hs⟩`. Establish `hsig : ∀ N i : ℕ, 2 ≤ N → i ≤ N → ∃ S : Sig A N i, ∀ j, InR D j → N = D.R.r → i = (D.R.sigW j).1 → IsDatW D j S.Dw`. Introduce `N i hN hi`. Take `⟨Dw, h1, h2, h3⟩` from `exists_datum_tied A hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, rfl⟩` from `exists_sig A hN Dw h1 h2 (hS Dw (h2 ▸ hN))`. Conclude with `⟨S, h3⟩`. Use `choose sig hsig using hsig`. Set `cs : Coeff κg.l` to `coeffOf A κg.l (FO D) inferInstance le_rfl (by`. Take `⟨y, hy⟩` from `hz`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hM', ← hy]`. Conclude with `phiO_mem_FO D y)`. Conclude with `⟨{ sig := sig, src := fun N j hN hj κ => (nonempty_src_of_sig _ κ).some κg := κg, κg_M := hM, κg_A := hA κs := κs, κs_M := by rw [hκs]; exact ⟨rfl, rfl⟩ κs_A := ⟨ex, hex, by rw [hκs]⟩ dat := fun j hj => hsig _ _ _ _ j hj (datW_N D κg j) (datW_j D κg hj.1 hj.2) cs := cs, eO := eOf …`.
+A detailed English derivation is pending.
 -/
 theorem exists_srcFam (A : Amb D)
     (hS : ∀ Dw : Datum A.H, 2 ≤ Dw.p + Dw.q → ∀ Xo : ∀ l : Level A.H, Moduli Dw l, SysEx Xo)

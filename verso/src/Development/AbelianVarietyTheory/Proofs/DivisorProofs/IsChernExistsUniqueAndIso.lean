@@ -15,35 +15,35 @@ namespace GlobalTheory.Cris.ChernExists
 variable {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {X : Scheme.{0}} {s : X ⟶ Sp R}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Cris.dpExp_add_and_natural T.B T.B T.J T.J T.δ T.δ T.nil).1 a ha b hb`.
+A detailed English derivation is pending.
 -/
 theorem exp_add (T : Thick γ s) {a b : T.B} (ha : a ∈ T.J) (hb : b ∈ T.J) :
     dpExp T.δ (a + b) = dpExp T.δ a * dpExp T.δ b :=
   (GlobalTheory.Cris.dpExp_add_and_natural T.B T.B T.J T.J T.δ T.δ T.nil).1 a ha b hb
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Cris.dpExp_add_and_natural T.B T'.B T.J T'.J T.δ T'.δ T.nil).2 (φ.φ : T.B →+* T'.B) φ.dp a ha`.
+A detailed English derivation is pending.
 -/
 theorem exp_map {T T' : Thick γ s} (φ : T ⟶ T') {a : T.B} (ha : a ∈ T.J) :
     φ.φ (dpExp T.δ a) = dpExp T'.δ (φ.φ a) :=
   (GlobalTheory.Cris.dpExp_add_and_natural T.B T'.B T.J T'.J T.δ T'.δ T.nil).2 (φ.φ : T.B →+* T'.B) φ.dp a ha
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Cris.ExpBij.dpExp_bijOn T.B T.J T.δ T.nil).injOn ha hb h`.
+A detailed English derivation is pending.
 -/
 theorem exp_inj (T : Thick γ s) {a b : T.B} (ha : a ∈ T.J) (hb : b ∈ T.J)
     (h : dpExp T.δ a = dpExp T.δ b) : a = b :=
   (GlobalTheory.Cris.ExpBij.dpExp_bijOn T.B T.J T.δ T.nil).injOn ha hb h
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Cris.ExpBij.dpExp_bijOn T.B T.J T.δ T.nil).surjOn (show u - 1 ∈ T.J from (T.ker _).1 (by rw [map_sub, hu, map_one, sub_self]))`.
+A detailed English derivation is pending.
 -/
 theorem exp_surj (T : Thick γ s) {u : T.B} (hu : T.π u = 1) : ∃ a ∈ T.J, dpExp T.δ a = u :=
   (GlobalTheory.Cris.ExpBij.dpExp_bijOn T.B T.J T.δ T.nil).surjOn
     (show u - 1 ∈ T.J from (T.ker _).1 (by rw [map_sub, hu, map_one, sub_self]))
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨v, rfl⟩` from `T.surj v`. Take `⟨a, ha, e⟩` from `exp_surj T (u := u * v) (by rw [map_mul, hv])`. Use `IsUnit.of_mul_eq_one (v * dpExp T.δ (-a)) ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e, ← exp_add T ha (T.J.neg_mem ha), add_neg_cancel, dpExp_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_of_π (T : Thick γ s) {u : T.B} (hu : IsUnit (T.π u)) : IsUnit u := by
   obtain ⟨v, hv⟩ := hu.exists_right_inv
@@ -53,7 +53,7 @@ theorem isUnit_of_π (T : Thick γ s) {u : T.B} (hu : IsUnit (T.π u)) : IsUnit 
   rw [← mul_assoc, ← e, ← exp_add T ha (T.J.neg_mem ha), add_neg_cancel, dpExp_zero]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(isUnit_of_π T hb).exists_left_inv`. Take `⟨f, hf, e⟩` from `exp_surj T (u := a * v) (by rw [map_mul, h, ← map_mul, mul_comm, hv, map_one])`. Conclude with `⟨f, hf, by rw [e, mul_assoc, hv, mul_one]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_log (T : Thick γ s) {a b : T.B} (hb : IsUnit (T.π b)) (h : T.π a = T.π b) :
     ∃ f ∈ T.J, dpExp T.δ f * b = a := by
@@ -65,13 +65,13 @@ universe v u
 variable {C : Type u} [Category.{v} C] (G : C ⥤ Thick γ s)
 
 /- English proof (translation)
-Use `choose u h1 using fun T T' φ ↦ (G.obj T').surj (a T T' φ)`. Use `choose l hl h2 using fun T T' T'' (φ : T ⟶ T') (ψ : T' ⟶ T'') ↦ exists_log (G.obj T'') (a := (G.map ψ).φ (u T T' φ) * u T' T'' ψ) (b := u T T'' (φ ≫ ψ)) (by rw [h1]; exact hu _ _ _) (by rw [map_mul, ← (G.map ψ).comm, h1, h1, h1, ha])`. Use `⟨u, ⟨l, fun T T' T'' T''' φ ψ χ ↦ ?_⟩, h1, fun T T' T'' φ ψ ↦ ⟨hl _ _ _ _ _, h2 _ _ _ _ _⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(G.map χ).φ (l T T' T'' φ ψ) + l T T'' T''' (φ ≫ ψ) χ = l T T' T''' φ (ψ ≫ χ) + l T' T'' T''' ψ χ`. Establish `m` using `(G.map χ).mem (hl T T' T'' φ ψ)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `exp_inj _ (add_mem m (hl ..)) (add_mem (hl ..) (hl ..)) ?_` and prove the remaining obligations. Rewrite using `[exp_add _ m (hl ..), exp_add _ (hl ..) (hl ..), ← exp_map _ (hl ..)]`. Establish `e1` using `congrArg (G.map χ).φ (h2 T T' T'' φ ψ)`. Establish `e2` using `h2 T T'' T''' (φ ≫ ψ) χ`. Establish `e3` using `h2 T T' T''' φ (ψ ≫ χ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4` using `h2 T' T'' T''' ψ χ`. Rewrite `e1` using `[map_mul, map_mul]`. Rewrite `e2` using `[Category.assoc]`. Rewrite `e3` using `[G.map_comp, Thick.comp_φ]`. Establish `hU : IsUnit (u T T''' (φ ≫ ψ ≫ χ))` using `isUnit_of_π _ (by rw [h1]; exact hu _ _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `hU.mul_right_cancel ?_` and prove the remaining obligations. Take the linear combination `(G.map χ).φ (dpExp _ (l T T' T'' φ ψ)) * e2 + u T'' T''' χ * e1 - dpExp _ (l T' T'' T''' ψ χ) * e3 - (G.map χ).φ ((G.map ψ).φ (u T T' φ)) * e4`.
+A detailed English derivation is pending.
 -/
 theorem exists_cocycle (a : ∀ T T' : C, (T ⟶ T') → (G.obj T').B₀) (hu : ∀ T T' φ, IsUnit (a T T' φ))
     (ha : ∀ T T' T'' φ ψ, a T T'' (φ ≫ ψ) = (G.map ψ).φ₀ (a T T' φ) * a T' T'' ψ) :
@@ -103,15 +103,15 @@ theorem exists_cocycle (a : ∀ T T' : C, (T ⟶ T') → (G.obj T').B₀) (hu : 
     dpExp _ (l T' T'' T''' ψ χ) * e3 - (G.map χ).φ ((G.map ψ).φ (u T T' φ)) * e4
 
 /- English proof (translation)
-Use `choose W hW using fun T ↦ (G.obj T).surj (w T)`. Use `choose f hf h2 using fun T T' (φ : T ⟶ T') ↦ exists_log (G.obj T') (a := u' T T' φ * (G.map φ).φ (W T)) (b := W T' * u T T' φ) (by rw [map_mul, hW]; exact (hw _).mul (hu _ _ _)) (by rw [map_mul, map_mul, ← (G.map φ).comm, hW, hW, e])`. Use `CatCoh.H2.mk_eq_mk.2 ⟨f, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Take `⟨m, e4⟩` from `h T T' T'' φ ψ`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m', e5⟩` from `h' T T' T'' φ ψ`. Establish `key : ∀ l l' : (G.obj T'').B, l ∈ (G.obj T'').J → l' ∈ (G.obj T'').J → dpExp (G.obj T'').δ l * u T T'' (φ ≫ ψ) = (G.map ψ).φ (u T T' φ) * u T' T'' ψ → dpExp (G.obj T'').δ l' * u' T T'' (φ ≫ ψ) = (G.map ψ).φ (u' T T' φ) * u' T' T'' ψ → (G.map ψ).φ (f T T' φ) - f T T'' (φ ≫ ψ) + f …`. Introduce `l l' m m' e4 e5`. Establish `m1` using `(G.map ψ).mem (hf T T' φ)`. Establish `k : (G.map ψ).φ (f T T' φ) + f T' T'' ψ + l = l' + f T T'' (φ ≫ ψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `exp_inj _ (add_mem (add_mem m1 (hf ..)) m) (add_mem m' (hf ..)) ?_` and prove the remaining obligations. Rewrite using `[exp_add _ (add_mem m1 (hf ..)) m, exp_add _ m1 (hf ..), exp_add _ m' (hf ..), ← exp_map _ (hf ..)]`. Establish `e1` using `congrArg (G.map ψ).φ (h2 T T' φ)`. Establish `e2` using `h2 T' T'' ψ`. Establish `e3` using `h2 T T'' (φ ≫ ψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_mul] at e1`. Rewrite `e3` using `[G.map_comp, Thick.comp_φ]`. Establish `hWu : ∀ T, IsUnit (W T)` using `fun T ↦ isUnit_of_π _ (by rw [hW]; exact hw _)`. Establish `hU : IsUnit (W T'' * u T T'' (φ ≫ ψ) * (G.map ψ).φ (W T'))` using `((hWu _).mul (isUnit_of_π _ (hu _ _ _))).mul ((hWu _).map _)`. Use `hU.mul_right_cancel ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(G.map ψ).φ (dpExp _ (f T T' φ)) * dpExp _ (f T' T'' ψ) * W T'' * (G.map ψ).φ (W T') * e4 + dpExp _ (f T' T'' ψ) * W T'' * u T' T'' ψ * e1 + (G.map ψ).φ (u' T T' φ) * (G.map ψ).φ ((G.map φ).φ (W T)) * e2 - (G.map ψ).φ ((G.map φ).φ (W T)) * (G.map ψ).φ (W T') * e5 - dpExp _ l' * ( …`. Take the linear combination `k`. Conclude with `key _ _ m m' e4 e5`.
+A detailed English derivation is pending.
 -/
 theorem mk_eq_mk (u u' : ∀ T T' : C, (T ⟶ T') → (G.obj T').B) (ℓ ℓ' : Z2 (G ⋙ O γ s))
     (w : ∀ T : C, (G.obj T).B₀) (hw : ∀ T, IsUnit (w T))
@@ -162,7 +162,7 @@ theorem mk_eq_mk (u u' : ∀ T T' : C, (T ⟶ T') → (G.obj T').B) (ℓ ℓ' : 
   exact key _ _ m m' e4 e5
 
 /- English proof (translation)
-Establish `e : x.appLE U ⊤ h = X.presheaf.map (homOfLE hV).op ≫ x.appLE V ⊤ h'`. Rewrite using `[Scheme.Hom.map_appLE]`. Unfold `evalAt`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalAt_res {B : Type} [CommRing B] (x : Sp B ⟶ X) {U V : X.Opens} (hV : V ≤ U)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)ˣ) :
@@ -174,7 +174,7 @@ theorem evalAt_res {B : Type} [CommRing B] (x : Sp B ⟶ X) {U V : X.Opens} (hV 
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `e : (spMap φ ≫ x).appLE U ⊤ h' ≫ (Scheme.ΓSpecIso (CommRingCat.of B')).hom = x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom ≫ CommRingCat.ofHom φ`. Rewrite using `[← Scheme.ΓSpecIso_naturality, ← Category.assoc, ← Scheme.Hom.appLE_comp_appLE (spMap φ) x U ⊤ ⊤ h le_rfl]`. Use `congr 2`. Conclude with `(congrArg (fun t ↦ t.hom f) e).symm`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem evalAt_spMap {B B' : Type} [CommRing B] [CommRing B'] (φ : B →+* B') (x : Sp B ⟶ X)
     (x' : Sp B' ⟶ X) (e : spMap φ ≫ x = x') {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x' ⁻¹ᵁ U)
@@ -191,14 +191,14 @@ def evU {B : Type} [CommRing B] (x : Sp B ⟶ X) (U : X.Opens) (h : ⊤ ≤ x �
   Units.map (evalAt x U h : Γ(X, U) →* B)
 
 /- English proof (translation)
-The claim follows from `Units.ext (evalAt_res x hV h h' f)`.
+A detailed English derivation is pending.
 -/
 theorem evU_res {B : Type} [CommRing B] (x : Sp B ⟶ X) {U V : X.Opens} (hV : V ≤ U)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)ˣ) : evU x V h' (res hV f) = evU x U h f :=
   Units.ext (evalAt_res x hV h h' f)
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ (L.U i ⊓ L.U j ⊓ L.U k)` using `le_inf (le_inf hi hj) hk`. Establish `e` using `congrArg (evU x (L.U i ⊓ L.U j ⊓ L.U k) h) (hL.cocycle i j k)`. Rewrite `e` using `[map_mul]`. Conclude with `(congrArg₂ (· * ·) (evU_res x _ _ h _) (evU_res x _ _ h _)).symm.trans (e.trans (evU_res x _ _ h _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evU_cocycle {B : Type} [CommRing B] (x : Sp B ⟶ X) {L : LB X} (hL : L.IsLB) {i j k : L.ι}
     (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) (hk : ⊤ ≤ x ⁻¹ᵁ L.U k) :
@@ -211,9 +211,9 @@ theorem evU_cocycle {B : Type} [CommRing B] (x : Sp B ⟶ X) {L : LB X} (hL : L.
     (e.trans (evU_res x _ _ h _))
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ (M.U k ⊓ L.U i ⊓ (M.U l ⊓ L.U j))` using `le_inf (le_inf hk hi) (le_inf hl hj)`. Establish `key : ∀ (a : Γ(X, M.U k ⊓ L.U i)ˣ) (b : Γ(X, M.U l ⊓ L.U j)ˣ), res (V` using `M.U k ⊓ L.U i ⊓ (M.U l ⊓ L.U j)) inf_le_left a = res (inf_le_inf inf_le_left inf_le_left) (M.g k l) * (res (inf_le_inf inf_le_right inf_le_right) (L.g i j))⁻¹ * res inf_le_right b → evU x (M.U k ⊓ M.U l) (le_inf hk hl) (M.g k l) * evU x (M.U l ⊓ L.U j) (le_inf hl hj) b = evU x (M …`. Introduce `a b e`. Establish `e` using `congrArg (evU x _ h) e`. Rewrite `e` using `[map_mul, map_mul, map_inv, evU_res (U := M.U k ⊓ L.U i) x _ (le_inf hk hi) h, evU_res (U := M.U k ⊓ M.U l) x _ (le_inf hk hl) h, evU_res (U := L.U i ⊓ L.U j) x _ (le_inf hi hj) h, evU_res (U := M.U l ⊓ L.U j) x _ (le_inf hl hj) h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, mul_right_comm _ _⁻¹, inv_mul_cancel_right]`. Conclude with `key _ _ (hw (k, i) (l, j))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evU_iso {B : Type} [CommRing B] (x : Sp B ⟶ X) {L M : LB X} {w : LB.Iso L M} (hw : w.IsGen)
     {i j : L.ι} {k l : M.ι} (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hj : ⊤ ≤ x ⁻¹ᵁ L.U j)
@@ -238,9 +238,9 @@ theorem evU_iso {B : Type} [CommRing B] (x : Sp B ⟶ X) {L M : LB X} {w : LB.Is
   exact key _ _ (hw (k, i) (l, j))
 
 /- English proof (translation)
-Set `i : (IsSmall γ s L.U).FullSubcategory → L.ι` to `fun T ↦ T.property.choose`. Establish `hi : ∀ T, ⊤ ≤ T.obj.x ⁻¹ᵁ L.U (i T)` using `fun T ↦ T.property.choose_spec`. Take `⟨u, ℓ, h1, h2⟩` from `exists_cocycle (IsSmall γ s L.U).ι (fun T T' φ ↦ evalAt T'.obj.x (L.U (i T') ⊓ L.U (i T)) (le_inf (hi T') (φ.hom.le_preimage (hi T))) (L.g (i T') (i T)).val) (fun T T' φ ↦ (Units.isUnit _).map _) fun T T' T'' φ ψ ↦ by`. Establish `e` using `congrArg Units.val (evU_cocycle T''.obj.x hL (hi T'') (ψ.hom.le_preimage (hi T')) ((φ ≫ ψ).hom.le_preimage (hi T)))`. Use `e.symm.trans ((mul_comm _ _).trans ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg₂ (· * ·) (evalAt_spMap ψ.hom.φ₀ T'.obj.x T''.obj.x ψ.hom.pt _ _ _).symm rfl`. Take `⟨z, hz⟩` from `(GlobalTheory.T.crystalline_H2_small_cover_bijective R I γ X s L.ι L.U hL.cover).2 (CatCoh.H2.mk _ ℓ)`. Conclude with `⟨z, i, hi, u, ℓ, h1, h2, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isChern (L : LB X) (hL : L.IsLB) : ∃ z, IsChern γ s L z := by
   let i : (IsSmall γ s L.U).FullSubcategory → L.ι := fun T ↦ T.property.choose
@@ -265,7 +265,7 @@ def coarsen {ι ι' : Type} (U : ι → X.Opens) (U' : ι' → X.Opens) (h : ∀
   smul _ _ _ := rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `CatCoh.H2.mk_surjective _ z`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem coarsen_pull2 {ι ι' : Type} (U : ι → X.Opens) (U' : ι' → X.Opens) (h : ∀ j, ∃ i, U' j ≤ U i)
     (z : Cris.H2 γ s) :
@@ -275,13 +275,11 @@ theorem coarsen_pull2 {ι ι' : Type} (U : ι → X.Opens) (U' : ι' → X.Opens
   rfl
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Take `⟨i, hi, u, ℓ, h1, h2, h3⟩` from `hz`. Take `⟨i', hi', u', ℓ', h1', h2', h3'⟩` from `hz'`. Set `U : M.ι × L.ι → X.Opens` to `fun p ↦ M.U p.1 ⊓ L.U p.2`. Establish `hU : ⨆ p, U p = ⊤`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[iSup_prod]`. Simplify using `only [U, ← inf_iSup_eq, hL.cover, inf_top_eq, hM.cover]`. Set `n` to `coarsen (γ := γ) (s := s) L.U U fun p ↦ ⟨p.2, inf_le_right⟩`. Set `n'` to `coarsen (γ := γ) (s := s) M.U U fun p ↦ ⟨p.1, inf_le_left⟩`. Use `(GlobalTheory.T.crystalline_H2_small_cover_bijective R I γ X s _ U hU).1 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← coarsen_pull2 L.U U (fun p ↦ ⟨p.2, inf_le_right⟩) z, ← coarsen_pull2 M.U U (fun p ↦ ⟨p.1, inf_le_left⟩) z', h3, h3', CoefMap.pullCohomologyTwo_class, CoefMap.pullCohomologyTwo_class]`. Use `mk_eq_mk (IsSmall γ s U).ι (fun T T' φ ↦ u _ _ (n.G.map φ)) (fun T T' φ ↦ u' _ _ (n'.G.map φ)) _ _ (fun T ↦ (evU T.obj.x (M.U (i' (n'.G.obj T)) ⊓ L.U (i (n.G.obj T))) (le_inf (hi' (n'.G.obj T)) (hi (n.G.obj T))) (w.s (i' (n'.G.obj T), i (n.G.obj T)))).val) (fun T ↦ Units.isUnit _ …` and prove the remaining obligations. Conclude with `(h1 _ _ (n.G.map φ)).symm ▸ (Units.isUnit _).map _`. Establish `e` using `congrArg Units.val (evU_iso T'.obj.x hw (hi (n.G.obj T')) (φ.hom.le_preimage (hi (n.G.obj T))) (hi' (n'.G.obj T')) (φ.hom.le_preimage (hi' (n'.G.obj T))))`. Use `Eq.trans ?_ (e.trans ?_)` and prove the remaining obligations.
-
-Conclude with `congrArg₂ (· * ·) (h1' _ _ (n'.G.map φ)) (evalAt_spMap φ.hom.φ₀ T.obj.x T'.obj.x φ.hom.pt _ _ _)`. Conclude with `congrArg₂ (· * ·) rfl (h1 _ _ (n.G.map φ)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_of_iso {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M) {z z' : Cris.H2 γ s}
     (hz : IsChern γ s L z) (hz' : IsChern γ s M z') : z' = z := by
@@ -313,11 +311,11 @@ theorem eq_of_iso {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M) {z z'
     · exact congrArg₂ (· * ·) rfl (h1 _ _ (n.G.map φ)).symm
 
 /- English proof (translation)
-Use `⟨⟨fun p ↦ L.g p.1 p.2⟩, fun p q ↦ ?_⟩` and prove the remaining obligations. Establish `rr : ∀ {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ), res h' (res h a) = res (h'.trans h) a` using `fun h h' a ↦ Units.ext (by`. Express the relevant statement in the definitionally equal form `(X.presheaf.map _ ≫ X.presheaf.map _).hom a.val = _`. Rewrite using `[← X.presheaf.map_comp]`. Use the proof step `rfl)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `W` to `L.U p.1 ⊓ L.U p.2 ⊓ (L.U q.1 ⊓ L.U q.2)`. Establish `a1 : W ≤ L.U p.1` using `inf_le_left.trans inf_le_left`. Establish `a2 : W ≤ L.U p.2` using `inf_le_left.trans inf_le_right`. Establish `b1 : W ≤ L.U q.1` using `inf_le_right.trans inf_le_left`. Establish `b2 : W ≤ L.U q.2` using `inf_le_right.trans inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (res (le_inf (le_inf a1 a2) b2)) (hL.cocycle p.1 p.2 q.2)`. Establish `e2` using `congrArg (res (le_inf (le_inf a1 b1) b2)) (hL.cocycle p.1 q.1 q.2)`. Simplify using `only [map_mul, rr] at e1 e2`. Express the relevant statement in the definitionally equal form `res (le_inf a1 a2) (L.g p.1 p.2) = res (le_inf a1 b1) (L.g p.1 q.1) * (res (le_inf a2 b2) (L.g p.2 q.2))⁻¹ * res (le_inf b1 b2) (L.g q.1 q.2)`. Rewrite using `[mul_right_comm, e2, ← e1, mul_inv_cancel_right]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_refl {L : LB X} (hL : L.IsLB) : LBIso L L := by
   refine ⟨⟨fun p ↦ L.g p.1 p.2⟩, fun p q ↦ ?_⟩
@@ -342,7 +340,7 @@ end GlobalTheory.Cris.ChernExists
 namespace GlobalTheory.Cris
 
 /- English proof (translation)
-Use `⟨fun L hL ↦ ?_, fun L M hL hM h z hz ↦ ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `ChernExists.exists_isChern (γ := κ) (s := s) L hL`. Conclude with `⟨z, hz, fun z' hz' ↦ ChernExists.eq_of_iso hL hL (ChernExists.lbIso_refl hL) hz hz'⟩`. Take `⟨z', hz'⟩` from `ChernExists.exists_isChern (γ := κ) (s := s) M hM`. Conclude with `ChernExists.eq_of_iso hL hM h hz hz' ▸ hz'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isChern_existsUnique_and_iso (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I)
     (X : Scheme.{0}) (s : X ⟶ Sp R) :

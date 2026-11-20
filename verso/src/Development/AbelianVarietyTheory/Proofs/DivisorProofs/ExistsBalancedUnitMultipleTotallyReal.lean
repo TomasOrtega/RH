@@ -14,11 +14,11 @@ open NumberField.InfinitePlace NumberField.mixedEmbedding NumberField.Units
 open NumberField.Units.dirichletUnitTheorem
 
 /- English proof (translation)
-Establish `h1 : ∑ w : InfinitePlace K, (mult w : ℝ) * Real.log (normAtPlace w x) = Real.log (mixedEmbedding.norm x)`. Rewrite using `[mixedEmbedding.norm_apply, Real.log_prod]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow]`. Introduce `w _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_ne_zero _ (mixedEmbedding.norm_ne_zero_iff.mp hx w)`. Establish `h2 : ∑ w : InfinitePlace K, (mult w : ℝ) = Module.finrank ℚ K`. Conclude with `sum_mult_eq` after adjusting the coercions. Establish `hn : (Module.finrank ℚ K : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Repeatedly rewrite using `[mul_sub, Finset.sum_sub_distrib, h1, ← Finset.sum_mul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sum_mult_log_sub {K : Type} [Field K] [NumberField K] (x : mixedSpace K)
     (hx : mixedEmbedding.norm x ≠ 0) :
@@ -39,7 +39,7 @@ theorem sum_mult_log_sub {K : Type} [Field K] [NumberField K] (x : mixedSpace K)
   ring
 
 /- English proof (translation)
-The claim follows from `|Real.log (w (((ε : 𝓞 K) : K) * b)) - Real.log (mixedEmbedding.norm (mixedEmbedding K (((ε : 𝓞 K) : K) * b))) * (Module.finrank ℚ K : ℝ)⁻¹| ≤ M := by classical obtain ⟨R, hR⟩ := (ZSpan.fundamentalDomain_isBounded ((basisUnitLattice K).ofZLatticeBasis ℝ (unitLattice K))).subset_cl …`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_log_bound (K : Type) [Field K] [NumberField K] : ∃ M : ℝ, 0 ≤ M ∧
     ∀ b : K, b ≠ 0 → ∃ ε : (𝓞 K)ˣ, ∀ w : InfinitePlace K,
@@ -96,7 +96,7 @@ theorem exists_unit_log_bound (K : Type) [Field K] [NumberField K] : ∃ M : ℝ
   exact le_mul_of_one_le_left (abs_nonneg _) one_le_mult
 
 /- English proof (translation)
-The claim follows from `|τ (((ε : 𝓞 F) : F) * b)| ≤ C * |τ' (((ε : 𝓞 F) : F) * b)| := by obtain ⟨M, hM0, hM⟩ := exists_unit_log_bound F refine ⟨Real.exp (2 * M), Real.one_le_exp (by positivity), ?_⟩ intro b hb obtain ⟨ε, hε⟩ := hM b hb refine ⟨ε, ?_⟩ set y : F := ((ε : 𝓞 F) : F) * b with hy_def have hy …`.
+A detailed English derivation is pending.
 -/
 theorem balanced_unit_multiple (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     ∃ C : ℝ, 1 ≤ C ∧ ∀ b : F, b ≠ 0 → ∃ ε : (𝓞 F)ˣ, ∀ τ τ' : Emb F,

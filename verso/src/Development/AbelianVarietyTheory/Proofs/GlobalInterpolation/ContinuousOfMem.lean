@@ -15,15 +15,15 @@ def Splits (A : Subalgebra ℂ (G → ℂ)) (p : G → ℂ) : Prop :=
     ∀ x k, p (x * k) = ∑ i, a i x * b i k
 
 /- English proof (translation)
-Introduce `p hp`. Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp => exact hS p hp`. Consider the case `algebraMap c`. Conclude with `⟨Unit, inferInstance, fun _ => algebraMap ℂ _ c, fun _ => 1, fun _ => ⟨Subalgebra.algebraMap_mem _ c, one_mem _⟩, fun x k => by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `add p q _ _ hp hq`. Take `⟨ι, _, a, b, hab, h⟩` from `hp`. Take `⟨κ, _, c, d, hcd, h'⟩` from `hq`. Use `⟨ι ⊕ κ, inferInstance, Sum.elim a c, Sum.elim b d, ?_, fun x k => ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hab i`. Conclude with `hcd i`. Rewrite using `[Pi.add_apply, h, h', Fintype.sum_sum_type]`. Both sides reduce to the same expression. Consider the case `mul p q _ _ hp hq`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ι, _, a, b, hab, h⟩` from `hp`. Take `⟨κ, _, c, d, hcd, h'⟩` from `hq`. Use `⟨ι × κ, inferInstance, fun t => a t.1 * c t.2, fun t => b t.1 * d t.2, fun t => ⟨mul_mem (hab _).1 (hcd _).1, mul_mem (hab _).2 (hcd _).2⟩, fun x k => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, h, h', Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem splits_adjoin (S : Set (G → ℂ)) (hS : ∀ p ∈ S, Splits (Algebra.adjoin ℂ S) p) :
     ∀ p ∈ Algebra.adjoin ℂ S, Splits (Algebra.adjoin ℂ S) p := by
@@ -53,7 +53,7 @@ theorem splits_adjoin (S : Set (G → ℂ)) (hS : ∀ p ∈ S, Splits (Algebra.a
     ring
 
 /- English proof (translation)
-Take `⟨ι, _, a, b, hab, h⟩` from `h`. Use `⟨Fintype.card ι, fun i => a ((Fintype.equivFin ι).symm i), fun i => b ((Fintype.equivFin ι).symm i), fun i => hab _, fun x k => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `(Equiv.sum_comp (Fintype.equivFin ι).symm fun i => a i x * b i k).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Splits.fin {A : Subalgebra ℂ (G → ℂ)} {p : G → ℂ} (h : Splits A p) :
     ∃ (m : ℕ) (a b : Fin m → G → ℂ), (∀ i, a i ∈ A ∧ b i ∈ A) ∧
@@ -70,7 +70,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `coord`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coord_star (τ : E →+* ℂ) (a : Cinf E) : coord τ (star a) = star (coord τ a) := by
   unfold coord
@@ -78,7 +78,7 @@ theorem coord_star (τ : E →+* ℂ) (a : Cinf E) : coord τ (star a) = star (c
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `coord`. Use `split_ifs`. Conclude with `continuous_apply (InfinitePlace.mk τ)`. Conclude with `Complex.continuous_conj.comp (continuous_apply (InfinitePlace.mk τ))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_coord (τ : E →+* ℂ) : Continuous (coord τ) := by
   unfold coord
@@ -88,7 +88,7 @@ theorem continuous_coord (τ : E →+* ℂ) : Continuous (coord τ) := by
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `coord`. Rewrite using `[InfinitePlace.mk_embedding, if_pos rfl]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coord_embedding (w : InfinitePlace E) (a : Cinf E) : coord w.embedding a = a w := by
   unfold coord
@@ -96,9 +96,9 @@ theorem coord_embedding (w : InfinitePlace E) (a : Cinf E) : coord w.embedding a
   rfl
 
 /- English proof (translation)
-Establish `hne : ComplexEmbedding.conjugate τ ≠ τ` using `fun h => (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ))) ⟨τ, ComplexEmbedding.isReal_iff.2 h, rfl⟩`. Unfold `coord`. Rewrite using `[InfinitePlace.mk_conjugate_eq]`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (fun h' => hne (h'.symm.trans h))]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_pos h, if_neg (fun h' => hne (h.symm.trans h'))]`. Conclude with `(star_star _).symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_conjugate (τ : E →+* ℂ) (a : Cinf E) :
     coord (ComplexEmbedding.conjugate τ) a = star (coord τ a) := by
@@ -114,7 +114,7 @@ theorem coord_conjugate (τ : E →+* ℂ) (a : Cinf E) :
     exact (star_star _).symm
 
 /- English proof (translation)
-Establish `: Continuous (infEq E).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`. Conclude with `this.comp continuous_fst`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_pInf : Continuous (pInf E) := by
   have : Continuous (infEq E).symm := continuous_pi fun w =>
@@ -123,7 +123,7 @@ theorem continuous_pInf : Continuous (pInf E) := by
   exact this.comp continuous_fst
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(infEq E).symm (infEq E _) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pInf_conj (a : Ad E) : pInf E (conjAd E a) = star (pInf E a) := by
   change (infEq E).symm (infEq E _) = _
@@ -137,7 +137,7 @@ theorem cEmb_apply (τ : E →+* ℂ) (x : UA E n) (i j : Fin n) :
     (cEmb τ x).val i j = coord τ (pInf E (x.1.val i j)) := rfl
 
 /- English proof (translation)
-Establish `h : (x.1.val.map (conjAd E))ᵀ * 1 * x.1.val = 1` using `x.2`. Rewrite `h` using `[Matrix.mul_one]`. Establish `h2 : (x.1⁻¹).val = (x.1.val.map (conjAd E))ᵀ` using `Units.inv_eq_of_mul_eq_one_left h`. Rewrite using `[cEmb_apply, cEmb_apply, ← coord_star, ← pInf_conj]`. Conclude with `congrArg (fun M : Matrix (Fin n) (Fin n) (Ad E) => coord τ (pInf E (M i j))) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cEmb_inv (τ : E →+* ℂ) (x : UA E n) (i j : Fin n) :
     (cEmb τ x⁻¹).val i j = star ((cEmb τ x).val j i) := by
@@ -153,9 +153,9 @@ abbrev coeffs : Set (infU E n → ℂ) :=
   {f | ∃ (τ : E →+* ℂ) (i : Fin n) (j : Fin n), f = fun x : infU E n => (cEmb τ x.val).val i j}
 
 /- English proof (translation)
-Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp`. Take `⟨τ, i, j, rfl⟩` from `hp`. Establish `h : Continuous fun x : infU E n => x.1.1.val i j` using `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_elem i j`. Conclude with `(continuous_coord τ).comp (continuous_pInf.comp h)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `algebraMap c => exact continuous_const`. Consider the case `add p q _ _ hp hq => exact hp.add hq`. Consider the case `mul p q _ _ hp hq => exact hp.mul hq`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_of_mem (p : infU E n → ℂ) (hp : p ∈ Algebra.adjoin ℂ (coeffs E n)) : Continuous p := by
   induction hp using Algebra.adjoin_induction with
@@ -169,9 +169,9 @@ theorem continuous_of_mem (p : infU E n → ℂ) (hp : p ∈ Algebra.adjoin ℂ 
   | mul p q _ _ hp hq => exact hp.mul hq
 
 /- English proof (translation)
-Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp`. Take `⟨τ, i, j, rfl⟩` from `hp`. Conclude with `Algebra.subset_adjoin ⟨ComplexEmbedding.conjugate τ, i, j, funext fun x => (coord_conjugate τ _).symm⟩`. Consider the case `algebraMap c => exact Subalgebra.algebraMap_mem _ (star c)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q _ _ hp hq => rw [star_add]`. Conclude with `add_mem hp hq`. Consider the case `mul p q _ _ hp hq => rw [star_mul]`. Conclude with `mul_mem hq hp`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem star_mem_of_mem (p : infU E n → ℂ) (hp : p ∈ Algebra.adjoin ℂ (coeffs E n)) :
     star p ∈ Algebra.adjoin ℂ (coeffs E n) := by
@@ -184,11 +184,9 @@ theorem star_mem_of_mem (p : infU E n → ℂ) (hp : p ∈ Algebra.adjoin ℂ (c
   | mul p q _ _ hp hq => rw [star_mul]; exact mul_mem hq hp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `hxy (Subtype.ext (Subtype.ext (Units.ext (Matrix.ext fun i j => ?_))))` and prove the remaining obligations. Establish `h1 : pInf E (x.1.1.val i j) = pInf E (y.1.1.val i j)`. Use function extensionality and compare the values at `w`. Use `(coord_embedding w _).symm.trans (Eq.trans ?_ (coord_embedding w _))` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hcon ⟨_, Algebra.subset_adjoin ⟨w.embedding, i, j, rfl⟩, hne⟩`. Establish `hx : GeneralLinearGroup.map (pFin E) x.1.1 = 1` using `x.2`. Establish `hy : GeneralLinearGroup.map (pFin E) y.1.1 = 1` using `y.2`. Establish `h2` using `congrArg (fun g : GL (Fin n) (Af E) => g.val i j) (hx.trans hy.symm)`.
-
-Conclude with `Prod.ext ((infEq E).symm.injective h1) h2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem separates (x y : infU E n) (hxy : x ≠ y) : ∃ p ∈ Algebra.adjoin ℂ (coeffs E n), p x ≠ p y := by
   by_contra hcon
@@ -204,9 +202,9 @@ theorem separates (x y : infU E n) (hxy : x ≠ y) : ∃ p ∈ Algebra.adjoin �
   exact Prod.ext ((infEq E).symm.injective h1) h2
 
 /- English proof (translation)
-Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp`. Take `⟨τ, i, j, rfl⟩` from `hp`. Establish `h` using `star_mem_of_mem (E := E) (n := n) _ (Algebra.subset_adjoin ⟨τ, j, i, rfl⟩)`. Establish `e : (fun x : infU E n => (cEmb τ (x⁻¹).val).val i j) = star fun x : infU E n => (cEmb τ x.val).val j i` using `funext fun x => cEmb_inv τ x.1 i j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e ▸ h`. Consider the case `algebraMap c => exact Subalgebra.algebraMap_mem _ c`. Consider the case `add p q _ _ hp hq => exact add_mem hp hq`. Consider the case `mul p q _ _ hp hq => exact mul_mem hp hq`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inv_mem_of_mem (p : infU E n → ℂ) (hp : p ∈ Algebra.adjoin ℂ (coeffs E n)) :
     (fun x => p x⁻¹) ∈ Algebra.adjoin ℂ (coeffs E n) := by
@@ -222,7 +220,7 @@ theorem inv_mem_of_mem (p : infU E n → ℂ) (hp : p ∈ Algebra.adjoin ℂ (co
   | mul p q _ _ hp hq => exact mul_mem hp hq
 
 /- English proof (translation)
-Use `splits_adjoin _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, i, j, rfl⟩`. Use `⟨Fin n, inferInstance, fun l x => (cEmb τ x.val).val i l, fun l x => (cEmb τ x.val).val l j, fun l => ⟨Algebra.subset_adjoin ⟨τ, i, l, rfl⟩, Algebra.subset_adjoin ⟨τ, l, j, rfl⟩⟩, fun x k => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(cEmb τ (x.val * k.val)).val i j = _`. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem splits_of_mem : ∀ p ∈ Algebra.adjoin ℂ (coeffs E n), Splits (Algebra.adjoin ℂ (coeffs E n)) p := by
   refine splits_adjoin _ ?_
@@ -233,7 +231,7 @@ theorem splits_of_mem : ∀ p ∈ Algebra.adjoin ℂ (coeffs E n), Splits (Algeb
   rw [map_mul, Units.val_mul, Matrix.mul_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_of_mem, star_mem_of_mem, separates, inv_mem_of_mem, fun p hp => (splits_of_mem p hp).fin⟩`.
+Supply the required witnesses or components.
 -/
 theorem main (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) :
     (∀ p ∈ Algebra.adjoin ℂ (coeffs E n), Continuous p) ∧

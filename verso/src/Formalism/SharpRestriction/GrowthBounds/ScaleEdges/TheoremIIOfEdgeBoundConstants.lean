@@ -7,27 +7,23 @@ namespace Formalism.MainNotions.Pf14
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Use `⟨max C₁ (max 2 (max Ct0 (max CD1 (Cr + 1)))), lt_of_lt_of_le h3 (le_max_left _ _), ?_⟩` and prove the remaining obligations. Introduce `C hC`. Establish `hC1 : C₁ ≤ C` using `le_trans (le_max_left _ _) hC`. Establish `hC'` using `le_trans (le_max_right _ _) hC`. Establish `hC2 : 2 ≤ C` using `le_trans (le_max_left _ _) hC'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC''` using `le_trans (le_max_right _ _) hC'`. Establish `hC3 : Ct0 ≤ C` using `le_trans (le_max_left _ _) hC''`. Establish `hC'''` using `le_trans (le_max_right _ _) hC''`. Establish `hC4 : CD1 ≤ C` using `le_trans (le_max_left _ _) hC'''`. Establish `hC5 : Cr + 1 ≤ C` using `le_trans (le_max_right _ _) hC'''`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet hp hr hOrb hN1 hWt hY hLa hk hL1 hD hc hsz t ht`. Establish `hH : Hyps C p n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar` using `⟨hp, hr, hOrb, hN1, hWt, hY, hLa, hk, hL1, hD, hc, hsz⟩`. Establish `hdom : IsDominant lam0` using `hWt.2.1`. Apply `hOE p n' W Qq O Kf ι σ j w hSet.1 m r lam0 t Dp _ cStar hdom` to reduce the goal to its premises. Use `⟨by omega, colSpan W 1, ⟨1, by simp, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hS7 p n' W Qq O Kf ι σ j w hSet.1 hBP m r lam0 t Dp _ cStar _ hdom (by omega)` to reduce the goal to its premises. Take `⟨E, hE1, hE2⟩` from `hME p n' W Qq O Kf ι σ j w hSet.1 (m + 1) r (by omega)`. Take `⟨hn1, hn2, hn3, hn4⟩` from `hNum C Ct0 CD1 Cr h0 h1 h2 hC2 hC3 hC4 hC5 p n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hH`. Establish `key : ∀ e ∈ E, _` using `fun e he => hE C hC1 p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet hH e (hE1 e he).1 (hE1 e he).2`. Use `choose! nE tS tT D1 hkey using key`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hAsm p n' W Qq O Kf ι σ j w hSet.1 m r lam0 t Dp _ cStar _ E nE hE1` to reduce the goal to its premises. Introduce `e he`. Take `⟨a1, a2, a3, _, a5⟩` from `hkey e he`. Use `⟨tS e, tT e, D1 e, ?_, ?_, ?_, a5⟩` and prove the remaining obligations. Establish `: (tS e : ℝ) ≤ t` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `: (tT e : ℝ) ≤ t` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `: (D1 e : ℝ) ≤ Dp` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ρ : ℝ := (1 - Cr * (TT.card : ℝ) * (r : ℝ) ^ 2 * ((m + 1 : ℕ) : ℝ) / Y) * (1 - ((m + 1 : ℕ) : ℝ) * c0 / a) ^ TT.card with hρ set Qr : ℝ := (p : ℝ) ^ (n' * (r * (m + 1 - r))) with hQr`. Establish `hp0 : (0 : ℝ) < p`. Establish `: 0 < p` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hQpos : 0 < Qr` using `pow_pos hp0 _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hdim : (0 : ℝ) ≤ (dimV Kf lam0 : ℝ)` using `Nat.cast_nonneg _`. Establish `hle : (1 - C * TT.card * (r : ℝ) ^ 2 * ((m + 1 : ℕ) : ℝ) / Y) * (dimV Kf lam0 : ℝ) ≤ ρ * (dimV Kf lam0 : ℝ)` using `mul_le_mul_of_nonneg_right hn4 hdim`. Use `le_trans hle ?_` and prove the remaining obligations. Break down `le_or_gt 0 (ρ * (dimV Kf lam0 : ℝ)) with hpos | hneg` into its components or cases. Establish `hsum : (E.card : ℝ) * (ρ * (dimV Kf lam0 : ℝ) / Qr) ≤ ((∑ e ∈ E, nE e : ℕ) : ℝ)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[← nsmul_eq_mul]`. Apply `Finset.card_nsmul_le_sum` to reduce the goal to its premises. Introduce `e he`. Conclude with `(hkey e he).2.2.2.1`.
-
-Establish `hcard : Qr ≤ (E.card : ℝ)`. Rewrite using `[hQr]`. Conclude with `hE2` after adjusting the coercions. Establish `: Qr * (ρ * (dimV Kf lam0 : ℝ) / Qr) ≤ (E.card : ℝ) * (ρ * (dimV Kf lam0 : ℝ) / Qr)` using `mul_le_mul_of_nonneg_right hcard (div_nonneg hpos hQpos.le)`. Establish `h4 : Qr * (ρ * (dimV Kf lam0 : ℝ) / Qr) = ρ * (dimV Kf lam0 : ℝ)`.
-
-Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_trans hneg.le (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem prvE_of_gl_operators_form_representation (D : Formalism.BasicNotions.D7) (hME : ManyEdges) (hS7 : S7) (hAsm : Asm) (hNum : Num)
     (hBP : BePerfect) (hOE : LPOneEvery)
@@ -97,7 +93,7 @@ theorem prvE_of_gl_operators_form_representation (D : Formalism.BasicNotions.D7)
     · exact le_trans hneg.le (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Take `⟨Ct0, CD1, Cr, C₁, h0, h1, h2, h3, hE⟩` from `hR hA h14a h14b`. Establish `hBP : BePerfect` using `hA.2.2.2.1`. Establish `hOE : LPOneEvery` using `hA.2.2.2.2.1`. Conclude with `prvE_of_gl_operators_form_representation D hME hS7 hAsm hNum hBP hOE Ct0 CD1 Cr C₁ h0 h1 h2 h3 hE`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theorem_II_of_edge_bound_constants (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ)
     (hME : ManyEdges) (hS7 : S7) (hAsm : Asm) (hNum : Num)

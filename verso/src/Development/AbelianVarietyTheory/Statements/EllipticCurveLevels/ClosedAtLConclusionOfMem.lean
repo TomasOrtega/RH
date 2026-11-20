@@ -145,9 +145,9 @@ def JumpsKept : Prop :=
         IsJumpsAt P Bw (r.comp (Dec (F := E) A).subtype) τ (J τ)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ a ha P AI hT w A hA O _ _ _ Bw hBw J r hr hss C hC hρ`. Use `set h : ℕ := Finset.univ.sup fun τ : E →+* Qbar l => ((J τ).map Int.natAbs).sum`. Establish `hb : ∀ τ, ∀ n ∈ J τ, |n| ≤ h` using `fun τ n hn => by`. Establish `h1 : n.natAbs ≤ ((J τ).map Int.natAbs).sum` using `Multiset.le_sum_of_mem (Multiset.mem_map_of_mem _ hn)`. Establish `h2 : ((J τ).map Int.natAbs).sum ≤ h` using `Finset.le_sup (f := fun τ : E →+* Qbar l => ((J τ).map Int.natAbs).sum) (Finset.mem_univ τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.abs_eq_natAbs]`. Conclude with `h1.trans h2` after adjusting the coercions. Establish `hdr` using `H₁ E Ω l a ha P AI hT w A hA O Bw hBw h r hr hss C hC fun ρ hm => ⟨(hρ ρ hm).1, (hρ ρ hm).2.1, fun τ LL' τ' hi => ⟨J τ, (hρ ρ hm).2.2 τ LL' τ' hi, hb τ⟩⟩`. Conclude with `⟨⟨hdr.1, H₂ E Ω l a ha P AI hT w A hA O Bw hBw J r hr hdr.1 C hC fun ρ hm => ⟨(hρ ρ hm).1, (hρ ρ hm).2.1, (hρ ρ hm).2.2⟩⟩, hdr.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem closedAtL_of (H₁ : ClosedDR) (H₂ : JumpsKept) : ClosedAtL := by
   intro E Ω _ _ _ _ _ l _ a ha P AI hT w A hA O _ _ _ Bw hBw J r hr hss C hC hρ
@@ -164,7 +164,7 @@ theorem closedAtL_of (H₁ : ClosedDR) (H₂ : JumpsKept) : ClosedAtL := by
     ⟨(hρ ρ hm).1, (hρ ρ hm).2.1, (hρ ρ hm).2.2⟩⟩, hdr.2⟩
 
 /- English proof (translation)
-Set `τ₀ : E →+* Qbar l` to `Bw.j.comp (algebraMap E Ω)`. Establish `hi : IsInduced Bw τ₀ (AlgHom.id ℚ_[l] ↥Bw.Kw.1)` using `fun x => rfl`. Take `⟨LL', r', hm, hd, -⟩` from `(hρ r hrC).2.2 τ₀ Bw.Kw _ hi`. Conclude with `⟨linApprox_of_mem hrC, ⟨⟨LL', r', hm, hd⟩, (hρ r hrC).2.2⟩, fun hc => hc r hrC⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem closedAtL_conclusion_of_mem {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ}
     [Fact l.Prime] {a : ℕ} {P : LocPrime l} {A : ValuationSubring Ω} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
@@ -183,25 +183,21 @@ theorem closedAtL_conclusion_of_mem {E Ω : Type} [Field E] [NumberField E] [Fie
   exact ⟨linApprox_of_mem hrC, ⟨⟨LL', r', hm, hd⟩, (hρ r hrC).2.2⟩, fun hc => hc r hrC⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hd : 0 < ‖α - β‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`. Establish `ha' : 0 < ‖(a : k)‖` using `norm_pos_iff.2 ha`. Use `set B' := max B 0`. Establish `hB' : 0 ≤ B'` using `le_max_right _ _`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q := ‖β‖ / ‖(a : k)‖`. Establish `hq : 0 ≤ q` using `by positivity`. Use `set ε : ℝ := ‖α - β‖ / (2 * (B' + 1) * (q + 1)) with hε`. Establish `hε0 : 0 < ε` using `by positivity`. Establish `hεeq : ε * (2 * (B' + 1) * (q + 1)) = ‖α - β‖` using `div_mul_cancel₀ _ (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, c, hs, hc⟩` from `hr ε hε0`. Take `⟨x, hxB, hα, hβ⟩` from `hx s hs`. Use `set S := ∑ ρ ∈ s, σ (c ρ)`. Establish `key : α - S * β = ∑ g ∈ x.support, x g * σ (trc r g - ∑ ρ ∈ s, c ρ * trc ρ g)`. Establish `hSβ : S * β = ∑ ρ ∈ s, σ (c ρ) * x.sum (fun g c' => c' * σ (trc ρ g))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]; exact Finset.sum_congr rfl fun ρ hρ => by rw [hβ ρ hρ]`. Rewrite using `[hSβ, ← hα]`. Simplify using `only [Finsupp.sum, map_sub, map_sum, map_mul, mul_sub, Finset.mul_sum, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun g _ => by ring` and prove the remaining obligations. Establish `h1 : ‖α - S * β‖ ≤ B' * ε`. Rewrite using `[key]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun g _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hσ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul ((hxB g).trans (le_max_left _ _)) (hc g) (norm_nonneg _) hB'`. Establish `h2 : ‖(1 : k') - S‖ * ‖(a : k)‖ ≤ ε`. Use `hc 1` as an intermediate fact. Establish `t1 : ∀ ρ : Γ →* GL (Fin a) k, trc ρ 1 = a` using `fun ρ => by simp [trc]`. Establish `e : trc r 1 - ∑ ρ ∈ s, c ρ * trc ρ 1 = (a : k) * (1 - ∑ ρ ∈ s, c ρ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[t1, Finset.sum_congr rfl fun ρ _ => by rw [t1 ρ], mul_sub, mul_one, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Rewrite `this` using `[e, norm_mul]`. Establish `e2 : (1 : k') - S = σ (1 - ∑ ρ ∈ s, c ρ)` using `by simp [S, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[e2, hσ, mul_comm]`. Conclude with `this`. Establish `h3 : ‖(S - 1) * β‖ ≤ ε * q`. Rewrite using `[norm_mul, ← norm_neg (S - 1), neg_sub]`. Establish `: ‖(1 : k') - S‖ ≤ ε / ‖(a : k)‖` using `by rw [le_div_iff₀ ha']; exact h2`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `e3 : α - β = (α - S * β) + (S - 1) * β` using `by ring`. Establish `h4 : ‖α - β‖ ≤ max (B' * ε) (ε * q)`. Rewrite using `[e3]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max h1 h3)`.
-
-Establish `h5 : B' * ε < ‖α - β‖` using `by nlinarith [mul_nonneg hB' hq, mul_pos hε0 (by positivity : (0:ℝ) < (B' + 1) * (q + 1))]`. Establish `h6 : ε * q < ‖α - β‖` using `by nlinarith [mul_nonneg hB' hq, mul_pos hε0 (by positivity : (0:ℝ) < (B' + 1) * (q + 1))]`. Conclude with `absurd h4 (not_le.2 (max_lt h5 h6))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_linApprox {k k' Γ : Type} [NormedField k] [NormedField k'] [IsUltrametricDist k'] [Group Γ] {a : ℕ}
     (ha : (a : k) ≠ 0) (σ : k →+* k') (hσ : ∀ x, ‖σ x‖ = ‖x‖) {r : Γ →* GL (Fin a) k} {C : Set (Γ →* GL (Fin a) k)}
@@ -257,23 +253,21 @@ theorem eq_of_linApprox {k k' Γ : Type} [NormedField k] [NormedField k'] [IsUlt
   exact absurd h4 (not_le.2 (max_lt h5 h6))
 
 /- English proof (translation)
-Use `set N : ℕ := ((J + J').map Int.natAbs).sum`. Establish `hN : ∀ n ∈ J + J', 0 ≤ n + N` using `fun n hn => by`. Establish `: n.natAbs ≤ N` using `Multiset.le_sum_of_mem (Multiset.mem_map_of_mem _ hn)`. Use linear arithmetic over natural numbers and integers. Use `set f : ℤ → ℕ := fun n => (n + N).toNat`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `p : Multiset ℤ → Polynomial F` to `fun M => ((M.map f).map fun k => Polynomial.X ^ k).sum`. Establish `ev : ∀ M : Multiset ℤ, (∀ n ∈ M, 0 ≤ n + N) → ∀ z : F, z ≠ 0 → (p M).eval z = z ^ N * (M.map (z ^ ·)).sum`. Introduce `M hM z hz`. Rewrite using `[show (p M).eval z = Polynomial.evalRingHom z (p M) from rfl]`. Simplify using `only [p, map_multiset_sum, Multiset.map_map, Function.comp_def, map_pow, Polynomial.coe_evalRingHom, Polynomial.eval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Multiset.sum_map_mul_left]`. Use `congr 1`. Use `Multiset.map_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `h1 : ((f n : ℕ) : ℤ) = n + N` using `Int.toNat_of_nonneg (hM n hn)`. Rewrite using `[Polynomial.eval_pow, Polynomial.eval_X, ← zpow_natCast, h1, zpow_add₀ hz, zpow_natCast, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : ∀ n ∈ J, 0 ≤ n + N` using `fun n hn => hN n (Multiset.mem_add.2 (Or.inl hn))`. Establish `hJ' : ∀ n ∈ J', 0 ≤ n + N` using `fun n hn => hN n (Multiset.mem_add.2 (Or.inr hn))`. Establish `hp : p J = p J'`. Use `Polynomial.eq_of_infinite_eval_eq _ _ (hS.mono fun z hz => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ev J hJ z (h0 z hz), ev J' hJ' z (h0 z hz), h z hz]`. Establish `coeff : ∀ (m : Multiset ℕ) (i : ℕ), ((m.map fun k => Polynomial.X ^ k).sum : Polynomial F).coeff i = (m.count i : F)`. Introduce `m i`. Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons k m ih`. Rewrite using `[Multiset.map_cons, Multiset.sum_cons, Polynomial.coeff_add, ih, Polynomial.coeff_X_pow, Multiset.count_cons]`. Apply the tactic sequence `split_ifs <;> simp_all [add_comm] <;> omega`. Establish `hm : J.map f = J'.map f`. Use extensionality with `i`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun P : Polynomial F => P.coeff i) hp` as an intermediate fact. Simplify using `only [p, coeff] at this`. Conclude with `this` after adjusting the coercions. Establish `back : ∀ M : Multiset ℤ, (∀ n ∈ M, 0 ≤ n + N) → (M.map f).map (fun k : ℕ => (k : ℤ) - N) = M`. Introduce `M hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id M]`. Use `Multiset.map_congr rfl fun n hn => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, id, f]`. Rewrite using `[Int.toNat_of_nonneg (hM n hn)]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← back J hJ, ← back J' hJ', hm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiset_eq_of_powSum {F : Type} [Field F] [CharZero F] {S : Set F} (hS : S.Infinite) (h0 : ∀ z ∈ S, z ≠ 0)
     (J J' : Multiset ℤ) (h : ∀ z ∈ S, (J.map (z ^ ·)).sum = (J'.map (z ^ ·)).sum) : J = J' := by
@@ -331,7 +325,7 @@ def Limit : Prop :=
         ClauseAt .ss π ι r w ∧ ClauseAt .crys π ι r w ∧ (IwaAt π w → ClauseAt .dR π ι r w)
 
 /- English proof (translation)
-Introduce `h` and use `h rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_apart_self (w : HeightOneSpectrum (𝓞 E)) : ¬ Apart w w := fun h => h rfl
 

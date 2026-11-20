@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 namespace GlobalTheory.Doubling.HgtDenom
 
 /- English proof (translation)
-Set `M' : Matrix (Fin n) (Fin n) S` to `fun i j => ⟨M i j, hM i j⟩`. Establish `e : M = S.subtype.mapMatrix M'` using `rfl`. Use `⟨?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `(M'.det).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← RingHom.map_adjugate]`. Conclude with `(M'.adjugate i j).2`.
+A detailed English derivation is pending.
 -/
 theorem det_adjugate_mem {A : Type} [CommRing A] (S : Subring A) {n : ℕ} (M : Matrix (Fin n) (Fin n) A)
     (hM : ∀ i j, M i j ∈ S) : M.det ∈ S ∧ ∀ i j, M.adjugate i j ∈ S := by
@@ -23,13 +23,13 @@ theorem det_adjugate_mem {A : Type} [CommRing A] (S : Subring A) {n : ℕ} (M : 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨hd, ha⟩` from `det_adjugate_mem _ M.1 hM`. Establish `hN` using `algebraMap_norm_eq hσ (R := Fv F v) M.1.det`. Establish `hs` using `sigR_mem_intLoc σ hd`. Establish `hint : ∀ a : Fv F v, algebraMap (Fv F v) (Fv F v ⊗[F] E) a ∈ intLoc F E v ↔ ‖a‖₊ ≤ 1` using `fun a => by`. Rewrite using `[mem_intLoc_iff_absFin_le_one, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, absFin_tmul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit M.1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 M.isUnit`. Establish `h0 : Algebra.norm (Fv F v) M.1.det ≠ 0` using `(hu.map (Algebra.norm (Fv F v))).ne_zero`. Use `⟨(hint _).1 (hN ▸ mul_mem hd hs), fun m hm y hy i => ?_⟩` and prove the remaining obligations. Use `set c := Algebra.norm (Fv F v) M.1.det`. Establish `ht : algebraMap (Fv F v) (Fv F v ⊗[F] E) (m / c) ∈ intLoc F E v` using `(hint _).2 (by rw [nnnorm_div]; exact div_le_one_of_le₀ hm zero_le)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : M.1.adjugate = M.1.det • (M⁻¹).1`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (m : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) (m / c) * sigR (Fv F v) σ M.1.det * M.1.det`. Rewrite using `[mul_assoc, mul_comm _ M.1.det, ← hN, ← map_mul, div_mul_cancel₀ _ h0, map_natCast]`. Establish `e3 : (m • ((M⁻¹).1 *ᵥ y)) i = algebraMap (Fv F v) (Fv F v ⊗[F] E) (m / c) * sigR (Fv F v) σ M.1.det * (M.1.adjugate *ᵥ y) i`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Matrix.smul_mulVec, Pi.smul_apply, Pi.smul_apply, nsmul_eq_mul, smul_eq_mul, e2, mul_assoc]`. Rewrite using `[e3]`. Use `mul_mem (mul_mem ht hs) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ j, M.1.adjugate i j * y j ∈ intLoc F E v`. Conclude with `sum_mem fun j _ => mul_mem (ha i j) (hy j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem std_denom {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} (v : HeightOneSpectrum (𝓞 F))
     (M : GL (Fin n) (Fv F v ⊗[F] E)) (hM : ∀ i j, M.1 i j ∈ intLoc F E v) :
@@ -62,15 +62,13 @@ theorem std_denom {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} (v : Hei
   exact sum_mem fun j _ => mul_mem (ha i j) (hy j)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Frames.exists_isLatticeFrame (F := F) L`. Establish `hb` using `ha v`. Use `set b := Formalism.UG.bc (compFin F E v) a`. Establish `hb' : ∀ y ∈ latLoc F L v, ∀ i, ((b⁻¹).1 *ᵥ y) i ∈ intLoc F E v` using `fun y hy => (hb _).2 (by rwa [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec])`. Establish `hent : ∀ i j, (b⁻¹ * M * b).1 i j ∈ intLoc F E v` using `fun i j => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ k, (Pi.single j 1 : Fin n → Fv F v ⊗[F] E) k ∈ intLoc F E v` using `fun k => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hb' _ (hM _ ((hb _).1 h1)) i`. Rewrite `h2` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Conclude with `h2`. Establish `hdet : (b⁻¹ * M * b).1.det = M.1.det`. Rewrite using `[Units.val_mul, Units.val_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Matrix.det_units_conj' b M.1`. Take `⟨h1, h2⟩` from `std_denom hσ v _ hent`. Rewrite `h1`, `h2` using `[hdet]`. Use `⟨h1, fun m hm y hy => ?_⟩` and prove the remaining obligations. Establish `h3` using `(hb _).1 (h2 m hm _ (hb' y hy))`.
-
-Rewrite `h3` using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`. Establish `e : b * (b⁻¹ * M * b)⁻¹ * b⁻¹ = M⁻¹` using `by group`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lat_denom {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     [Submodule.IsLattice E L] (v : HeightOneSpectrum (𝓞 F))
@@ -103,11 +101,11 @@ theorem lat_denom {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} (L : Sub
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hp : KeepsDiag finSumFinEquiv (matHom (Fv F v) σ Q p).1` using `(mem_siegelOf (e := finSumFinEquiv) (mat := matHom (Fv F v) σ Q)).1 p.2`. Establish `hk'` using `inv_mem hk`. Establish `ek : k⁻¹ = ioH _ σ hQ (y⁻¹, 1) * p`. Establish `: k = (p : GLoc σ Q v)⁻¹ * ioH _ σ hQ (y, 1)` using `by rw [e, ← mul_assoc, inv_mul_cancel, one_mul]`. Rewrite using `[this, mul_inv_rev, inv_inv, ← map_inv, Prod.inv_mk, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : pairVec finSumFinEquiv x x ∈ latLoc F (sumLat finSumFinEquiv L L) v`. Rewrite using `[latLoc_sumLat]`. Conclude with `(pairVec_mem_sumLat _).2 ⟨hx, hx⟩`. Establish `h2` using `(mem_stabLoc.1 hk' _).1 h1`. Establish `e3 : (matHom _ σ Q (ioH _ σ hQ (y⁻¹, 1))).1 = blkMat finSumFinEquiv (matHom _ σ J y⁻¹).1 (matHom _ σ J 1).1` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[ek, map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, hp.mulVec_diag, e3, blkMat_mulVec, latLoc_sumLat, pairVec_mem_sumLat]`. Conclude with `⟨h2.1, by simpa using h2.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levi_keeps (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {Q : Matrix (Fin (n + n)) (Fin (n + n)) E}
     (hQ : Q = dblGram finSumFinEquiv J) (L : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 F))
@@ -131,17 +129,15 @@ theorem levi_keeps (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
   exact ⟨h2.1, by simpa using h2.2⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J hJ Q hQ L _ v hI g`. Take `⟨p, k, hk, e⟩` from `hI (ioH (Fv F v) σ hQ (g, 1))`. Use `set α := leviOf finSumFinEquiv (matHom (Fv F v) σ Q) p with hα`. Use `set γ := matHom (Fv F v) σ J g with hγ`. Establish `hγ' : matHom (Fv F v) σ J g⁻¹ = γ⁻¹` using `map_inv _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kα : ∀ x ∈ latLoc F L v, α.1 *ᵥ x ∈ latLoc F L v` using `fun x hx => (levi_keeps σ hQ L v g p hk e hx).2`. Establish `kβ : ∀ x ∈ latLoc F L v, (γ⁻¹ * α).1 *ᵥ x ∈ latLoc F L v` using `fun x hx => by`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← hγ']`. Conclude with `(levi_keeps σ hQ L v g p hk e hx).1`. Take `⟨a1, a2⟩` from `lat_denom hσ L v α kα`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, b2⟩` from `lat_denom hσ L v _ kβ`. Establish `hg1 : ‖Algebra.norm (Fv F v) (γ⁻¹).1.det‖₊ = 1`. Use `abs_detH (absEv_conjUnit σ v) hJ g⁻¹` as an intermediate fact. Rewrite `this` using `[absEv_apply, val_detH, hγ']`. Then use the resulting hypothesis. Rewrite `b2` using `[Units.val_mul, Matrix.det_mul, map_mul, nnnorm_mul, hg1, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨Algebra.norm (Fv F v) α.1.det, (((Matrix.isUnit_iff_isUnit_det _).1 α.isUnit).map (Algebra.norm (Fv F v))).ne_zero, a1, ?_, fun m hm y hy => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e, hgtFin_mul p hk, absEv_apply]`. Both sides reduce to the same expression. Use `kα _ (b2 m hm y hy)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← Units.val_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e' : α * (γ⁻¹ * α)⁻¹ = γ` using `by group`. Rewrite `this` using `[e']`. Then use the resulting hypothesis. Use `kβ _ (a2 m hm y hy)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← Units.val_mul]`. Establish `e' : γ⁻¹ * α * α⁻¹ = γ⁻¹` using `by group`.
-
-Rewrite `this` using `[e', ← hγ']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), J.det ≠ 0 →
     ∀ (Q : Matrix (Fin (n + n)) (Fin (n + n)) E) (hQ : Q = dblGram finSumFinEquiv J) (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L]

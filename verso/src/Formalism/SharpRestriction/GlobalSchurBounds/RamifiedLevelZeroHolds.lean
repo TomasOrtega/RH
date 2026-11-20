@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions.Lnk Formalism.MainNotions.Glob
 variable {eps : ℝ}
 
 /- English proof (translation)
-The claim follows from `tT.mono fun D u hS h => UnramifiedTrace.hecke_ramified_zero_all D u hS h`.
+A detailed English derivation is pending.
 -/
 theorem ramified_level_zero_holds (Fm : FamP eps) (tT : FamU Fm ConcreteFormsLevelZero) : FamU Fm LocalLatticeBases.HeckeRamifiedLevelZero :=
   tT.mono fun D u hS h => UnramifiedTrace.hecke_ramified_zero_all D u hS h

@@ -19,9 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 namespace GlobalTheory.MiTop
 /- English proof (translation)
-Introduce `hCusp hHC D L hT Gi Gl Kc Yd cX ex W hFam hServ`. Take `⟨z, hz, hzc, hu⟩` from `hFam`. Use `⟨z, hz, hzc, fun u => ?_⟩` and prove the remaining obligations. Take `⟨f, d, hPin, hLaws, hZ, hTail, hDown, hOnto, hComm, hRat⟩` from `hu u`. Establish `hMain : MainX f.t` using `GlobalTheory.T.seesawTransportRelations_of_familyLaws hCusp hHC D _ _ f.t hLaws`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, r, c, hr, hU, hc, hRel⟩` from `_root_.GlobalTheory.MiTop.rel_of_links_alt W u f d hLaws.tup hMain hZ hTail hDown hOnto hComm hRat hServ`. Conclude with `⟨d, U, r, c, hPin, hr, hU, hc, hRel⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem joint_of_famAllQ_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.MiTop.FamilyAllConditions W → _root_.GlobalTheory.MiTop.FamilyServedCondition W → _root_.GlobalTheory.MiTop.JointCondition W := by
   intro hCusp hHC D L hT Gi Gl Kc Yd cX ex W hFam hServ

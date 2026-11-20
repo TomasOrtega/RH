@@ -12,7 +12,7 @@ section gen
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `[Module.End.intCast_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem intCast_comp (f : V →ₗ[ℂ] W) (z : ℤ) :
     f ∘ₗ ((z : Module.End ℂ V)) = ((z : Module.End ℂ W)) ∘ₗ f := by
@@ -20,7 +20,7 @@ theorem intCast_comp (f : V →ₗ[ℂ] W) (z : ℤ) :
   simp [Module.End.intCast_apply]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => refine LinearMap.ext fun v => ?_`. Simplify using the standard rewrite rules. Consider the case `succ t ih`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← LinearMap.comp_assoc, h 0, LinearMap.comp_assoc, ih (fun k => A k.succ) (fun k => B k.succ) (fun k => h _), LinearMap.comp_assoc]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofFn_comp (f : V →ₗ[ℂ] W) {t : ℕ} (A : Fin t → Module.End ℂ V) (B : Fin t → Module.End ℂ W)
     (h : ∀ k, f ∘ₗ A k = B k ∘ₗ f) : f ∘ₗ (List.ofFn A).prod = (List.ofFn B).prod ∘ₗ f := by
@@ -32,11 +32,11 @@ theorem ofFn_comp (f : V →ₗ[ℂ] W) {t : ℕ} (A : Fin t → Module.End ℂ 
       ih (fun k => A k.succ) (fun k => B k.succ) (fun k => h _), LinearMap.comp_assoc]
 
 /- English proof (translation)
-Unfold `qdet qminor`. Establish `key : ∀ σ : Equiv.Perm (Fin n), f ∘ₗ (((Equiv.Perm.sign σ : ℤ) : Module.End ℂ V) * (List.ofFn fun k : Fin n => Tm E (u - (k : ℂ)) (id (σ k)) (id k)).prod) = (((Equiv.Perm.sign σ : ℤ) : Module.End ℂ W) * (List.ofFn fun k : Fin n => Tm F (u - (k : ℂ)) (id (σ k)) (id k)).prod) ∘ₗ f` using `fun σ => by`. Rewrite using `[Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← LinearMap.comp_assoc, intCast_comp,`. Use the proof step `LinearMap.comp_assoc, ofFn_comp f _ _ (fun k => ?_), LinearMap.comp_assoc]`. Simplify using `only [Tm]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_add, LinearMap.add_comp, h]`. Use `congr 1`. Use `split_ifs`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => LinearMap.congr_fun (key σ) v`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qdet_comp {n : ℕ} (f : V →ₗ[ℂ] W) (E : Fin n → Fin n → Module.End ℂ V)
     (F : Fin n → Fin n → Module.End ℂ W) (h : ∀ a b, f ∘ₗ E a b = F a b ∘ₗ f) (u : ℂ) :
@@ -59,11 +59,11 @@ theorem qdet_comp {n : ℕ} (f : V →ₗ[ℂ] W) (E : Fin n → Fin n → Modul
   exact Finset.sum_congr rfl fun σ _ => LinearMap.congr_fun (key σ) v
 
 /- English proof (translation)
-Establish `key : ∀ r : ℂ, f ∘ₗ (A - algebraMap ℂ _ r) = (B - algebraMap ℂ _ r) ∘ₗ f`. Introduce `r`. Use extensionality with `v`. Establish `hv` using `LinearMap.congr_fun h v`. Simplify using `only [LinearMap.comp_apply] at hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hv]`. Proceed by induction on `L with`. Consider the case `nil`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `cons r L ih`. Rewrite using `[List.map_cons, List.map_cons, List.prod_cons, List.prod_cons, Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← LinearMap.comp_assoc, key r, LinearMap.comp_assoc, ih, ← LinearMap.comp_assoc]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem listSub_comp (f : V →ₗ[ℂ] W) (A : Module.End ℂ V) (B : Module.End ℂ W) (h : f ∘ₗ A = B ∘ₗ f)
     (L : List ℂ) :
@@ -84,7 +84,7 @@ theorem listSub_comp (f : V →ₗ[ℂ] W) (A : Module.End ℂ V) (B : Module.En
       LinearMap.comp_assoc, ih, ← LinearMap.comp_assoc]
 
 /- English proof (translation)
-Apply `Commute.list_prod_left` to reduce the goal to its premises. Introduce `x hx`. Take `⟨r, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `h.sub_left (Algebra.commutes r T)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem listSub_commute (A T : Module.End ℂ V) (h : Commute A T) (L : List ℂ) :
     Commute (L.map fun r => A - algebraMap ℂ _ r).prod T := by
@@ -94,7 +94,7 @@ theorem listSub_commute (A T : Module.End ℂ V) (h : Commute A T) (L : List ℂ
   exact h.sub_left (Algebra.commutes r T)
 
 /- English proof (translation)
-Rewrite using `[List.pairwise_map]`. Conclude with `List.pairwise_of_forall fun r s => ((Commute.refl A).sub_left (Algebra.commutes r A)).sub_right (Algebra.commutes s _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem listSub_pairwise (A : Module.End ℂ V) (L : List ℂ) :
     (L.map fun r => A - algebraMap ℂ _ r).Pairwise Commute := by
@@ -103,9 +103,9 @@ theorem listSub_pairwise (A : Module.End ℂ V) (L : List ℂ) :
     ((Commute.refl A).sub_left (Algebra.commutes r A)).sub_right (Algebra.commutes s _).symm
 
 /- English proof (translation)
-Establish `hm : l c ∈ List.ofFn l` using `by simp`. Establish `h1 : ((List.ofFn l).map fun r => A - algebraMap ℂ (Module.End ℂ V) r).prod = 0`. Rewrite using `[List.map_ofFn]`. Conclude with `h0`. Rewrite `h1` using `[((List.perm_cons_erase hm).map _).prod_eq' (listSub_pairwise A _), List.map_cons, List.prod_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(listSub_commute A _ ((Commute.refl A).sub_right (Algebra.commutes _ A).symm) _).eq]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem listSub_kill (A : Module.End ℂ V) {n : ℕ} (l : Fin n → ℂ) (c : Fin n)
     (h0 : (List.ofFn fun k => A - algebraMap ℂ _ (l k)).prod = 0) :
@@ -120,9 +120,9 @@ theorem listSub_kill (A : Module.End ℂ V) {n : ℕ} (l : Fin n → ℂ) (c : F
   exact h1
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hle : Algebra.adjoin ℂ s ≤ Subalgebra.centralizer ℂ {T}` using `Algebra.adjoin_le fun x hx => by`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce `y hy`. Rewrite using `[Set.mem_singleton_iff.1 hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hs x hx).symm.eq`. Establish `h2` using `hle hg`. Rewrite `h2` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(h2 T (Set.mem_singleton T)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_commute {A : Type} [Ring A] [Algebra ℂ A] (s : Set A) (T : A) (hs : ∀ x ∈ s, Commute x T) :
     ∀ g ∈ Algebra.adjoin ℂ s, Commute g T := by

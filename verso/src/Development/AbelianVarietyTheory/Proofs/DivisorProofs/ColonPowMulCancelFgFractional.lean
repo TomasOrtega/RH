@@ -6,11 +6,11 @@ open NumberField
 namespace GlobalTheory.ColonPowCancel
 
 /- English proof (translation)
-Set `I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K` to `⟨𝔟, FractionalIdeal.isFractional_of_fg hfg⟩`. Establish `hI : I ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises. Establish `: (I : Submodule (𝓞 K) K) = ((0 : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K)` using `by rw [h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[FractionalIdeal.coe_zero]`. Conclude with `this`. Use `⟨((I⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K), ?_⟩` and prove the remaining obligations. Establish `h1 : I⁻¹ * I = 1` using `inv_mul_cancel₀ hI`. Establish `h2` using `congrArg (fun J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K => (J : Submodule (𝓞 K) K)) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [FractionalIdeal.coe_mul, FractionalIdeal.coe_one] at h2`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv {K : Type} [Field K] [NumberField K] (𝔟 : Submodule (𝓞 K) K)
     (hfg : 𝔟.FG) (h0 : 𝔟 ≠ ⊥) : ∃ 𝔠 : Submodule (𝓞 K) K, 𝔠 * 𝔟 = 1 := by
@@ -29,11 +29,9 @@ theorem exists_inv {K : Type} [Field K] [NumberField K] (𝔟 : Submodule (𝓞 
   exact h2
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_colon]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[Submodule.mul_le]`. Introduce `m hm a ha`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hm`. Rewrite using `[smul_mul_assoc, ← Algebra.smul_def]`. Conclude with `N.smul_mem c (h a ha)`. Introduce `h a ha`. Rewrite using `[Algebra.smul_def]`.
-
-Conclude with `h (Submodule.mul_mem_mul (Submodule.mem_span_singleton_self _) ha)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_colon_iff {R K : Type} [CommRing R] [CommRing K] [Algebra R K]
     (N A : Submodule R K) (r : R) :
@@ -51,9 +49,9 @@ theorem mem_colon_iff {R K : Type} [CommRing R] [CommRing K] [Algebra R K]
     exact h (Submodule.mul_mem_mul (Submodule.mem_span_singleton_self _) ha)
 
 /- English proof (translation)
-Take `⟨𝔠, hc⟩` from `exists_inv 𝔟 hfg h0`. Establish `hp : 𝔠 ^ p * 𝔟 ^ p = 1` using `by rw [← mul_pow, hc, one_pow]`. Use extensionality with `r`. Rewrite using `[mem_colon_iff, mem_colon_iff, mul_left_comm]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h' : 𝔠 ^ p * (𝔟 ^ p * (Submodule.span (𝓞 K) {algebraMap (𝓞 K) K r} * A)) ≤ 𝔠 ^ p * (𝔟 ^ p * N)` using `by gcongr`. Rewrite `h'` using `[← mul_assoc, ← mul_assoc (𝔠 ^ p), hp, one_mul, one_mul]`. Then use the resulting hypothesis. Introduce `h gcongr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem colon_pow_mul_cancel {K : Type} [Field K] [NumberField K] (𝔟 : Submodule (𝓞 K) K)
     (hfg : 𝔟.FG) (h0 : 𝔟 ≠ ⊥) (p : ℕ) (A N : Submodule (𝓞 K) K) :

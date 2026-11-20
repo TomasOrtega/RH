@@ -10,11 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HostAAPartition
 
 /- English proof (translation)
-Establish `hb : D.host.𝔟 ≠ ⊥`. Introduce `h0`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h0, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : D.host.ccE ≠ ⊥`. Unfold `Formalism.BasicNotions.Host.ccE`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 D.host.K) (𝓞 D.host.E))]`. Conclude with `D.host.ccK_ne_bot`. Unfold `Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0`.
-
-Conclude with `mul_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hc) (inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hb))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem host_AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   have hb : D.host.𝔟 ≠ ⊥ := by
@@ -32,17 +30,17 @@ theorem host_AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
     (inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hb))
 
 /- English proof (translation)
-Introduce `D`. Use `set I := D.host.AA with hI`. Establish `hne : I ≠ 0` using `host_AA_ne_zero D`. Establish `h1 : (1 : D.host.E) ∈ I * I⁻¹`. Rewrite using `[mul_inv_cancel₀ hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.one_mem_one _`. Establish `key : ∀ z ∈ I * I⁻¹, ∃ (m : ℕ) (a c : Fin m → D.host.E), (∀ i, a i ∈ I) ∧ (∀ i, ∀ x ∈ I, ∃ b : 𝓞 D.host.E, (b : D.host.E) = c i * x) ∧ ∑ i, a i * c i = z`. Introduce `z hz`. Use `FractionalIdeal.mul_induction_on (C := fun z => ∃ (m : ℕ) (a c : Fin m → D.host.E), (∀ i, a i ∈ I) ∧ (∀ i, ∀ x ∈ I, ∃ b : 𝓞 D.host.E, (b : D.host.E) = c i * x) ∧ ∑ i, a i * c i = z) hz ?_ ?_` and prove the remaining obligations. Introduce `u hu v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨1, fun _ => u, fun _ => v, fun _ => hu, ?_, by simp⟩` and prove the remaining obligations. Introduce `_ x hx`. Establish `hvx : v * x ∈ I⁻¹ * I` using `FractionalIdeal.mul_mem_mul hv hx`. Rewrite `hvx` using `[inv_mul_cancel₀ hne, FractionalIdeal.mem_one_iff]`. Take `⟨b, hb⟩` from `hvx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨b, hb⟩`. Introduce and unpack `u v ⟨m, a, c, ha, hc, rfl⟩ ⟨n, a', c', ha', hc', rfl⟩`. Use `⟨m + n, Fin.append a a', Fin.append c c', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ha j`. Simplify using `using ha' j`. Introduce `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hc j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hc' j`. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules. Conclude with `key 1 h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem host_AA_partition : ∀ (D : D7), ∃ (m : ℕ) (a c : Fin m → D.host.E), (∀ i, a i ∈ D.host.AA) ∧ (∀ i, ∀ x ∈ D.host.AA, ∃ b : 𝓞 D.host.E, (b : D.host.E) = c i * x) ∧ ∑ i, a i * c i = 1 := by
   intro D

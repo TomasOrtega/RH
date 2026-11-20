@@ -20,7 +20,7 @@ def imSp (E : Type) [Field E] [NumberField E] [IsCMField E] : Submodule ℚ E wh
     rw [map_rat_smul, ha, smul_neg]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_imSp {a : E} : a ∈ imSp E ↔ cc a = -a := Iff.rfl
 
@@ -30,9 +30,9 @@ def dm (E : Type) [Field E] [NumberField E] [IsCMField E] : E →ₗ[ℚ] E wher
   map_smul' q x := by simp only [cc, map_rat_smul, RingHom.id_apply, smul_sub]
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Express the relevant statement in the definitionally equal form `cc (x - cc x) = -(x - cc x)`. Rewrite using `[show cc (x - cc x) = cc x - cc (cc x) by simp [cc], cc_cc]; ring`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `hy`. Use `⟨(1 / 2 : ℚ) • y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 / 2 : ℚ) • y - cc ((1 / 2 : ℚ) • y) = y`. Rewrite using `[show cc ((1 / 2 : ℚ) • y) = (1 / 2 : ℚ) • cc y from map_rat_smul _ _ _, (mem_imSp).1 hy, smul_neg, sub_neg_eq_add, ← add_smul]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem range_dm : LinearMap.range (dm E) = imSp E := by
   ext y
@@ -48,7 +48,7 @@ theorem range_dm : LinearMap.range (dm E) = imSp E := by
     norm_num
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker, ← IsCMField.complexConj_eq_self_iff]`. Express the relevant statement in the definitionally equal form `x - cc x = 0 ↔ _`. Rewrite using `[sub_eq_zero, eq_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_ker_dm {x : E} : x ∈ LinearMap.ker (dm E) ↔ x ∈ maximalRealSubfield E := by
   rw [LinearMap.mem_ker, ← IsCMField.complexConj_eq_self_iff]
@@ -65,9 +65,9 @@ def kerEquiv (E : Type) [Field E] [NumberField E] [IsCMField E] :
   right_inv y := rfl
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_range_add_finrank_ker (dm E)`. Rewrite `h` using `[range_dm, (kerEquiv E).finrank_eq]`. Establish `h1` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Unfold `fdeg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h`, the goal using `[← h1, h2]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_imSp : Module.finrank ℚ (imSp E) = fdeg E := by
   have h := LinearMap.finrank_range_add_finrank_ker (dm E)
@@ -89,17 +89,17 @@ instance : Module.Finite ℤ (imLat E) := by
 instance : Module.Free ℤ (imLat E) := Module.free_of_finite_type_torsion_free'
 
 /- English proof (translation)
-Rewrite using `[← finrank_imSp]`. Set `b` to `Module.Free.chooseBasis ℤ (imLat E)`. Set `v : Module.Free.ChooseBasisIndex ℤ (imLat E) → E` to `fun i => (b i : E)`. Establish `hz : LinearIndependent ℤ v` using `b.linearIndependent.map' (imLat E).subtype.toIntLinearMap (LinearMap.ker_eq_bot.2 Subtype.val_injective)`. Establish `hq : LinearIndependent ℚ v` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hz`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span ℚ (Set.range v) = imSp E`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(b i).2.2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `halg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨n, hn, hint⟩` from `halg.exists_integral_multiple`. Establish `hy : n • x ∈ imLat E`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[mem_imSp]`. Simplify using `only [cc, map_zsmul] at hx ⊢`. Rewrite using `[hx, smul_neg]`. Establish `hsum` using `b.sum_repr ⟨n • x, hy⟩`. Establish `hmem : n • x ∈ Submodule.span ℚ (Set.range v)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show n • x = ((⟨n • x, hy⟩ : imLat E) : E) from rfl, ← hsum, AddSubgroup.val_finset_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.coe_zsmul, ← Int.cast_smul_eq_zsmul ℚ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hx' : x = ((n : ℚ)⁻¹) • (n • x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.cast_smul_eq_zsmul ℚ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hn), one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ hmem`. Rewrite using `[← hspan, finrank_span_eq_card hq, Module.finrank_eq_card_chooseBasisIndex]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_imLat : Module.finrank ℤ (imLat E) = fdeg E := by
   rw [← finrank_imSp]
@@ -140,11 +140,11 @@ end GlobalTheory.LieDisc.ImIndex
 open GlobalTheory.LieDisc.ImIndex in
 
 /- English proof (translation)
-Introduce `E _ _ _ r _ _`. Rewrite using `[AddSubgroup.relIndex, ← finrank_imLat, ← AddSubgroup.index_range_nsmul (imLat E) r]`. Use `congr 1`. Use extensionality with `⟨x, hx⟩`. Simplify using `only [AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_map, AddMonoidHom.coe_mulLeft, AddMonoidHom.mem_range, nsmulAddMonoidHom_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext (by simp [← hyx, nsmul_eq_mul])⟩`. Introduce and unpack `⟨⟨y, hy⟩, hyx⟩`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Subtype.val hyx` as an intermediate fact. Simplify `this` using `[nsmul_eq_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.LieDisc.relIndex_mulLeft_imLat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ),
     Unr E → 1 ≤ r →

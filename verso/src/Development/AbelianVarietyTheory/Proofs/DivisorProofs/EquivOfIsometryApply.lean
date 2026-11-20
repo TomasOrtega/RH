@@ -10,7 +10,7 @@ namespace GlobalTheory.LowFilt
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {Z Z' : Submodule (𝓞 E) D.La}
 
 /- English proof (translation)
-Use `h.eq_zero (sub_mem hb hb') (by` as an intermediate fact. Use `sub_mem h2 h1` as an intermediate fact. Rewrite using `[sub_sub_sub_cancel_left] at this)` and apply the resulting hypothesis. Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem IsOpp.proj_unique (h : IsOpp D Z Z') {a b b' : D.La} (hb : b ∈ Z') (hb' : b' ∈ Z')
     (h1 : a - b ∈ perp D Z) (h2 : a - b' ∈ perp D Z) : b = b' := by
@@ -38,25 +38,25 @@ def IsOpp.proj (h : IsOpp D Z Z') : D.La →ₗ[𝓞 E] Z' where
     simpa [smul_sub] using this
 
 /- English proof (translation)
-The claim follows from `(h.exists_sub_mem_perp a).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem IsOpp.sub_proj_mem (h : IsOpp D Z Z') (a : D.La) : a - h.proj a ∈ perp D Z :=
   (h.exists_sub_mem_perp a).choose_spec.2
 
 /- English proof (translation)
-The claim follows from `h.proj_unique (h.proj a).2 hb (h.sub_proj_mem a) hab`.
+A detailed English derivation is pending.
 -/
 theorem IsOpp.proj_eq (h : IsOpp D Z Z') {a b : D.La} (hb : b ∈ Z') (hab : a - b ∈ perp D Z) : (h.proj a : D.La) = b :=
   h.proj_unique (h.proj a).2 hb (h.sub_proj_mem a) hab
 
 /- English proof (translation)
-The claim follows from `h.proj_eq hb (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem IsOpp.proj_of_mem (h : IsOpp D Z Z') {b : D.La} (hb : b ∈ Z') : (h.proj b : D.La) = b :=
   h.proj_eq hb (by simp)
 
 /- English proof (translation)
-The claim follows from `h.proj_eq Z'.zero_mem (by simpa using ha)`.
+A detailed English derivation is pending.
 -/
 theorem IsOpp.proj_of_perp (h : IsOpp D Z Z') {a : D.La} (ha : a ∈ perp D Z) : (h.proj a : D.La) = 0 :=
   h.proj_eq Z'.zero_mem (by simpa using ha)
@@ -64,9 +64,9 @@ theorem IsOpp.proj_of_perp (h : IsOpp D Z Z') {a : D.La} (ha : a ∈ perp D Z) :
 variable (D)
 
 /- English proof (translation)
-Use `choose w hw using fun a => D.unimod.2 ((D.EF a).comp (σ.restrictScalars ℤ))`. Use `⟨{ toFun := w, map_add' := fun a b => D.unimod.1 ?_, map_smul' := fun c a => D.unimod.1 ?_ }, fun a b => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[hw]`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [hw, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_restrictScalars, RingHom.id_apply, D.adj]`. Rewrite using `[← σ.map_smul]`. Conclude with `congrArg (fun f => f b) (hw a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adjoint (σ : D.La →ₗ[𝓞 E] D.La) : ∃ w : D.La →ₗ[𝓞 E] D.La, ∀ a b, D.EF (w a) b = D.EF a (σ b) := by
   choose w hw using fun a => D.unimod.2 ((D.EF a).comp (σ.restrictScalars ℤ))
@@ -78,9 +78,9 @@ theorem exists_adjoint (σ : D.La →ₗ[𝓞 E] D.La) : ∃ w : D.La →ₗ[�
   · exact congrArg (fun f => f b) (hw a)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_adjoint D g`. Establish `hwg : ∀ a, w (g a) = a` using `fun a => D.unimod.1 (LinearMap.ext fun b => by rw [hw, hg])`. Establish `hws : Function.Surjective w` using `fun a => ⟨g a, hwg a⟩`. Use `haveI := D.fin`. Establish `hwi : Function.Injective w` using `OrzechProperty.injective_of_surjective_endomorphism w hws`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b hab => by rw [← hwg a, ← hwg b, hab], fun a => ⟨w a, hwi (by rw [hwg])⟩⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem bijective_of_isometry (g : D.La →ₗ[𝓞 E] D.La) (hg : ∀ a b, D.EF (g a) (g b) = D.EF a b) :
     Function.Bijective g := by

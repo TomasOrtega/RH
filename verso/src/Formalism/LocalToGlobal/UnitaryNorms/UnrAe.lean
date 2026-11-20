@@ -17,7 +17,7 @@ def SMOne (L : Type) [Field L] [NumberField L] : Prop :=
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `hc : Continuous (χ.1 : Ideles L →* ℂˣ)` using `χ.2.1`. Conclude with `(h χ.1 hc).mono fun v hv x hx => hv x hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem HChar.unr_ae (h : UnrAE L) (χ : HChar L) : ∀ᶠ v in Filter.cofinite, χ.UnrAt v := by
   have hc : Continuous (χ.1 : Ideles L →* ℂˣ) := χ.2.1

@@ -2,21 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Introduce `K _ _`. Use `⟨NumberField.Units.torsionOrder K, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl hno haveI : Fact (Nat.Prime l) := ⟨hl⟩`. Rewrite using `[Nat.coprime_comm, hl.coprime_iff_not_dvd]`. Introduce `hdvd`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg⟩` from `exists_prime_orderOf_dvd_card' (G := NumberField.Units.torsion K) l hdvd`. Establish `h1 : IsPrimitiveRoot (g : (𝓞 K)ˣ) l`. Rewrite using `[← hg, ← Subgroup.orderOf_coe]`. Conclude with `IsPrimitiveRoot.orderOf _`. Establish `h2 : IsPrimitiveRoot (((g : (𝓞 K)ˣ) : 𝓞 K)) l` using `IsPrimitiveRoot.coe_units_iff.mpr h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h2.map_of_injective (f := algebraMap (𝓞 K) K) (FaithfulSMul.algebraMap_injective _ _)`. Conclude with `hno ⟨_, h3⟩`. Introduce `y hy hnorm`. Establish `hy' : ∀ v : HeightOneSpectrum (𝓞 K), Valued.v (((Neutral.B1.diagUnits K y : Neutral.B1.Ideles K) : AdeleRing (𝓞 K) K).2 v) = 1` using `hy`. Take `⟨r, hr⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one K (y : K) (fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.UpIdeleMod.valued_algebraMap (R := 𝓞 K) v]`. Conclude with `le_of_eq (hy' v))`. Establish `hI : IsIntegral ℤ (y : K)`. Use `NumberField.RingOfIntegers.isIntegral_coe r` as an intermediate fact. Rewrite `this` using `[hr]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨m, hm, hym⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one K ℂ hI hnorm`. Establish `hrm : r ^ m = 1`. Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[map_pow, hr, hym, map_one]`. Set `u : (𝓞 K)ˣ` to `Units.ofPowEqOne r m hrm hm.ne'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hu : u ∈ NumberField.Units.torsion K`. Rewrite using `[NumberField.Units.torsion, CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]`. Conclude with `⟨m, hm, Units.ext (by simp [u, hrm])⟩`. Rewrite `hu` using `[← NumberField.Units.rootsOfUnity_eq_torsion, mem_rootsOfUnity]`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.val_pow_eq_pow_val, Units.val_one, ← hr, ← map_pow]`. Establish `hu'` using `congrArg (fun z : (𝓞 K)ˣ => ((z : 𝓞 K))) hu`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_one] at hu'`. Express the relevant statement in the definitionally equal form `(u : 𝓞 K) ^ NumberField.Units.torsionOrder K = 1 at hu'`. Establish `hur : (u : 𝓞 K) = r` using `Units.val_ofPowEqOne r m hrm hm.ne'`.
-
-Rewrite `hu'` using `[hur]`. Rewrite using `[hu', map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Tw.kron :
     UpperTheory.V.Af.Tw.Kron := by

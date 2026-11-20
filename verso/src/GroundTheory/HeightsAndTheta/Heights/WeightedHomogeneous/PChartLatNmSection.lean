@@ -13,11 +13,11 @@ namespace ChartLatNm
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `hf'` using `(geoMultiHomog_iff f d).mpr hf`. Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : ∏ p : Coord n, (X p.1 : MvPolynomial ι Ω) ^ m p = ∏ k, (X k : MvPolynomial ι Ω) ^ d k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, (X k : MvPolynomial ι Ω) ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf' m hm k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Geo.mConeMap, aeval_monomial]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun i => by simp), Finsupp.prod_fintype _ _ (fun i => by simp)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hX, map_mul, map_prod, map_pow, MvPolynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mConeMap_of_homog (y : Coord n → Ω) {f : MvPolynomial (Coord n) ℤ} {d : ι → ℕ}
     (hf : IsWeightedHomogeneous (coordDeg n) f d) :
@@ -39,7 +39,7 @@ theorem mConeMap_of_homog (y : Coord n → Ω) {f : MvPolynomial (Coord n) ℤ} 
   ring
 
 /- English proof (translation)
-Rewrite using `[Geo.mCoordIdeal, RingHom.mem_ker, mConeMap_of_homog y hf, mul_eq_zero, C_eq_zero]`. Establish `: (∏ k, (X k : MvPolynomial ι Ω) ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (X_ne_zero k)`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mem_mCoordIdeal_iff (y : Coord n → Ω) {f : MvPolynomial (Coord n) ℤ} {d : ι → ℕ}
     (hf : IsWeightedHomogeneous (coordDeg n) f d) :
@@ -50,7 +50,7 @@ theorem mem_mCoordIdeal_iff (y : Coord n → Ω) {f : MvPolynomial (Coord n) ℤ
   simp [this]
 
 /- English proof (translation)
-Establish `h` using `IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ^ e k) (fun k => e k • coordDeg n ⟨k, c k⟩) (fun k _ => (isWeightedHomogeneous_X ℤ (coordDeg n) _).pow (e k))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[coordDeg, Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isWeightedHomogeneous_chartMono (c : (k : ι) → Fin (n k + 1)) (e : ι → ℕ) :
     IsWeightedHomogeneous (coordDeg n) (∏ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ^ e k) e := by
@@ -64,7 +64,7 @@ theorem isWeightedHomogeneous_chartMono (c : (k : ι) → Fin (n k + 1)) (e : ι
 variable (P : ArithVariety n) (y : Coord n → Ω)
 
 /- English proof (translation)
-Rewrite using `[P.mkF_eq_zero_iff, hP, mem_mCoordIdeal_iff y hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mkF_eq_zero_iff' (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y)
     {f : MvPolynomial (Coord n) ℤ} {d : ι → ℕ} (hf : IsWeightedHomogeneous (coordDeg n) f d) :
@@ -72,7 +72,7 @@ theorem mkF_eq_zero_iff' (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y)
   rw [P.mkF_eq_zero_iff, hP, mem_mCoordIdeal_iff y hf]
 
 /- English proof (translation)
-Use `forall_congr' fun k => ?_` and prove the remaining obligations. Rewrite using `[hP, mem_mCoordIdeal_iff y (isWeightedHomogeneous_X ℤ (coordDeg n) ⟨k, c k⟩), aeval_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLive_iff' (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y) (c : (k : ι) → Fin (n k + 1)) :
     P.IsLive c ↔ ∀ k, y ⟨k, c k⟩ ≠ 0 := by
@@ -80,7 +80,7 @@ theorem isLive_iff' (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y) (c : (
   rw [hP, mem_mCoordIdeal_iff y (isWeightedHomogeneous_X ℤ (coordDeg n) ⟨k, c k⟩), aeval_X]
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, h0, he⟩` from `hb s`. Conclude with `⟨g, h, d, (geoMultiHomog_iff g d).mp hg, (geoMultiHomog_iff h d).mp hh, h0, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rep (hb : Geo.Birational (ι := blockIdx n) y) (s : Ω) :
     ∃ (g h : MvPolynomial (Coord n) ℤ) (d : ι → ℕ), IsWeightedHomogeneous (coordDeg n) g d ∧
@@ -89,9 +89,9 @@ theorem exists_rep (hb : Geo.Birational (ι := blockIdx n) y) (s : Ω) :
   exact ⟨g, h, d, (geoMultiHomog_iff g d).mp hg, (geoMultiHomog_iff h d).mp hh, h0, he⟩
 
 /- English proof (translation)
-Rewrite using `[div_eq_div_iff (fun h => hq₀0 ((mkF_eq_zero_iff' P y hP hq₀).mp h)) (fun h => h0 ((mkF_eq_zero_iff' P y hP hq).mp h))]`. Rewrite using `[← sub_eq_zero, ← map_mul, ← map_mul, ← map_sub]`. Establish `h1` using `hg₀.mul hq`. Establish `h2` using `hg.mul hq₀`. Rewrite `h2` using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsub : IsWeightedHomogeneous (coordDeg n) (g₀ * q - g * q₀) (d₀ + d)` using `(weightedHomogeneousSubmodule ℤ (coordDeg n) (d₀ + d)).sub_mem h1 h2`. Rewrite using `[mkF_eq_zero_iff' P y hP hsub, map_sub, map_mul, map_mul, he₀, he]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frac_eq (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y) {s : Ω}
     {g q g₀ q₀ : MvPolynomial (Coord n) ℤ} {d d₀ : ι → ℕ}
@@ -115,7 +115,7 @@ def thetaFun (hb : Geo.Birational (ι := blockIdx n) y) (s : Ω) : P.FunField :=
   P.mkF (exists_rep y hb s).choose / P.mkF (exists_rep y hb s).choose_spec.choose
 
 /- English proof (translation)
-Take `⟨d₀, hg₀, hq₀, hq₀0, he₀⟩` from `(exists_rep y hb s).choose_spec.choose_spec`. Conclude with `frac_eq P y hP hg hq h0 he hg₀ hq₀ hq₀0 he₀`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thetaFun_eq (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y)
     (hb : Geo.Birational (ι := blockIdx n) y) {s : Ω} {g q : MvPolynomial (Coord n) ℤ} {d : ι → ℕ}
@@ -158,7 +158,7 @@ def theta (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y)
     ring
 
 /- English proof (translation)
-Introduce `h` and use `hc k (by rw [← aeval_X (R := ℤ) y ⟨k, c k⟩] exact (mkF_eq_zero_iff' P y hP (isWeightedHomogeneous_X ℤ (coordDeg n) _)).mp h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mkF_X_ne_zero (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y) (c : (k : ι) → Fin (n k + 1))
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (k : ι) : P.mkF (X ⟨k, c k⟩) ≠ 0 := fun h =>
@@ -167,7 +167,7 @@ theorem mkF_X_ne_zero (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y) (c :
     exact (mkF_eq_zero_iff' P y hP (isWeightedHomogeneous_X ℤ (coordDeg n) _)).mp h)
 
 /- English proof (translation)
-Simplify using `only [ArithVariety.chartPow, Pi.add_apply, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => zpow_add₀ (mkF_X_ne_zero P y hP c hc k) _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartPow_add (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y) (c : (k : ι) → Fin (n k + 1))
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (e e' : ι → ℤ) :
@@ -176,20 +176,20 @@ theorem chartPow_add (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y) (c : 
   exact Finset.prod_congr rfl fun k _ => zpow_add₀ (mkF_X_ne_zero P y hP c hc k) _ _
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (mkF_X_ne_zero P y hP c hc k)`.
+A detailed English derivation is pending.
 -/
 theorem chartPow_ne_zero (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y) (c : (k : ι) → Fin (n k + 1))
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (e : ι → ℤ) : P.chartPow c e ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (mkF_X_ne_zero P y hP c hc k)
 
 /- English proof (translation)
-Take `⟨g, q, d, hg, hq, hq0, he⟩` from `exists_rep y hb (s * ∏ k, y ⟨k, c₀ k⟩ ^ (-b k))`. Use `⟨g * ∏ k, (X ⟨k, c₀ k⟩ : MvPolynomial (Coord n) ℤ) ^ (b k).toNat, q * ∏ k, (X ⟨k, c₀ k⟩ : MvPolynomial (Coord n) ℤ) ^ (-b k).toNat, d + fun k => (b k).toNat, d + fun k => (-b k).toNat, hg.mul (isWeightedHomogeneous_chartMono c₀ _), hq.mul (isWeightedHomogeneous_chartMono c₀ _), f …` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [map_mul, map_prod, map_pow, aeval_X]`. Conclude with `mul_ne_zero hq0 (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc₀ k))`. Simplify using `only [map_mul, map_prod, map_pow, aeval_X]`. Rewrite using `[he]`. Establish `h1 : (∏ k, y ⟨k, c₀ k⟩ ^ (-b k)) * ∏ k, y ⟨k, c₀ k⟩ ^ (b k).toNat = ∏ k, y ⟨k, c₀ k⟩ ^ (-b k).toNat`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hc₀ k)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(s * aeval y q) * h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_reads_rep (hb : Geo.Birational (ι := blockIdx n) y) (c₀ : (k : ι) → Fin (n k + 1))
     (hc₀ : ∀ k, y ⟨k, c₀ k⟩ ≠ 0) (b : ι → ℤ) (s : Ω) :
@@ -220,7 +220,7 @@ theorem exists_reads_rep (hb : Geo.Birational (ι := blockIdx n) y) (c₀ : (k :
 variable (hP : P.ideal = Geo.mCoordIdeal (ι := blockIdx n) y) (hb : Geo.Birational (ι := blockIdx n) y)
 
 /- English proof (translation)
-The claim follows from `thetaFun_eq P y hP hb hg hq h0 he`.
+A detailed English derivation is pending.
 -/
 theorem theta_eq {s : Ω} {g q : MvPolynomial (Coord n) ℤ} {d : ι → ℕ}
     (hg : IsWeightedHomogeneous (coordDeg n) g d) (hq : IsWeightedHomogeneous (coordDeg n) q d)
@@ -229,11 +229,11 @@ theorem theta_eq {s : Ω} {g q : MvPolynomial (Coord n) ℤ} {d : ι → ℕ}
   thetaFun_eq P y hP hb hg hq h0 he
 
 /- English proof (translation)
-Establish `hM` using `isWeightedHomogeneous_chartMono c δ`. Establish `hMy : aeval y (∏ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ^ δ k) = ∏ k, y ⟨k, c k⟩ ^ δ k`. Simplify using `[map_prod]`. Establish `hMy0 : aeval y (∏ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ^ δ k) ≠ 0`. Rewrite using `[hMy]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Establish `hMF : P.mkF (∏ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ^ δ k) = P.chartPow c (fun k => (δ k : ℤ))`. Simplify using `[ArithVariety.chartPow, map_prod, zpow_natCast]`. Establish `hne : P.mkF (∏ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ^ δ k) ≠ 0` using `fun h => hMy0 ((mkF_eq_zero_iff' P y hP hM).mp h)`. Rewrite using `[theta_eq P y hP hb hg hM hMy0, ← hMF, div_mul_cancel₀ _ hne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMy, mul_assoc, ← Finset.prod_mul_distrib, Finset.prod_eq_one (fun k _ => by`. Rewrite using `[zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ (hc k))]), mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkF_eq_theta (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     {g : MvPolynomial (Coord n) ℤ} {δ : ι → ℕ} (hg : IsWeightedHomogeneous (coordDeg n) g δ) :
@@ -254,7 +254,7 @@ theorem mkF_eq_theta (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, y ⟨k, c k�
     rw [zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ (hc k))]), mul_one]
 
 /- English proof (translation)
-Rewrite using `[ArithVariety.chartCoord]`. Conclude with `theta_eq P y hP hb (isWeightedHomogeneous_X ℤ (coordDeg n) p) (isWeightedHomogeneous_X ℤ (coordDeg n) ⟨p.1, c p.1⟩ : IsWeightedHomogeneous _ _ (coordDeg n p)) (by rw [aeval_X]; exact hc p.1) (by rw [aeval_X, aeval_X, div_mul_cancel₀ _ (hc p.1)])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_chartCoord (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (p : Coord n) :
     theta P y hP hb (y p / y ⟨p.1, c p.1⟩) = P.chartCoord c p := by
@@ -264,7 +264,7 @@ theorem theta_chartCoord (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, y ⟨k, c
     (by rw [aeval_X]; exact hc p.1) (by rw [aeval_X, aeval_X, div_mul_cancel₀ _ (hc p.1)])
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib, map_prod, ArithVariety.chartPow, ArithVariety.chartPow, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, ← div_eq_mul_inv, ← div_zpow, map_zpow₀, ← div_zpow]`. Use `congr 1`. Conclude with `theta_eq P y hP hb (isWeightedHomogeneous_X ℤ (coordDeg n) ⟨k, c k⟩) (isWeightedHomogeneous_X ℤ (coordDeg n) ⟨k, c' k⟩ : IsWeightedHomogeneous _ _ (coordDeg n ⟨k, c k⟩)) (by rw [aeval_X]; exact hc' k) (by rw [aeval_X, aeval_X, div_mul_cancel₀ _ (hc' k)])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem theta_chartRatio (c c' : (k : ι) → Fin (n k + 1)) (hc' : ∀ k, y ⟨k, c' k⟩ ≠ 0) (e : ι → ℤ) :
     theta P y hP hb ((∏ k, y ⟨k, c k⟩ ^ e k) * ∏ k, y ⟨k, c' k⟩ ^ (-e k)) =
@@ -280,11 +280,11 @@ theorem theta_chartRatio (c c' : (k : ι) → Fin (n k + 1)) (hc' : ∀ k, y ⟨
     (by rw [aeval_X]; exact hc' k) (by rw [aeval_X, aeval_X, div_mul_cancel₀ _ (hc' k)])
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem u hu`. Take `⟨p, rfl⟩` from `hu`. Rewrite using `[theta_chartCoord P y hP hb c hc p]`. Conclude with `Subring.subset_closure ⟨p, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap r`. Rewrite using `[eq_intCast, map_intCast]`. Conclude with `intCast_mem _ r`. Consider the case `add u v _ _ hu hv`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hu hv`. Consider the case `mul u v _ _ hu hv`. Rewrite using `[map_mul]`. Conclude with `mul_mem hu hv`.
+A detailed English derivation is pending.
 -/
 theorem theta_mem_chartRing (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {x : Ω}
     (hx : x ∈ Geo.chartRingZ (ι := blockIdx n) y c) : theta P y hP hb x ∈ P.chartRing c := by
@@ -304,9 +304,9 @@ theorem theta_mem_chartRing (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, y ⟨k
     exact mul_mem hu hv
 
 /- English proof (translation)
-Establish `hle : P.chartRing c ≤ (Geo.chartRingZ (ι` using `blockIdx n) y c).toSubring.map (theta P y hP hb) := by`. Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `Subring.mem_map.mpr ⟨_, Algebra.subset_adjoin ⟨p, rfl⟩, theta_chartCoord P y hP hb c hc p⟩`. Take `⟨x, hx, hxu⟩` from `Subring.mem_map.mp (hle hu)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, hxu⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_theta_eq (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {u : P.FunField}
     (hu : u ∈ P.chartRing c) : ∃ x ∈ Geo.chartRingZ (ι := blockIdx n) y c, theta P y hP hb x = u := by
@@ -323,13 +323,13 @@ def thetaChart (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, y ⟨k, c k⟩ ≠ 
     (P.chartRing c) fun x => theta_mem_chartRing P y hP hb c hc x.2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `hinj : Function.Injective (thetaChart P y hP hb c hc)` using `fun a a' h => Subtype.ext ((theta P y hP hb).injective (congrArg Subtype.val h))`. Establish `hsurj : Function.Surjective (thetaChart P y hP hb c hc)`. Introduce and unpack `⟨u, hu⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨x, hx, rfl⟩` from `exists_theta_eq P y hP hb c hc hu`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Set `e` to `RingEquiv.ofBijective (thetaChart P y hP hb c hc) ⟨hinj, hsurj⟩`. Take `⟨p, hp, hev⟩` from `hv`. Use `⟨p.map (e.symm : P.chartRing c →+* Geo.chartRingZ (ι := blockIdx n) y c), hp.map _, (theta P y hP hb).injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomp : ((theta P y hP hb).comp (algebraMap (Geo.chartRingZ (ι` using `blockIdx n) y c) Ω)).comp (e.symm : P.chartRing c →+* Geo.chartRingZ (ι := blockIdx n) y c) = algebraMap (P.chartRing c) P.FunField := by`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `h1 : e (e.symm x) = x` using `e.apply_symm_apply x`. Conclude with `congrArg Subtype.val h1`. Rewrite using `[Polynomial.hom_eval₂, map_zero, Polynomial.eval₂_map, hcomp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hev`. Introduce `hv`. Conclude with `IsIntegral.map_of_comp_eq (thetaChart P y hP hb c hc) (theta P y hP hb) (RingHom.ext fun _ => rfl) hv`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_theta_iff (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (v : Ω) :
     IsIntegral (P.chartRing c) (theta P y hP hb v) ↔
@@ -362,13 +362,13 @@ def readElt (c₀ : (k : ι) → Fin (n k + 1)) (b : ι → ℤ) (s : Ω) : P.Fu
   theta P y hP hb (s * ∏ k, y ⟨k, c₀ k⟩ ^ (-b k)) * P.chartPow c₀ b
 
 /- English proof (translation)
-Introduce `g q δg δq hg hq hd`. Establish `hG : (fun k => (δg k : ℤ)) = b + fun k => (δq k : ℤ)`. Use function extensionality and compare the values at `k`. Rewrite using `[Pi.add_apply, hd k, add_comm]`. Establish `hY : (∏ k, y ⟨k, c₀ k⟩ ^ (-(δg k : ℤ))) = (∏ k, y ⟨k, c₀ k⟩ ^ (-b k)) * ∏ k, y ⟨k, c₀ k⟩ ^ (-(δq k : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (hc₀ k)]`. Use `congr 1`. Rewrite using `[hd k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hY0 : (∏ k, y ⟨k, c₀ k⟩ ^ (-b k)) * ∏ k, y ⟨k, c₀ k⟩ ^ (-(δq k : ℤ)) ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc₀ k)) (Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc₀ k))`. Rewrite using `[mkF_eq_theta P y hP hb c₀ hc₀ hg, mkF_eq_theta P y hP hb c₀ hc₀ hq, hG, chartPow_add P y hP c₀ hc₀, readElt, show ∀ u v w z : P.FunField, u * w * (v * z) = (u * v) * (w * z) from fun u v w z => by ring, ← map_mul, mul_left_inj' (mul_ne_zero (chartPow_ne_zero P y hP c₀ hc₀ _) (ch …`. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Introduce `e`. Apply `mul_right_cancel₀ hY0` to reduce the goal to its premises. Take the linear combination `e`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem reads_readElt (c₀ : (k : ι) → Fin (n k + 1)) (hc₀ : ∀ k, y ⟨k, c₀ k⟩ ≠ 0) (b : ι → ℤ) (s : Ω) :
     P.Reads y b s (readElt P y hP hb c₀ b s) := by
@@ -401,9 +401,9 @@ theorem reads_readElt (c₀ : (k : ι) → Fin (n k + 1)) (hc₀ : ∀ k, y ⟨k
     linear_combination e
 
 /- English proof (translation)
-Rewrite using `[readElt, mul_div_assoc, ← theta_chartRatio P y hP hb c₀ c hc b, ← map_mul]`. Use `congr 1`. Establish `h1 : (∏ k, y ⟨k, c₀ k⟩ ^ (-b k)) * ∏ k, y ⟨k, c₀ k⟩ ^ b k = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun k _ => by rw [zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ (hc₀ k))]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(s * ∏ k, y ⟨k, c k⟩ ^ (-b k)) * h1`.
+A detailed English derivation is pending.
 -/
 theorem readElt_div (c₀ c : (k : ι) → Fin (n k + 1)) (hc₀ : ∀ k, y ⟨k, c₀ k⟩ ≠ 0)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (b : ι → ℤ) (s : Ω) :
@@ -416,9 +416,9 @@ theorem readElt_div (c₀ c : (k : ι) → Fin (n k + 1)) (hc₀ : ∀ k, y ⟨k
   linear_combination (s * ∏ k, y ⟨k, c k⟩ ^ (-b k)) * h1
 
 /- English proof (translation)
-Take `⟨f, q, δf, δq, hf, hq, hd, hq0, he⟩` from `exists_reads_rep y hb c₀ hc₀ b s`. Establish `hmk` using `(reads_readElt P y hP hb c₀ hc₀ b s f q δf δq hf hq hd).mp he`. Establish `hQ : P.mkF q ≠ 0` using `fun h => hq0 ((mkF_eq_zero_iff' P y hP hq).mp h)`. Use `⟨f, q, δf, δq, hf, hq, fun k => by linarith [hd k], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hP, mem_mCoordIdeal_iff y hq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq0`. Rewrite using `[hmk, mul_div_cancel_right₀ _ hQ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOfDegree_readElt (c₀ : (k : ι) → Fin (n k + 1)) (hc₀ : ∀ k, y ⟨k, c₀ k⟩ ≠ 0) (b : ι → ℤ)
     (s : Ω) : P.IsOfDegree b (readElt P y hP hb c₀ b s) := by
@@ -435,17 +435,15 @@ end ChartLatNm
 open ChartLatNm in
 
 /- English proof (translation)
-Introduce `ι _ _ n Ω _ y P a τ s hP hb`. Take `⟨c₀, hc₀⟩` from `P.exists_chart`. Establish `hy₀ : ∀ k, y ⟨k, c₀ k⟩ ≠ 0` using `(isLive_iff' P y hP c₀).mp hc₀`. Establish `hab : ∀ k, -((τ : ℤ) * a k) = -((τ • a) k)` using `fun k => by simp`. Establish `hmem : s ∈ Geo.chartLatNm (ι` using `blockIdx n) y a τ ↔ ∀ c : (k : ι) → Fin (n k + 1), (∀ k, y ⟨k, c k⟩ ≠ 0) → IsIntegral (Geo.chartRingZ (ι := blockIdx n) y c) (s * ∏ k, y ⟨k, c k⟩ ^ (-((τ • a) k))) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(∀ c : (k : ι) → Fin (n k + 1), (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k)) ∈ integralClosure (Geo.chartRingZ (ι := blockIdx n) y c) Ω) ↔ _`. Simplify using `only [hab, mem_integralClosure_iff]`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨readElt P y hP hb c₀ (τ • a) s, ⟨isOfDegree_readElt P y hP hb c₀ hy₀ _ s, fun c hc => ?_⟩, reads_readElt P y hP hb c₀ hy₀ _ s⟩` and prove the remaining obligations. Establish `hyc` using `(isLive_iff' P y hP c).mp hc`. Rewrite using `[readElt_div P y hP hb c₀ c hy₀ hyc, mem_integralClosure_iff, isIntegral_theta_iff P y hP hb c hyc]`. Conclude with `hs c hyc`. Introduce and unpack `⟨t, ⟨hdeg, hint⟩, hR⟩ c hyc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hc` using `(isLive_iff' P y hP c).mpr hyc`. Take `⟨f, q, δf, δq, hf, hq, hd, hqP, rfl⟩` from `hdeg`. Establish `hQ : P.mkF q ≠ 0` using `fun h => hqP ((P.mkF_eq_zero_iff q).mp h)`. Establish `hd' : ∀ k, (δf k : ℤ) = δq k + (τ • a) k` using `fun k => by linarith [hd k]`. Establish `he` using `(hR f q δf δq hf hq hd').mpr (div_mul_cancel₀ _ hQ).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmk` using `(reads_readElt P y hP hb c₀ hy₀ (τ • a) s f q δf δq hf hq hd').mp he`. Establish `ht : P.mkF f / P.mkF q = readElt P y hP hb c₀ (τ • a) s`. Rewrite using `[hmk, mul_div_cancel_right₀ _ hQ]`. Establish `hi` using `hint c hc`. Rewrite `hi` using `[ht, readElt_div P y hP hb c₀ c hy₀ hyc, mem_integralClosure_iff, isIntegral_theta_iff P y hP hb c hyc]`.
-
-Conclude with `hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartLatNmSection.proof : ChartLatNmSection.Statement := by
   intro ι _ _ n Ω _ y P a τ s hP hb

@@ -7,9 +7,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.Segments
 
 /- English proof (translation)
-Take `⟨hN, -⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 hfl`. Establish `: IsCoatomic (Submodule (MonoidAlgebra ℂ G) P.asModule)` using `inferInstance`. Establish `hc : IsCoatomic (Subrepresentation P)` using `(Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := P)).isCoatomic_iff.2 this`. Take `h | ⟨C, hC, hle⟩` from `hc.eq_top_or_exists_le_coatom S`. Conclude with `absurd h hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨C, hC, hle⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_coatom_ge_of_hasFiniteLength {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {P : Representation ℂ G V} (hfl : HasFiniteLength P) (S : Subrepresentation P) (hS : S ≠ ⊤) :
@@ -23,21 +23,19 @@ theorem exists_coatom_ge_of_hasFiniteLength {G V : Type} [Group G] [AddCommGroup
   · exact ⟨C, hC, hle⟩
 
 /- English proof (translation)
-Introduce `G V W X _ _ _ _ _ _ _ σ P Q hc hfl f hf hQ`. Take `⟨-, f0, hf0, hco⟩` from `hc`. Establish `hne : Representation.IntertwiningMap.ker P Q f ≠ ⊤`. Introduce `h`. Take `⟨x, hx⟩` from `exists_ne (0 : X)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `hf x`. Establish `hv : v ∈ (⊤ : Subrepresentation P)` using `trivial`. Rewrite `hv` using `[← h]`. Conclude with `hx hv`. Take `⟨C, hC, hle⟩` from `exists_coatom_ge_of_hasFiniteLength hfl _ hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : ∀ v : V, f v = 0 → f0 v = 0`. Introduce `v hv`. Establish `h1 : v ∈ Representation.IntertwiningMap.ker P Q f` using `hv`. Establish `h2 : v ∈ C` using `hle h1`. Rewrite `h2` using `[hco C hC]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h2`. Set `e` to `LinearMap.quotKerEquivOfSurjective f.toLinearMap hf`. Set `gl : X →ₗ[ℂ] W` to `(LinearMap.ker f.toLinearMap).liftQ f0.toLinearMap (fun v hv => hk v hv) ∘ₗ e.symm.toLinearMap`. Establish `hgl : ∀ v : V, gl (f v) = f0 v`. Introduce `v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : e.symm (f v) = Submodule.Quotient.mk v`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [gl, LinearMap.comp_apply, LinearEquiv.coe_coe, h1, Submodule.liftQ_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨gl, fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hf x`. Establish `h2 : Q h (f v) = f (P h v)`. Use `congrArg (fun m => m v) (f.isIntertwining' h)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Establish `h3 : f0 (P h v) = σ h (f0 v)` using `congrArg (fun m => m v) (f0.isIntertwining' h)`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h2, hgl, hgl, h3]`. Introduce `w`.
-
-Take `⟨v, rfl⟩` from `hf0 w`. Conclude with `⟨f v, hgl v⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cosocle_quotient_of_quotient : ∀ {G V W X : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup X] [Module ℂ X] (σ : Representation ℂ G W) (P : Representation ℂ G V)

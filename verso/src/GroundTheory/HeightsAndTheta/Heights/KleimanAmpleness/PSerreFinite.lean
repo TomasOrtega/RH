@@ -12,15 +12,15 @@ noncomputable section
 universe u v
 
 /- English proof (translation)
-Introduce `S _ _ N`. Establish `key : ∀ (k : ℕ) (M : Type (max u v)) [AddCommGroup M] [Module (Poly S N) M] [Module S M] [IsScalarTower S (Poly S N) M] (𝓜 : GradedPMod S N M), Module.Finite (Poly S N) M → ∀ i, N + 1 ≤ i + k → ∀ c : ℤ, Module.Finite S (cohom 𝓜 i c)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `M _ _ _ _ 𝓜 _ i hi c`. Use `hTop S N M 𝓜 i c (by omega)` as an intermediate fact. Conclude with `⟨by rw [Subsingleton.elim (⊤ : Submodule S (cohom 𝓜 i c)) ⊥]; exact Submodule.fg_bot⟩`. Consider the case `succ k ih`. Introduce `M _ _ _ _ 𝓜 hM i hi c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨F, _, _, _, _, K, _, _, _, _, 𝓕, 𝓚, r, b, d, f, g, hb, hK, hf, hg, hfg⟩` from `hPres S N M 𝓜 hM`. Establish `hF : Module.Finite S (cohom 𝓕 i c)` using `(hFree S N F 𝓕 r b d hb).1 i c`. Establish `hKf : Module.Finite S (cohom 𝓚 (i + 1) c)` using `ih K 𝓚 hK (i + 1) (by omega) c`. Take `⟨-, δ, hδ, -⟩` from `(hExact S N K F M 𝓚 𝓕 𝓜 f g hf hg hfg c).2 i`. Use `⟨Submodule.fg_of_fg_map_of_fg_inf_ker δ (IsNoetherian.noetherian _) ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[top_inf_eq, LinearMap.exact_iff.mp hδ, LinearMap.range_eq_map]`. Conclude with `hF.fg_top.map _`. Introduce `M _ _ _ _ 𝓜 hM i c`. Take `⟨M', _, _, _, _, 𝓜', f, g, hgf, hfg⟩` from `hLift S N M 𝓜`. Establish `hM' : Module.Finite (Poly S N) M'` using `Module.Finite.of_surjective f.toLin fun y => ⟨g.toLin y, hfg y⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `key (N + 1) M' 𝓜' hM' i (by omega) c` as an intermediate fact. Conclude with `Module.Finite.of_injective (cohomMap f i c) (hRet S N M M' 𝓜 𝓜' f g hgf i c)`.
+A detailed English derivation is pending.
 -/
 theorem SerreFinite.proof (hExact : CechExact.Statement.{u, max u v})
     (hTop : CechTop.Statement.{u, max u v}) (hFree : SerreFree.Statement.{u, max u v})

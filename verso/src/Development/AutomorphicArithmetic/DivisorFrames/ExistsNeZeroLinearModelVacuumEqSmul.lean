@@ -21,11 +21,11 @@ open GlobalTheory.LinCoords GlobalTheory.WeilM
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hs : ∀ e, σ (σ e) = e` using `fun e => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`. Establish `ht : (t.comp σ).comp σ = t` using `AlgHom.ext fun e => by simp [hs]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `hTens`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Establish `h1 : piW t (x a b) = 0` using `congrFun (congrFun hx0 a) b`. Establish `h2 : piW t (y k l) = 0` using `congrFun (congrFun hy0 k) l`. Establish `hat : At (evFin F v) (x a b * JA a k * JB b l * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (y k l))` using `fun u hu => by`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← smul_mul_assoc, ← smul_mul_assoc, ← smul_mul_assoc, (at_mat_iff x).1 hx a b u hu, zero_mul, zero_mul, zero_mul]`. Rewrite using `[eq_lift2 h t hat, map_mul, map_mul, map_mul, h1, map_mul (piW (t.comp σ)), piW_cA' (t.comp σ), ht, h2, zero_mul, zero_mul, zero_mul, mul_zero, lift2_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hTens_half (h : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 F)} (t : E →ₐ[F] Fv F v) {n d : ℕ}
     (JA : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) (JB : Matrix (Fin d) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E))
@@ -49,17 +49,15 @@ private theorem hTens_half (h : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 F)}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW hM v t₁ t₀ ht b c ι hι`. Take `rfl : t₀ = t₁.comp σ` from `AlgHom.ext ht`. Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1`. Establish `hs : ∀ {t : E →ₐ[F] Fv F v} (ξ) {x y : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)}, At (evFin F v) x → x.map (piW t) = 0 → y.map (piW t) = 0 → GlobalTheory.WeilM.symp (R` using `AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) ξ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F W.J) x y = 0 := fun ξ x y hx hx0 hy0 => by`. Unfold `GlobalTheory.WeilM.symp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hTens_half hB.cm _ _ _ hx hx0 hy0, mul_zero, map_zero]`. Take `⟨hSB, h0, θ, -, hθ⟩` from `hM.vac v`. Take `⟨hz, hv⟩` from `GlobalTheory.BigDat.lagr_vac (GlobalTheory.BigNZ.isLagrModel_of_isLin hι) hSB h0 (latAtV X W v : Set _) (fun γ hγ hγ' => by`. Establish `h1` using `hθ γ hγ`. Apply the tactic sequence `rcases hγ' with h | h <;>`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hs _ h.1 h.2 h.2, mul_zero, AddChar.map_zero_eq_one, one_smul] at h1)` and apply the resulting hypothesis. Use the proof step `(fun z => by`. Use `⟨(b⁻¹.1 * z * c⁻¹.1).map fun p => GlobalTheory.LinCoords.lift2 hB.cm t₁ p 0, ⟨(GlobalTheory.LinCoords.at_mat_iff _).2 fun i j => GlobalTheory.LinCoords.at_lift2 _ _ _ _, Matrix.ext fun i j => GlobalTheory.LinCoords.piW_comp_lift2 _ _ _ _⟩, ?_⟩` and prove the remaining obligations. Establish `e : ((b⁻¹.1 * z * c⁻¹.1).map fun p => GlobalTheory.LinCoords.lift2 hB.cm t₁ p 0).map (piW t₁) = b⁻¹.1 * z * c⁻¹.1` using `Matrix.ext fun i j => GlobalTheory.LinCoords.piW_lift2 _ _ _ _`. Use `show b.1 * _ * c.1 = z`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one])`. Use the proof step `(fun x hx h => by`. Use `(GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B n d X W r s r' s' hB hX hW v x hx.1).2 fun γ hγ => ?_` and prove the remaining obligations. Take `⟨γ₁, h₁, γ₂, h₂, rfl, e₁, e₂⟩` from `GlobalTheory.LatSplit.latAtV_decomp hB.cm X W v t₁ γ hγ`. Establish `e : GlobalTheory.WeilM.symp (R` using `AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F W.J) x (γ₁ + γ₂) = GlobalTheory.WeilM.symp (R := AF F) (GlobalTheory.I …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.WeilM.symp, GlobalTheory.WeilM.hTens, Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Rewrite using `[e, hs _ hx.1 hx.2 e₁, zero_add]`. Conclude with `h γ₂ h₂ ⟨hat γ₂ h₂, e₂⟩)`. Use `⟨ι (M.vac v) 0, hz, fun x hx hx0 => ?_⟩` and prove the remaining obligations. Rewrite using `[hv x ⟨hx, hx0⟩, Set.indicator_apply]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_ne_zero_linearModel_vacuum_eq_smul :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)

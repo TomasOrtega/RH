@@ -34,9 +34,9 @@ open scoped Matrix
 namespace GlobalTheory.BottomRealAct
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompactHowe.substF_X]`. Simplify using `only [GlobalTheory.MinorFrame.colSub, MvPolynomial.aeval_X]`. Rewrite using `[Finset.sum_eq_single v.2.1]`. Simplify using `only [Matrix.one_apply_eq, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x _ hx`. Simplify using `only [Matrix.one_apply_ne hx, zero_mul, MvPolynomial.C_0, Finset.sum_const_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem substF_one_eq_colSub {ι : Type} {N n : ℕ} (M : ι → Matrix (Fin n) (Fin n) ℂ) :
     GlobalTheory.CompactHowe.substF (fun _ => (1 : Matrix (Fin N) (Fin N) ℂ)) M = GlobalTheory.MinorFrame.colSub M := by
@@ -50,7 +50,7 @@ theorem substF_one_eq_colSub {ι : Type} {N n : ℕ} (M : ι → Matrix (Fin n) 
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem rightRegularAction_list_dLR_eq_append {G : Type*} [CommGroup G] (a x y e c : G) : a * x * e / (c * e) = a * y * e / (c * e) * (x * y⁻¹) := by
   apply Additive.ofMul.injective
@@ -58,29 +58,27 @@ theorem rightRegularAction_list_dLR_eq_append {G : Type*} [CommGroup G] (a x y e
   abel
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX`. Establish `hθ : IsInfFam W.θ` using `hX.is.isVac.2.inf`. Establish `hV : HSpace.gram A' = 1` using `hX.std'.1`. Establish `hVW : HSpace.gram WW = 1` using `hX.stdW.1`. Establish `hW` using `fun t => GlobalTheory.RowTest.BottomClassSum.weil' hX t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxi : ∀ t τ, HasInfExp D (L.xi t) τ 0` using `fun t τ => by`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Conclude with `GlobalTheory.Chain.StepVac.hasInfExp_of_order hθ (hL.xi t) hn ho τ`. Use `choose b hb using fun τ => GlobalTheory.SplitCharExp.exists_hasInfExp D W.θ _ WW.rank τ hθ (hW μ₀).hecT (hW μ₀).resT`. Establish `hrel : ∀ t, (L.mu t (↑j + 1) * L.eta ^ (rankV D ↑i ↑j % 2)) / (G.ch.chi (D.R.m - ↑i) * L.eta ^ (rankV D ↑i ↑j % 2)) = (L.mu μ₀ (↑j + 1) * L.eta ^ (rankV D ↑i ↑j % 2)) / (G.ch.chi (D.R.m - ↑i) * L.eta ^ (rankV D ↑i ↑j % 2)) * (L.xi t * (L.xi μ₀)⁻¹)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `t`. Simplify using `only [LevCh.mu, Lift.tup]`. Conclude with `rightRegularAction_list_dLR_eq_append _ _ _ _ _`. Establish `hbt : ∀ t τ, HasInfExp D ((L.mu t (↑j + 1) * L.eta ^ (rankV D ↑i ↑j % 2)) / (G.ch.chi (D.R.m - ↑i) * L.eta ^ (rankV D ↑i ↑j % 2))) τ (b τ)`. Introduce `t τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hrel t]`. Use `GlobalTheory.Mem.HeckeExp.hasInfExp_mul (hb τ) (GlobalTheory.Mem.HeckeExp.hasInfExp_mul (hxi t τ) (GlobalTheory.Mem.HeckeExp.hasInfExp_inv (hxi μ₀ τ)))` as an intermediate fact. Simplify using `using this`. Use `choose k hk using fun τ => GlobalTheory.T.exists_int_eq_exponent_add_half_index D _ WW.rank τ (b τ) (hW μ₀).hecT (hW μ₀).resT (hb τ)`. Use `⟨k, GlobalTheory.RealColAct.realCol W.θ hθ A' hV, ?_, GlobalTheory.T.realUnitaryFockColumnAction_surjective hθ A' hV, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ a c`. Simplify using `only [GlobalTheory.RealColAct.realCol_apply, Matrix.transpose_apply]`. Conclude with `(((continuous_apply a).comp ((continuous_apply c).comp ((GlobalTheory.RealWeil.continuous_compAt hθ τ _ _).comp ((GlobalTheory.RealWeil.continuous_mt A').2.comp continuous_subtype_val))))).measurable`. Introduce `t x _ h _ g P choose a ha using fun τ => GlobalTheory.SplitCharExp.exists_hasInfExp D W.θ _ A'.rank τ hθ (hW t).hecS (hW t).resS choose e₁ he₁ using fun τ => GlobalTheory.T.exists_int_eq_exponent_add_half_index D _ A'.rank τ (a τ) (hW t).hecS (hW t).resS (ha τ)`. Establish `hψ : Continuous W.ψ` using `hX.is.isVac.1.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `es : X.rA'.s = fun _ => 1` using `funext fun τ => (hX.std'.2.2 τ).1`. Establish `eB : X.rA'.B = fun _ => 1` using `funext fun τ => (hX.std'.2.2 τ).2`. Establish `esW : X.rW.s = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).1`. Establish `eBW : X.rW.B = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).2`. Establish `hf : IsThetaFunO W.ψ A' WW (X.f' t)` using `(GlobalTheory.ConstRatio.theta_f hX.is t).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hX.is.idem t)`. Establish `hv : ∀ τ, IsFockVacAt (heisO W.ψ A' WW) W.θ τ (cplxO 1 1) (X.f' t)` using `fun τ => by`. Establish `h0` using `hX.is.isVac'.2.fock τ`. Rewrite `h0` using `[es, esW]`. Conclude with `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ hθ ho.conj.infPart_eq ho.conj.conj.infPart_eq (hX.is.snd t) hX.is.isVac'.2.theta hf h0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hBS : ∀ τ, ((fun _ => (1 : Matrix (Fin A'.rank) (Fin A'.rank) ℂ)) τ)ᴴ * gramAt D A' τ * 1 = 1` using `fun τ => by`. Rewrite using `[GlobalTheory.RealColAct.gramAt_of_gram_one hV]`. Simplify using the standard rewrite rules. Establish `hBT : ∀ τ, ((fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) τ)ᴴ * gramAt D WW τ * 1 = 1` using `fun τ => by`. Rewrite using `[GlobalTheory.RealColAct.gramAt_of_gram_one hVW]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `key0` using `GlobalTheory.RealFockPos.om_pureTensorO_pos D W.ψ W.θ A' WW _ _ (X.ω' t) (hW t) hθ (fun _ => 1) (fun _ => 1) hBS hBT a b ha (hbt t) e₁ (fun τ => -k τ) he₁ (fun τ => by push_cast; rw [hk τ]) (X.f' t) hf hv (g : GA D A') g.2 1 (one_mem _) P`. Simplify using `only [inv_one, Matrix.one_mul, Matrix.mul_one, GlobalTheory.StdUnn.CartanMove.compAt_mt_one, Matrix.det_one, one_zpow, mul_one] at key0`. Establish `hinv : ∀ τ, (compAt W.θ τ (Formalism.L2.Theta.mt A' (g : GA D A')))⁻¹ = compAt W.θ τ (Formalism.L2.Theta.mt A' (g : GA D A')⁻¹)` using `fun τ => Matrix.inv_eq_right_inv (GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := W.θ) τ (g : GA D A'))`. Establish `hsc : ∀ τ, (compAt W.θ τ (Formalism.L2.Theta.mt A' (g : GA D A'))).det ^ (-k τ) = ((GlobalTheory.RealColAct.realCol W.θ hθ A' hV g τ : Matrix (Fin A'.rank) (Fin A'.rank) ℂ)).det ^ (k τ)` using `fun τ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.RealColAct.realCol_apply, Matrix.det_transpose, ← hinv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', inv_zpow', zpow_neg]`. Establish `hsub : GlobalTheory.CompactHowe.substF (fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) (fun τ => ((compAt W.θ τ (Formalism.L2.Theta.mt A' (g : GA D A')))⁻¹)ᵀ) = GlobalTheory.MinorFrame.colSub (fun τ => (GlobalTheory.RealColAct.realCol W.θ hθ A' hV g τ : Matrix (Fin A'.rank) …`. Rewrite using `[substF_one_eq_colSub]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.RealColAct.realCol_apply, hinv]`. Establish `key : (X.ω' t) ((g : GA D A'), 1) ((pureTensorO W.ψ W.θ A' WW (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (X.f' t)) P) = (∏ τ, ((GlobalTheory.RealColAct.realCol W.θ hθ A' hV g τ : Matrix (Fin A'.rank) (Fin A'.rank) ℂ)).det ^ (k τ)) • (pureTensorO W.ψ W.θ A' WW (fun _ => 1 …`. Rewrite using `[key0, ← hsub]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => hsc τ`.
-
-Unfold `Tri.ker' thetaKO`. Rewrite using `[es, eB, esW, eBW]`. Establish `e : ((x * (g : GA D A'), h) : GA D A' × GA D WW) = (x, h) * ((g : GA D A'), 1)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply, key, map_smul, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realAction : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

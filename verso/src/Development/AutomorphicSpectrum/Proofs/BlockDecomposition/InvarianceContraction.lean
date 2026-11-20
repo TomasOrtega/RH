@@ -6,9 +6,9 @@ open PositivityTheory.Rg.Cz Fin Function
 namespace GlobalTheory.CompanionTheory.Invsum
 
 /- English proof (translation)
-Establish `step : ∀ s, ω (Function.update (b ∘ J) s (D k ((b ∘ J) s))) = -∑ i, (c (J s) i k : ℂ) • ω (Function.update (b ∘ J) s (b i))`. Introduce `s`. Establish `e : D k ((b ∘ J) s) = ∑ i, c i (J s) k • b i` using `hD k (J s)`. Establish `h1 : ω (Function.update (b ∘ J) s (∑ i, c i (J s) k • b i)) = ∑ i, ω (Function.update (b ∘ J) s (c i (J s) k • b i))` using `ω.toMultilinearMap.map_update_sum Finset.univ s (fun i => c i (J s) k • b i) (b ∘ J)`. Rewrite using `[e, h1, ← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h2 : ω (Function.update (b ∘ J) s (c i (J s) k • b i)) = c i (J s) k • ω (Function.update (b ∘ J) s (b i))` using `ω.map_update_smul (b ∘ J) s (c i (J s) k) (b i)`. Establish `h3 : ((c (J s) i k : ℝ) : ℂ) • ω (Function.update (b ∘ J) s (b i)) = c (J s) i k • ω (Function.update (b ∘ J) s (b i))` using `algebraMap_smul ℂ (c (J s) i k) (ω (Function.update (b ∘ J) s (b i)))`. Rewrite using `[h2, h3, hanti (J s) i k, neg_smul]`. Rewrite using `[hinv k (b ∘ J), Finset.sum_congr rfl fun s _ => step s, Finset.sum_neg_distrib, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem invariance_contraction {P : Type} [AddCommGroup P] [Module ℝ P] {M : Type} [AddCommGroup M]
     [Module ℂ M] [Module ℝ M] [IsScalarTower ℝ ℂ M] {β γ : Type} [Fintype β] (b : β → P)

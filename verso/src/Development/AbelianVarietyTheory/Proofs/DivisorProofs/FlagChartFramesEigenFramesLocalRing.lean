@@ -25,9 +25,7 @@ def cstF (X : FlagCover Y) (V : X.YY.Opens) (r : c.F) : Γ(X.YY, V) :=
   resG X.YY (le_top : V ≤ ⊤) ((X.π ≫ Y.s).appTop.hom (toΓ c.F r))
 
 /- English proof (translation)
-Unfold `cstF`. Rewrite using `[ev_res w le_top hw le_top, ev_appTop]`. Establish `key : (ev (w ≫ X.π ≫ Y.s) ⊤ le_top).comp (toΓ c.F) = ψ`. Establish `: spMap ((ev (w ≫ X.π ≫ Y.s) ⊤ le_top).comp (toΓ c.F)) = spMap ψ` using `(spMap_ev_top _).trans hψ`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective this)`.
-
-Conclude with `RingHom.congr_fun key r`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ev_cstF (X : FlagCover Y) {S : Type} [CommRing S] (w : Sp S ⟶ X.YY) (V : X.YY.Opens) (hw : ⊤ ≤ w ⁻¹ᵁ V)
     (ψ : c.F →+* S) (hψ : w ≫ X.π ≫ Y.s = spMap ψ) (r : c.F) : ev w V hw (cstF X V r) = ψ r := by
@@ -44,9 +42,9 @@ def eigDefect (X : FlagCover Y) (k : X.F.J) (σ : E →+* ℂ) (i : Fin (Dw.mult
     cstF X (X.F.U k) (embK c σ a) * X.F.u k σ j i
 
 /- English proof (translation)
-Unfold `eigDefect`. Rewrite using `[map_sub, map_sum, map_mul, ev_cstF X w _ hw ψ hψ]`. Simplify using `only [map_mul, Matrix.mulVec, dotProduct, Matrix.map_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ev_appLE w X.π (X.F.le k) hw (X.F.inM hw rfl)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_eigDefect (X : FlagCover Y) {S : Type} [CommRing S] (w : Sp S ⟶ X.YY) (k : X.F.J)
     (hw : ⊤ ≤ w ⁻¹ᵁ X.F.U k) (ψ : c.F →+* S) (hψ : w ≫ X.π ≫ Y.s = spMap ψ) (σ : E →+* ℂ) (i : Fin (Dw.mult σ))
@@ -63,17 +61,15 @@ theorem ev_eigDefect (X : FlagCover Y) {S : Type} [CommRing S] (w : Sp S ⟶ X.Y
   rfl
 
 /- English proof (translation)
-Use `GlobalTheory.DRFlag.AdaptedOfStep.eq_zero_of_dense (dense_flagOpen X) _ fun K _ w hw hwD => ?_` and prove the remaining obligations. Take `⟨ψ, hψ⟩ : ∃ ψ : c.F →+* K, spMap ψ = w ≫ X.π ≫ Y.s` from `⟨_, spMap_ev_top _⟩`. Use `letI : Algebra c.F K := ψ.toAlgebra`. Establish `hall : ⊤ ≤ w ⁻¹ᵁ flagOpen X` using `((IsLocalRing.closed_point_mem_iff (U := w ⁻¹ᵁ flagOpen X)).1 hwD).ge`. Establish `hr : Set.range w ⊆ Set.range X.inc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Establish `: w p ∈ flagOpen X` using `hall (Set.mem_univ p)`. Rewrite `this` using `[← opensRange_inc X]`. Conclude with `this`. Set `w' : Sp K ⟶ X.Yo` to `IsOpenImmersion.lift X.inc w hr`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw' : w' ≫ X.inc = w` using `IsOpenImmersion.lift_fac _ _ _`. Take `⟨y, hyd⟩ : ∃ y : Sp K ⟶ Xo.XF c, y = w' ≫ pullback.snd X.π Y.j` from `⟨_, rfl⟩`. Establish `hx : w ≫ X.π = y ≫ Y.j`. Rewrite using `[← hw', hyd, Category.assoc, Category.assoc, pullback.condition]`. Establish `hy : y ≫ pullback.snd _ _ = spMap (algebraMap c.F K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Y.j ≫ Y.s = pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`. Conclude with `(congrArg (_ ≫ ·) (Spec.map_id _)).trans (Category.comp_id _)`. Combine the equalities or inequalities in the displayed calculation. Establish `htop` using `X.top K y hy w hx k hw σ`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : X.F.vecAt k w hw hx σ i ∈ eigLie c (y ≫ Y.j) σ`. Rewrite using `[← htop]`. Conclude with `Submodule.subset_span ⟨i, i.2, rfl⟩`. Establish `heig` using `(vec_mem_eigLie (X.F.M k).toMChart (y ≫ Y.j) (X.F.inM hw hx) σ (fun m => X.F.uAt k w hw σ m i)).1 hmem a`. Rewrite using `[ev_eigDefect X w k hw ψ hψ.symm, ev_congr hx _ _ (X.F.inM hw hx), heig]`.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `sub_self _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigDefect_eq_zero (X : FlagCover Y) (k : X.F.J) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) (a : 𝓞 E)
     (j : Fin (X.F.M k).n) : eigDefect X k σ i a j = 0 := by
@@ -107,9 +103,9 @@ theorem eigDefect_eq_zero (X : FlagCover Y) (k : X.F.J) (σ : E →+* ℂ) (i : 
   exact sub_self _
 
 /- English proof (translation)
-Use `show actR Y.t.act a (vec _ _ _ _) = φ (embK c σ a) • vec _ _ _ _`. Rewrite using `[actR_vec, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Establish `h` using `ev_eigDefect X z k hz φ hφ σ i a j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[eigDefect_eq_zero, map_zero]`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `sub_eq_zero.1 h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actR_vecAt (X : FlagCover Y) {R : Type} [CommRing R] (φ : c.F →+* R) (z : Sp R ⟶ X.YY) (k : X.F.J)
     (hz : ⊤ ≤ z ⁻¹ᵁ X.F.U k) (hφ : z ≫ X.π ≫ Y.s = spMap φ) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) (a : 𝓞 E) :
@@ -124,17 +120,17 @@ theorem actR_vecAt (X : FlagCover Y) {R : Type} [CommRing R] (φ : c.F →+* R) 
   exact sub_eq_zero.1 h.symm
 
 /- English proof (translation)
-Use `choose A hA _ using fun i => he (v i) (hv i)`. Set `C : Matrix (Fin m) (Fin m) R` to `Matrix.of fun k i => ρ (e k) i`. Establish `hAC : Matrix.of A * C = 1`. Use extensionality with `i j`. Establish `h` using `congrFun (congrArg ρ (hA i)) j`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hρ, map_sum]`. Simplify using `only [map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Use `Eq.trans ?_ (h.symm.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_apply]`. Simplify using `only [eq_comm]`. Establish `hCA : C * Matrix.of A = 1` using `mul_eq_one_comm.1 hAC`. Establish `hek : ∀ k, e k = ∑ i, C k i • v i` using `fun k => by`. Simplify using `only [hA, Finset.smul_sum, smul_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`. Establish `: ∀ j, (∑ i, C k i * A i j) = (1 : Matrix (Fin m) (Fin m) R) k j` using `fun j => by`. Rewrite using `[← hCA, Matrix.mul_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Take `⟨b, hb, -⟩` from `he w hw`. Establish `hex : w = ∑ i, (∑ k, b k * C k i) • v i`. Rewrite using `[hb]`. Simplify using `only [Finset.sum_smul, ← smul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hek k, Finset.smul_sum]`. Use `⟨_, hex, fun a ha => funext fun i => ?_⟩` and prove the remaining obligations. Conclude with `(Fintype.linearIndependent_iffₛ.1 hli) _ _ (ha.symm.trans hex) i`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_of_retraction {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {m : ℕ}
     (v e : Fin m → N) (ρ : N →ₗ[R] Fin m → R) (hρ : ∀ i, ρ (v i) = Pi.single i 1) (P : N → Prop)
@@ -170,13 +166,13 @@ theorem existsUnique_of_retraction {R N : Type} [CommRing R] [AddCommGroup N] [M
   exact (Fintype.linearIndependent_iffₛ.1 hli) _ _ (ha.symm.trans hex) i
 
 /- English proof (translation)
-Introduce `R _ _ φ z k hz hφ`. Establish `hf : Nonempty (GlobalTheory.ShFam.EigFrame Y φ (z ≫ X.π))`. Establish `hc : (z ≫ X.π) ≫ Y.s = spMap φ ≫ spMap (RingHom.id c.F)`. Rewrite using `[Category.assoc, hφ]`. Conclude with `((congrArg (_ ≫ ·) (Spec.map_id _)).trans (Category.comp_id _)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c c.F (RingHom.id c.F) Y R φ (pullback.lift _ _ hc) (pullback.lift_snd _ _ _)`. Rewrite `h` using `[pullback.lift_fst]`. Then use the resulting hypothesis. Take `⟨f⟩` from `hf`. Use `⟨GlobalTheory.ShFam.EigFrame.ofVec (fun σ i => X.F.vecAt k z hz rfl σ i) (fun σ i a => actR_vecAt X φ z k hz hφ σ i a) (fun σ w hw => ?_), fun σ i => rfl⟩` and prove the remaining obligations. Take `⟨W, hW⟩` from `X.F.uAt_split k z hz σ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `existsUnique_of_retraction (fun i => X.F.vecAt k z hz rfl σ i) (f.vec σ) ((Matrix.mulVecLin W).comp (vec (X.F.M k).toMChart (z ≫ X.π) (X.F.inM hz rfl)).symm.toLinearMap) (fun i => ?_) (fun u => ∀ a, actR Y.t.act a u = φ (embK c σ a) • u) (fun i a => actR_vecAt X φ z k hz hφ σ i a …` and prove the remaining obligations. Use `show W.mulVec ((vec _ _ _).symm (vec _ _ _ _)) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Use function extensionality and compare the values at `r`. Use `congrFun (congrFun hW r) i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[Matrix.mulVec, dotProduct, this, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem framesExist_flagCover (X : FlagCover Y) : FramesExist X := by
   intro R _ _ φ z k hz hφ

@@ -19,7 +19,7 @@ namespace TopForm
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ} {U : Y.Opens}
 
 /- English proof (translation)
-Rewrite using `[dOn, dForm_eq]`. Use `AlternatingMap.map_coord_zero _ b ?_` and prove the remaining obligations. Set `` to `(algX p U).toAlgebra`. Rewrite using `[hb]`. Conclude with `(KaehlerDifferential.D k Γ(Y, U)).map_one_eq_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dOn_eq_zero_of_eq_one (f : Fin D → Γ(Y, U)) (b : Fin D) (hb : f b = 1) : dOn p f = 0 := by
   rw [dOn, dForm_eq]
@@ -29,7 +29,7 @@ theorem dOn_eq_zero_of_eq_one (f : Fin D → Γ(Y, U)) (b : Fin D) (hb : f b = 1
   exact (KaehlerDifferential.D k Γ(Y, U)).map_one_eq_zero
 
 /- English proof (translation)
-Rewrite using `[jacOn_eq, Finset.sum_eq_single i, hi, mul_one]`. Introduce `a _ ha`. Take `⟨b, hb⟩` from `Fin.exists_succAbove_eq (Ne.symm ha)`. Rewrite using `[dOn_eq_zero_of_eq_one _ b (by rw [hb, hi]), smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jacOn_of_eq_one (f : Fin (D + 1) → Γ(Y, U)) (i : Fin (D + 1)) (hi : f i = 1) :
     jacOn p f = (-1 : Γ(Y, U)) ^ (i : ℕ) • dOn p fun b => f (i.succAbove b) := by
@@ -40,7 +40,7 @@ theorem jacOn_of_eq_one (f : Fin (D + 1) → Γ(Y, U)) (i : Fin (D + 1)) (hi : f
   · simp
 
 /- English proof (translation)
-Use `Y.toRingedSpace.isUnit_of_isUnit_germ U f fun x hx => ?_` and prove the remaining obligations. Take `⟨W, hW, hxW, hWU⟩` from `Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens hx`. Use `(h W hW hWU).map (Y.presheaf.germ W x hxW).hom` as an intermediate fact. Rewrite `this` using `[show (Y.presheaf.germ W x hxW).hom (resG Y hWU f) = (Y.presheaf.germ U x hx).hom f from Y.presheaf.germ_res_apply (homOfLE hWU) x hxW f]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_of_affine {f : Γ(Y, U)}
     (h : ∀ W : Y.Opens, IsAffineOpen W → ∀ hW : W ≤ U, IsUnit (resG Y hW f)) : IsUnit f := by
@@ -51,7 +51,7 @@ theorem isUnit_of_affine {f : Γ(Y, U)}
     Y.presheaf.germ_res_apply (homOfLE hWU) x hxW f] at this
 
 /- English proof (translation)
-Establish `key (inst : Algebra k (MvPolynomial (Fin D) k)) (e : inst = AddMonoidAlgebra.algebra) : IsFreeGen (MvPolynomial (Fin D) k) (@dWedge k _ _ _ inst D X)`. Substitute `e` using the available equality. Use `isFreeGen_ιMulti (KaehlerDifferential.mvPolynomialBasis k (Fin D))` as an intermediate fact. Rewrite `this` using `[funext (KaehlerDifferential.mvPolynomialBasis_apply k (Fin D))]`. Then use the resulting hypothesis. Conclude with `key _ (Algebra.algebra_ext _ _ fun _ => rfl)`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isFreeGen_dForm_X (k : Type) [CommRing k] (D : ℕ) : IsFreeGen (MvPolynomial (Fin D) k)
     (dForm (algebraMap k (MvPolynomial (Fin D) k)) (X : Fin D → _)) := by
@@ -70,9 +70,9 @@ namespace ProjSpace
 variable (R : Type) [CommRing R] (N : ℕ)
 
 /- English proof (translation)
-Use `⟨isAffineOpen_chart R N i, ?_⟩` and prove the remaining obligations. Set `e : MvPolynomial (Fin N) R ≃ₐ[R] Γ(PSpace R N, chart R N i)` to `(renameEquiv R (finSuccAboveEquiv i)).trans (chartAlgEquiv R N i)`. Establish `he : (e : MvPolynomial (Fin N) R →+* _).comp (algebraMap R _) = algX (PSpace.str R N) (chart R N i)` using `RingHom.ext fun r => e.commutes r`. Use `(isFreeGen_dForm_X R N).formMap (RingHom.Etale.of_bijective e.bijective) he` as an intermediate fact. Rewrite `this` using `[formMap_dForm]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this using 3 with b` and compare the differences between its conclusion and the goal. Conclude with `((congrArg (chartAlgEquiv R N i) (rename_X _ b)).trans (chartAlgEquiv_X R N i (finSuccAboveEquiv i b))).symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isFrame_dOn_ratio (i : Fin (N + 1)) :
     IsFrame (dOn (PSpace.str R N) fun b : Fin N => ratio R N i (i.succAbove b)) := by
@@ -88,9 +88,9 @@ theorem isFrame_dOn_ratio (i : Fin (N + 1)) :
     (chartAlgEquiv_X R N i (finSuccAboveEquiv i b))).symm
 
 /- English proof (translation)
-Use `isUnit_of_affine fun W hW h => ?_` and prove the remaining obligations. Establish `l` using `h.trans (K.adj_U_le _ c)`. Establish `h₂ : W ≤ chart R N (c.2 PUnit.unit)` using `l.trans inf_le_right`. Rewrite using `[K.resG_jacSec_f _ c h (l.trans inf_le_left) h₂]`. Express the relevant statement in the definitionally equal form `IsUnit (K.coeff _ _ (jacOn _ (ratioOn W (c.2 PUnit.unit) h₂)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[jacOn_of_eq_one _ (c.2 PUnit.unit) (ratioOn_self (hi := h₂)), map_smul, smul_eq_mul]`. Use `(isUnit_one.neg.pow _).mul ((K.isUnit_jacobian_iff _ hW _ _).2 ?_)` and prove the remaining obligations. Use `(isFrame_dOn_ratio R N (c.2 PUnit.unit)).res hW h₂` as an intermediate fact. Rewrite `this` using `[resForm_dOn]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_jacSec_coord [SmoothOfRelativeDimension N (PSpace.str R N)]
     (K : CanonLB (PSpace.str R N) N) (c : (K.adj (O1 R N) (N + 1)).ι) :

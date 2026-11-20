@@ -16,7 +16,7 @@ namespace GlobalTheory.CompanionTheory.WaveMult
 def gconv (g g' : ℝ → ℝ) (r : ℝ) : ℝ := ∫ t, g t * g' (r - t)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Unfold `gconv`. Rewrite using `[← integral_sub_left_eq_self (fun t => g t * g' (r - t)) volume r]`. Simplify using `[mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gconv_comm (g g' : ℝ → ℝ) : gconv g g' = gconv g' g := by
   funext r
@@ -30,7 +30,7 @@ def KReg {V : Type} [NormedAddCommGroup V] (k : Mat n → V) : Prop :=
   ContinuousOn k (GLs n) ∧ ∃ R, ∀ y ∈ GLs n, R < lg y → k y = 0
 
 /- English proof (translation)
-Establish `: y.det ≠ 0` using `hy`. Express the relevant statement in the definitionally equal form `(y⁻¹).det ≠ 0`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_GLs {y : Mat n} (hy : y ∈ GLs n) : y⁻¹ ∈ GLs n := by
   have : y.det ≠ 0 := hy
@@ -42,9 +42,7 @@ section
 variable [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n)
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin ι`. Use `⟨Fintype.card ι, c ∘ e.symm, w ∘ e.symm, g ∘ e.symm, ks ∘ e.symm, fun i => h1 _, fun y hy => ?_, fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 y hy]`. Conclude with `(Equiv.sum_comp e.symm (fun i => c i • ks i y)).symm`. Rewrite using `[h3 χ]`.
-
-Conclude with `(Equiv.sum_comp e.symm (fun i => c i * zVal (w i) χ * coshT (g i) (cas χ))).symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMult_of_fintype {ι : Type} [Fintype ι] {k : Mat n → (E.V →L[ℂ] E.V)} {val : Inf n → ℂ} {T : ℝ}
     (c : ι → ℂ) (w : ι → List (Bool × ℕ)) (g : ι → ℝ → ℝ) (ks : ι → Mat n → (E.V →L[ℂ] E.V))
@@ -59,7 +57,7 @@ theorem isMult_of_fintype {ι : Type} [Fintype ι] {k : Mat n → (E.V →L[ℂ]
 end
 
 /- English proof (translation)
-Simplify using `[zVal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zVal_append (w w' : List (Bool × ℕ)) (χ : Inf n) : zVal (w ++ w') χ = zVal w χ * zVal w' χ := by
   simp [zVal]

@@ -19,21 +19,21 @@ variable {n : ℕ}
 def sg (ε : Fin n → Bool) (c : Fin n) : ℂ := if ε c then 1 else -1
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_mul_self (ε : Fin n → Bool) (c : Fin n) : sg ε c * sg ε c = 1 := by
   unfold sg
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_sg (ε : Fin n → Bool) (c : Fin n) : star (sg ε c) = sg ε c := by
   unfold sg
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_sg (ε : Fin n → Bool) (c : Fin n) : ‖sg ε c‖ = 1 := by
   unfold sg
@@ -48,7 +48,7 @@ def wt (dual : Bool) (ε : Fin n → Bool) (ξ : Fin n) (x : Matrix (Fin n) (Fin
   cond dual (sg ε c * star (x ξ c)) (x ξ c)
 
 /- English proof (translation)
-Consider the cases of `dual`. Both sides reduce to the same expression. Simplify using `only [wt, cond_true, norm_mul, norm_sg, norm_star, one_mul]`.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem norm_wt (dual : Bool) (ε : Fin n → Bool) (ξ : Fin n) (x : Matrix (Fin n) (Fin n) ℂ) (c : Fin n) :
     ‖wt dual ε ξ x c‖ = ‖x ξ c‖ := by
@@ -57,9 +57,9 @@ theorem norm_wt (dual : Bool) (ε : Fin n → Bool) (ξ : Fin n) (x : Matrix (Fi
   · simp only [wt, cond_true, norm_mul, norm_sg, norm_star, one_mul]
 
 /- English proof (translation)
-Establish `h1 : ‖x i j‖ ^ 2 ≤ ∑ j', ‖x i j'‖ ^ 2` using `Finset.single_le_sum (f := fun j' => ‖x i j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`. Establish `h2 : ∑ j', ‖x i j'‖ ^ 2 ≤ ∑ i', ∑ j', ‖x i' j'‖ ^ 2` using `Finset.single_le_sum (f := fun i' => ∑ j', ‖x i' j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Establish `h3 : ‖x i j‖ ^ 2 ≤ S7.hs x`. Simplify using `only [S7.hs, Formalism.REAL.hs]`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4` using `Real.abs_le_sqrt h3`. Rewrite `h4` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_entry_le (x : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖x i j‖ ≤ Real.sqrt (S7.hs x) := by
   have h1 : ‖x i j‖ ^ 2 ≤ ∑ j', ‖x i j'‖ ^ 2 :=
@@ -73,7 +73,7 @@ theorem norm_entry_le (x : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖x i j�
   rwa [abs_of_nonneg (norm_nonneg _)] at h4
 
 /- English proof (translation)
-Establish `he : Continuous (fun x : Matrix (Fin n) (Fin n) ℂ => x ξ c)` using `(continuous_apply c).comp (continuous_apply ξ)`. Consider the cases of `dual`. Conclude with `he`. Conclude with `continuous_const.mul he.star`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem continuous_wt (dual : Bool) (ε : Fin n → Bool) (ξ c : Fin n) :
     Continuous (fun x : Matrix (Fin n) (Fin n) ℂ => wt dual ε ξ x c) := by
@@ -99,7 +99,7 @@ def cf (dual : Bool) (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → 
   fun g => ∑ c, wt dual ε ξ (Formalism.MainNotions.S.umat g) c * inner ℂ y (σ (Formalism.MainNotions.S.umat g) (F c))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [cf, Pi.add_apply, map_add, inner_add_right, mul_add, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cf_add (dual : Bool) (y : H) (ξ : Fin n) (F F' : Fin n → H) :
     cf dual ε σ y ξ (F + F') = cf dual ε σ y ξ F + cf dual ε σ y ξ F' := by
@@ -107,7 +107,7 @@ theorem cf_add (dual : Bool) (y : H) (ξ : Fin n) (F F' : Fin n → H) :
   simp only [cf, Pi.add_apply, map_add, inner_add_right, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [cf, Pi.smul_apply, map_smul, inner_smul_right, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cf_smul (dual : Bool) (y : H) (ξ : Fin n) (a : ℂ) (F : Fin n → H) :
     cf dual ε σ y ξ (a • F) = a • cf dual ε σ y ξ F := by
@@ -116,18 +116,18 @@ theorem cf_smul (dual : Bool) (y : H) (ξ : Fin n) (a : ℂ) (F : Fin n → H) :
   exact Finset.sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_umat : Continuous (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g) := Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `(hσ.2.2 v).comp_continuous continuous_umat fun g => g.2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orbit (hσ : IsURepOn (UJset ε) σ) (v : H) :
     Continuous (fun g : Formalism.REAL.UJ ε => σ (Formalism.MainNotions.S.umat g) v) := (hσ.2.2 v).comp_continuous continuous_umat fun g => g.2
 
 /- English proof (translation)
-Unfold `cf`. Conclude with `continuous_finset_sum _ fun c _ => ((continuous_wt dual ε ξ c).comp continuous_umat).mul (continuous_const.inner (continuous_orbit hσ (F c)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_cf (hσ : IsURepOn (UJset ε) σ) (dual : Bool) (y : H) (ξ : Fin n) (F : Fin n → H) :
     Continuous (cf dual ε σ y ξ F) := by
@@ -136,9 +136,7 @@ theorem continuous_cf (hσ : IsURepOn (UJset ε) σ) (dual : Bool) (y : H) (ξ :
     (continuous_const.inner (continuous_orbit hσ (F c)))
 
 /- English proof (translation)
-Unfold `cf`. Use `memLp_finset_sum _ fun c _ => ?_` and prove the remaining obligations. Use `MemLp.of_le (hW c) ?_ (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `(((continuous_wt dual ε ξ c).comp continuous_umat).mul (continuous_const.inner (continuous_orbit hσ (F c)))).aestronglyMeasurable`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), norm_wt]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (norm_entry_le _ ξ c) (norm_nonneg _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memLp_cf (hσ : IsURepOn (UJset ε) σ) (dual : Bool) (y : H) (ξ : Fin n) (F : Fin n → H)
     (hW : ∀ c, MemLp (fun g : Formalism.REAL.UJ ε =>

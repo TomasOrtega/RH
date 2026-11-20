@@ -10,33 +10,29 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open UpperTheory.Lit.HoweDuality GlobalTheory.HoweGlobalPair
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ om v ω ρ hL hI K hrel hst hne`. Establish `one_mem : (1 : UA σ X.J) ∈ UAt σ X (evFin F v)` using `by show At _ (mat 1 - 1)`. Establish `h1 : mat (1 : UA σ X.J) = 1` using `Matrix.ext fun i => congrFun rfl`. Rewrite using `[h1, sub_self]`. Introduce `_ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `aug_le : augAt om v ≤ SB (Fin n × Fin d → Fv F v)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`. Conclude with `Submodule.sub_mem _ hφ₁ hφ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `key : ∀ P : Submodule ℂ ↥(SB (Fin n × Fin d → Fv F v)), relFin om v ≤ P → Stable (opFin om v) P → P = relFin om v ∨ P = ⊤`. Introduce `P hP hPs`. Establish `hT : GlobalTheory.Published.ThetaSub om v (P.map (SB (Fin n × Fin d → Fv F v)).subtype)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hzS` using `aug_le hz`. Use `⟨⟨z, hzS⟩, hP ?_, rfl⟩` and prove the remaining obligations. Simplify `hz` using `[relFin]`. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `k.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `h hh _ ⟨k, hk, rfl⟩ φ₁ hφ₁ hA`. Establish `hφ₁eq : φ₁ = ω (1, h) k` using `(hL.acts 1 one_mem h hh k k.2 φ₁).mp hA`. Set `g : Module.End ℂ ↥(SB (Fin n × Fin d → Fv F v))` to `{ toFun := fun x => ⟨ω (1, h) x, hL.pres 1 one_mem h hh x x.2⟩ map_add' := fun x y => by ext1; simp map_smul' := fun c x => by ext1; simp }`. Establish `hg : g ∈ opFin om v`. Use `⟨h, hh, fun φ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(hL.acts 1 one_mem h hh φ φ.2 _).mpr rfl`. Use `⟨g k, hPs g hg k hk, ?_⟩` and prove the remaining obligations. Simplify using `[g, hφ₁eq]`. Break down `hI _ hT with h1 | h1` into its components or cases. Use `left`.
+Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : (x : (Fin n × Fin d → Fv F v) → ℂ) ∈ augAt om v`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, hx, rfl⟩`. Simplify `hx'` using `[relFin]`. Introduce `hx`. Conclude with `hP hx`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx' : (x : (Fin n × Fin d → Fv F v) → ℂ) ∈ P.map (SB (Fin n × Fin d → Fv F v)).subtype`. Rewrite using `[h1]`. Conclude with `x.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨y, hy, hyx⟩` from `hx'`. Establish `hyx' : y = x` using `Subtype.ext hyx`. Rewrite using `[← hyx']`. Conclude with `hy`. Establish `hK : K = relFin om v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `key K hrel hst with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hne`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, s ∉ relFin om v := by`. Assume the negation of the conclusion as `hc`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_neg at hc`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hK, eq_top_iff]`. Introduce `x _`. Conclude with `hc x`.
-
-Use `⟨s, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP hPs hsP`. Break down `key P hP hPs with h | h` into its components or cases. Rewrite `hsP` using `[h]`. Conclude with `absurd hsP hs`.
-
-Conclude with `h`. Introduce `k hk`. Use `⟨1, Subalgebra.one_mem _, rfl, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[hK]`. Simplify using `using hk`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.HoweDuality.radIrr :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ} {om : Rep σ X W} {v : Pl F} {ω : UA σ X.J × UA σ W.J → Module.End ℂ (PositivityTheory.ThK.Fn F n d v)} {ρ : Matrix (Fin n) (Fin d) (AE F E) → Module.End ℂ (PositivityTheory.ThK.Fn F n d v)}, PositivityTheory.ThK.IsLocRep M ψ om v ω ρ → PositivityTheory.Sph.IrrAt om v → ∀ K : Submodule ℂ ↥(SB (Fin n × Fin d → Fv F v)), relFin om v ≤ K → Stable (opFin om v) K → K ≠ ⊤ → Rad (opFin om v) (relFin om v) K := by

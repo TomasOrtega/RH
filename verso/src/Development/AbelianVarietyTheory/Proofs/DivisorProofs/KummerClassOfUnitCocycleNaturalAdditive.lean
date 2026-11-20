@@ -12,13 +12,13 @@ namespace KumNat
 open ClsSpec
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F U).2.2.2 s hs`.
+A detailed English derivation is pending.
 -/
 theorem sec_subsingleton {R : Type} [CommRing R] (F : Shv R) (U : Scheme.{0}) {s : ℤ} (hs : s < 0) :
     Subsingleton (Sec ((res R F).X s) U) := (GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F U).2.2.2 s hs
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 α β p s h U x).2.1`.
+A detailed English derivation is pending.
 -/
 theorem ev_sub' {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n) (p s h U x) :
     ev (α - β) p s h U x = ev α p s h U x - ev β p s h U x := ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 α β p s h U x).2.1
@@ -26,11 +26,11 @@ theorem ev_sub' {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α β : 
 variable {q : ℕ}
 
 /- English proof (translation)
-Use `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.1 _ _ fun p s h U x => ?_` and prove the remaining obligations. Use `match p with`. Consider the case `0`. Take `rfl : s = 1` from `by omega`. Express the relevant statement in the definitionally equal form `U ⟶ X at x`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `sep (ClsSpec.loc_mono (root_loc (unit_res x hX) (umap x u)) fun V g ⟨v, hv⟩ => ?_)` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γ 0 1 _ V U g x, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γ' 0 1 _ V U g x]`. Establish `hv' : v ^ q = umap (g ≫ x) u` using `by rw [hv, umap_comp]`. Conclude with `(h₂ V (g ≫ x) v hv').trans (h₂' V (g ≫ x) v hv').symm`. Consider the case `1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `rfl : s = 0` from `by omega`. Conclude with `(h₁ U x).trans (h₁' U x).symm`. Consider the case `p + 2 => haveI := sec_subsingleton (tw q 1) U (s := s) (by omega)`. Conclude with `Subsingleton.elim _ _`.
+A detailed English derivation is pending.
 -/
 theorem kum_unique [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u : (Γ(X, ⊤))ˣ)
     {γ γ' : Cochain ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1}
@@ -57,7 +57,7 @@ theorem kum_unique [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-The claim follows from `kum_unique hX u h₁ h₂ (fun U x => ev_zero (E := sch.obj X) _ _ _ _ _) (fun U x v _ => (ev_zero (E := sch.obj X) _ _ _ _ _).trans (by rw [ht]; exact (smap_zero _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_kumT [NeZero q] (ht : kumT q = 0) {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u : (Γ(X, ⊤))ˣ)
     {γ : Cochain ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1}
@@ -68,11 +68,11 @@ theorem eq_zero_of_kumT [NeZero q] (ht : kumT q = 0) {X : Scheme.{0}} (hX : IsUn
     (fun U x v _ => (ev_zero (E := sch.obj X) _ _ _ _ _).trans (by rw [ht]; exact (smap_zero _).symm))
 
 /- English proof (translation)
-Take `⟨γ, hγ, h₁, h₂⟩` from `kum_spec q hX u`. Take `⟨γ', hγ', h₁', h₂'⟩` from `kum_spec q (unit_res f hX) (umap f u)`. Rewrite using `[← hγ, ← hγ']`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains (ZMod q)).map (sch.map f))) γ (zero_add 1)) = _`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `Cocycle.ext (kum_unique (unit_res f hX) (umap f u) (fun U y => ?_) (fun U y v hv => ?_) h₁' h₂')` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev ((Cochain.ofHom ((chains (ZMod q)).map (sch.map f))).comp γ.1 (zero_add 1)) 1 0 _ U y = 0`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.2.1 (sch.map f) γ.1 1 0 _ U y]`. Conclude with `h₁ U (y ≫ f)`. Express the relevant statement in the definitionally equal form `ev ((Cochain.ofHom ((chains (ZMod q)).map (sch.map f))).comp γ.1 (zero_add 1)) 0 1 _ U y = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.2.1 (sch.map f) γ.1 0 1 _ U y]`. Conclude with `h₂ U (y ≫ f) v (by rw [hv, umap_comp])`.
+A detailed English derivation is pending.
 -/
 theorem kum_pull [NeZero q] {Y X : Scheme.{0}} (f : Y ⟶ X) (u : (Γ(X, ⊤))ˣ) (hX : IsUnit (q : Γ(X, ⊤))) :
     pull _ (sch.map f) _ _ (kum q u) = kum q (Units.map f.appTop.hom.toMonoidHom u) := by
@@ -90,19 +90,19 @@ theorem kum_pull [NeZero q] {Y X : Scheme.{0}} (f : Y ⟶ X) (u : (Γ(X, ⊤))ˣ
     exact h₂ U (y ≫ f) v (by rw [hv, umap_comp])
 
 /- English proof (translation)
-Take `⟨γ₁, e₁, a₁, b₁⟩` from `kum_spec q hX u₁`. Take `⟨γ₂, e₂, a₂, b₂⟩` from `kum_spec q hX u₂`. Take `⟨γ₃, e₃, a₃, b₃⟩` from `kum_spec q hX (u₁ * u₂)`. Rewrite using `[← e₁, ← e₂, ← e₃, eq_comm, ← CohomologyClass.mk_add, ← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ 0 (zero_add 1)]`. Break down `kumT_cases q with ht | ht` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨e, he, hw⟩` from `exists_two_family ht (E := sch.obj X) (p := 0) (fun U (x : U ⟶ X) => unit_res x hX) (fun U (x : U ⟶ X) => umap x u₁) (fun U (x : U ⟶ X) => umap x u₂) (fun V U g (x : U ⟶ X) => umap_comp g x u₁) (fun V U g (x : U ⟶ X) => umap_comp g x u₂)`. Take `⟨β, c₁, c₂⟩` from `exists_single (I := res _ (tw q 1)) (n := 0) 0 0 (by simp) e he`. Use `⟨β, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.1 _ _ fun p s h U x => ?_⟩` and prove the remaining obligations. Rewrite using `[Cocycle.coe_sub, Cocycle.coe_add, ev_sub', ev_add]`. Use `match p with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `0`. Take `rfl : s = 1` from `by omega`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (zero_add 1) β U).1 x, c₁]`. Establish `hxU` using `unit_res (show U ⟶ X from x) hX`. Use `sep (ClsSpec.loc_mono (ClsSpec.loc_and (root_loc hxU (umap (show U ⟶ X from x) u₁)) (root_loc hxU (umap (show U ⟶ X from x) u₂))) ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `V g ⟨⟨v, hv⟩, w, hw'⟩`. Establish `hv' : v ^ q = umap (show V ⟶ X from x.res g) u₁` using `by rw [hv]; exact (umap_comp g _ u₁).symm`. Establish `hw'' : w ^ q = umap (show V ⟶ X from x.res g) u₂` using `by rw [hw']; exact (umap_comp g _ u₂).symm`. Establish `hvw : (v * w) ^ q = umap (show V ⟶ X from x.res g) (u₁ * u₂)` using `by rw [mul_pow, hv', hw'', map_mul]`. Rewrite using `[res_map, he V U g x, res_sub, res_add, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γ₁.1 0 1 _ V U g x, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γ₂.1 0 1 _ V U g x, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_proper …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw V (x.res g) v w hv' hw'', b₁ V (x.res g) v hv', b₂ V (x.res g) w hw'', b₃ V (x.res g) _ hvw, smap_sub, smap_add]`. Consider the case `1`. Take `rfl : s = 0` from `by omega`. Establish `key` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (zero_add 1) β U).2 0 (-1) 0 (by simp) h x`. Establish `hf : x.face 0 = x.face 1` using `rfl`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, c₂ (0 + 1) _ _ _ _ one_ne_zero, smap_zero, zero_add, Fin.sum_univ_two, hf, a₁ U x, a₂ U x, a₃ U x]`. Simplify using the standard rewrite rules. Consider the case `p + 2 => haveI := sec_subsingleton (tw q 1) U (s := s) (by omega)`. Conclude with `Subsingleton.elim _ _`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[δ_zero, Cocycle.coe_sub, Cocycle.coe_add, eq_zero_of_kumT ht hX u₁ a₁ b₁, eq_zero_of_kumT ht hX u₂ a₂ b₂, eq_zero_of_kumT ht hX _ a₃ b₃]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem kum_mul [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u₁ u₂ : (Γ(X, ⊤))ˣ) :
     kum q (u₁ * u₂) = kum q u₁ + kum q u₂ := by
@@ -148,13 +148,13 @@ theorem kum_mul [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u₁
     simp
 
 /- English proof (translation)
-Take `⟨γ, e, a, b⟩` from `kum_spec q hX (u ^ q)`. Rewrite using `[← e, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ 0 (zero_add 1)]`. Break down `kumT_cases q with ht | ht` into its components or cases. Take `⟨β, c₁, c₂⟩` from `exists_single (E := sch.obj X) (I := res _ (tw q 1)) (n := 0) 0 0 (by simp) (fun U (x : U ⟶ X) => kumT q U (umap x u)) (fun V U g (x : U ⟶ X) => (ht.1 V U g _ (unit_res x hX)).trans (congrArg (kumT q V) (umap_comp g x u).symm))`. Use `⟨β, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.1 _ _ fun p s h U x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `match p with`. Consider the case `0`. Take `rfl : s = 1` from `by omega`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (zero_add 1) β U).1 x, c₁]`. Express the relevant statement in the definitionally equal form `U ⟶ X at x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Treat this case separately.
 
-Conclude with `(b U x _ (by rw [← map_pow])).symm`. Consider the case `1`. Take `rfl : s = 0` from `by omega`. Establish `key` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (zero_add 1) β U).2 0 (-1) 0 (by simp) h x`. Establish `hf : x.face 0 = x.face 1` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, c₂ (0 + 1) _ _ _ _ one_ne_zero, smap_zero, zero_add, Fin.sum_univ_two, hf, a U x]`. Simplify using the standard rewrite rules. Consider the case `p + 2 => haveI := sec_subsingleton (tw q 1) U (s := s) (by omega)`. Conclude with `Subsingleton.elim _ _`. Conclude with `⟨0, by rw [δ_zero, eq_zero_of_kumT ht hX _ a b]⟩`.
+Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kum_pow_self [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u : (Γ(X, ⊤))ˣ) : kum q (u ^ q) = 0 := by
   obtain ⟨γ, e, a, b⟩ := kum_spec q hX (u ^ q)
@@ -186,7 +186,7 @@ end KumNat
 open KumNat in
 
 /- English proof (translation)
-Introduce `q _`. Conclude with `⟨fun X u hX => kum_spec q hX u, fun f u hX => kum_pull f u hX, fun u v hX => ⟨kum_mul hX u v, kum_pow_self hX u⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem kum_cocycle_natural_additive : ∀ (q : ℕ) [NeZero q], (∀ (X : Scheme.{0}) (u : (Γ(X, ⊤))ˣ), IsUnit (q : Γ(X, ⊤)) → ∃ γ : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1, CohomologyClass.mk γ = kum q u ∧ (∀ (U : Scheme.{0}) (x : U ⟶ X), ev γ.1 1 0 (by simp) U x = 0) ∧ ∀ (U : Scheme.{0}) (x : U ⟶ X) (v : (Γ(U, ⊤))ˣ), v ^ q = Units.map x.appTop.hom.toMonoidHom u → ev γ.1 0 1 (by simp) U x = Sec.map ((res _ (tw q 1)).d 0 1) (kumT q U v)) ∧ (∀ {Y X : Scheme.{0}} (f : Y ⟶ X) (u : (Γ(X, ⊤))ˣ), IsUnit (q : Γ(X, ⊤)) → pull _ (sch.map f) _ _ (kum q u) = kum q (Units.map f.appTop.hom.toMonoidHom u)) ∧ ∀ {X : Scheme.{0}} (u v : (Γ(X, ⊤))ˣ), IsUnit (q : Γ(X, ⊤)) → kum q (u * v) = kum q u + kum q v ∧ kum q (u ^ q) = 0 := by
   intro q _

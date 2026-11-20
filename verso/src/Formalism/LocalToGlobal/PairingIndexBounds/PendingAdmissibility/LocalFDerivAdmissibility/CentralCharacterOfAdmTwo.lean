@@ -10,7 +10,7 @@ namespace Formalism.L2.PairingIndexBounds.PowerSeriesNecessity
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `show MvPowerSeries.coeff (Finsupp.mapDomain f 0) Th = _`. Rewrite using `[Finsupp.mapDomain_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_resV {ι κ R : Type} [Semiring R] (f : κ → ι) (Th : MvPowerSeries ι R) :
     MvPowerSeries.constantCoeff (resV f Th) = MvPowerSeries.constantCoeff Th := by

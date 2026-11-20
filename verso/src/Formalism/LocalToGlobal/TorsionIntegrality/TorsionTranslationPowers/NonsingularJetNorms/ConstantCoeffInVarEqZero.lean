@@ -18,7 +18,7 @@ section Ring
 variable {K : Type} [Field K] {σ : Type} {R : Subring K}
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `ha`. Conclude with `R.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intMv_C {a : K} (ha : a ∈ R) : IntMv R (MvPowerSeries.C a : MvPowerSeries σ K) := by
   classical
@@ -29,7 +29,7 @@ theorem intMv_C {a : K} (ha : a ∈ R) : IntMv R (MvPowerSeries.C a : MvPowerSer
   · exact R.zero_mem
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[map_sum]`. Conclude with `R.sum_mem fun k hk => hF k hk n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intMv_sum {κ : Type} (s : Finset κ) {F : κ → MvPowerSeries σ K}
     (hF : ∀ k ∈ s, IntMv R (F k)) : IntMv R (∑ k ∈ s, F k) := by
@@ -38,33 +38,33 @@ theorem intMv_sum {κ : Type} (s : Finset κ) {F : κ → MvPowerSeries σ K}
   exact R.sum_mem fun k hk => hF k hk n
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPowerSeries.constantCoeff_X s, Formalism.L2.Th1.C.Pts.intMv_X s⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPt_X (s : σ) : IsPt R (MvPowerSeries.X s : MvPowerSeries σ K) :=
   ⟨MvPowerSeries.constantCoeff_X s, Formalism.L2.Th1.C.Pts.intMv_X s⟩
 
 /- English proof (translation)
-The claim follows from `PowerSeries.subst_mul (PowerSeries.HasSubst.X i) f g`.
+A detailed English derivation is pending.
 -/
 theorem series_at_variable_mul (i : σ) (f g : PowerSeries K) : at1 i (f * g) = at1 i f * at1 i g :=
   PowerSeries.subst_mul (PowerSeries.HasSubst.X i) f g
 
 /- English proof (translation)
-Unfold `at1`. Rewrite using `[← PowerSeries.coe_substAlgHom (PowerSeries.HasSubst.X i), map_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem series_at_variable_neg (i : σ) (f : PowerSeries K) : at1 i (-f) = -at1 i f := by
   unfold at1
   rw [← PowerSeries.coe_substAlgHom (PowerSeries.HasSubst.X i), map_neg]
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Th1.C.Pts.constantCoeff_subst (MvPowerSeries.constantCoeff_X i) hf`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_inVar_eq_zero (i : σ) {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (at1 i f) = 0 :=
   Formalism.L2.Th1.C.Pts.constantCoeff_subst (MvPowerSeries.constantCoeff_X i) hf
 
 /- English proof (translation)
-Unfold `phSum`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => constantCoeff_inVar_eq_zero i hf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_phSum [Fintype σ] {ph : PowerSeries K} (hf : PowerSeries.constantCoeff ph = 0) :
     MvPowerSeries.constantCoeff (phSum ph : MvPowerSeries σ K) = 0 := by
@@ -73,7 +73,7 @@ theorem cc_phSum [Fintype σ] {ph : PowerSeries K} (hf : PowerSeries.constantCoe
   exact Finset.sum_eq_zero fun i _ => constantCoeff_inVar_eq_zero i hf
 
 /- English proof (translation)
-The claim follows from `intMv_sum _ fun k _ => Formalism.L2.Th1.C.IntegralMvPolynomialLemmas.intMv_mul (intMv_C (hr k)) (Formalism.L2.Th1.C.IntegralMvPolynomialLemmas.intMv_prod _ fun i _ => Formalism.L2.Th1.C.IntegralMvPolynomialLemmas.intMv_subst (hV k i) (isPt_X i))`.
+A detailed English derivation is pending.
 -/
 theorem intMv_thetaProd {κ : Type} [Fintype κ] [Fintype σ] {r : κ → K} {V : κ → σ → PowerSeries K}
     (hr : ∀ k, r k ∈ R) (hV : ∀ k i, IntPS R (V k i)) : IntMv R (thetaProd r V) :=
@@ -81,9 +81,9 @@ theorem intMv_thetaProd {κ : Type} [Fintype κ] [Fintype σ] {r : κ → K} {V 
     (Formalism.L2.Th1.C.IntegralMvPolynomialLemmas.intMv_prod _ fun i _ => Formalism.L2.Th1.C.IntegralMvPolynomialLemmas.intMv_subst (hV k i) (isPt_X i))
 
 /- English proof (translation)
-Establish `h` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hφ`. Unfold `phSum`. Rewrite using `[← MvPowerSeries.coe_substAlgHom h, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `at1`. Rewrite using `[Formalism.L2.Th1.C.Pts.substMv_subst (MvPowerSeries.constantCoeff_X i) hφ, MvPowerSeries.subst_X h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_phSum {τ : Type} [Fintype σ] (ph : PowerSeries K) {φ : σ → MvPowerSeries τ K}
     (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) :
@@ -103,19 +103,19 @@ section Normed
 variable {K : Type} [NormedField K] {σ : Type}
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => (hR _).symm`.
+A detailed English derivation is pending.
 -/
 theorem integral_iff {R : Subring K} (hR : ∀ a, a ∈ R ↔ ‖a‖ ≤ 1) (f : MvPowerSeries σ K) :
     Integral f ↔ IntMv R f := forall_congr' fun _ => (hR _).symm
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => (hR _).symm`.
+A detailed English derivation is pending.
 -/
 theorem intS_iff {R : Subring K} (hR : ∀ a, a ∈ R ↔ ‖a‖ ≤ 1) (f : PowerSeries K) :
     IntS f ↔ IntPS R f := forall_congr' fun _ => (hR _).symm
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ball [IsUltrametricDist K] (a : K) : a ∈ Formalism.G.unitBall K ↔ ‖a‖ ≤ 1 := Iff.rfl
 
@@ -131,13 +131,13 @@ end CompatibleChartOperations
 open CompatibleChartOperations
 
 /- English proof (translation)
-Introduce `K _ _ _ κ n _ _ ph r V hph hr hV`. Use `⟨?_, (integral_iff mem_ball _).2 (intMv_thetaProd (fun k => (mem_ball _).2 (hr k)) fun k i => (intS_iff mem_ball _).1 (hV k i))⟩` and prove the remaining obligations. Establish `hnph : PowerSeries.constantCoeff (-ph) = 0` using `by rw [map_neg, hph, neg_zero]`. Establish `hE : ∀ i : n, at1 i (mvExp (-ph) : PowerSeries K) = mvExp (-(at1 i ph))`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← series_at_variable_neg]`. Conclude with `Formalism.L2.Th1.C.subst_mvExp hnph (MvPowerSeries.constantCoeff_X i)`. Establish `hS : mvExp (-(phSum ph : MvPowerSeries n K)) = ∏ i : n, mvExp (-(at1 i ph))`. Unfold `phSum`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `Formalism.L2.Th1.C.mvExp_sum _ _ fun i _ => by rw [map_neg, constantCoeff_inVar_eq_zero i hph, neg_zero]`. Unfold `thetaProd`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hS, mul_left_comm, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[series_at_variable_mul, hE]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem product_integral : ProdInt := by
   intro K _ _ _ κ n _ _ ph r V hph hr hV
@@ -161,9 +161,9 @@ theorem product_integral : ProdInt := by
   rw [series_at_variable_mul, hE]
 
 /- English proof (translation)
-Introduce `K _ _ _ n m _ φ hφ0 hφ Φ U hΦ hU`. Establish `h` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hφ0`. Establish `hnΦ : MvPowerSeries.constantCoeff (-Φ) = 0` using `by rw [map_neg, hΦ, neg_zero]`. Use `⟨?_, ?_, MvPowerSeries.constantCoeff_subst_eq_zero h hφ0 hΦ⟩` and prove the remaining obligations. Establish `hneg : MvPowerSeries.subst φ (-Φ) = -MvPowerSeries.subst φ Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← MvPowerSeries.coe_substAlgHom h, map_neg]`. Rewrite using `[MvPowerSeries.subst_mul h, ← hneg]`. Use `congr 1`. Conclude with `Formalism.L2.Th1.C.IntegralMvPolynomialLemmas.substMv_mvExp hnΦ hφ0`. Conclude with `(integral_iff mem_ball _).2 (Formalism.L2.Th1.C.IntegralMvPolynomialLemmas.intMv_substMv ((integral_iff mem_ball _).1 hU) fun i => ⟨hφ0 i, (integral_iff mem_ball _).1 (hφ i)⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem subst_exp_integral : SubstExpInt := by
   intro K _ _ _ n m _ φ hφ0 hφ Φ U hΦ hU
@@ -179,16 +179,16 @@ theorem subst_exp_integral : SubstExpInt := by
       fun i => ⟨hφ0 i, (integral_iff mem_ball _).1 (hφ i)⟩)
 
 /- English proof (translation)
-Introduce `K _ _ _ R hR σ f g`. Conclude with `and_congr Iff.rfl (integral_iff hR _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem congruence_iff_simeq : CongIffSimeq := by
   intro K _ _ _ R hR σ f g
   exact and_congr Iff.rfl (integral_iff hR _).symm
 
 /- English proof (translation)
-Introduce `K _ _ _ R hR l linv ph hFr O _ _ τ hEnd hBin hF1 hN hA n ι _ _ _ f f' hff hff' hd κ _ r V hr hV`. Take `⟨hlp, hFG, hph⟩` from `hFr`. Apply the tactic sequence `have hpt : ∀ i, IsPt R (hypCoord l linv τ f f' i) := fun i => Formalism.L2.Th1.C.Pts.isPt_flin hlp hFG (by rintro (e | e) <;> exact hEnd _) (by rintro (e | e) <;> exact isPt_X _)`. Take `⟨h1, h2⟩` from `hP K κ n ph r V hph hr hV`. Take `⟨h3, h4, h5⟩` from `hS K n (Bool × ι) (hypCoord l linv τ f f') (fun i => (hpt i).1) (fun i => (integral_iff hR _).2 (hpt i).2) (phSum ph) (thetaProd r V) (cc_phSum hph) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨_, _, h4, h5, (hC K R hR _ _ _).1 ?_, by rw [h1, h3]⟩` and prove the remaining obligations. Rewrite using `[subst_phSum ph fun i => (hpt i).1]`. Conclude with `hH K R l linv ph ⟨hlp, hFG, hph⟩ O τ hEnd hBin hF1 hN hA n ι f f' hff hff' hd (Bool × ι) (fun e => MvPowerSeries.X (false, e)) (fun e => MvPowerSeries.X (true, e)) (fun e => isPt_X _) (fun e => isPt_X _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntHyp_of (hP : ProdInt) (hS : SubstExpInt) (hC : CongIffSimeq)
     (hH : Formalism.L2.Th1.C.HyperbolicSum) (_hPt : Formalism.L2.Th1.C.PtClosure) : IntHyp := by
@@ -207,9 +207,9 @@ theorem IntHyp_of (hP : ProdInt) (hS : SubstExpInt) (hC : CongIffSimeq)
     (fun e => isPt_X _) (fun e => isPt_X _)
 
 /- English proof (translation)
-Introduce `K _ _ l linv hlp F hF hc ph ι _ N0 N1`. Rewrite using `[Formalism.L2.Th1.C.Dict.law_eq hlp hF hc]`. Unfold `Formalism.L2.Th1.D.sumE beSum`. Use `Finset.sum_congr rfl fun e => fun _ => ?_` and prove the remaining obligations. Rewrite using `[← Formalism.L2.Th1.C.Dict.subst_cob hlp ph (MvPowerSeries.constantCoeff_X (false, e)) (MvPowerSeries.constantCoeff_X (true, e))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `fin_cases a <;> rfl`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_series_analytic : SumEBridge := by
   intro K _ _ l linv hlp F hF hc ph ι _ N0 N1
@@ -223,18 +223,18 @@ theorem sum_series_analytic : SumEBridge := by
   fin_cases a <;> rfl
 
 /- English proof (translation)
-Introduce `K0 K _ _ j F f hF`. Conclude with `Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_cob j F hF f`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_coboundary : MapCob := by
   intro K0 K _ _ j F f hF
   exact Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_cob j F hF f
 
 /- English proof (translation)
-Introduce `K0 K _ _ _ _ _ _ l d N0 N1 _ σ j hU hj hd2 hev F hF ph0 hph0 hF1 hF2 ι _ _ om oms hOw hTr ζ hζ R hR hFr O _ _ τ hEnd hBin hCF1 hN hA n _ f f' hff hff' hdual κ _ r V hr hV`. Take `⟨U0, Φ, hU0, hΦ0, hΦ, hEq⟩` from `hI K R hR (lgF K l) (Formalism.L2.Th1.D.expF K l) (PowerSeries.map j ph0) hFr O τ hEnd hBin hCF1 hN hA n (ι × Fin N0 × Fin N1) f f' hff hff' hdual κ r V hr hV`. Establish `hFj0 : MvPowerSeries.constantCoeff (MvPowerSeries.map j F) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, hF.1, map_zero]`. Establish `hcob : cob (MvPowerSeries.map j F) (lgF K l) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_lgF j l, ← hM K0 K j F (lgF K0 l) hF.1, hF.2.2, map_zero]`. Establish `hb : beSum (lgF K l) (Formalism.L2.Th1.D.expF K l) (PowerSeries.map j ph0) = (Formalism.L2.Th1.D.sumE (MvPowerSeries.map j (cob F ph0)) : MvPowerSeries (Bool × ι × Fin N0 × Fin N1) K)`. Rewrite using `[hM K0 K j F ph0 hF.1]`. Conclude with `(hS K (lgF K l) (Formalism.L2.Th1.D.expF K l) hFr.1 (MvPowerSeries.map j F) hFj0 hcob (PowerSeries.map j ph0) ι N0 N1).symm`. Rewrite `hΦ` using `[hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hUi, hg⟩` from `hB0 K0 K l d N0 N1 σ j hU hj hd2 hev F hF (cob F ph0) hF1 hF2 ι om oms hOw hTr ζ hζ U0 Φ hU0 hΦ0 hΦ`. Conclude with `⟨U, hUi, fun g h1 h2 => by rw [hEq]; exact hg g h1 h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IntThetaZ_of (hB0 : Formalism.L2.Th1.D.B0) (hI : IntHyp) (hS : SumEBridge) (hM : MapCob) :
     IntThetaZ := by

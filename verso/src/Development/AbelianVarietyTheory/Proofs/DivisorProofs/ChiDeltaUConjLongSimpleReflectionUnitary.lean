@@ -9,11 +9,11 @@ namespace GlobalTheory
 namespace GKUnitary
 
 /- English proof (translation)
-Establish `h1 : ((y⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i (s i) * (y : Matrix (Fin n) (Fin n) R) (s i) i = 1`. Establish `h` using `congrFun (congrFun (Units.inv_mul y) i) i`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single (s i)]`. Rewrite using `[h, Matrix.one_apply_eq]`. Introduce `b _ hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hy b i hb, mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (s i)]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (s i)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `b _ hb`. Rewrite using `[ht b (s i) hb, mul_zero]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[hy b i hb, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -40,7 +40,7 @@ theorem diag_conj_weylRep {R : Type} [CommRing R] {n : ℕ} {s : Equiv.Perm (Fin
   · simp
 
 /- English proof (translation)
-Establish `key : ∀ z : L, ordL z = (fun w : WithZero (Multiplicative ℤ) => if h : w = 0 then (0 : ℤ) else -Multiplicative.toAdd (WithZero.unzero h)) (Valued.v z)` using `fun _ => rfl`. Rewrite using `[key x, key y, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordL_congr {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {x y : L}
     (h : Valued.v x = Valued.v y) : ordL x = ordL y := by
@@ -49,39 +49,37 @@ theorem ordL_congr {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ)
   rw [key x, key y, h]
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.P.fIwasawa_ordL_unit 1 1 (by simp) (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem ordL_one' {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] : ordL (1 : L) = 0 :=
   Formalism.UG.P.fIwasawa_ordL_unit 1 1 (by simp) (by simp) (by simp)
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q hU n k hk hn y hy α t ht`. Take `⟨hσ, hσv, -, -, -, hq2, -⟩` from `hU`. Establish `hq : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Establish `hs : simpleU k = Equiv.swap (lo k) (lo k).rev` using `by simp [simpleU, hk]`. Establish `hact : actU k α = Function.update α k (α k)⁻¹` using `by simp [actU, hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `hn`. Establish `hkv : k.val + 1 = m` using `by have := k.2; omega`. Establish `hrev : ((lo k).rev : ℕ) = m` using `by simp [Fin.val_rev, lo]; omega`. Use `set T : Matrix (Fin n) (Fin n) L := ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hT`. Establish `hdiag : ∀ i, (((y⁻¹ * t * y : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = T (simpleU k i) (simpleU k i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `diag_conj_weylRep hy ht i`. Establish `hprod : σ (T (lo k).rev (lo k).rev) * T (lo k) (lo k) = 1`. Establish `hu` using `(GlobalTheory.LGrp.mem_GU_iff σ n (t : GL (Fin n) L)).1 t.2 (lo k) (lo k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrFun (congrFun (Units.inv_mul (t : GL (Fin n) L)) (lo k)) (lo k)`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single (lo k)]`. Rewrite using `[← hu, h, Matrix.one_apply_eq]`. Introduce `b _ hb`. Conclude with `mul_eq_zero_of_right _ (ht b (lo k) hb)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `ha0 : T (lo k) (lo k) ≠ 0` using `right_ne_zero_of_mul_eq_one hprod`. Establish `hb0 : σ (T (lo k).rev (lo k).rev) ≠ 0` using `left_ne_zero_of_mul_eq_one hprod`. Establish `hord : ordL (T (lo k).rev (lo k).rev) = -ordL (T (lo k) (lo k))`. Establish `h` using `Formalism.UG.P.fIwasawa_ordL_mul _ _ hb0 ha0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[hprod, ordL_one', ordL_congr (hσv _)]`. Use linear arithmetic over natural numbers and integers. Unfold `chiDeltaU`. Rewrite using `[← hT]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ k), ← Finset.mul_prod_erase _ _ (Finset.mem_univ k)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrest : ∀ i ∈ Finset.univ.erase k, (if h : i.val < n then (α i : ℂ) ^ ordL ((((y⁻¹ * t * y : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) ⟨i.val, h⟩ ⟨i.val, h⟩) * (q : ℂ) ^ (-(ordL ((((y⁻¹ * t * y : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) ⟨i.val, h⟩ ⟨i.val, h⟩) …`. Introduce `i hi`. Establish `hik : i ≠ k` using `Finset.ne_of_mem_erase hi`. Establish `hin : i.val < n` using `by have := i.2; omega`. Rewrite using `[dif_pos hin, dif_pos hin, hdiag, hact, Function.update_of_ne hik]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfix : simpleU k ⟨i.val, hin⟩ = ⟨i.val, hin⟩`. Rewrite using `[hs]`. Use `Equiv.swap_apply_of_ne_of_ne ?_ ?_` and prove the remaining obligations. Introduce `h`. Apply `hik` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ext`. Simplify `congrArg Fin.val h` using `[lo]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[hrev]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `i.2` as an intermediate fact. Simplify using `at *`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hfix]`. Rewrite using `[Finset.prod_congr rfl hrest]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hkn : k.val < n` using `by omega`. Rewrite using `[dif_pos hkn, dif_pos hkn, hdiag, hact]`. Use `beta_reduce`. Rewrite using `[Function.update_self]`. Establish `hlk : (⟨k.val, hkn⟩ : Fin n) = lo k` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hlk, hs, Equiv.swap_apply_left, hord]`. Establish `he : ((n : ℤ) - 1 - 2 * (k.val : ℤ)) = 1`. Establish `: (n : ℤ) = m + m` using `by exact_mod_cast hm`. Establish `h2 : (k.val : ℤ) + 1 = m` using `by exact_mod_cast hkv`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Use `set r := ordL (T (lo k) (lo k))`. Establish `hα : (α k : ℂ) ≠ 0` using `(α k).ne_zero`. Establish `hq1 : (q : ℂ) ^ (-(-r) * (1 : ℤ)) * (q : ℂ) ^ (-2 * r) = (q : ℂ) ^ (-r * (1 : ℤ))`. Rewrite using `[← zpow_add₀ hq]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Units.val_inv_eq_inv_val, inv_zpow', ← hq1]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chiDeltaU_conj_simpleU_long :
     ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ),

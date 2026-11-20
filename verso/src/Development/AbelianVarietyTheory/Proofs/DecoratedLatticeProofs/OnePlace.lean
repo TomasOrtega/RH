@@ -37,9 +37,9 @@ noncomputable section
 namespace GlobalTheory.PlaceMatch
 
 /- English proof (translation)
-Take `⟨-, -, v, ε, ⟨α, rfl, -⟩, h⟩` from `he`. Establish `h0 : infPart D (e + cA D e) = 0`. Rewrite using `[h]`. Conclude with `TensorProduct.zero_tmul _ _`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (infPart D) (hg i j)` as an intermediate fact. Rewrite `this` using `[map_mul, h0, zero_mul, Matrix.sub_apply, map_sub, eq_comm, sub_eq_zero]`. Use `Eq.trans this ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_GfC_of_suppAt' {D : D7} {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D V}
     (hg : Formalism.L2.Theta.SuppAt e V g) : g ∈ GfC V := by
@@ -53,7 +53,7 @@ theorem mem_GfC_of_suppAt' {D : D7} {e : Formalism.L2.Theta.AE D} (he : IsSplitI
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
 /- English proof (translation)
-Use `GlobalTheory.LocGrp.suppAt_of_sandwich hg (mt V t⁻¹) (mt V t) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.MixModel.mt_mul, GlobalTheory.MixModel.mt_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, GlobalTheory.MixModel.mt_inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem suppAt_conj' {D : D7} {e : Formalism.L2.Theta.AE D} {V : HSp D} {g : GA D V} (hg : Formalism.L2.Theta.SuppAt e V g) (t : GA D V) :
     Formalism.L2.Theta.SuppAt e V (t⁻¹ * g * t) := by
@@ -61,7 +61,7 @@ theorem suppAt_conj' {D : D7} {e : Formalism.L2.Theta.AE D} {V : HSp D} {g : GA 
   rw [GlobalTheory.MixModel.mt_mul, GlobalTheory.MixModel.mt_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, GlobalTheory.MixModel.mt_inv_mul]
 
 /- English proof (translation)
-Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Take `⟨hr', ξ, hL⟩` from `(hB.st 0 hm).lev`. Establish `h1 : g ∈ GfC _ ∧ finE (d.st 0).V g ∈ lev D.sp.cm (d.st 0).V.gram (d.st 0).β (d.st 0).L` using `hg`. Rewrite `h1` using `[hL, mem_lev, mem_parLev]`. Conclude with `h1.2.1.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finE_mem_St_of_lev {D : D7} {u : D.what₂.Word} (d : GlobalTheory.SeeSaw.Dat D u) (hB : d.Base) (g : GA D (d.st 0).V)
     (hg : g ∈ d.lev 0) : finE (d.st 0).V g ∈ St (d.st 0).β := by
@@ -72,11 +72,11 @@ theorem finE_mem_St_of_lev {D : D7} {u : D.what₂.Word} (d : GlobalTheory.SeeSa
   exact h1.2.1.2.1
 
 /- English proof (translation)
-Introduce `a b a' b' ha hb z hz`. Establish `h1` using `h a b a' b' ha hb z hz`. Establish `hI : GlobalTheory.StepData.IntM (x'.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val` using `GlobalTheory.StepData.intM_of_mem_KO (G.S.P.le_KO x'.2)`. Establish `hM` using `hI.mul_maxM (GlobalTheory.StepData.mem_KOne.1 hc)`. Establish `e : (x'.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val * (((x'.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k)⁻¹ * x.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - 1) = (x.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - (x'.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_sub, Units.val_mul, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Matrix.mul_one]`. Rewrite `hM` using `[e]`. Establish `h2` using `hM a b`. Rewrite `h2` using `[Matrix.sub_apply]`. Establish `e2 : (x.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val a b - (GlobalTheory.LocMod.ofSplit G.q).pr (z : D.host.E) = ((x.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val a b - (x'.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val a b) + ((x'.1 : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val a b - (Glo …` using `by ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `(Valuation.map_add _ _ _).trans_lt (max_lt h2 h1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_of_congr {D : D7} {u : D.what₂.Word} {d : GlobalTheory.SeeSaw.Dat D u}
     {τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E} {PP : Pl D.host.E}
@@ -106,21 +106,21 @@ end GlobalTheory.PlaceMatch
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D u d τ G cG h0 hB _hTP hG Q hmul hN hU PP x`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hn : (d.st 0).V.rank = D.R.r` using `by rw [(hB.st 0 hm).rank]; show D.R.r + 0 * D.R.t = D.R.r; simp`. Establish `hst : ∀ w ∈ d.lev 0, finE (d.st 0).V w ∈ St (d.st 0).β` using `GlobalTheory.PlaceMatch.finE_mem_St_of_lev d hB`. Establish `hbes` using `(G PP).bes 0 D.R.rS h0 ((G PP).s + 1) (Nat.zero_add _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : (G PP).S.ρ = D.R.rS` using `by have := hbes.1; have := (G PP).S.odd; omega`. Establish `hLev` using `GlobalTheory.T.pinned_local_groups_have_level D u d τ cG G hB hG PP 0 ((G PP).s + 1) (Nat.zero_add _)`. Establish `hv : ∀ P : d.c.Pg, (G P).q.v = IsDedekindDomain.HeightOneSpectrum.under (NumberField.RingOfIntegers D.host.F) P.1`. Introduce `P`. Take `⟨ε, hε, hsum⟩` from `(G P).q.above`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ P.1 _ ε (G P).idem hε hsum).symm`. Establish `horth : ∀ P P' : d.c.Pg, P ≠ P' → ((G P).q.e + cA D (G P).q.e) * ((G P').q.e + cA D (G P').q.e) = 0`. Introduce `P P' hne`. Take `⟨ε, hε, hsum⟩` from `(G P).q.above`. Take `⟨ε', hε', hsum'⟩` from `(G P').q.above`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvv : (G P).q.v ≠ (G P').q.v`. Rewrite using `[hv P, hv P']`. Introduce `h`. Conclude with `hne (Subtype.ext (GlobalTheory.LevelPlaces.injOn_under D d.c hB.com P.2 P'.2 h))`. Rewrite using `[hsum, hsum', ← map_mul, GlobalTheory.SingleDatum.BasePair.placeIdem_mul_eq_zero hε' hε hvv, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hoff : ∀ g : GA D (d.st 0).V, Formalism.L2.Theta.SuppAt (G PP).q.e (d.st 0).V g → (d.t 0)⁻¹ * g * d.t 0 ∈ d.lev 0 → ∀ PP' ∈ d.c.Pg, PP' ≠ PP.1 → redFn (d.st 0).β PP' (finE (d.st 0).V ((d.t 0)⁻¹ * g * d.t 0)) = 1` using `fun g hg hl PP' hPP' hne => GlobalTheory.T.reduction_eq_one_of_supportedAt_orthogonal_splitPlace D (G ⟨PP', hPP'⟩).k (G ⟨PP', hPP'⟩).q PP' (G ⟨PP', hPP'⟩).idem (G PP).q.e (horth PP ⟨PP', hPP'⟩ fun h => hne (congrArg Subtype.val h).symm) _ _ _ (GlobalTheory.PlaceMatch.suppAt_conj' …`. Take `⟨n, γ, hnN, hnJ, hγJ, hc⟩` from `GlobalTheory.T.exists_N_embX_inv_mul_mem_KOne' (G PP).k (G PP).s D.R.k (G PP).S x.1 x.2`. Take `⟨hup1, hup2⟩` from `GlobalTheory.T.levelZeroUniformizerFrame_unipotent_and_embedGL (G PP).k (G PP).s D.R.k (G PP).S (Fin D.R.t)`. Take `⟨hupN, -⟩` from `hup1 ⟨n, hnJ⟩ hnN`. Rewrite `hupN` using `[hρ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν⟩` from `GlobalTheory.LocMod.Witness.exists_isLoc (GlobalTheory.LocMod.ofSplit (G PP).q) ((G PP).FY 0 ((G PP).s + 1) (Nat.zero_add _)) (GlobalTheory.LevZeroGen.upZero (G PP).S (Fin D.R.t) n)`. Take `⟨η, hη⟩` from `GlobalTheory.LocMod.Witness.exists_isLoc (GlobalTheory.LocMod.ofSplit (G PP).q) ((G PP).FX 0 (Nat.zero_le _)) (GlobalTheory.StepData.reGL (GlobalTheory.LevZeroGen.xZero (Fin D.R.k) (Fin D.R.t)) γ)`. Establish `hη'` using `GlobalTheory.T.besselFrame_embedding_localElement_eq_embedded_matrix D (G PP).k _ _ _ _ _ _ _ _ hbes η _ hη`. Rewrite `hη'` using `[← hup2]`. Establish `hνl` using `hLev ν _ hν ((GlobalTheory.LevZeroGen.upZero_mem_lev _ _ _).2 hnJ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hηl` using `hLev _ _ hη' ((GlobalTheory.LevZeroGen.upZero_mem_lev _ _ _).2 hγJ)`. Establish `hQν` using `hN PP ν _ (GlobalTheory.LocFlag.mem_flagN D _ _ _ _ _ _ _ _ _ hbes ν _ hupN hν) hupN hν hνl`. Establish `hQη` using `hU η (GlobalTheory.PlaceMatch.mem_GfC_of_suppAt' (G PP).q.split hη.1) hηl`. Establish `hprod` using `GlobalTheory.LocGrp.isLoc_mul _ hν hη'`. Rewrite `hprod` using `[← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (d.t 0)⁻¹ * ν * d.t 0 * ((d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o η * d.t 0) = (d.t 0)⁻¹ * (ν * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o η) * d.t 0` using `by group`. Establish `hl : (d.t 0)⁻¹ * (ν * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o η) * d.t 0 ∈ d.lev 0` using `hLev _ _ hprod ((GlobalTheory.LevZeroGen.upZero_mem_lev _ _ _).2 (mul_mem hnJ hγJ))`. Use `⟨_, hl, e ▸ hmul _ hνl _ hηl hQν hQη, fun hr => ?_, hoff _ hprod.1 hl⟩` and prove the remaining obligations. Conclude with `GlobalTheory.PlaceMatch.red_of_congr (G PP) x ⟨_, mul_mem hnJ hγJ⟩ _ (GlobalTheory.T.local_level_zero_stabilizer_mem D u d τ PP.1 (G PP) hB hr _ ⟨_, mul_mem hnJ hγJ⟩ hprod (hst _ hl)) hc`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PlaceMatch.one_place : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d τ PP.1) (cG : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), d.Base → IsTypePlaces d.c.Pg → GlobalTheory.LocMod.PinGBy G cG → ∀ Q : GA D (d.st 0).V → Prop, (∀ k ∈ d.lev 0, ∀ k' ∈ d.lev 0, Q k → Q k' → Q (k * k')) → (∀ (PP : d.c.Pg) (n : GA D (d.st 0).V) (q : GL (GlobalTheory.StepData.XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin ((G PP).s + 1)) (G PP).k), n ∈ flagN (d.bes 0 D.R.rS h0).d → q ∈ GlobalTheory.RootEx.N (G PP).k _ ((G PP).s + 1) (D.R.rS + 1) → (GlobalTheory.LocMod.ofSplit (G PP).q).IsLoc ((G PP).FY 0 ((G PP).s + 1) (Nat.zero_add _)) n q → (d.t 0)⁻¹ * n * d.t 0 ∈ d.lev 0 → Q ((d.t 0)⁻¹ * n * d.t 0)) → (∀ b ∈ GfC (D.sp.X 0), (d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b * d.t 0 ∈ d.lev 0 → Q ((d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b * d.t 0)) → ∀ (PP : d.c.Pg) (x : (G PP).S.P.J), ∃ m ∈ d.lev 0, Q m ∧ (∀ hr : D.R.r ≤ (d.st 0).V.rank, (G PP).Red x (upperLeftBlock hr (redFn (d.st 0).β PP.1 (finE (d.st 0).V m)))) ∧ ∀ PP' ∈ d.c.Pg, PP' ≠ PP.1 → redFn (d.st 0).β PP' (finE (d.st 0).V m) = 1 := by
   intro D u d τ G cG h0 hB _hTP hG Q hmul hN hU PP x

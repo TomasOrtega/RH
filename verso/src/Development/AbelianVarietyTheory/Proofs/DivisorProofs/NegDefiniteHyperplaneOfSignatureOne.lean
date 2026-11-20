@@ -15,7 +15,7 @@ variable {n : ℕ}
 def S (H : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) : ℂ := star x ⬝ᵥ H *ᵥ y
 
 /- English proof (translation)
-Unfold `S`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_conj (P D : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     S (Pᴴ * D * P) x y = S D (P *ᵥ x) (P *ᵥ y) := by
@@ -23,7 +23,7 @@ theorem S_conj (P D : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]
 
 /- English proof (translation)
-Unfold `S`. Rewrite using `[smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_smul_mat (c : ℂ) (H : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     S (c • H) x y = c * S H x y := by
@@ -31,7 +31,7 @@ theorem S_smul_mat (c : ℂ) (H : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → �
   rw [smul_mulVec, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `S`. Rewrite using `[mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_smul_right (c : ℂ) (H : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     S H x (c • y) = c * S H x y := by
@@ -39,7 +39,7 @@ theorem S_smul_right (c : ℂ) (H : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n →
   rw [mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `S`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem S_smul_left (c : ℂ) (H : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     S H (c • x) y = (starRingEnd ℂ) c * S H x y := by
@@ -47,7 +47,7 @@ theorem S_smul_left (c : ℂ) (H : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → 
   rw [star_smul, smul_dotProduct, smul_eq_mul]; rfl
 
 /- English proof (translation)
-Unfold `S`. Rewrite using `[mulVec_sub, dotProduct_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_sub_right (H : Matrix (Fin n) (Fin n) ℂ) (x y y' : Fin n → ℂ) :
     S H x (y - y') = S H x y - S H x y' := by
@@ -55,7 +55,7 @@ theorem S_sub_right (H : Matrix (Fin n) (Fin n) ℂ) (x y y' : Fin n → ℂ) :
   rw [mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Unfold `S`. Rewrite using `[star_sub, sub_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_sub_left (H : Matrix (Fin n) (Fin n) ℂ) (x x' y : Fin n → ℂ) :
     S H (x - x') y = S H x y - S H x' y := by
@@ -63,7 +63,7 @@ theorem S_sub_left (H : Matrix (Fin n) (Fin n) ℂ) (x x' y : Fin n → ℂ) :
   rw [star_sub, sub_dotProduct]
 
 /- English proof (translation)
-Unfold `S`. Express the relevant statement in the definitionally equal form `_ = star _`. Rewrite using `[← star_dotProduct_star, star_star, star_mulVec, hH.eq, ← dotProduct_mulVec]`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_symm {H : Matrix (Fin n) (Fin n) ℂ} (hH : H.IsHermitian) (x y : Fin n → ℂ) :
     S H y x = (starRingEnd ℂ) (S H x y) := by
@@ -72,7 +72,7 @@ theorem S_symm {H : Matrix (Fin n) (Fin n) ℂ} (hH : H.IsHermitian) (x y : Fin 
   rw [← star_dotProduct_star, star_star, star_mulVec, hH.eq, ← dotProduct_mulVec]
 
 /- English proof (translation)
-Unfold `S`. Simplify using `only [dotProduct, mulVec_diagonal, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -86,7 +86,7 @@ theorem S_diag (d : Fin n → ℝ) (x : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `S`. Simplify using `only [dotProduct, mulVec, Pi.star_apply]`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem S_cont (H : Matrix (Fin n) (Fin n) ℂ) :
     Continuous fun xy : (Fin n → ℂ) × (Fin n → ℂ) => S H xy.1 xy.2 := by
@@ -95,17 +95,17 @@ theorem S_cont (H : Matrix (Fin n) (Fin n) ℂ) :
   fun_prop
 
 /- English proof (translation)
-Take `⟨ε, hε, h⟩` from `(isCompact_sphere (0 : Fin n → ℂ) 1).exists_forall_le' (a := 0) hc.continuousOn (fun x hx => hp x (by rintro rfl; simp at hx))`. Establish `key : ∀ x, ε * ‖x‖ ^ 2 ≤ q x`. Introduce `x`. Distinguish the cases in `hx : x = 0`. Use `hh 0 x` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Substitute `hx` using the available equality. Simplify using `at this ⊢`. Conclude with `this.ge`. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Establish `h1` using `h (((‖x‖⁻¹ : ℝ) : ℂ) • x) (by`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, Complex.norm_real, norm_inv, norm_norm]`. Conclude with `inv_mul_cancel₀ hn.ne')`. Rewrite `h1` using `[hh]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨M, hM⟩` from `(Set.finite_range fun b : Fin n => q (Pi.single b 1)).bddAbove`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨√(M / ε), fun Y s hs hY a b => ?_⟩` and prove the remaining obligations. Establish `h1` using `key (Y *ᵥ Pi.single b 1)`. Rewrite `h1` using `[hY]`. Establish `h2 : q (Pi.single b 1) ≤ M` using `hM ⟨b, rfl⟩`. Establish `h3 : ‖Y a b‖ ≤ ‖Y *ᵥ Pi.single b 1‖`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `norm_le_pi_norm (Y *ᵥ Pi.single b 1) a` as an intermediate fact. Simplify `this` using `[mulVec_single_one]`. Rewrite using `[← Real.sqrt_mul' _ hs]`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Establish `h4 : ‖Y a b‖ ^ 2 ≤ ‖Y *ᵥ Pi.single b 1‖ ^ 2` using `by gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : s * q (Pi.single b 1) ≤ s * M` using `by gcongr`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hε]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem bound_of_pos (q : (Fin n → ℂ) → ℝ) (hc : Continuous q)
     (hh : ∀ (t : ℝ) x, q ((t : ℂ) • x) = t ^ 2 * q x) (hp : ∀ x, x ≠ 0 → 0 < q x) :
@@ -143,14 +143,14 @@ theorem bound_of_pos (q : (Fin n → ℂ) → ℝ) (hc : Continuous q)
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[← S_conj, h, S_smul_mat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem S_sim {H Y : Matrix (Fin n) (Fin n) ℂ} {s : ℝ} (h : Yᴴ * H * Y = (s : ℂ) • H) (x y : Fin n → ℂ) :
     S H (Y *ᵥ x) (Y *ᵥ y) = s * S H x y := by
   rw [← S_conj, h, S_smul_mat]
 
 /- English proof (translation)
-Rewrite using `[S_smul_left, S_smul_right]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem S_real_smul (H : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) (x : Fin n → ℂ) :
     (S H ((t : ℂ) • x) ((t : ℂ) • x)).re = t ^ 2 * (S H x x).re := by
@@ -159,7 +159,7 @@ theorem S_real_smul (H : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) (x : Fin n → �
   ring
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `bound_of_pos (fun x => -(S H x x).re) ((Complex.continuous_re.comp ((S_cont H).comp (continuous_id.prodMk continuous_id))).neg) (fun t x => by rw [S_real_smul]; ring) (fun x hx => neg_pos.2 (hneg x hx))`. Use `⟨K, fun Y s hs hY => hK Y s hs fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[S_sim hY]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bound_neg (H : Matrix (Fin n) (Fin n) ℂ) (hneg : ∀ x, x ≠ 0 → (S H x x).re < 0) :
     ∃ K : ℝ, ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ), 0 ≤ s → Yᴴ * H * Y = (s : ℂ) • H →
@@ -172,27 +172,25 @@ theorem bound_neg (H : Matrix (Fin n) (Fin n) ℂ) (hneg : ∀ x, x ≠ 0 → (S
   simp
 
 /- English proof (translation)
-Establish `him : ∀ x, (S H x x).im = 0` using `fun x => by`. Use `congrArg Complex.im (S_symm hH x x)` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz0 : z ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `[S] at hz`. Establish `hl : l ⬝ᵥ z ≠ 0` using `fun h => by linarith [hneg z hz0 h]`. Take `⟨K, hK⟩` from `bound_of_pos (fun x => 2 * Complex.normSq (S H z x) - (S H z z).re * (S H x x).re) (by`. Establish `h1 : Continuous fun x => S H z x` using `(S_cont H).comp (continuous_const.prodMk continuous_id)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : Continuous fun x => S H x x` using `(S_cont H).comp (continuous_id.prodMk continuous_id)`. Establish `h3` using `Complex.continuous_normSq.comp h1`. Establish `h4` using `Complex.continuous_re.comp h2`. Conclude with `(continuous_const.mul h3).sub (continuous_const.mul h4))`. Use the proof step `(fun t x => by rw [S_real_smul, S_smul_right, map_mul, Complex.normSq_ofReal]; ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun x hx => by set t : ℂ := (l ⬝ᵥ x) / (l ⬝ᵥ z) with ht`. Establish `hu : l ⬝ᵥ (x - t • z) = 0`. Rewrite using `[dotProduct_sub, dotProduct_smul, smul_eq_mul, ht, div_mul_cancel₀ _ hl, sub_self]`. Distinguish the cases in `h0 : x - t • z = 0`. Establish `hx' : x = t • z` using `sub_eq_zero.1 h0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht0 : t ≠ 0`. Introduce and unpack `h`. Rewrite `hx'` using `[h, zero_smul]`. Conclude with `hx hx'`. Establish `htp : 0 < Complex.normSq t` using `Complex.normSq_pos.2 ht0`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `clear_value t`. Substitute `hx'` using the available equality. Rewrite using `[S_smul_left, S_smul_right, map_mul, ← mul_assoc ((starRingEnd ℂ) t), ← Complex.normSq_eq_conj_mul_self, Complex.normSq_apply (S H z z), him z]`. Simplify using `only [Complex.re_ofReal_mul]`. Use `mul_pos htp (mul_pos hz hz)` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `hneg _ h0 hu`. Rewrite `h1` using `[S_sub_left, S_sub_right, S_sub_right, S_smul_left, S_smul_left, S_smul_right, S_smul_right, S_symm hH z x]`. Simplify using `only [Complex.sub_re, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, him z] at h1`. Rewrite using `[Complex.normSq_apply]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `mul_pos hz (neg_pos.2 h1)`. Use polynomial arithmetic with `[sq_nonneg ((S H z x).re - t.re * (S H z z).re), sq_nonneg ((S H z x).im - t.im * (S H z z).re), sq_nonneg (S H z x).re, sq_nonneg (S H z x).im])`. Use `⟨K, fun Y s hs hY ⟨c, hc⟩ => hK Y s hs.le fun x => ?_⟩` and prove the remaining obligations. Establish `e1` using `S_sim hY z z`. Rewrite `e1` using `[hc, S_smul_left, S_smul_right, ← mul_assoc, ← Complex.normSq_eq_conj_mul_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : Complex.normSq c = s`. Use `congrArg Complex.re e1` as an intermediate fact. Simplify using `only [Complex.re_ofReal_mul] at this`. Conclude with `mul_right_cancel₀ hz.ne' this`. Establish `e3` using `S_sim hY z x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `e3` using `[hc, S_smul_left]`. Establish `e4` using `congrArg Complex.normSq e3`. Rewrite `e4` using `[map_mul, map_mul, Complex.normSq_conj, e2, Complex.normSq_ofReal, mul_assoc]`. Establish `e5` using `mul_left_cancel₀ hs.ne' e4`. Rewrite using `[S_sim hY, e5, Complex.re_ofReal_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem bound_hyp (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian) (l : Fin n → ℂ)
     (hneg : ∀ x, x ≠ 0 → l ⬝ᵥ x = 0 → (S H x x).re < 0) (z : Fin n → ℂ) (hz : 0 < (S H z z).re) :
@@ -256,9 +254,9 @@ theorem bound_hyp (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian) (l : Fin
   ring
 
 /- English proof (translation)
-Use `⟨star (hh.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * Z, fun x hx => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hU : IsUnit (star (hh.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * Z)` using `(Unitary.isUnit_coe (U := hh.eigenvectorUnitary)).star.mul hZ`. Conclude with `(mulVec_injective_iff_isUnit.2 hU) (by rw [hx, mulVec_zero])`. Rewrite using `[← S_diag, ← S_conj]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hh.spectral_theorem, Unitary.conjStarAlgAut_apply]`. Rewrite using `[conjTranspose_mul, star_eq_conjTranspose, conjTranspose_conjTranspose]`. Simplify using `only [mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_diag {h : Matrix (Fin n) (Fin n) ℂ} (hh : h.IsHermitian) (Z : Matrix (Fin n) (Fin n) ℂ)
     (hZ : IsUnit Z) : ∃ P : Matrix (Fin n) (Fin n) ℂ, (∀ x, P *ᵥ x = 0 → x = 0) ∧
@@ -275,7 +273,7 @@ theorem exists_diag {h : Matrix (Fin n) (Fin n) ℂ} (hh : h.IsHermitian) (Z : M
     rfl
 
 /- English proof (translation)
-Rewrite `hd` using `[hh.det_eq_prod_eigenvalues, Finset.prod_ne_zero_iff]`. Simplify using `using hd i (Finset.mem_univ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eig_ne {h : Matrix (Fin n) (Fin n) ℂ} (hh : h.IsHermitian) (hd : h.det ≠ 0) (i : Fin n) :
     hh.eigenvalues i ≠ 0 := by
@@ -283,9 +281,9 @@ theorem eig_ne {h : Matrix (Fin n) (Fin n) ℂ} (hh : h.IsHermitian) (hd : h.det
   simpa using hd i (Finset.mem_univ _)
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `Function.ne_iff.1 hx`. Establish `hj' : x j ≠ 0` using `hj`. Establish `: ∑ i, d i * ‖x i‖ ^ 2 < ∑ _i : Fin n, (0 : ℝ)`. Use `Finset.sum_lt_sum (fun i _ => ?_) ⟨j, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : x i = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hi]`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (h i hi).le (sq_nonneg _)`. Conclude with `mul_neg_of_neg_of_pos (h j hj') (by positivity)`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_neg (d : Fin n → ℝ) (x : Fin n → ℂ) (hx : x ≠ 0) (h : ∀ i, x i ≠ 0 → d i < 0) :
     ∑ i, d i * ‖x i‖ ^ 2 < 0 := by
@@ -300,7 +298,7 @@ theorem sum_neg (d : Fin n → ℝ) (x : Fin n → ℂ) (hx : x ≠ 0) (h : ∀ 
   simpa using this
 
 /- English proof (translation)
-Take `⟨P, hP, e⟩` from `exists_diag hh Z hZ`. Rewrite using `[e]`. Use `sum_neg _ _ (fun h0 => hx (hP x h0)) fun i _ => ?_` and prove the remaining obligations. Use `Fintype.card_eq_zero_iff.1 hs` as an intermediate fact. Conclude with `lt_of_le_of_ne (not_lt.1 fun hi => this.false ⟨i, hi⟩) (eig_ne hh hd i)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem neg_definite_of_signature_zero {h : Matrix (Fin n) (Fin n) ℂ} (hh : h.IsHermitian) (hd : h.det ≠ 0)
     (hs : sigPosH hh = 0) (Z : Matrix (Fin n) (Fin n) ℂ) (hZ : IsUnit Z) (x : Fin n → ℂ) (hx : x ≠ 0) :
@@ -312,9 +310,9 @@ theorem neg_definite_of_signature_zero {h : Matrix (Fin n) (Fin n) ℂ} (hh : h.
   exact lt_of_le_of_ne (not_lt.1 fun hi => this.false ⟨i, hi⟩) (eig_ne hh hd i)
 
 /- English proof (translation)
-Take `⟨P, hP, e⟩` from `exists_diag hh Z hZ`. Take `⟨⟨i₀, hi₀⟩, hu⟩` from `Fintype.card_eq_one_iff.1 hs`. Use `⟨P i₀, fun x hx hl => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `sum_neg _ _ (fun h0 => hx (hP x h0)) fun i hi => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_ne (not_lt.1 fun hi' => hi ?_) (eig_ne hh hd i)` and prove the remaining obligations. Establish `: i = i₀` using `congrArg Subtype.val (hu ⟨i, hi'⟩)`. Rewrite using `[this]`. Conclude with `hl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_definite_hyperplane_of_signature_one {h : Matrix (Fin n) (Fin n) ℂ} (hh : h.IsHermitian) (hd : h.det ≠ 0)
     (hs : sigPosH hh = 1) (Z : Matrix (Fin n) (Fin n) ℂ) (hZ : IsUnit Z) :
@@ -336,9 +334,9 @@ section Algebra
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hu : IsUnit h.det` using `isUnit_iff_ne_zero.2 hd`. Establish `h1 : h * h⁻¹ = 1` using `mul_nonsing_inv h hu`. Establish `e1 : Y * (s⁻¹ • (B * (h⁻¹ * Yᴴ * h) * C')) = 1`. Rewrite using `[Matrix.mul_smul, ← mul_assoc, ← mul_assoc, e, Matrix.smul_mul, hC, smul_smul, inv_mul_cancel₀ hs, one_smul]`. Establish `e2` using `mul_eq_one_comm.1 e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB'` using `mul_eq_one_comm.1 hB`. Establish `e3 : B * (h⁻¹ * Yᴴ * h) * C' * Y = s • (1 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[← e2, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ hs, one_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem rearr {h B B' Y C C' : Matrix (Fin n) (Fin n) ℂ} (hd : h.det ≠ 0) (hB : B * B' = 1) (hC : C * C' = 1)
     (s : ℂ) (hs : s ≠ 0) (e : Y * B * (h⁻¹ * Yᴴ * h) = s • C) :
@@ -361,7 +359,7 @@ end Algebra
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `algebraMap ℝ _ r * G.psi w x = _`. Rewrite using `[← Algebra.smul_def]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem psiR_tmul (G : HTGroup p) (w : InfinitePlace G.F) (r : ℝ) (x : G.C) :
     G.psiR w (r ⊗ₜ x) = (r : ℂ) • G.psi w x := by
@@ -371,9 +369,9 @@ theorem psiR_tmul (G : HTGroup p) (w : InfinitePlace G.F) (r : ℝ) (x : G.C) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y`. Rewrite using `[starT_tmul, psiR_tmul, psiR_tmul, G.psi_star, conjTranspose_smul]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy`. Simplify using `only [map_add, MulOpposite.unop_add, hx, hy, conjTranspose_add, mul_add, add_mul]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem psiR_star (G : HTGroup p) (w : InfinitePlace G.F) (x : ℝ ⊗[ℚ] G.C) :
     G.psiR w (starT G.star ℝ x).unop = (G.gram w)⁻¹ * (G.psiR w x)ᴴ * G.gram w := by
@@ -386,9 +384,9 @@ theorem psiR_star (G : HTGroup p) (w : InfinitePlace G.F) (x : ℝ ⊗[ℚ] G.C)
     simp only [map_add, MulOpposite.unop_add, hx, hy, conjTranspose_add, mul_add, add_mul]
 
 /- English proof (translation)
-Establish `h` using `congrArg (G.psiR w) hz`. Establish `e : G.psiR w (inC G ℝ β) = G.psi w β`. Express the relevant statement in the definitionally equal form `G.psiR w ((1 : ℝ) ⊗ₜ (β : G.C)) = _`. Rewrite using `[psiR_tmul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[map_mul, map_mul, psiR_star, e, Units.val_one, map_one, map_one, ← one_smul ℂ (1 : Matrix _ _ ℂ)]`. Use `rearr (B' := G.psi w ((β⁻¹ : G.Cˣ) : G.C)) (G.gram_det w) (by rw [← map_mul, Units.mul_inv, map_one]) (mul_one 1) 1 one_ne_zero h` as an intermediate fact. Rewrite `this` using `[mul_one, one_smul]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_eq (G : HTGroup p) (w : InfinitePlace G.F) (β : G.Cˣ) (z : (ℝ ⊗[ℚ] G.C)ˣ) (hz : Triv G ℝ β z 1) :
     herm G w β = (G.psiR w z)ᴴ * G.gram w * G.psiR w z := by
@@ -403,9 +401,9 @@ theorem herm_eq (G : HTGroup p) (w : InfinitePlace G.F) (β : G.Cˣ) (z : (ℝ �
   exact this.symm
 
 /- English proof (translation)
-Establish `h` using `congrArg (G.psi w) y.2.1`. Establish `e : G.psi w (algebraMap ℚ G.C (y.1.2 : ℚ) * β) = ((((y.1.2 : ℚ) : ℝ)) : ℂ) • G.psi w β`. Rewrite using `[← Algebra.smul_def, map_rat_smul]`. Use extensionality with `i j`. Simplify using `[Rat.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[e, map_mul, map_mul, sh, G.psi_star]`. Establish `hb : G.psi w β * G.psi w ((β⁻¹ : G.Cˣ) : G.C) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Conclude with `rearr (G.gram_det w) hb hb _ (by exact_mod_cast y.1.2.ne_zero) h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sim_eq (G : HTGroup p) (w : InfinitePlace G.F) (β : G.Cˣ) (y : grp G β) :
     (G.psi w (y.1.1 : G.C))ᴴ * herm G w β * G.psi w (y.1.1 : G.C) = ((((y.1.2 : ℚ) : ℝ)) : ℂ) • herm G w β := by
@@ -419,15 +417,15 @@ theorem sim_eq (G : HTGroup p) (w : InfinitePlace G.F) (β : G.Cˣ) (y : grp G �
   exact rearr (G.gram_det w) hb hb _ (by exact_mod_cast y.1.2.ne_zero) h
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hT`. Establish `hpos : ∀ y : grp G β, (0 : ℝ) < ((y.1.2 : ℚ) : ℝ)` using `fun y => by exact_mod_cast y.2.2`. Establish `hZ : ∀ w, IsUnit (G.psiR w x)` using `fun w => x.isUnit.map _`. Establish `key : ∀ w : InfinitePlace G.F, ∃ K : ℝ, ∀ y : grp G β, FixL G v β y z → ∀ a b : Fin G.n, ‖G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) a b‖ ≤ K * √((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) : ℝ)`. Introduce `w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `G.sig w with ⟨h1, -⟩ | ⟨h0, -⟩` into its components or cases. Take `⟨v₀, hu⟩` from `Fintype.card_eq_one_iff.1 hG.2`. Establish `hwv : w = v` using `congrArg Subtype.val ((hu ⟨w, h1⟩).trans (hu ⟨v, hv⟩).symm)`. Substitute `hwv` using the available equality. Take `⟨l, hl⟩` from `neg_definite_hyperplane_of_signature_one (G.gram_herm w) (G.gram_det w) h1 _ (hZ w)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Rewrite `hl` using `[← herm_eq G w β x hx]`. Establish `hH : (herm G w β).IsHermitian`. Rewrite using `[herm_eq G w β x hx]`. Conclude with `isHermitian_conjTranspose_mul_mul _ (G.gram_herm w)`. Take `⟨K, hK⟩` from `bound_hyp _ hH l hl z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨K, fun y hy => hK _ _ (hpos y) (sim_eq G w β y) hy⟩`. Establish `hl` using `neg_definite_of_signature_zero (G.gram_herm w) (G.gram_det w) h0 _ (hZ w)`. Rewrite `hl` using `[← herm_eq G w β x hx]`. Take `⟨K, hK⟩` from `bound_neg _ hl`. Conclude with `⟨K, fun y _ => hK _ _ (hpos y).le (sim_eq G w β y)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose K hK using key`. Take `⟨M, hM⟩` from `(Set.finite_range K).bddAbove`. Conclude with `⟨M, fun y hy w a b => (hK w y hy a b).trans (mul_le_mul_of_nonneg_right (hM ⟨w, rfl⟩) (Real.sqrt_nonneg _))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main (p : ℕ) [Fact p.Prime] (G : HTGroup p) (hG : IsSimple G) (v : InfinitePlace G.F)
     (hv : sigPosH (G.gram_herm v) = 1) (β : G.Cˣ) (_hβ : sh G (β : G.C) = β)

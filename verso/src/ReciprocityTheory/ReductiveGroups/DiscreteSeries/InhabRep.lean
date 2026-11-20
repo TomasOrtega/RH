@@ -7,11 +7,11 @@ open Finset Matrix
 namespace ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Use `⟨⟨⟨rfl, fun a _ b _ => ?_⟩, fun g _ v => ?_, fun v => continuousOn_const⟩, ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `a b c d`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `k _ v _`. Conclude with `Submodule.mem_top`. Introduce `X _ v`. Establish `h1 : ((actM (fun _ _ => (0 : Module.End ℂ (⊤ : Submodule ℂ H))) X v : (⊤ : Submodule ℂ H)) : H) = 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[actM]`. Rewrite using `[h1]`. Simplify using `only [ContinuousLinearMap.one_apply]`. Conclude with `hasDerivAt_const _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDerivedOn_trivial {n : ℕ} (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] :
@@ -46,9 +46,9 @@ theorem rsM_apply {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (v : (⊤ : Submodu
     ((rsM A v : (⊤ : Submodule ℂ (EH n))) : EH n) = toEuclideanCLM (n := Fin n) (𝕜 := ℂ) A v := rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show toEuclideanCLM (n := Fin n) (𝕜 := ℂ) A (toEuclideanCLM (n := Fin n) (𝕜 := ℂ) B (v : EH n)) = toEuclideanCLM (n := Fin n) (𝕜 := ℂ) (A * B) (v : EH n)`. Rewrite using `[map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rsM_mul {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : rsM A * rsM B = rsM (A * B) := by
 
@@ -60,9 +60,9 @@ theorem rsM_mul {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : rsM A * rsM B = r
   rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show toEuclideanCLM (n := Fin n) (𝕜 := ℂ) A (v : EH n) - toEuclideanCLM (n := Fin n) (𝕜 := ℂ) B (v : EH n) = toEuclideanCLM (n := Fin n) (𝕜 := ℂ) (A - B) (v : EH n)`. Rewrite using `[map_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rsM_sub {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : rsM A - rsM B = rsM (A - B) := by
 
@@ -74,9 +74,9 @@ theorem rsM_sub {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : rsM A - rsM B = r
   rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show toEuclideanCLM (n := Fin n) (𝕜 := ℂ) 0 (v : EH n) = (0 : EH n)`. Rewrite using `[map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rsM_zero {n : ℕ} : rsM (0 : Matrix (Fin n) (Fin n) ℂ) = 0 := by
 
@@ -88,9 +88,9 @@ theorem rsM_zero {n : ℕ} : rsM (0 : Matrix (Fin n) (Fin n) ℂ) = 0 := by
   rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show toEuclideanCLM (n := Fin n) (𝕜 := ℂ) (-A) (v : EH n) = -toEuclideanCLM (n := Fin n) (𝕜 := ℂ) A (v : EH n)`. Rewrite using `[map_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rsM_neg {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : rsM (-A) = -rsM A := by
 
@@ -102,9 +102,9 @@ theorem rsM_neg {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : rsM (-A) = -rsM A :
   rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show toEuclideanCLM (n := Fin n) (𝕜 := ℂ) A (v : EH n) + toEuclideanCLM (n := Fin n) (𝕜 := ℂ) B (v : EH n) = toEuclideanCLM (n := Fin n) (𝕜 := ℂ) (A + B) (v : EH n)`. Rewrite using `[map_add]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rsM_add {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : rsM A + rsM B = rsM (A + B) := by
 
@@ -116,9 +116,9 @@ theorem rsM_add {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : rsM A + rsM B = r
   rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show c • toEuclideanCLM (n := Fin n) (𝕜 := ℂ) A (v : EH n) = toEuclideanCLM (n := Fin n) (𝕜 := ℂ) (c • A) (v : EH n)`. Rewrite using `[map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rsM_smul {n : ℕ} (c : ℂ) (A : Matrix (Fin n) (Fin n) ℂ) : c • rsM A = rsM (c • A) := by
 
@@ -135,9 +135,9 @@ def rsL (n : ℕ) : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (⊤ :
   map_smul' c A := (rsM_smul c A).symm
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, X a b • rsM (single a b (1 : ℂ)) = rsL n (X a b • single a b (1 : ℂ))` using `fun a b => rsM_smul _ _`. Establish `h2 : ∑ a, ∑ b, X a b • single a b (1 : ℂ) = X`. Use extensionality with `i j`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single i (fun c _ hc => by simp [hc]) (by simp), Finset.sum_eq_single j (fun c _ hc => by simp [hc]) (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Unfold `actM`. Simplify using `only [h1, ← map_sum, h2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem actM_rsM {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     actM (fun a b => rsM (single a b (1 : ℂ))) X = rsM X := by
@@ -155,9 +155,9 @@ theorem actM_rsM {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
   rfl
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[Matrix.single_mul_single_same]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.single_apply, Matrix.zero_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero (fun x _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma ss_lemma {n : ℕ} (a b c d : Fin n) :
     single a b (1 : ℂ) * single c d 1 = if b = c then single a d 1 else 0 := by
@@ -170,7 +170,7 @@ private lemma ss_lemma {n : ℕ} (a b c d : Fin n) :
     split_ifs with h1 h2 <;> simp_all
 
 /- English proof (translation)
-Introduce `a b c d`. Simplify using `only`. Rewrite using `[rsM_mul, rsM_mul, rsM_sub, ss_lemma, ss_lemma]`. Apply the tactic sequence `split_ifs <;> simp only [sub_zero, zero_sub, sub_self, rsM_zero, rsM_neg, rsM_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRep_rsM (n : ℕ) : IsGlRep (fun a b : Fin n => rsM (single a b (1 : ℂ))) := by
 
@@ -180,11 +180,11 @@ theorem glRep_rsM (n : ℕ) : IsGlRep (fun a b : Fin n => rsM (single a b (1 : �
   split_ifs <;> simp only [sub_zero, zero_sub, sub_self, rsM_zero, rsM_neg, rsM_sub]
 
 /- English proof (translation)
-Establish `hJ : Jm (fun _ : Fin n => true) = 1`. Simplify using `[Jm]`. Establish `hg' : gᴴ * g = 1`. Establish `h0 : gᴴ * Jm (fun _ : Fin n => true) * g = Jm (fun _ : Fin n => true)` using `hg`. Rewrite `h0` using `[hJ, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0`. Establish `hg2 : g * gᴴ = 1` using `mul_eq_one_comm.mp hg'`. Establish `hu : toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ) g ∈ unitary (EH n →L[ℂ] EH n) := by`. Rewrite using `[Unitary.mem_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_star, ← map_mul, Matrix.star_eq_conjTranspose, hg', map_one]`. Rewrite using `[← map_star, ← map_mul, Matrix.star_eq_conjTranspose, hg2, map_one]`. Conclude with `ContinuousLinearMap.norm_map_of_mem_unitary hu v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toE_unitary {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ UJset (fun _ : Fin n => true))
     (v : EH n) : ‖toEuclideanCLM (n := Fin n) (𝕜 := ℂ) g v‖ = ‖v‖ := by
@@ -204,7 +204,7 @@ theorem toE_unitary {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ UJset
   exact ContinuousLinearMap.norm_map_of_mem_unitary hu v
 
 /- English proof (translation)
-Set `f : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] (EH n →L[ℂ] EH n)` to `{ toFun := toEuclideanCLM (n := Fin n) (𝕜 := ℂ) map_add' := map_add _ map_smul' := map_smul _ }`. Conclude with `f.continuous_of_finiteDimensional`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem toE_continuous (n : ℕ) : Continuous (toEuclideanCLM (n := Fin n) (𝕜 := ℂ)) := by
 
@@ -215,7 +215,7 @@ theorem toE_continuous (n : ℕ) : Continuous (toEuclideanCLM (n := Fin n) (𝕜
   exact f.continuous_of_finiteDimensional
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Conclude with `NormedSpace.map_exp _ (toE_continuous n) X`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem toE_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     toEuclideanCLM (n := Fin n) (𝕜 := ℂ) (NormedSpace.exp X) =
@@ -227,13 +227,13 @@ theorem toE_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
   exact NormedSpace.map_exp _ (toE_continuous n) X
 
 /- English proof (translation)
-Establish `h2 : HasDerivAt (fun s : ℂ => NormedSpace.exp (s • toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ) X)) (NormedSpace.exp ((0 : ℂ) • toEuclideanCLM (n := Fin n) (𝕜 := ℂ) X) * toEuclideanCLM (n := Fin n) (𝕜 := ℂ) X) 0 := hasDerivAt_exp_smul_const (toEuclideanCLM (n := Fin n) (𝕜 := ℂ) X) 0`. Rewrite `h2` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Establish `h3 : HasDerivAt (fun s : ℂ => NormedSpace.exp (s • toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ) X) v) (toEuclideanCLM (n := Fin n) (𝕜 := ℂ) X v) 0 := by`. Establish `h4` using `(ContinuousLinearMap.apply ℂ (EH n) v).hasFDerivAt.comp_hasDerivAt (0 : ℂ) h2`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).ofReal_comp`. Establish `h3' : HasDerivAt (fun s : ℂ => (NormedSpace.exp (s • toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ) X)) v) (toEuclideanCLM (n := Fin n) (𝕜 := ℂ) X v) ((fun t : ℝ => (t : ℂ)) 0) := by`. Simplify using `using h3`. Establish `h6` using `h3'.scomp (0 : ℝ) hid`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_smul] at h6`. Establish `hfun : (fun t : ℝ => toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ) (NormedSpace.exp ((t : ℂ) • X)) v) = ((fun s : ℂ => (NormedSpace.exp (s • toEuclideanCLM (n := Fin n) (𝕜 := ℂ) X)) v) ∘ Complex.ofReal) := by`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply]`. Rewrite using `[toE_exp, map_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `h6`.
+A detailed English derivation is pending.
 -/
 theorem toE_deriv {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (v : EH n) :
     HasDerivAt (fun t : ℝ => toEuclideanCLM (n := Fin n) (𝕜 := ℂ) (NormedSpace.exp ((t : ℂ) • X)) v)
@@ -262,11 +262,11 @@ theorem toE_deriv {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (v : EH n) :
   exact h6
 
 /- English proof (translation)
-Use `⟨toEuclideanCLM (n := Fin n) (𝕜 := ℂ), fun a b => rsM (single a b (1 : ℂ)), ⟨⟨map_one _, fun a _ b _ => ?_⟩, fun g hg v => toE_unitary g hg v, fun v => ?_⟩, ⟨glRep_rsM n, fun _ _ v _ => Submodule.mem_top, fun X _ v => ?_⟩, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Conclude with `((ContinuousLinearMap.apply ℂ (EH n) v).continuous.comp (toE_continuous n)).continuousOn`. Rewrite using `[actM_rsM, rsM_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `toE_deriv X v`. Introduce `h`. Establish `h1 : toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ) (single a b (1 : ℂ)) = 0 := by ext1 v`. Use `congrArg (fun f : Module.End ℂ (⊤ : Submodule ℂ (EH n)) => ((f ⟨v, Submodule.mem_top⟩ : (⊤ : Submodule ℂ (EH n))) : EH n)) h` as an intermediate fact. Simplify `this` using `[rsM_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : single a b (1 : ℂ) = 0` using `(map_eq_zero_iff _ (toEuclideanCLM (n := Fin n) (𝕜 := ℂ)).injective).mp h1`. Establish `h3` using `congrFun (congrFun h2 a) b`. Simplify using `at h3`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDerivedOn_natural (n : ℕ) :
     ∃ (σ : Matrix (Fin n) (Fin n) ℂ → (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)))

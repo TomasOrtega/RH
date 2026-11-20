@@ -15,7 +15,7 @@ open scoped NumberField.AdeleRing ENNReal
 namespace GlobalTheory.CompanionTheory.UnfoldingAlt.TrBasic
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(g.val.transpose).transpose = g.val`. Rewrite using `[Matrix.transpose_transpose]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ti_ti {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] (g : GL n R) :
     ti (ti g) = g := by
@@ -24,7 +24,7 @@ theorem ti_ti {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] (
   rw [Matrix.transpose_transpose]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dl3, dg, AdelicGLn.diagonal]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rational_sign_diag_adelic : dia dl3 = (dg 1 (-1) 1 : GL (Fin 3) 𝔸[ℚ]) := by
   apply Units.ext
@@ -32,7 +32,7 @@ theorem rational_sign_diag_adelic : dia dl3 = (dg 1 (-1) 1 : GL (Fin 3) 𝔸[ℚ
   fin_cases i <;> fin_cases j <;> simp [dl3, dg, AdelicGLn.diagonal]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [w3, ti, dg, uni, Matrix.mul_apply, Fin.sum_univ_three, Matrix.vecMul, dotProduct] <;> ring`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_uni {R : Type*} [CommRing R] (x y z : R) :
     w3 * ti (dg 1 (-1) 1 : GL (Fin 3) R) * ti (uni x y z) =
@@ -43,7 +43,7 @@ theorem conj_uni {R : Type*} [CommRing R] (x y z : R) :
     simp [w3, ti, dg, uni, Matrix.mul_apply, Fin.sum_univ_three, Matrix.vecMul, dotProduct] <;> ring
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [w3, ti, dg, Matrix.mul_apply, Fin.sum_univ_three, Matrix.vecMul, dotProduct] <;> ring`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_cen {R : Type*} [CommRing R] (a : Rˣ) :
     w3 * ti (dg 1 (-1) 1 : GL (Fin 3) R) * ti (dg a a a) =
@@ -54,18 +54,18 @@ theorem conj_cen {R : Type*} [CommRing R] (a : Rˣ) :
     simp [w3, ti, dg, Matrix.mul_apply, Fin.sum_univ_three, Matrix.vecMul, dotProduct] <;> ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `W (w3 * ti (dia dl3 * g)) = _`. Rewrite using `[GlobalTheory.CompanionTheory.TransposeInverse.ti_mul, mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_apply (W : G3 → ℂ) (g : G3) : tr W g = W (w3 * ti (dia dl3) * ti g) := by
   change W (w3 * ti (dia dl3 * g)) = _
   rw [GlobalTheory.CompanionTheory.TransposeInverse.ti_mul, mul_assoc]
 
 /- English proof (translation)
-Use `⟨tr_apply, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `W h g`. Rewrite using `[tr_apply, tr_apply, GlobalTheory.CompanionTheory.TransposeInverse.ti_mul]`. Simplify using `only [mul_assoc]`. Introduce `W W' e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Use `congrFun e (ti ((w3 * ti (dia dl3))⁻¹ * x))` as an intermediate fact. Rewrite `this` using `[tr_apply, tr_apply, ti_ti, mul_inv_cancel_left]`. Then use the resulting hypothesis. Introduce `W hW x y z g`. Rewrite using `[tr_apply, tr_apply, GlobalTheory.CompanionTheory.TransposeInverse.ti_mul, ← mul_assoc, rational_sign_diag_adelic, conj_uni, mul_assoc, hW, add_comm z x]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `W hW a g`. Rewrite using `[tr_apply, tr_apply, GlobalTheory.CompanionTheory.TransposeInverse.ti_mul, ← mul_assoc, rational_sign_diag_adelic, conj_cen]`. Use `hW a⁻¹ (w3 * ti (dg 1 (-1) 1 : GL (Fin 3) 𝔸[ℚ]) * ti g)` as an intermediate fact. Rewrite using `[mul_assoc, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem main :
     (∀ (W : G3 → ℂ) (g : G3), tr W g = W (w3 * ti (dia dl3) * ti g)) ∧

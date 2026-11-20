@@ -6,17 +6,17 @@ open scoped IntermediateField nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ N hN hmem`. Establish `h1` using `NumberField.natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow K (𝓞 K) L (𝓞 L)`. Establish `h2 : Ideal.absNorm (differentIdeal (𝓞 K) (𝓞 L)) ∣ Ideal.absNorm (Ideal.span {(N : 𝓞 L)})` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hmem)`. Establish `h3 : Ideal.absNorm (Ideal.span {(N : 𝓞 L)}) = N ^ Module.finrank ℚ L`. Rewrite using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Establish `h4` using `Nat.le_of_dvd (pow_pos hN _) h2`. Establish `h5 : (discr L).natAbs ≤ N ^ Module.finrank ℚ L * (discr K).natAbs ^ Module.finrank K L`. Rewrite using `[h1]`. Conclude with `Nat.mul_le_mul_right _ h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : (0 : ℝ) < |((discr L : ℤ) : ℝ)|` using `abs_pos.2 (by exact_mod_cast discr_ne_zero L)`. Establish `hK : (0 : ℝ) < |((discr K : ℤ) : ℝ)|` using `abs_pos.2 (by exact_mod_cast discr_ne_zero K)`. Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `h6 : |((discr L : ℤ) : ℝ)| ≤ (N : ℝ) ^ Module.finrank ℚ L * |((discr K : ℤ) : ℝ)| ^ Module.finrank K L`. Establish `: (((discr L).natAbs : ℕ) : ℝ) ≤ ((N ^ Module.finrank ℚ L * (discr K).natAbs ^ Module.finrank K L : ℕ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h5` after adjusting the coercions. Simplify `this` using `[Nat.cast_natAbs]`. Establish `h7` using `Real.log_le_log hL h6`. Rewrite `h7` using `[Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow]`. Establish `h8 : Module.finrank ℚ K * Module.finrank K L = Module.finrank ℚ L` using `Module.finrank_mul_finrank ℚ K L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Establish `hl : (0 : ℝ) < Module.finrank ℚ L` using `by exact_mod_cast Module.finrank_pos`. Establish `h9 : (Module.finrank ℚ K : ℝ) * Module.finrank K L = Module.finrank ℚ L` using `by exact_mod_cast h8`. Rewrite using `[div_le_iff₀ hl]`. Use `h7.trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← h9]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_rootDiscr_le_of_natCast_mem_differentIdeal : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] (N : ℕ), 0 < N → (N : 𝓞 L) ∈ differentIdeal (𝓞 K) (𝓞 L) → Real.log |((discr L : ℤ) : ℝ)| / Module.finrank ℚ L ≤ Real.log |((discr K : ℤ) : ℝ)| / Module.finrank ℚ K + Real.log N := by
   intro K L _ _ _ _ _ N hN hmem

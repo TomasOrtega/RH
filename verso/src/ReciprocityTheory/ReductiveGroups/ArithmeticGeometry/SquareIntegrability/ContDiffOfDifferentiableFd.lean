@@ -6,9 +6,9 @@ namespace ReciprocityTheory.ChartRestriction.G.I2
 open MeasureTheory
 
 /- English proof (translation)
-Use `set e := Module.finrank ℂ W`. Set `L : W ≃L[ℂ] (Fin e → ℂ)` to `ContinuousLinearEquiv.ofFinrankEq (by simp [e])`. Establish `hg : Differentiable ℂ (F ∘ L.symm)` using `hF.comp L.symm.differentiable`. Establish `ha` using `ReciprocityTheory.AnForm.Osgood.osgood e Set.univ (F ∘ L.symm) isOpen_univ hg.differentiableOn`. Establish `hc : ContDiff ℂ k (F ∘ L.symm)` using `contDiff_iff_contDiffAt.2 fun x => (ha x (Set.mem_univ x)).contDiffAt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF' : F = (F ∘ L.symm) ∘ L`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[hF']`. Conclude with `hc.comp L.contDiff`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_of_differentiable_fd {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
     [FiniteDimensional ℂ W] {F : W → ℂ} (hF : Differentiable ℂ F) (k : ℕ) : ContDiff ℂ k F := by
@@ -26,11 +26,9 @@ theorem contDiff_of_differentiable_fd {W : Type*} [NormedAddCommGroup W] [Normed
   exact hc.comp L.contDiff
 
 /- English proof (translation)
-Unfold `polyDeriv`. Establish `hD : ∀ N : ℕ, iteratedFDeriv ℂ N (fun w => ∑ i ∈ s, c i * F i w) x = ∑ i ∈ s, c i • iteratedFDeriv ℂ N (F i) x`. Introduce `N`. Use `show iteratedFDeriv ℂ N (fun w => ∑ i ∈ s, c i • F i w) x = _`. Rewrite using `[iteratedFDeriv_sum (fun i hi => (hF i hi N).const_smul (c i)), Finset.sum_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Conclude with `iteratedFDeriv_const_smul_apply (a := c i) (hF i hi N).contDiffAt`. Simplify using `only [hD, ContinuousMultilinearMap.sum_apply, ContinuousMultilinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem polyDeriv_sum {σ W ι : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
     (P : MvPolynomial σ ℂ) (u : σ → W) (s : Finset ι) (c : ι → ℂ) (F : ι → W → ℂ)
@@ -59,21 +57,21 @@ namespace PT
 variable (X : PT E)
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[PT.fd, Set.mem_pi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fd_eq (n : ℕ) : X.fd n = Set.univ.pi (fun _ : Fin n => ZSpan.fundamentalDomain X.b) := by
   ext v
   simp [PT.fd, Set.mem_pi]
 
 /- English proof (translation)
-Rewrite using `[fd_eq]`. Conclude with `Bornology.IsBounded.pi fun _ => ZSpan.fundamentalDomain_isBounded X.b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBounded_fd (n : ℕ) : Bornology.IsBounded (X.fd n) := by
   rw [fd_eq]
   exact Bornology.IsBounded.pi fun _ => ZSpan.fundamentalDomain_isBounded X.b
 
 /- English proof (translation)
-Conclude with `(hg.continuousOn.integrableOn_compact (X.isBounded_fd n).isCompact_closure).mono_set subset_closure`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_fd {n : ℕ} {g : (Fin n → Vsp X.dim) → ℂ} (hg : Continuous g) :
     IntegrableOn g (X.fd n) := by
@@ -81,7 +79,7 @@ theorem integrableOn_fd {n : ℕ} {g : (Fin n → Vsp X.dim) → ℂ} (hg : Cont
     subset_closure
 
 /- English proof (translation)
-Establish `hc : ∀ (k : Fin n) (i : Idx X.dim), Continuous fun v : Fin n → Vsp X.dim => v k i` using `fun k i => (EuclideanSpace.proj i).continuous.comp (continuous_apply k)`. Establish `hHC : Continuous fun v : Fin n → Vsp X.dim => HC v v`. Unfold `HC Hf`. Conclude with `continuous_finset_sum _ fun k _ => continuous_finset_sum _ fun i _ => (hc k i).mul (Complex.continuous_conj.comp (hc k i))`. Conclude with `Complex.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp hHC)))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_weight (q n : ℕ) :
     Continuous fun v : Fin n → Vsp X.dim => (Real.exp (-(q * Real.pi) * (HC v v).re) : ℂ) := by
@@ -95,25 +93,25 @@ theorem continuous_weight (q n : ℕ) :
     (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp hHC)))
 
 /- English proof (translation)
-Establish `hwc` using `X.continuous_weight q n`. Establish `hpt : ∀ (G : (Fin n → Vsp X.dim) → ℂ) (v : Fin n → Vsp X.dim), X.ptN2 q G v = (G v * (starRingEnd ℂ) (G v) * (Real.exp (-(q * Real.pi) * (HC v v).re) : ℂ)).re`. Introduce `G v`. Simplify using `only [PT.ptN2]`. Rewrite using `[Complex.mul_conj, ← Complex.ofReal_mul, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∀ G H : (Fin n → Vsp X.dim) → ℂ, Continuous G → Continuous H → MeasureTheory.IntegrableOn (fun v => G v * (starRingEnd ℂ) (H v) * (Real.exp (-(q * Real.pi) * (HC v v).re) : ℂ)) (X.fd n)` using `fun G H hG hH => X.integrableOn_fd ((hG.mul (Complex.continuous_conj.comp hH)).mul hwc)`. Establish `hA : ∀ G : (Fin n → Vsp X.dim) → ℂ, Continuous G → X.l2 q G = (X.l2ip q G G).re`. Introduce `G hG`. Simplify using `only [PT.l2, PT.l2ip, MeasureTheory.setAverage_eq]`. Repeatedly rewrite using `[hpt G]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Complex.smul_re]`. Use `congr 1`. Use `first`. Consider the case `exact integral_re (hint G G hG hG)`. Consider the case `simpa using integral_re (hint G G hG hG)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hsum_int : ∀ v : Fin n → Vsp X.dim, (∑ i ∈ s, c i * e i v) * (starRingEnd ℂ) (∑ i ∈ s, c i * e i v) * (Real.exp (-(q * Real.pi) * (HC v v).re) : ℂ) = ∑ i ∈ s, ∑ j ∈ s, (c i * (starRingEnd ℂ) (c j)) * (e i v * (starRingEnd ℂ) (e j v) * (Real.exp (-(q * Real.pi) * (HC v v).re) : ℂ) …`. Introduce `v`. Rewrite using `[map_sum, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ i ∈ s, ∀ j ∈ s, MeasureTheory.IntegrableOn (fun v => (c i * (starRingEnd ℂ) (c j)) * (e i v * (starRingEnd ℂ) (e j v) * (Real.exp (-(q * Real.pi) * (HC v v).re) : ℂ))) (X.fd n)` using `fun i hi j hj => (hint (e i) (e j) (he i hi) (he j hj)).const_mul _`. Establish `hB : ∫ v in X.fd n, (∑ i ∈ s, c i * e i v) * (starRingEnd ℂ) (∑ i ∈ s, c i * e i v) * (Real.exp (-(q * Real.pi) * (HC v v).re) : ℂ) = ∑ i ∈ s, ∑ j ∈ s, (c i * (starRingEnd ℂ) (c j)) * ∫ v in X.fd n, e i v * (starRingEnd ℂ) (e j v) * (Real.exp (-(q * Real.pi) * (HC v v).re) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hsum_int]`. Rewrite using `[MeasureTheory.integral_finset_sum _ fun i hi => MeasureTheory.integrable_finset_sum _ fun j hj => hterm i hi j hj]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.integral_finset_sum _ fun j hj => hterm i hi j hj]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `first`. Consider the case `exact MeasureTheory.integral_const_mul _ _`. Consider the case `exact MeasureTheory.integral_mul_left _ _`. Establish `hF : Continuous (fun v => ∑ i ∈ s, c i * e i v)` using `continuous_finset_sum _ fun i hi => continuous_const.mul (he i hi)`. Establish `hip : X.l2ip q (fun v => ∑ i ∈ s, c i * e i v) (fun v => ∑ i ∈ s, c i * e i v) = ∑ i ∈ s, ∑ j ∈ s, (c i * (starRingEnd ℂ) (c j)) * X.l2ip q (e i) (e j)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [PT.l2ip, MeasureTheory.setAverage_eq]`. Rewrite using `[hB, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `(simp only [Complex.real_smul]; ring)`. Consider the case `rw [mul_smul_comm]`. Establish `hdiag : ∀ i ∈ s, ∑ j ∈ s, (c i * (starRingEnd ℂ) (c j)) * X.l2ip q (e i) (e j) = (c i * (starRingEnd ℂ) (c i)) * X.l2ip q (e i) (e i)`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_single i (fun j hj hji => ?_) (fun h => absurd hi h)` and prove the remaining obligations. Rewrite using `[horth i hi j hj (Ne.symm hji), mul_zero]`. Rewrite using `[hA _ hF, hip, Finset.sum_congr rfl hdiag, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hA _ (he i hi), Complex.mul_conj, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l2_sum_eq_sum_norm_sq_of_orthogonal {n : ℕ} (q : ℕ) {ι : Type*} (s : Finset ι) (c : ι → ℂ)
     (e : ι → (Fin n → Vsp X.dim) → ℂ) (he : ∀ i ∈ s, Continuous (e i))
@@ -191,23 +189,21 @@ theorem l2_sum_eq_sum_norm_sq_of_orthogonal {n : ℕ} (q : ℕ) {ι : Type*} (s 
 end PT
 
 /- English proof (translation)
-Unfold `IStatement`. Introduce `E _ _ _ X n nb bs hbs P π hπ s hs hs0 K hK`. Take `⟨hmem, horth, hl2, hspan⟩` from `hN E X P.q n π P.hq hπ s hs hs0 K hK`. Take `⟨F, hF, hF1, hJF⟩` from `hJ E X n nb bs hbs P`. Establish `hUd : ∀ b ∈ K, Differentiable ℂ (X.U P.q b (s0 X π s))` using `fun b hb => (hmem b hb).1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hUc : ∀ b ∈ K, Continuous (X.U P.q b (s0 X π s))` using `fun b hb => (hUd b hb).continuous`. Establish `hFspan` using `hspan hF`. Rewrite `hFspan` using `[Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l, hl, hlF⟩` from `hFspan`. Establish `hsub : l.support ⊆ K`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(Finsupp.mem_supported ℂ l).1 hl`. Conclude with `Finset.coe_subset.1 h`. Establish `hFsum : F = fun v => ∑ b ∈ K, l b * X.U P.q b (s0 X π s) v`. Rewrite using `[← hlF, Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset l hsub (fun b a => a • X.U P.q b (s0 X π s)) (fun b _ => zero_smul ℂ _)]`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, smul_eq_mul]`. Establish `hl2F : X.l2 P.q F = ∑ b ∈ K, ‖l b‖ ^ 2 * X.l2 1 s ^ n`. Rewrite using `[hFsum, X.l2_sum_eq_sum_norm_sq_of_orthogonal P.q K l (fun b => X.U P.q b (s0 X π s)) hUc (fun b hb b' hb' hne => horth b hb b' hb' hne)]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[hl2 b hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpd : polyDeriv (P1 bs) dir F 0 = ∑ b ∈ K, l b * polyDeriv (P1 bs) dir (X.U P.q b (s0 X π s)) 0`. Rewrite using `[hFsum]`. Conclude with `polyDeriv_sum _ _ K l (fun b => X.U P.q b (s0 X π s)) (fun b hb k => contDiff_of_differentiable_fd (hUd b hb) k) 0`. Establish `hS : X.l2 1 s ^ n * ∑ b ∈ K, ‖l b‖ ^ 2 = 1`. Rewrite using `[← hF1, hl2F, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hSnn : 0 ≤ ∑ b ∈ K, ‖l b‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `hLpos : 0 < X.l2 1 s ^ n`. Break down `le_or_gt (X.l2 1 s ^ n) 0 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `h`. Establish `hnorm : ‖polyDeriv (P1 bs) dir F 0‖ ≤ ∑ b ∈ K, ‖l b‖ * ‖polyDeriv (P1 bs) dir (X.U P.q b (s0 X π s)) 0‖`. Rewrite using `[hpd]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[norm_mul]`. Establish `hcs` using `Finset.sum_mul_sq_le_sq_mul_sq K (fun b => ‖l b‖) (fun b => ‖polyDeriv (P1 bs) dir (X.U P.q b (s0 X π s)) 0‖)`. Establish `h1 : ‖polyDeriv (P1 bs) dir F 0‖ ^ 2 ≤ (∑ b ∈ K, ‖l b‖ ^ 2) * ∑ b ∈ K, ‖polyDeriv (P1 bs) dir (X.U P.q b (s0 X π s)) 0‖ ^ 2`. Use `le_trans ?_ hcs` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hnorm 2`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (∑ b ∈ K, ‖l b‖ ^ 2), mul_assoc, mul_comm (∑ b ∈ K, ‖l b‖ ^ 2), hS, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iOf (hJ : JStatement) (hN : NStatement) : IStatement := by
   unfold IStatement

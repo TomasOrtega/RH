@@ -25,9 +25,9 @@ def SandStep : Prop :=
       IsURep π → IsOpInt μ π ph T → ∀ a, T.comp ((π a).comp T) = m a • T
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ μ _ _ _ ph m hph hci K _ _ π T hπ hT`. Establish `hsa` using `h1 G μ ph m hph hci K π T hπ hT`. Establish `hsw` using `h2 G μ ph m hph hci K π T hπ hT`. Take `⟨hπ1, -⟩` from `hπ`. Take `⟨hm1, -⟩` from `hci`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hsa, ?_, hsw⟩` and prove the remaining obligations. Establish `h` using `hsw 1`. Rewrite `h` using `[hπ1, hm1, one_smul, ContinuousLinearMap.one_def, ContinuousLinearMap.id_comp]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convProj_of (h1 : SelfAdjStep) (h2 : SandStep) : ConvProj := by
   intro G _ _ _ _ _ _ μ _ _ _ ph m hph hci K _ _ π T hπ hT

@@ -16,21 +16,21 @@ section Q
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T' : E}
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orth' {U : Submodule E S.V} {v : S.V} : v ∈ orth S U ↔ ∀ x ∈ U, S.hT x v = 0 := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Rewrite using `[← S.herm.eq x y, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm' (x y : S.V) : S.hT y x = star (S.hT x y) := by
   rw [← S.herm.eq x y, starRingEnd_apply]
 
 /- English proof (translation)
-Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span E (Set.range F'.fl.e) at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `F'.fl.z_orth j`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, LinearMap.add_apply, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hx, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hXz (F' : LFlag S r T') : ∀ x ∈ Xsp F', S.hT x F'.fl.z = 0 := by
   intro x hx
@@ -44,7 +44,7 @@ theorem hXz (F' : LFlag S r T') : ∀ x ∈ Xsp F', S.hT x F'.fl.z = 0 := by
   | smul a x _ hx => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hx, smul_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[herm', hXz F' x hx, star_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hzX (F' : LFlag S r T') : ∀ x ∈ Xsp F', S.hT F'.fl.z x = 0 := by
   intro x hx
@@ -83,14 +83,14 @@ Both sides reduce to the same expression.
 theorem hU_apply (F' : LFlag S r T') (c : E) (a b : Uo F') : hU F' c a b = hV F' c a b := rfl
 
 /- English proof (translation)
-Rewrite using `[hU_apply, hV_apply, (mem_orth'.mp b.2) a ha, hXz F' a ha]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hU_left (F' : LFlag S r T') (c : E) (a b : Uo F') (ha : (a : S.V) ∈ Xsp F') : hU F' c a b = 0 := by
   rw [hU_apply, hV_apply, (mem_orth'.mp b.2) a ha, hXz F' a ha]
   ring
 
 /- English proof (translation)
-Rewrite using `[hU_apply, hV_apply, herm' (b : S.V) (a : S.V), (mem_orth'.mp a.2) b hb, hzX F' b hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hU_right (F' : LFlag S r T') (c : E) (a b : Uo F') (hb : (b : S.V) ∈ Xsp F') : hU F' c a b = 0 := by
   rw [hU_apply, hV_apply, herm' (b : S.V) (a : S.V), (mem_orth'.mp a.2) b hb, hzX F' b hb]

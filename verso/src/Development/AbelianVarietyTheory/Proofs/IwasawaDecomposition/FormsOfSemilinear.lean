@@ -12,9 +12,9 @@ section Csd
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K)
 
 /- English proof (translation)
-Simplify using `only [Basis.equivFun_symm_apply, Submodule.coe_sum, Submodule.coe_smul, CSD.csum, CSD.H, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul, RingHom.id_apply]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `arg 2`. Use extensionality with `j`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem csum_coords (u v : Fin S.dim → K) :
     S.csum (S.basis.equivFun.symm u : S.Cl → S.V) (S.basis.equivFun.symm v : S.Cl → S.V) =
@@ -29,7 +29,7 @@ theorem csum_coords (u v : Fin S.dim → K) :
   ring
 
 /- English proof (translation)
-Simplify using `[CSD.nabLat, valLatF, Submodule.mem_pi, CSD.I]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_nabLat_iff (x : Fin S.dim → K) :
     x ∈ S.nabLat ↔ ∀ c, (S.basis.equivFun.symm x : S.Cl → S.V) c ∈ S.Nab c := by
@@ -41,39 +41,37 @@ variable {K K' : Type} [Field K] [NumberField K] [StarRing K] [Field K'] [Number
   {G G' : Type} [Group G] [Fintype G] [Group G'] [Fintype G'] {Pl0 Pl0' : Type}
 
 /- English proof (translation)
-Use `set C : Matrix (Fin B'.S.dim) (Fin B.S.dim) K' := Matrix.of fun i k => B'.S.basis.repr (L (B.S.basis k)) i with hCdef`. Establish `hcol : ∀ k, B'.S.basis.equivFun.symm (fun i => C i k) = L (B.S.basis k)`. Introduce `k`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hCdef]`. Establish `hC : ∀ y, C *ᵥ y = B'.S.basis.equivFun (∑ k, y k • L (B.S.basis k))`. Introduce `y`. Use extensionality with `i`. Simplify using `[hCdef, Matrix.mulVec, dotProduct, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hLsum : ∀ x : Fin B.S.dim → K, L (B.S.basis.equivFun.symm x) = ∑ k, φ (x k) • L (B.S.basis k)`. Introduce `x`. Rewrite using `[Basis.equivFun_symm_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => hsm _ _`. Establish `hT : ∀ x : Fin B.S.dim → K, C *ᵥ (fun k => φ (x k)) = B'.S.basis.equivFun (L (B.S.basis.equivFun.symm x))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[hC, hLsum]`. Establish `hTf : ∀ f : B.S.Forms, C *ᵥ (fun k => φ (B.S.basis.repr f k)) = ⇑(B'.S.basis.repr (L f))`. Introduce `f`. Use `hT (B.S.basis.equivFun f)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Use `⟨C, ⟨?_, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y₁ y₂ h`. Establish `h0 : ∑ k, (y₁ - y₂) k • L (B.S.basis k) = 0`. Establish `: C *ᵥ (y₁ - y₂) = 0` using `by rw [Matrix.mulVec_sub, h, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hC]`. Conclude with `(LinearEquiv.map_eq_zero_iff _).mp this`. Use `Fintype.linearIndependent_iff.mp hli _ h0` as an intermediate fact. Use function extensionality and compare the values at `k`. Conclude with `sub_eq_zero.mp (this k)`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Establish `hmem : B'.S.basis.equivFun.symm y ∈ Submodule.span K' (Set.range fun k => L (B.S.basis k))` using `hsp trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K').mp hmem`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hC, hc, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Establish `h1` using `hcs (B.S.basis a) (B.S.basis b)`. Rewrite `h1` using `[← hcol a, ← hcol b, csum_coords]`. Simplify using `only [Matrix.map_apply, CSD.H, Matrix.of_apply] at h1 ⊢`. Rewrite using `[← h1, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Matrix.of_apply]`. Introduce `g`. Establish `hv : ∀ f : B.S.Forms, (B'.S.actMat B'.r (e g) * C) *ᵥ (fun k => φ (B.S.basis.repr f k)) = (C * (B.S.actMat B.r g).map φ) *ᵥ (fun k => φ (B.S.basis.repr f k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `f`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hTf]`. Establish `h2 : (B.S.actMat B.r g).map φ *ᵥ (fun k => φ (B.S.basis.repr f k)) = fun k => φ (B.S.basis.repr (B.r g f) k)`. Use function extensionality and compare the values at `k`. Rewrite using `[show (fun k => φ (B.S.basis.repr f k)) = φ ∘ (B.S.basis.repr f) from rfl, ← RingHom.map_mulVec φ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [CSD.actMat, LinearMap.toMatrix_mulVec_repr]`. Rewrite using `[h2, hTf]`. Simplify using `only [CSD.actMat, LinearMap.toMatrix_mulVec_repr, hact]`. Use extensionality with `i k`. Establish `hs : (fun j => φ (B.S.basis.repr (B.S.basis k) j)) = Pi.single k 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, Pi.single_apply, h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congrFun (hv (B.S.basis k)) i` as an intermediate fact. Rewrite `this` using `[hs, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`. Conclude with `this`. Set `eO` to `(B'.S.basis.equivFun).restrictScalars (𝓞 K')`. Establish `himg : (fun x : Fin B.S.dim → K => C *ᵥ (fun k => φ (x k))) '' (B.S.nabLat : Set (Fin B.S.dim → K)) = eO '' (L '' {f : B.S.Forms | ∀ c, (f : B.S.Cl → B.S.V) c ∈ B.S.Nab c})`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨L (B.S.basis.equivFun.symm x), ⟨_, (mem_nabLat_iff _ _).mp hx, rfl⟩, (hT x).symm⟩`. Introduce and unpack `⟨_, ⟨f, hf, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨B.S.basis.equivFun f, (mem_nabLat_iff _ _).mpr (by simpa using hf), ?_⟩` and prove the remaining obligations. Use `show C *ᵥ (fun k => φ (B.S.basis.equivFun f k)) = _`. Rewrite using `[hT, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Use extensionality with `y`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[himg, ← LinearEquiv.coe_coe, Submodule.span_image, Submodule.mem_map_equiv, ← hnab, mem_nabLat_iff]`. Both sides reduce to the same expression. Rewrite using `[hZ, BlockDat.coord, BlockDat.coord, Submodule.map_span, Submodule.map_coe, Set.image_image, Set.image_image]`. Use `congr 1`. Use `Set.image_congr fun f _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hT]`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem forms_of_semilinear (φ : K →+* K') (e : G ≃* G') (B : BlockDat K G Pl0) (B' : BlockDat K' G' Pl0')
     (Z : Submodule K B.S.Forms) (Z' : Submodule K' B'.S.Forms) (L : B.S.Forms →+ B'.S.Forms)

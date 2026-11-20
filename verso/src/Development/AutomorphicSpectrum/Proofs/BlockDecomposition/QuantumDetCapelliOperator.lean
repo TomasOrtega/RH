@@ -15,13 +15,11 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL MeasureT
 namespace GlobalTheory.CompanionTheory.Clozel
 
 /- English proof (translation)
-Set `P : Subalgebra ℂ (Module.End ℂ S × Module.End ℂ V)` to `{ carrier := {z | ∀ x : S, (z.1 x : V) = z.2 x} mul_mem' := fun {p q} hp hq x => by show ((p.1 (q.1 x) : S) : V) = p.2 (q.2 x)`. Rewrite using `[hp, hq]`. Use the proof step `add_mem' := fun {p q} hp hq x => by show ((p.1 x + q.1 x : S) : V) = p.2 x + q.2 x`. Rewrite using `[Submodule.coe_add, hp, hq]`. Use the proof step `algebraMap_mem' := fun c x => rfl }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Z : Fin n → Fin n → Module.End ℂ S × Module.End ℂ V` to `fun i j => (X i j, Y i j)`. Establish `hZ : Formalism.REAL.qdet Z w ∈ P`. Use `P.sum_mem fun σ _ => P.mul_mem (intCast_mem P _) (P.list_prod_mem fun y hy => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hy`. Use `P.add_mem ?_ (fun x => h _ _ x)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `P.algebraMap_mem _`. Conclude with `P.zero_mem`. Establish `h1 : (Formalism.REAL.qdet Z w).1 = Formalism.REAL.qdet X w` using `map_qdet (AlgHom.fst ℂ (Module.End ℂ S) (Module.End ℂ V)) Z w`. Establish `h2 : (Formalism.REAL.qdet Z w).2 = Formalism.REAL.qdet Y w` using `map_qdet (AlgHom.snd ℂ (Module.End ℂ S) (Module.End ℂ V)) Z w`.
-
-Rewrite using `[← h1, ← h2]`. Conclude with `hZ x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdet_restrict {V : Type} [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V) {n : ℕ}
     (X : Fin n → Fin n → Module.End ℂ S) (Y : Fin n → Fin n → Module.End ℂ V)
@@ -52,7 +50,7 @@ theorem qdet_restrict {V : Type} [AddCommGroup V] [Module ℂ V] (S : Submodule 
   exact hZ x
 
 /- English proof (translation)
-Introduce `E _ _ _ a π τ u φ`. Conclude with `qdet_restrict π.V (EopV π τ) (Eop τ) (fun i j x => GlobalTheory.T.lie_operator_vector_eq E a π τ i j x) _ φ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem qdet_EopV_val : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a)
     (τ : E →+* ℂ) (u : ℂ) (φ : π.V),

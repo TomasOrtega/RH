@@ -17,7 +17,7 @@ variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup
   {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(sumOp_transversal h A B hB).2.2 hle`. Rewrite using `[normOp, h1, h2 e he, map_one, inv_one, one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem normOp_eq_self_of_le (h : IsHeis σ w γ W) (lam : ℕ →* ℂ) {A B : Submodule R X} (hB : SelfDual γ B)
     (hle : B ≤ A) {e : M} (he : Fixes W A e) : normOp lam W A B e = e := by
@@ -29,9 +29,9 @@ end Abstract
 variable {nS nT : ℕ}
 
 /- English proof (translation)
-Establish `h : (mtF σ J g).map (finPartF F E) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hg)`. Apply `GlobalTheory.HeisThetaF.smul_eq_zero_of_map_finPartF` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.sub_apply, RingHom.map_sub, Matrix.zero_apply, sub_eq_zero]`. Use `(congrFun (congrFun h i) j).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.map_one (finPartF F E) (finPartF F E).map_zero (finPartF F E).map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fin_smul_mtF_sub_one {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g : GAF σ J}
     (hg : g ∈ GlobalTheory.WeilPartsF.GinfCF σ J) : pairA F 0 1 • (mtF σ J g - 1) = 0 := by
@@ -44,7 +44,7 @@ theorem fin_smul_mtF_sub_one {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) 
   rfl
 
 /- English proof (translation)
-Establish `h1 : pairA F 1 0 • (x : WOF F E nS nT) = 0` using `GlobalTheory.HeisThetaF.smul_eq_zero_of_map_infPartF x.fin`. Establish `h2 : pairA F 0 1 = 1 - pairA F 1 0` using `Prod.ext (by show (0 : Ainf F) = 1 - 1; rw [sub_self]) (by show (1 : Af F) = 1 - 0; rw [sub_zero])`. Rewrite using `[h2, sub_smul, one_smul, h1, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_smul_XFF (x : XFF F E nS nT) : pairA F 0 1 • (x : WOF F E nS nT) = x := by
   have h1 : pairA F 1 0 • (x : WOF F E nS nT) = 0 := GlobalTheory.HeisThetaF.smul_eq_zero_of_map_infPartF x.fin
@@ -53,11 +53,11 @@ theorem fin_smul_XFF (x : XFF F E nS nT) : pairA F 0 1 • (x : WOF F E nS nT) =
   rw [h2, sub_smul, one_smul, h1, sub_zero]
 
 /- English proof (translation)
-Apply `XFF.ext` to reduce the goal to its premises. Rewrite using `[coe_rhoFF]`. Establish `hL : mtF σ JT h * (x : WOF F E nS nT) = x`. Establish `: (mtF σ JT h - 1) * (x : WOF F E nS nT) = 0`. Rewrite using `[← fin_smul_XFF x, Matrix.mul_smul, ← Matrix.smul_mul, fin_smul_mtF_sub_one hh, Matrix.zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hR : (x : WOF F E nS nT) * mtF σ JS g⁻¹ = x`. Establish `: (x : WOF F E nS nT) * (mtF σ JS g⁻¹ - 1) = 0`. Rewrite using `[← fin_smul_XFF x, Matrix.smul_mul, ← Matrix.mul_smul, fin_smul_mtF_sub_one (Subgroup.inv_mem _ hg), Matrix.mul_zero]`. Rewrite `this` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `show mtF σ JT h * (x : WOF F E nS nT) * mtF σ JS g⁻¹ = x`. Rewrite using `[hL, hR]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoFF_real {σ : E →ₐ[F] E} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
     {g : GAF σ JS} {h : GAF σ JT} (hg : g ∈ GlobalTheory.WeilPartsF.GinfCF σ JS) (hh : h ∈ GlobalTheory.WeilPartsF.GinfCF σ JT)
@@ -77,11 +77,11 @@ theorem rhoFF_real {σ : E →ₐ[F] E} {JS : Matrix (Fin nS) (Fin nS) E} {JT : 
   rw [hL, hR]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ _ hξ hc Λ w lam Om hR g hg h hh f`. Establish `hσ : ∀ z : E, σ (σ z) = z` using `fun z => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hB.cm.2.2.2, hB.cm.2.2.2, star_star])`. Establish `H` using `isHeis_opFF hσ hS hT hξ hc hR.hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : Om (g, h) = LinearMap.id`. Use `LinearMap.ext_on hR.span ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, e, he, rfl⟩`. Establish `hfix : Om (g, h) e = e`. Rewrite using `[hR.vac _ e he]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `normOp_eq_self_of_le H lam (hR.sd' _) (by rintro _ ⟨a, ha, rfl⟩; rw [rhoFF_real hg hh]; exact ha) he`. Rewrite using `[hR.op, rhoFF_real hg hh, hfix, LinearMap.id_apply]`. Rewrite using `[key, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLatRepF.real_triv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),

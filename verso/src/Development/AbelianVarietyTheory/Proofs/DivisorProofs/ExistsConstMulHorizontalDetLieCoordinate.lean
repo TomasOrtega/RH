@@ -18,7 +18,7 @@ namespace GlobalTheory.DetLine.HorConst
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨M, rfl, fun i => (EigParts.comb_iff v _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hv' i i rfl, show (fun i => (v i).left) = u from funext fun i => hv i i rfl]`. Conclude with `hM i`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_matrix {S : Scheme.{0}} {t : SAB H S} {R : Type} [CommRing R] {x : Sp R ⟶ S} {m n : ℕ} (h : m = n)
     {v v' : Fin n → (epsAt x ⟶ t.G)} {u u' : Fin m → (Sp (DualNumber R) ⟶ t.G.left)}
@@ -37,15 +37,13 @@ variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} 
 open GlobalTheory.LieLocBasis GlobalTheory.ShFam.EigLoc GlobalTheory.ShFam.CoordUniq in
 
 /- English proof (translation)
-Take `⟨n, xc, hx⟩` from `exists_chart Y.t x`. Use `choose e₁ he₁ using fun i => vec_exists hx _ (f₁.tan ρ i)`. Use `choose e₂ he₂ using fun i => vec_exists hx _ (f₂.tan ρ i)`. Use `choose M hM using fun i => (f₁.basis ρ _ (f₂.tan ρ i) (f₂.eig ρ i)).exists`. Establish `hM' : ∀ i, e₂ i = ∑ j, M i j • e₁ j` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hM i` as an intermediate fact. Rewrite `this` using `[he₂ i, show f₁.v ρ = fun j => vec Y.t x xc (e₁ j) from funext he₁]`. Conclude with `(comb_iff hx _ _ _).1 this`. Establish `hind : ∀ a : Fin (D.mult ρ) → k, ∑ i, a i • e₂ i = 0 → a = 0` using `fun a ha => by`. Establish `hb` using `f₂.basis ρ _ (vec_tan hx 0) ((vec_eig_iff hx _ _).2 (Submodule.zero_mem _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hb` using `[show f₂.v ρ = fun j => vec Y.t _ xc (e₂ j) from funext he₂]`. Conclude with `hb.unique ((comb_iff hx _ _ _).2 ha.symm) ((comb_iff hx _ _ _).2 (by simp))`. Use `⟨Matrix.of M, hM, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, ha0⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Use `ha (hind a ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hM', Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Establish `: ∑ i, a i * M i j = 0` using `congrFun ha0 j`.
-
-Rewrite using `[this, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_matrix_det_ne {k : Type} [Field k] {φ : c.F →+* k} {x : Sp k ⟶ Y.X} (f₁ f₂ : EigFrame Y φ x)
     (ρ : E →+* ℂ) : ∃ M : Matrix (Fin (D.mult ρ)) (Fin (D.mult ρ)) k,
@@ -73,11 +71,11 @@ theorem exists_matrix_det_ne {k : Type} [Field k] {φ : c.F →+* k} {x : Sp k �
   rw [this, zero_smul]
 
 /- English proof (translation)
-Take `⟨x, f⟩` from `a`. Take `⟨x', f'⟩` from `a'`. Take `rfl : x = x'` from `Subtype.ext ha`. Take `⟨M, hM, hM0⟩` from `exists_matrix_det_ne f f' τ`. Take `⟨N, hN, -⟩` from `exists_matrix_det_ne f f' (conjEmb τ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M', eM, hM'⟩` from `exists_matrix (GlobalTheory.Harm.mult_of_mem D hτ) hm.1 hm'.1 hM`. Take `⟨N', eN, hN'⟩` from `exists_matrix (GlobalTheory.Harm.mult_conjEmb_of_mem D hτ) hm.2 hm'.2 hN`. Establish `e₁` using `hσ.2 ℂ e x.1 v w v' w' M' N' hf hf' hM' hN'`. Establish `e₂` using `hh.2.1 ⟨x, f⟩ ⟨x, f'⟩ M N hi ⟨rfl, hM⟩ ⟨rfl, hN⟩`. Establish `h₁` using `hh.1 ⟨x, f⟩ hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `hh.1 ⟨x, f'⟩ hi`. Rewrite `e₁` using `[eM, eN]`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, div_eq_div_iff h₁ h₂]`. Use `mul_right_cancel₀ hM0 ?_` and prove the remaining obligations. Take the linear combination `σb ℂ x.1 v w * e₂ + h ⟨x, f⟩ * e₁`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem quot_eq {τ : E →+* ℂ} (hτ : τ (H.rt : E) = H.rt0) {e : c.F →+* ℂ} {h : CxFr Y e → ℂ} (hh : HorFn τ h)
     {V : Set (gen Y)} {σb : RuleY Y} (hσ : SecY Y V τ σb) (a a' : CxFr Y e) (ha : a.1.1 = a'.1.1) (hi : Inner a.1)
@@ -102,23 +100,21 @@ theorem quot_eq {τ : E →+* ℂ} (hτ : τ (H.rt : E) = H.rt0) {e : c.F →+* 
 open GlobalTheory.CxPts GlobalTheory.ShFam.Hor.Sec in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y τ e h B io V hio hV hstr hτ hh σb hσ`. Take `⟨W, hW, φ, fr, a, hy, hφ, ha, hv, hf⟩` from `GlobalTheory.ShFam.HolFrames.exists_affine_holFrames E H D l Xo c O β Y e B io hio hstr`. Use `choose v₀ w₀ hf₀ hm₀ using fun y => (EigParts.eigFrame_match E H D l Xo c O β Y τ hτ V _ (φ y) _ (hφ y) (by rintro _ ⟨z, rfl⟩; rw [← hV, Scheme.Hom.comp_apply]; exact ⟨_, rfl⟩) (fr y)).1`. Set `s (y : B.X) : Γ(B.X, W y)` to `σb _ _ (v₀ y) (w₀ y)`. Establish `key (y) (p : GlobalTheory.CxPts B.str e) (hp : p ∈ ptsIn B.str e (W y)) : ∃ v w, FrY Y V τ e (a y p).1.1 v w ∧ Match τ (a y p).2 v w ∧ σb ℂ (a y p).1.1 v w = ev B.str e _ (s y) p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (a y p).1.1 = spMap (evHom hp) ≫ (show Sp Γ(B.X, W y) ⟶ B.X from (hW y).fromSpec) ≫ io`. Establish `: spMap (evHom hp) ≫ (show Sp Γ(B.X, W y) ⟶ B.X from (hW y).fromSpec) = p.1` using `GlobalTheory.Points.specMap_valMap_fromSpec (hW y) p.1 hp`. Rewrite using `[ha, ← Category.assoc, this]`. Take `⟨v, w, h₁, h₂, h₃⟩` from `exists_pull (evHom hp) (hf₀ y) hx`. Establish `hj : (evHom hp).comp (φ y) = e` using `congrArg CommRingCat.Hom.hom (Spec.map_injective (h₁.1.symm.trans (a y p).1.2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, w, by have := h₁; rwa [hj] at this, ⟨fun i k hik => ?_, fun i k hik => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h₂, (hm₀ y).1 i k hik, hv y p hp]`. Rewrite using `[h₃, (hm₀ y).2 i k hik, hv y p hp]`. Rewrite using `[ev_eq hp]`. Apply the tactic sequence `exact hσ.1 _ ℂ (evHom hp) (Chart.dualMapR (evHom hp)) _ _ _ _ _ _ v w (fun a => by ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]) (by ext <;> simp [Chart.dualMapR]) (hf₀ y) h₁ hx h₂ h₃`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hA : Dense (ptsIn B.str e (io ⁻¹ᵁ (genBd Y).compl))`. Use `(GlobalTheory.T.complexPoints_nonempty_dense_variety c.F B e).2 _ ?_` and prove the remaining obligations. Take `⟨_, ⟨z, rfl⟩, hz⟩` from `Y.jQ_dense.inter_open_nonempty _ io.isOpenEmbedding.isOpen_range (Set.range_nonempty _)`. Conclude with `⟨z, fun hb => hb hz⟩`. Set `R` to `AnRead.all B.str e B.dim`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose u hu he using fun y => exists_extension R io hA (isOpen_ptsIn (W y)) (fun z _ => ha y z) (hf y) (h := fun a => (h a)⁻¹) (fun V _ _ _ B a hB ha hi => (hh.2.2.1 V B a hB ha hi).inv fun b hb => hh.1 _ (hi b hb)) (logGrowth_inv hh.2.2.2)`. Set `pt (z : GlobalTheory.CxPts B.str e) : B.X` to `z.1 (IsLocalRing.closedPoint ℂ)`. Establish `hpt (z : GlobalTheory.CxPts B.str e) : z ∈ ptsIn B.str e (W (pt z))` using `mem_ptsIn.2 (hy _)`. Take `⟨q, hq, hqe⟩` from `exists_holoOn_of_local (R := R) hA (S := Set.univ) (u := fun z => ev B.str e _ (s (pt z)) z * (h (a (pt z) z))⁻¹) fun y _ => ⟨ptsIn B.str e (W (pt y)), fun z => ev B.str e _ (s (pt y)) z * u (pt y) z, isOpen_ptsIn _, hpt y, (R.holoOn_ev _ _).mul (hu _), fun z hz => by`. Take `⟨v, w, h₁, h₂, h₃⟩` from `key _ z hz.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v', w', h₁', h₂', h₃'⟩` from `key _ z (hpt z)`. Use `quot_eq hτ hh hσ _ _ ((ha _ _).trans (ha _ _).symm) ((inner_iff (ha _ z)).2 hz.2) h₁ h₂ h₁' h₂'` as an intermediate fact. Rewrite `this` using `[h₃, h₃']`. Simplify using `only [he _ hz]`. Conclude with `this⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨κ, hκ⟩` from `GlobalTheory.ConstFn.holoOn_univ_const c.F B e R q hq`. Use `⟨κ, fun b v w hi hb hm => ?_⟩` and prove the remaining obligations. Establish `hr : Set.range b.1.1 ⊆ Set.range io` using `hV ▸ hb.2.1`. Establish `hl : IsOpenImmersion.lift io b.1.1 hr ≫ io = b.1.1` using `IsOpenImmersion.lift_fac _ _ _`. Set `z : GlobalTheory.CxPts B.str e` to `⟨IsOpenImmersion.lift io b.1.1 hr, by rw [← hstr, ← Category.assoc, hl]; exact b.1.2⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v', w', h₁', h₂', h₃'⟩` from `key _ z (hpt z)`. Establish `e₁` using `quot_eq hτ hh hσ b _ (hl.symm.trans (ha _ z).symm) hi hb hm h₁' h₂'`. Establish `e₂` using `hqe (x := z) ⟨trivial, (inner_iff hl.symm).1 hi⟩`. Rewrite `e₂` using `[hκ]`. Rewrite `e₁` using `[h₃']`.
-
-Rewrite using `[e₂]`. Conclude with `(mul_inv_eq_iff_eq_mul₀ (hh.1 b hi)).1 e₁`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const_mul_horFn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (τ : E →+* ℂ) (e : c.F →+* ℂ) (h : CxFr Y e → ℂ) (B : GlobalTheory.ProjVar.Var c.F) (io : B.X ⟶ gen Y) (V : Set (gen Y)), IsOpenImmersion io → Set.range io = V → io ≫ genStr Y = B.str → τ (H.rt : E) = H.rt0 → HorFn τ h → ∀ σb : RuleY Y, SecY Y V τ σb → ∃ κ : ℂ, ∀ (a : CxFr Y e) v w, Inner a.1 → FrY Y V τ e a.1.1 v w → Match τ a.2 v w → σb ℂ a.1.1 v w = κ * h a := by
   intro E _ _ _ H D l Xo c O _ β Y τ e h B io V hio hV hstr hτ hh σb hσ

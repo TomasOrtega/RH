@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.Grp
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun a : MonoidAlgebra ℂ G => a.coeff (k * g)) (he (MonoidAlgebra.single k 1))`. Simplify using `only [MonoidAlgebra.mul_single_apply, MonoidAlgebra.single_mul_apply] at h`. Simplify `h.symm` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_conj_of_central {G : Type} [Group G] (e : MonoidAlgebra ℂ G) (he : ∀ x, x * e = e * x) (k g : G) :
     e.coeff (k * g * k⁻¹) = e.coeff g := by
@@ -24,7 +24,7 @@ theorem coeff_conj_of_central {G : Type} [Group G] (e : MonoidAlgebra ℂ G) (he
   simpa [mul_assoc] using h.symm
 
 /- English proof (translation)
-Introduce `X px eR Xg hgood hc a b`. Apply `X.B.embLL.injective` to reduce the goal to its premises. Rewrite using `[hgood.2, hgood.2, map_mul eR, map_mul eR, map_inv eR]`. Conclude with `coeff_conj_of_central _ (Subalgebra.mem_center_iff.1 hc) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idemOf_coeff_conj : ∀ (X : Stages) (px : PreX X.B.toPre) (eR : Gc X.B px ≃* G0g X.toD7.nd) (Xg : Finset (Gc X.B px → X.B.LL)), GoodSet X (px := px) eR Xg → X.toD7.ntypes.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g X.toD7.nd)) → ∀ a b : Gc X.B px, (idemOf Xg).coeff (a * b * a⁻¹) = (idemOf Xg).coeff b := by
   intro X px eR Xg hgood hc a b
@@ -33,7 +33,7 @@ theorem idemOf_coeff_conj : ∀ (X : Stages) (px : PreX X.B.toPre) (eR : Gc X.B 
   exact coeff_conj_of_central _ (Subalgebra.mem_center_iff.1 hc) _ _
 
 /- English proof (translation)
-Introduce `X px I hX U L hI hG hL`. Take `⟨eG, cG, plg, iso, hid, hpl, hdiv, hbc⟩` from `GlobalTheory.T.exists_finiteGroupIdentification_fixedPlaces X px I U L hI hG hL`. Take `⟨Xg, hgood, hKs⟩` from `GlobalTheory.T.exists_goodCharacterSet_idempotent_coeff_coefficientField X px (eG.trans cG)`. Use `⟨eG, cG, Xg, hid, hgood, GlobalTheory.T.psiLevelPairCompatible_of_columnLevels X px I U L eG cG plg iso hI hL hid hpl hbc, hKs, GlobalTheory.T.upperUnipotentGenericCharacter_mem_integralField X.B px I, fun tr => ⟨?_, GlobalTheory.T.columnFaceLevels_baseLevel_symmetricLevel X px I …` and prove the remaining obligations. Conclude with `idemOf_coeff_conj X px (eG.trans cG) Xg hgood hG.cen`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem grp_levels_exist : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → GrpAt X I → LevOf X I U L → ∃ (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (cG : G0 L.Pg X.toD7.R.r ≃* G0g X.toD7.nd) (Xg : Finset (Gc X.B px → X.B.LL)), IsPlacewiseIdentity X (px := px) eG ∧ GoodSet X (px := px) (eG.trans cG) Xg ∧ PsiPPTie X.toD7 (lev0 I) (chr0 I) (lev1 I) (chr1 I) (eG.trans cG) ∧ (∀ g, (idemOf Xg).coeff g ∈ X.B.Ks) ∧ (∀ p, ((chr0 I p : X.B.LLˣ) : X.B.LL) ∈ X.B.Ks) ∧ ∀ tr, IdemClass (D := X.toD7) (famR X I hX U Xg tr).A ∧ Seed.LevelsL (famR X I hX U Xg tr) L eG (face0 X I hX U Xg tr).lv2 ∧ ∃ (plg : (Σ k : Fin 2, X.toD7.nd.PlG k) ≃ L.Pg) (iso : ∀ kv : (Σ k : Fin 2, X.toD7.nd.PlG k), ZMod (X.toD7.host.g kv.1) ≃+* kP (plg kv).1), (∀ kv, ((plg kv : L.Pg) : Pl X.toD7.host.E) = X.toD7.naut.plGw kv.1 kv.2) ∧ (∀ kv, L.C.P.Div kv.1 (plg kv).1) ∧ ∀ g kv, eG g (plg kv) = Formalism.UG.bc (iso kv : ZMod (X.toD7.host.g kv.1) →+* kP (plg kv).1) ((eG.trans cG) g kv) := by
   intro X px I hX U L hI hG hL

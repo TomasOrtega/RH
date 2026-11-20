@@ -14,7 +14,7 @@ namespace GlobalTheory.Desc.StalkMap
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `z _`. Establish `hz : X.fromSpecStalk x z ⤳ x`. Establish `: X.fromSpecStalk x z ∈ Set.range (X.fromSpecStalk x)` using `⟨z, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Conclude with `hz.mem_open U.2 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem top_le_fromSpecStalk (x : X) (U : X.Opens) (hx : x ∈ U) : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U := by
   intro z _
@@ -24,7 +24,7 @@ theorem top_le_fromSpecStalk (x : X) (U : X.Opens) (hx : x ∈ U) : ⊤ ≤ X.fr
   exact hz.mem_open U.2 hx
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hx]`. Simplify using `only [Category.assoc, ← Functor.map_comp]`. Establish `e : ((homOfLE le_top).op ≫ (homOfLE (top_le_fromSpecStalk x U hx)).op : Opposite.op (⊤ : (Spec (X.presheaf.stalk x)).Opens) ⟶ Opposite.op ⊤) = 𝟙 _` using `rfl`. Rewrite using `[e, CategoryTheory.Functor.map_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_fromSpecStalk (x : X) (U : X.Opens) (hx : x ∈ U) :
     (X.fromSpecStalk x).appLE U ⊤ (top_le_fromSpecStalk x U hx) =
@@ -39,14 +39,14 @@ def val {R : Type} [CommRing R] (g : Sp R ⟶ X) (V : X.Opens) (h : ⊤ ≤ g �
   (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.comp (g.appLE V ⊤ h).hom
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem val_congr {R : Type} [CommRing R] {g g' : Sp R ⟶ X} (e : g = g') (V : X.Opens) (h : ⊤ ≤ g ⁻¹ᵁ V)
     (h' : ⊤ ≤ g' ⁻¹ᵁ V) (u : Γ(X, V)) : val g V h u = val g' V h' u := by
   subst e; rfl
 
 /- English proof (translation)
-Establish `: (gp X).appLE V ⊤ h = X.presheaf.germ V _ hV ≫ (Scheme.ΓSpecIso (X.presheaf.stalk (genericPoint X))).inv` using `appLE_fromSpecStalk (genericPoint X) V hV`. Unfold `val`. Rewrite using `[RingHom.comp_apply, this]`. Conclude with `(Scheme.ΓSpecIso (X.presheaf.stalk (genericPoint X))).inv_hom_id_apply _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_gp [IsIntegral X] (V : X.Opens) (hV : genericPoint X ∈ V) (h : ⊤ ≤ gp X ⁻¹ᵁ V) (u : Γ(X, V)) :
     val (gp X) V h u = GlobalTheory.Cartier.fnOf V hV u := by
@@ -63,7 +63,7 @@ namespace GlobalTheory.Desc.StalkMap
 variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (CommRingCat.Hom.hom q u)) (Scheme.Hom.appLE_comp_appLE g φ V W ⊤ e h)`.
+A detailed English derivation is pending.
 -/
 theorem val_appLE (g : Sp R ⟶ X) (φ : X ⟶ X') (V : X'.Opens) (W : X.Opens) (e : W ≤ φ ⁻¹ᵁ V)
     (h : ⊤ ≤ g ⁻¹ᵁ W) (h' : ⊤ ≤ (g ≫ φ) ⁻¹ᵁ V) (u : Γ(X', V)) :
@@ -72,7 +72,7 @@ theorem val_appLE (g : Sp R ⟶ X) (φ : X ⟶ X') (V : X'.Opens) (W : X.Opens) 
     (Scheme.Hom.appLE_comp_appLE g φ V W ⊤ e h)
 
 /- English proof (translation)
-Establish `: g.appLE ⊤ ⊤ h = g.appTop` using `Scheme.Hom.appLE_eq_app g`. Conclude with `congrArg (fun q => (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (CommRingCat.Hom.hom q u)) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_top (g : Sp R ⟶ X) (h : ⊤ ≤ g ⁻¹ᵁ ⊤) (u : Γ(X, ⊤)) :
     val g ⊤ h u = (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (g.appTop.hom u) := by
@@ -80,7 +80,7 @@ theorem val_top (g : Sp R ⟶ X) (h : ⊤ ≤ g ⁻¹ᵁ ⊤) (u : Γ(X, ⊤)) :
   exact congrArg (fun q => (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (CommRingCat.Hom.hom q u)) this
 
 /- English proof (translation)
-Use `(val_appLE (spMap σ) g V ⊤ h le_top h' u).symm.trans ((val_top (spMap σ) le_top _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun q => CommRingCat.Hom.hom q ((g.appLE V ⊤ h).hom u)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom σ))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_spMap (σ : R →+* R') (g : Sp R ⟶ X) (V : X.Opens) (h : ⊤ ≤ g ⁻¹ᵁ V)
     (h' : ⊤ ≤ (spMap σ ≫ g) ⁻¹ᵁ V) (u : Γ(X, V)) : val (spMap σ ≫ g) V h' u = σ (val g V h u) := by
@@ -89,7 +89,7 @@ theorem val_spMap (σ : R →+* R') (g : Sp R ⟶ X) (V : X.Opens) (h : ⊤ ≤ 
     (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom σ))
 
 /- English proof (translation)
-Establish `h1 : ⊤ ≤ gp Y ⁻¹ᵁ (m ⁻¹ᵁ W)` using `top_le_fromSpecStalk _ _ hY`. Establish `h2 : ⊤ ≤ gp P ⁻¹ᵁ W` using `top_le_fromSpecStalk _ _ hP`. Establish `h3 : ⊤ ≤ (gp Y ≫ m) ⁻¹ᵁ W` using `h1`. Establish `h4 : ⊤ ≤ (spMap φ ≫ gp P) ⁻¹ᵁ W` using `hm ▸ h3`. Rewrite using `[← val_gp _ hY h1, ← val_gp _ hP h2, ← val_spMap φ (gp P) W h2 h4, ← val_congr hm W h3 h4, ← val_appLE (gp Y) m W (m ⁻¹ᵁ W) le_rfl h1 h3, Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fnOf_app_eq {Y P : Scheme.{0}} [IsIntegral Y] [IsIntegral P] (m : Y ⟶ P)
     (φ : P.functionField →+* Y.functionField) (hm : gp Y ≫ m = spMap φ ≫ gp P) {W : P.Opens}
@@ -107,9 +107,9 @@ end GlobalTheory.Desc.StalkMap
 open GlobalTheory.Desc.StalkMap in
 
 /- English proof (translation)
-Introduce `Y P _ _ m φ hm y v hv`. Take `⟨W, hW, s, rfl⟩` from `hv.exists_fnOf`. Establish `hy : y ∈ m ⁻¹ᵁ W` using `hW`. Establish `hY : genericPoint Y ∈ m ⁻¹ᵁ W` using `gen_mem hy`. Rewrite using `[← fnOf_app_eq m φ hm hY (gen_mem hW) s]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨regAt_fnOf hy hY _, ?_⟩` and prove the remaining obligations. Rewrite using `[unitAt_fnOf_iff hy hY, unitAt_fnOf_iff hW (gen_mem hW), ← Scheme.preimage_basicOpen]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.Desc.regAt_map_of_gp : ∀ (Y P : Scheme.{0}) [IsIntegral Y] [IsIntegral P] (m : Y ⟶ P)
     (φ : P.functionField →+* Y.functionField), gp Y ≫ m = spMap φ ≫ gp P → ∀ (y : Y) (v : P.functionField),

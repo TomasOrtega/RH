@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChartAction
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨-, h2, h3, -⟩` from `hR R G d x hx κ`. Conclude with `(h2 y (h3 a y ha)).unique ha hb`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rep_unique (hR : RepSt) {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {d : ℕ}
     {x : Fam G (Fin d)} (hx : IsUnivChart G d x) {κ : Type} [Finite κ] {a b : Fin d → MvPowerSeries κ R}
@@ -20,15 +20,13 @@ theorem rep_unique (hR : RepSt) {R : Type} [CommRing R] {G : Over (Spec (CommRin
   exact (h2 y (h3 a y ha)).unique ha hb
 
 /- English proof (translation)
-Introduce `R _ G _ _ d x hx O _ act Gl hF`. Establish `hex : ∀ a, ∃ φ, IsMapOf x x (act.act a) φ` using `fun a => by haveI := act.hom a`. Conclude with `(hM R G G d x x hx hx (act.act a) (IsMonHom.one_hom _)).exists`. Use `choose φ hφ using hex`. Establish `hpt : ∀ (n : ℕ) (j : Fin n), ∃ y, Rep x (pt R (n` using `n) d j) y := fun n j => ((hR R G d x hx (Fin n × Fin d)).1 _ (gp_pt j)).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose y hy using hpt`. Establish `h1 : ∀ a, Rep x (φ a) (fun m => y 1 0 m ≫ act.act a)` using `fun a => by`. Use `(hφ a).2 1 _ _ (hy 1 0)` as an intermediate fact. Rewrite `this` using `[gt_comp1_pt_right]`. Then use the resulting hypothesis. Use `⟨⟨φ, fun a => (hφ a).1, fun a => ?_, fun a b => ?_, fun a b => ?_, ?_⟩, hφ⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := act.hom a`. Use `rep_unique hR hx ((hφ a).2 2 _ _ (hF.2 2 _ _ _ _ (hy 2 0) (hy 2 1))) (hF.2 2 _ _ _ _ ((hφ a).2 2 _ _ (hy 2 0)) ((hφ a).2 2 _ _ (hy 2 1))) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Conclude with `MonObj.mul_comp _ _ _`. Use `rep_unique hR hx (h1 (a + b)) (hF.2 1 _ _ _ _ (h1 a) (h1 b)) ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[act.add]`. Conclude with `MonObj.comp_mul _ _ _`. Use `rep_unique hR hx (h1 (a * b)) ((hφ a).2 1 _ _ (h1 b)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `m`.
-
-Rewrite using `[mul_comm, act.mul, Category.assoc]`. Use `rep_unique hR hx (h1 1) (hy 1 0) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Rewrite using `[act.one, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actSt_of (_ : JetAlgSt) (hR : RepSt) (hM : MapSt) : ActSt := by
   intro R _ G _ _ d x hx O _ act Gl hF

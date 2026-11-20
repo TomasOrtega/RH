@@ -8,9 +8,9 @@ universe u
 namespace UpperTheory.Gal.G3
 
 /- English proof (translation)
-Establish `hk' : (k : ℚ) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `h1` using `congrArg H e`. Simplify using `only [map_nsmul, map_add, hv] at h1`. Establish `h2 : k • H (U (Hi v)) = k • (v + N • H w)`. Rewrite using `[h1, smul_add, mul_comm N k, mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[← Nat.cast_smul_eq_nsmul ℚ k, ← Nat.cast_smul_eq_nsmul ℚ k]`. Conclude with `MulAction.injective₀ hk' h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_core {V : Type*} [AddCommGroup V] [Module ℚ V] (H U Hi : V →+ V) {k N : ℕ} (hk : 0 < k) {v w : V}
     (hv : H (Hi v) = v) (e : U (k • Hi v) = k • Hi v + (N * k) • w) : H (U (Hi v)) = v + N • H w := by
@@ -23,9 +23,9 @@ private theorem conj_core {V : Type*} [AddCommGroup V] [Module ℚ V] (H U Hi : 
   exact MulAction.injective₀ hk' h2
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨w, hw, e⟩` from `hu _ (hinv v hv)`. Use `⟨L.actG h w, hI w hw, ?_⟩` and prove the remaining obligations. Establish `hhv : L.actG h (L.actG h⁻¹ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conj_core (L.actG h).toAddMonoidHom (L.actG u).toAddMonoidHom (L.actG h⁻¹).toAddMonoidHom hk (v := v) (w := w) hhv e` as an intermediate fact. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem congOne_conj {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {h u : G.GAf} {k N : ℕ}
     (hI : Integ L h) (hk : 0 < k) (hinv : ∀ v ∈ LaHat D, k • L.actG h⁻¹ v ∈ LaHat D) (hu : L.CongOne (N * k) u) :
@@ -42,7 +42,7 @@ private theorem congOne_conj {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup
 end UpperTheory.Gal.G3
 
 /- English proof (translation)
-Introduce `p _ D G L h k N hI hk hinv u hu`. Use `⟨congOne_conj L hI hk hinv hu.1, ?_⟩` and prove the remaining obligations. Establish `e : (h * u * h⁻¹)⁻¹ = h * u⁻¹ * h⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `congOne_conj L hI hk hinv hu.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pAdmOf :
     AdmOf := by

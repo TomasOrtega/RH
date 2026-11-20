@@ -14,7 +14,7 @@ section Rings
 variable {S : Scheme.{0}} {A B D : Type} [CommRing A] [CommRing B] [CommRing D]
 
 /- English proof (translation)
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp (f : A →+* B) (g : B →+* D) :
     dualMap (g.comp f) = (dualMap g).comp (dualMap f) := by
@@ -22,7 +22,7 @@ theorem dualMap_comp (f : A →+* B) (g : B →+* D) :
   ext <;> simp [dualMap]
 
 /- English proof (translation)
-Rewrite using `[dualMap_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_dualMap_comp (f : A →+* B) (g : B →+* D) :
     Spec.map (CommRingCat.ofHom (dualMap (g.comp f))) =
@@ -30,9 +30,9 @@ theorem spec_dualMap_comp (f : A →+* B) (g : B →+* D) :
   rw [dualMap_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[LieEx.isTanAt_iff]`. Establish `key : (LieEx.zsec x' : _ ⟶ LieEx.ob x' B) ≫ LieCarrier.epsHom φ x x' h = (Over.homMk (Spec.map (CommRingCat.ofHom φ)) h : Over.mk x' ⟶ Over.mk x) ≫ LieEx.zsec x` using `by ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[dualMap]`. Rewrite using `[← Category.assoc, key, Category.assoc, hv, MonObj.comp_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTanAt_epsHom {G : Over S} [GrpObj G] (φ : A →+* B) (x : Spec (CommRingCat.of A) ⟶ S)
     (x' : Spec (CommRingCat.of B) ⟶ S) (h : Spec.map (CommRingCat.ofHom φ) ≫ x = x') (v : epsAt x ⟶ G)
@@ -49,7 +49,7 @@ theorem isTanAt_epsHom {G : Over S} [GrpObj G] (φ : A →+* B) (x : Spec (CommR
   rw [← Category.assoc, key, Category.assoc, hv, MonObj.comp_one]
 
 /- English proof (translation)
-Establish `h1` using `(cancel_mono (X.fromSpecStalk c)).1 h`. Establish `h2` using `Spec.map_injective h1`. Conclude with `congrArg CommRingCat.Hom.hom h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalk_hom_ext {X : Scheme.{0}} (c : X) (a b : X.presheaf.stalk c →+* B)
     (h : Spec.map (CommRingCat.ofHom a) ≫ X.fromSpecStalk c = Spec.map (CommRingCat.ofHom b) ≫ X.fromSpecStalk c) :
@@ -64,7 +64,7 @@ variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω : Type} [Field Ω] {ξ : S
   {E : Type} [AddCommGroup E] [Module Ω E] {R : Type} [CommRing R] [IsLocalRing R] {C : Type} [Field C] [Algebra R C]
 
 /- English proof (translation)
-Establish `h : (Spec.map (CommRingCat.ofHom (algebraMap R C))) (IsLocalRing.closedPoint C) ⤳ IsLocalRing.closedPoint R` using `IsLocalRing.specializes_closedPoint _`. Conclude with `h.map z.continuous`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem centre_specializes (z : Spec (CommRingCat.of R) ⟶ X) :
     centre (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z) ⤳ centre z := by
@@ -73,15 +73,13 @@ theorem centre_specializes (z : Spec (CommRingCat.of R) ⟶ X) :
   exact h.map z.continuous
 
 /- English proof (translation)
-Establish `hsp` using `centre_specializes (C := C) z`. Establish `F1 : Spec.map (CommRingCat.ofHom (X.presheaf.stalkSpecializes hsp).hom) ≫ X.fromSpecStalk (centre z) = X.fromSpecStalk (centre (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z))` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp`. Establish `gen_eq : (genMap ξ ⟨_, hc'⟩).comp (X.presheaf.stalkSpecializes hsp).hom = genMap ξ ⟨_, hc⟩`. Apply `stalk_hom_ext` to reduce the goal to its premises. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, F1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(LieCarrier.genMap_fromSpecStalk ⟨_, hc'⟩).trans (LieCarrier.genMap_fromSpecStalk ⟨_, hc⟩).symm`. Establish `s_eq : (Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z)).hom.comp (X.presheaf.stalkSpecializes hsp).hom = (algebraMap R C).comp (Scheme.stalkClosedPointTo z).hom`. Apply `stalk_hom_ext` to reduce the goal to its premises. Establish `L : Spec.map (X.presheaf.stalkSpecializes hsp ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z)) ≫ X.fromSpecStalk (centre z) = Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z` using `(congrArg (· ≫ X.fromSpecStalk (centre z)) (Spec.map_comp _ _)).trans ((Category.assoc _ _ _).trans ((congrArg (Spec.map (Scheme.stalkClosedPointTo _) ≫ ·) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp)).trans (Scheme.Spec_stalkClosedPointTo_fromSpecStalk _)))`. Establish `Rt : Spec.map (Scheme.stalkClosedPointTo z ≫ CommRingCat.ofHom (algebraMap R C)) ≫ X.fromSpecStalk (centre z) = Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z` using `(congrArg (· ≫ X.fromSpecStalk (centre z)) (Spec.map_comp _ _)).trans ((Category.assoc _ _ _).trans (congrArg (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `L.trans Rt.symm`. Use `⟨hc', LieCarrier.epsHom (X.presheaf.stalkSpecializes hsp).hom _ _ F1 ≫ v, ⟨isTanAt_epsHom _ _ _ _ _ hv.1, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(M.pt e).left = Spec.map (CommRingCat.ofHom (dualMap (genMap ξ ⟨_, hc'⟩))) ≫ Spec.map (CommRingCat.ofHom (dualMap (X.presheaf.stalkSpecializes hsp).hom)) ≫ v.left`. Establish `e` using `spec_dualMap_comp (X.presheaf.stalkSpecializes hsp).hom (genMap ξ ⟨_, hc'⟩)`. Rewrite `e` using `[gen_eq]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `hv.2.trans ((congrArg (· ≫ v.left) e).trans (Category.assoc _ _ _))`. Express the relevant statement in the definitionally equal form `t.left = Spec.map (CommRingCat.ofHom (dualMap (Scheme.stalkClosedPointTo _).hom)) ≫ Spec.map (CommRingCat.ofHom (dualMap (X.presheaf.stalkSpecializes hsp).hom)) ≫ v.left`. Establish `e1` using `spec_dualMap_comp (Scheme.stalkClosedPointTo z).hom (algebraMap R C)`. Establish `e2` using `spec_dualMap_comp (X.presheaf.stalkSpecializes hsp).hom (Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z)).hom`. Establish `e3` using `(congrArg (fun f : X.presheaf.stalk (centre z) →+* C => Spec.map (CommRingCat.ofHom (dualMap f))) s_eq).symm.trans e2`.
-
-Conclude with `ht.trans ((congrArg (_ ≫ ·) hu).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ v.left) (e1.symm.trans e3)).trans (Category.assoc _ _ _))))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valAt_base (M : LieModel G ξ E) (z : Spec (CommRingCat.of R) ⟶ X) {e : E} (hc : genPt ξ ⤳ centre z)
     (hc' : genPt ξ ⤳ centre (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z))
@@ -138,21 +136,21 @@ namespace GlobalTheory.CompanionTheory.Ar
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
 /- English proof (translation)
-Introduce `X G _ _ Ω _ ξ E _ _ M R _ _ z C _ _ EC _ _ _ _ MC hξ hG h h' w`. Take `⟨ER, _, _, ⟨MR⟩⟩` from `lieModel_exists X G R z`. Take `⟨ev, hev, -, hspan⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ E M R z h ER MR hξ hG`. Take `⟨evC, hevC, -, -⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ E M C _ h' EC MC hξ hG`. Establish `hj : ∀ u : ER, ∃ w, MC.pt w = LieCarrier.epsHom (algebraMap R C) z _ rfl ≫ MR.pt u` using `fun u => MC.onto _ (LieFib.isTanAt_epsHom _ _ _ _ _ (MR.tan u))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose j hj using hj`. Establish `hjl : ∀ u, (MC.pt (j u)).left = Spec.map (CommRingCat.ofHom (dualMap (algebraMap R C))) ≫ (MR.pt u).left` using `fun u => congrArg CommaMorphism.left (hj u)`. Establish `hadd : ∀ u u', j (u + u') = j u + j u'` using `fun u u' => MC.inj (by`. Rewrite using `[hj, MC.add, hj, hj, MR.add, MonObj.comp_mul])`. Establish `hsmul : ∀ (r : R) u, j (r • u) = r • j u` using `fun r u => MC.inj (Over.OverMorphism.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul C r (j u), MC.smul, hjl, hjl, MR.smul]`. Establish `e : Spec.map (CommRingCat.ofHom (epsMul (algebraMap R C r))) ≫ Spec.map (CommRingCat.ofHom (dualMap (algebraMap R C))) = Spec.map (CommRingCat.ofHom (dualMap (algebraMap R C))) ≫ Spec.map (CommRingCat.ofHom (epsMul r))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, LieCarrier.dualMap_epsMul]`. Rewrite using `[← Category.assoc, ← e, Category.assoc]))`. Set `jL : ER →ₗ[R] EC` to `{ toFun := j, map_add' := hadd, map_smul' := hsmul }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgen : ∀ (e : E) (he : e ∈ M.lat ⟨centre z, h⟩), M.ValAt (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z) e (MC.pt (j (ev ⟨e, he⟩)))`. Introduce `e he`. Take `⟨h2, v, hv, hu⟩` from `(hev e _).2 ⟨he, rfl⟩`. Conclude with `LieFib.valAt_base M z h h' v hv _ _ (hjl _) hu`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hw`. Establish `hle : M.fibAt M.lat z MC ≤ LinearMap.range jL`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w' ⟨h2, e, he, hval⟩`. Take `⟨he', hw'⟩` from `(hevC e _).1 hval`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨he'', hw''⟩` from `(hevC e _).1 (hgen e he)`. Conclude with `⟨ev ⟨e, he⟩, hw''.symm.trans hw'⟩`. Take `⟨u, rfl⟩` from `hle hw`. Conclude with `⟨MR.pt u, MR.tan u, hjl u⟩`. Introduce and unpack `⟨v, hv, hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, rfl⟩` from `MR.onto v hv`. Establish `hwu : w = j u` using `MC.inj (Over.OverMorphism.ext (hw.trans (hjl u).symm))`. Substitute `hwu` using the available equality. Establish `hu : u ∈ Submodule.span R (Set.range ev)` using `hspan ▸ Submodule.mem_top`. Establish `hle : (Submodule.span R (Set.range ev)).map jL ≤ M.fibAt M.lat z MC`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.map_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨⟨e, he⟩, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨h, e, he, hgen e he⟩`. Conclude with `hle (Submodule.mem_map_of_mem hu)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lieLat_fibAt_iff : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (R : Type) [CommRing R] [IsLocalRing R] (z : Spec (CommRingCat.of R) ⟶ X) (C : Type) [Field C] [Algebra R C] (EC : Type) [AddCommGroup EC] [Module C EC] [Module R EC] [IsScalarTower R C EC] (MC : LieModel G (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z) EC), IsCptGen ξ → Smooth G.hom → genPt ξ ⤳ centre z → genPt ξ ⤳ centre (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ z) → ∀ w : EC, w ∈ M.fibAt M.lat z MC ↔ ∃ v : epsAt z ⟶ G, IsTanAt G z v ∧ (MC.pt w).left = Spec.map (CommRingCat.ofHom (dualMap (algebraMap R C))) ≫ v.left := by
   intro X G _ _ Ω _ ξ E _ _ M R _ _ z C _ _ EC _ _ _ _ MC hξ hG h h' w

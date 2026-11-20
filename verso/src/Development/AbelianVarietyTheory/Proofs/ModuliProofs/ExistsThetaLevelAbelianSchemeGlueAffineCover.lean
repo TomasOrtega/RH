@@ -28,36 +28,36 @@ section Bundles
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `H.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull A χ χ rfl) (chartPullSame B (fun _ => χ ≫ φ) (fun _ => φ) _ χ fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull {A : LB Y} {B : LB X} {φ : Y ⟶ X} (H : LBIso A (B.pull φ)) (χ : Z ⟶ Y) :
     LBIso (A.pull χ) (B.pull (χ ≫ φ)) :=
   H.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull A χ χ rfl) (chartPullSame B (fun _ => χ ≫ φ) (fun _ => φ) _ χ fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `H'.trans hC (pull_isLB hA _) (pull_isLB hB _) (lbIso_pull H χ)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_comp {C : LB Z} {A : LB Y} {B : LB X} (hC : C.IsLB) (hA : A.IsLB) (hB : B.IsLB) {φ : Y ⟶ X}
     {χ : Z ⟶ Y} (H' : LBIso C (A.pull χ)) (H : LBIso A (B.pull φ)) : LBIso C (B.pull (χ ≫ φ)) :=
   H'.trans hC (pull_isLB hA _) (pull_isLB hB _) (lbIso_pull H χ)
 
 /- English proof (translation)
-The claim follows from `H'.trans hC (pull_isLB hB _) (pull_isLB hA _) (lbIso_pull H χ).symm`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_cancel {C : LB Z} {A : LB Y} {B : LB X} (hC : C.IsLB) (hA : A.IsLB) (hB : B.IsLB) {φ : Y ⟶ X}
     {χ : Z ⟶ Y} (H' : LBIso C (B.pull (χ ≫ φ))) (H : LBIso A (B.pull φ)) : LBIso C (A.pull χ) :=
   H'.trans hC (pull_isLB hB _) (pull_isLB hA _) (lbIso_pull H χ).symm
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.PolBaseChange.lbIso_refl hA).chartPull (chartPullId A) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull A _ _ rfl)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_id {A : LB X} (hA : A.IsLB) : LBIso A (A.pull (𝟙 X)) :=
   (GlobalTheory.PolBaseChange.lbIso_refl hA).chartPull (chartPullId A) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull A _ _ rfl)
 
 /- English proof (translation)
-Use `GlobalTheory.exists_gen_of_local_of_section A.left S A.hom (eSec A) (LB.div M L) (LB.isLB_div hM hL) (Over.w η[A]) (GlobalTheory.surjective_app_of_isAbelianScheme hG A hA) (fun s => ?_) ?_` and prove the remaining obligations. Take `⟨U, hU, w, hw⟩` from `h s`. Conclude with `⟨U, hU, gen_chartPull (GlobalTheory.IsoDescent.chartPullDiv M L _) w hw⟩`. Take `⟨a, ha⟩` from `rL`. Take `⟨c, hc⟩` from `rM`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `GlobalTheory.IsoDescent.lbIso_of_gens hL hM _ _ _ _ a ha c hc`. Conclude with `gen_chartPull (GlobalTheory.IsoDescent.chartPullDiv M L _) w hw`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lbIso_of_local (hG : Out.GlobalFnsSt) {S : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbelianScheme A)
     {L M : LB A.left} (hL : L.IsLB) (hM : M.IsLB) (rL : Out.Rigidified A L) (rM : Out.Rigidified A M)
@@ -77,7 +77,7 @@ end Bundles
 section Charts
 
 /- English proof (translation)
-Take `⟨i, z, hz⟩` from `ha (p x)`. Take `⟨w, hw, -⟩` from `Scheme.exists_preimage_of_isPullback (h i) x z hz.symm`. Conclude with `⟨i, w, hw⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem covers_of_isPullback {X Y : Scheme.{0}} {p : X ⟶ Y} {κ : Type} {X' Y' : κ → Scheme.{0}}
     {χ : ∀ i, X' i ⟶ X} {p' : ∀ i, X' i ⟶ Y' i} {a : ∀ i, Y' i ⟶ Y} (ha : ∀ y, ∃ i z, a i z = y)
@@ -87,7 +87,7 @@ theorem covers_of_isPullback {X Y : Scheme.{0}} {p : X ⟶ Y} {κ : Type} {X' Y'
   exact ⟨i, w, hw⟩
 
 /- English proof (translation)
-The claim follows from `Scheme.Cover.hom_ext (Scheme.Cover.mkOfCovers κ X' χ hc) f g h`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext_of_charts {X Z : Scheme.{0}} {κ : Type} {X' : κ → Scheme.{0}} (χ : ∀ i, X' i ⟶ X)
     (ho : ∀ i, IsOpenImmersion (χ i)) (hc : ∀ x, ∃ i z, χ i z = x) {f g : X ⟶ Z}
@@ -95,7 +95,7 @@ theorem hom_ext_of_charts {X Z : Scheme.{0}} {κ : Type} {X' : κ → Scheme.{0}
   Scheme.Cover.hom_ext (Scheme.Cover.mkOfCovers κ X' χ hc) f g h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Scheme.Cover.glueMorphisms (Scheme.Cover.mkOfCovers κ X' χ hc) φ h, Scheme.Cover.ι_glueMorphisms (Scheme.Cover.mkOfCovers κ X' χ hc) φ h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_hom_of_charts {X Z : Scheme.{0}} {κ : Type} {X' : κ → Scheme.{0}} (χ : ∀ i, X' i ⟶ X)
     (ho : ∀ i, IsOpenImmersion (χ i)) (hc : ∀ x, ∃ i z, χ i z = x) (φ : ∀ i, X' i ⟶ Z)
@@ -105,13 +105,13 @@ theorem exists_hom_of_charts {X Z : Scheme.{0}} {κ : Type} {X' : κ → Scheme.
     Scheme.Cover.ι_glueMorphisms (Scheme.Cover.mkOfCovers κ X' χ hc) φ h⟩
 
 /- English proof (translation)
-Use `⟨IsPullback.flip ?_, fun P x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Use `Scheme.isPullback_of_openCover _ _ _ _ (Scheme.Cover.mkOfCovers κ T' a ha) fun i ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsPullback (pullback.snd G.hom (a i)) (pullback.fst G.hom (a i) ≫ φ) (a i ≫ f) H.hom`. Apply the tactic sequence `refine (hφ i).1.flip.of_iso (hχ i).1.isoPullback (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp`. Use `hom_ext_of_charts (fun i => pullback.fst P.hom (a i)) (fun i => inferInstance) (covers_of_isPullback ha fun i => IsPullback.of_hasPullback P.hom (a i)) fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Set `Q : Over (T' i)` to `Over.mk (pullback.snd P.hom (a i))`. Establish `w : ∀ x : P ⟶ G, (pullback.fst P.hom (a i) ≫ x.left) ≫ G.hom = pullback.snd P.hom (a i) ≫ a i` using `fun x => by`. Rewrite using `[Category.assoc, Over.w x, pullback.condition]`. Set `l : (P ⟶ G) → (Q ⟶ G' i)` to `fun x => Over.homMk ((hχ i).1.lift _ _ (w x)) ((hχ i).1.lift_snd _ _ _)`. Establish `hl : ∀ x, (l x).left ≫ χ i = pullback.fst P.hom (a i) ≫ x.left` using `fun x => (hχ i).1.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c : Over.mk (Q.hom ≫ a i) ⟶ P` to `Over.homMk (pullback.fst P.hom (a i)) pullback.condition`. Set `d : Over.mk (Q.hom ≫ a i ≫ f) ⟶ Over.mk (P.hom ≫ f)` to `Over.homMk (pullback.fst P.hom (a i)) (pullback.condition_assoc _)`. Establish `hk : ∀ (x : P ⟶ G) (x₀ : Over.mk (P.hom ≫ f) ⟶ H), x₀.left = x.left ≫ φ → (d ≫ x₀).left = (l x).left ≫ χ i ≫ φ` using `fun x x₀ hx => (congrArg (pullback.fst P.hom (a i) ≫ ·) hx).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ) (hl x).symm).trans (Category.assoc _ _ _)))`. Establish `e₁` using `(hχ i).2 Q (l x) (l y) (c ≫ x) (c ≫ y) (hl x).symm (hl y).symm`. Establish `e₂` using `(hφ i).2 Q (l x) (l y) (d ≫ x₀) (d ≫ y₀) (hk x x₀ hx) (hk y y₀ hy)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁`, `e₂` using `[← MonObj.comp_mul]`. Conclude with `(e₂.trans (Category.assoc _ _ _).symm).trans ((congrArg (· ≫ φ) e₁.symm).trans (Category.assoc _ _ _))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_of_charts {T S : Scheme.{0}} {G : Over T} {H : Over S} [GrpObj G] [GrpObj H] {f : T ⟶ S}
     {φ : G.left ⟶ H.left} {κ : Type} {T' : κ → Scheme.{0}} {G' : ∀ i, Over (T' i)} [∀ i, GrpObj (G' i)]
@@ -161,19 +161,19 @@ def IsMap (t' : TObj g k J b s') (t : TObj g k J b s) (f : S' ⟶ S) (φ : t'.A.
 variable {t : TObj g k J b s} {t' : TObj g k J b s'} {t'' : TObj g k J b s''}
 
 /- English proof (translation)
-The claim follows from `Over.w (t.pt i)`.
+A detailed English derivation is pending.
 -/
 theorem pt_hom (t : TObj g k J b s) (i : Fin (2 * g)) : (t.pt i).left ≫ t.A.hom = 𝟙 S := Over.w (t.pt i)
 
 /- English proof (translation)
-The claim follows from `haveI : IsMonHom (Iso.refl t.A).hom := inferInstanceAs (IsMonHom (𝟙 t.A)) ⟨isGrpPullback_of_iso (Iso.refl t.A), lbIso_pull_id t.isLB, fun _ => by simp, fun _ => by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsMap.id (t : TObj g k J b s) : IsMap t t (𝟙 S) (𝟙 _) :=
   haveI : IsMonHom (Iso.refl t.A).hom := inferInstanceAs (IsMonHom (𝟙 t.A))
   ⟨isGrpPullback_of_iso (Iso.refl t.A), lbIso_pull_id t.isLB, fun _ => by simp, fun _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h'.1.comp h.1, lbIso_comp t''.isLB t'.isLB t.isLB h'.2.1 h.2.1, fun i => ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ φ) (h'.2.2.1 i))).trans ((Category.assoc _ _ _).trans ((congrArg (f' ≫ ·) (h.2.2.1 i)).trans (Category.assoc _ _ _).symm)), fun j => by rw [← Category.assoc …`.
+Supply the required witnesses or components.
 -/
 theorem IsMap.comp {f : S' ⟶ S} {f' : S'' ⟶ S'} {φ : t'.A.left ⟶ t.A.left} {χ : t''.A.left ⟶ t'.A.left}
     (h' : IsMap t'' t' f' χ) (h : IsMap t' t f φ) : IsMap t'' t (f' ≫ f) (χ ≫ φ) :=
@@ -183,11 +183,9 @@ theorem IsMap.comp {f : S' ⟶ S} {f' : S'' ⟶ S'} {φ : t'.A.left ⟶ t.A.left
     fun j => by rw [← Category.assoc, h'.2.2.2 j, Category.assoc, h.2.2.2 j, Category.assoc]⟩
 
 /- English proof (translation)
-Establish `hp` using `h.1.1`. Take `⟨χ, e, w⟩ : ∃ χ : t''.A.left ⟶ t'.A.left, χ ≫ φ = ρ ∧ χ ≫ t'.A.hom = t''.A.hom ≫ f'` from `⟨hp.lift ρ (t''.A.hom ≫ f') (by rw [h'.1.1.w, Category.assoc]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Substitute `e` using the available equality. Use `⟨χ, rfl, h.1.cancel h'.1 w, lbIso_cancel t''.isLB t'.isLB t.isLB h'.2.1 h.2.1, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Apply `hp.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `((Category.assoc _ _ _).trans (h'.2.2.1 i)).trans ((Category.assoc _ _ _).trans ((congrArg (f' ≫ ·) (h.2.2.1 i).symm).trans (Category.assoc _ _ _).symm))`. Rewrite using `[Category.assoc, w, ← Category.assoc, pt_hom]`. Conclude with `(Category.id_comp _).trans (((Category.assoc _ _ _).trans (congrArg (f' ≫ ·) (pt_hom t' i))).trans (Category.comp_id _)).symm`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h'.2.2.2 j, Category.assoc, Category.assoc, h.2.2.2 j]`.
-
-Rewrite using `[Category.assoc, w, ← Category.assoc, Over.w, Category.assoc, Over.w, w]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMap.cancel {f : S' ⟶ S} {f' : S'' ⟶ S'} {φ : t'.A.left ⟶ t.A.left} {ρ : t''.A.left ⟶ t.A.left}
     (h' : IsMap t'' t (f' ≫ f) ρ) (h : IsMap t' t f φ) : ∃ χ, χ ≫ φ = ρ ∧ IsMap t'' t' f' χ := by
@@ -207,7 +205,7 @@ theorem IsMap.cancel {f : S' ⟶ S} {f' : S'' ⟶ S'} {φ : t'.A.left ⟶ t.A.le
     · rw [Category.assoc, w, ← Category.assoc, Over.w, Category.assoc, Over.w, w]
 
 /- English proof (translation)
-The claim follows from `let ⟨_, h'⟩ := h' let ⟨_, h⟩ := h ⟨_, IsMap.comp h' h⟩`.
+A detailed English derivation is pending.
 -/
 theorem tMap_comp {f : S' ⟶ S} {f' : S'' ⟶ S'} (h' : TMap t'' t' f') (h : TMap t' t f) : TMap t'' t (f' ≫ f) :=
   let ⟨_, h'⟩ := h'
@@ -215,7 +213,7 @@ theorem tMap_comp {f : S' ⟶ S} {f' : S'' ⟶ S'} (h' : TMap t'' t' f') (h : TM
   ⟨_, IsMap.comp h' h⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨_, h'⟩ := h' let ⟨_, h⟩ := h let ⟨χ, _, e⟩ := IsMap.cancel h' h ⟨χ, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem tMap_cancel {f : S' ⟶ S} {f' : S'' ⟶ S'} (h' : TMap t'' t (f' ≫ f)) (h : TMap t' t f) : TMap t'' t' f' :=
   let ⟨_, h'⟩ := h'
@@ -226,7 +224,7 @@ theorem tMap_cancel {f : S' ⟶ S} {f' : S'' ⟶ S'} (h' : TMap t'' t (f' ≫ f)
 end
 
 /- English proof (translation)
-Take `⟨R, a, ha, hp, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (x := p) (U := ⊤) trivial`. Conclude with `⟨R, inferInstance, a, ha, hp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_affine (T : Scheme.{0}) (p : T) :
     ∃ (R : Type) (_ : CommRing R) (a : Sp R ⟶ T), IsOpenImmersion a ∧ p ∈ Set.range a := by
@@ -238,11 +236,11 @@ variable (h₁ : Out.Laws) (h₂ : Out.Laws2) {g N' m : ℕ} {b : TBase o (N' ^ 
 include h₁ h₂ hm hd hN
 
 /- English proof (translation)
-Take `⟨β, rfl⟩ : ∃ β : o →+* R, r = spMap β` from `⟨(Spec.preimage r).hom, (Spec.map_preimage r).symm⟩`. Take `⟨ψ, e, w⟩ : ∃ ψ : u.A.left ⟶ u.A.left, ψ ≫ φ = φ' ∧ ψ ≫ u.A.hom = u.A.hom` from `⟨a.1.lift φ' u.A.hom a'.1.w, a.1.lift_fst _ _ _, a.1.lift_snd _ _ _⟩`. Substitute `e` using the available equality. Establish `H` using `(GlobalTheory.T.thetaLevel_iso_unique_of_dense_common_fibres h₁ h₂ o g N' J b m R β u u hm hd hN (fun p => subset_closure (by`. Take `⟨v, hv⟩` from `GlobalTheory.tObj_pull o g _ J b _ _ _ _ ((Sp R).fromSpecResidueField p) u rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(Sp R).residueField p, inferInstance, (Sp R).fromSpecResidueField p, v, ((Sp R).range_fromSpecResidueField p).ge rfl, hv, hv⟩))).2 (𝟙 _) ψ (IsMap.id u).1`. Use the proof step `(a.cancel (a'.congr (Category.id_comp _).symm rfl) (w.trans (Category.comp_id _).symm))`. Use the proof step `(lbIso_pull_id u.isLB) (lbIso_cancel u.isLB u.isLB t.isLB c' c) (fun i => by`. Apply `a.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.comp_id, Category.assoc]`.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `d i`. Rewrite using `[Category.comp_id, Category.assoc, w])`. Rewrite using `[← H, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem unique_affine {R : Type} [CommRing R] [_root_.IsReduced R] {r : Sp R ⟶ Sp o} (u : TObj g (N' ^ 2) J b r)
     (t : TObj g (N' ^ 2) J b s) {f : Sp R ⟶ S} {φ φ' : u.A.left ⟶ t.A.left} (a : IsGrpPullback u.A t.A f φ)
@@ -264,9 +262,9 @@ theorem unique_affine {R : Type} [CommRing R] [_root_.IsReduced R] {r : Sp R ⟶
   rw [← H, Category.id_comp]
 
 /- English proof (translation)
-Use `choose R _ y hy hp using exists_affine S'`. Use `choose v χ hχ using fun p => GlobalTheory.tObj_pull o g _ J b _ _ _ _ (y p) u rfl`. Use `hom_ext_of_charts χ (fun p => MorphismProperty.of_isPullback (hχ p).1.1.flip (hy p)) (covers_of_isPullback (fun p => ⟨p, hp p⟩) fun p => (hχ p).1.1) fun p => ?_` and prove the remaining obligations. Use `hy p` as an intermediate fact. Establish `: IsReduced (Sp (R p))` using `isReduced_of_isOpenImmersion (y p)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: _root_.IsReduced (R p)` using `(affine_isReduced_iff (CommRingCat.of (R p))).1 this`. Use `unique_affine h₁ h₂ hm hd hN (v p) t ((hχ p).1.comp a) ((hχ p).1.comp a') (lbIso_comp (v p).isLB u.isLB t.isLB (hχ p).2.1 c) (lbIso_comp (v p).isLB u.isLB t.isLB (hχ p).2.1 c') fun i => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc, (hχ p).2.2.1 i]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (y p ≫ ·) (d i)).trans (Category.assoc _ _ _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unique [IsReduced S'] (u : TObj g (N' ^ 2) J b s')
     (t : TObj g (N' ^ 2) J b s) {f : S' ⟶ S} {φ φ' : u.A.left ⟶ t.A.left} (a : IsGrpPullback u.A t.A f φ)
@@ -285,21 +283,19 @@ theorem unique [IsReduced S'] (u : TObj g (N' ^ 2) J b s')
   exact (Category.assoc _ _ _).trans ((congrArg (y p ≫ ·) (d i)).trans (Category.assoc _ _ _).symm)
 
 /- English proof (translation)
-Use `choose V a r v ha hp hu ht using h`. Use `choose χ hχ using hu`. Use `choose ψ hψ using ht`. Establish `ho : ∀ p, IsOpenImmersion (χ p)` using `fun p => MorphismProperty.of_isPullback (hχ p).1.1.flip (ha p)`. Establish `hc' : ∀ y, ∃ p z, a p z = y` using `fun p => ⟨p, hp p⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `covers_of_isPullback hc' fun p => (hχ p).1.1`. Take `⟨φ, hφ⟩` from `exists_hom_of_charts χ ho hc ψ fun p q => by`. Take `⟨w, ρ, hρ⟩` from `GlobalTheory.tObj_pull o g _ J b _ _ _ _ (pullback.fst (a p) (a q)) (v p) rfl`. Establish `k` using `IsMap.comp hρ (hχ p)`. Rewrite `k` using `[pullback.condition]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ρ', e, hρ'⟩` from `IsMap.cancel k (hχ q)`. Establish `k₁` using `IsMap.comp hρ (hψ p)`. Establish `k₂` using `IsMap.comp hρ' (hψ q)`. Rewrite `k₂` using `[← pullback.condition_assoc]`. Establish `: IsReduced (pullback (a p) (a q))` using `isReduced_of_isOpenImmersion (pullback.fst (a p) (a q) ≫ a p)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `E` using `unique h₁ h₂ hm hd hN w t k₁.1 k₂.1 k₁.2.1 k₂.2.1 fun i => (k₁.2.2.1 i).trans (k₂.2.2.1 i).symm`. Set `l : pullback (χ p) (χ q) ⟶ w.A.left` to `hρ.1.1.lift (pullback.fst _ _) (pullback.lift (pullback.fst _ _ ≫ (v p).A.hom) (pullback.snd _ _ ≫ (v q).A.hom) (by`. Rewrite using `[Category.assoc, Category.assoc, ← (hχ p).1.1.w, ← (hχ q).1.1.w, pullback.condition_assoc]))`. Use the proof step `(pullback.lift_fst _ _ _).symm`. Establish `l₁ : l ≫ ρ = pullback.fst _ _` using `hρ.1.1.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `l₂ : l ≫ ρ' = pullback.snd _ _`. Rewrite using `[← cancel_mono (χ q), Category.assoc, e, ← Category.assoc, l₁, pullback.condition]`. Rewrite using `[← l₁, ← l₂, Category.assoc, Category.assoc, E]`. Establish `gp : IsGrpPullback u.A t.A f φ` using `isGrpPullback_of_charts ha hc' (fun p => (hχ p).1) fun p => (hψ p).1.congr rfl (hφ p).symm`. Use `⟨φ, gp, ?_, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `lbIso_of_local h₁.globalFns u.A u.ab u.isLB (pull_isLB t.isLB _) u.rigid (GlobalTheory.PolBaseChange.rigidified_pull gp t.rigid) fun p => ⟨(a p).opensRange, hp p, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range ((u.A.hom ⁻¹ᵁ (a p).opensRange).ι ≫ u.A.hom) ⊆ Set.range (a p)`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `z.2`. Take `⟨j, hj⟩ : ∃ j, j ≫ χ p = (u.A.hom ⁻¹ᵁ (a p).opensRange).ι` from `⟨(hχ p).1.1.lift _ _ (IsOpenImmersion.lift_fac (a p) _ hr).symm, (hχ p).1.1.lift_fst _ _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c : LBIso (v p).L ((t.L.pull φ).pull (χ p))` using `lbIso_cancel (v p).isLB (pull_isLB t.isLB _) t.isLB (by rw [hφ]; exact (hψ p).2.1) (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB t.isLB _))`. Rewrite using `[← hj]`. Conclude with `(lbIso_pull (hχ p).2.1 j).symm.trans (pull_isLB u.isLB _) (pull_isLB (v p).isLB _) (pull_isLB (pull_isLB t.isLB _) _) (lbIso_pull c j)`. Use `hom_ext_of_charts a ha hc' fun p => ?_` and prove the remaining obligations. Use `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ φ) ((hχ p).2.2.1 i).symm)).trans ?_` and prove the remaining obligations.
-
-Use `((Category.assoc _ _ _).trans (congrArg (((v p).pt i).left ≫ ·) (hφ p))).trans ?_` and prove the remaining obligations. Conclude with `((hψ p).2.2.1 i).trans (Category.assoc _ _ _)`. Use `hom_ext_of_charts χ ho hc fun p => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← (hχ p).2.2.2 j, Category.assoc, hφ, (hψ p).2.2.2 j, ← Category.assoc, hφ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tMap_of_local [IsReduced S'] (u : TObj g (N' ^ 2) J b s') (t : TObj g (N' ^ 2) J b s) (f : S' ⟶ S)
     (h : ∀ p : S', ∃ (V : Scheme.{0}) (a : V ⟶ S') (r : V ⟶ Sp o) (v : TObj g (N' ^ 2) J b r),
@@ -353,13 +349,13 @@ theorem tMap_of_local [IsReduced S'] (u : TObj g (N' ^ 2) J b s') (t : TObj g (N
 end Theta
 
 /- English proof (translation)
-Introduce `h₁ h₂ o _ g N' J b m S _ s I R _ x t hm hd hN hx hc H`. Set `U : I → S.Opens` to `fun i => (x i).opensRange`. Set `e : ∀ i, Sp (R i) ≅ (U i).toScheme` to `fun i => (x i).isoOpensRange`. Establish `e₁ : ∀ i, (e i).hom ≫ (U i).ι = x i` using `fun i => (x i).isoOpensRange_hom_ι`. Establish `e₂ : ∀ i, (e i).inv ≫ x i = (U i).ι` using `fun i => (x i).isoOpensRange_inv_comp`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose t' ht' using fun i => GlobalTheory.tObj_pull o g _ J b _ _ _ ((U i).ι ≫ s) (e i).inv (t i) (by rw [← Category.assoc, e₂])`. Take `⟨t₀, ht₀⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_glue_openCover o g _ J b S s I U t' (top_le_iff.1 fun p _ => TopologicalSpace.Opens.mem_iSup.2 (hc p)) (fun i j => by`. Take `⟨u, hu⟩` from `GlobalTheory.tObj_pull o g _ J b _ _ _ ((U i ⊓ U j).ι ≫ s) (S.homOfLE inf_le_left) (t' i) (by rw [← Category.assoc, Scheme.homOfLE_ι])`. Use `⟨u, hu, tMap_of_local h₁ h₂ hm hd hN u (t' j) _ fun p => ?_⟩` and prove the remaining obligations. Take `⟨T, _, a, ha, hp⟩` from `exists_affine _ p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `GlobalTheory.tObj_pull o g _ J b _ _ _ (((a ≫ S.homOfLE (inf_le_left : U i ⊓ U j ≤ U i)) ≫ (e i).inv) ≫ x i ≫ s) a u (by simp only [Category.assoc, reassoc_of% e₂, Scheme.homOfLE_ι_assoc])`. Use `⟨_, a, _, v, ha, hp, hv, tMap_cancel (H i j T _ _ v inferInstance ?_ (tMap_comp (tMap_comp hv hu) (ht' i))) (ht' j)⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, e₂, Scheme.homOfLE_ι])`. Use the proof step `(fun T i f u φ φ' hf a a' c c' d => by`. Establish `: IsReduced T` using `isReduced_of_isOpenImmersion (f ≫ (U i).ι)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `unique h₁ h₂ hm hd hN u (t' i) a a' c c' d)`. Use `⟨t₀, fun i => ?_⟩` and prove the remaining obligations. Establish `k : TMap (t i) (t' i) (e i).hom` using `tMap_cancel (by rw [Iso.hom_inv_id]; exact ⟨_, IsMap.id _⟩) (ht' i)`. Use `tMap_comp k (ht₀ i)` as an intermediate fact. Rewrite `this` using `[e₁]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_glue : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (m : ℕ) (S : Scheme.{0}) [IsReduced S] (s : S ⟶ Sp o) (I : Type) (R : I → Type) [∀ i, CommRing (R i)] (x : ∀ i, Sp (R i) ⟶ S) (t : ∀ i, TObj g (N' ^ 2) J b (x i ≫ s)), 2 ≤ m → m ^ 2 ∣ N' → Odd N' → (∀ i, IsOpenImmersion (x i)) → (∀ p : S, ∃ i, p ∈ Set.range (x i)) → (∀ i i' (T : Type) [CommRing T] (a : Sp T ⟶ Sp (R i)) (a' : Sp T ⟶ Sp (R i')) (u : TObj g (N' ^ 2) J b (a ≫ x i ≫ s)), IsOpenImmersion a → a ≫ x i = a' ≫ x i' → TMap u (t i) a → TMap u (t i') a') → ∃ t₀ : TObj g (N' ^ 2) J b s, ∀ i, TMap (t i) t₀ (x i) := by
   intro h₁ h₂ o _ g N' J b m S _ s I R _ x t hm hd hN hx hc H

@@ -16,9 +16,9 @@ open Filter Topology GlobalTheory.CWDeriv
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `e : ∀ (w : List (Mat k r)) (v : H), dsigW (k` using `k) (r := r) σ w v = PI.UpqRep.dsigW (k := k) (r := r) σ w v := by`. Introduce `w v`. Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => show dsig σ X _ = PI.UpqRep.dsig σ X _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[ih]`. Both sides reduce to the same expression. Unfold `IsCWCont at h`. Simplify using `only [e] at h`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cwCont_of {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup Wp]
     {σ : Mat k r → (H →L[ℂ] H)} {Bm : H → Wp} (h : IsCWCont (k := k) (r := r) σ Bm) :
@@ -34,15 +34,13 @@ theorem cwCont_of {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   exact h
 
 /- English proof (translation)
-Establish `hD : DerFacts R` using `fun X hX => ⟨fun _ hv => ⟨DerivedAction.dsig_smooth hR.2 hX hv, DerivedAction.hasDerivAt_dsig hX hv⟩, fun _ hv _ hw => DerivedAction.dsig_skew hR.2 hX hv hw⟩`. Establish `hsm` using `PI.UnitaryGroupMassFormula.CapelliEig.smooth_right_action k r ε mu R.H R.σ hR.2 v hv`. Establish `h0 : (0 : R.H) ∈ R.sm` using `R.smSub.zero_mem`. Establish `hB0 : Bm 0 = 0` using `by simpa using hs 0 0 h0`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `cw_tendsto hB (l := 𝓝[GG k r] g) (u := fun x => (1 : ℂ) • (R.σ x v - R.σ g v) - 0) (by filter_upwards [self_mem_nhdsWithin] with x hx`. Conclude with `sm_comb 1 (hsm x hx) (hsm g hg) h0)`. Use the proof step `(by`. Introduce `W hW`. Establish `h2 : Tendsto _ (𝓝[GG k r] g) _` using `(smoothOnH_continuousOn (dsigW_orbit_smooth hR hD hv W hW) g hg).tendsto`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0 : PI.UpqRep.dsigW (k` using `k) (r := r) R.σ W 0 = 0 := by`. Establish `h` using `dsigW_comb hD W hW 0 h0 h0 h0`. Simplify using `only [zero_smul, zero_sub, neg_zero] at h`. Rewrite `h` using `[eq_neg_iff_add_eq_zero, ← two_smul ℂ]`. Simplify using `using h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[← tendsto_sub_nhds_zero_iff]`. Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with x hx`. Rewrite using `[dsigW_comb hD W hW 1 (hsm x hx) (hsm g hg) h0, hW0, one_smul, sub_zero])`. Use `tendsto_sub_nhds_zero_iff.mp (h1.congr' ?_)` and prove the remaining obligations.
-
-Use `filter_upwards [self_mem_nhdsWithin] with x hx`. Rewrite using `[lin_comb ha hs 1 (hsm x hx) (hsm g hg) h0, hB0, one_smul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_orbit {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} (R : BranchingSupport.Rep k r)
     (hR : R.IsDS ε mu) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (Bm : R.H → V)
@@ -78,9 +76,9 @@ theorem continuousOn_orbit {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r 
   rw [lin_comb ha hs 1 (hsm x hx) (hsm g hg) h0, hB0, one_smul, sub_zero]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨?_, fun h0 => h2 ?_, by rw [Measure.smul_apply, h3, smul_zero], fun s hs => by` and prove the remaining obligations. Rewrite using `[Measure.map_smul, h4 s hs]⟩`. Conclude with `inferInstanceAs (SigmaFinite (x.toNNReal • μ))`. Establish `h1` using `Measure.measure_univ_eq_zero.2 h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `Measure.measure_univ_eq_zero.1 ((mul_eq_zero.1 h1).resolve_left (ENNReal.ofReal_pos.2 hx).ne')`.
+A detailed English derivation is pending.
 -/
 theorem isHaarOn_smul {S : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn S μ) {x : ℝ} (hx : 0 < x) :
     IsHaarOn S (ENNReal.ofReal x • μ) := by
@@ -93,7 +91,7 @@ theorem isHaarOn_smul {S : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn 
     exact Measure.measure_univ_eq_zero.1 ((mul_eq_zero.1 h1).resolve_left (ENNReal.ofReal_pos.2 hx).ne')
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.haar_lie_nilpotent_eq_lebesgue k r`. Unfold `haarLie at h ⊢`. Rewrite `h` using `[one_smul]`. Rewrite using `[h, smul_smul, mul_comm x, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (by norm_num), mul_comm (ENNReal.ofReal x)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem haarLie_eq (x : ℝ) :
     haarLie (Nset k r) (ENNReal.ofReal x) =
@@ -106,11 +104,9 @@ theorem haarLie_eq (x : ℝ) :
   simp
 
 /- English proof (translation)
-Set `R : BranchingSupport.Rep k r` to `⟨H, σ⟩`. Establish `hR : R.IsDS ε lam` using `⟨hlam, hσ⟩`. Take `⟨e1, e2, e3⟩` from `(GlobalTheory.Amp.Schur.type_irred_and_avg k r z π hz hT).1 u hπ`. Rewrite `hq` using `[haarLie_eq]`. Use `⟨hz, hT, e1, e2, e3, hG, hW, hW1, isHaarOn_smul (GlobalTheory.T.flagUnipotentLebesgueMeasure_isHaarOn k r) (by positivity), hq, fun n _ => by unfold psi; rw [mul_comm]; exact Complex.norm_exp_ofReal_mul_I _, fun a ha m hm g hg => ?_, continuousOn_orbit R hR Bm hB.1 hB.2.1 (cwCont …` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ham : a * m ∈ GG k r` using `(PI.UnitaryGroupMassFormula.CapelliEig.unitary_Hecke_group k r a ha.1).2.2 m hm.1`. Establish `h1` using `PI.UnitaryGroupMassFormula.CapelliEig.Hecke_multiplication k r ε lam H σ hσ _ ham g hg`. Establish `h2` using `PI.UnitaryGroupMassFormula.CapelliEig.smooth_right_action k r ε lam H σ hσ v₀ hv g hg`. Use `show Bm (σ (a * m * g) v₀) = _`. Rewrite using `[h1]`.
-
-Conclude with `hB.2.2.1 a ha m hm _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneSide_of {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
@@ -139,9 +135,9 @@ theorem oneSide_of {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H
   exact hB.2.2.1 a ha m hm _ h2
 
 /- English proof (translation)
-Introduce `D τ w w' θ W lam A hv hθ hT hT' hW hA`. Take `⟨w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14⟩` from `hW`. Take `⟨a1, a2, a3, a4, a5, -, -, a8, a9, a10, -⟩` from `hA`. Rewrite `w13`, `w14` using `[w12]`. Establish `hx : 0 < (2 * D.host.v) ^ (-((D.R.rS : ℝ) * D.R.k)) * θ` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨oneSide_of hx a1 a2 w3 (w5 ▸ hT) w1 w7 w8 w9 w13 a3 a5 a8 a9, oneSide_of hx a1 a2 w4 (w6 ▸ hT') w2 w7 w10 w11 w14 a4 a5 a8 a10⟩`.
+Supply the required witnesses or components.
 -/
 theorem oneSide_of_good : ∀ (D : D7) (τ : D.what₂.Tau) (w w' : D.what₂.Word) (θ : ℝ) (W : LocW D.R.k D.R.rS) (lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (A : LocS W), 0 < D.host.v → 0 < θ → 0 < Tr D w → 0 < Tr D w' → GoodW D τ w w' θ W → GoodS D lam A → OneSide W.z W.π (psiS D W.z) W.μG W.μW (ENNReal.ofReal ((2 * D.host.v) ^ (-((D.R.rS : ℝ) * D.R.k)) * θ * 2 ^ (D.R.rS * (D.R.k + 1) + D.R.rS * (D.R.rS - 1))) • lebN D.R.k D.R.rS) W.νS A.Φ A.cN ∧ OneSide W.z' W.π' (psiS D W.z') W.μG W.μW' (ENNReal.ofReal ((2 * D.host.v) ^ (-((D.R.rS : ℝ) * D.R.k)) * θ * 2 ^ (D.R.rS * (D.R.k + 1) + D.R.rS * (D.R.rS - 1))) • lebN D.R.k D.R.rS) W.νS' A.Φ' A.cN := by
   intro D τ w w' θ W lam A hv hθ hT hT' hW hA

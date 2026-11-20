@@ -24,7 +24,7 @@ open TrivSqZeroExt (inl inr)
 open ReciprocityTheory.ChartRestriction.G.Chart (sp)
 
 /- English proof (translation)
-Establish `: Nontrivial (DualNumber Ω)` using `(TrivSqZeroExt.inl_injective (R := Ω) (M := Ω)).nontrivial`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun y => ?_` and prove the remaining obligations. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using `using IsLocalRing.isUnit_or_isUnit_one_sub_self y.fst`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isLocalRing_dual (Ω : Type) [CommRing Ω] [IsLocalRing Ω] : IsLocalRing (DualNumber Ω) := by
   have : Nontrivial (DualNumber Ω) := (TrivSqZeroExt.inl_injective (R := Ω) (M := Ω)).nontrivial
@@ -33,9 +33,9 @@ theorem isLocalRing_dual (Ω : Type) [CommRing Ω] [IsLocalRing Ω] : IsLocalRin
   simpa using IsLocalRing.isUnit_or_isUnit_one_sub_self y.fst
 
 /- English proof (translation)
-Rewrite `hy` using `[← Ideal.map_pow]`. Set `S : Ideal (DualNumber Ω)` to `{ carrier := {y | y.fst ∈ K ^ n ∧ y.snd ∈ K ^ n} add_mem' := fun ha hb => ⟨by simpa using add_mem ha.1 hb.1, by simpa using add_mem ha.2 hb.2⟩ zero_mem' := ⟨by simp, by simp⟩ smul_mem' := fun c y hy => ⟨by simpa using Ideal.mul_mem_left _ c.fst hy.1, by`. Simplify `add_mem (Ideal.mul_mem_left _ c.fst hy.2) (Ideal.mul_mem_left _ c.snd hy.1)⟩ }` using `[TrivSqZeroExt.snd_mul, smul_eq_mul, _root_.mul_comm]`. Establish `: (K ^ n).map (algebraMap Ω (DualNumber Ω)) ≤ S` using `Ideal.map_le_iff_le_comap.2 fun r hr => ⟨by simpa [TrivSqZeroExt.algebraMap_eq_inl] using hr, by`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this hy`.
+A detailed English derivation is pending.
 -/
 theorem mem_pow_map {Ω : Type} [CommRing Ω] (K : Ideal Ω) (n : ℕ) (y : DualNumber Ω)
     (hy : y ∈ (K.map (algebraMap Ω (DualNumber Ω))) ^ n) : y.fst ∈ K ^ n ∧ y.snd ∈ K ^ n := by
@@ -53,9 +53,9 @@ theorem mem_pow_map {Ω : Type} [CommRing Ω] (K : Ideal Ω) (n : ℕ) (y : Dual
   exact this hy
 
 /- English proof (translation)
-Rewrite using `[← Ideal.map_map]`. Use `⟨fun y hy => ?_⟩` and prove the remaining obligations. Establish `h' : ∀ n, y.fst ∈ (I.map φ) ^ n ∧ y.snd ∈ (I.map φ) ^ n` using `fun n => mem_pow_map _ n y (by`. Use `hy n` as an intermediate fact. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top] at this)` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `ext`. Conclude with `h.haus y.fst fun n => by rw [SModEq.zero, smul_eq_mul, Ideal.mul_top]; exact (h' n).1`. Conclude with `h.haus y.snd fun n => by rw [SModEq.zero, smul_eq_mul, Ideal.mul_top]; exact (h' n).2`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isHausdorff_dual {R Ω : Type} [CommRing R] [CommRing Ω] (φ : R →+* Ω) (I : Ideal R)
     [h : IsHausdorff (I.map φ) Ω] :
@@ -70,7 +70,7 @@ theorem isHausdorff_dual {R Ω : Type} [CommRing R] [CommRing Ω] (φ : R →+* 
   · exact h.haus y.snd fun n => by rw [SModEq.zero, smul_eq_mul, Ideal.mul_top]; exact (h' n).2
 
 /- English proof (translation)
-Establish `h` using `CoeffWt.isGrpPullback_self G`. Take `⟨u, e⟩` from `PullbackSections.push_surj h (tv v)`. Conclude with `⟨u, (Category.comp_id _).symm.trans (congrArg (fun q => q.left) e), (PullbackSections.isTangent_iff h _).2 (by rw [e]; exact PullbackSections.tv_mem _)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tangent_lift {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (v : TanM (𝟙 (Sp R)) G) : ∃ u : epsR R ⟶ G, u.left = (tv v).left ∧ IsTangent u := by
@@ -80,9 +80,9 @@ theorem exists_tangent_lift {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G]
     (PullbackSections.isTangent_iff h _).2 (by rw [e]; exact PullbackSections.tv_mem _)⟩
 
 /- English proof (translation)
-Use `letI : Algebra R Ω := φ.toAlgebra`. Use `RingHom.ext fun r => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Use `show (epsHom δ (φ r)).fst = (algebraMap R (DualNumber Ω) r).fst`. Simplify using `[epsHom, TrivSqZeroExt.algebraMap_eq_inl']`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `show (epsHom δ (φ r)).snd = (algebraMap R (DualNumber Ω) r).snd`. Simplify using `[epsHom, TrivSqZeroExt.algebraMap_eq_inl', hδφ]`.
+A detailed English derivation is pending.
 -/
 theorem epsHom_comp {R Ω : Type} [CommRing R] [CommRing Ω] (φ : R →+* Ω) (δ : Derivation ℤ Ω Ω)
     (hδφ : ∀ r, δ (φ r) = 0) :
@@ -97,29 +97,27 @@ theorem epsHom_comp {R Ω : Type} [CommRing R] [CommRing Ω] (φ : R →+* Ω) (
     simp [epsHom, TrivSqZeroExt.algebraMap_eq_inl', hδφ]
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ _ _ t P`. Use `letI := H.starRing`. Introduce `Y n vH dd hdd v' hv' dd' hdd' Ω _ _ _ φ x δ hcomp hx hδφ hδ x' hx' hxx' a O f hO`. Use `letI : Algebra R Ω := φ.toAlgebra`. Establish `hε : (inr 1 : DualNumber Ω) * inr 1 = 0` using `TrivSqZeroExt.inr_mul_inr _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI := isLocalRing_dual Ω`. Use `haveI : IsHausdorff ((maximalIdeal R).map (algebraMap R (DualNumber Ω))) (DualNumber Ω) := isHausdorff_dual φ (maximalIdeal R)`. Set `jη : epsR R ⟶ overAt (𝟙 (Sp R)) (DualNumber R)` to `Over.homMk (𝟙 _) (by simp)`. Take `⟨u₀, hu₀, hut₀⟩` from `exists_tangent_lift Y.H (vH a)`. Take `⟨u₁, hu₁, hut₁⟩` from `exists_tangent_lift t.G (v' a)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eu₀ : u₀ = jη ≫ tv (vH a)` using `Over.OverMorphism.ext (hu₀.trans (Category.id_comp _).symm)`. Establish `eu₁ : u₁ = jη ≫ tv (v' a)` using `Over.OverMorphism.ext (hu₁.trans (Category.id_comp _).symm)`. Set `T : Over (Sp R)` to `Over.mk (spMap φ)`. Set `xt : T ⟶ Y.H` to `Over.homMk x hx`. Set `xt' : T ⟶ t.G` to `Over.homMk x' hx'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `kz : sp (R₀` to `R) (DualNumber Ω) ⟶ T := Over.homMk (spMap (algebraMap Ω (DualNumber Ω))) (by show spMap _ ≫ spMap φ = Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber Ω)))`. Rewrite using `[spMap, spMap, ← Spec.map_comp]`. Use the proof step `rfl)`. Set `kε : sp (R₀` to `R) (DualNumber Ω) ⟶ T := Over.homMk (spMap (epsHom (δ a))) (by show spMap _ ≫ spMap φ = Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber Ω)))`. Rewrite using `[spMap, spMap, ← Spec.map_comp]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (epsHom_comp φ (δ a) (hδφ a)))`. Set `kk` to `Chart.spMap (GlobalTheory.SqZero.epsTo R (inr 1 : DualNumber Ω) hε) ≫ jη`. Set `z : sp (R₀` to `R) (DualNumber Ω) ⟶ Y.H := kz ≫ xt`. Set `z' : sp (R₀` to `R) (DualNumber Ω) ⟶ t.G := kz ≫ xt'`. Set `yH` to `(Chart.spMap (GlobalTheory.SqZero.epsTo R (inr 1 : DualNumber Ω) hε) ≫ u₀) * z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `yG` to `(Chart.spMap (GlobalTheory.SqZero.epsTo R (inr 1 : DualNumber Ω) hε) ≫ u₁) * z'`. Establish `e₁ : yH = kε ≫ xt`. Use `CoeffWt.eq_of_valR Y yH (kε ≫ xt) ⊤ (x (closedPoint Ω)) trivial fun V' _ hp => ?_` and prove the remaining obligations. Establish `m : ⊤ ≤ x ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V')` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of Ω) x hp).ge`. Take `⟨a₁, a₂⟩` from `GlobalTheory.ZH.CrdCalc.valR_spMap (algebraMap Ω (DualNumber Ω)) x _ m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b₁, b₂⟩` from `GlobalTheory.ZH.CrdCalc.valR_spMap (epsHom (δ a)) x _ m`. Take `⟨c₁, c₂⟩` from `CoeffWt.valR_translate hu₀ hut₀ (hdd a) (inr 1 : DualNumber Ω) hε z _ a₁`. Use `⟨c₁, b₁, fun α g _ => ?_⟩` and prove the remaining obligations. Use `(c₂ g).trans (Eq.trans ?_ (b₂ g).symm)` and prove the remaining obligations. Use `show valR (spMap (algebraMap Ω (DualNumber Ω)) ≫ x) _ g + inr 1 * valR (spMap (algebraMap Ω (DualNumber Ω)) ≫ x) _ (dd a _ g) = _`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[a₂, a₂, hδ a _ g m]`. Apply the tactic sequence `ext <;> simp [epsHom, TrivSqZeroExt.algebraMap_eq_inl']`. Establish `hG : GlobalFnsSt` using `GlobalTheory.allSixLaws.1.globalFns`. Establish `pz` using `hxx'.pull kz (Y.rep.1 _ _ kz xt)`. Establish `pu` using `(hv' a).pull (Chart.spMap (GlobalTheory.SqZero.epsTo R (inr 1 : DualNumber Ω) hε) ≫ jη) (Y.rep.1 _ _ (Chart.spMap (GlobalTheory.SqZero.epsTo R (inr 1 : DualNumber Ω) hε) ≫ jη) (tv (vH a)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `pu` using `[Category.assoc, Category.assoc, ← eu₀, ← eu₁]`. Establish `pm` using `FormalPoint.IsPointOf.mul hG pu pz (Y.rep.2 _ _ _)`. Establish `pε` using `hxx'.pull kε (Y.rep.1 _ _ kε xt)`. Establish `e₂ : yG = kε ≫ xt'`. Establish `pm' : FormalPoint.IsPointOf P.U.toUnifPre (Y.Φ _ (kε ≫ xt)) yG`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← e₁]`. Conclude with `pm`. Conclude with `FormalPoint.IsPointOf.unique pm' pε`. Take `⟨a₁, a₂⟩` from `GlobalTheory.ZH.CrdCalc.valR_spMap (algebraMap Ω (DualNumber Ω)) x' O hO`. Take `⟨b₁, b₂⟩` from `GlobalTheory.ZH.CrdCalc.valR_spMap (epsHom (δ a)) x' O hO`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c₁, c₂⟩` from `CoeffWt.valR_translate hu₁ hut₁ (hdd' a) (inr 1 : DualNumber Ω) hε z' O a₁`. Establish `hz : ∀ g, valR z'.left O g = algebraMap Ω (DualNumber Ω) (valR x' O g)` using `a₂`. Establish `k : valR yG.left O f = valR (spMap (epsHom (δ a)) ≫ x') O f`. Rewrite using `[e₂]`. Both sides reduce to the same expression.
-
-Establish `k2 : algebraMap Ω (DualNumber Ω) (valR x' O f) + inr 1 * algebraMap Ω (DualNumber Ω) (valR x' O (dd' a O f)) = epsHom (δ a) (valR x' O f)`. Rewrite using `[← hz, ← hz, ← c₂, k, b₂]`. Establish `k3` using `congrArg TrivSqZeroExt.snd k2`. Simplify `k3` using `[epsHom, TrivSqZeroExt.algebraMap_eq_inl']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t), letI := H.starRing; ∀ (Y : Ray P.oD) (n : ℕ) (vH : Fin n → TanM (𝟙 (Sp R)) Y.H) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (vH a) (dd a)) → ∀ (v' : Fin n → TanM (𝟙 (Sp R)) t.G), (∀ a, GlobalTheory.FormalPoint.IsPointOf P.U.toUnifPre (Y.Φ _ (tv (vH a))) (tv (v' a))) → ∀ (dd' : Fin n → Fld t.G.left), (∀ a, IsInv t.G (v' a) (dd' a)) → ∀ (Ω : Type) [CommRing Ω] [IsDomain Ω] [IsLocalRing Ω] (φ : R →+* Ω) (x : Sp Ω ⟶ Y.H.left) (δ : Fin n → Derivation ℤ Ω Ω), IsAdicComplete ((maximalIdeal R).map φ) Ω → ∀ (hx : x ≫ Y.H.hom = spMap φ), (∀ a r, δ a (φ r) = 0) → (∀ a O f, ⊤ ≤ x ⁻¹ᵁ O → valR x O (dd a O f) = δ a (valR x O f)) → ∀ (x' : Sp Ω ⟶ t.G.left) (hx' : x' ≫ t.G.hom = spMap φ), GlobalTheory.FormalPoint.IsPointOf P.U.toUnifPre (Y.Φ (Over.mk (spMap φ)) (Over.homMk x hx)) (Over.homMk x' hx') → ∀ a O f, ⊤ ≤ x' ⁻¹ᵁ O → valR x' O (dd' a O f) = δ a (valR x' O f) := by
   intro E _ _ _ H R _ _ _ _ _ _ t P

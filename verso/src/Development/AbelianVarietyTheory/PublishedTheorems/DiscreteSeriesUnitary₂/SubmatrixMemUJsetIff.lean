@@ -14,7 +14,7 @@ def HarishChandra : Prop :=
         IsFdeg (Formalism.REAL.muG ε) σ (c * Formalism.QuantumDeterminants.fdegHC lam)
 
 /- English proof (translation)
-Take `⟨c, hc, h1⟩` from `h n ε`. Conclude with `⟨c, hc, fun lam hl H _ _ σ hσ => h1 1 lam hl H σ (by simpa [Equiv.Perm.one_def] using hσ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HarishChandra.chamber (h : HarishChandra) (n : ℕ) (ε : Fin n → Bool) : ∃ c : ℝ, 0 < c ∧
     ∀ (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →

@@ -22,9 +22,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowThetaIt
 
 /- English proof (translation)
-Take `⟨X, hX, h1, h2⟩` from `GlobalTheory.Chain.ItPairObj.exists_record hD hH`. Establish `key : ∀ τ, (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, LocIt M M' τ (aS τ) (aT τ) A` using `fun τ => by`. Take `⟨t, al, be, ga, de, hd, e1, e2⟩` from `hP τ`. Conclude with `exists_locIt hX h1 h2 (GlobalTheory.T.thetaModels_eq_coverDiscreteSeries hD hH D) M M' τ hd e1 e2`. Use `choose hr A hA using key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨It, I, hI⟩` from `GlobalTheory.T.exists_globalFockIntertwiner_tensor_realPlaces D V W _ _ M M' aS aT A GlobalTheory.Contr.contraction.2 (GlobalTheory.T.gluing_law_holds D _ _) hA`. Use `⟨It, hI.ne, fun ω f ⟨χS, χT, hω, he⟩ hf => ?_⟩` and prove the remaining obligations. Establish `hv` using `fun τ => GlobalTheory.T.thetaVacuumCharacters_atRealPlaces D V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (he τ).1 (he τ).2 hf`. Conclude with `isItW_of_globIt hθ hI hr (GlobalTheory.T.fockVectorsOverVacuumIsometry_of_skeletonDatum D V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2 (fun τ => (hv τ).2.1) fun τ => (hv τ).2.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem itPair_of_par (hD : GlobalTheory.Published.DiscreteSeriesCover) (hH : GlobalTheory.Published.HarishChandraModules) {D : D7} {V W : HSp D}
     {S S' : D.what₂.Tau → SPar} (M : DSModel V S) (M' : DSModel W S') {θ : InfFam D} (hθ : IsInfFam θ)
@@ -59,41 +59,39 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowThetaIt
 
 /- English proof (translation)
-Establish `he : (D.hc τ).e ⟨j, hj⟩ = ((grid D τ).e (j + 1) : ℚ)` using `(GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D) (cen D τ)).2.2 ⟨j, hj⟩`. Use `set G := grid D τ with hG`. Use `set δ : ℚ := if Odd (i + j) then -(1 / 2) else 0 with hδ`. Use `set δ' : ℚ := if Odd (i + (j + 1)) then -(1 / 2) else 0 with hδ'`. Establish `hT : att (-(D.hc τ).e ⟨j, hj⟩) (rkV D i (j + 1)) = -(G.e (j + 1) : ℚ) + δ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [att, he, hδ]`. Distinguish the cases in `h : Odd (i + j)`. Establish `h' : Odd (rkV D i (j + 1))` using `by rw [odd_rkV, show i + (j + 1) = i + j + 1 by ring, Nat.odd_add_one]; tauto`. Simplify using `only [h, h', if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h' : ¬ Odd (rkV D i (j + 1))` using `by rw [odd_rkV, show i + (j + 1) = i + j + 1 by ring, Nat.odd_add_one]; tauto`. Simplify using `only [h, h', if_false]`. Expand and normalize the polynomial expressions, which then agree. Establish `hS' : att (-(D.hc τ).e ⟨j, hj⟩) (rkV D i j) = -(G.e (j + 1) : ℚ) + δ'`. Simplify using `only [att, he, hδ']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h : Odd (i + j)`. Establish `h' : Odd (rkV D i j) ↔ False` using `by rw [odd_rkV]; tauto`. Establish `h'' : Odd (i + (j + 1)) ↔ False` using `by rw [show i + (j + 1) = i + j + 1 by ring, Nat.odd_add_one]; tauto`. Simplify using `only [h', h'', if_false]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h' : Odd (rkV D i j)` using `by rw [odd_rkV]; tauto`. Establish `h'' : Odd (i + (j + 1))` using `by rw [show i + (j + 1) = i + j + 1 by ring, Nat.odd_add_one]; tauto`. Simplify using `only [h', h'', if_true]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT, hS']`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P := shift δ (G.parD i j) with hP`. Establish `hpart` using `partner_parD D τ i j hi hj δ δ'`. Establish `ht : 1 ≤ D.R.t` using `D.R.t_odd.pos`. Establish `hN : 1800 < bigN D`. Establish `h1` using `hS.1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : D.R.m ≤ D.R.m * (D.R.t + sLen D + 1)` using `Nat.le_mul_of_pos_right _ (by omega)`. Unfold `bigN`. Unfold `Ranks.r at h1`. Use linear arithmetic over natural numbers and integers. Establish `hgap : GapOver P (2 * (bigN D : ℚ) ^ 3)` using `GlobalTheory.RemoveBlock.gapOver_shift (gapOver_parD D hS τ i j hi hj.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgap' : GapOver (partner D.R.t true (-(G.e (j + 1) : ℚ) + δ) (-(G.e (j + 1) : ℚ) + δ') P) (2 * (bigN D : ℚ) ^ 3)`. Rewrite using `[hP, ← hpart]`. Conclude with `GlobalTheory.RemoveBlock.gapOver_shift (gapOver_parD D hS τ i (j + 1) hi hj)`. Establish `hreg : IsRegular P` using `isRegular_of_gapOver (by positivity) hgap`. Establish `hfar3 : FarFrom (-(G.e (j + 1) : ℚ) + δ) (((D.R.t : ℚ) + 3) / 2) P` using `farFrom_shift (farFrom_parD D τ i j hi hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hfar1 : FarFrom (-(G.e (j + 1) : ℚ) + δ) (((D.R.t : ℚ) + 1) / 2) P` using `fun x hx => le_trans (by linarith) (hfar3 x hx)`. Establish `hne : P.Nonempty`. Establish `hv : ((grid D τ).v 2 : ℚ) ∈ (grid D τ).cloud` using `GridData.mem_cloud.2 ⟨2, le_rfl, by have := D.R.m_add_three_le_k; show 2 ≤ D.R.k; omega, rfl⟩`. Establish `hmem : (((grid D τ).v 2 : ℚ), true) ∈ (grid D τ).parD i j` using `GridData.mem_parD.2 (Or.inl ⟨hv, rfl⟩)`. Conclude with `⟨_, mem_shift' hmem⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : P.card + D.R.t ≤ bigN D`. Rewrite using `[hP, card_shift]`. Establish `h0 : (G.parD i j).card ≤ rkV D i j` using `card_parD_le D τ i j hi`. Establish `a : (j + 1) * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ hj`. Establish `b : i * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `c : D.R.m * (D.R.t + sLen D + 1) = D.R.m * D.R.t + D.R.m * sLen D + D.R.m` using `by ring`. Establish `d : (j + 1) * D.R.t = j * D.R.t + D.R.t` using `by ring`. Use `show _ ≤ D.R.k + D.R.m * (D.R.t + sLen D + 1)`. Unfold `rkV Ranks.r at h0`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hcos : InCoset (-(G.e (j + 1) : ℚ) + δ + ((D.R.t : ℚ) + 1) / 2) (entries P)`. Introduce `x hx`. Take `⟨s, hs⟩` from `mem_entries.1 hx`. Establish `hy` using `fst_mem_entries (mem_shift.1 hs)`. Take `⟨z, hz⟩` from `int_parD D τ i j _ hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only at hz`. Take `⟨q, hq⟩` from `D.R.t_odd`. Establish `htq : ((D.R.t : ℚ) + 1) / 2 = q + 1` using `by rw [hq]; push_cast; ring`. Use `⟨z + G.e (j + 1) - (q + 1), ?_⟩` and prove the remaining obligations. Rewrite using `[htq]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨al, be, ga, de, hPe, hP'⟩` from `GlobalTheory.T.isRealThetaParameterPair_thetaPartnerSignedParameter D.R.t true _ _ P (bigN D) ht hne hreg hcos hfar1 hcard hN hgap hgap'`. Break down `hP' with ⟨hd, hP'⟩ | ⟨-, hP'⟩` into its components or cases. Use `⟨D.R.t, al, be, ga, de, hd, ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[← hPe]`. Both sides reduce to the same expression. Rewrite using `[← hP', ← hpart]`. Both sides reduce to the same expression. Use `exfalso set c' : ℚ := -(G.e (j + 1) : ℚ) + δ' with hc'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the second alternative. Establish an intermediate fact.
 
-Establish `hx0 : ((D.R.t : ℚ) - 1) / 2 ∈ Formalism.BasicNotions.TH.block D.R.t` using `by simp only [Formalism.BasicNotions.TH.block, List.mem_map, List.mem_range]; simp; exact ⟨0, by omega, by simp⟩`. Establish `m1 : (((D.R.t : ℚ) - 1) / 2 + c', false) ∈ partner D.R.t true (-(G.e (j + 1) : ℚ) + δ) c' P`. Rewrite using `[hP']`. Simplify using `only [signed, Finset.mem_union, List.mem_toFinset, List.mem_map]`. Conclude with `Or.inr ⟨_, List.mem_append.2 (Or.inl (List.mem_append.2 (Or.inr hx0))), rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `m2 : (((D.R.t : ℚ) - 1) / 2 + c', true) ∈ partner D.R.t true (-(G.e (j + 1) : ℚ) + δ) c' P`. Simplify using `only [partner, Finset.mem_union, Finset.mem_image]`. Use `Or.inr ⟨_, mem_block.2 ⟨0, by omega, by push_cast; ring⟩, rfl⟩` and prove the remaining obligations. Use `hgap' _ m1 _ m2 (by simp)` as an intermediate fact. Simplify using `only [sub_self, abs_zero] at this`.
-
-Establish `: (0 : ℚ) ≤ 2 * (bigN D : ℚ) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dataAR_row (D : D7) (hS : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D) (i j : ℕ) (τ : D.what₂.Tau) (hi : i ≤ D.R.m) (hj : j < D.R.m) :
     ∃ (t : ℕ) (al be ga de : List ℚ), Formalism.MainNotions.SchurIrreducible.DataAR t al be ga de ∧
@@ -199,9 +197,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowThetaIt
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc hD hH _ hSz F hc _ G' W _ G hSp _ _ _ i j hi hj ω f hω hf`. Establish `hR : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R` using `⟨hc.lev, hc.models.inf, hc.models.νY, hc.models.νY', hc.models.νX⟩`. Establish `hV` using `hSp.vert i j hi hj.le`. Establish `hV'` using `hSp.vert i (j + 1) hi hj`. Take `⟨It, -, hIt⟩` from `itPair_of_par hD hH (G.nV i j).M (G.nV i (j + 1)).M hR.inf R.ψ (fun τ => GlobalTheory.PairLift.att (-(D.hc τ).e ⟨j, hj⟩) (rkV D (i + 1) j)) (fun τ => GlobalTheory.PairLift.att (-(D.hc τ).e ⟨j, hj⟩) (rkV D (i + 1) (j + 1))) (fun τ => by rw [hV.par, hV'.par]; exact dataAR_row D hSz …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨It, fun t => hIt (ω t) f ⟨_, _, hω t, fun τ => ⟨GlobalTheory.PairLift.hasInfExp_att (GlobalTheory.PairLift.exp_mu hR t hj τ) (GlobalTheory.PairLift.exp_eta hR τ) _, GlobalTheory.PairLift.hasInfExp_att (GlobalTheory.PairLift.exp_mu hR t hj τ) (GlobalTheory.PairLift.exp_eta hR τ) …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem rowTheta_it : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}, GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → HostHyp D → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ {F : Face D A}, GlobalTheory.Hk3.Core R F → sc.cGap = 1 → ∀ {G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} (W : G'.Weil), W.Over R → ∀ G : GlobalTheory.Grid.GridPre R, G.IsSpaces → G.IsChars → SpAgree G W → (∀ i, i < D.R.m → ∀ κ : G'.CosAt i, IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) G.idem (latO (G'.pS (.chi i 0)) (G'.pT (.chi i 0)) (G'.latS (.chi i 0) : Set _) (G'.latT (.chi i 0) : Set _) fun _ => True) 1 (W.vac i) (cosInd G.idem κ) (W.cosVec i κ)) → ∀ i j, i + 1 ≤ D.R.m → j < D.R.m → ∀ (ω : T → GlobalTheory.Grid.WRep (G.nV i j).V (G.nV i (j + 1)).V) (f : WO (G.nV i j).V (G.nV i (j + 1)).V → ℂ), (∀ t, GlobalTheory.Grid.IsWeil R.ψ false (G.nV i j).V (G.nV i (j + 1)).V (GlobalTheory.Grid.GridPre.muAt R t (j + 1) (rkV D (i + 1) j)) (GlobalTheory.Grid.GridPre.muAt R t (j + 1) (rkV D (i + 1) (j + 1))) (ω t)) → GlobalTheory.Grid.IsVac R.ψ R.θ false (G.nV i j) (G.nV i (j + 1)) f → ∃ It : GlobalTheory.Grid.Pol (G.nV i j) (G.nV i (j + 1)) →ₗ[ℂ] SmT (G.nV i (j + 1)).M →ₗ[ℂ] SmT (G.nV i j).M, ∀ t, IsItW R.θ (G.nV i j).M (G.nV i (j + 1)).M (ω t) (GlobalTheory.Grid.fock R.ψ R.θ false (G.nV i j) (G.nV i (j + 1)) f) It := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc hD hH _ hSz F hc _ G' W _ G hSp _ _ _ i j hi hj ω f hω hf

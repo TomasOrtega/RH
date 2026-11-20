@@ -7,20 +7,20 @@ open Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeter
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem rpow_three_halves_sq_eq_cube {x : ℝ} (hx : 0 ≤ x) : (x ^ ((3 : ℝ) / 2)) ^ 2 = x ^ 3 := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul hx]
   norm_num
 
 /- English proof (translation)
-Use `⟨fun n ε => ?_, fun L a n hL ha hn => ?_⟩` and prove the remaining obligations. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hs` using `rpow_three_halves_sq_eq_cube hn`. Establish `hp : 0 ≤ (n : ℝ) ^ ((3 : ℝ) / 2)` using `Real.rpow_nonneg hn _`. Establish `h1 : nsq (rhoN ε) ≤ (n : ℝ) * ((n : ℝ) / 2) ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∑ a : Fin n, (rhoN ε a) ^ 2 ≤ ∑ _a : Fin n, ((n : ℝ) / 2) ^ 2`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `rho_rhoN_bound ε a`. Conclude with `sq_le_sq' h1 h2`. Simplify `this` using `[nsq, dot, sq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `Real.sqrt_le_iff.mpr ⟨by positivity, h1.trans ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, hs]`. Establish `: (0 : ℝ) ≤ (n : ℝ) ^ 3` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hs` using `rpow_three_halves_sq_eq_cube hn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 ≤ n ^ ((3 : ℝ) / 2)` using `Real.rpow_nonneg hn _`. Generalize the expression as in `n ^ ((3 : ℝ) / 2) = s at hs hp`. Rewrite using `[← hs]`. Use polynomial arithmetic with `[mul_nonneg hL hp, mul_nonneg ha hp, sq_nonneg a, sq_nonneg s]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rhoN_norm_le_and_casimir_arith :
     (∀ (n : ℕ) (ε : Fin n → Bool), Real.sqrt (nsq (rhoN ε)) ≤ 0.58 * (n : ℝ) ^ ((3 : ℝ) / 2)) ∧

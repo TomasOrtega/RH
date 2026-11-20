@@ -14,9 +14,9 @@ open scoped TensorProduct InnerProductSpace in
 attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Introduce `G H S Sinf Ds Dt _ _ _ _ _ _ _ _ _ ν 𝓕 th pt It CCs CCt io hio hker k k' a a' hth hinv F F' u hF' hu`. Use `sub_eq_zero.mp (hker (io F' - u) fun φ v => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_sub, LinearMap.sub_apply, Pi.sub_apply, Pi.zero_apply]`. Rewrite using `[sub_eq_zero, ← hio.eq F' φ v g, hu, ← hio.eq F φ v (g * k)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `_root_.Formalism.IndefR.Lift.liftInt`. Rewrite using `[← hinv F φ v (g * k), ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[hF', show a * (th (g * k) (h * k') (pt φ) * (F : Ds →ₗ[ℂ] (H → ℂ)) v (h * k')) = (a * th (g * k) (h * k') (pt φ)) * (F : Ds →ₗ[ℂ] (H → ℂ)) v (h * k') from (_root_.mul_assoc _ _ _).symm, hth]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

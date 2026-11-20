@@ -34,7 +34,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace MainStatements.WeightKernel
 
 /- English proof (translation)
-The claim follows from `MainStatements.WeightKernel.RegInt.regClassInt PositivityTheory.Prw.siegelCore_holds`.
+A detailed English derivation is pending.
 -/
 theorem regClassInt_holds : MainStatements.RegularCuspidalTrace.RegClassInt := MainStatements.WeightKernel.RegInt.regClassInt PositivityTheory.Prw.siegelCore_holds
 

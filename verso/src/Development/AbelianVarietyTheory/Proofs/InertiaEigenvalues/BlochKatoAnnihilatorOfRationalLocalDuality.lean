@@ -24,7 +24,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {K₀ K : Type} [Field K₀] 
     (PD : PeriodData G ℚ_[l] K₀ K B BdR)
 
 /- English proof (translation)
-Simplify using `[ReciprocityTheory.Def.d1, charRep, cycLL, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cyclotomicTwist_differential_apply {LL : Type} [Field LL] [Algebra ℚ_[l] LL] (f : G → LL) (x : G × G) :
     ReciprocityTheory.Def.d1 (charRep (cycLL PD LL)) f x =
@@ -32,17 +32,15 @@ theorem cyclotomicTwist_differential_apply {LL : Type} [Field LL] [Algebra ℚ_[
   simp [ReciprocityTheory.Def.d1, charRep, cycLL, Algebra.smul_def]
 
 /- English proof (translation)
-Use `haveI : ContinuousAdd LL := IsModuleTopology.toContinuousAdd ℚ_[l] LL`. Use `haveI : ContinuousSMul ℚ_[l] LL := IsModuleTopology.toContinuousSMul ℚ_[l] LL`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩ c`. Use `⟨fun g => Algebra.trace ℚ_[l] LL (c * f g), ?_, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsModuleTopology.continuous_of_linearMap ((Algebra.trace ℚ_[l] LL).comp (LinearMap.mulLeft ℚ_[l] c))).comp hf`. Use function extensionality and compare the values at `x`. Rewrite using `[cyclotomicTwist_differential_apply, cyclotomicTwist_differential_apply]`. Establish `e1 : c * (algebraMap ℚ_[l] LL (PD.χ x.1 : ℚ_[l]) * f x.2 - f (x.1 * x.2) + f x.1) = (PD.χ x.1 : ℚ_[l]) • (c * f x.2) - c * f (x.1 * x.2) + c * f x.1`. Rewrite using `[Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_add, map_sub, map_smul, smul_eq_mul]`. Simplify using the standard rewrite rules. Introduce `h choose f hf using h`. Establish `hB` using `traceForm_nondegenerate ℚ_[l] LL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `b` to `Module.finBasis ℚ_[l] LL`. Set `d` to `(Algebra.traceForm ℚ_[l] LL).dualBasis hB b`. Use `⟨fun g => ∑ i, f (b i) g • d i, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_finsetSum _ fun i _ => ((hf (b i)).1).smul continuous_const`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[cyclotomicTwist_differential_apply]`. Establish `hz : z x = ∑ i, (d.repr (z x) i) • d i` using `(d.sum_repr (z x)).symm`. Establish `hc : ∀ i, d.repr (z x) i = (PD.χ x.1 : ℚ_[l]) * f (b i) x.2 - f (b i) (x.1 * x.2) + f (b i) x.1`. Introduce `i`. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply, mul_comm, ← congrFun (hf (b i)).2 x, cyclotomicTwist_differential_apply]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hz]`. Repeatedly rewrite using `[hc, add_smul, sub_smul, mul_smul, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.smul_sum, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cobL_iff_trace {LL : Type} [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL]
     [FiniteDimensional ℚ_[l] LL] [IsModuleTopology ℚ_[l] LL] (z : G × G → LL) :
@@ -106,11 +104,11 @@ theorem trPair_apply {LL V V' : Type} [Field LL] [Algebra ℚ_[l] LL]
     trPair Pr x y = Algebra.trace ℚ_[l] LL (Pr x y) := rfl
 
 /- English proof (translation)
-Establish `hB` using `traceForm_nondegenerate ℚ_[l] LL`. Take `⟨h1, h2, h3, h4⟩` from `hP`. Use `⟨fun g x y => ?_, fun x hx => h2 x fun y => ?_, fun y hy => h3 y fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[resQ_apply, resQ_apply, trPair_apply, trPair_apply, h1]`. Establish `e : ((cycLL (P.PD K) LL g : LLˣ) : LL) * Pr x y = ((P.PD K).χ g : ℚ_[l]) • Pr x y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[cycLL, Algebra.smul_def]`. Rewrite using `[e, map_smul, smul_eq_mul]`. Simplify using `[cycLL]`. Use `hB.1 _ fun c => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, mul_comm, ← smul_eq_mul, ← map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx (c • y)`. Use `hB.1 _ fun c => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, mul_comm, ← smul_eq_mul, ← LinearMap.smul_apply, ← map_smul]`. Conclude with `hy (c • x)`. Rewrite using `[← Module.finrank_mul_finrank ℚ_[l] LL V, ← Module.finrank_mul_finrank ℚ_[l] LL V', h4]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDual1_trPair {LL : Type} [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ_[l] LL]
     {V V' : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
@@ -142,25 +140,21 @@ namespace GlobalTheory
 open GlobalTheory.PstCoeff GlobalTheory.BkCoeff
 
 /- English proof (translation)
-Introduce `LL _ _ _ O _ _ hO A A' Pr hdR hP`. Take `⟨-, hfin, hmt, htr, -⟩` from `hO`. Use `haveI := hfin`. Use `haveI := hmt`. Use `haveI := htr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℚ_[l] A.V := Module.Finite.trans LL A.V`. Use `haveI : FiniteDimensional ℚ_[l] A'.V := Module.Finite.trans LL A'.V`. Use `haveI : IsModuleTopology ℚ_[l] A.V := isModuleTopology_of_tower ℚ_[l] LL A.V`. Use `haveI : IsModuleTopology ℚ_[l] A'.V := isModuleTopology_of_tower ℚ_[l] LL A'.V`. Use `haveI : ContinuousConstSMul ℚ_[l] A.V := ⟨fun c => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc : Continuous fun x : A.V => algebraMap ℚ_[l] LL c • x` using `continuous_const_smul _`. Simplify `hc⟩` using `only [algebraMap_smul]`. Use `haveI : ContinuousConstSMul ℚ_[l] A'.V := ⟨fun c => by`. Establish `hc : Continuous fun x : A'.V => algebraMap ℚ_[l] LL c • x` using `continuous_const_smul _`. Simplify `hc⟩` using `only [algebraMap_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `key` using `h A.V A'.V (resQ A.ρ) (resQ A'.ρ) (trPair Pr) A.cont A'.cont ((isDR_resQ_iff P A.ρ).mpr hdR) (isDual1_trPair P hP)`. Establish `cupS : ∀ (c : LL) (a : ↥(GK K) → A.V) (b : ↥(GK K) → A'.V), cupL (resQ A'.ρ) (trPair Pr) a (c • b) = fun x => Algebra.trace ℚ_[l] LL (c * cupL A'.ρ Pr a b x)`. Introduce `c a b`. Use function extensionality and compare the values at `x`. Simplify using `[cupL, trPair_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `cupS' : ∀ (c : LL) (a : ↥(GK K) → A.V) (b : ↥(GK K) → A'.V), cupL (resQ A'.ρ) (trPair Pr) (c • a) b = fun x => Algebra.trace ℚ_[l] LL (c * cupL A'.ρ Pr a b x)`. Introduce `c a b`. Use function extensionality and compare the values at `x`. Simplify using `[cupL, trPair_apply]`. Establish `cup1 : ∀ (a : ↥(GK K) → A.V) (b : ↥(GK K) → A'.V), cupL (resQ A'.ρ) (trPair Pr) a b = fun x => Algebra.trace ℚ_[l] LL (1 * cupL A'.ρ Pr a b x)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Use function extensionality and compare the values at `x`. Simplify using `[cupL, trPair_apply]`. Use `⟨fun a ha => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_finiteCocycles_restrictScalars_Ql P, (key.1 a ha)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H b hb`. Rewrite using `[cobL_iff_trace]`. Introduce `c`. Rewrite using `[← cupS]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H (c • b) ((mem_finiteCocycles_restrictScalars_Ql P _ _).mpr ((finiteCocycles (P.PD K) A'.ρ).smul_mem c hb))`. Introduce `H b hb`. Use `(cobL_iff_trace (P.PD K) _).mp (H b ((mem_finiteCocycles_restrictScalars_Ql P _ _).mp hb)) 1` as an intermediate fact. Rewrite `this` using `[← cup1]`. Then use the resulting hypothesis. Rewrite using `[← mem_finiteCocycles_restrictScalars_Ql P, (key.2 b hb)]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `H a ha`. Rewrite using `[cobL_iff_trace]`. Introduce `c`. Rewrite using `[← cupS']`.
-
-Conclude with `H (c • a) ((mem_finiteCocycles_restrictScalars_Ql P _ _).mpr ((finiteCocycles (P.PD K) A.ρ).smul_mem c ha))`. Introduce `H a ha`. Use `(cobL_iff_trace (P.PD K) _).mp (H a ((mem_finiteCocycles_restrictScalars_Ql P _ _).mp ha)) 1` as an intermediate fact. Rewrite `this` using `[← cup1]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem bkACore_of_rationalDuality (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l)
     (h : GlobalTheory.Published.BlochKato.RationalDuality (P.PD K)) : bkACore (P.PD K) := by

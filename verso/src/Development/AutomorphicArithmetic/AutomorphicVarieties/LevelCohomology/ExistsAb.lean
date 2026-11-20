@@ -12,13 +12,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.ML UpperTheory.V.X
 
 /- English proof (translation)
-Use `set K := IntermediateField.fixedField θ.ker with hK`. Establish `hfix : K.fixingSubgroup = θ.ker` using `InfiniteGalois.fixingSubgroup_fixedField ⟨θ.ker, Subgroup.isClosed_of_isOpen _ hθ⟩`. Establish `hfin : FiniteDimensional k K`. Rewrite using `[← InfiniteGalois.isOpen_iff_finite, hfix]`. Conclude with `hθ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgal : IsGalois k K`. Rewrite using `[← InfiniteGalois.normal_iff_isGalois, hfix]`. Conclude with `θ.normal_ker`. Use `⟨K, hfin, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `{ toIsGalois := hgal, is_comm := ⟨fun x y => ?_⟩ }` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := k) (K₁ := K) Ω x`. Take `⟨y, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := k) (K₁ := K) Ω y`. Rewrite using `[← map_mul, ← map_mul, MonoidHom.eq_iff, IntermediateField.restrictNormalHom_ker, hfix, MonoidHom.mem_ker, map_mul, map_inv, map_mul, map_mul, mul_comm (θ y) (θ x), inv_mul_cancel]`. Use extensionality with `σ`. Rewrite using `[UpperTheory.V.Base.mem_galOf, ← hfix, IntermediateField.mem_fixingSubgroup_iff]`.
-
-Conclude with `⟨fun h x hx => h ⟨x, hx⟩, fun h x => h x.1 x.2⟩`. Introduce `x hx`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).2 hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_ab (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω]
     {A : Type} [CommGroup A] (θ : G k Ω →* A) (hθ : IsOpen (θ.ker : Set (G k Ω))) :
@@ -47,31 +45,25 @@ private theorem exists_ab (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Al
     exact (IntermediateField.mem_fixedField_iff _ _).2 hx
 
 /- English proof (translation)
-The claim follows from `Module.length_ne_top`.
+A detailed English derivation is pending.
 -/
 private theorem len_fin {R M : Type} [Ring R] [AddCommGroup M] [Module R M] (h : Finite M) :
     Module.length R M ≠ ⊤ := Module.length_ne_top
 
 /- English proof (translation)
-Introduce `CK hK hPT hLF hLT k Ω _ _ _ _ _ l _ O _ _ _ _ _ ψ hψ e he`. Use `set N : ℕ := if l = 2 then 4 else l with hN`. Establish `hN2 : 2 < N`. Use `(Fact.out : l.Prime).two_le` as an intermediate fact. Rewrite using `[hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs with h <;> omega`. Use `haveI : NeZero N := ⟨by omega⟩`. Use `haveI : Fact (1 < N) := ⟨by omega⟩`. Take `⟨L, hfin, hab, hgal, hmem⟩` from `exists_ab k Ω (ψ.prod (Chr.cls k Ω N)) (by`. Rewrite using `[MonoidHom.ker_prod, Subgroup.coe_inf]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hψ.inter (Chr.clsFacts k Ω N).1)`. Use `haveI := hfin`. Use `haveI := hab`. Use `haveI : NumberField L := NumberField.of_module_finite k L`. Use `haveI : Algebra.IsAlgebraic L Ω := Algebra.IsAlgebraic.tower_top (K := k) L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed k`. Use `haveI : IsAlgClosure L Ω := ⟨IsAlgClosure.isAlgClosed k, inferInstance⟩`. Use `haveI : CharZero Ω := (RingHom.charZero_iff (algebraMap k Ω).injective).1 inferInstance`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Establish `hζL : ζ ∈ L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hmem` to reduce the goal to its premises. Introduce `g hg`. Establish `h1 : Chr.cls k Ω N g = 1` using `(MonoidHom.mem_ker).1 (Subgroup.mem_inf.1 (by rwa [MonoidHom.ker_prod] at hg)).2`. Rewrite using `[Chr.cls_spec N g ζ hζ.pow_eq_one, h1, Units.val_one, ZMod.val_one, pow_one]`. Establish `hζ' : IsPrimitiveRoot (⟨ζ, hζL⟩ : L) N` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap L Ω) hζ (algebraMap L Ω).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI htc : IsTotallyComplex L := NumberField.nrRealPlaces_eq_zero_iff.1 (NumberField.InfinitePlace.IsPrimitiveRoot.nrRealPlaces_eq_zero_of_two_lt hN2 hζ')`. Establish `hmu : HasMuQ l L` using `⟨⟨ζ, hζL⟩, hζ'⟩`. Take `⟨D⟩` from `Formalism.GaloisCohomology.ldata_nonempty (F := L) (Ω := Ω) l`. Establish `hsha : shaLen D (e : ℤ) ≠ ⊤` using `ne_top_of_le_ne_top (len_fin (R := ℤ_[l]) (hK l L Ω D htc hmu e he).1) (UpperTheory.V.PropA.shaLeV hPT hLF hLT L Ω l (UpperTheory.V.LDataCardLeFinrank.ptCase_of_isTotallyComplex L l) D e)`. Establish `hle : galOf k L Ω ≤ ψ.ker`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Both sides reduce to the same expression.
 
-Rewrite using `[hgal, MonoidHom.ker_prod]`. Conclude with `inf_le_left`. Establish `hup` using `Chr.upV k Ω L l O D e ψ hle Finset.univ (by rw [Finset.coe_univ, Subgroup.closure_univ])`. Establish `heO : eO l O ≠ ⊤` using `(Chr.rootVal l O 1 one_ne_zero).2.2.1`. Establish `hopen : IsOpen (Subgroup.map (cycZ k Ω l) ψ.ker : Set ℤ_[l]ˣ)`.
-
-Establish `h0 : IsOpen ((cycZ L Ω l).range : Set ℤ_[l]ˣ)`. Rewrite using `[(UpperTheory.V.LDataCardLeFinrank.ranges L Ω l D).1]`. Conclude with `KStar.TotallyRealRoots.isOpen_galImage`. Use `Subgroup.isOpen_mono ?_ h0` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, rfl⟩`.
-
-Use `⟨galEmb k L Ω σ, hle ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← UpperTheory.V.Base.range_galEmb]`. Conclude with `⟨σ, rfl⟩`. Both sides reduce to the same expression. Establish `hh0 : Chr.h0 l e ψ ⊤ ≠ ⊤`.
-
-Use `ne_top_of_le_ne_top ?_ (le_trans ((Chr.h0Nu k Ω l O e ψ ⊤).1 ψ.ker le_top) ((Chr.h0Nu k Ω l O e ψ ψ.ker).2 le_rfl))` and prove the remaining obligations. Conclude with `WithTop.mul_ne_top (KStar.TotallyRealRoots.nu_ne_top hopen (by omega)) heO`. Use `ne_top_of_le_ne_top ?_ hup` and prove the remaining obligations. Conclude with `WithTop.add_ne_top.2 ⟨WithTop.mul_ne_top hsha heO, WithTop.mul_ne_top (ENat.coe_ne_top _) hh0⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.soFin :
     ∀ CK : ℝ, LemmaK CK → GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK → ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (ψ : G k Ω →* Oˣ), IsOpen (ψ.ker : Set (G k Ω)) → ∀ e : ℕ, 1 ≤ e → Chr.V l e ψ ≠ ⊤ := by

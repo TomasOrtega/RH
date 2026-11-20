@@ -14,11 +14,11 @@ open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 
 /- English proof (translation)
-Unfold `part glueMeas`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Use `le_trans ?_ (add_le_add (le_iSup (fun c : AlgChart p σ D => chartMeas c.e fun y => ENNReal.ofReal ((ε : ℤ) * dens L₂ c y)) c) (le_iSup (fun c : AlgChart p σ D => chartMeas c.e fun y => ENNReal.ofReal ((ε : ℤ) * dens L₃ c y)) c))` and prove the remaining obligations. Use `Measure.le_iff.2 fun A hA => ?_` and prove the remaining obligations. Establish `hB : MeasurableSet (c.e.source ∩ A)` using `c.e.open_source.measurableSet.inter hA`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hI` using `GlobalTheory.ChartGlue.measurableSet_image c.e hB inter_subset_left`. Establish `hsub : c.e '' (c.e.source ∩ A) ⊆ c.e.target` using `fun _ ⟨y, hy, e⟩ => e ▸ c.e.map_source hy.1`. Establish `hcont : ContinuousOn (fun v => dens L₂ c (c.e.symm v)) c.e.target` using `(GlobalTheory.T.continuousOn_mixedChernFormDensityInChart k X p σ D L₂ c).comp c.e.continuousOn_symm c.e.mapsTo_symm`. Establish `hm : AEMeasurable (fun v => ENNReal.ofReal (((ε : ℤ) : ℝ) * dens L₂ c (c.e.symm v))) (volume.restrict (c.e '' (c.e.source ∩ A)))` using `(((hcont.aemeasurable c.e.open_target.measurableSet).const_mul _).ennreal_ofReal).mono_measure (Measure.restrict_mono hsub le_rfl)`. Rewrite using `[Measure.add_apply, chartMeas_apply _ _ hA, chartMeas_apply _ _ hA, chartMeas_apply _ _ hA, ← lintegral_add_left' hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `setLIntegral_mono' hI fun v hv => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[h c _ (c.e.map_target (hsub hv)), mul_add]`. Conclude with `ENNReal.ofReal_add_le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mix.part_le_add_of_dens_add {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     (L₁ L₂ L₃ : Fin D → MLine p σ)
@@ -47,11 +47,9 @@ theorem GlobalTheory.Mix.part_le_add_of_dens_add {k : Type} [CommRing k] {X : Sc
   exact ENNReal.ofReal_add_le
 
 /- English proof (translation)
-Introduce `k _ X p σ _ D L₁ L₂ L₃ h f`. Use `⟨fun h₂ h₃ => ⟨(h₂.1.add_measure h₃.1).mono_measure (GlobalTheory.Mix.part_le_add_of_dens_add L₁ L₂ L₃ h 1), (h₂.2.add_measure h₃.2).mono_measure (GlobalTheory.Mix.part_le_add_of_dens_add L₁ L₂ L₃ h (-1))⟩, fun h₁ h₂ h₃ => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.linear_relation_mixed_densities_integrals k X p σ D (Fin 3) ![1, -1, -1] ![L₁, L₂, L₃] (fun c y hy => by` as an intermediate fact. Rewrite using `[Fin.sum_univ_three]`. Use `show 1 * dens L₁ c y + -1 * dens L₂ c y + -1 * dens L₃ c y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h c y hy]`. Use the proof step `ring) f`. Use the proof step `(fun i => by fin_cases i`. Conclude with `h₁`. Conclude with `h₂`.
-
-Conclude with `h₃)`. Rewrite `this` using `[Fin.sum_univ_three]`. Express the relevant statement in the definitionally equal form `1 * Mix.int L₁ f + -1 * Mix.int L₂ f + -1 * Mix.int L₃ f = 0 at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mix.int_add_of_dens_add : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) [SecondCountableTopology (CxPts p σ)] (D : ℕ) (L₁ L₂ L₃ : Fin D → MLine p σ), (∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, dens L₁ c y = dens L₂ c y + dens L₃ c y) → ∀ f : CxPts p σ → ℝ, (Intg L₂ f → Intg L₃ f → Intg L₁ f) ∧ (Intg L₁ f → Intg L₂ f → Intg L₃ f → Mix.int L₁ f = Mix.int L₂ f + Mix.int L₃ f) := by
   intro k _ X p σ _ D L₁ L₂ L₃ h f

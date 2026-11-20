@@ -126,7 +126,7 @@ abbrev σ : T.Q.c.F →+* ℂ := Y.σ'.comp (incF T.Q.c Y.c' Y.hle)
 
 omit [Group G] [Fintype G] in
 /- English proof (translation)
-The claim follows from `RingHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem σ_eq : Y.σ = T.σ₀ := RingHom.ext fun _ => rfl
 
@@ -185,13 +185,13 @@ def EquivAt : Prop := ∃ cc : Y.U.Comp → ℂ, CUnit cc ∧ Y.LevelEquiv R cc
 def EquivFrameAt : Prop := ∃ cc : Y.U.Comp → ℂ, CUnit cc ∧ Y.FrameConst R cc ∧ Y.LevelEquiv R cc
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ hc => ⟨hc.1, hc.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem EquivFrameAt.equivAt (h : Y.EquivFrameAt R) : Y.EquivAt R :=
   h.imp fun _ hc => ⟨hc.1, hc.2.2⟩
 
 /- English proof (translation)
-Introduce `a ha g f hf`. Use `⟨(h a ha g f hf).1, fun κ hκ x => ?_⟩` and prove the remaining obligations. Use `(h a ha g f hf).2 κ hκ x` as an intermediate fact. Simplify using `only [phi_apply] at this ⊢`. Take the linear combination `u * this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem LevelEquiv.smul {cc : Y.U.Comp → ℂ} (h : Y.LevelEquiv R cc) (u : ℂ) : Y.LevelEquiv R fun k => u * cc k := by
   intro a ha g f hf
@@ -211,9 +211,9 @@ def ofField (h : LawsM T.toCore) (c' : Coeff T.Q.l) (hle : T.Q.c.F ≤ c'.F)
 omit [Group G] [Fintype G] in
 
 /- English proof (translation)
-Take `⟨hr, g, e, F, ik, φ, th, -, -, h3, h4⟩` from `h.adPin ((i : ℕ) + 1) ⟨Nat.le_add_left _ _, i.2⟩ Y.σ T.toCore.good_σ₀`. Establish `key : ∀ (W : HSp D) (hV : T.V ((i : ℕ) + 1) Y.σ = W) (hW : W.rank = D.R.r), DictLat Y.U W hW (castDict hV (T.dict ((i : ℕ) + 1) Y.σ)) (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hW) ∘ₗ T.iota ((i : ℕ) + 1)) e F ik φ th (T.x₀ ((i : ℕ) + 1) Y.σ)`. Introduce `W hV hW`. Substitute `hV` using the available equality. Conclude with `h4`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨⟨g, e, F, ik, φ, th⟩, h3, key _ Y.hV _⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_dictDat (h : LawsJ T) :
     ∃ d : DictDat Y.U, d.Is (Wc D i) (rank_Wc i) Y.dict Y.ι (T.x₀ ((i : ℕ) + 1) Y.σ) := by
@@ -243,7 +243,7 @@ def EquivRowBare : Prop :=
     (T : CoreJ D) (i : Fin D.R.m) (Y : RowDat T G i), Y.Ties R F → Y.EquivAt R
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F T i Y hY` and use `(h D G Pl0 T0 A Ks R F T i Y hY).equivAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EquivRow.bare (h : EquivRow) : EquivRowBare :=
   fun D G _ _ Pl0 T0 A Ks _ _ _ R F T i Y hY => (h D G Pl0 T0 A Ks R F T i Y hY).equivAt

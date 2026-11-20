@@ -73,7 +73,7 @@ section Checks
 variable {S S' : Scheme.{0}} {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Use `Q.q_hom` as an intermediate fact. Establish `e : (t ≫ Q.i) ≫ Q.q = 1`. Rewrite using `[Category.assoc, Q.isKernel.w, ← Category.assoc, Hom.one_def, toUnit_unique (t ≫ toUnit _) (toUnit _)]`. Rewrite using `[MonObj.mul_comp, e, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem TQ.act_comp {G : Over S} [GrpObj G] (Q : TQ G X) {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) :
     ((t ≫ Q.i) * g) ≫ Q.q = g ≫ Q.q := by
@@ -83,13 +83,13 @@ theorem TQ.act_comp {G : Over S} [GrpObj G] (Q : TQ G X) {Z : Over S} (t : Z ⟶
   rw [MonObj.mul_comp, e, _root_.one_mul]
 
 /- English proof (translation)
-Use `Q.q_affine` as an intermediate fact. Take `⟨h₁, -, h₃⟩` from `invariant_functions_descend S G Q.B _ Q.q Q.i Q.q_hom Q.i_hom Q.q_flat Q.q_surj inferInstance Q.isKernel V`. Use `⟨fun a => ⟨fun h => h₃ a fun Z t g k₁ k₂ => ?_, ?_⟩, h₁, ?_⟩` and prove the remaining obligations. Rewrite using `[h Z t g k₁ k₂, ← chV_val, chV_zero, Units.val_one, _root_.one_mul]`. Introduce and unpack `⟨c, rfl⟩ Z t g k₁ k₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `e : ∀ (r : Z.left ⟶ G.left) (k : ⊤ ≤ r ⁻¹ᵁ (Q.q.left ⁻¹ᵁ V)), (r.appLE _ ⊤ k).hom ((Q.q.left.app V).hom c) = ((r ≫ Q.q.left).appLE V ⊤ k).hom c` using `fun r k => (congrArg (fun q => q.hom c) (Scheme.Hom.comp_appLE r Q.q.left V ⊤ k)).symm`. Establish `e' : ∀ (r r' : Z.left ⟶ Q.B.left) (_ : r = r') (k : ⊤ ≤ r ⁻¹ᵁ V) (k' : ⊤ ≤ r' ⁻¹ᵁ V), (r.appLE V ⊤ k).hom c = (r'.appLE V ⊤ k').hom c`. Introduce and unpack `r _ rfl k k'`. Both sides reduce to the same expression. Rewrite using `[e, e, ← chV_val, chV_zero, Units.val_one, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `k : ((t ≫ Q.i) * g).left ≫ Q.q.left = g.left ≫ Q.q.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, Q.act_comp]`. Conclude with `e' _ _ k _ _`. Establish `e` using `congrArg (fun q => q.left) (Q.act_comp (fst (splitTorus _ X) G) (snd _ G))`. Simplify using `only [Over.comp_left] at e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, e]`.
+A detailed English derivation is pending.
 -/
 theorem TQ.invariants {G : Over S} [GrpObj G] (Q : TQ G X) (V : Q.B.left.Opens) :
     (∀ a : Γ(G.left, Q.q.left ⁻¹ᵁ V), IsWt Q.i _ a 0 ↔ ∃ c, (Q.q.left.app V).hom c = a) ∧
@@ -117,7 +117,7 @@ theorem TQ.invariants {G : Over S} [GrpObj G] (Q : TQ G X) (V : Q.B.left.Opens) 
     rw [← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, e]
 
 /- English proof (translation)
-Take `⟨_, ⟨V, hV, rfl⟩, hb, -⟩` from `Q.B.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ b) isOpen_univ`. Take `⟨h₁, h₂, h₃⟩` from `Q.invariants V`. Conclude with `⟨V, hb, hV, h₁, h₂, h₃, (Units.map (G.left.presheaf.map (homOfLE le_top).op).hom.toMonoidHom).comp (splitTorusPointsEquiv S X G p), fun χ => (isWt_of_retraction p hp χ).res le_top⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TQ.locTriv_of_retraction {G : Over S} [GrpObj G] (Q : TQ G X) (p : G ⟶ splitTorus S X) [IsMonHom p]
     (hp : Q.i ≫ p = 𝟙 _) (b : Q.B.left) : ∃ V : Q.B.left.Opens, b ∈ V ∧ IsAffineOpen V ∧
@@ -133,14 +133,14 @@ theorem TQ.locTriv_of_retraction {G : Over S} [GrpObj G] (Q : TQ G X) (p : G ⟶
     fun χ => (isWt_of_retraction p hp χ).res le_top⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsPullback.of_vert_isIso (fst := f) (snd := 𝟙 S') (f := 𝟙 S) (g := f) ⟨by simp⟩, fun T x y x₀ y₀ hx _ => by rw [toUnit_unique (x₀ * y₀) x₀, toUnit_unique (x * y) x, hx]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGrpPullback_unit (f : S' ⟶ S) : IsGrpPullback (𝟙_ (Over S')) (𝟙_ (Over S)) f f :=
   ⟨IsPullback.of_vert_isIso (fst := f) (snd := 𝟙 S') (f := 𝟙 S) (g := f) ⟨by simp⟩, fun T x y x₀ y₀ hx _ => by
     rw [toUnit_unique (x₀ * y₀) x₀, toUnit_unique (x * y) x, hx]⟩
 
 /- English proof (translation)
-Use `⟨⟨2, ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, pow_two, DualNumber.eps_mul_eps]`. Simplify using the standard rewrite rules. Use `congrArg TrivSqZeroExt.snd (Ideal.span_singleton_eq_bot.1 h)` as an intermediate fact. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem span_eps_nilpotent : IsNilpotent (Ideal.span {(DualNumber.eps : DualNumber ℚ)}) ∧
     Ideal.span {(DualNumber.eps : DualNumber ℚ)} ≠ ⊥ := by
@@ -150,9 +150,9 @@ theorem span_eps_nilpotent : IsNilpotent (Ideal.span {(DualNumber.eps : DualNumb
     simp at this
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Set `Q` to `TQ.prod X A hA`. Use `Q.q_affine` as an intermediate fact. Establish `: QuasiCompact Q.q.left` using `inferInstance`. Take `⟨O, h₁, h₂, h₃, h⟩` from `exists_gtDatum_of_splitTorus_extension S X _ A hA Q.q Q.i Q.q_hom Q.i_hom Q.q_flat Q.q_surj this Q.isKernel`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, -, hd⟩` from `h hA`. Conclude with `⟨O, h₁, h₂, h₃, d, Q, hd.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gtDatum_prod [Module.Free ℤ X] [Module.Finite ℤ X] (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) :
     ∃ (O : X → RigLB A) (h₁ : _) (h₂ : _) (h₃ : _)
@@ -168,7 +168,7 @@ theorem exists_gtDatum_prod [Module.Free ℤ X] [Module.Finite ℤ X] (A : Over 
   exact ⟨O, h₁, h₂, h₃, d, Q, hd.symm⟩
 
 /- English proof (translation)
-The claim follows from `have : IsAffine (splitTorus (Spec A) X).left := isAffine_of_isAffineHom (splitTorus (Spec A) X).hom (h _ _ X (𝟙 _) inferInstance ⊤ (isAffineOpen_top _) le_top).1 u`.
+A detailed English derivation is pending.
 -/
 example (h : ActGradeSt) (A : CommRingCat.{0}) (u : Γ((splitTorus (Spec A) X).left, ⊤)) :
     ∃ a : X →₀ Γ((splitTorus (Spec A) X).left, ⊤), (∀ χ, IsWt (𝟙 _) ⊤ (a χ) χ) ∧ u = a.sum fun _ x => x :=
@@ -176,9 +176,7 @@ example (h : ActGradeSt) (A : CommRingCat.{0}) (u : Γ((splitTorus (Spec A) X).l
   (h _ _ X (𝟙 _) inferInstance ⊤ (isAffineOpen_top _) le_top).1 u
 
 /- English proof (translation)
-Establish `w : ∀ ψ χ : X, IsWt (𝟙 _) ⊤ (Finsupp.single ψ (charUnit S X ψ).val χ) χ` using `fun ψ χ => by`. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs with e`. Conclude with `e ▸ isWt_charUnit ψ`. Conclude with `isWt_zero χ`.
-
-Use `⟨Finsupp.single χ₁ (charUnit S X χ₁).val + Finsupp.single χ₂ (charUnit S X χ₂).val, fun χ => (w χ₁ χ).add (w χ₂ χ), ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl, Finsupp.sum_single_index rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (χ₁ χ₂ : X) : ∃ a : X →₀ Γ((splitTorus S X).left, ⊤), (∀ χ, IsWt (𝟙 _) ⊤ (a χ) χ) ∧
     (charUnit S X χ₁).val + (charUnit S X χ₂).val = a.sum fun _ x => x := by
@@ -194,9 +192,9 @@ example (χ₁ χ₂ : X) : ∃ a : X →₀ Γ((splitTorus S X).left, ⊤), (�
     Finsupp.sum_single_index rfl]
 
 /- English proof (translation)
-Use `⟨fun u => ⟨Finsupp.single 0 u, fun χ Z t g h₁ h₂ => ?_, by rw [Finsupp.sum_single_index rfl]⟩, fun a _ h => ?_⟩` and prove the remaining obligations. Establish `e : (t ≫ i) * g = g` using `by rw [point_eq_of_subsingleton t 1, MonObj.one_comp, _root_.one_mul]`. Establish `e' : ∀ (r r' : Z.left ⟶ G.left) (_ : r = r') (k : ⊤ ≤ r ⁻¹ᵁ V) (k' : ⊤ ≤ r' ⁻¹ᵁ V) (c), (r.appLE V ⊤ k).hom c = (r'.appLE V ⊤ k').hom c`. Introduce and unpack `r _ rfl k k' c`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Rewrite using `[← chV_val, Subsingleton.elim χ 0, chV_zero, Units.val_one, _root_.one_mul]`. Establish `k : ((t ≫ i) * g).left = g.left` using `by rw [e]`. Conclude with `e' _ _ k _ _ _`. Rewrite `h` using `[Finsupp.sum_fintype _ _ fun _ => rfl, Fintype.sum_unique]`. Conclude with `Finsupp.ext fun χ => Subsingleton.elim default χ ▸ h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (G : Over S) [GrpObj G] (i : splitTorus S PUnit ⟶ G) [IsMonHom i] (V : G.left.Opens) :
     (∀ u : Γ(G.left, V), ∃ a : PUnit →₀ Γ(G.left, V), (∀ χ, IsWt i V (a χ) χ) ∧ u = a.sum fun _ x => x) ∧
@@ -213,7 +211,7 @@ example (G : Over S) [GrpObj G] (i : splitTorus S PUnit ⟶ G) [IsMonHom i] (V :
     exact Finsupp.ext fun χ => Subsingleton.elim default χ ▸ h
 
 /- English proof (translation)
-Take `⟨B, q, -, -, -, hq, -⟩` from `h (DualNumber ℚ) _ span_eps_nilpotent.1 ℤ (splitTorus _ ℤ) (splitTorus _ ℤ) _ (SplitTorus.isGrpPullback_bcMap _ ℤ) (TQ.torus _ ℤ) (𝟙 _) inferInstance (torusCompat_bcMap _)`. Conclude with `⟨B, q, hq⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (h : QuotSchemeSt) : ∃ (B : Over (Spec (CommRingCat.of (DualNumber ℚ)))) (q : splitTorus _ ℤ ⟶ B),
     IsAffineHom q.left := by
@@ -222,7 +220,7 @@ example (h : QuotSchemeSt) : ∃ (B : Over (Spec (CommRingCat.of (DualNumber ℚ
   exact ⟨B, q, hq⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨𝟙_ _, toUnit _, red J, (isGrpPullback_unit (red J)).1, by show (toUnit (splitTorus _ X)).left ≫ _ = _ rw [Rosenlicht.toUnit_left, Rosenlicht.toUnit_left] exact (SplitTorus.bcMap_hom _ X).symm, (TQ.torus _ X).q_affine, (TQ.torus _ X).locTriv_of_retraction (𝟙 _) (Category.id_comp …`.
+Supply the required witnesses or components.
 -/
 example (A : Type) [CommRing A] (J : Ideal A) :
     ∃ (B : Over (Spec (CommRingCat.of A))) (q : splitTorus _ X ⟶ B) (j : (TQ.torus _ X).B.left ⟶ B.left),
@@ -242,16 +240,16 @@ example (A : Type) [CommRing A] (J : Ideal A) :
     (TQ.torus _ X).locTriv_of_retraction (𝟙 _) (Category.id_comp _)⟩
 
 /- English proof (translation)
-The claim follows from `(h S X _ A _ _ (TQ.prod X A hA).i_hom (TQ.prod X A hA).q_affine ((TQ.prod X A hA).locTriv_of_retraction (fst _ _) (lift_fst _ _))).1`.
+A detailed English derivation is pending.
 -/
 example (h : LocTrivSt) (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) : Mono (TQ.prod X A hA).i :=
   (h S X _ A _ _ (TQ.prod X A hA).i_hom (TQ.prod X A hA).q_affine
     ((TQ.prod X A hA).locTriv_of_retraction (fst _ _) (lift_fst _ _))).1
 
 /- English proof (translation)
-Use `Q.q_hom` as an intermediate fact. Use `⟨⟨fun a b e => Q.isKernel.hom_ext e (toUnit_unique _ _)⟩, Q.q_flat, Q.q_surj, fun _ => Q.isAb.smooth, fun Z g g' => ⟨fun e => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `w : (g' * g⁻¹) ≫ Q.q = toUnit Z ≫ η[Q.B]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, e, mul_inv_cancel]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `⟨Q.isKernel.lift _ _ w, by rw [Q.isKernel.lift_fst, inv_mul_cancel_right]⟩`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `(Q.act_comp t g).symm`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem TQ.locTriv_conclusion {G : Over S} [GrpObj G] (Q : TQ G X) :
     Mono Q.i ∧ Flat Q.q.left ∧ Surjective Q.q.left ∧ (Smooth G.hom → Smooth Q.B.hom) ∧
@@ -267,14 +265,14 @@ theorem TQ.locTriv_conclusion {G : Over S} [GrpObj G] (Q : TQ G X) :
     exact (Q.act_comp t g).symm
 
 /- English proof (translation)
-The claim follows from `(h (DualNumber ℚ) _ span_eps_nilpotent.1 ℤ (splitTorus _ ℤ) (splitTorus _ ℤ) _ (SplitTorus.isGrpPullback_bcMap _ ℤ) (TQ.torus _ ℤ)).nonempty`.
+A detailed English derivation is pending.
 -/
 example (h : LevelTQSt) : Nonempty (TQ (splitTorus (Spec (CommRingCat.of (DualNumber ℚ))) ℤ) ℤ) :=
   (h (DualNumber ℚ) _ span_eps_nilpotent.1 ℤ (splitTorus _ ℤ) (splitTorus _ ℤ) _
     (SplitTorus.isGrpPullback_bcMap _ ℤ) (TQ.torus _ ℤ)).nonempty
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨TQ.torus S X, torusCompat_bcMap f⟩, TQ.torus S' X, torusCompat_bcMap f⟩`.
+Supply the required witnesses or components.
 -/
 example (f : S' ⟶ S) :
     (∃ Q : TQ (splitTorus S X) X, TorusCompat f (SplitTorus.bcMap f X) (TQ.torus S' X).i Q.i) ∧
@@ -282,7 +280,7 @@ example (f : S' ⟶ S) :
   ⟨⟨TQ.torus S X, torusCompat_bcMap f⟩, TQ.torus S' X, torusCompat_bcMap f⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(h S S' f X _ _ _ (SplitTorus.isGrpPullback_bcMap f X) (TQ.torus S X) (TQ.torus S' X) (torusCompat_bcMap f)).imp fun _ e => e.2, (h' S S' f X _ _ _ (SplitTorus.isGrpPullback_bcMap f X) (TQ.torus S X)).nonempty⟩`.
+Supply the required witnesses or components.
 -/
 example (h : TQUniqSt) (h' : TQBaseSt) (f : S' ⟶ S) :
     (∃ β, IsGrpPullback (TQ.torus S' X).B (TQ.torus S X).B f β) ∧ Nonempty (TQ (splitTorus S' X) X) :=
@@ -291,7 +289,7 @@ example (h : TQUniqSt) (h' : TQBaseSt) (f : S' ⟶ S) :
     (h' S S' f X _ _ _ (SplitTorus.isGrpPullback_bcMap f X) (TQ.torus S X)).nonempty⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨f, by show (toUnit (splitTorus S' X)).left ≫ _ = _ ≫ (toUnit (splitTorus S X)).left rw [Rosenlicht.toUnit_left, Rosenlicht.toUnit_left] exact (SplitTorus.bcMap_hom _ X).symm, isGrpPullback_unit f⟩`.
+Supply the required witnesses or components.
 -/
 example (f : S' ⟶ S) : ∃ β : (TQ.torus S' X).B.left ⟶ (TQ.torus S X).B.left,
     (TQ.torus S' X).q.left ≫ β = SplitTorus.bcMap f X ≫ (TQ.torus S X).q.left ∧
@@ -302,16 +300,16 @@ example (f : S' ⟶ S) : ∃ β : (TQ.torus S' X).B.left ⟶ (TQ.torus S X).B.le
     exact (SplitTorus.bcMap_hom _ X).symm, isGrpPullback_unit f⟩
 
 /- English proof (translation)
-The claim follows from `h S X _ (TQ.torus S X) _ 0 inferInstance (inferInstanceAs (SmoothOfRelativeDimension 0 (𝟙 S)))`.
+A detailed English derivation is pending.
 -/
 example (h : TQDimSt) [Nonempty S] [Module.Free ℤ X] [Module.Finite ℤ X] :
     Module.finrank ℤ X = 0 + Module.finrank ℤ X :=
   h S X _ (TQ.torus S X) _ 0 inferInstance (inferInstanceAs (SmoothOfRelativeDimension 0 (𝟙 S)))
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Use `(h S ℤ _ (TQ.prod ℤ A hA) ℂ p).2 N (fun a => ?_) b hb` and prove the remaining obligations. Take `⟨r, hr⟩` from `IsAlgClosed.exists_pow_nat_eq a.val hN`. Establish `h0 : r ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `a.ne_zero (hr.symm.trans (zero_pow hN.ne'))`. Conclude with `⟨Units.mk0 r h0, Units.ext (by simpa using hr)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 example (h : TQPtsSt) (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) (p : Spec (CommRingCat.of ℂ) ⟶ S) (N : ℕ)
     (hN : 0 < N) (b : Over.mk p ⟶ A) (hb : b ^ N = 1) :
@@ -325,7 +323,7 @@ example (h : TQPtsSt) (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) (p : Spec
   exact ⟨Units.mk0 r h0, Units.ext (by simpa using hr)⟩
 
 /- English proof (translation)
-Use `⟨lift 1 b, fun hb => ?_, lift_snd _ _⟩` and prove the remaining obligations. Use `ext`. Rewrite using `[MonObj.pow_comp, lift_fst, one_pow, MonObj.one_comp]`. Rewrite using `[MonObj.pow_comp, lift_snd, hb, MonObj.one_comp]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 example (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) (Z : Over S) (N : ℕ) (b : Z ⟶ A) :
     ∃ g : Z ⟶ splitTorus S X ⊗ A, (b ^ N = 1 → g ^ N = 1) ∧ g ≫ (TQ.prod X A hA).q = b := by

@@ -20,7 +20,7 @@ variable {R S : Type} [CommRing R] [CommRing S] {l : ℕ}
 open PowerSeries in
 variable {R S : Type} [CommRing R] [CommRing S] {l : ℕ} in
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z : R, z = 0` using `fun z => IsHausdorff.haus ‹_› z fun n => by simp [Ideal.top_pow, SModEq.top]`. Rewrite using `[key x, key y]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma subsingleton_of_isHausdorff_whole_ideal {I : Ideal R} [IsHausdorff I R] (h : I = ⊤) :
     Subsingleton R := by
@@ -33,7 +33,7 @@ private lemma subsingleton_of_isHausdorff_whole_ideal {I : Ideal R} [IsHausdorff
 open PowerSeries in
 variable {R S : Type} [CommRing R] [CommRing S] {l : ℕ} in
 /- English proof (translation)
-Establish `h1 : constantCoeff (1 : R⟦X⟧) ∉ I`. Simplify `hI` using `[Ideal.eq_top_iff_one]`. Use `H.coe_natDegree_eq_order_map (p : R⟦X⟧) 1 h1 (by simp)` as an intermediate fact. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma order_map_toNat_eq_natDegree_of_isDistinguishedAt {I : Ideal R} {p : Polynomial R}
     (H : p.IsDistinguishedAt I) (hI : I ≠ ⊤) :
@@ -48,9 +48,9 @@ open PowerSeries in
 variable {R S : Type} [CommRing R] [CommRing S] {l : ℕ} in
 
 /- English proof (translation)
-Establish `hI : I ≠ ⊤`. Introduce `h`. Use `subsingleton_of_isHausdorff_whole_ideal (I := I) h` as an intermediate fact. Conclude with `not_subsingleton R this`. Establish `D` using `H.isWeierstrassDivisorAt' (I := I)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `D.isWeierstrassDivisionAt_div_mod a`. Use `⟨D.mod a, ?_, D.div a, sub_eq_iff_eq_add.mpr hd.eq_mul_add⟩` and prove the remaining obligations. Establish `hlt` using `hd.degree_lt`. Rewrite `hlt` using `[order_map_toNat_eq_natDegree_of_isDistinguishedAt H hI]`. Rewrite using `[Polynomial.degree_eq_natDegree (Polynomial.Monic.ne_zero H.monic)]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NB.LT.exists_poly_mod [Nontrivial R] {I : Ideal R} [IsAdicComplete I R] {p : Polynomial R}
     (H : p.IsDistinguishedAt I) (a : R⟦X⟧) :
@@ -70,15 +70,13 @@ open PowerSeries in
 variable {R S : Type} [CommRing R] [CommRing S] {l : ℕ} in
 
 /- English proof (translation)
-Distinguish the cases in `hI : I = ⊤`. Use `subsingleton_of_isHausdorff_whole_ideal (I := I) hI` as an intermediate fact. Rewrite using `[Subsingleton.elim r 0]`. Conclude with `dvd_zero p`. Establish `hm` using `H.monic`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `h`. Establish `D` using `H.isWeierstrassDivisorAt' (I := I)`. Establish `hdeg : (r %ₘ p).degree < ((map (Ideal.Quotient.mk I)) (p : R⟦X⟧)).order.toNat`. Rewrite using `[order_map_toNat_eq_natDegree_of_isDistinguishedAt H hI]`. Distinguish the cases in `hs : Nontrivial R`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Polynomial.degree_modByMonic_lt r hm).trans_le Polynomial.degree_le_natDegree`. Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`. Rewrite using `[Subsingleton.elim (r %ₘ p) 0]`. Simplify using the standard rewrite rules. Establish `hmul : (p : R⟦X⟧) * (h - ((r /ₘ p : Polynomial R) : R⟦X⟧)) = ((r %ₘ p : Polynomial R) : R⟦X⟧)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `Polynomial.modByMonic_add_div r p`. Establish `e' : ((r %ₘ p : Polynomial R) : R⟦X⟧) + (p : R⟦X⟧) * ((r /ₘ p : Polynomial R) : R⟦X⟧) = (r : R⟦X⟧)`. Rewrite using `[← Polynomial.coe_mul, ← Polynomial.coe_add, e]`. Rewrite using `[mul_sub, ← hh, ← e']`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `(D.eq_zero_of_mul_eq hdeg hmul).2` as an intermediate fact. Conclude with `(Polynomial.modByMonic_eq_zero_iff_dvd hm).mp this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NB.LT.poly_dvd_of_dvd {I : Ideal R} [IsAdicComplete I R] {p : Polynomial R}
     (H : p.IsDistinguishedAt I) {r : Polynomial R} (h : (p : R⟦X⟧) ∣ (r : R⟦X⟧)) : p ∣ r := by
@@ -109,7 +107,7 @@ theorem _root_.GlobalTheory.NB.LT.poly_dvd_of_dvd {I : Ideal R} [IsAdicComplete 
 open PowerSeries in
 variable {R S : Type} [CommRing R] [CommRing S] {l : ℕ} in
 /- English proof (translation)
-Establish `e : σ.comp (Polynomial.coeToPowerSeries.algHom R) = Polynomial.aeval (σ X)` using `Polynomial.algHom_ext (by simp)`. Simplify using `using DFunLike.congr_fun e r`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.NB.LT.algHom_coe {B : Type} [CommRing B] [Algebra R B] (σ : R⟦X⟧ →ₐ[R] B) (r : Polynomial R) :
     σ (r : R⟦X⟧) = Polynomial.aeval (σ X) r := by
@@ -120,9 +118,9 @@ theorem _root_.GlobalTheory.NB.LT.algHom_coe {B : Type} [CommRing B] [Algebra R 
 open PowerSeries in
 variable {R S : Type} [CommRing R] [CommRing S] {l : ℕ} in
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : X ^ n ∣ f - (trunc n f : R⟦X⟧) := by`. Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Simplify using `[coeff_trunc, hm]`. Establish `e : ρ f - Polynomial.aeval (ρ X) (trunc n f) = ρ (X ^ n) * ρ g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← _root_.GlobalTheory.NB.LT.algHom_coe ρ, ← map_sub, hg, map_mul]`. Rewrite using `[e, map_pow]`. Conclude with `(pow_dvd_pow_of_dvd hρ n).mul_right _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma X_pow_dvd_sub_aeval_trunc (ρ : R⟦X⟧ →ₐ[R] R⟦X⟧) (hρ : X ∣ ρ X) (n : ℕ)
     (f : R⟦X⟧) : X ^ n ∣ ρ f - Polynomial.aeval (ρ X) (trunc n f) := by
@@ -139,9 +137,9 @@ open PowerSeries in
 variable {R S : Type} [CommRing R] [CommRing S] {l : ℕ} in
 
 /- English proof (translation)
-Use `AlgHom.ext fun f => PowerSeries.ext fun m => ?_` and prove the remaining obligations. Establish `h1` using `X_pow_dvd_sub_aeval_trunc σ hX (m + 1) f`. Establish `h2` using `X_pow_dvd_sub_aeval_trunc τ (h ▸ hX) (m + 1) f`. Rewrite `h1` using `[h]`. Establish `h3` using `dvd_sub h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[sub_sub_sub_cancel_right]`. Use `(X_pow_dvd_iff.mp h3) m (Nat.lt_succ_self m)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem _root_.GlobalTheory.NB.LT.algHom_ext_X (σ τ : R⟦X⟧ →ₐ[R] R⟦X⟧) (h : σ X = τ X) (hX : X ∣ σ X) : σ = τ := by
   refine AlgHom.ext fun f => PowerSeries.ext fun m => ?_

@@ -35,22 +35,22 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 variable (Y : Model Xo c β) (b : O →+* O') (hb : β'.comp b = β) [IsPreimmersion (spMap b)] [Flat (spMap b)]
 
 /- English proof (translation)
-The claim follows from `(MorphismProperty.monomorphisms Scheme.{0}).of_isPullback (locMap Y b).cart.1.flip (show Mono (pullback.fst Y.s (spMap b)) from inferInstance)`.
+A detailed English derivation is pending.
 -/
 theorem mono_locMap : Mono (locMap Y b).φ :=
   (MorphismProperty.monomorphisms Scheme.{0}).of_isPullback (locMap Y b).cart.1.flip
     (show Mono (pullback.fst Y.s (spMap b)) from inferInstance)
 
 /- English proof (translation)
-Establish `ej` using `locModel_j Y b hb`. Establish `em` using `locModel_m Y b hb`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, m, P, φ, he, w, e, h₁, h₂, h₃, h₄, h₅, h₆⟩`. Take `⟨n, hn⟩` from `ObjMaps.exists_sab_comp (locMap Y b) m`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨t, n, P, φ, he, w, e, h₁, h₂, h₃, h₄, h₅, fun F _ _ _ _ uF e₁ e₂ => ⟨(h₆ F uF e₁ e₂).1, fun yF hy k p₀ σ hσ q₀ q x k₁ k₂ k₃ k₄ => (h₆ F uF e₁ e₂).2 yF ?_ k p₀ σ hσ q₀ q x k₁ k₂ k₃ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (pullback.fst Y.s (spMap b)), Category.assoc, ej, hy]`. Simplify using `only [Category.assoc]`. Use `mono_locMap Y b` as an intermediate fact. Rewrite using `[← cancel_mono (locMap Y b).φ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k₄` using `[hn, ← em]`. Simplify using `only [Category.assoc]`. Conclude with `k₄`. Introduce and unpack `⟨t, m, P, φ, he, w, e, h₁, h₂, h₃, h₄, h₅, h₆⟩`. Take `⟨n, hn⟩` from `ObjMaps.exists_sab_cancel (locMap Y b) m`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, n, P, φ, he, w, e, h₁, h₂, h₃, h₄, h₅, fun F _ _ _ _ uF e₁ e₂ => ⟨(h₆ F uF e₁ e₂).1, fun yF hy k p₀ σ hσ q₀ q x k₁ k₂ k₃ k₄ => (h₆ F uF e₁ e₂).2 yF ?_ k p₀ σ hσ q₀ q x k₁ k₂ k₃ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← ej, ← Category.assoc, hy]`. Simplify using `only [Category.assoc]`. Use `congrArg (· ≫ (locMap Y b).φ) k₄` as an intermediate fact. Simplify using `only [Category.assoc] at this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, ← em]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem hasArcData_iff {O'' R : Type} [CommRing O''] [IsDomain O''] [CommRing R] [IsDomain R] {b' : O' →+* O''}
     (a : ArcIn D l β' O'' b') (I : Ideal R) (f : O'' →+* R) (u : R) (χ : Sp R ⟶ (locModel Y b hb).X) :
@@ -82,9 +82,9 @@ theorem hasArcData_iff {O'' R : Type} [CommRing O''] [IsDomain O''] [CommRing R]
       exact this
 
 /- English proof (translation)
-Rewrite using `[← locModel_j Y b hb]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨u, Scheme.Hom.comp_apply _ _ _⟩`. Introduce and unpack `⟨u, hu⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨u, (pullback.fst Y.s (spMap b)).isEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hu, Scheme.Hom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_range_j_iff (x : (locModel Y b hb).X) :
     x ∈ Set.range (locModel Y b hb).j ↔ pullback.fst Y.s (spMap b) x ∈ Set.range Y.j := by
@@ -97,7 +97,7 @@ theorem mem_range_j_iff (x : (locModel Y b hb).X) :
     rw [← hu, Scheme.Hom.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -105,19 +105,15 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A
   rfl
 
 /- English proof (translation)
-Introduce `O'' _ _ _ b' ϖ a hO`. Take `⟨χ₀, hu, hs⟩` from `h O'' (b'.comp b) ϖ (arcRestrict b hb a) hO`. Take `⟨c₁, c₂, c₃, c₄⟩` from `(hu χ₀).1 rfl`. Establish `hw : χ₀ ≫ Y.s = (spMap (PowerSeries.C (R` using `O'')) ≫ spMap b') ≫ spMap b := by`. Rewrite using `[c₁, spMap_comp', Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hχ : pullback.lift χ₀ _ hw ≫ pullback.fst Y.s (spMap b) = χ₀` using `pullback.lift_fst _ _ _`. Use `⟨pullback.lift χ₀ _ hw, fun χ' => ⟨?_, ?_⟩, fun hi y' ev d₁ d₂ d₃ d₄ d₅ => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Use `⟨pullback.lift_snd _ _ _, fun x => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_abLocus_locModel, ← Scheme.Hom.comp_apply, hχ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `c₂ x`. Rewrite using `[mem_range_j_iff, ← Scheme.Hom.comp_apply, hχ]`. Conclude with `c₃ x hx`. Rewrite using `[hasArcData_iff, hχ]`. Conclude with `c₄`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨d₁, d₂, d₃, d₄⟩`. Rewrite using `[← cancel_mono (pullback.fst Y.s (spMap b)), hχ]`. Use `(hu _).2 ⟨?_, fun x => ?_, fun x hx => ?_, (hasArcData_iff Y b hb a _ _ _ _).1 d₄⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, spMap_comp', ← Category.assoc]`. Conclude with `congrArg (· ≫ spMap b) d₁`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.Hom.comp_apply, ← mem_abLocus_locModel Y b hb]`. Conclude with `d₂ x`. Rewrite using `[Scheme.Hom.comp_apply, ← mem_range_j_iff Y b hb]`. Conclude with `d₃ x hx`. Rewrite using `[← cancel_mono (pullback.fst Y.s (spMap b)), Category.assoc, hχ]`.
-
-Use `hs hi _ ev ?_ ?_ ((hasArcData_iff Y b hb a _ _ _ _).1 d₃) d₄ d₅` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, spMap_comp']`. Conclude with `congrArg (· ≫ spMap b) d₁`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[← Category.assoc, Scheme.Hom.comp_apply, ← mem_range_j_iff Y b hb]`.
-
-Conclude with `d₂ ⟨q, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locModel_arc (h : Y.N4) : (locModel Y b hb).N4 := by
   intro O'' _ _ _ b' ϖ a hO
@@ -155,7 +151,7 @@ theorem locModel_arc (h : Y.N4) : (locModel Y b hb).N4 := by
 end GlobalTheory.LocArc
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ Y _ _ _ b hb _ _ h` and use `GlobalTheory.LocArc.locModel_arc Y b hb h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocArc.arc_localise : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (O' : Type) [CommRing O'] (β' : O' →+* c.F) (b : O →+* O') (hb : β'.comp b = β) [IsPreimmersion (spMap b)] [Flat (spMap b)], Y.N4 → (locModel Y b hb).N4 :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ Y _ _ _ b hb _ _ h => GlobalTheory.LocArc.locModel_arc Y b hb h

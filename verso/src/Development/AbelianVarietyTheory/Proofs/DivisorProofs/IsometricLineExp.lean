@@ -28,9 +28,9 @@ section General
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {ι κ : Type} [Fintype ι] [Fintype κ]
 
 /- English proof (translation)
-Use `⟨fun m => ?_, fun P e he hP => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow, aeval_lin]`. Establish `h2` using `hΨ.1 (fun z => ∑ j, m j * T j z)`. Simplify using `only [Int.cast_sum, Int.cast_mul] at h2`. Rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((isometric_comb_comb L T m).trans (isometric_comb_congr hT m)).gdeg_eq _`. Conclude with `hΨ.2 _ e he (by simpa using hP.aeval _ fun j => isHomogeneous_lin _)`.
+A detailed English derivation is pending.
 -/
 theorem isGeoFun_subst {L : ι → HermLB p} {D : ℕ} {Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hΨ : IsGeoFun L D Ψ)
     (M : κ → HermLB p) (T : κ → ι → ℤ) (hT : ∀ j, (comb L (T j)).Isometric (M j)) :
@@ -48,7 +48,7 @@ variable (p) in
 def cst (t : ℝ) : HermLB p := (triv p).shift (fun _ => t) fun _ => rfl
 
 /- English proof (translation)
-Rewrite using `[← icls_tens, icls_eq_iff]`. Use `Isometric.symm (isometric_of_chart (fun c => c.1) (fun _ _ h => h.1) (fun x c c' h h' => (CechPic.gm_tens L.B (LB.triv X) (𝟙 X) x c c' h h').trans ((congrArg (_ * ·) (map_one _)).trans (mul_one _))) fun σ a y _ => ?_)` and prove the remaining obligations. Use `show (L.φ σ).φ a.1 y + 2 * t = (L.φ σ).φ a.1 y + ((0 : ℝ) + 2 * t)`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem icls_shift (L : HermLB p) (t : ℝ) :
     (L.shift (fun _ => t) fun _ => rfl).icls = L.icls + (cst p t).icls := by
@@ -60,7 +60,7 @@ theorem icls_shift (L : HermLB p) (t : ℝ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← icls_shift, icls_eq_iff]`. Conclude with `isometric_of_eqOn fun σ a y _ => by show ((0 : ℝ) + 2 * s) + 2 * t = (0 : ℝ) + 2 * (s + t)`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem icls_cst_add (s t : ℝ) : (cst p (s + t)).icls = (cst p s).icls + (cst p t).icls := by
   rw [← icls_shift, icls_eq_iff]
@@ -69,14 +69,14 @@ theorem icls_cst_add (s t : ℝ) : (cst p (s + t)).icls = (cst p s).icls + (cst 
     ring
 
 /- English proof (translation)
-Use `map_zsmul (AddMonoidHom.mk' (fun t : ℝ => (cst p t).icls) icls_cst_add) n 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem icls_cst_int (n : ℤ) : (cst p (n : ℝ)).icls = n • (cst p 1).icls := by
   have := map_zsmul (AddMonoidHom.mk' (fun t : ℝ => (cst p t).icls) icls_cst_add) n 1
   simpa using this
 
 /- English proof (translation)
-The claim follows from `isometric_of_eqOn fun σ a y _ => by exact (congrArg (· + 2 * t) (Weight.pull_φ (L.φ σ) π hπ a y)).trans (Weight.pull_φ ((L.φ σ).addFn fun _ => 2 * t) π hπ a y).symm`.
+A detailed English derivation is pending.
 -/
 theorem pull_shift (L : HermLB p) (t : ℝ) (π : Y ⟶ X) (hπ : π ≫ p = q) :
     ((L.shift (fun _ => t) fun _ => rfl).pull π hπ).Isometric ((L.pull π hπ).shift (fun _ => t) fun _ => rfl) :=
@@ -85,7 +85,7 @@ theorem pull_shift (L : HermLB p) (t : ℝ) (π : Y ⟶ X) (hπ : π ≫ p = q) 
       (Weight.pull_φ ((L.φ σ).addFn fun _ => 2 * t) π hπ a y).symm
 
 /- English proof (translation)
-Use `icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[icls_shift, icls_comb, icls_comb, icls_cst_int, ← Finset.add_sum_erase _ _ (Finset.mem_univ a), ← Finset.add_sum_erase _ _ (Finset.mem_univ a), icls_eq_iff.2 ha, icls_shift, Finset.sum_congr rfl fun i hi => by rw [hne i (Finset.ne_of_mem_erase hi)], smul_add]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem comb_shift {L L' : ι → HermLB p} (a : ι) (ha : (L' a).Isometric ((L a).shift (fun _ => 1) fun _ => rfl))
     (hne : ∀ i, i ≠ a → L' i = L i) (n : ι → ℤ) :
@@ -97,7 +97,7 @@ theorem comb_shift {L L' : ι → HermLB p} (a : ι) (ha : (L' a).Isometric ((L 
   abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `S f`. Simplify using `only [HermLB.shift, Weight.chernInt, Weight.chernPart_addFn_const]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem chernInt_shift (L : HermLB p) (t : ℝ) (σ : k →+* ℂ) (D : ℕ) :
     ((L.shift (fun _ => t) fun _ => rfl).φ σ).chernInt D = (L.φ σ).chernInt D := by
@@ -105,15 +105,15 @@ theorem chernInt_shift (L : HermLB p) (t : ℝ) (σ : k →+* ℂ) (D : ℕ) :
   simp only [HermLB.shift, Weight.chernInt, Weight.chernPart_addFn_const]
 
 /- English proof (translation)
-Establish `hz` using `GlobalTheory.ArInt.Model.eq_zero_of_pow (D + 1) (Φ' - Φ - Ψ ∘ₗ (pderiv a).toLinearMap) (fun n => by`. Establish `h3` using `hC.arShift k X p D hX (comb L n) _ (n a) (hΦ.1 n)`. Establish `h4` using `(hΦ'.1 n).unique hX ((hs n).symm.isSelfInter hX h3)`. Establish `h5 : pderiv a (lin (fun i => (n i : ℝ)) ^ (D + 1)) = (((D : ℝ) + 1) * n a) • lin (fun i => (n i : ℝ)) ^ D`. Establish `: pderiv a (lin (fun i => (n i : ℝ))) = C (n a : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[lin, pderiv_X, Pi.single_apply]`. Rewrite using `[pderiv_pow, this, smul_eq_C_mul]`. Simplify using `only [Nat.add_sub_cancel, map_mul, map_add, map_natCast, map_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, Derivation.coeFn_coe]`. Rewrite using `[h5, map_smul, hΨ.1 n, h4, smul_eq_mul]`. Use the proof step `ring)`. Use the proof step `(fun P e he hP => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, Derivation.coeFn_coe]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hΦ.2 P e he hP, hΦ'.2 P e he hP]`. Break down `Nat.eq_zero_or_pos e with rfl | h0` into its components or cases. Rewrite using `[totalDegree_eq_zero_iff_eq_C.1 (Nat.le_zero.1 hP.totalDegree_le), pderiv_C, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hΨ.2 _ (e - 1) (by omega) hP.pderiv] ring)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `LinearMap.congr_fun hz G` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, Derivation.coeFn_coe, LinearMap.zero_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem arFun_shift (hC : ArCalc) [IsIntegral X] {D : ℕ} (hX : IsArithVar p D) {L L' : ι → HermLB p} (a : ι)
     (hs : ∀ n : ι → ℤ, (comb L' n).Isometric ((comb L n).shift (fun _ => (n a : ℝ)) fun _ => rfl))
@@ -152,7 +152,7 @@ section Bundle
 variable {k : Type} [CommRing k] {B Y : Scheme.{0}} [IsIntegral B] [IsIntegral Y] {q : B ⟶ Sp k} {p : Y ⟶ Sp k} {d : ℕ}
 
 /- English proof (translation)
-Use `(topologicalKrullDim_subspace_le B _).trans_lt ?_` and prove the remaining obligations. Rewrite using `[hq.dim_eq]`. Conclude with `Nat.lt_succ_self (d + 1)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_image_lt (hq : IsArithVar q d) (π : Y ⟶ B) :
     topologicalKrullDim (closure ({π (genericPoint Y)} : Set B)) < ((d + 1 + 1 : ℕ) : WithBot ℕ∞) := by
@@ -161,9 +161,9 @@ theorem dim_image_lt (hq : IsArithVar q d) (π : Y ⟶ B) :
   exact_mod_cast Nat.lt_succ_self (d + 1)
 
 /- English proof (translation)
-Establish `h0` using `GlobalTheory.ProjDrop.isSelfInter_zero_of_dim_lt hC k B Y q p d (d + 1) hq hp π w (dim_image_lt hq π)`. Establish `h1` using `hC.arShift k Y p (d + 1) hp _ _ 1 (h0 L)`. Establish `h2` using `((pull_shift L 1 π w).isSelfInter hp (h0 _)).unique hp h1`. Establish `h3 : (((d + 1 : ℕ) : ℝ) + 1) ≠ 0` using `by positivity`. Rewrite `h2` using `[zero_add, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h2.symm).resolve_left h3`.
+A detailed English derivation is pending.
 -/
 theorem gdeg_pull_zero (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p)
     (L : HermLB q) : gdeg (L.pull π w) (d + 1) = 0 := by
@@ -180,7 +180,7 @@ variable {π : Y ⟶ B} {w : π ≫ q = p} {E : B.Modules} {h : VMetric q E 2} {
 def baseExp : Fin 3 → Fin 5 → ℤ := fun j => Pi.single ((![3, 4, 2] : Fin 3 → Fin 5) j) 1
 
 /- English proof (translation)
-Simplify using `only [baseExp, lin_single]`. Rewrite using `[rename_eq_aeval]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aeval_baseExp (f : MvPolynomial (Fin 3) ℝ) :
     aeval (fun j => lin fun i => (baseExp j i : ℝ)) f = rename (![3, 4, 2] : Fin 3 → Fin 5) f := by
@@ -189,7 +189,7 @@ theorem aeval_baseExp (f : MvPolynomial (Fin 3) ℝ) :
   rfl
 
 /- English proof (translation)
-Use `(isometric_comb_single _ _).trans ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases j <;> exact Isometric.refl _`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isometric_baseExp (j : Fin 3) : (comb (fam5 π w H flB fl A) (baseExp j)).Isometric
     (((![VMetric.grLB flB 0 H, VMetric.grLB flB 1 H, A] : Fin 3 → HermLB q) j).pull π w) := by
@@ -197,9 +197,9 @@ theorem isometric_baseExp (j : Fin 3) : (comb (fam5 π w H flB fl A) (baseExp j)
   fin_cases j <;> exact Isometric.refl _
 
 /- English proof (translation)
-Establish `h1` using `((hC.arIso k Y p (d + 1) hp).2 (Fin 5) _ Φ hΦ).2.2 (Fin 3) _ baseExp isometric_baseExp`. Establish `h2 : IsArFun (fun j => ((![VMetric.grLB flB 0 H, VMetric.grLB flB 1 H, A] : Fin 3 → HermLB q) j).pull π w) (d + 1) 0`. Use `⟨fun n => ?_, fun _ _ _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply]`. Conclude with `(isometric_comb_pull _ n π w).symm.isSelfInter hp (GlobalTheory.ProjDrop.isSelfInter_zero_of_dim_lt hC k B Y q p d (d + 1) hq hp π w (dim_image_lt hq π) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun (GlobalTheory.ArInt.Model.isArFun_unique hp h1 h2) f` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, aeval_baseExp]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem arFun_base (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 1))
     {Φ : MvPolynomial (Fin 5) ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun (fam5 π w H flB fl A) (d + 1) Φ) (f : MvPolynomial (Fin 3) ℝ) :
@@ -215,9 +215,9 @@ theorem arFun_base (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 1
   rwa [LinearMap.comp_apply, AlgHom.toLinearMap_apply, aeval_baseExp] at this
 
 /- English proof (translation)
-Establish `h1` using `isGeoFun_subst hΨ _ baseExp isometric_baseExp`. Establish `h2 : IsGeoFun (fun j => ((![VMetric.grLB flB 0 H, VMetric.grLB flB 1 H, A] : Fin 3 → HermLB q) j).pull π w) (d + 1) 0`. Use `⟨fun n => ?_, fun _ _ _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, (isometric_comb_pull _ n π w).gdeg_eq, gdeg_pull_zero hC hq hp]`. Use `LinearMap.congr_fun (GlobalTheory.ArInt.Model.isGeoFun_unique h1 h2) f` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, aeval_baseExp]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem geoFun_base (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 1))
     {Ψ : MvPolynomial (Fin 5) ℝ →ₗ[ℝ] ℝ} (hΨ : IsGeoFun (fam5 π w H flB fl A) (d + 1) Ψ) (f : MvPolynomial (Fin 3) ℝ) :
@@ -233,7 +233,7 @@ theorem geoFun_base (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 
 def lineExp : Fin 3 → Fin 5 → ℤ := ![![1, 0, 0, 0, 0], ![-1, 0, 0, 1, 1], ![0, 0, 1, 0, 0]]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [lineExp, lin, Fin.sum_univ_five] <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lin_lineExp : (fun j => lin fun i => (lineExp j i : ℝ)) =
     (![X 0, X 3 + X 4 - X 0, X 2] : Fin 3 → MvPolynomial (Fin 5) ℝ) := by
@@ -241,15 +241,13 @@ theorem lin_lineExp : (fun j => lin fun i => (lineExp j i : ℝ)) =
   fin_cases j <;> simp [lineExp, lin, Fin.sum_univ_five] <;> ring
 
 /- English proof (translation)
-Use `set L5 := fam5 π w H flB fl A with hL5`. Establish `iso : ((L5 0).tens (L5 1)).Isometric ((L5 3).tens (L5 4))`. Establish `e₁` using `VMetric.isometric_grLB_tens_grLB_det k Y p _ _ (H.pull π w) fl`. Establish `e₂` using `VMetric.isometric_det_pull H π w`. Establish `e₃` using `((VMetric.isometric_grLB_tens_grLB_det k B q E h H flB).symm.pull π w).trans (HermLB.isometric_pull_tens _ _ π w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e₁.trans (e₂.trans e₃)`. Establish `icl : (L5 1).icls = (L5 3).icls + (L5 4).icls - (L5 0).icls`. Use `HermLB.icls_eq_iff.2 iso` as an intermediate fact. Rewrite `this` using `[HermLB.icls_tens, HermLB.icls_tens]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[icls_comb]`. Use `fin_cases j`. Express the relevant statement in the definitionally equal form `_ = (L5 0).icls`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[lineExp, Fin.sum_univ_five]`. Express the relevant statement in the definitionally equal form `_ = (L5 1).icls`. Rewrite using `[icl]`. Simplify using `[lineExp, Fin.sum_univ_five]`. Normalize the expressions using the abelian group laws.
-
-Express the relevant statement in the definitionally equal form `_ = (L5 2).icls`. Simplify using `[lineExp, Fin.sum_univ_five]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isometric_lineExp (j : Fin 3) : (comb (fam5 π w H flB fl A) (lineExp j)).Isometric
     ((![VMetric.grLB fl 0 (H.pull π w), VMetric.grLB fl 1 (H.pull π w), A.pull π w] : Fin 3 → HermLB p) j) := by

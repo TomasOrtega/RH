@@ -10,13 +10,11 @@ open scoped Pointwise
 namespace GlobalTheory.CompanionTheory.TorusCh
 
 /- English proof (translation)
-Establish `hγ : ∀ y ∈ W, γ *ᵥ y ∈ W` using `fun y hy => hW ⟨y, hy, by rw [Matrix.toLin'_apply]⟩`. Proceed by induction on `g using Polynomial.induction_on with`. Consider the case `C a`. Introduce `y hy`. Rewrite using `[aeval_C, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.smul_mem a hy`. Consider the case `add p q hp hq`. Introduce `y hy`. Rewrite using `[map_add, Matrix.add_mulVec]`. Conclude with `W.add_mem (hp y hy) (hq y hy)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `monomial k a ih`. Introduce `y hy`. Establish `: aeval γ (C a * X ^ (k + 1)) = aeval γ (C a * X ^ k) * γ`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, aeval_X]`. Rewrite using `[this, ← Matrix.mulVec_mulVec]`.
-
-Conclude with `ih _ (hγ y hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mulVec_mem_of_stable {K : Type} [Field K] {n : ℕ} (γ : Matrix (Fin n) (Fin n) K)
     (W : Submodule K (Fin n → K)) (hW : W.map (Matrix.toLin' γ) ≤ W) (g : K[X]) :
@@ -56,17 +54,17 @@ def stableIdeal {K : Type} [Field K] {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) (
     exact aeval_mulVec_mem_of_stable γ W hW c _ hx
 
 /- English proof (translation)
-Introduce `K _ n γ v hsep hcyc W hW`. Use `set I := stableIdeal γ v W hW with hI`. Establish `hmemI : ∀ h : K[X], h ∈ I ↔ aeval γ h *ᵥ v ∈ W` using `fun h => Iff.rfl`. Take `⟨w, hw⟩ : ∃ w, I = Ideal.span {w}` from `⟨Submodule.IsPrincipal.generator I, (Ideal.span_singleton_generator I).symm⟩`. Establish `hdvd : ∀ h : K[X], aeval γ h *ᵥ v ∈ W ↔ w ∣ h` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmemI, hw, Ideal.mem_span_singleton]`. Establish `hχ : aeval γ γ.charpoly = 0` using `Matrix.aeval_self_charpoly γ`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : w ∣ γ.charpoly := by`. Rewrite using `[← hdvd, hχ, Matrix.zero_mulVec]`. Conclude with `W.zero_mem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hco : IsCoprime w c` using `Polynomial.Separable.isCoprime (hc ▸ hsep)`. Take `⟨u, b, hub⟩` from `hco`. Use `⟨aeval γ (u * w), ⟨u * w, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `key : u * w * (u * w) = u * w - u * b * γ.charpoly`. Take the linear combination `(u * w) * hub + (u * b) * hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← map_mul, key, map_sub, map_mul (aeval γ) (u * b), hχ, mul_zero, sub_zero]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨h, rfl⟩` from `hcyc y`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← map_mul, hdvd]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨u * h, by ring⟩`. Introduce `y hy`. Take `⟨h, rfl⟩` from `hcyc y`. Take `⟨g, rfl⟩` from `(hdvd h).1 hy`. Use `⟨aeval γ (w * g) *ᵥ v, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `key : u * w * (w * g) = w * g - g * b * γ.charpoly`. Take the linear combination `(w * g) * hub + (g * b) * hc`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← map_mul, key, map_sub, map_mul (aeval γ) (g * b), hχ, mul_zero, sub_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idem_pol_range_eq : ∀ (K : Type) [Field K] (n : ℕ) (γ : Matrix (Fin n) (Fin n) K) (v : Fin n → K),
     γ.charpoly.Separable → (∀ y : Fin n → K, ∃ h : K[X], y = aeval γ h *ᵥ v) →

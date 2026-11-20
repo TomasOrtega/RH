@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [List.sum_cons, Multiset.mem_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem multiset_mem_list_sum' {α : Type*} (l : List (Multiset α)) (x : α) :
     x ∈ l.sum ↔ ∃ m ∈ l, x ∈ m := by
@@ -12,9 +12,9 @@ theorem multiset_mem_list_sum' {α : Type*} (l : List (Multiset α)) (x : α) :
   | cons a l ih => simp [List.sum_cons, Multiset.mem_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp at h`. Consider the case `cons a l ih`. Rewrite using `[List.sum_cons]`. Break down `List.mem_cons.1 h with rfl | h` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Multiset.le_add_right _ _`. Conclude with `(ih h).trans (Multiset.le_add_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem multiset_le_list_sum' {α : Type*} (l : List (Multiset α)) (m : Multiset α) (h : m ∈ l) :
     m ≤ l.sum := by
@@ -27,7 +27,7 @@ theorem multiset_le_list_sum' {α : Type*} (l : List (Multiset α)) (m : Multise
     · exact (ih h).trans (Multiset.le_add_left _ _)
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_natCast_cpow_of_pos hq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_natCast_cpow_ofReal {q : ℕ} (hq : 0 < q) (s : ℝ) :
     ‖(q : ℂ) ^ ((s : ℝ) : ℂ)‖ = (q : ℝ) ^ s := by
@@ -35,7 +35,7 @@ theorem norm_natCast_cpow_ofReal {q : ℕ} (hq : 0 < q) (s : ℝ) :
   simp
 
 /- English proof (translation)
-Break down `lt_trichotomy x y with hxy | hxy | hxy` into its components or cases. Conclude with `absurd h (ne_of_lt (Real.rpow_lt_rpow_of_exponent_lt hb hxy))`. Conclude with `hxy`. Conclude with `absurd h (ne_of_gt (Real.rpow_lt_rpow_of_exponent_lt hb hxy))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem rpow_exponent_inj_of_one_lt {b : ℝ} (hb : 1 < b) {x y : ℝ} (h : b ^ x = b ^ y) : x = y := by
   rcases lt_trichotomy x y with hxy | hxy | hxy
@@ -44,39 +44,35 @@ theorem rpow_exponent_inj_of_one_lt {b : ℝ} (hb : 1 < b) {x y : ℝ} (h : b ^ 
   · exact absurd h (ne_of_gt (Real.rpow_lt_rpow_of_exponent_lt hb hxy))
 
 /- English proof (translation)
-Introduce `q t L Rw c hq ht hc hRw hL hsum`. Establish `hq0 : 0 < q` using `by omega`. Establish `hq1 : (1:ℝ) < q` using `by exact_mod_cast hq`. Establish `nm : ∀ s : ℝ, ‖(q : ℂ) ^ ((s : ℝ) : ℂ)‖ = (q : ℝ) ^ s` using `norm_natCast_cpow_ofReal hq0`. Establish `Pne : ∀ s : ℝ, (q : ℂ) ^ ((s : ℝ) : ℂ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s h0`. Establish `h` using `nm s`. Rewrite `h` using `[h0, norm_zero]`. Conclude with `(Real.rpow_pos_of_pos (by positivity) s).ne' h.symm`. Simplify using `only [bind_pure_comp, List.map_eq_map, List.map_map, Function.comp_def] at hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩ : ∃ n, t = n + 1` from `⟨t - 1, by omega⟩`. Establish `hright : ((List.range (n+1)).map fun (k : ℕ) => ({c * (q : ℂ) ^ (((((n+1:ℕ) : ℝ) - 1) / 2 - (k : ℝ) : ℝ) : ℂ)} : Multiset ℂ)).sum = {c * (q : ℂ) ^ (((((n+1:ℕ) : ℝ) - 1) / 2 : ℝ) : ℂ)} + ((List.range n).map fun (k : ℕ) => ({c * (q : ℂ) ^ (((((n+1:ℕ) : ℝ) - 1) / 2 - ((k:ℝ) + 1) : ℝ …`. Rewrite using `[List.range_succ_eq_map, List.map_cons, List.sum_cons, List.map_map]`. Use `congr 2`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `k _`. Simplify using the standard rewrite rules. Rewrite `hsum` using `[hright]`. Establish `hsmall : ∀ x ∈ Rw + ((List.range n).map fun (k : ℕ) => ({c * (q : ℂ) ^ (((((n+1:ℕ) : ℝ) - 1) / 2 - ((k:ℝ) + 1) : ℝ) : ℂ)} : Multiset ℂ)).sum, ‖x‖ < (q : ℝ) ^ ((((n+1:ℕ) : ℝ) - 1) / 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Break down `Multiset.mem_add.1 hx with hx | hx` into its components or cases. Conclude with `hRw x hx`. Take `⟨m, hm, hxm⟩` from `(multiset_mem_list_sum' _ _).1 hx`. Take `⟨k, _, rfl⟩` from `List.mem_map.1 hm`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hxm` using `[Multiset.mem_singleton]`. Substitute `hxm` using the available equality. Rewrite using `[norm_mul, hc, nm, one_mul]`. Conclude with `Real.rpow_lt_rpow_of_exponent_lt hq1 (by have := Nat.cast_nonneg (α := ℝ) k; linarith)`. Establish `hsum' : (L.map fun e => ((List.range e.1).map fun k => e.2.map (· * (q : ℂ) ^ (((((e.1 : ℝ) - 1) / 2 - (k : ℝ) : ℝ)) : ℂ))).sum).sum = {c * (q : ℂ) ^ (((((n+1:ℕ) : ℝ) - 1) / 2 : ℝ) : ℂ)} + (Rw + ((List.range n).map fun (k : ℕ) => ({c * (q : ℂ) ^ (((((n+1:ℕ) : ℝ) - 1) / 2 - ((k:ℝ) …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hsum, add_left_comm]`. Use `clear hsum hright`. Prove the components needed by the constructor for the conclusion. Establish `hmem` using `hsum' ▸ Multiset.mem_add.2 (Or.inl (Multiset.mem_singleton_self _))`. Take `⟨m, hm, hxm⟩` from `(multiset_mem_list_sum' _ _).1 hmem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, rfl⟩` from `List.mem_map.1 hm`. Take `⟨m', hm', hxm'⟩` from `(multiset_mem_list_sum' _ _).1 hxm`. Take `⟨k, _, rfl⟩` from `List.mem_map.1 hm'`. Take `⟨α, hα, hαeq⟩` from `Multiset.mem_map.1 hxm'`. Establish `hn` using `congrArg norm hαeq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hn` using `[norm_mul, norm_mul, (hL e he).2.2 α hα, hc, nm, nm, one_mul, one_mul]`. Establish `hx` using `rpow_exponent_inj_of_one_lt hq1 hn`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Establish `: ((n + 1 : ℕ) : ℝ) ≤ (e.1 : ℝ)`. Establish `hk : (0:ℝ) ≤ k` using `by positivity`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Move the coercions through the operations in `at hx ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Introduce `e he hte`. Take `⟨hd1, hE0, hEn⟩` from `hL e he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : e.2.map (· * (q : ℂ) ^ (((((e.1 : ℝ) - 1) / 2 - ((0:ℕ) : ℝ) : ℝ)) : ℂ)) ≤ {c * (q : ℂ) ^ (((((n+1:ℕ) : ℝ) - 1) / 2 : ℝ) : ℂ)} + (Rw + ((List.range n).map fun (k : ℕ) => ({c * (q : ℂ) ^ (((((n+1:ℕ) : ℝ) - 1) / 2 - ((k:ℝ) + 1) : ℝ) : ℂ)} : Multiset ℂ)).sum)`. Rewrite using `[← hsum']`. Use `(multiset_le_list_sum' ((List.range e.1).map fun (k : ℕ) => e.2.map (· * (q : ℂ) ^ (((((e.1 : ℝ) - 1) / 2 - (k : ℝ) : ℝ)) : ℂ))) _ ?_).trans (multiset_le_list_sum' _ _ ?_)` and prove the remaining obligations. Conclude with `List.mem_map.2 ⟨0, List.mem_range.2 (by omega), rfl⟩`. Conclude with `List.mem_map.2 ⟨e, he, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1` using `Multiset.filter_le_filter (fun x : ℂ => (q : ℝ) ^ ((((n+1:ℕ) : ℝ) - 1) / 2) ≤ ‖x‖) hle`. Rewrite `h1` using `[Multiset.filter_eq_self.2, Multiset.filter_add, Multiset.filter_eq_nil.2 (fun x hx => not_le.2 (hsmall x hx)), add_zero]`. Use `swap`. Introduce `x hx`. Take `⟨α, hα, rfl⟩` from `Multiset.mem_map.1 hx`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, hEn α hα, nm, one_mul]`. Apply `Real.rpow_le_rpow_of_exponent_le hq1.le` to reduce the goal to its premises. Establish `: ((n + 1 : ℕ) : ℝ) ≤ (e.1 : ℝ)` using `by exact_mod_cast hte`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `h1.trans (Multiset.filter_le _ _)`. Establish `hcard : Multiset.card ({c * (q : ℂ) ^ (((((n+1:ℕ) : ℝ) - 1) / 2 : ℝ) : ℂ)} : Multiset ℂ) ≤ Multiset.card (e.2.map (· * (q : ℂ) ^ (((((e.1 : ℝ) - 1) / 2 - ((0:ℕ) : ℝ) : ℝ)) : ℂ)))`. Rewrite using `[Multiset.card_singleton, Multiset.card_map]`. Conclude with `Multiset.card_pos.2 hE0`. Establish `h3` using `Multiset.eq_of_le_of_card_le h2 hcard`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨α, hEα, hαeq⟩` from `Multiset.map_eq_singleton.1 h3`. Establish `hα : α ∈ e.2` using `by rw [hEα]; exact Multiset.mem_singleton_self _`. Establish `hn` using `congrArg norm hαeq`. Rewrite `hn` using `[norm_mul, norm_mul, hEn α hα, hc, nm, nm, one_mul, one_mul]`. Establish `hx` using `rpow_exponent_inj_of_one_lt hq1 hn`.
-
-Establish `hd : e.1 = n + 1`. Establish `: (e.1 : ℝ) = ((n + 1 : ℕ) : ℝ)` using `by push_cast at hx ⊢; linarith`. Conclude with `this` after adjusting the coercions. Use `⟨hd, ?_⟩` and prove the remaining obligations. Rewrite using `[hEα]`.
-
-Use `congr 1`. Simplify using `only [hd, Nat.cast_zero, sub_zero] at hαeq`. Conclude with `mul_right_cancel₀ (Pne _) hαeq`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem longest_segment_unique_of_bounded_remainder :
     ∀ (q t : ℕ) (L : List (ℕ × Multiset ℂ)) (Rw : Multiset ℂ) (c : ℂ), 1 < q → 1 ≤ t → ‖c‖ = 1 → (∀ x ∈ Rw, ‖x‖ < (q : ℝ) ^ (((t : ℝ) - 1) / 2)) → (∀ e ∈ L, 1 ≤ e.1 ∧ e.2 ≠ 0 ∧ ∀ α ∈ e.2, ‖α‖ = 1) → (L.map fun e => ((List.range e.1).map fun k => e.2.map (· * (q : ℂ) ^ (((((e.1 : ℝ) - 1) / 2 - (k : ℝ) : ℝ)) : ℂ))).sum).sum = Rw + ((List.range t).map fun k => ({c * (q : ℂ) ^ (((((t : ℝ) - 1) / 2 - (k : ℝ) : ℝ)) : ℂ)} : Multiset ℂ)).sum → (∃ e ∈ L, t ≤ e.1) ∧ ∀ e ∈ L, t ≤ e.1 → e.1 = t ∧ e.2 = {c} := by

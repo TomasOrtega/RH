@@ -10,15 +10,13 @@ open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTh
 namespace GlobalTheory.ShFam.GalCarry
 
 /- English proof (translation)
-Introduce `y φ f t a τ i`. Take `⟨φ₁, f₁, t₁, a₁, h1⟩` from `Y.gr_spec y`. Establish `hι` using `IsFractionRing.injective (Y.Y.X.presheaf.stalk y) Y.Y.X.functionField`. Take `rfl : φ₁ = φ` from `RingHom.ext fun x => hι ((RingHom.congr_fun a₁.2.1 x).symm.trans (RingHom.congr_fun a.2.1 x))`. Take `⟨k₁, hk₁⟩` from `f₁.exists_isMap _ a.2.1 a.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `f.exists_isMap _ a.2.1 a.1`. Establish `e1 (τ i d) : k₁.co Y.f0 τ d i = ∑ j, k.co Y.f0 τ j i * algebraMap _ Y.Y.X.functionField (f₁.co f τ d j)`. Rewrite using `[← k₁.co_mul k, hk₁.co τ hk a.1, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `hM (τ d i) (h : i < d) : f₁.co f τ d i = 0` using `hι ((CoordUniq.tri_of_mul (M := fun i a => algebraMap _ Y.Y.X.functionField (f₁.co f τ a i)) (fun i a => (a₁.co τ hk₁).1 a i) (fun i a' => (a.co τ hk).1 a' i) (fun i => (a.co τ hk).2 i ▸ (t τ i).ne_zero) (e1 τ) i d h).trans (map_zero _).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu (τ i) : IsUnit (f₁.co f τ i i)`. Use `f₁.isUnit_det_co f τ` as an intermediate fact. Rewrite `this` using `[Matrix.det_of_upperTriangular (M := f₁.co f τ) fun _ _ h => hM τ _ _ h]`. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun i => f₁.co f τ i i) (Finset.mem_univ i)) this`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu'⟩ : ∃ u : (Y.Y.X.presheaf.stalk y)ˣ, t₁ τ i = t τ i * Units.map (algebraMap _ Y.Y.X.functionField).toMonoidHom u := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(hu τ i).unit, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← (a₁.co τ hk₁).2, e1, Units.val_mul, ← (a.co τ hk).2]`. Conclude with `CoordUniq.diag_of_mul (M := fun i a => algebraMap _ Y.Y.X.functionField (f₁.co f τ a i)) (fun i a' => (a.co τ hk).1 a' i) (fun i a h => by simp only [hM τ a i h, map_zero]) i`. Use `(CartierDiv.IsEqn.iff_unitAt (h1 τ i)).2 ⟨(u⁻¹ : _ˣ), Units.isUnit _, ?_⟩` and prove the remaining obligations. Rewrite using `[hu', Units.val_mul, div_mul_cancel_left₀ (Units.ne_zero _), ← Units.val_inv_eq_inv_val, ← map_inv]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem triEqn (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F)

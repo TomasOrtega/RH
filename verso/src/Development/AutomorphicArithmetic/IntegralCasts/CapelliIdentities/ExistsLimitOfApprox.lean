@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R _ I hI P h x₀ h₀`. Use `choose g hg hP using h`. Set `f : (n : ℕ) → {x : R // P n x}` to `fun n => Nat.rec (motive := fun n => {x : R // P n x}) ⟨x₀, h₀⟩ (fun n x => ⟨g n x.1 x.2, hP n x.1 x.2⟩) n`. Establish `hstep : ∀ n, (f (n + 1)).1 - (f n).1 ∈ I ^ n` using `fun n => hg n (f n).1 (f n).2`. Establish `hdiff : ∀ m n, m ≤ n → (f n).1 - (f m).1 ∈ I ^ m`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`. Establish `h1 : (f (n + 1)).1 - (f n).1 ∈ I ^ m` using `Ideal.pow_le_pow_right hmn (hstep n)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(I ^ m).add_mem h1 ih`. Rewrite `h2` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `htop : ∀ n : ℕ, (I ^ n • ⊤ : Submodule R R) = I ^ n` using `fun n => by`. Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Take `⟨L, hL⟩` from `IsPrecomplete.prec hI (f := fun n => (f n).1) (by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hmn`. Use `SModEq.symm ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, htop]`. Conclude with `hdiff m n hmn)`. Use `⟨L, fun n => ⟨(f n).1, (f n).2, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `(hL n).symm`. Rewrite `h3` using `[SModEq.sub_mem, htop]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qp1.exists_limit_of_approx.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] (I : Ideal R)

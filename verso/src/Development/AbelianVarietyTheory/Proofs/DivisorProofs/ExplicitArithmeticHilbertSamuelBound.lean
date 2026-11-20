@@ -21,15 +21,13 @@ noncomputable section
 namespace GlobalTheory.HSShortTop
 
 /- English proof (translation)
-Introduce `hQ hB hT hS F _ _ X Λ₀ hG h hh`. Take `⟨dd, f, hdpos, hf, hfh⟩` from `hh`. Take `⟨hdel, Q, hQ0, hQs⟩` from `hB F X.toTuple X.geom hG.bir dd f hf`. Establish `hHyp` using `GlobalTheory.T.hilbertSamuelLatticeSystem_hyp F X Λ₀ hG`. Establish `hFlat` using `GlobalTheory.T.hilbertSamuel_filtration_at_good_sections hQ F X Λ₀ hG dd f Q hQs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hirr : Irreducible f` using `GlobalTheory.ChowHt.irreducible_of_irreducible_map hf.irred`. Take `⟨hpos, hcl⟩` from `hS F (Tot X.toGeo) (sysOf X Λ₀) hHyp dd f Q (by omega) hf.homog hirr hQ0 hFlat`. Establish `hfr : Module.finrank F ((sysOf X Λ₀).V (sysOf X Λ₀).T) = X.d`. Rewrite using `[X.d_eq_finrank]`. Conclude with `(inclEquiv X X.T).finrank_eq.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg : deg ((sysOf X Λ₀).nm (sysOf X Λ₀).T) ((sysOf X Λ₀).M (sysOf X Λ₀).T) = X.degM X.T`. Use `GlobalTheory.IsoDeg.deg_map_eq F (X.V X.T) (LinearMap.range (incl X X.T)) (X.nm X.T) (comap (X.nm X.T) (inclEquiv X X.T).symm.toLinearMap (inclEquiv X X.T).symm.injective) (inclEquiv X X.T) (fun σ m c g => by simp only [csq, HermTools.comap, LinearEquiv.coe_coe, LinearEquiv.symm_ …` as an intermediate fact. Conclude with `this`. Establish `hTie` using `(hT F X.toHermSys X.abelian₂ hHyp.lat h ⟨dd, f, hdpos, hf, hfh⟩ dd 1 f 1 hf le_rfl one_ne_zero).2`. Rewrite `hcl` using `[hfr, hdeg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd' : ((X.del : ℤ) : ℝ) = (dd : ℝ)` using `by rw [← hdel]; push_cast; rfl`. Rewrite using `[hd']`. Use `GlobalTheory.T.hermitianSystemSlopeBound_of_determinantSlopeInequality X.T X.D X.n X.abelian₂ X.beta Λ₀ X.LamD X.LamT dd h _ X.d (X.degM X.T) (by exact_mod_cast hHyp.one_le) hHyp.le_T (by exact_mod_cast X.one_le_n) hHyp.lat.one_le hHyp.one_le_beta (by exact_mod_cast hdpos) ?_ hcl` and prove the remaining obligations. Establish `h2 : h - (Real.log X.n + 1) / 2 ≤ ht X.w X.A f / (((X.D : ℝ) + 1) * dd)`. Simplify using `at hTie`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem geoBound_of_abstract : Quoted → BertiniNF → HeightTie → SlopeBound → GeoBound := by
   intro hQ hB hT hS F _ _ X Λ₀ hG h hh

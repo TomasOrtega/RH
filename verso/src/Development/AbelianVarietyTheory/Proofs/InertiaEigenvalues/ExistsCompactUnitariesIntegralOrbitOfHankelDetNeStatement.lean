@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FullToGlIsSelf
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JR.SuppBdd.exists_compact_of_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsCompactUnitariesIntegralOrbitOfHankelDetNe.lean&line=44#L44)
 -/

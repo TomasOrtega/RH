@@ -3,21 +3,21 @@ import Formalism.JumpKernelCokernel.Statement
 namespace Formalism.KernelCokernelLengths
 
 /- English proof (translation)
-Introduce `A _ ℓ u ε q b Y hℓ hY`. Use `set k := (Y - 1) / ℓ with hk`. Use `set I : Ideal A := Ideal.span {(ℓ : A), q ^ ℓ} with hI`. Establish `hYle : Y ≤ ℓ * (k + 1)`. Establish `h` using `Nat.lt_mul_div_succ (Y - 1) (show 0 < ℓ by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h` using `[← hk]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : (u * q ^ ℓ + (ℓ : A) * ε) ^ b ∈ Ideal.span {(ℓ : A) ^ (b - k)} ⊔ Ideal.span {q ^ Y} * I ^ (b - k - 1)`. Rewrite using `[add_pow]`. Use `Ideal.sum_mem _ (fun m hm => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `hm` using `[Finset.mem_range]`. Distinguish the cases in `hmk : m ≤ k`. Apply `Ideal.mem_sup_left` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton]`. Establish `h1 : (ℓ : A) ^ (b - k) ∣ ((ℓ : A) * ε) ^ (b - m)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_pow]; exact Dvd.dvd.mul_right (pow_dvd_pow _ (by omega)) _`. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_left h1 _) _`. Apply `Ideal.mem_sup_right` to reduce the goal to its premises. Take `⟨e, rfl⟩ : ∃ e, m = k + 1 + e` from `⟨m - (k + 1), by omega⟩`. Establish `hℓI : (ℓ : A) ∈ I` using `Ideal.subset_span (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqI : q ^ ℓ ∈ I` using `Ideal.subset_span (by simp)`. Establish `hin : (q ^ ℓ) ^ e * (ℓ : A) ^ (b - (k + 1 + e)) ∈ I ^ (b - k - 1)`. Use `Ideal.mul_mem_mul (Ideal.pow_mem_pow hqI e) (Ideal.pow_mem_pow hℓI (b - (k + 1 + e)))` as an intermediate fact. Rewrite `this` using `[← pow_add]`. Conclude with `Ideal.pow_le_pow_right (by omega) this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `hp : q ^ (ℓ * (k + 1)) = q ^ Y * q ^ (ℓ * (k + 1) - Y)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `heq : (u * q ^ ℓ) ^ (k + 1 + e) * ((ℓ : A) * ε) ^ (b - (k + 1 + e)) * (b.choose (k + 1 + e) : A) = q ^ Y * ((q ^ ℓ) ^ e * (ℓ : A) ^ (b - (k + 1 + e)) * (u ^ (k + 1 + e) * q ^ (ℓ * (k + 1) - Y) * ε ^ (b - (k + 1 + e)) * (b.choose (k + 1 + e) : A)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hq : (q ^ ℓ) ^ (k + 1 + e) = q ^ Y * q ^ (ℓ * (k + 1) - Y) * (q ^ ℓ) ^ e`. Rewrite using `[pow_add, ← pow_mul, hp]`. Rewrite using `[mul_pow, mul_pow, hq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) (Ideal.mul_mem_right _ _ hin)`. Take `⟨a, ha, c, hc, hac⟩` from `Submodule.mem_sup.mp hmem`. Take `⟨α, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Take `⟨β, hβ, rfl⟩` from `Ideal.mem_span_singleton_mul.mp hc`. Conclude with `⟨α, β, by rw [← hac]; ring, hβ⟩`.
+A detailed English derivation is pending.
 -/
 theorem power_binomial_bound : PowBinom := by
   intro A _ ℓ u ε q b Y hℓ hY

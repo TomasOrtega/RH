@@ -27,7 +27,7 @@ def preLift {P : PSh} {F : Shv R} (a : ∀ U : Scheme.{0}, P.obj (op U) → Sec 
     all_goals simp
 
 /- English proof (translation)
-Use `show (Finsupp.lift (F.obj.obj (op U)) (ULift.{1} R) (ULift.{1} (P.obj (op U))) (fun y => a U y.down)) (Finsupp.single (ULift.up x) 1) = _`. Apply the tactic sequence `rw [Finsupp.lift_apply, Finsupp.sum_single_index] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem preLift_app {P : PSh} {F : Shv R} (a : ∀ U : Scheme.{0}, P.obj (op U) → Sec F U) (ha) (U : Scheme.{0})
     (x : P.obj (op U)) : ((preLift a ha).app (op U)).hom (ModuleCat.freeMk (ULift.up x)) = a U x := by
@@ -40,7 +40,7 @@ def shLift {P : PSh} {F : Shv R} (a : ∀ U : Scheme.{0}, P.obj (op U) → Sec F
   ObjectProperty.homMk (sheafifyLift Scheme.etaleTopology (preLift a ha) F.property)
 
 /- English proof (translation)
-Unfold `freeGen`. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology ((freeP R).obj P) ≫ sheafifyLift Scheme.etaleTopology (preLift a ha) F.property).app (op U)).hom _ = _`. Rewrite using `[toSheafify_sheafifyLift]`. Conclude with `preLift_app a ha U x`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shLift_gen {P : PSh} {F : Shv R} (a : ∀ U : Scheme.{0}, P.obj (op U) → Sec F U) (ha) (U : Scheme.{0})
     (x : P.obj (op U)) : ((shLift a ha).hom.app (op U)).hom (freeGen R P U x) = a U x := by
@@ -57,7 +57,7 @@ def comp (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Scheme.{0}
   (chainsXIso R E p).hom ≫ shLift (P := E.obj (op (SimplexCategory.mk p))) (a p s h) (fun V U g x => ha p s h V U g x)
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Simplify using `[comp]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem comp_key (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Scheme.{0}, Sx E p U → Sec (I.X s) U)
     (ha : ∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), Sec.res g (a p s h U x) = a p s h V (x.res g))
@@ -69,9 +69,9 @@ theorem comp_key (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Sc
   simp [comp]
 
 /- English proof (translation)
-Introduce `R _ E I n a ha`. Use `⟨Cochain.mk fun i j hij => if hi : i ≤ 0 then eqToHom (congrArg (fun k => ((chains R).obj E).X k) (by omega : i = -(((-i).toNat : ℕ) : ℤ))) ≫ comp a ha ((-i).toNat) j (by omega) else 0, ?_⟩` and prove the remaining obligations. Introduce `p s h U x`. Unfold `ev`. Rewrite using `[Cochain.mk_v, dif_pos (by omega), comp_key a ha p _ (by omega) s h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `shLift_gen _ _ U x`.
+A detailed English derivation is pending.
 -/
 theorem LeafEvMk_of : LateralTheory.E.ChernClassExistence.LeafEvMk := by
   intro R _ E I n a ha

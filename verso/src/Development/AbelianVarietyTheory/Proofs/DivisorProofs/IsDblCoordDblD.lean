@@ -22,7 +22,7 @@ variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.hTens GlobalTheory.WeilM.dbl`. Simplify using `only [Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.toCols₁_apply, Matrix.toCols₂_apply, Matrix.zero_apply, Matrix.neg_apply, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, …`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hTens_dbl (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α (β ⊕ β) E) :
     GlobalTheory.WeilM.hTens c JA (GlobalTheory.WeilM.dbl JB) x y =
@@ -34,7 +34,7 @@ theorem hTens_dbl (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α (
     Finset.sum_add_distrib, sub_eq_add_neg]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.symp`. Rewrite using `[hTens_dbl, mul_sub, map_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symp_dbl (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α (β ⊕ β) E) :
     GlobalTheory.WeilM.symp c ξ JA (GlobalTheory.WeilM.dbl JB) x y =
@@ -90,7 +90,7 @@ def dblD {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {κ : Type} [Finty
     ring
 
 /- English proof (translation)
-Introduce `w₁ w₂`. Simplify using `[dblD]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isDblCoord_dblD {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {κ : Type} [Fintype κ]
     (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ) : GlobalTheory.WeilM.IsDblCoord c ξ JA JB d (dblD c d) := by
@@ -105,9 +105,9 @@ variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E
 variable {α β γ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype γ] [DecidableEq γ]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← e.symm.sum_comp]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← e.symm.sum_comp]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symp_submatrix (e : γ ≃ β) (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α γ E) :
     GlobalTheory.WeilM.symp c ξ JA (JB.submatrix e e) x y =
@@ -170,7 +170,7 @@ def JBd (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) :
   (GlobalTheory.WeilM.dbl JB).submatrix finSumFinEquiv.symm finSumFinEquiv.symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases h1 : finSumFinEquiv.symm i with i' | i' <;> rcases h2 : finSumFinEquiv.symm j with j' | j' <;>`. Simplify using `[JBd, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, GlobalTheory.WeilM.dbl, h1, h2]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem incM_JBd (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) :
     incM D.host.F (JBd S JB) =

@@ -8,21 +8,17 @@ noncomputable section
 namespace GlobalTheory.FunObj.SqNum.CondExps
 
 /- English proof (translation)
-Introduce `D _ T Lc sc G s κ χ hχ`. Set `𝔣 : Ideal (𝓞 D.host.F)` to `condF G.pl`. Set `𝔐 : Ideal (𝓞 D.host.E)` to `𝔣.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))`. Establish `hrank : Module.finrank (𝓞 D.host.F) (𝓞 D.host.E) = 2` using `(IsFractionRing.finrank_eq (𝓞 D.host.F) D.host.F (𝓞 D.host.E) D.host.E).symm.trans (Algebra.IsQuadraticExtension.finrank_eq_two _ _)`. Establish `hnorm𝔣 : Ideal.absNorm 𝔣 = levQ G.pl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [𝔣, condF, levQ, map_prod, map_pow]`. Establish `hlev : 0 < levQ G.pl` using `Finset.prod_pos fun v _ => pow_pos (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)) _`. Establish `hnorm𝔐 : Ideal.absNorm 𝔐 = levQ G.pl ^ 2`. Rewrite using `[Ideal.absNorm_algebraMap, hrank, hnorm𝔣]`. Establish `h𝔐0 : 𝔐 ≠ ⊥` using `fun h => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `hnorm𝔐`. Rewrite `h'` using `[h, Ideal.absNorm_bot]`. Conclude with `(pow_pos hlev 2).ne' h'.symm`. Set `f : HeightOneSpectrum (𝓞 D.host.E) → ℕ` to `fun P => expIn (condF G.pl) (P.under (𝓞 D.host.F))`. Establish `hdvd : ∀ P : HeightOneSpectrum (𝓞 D.host.E), P.asIdeal ^ f P ∣ 𝔐` using `fun P => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (P.under (𝓞 D.host.F)).asIdeal ^ f P ∣ 𝔣` using `pow_multiplicity_dvd _ _`. Establish `h2 : P.asIdeal ∣ (P.under (𝓞 D.host.F)).asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))` using `Ideal.dvd_iff_le.2 Ideal.map_comap_le`. Take `⟨c, hc⟩` from `h1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show 𝔣.map _ = _`. Rewrite using `[hc, Ideal.map_mul, Ideal.map_pow]`. Establish `hfin : (Function.support f).Finite`. Use `(Ideal.finite_factors h𝔐0).subset fun P hP => ?_` and prove the remaining obligations. Conclude with `(dvd_pow_self _ hP).trans (hdvd P)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finsupp.ofSupportFinite f hfin, fun P => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hχ.2.2.2 (P.under (𝓞 D.host.F)) P rfl).2 (Finset.notMem_empty _)`. Use `set a := Finsupp.ofSupportFinite f hfin`. Establish `hJ : (a.prod fun P k => P.asIdeal ^ k) ∣ 𝔐`. Use `Finset.prod_dvd_of_coprime (fun P _ Q _ hPQ => ?_) fun P _ => ?_` and prove the remaining obligations.
-
-Conclude with `(Ideal.isCoprime_of_isMaximal fun h => hPQ (HeightOneSpectrum.ext h)).pow`. Conclude with `hdvd P`. Establish `e : (a.prod fun v k => Ideal.absNorm v.asIdeal ^ k) = Ideal.absNorm (a.prod fun P k => P.asIdeal ^ k)`. Simplify using `only [Finsupp.prod, map_prod, map_pow]`. Rewrite using `[e, ← hnorm𝔐]`.
-
-Conclude with `Nat.le_of_dvd (hnorm𝔐 ▸ pow_pos hlev 2) (map_dvd Ideal.absNorm hJ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_condExps : ∀ (D : D7) [IsCMField D.host.E] {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (s : ℕ)
     (κ : D.what₂.Tau → ℕ) (χ : HChar D.host.E), IsValChar (cmPhi D) s κ (condF G.pl) ∅ χ →

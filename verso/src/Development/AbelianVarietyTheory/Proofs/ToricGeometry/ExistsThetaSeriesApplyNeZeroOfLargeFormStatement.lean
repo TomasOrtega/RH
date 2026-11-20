@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsThetaSeriesAp
 open Complex Matrix Filter Topology
 open scoped BigOperators Real
 /- English proof (citation)
-Apply `GlobalTheory.ThetaLarge.exists_theta_apply_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FToricGeometry%2FExistsThetaSeriesApplyNeZeroOfLargeForm.lean&line=182#L182)
 -/

@@ -13,21 +13,19 @@ open Classical
 namespace PI.GGMatBoundW
 
 /- English proof (translation)
-Introduce `X _ M c hM hev`. Establish `gen : ∀ (A : Matrix X X ℂ) (hA : A.IsHermitian) (b : ℝ), (∀ (w : X → ℂ) (μ : ℂ), w ≠ 0 → A *ᵥ w = μ • w → ∃ r : ℝ, μ = r ∧ b ≤ r) → ∀ j, b ≤ hA.eigenvalues j`. Introduce `A hA b h j`. Establish `hv` using `hA.mulVec_eigenvectorBasis j`. Establish `hne` using `hA.eigenvectorBasis.orthonormal.ne_zero j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ v : X → ℂ, v ≠ 0 → A *ᵥ v = hA.eigenvalues j • v → b ≤ hA.eigenvalues j`. Introduce `v hv0 hAv`. Take `⟨r, hr, hbr⟩` from `h v (hA.eigenvalues j : ℂ) hv0 (by rw [hAv]; ext i; simp)`. Establish `hre : hA.eigenvalues j = r` using `by exact_mod_cast hr`. Rewrite using `[hre]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbr`. Conclude with `key _ (fun h0 => hne (by ext i; simpa using congrFun h0 i)) hv`. Establish `h1 : ((c : ℂ) • (1 : Matrix X X ℂ)).IsHermitian`. Simplify using `[Matrix.IsHermitian, Matrix.conjTranspose_smul]`. Establish `hN : ((c : ℂ) • (1 : Matrix X X ℂ) - M).IsHermitian` using `h1.sub hM`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNev : ∀ (w : X → ℂ) (μ : ℂ), w ≠ 0 → ((c : ℂ) • (1 : Matrix X X ℂ) - M) *ᵥ w = μ • w → ∃ r : ℝ, μ = r ∧ 0 ≤ r`. Introduce `w μ hw h`. Establish `hMw : M *ᵥ w = ((c : ℂ) - μ) • w`. Rewrite `h` using `[Matrix.sub_mulVec]`. Use `first`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [Matrix.smul_mulVec] at h`. Consider the case `rw [Matrix.smul_mulVec_assoc] at h`. Consider the case `simp only [Matrix.smul_mulVec_assoc] at h`. Rewrite `h` using `[Matrix.one_mulVec]`. Rewrite using `[sub_smul, ← h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Take `⟨r, hr, _, hrc⟩` from `hev w ((c : ℂ) - μ) hw hMw`. Use `⟨c - r, ?_, by linarith⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `-hr`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Use `hM.posSemidef_iff_eigenvalues_nonneg.mpr fun j => gen M hM 0 ?_ j` and prove the remaining obligations. Introduce `w μ hw h`. Take `⟨r, hr, h0, _⟩` from `hev w μ hw h`. Conclude with `⟨r, hr, h0⟩`.
-
-Conclude with `hN.posSemidef_iff_eigenvalues_nonneg.mpr fun j => gen _ hN 0 hNev j`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spectrum_positive_semidefinite : SpecPSD := by
   intro X _ M c hM hev

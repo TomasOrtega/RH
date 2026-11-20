@@ -18,7 +18,7 @@ variable (F E) in
 def rI : AEF F E := algebraMap (AF F) (AEF F E) (pairA F 1 0)
 
 /- English proof (translation)
-Rewrite using `[rI, ← map_mul]`. Use `congr 1`. Conclude with `Prod.ext (mul_one _) (mul_zero _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rI_idem : rI F E * rI F E = rI F E := by
   rw [rI, ← map_mul]
@@ -26,13 +26,13 @@ theorem rI_idem : rI F E * rI F E = rI F E := by
   exact Prod.ext (mul_one _) (mul_zero _)
 
 /- English proof (translation)
-Rewrite using `[rI, ← map_mul, show pairA F 1 0 * pairA F 0 ι = 0 from Prod.ext (mul_zero _) (zero_mul _), map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem rI_mul_fin (ι : Af F) : rI F E * algebraMap (AF F) (AEF F E) (pairA F 0 ι) = 0 := by
   rw [rI, ← map_mul, show pairA F 1 0 * pairA F 0 ι = 0 from Prod.ext (mul_zero _) (zero_mul _), map_zero]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairA F 1 0 ⊗ₜ 1) = 1`. Rewrite using `[Algebra.TensorProduct.map_tmul, show fstA F (pairA F 1 0) = 1 from rfl, AlgHom.id_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem infPart_rI : infPartF F E (rI F E) = 1 := by
   show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairA F 1 0 ⊗ₜ 1) = 1
@@ -40,21 +40,21 @@ theorem infPart_rI : infPartF F E (rI F E) = 1 := by
   rfl
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairA F 0 ι ⊗ₜ 1) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul, show fstA F (pairA F 0 ι) = 0 from rfl, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_fin (ι : Af F) : infPartF F E (algebraMap (AF F) (AEF F E) (pairA F 0 ι)) = 0 := by
   show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairA F 0 ι ⊗ₜ 1) = 0
   rw [Algebra.TensorProduct.map_tmul, show fstA F (pairA F 0 ι) = 0 from rfl, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Rewrite using `[rI, ev_alg]`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_rI (Q : HeightOneSpectrum (𝓞 E)) : ev F E Q (rI F E) = 0 := by
   rw [rI, ev_alg]
   exact map_zero _
 
 /- English proof (translation)
-Rewrite using `[ev_alg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_fin (Q : HeightOneSpectrum (𝓞 E)) (ι : Af F) :
     ev F E Q (algebraMap (AF F) (AEF F E) (pairA F 0 ι)) = complMap rfl (evalV F (Q.under (𝓞 F)) ι) := by
@@ -62,16 +62,16 @@ theorem ev_fin (Q : HeightOneSpectrum (𝓞 E)) (ι : Af F) :
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `infEmb τ (compInf F E w ((1 : AF F) ⊗ₜ[F] x)) = _`. Rewrite using `[show compInf F E w ((1 : AF F) ⊗ₜ[F] x) = evInf F w 1 ⊗ₜ[F] x from rfl, infEmb_tmul, map_one, map_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem piInf_inc {w : InfinitePlace F} (τ : EmbOver E w) (x : E) : piInf τ (incAF F E x) = τ.1 x := by
   change infEmb τ (compInf F E w ((1 : AF F) ⊗ₜ[F] x)) = _
   rw [show compInf F E w ((1 : AF F) ⊗ₜ[F] x) = evInf F w 1 ⊗ₜ[F] x from rfl, infEmb_tmul, map_one, map_one, one_mul]
 
 /- English proof (translation)
-Establish `h1 : piInf τ (rI F E + algebraMap (AF F) (AEF F E) (pairA F 0 1)) = 1`. Rewrite using `[rI, ← map_add, show pairA F 1 0 + pairA F 0 1 = 1 from Prod.ext (add_zero _) (zero_add _), map_one, map_one]`. Establish `h2 : piInf τ (algebraMap (AF F) (AEF F E) (pairA F 0 1)) = 0`. Express the relevant statement in the definitionally equal form `infEmb τ (compInf F E w (pairA F 0 1 ⊗ₜ[F] (1 : E))) = _`. Rewrite using `[show compInf F E w (pairA F 0 1 ⊗ₜ[F] (1 : E)) = evInf F w (pairA F 0 1) ⊗ₜ[F] (1 : E) from rfl, show evInf F w (pairA F 0 1) = 0 from map_zero (GlobalTheory.AutFunCompare.evW w), TensorProduct.zero_tmul, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[map_add, h2, add_zero]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piInf_rI {w : InfinitePlace F} (τ : EmbOver E w) : piInf τ (rI F E) = 1 := by
   have h1 : piInf τ (rI F E + algebraMap (AF F) (AEF F E) (pairA F 0 1)) = 1 := by
@@ -88,11 +88,11 @@ end Idem
 section Main
 
 /- English proof (translation)
-Establish `hAt : At (evI F) (((GlobalTheory.InertTrivial.proj (rI F E) rI_idem t : (AEF F E)ˣ) : AEF F E) - 1)`. Introduce `u hu`. Establish `hu1 : u.1 = 0` using `(RingEquiv.map_eq_zero_iff (InfiniteAdeleRing.ringEquiv_mixedSpace F)).1 hu`. Establish `h0 : algebraMap (AF F) (AEF F E) u * rI F E = 0`. Rewrite using `[rI, ← map_mul, show u * pairA F 1 0 = 0 from Prod.ext (show u.1 * 1 = 0 by rw [hu1, zero_mul]) (show u.2 * 0 = 0 from mul_zero _), map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.InertTrivial.proj_val, Algebra.smul_def]`. Take the linear combination `((t : AEF F E) - 1) * h0`. Rewrite using `[h3 _ hAt]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hpi : piInf (B.emb w) ((GlobalTheory.InertTrivial.proj (rI F E) rI_idem t : (AEF F E)ˣ) : AEF F E) = piInf (B.emb w) (t : AEF F E)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.InertTrivial.proj_val, map_add, map_mul, map_sub, map_one, piInf_rI]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zpow_one, hpi]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_real {B : Base F E} {η : (AEF F E)ˣ →* Circle} (h3 : HasExp B.emb η (fun _ => 1)) (t : (AEF F E)ˣ) :
     (η (GlobalTheory.InertTrivial.proj (rI F E) rI_idem t) : ℂ) =
@@ -115,67 +115,63 @@ theorem eta_real {B : Base F E} {η : (AEF F E)ˣ →* Circle} (h3 : HasExp B.em
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hcm` using `hB.cm`. Establish `: Algebra.IsQuadraticExtension F E` using `⟨hcm.2.2.1⟩`. Use `hB.unram` as an intermediate fact. Take `⟨θ, d, ε, ι, hd0, hσθ, hθθ, hdec, e1, e2, e3, e4, e5, e6⟩` from `exists_half hcm`. Use `⟨ε, ⟨e1, e2, e3, e6⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set J := algebraMap (AF F) (AEF F E) (pairA F 0 ι) with hJdef`. Establish `hc2 : cAF σ ε * cAF σ ε = cAF σ ε` using `by rw [← map_mul, e1]`. Establish `hJ : J * J = J` using `by rw [← e4]; linear_combination e1 + hc2 + 2 * e2`. Establish `hrJ : rI F E * J = 0` using `rI_mul_fin ι`. Establish `hf : (1 - rI F E - J) * (1 - rI F E - J) = 1 - rI F E - J`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hJ + rI_idem (F := F) (E := E) + 2 * hrJ`. Establish `evJ : ∀ Q : HeightOneSpectrum (𝓞 E), (Fx σ Q → ev F E Q J = 0) ∧ (¬ Fx σ Q → ev F E Q J = 1)`. Introduce `Q`. Rewrite using `[hJdef, ev_fin]`. Break down `e5 (Q.under (𝓞 F)) with ⟨h5, h6⟩ | ⟨h5, h6⟩` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨fun hQ => absurd h6 (not_sq_of_fx hcm hd0 hσθ hθθ hdec hQ), fun _ => by rw [h5, map_one]⟩`. Conclude with `⟨fun _ => by rw [h5, map_zero], fun hQ => absurd (sq_of_split hcm hd0 hσθ hθθ hdec (isSplit_of_not_fx hcm hQ)) h6⟩`. Establish `hker : ∀ y : (AEF F E)ˣ, (∀ Q, Fx σ Q → wv F E Q y = 1) → (η.comp (GlobalTheory.InertTrivial.proj _ hf)) y = 1`. Introduce `y hy`. Establish `hint : ∀ z : (AEF F E)ˣ, (∀ Q, Fx σ Q → wv F E Q z = 1) → finPartF F E (GlobalTheory.InertTrivial.proj _ hf z : AEF F E) ∈ intAEF F E`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Use `(int_iff _).2 fun Q => ?_` and prove the remaining obligations. Establish `hevf : ev F E Q (1 - rI F E - J) = 1 - ev F E Q J` using `by rw [map_sub, map_sub, map_one, ev_rI, sub_zero]`. Rewrite using `[GlobalTheory.InertTrivial.proj_val, map_add, map_mul, map_sub (ev F E Q) 1, map_one, hevf]`. Distinguish the cases in `hQ : Fx σ Q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(evJ Q).1 hQ]`. Simplify using `only [sub_zero, one_mul, sub_self, add_zero]`. Conclude with `le_of_eq (hz Q hQ)`. Rewrite using `[(evJ Q).2 hQ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinf : infPartF F E (1 - rI F E - J) = 0`. Rewrite using `[map_sub, map_sub, map_one, infPart_rI, hJdef, infPart_fin]`. Expand and normalize the polynomial expressions, which then agree. Use `h4 _ ?_ ?_ (hint y hy) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.InertTrivial.proj_val, map_add, map_mul, map_sub (infPartF F E) 1 (1 - rI F E - J), hinf, map_one]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `e he`. Establish `hcc : ∀ z, cAF σ (cAF σ z) = z` using `GlobalTheory.HeisLineF.cAF_cAF σ (GlobalTheory.SplitDetCharF.sig_invol hcm)`. Establish `heJ : e * J = e`. Rewrite using `[← e4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `e6 e he with ⟨a1, a2⟩ | ⟨a1, a2⟩` into its components or cases. Establish `: e * cAF σ ε = 0`. Use `congrArg (cAF σ) a2` as an intermediate fact. Rewrite `this` using `[map_mul, hcc, map_zero, mul_comm]`. Then use the resulting hypothesis. Take the linear combination `a1 + this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: e * cAF σ ε = e`. Use `congrArg (cAF σ) a2` as an intermediate fact. Rewrite `this` using `[map_mul, hcc, mul_comm]`. Then use the resulting hypothesis. Take the linear combination `a1 + this`. Take `⟨he1, he2, v, ε', ⟨α, hα, -, -⟩, he3⟩` from `he`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `her : e * rI F E = 0`. Establish `h0 : e = e * algebraMap (AF F) (AEF F E) ε'` using `by rw [← he3]; linear_combination -he1 - he2`. Rewrite using `[h0, mul_assoc, mul_comm (algebraMap _ _ ε'), hα, rI_mul_fin, mul_zero]`. Rewrite using `[GlobalTheory.InertTrivial.proj_val]`. Take the linear combination `(1 - (y : AEF F E)) * her + (1 - (y : AEF F E)) * heJ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_inv]`. Conclude with `hint _ fun Q hQ => by rw [map_inv, hy Q hQ, inv_one]`. Establish `hgen : ∀ P, Fx σ P → ∃ z, wv F E P z = WithZero.exp (-1 : ℤ) ∧ (∀ Q, Q ≠ P → wv F E Q z = 1) ∧ ((η.comp (GlobalTheory.InertTrivial.proj _ hf)) z : ℂ) = -1`. Introduce `P hP`. Establish `hns : ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E` using `E) (P.under (𝓞 F)) := fun hs => not_sq_of_fx hcm hd0 hσθ hθθ hdec hP (sq_of_split hcm hd0 hσθ hθθ hdec hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hu : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) (P.under (𝓞 F)) := GlobalTheory.LFun.isUnram_iff.2 fun w _ => Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 F)`. Set `π : (Fv F (P.under (𝓞 F)))ˣ` to `Formalism.L2.Host.atFin (P.under (𝓞 F)) (Formalism.L2.Host.unif (P.under (𝓞 F)))`. Set `a : (AF F)ˣ` to `Neutral.B1.localIdele F (P.under (𝓞 F)) π`. Establish `ha1 : (a : AF F).2 (P.under (𝓞 F)) = π` using `Neutral.B1.localIdele_snd_self F (P.under (𝓞 F)) π`. Establish `ha2 : ∀ u, u ≠ P.under (𝓞 F) → (a : AF F).2 u = 1` using `fun u hu' => Pi.mulSingle_eq_of_ne hu' _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hι : evalV F (P.under (𝓞 F)) ι = 0`. Break down `e5 (P.under (𝓞 F)) with ⟨-, h6⟩ | ⟨h5, -⟩` into its components or cases. Conclude with `absurd h6 (not_sq_of_fx hcm hd0 hσθ hθθ hdec hP)`. Conclude with `h5`. Use `⟨idFF F E a, ?_, fun Q hQ => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wv_apply]`. Express the relevant statement in the definitionally equal form `Valued.v (ev F E P (algebraMap (AF F) (AEF F E) (a : AF F))) = _`. Rewrite using `[ev_alg]`. Express the relevant statement in the definitionally equal form `Valued.v (complMap rfl ((a : AF F).2 (P.under (𝓞 F)))) = _`. Rewrite using `[ha1, valued_complMap rfl π.ne_zero, GlobalTheory.LFun.isUnram_iff.1 hu P rfl, pow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Formalism.L2.Host.unif_spec (P.under (𝓞 F))`. Establish `hQv : Q.under (𝓞 F) ≠ P.under (𝓞 F)` using `fun h => hQ (GlobalTheory.LFun.eq_of_not_isSplit hns h rfl)`. Rewrite using `[wv_apply]`. Express the relevant statement in the definitionally equal form `Valued.v (ev F E Q (algebraMap (AF F) (AEF F E) (a : AF F))) = _`. Rewrite using `[ev_alg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Express the relevant statement in the definitionally equal form `Valued.v (complMap rfl ((a : AF F).2 (Q.under (𝓞 F)))) = _`. Rewrite using `[ha2 _ hQv, map_one, map_one]`. Establish `hsnd : (0 + ι) * ((a : AF F).2 - 1) = 0`. Use `GlobalTheory.SplitDetCharF.af_ext' F fun u => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_sub, map_one, map_add, map_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hu' : u = P.under (𝓞 F)`. Rewrite using `[hu', hι, zero_mul]`. Rewrite using `[show evalV F u (a : AF F).2 = 1 from ha2 u hu', sub_self, mul_zero]`. Establish `hprod : (pairA F 1 0 + pairA F 0 ι) * ((a : AF F) - 1) = 0` using `Prod.ext (show (1 + 0) * ((a : AF F).1 - 1) = 0 by`. Rewrite using `[show (a : AF F).1 = 1 from rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `ring) hsnd`. Establish `hz : (rI F E + J) * (algebraMap (AF F) (AEF F E) (a : AF F) - 1) = 0`. Rewrite using `[rI, hJdef, ← map_add, ← map_one (algebraMap (AF F) (AEF F E)), ← map_sub, ← map_mul, hprod, map_zero]`. Establish `hpz : GlobalTheory.InertTrivial.proj _ hf (idFF F E a) = idFF F E a`. Use `Units.ext ?_` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.InertTrivial.proj_val]`. Express the relevant statement in the definitionally equal form `(1 - rI F E - J) * algebraMap (AF F) (AEF F E) (a : AF F) + (1 - (1 - rI F E - J)) = algebraMap (AF F) (AEF F E) (a : AF F)`. Take the linear combination `-hz`. Use `show ((η (GlobalTheory.InertTrivial.proj _ hf (idFF F E a)) : Circle) : ℂ) = -1`. Rewrite using `[hpz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨⟨η₀, h0⟩, hres⟩` from `h2`. Rewrite using `[hres η₀ h0 a, pow_one, GlobalTheory.EtaSignReal.eq_signToCircle η₀ h0, MonoidHom.comp_apply, GlobalTheory.LFun.normSign_localIdele, GlobalTheory.QuadSymbol.eta_eq_neg_one_iff.2 (GlobalTheory.LFun.not_mem_normGroup_of_inert hcm.2.2.1 hns hu (Formalism.L2.Host.unif_spec (P.under ( …`. Express the relevant statement in the definitionally equal form `((if (-1 : ℤˣ) = 1 then (1 : Circle) else -1 : Circle) : ℂ) = -1`. Rewrite using `[if_neg (by decide)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlamP : ∀ P : HeightOneSpectrum (𝓞 E), (Fx σ P → lam (Ideal.absNorm P.asIdeal) = -(Real.sqrt (Ideal.absNorm P.asIdeal) : ℂ)) ∧ (¬ Fx σ P → lam (Ideal.absNorm P.asIdeal) = (Real.sqrt (Ideal.absNorm P.asIdeal) : ℂ))` using `fun P => ⟨fun hP => by`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `((hlam.2 P.asIdeal P.isMaximal (Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot)).2 hP).1,`. Use `fun hP => hsq _ (fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)) fun q hq hi hd => hP (hi P.asIdeal P.isMaximal (GlobalTheory.EtaProduct.mem_of_dvd_absNorm P hq hd))⟩`. Establish `lam_int : ∀ (u : 𝓞 E) (k : Eˣ), (k : E) = u → lam (Ideal.absNorm (Ideal.span {u})) = ((η.comp (GlobalTheory.InertTrivial.proj _ hf)) (Units.map (incAF F E).toMonoidHom k) : ℂ) * (Real.sqrt (Ideal.absNorm (Ideal.span {u})) : ℂ)` using `fun u k hk => hom_fix (Fx σ) (wv F E) (Units.map (incAF F E).toMonoidHom) (η.comp (GlobalTheory.InertTrivial.proj _ hf)) lam (fun Q k => wv_inc Q k) hker hgen hlamP u k hk`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `product : ∀ k : Eˣ, (η (GlobalTheory.InertTrivial.proj J hJ (Units.map (incAF F E).toMonoidHom k)) : ℂ) * ((η.comp (GlobalTheory.InertTrivial.proj _ hf)) (Units.map (incAF F E).toMonoidHom k) : ℂ) * ∏ w, tauB B w k / (‖tauB B w k‖ : ℂ) = 1`. Introduce `k`. Establish `e0` using `congrArg η (GlobalTheory.EtaProduct.proj_three (rI_idem (F := F) (E := E)) hJ hrJ hf (Units.map (incAF F E).toMonoidHom k))`. Rewrite `e0` using `[h1.2 k, η.map_mul, η.map_mul]`. Establish `e1'` using `congrArg (fun z : Circle => (z : ℂ)) e0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Circle.coe_mul, Circle.coe_one] at e1'`. Establish `er` using `eta_real h3 (Units.map (incAF F E).toMonoidHom k)`. Establish `hk' : ((Units.map (incAF F E).toMonoidHom k : (AEF F E)ˣ) : AEF F E) = incAF F E (k : E)` using `rfl`. Rewrite `er` using `[hk']`. Simplify using `only [piInf_inc] at er`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show ∏ w, tauB B w k / (‖tauB B w k‖ : ℂ) = (η (GlobalTheory.InertTrivial.proj (rI F E) rI_idem (Units.map (incAF F E).toMonoidHom k)) : ℂ) from er.symm]`. Conclude with `e1'.symm`. Introduce `x k hx hk y hy`. Take `⟨u, z, hz, e⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Establish `hz0 : z ≠ 0` using `nonZeroDivisors.ne_zero hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hzE : (z : E) ≠ 0` using `by simpa using hz0`. Establish `e' : x * (z : E) = u` using `by rw [← e]; exact div_mul_cancel₀ _ hzE`. Establish `huE : (u : E) ≠ 0` using `e' ▸ mul_ne_zero hx hzE`. Establish `hN : ∀ a : 𝓞 E, ((Ideal.absNorm (Ideal.span {a}) : ℕ) : ℚ) = |Algebra.norm ℚ (a : E)|` using `fun a => by`. Rewrite using `[Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int, Nat.cast_natAbs, Int.cast_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : k * Ideal.absNorm (Ideal.span {z}) = Ideal.absNorm (Ideal.span {u})`. Establish `: ((k * Ideal.absNorm (Ideal.span {z}) : ℕ) : ℚ) = (Ideal.absNorm (Ideal.span {u}) : ℕ)`. Rewrite using `[Nat.cast_mul, hN, hN, hk, ← e', map_mul, abs_mul]`. Conclude with `this` after adjusting the coercions. Establish `nz : Ideal.absNorm (Ideal.span {z}) ≠ 0` using `by simpa [Ideal.absNorm_eq_zero_iff] using hz0`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx (by simpa using hk.symm)`. Establish `l1` using `lam_int u (Units.mk0 _ huE) rfl`. Establish `l2` using `lam_int z (Units.mk0 _ hzE) rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `eu : Units.mk0 _ huE = Units.mk0 x hx * Units.mk0 _ hzE` using `Units.ext e'.symm`. Rewrite `l1` using `[← hk', map_mul, l2, eu, map_mul, map_mul, Nat.cast_mul, Real.sqrt_mul (Nat.cast_nonneg _), Complex.ofReal_mul, Circle.coe_mul]`. Establish `l3 : lam k = ((η.comp (GlobalTheory.InertTrivial.proj _ hf)) (Units.map (incAF F E).toMonoidHom (Units.mk0 x hx)) : ℂ) * (Real.sqrt k : ℂ)`. Use `mul_right_cancel₀ (l2 ▸ hlam.1 _ nz) (l1.trans ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `p` using `product (Units.mk0 x hx)`. Establish `ey : GlobalTheory.InertTrivial.proj J hJ (Units.map (incAF F E).toMonoidHom (Units.mk0 x hx)) = y` using `Units.ext (by rw [GlobalTheory.InertTrivial.proj_val, hy, e4]; rfl)`. Rewrite `p` using `[ey, Units.val_mk0, Finset.prod_div_distrib, ← Complex.ofReal_prod]`. Establish `hp : 0 < ∏ w, ‖tauB B w x‖` using `Finset.prod_pos fun w _ => norm_pos_iff.2 ((map_ne_zero _).2 hx)`. Use `⟨Real.sqrt k * ∏ w, ‖tauB B w x‖, mul_pos (Real.sqrt_pos.2 (by positivity)) hp, ?_⟩` and prove the remaining obligations.
-
-Establish `hp' : ((∏ w, ‖tauB B w x‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hp.ne'`. Rewrite `p` using `[← mul_div_assoc, div_eq_one_iff_eq hp']`. Rewrite using `[l3, Complex.ofReal_mul, ← p]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_half_character_eta_product {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {η : (AEF F E)ˣ →* Circle}
     (h1 : IsHeckeCharF η) (h2 : ResEtaF η 1) (h3 : HasExp B.emb η (fun _ => 1)) (h4 : UnramInert σ η)

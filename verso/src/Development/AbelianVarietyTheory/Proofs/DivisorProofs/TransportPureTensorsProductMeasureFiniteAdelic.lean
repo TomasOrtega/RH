@@ -21,9 +21,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨g, hg⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed (fun S : Finset (HeightOneSpectrum (𝓞 F)) => (levelOff σ J L S : Set (GAd σ J)) \ N) (fun S S' => ⟨S ∪ S', Set.diff_subset_diff_left (levelOff_anti σ J L Finset.subset_union_left), Set.diff_subset_diff_left (levelO …`. Rewrite `hg` using `[Set.mem_iInter]`. Establish `e : g = 1` using `GAd_ext σ J (fun w => by rw [mem_finPts_iff_forall.1 (mem_levelOff.1 (hg ∅).1).1 w, map_one]) fun v => by rw [(mem_levelOff.1 (hg {v}).1).2.1 v (Finset.mem_singleton_self v), map_one]`.
-
-Conclude with `(hg ∅).2 (e ▸ h1)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_levelOff_subset [Submodule.IsLattice E L] (N : Set (GAd σ J)) (hN : IsOpen N)
     (h1 : (1 : GAd σ J) ∈ N) : ∃ S, (levelOff σ J L S : Set (GAd σ J)) ⊆ N := by
@@ -46,19 +44,15 @@ theorem exists_levelOff_subset [Submodule.IsLattice E L] (N : Set (GAd σ J)) (h
 end Density
 
 /- English proof (translation)
-Use `haveI hL : Submodule.IsLattice D.host.E (stdLattice D.host.E V.rank) := isLattice_stdLattice`. Use `set H : Subgroup (GfC V) := ⨆ v, (locFin V v).range with hH`. Establish `hemb : ∀ v x, GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v x ∈ H.map (GfC V).subtype` using `fun v x => ⟨locFin V v x, Subgroup.mem_iSup_of_mem v ⟨x, rfl⟩, rfl⟩`. Introduce `g`. Rewrite using `[mem_closure_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `o ho hgo`. Take `⟨U, hU, rfl⟩` from `isOpen_induced_iff.1 ho`. Set `N : Set (GA D V)` to `(fun k => (g : GA D V) * k⁻¹) ⁻¹' U`. Establish `hN : IsOpen N` using `hU.preimage (continuous_const.mul continuous_inv)`. Establish `h1 : (1 : GA D V) ∈ N` using `by simpa [N] using hgo`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S₀, hS₀⟩` from `GlobalTheory.TrMultTransport.exists_levelOff_subset D.sp.cm.sig V.gram (stdLattice D.host.E V.rank) N hN h1`. Establish `hf` using `Filter.eventually_cofinite.1 (GlobalTheory.AdelicU.eventually_proj_mem_stabLoc D.sp.cm.sig V.gram (stdLattice D.host.E V.rank) (g : GA D V))`. Use `set S' := S₀ ∪ hf.toFinset with hS'`. Use `set x := embAt D.sp.cm.sig V.gram S' (projAt D.sp.cm.sig V.gram S' (g : GA D V)) with hx`. Establish `hxm` using `GlobalTheory.AdelicU.mem_atPts.1 (embAt_mem D.sp.cm.sig V.gram S' (projAt D.sp.cm.sig V.gram S' (g : GA D V)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hgfin : (g : GA D V) ∈ GlobalTheory.AdelicU.finPts D.sp.cm.sig V.gram` using `g.2`. Establish `hrest : (partAway D.sp.cm.sig V.gram S' (g : GA D V) : GA D V) ∈ levelOff D.sp.cm.sig V.gram (stdLattice D.host.E V.rank) S'`. Use `mem_levelOff.2 ⟨mul_mem (inv_mem hxm.1) hgfin, mem_awayPts.1 (partAway _ _ S' (g : GA D V)).2, fun v hv => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `proj D.sp.cm.sig V.gram v ((embAt _ _ S' (projAt _ _ S' (g : GA D V)))⁻¹ * (g : GA D V)) ∈ _`. Rewrite using `[map_mul, map_inv, hxm.2 v hv, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_union_right _ (hf.mem_toFinset.2 hc))`. Establish `hp : (partAway D.sp.cm.sig V.gram S' (g : GA D V) : GA D V) ∈ N` using `hS₀ (GlobalTheory.PlaceGen.levelOff_anti _ _ _ Finset.subset_union_left hrest)`. Establish `hxe : (g : GA D V) * (partAway D.sp.cm.sig V.gram S' (g : GA D V) : GA D V)⁻¹ = x`. Conclude with `mul_inv_eq_of_eq_mul (embAt_mul_partAway D.sp.cm.sig V.gram S' (g : GA D V)).symm`.
-
-Establish `hxH : x ∈ H.map (GfC V).subtype` using `GlobalTheory.PlaceGen.piCoprod_mem (fun v : S' => GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v) _ _ (fun v y => hemb v y) _`. Take `⟨y, hy, hye⟩` from `hxH`. Use `⟨y, ?_, hy⟩` and prove the remaining obligations. Use `show (y : GA D V) ∈ U`. Establish `: (y : GA D V) = x` using `hye`.
-
-Rewrite using `[this, ← hxe]`. Conclude with `hp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_locFin (D : D7) (V : HSp D) :
     Dense ((⨆ v, (locFin V v).range : Subgroup (GfC V)) : Set (GfC V)) := by
@@ -102,13 +96,11 @@ theorem dense_locFin (D : D7) (V : HSp D) :
   exact hp
 
 /- English proof (translation)
-Set `f₁ : GfC V →* Gv V' v` to `(finLoc V' v).comp Φ.toMulEquiv.toMonoidHom`. Set `f₂ : GfC V →* Gv V' v` to `(j v).toMulEquiv.toMonoidHom.comp (finLoc V v)`. Establish `hc : ∀ {W : HSp D}, Continuous (finLoc W v)` using `fun {W} => (continuous_proj D.sp.cm.sig W.gram v).comp continuous_subtype_val`. Establish `c₁ : Continuous f₁` using `hc.comp Φ.continuous`. Establish `c₂ : Continuous f₂` using `(j v).continuous.comp hc`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (⨆ u, (locFin V u).range) ≤ MonoidHom.eqLocus f₁ f₂` using `iSup_le fun u => by`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `show finLoc V' v (Φ (locFin V u x)) = j v (finLoc V v (locFin V u x))`. Rewrite using `[hΦ]`. Distinguish the cases in `h : v = u`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[finLoc]`. Simplify using `[finLoc, proj_emb_ne _ _ h]`. Use `Set.EqOn.closure (s := ((⨆ u, (locFin V u).range : Subgroup (GfC V)) : Set (GfC V))) (fun x hx => hle hx) c₁ c₂` as an intermediate fact. Rewrite `this` using `[(dense_locFin D V).closure_eq]`.
-
-Conclude with `this (Set.mem_univ g)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finLoc_transport {D : D7} {V V' : HSp D}
     (j : ∀ v, GLoc D.sp.cm.sig V.gram v ≃ₜ* GLoc D.sp.cm.sig V'.gram v) (Φ : GfC V ≃ₜ* GfC V')
@@ -134,17 +126,17 @@ theorem finLoc_transport {D : D7} {V V' : HSp D}
   exact this (Set.mem_univ g)
 
 /- English proof (translation)
-Introduce `D V V' j hK Φ hΦ`. Establish `h1 : ∀ ff g, finFn V' (transfer j ff) (Φ g) = finFn V ff g` using `fun ff g => by`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Use `finLoc_transport j Φ hΦ v g` as an intermediate fact. Simplify using `only [finLoc, MonoidHom.comp_apply, Subgroup.coe_subtype] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.Orb.transfer, Function.comp_apply, this, ContinuousMulEquiv.symm_apply_apply]`. Use `⟨h1, fun μf ν hν => ?_⟩` and prove the remaining obligations. Use `haveI := hν.1`. Use `⟨Φ.isHaarMeasure_map ν, fun ff' hff' => ?_⟩` and prove the remaining obligations. Set `ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ` to `fun v => ff' v ∘ j v`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ht : GlobalTheory.Orb.transfer j ff = ff'` using `funext fun v => funext fun y => by`. Simplify using `[ff, GlobalTheory.Orb.transfer]`. Establish `hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff`. Use `hff'.transfer (fun v => (j v).symm) (Filter.Eventually.of_forall fun v g => by` as an intermediate fact. Use `hK v ((j v).symm g)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `this.symm)`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v y`. Simplify using `[ff, GlobalTheory.Orb.transfer]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : MeasurableEmbedding (⇑Φ)` using `Φ.toHomeomorph.measurableEmbedding`. Rewrite using `[hm.integral_map]`. Establish `e1 : ∀ g, finFn V' ff' (Φ g) = finFn V ff g` using `fun g => by`. Rewrite using `[← h1 ff g, ht]`. Simplify using `only [e1, hν.2 ff hff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `finprod_congr fun v => ?_` and prove the remaining obligations. Establish `hjm : MeasurableEmbedding (⇑(j v))` using `(j v).toHomeomorph.measurableEmbedding`. Use `show _ = ∫ x, ff' v x ∂(μf v).map (j v)`. Rewrite using `[hjm.integral_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transport :
     ∀ (D : D7) (V V' : HSp D) (j : ∀ v, GLoc D.sp.cm.sig V.gram v ≃ₜ* GLoc D.sp.cm.sig V'.gram v),

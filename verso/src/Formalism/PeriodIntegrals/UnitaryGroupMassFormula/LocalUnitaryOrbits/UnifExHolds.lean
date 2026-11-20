@@ -12,7 +12,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `⟨PI.VolStabSW.unifV v, ?_⟩` and prove the remaining obligations. Unfold `IsUnif`. Rewrite using `[PI.VolStabSW.unifV_val]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unifEx_holds {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     UnifEx v := by
@@ -22,11 +22,9 @@ theorem unifEx_holds {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum
   rfl
 
 /- English proof (translation)
-Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `h1 : Valued.v ϖ < 1`. Rewrite using `[hv]`. Evaluate the decidable proposition. Use `⟨fun h => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `hlt : ‖ϖ‖ < 1` using `Valued.toNormedField.norm_lt_one_iff.2 h1`. Conclude with `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hlt`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`.
-
-Conclude with `h1.le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_spec {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ϖ : Fv F v)
     (hϖ : IsUnif v ϖ) : ϖ ≠ 0 ∧ Tendsto (fun k : ℕ => ϖ ^ k) atTop (𝓝 0) ∧
@@ -50,7 +48,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-Unfold `OEv at *`. Conclude with `Submodule.add_mem _ hx hy`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem oEv_add {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x + y ∈ OEv (E := E) v := by
@@ -58,14 +56,14 @@ theorem oEv_add {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ 
   exact Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-Unfold `OEv`. Conclude with `Submodule.zero_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem oEv_zero : (0 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
   unfold OEv
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Unfold `OEv at *`. Conclude with `Submodule.neg_mem _ hx`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem oEv_neg {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) : -x ∈ OEv (E := E) v := by
   unfold OEv at *

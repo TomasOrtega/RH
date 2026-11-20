@@ -9,15 +9,15 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ S P' X π h a q hπ x hx H`. Take `⟨s₀, hs₀⟩` from `π.surjective (h x)`. Take `⟨w, hw, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := h) (g := π) x s₀ hs₀.symm`. Set `Ω : Type` to `AlgebraicClosure ((pullback h π).residueField w)`. Set `t : Sp Ω ⟶ pullback h π` to `Spec.map (CommRingCat.ofHom (algebraMap ((pullback h π).residueField w) Ω)) ≫ (pullback h π).fromSpecResidueField w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ht : ∀ y, t y = w`. Introduce `y`. Simplify using `only [t, Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Establish `hξ : ∀ y, (t ≫ pullback.fst h π) y = x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[Scheme.Hom.comp_apply, ht, hw]`. Take `⟨p, hp, -⟩` from `H Ω (t ≫ pullback.fst h π) (t ≫ pullback.snd h π) (by`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, rfl⟩`. Conclude with `hξ u`. Introduce and unpack `rfl`. Conclude with `⟨closedPoint Ω, hξ _⟩)`. Use the proof step `(by simp [pullback.condition])`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨p (closedPoint Ω), ?_⟩` and prove the remaining obligations. Establish `h₀` using `hξ (closedPoint Ω)`. Rewrite `h₀` using `[← hp]`. Conclude with `(Scheme.Hom.comp_apply p a _).symm.trans h₀`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_fibre_of_geometric_lifting :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (S P' X : Scheme.{0}) (π : S ⟶ Sp R) (h : P' ⟶ Sp R) (a : X ⟶ P') (q : X ⟶ S), Surjective π → ∀ x : P', h x = closedPoint R → (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ξ : Sp Ω ⟶ P') (s : Sp Ω ⟶ S), Set.range ξ = {x} → ξ ≫ h = s ≫ π → ∃ p : Sp Ω ⟶ X, p ≫ a = ξ ∧ p ≫ q = s) → ∃ z : X, a z = x := by

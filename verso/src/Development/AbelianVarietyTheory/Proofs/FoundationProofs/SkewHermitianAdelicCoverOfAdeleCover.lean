@@ -10,21 +10,21 @@ noncomputable section
 namespace GlobalTheory.Eis.Conv.CovSkew
 
 /- English proof (translation)
-Take `⟨-, hc, h2, hσ⟩` from `h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hnr : ¬ ComplexEmbedding.IsReal τ` using `IsTotallyComplex.complexEmbedding_not_isReal τ`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, star (τ x) ≠ τ x := by`. Assume the negation of the conclusion as `hcon`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hcon`. Apply `hnr` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Conclude with `hcon x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hδ : σ (x - σ x) = -(x - σ x)`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ, map_neg, map_sub, hσ, star_sub, star_star, neg_sub]`. Establish `h0 : x - σ x ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[← hσ, ← sub_eq_zero.mp h0]`. Use `⟨x - σ x, hδ, ?_⟩` and prove the remaining obligations. Generalize the expression as in `x - σ x = δ at hδ h0`. Establish `hli : LinearIndependent F ![(1 : E), δ]`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h1` using `congrArg σ hst`. Establish `hsm : ∀ (a : F) (z : E), σ (a • z) = a • σ z` using `fun a z => σ.toLinearMap.map_smul a z`. Rewrite `h1` using `[map_add, hsm, hsm, map_one, hδ, map_zero, smul_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : (2 * s) • (1 : E) = 0`. Rewrite using `[two_mul, add_smul]`. Take the linear combination `hst + h1`. Establish `hs0 : s = 0` using `by simpa using hs`. Use `⟨hs0, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hst` using `[hs0, zero_smul, zero_add]`. Conclude with `(smul_eq_zero.mp hst).resolve_right h0`. Introduce `z`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by simp [h2])`. Establish `hz : z ∈ Submodule.span F (Set.range ![(1 : E), δ])` using `by rw [hsp]; trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hz` using `[Matrix.range_cons, Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union, Submodule.mem_span_pair]`. Take `⟨a, b, hab⟩` from `hz`. Conclude with `⟨a, b, hab.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_delta (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) :
@@ -72,9 +72,9 @@ section
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul r e`. Take `⟨a, b, rfl⟩` from `h e`. Conclude with `⟨a • r, b • r, by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[TensorProduct.tmul_add, TensorProduct.smul_tmul, TensorProduct.smul_tmul]⟩`. Consider the case `add x y hx hy`. Take `⟨u, v, rfl⟩` from `hx`. Take `⟨u', v', rfl⟩` from `hy`. Conclude with `⟨u + u', v + v', by simp only [TensorProduct.add_tmul]; abel⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coords (δ : E) (h : ∀ z : E, ∃ a b : F, z = a • (1 : E) + b • δ) (z : R ⊗[F] E) :
     ∃ u v : R, z = u ⊗ₜ[F] (1 : E) + v ⊗ₜ[F] δ := by
@@ -92,22 +92,22 @@ theorem exists_coords (δ : E) (h : ∀ z : E, ∃ a b : F, z = a • (1 : E) + 
 def psi (δ : E) (a a' : R) : R ⊗[F] E := (a - a') • (1 : R ⊗[F] E) + (a + a') • ((1 : R) ⊗ₜ[F] δ)
 
 /- English proof (translation)
-Simplify using `[psi, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul']`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_eq (δ : E) (a a' : R) :
     psi δ a a' = (a - a') ⊗ₜ[F] (1 : E) + (a + a') ⊗ₜ[F] δ := by
   simp [psi, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Use `choose U V hUV using fun i j => exists_coords δ h (S i j)`. Use `set c : R := algebraMap F R 2⁻¹ with hc`. Establish `h2 : 2 * c = 1`. Rewrite using `[hc, ← map_ofNat (algebraMap F R) 2, ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one]`. Use `⟨fun i j => c * c * (U i j - U j i + V i j + V j i), fun i j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ (S j i) = - S i j` using `congrFun (congrFun hS i) j`. Establish `e1 : ∀ k l, S k l = U k l • (1 : R ⊗[F] E) + V k l • ((1 : R) ⊗ₜ[F] δ)` using `fun k l => by`. Rewrite using `[hUV]`. Simplify using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul']`. Establish `e2 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ (S j i) = U j i • (1 : R ⊗[F] E) - V j i • ((1 : R) ⊗ₜ[F] δ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hUV, map_add]`. Express the relevant statement in the definitionally equal form `U j i ⊗ₜ[F] σ 1 + V j i ⊗ₜ[F] σ δ = _`. Simplify using `[hδ, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', TensorProduct.tmul_neg, sub_eq_add_neg]`. Rewrite `h1` using `[e2]`. Establish `e3` using `e1 i j`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2' : 2 * algebraMap R (R ⊗[F] E) c = 1`. Rewrite using `[← map_ofNat (algebraMap R (R ⊗[F] E)) 2, ← map_mul, h2, map_one]`. Unfold `psi`. Simplify using `only [Algebra.smul_def, map_add, map_sub, map_mul] at h1 e3 ⊢`. Generalize the expression as in `algebraMap R (R ⊗[F] E) = f at *`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 
-Generalize the expression as in `((1 : R) ⊗ₜ[F] δ) = d at *`. Take the linear combination `(f c) * e3 + (f c) * h1 - S i j * h2' - f c * (f (U i j) - f (U j i) + (f (V i j) + f (V j i)) * d) * h2'`.
+A detailed English derivation is pending.
 -/
 theorem exists_psi [CharZero F] (σ : E →ₐ[F] E) (δ : E) (hδ : σ δ = -δ)
     (h : ∀ z : E, ∃ a b : F, z = a • (1 : E) + b • δ) {n : ℕ}
@@ -139,9 +139,9 @@ theorem exists_psi [CharZero F] (σ : E →ₐ[F] E) (δ : E) (hδ : σ δ = -δ
     - f c * (f (U i j) - f (U j i) + (f (V i j) + f (V j i)) * d) * h2'
 
 /- English proof (translation)
-Establish `: inclR (F` using `F) R ((x - x') • (1 : E) + (x + x') • δ) = psi δ (algebraMap F R x) (algebraMap F R x') := by`. Rewrite using `[psi_eq, ← map_sub, ← map_add, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, TensorProduct.smul_tmul, ← TensorProduct.tmul_add]`. Both sides reduce to the same expression. Rewrite using `[this]`. Unfold `psi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Algebra.smul_def, map_add, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_split (δ : E) (x x' : F) (y y' t w w' : R) :
     psi δ (algebraMap F R x + y + t * w) (algebraMap F R x' + y' + t * w')
@@ -161,17 +161,17 @@ theorem psi_split (δ : E) (x x' : F) (y y' t w w' : R) :
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ b C₀ Ω₀ hΩ₀ hcov n`. Take `⟨δ, hδ, hsp⟩` from `exists_delta F E σ hσ`. Use `choose Y hY hYc using hcov`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `isTopologicalRing_tens`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun p : AF F × AF F => psi (F` using `F) δ p.1 p.2 := by`. Unfold `psi`. Use `fun_prop`. Use `⟨_, C₀ ^ (n * n), (hΩ₀.prod hΩ₀).image hcont, fun m => ?_⟩` and prove the remaining obligations. Use `⟨(Fintype.piFinset fun p : Fin n × Fin n => Y (m p.1 + m p.2)).image (fun y => Matrix.of fun i j => psi δ (y (i, j)) (y (j, i))), ?_, fun S hS => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Nat.cast_le.mpr Finset.card_image_le).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.card_piFinset, Nat.cast_prod]`. Use `(Finset.prod_le_prod (fun _ _ => Nat.cast_nonneg _) (fun p _ => hY _)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, Finset.prod_pow_eq_pow_sum]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← pow_mul]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, Fintype.sum_prod_type]`. Use `congr 1`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, hT⟩` from `exists_psi σ δ hδ hsp S hS choose x y hy ω hω hTe using fun i j => hYc (m i + m j) (T i j)`. Use `⟨Matrix.of fun i j => (x i j - x j i) • (1 : E) + (x i j + x j i) • δ, _, Finset.mem_image.mpr ⟨fun p => y p.1 p.2, Fintype.mem_piFinset.mpr fun p => hy _ _, rfl⟩, Matrix.of fun i j => psi δ (ω i j) (ω j i), fun i j => ⟨(ω i j, ω j i), ⟨hω _ _, hω _ _⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, hT, hTe i j, hTe j i, add_comm (m j) (m i), psi_split]`. Establish `: (halfE F E).1 = algebraMap (AF F) (AF F ⊗[F] E) (halfInf F).1` using `rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, map_pow]`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cover_skew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (b C₀ : ℝ) (Ω₀ : Set (AF F)), IsCompact Ω₀ → (∀ m : ℕ, ∃ Y : Finset (AF F), (Y.card : ℝ) ≤ C₀ * b ^ m ∧ ∀ a : AF F, ∃ x : F, ∃ y ∈ Y, ∃ ω ∈ Ω₀, a = algebraMap F (AF F) x + y + (halfInf F).1 ^ m * ω) → ∀ n : ℕ, ∃ (Ω : Set (AF F ⊗[F] E)) (C : ℝ), IsCompact Ω ∧ ∀ m : Fin n → ℕ, ∃ Y : Finset (Matrix (Fin n) (Fin n) (AF F ⊗[F] E)), (Y.card : ℝ) ≤ C * ∏ i, (b ^ 2) ^ (n * m i) ∧ ∀ S : Matrix (Fin n) (Fin n) (AF F ⊗[F] E), cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) S = -S → ∃ S₀ : Matrix (Fin n) (Fin n) E, ∃ y ∈ Y, ∃ ω : Matrix (Fin n) (Fin n) (AF F ⊗[F] E), (∀ i j, ω i j ∈ Ω) ∧ S = S₀.map (inclR (F := F) (AF F)) + y + Matrix.diagonal (fun i => (halfE F E).1 ^ m i) * ω * Matrix.diagonal (fun i => (halfE F E).1 ^ m i) := by
   intro F E _ _ _ _ _ σ hσ b C₀ Ω₀ hΩ₀ hcov n

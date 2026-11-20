@@ -12,13 +12,13 @@ open GlobalTheory.AscFin
 namespace GlobalTheory.KapAdjLine
 
 /- English proof (translation)
-Unfold `OnStd`. Introduce `D _ _ _ _ _ _ G _ _ _ F hF ρ x`. Establish `hτ : (F.lnk ρ).τ = D.host.xi0 • (1 : Matrix (Fin (negSp F.Lz).rank) (Fin (negSp F.Lz).rank) D.host.E)`. Establish `hl` using `F.line ρ`. Establish `hu : Unique (Fin (negSp F.Lz).rank)` using `by rw [hl.1]; infer_instance`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : F.ζ (ρ + 1) = (-D.host.xi0) • F.ζ ρ` using `by rw [hF.ζ, hF.ζ (ρ), pow_succ', mul_smul]`. Establish `e : (F.lnk ρ).τ *ᵥ F.ζ ρ = -((-D.host.xi0) • F.ζ ρ)` using `by rw [← hz]; exact (F.lnk ρ).map`. Establish `h2` using `hl.2`. Simplify using `only [dotProduct, Matrix.mulVec, Fintype.sum_unique] at h2`. Establish `b : F.ζ ρ default ≠ 0` using `right_ne_zero_of_mul (right_ne_zero_of_mul h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1` using `congrFun e default`. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_unique, Pi.neg_apply, Pi.smul_apply, smul_eq_mul, neg_mul, neg_neg] at e1`. Use function extensionality and compare the values at `i j`. Rewrite using `[Subsingleton.elim i default, Subsingleton.elim j default]`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_right_cancel₀ b e1`. Rewrite using `[Lnk.κ, hτ, rat_smul, rat_one, Matrix.smul_mul, Matrix.one_mul, smul_smul, ← map_mul, mul_inv_cancel₀ GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero, map_one, one_smul, GlobalTheory.Unf.LinkGram.ofAdj_starAdj]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_starAdj : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (x : WO (negSp F.Lz) (G.V (.core (2 * ρ + 1)))), (F.lnk ρ).κ _ (incA D D.host.xi0⁻¹ • GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj _ _ x) = x := by
   unfold OnStd

@@ -5,17 +5,17 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IwahoriNeBotOfSp
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel Matrix UpperTheory.Gal.TypesAndIwahori
 
 /- English proof (translation)
-Introduce `L k _ _ _ _ N s d e V _ _ π hs hi θ μ hμ ⟨v, hv0, hv⟩`. Establish `hadm : IsAdmissible π` using `(L.bz k).1 (Fin N) V π hs hi`. Establish `hb` using `L.mp k N s d e V π hadm`. Establish `hJ : KOne k (Fin N) ⊔ (unipRad k e ⊓ KO k (Fin N)) = proRad k e` using `(GlobalTheory.LocGL.IwahoriFactor.proRad_eq_sup e).symm`. Rewrite `hb` using `[hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ g ∈ proRad k e, π g v = v`. Introduce `g hg`. Establish `hp : g ∈ parahoric k e` using `proRad_le_parahoric e hg`. Establish `h1 : parahoricProj k e ⟨g, hp⟩ = 1` using `(parahoricProj_eq_one_iff e ⟨g, hp⟩).2 hg`. Establish `h2 : π g v = ((typeChar e θ ⟨g, hp⟩ : ℂˣ) : ℂ) • v` using `hv ⟨g, hp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : typeChar e θ ⟨g, hp⟩ = 1` using `by show leviChar _ θ (parahoricProj k e ⟨g, hp⟩) = 1`. Rewrite using `[h1, map_one]`. Rewrite using `[h2, h3, Units.val_one, one_smul]`. Establish `hfix : v ∈ fixed π (proRad k e)` using `GlobalTheory.Cong.LimitAtL.mem_fixed.2 key`. Establish `h0 : (0 : V) ∈ fixed π (proRad k e)` using `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Submodule.Quotient.mk v, fun hy => hv0 (hb.injOn hfix h0 ?_), fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `using hy`. Establish `h1 : jacU e π x (Submodule.Quotient.mk v) = Submodule.Quotient.mk (π (leviEmb k e x) v)` using `rfl`. Establish `h2` using `hv ⟨leviEmb k e x, leviEmb_mem_parahoric e ⟨x, hx⟩⟩`. Establish `h3 : π (leviEmb k e x) v = ((typeChar e θ ⟨leviEmb k e x, leviEmb_mem_parahoric e ⟨x, hx⟩⟩ : ℂˣ) : ℂ) • v` using `h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ∀ a, ((μ a (GeneralLinearGroup.det (x a)) : ℂˣ) : ℂ) = ((θ a (GeneralLinearGroup.det (redLevi k _ ⟨x, hx⟩ a)) : ℂˣ) : ℂ)`. Introduce `a`. Establish `h5` using `(hμ a).detChar_eq ⟨x a, hx a trivial⟩`. Rewrite using `[redLevi_apply]`. Conclude with `congrArg (fun u : ℂˣ => (u : ℂ)) h5`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : parahoricProj k e ⟨leviEmb k e x, leviEmb_mem_parahoric e ⟨x, hx⟩⟩ = redLevi k _ ⟨x, hx⟩` using `parahoricProj_leviEmb e ⟨x, hx⟩`. Rewrite using `[h1, h3, typeChar_apply, h6, Units.coe_prod, Submodule.Quotient.mk_smul]`. Simplify using `only [h4]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TypesAndIwahori.jacOfType :
     UpperTheory.Gal.TypesAndIwahori.Loc → UpperTheory.Gal.TypesAndIwahori.JacOfType := by

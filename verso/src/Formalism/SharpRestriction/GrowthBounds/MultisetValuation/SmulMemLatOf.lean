@@ -24,7 +24,7 @@ structure Res (π : W) (F : Type) [Field F] [Algebra W F] : Prop where
 variable {π : W}
 
 /- English proof (translation)
-Introduce `y`. Use `choose w hw using fun i => h.surj (y i)`. Conclude with `⟨w, funext hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem red_surj (h : Res π F) : Function.Surjective (red (W := W) F n) := by
   intro y
@@ -32,9 +32,9 @@ theorem red_surj (h : Res π F) : Function.Surjective (red (W := W) F n) := by
   exact ⟨w, funext hw⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `: ∀ i, π ∣ w i` using `fun i => (h.ker _).1 (congrFun h0 i)`. Use `choose w' hw' using this`. Conclude with `⟨w', funext hw'⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w', rfl⟩`. Use function extensionality and compare the values at `i`. Rewrite using `[red_apply]`. Conclude with `(h.ker _).2 ⟨w' i, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_eq_zero (h : Res π F) (w : Fin n → W) : red F n w = 0 ↔ ∃ w' : Fin n → W, w = π • w' := by
   constructor
@@ -63,9 +63,9 @@ def LatOf (g : Matrix (Fin n) (Fin n) Qq) (U : Submodule F (Fin n → F)) : Subm
 variable [IsDomain W] [IsPrincipalIdealRing W] [IsFractionRing W Qq]
 
 /- English proof (translation)
-Unfold `LatOf`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w', hw', he⟩`. Rewrite using `[← psi_inj (IsFractionRing.injective W Qq) g hg he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw'`. Introduce `hw`. Conclude with `⟨w, hw, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem psi_mem_LatOf (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) (U : Submodule F (Fin n → F))
     (w : Fin n → W) : psi g w ∈ LatOf (W := W) g U ↔ red F n w ∈ U := by
@@ -79,14 +79,14 @@ theorem psi_mem_LatOf (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) (U : S
     exact ⟨w, hw, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← range_psi]`. Conclude with `LinearMap.map_le_range`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LatOf_le (g : Matrix (Fin n) (Fin n) Qq) (U : Submodule F (Fin n → F)) : LatOf (W := W) g U ≤ colSpan W g := by
   rw [← range_psi]
   exact LinearMap.map_le_range
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[← range_psi]`. Take `⟨w, rfl⟩` from `hy`. Rewrite using `[← map_smul, psi_mem_LatOf (W := W) g hg, (red_eq_zero h _).2 ⟨w, rfl⟩]`. Conclude with `U.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_LatOf (h : Res π F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det)
     (U : Submodule F (Fin n → F)) : ∀ y ∈ colSpan W g, π • y ∈ LatOf (W := W) g U := by
@@ -97,14 +97,14 @@ theorem smul_mem_LatOf (h : Res π F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUn
   exact U.zero_mem
 
 /- English proof (translation)
-The claim follows from `isLattice_between π h.ne g hg _ (LatOf_le g U) (smul_mem_LatOf h g hg U)`.
+A detailed English derivation is pending.
 -/
 theorem LatOf_lattice (h : Res π F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det)
     (U : Submodule F (Fin n → F)) : IsLattice W (LatOf (W := W) g U) :=
   isLattice_between π h.ne g hg _ (LatOf_le g U) (smul_mem_LatOf h g hg U)
 
 /- English proof (translation)
-Use extensionality with `z`. Take `⟨w, rfl⟩` from `red_surj h z`. Rewrite using `[← psi_mem_LatOf (W := W) g hg, ← psi_mem_LatOf (W := W) g hg, he]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem LatOf_inj (h : Res π F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det)
     {U U' : Submodule F (Fin n → F)} (he : LatOf (W := W) g U = LatOf (W := W) g U') : U = U' := by
@@ -113,15 +113,15 @@ theorem LatOf_inj (h : Res π F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.
   rw [← psi_mem_LatOf (W := W) g hg, ← psi_mem_LatOf (W := W) g hg, he]
 
 /- English proof (translation)
-Use `⟨toF h ((S.comap (psi g)).map (red F n)), ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Establish `hy'` using `LatOf_le g _ hy`. Rewrite `hy'` using `[← range_psi]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, rfl⟩` from `hy'`. Rewrite `hy` using `[psi_mem_LatOf (W := W) g hg]`. Take `⟨w', hw', he⟩` from `Submodule.mem_map.1 (show red F n w ∈ (S.comap (psi g)).map (red F n) from hy)`. Establish `h0 : red F n (w - w') = 0` using `by rw [map_sub, he, sub_self]`. Take `⟨w'', hw''⟩` from `(red_eq_zero h _).1 h0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: psi g w = psi g w' + π • psi g w''`. Rewrite using `[← map_smul, ← hw'', ← map_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.add_mem hw' (h2 _ (by rw [← range_psi]; exact LinearMap.mem_range_self _ _))`. Introduce `y hy`. Establish `hy'` using `h1 hy`. Rewrite `hy'` using `[← range_psi]`. Take `⟨w, rfl⟩` from `hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[psi_mem_LatOf (W := W) g hg]`. Conclude with `Submodule.mem_map.2 ⟨w, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem LatOf_surj (h : Res π F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det)
     (S : Submodule W (Fin n → Qq)) (h1 : S ≤ colSpan W g) (h2 : ∀ y ∈ colSpan W g, π • y ∈ S) :
@@ -150,9 +150,9 @@ theorem LatOf_surj (h : Res π F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g
     exact Submodule.mem_map.2 ⟨w, hy, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← Module.natCard_eq_pow_finrank, ← Nat.card_congr (Submodule.Quotient.restrictScalarsEquiv W U).toEquiv]`. Apply `card_quot (colSpan W g) (LatOf (W := W) g U) (psi g) (range_psi g) ((U.restrictScalars W).mkQ.comp (red F n))` to reduce the goal to its premises. Conclude with `(Submodule.mkQ_surjective _).comp (red_surj h)`. Introduce `w`. Rewrite using `[psi_mem_LatOf (W := W) g hg, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem card_down (h : Res π F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) (U : Submodule F (Fin n → F)) :
     Nat.card (↥(colSpan W g) ⧸ Submodule.comap (colSpan W g).subtype (LatOf (W := W) g U)) =
@@ -165,11 +165,11 @@ theorem card_down (h : Res π F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.
     rfl
 
 /- English proof (translation)
-Establish `hsum` using `Submodule.finrank_quotient_add_finrank U`. Rewrite `hsum` using `[Module.finrank_fin_fun]`. Establish `hc` using `card_down h g hg U`. Rewrite `hc` using `[hq]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hE`. Establish `h5` using `hE.2.2.2.2`. Rewrite `h5` using `[hc, pow_mul]`. Use `Nat.pow_right_injective hq1 h5` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `hi`. Use `⟨LatOf_lattice h g hg U, ⟨g, hg, rfl⟩, LatOf_le g U, smul_mem_LatOf h g hg U, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, pow_mul]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem edge_down_iff (p n' i : ℕ) (h : Res (p : W) F) (hq : Nat.card F = p ^ n') (hq1 : 2 ≤ p ^ n')
     (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) (U : Submodule F (Fin n → F)) :
@@ -191,9 +191,9 @@ theorem edge_down_iff (p n' i : ℕ) (h : Res (p : W) F) (hq : Nat.card F = p ^ 
     omega
 
 /- English proof (translation)
-Use `symm`. Apply `Nat.card_eq_of_bijective (fun U : {U : Submodule F (Fin n → F) // Pu U ∧ Module.finrank F U + i = n} => (⟨LatOf (W := W) g U.1, (edge_down_iff p n' i h hq hq1 g hg U.1).2 U.2.2, (hP U.1).2 U.2.1⟩ : {B1 : Submodule W (Fin n → Qq) // IsEdge p n' i ⟨B1, colSpan W g⟩ ∧ Pd B1}))` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `U U' he`. Conclude with `Subtype.ext (LatOf_inj h g hg (congrArg Subtype.val he))`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨B1, hE, hPd⟩`. Take `⟨U, rfl⟩` from `LatOf_surj h g hg B1 hE.2.2.1 hE.2.2.2.1`. Conclude with `⟨⟨U, (hP U).1 hPd, (edge_down_iff p n' i h hq hq1 g hg U).1 hE⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem down_card (p n' i : ℕ) (h : Res (p : W) F) (hq : Nat.card F = p ^ n') (hq1 : 2 ≤ p ^ n')
     (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) (Pd : Submodule W (Fin n → Qq) → Prop)

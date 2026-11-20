@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 open CategoryTheory
 
 /- English proof (translation)
-Establish `hs : g⁻¹ * g' ∈ S` using `QuotientGroup.eq.mp h`. Set `s : S` to `⟨g⁻¹ * g', hs⟩`. Establish `hF : F.1 (S.subtype s⁻¹ * g⁻¹) = (Rep.res S.subtype A).ρ s⁻¹ (F.1 g⁻¹)` using `F.2 s⁻¹ g⁻¹`. Establish `hg : S.subtype s⁻¹ * g⁻¹ = g'⁻¹` using `by show (g⁻¹ * g')⁻¹ * g⁻¹ = g'⁻¹ group`. Rewrite `hF` using `[hg]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hF]`. Use `show _ = A.ρ g' (A.ρ (g⁻¹ * g')⁻¹ (F.1 g⁻¹))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, show g' * (g⁻¹ * g')⁻¹ = g by group]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem term_congr {G : Type} [Group G] (S : Subgroup G) (A : Rep.{0} ℂ G)
     (F : Representation.coindV S.subtype (Rep.res S.subtype A).ρ) {g g' : G}
@@ -26,7 +26,7 @@ private noncomputable def tr {G : Type} [Group G] (S : Subgroup G) [Fintype (G �
   ∑ q : G ⧸ S, A.ρ q.out ∘ₗ LinearMap.proj q.out⁻¹ ∘ₗ Submodule.subtype _
 
 /- English proof (translation)
-Rewrite using `[tr, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem tr_apply {G : Type} [Group G] (S : Subgroup G) [Fintype (G ⧸ S)] (A : Rep.{0} ℂ G)
     (F : Representation.coindV S.subtype (Rep.res S.subtype A).ρ) :
@@ -35,11 +35,9 @@ private theorem tr_apply {G : Type} [Group G] (S : Subgroup G) [Fintype (G ⧸ S
   rfl
 
 /- English proof (translation)
-Rewrite using `[tr_apply, tr_apply, map_sum]`. Use `Fintype.sum_equiv (MulAction.toPerm h⁻¹ : Equiv.Perm (G ⧸ S)) _ _ ?_` and prove the remaining obligations. Introduce `q`. Establish `hq : ((h⁻¹ * q.out : G) : G ⧸ S) = (((MulAction.toPerm h⁻¹ : Equiv.Perm (G ⧸ S)) q).out : G)`. Rewrite using `[QuotientGroup.out_eq']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = h⁻¹ • q`. Rewrite using `[← QuotientGroup.out_eq' q, MulAction.Quotient.smul_mk, QuotientGroup.out_eq']`. Both sides reduce to the same expression. Rewrite using `[← term_congr S A F hq]`. Use `show A.ρ q.out (F.1 (q.out⁻¹ * h)) = _`.
-
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left, mul_inv_rev, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tr_equiv {G : Type} [Group G] (S : Subgroup G) [Fintype (G ⧸ S)] (A : Rep.{0} ℂ G) (h : G)
     (F : Representation.coindV S.subtype (Rep.res S.subtype A).ρ) :
@@ -57,15 +55,13 @@ private theorem tr_equiv {G : Type} [Group G] (S : Subgroup G) [Fintype (G ⧸ S
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left, mul_inv_rev, inv_inv]
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Af.BA.CoindRetract`. Introduce `G _ S hS A`. Use `haveI := hS`. Use `haveI : Fintype (G ⧸ S) := Fintype.ofFinite _`. Establish `hn : (Fintype.card (G ⧸ S) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `P : A →ₗ[ℂ] Representation.coindV S.subtype (Rep.res S.subtype A).ρ` to `{ toFun := fun a => ⟨fun g => A.ρ g a, fun s g => by show A.ρ (S.subtype s * g) a = A.ρ (S.subtype s) (A.ρ g a)`. Rewrite using `[map_mul, Module.End.mul_apply]⟩`. Use the proof step `map_add' := fun a b => Subtype.ext (funext fun g => map_add (A.ρ g) a b)`. Use the proof step `map_smul' := fun c a => Subtype.ext (funext fun g => map_smul (A.ρ g) c a) }`. Set `π : A ⟶ Rep.coind S.subtype (Rep.res S.subtype A)` to `Rep.ofHom ⟨P, fun h => LinearMap.ext fun a => Subtype.ext (funext fun g => by show A.ρ g (A.ρ h a) = A.ρ (g * h) a`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, Module.End.mul_apply])⟩`. Set `ι : Rep.coind S.subtype (Rep.res S.subtype A) ⟶ A` to `Rep.ofHom ⟨(Fintype.card (G ⧸ S) : ℂ)⁻¹ • tr S A, fun h => LinearMap.ext fun F => by`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, map_smul]`. Conclude with `congrArg (fun x => (Fintype.card (G ⧸ S) : ℂ)⁻¹ • x) (tr_equiv S A h F)⟩`. Use `⟨π, ι, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Rep.hom_ext` to reduce the goal to its premises. Use extensionality with `a`. Use `show (Fintype.card (G ⧸ S) : ℂ)⁻¹ • tr S A (P a) = a`. Rewrite using `[tr_apply]`. Establish `hterm : ∀ q : G ⧸ S, A.ρ q.out ((P a).1 q.out⁻¹) = a` using `fun q => by show A.ρ q.out (A.ρ q.out⁻¹ a) = a`.
-
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[Finset.sum_congr rfl fun q _ => hterm q, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hn, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.coind_retract_of_finite_index :
     UpperTheory.V.Af.BA.CoindRetract := by

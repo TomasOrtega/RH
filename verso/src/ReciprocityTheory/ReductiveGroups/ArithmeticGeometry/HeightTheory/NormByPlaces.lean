@@ -18,17 +18,15 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Take `⟨hprime, hh⟩` from `hp`. Use `haveI := hprime`. Establish `hne : p ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hh` using `[Ideal.height_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one hh`. Take `⟨q, hqp, hq⟩` from `Ideal.IsPrime.exists_mem_prime_of_ne_bot hprime hne`. Establish `hsq : (Ideal.span {q}).IsPrime` using `(Ideal.span_singleton_prime hq.ne_zero).mpr hq`. Establish `hle : Ideal.span {q} ≤ p` using `(Ideal.span_singleton_le_iff_mem _).mpr hqp`. Establish `heq : Ideal.span {q} = p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne2`. Use `haveI := hsq`. Establish `hqb : (⊥ : Ideal (KTp K d.D d.N)) < Ideal.span {q}`. Rewrite using `[bot_lt_iff_ne_bot, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hq.ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h1 : (Ideal.span {q}).height < ((1 : ℕ) : ℕ∞)` using `(Ideal.height_le_iff (n := 1)).mp (by rw [hh]; norm_num) _ hsq (lt_of_le_of_ne hle hne2)`. Establish `h2 : ¬ (Ideal.span {q}).height ≤ ((0 : ℕ) : ℕ∞)`. Rewrite using `[Ideal.height_le_iff]`. Use `push_neg`. Conclude with `⟨⊥, Ideal.bot_prime, hqb, by simp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `h2` to reduce the goal to its premises. Establish `h1' : (Ideal.span {q}).height < 1` using `by simpa using h1`. Simplify using `using ENat.lt_one_iff_eq_zero.mp h1'`. Establish `hpr : p.IsPrincipal` using `⟨⟨q, heq.symm⟩⟩`. Unfold `Data.gen`.
-
-Rewrite using `[dif_pos hpr]`. Conclude with `(Ideal.span_singleton_generator p).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_span {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) : p = Ideal.span {d.gen p} := by
   obtain ⟨hprime, hh⟩ := hp
@@ -61,19 +59,17 @@ theorem gen_span {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) : p = Ideal.sp
   exact (Ideal.span_singleton_generator p).symm
 
 /- English proof (translation)
-Establish `hP : (Ideal.span {π}).IsPrime` using `(Ideal.span_singleton_prime hπ.ne_zero).mpr hπ`. Use `haveI := hP`. Use `⟨hP, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[show (1 : ℕ∞) = ((1 : ℕ) : ℕ∞) by norm_num, Ideal.height_le_iff]`. Introduce `q hq hlt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `haveI := hq`. Distinguish the cases in `hqb : q = ⊥`. Substitute `hqb` using the available equality. Rewrite using `[Ideal.height_bot]`. Evaluate the numerical expressions.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Take `⟨π', hπ'q, hπ'⟩` from `Ideal.IsPrime.exists_mem_prime_of_ne_bot hq hqb`. Establish `h1 : π' ∈ Ideal.span {π}` using `hlt.le hπ'q`. Rewrite `h1` using `[Ideal.mem_span_singleton]`. Take `⟨t, ht⟩` from `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hπ'.dvd_or_dvd (dvd_of_eq ht) with h | h` into its components or cases. Establish `hmem : π ∈ q`. Take `⟨r, hr⟩` from `h`. Rewrite using `[hr]`. Conclude with `q.mul_mem_right _ hπ'q`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hlt.not_ge ((Ideal.span_singleton_le_iff_mem _).mpr hmem)`. Take `⟨r, hr⟩` from `h`. Establish `e : π' * (π * r) = π' * 1`. Rewrite using `[mul_one]`. Use `conv_rhs => rw [ht, hr]`.
+Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `hπ.not_unit (isUnit_iff_exists_inv.mpr ⟨r, mul_left_cancel₀ hπ'.ne_zero e⟩)`. Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `h0 : (Ideal.span {π}).height ≤ ((0 : ℕ) : ℕ∞)`. Simplify using `using ENat.lt_one_iff_eq_zero.mp hlt`.
-
-Rewrite `h0` using `[Ideal.height_le_iff]`. Establish `h2` using `h0 ⊥ Ideal.bot_prime (by`. Rewrite using `[bot_lt_iff_ne_bot, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hπ.ne_zero)`. Simplify using `at h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma span_singleton_mem_htOne_of_prime {π : KTp K d.D d.N} (hπ : Prime π) : Ideal.span {π} ∈ d.HtOne := by
   have hP : (Ideal.span {π}).IsPrime := (Ideal.span_singleton_prime hπ.ne_zero).mpr hπ
@@ -114,9 +110,9 @@ private lemma span_singleton_mem_htOne_of_prime {π : KTp K d.D d.N} (hπ : Prim
     simp at h2
 
 /- English proof (translation)
-Introduce `hg`. Establish `hle : q ≤ p`. Rewrite using `[d.gen_span hq]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).mpr hg`. Use `haveI := hp.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(Ideal.height_le_iff (n := 1)).mp (by rw [hp.2]; norm_num) q hq.1 (lt_of_le_of_ne hle hne)`. Rewrite `h1` using `[hq.2]`. Evaluate the numerical expressions using `at h1`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 private lemma gen_notMem_of_ne {p q : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) (hq : q ∈ d.HtOne)
     (hne : q ≠ p) : d.gen q ∉ p := by
@@ -130,23 +126,21 @@ private lemma gen_notMem_of_ne {p q : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne
   norm_num at h1
 
 /- English proof (translation)
-Establish `hred` using `IsFractionRing.num_den_reduced (KTp K d.D d.N) u`. Establish `heq` using `IsFractionRing.mk'_num_den' (KTp K d.D d.N) u`. Use `set n := IsFractionRing.num (KTp K d.D d.N) u with hn_def`. Use `set m := IsFractionRing.den (KTp K d.D d.N) u with hm_def`. Establish `hm0 : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (m : KTp K d.D d.N) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors m.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnu : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) n = u * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (m : KTp K d.D d.N)`. Rewrite using `[← heq, div_mul_cancel₀ _ hm0]`. Establish `hcross : ∀ a s : KTp K d.D d.N, u * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) s = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a → n * s = a * (m : KTp K d.D d.N)`. Introduce `a s has`. Apply `IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul, map_mul, hnu, ← has]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn0 : n ≠ 0`. Introduce `h0`. Apply `hu` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← heq, h0, map_zero, zero_div]`. Establish `hm0' : (m : KTp K d.D d.N) ≠ 0` using `nonZeroDivisors.coe_ne_zero m`. Establish `hunit : ∀ x : KTp K d.D d.N, x ≠ 0 → (x = n ∨ x = m) → IsUnit x`. Introduce `x hx0 hx`. Assume the negation of the conclusion as `hxu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨π, hirr, hπx⟩` from `WfDvdMonoid.exists_irreducible_factor hxu hx0`. Establish `hπ : Prime π` using `UniqueFactorizationMonoid.irreducible_iff_prime.mp hirr`. Take `⟨a, s, ha, hs, has⟩` from `hloc _ (span_singleton_mem_htOne_of_prime d hπ)`. Establish `hR` using `hcross a s has`. Establish `hπa : ¬ π ∣ a` using `fun h => ha (Ideal.mem_span_singleton.mpr h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hπs : ¬ π ∣ s` using `fun h => hs (Ideal.mem_span_singleton.mpr h)`. Break down `hx with rfl | rfl` into its components or cases. Establish `h1 : π ∣ a * m` using `hR ▸ dvd_mul_of_dvd_left hπx s`. Break down `hπ.dvd_or_dvd h1 with h | h` into its components or cases. Conclude with `hπa h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hπ.not_unit (hred hπx h)`. Establish `h1 : π ∣ n * s` using `hR.symm ▸ dvd_mul_of_dvd_right hπx a`. Break down `hπ.dvd_or_dvd h1 with h | h` into its components or cases. Conclude with `hπ.not_unit (hred h hπx)`. Conclude with `hπs h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r1, hr1, hn⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.mp (hunit n hn0 (Or.inl rfl))`. Take `⟨r2, hr2, hm⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.mp (hunit _ hm0' (Or.inr rfl))`. Establish `hC : ∀ r : K, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (MvPolynomial.C r) = algebraMap K (KTf K d.D d.N) r` using `fun r => by`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Use `⟨r1 / r2, div_ne_zero hr1.ne_zero hr2.ne_zero, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← heq, hn, hm, hC, hC, map_div₀]`.
+A detailed English derivation is pending.
 -/
 private lemma exists_const_of_locally_unit_at_htOne (u : KTf K d.D d.N) (hu : u ≠ 0)
     (hloc : ∀ p ∈ d.HtOne, ∃ a s : KTp K d.D d.N, a ∉ p ∧ s ∉ p ∧
@@ -200,19 +194,19 @@ private lemma exists_const_of_locally_unit_at_htOne (u : KTf K d.D d.N) (hu : u 
   rw [← heq, hn, hm, hC, hC, map_div₀]
 
 /- English proof (translation)
-Establish `h1p : (1 : KTp K d.D d.N) ∉ p` using `(Ideal.ne_top_iff_one p).mp hp.1.ne_top`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, 1, h1p, h1p, by simp⟩`. Consider the case `insert q T hqT ih`. Take `⟨A, B, hA, hB, hAB⟩` from `ih (fun q' h => hT q' (Finset.mem_insert_of_mem h))`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hqH : q ∈ d.HtOne` using `hT q (Finset.mem_insert_self _ _)`. Rewrite using `[Finset.prod_insert hqT]`. Distinguish the cases in `hqp : q = p`. Substitute `hqp` using the available equality. Use `⟨A, B, hA, hB, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos (Finset.mem_insert_self _ _), mul_assoc, hAB, if_neg hqT, zpow_zero, one_mul]`. Establish `hgq : d.gen q ∉ p` using `gen_notMem_of_ne d hp hqH hqp`. Establish `hgq0 : d.gen q ≠ 0`. Introduce `h0`. Establish `hq` using `d.gen_span hqH`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hq` using `[h0, Ideal.span_singleton_eq_bot.mpr rfl]`. Establish `h2` using `hqH.2`. Rewrite `h2` using `[hq, Ideal.height_bot]`. Conclude with `zero_ne_one h2`. Establish `hg0 : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen q) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hgq0`. Establish `hnot : ∀ (X : KTp K d.D d.N) (k : ℕ), X ∉ p → X * d.gen q ^ k ∉ p` using `fun X k hX h => (hp.1.mem_or_mem h).elim hX (fun h' => hgq (hp.1.mem_of_pow_mem _ h'))`. Establish `hif : (if p ∈ insert q T then E p else 0) = (if p ∈ T then E p else 0)`. Simplify using `[Finset.mem_insert, Ne.symm hqp]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hif]`. Break down `le_or_gt 0 (E q) with hE | hE` into its components or cases. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le hE`. Use `⟨A * d.gen q ^ k, B, hnot A k hA, hB, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, zpow_natCast, map_mul, map_pow, mul_assoc, hAB]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩` from `Int.exists_eq_neg_ofNat hE.le`. Use `⟨A, B * d.gen q ^ k, hA, hnot B k hB, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, zpow_neg, zpow_natCast, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma prod_gen_zpow_split_at {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) (E : Ideal (KTp K d.D d.N) → ℤ)
     (T : Finset (Ideal (KTp K d.D d.N))) (hT : ∀ q ∈ T, q ∈ d.HtOne) :
@@ -268,11 +262,9 @@ private lemma prod_gen_zpow_split_at {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.H
           _ = _ := by rw [inv_mul_cancel₀ (pow_ne_zero _ hg0), mul_one, hAB]
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `haveI : FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.omS_finite hd h c).1`. Establish `hmap : ∀ x : KTp K d.D d.N, algebraMap (KTf K d.D d.N) (OmS (Ω c) d.D d.N) (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) x) = d.sH c x`. Introduce `x`. Conclude with `IsFractionRing.lift_algebraMap (h c) x`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hOver : d.OverP c p = HNm.OverR (KTp K d.D d.N) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) p`. Use extensionality with `w`. Simplify using `only [Data.OverP, HNm.OverR, Set.mem_setOf_eq, hmap]`. Take `⟨hprime, hh⟩` from `hp`. Use `haveI := hprime`.
-
-Rewrite using `[hOver]`. Conclude with `(HNm.local_norm (R := KTp K d.D d.N) (F := KTf K d.D d.N) (L := OmS (Ω c) d.D d.N) p hh (d.gen p) (d.gen_span ⟨hprime, hh⟩) 1 one_ne_zero).1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma overP_finite (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (p : Ideal (KTp K d.D d.N))
     (hp : p ∈ d.HtOne) : (d.OverP c p).Finite := by
@@ -292,37 +284,31 @@ private lemma overP_finite (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (p : Ideal (KTp
     (d.gen p) (d.gen_span ⟨hprime, hh⟩) 1 one_ne_zero).1
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `haveI : FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.omS_finite hd h c).1`. Establish `hmap : ∀ x : KTp K d.D d.N, algebraMap (KTf K d.D d.N) (OmS (Ω c) d.D d.N) (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) x) = d.sH c x`. Introduce `x`. Conclude with `IsFractionRing.lift_algebraMap (h c) x`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hOver : ∀ p, d.OverP c p = HNm.OverR (KTp K d.D d.N) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) p`. Introduce `p`. Use extensionality with `w`. Simplify using `only [Data.OverP, HNm.OverR, Set.mem_setOf_eq, hmap]`. Use `⟨fun p hp => overP_finite d hd h c p hp, fun y hy => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hset : {p | p ∈ d.HtOne ∧ ∃ w ∈ d.OverP c p, w y ≠ 0} = {p : Ideal (KTp K d.D d.N) | p.IsPrime ∧ p.height = 1 ∧ ∃ w ∈ HNm.OverR (KTp K d.D d.N) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) p, w y ≠ 0}`. Use extensionality with `p`. Simplify using `only [Set.mem_setOf_eq, Data.HtOne, hOver, and_assoc]`. Establish `hfin : {p | p ∈ d.HtOne ∧ ∃ w ∈ d.OverP c p, w y ≠ 0}.Finite`. Rewrite using `[hset]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `HNm.fin_support (R := KTp K d.D d.N) (F := KTf K d.D d.N) (L := OmS (Ω c) d.D d.N) y hy`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Use `set E : Ideal (KTp K d.D d.N) → ℤ := fun p => ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.OverP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (w y) with hE_def`. Use `set T := hfin.toFinset with hT_def`. Establish `hTsub : ∀ q ∈ T, q ∈ d.HtOne` using `fun q hq => ((Set.Finite.mem_toFinset _).mp hq).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hE0 : ∀ p ∈ d.HtOne, p ∉ T → E p = 0`. Introduce `p hp hpT`. Establish `hz : ∀ w ∈ d.OverP c p, w y = 0`. Introduce `w hw`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `hpT ((Set.Finite.mem_toFinset _).mpr ⟨hp, w, hw, hne⟩)`. Rewrite using `[hE_def]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `hw : w ∈ d.OverP c p`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hw, hz w hw]`. Simplify using `[hw]`. Use `set z := Algebra.norm (KTf K d.D d.N) y with hz_def`. Establish `hz0 : z ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hy`. Use `set P := ∏ q ∈ T, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen q) ^ E q with hP_def`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ 0`. Rewrite using `[hP_def, Finset.prod_ne_zero_iff]`. Introduce `q hq`. Apply `zpow_ne_zero` to reduce the goal to its premises. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `hqH` using `hTsub q hq`. Establish `hq'` using `d.gen_span hqH`. Rewrite `hq'` using `[h0, Ideal.span_singleton_eq_bot.mpr rfl]`. Establish `h2` using `hqH.2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[hq', Ideal.height_bot]`. Conclude with `zero_ne_one h2`. Establish `hloc : ∀ p ∈ d.HtOne, ∃ a s : KTp K d.D d.N, a ∉ p ∧ s ∉ p ∧ z / P * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) s = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a`. Introduce `p hp`. Use `haveI := hp.1`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, a, s, ha, hs, hzs⟩` from `HNm.local_norm (R := KTp K d.D d.N) (F := KTf K d.D d.N) (L := OmS (Ω c) d.D d.N) p hp.2 (d.gen p) (d.gen_span hp) y hy`. Rewrite `hzs` using `[← hOver p]`. Express the relevant statement in the definitionally equal form `z * _ = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ E p * _ at hzs`. Take `⟨A, B, hA, hB, hAB⟩` from `prod_gen_zpow_split_at d hp E T hTsub`. Establish `hexp : (if p ∈ T then E p else 0) = E p` using `by split_ifs with hpT`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Conclude with `(hE0 p hp hpT).symm`. Rewrite `hAB` using `[hexp]`. Use `⟨a * B, s * A, fun h' => (hp.1.mem_or_mem h').elim ha hB, fun h' => (hp.1.mem_or_mem h').elim hs hA, ?_⟩` and prove the remaining obligations. Establish `key : z * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) s * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) A = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) a * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) B * P`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hzs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = _ := by rw [key, mul_div_cancel_right₀ _ hP0]`. Take `⟨κ, hκ, hu⟩` from `exists_const_of_locally_unit_at_htOne d (z / P) (div_ne_zero hz0 hP0) hloc`. Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Establish `hfp : ∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ E p = P`. Rewrite using `[hP_def]`.
-
-Apply `finprod_mem_eq_prod_of_subset` to reduce the goal to its premises. Introduce and unpack `p ⟨hpH, hp1⟩`. Assume the negation of the conclusion as `hpT`. Conclude with `hp1 (by simp only []; rw [hE0 p hpH hpT, zpow_zero])`. Conclude with `fun q hq => hTsub q hq`.
-
-Express the relevant statement in the definitionally equal form `z = algebraMap K (KTf K d.D d.N) κ * ∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ E p`. Rewrite using `[hfp, ← hu, div_mul_cancel₀ _ hP0]`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_by_places (hd : d.AxH 𝒜) (h : d.S1) (c : ι) :
     (∀ p ∈ d.HtOne, (d.OverP c p).Finite) ∧

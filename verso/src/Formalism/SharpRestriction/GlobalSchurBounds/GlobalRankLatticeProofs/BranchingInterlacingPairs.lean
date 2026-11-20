@@ -12,14 +12,14 @@ namespace BernoulliSums
 variable {α : Type*} [Fintype α]
 
 /- English proof (translation)
-Unfold `bern`. Conclude with `mul_nonneg (pow_nonneg h0 _) (pow_nonneg (by linarith) _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bern_nonneg {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (T : Finset α) : 0 ≤ bern δ T := by
   unfold bern
   exact mul_nonneg (pow_nonneg h0 _) (pow_nonneg (by linarith) _)
 
 /- English proof (translation)
-Simplify using `only [bern]`. Rewrite using `[← Finset.powerset_univ, Finset.sum_powerset_apply_card (fun k => δ ^ k * (1 - δ) ^ (Fintype.card α - k) * f k), Finset.card_univ]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Simplify using `[bernsteinPolynomial, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_bern_card (δ : ℝ) (f : ℕ → ℝ) :
     ∑ T : Finset α, bern δ T * f T.card =
@@ -35,7 +35,7 @@ theorem sum_bern_card (δ : ℝ) (f : ℕ → ℝ) :
   ring
 
 /- English proof (translation)
-Establish `h` using `sum_bern_card (α := α) δ (fun _ => 1)`. Simplify using `only [mul_one] at h`. Rewrite using `[h, ← Polynomial.eval_finset_sum, bernsteinPolynomial.sum, Polynomial.eval_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_bern (δ : ℝ) : ∑ T : Finset α, bern δ T = 1 := by
   have h := sum_bern_card (α := α) δ (fun _ => 1)
@@ -43,7 +43,7 @@ theorem sum_bern (δ : ℝ) : ∑ T : Finset α, bern δ T = 1 := by
   rw [h, ← Polynomial.eval_finset_sum, bernsteinPolynomial.sum, Polynomial.eval_one]
 
 /- English proof (translation)
-Rewrite using `[sum_bern_card δ (fun ν => (((Fintype.card α : ℕ) : ℝ) * δ - ν) ^ 2)]`. Establish `h` using `congrArg (Polynomial.eval δ) (bernsteinPolynomial.variance ℝ (Fintype.card α))`. Simplify using `only [Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_sub, Polynomial.eval_smul, Polynomial.eval_X, Polynomial.eval_natCast, nsmul_eq_mul, Polynomial.eval_one] at h`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -65,43 +65,35 @@ open BernoulliSums
 
 open Classical in
 /- English proof (translation)
-Introduce `δ hδ0 hδ1 hδn β BAD _ hbad P hp ω hP hω`. Use `set n : ℕ := Fintype.card (HH D) with hndef`. Establish `hn : ((n : ℕ) : ℝ) = (D.R.n : ℝ)`. Rewrite using `[hndef]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact_mod_cast Formalism.HC.Frame.card_A (φ := D.R.toFrame)`. Consider the case `exact_mod_cast Formalism.HC.Frame.card_A D.R.toFrame`. Consider the case `(rw [Formalism.HC.Frame.card_A]; rfl)`. Rewrite `hδn`, the goal using `[← hn]`. Establish `hnpos : (0 : ℝ) < n` using `by nlinarith`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbern0 : ∀ T : Finset (HH D), 0 ≤ bern δ T` using `fun T => bern_nonneg hδ0.le hδ1 T`. Establish `hsum1 : ∑ T : Finset (HH D), bern δ T = 1` using `sum_bern δ`. Establish `hvar` using `sum_bern_var (α := HH D) δ`. Rewrite `hvar` using `[← hndef]`. Use `set B : ℝ := 4 * β * δ * n * ∑ p ∈ P, ω p with hB`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hper : ∀ p ∈ P, ∑ T : Finset (HH D), bern δ T * ((T.filter (fun t => BAD (hp p) t T)).card : ℝ) ≤ n * (β * δ)`. Introduce `p hpP`. Establish `hc : ∀ T : Finset (HH D), bern δ T * ((T.filter (fun t => BAD (hp p) t T)).card : ℝ) = ∑ t : HH D, if t ∈ T ∧ BAD (hp p) t T then bern δ T else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `T`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `: (Finset.univ.filter fun t => t ∈ T ∧ BAD (hp p) t T) = T.filter (fun t => BAD (hp p) t T)`. Use extensionality with `t`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `set Y : Finset (HH D) → ℝ := fun T => ∑ p ∈ P, ω p * ((T.filter (fun t => BAD (hp p) t T)).card : ℝ) with hY`. Establish `hY0 : ∀ T, 0 ≤ Y T` using `fun T => Finset.sum_nonneg fun p hpP => mul_nonneg (hω p hpP) (Nat.cast_nonneg _)`. Establish `hEY : ∑ T : Finset (HH D), bern δ T * Y T ≤ n * (β * δ) * ∑ p ∈ P, ω p`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hY, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun T _ => by ring` and prove the remaining obligations. Use `_ ≤ ∑ p ∈ P, ω p * (n * (β * δ)) := Finset.sum_le_sum fun p hpP => mul_le_mul_of_nonneg_left (hper p hpP) (hω p hpP)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = n * (β * δ) * ∑ p ∈ P, ω p := by`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Establish `hEY0 : 0 ≤ ∑ T : Finset (HH D), bern δ T * Y T` using `Finset.sum_nonneg fun T _ => mul_nonneg (hbern0 T) (hY0 T)`. Set `good : Finset (HH D) → Prop` to `fun T => δ * n / 2 ≤ T.card ∧ (T.card : ℝ) ≤ 2 * δ * n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hq : 0 < (δ * n) ^ 2` using `by positivity`. Establish `hcheb : ∀ T : Finset (HH D), (if good T then (0 : ℝ) else bern δ T) ≤ bern δ T * ((n * δ - T.card) ^ 2 * (4 / (δ * n) ^ 2))`. Introduce `T`. Use `split_ifs with hg`. Conclude with `mul_nonneg (hbern0 T) (mul_nonneg (sq_nonneg _) (by positivity))`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1 : (δ * n) ^ 2 ≤ 4 * (n * δ - T.card) ^ 2`. Simplify using `only [good, not_and_or, not_le] at hg`. Break down `hg with h | h` into its components or cases. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (hbern0 T)` to reduce the goal to its premises. Rewrite using `[mul_div_assoc', le_div_iff₀ hq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbad_le : ∑ T : Finset (HH D), (if good T then (0 : ℝ) else bern δ T) ≤ 1 / 4`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hvar, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun T _ => by ring`. Use `_ ≤ 1 / 4 := by`. Rewrite using `[mul_div_assoc', div_le_iff₀ hq]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hδn (by positivity : (0 : ℝ) ≤ δ * n), mul_nonneg (mul_nonneg hδ0.le hδ0.le) hnpos.le]`. Establish `hsplit : ∑ T : Finset (HH D), (if good T then bern δ T else 0) + ∑ T : Finset (HH D), (if good T then (0 : ℝ) else bern δ T) = 1`. Rewrite using `[← Finset.sum_add_distrib, ← hsum1]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun T _ => by split_ifs <;> ring`. Choose the witnesses or unpack the hypotheses as in `⟨T0, -, hT0⟩ : ∃ T0 ∈ (Finset.univ : Finset (Finset (HH D))), (0 : ℝ) < (if good T0 then bern δ T0 else 0) := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `: ∑ T : Finset (HH D), (if good T then bern δ T else 0) ≤ 0` using `Finset.sum_nonpos hne`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgood0 : good T0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hg`. Rewrite `hT0` using `[if_neg hg]`. Conclude with `lt_irrefl _ hT0`. Rewrite `hT0` using `[if_pos hgood0]`. Establish `hlow : B * ∑ T : Finset (HH D), (if good T then bern δ T else 0) < ∑ T : Finset (HH D), bern δ T * Y T`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun T _ => by split_ifs <;> ring`. Use `_ < ∑ T : Finset (HH D), (if good T then bern δ T * Y T else 0) := by`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises.
-
-Introduce `T _ split_ifs with hg`. Conclude with `mul_le_mul_of_nonneg_left (hcon T hg.1 hg.2).le (hbern0 T)`. Conclude with `le_refl _`. Use `⟨T0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos hgood0, if_pos hgood0]`.
-
-Conclude with `mul_lt_mul_of_pos_left (hcon T0 hgood0.1 hgood0.2) hT0`. Use `_ ≤ ∑ T : Finset (HH D), bern δ T * Y T := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `T _`. Use `split_ifs`.
-
-Conclude with `le_refl _`. Conclude with `mul_nonneg (hbern0 T) (hY0 T)`. Establish `hB0 : 0 ≤ B` using `by rw [hB]; linarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show (3 : ℝ) / 4 ≤ ∑ T : Finset (HH D), (if good T then bern δ T else 0) by linarith) hB0]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem branching_interlacing_pairs (D : D7) (sc : Scale) : Conclusion6 D sc := by
   intro δ hδ0 hδ1 hδn β BAD _ hbad P hp ω hP hω

@@ -13,25 +13,23 @@ open Formalism Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheor
 namespace GlobalTheory.ContDR
 
 /- English proof (translation)
-Introduce `l _ P AI T K V _ _ _ _ _ ρ hρ k x β hβ x' f hf`. Establish `hV : ∀ φ : V →ₗ[ℚ_[l]] ℚ_[l], Continuous φ` using `fun φ => IsModuleTopology.continuous_of_linearMap φ`. Establish `key : ∀ φ : V →ₗ[ℚ_[l]] ℚ_[l], Continuous fun g => φ (f g)`. Introduce `φ`. Set `Φ : V ⊗[ℚ_[l]] P.R.BdR →ₗ[ℚ_[l]] P.R.BdR` to `(TensorProduct.lid ℚ_[l] P.R.BdR).toLinearMap ∘ₗ TensorProduct.map φ LinearMap.id`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ v b, Φ (v ⊗ₜ b) = qB P (φ v) * b`. Introduce `v b`. Simplify using `[Φ, Algebra.smul_def]`. Establish `h1 : ∀ (y : V ⊗[ℚ_[l]] P.R.BdR) (i : Fin k), LatCont AI fun g => Φ (β i g • y)`. Introduce `y i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simpa using latCont_const AI 0`. Consider the case `tmul v b`. Simplify using `only [TensorProduct.smul_tmul', hΦ]`. Simplify using `using latCont_orbit AI T b ((hV φ).comp ((hβ i).smul continuous_const)) (γ := fun _ => 1) continuous_const`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add y y' ih ih'`. Simplify using `only [smul_add, map_add]`. Conclude with `ih.add AI ih'`. Establish `h2 : ∀ y : V ⊗[ℚ_[l]] P.R.BdR, LatCont AI fun g => Φ (actVdR (P.PD K) ρ g y)`. Introduce `y`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simpa using latCont_const AI 0`. Consider the case `tmul v b`. Establish `e : ∀ g : ↥(GK K), Φ (actVdR (P.PD K) ρ g (v ⊗ₜ b)) = qB P (φ (ρ g v)) * P.actQdR (g : GQ l) b`. Introduce `g`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← P.PD_actdR K g b, ← hΦ]`. Both sides reduce to the same expression. Simplify using `only [e]`. Conclude with `latCont_orbit AI T b ((hV φ).comp (hρ v)) continuous_subtype_val`. Consider the case `add y y' ih ih'`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [map_add]`. Conclude with `ih.add AI ih'`. Apply `continuous_of_latCont AI T` to reduce the goal to its premises. Establish `e : ∀ g, qB P (φ (f g)) = ∑ i, Φ (β i g • x i) + (Φ (actVdR (P.PD K) ρ g x') + -Φ x')`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Use `congrArg Φ (hf g)` as an intermediate fact. Rewrite `this` using `[hΦ, mul_one, map_add, map_sum, map_sub, sub_eq_add_neg]`. Then use the resulting hypothesis. Simplify using `only [e]`. Conclude with `(LatCont.sum AI _ _ fun i => h1 (x i) i).add AI ((h2 x').add AI (latCont_const AI _))`. Set `b` to `Module.finBasis ℚ_[l] V`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: f = fun g => ∑ j, b.coord j (f g) • b j`. Use function extensionality and compare the values at `g`. Simplify using `[b.sum_repr]`. Rewrite using `[this]`. Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd ℚ_[l] V`.
-
-Use `haveI : ContinuousSMul ℚ_[l] V := IsModuleTopology.toContinuousSMul ℚ_[l] V`. Conclude with `continuous_finset_sum _ fun j _ => (key (b.coord j)).smul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem cont_dR : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), (∀ v : V, Continuous fun g => ρ g v) → ∀ (k : ℕ) (x : Fin k → V ⊗[ℚ_[l]] P.R.BdR) (β : Fin k → ↥(GK K) → ℚ_[l]), (∀ i, Continuous (β i)) → ∀ (x' : V ⊗[ℚ_[l]] P.R.BdR) (f : ↥(GK K) → V), (∀ g, f g ⊗ₜ[ℚ_[l]] (1 : P.R.BdR) = ∑ i, β i g • x i + (actVdR (P.PD K) ρ g x' - x')) → Continuous f := by
   intro l _ P AI T K V _ _ _ _ _ ρ hρ k x β hβ x' f hf

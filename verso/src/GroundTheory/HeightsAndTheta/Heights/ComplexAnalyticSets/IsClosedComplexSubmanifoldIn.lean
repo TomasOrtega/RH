@@ -102,9 +102,9 @@ def lineMap : MvPolynomial (Fin 2) ℂ →ₐ[ℂ] MvPolynomial (Fin 1) ℂ :=
 def lineIdeal : Ideal (MvPolynomial (Fin 2) ℂ) := RingHom.ker lineMap
 
 /- English proof (translation)
-Introduce `p`. Use `⟨rename (fun _ : Fin 1 => (0 : Fin 2)) p, ?_⟩` and prove the remaining obligations. Establish `h : ((![X 0, 0] : Fin 2 → MvPolynomial (Fin 1) ℂ) ∘ fun _ : Fin 1 => (0 : Fin 2)) = X`. Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [lineMap, aeval_rename, h, aeval_X_left_apply]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem lineMap_surjective : Function.Surjective lineMap := by
   intro p
@@ -121,7 +121,7 @@ def lineEquiv : (MvPolynomial (Fin 2) ℂ ⧸ lineIdeal) ≃ₐ[ℂ] MvPolynomia
   Ideal.quotientKerAlgEquivOfSurjective lineMap_surjective
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_eq_of_ringEquiv lineEquiv.toRingEquiv, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lineIdeal_dim : ringKrullDim (MvPolynomial (Fin 2) ℂ ⧸ lineIdeal) = (1 : ℕ) := by
   rw [ringKrullDim_eq_of_ringEquiv lineEquiv.toRingEquiv,
@@ -131,9 +131,9 @@ theorem lineIdeal_dim : ringKrullDim (MvPolynomial (Fin 2) ℂ ⧸ lineIdeal) = 
 def lineProj : (Fin 2 → ℂ) →ₗ[ℂ] (Fin 1 → ℂ) := LinearMap.pi fun _ => LinearMap.proj 0
 
 /- English proof (translation)
-Establish `h : (lineEquiv.toAlgHom.comp (projAlgHom lineIdeal lineProj)) = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `[projAlgHom, lineEquiv, linPoly, lineProj, lineMap, Fin.sum_univ_two]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(Ideal.quotientKerAlgEquivOfSurjective_mk lineMap_surjective (X 0)).trans (by simp [lineMap])`. Conclude with `congrArg (fun f => f p) h`.
+A detailed English derivation is pending.
 -/
 theorem lineEquiv_projAlgHom (p : MvPolynomial (Fin 1) ℂ) :
     lineEquiv (projAlgHom lineIdeal lineProj p) = p := by
@@ -147,9 +147,9 @@ theorem lineEquiv_projAlgHom (p : MvPolynomial (Fin 1) ℂ) :
   exact congrArg (fun f => f p) h
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (projAlgHom lineIdeal lineProj)` using `Function.LeftInverse.injective lineEquiv_projAlgHom`. Establish `hsurj : Function.Surjective (projAlgHom lineIdeal lineProj)`. Introduce `q`. Use `⟨lineEquiv q, lineEquiv.injective ?_⟩` and prove the remaining obligations. Rewrite using `[lineEquiv_projAlgHom]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hinj, RingHom.Finite.of_surjective _ hsurj⟩`.
+Supply the required witnesses or components.
 -/
 theorem lineProj_finite : IsFiniteProjection lineIdeal lineProj := by
   have hinj : Function.Injective (projAlgHom lineIdeal lineProj) :=
@@ -161,13 +161,13 @@ theorem lineProj_finite : IsFiniteProjection lineIdeal lineProj := by
   exact ⟨hinj, RingHom.Finite.of_surjective _ hsurj⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, lineIdeal_dim⟩`.
+Supply the required witnesses or components.
 -/
 example : lineIdeal.IsPrime ∧ ringKrullDim (MvPolynomial (Fin 2) ℂ ⧸ lineIdeal) = (1 : ℕ) :=
   ⟨inferInstance, lineIdeal_dim⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, lineIdeal_dim, lineProj_finite, X_ne_zero _⟩`.
+Supply the required witnesses or components.
 -/
 example : lineIdeal.IsPrime ∧ ringKrullDim (MvPolynomial (Fin 2) ℂ ⧸ lineIdeal) = (1 : ℕ) ∧
     IsFiniteProjection lineIdeal lineProj ∧ (X 0 : MvPolynomial (Fin 1) ℂ) ≠ 0 :=
@@ -176,7 +176,7 @@ example : lineIdeal.IsPrime ∧ ringKrullDim (MvPolynomial (Fin 2) ℂ ⧸ lineI
 def originIdeal (n : ℕ) : Ideal (MvPolynomial (Fin n) ℂ) := RingHom.ker (eval (0 : Fin n → ℂ))
 
 /- English proof (translation)
-Simplify using `[originIdeal]`.
+Simplify using the standard rewrite rules.
 -/
 example : X 0 ∈ originIdeal 1 ∧ (1 : MvPolynomial (Fin 1) ℂ) ∉ originIdeal 1 := by
   simp [originIdeal]

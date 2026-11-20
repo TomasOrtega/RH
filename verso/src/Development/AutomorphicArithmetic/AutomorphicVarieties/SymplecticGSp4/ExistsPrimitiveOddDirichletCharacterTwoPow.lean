@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Establish `hd : Monoid.exponent (ZMod (2 ^ j))ˣ ∣ 2 ^ (k + 3)`. Use `Group.exponent_dvd_card.trans ?_` and prove the remaining obligations. Rewrite using `[ZMod.card_units_eq_totient]`. Break down `Nat.eq_zero_or_pos j with h | h` into its components or cases. Substitute `h` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[Nat.totient_prime_pow Nat.prime_two h]`. Simplify using `using pow_dvd_pow 2 (by omega : j - 1 ≤ k + 3)`. Conclude with `HasEnoughRootsOfUnity.of_dvd O hd`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.hasEnoughRootsOfUnity_exponent_units_zmod_two_pow (O : Type) [CommRing O] (k j : ℕ) (hj : j ≤ k + 3)
     [HasEnoughRootsOfUnity O (2 ^ (k + 3))] :
@@ -19,33 +19,31 @@ private theorem UpperTheory.hasEnoughRootsOfUnity_exponent_units_zmod_two_pow (O
   exact HasEnoughRootsOfUnity.of_dvd O hd
 
 /- English proof (translation)
-Introduce `O _ _ n hn hroots`. Take `⟨k, rfl⟩ : ∃ k, n = k + 3` from `⟨n - 3, by omega⟩`. Establish `e1` using `UpperTheory.hasEnoughRootsOfUnity_exponent_units_zmod_two_pow O k (k + 3) le_rfl`. Establish `e2` using `UpperTheory.hasEnoughRootsOfUnity_exponent_units_zmod_two_pow O k 2 (by omega)`. Use `set z : ℤ := 1 + 2 ^ (k + 2) with hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcopN : IsCoprime z ((2 ^ (k + 3) : ℕ) : ℤ)`. Use `⟨1 - 2 ^ (k + 2), 2 ^ (k + 1), ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[hz]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hzN : ((z : ℤ) : ZMod (2 ^ (k + 3))) ≠ 1`. Rewrite using `[hz]`. Use `push_cast`. Introduce `h`. Establish `h0 : ((2 ^ (k + 2) : ℕ) : ZMod (2 ^ (k + 3))) = 0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Take the linear combination `h`. Rewrite `h0` using `[ZMod.natCast_eq_zero_iff]`. Use `Nat.le_of_dvd (by positivity) h0` as an intermediate fact. Use `Nat.pow_lt_pow_right (by norm_num : 1 < 2) (by omega : k + 2 < k + 3)` as an intermediate fact.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hz4 : ((z : ℤ) : ZMod (2 ^ 2)) = 1`. Rewrite using `[hz]`. Use `push_cast`. Rewrite using `[pow_add, show (2 : ZMod (2 ^ 2)) ^ 2 = 0 from by decide, mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzM : ((z : ℤ) : ZMod (2 ^ (k + 2))) = 1`. Rewrite using `[hz]`. Use `push_cast`. Rewrite using `[show (2 : ZMod (2 ^ (k + 2))) ^ (k + 2) = ((2 ^ (k + 2) : ℕ) : ZMod (2 ^ (k + 2))) by push_cast; rfl, ZMod.natCast_self, add_zero]`. Establish `prim : ∀ χ : DirichletCharacter O (2 ^ (k + 3)), χ (z : ZMod (2 ^ (k + 3))) ≠ 1 → χ.IsPrimitive`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `χ hχ`. Rewrite using `[DirichletCharacter.isPrimitive_def]`. Take `⟨i, hi, hc⟩` from `(Nat.dvd_prime_pow Nat.prime_two).1 χ.conductor_dvd_level`. Assume the negation of the conclusion as `hne`. Establish `hik : i ≤ k + 2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge i (k + 3) with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `absurd (by rw [hc, show i = k + 3 by omega]) hne`. Establish `hf0 : χ.FactorsThrough (2 ^ i)`. Rewrite using `[← hc]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `χ.factorsThrough_conductor`. Establish `hf : χ.FactorsThrough (2 ^ (k + 2))` using `DirichletCharacter.FactorsThrough.mono _ hf0 (pow_dvd_pow 2 hik) (pow_dvd_pow 2 (by omega))`. Apply `hχ` to reduce the goal to its premises. Rewrite using `[hf.eq_changeLevel, DirichletCharacter.changeLevel_eq_cast_of_dvd' _ hf.dvd hcopN, hzM, map_one]`. Take `⟨χ, hχ⟩` from `DirichletCharacter.exists_apply_ne_one_of_hasEnoughRootsOfUnity O hzN`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ψ₀, hψ₀⟩` from `DirichletCharacter.exists_apply_ne_one_of_hasEnoughRootsOfUnity O (show (-1 : ZMod (2 ^ 2)) ≠ 1 by decide)`. Establish `h42 : 2 ^ 2 ∣ 2 ^ (k + 3)` using `pow_dvd_pow 2 (by omega)`. Use `set ψ := DirichletCharacter.changeLevel h42 ψ₀ with hψ`. Establish `hcm1 : IsCoprime (-1 : ℤ) ((2 ^ (k + 3) : ℕ) : ℤ)` using `isCoprime_one_left.neg_left`. Establish `hψz : ψ (z : ZMod (2 ^ (k + 3))) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hψ, DirichletCharacter.changeLevel_eq_cast_of_dvd' _ h42 hcopN, hz4, map_one]`. Establish `hψm : ψ (-1) = -1`. Establish `h1 : ψ (-1) = ψ₀ (-1)`. Use `DirichletCharacter.changeLevel_eq_cast_of_dvd' ψ₀ h42 hcm1` as an intermediate fact. Move the coercions through the operations in `at this`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ, this]`. Rewrite using `[h1]`. Establish `hsq : ψ₀ (-1) * ψ₀ (-1) = 1`. Rewrite using `[← map_mul, neg_one_mul, neg_neg, map_one]`. Break down `mul_self_eq_one_iff.1 hsq with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd h hψ₀`. Conclude with `h`. Establish `hsq : χ (-1) * χ (-1) = 1`. Rewrite using `[← map_mul, neg_one_mul, neg_neg, map_one]`. Break down `mul_self_eq_one_iff.1 hsq with h | h` into its components or cases.
-
-Use `⟨χ * ψ, prim _ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MulChar.mul_apply, hψz, mul_one]`. Conclude with `hχ`. Rewrite using `[MulChar.mul_apply, h, hψm, one_mul]`. Conclude with `⟨χ, prim χ hχ, h⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_primitive_odd_dirichletCharacter_two_pow :
     ∀ (O : Type) [CommRing O] [IsDomain O] (n : ℕ), 3 ≤ n → HasEnoughRootsOfUnity O (2 ^ n) → ∃ ξ : DirichletCharacter O (2 ^ n), ξ.IsPrimitive ∧ ξ (-1) = -1 := by

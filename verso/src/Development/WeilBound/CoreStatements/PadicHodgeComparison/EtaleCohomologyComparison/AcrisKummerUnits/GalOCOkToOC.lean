@@ -17,7 +17,7 @@ variable (l) in
 def clToC : PadicAlgCl l →+* ℂ_[l] := algebraMap _ _
 
 /- English proof (translation)
-The claim follows from `UniformSpace.Completion.norm_coe x`.
+A detailed English derivation is pending.
 -/
 theorem norm_clToC (x : PadicAlgCl l) : ‖clToC l x‖ = ‖x‖ := UniformSpace.Completion.norm_coe x
 
@@ -28,7 +28,7 @@ def okToOC : OK l K →+* OC l :=
     mem_normInteger.2 ((norm_clToC _).trans_le (mem_normInteger.1 x.2))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (gal_smul_coe_of_mem σ x.1)`.
+A detailed English derivation is pending.
 -/
 theorem galOC_okToOC (σ : Gal(PadicAlgCl l/K)) (x : OK l K) : galOC σ (okToOC l K x) = okToOC l K x :=
   Subtype.ext (gal_smul_coe_of_mem σ x.1)
@@ -40,7 +40,7 @@ def PAlg.cToUg (A : PAlg l) : ℂ_[l] →+* A.Ug :=
     ((IsPerfectoidField.awayEquiv (K := ℂ_[l]) l).symm : ℂ_[l] →+* Localization.Away (l : OC l))
 
 /- English proof (translation)
-Establish `e : (IsPerfectoidField.awayEquiv (K` using `ℂ_[l]) l).symm (x : ℂ_[l]) = algebraMap _ _ x := (IsPerfectoidField.awayEquiv (K := ℂ_[l]) l).symm.commutes x`. Rewrite using `[PAlg.cToUg, RingHom.comp_apply, RingHom.coe_coe, e]`. Conclude with `IsLocalization.lift_eq _ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PAlg.cToUg_coe (A : PAlg l) (x : OC l) : A.cToUg x = algebraMap A.U A.Ug (A.oC x) := by
   have e : (IsPerfectoidField.awayEquiv (K := ℂ_[l]) l).symm (x : ℂ_[l]) = algebraMap _ _ x :=

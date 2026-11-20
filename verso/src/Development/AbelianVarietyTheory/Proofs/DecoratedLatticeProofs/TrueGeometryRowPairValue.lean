@@ -10,11 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.TopFrame
 
 /- English proof (translation)
-Break down `GlobalTheory.TopStep.idx_cases hN r with ⟨i, rfl⟩ | rfl` into its components or cases. Establish `h` using `congrFun (GlobalTheory.TopStep.prH_sumE hN (1 : Formalism.L2.Col.Sp E n ≃ₗ[E] Formalism.L2.Col.Sp E n) t (Pi.single b 1)) i`. Use `h.trans ?_` and prove the remaining obligations. Use `show (Pi.single b (1 : E) : Fin N → E) (Formalism.L2.Col.Br.iC hN i) = _`. Establish `hi : ¬ (Formalism.L2.Col.Br.iC hN i).val + 1 = N` using `by show ¬ i.val + 1 = N`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hi, Pi.single_apply]`. Simplify using `only [Fin.ext_iff]`. Establish `hi : (Formalism.L2.Col.Br.iL hN).val + 1 = N` using `by show n + 1 = N`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[GlobalTheory.TopStep.sumE_last, if_pos hi, Pi.single_apply]`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sumE_one_single {E : Type} [Field E] {N n : ℕ} (hN : N = n + 1) (t : Eˣ) (r b : Fin N) :
     GlobalTheory.TopStep.sumE hN (1 : Formalism.L2.Col.Sp E n ≃ₗ[E] Formalism.L2.Col.Sp E n) t (Pi.single b 1) r =
@@ -37,13 +37,11 @@ theorem sumE_one_single {E : Type} [Field E] {N n : ℕ} (hN : N = n + 1) (t : E
     split_ifs <;> simp
 
 /- English proof (translation)
-Substitute `hj` using the available equality. Establish `hQ : P.1 ∈ I.Q a`. Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases. Conclude with `absurd h hP`. Conclude with `h`.
+Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSQ : P.1 ∈ I.SQ` using `Finset.mem_biUnion.2 ⟨a, Finset.mem_univ _, hQ⟩`. Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Establish `hπ` using `GlobalTheory.Mem.Col2.PerLaw.piT_notMem_Q hI u a`. Establish `h1` using `hA.top β (Formalism.L2.Col.DecoF.base _ _ _ _ _) 1 1 (isPtOf_base _) ⟨(Matrix.one_mul _).trans (Matrix.mul_one _).symm, Matrix.one_mulVec _⟩`. Rewrite `h1` using `[one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h1.fr ⟨P.1, hQ⟩ r b`. Establish `h3` using `(hA.base _ le_rfl β).1.fr ⟨P.1, hSQ⟩ r b`. Establish `h4` using `(algebraMap B.fields.E (P.1.adicCompletion B.fields.E)).injective (h3.symm.trans h2)`. Rewrite using `[frsF_eq_ptFr, ← extTo_fr I.SQ _ ⟨P.1, hSQ⟩, h4, tilF_fr I.sel (I.tup a) hPr u hπ]`. Use `(sumE_one_single _ _ r b).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[unitOf_val (hπ ⟨P.1, hQ⟩)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_top {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {u : B.Word} {a : I.ι}
     {Ch₀ : ℕ → Type} (A : TwDat I l Z u a Ch₀) (hA : A.Is) (hI : I.Ok) (P : BadPr I a) (hP : P.1 ∉ (B.primes X).vGs)
@@ -71,25 +69,21 @@ theorem frsF_top {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat hiA t J hJ i hm γ e he r b`. Establish `hs : (J.G i).s + 1 + 1 = B.R.m` using `(J.G i).hs`. Establish `key : ∀ j (h : j = (I.rec7 l Z).R.m), (∀ r s, (a.g.oT j h).iA r s = if r.val = s.val then 1 else 0) ∧ ∀ r, vecB (a.g.oT j h) (@TDat.ζ₀ _ _ _ a.fld a.val a.top a.loc _ a.o) r = if r.val + 1 = B.R.N B.R.m then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 0`. Introduce `j h`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `⟨hiA, fun r => hat.z0 r⟩`. Take `⟨hA, hz⟩` from `key _ (J.G i).hs`. Take `⟨-, ⟨e', he', hT'⟩, hz0⟩` from `ha.stdQ (J.pl i) ⟨t, J.mem i⟩`. Set `ι : (I.rec7 l Z).host.E →+* (J.G i).k` to `(J.G i).q.pr.comp (incA (I.rec7 l Z))`. Establish `hL` using `frsF_top J.A hJ.is hW.tr.ok (J.P i) (hJ.tw i).nmem _ hs γ (finCongr (rankN (I.rec7 l Z) _ hm) r) (e b)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL' : baseFr J.A (J.P i) ((J.G i).s + 1 + 1) hm γ r (e b) = if r.val = (e b).val then (if r.val + 1 = B.R.N B.R.m then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 1) else 0` using `hL`. Establish `hN : B.R.N ((J.G i).s + 1 + 1) = B.R.N B.R.m` using `congrArg _ hs`. Use `(congrArg _ hL').trans (Eq.trans ?_ (congrFun (congrFun (J.G i).last r) b).symm)` and prove the remaining obligations. Break down `b with b | b` into its components or cases. Establish `hb : (e (Sum.inl b)).val = (e' b).val` using `(he _).trans (he' b).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hb2 : (e (Sum.inl b)).val + 1 ≠ B.R.N B.R.m`. Introduce `h`. Establish `h2 : (e (Sum.inr ())).val = B.R.N B.R.m - 1` using `he _`. Establish `h3 : e (Sum.inl b) = e (Sum.inr ())` using `Fin.ext (by omega)`. Conclude with `Sum.inl_ne_inr (e.injective h3)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (if r.val = (e (Sum.inl b)).val then (if r.val + 1 = B.R.N B.R.m then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 1) else 0) = (a.g.oT _ (J.G i).hs).iA r (e' b)`. Use `Eq.trans ?_ (hA r (e' b)).symm` and prove the remaining obligations. Rewrite using `[← hb]`. Use `split_ifs with h1 h2`. Conclude with `absurd (h1 ▸ h2) hb2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Use `(congrArg _ h5).trans ?_` and prove the remaining obligations. Use `show _ = ∑ c, ι ((a.g.oT _ (J.G i).hs).iA r c) * (J.G i).FT.β c b`. Establish `h6 : ∀ c, (J.G i).FT.β c b = if c = e' b then 1 else 0` using `fun c => (congrFun (congrFun hT' c) b).trans Matrix.one_apply`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Eq.symm ((Finset.sum_congr rfl fun c _ => congrArg _ (h6 c)).trans ?_)` and prove the remaining obligations. Use `(Finset.sum_eq_single (e' b) (fun c _ hc => ?_) (fun h => absurd (Finset.mem_univ _) h)).trans ?_` and prove the remaining obligations. Conclude with `(congrArg _ (if_neg hc)).trans (mul_zero _)`. Conclude with `(congrArg _ (if_pos rfl)).trans (mul_one _)`. Establish `h2 : (e (Sum.inr b)).val = B.R.N B.R.m - 1` using `he _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3` using `(e (Sum.inr b)).2`. Establish `h4 : (if r.val = (e (Sum.inr b)).val then (if r.val + 1 = B.R.N B.R.m then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 1) else 0) = vecB (a.g.oT _ (J.G i).hs) (@TDat.ζ₀ _ _ _ a.fld a.val a.top a.loc _ a.o) r`. Rewrite using `[hz]`. Use `split_ifs with h5 h6 h7`. Both sides reduce to the same expression.
-
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Use `(congrArg _ h4).trans ?_` and prove the remaining obligations. Use `show ι (∑ c, (a.g.oT _ (J.G i).hs).iB r c * (@TDat.ζ₀ _ _ _ a.fld a.val a.top a.loc _ a.o) c) = ∑ c, ι ((a.g.oT _ (J.G i).hs).iB r c) * (J.G i).z₀ c`.
-
-Conclude with `(map_sum ι _ _).trans (Finset.sum_congr rfl fun c _ => (map_mul ι _ _).trans (congrArg _ (congrFun hz0 c).symm))`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem baseFr_top_eq : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → (∀ r s, (a.g.oT B.R.m rfl).iA r s = if r.val = s.val then 1 else 0) → ∀ t (J : QJ a t), J.Reads → ∀ i (hm : (J.G i).s + 1 + 1 ≤ B.R.m) (γ : J.Ch₀ ((J.G i).s + 1 + 1)) (e : GlobalTheory.StepData.Ix (Fin B.R.k ⊕ Fin ((J.G i).s + 1)) (Fin B.R.t) ((J.G i).s + 2) ⊕ Unit ≃ Fin (B.R.N ((J.G i).s + 1 + 1))), GlobalTheory.SymBridge.IsOrd (Sum.elim GlobalTheory.SymBridge.zPos fun _ => B.R.N B.R.m - 1) e → ∀ r b, (ofSplit (J.G i).q).pr (baseFr J.A (J.P i) ((J.G i).s + 1 + 1) hm γ r (e b)) = (J.G i).FM.β r b := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat hiA t J hJ i hm γ e he r b

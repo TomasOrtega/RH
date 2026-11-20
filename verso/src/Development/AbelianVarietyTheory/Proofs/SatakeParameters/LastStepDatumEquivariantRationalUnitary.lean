@@ -15,7 +15,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (sel : HeightOneSpectrum (𝓞
   (mu : Tup X.F X.E X.K S) {u : Pr.Word} {j : ℕ}
 
 /- English proof (translation)
-Unfold `frsF`. Rewrite using `[dif_neg hP, dif_neg hP]`. Use `show g.1 * p.fr _ * (((1 : GLQ X.E (R.N j) (QE sel (mu : Chr X.F X.E X.K))) _)⁻¹).1 = _`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frsF_rat_notG (p : ChPt (R := R) sel mu u j) (g : UF X.E (R.N j)) (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) :
     frsF sel mu (((g, 1, 1) : UF X.E (R.N j) × GLG X.E (R.N j) Pr.vGs × GLQ X.E (R.N j) (QE sel (mu : Chr X.F X.E X.K))) • p) P =
@@ -26,13 +26,13 @@ theorem frsF_rat_notG (p : ChPt (R := R) sel mu u j) (g : UF X.E (R.N j)) (P : r
   simp
 
 /- English proof (translation)
-Take `⟨κ, he, hr⟩` from `liftFr_smul p.deco (g, (1 : GLG X.E (R.N j) Pr.vGs)) ⟨P.1, hP⟩`. Use `⟨κ, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Unfold `frsF`. Rewrite using `[dif_pos hP, dif_pos hP]`. Conclude with `he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.TopStep.mem_stdAt]`. Introduce `i`. Establish `hkx` using `GlobalTheory.TopStep.mem_stdAt.1 ((κ.2 x).2 hx) i`. Establish `hxi` using `GlobalTheory.TopStep.mem_stdAt.1 hx i`. Establish `h1` using `congrFun (hr x hx) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.one_apply, inv_one, Units.val_one, Matrix.one_mulVec] at h1`. Establish `hred : redP P.1 (κ.1 x i - x i) = 0`. Rewrite using `[GlobalTheory.TopStep.reduction_sub hkx hxi]`. Establish `h2 : redP P.1 (κ.1 x i) = redP P.1 (x i)` using `h1`. Rewrite using `[h2, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.TopStep.intAt_div_of_redP (hq P hP) (GlobalTheory.TopStep.intAt_sub hkx hxi) hred`. Establish `e : (((qOf P.1 : X.E) ^ 1)⁻¹ • (κ.1 x - x)) i = (κ.1 x i - x i) / (qOf P.1 : X.E)`. Simplify using `[div_eq_inv_mul]`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_rat_G (hq : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → ((qOf P.1 : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal ^ 2)
     (p : ChPt (R := R) sel mu u j) (g : UF X.E (R.N j)) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) :
@@ -64,55 +64,49 @@ theorem frsF_rat_G (hq : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → ((qOf P.1 :
 end Frames
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie i hi hlt β β' x x' p p' _hp _hp' g g' w`. Establish `hm` using `m_eq t μ`. Take `rfl : i = t.m2 + 1` from `by omega`. Establish `hn1 : ¬ (t.m2 + 1 < t.m2)` using `by omega`. Establish `hn2 : t.m2 + 1 ≠ t.m2` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `xiPt`. Rewrite using `[dif_neg hn1, if_neg hn2, dif_neg hn1, if_neg hn2, XiTop_eq, XiTop_eq]`. Use `congr 1`. Conclude with `phiT_smul t.X.K p.deco p'.deco g 1 g' 1 w`. Establish `hX : t.X.Ok` using `hPin.fields.ok`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hok` using `t.idx_ok μ`. Establish `hc` using `hok.cst_ok`. Establish `hrep : ∀ q : ChPt (R` using `D.R) t.sel (t.tup μ) (t.word u) (t.m2 + 1), repY (cosetOf A (t.m2 + 1) (Nat.le_of_succ_le hi) β q) ∈ cosetOf A (t.m2 + 1) (Nat.le_of_succ_le hi) β q := by`. Introduce `q`. Take `⟨y, hy⟩` from `GlobalTheory.CplCosetPt.exists_sameCoset_frames t.sel (t.tup μ) (t.cst μ) (fun P => frsF t.sel (t.tup μ) q P) (fun P => y0At A (t.m2 + 1) (Nat.le_of_succ_le hi) β P)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Classical.epsilon_spec (p := fun y => y ∈ cosetOf A (t.m2 + 1) (Nat.le_of_succ_le hi) β q) ⟨y, hy⟩`. Establish `hy0` using `GlobalTheory.T.intAt_scaled_baseCosetRep_of_adTie D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie β`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Establish `hq0 : (qOf P.1 : t.X.E) ≠ 0` using `GlobalTheory.TopStep.qOf_ne_zero`. Establish `hqI : IntAt P.1 (qOf P.1 : t.X.E)` using `by simpa using IntAt.coe P.1 ((qOf P.1 : ℕ) : 𝓞 t.X.E)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hyy : y0At A (t.m2 + 1) (Nat.le_of_succ_le hi) β P = A.y0 β P`. Unfold `y0At`. Rewrite using `[dif_pos rfl]`. Distinguish the cases in `hP : P.1 ∈ t.Pr.vGs`. Establish `hq2 : ∀ P : rowSG t.Pr t.sel (t.tup μ), P.1 ∈ t.Pr.vGs → ((qOf P.1 : ℕ) : 𝓞 t.X.E) ∉ P.1.asIdeal ^ 2` using `fun P hP => GlobalTheory.TopStep.qOf_notMem_sq hX t.pr_ok hP`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hF, hκc⟩` from `frsF_rat_G t.sel (t.tup μ) hq2 p g P hP`. Take `⟨κ', hF', hκc'⟩` from `frsF_rat_G t.sel (t.tup μ) hq2 p' g' P hP`. Establish `hD1 : (t.cst μ).D P = 1` using `hok.depthG P hP`. Establish `hκD : ∀ z ∈ stdAt t.X.E _ P.1, ((qOf P.1 : t.X.E) ^ (t.cst μ).D P)⁻¹ • (κ.1 z - z) ∈ stdAt t.X.E _ P.1`. Rewrite using `[hD1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hκc`. Establish `hκD' : ∀ z ∈ stdAt t.X.E _ P.1, ((qOf P.1 : t.X.E) ^ (t.cst μ).D P)⁻¹ • (κ'.1 z - z) ∈ stdAt t.X.E _ P.1`. Rewrite using `[hD1]`. Conclude with `hκc'`. Establish `hy0P : ∀ l, IntAt P.1 ((qOf P.1 : t.X.E) * A.y0 β P l)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `l`. Establish `h` using `hy0 P l`. Simplify `h` using `only [hP, if_true, pow_one]`. Establish `key1 : ∀ (F1 : Sp t.X.E (D.R.N (t.m2 + 1)) ≃ₗ[t.X.E] Sp t.X.E (D.R.N (t.m2 + 1))) (u1 u0 : Sp t.X.E (D.R.N (t.m2 + 1))), F1 = g.1 * frsF t.sel (t.tup μ) p P * κ.1 → SameCoset t.sel (t.tup μ) (t.cst μ) P (F1.symm u1) (y0At A (t.m2 + 1) (Nat.le_of_succ_le hi) β P) → SameCoset t.sel …`. Introduce and unpack `F1 u1 u0 rfl h1 h2`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `SameCoset at h1 h2`. Simplify using `only [hP, if_true, pow_zero, inv_one, one_mul, hyy] at h1 h2`. Establish `e1 : inFr (g.1 * frsF t.sel (t.tup μ) p P * κ.1) (g'.1 * frsF t.sel (t.tup μ) p' P * κ'.1) (g'.1.toLinearMap ∘ₗ w ∘ₗ g.1.symm.toLinearMap) = κ'.1.symm.toLinearMap ∘ₗ inFr (frsF t.sel (t.tup μ) p P) (frsF t.sel (t.tup μ) p' P) w ∘ₗ κ.1.toLinearMap`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show κ'.1.symm ((frsF t.sel (t.tup μ) p' P).symm (g'.1.symm (g'.1 (w (g.1.symm (g.1 ((frsF t.sel (t.tup μ) p P) (κ.1 v)))))))) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `e2 : (g.1 * frsF t.sel (t.tup μ) p P * κ.1).symm u1 = κ.1.symm ((frsF t.sel (t.tup μ) p P).symm (g.1.symm u1))` using `rfl`. Rewrite using `[e1, e2]`. Rewrite `h1` using `[e2]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Generalize the expression as in `(frsF t.sel (t.tup μ) p P).symm (g.1.symm u1) = v1 at h1 ⊢`. Generalize the expression as in `(frsF t.sel (t.tup μ) p P).symm u0 = v at h2 ⊢`. Generalize the expression as in `inFr (frsF t.sel (t.tup μ) p P) (frsF t.sel (t.tup μ) p' P) w = Yw`. Establish `hbd : ∀ z : Sp t.X.E (D.R.N (t.m2 + 1)), (∀ l, IntAt P.1 ((z - A.y0 β P) l)) → ∀ l, IntAt P.1 ((qOf P.1 : t.X.E) * z l)`. Introduce `z hz l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (qOf P.1 : t.X.E) * z l = (qOf P.1 : t.X.E) * (z - A.y0 β P) l + (qOf P.1 : t.X.E) * A.y0 β P l`. Simplify using `only [Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(hqI.mul (hz l)).add (hy0P l)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hw : (qOf P.1 : t.X.E) • κ.1.symm v1 ∈ stdAt t.X.E _ P.1` using `GlobalTheory.TopStep.mem_stdAt.2 fun l => by simpa using hbd _ h1 l`. Establish `hw1 : (qOf P.1 : t.X.E) • v1 ∈ stdAt t.X.E _ P.1`. Establish `h` using `(κ.2 ((qOf P.1 : t.X.E) • κ.1.symm v1)).2 hw`. Rewrite `h` using `[map_smul, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hv1 : ∀ l, IntAt P.1 ((qOf P.1 : t.X.E) * v1 l)` using `fun l => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using GlobalTheory.TopStep.mem_stdAt.1 hw1 l`. Rewrite using `[GlobalTheory.TwV.AwayTopG.topDat_frames_vGs A dtU a hPin hTie P hP κ.1 κ'.1 κ.2 hκD κ'.2 hκD' Yw v1 hv1]`. Establish `hs` using `GlobalTheory.TwV.AwayTopG.symm_near κ.2 hκc hw1`. Rewrite `hs` using `[map_smul, ← smul_sub, smul_smul, pow_one, inv_mul_cancel₀ hq0, one_smul]`. Establish `hdiff : v1 - v ∈ stdAt t.X.E _ P.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `GlobalTheory.TopStep.mem_stdAt.2 fun l => ?_` and prove the remaining obligations. Establish `e : (v1 - v) l = (κ.1.symm v1 - A.y0 β P) l - (κ.1.symm v1 - v1) l - (v - A.y0 β P) l`. Simplify using `only [Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.TopStep.intAt_sub (GlobalTheory.TopStep.intAt_sub (h1 l) (GlobalTheory.TopStep.mem_stdAt.1 hs l)) (h2 l)`. Unfold `topDat`. Use `congr 1`. Establish `h` using `GlobalTheory.TopLaw.ftY_comp_glint t.sel (t.tup μ) (t.cst μ) hc P (hok.depthQ P) (κ := 1) (atNL t.X.E (D.R.N (t.m2 + 1 + 1)) (D.R.N (t.m2 + 1 + 1) - 1) ∘ₗ Yw) v v1 (fun _ => hbd _ h2) (fun h => absurd hP h) (fun _ => hdiff) (fun h => absurd hP h)`. Conclude with `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hF']`. Conclude with `key1 _ _ _ hF (hrep _ P) (hrep _ P)`. Establish `hy0P : ∀ l, IntAt P.1 ((qOf P.1 : t.X.E) ^ (t.cst μ).M * A.y0 β P l)`. Introduce `l`. Establish `h` using `hy0 P l`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `only [hP, if_false]`. Establish `hqM : (qOf P.1 : t.X.E) ^ (t.cst μ).M ≠ 0` using `pow_ne_zero _ hq0`. Establish `key2 : ∀ (F1 : Sp t.X.E (D.R.N (t.m2 + 1)) ≃ₗ[t.X.E] Sp t.X.E (D.R.N (t.m2 + 1))) (u1 u0 : Sp t.X.E (D.R.N (t.m2 + 1))), F1 = g.1 * frsF t.sel (t.tup μ) p P → SameCoset t.sel (t.tup μ) (t.cst μ) P (F1.symm u1) (y0At A (t.m2 + 1) (Nat.le_of_succ_le hi) β P) → SameCoset t.sel (t.tu …`. Introduce and unpack `F1 u1 u0 rfl h1 h2`. Unfold `SameCoset at h1 h2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [hP, if_false, hyy] at h1 h2`. Establish `e1 : inFr (g.1 * frsF t.sel (t.tup μ) p P) (g'.1 * frsF t.sel (t.tup μ) p' P) (g'.1.toLinearMap ∘ₗ w ∘ₗ g.1.symm.toLinearMap) = inFr (frsF t.sel (t.tup μ) p P) (frsF t.sel (t.tup μ) p' P) w`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show (frsF t.sel (t.tup μ) p' P).symm (g'.1.symm (g'.1 (w (g.1.symm (g.1 ((frsF t.sel (t.tup μ) p P) v)))))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e2 : (g.1 * frsF t.sel (t.tup μ) p P).symm u1 = (frsF t.sel (t.tup μ) p P).symm (g.1.symm u1)` using `rfl`. Rewrite using `[e1, e2]`. Rewrite `h1` using `[e2]`. Generalize the expression as in `(frsF t.sel (t.tup μ) p P).symm (g.1.symm u1) = v1 at h1 ⊢`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Generalize the expression as in `(frsF t.sel (t.tup μ) p P).symm u0 = v at h2 ⊢`. Generalize the expression as in `inFr (frsF t.sel (t.tup μ) p P) (frsF t.sel (t.tup μ) p' P) w = Yw`. Establish `hv : ∀ l, IntAt P.1 ((qOf P.1 : t.X.E) ^ (t.cst μ).M * v l)`. Introduce `l`. Establish `e : (qOf P.1 : t.X.E) ^ (t.cst μ).M * v l = (qOf P.1 : t.X.E) ^ (t.cst μ).M * (qOf P.1 : t.X.E) ^ (t.cst μ).M * (((qOf P.1 : t.X.E) ^ (t.cst μ).M)⁻¹ * (v - A.y0 β P) l) + (qOf P.1 : t.X.E) ^ (t.cst μ).M * A.y0 β P l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(((GlobalTheory.TopStep.intAt_pow hqI _).mul (GlobalTheory.TopStep.intAt_pow hqI _)).mul (h2 l)).add (hy0P l)`.
-
-Establish `hdiff : ((qOf P.1 : t.X.E) ^ (t.cst μ).M)⁻¹ • (v1 - v) ∈ stdAt t.X.E _ P.1`. Use `GlobalTheory.TopStep.mem_stdAt.2 fun l => ?_` and prove the remaining obligations. Establish `e : (((qOf P.1 : t.X.E) ^ (t.cst μ).M)⁻¹ • (v1 - v)) l = ((qOf P.1 : t.X.E) ^ (t.cst μ).M)⁻¹ * (v1 - A.y0 β P) l - ((qOf P.1 : t.X.E) ^ (t.cst μ).M)⁻¹ * (v - A.y0 β P) l`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `GlobalTheory.TopStep.intAt_sub (h1 l) (h2 l)`. Unfold `topDat`. Use `congr 1`. Establish `h` using `GlobalTheory.TopLaw.ftY_comp_glint t.sel (t.tup μ) (t.cst μ) hc P (hok.depthQ P) (κ := 1) (atNL t.X.E (D.R.N (t.m2 + 1 + 1)) (D.R.N (t.m2 + 1 + 1) - 1) ∘ₗ Yw) v v1 (fun h => absurd h hP) (fun _ => hv) (fun h => absurd h hP) (fun _ => hdiff)`.
-
-Conclude with `h`. Rewrite using `[frsF_rat_notG t.sel (t.tup μ) p' g' P hP]`. Conclude with `key2 _ _ _ (frsF_rat_notG t.sel (t.tup μ) p g P hP) (hrep _ P) (hrep _ P)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiPt_top_smul : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ i (hi : i + 1 ≤ D.R.m), t.m2 < i → ∀ β β' (x : UA D i (Nat.le_of_succ_le hi)) (x' : UA D (i + 1) hi) p p',

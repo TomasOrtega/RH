@@ -5,11 +5,11 @@ open Module GlobalTheory.HTRho GlobalTheory.UPel.Sm GlobalTheory.UPel.Sm.Model
 namespace GlobalTheory.HTRho
 
 /- English proof (translation)
-Unfold `mSub`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c, x, -, rfl⟩`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective G x`. Use `⟨σ (algebraMap C O c) y - χ c • y, ⟨c, y, trivial, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨w, ⟨c, y, -, rfl⟩, rfl⟩`. Use `⟨c, G.mkQ y, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, qAct_mk]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mSub_qAct_top {k O C : Type*} {H : Type*} [Field k] [AddCommGroup H] [Module k H] [Ring O] [CommRing C]
     [Algebra C O] (σ : O →+* Module.End k H) (G : Submodule k H) (hG : ∀ a, ∀ x ∈ G, σ a x ∈ G)
@@ -29,11 +29,11 @@ theorem mSub_qAct_top {k O C : Type*} {H : Type*} [Field k] [AddCommGroup H] [Mo
     rw [map_sub, map_smul, qAct_mk]
 
 /- English proof (translation)
-Use `⟨fun hJ => ?_, fun i => ?_⟩` and prove the remaining obligations. Unfold `jSub`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `z ⟨r, lam, c, x, -, hc, rfl⟩`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective G x`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hmem : (∑ l, lam l • σ (algebraMap C O (c l)) y) ∈ G` using `hJ (Submodule.subset_span ⟨r, lam, c, y, trivial, hc, rfl⟩)`. Establish `: (∑ l, lam l • qAct σ G hG (algebraMap C O (c l)) (Submodule.Quotient.mk y)) = G.mkQ (∑ l, lam l • σ (algebraMap C O (c l)) y)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hmem`. Rewrite using `[mSub_qAct_top]`. Conclude with `LinearEquiv.finrank_eq (Submodule.quotientQuotientEquivQuotientSup G (mSub σ (χ i) ⊤))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotFacts {k O C Idx H : Type*} [Field k] [AddCommGroup H] [Module k H] [Ring O] [CommRing C]
     [Algebra C O] (σ : O →+* Module.End k H) (G : Submodule k H) (hG : ∀ a, ∀ x ∈ G, σ a x ∈ G)

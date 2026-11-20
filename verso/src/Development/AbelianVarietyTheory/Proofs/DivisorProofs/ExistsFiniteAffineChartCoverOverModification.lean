@@ -9,13 +9,13 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ M G hG L hL`. Use `haveI := M.proper`. Use `haveI : CompactSpace M.S := QuasiCompact.compactSpace_of_compactSpace M.π`. Use `haveI : CompactSpace G.left := QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `hx : ∀ x : G.left, ∃ (j : L.ι) (W : G.left.Opens) (U : M.S.Opens), x ∈ W ∧ W ≤ L.U j ∧ W ≤ G.hom ⁻¹ᵁ U ∧ IsAffineOpen W ∧ IsAffineOpen U`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x`. Establish `hxt : x ∈ (⊤ : G.left.Opens)` using `trivial`. Rewrite `hxt` using `[← hL.cover]`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hxt`. Take `⟨U, hU, hxU, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 M.S.isBasis_affineOpens) (show G.hom x ∈ (⊤ : M.S.Opens) from trivial)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hxW, hWle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 G.left.isBasis_affineOpens) (show x ∈ L.U j ⊓ G.hom ⁻¹ᵁ U from ⟨hj, hxU⟩)`. Conclude with `⟨j, W, U, hxW, hWle.trans inf_le_left, hWle.trans inf_le_right, hW, hU⟩`. Use `choose j W U hxW hWj hWU hWa hUa using hx`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (W x : Set G.left)) (fun x => (W x).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hxW x⟩)`. Set `e` to `t.equivFin`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨t.card, fun b => j (e.symm b), fun b => W (e.symm b), fun b => U (e.symm b), ?_, fun b => hWj _, fun b => hWU _, fun b => hWa _, fun b => hUa _⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨e ⟨y, hy⟩, by simpa using hxy⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_affine_chart_cover : ∀ (R : Type) [CommRing R] [IsDomain R] (M : Modif R) (G : Over M.S), QuasiCompact G.hom → ∀ (L : LB G.left), L.IsLB → ∃ (n : ℕ) (j : Fin n → L.ι) (W : Fin n → G.left.Opens) (U : Fin n → M.S.Opens), (⨆ b, W b = ⊤) ∧ (∀ b, W b ≤ L.U (j b)) ∧ (∀ b, W b ≤ G.hom ⁻¹ᵁ U b) ∧ (∀ b, IsAffineOpen (W b)) ∧ (∀ b, IsAffineOpen (U b)) := by
   intro R _ _ M G hG L hL

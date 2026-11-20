@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProductFormulaHaar.T2Sp
 namespace PI.ProdFormulaE.Tr
 
 /- English proof (translation)
-The claim follows from `trSum_of toPi_injective toPi_surjective`.
+A detailed English derivation is pending.
 -/
 theorem sumLocalTrace : TrSum := trSum_of toPi_injective toPi_surjective
 

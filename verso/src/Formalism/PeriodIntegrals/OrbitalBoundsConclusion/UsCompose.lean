@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentComposition.De
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentComposition.Expand
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.UsCompose.composeDD_of (fun _ X q => PI.UnitaryGroupMassFormula.UsCompose.degDP X q) (fun k j ρ => PI.UnitaryGroupMassFormula.UsCompose.degD k j ρ) PI.UnitaryGroupMassFormula.UsCompose.expand`.
+A detailed English derivation is pending.
 -/
 theorem differential_operator_compose : Formalism.FourierDecayAlt.U.ComposeDD :=
   PI.UnitaryGroupMassFormula.UsCompose.composeDD_of (fun _ X q => PI.UnitaryGroupMassFormula.UsCompose.degDP X q)

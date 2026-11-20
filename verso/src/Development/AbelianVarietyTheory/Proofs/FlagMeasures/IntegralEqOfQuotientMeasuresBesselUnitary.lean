@@ -11,13 +11,11 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.SnMass.QuotUniq
 
 /- English proof (translation)
-Take `⟨-, -, φ, hφ, h⟩` from `GlobalTheory.Amp.CutQuot.cut_quotient k r R μG μR ν hR hG hμ hU hν`. Take `⟨h1, -, -⟩` from `GlobalTheory.Amp.CutQuot.cut_quotient k r R μG μR ν' hR hG hμ hU hν'`. Establish `h1' : ∀ᵐ x ∂ν', Matrix.of x ∈ GG k r` using `h1`. Establish `hae : ∀ᵐ s ∂μR, Matrix.of s ∈ R` using `hμ.2.2.1`. Establish `hW' : ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, (∫⁻ s, f (lmulM (Matrix.of s) x) ∂μR) ∂ν'` using `hν'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTm` using `(GlobalTheory.Amp.CutQuot.continuous_act k r).measurable`. Rewrite using `[h F hF hFi, hW' (fun x => φ x * F x) (hφ.1.mul hF)]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [h1'] with x hx`. Establish `hTx : Measurable fun s : Mt k r => lmulM (Matrix.of s) x` using `hTm.comp (measurable_id.prodMk measurable_const)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∫⁻ s, φ (lmulM (Matrix.of s) x) * F (lmulM (Matrix.of s) x) ∂μR = ∫⁻ s, φ (lmulM (Matrix.of s) x) * F x ∂μR`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with s hs`. Rewrite using `[hFi _ hs x hx]`. Rewrite using `[h2, lintegral_mul_const (F x) (f := fun s => φ (lmulM (Matrix.of s) x)) (hφ.1.comp hTx)]`.
-
-Conclude with `mul_le_of_le_one_left zero_le (hφ.2 x hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_le {k r : ℕ} {R : Set (Mat k r)} {μG μR ν ν' : Measure (Mt k r)}
     (hR : IsClosedSub k r R) (hG : IsHaarOn (GG k r) μG) (hμ : IsHaarOn R μR) (hU : IsUnimod R μR)
@@ -45,21 +43,19 @@ theorem lintegral_le {k r : ℕ} {R : Set (Mat k r)} {μG μR ν ν' : Measure (
   exact mul_le_of_le_one_left zero_le (hφ.2 x hx)
 
 /- English proof (translation)
-Introduce `k r R μG μR ν ν' hR hG hμ hU hν hν' V _ _ _ F hF hFi`. Use `borelize V`. Use `set S : Set (Mt k r) := {x | Matrix.of x ∈ GG k r} with hS`. Establish `hSm : MeasurableSet S` using `GlobalTheory.Amp.CutQuot.measurable_G k r`. Establish `hFc : ContinuousOn (fun x : Mt k r => F (Matrix.of x)) S` using `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F' : Mt k r → V := S.piecewise (fun x : Mt k r => F (Matrix.of x)) (fun _ => 0) with hF'`. Establish `hF'm : Measurable F'` using `hFc.measurable_piecewise continuousOn_const hSm`. Establish `hsep : TopologicalSpace.IsSeparable (Set.range F')`. Establish `h1 : TopologicalSpace.IsSeparable ((fun x : Mt k r => F (Matrix.of x)) '' S)` using `hFc.isSeparable_image (TopologicalSpace.IsSeparable.of_separableSpace S)`. Use `(h1.union (Set.finite_singleton (0 : V)).isSeparable).mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Distinguish the cases in `hx : x ∈ S`. Conclude with `Or.inl ⟨x, hx, by rw [hF', Set.piecewise_eq_of_mem _ _ _ hx]⟩`. Conclude with `Or.inr (by rw [hF', Set.piecewise_eq_of_notMem _ _ _ hx]; rfl)`. Establish `hinv : ∀ ρ ∈ R, ∀ x : Mt k r, Matrix.of x ∈ GG k r → F' (lmulM ρ x) = F' x`.
+Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ρ hρ x hx`. Establish `hx' : lmulM ρ x ∈ S` using `(GlobalTheory.Amp.CutQuot.mul_mem_iff (hR.1 hρ) (Matrix.of x)).2 hx`. Rewrite using `[hF', Set.piecewise_eq_of_mem _ _ _ hx', Set.piecewise_eq_of_mem _ _ _ (show x ∈ S from hx)]`. Conclude with `hFi ρ hρ _ hx`. Establish `hm : MeasurableSpace.comap F' inferInstance ≤ (inferInstance : MeasurableSpace (Mt k r))` using `hF'm.comap_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : StronglyMeasurable[MeasurableSpace.comap F' inferInstance] F'` using `(@stronglyMeasurable_iff_measurable_separable _ _ _ (MeasurableSpace.comap F' inferInstance) _ _ _ _).2 ⟨comap_measurable F', hsep⟩`. Establish `htrim : ν.trim hm = ν'.trim hm`. Use `@Measure.ext _ (MeasurableSpace.comap F' inferInstance) _ _ fun A hA => ?_` and prove the remaining obligations. Rewrite using `[trim_measurableSet_eq hm hA, trim_measurableSet_eq hm hA]`. Establish `hAm : MeasurableSet A` using `hm A hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨B, -, rfl⟩` from `hA`. Establish `hi : ∀ ρ ∈ R, ∀ x : Mt k r, Matrix.of x ∈ GG k r → (F' ⁻¹' B).indicator (1 : Mt k r → ℝ≥0∞) (lmulM ρ x) = (F' ⁻¹' B).indicator 1 x`. Introduce `ρ hρ x hx`. Simplify using `only [Set.indicator, Set.mem_preimage, hinv ρ hρ x hx, Pi.one_apply]`. Rewrite using `[← lintegral_indicator_one hAm, ← lintegral_indicator_one hAm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_antisymm (lintegral_le hR hG hμ hU hν hν' _ (measurable_one.indicator hAm) hi) (lintegral_le hR hG hμ hU hν' hν _ (measurable_one.indicator hAm) hi)`. Establish `hae : ∀ ν₀ : Measure (Mt k r), IsQuotMeas μG μR ν₀ → (fun x : Mt k r => F (Matrix.of x)) =ᵐ[ν₀] F'`. Introduce `ν₀ h`. Establish `h1 : ∀ᵐ x ∂ν₀, x ∈ S` using `(GlobalTheory.Amp.CutQuot.cut_quotient k r R μG μR ν₀ hR hG hμ hU h).1`. Use `filter_upwards [h1] with x hx`.
-
-Rewrite using `[hF', Set.piecewise_eq_of_mem _ _ _ hx]`. Rewrite using `[integrable_congr (hae ν hν), integrable_congr (hae ν' hν'), integral_congr_ae (hae ν hν), integral_congr_ae (hae ν' hν'), integral_trim hm hsm, integral_trim hm hsm, htrim]`. Use `⟨⟨fun h => ?_, fun h => ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `integrable_of_integrable_trim hm (htrim ▸ h.trim hm hsm)`. Conclude with `integrable_of_integrable_trim hm (htrim.symm ▸ h.trim hm hsm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem quot_uniq : ∀ (k r : ℕ) (R : Set (Mat k r)) (μG μR ν ν' : Measure (Mt k r)), IsClosedSub k r R → IsHaarOn (GG k r) μG → IsHaarOn R μR → IsUnimod R μR → IsQuotMeas μG μR ν → IsQuotMeas μG μR ν' → ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V] (F : Mat k r → V), ContinuousOn F (GG k r) → (∀ ρ ∈ R, ∀ x ∈ GG k r, F (ρ * x) = F x) → (Integrable (fun x : Mt k r => F (Matrix.of x)) ν ↔ Integrable (fun x : Mt k r => F (Matrix.of x)) ν') ∧ ∫ x, F (Matrix.of x) ∂ν = ∫ x, F (Matrix.of x) ∂ν' := by
   intro k r R μG μR ν ν' hR hG hμ hU hν hν' V _ _ _ F hF hFi

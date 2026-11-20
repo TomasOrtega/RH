@@ -34,9 +34,9 @@ def holLineBundleEquivAlt : HolLineBundle A ≃ IndefiniteRowSideFullHecke.Hilbe
   right_inv _ := rfl
 
 /- English proof (translation)
-Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, c⟩`. Conclude with `⟨a, c, b⟩`. Introduce and unpack `⟨a, b, c⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, c, b⟩`.
+Supply the required witnesses or components.
 -/
 theorem sections_eq_sectionSpace (L : HolLineBundle A) (n : ℕ) :
     L.sections n = IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.sectionSpace L.toIndefiniteRowSideFullHecke n := by
@@ -54,7 +54,7 @@ namespace Weight
 variable {L : HolLineBundle A}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨W.smooth, W.compat⟩`.
+Supply the required witnesses or components.
 -/
 theorem isWeight (W : Weight L) : IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.IsWeight L.toIndefiniteRowSideFullHecke W.φ :=
   ⟨W.smooth, W.compat⟩
@@ -83,9 +83,9 @@ theorem lerp_φ (W₀ W₁ : Weight L) (t : ℝ) :
 end Weight
 
 /- English proof (translation)
-Establish `hT : MeasurableSet (A.chart j).target` using `(A.chart j).open_target.measurableSet`. Establish `hs : AEMeasurable (A.chart j).symm (volume.restrict (A.chart j).target)` using `(A.chart j).continuousOn_symm.aemeasurable hT`. Establish `hf : AEMeasurable (fun y => ENNReal.ofReal (d y)) (volume.restrict (A.chart j).target)` using `ENNReal.measurable_ofReal.comp_aemeasurable (hd.aemeasurable hT)`. Rewrite using `[lintegral_map' hg.aemeasurable (hs.mono_ac (withDensity_absolutelyContinuous _ _)), lintegral_withDensity_eq_lintegral_mul₀ hf (show AEMeasurable (fun y => g ((A.chart j).symm y)) _ from hg.comp_aemeasurable hs)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.mul_apply]`. Conclude with `mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_map_chart [MeasurableSpace X] [BorelSpace X] (j : Fin A.n)
     {d : (Fin D → ℂ) → ℝ} (hd : ContinuousOn d (A.chart j).target) {g : X → ℝ≥0∞}

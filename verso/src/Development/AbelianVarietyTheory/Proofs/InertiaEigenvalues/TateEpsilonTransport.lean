@@ -8,33 +8,31 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocalFieldIso
 
 /- English proof (translation)
-Introduce `k k' _ _ _ _ _ _ _ _ _ _ i hi ψ ψ' χ χ' e hψ hχ he`. Take `⟨_, hv1, hord, hres, _⟩` from `continuous_iso_keeps_valuation k k' i hi`. Use `set u : kˣ →* k'ˣ := Units.map i.toRingHom.toMonoidHom with hu`. Establish `hcoe : ∀ x : kˣ, ((u x : k'ˣ) : k') = i x` using `fun x => rfl`. Establish `hle : ∀ x y : k, valuation k' (i x) ≤ valuation k' (i y) ↔ valuation k x ≤ valuation k y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Establish `hy' : i y ≠ 0` using `by simpa using hy`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hv1 (x / y)`. Rewrite `h1` using `[map_div₀, map_div₀, map_div₀, div_le_one₀ ((Valuation.pos_iff _).2 hy'), div_le_one₀ ((Valuation.pos_iff _).2 hy)]`. Conclude with `h1`. Establish `hsurj : ∀ x' : k'ˣ, ∃ x : kˣ, u x = x'` using `fun x' => ⟨Units.map i.symm.toRingHom.toMonoidHom x', by ext; simp [hu]⟩`. Establish `huinj : Function.Injective u` using `fun x y h => by ext; exact i.injective (by simpa [hcoe] using congrArg (fun z : k'ˣ => (z : k')) h)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hunif : ∀ a : ℕ, ∃ p : kˣ, valuation k (p : k) = uniformizer k ^ a ∧ valuation k' (i p) = uniformizer k' ^ a`. Introduce `a`. Take `⟨p, hp, hp'⟩` from `exists_unit_pow k a`. Take `⟨q, hq, hq'⟩` from `exists_unit_pow k' a`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hq, ← hcoe, valuation_eq_iff_ord, hord, hp', hq']`. Establish `hfilt : ∀ (x : kˣ) (b : ℕ), u x ∈ unitFilt k' b ↔ x ∈ unitFilt k b`. Introduce `x b`. Take `⟨p, hp, hp'⟩` from `hunif b`. Simplify using `only [unitFilt, Set.mem_setOf_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : valuation k' ((u x : k'ˣ) : k') = 1 ↔ valuation k (x : k) = 1`. Rewrite using `[← ord_eq_zero_iff, ← ord_eq_zero_iff, hord]`. Establish `e2 : valuation k' (((u x : k'ˣ) : k') - 1) ≤ uniformizer k' ^ b ↔ valuation k ((x : k) - 1) ≤ uniformizer k ^ b`. Establish `hs : i ((x : k) - 1) = i x - 1` using `by rw [map_sub, map_one]`. Rewrite using `[← hp, ← hp', hcoe, ← hle, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e1, e2]`. Take `⟨c, a, R, hc, ha, hR, rfl⟩` from `he`. Use `⟨u c, a, R.image u, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x'`. Take `⟨x, rfl⟩` from `i.surjective x'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hcoe, hle, ← hc x]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Rewrite using `[← hψ]`. Conclude with `h (i y) ((hle y x).2 hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h y' hy'`. Take `⟨y, rfl⟩` from `i.surjective y'`. Rewrite using `[hψ]`. Conclude with `h y ((hle y x).1 hy')`. Use `⟨fun x' hx' => ?_, fun b hb => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, rfl⟩` from `hsurj x'`. Rewrite using `[hχ]`. Conclude with `ha.1 x ((hfilt x a).1 hx')`. Take `⟨x, hx, hx'⟩` from `ha.2 b hb`. Conclude with `⟨u x, (hfilt x b).2 hx, by rw [hχ]; exact hx'⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun r' hr' => ?_, fun y' hy' => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, rfl⟩` from `Finset.mem_image.1 hr'`. Rewrite using `[hord, hord]`. Conclude with `hR.1 r hr`. Take `⟨y, rfl⟩` from `hsurj y'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `hy'` using `[hord, hord]`. Take `⟨r, ⟨hr, hrv⟩, hru⟩` from `hR.2 y hy'`. Use `⟨u r, ⟨Finset.mem_image_of_mem u hr, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hcoe, hcoe, hcoe, ← map_sub i, hle]`. Conclude with `hrv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `r' ⟨hr', hr'v⟩`. Take `⟨r0, hr0, rfl⟩` from `Finset.mem_image.1 hr'`. Rewrite `hr'v` using `[hcoe, hcoe, hcoe, ← map_sub i, hle]`. Rewrite using `[hru r0 ⟨hr0, hr'v⟩]`. Rewrite using `[hres, Finset.sum_image (fun x _ y _ h => huinj h)]`.
-
-Use `congr 1`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hχ, hcoe, hψ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTateEps_transport : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] [CharZero k'] (i : k ≃+* k'), Continuous i → ∀ (ψ : AddChar k Circle) (ψ' : AddChar k' Circle) (χ : kˣ →* ℂˣ) (χ' : k'ˣ →* ℂˣ) (e : ℂ), (∀ x, ψ' (i x) = ψ x) → (∀ x, χ' (Units.map i.toRingHom.toMonoidHom x) = χ x) → IsTateEps ψ χ e → IsTateEps ψ' χ' e := by
   intro k k' _ _ _ _ _ _ _ _ _ _ i hi ψ ψ' χ χ' e hψ hχ he

@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ar
 open Matrix Filter ReciprocityTheory.Gal UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.B2
 
 /- English proof (translation)
-Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f), Nat.card_congr f.quotKerEquivRange.toEquiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_ker_range {A V W : Type} [CommRing A] [AddCommGroup V] [Module A V] [AddCommGroup W] [Module A W]
     (f : V →ₗ[A] W) : Nat.card V = Nat.card (LinearMap.ker f) * Nat.card (LinearMap.range f) := by
@@ -21,11 +21,11 @@ private def Zu {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] (M : FRe
     exact ⟨Submodule.smul_mem _ c a1, fun g hg => by rw [Pi.smul_apply, a2 g hg, smul_zero]⟩
 
 /- English proof (translation)
-Establish `hLC : LC M.ρ`. Introduce `m`. Rewrite using `[IsLocallyConstant.iff_continuous]`. Conclude with `M.cont.comp (continuous_id.prodMk continuous_const)`. Establish `hJ' : ∀ g ∈ J, M.ρ g = 1` using `fun g hg => LinearMap.ext (hJ g hg)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin, hcard⟩` from `h A M.X M.ρ hLC hl hJ'`. Establish `hset : ((Zu M J : Submodule A (G → M.X)) : Set (G → M.X)) = {z | z ∈ Zl M.ρ ∧ ∀ g ∈ J, z g = 0}`. Use extensionality with `z`. Use `show (z ∈ Z1 M.ρ ∧ ∀ g ∈ J, z g = 0) ↔ _`. Rewrite using `[mem_Z1_iff_cocycle, Set.mem_setOf_eq, mem_Zl, IsLocallyConstant.iff_continuous]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (Zu M J) ≃ {z | z ∈ Zl M.ρ ∧ ∀ g ∈ J, z g = 0}` using `Equiv.setCongr hset`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI := hfin.to_subtype`. Conclude with `Finite.of_equiv _ e.symm`. Rewrite using `[Nat.card_congr e, Nat.card_coe_set_eq, hcard]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_Zu {l : ℕ} [Fact l.Prime] {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] {J : Subgroup G}
     (h : UnrCount l G J) (M : FRep A G) (hl : ∀ m : M.X, l • m = 0) (hJ : ∀ g ∈ J, ∀ m, M.ρ g m = m) :
@@ -56,9 +56,9 @@ private def kerRep {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] (M M
   cont := Continuous.subtype_mk (M.cont.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))) _
 
 /- English proof (translation)
-Establish `hz' : z ∈ Z1 M.ρ ∧ ∀ g ∈ J, z g = 0` using `hz`. Establish `hzc` using `(mem_Z1_iff_cocycle _ _).1 hz'.1`. Use `show (fun g => u (z g)) ∈ Z1 M'.ρ ∧ ∀ g ∈ J, (fun g => u (z g)) g = 0`. Use `⟨(mem_Z1_iff_cocycle _ _).2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_of_discreteTopology (f := u)).comp hzc.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g h`. Simplify using `only [hzc.2 g h, map_add, hu]`. Introduce `g hg`. Simplify using `only [hz'.2 g hg, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem comp_mem_Zu_of_equivariant {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] {J : Subgroup G}
     (M M' : FRep A G) (u : M.X →ₗ[A] M'.X) (hu : ∀ g m, u (M.ρ g m) = M'.ρ g (u m))
@@ -74,9 +74,9 @@ private theorem comp_mem_Zu_of_equivariant {A G : Type} [CommRing A] [Group G] [
     simp only [hz'.2 g hg, map_zero]
 
 /- English proof (translation)
-Establish `hd : ∀ g, d0 M.ρ m g = M.ρ g m - m` using `fun g => rfl`. Use `show d0 M.ρ m ∈ Z1 M.ρ ∧ ∀ g ∈ J, d0 M.ρ m g = 0`. Use `⟨(mem_Z1_iff_cocycle _ _).2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun g => M.ρ g m` using `M.cont.comp (continuous_id.prodMk continuous_const)`. Conclude with `(hc.sub continuous_const).congr (fun g => (hd g).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g h`. Rewrite using `[hd, hd, hd, map_sub, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Introduce `g hg`. Rewrite using `[hd, hJ g hg, sub_self]`.
+Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem d0_mem_Zu_of_trivial_on {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] {J : Subgroup G}
     (M : FRep A G) (hJ : ∀ g ∈ J, ∀ m, M.ρ g m = m) (m : M.X) : d0 M.ρ m ∈ Zu M J := by
@@ -92,9 +92,9 @@ private theorem d0_mem_Zu_of_trivial_on {A G : Type} [CommRing A] [Group G] [Top
     rw [hd, hJ g hg, sub_self]
 
 /- English proof (translation)
-Establish `hz' : z ∈ Z1 M.ρ ∧ ∀ g ∈ J, z g = 0` using `hz`. Establish `hzc` using `(mem_Z1_iff_cocycle _ _).1 hz'.1`. Use `show _ ∈ Z1 (kerRep M M' u hu).ρ ∧ _`. Use `⟨(mem_Z1_iff_cocycle _ _).2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `hzc.1.subtype_mk _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g h`. Conclude with `Subtype.ext (hzc.2 g h)`. Introduce `g hg`. Conclude with `Subtype.ext (hz'.2 g hg)`.
+A detailed English derivation is pending.
 -/
 private theorem ker_restrict_mem_Zu_of_comp_zero {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] {J : Subgroup G}
     (M M' : FRep A G) (u : M.X →ₗ[A] M'.X) (hu : ∀ g m, u (M.ρ g m) = M'.ρ g (u m))
@@ -111,55 +111,47 @@ private theorem ker_restrict_mem_Zu_of_comp_zero {A G : Type} [CommRing A] [Grou
     exact Subtype.ext (hz'.2 g hg)
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ J h`. Unfold `UrAx`. Introduce `A _ M hl hJ`. Establish `memZu : ∀ {N : FRep A G} {z : G → N.X}, z ∈ Zu N J ↔ z ∈ Z1 N.ρ ∧ ∀ g ∈ J, z g = 0` using `Iff.rfl`. Take `⟨hfin, hcZ⟩` from `card_Zu h M hl hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hZ : Zu M J ≤ Z1 M.ρ` using `fun z hz => (memZu.1 hz).1`. Establish `hres : ∀ w : Z1 M.ρ, resH1 M.ρ J.subtype continuous_subtype_val (Submodule.Quotient.mk w) = Submodule.Quotient.mk (restrictCocycles1 M.ρ J.subtype continuous_subtype_val w)` using `fun w => rfl`. Set `φ0 : Zu M J →ₗ[A] H1 M.ρ` to `(Submodule.mkQ _) ∘ₗ Submodule.inclusion hZ`. Establish `hφ0 : ∀ z, φ0 z ∈ H1ur M.ρ J`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[H1ur, LinearMap.mem_ker]`. Use `show resH1 M.ρ J.subtype continuous_subtype_val (Submodule.Quotient.mk (Submodule.inclusion hZ z)) = 0`. Rewrite using `[hres]`. Establish `hz0 : restrictCocycles1 M.ρ J.subtype continuous_subtype_val (Submodule.inclusion hZ z) = 0` using `Subtype.ext (funext fun x => (memZu.1 z.2).2 x x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz0, Submodule.Quotient.mk_zero]`. Set `φ : Zu M J →ₗ[A] H1ur M.ρ J` to `φ0.codRestrict _ hφ0`. Set `d : M.X →ₗ[A] Zu M J` to `(d0 M.ρ).codRestrict _ (d0_mem_Zu_of_trivial_on M hJ)`. Establish `hsurj : Function.Surjective φ`. Introduce and unpack `⟨c, hc⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Rewrite `hc` using `[H1ur, LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `resH1 M.ρ J.subtype continuous_subtype_val (Submodule.Quotient.mk w) = 0 at hc`. Rewrite `hc` using `[hres, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Take `⟨m, hm⟩` from `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwJ : ∀ g ∈ J, w.1 g = 0`. Introduce `g hg`. Establish `hh` using `hm ⟨g, hg⟩`. Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype, hJ g hg, sub_self] at hh`. Conclude with `hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨⟨w.1, memZu.2 ⟨w.2, hwJ⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Establish `hker : LinearMap.ker d = H0 M.ρ`. Use extensionality with `m`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[LinearMap.mem_ker, mem_riemannRochSpace_iff_regularAt_everywhere]`. Prove the components needed by the constructor for the conclusion. Introduce `hm g`. Establish `hh : M.ρ g m - m = 0` using `congrArg (fun z : Zu M J => z.1 g) hm`. Conclude with `sub_eq_zero.1 hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `hm`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `(sub_eq_zero.2 (hm g) : M.ρ g m - m = 0)`. Establish `hrange : LinearMap.range d = LinearMap.ker φ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `z`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (Submodule.Quotient.mk (Submodule.inclusion hZ (d m)) : H1 M.ρ) = 0`. Apply `(Submodule.Quotient.mk_eq_zero (Submodule.comap (Z1 M.ρ).subtype (B1 M.ρ))).2` to reduce the goal to its premises. Use `show d0 M.ρ m ∈ B1 M.ρ`. Conclude with `(mem_coboundaries1 _ _).2 ⟨m, fun g => rfl⟩`. Introduce `hz`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz2 : (Submodule.Quotient.mk (Submodule.inclusion hZ z) : H1 M.ρ) = 0` using `congrArg Subtype.val hz`. Establish `hB : z.1 ∈ B1 M.ρ` using `(Submodule.Quotient.mk_eq_zero (Submodule.comap (Z1 M.ρ).subtype (B1 M.ρ))).1 hz2`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hB`. Conclude with `⟨m, Subtype.ext (funext fun g => (hm g).symm)⟩`. Establish `hrφ : Nat.card (LinearMap.range φ) = Nat.card (H1ur M.ρ J)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[LinearMap.range_eq_top.2 hsurj]`. Conclude with `Nat.card_congr Submodule.topEquiv.toEquiv`. Use `haveI := hfin`. Establish `e1` using `card_ker_range d`. Establish `e2` using `card_ker_range φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[hker, hrange]`. Rewrite `e2` using `[hrφ, hcZ, e1]`. Establish `hpos : 0 < Nat.card (LinearMap.ker φ)` using `Nat.card_pos`. Rewrite `e2` using `[mul_comm]`. Conclude with `(Nat.eq_of_mul_eq_mul_left hpos e2).le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `M' u hu hsu y' hy' hy'J`. Establish `hl' : ∀ m : M'.X, l • m = 0`. Introduce `m`. Take `⟨x, rfl⟩` from `hsu m`. Rewrite using `[← map_nsmul, hl, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hJ' : ∀ g ∈ J, ∀ m : M'.X, M'.ρ g m = m`. Introduce `g hg m`. Take `⟨x, rfl⟩` from `hsu m`. Rewrite using `[← hu, hJ g hg]`. Take `⟨hfin', hcZ'⟩` from `card_Zu h M' hl' hJ'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `K` to `kerRep M M' u hu`. Establish `hlK : ∀ m : K.X, l • m = 0` using `fun m => Subtype.ext (hl m.1)`. Establish `hJK : ∀ g ∈ J, ∀ m : K.X, K.ρ g m = m` using `fun g hg m => Subtype.ext (hJ g hg m.1)`. Take `⟨-, hcZK⟩` from `card_Zu h K hlK hJK`. Set `ψ : Zu M J →ₗ[A] Zu M' J` to `((u.compLeft G) ∘ₗ (Zu M J).subtype).codRestrict _ (fun z => comp_mem_Zu_of_equivariant M M' u hu z.1 z.2)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Set `ι : Zu K J →ₗ[A] Zu M J` to `(((LinearMap.ker u).subtype.compLeft G) ∘ₗ (Zu K J).subtype).codRestrict _ (fun w => comp_mem_Zu_of_equivariant K M (LinearMap.ker u).subtype (fun g m => rfl) w.1 w.2)`. Establish `hιinj : Function.Injective ι`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `Subtype.ext (congrArg (fun z : Zu M J => z.1 g) hab)`. Establish `hιr : LinearMap.range ι = LinearMap.ker ψ`. Use extensionality with `z`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨w, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `LinearMap.mem_ker.1 (w.1 g).2`. Introduce `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : ∀ g, u (z.1 g) = 0` using `fun g => congrArg (fun y : Zu M' J => y.1 g) hz`. Conclude with `⟨⟨_, ker_restrict_mem_Zu_of_comp_zero M M' u hu z.1 z.2 hk⟩, Subtype.ext rfl⟩`. Establish `hcM : Nat.card M.X = Nat.card K.X * Nat.card M'.X`. Establish `e` using `card_ker_range u`. Rewrite `e` using `[LinearMap.range_eq_top.2 hsu, Nat.card_congr Submodule.topEquiv.toEquiv]`.
-
-Conclude with `e`. Establish `e2` using `card_ker_range ψ`. Rewrite `e2` using `[← hιr, Nat.card_congr (LinearEquiv.ofInjective ι hιinj).symm.toEquiv, hcZ, hcZK, hcM]`. Establish `hposK : 0 < Nat.card K.X` using `Nat.card_pos`. Establish `hrψ : Nat.card (LinearMap.range ψ) = Nat.card (Zu M' J)`.
-
-Rewrite using `[hcZ']`. Conclude with `(Nat.eq_of_mul_eq_mul_left hposK e2).symm`. Use `haveI := hfin'`. Establish `htop : (LinearMap.range ψ).toAddSubgroup = ⊤` using `AddSubgroup.eq_top_of_card_eq _ hrψ`. Establish `hmem : (⟨y', memZu.2 ⟨hy', hy'J⟩⟩ : Zu M' J) ∈ LinearMap.range ψ`.
-
-Establish `hh : (⟨y', memZu.2 ⟨hy', hy'J⟩⟩ : Zu M' J) ∈ (LinearMap.range ψ).toAddSubgroup`. Rewrite using `[htop]`. Conclude with `AddSubgroup.mem_top _`. Conclude with `hh`. Take `⟨z, hz⟩` from `LinearMap.mem_range.1 hmem`.
-
-Conclude with `⟨z.1, (memZu.1 z.2).1, (memZu.1 z.2).2, fun g => congrArg (fun y : Zu M' J => y.1 g) hz⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.B2.urOf :
     ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G), UnrCount l G J → UrAx l J := by

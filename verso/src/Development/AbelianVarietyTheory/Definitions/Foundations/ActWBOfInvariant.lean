@@ -65,7 +65,7 @@ def IsZetaB (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (pr : X.Fn l → Fin 2 �
       Cv n (Y r s y) (pr (β s y) + (mat ρ s *ᵥ b (y * (cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹) - b y))
 
 /- English proof (translation)
-Introduce `γ hγ` and use `by rw [CongruenceSubgroup.Gamma_mem] at hγ rw [CongruenceSubgroup.Gamma0_mem, ZMod.intCast_zmod_eq_zero_iff_dvd] exact (Int.natCast_dvd_natCast.2 h).trans ((ZMod.intCast_zmod_eq_zero_iff_dvd _ M).1 hγ.2.2.1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Gamma_le_Gamma0 {l M : ℕ} (h : l ∣ M) : CongruenceSubgroup.Gamma M ≤ CongruenceSubgroup.Gamma0 l := fun γ hγ => by
   rw [CongruenceSubgroup.Gamma_mem] at hγ
@@ -73,44 +73,42 @@ theorem Gamma_le_Gamma0 {l M : ℕ} (h : l ∣ M) : CongruenceSubgroup.Gamma M �
   exact (Int.natCast_dvd_natCast.2 h).trans ((ZMod.intCast_zmod_eq_zero_iff_dvd _ M).1 hγ.2.2.1)
 
 /- English proof (translation)
-Simplify using `[crtF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crtF_mod_left (m N : ℕ) : ((crtF m N : ℤ) : ZMod m) = 0 := by
   simp [crtF]
 
 /- English proof (translation)
-Simplify using `only [crtF, Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val]`. Conclude with `ZMod.mul_inv_of_unit _ ((ZMod.isUnit_iff_coprime m N).2 h)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crtF_mod_right {m N : ℕ} [NeZero N] (h : Nat.Coprime m N) : ((crtF m N : ℤ) : ZMod N) = 1 := by
   simp only [crtF, Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val]
   exact ZMod.mul_inv_of_unit _ ((ZMod.isUnit_iff_coprime m N).2 h)
 
 /- English proof (translation)
-Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `[sigN, crtF_mod_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sigN_mem_Gamma (m N : ℕ) : sigN m N ∈ CongruenceSubgroup.Gamma m := by
   rw [CongruenceSubgroup.Gamma_mem]
   simp [sigN, crtF_mod_left]
 
 /- English proof (translation)
-Rewrite using `[wMat, Matrix.det_mul, (sigN l N).2, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_wMat (l N : ℕ) : (wMat l N).det = N := by
   rw [wMat, Matrix.det_mul, (sigN l N).2, Matrix.det_fin_two_of]
   simp
 
 /- English proof (translation)
-Take `⟨h1, h0⟩` from `hγ`. Take `⟨h00, h11, h10⟩` from `(CongruenceSubgroup.Gamma1_mem _ _).1 h1`. Establish `hl : ((γ 1 0 : ℤ) : ZMod l) = 0` using `CongruenceSubgroup.Gamma0_mem.1 h0`. Take `⟨t, ht⟩ : (N : ℤ) ∣ γ 1 0` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ N).1 h10`. Establish `htl : (t : ZMod l) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hl` using `[ht, Int.cast_mul, Int.cast_natCast]`. Conclude with `(((ZMod.isUnit_iff_coprime N l).2 h.symm).mul_right_eq_zero).1 hl`. Set `δ : SL(2, ℤ)` to `⟨!![γ 0 0, N * γ 0 1; t, γ 1 1], by`. Establish `e` using `γ.2`. Rewrite `e` using `[Matrix.det_fin_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fin_two_of]`. Establish `e' : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1` using `e`. Rewrite `e'` using `[ht]`. Use the proof step `linarith⟩`. Establish `hδ : !![(N : ℤ), 0; 0, 1] * (γ : Matrix (Fin 2) (Fin 2) ℤ) = (δ : Matrix (Fin 2) (Fin 2) ℤ) * !![(N : ℤ), 0; 0, 1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [δ, Matrix.mul_apply, Fin.sum_univ_two, ht] <;> ring`. Use `⟨sigN l N * δ * (sigN l N)⁻¹, Subgroup.mem_inf.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hf` using `crtF_mod_right h`. Establish `hc : ((sigN l N * δ * (sigN l N)⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) = !![1 - crtF l N ^ 2, crtF l N ^ 3 - 2 * crtF l N; crtF l N, 1 - crtF l N ^ 2] * !![γ 0 0, N * γ 0 1; t, γ 1 1] * Matrix.adjugate !![1 - crtF l N ^ 2, crtF l N ^ 3 - 2 * crtF l N; crtF l N, 1 - crtF l N ^ …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv]`. Both sides reduce to the same expression. Apply the tactic sequence `refine (CongruenceSubgroup.Gamma1_mem _ _).2 ⟨?_, ?_, ?_⟩ <;> rw [hc] <;>`. Apply the tactic sequence `simp [Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two, hf, h00, h11] <;> norm_num`. Establish `hσ` using `Gamma_le_Gamma0 (dvd_refl l) (sigN_mem_Gamma l N)`.
-
-Conclude with `mul_mem (mul_mem hσ (CongruenceSubgroup.Gamma0_mem.2 htl)) (inv_mem hσ)`. Rewrite using `[wMat, Matrix.mul_assoc, hδ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.SpecialLinearGroup.coe_mul, ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel_right]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_wMat_mul {l N : ℕ} [NeZero N] (h : Nat.Coprime l N) {γ : SL(2, ℤ)} (hγ : γ ∈ Gam N l) :
     ∃ γ' ∈ Gam N l, wMat l N * (γ : Matrix (Fin 2) (Fin 2) ℤ) = (γ' : Matrix (Fin 2) (Fin 2) ℤ) * wMat l N := by
@@ -146,7 +144,7 @@ theorem exists_wMat_mul {l N : ℕ} [NeZero N] (h : Nat.Coprime l N) {γ : SL(2,
       ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel_right]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [GlobalTheory.ZetaB.gR, Matrix.vecMul, dotProduct, Fin.sum_univ_two, GlobalTheory.ZetaB.cR_mod l N hN]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecMul_gR (l N : ℕ) [Fact l.Prime] (hN : (N : ZMod l) ≠ 0) (r₀ : ZMod l) :
     (![r₀, 1] : Fin 2 → ZMod l) ᵥ* ((GlobalTheory.ZetaB.gR l N r₀ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom (ZMod l))) =
@@ -158,23 +156,23 @@ def lnFn (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) : Submodule ℤ_[l
   Submodule.pi Set.univ fun _ => (idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Khat l))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h u => h u (Set.mem_univ u), fun h u _ => h u⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_lnFn (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (b : X.Fn l) :
     b ∈ lnFn X l n ↔ ∀ u, b u ∈ (idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Khat l)) :=
   ⟨fun h u => h u (Set.mem_univ u), fun h u _ => h u⟩
 
 /- English proof (translation)
-The claim follows from `(mem_lnFn X l n _).2 fun _ => Submodule.smul_top_le_comap_smul_top _ (X.kmap l _) ((mem_lnFn X l n _).1 hb _)`.
+A detailed English derivation is pending.
 -/
 theorem act_mem_lnFn (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {n : ℕ} (m : Matrix (Fin 2) (Fin 2) ℤ) {b : X.Fn l}
     (hb : b ∈ lnFn X l n) : X.act l m b ∈ lnFn X l n :=
   (mem_lnFn X l n _).2 fun _ => Submodule.smul_top_le_comap_smul_top _ (X.kmap l _) ((mem_lnFn X l n _).1 hb _)
 
 /- English proof (translation)
-Establish `hu : Units.map φ.toMonoidHom (GlobalTheory.ZetaB.unitOf X a) = GlobalTheory.ZetaB.unitOf X (φ a)`. Distinguish the cases in `h : a = 0`. Substitute `h` using the available equality. Rewrite using `[map_zero, GlobalTheory.ZetaB.unitOf_zero, map_one]`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.ZetaB.unitOf_val X ((map_ne_zero φ).2 h), Units.coe_map, GlobalTheory.ZetaB.unitOf_val X h]`. Both sides reduce to the same expression. Unfold `Tower.kmap GlobalTheory.ZetaB.clsHat`. Simplify using `only [LinearMap.restrictScalars_apply]`. Rewrite using `[AdicCompletion.map_of, LinearMap.baseChange_tmul, ← hu]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -193,7 +191,7 @@ theorem kmap_clsHat (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (φ : X.K ≃+* X
   rfl
 
 /- English proof (translation)
-Establish `h : 0 < (γ : Matrix (Fin 2) (Fin 2) ℤ).det` using `by rw [γ.2]; exact one_pos`. Unfold `toGQ`. Rewrite using `[dif_pos h]`. Conclude with `Subtype.ext (Units.ext rfl)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toGQ_coe_SL (γ : SL(2, ℤ)) : toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ) = ofSL γ := by
   have h : 0 < (γ : Matrix (Fin 2) (Fin 2) ℤ).det := by rw [γ.2]; exact one_pos
@@ -202,7 +200,7 @@ theorem toGQ_coe_SL (γ : SL(2, ℤ)) : toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ) =
   exact Subtype.ext (Units.ext rfl)
 
 /- English proof (translation)
-The claim follows from `Tower.act_act Ω ε X l _ _ (by rw [γ.2]; exact one_pos) (by rw [γ'.2]; exact one_pos) b`.
+A detailed English derivation is pending.
 -/
 theorem act_act_SL (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (γ γ' : SL(2, ℤ)) (b : X.Fn l) :
     X.act l (γ' : Matrix (Fin 2) (Fin 2) ℤ) (X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b) =
@@ -213,7 +211,7 @@ def InvMod (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (H : Subgroup SL
   ∀ γ ∈ H, X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b - b ∈ lnFn X l n
 
 /- English proof (translation)
-Establish `e` using `act_mem_lnFn X l (m' : Matrix (Fin 2) (Fin 2) ℤ) (hb _ h)`. Rewrite `e` using `[map_sub, act_act_SL, inv_mul_cancel_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem InvMod.act_congr {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {H : Subgroup SL(2, ℤ)} {b : X.Fn l}
     (hb : InvMod X l n H b) {m m' : SL(2, ℤ)} (h : m * m'⁻¹ ∈ H) :
@@ -222,15 +220,15 @@ theorem InvMod.act_congr {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {H
   rwa [map_sub, act_act_SL, inv_mul_cancel_right] at e
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite using `[mem_lnFn]`. Introduce `u`. Establish `h1 : X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) (secT X l w a) u = ((mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 0) ^ w • GlobalTheory.ZetaB.clsHat X l a` using `by show X.kmap l _ (_ • _) = _`. Rewrite using `[map_smul, kmap_clsHat, toGQ_coe_SL]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `(mem_lev_iff X _ a).1 ha γ hγ`. Rewrite using `[Pi.sub_apply, h1]`. Use `show _ - (u 0) ^ w • GlobalTheory.ZetaB.clsHat X l a ∈ _`. Rewrite using `[← sub_smul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Use `Dvd.dvd.trans ?_ (sub_dvd_pow_sub_pow _ _ w)` and prove the remaining obligations. Rewrite `hγ` using `[CongruenceSubgroup.Gamma_mem]`. Establish `hd : ∀ a : ℤ, (a : ZMod M) = 0 → (l : ℤ_[l]) ^ n ∣ (a : ℤ_[l])` using `fun a h => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Int.natCast_dvd_natCast.2 hM).trans ((ZMod.intCast_zmod_eq_zero_iff_dvd _ M).1 h)` as an intermediate fact. Establish `e` using `map_dvd (Int.castRingHom ℤ_[l]) this`. Simplify using `using e`. Establish `e : (mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 0 - u 0 = ((γ 0 0 - 1 : ℤ) : ℤ_[l]) * u 0 + ((γ 0 1 : ℤ) : ℤ_[l]) * u 1`. Simplify using `[mZl, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_add ((hd _ (by push_cast; rw [hγ.1, sub_self])).mul_right _) ((hd _ hγ.2.1).mul_right _)`.
+A detailed English derivation is pending.
 -/
 theorem invMod_secT (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {n M : ℕ} (hM : l ^ n ∣ M) (w : ℕ) {a : X.K}
     (ha : a ∈ topL X M) : InvMod X l n (CongruenceSubgroup.Gamma M) (secT X l w a) := by
@@ -262,9 +260,9 @@ theorem invMod_secT (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {n M : ℕ} (hM :
   exact dvd_add ((hd _ (by push_cast; rw [hγ.1, sub_self])).mul_right _) ((hd _ hγ.2.1).mul_right _)
 
 /- English proof (translation)
-Introduce `γ hγ`. Take `⟨γ', hγ', e⟩` from `exists_wMat_mul h hγ`. Establish `hw : 0 < (wMat l N).det` using `by rw [det_wMat]; exact_mod_cast NeZero.pos N`. Establish `h1` using `act_mem_lnFn X l (wMat l N) (hb γ' hγ')`. Rewrite `h1` using `[map_sub, Tower.act_act Ω ε X l _ _ (by rw [γ'.2]; exact one_pos) hw, ← e, ← Tower.act_act Ω ε X l _ _ hw (by rw [γ.2]; exact one_pos)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem InvMod.wB {X : Tower Ω ε} {l N : ℕ} [Fact l.Prime] [NeZero N] (h : Nat.Coprime l N) {n : ℕ} {b : X.Fn l}
     (hb : InvMod X l n (Gam N l) b) : InvMod X l n (Gam N l) (wB X l N b) := by
@@ -277,9 +275,9 @@ theorem InvMod.wB {X : Tower Ω ε} {l N : ℕ} [Fact l.Prime] [NeZero N] (h : N
   exact h1
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Establish `h : ∃ y : (ZMod M)ˣ, ∀ z : Ω, z ^ M = 1 → s z = z ^ (y : ZMod M).val`. Use `⟨hζ.autToPow ℚ s, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hz`. Rewrite using `[map_pow, ← hζ.autToPow_spec ℚ s, ← pow_mul, ← pow_mul, mul_comm]`. Conclude with `cycM_spec M s h z hz`.
+A detailed English derivation is pending.
 -/
 theorem cycM_apply [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) {z : Ω} (hz : z ^ M = 1) :
     s z = z ^ (cycM M s : ZMod M).val := by
@@ -293,11 +291,11 @@ theorem cycM_apply [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ
   exact cycM_spec M s h z hz
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : Normal ℚ Ω := IsAlgClosure.normal ℚ Ω`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Establish `h : ∃ s : Ω ≃ₐ[ℚ] Ω, ∀ z : Ω, z ^ M = 1 → s z = z ^ (y : ZMod M).val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hζ.pow_of_coprime _ (ZMod.val_coe_unit_coprime y)`. Establish `hm : ∀ {ξ : Ω}, IsPrimitiveRoot ξ M → Polynomial.cyclotomic M ℚ = minpoly ℚ ξ` using `fun hξ => minpoly.eq_of_irreducible_of_monic (Polynomial.cyclotomic.irreducible_rat (NeZero.pos M)) (by rw [Polynomial.aeval_def, ← Polynomial.eval_map, Polynomial.map_cyclotomic]`. Conclude with `hξ.isRoot_cyclotomic (NeZero.pos M)) (Polynomial.cyclotomic.monic M ℚ)`. Establish `h3 : minpoly ℚ (ζ ^ (y : ZMod M).val) = minpoly ℚ ζ` using `(hm h2).symm.trans (hm hζ)`. Take `⟨s, hs⟩` from `(Normal.minpoly_eq_iff_mem_orbit Ω).1 h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hz`. Establish `hs' : s ζ = ζ ^ (y : ZMod M).val` using `hs`. Rewrite using `[map_pow, hs', ← pow_mul, ← pow_mul, mul_comm]`. Conclude with `repM_spec M y h z hz`.
+A detailed English derivation is pending.
 -/
 theorem repM_apply [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (y : (ZMod M)ˣ) {z : Ω} (hz : z ^ M = 1) :
     repM (Ω := Ω) M y z = z ^ (y : ZMod M).val := by
@@ -320,9 +318,9 @@ theorem repM_apply [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (y : (ZMod M)ˣ) {
   exact repM_spec M y h z hz
 
 /- English proof (translation)
-Rewrite using `[mem_fixMu_iff]`. Introduce `z hz`. Establish `hp : ∀ a b : ZMod M, (z ^ a.val) ^ b.val = z ^ (a * b).val` using `fun a b => by`. Rewrite using `[← pow_mul, ZMod.val_mul, ← pow_eq_pow_mod _ hz]`. Establish `hz' : ∀ a : ℕ, (z ^ a) ^ M = 1` using `fun a => by rw [← pow_mul, mul_comm, pow_mul, hz, one_pow]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `shArg`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, repM_apply M _ hz, cycM_apply M s (hz' _), hp, ← Units.val_mul, inv_mul_cancel_right, ← repM_apply (Ω := Ω) M y hz, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem shArg_mem_fixMu [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) (y : (ZMod M)ˣ) :
     shArg M s y ∈ fixMu Ω M := by
@@ -336,7 +334,7 @@ theorem shArg_mem_fixMu [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (s : Ω ≃�
     inv_mul_cancel_right, ← repM_apply (Ω := Ω) M y hz, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Establish `h : crtF 3 5 = 6` using `by haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩`. Establish `e : (((3 : ℕ) : ZMod 5))⁻¹ = 2` using `inv_eq_of_mul_eq_one_right (by decide +revert)`. Rewrite using `[crtF, e]`. Both sides reduce to the same expression. Simplify using `[sigN, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 example : (sigN 3 5 : Matrix (Fin 2) (Fin 2) ℤ) = !![-35, 204; 6, -35] := by
   have h : crtF 3 5 = 6 := by
@@ -347,7 +345,7 @@ example : (sigN 3 5 : Matrix (Fin 2) (Fin 2) ℤ) = !![-35, 204; 6, -35] := by
   simp [sigN, h]
 
 /- English proof (translation)
-Rewrite using `[← vecMul_gR l N hN r₀, ← Matrix.neg_vecMul]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (l N : ℕ) [Fact l.Prime] (hN : (N : ZMod l) ≠ 0) (r₀ : ZMod l) :
     (![-r₀, -1] : Fin 2 → ZMod l) ᵥ* ((GlobalTheory.ZetaB.gR l N r₀ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom (ZMod l))) =
@@ -358,7 +356,7 @@ example (l N : ℕ) [Fact l.Prime] (hN : (N : ZMod l) ≠ 0) (r₀ : ZMod l) :
   fin_cases i <;> simp
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [GlobalTheory.ZetaB.gR, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (l N : ℕ) (r₀ : ZMod l) :
     (![1, 0] : Fin 2 → ℤ) ᵥ* (GlobalTheory.ZetaB.gR l N r₀ : Matrix (Fin 2) (Fin 2) ℤ) = ![1, 0] := by
@@ -366,14 +364,14 @@ example (l N : ℕ) (r₀ : ZMod l) :
   fin_cases i <;> simp [GlobalTheory.ZetaB.gR, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `[secT]`.
+Simplify using the standard rewrite rules.
 -/
 example (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (a : X.K) :
     secT X l 1 a ![1, 0] = GlobalTheory.ZetaB.clsHat X l a ∧ secT X l 1 a ![0, 1] = 0 := by
   simp [secT]
 
 /- English proof (translation)
-Unfold `secT`. Rewrite using `[galB_section_zero, kmap_clsHat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 example (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (s : Ω ≃ₐ[ℚ] Ω) (w : ℕ) (a : X.K) :
     X.galB l s (secT X l w a) = secT X l w (X.gal s a) := by

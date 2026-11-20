@@ -5,17 +5,17 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.SqrtNegRam
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ _ p hp hd δ hδ w hpw hunr`. Establish `hmax` using `w.isMaximal`. Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hv : Algebra.IsUnramifiedAt ℤ (w.asIdeal.under (𝓞 E))`. Use `(not_dvd_discr_iff_forall_mem E (𝓞 E) hpz).1 hd _ inferInstance ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.under, Ideal.mem_comap]`. Simplify using `using hpw`. Establish `h1 : w.asIdeal.ramificationIdx (𝓞 E) = 1` using `Ideal.ramificationIdx_eq_one_iff.2 hunr`. Establish `h2 : (w.asIdeal.under (𝓞 E)).ramificationIdx ℤ = 1` using `Ideal.ramificationIdx_eq_one_iff.2 hv`. Establish `h3 : w.asIdeal.ramificationIdx ℤ = 1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.ramificationIdx_tower (R := ℤ) (w.asIdeal.under (𝓞 E)) w.asIdeal, h1, h2]`. Establish `hZ : Algebra.IsUnramifiedAt ℤ w.asIdeal` using `Ideal.ramificationIdx_eq_one_iff.1 h3`. Establish `hint : IsIntegral ℤ δ`. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[hδ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (-(p : K)) = algebraMap ℤ K (-(p : ℤ))` using `by simp`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`. Use `set y : 𝓞 K := ⟨δ, hint⟩ with hy`. Establish `hy2 : y ^ 2 = (p : 𝓞 K) * (-1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K (y ^ 2) = algebraMap (𝓞 K) K ((p : 𝓞 K) * (-1))`. Rewrite using `[map_pow, map_mul, map_neg, map_one, map_natCast]`. Express the relevant statement in the definitionally equal form `δ ^ 2 = _`. Rewrite using `[hδ]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hu : (-1 : 𝓞 K) ∉ w.asIdeal`. Introduce `h`. Conclude with `hmax.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using w.asIdeal.neg_mem h))`. Conclude with `GlobalTheory.UnramSquare.not_sq_mul_unit K w.asIdeal hZ p hp hpw y (-1) hu hy2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isUnramifiedAt_of_sq_eq_neg :
     ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K] (p : ℕ), p.Prime →

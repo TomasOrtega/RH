@@ -8,9 +8,9 @@ open scoped Pointwise
 variable (E : Type*) [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.mem_div_iff_forall_mul_mem, ← coeSubmodule_differentIdeal ℤ ℚ (L := E) (𝓞 E), IsLocalization.mem_coeSubmodule]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨x, h, rfl⟩`. Introduce and unpack `⟨y, hy, h⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `: y = x` using `FaithfulSMul.algebraMap_injective (𝓞 E) E h`. Conclude with `this ▸ hy`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_differentIdeal_iff' (x : 𝓞 E) :
     x ∈ differentIdeal ℤ (𝓞 E) ↔
@@ -25,13 +25,13 @@ private theorem mem_differentIdeal_iff' (x : 𝓞 E) :
     exact this ▸ hy
 
 /- English proof (translation)
-Establish `hone : ∀ (τ : Gal(E/ℚ)) (a : E), a ∈ (1 : Submodule (𝓞 E) E) → τ a ∈ (1 : Submodule (𝓞 E) E)`. Introduce `τ a ha`. Rewrite `ha`, the goal using `[Submodule.mem_one]`. Take `⟨b, rfl⟩` from `ha`. Conclude with `⟨τ • b, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hx`, the goal using `[mem_differentIdeal_iff']`. Introduce `y hy`. Establish `hy' : σ.symm y ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite `hy`, the goal using `[Submodule.mem_traceDual]`. Introduce `a ha`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hy (σ a) (hone σ a ha)` as an intermediate fact. Rewrite `this`, the goal using `[Algebra.traceForm_apply]`. Rewrite using `[← Algebra.trace_eq_of_algEquiv σ, map_mul, AlgEquiv.apply_symm_apply]`. Conclude with `this`. Use `hone σ _ (hx _ hy')` as an intermediate fact.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, AlgEquiv.apply_symm_apply]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem smul_mem_differentIdeal' (σ : Gal(E/ℚ)) {x : 𝓞 E}
     (hx : x ∈ differentIdeal ℤ (𝓞 E)) : σ • x ∈ differentIdeal ℤ (𝓞 E) := by
@@ -55,9 +55,9 @@ private theorem smul_mem_differentIdeal' (σ : Gal(E/ℚ)) {x : 𝓞 E}
   exact this
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using smul_mem_differentIdeal' E σ h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `smul_mem_differentIdeal' E σ⁻¹`.
+A detailed English derivation is pending.
 -/
 theorem smul_differentIdeal (σ : Gal(E/ℚ)) :
     σ • differentIdeal ℤ (𝓞 E) = differentIdeal ℤ (𝓞 E) := by

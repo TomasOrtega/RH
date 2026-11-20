@@ -9,13 +9,11 @@ section Cofinal
 variable {B : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B]
 
 /- English proof (translation)
-Establish `: Ring.KrullDimLE 0 (B ⧸ maximalIdeal B ^ j)`. Use `Ring.krullDimLE_zero_iff.2 fun P hP => ?_` and prove the remaining obligations. Establish `hc : (P.comap (Ideal.Quotient.mk (maximalIdeal B ^ j))).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hle : maximalIdeal B ≤ P.comap (Ideal.Quotient.mk (maximalIdeal B ^ j))` using `fun x hx => by`. Use `hc.mem_of_pow_mem j ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Ideal.Quotient.mk (maximalIdeal B ^ j) (x ^ j) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow hx j)`. Use `show Ideal.Quotient.mk _ (x ^ j) ∈ P`. Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `he : P.comap (Ideal.Quotient.mk (maximalIdeal B ^ j)) = maximalIdeal B` using `((maximalIdeal.isMaximal B).eq_of_le hc.ne_top hle).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨⟨hP.ne_top, fun J hJ => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hc' : J.comap (Ideal.Quotient.mk (maximalIdeal B ^ j)) ≠ ⊤` using `fun h => hne (by rw [Ideal.eq_top_iff_one]; simpa using (Ideal.eq_top_iff_one _).1 h)`. Establish `h1 : J.comap (Ideal.Quotient.mk (maximalIdeal B ^ j)) = P.comap (Ideal.Quotient.mk (maximalIdeal B ^ j))` using `le_antisymm ((le_maximalIdeal hc').trans he.ge) (Ideal.comap_mono hJ.le)`. Conclude with `hJ.ne' (Ideal.comap_injective_of_surjective _ Ideal.Quotient.mk_surjective h1)`.
-
-Conclude with `IsNoetherianRing.isArtinianRing_of_krullDimLE_zero`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem artinian_quot (j : ℕ) : IsArtinianRing (B ⧸ maximalIdeal B ^ j) := by
   have : Ring.KrullDimLE 0 (B ⧸ maximalIdeal B ^ j) := by
@@ -40,9 +38,9 @@ private theorem artinian_quot (j : ℕ) : IsArtinianRing (B ⧸ maximalIdeal B ^
   exact IsNoetherianRing.isArtinianRing_of_krullDimLE_zero
 
 /- English proof (translation)
-Use `haveI := artinian_quot (B := B) j`. Set `f : ℕ →o (Ideal (B ⧸ maximalIdeal B ^ j))ᵒᵈ` to `⟨fun N => OrderDual.toDual ((I N).map (Ideal.Quotient.mk _)), fun a b h => Ideal.map_mono (hI h)⟩`. Take `⟨e, he⟩` from `IsArtinian.monotone_stabilizes f`. Use `⟨e, fun N hN a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.Quotient.mk (maximalIdeal B ^ j) a ∈ (I N).map (Ideal.Quotient.mk _)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (I e).map (Ideal.Quotient.mk (maximalIdeal B ^ j)) = (I N).map (Ideal.Quotient.mk _)` using `he N hN`. Rewrite using `[← h2]`. Conclude with `Ideal.mem_map_of_mem _ ha`. Take `⟨b, hb, h3⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 h1`. Conclude with `⟨b, hb, Ideal.Quotient.eq.1 h3.symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem stab (I : ℕ → Ideal B) (hI : Antitone I) (j : ℕ) :
     ∃ e, ∀ N, e ≤ N → ∀ a ∈ I e, ∃ b ∈ I N, a - b ∈ maximalIdeal B ^ j := by
@@ -59,27 +57,25 @@ private theorem stab (I : ℕ → Ideal B) (hI : Antitone I) (j : ℕ) :
   exact ⟨b, hb, Ideal.Quotient.eq.1 h3.symm⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `choose e he using fun j => stab I hI (k + j)`. Set `E : ℕ → ℕ` to `fun j => (Finset.range (j + 1)).sup e + j`. Establish `hE : Monotone E` using `monotone_nat_of_le_succ fun j => Nat.add_le_add (Finset.sup_mono (Finset.range_mono (Nat.le_succ _))) (Nat.le_succ _)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEe : ∀ j, e j ≤ E j` using `fun j => le_trans (Finset.le_sup (f := e) (Finset.self_mem_range_succ j)) (Nat.le_add_right _ _)`. Establish `hEj : ∀ j, j ≤ E j` using `fun j => Nat.le_add_left _ _`. Set `P : ℕ → B → Prop` to `fun j x => x ∈ I (E j) ∧ x ∉ maximalIdeal B ^ k`. Establish `step : ∀ j x, P j x → ∃ y, P (j + 1) y ∧ x - y ∈ maximalIdeal B ^ (k + j)`. Introduce and unpack `j x ⟨h1, h2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hd⟩` from `he j (E (j + 1)) ((hEe j).trans (hE (Nat.le_succ j))) x (hI (hEe j) h1)`. Use `⟨y, ⟨hy, fun h => h2 ?_⟩, hd⟩` and prove the remaining obligations. Use `add_mem (Ideal.pow_le_pow_right (Nat.le_add_right k j) hd) h` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Take `⟨x₀, h1, h2⟩` from `SetLike.not_le_iff_exists.1 (hcon (E 0))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : ∀ j, {x // P j x}` to `fun j => Nat.rec ⟨x₀, h1, h2⟩ (fun j x => ⟨(step j x.1 x.2).choose, (step j x.1 x.2).choose_spec.1⟩) j`. Establish `ha : ∀ j, (a j).1 - (a (j + 1)).1 ∈ maximalIdeal B ^ (k + j)` using `fun j => (step j (a j).1 (a j).2).choose_spec.2`. Establish `hchain : ∀ m n, m ≤ n → (a m).1 - (a n).1 ∈ maximalIdeal B ^ (k + m)`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `base => simp`. Consider the case `succ n hmn ih`. Use `add_mem ih (Ideal.pow_le_pow_right (Nat.add_le_add_left hmn k) (ha n))` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hsm : ∀ j : ℕ, (maximalIdeal B ^ j • ⊤ : Ideal B) = maximalIdeal B ^ j` using `fun j => by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := maximalIdeal B) (M := B) inferInstance (f := fun j => (a j).1) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, hsm]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_add_left _ _) (hchain m n hmn))`. Establish `hL' : ∀ j, (a j).1 - L ∈ maximalIdeal B ^ j` using `fun j => by`. Use `SModEq.sub_mem.1 (hL j)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Establish `hmem : ∀ N, L ∈ I N`. Introduce `N`. Distinguish the cases in `hNt : I N = ⊤`. Simplify using `[hNt]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ⨅ i, maximalIdeal B ^ i • (⊤ : Submodule B (B ⧸ I N)) = ⊥` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal B).ne_top`. Establish `: Ideal.Quotient.mk (I N) L ∈ (⊥ : Submodule B (B ⧸ I N))`. Rewrite using `[← hb]`. Use `(Submodule.mem_iInf _).2 fun j => ?_` and prove the remaining obligations. Establish `h3 : (a (max j N)).1 ∈ I N` using `hI ((le_max_right j N).trans (hEj _)) (a (max j N)).2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `Ideal.pow_le_pow_right (le_max_left j N) (hL' (max j N))`. Establish `h5 : Ideal.Quotient.mk (I N) L = ((a (max j N)).1 - L) • (-1 : B ⧸ I N)`. Rewrite using `[Algebra.smul_def]`. Establish `: Ideal.Quotient.mk (I N) (a (max j N)).1 = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 h3`. Simplify using `[Ideal.Quotient.algebraMap_eq, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h5]`. Conclude with `Submodule.smul_mem_smul h4 trivial`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`. Establish `hz : L = 0`. Establish `: L ∈ ⨅ N, I N` using `(Submodule.mem_iInf _).2 hmem`.
-
-Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Use `hL' k` as an intermediate fact. Rewrite `this` using `[hz, sub_zero]`. Establish `h6` using `(a k).2.2`. Conclude with `h6 this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cofinal [IsAdicComplete (maximalIdeal B) B] (I : ℕ → Ideal B) (hI : Antitone I)
     (h0 : ⨅ N, I N = ⊥) (k : ℕ) : ∃ N, I N ≤ maximalIdeal B ^ k := by
@@ -153,15 +149,15 @@ section Der
 variable {O R K : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing K] [Algebra O K]
 
 /- English proof (translation)
-Establish `h1 : D 1 = 0`. Use `hD 1 1` as an intermediate fact. Simplify using `only [mul_one, map_one, one_mul] at this`. Take the linear combination `(-1 : K) * this`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Proceed by induction.
 
-Consider the case `mem x hx => exact h x hx`. Consider the case `algebraMap a`. Use `⟨A.algebraMap_mem a, ?_⟩` and prove the remaining obligations. Establish `: (⟨algebraMap O R a, A.algebraMap_mem a⟩ : A) = a • (1 : A)`. Use `ext`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Algebra.smul_def]`. Rewrite using `[this, map_smul, h1, smul_zero]`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨add_mem a b, ?_⟩` and prove the remaining obligations. Establish `: (⟨x + y, add_mem a b⟩ : A) = ⟨x, a⟩ + ⟨y, b⟩` using `rfl`. Rewrite using `[this, map_add, ha, hb, add_zero]`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hy`. Use `⟨mul_mem a b, ?_⟩` and prove the remaining obligations. Establish `: (⟨x * y, mul_mem a b⟩ : A) = ⟨x, a⟩ * ⟨y, b⟩` using `rfl`. Rewrite using `[this, hD, ha, hb, mul_zero, mul_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem kill (A : Subalgebra O R) (ξ : A →ₐ[O] K) (D : A →ₗ[O] K)
     (hD : ∀ f g, D (f * g) = ξ f * D g + ξ g * D f) (s : Set R)
@@ -200,13 +196,13 @@ variable {O R K : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] 
   [NormedField K] [Algebra O K]
 
 /- English proof (translation)
-Set `I : ℕ → Ideal B` to `fun N => (maximalIdeal R ^ N).comap (B.val : B →+* R)`. Establish `hI : Antitone I` using `fun a b h => Ideal.comap_mono (Ideal.pow_le_pow_right h)`. Establish `h0 : ⨅ N, I N = ⊥`. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Establish `h1 : (x : R) ∈ ⨅ N : ℕ, maximalIdeal R ^ N` using `(Submodule.mem_iInf _).2 fun N => (Submodule.mem_iInf _).1 hx N`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal R).ne_top, Ideal.mem_bot]`. Conclude with `Subtype.ext h1`. Use extensionality with `x`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖E x‖ / 2` using `half_pos (norm_pos_iff.2 hne)`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hc _ hpos`. Take `⟨N, hN⟩` from `cofinal I hI h0 k`. Take `⟨t, ht, hd'⟩` from `hd x N`. Establish `h2` using `hk (x - t) (hN hd')`. Rewrite `h2` using `[map_sub, hT t ht, sub_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private theorem close_zero (B : Subalgebra O R) [hB : IsCO O B]
     (hm : maximalIdeal B = (maximalIdeal R).comap (B.val : B →+* R)) (E : B →ₗ[O] K)
@@ -233,19 +229,17 @@ private theorem close_zero (B : Subalgebra O R) [hB : IsCO O B]
 end Close
 
 /- English proof (translation)
-Introduce `l _ c _ F C₀ n hF hn S ξ D hD hr hψ`. Take `⟨hco, hm⟩` from `Fr.co_B hF hn S`. Use `haveI := hco`. Establish `hD' : ∀ f g, D (f * g) = ξ f * D g + ξ g * D f` using `hD`. Establish `hs : ∀ x ∈ ({x | ∃ g i j, x = S.ρ.r g i j} ∪ {x | ∃ v i g, x = (S.ρ.ψ v i g : S.R)} : Set S.R), ∃ hx : x ∈ S.A, D ⟨x, hx⟩ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x (⟨g, i, j, rfl⟩ | ⟨v, i, g, rfl⟩)`. Conclude with `⟨S.r_mem g i j, hr g i j⟩`. Conclude with `⟨S.B_le_A (S.ψ_mem v i g), hψ v i g⟩`. Establish `hadj : Algebra.adjoin c.O (S.ρ.mon 0 ∪ {x | ∃ v i g, x = (S.ρ.ψ v i g : S.R)}) ≤ Algebra.adjoin c.O ({x | ∃ g i j, x = S.ρ.r g i j} ∪ {x | ∃ v i g, x = (S.ρ.ψ v i g : S.R)})`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x (⟨L, -, rfl⟩ | hx)`. Use `Subalgebra.list_prod_mem _ fun y hy => ?_` and prove the remaining obligations. Take `⟨s, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨_, _, _, rfl⟩)`. Conclude with `Algebra.subset_adjoin (Or.inr hx)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hB : D ∘ₗ S.inc.toLinearMap = 0`. Use `close_zero S.B (hm.trans rfl) _ (fun ε hε => ?_) {t | (t : S.R) ∈ Algebra.adjoin c.O (S.ρ.mon 0 ∪ {x | ∃ v i g, x = (S.ρ.ψ v i g : S.R)})} (fun t ht => ?_) (fun x N => ?_)` and prove the remaining obligations. Establish `hDB : D ∘ₗ S.inc.toLinearMap ∈ PtDer (ξ.comp S.inc) (Qbar l)` using `fun f g => by`. Simplify using `using hD (S.inc f) (S.inc g)`. Take `⟨k, hk⟩` from `derCont l c S.B (ξ.comp S.inc) _ hDB ε hε`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, fun a ha => (hk a ha).1⟩`. Take `⟨_, h⟩` from `kill S.A ξ D hD' _ hs (hadj ht)`. Conclude with `h`. Take `⟨y, hy, h⟩` from `x.2 N`. Conclude with `⟨⟨y, Fr.le_adicClosure _ hy⟩, hy, h⟩`.
+Supply the required witnesses or components. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use extensionality with `⟨x, hx⟩`. Take `⟨_, h⟩` from `kill S.A ξ D hD' ((S.B : Set S.R) ∪ {x | ∃ g i j, x = S.ρ.r g i j}) (by`. Introduce and unpack `x (hx | ⟨g, i, j, rfl⟩)`. Conclude with `⟨S.B_le_A hx, LinearMap.congr_fun hB ⟨x, hx⟩⟩`. Conclude with `⟨S.r_mem g i j, hr g i j⟩) hx`.
-
-Conclude with `h`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.derExt :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] (F : Fr.Frame l (ResidueField c.O)) (C₀ n : ℕ), F.Ok C₀ → (n = 2 ∨ n = 3) →

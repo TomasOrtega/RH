@@ -22,7 +22,7 @@ def FrameCarried {X : Scheme.{0}} (L : LB X) (W : X.Opens) (T : ∀ k, Γ(X, W �
     gm f z (W ⊓ L.U j) (T j) = gw w (𝟙 X) z j k * gm (𝟙 X) z (W ⊓ L.U k) (T k)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val f y U h, Units.coe_map, gm_val (𝟙 X) (f y) U h]`. Use `congrArg (fun q => q.hom a.val) (f.germ_stalkMap U y h)` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Conclude with `this.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gm_eq_map_gm {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)ˣ) :
     gm f y U a = Units.map (f.stalkMap y).hom.toMonoidHom (gm (𝟙 X) (f y) U a) := by
@@ -37,11 +37,11 @@ end GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Apply `TopCat.Presheaf.section_ext X.sheaf O` to reduce the goal to its premises. Introduce `x hx`. Take `⟨k, hk⟩` from `exists_chart hL x`. Establish `hfx : f x ∈ O` using `h hx`. Take `⟨j, hj⟩` from `exists_chart hL (f x)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : gm f x O r = gm (𝟙 X) x O r`. Rewrite using `[gm_eq_map_gm f x O hfx, hr (f x) j hfx hj, map_mul, map_inv, ← gm_eq_map_gm f x (W' ⊓ L.U j) (show f x ∈ W' ⊓ L.U j from ⟨hOW' hfx, hj⟩), ← gm_eq_map_gm f x (W ⊓ L.U j) (show f x ∈ W ⊓ L.U j from ⟨hOW hfx, hj⟩), hT' x j k (hOW' hx) (hOW' hfx) hk hj, hT x j k (hOW hx) (hOW hfx) h …`. Establish `e1` using `congrArg Units.val key`. Rewrite `e1` using `[gm_val f x O hfx, gm_val (𝟙 X) x O hx]`. Use `Eq.trans ?_ (e1.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply X.presheaf _ x hx _`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem FrameCarried.ratio_fixed {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {W W' O : X.Opens}
     {T : ∀ k, Γ(X, W ⊓ L.U k)ˣ} {T' : ∀ k, Γ(X, W' ⊓ L.U k)ˣ} {f : X ⟶ X} {w : LB.Iso L (L.pull f)}

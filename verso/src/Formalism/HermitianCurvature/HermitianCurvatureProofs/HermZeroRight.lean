@@ -9,17 +9,17 @@ noncomputable section
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[mulVec, dotProduct]`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h, Finset.sum_eq_single ⟨2 * r + k - i.val, by omega⟩]`. Establish `: Hpk k r i ⟨2 * r + k - i.val, by omega⟩ = 1`. Unfold `Hpk`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Break down `h with h | h` into its components or cases. Rewrite using `[if_pos ⟨h, by simp; omega⟩]`. Rewrite using `[if_neg (by simp; omega), if_pos ⟨by simp; omega, by simp; omega⟩]`. Rewrite using `[this, one_mul]`. Introduce `j _ hj`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Hpk k r i j = 0`. Unfold `Hpk`. Establish `hj' : j.val ≠ 2 * r + k - i.val` using `fun e => hj (Fin.ext (by simpa using e))`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg (by omega)]`. Rewrite using `[this, zero_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Rewrite using `[if_neg h, Finset.sum_eq_single i]`. Unfold `Hpk`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_pos ⟨by omega, by omega, rfl⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> ring`. Introduce `j _ hj`. Establish `: Hpk k r i j = 0`. Unfold `Hpk`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg (fun e => hj e.2.2.symm)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_mul]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hpk_mulVec (x : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ x) i = if i.val < r ∨ r + k < i.val then x ⟨2 * r + k - i.val, by omega⟩
@@ -52,13 +52,13 @@ theorem hpk_mulVec (x : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     · intro h'; exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [transpose_apply, Hpk]`. Distinguish the cases in `h1 : j.val < r ∧ j.val + i.val = 2 * r + k`. Rewrite using `[if_pos h1]`. Distinguish the cases in `h2 : i.val < r ∧ i.val + j.val = 2 * r + k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h2]`. Rewrite using `[if_neg h2, if_pos ⟨h1.1, by omega⟩]`. Rewrite using `[if_neg h1]`. Distinguish the cases in `h2 : i.val < r ∧ j.val + i.val = 2 * r + k`. Rewrite using `[if_pos h2, if_pos ⟨h2.1, by omega⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h2]`. Distinguish the cases in `h3 : i.val < r ∧ i.val + j.val = 2 * r + k`. Conclude with `absurd ⟨h3.1, by omega⟩ h2`. Distinguish the cases in `h4 : j.val < r ∧ i.val + j.val = 2 * r + k`. Conclude with `absurd ⟨h4.1, by omega⟩ h1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg h3, if_neg h4]`. Distinguish the cases in `h5 : i = j`. Substitute `h5` using the available equality. Both sides reduce to the same expression. Rewrite using `[if_neg (fun e => h5 e.2.2.symm), if_neg (fun e => h5 e.2.2)]`.
+Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hpk_symm' : (Hpk k r)ᵀ = Hpk k r := by
   ext i j
@@ -82,7 +82,7 @@ theorem hpk_symm' : (Hpk k r)ᵀ = Hpk k r := by
           · rw [if_neg (fun e => h5 e.2.2.symm), if_neg (fun e => h5 e.2.2)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[conjTranspose_apply, ← transpose_apply (Hpk k r) j i, hpk_symm']`. Unfold `Hpk`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
   ext i j
@@ -97,54 +97,54 @@ theorem herm_eq (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x y = ∑ i, star (y i) * (Hpk k r *ᵥ x) i := rfl
 
 /- English proof (translation)
-Simplify using `only [herm, mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_left (x x' y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (x + x') y = herm (Hpk k r) x y + herm (Hpk k r) x' y := by
   simp only [herm, mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [herm, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_left (c : ℂ) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (c • x) y = c * herm (Hpk k r) x y := by
   simp only [herm, mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [herm, mulVec_sub, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_sub_left (x x' y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (x - x') y = herm (Hpk k r) x y - herm (Hpk k r) x' y := by
   simp only [herm, mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Simplify using `only [herm, star_add, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_right (x y y' : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x (y + y') = herm (Hpk k r) x y + herm (Hpk k r) x y' := by
   simp only [herm, star_add, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [herm, star_smul, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_right (c : ℂ) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x (c • y) = star c * herm (Hpk k r) x y := by
   simp only [herm, star_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[herm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_zero_left (y : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) 0 y = 0 := by
   simp [herm]
 
 /- English proof (translation)
-Simplify using `[herm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_zero_right (x : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) x 0 = 0 := by
   simp [herm]
 
 /- English proof (translation)
-Simplify using `only [herm]`. Rewrite using `[star_dotProduct, star_mulVec, hpk_conjT, dotProduct_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_swap (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x y = star (herm (Hpk k r) y x) := by
@@ -152,7 +152,7 @@ theorem herm_swap (x y : Fin (2 * r + k + 1) → ℂ) :
   rw [star_dotProduct, star_mulVec, hpk_conjT, dotProduct_mulVec]
 
 /- English proof (translation)
-Establish `h : ξᴴ * Hpk k r = -(Hpk k r * ξ)` using `eq_neg_of_add_eq_zero_left hξ`. Simplify using `only [herm]`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, h, neg_mulVec, dotProduct_neg, neg_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_skew {ξ : B.Mat k r} (hξ : B.inLie k r ξ) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (ξ *ᵥ x) y = -herm (Hpk k r) x (ξ *ᵥ y) := by
@@ -161,11 +161,11 @@ theorem herm_skew {ξ : B.Mat k r} (hξ : B.inLie k r ξ) (x y : Fin (2 * r + k 
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, h, neg_mulVec, dotProduct_neg, neg_neg]
 
 /- English proof (translation)
-Establish `key : ∀ a b : Fin (2 * r + k + 1) → ℂ, Matrix.trace (ξ * vecMulVec a (star (Hpk k r *ᵥ b))) = herm (Hpk k r) (ξ *ᵥ a) b`. Introduce `a b`. Establish `hb : star (Hpk k r *ᵥ b) = star b ᵥ* Hpk k r`. Rewrite using `[star_mulVec, hpk_conjT]`. Rewrite using `[hb, herm, dotProduct_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, vecMulVec_apply, dotProduct, mulVec]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Xuv, Matrix.mul_sub, Matrix.trace_sub, key, key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_xuv (ξ : B.Mat k r) (u v : Fin (2 * r + k + 1) → ℂ) :
     Matrix.trace (ξ * Xuv k r u v) = herm (Hpk k r) (ξ *ᵥ u) v - herm (Hpk k r) (ξ *ᵥ v) u := by

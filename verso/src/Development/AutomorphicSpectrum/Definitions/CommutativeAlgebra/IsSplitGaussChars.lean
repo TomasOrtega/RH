@@ -152,16 +152,16 @@ def LineGood (x : RatFunc k) : Prop :=
   {i | lineV k i x ≠ 1}.Finite ∧ ∑ᶠ i, (lineW k i : ℤ) * WithZero.log (lineV k i x) = 0
 
 /- English proof (translation)
-The claim follows from `h.1.subset fun i hi h1 => hi (by simp [h1])`.
+A detailed English derivation is pending.
 -/
 theorem LineGood.supp {x : RatFunc k} (h : LineGood k x) :
     (Function.support fun i => (lineW k i : ℤ) * WithZero.log (lineV k i x)).Finite :=
   h.1.subset fun i hi h1 => hi (by simp [h1])
 
 /- English proof (translation)
-Use `⟨(h.1.union h'.1).subset fun i hi => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Conclude with `hi (by simp [hc.1, hc.2])`. Establish `: ∀ i, (lineW k i : ℤ) * WithZero.log (lineV k i (x * y)) = (lineW k i : ℤ) * WithZero.log (lineV k i x) + (lineW k i : ℤ) * WithZero.log (lineV k i y)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy), mul_add]`. Simplify using `only [this]`. Rewrite using `[finsum_add_distrib (h.supp k) (h'.supp k), h.2, h'.2, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LineGood.mul {x y : RatFunc k} (hx : x ≠ 0) (hy : y ≠ 0) (h : LineGood k x)
     (h' : LineGood k y) : LineGood k (x * y) := by
@@ -179,9 +179,9 @@ theorem LineGood.mul {x y : RatFunc k} (hx : x ≠ 0) (hy : y ≠ 0) (h : LineGo
     rw [finsum_add_distrib (h.supp k) (h'.supp k), h.2, h'.2, add_zero]
 
 /- English proof (translation)
-Use `⟨h.1.subset fun i hi h1 => hi (by simp [h1]), ?_⟩` and prove the remaining obligations. Establish `: ∀ i, (lineW k i : ℤ) * WithZero.log (lineV k i x⁻¹) = -((lineW k i : ℤ) * WithZero.log (lineV k i x))`. Introduce `i`. Rewrite using `[map_inv₀, WithZero.log_inv, mul_neg]`. Simplify using `only [this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[finsum_neg_distrib, h.2, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LineGood.inv {x : RatFunc k} (h : LineGood k x) : LineGood k x⁻¹ := by
   refine ⟨h.1.subset fun i hi h1 => hi (by simp [h1]), ?_⟩
@@ -195,23 +195,23 @@ theorem LineGood.inv {x : RatFunc k} (h : LineGood k x) : LineGood k x⁻¹ := b
 open Classical in
 
 /- English proof (translation)
-The claim follows from `RatFunc.inftyValuation.polynomial k hf`.
+A detailed English derivation is pending.
 -/
 theorem lineV_none {f : k[X]} (hf : f ≠ 0) :
     lineV k none (algebraMap _ _ f) = WithZero.exp (f.natDegree : ℤ) :=
   RatFunc.inftyValuation.polynomial k hf
 
 /- English proof (translation)
-The claim follows from `q.valuation_of_algebraMap f`.
+A detailed English derivation is pending.
 -/
 theorem lineV_some (q : HeightOneSpectrum k[X]) (f : k[X]) :
     lineV k (some q) (algebraMap _ _ f) = q.intValuation f :=
   q.valuation_of_algebraMap f
 
 /- English proof (translation)
-Establish `: ∀ i, lineV k i (algebraMap _ _ f) = 1`. Introduce and unpack `(_ | q)`. Rewrite using `[lineV_none k hf.ne_zero, natDegree_eq_zero_of_isUnit hf]`. Simplify using the standard rewrite rules. Rewrite using `[lineV_some, q.intValuation_eq_one_iff]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h hf)`. Conclude with `⟨by simp [this], by simp [this]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Supply the required witnesses or components.
 -/
 theorem lineGood_unit {f : k[X]} (hf : IsUnit f) : LineGood k (algebraMap _ _ f) := by
   have : ∀ i, lineV k i (algebraMap _ _ f) = 1 := by
@@ -222,13 +222,13 @@ theorem lineGood_unit {f : k[X]} (hf : IsUnit f) : LineGood k (algebraMap _ _ f)
   exact ⟨by simp [this], by simp [this]⟩
 
 /- English proof (translation)
-Set `q : HeightOneSpectrum k[X]` to `⟨Ideal.span {f}, (Ideal.span_singleton_prime hf.ne_zero).2 hf, by simpa using hf.ne_zero⟩`. Establish `h1 : ∀ i, i ≠ none → i ≠ some q → lineV k i (algebraMap _ _ f) = 1`. Introduce and unpack `(_ | r) hi hi'`. Conclude with `absurd rfl hi`. Rewrite using `[lineV_some, r.intValuation_eq_one_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `hi' (congrArg some (HeightOneSpectrum.ext ?_))` and prove the remaining obligations. Conclude with `(q.isMaximal.eq_of_le r.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 h)).symm`. Establish `hs : {i | lineV k i (algebraMap _ _ f) ≠ 1} ⊆ ({none, some q} : Finset _)`. Introduce `i hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hc`. Conclude with `hi (h1 i hc.1 hc.2)`. Use `⟨(Finset.finite_toSet _).subset hs, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset (s := {none, some q}) _ (fun i hi => hs fun h => hi (by simp [h])), Finset.sum_pair (by simp), lineV_none k hf.ne_zero, lineV_some, q.intValuation_singleton hf.ne_zero rfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: lineW k (some q) = f.natDegree` using `natDegree_eq_of_degree_eq (degree_eq_degree_of_associated (Ideal.span_singleton_eq_span_singleton.1 (Ideal.span_singleton_generator q.asIdeal)))`. Rewrite using `[this]`. Simplify using `[lineW]`.
+A detailed English derivation is pending.
 -/
 theorem lineGood_prime {f : k[X]} (hf : Prime f) : LineGood k (algebraMap _ _ f) := by
   classical
@@ -258,9 +258,9 @@ theorem lineGood_prime {f : k[X]} (hf : Prime f) : LineGood k (algebraMap _ _ f)
   rw [this]; simp [lineW]
 
 /- English proof (translation)
-Proceed by induction on `f using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl hf`. Consider the case `h₂ x hx => exact lineGood_unit k hx`. Consider the case `h₃ a p ha hp ih`. Rewrite using `[map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(lineGood_prime k hp).mul k (by simpa using hp.ne_zero) (by simpa using ha) (ih ha)`.
+A detailed English derivation is pending.
 -/
 theorem lineGood_poly (f : k[X]) (hf : f ≠ 0) : LineGood k (algebraMap _ _ f) := by
   induction f using UniqueFactorizationMonoid.induction_on_prime with
@@ -271,7 +271,7 @@ theorem lineGood_poly (f : k[X]) (hf : f ≠ 0) : LineGood k (algebraMap _ _ f) 
     exact (lineGood_prime k hp).mul k (by simpa using hp.ne_zero) (by simpa using ha) (ih ha)
 
 /- English proof (translation)
-Establish `hn` using `RatFunc.num_ne_zero hx`. Establish `hd` using `x.denom_ne_zero`. Rewrite using `[← x.num_div_denom, div_eq_mul_inv]`. Conclude with `(lineGood_poly k _ hn).mul k (by simpa using hn) (by simpa using hd) ((lineGood_poly k _ hd).inv k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineGood (x : RatFunc k) (hx : x ≠ 0) : LineGood k x := by
   have hn := RatFunc.num_ne_zero hx
@@ -298,15 +298,15 @@ def trivLat (d : ℕ) : C.I → AddSubgroup (Fin d → K) := fun i =>
     neg_mem' := fun ha j => by simpa using ha j }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_trivLat {d : ℕ} {i : C.I} {x : Fin d → K} :
     x ∈ trivLat C d i ↔ ∀ j, C.v i (x j) ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Set `e : ι ≃ Fin (Module.finrank K V)` to `Fintype.equivFinOfCardEq (Module.finrank_eq_card_basis b).symm`. Establish `: ∀ i, IsLatOf C i (b.reindex e) (L i)` using `fun i x => by`. Rewrite using `[h]`. Simplify using `only [Module.Basis.repr_reindex_apply]`. Conclude with `⟨fun H q => H _, fun H q => by simpa using H (e q)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨fun i => ⟨_, this i⟩, b.reindex e, by simp [this]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isBun_of_basis {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι]
     (b : Module.Basis ι K V) (L : C.I → AddSubgroup V)
@@ -319,7 +319,7 @@ theorem isBun_of_basis {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι]
   exact ⟨fun i => ⟨_, this i⟩, b.reindex e, by simp [this]⟩
 
 /- English proof (translation)
-Introduce `r` and use `(C.v i).map_sum_le (s := Finset.univ) (f := fun s => M r s * x s) fun s _ => ((C.v i).map_mul _ _).trans_le (mul_le_one' (hM r s) (hx s))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_trivLat {d : ℕ} {i : C.I} {M : Matrix (Fin d) (Fin d) K}
     (hM : ∀ r s, C.v i (M r s) ≤ 1) {x : Fin d → K} (hx : x ∈ trivLat C d i) :
@@ -328,7 +328,7 @@ theorem mulVec_mem_trivLat {d : ℕ} {i : C.I} {M : Matrix (Fin d) (Fin d) K}
     ((C.v i).map_mul _ _).trans_le (mul_le_one' (hM r s) (hx s))
 
 /- English proof (translation)
-Introduce `r` and use `by by_cases h : r = j · subst h; simp · simp [h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem single_mem_trivLat {d : ℕ} (i : C.I) (j : Fin d) :
     (Pi.single j 1 : Fin d → K) ∈ trivLat C d i := fun r => by
@@ -337,7 +337,7 @@ theorem single_mem_trivLat {d : ℕ} (i : C.I) (j : Fin d) :
   · simp [h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use extensionality with `y`. Use `⟨fun h j => ?_, fun h x hx => ?_⟩` and prove the remaining obligations. Simplify using `using h _ (single_mem_trivLat C i j)`. Conclude with `(C.v i).map_sum_le (s := Finset.univ) (f := fun s => x s * y s) fun s _ => ((C.v i).map_mul _ _).trans_le (mul_le_one' (hx s) (h s))`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dotDual_trivLat (d : ℕ) : dotDual C (trivLat C d) = trivLat C d := by
   funext i; ext y
@@ -347,11 +347,11 @@ theorem dotDual_trivLat (d : ℕ) : dotDual C (trivLat C d) = trivLat C d := by
       ((C.v i).map_mul _ _).trans_le (mul_le_one' (hx s) (h s))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `le_antisymm ((AddSubgroup.closure_le _).2 ?_) fun y hy => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, x, ha, hx, rfl⟩ j`. Simplify using `only [Pi.smul_apply, frobVec, smul_eq_mul, map_mul, map_pow]`. Conclude with `mul_le_one' ha (pow_le_one' (hx j) p)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.univ_sum_single y]`. Use `sum_mem fun j _ => AddSubgroup.subset_closure ⟨y j, Pi.single j 1, hy j, single_mem_trivLat C i j, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `r`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[frobVec]`. Simplify using `[frobVec, h, hp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frobLat_trivLat {p : ℕ} (hp : p ≠ 0) (d : ℕ) :
     frobLat C p (trivLat C d) = trivLat C d := by
@@ -421,17 +421,17 @@ def latOf (i : C.I) {n : ℕ} (b : Module.Basis (Fin n) K V) : AddSubgroup V whe
   neg_mem' := fun ha q => by simpa using ha q
 
 /- English proof (translation)
-Introduce `_` and use `Iff.rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isLatOf_latOf (i : C.I) {n : ℕ} (b : Module.Basis (Fin n) K V) :
     IsLatOf C i b (latOf C i b) := fun _ => Iff.rfl
 
 /- English proof (translation)
-Establish `key : ∀ {b b' : Module.Basis (Fin n) K V}, IsLatOf C i b L → IsLatOf C i b' L → C.v i (b.det b') ≤ 1`. Introduce `b b' h h'`. Rewrite using `[Module.Basis.det_apply, Matrix.det_apply']`. Use `(C.v i).map_sum_le fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_one' ?_ (Finset.prod_le_one' fun q _ => (h _).1 ((h' _).2 fun r => ?_) _)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simp [e]`. Apply the tactic sequence `by_cases e : q = r <;> simp [e, Finsupp.single_apply]`. Establish `h1 : C.v i (b.det b') * C.v i (b'.det b) = 1`. Rewrite using `[← map_mul, Module.Basis.det_mul_det, Module.Basis.det_self, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_antisymm (key h h') (h1 ▸ mul_le_of_le_one_right' (key h' h))`.
+A detailed English derivation is pending.
 -/
 theorem v_det {i : C.I} {n : ℕ}
     {b b' : Module.Basis (Fin n) K V} {L : AddSubgroup V} (h : IsLatOf C i b L)
@@ -450,9 +450,9 @@ theorem v_det {i : C.I} {n : ℕ}
   exact le_antisymm (key h h') (h1 ▸ mul_le_of_le_one_right' (key h' h))
 
 /- English proof (translation)
-Use `finsum_congr fun i => ?_` and prove the remaining obligations. Establish `hex : ∃ b : Module.Basis (Fin (Module.finrank K V)) K V, IsLatOf C i b (L i)` using `⟨_, h i⟩`. Establish `: IsLatOf C i (locBasis C i (L i)) (L i)`. Rewrite using `[locBasis, dif_pos hex]`. Conclude with `hex.choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.Basis.det_mul_det _ (b i), map_mul, v_det C (h i) this, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem deg_eq [FiniteDimensional K V]
     {L : C.I → AddSubgroup V} (b : C.I → Module.Basis (Fin (Module.finrank K V)) K V)
@@ -465,7 +465,7 @@ theorem deg_eq [FiniteDimensional K V]
   rw [← Module.Basis.det_mul_det _ (b i), map_mul, v_det C (h i) this, mul_one]
 
 /- English proof (translation)
-Rewrite using `[deg_eq C (fun _ => b) fun i => isLatOf_latOf C i b]`. Conclude with `C.prod _ ((Module.finBasis K V).isUnit_det b).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_const [FiniteDimensional K V] (b : Module.Basis (Fin (Module.finrank K V)) K V) :
     deg C (fun i => latOf C i b) = 0 := by
@@ -481,7 +481,7 @@ local instance factPrimeFive : Fact (Nat.Prime 5) := ⟨by norm_num⟩
 def gaussChar : GaussianInt →+* ZMod 5 := Zsqrtd.lift ⟨2, by decide⟩
 
 /- English proof (translation)
-Simplify using `only [gaussChar, Zsqrtd.lift_apply_apply]`. Evaluate the decidable proposition.
+Simplify using the standard rewrite rules. Evaluate the decidable proposition.
 -/
 theorem gaussChar_star_ne : gaussChar (star ⟨0, 1⟩) ≠ gaussChar ⟨0, 1⟩ := by
   simp only [gaussChar, Zsqrtd.lift_apply_apply]
@@ -502,23 +502,23 @@ def gaussChars : Bool → (GaussianInt →+* ZMod 5)
   | true => gaussChar.comp (starRingEnd GaussianInt)
 
 /- English proof (translation)
-Establish `hgen : ∀ x : TensorProduct ℤ (ZMod 5) GaussianInt, ∃ a b : ZMod 5, x = a ⊗ₜ (1 : GaussianInt) + b ⊗ₜ (⟨0, 1⟩ : GaussianInt)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul c z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨z.re • c, z.im • c, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, TensorProduct.smul_tmul, ← TensorProduct.tmul_add]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`. Consider the case `add x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Take `⟨a, b, rfl⟩` from `hx`. Take `⟨a', b', rfl⟩` from `hy`. Conclude with `⟨a + a', b + b', by simp only [TensorProduct.add_tmul]; abel⟩`. Establish `h0 : gaussChars false ⟨0, 1⟩ = 2`. Simplify using `[gaussChars, gaussChar, Zsqrtd.lift_apply_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : gaussChars true ⟨0, 1⟩ = -2`. Simplify using `[gaussChars, gaussChar, Zsqrtd.lift_apply_apply, starRingEnd_apply]`. Unfold `IsSplit`. Use `set F := Algebra.TensorProduct.lift (Algebra.ofId (ZMod 5) (Bool → ZMod 5)) (Pi.algHom ℤ (fun _ : Bool => ZMod 5) fun s => (gaussChars s).toIntAlgHom) (fun _ _ => Commute.all _ _) with hF`. Establish `hv : ∀ (a b : ZMod 5) (s : Bool), F (a ⊗ₜ (1 : GaussianInt) + b ⊗ₜ (⟨0, 1⟩ : GaussianInt)) s = a + b * gaussChars s ⟨0, 1⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b s`. Simplify using `[hF, Algebra.ofId_apply]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, rfl⟩` from `hgen x`. Establish `e0` using `congrFun hx false`. Establish `e1` using `congrFun hx true`. Rewrite `e0` using `[hv, h0]`. Rewrite `e1` using `[hv, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ a b : ZMod 5, a + b * 2 = 0 → a + b * -2 = 0 → a = 0 ∧ b = 0` using `by decide`. Take `⟨rfl, rfl⟩` from `key a b e0 e1`. Simplify using the standard rewrite rules. Introduce `y`. Establish `key : ∀ u w : ZMod 5, ∃ a b : ZMod 5, a + b * 2 = u ∧ a + b * -2 = w` using `by decide`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, ha, hb⟩` from `key (y false) (y true)`. Use `⟨a ⊗ₜ (1 : GaussianInt) + b ⊗ₜ (⟨0, 1⟩ : GaussianInt), funext fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Consider the cases of `s`. Rewrite using `[h0, ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hb]`.
+A detailed English derivation is pending.
 -/
 theorem isSplit_gaussChars : IsSplit gaussChars := by
   have hgen : ∀ x : TensorProduct ℤ (ZMod 5) GaussianInt, ∃ a b : ZMod 5,
@@ -583,7 +583,7 @@ def twistBasis (i : (projLine k).I) :
 def twistLat : (projLine k).I → AddSubgroup V := fun i => latOf (projLine k) i (twistBasis k V i)
 
 /- English proof (translation)
-Use `⟨fun i => ⟨_, isLatOf_latOf _ i _⟩, Module.finBasis (RatFunc k) V, (Set.finite_singleton (show (projLine k).I from none)).subset ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | q) hq`. Both sides reduce to the same expression. Conclude with `absurd (isLatOf_latOf _ _ _) hq`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isBun_twistLat : IsBun (projLine k) (twistLat k V) := by
   refine ⟨fun i => ⟨_, isLatOf_latOf _ i _⟩, Module.finBasis (RatFunc k) V,
@@ -595,9 +595,9 @@ theorem isBun_twistLat : IsBun (projLine k) (twistLat k V) := by
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[deg_eq (projLine k) (L := twistLat k V) (twistBasis k V) (fun i => isLatOf_latOf _ i _), finsum_eq_single _ (show (projLine k).I from none)]`. Simplify using `only [twistBasis, Module.Basis.det_unitsSMul_self]`. Simplify using `[projLine, lineV, lineW, RatFunc.inftyValuation.X]`. Introduce and unpack `(_ | q) hq`. Conclude with `absurd rfl hq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[twistBasis, Module.Basis.det_self]`.
+A detailed English derivation is pending.
 -/
 theorem deg_twistLat : deg (projLine k) (twistLat k V) = Module.finrank (RatFunc k) V := by
   rw [deg_eq (projLine k) (L := twistLat k V) (twistBasis k V) (fun i => isLatOf_latOf _ i _),

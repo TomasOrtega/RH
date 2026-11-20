@@ -24,14 +24,14 @@ def phW : ML J Dt.nL r × Fin r → ℕ
   | _ => 1
 
 /- English proof (translation)
-Take `⟨w, a⟩` from `v`. Apply the tactic sequence `cases w <;> simp [SignedChainData.ph, phV, phW]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ph_X (v : ML J Dt.nL r × Fin r) : Dt.ph (X v) = X (phV Dt v) ^ phW Dt v := by
   obtain ⟨w, a⟩ := v
   cases w <;> simp [SignedChainData.ph, phV, phW]
 
 /- English proof (translation)
-Use extensionality with `⟨⟨j, x⟩, a⟩`. Break down `x with l | m` into its components or cases. Simplify using `[phExp]`. Simplify using `[phExp]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem phExp_zero : phExp Dt 0 = 0 := by
   ext ⟨⟨j, x⟩, a⟩
@@ -40,7 +40,7 @@ theorem phExp_zero : phExp Dt 0 = 0 := by
   · simp [phExp]
 
 /- English proof (translation)
-Use extensionality with `⟨⟨j, l | m⟩, a⟩`. Simplify using `[phExp]`. Apply the tactic sequence `simp only [phExp, Finsupp.coe_equivFunOnFinite_symm, Finsupp.coe_add, Pi.add_apply] split_ifs <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phExp_add (M N : ML J Dt.nL r × Fin r →₀ ℕ) : phExp Dt (M + N) = phExp Dt M + phExp Dt N := by
   ext ⟨⟨j, l | m⟩, a⟩
@@ -49,7 +49,7 @@ theorem phExp_add (M N : ML J Dt.nL r × Fin r →₀ ℕ) : phExp Dt (M + N) = 
     split_ifs <;> ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext ⟨⟨j, l | m⟩, a⟩ <;> rcases v with ⟨⟨j', l'⟩ | ⟨j', m'⟩ | ⟨j', m'⟩ | ⟨j', m', h'⟩, b⟩ <;>`. Simplify using `[phExp, phV, phW, Finsupp.single_apply]`. Apply the tactic sequence `all_goals by_cases hj : j' = j`. Apply the tactic sequence `all_goals first | (subst hj; simp_all) | simp_all`. Apply the tactic sequence `all_goals (rintro h1 rfl rfl; omega)`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phExp_single (v : ML J Dt.nL r × Fin r) (k : ℕ) :
     phExp Dt (Finsupp.single v k) = Finsupp.single (phV Dt v) (phW Dt v * k) := by
@@ -62,7 +62,7 @@ theorem phExp_single (v : ML J Dt.nL r × Fin r) (k : ℕ) :
 end Ph
 
 /- English proof (translation)
-Introduce `p O _ _ _ r J _ Dt M c`. Use `Finsupp.induction M ?_ ?_` and prove the remaining obligations. Simplify using `[phExp_zero, SignedChainData.ph]`. Introduce `v k N _ _ ih`. Rewrite using `[monomial_single_add, map_mul, map_pow, ih, ph_X, phExp_add, phExp_single, monomial_single_add, pow_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem phMon : PhMon := by
   intro p O _ _ _ r J _ Dt M c
@@ -77,7 +77,7 @@ variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   (Dt : SignedChainData p O r J)
 
 /- English proof (translation)
-Establish `h` using `phMon p O r J Dt M a`. Rewrite using `[h, monomial_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ph_monomial_mul (β : TL J Dt.nL r × Fin r →₀ ℕ) (c : KK O) (M : ML J Dt.nL r × Fin r →₀ ℕ) (a : KK O) :
     monomial β c * Dt.ph (monomial M a) = monomial (β + phExp Dt M) (c * a) := by
@@ -85,7 +85,7 @@ theorem ph_monomial_mul (β : TL J Dt.nL r × Fin r →₀ ℕ) (c : KK O) (M : 
   rw [h, monomial_mul]
 
 /- English proof (translation)
-Unfold `multideg`. Simplify using `[Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem multideg_add' {ι : Type} {n : ℕ} (a b : ι × Fin n →₀ ℕ) (x : ι) :
     multideg (a + b) x = multideg a x + multideg b x := by
@@ -93,14 +93,14 @@ theorem multideg_add' {ι : Type} {n : ℕ} (a b : ι × Fin n →₀ ℕ) (x : 
   simp [Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[phExp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phExp_inl (M : ML J Dt.nL r × Fin r →₀ ℕ) (j : ZMod J) (l : Fin (Dt.nL j)) (a : Fin r) :
     phExp Dt M (⟨j, Sum.inl l⟩, a) = M (ML.ll j l, a) := by
   simp [phExp]
 
 /- English proof (translation)
-Simplify using `[phExp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phExp_inr (M : ML J Dt.nL r × Fin r →₀ ℕ) (j : ZMod J) (m : Fin r) (a : Fin r) :
     phExp Dt M (⟨j, Sum.inr m⟩, a) = M (ML.lab j m, a) + Dt.P j m * M (ML.wc j m, a) +
@@ -108,7 +108,7 @@ theorem phExp_inr (M : ML J Dt.nL r × Fin r →₀ ℕ) (j : ZMod J) (m : Fin r
   simp [phExp]
 
 /- English proof (translation)
-Break down `x with ⟨j, l | m⟩` into its components or cases. Simplify using `only [multideg, phDeg, phExp_inl]`. Simplify using `only [multideg, phDeg, phExp_inr, Finset.sum_add_distrib, Finset.mul_sum]`. Apply the tactic sequence `by_cases h : 1 ≤ (m : ℕ) <;> simp [h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem multideg_phExp (M : ML J Dt.nL r × Fin r →₀ ℕ) (x : TL J Dt.nL r) :
     multideg (phExp Dt M) x = phDeg Dt (fun y => multideg M y) x := by
@@ -120,9 +120,9 @@ theorem multideg_phExp (M : ML J Dt.nL r × Fin r →₀ ℕ) (x : TL J Dt.nL r)
 end Alg2
 
 /- English proof (translation)
-Unfold `compD`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_filter, mem_support_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : ∀ x, multideg m x = d x`. Apply the tactic sequence `by_cases h0 : coeff m H = 0 <;> simp [h, h0]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem coeff_compD {Kf : Type} [Field Kf] {ι : Type} {s : ℕ} (d : ι → ℕ)
     (H : MvPolynomial (ι × Fin s) Kf) (m : ι × Fin s →₀ ℕ) :
@@ -137,9 +137,9 @@ private theorem coeff_compD {Kf : Type} [Field Kf] {ι : Type} {s : ℕ} (d : ι
   · simp [h]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_compD, coeff_monomial]`. Distinguish the cases in `h : m = n`. Substitute `h` using the available equality. Apply the tactic sequence `by_cases h' : ∀ x, multideg m x = d x <;> simp [h']`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h' : ∀ x, multideg m x = d x <;> simp [h, h']`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem compD_monomial' {Kf : Type} [Field Kf] {ι : Type} {s : ℕ} (d : ι → ℕ)
     (m : ι × Fin s →₀ ℕ) (b : Kf) :
@@ -152,7 +152,7 @@ private theorem compD_monomial' {Kf : Type} [Field Kf] {ι : Type} {s : ℕ} (d 
   · by_cases h' : ∀ x, multideg m x = d x <;> simp [h, h']
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_compD, coeff_sum]`. Apply the tactic sequence `by_cases h : ∀ x, multideg m x = d x <;> simp [h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem compD_sum {Kf : Type} [Field Kf] {ι : Type} {s : ℕ} (d : ι → ℕ) {κ : Type*} (S : Finset κ)
     (f : κ → MvPolynomial (ι × Fin s) Kf) : compD d (∑ k ∈ S, f k) = ∑ k ∈ S, compD d (f k) := by
@@ -161,11 +161,11 @@ theorem compD_sum {Kf : Type} [Field Kf] {ι : Type} {s : ℕ} (d : ι → ℕ) 
   by_cases h : ∀ x, multideg m x = d x <;> simp [h]
 
 /- English proof (translation)
-Introduce `p O _ _ _ r J _ Dt d β c F`. Establish `key : ∀ mo : ML J Dt.nL r × Fin r →₀ ℕ, ((∀ x, multideg (β + phExp Dt mo) x = d x) ↔ ∀ x, multideg β x + phDeg Dt (fun y => multideg mo y) x = d x)`. Introduce `mo`. Simplify using `only [multideg_add', multideg_phExp]`. Unfold `filtQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `conv_lhs => rw [F.as_sum]`. Rewrite using `[map_sum, Finset.mul_sum, compD_sum, map_sum, Finset.mul_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun mo _ => ?_)` and prove the remaining obligations. Rewrite using `[ph_monomial_mul, compD_monomial']`. Simplify using `only [key]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem compPh : CompPh := by
   intro p O _ _ _ r J _ Dt d β c F
@@ -182,9 +182,9 @@ theorem compPh : CompPh := by
   split_ifs <;> rfl
 
 /- English proof (translation)
-Unfold `SignedChainData.Fdig`. Use `Finset.sum_subset (Finset.filter_subset_filter _ hS) ?_` and prove the remaining obligations. Introduce `mo h1 h2`. Establish `h0 : coeff mo F = 0`. Assume the negation of the conclusion as `h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h2 (Finset.mem_filter.2 ⟨mem_support_iff.2 h, (Finset.mem_filter.1 h1).2⟩)`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fdig_eq_sum_C_coeff_mul_prod_of_support_subset {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {r J : ℕ}
     (Dt : SignedChainData p O r J) (rho : (ZMod J × Fin r) × Fin r → ℕ)
@@ -201,7 +201,7 @@ private theorem fdig_eq_sum_C_coeff_mul_prod_of_support_subset {p : ℕ} {O : Ty
   simp [h0]
 
 /- English proof (translation)
-Rewrite using `[fdig_eq_sum_C_coeff_mul_prod_of_support_subset Dt rho (F + G) (F.support ∪ G.support) support_add, fdig_eq_sum_C_coeff_mul_prod_of_support_subset Dt rho F (F.support ∪ G.support) Finset.subset_union_left, fdig_eq_sum_C_coeff_mul_prod_of_support_subset Dt rho G (F.support ∪ G.sup …`. Use `Finset.sum_congr rfl (fun mo _ => ?_)` and prove the remaining obligations. Rewrite using `[coeff_add, map_add, add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem signedChainData_fdig_add {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {r J : ℕ}
     (Dt : SignedChainData p O r J) (rho : (ZMod J × Fin r) × Fin r → ℕ)
@@ -215,7 +215,7 @@ private theorem signedChainData_fdig_add {p : ℕ} {O : Type} [CommRing O] [IsDo
   rw [coeff_add, map_add, add_mul]
 
 /- English proof (translation)
-Introduce `p O _ _ _ r J Dt rho α s f`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[SignedChainData.Fdig]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, signedChainData_fdig_add, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem fdigSum : FdigSum := by
   intro p O _ _ _ r J Dt rho α s f
@@ -231,7 +231,7 @@ variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   (Dt : SignedChainData p O r J)
 
 /- English proof (translation)
-Use `⟨fun j m a => ?_, fun j m h a => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hM _ (Finsupp.mem_support_iff.2 hne)`. Assume the negation of the conclusion as `hne`. Conclude with `hM _ (Finsupp.mem_support_iff.2 hne)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem lw_zero (M : ML J Dt.nL r × Fin r →₀ ℕ) (hM : ∀ v ∈ M.support, IsLW v.1) :
     (∀ j m a, M (ML.lab j m, a) = 0) ∧ (∀ j m h a, M (ML.tp j m h, a) = 0) := by
@@ -242,9 +242,9 @@ theorem lw_zero (M : ML J Dt.nL r × Fin r →₀ ℕ) (hM : ∀ v ∈ M.support
     exact hM _ (Finsupp.mem_support_iff.2 hne)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `lw_zero Dt M hM`. Unfold `SignedChainData.digOK`. Use `forall_congr' (fun j => forall_congr' (fun m => forall_congr' (fun a => ?_)))` and prove the remaining obligations. Rewrite using `[Finsupp.add_apply, phExp_inr, h1, zero_add]`. Use `split_ifs with h`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, add_zero, Nat.add_mul_mod_self_left]`. Rewrite using `[add_zero, Nat.add_mul_mod_self_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem digOK_phExp (hP : ∀ j m, 0 < Dt.P j m) (rho : (ZMod J × Fin r) × Fin r → ℕ) (β : TL J Dt.nL r × Fin r →₀ ℕ)
     (M : ML J Dt.nL r × Fin r →₀ ℕ) (hM : ∀ v ∈ M.support, IsLW v.1) :
@@ -258,21 +258,21 @@ theorem digOK_phExp (hP : ∀ j m, 0 < Dt.P j m) (rho : (ZMod J × Fin r) × Fin
   · rw [add_zero, Nat.add_mul_mod_self_left]
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_notin_range _ _ hw`.
+A detailed English derivation is pending.
 -/
 theorem liftMon_notin (mo : TL J Dt.nL r × Fin r →₀ ℕ) (w : ML J Dt.nL r × Fin r)
     (hw : w ∉ Set.range Dt.liftVar) : liftMon Dt mo w = 0 :=
   Finsupp.mapDomain_notin_range _ _ hw
 
 /- English proof (translation)
-Apply the tactic sequence `rintro ⟨⟨j, l | m⟩, a⟩ ⟨⟨j', l' | m'⟩, a'⟩ h <;> simp only [SignedChainData.liftVar] at h <;> cases h <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem liftVar_injective' {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {r J : ℕ} (Dt : SignedChainData p O r J) : Function.Injective Dt.liftVar := by
   rintro ⟨⟨j, l | m⟩, a⟩ ⟨⟨j', l' | m'⟩, a'⟩ h <;> simp only [SignedChainData.liftVar] at h <;> cases h <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rcases v with ⟨⟨j, l | m⟩, a⟩ <;> simp [liftE, Pof, SignedChainData.liftExp]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem liftE_apply_eq_liftExp {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {r J : ℕ} (Dt : SignedChainData p O r J) (γ : TL J Dt.nL r × Fin r →₀ ℕ) (v : TL J Dt.nL r × Fin r) :
@@ -280,13 +280,13 @@ private theorem liftE_apply_eq_liftExp {p : ℕ} {O : Type} [CommRing O] [IsDoma
   rcases v with ⟨⟨j, l | m⟩, a⟩ <;> simp [liftE, Pof, SignedChainData.liftExp]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `lw_zero Dt M hM`. Use extensionality with `w`. Distinguish the cases in `hw : w ∈ Set.range Dt.liftVar`. Take `⟨x, rfl⟩` from `hw`. Simplify using `only [liftMon, Finsupp.add_apply, Finsupp.mapDomain_apply (liftVar_injective' Dt)]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Break down `x with ⟨⟨j, l | m⟩, a⟩` into its components or cases. Simplify using `[liftE, Pof, phExp_inl, SignedChainData.liftVar]`. Simplify using `only [liftE, Finsupp.onFinset_apply, Pof, Finsupp.add_apply, phExp_inr, h1, zero_add, SignedChainData.liftVar] split_ifs with h`. Rewrite using `[h2, add_zero, Nat.add_mul_div_left _ _ (hP j m)]`. Rewrite using `[add_zero, Nat.add_mul_div_left _ _ (hP j m)]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.add_apply, liftMon_notin Dt _ w hw, liftMon_notin Dt _ w hw, zero_add]`. Break down `w with ⟨v, a⟩` into its components or cases. Consider the cases of `v with`. Consider the case `ll j l => exact absurd ⟨(⟨j, Sum.inl l⟩, a), rfl⟩ hw`. Consider the case `wc j m => exact absurd ⟨(⟨j, Sum.inr m⟩, a), rfl⟩ hw`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `lab j m => exact (h1 j m a).symm`. Consider the case `tp j m h => exact (h2 j m h a).symm`.
+Treat this case separately. Treat this case separately.
 -/
 theorem liftMon_phExp (hP : ∀ j m, 0 < Dt.P j m) (β : TL J Dt.nL r × Fin r →₀ ℕ) (M : ML J Dt.nL r × Fin r →₀ ℕ)
     (hM : ∀ v ∈ M.support, IsLW v.1) : liftMon Dt (β + phExp Dt M) = liftMon Dt β + M := by
@@ -313,13 +313,13 @@ theorem liftMon_phExp (hP : ∀ j m, 0 < Dt.P j m) (β : TL J Dt.nL r × Fin r �
 end Dig
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Simplify using `[hb, SignedChainData.Fdig]`. Unfold `SignedChainData.Fdig`. Rewrite using `[support_monomial, if_neg hb]`. Distinguish the cases in `hd : Dt.digOK rho γ`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Finset.filter_singleton, hd, if_true, Finset.sum_singleton, coeff_monomial]`. Rewrite using `[liftMon, ← rename_monomial, monomial_eq, map_mul, rename_C, Finsupp.prod, map_prod]`. Use `congr 1`. Simplify using `only [map_pow, rename_X, liftE_apply_eq_liftExp]`. Use `(Finset.prod_subset Finsupp.support_onFinset_subset fun v _ hv => ?_).symm` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : Dt.liftExp γ v = 0`. Rewrite using `[← liftE_apply_eq_liftExp]`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finsupp.mem_support_iff.2 h)`. Rewrite using `[h0, pow_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.filter_singleton, hd]`.
+A detailed English derivation is pending.
 -/
 private theorem fdig_monomial {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {r J : ℕ} (Dt : SignedChainData p O r J) (rho : (ZMod J × Fin r) × Fin r → ℕ)
@@ -343,11 +343,11 @@ private theorem fdig_monomial {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [Is
   · simp [Finset.filter_singleton, hd]
 
 /- English proof (translation)
-Introduce `p O _ _ _ r J _ Dt hP rho β c F hF`. Establish `hsupp : ∀ mo ∈ F.support, ∀ v ∈ mo.support, IsLW v.1`. Introduce `mo hmo v hv`. Conclude with `(mem_supported.1 hF) (Finset.mem_coe.2 ((mem_vars v).2 ⟨mo, hmo, hv⟩))`. Establish `hs` using `fdigSum p O r J Dt rho _ F.support (fun mo => monomial β c * Dt.ph (monomial mo (coeff mo F)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [F.as_sum]`. Rewrite using `[map_sum, Finset.mul_sum, hs]`. Simplify using `only [ph_monomial_mul, fdig_monomial]`. Distinguish the cases in `hd : Dt.digOK rho β`. Rewrite using `[if_pos hd] conv_rhs => rw [F.as_sum, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun mo hmo => ?_)` and prove the remaining obligations. Rewrite using `[if_pos ((digOK_phExp Dt hP rho β mo (hsupp mo hmo)).2 hd), liftMon_phExp Dt hP β mo (hsupp mo hmo), monomial_mul]`. Rewrite using `[if_neg hd]`. Use `Finset.sum_eq_zero (fun mo hmo => ?_)` and prove the remaining obligations. Rewrite using `[if_neg (fun h => hd ((digOK_phExp Dt hP rho β mo (hsupp mo hmo)).1 h))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdigPh : FdigPh := by
   intro p O _ _ _ r J _ Dt hP rho β c F hF

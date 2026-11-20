@@ -7,7 +7,7 @@ open PowerSeries GlobalTheory.BK
 namespace GlobalTheory.Proof.cokernel_latticeMap_killed_by_prime_pow
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ l e a _ _ _ _ hT ι κ _ _ _ _ Sig U N η H hB D₁ D₂ hD₁ hD₂ F hF`. Use `haveI : FiniteDimensional ℚ_[l] K := hT.finite`. Use `haveI : CompleteSpace K := FiniteDimensional.complete ℚ_[l] K`. Conclude with `GlobalTheory.T.killsCoker_all_of_killsCoker_phiModuleLattice O K l e a ι κ η H D₁ D₂ F _ (GlobalTheory.T.breuilKisin_pow_kills_lattice_cokernel O K l e a ι κ η H D₁ D₂ F Sig U N hB hD₁.chars_subset hD₂ hF)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.IndefiniteRowSideFullHecke.RepresentationBounds.Stmt := by
   intro O K _ _ _ _ _ l e a _ _ _ _ hT ι κ _ _ _ _ Sig U N η H hB D₁ D₂ hD₁ hD₂ F hF

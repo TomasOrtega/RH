@@ -27,21 +27,17 @@ open scoped GroundTheory.PAdicHodge.CyclNorms
 namespace GlobalTheory.CompanionTheory.LTLink
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ w A hA O _ _ _ Bw hI art hart χ hχ φ hφ hφj x σ hx hσ hxσ`. Use `letI algF : Algebra (w.adicCompletion E) (Om l) := φ.toAlgebra`. Establish `hmap : ∀ y, algebraMap (w.adicCompletion E) (Om l) y = φ y` using `fun _ => rfl`. Establish `hr : Set.range (algebraMap (w.adicCompletion E) (Om l)) = (Bw.Kw.1 : Set (Om l))` using `GlobalTheory.T.local_embedding_range_eq_field Bw w φ hφ hφj`. Use `haveI hsep : IsSepClosure (w.adicCompletion E) (Om l) := GlobalTheory.T.is_sep_closure_of_range_eq Bw.Kw hr`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hext : ValuativeExtension (w.adicCompletion E) (Om l) := ⟨fun a b => by`. Rewrite using `[GroundTheory.PAdicHodge.CyclNorms.vle_iff_norm_le]`. Conclude with `(GlobalTheory.T.valuation_le_iff_norm_embedding φ hφ a b).symm⟩`. Use `haveI hclosed : IsSepClosed (Om l) := IsSepClosure.sep_closed (w.adicCompletion E)`. Use `haveI halg : Algebra.IsAlgebraic (w.adicCompletion E) (Om l) := hsep.separable.isAlgebraic`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨π, hπ, H⟩` from `GlobalTheory.T.exists_uniformizer_galois_action hχ hr`. Set `g'` to `Bw.e σ`. Establish `hfix : ∀ y, (g' : GQ l) (algebraMap (w.adicCompletion E) (Om l) y) = algebraMap (w.adicCompletion E) (Om l) y`. Introduce `y`. Establish `hy : algebraMap (w.adicCompletion E) (Om l) y ∈ Bw.Kw.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: algebraMap (w.adicCompletion E) (Om l) y ∈ (Bw.Kw.1 : Set (Om l))` using `hr ▸ ⟨y, rfl⟩`. Conclude with `this`. Conclude with `g'.2 ⟨_, hy⟩`. Set `g : Om l ≃ₐ[w.adicCompletion E] Om l` to `{ (g' : GQ l).toRingEquiv with commutes' := hfix }`. Establish `hg : ∀ y, g y = (g' : GQ l) y` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu, hact⟩` from `H g g' hg`. Establish `hdeg : unramifiedDegree (w.adicCompletion E) (Om l) g = 1` using `GlobalTheory.T.local_bridge_lubin_tate_field Bw hI σ hσ g hg`. Establish `hloc` using `GlobalTheory.T.lubin_tate_unramified_degree_one hπ (isLubinTateSeries_ltPoly π) u g hdeg hact`. Establish `hres` using `fun (L : IntermediateField E Ω) [FiniteDimensional E L] [IsAbelianGalois E L] => GlobalTheory.T.local_global_artin_compatible w Bw.j (fun y => (hφj y).symm) (unitsIncl _ u⁻¹) (σ : G E Ω) g (fun z => by rw [hg]; exact Bw.e_comm σ z) hloc L`. Establish `h1 : art (localIdele E w (unitsIncl _ u)) = toAb E Ω σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.T.global_artin_map_unique art hart]`. Establish `hb : ∀ a b : Gab E Ω, (∀ (L : IntermediateField E Ω) [FiniteDimensional E L] [IsAbelianGalois E L], PositivityTheory.FamInh.res L a = PositivityTheory.FamInh.res L b) → a = b`. Introduce `a b h`. Use `PositivityTheory.FamInh.mem_of_forall_res (H := ⊥) (g := a * b⁻¹) (by simpa using isClosed_singleton) fun L _ _ _ => by rw [map_mul, map_inv, h L, mul_inv_cancel]` as an intermediate fact. Conclude with `mul_inv_eq_one.1 (Subgroup.mem_bot.1 this)`.
-
-Use `hb _ _ fun L _ _ => ?_` and prove the remaining obligations. Rewrite using `[hres L, MonoidHom.inv_apply, map_inv, map_inv]`. Simplify using the standard rewrite rules. Establish `h2 : unitsIncl _ u = x` using `GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' E Ω art hart w (h1.trans hxσ.symm)`. Rewrite using `[← hu, ← h2]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem link : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime]
     (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), IsPlaceOver A w →

@@ -18,7 +18,7 @@ namespace GlobalTheory.HalfSupport
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [hO, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `(Finset.sum_congr rfl fun b _ => Finset.sum_comm).trans (Finset.sum_comm.trans (Finset.sum_congr rfl fun d _ => Finset.sum_comm))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hO_eq_trace (S T : HSp D) (x y : WO S T) :
     hO S T x y = Matrix.trace (HMul.hMul (HMul.hMul (HMul.hMul ((S.gram⁻¹).map (incA D)) (Matrix.transpose (y.map (cA D))))
@@ -29,7 +29,7 @@ theorem hO_eq_trace (S T : HSp D) (x y : WO S T) :
     (Finset.sum_comm.trans (Finset.sum_congr rfl fun d _ => Finset.sum_comm))
 
 /- English proof (translation)
-Rewrite using `[show Gi * (Nt * Tt) * GW * (a * M) = (Gi * Nt * Tt * GW * a) * M by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm, show M * (Gi * Nt * Tt * GW * a) = (M * Gi * Nt) * (Tt * (GW * a)) by`. Simplify using `only [Matrix.mul_assoc], hP, Matrix.one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_inverseGram_conj_smul_eq {R : Type} [CommRing R] {w r n : ℕ} (Gi : Matrix (Fin n) (Fin n) R) (Nt : Matrix (Fin n) (Fin r) R)
     (Tt : Matrix (Fin r) (Fin w) R) (GW : Matrix (Fin w) (Fin w) R) (a : Matrix (Fin w) (Fin r) R)
@@ -40,7 +40,7 @@ theorem trace_inverseGram_conj_smul_eq {R : Type} [CommRing R] {w r n : ℕ} (Gi
       simp only [Matrix.mul_assoc], hP, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `e1 : adj D C = Matrix.conjTranspose C` using `rfl`. Establish `e2 : Matrix.transpose (K.map star) = Matrix.conjTranspose K` using `rfl`. Rewrite using `[e1, e2, ← Matrix.conjTranspose_mul, hKC, Matrix.conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_mul_conj {r n : ℕ} (C : Matrix (Fin n) (Fin r) D.host.E) (K : Matrix (Fin r) (Fin n) D.host.E)
     (hKC : K * C = 1) : adj D C * Matrix.transpose (K.map star) = 1 := by
@@ -49,11 +49,11 @@ theorem adj_mul_conj {r n : ℕ} (C : Matrix (Fin n) (Fin r) D.host.E) (K : Matr
   rw [e1, e2, ← Matrix.conjTranspose_mul, hKC, Matrix.conjTranspose_one]
 
 /- English proof (translation)
-Rewrite using `[symplO, hO_eq_trace]`. Use `congr 2`. Establish `hN : (restEmb V W K t).map (cA D) = HMul.hMul (t.map (cA D)) ((K.map star).map (incA D))`. Rewrite using `[restEmb, Matrix.map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hP : HMul.hMul (HMul.hMul ((adj D C * V.gram).map (incA D)) ((V.gram⁻¹).map (incA D))) (Matrix.transpose ((K.map star).map (incA D))) = (1 : Matrix (Fin r) (Fin r) (AE D))`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.mul_assoc (adj D C), Matrix.mul_nonsing_inv _ (GlobalTheory.LatVac.gram_det_isUnit V), Matrix.mul_one, adj_mul_conj C K hKC, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart, hN, Matrix.transpose_mul]`. Rewrite using `[trace_inverseGram_conj_smul_eq _ _ _ _ _ _ hP]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem symplO_isoPart_restEmb (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (K : Matrix (Fin r) (Fin V.rank) D.host.E) (hKC : K * C = 1) (a t : Mx D W.rank r) :
@@ -77,7 +77,7 @@ theorem symplO_isoPart_restEmb (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [res, Pi.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul c _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem res_smul (V V' W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E) (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r))
@@ -88,9 +88,9 @@ theorem res_smul (V V' W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.h
   exact integral_const_mul c _
 
 /- English proof (translation)
-Establish `hg` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf w`. Establish `h4` using `((GlobalTheory.TowerRestrict.res_theta D V V' W r C B hs ψ hψ μ 𝓨 hμ).1 _ hg).2.2.2 y`. Rewrite `h4` using `[GlobalTheory.SplitScalar.heisO_comm, hy, res_smul]`. Establish `h5 : (ψ (symplO V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C y) w) - 1) • res V V' W C B μ 𝓨 (heisO ψ V W w f) = 0`. Rewrite using `[sub_smul, h4, one_smul, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h5).resolve_left (sub_ne_zero.2 hne)`.
+A detailed English derivation is pending.
 -/
 theorem res_eq_zero_of_ne {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V V' W : HSp D} {r : ℕ}
     {C : Matrix (Fin V.rank) (Fin r) D.host.E} {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E}
@@ -107,16 +107,16 @@ theorem res_eq_zero_of_ne {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ
   exact (smul_eq_zero.1 h5).resolve_left (sub_ne_zero.2 hne)
 
 /- English proof (translation)
-Simplify using `[Matrix.single_apply, mul_ite, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_single {m n : ℕ} (t : Mx D m n) (i : Fin m) (j : Fin n) (s : AE D) :
     ∑ k, ∑ l, cA D (t k l) * (Matrix.single i j s : Mx D m n) k l = cA D (t i j) * s := by
   simp [Matrix.single_apply, mul_ite, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE D)` using `(Formalism.IndefR.Eqv.ae_facts D).1`. Establish `h1 : Continuous fun s : AE D => (Matrix.single i j s : Matrix (Fin W.rank) (Fin r) (AE D))`. Establish `e : (fun s : AE D => (Matrix.single i j s : Matrix (Fin W.rank) (Fin r) (AE D))) = fun s => s • (Matrix.single i j 1 : Matrix (Fin W.rank) (Fin r) (AE D))`. Use function extensionality and compare the values at `s`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `continuous_id.smul continuous_const`. Conclude with `(continuous_const.matrix_mul h1).matrix_mul continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_isoPart_single (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (G : Matrix (Fin W.rank) (Fin W.rank) (AE D)) (i : Fin W.rank) (j : Fin r) :
@@ -134,29 +134,25 @@ theorem continuous_isoPart_single (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.ran
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ V V' W r C B hs μ 𝓨 hμ K hKC _ e he f hf`. Establish `: IsTopologicalRing (AE D)` using `(Formalism.IndefR.Eqv.ae_facts D).1`. Take `⟨U, hUo, hU⟩` from `hf.level`. Establish `he'` using `GlobalTheory.SplitScalar.isSplitIdem_conj he`. Set `R : halfMx (cA D e) W.rank r →+ WO V W` to `{ toFun := fun t => restEmb V W K t map_zero' := Matrix.zero_mul _ map_add' := fun x y => restEmb_add V W K x y }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hRc : Continuous R` using `continuous_subtype_val.matrix_mul continuous_const`. Set `Gi : Matrix (Fin W.rank) (Fin W.rank) (AE D)` to `(W.gram⁻¹).map (incA D)`. Establish `hGG : HMul.hMul (W.gram.map (incA D)) Gi = (1 : Matrix (Fin W.rank) (Fin W.rank) (AE D))`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (GlobalTheory.LatVac.gram_det_isUnit W), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `key : ∀ (i : Fin W.rank) (j : Fin r), ∃ Cij : Set (AE D), IsCompact Cij ∧ ∀ x, e * x = x → (∀ s ∈ (fun s : AE D => GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C (HMul.hMul Gi (Matrix.single i j s : Mx D W.rank r) : Mx D W.rank r)) ⁻¹' (U : Se …` using `fun i j => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C (HMul.hMul Gi (Matrix.single i j (0 : AE D) : Mx D W.rank r) : Mx D W.rank r) = 0`. Rewrite using `[Matrix.single_zero, Matrix.mul_zero]`. Conclude with `Matrix.zero_mul _`. Use `GlobalTheory.SplitAnnihilator.annihilator_subset_compact D ψ (GlobalTheory.StdCharLocal.psiV_ne_one D ψ hψ) e he _ ?_` and prove the remaining obligations. Use `(continuous_isoPart_single V W C Gi i j).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `hUo.mem_nhds U.zero_mem`. Use `choose Cij hCc hCm using key`. Set `Kij : Fin W.rank → Fin r → Set (AE D)` to `fun i j => (fun x => cA D (incA D D.host.xi0⁻¹ * x)) '' Cij i j`. Use `⟨U.comap R, {t | ∀ i j, (t : Mx D W.rank r) i j ∈ Kij i j}, hUo.preimage hRc, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact (Set.pi Set.univ fun i => Set.pi Set.univ fun j => Kij i j : Set (Fin W.rank → Fin r → AE D))` using `isCompact_univ_pi fun i => isCompact_univ_pi fun j => (hCc i j).image (GlobalTheory.FockCompare.ThetaCont.continuous_conj.comp (continuous_const.mul continuous_id))`. Use `(isClosed_halfMx (cA D e) W.rank r).isClosedEmbedding_subtypeVal.isCompact_preimage hK` as an intermediate fact. Establish `e : {t : halfMx (cA D e) W.rank r | ∀ i j, (t : Mx D W.rank r) i j ∈ Kij i j} = Subtype.val ⁻¹' (Set.pi Set.univ fun i => Set.pi Set.univ fun j => Kij i j : Set (Fin W.rank → Fin r → AE D))`. Use extensionality with `t`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i (Set.mem_univ _) j (Set.mem_univ _)⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[e]`. Conclude with `this`. Introduce `t ht`. Assume the negation of the conclusion as `hne`. Apply `ht` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Establish `hti : cA D e * (t : Mx D W.rank r) i j = (t : Mx D W.rank r) i j` using `t.2 i j`. Establish `hti' : e * cA D ((t : Mx D W.rank r) i j) = cA D ((t : Mx D W.rank r) i j)`. Use `congrArg (cA D) hti` as an intermediate fact. Rewrite `this` using `[map_mul, GlobalTheory.DualPairCheck.cA_cA]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `⟨incA D D.host.xi0 * cA D ((t : Mx D W.rank r) i j), hCm i j _ (by rw [mul_left_comm, hti']) ?_, ?_⟩` and prove the remaining obligations. Introduce `s hsU hse`. Assume the negation of the conclusion as `hψ1`. Establish `ha : IsHalf e (HMul.hMul Gi (Matrix.single i j s : Mx D W.rank r) : Mx D W.rank r)`. Use `mul_isHalf (fun k l => ?_) Gi` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.single_apply]`. Use `split_ifs`. Conclude with `hse`. Conclude with `mul_zero e`. Establish `hfin` using `GlobalTheory.SplitScalar.half_fin he (isHalf_mul ha ((adj D C * V.gram).map (incA D)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Use `res_eq_zero_of_ne hψ hs hμ hf _ (hU _ hsU hfin) ?_` and prove the remaining obligations. Rewrite using `[symplO_isoPart_restEmb V W C K hKC, ← Matrix.mul_assoc, hGG, Matrix.one_mul, sum_single, ← mul_assoc]`. Conclude with `hψ1`. Use `show cA D (incA D D.host.xi0⁻¹ * (incA D D.host.xi0 * cA D ((t : Mx D W.rank r) i j))) = _`.
-
-Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ (GlobalTheory.IndefiniteRowSideFullHecke.BesselData.embedding_xi_zero_ne_zero D), map_one, one_mul, GlobalTheory.DualPairCheck.cA_cA]`. Introduce `t l hl`. Establish `hl' : restEmb V W K l ∈ U` using `hl`. Establish `hlh : IsHalf (cA D e) (restEmb V W K l)` using `isHalf_mul l.2 _`. Establish `hth : IsHalf (cA D e) (restEmb V W K t)` using `isHalf_mul t.2 _`.
-
-Establish `hfin` using `GlobalTheory.SplitScalar.half_fin he' hlh`. Rewrite using `[AddSubgroup.coe_add, restEmb_add, GlobalTheory.SplitScalar.heisO_add_of_orth ψ V W (GlobalTheory.SplitScalar.symplO_eq_zero V W (by rw [GlobalTheory.DualPairCheck.cA_cA, he.2.1]) hth hlh), hU _ hl' hfin]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_locConst : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ K : Matrix (Fin r) (Fin V.rank) D.host.E, K * C = 1 → K * B = 0 → ∀ e, IsSplitIdem D e → ∀ f, IsThetaFunO ψ V W f → ∃ (L : AddSubgroup (halfMx (cA D e) W.rank r)) (Kc : Set (halfMx (cA D e) W.rank r)), IsOpen (L : Set (halfMx (cA D e) W.rank r)) ∧ IsCompact Kc ∧ (∀ t, t ∉ Kc → res V V' W C B μ 𝓨 (heisO ψ V W (restEmb V W K t) f) = 0) ∧ ∀ t, ∀ l ∈ L, heisO ψ V W (restEmb V W K (t + l : halfMx (cA D e) W.rank r)) f = heisO ψ V W (restEmb V W K t) f := by
   intro D ψ hψ V V' W r C B hs μ 𝓨 hμ K hKC _ e he f hf

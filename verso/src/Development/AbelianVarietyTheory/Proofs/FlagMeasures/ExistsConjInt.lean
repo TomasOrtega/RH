@@ -18,7 +18,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Simplify using `only [hf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm (s := Finset.univ (α := Fin m))]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hf_sum_left (L : LocE F E) {n m : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
     (x : Fin m → Fin n → E) (c : Fin m → E) (y : Fin n → E) :
@@ -29,7 +29,7 @@ theorem hf_sum_left (L : LocE F E) {n m : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
   exact Finset.sum_congr rfl fun a _ => Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [hf, map_sum, map_mul, L.cj_cj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `: L.cj (Hm b a) = Hm a b` using `congrFun (congrFun h a) b`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -42,9 +42,9 @@ theorem hf_cj (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h : IsHe
   rw [this]; ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h1 : ∀ y, hf L Hm y (∑ i, A i a • x i) = ∑ i, L.cj (A i a) * hf L Hm y (x i)`. Introduce `y`. Rewrite using `[← hf_cj L h, hf_sum_left]`. Simplify using `only [map_sum, map_mul, hf_cj L h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [gramT, rmul, Matrix.of_apply, hf_sum_left, h1, Matrix.mul_apply, cT]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramT_rmul (L : LocE F E) {n m : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm)
     (x : Fin m → Fin n → E) (A : Matrix (Fin m) (Fin m) E) :
@@ -58,7 +58,7 @@ theorem gramT_rmul (L : LocE F E) {n m : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `hf_cj L h _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isHerm_gramT (L : LocE F E) {n m : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm)
     (x : Fin m → Fin n → E) : IsHerm L (gramT L Hm x) := by
@@ -66,7 +66,7 @@ theorem isHerm_gramT (L : LocE F E) {n m : ℕ} {Hm : Matrix (Fin n) (Fin n) E} 
   exact hf_cj L h _ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [cT, Matrix.mul_apply, map_sum, map_mul, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_mul (L : LocE F E) {m : ℕ} (A B : Matrix (Fin m) (Fin m) E) :
     cT L (A * B) = cT L B * cT L A := by
@@ -74,14 +74,14 @@ theorem cT_mul (L : LocE F E) {m : ℕ} (A B : Matrix (Fin m) (Fin m) E) :
   simp only [cT, Matrix.mul_apply, map_sum, map_mul, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `L.cj_cj _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cT_cT (L : LocE F E) {m : ℕ} (A : Matrix (Fin m) (Fin m) E) : cT L (cT L A) = A := by
   ext a b
   exact L.cj_cj _
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [cT, Matrix.one_apply, eq_comm (a := b)]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_one (L : LocE F E) {m : ℕ} : cT L (1 : Matrix (Fin m) (Fin m) E) = 1 := by
   ext a b
@@ -89,7 +89,7 @@ theorem cT_one (L : LocE F E) {m : ℕ} : cT L (1 : Matrix (Fin m) (Fin m) E) = 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [rmul, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rmul_rmul {n m : ℕ} (x : Fin m → Fin n → E) (A B : Matrix (Fin m) (Fin m) E) :
     rmul (rmul x A) B = rmul x (A * B) := by
@@ -99,14 +99,14 @@ theorem rmul_rmul {n m : ℕ} (x : Fin m → Fin n → E) (A B : Matrix (Fin m) 
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[rmul, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rmul_one {n m : ℕ} (x : Fin m → Fin n → E) : rmul x 1 = x := by
   funext j
   simp [rmul, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.mul_apply] exact Subring.sum_mem _ fun i _ => Subring.mul_mem _ (hA a i) (hB i b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_mul (L : LocE F E) {m : ℕ} {A B : Matrix (Fin m) (Fin m) E} (hA : IsIntM L A)
     (hB : IsIntM L B) : IsIntM L (A * B) := fun a b => by
@@ -116,11 +116,11 @@ theorem isIntM_mul (L : LocE F E) {m : ℕ} {A B : Matrix (Fin m) (Fin m) E} (hA
 variable [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Use `L.free` as an intermediate fact. Establish `: Module.Finite F E` using `Module.finite_of_finrank_eq_succ L.rank`. Establish `he : IsIntegral F e` using `Algebra.IsIntegral.isIntegral e`. Take `⟨⟨c, hc⟩, hce⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors 𝒪[F]) e he`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hc) hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hi`. Rewrite using `[L.O_def]`. Establish `h1 : IsIntegral 𝒪[F] (((u⁻¹ : (𝒪[F])ˣ) * ϖ ^ j : 𝒪[F]) • (((u : 𝒪[F]) * ϖ ^ k) • e))` using `IsIntegral.smul _ hce`. Establish `h2 : ((u⁻¹ : (𝒪[F])ˣ) * ϖ ^ j : 𝒪[F]) * ((u : 𝒪[F]) * ϖ ^ k) = ϖ ^ (k + j)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_add]`. Take the linear combination `(ϖ ^ j * ϖ ^ k) * u.inv_mul`. Rewrite `h1` using `[smul_smul, h2, Algebra.smul_def, IsScalarTower.algebraMap_apply 𝒪[F] F E]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem (L : LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (e : E) :
     ∃ k : ℕ, ∀ i ≥ k, algebraMap F E ((ϖ : F) ^ i) * e ∈ L.O := by
@@ -143,13 +143,11 @@ theorem exists_pow_mul_mem (L : LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) 
   exact h1
 
 /- English proof (translation)
-Use `choose k hk using fun p : Fin m × Fin m × Fin m × Fin m => exists_pow_mul_mem L hϖ (A p.1 p.2.1 * A⁻¹ p.2.2.1 p.2.2.2)`. Use `⟨Finset.univ.sup k, fun i hi K hK a b => ?_⟩` and prove the remaining obligations. Establish `h1 : A * K * A⁻¹ = 1 + A * (K - 1) * A⁻¹`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_nonsing_inv _ hA]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.add_apply]`. Use `Subring.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Subring.zero_mem _`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Use `Subring.sum_mem _ fun s _ => Subring.sum_mem _ fun r _ => ?_` and prove the remaining obligations. Take `⟨c, hc, h⟩` from `hK r s`. Rewrite using `[Matrix.sub_apply, h]`.
-
-Use `Subring.mul_mem _ (hk (a, r, s, b) i (le_trans (Finset.le_sup (Finset.mem_univ _)) hi)) hc` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_conj_int (L : LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {m : ℕ}
     (A : Matrix (Fin m) (Fin m) E) (hA : IsUnit A.det) :
@@ -174,31 +172,29 @@ theorem exists_conj_int (L : LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {m 
     ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ n Hm hH Λs hΛ m x hx hmn A hA hint`. Take `⟨k, hk⟩` from `exists_conj_int L hϖ A hA`. Use `⟨max k 1, fun i hi => ?_⟩` and prove the remaining obligations. Establish `hO` using `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Establish `hq : (0 : ℝ) < resQ ϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hO.2.2.2.2.2.2.1` as an intermediate fact. Conclude with `(by omega : 0 < resQ ϖ)` after adjusting the coercions. Establish `hAi : IsUnit (A⁻¹).det` using `Matrix.isUnit_nonsing_inv_det A hA`. Establish `hAA : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hA`. Establish `hAA' : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul _ hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA : cT L A * cT L A⁻¹ = 1` using `by rw [← cT_mul, hAA', cT_one]`. Establish `hcA' : cT L A⁻¹ * cT L A = 1` using `by rw [← cT_mul, hAA, cT_one]`. Establish `hΓ` using `isHerm_gramT L hH.1 x`. Use `set O := horb L ϖ (gramT L Hm x) i with hOdef`. Establish `hOco : IsCO (hermLat L m) O` using `((GlobalTheory.T.matrixCongruentOneModUniformizerPow_group_and_orbits L ϖ hϖ m i (le_of_max_le_right hi)).2.2 _ hΓ hx).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := (fun X => cT L A⁻¹ * X * A⁻¹) '' O with hBdef`. Establish `hBco : IsCO (hermLat L m) B` using `((GlobalTheory.T.hermitianMatrix_congruence_content_jacobian L ϖ hϖ m A⁻¹ hAi).2 O hOco).1`. Establish `hback : ∀ X : Matrix (Fin m) (Fin m) E, cT L A * (cT L A⁻¹ * X * A⁻¹) * A = X`. Introduce `X`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Establish `hforth : ∀ X : Matrix (Fin m) (Fin m) E, cT L A⁻¹ * (cT L A * X * A) * A⁻¹ = X`. Introduce `X`. Combine the equalities or inequalities in the displayed calculation. Establish `hOB : (fun X => cT L A * X * A) '' B = O`. Rewrite using `[hBdef, Set.image_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hback, Set.image_id']`. Establish `hcO` using `((GlobalTheory.T.hermitianMatrix_congruence_content_jacobian L ϖ hϖ m A hA).2 B hBco).2`. Rewrite `hcO` using `[hOB]`. Establish `hBint : ∀ X ∈ B, X ∈ hermLat L m`. Introduce and unpack `_ ⟨_, ⟨K, hK, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK'` using `hk i (le_of_max_le_left hi) K hK`. Establish `h1 : cT L A⁻¹ * (cT L K * gramT L Hm x * K) * A⁻¹ = cT L (A * K * A⁻¹) * gramT L Hm (rmul x A⁻¹) * (A * K * A⁻¹)`. Rewrite using `[gramT_rmul L hH.1, cT_mul, cT_mul]`. Use `conv_lhs => rw [← hback (gramT L Hm x)]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `AddSubgroup.subset_closure ⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsHerm L (cT L A⁻¹ * (cT L K * gramT L Hm x * K) * A⁻¹)`. Rewrite using `[← gramT_rmul L hH.1, ← gramT_rmul L hH.1]`. Conclude with `isHerm_gramT L hH.1 _`. Express the relevant statement in the definitionally equal form `IsIntM L (cT L A⁻¹ * (cT L K * gramT L Hm x * K) * A⁻¹)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[h1]`. Conclude with `isIntM_mul L (isIntM_mul L (fun a b => (hO.2.1 _ (hK' b a)).1) hint) hK'`. Take `⟨hTco, hT1, hT2⟩` from `GlobalTheory.T.primitiveTuples_hermitianGram_coset_content L ϖ hϖ Hm hH Λs hΛ m hmn B hBint hBco`. Establish `hS : {z : Fin m → Fin n → E | IsPrimT L Hm Λs (rmul z A⁻¹) ∧ gramT L Hm z ∈ O} = (fun x => rmul x A) '' {z : Fin m → Fin n → E | IsPrimT L Hm Λs z ∧ gramT L Hm z ∈ B}`. Use extensionality with `z`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨rmul z A⁻¹, ⟨h1, _, h2, (gramT_rmul L hH.1 _ _).symm⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [rmul_rmul, hAA', rmul_one]`. Introduce and unpack `⟨y, ⟨h1, h2⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨by simpa only [rmul_rmul, hAA, rmul_one] using h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hOB]`. Conclude with `⟨_, h2, (gramT_rmul L hH.1 _ _).symm⟩`. Apply the tactic sequence `have hcS := ((GlobalTheory.T.tuple_jacobian_rightMul_isometry L ϖ hϖ Hm hH Λs hΛ m).1 A hA _ hTco).2`. Rewrite using `[hS, hcS, hcO, ← mul_assoc, ← zpow_add₀ hq.ne']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `he : -(vE L ϖ (A.det * L.cj A.det) * ((n : ℤ) - m)) + -(vE L ϖ (A.det * L.cj A.det) * m) = -(vE L ϖ (A.det * L.cj A.det) * n)` using `by ring`. Rewrite using `[he]`. Establish `hp` using `(zpow_pos hq (-(vE L ϖ (A.det * L.cj A.det) * n))).le`. Prove the components needed by the constructor for the conclusion. Use `mul_le_mul_of_nonneg_left hT1 hp` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le_mul_of_nonneg_left hT2 hp` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cont_prim_scale : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (ϖ : 𝒪[F]), Irreducible ϖ → ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ Λs, IsSD L Hm Λs → ∀ (m : ℕ) (x : Fin m → Fin n → E), IsUnit (gramT L Hm x).det → 2 * m + 3 ≤ n → ∀ A : Matrix (Fin m) (Fin m) E, IsUnit A.det → IsIntM L (gramT L Hm (rmul x A⁻¹)) → ∃ i0 : ℕ, ∀ i ≥ i0, (resQ ϖ : ℝ) ^ (-(vE L ϖ (A.det * L.cj A.det) * ((n : ℤ) - m))) * cont (hermLat L m) (horb L ϖ (gramT L Hm x) i) ≤ 2 * cont (tupLat L Λs m) {z : Fin m → Fin n → E | IsPrimT L Hm Λs (rmul z A⁻¹) ∧ gramT L Hm z ∈ horb L ϖ (gramT L Hm x) i} ∧ cont (tupLat L Λs m) {z : Fin m → Fin n → E | IsPrimT L Hm Λs (rmul z A⁻¹) ∧ gramT L Hm z ∈ horb L ϖ (gramT L Hm x) i} ≤ 2 * ((resQ ϖ : ℝ) ^ (-(vE L ϖ (A.det * L.cj A.det) * ((n : ℤ) - m))) * cont (hermLat L m) (horb L ϖ (gramT L Hm x) i)) := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ n Hm hH Λs hΛ m x hx hmn A hA hint

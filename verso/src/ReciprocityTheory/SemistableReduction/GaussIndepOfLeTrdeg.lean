@@ -5,9 +5,7 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open MvPolynomial
 
 /- English proof (translation)
-Establish `htop : Algebra.adjoin E ((↑) ⁻¹' Set.range tb : Set (Algebra.adjoin E (Set.range tb))) = ⊤` using `Algebra.adjoin_adjoin_coe_preimage`. Use `haveI : FaithfulSMul E (Algebra.adjoin E (Set.range tb)) := (faithfulSMul_iff_algebraMap_injective E _).mpr (algebraMap E _).injective`. Use `haveI : Algebra.IsAlgebraic (Algebra.adjoin E ((↑) ⁻¹' Set.range tb : Set (Algebra.adjoin E (Set.range tb)))) (Algebra.adjoin E (Set.range tb)) := ⟨fun a => by`. Establish `ha : a ∈ Algebra.adjoin E ((↑) ⁻¹' Set.range tb : Set (Algebra.adjoin E (Set.range tb)))`. Rewrite using `[htop]`.
-
-Conclude with `Algebra.mem_top`. Conclude with `isAlgebraic_algebraMap (⟨a, ha⟩ : Algebra.adjoin E _)⟩`. Conclude with `exists_isTranscendenceBasis_subset (R := E) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_transcendenceBasis_subset_adjoin_range {E C : Type} [Field E] [Field C] [Algebra E C] {σ : Type}
     (tb : σ → C) : ∃ t ⊆ ((↑) ⁻¹' Set.range tb : Set (Algebra.adjoin E (Set.range tb))),
@@ -25,7 +23,7 @@ private theorem exists_transcendenceBasis_subset_adjoin_range {E C : Type} [Fiel
   exact exists_isTranscendenceBasis_subset (R := E) _
 
 /- English proof (translation)
-Take `⟨t, hts, hb⟩` from `exists_transcendenceBasis_subset_adjoin_range (E := E) tb`. Rewrite using `[← hb.cardinalMk_eq_trdeg]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem gauss_trdeg_adjoin_le {E C : Type} [Field E] [Field C] [Algebra E C] {σ : Type}
     (tb : σ → C) : Algebra.trdeg E (Algebra.adjoin E (Set.range tb)) ≤ Cardinal.mk σ := by
@@ -37,7 +35,7 @@ theorem gauss_trdeg_adjoin_le {E C : Type} [Field E] [Field C] [Algebra E C] {σ
     _ ≤ Cardinal.mk σ := Cardinal.mk_range_le
 
 /- English proof (translation)
-Use `haveI : FaithfulSMul F E := (faithfulSMul_iff_algebraMap_injective F E).mpr (algebraMap F E).injective`. Use `haveI : FaithfulSMul E (Algebra.adjoin E (Set.range tb)) := (faithfulSMul_iff_algebraMap_injective E _).mpr (algebraMap E _).injective`. Rewrite using `[trdeg_add_eq F E (A := Algebra.adjoin E (Set.range tb))]`. Establish `hu' : AlgebraicIndependent F (fun j => (⟨ub j, hmem j⟩ : Algebra.adjoin E (Set.range tb)))` using `AlgebraicIndependent.of_comp ((Algebra.adjoin E (Set.range tb)).val.restrictScalars F) hu`. Conclude with `hu'.cardinalMk_le_trdeg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gauss_card_le_trdeg_add {F E C : Type} [Field F] [Field E] [Field C] [Algebra F E] [Algebra E C]
     [Algebra F C] [IsScalarTower F E C] {σ τ : Type} (tb : σ → C) (ub : τ → C)
@@ -53,17 +51,17 @@ theorem gauss_card_le_trdeg_add {F E C : Type} [Field F] [Field E] [Field C] [Al
   exact hu'.cardinalMk_le_trdeg
 
 /- English proof (translation)
-Take `⟨t, hts, hb⟩` from `exists_transcendenceBasis_subset_adjoin_range (E := E) tb`. Establish `ht` using `hb.cardinalMk_eq_trdeg`. Establish `h1 : Cardinal.mk t ≤ Cardinal.mk ((↑) ⁻¹' Set.range tb : Set (Algebra.adjoin E (Set.range tb)))` using `Cardinal.mk_le_mk_of_subset hts`. Establish `h2 : Cardinal.mk ((↑) ⁻¹' Set.range tb : Set (Algebra.adjoin E (Set.range tb))) ≤ Cardinal.mk (Set.range tb)` using `Cardinal.mk_preimage_of_injective _ _ Subtype.val_injective`. Establish `h3 : Cardinal.mk (Set.range tb) ≤ Cardinal.mk σ` using `Cardinal.mk_range_le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσt : Cardinal.mk σ ≤ Cardinal.mk t` using `ht ▸ h`. Establish `hinj : Function.Injective tb`. Take `⟨e⟩` from `Cardinal.eq.1 (le_antisymm h3 (hσt.trans (h1.trans h2)))`. Establish `hr : Function.Injective (Set.rangeFactorization tb)` using `(Finite.injective_iff_surjective_of_equiv e.symm).2 Set.rangeFactorization_surjective`. Conclude with `fun a b hab => hr (Subtype.ext hab)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hsf : ((↑) ⁻¹' Set.range tb : Set (Algebra.adjoin E (Set.range tb))).Finite` using `(Set.finite_range tb).preimage Subtype.val_injective.injOn`. Establish `hle : ((↑) ⁻¹' Set.range tb : Set (Algebra.adjoin E (Set.range tb))).ncard ≤ t.ncard`. Rewrite using `[← Nat.card_coe_set_eq, ← Nat.card_coe_set_eq]`. Conclude with `Cardinal.toNat_le_toNat ((h2.trans h3).trans hσt) (hsf.subset hts).lt_aleph0`. Rewrite `hb` using `[Set.eq_of_subset_of_ncard_le hts hle hsf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `g : σ → Algebra.adjoin E (Set.range tb)` to `fun i => ⟨tb i, Algebra.subset_adjoin ⟨i, rfl⟩⟩`. Establish `hginj : Function.Injective g` using `fun a b hab => hinj (congrArg Subtype.val hab)`. Establish `hrange : Set.range g = ((↑) ⁻¹' Set.range tb : Set (Algebra.adjoin E (Set.range tb)))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨i, rfl⟩`. Introduce and unpack `⟨i, hi⟩`. Conclude with `⟨i, Subtype.ext hi⟩`. Establish `hg : AlgebraicIndependent E g`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraicIndependent_subtype_range hginj, hrange]`. Conclude with `hb.1`. Conclude with `hg.map' (f := (Algebra.adjoin E (Set.range tb)).val) Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem gauss_indep_of_le_trdeg {E C : Type} [Field E] [Field C] [Algebra E C] {σ : Type}
     [Finite σ] (tb : σ → C)
@@ -106,9 +104,9 @@ theorem gauss_indep_of_le_trdeg {E C : Type} [Field E] [Field C] [Algebra E C] {
   exact hg.map' (f := (Algebra.adjoin E (Set.range tb)).val) Subtype.val_injective
 
 /- English proof (translation)
-Take `⟨a', rfl⟩` from `Cardinal.lt_aleph0.1 (ha.trans_lt (Cardinal.nat_lt_aleph0 d))`. Take `⟨b', rfl⟩` from `Cardinal.lt_aleph0.1 (hb.trans_lt (Cardinal.nat_lt_aleph0 s))`. Establish `h' : s + d ≤ a' + b'` using `by exact_mod_cast h`. Establish `ha' : a' ≤ d` using `by exact_mod_cast ha`. Establish `hb' : b' ≤ s` using `by exact_mod_cast hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `(by omega : a' = d)` after adjusting the coercions. Conclude with `(by omega : b' = s)` after adjusting the coercions.
+Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem gauss_card_arith {a b : Cardinal} {s d : ℕ} (h : ((s + d : ℕ) : Cardinal) ≤ a + b)
     (ha : a ≤ d) (hb : b ≤ s) : a = d ∧ b = s := by
@@ -122,7 +120,7 @@ theorem gauss_card_arith {a b : Cardinal} {s d : ℕ} (h : ((s + d : ℕ) : Card
   · exact_mod_cast (by omega : b' = s)
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]`. Conclude with `R.sum_mem fun α _ => R.mul_mem (hc α) (R.prod_mem fun i _ => R.pow_mem (hg i) _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_aeval_mem {B C : Type} [CommRing B] [CommRing C] [Algebra B C] {σ : Type}
     (g : σ → C) (P : MvPolynomial σ B) (R : Subring C)

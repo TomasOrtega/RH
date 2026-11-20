@@ -12,14 +12,14 @@ variable {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {B : Base O A} {M 
   {D : Type} [AddCommGroup D] [Module A D] [Module O D] [IsScalarTower O A D]
 
 /- English proof (translation)
-Simplify using `[WachMod.Z1, WachMod.d1, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem WachMod.mem_cocycles_units_iff (W : WachMod B M D) (pr : D × D) :
     pr ∈ W.Z1 ↔ W.d1 pr.1 pr.2 = 0 := by
   simp [WachMod.Z1, WachMod.d1, sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `[WachMod.B1]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem WachMod.WachMod_mem_B1_iff (W : WachMod B M D) (pr : D × D) :
     pr ∈ W.B1 ↔ ∃ x, (W.φ x - x, W.γ x - x) = pr := by
@@ -28,27 +28,25 @@ private theorem WachMod.WachMod_mem_B1_iff (W : WachMod B M D) (pr : D × D) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O A _ _ _ B M D D' _ _ _ _ _ _ _ _ W W' F`. Establish `hQ : ∀ y, W.QInv y → W'.QInv (F.f y)` using `fun y hy => by show B.Q ^ M • F.f y ∈ W'.N`. Rewrite using `[← map_smul]`. Conclude with `F.N_le _ hy`. Establish `hX : ∀ z, W.XN z → W'.XN (F.f z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `z ⟨n, hn, rfl⟩`. Conclude with `⟨F.f n, F.N_le n hn, map_smul _ _ _⟩`. Establish `hC1 : ∀ y z, W.C1 y z → W'.C1 (F.f y) (F.f z)` using `fun y z h => ⟨hQ y h.1, hX z h.2⟩`. Establish `hd : ∀ y z, F.f (W.d1 y z) = W'.d1 (F.f y) (F.f z)` using `fun y z => by`. Simplify using `only [WachMod.d1, map_sub, F.φ_comm, F.γ_comm]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hZ1 : W.Z1.map F.f2 ≤ W'.Z1`. Introduce and unpack `_ ⟨pr, hpr, rfl⟩`. Use `(WachMod.mem_cocycles_units_iff W' _).mpr ?_` and prove the remaining obligations. Use `show W'.d1 (F.f pr.1) (F.f pr.2) = 0`. Rewrite using `[← hd, (WachMod.mem_cocycles_units_iff W pr).mp hpr, map_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hB1 : W.B1.map F.f2 ≤ W'.B1`. Introduce and unpack `_ ⟨pr, hpr, rfl⟩`. Take `⟨x, rfl⟩` from `(WachMod.WachMod_mem_B1_iff W pr).mp hpr`. Conclude with `(WachMod.WachMod_mem_B1_iff W' _).mpr ⟨F.f x, by simp [Hom.f2, F.φ_comm, F.γ_comm]⟩`. Establish `hZf : W.Zf.map F.f2 ≤ W'.Zf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.map_le_iff_le_comap.mpr ?_` and prove the remaining obligations. Rewrite using `[WachMod.Zf]`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `pr ⟨hz, a, b, hb, hint⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Submodule.mem_comap.mpr ?_` and prove the remaining obligations. Rewrite using `[WachMod.Zf]`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨hZ1 ⟨pr, hz, rfl⟩, a, F.f2 b, hB1 ⟨b, hb, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨k, hk⟩, hxn⟩` from `hint`. Establish `e : (B.p ^ a : ℕ) • F.f2 pr + F.f2 b = F.f2 ((B.p ^ a : ℕ) • pr + b)`. Rewrite using `[map_add, map_nsmul]`. Rewrite using `[e]`. Use `⟨⟨k, ?_⟩, hX _ hxn⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show B.Q ^ k • F.f (((B.p ^ a : ℕ) • pr + b).1) ∈ W'.N`. Rewrite using `[← map_smul]`. Conclude with `F.N_le _ hk`. Introduce `pr hpr`. Use `Submodule.mem_comap.mpr ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[WachMod.Zf]`. Conclude with `Submodule.mem_sup_right (hB1 ⟨pr, hpr, rfl⟩)`. Use `⟨hQ, hX, ?_, hd, ?_, ?_, ?_, hZ1, hB1, hZf⟩` and prove the remaining obligations. Introduce and unpack `ω ⟨y, hy, rfl⟩`. Conclude with `⟨F.f y, hQ y hy, map_smul _ _ _⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `y z ⟨h1, h2⟩`. Conclude with `⟨hC1 y z h1, by rw [← hd, h2, map_zero]⟩`. Introduce and unpack `y z ⟨x, hx, rfl, rfl⟩`. Conclude with `⟨F.f x, F.N_le x hx, by rw [map_sub, F.φ_comm], by rw [map_sub, F.γ_comm]⟩`. Introduce and unpack `ω ⟨y, z, h, rfl⟩`.
-
-Conclude with `⟨F.f y, F.f z, hC1 y z h, hd y z⟩`.
+A detailed English derivation is pending.
 -/
 theorem homPreservesCochains_holds : HomMaps := by
   intro O A _ _ _ B M D D' _ _ _ _ _ _ _ _ W W' F
@@ -105,25 +103,23 @@ theorem homPreservesCochains_holds : HomMaps := by
     exact ⟨F.f y, F.f z, hC1 y z h, hd y z⟩
 
 /- English proof (translation)
-Introduce `O A _ _ _ B M D _ _ _ _ N γ hG hQ hγ hN y hy`. Take `⟨v, hvu, ⟨t, hvt⟩, hγQ⟩` from `hG`. Establish `hit : ∀ (k : ℕ) (x : D), (fun x : D => B.Q • x)^[k] x = B.Q ^ k • x`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ k ih => intro x`. Rewrite using `[Function.iterate_succ_apply', ih, pow_succ', mul_smul]`. Establish `hQM : Function.Bijective (fun x : D => B.Q ^ M • x)`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hQ.iterate M`. Rewrite `h` using `[show (fun x : D => B.Q • x)^[M] = fun x => B.Q ^ M • x from funext (hit M)]`. Then use the resulting hypothesis. Establish `hvk : ∀ k : ℕ, ∃ s : A, v ^ k = 1 + B.X * s`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ k ih`. Take `⟨s, hs⟩` from `ih`. Conclude with `⟨s + t + B.X * s * t, by rw [pow_succ, hs, hvt]; ring⟩`. Take `⟨s, hs⟩` from `hvk M`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hγn : γ (B.Q ^ M • y) = v ^ M • B.Q ^ M • γ y`. Rewrite using `[hγ, map_pow, hγQ, mul_pow, mul_smul]`. Take `⟨n', hn'N, hn'⟩` from `hN _ hy`. Take `⟨u, hu⟩` from `hvu.pow M`. Establish `hQγ : B.Q ^ M • γ y ∈ N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : γ (B.Q ^ M • y) ∈ N`. Establish `e : γ (B.Q ^ M • y) = B.Q ^ M • y + B.X • n'` using `by rw [← hn']; abel`. Rewrite using `[e]`. Conclude with `N.add_mem hy (N.smul_mem _ hn'N)`. Establish `h2 : B.Q ^ M • γ y = ((u⁻¹ : Aˣ) : A) • γ (B.Q ^ M • y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγn, ← hu, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[h2]`. Conclude with `N.smul_mem _ h1`. Establish `hmN : n' - s • B.Q ^ M • γ y ∈ N` using `N.sub_mem hn'N (N.smul_mem _ hQγ)`. Establish `hkey : B.Q ^ M • (γ y - y) = B.X • (n' - s • B.Q ^ M • γ y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (1 + B.X * s) • B.Q ^ M • γ y - B.Q ^ M • y = B.X • n'`. Rewrite using `[← hs, ← hγn]`. Conclude with `hn'`. Rewrite using `[smul_sub, smul_sub, ← e, add_smul, one_smul, mul_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y', hy'⟩` from `hQM.2 (n' - s • B.Q ^ M • γ y)`. Simplify using `only at hy'`. Use `⟨y', by rw [hy']; exact hmN, ?_⟩` and prove the remaining obligations. Apply `hQM.1` to reduce the goal to its premises. Use `show B.Q ^ M • (γ y - y) = B.Q ^ M • (B.X • y')`.
-
-Rewrite using `[hkey, smul_comm (B.Q ^ M) B.X y', hy']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaStableOfGammaQUnit_holds : GammaQNOf := by
   intro O A _ _ _ B M D _ _ _ _ N γ hG hQ hγ hN y hy
@@ -172,9 +168,9 @@ theorem gammaStableOfGammaQUnit_holds : GammaQNOf := by
   rw [hkey, smul_comm (B.Q ^ M) B.X y', hy']
 
 /- English proof (translation)
-Introduce `O A _ _ _ B M D D' _ _ _ _ _ _ _ _ W W' F g e hfin hlift`. Take `⟨s, hs, hspan⟩` from `hfin`. Use `show Module.length O (↥W'.Zf ⧸ F.ImF.comap W'.Zf.subtype) ≤ _`. Use `first`. Consider the case `exact Formalism.WachCohomologyFacts.quotientLengthBound_holds O (D' × D') B.p g e W'.Zf W'.B1 F.ImF s hs hspan le_sup_right hlift`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Formalism.WachCohomologyFacts.PLenBound.quotientLengthBound_holds O (D' × D') B.p g e W'.Zf W'.B1 F.ImF s hs hspan le_sup_right hlift`. Consider the case `exact _root_.quotientLengthBound_holds O (D' × D') B.p g e W'.Zf W'.B1 F.ImF s hs hspan le_sup_right hlift`.
+A detailed English derivation is pending.
 -/
 theorem cokernelLengthBound_holds : ColBound := by
   intro O A _ _ _ B M D D' _ _ _ _ _ _ _ _ W W' F g e hfin hlift
@@ -186,9 +182,9 @@ theorem cokernelLengthBound_holds : ColBound := by
     | exact _root_.quotientLengthBound_holds O (D' × D') B.p g e W'.Zf W'.B1 F.ImF s hs hspan le_sup_right hlift
 
 /- English proof (translation)
-Introduce `O A _ _ _ B M D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ S H₁ H₂ _ _ _ _ cl₁ cl₂ Hf₁ Hf₂ g eW c hnat hcl₁ hint hlifts κ hκ`. Take `⟨pr, hcoc, hpr⟩` from `hint.2 κ hκ`. Take `⟨y₁, z₁, hcoc₁, hy, hz⟩` from `hlifts _ _ hcoc`. Establish `hmem : ((y₁, z₁) : D₁ × D₁) ∈ W₁.Z1` using `(WachMod.mem_cocycles_units_iff W₁ _).mpr hcoc₁.2`. Use `⟨cl₁ ⟨(y₁, z₁), hmem⟩, hcl₁ _ hcoc₁, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpr' : ((c • pr : W₂.Z1) : D₂ × D₂) = S.π.f2 (⟨(y₁, z₁), hmem⟩ : W₁.Z1)` using `by show c • (pr : D₂ × D₂) = (S.π.f y₁, S.π.f z₁)`. Rewrite using `[hy, hz]`. Both sides reduce to the same expression. Rewrite using `[hnat _ _ hpr', map_smul, hpr, smul_smul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem finiteClassesLift_holds : LiftHf := by
   intro O A _ _ _ B M D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ S H₁ H₂ _ _ _ _ cl₁ cl₂ Hf₁ Hf₂ g eW c

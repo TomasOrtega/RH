@@ -7,21 +7,19 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.Equi.BallVol
 
 /- English proof (translation)
-Introduce `F _ _ v lam hlam k a`. Take `⟨hHaar, h1⟩` from `hlam`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI : ProperSpace (Fv F v) := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `haveI : lam.Regular := Measure.Regular.of_sigmaCompactSpace_of_isLocallyFiniteMeasure lam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `htr : (fun z => z - a) ⁻¹' ballV v k = (fun z => z + -a) ⁻¹' ballV v k`. Simplify using `only [sub_eq_add_neg]`. Rewrite using `[htr, measure_preimage_add_right]`. Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer F v`. Set `ϖ : Fv F v` to `((π : v.adicCompletion F) : Fv F v)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvϖ : Valued.v ϖ = WithZero.exp (-1)`. Rewrite using `[← hπ]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v π`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hvϖ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hvϖ.symm`. Use `open Pointwise in`. Establish `hball : ballV v k = (ϖ ^ k) • (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ (pow_ne_zero k hϖ0)]`. Simplify using `only [ballV, Set.mem_ofPred_eq, SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers, smul_eq_mul, map_mul, map_inv₀, map_pow, hvϖ]`. Establish `hk : (WithZero.exp (-1 : ℤ)) ^ k = WithZero.exp (-(k : ℤ))`. Rewrite using `[← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, inv_mul_le_iff₀ (zero_lt_iff.2 WithZero.exp_ne_zero), mul_one]`. Rewrite using `[hball]`. Establish `hu : IsUnit (ϖ ^ k)` using `(pow_ne_zero k hϖ0).isUnit`. Use `open Pointwise in`. Establish `key` using `distribHaarChar_mul lam hu.unit (v.adicCompletionIntegers F : Set (Fv F v))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[Units.smul_def, IsUnit.unit_spec, h1, mul_one]`. Rewrite using `[← key]`. Establish `hm` using `GlobalTheory.GaugeProdFormula.modu_finite F v (ϖ ^ k) (pow_ne_zero k hϖ0)`. Rewrite `hm` using `[GlobalTheory.GaugeEx.modu, dif_pos hu]`. Establish `hn : ‖ϖ‖ = ((Ideal.absNorm v.asIdeal : ℝ))⁻¹`.
-
-Rewrite using `[NumberField.FinitePlace.norm_def, HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v π, hπ, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Use `show (((Ideal.absNorm v.asIdeal : NNReal) ^ (-1 : ℤ) : NNReal) : ℝ) = _`. Rewrite using `[zpow_neg_one, NNReal.coe_inv, NNReal.coe_natCast]`. Rewrite `hm` using `[norm_pow, hn, inv_pow]`. Rewrite using `[← hm, ENNReal.ofReal_coe_nnreal]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_translate_ballV : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → ∀ (k : ℕ) (a : Fv F v), lam ((fun z => z - a) ⁻¹' ballV v k) = ENNReal.ofReal (((Ideal.absNorm v.asIdeal : ℝ) ^ k)⁻¹) := by
   intro F _ _ v lam hlam k a

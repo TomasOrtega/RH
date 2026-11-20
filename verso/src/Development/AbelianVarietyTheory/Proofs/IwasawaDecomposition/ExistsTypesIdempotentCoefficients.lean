@@ -22,7 +22,7 @@ theorem coeff_ten (x : ∀ i, MonoidAlgebra ℂ (Γ i)) (g : ∀ i, Γ i) :
     (ten x).coeff g = ∏ i, (x i).coeff (g i) := rfl
 
 /- English proof (translation)
-Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_mul_sum {Δ : Type} [Group Δ] [Fintype Δ] (x y : MonoidAlgebra ℂ Δ) (g : Δ) :
     (x * y).coeff g = ∑ h, x.coeff h * y.coeff (h⁻¹ * g) := by
@@ -30,9 +30,9 @@ theorem coeff_mul_sum {Δ : Type} [Group Δ] [Fintype Δ] (x y : MonoidAlgebra �
   simp
 
 /- English proof (translation)
-Use `haveI := fun i => Fintype.ofFinite (Γ i)`. Use extensionality with `g`. Simplify using `only [coeff_mul_sum, coeff_ten]`. Rewrite using `[Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ten_mul (x y : ∀ i, MonoidAlgebra ℂ (Γ i)) : ten x * ten y = ten fun i => x i * y i := by
   classical
@@ -45,9 +45,9 @@ theorem ten_mul (x y : ∀ i, MonoidAlgebra ℂ (Γ i)) : ten x * ten y = ten fu
   rfl
 
 /- English proof (translation)
-Use extensionality with `h`. Rewrite using `[coeff_ten]`. Distinguish the cases in `hh : g = h`. Substitute `hh` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hh`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi])]`. Simplify using `[hh]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ten_single (g : ∀ i, Γ i) :
     ten (fun i => MonoidAlgebra.single (g i) (1 : ℂ)) = MonoidAlgebra.single g 1 := by
@@ -61,9 +61,9 @@ theorem ten_single (g : ∀ i, Γ i) :
     simp [hh]
 
 /- English proof (translation)
-Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `b`. Proceed by induction on `b using MonoidAlgebra.induction_on with`. Consider the case `of g => simp only [MonoidAlgebra.of_apply, ← ten_single, ten_mul, hx]`. Consider the case `add a b ha hb => rw [add_mul, mul_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c a ha => rw [smul_mul_assoc, mul_smul_comm, ha]`.
+Treat this case separately.
 -/
 theorem ten_central (x : ∀ i, MonoidAlgebra ℂ (Γ i)) (hx : ∀ i a, x i * a = a * x i) :
     ten x ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (∀ i, Γ i)) := by
@@ -75,7 +75,7 @@ theorem ten_central (x : ∀ i, MonoidAlgebra ℂ (Γ i)) (hx : ∀ i a, x i * a
   | smul c a ha => rw [smul_mul_assoc, mul_smul_comm, ha]
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[coeff_ten, Finset.prod_eq_zero (Finset.mem_univ i) (by simp [h])]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ten_eq_zero {x : ∀ i, MonoidAlgebra ℂ (Γ i)} {i : I} (h : x i = 0) : ten x = 0 := by
   ext g
@@ -83,9 +83,9 @@ theorem ten_eq_zero {x : ∀ i, MonoidAlgebra ℂ (Γ i)} {i : I} (h : x i = 0) 
   simp
 
 /- English proof (translation)
-Establish `h1 : ∀ i, ∃ g, (x i).coeff g ≠ 0`. Introduce `i`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `h i (by ext g; simp [hh g])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose g hg using h1`. Introduce `h0`. Establish `h2` using `coeff_ten x g`. Rewrite `h2` using `[h0]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ => hg i) (by simpa using h2.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ten_ne_zero {x : ∀ i, MonoidAlgebra ℂ (Γ i)} (h : ∀ i, x i ≠ 0) : ten x ≠ 0 := by
   have h1 : ∀ i, ∃ g, (x i).coeff g ≠ 0 := by
@@ -102,11 +102,11 @@ theorem ten_ne_zero {x : ∀ i, MonoidAlgebra ℂ (Γ i)} (h : ∀ i, x i ≠ 0)
 end Tensor
 
 /- English proof (translation)
-Establish `hz : Ideal.span {z} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Take `⟨u, hu⟩` from `hu.exists_left_inv`. Establish `h1 : (u : A) * z = 1` using `congrArg Subtype.val hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `ht` to reduce the goal to its premises. Rewrite using `[← one_mul t, ← h1, mul_assoc, h, mul_zero]`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hz`. Use `letI := Ideal.Quotient.field M`. Use `haveI : Module.Finite ℂ (Subalgebra.center ℂ A) := Module.Finite.of_injective (Subalgebra.center ℂ A).val.toLinearMap Subtype.val_injective`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite ℂ (Subalgebra.center ℂ A ⧸ M) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ ℂ M).toLinearMap (Ideal.Quotient.mkₐ_surjective ℂ M)`. Set `l : (Subalgebra.center ℂ A ⧸ M) →ₐ[ℂ] ℂ` to `IsAlgClosed.lift`. Use `⟨l.comp (Ideal.Quotient.mkₐ ℂ M), ?_⟩` and prove the remaining obligations. Conclude with `(congrArg l (Ideal.Quotient.eq_zero_iff_mem.2 (hle (Ideal.mem_span_singleton_self z)))).trans (map_zero l)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_char {A : Type} [Ring A] [Algebra ℂ A] [Module.Finite ℂ A] (z : Subalgebra.center ℂ A) {t : A}
     (ht : t ≠ 0) (h : (z : A) * t = 0) : ∃ ω : Subalgebra.center ℂ A →ₐ[ℂ] ℂ, ω z = 0 := by
@@ -151,15 +151,13 @@ theorem twoChar_apply {Z A : Type} [Ring Z] [Algebra ℂ Z] [Ring A] [Algebra �
 open Classical in
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (∀ i, P i)`. Establish `h : e = ∑ a : ∀ i, P i, if good a then ten (fun i => E i (a i)) else 0`. Use extensionality with `g`. Rewrite using `[he, finsum_eq_sum_of_fintype, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Use `split_ifs`. Both sides reduce to the same expression. Both sides reduce to the same expression. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sum_mem fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `ten_central _ fun i => h2 i _`. Conclude with `zero_mem _`. Rewrite using `[h, Finset.sum_mul, Finset.sum_eq_single a]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using `only [ten_mul, h1]`. Rewrite using `[zero_mul]`. Introduce `b _ hb split_ifs`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hb`.
-
-Rewrite using `[ten_mul]`. Conclude with `ten_eq_zero (i := i) (h3 i _ _ hi)`. Rewrite using `[zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_sum {I : Type} [Fintype I] {Γ : I → Type} [∀ i, Group (Γ i)] [∀ i, Finite (Γ i)]
     {P : I → Type} [∀ i, Finite (P i)] (E : ∀ i, P i → MonoidAlgebra ℂ (Γ i)) (good : (∀ i, P i) → Prop)
@@ -200,11 +198,11 @@ section Types
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
 
 /- English proof (translation)
-Use `haveI : ∀ k, NeZero (H.g k) := fun k => ⟨(H.g_prime k).ne_zero⟩`. Use `haveI : ∀ k, Fact (H.g k).Prime := fun k => ⟨H.g_prime k⟩`. Take `⟨hc, hm⟩` from `good_sum (I := Σ k : Fin 2, N.PlG k) (P := fun kv => Fin R.r → ZMod (H.g kv.1)) (fun kv p => T.eSer kv.1 (Formalism.CyclotomicNorms.monicOf p)) (fun a => T.goodTuple (fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩))) T.e0 (fun g => rfl) (fun _ _ => T.eSer_idem _ _) (fun _ …`. Rewrite using `[← Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt p i, h, Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt]))`. Use `⟨hc, fun f hf => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : ∀ kv : (Σ k : Fin 2, N.PlG k), Fin R.r → ZMod (H.g kv.1)` to `fun kv i => (f kv.1 kv.2).coeff i`. Establish `ha : ∀ kv, Formalism.CyclotomicNorms.monicOf (a kv) = f kv.1 kv.2` using `fun kv => Formalism.CyclotomicNorms.Sqf.monicOf_coeffs _ (hf _ _).1 (hf _ _).2.1`. Establish `ha' : (fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩)) = f`. Use function extensionality and compare the values at `k v`. Conclude with `ha ⟨k, v⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hm a` as an intermediate fact. Rewrite `this` using `[ha']`. Use `⟨_, ten_ne_zero fun kv => ?_, fun h => this.trans (if_pos h), fun h => this.trans (if_neg h)⟩` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `hs _ _ (hf _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodTupleIdempotent_central_and_action (T : NTypes A) (hs : ∀ k f, f.Monic ∧ f.natDegree = R.r ∧ f.coeff 0 ≠ 0 → T.eSer k f ≠ 0) :
     T.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g N)) ∧
@@ -232,11 +230,11 @@ theorem goodTupleIdempotent_central_and_action (T : NTypes A) (hs : ∀ k f, f.M
   exact hs _ _ (hf _ _)
 
 /- English proof (translation)
-Introduce `h`. Use `haveI : Fact (H.g 0).Prime := ⟨H.g_prime 0⟩`. Establish `hne : Nonempty (N.PlG 0)`. Rewrite using `[← Fintype.card_pos_iff, N.card_PlG]`. Conclude with `GaloisStage.f_pos R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v⟩` from `hne`. Establish `hf : Squarefree ((X - 1 : (ZMod (H.g 0))[X]) ^ R.r)` using `(h 0).1.2.1 v`. Establish `h1 : IsUnit (X - 1 : (ZMod (H.g 0))[X])` using `hf _ (by rw [← sq]; exact pow_dvd_pow _ (GaloisStage.two_le_r R))`. Establish `h2` using `natDegree_eq_zero_of_isUnit h1`. Establish `h3` using `(GaloisStage.monic_unip (K := ZMod (H.g 0)) 1).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h3` using `[pow_one]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem not_good_unip (T : NTypes A) : ¬ T.goodTuple (fun _ _ => (X - 1) ^ R.r) := by
   intro h
@@ -254,15 +252,15 @@ theorem not_good_unip (T : NTypes A) : ¬ T.goodTuple (fun _ _ => (X - 1) ^ R.r)
   omega
 
 /- English proof (translation)
-Use `haveI : ∀ k, NeZero (H.g k) := fun k => ⟨(H.g_prime k).ne_zero⟩`. Use `haveI : ∀ k, Fact (H.g k).Prime := fun k => ⟨H.g_prime k⟩`. Take `⟨hc, hm⟩` from `goodTupleIdempotent_central_and_action T hs`. Take `⟨t, ht, -, ht0⟩` from `hm (fun _ _ => (X - 1) ^ R.r) fun k _ => ⟨(GaloisStage.monic_unip _).1, (GaloisStage.monic_unip _).2, GaloisStage.unip_coeff_zero _ _⟩`. Take `⟨ω₀, h0⟩` from `exists_char ⟨T.e0, hc⟩ ht (ht0 (not_good_unip T))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ω₁, h1, h2⟩ : ∃ ω₁ : Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g N)) →ₐ[ℂ] ℂ, (∀ μ, ω₁ ⟨T.e0, hc⟩ • what₂.eOp μ = what₂.eOp μ) ∧ ∀ μ j, ω₁ ⟨T.e0, hc⟩ • what₂.eMt μ j = what₂.eMt μ j := by`. Break down `h with ⟨f, hf⟩ | ⟨h1, h2⟩` into its components or cases. Take `⟨s, hs0, hs1, -⟩` from `hm f fun k v => (hf k).1.1 v`. Take `⟨ω₁, h1⟩` from `exists_char (1 - ⟨T.e0, hc⟩) hs0 (by`. Express the relevant statement in the definitionally equal form `(1 - T.e0) * s = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sub_mul, one_mul, hs1 hf, sub_self])`. Rewrite `h1` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `⟨ω₁, fun μ => by rw [← h1, one_smul], fun μ j => by rw [← h1, one_smul]⟩`. Conclude with `⟨ω₀, fun μ => by rw [h1, smul_zero], fun μ j => by rw [h2, smul_zero]⟩`. Set `T' : NTypes A` to `{ T with cenAmb := fun μ => twoChar ω₁ ω₀ (what₂.eOp μ) (what₂.eOp_idem μ) cenMt := fun μ j => twoChar ω₁ ω₀ (what₂.eMt μ j) (what₂.eMt_idem μ j) }`.
+Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : T'.e0 = T.e0` using `rfl`. Use `⟨T', ⟨fun μ => ?_, fun μ j => ?_⟩, he⟩` and prove the remaining obligations. Rewrite using `[he, NTypes.onAmb, dif_pos hc]`. Express the relevant statement in the definitionally equal form `_ = twoChar ω₁ ω₀ (what₂.eOp μ) (what₂.eOp_idem μ) _`. Rewrite using `[twoChar_apply, h0, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(h1 μ).symm`. Rewrite using `[he, NTypes.onMt, dif_pos hc]`. Express the relevant statement in the definitionally equal form `_ = twoChar ω₁ ω₀ (what₂.eMt μ j) (what₂.eMt_idem μ j) _`. Rewrite using `[twoChar_apply, h0, zero_smul, add_zero]`. Conclude with `(h2 μ j).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tie (T : NTypes A) (hs : ∀ k f, f.Monic ∧ f.natDegree = R.r ∧ f.coeff 0 ≠ 0 → T.eSer k f ≠ 0)
     (h : (∃ f, T.goodTuple f) ∨ ((∀ μ, what₂.eOp μ = 0) ∧ ∀ μ j, what₂.eMt μ j = 0)) :
@@ -299,9 +297,7 @@ theorem exists_tie (T : NTypes A) (hs : ∀ k f, f.Monic ∧ f.natDegree = R.r �
     exact (h2 μ j).symm
 
 /- English proof (translation)
-Use `haveI : ∀ k, NeZero (H.g k) := fun k => ⟨(H.g_prime k).ne_zero⟩`. Simplify using `only [NTypes.e0, MonoidAlgebra.coeff_ofCoeff, Finsupp.coe_equivFunOnFinite_symm]`. Use `finsum_induction (· ∈ S) (zero_mem S) (fun _ _ => add_mem) fun a => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `prod_mem fun _ _ => hS _ _ _`.
-
-Conclude with `zero_mem S`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goodTupleIdempotent_coeff_mem_subring (T : NTypes A) (S : Subring ℂ) (hS : ∀ k f x, (T.eSer k f).coeff x ∈ S) (x : G0g N) :
     T.e0.coeff x ∈ S := by
@@ -374,7 +370,7 @@ def types0 [IsEmpty N.Loc] (hl : ∀ k w (p : A.LP w), A.items₂ k w p = (X - 1
 end Types
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, v, h6⟩` from `h`. Use `⟨fun v => h1 _, fun v => h2 _, fun l hl hb v => h3 l hl hb _, fun l hl hb v => h4 l hl hb _, fun a ha hb => ?_, e.symm v, by simpa using h6⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `h5 a ha hb`. Conclude with `⟨e.symm v, by simpa using hv⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isGood_comp {n g : ℕ} [Fact g.Prime] {P Q J : Type} (e : P ≃ Q) {f : Q → (ZMod g)[X]}
     {χ : Q → J → (ZMod g)ˣ} (h : Formalism.CyclotomicNorms.IsGood n g f χ) :
@@ -386,7 +382,7 @@ theorem isGood_comp {n g : ℕ} [Fact g.Prime] {P Q J : Type} (e : P ≃ Q) {f :
   exact ⟨e.symm v, by simpa using hv⟩
 
 /- English proof (translation)
-Establish `h3 : IntermediateField.adjoin ℚ {Complex.exp (2 * Real.pi * Complex.I / (B.toPre.restRowsFiniteGroupCard : ℕ))} ≤ (B.LL0.toSubfield.map B.embLL).toIntermediateField (fun q => by simpa using ratCast_mem (B.LL0.toSubfield.map B.embLL) q)`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Take `⟨z, hz, hz'⟩` from `B.roots_Ks _ List.mem_cons_self`. Conclude with `⟨z, B.Ks_le hz, hz'⟩`. Conclude with `fun z hz => h3 hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem adjoin_le (B : Base) : ∀ z ∈ IntermediateField.adjoin ℚ
     {Complex.exp (2 * Real.pi * Complex.I / (B.toPre.restRowsFiniteGroupCard : ℕ))}, z ∈ (B.LL0.toSubfield.map B.embLL).toSubring := by
@@ -399,9 +395,9 @@ theorem adjoin_le (B : Base) : ∀ z ∈ IntermediateField.adjoin ℚ
   exact fun z hz => h3 hz
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `hg`. Take `⟨ε, hε⟩` from `hχ`. Use `⟨fun k v => f k (ε k v), fun k => ?_⟩` and prove the remaining obligations. Use `haveI : Fact (B.host.g k).Prime := ⟨B.host.g_prime k⟩`. Establish `h : nd.chiT k = fun v => χ k (ε k v)` using `funext (hε k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `isGood_comp (ε k) (hf k).1`. Establish `h2` using `isGood_comp (ε k) (hf k).2`. Rewrite `h1` using `[← h]`. Simplify using `only [← hε] at h2`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_goodTuple {B : Base} {C : Cols B} {W : RowsRest B C} {χ : Chi B.toPre}
     {nd : NData B.R B.host W.what₂} {A : NAut nd} (T : NTypes A) (hχ : HasChi nd χ) (hg : GoodChi B.toPre χ) :
@@ -418,9 +414,9 @@ theorem exists_goodTuple {B : Base} {C : Cols B} {W : RowsRest B C} {χ : Chi B.
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `B C W χ nd A hE hχ hl hi hg`. Use `choose tg htg using fun (k : Fin 2) (v : nd.PlG k) => GlobalTheory.TameInertiaGen.exists_tameGenAt B.host.E nd.Om (A.plGw k v) (nd.plOm.1 (A.plGw k v)) (nd.plOm.2 _)`. Use `choose e he using fun k : Fin 2 => SerInhab.exists_isSer B.R.r (B.host.g k) B.toPre.restRowsFiniteGroupCard (B.host.g_prime k) B.toPre.restRowsFiniteGroupCard_pos ((dvd_pow_self _ (GaloisStage.f_pos B.R).ne').trans (Finset.dvd_prod_of_mem (fun k : Fin 2 => (Nat.card (GL (Fin B.R. …`. Take `⟨T, hT⟩ : ∃ T : NTypes A, T.eSer = e` from `⟨types0 hl hi B.g_cond B.BB_disj tg htg e he, rfl⟩`. Substitute `hT` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T', h1, h2⟩` from `exists_tie T (fun k f hf h0 => ((he k).zero f).1 h0 hf) (hg.imp_left (exists_goodTuple T hχ))`. Use `⟨T', h1, fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hy'⟩` from `goodTupleIdempotent_coeff_mem_subring T _ (fun k f x => adjoin_le B _ ((he k).rat f x)) x`. Conclude with `⟨⟨y, hy⟩, by rw [h2]; exact hy'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nTypes : ∀ (B : Base) (C : Cols B) (W : RowsRest B C) (χ : Chi B.toPre)
     (nd : NData B.R B.host W.what₂) (A : NAut nd), IsEmpty nd.Loc → HasChi nd χ →

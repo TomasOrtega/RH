@@ -14,21 +14,19 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ M n U b hU hb`. Use `haveI := M.proper`. Use `haveI : IsLocallyNoetherian M.S := LocallyOfFiniteType.isLocallyNoetherian M.π`. Use `haveI : CompactSpace M.S := QuasiCompact.compactSpace_of_compactSpace M.π`. Use `haveI : M.S.IsSeparated := ⟨by rw [← terminal.comp_from M.π]; infer_instance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun V : M.S.affineOpens => (V.1 : Set M.S)) (fun V => V.1.isOpen) (by`. Introduce `x _`. Take `⟨_, ⟨V, hV, rfl⟩, hx, -⟩` from `M.S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Conclude with `Set.mem_iUnion.2 ⟨⟨V, hV⟩, hx⟩)`. Set `r` to `s.card`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `Vc : Fin r → M.S.Opens` to `fun i => (s.equivFin.symm i).1.1`. Establish `hVa : ∀ i, IsAffineOpen (Vc i)` using `fun i => (s.equivFin.symm i).1.2`. Establish `hcov : (⨆ i, Vc i) = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨V, hV, hx⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ x))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨s.equivFin ⟨V, hV⟩, by simpa [Vc] using hx⟩`. Establish `hloc : ∀ (i : Fin r) (m : Fin n), ∃ t : Finset Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ Vc i), (∀ y ∈ t, (M.gp.app (Vc i)).hom.IsIntegralElem y) ∧ resK M.gp (inf_le_left : U m ⊓ Vc i ≤ U m) (b m) ∈ Subring.closure (Set.range (M.gp.app (U m ⊓ Vc i)).hom ∪ resK M.gp (inf_le_right : U m ⊓ Vc …`. Introduce `i m`. Use `GlobalTheory.T.mem_subringClosure_of_isIntegralElem_affineOpen_le M.gp (Vc i) (U m ⊓ Vc i) inf_le_right (hVa i) ((hU m).inf (hVa i)) _ ?_` and prove the remaining obligations. Take `⟨p, hp, hpe⟩` from `hb m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨p.map (M.S.presheaf.map (homOfLE (inf_le_left : U m ⊓ Vc i ≤ U m)).op).hom, hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `hc : (M.gp.app (U m ⊓ Vc i)).hom.comp (M.S.presheaf.map (homOfLE (inf_le_left : U m ⊓ Vc i ≤ U m)).op).hom = (resK M.gp (inf_le_left : U m ⊓ Vc i ≤ U m)).comp (M.gp.app (U m)).hom`. Use extensionality with `a`. Conclude with `(resK_app M.gp _ a).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← Polynomial.hom_eval₂, hpe, map_zero]`. Use `choose t ht hbt using hloc`. Set `T : ∀ i, Finset Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ Vc i)` to `fun i => Finset.univ.biUnion (t i)`. Use `⟨finFam M.gp Vc T, ⟨fun V _ a => finFam_range _ _ _ _ a, fun V V' hle _ _ x hx => finFam_res _ _ _ V V' hle x hx, fun V hV f x hx => GlobalTheory.T.finiteGeneratedSubring_localised_basicOpen M.gp Vc T V hV f x hx, fun V hV => GlobalTheory.T.finite_generation_integral_family_secti …` and prove the remaining obligations. Introduce `i y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative.
 
-Take `⟨m, -, hm⟩` from `Finset.mem_biUnion.1 (show y ∈ Finset.univ.biUnion (t i) from hy)`. Conclude with `ht i m y hm`. Introduce `m`. Rewrite using `[mem_finFam]`. Introduce `i`.
-
-Use `Subring.closure_mono ?_ (hbt i m)` and prove the remaining obligations. Introduce and unpack `_ (h | ⟨z, hz, rfl⟩)`. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨z, show z ∈ Finset.univ.biUnion (t i) from Finset.mem_biUnion.2 ⟨m, Finset.mem_univ _, hz⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_finSub_of_isIntegralElem : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (M : Modif R) (n : ℕ) (U : Fin n → M.S.Opens)
     (b : ∀ m, Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U m)), (∀ m, IsAffineOpen (U m)) →
@@ -82,9 +80,9 @@ theorem exists_finSub_of_isIntegralElem : ∀ (R : Type) [CommRing R] [IsDomain 
     · exact Or.inr ⟨z, show z ∈ Finset.univ.biUnion (t i) from Finset.mem_biUnion.2 ⟨m, Finset.mem_univ _, hz⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ M n U b hU hb`. Take `⟨F, hF, hbF⟩` from `exists_finSub_of_isIntegralElem R M n U b hU hb`. Use `haveI : IsIntegral M.S := M.integral`. Use `haveI : IsDominant M.gp := M.dominant`. Take `⟨S', h, gp', hgp, hfin, hint, hdom, hsec⟩` from `GlobalTheory.T.exists_finite_normalization_integral_sections M.gp F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Use `haveI := M.proper`. Set `M' : Modif R` to `{ S := S', π := h ≫ M.π, proper := inferInstance, integral := hint, gp := gp', gp_π := by rw [← Category.assoc, hgp, M.gp_π], dominant := hdom }`. Conclude with `⟨M', h, hgp, hfin, rfl, fun m => hsec (U m) (hU m) (b m) (hbF m)⟩`.
+A detailed English derivation is pending.
 -/
 theorem finiteModif_regular : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (M : Modif R) (n : ℕ) (U : Fin n → M.S.Opens) (b : ∀ m, Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U m)), (∀ m, IsAffineOpen (U m)) → (∀ m, (M.gp.app (U m)).hom.IsIntegralElem (b m)) → ∃ (M' : Modif R) (h : M'.S ⟶ M.S) (hgp : M'.gp ≫ h = M.gp), IsFinite h ∧ h ≫ M.π = M'.π ∧ ∀ m, ∃ c : Γ(M'.S, h ⁻¹ᵁ U m), (M'.gp.appLE (h ⁻¹ᵁ U m) (M.gp ⁻¹ᵁ U m) (le_preimage_of_comp_eq M.gp M'.gp h hgp (U m))).hom c = b m := by
   intro R _ _ _ M n U b hU hb

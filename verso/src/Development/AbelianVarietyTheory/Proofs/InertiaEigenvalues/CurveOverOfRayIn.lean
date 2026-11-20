@@ -17,15 +17,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwistRat.Field
 
 /- English proof (translation)
-Introduce `_ D Q hP N hN Fc σ hray`. Take `⟨L, _, _, _, _, hL, j, -, hjv⟩` from `hray`. Establish `hC : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField (algebraMap D.host.K L) N` using `GlobalTheory.FieldSize.RayNorm.containsRayField_of_ray N hL.1 fun I hI hc => (hL.2.2 I hI hc).1`. Set `S : IntermediateField ℚ ℂ` to `σ.toRatAlgHom.fieldRange`. Set `e : Fc ≃ₐ[ℚ] S` to `AlgEquiv.ofInjectiveField σ.toRatAlgHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hS : ∀ x, j x ∈ S` using `fun x => by`. Take `⟨y, hy⟩` from `hjv x`. Conclude with `⟨y, hy⟩`. Set `j' : L →+* S` to `j.codRestrict S hS`. Set `ψ : L →+* ℂ` to `(algebraMap Fc ℂ).comp (((e.symm : S ≃+* Fc) : S →+* Fc).comp j')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hψ : ψ.toRatAlgHom.fieldRange ≤ Fc`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(e.symm (j' x)).2`. Establish `hsq : ∃ a : D.host.K, a ^ 2 = -(Q.H.d : D.host.K)`. Use `⟨⟨D.host.sqrtMinusD, Formalism.L2.Pj.LPb.sqrtMinusD_mem_K D⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP.1]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hb : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E)` using `D.host.sqrtMinusD_sq`. Simplify using `using hb`. Take `⟨hW, hrt⟩` from `GlobalTheory.FieldSize.WeberTransport.weberIn_of_containsRayField D.host.E Q.H D.host.K L (algebraMap D.host.K L) ψ (Formalism.L2.Pj.LPb.finrank_K D) hsq N hN hC`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.FinalJoin.CurveField.curveOver_of_weberIn D.host.E Q.H Fc N (by omega)).1 (hψ hrt) fun Λ hΛ => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hW Λ hΛ`. Conclude with `⟨hψ h1, fun s hs => hψ (h2 s hs)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem curveOver_of_rayIn : GlobalTheory.Published.RayClassFieldSt → ∀ (D : D7) (Q : Par D), Q.PinHost → ∀ (N : ℕ), 3 ≤ N →
     ∀ (Fc : IntermediateField ℚ ℂ) (σ : Fc →+* ℂ), RayIn D N σ.fieldRange → GlobalTheory.CompRat.CurveOver Q.H Fc N := by

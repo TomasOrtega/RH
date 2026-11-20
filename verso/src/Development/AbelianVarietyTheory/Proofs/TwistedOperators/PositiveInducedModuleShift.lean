@@ -31,9 +31,9 @@ open GlobalTheory.RealInd.Stages Finset GlobalTheory.FlagMeas Formalism.REAL
 namespace GlobalTheory.RealInd.Stages
 
 /- English proof (translation)
-Take `⟨S, hS, hvS, hK⟩` from `hv`. Use `⟨S.map T.toLinearMap, inferInstance, ⟨v, hvS, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨w, hw, rfl⟩`. Establish `hu : gᴴ * Jm ε * g = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, Matrix.mem_unitaryGroup_iff'.1 hg.1, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl, -⟩` from `GlobalTheory.RealIwasawa.exists_uMat g hu`. Conclude with `⟨_, hK _ hg w hw, hT y w⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isKFin_map {n : ℕ} (ε : Fin n → Bool) {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
@@ -53,33 +53,29 @@ end GlobalTheory.RealInd.Stages
 namespace GlobalTheory.RealInd.Stages
 
 /- English proof (translation)
-Take `⟨b, W', β, p, hW', hp, hl, hβ, hpos⟩` from `GlobalTheory.T.refine_isotropic_flag I.flag`. Establish `h6` using `GlobalTheory.T.refined_flag_half_sum_of_roots n I.j hβ hpos`. Establish `hp0 : p 0 = 0` using `Fin.ext (by rw [hpos]; simp)`. Establish `hb : 0 < b`. Use `(h6 ⟨0, h⟩).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `I.pos ⟨0, h⟩`. Establish `h2 : #{l | β l = ⟨0, h⟩} ≤ b` using `(card_filter_le _ _).trans (by simp)`. Use linear arithmetic over natural numbers and integers. Establish `hβ0 : β ⟨0, hb⟩ = ⟨0, h⟩`. Use `(hβ _ _).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (⟨0, h⟩ : Fin I.a).castSucc = 0 from rfl, hp0]`. Conclude with `Fin.zero_le _`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl0⟩ : (univ.filter (fun l => β l = ⟨0, h⟩)).Nonempty := by`. Rewrite using `[← card_pos, (h6 ⟨0, h⟩).1]`. Conclude with `I.pos _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `((hβ l ⟨0, h⟩).1 (mem_filter.1 hl0).2).2` as an intermediate fact. Rewrite `this`, the goal using `[Fin.lt_iff_val_lt_val]`. Simplify using `only [Fin.coe_castSucc] at this ⊢`. Use linear arithmetic over natural numbers and integers. Take `⟨U, _, _, _, τ, y, hτ, hμ⟩` from `hTL n ε I.toDatum b W' hW' (fun i => ⟨p i, hp i⟩) hl`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hKM : IsCompact ((KG ε : Set (UJ ε)) ∩ (I.M : Set (UJ ε)))` using `(isCompact_iff_compactSpace.2 (instCompactKG n ε)).inter_right (isClosed_leviOne I.flag I.pos)`. Use `haveI : CompactSpace ↥(KG ε ⊓ I.M) := isCompact_iff_compactSpace.1 hKM`. Set `μ : Measure ↥(KG ε ⊓ I.M)` to `Measure.haarMeasure ⊤`. Use `haveI : IsProbabilityMeasure μ := ⟨Measure.haarMeasure_self⟩`. Take `⟨ι, hι⟩` from `hμ μ inferInstance inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set s' := stageS I.j β I.s y with hs'def`. Take `⟨H', _, _, _, ρ', ι', hm'⟩` from `exists_isIndModel (σ := τ) hW' (fun _ => le_rfl) (fun m hm => hτ.2.2.1.2.1 _ ⟨m, hm, rfl⟩) s'`. Set `D' : Datum ε` to `{ a := b j := fun _ => 1 W := W' flag := hW' pos := fun _ => le_rfl V := U σ := τ temp := hτ s := s' }`. Set `I' : IndModule ε` to `{ D' with H := H', ρ := ρ', ι := ι', model := hm' }`. Establish `h9` using `GlobalTheory.T.stage_parameter_pairing_shift n I.j β I.s y I.pos (fun i => (h6 i).1) (fun i => (h6 i).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hs : ∀ x t, IsSplit ε W' x t → t ∈ leviOne ε I.W → pairing (fun _ => 1) s' x = pairing (fun _ => 1) (fun l => Complex.I * y l) x` using `fun x t ht hm => h9.2 x (GlobalTheory.T.split_torus_levi_sum_vanishes hW' hp hβ ht hm)`. Establish `h1 : ∀ v, τ 1 v = v` using `fun v => by`. Rewrite using `[hτ.2.2.1.1.1]`. Both sides reduce to the same expression. Establish `hmem : ∀ F ∈ I'.fns, ∀ g, restr I.M F g ∈ indFun I.M (fun _ => 1) W' τ (fun l => Complex.I * y l)` using `fun F hF g => GlobalTheory.T.induction_in_stages_restriction τ s' y hs hF g`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont : ∀ F ∈ I'.fns, Continuous F` using `fun F hF => (mem_indFun_top.1 hF).1`. Establish `hΦ : ∀ F ∈ I'.fns, stageFun I.M _ ι F ∈ I.fns` using `fun F hF => mem_indFun_top.2 ⟨GlobalTheory.T.stage_function_continuous I.M _ ι μ hι.norm_sq (hcont F hF) (hmem F hF), GlobalTheory.T.induction_in_stages_intertwining τ I.σ I.s s' _ ι (fun m hm u hu => GlobalTheory.T.levi_conjugates_unipotent_refined I.flag hW' hp hl hβ m hm.1 u h …`. Set `Φ : I'.fns →ₗ[ℂ] I.fns` to `{ toFun := fun F => ⟨stageFun I.M _ ι F.1, hΦ F.1 F.2⟩ map_add' := fun F G => Subtype.ext (funext fun g => by`. Express the relevant statement in the definitionally equal form `stageFun I.M _ ι (F.1 + G.1) g = stageFun I.M _ ι F.1 g + stageFun I.M _ ι G.1 g`. Rewrite using `[stageFun_of_mem ι (hmem _ (I'.fns.add_mem F.2 G.2) g), stageFun_of_mem ι (hmem _ F.2 g), stageFun_of_mem ι (hmem _ G.2 g), ← map_add]`.
+Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `congrArg ι (Subtype.ext (funext fun m => by`. Apply the tactic sequence `by_cases hm : m ∈ I.M <;> simp [restr, hm])))`. Use the proof step `map_smul' := fun c F => Subtype.ext (funext fun g => by`. Express the relevant statement in the definitionally equal form `stageFun I.M _ ι (c • F.1) g = c • stageFun I.M _ ι F.1 g`. Rewrite using `[stageFun_of_mem ι (hmem _ (I'.fns.smul_mem c F.2) g), stageFun_of_mem ι (hmem _ F.2 g), ← map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `congrArg ι (Subtype.ext (funext fun m => by`. Apply the tactic sequence `by_cases hm : m ∈ I.M <;> simp [restr, hm]))) }`. Establish `hnorm : ∀ F : I'.fns, ‖I.ι (Φ F)‖ = ‖ι' F‖` using `fun F => (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 (by`. Rewrite using `[I.model.norm_sq, hm'.norm_sq]`. Conclude with `GlobalTheory.T.stage_function_norm_integral I.M _ ι μ hι.norm_sq (hcont _ F.2) (hmem _ F.2))`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hΦtr : ∀ (F : I'.fns) (g : UJ ε), (Φ ⟨fun g' => F.1 (g' * g), indFun_mul_right F.2 trivial⟩).1 = fun g' => (Φ F).1 (g' * g)` using `fun F g =>`. Use function extensionality and compare the values at `fun g' => by`. Express the relevant statement in the definitionally equal form `stageFun I.M _ ι (fun g' => F.1 (g' * g)) g' = stageFun I.M _ ι F.1 (g' * g)`. Establish `: restr I.M (fun g' => F.1 (g' * g)) g' = restr I.M F.1 (g' * g)` using `funext fun m => by`. Simplify using `only [restr, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Unfold `stageFun`. Rewrite using `[this]`. Establish `hbd : ∃ C, ∀ F, ‖(I.ι ∘ₗ Φ) F‖ ≤ C * ‖ι' F‖` using `⟨1, fun F => by rw [one_mul]; exact (hnorm F).le⟩`. Set `T₀` to `(I.ι ∘ₗ Φ).extendOfNorm ι'`. Establish `hT₀ : ∀ F, T₀ (ι' F) = I.ι (Φ F)` using `LinearMap.extendOfNorm_eq hm'.dense hbd`.
-
-Establish `hiso : ∀ v, ‖T₀ v‖ = ‖v‖` using `fun v => hm'.dense.induction_on v (isClosed_eq (by fun_prop) (by fun_prop)) fun F => by rw [hT₀]; exact hnorm F`. Use `⟨I', hb, rfl, ?_, ⟨T₀.toLinearMap, hiso⟩, fun g w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(s' ⟨0, hb⟩).re = _`. Simplify using `[hs'def, stageS, hβ0]`. Express the relevant statement in the definitionally equal form `T₀ (ρ' (uMat g) w) = I.ρ (uMat g) (T₀ w)`.
-
-Use `hm'.dense.induction_on w (isClosed_eq (by fun_prop) (by fun_prop)) fun F => ?_` and prove the remaining obligations. Rewrite using `[hm'.transl g trivial F ⟨_, indFun_mul_right F.2 trivial⟩ (fun _ => rfl), hT₀, hT₀]`. Conclude with `(I.model.transl g trivial (Φ F) _ (fun g' => congrFun (hΦtr F g) g')).symm`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stage {n : ℕ} {ε : Fin n → Bool} (I : IndModule ε) (h : 0 < I.a)
     (hTL : GlobalTheory.Published.Langlands.TemperedLevi) :
@@ -179,7 +175,7 @@ end GlobalTheory.RealInd.Stages
 namespace GlobalTheory.RealInd.Stages
 
 /- English proof (translation)
-Introduce `hLC n ε I h χ hI`. Take `⟨I', h', hj, hre, T, hT⟩` from `exists_stage I h hLC.2.2.2.2.2.2`. Use `⟨I', h', hj, hre, fun k v hv => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `hI k (T v) (isKFin_map ε _ _ T hT hv)`. Conclude with `⟨N, T.injective (by rw [← GlobalTheory.T.isometry_intertwines_enveloping ε _ _ T hT, hN, map_zero])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_first_step_one : GlobalTheory.Published.LanglandsClassification → ∀ (n : ℕ) (ε : Fin n → Bool) (I : IndModule ε) (h : 0 < I.a) (χ : Fin n → ℂ), (∀ (k : ℕ) v, IsKFin ε I.ρ v → ∃ N : ℕ, actU ε I.ρ ((etr (Egl n) (k + 1) - algebraMap ℂ _ (gelfVal χ (k + 1))) ^ N) v = 0) → ∃ (I' : IndModule ε) (h' : 0 < I'.a), I'.j ⟨0, h'⟩ = 1 ∧ (I'.s ⟨0, h'⟩).re = (I.s ⟨0, h⟩).re ∧ (∀ (k : ℕ) v, IsKFin ε I'.ρ v → ∃ N : ℕ, actU ε I'.ρ ((etr (Egl n) (k + 1) - algebraMap ℂ _ (gelfVal χ (k + 1))) ^ N) v = 0) := by
   intro hLC n ε I h χ hI

@@ -5,15 +5,15 @@ namespace Formalism.HermitianLattices.Ext.L3.SplitPrimeIdeals
 variable {A B : Type*} [CommRing A] [CommRing B] {ι : A →+* B} {σ : B →+* B}
 
 /- English proof (translation)
-Establish `hσP : ∀ p ∈ P, σ p ∈ P` using `fun p hp => Ideal.mem_comap.1 (hc.symm ▸ hp)`. Establish `hσδ : σ (θ - σ θ) = -(θ - σ θ)`. Rewrite using `[map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDP : (θ - σ θ) * (θ - σ θ) ∉ P` using `fun h => hθ ((hP.isPrime.mem_or_mem h).elim id id)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take `⟨u, i, hi, hui⟩` from `hP.exists_inv hDP`. Establish `hσi : σ i ∈ P` using `hσP i hi`. Establish `h2 : σ u * ((θ - σ θ) * (θ - σ θ)) + σ i = 1`. Use `congrArg σ hui` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, hσδ, map_one, neg_mul_neg]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `set y := ((x * θ - σ x * σ θ) * (θ - σ θ)) * (u * σ u * ((θ - σ θ) * (θ - σ θ))) with hy_def`. Establish `hy : σ y = y`. Rewrite using `[hy_def]`. Simplify using `only [map_mul, map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(hfix y).1 hy`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Establish `e : x - y = x * i + x * σ i - x * i * σ i - (x - σ x) * (σ θ * (θ - σ θ) * u * σ u * ((θ - σ θ) * (θ - σ θ)))`. Rewrite using `[hy_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-x * σ u * ((θ - σ θ) * (θ - σ θ))) * hui + (-x * (1 - i)) * h2`. Rewrite using `[e]`. Conclude with `P.sub_mem (P.sub_mem (P.add_mem (P.mul_mem_left _ hi) (P.mul_mem_left _ hσi)) (P.mul_mem_left _ hσi)) (P.mul_mem_right _ hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_sub_iota_mem_of_sub_involution_mem (hσ : ∀ x, σ (σ x) = x) (hfix : ∀ x, σ x = x ↔ x ∈ Set.range ι)
     {P : Ideal B} (hP : P.IsMaximal) (hc : P.comap σ = P) {θ : B} (hθ : θ - σ θ ∉ P)
@@ -46,29 +46,25 @@ private theorem exists_sub_iota_mem_of_sub_involution_mem (hσ : ∀ x, σ (σ x
     (P.mul_mem_left _ hσi)) (P.mul_mem_right _ hx)
 
 /- English proof (translation)
-Use `haveI := hP`. Use `letI : Field (B ⧸ P) := Ideal.Quotient.field P`. Establish `hle : P ≤ P.comap σ` using `le_of_eq hc.symm`. Use `set sb : B ⧸ P →+* B ⧸ P := Ideal.quotientMap P σ hle with hsb`. Use `set φ : A ⧸ P.comap ι →+* B ⧸ P := Ideal.quotientMap P ι le_rfl with hφ`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsbmk : ∀ x, sb (Ideal.Quotient.mk P x) = Ideal.Quotient.mk P (σ x)` using `fun x => Ideal.quotientMap_mk`. Establish `hsb2 : ∀ c, sb (sb c) = c`. Introduce `c`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite using `[hsbmk, hsbmk, hσ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφmk : ∀ a, φ (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk P (ι a)` using `fun a => Ideal.quotientMap_mk`. Establish `hsbφ : ∀ c, sb (φ c) = φ c`. Introduce `c`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite using `[hφmk, hsbmk, (hfix (ι a)).2 ⟨a, rfl⟩]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφinj : Function.Injective φ` using `Ideal.quotientMap_injective`. Establish `hlift : ∀ c, sb c = c → ∃ a, φ a = c`. Introduce `c hcfix`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite `hcfix` using `[hsbmk]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hx : x - σ x ∈ P` using `Ideal.Quotient.eq.1 hcfix.symm`. Take `⟨a, ha⟩` from `exists_sub_iota_mem_of_sub_involution_mem hσ hfix hP hc hθ x hx`. Conclude with `⟨Ideal.Quotient.mk _ a, by rw [hφmk]; exact (Ideal.Quotient.eq.2 ha).symm⟩`. Use `set th := Ideal.Quotient.mk P θ with hth`. Establish `hδ : th - sb th ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hth, hsbmk, ← map_sub, Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hθ`. Set `f : (A ⧸ P.comap ι) × (A ⧸ P.comap ι) → B ⧸ P` to `fun p => φ p.1 + φ p.2 * th`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ h`. Simplify using `only [f] at h`. Establish `h2` using `congrArg sb h`. Simplify using `only [map_add, map_mul, hsbφ] at h2`. Establish `hb : φ b = φ b'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : (φ b - φ b') * (th - sb th) = 0` using `by linear_combination h - h2`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `sub_eq_zero.1 h4`. Conclude with `absurd h4 hδ`. Establish `ha : φ a = φ a'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hb]`. Conclude with `add_right_cancel h`. Conclude with `Prod.ext (hφinj ha) (hφinj hb)`. Introduce `y set bb := (y - sb y) / (th - sb th) with hbb_def`. Establish `hbb : sb bb = bb`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hbb_def, map_div₀, map_sub, map_sub, hsb2, hsb2, show sb y - y = -(y - sb y) by ring, show sb th - th = -(th - sb th) by ring, neg_div_neg_eq]`. Establish `hmul : bb * (th - sb th) = y - sb y` using `div_mul_cancel₀ _ hδ`. Use `set aa := y - bb * th with haa_def`. Establish `haa : sb aa = aa`. Rewrite using `[haa_def, map_sub, map_mul, hbb]`.
-
-Take the linear combination `hmul`. Take `⟨a, ha⟩` from `hlift aa haa`. Take `⟨b, hb⟩` from `hlift bb hbb`. Use `⟨(a, b), ?_⟩` and prove the remaining obligations. Simplify using `only [f, ha, hb, haa_def]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sq, ← Nat.card_prod, Nat.card_congr (Equiv.ofBijective f hf)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_quotient_comap_sq_eq_card_quotient_of_involution (hσ : ∀ x, σ (σ x) = x) (hfix : ∀ x, σ x = x ↔ x ∈ Set.range ι)
     {P : Ideal B} (hP : P.IsMaximal) (hc : P.comap σ = P) {θ : B} (hθ : θ - σ θ ∉ P) :
@@ -139,9 +135,9 @@ private theorem card_quotient_comap_sq_eq_card_quotient_of_involution (hσ : ∀
   rw [sq, ← Nat.card_prod, Nat.card_congr (Equiv.ofBijective f hf)]
 
 /- English proof (translation)
-Use `set S : Subring B := RingHom.eqLocus σ (RingHom.id B) with hS`. Establish `hfix' : ∀ x, σ x = x ↔ x ∈ Set.range (S.subtype)`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨x, hx⟩, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `a.2`. Conclude with `⟨Nat.card (S ⧸ P.comap S.subtype), (card_quotient_comap_sq_eq_card_quotient_of_involution (ι := S.subtype) hσ hfix' hP hc hθ).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sq_card_quot (hσ : ∀ x, σ (σ x) = x) {P : Ideal B} (hP : P.IsMaximal)
     (hc : P.comap σ = P) {θ : B} (hθ : θ - σ θ ∉ P) : ∃ q : ℕ, Nat.card (B ⧸ P) = q ^ 2 := by
@@ -157,7 +153,7 @@ theorem exists_sq_card_quot (hσ : ∀ x, σ (σ x) = x) {P : Ideal B} (hP : P.I
   exact ⟨Nat.card (S ⧸ P.comap S.subtype), (card_quotient_comap_sq_eq_card_quotient_of_involution (ι := S.subtype) hσ hfix' hP hc hθ).symm⟩
 
 /- English proof (translation)
-Conclude with `card_quotient_comap_sq_eq_card_quotient_of_involution hσ hfix hP hc hθ`.
+A detailed English derivation is pending.
 -/
 theorem card_quot_inert (hσ : ∀ x, σ (σ x) = x) (hfix : ∀ x, σ x = x ↔ x ∈ Set.range ι)
     {P : Ideal B} (hP : P.IsMaximal) (hc : P.comap σ = P) {θ : B} (hθ : θ - σ θ ∉ P) :
@@ -165,19 +161,17 @@ theorem card_quot_inert (hσ : ∀ x, σ (σ x) = x) (hfix : ∀ x, σ x = x ↔
   exact card_quotient_comap_sq_eq_card_quotient_of_involution hσ hfix hP hc hθ
 
 /- English proof (translation)
-Establish `hσP : ∀ p ∈ P, σ p ∈ P` using `fun p hp => Ideal.mem_comap.1 (hc.symm ▸ hp)`. Establish `hmem : ∀ z, σ z = z → z ∈ P → z ∈ (P.comap ι).map ι`. Introduce `z hz hzP`. Take `⟨a, rfl⟩` from `(hfix z).1 hz`. Conclude with `Ideal.mem_map_of_mem ι (Ideal.mem_comap.2 hzP)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm Ideal.map_comap_le fun y hy => ?_` and prove the remaining obligations. Establish `hσδ : σ (θ - σ θ) = -(θ - σ θ)`. Rewrite using `[map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDP : (θ - σ θ) * (θ - σ θ) ∉ P` using `fun h => hθ ((hP.isPrime.mem_or_mem h).elim id id)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, i, hi, hui⟩` from `hP.exists_inv hDP`. Establish `h2 : σ u * ((θ - σ θ) * (θ - σ θ)) + σ i = 1`. Use `congrArg σ hui` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, hσδ, map_one, neg_mul_neg]`. Then use the resulting hypothesis. Use `set v := u * σ u * ((θ - σ θ) * (θ - σ θ)) with hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set j := 1 - v * ((θ - σ θ) * (θ - σ θ)) with hj`. Establish `hjfix : σ j = j`. Rewrite using `[hj, hv]`. Simplify using `only [map_sub, map_mul, map_one, hσ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hjP : j ∈ P`. Establish `e : j = i + σ i - i * σ i`. Rewrite using `[hj, hv]`. Take the linear combination `(-σ u * ((θ - σ θ) * (θ - σ θ))) * hui + (-(1 - i)) * h2`. Rewrite using `[e]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.sub_mem (P.add_mem hi (hσP i hi)) (P.mul_mem_left _ (hσP i hi))`. Establish `hT : ∀ w ∈ P, w + σ w ∈ (P.comap ι).map ι` using `fun w hw => hmem _ (by rw [map_add, hσ, add_comm]) (P.add_mem hw (hσP w hw))`. Establish `e : y = y * j + ((y * θ + σ (y * θ)) - σ θ * (y + σ y)) * (v * (θ - σ θ))`. Rewrite using `[hj, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (hmem j hjfix hjP)) (Ideal.mul_mem_right _ _ (Ideal.sub_mem _ (hT _ (P.mul_mem_right _ hy)) (Ideal.mul_mem_left _ _ (hT y hy))))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_comap_of_inert (hσ : ∀ x, σ (σ x) = x) (hfix : ∀ x, σ x = x ↔ x ∈ Set.range ι)
     {P : Ideal B} (hP : P.IsMaximal) (hc : P.comap σ = P) {θ : B} (hθ : θ - σ θ ∉ P) :

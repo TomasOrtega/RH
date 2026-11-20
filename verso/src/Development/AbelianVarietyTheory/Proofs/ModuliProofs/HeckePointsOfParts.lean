@@ -16,13 +16,11 @@ namespace GlobalTheory.HeckePoint
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `exists_ptsEquiv m.cart (𝟙_ (Over (Sp k))) y (Category.id_comp _)`. Establish `key : ∀ (T : Over (Sp k)) (y' : T.left ⟶ X) (_ : T.hom ≫ y = y') (n : ℤ) (x x' : T ⟶ o.t.G) (x₀ x₀' : Over.mk y' ⟶ u.t.G) (c : Γ(T.left, ⊤)ˣ), x₀.left = x.left ≫ m.cm.F → x₀'.left = x'.left ≫ m.cm.F → (Out.WeilIs o.t.G o.t.PP.L n x x' c ↔ Out.WeilIs u.t.G u.t.PP.L n x₀ x₀' c)`. Introduce `T y' e`. Substitute `e` using the available equality. Take `⟨w, hw, -⟩` from `m.lin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `fun n x x' x₀ x₀' c => hW _ _ _ _ y m.cm.F _ _ u.t.PP.isLB o.t.PP.isLB m.cart ⟨w, hw⟩ T n x x' x₀ x₀' c`. Establish `tu : (toUnit (Over.mk y)).left = y` using `by simp`. Use `⟨ρ, m.cart.1.isoPullback, m.cart.1.isoPullback_hom_snd, fun x => ?_, fun a x => Over.OverMorphism.ext ?_, fun n x x' c => key _ y (Category.id_comp _) n x x' _ _ _ (hρ x) (hρ x'), fun a => Over.OverMorphism.ext ?_, fun a => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[fibPt, pullback.lift_fst, hρ, Category.assoc, m.cart.1.isoPullback_hom_fst]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fibPt, pullback.lift_snd, Category.assoc, m.cart.1.isoPullback_hom_snd]`. Conclude with `(Over.w x).symm`. Rewrite using `[hρ, Over.comp_left, Over.comp_left, hρ, Category.assoc, m.act, Category.assoc]`. Rewrite using `[hρ, Over.comp_left, tu]`. Conclude with `m.eta a`.
-
-Rewrite using `[hρ, Over.comp_left, tu]`. Conclude with `m.etaA a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transfer
     (hW : ∀ (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB → IsGrpPullback G' G f φ → LBIso L' (L.pull φ) → ∀ (T : Over S') (k : ℤ) (x y : T ⟶ G') (x₀ y₀ : Over.mk (T.hom ≫ f) ⟶ G) (c : Γ(T.left, ⊤)ˣ), x₀.left = x.left ≫ φ → y₀.left = y.left ≫ φ → (Out.WeilIs G' L' k x y c ↔ Out.WeilIs G L k x₀ y₀ c))
@@ -55,7 +53,7 @@ theorem exists_transfer
   · rw [hρ, Over.comp_left, tu]; exact m.etaA a
 
 /- English proof (translation)
-Introduce `a b h` and use `Over.OverMorphism.ext (by have := congrArg (· ≫ pullback.fst G.hom y) h simpa only [fibPt, pullback.lift_fst] using this)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fibPt_injective {X : Scheme.{0}} (G : Over X) {k : Type} [Field k] {y : Sp k ⟶ X} :
     Function.Injective (fibPt G (y := y)) := fun a b h => Over.OverMorphism.ext (by

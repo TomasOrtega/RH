@@ -14,7 +14,7 @@ def tGL {n : ℕ} (i j : Fin n) (h : i ≠ j) (s : ℂ) : GL (Fin n) ℂ :=
     by rw [transvection_mul_transvection_same i j h, neg_add_cancel, transvection_zero]⟩
 
 /- English proof (translation)
-Establish `e : T = tGL i j h s` using `Units.ext hT`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem inv_val {n : ℕ} {i j : Fin n} (h : i ≠ j) (s : ℂ) (T : GL (Fin n) ℂ)
     (hT : T.val = transvection i j s) : (T⁻¹).val = transvection i j (-s) := by
@@ -23,7 +23,7 @@ theorem inv_val {n : ℕ} {i j : Fin n} (h : i ≠ j) (s : ℂ) (T : GL (Fin n) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.aeval_def, ← Polynomial.coe_evalRingHom, MvPolynomial.eval₂_comp_left]`. Establish `: (Polynomial.evalRingHom s).comp (algebraMap ℂ ℂ[X]) = RingHom.id ℂ` using `by ext; simp`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_evalRingHom {σ : Type} (g : σ → ℂ[X]) (Q : MvPolynomial σ ℂ) (s : ℂ) :
     (MvPolynomial.aeval g Q).eval s = MvPolynomial.eval (fun v => (g v).eval s) Q := by
@@ -34,11 +34,11 @@ theorem eval_evalRingHom {σ : Type} (g : σ → ℂ[X]) (Q : MvPolynomial σ �
   rfl
 
 /- English proof (translation)
-Use `choose Q hQ using hΦ.poly`. Set `g : (Fin n × Fin n) ⊕ (Fin n × Fin n) → ℂ[X]` to `Sum.elim (fun p => (transvection i j (X : ℂ[X])) p.1 p.2) (fun p => (transvection i j (-X : ℂ[X])) p.1 p.2)`. Use `⟨fun a => ∑ b, MvPolynomial.aeval g (Q a b) * C (w b), ?_⟩` and prove the remaining obligations. Introduce `s T hT`. Use function extensionality and compare the values at `a`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulVec, dotProduct, eval_finset_sum, eval_mul, eval_C, eval_evalRingHom]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hQ a b T]`. Use `congr 2`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Break down `v with ⟨p1, p2⟩ | ⟨p1, p2⟩` into its components or cases. Apply the tactic sequence `simp only [g, Sum.elim_inl, hT, transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply] split_ifs <;> simp`. Apply the tactic sequence `simp only [g, Sum.elim_inr, inv_val h s T hT, transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply] split_ifs <;> simp`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem expand {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ)
     (hΦ : IsPolyRep Φ) {i j : Fin n} (h : i ≠ j) (w : ι → ℂ) :
@@ -72,7 +72,7 @@ namespace GlobalTheory.AlgWtHW.LowerTransv
 open Polynomial
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[diagonal_apply_ne _ hab, hA hab]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagonal_eq_of_isDiag {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.IsDiag) :
     A = diagonal (fun m => A m m) := by
@@ -82,7 +82,7 @@ theorem diagonal_eq_of_isDiag {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : A
   · simp [diagonal_apply_ne _ hab, hA hab]
 
 /- English proof (translation)
-Establish `hdet : (D.val).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp D.isUnit).ne_zero`. Rewrite `hdet` using `[diagonal_eq_of_isDiag _ hD, det_diagonal]`. Conclude with `(Finset.prod_ne_zero_iff.mp hdet) m (Finset.mem_univ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_ne_zero {n : ℕ} (D : GL (Fin n) ℂ) (hD : D.val.IsDiag) (m : Fin n) :
     D.val m m ≠ 0 := by
@@ -92,11 +92,11 @@ theorem diag_ne_zero {n : ℕ} (D : GL (Fin n) ℂ) (hD : D.val.IsDiag) (m : Fin
   exact (Finset.prod_ne_zero_iff.mp hdet) m (Finset.mem_univ _)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.add_apply, diagonal_mul, mul_diagonal, Matrix.single_apply]`. Distinguish the cases in `h2 : i = a ∧ j = b`. Take `⟨rfl, rfl⟩` from `h2`. Simplify using `only [and_self, if_true, one_apply_ne h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h2, if_false, mul_zero, zero_mul, add_zero]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[one_apply_ne hab]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagonal_mul_transvection {n : ℕ} {i j : Fin n} (h : i ≠ j) (d : Fin n → ℂ)
     (hdj : d j ≠ 0) (s : ℂ) :
@@ -115,9 +115,9 @@ theorem diagonal_mul_transvection {n : ℕ} {i j : Fin n} (h : i ≠ j) (d : Fin
     · simp [one_apply_ne hab]
 
 /- English proof (translation)
-Establish `key : D.val * T.val = transvection i j (s * (D.val i i / D.val j j)) * D.val`. Use `diagonal_mul_transvection h (fun m => D.val m m) (diag_ne_zero D hD j) s` as an intermediate fact. Rewrite `this` using `[← diagonal_eq_of_isDiag _ hD]`. Rewrite using `[hT]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_mul, key, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem conj_val {n : ℕ} {i j : Fin n} (h : i ≠ j) (D : GL (Fin n) ℂ) (hD : D.val.IsDiag)
     (s : ℂ) (T : GL (Fin n) ℂ) (hT : T.val = transvection i j s) :
@@ -140,9 +140,9 @@ def shiftWt {n : ℕ} (ν : Fin n → ℤ) (i j : Fin n) (k : ℕ) : Fin n → �
   fun m => ν m + (k : ℤ) * (if m = i then 1 else 0) - (k : ℤ) * (if m = j then 1 else 0)
 
 /- English proof (translation)
-Establish `e : ∀ m, d m ^ (shiftWt ν i j k m) = d m ^ ν m * ((if m = i then d m ^ (k : ℤ) else 1) / (if m = j then d m ^ (k : ℤ) else 1))`. Introduce `m`. Simplify using `only [shiftWt]`. Rewrite using `[zpow_sub₀ (hd m), zpow_add₀ (hd m), mul_div_assoc]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.prod_congr rfl (fun m _ => e m), Finset.prod_mul_distrib, Finset.prod_div_distrib, Finset.prod_ite_eq', Finset.prod_ite_eq']`. Simplify using `[div_pow, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_zpow_shiftWt {n : ℕ} (d : Fin n → ℂ) (hd : ∀ m, d m ≠ 0) (ν : Fin n → ℤ)
     (i j : Fin n) (k : ℕ) :
@@ -158,11 +158,11 @@ theorem prod_zpow_shiftWt {n : ℕ} (d : Fin n → ℂ) (hd : ∀ m, d m ≠ 0) 
   simp [div_pow, zpow_natCast]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hν`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← h1]`. Simplify using `only [shiftWt, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `K`. Establish `hK` using `h2 K`. Simplify using `only [shiftWt, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and]`. Establish `hji' : (j : ℕ) < i` using `hji`. Distinguish the cases in `hi : (i : ℕ) < K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hj : (j : ℕ) < K` using `lt_trans hji' hi`. Simplify using `only [hi, hj, if_true]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hi, if_false, mul_zero, add_zero]`. Apply the tactic sequence `have : (0 : ℤ) ≤ (k : ℤ) * (if (j : ℕ) < K then 1 else 0) := by split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -189,15 +189,15 @@ theorem domLE_shiftWt {n : ℕ} {ν lam : Fin n → ℤ} (hν : DomLE ν lam) {i
       linarith
 
 /- English proof (translation)
-Introduce `D hD`. Establish `hd : ∀ m, D.val m m ≠ 0` using `diag_ne_zero D hD`. Use `set c : ℂ := D.val i i / D.val j j with hc`. Use `set P : ℂ := ∏ m, D.val m m ^ ν m with hP`. Establish `hs : ∀ s : ℂ, Φ D *ᵥ (fun a => (q a).eval s) = P • (fun a => (q a).eval (s * c))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s`. Establish `hT : (tGL i j h s).val = transvection i j s` using `rfl`. Establish `hc' : Φ D * Φ (tGL i j h s) = Φ (D * tGL i j h s * D⁻¹) * Φ D`. Rewrite using `[← hΦ.mul, ← hΦ.mul, inv_mul_cancel_right]`. Rewrite using `[← hq s _ hT, ← hq (s * c) _ (conj_val h D hD s _ hT), mulVec_mulVec, hc', ← mulVec_mulVec, hw D hD, mulVec_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpoly : ∀ a, ∑ b, C (Φ D a b) * q b = C P * (q a).comp (C c * X)`. Introduce `a`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `s`. Establish `e` using `congrFun (hs s) a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at e`. Simplify using `only [eval_finset_sum, eval_mul, eval_C, eval_comp, eval_X]`. Rewrite using `[e, mul_comm c s]`. Use function extensionality and compare the values at `a`. Establish `e` using `congrArg (fun p => Polynomial.coeff p k) (hpoly a)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [finset_sum_coeff, coeff_C_mul, comp_C_mul_X_coeff] at e`. Simplify using `only [mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e, prod_zpow_shiftWt _ hd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isWtVec_coeff {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
     (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ) (hΦ : IsPolyRep Φ) {i j : Fin n} (h : i ≠ j)
@@ -238,13 +238,13 @@ namespace GlobalTheory.AlgWtHW
 open Polynomial LowerTransv
 
 /- English proof (translation)
-Introduce `n ι _ _ Φ hΦ lam ν hν w hw i j hji s T hT`. Establish `h : i ≠ j` using `hji.ne'`. Take `⟨q, hq⟩` from `expand Φ hΦ h w`. Use `set N : ℕ := (Finset.univ.sup fun a => (q a).natDegree) + 1 with hN`. Establish `hsum : Φ T *ᵥ w = ∑ k ∈ Finset.range N, s ^ k • (fun a => (q a).coeff k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq s T hT]`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply]`. Establish `hlt : (q a).natDegree < N` using `Nat.lt_succ_of_le (Finset.le_sup (f := fun a => (q a).natDegree) (Finset.mem_univ a))`. Rewrite using `[eval_eq_sum_range' hlt]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨shiftWt ν i j k, domLE_shiftWt hν hji k, isWtVec_coeff Φ hΦ h ν w hw q hq k⟩`.
+A detailed English derivation is pending.
 -/
 theorem lowerTransvection_mulVec_mem_Sle : ∀ {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
     (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ), IsPolyRep Φ → ∀ (lam ν : Fin n → ℤ), DomLE ν lam →

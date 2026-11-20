@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `ModelDimension.cusp_form_extension_vanishing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FCommonZeroEvaluation%2FCuspFormExtensionVanishing.lean&line=37#L37)
 -/

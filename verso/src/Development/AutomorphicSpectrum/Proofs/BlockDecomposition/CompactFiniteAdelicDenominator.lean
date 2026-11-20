@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.AdeleDenom
 open IsDedekindDomain
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) (x := f) (fun v => by`. Establish `hv` using `h v`. Rewrite `hv` using `[HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.adicCompletion.valued_coe]`. Conclude with `hv)`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_forall_mem_adicCompletionIntegers {F : Type} [Field F] [NumberField F] (f : F)
     (h : ∀ v : HeightOneSpectrum (𝓞 F), (f : v.adicCompletion F) ∈ HeightOneSpectrum.adicCompletionIntegers F v) :
@@ -30,25 +30,23 @@ theorem isIntegral_of_forall_mem_adicCompletionIntegers {F : Type} [Field F] [Nu
   exact NumberField.RingOfIntegers.isIntegral_coe r
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `key : ∀ x : E, ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : E) * x)`. Introduce `x`. Establish `halg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff (A := ℤ) (K := ℚ) (C := E)).mpr (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x)`. Take `⟨y, hy, hyx⟩` from `halg.exists_integral_multiple`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y.natAbs, Int.natAbs_pos.mpr hy, ?_⟩` and prove the remaining obligations. Establish `hc : ((y.natAbs : ℕ) : E) = ((|y| : ℤ) : E)`. Rewrite using `[← Int.cast_natCast, Int.natCast_natAbs]`. Break down `abs_choice y with h | h` into its components or cases. Rewrite using `[hc, h, ← zsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hyx`. Rewrite using `[hc, h, Int.cast_neg, neg_mul, ← zsmul_eq_mul]`. Conclude with `hyx.neg`. Set `b` to `Module.finBasis F E`. Use `choose mm hmm0 hmm using fun i => key (b i)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨m, hm0, hmb⟩ : ∃ m : ℕ, 0 < m ∧ ∀ i, IsIntegral ℤ ((m : E) * b i) := by`. Use `⟨∏ i, mm i, Finset.prod_pos fun i _ => hmm0 i, fun i => ?_⟩` and prove the remaining obligations. Establish `hsplit : ((∏ j, mm j : ℕ) : E) = ((∏ j ∈ Finset.univ.erase i, mm j : ℕ) : E) * (mm i : E)`. Rewrite using `[← Nat.cast_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Rewrite using `[hsplit, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `IsIntegral.mul ?_ (hmm i)` and prove the remaining obligations. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := E) (x := ((∏ j ∈ Finset.univ.erase i, mm j : ℕ) : ℤ)))`. Set `B` to `Algebra.TensorProduct.basis (Af F) b`. Set `φ : (Af F ⊗[F] E) →ₗ[Af F] (Fin (Module.finrank F E) → Af F)` to `B.equivFun.toLinearMap`. Establish `hφ : Continuous φ` using `IsModuleTopology.continuous_of_linearMap φ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, hN, hNK⟩` from `GlobalTheory.WeilM.exists_nat_mul_integral_of_isCompact F (hL.image hφ)`. Use `⟨N * m, Nat.mul_pos hN hm0, fun e he => ?_⟩` and prove the remaining obligations. Establish `hx` using `hNK (φ (inclR (F := F) (Af F) e)) ⟨_, he, rfl⟩`. Establish `hcoord : ∀ i, φ (inclR (F` using `F) (Af F) e) i = algebraMap F (Af F) (b.repr e i) := by`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hincl : inclR (F` using `F) (Af F) e = (1 : Af F) ⊗ₜ[F] e := rfl`. Simplify using `[φ, B, hincl, Algebra.TensorProduct.basis_repr_tmul]`. Establish `hint : ∀ i, IsIntegral ℤ ((N : F) * b.repr e i)`. Introduce `i`. Use `isIntegral_of_forall_mem_adicCompletionIntegers _ fun v => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hx i v`. Rewrite `h1` using `[hcoord, ← map_natCast (algebraMap F (Af F)) N, ← map_mul]`. Conclude with `h1`. Establish `hsum : ((N * m : ℕ) : E) * e = ∑ i, algebraMap F E ((N : F) * b.repr e i) * ((m : E) * b i)` using `by conv_lhs => rw [← b.sum_repr e]`. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`.
-
-Conclude with `IsIntegral.sum _ fun i _ => (hint i).algebraMap.mul (hmb i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_isIntegral_of_isCompact (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (L : Set (Af F ⊗[F] E)) (hL : IsCompact L) :

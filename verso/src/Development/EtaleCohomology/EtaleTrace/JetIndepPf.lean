@@ -8,9 +8,9 @@ namespace LateralTheory.EtaleTrace.Cov
 variable {k K : Type} [Field k] [Field K] [Algebra k K]
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add f g hf hg => simp [hf, hg, add_smul, Finset.sum_add_distrib]`. Consider the case `mul_X f i hf`. Simplify using `only [map_mul, aeval_X, Derivation.leibniz, hf, pderiv_X, Finset.sum_add_distrib, mul_smul, Finset.smul_sum, Derivation.leibniz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply]`. Simplify using `only [apply_ite (aeval w), map_zero, add_smul, ite_smul, zero_smul, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, mul_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem jetIndep_chain {n : ℕ} (w : Fin n → K) (F : MvPolynomial (Fin n) k) :
     KaehlerDifferential.D k K (aeval w F) =
@@ -25,11 +25,9 @@ theorem jetIndep_chain {n : ℕ} (w : Fin n → K) (F : MvPolynomial (Fin n) k) 
       Finset.sum_ite_eq, Finset.mem_univ, if_true, mul_smul]
 
 /- English proof (translation)
-Establish `e1` using `congrArg (aeval w) hF.sum_X_mul_pderiv`. Simplify using `only [map_sum, map_mul, aeval_X, map_nsmul, h0, smul_zero] at e1`. Establish `e2` using `jetIndep_chain w F`. Rewrite `e2` using `[h0, Derivation.map_zero]`. Use `Fintype.linearIndependent_iff.1 hw (fun j => aeval w (pderiv j F)) ?_ j` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext`. Simplify using `only [jet, Prod.fst_sum, Prod.smul_fst, smul_eq_mul, Prod.fst_zero]`. Rewrite using `[← e1]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Simplify using `only [jet, Prod.snd_sum, Prod.smul_snd, Prod.snd_zero]`.
-
-Conclude with `e2.symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetIndep_pderiv {n : ℕ} (w : Fin n → K) (hw : LinearIndependent K (jet k w)) {m : ℕ}
     (F : MvPolynomial (Fin n) k) (hF : F.IsHomogeneous m) (h0 : aeval w F = 0) (j : Fin n) :
@@ -46,13 +44,13 @@ theorem jetIndep_pderiv {n : ℕ} (w : Fin n → K) (hw : LinearIndependent K (j
     exact e2.symm
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (α i) with h0 | hpos` into its components or cases. Simplify using `[h0]`. Establish `hc` using `congrArg (coeff (α - Finsupp.single i 1)) (h i)`. Rewrite `hc` using `[coeff_pderiv, coeff_zero]`. Establish `hα' : α - Finsupp.single i 1 + Finsupp.single i 1 = α`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `l`. Distinguish the cases in `hl : i = l`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[hl]`. Rewrite `hc` using `[hα']`. Establish `hne : coeff α F ≠ 0` using `mem_support_iff.1 hα`. Establish `h1 : (((α - Finsupp.single i 1 : Fin n →₀ ℕ) i : ℕ) : k) + 1 = 0` using `(mul_eq_zero.1 hc).resolve_left hne`. Establish `e : (α - Finsupp.single i 1 : Fin n →₀ ℕ) i + 1 = α i` using `by simp; omega`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← CharP.cast_eq_zero_iff k p, ← e]`. Conclude with `h1` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetIndep_dvd {n p : ℕ} [CharP k p] (F : MvPolynomial (Fin n) k) (h : ∀ j, pderiv j F = 0)
     (α : Fin n →₀ ℕ) (hα : α ∈ F.support) (i : Fin n) : p ∣ α i := by
@@ -73,15 +71,15 @@ theorem jetIndep_dvd {n p : ℕ} [CharP k p] (F : MvPolynomial (Fin n) k) (h : �
   exact_mod_cast h1
 
 /- English proof (translation)
-Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Set `q : (Fin n →₀ ℕ) → (Fin n →₀ ℕ)` to `fun α => Finsupp.mapRange (· / p) (Nat.zero_div p) α`. Establish `hq : ∀ α ∈ F.support, p • q α = α`. Introduce `α hα`. Use extensionality with `i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[q, Nat.mul_div_cancel' (hd α hα i)]`. Use `⟨∑ α ∈ F.support, monomial (q α) ((frobeniusEquiv k p).symm (coeff α F)), ?_, ?_⟩` and prove the remaining obligations. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `α hα`. Apply `isHomogeneous_monomial` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hm : α.degree = m`. Use `hF (mem_support_iff.1 hα)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `this`. Establish `: p * (q α).degree = m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Finsupp.degree (hq α hα)`. Rewrite `h2` using `[map_nsmul, smul_eq_mul]`. Rewrite using `[h2, hm]`. Rewrite using `[← this, Nat.mul_div_cancel_left _ hp]`. Rewrite using `[sum_pow_char] conv_lhs => rw [F.as_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite using `[monomial_pow, frobeniusEquiv_symm_pow_p, hq α hα]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetIndep_root {n p : ℕ} [Fact p.Prime] [CharP k p] [PerfectRing k p]
     (F : MvPolynomial (Fin n) k) {m : ℕ} (hF : F.IsHomogeneous m) (hd : ∀ α ∈ F.support, ∀ i, p ∣ α i) :
@@ -108,17 +106,17 @@ theorem jetIndep_root {n p : ℕ} [Fact p.Prime] [CharP k p] [PerfectRing k p]
     rw [monomial_pow, frobeniusEquiv_symm_pow_p, hq α hα]
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ n w hw m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `F hF h0`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Assume the negation of the conclusion as `hne`. Establish `ht` using `hF.totalDegree hne`. Rewrite `ht` using `[totalDegree_eq_zero_iff_eq_C]`. Rewrite `h0` using `[ht, aeval_C, map_eq_zero_iff _ (algebraMap k K).injective]`. Conclude with `hne (by rw [ht, h0, C_0])`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpd : ∀ j, pderiv j F = 0` using `fun j => ih (m - 1) (by omega) _ hF.pderiv (jetIndep_pderiv w hw F hF h0 j)`. Take `⟨p, hcp⟩` from `CharP.exists k`. Break down `CharP.char_is_prime_or_zero k p with hpp | rfl` into its components or cases. Use `Fact.mk hpp` as an intermediate fact. Establish `: ExpChar k p` using `ExpChar.prime hpp`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: PerfectRing k p` using `PerfectField.toPerfectRing p`. Take `⟨G, hG, rfl⟩` from `jetIndep_root F hF (fun α hα i => jetIndep_dvd F hpd α hα i)`. Rewrite `h0` using `[map_pow]`. Establish `hG0` using `ih (m / p) (Nat.div_lt_self hm hpp.one_lt) G hG (pow_eq_zero_iff hpp.ne_zero |>.1 h0)`. Rewrite using `[hG0, zero_pow hpp.ne_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `α`. Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hc`. Establish `hα0 : α = 0`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using jetIndep_dvd (p := 0) F hpd α (mem_support_iff.2 hc) i`. Use `hF hc` as an intermediate fact. Substitute `hα0` using the available equality. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem JetIndep_of : JetIndep := by
   intro k K _ _ _ _ n w hw m

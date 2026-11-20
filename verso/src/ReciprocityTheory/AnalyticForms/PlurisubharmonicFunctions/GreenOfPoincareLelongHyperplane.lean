@@ -58,14 +58,14 @@ def PoincareLelongNormalCrossing : Prop :=
       ∑ i, (m i : ℝ) * ∫ w, v (hypInclAt i w) * densHypAt i φ w
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[hypInclAt, hypIncl, Fin.insertNth_zero']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem hypInclAt_zero {n : ℕ} (w : Fin n → ℂ) : hypInclAt 0 w = hypIncl w := by
   funext j
   simp [hypInclAt, hypIncl, Fin.insertNth_zero']
 
 /- English proof (translation)
-Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU z hz`. Set `f : ContDiffBump z` to `⟨ε / 4, ε / 2, by positivity, by linarith⟩`. Use `⟨f, ⟨hU, f.contDiff, f.hasCompactSupport, ?_, hφ⟩, f.one_of_mem_closedBall (Metric.mem_closedBall_self (by positivity))⟩` and prove the remaining obligations. Rewrite using `[f.tsupport_eq]`. Conclude with `(Metric.closedBall_subset_ball (by linarith : ε / 2 < ε)).trans hball`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_poincareLelongData {n : ℕ} (U : Set (Fin (n + 1) → ℂ)) (hU : IsOpen U) (z : Fin (n + 1) → ℂ)
     (hz : z ∈ U) (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ) (hφ : ∀ k, ContDiffOn ℝ ∞ (φ k) U) :
@@ -78,13 +78,13 @@ theorem exists_poincareLelongData {n : ℕ} (U : Set (Fin (n + 1) → ℂ)) (hU 
   exact (Metric.closedBall_subset_ball (by linarith : ε / 2 < ε)).trans hball
 
 /- English proof (translation)
-Take `⟨h1, -, h3⟩` from `h 0 Set.univ u Fin.elim0 ⟨isOpen_univ, hu, hcs, Set.subset_univ _, fun k => k.elim0⟩`. Establish `hv : densV u (Fin.elim0 : Fin 0 → (Fin 1 → ℂ) → ℝ) = ReciprocityTheory.AnForm.maDens ![u]`. Use function extensionality and compare the values at `z`. Both sides reduce to the same expression. Rewrite `h1`, `h3` using `[hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`. Establish `hw : ∀ w : Fin 0 → ℂ, u (hypIncl w) * densHyp (Fin.elim0 : Fin 0 → (Fin 1 → ℂ) → ℝ) w = u 0`. Introduce `w`. Establish `e1 : hypIncl w = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Use `Fin.cases rfl (fun i => i.elim0) j` and prove the remaining obligations. Establish `e2 : densHyp (Fin.elim0 : Fin 0 → (Fin 1 → ℂ) → ℝ) w = 1`. Simplify using `[densHyp, ReciprocityTheory.AnForm.maDens, ReciprocityTheory.AnForm.mdisc]`. Rewrite using `[e1, e2, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hw]`. Simplify using `[MeasureTheory.integral_const, MeasureTheory.volume_pi, MeasureTheory.measureReal_def, MeasureTheory.Measure.pi_univ]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem green_of_poincareLelongHyperplane (h : PoincareLelongHyperplane) (u : (Fin 1 → ℂ) → ℝ) (hu : ContDiff ℝ 3 u)
     (hcs : HasCompactSupport u) :

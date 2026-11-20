@@ -17,9 +17,9 @@ open Zc.Comb
 variable {α β : Type*}
 
 /- English proof (translation)
-Proceed by induction on `P with`. Consider the case `nil => exact Zc.Comb.Interleave.nil`. Consider the case `cons p P ih`. Consider the cases of `hq : q p with`. Consider the case `true`.
+Proceed by induction. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [List.filter_cons, hq, Bool.not_true, Bool.false_eq_true, ↓reduceIte, List.map_cons]`. Conclude with `Zc.Comb.Interleave.left ih`. Consider the case `false`. Simplify using `only [List.filter_cons, hq, Bool.not_false, Bool.false_eq_true, ↓reduceIte, List.map_cons]`. Conclude with `Zc.Comb.Interleave.right ih`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem interleave_filter (f : β → α) (q : β → Bool) (P : List β) :
     Interleave ((P.filter q).map f) ((P.filter fun p => !q p).map f) (P.map f) := by
@@ -37,17 +37,17 @@ theorem interleave_filter (f : β → α) (q : β → Bool) (P : List β) :
       exact Zc.Comb.Interleave.right ih
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `s P hP`. Establish `hnil : P = []` using `List.eq_nil_iff_forall_not_mem.mpr fun p hp => by`. Use `hP p hp` as an intermediate fact.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Substitute `hnil` using the available equality. Conclude with `Zc.Comb.Shuffle.nil`. Consider the case `succ n ih`. Introduce `s P hP`.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.range'_succ, List.map_cons]`. Use `Zc.Comb.Shuffle.cons (v := (P.filter fun p => !decide (c p = s)).map f) ?_ (GlobalTheory.CompanionTheory.CuspShuffle.interleave_filter f (fun p => decide (c p = s)) P)` and prove the remaining obligations. Establish `h` using `ih (s + 1) (P.filter fun p => !decide (c p = s)) (by`. Introduce `p hp`. Rewrite `hp` using `[List.mem_filter]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hP p hp.1`. Establish `hne : c p ≠ s` using `by simpa using hp.2`. Use the proof step `omega)`. Use `h using 1` and compare the differences between its conclusion and the goal. Apply `List.map_congr_left` to reduce the goal to its premises.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i hi`. Rewrite `hi` using `[List.mem_range'_1]`. Rewrite using `[List.filter_filter]`. Use `congr 1`. Apply `List.filter_congr` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `p _`. Distinguish the cases in `hc : c p = i`. Establish `his : i ≠ s` using `by omega`. Simplify using `[hc, his]`. Simplify using `[hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shuffle_range (f : β → α) (c : β → ℕ) (n : ℕ) : ∀ (s : ℕ) (P : List β),
     (∀ p ∈ P, s ≤ c p ∧ c p < s + n) →
@@ -85,11 +85,11 @@ theorem shuffle_range (f : β → α) (c : β → ℕ) (n : ℕ) : ∀ (s : ℕ)
     · simp [hc]
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.CompanionTheory.CuspShuffle.shuffle_range W.get (fun p => (c p : ℕ)) h 0 (List.finRange W.length) (fun p _ => ⟨Nat.zero_le _, by simpa using (c p).isLt⟩)`. Use `key using 1` and compare the differences between its conclusion and the goal. Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `i h1 h2`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.getElem_ofFn, List.getElem_map, List.getElem_range', ← hD]`. Unfold `Zc.Cos.sub`. Use `congr 1`. Apply `List.filter_congr` to reduce the goal to its premises. Introduce `p _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Fin.ext_iff]`. Apply the tactic sequence `apply List.ext_getElem <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shuffle_of_colouring {h : ℕ} (W : List α) (c : Fin W.length → Fin h) (D : Fin h → List α)
     (hD : ∀ i, Zc.Cos.sub W c i = D i) : Shuffle (List.ofFn D) W := by
@@ -110,9 +110,9 @@ theorem shuffle_of_colouring {h : ℕ} (W : List α) (c : Fin W.length → Fin h
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `Zc.Cos.decWord Zc.M.decW`. Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `i h1 h2`. Rewrite using `[List.getElem_reverse, List.getElem_ofFn, List.getElem_ofFn]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using `only [Fin.val_rev, List.length_ofFn]`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem decWord_eq_decW (Δ : Segment k) : Zc.Cos.decWord Δ = decW Δ := by
   unfold Zc.Cos.decWord Zc.M.decW
@@ -126,13 +126,13 @@ theorem decWord_eq_decW (Δ : Segment k) : Zc.Cos.decWord Δ = decW Δ := by
     omega
 
 /- English proof (translation)
-Take `⟨hsum, hne⟩` from `hw`. Establish `hmult` using `GlobalTheory.T.segment_product_jacquet_shuffle_count hA hL Δ x hd hΔ w hc`. Establish `hpos : Zc.Cos.jmL w (GlobalTheory.LocGL.prodIrr x hd) ≠ 0`. Unfold `Zc.Cos.jmL`. Rewrite using `[dif_pos hsum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne`. Rewrite `hpos` using `[hmult]`. Establish `hcard : Zc.Cos.shuffleCount w (fun i => Zc.Cos.decWord (Δ i)) ≠ 0` using `by exact_mod_cast hpos`. Unfold `Zc.Cos.shuffleCount at hcard`. Take `⟨col, hcol⟩` from `Finset.card_ne_zero.mp hcard`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcol' : ∀ i, Zc.Cos.sub w col i = Zc.Cos.decWord (Δ i)` using `by simpa using hcol`. Unfold `Zc.M.InShW`. Use `⟨List.ofFn Δ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map]`. Rewrite using `[List.map_ofFn]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (Zc.M.decW ∘ Δ) = fun i => Zc.Cos.decWord (Δ i)`. Use function extensionality and compare the values at `fun i => (GlobalTheory.CompanionTheory.CuspShuffle.decWord_eq_decW (Δ i)).symm`. Rewrite using `[e]`. Conclude with `GlobalTheory.CompanionTheory.CuspShuffle.shuffle_of_colouring w col _ hcol'`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inShW_of_wd {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hL : LSegJacquet k) {h N : ℕ} (x : Fin h → IrrGL k)

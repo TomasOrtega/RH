@@ -14,21 +14,21 @@ namespace GlobalTheory.AdjAct
 variable {D : D7}
 
 /- English proof (translation)
-Use `show (matHom T g).1 * (matHom T g⁻¹).1 = 1`. Rewrite using `[map_inv]`. Conclude with `(matHom T g).mul_inv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_mul_mt_inv (T : HSp D) (g : GA D T) : Formalism.L2.Theta.mt T g * Formalism.L2.Theta.mt T g⁻¹ = 1 := by
   show (matHom T g).1 * (matHom T g⁻¹).1 = 1
   rw [map_inv]; exact (matHom T g).mul_inv
 
 /- English proof (translation)
-Use `show (matHom S 1⁻¹).1 = 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mt_one_inv (S : HSp D) : Formalism.L2.Theta.mt S 1⁻¹ = 1 := by
   show (matHom S 1⁻¹).1 = 1
   simp
 
 /- English proof (translation)
-Establish `hU : Formalism.UG.cT (cA D) (Formalism.L2.Theta.mt T g) * T.gram.map (incA D) * Formalism.L2.Theta.mt T g = T.gram.map (incA D)` using `(show HR (AF D.host.F) D.sp.cm.sig T.gram from g).2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem cT_mt_gram (T : HSp D) (g : GA D T) : Formalism.UG.cT (cA D) (Formalism.L2.Theta.mt T g) * T.gram.map (incA D) =
     T.gram.map (incA D) * Formalism.L2.Theta.mt T g⁻¹ := by
@@ -39,21 +39,21 @@ theorem cT_mt_gram (T : HSp D) (g : GA D T) : Formalism.UG.cT (cA D) (Formalism.
     _ = _ := by rw [← Matrix.mul_assoc, hU]
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finE_inv_val (T : HSp D) (g : GA D T) :
     ((Formalism.IndefR.Lev.finE T g)⁻¹).1 = (Formalism.L2.Theta.mt T g⁻¹).map (toEAf D) := by
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_inv_val {n : ℕ} (β y : GL (Fin n) (EAf D)) :
     ((β⁻¹ * y * β)⁻¹ : GL (Fin n) (EAf D)).1 = (β⁻¹).1 * (y⁻¹).1 * β.1 := by
   rw [_root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_transpose_mul (S T : HSp D) (g : GA D T) (x : WO S T) :
     ((HMul.hMul (Formalism.L2.Theta.mt T g) (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) :
@@ -63,7 +63,7 @@ theorem conj_transpose_mul (S T : HSp D) (g : GA D T) (x : WO S T) :
   rw [Matrix.map_mul, Matrix.transpose_mul]; rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem assoc_swap {R : Type} [CommRing R] {s t : ℕ} (A : Matrix (Fin s) (Fin s) R) (X : Matrix (Fin s) (Fin t) R)
     (C G N : Matrix (Fin t) (Fin t) R) (h : C * G = G * N) : A * (X * C) * G = A * X * G * N := by
@@ -71,7 +71,7 @@ theorem assoc_swap {R : Type} [CommRing R] {s t : ℕ} (A : Matrix (Fin s) (Fin 
   rw [h]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc bT, hb, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_assoc {R : Type} [CommRing R] {s t : ℕ} (bS : Matrix (Fin s) (Fin s) R) (Y : Matrix (Fin s) (Fin t) R)
     (N bT bTi : Matrix (Fin t) (Fin t) R) (hb : bT * bTi = 1) :
@@ -80,7 +80,7 @@ theorem frame_assoc {R : Type} [CommRing R] {s t : ℕ} (bS : Matrix (Fin s) (Fi
   rw [← Matrix.mul_assoc bT, hb, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `D S T βS βT g x`. Rewrite using `[frMapAdj, frMapAdj, actO, mt_one_inv, Matrix.mul_one, conj_transpose_mul, conj_inv_val, finE_inv_val, assoc_swap _ _ _ _ _ (cT_mt_gram T g), Matrix.map_mul]`. Conclude with `frame_assoc _ _ _ _ _ (by rw [← Units.val_mul, mul_inv_cancel, Units.val_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMapAdj_actO : ∀ {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (g : GA D T) (x : WO S T), frMapAdj S T βS βT (actO S T 1 g x) = HMul.hMul (frMapAdj S T βS βT x) ((βT⁻¹ * Formalism.IndefR.Lev.finE T g * βT)⁻¹ : GL (Fin T.rank) (EAf D)).1 := by
   intro D S T βS βT g x

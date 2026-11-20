@@ -9,11 +9,11 @@ open MvPolynomial AlgebraicGeometry CategoryTheory NumberField Filter Topology R
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-Take `⟨x0, k0⟩` from `a`. Establish `h : ∀ r : Ψ × Fin N, fundOnRoot (x0, k0) r • f r = if r.1 = x0 ∧ r.2 ≤ k0 then -f r else 0`. Introduce `r`. Simplify using `only [fundOnRoot]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [h]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single x0]`. Simplify using `only [true_and, ← Finset.sum_filter, Finset.sum_neg_distrib]`. Use `congr 2`. Use extensionality with `k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Introduce `x _ hx`. Simplify using `[hx]`. Introduce `hx`. Conclude with `absurd (Finset.mem_univ x0) hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_fundOnRoot {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} {A : Type} [AddCommGroup A] (a : Ψ × Fin N)
     (f : Ψ × Fin N → A) : ∑ r, fundOnRoot a r • f r = -∑ k ∈ Finset.Iic a.2, f (a.1, k) := by
@@ -34,7 +34,7 @@ theorem sum_fundOnRoot {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} {A : 
     exact absurd (Finset.mem_univ x0) hx
 
 /- English proof (translation)
-Establish `hpos : ∀ j, 0 < (ℓ j).h z` using `fun j => (ℓ j).pos z hz`. Use `show Real.log (∏ j, (ℓ j).h z ^ n j) = _`. Rewrite using `[Real.log_prod (fun j _ => (zpow_pos (hpos j) _).ne')]`. Simplify using `only [Real.log_zpow, zsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem log_combLine {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Type} [Fintype J] (ℓ : J → HermLine ι)
     (n : J → ℤ) {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -45,25 +45,23 @@ theorem log_combLine {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (�
   simp only [Real.log_zpow, zsmul_eq_mul]
 
 /- English proof (translation)
-Take `⟨x0, k0⟩` from `r`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single x0]`. Use `rotate_left`. Introduce `x _ hx`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[rootOnFund, hx]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ x0) h`. Establish `hterm : ∀ j : Fin N, rootOnFund (x0, k0) (x0, j) • -∑ k ∈ Finset.Iic j, f (x0, k) = (if j = k0 then ∑ k ∈ Finset.Iic j, f (x0, k) else 0) - (if (j : ℕ) + 1 = k0 then ∑ k ∈ Finset.Iic j, f (x0, k) else 0)`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [rootOnFund, if_true]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [hterm, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Break down `k0 with ⟨k, hk⟩` into its components or cases. Consider the cases of `k with`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero`. Establish `hsum : ∑ j : Fin N, (if (j : ℕ) + 1 = (0 : ℕ) then ∑ k ∈ Finset.Iic j, f (x0, k) else 0) = 0` using `Finset.sum_eq_zero fun j _ => if_neg (by omega)`. Establish `hI : Finset.Iic (⟨0, hk⟩ : Fin N) = {⟨0, hk⟩}`. Use extensionality with `j`. Simplify using `only [Finset.mem_Iic, Finset.mem_singleton, Fin.le_def, Fin.ext_iff]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [Fin.val_mk] at *`. Rewrite using `[hsum, sub_zero, hI, Finset.sum_singleton]`. Consider the case `succ k'`. Establish `hk' : k' < N` using `by omega`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ j : Fin N, (if (j : ℕ) + 1 = k' + 1 then ∑ k ∈ Finset.Iic j, f (x0, k) else 0) = ∑ k ∈ Finset.Iic (⟨k', hk'⟩ : Fin N), f (x0, k)`. Rewrite using `[Finset.sum_eq_single ⟨k', hk'⟩]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hj'`. Apply `hj` to reduce the goal to its premises. Use `ext`. Simplify using `only [Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hI : Finset.Iic (⟨k' + 1, hk⟩ : Fin N) = insert ⟨k' + 1, hk⟩ (Finset.Iic ⟨k', hk'⟩)`. Use extensionality with `j`. Simplify using `only [Finset.mem_Iic, Finset.mem_insert, Fin.le_def, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hnot : (⟨k' + 1, hk⟩ : Fin N) ∉ Finset.Iic (⟨k', hk'⟩ : Fin N)`. Simplify using `[Fin.le_def]`. Simplify using `only [Fin.val_mk] at *`. Rewrite using `[hsum, hI, Finset.sum_insert hnot]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_root_fund {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (r : Ψ × Fin N) (f : Ψ × Fin N → ℝ) :
     ∑ a, rootOnFund r a • -∑ k ∈ Finset.Iic a.2, f (a.1, k) = f r := by

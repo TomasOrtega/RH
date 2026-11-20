@@ -34,11 +34,11 @@ def midF (L : SizeData₂ D) (C : ℝ) : ℝ :=
   C * D.R.f * D.R.m * L.sc.b * Real.log L.sc.x + C * L.sc.x ^ C * (TwistedPlaces.large₂ L) ^ 2
 
 /- English proof (translation)
-Establish `hx : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`. Establish `hxp : 0 < L.sc.x` using `lt_of_lt_of_le one_pos hx`. Establish `hCx : C * L.sc.x ^ C ≤ C' * L.sc.x ^ C'`. Break down `le_or_gt 0 C with hC | hC` into its components or cases. Conclude with `mul_le_mul h (Real.rpow_le_rpow_of_exponent_le hx h) (Real.rpow_nonneg hxp.le _) h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: C * L.sc.x ^ C ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hC.le (Real.rpow_nonneg hxp.le _)`. Conclude with `this.trans (mul_nonneg h0 (Real.rpow_nonneg hxp.le _))`. Establish `hlog : 0 ≤ Real.log L.sc.x` using `Real.log_nonneg hx`. Establish `hb : 0 ≤ L.sc.b` using `(Real.exp_pos _).le`. Establish `hk : 0 ≤ (D.R.f : ℝ) * D.R.m * L.sc.b * Real.log L.sc.x` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `mul_le_mul_of_nonneg_right h hk`. Establish `h2` using `mul_le_mul_of_nonneg_right hCx (sq_nonneg (TwistedPlaces.large₂ L))`. Unfold `midF`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem midF_mono (L : SizeData₂ D) {C C' : ℝ} (h : C ≤ C') (h0 : 0 ≤ C') : midF L C ≤ midF L C' := by
   have hx : 1 ≤ L.sc.x := L.sc.one_lt_alt.le
@@ -63,11 +63,9 @@ def StarS (L : SizeData₂ D) (ρ : FamilyRepresentationConstants.RhoFam D) (C :
   ∀ i, TwistedPlaces.TwLoc D i → D.nd.l i ∈ D.host.small → D.nd.l i ≠ 2 → ∀ π ∈ D.nd.Zgood i, Bd ρ i π (midF L C)
 
 /- English proof (translation)
-Establish `h0 : ∀ l, TwistedPlaces.sumOver D l (fun _ => (0 : ℝ)) = 0` using `fun l => by simp [TwistedPlaces.sumOver]`. Use `⟨⟨fun _ _ => 0, fun _ _ => 0, fun _ => midF L C, fun _ _ => False, ∅, fun _ _ => 0, fun _ _ => 0⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i _ _ show TwistedPlaces.sumOver D _ (fun _ => (0 : ℝ)) + midF L C ≤ midF L C`. Rewrite using `[h0, zero_add]`. Introduce `i hi hl π hπ show Bd ρ i π (TwistedPlaces.sumOver D _ (fun _ => (0 : ℝ)) + midF L C)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0, zero_add]`. Distinguish the cases in `h2 : D.nd.l i = 2`. Conclude with `h23 i hi (Or.inl h2) π hπ`. Distinguish the cases in `hs : D.nd.l i ∈ D.host.small`. Conclude with `hS i hi hs h2 π hπ`.
-
-Conclude with `h23 i hi (Or.inr ⟨hl.resolve_left hs, hs⟩) π hπ`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem starF_of (L : SizeData₂ D) (ρ : FamilyRepresentationConstants.RhoFam D) (C : ℝ) (h23 : BoundAtTwoThree L ρ C) (hS : StarS L ρ C) : StarF L ρ C := by
   have h0 : ∀ l, TwistedPlaces.sumOver D l (fun _ => (0 : ℝ)) = 0 := fun l => by simp [TwistedPlaces.sumOver]

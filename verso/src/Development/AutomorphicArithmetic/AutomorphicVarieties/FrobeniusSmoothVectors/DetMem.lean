@@ -3,17 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n _ _ S m g α`. Rewrite using `[Matrix.det_apply, MvPolynomial.coeff_sum]`. Use `sum_mem (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Units.smul_def, MvPolynomial.coeff_smul]`. Use `zsmul_mem ?_ _` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Rewrite using `[Finset.prod_univ_sum, MvPolynomial.coeff_sum]`. Use `sum_mem (fun f _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, mul_comm, MvPolynomial.coeff_C_mul]`. Use `mul_mem (S.mon_mem ?_) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨List.ofFn (fun i => (g (f i), σ i, i)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_ofFn, List.sum_ofFn]`. Simplify using `only [Function.comp_def]`. Rewrite using `[Finset.sum_sub_distrib, Equiv.sum_comp, sub_self]`. Rewrite using `[List.map_ofFn, List.prod_ofFn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d, ∏ i, (MvPolynomial.X (f i) : MvPolynomial (Fin m) S.R) = MvPolynomial.monomial d 1 := by`. Use `Finset.prod_induction _ (fun p => ∃ d, p = MvPolynomial.monomial d 1) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `a b ⟨d₁, rfl⟩ ⟨d₂, rfl⟩`. Conclude with `⟨d₁ + d₂, by rw [MvPolynomial.monomial_mul, mul_one]⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨0, by rw [MvPolynomial.monomial_zero', MvPolynomial.C_1]⟩`. Introduce `i _`. Conclude with `⟨Finsupp.single (f i) 1, rfl⟩`. Rewrite using `[hd, MvPolynomial.coeff_monomial]`. Use `split_ifs`.
-
-Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.det_mem :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ (m : ℕ) (g : Fin m → F.G0) (α : Fin m →₀ ℕ), MvPolynomial.coeff α (∑ a, (MvPolynomial.X a : MvPolynomial (Fin m) S.R) • (S.ρ.r (g a)).map MvPolynomial.C).det ∈ S.B := by

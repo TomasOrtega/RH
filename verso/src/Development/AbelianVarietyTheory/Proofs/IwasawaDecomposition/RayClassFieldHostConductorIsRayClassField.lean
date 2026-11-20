@@ -26,7 +26,7 @@ def toIF (D : D7) (jE : D.host.E →+* Qb) (L : Fld) (h : KQbar D jE ≤ L) :
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ParRay.nfOf hf GlobalTheory.Mem.Fld.IsRayField D.host.K M (GlobalTheory.Mem.RaySplit.condIdeal D.host) := by obtain ⟨M, _, _, _, hM⟩ := GlobalTheory.Published.rayClassFieldSt_iff_isRayField.1 hray D.host.K _ (GlobalTheory.Mem.RaySplit.condIdeal_ne_bot D.host) letI := …`.
+A detailed English derivation is pending.
 -/
 theorem exists_embedded (hray : GlobalTheory.Published.RayClassFieldSt) (D : D7) (jE : D.host.E →+* Qb) :
     ∃ (M : Fld) (h : KQbar D jE ≤ M) (hf : FiniteDimensional ℚ M),
@@ -53,23 +53,19 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `h2K` using `GlobalTheory.Mem.RaySplit.finrank_K D.host`. Establish `h3K` using `GlobalTheory.Mem.RaySplit.isEmpty_real D.host`. Use `letI := GlobalTheory.ParRay.algK D jE h`. Use `haveI := GlobalTheory.ParRay.nfOf hf`. Use `letI := algQb D jE`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨hKL, hfL, hspl⟩` from `hL`. Set `mkE : ∀ (X : Fld) (hX : KQbar D jE ≤ X), X ≃+* toIF D jE X hX` to `fun X hX => { toFun := fun x => ⟨x.1, x.2⟩, invFun := fun x => ⟨x.1, x.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_mul' := fun _ _ => rfl, map_add' := fun _ _ => rfl }`. Set `R` to `toIF D jE M h`. Set `L'` to `toIF D jE L hKL`. Set `eR : M ≃ₐ[D.host.K] R` to `AlgEquiv.ofRingEquiv (f := mkE M h) fun x => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eL : L ≃+* L'` to `mkE L hKL`. Use `haveI : NumberField R := { to_finiteDimensional := (eR.toRingEquiv.toRatAlgEquiv).toLinearEquiv.finiteDimensional }`. Use `haveI : NumberField L' := { to_finiteDimensional := eL.toRatAlgEquiv.toLinearEquiv.finiteDimensional }`. Establish `hR : GlobalTheory.Mem.Fld.IsRayField D.host.K R (GlobalTheory.Mem.RaySplit.condIdeal D.host)` using `hM.of_algEquiv eR`. Establish `hab : IsAbelianGalois D.host.K R` using `hR.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ 𝔭 : HeightOneSpectrum (𝓞 D.host.K), ¬ 𝔭.asIdeal ∣ GlobalTheory.Mem.RaySplit.condIdeal D.host → (𝔭.asIdeal.primesOver (𝓞 R)).ncard = Module.finrank D.host.K R → ∃ π : 𝓞 D.host.K, 𝔭.asIdeal = Ideal.span {π} ∧ π - 1 ∈ GlobalTheory.Mem.RaySplit.condIdeal D.host` using `fun 𝔭 h1 h2 => GlobalTheory.T.exists_span_eq_one_mod_of_splits_in_rayClassField D.host.K R _ hR 𝔭 h1 h2`. Establish `hle : L' ≤ R`. Use `@GlobalTheory.Bauer.le_of_finite_split_not_split D.host.K Qb _ _ _ _ R L' _ _ hab.toIsGalois ((Ideal.finite_factors (GlobalTheory.Mem.RaySplit.condIdeal_ne_bot D.host)).subset ?_)` and prove the remaining obligations. Introduce and unpack `𝔭 ⟨hpr, hRs, hLs⟩`. Assume the negation of the conclusion as `hnd`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `hLs` to reduce the goal to its premises. Rewrite `hRs`, the goal using `[GlobalTheory.Bauer.ncard_eq_ncard_primesOver]`. Take `⟨π, hπ, hπ1⟩` from `key 𝔭 hnd hRs`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_mul_galois_conj_eq_prime_imagQuadratic D.host.K h3K h2K (jE.comp (algebraMap D.host.K D.host.E)) π (Ideal.absNorm 𝔭.asIdeal) (congrArg Ideal.absNorm hπ).symm`. Establish `hray : IsRayPrime (KQbar D jE) (D.host.QS * D.host.q * D.host.d) (Ideal.absNorm 𝔭.asIdeal)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hpr, jE ((π : D.host.K) : D.host.E), ⟨_, (π : D.host.K).2, rfl⟩, ?_, ?_, σ, hσ⟩` and prove the remaining obligations. Conclude with `(RingOfIntegers.isIntegral_coe π).map (jE.comp (algebraMap D.host.K D.host.E)).toIntAlgHom`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hπ1`. Establish `hm0 : ((D.host.QS * D.host.q * D.host.d : ℕ) : Qb) ≠ 0`. Conclude with `GlobalTheory.Mem.RaySplit.cond_ne_zero D.host` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (jE ((π : D.host.K) : D.host.E) - 1) / ((D.host.QS * D.host.q * D.host.d : ℕ) : Qb) = (jE.comp (algebraMap D.host.K D.host.E)) (y : D.host.K)`. Rewrite using `[div_eq_iff hm0]`. Establish `e1` using `congrArg ((jE.comp (algebraMap D.host.K D.host.E)).comp (algebraMap (𝓞 D.host.K) D.host.K)) hy`. Simplify using `only [map_mul, map_sub, map_one, map_natCast] at e1`. Conclude with `e1.symm`.
-
-Rewrite using `[e]`. Conclude with `(RingOfIntegers.isIntegral_coe y).map (jE.comp (algebraMap D.host.K D.host.E)).toIntAlgHom`. Establish `hsp` using `hspl _ hray`. Establish `h1 : ((Ideal.span {((Ideal.absNorm 𝔭.asIdeal : ℕ) : ℤ)}).primesOver (𝓞 L')).ncard = Module.finrank ℚ L'`. Rewrite using `[← GlobalTheory.HostSplit.ncard_placesOver L' hpr, ← finrank_eq_of_equiv eL]`.
-
-Conclude with `(ncard_places_of_equiv eL _).symm.trans hsp`. Conclude with `GlobalTheory.T.splits_completely_over_intermediate_of_splits_over_rat D.host.K L' _ hpr h1 𝔭 (Ideal.absNorm_mem 𝔭.asIdeal)`. Conclude with `fun x hx => hle hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem le_of_rayAdm (D : D7) (jE : D.host.E →+* Qb) (M : Fld) (h : KQbar D jE ≤ M) (hf : FiniteDimensional ℚ M)
     (hM : letI := GlobalTheory.ParRay.algK D jE h; haveI := GlobalTheory.ParRay.nfOf hf;
@@ -128,7 +124,7 @@ theorem le_of_rayAdm (D : D7) (jE : D.host.E →+* Qb) (M : Fld) (h : KQbar D jE
   exact fun x hx => hle hx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ParRay.nfOf hf IsGalois D.host.K (MrayC D jE) ∧ (∀ σ τ : MrayC D jE ≃ₐ[D.host.K] MrayC D jE, σ * τ = τ * σ) ∧ (∀ p : ℕ, p.Prime → (p : ℤ) ∣ NumberField.discr (MrayC D jE) → p ∣ D.host.QS * D.host.q * D.host.d) ∧ ∀ p, IsRayPrime (KQbar D jE) (D.host.QS * D.host.q * D. …`.
+A detailed English derivation is pending.
 -/
 theorem rayField_isRay : GlobalTheory.Published.RayClassFieldSt → ∀ (D : D7) (jE : D.host.E →+* Qb),
     ∃ (h : KQbar D jE ≤ MrayC D jE) (hf : FiniteDimensional ℚ (MrayC D jE)),

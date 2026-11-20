@@ -5,11 +5,11 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hprim`. Use `haveI : IsDomain (PreTilt O p) := PreTilt.isDomain C v O hv p`. Use `⟨by unfold _root_.GlobalTheory.Sandwich.Ainf; infer_instance, ?_⟩` and prove the remaining obligations. Introduce `h`. Unfold `_root_.GlobalTheory.Sandwich.mu at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h1 : WittVector.teichmuller p ε = 1` using `sub_eq_zero.mp h`. Establish `hε : ε = 1`. Use `congrArg (fun x => WittVector.coeff x 0) h1` as an intermediate fact. Simplify `this` using `[WittVector.teichmuller_coeff_zero]`. Establish `hroot : _root_.GlobalTheory.Sandwich.root ε = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.Sandwich.root`. Rewrite using `[hε, map_one]`. Rewrite `hprim` using `[hroot, map_one]`. Conclude with `(Fact.out : p.Prime).one_lt.ne' (IsPrimitiveRoot.one_left_iff.mp hprim)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ainf_isDomain_and_mu_ne_zero : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (_root_.GlobalTheory.Sandwich.root ε).untilt p → IsDomain (_root_.GlobalTheory.Sandwich.Ainf p O) ∧ _root_.GlobalTheory.Sandwich.mu ε ≠ 0 := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hprim

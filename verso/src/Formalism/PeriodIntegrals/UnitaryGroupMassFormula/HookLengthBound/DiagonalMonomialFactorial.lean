@@ -14,13 +14,11 @@ def IsDiag {N : ℕ} (m : Fin N × Fin N →₀ ℕ) : Prop := ∀ v : Fin N × 
 
 open scoped Classical in
 /- English proof (translation)
-Rewrite using `[diagHom, aeval_monomial]`. Use `split_ifs with h`. Rewrite using `[monomial_eq, algebraMap_eq]`. Use `congr 1`. Use `Finsupp.prod_congr fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: v.1 = v.2`. Assume the negation of the conclusion as `hne`. Conclude with `(Finsupp.mem_support_iff.1 hv) (h v hne)`. Rewrite using `[if_pos this]`. Establish `: ∃ v, v.1 ≠ v.2 ∧ m v ≠ 0`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h fun v hv => by_contra fun h0 => h0 (hc v hv)`. Take `⟨v, hv, hmv⟩` from `this`. Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (i := v) (Finsupp.mem_support_iff.2 hmv), mul_zero]`.
-
-Rewrite using `[if_neg hv, zero_pow hmv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagHom_monomial {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (c : ℚ) :
     diagHom N (monomial m c) = if IsDiag m then monomial m c else 0 := by
@@ -43,9 +41,9 @@ theorem diagHom_monomial {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (c : ℚ) :
     rw [if_neg hv, zero_pow hmv]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' f (fun μ c => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[diagHom_monomial] split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[coeff_zero, coeff_monomial, if_neg]`. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h hm`. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_diagHom {N : ℕ} (f : MvPolynomial (Fin N × Fin N) ℚ) (m : Fin N × Fin N →₀ ℕ)
     (hm : IsDiag m) : coeff m (diagHom N f) = coeff m f := by
@@ -63,11 +61,11 @@ def diagMono {N : ℕ} (s : ℕ) (h : s ≤ N) : Fin N × Fin N →₀ ℕ :=
   ∑ p : Fin s, Finsupp.single (Fin.castLE h p, Fin.castLE h p) 1
 
 /- English proof (translation)
-Rewrite using `[lpMinor, AlgHom.map_det]`. Establish `hM : (diagHom N).mapMatrix (Matrix.of fun p q : Fin s => (X (Fin.castLE hr p, Fin.castLE hn q) : MvPolynomial (Fin N × Fin N) ℚ)) = Matrix.diagonal fun p : Fin s => (X (Fin.castLE hr p, Fin.castLE hr p) : MvPolynomial (Fin N × Fin N) ℚ)`. Use extensionality with `p q`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[diagHom]`. Establish `: ¬ (Fin.castLE hr p = Fin.castLE hn q)`. Introduce `h`. Apply `hpq` to reduce the goal to its premises. Conclude with `Fin.ext (by simpa [Fin.ext_iff] using h)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[diagHom, hpq, this]`. Rewrite using `[hM, Matrix.det_diagonal, diagMono, monomial_sum_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem diagHom_lpMinor {N : ℕ} (s : ℕ) (hr hn : s ≤ N) :
     diagHom N (lpMinor ℚ s hr hn) = monomial (diagMono s hr) 1 := by
@@ -92,7 +90,7 @@ def M0 {N : ℕ} (ν : Fin N → ℕ) : Fin N × Fin N →₀ ℕ :=
   ∑ s : Fin N, (ν s - nuNext ν s) • diagMono (s.val + 1) s.isLt
 
 /- English proof (translation)
-Rewrite using `[hw, map_prod, M0, monomial_sum_one]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, diagHom_lpMinor, monomial_pow, one_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagHom_hw {N : ℕ} (ν : Fin N → ℕ) :
     diagHom N (hw ℚ le_rfl ν) = monomial (M0 ν) 1 := by
@@ -102,9 +100,9 @@ theorem diagHom_hw {N : ℕ} (ν : Fin N → ℕ) :
   rw [map_pow, diagHom_lpMinor, monomial_pow, one_pow]
 
 /- English proof (translation)
-Introduce `v hv`. Simplify using `only [M0, diagMono, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_zero, mul_zero]`. Introduce `p _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Substitute `h` using the available equality. Conclude with `hv rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isDiag_diagonal_monomial {N : ℕ} (ν : Fin N → ℕ) : IsDiag (M0 ν) := by
   classical
@@ -119,15 +117,15 @@ theorem isDiag_diagonal_monomial {N : ℕ} (ν : Fin N → ℕ) : IsDiag (M0 ν)
   exact hv rfl
 
 /- English proof (translation)
-Rewrite using `[← coeff_diagHom _ _ (isDiag_diagonal_monomial ν), diagHom_hw, coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_diagonal_monomial_hw {N : ℕ} (ν : Fin N → ℕ) : coeff (M0 ν) (hw ℚ le_rfl ν) = 1 := by
   rw [← coeff_diagHom _ _ (isDiag_diagonal_monomial ν), diagHom_hw, coeff_monomial, if_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by intro i; simp)]`. Rewrite using `[Finset.sum_apply, Fintype.sum_prod_type]`. Simplify using `only [Pi.smul_apply, rowW, smul_eq_mul, Pi.single_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weight_rowW_apply {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (a : Fin N) :
     (Finsupp.weight (rowW N N) m) a = ∑ b : Fin N, m (a, b) := by
@@ -142,9 +140,9 @@ theorem weight_rowW_apply {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (a : Fin N) 
   · simp
 
 /- English proof (translation)
-Establish `hmem : coeff (M0 ν) (hw ℚ le_rfl ν) ≠ 0` using `by rw [coeff_diagonal_monomial_hw]; exact one_ne_zero`. Establish `hw8` using `hwRowWeight ℚ N N le_rfl ν hν hmem`. Establish `h1` using `congrFun hw8 a`. Rewrite `h1` using `[weight_rowW_apply, Finset.sum_eq_single a]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[rowNu]`. Introduce `b _ hb`. Conclude with `isDiag_diagonal_monomial ν (a, b) (Ne.symm hb)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagonal_monomial_apply {N : ℕ} (ν : Fin N → ℕ) (hν : Antitone ν) (a : Fin N) : M0 ν (a, a) = ν a := by
   classical
@@ -159,11 +157,11 @@ theorem diagonal_monomial_apply {N : ℕ} (ν : Fin N → ℕ) (hν : Antitone �
   · simp
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_subset (Finset.subset_univ _) (fun k _ hk => by`. Rewrite using `[Finsupp.notMem_support_iff.1 hk]`. Use the proof step `rfl)]`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_eq_single a]`. Rewrite using `[diagonal_monomial_apply ν hν a]`. Introduce `b _ hb`. Rewrite using `[isDiag_diagonal_monomial ν (a, b) (Ne.symm hb)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem diagonal_monomial_factorial {N : ℕ} (ν : Fin N → ℕ) (hν : Antitone ν) :
     (∏ k ∈ (M0 ν).support, ((M0 ν) k).factorial) = ∏ l, (ν l).factorial := by
@@ -180,9 +178,9 @@ theorem diagonal_monomial_factorial {N : ℕ} (ν : Fin N → ℕ) (hν : Antito
   · simp
 
 /- English proof (translation)
-Establish `hmem : M0 ν ∈ (hw ℚ le_rfl ν).support`. Rewrite using `[mem_support_iff, coeff_diagonal_monomial_hw]`. Conclude with `one_ne_zero`. Unfold `fockQ`. Use `le_trans (le_of_eq ?_) (Finset.single_le_sum (f := fun m => coeff m (hw ℚ le_rfl ν) * coeff m (hw ℚ le_rfl ν) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℚ)) (fun m _ => mul_nonneg (mul_self_nonneg _) (Nat.cast_nonneg _)) hmem)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [coeff_diagonal_monomial_hw, one_mul]`. Rewrite using `[diagonal_monomial_factorial ν hν]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fockQ_hw_ge {N : ℕ} (ν : Fin N → ℕ) (hν : Antitone ν) :
     (∏ l, ((ν l).factorial : ℚ)) ≤ fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν) := by
@@ -200,9 +198,9 @@ theorem fockQ_hw_ge {N : ℕ} (ν : Fin N → ℕ) (hν : Antitone ν) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `fockQ_hw_ge ν hν`. Establish `hpos : (0 : ℝ) < ∏ l, ((ν l).factorial : ℝ)` using `Finset.prod_pos fun l _ => by exact_mod_cast Nat.factorial_pos _`. Establish `h' : (∏ l, ((ν l).factorial : ℝ)) ≤ ((fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν) : ℚ) : ℝ)`. Conclude with `h` after adjusting the coercions. Unfold `PI.cNu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_le_div hpos]`. Conclude with `h'`.
+A detailed English derivation is pending.
 -/
 theorem one_le_cNu {N : ℕ} (ν : Fin N → ℕ) (hν : Antitone ν) : 1 ≤ PI.cNu ν := by
   have h := fockQ_hw_ge ν hν

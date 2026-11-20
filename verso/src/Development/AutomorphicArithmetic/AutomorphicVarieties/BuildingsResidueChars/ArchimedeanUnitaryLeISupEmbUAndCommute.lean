@@ -9,17 +9,15 @@ open GlobalTheory.DefU Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `g hg h`. Establish `h2 : GeneralLinearGroup.map (pFin E) g.1 = 1` using `hg`. Establish `h1 : cInf g = 1` using `gl_ext_evGL fun w => by`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h w (Finset.notMem_empty w), map_one]`. Establish `: g = 1`. Use `Subtype.ext (ga_ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cInf g = cInf 1`. Rewrite using `[h1, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `(map_one _).symm`. Rewrite using `[this]`. Conclude with `one_mem _`. Consider the case `insert v s hv ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg h`. Establish `hr : (embRet v.embedding g : UA E n) ∈ embU n v.embedding` using `(embRet v.embedding g).2`. Establish `hr' : (embRet v.embedding g : UA E n) ∈ ⨆ τ : E →+* ℂ, embU n τ` using `(le_iSup (fun τ : E →+* ℂ => embU n τ) v.embedding) hr`. Establish `hk : (embRet v.embedding g : UA E n)⁻¹ * g ∈ ⨆ τ : E →+* ℂ, embU n τ`. Use `ih _ (mul_mem (inv_mem (embU_le_infU _ hr)) hg) fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_mul, map_inv, cInf_embRet, map_mul, map_inv, InfinitePlace.mk_embedding]`. Distinguish the cases in `e : w = v`. Substitute `e` using the available equality. Rewrite using `[evGL_cutGL_self, inv_mul_cancel]`. Rewrite using `[evGL_cutGL_of_ne e, h w (by simp [e, hw]), inv_one, one_mul]`.
-
-Simplify using `using mul_mem hr' hk`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem infinite_unitary_generated_by_embeddings (s : Finset (InfinitePlace E)) :
     ∀ g ∈ infU E n, (∀ w, w ∉ s → evGL w (cInf g) = 1) → g ∈ ⨆ τ : E →+* ℂ, embU n τ := by
@@ -56,11 +54,11 @@ end
 
 open GlobalTheory.DefU Matrix in
 /- English proof (translation)
-Introduce `E _ _ _ n`. Use `⟨fun g hg => infinite_unitary_generated_by_embeddings Finset.univ g hg fun w hw => (hw (Finset.mem_univ w)).elim, ?_⟩` and prove the remaining obligations. Introduce `τ τ' hne a ha b hb`. Establish `h2 : GeneralLinearGroup.map (pFin E) b.1 = 1` using `hb.1`. Use `Subtype.ext (ga_ext ?_ ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `cInf (a * b) = cInf (b * a)`. Rewrite using `[map_mul, map_mul]`. Use `gl_ext_evGL fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `h : w = InfinitePlace.mk τ'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[evGL_cInf_of_mem ha (h ▸ hne.symm), one_mul, mul_one]`. Rewrite using `[evGL_cInf_of_mem hb h, one_mul, mul_one]`. Simplify using `only [Subgroup.coe_mul, map_mul, h2, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.archimedeanUnitary_le_iSup_embU_and_commute :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), infU E n ≤ (⨆ τ : E →+* ℂ, embU n τ) ∧ ∀ τ τ' : E →+* ℂ, InfinitePlace.mk τ ≠ InfinitePlace.mk τ' → ∀ a ∈ embU (E := E) n τ, ∀ b ∈ embU n τ', a * b = b * a := by

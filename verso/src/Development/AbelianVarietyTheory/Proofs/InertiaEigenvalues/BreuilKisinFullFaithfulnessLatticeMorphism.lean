@@ -21,7 +21,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {T T' : LocLat G ℚ_[l] K O}
 omit [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul w x => rfl`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem latW_smul (f : LatHom T.L T'.L) (r : OW l O) (y : TW (OW l O) T) :
     latW f (r • y) = r • latW f y := by
@@ -33,7 +33,7 @@ theorem latW_smul (f : LatHom T.L T'.L) (r : OW l O) (y : TW (OW l O) T) :
 omit [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem latW_frob (f : LatHom T.L T'.L) (y : TW (OW l O) T) :
     latW f (TWmap (frobOW l O) T y) = TWmap (frobOW l O) T' (latW f y) := by
@@ -55,9 +55,9 @@ def latZ (f : LatHom T.L T'.L) :
 omit [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
 /- English proof (translation)
-Set `_` to `zlLat T`. Set `_` to `zlLat T'`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul w x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem kappa_latZ (f : LatHom T.L T'.L) :
     letI := zlLat T
@@ -74,25 +74,21 @@ theorem kappa_latZ (f : LatHom T.L T'.L) :
 variable {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ}
 
 /- English proof (translation)
-Establish `hb : ∀ j : ι, (fun _ => Pi.single j 1 : Vec K a ι) ∈ P.M` using `fun j => mem_tot.2 fun τ i => by`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hij]`. Conclude with `zero_mem _`. Establish `hb' : ∀ j : ι, toW t ϖ P ⟨_, mem_ME_of_mem_M (hb j)⟩ = Pi.single j 1` using `fun j => funext fun i => by`. Rewrite using `[toW_apply]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hij` using the available equality. Rewrite using `[Pi.single_eq_same (M := fun _ => OW l O), ← map_one (ϖ.iW t K)]`. Conclude with `congrArg _ (funext fun τ => Subtype.ext (Pi.single_eq_same (M := fun _ => K⟦X⟧) i 1))`. Rewrite using `[Pi.single_eq_of_ne (M := fun _ => OW l O) hij, ← map_zero (ϖ.iW t K)]`. Conclude with `congrArg _ (funext fun τ => Subtype.ext (Pi.single_eq_of_ne (M := fun _ => K⟦X⟧) hij 1))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose m hm hmj using fun j => h _ (hb j)`. Simplify using `only [hb'] at hmj`. Set `Y : Matrix κ ι (OW l O)` to `Matrix.of fun i j => inclO l O (ϖ.iTot t K fun τ => ⟨m j τ i, mem_tot.1 (hm j) τ i⟩)`. Establish `hY : ∀ j, toW t ϖ Q ⟨m j, mem_ME_of_mem_M (hm j)⟩ = fun i => Y i j` using `fun j => funext fun i => ϖ.iW_of_mem t K fun τ => ⟨m j τ i, mem_tot.1 (hm j) τ i⟩`. Establish `key : ∀ v, I'.j (Y *ᵥ v) = latW f (I.j v)` using `fun v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Y *ᵥ v = ∑ j, v j • fun i => Y i j` using `by ext1 i`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Use `conv_rhs => rw [pi_eq_sum_univ' v, map_sum, map_sum]`. Rewrite using `[h1, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul I.j, latW_smul, hmj, hY, map_smul I'.j]`. Establish `hmat : Y * frobMat t ϖ P = frobMat t ϖ Q * Y.map (frobOW l O)`. Establish `h1 : ∀ v, Y *ᵥ phiW t ϖ P v = phiW t ϖ Q (Y *ᵥ v)` using `fun v => I'.j.injective (by`. Rewrite using `[key, I.j_φ, latW_frob, I'.j_φ, key])`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `ext1 i j`. Establish `h2` using `congrFun (h1 (Pi.single j 1)) i`. Establish `h3 : (fun k => frobOW l O (Pi.single (M` using `fun _ : ι => OW l O) j 1 k)) = Pi.single j 1 :=`. Use function extensionality and compare the values at `fun k => by simp only [Pi.single_apply, apply_ite (frobOW l O), map_one, map_zero]`. Rewrite `h2` using `[phiW_apply, phiW_apply, h3, Matrix.mulVec_mulVec, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Use `⟨⟨fun τ => Matrix.of fun i j => m j τ i, fun τ i j => mem_tot.1 (hm j) τ i, fun τ => ?_⟩, key⟩` and prove the remaining obligations. Use `ext1 i j`. Establish `h1` using `congrFun₂ hmat i j`. Express the relevant statement in the definitionally equal form `∑ k, inclO l O (ϖ.iTot t K _) * ϖ.iW t K _ = ∑ k, ϖ.iW t K _ * frobOW l O (inclO l O (ϖ.iTot t K _)) at h1`.
-
-Simplify using `only [frobOW_inclO, ← PiSys.iTot_frob] at h1`. Simplify using `only [← ϖ.iW_of_mem t K, ← map_mul] at h1`. Rewrite `h1` using `[← map_sum, ← map_sum]`. Establish `h2` using `congrArg Subtype.val (congrFun (ϖ.iW_injective t K h1) τ)`. Rewrite `h2` using `[Finset.sum_apply, Finset.sum_apply, AddSubmonoidClass.coe_finsetSum, AddSubmonoidClass.coe_finsetSum]`.
-
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_isMapOf (I : Ident t ϖ P T) (I' : Ident t ϖ Q T') (f : LatHom T.L T'.L)
     (h : ∀ (m : Vec K a ι) (hm : m ∈ P.M), ∃ (m' : Vec K a κ) (hm' : m' ∈ Q.M),
@@ -151,9 +147,9 @@ theorem exists_isMapOf (I : Ident t ϖ P T) (I' : Ident t ϖ Q T') (f : LatHom T
 end Lat
 
 /- English proof (translation)
-Set `_` to `zlLat T`. Set `_` to `zlLat T'`. Take `⟨E, j, hE, h⟩` from `H`. Take `⟨E', j', hE', h'⟩` from `H'`. Take `⟨u, hu, -⟩` from `(BS l (ϖ.field a) _ _ (isAinf_ainfObj _)).2 _ _ _ _ E E' j j' hE hE' (latZ f) fun g x => Subtype.ext (f.equiv g x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `exists_isMapOf I I' f fun m hm => (h' _).1 ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `(h _).2 ⟨m, hm, rfl⟩`. Use `⟨u.u _ x, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, ← u.u_tr, hu]`. Conclude with `(kappa_latZ f _).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (BS : GlobalTheory.Published.BhattScholzeCrystallineLattices) (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a]
     [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O]

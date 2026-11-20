@@ -24,11 +24,9 @@ open GlobalTheory.SplitScalar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : Valued.v (algebraMap (OI v) (Fv D.host.F v) ϖ) < 1`. Use `lt_of_le_of_ne ϖ.2 fun h => hϖ.not_isUnit ?_` and prove the remaining obligations. Conclude with `HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one.2 h`. Establish `h2 : min (Valued.v c) (Valued.v d) ≠ 0`. Apply the tactic sequence `rcases min_choice (Valued.v c) (Valued.v d) with h | h <;> rw [h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Conclude with `(Valuation.ne_zero_iff _).2 hc`. Conclude with `(Valuation.ne_zero_iff _).2 hd`. Take `⟨N, hN⟩` from `exists_pow_lt₀ h1 (Units.mk0 _ h2)`. Apply the tactic sequence `refine ⟨N, ?_, ?_⟩ <;> rw [map_pow, map_pow]`. Conclude with `hN.le.trans (min_le_left _ _)`.
-
-Conclude with `hN.le.trans (min_le_right _ _)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_pow_le {v : FinPl D} {ϖ : OI v} (hϖ : Irreducible ϖ) {c d : Fv D.host.F v} (hc : c ≠ 0) (hd : d ≠ 0) :
     ∃ N : ℕ, Valued.v (algebraMap (OI v) (Fv D.host.F v) (ϖ ^ N)) ≤ Valued.v c ∧
@@ -46,7 +44,7 @@ theorem exists_pow_le {v : FinPl D} {ϖ : OI v} (hϖ : Irreducible ϖ) {c d : Fv
   · exact hN.le.trans (min_le_right _ _)
 
 /- English proof (translation)
-Establish `h : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ x * GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ x⁻¹ = 1`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ`. Rewrite using `[← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_inv_cancel₀ hx]`. Conclude with `map_one φ`. Conclude with `left_ne_zero_of_mul_eq_one h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdQ_ne_zero {v : FinPl D} (φ : SplitProj D v) {x : D.host.E} (hx : x ≠ 0) : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ x ≠ 0 := by
   have h : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ x * GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ x⁻¹ = 1 := by
@@ -56,36 +54,36 @@ theorem rdQ_ne_zero {v : FinPl D} (φ : SplitProj D v) {x : D.host.E} (hx : x �
   exact left_ne_zero_of_mul_eq_one h
 
 /- English proof (translation)
-The claim follows from `map_nsmul (AddMonoidHom.mk' κ h) k x`.
+A detailed English derivation is pending.
 -/
 theorem map_nsmul_of_add {A B : Type} [AddGroup A] [AddGroup B] {κ : A → B} (h : ∀ x y, κ (x + y) = κ x + κ y) (k : ℕ)
     (x : A) : κ (k • x) = k • κ x :=
   map_nsmul (AddMonoidHom.mk' κ h) k x
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (AE D), symplO_smul, map_natCast, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_nsmul (S T : HSp D) (k : ℕ) (x y : WO S T) : symplO S T (k • x) y = symplO S T x (k • y) := by
   rw [← Nat.cast_smul_eq_nsmul (AE D), symplO_smul, map_natCast, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Introduce `D ψ hψ S T ΛS ΛT βS βT hS hT hfS hfT v φ e he ϖ hϖ f hf`. Take `⟨U, hU, hUf⟩` from `hf.level`. Take `⟨k, hk, hkU⟩` from `(GlobalTheory.LatLevel.level_of_generators D S T _ _ hS hT (GlobalTheory.LatFinGen.latO_finitely_generated D S T _ _ hS hT)).1 U hU`. Take `⟨hd, -, -⟩` from `GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT`. Take `⟨-, a, -, ha0, -, himg⟩` from `GlobalTheory.SplitLatticeHalves.splitLattice D S T ΛS ΛT βS βT hS hT hfS hfT v φ e he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hadd, hbij, -⟩, -⟩` from `GlobalTheory.PlaceTensor.adjCo_isCoord D S T ΛS ΛT hS hT v φ e he (frCo φ βS) (frCo φ βT)`. Establish `hst` using `@idem_smul_mem D S T ΛS ΛT _ he.1.1`. Establish `he'` using `isSplitIdem_conj he.1`. Establish `hb` using `rdQ_ne_zero φ (star_ne_zero.2 ha0)`. Generalize the expression as in `GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (star a) = b at hb himg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) = Λ at *`. Use `haveI : CharZero (Fv D.host.F v) := algebraRat.charZero _`. Establish `hk0 : (k : Fv D.host.F v) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `hkv : Valued.v (k : Fv D.host.F v) ≠ 0` using `(Valuation.ne_zero_iff _).2 hk0`. Take `⟨N, hN1, hN2⟩` from `exists_pow_le hϖ (mul_ne_zero hk0 hb) (mul_ne_zero hk0 (inv_ne_zero hb))`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, fun z hz => ?_, fun ℓ hℓ x hx hne i j => ?_⟩` and prove the remaining obligations. Establish `hy : (k : Fv D.host.F v)⁻¹ • adjCo φ S T (frCo φ βS) (frCo φ βT) z ∈ {y : Matrix (Fin S.rank) (Fin T.rank) (Fv D.host.F v) | ∀ i j, Valued.v (y i j) ≤ Valued.v b}`. Introduce `i j`. Take `⟨o, ho⟩` from `hz.2 i j`. Rewrite using `[Matrix.smul_apply, ho, smul_eq_mul, map_mul, map_mul, map_mul, map_inv₀, inv_mul_le_iff₀ (zero_lt_iff.2 hkv), ← Valuation.map_mul _ (k : Fv D.host.F v)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_le_of_le_one_right' o.2).trans hN1`. Rewrite `hy` using `[← himg]`. Take `⟨t, ⟨ht, hth⟩, hty⟩` from `hy`. Establish `: z = k • t`. Use `hbij.injOn hz.1 (isHalf_nsmul hth k) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul_of_add hadd, hty, ← Nat.cast_smul_eq_nsmul (Fv D.host.F v), smul_smul, mul_inv_cancel₀ hk0, one_smul]`. Conclude with `hUf z (this ▸ hkU t ht) (half_fin he' hz.1)`. Establish `hkx : k • x ∈ Λ`. Assume the negation of the conclusion as `hn`. Take `⟨l, hl, hlh, hl1⟩` from `exists_dual_half he' hd (by rw [GlobalTheory.DualPairCheck.cA_cA]; exact hst) (isHalf_nsmul hx k) hn`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hlh` using `[GlobalTheory.DualPairCheck.cA_cA]`. Establish `hlk` using `isHalf_nsmul hlh k`. Establish `h2` using `hℓ _ hlk _ (GlobalTheory.FinTranslate.isTheta_heisO_fin hψ.1 (half_fin he' hx) hf)`. Rewrite `h2` using `[heisO_comm, hUf _ (hkU l hl) (half_fin he.1 hlk), map_smul, smul_eq_mul, symplO_nsmul]`. Conclude with `hl1 (mul_right_cancel₀ hne (h2.trans (one_mul _).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hy : adjCo φ S T (frCo φ βS) (frCo φ βT) (k • x) ∈ {y : Matrix (Fin S.rank) (Fin T.rank) (Fv D.host.F v) | ∀ i j, Valued.v (y i j) ≤ Valued.v b}`. Rewrite using `[← himg]`. Conclude with `⟨_, ⟨hkx, isHalf_nsmul hx k⟩, rfl⟩`. Establish `h3` using `hy i j`. Rewrite `h3` using `[map_nsmul_of_add hadd, Matrix.smul_apply, nsmul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨algebraMap (OI v) (Fv D.host.F v) (ϖ ^ N) * adjCo φ S T (frCo φ βS) (frCo φ βT) x i j, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul]`. Use `(mul_le_mul_left hN2 _).trans ?_` and prove the remaining obligations. Rewrite using `[← Valuation.map_mul, mul_right_comm, Valuation.map_mul, map_inv₀]`. Conclude with `mul_inv_le_one_of_le₀ h3 zero_le'`.
+A detailed English derivation is pending.
 -/
 theorem level_and_support : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Formalism.IndefR.Lev.EAf D)) (βT : GL (Fin T.rank) (Formalism.IndefR.Lev.EAf D)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (v : FinPl D) (φ : SplitProj D v) (e : Formalism.L2.Theta.AE D), IsIdemOf φ e → ∀ (ϖ : OI v), Irreducible ϖ → ∀ f, IsThetaFunO ψ S T f → ∃ N : ℕ, (∀ z ∈ halfPow φ S T (frCo φ βS) (frCo φ βT) e ϖ N, heisO ψ S T z f = f) ∧ ∀ ℓ, InvForm ψ S T e ℓ → ∀ x, IsHalf (cA D e) x → ℓ (heisO ψ S T x f) ≠ 0 → Bdd ϖ N (adjCo φ S T (frCo φ βS) (frCo φ βT) x) := by
   intro D ψ hψ S T ΛS ΛT βS βT hS hT hfS hfT v φ e he ϖ hϖ f hf

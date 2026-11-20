@@ -6,11 +6,11 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Establish `hbd : b = d`. Assume the negation of the conclusion as `hne`. Establish `h0 : b - d ≠ 0` using `sub_ne_zero.mpr hne`. Establish `h0' : algebraMap F E (b - d) ≠ 0`. Conclude with `(map_ne_zero _).2 h0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ : θ = algebraMap F E ((c - a) / (b - d))`. Rewrite using `[map_div₀, eq_div_iff h0', map_sub, map_sub]`. Take the linear combination `e`. Apply `h.nonsq` to reduce the goal to its premises. Use `⟨(c - a) / (b - d), (algebraMap F E).injective ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← hθ, ← h.sq, sq]`. Use `⟨(algebraMap F E).injective ?_, hbd⟩` and prove the remaining obligations. Rewrite `e` using `[hbd]`. Conclude with `add_right_cancel e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quad_unique {F E : Type} [Field F] [Field E] [Algebra F E] {δ : F} {θ : E}
     {σ : E ≃ₐ[F] E} (h : IsQuad δ θ σ) {a b c d : F}
@@ -32,29 +32,29 @@ private theorem quad_unique {F E : Type} [Field F] [Field E] [Algebra F E] {δ :
   exact add_right_cancel e
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ δ θ σ h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional F E := by classical`. Use `⟨⟨{1, θ}, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Take `⟨a, b, rfl⟩` from `h.span x`. Rewrite using `[Finset.coe_pair, Submodule.mem_span_pair]`. Conclude with `⟨a, b, by simp [Algebra.smul_def]⟩`. Apply `IsGalois.of_fixedField_eq_bot` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨a, b, rfl⟩` from `h.span x`. Establish `h1 : σ (algebraMap F E a + algebraMap F E b * θ) = algebraMap F E a + algebraMap F E b * θ` using `(IntermediateField.mem_fixedField_iff _ _).1 hx σ (Subgroup.mem_top _)`. Rewrite `h1` using `[map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, h.conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : algebraMap F E a + algebraMap F E (-b) * θ = algebraMap F E a + algebraMap F E b * θ`. Rewrite using `[← h1, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `(quad_unique h h2).2`. Establish `hb : b = 0` using `by linear_combination (-1/2 : F) * h3`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, map_zero, zero_mul, add_zero]`. Conclude with `IntermediateField.algebraMap_mem _ a`. Introduce `τ`. Establish `h1 : τ θ ^ 2 = θ ^ 2`. Rewrite using `[← map_pow, h.sq, AlgEquiv.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with e | e` into its components or cases. Use `left`. Use extensionality with `x`. Take `⟨a, b, rfl⟩` from `h.span x`. Simplify using `[e]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `right`. Use extensionality with `x`. Take `⟨a, b, rfl⟩` from `h.span x`. Simplify using `[e, h.conj]`. Introduce `L _ φ r hr choose A B hAB using h.span`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ (x : E) (a b : F), x = algebraMap F E a + algebraMap F E b * θ → A x = a ∧ B x = b` using `fun x a b e => quad_unique h ((hAB x).symm.trans e)`. Establish `hal : ∀ a : F, φ (A (algebraMap F E a)) + φ (B (algebraMap F E a)) * r = φ a`. Introduce `a`. Take `⟨h1, h2⟩` from `key (algebraMap F E a) a 0 (by simp)`. Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨{ toFun := fun x => φ (A x) + φ (B x) * r map_one' := by simpa using hal 1 map_zero' := by simpa using hal 0 map_add' := ?_ map_mul' := ?_ }, hal, ?_⟩` and prove the remaining obligations. Introduce `x y`. Take `⟨h1, h2⟩` from `key (x * y) (A x * A y + δ * B x * B y) (A x * B y + B x * A y) (by`. Establish `hx` using `hAB x`. Establish `hy` using `hAB y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hs` using `h.sq`. Simplify using `only [map_add, map_mul]`. Take the linear combination `y * hx + (algebraMap F E (A x) + algebraMap F E (B x) * θ) * hy + algebraMap F E (B x) * algebraMap F E (B y) * hs)`. Simplify using `only [h1, h2, map_add, map_mul]`. Take the linear combination `(-(φ (B x) * φ (B y))) * hr`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y`. Take `⟨h1, h2⟩` from `key (x + y) (A x + A y) (B x + B y) (by`. Establish `hx` using `hAB x`. Establish `hy` using `hAB y`. Simplify using `only [map_add]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take the linear combination `hx + hy)`. Simplify using `only [h1, h2, map_add]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h1, h2⟩` from `key θ 0 1 (by simp)`. Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isQuad_galois_and_embedding : ∀ (F E : Type) [Field F] [CharZero F] [Field E] [Algebra F E] (δ : F) (θ : E) (σ : E ≃ₐ[F] E), IsQuad δ θ σ → IsGalois F E ∧ (∀ τ : E ≃ₐ[F] E, τ = 1 ∨ τ = σ) ∧ ∀ (L : Type) [Field L] (φ : F →+* L) (r : L), r ^ 2 = φ δ → ∃ ψ : E →+* L, (∀ a : F, ψ (algebraMap F E a) = φ a) ∧ ψ θ = r := by
   intro F E _ _ _ _ δ θ σ h

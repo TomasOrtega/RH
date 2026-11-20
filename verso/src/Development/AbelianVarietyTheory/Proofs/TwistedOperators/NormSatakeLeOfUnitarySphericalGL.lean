@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.LFun.SatBoundGL
 
 /- English proof (translation)
-Use `letI := GlobalTheory.LocalData.complRel w`. Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `h` using `ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[Valuation.mem_integer_iff, HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using `using h x 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem mem_adicCompletionIntegers_iff {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (x : w.adicCompletion E) :
@@ -26,7 +26,7 @@ private theorem mem_adicCompletionIntegers_iff {E : Type} [Field E] [NumberField
 open ValuativeRel in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField w GlobalTheory.SplitWeil.resCard (w.adicCompletion E) = Ideal.absNorm w.asIdeal := by letI := GlobalTheory.LocalData.complRel w haveI := GlobalTheory.LocalData.isLocalField w let e : Valuation.integer (ValuativeRel.valuation (w.adicCompletion E …`.
+A detailed English derivation is pending.
 -/
 theorem resCard_completion {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     letI := GlobalTheory.LocalData.complRel w
@@ -47,11 +47,11 @@ theorem resCard_completion {E : Type} [Field E] [NumberField E] (w : HeightOneSp
   rfl
 
 /- English proof (translation)
-Introduce `hT E _ _ w n V _ _ ρ B hirr hun hsat b hb`. Use `letI := GlobalTheory.LocalData.complRel w`. Use `haveI := GlobalTheory.LocalData.isLocalField w`. Take `⟨hsph, hvec⟩` from `hsat`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).mp hsph`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG : LGrp.HasSatakeGL ρ B` using `GlobalTheory.LFun.SatCompare.hasSatakeGL_of_isSatVecGL hirr (hvec x hx hx0)`. Take `⟨α, hαB, hα⟩` from `(GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ ρ B).mp hG`. Establish `hR` using `hT (w.adicCompletion E) n V ρ α hirr.1 hirr.2 ((GlobalTheory.LGrp.isUnitarisable_iff ρ).mp hun) ?_ hα`. Rewrite `hb` using `[← hαB]`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.mp hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi` using `(hR i).2`. Rewrite `hi` using `[resCard_completion]`. Then use the resulting hypothesis. Unfold `GlobalTheory.SmGL.IsSpherical`. Conclude with `(GlobalTheory.LGrp.isSpherical_iff ρ _).mp hG.2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem norm_le_of_hasSatGL : GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.SatakeTrivialBound → ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (B : Multiset ℂˣ), GlobalTheory.LGrp.IsIrrSmooth ρ → GlobalTheory.LGrp.IsUnitarisable ρ → HasSatGL w ρ B → ∀ b ∈ B, ‖(b : ℂ)‖ ≤ ((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ^ (((n : ℝ) - 1) / 2) := by
   intro hT E _ _ w n V _ _ ρ B hirr hun hsat b hb

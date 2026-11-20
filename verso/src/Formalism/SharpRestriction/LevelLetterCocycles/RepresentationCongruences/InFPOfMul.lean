@@ -19,26 +19,26 @@ namespace Formalism.MainNotions.N.Ln17.PCutBoundRep
 variable (W : LocWach PD LL O v n) {T : LocLat G Qp LL O}
 
 /- English proof (translation)
-The claim follows from `GS.γD_smulA W T W.gam a x`.
+A detailed English derivation is pending.
 -/
 theorem γ_smul (a : LetA O n) (x : W.DD T) : W.γ T (a • x) = W.γA W.gam a • W.γ T x :=
   GS.γD_smulA W T W.gam a x
 
 /- English proof (translation)
-Simplify using `only [lA, map_pow, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem γA_lA (k : ℕ) : W.γA W.gam (lA W ^ k) = lA W ^ k := by
   simp only [lA, map_pow, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem φD_smulA (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
   rw [← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]
   rfl
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih => rw [pow_succ', pow_succ', Module.End.mul_apply, ih, φD_smulA, Module.End.mul_apply] <;> rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem φpow_smulA (e : ℕ) (a : LetA O n) (x : W.DD T) :
     ((W.φD T) ^ e) (a • x) = (W.φA ^ e) a • ((W.φD T) ^ e) x := by
@@ -48,7 +48,7 @@ theorem φpow_smulA (e : ℕ) (a : LetA O n) (x : W.DD T) :
       <;> rfl
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← ih]`. Conclude with `(W.φγ_comm T W.gam _).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γ_φpow (e : ℕ) (x : W.DD T) : W.γ T (((W.φD T) ^ e) x) = ((W.φD T) ^ e) (W.γ T x) := by
   induction e with
@@ -58,7 +58,7 @@ theorem γ_φpow (e : ℕ) (x : W.DD T) : W.γ T (((W.φD T) ^ e) x) = ((W.φD T
     exact (W.φγ_comm T W.gam _).symm
 
 /- English proof (translation)
-Introduce `δ hδ`. Use `show W.γD T δ (W.γD T W.gam x) = W.γD T W.gam x`. Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, h δ hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γ_Δ {x : W.DD T} (h : ∀ δ ∈ W.DelF, W.γD T δ x = x) :
     ∀ δ ∈ W.DelF, W.γD T δ (W.γ T x) = W.γ T x := by
@@ -67,7 +67,7 @@ theorem γ_Δ {x : W.DD T} (h : ∀ δ ∈ W.DelF, W.γD T δ x = x) :
   rw [← W.γD_mul, mul_comm, W.γD_mul, h δ hδ]
 
 /- English proof (translation)
-Establish `hx' : x ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ x = x` using `hx`. Use `show W.γ T x ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ (W.γ T x) = W.γ T x`. Conclude with `⟨(hP2 T hT).1 W.gam x hx'.1, γ_Δ W hx'.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem γ_NΔ (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W) {x : W.DD T} (hx : x ∈ W.NΔ T) :
     W.γ T x ∈ W.NΔ T := by
@@ -76,9 +76,9 @@ theorem γ_NΔ (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariant
   exact ⟨(hP2 T hT).1 W.gam x hx'.1, γ_Δ W hx'.2⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hx`. Use `⟨γ_NΔ W hT hP2 h1, ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hzx⟩` from `Submodule.mem_map.1 h2`. Use `Submodule.mem_map.2 ⟨W.γ T z, (hP2 T hT).1 W.gam z hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[γ_smul, GS.γA_letE]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem γ_NΔi (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W) {c : ZMod n} {x : W.DD T}
     (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T c x) : Formalism.MainNotions.LiftingTheory.InNΔi W T c (W.γ T x) := by
@@ -91,9 +91,9 @@ theorem γ_NΔi (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvarian
   rw [γ_smul, GS.γA_letE]
 
 /- English proof (translation)
-Establish `key : Pp W T c e ≤ (Pp W T c e).comap (W.γ T).toAddMonoidHom`. Unfold `Pp`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`. Use `AddSubgroup.mem_comap.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show W.γ T (a • ((W.φD T) ^ e) x) ∈ _`. Rewrite using `[γ_smul, γ_φpow]`. Conclude with `AddSubgroup.subset_closure ⟨_, GS.γA_mem W W.gam ha, _, γ_NΔi W hT hP2 hx, rfl⟩`. Conclude with `key hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γ_Pp (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W) {c : ZMod n} {e : ℕ} {y : W.DD T}
     (hy : y ∈ Pp W T c e) : W.γ T y ∈ Pp W T c e := by
@@ -108,7 +108,7 @@ theorem γ_Pp (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantL
   exact key hy
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `h`. Conclude with `⟨W.γ T y, γ_Pp W hT hP2 hy, γ_smul W f y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem γ_InFP (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W) {c : ZMod n} {e : ℕ} {f : LetA O n}
     {x : W.DD T} (h : InFP W T c e f x) : InFP W T c e (W.γA W.gam f) (W.γ T x) := by
@@ -116,11 +116,11 @@ theorem γ_InFP (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvarian
   exact ⟨W.γ T y, γ_Pp W hT hP2 hy, γ_smul W f y⟩
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `h`. Use `⟨g • y, ?_, mul_smul f g y⟩` and prove the remaining obligations. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x', hx', rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Conclude with `⟨g * a, mul_mem hg ha, x', hx', (mul_smul g a _).symm⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `(Pp W T c e).zero_mem`. Consider the case `add u v _ _ hu hv => rw [smul_add]`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `(Pp W T c e).add_mem hu hv`. Consider the case `neg u _ hu => rw [smul_neg]`. Conclude with `(Pp W T c e).neg_mem hu`.
+A detailed English derivation is pending.
 -/
 theorem inMultiple_of_mul {c : ZMod n} {e : ℕ} {f g : LetA O n} (hg : g ∈ W.AΔ) {x : W.DD T}
     (h : InFP W T c e (f * g) x) : InFP W T c e f x := by
@@ -136,15 +136,15 @@ theorem inMultiple_of_mul {c : ZMod n} {e : ℕ} {f g : LetA O n} (hg : g ∈ W.
   | neg u _ hu => rw [smul_neg]; exact (Pp W T c e).neg_mem hu
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, (Pp W T c e).zero_mem, (smul_zero f).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem inMultiple_zero {c : ZMod n} {e : ℕ} {f : LetA O n} : InFP W T c e f 0 :=
   ⟨0, (Pp W T c e).zero_mem, (smul_zero f).symm⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `inMultiple_zero W`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hxy⟩` from `h a (Finset.mem_insert_self a s)`. Take `⟨y', hy', hxy'⟩` from `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`. Conclude with `⟨y + y', (Pp W T c e).add_mem hy hy', by rw [hxy, hxy', smul_add]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inMultiple_sum {c : ZMod n} {e : ℕ} {f : LetA O n} {ι : Type} (s : Finset ι) (x : ι → W.DD T)
     (h : ∀ i ∈ s, InFP W T c e f (x i)) : InFP W T c e f (∑ i ∈ s, x i) := by
@@ -158,11 +158,11 @@ theorem inMultiple_sum {c : ZMod n} {e : ℕ} {f : LetA O n} {ι : Type} (s : Fi
     exact ⟨y + y', (Pp W T c e).add_mem hy hy', by rw [hxy, hxy', smul_add]⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, ⟨y, hy, hyc, hxy⟩⟩` from `h`. Establish `h1 : (letE (O` using `O) c : LetA O n) • w = w := h1`. Establish `h2 : ∀ δ ∈ W.DelF, W.γD T δ w = w` using `h2`. Take `⟨u, hu, hγπ⟩` from `hpi0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (letE (O := O) c : LetA O n) • W.γ T w = W.γ T w`. Rewrite using `[← GS.γA_letE W W.gam c, ← γ_smul, h1]`. Conclude with `γ_Δ W h2`. Use `⟨u • W.γ T y, TypesA.NΔ_smul W hu (γ_NΔ W hT hP2 hy), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm, ← GS.γA_letE W W.gam c, ← γ_smul, hyc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: W.γ T (W.γ T w) - W.γ T w = W.γ T (W.γ T w - w)` using `by rw [map_sub]`. Rewrite using `[this, hxy, γ_smul, hγπ, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem InI_γ (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W)
     (hpi0 : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u) {c : ZMod n} {w : W.DD T}
@@ -181,11 +181,9 @@ theorem InI_γ (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariant
       rw [this, hxy, γ_smul, hγπ, mul_smul]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `h1 : (letE (O` using `O) c : LetA O n) • w = w := h1`. Establish `h2 : ∀ δ ∈ W.DelF, W.γD T δ w = w` using `h2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (letE (O := O) c : LetA O n) • (a • w) = a • w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm, h1]`. Use `show ∀ δ ∈ W.DelF, W.γD T δ (a • w) = a • w`. Introduce `δ hδ`. Rewrite using `[GS.γD_smulA, ha δ hδ, h2 δ hδ]`. Establish `: W.γ T (a • w) - a • w = a • (W.γ T w - w)` using `by rw [γ_smul, ha', smul_sub]`.
-
-Rewrite using `[this]`. Conclude with `TypesA.InFNc_smul W ha h3`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InI_smulA {c : ZMod n} {a : LetA O n} (ha : a ∈ W.AΔ) (ha' : W.γA W.gam a = a) {w : W.DD T}
     (h : InI W T c w) : InI W T c (a • w) := by
@@ -203,9 +201,9 @@ theorem InI_smulA {c : ZMod n} {a : LetA O n} (ha : a ∈ W.AΔ) (ha' : W.γA W.
     exact TypesA.InFNc_smul W ha h3
 
 /- English proof (translation)
-Take `⟨h1, h2, y, hy, hyl, hyx⟩` from `h`. Use `⟨?_, ?_, o • y, (W.NΔ T).smul_mem o hy, ?_, ?_⟩` and prove the remaining obligations. Unfold `InLet at h1 ⊢`. Rewrite using `[smul_comm, h1]`. Introduce `δ hδ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_smul, h2 δ hδ]`. Rewrite using `[smul_comm, hyl]`. Rewrite using `[map_smul, ← smul_sub, hyx, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem InI_smulO {c : ZMod n} (o : O) {w : W.DD T} (h : InI W T c w) : InI W T c (o • w) := by
   obtain ⟨h1, h2, y, hy, hyl, hyx⟩ := h
@@ -218,13 +216,11 @@ theorem InI_smulO {c : ZMod n} (o : O) {w : W.DD T} (h : InI W T c w) : InI W T 
   · rw [map_smul, ← smul_sub, hyx, smul_comm]
 
 /- English proof (translation)
-Establish `hadd : ∀ x y, InI W T c x → InI W T c y → InI W T c (x + y)`. Introduce and unpack `x y ⟨hx1, hx2, u, hu, hul, hux⟩ ⟨hy1, hy2, u', hu', hul', hux'⟩`. Use `⟨?_, ?_, u + u', (W.NΔ T).add_mem hu hu', ?_, ?_⟩` and prove the remaining obligations. Unfold `InLet at hx1 hy1 ⊢`. Rewrite using `[smul_add, hx1, hy1]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `δ hδ`. Rewrite using `[map_add, hx2 δ hδ, hy2 δ hδ]`. Rewrite using `[smul_add, hul, hul']`. Rewrite using `[map_add, add_sub_add_comm, hux, hux', smul_add]`. Establish `hzero : InI W T c 0` using `⟨by unfold InLet; rw [smul_zero], fun δ _ => map_zero _, 0, (W.NΔ T).zero_mem, smul_zero _, by rw [map_zero, sub_zero, smul_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `hzero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `hadd _ _ (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InI_sum {c : ZMod n} {ι : Type} (s : Finset ι) (x : ι → W.DD T) (h : ∀ i ∈ s, InI W T c (x i)) :
     InI W T c (∑ i ∈ s, x i) := by
@@ -247,7 +243,7 @@ theorem InI_sum {c : ZMod n} {ι : Type} (s : Finset ι) (x : ι → W.DD T) (h 
     exact hadd _ _ (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa using h`. Consider the case `succ i ih => rw [Function.iterate_succ_apply']`. Conclude with `InI_γ W hT hP2 hpi0 ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem InI_iter (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W)
     (hpi0 : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u) {c : ZMod n} {w : W.DD T} (h : InI W T c w) (i : ℕ) :
@@ -257,7 +253,7 @@ theorem InI_iter (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvaria
   | succ i ih => rw [Function.iterate_succ_apply']; exact InI_γ W hT hP2 hpi0 ih
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]`. Simplify using `[Module.End.pow_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_eq (P : Polynomial O) (x : W.DD T) :
     Polynomial.aeval (W.γ T) P x = ∑ i ∈ Finset.range (P.natDegree + 1), P.coeff i • (W.γ T)^[i] x := by
@@ -265,7 +261,7 @@ theorem aeval_eq (P : Polynomial O) (x : W.DD T) :
   simp [Module.End.pow_apply]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]`. Simplify using `[Module.End.pow_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aevalE_eq (P : Polynomial O) (f : W.EE) :
     Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) P f =
@@ -274,7 +270,7 @@ theorem aevalE_eq (P : Polynomial O) (f : W.EE) :
   simp [Module.End.pow_apply]
 
 /- English proof (translation)
-Rewrite using `[aeval_eq]`. Conclude with `InI_sum W _ _ fun i _ => InI_smulO W _ (InI_iter W hT hP2 hpi0 h i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InI_aeval (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W)
     (hpi0 : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u) {c : ZMod n} {w : W.DD T} (h : InI W T c w)

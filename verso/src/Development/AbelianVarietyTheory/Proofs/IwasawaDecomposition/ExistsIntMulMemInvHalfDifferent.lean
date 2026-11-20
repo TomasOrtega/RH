@@ -20,7 +20,7 @@ open scoped BigOperators
 namespace AmbEx
 
 /- English proof (translation)
-Establish `h1 : ∀ i, σ ((u *ᵥ y) i) = (u.map σ *ᵥ fun j => σ (y j)) i` using `fun i => RingHom.map_mulVec σ u y i`. Simplify using `only [h1]`. Express the relevant statement in the definitionally equal form `(u *ᵥ x) ⬝ᵥ (u.map σ *ᵥ fun j => σ (y j)) = x ⬝ᵥ fun j => σ (y j)`. Rewrite using `[dotProduct_comm, dotProduct_mulVec, vecMul_mulVec, hu, vecMul_one, dotProduct_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec {K n : Type} [Field K] [Fintype n] [DecidableEq n] (σ : K →+* K) (u : Matrix n n K)
     (hu : (u.map σ)ᵀ * u = 1) (x y : n → K) : ∑ i, (u *ᵥ x) i * σ ((u *ᵥ y) i) = ∑ i, x i * σ (y i) := by
@@ -30,27 +30,25 @@ theorem form_mulVec {K n : Type} [Field K] [Fintype n] [DecidableEq n] (σ : K �
   rw [dotProduct_comm, dotProduct_mulVec, vecMul_mulVec, hu, vecMul_one, dotProduct_comm]
 
 /- English proof (translation)
-Introduce `K _ _ σ n _ _ p 𝔭 α β L hσ hN hp hp𝔭 hα hβ hαβ hfg hsp hsd`. Take `⟨g, hg, t, ht, hL, hc⟩` from `GlobalTheory.T.exists_matrix_basis_lattice_up_to_denominator_notMem K n L 𝔭 hfg hsp`. Take `⟨u, hu, t', ht', h1, h2⟩` from `GlobalTheory.T.exists_unitary_mul_integral_at_split_prime K σ n 𝔭 α β hσ hα hβ hαβ g hg`. Establish `hud : IsUnit u.det` using `Matrix.isUnit_det_of_left_inverse hu`. Set `e : (n → K) ≃ₗ[K] (n → K)` to `(Matrix.toLinearEquiv' u (Matrix.invertibleOfIsUnitDet u hud)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hes : ∀ v, e.symm v = u *ᵥ v` using `fun v => rfl`. Establish `he : ∀ x, e x = u⁻¹ *ᵥ x` using `fun x => by`. Apply `e.symm.injective` to reduce the goal to its premises. Rewrite using `[e.symm_apply_apply, hes, mulVec_mulVec, mul_nonsing_inv _ hud, one_mulVec]`. Establish `hform : ∀ x y, ∑ i, e x i * σ (e y i) = ∑ i, x i * σ (y i)` using `fun x y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← form_mulVec σ u hu (e x) (e y), ← hes, ← hes, e.symm_apply_apply, e.symm_apply_apply]`. Set `L' : Submodule (𝓞 K) (n → K)` to `L.comap (e.symm.toLinearMap.restrictScalars (𝓞 K))`. Establish `hm : ∀ v, v ∈ L' ↔ e.symm v ∈ L` using `fun v => Iff.rfl`. Establish `htt : t * t' ∉ 𝔭.asIdeal` using `fun h => (𝔭.isPrime.mem_or_mem h).elim ht ht'`. Take `⟨s, hs, ha, hb⟩` from `GlobalTheory.T.selfDual_lattice_standard_at_rational_prime K σ n p 𝔭 α β L' (t * t') hσ hN hp hp𝔭 hα hβ hαβ (fun x => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm, hsd]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Use `h _ ((hm y).1 hy)` as an intermediate fact. Rewrite `this` using `[← hform, e.apply_symm_apply, e.apply_symm_apply]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h y hy`. Use `h (e y) (by rw [hm, e.symm_apply_apply]; exact hy)` as an intermediate fact. Rewrite using `[← hform, e.apply_symm_apply]) htt` and apply the resulting hypothesis. Use the proof step `(fun x hx i => by`. Establish `hx'` using `hL _ ((hm x).1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x = (u⁻¹ * g) *ᵥ (g⁻¹ *ᵥ e.symm x)`. Rewrite using `[mulVec_mulVec, Matrix.mul_assoc, mul_nonsing_inv _ hg, Matrix.mul_one, ← he, e.apply_symm_apply]`. Establish `e2 : ((t * t' : 𝓞 K) : K) * x i = ∑ j, ((t' : K) * (u⁻¹ * g) i j) * ((t : K) * (g⁻¹ *ᵥ e.symm x) j)` using `by conv_lhs => rw [this]`. Simplify using `only [mulVec, dotProduct, Finset.mul_sum]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by simp only [← Finset.mul_sum]; ring`. Rewrite using `[e2]`. Conclude with `sum_mem fun j _ => mul_mem (h2 i j) (hx' j))`. Use the proof step `(fun j => by`. Rewrite using `[hm, hes]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `choose c hc' using fun k => h1 k j`. Establish `e2 : u *ᵥ (Pi.single j ((t * t' : 𝓞 K) : K)) = ∑ k, c k • ((t : K) • fun i => g i k)`. Establish `: u = g * (g⁻¹ * u)` using `by rw [← Matrix.mul_assoc, mul_nonsing_inv _ hg, Matrix.one_mul]`. Use function extensionality and compare the values at `i`. Establish `h3 : (u *ᵥ (Pi.single j ((t * t' : 𝓞 K) : K))) i = u i j * ((t : K) * t')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mulVec_single]`. Establish `h4 : u i j = ∑ k, g i k * (g⁻¹ * u) k j` using `by conv_lhs => rw [this]`. Conclude with `Matrix.mul_apply`. Rewrite using `[h3, h4, Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, Algebra.smul_def, hc', smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `sum_mem fun k _ => L.smul_mem _ (hc k))`. Use `⟨e, hform, s, hs, fun x hx i => ha _ (by rw [hm, e.symm_apply_apply]; exact hx) i, fun v hv => ?_⟩` and prove the remaining obligations.
-
-Use `(hm _).1 (hb v hv)` as an intermediate fact. Rewrite `this` using `[map_smul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_move : ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* K) (n : Type) [Fintype n] [DecidableEq n] (p : ℕ) (𝔭 : HeightOneSpectrum (𝓞 K)) (α β : 𝓞 K) (L : Submodule (𝓞 K) (n → K)), (∀ x, σ (σ x) = x) → (∀ x : 𝓞 K, ∃ m : ℤ, (x : K) * σ x = m) → p.Prime → (p : 𝓞 K) ∈ 𝔭.asIdeal → α ∈ 𝔭.asIdeal → β ∉ 𝔭.asIdeal → (β : K) = σ α → L.FG → Submodule.span K (L : Set (n → K)) = ⊤ → (∀ x, x ∈ L ↔ ∀ y ∈ L, ∑ i, x i * σ (y i) ∈ (algebraMap (𝓞 K) K).range) → ∃ u : (n → K) ≃ₗ[K] (n → K), (∀ x y, ∑ i, u x i * σ (u y i) = ∑ i, x i * σ (y i)) ∧ ∃ s : ℕ, Nat.Coprime s p ∧ (∀ x ∈ L, ∀ i, (s : K) * u x i ∈ (algebraMap (𝓞 K) K).range) ∧ ∀ v : n → K, (∀ i, v i ∈ (algebraMap (𝓞 K) K).range) → (s : K) • u.symm v ∈ L := by
   intro K _ _ σ n _ _ p 𝔭 α β L hσ hN hp hp𝔭 hα hβ hαβ hfg hsp hsd
@@ -110,9 +108,9 @@ theorem exists_move : ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* K) 
   rwa [map_smul] at this
 
 /- English proof (translation)
-Establish `hI0 : 𝔭.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 K))` using `mem_nonZeroDivisors_of_ne_zero 𝔭.ne_bot`. Establish `hp : (𝔭.asIdeal ^ classNumber K).IsPrincipal`. Rewrite using `[← ClassGroup.mk0_eq_one_iff (pow_mem hI0 _)]`. Establish `: (⟨𝔭.asIdeal ^ classNumber K, pow_mem hI0 _⟩ : nonZeroDivisors (Ideal (𝓞 K))) = ⟨𝔭.asIdeal, hI0⟩ ^ classNumber K` using `rfl`. Rewrite using `[this, map_pow, classNumber]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_card_eq_one`. Conclude with `⟨_, (Ideal.span_singleton_generator _).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gen_pow {K : Type} [Field K] [NumberField K] (𝔭 : HeightOneSpectrum (𝓞 K)) :
     ∃ π : 𝓞 K, 𝔭.asIdeal ^ classNumber K = Ideal.span {π} := by
@@ -127,18 +125,18 @@ theorem exists_gen_pow {K : Type} [Field K] [NumberField K] (𝔭 : HeightOneSpe
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.nonempty_isoKG_of_trace_positive H.K H.E (H.conj : H.E →+* H.E) (HostK.conjK H) (Tau R) (HostK.card_tau H) (fun _ => rfl) (UnusedSlot33.HK.conj_conj H) (HostK.trace_conj H) (HostK.trace_pos H)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_isoK : Nonempty (Th.IsoK H (Tau R)) :=
   GlobalTheory.T.nonempty_isoKG_of_trace_positive H.K H.E (H.conj : H.E →+* H.E) (HostK.conjK H) (Tau R) (HostK.card_tau H) (fun _ => rfl)
     (UnusedSlot33.HK.conj_conj H) (HostK.trace_conj H) (HostK.trace_pos H)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha, ha0⟩ : ∃ a ∈ H.AA0, a ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `one_ne_zero (h 1 ((factMMUnimodular R H 1).2 fun y hy => ?_))` and prove the remaining obligations. Rewrite using `[h y hy, map_zero, mul_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_mem _`. Take `⟨N, hN, hi⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ H.E).2 (Algebra.IsAlgebraic.isAlgebraic (x / a))).exists_integral_multiple`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Establish `h` using `(H.AA0 : Submodule (𝓞 H.E) H.E).smul_mem (⟨N • (x / a), hi⟩ : 𝓞 H.E) ha`. Establish `e : (⟨N • (x / a), hi⟩ : 𝓞 H.E) • a = (N : H.E) * x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(N • (x / a)) * a = _`. Rewrite using `[zsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← e]`. Conclude with `h`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_mul_mem_invHalfDifferent (x : H.E) : ∃ N : ℤ, N ≠ 0 ∧ (N : H.E) * x ∈ H.AA0 := by
   obtain ⟨a, ha, ha0⟩ : ∃ a ∈ H.AA0, a ≠ 0 := by
@@ -162,13 +160,13 @@ def lat4 : Submodule (𝓞 H.K) (Fin 4 → H.E) :=
   Submodule.pi Set.univ fun _ => (H.AA0 : Submodule (𝓞 H.E) H.E).restrictScalars (𝓞 H.K)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h a => h a trivial, fun h a _ => h a⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_fourCopiesInvHalfDifferent_iff (x : Fin 4 → H.E) : x ∈ lat4 H ↔ ∀ a, x a ∈ H.AA0 :=
   ⟨fun h a => h a trivial, fun h a _ => h a⟩
 
 /- English proof (translation)
-Use `Submodule.fg_pi fun _ => ?_` and prove the remaining obligations. Establish `h1 : Module.Finite (𝓞 H.E) (H.AA0 : Submodule (𝓞 H.E) H.E)` using `Module.Finite.iff_fg.2 (FractionalIdeal.fg_of_isNoetherianRing le_rfl H.AA0)`. Establish `h2 : Module.Finite (𝓞 H.K) (H.AA0 : Submodule (𝓞 H.E) H.E)` using `Module.Finite.trans (𝓞 H.E) _`. Conclude with `Module.Finite.iff_fg.1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fourCopiesInvHalfDifferent_fg : (lat4 H).FG := by
   refine Submodule.fg_pi fun _ => ?_
@@ -178,11 +176,11 @@ theorem fourCopiesInvHalfDifferent_fg : (lat4 H).FG := by
   exact Module.Finite.iff_fg.1 h2
 
 /- English proof (translation)
-Rewrite using `[mem_fourCopiesInvHalfDifferent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `sum_mem fun a _ => (factMMUnimodular R H _).1 (h a) _ ((mem_fourCopiesInvHalfDifferent_iff H y).1 hy a)`. Introduce `h a`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(factMMUnimodular R H _).2 fun y hy => ?_` and prove the remaining obligations. Use `h (Pi.single a y) ((mem_fourCopiesInvHalfDifferent_iff H _).2 fun b => by` as an intermediate fact. Distinguish the cases in `e : b = a`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same]` and apply the resulting hypothesis.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne e]`. Conclude with `(H.AA0 : Submodule (𝓞 H.E) H.E).zero_mem)`. Rewrite `this` using `[Finset.sum_eq_single a (fun b _ e => by rw [Pi.single_eq_of_ne e, map_zero, mul_zero, map_zero]) (by simp), Pi.single_eq_same]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fourCopiesInvHalfDifferent_selfDual (x : Fin 4 → H.E) : x ∈ lat4 H ↔ ∀ y ∈ lat4 H,
     ∑ a, Algebra.trace H.K H.E (x a * H.conj (y a)) ∈ (algebraMap (𝓞 H.K) H.K).range := by
@@ -202,19 +200,17 @@ theorem fourCopiesInvHalfDifferent_selfDual (x : Fin 4 → H.E) : x ∈ lat4 H �
       Pi.single_eq_same] at this
 
 /- English proof (translation)
-Take `⟨γ⟩` from `nonempty_isoK H`. Take `⟨𝔭, α, β, hp𝔭, hα, hβ, hαβ⟩` from `GlobalTheory.T.exists_prime_over_split_not_mem_conj R H p hp hs`. Establish `hiso : ∀ x y, ∑ w, γ.g x w * HostK.conjK H (γ.g y w) = ∑ a, Algebra.trace H.K H.E (x a * H.conj (y a))` using `fun x y => by`. Apply `(algebraMap H.K H.E).injective` to reduce the goal to its premises. Rewrite using `[← γ.isom, map_sum]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun w _ => map_mul _ _ _`. Set `L : Submodule (𝓞 H.K) (Fin 4 × Tau R → H.K)` to `(lat4 H).map (γ.g.toLinearMap.restrictScalars (𝓞 H.K))`. Establish `hm : ∀ x, γ.g x ∈ L ↔ x ∈ lat4 H` using `fun x => ⟨fun ⟨y, hy, e⟩ => (γ.g.injective e : y = x) ▸ hy, fun h => ⟨x, h, rfl⟩⟩`. Take `⟨u, hu, s, hsp, h1, h2⟩` from `exists_move H.K (HostK.conjK H) (Fin 4 × Tau R) p 𝔭 α β L (HostK.conjK_conjK H) (HostK.exists_norm_int H) hp hp𝔭 hα hβ hαβ ((fourCopiesInvHalfDifferent_fg H).map _) (by`. Rewrite using `[eq_top_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `v -`. Take `⟨x, rfl⟩` from `γ.g.surjective v`. Use `choose N hN hx using fun a => exists_int_mul_mem_invHalfDifferent H (x a)`. Establish `h0 : ((∏ a, N a : ℤ) : H.K) ≠ 0` using `Int.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun a _ => hN a)`. Rewrite using `[← Submodule.smul_mem_iff _ h0, ← γ.g.map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.subset_span ((hm _).2 ((mem_fourCopiesInvHalfDifferent_iff H _).2 fun a => ?_))` and prove the remaining obligations. Use `(H.AA0 : Submodule (𝓞 H.E) H.E).smul_of_tower_mem (∏ b ∈ Finset.univ.erase a, N b) (hx a)` as an intermediate fact. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_intCast, ← Finset.prod_erase_mul _ _ (Finset.mem_univ a), Int.cast_mul, mul_assoc, ← zsmul_eq_mul]`. Conclude with `this)`. Use the proof step `(fun v => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨x, rfl⟩` from `γ.g.surjective v`. Rewrite using `[hm, fourCopiesInvHalfDifferent_selfDual]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Conclude with `(hiso x y).symm ▸ h y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h y hy`. Conclude with `hiso x y ▸ h _ ((hm y).2 hy))`. Use `⟨⟨γ.g.trans u, fun x y => ?_⟩, fun x hx => ⟨s, hsp, h1 _ ((hm x).2 ((mem_fourCopiesInvHalfDifferent_iff H x).2 hx))⟩, fun v hv => ⟨s, hsp, fun a => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hiso, ← hu, map_sum]`. Conclude with `Finset.sum_congr rfl fun w _ => (map_mul (algebraMap H.K H.E) (u (γ.g x) w) (HostK.conjK H (u (γ.g y) w))).symm`.
-
-Establish `h3` using `h2 v hv`. Rewrite `h3` using `[← γ.g.apply_symm_apply (u.symm v), ← γ.g.map_smul, hm, mem_fourCopiesInvHalfDifferent_iff]`. Establish `h4` using `h3 a`. Rewrite `h4` using `[Pi.smul_apply, Algebra.smul_def, map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_atP (p : ℕ) (hp : p.Prime) (hs : Th.SplitK H p) : ∃ γ : Th.IsoK H (Tau R), Th.AtP γ p := by
   classical
@@ -264,13 +260,13 @@ def ellE (τ : Tau R) : Submodule (𝓞 H.E) H.E :=
   (Submodule.span (𝓞 H.E) (conjVec H)).comap (LinearMap.single (𝓞 H.E) (fun _ : Tau R => H.E) τ)
 
 /- English proof (translation)
-Use `letI : DecidableEq (Tau R) := fun a b => Classical.propDecidable (a = b)`. Take `⟨d, hd, hA⟩` from `H.AA0.isFractional`. Establish `hd0 : (d : H.E) ≠ 0` using `by exact_mod_cast nonZeroDivisors.ne_zero hd`. Set `g` to `H.sigmaOf (τ : R.GG)`. Establish `hg0 : g d ≠ 0` using `(map_ne_zero g).2 hd0`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : ellE H τ ≤ Submodule.span (𝓞 H.E) {(g d)⁻¹}`. Introduce `s hs`. Establish `h1 : Submodule.span (𝓞 H.E) (conjVec H) ≤ (Submodule.span (𝓞 H.E) {(g d)⁻¹}).comap (LinearMap.proj (R` using `𝓞 H.E) (φ := fun _ : Tau R => H.E) τ) := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨b, hb⟩` from `hA a ha`. Use `Submodule.mem_span_singleton.2 ⟨⟨g b, b.isIntegral_coe.map (g : H.E →+* H.E).toIntAlgHom⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (algebraMap _ _ b) * (g d)⁻¹ = g a`. Rewrite using `[hb, Algebra.smul_def, map_mul]`. Express the relevant statement in the definitionally equal form `g d * g a * (g d)⁻¹ = g a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Clear the denominators using the available nonvanishing facts. Establish `h2` using `h1 hs`. Simplify using `using h2`. Conclude with `Submodule.FG.of_le (Submodule.fg_span_singleton _) hle`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ellE_fg (τ : Tau R) : (ellE H τ).FG := by
   letI : DecidableEq (Tau R) := fun a b => Classical.propDecidable (a = b)
@@ -295,17 +291,17 @@ theorem ellE_fg (τ : Tau R) : (ellE H τ).FG := by
   exact Submodule.FG.of_le (Submodule.fg_span_singleton _) hle
 
 /- English proof (translation)
-Take `⟨M, hM, hφ, hs⟩` from `GlobalTheory.T.exists_finite_extension_capitulation_complex H.E H.φ₀ (Tau R) (ellE H) (ellE_fg H)`. Use `choose s hs using hs`. Use `haveI : NumberField M := ⟨⟩`. Use `letI : Algebra H.E M := (H.φ₀.codRestrict M hφ).toAlgebra`. Establish `hal : ∀ x : H.E, ((algebraMap H.E M x : M) : ℂ) = H.φ₀ x` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun τ => s τ, M, inferInstance, fun τ x => hφ _, fun τ => ⟨s τ, rfl, ?_⟩⟩` and prove the remaining obligations. Establish `hl : ∀ x : H.E, TaylorLogMetric.liftM M (H.φ₀ x) = algebraMap H.E M x` using `fun x => dif_pos (hφ x)`. Establish `h1 : Th.mmM H (embT H) M = Submodule.span (𝓞 M) ((fun (v : Tau R → H.E) (i : Tau R) => algebraMap H.E M (v i)) '' conjVec H)`. Unfold `Th.mmM`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨_, ⟨a, ha, rfl⟩, funext fun τ => (hl _).symm⟩`. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a, ha, funext fun τ => (hl _).symm⟩`. Establish `h2` using `@GlobalTheory.T.comap_single_span_algebraMap_numberField H.E M _ _ _ _ _ (Tau R) _ (fun a b => Classical.propDecidable (a = b)) (conjVec H) τ`. Rewrite using `[← hs τ]`. Unfold `Th.ellT`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `h2.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨x, hx, e⟩`. Conclude with `⟨x, hx, Subtype.ext e.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dgen : ∃ cD, Th.IsDgen H (embT H) cD := by
   obtain ⟨M, hM, hφ, hs⟩ := GlobalTheory.T.exists_finite_extension_capitulation_complex H.E H.φ₀ (Tau R) (ellE H) (ellE_fg H)
@@ -339,13 +335,11 @@ theorem exists_dgen : ∃ cD, Th.IsDgen H (embT H) cD := by
     exact ⟨x, hx, Subtype.ext e.symm⟩
 
 /- English proof (translation)
-Establish `h2 : Th.SplitK H 2` using `Or.inl rfl`. Establish `hpp : ∀ p : ℕ, ∃ 𝔭 : HeightOneSpectrum (𝓞 H.K), p.Prime → Th.SplitK H p → (p : 𝓞 H.K) ∈ 𝔭.asIdeal` using `fun p => by`. Distinguish the cases in `h : p.Prime ∧ Th.SplitK H p`. Take `⟨𝔭, -, -, h1, -⟩` from `GlobalTheory.T.exists_prime_over_split_not_mem_conj R H p h.1 h.2`. Conclude with `⟨𝔭, fun _ _ => h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨𝔭, -⟩` from `GlobalTheory.T.exists_prime_over_split_not_mem_conj R H 2 Nat.prime_two h2`. Conclude with `⟨𝔭, fun a b => absurd ⟨a, b⟩ h⟩`. Establish `hga : ∀ p : ℕ, ∃ γ : Th.IsoK H (Tau R), p.Prime → Th.SplitK H p → Th.AtP γ p` using `fun p => by`. Distinguish the cases in `h : p.Prime ∧ Th.SplitK H p`. Take `⟨γ, h1⟩` from `exists_atP H p h.1 h.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨γ, fun _ _ => h1⟩`. Conclude with `⟨γ₀, fun a b => absurd ⟨a, b⟩ h⟩`. Use `choose pp hpp using hpp`. Use `choose ga hga using hga`. Use `choose pi hpi using fun p => exists_gen_pow (pp p)`.
-
-Use `choose rt hrt using fun p => IsAlgClosed.exists_pow_nat_eq (H.φ₀ (((pi p : 𝓞 H.K) : H.K) : H.E) / H.φ₀ (H.conj (((pi p : 𝓞 H.K) : H.K) : H.E))) (n := 2 * classNumber H.K) (Nat.mul_pos two_pos (classNumber_pos H.K))`. Conclude with `⟨⟨pp, hpp, pi, fun p _ _ => hpi p, ga, hga, rt, fun p _ _ => hrt p⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_kapIn (γ₀ : Th.IsoK H (Tau R)) : Nonempty (Th.KapIn γ₀) := by
   classical
@@ -372,9 +366,9 @@ theorem nonempty_kapIn (γ₀ : Th.IsoK H (Tau R)) : Nonempty (Th.KapIn γ₀) :
 end AmbEx
 
 /- English proof (translation)
-Take `⟨δ, L, ω₀, hδ, hL, ht⟩` from `GlobalTheory.T.exists_periodPair_lattice_eq_lamOf R H`. Take `⟨γ₀⟩` from `AmbEx.nonempty_isoK H`. Take `⟨gC, hgC⟩` from `GlobalTheory.T.exists_complexLinear_extension_of_traceIsometry' H.K H.E H.conj (Tau R) H.φ₀ (embT H) (HostK.emb_conj H _) (fun _ => HostK.emb_conj H _) (HostK.embT_K H) (HostK.sum_embT H) γ₀`. Take `⟨kc⟩` from `AmbEx.nonempty_kapIn H γ₀`. Take `⟨cD, hc⟩` from `AmbEx.exists_dgen H`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨δ, ⟨L, hL, ω₀, ht, γ₀, gC, hgC, kc⟩, cD⟩, hδ, hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ambIn_ok {R : Ranks} (H : Host R) : ∃ J : AmbIn H, J.Ok := by
   obtain ⟨δ, L, ω₀, hδ, hL, ht⟩ := GlobalTheory.T.exists_periodPair_lattice_eq_lamOf R H

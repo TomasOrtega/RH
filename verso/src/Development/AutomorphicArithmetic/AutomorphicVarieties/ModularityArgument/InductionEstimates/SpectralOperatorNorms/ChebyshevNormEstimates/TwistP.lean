@@ -15,13 +15,13 @@ variable {H V W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
   [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
 /- English proof (translation)
-Establish `hQ : ∀ x, Q (Q x) = Q x` using `fun x => by`. Use `congrArg (fun A : H →L[ℂ] H => A x) hi` as an intermediate fact. Simplify using `using this`. Establish `hsym : ∀ x y, ⟪Q x, y⟫_ℂ = ⟪x, Q y⟫_ℂ` using `fun x y => hs.isSymmetric x y`. Establish `h1 : Q (U (h - Q h)) = 0` using `(hk _).2 (by rw [map_sub, hQ, sub_self])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sub, map_sub, sub_eq_zero]`. Rewrite using `[h1]`. Use `set w := U (Q h) - Q (U (Q h)) with hw`. Establish `hw0 : Q w = 0` using `by rw [hw, map_sub, hQ, sub_self]`. Establish `hw1 : Q (U.symm w) = 0` using `(hk _).1 (by simpa using hw0)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ⟪w, U (Q h)⟫_ℂ = 0`. Use `U.inner_map_map (U.symm w) (Q h)` as an intermediate fact. Rewrite `this` using `[U.apply_symm_apply]`. Rewrite using `[this, ← hsym, hw1, inner_zero_left]`. Establish `h3 : ⟪w, w⟫_ℂ = 0` using `by conv_lhs => rw [hw, inner_sub_right, ← hw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← hsym, hw0, inner_zero_left, sub_self]`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h3)`.
+A detailed English derivation is pending.
 -/
 private theorem comm_of_ker (U : H ≃ₗᵢ[ℂ] H) (Q : H →L[ℂ] H) (hs : IsSelfAdjoint Q) (hi : Q ∘L Q = Q)
     (hk : ∀ h, Q (U h) = 0 ↔ Q h = 0) (h : H) : U (Q h) = Q (U h) := by
@@ -45,34 +45,32 @@ private theorem comm_of_ker (U : H ≃ₗᵢ[ℂ] H) (Q : H →L[ℂ] H) (hs : I
   exact sub_eq_zero.1 (inner_self_eq_zero.1 h3)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(s.toContinuousLinearEquiv : V →L[ℂ] W).compLp u, (s.toContinuousLinearEquiv : V →L[ℂ] W).coeFn_compLp u⟩`.
+Supply the required witnesses or components.
 -/
 private theorem lift_ex (s : V ≃ₗᵢ[ℂ] W) (u : L V) : ∃ v : L W, ∀ᵐ x : ℝ, v x = s (u x) :=
   ⟨(s.toContinuousLinearEquiv : V →L[ℂ] W).compLp u, (s.toContinuousLinearEquiv : V →L[ℂ] W).coeFn_compLp u⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `lift_ex s.symm v`. Conclude with `⟨u, hu.mono fun x hx => by rw [hx, s.apply_symm_apply]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem lift_ex' (s : V ≃ₗᵢ[ℂ] W) (v : L W) : ∃ u : L V, ∀ᵐ x : ℝ, v x = s (u x) := by
   obtain ⟨u, hu⟩ := lift_ex s.symm v
   exact ⟨u, hu.mono fun x hx => by rw [hx, s.apply_symm_apply]⟩
 
 /- English proof (translation)
-Use `⟨fun P ⟨h1, h2, h3⟩ => comm_of_ker U P h1 h2 fun h => ?_, fun T Λ ⟨h1, h2, h3⟩ => comm_of_ker U Λ h1 h2 fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[h3, h3]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Use `⟨fun u => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `lift_ex s u`. Rewrite using `[← U.inner_map_map, hs u v hv, b]`. Take `⟨u, hu⟩` from `lift_ex t v`. Rewrite using `[← U.inner_map_map, ht v u hu, a]`. Introduce and unpack `⟨a, b⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨fun u => ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `lift_ex' t u`. Rewrite using `[← ht v u hv, U.inner_map_map, b]`. Take `⟨u, hu⟩` from `lift_ex' s v`. Rewrite using `[← hs u v hu, U.inner_map_map, a]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, h3]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, v, hu, hv, e⟩`. Take `⟨v', hv'⟩` from `lift_ex' t u`. Take `⟨u', hu'⟩` from `lift_ex' s v`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u', v', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hv, hu'] with x a b hx`. Conclude with `s.injective (by rw [← b, a hx, map_zero])`. Use `filter_upwards [hu, hv'] with x a b hx`. Conclude with `t.injective (by rw [← b, a hx, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Apply `U.injective` to reduce the goal to its premises. Rewrite using `[e, map_add, hs u' v hu', ht v' u hv', add_comm]`. Introduce and unpack `⟨u, v, hu, hv, e⟩`. Take `⟨v', hv'⟩` from `lift_ex s u`. Take `⟨u', hu'⟩` from `lift_ex t v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u', v', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hv, hu'] with x a b hx`. Rewrite using `[b, a hx, map_zero]`. Use `filter_upwards [hu, hv'] with x a b hx`. Rewrite using `[b, a hx, map_zero]`.
-
-Rewrite using `[e, map_add, hs u v' hv', ht v u' hu', add_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem abs_main (J : L V →ₗᵢ[ℂ] H) (J' : L W →ₗᵢ[ℂ] H) (U : H ≃ₗᵢ[ℂ] H) (s : V ≃ₗᵢ[ℂ] W) (t : W ≃ₗᵢ[ℂ] V)
     (hs : ∀ (u : L V) (v : L W), (∀ᵐ x : ℝ, v x = s (u x)) → U (J u) = J' v)
@@ -122,9 +120,9 @@ private theorem abs_main (J : L V →ₗᵢ[ℂ] H) (J' : L W →ₗᵢ[ℂ] H) 
 end Abstract
 
 /- English proof (translation)
-Introduce `E _ _ _ μ _ θ 𝔢 𝔵`. Take `⟨U, hU, -, -⟩` from `UpperTheory.ConvolutionTheory.C.twistUnitary E (2 + 2) μ θ`. Establish `hU' : ∀ h, θ.U h = U h` using `fun h => by rw [← hU]; rfl`. Take `⟨t, -, ht⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.convU E μ (BW.mu1 E 2) 𝔵.τ₂ 𝔵.τ₁ ⟨𝔵.pair.irr₂, 𝔵.pair.irr₁, 𝔵.pair.orth.symm⟩ 𝔵.D 𝔵.d' 𝔵.d 𝔵.A' 𝔵.A 𝔵.σ θ 𝔵.θ₂ 𝔵.gal 𝔵.gal₂ 𝔵.stable 𝔵.swap₂ 𝔵.swap₁`. Take `⟨a, b⟩` from `abs_main 𝔵.A.J 𝔵.A'.J U 𝔵.s t (fun u v h => by rw [← hU']; exact 𝔵.s_op u v h) (fun v u h => by rw [← hU']; exact ht v u h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ContinuousLinearMap.ext fun h => ?_, fun T Λ hΛ => ContinuousLinearMap.ext fun h => ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, hU']`. Conclude with `a _ 𝔵.isP h`. Simplify using `only [ContinuousLinearMap.comp_apply, hU']`. Conclude with `b T Λ hΛ h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.twistP :
     ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {μ : Measure (normOneGL E (2 + 2))} [μ.IsHaarMeasure] {θ : Twist μ} {𝔢 : Side θ 2} (𝔵 : Fam 𝔢), θ.U ∘L 𝔵.P = 𝔵.P ∘L θ.U ∧

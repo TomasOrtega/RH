@@ -41,13 +41,13 @@ def zeroObj (J : Type) (b : TBase o k) (s : S ⟶ Sp o) : TObj 0 k J b s where
   hom := fun _ => inferInstance
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 example {g : ℕ} {J : Type} {b : TBase o k} {s : S ⟶ Sp o} (t : TObj g k J b s) (w w' : J) (h : t.Prim w w') :
     lift (t.act w) (t.act w') ≫ μ[t.A] = 𝟙 t.A := h.1
 
 /- English proof (translation)
-Use `⟨⟨fun _ => 1⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `h : (LB.div M L).g i j = 1` using `(congrArg₂ (· * ·) ((congrArg _ (hM _ _)).trans (map_one _)) ((congrArg (·⁻¹) ((congrArg _ (hL _ _)).trans (map_one _))).trans inv_one)).trans (_root_.mul_one _)`. Conclude with `(map_one _).trans ((congrArg₂ (· * ·) h (map_one _)).trans (_root_.mul_one _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_of_g {X : Scheme.{0}} (L M : LB X) (hL : ∀ i j, L.g i j = 1) (hM : ∀ i j, M.g i j = 1) : LBIso L M := by
   refine ⟨⟨fun _ => 1⟩, fun i j => ?_⟩
@@ -57,16 +57,14 @@ theorem lbIso_of_g {X : Scheme.{0}} (L M : LB X) (hL : ∀ i j, L.g i j = 1) (hM
   exact (map_one _).trans ((congrArg₂ (· * ·) h (map_one _)).trans (_root_.mul_one _)).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨toUnit_unique _ _, lbIso_of_g _ _ (linComb_triv_g _ _) (linComb_triv_g _ _), lbIso_of_g _ _ (fun _ _ => rfl) (linComb_triv_g _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_prim {J : Type} (b : TBase o k) (s : S ⟶ Sp o) (w w' : J) : (zeroObj J b s).Prim w w' :=
   ⟨toUnit_unique _ _, lbIso_of_g _ _ (linComb_triv_g _ _) (linComb_triv_g _ _),
     lbIso_of_g _ _ (fun _ _ => rfl) (linComb_triv_g _ _)⟩
 
 /- English proof (translation)
-Use `⟨f, ⟨?_, fun T x y x₀ y₀ _ _ => ?_⟩, lbIso_of_g _ _ (fun _ _ => rfl) (linComb_triv_g _ _), fun i => Fin.elim0 i, fun j => ?_⟩` and prove the remaining obligations. Use `show IsPullback f (𝟙 S') (𝟙 S) f`. Conclude with `IsPullback.of_vert_isIso ⟨by simp⟩`. Establish `h1 : (x₀ * y₀).left ≫ 𝟙 S = T.hom ≫ f` using `Over.w (x₀ * y₀)`. Establish `h2 : (x * y).left ≫ 𝟙 S' = T.hom` using `Over.w (x * y)`.
-
-Conclude with `((Category.comp_id _).symm.trans h1).trans (congrArg (· ≫ f) ((Category.comp_id _).symm.trans h2)).symm`. Use `show 𝟙 S' ≫ f = f ≫ 𝟙 S`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zero_tmap {J : Type} (b : TBase o k) (s : S ⟶ Sp o) (s' : S' ⟶ Sp o) (f : S' ⟶ S) :
     TMap (zeroObj J b s') (zeroObj J b s) f := by
@@ -81,9 +79,9 @@ theorem zero_tmap {J : Type} (b : TBase o k) (s : S ⟶ Sp o) (s' : S' ⟶ Sp o)
     simp
 
 /- English proof (translation)
-Establish `hu : IsUnit (N : R)`. Use `b.unit.map β` as an intermediate fact. Rewrite `this` using `[map_natCast, Nat.cast_pow]`. Conclude with `(isUnit_pow_iff two_ne_zero).1 this`. Establish `hu' : IsUnit (N : Γ((Over.mk x).left, ⊤))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hu.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Unfold `TObj.HasTh`. Simplify using `only [map_one]`. Conclude with `GlobalTheory.ThetaPtDet.isThetaPt_zero S N hN hu' _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zero_hasTh {J : Type} {N : ℕ} (hN : Odd N) (b : TBase o (N ^ 2)) {R : Type} [CommRing R] (β : o →+* R) (x : Sp R ⟶ S)
     (s : S ⟶ Sp o) : (zeroObj J b s).HasTh x (fun _ => 1) := by
@@ -99,7 +97,7 @@ theorem zero_hasTh {J : Type} {N : ℕ} (hN : Odd N) (b : TBase o (N ^ 2)) {R : 
   exact GlobalTheory.ThetaPtDet.isThetaPt_zero S N hN hu' _
 
 /- English proof (translation)
-Use `Set.eq_univ_of_forall fun p => ⟨ℂ, inferInstance, 𝟙 _, ⟨p, rfl⟩, ℂ, inferInstance, RingHom.id ℂ, RingHom.id ℂ, RingHom.id ℂ, zeroObj J b _, zeroObj J b _, zeroObj J b _, rfl, ?_, zero_tmap _ _ _ _, zero_tmap _ _ _ _, zero_tmap _ _ _ _, trivial⟩` and prove the remaining obligations. Simplify using `[spMap]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem zero_fromC {J : Type} (b : TBase ℂ k) :
     fromSet (RingHom.id ℂ) (fun _ => True) (zeroObj J b (spMap (RingHom.id ℂ))) = Set.univ := by
@@ -109,7 +107,7 @@ theorem zero_fromC {J : Type} (b : TBase ℂ k) :
   simp [spMap]
 
 /- English proof (translation)
-Introduce `_ _ h` and use `h.elim shape := fun _ h => h.elim fam := ⟨0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun _ h => h.elim⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem goodClass_empty {g N : ℕ} {J : Type} {b : TBase o (N ^ 2)} (em : o →+* ℂ) (Mat κ) (w w' : J) (d : ℕ) :
     GoodClass (g := g) (b := b) em (fun _ => False) Mat κ w w' d where
@@ -118,7 +116,7 @@ theorem goodClass_empty {g N : ℕ} {J : Type} {b : TBase o (N ^ 2)} (em : o →
   fam := ⟨0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun _ h => h.elim⟩
 
 /- English proof (translation)
-Take `⟨x, hx, -⟩` from `F.pts PUnit (algebraMap o PUnit) (fun _ => 0) ⟨fun _ _ => Subsingleton.elim _ _, fun q hq => (hq.ne_top (Subsingleton.elim _ _)).elim⟩`. Conclude with `hx.2.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem odd_of_thetaFam {g n N : ℕ} {J : Type} {b : TBase o (N ^ 2)} {em : o →+* ℂ}
     {C : TObj g (N ^ 2) J b (spMap em) → Prop} (F : ThetaFam n em C) : Odd N := by
@@ -127,11 +125,11 @@ theorem odd_of_thetaFam {g n N : ℕ} {J : Type} {b : TBase o (N ^ 2)} {em : o �
   exact hx.2.1
 
 /- English proof (translation)
-Introduce `h`. Take `⟨c, hc⟩` from `h (fun _ => 1)`. Apply `hc` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `· simp`. Introduce `h0`. Establish `h1` using `congrFun h0 0`. Establish `h2` using `congrArg (ZMod.castHom (show 3 ∣ 9 ^ 2 by norm_num) (ZMod 3)) h1`. Simplify using `only [Pi.add_apply, Pi.smul_apply, map_add, map_one, map_nsmul, Pi.zero_apply, map_zero] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition.
 
-Use `revert h2`. Generalize the expression as in `(ZMod.castHom (show 3 ∣ 9 ^ 2 by norm_num) (ZMod 3)) (c 0) = z`. Use `revert z`. Evaluate the decidable proposition.
+A detailed English derivation is pending.
 -/
 example : ¬ Coset (g := 1) 3 9 (fun a : Ix 1 (9 ^ 2) => if a = 0 then (1 : ℚ) else 0) ⊥ := by
   intro h
@@ -148,13 +146,9 @@ example : ¬ Coset (g := 1) 3 9 (fun a : Ix 1 (9 ^ 2) => if a = 0 then (1 : ℚ)
   revert z; decide
 
 /- English proof (translation)
-Use `haveI := h.proper`. Use `haveI := h.geomConnected`. Use `haveI : Etale A.hom := (Etale.iff_smoothOfRelativeDimension_zero _).2 hd`. Set `e : S ⟶ A.left` to `eSec A`. Establish `he : e ≫ A.hom = 𝟙 S` using `Over.w η[A]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : IsClosedImmersion e := by haveI : IsClosedImmersion (e ≫ A.hom) := by rw [he]; infer_instance`. Conclude with `IsClosedImmersion.of_comp e A.hom`. Use `haveI : MorphismProperty.HasOfPostcompProperty @IsOpenImmersion (MorphismProperty.diagonal @IsOpenImmersion) := MorphismProperty.hasOfPostcompProperty_iff_le_diagonal.mpr le_rfl`. Use `haveI : IsOpenImmersion e := MorphismProperty.of_postcomp (W := @IsOpenImmersion) (W' := MorphismProperty.diagonal @IsOpenImmersion) e A.hom (inferInstanceAs (IsOpenImmersion (pullback.diagonal A.hom))) (by rw [he]; infer_instance)`. Establish `hs : ∀ y : S, A.hom (e y) = y` using `fun y => by rw [← Scheme.Hom.comp_apply, he]; rfl`.
-
-Use `haveI : IsIso e := by`. Use `isIso_of_isOpenImmersion_of_opensRange_eq_top _ (top_unique fun a _ => ?_)` and prove the remaining obligations. Establish `hc` using `(A.hom.isConnected_preimage_singleton (A.hom a)).isPreconnected`. Establish `hcl : IsClopen (Set.range e)` using `⟨e.isClosedEmbedding.isClosed_range, e.isOpenEmbedding.isOpen_range⟩`. Conclude with `hc.subset_isClopen hcl ⟨e (A.hom a), hs _, _, rfl⟩ rfl`.
-
-Use `haveI : IsIso (e ≫ A.hom) := by rw [he]; infer_instance`. Conclude with `IsIso.of_isIso_comp_left e _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_of_dim_zero (A : Over S) [GrpObj A] (h : IsAbelianScheme A) (hd : SmoothOfRelativeDimension 0 A.hom) :
     IsIso A.hom := by
@@ -181,11 +175,11 @@ theorem isIso_of_dim_zero (A : Over S) [GrpObj A] (h : IsAbelianScheme A) (hd : 
   exact IsIso.of_isIso_comp_left e _
 
 /- English proof (translation)
-Substitute `hF` using the available equality. Establish `le : ∀ p : M.ι × L.ι, M.U p.1 ⊓ L.U p.2 ≤ (L.pull (𝟙 X)).U (fun _ => p.2)` using `fun p y hy => Set.mem_iInter.2 fun _ => hy.2`. Use `⟨⟨fun p => (res (le p) (t.s fun _ => p.2))⁻¹⟩, fun p q => ?_⟩` and prove the remaining obligations. Establish `hle : M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.1 ⊓ L.U q.2) ≤ (L.pull (𝟙 X)).U (fun _ => p.2) ⊓ (L.pull (𝟙 X)).U (fun _ => q.2)` using `inf_le_inf (le p) (le q)`. Establish `key` using `congrArg (res hle) (ht (fun _ => p.2) (fun _ => q.2))`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `erw [map_mul, DVR.res_res', DVR.res_res'] at key`. Establish `aux : ∀ {G : Type} [CommGroup G] (a g b a' m g' b' : G), a = g * b → a' = a⁻¹ → m = 1 → g' = g → b' = b⁻¹ → a' = m * g'⁻¹ * b'`. Introduce and unpack `G _ a g b a' m g' b' rfl rfl rfl rfl rfl`. Rewrite using `[_root_.one_mul, mul_inv]`. Use `aux _ _ _ _ _ _ _ key ((map_inv _ _).trans (congrArg _ (DVR.res_res' _ _ _))) ((congrArg _ (hM _ _)).trans (map_one _)) ?_ ((map_inv _ _).trans (congrArg _ (DVR.res_res' _ _ _)))` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Simplify using `only [LB.pull, LB.LinComb]`. Use `erw [Fintype.prod_unique, zpow_one, DVR.res_res']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lbIso_of_gen {X : Scheme.{0}} (L M : LB X) (F : X ⟶ X) (hF : F = 𝟙 X) (t : LB.Gen (L.pull F)) (ht : t.IsGen)
     (hM : ∀ i j, M.g i j = 1) : LBIso L M := by
@@ -208,11 +202,9 @@ theorem lbIso_of_gen {X : Scheme.{0}} (L M : LB X) (F : X ⟶ X) (hF : F = 𝟙 
   rfl
 
 /- English proof (translation)
-Use `haveI := isIso_of_dim_zero t.A t.ab t.dim`. Take `⟨r, hr⟩` from `t.rigid`. Establish `he : (eSec t.A : S' ⟶ t.A.left) ≫ t.A.hom = 𝟙 S'` using `Over.w η[t.A]`. Establish `hF : t.A.hom ≫ (eSec t.A : S' ⟶ t.A.left) = 𝟙 _`. Rewrite using `[← cancel_mono t.A.hom, Category.assoc, he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨t.A.hom ≫ f, ⟨?_, fun T x y x₀ y₀ _ _ => ?_⟩, lbIso_of_gen _ _ _ hF _ (DVR.pullGen_isGen _ _ _ r hr t.A.hom) (linComb_triv_g _ _), fun i => Fin.elim0 i, fun j => ?_⟩` and prove the remaining obligations. Use `show IsPullback (t.A.hom ≫ f) t.A.hom (𝟙 S) f`. Conclude with `IsPullback.of_vert_isIso ⟨by simp⟩`. Establish `h1 : (x₀ * y₀).left ≫ 𝟙 S = T.hom ≫ f` using `Over.w (x₀ * y₀)`.
-
-Conclude with `((Category.comp_id _).symm.trans h1).trans ((congrArg (· ≫ f) (Over.w (x * y))).symm.trans (Category.assoc _ _ _))`. Use `show (t.act j).left ≫ t.A.hom ≫ f = (t.A.hom ≫ f) ≫ 𝟙 S`. Rewrite using `[← Category.assoc, Over.w (t.act j), Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmap_zero {J : Type} {b : TBase o k} (s : S ⟶ Sp o) {s' : S' ⟶ Sp o} (t : TObj 0 k J b s') (f : S' ⟶ S) :
     TMap t (zeroObj J b s) f := by
@@ -233,9 +225,9 @@ theorem tmap_zero {J : Type} {b : TBase o k} (s : S ⟶ Sp o) {s' : S' ⟶ Sp o}
     rw [← Category.assoc, Over.w (t.act j), Category.comp_id]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `zero_hasTh (J := J) hN b β x s`. Use `⟨h1, h2, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, th, s1, α, τ, U, s2, w, u, a1, a2, a3, a4, a5, a6, a7, a8⟩` from `h3 p`. Use `⟨V, hV, th, s1, α, τ, U, s2, w, (show Γ((Out.overRes V).left, ⊤)ˣ from Units.map (V.ι.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).toMonoidHom c) * u, a1, a2, a3, a4, a5, a6, a7, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `a8 i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [map_one] at h`. Use `erw [Units.val_mul, _root_.mul_assoc, ← h, _root_.mul_one]`. Simplify using `only [hv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zero_hasTh_unit {J : Type} {N : ℕ} (hN : Odd N) (b : TBase o (N ^ 2)) {R : Type} [CommRing R] (β : o →+* R)
     (x : Sp R ⟶ S) (s : S ⟶ Sp o) (v : Ix 0 (N ^ 2) → R) (c : Rˣ) (hv : ∀ a, v a = c) : (zeroObj J b s).HasTh x v := by
@@ -284,28 +276,24 @@ def thetaFamZero (n N : ℕ) (hN : Odd N) (J : Type) (b : TBase ℂ (N ^ 2)) :
   unram := fun K _ x _ h _ _ => by simpa [spMap] using h
 
 /- English proof (translation)
-The claim follows from `Finset.prod_eq_one fun _ _ => by rw [hg, map_one]; erw [map_one]; exact one_zpow _`.
+A detailed English derivation is pending.
 -/
 theorem linComb_g_one {X Y : Scheme.{0}} (M : LB X) (hg : ∀ i j, M.g i j = 1) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j j' : (LB.LinComb M φ ε).ι) : (LB.LinComb M φ ε).g j j' = 1 :=
   Finset.prod_eq_one fun _ _ => by rw [hg, map_one]; erw [map_one]; exact one_zpow _
 
 /- English proof (translation)
-Use `fun j => ⟨fun i => Fin.elim0 i, ?_⟩` and prove the remaining obligations. Use `show Out.RelAmple (𝟙_ (Over S)) (LB.LinComb (trivLB _) (K := Fin 2) ![𝟙 _, 𝟙 _] ![(κ : ℤ), -1])`. Generalize the expression as in `hM : LB.LinComb (trivLB (𝟙_ (Over S)).left) (Y := (𝟙_ (Over S)).left) (K := Fin 2) ![𝟙 _, 𝟙 _] ![(κ : ℤ), -1] = M`. Establish `hg : ∀ i j, M.g i j = 1` using `by subst hM; exact linComb_triv_g _ _`. Establish `hU : ∃ i, M.U i = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hM` using the available equality. Conclude with `⟨fun _ => PUnit.unit, top_unique fun y _ => Set.mem_iInter.2 fun _ => trivial⟩`. Take `⟨i₀, hi₀⟩` from `hU`. Introduce `U hU`. Use `haveI : IsIso (𝟙_ (Over S)).hom := by show IsIso (𝟙 S); infer_instance`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Y` to `((𝟙_ (Over S)).hom ⁻¹ᵁ U).toScheme`. Establish `hp : ∀ i j, (Out.powOver (𝟙_ (Over S)) M U 1).g i j = 1` using `fun i j => by`. Conclude with `linComb_g_one M hg _ _ i j`. Set `s0 : LB.Sec (Out.powOver (𝟙_ (Over S)) M U 1)` to `⟨fun _ => 1, by`. Introduce `i j`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hp, Units.val_one, _root_.one_mul]`. Repeat the step `erw [map_one]` while it applies. Apply the tactic sequence `all_goals rfl⟩`. Establish `hD : Out.nonzeroLocus s0 = ⊤`. Apply `top_unique` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Simplify using `only [Out.nonzeroLocus, s0, Scheme.basicOpen_one]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => i₀, Set.mem_iInter.2 fun _ => by show _ ∈ M.U i₀`. Rewrite using `[hi₀]`. Use the proof step `trivial⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨1, le_rfl, 0, fun _ => s0, by simp only [iSup_const]; exact hD, fun _ => ⟨?_, fun _ => 1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hD]`. Establish `: IsAffine Y` using `hU`. Conclude with `isAffineOpen_top Y`. Introduce `j k erw [map_one]`.
-
-Apply the tactic sequence `(try erw [map_one])`. Apply the tactic sequence `(try erw [map_one])`. Conclude with `(_root_.mul_one _).symm`. Introduce `p`. Take `⟨a, rfl⟩` from `surj_appLE ((𝟙_ (Over S)).hom ∣_ U) _ hD le_top p`.
-
-Conclude with `⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem zero_shape {J : Type} (b : TBase o k) (s : S ⟶ Sp o) (Mat κ) : (zeroObj J b s).Shape Mat κ := by
   refine fun j => ⟨fun i => Fin.elim0 i, ?_⟩
@@ -343,13 +331,13 @@ theorem zero_shape {J : Type} (b : TBase o k) (s : S ⟶ Sp o) (Mat κ) : (zeroO
     exact ⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨thetaFamZero 3 9 (by decide) _ _⟩`.
+Supply the required witnesses or components.
 -/
 example : Nonempty (ThetaFam (g := 0) (J := Unit) (b := baseC (9 ^ 2) (by norm_num)) 3 (RingHom.id ℂ) (fun _ => True)) :=
   ⟨thetaFamZero 3 9 (by decide) _ _⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H`. Conclude with `LBIso.trans (DVR.linComb_isLB _ hL _ _) (DVR.linComb_isLB _ (trivLB_isLB _) _ _) hM (iso_linComb ((isGen_iff w).1 hw) ψ ε) (lbIso_of_g _ _ (linComb_triv_g _ _) hg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem linComb_iso_triv {X X' Y : Scheme.{0}} {L : LB X'} (hL : L.IsLB) {F : X' ⟶ X} (H : LBIso L ((trivLB X).pull F))
     {K : Type} [Fintype K] (ψ : K → (Y ⟶ X')) (ε : K → ℤ) {M : LB Y} (hM : M.IsLB) (hg : ∀ i j, M.g i j = 1) :
@@ -359,11 +347,9 @@ theorem linComb_iso_triv {X X' Y : Scheme.{0}} {L : LB X'} (hL : L.IsLB) {F : X'
     (iso_linComb ((isGen_iff w).1 hw) ψ ε) (lbIso_of_g _ _ (linComb_triv_g _ _) hg)
 
 /- English proof (translation)
-Use `haveI := isIso_of_dim_zero t.A t.ab t.dim`. Use `letI := t.ab.comm`. Take `⟨φ, h, hL, -, -⟩` from `tmap_zero s t (𝟙 _)`. Establish `hL' : LBIso t.L ((trivLB (Sp R)).pull φ)` using `hL`. Establish `lb : ∀ {Y : Scheme.{0}} {K : Type} [Fintype K] (ψ : K → (Y ⟶ t.A.left)) (ε : K → ℤ), (LB.LinComb t.L ψ ε).IsLB` using `fun _ _ => DVR.linComb_isLB _ t.isLB _ _`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lb' : ((trivLB (Sp R)).pull φ).IsLB` using `DVR.linComb_isLB _ (trivLB_isLB _) _ _`. Use `⟨fun j => ⟨fun i => Fin.elim0 i, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `linComb_iso_triv t.isLB hL' (K := Fin 2) ![𝟙 t.A.left, (t.act j).left] ![(κ : ℤ), -1] lb' (linComb_triv_g _ _)`. Conclude with `relAmple_pull h.1 (trivLB_isLB _) (lb _ _) ((isGen_iff u).1 hu) ⊤ (isAffineOpen_top _) (fun _ => trivial) (zeroPolAV (Sp R)).ample`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Rewrite using `[← cancel_mono t.A.hom, Over.w, Over.w]`. Conclude with `LBIso.trans (lb _ _) (trivLB_isLB _) (lb _ _) (linComb_iso_triv t.isLB hL' _ _ (trivLB_isLB _) fun _ _ => rfl) (linComb_iso_triv t.isLB hL' _ _ (trivLB_isLB _) fun _ _ => rfl).symm`. Conclude with `LBIso.trans t.isLB lb' (lb _ _) hL' (linComb_iso_triv t.isLB hL' _ _ lb' (linComb_triv_g _ _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shape_prim_of_dim_zero {J : Type} {b : TBase o k} {R : Type} [CommRing R] {s : Sp R ⟶ Sp o} (t : TObj 0 k J b s)
     (Mat κ) (w w' : J) : t.Shape Mat κ ∧ t.Prim w w' := by
@@ -387,7 +373,7 @@ theorem shape_prim_of_dim_zero {J : Type} {b : TBase o k} {R : Type} [CommRing R
   · exact LBIso.trans t.isLB lb' (lb _ _) hL' (linComb_iso_triv t.isLB hL' _ _ lb' (linComb_triv_g _ _)).symm
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `trivial shape := fun t _ => shape_prim_of_dim_zero t Mat κ w w' fam := ⟨1, fun _ => Set.univ, fun _ _ _ => 1, fun _ => ⟨isOpen_univ, isPreconnected_univ, fun _ => differentiableOn_const _, fun _ _ => ⟨⟨zeroObj J b _, trivial, zero_hasTh hN b em _ _⟩, (Set.toFinite _).countable⟩⟩, …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem goodClass_zero {N : ℕ} (hN : Odd N) {J : Type} (b : TBase o (N ^ 2)) (em : o →+* ℂ) (Mat κ) (w w' : J) :
     GoodClass (g := 0) (b := b) em (fun _ => True) Mat κ w w' 0 where
@@ -400,7 +386,7 @@ theorem goodClass_zero {N : ℕ} (hN : Odd N) {J : Type} (b : TBase o (N ^ 2)) (
       (tmap_zero _ t _)).2 (zero_hasTh hN b em _ _)⟩⟩
 
 /- English proof (translation)
-Take `⟨r, B, θ, -, h2⟩` from `h.fam`. Take `⟨i, z, -, hz⟩` from `h2 t ht`. Conclude with `hz.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem odd_of_goodClass {g N : ℕ} {J : Type} {b : TBase o (N ^ 2)} {em : o →+* ℂ}
     {C : TObj g (N ^ 2) J b (spMap em) → Prop} {Mat κ} {w w' : J} {d : ℕ} (h : GoodClass em C Mat κ w w' d)
@@ -410,7 +396,7 @@ theorem odd_of_goodClass {g N : ℕ} {J : Type} {b : TBase o (N ^ 2)} {em : o �
   exact hz.1
 
 /- English proof (translation)
-Establish `hd : Dense (fromSet em C (zeroObj J b (spMap em)))` using `fun p => subset_closure ⟨ℂ, inferInstance, 𝟙 _, ⟨p, rfl⟩, ℂ, inferInstance, em, RingHom.id ℂ, RingHom.id ℂ, zeroObj J b _, zeroObj J b _, t, rfl, by simp [spMap], zero_tmap _ _ _ _, zero_tmap _ _ _ _, tmap_zero _ _ _, ht⟩`. Take `⟨f, -, -⟩` from `F.rep _ _ _ inferInstance hd`. Conclude with `⟨f (IsLocalRing.closedPoint ℂ)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_of_thetaFam {n N : ℕ} {J : Type} {b : TBase o (N ^ 2)} {em : o →+* ℂ}
     {C : TObj 0 (N ^ 2) J b (spMap em) → Prop} (F : ThetaFam n em C) (t) (ht : C t) : Nonempty F.MM := by
@@ -421,11 +407,9 @@ theorem nonempty_of_thetaFam {n N : ℕ} {J : Type} {b : TBase o (N ^ 2)} {em : 
   exact ⟨f (IsLocalRing.closedPoint ℂ)⟩
 
 /- English proof (translation)
-Introduce `h`. Use `haveI : Subsingleton (Ix 0 (N ^ 2)) := ⟨fun _ _ => funext fun i => Fin.elim0 i⟩`. Take `⟨r, B, θ, h1, h2⟩` from `h.fam`. Take `⟨i, z, hz, hv⟩` from `h2 t ht`. Establish `hc` using `((h1 i).2.2.2 z hz).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : {z' ∈ B i | ∃ c : ℂ, θ i z' = c • θ i z} = B i`. Use `Set.Subset.antisymm (fun _ h => h.1) fun y hy => ⟨hy, θ i y 0 / θ i z 0, funext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim a 0, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ (hne t _ hv)]`. Rewrite `hc` using `[he]`. Establish `h0` using `hc.measure_zero (MeasureTheory.volume : MeasureTheory.Measure (Fin (d + 1) → ℂ))`.
-
-Conclude with `((h1 i).1.measure_pos MeasureTheory.volume ⟨z, hz⟩).ne' h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_goodClass_zero_succ {N : ℕ} {J : Type} {b : TBase o (N ^ 2)} {em : o →+* ℂ}
     {C : TObj 0 (N ^ 2) J b (spMap em) → Prop} {Mat κ} {w w' : J} {d : ℕ}
@@ -444,7 +428,7 @@ theorem not_goodClass_zero_succ {N : ℕ} {J : Type} {b : TBase o (N ^ 2)} {em :
   exact ((h1 i).1.measure_pos MeasureTheory.volume ⟨z, hz⟩).ne' h0
 
 /- English proof (translation)
-Rewrite using `[smul_comm n N, smul_smul n, Nat.mul_div_cancel' h, smul_smul, ← sq]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 example {g n N : ℕ} (h : n ∣ N) (c : Ix g (N ^ 2)) : n • N • (N / n) • c = 0 := by
   rw [smul_comm n N, smul_smul n, Nat.mul_div_cancel' h, smul_smul, ← sq]

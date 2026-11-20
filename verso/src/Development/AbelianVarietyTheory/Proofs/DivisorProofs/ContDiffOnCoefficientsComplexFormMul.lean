@@ -7,7 +7,7 @@ open scoped ContDiff ComplexConjugate Topology
 namespace GlobalTheory.CxForm
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (bas n).sum_repr x, ← (bas n).sum_repr y]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bas_repr_mul (n : ℕ) (x y : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (x * y) S =
@@ -18,9 +18,7 @@ theorem bas_repr_mul (n : ℕ) (x y : Alt n) (S : Finset (Fin (n + n))) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `n m F G`. Use `⟨fun s hF hG S => ?_, fun v hF hG S => ?_⟩` and prove the remaining obligations. Rewrite using `[show (fun v => (bas n).repr (F v * G v) S) = _ from funext fun v => bas_repr_mul n (F v) (G v) S]`. Conclude with `ContDiffOn.sum fun T _ => ContDiffOn.sum fun U _ => ((hF T).mul (hG U)).mul contDiffOn_const`. Rewrite using `[show (fun x => (bas n).repr (F x * G x) S) = _ from funext fun x => bas_repr_mul n (F x) (G x) S]`.
-
-Conclude with `DifferentiableAt.fun_sum fun T _ => DifferentiableAt.fun_sum fun U _ => ((hF T).fun_mul (hG U)).fun_mul (differentiableAt_const _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_coeff_mul : ∀ (n m : ℕ) (F G : V m → Alt n),
     (∀ s : Set (V m), (∀ S, ContDiffOn ℝ ∞ (fun v => (bas n).repr (F v) S) s) →

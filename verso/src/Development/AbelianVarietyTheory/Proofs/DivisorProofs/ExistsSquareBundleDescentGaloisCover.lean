@@ -24,28 +24,28 @@ open GlobalTheory.CechPic
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem square_hom_ext (A : Over S) {Z : Scheme.{0}} {f g : Z ⟶ (A ⊗ A).left}
     (h₁ : f ≫ (fst A A).left = g ≫ (fst A A).left) (h₂ : f ≫ (snd A A).left = g ≫ (snd A A).left) : f = g :=
   pullback.hom_ext h₁ h₂
 
 /- English proof (translation)
-Use `show (η[A ⊗ A] ≫ fst A A).left = η[A].left`. Simplify using `[Hom.one_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eSec_fst (A : Over S) [GrpObj A] : eSec (A ⊗ A) ≫ (fst A A).left = eSec A := by
   show (η[A ⊗ A] ≫ fst A A).left = η[A].left
   simp [Hom.one_def]
 
 /- English proof (translation)
-Use `show (η[A ⊗ A] ≫ snd A A).left = η[A].left`. Simplify using `[Hom.one_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eSec_snd (A : Over S) [GrpObj A] : eSec (A ⊗ A) ≫ (snd A A).left = eSec A := by
   show (η[A ⊗ A] ≫ snd A A).left = η[A].left
   simp [Hom.one_def]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `eSec A ≫ (lift (1 : A ⟶ A) (𝟙 A)).left ≫ (fst A A).left = eSec (A ⊗ A) ≫ (fst A A).left show (η[A] ≫ lift (1 : A ⟶ A) (𝟙 A) ≫ fst A A).left = (η[A ⊗ A] ≫ fst A A).left`. Simplify using `[Hom.one_def]`. Express the relevant statement in the definitionally equal form `eSec A ≫ (lift (1 : A ⟶ A) (𝟙 A)).left ≫ (snd A A).left = eSec (A ⊗ A) ≫ (snd A A).left show (η[A] ≫ lift (1 : A ⟶ A) (𝟙 A) ≫ snd A A).left = (η[A ⊗ A] ≫ snd A A).left`. Simplify using `[Hom.one_def]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem eSec_lift_one (A : Over S) [GrpObj A] : eSec A ≫ (lift (1 : A ⟶ A) (𝟙 A)).left = eSec (A ⊗ A) := by
   apply pullback.hom_ext
@@ -57,21 +57,19 @@ theorem eSec_lift_one (A : Over S) [GrpObj A] : eSec A ≫ (lift (1 : A ⟶ A) (
     simp [Hom.one_def]
 
 /- English proof (translation)
-Introduce `X Y π Ga _ ρ A _ A₀ _ φ ν P hπ hA hA₀ gp hν hνρ ν₁ νm hP ⟨t₀, ht₀⟩ hsq`. Take `⟨hL, -⟩` from `GlobalTheory.abelianSchemeLaws_all`. Establish `hG` using `hL.globalFns`. Establish `hA₂ : IsAbelianScheme (G2 A)` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA hA`. Use `choose ν₂ hν₂ iν₂ using hsq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ν₂m : ∀ a c, ν₂ (a * c) = ν₂ a ≫ ν₂ c` using `fun a c => square_hom_ext A (by rw [(hν₂ _).1, Category.assoc, (hν₂ c).1, reassoc_of% (hν₂ a).1, νm]) (by rw [(hν₂ _).2, Category.assoc, (hν₂ c).2, reassoc_of% (hν₂ a).2, νm])`. Establish `wA : (fst A A).left ≫ A.hom = (snd A A).left ≫ A.hom` using `(Over.w (fst A A)).trans (Over.w (snd A A)).symm`. Set `φ₂ : (G2 A).left ⟶ (G2 A₀).left` to `pullback.lift ((fst A A).left ≫ φ) ((snd A A).left ≫ φ) (by rw [Category.assoc, Category.assoc, gp.1.w, reassoc_of% wA])`. Establish `hsqφ : IsSquare φ φ₂` using `⟨pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `hpb` using `GlobalTheory.SiegelDescent.isPullback_square gp.1 φ₂ hsqφ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ a, ν₂ a ≫ (G2 A).hom = (G2 A).hom ≫ ρ a` using `fun a => by`. Rewrite using `[← Over.w (fst A A), reassoc_of% (hν₂ a).1, (hνρ a).1.w, Category.assoc]`. Establish `hinv : ∀ a, ν₂ a ≫ φ₂ = φ₂` using `fun a => square_hom_ext A₀ (by rw [Category.assoc, hsqφ.1, reassoc_of% (hν₂ a).1, hν.inv a]) (by rw [Category.assoc, hsqφ.2, reassoc_of% (hν₂ a).2, hν.inv a])`. Establish `hφ₂ : IsGaloisCover Ga ν₂ φ₂` using `((galoisCover_descent X Y π Ga ρ hπ).2.2 (G2 A).left (G2 A₀).left φ₂ ν₂ (G2 A).hom (G2 A₀).hom hu hpb.w.symm).2 hpb.flip hinv`. Establish `he : eSec (G2 A) ≫ (G2 A).hom = 𝟙 X` using `Over.w η[G2 A]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : ∀ a, eSec (G2 A) ≫ ν₂ a = ρ a ≫ eSec (G2 A)` using `fun a => square_hom_ext A (by rw [Category.assoc, (hν₂ a).1, reassoc_of% eSec_fst A, GlobalTheory.TripleDescent.one_comm (hνρ a), Category.assoc, eSec_fst]) (by rw [Category.assoc, (hν₂ a).2, reassoc_of% eSec_snd A, GlobalTheory.TripleDescent.one_comm (hνρ a), Category.assoc, eSe …`. Establish `hc0 : cls _ (pull_isLB hP (lift (1 : A ⟶ A) (𝟙 A)).left) = 0` using `(cls_eq_zero_iff _).2 ⟨t₀, ht₀⟩`. Establish `hPe : pull (eSec (G2 A)) (cls P hP) = 0`. Rewrite using `[← eSec_lift_one, pull_comp, ← cls_pull hP _ (pull_isLB hP _), hc0, map_zero]`. Take `⟨r, hr⟩` from `(cls_eq_zero_iff (pull_isLB hP (eSec (G2 A)))).1 hPe`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu₁, hu₂⟩` from `GlobalTheory.TripleDescent.exists_linearisation hP (G2 A).hom (eSec (G2 A)) he (hG _ _ hA₂).2 ρ ν₂ hπ.mul ν₂m hτ r hr iν₂`. Take `⟨M, hM, iM⟩` from `GlobalTheory.LinDescent.exists_descent_of_isGaloisCover _ _ φ₂ Ga ν₂ P hφ₂ hP u hu₁ hu₂`. Establish `hMP : pull φ₂ (cls M hM) = cls P hP` using `((cls_eq_iff hP (pull_isLB hM φ₂)).2 iM).symm`. Establish `he₀ : eSec (G2 A₀) ≫ (G2 A₀).hom = 𝟙 Y` using `Over.w η[G2 A₀]`. Establish `hφe : eSec (G2 A) ≫ φ₂ = π ≫ eSec (G2 A₀)` using `square_hom_ext A₀ (by rw [Category.assoc, hsqφ.1, reassoc_of% eSec_fst A, GlobalTheory.TripleDescent.one_comm gp, Category.assoc, eSec_fst]) (by rw [Category.assoc, hsqφ.2, reassoc_of% eSec_snd A, GlobalTheory.TripleDescent.one_comm gp, Category.assoc, eSec_snd])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `P₀ : LB (G2 A₀).left` to `LB.LinComb M (K := Fin 2) ![𝟙 _, (G2 A₀).hom ≫ eSec (G2 A₀)] ![1, -1]`. Establish `hP₀ : P₀.IsLB` using `LB.isLB_linComb hM _ _`. Establish `hc : cls P₀ hP₀ = cls M hM - pull ((G2 A₀).hom ≫ eSec (G2 A₀)) (cls M hM)`. Rewrite using `[cls_linComb hM, Fin.sum_univ_two]`. Simplify using `[pull_id, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P₀, φ₂, hP₀, hsqφ, ?_, ?_⟩` and prove the remaining obligations. Use `(cls_eq_iff hP (pull_isLB hP₀ φ₂)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hP₀, hc, map_sub, ← pull_comp, hMP, ← Category.assoc, hpb.w, Category.assoc, ← hφe, ← Category.assoc, pull_comp, hMP, pull_comp, hPe, map_zero, sub_zero]`. Use `(cls_eq_zero_iff (pull_isLB hP₀ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hP₀, hc, map_sub, ← pull_comp, ← Category.assoc, he₀]`.
-
-Use `erw [Category.id_comp, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bundle_descent : ∀ (X Y : Scheme.{0}) (π : X ⟶ Y) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (A : Over X) [GrpObj A] (A₀ : Over Y) [GrpObj A₀] (φ : A.left ⟶ A₀.left) (ν : Ga → (A.left ⟶ A.left)) (P : LB (G2 A).left), IsGaloisCover Ga ρ π → IsAbelianScheme A → IsAbelianScheme A₀ → IsGrpPullback A A₀ π φ → IsGaloisCover Ga ν φ → (∀ a, IsGrpPullback A A (ρ a) (ν a)) → ν 1 = 𝟙 _ → (∀ a c, ν (a * c) = ν a ≫ ν c) → P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∀ a, ∃ φ₂ : (G2 A).left ⟶ (G2 A).left, IsSquare (ν a) φ₂ ∧ LBIso P (P.pull φ₂)) → ∃ (P₀ : LB (G2 A₀).left) (φ₂ : (G2 A).left ⟶ (G2 A₀).left), P₀.IsLB ∧ IsSquare φ φ₂ ∧ LBIso P (P₀.pull φ₂) ∧ ∃ t : (P₀.pull (eSec (G2 A₀))).Gen, t.IsGen := by
   intro X Y π Ga _ ρ A _ A₀ _ φ ν P hπ hA hA₀ gp hν hνρ ν₁ νm hP ⟨t₀, ht₀⟩ hsq

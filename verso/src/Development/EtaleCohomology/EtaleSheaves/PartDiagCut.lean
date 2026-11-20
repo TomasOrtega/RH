@@ -34,7 +34,7 @@ def S (I : Ideal B) (e : B ⧸ I) : Submonoid B where
       _ = e := by rw [hu, ht]
 
 /- English proof (translation)
-Introduce and unpack `s ⟨t, ht⟩`. Use `⟨t, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem S_mono (I : Ideal B) {e e' : B ⧸ I} (h : e' * e = e') : S I e ≤ S I e' := by
   rintro s ⟨t, ht⟩
@@ -49,7 +49,7 @@ def par {A : Type} [CommRing A] {P Q : Part A} (h : P ≤ Q) (e : Q.1) : P.1 :=
   ⟨Classical.choose (h e.1 e.2), (Classical.choose_spec (h e.1 e.2)).1⟩
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (h e.1 e.2)).2`.
+A detailed English derivation is pending.
 -/
 theorem par_spec {A : Type} [CommRing A] {P Q : Part A} (h : P ≤ Q) (e : Q.1) : e.1 * (par h e).1 = e.1 :=
   (Classical.choose_spec (h e.1 e.2)).2
@@ -110,11 +110,11 @@ def diagβ (I : Ideal B) (hid : DiagId) (hcomp : DiagComp) (hnat : DiagNat) :
     rw [← RingHom.comp_apply, hnat]
 
 /- English proof (translation)
-Introduce `q B _ _ I hB hq`. Use `(hdir (B ⧸ I)).1` as an intermediate fact. Use `(hdir (B ⧸ I)).2` as an intermediate fact. Use `⟨Part (B ⧸ I), inferInstance, inferInstance, diag I hid hcomp, diagβ I hid hcomp hnat, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hprod q B I hB hq P`. Introduce `P`. Conclude with `ha B I P`. Introduce `P x hx`. Use `⟨P, 𝟙 P, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(diag I hid hcomp).map_id, CommRingCat.hom_id]`. Conclude with `hb B I P x hx`. Introduce `P p a₀ hp h1 h2`. Take `⟨Q, h, a, h3, h4⟩` from `hc B I hB P p a₀ hp h1 h2`. Conclude with `⟨Q, homOfLE h, a, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goal_of (hdir : PartDirected) (hid : DiagId) (hcomp : DiagComp) (hnat : DiagNat) (hprod : StageProd)
     (ha : PartA) (hb : PartB) (hc : PartC) : LateralTheory.E.HensCut.PartDiag := by

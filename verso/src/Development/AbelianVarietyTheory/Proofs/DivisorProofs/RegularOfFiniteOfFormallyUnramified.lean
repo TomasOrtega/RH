@@ -24,7 +24,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.InteriorChart
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Conclude with `Function.bijective_id`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_stalkSpecializes {X : Scheme.{0}} {x y : X} (e : x = y) (h : x ⤳ y) :
     Function.Bijective (X.presheaf.stalkSpecializes h).hom := by
@@ -33,11 +33,9 @@ theorem bijective_stalkSpecializes {X : Scheme.{0}} {x y : X} (e : x = y) (h : x
   exact Function.bijective_id
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hφ`. Use `⟨RingHom.Flat.comp h1 hf, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.map_map, h2, hm]`. Establish `e : (residue C).comp (ρ.comp φ) = (ResidueField.map ρ).comp ((residue B).comp φ)`. Rewrite using `[← RingHom.comp_assoc, ← ResidueField.map_comp_residue, RingHom.comp_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hm' : (ResidueField.map ρ).Finite`. Establish `h` using `RingHom.Finite.comp (RingHom.Finite.of_surjective (residue C) residue_surjective) hfin`. Rewrite `h` using `[← ResidueField.map_comp_residue]`. Conclude with `RingHom.Finite.of_comp_finite h`.
-
-Conclude with `RingHom.Finite.comp hm' h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEtaleCompletion_comp {A B C : Type} [CommRing A] [IsLocalRing A] [CommRing B] [IsLocalRing B] [CommRing C]
     [IsLocalRing C] (φ : A →+* B) (ρ : B →+* C) [IsLocalHom ρ] (hφ : IsEtaleCompletion φ) (hf : ρ.Flat)
@@ -55,11 +53,9 @@ theorem isEtaleCompletion_comp {A B C : Type} [CommRing A] [IsLocalRing A] [Comm
     exact RingHom.Finite.comp hm' h3
 
 /- English proof (translation)
-Use `algebraize [ρ]`. Use `haveI : IsLocalHom (algebraMap A B) := ‹IsLocalHom ρ›`. Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing A B`. Establish `hm : (maximalIdeal A).map (algebraMap A B) = maximalIdeal B` using `Algebra.FormallyUnramified.map_maximalIdeal`. Establish `hd : ringKrullDim B = ringKrullDim A` using `ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective hi`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI hreg : IsRegularLocalRing B := by`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Establish `h1` using `Ideal.spanFinrank_map_le_of_fg (algebraMap A B) (maximalIdeal A).fg_of_isNoetherianRing`. Rewrite `h1` using `[hm]`. Rewrite using `[hd, ← IsRegularLocalRing.spanFinrank_maximalIdeal]`.
-
-Conclude with `h1` after adjusting the coercions. Use `⟨hm, hreg, ?_⟩` and prove the remaining obligations. Use `haveI : Module.Free A B := GlobalTheory.free_of_isRegularLocalRing_of_finite hd.symm`. Conclude with `(inferInstance : Module.Flat A B)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem regular_of_finite_of_formallyUnramified {A B : Type} [CommRing A] [CommRing B] [IsRegularLocalRing A]
     [IsLocalRing B] (ρ : A →+* B) [IsLocalHom ρ] (hi : Function.Injective ρ) (hfin : ρ.Finite)
@@ -81,15 +77,13 @@ theorem regular_of_finite_of_formallyUnramified {A B : Type} [CommRing A] [CommR
   exact (inferInstance : Module.Flat A B)
 
 /- English proof (translation)
-Establish `fg : (maximalIdeal (X.presheaf.stalk x)).FG` using `IsNoetherian.noetherian _`. Establish `hm` using `AdicCompletion.maximalIdeal_eq_map_of_fg fg`. Set `φ` to `algebraMap (X.presheaf.stalk x) (AdicCompletion (maximalIdeal (X.presheaf.stalk x)) (X.presheaf.stalk x))`. Use `haveI : IsLocalHom φ := ((IsLocalRing.local_hom_TFAE φ).out 0 2).mpr hm.symm.le`. Establish `hres : Function.Surjective ((residue _).comp φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Take `⟨a, ha⟩` from `(AdicCompletion.residueField_map_bijective (X.presheaf.stalk x)).2 r`. Take `⟨b, rfl⟩` from `residue_surjective a`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, RingHom.comp_apply, ResidueField.map_residue]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : GlobalTheory.fromSpecCompletedStalk X x (closedPoint _) = x`. Rewrite using `[GlobalTheory.fromSpecCompletedStalk]`. Use `erw [Scheme.Hom.comp_apply]`. Establish `hc : Spec.map (CommRingCat.ofHom φ) (closedPoint _) = closedPoint (X.presheaf.stalk x)` using `IsLocalRing.comap_closedPoint φ`. Use `erw [hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.fromSpecStalk_closedPoint`. Take `⟨e, he, hψ⟩` from `GlobalTheory.GenFan.stalk_factor_eq hx (CommRingCat.ofHom φ) (Scheme.stalkClosedPointTo (GlobalTheory.fromSpecCompletedStalk X x)) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ]`. Conclude with `isEtaleCompletion_comp_bij e he φ ⟨RingHom.flat_algebraMap_iff.2 (AdicCompletion.flat_of_isNoetherian _), hm.symm, RingHom.Finite.of_surjective _ hres⟩`.
-
-Rewrite using `[hψ, ← RingHom.comp_assoc]`. Conclude with `hres.comp he.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem completedStalk_chart (X : Scheme.{0}) (x : X) [IsNoetherianRing (X.presheaf.stalk x)] :
     IsEtaleCompletion (Scheme.stalkClosedPointTo (GlobalTheory.fromSpecCompletedStalk X x)).hom ∧
@@ -127,21 +121,17 @@ end GlobalTheory.InteriorChart
 namespace GlobalTheory.InteriorChart
 
 /- English proof (translation)
-Introduce `g n _ F x₀`. Use `haveI : IsRegularLocalRing (GlobalTheory.LowChart.W F (r := 0) x₀) := GlobalTheory.LowChart.isRegularLocalRing_W_of_isRegularRing F (r := 0) x₀`. Use `haveI hc₀ : IsAdicComplete (maximalIdeal (GlobalTheory.LowChart.W F (r := 0) x₀)) (GlobalTheory.LowChart.W F (r := 0) x₀) := GlobalTheory.LowChart.isAdicComplete_completedStalkSiegelFibrePower F (r := 0) x₀`. Use `haveI : CharZero (GlobalTheory.LowChart.W F (r := 0) x₀) := GlobalTheory.LowChart.charZero_W_of_charZero F (r := 0) x₀`. Use `haveI : IsRegularLocalRing (F.X.presheaf.stalk x₀) := GlobalTheory.LowChart.isRegularLocalRing_stalk F (r := 0) x₀`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Set `y₀ : Sp (GlobalTheory.LowChart.W F (r` to `0) x₀) ⟶ F.X := GlobalTheory.LowChart.toPow F (r := 0) x₀`. Establish `hx : y₀ (closedPoint (GlobalTheory.LowChart.W F (r` using `0) x₀)) = x₀ := GlobalTheory.LowChart.toPow_closedPoint F (r := 0) x₀`. Take `⟨hEt₀, hres₀⟩` from `completedStalk_chart F.X x₀`. Express the relevant statement in the definitionally equal form `IsEtaleCompletion (Scheme.stalkClosedPointTo y₀).hom at hEt₀`. Express the relevant statement in the definitionally equal form `Function.Surjective ((residue (GlobalTheory.LowChart.W F (r := 0) x₀)).comp (Scheme.stalkClosedPointTo y₀).hom) at hres₀`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R', _, _, ρ, hc', hloc, hinj, hfin, hfu, B, _, _, β, β₂, M, hcub, hpb, hsq, hamp, hk, hiso⟩` from `GlobalTheory.T.finite_unramified_extension_group_lift F (GlobalTheory.LowChart.W F (r := 0) x₀) hc₀ y₀`. Take `⟨hm', hreg', hflat⟩` from `regular_of_finite_of_formallyUnramified ρ hinj hfin hfu`. Establish `hdom : IsDomain R'` using `(GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R').1`. Establish `hcz : CharZero R'` using `charZero_of_injective_ringHom hinj`. Set `ξ₀ : Sp R' ⟶ F.X` to `spMap ρ ≫ y₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcp : ξ₀ (closedPoint R') = y₀ (closedPoint (GlobalTheory.LowChart.W F (r` using `0) x₀)) := by show y₀ (spMap ρ (closedPoint R')) = _`. Rewrite using `[show spMap ρ (closedPoint R') = closedPoint (GlobalTheory.LowChart.W F (r := 0) x₀) from IsLocalRing.comap_closedPoint ρ]`. Establish `hs : ξ₀ (closedPoint R') ⤳ y₀ (closedPoint (GlobalTheory.LowChart.W F (r` using `0) x₀)) := specializes_of_eq hcp`. Establish `key` using `GlobalTheory.TorRef.stalkClosedPointTo_comp_spMap_specializes F.X y₀ ρ hs`. Set `E` to `RingEquiv.ofBijective (F.X.presheaf.stalkSpecializes hs).hom (bijective_stalkSpecializes hcp hs)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hξ : (Scheme.stalkClosedPointTo ξ₀).hom = (ρ.comp (Scheme.stalkClosedPointTo y₀).hom).comp E.symm.toRingHom`. Use extensionality with `b`. Take `⟨a, rfl⟩` from `E.surjective b`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, RingEquiv.symm_apply_apply]`. Conclude with `key a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨R', inferInstance, hreg', hdom, ξ₀, hc', hcz, hcp.trans hx, ?_, ?_, B, inferInstance, inferInstance, β, β₂, M, hcub, hpb, hsq, hamp, hk, hiso⟩` and prove the remaining obligations. Rewrite using `[hξ]`. Conclude with `isEtaleCompletion_comp_bij _ E.symm.bijective _ (isEtaleCompletion_comp _ ρ hEt₀ hflat hm' hfin)`. Establish `hmap : (ResidueField.map ρ).FormallyUnramified`. Apply `RingHom.FormallyUnramified.of_comp (f := residue (GlobalTheory.LowChart.W F (r := 0) x₀))` to reduce the goal to its premises.
-
-Rewrite using `[ResidueField.map_comp_residue]`. Conclude with `RingHom.FormallyUnramified.comp hfu (RingHom.FormallyUnramified.of_surjective residue_surjective)`. Establish `e2 : (residue R').comp (Scheme.stalkClosedPointTo ξ₀).hom = (ResidueField.map ρ).comp (((residue (GlobalTheory.LowChart.W F (r` using `0) x₀)).comp (Scheme.stalkClosedPointTo y₀).hom).comp E.symm.toRingHom) := by`. Rewrite using `[hξ, ← RingHom.comp_assoc, ← RingHom.comp_assoc, ← ResidueField.map_comp_residue]`. Both sides reduce to the same expression.
-
-Rewrite using `[e2]`. Conclude with `RingHom.FormallyUnramified.comp (RingHom.FormallyUnramified.of_surjective (hres₀.comp E.symm.surjective)) hmap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart : ∀ (g n : ℕ), 3 ≤ n → ∀ (F : SFam g n (zetaAway n)) (x₀ : F.X), ∃ (R : Type) (_ : CommRing R) (_ : IsRegularLocalRing R) (_ : IsDomain R) (ξ₀ : Sp R ⟶ F.X), IsAdicComplete (maximalIdeal R) R ∧ CharZero R ∧ ξ₀ (closedPoint R) = x₀ ∧ IsEtaleCompletion (Scheme.stalkClosedPointTo ξ₀).hom ∧ ((residue R).comp (Scheme.stalkClosedPointTo ξ₀).hom).FormallyUnramified ∧ ∃ (B : Over (Sp R)) (_ : GrpObj B) (_ : IsCommMonObj B) (β : B.left ⟶ F.univ.A.left) (β₂ : (G2 B).left ⟶ (G2 F.univ.A).left) (M : RigLB B) (_ : CubicalStr B M), IsGrpPullback B F.univ.A ξ₀ β ∧ IsSquare β β₂ ∧ RelAmple B M.L ∧ KTriv B M.L ∧ LBIso (abelian₂ B M.L) (F.univ.P.pull β₂) := by
   intro g n _ F x₀

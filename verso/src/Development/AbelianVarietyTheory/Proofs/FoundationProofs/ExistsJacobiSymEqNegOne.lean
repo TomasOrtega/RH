@@ -6,15 +6,13 @@ open Finset
 namespace GlobalTheory.JacobiClassSum
 
 /- English proof (translation)
-Take `⟨p, hp, t, rfl⟩` from `Nat.exists_prime_and_dvd (ne_of_gt h1)`. Establish `hcop : Nat.Coprime p t` using `Nat.coprime_of_squarefree_mul hsq`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hp2 : p ≠ 2`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(Nat.not_odd_iff_even.mpr (even_two_mul t)) hodd`. Establish `ht : t ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h1`. Use `haveI : NeZero t := ⟨ht⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `FiniteField.exists_nonsquare (F := ZMod p) (by rwa [ZMod.ringChar_zmod_n])`. Take `⟨c, hc1, hc2⟩` from `Nat.chineseRemainder hcop n.val 1`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `e1 : jacobiSym (c : ℤ) p = -1`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym, legendreSym.eq_neg_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `: (((c : ℤ) : ZMod p)) = n`. Rewrite using `[Int.cast_natCast, (ZMod.natCast_eq_natCast_iff _ _ _).mpr hc1, ZMod.natCast_zmod_val]`. Rewrite using `[this]` and apply the resulting hypothesis. Establish `e2 : jacobiSym (c : ℤ) t = 1`. Rewrite using `[jacobiSym.mod_left' (a₂ := 1) (by exact_mod_cast (Int.natCast_modEq_iff.mpr hc2)), jacobiSym.one_left]`.
-
-Rewrite using `[jacobiSym.mul_right, e1, e2]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem exists_jacobiSym_eq_neg_one {s : ℕ} (h1 : 1 < s) (hodd : Odd s) (hsq : Squarefree s) :
     ∃ c : ℕ, jacobiSym (c : ℤ) s = -1 := by
@@ -43,18 +41,18 @@ theorem exists_jacobiSym_eq_neg_one {s : ℕ} (h1 : 1 < s) (hodd : Odd s) (hsq :
   norm_num
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_natCast, Int.natCast_mod, ← jacobiSym.mod_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jacobiSym_val_natCast {s : ℕ} [NeZero s] (b : ℕ) :
     jacobiSym (((b : ZMod s).val : ℕ) : ℤ) s = jacobiSym (b : ℤ) s := by
   rw [ZMod.val_natCast, Int.natCast_mod, ← jacobiSym.mod_left]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_jacobiSym_eq_neg_one h1 hodd hsq`. Establish `hcop : Nat.Coprime c s`. Assume the negation of the conclusion as `h`. Establish `: jacobiSym (c : ℤ) s = 0` using `jacobiSym.eq_zero_iff_not_coprime.mpr (by simpa [Int.gcd_natCast_natCast] using h)`. Rewrite `hc` using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at hc`. Establish `key : ∀ x : ZMod s, jacobiSym ((((c : ZMod s) * x).val : ℕ) : ℤ) s = - jacobiSym ((x.val : ℕ) : ℤ) s`. Introduce `x`. Establish `: (c : ZMod s) * x = ((c * x.val : ℕ) : ZMod s)`. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, jacobiSym_val_natCast, Nat.cast_mul, jacobiSym.mul_left, hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `Equiv.sum_comp (Units.mulLeft (ZMod.unitOfCoprime c hcop)) (fun x : ZMod s => jacobiSym ((x.val : ℕ) : ℤ) s)`. Simplify using `only [Units.mulLeft_apply, ZMod.coe_unitOfCoprime, key, Finset.sum_neg_distrib] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sum_zmod_eq_zero {s : ℕ} [NeZero s] (h1 : 1 < s) (hodd : Odd s) (hsq : Squarefree s) :
     ∑ x : ZMod s, jacobiSym ((x.val : ℕ) : ℤ) s = 0 := by
@@ -78,13 +76,13 @@ theorem sum_zmod_eq_zero {s : ℕ} [NeZero s] (h1 : 1 < s) (hodd : Odd s) (hsq :
   linarith
 
 /- English proof (translation)
-Introduce `m₀ s a₀ hm h1 hodd hsq hcop`. Use `haveI : NeZero s := ⟨by omega⟩`. Rewrite using `[← sum_zmod_eq_zero h1 hodd hsq]`. Use `Finset.sum_bij (fun b _ => (b : ZMod s)) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb b' hb' h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_range] at hb hb'`. Establish `h2 : b ≡ b' [MOD s]` using `(ZMod.natCast_eq_natCast_iff _ _ _).mp h`. Establish `h3 : b ≡ b' [MOD m₀]` using `hb.2.trans hb'.2.symm`. Establish `h4 : b ≡ b' [MOD m₀ * s]` using `(Nat.modEq_and_modEq_iff_modEq_mul hcop.symm).mp ⟨h3, h2⟩`. Conclude with `Nat.ModEq.eq_of_lt_of_lt h4 hb.1 hb'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x _`. Establish `hlt` using `Nat.chineseRemainder_lt_mul hcop.symm a₀ x.val hm.ne' (NeZero.ne s)`. Establish `hpr` using `(Nat.chineseRemainder hcop.symm a₀ x.val).2`. Use `⟨(Nat.chineseRemainder hcop.symm a₀ x.val : ℕ), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hlt, hpr.1⟩`. Use `show ((Nat.chineseRemainder hcop.symm a₀ x.val : ℕ) : ZMod s) = x`. Rewrite using `[(ZMod.natCast_eq_natCast_iff _ _ _).mpr hpr.2, ZMod.natCast_zmod_val]`. Introduce `b _`. Conclude with `(jacobiSym_val_natCast b).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lamSumZero : Formalism.HermitianLattices.GL2a2.LamSumZero := by
   intro m₀ s a₀ hm h1 hodd hsq hcop

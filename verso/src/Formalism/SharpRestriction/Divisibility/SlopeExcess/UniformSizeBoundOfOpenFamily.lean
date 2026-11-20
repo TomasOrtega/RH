@@ -10,11 +10,11 @@ namespace Formalism.MainNotions.DIV.Proofs
 open Formalism.BasicNotions Formalism.MainNotions
 
 /- English proof (translation)
-Distinguish the cases in `h : j - 1 < D.R.m`. Establish `hj1 : 1 ≤ max j 1` using `le_max_right _ _`. Establish `hj2 : max j 1 ≤ D.R.m` using `by omega`. Establish `h' : max j 1 - 1 < D.R.m` using `by omega`. Establish `key` using `S.wj_ge L τ (max j 1) hj1 hj2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `S.w''_pos L`. Unfold `wj at key ⊢`. Rewrite using `[dif_pos h]`. Rewrite `key` using `[dif_pos h']`. Establish `hf : (⟨max j 1 - 1, h'⟩ : Fin D.R.m) = ⟨j - 1, h⟩` using `Fin.ext (by show max j 1 - 1 = j - 1; omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hf]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `wj`. Rewrite using `[dif_neg h]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem top2c2_wj_nonneg {D : D7} (L : SizeData₂ D) (j : ℕ) (τ : D.what₂.Tau) : 0 ≤ wj D j τ := by
   by_cases h : j - 1 < D.R.m
@@ -32,9 +32,9 @@ theorem top2c2_wj_nonneg {D : D7} (L : SizeData₂ D) (j : ℕ) (τ : D.what₂.
   · unfold wj; rw [dif_neg h]
 
 /- English proof (translation)
-Unfold `J.DlSize`. Use `⟨Fm.x1 + 1, fun x hx i => ?_⟩` and prove the remaining obligations. Establish `hx1 : Fm.x1 < x` using `by linarith`. Take `⟨-, -, -, -, -, -, hQD, -⟩` from `Fm.sizes x hx1 i`. Take `⟨-, -, -, -, -, h, -⟩` from `hQD`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem top2c2_dlSize (eps : ℝ) (Fm : FamP eps) : J.DlSize Fm := by
   unfold J.DlSize
@@ -45,9 +45,9 @@ theorem top2c2_dlSize (eps : ℝ) (Fm : FamP eps) : J.DlSize Fm := by
   exact h
 
 /- English proof (translation)
-Take `⟨CT, xT, hOT⟩` from `J.family_levelPrime_budget Fm hT (top2c2_dlSize eps Fm) hB`. Take `⟨CG, xG, hOG⟩` from `J.family_gammaDiscriminant_budget Fm hT (top2c2_dlSize eps Fm) hG`. Take `⟨Cg, xs, hCg, hSz⟩` from `hSz`. Take `⟨Cd, xd, hD⟩` from `hD`. Take `⟨CI, xi, hI⟩` from `hI`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, x0, h⟩` from `degree_weight_family_of_constant Fm XF C1 C2 C3 hC ⟨0, fun x _ i j τ => top2c2_wj_nonneg (Fm.L x i) j τ⟩ ⟨Cg, CT, CG, Cd, CI, max (max xT xG) (max xs (max xd xi)), hCg, fun x hx i => by`. Simplify using `only [max_le_iff] at hx`. Conclude with `⟨hSz x hx.2.1 i, hOT x hx.1.1 i, hOG x hx.1.2 i, hD x hx.2.2.1 i, hI x hx.2.2.2 i⟩⟩`. Use `⟨C, max x0 (Fm.x1 + 1), fun x hx i => h x (le_trans (le_max_left _ _) hx) ?_ i⟩` and prove the remaining obligations. Use `le_trans (le_max_right _ _) hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

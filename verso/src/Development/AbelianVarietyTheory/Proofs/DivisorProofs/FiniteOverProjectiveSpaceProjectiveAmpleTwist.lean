@@ -18,9 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FiniteOverPSpace
 
 /- English proof (translation)
-Introduce `o _ _ n k Z p hk hp`. Establish `hO` using `ProjSpace.O1_isLB o n`. Establish `hA : IsAmpleLB ((ProjSpace.O1 o n).pull p)` using `(isAmple_projective_O_one o n).pull_of_isAffineHom p`. Use `⟨isProjOver_comp_of_isFinite p ⟨n, 𝟙 _, inferInstance, Category.id_comp _⟩, isLB_lbPow hA.isLB k, (isAmpleLB_pow_iff hA.isLB hk).2 hA, fun Y h => ?_⟩` and prove the remaining obligations. Use `(CechPic.cls_eq_iff (pull_isLB (isLB_lbPow hA.isLB k) h) (isLB_lbPow (pull_isLB hO (h ≫ p)) k)).1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CechPic.cls_pull (isLB_lbPow hA.isLB k), CechPic.cls_lbPow hA.isLB, CechPic.cls_lbPow (pull_isLB hO (h ≫ p)), CechPic.cls_pull hO, CechPic.cls_pull hO, CechPic.pull_comp, map_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isProjOver_and_isAmpleLB : ∀ (o : Type) [CommRing o] [IsNoetherianRing o] (n k : ℕ) (Z : Scheme.{0}) (p : Z ⟶ PSpace o n), 1 ≤ k → IsFinite p → IsProjOver (p ≫ PSpace.str o n) ∧ (lbPow ((ProjSpace.O1 o n).pull p) k).IsLB ∧ IsAmpleLB (lbPow ((ProjSpace.O1 o n).pull p) k) ∧ ∀ (Y : Scheme.{0}) (h : Y ⟶ Z), LBIso ((lbPow ((ProjSpace.O1 o n).pull p) k).pull h) (lbPow ((ProjSpace.O1 o n).pull (h ≫ p)) k) := by
   intro o _ _ n k Z p hk hp

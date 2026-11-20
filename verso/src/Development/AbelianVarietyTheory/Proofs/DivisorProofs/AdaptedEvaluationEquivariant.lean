@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.ThKIsoMove
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `h1 : (((1 : UA σ W.J) : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1` using `rfl`. Simplify using `only [actAB, h1, Matrix.transpose_one, Matrix.mul_one]`. Use extensionality with `i j`. Simplify using `[mat, Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actAB_vecMulVec {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (γ : UA σ X.J) (y : Fin n → AE F E) (x : Fin d → AE F E) :
     actAB (cA σ) ((γ, 1) : UA σ X.J × UA σ W.J) (Matrix.vecMulVec y x) = Matrix.vecMulVec (mat γ *ᵥ y) x := by
@@ -27,15 +27,15 @@ theorem actAB_vecMulVec {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (γ : UA σ 
   simp [mat, Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `hS` using `hP.weil.isUSplitting`. Rewrite `hγ` using `[ratU, Subgroup.mem_subgroupOf]`. Take `⟨g₀, hg₀⟩` from `hγ`. Establish `hmat : mat γ = (g₀ : Matrix (Fin n) (Fin n) E).map (inclR (F` using `F) (E := E) (AF F)) := by`. Rewrite using `[mat, ← hg₀]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hl : ∀ ξ : Fin n → E, (g₀ : Matrix (Fin n) (Fin n) E) *ᵥ (((g₀⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ξ) = ξ`. Introduce `ξ`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.GeneralLinearGroup.coe_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hr : ∀ ξ : Fin n → E, ((g₀⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ((g₀ : Matrix (Fin n) (Fin n) E) *ᵥ ξ) = ξ`. Introduce `ξ`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel]`. Simplify using the standard rewrite rules. Use `⟨⟨fun ξ => ((g₀⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ξ, fun ξ => (g₀ : Matrix (Fin n) (Fin n) E) *ᵥ ξ, hl, hr⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v ξ Ψ hΨ`. Simplify using `only [Equiv.coe_fn_mk]`. Rewrite using `[hS.impl _ _ Ψ hΨ, actAB_vecMulVec]`. Use `congr 2`. Rewrite using `[hmat]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Establish `hc : incV F (((g₀⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ξ) = (inclR (F` using `F) (E := E) (AF F)) ∘ (((g₀⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ξ) := rfl`. Rewrite using `[hc, ← RingHom.map_mulVec, hl]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twist {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') (γ : UA σ X.J) (hγ : γ ∈ ratU σ X.J) :
@@ -64,11 +64,9 @@ theorem twist {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Mo
   rfl
 
 /- English proof (translation)
-Rewrite using `[M.co.form u v]`. Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul]`. Use `set a := M.co.e u`. Use `set b := M.co.e v`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show x + b.1 + a.1 = x + a.1 + b.1 by abel]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [add_dotProduct]`. Rewrite using `[dotProduct_comm a.1 b.2, dotProduct_comm b.1 a.2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rho_comm {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (u v : Matrix (Fin n) (Fin d) (AE F E)) (Φ : Fn F n d) :
@@ -86,7 +84,7 @@ theorem rho_comm {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (Φ : Fn F n d) :
     M.co.rho ψ 0 Φ = Φ := by
@@ -94,13 +92,13 @@ theorem rho_zero {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) 
   simp [Darboux.rho, schr]
 
 /- English proof (translation)
-Introduce `Ψ hΨ`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `mem : ∀ w Φ, Φ ∈ schA F (Fin n × Fin d) → M.co.rho B.ψ w Φ ∈ schA F (Fin n × Fin d)` using `fun w Φ hΦ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ _ Φ hΦ`. Set `a : (Fin n → E) → ℂ` to `fun ξ => D (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) Ψ)`. Establish `ha : Summable a` using `(hsum Ψ hΨ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : a 0 = 0`. Use `GlobalTheory.T.fourier_coeff_zero_of_vanishing F E B.ψ hψ n a ha fun z => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `GlobalTheory.T.hermitian_form_surjective_adelic F E σ B n r s X hP.base hP.herm z`. Establish `h0` using `(hsum _ (mem (Matrix.vecMulVec y (incV F H'.x)) Ψ hΨ)).2`. Rewrite using `[← h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[rho_comm, hD _ _ (mem _ _ (mem _ _ hΨ)), hinv _ _ (mem _ _ hΨ), GlobalTheory.T.symplectic_pairing_rank_one F E σ B n d d₁ X W W₁ H' i₀ i₁ r s r' s' hP.base hP.herm hP.skew hH, hy]`. Establish `e0 : Matrix.vecMulVec (incV F (0 : Fin n → E)) (incV F H'.y) = 0`. Use extensionality with `i j`. Simplify using `[incV, Matrix.vecMulVec_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify `key` using `[a, e0, rho_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isolate {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {d₁ : ℕ} {W₁ : Spc F E d₁} {H' : Plane E d d₁}
@@ -128,21 +126,21 @@ theorem isolate {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : 
   simpa [a, e0, rho_zero] using key
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ he₀ χX χW om r s r' s' hP γ hγ`. Establish `hS` using `hP.weil.isUSplitting`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `pres : ∀ Ψ ∈ schA F (Fin n × Fin d), om (γ, 1) Ψ ∈ schA F (Fin n × Fin d)` using `fun Ψ hΨ => hS.pres _ Ψ hΨ`. Establish `mem : ∀ w Φ, Φ ∈ schA F (Fin n × Fin d) → M.co.rho B.ψ w Φ ∈ schA F (Fin n × Fin d)` using `fun w Φ hΦ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ _ Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C₀, hC₀, hexp⟩` from `GlobalTheory.T.eigen_intertwiner_restriction_rank hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ he₀ hP.base hP.good ⟨r, s, r', s', hP.herm, hP.skew⟩`. Take `⟨τ, hτ⟩` from `twist hP γ hγ`. Establish `hinv` using `GlobalTheory.T.thetaSum_invariant_rational_unitary hK.base F E σ B n d X W M χX χW om r s r' s' hP γ hγ 1 (one_mem _)`. Set `w : (Fin n → E) → Matrix (Fin n) (Fin d) (AE F E)` to `fun ξ => Matrix.vecMulVec (incV F ξ) (incV F H'.y)`. Set `D : Fn F n d → ℂ` to `fun Ψ => thetaSum F (e₀ (om (γ, 1) Ψ)) - thetaSum F (e₀ Ψ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hD : ∀ c : ℂ, ∀ Ψ ∈ schA F (Fin n × Fin d), D (c • Ψ) = c * D Ψ`. Introduce `c Ψ _`. Simplify using `only [D, map_smul, thetaSum_smul, mul_sub]`. Establish `hDinv : ∀ y : Fin n → AE F E, ∀ Ψ ∈ schA F (Fin n × Fin d), D (M.co.rho B.ψ (Matrix.vecMulVec y (incV F H'.x)) Ψ) = D Ψ`. Introduce `y Ψ hΨ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : om (γ, 1) (M.co.rho B.ψ (Matrix.vecMulVec y (incV F H'.x)) Ψ) = M.co.rho B.ψ (Matrix.vecMulVec (mat γ *ᵥ y) (incV F H'.x)) (om (γ, 1) Ψ)`. Rewrite using `[hS.impl _ _ Ψ hΨ, actAB_vecMulVec]`. Simplify using `only [D]`. Rewrite using `[h1, he₀.inv _ ⟨_, rfl⟩ _ (pres Ψ hΨ), he₀.inv _ ⟨_, rfl⟩ _ hΨ]`. Establish `hDsum : ∀ Ψ ∈ schA F (Fin n × Fin d), Summable (fun ξ : Fin n → E => D (M.co.rho B.ψ (w ξ) Ψ)) ∧ ∑' ξ : Fin n → E, D (M.co.rho B.ψ (w ξ) Ψ) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Ψ hΨ`. Take `⟨s1, e1⟩` from `hexp Ψ hΨ`. Take `⟨s2, e2⟩` from `hexp _ (pres Ψ hΨ)`. Establish `r2 : ∀ ξ, thetaSum F (e₀ (M.co.rho B.ψ (w ξ) (om (γ, 1) Ψ))) = thetaSum F (e₀ (om (γ, 1) (M.co.rho B.ψ (w (τ ξ)) Ψ)))` using `fun ξ => by rw [hτ H'.y ξ Ψ hΨ]`. Simplify using `only [w] at r2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `s2`, `e2` using `[r2]`. Establish `s3 : Summable (fun η : Fin n → E => thetaSum F (e₀ (om (γ, 1) (M.co.rho B.ψ (w η) Ψ))))` using `(τ.summable_iff (f := fun η : Fin n → E => thetaSum F (e₀ (om (γ, 1) (M.co.rho B.ψ (w η) Ψ))))).1 s2`. Establish `e3 : ∑' η : Fin n → E, thetaSum F (e₀ (om (γ, 1) (M.co.rho B.ψ (w η) Ψ))) = ∑' ξ : Fin n → E, thetaSum F (e₀ (om (γ, 1) (M.co.rho B.ψ (w (τ ξ)) Ψ)))` using `(τ.tsum_eq (fun η : Fin n → E => thetaSum F (e₀ (om (γ, 1) (M.co.rho B.ψ (w η) Ψ))))).symm`. Use `⟨s3.sub s1, ?_⟩` and prove the remaining obligations. Rewrite using `[s3.tsum_sub s1, sub_eq_zero]`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ hC₀` to reduce the goal to its premises. Rewrite using `[e3, ← e1]`. Simplify using `only [w]`. Rewrite using `[← e2, hinv Ψ hΨ]`. Introduce `Φ hΦ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `isolate hP hH D hD hDinv hDsum Φ hΦ` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thetaSum_eval_rat_inv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

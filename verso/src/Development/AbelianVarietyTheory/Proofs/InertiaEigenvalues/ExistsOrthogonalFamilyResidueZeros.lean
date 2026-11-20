@@ -19,29 +19,25 @@ open scoped Formalism.Per
 namespace GlobalTheory.CoreOrth
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hsurj, -, -⟩` from `GlobalTheory.PSer.Laws.sh_laws l`. Establish `hnι : ∀ x, ‖ι x‖ = ‖sh x‖` using `fun x => by rw [← hn, hs]`. Use `choose m hm using fun j => hsurj (μ j) (hμ j).2`. Take `⟨w, hw⟩` from `hsurj (l : ℂ_[l]) (by rw [GlobalTheory.PSer.Laws.norm_l]; exact inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt.le))`. Use `set ϖ : F := ι w with hϖdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ : ‖ϖ‖ = (l : ℝ)⁻¹` using `by rw [hnι, hw, GlobalTheory.PSer.Laws.norm_l]`. Establish `hϖs : tsh ϖ = l` using `by rw [hs, hw]`. Use `set lamF : Fin h → F := fun j => ι (m j) with hlamF`. Establish `hnl : ∀ j, ‖lamF j‖ = ‖μ j‖` using `fun j => by simp only [lamF, hnι, hm]`. Establish `hmu : ∀ j, sh (m j) = μ j` using `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `horthF : GlobalTheory.PMonE.Orth l lamF`. Introduce `c j hc`. Use `GlobalTheory.T.norm_sh_le_sh_int_sum_of_orthogonal l h m (fun i j => by rw [hmu, hmu]; exact hratio i j) (fun c j => by simp only [hmu]; exact horth c j) c j hc` as an intermediate fact. Establish `e : (∑ i, (c i : F) * lamF i) = ι (∑ i, (c i : Fl l) * m i)` using `by simp [lamF, map_sum]`. Rewrite using `[e, hnι, hnι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `this`. Establish `hpos : 0 < h` using `by omega`. Take `⟨ρ, τ, K, hρ, hτ, hW1, hW2, hW3⟩` from `GlobalTheory.T.frobenius_polydisc_windows_surjective_bounds_zero F l h ϖ hpos hϖ lamF (fun j => by rw [← norm_pos_iff, hnl]; exact norm_pos_iff.2 (hμ j).1) (fun i j hij => by simp only [hnl]; exact hanti hij) horthF (fun i j => by simp only [hnl]; exact hratio i j)`. Use `set S : Set (Fin h → Fl l) := {x | ∀ j, ‖sh (x j)‖ ≤ ρ j} with hSdef`. Set `η : (Fin h → Fl l) → Fin h → ℂ_[l]` to `fun x i => ∑ j, sh (m j) * lam h i (x j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hE : ∀ x ∈ S, ∀ i, ‖η x i - tsh (GlobalTheory.PMonE.rowT l ϖ lamF K (fun j => ι (x j)) i)‖ ≤ ‖(l : ℂ_[l])‖ * τ i`. Introduce `x hx i`. Conclude with `GlobalTheory.T.tiltedSeriesRow_sub_untilt_truncatedAdditiveRow l F ι tsh hn hs hon h m x ϖ K τ i (by omega) hϖs (fun j => (hx j).trans_lt (hρ j).2) (fun j n => hW1 (fun j => ι (x j)) (fun j => by rw [hnι]; exact hx j) i j n)`. Establish `hpre : ∀ z : Fin h → F, (∀ j, ‖z j‖ ≤ ρ j) → ∃ x ∈ S, (fun j => ι (x j)) = z`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose x hx using fun j => hon (z j) ((hz j).trans (hρ j).2.le)`. Use `⟨x, fun j => ?_, funext hx⟩` and prove the remaining obligations. Rewrite using `[← hnι, hx]`. Conclude with `hz j`. Establish `hL1 : ∀ t : Fin h → ℂ_[l], (∀ i, ‖t i‖ ≤ τ i) → ∃ y ∈ S, ∀ i, ‖η y i - t i‖ ≤ ‖(l : ℂ_[l])‖ * τ i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `t ht`. Use `choose b hb using fun i => GlobalTheory.T.tiltUntilt_multiplicative_extension_surjective l F ι tsh hn hs hon (t i)`. Take `⟨z, hz, hrow⟩` from `hW2 b (fun i => by rw [← hn, hb]; exact ht i)`. Take `⟨x, hxS, hxz⟩` from `hpre z hz`. Use `⟨x, hxS, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `hE x hxS i` as an intermediate fact. Rewrite `this` using `[hxz, hrow, hb]`. Then use the resulting hypothesis. Take `⟨z0, hz0, ⟨j0, hj0⟩, hrow0⟩` from `hW3`. Take `⟨x0, hx0S, hx0z⟩` from `hpre z0 hz0`. Establish `hL2 : ∀ i, ‖η x0 i‖ ≤ ‖(l : ℂ_[l])‖ * τ i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Use `hE x0 hx0S i` as an intermediate fact. Rewrite `this` using `[hx0z, hrow0, map_zero, sub_zero]`. Then use the resulting hypothesis. Take `⟨y, hy0, hyS, hysum⟩` from `GlobalTheory.T.lift_hasSum_zero_of_surjective_mod_prime l (Fin h → Fl l) (Fin h) η τ S hL1 x0 hx0S hL2`. Use `haveI : Nonempty (Fin h) := ⟨⟨0, hpos⟩⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set R : ℝ := Finset.univ.sup' Finset.univ_nonempty ρ with hRdef`. Establish `hρR : ∀ j, ρ j ≤ R` using `fun j => Finset.le_sup' ρ (Finset.mem_univ j)`. Establish `hR1 : R < 1` using `(Finset.sup'_lt_iff _).2 fun j _ => (hρ j).2`. Use `⟨fun j k => y k j, j0, ρ j0, R, (hρ j0).1.le, (hρ j0).2, hR1, fun a k => (hyS k a).trans (hρR a), fun k => hyS k j0, ?_, ?_⟩` and prove the remaining obligations. Use `show ρ j0 ^ l ^ h < ‖sh (y 0 j0)‖`.
-
-Rewrite using `[hy0, ← hnι]`. Use `congrFun hx0z j0` as an intermediate fact. Rewrite using `[this]`. Conclude with `hj0`. Introduce `i`.
-
-Use `GlobalTheory.T.sum_mul_untiltFrobeniusDoubleSeries_eq_zero l h μ i y R (by omega) hR1 (fun k j => (hyS k j).trans (hρR j)) ?_` and prove the remaining obligations. Use `hysum i` as an intermediate fact. Simplify `this` using `[η, hmu]`.
+A detailed English derivation is pending.
 -/
 theorem core (l : ℕ) [Fact l.Prime] (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [CompleteSpace F]
     [IsAlgClosed F] [CharP F l] [PerfectRing F l] (ι : Fl l →+* F) (tsh : F →*₀ ℂ_[l])
@@ -117,7 +113,7 @@ end GlobalTheory.CoreOrth
 namespace GlobalTheory.CoreOrth
 
 /- English proof (translation)
-Introduce `l _ h μ h2 hμ hanti hratio horth`. Take `⟨hac, ι, hs, hon⟩` from `GlobalTheory.T.tilt_complexPadic_isAlgClosed_unitBall l`. Use `haveI := hac`. Conclude with `core l (Tilt ℂ_[l] NormedField.valuation (GroundTheory.PAdicHodge.normInteger ℂ_[l]) GroundTheory.PAdicHodge.normInteger_integers l) ι (GroundTheory.PAdicHodge.tiltSharp ℂ_[l] l) (fun z => GroundTheory.PAdicHodge.norm_tiltSharp z) hs hon h μ h2 hμ hanti hratio horth`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem residue_zeros : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l]), 2 ≤ h → (∀ i, μ i ≠ 0 ∧ ‖μ i‖ ≤ 1) → Antitone (fun i => ‖μ i‖) → (∀ i j, ‖μ i‖ < l * ‖μ j‖) → (∀ (c : Fin h → ℚ_[l]) (j : Fin h), ‖c j‖ * ‖μ j‖ ≤ ‖∑ i, algebraMap ℚ_[l] ℂ_[l] (c i) * μ i‖) → ∃ (y : Fin h → ℕ → Formalism.Per.Fl l) (j0 : Fin h) (r R : ℝ), 0 ≤ r ∧ r < 1 ∧ R < 1 ∧ (∀ a k, ‖sh (y a k)‖ ≤ R) ∧ (∀ k, ‖sh (y j0 k)‖ ≤ r) ∧ r ^ l ^ h < ‖sh (y j0 0)‖ ∧ ∀ i : Fin h, ∑ j, μ j * abelian₂ h i (y j) = 0 := by
   intro l _ h μ h2 hμ hanti hratio horth

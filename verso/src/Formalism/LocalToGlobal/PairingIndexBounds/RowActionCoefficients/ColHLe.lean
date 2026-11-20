@@ -20,7 +20,7 @@ def hvO {A : Type*} [CommRing A] {n : ℕ} (x : Fin n → ℕ → A) (y : Matrix
 def colH {n : ℕ} (ν : Fin n → ℕ) (k : ℕ) : ℕ := (Finset.univ.filter fun t : Fin n => k < ν t).card
 
 /- English proof (translation)
-Unfold `colH`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem colH_le {n : ℕ} (ν : Fin n → ℕ) (k : ℕ) : colH ν k ≤ n := by
   unfold colH

@@ -9,7 +9,7 @@ open TensorProduct NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectr
 namespace PI.UnitaryApproxFinWork
 
 /- English proof (translation)
-Establish `halg : IsAlgebraic ℤ e` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (Algebra.IsAlgebraic.isAlgebraic e)`. Take `⟨y, hy0, hyint⟩` from `halg.exists_integral_multiple`. Conclude with `⟨y, hy0, by rwa [zsmul_eq_mul] at hyint⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bd_int_mult {K : Type} [Field K] [NumberField K] (e : K) :
     ∃ N : ℤ, N ≠ 0 ∧ IsIntegral ℤ ((N : K) * e) := by
@@ -21,15 +21,15 @@ theorem bd_int_mult {K : Type} [Field K] [NumberField K] (e : K) :
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨b, hb, hab⟩` from `adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v a`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {b}))`. Use `⟨(Ideal.absNorm (Ideal.span {b}) : ℤ), ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : Ideal.absNorm (Ideal.span {b}) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hb0`. Conclude with `h0` after adjusting the coercions. Establish `hab' : a * algebraMap F (v.adicCompletion F) (b : F) ∈ v.adicCompletionIntegers F` using `by first`. Consider the case `exact hab`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(convert hab using 2)`. Consider the case `simpa using hab`. Establish `hc' : algebraMap F (v.adicCompletion F) (c : F) ∈ v.adicCompletionIntegers F` using `by first`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.coe_mem_adicCompletionIntegers v c`. Consider the case `(convert IsDedekindDomain.HeightOneSpectrum.coe_mem_adicCompletionIntegers (K := F) v c using 1)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `simpa using IsDedekindDomain.HeightOneSpectrum.coe_mem_adicCompletionIntegers (K := F) v c`. Establish `hcast : algebraMap F (v.adicCompletion F) (c : F) * algebraMap F (v.adicCompletion F) (b : F) = ((Ideal.absNorm (Ideal.span {b}) : ℤ) : v.adicCompletion F)`. Rewrite using `[← map_mul, show (c : F) * (b : F) = ((c * b : 𝓞 F) : F) from rfl, hc]`. Simplify using the standard rewrite rules. Rewrite using `[← IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, ← hcast]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : algebraMap F (v.adicCompletion F) (c : F) * algebraMap F (v.adicCompletion F) (b : F) * a = algebraMap F (v.adicCompletion F) (c : F) * (a * algebraMap F (v.adicCompletion F) (b : F))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem hc' hab'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bd_local (v : HeightOneSpectrum (𝓞 F)) (a : v.adicCompletion F) :
     ∃ N : ℤ, N ≠ 0 ∧ Valued.v ((N : v.adicCompletion F) * a) ≤ 1 := by
@@ -63,15 +63,15 @@ theorem bd_local (v : HeightOneSpectrum (𝓞 F)) (a : v.adicCompletion F) :
     exact mul_mem hc' hab'
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `tmul e t`. Take `⟨N₁, hN₁, h₁⟩` from `bd_int_mult e`. Take `⟨N₂, hN₂, h₂⟩` from `bd_local v t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨N₁ * N₂, mul_ne_zero hN₁ hN₂, ?_⟩` and prove the remaining obligations. Establish `hL : ((N₁ : ℤ) : E ⊗[F] v.adicCompletion F) = (N₁ : E) ⊗ₜ[F] (1 : v.adicCompletion F)`. Rewrite using `[← Algebra.TensorProduct.includeLeftRingHom_apply, map_intCast]`. Establish `hR : ((N₂ : ℤ) : E ⊗[F] v.adicCompletion F) = (1 : E) ⊗ₜ[F] (N₂ : v.adicCompletion F)`. Rewrite using `[← Algebra.TensorProduct.includeRight_apply, map_intCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((N₁ * N₂ : ℤ) : E ⊗[F] v.adicCompletion F) * (e ⊗ₜ[F] t) = ((N₁ : E) * e) ⊗ₜ[F] (1 : v.adicCompletion F) * ((1 : E) ⊗ₜ[F] ((N₂ : v.adicCompletion F) * t))`. Rewrite using `[Int.cast_mul, hL, hR]`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e1]`. Use `Subring.mul_mem _ (Subring.subset_closure (Set.mem_union_left _ ⟨⟨(N₁ : E) * e, RingHom.mem_range.2 ⟨⟨_, h₁⟩, rfl⟩⟩, rfl⟩)) (Subring.subset_closure (Set.mem_union_right _ ⟨⟨(N₂ : v.adicCompletion F) * t, ?_⟩, rfl⟩))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).2 h₂`. Consider the case `add x y hx hy`. Take `⟨N₁, hN₁, h₁⟩` from `hx`. Take `⟨N₂, hN₂, h₂⟩` from `hy`. Use `⟨N₁ * N₂, mul_ne_zero hN₁ hN₂, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : ((N₁ * N₂ : ℤ) : E ⊗[F] v.adicCompletion F) * (x + y) = (N₂ : E ⊗[F] v.adicCompletion F) * ((N₁ : E ⊗[F] v.adicCompletion F) * x) + (N₁ : E ⊗[F] v.adicCompletion F) * ((N₂ : E ⊗[F] v.adicCompletion F) * y)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `Subring.add_mem _ (Subring.mul_mem _ (intCast_mem _ N₂) h₁) (Subring.mul_mem _ (intCast_mem _ N₁) h₂)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bd_main (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) :
     ∃ N : ℤ, N ≠ 0 ∧ (N : E ⊗[F] v.adicCompletion F) * x ∈ Sv E v := by
@@ -109,9 +109,9 @@ theorem bd_main (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion 
       (Subring.mul_mem _ (intCast_mem _ N₁) h₂)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v x`. Take `⟨N, hN, h⟩` from `bd_main v x`. Use `⟨(N : 𝓞 F), by exact_mod_cast hN, ?_⟩` and prove the remaining obligations. Establish `e : dv E v (N : 𝓞 F) = (N : E ⊗[F] v.adicCompletion F)`. Unfold `dv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[PI.UnitaryApproxDefs.inclE]`. Rewrite using `[e]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded_rational_unitary : BddR := by
   intro F E _ _ _ _ _ v x

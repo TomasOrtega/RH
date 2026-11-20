@@ -8,13 +8,13 @@ namespace GlobalTheory.CuspGL
 open Polynomial in
 
 /- English proof (translation)
-Introduce `G _ _ χ hχ`. Use `Fintype.ofFinite G` as an intermediate fact. Unfold `_root_.GlobalTheory.BI.Virt at hχ`. Proceed by induction on `hχ using AddSubgroup.closure_induction with`. Consider the case `mem ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨n, ρ, h⟩` from `hψ`. Introduce `g`. Establish `key` using `_root_.GlobalTheory.BadShare.ZCalc.character_inv (FDRep.of ρ) g`. Simplify using `only [h, Algebra.algebraMap_self, RingHom.id_apply]`. Conclude with `key.symm`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => intro g`. Simplify using the standard rewrite rules. Consider the case `add ψ φ _ _ h₁ h₂ => intro g`. Simplify using `[h₁ g, h₂ g]`. Consider the case `neg ψ _ h₁ => intro g`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[h₁ g]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CuspGL.star_virt_eq_inv : ∀ (G : Type) [Group G] [Finite G] (χ : G → ℂ),
     χ ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G → ∀ g, star (χ g) = χ g⁻¹ := by

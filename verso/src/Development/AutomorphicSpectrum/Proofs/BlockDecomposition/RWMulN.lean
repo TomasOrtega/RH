@@ -11,14 +11,14 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 variable {E : Type} [Field E] [TopologicalSpace E] [MeasurableSpace E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `nsg`. Conclude with `if_pos ⟨1, by simp⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nsg_one : nsg E (1 : F) = 1 := by
   unfold nsg
   exact if_pos ⟨1, by simp⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[rWm, rW, nsg_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rW_n (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ) (b : F) (Φ : E → ℂ) :
     rWm χ σ μ lam !![1, b; 0, 1] Φ = fun z => (χ (b * Algebra.norm F z) : ℂ) * Φ z := by
@@ -26,15 +26,15 @@ theorem rW_n (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam 
   simp [rWm, rW, nsg_one]
 
 /- English proof (translation)
-Rewrite using `[rW_n]`. Use function extensionality and compare the values at `z`. Establish `e00 : (g * !![1, b; 0, 1]) 0 0 = g 0 0` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e01 : (g * !![1, b; 0, 1]) 0 1 = g 0 0 * b + g 0 1` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e10 : (g * !![1, b; 0, 1]) 1 0 = g 1 0` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e11 : (g * !![1, b; 0, 1]) 1 1 = g 1 0 * b + g 1 1` using `by simp [Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `only [rWm, rW, e00, e01, e10, e11]`. Distinguish the cases in `hc : g 1 0 = 0`. Rewrite using `[if_pos (e10.trans hc), if_pos hc]`. Establish `hN : Algebra.norm F (algebraMap F E (g 0 0) * z) = g 0 0 ^ 2 * Algebra.norm F z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Algebra.norm_algebraMap, hfin]`. Establish `hadd : g 0 0 * (g 0 0 * b + g 0 1) * Algebra.norm F z = g 0 0 * g 0 1 * Algebra.norm F z + b * (g 0 0 ^ 2 * Algebra.norm F z)` using `by ring`. Rewrite using `[hN, hadd, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => hc (e10.symm.trans h)), if_neg hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `hadd : (g 0 0 * Algebra.norm F z + (g 1 0 * b + g 1 1) * Algebra.norm F u - Algebra.trace F E (σ z * u)) / g 1 0 = (g 0 0 * Algebra.norm F z + g 1 1 * Algebra.norm F u - Algebra.trace F E (σ z * u)) / g 1 0 + b * Algebra.norm F u`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `beta_reduce`. Rewrite using `[hadd, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rW_mul_n (hfin : Module.finrank F E = 2) (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ)
     (g : Matrix (Fin 2) (Fin 2) F) (b : F) (Φ : E → ℂ) :
@@ -70,7 +70,7 @@ theorem rW_mul_n (hfin : Module.finrank F E = 2) (χ : AddChar F Circle) (σ : E
 end GlobalTheory.CompanionTheory.GL2LocalData.WRepNProof
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ _ _ E _ _ _ _ _ _ _ hfin _ σ _ η _ g _ b Φ _`. Conclude with `GlobalTheory.CompanionTheory.GL2LocalData.WRepNProof.rW_mul_n hfin χ σ _ _ g b Φ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.GL2LocalData.wRepN : Ad3.K.GL2LocalData.WRepN := by
   intro F _ _ _ _ _ _ _ χ _ _ E _ _ _ _ _ _ _ hfin _ σ _ η _ g _ b Φ _

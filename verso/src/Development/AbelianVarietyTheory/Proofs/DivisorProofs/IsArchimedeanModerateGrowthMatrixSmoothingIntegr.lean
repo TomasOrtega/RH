@@ -12,14 +12,14 @@ variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 namespace SmoothGrowth
 
 /- English proof (translation)
-Use `open scoped Matrix.Norms.Operator in exact Units.isOpenEmbedding_val (R := Matrix (Fin n) (Fin n) (Cinf E))`.
+A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_valGLInf :
     Topology.IsOpenEmbedding (fun g : GL (Fin n) (Cinf E) => fun i j => (g : Matrix (Fin n) (Fin n) (Cinf E)) i j) := by
   open scoped Matrix.Norms.Operator in exact Units.isOpenEmbedding_val (R := Matrix (Fin n) (Fin n) (Cinf E))
 
 /- English proof (translation)
-Use `(isOpenEmbedding_valGLInf (E := E) (n := n)).isOpen_range` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Conclude with `⟨fun ⟨u, hu⟩ => ⟨u, hu⟩, fun ⟨u, hu⟩ => ⟨u, hu⟩⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem isOpen_isUnit_ofInf : IsOpen {x : Fin n → Fin n → Cinf E | IsUnit (Matrix.of x)} := by
   have := (isOpenEmbedding_valGLInf (E := E) (n := n)).isOpen_range
@@ -28,7 +28,7 @@ theorem isOpen_isUnit_ofInf : IsOpen {x : Fin n → Fin n → Cinf E | IsUnit (M
   exact ⟨fun ⟨u, hu⟩ => ⟨u, hu⟩, fun ⟨u, hu⟩ => ⟨u, hu⟩⟩
 
 /- English proof (translation)
-Rewrite using `[isOpenEmbedding_valGLInf.isInducing.continuousOn_iff]`. Conclude with `continuousOn_id.congr fun x hx => val_toGLInf hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_toGLInf :
     ContinuousOn (fun x : Fin n → Fin n → Cinf E => toGLInf (Matrix.of x)) {x | IsUnit (Matrix.of x)} := by
@@ -36,11 +36,11 @@ theorem continuousOn_toGLInf :
   exact continuousOn_id.congr fun x hx => val_toGLInf hx
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h : Continuous fun g : GL (Fin n) (Cinf E) => (g : Matrix (Fin n) (Fin n) (Cinf E))` using `Units.continuous_val`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(continuous_apply w).comp ((continuous_apply j).comp ((continuous_apply i).comp h))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : Continuous fun g : GL (Fin n) (Cinf E) => ((g⁻¹ : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E))` using `Units.continuous_coe_inv`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `e : (fun g : GL (Fin n) (Cinf E) => ((compGL w g)⁻¹ : GL (Fin n) ℂ).val i j) = fun g => ((g⁻¹ : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E)) i j w`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Continuous (fun g : GL (Fin n) (Cinf E) => ((compGL w g)⁻¹ : GL (Fin n) ℂ).val i j)`. Rewrite using `[e]`. Conclude with `(continuous_apply w).comp ((continuous_apply j).comp ((continuous_apply i).comp h))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_compGL (w : InfinitePlace E) : Continuous (compGL (n := n) w) := by
   rw [Units.continuous_iff]
@@ -60,21 +60,21 @@ theorem continuous_compGL (w : InfinitePlace E) : Continuous (compGL (n := n) w)
     exact (continuous_apply w).comp ((continuous_apply j).comp ((continuous_apply i).comp h))
 
 /- English proof (translation)
-Unfold `htInf`. Conclude with `continuous_finset_prod _ fun w _ => continuous_htGL.comp (continuous_compGL w)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_htInf : Continuous (htInf : GL (Fin n) (Cinf E) → ℝ) := by
   unfold htInf
   exact continuous_finset_prod _ fun w _ => continuous_htGL.comp (continuous_compGL w)
 
 /- English proof (translation)
-Unfold `htInf`. Conclude with `Finset.prod_pos fun w _ => htGL_pos _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem htInf_pos' (g : GL (Fin n) (Cinf E)) : 0 < htInf g := by
   unfold htInf
   exact Finset.prod_pos fun w _ => htGL_pos _
 
 /- English proof (translation)
-Unfold `htInf`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun w _ => (htGL_pos _).le) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `htGL_mul_le _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htInf_mul_le (g h : GL (Fin n) (Cinf E)) : htInf (g * h) ≤ htInf g * htInf h := by
   unfold htInf
@@ -84,7 +84,7 @@ theorem htInf_mul_le (g h : GL (Fin n) (Cinf E)) : htInf (g * h) ≤ htInf g * h
   exact htGL_mul_le _ _
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (GL (Fin n) (Cinf E)) := borel _`. Use `haveI : BorelSpace (GL (Fin n) (Cinf E)) := ⟨rfl⟩`. Establish `h : Measurable γ` using `(isOpenEmbedding_valGLInf.measurableEmbedding.measurable_comp_iff).1 (measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => hγ i j)`. Conclude with `hF.measurable.comp h`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_comp_GLInf {X β : Type} [MeasurableSpace X] [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β]
     {F : GL (Fin n) (Cinf E) → β} (hF : Continuous F) {γ : X → GL (Fin n) (Cinf E)}
@@ -96,7 +96,7 @@ theorem measurable_comp_GLInf {X β : Type} [MeasurableSpace X] [TopologicalSpac
   exact hF.measurable.comp h
 
 /- English proof (translation)
-Establish `: (fun x : Fin n → Fin n → Cinf E => (toGLInf (Matrix.of x) : Matrix (Fin n) (Fin n) (Cinf E)) i j) = fun x => if x ∈ {x : Fin n → Fin n → Cinf E | IsUnit (Matrix.of x)} then x i j else (1 : Matrix (Fin n) (Fin n) (Cinf E)) i j`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases h : IsUnit (Matrix.of x) <;> simp [toGLInf, h]`. Rewrite using `[this]`. Conclude with `Measurable.ite isOpen_isUnit_ofInf.measurableSet (by fun_prop) measurable_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_toGLInf_entry (i j : Fin n) :
     Measurable fun x : Fin n → Fin n → Cinf E => (toGLInf (Matrix.of x) : Matrix (Fin n) (Fin n) (Cinf E)) i j := by
@@ -110,9 +110,9 @@ theorem measurable_toGLInf_entry (i j : Fin n) :
   exact Measurable.ite isOpen_isUnit_ofInf.measurableSet (by fun_prop) measurable_const
 
 /- English proof (translation)
-Distinguish the cases in `ha : a ∈ tsupport α`. Establish `hu : IsUnit (Matrix.of a)` using `hsub ha`. Establish `: (g : Matrix (Fin n) (Fin n) (Cinf E)) * Matrix.of a = ((g * toGLInf (Matrix.of a) : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E))`. Rewrite using `[Units.val_mul, val_toGLInf hu]`. Rewrite using `[this, onMatInf_val]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport ha, zero_mul, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smoothMatInf_integrand_eq (α : (Fin n → Fin n → Cinf E) → ℂ)
     (hsub : tsupport α ⊆ {x | IsUnit (Matrix.of x)}) (W : GL (Fin n) (Cinf E) → ℂ) (g : GL (Fin n) (Cinf E))
@@ -131,23 +131,19 @@ end SmoothGrowth
 open SmoothGrowth
 
 /- English proof (translation)
-Introduce `E _ _ n α hα hcs hsub W hW`. Use `haveI : FirstCountableTopology (GL (Fin n) (Cinf E)) := (isOpenEmbedding_valGLInf (E := E) (n := n)).isInducing.firstCountableTopology`. Take `⟨hWc, C, N, hC⟩` from `hW`. Establish `hC0 : 0 ≤ C`. Use `(norm_nonneg _).trans (hC 1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `nonneg_of_mul_nonneg_left this (pow_pos (htInf_pos' _) _)`. Establish `hK : IsCompact (tsupport α)` using `hcs`. Establish `hcont : ContinuousOn (fun a : Fin n → Fin n → Cinf E => htInf (toGLInf (Matrix.of a))) (tsupport α)` using `continuous_htInf.comp_continuousOn (continuousOn_toGLInf.mono hsub)`. Take `⟨R₀, hR₀⟩` from `hK.exists_bound_of_continuousOn hcont`. Use `set R : ℝ := max R₀ 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hRb : ∀ a ∈ tsupport α, htInf (toGLInf (Matrix.of a)) ≤ R` using `fun a ha => by`. Use `hR₀ a ha` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans (this.trans (le_max_left _ _))`. Establish `hαi : Integrable (fun a => ‖α a‖) (volume : Measure (Fin n → Fin n → Cinf E))` using `(hα.integrable_of_hasCompactSupport hcs).norm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `set F : GL (Fin n) (Cinf E) → (Fin n → Fin n → Cinf E) → ℂ := fun g a => α a * W (g * toGLInf (Matrix.of a)) with hF`. Establish `hsm : smoothMatInf α W = fun g => ∫ a, F g a`. Use function extensionality and compare the values at `g`. Unfold `smoothMatInf`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun a => smoothMatInf_integrand_eq α hsub W g a)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hbound : ∀ g a, ‖F g a‖ ≤ ‖α a‖ * (C * R ^ N * htInf g ^ N)`. Introduce `g a`. Distinguish the cases in `ha : a ∈ tsupport α`. Simplify using `only [hF, norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : htInf (g * toGLInf (Matrix.of a)) ≤ htInf g * R` using `(htInf_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hRb a ha) (htInf_pos' _).le)`. Establish `h2` using `pow_le_pow_left₀ (htInf_pos' _).le h1 N`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[hF, image_eq_zero_of_notMem_tsupport ha]`. Apply the tactic sequence `have hmeas : ∀ g, AEStronglyMeasurable (F g) volume := fun g => (hα.measurable.mul (measurable_comp_GLInf (F := fun q => W (g * q)) (by fun_prop) (fun i j => measurable_toGLInf_entry i j))).aestronglyMeasurable`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsm]`. Use `⟨?_, C * R ^ N * ∫ a, ‖α a‖, N, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Establish `hev : ∀ᶠ g in nhds g₀, htInf g ≤ htInf g₀ + 1` using `(continuous_htInf.continuousAt).eventually (gt_mem_nhds (lt_add_one (htInf g₀))) |>.mono fun _ h => h.le`.
-
-Use `continuousAt_of_dominated (bound := fun a => ‖α a‖ * (C * R ^ N * (htInf g₀ + 1) ^ N)) (Filter.Eventually.of_forall hmeas) ?_ (hαi.mul_const _) ?_` and prove the remaining obligations. Use `filter_upwards [hev] with g hg`. Use `Filter.Eventually.of_forall fun a => (hbound g a).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left ?_ (by positivity)) (norm_nonneg _)` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (htInf_pos' _).le hg N`.
-
-Use `Filter.Eventually.of_forall fun a => ?_` and prove the remaining obligations. Conclude with `(continuous_const.mul (hWc.comp (continuous_id.mul continuous_const))).continuousAt`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isModGrowthInf_smoothMatInf : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (α : (Fin n → Fin n → Cinf E) → ℂ),
     Continuous α → HasCompactSupport α → tsupport α ⊆ {x | IsUnit (Matrix.of x)} →

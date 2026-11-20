@@ -21,9 +21,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 section Ideals
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `h`. Take `⟨y, hy, _, hz, e⟩` from `Submodule.mem_sup.1 ha`. Take `⟨y', hy', _, hz', e'⟩` from `Submodule.mem_sup.1 hb`. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.1 hz'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mem_sup.2 ⟨u * a * y' + v * b * y, add_mem (I.mul_mem_left _ hy') (I.mul_mem_left _ hy), (u * t + v * s) * (a * b), Ideal.mem_span_singleton'.2 ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Take the linear combination `(u * a) * e' + (v * b) * e + x * huv`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mem_sup_span_mul {O : Type} [CommRing O] {I : Ideal O} {a b x : O} (h : IsCoprime a b)
     (ha : x ∈ I ⊔ Ideal.span {a}) (hb : x ∈ I ⊔ Ideal.span {b}) : x ∈ I ⊔ Ideal.span {a * b} := by
@@ -37,19 +37,17 @@ theorem mem_sup_span_mul {O : Type} [CommRing O] {I : Ideal O} {a b x : O} (h : 
   linear_combination (u * a) * e' + (v * b) * e + x * huv
 
 /- English proof (translation)
-Take `⟨hc, -⟩` from `Formalism.MainNotions.ModuliIntegralCharts.H1.GSplit.split_of_ncard hp h`. Use `set I : Ideal (𝓞 E) := Ideal.span {((p : ℕ) : 𝓞 E)} with hI`. Establish `hI0 : I ≠ ⊥`. Rewrite using `[hI, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set M := UniqueFactorizationMonoid.normalizedFactors I with hM`. Establish `hN : Ideal.absNorm I = p ^ Module.finrank ℚ E`. Rewrite using `[hI, Ideal.absNorm_span_singleton]`. Establish `: ((p : ℕ) : 𝓞 E) = algebraMap ℤ (𝓞 E) (p : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hprod : M.prod = I` using `Ideal.prod_normalizedFactors_eq_self hI0`. Establish `hge : ∀ P ∈ M, p ≤ Ideal.absNorm P`. Introduce `P hP`. Take `⟨hPp, hIP⟩` from `(Ideal.mem_normalizedFactors_iff hI0).1 hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : Ideal.absNorm P ∣ p ^ Module.finrank ℚ E` using `hN ▸ Ideal.absNorm_dvd_absNorm_of_le hIP`. Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow hp).1 hd`. Establish `h1 : Ideal.absNorm P ≠ 1` using `by rw [Ne, Ideal.absNorm_eq_one_iff]; exact hPp.ne_top`. Rewrite `h1`, the goal using `[hj]`. Conclude with `Nat.le_self_pow (by rintro rfl; simp at h1) p`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwM : P ∈ M` using `(Ideal.mem_normalizedFactors_iff hI0).2 ⟨hP, by rw [hI, Ideal.span_singleton_le_iff_mem]; exact hw⟩`. Use `le_antisymm ?_ (hge _ hwM)` and prove the remaining obligations. Take `⟨M', hM'⟩` from `Multiset.exists_cons_of_mem hwM`. Establish `h2 : p ^ M'.card ≤ (M'.map Ideal.absNorm).prod`. Use `Multiset.pow_card_le_prod (s := M'.map Ideal.absNorm) (a := p) (fun x hx => by` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hP, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `hge P (hM' ▸ Multiset.mem_cons_of_mem hP))`. Simplify using `using this`. Establish `h3 : Ideal.absNorm P * (M'.map Ideal.absNorm).prod = p * p ^ M'.card`. Rewrite using `[← pow_succ', ← Multiset.card_cons P, ← hM', hc, ← hN, ← hprod, hM', Multiset.prod_cons, map_mul, map_multiset_prod]`.
-
-Assume the negation of the conclusion as `hlt`. Establish `hlt'` using `not_le.1 hlt`. Establish `hpos : 0 < p ^ M'.card` using `pow_pos hp.pos _`. Use the polynomial consequences of the given equalities and inequalities.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem absNorm_eq_of_split {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime)
     (h : {v : HeightOneSpectrum (𝓞 E) | ((p : ℕ) : 𝓞 E) ∈ v.asIdeal}.ncard = Module.finrank ℚ E) {P : Ideal (𝓞 E)}
@@ -98,14 +96,14 @@ def halfPrime (l : Level H) (v : Ideal (𝓞 (maximalRealSubfield E))) : Ideal (
   l.Mb ⊔ v.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))
 
 /- English proof (translation)
-Establish `: Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb` using `l.prod ▸ Ideal.mul_le_left`. Conclude with `this (Ideal.subset_span rfl)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_M_mem (l : Level H) : (l.M : 𝓞 E) ∈ l.Mb := by
   have : Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb := l.prod ▸ Ideal.mul_le_left
   exact this (Ideal.subset_span rfl)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by show ((H.bar (H.bar a) : 𝓞 E) : E) = (a : E) rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply])`.
+A detailed English derivation is pending.
 -/
 theorem bar_bar' (a : 𝓞 E) : H.bar (H.bar a) = a :=
   Subtype.ext (by
@@ -113,7 +111,7 @@ theorem bar_bar' (a : 𝓞 E) : H.bar (H.bar a) = a :=
     rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply])
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by show ((H.bar (algebraMap _ (𝓞 E) a) : 𝓞 E) : E) = _ rw [H.bar_eq] exact (IsCMField.complexConj E).commutes (a : maximalRealSubfield E))`.
+A detailed English derivation is pending.
 -/
 theorem bar_algebraMap (a : 𝓞 (maximalRealSubfield E)) :
     H.bar (algebraMap _ (𝓞 E) a) = algebraMap _ (𝓞 E) a :=
@@ -123,7 +121,7 @@ theorem bar_algebraMap (a : 𝓞 (maximalRealSubfield E)) :
     exact (IsCMField.complexConj E).commutes (a : maximalRealSubfield E))
 
 /- English proof (translation)
-Establish `h1 : ((y * H.bar y : 𝓞 E) : E) ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff, ← H.bar_eq, map_mul, bar_bar', mul_comm]`. Use `⟨⟨⟨_, h1⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ (maximalRealSubfield E) E) Subtype.val_injective).1 (y * H.bar y).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_norm (y : 𝓞 E) : ∃ z : 𝓞 (maximalRealSubfield E), algebraMap _ (𝓞 E) z = y * H.bar y := by
   have h1 : ((y * H.bar y : 𝓞 E) : E) ∈ maximalRealSubfield E := by
@@ -133,11 +131,11 @@ theorem exists_norm (y : 𝓞 E) : ∃ z : 𝓞 (maximalRealSubfield E), algebra
     (y * H.bar y).2
 
 /- English proof (translation)
-Use `le_antisymm h fun x hx => ?_` and prove the remaining obligations. Establish `hc : v = P.comap (algebraMap _ (𝓞 E))` using `hv.eq_of_le (Ideal.comap_ne_top _ hP.ne_top) (Ideal.map_le_iff_le_comap.1 (le_sup_right.trans h))`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (l.coprime ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E))`. Take `⟨b', hb', rfl⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 hb`. Express the relevant statement in the definitionally equal form `a + H.bar b' = 1 at hab`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hab' : H.bar a + b' = 1` using `by simpa [bar_bar'] using congrArg H.bar hab`. Take `⟨z, hz⟩` from `exists_norm (H := H) (H.bar b' * x + a)`. Establish `hzv : z ∈ v`. Rewrite using `[hc, Ideal.mem_comap, hz]`. Conclude with `P.mul_mem_right _ (add_mem (P.mul_mem_left _ hx) (h (Ideal.mem_sup_left ha)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Ideal.mem_map_of_mem (algebraMap _ (𝓞 E)) hzv`. Rewrite `h1` using `[hz, map_add, map_mul, bar_bar']`. Use `Submodule.mem_sup.2 ⟨a * (x - 1) + b' * ((1 - H.bar x) * (H.bar b' * x + a)), add_mem (l.Mb.mul_mem_right _ ha) (l.Mb.mul_mem_right _ hb'), _, h1, ?_⟩` and prove the remaining obligations. Take the linear combination `x * hab + (H.bar b' * x + a) * hab'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem halfPrime_eq (l : Level H) {v : Ideal (𝓞 (maximalRealSubfield E))} (hv : v.IsMaximal) {P : Ideal (𝓞 E)}
     (hP : P.IsPrime) (h : halfPrime l v ≤ P) : halfPrime l v = P := by
@@ -160,13 +158,11 @@ theorem halfPrime_eq (l : Level H) {v : Ideal (𝓞 (maximalRealSubfield E))} (h
   linear_combination x * hab + (H.bar b' * x + a) * hab'
 
 /- English proof (translation)
-Take `⟨Q, hQ, hQv⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 E) v (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))).1 (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `bot_le)`. Establish `hvQ : v.map (algebraMap _ (𝓞 E)) ≤ Q` using `Ideal.map_le_iff_le_comap.2 hQv.ge`. Establish `hMQ : l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ Q`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[l.prod, Ideal.span_singleton_le_iff_mem]`. Simplify using `using hvQ (Ideal.mem_map_of_mem _ hM)`. Break down `hQ.isPrime.mul_le.1 hMQ with h | h` into its components or cases. Rewrite using `[halfPrime_eq l hv hQ.isPrime (sup_le h hvQ)]`. Conclude with `hQ.isPrime`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hQ.isPrime`. Establish `hP : (Q.comap (H.bar : 𝓞 E →+* 𝓞 E)).IsPrime` using `inferInstance`. Rewrite using `[halfPrime_eq l hv hP (sup_le (Ideal.map_le_iff_le_comap.1 h) (Ideal.map_le_iff_le_comap.2 fun a ha => ?_))]`. Conclude with `hP`. Use `show H.bar (algebraMap _ (𝓞 E) a) ∈ Q`.
-
-Rewrite using `[bar_algebraMap]`. Conclude with `hvQ (Ideal.mem_map_of_mem _ ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfPrime_isPrime (l : Level H) {v : Ideal (𝓞 (maximalRealSubfield E))} (hv : v.IsMaximal)
     (hM : (l.M : 𝓞 (maximalRealSubfield E)) ∈ v) : (halfPrime l v).IsPrime := by
@@ -193,11 +189,11 @@ end Ideals
 section Generic
 
 /- English proof (translation)
-Simplify using `only [superDiag, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `hij : j ≠ i` using `fun e => by rw [e] at h; omega`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_add_of_mem j i (Finset.mem_univ _) (Finset.mem_univ _) hij, hu.2, hu'.2, one_mul, mul_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c _ hc`. Distinguish the cases in `hci : c < i`. Rewrite using `[hu.1 (show id c < id i from hci), zero_mul]`. Establish `h1 : (c : ℕ) ≠ j` using `fun e => hc.1 (Fin.ext e)`. Establish `h2 : (c : ℕ) ≠ i` using `fun e => hc.2 (Fin.ext e)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ¬ (c : ℕ) < i` using `hci`. Rewrite using `[hu'.1 (show id j < id c from (by show (j : ℕ) < c; omega)), mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem superDiag_mul {r : ℕ} {k : Type} [Field k] {u u' : GL (Fin r) k} (hu : u ∈ unitri r k) (hu' : u' ∈ unitri r k) :
     superDiag ((u * u' : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) =
@@ -252,7 +248,7 @@ def factorH (i : Fin 2) : Subgroup (LevelGroup Hs) := factorG Hs i ⊓ levelU Hs
 def levelGU (i : Fin 2) : Subgroup (LevelGroup Hs) := Subgroup.pi {v | v.1 ≠ i} fun v => unitri R.r (ZMod (Hs.g v.1))
 
 /- English proof (translation)
-Use `⟨fun v => if v.1 = 0 then a v else 1, fun v hv => if_neg hv, fun v => if v.1 = 1 then a v else 1, fun v hv => if_neg hv, funext fun v => ?_, fun v h => if_pos h, fun v h => if_pos h⟩` and prove the remaining obligations. Take `⟨i, w⟩` from `v`. Apply the tactic sequence `fin_cases i <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_factor (a : LevelGroup Hs) : ∃ b ∈ factorG Hs 0, ∃ c ∈ factorG Hs 1, a = b * c ∧
     (∀ v, v.1 = 0 → b v = a v) ∧ ∀ v, v.1 = 1 → c v = a v := by
@@ -285,7 +281,7 @@ def grpG : Subgroup (LevelAut Dw l) := trivMod Dw.La l.Mb (Ideal.span {((cofacto
 variable {Dw l}
 
 /- English proof (translation)
-Establish `h : cofactor l = m`. Rewrite using `[cofactor, hM, Nat.mul_div_cancel_left _ (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos)]`. Conclude with `⟨⟨hA, h ▸ hM, h ▸ hm⟩, h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isTypeLevel_of_eq {m : ℕ} (hA : l.A = 1) (hM : l.M = D.host.g 0 * D.host.g 1 * m)
     (hm : Nat.Coprime (D.host.g 0 * D.host.g 1) m) : IsTypeLevel l ∧ cofactor l = m := by
@@ -294,19 +290,19 @@ theorem isTypeLevel_of_eq {m : ℕ} (hA : l.A = 1) (hM : l.M = D.host.g 0 * D.ho
   exact ⟨⟨hA, h ▸ hM, h ▸ hm⟩, h⟩
 
 /- English proof (translation)
-The claim follows from `isTypeLevel_of_eq h.2 (by rw [mul_one]; exact h.1) (Nat.coprime_one_right _)`.
+A detailed English derivation is pending.
 -/
 theorem isTypeLevel_of_pin {Q : Par D} (h : Q.PinLevel) : IsTypeLevel Q.l ∧ cofactor Q.l = 1 :=
   isTypeLevel_of_eq h.2 (by rw [mul_one]; exact h.1) (Nat.coprime_one_right _)
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_sup_right (by simpa using Ideal.mem_map_of_mem (algebraMap _ (𝓞 D.host.E)) v.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem g_mem_typePrime (v : Sq D.host) : ((D.host.g v.1 : ℕ) : 𝓞 D.host.E) ∈ typePrime l v :=
   Ideal.mem_sup_right (by simpa using Ideal.mem_map_of_mem (algebraMap _ (𝓞 D.host.E)) v.2.2)
 
 /- English proof (translation)
-Use `fin_cases i`. Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem g_dvd (i : Fin 2) : D.host.g i ∣ D.host.g 0 * D.host.g 1 := by
   fin_cases i
@@ -314,9 +310,7 @@ theorem g_dvd (i : Fin 2) : D.host.g i ∣ D.host.g 0 * D.host.g 1 := by
   · exact dvd_mul_left _ _
 
 /- English proof (translation)
-Rewrite using `[Nat.coprime_primes (D.host.g_prime i) (D.host.g_prime j)]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `absurd rfl h`. Conclude with `D.host.g_ne`. Conclude with `D.host.g_ne.symm`.
-
-Conclude with `absurd rfl h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem g_coprime {i j : Fin 2} (h : i ≠ j) : Nat.Coprime (D.host.g i) (D.host.g j) := by
   rw [Nat.coprime_primes (D.host.g_prime i) (D.host.g_prime j)]
@@ -327,7 +321,7 @@ theorem g_coprime {i j : Fin 2} (h : i ≠ j) : Nat.Coprime (D.host.g i) (D.host
   · exact absurd rfl h
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `Nat.Coprime.cast (R := O) h`. Conclude with `Ideal.isCoprime_iff_exists.2 ⟨_, I.mul_mem_left u ha, _, J.mul_mem_left v hb, huv⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCoprime_of_natCast {O : Type} [CommRing O] {I J : Ideal O} {a b : ℕ} (h : Nat.Coprime a b) (ha : (a : O) ∈ I)
     (hb : (b : O) ∈ J) : IsCoprime I J := by
@@ -335,9 +329,9 @@ theorem isCoprime_of_natCast {O : Type} [CommRing O] {I J : Ideal O} {a b : ℕ}
   exact Ideal.isCoprime_iff_exists.2 ⟨_, I.mul_mem_left u ha, _, J.mul_mem_left v hb, huv⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨i, v⟩ ⟨j, w⟩ hne`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Establish `hvw : v.1 ≠ w.1` using `fun e => hne (congrArg _ (Subtype.ext e))`. Take `⟨a, ha, b, hb, e⟩` from `Ideal.isCoprime_iff_exists.1 (HeightOneSpectrum.isCoprime_of_ne _ _ hvw)`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.isCoprime_iff_exists.2 ⟨_, Ideal.mem_sup_right (Ideal.mem_map_of_mem _ ha), _, Ideal.mem_sup_right (Ideal.mem_map_of_mem _ hb), by rw [← map_add, e, map_one]⟩`. Conclude with `isCoprime_of_natCast (g_coprime h) (g_mem_typePrime ⟨i, v⟩) (g_mem_typePrime ⟨j, w⟩)`.
+A detailed English derivation is pending.
 -/
 theorem typePrime_coprime : Pairwise (Function.onFun IsCoprime (typePrime l)) := by
   rintro ⟨i, v⟩ ⟨j, w⟩ hne
@@ -350,15 +344,13 @@ theorem typePrime_coprime : Pairwise (Function.onFun IsCoprime (typePrime l)) :=
   · exact isCoprime_of_natCast (g_coprime h) (g_mem_typePrime ⟨i, v⟩) (g_mem_typePrime ⟨j, w⟩)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `key : ∀ i, x ∈ l.Mb ⊔ Ideal.span {((D.host.g i : ℕ) : 𝓞 D.host.E)}`. Introduce `i`. Establish `h0 : Ideal.span {((D.host.g i : ℕ) : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(D.host.g_prime i).ne_zero` after adjusting the coercions. Establish `hsq : Squarefree (l.Mb ⊔ Ideal.span {((D.host.g i : ℕ) : 𝓞 D.host.E)})` using `((UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors h0).2 (Formalism.MainNotions.ModuliIntegralCharts.H1.GSplit.g_splits D i).2).squarefree_of_dvd (Ideal.dvd_iff_le.2 le_sup_right)`. Establish `hx' : x ∈ (l.Mb ⊔ Ideal.span {((D.host.g i : ℕ) : 𝓞 D.host.E)}).radical`. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`. Introduce and unpack `P ⟨hP, hPp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hg : ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ Ideal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) P`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hP (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Set `v : HeightOneSpectrum (𝓞 D.host.F)` to `⟨Ideal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) P, inferInstance, fun e => by`. Rewrite `hg` using `[e, Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(D.host.g_prime i).ne_zero (by exact_mod_cast hg)⟩`. Establish `hle : typePrime l ⟨i, ⟨v, hg⟩⟩ ≤ P` using `sup_le (le_sup_left.trans hP) Ideal.map_comap_le`. Conclude with `hle (Ideal.mem_iInf.1 hx _)`. Take `⟨n, hn⟩` from `hx'`. Use `Ideal.dvd_span_singleton.1 (hsq.isRadical n _ ?_)` and prove the remaining obligations.
-
-Rewrite using `[Ideal.span_singleton_pow]`. Conclude with `Ideal.dvd_span_singleton.2 hn`. Rewrite using `[Nat.cast_mul]`. Conclude with `mem_sup_span_mul (Nat.Coprime.cast (g_coprime (by decide))) (key 0) (key 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iInf_typePrime_le :
     ⨅ v, typePrime l v ≤ l.Mb ⊔ Ideal.span {((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E)} := by
@@ -389,9 +381,9 @@ theorem iInf_typePrime_le :
   exact mem_sup_span_mul (Nat.Coprime.cast (g_coprime (by decide))) (key 0) (key 1)
 
 /- English proof (translation)
-Establish `hP : (typePrime l v).IsPrime`. Use `halfPrime_isPrime l v.2.1.isMaximal ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `(g_dvd v.1).mul_right (cofactor l)`. Rewrite using `[hl.2.1, hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ v.2.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hP, absNorm_eq_of_split (D.host.g_prime _) (D.nd.g_split _) hP (g_mem_typePrime v)⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsTypeLevel.typePrime_spec (hl : IsTypeLevel l) (v : Sq D.host) :
     (typePrime l v).IsPrime ∧ Ideal.absNorm (typePrime l v) = D.host.g v.1 := by
@@ -403,11 +395,9 @@ theorem IsTypeLevel.typePrime_spec (hl : IsTypeLevel l) (v : Sq D.host) :
   exact ⟨hP, absNorm_eq_of_split (D.host.g_prime _) (D.nd.g_split _) hP (g_mem_typePrime v)⟩
 
 /- English proof (translation)
-Establish `hc : Nat.card (𝓞 D.host.E ⧸ typePrime l v) = D.host.g v.1`. Rewrite using `[← (hl.typePrime_spec v).2, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 D.host.E ⧸ typePrime l v) := Nat.finite_of_card_ne_zero (hc ▸ (D.host.g_prime _).ne_zero)`. Use `haveI := Fintype.ofFinite (𝓞 D.host.E ⧸ typePrime l v)`. Take `⟨z, hz⟩` from `(ZMod.ringEquivOfPrime (𝓞 D.host.E ⧸ typePrime l v) (D.host.g_prime v.1) (by rw [← Nat.card_eq_fintype_card, hc])).surjective (Ideal.Quotient.mk _ a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, rfl⟩` from `ZMod.intCast_surjective z`. Rewrite `hz` using `[map_intCast, ← map_intCast (Ideal.Quotient.mk (typePrime l v)), Ideal.Quotient.eq]`. Use `⟨n, fun x => ?_⟩` and prove the remaining obligations. Establish `h : ((n : 𝓞 D.host.E) - a) • x ∈ typePrime l v • (⊤ : Submodule _ (QMod Dw.La (typePrime l v)))` using `Submodule.smul_mem_smul hz trivial`. Rewrite `h` using `[smul_top_qMod, Submodule.mem_bot, sub_smul, sub_eq_zero, Int.cast_smul_eq_zsmul]`.
-
-Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTypeLevel.smul_eq_zsmul (hl : IsTypeLevel l) (v : Sq D.host) (a : 𝓞 D.host.E) :
     ∃ n : ℤ, ∀ x : QMod Dw.La (typePrime l v), a • x = n • x := by
@@ -426,9 +416,9 @@ theorem IsTypeLevel.smul_eq_zsmul (hl : IsTypeLevel l) (v : Sq D.host) (a : 𝓞
   exact h.symm
 
 /- English proof (translation)
-Use `haveI : Finite M := Nat.finite_of_card_ne_zero (hN ▸ pow_ne_zero _ hp.out.ne_zero)`. Take `⟨inst⟩ : Nonempty (Module (ZMod p) M)` from `⟨AddCommGroup.zmodModule h⟩`. Establish `hf : Module.finrank (ZMod p) M = Module.finrank (ZMod p) (Fin r → ZMod p)`. Use `Module.natCard_eq_pow_finrank (K := ZMod p) (V := M)` as an intermediate fact. Rewrite `this` using `[hN, Nat.card_zmod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.finrank_fin_fun]`. Conclude with `(Nat.pow_right_injective hp.out.two_le this).symm`. Use `haveI : FiniteDimensional (ZMod p) M := Module.Finite.of_finite`. Conclude with `⟨(LinearEquiv.ofFinrankEq (R := ZMod p) M (Fin r → ZMod p) hf).toAddEquiv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_addEquiv_pi {M : Type} [AddCommGroup M] {p r : ℕ} [hp : Fact p.Prime] (h : ∀ x : M, p • x = 0)
     (hN : Nat.card M = p ^ r) : Nonempty (M ≃+ (Fin r → ZMod p)) := by
@@ -443,11 +433,9 @@ theorem nonempty_addEquiv_pi {M : Type} [AddCommGroup M] {p r : ℕ} [hp : Fact 
   exact ⟨(LinearEquiv.ofFinrankEq (R := ZMod p) M (Fin r → ZMod p) hf).toAddEquiv⟩
 
 /- English proof (translation)
-Use `⟨fun v => Classical.choice ?_⟩` and prove the remaining obligations. Establish `hc : Nat.card (𝓞 D.host.E ⧸ typePrime l v) = D.host.g v.1`. Rewrite using `[← (hl.typePrime_spec v).2, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 D.host.E ⧸ typePrime l v) := Nat.finite_of_card_ne_zero (hc ▸ (D.host.g_prime _).ne_zero)`. Use `haveI := Dw.fin`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := Dw.proj`. Establish `hN : Nat.card (QMod Dw.La (typePrime l v)) = D.host.g v.1 ^ D.R.r`. Rewrite using `[natCard_quot_smul_top_of_projective, hc, Dw.rank, hr]`. Use `nonempty_addEquiv_pi (fun x => ?_) hN` and prove the remaining obligations. Establish `h : ((D.host.g v.1 : ℕ) : 𝓞 D.host.E) • x ∈ typePrime l v • (⊤ : Submodule _ (QMod Dw.La (typePrime l v)))` using `Submodule.smul_mem_smul (g_mem_typePrime v) trivial`.
-
-Rewrite `h` using `[smul_top_qMod, Submodule.mem_bot, Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem IsTypeLevel.nonempty_typeFrame (hl : IsTypeLevel l) (hr : Dw.p + Dw.q = D.R.r) : Nonempty (TypeFrame Dw l) := by
   refine ⟨fun v => Classical.choice ?_⟩
@@ -467,7 +455,7 @@ def typeRed (fr : TypeFrame Dw l) : LevelAut Dw l →* LevelGroup D.host :=
   MonoidHom.pi fun v => (autMat (fr v)).comp (autRed (N := Dw.La) (J := typePrime l v) le_sup_left)
 
 /- English proof (translation)
-The claim follows from `(autMat_mulVec (fr v) _ _).trans (congrArg _ (autRed_qProj _ γ q))`.
+A detailed English derivation is pending.
 -/
 theorem typeRed_mulVec (fr : TypeFrame Dw l) (γ : LevelAut Dw l) (v : Sq D.host) (q : LaMod Dw l) :
     (typeRed fr γ v : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g v.1))).mulVec
@@ -475,9 +463,7 @@ theorem typeRed_mulVec (fr : TypeFrame Dw l) (γ : LevelAut Dw l) (v : Sq D.host
   (autMat_mulVec (fr v) _ _).trans (congrArg _ (autRed_qProj _ γ q))
 
 /- English proof (translation)
-Use `⟨fun h v => trivMod_mono ?_ h, fun h => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `g_dvd (D := D) v.1`. Rewrite using `[Ideal.span_singleton_le_iff_mem, hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (g_mem_typePrime v)`. Rewrite using `[grpR, ← trivMod_sup]`.
-
-Conclude with `trivMod_mono iInf_typePrime_le fun q => mem_iInf_smul_top typePrime_coprime fun v => h v q`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_grpR_iff {γ : LevelAut Dw l} : γ ∈ grpR Dw l ↔ ∀ v, γ ∈ trivMod Dw.La l.Mb (typePrime l v) := by
   refine ⟨fun h v => trivMod_mono ?_ h, fun h => ?_⟩
@@ -488,7 +474,7 @@ theorem mem_grpR_iff {γ : LevelAut Dw l} : γ ∈ grpR Dw l ↔ ∀ v, γ ∈ t
     exact trivMod_mono iInf_typePrime_le fun q => mem_iInf_smul_top typePrime_coprime fun v => h v q
 
 /- English proof (translation)
-Rewrite using `[mem_grpR_iff, funext_iff]`. Use `forall_congr' fun v => Iff.trans ?_ (autRed_eq_one (J := typePrime l v) le_sup_left γ)` and prove the remaining obligations. Conclude with `map_eq_one_iff _ (autMat_injective (fr v))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem typeRed_eq_one (fr : TypeFrame Dw l) {γ : LevelAut Dw l} : typeRed fr γ = 1 ↔ γ ∈ grpR Dw l := by
   rw [mem_grpR_iff, funext_iff]
@@ -500,16 +486,14 @@ def partIdeal (l : Level H) : Option (Sq D.host) → Ideal (𝓞 D.host.E)
   | some v => typePrime l v
 
 /- English proof (translation)
-The claim follows from `| none => le_sup_left | some _ => le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem le_partIdeal : ∀ o, l.Mb ≤ partIdeal l o
   | none => le_sup_left
   | some _ => le_sup_left
 
 /- English proof (translation)
-Establish `key : ∀ v, IsCoprime (partIdeal l (some v)) (partIdeal l none)` using `fun v => isCoprime_of_natCast (hl.2.2.coprime_dvd_left (g_dvd v.1)) (g_mem_typePrime v) (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Introduce and unpack `(_ | v) (_ | w) h`. Conclude with `absurd rfl h`. Conclude with `(key w).symm`. Conclude with `key v`.
-
-Conclude with `typePrime_coprime fun e => h (congrArg _ e)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem IsTypeLevel.partIdeal_coprime (hl : IsTypeLevel l) : Pairwise (Function.onFun IsCoprime (partIdeal l)) := by
   have key : ∀ v, IsCoprime (partIdeal l (some v)) (partIdeal l none) := fun v =>
@@ -522,7 +506,7 @@ theorem IsTypeLevel.partIdeal_coprime (hl : IsTypeLevel l) : Pairwise (Function.
   · exact typePrime_coprime fun e => h (congrArg _ e)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h` using `mem_sup_span_mul (Nat.Coprime.cast hl.2.2) (iInf_typePrime_le (Ideal.mem_iInf.2 fun v => Ideal.mem_iInf.1 hx (some v))) (Ideal.mem_iInf.1 hx none)`. Rewrite `h` using `[← Nat.cast_mul, ← hl.2.1]`. Conclude with `sup_le le_rfl ((Ideal.span_singleton_le_iff_mem _).2 (natCast_M_mem l)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTypeLevel.iInf_partIdeal_le (hl : IsTypeLevel l) : ⨅ o, partIdeal l o ≤ l.Mb := by
   intro x hx
@@ -535,7 +519,7 @@ def IsTypeLevel.parts (hl : IsTypeLevel l) : LevelAut Dw l ≃* ∀ o, QAut Dw.L
   crtAut le_partIdeal hl.partIdeal_coprime hl.iInf_partIdeal_le
 
 /- English proof (translation)
-Use `eq_bot_iff.2 fun γ hγ => (map_eq_one_iff _ hl.parts.injective).1 (funext fun o => ?_)` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => exact (autRed_eq_one _ γ).2 (trivMod_mono le_sup_right hγ.1)`. Consider the case `some v => exact (autRed_eq_one _ γ).2 (mem_grpR_iff.1 hγ.2 v)`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem IsTypeLevel.grpG_inf_grpR (hl : IsTypeLevel l) : grpG Dw l ⊓ grpR Dw l = ⊥ := by
   refine eq_bot_iff.2 fun γ hγ => (map_eq_one_iff _ hl.parts.injective).1 (funext fun o => ?_)
@@ -544,9 +528,9 @@ theorem IsTypeLevel.grpG_inf_grpR (hl : IsTypeLevel l) : grpG Dw l ⊓ grpR Dw l
   | some v => exact (autRed_eq_one _ γ).2 (mem_grpR_iff.1 hγ.2 v)
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_one _).2 fun γ hγ => Subtype.ext ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_bot.1 (hl.grpG_inf_grpR ▸ ⟨γ.2, (typeRed_eq_one fr).1 hγ⟩)`. Use `choose b hb using fun v => autMat_surjective (fr v) (hl.smul_eq_zsmul v) (a v)`. Take `⟨γ, hγ⟩` from `(hl.parts (Dw := Dw)).surjective fun o => match o with`. Consider the case `none => 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `some v => b v`. Use `⟨⟨γ, ?_⟩, funext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[grpG, ← trivMod_sup]`. Conclude with `(autRed_eq_one (le_partIdeal none) γ).1 (congrFun hγ none)`. Conclude with `(congrArg (autMat (fr v)) (congrFun hγ (some v))).trans (hb v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTypeLevel.typeRed_bijective (hl : IsTypeLevel l) (fr : TypeFrame Dw l) :
     Function.Bijective ((typeRed fr).comp (grpG Dw l).subtype) := by
@@ -565,22 +549,22 @@ def typeEmb (hl : IsTypeLevel l) (fr : TypeFrame Dw l) : LevelGroup D.host →* 
   (grpG Dw l).subtype.comp (MulEquiv.ofBijective _ (hl.typeRed_bijective fr)).symm.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `(MulEquiv.ofBijective _ (hl.typeRed_bijective fr)).apply_symm_apply a`.
+A detailed English derivation is pending.
 -/
 theorem typeRed_typeEmb (hl : IsTypeLevel l) (fr : TypeFrame Dw l) (a : LevelGroup D.host) :
     typeRed fr (typeEmb hl fr a) = a :=
   (MulEquiv.ofBijective _ (hl.typeRed_bijective fr)).apply_symm_apply a
 
 /- English proof (translation)
-The claim follows from `Subtype.property _`.
+A detailed English derivation is pending.
 -/
 theorem typeEmb_mem (hl : IsTypeLevel l) (fr : TypeFrame Dw l) (a : LevelGroup D.host) : typeEmb hl fr a ∈ grpG Dw l :=
   Subtype.property _
 
 /- English proof (translation)
-Use `hl.parts.injective ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `: hl.parts γ none = 1` using `(autRed_eq_one _ γ).2 (trivMod_mono le_sup_right hγ)`. Simplify using `[this]`. Consider the case `some v`. Establish `: hl.parts δ (some v) = 1` using `(autRed_eq_one _ δ).2 (mem_grpR_iff.1 hδ v)`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem IsTypeLevel.commute (hl : IsTypeLevel l) {γ δ : LevelAut Dw l} (hγ : γ ∈ grpG Dw l) (hδ : δ ∈ grpR Dw l) :
     Commute γ δ := by
@@ -617,7 +601,7 @@ theorem prodEquiv_apply (hl : IsTypeLevel l) (fr : TypeFrame Dw l) (a : LevelGro
     prodEquiv hl fr (a, b) = typeEmb hl fr a * b := rfl
 
 /- English proof (translation)
-Rewrite using `[prodEquiv_apply, map_mul, typeRed_typeEmb, (typeRed_eq_one fr).2 x.2.2, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem typeRed_prodEquiv (hl : IsTypeLevel l) (fr : TypeFrame Dw l) (x : LevelGroup D.host × grpR Dw l) :
     typeRed fr (prodEquiv hl fr x) = x.1 := by

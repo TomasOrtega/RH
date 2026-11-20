@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerEleme
 open Finset UpperTheory.V.Bern UpperTheory.V.Stk
 
 /- English proof (translation)
-Introduce `M a _ ha R Γ _ _ φ c f`. Unfold `sumEl yCl`. Rewrite using `[Finset.mul_sum]`. Use `symm`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight (ZMod.unitOfCoprime a ha))]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `key : ((a : ZMod M))⁻¹ * ((b : ZMod M) * (a : ZMod M)) = (b : ZMod M)`. Rewrite using `[mul_comm (b : ZMod M), ← mul_assoc, mul_comm _ (a : ZMod M), ZMod.coe_mul_inv_eq_one a ha, one_mul]`. Rewrite using `[MonoidAlgebra.single_mul_single]`. Simplify using `only [Equiv.coe_mulRight, map_mul, mul_inv_rev, Units.val_mul, ZMod.coe_unitOfCoprime, key]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Stk.single_inv_mul_groupRingSumOverUnitsInv :
     ∀ (M a : ℕ) [NeZero M] (ha : a.Coprime M) (R Γ : Type) [CommRing R] [Group Γ] (φ : (ZMod M)ˣ →* Γ) (c : R)

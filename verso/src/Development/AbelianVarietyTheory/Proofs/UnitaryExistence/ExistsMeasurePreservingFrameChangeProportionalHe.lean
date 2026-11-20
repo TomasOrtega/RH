@@ -15,7 +15,7 @@ variable {r : ℕ}
 def Sim (S g : Matrix (Fin r) (Fin r) ℂ) (c : ℂ) : Prop := gᵀ * S * g.map (starRingEnd ℂ) = c • S
 
 /- English proof (translation)
-Unfold `Sim at *`. Rewrite using `[Matrix.transpose_mul, Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem Sim.mul {S g h : Matrix (Fin r) (Fin r) ℂ} {c d : ℂ} (hg : Sim S g c) (hh : Sim S h d) :
     Sim S (g * h) (c * d) := by
@@ -29,7 +29,7 @@ open MeasureTheory Topology Matrix NumberField in
 open scoped ENNReal in
 variable {r : ℕ} in
 /- English proof (translation)
-Introduce `hM0`. Apply `hK` to reduce the goal to its premises. Rewrite using `[← h, det_mul, det_mul, det_transpose, hM0, zero_mul, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma det_ne_zero_of_form_eq {K G M : Matrix (Fin r) (Fin r) ℂ} (hK : K.det ≠ 0)
     (h : Mᵀ * G * M.map (starRingEnd ℂ) = K) : M.det ≠ 0 := by
@@ -42,7 +42,7 @@ open MeasureTheory Topology Matrix NumberField in
 open scoped ENNReal in
 variable {r : ℕ} in
 /- English proof (translation)
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma form_smul_left_automorphic_membership (c : ℂ) (K A : Matrix (Fin r) (Fin r) ℂ) :
     Aᵀ * (c • K) * A.map (starRingEnd ℂ) = c • (Aᵀ * K * A.map (starRingEnd ℂ)) := by
@@ -53,9 +53,9 @@ open MeasureTheory Topology Matrix NumberField in
 open scoped ENNReal in
 variable {r : ℕ} in
 /- English proof (translation)
-Rewrite using `[transpose_smul]`. Establish `: ((a : ℂ) • A).map (starRingEnd ℂ) = (a : ℂ) • A.map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma form_smul_right_automorphic_membership (a : ℝ) (K A : Matrix (Fin r) (Fin r) ℂ) :
     ((a : ℂ) • A)ᵀ * K * ((a : ℂ) • A).map (starRingEnd ℂ) =
@@ -74,7 +74,7 @@ open MeasureTheory Topology Matrix NumberField in
 open scoped ENNReal in
 variable {r : ℕ} in
 /- English proof (translation)
-Rewrite using `[transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma form_mul' (K A B : Matrix (Fin r) (Fin r) ℂ) :
     (A * B)ᵀ * K * (A * B).map (starRingEnd ℂ) =
@@ -87,7 +87,7 @@ open MeasureTheory Topology Matrix NumberField in
 open scoped ENNReal in
 variable {r : ℕ} in
 /- English proof (translation)
-Simplify using `[Matrix.map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma form_one' (K : Matrix (Fin r) (Fin r) ℂ) :
     (1 : Matrix (Fin r) (Fin r) ℂ)ᵀ * K * (1 : Matrix (Fin r) (Fin r) ℂ).map (starRingEnd ℂ) = K := by
@@ -98,9 +98,9 @@ open MeasureTheory Topology Matrix NumberField in
 open scoped ENNReal in
 variable {r : ℕ} in
 /- English proof (translation)
-Establish `hinv : (B⁻¹)ᵀ * J * (B⁻¹).map (starRingEnd ℂ) = c⁻¹ • J`. Establish `h1 : (B * B⁻¹)ᵀ * J * (B * B⁻¹).map (starRingEnd ℂ) = J`. Rewrite using `[mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hB), form_one']`. Rewrite `h1` using `[form_mul', hsim, form_smul_left_automorphic_membership]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `_ = c⁻¹ • J := by rw [h1]`. Rewrite using `[form_mul', form_mul', hinv, form_smul_left_automorphic_membership, hg, form_smul_left_automorphic_membership, hsim, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma form_conj_eq_of_similitude {J B g : Matrix (Fin r) (Fin r) ℂ} {c : ℂ} (hc : c ≠ 0) (hB : B.det ≠ 0)
     (hsim : Bᵀ * J * B.map (starRingEnd ℂ) = c • J) (hg : gᵀ * J * g.map (starRingEnd ℂ) = J) :
@@ -121,7 +121,7 @@ open MeasureTheory Topology Matrix NumberField in
 open scoped ENNReal in
 variable {r : ℕ} in
 /- English proof (translation)
-Substitute `hΨ hp` using the available equality. Use `⟨MeasurableEquiv.refl _, MeasurePreserving.id _, fun t τ τ' h => ?_⟩` and prove the remaining obligations. Rewrite using `[Subtype.ext h]`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma exists_transport_haarU_pi {ι : Type} (Ψ Ψ' : Finset ι) (p p' : ℕ) (hΨ : Ψ = Ψ')
     (hp : p = p') :
@@ -139,47 +139,41 @@ open MeasureTheory Topology Matrix NumberField in
 open scoped ENNReal in
 variable {r : ℕ} in
 /- English proof (translation)
-Introduce `E _ _ _ r X X' y y' hΨ hp hy hy' hG`. Use `choose tf htf hGt using hG`. Use `set J := _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.sgnMat r X.p0 with hJdef`. Establish `hJJ : J * J = 1`. Rewrite using `[hJdef, _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.sgnMat, diagonal_mul_diagonal, ← diagonal_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hJdet : J.det ≠ 0`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg det hJJ` as an intermediate fact. Rewrite `this` using `[det_mul, h, zero_mul, det_one]`. Conclude with `zero_ne_one this`. Set `τ' : X.Ψ → X'.Ψ` to `fun τ => ⟨τ.1, hΨ ▸ τ.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : ∀ τ : X.Ψ, _root_.ReciprocityTheory.ChartRestriction.G.FD.gram (τ : E →+* ℂ) X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y τ) = J` using `hy`. Establish `hy0' : ∀ τ : X'.Ψ, _root_.ReciprocityTheory.ChartRestriction.G.FD.gram (τ : E →+* ℂ) X'.Gm (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' τ) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.sgnMat r X'.p0` using `hy'`. Establish `hM : ∀ τ : X.Ψ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y τ)ᵀ * X.Gm.map τ.1 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y τ).map (starRingEnd ℂ) = J`. Introduce `τ`. Use `hy0 τ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_eq]`. Then use the resulting hypothesis. Establish `hM' : ∀ τ : X.Ψ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ))ᵀ * X'.Gm.map τ.1 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ)).map (starRingEnd ℂ) = J`. Introduce `τ`. Use `hy0' (τ' τ)` as an intermediate fact. Rewrite `this` using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_eq, ← hp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hMdet : ∀ τ : X.Ψ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y τ).det ≠ 0` using `fun τ => det_ne_zero_of_form_eq hJdet (hM τ)`. Establish `hM'det : ∀ τ : X.Ψ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ)).det ≠ 0` using `fun τ => det_ne_zero_of_form_eq hJdet (hM' τ)`. Use `set B : X.Ψ → Matrix (Fin r) (Fin r) ℂ := fun τ => ((Real.sqrt |tf τ| : ℝ) : ℂ) • ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y τ)⁻¹ * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ)) with hBdef`. Use `set s : X.Ψ → ℂ := fun τ => ((|tf τ| / tf τ : ℝ) : ℂ) with hsdef`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hs0 : ∀ τ, s τ ≠ 0`. Introduce `τ`. Simplify using `only [hsdef]`. Conclude with `div_ne_zero (abs_ne_zero.mpr (htf τ)) (htf τ)` after adjusting the coercions. Establish `hs2 : ∀ τ, s τ * s τ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Simplify using `only [hsdef]`. Rewrite using `[← Complex.ofReal_mul, ← sq, div_pow, sq_abs, div_self (pow_ne_zero _ (htf τ)), Complex.ofReal_one]`. Establish `hsim : ∀ τ : X.Ψ, (B τ)ᵀ * J * (B τ).map (starRingEnd ℂ) = s τ • J`. Introduce `τ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `ht` using `htf τ`. Establish `h1 : (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ))ᵀ * X.Gm.map τ.1 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ)).map (starRingEnd ℂ) = ((tf τ : ℝ) : ℂ)⁻¹ • J`. Use `hM' τ` as an intermediate fact. Rewrite `this` using `[hGt τ, form_smul_left_automorphic_membership]`. Rewrite using `[← this, smul_smul, inv_mul_cancel₀ (by exact_mod_cast ht), one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [hBdef, hsdef]`. Rewrite using `[form_smul_right_automorphic_membership, Real.sq_sqrt (abs_nonneg _)]`. Use `conv_lhs => rw [← hM τ]`. Rewrite using `[← form_mul', mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.mpr (hMdet τ)), h1, smul_smul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hBdet : ∀ τ, (B τ).det ≠ 0`. Introduce `τ`. Use `det_ne_zero_of_form_eq ?_ (hsim τ)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (hs0 τ)) hJdet`. Set `Bu : X.Ψ → GL (Fin r) ℂ` to `fun τ => Matrix.GeneralLinearGroup.mkOfDetNeZero (B τ) (hBdet τ)`. Establish `hBu : ∀ τ, ((Bu τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = B τ` using `fun τ => rfl`. Establish `hBuinv : ∀ τ, (((Bu τ)⁻¹ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (B τ)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ`. Rewrite using `[Matrix.coe_units_inv, hBu]`. Establish `hmem : ∀ g : GL (Fin r) ℂ, g ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.Upq r X.p0 ↔ (g : Matrix (Fin r) (Fin r) ℂ)ᵀ * J * (g : Matrix (Fin r) (Fin r) ℂ).map (starRingEnd ℂ) = J` using `fun g => Iff.rfl`. Establish `hαmem : ∀ (g : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.Upq r X.p0) (τ : X.Ψ), (Bu τ)⁻¹ * (g : GL (Fin r) ℂ) * Bu τ ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.Upq r X.p0`. Introduce `g τ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hmem, Units.val_mul, Units.val_mul, hBuinv, hBu]`. Conclude with `form_conj_eq_of_similitude (hs0 τ) (hBdet τ) (hsim τ) ((hmem g).mp g.2)`. Establish `humem : ∀ τ : X.Ψ, Bu τ * Bu τ ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.Upq r X.p0`. Introduce `τ`. Rewrite using `[hmem, Units.val_mul, hBu, form_mul', hsim, form_smul_left_automorphic_membership, hsim, smul_smul, hs2, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `α : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.RealGrp X → _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.RealGrp X` to `fun t τ => ⟨(Bu τ)⁻¹ * (t τ : GL (Fin r) ℂ) * Bu τ, hαmem (t τ) τ⟩`. Set `u : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.RealGrp X` to `fun τ => ⟨Bu τ * Bu τ, humem τ⟩`. Take `⟨e, he, hecoe⟩` from `exists_transport_haarU_pi (r := r) X.Ψ X'.Ψ X.p0 X'.p0 hΨ hp`. Use `⟨e, α, u, he, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous α`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `continuous_pi fun τ => Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(continuous_const.mul ((continuous_apply τ).subtype_val)).mul continuous_const`. Conclude with `hcont.measurable`. Introduce `t`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (Bu τ)⁻¹ * ((Bu τ)⁻¹ * (t τ : GL (Fin r) ℂ) * Bu τ) * Bu τ = (Bu τ * Bu τ)⁻¹ * (t τ : GL (Fin r) ℂ) * (Bu τ * Bu τ)`. Use `group`. Introduce `t τ σ hτσ`. Take `rfl : σ = τ' τ` from `Subtype.ext hτσ.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hecoe (α t) τ (τ' τ) rfl]`. Use `show _root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ) * (((Bu τ)⁻¹ * (t τ : GL (Fin r) ℂ) * Bu τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ))⁻¹ = _`. Rewrite using `[Units.val_mul, Units.val_mul, hBuinv, hBu]`. Use `set c : ℂ := ((Real.sqrt |tf τ| : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0`.
-
-Simplify using `only [hc]`. Conclude with `(Real.sqrt_pos.mpr (abs_pos.mpr (htf τ))).ne'` after adjusting the coercions. Establish `hMB : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat y τ * B τ = c • _root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ)`. Simplify using `only [hBdef]`. Rewrite using `[Matrix.mul_smul, mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.mpr (hMdet τ))]`.
-
-Establish `h1 : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ) * (B τ)⁻¹ = c⁻¹ • _root_.ReciprocityTheory.ChartRestriction.G.FD.mat y τ`. Establish `: _root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ) = c⁻¹ • (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y τ * B τ)`. Rewrite using `[hMB, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[this, Matrix.smul_mul, Matrix.mul_assoc, mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (hBdet τ)), Matrix.mul_one]`. Establish `h2 : B τ * (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y' (τ' τ))⁻¹ = c • (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat y τ)⁻¹`.
-
-Simplify using `only [hBdef]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_assoc, mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (hM'det τ)), Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, h2]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hc0, inv_mul_cancel₀ hc0, one_smul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PeterssonFrameChange.frame_change : ∀ (E : Type) [Field E]
     [NumberField E] [IsCMField E] (r : ℕ) (X X' : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (y : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r)

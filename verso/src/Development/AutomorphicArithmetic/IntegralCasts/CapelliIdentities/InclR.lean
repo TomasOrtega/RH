@@ -7,7 +7,7 @@ import Mathlib
       IsDedekindDomain.HeightOneSpectrum.adicCompletion F v
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh24.aux2 :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F]
@@ -43,15 +43,13 @@ noncomputable def UpperTheory.Reformulated.B.Qh24.OEv :
         Set (TensorProduct F (UpperTheory.Reformulated.B.Qh24.Fv F v) E))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v s t hs ht`. Unfold `UpperTheory.Reformulated.B.Qh24.OEv at *`. Simplify using `only [SetLike.mem_coe] at *`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `zero => rw [zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_mul]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `mem a ha`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `zero => rw [mul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`. Consider the case `mem b hb`. Take `⟨x, -, rfl⟩` from `ha`.
-
-Take `⟨y, -, rfl⟩` from `hb`. Use `Submodule.subset_span ⟨x * y, Set.mem_univ _, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh24.oev_mul :
     ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [NumberField E] [inst_4 : Algebra F E]

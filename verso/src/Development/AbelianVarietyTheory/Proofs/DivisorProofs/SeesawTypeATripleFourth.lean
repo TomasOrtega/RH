@@ -20,7 +20,7 @@ open Classical
 namespace GlobalTheory.ArchEigen
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.ArchUniq.schrF, GlobalTheory.ArchUniq.omega]`. Rewrite using `[add_right_comm z w'.1 w.1, hP.addL z w.1 w'.2, hP.addL z w'.1 w.2]`. Rewrite using `[← mul_assoc, ← Complex.exp_add, ← mul_assoc (Complex.exp _), ← Complex.exp_add, ← mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -38,7 +38,7 @@ theorem schrF_comm {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {P : V 
   ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [GlobalTheory.ArchUniq.omega, hP.zero_left, hP.zero_right]`. Consider the case `insert j S hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, ← ih]`. Simplify using `only [GlobalTheory.ArchUniq.omega, Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd, hP.addR, hP.addL, hP.smulR, hP.smulL]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -59,37 +59,33 @@ end GlobalTheory.ArchEigen
 namespace GlobalTheory.ArchEigen
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hpure K hK f₀`. Establish `hP : GlobalTheory.ArchUniq.IsPairing (GlobalTheory.ArchUniq.trP F (Fin (b + 2) × Fin (b + 2 + a')))` using `GlobalTheory.ArchUniq.Coord.isPairing_trP _`. Establish `hcont` using `GlobalTheory.T.config_a_two_triples_identity_first F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ K`. Take `⟨m, yv, W', hW'o, h1W, hprop, hfib⟩` from `GlobalTheory.T.config_a_two_triples_identity_second F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ K hK hcont`. Establish `h0 : GlobalTheory.ArchUniq.Coord.coordI G.M 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.ArchUniq.Coord.coordI_add G.M 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`. Establish `hsum : ∀ (z : Fin m → Fin (b + 2) → AE F E) (s : Fin m → ℝ) (S : Finset (Fin m)), GlobalTheory.ArchUniq.Coord.coordI G.M (Matrix.vecMulVec (∑ i ∈ S, realAd F (s i) • z i) (incV F H'.x)) = ∑ i ∈ S, s i • GlobalTheory.ArchUniq.Coord.coordI G.M (Matrix.vecMulVec (z i) (incV F H'.x))`. Introduce `z s S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, Matrix.zero_vecMulVec, h0]`. Consider the case `insert j S hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, Matrix.add_vecMulVec, GlobalTheory.ArchUniq.Coord.coordI_add, ih, Matrix.smul_vecMulVec, GlobalTheory.ArchUniq.Coord.coordI_smul]`. Use `set c : Fin m → (Fin (b + 2) × Fin (b + 2 + a') → mixedEmbedding.mixedSpace F) × (Fin (b + 2) × Fin (b + 2 + a') → mixedEmbedding.mixedSpace F) := fun i => GlobalTheory.ArchUniq.Coord.coordI G.M (Matrix.vecMulVec (yv i) (incV F H'.x)) with hc`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `Λ₁ : EuclideanSpace ℝ (Fin m) →L[ℝ] (Fin (b + 2) × Fin (b + 2 + a') → mixedEmbedding.mixedSpace F)` to `∑ i, (EuclideanSpace.proj i).smulRight (c i).1`. Set `Λ₂ : EuclideanSpace ℝ (Fin m) →L[ℝ] (Fin (b + 2) × Fin (b + 2 + a') → mixedEmbedding.mixedSpace F)` to `∑ i, (EuclideanSpace.proj i).smulRight (c i).2`. Establish `hΛ : ∀ s : EuclideanSpace ℝ (Fin m), (Λ₁ s, Λ₂ s) = GlobalTheory.ArchUniq.Coord.coordI G.M (Matrix.vecMulVec (∑ i, realAd F (s i) • yv i) (incV F H'.x))`. Introduce `s`. Rewrite using `[hsum yv (fun i => s i) Finset.univ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Λ₁, Prod.fst_sum, hc]`. Simplify using `[Λ₂, Prod.snd_sum, hc]`. Use `⟨m, Λ₁, Λ₂, _, W', ?_, hW'o, h1W, hprop, hfib, ?_⟩` and prove the remaining obligations. Conclude with `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => (hcont (yv i)).neg)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p y`. Establish `hkK : p.1.1 ∈ KAt K (evI F)` using `p.1.2`. Establish `hkU : p.1.1 ∈ UAt σ G.V (evI F)` using `p.1.2.2`. Establish `hψ : IsStd B.ψ` using `hT.base.std`. Establish `hex : ∀ f : SInf F (Fin (b + 2) × Fin (b + 2 + a')), ∃ f₁ : SInf F (Fin (b + 2) × Fin (b + 2 + a')), Acts (evI F) (om (p.1.1, 1)) f f₁` using `GlobalTheory.ThK.ArchActs.acts_inf hKP F E σ B (b + 2) a' G X om om' hT p.1.1 hkU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Alin : SInf F (Fin (b + 2) × Fin (b + 2 + a')) →ₗ[ℂ] SInf F (Fin (b + 2) × Fin (b + 2 + a'))` to `{ toFun := locOpInf (om (p.1.1, 1)) map_add' := fun f f' => by simpa using locOpInf_lin (om (p.1.1, 1)).isLinear hex 1 1 f f' map_smul' := fun a f => by simpa using locOpInf_lin (om (p.1.1, 1)).isLinear hex a 0 f 0 }`. Establish `hAc : Continuous Alin`. Use `Seminorm.continuous_from_bounded (schwartz_withSeminorms ℂ _ ℂ) (schwartz_withSeminorms ℂ _ ℂ) Alin ?_` and prove the remaining obligations. Introduce `i`. Take `⟨s', C, hC⟩` from `GlobalTheory.ArchKX.locOpInf_unif_bound hKP F E σ B (b + 2) a' G X om om' hT K hK {i}`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨s', ⟨max C 0, le_max_right _ _⟩, Seminorm.le_def.2 fun f => ?_⟩` and prove the remaining obligations. Establish `h` using `hC p.1.1 hkK f`. Simplify using `only [Finset.sup_singleton] at h`. Simplify using `only [Seminorm.comp_apply, Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul, NNReal.coe_mk]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (apply_nonneg _ _))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Acl : SInf F (Fin (b + 2) × Fin (b + 2 + a')) →L[ℂ] SInf F (Fin (b + 2) × Fin (b + 2 + a'))` to `⟨Alin, hAc⟩`. Establish `hAcl : ∀ f, Acl f = locOpInf (om (p.1.1, 1)) f` using `fun f => rfl`. Use `set wt := GlobalTheory.ArchUniq.Coord.coordI G.M (shiftA H H' p.2.1) with hwt`. Establish `hR : ∀ h : SInf F (Fin (b + 2) × Fin (b + 2 + a')), locOpInf (G.M.co.rho B.ψ (partInf F (shiftA H H' p.2.1))) h = GlobalTheory.SchrPairing.schrSch hP wt h` using `fun h => DFunLike.coe_injective ((locOpInf_rho G.M.co hψ _ h).2.trans (GlobalTheory.SchrPairing.coe_schrSch hP wt h).symm)`. Set `ℓ : SInf F (Fin (b + 2) × Fin (b + 2 + a')) →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp ((SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ).comp (ei.comp ((GlobalTheory.SchrPairing.schrSch hP wt).comp Acl)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hℓ : ∀ g, ℓ g = ei (GlobalTheory.SchrPairing.schrSch hP wt (Acl g)) y` using `fun g => rfl`. Use `⟨ℓ, fun g => by rw [hℓ, hAcl, hR], fun s g hg => ?_⟩` and prove the remaining obligations. Use `set ys : Fin (b + 2) → AE F E := ∑ i, realAd F (s i) • yv i with hys`. Use `set u := Matrix.vecMulVec ys (incV F H'.x) with hu`. Establish `hg' : g = locOpInf (G.M.co.rho B.ψ (partInf F u)) f₀` using `DFunLike.coe_injective (hg.trans (by rw [hΛ s]; exact (locOpInf_rho G.M.co hψ u f₀).2.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hIsLoc : GlobalTheory.ThK.LemF.IsLocPart G.M G₁.M e ei ev` using `⟨hei, hev, hpure⟩`. Establish `t4` using `GlobalTheory.T.config_A_local_part_fold hKP.base F E σ B b a' G G₁ H H' hCfg e he ei ev hIsLoc X om om' om₁ om₁' hT hT₁ p.1.1 hkU u f₀`. Establish `hact : actAB (cA σ) ((p.1.1, 1) : UA σ G.V.J × UA σ G.W.J) u = Matrix.vecMulVec (mat p.1.1 *ᵥ ys) (incV F H'.x)`. Establish `h` using `Matrix.mul_vecMulVec (mat p.1.1) ys (incV F H'.x)`. Simplify using `only [actAB, hu, Units.val_one, Prod.snd_one, Prod.fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify `h` using `[mat]`. Use `set w'' := GlobalTheory.ArchUniq.Coord.coordI G.M (Matrix.vecMulVec (mat p.1.1 *ᵥ ys) (incV F H'.x)) with hw''`. Establish `hAg : Acl g = GlobalTheory.SchrPairing.schrSch hP w'' (Acl f₀)`. Rewrite using `[hAcl, hAcl, hg', t4, hact]`. Conclude with `DFunLike.coe_injective ((locOpInf_rho G.M.co hψ _ _).2.trans (GlobalTheory.SchrPairing.coe_schrSch hP w'' _).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set h₁ := GlobalTheory.SchrPairing.schrSch hP wt (Acl f₀) with hh₁`. Use `set h₂ := GlobalTheory.SchrPairing.schrSch hP w'' h₁ with hh₂`. Establish `hcomm : GlobalTheory.SchrPairing.schrSch hP wt (Acl g) = Complex.exp (-(2 * Real.pi * Complex.I) * ((GlobalTheory.ArchUniq.omega (GlobalTheory.ArchUniq.trP F (Fin (b + 2) × Fin (b + 2 + a'))) wt w'' : ℝ) : ℂ)) • h₂`. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hAg, GlobalTheory.SchrPairing.coe_schrSch, GlobalTheory.SchrPairing.coe_schrSch, GlobalTheory.ArchEigen.schrF_comm hP, SchwartzMap.smul_apply, smul_eq_mul, hh₂, hh₁, GlobalTheory.SchrPairing.coe_schrSch, GlobalTheory.SchrPairing.coe_schrSch]`. Establish `hei2 : ei h₂ = ei h₁` using `GlobalTheory.ThK.HeisInvInf.ei_schr_eq F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hev hpure (mat p.1.1 *ᵥ ys) h₁ h₂ (GlobalTheory.SchrPairing.coe_schrSch hP w'' h₁)`. Establish `hw''s : w'' = ∑ i, s i • GlobalTheory.ArchUniq.Coord.coordI G.M (Matrix.vecMulVec (mat p.1.1 *ᵥ yv i) (incV F H'.x))`. Rewrite using `[hw'', hys, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul]`.
-
-Conclude with `hsum (fun i => mat p.1.1 *ᵥ yv i) (fun i => s i) Finset.univ`. Establish `hphase : inner ℝ s (WithLp.toLp 2 fun i => -GlobalTheory.ArchUniq.omega (GlobalTheory.ArchUniq.trP F (Fin (b + 2) × Fin (b + 2 + a'))) (GlobalTheory.ArchUniq.Coord.coordI G.M (shiftA H H' p.2.1)) (GlobalTheory.ArchUniq.Coord.coordI G.M (Matrix.vecMulVec (mat p.1.1 *ᵥ yv i) (incV …`. Rewrite using `[hw''s, GlobalTheory.ArchEigen.omega_sum hP]`. Simplify using `[PiLp.inner_apply, hwt, Finset.sum_neg_distrib, mul_comm]`. Rewrite using `[hℓ, hℓ, hcomm, map_smul, SchwartzMap.smul_apply, hei2, smul_eq_mul, hphase]`.
-
-Use `congr 1`. Use `push_cast`. Put the polynomial expressions in normal form.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem exists_param_eigen : ∀ (hKP : GlobalTheory.ThK.KP) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

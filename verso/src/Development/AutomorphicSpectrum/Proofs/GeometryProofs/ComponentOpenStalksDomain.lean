@@ -17,9 +17,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Use `⟨?_, f.stalkMap_surjective x⟩` and prove the remaining obligations. Establish `h` using `Flat.stalkMap f x`. Use `algebraize [(f.stalkMap x).hom]`. Establish `: IsLocalHom (algebraMap (Y.presheaf.stalk (f x)) (X.presheaf.stalk x))` using `inferInstanceAs <| IsLocalHom (f.stalkMap x).hom`. Establish `: Module.FaithfullyFlat (Y.presheaf.stalk (f x)) (X.presheaf.stalk x)` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`.
-
-Conclude with `FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (f x)) (X.presheaf.stalk x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalkMap_bijective_of_flat_preimmersion {X Y : Scheme.{0}} (f : X ⟶ Y) [IsPreimmersion f] [Flat f] (x : X) :
     Function.Bijective (f.stalkMap x).hom := by
@@ -33,11 +31,11 @@ theorem stalkMap_bijective_of_flat_preimmersion {X Y : Scheme.{0}} (f : X ⟶ Y)
   exact FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (f x)) (X.presheaf.stalk x)
 
 /- English proof (translation)
-Use `haveI : IsDomain O := hi.isDomain β`. Use `letI : Algebra O F := β.toAlgebra`. Establish `hal : ∀ a : O, algebraMap O F a = β a` using `fun _ => rfl`. Establish `hfr : IsLocalization (nonZeroDivisors O) F` using `{ map_units := fun y => by`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hal]`. Conclude with `fun h => nonZeroDivisors.ne_zero y.2 (hi (h.trans (map_zero β).symm))`. Use `surj := fun z => by`. Take `⟨a, b, hb, e⟩` from `hq z`. Establish `hb0 : b ≠ 0` using `fun h => hb (by rw [h, map_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨(a, ⟨b, mem_nonZeroDivisors_of_ne_zero hb0⟩), e⟩`. Use `exists_of_eq := fun {x y} e => ⟨1, by rw [hi e]⟩ }`. Use `⟨IsPreimmersion.of_isLocalization (nonZeroDivisors O) (S := F), ?_⟩` and prove the remaining obligations. Establish `hfl : Module.Flat O F` using `IsLocalization.flat F (nonZeroDivisors O)`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.flat_algebraMap_iff.2 hfl)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spMap_flat_preimmersion {O F : Type} [CommRing O] [Field F] (β : O →+* F) (hi : Function.Injective β)
     (hq : ∀ x : F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) : IsPreimmersion (spMap β) ∧ Flat (spMap β) := by
@@ -61,7 +59,7 @@ theorem spMap_flat_preimmersion {O F : Type} [CommRing O] [Field F] (β : O →+
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `spMap_flat_preimmersion β hi hq`. Establish `h3 : IsPreimmersion (pullback.fst Y.s (spMap β))` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip h1`. Establish `h4 : Flat (pullback.fst Y.s (spMap β))` using `MorphismProperty.of_isPullback (P := @Flat) (IsPullback.of_hasPullback _ _).flip h2`. Use `Y.jQ_open` as an intermediate fact. Conclude with `⟨inferInstanceAs (IsPreimmersion (Y.jQ ≫ pullback.fst _ _)), inferInstanceAs (Flat (Y.jQ ≫ pullback.fst _ _))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem j_flat_preimmersion {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     (Y : Model Xo c β) (hi : Function.Injective β) (hq : ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) :
@@ -75,11 +73,11 @@ theorem j_flat_preimmersion {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing
   exact ⟨inferInstanceAs (IsPreimmersion (Y.jQ ≫ pullback.fst _ _)), inferInstanceAs (Flat (Y.jQ ≫ pullback.fst _ _))⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y U Z ⟨hi, hN, hq⟩`. Take `⟨h1, h2⟩` from `j_flat_preimmersion Y hi hq`. Establish `hP : IsProper Y.s` using `GlobalTheory.SchemeWords.isProper_of_isProjOver Y.proj`. Establish `hLN : IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`. Establish `ho` using `isOpen_closure_genPt (Z.ξ₀ ≫ Y.j) Z.gen`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : U = Y.j ⁻¹' closure {genPt (Z.ξ₀ ≫ Y.j)}`. Use extensionality with `u`. Rewrite using `[Z.closure u, Set.mem_preimage, ← specializes_iff_mem_closure]`. Conclude with `(Y.j.isEmbedding.isInducing.specializes_iff).symm`. Use `⟨⟨U, hU ▸ ho.preimage Y.j.continuous⟩, rfl, fun p _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := (Y.normal (Y.j p)).1`. Establish `hb` using `stalkMap_bijective_of_flat_preimmersion Y.j p`. Conclude with `((RingEquiv.ofBijective _ hb).symm.injective.isDomain (RingEquiv.ofBijective _ hb).symm.toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem cptOver_isOpen_isDomain : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → ∃ U' : (Xo.XF c).Opens, (U' : Set (Xo.XF c)) = U ∧ ∀ p : Xo.XF c, p ∈ U → IsDomain ((Xo.XF c).presheaf.stalk p) := by
   intro E _ _ _ H D l Xo c O _ β Y U Z ⟨hi, hN, hq⟩

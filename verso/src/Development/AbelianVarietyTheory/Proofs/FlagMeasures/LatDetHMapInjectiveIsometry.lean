@@ -15,11 +15,11 @@ variable {R K U V : Type*} [CommRing R] [Field K] [Algebra R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
 /- English proof (translation)
-Set `e : A ≃ₗ[R] A.map f` to `Submodule.equivMapOfInjective f hf A`. Establish `he : (B.comap A.subtype).map (e : A →ₗ[R] A.map f) = (B.map f).comap (A.map f).subtype`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, ha⟩, haB, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, haB, rfl⟩`. Introduce `hz`. Take `⟨b, hb, hbz⟩` from `hz`. Take `⟨a, ha, haz⟩` from `z.2`. Take `rfl : a = b` from `hf (haz.trans hbz.symm)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨a, ha⟩, hb, Subtype.ext haz⟩`. Conclude with `(Submodule.Quotient.equiv _ _ e he).length_eq.symm`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem length_quot_map (f : U →ₗ[R] V) (hf : Function.Injective f) (A B : Submodule R U) :
     Module.length R ((A.map f) ⧸ (B.map f).comap (A.map f).subtype) =
@@ -38,13 +38,11 @@ theorem length_quot_map (f : U →ₗ[R] V) (hf : Function.Injective f) (A B : S
   exact (Submodule.Quotient.equiv _ _ e he).length_eq.symm
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, a, ha, hax⟩`. Establish `hs0 : algebraMap R K s ≠ 0`. Introduce `h0`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `hRK (by rw [h0, map_zero])`. Rewrite using `[this]`. Conclude with `p.zero_mem`. Use `⟨(algebraMap R K s)⁻¹ • a, ⟨s, hs, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K s ((algebraMap R K s)⁻¹ • a), smul_smul, mul_inv_cancel₀ hs0, one_smul]`. Conclude with `ha`. Rewrite `hax`, the goal using `[LinearMap.restrictScalars_apply]`. Rewrite using `[map_smul, hax, ← algebraMap_smul K s x, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Introduce and unpack `⟨y, ⟨s, hs, hsy⟩, rfl⟩`.
-
-Conclude with `⟨s, hs, s • y, hsy, LinearMap.map_smul _ s y⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localization_map₂ (hRK : Function.Injective (algebraMap R K)) (i : U →ₗ[K] V)
     (hi : Function.Injective i) (p : Ideal R) [p.IsPrime] (A : Submodule R U) :
@@ -67,7 +65,7 @@ theorem localization_map₂ (hRK : Function.Injective (algebraMap R K)) (i : U �
     exact ⟨s, hs, s • y, hsy, LinearMap.map_smul _ s y⟩
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.locLen`. Rewrite using `[localization_map₂ hRK i hi p A, localization_map₂ hRK i hi p B, length_quot_map (i.restrictScalars R) (by simpa using hi)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem locLen_map (hRK : Function.Injective (algebraMap R K)) (i : U →ₗ[K] V)
     (hi : Function.Injective i) (p : Ideal R) [p.IsPrime] (A B : Submodule R U) :
@@ -78,7 +76,7 @@ theorem locLen_map (hRK : Function.Injective (algebraMap R K)) (i : U →ₗ[K] 
     length_quot_map (i.restrictScalars R) (by simpa using hi)]
 
 /- English proof (translation)
-Establish `hi' : Function.Injective (i.restrictScalars R)` using `by simpa using hi`. Unfold `Formalism.HermitianLatticesTheory.lidx`. Rewrite using `[← Submodule.map_inf _ hi', locLen_map hRK i hi, locLen_map hRK i hi]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lidx_map (hRK : Function.Injective (algebraMap R K)) (i : U →ₗ[K] V)
     (hi : Function.Injective i) (p : Ideal R) [p.IsPrime] (A B : Submodule R U) :
@@ -97,7 +95,7 @@ variable {K U V : Type} [Field K] [NumberField K] [StarRing K]
   [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `hRK : Function.Injective (algebraMap (𝓞 K) K)` using `IsFractionRing.injective (𝓞 K) K`. Unfold `genIdxH`. Use `finprod_congr fun P => ?_` and prove the remaining obligations. Use `haveI := P.isPrime`. Rewrite using `[lidx_map hRK i hi]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genIdxH_map (i : U →ₗ[K] V) (hi : Function.Injective i) (A B : Submodule (𝓞 K) U) :
     genIdxH (A.map (i.restrictScalars (𝓞 K))) (B.map (i.restrictScalars (𝓞 K))) = genIdxH A B := by
@@ -108,18 +106,18 @@ theorem genIdxH_map (i : U →ₗ[K] V) (hi : Function.Injective i) (A B : Submo
   rw [lidx_map hRK i hi]
 
 /- English proof (translation)
-Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dual (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (x : V) :
     x ∈ Formalism.HermitianLatticesTheory.dual h L ↔ ∀ y ∈ L, h y x ∈ (1 : Submodule (𝓞 K) K) := by
   simp [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]
 
 /- English proof (translation)
-Establish `hspan : (Submodule.span K ((N.map (i.restrictScalars (𝓞 K)) : Submodule (𝓞 K) V) : Set V)) = (Submodule.span K (N : Set U)).map i`. Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image]`. Use extensionality with `x`. Simplify using `only [dualInH, Submodule.mem_inf, Submodule.restrictScalars_mem, hspan, mem_dual, Submodule.mem_map, LinearMap.coe_restrictScalars]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hx, y, hy, rfl⟩`. Use `⟨y, ⟨fun n hn => ?_, hy⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← hiso]`. Conclude with `hx (i n) ⟨n, hn, rfl⟩`. Introduce and unpack `⟨y, ⟨hy, hys⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, y, hys, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Rewrite using `[hiso]`. Conclude with `hy n hn`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualInH_map (hU : U →ₗ⋆[K] U →ₗ[K] K) (hV : V →ₗ⋆[K] V →ₗ[K] K) (i : U →ₗ[K] V)
     (hiso : ∀ x y, hV (i x) (i y) = hU x y) (N : Submodule (𝓞 K) U) :
@@ -145,7 +143,7 @@ theorem dualInH_map (hU : U →ₗ⋆[K] U →ₗ[K] K) (hV : V →ₗ⋆[K] V �
 end NumberField
 
 /- English proof (translation)
-Introduce `K U V _ _ _ _ _ _ _ _ _ _ _ hU hV i hi hiso N`. Unfold `latDetH`. Rewrite using `[dualInH_map hU hV i hiso, genIdxH_map i hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem latDetH_map : ∀ (K U V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup U] [Module K U] [Module (𝓞 K) U] [IsScalarTower (𝓞 K) K U] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (hU : U →ₗ⋆[K] U →ₗ[K] K) (hV : V →ₗ⋆[K] V →ₗ[K] K) (i : U →ₗ[K] V), Function.Injective i → (∀ x y, hV (i x) (i y) = hU x y) → ∀ N : Submodule (𝓞 K) U, latDetH hV (N.map (i.restrictScalars (𝓞 K))) = latDetH hU N := by
   intro K U V _ _ _ _ _ _ _ _ _ _ _ hU hV i hi hiso N

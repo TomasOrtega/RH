@@ -13,15 +13,15 @@ open scoped TensorProduct
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[bsH_eq_bsA]`. Establish `hex : ∃ v : ℕ, ∃ i : ℕ, φ.ofNat v + i • h = t` using `⟨t.val, 0, by simp⟩`. Unfold `Formalism.L2.GlobalTheoryTheory.Arith.bsH`. Rewrite using `[dif_pos hex]`. Unfold `Formalism.MainNotions.Inhab.bsA`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Nat.find_min'` to reduce the goal to its premises. Take `⟨i, hi⟩` from `Formalism.MainNotions.Inhab.bsA_orb h t`. Conclude with `⟨i, hi⟩`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨i, hi⟩` from `Nat.find_spec hex set v := Nat.find hex`. Establish `hN : 1 ≤ φ.ord` using `φ.ord_pos`. Establish `hv : φ.ofNat v = t + (i * (φ.ord - 1)) • h`. Establish `h1 : (i * (φ.ord - 1)) • h + i • h = 0`. Rewrite using `[← add_nsmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: i * (φ.ord - 1) + i = i * φ.ord`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, mul_nsmul', Formalism.MainNotions.Inhab.ord_nsmul_A, nsmul_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_assoc, add_comm (i • h), h1, add_zero]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = t + (i * (φ.ord - 1)) • h := by rw [hi]`. Establish `hle` using `Formalism.MainNotions.Inhab.bsA_val_le h t (i * (φ.ord - 1))`. Rewrite `hle` using `[Formalism.MainNotions.Inhab.bsA_val, ← hv, Formalism.HC.Frame.val_ofNat]`. Conclude with `hle.trans (Nat.mod_le _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arith_bsH_eq {φ : Formalism.HC.Frame} (h t : φ.A) : Formalism.L2.GlobalTheoryTheory.Arith.bsH h t = Formalism.L2.G.bsH φ h t := by
   rw [bsH_eq_bsA]
@@ -59,9 +59,9 @@ open Formalism.L2.G Formalism.MainNotions.G Formalism.UG Formalism.FrobeniusOrbi
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hs : stepP D p = hP D p`. Unfold `stepP`. Rewrite using `[if_neg (fun h : D.host.cls p = PrimeClass.signal => by`. Establish `hc' : D.host.cls p = PrimeClass.inertClass` using `hc`. Rewrite `h` using `[hc']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `PrimeClass.noConfusion h)]`. Unfold `reps`. Rewrite using `[hs]`. Use extensionality with `x`. Simplify using `[hb, arith_bsH_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reps_canon {D : D7} {L : SizeData₂ D} (X : Inst D L) (hb : ∀ h t, X.bs h t = Formalism.L2.GlobalTheoryTheory.Arith.bsH h t) {p : ℕ}
     (hc : IsResidueClassZero D p) : ((reps X p : Finset (HH D)) : Set (HH D)) = Set.range (Formalism.L2.G.bsH D.R.toFrame (hP D p)) := by
@@ -76,7 +76,7 @@ theorem reps_canon {D : D7} {L : SizeData₂ D} (X : Inst D L) (hb : ∀ h t, X.
   simp [hb, arith_bsH_eq]
 
 /- English proof (translation)
-Unfold `fillG`. Rewrite using `[hfill j hj (D.eTau.symm (tau1P D.R.toFrame t)) (false, t) (by rw [Equiv.apply_symm_apply, Formalism.MainNotions.Inhab.plGG_false]; rfl)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbitFill_eq_sizeMinusWeight_firstPlace {D : D7} {L : SizeData₂ D} (X : Inst D L)
     (hfill : ∀ j ∈ SizeData₂.lifts D, ∀ (τ : D.what₂.Tau) (z : Bool × HH D), (D.eTau τ : D.R.GG) = plGG D z →
@@ -91,25 +91,23 @@ variable {p : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValua
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use `⟨rfl, rfl, hcc, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[reps_canon X hb hc]`. Conclude with `vOfH_injOn _ _`. Introduce `v s t ht`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht' : ((posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩ : D.R.Psi) : D.R.GG) = D.R.tau2 t`. Establish `h0 : ((D.eTau (D.eTau.symm (posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩)) : D.R.Psi) : D.R.GG) = D.R.tau2 t` using `ht`. Rewrite `h0` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `⟨fun hs => ?_, fun jj hj => ?_⟩` and prove the remaining obligations. Establish `h1 : ((posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩ : D.R.Psi) : D.R.GG) ∈ D.host.topPlaces` using `(Finset.mem_filter.1 hs).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[ht', ← Formalism.MainNotions.Inhab.plGG_true, Formalism.MainNotions.Inhab.plGG_top_iff]`. Conclude with `Bool.noConfusion h1.1`. Use `show ((wRec D u (posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩) jj : ℤ) : ℝ) = _`. Rewrite using `[wRec_eq D u _ jj hj]`. Unfold `fillG`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hfill jj hj (D.eTau.symm (posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩)) (true, t) (by rw [Equiv.apply_symm_apply, ht', Formalism.MainNotions.Inhab.plGG_true])]`. Introduce `t0 ht0`. Establish `ht0' : t0 ∈ Set.range (Formalism.L2.G.bsH D.R.toFrame (hP D p))`. Rewrite using `[← reps_canon X hb hc]`. Conclude with `ht0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `ht0'`. Use `⟨orderOf_zH _ _, fun s => ?_⟩` and prove the remaining obligations. Establish `hpos : posG (zH D.R.toFrame (hP D p)) ⟨vOfH D.R.toFrame (hP D p) (Formalism.L2.G.bsH D.R.toFrame (hP D p) x), s⟩ = tau1P D.R.toFrame (Formalism.L2.G.bsH D.R.toFrame (hP D p) x + s.val • hP D p)`. Rewrite using `[posG_vOfH, bsH_idem]`. Establish `hmem : (s ∈ (fillsRec D u (D.R.iota (hP D p)) hS (rRec L p) Lc I ψ y e c hcl).TT (vOfH D.R.toFrame (hP D p) (Formalism.L2.G.bsH D.R.toFrame (hP D p) x))) ↔ Formalism.L2.G.bsH D.R.toFrame (hP D p) x + s.val • hP D p ∈ D.host.TT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← tau_top_places_iff]`. Use `show s ∈ Finset.univ.filter _ ↔ _`. Rewrite using `[Finset.mem_filter, hpos]`. Conclude with `⟨fun h => h.2, fun h => ⟨Finset.mem_univ _, h⟩⟩`. Establish `ha : (fillsRec D u (D.R.iota (hP D p)) hS (rRec L p) Lc I ψ y e c hcl).a (vOfH D.R.toFrame (hP D p) (Formalism.L2.G.bsH D.R.toFrame (hP D p) x)) s = aL L (Formalism.L2.G.bsH D.R.toFrame (hP D p) x + s.val • hP D p)` using `by show (if ((posG (zH D.R.toFrame (hP D p)) _ : D.R.Psi) : D.R.GG) ∈ D.host.topPlaces then lamRec D u (posG (zH D.R.toFrame (hP D p)) _) 0 else 0) = _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpos, tau_coe_val]`. Unfold `aL`. Distinguish the cases in `ht : Formalism.L2.G.bsH D.R.toFrame (hP D p) x + s.val • hP D p ∈ D.host.TT`. Rewrite using `[if_pos ((tau_top_places_iff D _).2 ht), dif_pos ht]`. Conclude with `(lamRec_top L u _ ⟨_, ht⟩ rfl).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => ht ((tau_top_places_iff D _).1 h)), dif_neg ht]`. Establish `hb' : (fillsRec D u (D.R.iota (hP D p)) hS (rRec L p) Lc I ψ y e c hcl).b (vOfH D.R.toFrame (hP D p) (Formalism.L2.G.bsH D.R.toFrame (hP D p) x)) s = bL L (Formalism.L2.G.bsH D.R.toFrame (hP D p) x + s.val • hP D p)` using `by show (if ((posG (zH D.R.toFrame (hP D p)) _ : D.R.Psi) : D.R.GG) ∈ D.host.topPlaces then -lamRec D u (posG (zH D.R.toFrame (hP D p)) _) (Fin.last _) else 0) = _`. Rewrite using `[hpos, tau_coe_val]`. Unfold `bL`. Distinguish the cases in `ht : Formalism.L2.G.bsH D.R.toFrame (hP D p) x + s.val • hP D p ∈ D.host.TT`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ((tau_top_places_iff D _).2 ht), dif_pos ht, (lamRec_top L u _ ⟨_, ht⟩ rfl).2, neg_neg]`. Rewrite using `[if_neg (fun h => ht ((tau_top_places_iff D _).1 h)), dif_neg ht]`. Use `⟨?_, hmem, fun _ => ⟨ha, hb'⟩, fun jj hj => ?_⟩` and prove the remaining obligations. Use `show ((D.eTau (D.eTau.symm (posG (zH D.R.toFrame (hP D p)) _)) : D.R.Psi) : D.R.GG) = _`. Rewrite using `[Equiv.apply_symm_apply, hpos]`.
-
-Both sides reduce to the same expression. Use `show ((wRec D u (posG (zH D.R.toFrame (hP D p)) _) jj : ℤ) : ℝ) = _`. Rewrite using `[hpos, wRec_eq D u _ jj hj, orbitFill_eq_sizeMinusWeight_firstPlace X hfill jj hj]`.
+A detailed English derivation is pending.
 -/
 theorem latTiedAt_canon {D : D7} (L : SizeData₂ D) (X : Inst D L) (hb : ∀ h t, X.bs h t = Formalism.L2.GlobalTheoryTheory.Arith.bsH h t)
     (hfill : ∀ j ∈ SizeData₂.lifts D, ∀ (τ : D.what₂.Tau) (z : Bool × HH D), (D.eTau τ : D.R.GG) = plGG D z →
@@ -207,7 +205,7 @@ noncomputable def fillsC (c : ℕ) (hcl : ∀ u, CloudBound (recG D sc Ce Lc X h
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Rewrite using `[latTied_iff]`. Introduce `(u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))`. Conclude with `latTiedAt_canon (D := recG D sc Ce Lc X hd) L Xi hb (hfill w) u h.2.2.1 (X u w h).hS (rSc sc D.R.k (D.what₂.places.resChar w)) (by rw [rRec_eq, hsc]; rfl) (Lc u) (X u w h).I (X u w h).ψ (repP (Lc u) _) (epSc D.R sc Ce (D.what₂.places.resChar w)) c (hcl u) hcc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem latTied_fillsC (c : ℕ) (hcl : ∀ u, CloudBound (recG D sc Ce Lc X hd) u c)
     (Lv : ∀ u w h, Levels (fillsC D sc Ce Lc X hd c hcl u w h)) (Ch : ∀ u w h, Chain (Lv u w h))
@@ -225,7 +223,7 @@ theorem latTied_fillsC (c : ℕ) (hcl : ∀ u, CloudBound (recG D sc Ce Lc X hd)
     (epSc D.R sc Ce (D.what₂.places.resChar w)) c (hcl u) hcc
 
 /- English proof (translation)
-Introduce `j hj` and use `wRec_eq D u _ j hj`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fillsC_w (c : ℕ) (hcl : ∀ u, CloudBound (recG D sc Ce Lc X hd) u c) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (x : Fin ((recG D sc Ce Lc X hd).gat u w h).P.nV)
@@ -247,7 +245,7 @@ attribute [local instance] Formalism.BasicNotions.factResChar
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Consider the cases of `hR`. Use `⟨fun _ w _ => vOfH D0.R.toFrame (hP D0 (D0.what₂.places.resChar w)), fillsC D0 sc Ce Lc X hd c hcl, fun _ _ _ => ⟨rfl, rfl⟩, fun u v hg x s => fillsC_w D0 sc Ce Lc X hd c hcl u v hg x s, ?_⟩` and prove the remaining obligations. Introduce `Lv Ch Vram L hsc hcc Xi hb hfill`. Conclude with `latTied_fillsC D0 sc Ce Lc X hd c hcl Lv Ch Vram L hsc hcc Xi hb hfill`.
+Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem latLayer_of_eq (sc : Scale) (D : D7) (Gt : GatTies D) (D0 : D7) (Ce : ℝ)
     (Lc : ∀ u, ColLevel D0.R D0.host.F D0.host.E D0.sp D0.host.g (D0.mem u).C (D0.mem u).A (D0.clsLat u))
@@ -284,9 +282,9 @@ open GlobalTheory.GyLat
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `K B f T w _ _ _ Z t Wt nch _ Y _ _ hcl`. Take `⟨c, hcl, hcG⟩` from `hcl`. Take `⟨D0, Lc, I, ψ, hd, H0, hL, Tf, Bm, hBs, hB, iK, lam, hK, hPos, CH, eq⟩` from `t.isRec`. Establish `hR : (⟨w.D Z, t.Gt⟩ : Σ D : D7, GatTies D) = ⟨Formalism.L2.G.recC D0 K.s 1 Lc I ψ hd, Formalism.L2.G.gatTiesC D0 K.s 1 Lc I ψ hd⟩` using `congrArg (fun x => (⟨x.1, x.2.1⟩ : Σ D : D7, GatTies D)) eq`. Take `⟨vOf, Fl, h1, h2, h3⟩` from `latLayer_of_eq K.s (w.D Z) t.Gt D0 1 Lc (Formalism.L2.G.packC D0 Lc I ψ) hd hR c hcl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨vOf, Fl, h1, h2, ?_⟩` and prove the remaining obligations. Introduce `Lv Ch Vram L hsc _ hV X hX _ _ hLF`. Conclude with `h3 Lv Ch Vram L hsc (hcG L hsc hV) X hX.1 (fun v => (hLF v).1)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem latLayer_free : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (_ : NchT w Z Wt nch) (Y : DivX (w.D Z)),

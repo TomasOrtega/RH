@@ -17,11 +17,11 @@ namespace GlobalTheory.BdFib
 open GlobalTheory.SpecialFibreExt
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t k k' _ _ f x φ m hφ Q ψ hQ`. Take `⟨h₁, h₂, h₃⟩` from `hφ`. Take `⟨-, gP, hw⟩` from `hQ`. Establish `gG` using `isGrpPullback_pullback φ.G (spMap f)`. Take `⟨hL, hr, ⟨c', h'⟩, -⟩` from `Out.CubePf.cubePull _ _ _ _ (cubeMapOf gG) φ.L φ.cub`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `φ.i_hom` as an intermediate fact. Take `⟨q, i, hq, hi, sq, ker⟩` from `exists_ext_baseChange gG gP φ.q φ.i φ.isKernel`. Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨cB⟩` from `(GlobalTheory.firstFiveLaws.1.cube _ Q ⟨Q.L, rig, Q.isLB, hrig⟩ rfl).1`. Establish `hB` using `TripleModel.isPullCubical_of_lbIso GlobalTheory.globalFns_holds Q.isAb gP cB φ.cubB (LBIso.symm hw)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF : (SpecialFibreExt.comp (cubeMapOf gG) (CubeMap.ofHom φ.q)).F = (CubeMap.ofHom q).F ≫ (cubeMapOf gP).F` using `sq.w`. Establish `hs : Smooth ((Over.pullback (spMap f)).obj φ.G).hom` using `MorphismProperty.of_isPullback (P := @Smooth) gG.1 φ.smooth`. Use `⟨{ G := (Over.pullback (spMap f)).obj φ.G, smooth := hs, L := _, cub := c', P := Q, rig := rig rig_gen := hrig, cubB := cB, q := q q_flat := MorphismProperty.of_isPullback (P := @Flat) sq φ.q_flat q_surj := MorphismProperty.of_isPullback (P := @Surjective) sq φ.q_surj q_affine := …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_fibAt_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (k k' : Type) [Field k] [Field k'] (f : k →+* k') (x : Sp k ⟶ X) (φ : Fib k) (m : CubeMap φ.G t.G), FibAt t x φ m → ∀ (Q : Out.PolAV (Sp k')) (ψ : Q.A.left ⟶ φ.P.A.left), IsPolFibre f φ.P Q ψ → ∃ (φ' : Fib k') (m' : CubeMap φ'.G t.G) (χ : φ'.G.left ⟶ φ.G.left) (ψ' : φ'.P.A.left ⟶ φ.P.A.left), φ'.P = Q ∧ HEq ψ' ψ ∧ FibAt t (spMap f ≫ x) φ' m' ∧ IsGrpPullback φ'.G φ.G (spMap f) χ ∧ χ ≫ m.F = m'.F ∧ φ'.q.left ≫ ψ' = χ ≫ φ.q.left ∧ Module.finrank ℤ φ'.X = Module.finrank ℤ φ.X := by
   intro E _ _ _ H X t k k' _ _ f x φ m hφ Q ψ hQ

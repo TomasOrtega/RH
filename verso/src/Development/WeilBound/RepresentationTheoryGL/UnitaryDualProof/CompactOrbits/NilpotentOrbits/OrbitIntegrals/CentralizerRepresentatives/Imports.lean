@@ -9,19 +9,17 @@ namespace PositivityTheory.RgUd.T.Nil.Orb.BReps
 variable {k : Type} [Field k] {n : ℕ}
 
 /- English proof (translation)
-Use `letI iCR : CommRing Z := { (inferInstance : Ring Z) with mul_comm := fun a b => Subtype.ext (hc a a.2 b b.2) }`. Use `letI iM : Module Z (Fin n → k) := Module.compHom (Fin n → k) ((Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) k ≃ₐ[k] Module.End k (Fin n → k)).toRingHom.comp Z.val.toRingHom)`. Establish `hsmul : ∀ (z : Z) (u : Fin n → k), z • u = (z : Matrix (Fin n) (Fin n) k) *ᵥ u` using `fun z u => rfl`. Use `haveI iST : IsScalarTower k Z (Fin n → k) := ⟨fun c z u => by`. Rewrite using `[hsmul, hsmul, Subalgebra.coe_smul]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Simplify using `[mulVec, dotProduct, Finset.mul_sum, mul_assoc]⟩`. Take `⟨M, fM, L, fL, hne, Rc, o, H⟩` from `@dex_global k _ Z iCR (Subalgebra.algebra Z) inferInstance hr (Fin n → k) _ iM _ iST inferInstance`. Use `⟨M, fM, L, fL, hne, Rc, o, ?_⟩` and prove the remaining obligations. Introduce `N hNZ hNnil v`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `toZ : (A : Matrix (Fin n) (Fin n) k) → (∀ z ∈ Z, z * A = A * z) → ((Fin n → k) →ₗ[Z] (Fin n → k))` to `fun A hA => { toFun := fun u => A *ᵥ u map_add' := fun u w => mulVec_add A u w map_smul' := fun z u => by show A *ᵥ ((z : Matrix (Fin n) (Fin n) k) *ᵥ u) = (z : Matrix (Fin n) (Fin n) k) *ᵥ (A *ᵥ u)`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, hA z z.2] }`. Establish `hpow : ∀ j : ℕ, ∀ u, ((toZ N hNZ) ^ j) u = (N ^ j) *ᵥ u`. Introduce `j`. Proceed by induction on `j with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro u`. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `u`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, pow_succ', ← mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hnil : IsNilpotent (toZ N hNZ)`. Take `⟨K, hK⟩` from `hNnil`. Conclude with `⟨K, LinearMap.ext fun u => by rw [hpow, hK, zero_mulVec]; rfl⟩`. Take `⟨ι, fι, l, s, β, h1, h2, h3, h4, h5, h6⟩` from `H (toZ N hNZ) hnil v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : ∀ (A : Matrix (Fin n) (Fin n) k), (∀ z ∈ Z, z * A = A * z) → A * N = N * A → ∀ (m : M) (p : L m) (a : ι m) (i : Fin (l m a)), (i : ℕ) < s m a → (β.repr (A *ᵥ v)) ⟨m, (p, ⟨a, i⟩)⟩ = 0`. Introduce `A hAZ hAN m p a i hi`. Use `h6 (toZ A hAZ) (LinearMap.ext fun u => ?_) m p a i hi` and prove the remaining obligations. Use `show A *ᵥ (N *ᵥ u) = N *ᵥ (A *ᵥ u)`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, hAN]`.
-
-Conclude with `⟨@Frame.mk k _ n Z M fM L fL Rc o N v ι fι l s β h1 h2 (fun z m p j => h3 z m p j) h4 h5 hA⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frames (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hc : ∀ a ∈ Z, ∀ b ∈ Z, a * b = b * a)
     (hr : IsReduced Z) :

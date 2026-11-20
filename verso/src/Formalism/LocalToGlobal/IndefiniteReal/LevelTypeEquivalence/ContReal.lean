@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {S T : HSp D} {k : ℕ}
 
 /- English proof (translation)
-Establish `: s = ∑ i, s i • ev i`. Use function extensionality and compare the values at `j`. Simplify using `[ev, Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [this]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem clm_sum {M : Type} [NormedAddCommGroup M] [NormedSpace ℝ M] (ℓ : (Fin k → ℝ) →L[ℝ] M) (s : Fin k → ℝ) :
     ℓ s = ∑ i, s i • ℓ (ev i) := by
@@ -32,15 +32,15 @@ variable (Λ : Ainf D.host.F →+ ℂ) (hΛ : Continuous Λ) (L : (Fin k → ℝ
 include hΛ hL in
 
 /- English proof (translation)
-Establish `hs : ∀ t, Λ (symplOH S T (L s) (L t)).1 = ∑ i, s i * Λ (symplOH S T (L (ev i)) (L t)).1`. Introduce `t`. Set `g : (Fin k → ℝ) →+ ℂ` to `AddMonoidHom.mk' (fun s => Λ (symplOH S T (L s) (L t)).1) (fun a b => by`. Simplify using `only [map_add, symplOH_add_left]`. Conclude with `Λ.map_add _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg : Continuous g`. Establish `h1 : Continuous fun s => symplOH S T (L s) (L t)` using `(continuous_symplOH_left (L t)).comp hL`. Conclude with `hΛ.comp (continuous_fst.comp h1)`. Use `clm_sum (AddMonoidHom.toRealLinearMap g hg) s` as an intermediate fact. Simplify `this` using `[g, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs t]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Set `g : (Fin k → ℝ) →+ ℂ` to `AddMonoidHom.mk' (fun t => Λ (symplOH S T (L (ev i)) (L t)).1) (fun a b => by`. Simplify using `only [map_add, symplOH_add_right]`. Conclude with `Λ.map_add _ _)`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Continuous g`. Establish `h1 : Continuous fun t => symplOH S T (L (ev i)) (L t)` using `(continuous_symplOH_right _).comp hL`. Conclude with `hΛ.comp (continuous_fst.comp h1)`. Use `clm_sum (AddMonoidHom.toRealLinearMap g hg) t` as an intermediate fact. Simplify using `only [AddMonoidHom.coe_toRealLinearMap, g, AddMonoidHom.mk'_apply, smul_eq_mul] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem beta_poly (s t : Fin k → ℝ) :
     Λ (symplOH S T (L s) (L t)).1 = ∑ i, ∑ j, s i * t j * Λ (symplOH S T (L (ev i)) (L (ev j))).1 := by
@@ -79,21 +79,17 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {Λ : Ainf D.host.F →+ ℂ} (hΛ : C
 include hΛ hψΛ hL in
 
 /- English proof (translation)
-Use `set b : Fin k → Fin k → ℂ := fun i j => Λ (symplOH S T (L (ev i)) (L (ev j))).1`. Use `set g0 : (Fin k → ℝ) → ℂ := fun r => f (x0 + L r)`. Establish `hg0 : ContDiff ℝ ∞ g0` using `hf.smooth k L hL.1 hL.2.1 x0`. Use `set ℓ := ellx Λ hΛ L hL.1 x0`. Use `set Φ : (Fin k → ℝ) × (Fin k → ℝ) → ℂ := fun p => Complex.exp (ℓ p.2 + ∑ i, ∑ j, (p.1 i : ℂ) * (p.2 j : ℂ) * b i j) * g0 (p.1 + p.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΦ : ContDiff ℝ ∞ Φ`. Establish `h1 : ContDiff ℝ ∞ fun p : (Fin k → ℝ) × (Fin k → ℝ) => ℓ p.2` using `ℓ.contDiff.comp contDiff_snd`. Establish `h2 : ContDiff ℝ ∞ fun p : (Fin k → ℝ) × (Fin k → ℝ) => ∑ i, ∑ j, (p.1 i : ℂ) * (p.2 j : ℂ) * b i j`. Use `ContDiff.sum fun i _ => ContDiff.sum fun j _ => ?_` and prove the remaining obligations. Use `ContDiff.mul (ContDiff.mul ?_ ?_) contDiff_const` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `Complex.ofRealCLM.contDiff.comp ((contDiff_apply ℝ ℝ i).comp contDiff_fst)`. Conclude with `Complex.ofRealCLM.contDiff.comp ((contDiff_apply ℝ ℝ j).comp contDiff_snd)`. Conclude with `((Complex.contDiff_exp (𝕜 := ℝ)).comp (h1.add h2)).mul (hg0.comp (contDiff_fst.add contDiff_snd))`. Establish `hGf : ∀ s, Gf ψ L f (x0 + L s) = fun t => Φ (s, t)`. Introduce `s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Establish `hrs : eInf D • L s = L s` using `(wo_real_iff (L s)).mp (hL.2.1 s)`. Establish `hrt : eInf D • L t = L t` using `(wo_real_iff (L t)).mp (hL.2.1 t)`. Simplify using `only [Gf, heisO, Φ, g0]`. Rewrite using `[symplOH_add_left]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (symplOH S T x0 (L t) + symplOH S T (L s) (L t)).2 = 0` using `by show (symplOH S T x0 (L t)).2 + (symplOH S T (L s) (L t)).2 = 0`. Rewrite using `[symplOH_snd _ _ hrt, symplOH_snd _ _ hrt, add_zero]`. Rewrite using `[hψΛ _ h2, show (symplOH S T x0 (L t) + symplOH S T (L s) (L t)).1 = (symplOH S T x0 (L t)).1 + (symplOH S T (L s) (L t)).1 from rfl, map_add, beta_poly Λ hΛ L hL.1 s t, map_add, add_assoc]`. Both sides reduce to the same expression. Establish `hval : ∀ s, dH ψ L l f (x0 + L s) = iteratedFDeriv ℝ n Φ (s, 0) (fun i => (0, ev (l i)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s`. Establish `e : dH ψ L l f (x0 + L s) = iteratedFDeriv ℝ n (Gf ψ L f (x0 + L s)) 0 (fun i => ev (l i))` using `rfl`. Rewrite using `[e, hGf s]`. Establish `hcomp : (fun t => Φ (s, t)) = (fun q => Φ (q + (s, 0))) ∘ (ContinuousLinearMap.inr ℝ (Fin k → ℝ) (Fin k → ℝ))`. Use function extensionality and compare the values at `t`.
-
-Simplify using the standard rewrite rules. Establish `hΦs : ContDiff ℝ ∞ (fun q => Φ (q + (s, 0)))` using `hΦ.comp (contDiff_id.add contDiff_const)`. Rewrite using `[hcomp, ContinuousLinearMap.iteratedFDeriv_comp_right (ContinuousLinearMap.inr ℝ (Fin k → ℝ) (Fin k → ℝ)) hΦs 0 (natCast_lt_inf n).le, iteratedFDeriv_comp_add_right]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[hval]`.
-
-Conclude with `(ContinuousMultilinearMap.apply ℝ _ ℂ _).continuous.comp ((hΦ.continuous_iteratedFDeriv (natCast_lt_inf n).le).comp (continuous_id.prodMk continuous_const))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_real {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (x0 : WO S T) {n : ℕ} (l : Fin n → Fin k) :
     Continuous fun s => dH ψ L l f (x0 + L s) := by

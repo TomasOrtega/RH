@@ -17,30 +17,30 @@ noncomputable def rtr (g : Matrix ι ι ℂ) : MvPolynomial (ι × ι) ℂ →�
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[evC]`.
+Simplify using the standard rewrite rules.
 -/
 lemma evC_add (p q : MvPolynomial (ι × ι) ℂ) (y : Matrix ι ι ℂ) : evC (p + q) y = evC p y + evC q y := by
   simp [evC]
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[evC]`.
+Simplify using the standard rewrite rules.
 -/
 lemma evC_mul (p q : MvPolynomial (ι × ι) ℂ) (y : Matrix ι ι ℂ) : evC (p * q) y = evC p y * evC q y := by
   simp [evC]
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[evC, MvPolynomial.smul_eval]`.
+Simplify using the standard rewrite rules.
 -/
 lemma evC_smul (c : ℂ) (p : MvPolynomial (ι × ι) ℂ) (y : Matrix ι ι ℂ) : evC (c • p) y = c * evC p y := by
   simp [evC, MvPolynomial.smul_eval]
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [evC, rtr]`. Consider the case `add p q hp hq => rw [map_add, evC_add, evC_add, hp, hq]`. Consider the case `mul_X p ij hp`. Rewrite using `[map_mul, evC_mul, evC_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[evC, rtr, Matrix.mul_apply, MvPolynomial.smul_eval, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 lemma evC_rtr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) : evC (rtr g f) y = evC f (y * g) := by
   induction f using MvPolynomial.induction_on with
@@ -53,9 +53,9 @@ lemma evC_rtr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) : evC (
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [evC, ltr]`. Consider the case `add p q hp hq => rw [map_add, evC_add, evC_add, hp, hq]`. Consider the case `mul_X p ij hp`. Rewrite using `[map_mul, evC_mul, evC_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[evC, ltr, Matrix.mul_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 lemma evC_ltr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) : evC (ltr g f) y = evC f (g * y) := by
   induction f using MvPolynomial.induction_on with
@@ -68,7 +68,7 @@ lemma evC_ltr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) : evC (
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[evC, ev, MvPolynomial.eval_map, MvPolynomial.aeval_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma evC_map (p : MvPolynomial (ι × ι) ℚ) (y : Matrix ι ι ℂ) :
     evC (MvPolynomial.map (algebraMap ℚ ℂ) p) y = ev p y := by
@@ -77,13 +77,13 @@ lemma evC_map (p : MvPolynomial (ι × ι) ℚ) (y : Matrix ι ι ℂ) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨Submodule.span ℂ {MvPolynomial.C a}, Submodule.fg_span (Set.finite_singleton _), fun g => ?_⟩` and prove the remaining obligations. Apply `Submodule.subset_span` to reduce the goal to its premises. Simplify using `[rtr]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq`. Take `⟨V, hV, h⟩` from `hp`. Take `⟨V', hV', h'⟩` from `hq`. Use `⟨V ⊔ V', hV.sup hV', fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup (h g) (h' g)`. Consider the case `mul_X p ij hp`. Take `⟨V, hV, h⟩` from `hp`. Use `⟨V * Submodule.span ℂ (Set.range MvPolynomial.X), hV.mul (Submodule.fg_span (Set.finite_range _)), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_mem_mul (h g) ?_` and prove the remaining obligations. Rewrite using `[rtr, MvPolynomial.aeval_X]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_fg_rtr (f : MvPolynomial (ι × ι) ℂ) :
     ∃ V : Submodule ℂ (MvPolynomial (ι × ι) ℂ), V.FG ∧ ∀ g, rtr g f ∈ V := by
@@ -110,11 +110,11 @@ lemma exists_fg_rtr (f : MvPolynomial (ι × ι) ℂ) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Take `⟨V, hV, h⟩` from `exists_fg_rtr f`. Establish `hle : Submodule.span ℂ ((fun g => rtr g f) '' Γ) ≤ V`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, -, rfl⟩`. Conclude with `h g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hfg : (Submodule.span ℂ ((fun g => rtr g f) '' Γ)).FG`. Establish `: Module.Finite ℂ V` using `Module.Finite.iff_fg.2 hV`. Conclude with `Module.Finite.iff_fg.1 (Submodule.finiteDimensional_of_le hle)`. Take `⟨s, hs, hspan⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg`. Use `⟨s, fun p hp => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg, rfl⟩` from `hs hp`. Conclude with `⟨g, hg, rfl⟩`. Rewrite using `[← hspan]`. Conclude with `Submodule.subset_span ⟨g, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_finset_rtr (Γ : Set (Matrix ι ι ℂ)) (f : MvPolynomial (ι × ι) ℂ) :
     ∃ s : Finset (MvPolynomial (ι × ι) ℂ), (∀ p ∈ s, ∃ g ∈ Γ, p = rtr g f) ∧
@@ -151,7 +151,7 @@ def multIdeal (Γ : Set (Matrix ι ι ℂ)) (π : Matrix ι ι ℂ → Matrix ι
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal D hD`. Take `⟨x, rfl⟩` from `MvPolynomial.isMaximal_iff_eq_vanishingIdeal_singleton.1 hM`. Use `⟨Matrix.of fun i j => x (i, j), fun b hb => ?_⟩` and prove the remaining obligations. Use `(MvPolynomial.mem_vanishingIdeal_singleton_iff _ _).1 (hle hb)` as an intermediate fact. Simplify `this` using `[evC, MvPolynomial.aeval_eq_eval]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma exists_common_zero (D : Ideal (MvPolynomial (ι × ι) ℂ)) (hD : D ≠ ⊤) :
     ∃ z : Matrix ι ι ℂ, ∀ b ∈ D, evC b z = 0 := by
@@ -166,27 +166,25 @@ end GlobalTheory.ClassFin.FibreDescent
 open GlobalTheory.ClassFin.FibreDescent in
 
 /- English proof (translation)
-Introduce `ι _ _ Γ e hΓ he htri f hf`. Establish `hmul : ∀ x ∈ Γ, ∀ y ∈ Γ, blk e (x * y) = blk e x * blk e y` using `fun x hx y hy => ((GlobalTheory.ClassFin.blk_mul_of_triangular ι e ℂ he).2.1 x y (htri x hx) (htri y hy)).1`. Establish `hpre : IsPre (blk e '' Γ)` using `GlobalTheory.ClassFin.isPre_blk_image ι Γ e hΓ.toIsPre he htri`. Take `⟨-, hm, hadj, hdet⟩` from `GlobalTheory.T.ratZariskiClosurePoints_isGroup ι _ hpre ℂ`. Take `⟨s, hs, hspan⟩` from `exists_finset_rtr Γ f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₀, ⟨x₀, hx₀, hb₀⟩, hb⟩` from `GlobalTheory.T.exists_multiplier_descend_blockDiagPartOfRatIdempotent ι Γ e hΓ.closed ⟨1, hΓ.one_mem⟩ s (by`. Introduce `p hp x hx x' hx' hxx`. Take `⟨g, hg, rfl⟩` from `hs p hp`. Rewrite using `[evC_rtr, evC_rtr]`. Conclude with `hf _ (hΓ.mul_mem _ hx _ hg) _ (hΓ.mul_mem _ hx' _ hg) (by rw [hmul _ hx _ hg, hmul _ hx' _ hg, hxx]))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb₀D : b₀ ∈ multIdeal Γ (blk e) f`. Introduce `g hg`. Establish `key : ∀ p ∈ Submodule.span ℂ (s : Set (MvPolynomial (ι × ι) ℂ)), ∃ b' : MvPolynomial (ι × ι) ℂ, ∀ x ∈ Γ, evC b₀ (blk e x) * evC p x = evC b' (blk e x)`. Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem p hp => exact hb p hp`. Consider the case `zero => exact ⟨0, fun x _ => by simp [evC]⟩`. Consider the case `add p q _ _ hp hq`. Take `⟨a', ha'⟩` from `hp`. Take `⟨b', hb'⟩` from `hq`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a' + b', fun x hx => by rw [evC_add, evC_add, mul_add, ha' x hx, hb' x hx]⟩`. Consider the case `smul c p _ hp`. Take `⟨a', ha'⟩` from `hp`. Conclude with `⟨c • a', fun x hx => by rw [evC_smul, evC_smul, ← ha' x hx]; ring⟩`. Take `⟨b', hb'⟩` from `key _ (hspan g hg)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b', fun x hx => by rw [← hb' x hx, evC_rtr]⟩`. Establish `hstab : ∀ h ∈ Γ, rtr (blk e h) b₀ ∈ multIdeal Γ (blk e) f`. Introduce `h hh g hg`. Take `⟨b', hb'⟩` from `hb₀D (h.adjugate * g) (hΓ.mul_mem _ (hΓ.adj_mem _ hh) _ hg)`. Use `⟨rtr (blk e h) b', fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evC_rtr, evC_rtr, ← hmul _ hx _ hh, ← hb' _ (hΓ.mul_mem _ hx _ hh), Matrix.mul_assoc, ← Matrix.mul_assoc h, Matrix.mul_adjugate, hΓ.det_eq _ hh, one_smul, Matrix.one_mul]`. Establish `htop : multIdeal Γ (blk e) f = ⊤`. Assume the negation of the conclusion as `hD`. Take `⟨z, hz⟩` from `exists_common_zero _ hD`. Establish `hzp : z ∈ pts (blk e '' Γ) ℂ`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Rewrite using `[← evC_map]`. Use `hz _ fun g _ => ⟨0, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[evC_map, hp _ ⟨x, hx, rfl⟩]`. Simplify using `[evC]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx₀p : blk e x₀ ∈ pts (blk e '' Γ) ℂ` using `fun p hp => hp _ ⟨x₀, hx₀, rfl⟩`. Use `GlobalTheory.T.evalComplexPoly_eq_zero_on_ratZariskiClosure ι _ hpre.aut_mem (ltr z b₀) (by` as an intermediate fact. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Rewrite using `[evC_ltr, ← evC_rtr]`. Conclude with `hz _ (hstab h hh)) _ (hm _ (hadj z hzp) _ hx₀p)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[evC_ltr, ← Matrix.mul_assoc, Matrix.mul_adjugate, hdet z hzp, one_smul, Matrix.one_mul]`. Conclude with `hb₀ this`. Establish `h1 : (1 : MvPolynomial (ι × ι) ℂ) ∈ multIdeal Γ (blk e) f` using `htop ▸ Submodule.mem_top`. Take `⟨b, hb⟩` from `h1 1 hΓ.one_mem`. Use `⟨b, fun x hx => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hb x hx, Matrix.mul_one]`. Simplify using `[evC]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ClassFin.exists_evC_blk_of_fibre_const : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)) (e : Matrix ι ι ℚ), IsQGroup Γ → e * e = e → (∀ g ∈ Γ, (1 - e.map (algebraMap ℚ ℂ)) * g * e.map (algebraMap ℚ ℂ) = 0) → ∀ f : MvPolynomial (ι × ι) ℂ, (∀ x ∈ Γ, ∀ x' ∈ Γ, blk e x = blk e x' → evC f x = evC f x') → ∃ b : MvPolynomial (ι × ι) ℂ, ∀ x ∈ Γ, evC f x = evC b (blk e x) := by
   intro ι _ _ Γ e hΓ he htri f hf

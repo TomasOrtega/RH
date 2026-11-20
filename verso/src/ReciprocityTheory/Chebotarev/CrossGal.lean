@@ -5,11 +5,11 @@ open NumberField Polynomial
 namespace ReciprocityTheory.Cheb
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `Normal.exists_isSplittingField ℚ K`. Distinguish the cases in `h0 : p = 0`. Substitute `h0` using the available equality. Use `⟨X, X_ne_zero, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Simplify using the standard rewrite rules. Establish `h` using `hp.adjoin_rootSet`. Simplify using `only [rootSet_zero, Algebra.adjoin_empty] at h`. Rewrite using `[eq_top_iff, ← h]`. Conclude with `bot_le`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨p, h0, hp⟩`.
+A detailed English derivation is pending.
 -/
 theorem cxgal_exists_sf (K : Type) [Field K] [NumberField K] [IsGalois ℚ K] :
     ∃ p : ℚ[X], p ≠ 0 ∧ IsSplittingField ℚ K p := by
@@ -26,9 +26,9 @@ theorem cxgal_exists_sf (K : Type) [Field K] [NumberField K] [IsGalois ℚ K] :
   · exact ⟨p, h0, hp⟩
 
 /- English proof (translation)
-Take `⟨p, hp0, hp⟩` from `cxgal_exists_sf K`. Establish `: IsSplittingField K (CyclotomicField l K) ((X ^ l - 1 : ℚ[X]).map (algebraMap ℚ K))`. Simplify using `only [Polynomial.map_sub, Polynomial.map_pow, map_X, Polynomial.map_one]`. Conclude with `IsCyclotomicExtension.isSplittingField_X_pow_sub_one l K (CyclotomicField l K)`. Use `IsSplittingField.mul (K := K) (L := CyclotomicField l K) p (X ^ l - 1) hp0 (X_pow_sub_C_ne_zero (NeZero.pos l) 1)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Normal ℚ (CyclotomicField l K)` using `Normal.of_isSplittingField (p * (X ^ l - 1))`. Conclude with `IsGalois.mk`.
+A detailed English derivation is pending.
 -/
 theorem isGalois_cyclotomicField (K : Type) [Field K] [NumberField K] [IsGalois ℚ K] (l : ℕ) [NeZero l] :
     IsGalois ℚ (CyclotomicField l K) := by

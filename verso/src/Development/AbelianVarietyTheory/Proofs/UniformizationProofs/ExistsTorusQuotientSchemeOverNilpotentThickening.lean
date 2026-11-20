@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.TorusQuotientLift
 
 /- English proof (translation)
-Use `Scheme.hom_ext_of_forall f g fun y => ?_` and prove the remaining obligations. Take `⟨W, V, hf, hg, hy, hV, e⟩` from `H y`. Establish `key : ∀ (r : Y ⟶ B) (hr : W ≤ r ⁻¹ᵁ V), W.ι ≫ r = W.toSpecΓ ≫ Spec.map (r.appLE V W hr) ≫ hV.fromSpec`. Introduce `r hr`. Rewrite using `[Scheme.Opens.toSpecΓ_SpecMap_appLE_assoc, hV.toSpecΓ_fromSpec, Scheme.Hom.resLE_comp_ι]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨W, hy, by rw [key f hf, key g hg, e]⟩`.
+Supply the required witnesses or components.
 -/
 theorem hom_ext_appLE {Y B : Scheme.{0}} (f g : Y ⟶ B)
     (H : ∀ y : Y, ∃ (W : Y.Opens) (V : B.Opens) (hf : W ≤ f ⁻¹ᵁ V) (hg : W ≤ g ⁻¹ᵁ V), y ∈ W ∧ IsAffineOpen V ∧
@@ -35,7 +35,7 @@ theorem hom_ext_appLE {Y B : Scheme.{0}} (f g : Y ⟶ B)
   exact ⟨W, hy, by rw [key f hf, key g hg, e]⟩
 
 /- English proof (translation)
-Introduce `y hy` and use `by obtain ⟨z, rfl⟩ := i.surjective y exact h hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_of_preimage_le {Z Y : Scheme.{0}} (i : Z ⟶ Y) [Surjective i] {U V : Y.Opens} (h : i ⁻¹ᵁ U ≤ i ⁻¹ᵁ V) :
     U ≤ V := fun y hy => by
@@ -43,7 +43,7 @@ theorem le_of_preimage_le {Z Y : Scheme.{0}} (i : Z ⟶ Y) [Surjective i] {U V :
   exact h hy
 
 /- English proof (translation)
-Take `⟨O, hO, hO'⟩` from `i.isClosedEmbedding.isInducing.isOpen_iff.mp U.isOpen`. Conclude with `⟨⟨O, hO⟩, TopologicalSpace.Opens.ext hO'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_preimage_eq {Z Y : Scheme.{0}} (i : Z ⟶ Y) [IsClosedImmersion i] (U : Z.Opens) :
     ∃ V : Y.Opens, i ⁻¹ᵁ V = U := by
@@ -51,7 +51,7 @@ theorem exists_preimage_eq {Z Y : Scheme.{0}} (i : Z ⟶ Y) [IsClosedImmersion i
   exact ⟨⟨O, hO⟩, TopologicalSpace.Opens.ext hO'⟩
 
 /- English proof (translation)
-Use `choose k hk using h`. Conclude with `⟨⟨⟨⟨k, hf (by rw [hk, map_one, map_one])⟩, fun a b => hf (by simp only [hk, map_mul])⟩, hf (by rw [hk, map_zero, map_zero]), fun a b => hf (by simp only [hk, map_add])⟩, hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_factor {R T C : Type} [CommRing R] [CommRing T] [CommRing C] (f : R →+* C)
     (hf : Function.Injective f) (g : T →+* C) (h : ∀ t, ∃ r, f r = g t) : ∃ k : T →+* R, ∀ t, f (k t) = g t := by
@@ -75,7 +75,7 @@ def subPresheaf {G B₀ : Scheme.{0}} (R : ∀ V : G.Opens, Subring Γ(G, V))
     exact (rs_rs _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `congr($((f.map_appLE e' (homOfLE h).op).trans (f.appLE_map e (homOfLE h').op).symm).hom a)`.
+A detailed English derivation is pending.
 -/
 theorem appLE_rs {Z Y : Scheme.{0}} (f : Z ⟶ Y) {V V' : Y.Opens} {U U' : Z.Opens} (h : V' ≤ V) (h' : U' ≤ U)
     (e : U ≤ f ⁻¹ᵁ V) (e' : U' ≤ f ⁻¹ᵁ V') (a : Γ(Y, V)) :
@@ -85,49 +85,45 @@ theorem appLE_rs {Z Y : Scheme.{0}} (f : Z ⟶ Y) {V V' : Y.Opens} {U U' : Z.Ope
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use `choose W hW using fun U : B₀.Opens => exists_preimage_eq F (q₀ ⁻¹ᵁ U)`. Establish `hm : Monotone W` using `fun U U' h => le_of_preimage_le F (by rw [hW, hW]; exact q₀.preimage_mono h)`. Set `𝒜` to `subPresheaf R hres W hm`. Use `choose π₀ hπ₀ using fun U : B₀.Opens => exists_factor _ (hinj U) ((F.appLE (W U) _ (hW U).ge).hom.comp (R (W U)).subtype) fun a => hdesc U _ (hW U) a.1 a.2`. Establish `hπ : ∀ U (a : R (W U)), (q₀.app U).hom (π₀ U a) = (F.appLE (W U) _ (hW U).ge).hom a.1` using `hπ₀`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Set `π : 𝒜 ⟶ B₀.presheaf` to `{ app U := CommRingCat.ofHom (π₀ U.unop) naturality U U' i := by`. Use extensionality with `a`. Apply `hinj U'.unop` to reduce the goal to its premises. Use `(hπ _ _).trans (Eq.trans ?_ (app_rs q₀ i.unop.le _).symm)` and prove the remaining obligations. Conclude with `(appLE_rs F (hm i.unop.le) _ _ _ _).trans (congrArg _ (hπ _ a).symm) }`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `inc : ∀ U, 𝒜.obj (op U) ⟶ Γ(G, W U)` to `fun U => CommRingCat.ofHom (R (W U)).subtype`. Set `α : ∀ U, A →+* R (W U)` to `fun U => (baseMap g (W U)).codRestrict (R _) fun _ => hbase _ _`. Establish `hk : ∀ U ∈ 𝒰, RingHom.ker (π₀ U) ≤ J.map (α U)` using `fun U hU a ha => hker U hU _ (hW U) a (by rw [← hπ, (RingHom.mem_ker).1 ha, map_zero])`. Take `⟨B, j, _, _, φ, hφ, hφ'⟩` from `ThickGlue.exists_scheme_of_thickenings B₀ 𝒰 haff hbasic (eq_top_iff.2 fun b _ => TopologicalSpace.Opens.mem_sSup.2 (hcov b)) 𝒜 π (fun U hU => ⟨fun c => by`. Take `⟨a, ha, e⟩` from `hsurj U hU _ (hW U) c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨⟨a, ha⟩, hinj U ((hπ U ⟨a, ha⟩).trans e)⟩, by`. Take `⟨n, hn⟩` from `hJ`. Establish `h : J.map (α U) ^ n = ⊥` using `by rw [← Ideal.map_pow, hn]; exact Ideal.map_bot`. Conclude with `⟨n, eq_bot_iff.2 ((Ideal.pow_right_mono (hk U hU) n).trans h.le)⟩⟩)`. Use the proof step `(fun U hU a => hloc U hU _ (hW U) a _ _ (eq_of_preimage_eq (i := F) (by`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hW, Scheme.preimage_basicOpen, Scheme.preimage_basicOpen]`. Use `(congrArg G₀.basicOpen (hπ U a)).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.basicOpen_appLE, Scheme.preimage_basicOpen, inf_eq_right]`. Conclude with `(G₀.basicOpen_le _).trans (hW U).le)))`. Establish `hbas : ∀ (b : B) (O : B.Opens), b ∈ O → ∃ V : B.Opens, j ⁻¹ᵁ V ∈ 𝒰 ∧ b ∈ V ∧ V ≤ O`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `b O hb`. Take `⟨b, rfl⟩` from `j.surjective b`. Take `⟨U, hU, hbU⟩` from `hcov b`. Take `⟨f, hf, hbf⟩` from `(haff U hU).exists_basicOpen_le (V := j ⁻¹ᵁ O) ⟨b, hb⟩ hbU`. Take `⟨V, hV⟩` from `exists_preimage_eq j (B₀.basicOpen f)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨V, hV ▸ hbasic U hU f, hV.ge hbf, le_of_preimage_le j (hV ▸ hf)⟩`. Set `κ` to `{V : B.Opens // j ⁻¹ᵁ V ∈ 𝒰}`. Set `ψ : ∀ k : κ, Γ(B, k.1) ⟶ Γ(G, W (j ⁻¹ᵁ k.1))` to `fun k => (φ k.1 k.2).hom ≫ inc _`. Establish `hψ : ∀ (k m : κ) (e : m.1 ≤ k.1), B.presheaf.map (homOfLE e).op ≫ ψ m = ψ k ≫ G.presheaf.map (homOfLE (hm (j.preimage_mono e))).op` using `fun k m e => by`. Simplify using `only [ψ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Category.assoc, hφ' _ _ k.2 m.2 e, Category.assoc, Category.assoc]`. Both sides reduce to the same expression. Establish `hmem : ∀ (x : G₀) (V : B.Opens), F x ∈ W (j ⁻¹ᵁ V) ↔ j (q₀ x) ∈ V` using `fun x V => SetLike.ext_iff.1 (hW (j ⁻¹ᵁ V)) x`. Take `⟨q, hq⟩` from `RingGlue.exists_hom_of_ring_maps G B κ (fun k => W (j ⁻¹ᵁ k.1)) (fun k => k.1) (fun k => (hφ k.1 k.2).1) ψ (fun y => by`. Take `⟨x, rfl⟩` from `F.surjective y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨V, h, hb, -⟩` from `hbas (j (q₀ x)) ⊤ trivial`. Conclude with `⟨⟨V, h⟩, (hmem x V).2 hb⟩)`. Use the proof step `(fun k l y hk hl => by`. Take `⟨x, rfl⟩` from `F.surjective y`. Take `⟨V, h, hb, hle⟩` from `hbas (j (q₀ x)) (k.1 ⊓ l.1) ⟨(hmem x _).1 hk, (hmem x _).1 hl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨V, h⟩, _, _, hle.trans inf_le_left, hle.trans inf_le_right, (hmem x V).2 hb, hψ k ⟨V, h⟩ _, hψ l ⟨V, h⟩ _⟩)`. Use `choose hq₁ hq₂ using hq`. Set `β : ∀ U, Γ(Spec (CommRingCat.of A), ⊤) ⟶ 𝒜.obj (op U)` to `fun U => CommRingCat.ofHom (R := Γ(Spec (CommRingCat.of A), ⊤)) (S := R (W U)) ((g.appLE ⊤ (W U) le_top).hom.codRestrict (R _) (hbase _))`. Establish `hβ : ∀ (k m : κ) (e : m.1 ≤ k.1), (Spec (CommRingCat.of A)).presheaf.map (homOfLE (le_refl ⊤)).op ≫ β _ ≫ (φ m.1 m.2).inv = (β _ ≫ (φ k.1 k.2).inv) ≫ B.presheaf.map (homOfLE e).op` using `fun k m e => by`. Rewrite using `[← cancel_mono (φ m.1 m.2).hom]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[hφ' _ _ k.2 m.2 e, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]`. Use extensionality with `c`. Conclude with `Subtype.ext (appLE_rs g (le_refl ⊤) (hm (j.preimage_mono e)) _ _ c)`. Take `⟨s, hs⟩` from `RingGlue.exists_hom_of_ring_maps B (Spec (CommRingCat.of A)) κ (fun k => k.1) (fun _ => ⊤) (fun _ => isAffineOpen_top _) (fun k => β _ ≫ (φ k.1 k.2).inv) (fun b => by`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨V, h, hb, -⟩` from `hbas b ⊤ trivial`. Conclude with `⟨⟨V, h⟩, hb⟩)`. Use the proof step `(fun k l b hk hl => by`. Take `⟨V, h, hb, hle⟩` from `hbas b (k.1 ⊓ l.1) ⟨hk, hl⟩`. Conclude with `⟨⟨V, h⟩, hle.trans inf_le_left, hle.trans inf_le_right, le_rfl, le_rfl, hb, hβ k ⟨V, h⟩ _, hβ l ⟨V, h⟩ _⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose hs₁ hs₂ using hs`. Establish `hπ' : ∀ U, π.app (op U) ≫ q₀.app U = inc U ≫ F.appLE (W U) _ (hW U).ge` using `fun U => by`. Use extensionality with `a`. Conclude with `hπ U a`. Establish `hsq : q₀ ≫ j = F ≫ q` using `hom_ext_appLE _ _ fun x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨V, h, hb, -⟩` from `hbas (j (q₀ x)) ⊤ trivial`. Use `⟨q₀ ⁻¹ᵁ j ⁻¹ᵁ V, V, le_rfl, (hW _).ge.trans (F.preimage_mono (hq₁ ⟨V, h⟩)), hb, (hφ V h).1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.appLE_comp_appLE F q V (W (j ⁻¹ᵁ V)) _ (hq₁ ⟨V, h⟩) (hW _).ge, hq₂ ⟨V, h⟩]`. Simplify using `only [ψ, Category.assoc]`. Rewrite using `[← hπ', ← Category.assoc, (hφ V h).2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Scheme.Hom.appLE_eq_app _).trans (Scheme.Hom.comp_app _ _ _)`. Establish `hqs : q ≫ s = g` using `hom_ext_appLE _ _ fun y => by`. Take `⟨x, rfl⟩` from `F.surjective y`. Take `⟨V, h, hb, -⟩` from `hbas (j (q₀ x)) ⊤ trivial`. Use `⟨W (j ⁻¹ᵁ V), ⊤, le_top, le_top, (hmem x V).2 hb, isAffineOpen_top _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Scheme.Hom.appLE_comp_appLE q s ⊤ V _ (hs₁ ⟨V, h⟩) (hq₁ ⟨V, h⟩), hq₂ ⟨V, h⟩, hs₂ ⟨V, h⟩]`. Simplify using `only [ψ, Category.assoc, Iso.inv_hom_id_assoc]`. Both sides reduce to the same expression. Establish `hjs : j ≫ s = b₀ ≫ red J` using `hom_ext_appLE _ _ fun b => by`. Take `⟨V, h, hb, -⟩` from `hbas (j b) ⊤ trivial`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨j ⁻¹ᵁ V, ⊤, le_top, le_top, hb, isAffineOpen_top _, ?_⟩` and prove the remaining obligations. Establish `: Mono (q₀.app (j ⁻¹ᵁ V))` using `ConcreteCategory.mono_of_injective _ (hinj _)`. Rewrite using `[← cancel_mono (q₀.app (j ⁻¹ᵁ V)), Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Use `congr 1`. Rewrite using `[← hF, ← hqs, ← Category.assoc, hsq, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨B, s, q, j, hqs, isPullback_red_of_ker_app_le_map A J B₀ B j b₀ s ‹_› hjs fun b => ?_, hsq, fun b => ?_⟩` and prove the remaining obligations. Take `⟨V, h, hb, -⟩` from `hbas b ⊤ trivial`. Use `⟨V, hb, (hφ V h).1, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h1 : (φ V h).hom.hom c ∈ J.map (α _)` using `hk _ h (by`. Rewrite `hc` using `[← (hφ V h).2]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc)`. Establish `h2` using `Ideal.mem_map_of_mem (φ V h).inv.hom h1`. Rewrite `h2` using `[Ideal.map_map, ← CommRingCat.comp_apply, Iso.hom_inv_id]`. Rewrite using `[hs₂ ⟨V, h⟩]`. Conclude with `h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨V, h, hb, -⟩` from `hbas b ⊤ trivial`. Use `⟨V, hb, h, (hφ V h).1, ?_⟩` and prove the remaining obligations. Establish `e : q ⁻¹ᵁ V = W (j ⁻¹ᵁ V)` using `eq_of_preimage_eq (i := F) (by`. Rewrite using `[hW, ← Scheme.Hom.comp_preimage, ← hsq, Scheme.Hom.comp_preimage])`. Establish `key : ∀ (V' : G.Opens) (e : q ⁻¹ᵁ V = V'), (Function.Injective (q.appLE V V' e.ge).hom ∧ ∀ a, a ∈ R V' ↔ ∃ c, (q.appLE V V' e.ge).hom c = a) → Function.Injective (q.app V).hom ∧ ∀ a, a ∈ R (q ⁻¹ᵁ V) ↔ ∃ c, (q.app V).hom c = a`.
-
-Introduce and unpack `_ rfl H`. Rewrite `H` using `[Scheme.Hom.appLE_eq_app]`. Then use the resulting hypothesis. Use `key _ e ?_` and prove the remaining obligations. Rewrite using `[hq₂ ⟨V, h⟩]`. Establish `hb` using `ConcreteCategory.bijective_of_isIso (φ V h).hom`.
-
-Use `⟨Subtype.val_injective.comp hb.1, fun a => ⟨fun ha => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hb.2 ⟨a, ha⟩`. Conclude with `⟨c, congrArg Subtype.val hc⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `((φ V h).hom.hom c).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_quotient {A : Type} [CommRing A] {J : Ideal A} (hJ : IsNilpotent J) {G G₀ B₀ : Scheme.{0}}
     (g : G ⟶ Spec (CommRingCat.of A)) (F : G₀ ⟶ G) [IsClosedImmersion F] [Surjective F]
@@ -309,9 +305,9 @@ def Graded (i : splitTorus S X ⟶ G) (V : G.left.Opens) : Prop :=
 variable {i : splitTorus S X ⟶ G} {i' : splitTorus S' X ⟶ G'} {V : G.left.Opens} {V' : G'.left.Opens}
 
 /- English proof (translation)
-Use `h.2 (a.mapRange p (map_zero p) - Finsupp.single χ (p (a.sum fun _ x => x))) (fun ψ => by` as an intermediate fact. Use `(wtSub i' V' ψ).sub_mem (hp _ _ (ha ψ)) ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs with e`. Conclude with `e ▸ hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `zero_mem _) (by`. Rewrite using `[Finsupp.sum_sub_index (fun _ _ _ => rfl), Finsupp.sum_single_index rfl, Finsupp.sum_mapRange_index (fun _ => rfl), map_finsuppSum, sub_self])`. Simplify `DFunLike.congr_fun this χ` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem Graded.map_eq (h : Graded i' V') (p : Γ(G.left, V) →+* Γ(G'.left, V'))
     (hp : ∀ χ x, IsWt i V x χ → IsWt i' V' (p x) χ) {a : X →₀ Γ(G.left, V)} (ha : ∀ χ, IsWt i V (a χ) χ) {χ : X}
@@ -328,7 +324,7 @@ theorem Graded.map_eq (h : Graded i' V') (p : Γ(G.left, V) →+* Γ(G'.left, V'
   simpa [sub_eq_zero] using DFunLike.congr_fun this χ
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h₀.1 u`. Conclude with `⟨a χ, ha χ, h.map_eq p hp ha hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Graded.exists_lift (h₀ : Graded i V) (h : Graded i' V') (p : Γ(G.left, V) →+* Γ(G'.left, V'))
     (hp : ∀ χ x, IsWt i V x χ → IsWt i' V' (p x) χ) (u : Γ(G.left, V)) {χ : X} (hy : IsWt i' V' (p u) χ) :
@@ -337,17 +333,17 @@ theorem Graded.exists_lift (h₀ : Graded i V) (h : Graded i' V') (p : Γ(G.left
   exact ⟨a χ, ha χ, h.map_eq p hp ha hy⟩
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ J.map ((wtZero i V).subtype.comp α), ∀ c, ∃ a : X →₀ Γ(G.left, V), (∀ χ, IsWt i V (a χ) χ) ∧ c * y = (a.sum fun _ x => x) ∧ ∃ z ∈ J.map α, z.1 = a 0`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨r, hr, rfl⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Take `⟨a, ha, rfl⟩` from `h.1 c`. Use `⟨a.mapRange (· * (α r).1) (zero_mul _), fun χ => ?_, ?_, ⟨a 0, ha 0⟩ * α r, Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem α hr), rfl⟩` and prove the remaining obligations. Simplify using `using IsWt.mul (ha χ) (α r).2`. Rewrite using `[Finsupp.sum_mapRange_index (fun _ => rfl), Finsupp.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `zero => exact fun c => ⟨0, isWt_zero, by simp, 0, zero_mem _, rfl⟩`. Consider the case `add y y' _ _ H H'`. Introduce `c`. Take `⟨a, ha, e, z, hz, f⟩` from `H c`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha', e', z', hz', f'⟩` from `H' c`. Use `⟨a + a', fun χ => (ha χ).add (ha' χ), ?_, z + z', add_mem hz hz', congrArg₂ (· + ·) f f'⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), mul_add, e, e']`. Consider the case `smul d y _ H`. Introduce `c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_eq_mul, ← _root_.mul_assoc]`. Conclude with `H _`. Take `⟨a, ha, e, z, hz, f⟩` from `key _ hx 1`. Rewrite `e` using `[_root_.one_mul]`. Use `h.map_eq (RingHom.id _) (fun _ _ h => h) ha (χ := 0) (by rw [← e]; exact x.2)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[show x = z from Subtype.ext (e.trans (this.symm.trans f.symm))]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem Graded.mem_map (h : Graded i V) {A : Type} [CommRing A] (J : Ideal A) (α : A →+* wtZero i V)
     (x : wtZero i V) (hx : x.1 ∈ J.map ((wtZero i V).subtype.comp α)) : x ∈ J.map α := by
@@ -382,15 +378,13 @@ theorem Graded.mem_map (h : Graded i V) {A : Type} [CommRing A] (J : Ideal A) (�
   rwa [show x = z from Subtype.ext (e.trans (this.symm.trans f.symm))]
 
 /- English proof (translation)
-Use `letI := ((rs hle).restrict (wtZero i V) (wtZero i W) fun _ hx => IsWt.res hx hle).toAlgebra`. Use `IsLocalization.Away.mk a ?_ (fun z => ?_) fun x y hxy => ?_` and prove the remaining obligations. Establish `hu : IsUnit (rs hle a.1)`. Substitute `e` using the available equality. Conclude with `RingedSpace.isUnit_res_basicOpen G.left.toRingedSpace a.1`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hu`. Establish `h1 : IsWt i W u.val 0` using `hu ▸ IsWt.res a.2 hle`. Establish `h2 : IsWt i W (u⁻¹).val 0` using `by simpa using h1.inv`. Conclude with `IsUnit.of_mul_eq_one (⟨_, h2⟩ : wtZero i W) (Subtype.ext (by`. Express the relevant statement in the definitionally equal form `rs hle a.1 * (u⁻¹).val = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hu, Units.mul_inv]))`. Take `⟨n, y, hy⟩` from `exists_eq_pow_mul hV hle a.1 z.1 e`. Take `⟨x, hx, hx'⟩` from `h.exists_lift h' (rs hle) (fun _ _ hx => hx.res hle) y (χ := 0) (hy ▸ mul_mem (pow_mem (show rs hle a.1 ∈ wtZero i W from IsWt.res a.2 hle) n) z.2)`. Use `⟨n, ⟨x, hx⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z.1 * rs hle a.1 ^ n = rs hle x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hx', hy, mul_comm]`. Take `⟨n, hn⟩` from `exists_pow_mul_eq_zero hV hle a.1 (x.1 - y.1) e (by`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg Subtype.val hxy)`. Rewrite `hn` using `[mul_sub, sub_eq_zero]`.
-
-Conclude with `⟨n, Subtype.ext hn⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Graded.isLocalization (hV : IsAffineOpen V) (h : Graded i V) (a : wtZero i V) (W : G.left.Opens) (hle : W ≤ V)
     (e : W = G.left.basicOpen a.1) (h' : Graded i W) :
@@ -419,7 +413,7 @@ theorem Graded.isLocalization (hV : IsAffineOpen V) (h : Graded i V) (a : wtZero
     exact ⟨n, Subtype.ext hn⟩
 
 /- English proof (translation)
-Introduce `Z t g h₁ h₂` and use `by rw [← chV_val, chV_zero, Units.val_one, _root_.one_mul, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE] simp only [hr Z t g]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isWt_appLE_of_invariant {Y : Scheme.{0}} (r : G.left ⟶ Y)
     (hr : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (g : Z ⟶ G), ((t ≫ i) * g).left ≫ r = g.left ≫ r)
@@ -429,7 +423,7 @@ theorem isWt_appLE_of_invariant {Y : Scheme.{0}} (r : G.left ⟶ Y)
   simp only [hr Z t g]
 
 /- English proof (translation)
-Use `Q.q_hom` as an intermediate fact. Rewrite using `[MonObj.mul_comp, Category.assoc, Q.isKernel.w, ← Hom.one_def, MonObj.comp_one, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_comp_q (Q : TQ G X) {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) :
     ((t ≫ Q.i) * g) ≫ Q.q = g ≫ Q.q := by
@@ -437,7 +431,7 @@ theorem act_comp_q (Q : TQ G X) {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z �
   rw [MonObj.mul_comp, Category.assoc, Q.isKernel.w, ← Hom.one_def, MonObj.comp_one, _root_.one_mul]
 
 /- English proof (translation)
-Introduce `Z t g h₁ h₂` and use `by obtain ⟨τ, hτ, hχ, e⟩ := hT let t₀ : Over.mk (Z.hom ≫ f) ⟶ splitTorus S X := Over.homMk (t.left ≫ τ) (by rw [Category.assoc, hτ, ← Category.assoc, Over.w]; rfl) let g₀ : Over.mk (Z.hom ≫ f) ⟶ G := Over.homMk (g.left ≫ F) (by rw [Category.assoc, hF.1.w, ← Category.assoc, Over.w …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isWt_appLE_of_isGrpPullback {f : S' ⟶ S} {F : G'.left ⟶ G.left} (hF : IsGrpPullback G' G f F)
     (hT : TorusCompat f F i' i) (h : V' ≤ F ⁻¹ᵁ V) (χ : X) (x : Γ(G.left, V)) (hx : IsWt i V x χ) :
@@ -463,21 +457,19 @@ def unitWts (i : splitTorus S X ⟶ G) (V : G.left.Opens) : AddSubgroup X where
   neg_mem' := fun ⟨u, hu⟩ => ⟨u⁻¹, hu.inv⟩
 
 /- English proof (translation)
-Introduce `_ ⟨u, hu⟩` and use `⟨Units.map (rs h).toMonoidHom u, hu.res h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem unitWts_mono {W : G.left.Opens} (h : W ≤ V) : unitWts i V ≤ unitWts i W :=
   fun _ ⟨u, hu⟩ => ⟨Units.map (rs h).toMonoidHom u, hu.res h⟩
 
 /- English proof (translation)
-Use `choose v hv using h`. Set `b` to `Module.Free.chooseBasis ℤ X`. Set `l : X →ₗ[ℤ] Additive Γ(G.left, V)ˣ` to `b.constr ℤ fun k => Additive.ofMul (v (b k))`. Use `⟨AddMonoidHom.toMultiplicativeLeft l.toAddMonoidHom, fun χ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsWt i V (l χ).toMul.val χ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression.
 
-Set `H : AddSubgroup X` to `{ carrier := {χ | IsWt i V (l χ).toMul.val χ} add_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `IsWt i V (l (a + b)).toMul.val _`. Rewrite using `[map_add]`. Conclude with `IsWt.mul ha hb`. Use the proof step `zero_mem' := by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsWt i V (l 0).toMul.val _`. Rewrite using `[map_zero]`. Conclude with `isWt_one`. Use the proof step `neg_mem' := fun {a} ha => by`. Express the relevant statement in the definitionally equal form `IsWt i V (l (-a)).toMul.val _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg]`. Conclude with `IsWt.inv ha }`. Establish `: Submodule.span ℤ (Set.range b) ≤ H.toIntSubmodule` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `IsWt i V (l (b k)).toMul.val _`.
-
-Rewrite using `[Module.Basis.constr_basis]`. Conclude with `hv _)`. Conclude with `this (b.span_eq ▸ Submodule.mem_top)`.
+A detailed English derivation is pending.
 -/
 theorem exists_units_hom [Module.Free ℤ X] (h : ∀ χ, χ ∈ unitWts i V) :
     ∃ u : Multiplicative X →* Γ(G.left, V)ˣ, ∀ χ, IsWt i V (u (Multiplicative.ofAdd χ)).val χ := by
@@ -504,9 +496,9 @@ theorem exists_units_hom [Module.Free ℤ X] (h : ∀ χ, χ ∈ unitWts i V) :
   exact this (b.span_eq ▸ Submodule.mem_top)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := X)`. Use `choose V hb hV using Q.loc b`. Establish `hb' : b ∈ s.inf V`. Use `Finset.inf_induction (p := fun O : Q.B.left.Opens => b ∈ O) trivial (fun _ h _ h' => ⟨h, h'⟩) fun χ _ => hb χ` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hbU, hle⟩` from `Q.B.left.isBasis_affineOpens.exists_subset_of_mem_open hb' (s.inf V).isOpen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, ⟨hU, fun χ => ?_⟩, hbU⟩` and prove the remaining obligations. Establish `: Submodule.span ℤ (s : Set X) ≤ (unitWts Q.i (Q.q.left ⁻¹ᵁ U)).toIntSubmodule` using `Submodule.span_le.2 fun χ hχ => unitWts_mono (Q.q.left.preimage_mono ((show U ≤ s.inf V from hle).trans (Finset.inf_le hχ))) (hV χ)`. Conclude with `this (hs ▸ Submodule.mem_top)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_affine_unitWts [Module.Finite ℤ X] (Q : TQ G X) (b : Q.B.left) :
     ∃ U : Q.B.left.Opens, (IsAffineOpen U ∧ ∀ χ, χ ∈ unitWts Q.i (Q.q.left ⁻¹ᵁ U)) ∧ b ∈ U := by
@@ -524,11 +516,11 @@ theorem exists_affine_unitWts [Module.Finite ℤ X] (Q : TQ G X) (b : Q.B.left) 
 end Weights
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `: IsClosedImmersion i` using `MorphismProperty.of_isPullback h.flip inferInstance`. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Use `⟨i.app_surjective U hU, ?_⟩` and prove the remaining obligations. Establish `hpo` using `(isIso_pushoutSection_iff h (US := ⊤) (UT := ⊤) (UX := U) (UY := i ⁻¹ᵁ U) le_top le_top (by simp)).1 (isIso_pushoutSection_of_isAffineOpen h _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpo' : IsPushout ((Scheme.ΓSpecIso (.of A)).inv ≫ f.appLE ⊤ U le_top) (CommRingCat.ofHom (Ideal.Quotient.mk J)) (i.app U) ((Scheme.ΓSpecIso (.of (A ⧸ J))).inv ≫ f'.appLE ⊤ (i ⁻¹ᵁ U) le_top)`. Use `hpo.of_iso (Scheme.ΓSpecIso _) (Iso.refl _) (Scheme.ΓSpecIso _) (Iso.refl _) (by simp) ?_ (by simp [Scheme.Hom.appLE_eq_app]) (by simp)` and prove the remaining obligations. Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Use `congr 1`. Rewrite using `[PrimeSection.ker_eq_map_of_isPushout hpo' Ideal.Quotient.mk_surjective]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (Ideal.map _) Ideal.mk_ker`.
+A detailed English derivation is pending.
 -/
 theorem surjective_and_ker {A : Type} [CommRing A] {J : Ideal A} {Y Z : Scheme.{0}}
     {f : Y ⟶ Spec (CommRingCat.of A)} {i : Z ⟶ Y} {f' : Z ⟶ Spec (CommRingCat.of (A ⧸ J))}
@@ -552,7 +544,7 @@ theorem surjective_and_ker {A : Type} [CommRing A] {J : Ideal A} {Y Z : Scheme.{
   exact congrArg (Ideal.map _) Ideal.mk_ker
 
 /- English proof (translation)
-The claim follows from `isAffine_of_isPullback_of_isNilpotent J hJ _ Ideal.Quotient.mk_surjective Ideal.mk_ker ((isPullback_morphismRestrict i U).paste_vert h) hU`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_of_preimage {A : Type} [CommRing A] {J : Ideal A} (hJ : IsNilpotent J) {Y Z : Scheme.{0}}
     {f : Y ⟶ Spec (CommRingCat.of A)} {i : Z ⟶ Y} {f' : Z ⟶ Spec (CommRingCat.of (A ⧸ J))}
@@ -561,25 +553,23 @@ theorem isAffineOpen_of_preimage {A : Type} [CommRing A] {J : Ideal A} (hJ : IsN
     ((isPullback_morphismRestrict i U).paste_vert h) hU
 
 /- English proof (translation)
-Introduce `A _ J hJ X _ _ _ G _ _ G₀ _ F hF Q₀ i hi hT`. Establish `: IsClosedImmersion F` using `MorphismProperty.of_isPullback hF.1.flip inferInstance`. Establish `: Surjective F` using `MorphismProperty.of_isPullback hF.1.flip (surjective_red hJ)`. Use `Q₀.q_affine` as an intermediate fact. Establish `hd` using `invariant_functions_descend _ G₀ Q₀.B _ Q₀.q Q₀.i Q₀.q_hom Q₀.i_hom Q₀.q_flat Q₀.q_surj inferInstance Q₀.isKernel`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `st₀ : ∀ U : Q₀.B.left.Opens, (snd (splitTorus _ X) G₀).left ⁻¹ᵁ (Q₀.q.left ⁻¹ᵁ U) ≤ ((fst (splitTorus _ X) G₀ ≫ Q₀.i) * snd _ G₀).left ⁻¹ᵁ (Q₀.q.left ⁻¹ᵁ U)` using `fun U => by`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, ← Over.comp_left, ← Over.comp_left, act_comp_q]`. Establish `st : ∀ (U : Q₀.B.left.Opens) (V : G.left.Opens), F ⁻¹ᵁ V = Q₀.q.left ⁻¹ᵁ U → (snd (splitTorus _ X) G).left ⁻¹ᵁ V ≤ ((fst (splitTorus _ X) G ≫ i) * snd _ G).left ⁻¹ᵁ V` using `fun U V e => torus_stable_of_red A J hJ X G G₀ F hF Q₀.i i hT V (e ▸ st₀ U)`. Establish `aff : ∀ (U : Q₀.B.left.Opens), IsAffineOpen U → ∀ V : G.left.Opens, F ⁻¹ᵁ V = Q₀.q.left ⁻¹ᵁ U → IsAffineOpen V` using `fun U hU V e => isAffineOpen_of_preimage hJ hF.1 (e ▸ hU.preimage Q₀.q.left)`. Establish `gr : ∀ (U : Q₀.B.left.Opens), IsAffineOpen U → ∀ V : G.left.Opens, F ⁻¹ᵁ V = Q₀.q.left ⁻¹ᵁ U → Graded i V` using `fun U hU V e => functions_graded_by_weights _ G X i hi V (aff U hU V e) (st U V e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lft : ∀ (U : Q₀.B.left.Opens), IsAffineOpen U → ∀ (V : G.left.Opens) (e : F ⁻¹ᵁ V = Q₀.q.left ⁻¹ᵁ U) (χ : X) (y : Γ(G₀.left, Q₀.q.left ⁻¹ᵁ U)), IsWt Q₀.i _ y χ → ∃ x, IsWt i V x χ ∧ (F.appLE V _ e.ge).hom x = y`. Introduce `U hU V e χ y hy`. Take `⟨u, rfl⟩` from `(surjective_and_ker hF.1 (aff U hU V e) e).1 y`. Conclude with `(gr U hU V e).exists_lift (functions_graded_by_weights _ G₀ X Q₀.i Q₀.i_hom _ (hU.preimage _) (st₀ U)) _ (isWt_appLE_of_isGrpPullback hF hT e.ge) u hy`. Take `⟨B, s, q, j, hqs, hj, hsq, H⟩` from `exists_quotient hJ G.hom F Q₀.B.hom Q₀.q.left (by rw [hF.1.w, ← Category.assoc, Over.w]) (wtZero i) (fun V V' h a ha => IsWt.res ha h) (fun V c => isWt_appLE_of_invariant G.hom (fun Z t g => by rw [Over.w, Over.w]) ⊤ le_top c) (fun U => (hd U).1) (fun U V e a ha => (hd U).2.2 _ f …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isWt_appLE_of_isGrpPullback hF hT e.ge 0 a ha Z t g h₁ h₂, ← chV_val, chV_zero, Units.val_one, _root_.one_mul])`. Use the proof step `{U | IsAffineOpen U ∧ ∀ χ, χ ∈ unitWts Q₀.i (Q₀.q.left ⁻¹ᵁ U)} (fun U hU => hU.1)`. Use the proof step `(fun U hU f => ⟨hU.1.basicOpen f, fun χ => unitWts_mono (Q₀.q.left.preimage_mono (Q₀.B.left.basicOpen_le f)) (hU.2 χ)⟩)`. Use the proof step `(exists_affine_unitWts Q₀)`. Use the proof step `(fun U hU V e c => lft U hU.1 V e 0 _ (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `isWt_appLE_of_invariant Q₀.q.left (fun Z t g => congrArg (·.left) (act_comp_q Q₀ t g)) U le_rfl c))`. Use the proof step `(fun U hU V e a ha => (gr U hU.1 V e).mem_map J _ a ((surjective_and_ker hF.1 (aff U hU.1 V e) e).2.le ha))`. Use the proof step `(fun U hU V e a V' h e' => (gr U hU.1 V e).isLocalization (aff U hU.1 V e) a V' h e' (by`. Take `⟨c, hc⟩` from `(hd U).2.2 ((F.appLE V _ e.ge).hom a.1) fun Z t g h₁ h₂ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[isWt_appLE_of_isGrpPullback hF hT e.ge 0 a.1 a.2 Z t g h₁ h₂, ← chV_val, chV_zero, Units.val_one, _root_.one_mul]`. Use `gr _ (hU.1.basicOpen c) V' ?_` and prove the remaining obligations. Rewrite using `[e', Scheme.preimage_basicOpen Q₀.q.left, hc, Scheme.basicOpen_appLE, eq_comm, inf_eq_right, ← e]`. Conclude with `F.preimage_mono (G.left.basicOpen_le _)))`. Establish `hp : ∀ V : B.Opens, F ⁻¹ᵁ q ⁻¹ᵁ V = Q₀.q.left ⁻¹ᵁ j ⁻¹ᵁ V` using `fun V => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Scheme.Hom.comp_preimage, ← hsq, Scheme.Hom.comp_preimage]`. Use `⟨Over.mk s, Over.homMk q hqs, j, hj, hsq, isAffineHom_of_forall_exists_isAffineOpen q fun b => ?_, fun b => ?_⟩` and prove the remaining obligations. Take `⟨V, hb, hU, hV, -⟩` from `H b`. Conclude with `⟨V, hb, hV, aff _ hU.1 _ (hp V)⟩`. Take `⟨V, hb, hU, hV, h₁, h₂⟩` from `H b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨V, hb, hV, h₂, h₁, st _ _ (hp V), exists_units_hom (V := q ⁻¹ᵁ V) fun χ => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hU.2 χ`. Take `⟨x, hx, e⟩` from `lft _ hU.1 _ (hp V) χ _ hu`. Take `⟨hs, hk⟩` from `surjective_and_ker hF.1 (aff _ hU.1 _ (hp V)) (hp V)`. Take `⟨y, hy⟩` from `hs (u⁻¹).val`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : x * y - 1 ∈ J.map (baseMap G.hom (q ⁻¹ᵁ V))`. Rewrite using `[← hk, RingHom.mem_ker, map_sub, map_mul, e, hy, Units.mul_inv, map_one, sub_self]`. Take `⟨n, hn⟩` from `hJ`. Establish `h2 : IsNilpotent (x * y - 1)` using `⟨n, by`. Use `Ideal.pow_mem_pow h1 n` as an intermediate fact.
-
-Rewrite `this` using `[← Ideal.map_pow, hn]`. Simplify using `using this⟩`. Establish `h3 : IsUnit (x * y)` using `by simpa using h2.isUnit_add_one`. Take `⟨v, rfl⟩` from `isUnit_of_mul_isUnit_left h3`. Conclude with `⟨v, hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_quotient_scheme : (∀ (A : Type) [CommRing A] (J : Ideal A), IsNilpotent J → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over (Spec (CommRingCat.of A))) [GrpObj G] [IsCommMonObj G] (G₀ : Over (Spec (CommRingCat.of (A ⧸ J)))) [GrpObj G₀] (F : G₀.left ⟶ G.left), IsGrpPullback G₀ G (red J) F → ∀ (Q₀ : TQ G₀ X) (i : splitTorus _ X ⟶ G), IsMonHom i → TorusCompat (red J) F Q₀.i i → ∃ (B : Over (Spec (CommRingCat.of A))) (q : G ⟶ B) (j : Q₀.B.left ⟶ B.left), IsPullback j Q₀.B.hom B.hom (red J) ∧ Q₀.q.left ≫ j = F ≫ q.left ∧ IsAffineHom q.left ∧ ∀ b : B.left, ∃ V : B.left.Opens, b ∈ V ∧ IsAffineOpen V ∧ (∀ a : Γ(G.left, q.left ⁻¹ᵁ V), IsWt i _ a 0 ↔ ∃ c, (q.left.app V).hom c = a) ∧ Function.Injective (q.left.app V).hom ∧ (snd (splitTorus _ X) G).left ⁻¹ᵁ (q.left ⁻¹ᵁ V) ≤ ((fst (splitTorus _ X) G ≫ i) * snd _ G).left ⁻¹ᵁ (q.left ⁻¹ᵁ V) ∧ ∃ u : Multiplicative X →* Γ(G.left, q.left ⁻¹ᵁ V)ˣ, ∀ χ, IsWt i _ (u (Multiplicative.ofAdd χ)).val χ) := by
   intro A _ J hJ X _ _ _ G _ _ G₀ _ F hF Q₀ i hi hT

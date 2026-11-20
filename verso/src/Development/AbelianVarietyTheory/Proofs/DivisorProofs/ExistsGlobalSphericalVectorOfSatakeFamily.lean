@@ -14,7 +14,7 @@ namespace GlobalTheory.JSW.SphVec
 open GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.LFun
 
 /- English proof (translation)
-Establish `h : (twKer ρ K 1).map S ≤ twKer σ K 1`. Rewrite using `[twKer, Submodule.map_span_le]`. Introduce and unpack `_ ⟨n, u, rfl⟩`. Conclude with `Submodule.subset_span ⟨n, S u, by simp [hS]⟩`. Conclude with `h ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_mem_twKer {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} {K : Subgroup G}
@@ -28,21 +28,19 @@ theorem map_mem_twKer {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hK : IsCompact ((KGL w a : Subgroup _) : Set (GL (Fin a) (w.adicCompletion E)))` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2`. Establish `hsm : IsSmooth (π.locRep w)` using `π.isSmooth_locRep w`. Establish `hsU : IsSmooth (GlobalTheory.PRep.sub (π.locRep w) U hU)` using `fun v => by`. Use `hsm v.1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `Subtype.ext_iff`. Assume the negation of the conclusion as `hne`. Establish `hbot : fixed (GlobalTheory.PRep.sub (π.locRep w) U hU) (KGL w a) = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `v hv`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hne ⟨v.1, v.2, fun h => h0 (Subtype.ext h), fun k hk => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hv k hk)⟩`. Establish `htop` using `(GlobalTheory.LocGL.isCompl_fixed_twKer hsU hK).sup_eq_top`. Rewrite `htop` using `[hbot, bot_sup_eq]`. Establish `hall : ∀ g, π.locRep w g y ∈ twKer (π.locRep w) (KGL w a) 1` using `fun g => map_mem_twKer (ρ := GlobalTheory.PRep.sub (π.locRep w) U hU) U.subtype (fun _ _ => rfl) (v := ⟨_, hU g y hy⟩) (htop ▸ Submodule.mem_top)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hS`. Set `Wl : Submodule ℂ π.V` to `⨅ g, (twKer (π.locRep w) (KGL w a) 1).comap (π.locRep w g)`. Establish `memWl : ∀ v, v ∈ Wl ↔ ∀ g, π.locRep w g v ∈ twKer (π.locRep w) (KGL w a) 1` using `fun v => by`. Simplify using `[Wl, Submodule.mem_iInf]`. Establish `stab : GlobalTheory.CuspRep.IsStable (Wl.map π.V.subtype)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `o _ ⟨v, hv, rfl⟩`. Take `⟨g, S, hS, ho⟩` from `GlobalTheory.LocFactor.op_eq_locRep_comp π w o`. Establish `hv'` using `(memWl v).1 hv`. Use `⟨π.op o v, (memWl _).2 fun h => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[ho, LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `LinearMap.congr_fun (hS (h * g)) v`. Simplify using `only [LinearMap.comp_apply] at e`. Rewrite using `[← e]`. Conclude with `map_mem_twKer S (fun h v => LinearMap.congr_fun (hS h) v) (hv' (h * g))`. Break down `π.irred _ (Submodule.map_subtype_le _ _) stab with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (y : Sm E a) ∈ Wl.map π.V.subtype` using `⟨y, (memWl y).2 hall, rfl⟩`. Rewrite `h1` using `[h, Submodule.mem_bot]`. Conclude with `hy0 (Subtype.ext h1)`. Establish `h1 : (x : Sm E a) ∈ Wl.map π.V.subtype` using `by rw [h]; exact x.2`. Take `⟨x', hx', e⟩` from `h1`.
-
-Take `rfl : x' = x` from `Subtype.ext e`. Establish `h2` using `(memWl x').1 hx' 1`. Rewrite `h2` using `[map_one, Module.End.one_apply]`. Conclude with `hx0 (Submodule.disjoint_def.1 (GlobalTheory.LocGL.isCompl_fixed_twKer hsm hK).disjoint x' hx h2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed_mem (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E))
     (hS : GlobalTheory.LGrp.IsSpherical (π.locRep w) (KGL w a)) (U : Submodule ℂ π.V)
@@ -93,7 +91,7 @@ theorem exists_fixed_mem (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E))
     exact hx0 (Submodule.disjoint_def.1 (GlobalTheory.LocGL.isCompl_fixed_twKer hsm hK).disjoint x' hx h2)
 
 /- English proof (translation)
-Simplify using `only [CuspSub.locRep, MonoidHom.comp_apply]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, LocSph.comm_locGL w _ (pLoc_locGL_of_ne h k)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem locRep_comm (π : CuspSub E a) {v w : HeightOneSpectrum (𝓞 E)} (h : w ≠ v)
     (k : GL (Fin a) (v.adicCompletion E)) (g : GL (Fin a) (w.adicCompletion E)) (x : π.V) :
@@ -103,13 +101,11 @@ theorem locRep_comm (π : CuspSub E a) {v w : HeightOneSpectrum (𝓞 E)} (h : w
     LocSph.comm_locGL w _ (pLoc_locGL_of_ne h k)]
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => exact ⟨y, hy0, fun v hv => hy v (by simpa using hv)⟩`. Consider the case `insert w F _ ih`. Take `⟨x, hx0, hx⟩` from `ih fun v hv => hF v (Finset.mem_insert_of_mem hv)`. Set `U : Submodule ℂ π.V` to `⨅ v : {v // (v ∈ T ∨ v ∈ F) ∧ w ≠ v}, fixed (π.locRep v.1) (KGL v.1 a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `memU : ∀ z, z ∈ U ↔ ∀ v, (v ∈ T ∨ v ∈ F) → w ≠ v → ∀ k ∈ KGL v a, π.locRep v k z = z` using `fun z => by`. Simplify using `only [U, Submodule.mem_iInf, GlobalTheory.LGrp.mem_fixed, Subtype.forall]`. Conclude with `⟨fun h v h1 h2 => h v ⟨h1, h2⟩, fun h v h1 => h v h1.1 h1.2⟩`. Take `⟨z, hz, hz0, hzw⟩` from `exists_fixed_mem π w (hF w (Finset.mem_insert_self _ _)) U (fun g z hz => (memU _).2 fun v hv hne k hk => by`. Rewrite using `[locRep_comm π hne, (memU z).1 hz v hv hne k hk])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `((memU x).2 fun v hv _ => hx v hv) hx0`. Use `⟨z, hz0, fun v hv => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hne : w = v`. Substitute `hne` using the available equality. Conclude with `hzw`.
-
-Use `(memU z).1 hz v (hv.imp_right fun h => ?_) hne` and prove the remaining obligations. Conclude with `(Finset.mem_insert.1 h).resolve_left fun e => hne e.symm`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_fixed_union (π : CuspSub E a) (T : Set (HeightOneSpectrum (𝓞 E))) {y : π.V} (hy0 : y ≠ 0)
     (hy : ∀ v ∈ T, ∀ k ∈ KGL v a, π.locRep v k y = y) (F : Finset (HeightOneSpectrum (𝓞 E)))
@@ -135,9 +131,9 @@ theorem exists_fixed_union (π : CuspSub E a) (T : Set (HeightOneSpectrum (𝓞 
       exact (Finset.mem_insert.1 h).resolve_left fun e => hne e.symm
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Establish `hev` using `LocSph.eventually_mem ((π.cusp φ hφ).1.level.mem_nhds (by simp))`. Rewrite `hev` using `[Filter.eventually_cofinite]`. Take `⟨x, hx0, hx⟩` from `exists_fixed_union π {w | ∀ g : GL (Fin a) (w.adicCompletionIntegers E), locGL E a w (GeneralLinearGroup.map (w.adicCompletionIntegers E).subtype g) ∈ {k | finRep E a k φ = φ}} (y := ⟨φ, hφ⟩) (fun h => h0 (congrArg Subtype.val h)) (by rintro v hv _ ⟨g, rfl⟩; exact Subtype.ext (hv …`. Use `⟨x.1, x.2, fun h => hx0 (Subtype.ext h), fun w hw k hk => congrArg Subtype.val (hx w ?_ k hk)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(em _).imp_right fun h => Finset.mem_filter.2 ⟨hev.mem_toFinset.2 h, hw⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_sphVec_of_isSpherical (π : CuspSub E a) (S : Set (HeightOneSpectrum (𝓞 E)))
     (hS : ∀ w ∉ S, GlobalTheory.LGrp.IsSpherical (π.locRep w) (KGL w a)) :
@@ -156,7 +152,7 @@ theorem exists_sphVec_of_isSpherical (π : CuspSub E a) (S : Set (HeightOneSpect
   refine (em _).imp_right fun h => Finset.mem_filter.2 ⟨hev.mem_toFinset.2 h, hw⟩
 
 /- English proof (translation)
-The claim follows from `exists_sphVec_of_isSpherical π S fun w hw => (hS w hw).elim fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem exists_sphVec (π : CuspSub E a) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (hS : ∀ w ∉ S, ∃ B, HasSatGL w (π.locRep w) B) :
@@ -164,7 +160,7 @@ theorem exists_sphVec (π : CuspSub E a) (S : Finset (HeightOneSpectrum (𝓞 E)
   exists_sphVec_of_isSpherical π S fun w hw => (hS w hw).elim fun _ h => h.1
 
 /- English proof (translation)
-The claim follows from `exists_sphVec π S fun w hw => ⟨B w, h w hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_sphVec_of_hasSat (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (B : HeightOneSpectrum (𝓞 E) → Multiset ℂˣ)

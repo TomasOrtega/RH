@@ -12,7 +12,7 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 noncomputable section
 
 /- English proof (translation)
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Rewrite using `[toMul_nsmul, toMul_zero]`. Conclude with `Subtype.ext ((mem_rootsOfUnity ℓ _).1 (Additive.toMul a).2)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_rootsOfUnity_eq_zero {E : Type*} [CommMonoid E] (ℓ : ℕ)
     (a : Additive (rootsOfUnity ℓ E)) : ℓ • a = 0 := by
@@ -27,11 +27,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Compa
   [IsDiscreteRep E.X₂] [IsDiscreteRep E.X₃]
 
 /- English proof (translation)
-Establish `hfx : (cohomologyMap E.f 3).hom x = 0`. Use `h3 _ ?_` and prove the remaining obligations. Rewrite using `[← map_nsmul, nsmul_cohomology_eq_zero _ hX 3 x, map_zero]`. Take `⟨y, rfl⟩` from `exists_δ_eq_of_cohomologyMap_f_eq_zero hE 2 3 rfl x hfx`. Establish `hyt : IsOfFinAddOrder y` using `isTorsion_cohomology _ (by norm_num) y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδℓ : ℓ ^ 1 • (δ hE 2 3 rfl).hom.toAddMonoidHom y = 0`. Rewrite using `[pow_one]`. Conclude with `nsmul_cohomology_eq_zero _ hX 3 _`. Take `⟨y', hj, hy'⟩` from `exists_primary_map_eq (δ hE 2 3 rfl).hom.toAddMonoidHom hℓ hyt hδℓ`. Express the relevant statement in the definitionally equal form `(δ hE 2 3 rfl).hom y = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← show (δ hE 2 3 rfl).hom y' = (δ hE 2 3 rfl).hom y from hy']`. Take `⟨z, rfl⟩` from `hdiv y' hj`. Rewrite using `[← ModuleCat.comp_apply, comp_δ]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_zero_h3_of_shortExact (hE : E.ShortExact) {ℓ : ℕ} (hℓ : ℓ.Prime)
     (hX : ∀ a : E.X₁, ℓ • a = 0) (h3 : ∀ z : cohomology E.X₂ 3, ℓ • z = 0 → z = 0)
@@ -62,9 +62,9 @@ set_option maxHeartbeats 1000000 in
 include hℓ hS in
 
 /- English proof (translation)
-Establish `: NeZero ℓ` using `⟨hℓ.ne_zero⟩`. Establish `hE` using `sUnitsKummerSequence_shortExact (Ω := ℚ̄) S ℓ (fun v hv h => hv (hS v h))`. Use `eq_zero_h3_of_shortExact (E := sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) ℓ) hE hℓ (nsmul_rootsOfUnity_eq_zero ℓ) h3 (fun y hy => ?_) x` and prove the remaining obligations. Take `⟨z, hz⟩` from `exists_nsmul_eq_h2SUnits K S ℓ hℓ hS hK ⟨y, hy⟩`. Use `⟨z.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sUnitsKummerSequence_g]`. Conclude with `(cohomologyMap_nsmul_id_apply _ ℓ 2 z.1).trans (congrArg Subtype.val hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_h3_rootsOfUnity_of_h3_sUnits (hK : ℓ ≠ 2 ∨ IsTotallyComplex K.1)
     (h3 : ∀ z : cohomology (galSUnitsMax K.1 ℚ̄ S) 3, ℓ • z = 0 → z = 0)

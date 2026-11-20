@@ -7,9 +7,7 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.LamTie
 
 /- English proof (translation)
-Establish `hd : (C.delAt l).TameAt w`. Unfold `CharFrame.delAt`. Use `split_ifs`. Conclude with `C.isDel'.tame w`. Conclude with `C.isDel.tame w`.
-
-Conclude with `HChar.LevelLe.mul ((C.isMu0 j).tame w) hd`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mu0_del_tame {D : D7} (C : CharFrame D) (l : ℕ) (j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     (C.mu0 j * C.delAt l).LevelLe w 1 := by
@@ -20,9 +18,7 @@ theorem mu0_del_tame {D : D7} (C : CharFrame D) (l : ℕ) (j : Fin D.R.m) (w : H
   exact HChar.LevelLe.mul ((C.isMu0 j).tame w) hd
 
 /- English proof (translation)
-Establish `h1 : ∀ k, ¬ OverP D.host (D.host.g k) w` using `fun k hk => hw (Or.inl ⟨k, hk⟩)`. Establish `hd : (C.delAt l).UnrAt w`. Unfold `CharFrame.delAt`. Use `split_ifs`. Conclude with `C.isDel'.unr w (fun h => hw (Or.inr (Or.inr h)))`.
-
-Conclude with `C.isDel.unr w (fun h => hw (Or.inr (Or.inl h)))`. Conclude with `HChar.UnrAt.mul ((C.isMu0 j).unr w h1) hd`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mu0_del_unr {D : D7} (C : CharFrame D) (l : ℕ) (j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : ¬ Over4 D.host w) : (C.mu0 j * C.delAt l).UnrAt w := by
@@ -34,11 +30,11 @@ theorem mu0_del_unr {D : D7} (C : CharFrame D) (l : ℕ) (j : Fin D.R.m) (w : He
   exact HChar.UnrAt.mul ((C.isMu0 j).unr w h1) hd
 
 /- English proof (translation)
-Introduce `D Z hZ l j a w`. Take `⟨h4, h0, hO⟩` from `expIn_cond0 D.R D.host Z.q0 Z.w0 hZ.places w`. Establish `hA` using `hZ.aux a`. Unfold `LamDat.lam0`. Distinguish the cases in `hw : Over4 D.host w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h4 hw]`. Conclude with `expAt_mul_inv _ (Z.chi a) _ w 2 (by norm_num) (hA.two w hw) (mu0_del_tame Z.C l j w)`. Distinguish the cases in `hb : below w = below Z.w0`. Rewrite using `[(h0 hb).2]`. Establish `hu` using `mu0_del_unr Z.C l j w hw`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `expAt_mul_inv _ (Z.chi a) _ w 1 le_rfl (hA.one w hb) ((HChar.unrAt_iff _ _).1 hu)`. Rewrite using `[hO hw hb]`. Establish `hu` using `HChar.UnrAt.mul (mu0_del_unr Z.C l j w hw) (HChar.UnrAt.inv (hA.unr w hw hb))`. Introduce `m`. Conclude with `⟨fun _ => Nat.zero_le m, fun _ => HChar.UnrAt.levelLe hu m⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lam0_expAt : ∀ (D : D7) (Z : LamDat D), Z.Ok → ∀ (l : ℕ) (j a : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)),
     ExpAt (Z.lam0 l j a) w (expIn (cond0 D.host Z.w0) (below w)) := by

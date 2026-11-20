@@ -22,7 +22,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 include PD in
 
 /- English proof (translation)
-Introduce `h`. Apply `PD.not_mem_filtration_two` to reduce the goal to its premises. Establish `: PD.ι PD.t = 0` using `by rw [← mul_one (PD.ι PD.t), h, mul_zero]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_ne_zero_BdR : (1 : BdR) ≠ 0 := by
   intro h
@@ -34,7 +34,7 @@ theorem one_ne_zero_BdR : (1 : BdR) ≠ 0 := by
 include PD in
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one Qp (one_ne_zero_BdR PD)`. Establish `h` using `congrArg (fun x => TensorProduct.rid Qp V (LinearMap.lTensor V f x)) hv`. Simplify `h` using `[hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_tmul_one (v : V) (hv : v ⊗ₜ[Qp] (1 : BdR) = 0) : v = 0 := by
   obtain ⟨f, hf⟩ := Module.Projective.exists_dual_eq_one Qp (one_ne_zero_BdR PD)
@@ -42,13 +42,13 @@ theorem eq_zero_of_tmul_one (v : V) (hv : v ⊗ₜ[Qp] (1 : BdR) = 0) : v = 0 :=
   simpa [hf] using h
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional LL ↥(DdR PD ρ ⊓ FilV PD (LL := LL) (V := V) 0) := Submodule.finiteDimensional_of_le inf_le_left`. Set `j : V →ₗ[LL] V ⊗[Qp] BdR` to `(AlgebraTensorModule.mk Qp LL V BdR).flip 1`. Establish `hj : ∀ v, j v = v ⊗ₜ[Qp] (1 : BdR)` using `fun v => rfl`. Establish `hm : ∀ v ∈ H0V ρ, j v ∈ DdR PD ρ ⊓ FilV PD (LL` using `LL) (V := V) 0 := by`. Introduce `v hv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [H0V, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hv`. Establish `: j v ∈ DdR PD ρ`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj]`. Simplify using `[actVdR, hv g]`. Conclude with `this`. Conclude with `⟨v ⊗ₜ[Qp] ⟨1, PD.one_mem⟩, by simp [hj]⟩`. Use `LinearMap.finrank_le_finrank_of_injective (f := j.restrict hm) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `v hv`. Establish `h0 : j v.1 = 0` using `congrArg Subtype.val (LinearMap.mem_ker.1 hv)`. Use `eq_zero_of_tmul_one PD v.1 (by rw [← hj]; exact h0)` as an intermediate fact. Conclude with `(Submodule.mem_bot _).2 (Subtype.ext this)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_H0V_le [FiniteDimensional LL ↥(DdR PD ρ)] :
     finrank LL ↥(H0V ρ) ≤ finrank LL ↥(DdR PD ρ ⊓ FilV PD (LL := LL) (V := V) 0) := by
@@ -77,9 +77,9 @@ theorem finrank_H0V_le [FiniteDimensional LL ↥(DdR PD ρ)] :
   exact (Submodule.mem_bot _).2 (Subtype.ext this)
 
 /- English proof (translation)
-Establish `h' : finrank LL ↥(DdR PD ρ) = finrank LL V` using `by rw [h, hK, one_mul]`. Break down `Nat.eq_zero_or_pos (finrank LL V) with h0 | h0` into its components or cases. Use `Submodule.finrank_le (H0V ρ)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `haveI : FiniteDimensional LL ↥(DdR PD ρ) := Module.finite_of_finrank_pos (by omega)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `finrank_H0V_le PD ρ` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem h0_add_le [FiniteDimensional LL V] (hK : finrank Qp K = 1) (h : IsDR PD ρ) :
     (finrank LL ↥(H0V ρ) : ℤ) + ((finrank LL ↥(DdR PD ρ) : ℤ) -
@@ -95,7 +95,7 @@ theorem h0_add_le [FiniteDimensional LL V] (hK : finrank Qp K = 1) (h : IsDR PD 
 end General
 
 /- English proof (translation)
-Introduce `l _ P K LL hK hBK A hA`. Establish `hd` using `hBK.2.1 _ _ (goodO_ringOfIntegers l LL) A hA`. Establish `h` using `h0_add_le (P.PD K) A.ρ hK hA`. Rewrite `h` using `[← hd]`. Conclude with `h` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_H1f_le : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l), finrank ℚ_[l] ↥K.1 = 1 → LocalSituation.bkAll (P.PD K) → ∀ A : GRep ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL), IsDR (P.PD K) A.ρ → finrank ↥LL.1 (FiniteCohomology (P.PD K) A.ρ) ≤ finrank ↥LL.1 A.V := by
   intro l _ P K LL hK hBK A hA

@@ -31,7 +31,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-Introduce `S _ _ y K _ _ ψ` and use `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1.secBaseChange E H Dw l Xo c S K ψ y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frBCField : FrBCFieldSt Xo c := fun S _ _ y K _ _ ψ =>
   GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1.secBaseChange E H Dw l Xo c S K ψ y

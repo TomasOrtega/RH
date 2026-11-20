@@ -22,9 +22,9 @@ lemma Rw_cons' {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (X : Mat k
   rfl
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons X w ih`. Rewrite using `[Rw_cons']`. Establish `h` using `ih (fun Y hY => hw Y (List.mem_cons_of_mem _ hY))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `CkOn_Dx (x := (false, X)) (hw X (by simp)) (by simpa using h)`.
+A detailed English derivation is pending.
 -/
 lemma ckOn_Rw_top {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {UU : Set (Mat k r)} {f : Mat k r → E}
     (hf : CkOn ⊤ UU f) {w : List (Mat k r)} (hw : ∀ X ∈ w, inLie k r X) : CkOn ⊤ UU (Rw w f) := by
@@ -36,13 +36,13 @@ lemma ckOn_Rw_top {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {UU : S
     exact CkOn_Dx (x := (false, X)) (hw X (by simp)) (by simpa using h)
 
 /- English proof (translation)
-Introduce `es`. Proceed by induction on `es with`. Consider the case `nil`. Introduce `_`. Simplify using `only [C6.Epart, List.map_nil, List.prod_nil, Finset.univ_eq_empty, Finset.sum_empty]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hasDerivAt_const _ _`. Consider the case `cons e es ih`. Introduce `hes`. Establish `h1 : HasDerivAt (fun s => Rw e.2 (fib e.1) (crv (false, X) g s)) (Rw (X :: e.2) (fib e.1) g) 0`. Rewrite using `[Rw_cons']`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `CkOn_diff (x := (false, X)) hX (sCkOn_mono le_top (ckOn_Rw_top (hfib e.1) (hes e (by simp)))) hg hg.1`. Establish `h2` using `ih (fun e' he' => hes e' (List.mem_cons_of_mem _ he'))`. Establish `h3` using `h1.mul h2`. Use `show HasDerivAt (fun s => Rw e.2 (fib e.1) (crv (false, X) g s) * C6.Epart fib es (crv (false, X) g s)) _ 0`. Use `h3.congr_deriv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ f : Fin (e :: es).length → C6.EndH Wp Wq, ∑ i, f i = f ⟨0, by simp⟩ + ∑ i : Fin es.length, f i.succ` using `fun f => Fin.sum_univ_succ f`. Rewrite using `[key, crv_zero]`. Simplify using `[C6.Epart, Finset.mul_sum]`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_epart (D : RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → Mat k r → C6.EndH Wp Wq)
     (hfib : ∀ j, CkOn ⊤ (GPos D) (fib j)) {X : Mat k r} (hX : inLie k r X) {g : Mat k r} (hg : g ∈ GPos D) :
@@ -71,7 +71,7 @@ theorem hasDerivAt_epart (D : RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf 
     simp [C6.Epart, Finset.mul_sum]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => simp [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma list_sum_apply {α : Type*} (L : List α) (f : α → C6.EndH Wp Wq) (x : Wq →L[ℂ] Wp) :
     (L.map f).sum x = (L.map fun t => f t x).sum := by
@@ -80,7 +80,7 @@ lemma list_sum_apply {α : Type*} (L : List α) (f : α → C6.EndH Wp Wq) (x : 
   | cons a L ih => simp [ih]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => simp [ih, add_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma list_sum_smul {α : Type*} (L : List α) (f : α → ℂ) (E : C6.EndH Wp Wq) :
     (L.map fun t => f t • E).sum = (L.map f).sum • E := by
@@ -89,7 +89,7 @@ lemma list_sum_smul {α : Type*} (L : List α) (f : α → ℂ) (E : C6.EndH Wp 
   | cons a L ih => simp [ih, add_smul]
 
 /- English proof (translation)
-Introduce `t' ht'`. Simplify using `only [dscal, List.mem_append, List.mem_singleton, List.mem_ofFn, Set.mem_range] at ht'`. Apply the tactic sequence `rcases ht' with ((h | ⟨m, h⟩) | ⟨m, h⟩) | h <;> subst h <;> (try split_ifs) <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma dscal_es (D : RealPlaceData k r Wp Wq) {nf : ℕ} (X : Mat k r) (t : CT k r nf) :
     ∀ t' ∈ dscal D X t, t'.es = t.es := by
@@ -98,11 +98,9 @@ lemma dscal_es (D : RealPlaceData k r Wp Wq) {nf : ℕ} (X : Mat k r) (t : CT k 
   rcases ht' with ((h | ⟨m, h⟩) | ⟨m, h⟩) | h <;> subst h <;> (try split_ifs) <;> rfl
 
 /- English proof (translation)
-Establish `h1` using `hasDerivAt_cvs D X g t hnz hG`. Establish `h2` using `hasDerivAt_epart D fib hfib hX hg t.es hes`. Establish `h3` using `h1.smul h2`. Use `show HasDerivAt (fun s => cvs D t (crv (false, X) g s) • C6.Epart fib t.es (crv (false, X) g s)) _ 0`. Use `h3.congr_deriv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[crv_zero, dco, List.map_append, List.sum_append, add_comm]`. Use `symm`. Use `congr 1`. Rewrite using `[← list_sum_smul]`. Conclude with `congrArg List.sum (List.map_congr_left (fun t' ht' => by simp only [cv, dscal_es D X t t' ht']))`.
-
-Simplify using `only [dfib, List.map_ofFn, List.sum_ofFn, Function.comp_def, cv, cvs, Finset.smul_sum]`.
+Use symmetry to reverse the relation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_cv (D : RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → Mat k r → C6.EndH Wp Wq)
     (hfib : ∀ j, CkOn ⊤ (GPos D) (fib j)) {X : Mat k r} (hX : inLie k r X) {g : Mat k r} (hg : g ∈ GPos D)
@@ -139,13 +137,11 @@ def Good {nf : ℕ} (L : Finset (Fin (r + 2))) (e : CT k r nf × List (Mat k r))
   (∀ x ∈ e.1.es, ∀ Y ∈ x.2, inLie k r Y) ∧ (∀ Y ∈ e.2, inLie k r Y)
 
 /- English proof (translation)
-Introduce `t' ht' l hl`. Simplify using `only [dscal, List.mem_append, List.mem_singleton, List.mem_ofFn, Set.mem_range] at ht'`. Apply the tactic sequence `rcases ht' with ((h | ⟨m, h⟩) | ⟨m, h⟩) | h <;> subst h`. Conclude with `hP l hl`. Use `split_ifs at hl with hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hP l hl`. Distinguish the cases in `hlm : l = m`. Substitute `hlm` using the available equality. Conclude with `hP l (Or.inl hm)`. Apply `hP l` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hl` using `[Pi.single_apply, hlm]`. Use `split_ifs at hl with hm`. Conclude with `hP l hl`. Distinguish the cases in `hlm : l = m`. Substitute `hlm` using the available equality.
-
-Conclude with `hP l (Or.inr hm)`. Apply `hP l` to reduce the goal to its premises. Simplify `hl` using `[Pi.single_apply, hlm]`. Apply the tactic sequence `split_ifs at hl <;> exact hP l hl`.
+Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma dscal_support_prop_of_support_prop (D : RealPlaceData k r Wp Wq) {nf : ℕ} (X : Mat k r) (t : CT k r nf)
     (P : Fin (r + 2) → Prop) (hP : ∀ l, (t.a l ≠ 0 ∨ t.b l ≠ 0) → P l) :
@@ -169,17 +165,15 @@ private lemma dscal_support_prop_of_support_prop (D : RealPlaceData k r Wp Wq) {
   · split_ifs at hl <;> exact hP l hl
 
 /- English proof (translation)
-Unfold `Good at he ⊢`. Take `⟨hab, hes, hw⟩` from `he`. Introduce `e' he'`. Simplify using `only [stepOne, List.mem_append, List.mem_map, List.mem_singleton] at he'`. Break down `he' with ⟨t', ht', rfl⟩ | rfl` into its components or cases.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨⟨?_, ?_, hw⟩, by simp⟩` and prove the remaining obligations. Simplify using `only [dco, List.mem_append] at ht'`. Break down `ht' with ht' | ht'` into its components or cases. Conclude with `dscal_support_prop_of_support_prop D X e.1 _ hab t' ht'`. Simplify using `only [dfib, List.mem_ofFn, Set.mem_range] at ht'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `ht'`. Conclude with `hab`. Simplify using `only [dco, List.mem_append] at ht'`. Break down `ht' with ht' | ht'` into its components or cases. Rewrite using `[dscal_es D X e.1 t' ht']`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hes`. Simplify using `only [dfib, List.mem_ofFn, Set.mem_range] at ht'`. Take `⟨i, rfl⟩` from `ht'`. Introduce `x hx Y hY`. Break down `List.mem_or_eq_of_mem_set hx with hx | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hes x hx Y hY`. Break down `List.mem_cons.1 hY with rfl | hY` into its components or cases. Conclude with `hX`. Conclude with `hes _ (by simp) Y hY`. Use `⟨⟨hab, hes, ?_⟩, by simp⟩` and prove the remaining obligations.
-
-Introduce `Y hY`. Break down `List.mem_cons.1 hY with rfl | hY` into its components or cases. Conclude with `hX`. Conclude with `hw Y hY`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma good_step (D : RealPlaceData k r Wp Wq) {nf : ℕ} {L : Finset (Fin (r + 2))} {X : Mat k r} (hX : inLie k r X)
     {e : CT k r nf × List (Mat k r)} (he : Good L e) :
@@ -214,11 +208,11 @@ lemma good_step (D : RealPlaceData k r Wp Wq) {nf : ℕ} {L : Finset (Fin (r + 2
     · exact hw Y hY
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `_ Lf hLf e' he'`. Conclude with `⟨hLf e' he', e', he', by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `cons X w ih`. Introduce `hw Lf hLf e' he'`. Establish `hX : inLie k r X` using `hw X (by simp)`. Establish `hw' : ∀ Y ∈ w, inLie k r Y` using `fun Y hY => hw Y (List.mem_cons_of_mem _ hY)`. Simplify using `only [steps, List.foldr_cons, step, List.mem_flatMap] at he'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨e'', he'', he'⟩` from `he'`. Take `⟨hg, e, he, hlen⟩` from `ih hw' Lf hLf e'' he''`. Take `⟨hg', hlen'⟩` from `good_step D hX hg e' he'`. Use `⟨hg', e, he, ?_⟩` and prove the remaining obligations. Simplify using `only [List.length_cons]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/

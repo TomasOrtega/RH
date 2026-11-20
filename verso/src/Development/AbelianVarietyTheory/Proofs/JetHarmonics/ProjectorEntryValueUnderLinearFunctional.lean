@@ -12,7 +12,7 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem qminor_cast {M : Type} [AddCommGroup M] [Module ℂ M] {n a b : ℕ} (E : Fin n → Fin n → Module.End ℂ M)
     (h : a = b) (f g : Fin b → Fin n) (u : ℂ) :
@@ -25,37 +25,35 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `M Wp _ _ _ _ k r E l p τ hk hE hp mu u Pop hmu hq hP hW s`. Use `set D : ℂ := ∏ t ∈ univ.erase s, ((mu t : ℂ) - mu s) with hD`. Use `set N : ℂ := ∏ i ∈ Icc 1 k, (-(mu s : ℂ) + 1 / 2 + (u i : ℂ)) with hN`. Establish `hDn : ‖D‖ = ∏ t ∈ univ.erase s, |mu s - mu t|`. Rewrite using `[hD, norm_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, abs_sub_comm]`. Establish `hNn : ‖N‖ = ∏ i ∈ Icc 1 k, |mu s - 1 / 2 - u i|`. Rewrite using `[hN, norm_prod]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (-(mu s : ℂ) + 1 / 2 + (u t : ℂ)) = ((-(mu s - 1 / 2 - u t) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_neg]`. Establish `hD0 : D ≠ 0`. Rewrite using `[hD, Finset.prod_ne_zero_iff]`. Introduce `t ht h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : mu t = mu s` using `by exact_mod_cast sub_eq_zero.mp h`. Conclude with `(Finset.mem_erase.mp ht).1 (hmu h1)`. Establish `hinj : Function.Injective (fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1)))`. Introduce `a b h`. Use `congrArg Fin.val h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only at this`. Conclude with `Fin.ext (by omega)`. Establish `hblock : ∀ v, l (Formalism.REAL.qminor E (fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) (fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) (-(mu s : ℂ) + (k : ℂ) / 2) v) = N • l v`. Introduce `v`. Rewrite using `[GlobalTheory.T.quantumMinor_block_linearMap_intertwine M Wp _ k E l _ Pop hinj hP, hW, hN]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hcof : ∀ (v : M) (y : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → M), (∀ t, splitCas E (y t) = ((-mu t + (1 - (((2 * r + k + 1) : ℕ) : ℝ)) / 2 : ℝ) : ℂ) • y t) → ∑ t, y t = Pi.single (Fin.last (2 * r + k)) v → ∀ i : Fin (2 * r + k + 1), D • l (y s i) = ((-1 : ℂ) ^ (i.val + (2 * r …`. Introduce `v y hy hs i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `GlobalTheory.T.capelliComatrix_picks_splitCasimir_eigencomponent M (2 * r + k) E mu y hE hq hy s i`. Establish `hj : ∀ j, ∑ t, y t j = (Pi.single (Fin.last (2 * r + k)) v : Fin (2 * r + k + 1) → M) j`. Introduce `j`. Rewrite using `[← hs, Finset.sum_apply]`. Rewrite `h` using `[Finset.sum_eq_single (Fin.last (2 * r + k))]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hj, Pi.single_eq_same]`. Rewrite using `[← map_smul, ← map_smul, hD, ← h]`. Both sides reduce to the same expression. Introduce `j _ hne`. Rewrite using `[hj, Pi.single_eq_of_ne hne]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Distinguish the cases in `hr : r = 0`. Use `⟨D⁻¹ * N, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_inv, hDn, hNn, if_pos hr]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `v y hy hs`. Rewrite using `[if_pos hr]`. Establish `h` using `hcof v y hy hs (Fin.last _)`. Substitute `hr` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hm : Formalism.REAL.qminor E (Fin.succAbove (Fin.last (2 * 0 + k))) (Fin.succAbove (Fin.last (2 * 0 + k))) (-(mu s : ℂ) + ((2 * 0 + k : ℕ) : ℂ) / 2) = Formalism.REAL.qminor E (fun i : Fin k => (⟨0 + i.val, by omega⟩ : Fin (2 * 0 + k + 1))) (fun i : Fin k => (⟨0 + i.val, by omega⟩ …`. Use `qminor_cast E (show k = 2 * 0 + k by omega) (Fin.succAbove (Fin.last (2 * 0 + k))) (Fin.succAbove (Fin.last (2 * 0 + k))) (-(mu s : ℂ) + (k : ℂ) / 2)` as an intermediate fact. Establish `e : (fun i : Fin k => (⟨0 + i.val, by omega⟩ : Fin (2 * 0 + k + 1))) = fun i => Fin.succAbove (Fin.last (2 * 0 + k)) (Fin.cast (show k = 2 * 0 + k by omega) i)`. Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, this]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hm, hblock]`. Establish `hs1 : ((-1 : ℂ) ^ ((Fin.last (2 * 0 + k)).val + (2 * 0 + k))) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.val_last, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hs1, one_smul]`. Rewrite using `[mul_smul, ← h, smul_smul, inv_mul_cancel₀ hD0, one_smul]`. Establish `hr1 : 1 ≤ r` using `by omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c1, hc1, h1⟩` from `GlobalTheory.T.glRelation_row_steps_functional_eigen M Wp k r E l p τ hk hE hp hr1`. Take `⟨c2, hc2, h2⟩` from `GlobalTheory.T.besselColumnSteps_functional_eigen M Wp k r E l p τ hk hE hp hr1`. Use `⟨D⁻¹ * ((-1 : ℂ) ^ (2 * r + k) * (c1 * (c2 * N))), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_inv, norm_mul, norm_mul, norm_mul, hDn, hNn, if_neg hr, hc1, hc2, norm_pow]`. Simplify using `only [norm_neg, norm_one, one_pow]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `v y hy hs`. Rewrite using `[if_neg hr]`. Establish `h` using `hcof v y hy hs 0`. Establish `e : (-(mu s : ℂ) + ((2 * r + k : ℕ) : ℂ) / 2) - (r : ℂ) = -(mu s : ℂ) + (k : ℂ) / 2` using `by push_cast; ring`.
-
-Rewrite `h` using `[h1, h2, e, hblock, Fin.val_zero, zero_add]`. Rewrite using `[mul_smul, mul_smul, mul_smul, mul_smul, ← h, smul_smul, inv_mul_cancel₀ hD0, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capelli_projector_entry_value : ∀ (M Wp : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] [AddCommGroup Wp] [Module ℂ Wp] (k r : ℕ) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ M) (l : M →ₗ[ℂ] Wp) (p : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ) (τ : ℝ), 1 ≤ k → Formalism.REAL.GlRel E → (∀ a b : Fin (2 * r + k + 1), a < b → ¬ (r ≤ a.val ∧ b.val ≤ r + k) → (∀ v, l (E a b v) = p a b • l v) ∧ ‖p a b‖ = (if b.val = a.val + 1 ∧ (b.val < r ∨ r + k < a.val) then (1 : ℝ) else if (a.val + 1 = r ∧ b.val = r + k) ∨ (a.val = r + k ∧ b.val = r + k + 1) then τ else 0)) → ∀ (mu : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (Pop : Fin k → Fin k → Wp → Wp), Function.Injective mu → (∀ (Y : ℂ) (w : M), Formalism.REAL.qdet E (Y + ((((2 * r + k + 1) : ℕ) : ℂ) - 1) / 2) w = (∏ s, (Y + (mu s : ℂ))) • w) → (∀ i j v, l (E ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) i) ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) j) v) = Pop i j (l v)) → (∀ (w : ℂ) (x : Wp), Formalism.FourierDecayAlt.Q.qmF Pop id id w x = (∏ i ∈ Icc 1 k, (w - (k : ℂ) / 2 + 1 / 2 + (u i : ℂ))) • x) → ∀ s, ∃ c : ℂ, ‖c‖ = (if r = 0 then 1 else τ ^ 2) * ((∏ i ∈ Icc 1 k, |mu s - 1 / 2 - u i|) / ∏ t ∈ univ.erase s, |mu s - mu t|) ∧ ∀ (v : M) (y : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → M), (∀ t, splitCas E (y t) = ((-mu t + (1 - (((2 * r + k + 1) : ℕ) : ℝ)) / 2 : ℝ) : ℂ) • y t) → ∑ t, y t = Pi.single (Fin.last (2 * r + k)) v → l (y s (if r = 0 then Fin.last (2 * r + k) else 0)) = c • l v := by
   intro M Wp _ _ _ _ k r E l p τ hk hE hp mu u Pop hmu hq hP hW s

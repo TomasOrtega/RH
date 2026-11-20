@@ -18,14 +18,14 @@ variable {n : Type} [Fintype n] [DecidableEq n]
 def embA (a : Fin 4) (x : n → ℂ) : Fin 4 × n → ℂ := fun w => if w.1 = a then x w.2 else 0
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `by_cases h : a' = a <;> simp [slice, embA, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem slice_embA (a a' : Fin 4) (x : n → ℂ) : slice a' (embA a x) = if a' = a then x else 0 := by
   ext i
   by_cases h : a' = a <;> simp [slice, embA, h]
 
 /- English proof (translation)
-Introduce `a'`. Rewrite using `[slice_embA]`. Use `split_ifs`. Conclude with `hx`. Conclude with `Λ.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embA_mem (Λ : AddSubgroup (n → ℂ)) (a : Fin 4) {x : n → ℂ} (hx : x ∈ Λ) : embA a x ∈ pow4 Λ := by
   intro a'
@@ -35,15 +35,15 @@ theorem embA_mem (Λ : AddSubgroup (n → ℂ)) (a : Fin 4) {x : n → ℂ} (hx 
   · exact Λ.zero_mem
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx a`. Rewrite using `[← hsd]`. Introduce `y hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm⟩` from `hx (embA a y) (embA_mem Λ a hy)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm]`. Simplify using `only [altE, matrixForm_fourfoldBlock, slice_embA]`. Rewrite using `[Finset.sum_eq_single a]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ a) hh`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx y hy`. Establish `: ∀ a, ∃ m : ℤ, altE (matH h) (slice a x) (slice a y) = (m : ℝ)` using `fun a => by`. Establish `h1 : slice a x ∈ dualLat (matH h) Λ` using `by rw [hsd]; exact hx a`. Conclude with `h1 _ (hy a)`. Use `choose m hm using this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨∑ a, m a, ?_⟩` and prove the remaining obligations. Simplify using `only [altE] at hm`. Simplify using `only [altE, matrixForm_fourfoldBlock, Complex.im_sum, hm]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isSelfDual_matH_blk4_pow4 (h : Matrix n n ℂ) (Λ : AddSubgroup (n → ℂ)) (hsd : IsSelfDual (matH h) Λ) :
     IsSelfDual (matH (blk4 h)) (pow4 Λ) := by
@@ -73,15 +73,13 @@ theorem isSelfDual_matH_blk4_pow4 (h : Matrix n n ℂ) (Λ : AddSubgroup (n → 
     rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨g.symm x, ?_, by simp⟩` and prove the remaining obligations. Use `show g.symm x ∈ Λ`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsd]`. Introduce `y hy`. Take `⟨m, hm⟩` from `hx (g y) ⟨y, hy, rfl⟩`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hg (g.symm x) y` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this`. Simplify using `only [altE, this]`. Introduce and unpack `⟨x', hx', rfl⟩ y ⟨y', hy', rfl⟩`. Establish `h1 : x' ∈ dualLat H Λ` using `by rw [hsd]; exact hx'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `h1 y' hy'`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm]`. Use `hg x' y'` as an intermediate fact. Simplify using `only [altE]`.
-
-Conclude with `congrArg Complex.im this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem selfDual_img {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (H : Sesq V)
     (H' : Sesq W) (g : V ≃ₗ[ℂ] W) (hg : IsIsom H H' (g : V →ₗ[ℂ] W)) (Λ : AddSubgroup V)
@@ -109,9 +107,9 @@ theorem selfDual_img {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup 
     exact congrArg Complex.im this
 
 /- English proof (translation)
-Break down `Int.even_or_odd b with ⟨k, hk⟩ | hb` into its components or cases. It suffices to derive a contradiction. Substitute `hk` using the available equality. Establish `h5 : 4 * ((a : ℤ) * c) = 4 * (k * k) + d` using `by rw [← mul_assoc, h4]; ring`. Generalize the expression as in `(a : ℤ) * c = s at h5`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `k * k = t at h5`. Use linear arithmetic over natural numbers and integers. Conclude with `hb`.
+Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem odd_b (a : ℕ) (b c : ℤ) (d : ℕ) (h4 : 4 * (a : ℤ) * c = b ^ 2 + d) (h8 : d % 8 = 7) : Odd b := by
   rcases Int.even_or_odd b with ⟨k, hk⟩ | hb
@@ -124,7 +122,7 @@ theorem odd_b (a : ℕ) (b c : ℤ) (d : ℕ) (h4 : 4 * (a : ℤ) * c = b ^ 2 + 
   · exact hb
 
 /- English proof (translation)
-The claim follows from `(cmL a b d ha hd lam hlam).ω₁_mem_lattice half := (cmL a b d ha hd lam hlam).ω₁_div_two_notMem_lattice isom := hg alpha0 := by simp [alphaQ, qOf] betaStd := fun x hx => CmStdCharScale_proof a b c d ha hd lam hlam h4 hodd h8 _ x hx betaSemi := by have hsd' := selfDual_img _ _ g hg …`.
+A detailed English derivation is pending.
 -/
 theorem stdData_cm (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (lam : ℂ) (hlam : lam ≠ 0)
     (h4 : 4 * (a : ℤ) * c = b ^ 2 + d)
@@ -163,7 +161,7 @@ end Formalism.L2.Th1.H.CmData
 namespace Formalism.L2.Th1.H
 
 /- English proof (translation)
-Introduce `a b c d ha hd lam hlam h4 hodd h8 n _ _ h Λ g hg hsd hst i1 i2`. Conclude with `CmData.stdData_cm a b c d ha hd lam hlam h4 hodd h8 h Λ g hg hsd hst i1 i2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem StdDataCm_proof : StdDataCm := by
   intro a b c d ha hd lam hlam h4 hodd h8 n _ _ h Λ g hg hsd hst i1 i2

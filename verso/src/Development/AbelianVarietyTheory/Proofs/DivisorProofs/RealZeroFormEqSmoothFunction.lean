@@ -16,13 +16,11 @@ noncomputable section
 namespace GlobalTheory.CxForm
 
 /- English proof (translation)
-Establish `e : a = algebraMap ℂ (Alt n) ((bas n).repr a ∅)`. Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← bas_empty, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Use `split_ifs with hS`. Substitute `hS` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[smul_zero]`. Assume the negation of the conclusion as `h0`. Take `⟨h3, h4⟩` from `h₁ S h0`. Use `hS (Finset.eq_empty_of_forall_notMem fun i hi => ?_).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_ge i.val n with h | h` into its components or cases. Conclude with `Finset.notMem_empty i (Finset.card_eq_zero.1 h3 ▸ Finset.mem_filter.2 ⟨hi, h⟩)`. Conclude with `Finset.notMem_empty i (Finset.card_eq_zero.1 h4 ▸ Finset.mem_filter.2 ⟨hi, h⟩)`. Establish `hs : swap a = a` using `by rw [e, AlgHom.commutes]`. Establish `hr` using `h₂ ∅`.
-
-Rewrite `hr` using `[hs]`. Rewrite using `[Complex.conj_eq_iff_re.1 hr.symm]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_algebraMap_of_isType_zero {n : ℕ} {a : Alt n} (h₁ : IsType 0 0 a) (h₂ : IsReal a) :
     a = algebraMap ℂ (Alt n) (((bas n).repr a ∅).re : ℂ) := by
@@ -47,11 +45,9 @@ theorem eq_algebraMap_of_isType_zero {n : ℕ} {a : Alt n} (h₁ : IsType 0 0 a)
   exact e
 
 /- English proof (translation)
-Set `t : M → ℝ` to `fun y => ((bas n).repr (α ⟨((A.cover y).choose, y), (A.cover y).choose_spec⟩) ∅).re`. Establish `e (x : A.Pt) : α x = algebraMap ℂ (Alt n) (t x.pt : ℂ)`. Set `x' : A.Pt` to `⟨((A.cover x.pt).choose, x.pt), (A.cover x.pt).choose_spec⟩`. Establish `h₁` using `eq_algebraMap_of_isType_zero (hα.2 x').1 (hα.2 x').2`. Conclude with `(hα.1.compat x x' rfl).trans ((congrArg _ h₁).trans (AlgHom.commutes _ _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, fun i => ?_, funext e⟩` and prove the remaining obligations. Use `(Complex.reCLM.contDiff.comp_contDiffOn (hα.1.smooth i ∅)).congr fun v hv => ?_` and prove the remaining obligations. Establish `h₁ : A.loc α i v = algebraMap ℂ (Alt n) (t ((A.e i).symm v) : ℂ)`. Rewrite using `[HolAtlas.loc, dif_pos hv]`. Conclude with `e ⟨(i, (A.e i).symm v), (A.e i).map_target hv⟩`.
-
-Simplify using `[h₁, Algebra.algebraMap_eq_smul_one, ← bas_empty, -Complex.coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HolAtlas.IsRealForm.exists_fn {M : Type} [TopologicalSpace M] {n : ℕ} {A : HolAtlas M n} {α : A.Fld}
     (hα : A.IsRealForm 0 α) :
@@ -69,7 +65,7 @@ theorem HolAtlas.IsRealForm.exists_fn {M : Type} [TopologicalSpace M] {n : ℕ} 
   simp [h₁, Algebra.algebraMap_eq_smul_one, ← bas_empty, -Complex.coe_smul]
 
 /- English proof (translation)
-Introduce `k _ X p D h σ α hα`. Take `⟨t, ht, e⟩` from `hα.exists_fn`. Use `⟨t, fun y => ?_, e⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(h.atlas σ).cover y`. Conclude with `cInfAt_of_chart isOpen_univ c ((ht c).mono fun _ hv => hv.1) hc trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsRegVar.exists_cInfAt_of_isRealForm_zero : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (σ : k →+* ℂ) (α : (h.atlas σ).Fld), (h.atlas σ).IsRealForm 0 α → ∃ t : CxPts p σ → ℝ, (∀ y, CInfAt t y) ∧ α = (h.atlas σ).fn t := by
   intro k _ X p D h σ α hα

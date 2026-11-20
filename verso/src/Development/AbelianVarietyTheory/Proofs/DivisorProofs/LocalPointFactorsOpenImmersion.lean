@@ -18,9 +18,9 @@ open GlobalTheory.UnitGlue
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hrange : Set.range yb ⊆ Set.range ξ`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hsp : x ⤳ IsLocalRing.closedPoint S` using `IsLocalRing.specializes_closedPoint x`. Conclude with `(hsp.map yb.base.hom.continuous).mem_open ξ.isOpenEmbedding.isOpen_range hc`. Use `⟨(Spec.preimage (IsOpenImmersion.lift ξ yb hrange)).hom, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Spec.map (Spec.preimage _) ≫ _ = _`. Rewrite using `[Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem localSpec_fac_of_closedPoint_mem_range (S : Type) [CommRing S] [IsLocalRing S] (X : Scheme.{0})
     (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (yb : Sp S ⟶ X) (hξ : IsOpenImmersion ξ)
@@ -35,7 +35,7 @@ theorem localSpec_fac_of_closedPoint_mem_range (S : Type) [CommRing S] [IsLocalR
   exact IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-The claim follows from `@localSpec_fac_of_closedPoint_mem_range`.
+A detailed English derivation is pending.
 -/
 example : ∀ (S : Type) [CommRing S] [IsLocalRing S] (X : Scheme.{0}) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (yb : Sp S ⟶ X), IsOpenImmersion ξ → yb (IsLocalRing.closedPoint S) ∈ Set.range ξ → ∃ φ : R →+* S, spMap φ ≫ ξ = yb := @localSpec_fac_of_closedPoint_mem_range
 

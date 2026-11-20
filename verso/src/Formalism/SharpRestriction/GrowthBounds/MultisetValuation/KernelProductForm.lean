@@ -14,7 +14,7 @@ section IntRL
 variable {ι K : Type} [Field K] {R : Subring K}
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_mul]`. Conclude with `R.sum_mem fun x _ => R.mul_mem (hf _) (hg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem en_IntR_mul {f g : MvPowerSeries ι K} (hf : IntR R f) (hg : IntR R g) : IntR R (f * g) := by
   classical
@@ -23,7 +23,7 @@ theorem en_IntR_mul {f g : MvPowerSeries ι K} (hf : IntR R f) (hg : IntR R g) :
   exact R.sum_mem fun x _ => R.mul_mem (hf _) (hg _)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_one]`. Use `split_ifs`. Conclude with `R.one_mem`. Conclude with `R.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem en_IntR_one : IntR R (1 : MvPowerSeries ι K) := by
   classical
@@ -34,7 +34,7 @@ theorem en_IntR_one : IntR R (1 : MvPowerSeries ι K) := by
   · exact R.zero_mem
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `R.one_mem`. Conclude with `R.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem en_IntR_X (i : ι) : IntR R (MvPowerSeries.X i : MvPowerSeries ι K) := by
   classical
@@ -45,7 +45,7 @@ theorem en_IntR_X (i : ι) : IntR R (MvPowerSeries.X i : MvPowerSeries ι K) := 
   · exact R.zero_mem
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `en_IntR_one`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `en_IntR_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem en_IntR_pow {f : MvPowerSeries ι K} (hf : IntR R f) (k : ℕ) : IntR R (f ^ k) := by
   induction k with
@@ -53,7 +53,7 @@ theorem en_IntR_pow {f : MvPowerSeries ι K} (hf : IntR R f) (k : ℕ) : IntR R 
   | succ k ih => rw [pow_succ]; exact en_IntR_mul ih hf
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f (IntR R) (fun _ _ => en_IntR_mul) en_IntR_one h`.
+A detailed English derivation is pending.
 -/
 theorem en_IntR_prod {α : Type} (s : Finset α) (f : α → MvPowerSeries ι K) (h : ∀ a ∈ s, IntR R (f a)) :
     IntR R (∏ a ∈ s, f a) :=
@@ -64,23 +64,19 @@ end IntRL
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X)
 
 /- English proof (translation)
-Establish `e1 : X.ThZA Y.Kc j ((∏ v, en_F X Y j v) * U1) = (∏ v, X.ThZA Y.Kc j (en_F X Y j v)) * MvPowerSeries.subst (fun i => X.ThZA Y.Kc j (en_Ec p Y.Kc i)) (inParamK p Y.Kc U1)`. Rewrite using `[en_ThZA_mul, en_ThZA_prod]`. Use `congr 1`. Use `conv_lhs => rw [← en_Ec_inParamK p Y.Kc U1]`. Unfold `Sys.ThZA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.subst_comp_subst_apply (en_Ec_hs p Y.Kc) (en_coordZA_hs X Y.Kc j)]`. Establish `ha : MvPowerSeries.HasSubst (fun i => X.ThZA Y.Kc j (en_Ec p Y.Kc i))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => MvPowerSeries.constantCoeff_subst_eq_zero (en_coordZA_hs X Y.Kc j) (en_coordZA_zero X Y.Kc j) (en_Ec_zero p Y.Kc i)`. Rewrite using `[en_applyD_eq, e1]`. Take `⟨B, hB⟩` from `Gen.jp_subst_expand (en_mapP Y.Kc (X.ZA j) (X.FrI j) (X.PI j I i0)) (∏ v, X.ThZA Y.Kc j (en_F X Y j v)) (fun i => X.ThZA Y.Kc j (en_Ec p Y.Kc i)) ha (inParamK p Y.Kc U1)`. Rewrite using `[hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `valuation_coeff_ge_sum Y _ _ _ fun β _ => valuation_coeff_ge_smul Y (hU1 β) ?_` and prove the remaining obligations. Use `set Ub : X.Pl → MvPowerSeries (X.EA j ⊕ X.EA j) Y.Kc := fun v => ∏ i ∈ β.support.filter (fun i => en_pi X j i = v), (en_Ec p Y.Kc i) ^ (β i) with hUb`. Establish `e2 : (β.prod fun i e => X.ThZA Y.Kc j (en_Ec p Y.Kc i) ^ e) = ∏ v, X.ThZA Y.Kc j (Ub v)`. Unfold `Finsupp.prod`. Rewrite using `[← Finset.prod_fiberwise β.support (en_pi X j)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hUb, en_ThZA_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => (en_ThZA_pow X Y.Kc j _ _).symm`. Establish `e3 : (∏ v, X.ThZA Y.Kc j (en_F X Y j v)) * ∏ v, X.ThZA Y.Kc j (Ub v) = ∏ v, X.ThZA Y.Kc j (en_F X Y j v * Ub v)`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun v _ => (en_ThZA_mul X Y.Kc j _ _).symm`. Establish `hG : ∀ v, X.ThZA Y.Kc j (en_F X Y j v * Ub v) ∈ Gen.SuppOn (Sigma.fst : X.ZA j → X.Pl) v` using `fun v => en_ThZA_supp X Y.Kc j v (Subring.mul_mem _ (en_F_supp X Y j v) (Subring.prod_mem _ fun i hi => Subring.pow_mem _ (by`. Use `en_Ec_supp p Y.Kc (en_pi X j) i` as an intermediate fact. Rewrite `this` using `[(Finset.mem_filter.1 hi).2]`. Conclude with `this) _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e4 : ∏ v, X.ThZA Y.Kc j (en_F X Y j v * Ub v) = ∏ v, Gen.atP v (Gen.resP v (X.ThZA Y.Kc j (en_F X Y j v * Ub v)))` using `Finset.prod_congr rfl fun v _ => Gen.eq_atP v _ (hG v)`. Establish `e5 : en_mapP Y.Kc (X.ZA j) (X.FrI j) (X.PI j I i0) = ∏ v, MvPolynomial.rename (Sigma.mk v) (en_Ploc X Y j I i0 v)`. Rewrite using `[PI_eq_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun v _ => en_mapP_PIvS X Y j I i0 v`. Rewrite using `[e2, e3, e4, e5, Gen.jp_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `valuation_coeff_ge_prod_rat Y _ _ _ fun v _ => ?_` and prove the remaining obligations. Establish `e6 : Gen.jp (en_Ploc X Y j I i0 v) (Gen.resP v (X.ThZA Y.Kc j (en_F X Y j v * Ub v))) = applyD (PIvS X j I (fun _ => i0 v) v) (X.ThZA Y.Kc j (en_F X Y j v * Ub v))`. Rewrite using `[en_applyD_eq, ← PIvS_congr, en_mapP_PIvS]`. Use `conv_rhs => rw [Gen.eq_atP v _ (hG v)]`. Rewrite using `[Gen.jp_rename]`.
-
-Rewrite using `[e6]`. Establish `hint : IntR Y.Oc (inParamK p Y.Kc (Ub v))`. Rewrite using `[hUb, en_inParamK_prod]`. Use `en_IntR_prod _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[en_inParamK_pow, en_inParamK_Ec]`.
-
-Conclude with `en_IntR_pow (en_IntR_X i) _`. Conclude with `fun n => hLow v (Ub v) hint I n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem en_places_add (j : ℕ) (i0 : X.Pl → ℕ) (gP : X.Pl → ℚ) (hLow : ∀ v, LowAtI X Y j v (i0 v) (gP v))
     (U1 : MvPowerSeries (X.EA j ⊕ X.EA j) Y.Kc) (hU1 : IntR Y.Oc (inParamK p Y.Kc U1)) (I : X.ColCh j) :
@@ -150,9 +146,9 @@ def KernelProductForm (D : Formalism.BasicNotions.D7) : Prop :=
 variable {X Y}
 
 /- English proof (translation)
-Introduce `hA j hj i0 gP hLow La La' h1 h2 φ I n`. Take `⟨U1, hU1, e⟩` from `h hA j hj La La' h1 h2 φ`. Rewrite using `[e]`. Use `en_places_add X Y j i0 gP hLow U1 hU1 I n` as an intermediate fact. Move the coercions through the operations in `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem restPlaces_of (D : Formalism.BasicNotions.D7) (h : KernelProductForm X Y D) : RestPlaces X Y D := by
   intro hA j hj i0 gP hLow La La' h1 h2 φ I n

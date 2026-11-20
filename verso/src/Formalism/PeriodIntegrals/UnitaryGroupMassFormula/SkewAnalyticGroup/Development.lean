@@ -33,7 +33,7 @@ def StepAnalytic : Prop :=
       -∫ x, f₁ (Matrix.of x) * star (RdV X f₂ (Matrix.of x)) ∂μ
 
 /- English proof (translation)
-Introduce `k r i μ hμ X f₁ f₂ hX hs₁ hs₂ hc₁ hc₂`. Take `⟨hcl, hfl, hexp⟩` from `h1 k r i X hX`. Conclude with `h2 (2 * r + k + 1) (Glev k r i) μ X f₁ f₂ hcl hfl hμ.conc (fun t => hμ.right _ (hexp t)) hμ.finite_compact (fun g₀ hg₀ => hs₁ g₀ ⟨hg₀, Set.mem_univ _⟩) (fun g₀ hg₀ => hs₂ g₀ ⟨hg₀, Set.mem_univ _⟩) hc₁ hc₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rdSkew_of (h1 : StepGroup) (h2 : StepAnalytic) : RdSkew := by
   intro k r i μ hμ X f₁ f₂ hX hs₁ hs₂ hc₁ hc₂

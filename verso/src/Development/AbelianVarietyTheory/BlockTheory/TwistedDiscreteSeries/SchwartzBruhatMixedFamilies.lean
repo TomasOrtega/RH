@@ -91,7 +91,7 @@ def MixExpansion (D : D7) : Prop :=
       IsCovolOne (ratMx D ρ S.rank) μ 𝓕 → ExpansionT ψ d S μ 𝓕)
 
 /- English proof (translation)
-The claim follows from `(h ψ hψ.1).1 S S₀ T ρ d μ 𝓕 hμ`.
+A detailed English derivation is pending.
 -/
 theorem MixExpansion.std (h : MixExpansion D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) {μ : Measure (Mx D T.rank ρ)} {𝓕 : Set (Mx D T.rank ρ)}

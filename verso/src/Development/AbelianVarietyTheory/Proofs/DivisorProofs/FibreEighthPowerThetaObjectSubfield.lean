@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-Introduce `W hW gQ`. Take `⟨J, hJ, Mat, κ, w, w', hA⟩` from `GlobalTheory.T.sharp_refinement_odd_prime_localization W hW gQ`. Use `⟨J, hJ, Mat, κ, w, w', ?_⟩` and prove the remaining obligations. Introduce `l hl ho j hj V V₁ _ _ _ _ _ hCN hu Q hQ ρ hρ D e hS C u mo hmo hT K _ _ ev k₀ hk₀ hr`. Take `⟨bT, t, ψ, h1, h2, h3, h4, h5⟩` from `hA l hl ho j hj V V₁ hCN hu Q hQ ρ hρ D e hS K ev k₀ hk₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `GlobalTheory.T.sharp_refinement_coefficient_family W hW gQ J l hl ho j hj V V₁ hCN hu Q hQ ρ hρ D e hS C u mo hmo hT K ev k₀ hk₀ hr bT t ψ h3 h4`. Conclude with `⟨bT, t, v, ψ, h1, h2, hv, h3, h4, h5⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sharp_fibre_theta_object : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (gQ : ℕ), ∃ (J : Type) (_ : Finite J)
     (Mat : J → Matrix (Fin (2 * (8 * gQ))) (Fin (2 * (8 * gQ))) ℤ) (κ : ℕ) (w w' : J),

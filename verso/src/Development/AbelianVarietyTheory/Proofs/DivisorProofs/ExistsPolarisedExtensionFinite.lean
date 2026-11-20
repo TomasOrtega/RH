@@ -17,7 +17,7 @@ open GlobalTheory.TorusPart
 namespace GlobalTheory.TorusPart
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `grpPullback_iso h (isGrpPullback_pullback G f)`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono e.hom, Category.assoc, IsMonHom.mul_hom, ← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCommMonObj_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] [IsCommMonObj G]
     {G' : Over S'} [GrpObj G'] {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) : IsCommMonObj G' := by
@@ -27,15 +27,13 @@ theorem isCommMonObj_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Ov
     IsCommMonObj.mul_comm]
 
 /- English proof (translation)
-Introduce `O _ _ c K Ω _ _ _ _ G _ hG i G' _ i' φ hφ ⟨T, P, e, j, he, hj, hR⟩`. Use `letI := T.addCommGroup`. Use `letI := T.grpB`. Use `haveI := T.free`. Use `haveI := T.finite`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, G₀, _, i₀, φ₀, Y, _, _, _, u₀, B, _, q₀, j₀, ψ, h₀, hB, hu₀, hK₀, hq₀, hψ⟩` from `GlobalTheory.T.torus_part_of_pulled_action O K Ω G hG i G' i' φ hφ T.X T.i P.A (T.q ≫ e.hom) j P.isAb T.i_hom ((isKer_torusExtension T).comp_iso e he) hj`. Use `haveI : Algebra.IsAlgebraic F Ω := Algebra.IsAlgebraic.tower_top (K := K) F`. Take `⟨F', hF', P₁, j₁, ψ₁, hψ₁, hR₁⟩` from `GlobalTheory.T.rosati_polarization_finite_extension O c F Ω B hB j₀ P j ψ hψ hR`. Use `haveI := hG.comm`. Use `haveI := isCommMonObj_of_isGrpPullback h₀.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨G₂, _, i₂, φ₂, h₂⟩ : ∃ (G₂ : Over (Sp F')) (_ : GrpObj G₂) (i₂ : OAct O G₂) (φ₂ : G₂.left ⟶ G₀.left), IsActPull i₂ i₀ (spMap (algebraMap F F')) φ₂` from `⟨_, _, _, _, exists_isActPull (spMap (algebraMap F F')) i₀⟩`. Take `⟨u₂, hu₂, -⟩` from `existsUnique_torusCompat h₂.1.1 u₀`. Take `⟨q₂, hK₂, sq⟩` from `IsKer.baseChange h₂.1 hψ₁.1 hu₂ hK₀`. Use `⟨F', inferInstance, inferInstance, Module.Finite.trans F F', G₂, inferInstance, i₂, φ₂ ≫ φ₀, Y, inferInstance, inferInstance, inferInstance, u₂, P₁, q₂, j₁, ?_, hu₂.isMonHom h₂.1, hK₂, fun a => ?_, hR₁⟩` and prove the remaining obligations. Establish `h` using `h₂.comp h₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : spMap (algebraMap F F') ≫ spMap (algebraMap K F) = spMap (algebraMap K F')`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite `h` using `[hs]`. Then use the resulting hypothesis. Use `Over.OverMorphism.ext (hψ₁.1.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations.
-
-Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hψ₁.2, ← sq.w, ← Category.assoc, h₂.2, Category.assoc, ← Over.comp_left, hq₀, Over.comp_left, ← Category.assoc, sq.w, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_polarised_extension_finite : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (c : O →+* O) (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] (G : Over (Sp K)) [GrpObj G], IsSemiAbelian G → ∀ (i : OAct O G) (G' : Over (Sp Ω)) [GrpObj G']

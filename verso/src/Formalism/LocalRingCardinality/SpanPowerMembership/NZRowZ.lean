@@ -69,7 +69,7 @@ def fin_tw : TwForms DR where
   eMu0_emb := fun _ _ _ _ => HEq.rfl
 
 /- English proof (translation)
-Introduce `s c` and use `((nuD DR u i s).colLen_anti 0 c (Nat.zero_le _)).trans ((nuD_rows DR u i s).trans (by show R.k + i * (R.t + 1) ≤ R.k + j * (R.t + 1); have := Nat.mul_le_mul_right (R.t + 1) hj; omega))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fin_nu_le (u : W) (i : ℕ) (j : ℕ) (hj : i ≤ j) :
     ∀ s c, (nuD DR u i s).colLen c ≤ R.N j := fun s c =>
@@ -181,25 +181,25 @@ def fin_ent (P : EntPl DR) : KerEnt DR (fin_X H u0 hcW hv0 hb0 he0 hf0 hl0 Del h
     rw [e1, one_mul]
 
 /- English proof (translation)
-The claim follows from `(entPl_nonempty DR).map (fin_ent H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg)`.
+A detailed English derivation is pending.
 -/
 theorem fin_ent_nonempty : Nonempty (KerEnt DR (fin_X H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg) (fin_tw H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg)) :=
   (entPl_nonempty DR).map (fin_ent H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg)
 
 /- English proof (translation)
-The claim follows from `row_rrDef H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat`.
+A detailed English derivation is pending.
 -/
 theorem fin_rrDef : DV.RRDef DR := row_rrDef H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat
 /- English proof (translation)
-The claim follows from `row_lamDef H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat`.
+A detailed English derivation is pending.
 -/
 theorem fin_lamDef : DV.LamDef DR := row_lamDef H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat
 /- English proof (translation)
-The claim follows from `row_buDef H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat`.
+A detailed English derivation is pending.
 -/
 theorem fin_buDef : Rows.BuDefQ (DR).what₂ := row_buDef H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat
 /- English proof (translation)
-Establish `hi : (RowSide.sharp DR).iota (DR).what₂.mu0 = (LinearMap.id : En d →ₗ[ℂ] En d)` using `(sharp_iota DR _).trans (rowsN_iota (hd := hd) _)`. Conclude with `(kapOf_one (RowSide.sharp DR) _ (iiStar_id _ rfl (fun x y => by rw [hi]; rfl) (by rw [hi]; exact Function.surjective_id)) (fun _ _ => rfl)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_kapR : DV.KapRBase (fin_X H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg) := by
   have hi : (RowSide.sharp DR).iota (DR).what₂.mu0 = (LinearMap.id : En d →ₗ[ℂ] En d) :=
@@ -208,11 +208,11 @@ theorem fin_kapR : DV.KapRBase (fin_X H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap
     (by rw [hi]; exact Function.surjective_id)) (fun _ _ => rfl)).symm
 
 /- English proof (translation)
-Use `letI : StarRing H.E := H.cmStar`. Establish `hset : ∀ y : Fin d0 → H.E, (DR).what₂.jMt μ j y ∈ (DR).what₂.TjSet μ j ↔ y ∈ (stdH H.E d0).L` using `fun y => by`. Establish `e : (DR).what₂.TjSet μ j = (oB (eb d0) (H.φ₀.comp (algebraMap (𝓞 H.E) H.E))).carrier` using `rowsN_TjSet (hd := hd) μ j`. Rewrite using `[e]`. Conclude with `jB_mem_oB H.φ₀ (eb d0) (algebraMap (𝓞 H.E) H.E) (row_OFull H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hga …`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact (hset y).mp hy`. Consider the case `zero => exact zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul a y _ hy`. Conclude with `(stdH H.E d0).L.smul_mem a hy`. Introduce `hx`. Conclude with `Submodule.subset_span ((hset x).mpr hx)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fin_memTjL (μ j) (x : Fin d0 → H.E) :
     x ∈ Idx.TjL DR μ j ↔ x ∈ (@stdH H.E _ _ H.cmStar d0).L := by
@@ -233,13 +233,13 @@ theorem fin_memTjL (μ j) (x : Fin d0 → H.E) :
     exact Submodule.subset_span ((hset x).mpr hx)
 
 /- English proof (translation)
-Use `letI : StarRing H.E := H.cmStar`. Use `⟨fun μ j w _ _ => (ijIdx_zero _ μ j w ?_).symm, fun μ j w _ _ => (jwIdx_zero DR μ j w ?_).symm⟩` and prove the remaining obligations. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨y, (fin_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg μ j y).mpr hy, rfl⟩`. Introduce and unpack `⟨x, hx, e⟩`. Establish `: y = x` using `jB_inj H.φ₀ (eb d0) e`. Rewrite using `[this]`. Conclude with `(fin_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg μ j x).mp hx`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use `(fin_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg μ j x).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨Submodule.subset_span ((fin_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg μ j x).mpr hx), fu …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(dual_std H.φ₀ (fun z => emb_star H H.φ₀ z) (eb d0) x).mpr hx a ((fin_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb h …`. Introduce and unpack `⟨-, h⟩`. Conclude with `(dual_std H.φ₀ (fun z => emb_star H H.φ₀ z) (eb d0) x).mp fun a ha => h a ((fin_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT f …`.
+A detailed English derivation is pending.
 -/
 theorem fin_idx : IdxDefs DR (fin_X H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg) := by
   letI : StarRing H.E := H.cmStar
@@ -269,7 +269,7 @@ def fin_char : CentralCharacterOne DR := ⟨(levelRecordCentralCharacterOne H u0
 
 def finiteBaseSide : BaseLevelRowSide DR := standardBaseSide DR (fin_char H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg)
 /- English proof (translation)
-The claim follows from `standardBaseSide_latticeDefined DR _ (row_OFull H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)`.
+A detailed English derivation is pending.
 -/
 theorem fin_rr0Def : (finiteBaseSide H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg).s.RRDef := standardBaseSide_latticeDefined DR _ (row_OFull H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 def finiteAmbientForm : AmbForm DR (finiteBaseSide H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat Wg).s := standardAmbientForm DR _

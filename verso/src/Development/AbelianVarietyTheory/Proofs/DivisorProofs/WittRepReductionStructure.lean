@@ -8,25 +8,23 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ Λ _ _ _ _ _ _ k _ _ _ h d N b s ρ hρ hch`. Take `⟨e, π, a, u, h0, he, hp, hmon, hmem, -, hψ⟩` from `GlobalTheory.T.exists_uniformizer_separable_reduction p Λ`. Set `c : WittVector p k →+* k` to `WittVector.constantCoeff`. Set `ψ : ℤ_[p] →+* k` to `c.comp s`. Set `Φ : Λ →+* Matrix (Fin h) (Fin h) k` to `c.mapMatrix.comp ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ l, Φ l = (ρ l).map c` using `fun l => rfl`. Take `⟨hsep, hcp⟩` from `hψ k ψ`. Establish `hsurj : Function.Surjective c` using `fun r => ⟨WittVector.teichmuller p r, by`. Simplify using `only [c, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]⟩`. Establish `hker : ∀ w, c w = 0 → (p : WittVector p k) ∣ w` using `fun w hw => Ideal.mem_span_singleton.1 ((WittVector.mem_span_p_iff_coeff_zero_eq_zero w).2 hw)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcp0 : c p = 0` using `by rw [map_natCast, CharP.cast_eq_zero]`. Take `⟨ht0, htk⟩` from `GlobalTheory.T.reduction_uniformizer_nilpotent p (WittVector p k) k Λ h e c ρ π u (WittVector.p_nonzero p k) hsurj hker hcp0 he hp`. Establish `hscal : Φ.comp (algebraMap ℤ_[p] Λ) = (algebraMap k (Matrix (Fin h) (Fin h) k)).comp ψ`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ (algebraMap ℤ_[p] Λ z) = algebraMap k (Matrix (Fin h) (Fin h) k) (ψ z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hΦ, hρ, Algebra.algebraMap_eq_smul_one]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [ψ, hij, Matrix.one_apply]`. Establish `hscal' : ∀ z (l : Λ), Φ (z • l) = ψ z • Φ l`. Introduce `z l`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Φ (algebraMap ℤ_[p] Λ z) = algebraMap k (Matrix (Fin h) (Fin h) k) (ψ z)` using `RingHom.congr_fun hscal z`. Rewrite using `[Algebra.smul_def, map_mul, this, ← Algebra.smul_def]`. Establish `haev : Polynomial.aeval (Φ a) (h0.map ψ) = Φ (Polynomial.aeval a h0)`. Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.hom_eval₂, Polynomial.eval₂_map, hscal]`. Take `⟨m, hm⟩` from `Ideal.mem_span_singleton.1 hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hT : (Φ a).charpoly = (h0.map ψ) ^ (e * N)`. Rewrite using `[hΦ, Matrix.charpoly_map, hch, Polynomial.map_map, Polynomial.map_pow, pow_mul, ← hcp]`. Take `⟨x, hx⟩` from `GlobalTheory.T.cyclic_generators_invariant_top k h e N (Φ π) (Φ a) (h0.map ψ) he (hmon.map ψ) hsep (by rw [← map_mul, ← map_mul, mul_comm]) ht0 htk (fun x => ⟨Φ m *ᵥ x, by rw [haev, hm, map_mul, Matrix.mulVec_mulVec]⟩) hT`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use `set U := Submodule.span k (Set.range fun ij : Fin N × Fin d => (ρ (b ij.2)).map WittVector.constantCoeff *ᵥ x ij.1) with hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ (l : Λ) i, Φ l *ᵥ x i ∈ U`. Introduce `l i`. Rewrite using `[← b.sum_repr l, map_sum, Matrix.sum_mulVec]`. Use `U.sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hscal', Matrix.smul_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `U.smul_mem _ (Submodule.subset_span ⟨(i, j), rfl⟩)`. Establish `stab : ∀ (l : Λ), ∀ z ∈ U, Φ l *ᵥ z ∈ U`. Introduce `l z hz`. Establish `: U ≤ U.comap (Φ l).mulVecLin`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨⟨i, j⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `Φ l *ᵥ (Φ (b j) *ᵥ x i) ∈ U`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul]`. Conclude with `key _ _`. Conclude with `this hz`.
-
-Use `hx U (fun i => ?_) (stab π) (stab a)` and prove the remaining obligations. Simplify using `using key 1 i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem special_fibre_generators : ∀ (p : ℕ) [Fact p.Prime] (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Free ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] (k : Type) [Field k] [IsAlgClosed k] [CharP k p] (h d N : ℕ) (b : Module.Basis (Fin d) ℤ_[p] Λ) (s : ℤ_[p] →+* WittVector p k) (ρ : Λ →+* Matrix (Fin h) (Fin h) (WittVector p k)), (∀ c : ℤ_[p], ρ (algebraMap ℤ_[p] Λ c) = s c • (1 : Matrix (Fin h) (Fin h) (WittVector p k))) → (∀ a : Λ, (ρ a).charpoly = ((LinearMap.mulLeft ℤ_[p] a).charpoly ^ N).map s) → ∃ x : Fin N → Fin h → k, Submodule.span k (Set.range fun ij : Fin N × Fin d => (ρ (b ij.2)).map WittVector.constantCoeff *ᵥ x ij.1) = ⊤ := by
   intro p _ Λ _ _ _ _ _ _ k _ _ _ h d N b s ρ hρ hch

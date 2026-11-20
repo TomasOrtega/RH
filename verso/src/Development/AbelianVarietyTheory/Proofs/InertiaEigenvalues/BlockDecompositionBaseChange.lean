@@ -7,29 +7,29 @@ namespace GlobalTheory
 open Matrix in
 
 /- English proof (translation)
-Establish `hext : ∀ {a b : ℕ} (X Y : Matrix (Fin a) (Fin b) K), (∀ v, X *ᵥ v = Y *ᵥ v) → X = Y` using `fun X Y h => Matrix.toLin'.injective (LinearMap.ext fun v => by`. Simplify `h v)` using `only [Matrix.toLin'_apply]`. Take `⟨A₁, hA₁⟩ : ∃ A : Matrix (Fin r) (Fin n) K, ∀ v, A *ᵥ v = (e v).1` from `⟨LinearMap.toMatrix' (LinearMap.fst K _ _ ∘ₗ e.toLinearMap), fun v => by`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Use the proof step `rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨A₂, hA₂⟩ : ∃ A : Matrix (Fin t) (Fin n) K, ∀ v, A *ᵥ v = (e v).2` from `⟨LinearMap.toMatrix' (LinearMap.snd K _ _ ∘ₗ e.toLinearMap), fun v => by`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Use the proof step `rfl⟩`. Take `⟨B₁, hB₁⟩ : ∃ B : Matrix (Fin n) (Fin r) K, ∀ p, B *ᵥ p = e.symm (p, 0)` from `⟨LinearMap.toMatrix' (e.symm.toLinearMap ∘ₗ LinearMap.inl K _ _), fun p => by`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl⟩`. Take `⟨B₂, hB₂⟩ : ∃ B : Matrix (Fin n) (Fin t) K, ∀ q, B *ᵥ q = e.symm (0, q)` from `⟨LinearMap.toMatrix' (e.symm.toLinearMap ∘ₗ LinearMap.inr K _ _), fun q => by`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Use the proof step `rfl⟩`. Establish `h11 : A₁ * B₁ = 1` using `hext _ _ fun p => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hB₁, hA₁, LinearEquiv.apply_symm_apply, Matrix.one_mulVec]`. Establish `h12 : A₁ * B₂ = 0` using `hext _ _ fun q => by`. Rewrite using `[← Matrix.mulVec_mulVec, hB₂, hA₁, LinearEquiv.apply_symm_apply, Matrix.zero_mulVec]`. Establish `h21 : A₂ * B₁ = 0` using `hext _ _ fun p => by`. Rewrite using `[← Matrix.mulVec_mulVec, hB₁, hA₂, LinearEquiv.apply_symm_apply, Matrix.zero_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h22 : A₂ * B₂ = 1` using `hext _ _ fun q => by`. Rewrite using `[← Matrix.mulVec_mulVec, hB₂, hA₂, LinearEquiv.apply_symm_apply, Matrix.one_mulVec]`. Establish `hBA : B₁ * A₁ + B₂ * A₂ = 1` using `hext _ _ fun u => by`. Rewrite using `[Matrix.add_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hA₁, hA₂, hB₁, hB₂, ← map_add, Prod.mk_add_mk, add_zero, zero_add, Prod.mk.eta, LinearEquiv.symm_apply_apply, Matrix.one_mulVec]`. Establish `h11' : A₁.map φ * B₁.map φ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, h11, Matrix.map_one _ φ.map_zero φ.map_one]`. Establish `h12' : A₁.map φ * B₂.map φ = 0`. Rewrite using `[← Matrix.map_mul, h12, Matrix.map_zero _ φ.map_zero]`. Establish `h21' : A₂.map φ * B₁.map φ = 0`. Rewrite using `[← Matrix.map_mul, h21, Matrix.map_zero _ φ.map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h22' : A₂.map φ * B₂.map φ = 1`. Rewrite using `[← Matrix.map_mul, h22, Matrix.map_one _ φ.map_zero φ.map_one]`. Establish `hBA' : B₁.map φ * A₁.map φ + B₂.map φ * A₂.map φ = 1`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add _ φ.map_add, hBA, Matrix.map_one _ φ.map_zero φ.map_one]`. Use `⟨LinearEquiv.ofLinearMap ((Matrix.toLin' (A₁.map φ)).prod (Matrix.toLin' (A₂.map φ))) ((Matrix.toLin' (B₁.map φ)).coprod (Matrix.toLin' (B₂.map φ))) ?_ ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨p, q⟩` from `x`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;>`. Simplify using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, h11', h12', h21', h22']`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : (B₁.map φ * A₁.map φ) *ᵥ u + (B₂.map φ * A₂.map φ) *ᵥ u = u`. Rewrite using `[← Matrix.add_mulVec, hBA', Matrix.one_mulVec]`. Simplify `key` using `[Matrix.mulVec_mulVec]`. Introduce `M P d h u`. Establish `hM₁ : A₁ * M = P * A₁` using `hext _ _ fun v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hA₁, hA₁, h v]`. Establish `hM₂ : A₂ * M = Matrix.diagonal d * A₂` using `hext _ _ fun v => by`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hA₂, hA₂, h v]`. Use function extensionality and compare the values at `c`. Rewrite using `[Matrix.mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM₁' : A₁.map φ * M.map φ = P.map φ * A₁.map φ`. Rewrite using `[← Matrix.map_mul, hM₁, Matrix.map_mul]`. Establish `hM₂' : A₂.map φ * M.map φ = Matrix.diagonal (fun c => φ (d c)) * A₂.map φ`. Rewrite using `[← Matrix.map_mul, hM₂, Matrix.map_mul, Matrix.diagonal_map φ.map_zero]`. Use `Prod.ext ?_ (funext fun c => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `A₁.map φ *ᵥ (M.map φ *ᵥ u) = P.map φ *ᵥ (A₁.map φ *ᵥ u)`. Rewrite using `[Matrix.mulVec_mulVec, hM₁', ← Matrix.mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `(A₂.map φ *ᵥ (M.map φ *ᵥ u)) c = φ (d c) * (A₂.map φ *ᵥ u) c`. Rewrite using `[Matrix.mulVec_mulVec, hM₂', ← Matrix.mulVec_mulVec, Matrix.mulVec_diagonal]`.
+A detailed English derivation is pending.
 -/
 theorem blockDecomposition_baseChange {K L : Type} [Field K] [Field L] (φ : K →+* L) {n r t : ℕ}
     (e : (Fin n → K) ≃ₗ[K] ((Fin r → K) × (Fin t → K))) :

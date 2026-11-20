@@ -4,15 +4,15 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoeff
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter Topology UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Ci
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, rfl⟩ : ∃ a : Fin n → ℂ, s = Finset.univ.val.map a := by`. Proceed by induction on `s using Quotient.inductionOn with`. Consider the case `h l`. Establish `hl : l.length = n` using `by simpa using hs`. Substitute `hl` using the available equality.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨l.get, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map, List.ofFn_get]`. Both sides reduce to the same expression. Establish `h1 : aeval (fun j : Fin n => esymm (Fin n) ℂ (j + 1)) (powE f i) = expand f (esymm (Fin n) ℂ (i + 1))`. Rewrite using `[← esymmAlgHom_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val ((esymmAlgEquiv (Fin n) ℂ (Fintype.card_fin n)).apply_symm_apply ⟨expand f (esymm (Fin n) ℂ (i + 1)), fun w => by rw [rename_expand, esymm_isSymmetric]⟩)` as an intermediate fact. Conclude with `this`. Establish `h2` using `congrArg (aeval a) h1`. Rewrite `h2` using `[← AlgHom.comp_apply, comp_aeval, ← AlgHom.comp_apply]`. Establish `h3 : (aeval a : MvPolynomial (Fin n) ℂ →ₐ[ℂ] ℂ).comp (expand f) = aeval fun r => a r ^ f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`. Simplify using `only [aeval_esymm_eq_multiset_esymm] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.map_map, ← coe_aeval_eq_eval]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem eval_powE {n : ℕ} (f : ℕ) (i : Fin n) (s : Multiset ℂ) (hs : s.card = n) :
     eval (fun j : Fin n => s.esymm (j + 1)) (powE f i) = (s.map (· ^ f)).esymm (i + 1) := by
@@ -43,19 +43,19 @@ private theorem eval_powE {n : ℕ} (f : ℕ) (i : Fin n) (s : Multiset ℂ) (hs
   exact h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n x Λ t P hP`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_apply]`. Use `hom_congr_vars (p₁ := P) (p₂ := P) ?_ ?_ rfl` and prove the remaining obligations. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c`. Simplify using `[val, bcPR]`. Introduce and unpack `(_ | y)`. Simplify using `[val, bcPR]`. Simplify using `[val, bcPR, bcInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `y hy _`. Establish `h` using `eval_powE (resDeg F y.1) y.2 _ (hP y hy)`. Simplify using `only [val, bcPR, RingHom.comp_apply, eval₂Hom_X', coe_eval₂Hom, eval₂_map, eval₂_rename, eval₂_X]`. Rewrite using `[hval, bcSat, ← h]`. Establish `hc : ((eval fun o : Option (Ix F n) => o.elim (x : ℂ) fun y => x * (Λ y.1).esymm (y.2 + 1)).comp C) = RingHom.id ℂ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `c`. Simplify using the standard rewrite rules. Rewrite using `[hc]`. Both sides reduce to the same expression. Introduce `y hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : bcPR F P = bind₁ (fun x : Pl E × Fin n => (map C (rename (fun i => (x.1.under (𝓞 F), i)) (powE (resDeg F x.1) x.2)) : PR F n)) (map (rename (Option.map fun x : Ix E n => (x.1.comp (algebraMap F E), x.2))).toRingHom P)`. Rewrite using `[bind₁, aeval_def, eval₂_map]`. Both sides reduce to the same expression. Rewrite `hy` using `[h]`. Take `⟨y', hy', hy2⟩` from `mem_vars_bind₁ _ _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨y', vars_map _ _ hy', ?_⟩` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `mem_vars_rename _ _ (vars_map _ _ hy2)`. Both sides reduce to the same expression. Introduce `η m`. Simplify using `only [chebP, bcPR, eval₂Hom_C, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Polynomial.aeval_algHom_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.ConvolutionTheory.Ci.valBc :
     ValBc := by

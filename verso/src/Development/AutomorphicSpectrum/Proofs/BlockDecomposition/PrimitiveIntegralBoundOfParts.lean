@@ -13,11 +13,9 @@ open Ad3 Ad3.LR Ad3.LR.C Ad3.LR.B
 namespace GlobalTheory.CompanionTheory.PrimalInt
 
 /- English proof (translation)
-Establish `hD : Measurable fun x => (g x).det`. Simplify using `only [Matrix.det_fin_two]`. Conclude with `((hg 0 0).mul (hg 1 1)).sub ((hg 0 1).mul (hg 1 0))`. Establish `e : ∀ i j, Measurable fun x => ((g x i j : ℝ) : ℂ)` using `fun i j => Complex.measurable_ofReal.comp (hg i j)`. Unfold `Wm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measurable.ite (measurableSet_lt measurable_const hD) ?_ measurable_const` and prove the remaining obligations. Establish `hden` using `(e 1 1).sub ((e 1 0).mul_const Complex.I)`. Establish `hnum` using `(e 0 1).sub ((e 0 0).mul_const Complex.I)`. Use `Measurable.mul (Measurable.mul ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Complex.measurable_ofReal.comp (hD.pow_const _)`.
-
-Conclude with `hden.pow_const _`. Conclude with `Complex.measurable_exp.comp ((hnum.div hden).const_mul _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_Wm_comp {α : Type*} [MeasurableSpace α] (k : ℕ)
     (g : α → Matrix (Fin 2) (Fin 2) ℝ) (hg : ∀ i j, Measurable fun x => g x i j) :
@@ -37,15 +35,15 @@ theorem measurable_Wm_comp {α : Type*} [MeasurableSpace α] (k : ℕ)
   · exact Complex.measurable_exp.comp ((hnum.div hden).const_mul _)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.TateR.val_measurableEmbedding.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_val : Measurable (Units.val : ℝˣ → ℝ) :=
   GlobalTheory.CompanionTheory.TateR.val_measurableEmbedding.measurable
 
 /- English proof (translation)
-Unfold `chR`. Use `Measurable.mul (Measurable.ite ?_ measurable_const measurable_const) ?_` and prove the remaining obligations. Consider the cases of `δ`. Simplify using the standard rewrite rules. Simplify using `using measurableSet_lt measurable_val measurable_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(Complex.measurable_ofReal.comp measurable_val.abs).pow_const _`.
+A detailed English derivation is pending.
 -/
 theorem measurable_chR (δ : Bool) (z : ℂ) : Measurable (chR δ z) := by
   unfold chR
@@ -56,24 +54,24 @@ theorem measurable_chR (δ : Bool) (z : ℂ) : Measurable (chR δ z) := by
   · exact (Complex.measurable_ofReal.comp measurable_val.abs).pow_const _
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.GodementInt.measurable_integral_mul_blk (⇑Φ) 1 Φ.continuous` as an intermediate fact. Simplify `this` using `[inn]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem measurable_inn (Φ : Sw) : Measurable fun h : M22 => inn Φ 1 (Matrix.of h) := by
   have := GlobalTheory.CompanionTheory.GodementInt.measurable_integral_mul_blk (⇑Φ) 1 Φ.continuous
   simpa [inn] using this
 
 /- English proof (translation)
-Simplify using `[innB, inn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem innB_one (Φ : Sw) (h : M22) : innB (⇑Φ) h 1 = inn Φ 1 (Matrix.of h) := by
   simp [innB, inn]
 
 /- English proof (translation)
-Unfold `prI`. Establish `hdet : Measurable fun p : ℝˣ × M22 => (Matrix.of p.2).det` using `GlobalTheory.CompanionTheory.GodementWeight.measurable_det_of.comp measurable_snd`. Establish `hW : Measurable fun p : ℝˣ × M22 => Wm k (d2 p.1 * (Matrix.of p.2)⁻¹)`. Use `measurable_Wm_comp k _ fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `have e : ∀ i j, Measurable fun p : ℝˣ × M22 => ((Matrix.of p.2)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) i j := fun i j => (GlobalTheory.CompanionTheory.GodementWeight.measurable_inv_entry i j).comp measurable_snd`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha : Measurable fun p : ℝˣ × M22 => ((p.1 : ℝˣ) : ℝ)` using `measurable_val.comp measurable_fst`. Use `fin_cases i`. Establish `hm : Measurable fun p : ℝˣ × M22 => ((p.1 : ℝˣ) : ℝ) * ((Matrix.of p.2)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 0 j` using `ha.mul (e 0 j)`. Simplify `hm` using `[d2, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify `e 1 j` using `[d2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `(((hW.mul ((measurable_inn Φ).comp measurable_snd)).mul (GlobalTheory.CompanionTheory.GodementWeight.measurable_sg hdet)).mul ?_).mul ((measurable_chR δ _).comp measurable_fst)` and prove the remaining obligations. Conclude with `Complex.measurable_ofReal.comp (hdet.abs.pow_const _)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_prI (k : ℕ) (Φ : Sw) (δ : Bool) (s : ℂ) : Measurable (prI k Φ δ s) := by
   unfold prI
@@ -96,14 +94,14 @@ theorem measurable_prI (k : ℕ) (Φ : Sw) (δ : Bool) (s : ℂ) : Measurable (p
   exact Complex.measurable_ofReal.comp (hdet.abs.pow_const _)
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_sg (t : ℝ) : ‖sg t‖ = 1 := by
   unfold sg
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `ha : 0 < |(a : ℝ)|` using `abs_pos.2 a.ne_zero`. Unfold `chR`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos ha]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_chR (δ : Bool) (z : ℂ) (a : ℝˣ) : ‖chR δ z a‖ = |(a : ℝ)| ^ z.re := by
   have ha : 0 < |(a : ℝ)| := abs_pos.2 a.ne_zero
@@ -112,7 +110,7 @@ theorem norm_chR (δ : Bool) (z : ℂ) (a : ℝˣ) : ‖chR δ z a‖ = |(a : �
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hre : (s - 1 / 2).re = s.re - 1 / 2` using `by simp`. Unfold `prI`. Simplify using `only [norm_mul, norm_sg, norm_chR, hre, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg (Matrix.of h).det) _)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_prI (k : ℕ) (Φ : Sw) (δ : Bool) (s : ℂ) (a : ℝˣ) (h : M22) :
     ‖prI k Φ δ s (a, h)‖ = ‖inn Φ 1 (Matrix.of h)‖ * |(Matrix.of h).det| ^ (-(1 : ℝ) / 2) *
@@ -124,7 +122,7 @@ theorem norm_prI (k : ℕ) (Φ : Sw) (δ : Bool) (s : ℂ) (a : ℝˣ) (h : M22)
   ring
 
 /- English proof (translation)
-Establish `hinv : (Matrix.of h)⁻¹ = 0`. Apply `Matrix.nonsing_inv_apply_not_isUnit` to reduce the goal to its premises. Rewrite using `[hd]`. Simplify using the standard rewrite rules. Simplify using `[prI, hinv, Wm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prI_of_det_zero (k : ℕ) (Φ : Sw) (δ : Bool) (s : ℂ) (a : ℝˣ) (h : M22)
     (hd : (Matrix.of h).det = 0) : prI k Φ δ s (a, h) = 0 := by
@@ -135,7 +133,7 @@ theorem prI_of_det_zero (k : ℕ) (Φ : Sw) (δ : Bool) (s : ℂ) (a : ℝˣ) (h
   simp [prI, hinv, Wm]
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Simplify using `[Matrix.adjugate_fin_two, div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_row (h : M22) (hd : (Matrix.of h).det ≠ 0) :
     ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 1 0 = -h 1 0 / (Matrix.of h).det ∧
@@ -144,11 +142,11 @@ theorem inv_row (h : M22) (hd : (Matrix.of h).det ≠ 0) :
   simp [Matrix.adjugate_fin_two, div_eq_inv_mul]
 
 /- English proof (translation)
-Establish `h1 : A⁻¹ ^ (1 / 2 - σ) = A ^ (σ - 1 / 2)`. Rewrite using `[Real.inv_rpow hA.le, ← Real.rpow_neg hA.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (A ^ 2) ^ ((2 * σ - 1) / 2) = A ^ (2 * σ - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hA.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : (c2 / A ^ 2) ^ ((2 * σ - 1) / 2) = c2 ^ ((2 * σ - 1) / 2) * A ^ (-(2 * σ - 1))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Real.div_rpow hc (by positivity), h2, Real.rpow_neg hA.le, div_eq_mul_inv]`. Rewrite using `[h1, h4]`. Establish `h3 : A ^ (-(1 : ℝ) / 2) * (A ^ (σ - 1 / 2) * (c2 ^ ((2 * σ - 1) / 2) * A ^ (-(2 * σ - 1)))) = (A ^ (-(1 : ℝ) / 2) * A ^ (σ - 1 / 2) * A ^ (-(2 * σ - 1))) * c2 ^ ((2 * σ - 1) / 2)` using `by ring`. Rewrite using `[h3, ← Real.rpow_add hA, ← Real.rpow_add hA]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -174,13 +172,13 @@ theorem det_power (A c2 σ : ℝ) (hA : 0 < A) (hc : 0 ≤ c2) :
   ring
 
 /- English proof (translation)
-Take `⟨e0, e1⟩` from `inv_row h hd`. Establish `hA : 0 < |(Matrix.of h).det|` using `abs_pos.2 hd`. Establish `b0 : |(Matrix.of h)⁻¹ 1 0| ≤ ‖eta h‖`. Simplify `norm_le_pi_norm (eta h) 0` using `[eta]`. Establish `b1 : |(Matrix.of h)⁻¹ 1 1| ≤ ‖eta h‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `norm_le_pi_norm (eta h) 1` using `[eta]`. Rewrite `b0` using `[e0, abs_div, abs_neg]`. Rewrite `b1` using `[e1, abs_div]`. Establish `hs : (h 0 0 ^ 2 + h 1 0 ^ 2) ^ ((1 : ℝ) / 2) ≤ |h 0 0| + |h 1 0|`. Rewrite using `[← Real.sqrt_eq_rpow]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations. Use `mul_nonneg (abs_nonneg (h 0 0)) (abs_nonneg (h 1 0))` as an intermediate fact. Use polynomial arithmetic with `[sq_abs (h 0 0), sq_abs (h 1 0)]`. Establish `: (h 0 0 ^ 2 + h 1 0 ^ 2) ^ ((1 : ℝ) / 2) / |(Matrix.of h).det| ≤ |h 0 0| / |(Matrix.of h).det| + |h 1 0| / |(Matrix.of h).det|`. Rewrite using `[← add_div]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_le_div_of_nonneg_right hs hA.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem col_le_eta (h : M22) (hd : (Matrix.of h).det ≠ 0) :
     1 + (h 0 0 ^ 2 + h 1 0 ^ 2) ^ ((1 : ℝ) / 2) / |(Matrix.of h).det| ≤ 2 * (1 + ‖eta h‖) := by
@@ -204,13 +202,13 @@ theorem col_le_eta (h : M22) (hd : (Matrix.of h).det ≠ 0) :
   linarith
 
 /- English proof (translation)
-Establish `hpow` using `det_power A c2 σ hA hc`. Establish `hAs : A ^ (-1 - σ) = A⁻¹ * A ^ (-σ)`. Rewrite using `[sub_eq_add_neg, Real.rpow_add hA, Real.rpow_neg_one]`. Establish `hP : 0 ≤ A ^ (-σ) * c2 ^ ((2 * σ - 1) / 2)` using `mul_nonneg (Real.rpow_nonneg hA.le _) (Real.rpow_nonneg hc _)`. Establish `hL : I * A ^ (-(1 : ℝ) / 2) * (C * A⁻¹ ^ (1 / 2 - σ) * (c2 / A ^ 2) ^ ((2 * σ - 1) / 2)) = C * I * (A ^ (-σ) * c2 ^ ((2 * σ - 1) / 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hpow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hden : 1 / (1 + E) ^ N ≤ 2 ^ N / c1 ^ N`. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity), one_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith) hcE N`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI2 : I ≤ K * A⁻¹ * 2 ^ N / ((1 + nh) ^ N * c1 ^ N)`. Use `hI.trans ?_` and prove the remaining obligations. Establish `hn : 0 ≤ K * A⁻¹ / (1 + nh) ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_div_comm, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ K * A⁻¹ / (1 + nh) ^ N * (2 ^ N / c1 ^ N) := mul_le_mul_of_nonneg_left hden hn`. Use `_ = K * A⁻¹ * 2 ^ N / ((1 + nh) ^ N * c1 ^ N) := by rw [div_mul_div_comm]`. Rewrite using `[hL, hAs]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bound_of_det_ne (N : ℕ) (C K σ I E A c2 c1 nh : ℝ) (hA : 0 < A) (hc : 0 ≤ c2)
     (hnh : 0 ≤ nh) (hc1 : 1 ≤ c1) (hE : 0 ≤ E) (hK : 0 ≤ K)
@@ -248,27 +246,25 @@ theorem bound_of_det_ne (N : ℕ) (C K σ I E A c2 c1 nh : ℝ) (hA : 0 < A) (hc
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `hIbp hAbs hM k hk Φ δ s hs0 hs1`. Take `⟨C, hC⟩` from `hAbs k hk s.re hs0 hs1`. Take `⟨N, hN⟩` from `hM s.re hs0 hs1`. Establish `hMaj` using `hN N le_rfl`. Take `⟨C₁, hC₁⟩` from `hIbp N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set B : ℝ := 2 ^ (N + 8) * (Finset.Iic ((N + 8, N) : ℕ × ℕ)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) Φ with hBdef`. Establish `hB : ∀ n ≤ N, ∀ X : M23, (1 + ‖X‖) ^ (N + 8) * ‖iteratedFDeriv ℝ n (⇑Φ) X‖ ≤ B` using `fun n hn X => SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (N + 8, N)) le_rfl hn Φ X`. Establish `hInn : ∀ h : M22, (Matrix.of h).det ≠ 0 → ‖inn Φ 1 (Matrix.of h)‖ ≤ |C₁ * B| * |(Matrix.of h).det|⁻¹ / ((1 + ‖h‖) ^ N * (1 + ‖eta h‖) ^ N)`. Introduce `h hd`. Use `hC₁ (⇑Φ) B (Φ.smooth ⊤) hB h 1 hd` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[innB_one]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [abs_one, one_mul]`. Use `gcongr`. Conclude with `le_abs_self _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmeas` using `measurable_prI k Φ δ s`. Establish `hint : ∀ h : M22, ∀ a : ℝˣ, ‖prI k Φ δ s (a, h)‖ = ‖inn Φ 1 (Matrix.of h)‖ * |(Matrix.of h).det| ^ (-(1 : ℝ) / 2) * (‖Wm k (d2 a * (Matrix.of h)⁻¹)‖ * |(a : ℝ)| ^ (s.re - 1 / 2))` using `fun h a => norm_prI k Φ δ s a h`. Rewrite using `[integrable_prod_iff' hmeas.aestronglyMeasurable]`. Use `⟨Filter.Eventually.of_forall fun h => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hd : (Matrix.of h).det = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [prI_of_det_zero k Φ δ s _ h hd]`. Conclude with `integrable_zero _ _ _`. Establish `hdg : ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero hd`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `Integrable.mono' (((hC _ hdg).1).const_mul (‖inn Φ 1 (Matrix.of h)‖ * |(Matrix.of h).det| ^ (-(1 : ℝ) / 2))) ?_ ?_` and prove the remaining obligations. Conclude with `(hmeas.comp (measurable_id.prodMk measurable_const)).aestronglyMeasurable`. Conclude with `Filter.Eventually.of_forall fun a => (hint h a).le`. Use `Integrable.mono' (hMaj.const_mul (|C| * |C₁ * B| * 2 ^ N)) ?_ ?_` and prove the remaining obligations. Conclude with `(hmeas.norm.stronglyMeasurable.integral_prod_left' (μ := mulR)).aestronglyMeasurable`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.Eventually.of_forall fun h => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Distinguish the cases in `hd : (Matrix.of h).det = 0`. Simplify using `only [prI_of_det_zero k Φ δ s _ h hd, norm_zero, integral_zero]`. Establish `: (0 : ℝ) ≤ |(Matrix.of h).det| ^ (-1 - s.re) * (h 0 0 ^ 2 + h 1 0 ^ 2) ^ ((2 * s.re - 1) / 2) / ((1 + ‖h‖) ^ N * (1 + (h 0 0 ^ 2 + h 1 0 ^ 2) ^ ((1 : ℝ) / 2) / |(Matrix.of h).det|) ^ N)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hdg : ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero hd`. Establish `hA : 0 < |(Matrix.of h).det|` using `abs_pos.2 hd`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdetinv : |((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det| = |(Matrix.of h).det|⁻¹`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv', abs_inv]`. Take `⟨e0, e1⟩` from `inv_row h hd`. Establish `hrow : ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 1 0 ^ 2 + ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 1 1 ^ 2 = (h 0 0 ^ 2 + h 1 0 ^ 2) / |(Matrix.of h).det| ^ 2`. Rewrite using `[e0, e1, sq_abs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hval : ∫ a : ℝˣ, ‖prI k Φ δ s (a, h)‖ ∂mulR = ‖inn Φ 1 (Matrix.of h)‖ * |(Matrix.of h).det| ^ (-(1 : ℝ) / 2) * (C * |(Matrix.of h).det|⁻¹ ^ (1 / 2 - s.re) * ((h 0 0 ^ 2 + h 1 0 ^ 2) / |(Matrix.of h).det| ^ 2) ^ ((2 * s.re - 1) / 2))`. Simplify using `only [hint h]`. Rewrite using `[integral_const_mul, (hC _ hdg).2, hdetinv, hrow]`.
-
-Rewrite using `[hval]`. Use `bound_of_det_ne N C |C₁ * B| s.re _ ‖eta h‖ _ _ _ ‖h‖ hA (by positivity) (norm_nonneg _) ?_ (norm_nonneg _) (abs_nonneg _) (hInn h hd) (norm_nonneg _) (col_le_eta h hd)` and prove the remaining obligations. Establish `: 0 ≤ (h 0 0 ^ 2 + h 1 0 ^ 2) ^ ((1 : ℝ) / 2) / |(Matrix.of h).det|` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem main : IbpBound → AbsoluteZetaIntegralBound → ComplexMatrixMajorantIntegrable → PrimInt := by
   intro hIbp hAbs hM k hk Φ δ s hs0 hs1

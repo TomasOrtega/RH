@@ -5,13 +5,13 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.IwConst
 
 /- English proof (translation)
-Introduce `k a b hk Q hQ`. Set `L : EuclideanSpace ℝ (Fin k) →ₗ[ℝ] EuclideanSpace ℝ (Fin a ⊕ Fin b)` to `(WithLp.linearEquiv 2 ℝ (Fin a ⊕ Fin b → ℝ)).symm.toLinearMap ∘ₗ (LinearEquiv.sumArrowLequivProdArrow (Fin a) (Fin b) ℝ ℝ).symm.toLinearMap ∘ₗ Q ∘ₗ (WithLp.linearEquiv 2 ℝ (Fin k → ℝ)).toLinearMap`. Establish `hL : ∀ z, ‖L z‖ = ‖z‖`. Introduce `z`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Real.norm_eq_abs, sq_abs, Fintype.sum_sum_type]`. Rewrite using `[← hQ z.ofLp]`. Both sides reduce to the same expression. Set `Li : EuclideanSpace ℝ (Fin k) →ₗᵢ[ℝ] EuclideanSpace ℝ (Fin a ⊕ Fin b)` to `⟨L, hL⟩`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hd : Module.finrank ℝ (EuclideanSpace ℝ (Fin k)) = Module.finrank ℝ (EuclideanSpace ℝ (Fin a ⊕ Fin b))`. Simplify using `[hk]`. Establish `h1` using `(Li.toLinearIsometryEquiv hd).measurePreserving`. Establish `h2` using `PiLp.volume_preserving_toLp (Fin k)`. Establish `h3` using `PiLp.volume_preserving_ofLp (Fin a ⊕ Fin b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `volume_measurePreserving_sumPiEquivProdPi (fun _ : Fin a ⊕ Fin b => ℝ)`. Establish `h` using `h4.comp (h3.comp (h1.comp h2))`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurePreserving_of_sum_sq_eq : ∀ (k a b : ℕ), k = a + b → ∀ Q : (Fin k → ℝ) →ₗ[ℝ] (Fin a → ℝ) × (Fin b → ℝ), (∀ z, ∑ i, (Q z).1 i ^ 2 + ∑ i, (Q z).2 i ^ 2 = ∑ i, z i ^ 2) → MeasurePreserving Q volume volume := by
   intro k a b hk Q hQ

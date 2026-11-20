@@ -20,9 +20,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace RD
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
 /- English proof (translation)
-Establish `hm : t.1.map (compFin F E v) = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, ← Place.compFin_finOne v (t.1 i j)]`. Express the relevant statement in the definitionally equal form `compFin F E v ((finOne F • t.1) i j) = _`. Rewrite using `[hf, Matrix.smul_apply, Place.compFin_finOne, Matrix.one_apply, Matrix.one_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hm, Matrix.det_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.compFin_det (t : GL (Fin d.n) (AE F E)) (hf : finOne F • t.1 = finOne F • 1) (v : Pl F) :
     compFin F E v (t.1.det) = 1 := by
@@ -34,9 +34,9 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.compFin_det (t : GL (Fin 
     split_ifs <;> simp
   rw [RingHom.map_det, RingHom.mapMatrix_apply, hm, Matrix.det_one]
 /- English proof (translation)
-Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `congrArg Matrix.det ht`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne h]`. Use `congrArg Matrix.det (ho w' h)` as an intermediate fact. Rewrite `this` using `[Matrix.det_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.piInf_det (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ) (ht : d.cw w t.1 = a)
     (ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1) (w' : InfinitePlace F) :
@@ -51,9 +51,9 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.piInf_det (t : GL (Fin d.
     rw [Matrix.det_one] at this
     exact this
 /- English proof (translation)
-Take `⟨-, hs2, hs3, -, -⟩` from `(Place.exists_sec d.cm d.B.emb).choose_spec`. Apply `PositivityTheory.ThKG.Tow.Levi.ad_ext d.cm d.B.emb` to reduce the goal to its premises. Introduce `w'`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.RD_k.piInf_det (d := d) w t a ht ho w', _root_.PositivityTheory.SiegelWeilFormula.SD_k.uW, map_add, hs2, Place.piInf_finOne, add_zero]`. Introduce `v`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.RD_k.compFin_det (d := d) t hf v, _root_.PositivityTheory.SiegelWeilFormula.SD_k.uW, map_add, ← Place.compFin_finOne v, hs3, map_zero, zero_add, Place.compFin_finOne, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.det_uW (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ) (ht : d.cw w t.1 = a)
     (ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1) (hf : finOne F • t.1 = finOne F • 1) :
@@ -66,9 +66,9 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.det_uW (t : GL (Fin d.n) 
     rw [_root_.PositivityTheory.SiegelWeilFormula.RD_k.compFin_det (d := d) t hf v, _root_.PositivityTheory.SiegelWeilFormula.SD_k.uW, map_add, ← Place.compFin_finOne v, hs3, map_zero, zero_add,
       Place.compFin_finOne, map_one]
 /- English proof (translation)
-Establish `e` using `_root_.PositivityTheory.SiegelWeilFormula.RD_k.det_uW (d := d) w t a ht ho hf`. Establish `hu : IsUnit (d.uW w a.det)`. Rewrite using `[← e]`. Conclude with `(Matrix.GeneralLinearGroup.det t).isUnit.map (RingHom.id _) |>.map (RingHom.id _) |> fun h => by`. Simplify `h` using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW, dif_pos hu]`. Establish `: hu.unit = Matrix.GeneralLinearGroup.det t` using `Units.ext (by rw [IsUnit.unit_spec, Matrix.GeneralLinearGroup.val_det_apply, e])`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.chi_det (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ) (ht : d.cw w t.1 = a)
     (ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1) (hf : finOne F • t.1 = finOne F • 1) :
@@ -83,13 +83,13 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.chi_det (t : GL (Fin d.n)
     Units.ext (by rw [IsUnit.unit_spec, Matrix.GeneralLinearGroup.val_det_apply, e])
   rw [this]
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Doubling.absE_apply]`. Establish `hinf : ∀ w', GlobalTheory.Doubling.absEw F E w' (GlobalTheory.Doubling.unitInf F E w' (Matrix.GeneralLinearGroup.det t)) = ‖Function.update (fun _ => (1 : ℂ)) w a.det w'‖₊ ^ 2`. Introduce `w'`. Rewrite using `[GlobalTheory.Doubling.absEw_eq_sq d.cm (d.B.emb w'), ← _root_.PositivityTheory.SiegelWeilFormula.RD_k.piInf_det (d := d) w t a ht ho w', ← Matrix.GeneralLinearGroup.val_det_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfin : ∀ v, GlobalTheory.Doubling.absEv F E v (GlobalTheory.Doubling.unitFin F E v (Matrix.GeneralLinearGroup.det t)) = 1`. Introduce `v`. Establish `: GlobalTheory.Doubling.unitFin F E v (Matrix.GeneralLinearGroup.det t) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show compFin F E v ((Matrix.GeneralLinearGroup.det t : (AE F E)ˣ) : AE F E) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, _root_.PositivityTheory.SiegelWeilFormula.RD_k.compFin_det (d := d) t hf v]`. Rewrite using `[this, map_one]`. Simplify using `only [hinf, hfin, finprod_one, mul_one]`. Rewrite using `[Finset.prod_eq_single w (fun w' _ h => by rw [Function.update_of_ne h]; simp) (fun h => absurd (Finset.mem_univ w) h), Function.update_self]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.absE_det (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ) (ht : d.cw w t.1 = a)
     (ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1) (hf : finOne F • t.1 = finOne F • 1) :
@@ -114,9 +114,9 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.absE_det (t : GL (Fin d.n
   push_cast
   rfl
 /- English proof (translation)
-Introduce `y a ha hy`. Take `⟨t, ht, ho, hf, hS⟩` from `R.stepM_gen w hT y a ha hy`. Establish `hc : (d.χ (Matrix.GeneralLinearGroup.det t) : ℂ) * (((absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) ^ ((d.m : ℝ) / 2) : ℝ) : ℂ) = d.chiW w a.det * (‖a.det‖ : ℂ) ^ d.m`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.RD_k.chi_det (d := d) w t a ht ho hf, _root_.PositivityTheory.SiegelWeilFormula.RD_k.absE_det (d := d) w t a ht ho hf, ← Real.rpow_natCast ‖a.det‖ 2, ← Real.rpow_mul (norm_nonneg _), show ((2 : ℕ) : ℝ) * ((d.m : ℝ) / 2) = (d.m : ℝ) by pu …`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Simplify using `only [hc] at hS`. Conclude with `hS`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.stepM_val_pf (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) : ∀ (y : GR d.n) (a : Matrix (Fin d.n) (Fin d.n) ℂ), IsUnit a.det → mR y = mLoc a →
     R.StepOK w (R.ι w y) (fun f u => (d.chiW w a.det * (‖a.det‖ : ℂ) ^ d.m) * f (Matrix.of u * a)) id := by

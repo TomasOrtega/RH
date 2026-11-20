@@ -7,11 +7,11 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.PowerSeriesEval
 
 /- English proof (translation)
-Establish `hdvd : (Polynomial.X : Polynomial W) ^ K ∣ p - PowerSeries.trunc K (p : W⟦X⟧)`. Rewrite using `[Polynomial.X_pow_dvd_iff]`. Introduce `d hd`. Rewrite using `[Polynomial.coeff_sub, PowerSeries.coeff_trunc, if_pos hd, Polynomial.coeff_coe, sub_self]`. Take `⟨q, hq⟩` from `hdvd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `PowerSeries.trunc K (p : W⟦X⟧) = t at hq ⊢`. Establish `hp : p = t + Polynomial.X ^ K * q`. Rewrite using `[← hq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Ideal.Quotient.eq, hp, Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_X_pow]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: t.eval₂ ω v - (t.eval₂ ω v + v ^ K * q.eval₂ ω v) = -(v ^ K * q.eval₂ ω v)` using `by ring`. Rewrite using `[this]`. Conclude with `I.neg_mem (I.mul_mem_right _ hK)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eval₂_trunc_coe {W C : Type} [CommRing W] [CommRing C] (ω : W →+* C) (v : C)
     (I : Ideal C) {K : ℕ} (hK : v ^ K ∈ I) (p : Polynomial W) :
@@ -51,15 +51,15 @@ end GlobalTheory.PowerSeriesEval
 
 open GlobalTheory.PowerSeriesEval in
 /- English proof (translation)
-Introduce `W _ C _ J hJ ω v e he`. Establish `hN : v ^ (e + 1) ∈ J` using `by rw [pow_succ]; exact J.mul_mem_right _ he`. Establish `hK : ∀ n : ℕ, v ^ ((e + 1) * n + 1) ∈ J ^ n` using `fun n => by`. Rewrite using `[pow_succ, pow_mul]`. Conclude with `(J ^ n).mul_mem_right _ (Ideal.pow_mem_pow hN n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : (n : ℕ) → W⟦X⟧ →+* C ⧸ J ^ n` to `fun n => truncEval ω v (J ^ n) ((e + 1) * n) (hK n)`. Establish `hf : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow J hle).comp (f n) = f m`. Introduce `m n hle`. Use extensionality with `g`. Simplify using `only [f, RingHom.comp_apply, truncEval_apply, Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mk_eval₂_trunc_coe ω v (J ^ m) (hK m), PowerSeries.trunc_trunc_of_le _ (Nat.succ_le_succ (Nat.mul_le_mul_left _ hle))]`. Use `⟨IsAdicComplete.liftRingHom J f hf, fun w => ?_, ?_⟩` and prove the remaining obligations. Use `IsHausdorff.funext' (R := Unit) J (f := fun _ => IsAdicComplete.liftRingHom J f hf (PowerSeries.C w)) (g := fun _ => ω w) (fun n _ => by` as an intermediate fact. Rewrite using `[IsAdicComplete.mk_liftRingHom]`. Simplify using `[f, truncEval_apply])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrFun this ()`. Use `IsHausdorff.funext' (R := Unit) J (f := fun _ => IsAdicComplete.liftRingHom J f hf X) (g := fun _ => v) (fun n _ => by` as an intermediate fact. Rewrite using `[IsAdicComplete.mk_liftRingHom]`. Simplify using `only [f, truncEval_apply]`. Break down `n with _ | n` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.Quotient.eq, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`. Rewrite using `[PowerSeries.trunc_X_of (Nat.succ_le_succ (Nat.mul_pos (Nat.succ_pos e) (Nat.succ_pos n))), Polynomial.eval₂_X])`. Conclude with `congrFun this ()`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PowerSeriesEval.exists_ringHom_powerSeries :
     ∀ (W : Type) [CommRing W] (C : Type) [CommRing C] (J : Ideal C), IsAdicComplete J C →

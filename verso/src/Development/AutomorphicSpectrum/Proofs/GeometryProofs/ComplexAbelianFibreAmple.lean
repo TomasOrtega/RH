@@ -32,11 +32,9 @@ open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 /- English proof (translation)
-Introduce `E _ _ _ H L _ _ D σ`. Establish `hC` using `Out.CubePf.cubePull`. Set `m₁` to `PullbackSections.sabM hC (spMap σ) D.tK`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ D.m m₁`. Establish `e : spMap σ ≫ spMap (algebraMap (𝓞 L) L) = emb σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [emb, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨w, hw, -⟩` from `m₁.lin`. Use `⟨PullbackSections.sabT hC (spMap σ) D.tK, e ▸ n, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @IsProper) m₁.cart.1 D.princ.1`.
-
-Conclude with `relAmple_pull m₁.cart.1 D.tK.PP.isLB (PullbackSections.sabT hC (spMap σ) D.tK).PP.isLB ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) D.princ.2.1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_fibre_pol : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ), ∃ (t' : SAB H (Sp ℂ)) (_ : SABMap t' D.t (emb σ)), IsProper t'.G.hom ∧ Out.RelAmple t'.G t'.PP.L := by
   intro E _ _ _ H L _ _ D σ

@@ -13,9 +13,9 @@ open Formalism.MainNotions.G.WittFrameLocaliserOrders Formalism.MainNotions.G.sy
 section Reals
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < (p : ℝ)` using `by exact_mod_cast (by omega : 1 < p)`. Establish `hℓ : 0 ≤ Real.logb p a` using `Real.logb_nonneg hp1 ha`. Distinguish the cases in `h0 : M = 0`. Substitute `h0` using the available equality. Simplify using `only [Nat.log_zero_right, Nat.cast_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : (0 : ℝ) < (M : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero h0`. Establish `l1 : ((Nat.log p M : ℕ) : ℝ) ≤ Real.logb p (M : ℝ)` using `Real.natLog_le_logb _ _`. Establish `l2 : Real.logb p (M : ℝ) ≤ Real.logb p (a ^ 3)` using `Real.logb_le_logb_of_le hp1 hpos hM`. Establish `l3 : Real.logb p (a ^ 3) = 3 * Real.logb p a` using `by rw [Real.logb_pow]; norm_num`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -34,12 +34,12 @@ theorem natlog_le_three (p M : ℕ) (a : ℝ) (hp : 2 ≤ p) (ha : 1 ≤ a) (hM 
     linarith
 
 /- English proof (translation)
-Use polynomial arithmetic with `[sq_nonneg a]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem two_a_le_cube (a : ℝ) (h : 2 ≤ a) : 2 * a ≤ a ^ 3 := by nlinarith [sq_nonneg a]
 
 /- English proof (translation)
-Use polynomial arithmetic with `[sq_nonneg a]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sq_add_le_cube (a : ℝ) (h : 2 ≤ a) : a ^ 2 + a ≤ a ^ 3 := by nlinarith [sq_nonneg a]
 
@@ -49,7 +49,7 @@ Use the polynomial consequences of the given equalities and inequalities.
 theorem four_N_a (N a : ℝ) (ha : 0 ≤ a) (h : 4 * N ≤ a) : 2 * (N * (2 * a)) ≤ a ^ 2 := by nlinarith
 
 /- English proof (translation)
-Establish `h1 : k ≤ k ^ 2` using `le_sq_of_one_le k hk`. Establish `h2 : 0 ≤ N * ℓ` using `mul_nonneg hN hℓ`. Establish `h3 : (N * ℓ) * r ≤ (N * ℓ) * k ^ 2` using `mul_le_mul_of_nonneg_left (le_trans hr h1) h2`. Establish `h4 : (N * ℓ) * K ≤ (N * ℓ) * k ^ 2` using `mul_le_mul_of_nonneg_left (le_trans hK h1) h2`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem size_fin (N k r K ℓ A B Cc : ℝ) (hN : 0 ≤ N) (hℓ : 0 ≤ ℓ) (hk : 1 ≤ k) (hr0 : 0 ≤ r) (hK0 : 0 ≤ K) (hr : r ≤ k)
     (hK : K ≤ k)
@@ -62,7 +62,7 @@ theorem size_fin (N k r K ℓ A B Cc : ℝ) (hN : 0 ≤ N) (hℓ : 0 ≤ ℓ) (h
   nlinarith
 
 /- English proof (translation)
-Establish `h1 : (s : ℝ) ≤ B / (Y * k ^ 2)` using `by rw [hs]; exact Int.floor_le _`. Establish `h2 : (2 : ℝ) ≤ Y * k ^ 2`. Establish `: (1 : ℝ) ≤ k ^ 2` using `one_le_pow₀ hk`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : B / (Y * k ^ 2) ≤ B / 2` using `div_le_div_of_nonneg_left hB.le (by norm_num) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -80,15 +80,15 @@ end Reals
 section Mult
 
 /- English proof (translation)
-Establish `h1 : ∀ s, (d s).factorial = Nat.multinomial Finset.univ (fun c : Fin n => be (s, c)) * ∏ c : Fin n, (be (s, c)).factorial`. Introduce `s`. Rewrite using `[mul_comm, Nat.multinomial_spec, ← hbe s]`. Both sides reduce to the same expression. Establish `h2 : expFact be = ∏ s : ι, ∏ c : Fin n, (be (s, c)).factorial`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `expFact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => rfl), Fintype.prod_prod_type]`. Establish `h3 : (∏ s, (d s).factorial) = (∏ s : ι, Nat.multinomial Finset.univ (fun c : Fin n => be (s, c))) * expFact be`. Rewrite using `[h2, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun s _ => h1 s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMn0 : (∏ s : ι, Nat.multinomial Finset.univ (fun c : Fin n => be (s, c))) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => (Nat.multinomial_pos _ _).ne'`. Establish `hE0 : expFact be ≠ 0`. Rewrite using `[h2]`. Conclude with `Finset.prod_ne_zero_iff.2 fun s _ => Finset.prod_ne_zero_iff.2 fun c _ => Nat.factorial_ne_zero _`. Establish `h4 : padicValNat p (∏ s : ι, Nat.multinomial Finset.univ (fun c : Fin n => be (s, c))) ≤ ∑ x, n * Nat.log p (d x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Formalism.CountingSumsFrames.fock_val_prod p _ _ (fun s _ => (Nat.multinomial_pos _ _).ne')]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Use `Formalism.CountingSumsFrames.fock_mult_val_le p (fun c : Fin n => be (s, c)) Finset.univ` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Establish `e : ∑ c : Fin n, be (s, c) = d s` using `hbe s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[e]`. Conclude with `this`. Rewrite using `[h3, padicValNat.mul hMn0 hE0]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mult_level (p : ℕ) [hp : Fact p.Prime] {ι : Type} [Fintype ι] {n : ℕ} (d : ι → ℕ) (be : ι × Fin n →₀ ℕ)
     (hbe : ∀ x, multideg be x = d x) :
@@ -122,11 +122,11 @@ theorem mult_level (p : ℕ) [hp : Fact p.Prime] {ι : Type} [Fintype ι] {n : �
   omega
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `hp.out.two_le`. Establish `hp1 : (1 : ℝ) < (p : ℝ)` using `by exact_mod_cast (by omega : 1 < p)`. Establish `hℓ : 0 ≤ Real.logb p a` using `Real.logb_nonneg hp1 (by linarith)`. Establish `h` using `mult_level p d be hbe`. Establish `h' : (padicValNat p (∏ x, (d x).factorial) : ℝ) ≤ (padicValNat p (expFact be) : ℝ) + ((∑ x, n * Nat.log p (d x) : ℕ) : ℝ)` using `by exact_mod_cast h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ((∑ x, n * Nat.log p (d x) : ℕ) : ℝ) ≤ (N : ℝ) * ((n : ℝ) * (3 * Real.logb p a))`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun x _ => mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Conclude with `natlog_le_three p _ a hp2 (by linarith) (le_trans (hd x) (two_a_le_cube a ha))`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (Fintype.card ι : ℝ) * ((n : ℝ) * (3 * Real.logb p a)) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ (N : ℝ) * ((n : ℝ) * (3 * Real.logb p a)) := mul_le_mul_of_nonneg_right (by exact_mod_cast hcard) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mult_level_real (p : ℕ) [hp : Fact p.Prime] {ι : Type} [Fintype ι] {n : ℕ} (d : ι → ℕ) (be : ι × Fin n →₀ ℕ)
     (hbe : ∀ x, multideg be x = d x) (N : ℕ) (a : ℝ) (ha : 2 ≤ a) (hcard : Fintype.card ι ≤ N)
@@ -157,7 +157,7 @@ section Dno
 variable {r K J : ℕ} [NeZero J]
 
 /- English proof (translation)
-Unfold `degIn`. Use `Finset.sum_le_sum fun x _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `Nat.zero_le _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem degIn_le_sum {ι : Type} [Fintype ι] (d : ι → ℕ) (S : Set ι) : degIn d S ≤ ∑ x, d x := by
   unfold degIn
@@ -167,7 +167,7 @@ theorem degIn_le_sum {ι : Type} [Fintype ι] (d : ι → ℕ) (S : Set ι) : de
   · exact Nat.zero_le _
 
 /- English proof (translation)
-Unfold `N0`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem triangular_count_le_sq (K k : ℕ) (hK : K ≤ k) : N0 K ≤ k ^ 2 := by
   unfold N0
@@ -177,7 +177,7 @@ theorem triangular_count_le_sq (K k : ℕ) (hK : K ≤ k) : N0 K ≤ k ^ 2 := by
     _ = k ^ 2 := by ring
 
 /- English proof (translation)
-Rewrite using `[card_TL_eq, Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, ZMod.card, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_idx (nL : ZMod J → ℕ) :
     Fintype.card (Σ j : ZMod J, Fin (nL j + r + 1)) = Fintype.card (TL J nL r) + J := by
@@ -186,7 +186,7 @@ theorem card_idx (nL : ZMod J → ℕ) :
   rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, ZMod.card, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[card_TL_eq]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem J_le_card (nL : ZMod J → ℕ) (hr : 1 ≤ r) : J ≤ Fintype.card (TL J nL r) := by
   rw [card_TL_eq]
@@ -194,19 +194,19 @@ theorem J_le_card (nL : ZMod J → ℕ) (hr : 1 ≤ r) : J ≤ Fintype.card (TL 
     _ ≤ ∑ j : ZMod J, (nL j + r) := Finset.sum_le_sum fun j _ => by omega
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < (p : ℝ)` using `by exact_mod_cast (by omega : 1 < p)`. Establish `hℓ : 0 ≤ Real.logb p a` using `Real.logb_nonneg hp1 (by linarith)`. Establish `hcard' : (Fintype.card (TL J nL r) : ℝ) ≤ (N : ℝ)` using `by exact_mod_cast hcard`. Establish `hsum : ((∑ x, dNo x : ℕ) : ℝ) ≤ (N : ℝ) * (2 * a)`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ (N : ℝ) * (2 * a) := mul_le_mul_of_nonneg_right hcard' (by linarith)`. Establish `hterm : ∀ i : Σ j : ZMod J, Fin (nL j + r + 1), ((N0 K * Nat.log p (2 * degIn dNo (NSet nL i.1 i.2.val) + K - 1) : ℕ) : ℝ) ≤ (k : ℝ) ^ 2 * (3 * Real.logb p a)`. Introduce `i`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hM : ((2 * degIn dNo (NSet nL i.1 i.2.val) + K - 1 : ℕ) : ℝ) ≤ a ^ 3`. Establish `e1 : 2 * degIn dNo (NSet nL i.1 i.2.val) + K - 1 ≤ 2 * (∑ x, dNo x) + k`. Use `degIn_le_sum dNo (NSet nL i.1 i.2.val)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e2 : ((2 * degIn dNo (NSet nL i.1 i.2.val) + K - 1 : ℕ) : ℝ) ≤ ((2 * (∑ x, dNo x) + k : ℕ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1` after adjusting the coercions. Establish `e3 : ((2 * (∑ x, dNo x) + k : ℕ) : ℝ) = 2 * ((∑ x, dNo x : ℕ) : ℝ) + (k : ℝ)` using `by push_cast; ring`. Establish `e4` using `four_N_a (N : ℝ) a (by linarith) h4N`. Establish `e5` using `sq_add_le_cube a ha2`. Rewrite `e2` using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `l` using `natlog_le_three p _ a hp (by linarith) hM`. Establish `hN0 : ((N0 K : ℕ) : ℝ) ≤ (k : ℝ) ^ 2` using `by exact_mod_cast triangular_count_le_sq K k hK`. Rewrite using `[Nat.cast_mul]`. Conclude with `mul_le_mul hN0 l (Nat.cast_nonneg _) (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidx : (Fintype.card (Σ j : ZMod J, Fin (nL j + r + 1)) : ℝ) ≤ 2 * (N : ℝ)`. Establish `h1` using `card_idx (r := r) nL`. Establish `h2` using `J_le_card (r := r) nL hr`. Establish `: Fintype.card (Σ j : ZMod J, Fin (nL j + r + 1)) ≤ 2 * N` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Unfold `DnoOf`. Rewrite using `[Nat.cast_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ 2 * (N : ℝ) * ((k : ℝ) ^ 2 * (3 * Real.logb p a)) := mul_le_mul_of_nonneg_right hidx (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem DnoOf_le (p : ℕ) (hp : 2 ≤ p) (nL : ZMod J → ℕ) (dNo : TL J nL r → ℕ) (N k : ℕ) (a : ℝ) (hr : 1 ≤ r)
     (hK : K ≤ k) (hcard : Fintype.card (TL J nL r) ≤ N) (hd : ∀ x, (dNo x : ℝ) ≤ 2 * a) (ha2 : 2 ≤ a)

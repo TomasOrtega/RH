@@ -27,11 +27,11 @@ namespace GlobalTheory.CuspFrechet
 variable {D : D7} {θ : InfFam D} {V : HSp D} {U : Subgroup (GA D V)} {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[RderC_eq_sum_glDer hθ hs, Finset.sum_mul]`. Establish `hm : ∀ a : Fin V.rank × Fin V.rank, Z a.1 a.2 • glDer θ V (τ, a) φ ∈ SmFun θ V` using `fun a => Submodule.smul_mem _ _ ((linOnSm_RderC τ _).mem _ hs)`. Generalize the expression as in `(Finset.univ : Finset (Fin V.rank × Fin V.rank)) = s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Use `growthSob_smul (θ := θ) (φ := φ) 0 d N` as an intermediate fact. Rewrite `this` using `[zero_smul, enorm_zero, zero_mul]`. Simplify using `[this]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `(growthSob_add_le (hm a) (sum_mem fun b _ => hm b) d N).trans (add_le_add ?_ ih)` and prove the remaining obligations. Rewrite using `[growthSob_smul]`. Conclude with `mul_le_mul' le_rfl (wordSum_letter_le d _ φ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growthSob_RderC_le (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hs : φ ∈ SmFun θ V) (τ : D.what₂.Tau)
     (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (d : ℕ) : growthSob θ V d N (RderC θ V τ Z φ) ≤
@@ -76,9 +76,9 @@ def cuspSub (hU : IsOpen (U : Set (GA D V))) : Submodule ℂ (GA D V → ℂ) wh
 variable {hU : IsOpen (U : Set (GA D V))}
 
 /- English proof (translation)
-Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hφ`. Use `⟨a1.comp (continuous_mul_const h), fun γ hγ g => ?_, fun k h1 h2 g => ?_, rTr_mem_smFun hθ h a4, (GlobalTheory.Mem.Th.isCuspFun_closed D V φ φ ⟨a2, ⟨U, hU, a3⟩, a1⟩ ⟨a2, ⟨U, hU, a3⟩, a1⟩ a5 a5).2.2.1 h, fun d => ?_⟩` and prove the remaining obligations. Simplify using `only [rTr, mul_assoc, a2 γ hγ]`. Simplify using `only [rTr]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, ← comm_of_mem V hh h2, ← mul_assoc, a3 k h1 h2]`. Take `⟨C, m, hC⟩` from `GlobalTheory.T.moderateGrowthSobolevSize_rightTranslate_polyBound D θ hθ V d N`. Conclude with `ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top ENNReal.ofReal_ne_top) (a6 d)) (hC h hh φ a4)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rTr_mem_cuspSub (hθ : IsInfFam θ) {h : GA D V} (hh : h ∈ GinfC V) {φ : GA D V → ℂ} (hφ : φ ∈ cuspSub θ N hU) :
     rTr V h φ ∈ cuspSub θ N hU := by
@@ -94,11 +94,9 @@ theorem rTr_mem_cuspSub (hθ : IsInfFam θ) {h : GA D V} (hh : h ∈ GinfC V) {�
       (hC h hh φ a4)
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6⟩` from `id hφ`. Establish `b1 : Continuous (Rder θ V τ X φ)` using `continuous_rWord hθ a4 a1 ((unifModGrowth_iff_growthSob hθ a4).2 ⟨N, a6⟩) (l := [(τ, X)]) fun p hp => by rw [List.mem_singleton.1 hp]; exact hX`. Establish `b2 : ∀ γ ∈ GQ V, ∀ g, Rder θ V τ X φ (γ * g) = Rder θ V τ X φ g` using `fun γ hγ => rWord_left (θ := θ) (a2 γ hγ) [(τ, X)]`. Use `⟨b1, b2, fun k h1 h2 g => ?_, Rder_mem a4 hX, ?_, fun d => ?_⟩` and prove the remaining obligations. Establish `e : rTr V k φ = φ` using `funext (a3 k h1 h2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(congrFun (Rder_rTr_fin h2 τ X φ) g).symm.trans (by rw [e])`. Establish `hm : ∀ t : ℝ, ((t : ℂ)⁻¹) • (rTr V (oneP θ V τ X t) φ - φ) ∈ cuspSub θ N hU` using `fun t => Submodule.smul_mem _ _ (sub_mem (rTr_mem_cuspSub hθ (atTau_mem V τ _) hφ) hφ)`. Establish `ht : Tendsto (fun n : ℕ => 1 / ((n : ℝ) + 1)) atTop (𝓝[≠] 0)` using `tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat, .of_forall fun n => (Nat.one_div_pos_of_nat (α := ℝ)).ne'⟩`. Conclude with `GlobalTheory.T.isCuspFun_of_tendsto_moderateGrowthSize D V N _ _ (fun n => ⟨(hm _).1, (hm _).2.1, (hm _).2.2.2.2.1⟩) b1 b2 ((GlobalTheory.T.tendsto_moderateGrowthSize_differenceQuotient D θ hθ V τ N X hX φ a4 (a6 2)).comp ht)`. Rewrite using `[← GlobalTheory.SmoothAutCheck.RderC_eq θ V τ hX]`.
-
-Conclude with `ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.sum_ne_top.2 fun _ _ => enorm_ne_top) (a6 _)) (growthSob_RderC_le hθ a4 τ X d)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rder_mem_cuspSub (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ)
     {φ : GA D V → ℂ} (hφ : φ ∈ cuspSub θ N hU) : Rder θ V τ X φ ∈ cuspSub θ N hU := by
@@ -134,22 +132,22 @@ variable (θ N hU) in
 def incl : Sp θ N hU →ₗ[ℂ] (GA D V → ℂ) := (cuspSub θ N hU).subtype
 
 /- English proof (translation)
-The claim follows from `x.2`.
+A detailed English derivation is pending.
 -/
 theorem incl_mem (x : Sp θ N hU) : incl θ N hU x ∈ cuspSub θ N hU := x.2
 
 /- English proof (translation)
-The claim follows from `(incl_mem x).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem incl_sm (x : Sp θ N hU) : incl θ N hU x ∈ SmFun θ V := (incl_mem x).2.2.2.1
 
 /- English proof (translation)
-The claim follows from `(incl_mem x).2.2.2.2.2 d`.
+A detailed English derivation is pending.
 -/
 theorem incl_fin (x : Sp θ N hU) (d : ℕ) : growthSob θ V d N (incl θ N hU x) ≠ ⊤ := (incl_mem x).2.2.2.2.2 d
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem incl_injective : Function.Injective (incl θ N hU) := Subtype.val_injective
 
@@ -168,14 +166,14 @@ instance : UniformSpace (Sp θ N hU) := (SeminormFamily.addGroupFilterBasis (sem
 instance : IsUniformAddGroup (Sp θ N hU) := (SeminormFamily.addGroupFilterBasis (sem θ N hU)).isUniformAddGroup
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem withSem : WithSeminorms (sem θ N hU) := ⟨rfl⟩
 
 instance : ContinuousSMul ℂ (Sp θ N hU) := withSem.continuousSMul
 
 /- English proof (translation)
-Rewrite using `[withSem.tendsto_nhds]`. Use `forall_congr' fun d => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tendsto_toReal_iff (fun _ => incl_fin _ d) ENNReal.zero_ne_top, ENNReal.toReal_zero, Metric.tendsto_nhds]`. Simplify using `only [dist_zero_right, Real.norm_of_nonneg ENNReal.toReal_nonneg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tendsto_iff {α : Type} {F : Filter α} {u : α → Sp θ N hU} {y : Sp θ N hU} : Tendsto u F (𝓝 y) ↔
     ∀ d, Tendsto (fun a => growthSob θ V d N (incl θ N hU (u a - y))) F (𝓝 0) := by
@@ -187,16 +185,16 @@ theorem tendsto_iff {α : Type} {F : Filter α} {u : α → Sp θ N hU} {y : Sp 
   rfl
 
 /- English proof (translation)
-Simplify using `only [tendsto_iff, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tendsto_zero_iff {α : Type} {F : Filter α} {u : α → Sp θ N hU} : Tendsto u F (𝓝 0) ↔
     ∀ d, Tendsto (fun a => growthSob θ V d N (incl θ N hU (u a))) F (𝓝 0) := by
   simp only [tendsto_iff, sub_zero]
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun a => ENNReal.ofReal (‖u a g - f g‖ / height V g ^ N)) F (𝓝 0)` using `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds h (fun _ => zero_le) fun a => le_iSup (fun g => ENNReal.ofReal (‖(u a - f) g‖ / height V g ^ N)) g`. Establish `hp` using `pow_pos (height_pos V g) N`. Establish `h2` using `((ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp h1).mul_const (height V g ^ N)`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Simplify using `only [ENNReal.toReal_zero, zero_mul] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `h2.congr fun a => ?_` and prove the remaining obligations. Rewrite using `[Function.comp, ENNReal.toReal_ofReal (by positivity), div_mul_cancel₀ _ hp.ne']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tendsto_apply_of_size {α : Type} {F : Filter α} {u : α → GA D V → ℂ} {f : GA D V → ℂ}
     (h : Tendsto (fun a => growthSize V N (u a - f)) F (𝓝 0)) (g : GA D V) : Tendsto (fun a => u a g) F (𝓝 (f g)) := by
@@ -219,13 +217,13 @@ instance : T2Space (Sp θ N hU) := by
   simpa using (growthSize_le_iff (C := 0) le_rfl).1 (h1.le.trans zero_le) g
 
 /- English proof (translation)
-Use `(withSem (θ := θ) (N := N) (hU := hU)).firstCountableTopology` as an intermediate fact. Establish `: (_root_.uniformity (Sp θ N hU)).IsCountablyGenerated` using `IsUniformAddGroup.uniformity_countably_generated`. Use `UniformSpace.complete_of_cauchySeq_tendsto fun u hu => ?_` and prove the remaining obligations. Establish `h1` using `hu.tendsto_uniformity`. Rewrite `h1` using `[uniformity_eq_comap_nhds_zero_swapped, tendsto_comap_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨f, f1, f2, f3⟩` from `GlobalTheory.T.growthSobolev_cauchy_tendsto_smooth_limit D θ hθ V N (fun n => incl θ N hU (u n)) (fun n => ⟨(incl_mem _).1, incl_sm _, incl_fin _⟩) fun d => by`. Simplify `tendsto_zero_iff.1 h1 d` using `only [Function.comp, map_sub, Prod.map]`. Establish `f0` using `f3 0`. Simplify using `only [growthSob, wordSum_zero] at f0`. Establish `p` using `tendsto_apply_of_size f0`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `l : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g` using `fun γ hγ g => tendsto_nhds_unique (p _) ((p g).congr fun n => ((incl_mem _).2.1 γ hγ g).symm)`. Use `⟨⟨f, f1, l, fun k h1 h2 g => tendsto_nhds_unique (p _) ((p g).congr fun n => ((incl_mem _).2.2.1 k h1 h2 g).symm), f2, GlobalTheory.T.isCuspFun_of_tendsto_moderateGrowthSize D V N _ f (fun n => ⟨(incl_mem _).1, (incl_mem _).2.1, (incl_mem _).2.2.2.2.1⟩) f1 l f0, fun d => ?_⟩, ten …` and prove the remaining obligations. Take `⟨n, hn⟩` from `((f3 d).eventually (gt_mem_nhds ENNReal.zero_lt_top)).exists`. Establish `e : f = incl θ N hU (u n) + (-1 : ℂ) • (incl θ N hU (u n) - f)` using `by simp`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ne_top_of_le_ne_top (ENNReal.add_ne_top.2 ⟨incl_fin _ d, ?_⟩) (growthSob_add_le (incl_sm _) (Submodule.smul_mem _ _ (sub_mem (incl_sm _) f2)) d N)` and prove the remaining obligations. Rewrite using `[growthSob_smul]`. Conclude with `ENNReal.mul_ne_top enorm_ne_top hn.ne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem completeSpace (hθ : IsInfFam θ) : CompleteSpace (Sp θ N hU) := by
   have := (withSem (θ := θ) (N := N) (hU := hU)).firstCountableTopology
@@ -253,9 +251,9 @@ theorem completeSpace (hθ : IsInfFam θ) : CompleteSpace (Sp θ N hU) := by
   exact ENNReal.mul_ne_top enorm_ne_top hn.ne
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero T ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Use `tendsto_zero_iff.2 fun d => ?_` and prove the remaining obligations. Take `⟨d', c, hc, h⟩` from `h d`. Use `ENNReal.Tendsto.const_mul (tendsto_zero_iff.1 (tendsto_id (x := 𝓝 (0 : Sp θ N hU))) d') (a := c) (Or.inr hc)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_zero]`. Conclude with `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds this (fun _ => zero_le) h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_le (T : Sp θ N hU →ₗ[ℂ] Sp θ N hU) (h : ∀ d, ∃ (d' : ℕ) (c : ℝ≥0∞), c ≠ ⊤ ∧
     ∀ x, growthSob θ V d N (incl θ N hU (T x)) ≤ c * growthSob θ V d' N (incl θ N hU x)) : Continuous T := by
@@ -276,7 +274,7 @@ def act (hθ : IsInfFam θ) (h : GinfC V) : Sp θ N hU →L[ℂ] Sp θ N hU wher
     exact ⟨d, _, ENNReal.mul_ne_top ENNReal.coe_ne_top ENNReal.ofReal_ne_top, fun x => hC h.1 h.2 _ (incl_sm x)⟩
 
 /- English proof (translation)
-The claim follows from `add_mem (Rder_mem_cuspSub hθ (GlobalTheory.SmoothAutCheck.parts_mem V τ Z).1 hφ) (Submodule.smul_mem _ _ (Rder_mem_cuspSub hθ (GlobalTheory.SmoothAutCheck.parts_mem V τ Z).2 hφ))`.
+A detailed English derivation is pending.
 -/
 theorem RderC_mem_cuspSub (hθ : IsInfFam θ) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     {φ : GA D V → ℂ} (hφ : φ ∈ cuspSub θ N hU) : RderC θ V τ Z φ ∈ cuspSub θ N hU :=
@@ -307,23 +305,23 @@ def der (hθ : IsInfFam θ) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V
     growthSob_RderC_le hθ (incl_sm x) τ Z d⟩
 
 /- English proof (translation)
-The claim follows from `((derL N hU hθ τ).flip x).continuous_of_finiteDimensional`.
+A detailed English derivation is pending.
 -/
 theorem continuous_derL (hθ : IsInfFam θ) (τ : D.what₂.Tau) (x : Sp θ N hU) :
     Continuous fun Z => derL N hU hθ τ Z x :=
   ((derL N hU hθ τ).flip x).continuous_of_finiteDimensional
 
 /- English proof (translation)
-The claim follows from `incl_injective (RderC_rTr hθ ⟨h.2, GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V h.1⟩ τ Z _)`.
+A detailed English derivation is pending.
 -/
 theorem derL_act (hθ : IsInfFam θ) (h : GinfC V) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (x : Sp θ N hU) : derL N hU hθ τ Z (act N hU hθ h x) = act N hU hθ h (derL N hU hθ τ (adAt θ h.1 τ Z) x) :=
   incl_injective (RderC_rTr hθ ⟨h.2, GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V h.1⟩ τ Z _)
 
 /- English proof (translation)
-Use `tendsto_zero_iff.2 fun d => ?_` and prove the remaining obligations. Take `⟨C, m, hC⟩` from `GlobalTheory.T.moderateGrowthSobolevSize_rightTranslate_polyBound D θ hθ V d N`. Establish `h1 : Tendsto (fun a => (C : ℝ≥0∞) * ENNReal.ofReal (height V (h a).1 ^ m)) F (𝓝 ((C : ℝ≥0∞) * ENNReal.ofReal (height V 1 ^ m)))` using `ENNReal.Tendsto.const_mul (ENNReal.tendsto_ofReal ((((continuous_height V).tendsto 1).comp hh).pow m)) (Or.inr ENNReal.coe_ne_top)`. Establish `hn : (C : ℝ≥0∞) * ENNReal.ofReal (height V 1 ^ m) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.coe_ne_top ENNReal.ofReal_ne_top`. Use `ENNReal.Tendsto.mul h1 (Or.inr ENNReal.zero_ne_top) (tendsto_zero_iff.1 hz d) (Or.inr hn)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_zero]`. Conclude with `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds this (fun _ => zero_le) fun a => hC _ (h a).2 _ (incl_sm _)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_act_zero (hθ : IsInfFam θ) {α : Type} {F : Filter α} {h : α → GinfC V} {z : α → Sp θ N hU}
     (hh : Tendsto (fun a => (h a).1) F (𝓝 1)) (hz : Tendsto z F (𝓝 0)) :
@@ -342,11 +340,11 @@ theorem tendsto_act_zero (hθ : IsInfFam θ) {α : Type} {F : Filter α} {h : α
     hC _ (h a).2 _ (incl_sm _)
 
 /- English proof (translation)
-Establish `key : ∀ l : List (D.what₂.Tau × Fin V.rank × Fin V.rank), ∀ x, Tendsto (fun a => growthSize V N (wordAct (glDer θ V) l (incl θ N hU (u a x)))) F (𝓝 0)`. Introduce `l`. Proceed by induction on `l using List.reverseRecOn with`. Consider the case `nil => exact h0`. Consider the case `append_singleton l i ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x`. Use `(tendsto_zero_iff.1 (hs i.1 (Matrix.single i.2.1 i.2.2 1) x) l.length).add (ih (derL N hU hθ i.1 (Matrix.single i.2.1 i.2.2 1) x))` as an intermediate fact. Rewrite `this` using `[add_zero]`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds this (fun _ => zero_le) fun a => ?_` and prove the remaining obligations. Use `le_trans ?_ (add_le_add (le_wordSum (l := l) le_rfl _) le_rfl)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_eq_of_le (congrArg _ ?_) growthSize_add_le` and prove the remaining obligations. Rewrite using `[← (linOnSm_glWord l).add _ (incl_sm _) _ (incl_sm _), ← map_add, sub_add_cancel, wordAct_append]`. Both sides reduce to the same expression. Use `tendsto_zero_iff.2 fun d => ?_` and prove the remaining obligations. Simplify `tendsto_finsetSum (Finset.range (d + 1)) fun k _ => tendsto_finsetSum Finset.univ fun (a : Fin k → _) _ => key (List.ofFn a) x` using `only [Finset.sum_const_zero, growthSob, wordSum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_zero_of_comm (hθ : IsInfFam θ) {α : Type} {F : Filter α} (u : α → Sp θ N hU → Sp θ N hU)
     (h0 : ∀ x, Tendsto (fun a => growthSize V N (incl θ N hU (u a x))) F (𝓝 0))
@@ -376,9 +374,9 @@ variable (θ) in
 def pt (τ : D.what₂.Tau) (u : Matrix (Fin V.rank) (Fin V.rank) ℂ) : GinfC V := ⟨atTau θ V τ u, atTau_mem V τ u⟩
 
 /- English proof (translation)
-Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `h1 : Tendsto (fun u => (pt θ τ u).1) (𝓝[Formalism.QuantumDeterminants.UH (gramAt D V τ)] 1) (𝓝 1)`. Use `continuousOn_atTau hθ V τ 1 (one_mem_UH _)` as an intermediate fact. Rewrite `this` using `[ContinuousWithinAt, atTau_one hθ]`. Then use the resulting hypothesis. Use `tendsto_zero_of_comm hθ (fun u x => act N hU hθ (pt θ τ u) x - x) (fun x => GlobalTheory.T.tendsto_moderateGrowthSize_translate_near_one D θ hθ V τ N _ (incl_sm x) (incl_fin x 1)) (fun τ' Z x => ?_) x` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm` using `GlobalTheory.Cusp.KinfCompact.continuous_realMat hθ V τ'`. Establish `h2 : Continuous fun h : GA D V => derL N hU hθ τ' (adAt θ h τ' Z - Z) x` using `(continuous_derL hθ τ' x).comp ((((hm.comp continuous_inv).matrix_mul continuous_const).matrix_mul hm).sub continuous_const)`. Establish `h3` using `(h2.tendsto' 1 0 (by simp [adAt, infMat_one])).comp h1`. Use `(tendsto_act_zero hθ h1 h3).congr fun u => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, map_sub, LinearMap.sub_apply, derL_act]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -400,31 +398,31 @@ theorem tendsto_act_one (hθ : IsInfFam θ) (τ : D.what₂.Tau) (x : Sp θ N hU
   abel
 
 /- English proof (translation)
-The claim follows from `incl_injective (funext fun g => congrArg (incl θ N hU x) (mul_assoc g a.1 b.1).symm)`.
+A detailed English derivation is pending.
 -/
 theorem act_mul (hθ : IsInfFam θ) (a b : GinfC V) (x : Sp θ N hU) :
     act N hU hθ (a * b) x = act N hU hθ a (act N hU hθ b x) :=
   incl_injective (funext fun g => congrArg (incl θ N hU x) (mul_assoc g a.1 b.1).symm)
 
 /- English proof (translation)
-The claim follows from `incl_injective (funext fun g => congrArg (incl θ N hU x) (mul_one g))`.
+A detailed English derivation is pending.
 -/
 theorem act_one (hθ : IsInfFam θ) (x : Sp θ N hU) : act N hU hθ 1 x = x :=
   incl_injective (funext fun g => congrArg (incl θ N hU x) (mul_one g))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (atTau_mul hθ V τ hg hg')`.
+A detailed English derivation is pending.
 -/
 theorem pt_mul (hθ : IsInfFam θ) (τ : D.what₂.Tau) {g g' : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hg' : g' ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
     pt θ τ (g * g') = pt θ τ g * pt θ τ g' := Subtype.ext (atTau_mul hθ V τ hg hg')
 
 /- English proof (translation)
-Introduce `u hu`. Establish `hv` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V (atTau θ V τ u)⁻¹ τ`. Establish `huv` using `infMat_mul_inv θ V τ (atTau θ V τ u)`. Rewrite `huv` using `[(atTau_spec hθ V τ hu).2.1]`. Generalize the expression as in `infMat D.sp.cm.sig V.gram (θ τ) (atTau θ V τ u)⁻¹ = v at hv huv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `h1 : Tendsto (fun w => v * w) (𝓝[Formalism.QuantumDeterminants.UH (gramAt D V τ)] u) (𝓝[Formalism.QuantumDeterminants.UH (gramAt D V τ)] 1)`. Rewrite using `[← mul_eq_one_comm.1 huv]`. Conclude with `(continuous_const.matrix_mul continuous_id).continuousWithinAt.tendsto_nhdsWithin fun w hw => mul_mem_UH hv hw`. Establish `h2` using `((act N hU hθ (pt θ τ u)).continuous.tendsto' 0 0 (map_zero _)).comp ((tendsto_act_one hθ τ x).comp h1)`. Use `tendsto_sub_nhds_zero_iff.1 (h2.congr' (eventually_mem_nhdsWithin.mono fun w hw => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, map_sub]`. Rewrite using `[← act_mul, ← pt_mul hθ τ hu (mul_mem_UH hv hw), ← Matrix.mul_assoc, huv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_act (hθ : IsInfFam θ) (τ : D.what₂.Tau) (x : Sp θ N hU) :
     ContinuousOn (fun u => act N hU hθ (pt θ τ u) x) (Formalism.QuantumDeterminants.UH (gramAt D V τ)) := by
@@ -443,9 +441,9 @@ theorem continuousOn_act (hθ : IsInfFam θ) (τ : D.what₂.Tau) (x : Sp θ N h
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 /- English proof (translation)
-Establish `: CompleteSpace (Matrix (Fin n) (Fin n) ℂ)` using `FiniteDimensional.complete ℝ _`. Establish `h1` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Establish `h2` using `HasDerivAt.scomp (0 : ℝ) (h := fun t : ℝ => -t) (by rw [neg_zero]; exact h1) (hasDerivAt_neg (0 : ℝ))`. Establish `h3` using `((h2.mul_const Z).mul h1).tendsto_slope_zero`. Simplify using `only [zero_add, Function.comp, neg_zero, zero_smul, NormedSpace.exp_zero, one_mul, mul_one, Pi.mul_apply, neg_smul, one_smul, neg_mul] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[neg_add_eq_sub]`. Use `h3.congr fun t => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_inv, Complex.coe_smul, neg_smul]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tendsto_ad_exp {n : ℕ} (X Z : Matrix (Fin n) (Fin n) ℂ) :
     Tendsto (fun t : ℝ => ((t : ℂ)⁻¹) • (NormedSpace.exp ((-t) • X) * Z * NormedSpace.exp (t • X) - Z)) (𝓝[≠] 0)
@@ -462,17 +460,17 @@ theorem tendsto_ad_exp {n : ℕ} (X Z : Matrix (Fin n) (Fin n) ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun t : ℝ => (pt θ τ (NormedSpace.exp (t • X))).1) (𝓝[≠] 0) (𝓝 1)` using `((GlobalTheory.Mem.Lift.continuous_oneP hθ hX).tendsto' 0 1 (GlobalTheory.Mem.Lift.oneP_zero hθ)).mono_left nhdsWithin_le_nhds`. Apply the tactic sequence `have h1' : Tendsto (fun t : ℝ => NormedSpace.exp (t • X)) (𝓝[≠] 0) (𝓝[Formalism.QuantumDeterminants.UH (gramAt D V τ)] 1) := tendsto_nhdsWithin_iff.2 ⟨((continuous_matrix fun i j => continuous_iff_continuousAt.2 fun t => (GlobalTheory.Mem.Lift.hasDerivAt_exp_entry X t i j).contin …`. Establish `eX : ∀ y : Sp θ N hU, incl θ N hU (derL N hU hθ τ X y) = Rder θ V τ X (incl θ N hU y)` using `fun y => GlobalTheory.SmoothAutCheck.RderC_eq θ V τ hX _`. Use `tendsto_zero_of_comm hθ (fun (t : ℝ) x => ((t : ℂ)⁻¹) • (act N hU hθ (pt θ τ (NormedSpace.exp (t • X))) x - x) - derL N hU hθ τ X x) (fun x => ?_) (fun τ' Z x => ?_) x` and prove the remaining obligations. Simplify using `only [map_sub, eX]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.T.tendsto_moderateGrowthSize_differenceQuotient D θ hθ V τ N X hX _ (incl_sm x) (incl_fin x 2)`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB, hb⟩ : ∃ B, Tendsto (fun t : ℝ => ((t : ℂ)⁻¹) • (adAt θ (oneP θ V τ X t) τ' Z - Z)) (𝓝[≠] 0) (𝓝 B) ∧ derL N hU hθ τ' Z (derL N hU hθ τ X x) = derL N hU hθ τ X (derL N hU hθ τ' Z x) + derL N hU hθ τ' B x := by`. Establish `hi : ∀ t, (oneP θ V τ X t)⁻¹ = oneP θ V τ X (-t)` using `fun t => inv_eq_of_mul_eq_one_right (by`. Rewrite using `[← GlobalTheory.Mem.Lift.oneP_add hθ hX, add_neg_cancel, GlobalTheory.Mem.Lift.oneP_zero hθ])`. Establish `hs` using `GlobalTheory.Mem.Lift.isAtTau_oneP hθ hX`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbr` using `GlobalTheory.T.complexDerivative_rightDerivative_commutator D θ hθ V τ τ' Z X hX _ (incl_sm x)`. Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality. Use `⟨_, (tendsto_ad_exp X Z).congr fun t => ?_, incl_injective ?_⟩` and prove the remaining obligations. Rewrite using `[adAt, hi, (hs _).2.1, (hs _).2.1]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, eX, incl_derL, eX]`. Conclude with `hbr.1`. Use `⟨0, tendsto_const_nhds.congr fun t => ?_, incl_injective ?_⟩` and prove the remaining obligations. Rewrite using `[adAt, hi, (hs _).2.2 _ c, (hs _).2.2 _ c, Matrix.one_mul, Matrix.mul_one, sub_self, smul_zero]`. Rewrite using `[map_zero, LinearMap.zero_apply, add_zero, eX, incl_derL, eX]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hbr.2 c`. Establish `h2` using `((continuous_derL hθ τ' x).tendsto' 0 0 (by simp)).comp (tendsto_sub_nhds_zero_iff.2 hB)`. Establish `h3` using `(tendsto_act_zero hθ h1 h2).add ((tendsto_act_one hθ τ (derL N hU hθ τ' B x)).comp h1')`. Rewrite `h3` using `[add_zero]`. Use `h3.congr fun t => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [Function.comp, map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, derL_act, hb, smul_sub]`. Express the relevant statement in the definitionally equal form `_ = _ • act N hU hθ _ (derL N hU hθ τ' (adAt θ (oneP θ V τ X t) τ' Z) x) - _ - _ - _`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem tendsto_quot (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ)
     (x : Sp θ N hU) : Tendsto (fun t : ℝ => ((t : ℂ)⁻¹) • (act N hU hθ (pt θ τ (NormedSpace.exp (t • X))) x - x) -
@@ -514,15 +512,15 @@ theorem tendsto_quot (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V
   abel
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ))`.
+A detailed English derivation is pending.
 -/
 theorem fr_mul_inv (A : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau) : A.fr τ * (A.fr τ)⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ))
 
 /- English proof (translation)
-Establish `h1` using `fr_mul_inv A τ`. Establish `hk' : kᴴ * Formalism.REAL.Jm (A.ε τ) * k = Formalism.REAL.Jm (A.ε τ)` using `hk`. Establish `h3 : ((A.fr τ)⁻¹)ᴴ * (A.fr τ)ᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Use `show _ᴴ * _ * _ = _`. Rewrite using `[← A.fr_gram τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_UH (A : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau) {k : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hk : k ∈ Formalism.MainNotions.S.UJset (A.ε τ)) : (A.fr τ)⁻¹ * k * A.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
@@ -536,9 +534,9 @@ theorem conj_mem_UH (A : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau) {k : Ma
     _ = _ := by rw [h1, h3, Matrix.mul_one, Matrix.mul_one, hk']
 
 /- English proof (translation)
-Establish `h1` using `fr_mul_inv A τ`. Establish `hX' : Xᴴ * Formalism.REAL.Jm (A.ε τ) + Formalism.REAL.Jm (A.ε τ) * X = 0` using `hX`. Establish `h3 : ((A.fr τ)⁻¹)ᴴ * (A.fr τ)ᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Use `show _ᴴ * _ + _ * _ = _`. Rewrite using `[← A.fr_gram τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_add, Matrix.add_mul]`. Use `_ = _ := by rw [h1, h3, Matrix.mul_one, Matrix.mul_one, hX', Matrix.mul_zero, Matrix.zero_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_lieAt (A : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ GlobalTheory.SmoothGlob.lieSet (A.ε τ)) : (A.fr τ)⁻¹ * X * A.fr τ ∈ lieAt V τ := by
@@ -553,7 +551,7 @@ theorem conj_mem_lieAt (A : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau) {X :
     _ = _ := by rw [h1, h3, Matrix.mul_one, Matrix.mul_one, hX', Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-The claim follows from `withSem map_one := ContinuousLinearMap.ext fun x => by rw [Matrix.mul_one, mul_eq_one_comm.1 (fr_mul_inv A τ), show pt θ τ 1 = 1 from Subtype.ext (atTau_one hθ V τ)] exact act_one hθ x map_mul a ha b hb := ContinuousLinearMap.ext fun x => by rw [ContinuousLinearMap.comp_apply, ← …`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothModRep (hθ : IsInfFam θ) (A : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau) :
     GlobalTheory.SmoothGlob.IsSmoothModRep (A.ε τ) (sem θ N hU) (fun g => act N hU hθ (pt θ τ ((A.fr τ)⁻¹ * g * A.fr τ)))
@@ -593,7 +591,7 @@ theorem isSmoothModRep (hθ : IsInfFam θ) (A : GlobalTheory.ChainFr.Fr V) (τ :
     ring
 
 /- English proof (translation)
-Introduce `D θ hθ V A U N hU`. Use `⟨Sp θ N hU, inferInstance, inferInstance, inferInstance, inferInstance, completeSpace hθ, inferInstance, sem θ N hU, incl θ N hU, incl_injective, fun φ => ⟨?_, fun h => ⟨⟨φ, h⟩, rfl⟩⟩, fun _ _ => rfl, fun τ => ⟨_, _, isSmoothModRep hθ A τ, fun _ _ _ => rfl, fun X hX x => GlobalTh …` and prove the remaining obligations. Introduce and unpack `⟨x, rfl⟩`. Conclude with `incl_mem x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_frechet : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (A : GlobalTheory.ChainFr.Fr V) (U : Subgroup (GA D V)) (N : ℕ), IsOpen (U : Set (GA D V)) → ∃ (E : Type) (_ : AddCommGroup E) (_ : Module ℂ E) (_ : UniformSpace E) (_ : IsUniformAddGroup E) (_ : CompleteSpace E) (_ : T2Space E) (p : ℕ → Seminorm ℂ E) (ι : E →ₗ[ℂ] (GA D V → ℂ)), Function.Injective ι ∧ (∀ φ, φ ∈ Set.range ι ↔ Continuous φ ∧ (∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) ∧ (∀ k ∈ U, k ∈ GfC V → ∀ g, φ (g * k) = φ g) ∧ φ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V ∧ IsCuspFun V φ ∧ ∀ d, GlobalTheory.Size.growthSob θ V d N φ ≠ ⊤) ∧ (∀ d x, p d x = (GlobalTheory.Size.growthSob θ V d N (ι x)).toReal) ∧ ∀ τ, ∃ π dπ : Matrix (Fin V.rank) (Fin V.rank) ℂ → (E →L[ℂ] E), GlobalTheory.SmoothGlob.IsSmoothModRep (A.ε τ) p π dπ ∧ (∀ g ∈ Formalism.MainNotions.S.UJset (A.ε τ), ∀ x, ι (π g x) = rTr V (A.elt θ τ g) (ι x)) ∧ ∀ X ∈ GlobalTheory.SmoothGlob.lieSet (A.ε τ), ∀ x, ι (dπ X x) = Rder θ V τ ((A.fr τ)⁻¹ * X * A.fr τ) (ι x) := by
   intro D θ hθ V A U N hU

@@ -13,7 +13,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.RegroupDenom
 
 /- English proof (translation)
-Use `show x ∈ ((A ⊓ B : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) ↔ _`. Rewrite using `[FractionalIdeal.coe_inf, Submodule.mem_inf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_inf_frac {K : Type} [Field K] [NumberField K]
     {A B : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} {x : K} :
@@ -23,21 +23,19 @@ theorem mem_inf_frac {K : Type} [Field K] [NumberField K]
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ A B hA hB t g`. Establish `hJne : ∀ c : K, c ≠ 0 → B ⊓ FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) c⁻¹ * A ≠ 0`. Introduce `c hc`. Take `⟨x, hx0, hxI⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger hB`. Establish `h2 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) c⁻¹ * A ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `mul_ne_zero ?_ hA` and prove the remaining obligations. Simplify `hc` using `[FractionalIdeal.spanSingleton_eq_zero_iff]`. Take `⟨y, hy0, hyI⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger h2`. Introduce `hz`. Establish `hmem : algebraMap (𝓞 K) K x * algebraMap (𝓞 K) K y ∈ B ⊓ FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) c⁻¹ * A`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_inf_frac]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ y hxI`. Rewrite using `[← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ x hyI`. Rewrite `hmem` using `[hz, FractionalIdeal.mem_zero_iff]`. Simplify the hypotheses and the goal together. Establish `hcmem : ∀ c : K, c ≠ 0 → c ∈ A / (B ⊓ FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) c⁻¹ * A)`. Introduce `c hc`.
+Simplify the hypotheses and the goal together. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[FractionalIdeal.mem_div_iff_of_ne_zero (hJne c hc)]`. Introduce `y hy`. Rewrite `hy` using `[mem_inf_frac]`. Take `⟨z, hz, rfl⟩` from `(FractionalIdeal.mem_singleton_mul).1 hy.2`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hc, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hz`. Set `F : {c : K // c ≠ 0} → (Σ J : {J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K // J ≠ 0 ∧ J ≤ B}, {c : K // c ∈ A / (J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)})` to `fun c => ⟨⟨_, hJne c.1 c.2, inf_le_left⟩, ⟨c.1, hcmem c.1 c.2⟩⟩`. Establish `hF : Function.Injective F`. Introduce `a b hab`. Use `congrArg (fun p : (Σ J : {J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K // J ≠ 0 ∧ J ≤ B}, {c : K // c ∈ A / (J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)}) => (p.2 : K)) hab` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Subtype.ext this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.tsum_sigma']`. Use `congr 1`. Use function extensionality and compare the values at `J`.
-
-Use `show ∑' b : {c : K // c ∈ A / (J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)}, ENNReal.ofReal ((FractionalIdeal.absNorm (J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ℝ) ^ (-t)) * g b = _`. Rewrite using `[ENNReal.tsum_mul_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_regroup_by_denominator_le : ∀ (K : Type) [Field K] [NumberField K] (I₀ I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K), I₀ ≠ 0 → I ≠ 0 →
     ∀ (t : ℝ) (g : K → ENNReal),

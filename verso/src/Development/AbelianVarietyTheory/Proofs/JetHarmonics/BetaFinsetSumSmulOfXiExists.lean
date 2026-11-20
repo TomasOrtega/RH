@@ -25,7 +25,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 variable [FiniteDimensional ℂ Wp] in
 
 /- English proof (translation)
-The claim follows from `_root_.Formalism.FourierDecayAlt.P.JCx2.sq_beta_sesq D hA hF hF' hG c`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BetaSum.beta_sesq (hXi : _root_.Formalism.FourierDecayAlt.B.XiExists) (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) {A : ℝ}
     (hA : _root_.Formalism.FourierDecayAlt.B.AB k r ≤ A)
@@ -43,7 +43,7 @@ open Finset MeasureTheory in
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] in
 /- English proof (translation)
-Unfold `_root_.Formalism.FourierDecayAlt.B.beta _root_.Formalism.QuantumDeterminants.betaBig`. Rewrite using `[show (star : ℂ → ℂ) = starRingEnd ℂ from rfl, ← integral_conj]`. Use `congr 1`. Use extensionality with `p`. Simplify using `[inner_conj_symm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma beta_eq_star_beta_swap (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (F G : _root_.Formalism.FourierDecayAlt.B.Mat k r → Wq →L[ℂ] Wp) :
     _root_.Formalism.FourierDecayAlt.B.beta D F G = star (_root_.Formalism.FourierDecayAlt.B.beta D G F) := by
@@ -57,7 +57,7 @@ open Finset MeasureTheory in
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] in
 /- English proof (translation)
-Rewrite using `[beta_eq_star_beta_swap D F G, beta_eq_star_beta_swap D F G₂, _root_.Formalism.FourierDecayAlt.P.Dx1.LZ.beta_congr_left D h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma beta_congr_right_on_GV (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) {F G G₂ : _root_.Formalism.FourierDecayAlt.B.Mat k r → Wq →L[ℂ] Wp}
     (h : ∀ g ∈ _root_.Formalism.FourierDecayAlt.B.GV k r, G g = G₂ g) : _root_.Formalism.FourierDecayAlt.B.beta D F G = _root_.Formalism.FourierDecayAlt.B.beta D F G₂ := by
@@ -68,13 +68,13 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] in
 variable [FiniteDimensional ℂ Wp] in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0 : _root_.Formalism.FourierDecayAlt.B.InCC A 5 (fun _ : _root_.Formalism.FourierDecayAlt.B.Mat k r ↦ (0 : Wq →L[ℂ] Wp))` using `_root_.Formalism.FourierDecayAlt.P.JCx2.sq_inCC_zero`. Establish `h` using `(_root_.Formalism.FourierDecayAlt.P.JCx2.sq_beta_sesq D hA h0 h0 hG 1).1`. Establish `e : ((fun _ : _root_.Formalism.FourierDecayAlt.B.Mat k r ↦ (0 : Wq →L[ℂ] Wp)) + (1 : ℂ) • (fun _ : _root_.Formalism.FourierDecayAlt.B.Mat k r ↦ (0 : Wq →L[ℂ] Wp))) = (fun _ : _root_.Formalism.FourierDecayAlt.B.Mat k r ↦ (0 : Wq →L[ℂ] Wp))`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite `h` using `[e, one_mul]`. Simplify using `only [Finset.sum_empty]`. Establish `: _root_.Formalism.FourierDecayAlt.B.beta D (fun _ : _root_.Formalism.FourierDecayAlt.B.Mat k r ↦ (0 : Wq →L[ℂ] Wp)) G = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `-h`. Conclude with `this`. Consider the case `insert x s hx ih`. Establish `hs : _root_.Formalism.FourierDecayAlt.B.InCC A 5 (fun g ↦ ∑ i ∈ s, c i • Fi i g)` using `_root_.Formalism.FourierDecayAlt.P.JCx2.sq_inCC_sum s (fun i g ↦ c i • Fi i g) (fun i _ ↦ _root_.Formalism.FourierDecayAlt.P.JCx2.sq_inCC_smul (c i) (hFi i))`. Establish `e : (fun g ↦ ∑ i ∈ insert x s, c i • Fi i g) = (fun g ↦ ∑ i ∈ s, c i • Fi i g) + c x • Fi x`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Simplify using `[Finset.sum_insert hx, add_comm]`. Rewrite using `[e, (_root_.Formalism.FourierDecayAlt.P.JCx2.sq_beta_sesq D hA hs (hFi x) hG (c x)).1, ih, Finset.sum_insert hx, add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma beta_sum_smul_left (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : _root_.Formalism.FourierDecayAlt.B.AB k r ≤ A)
     {ι : Type} (s : Finset ι) (c : ι → ℂ) (Fi : ι → _root_.Formalism.FourierDecayAlt.B.Mat k r → Wq →L[ℂ] Wp)
@@ -107,7 +107,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] in
 variable [FiniteDimensional ℂ Wp] in
 /- English proof (translation)
-Rewrite using `[beta_eq_star_beta_swap, beta_sum_smul_left D hA s c Fi hFi hG, star_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[star_mul', beta_eq_star_beta_swap D G (Fi i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma beta_sum_smul_right (D : _root_.Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : _root_.Formalism.FourierDecayAlt.B.AB k r ≤ A)
     {ι : Type} (s : Finset ι) (c : ι → ℂ) (Fi : ι → _root_.Formalism.FourierDecayAlt.B.Mat k r → Wq →L[ℂ] Wp)
@@ -123,7 +123,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 variable [FiniteDimensional ℂ Wp] in
 
 /- English proof (translation)
-Introduce `_ k r Wp Wq _ _ _ _ _ _ D A ι S T a b Fi F F' hA hFi hF hF'`. Rewrite using `[_root_.Formalism.FourierDecayAlt.P.Dx1.LZ.beta_congr_left D hF, beta_congr_right_on_GV D hF', beta_sum_smul_left D hA S a Fi hFi (_root_.Formalism.FourierDecayAlt.P.JCx2.sq_inCC_sum T (fun i g ↦ b i • Fi i g) (fun i _ ↦ _root_.Formalism.FourierDecayAlt.P.JCx2.sq_inCC_smul (b i) …`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[beta_sum_smul_right D hA T b Fi hFi (hFi i), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

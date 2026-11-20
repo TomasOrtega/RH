@@ -9,14 +9,14 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.LamTie.GridCharacters
 
 /- English proof (translation)
-Introduce `x hx hx'` and use `h x hx (hx'.trans (WithZero.exp_le_exp.2 (by omega)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levelLe_of_le {E : Type} [Field E] [NumberField E] {χ : Formalism.L2.Host.HChar E} {w : HeightOneSpectrum (𝓞 E)} {m n : ℕ}
     (h : χ.LevelLe w m) (hmn : m ≤ n) : χ.LevelLe w n := fun x hx hx' =>
   h x hx (hx'.trans (WithZero.exp_le_exp.2 (by omega)))
 
 /- English proof (translation)
-Introduce `m` and use `⟨fun hm => by by_contra hlt exact h' (levelLe_of_le hm (by omega)), fun hm => levelLe_of_le h hm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem expAt_succ {E : Type} [Field E] [NumberField E] {χ : Formalism.L2.Host.HChar E} {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
     (h : χ.LevelLe w (n + 1)) (h' : ¬ χ.LevelLe w n) : ExpAt χ w (n + 1) := fun m =>

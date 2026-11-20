@@ -14,15 +14,13 @@ open GlobalTheory.HeckeBridge GlobalTheory.IndefiniteRowSideFullHecke.CompletedL
 open GlobalTheory.CMVal (IsHeckeL IsCMType eulerFactor)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' h χ hχ`. Use `haveI := h.base.cm.2.1`. Take `⟨H, hu, hloc, hinf⟩` from `exists_hchar_unitary F E σ h.base.cm X.ν (isHecke_nu h)`. Establish `hφ` using `isCMType_emb h.base.cm B.emb`. Establish `hn` using `hinf _ _ (hasExp_nu h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w₀⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `k0` using `h.geo.kappa`. Break down `hχ with rfl | rfl` into its components or cases. Take `⟨L, hL, hz⟩` from `PositivityTheory.ThKRed.HK.heckeL_ne_zero hφ hu hn ⟨w₀, by have := k0 w₀; omega⟩`. Conclude with `⟨L, hL.1, fun s hs => eq_charL hu hloc hL hs, fun z h1 => hz z fun w => by`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `k0 w` as an intermediate fact. Use `le_abs_self (B.mα w - B.mβ w)` as an intermediate fact. Use the proof step `omega⟩`. Establish `hu'` using `GlobalTheory.Published.HeckeFEModel.isUnitary_inv hu`. Take `⟨L, hL, hz⟩` from `PositivityTheory.ThKRed.HK.heckeL_ne_zero hφ hu' (GlobalTheory.Published.HeckeFEModel.hasInf_inv hn) ⟨w₀, by have := k0 w₀; omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L, hL.1, fun s hs => eq_charL hu' (fun W x => ?_) hL hs, fun z h1 => hz z fun w => by` and prove the remaining obligations. Use `k0 w` as an intermediate fact. Use `le_abs_self (B.mα w - B.mβ w)` as an intermediate fact. Rewrite using `[abs_neg]`. Use the proof step `omega⟩`.
-
-Rewrite using `[Formalism.L2.Host.HChar.loc_inv, hloc]`. Conclude with `(map_inv Circle.toUnits _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lInt2 : LInt2 := by
   intro F E _ _ _ _ _ σ B a a' G X om om' h χ hχ
@@ -44,7 +42,7 @@ theorem lInt2 : LInt2 := by
     exact (map_inv Circle.toUnits _).symm
 
 /- English proof (translation)
-The claim follows from `constOfGood_of hS GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne_holds`.
+A detailed English derivation is pending.
 -/
 theorem constOfGood (hS : GlobalTheory.Published.StrongApproxSU) : ConstOfGood :=
   constOfGood_of hS GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne_holds

@@ -9,23 +9,19 @@ set_option autoImplicit false
 namespace GlobalTheory.VolBr
 
 /- English proof (translation)
-Take `⟨s, hs, hmax⟩` from `exists_maximal_linearIndepOn ℤ (Subtype.val : ↥(T : Set G) → G)`. Establish `ha : ∀ i : (T : Set G), ∃ a : ℤ, a ≠ 0 ∧ a • (i : G) ∈ Submodule.span ℤ (Subtype.val '' s)`. Introduce `i`. Distinguish the cases in `h : i ∈ s`. Conclude with `⟨1, one_ne_zero, by rw [one_smul]; exact Submodule.subset_span ⟨i, h, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `hmax i h`. Use `choose a ha0 ha using ha`. Use `set M : ℤ := ∏ i, a i with hMdef`. Establish `hM0 : M ≠ 0` using `Finset.prod_ne_zero_iff.2 (fun i _ => ha0 i)`. Establish `hMmem : ∀ x ∈ Submodule.span ℤ (T : Set G), M • x ∈ Submodule.span ℤ (Subtype.val '' s)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Establish `e : M = a ⟨y, hy⟩ * ∏ i ∈ Finset.univ.erase ⟨y, hy⟩, a i` using `(Finset.mul_prod_erase _ _ (Finset.mem_univ _)).symm`. Rewrite using `[e, mul_comm, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ (ha ⟨y, hy⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Set `f : Submodule.span ℤ (T : Set G) →ₗ[ℤ] Submodule.span ℤ (Subtype.val '' s)` to `{ toFun := fun x => ⟨M • (x : G), hMmem x x.2⟩ map_add' := by intro x y; ext; simp [smul_add] map_smul' := by`. Introduce `c x`. Use `ext`. Express the relevant statement in the definitionally equal form `M • (c • (x : G)) = c • (M • (x : G))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `smul_comm _ _ _ }`. Establish `hf : Function.Injective f`. Introduce `x y hxy`. Establish `e` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (smul_right_injective G hM0 e)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsfin : (Subtype.val '' s : Set G).Finite` using `(Set.toFinite s).image _`. Use `haveI : Module.Finite ℤ (Submodule.span ℤ (Subtype.val '' s)) := Module.Finite.span_of_finite ℤ hsfin`. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hf`. Establish `hli : LinearIndepOn ℤ id (Subtype.val '' s)` using `hs.id_image`. Use `haveI := hsfin.fintype`.
-
-Rewrite `h1` using `[finrank_span_set_eq_card hli, Set.toFinset_card]`. Set `eqv` to `Fintype.equivFin (Subtype.val '' s : Set G)`. Establish `h2` using `hr _ (fun j => (eqv.symm j : G)) (hli.comp _ eqv.symm.injective) (by`. Introduce `j`. Take `⟨i, _, hi⟩` from `(eqv.symm j).2`.
-
-Rewrite using `[← hi]`. Conclude with `i.2)`. Conclude with `h1.trans h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_span_finset_le_of_indep {G : Type} [AddCommGroup G] [IsAddTorsionFree G] (T : Finset G) (r : ℕ)
     (hr : ∀ (n : ℕ) (e : Fin n → G), LinearIndependent ℤ e → (∀ j, e j ∈ (T : Set G)) → n ≤ r) :
@@ -76,33 +72,29 @@ theorem finrank_span_finset_le_of_indep {G : Type} [AddCommGroup G] [IsAddTorsio
   exact h1.trans h2
 
 /- English proof (translation)
-Use `haveI : NeZero q := ⟨hq.ne'⟩`. Use `set L := Submodule.span ℤ (T : Set G) with hLdef`. Establish `hd : Module.finrank ℤ L ≤ r` using `finrank_span_finset_le_of_indep T r (fun n e he hmem => hr n e he (fun j => hT (hmem j)))`. Use `haveI : Module.Free ℤ L := Module.free_of_finite_type_torsion_free'`. Use `set d := Module.finrank ℤ L with hddef`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b` to `Module.finBasis ℤ L`. Set `v : G → (Fin d → ℤ)` to `fun x => if hx : x ∈ L then b.equivFun ⟨x, hx⟩ else 0`. Set `c : G → (Fin d → ZMod q)` to `fun x i => ((v x i : ℤ) : ZMod q)`. Set `z : G → G → G` to `fun x y => ((b.equivFun.symm (fun i => (v x i - v y i) / (q : ℤ)) : L) : G)`. Establish `hkey : ∀ x ∈ L, ∀ y ∈ L, c x = c y → q • z x y = x - y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx y hy hc`. Establish `hdvd : ∀ i, (q : ℤ) ∣ v x i - v y i`. Introduce `i`. Establish `e` using `congrFun hc i`. Apply `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Conclude with `sub_eq_zero.2 e`. Establish `hvx : v x = b.equivFun ⟨x, hx⟩` using `dif_pos hx`. Establish `hvy : v y = b.equivFun ⟨y, hy⟩` using `dif_pos hy`. Establish `e : q • (b.equivFun.symm (fun i => (v x i - v y i) / (q : ℤ)) : L) = ⟨x, hx⟩ - ⟨y, hy⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `b.equivFun.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, LinearEquiv.apply_symm_apply, map_sub, ← hvx, ← hvy]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, nsmul_eq_mul]`. Conclude with `Int.mul_ediv_cancel' (hdvd i)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e2` using `congrArg Subtype.val e`. Simplify `e2` using `[z]`. Establish `hLΛ : ∀ x ∈ L, x ∈ Λ`. Introduce `x hx`. Establish `: L ≤ Λ.toIntSubmodule` using `Submodule.span_le.2 (fun y hy => hB.subset R (hT hy))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this hx`. Set `ρ : (Fin d → ZMod q) → G` to `Function.invFunOn c (T : Set G)`. Establish `hρ : ∀ x ∈ (T : Set G), ρ (c x) ∈ (T : Set G) ∧ c (ρ (c x)) = c x` using `fun x hx => ⟨Function.invFunOn_mem ⟨x, hx, rfl⟩, Function.invFunOn_eq ⟨x, hx, rfl⟩⟩`. Set `φ : G → (Fin d → ZMod q) × G` to `fun x => (c x, z x (ρ (c x)))`. Establish `hsub : ∀ x ∈ (T : Set G), x ∈ L` using `fun x hx => Submodule.subset_span hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmaps : Set.MapsTo φ (T : Set G) (Set.univ ×ˢ B (2 * R / q))`. Introduce `x hx`. Use `⟨Set.mem_univ _, ?_⟩` and prove the remaining obligations. Take `⟨hyT, hyc⟩` from `hρ x hx`. Establish `h1` using `hkey x (hsub x hx) _ (hsub _ hyT) hyc.symm`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : x - ρ (c x) ∈ B (R + R)` using `hB.sub_mem R R _ _ (hT hx) (hT hyT)`. Establish `hqR : ((q : ℝ)) * (2 * R / q) = R + R`. Establish `: (q : ℝ) ≠ 0` using `by exact_mod_cast hq.ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzΛ : z x (ρ (c x)) ∈ Λ` using `hLΛ _ (Subtype.property _)`. Use `(hB.nsmul_iff q (2 * R / q) _ hq hzΛ).1 ?_` and prove the remaining obligations. Rewrite using `[hqR, h1]`. Conclude with `h2`. Establish `hinj : Set.InjOn φ (T : Set G)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx x' hx' h`. Establish `hc : c x = c x'` using `congrArg Prod.fst h`. Establish `hz : z x (ρ (c x)) = z x' (ρ (c x'))` using `congrArg Prod.snd h`. Take `⟨hyT, hyc⟩` from `hρ x hx`. Establish `h1` using `hkey x (hsub x hx) _ (hsub _ hyT) hyc.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1'` using `hkey x' (hsub x' hx') (ρ (c x)) (hsub _ hyT) (by rw [hyc, hc])`. Rewrite `hz` using `[← hc]`. Rewrite `h1` using `[hz]`. Conclude with `sub_left_injective (h1.symm.trans h1')`. Establish `hle` using `Set.encard_le_encard_of_injOn hmaps hinj`.
-
-Rewrite `hle` using `[Set.encard_prod, Set.encard_univ]`. Use `hle.trans ?_` and prove the remaining obligations. Use `gcongr`. Rewrite using `[ENat.card_eq_coe_fintype_card]`. Simplify using `only [Fintype.card_fun, ZMod.card, Fintype.card_fin]`.
-
-Conclude with `Nat.pow_le_pow_right hq hd` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem encard_finset_le_pow_mul {G : Type} [AddCommGroup G] [IsAddTorsionFree G] (Λ : AddSubgroup G)
     (B : ℝ → Set G) (hB : IsBallFam Λ B) (R : ℝ) (q r : ℕ) (hq : 0 < q)
@@ -178,11 +170,11 @@ theorem encard_finset_le_pow_mul {G : Type} [AddCommGroup G] [IsAddTorsionFree G
   exact_mod_cast Nat.pow_le_pow_right hq hd
 
 /- English proof (translation)
-Introduce `G _ _ Λ B hB R q r hq hr`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hC` using `hlt.ne_top`. Take `⟨t, hts, htc⟩` from `Set.exists_subset_encard_eq (Order.add_one_le_of_lt hlt)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.1 hC`. Establish `htfin : t.Finite` using `Set.encard_ne_top_iff.1 (by rw [htc, ← hm]; exact ENat.coe_ne_top (m + 1))`. Establish `h` using `encard_finset_le_pow_mul Λ B hB R q r hq hr htfin.toFinset (by simpa using hts)`. Rewrite `h` using `[Set.Finite.coe_toFinset, htc, ← hm]`. Normalize the coercions in `at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem encard_ball_le_pow_mul : ∀ (G : Type) [AddCommGroup G] [IsAddTorsionFree G] (Λ : AddSubgroup G) (B : ℝ → Set G),
     IsBallFam Λ B → ∀ (R : ℝ) (q r : ℕ), 0 < q →

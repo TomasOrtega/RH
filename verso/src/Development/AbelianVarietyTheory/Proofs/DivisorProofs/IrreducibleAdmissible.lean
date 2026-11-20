@@ -27,7 +27,7 @@ def subrepCompEquiv (π : Representation ℂ G V) (Φ : H ≃* G) :
   map_rel_iff' := Iff.rfl
 
 /- English proof (translation)
-Use `h` as an intermediate fact. Conclude with `(subrepCompEquiv π Φ).isSimpleOrder`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp (π : Representation ℂ G V) (Φ : H ≃* G) (h : π.IsIrreducible) :
     Representation.IsIrreducible (π.comp Φ.toMonoidHom : Representation ℂ H V) := by
@@ -35,7 +35,7 @@ theorem isIrreducible_comp (π : Representation ℂ G V) (Φ : H ≃* G) (h : π
   exact (subrepCompEquiv π Φ).isSimpleOrder
 
 /- English proof (translation)
-Introduce `v`. Conclude with `(h v).preimage (map_continuous Φ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_comp (π : Representation ℂ G V) (Φ : H ≃ₜ* G) (h : IsSmooth π) :
     IsSmooth (π.comp Φ.toMulEquiv.toMonoidHom : Representation ℂ H V) := by
@@ -43,15 +43,13 @@ theorem isSmooth_comp (π : Representation ℂ G V) (Φ : H ≃ₜ* G) (h : IsSm
   exact (h v).preimage (map_continuous Φ)
 
 /- English proof (translation)
-Use `⟨hs, fun K hKo hKc => ?_⟩` and prove the remaining obligations. Use `set K' : Subgroup H := K.comap Φ.toMulEquiv.toMonoidHom with hK'`. Establish `hset : (K' : Set H) = Φ.symm '' (K : Set G)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨Φ x, hx, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩ show Φ (Φ.symm y) ∈ K`. Simplify using `using hy`. Establish `hK'o : IsOpen (K' : Set H)` using `hKo.preimage (map_continuous Φ)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK'c : IsCompact (K' : Set H)`. Rewrite using `[hset]`. Conclude with `hKc.image (map_continuous Φ.symm)`. Use `h.2 K' hK'o hK'c` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := fixed (π.comp Φ.toMulEquiv.toMonoidHom) K') ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v hv`. Simplify using `only [fixed, eig, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq] at hv ⊢`. Introduce `x`. Establish `h1` using `hv ⟨Φ x, x.2⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul] at h1 ⊢`.
-
-Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAdmissible_of_comp (π : Representation ℂ G V) (Φ : H ≃ₜ* G) (hs : IsSmooth π)
     (h : IsAdmissible (π.comp Φ.toMulEquiv.toMonoidHom : Representation ℂ H V)) : IsAdmissible π := by
@@ -91,7 +89,7 @@ def glReindex (K : Type) [Field K] [TopologicalSpace K] [IsTopologicalRing K] {�
     ⟨(Units.continuous_val).matrix_submatrix _ _, (Units.continuous_coe_inv).matrix_submatrix _ _⟩
 
 /- English proof (translation)
-Introduce `n _ _ V _ _ π hs hi`. Set `Φ` to `glReindex k (Fintype.equivFin n).symm`. Conclude with `isAdmissible_of_comp π Φ hs (hA k (Fintype.card n) V _ (isSmooth_comp π Φ hs) (isIrreducible_comp π Φ.toMulEquiv hi))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem irreducibleAdmissible (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] : IrreducibleAdmissible k := by
@@ -101,7 +99,7 @@ theorem irreducibleAdmissible (hA : GlobalTheory.Published.IrreducibleAdmissible
     (hA k (Fintype.card n) V _ (isSmooth_comp π Φ hs) (isIrreducible_comp π Φ.toMulEquiv hi))
 
 /- English proof (translation)
-Introduce `hA hS k _ _ _ _`. Conclude with `⟨irreducibleAdmissible hA k, GlobalTheory.T.jacquet_finite_length hS k, GlobalTheory.T.induction_finite_length hS k, GlobalTheory.SmGL.IndDual.inductionContragredient k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : GlobalTheory.Published.IrreducibleAdmissibleGL → GlobalTheory.Published.StandardFunctorsFiniteLength →
     GlobalTheory.Published.BernsteinZelevinskyFiniteness := by

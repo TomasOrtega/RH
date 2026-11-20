@@ -16,9 +16,9 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
   [∀ c, Algebra (𝓞 K) (A c)]
 
 /- English proof (translation)
-Unfold `Data.HeightIntegralEstimateTrivialPlace meanK`. Establish `hN : (0 : ℝ) < (Fintype.card (K →+* ℂ) : ℝ)` using `by first`. Consider the case `exact_mod_cast Fintype.card_pos`. Consider the case `(haveI : Nonempty (K →+* ℂ) := ⟨(IsAlgClosed.lift : K →ₐ[ℚ] ℂ).toRingHom⟩`. Conclude with `Fintype.card_pos)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_right_comm, Finset.sum_div, div_le_iff₀ hN]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem htI2et_of_pt (d : Data K ι Ω WT A)
     (hpt : ∀ sg, Real.log (d.supN sg (d.n1 • d.wde) d.et) / d.i ≤ d.Pet) : d.HeightIntegralEstimateTrivialPlace := by
@@ -63,9 +63,9 @@ def NrmTieU (h : GenFrEx Xo c) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) 
 variable [Fintype (Comp Xo c)]
 
 /- English proof (translation)
-Unfold `Data.supN`. Apply `Real.iSup_nonneg` to reduce the goal to its premises. Introduce `p`. Unfold `dataOf nrmC`. Simplify using `only`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Use `first`. Consider the case `positivity`. Consider the case `exact (rfl : (0 : ℕ) = 0)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem supN_dataOf_nonneg (h : GenFrEx Xo c)
     (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
@@ -89,15 +89,15 @@ theorem supN_dataOf_nonneg (h : GenFrEx Xo c)
   | exact (rfl : (0 : ℕ) = 0)
 
 /- English proof (translation)
-Introduce `Z P`. Take `⟨σ, hσ, k, x, hx, hw, he⟩` from `htie Z P`. Establish `h1` using `hI2 σ hσ k x hx`. Establish `h2` using `harch σ hσ k x hx`. Use `show -Real.log (Real.sqrt (∑ j, nrmC fn (yP Z) (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR j) Z) P ^ 2)) ≤ tableLineDegreeFive * DF + cc / (i : ℝ) * (-Real.log (nrmC fn (yP Z) ((i * g0) • wtZ ude.1 ude.2) (valC h uet.1 uet.2 etR Z) P)) + cc * tableLineDegreeTwo`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbe : (∑ j, nrmC fn (yP Z) (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR j) Z) P ^ 2) = ∑ j, recNrm (U σ) xR uL.1 uL.2 (wR j) k x ^ 2` using `Finset.sum_congr rfl fun j _ => by rw [hw j]`. Rewrite using `[hbe]`. Establish `hm` using `valC_mem h uet.1 uet.2 etR Z`. Rewrite `hm` using `[huet]`. Establish `hpos : 0 < nrmC fn (yP Z) ((i * g0) • wtZ ude.1 ude.2) (valC h uet.1 uet.2 etR Z) P` using `nrmC_pos fn (yP Z) hfn P hm (valC_ne_zero (het Z))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : nrmC fn (yP Z) ((i * g0) • wtZ ude.1 ude.2) (valC h uet.1 uet.2 etR Z) P ≤ recNrm (U σ) xR uet.1 uet.2 etR k x`. Rewrite using `[← huet]`. Conclude with `he`. Establish `hlog` using `Real.log_le_log hpos (he'.trans h2)`. Rewrite `hlog` using `[Real.log_exp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e := Real.log (nrmC fn (yP Z) ((i * g0) • wtZ ude.1 ude.2) (valC h uet.1 uet.2 etR Z) P)`. Use `set φ := ReciprocityTheory.ChartRestriction.G.I2.phiFD ((U σ).X k) th x`. Establish `hi' : (0 : ℝ) < i` using `Nat.cast_pos.2 hi`. Establish `h3 : φ - tableLineDegreeTwo ≤ -e / i`. Rewrite using `[le_div_iff₀ hi']`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `key : cc * φ ≤ cc / (i : ℝ) * (-e) + cc * tableLineDegreeTwo`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem htI2be_of (h : GenFrEx Xo c)
     (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
@@ -164,7 +164,7 @@ def SupTieEt {ι : Type} [Fintype ι] {Ω : ι → Type} [∀ c, Field (Ω c)] [
 variable (j : ℕ) [IsCMField D.host.E] [Fintype (Comp (T.Q.Xo j) T.Q.c)]
 
 /- English proof (translation)
-Break down `ha.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h, Real.log_zero, zero_div]`. Conclude with `hQ`. Conclude with `le_trans (le_trans (div_le_div_of_nonneg_right (Real.log_le_log h hab) hn) hb) hPQ`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem log_div_le_lemma {a b P Q n : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) (hb : Real.log b / n ≤ P)
     (hPQ : P ≤ Q) (hQ : 0 ≤ Q) (hn : 0 ≤ n) : Real.log a / n ≤ Q := by
@@ -174,9 +174,9 @@ private theorem log_div_le_lemma {a b P Q n : ℝ} (ha : 0 ≤ a) (hab : a ≤ b
   · exact le_trans (le_trans (div_le_div_of_nonneg_right (Real.log_le_log h hab) hn) hb) hPQ
 
 /- English proof (translation)
-Apply `htI2et_of_pt` to reduce the goal to its premises. Introduce `sg`. Use `log_div_le_lemma ?_ (htie sg) (hsup sg) hP hP0 (by positivity)` and prove the remaining obligations. Unfold `Data.supN`. Apply `Real.iSup_nonneg` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p`. Unfold `dataOf nrmC`. Simplify using `only`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Check the signs of the components of the expression.
 -/
 theorem htI2et_of_etSup (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (δ : ∀ Z : Comp (T.Q.Xo j) T.Q.c, AddValuation (Om Z) (WithTop ℤ) → Ix (T.Q.Dw j) → ℤ)
@@ -202,9 +202,9 @@ theorem htI2et_of_etSup (hG : GenFrEx (T.Q.Xo j) T.Q.c)
   positivity
 
 /- English proof (translation)
-Apply `htI2be_of (hi := hi) (hcc := hcc) (hfn := hfn) (het := het) (huet := huet) (htie := htie) (hI2 := hI2)` to reduce the goal to its premises. Use `first`. Consider the case `exact harch`. Consider the case `(unfold EtArch at harch; exact harch)`. Consider the case `(intro σ hσ k x hx; exact harch σ hσ k x hx)`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(unfold EtArch at harch; exact (harch : (0 : ℕ) = 0))`.
+A detailed English derivation is pending.
 -/
 theorem htI2be_of_etArch (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (δ : ∀ Z : Comp (T.Q.Xo j) T.Q.c, AddValuation (Om Z) (WithTop ℤ) → Ix (T.Q.Dw j) → ℤ)

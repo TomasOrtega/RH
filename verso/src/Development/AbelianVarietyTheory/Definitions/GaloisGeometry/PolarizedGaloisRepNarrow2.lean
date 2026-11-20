@@ -23,7 +23,7 @@ def ineEig (a : WDRep h V) (χ : Ine (F := E) A → ℂ) : Submodule ℂ V :=
   ⨅ σ : Ine (F := E) A, Module.End.eigenspace (a.ρ (ineIncl h σ)) (χ σ)
 
 /- English proof (translation)
-Simplify using `[ineEig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ineEig {a : WDRep h V} {χ : Ine (F := E) A → ℂ} {v : V} :
     v ∈ a.ineEig χ ↔ ∀ σ : Ine (F := E) A, a.ρ (ineIncl h σ) v = χ σ • v := by
@@ -33,15 +33,15 @@ def Mono0Ine (a : WDRep h V) (χ : Ine (F := E) A → ℂ) : Prop :=
   ∀ v ∈ a.ineEig χ, a.N v = 0
 
 /- English proof (translation)
-Introduce `v _` and use `by rw [show a.N = 0 from ha]; rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Mono0.mono0Ine {a : WDRep h V} (ha : a.Mono0) (χ : Ine (F := E) A → ℂ) : a.Mono0Ine χ :=
   fun v _ => by rw [show a.N = 0 from ha]; rfl
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hab`. Introduce `u hu`. Establish `hv : e.symm u ∈ a.ineEig χ` using `mem_ineEig.2 fun σ => e.injective (by`. Rewrite using `[h1, LinearEquiv.apply_symm_apply, map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `mem_ineEig.1 hu σ)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearEquiv.apply_symm_apply e u, ← h2, ha _ hv, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem Iso.mono0Ine {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) {χ : Ine (F := E) A → ℂ}
     (ha : a.Mono0Ine χ) : b.Mono0Ine χ := by
@@ -53,7 +53,7 @@ theorem Iso.mono0Ine {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) {χ : Ine 
   rw [← LinearEquiv.apply_symm_apply e u, ← h2, ha _ hv, map_zero]
 
 /- English proof (translation)
-Establish `e : (a.tw s).ineEig χ = a.ineEig χ`. Use extensionality with `v`. Simplify using `only [mem_ineEig, tw_ρ, deg_ineIncl, zpow_zero, one_smul]`. Simplify using `only [Mono0Ine, e, tw_N]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mono0Ine_tw {a : WDRep h V} {χ : Ine (F := E) A → ℂ} (s : ℝ) :
     (a.tw s).Mono0Ine χ ↔ a.Mono0Ine χ := by
@@ -70,21 +70,21 @@ def mono0Ine (x : WD h) (χ : Ine (F := E) A → ℂ) : Prop :=
     (fun _ _ hab => propext ⟨fun ha => WDRep.Iso.mono0Ine hab ha, fun hb => WDRep.Iso.mono0Ine hab.symm hb⟩) x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨WDRep.Iso.mono0Ine (iso_std a).symm, WDRep.Iso.mono0Ine (iso_std a)⟩`.
+Supply the required witnesses or components.
 -/
 @[simp] theorem mono0Ine_mk {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (a : WDRep h V) (χ : Ine (F := E) A → ℂ) : mono0Ine (mk a) χ ↔ a.Mono0Ine χ :=
   ⟨WDRep.Iso.mono0Ine (iso_std a).symm, WDRep.Iso.mono0Ine (iso_std a)⟩
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a => exact (mono0Ine_mk a χ).2 (WDRep.Mono0.mono0Ine ((monodromyZero_ofWeilDeligneRepClass_iff a).1 hx) χ)`.
+Proceed by induction. Treat this case separately.
 -/
 theorem mono0Ine_of_mono0 {x : WD h} (hx : mono0 x) (χ : Ine (F := E) A → ℂ) : mono0Ine x χ := by
   induction x using ind with
   | hP n a => exact (mono0Ine_mk a χ).2 (WDRep.Mono0.mono0Ine ((monodromyZero_ofWeilDeligneRepClass_iff a).1 hx) χ)
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a => rw [lpTw_mk, mono0Ine_mk, mono0Ine_mk, WDRep.mono0Ine_tw]`.
+Proceed by induction. Treat this case separately.
 -/
 @[simp] theorem mono0Ine_lpTw (x : WD h) (s : ℝ) (χ : Ine (F := E) A → ℂ) :
     mono0Ine (lpTw x s) χ ↔ mono0Ine x χ := by
@@ -92,9 +92,9 @@ Proceed by induction on `x using ind with`. Consider the case `hP n a => rw [lpT
   | hP n a => rw [lpTw_mk, mono0Ine_mk, mono0Ine_mk, WDRep.mono0Ine_tw]
 
 /- English proof (translation)
-Rewrite using `[lpSp, mono0Ine_mk]`. Introduce `H`. Establish `hv : (Pi.single 0 1 : Fin 2 → ℂ) ∈ (WDRep.sp h 2).ineEig (fun _ => 1)`. Use `WDRep.mem_ineEig.2 fun σ => ?_` and prove the remaining obligations. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[WDRep.sp_ρ, deg_ineIncl]`. Use `congrFun (H _ hv) 1` as an intermediate fact. Simplify using `[WDRep.sp_N, shiftEnd_apply] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : ¬ (lpSp h 2).mono0Ine (fun _ => 1) := by
   rw [lpSp, mono0Ine_mk]
@@ -107,7 +107,7 @@ example : ¬ (lpSp h 2).mono0Ine (fun _ => 1) := by
   simp [WDRep.sp_N, shiftEnd_apply] at this
 
 /- English proof (translation)
-The claim follows from `mono0Ine_of_mono0 hx χ`.
+A detailed English derivation is pending.
 -/
 example (x : WD h) (hx : x.mono0) (χ : Ine (F := E) A → ℂ) : x.mono0Ine χ := mono0Ine_of_mono0 hx χ
 

@@ -13,7 +13,7 @@ namespace GlobalTheory.Mem.R3.Rw.LevExt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hx` using `h.xi t`. Rewrite `hx` using `[h.xi_base]`. Establish `e : L.xi t = 1` using `MonoidHom.ext (GlobalTheory.ChrEqUnique.eq_one_of_chrEq hx)`. Use `show L.mu0 j * L.xi t = L.mu0 j`. Rewrite using `[e, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gridCharacter_eq_reference_at_base_tuple {D : D7} {T : Type} {L : Formalism.IndefR.Links.LevCh D T} {t : T} (h : L.Is t) (j : ℕ) : L.mu t j = L.mu0 j := by
   have hx := h.xi t
@@ -23,7 +23,7 @@ theorem gridCharacter_eq_reference_at_base_tuple {D : D7} {T : Type} {L : Formal
   rw [e, mul_one]
 
 /- English proof (translation)
-Use `Finset.eq_empty_of_forall_notMem fun PP hPP => ?_` and prove the remaining obligations. Establish `h1` using `(h.Q_ram t PP).2 (Or.inl hPP)`. Rewrite `h1` using `[h.xi_base]`. Conclude with `h1 fun _ _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Q_eq_empty {D : D7} {T : Type} {L : Formalism.IndefR.Links.LevCh D T} {t : T} (h : L.Is t) : L.Q t = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun PP hPP => ?_
@@ -32,9 +32,9 @@ theorem Q_eq_empty {D : D7} {T : Type} {L : Formalism.IndefR.Links.LevCh D T} {t
   exact h1 fun _ _ => rfl
 
 /- English proof (translation)
-Use `MonoidHom.ext fun u => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : kP P)`. Use `haveI : Nontrivial (kP P) := Ideal.Quotient.nontrivial_iff.2 P.isPrime.ne_top`. Establish `ha0 : (a : D.host.E) ≠ 0`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : a = 0` using `RingOfIntegers.coe_eq_zero_iff.1 h0`. Apply `u.ne_zero` to reduce the goal to its premises. Rewrite using `[← ha, h1, map_zero]`. Rewrite using `[h a (Units.mk0 _ ha0) u rfl ha.symm, h' a (Units.mk0 _ ha0) u rfl ha.symm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRes_unique' {D : D7} {χ : Formalism.L2.Host.HChar D.host.E} {P : Pl D.host.E} {c c' : (kP P)ˣ →* ℂˣ}
     (h : IsRes χ P c) (h' : IsRes χ P c') : c = c' := by
@@ -53,9 +53,9 @@ section Gen
 variable {B B' : Base} {C : Cols B} {C' : Cols B'} {a : Late B C} {a' : Late B' C'}
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (χ')) ((by with_unfolding_all exact ((χ) :))) (χ')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (χ')) (χ') (((χ))) (((hχ)))).symm : _))`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `clear (hχ)`. Substitute `e))` using the available equality. Establish `e : @Eq ((AE a.D)ˣ →* Circle) ((by with_unfolding_all exact (c' :))) c` using `GlobalTheory.ChrEqUnique.idc_unique a.D _ c χ ((by with_unfolding_all exact (h' :))) h`. Conclude with `(by with_unfolding_all exact ((heq_of_eq e) :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idc_heq (hP : B'.toPre = B.toPre) {c : (AE a.D)ˣ →* Circle} {c' : (AE a'.D)ˣ →* Circle}
     {χ : Formalism.L2.Host.HChar a.D.host.E} {χ' : Formalism.L2.Host.HChar a'.D.host.E} (hχ : HEq χ' χ) (h : ChrEq c χ)
@@ -71,11 +71,9 @@ theorem idc_heq (hP : B'.toPre = B.toPre) {c : (AE a.D)ˣ →* Circle} {c' : (AE
   exact (by with_unfolding_all exact ((heq_of_eq e) :))
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (χ')) ((by with_unfolding_all exact ((χ) :))) (χ')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (χ')) (χ') (((χ))) (((hχ)))).symm : _))`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `clear (hχ)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (PP')) ((by with_unfolding_all exact ((PP) :))) (PP')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (PP')) (PP') (((PP))) (((hPP)))).symm : _))`. Use `clear (hPP)`.
-
-Substitute `e))` using the available equality. Establish `e : ((by with_unfolding_all exact (c' :)) : (kP PP)ˣ →* ℂˣ)⁻¹ = c⁻¹` using `isRes_unique' (D := a.D) ((by with_unfolding_all exact (h' :))) h`. Establish `e' : @Eq ((kP PP)ˣ →* ℂˣ) ((by with_unfolding_all exact (c' :))) c` using `inv_inj.1 e`. Conclude with `(by with_unfolding_all exact ((heq_of_eq e') :))`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_heq (hP : B'.toPre = B.toPre) {χ : Formalism.L2.Host.HChar a.D.host.E} {χ' : Formalism.L2.Host.HChar a'.D.host.E} (hχ : HEq χ' χ)
     {PP : Pl a.D.host.E} {PP' : Pl a'.D.host.E} (hPP : HEq PP' PP) {c : (kP PP)ˣ →* ℂˣ} {c' : (kP PP')ˣ →* ℂˣ}
@@ -96,11 +94,9 @@ theorem res_heq (hP : B'.toPre = B.toPre) {χ : Formalism.L2.Host.HChar a.D.host
   exact (by with_unfolding_all exact ((heq_of_eq e') :))
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (f')) ((by with_unfolding_all exact ((f) :))) (f')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (f')) (f') (((f))) (((hf)))).symm : _))`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `clear (hf)`. Substitute `e))` using the available equality. Establish `e : @Eq (type_of% i') ((by with_unfolding_all exact (i :))) i'` using `(by with_unfolding_all exact ((Fin.ext h : @Eq (type_of% i') ((by with_unfolding_all exact (i :))) i') :))`. Use `clear h`. Substitute `e` using the available equality.
-
-Conclude with `(by with_unfolding_all exact ((HEq.refl ((Top.Fr.at a.st f).mu0 i)) :))`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem hermitianCodeCharFrame_referenceCharacter_heq (hP : B'.toPre = B.toPre) {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} (hf : HEq f' f) {i : Fin a.D.R.m}
     {i' : Fin a'.D.R.m} (h : (i : ℕ) = i') : HEq ((Top.Fr.at a'.st f').mu0 i') ((Top.Fr.at a.st f).mu0 i) := by
@@ -117,9 +113,9 @@ theorem hermitianCodeCharFrame_referenceCharacter_heq (hP : B'.toPre = B.toPre) 
   exact (by with_unfolding_all exact ((HEq.refl ((Top.Fr.at a.st f).mu0 i)) :))
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (f')) ((by with_unfolding_all exact ((f) :))) (f')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (f')) (f') (((f))) (((hf)))).symm : _))`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `clear (hf)`. Substitute `e))` using the available equality. Conclude with `(by with_unfolding_all exact ((HEq.refl (Top.Fr.at a.st f).eta) :))`.
+A detailed English derivation is pending.
 -/
 theorem frat_eta_heq (hP : B'.toPre = B.toPre) {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} (hf : HEq f' f) :
     HEq (Top.Fr.at a'.st f').eta (Top.Fr.at a.st f).eta := by
@@ -133,11 +129,9 @@ theorem frat_eta_heq (hP : B'.toPre = B.toPre) {f : Top.Fr B.toPre} {f' : Top.Fr
   exact (by with_unfolding_all exact ((HEq.refl (Top.Fr.at a.st f).eta) :))
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (px')) ((by with_unfolding_all exact ((px) :))) (px')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (px')) (px') (((px))) (((hpx)))).symm : _))`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `clear (hpx)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (PP')) ((by with_unfolding_all exact ((PP) :))) (PP')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (PP')) (PP') (((PP))) (((hPP)))).symm : _))`. Use `clear (hPP)`.
-
-Substitute `e))` using the available equality. Conclude with `(by with_unfolding_all exact (h :))`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_vGs (hP : B'.toPre = B.toPre) {px : PreX B.toPre} {px' : PreX B'.toPre} (hpx : HEq px' px)
     {PP : Pl a.D.host.E} {PP' : Pl a'.D.host.E} (hPP : HEq PP' PP) (h : PP ∈ (B.primes px).vGs) : PP' ∈ (B'.primes px').vGs := by
@@ -162,15 +156,13 @@ open GlobalTheory.Mem.R3.Rw.LevExt in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE hf hpx hL'`. Establish `hP : B'.toPre = B.toPre` using `hE.1`. Establish `hC : z.R.toLevCh.C = Top.Fr.at (w.st Z) f` using `z.lev.C.trans (by rw [w.C_eq])`. Establish `hC' : R'.toLevCh.C = Top.Fr.at (w'.st Z') f'` using `hL'.C.trans (by rw [w'.C_eq])`. Establish `hmu0 : ∀ (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m), (i : ℕ) = i' → HEq (R'.toLevCh.C.mu0 i') (z.R.toLevCh.C.mu0 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i i' h`. Rewrite using `[hC, hC']`. Conclude with `hermitianCodeCharFrame_referenceCharacter_heq (a := Z) (a' := Z') hP hf h`. Establish `heta : HEq R'.toLevCh.C.eta z.R.toLevCh.C.eta`. Rewrite using `[hC, hC']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `frat_eta_heq (a := Z) (a' := Z') hP hf`. Establish `hs` using `z.lev.is`. Establish `hs'` using `hL'.is`. Use `⟨fun i i' h => ⟨?_, fun PP' PP hPP hm => ?_⟩, ?_, Q_eq_empty hs', Q_eq_empty hs⟩` and prove the remaining obligations. Rewrite using `[gridCharacter_eq_reference_at_base_tuple hs', gridCharacter_eq_reference_at_base_tuple hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `idc_heq (a := Z) (a' := Z') hP (hmu0 i i' h) (hs.mu0 i) (hs'.mu0 i')`. Establish `hm0 : PP ∈ (B.primes w.px).vGs`. Establish `e` using `z.lev.Pg`. Rewrite using `[← e]`. Conclude with `hm`.
-
-Establish `hm' : PP' ∈ R'.toLevCh.Pg`. Rewrite using `[hL'.Pg]`. Conclude with `mem_vGs (a := Z) (a' := Z') hP hpx hPP hm0`. Conclude with `res_heq (a := Z) (a' := Z') hP (hmu0 i i' h) hPP (hs.chi i PP hm) (hs'.chi i' PP' hm')`. Conclude with `idc_heq (a := Z) (a' := Z') hP heta hs.eta hs'.eta`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.Rw.LevExt.levSame_of_levOf : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}

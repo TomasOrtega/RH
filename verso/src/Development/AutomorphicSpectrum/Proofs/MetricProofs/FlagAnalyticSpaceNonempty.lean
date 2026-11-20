@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA`. Conclude with `FA.Re.nonempty_base`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem flagAn_S_nonempty : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d), Nonempty FA.S.X := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA

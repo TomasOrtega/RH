@@ -23,14 +23,14 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-The claim follows from `Scheme.IdealSheafData.comap_mul I J U.ι`.
+A detailed English derivation is pending.
 -/
 theorem restrictIdeal_mul {X : Scheme.{u}} (I J : X.IdealSheafData) (U : X.Opens) :
     restrictIdeal (I * J) U = restrictIdeal I U * restrictIdeal J U :=
   Scheme.IdealSheafData.comap_mul I J U.ι
 
 /- English proof (translation)
-Establish `h1 : π.resLE U V hV ≫ U.ι = V.ι ≫ π` using `by simp`. Rewrite using `[Category.assoc, c.comp_struct, ← Category.assoc, h1, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem etaleChart_comap_map_comp_affineSpaceFinToSpec {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X' ⟶ X) {U : X.Opens} {m : ℕ}
@@ -40,7 +40,7 @@ private theorem etaleChart_comap_map_comp_affineSpaceFinToSpec {X X' : Scheme.{u
   rw [Category.assoc, c.comp_struct, ← Category.assoc, h1, Category.assoc]
 
 /- English proof (translation)
-Use `he` as an intermediate fact. Use `c.isEtale` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem etale_etaleChart_comap_map {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X' ⟶ X) {U : X.Opens} {m : ℕ}
@@ -69,7 +69,7 @@ theorem EtaleChart.comap_map {X X' : Scheme.{u}} {k : Type u} [Field k]
     (EtaleChart.comap p π c V hV he).map = π.resLE U V hV ≫ c.map := rfl
 
 /- English proof (translation)
-Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.comap_map, Scheme.IdealSheafData.comap_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem EtaleChart.comap_coordIdeal {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X' ⟶ X) {U : X.Opens} {m : ℕ}
@@ -81,19 +81,19 @@ theorem EtaleChart.comap_coordIdeal {X X' : Scheme.{u}} {k : Type u} [Field k]
     Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Use `isSmoothDivisor_of_locally_coordIdeal (p := p) (A * B) ?_` and prove the remaining obligations. Introduce `x`. Distinguish the cases in `hxA : x ∈ A.support`. Establish `hxB : x ∉ B.support` using `fun h => Set.disjoint_left.mp hAB hxA h`. Take `⟨U, m, c, j, hxU, hAU⟩` from `exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton p A hA x hxA`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨U ⊓ B.support.compl, ⟨hxU, hxB⟩, m, c.restrict inf_le_left, Or.inr ⟨j, ?_⟩⟩` and prove the remaining obligations. Establish `hBtop : restrictIdeal B (U ⊓ B.support.compl) = ⊤`. Use `(restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `hy.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc` using `restrictIdeal_eq_restrict_coordIdeal_of_le (U := U) (V := U ⊓ B.support.compl) inf_le_left c A {j} hAU`. Rewrite using `[restrictIdeal_mul, hBtop, Scheme.IdealSheafData.mul_top, hc]`. Distinguish the cases in `hxB : x ∈ B.support`. Take `⟨U, m, c, j, hxU, hBU⟩` from `exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton p B hB x hxB`. Use `⟨U ⊓ A.support.compl, ⟨hxU, hxA⟩, m, c.restrict inf_le_left, Or.inr ⟨j, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hAtop : restrictIdeal A (U ⊓ A.support.compl) = ⊤`. Use `(restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `hy.2`. Establish `hc` using `restrictIdeal_eq_restrict_coordIdeal_of_le (U := U) (V := U ⊓ A.support.compl) inf_le_left c B {j} hBU`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[restrictIdeal_mul, hAtop, Scheme.IdealSheafData.top_mul, hc]`. Take `⟨U, m, hxU, hUW, -, ⟨c⟩⟩` from `exists_etaleChart_le p x (A.support.compl ⊓ B.support.compl) ⟨hxA, hxB⟩`. Use `⟨U, hxU, m, c, Or.inl ?_⟩` and prove the remaining obligations. Establish `hAtopW : restrictIdeal A (A.support.compl ⊓ B.support.compl) = ⊤`. Use `(restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Conclude with `hy.1`. Establish `hBtopW : restrictIdeal B (A.support.compl ⊓ B.support.compl) = ⊤`. Use `(restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr ?_` and prove the remaining obligations. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy.2`. Establish `hAtop : restrictIdeal A U = ⊤` using `restrictIdeal_eq_top_of_le A hUW hAtopW`. Establish `hBtop : restrictIdeal B U = ⊤` using `restrictIdeal_eq_top_of_le B hUW hBtopW`. Rewrite using `[restrictIdeal_mul, hAtop, hBtop, Scheme.IdealSheafData.mul_top]`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothDivisor_mul_of_disjoint_support {X : Scheme.{u}} {k : Type u} [Field k]
     [CharZero k] (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -141,11 +141,11 @@ theorem isSmoothDivisor_mul_of_disjoint_support {X : Scheme.{u}} {k : Type u} [F
       rw [restrictIdeal_mul, hAtop, hBtop, Scheme.IdealSheafData.mul_top]
 
 /- English proof (translation)
-Establish `hcc : B.comap (V.ι ≫ π) = (B.comap π).comap V.ι`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Establish `htop : B.comap (V.ι ≫ π) = ⊤`. Use `Blowup.comap_eq_top_of_notMem_support (V.ι ≫ π) B ?_` and prove the remaining obligations. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : V.ι.base y ∈ Set.range V.ι.base` using `Set.mem_range_self y`. Rewrite `hy` using `[Scheme.Opens.range_ι]`. Establish `h2 : π.base (V.ι.base y) ∉ B.support` using `hV _ hy`. Simplify using `using h2`. Rewrite using `[restrictIdeal_eq_comap_ι, ← hcc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `htop`.
+A detailed English derivation is pending.
 -/
 private theorem restrictIdeal_comap_eq_top_of_notMem_support {X X' : Scheme.{u}} (π : X' ⟶ X)
     (B : X.IdealSheafData) (V : X'.Opens) (hV : ∀ y : X', y ∈ V → π.base y ∉ B.support) :
@@ -163,15 +163,13 @@ private theorem restrictIdeal_comap_eq_top_of_notMem_support {X X' : Scheme.{u}}
   exact htop
 
 /- English proof (translation)
-Use `isSmoothDivisor_of_locally_coordIdeal (B.comap π) ?_` and prove the remaining obligations. Introduce `x'`. Distinguish the cases in `hx : π.base x' ∈ B.support`. Take `⟨U, m, c, j, hxU, hBU⟩` from `exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton p B hB (π.base x') hx`. Establish `hxZ : π.base x' ∉ Z.support` using `fun hZ => (Set.disjoint_left.mp hdisj hZ) hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hWle : (U ⊓ Z.support.compl : X.Opens) ≤ U` using `inf_le_left`. Establish `hWsup : ∀ y : X, y ∈ (U ⊓ Z.support.compl : X.Opens) → y ∉ Z.support` using `fun y hy => hy.2`. Establish `hiso : IsIso (π ∣_ (U ⊓ Z.support.compl : X.Opens))` using `isIso_morphismRestrict_of_isBlowupAlongIdealSheaf hπ (U ⊓ Z.support.compl : X.Opens) hWsup`. Establish `hiso2 : IsIso (π.resLE (U ⊓ Z.support.compl : X.Opens) (π ⁻¹ᵁ (U ⊓ Z.support.compl : X.Opens)) le_rfl)`. Rewrite using `[Scheme.Hom.resLE_eq_morphismRestrict]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hiso`. Establish `he : AlgebraicGeometry.Etale (π.resLE (U ⊓ Z.support.compl : X.Opens) (π ⁻¹ᵁ (U ⊓ Z.support.compl : X.Opens)) le_rfl)` using `inferInstance`. Establish `hxV : x' ∈ (π ⁻¹ᵁ (U ⊓ Z.support.compl : X.Opens))` using `⟨hxU, hxZ⟩`. Use `⟨π ⁻¹ᵁ (U ⊓ Z.support.compl : X.Opens), hxV, m, EtaleChart.comap p π (c.restrict hWle) (π ⁻¹ᵁ (U ⊓ Z.support.compl : X.Opens)) le_rfl he, Or.inr ⟨j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[EtaleChart.comap_coordIdeal, restrictIdeal_comap_eq_comap_resLE_restrictIdeal π B (U ⊓ Z.support.compl : X.Opens) (π ⁻¹ᵁ (U ⊓ Z.support.compl : X.Opens)) le_rfl, restrictIdeal_eq_restrict_coordIdeal_of_le hWle c B {j} hBU]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U, m, hxU, hUW, -, ⟨c⟩⟩` from `exists_etaleChart_le (π ≫ p) x' (π ⁻¹ᵁ B.support.compl) hx`. Use `⟨U, hxU, m, c, Or.inl ?_⟩` and prove the remaining obligations. Use `restrictIdeal_comap_eq_top_of_notMem_support π B U ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : y ∈ π ⁻¹ᵁ B.support.compl` using `hUW hy`.
-
-Conclude with `hy'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSmoothDivisor_comap_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} {k : Type u} [Field k]
     [CharZero k] (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -213,15 +211,13 @@ theorem isSmoothDivisor_comap_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} {k 
     exact hy'
 
 /- English proof (translation)
-Establish `hqAB : QuasiCompact (strictTransformι π Z (A * B))` using `FunctorialResolution.EmbeddedResolution.quasiCompact_strictTransformι_of_isLocallyNoetherian π Z (A * B)`. Establish `hqA : QuasiCompact (strictTransformι π Z A)` using `FunctorialResolution.EmbeddedResolution.quasiCompact_strictTransformι_of_isLocallyNoetherian π Z A`. Use `eq_of_locally_restrictIdeal_eq _ _ ?_` and prove the remaining obligations. Introduce `x`. Distinguish the cases in `hx : π.base x ∈ Z.support`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hxB : π.base x ∉ B.support` using `fun hB => (Set.disjoint_left.mp hBZ hB) hx`. Use `⟨π ⁻¹ᵁ B.support.compl, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hxB`. Establish `hVmem : ∀ y : X', y ∈ π ⁻¹ᵁ B.support.compl → π.base y ∉ B.support`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hy`. Establish `hBtop : restrictIdeal (B.comap π) (π ⁻¹ᵁ B.support.compl) = ⊤` using `restrictIdeal_comap_eq_top_of_notMem_support π B _ hVmem`. Establish `hcomapB : B.comap ((π ⁻¹ᵁ B.support.compl).ι ≫ π) = ⊤`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Conclude with `hBtop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hD : (A * B).comap ((π ⁻¹ᵁ B.support.compl).ι ≫ π) = A.comap ((π ⁻¹ᵁ B.support.compl).ι ≫ π)`. Rewrite using `[Scheme.IdealSheafData.comap_mul, hcomapB, Scheme.IdealSheafData.mul_top]`. Rewrite using `[restrictIdeal_mul, hBtop, Scheme.IdealSheafData.mul_top, restrictIdeal_strictTransform π Z (A * B) (π ⁻¹ᵁ B.support.compl), restrictIdeal_strictTransform π Z A (π ⁻¹ᵁ B.support.compl)]`. Conclude with `strictTransform_eq_of_comap_eq _ _ Z (A * B) Z A rfl hD`. Use `⟨π ⁻¹ᵁ Z.support.compl, ?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `hx`. Establish `hVmem : ∀ y : X', y ∈ π ⁻¹ᵁ Z.support.compl → π.base y ∉ Z.support`. Introduce `y hy`. Conclude with `hy`. Rewrite using `[restrictIdeal_strictTransform_eq_comap_of_notMem_support π Z (A * B) _ hVmem, Scheme.IdealSheafData.comap_mul, restrictIdeal_mul, restrictIdeal_mul, restrictIdeal_strictTransform_eq_comap_of_notMem_support π Z A _ hVmem]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strictTransform_mul_of_disjoint_support {X X' : Scheme.{u}} [IsLocallyNoetherian X']
     (π : X' ⟶ X) (Z A B : X.IdealSheafData)

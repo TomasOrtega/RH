@@ -17,7 +17,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 omit [NumberField K] [StarRing K] in
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_coe, ← Submodule.span_image]`. Apply the tactic sequence `try rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primInv_span_gmap (γ : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) :
     Submodule.span K ((Formalism.HermitianLatticesTheory.gmap γ M : Submodule (𝓞 K) V) : Set V) =
@@ -29,7 +29,7 @@ theorem primInv_span_gmap (γ : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) :
 omit [NumberField K] [StarRing K] in
 
 /- English proof (translation)
-Introduce `M N hMN`. Conclude with `Submodule.map_injective_of_injective (f := (γ : V →ₗ[K] V).restrictScalars (𝓞 K)) γ.injective hMN`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem primInv_gmap_injective (γ : V ≃ₗ[K] V) :
     Function.Injective (fun M : Submodule (𝓞 K) V => Formalism.HermitianLatticesTheory.gmap γ M) := by
@@ -39,9 +39,9 @@ theorem primInv_gmap_injective (γ : V ≃ₗ[K] V) :
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Use extensionality with `x`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `γ.symm (γ z) ∈ M`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[γ.symm_apply_apply]` and apply the resulting hypothesis. Introduce `hx`. Conclude with `⟨γ x, ⟨x, hx, rfl⟩, γ.symm_apply_apply x⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem primInv_gmap_symm (γ : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap γ⁻¹ (Formalism.HermitianLatticesTheory.gmap γ M) = M := by
@@ -55,11 +55,11 @@ theorem primInv_gmap_symm (γ : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) :
     exact ⟨γ x, ⟨x, hx, rfl⟩, γ.symm_apply_apply x⟩
 
 /- English proof (translation)
-Take `⟨⟨hle, heq⟩, hrk, hdet⟩` from `hM`. Establish `hspan` using `primInv_span_gmap γ M`. Use `⟨⟨Submodule.map_mono hle, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hres : ((Submodule.span K (M : Set V)).map (γ : V →ₗ[K] V)).restrictScalars (𝓞 K) = ((Submodule.span K (M : Set V)).restrictScalars (𝓞 K)).map ((γ : V →ₗ[K] V).restrictScalars (𝓞 K))`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Iff.rfl`. Rewrite using `[hspan, hres]`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[← Submodule.map_inf ((γ : V →ₗ[K] V).restrictScalars (𝓞 K)) γ.injective, ← heq]`. Rewrite using `[hspan, LinearEquiv.finrank_map_eq]`.
+Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hrk`. Rewrite using `[← hdet]`. Apply the tactic sequence `exact GlobalTheory.T.latDetH_map_injective_isometry K V V h h (γ : V →ₗ[K] V) γ.injective (fun x y => hγ x y) M`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primInv_mem (h : V →ₗ⋆[K] V →ₗ[K] K) (γ : V ≃ₗ[K] V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom h)
     (L : Submodule (𝓞 K) V) (j de : ℕ) (M : Submodule (𝓞 K) V) (hM : M ∈ PrimSubs h L j de) :
@@ -81,9 +81,9 @@ theorem primInv_mem (h : V →ₗ⋆[K] V →ₗ[K] K) (γ : V ≃ₗ[K] V) (hγ
     exact GlobalTheory.T.latDetH_map_injective_isometry K V V h h (γ : V →ₗ[K] V) γ.injective (fun x y => hγ x y) M
 
 /- English proof (translation)
-Unfold `cntPrim`. Rewrite using `[← Set.InjOn.encard_image (f := fun M : Submodule (𝓞 K) V => Formalism.HermitianLatticesTheory.gmap γ M) (s := PrimSubs h L j de) (fun _ _ _ _ hab => primInv_gmap_injective γ hab)]`. Establish `hsub : (fun M : Submodule (𝓞 K) V => Formalism.HermitianLatticesTheory.gmap γ M) '' PrimSubs h L j de ⊆ PrimSubs h (Formalism.HermitianLatticesTheory.gmap γ L) j de`. Introduce and unpack `_ ⟨M, hM, rfl⟩`. Conclude with `primInv_mem h γ hγ L j de M hM`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Treat this case separately.
 
-Use `first`. Consider the case `exact Set.encard_le_encard hsub`. Consider the case `exact Set.encard_mono hsub`. Consider the case `exact Set.encard_le_card hsub`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem primInv_le (h : V →ₗ⋆[K] V →ₗ[K] K) (γ : V ≃ₗ[K] V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom h)
     (L : Submodule (𝓞 K) V) (j de : ℕ) : cntPrim h L j de ≤ cntPrim h (Formalism.HermitianLatticesTheory.gmap γ L) j de := by
@@ -102,7 +102,7 @@ theorem primInv_le (h : V →ₗ⋆[K] V →ₗ[K] K) (γ : V ≃ₗ[K] V) (hγ 
 end
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ h γ hγ L j de`. Use `le_antisymm ?_ (primInv_le h γ hγ L j de)` and prove the remaining obligations. Use `primInv_le h γ⁻¹ (inv_mem hγ) (Formalism.HermitianLatticesTheory.gmap γ L) j de` as an intermediate fact. Rewrite `this` using `[primInv_gmap_symm]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cntPrim_gmap_isom : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), ∀ γ ∈ Formalism.HermitianLatticesTheory.isom h, ∀ (L : Submodule (𝓞 K) V) (j de : ℕ), cntPrim h (Formalism.HermitianLatticesTheory.gmap γ L) j de = cntPrim h L j de := by
   intro K V _ _ _ _ _ _ _ h γ hγ L j de

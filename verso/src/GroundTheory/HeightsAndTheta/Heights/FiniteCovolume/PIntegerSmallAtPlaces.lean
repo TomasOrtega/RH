@@ -6,9 +6,9 @@ namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 open NumberField
 
 /- English proof (translation)
-Introduce `a ha hlt`. Assume the negation of the conclusion as `hne`. Set `b : 𝓞 E` to `⟨a, ha⟩`. Establish `hb : b ≠ 0` using `fun h => hne (congrArg Subtype.val h)`. Set `w : InfinitePlace E` to `Classical.arbitrary _`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1 : 1 ≤ w b` using `InfinitePlace.one_le_of_lt_one hb (fun z _ => hlt z)`. Conclude with `absurd (hlt w) (not_lt.mpr h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IntegerSmallAtPlaces.proof (E : Type*) [Field E] [NumberField E] :
     IntegerSmallAtPlaces.Statement E := by

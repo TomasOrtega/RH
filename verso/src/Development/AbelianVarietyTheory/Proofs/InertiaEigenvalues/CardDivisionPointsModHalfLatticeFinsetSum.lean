@@ -24,7 +24,7 @@ open GlobalTheory.LevelSeries
 namespace GlobalTheory.DivPtFourier.Prod
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi' => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_eq_single i (fun j hj hji => ho i hi' j hj (Ne.symm hji)) (fun h => absurd hi' h), hi i hi']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_idem {D : D7} {ι : Type} (s : Finset ι) (cs : ι → AE D)
     (hi : ∀ i ∈ s, cs i * cs i = cs i) (ho : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → cs i * cs j = 0) :
@@ -35,7 +35,7 @@ theorem sum_idem {D : D7} {ι : Type} (s : Finset ι) (cs : ι → AE D)
     (fun h => absurd hi' h), hi i hi']
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero ho`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_orth {D : D7} {ι : Type} (s : Finset ι) (cs : ι → AE D) (i : ι) (hi : i ∉ s)
     (ho : ∀ j ∈ s, cs i * cs j = 0) : cs i * (∑ j ∈ s, cs j) = 0 := by
@@ -43,33 +43,31 @@ theorem sum_orth {D : D7} {ι : Type} (s : Finset ι) (cs : ι → AE D) (i : ι
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Establish `h₂₁ : c₂ * c₁ = 0` using `by rw [mul_comm]; exact h₁₂`. Establish `orth : ∀ (a b : AE D), a * b = 0 → ∀ x : WO S T, b • x = x → a • x = 0`. Introduce `a b hab x hx`. Rewrite using `[← hx, smul_smul, hab, zero_smul]`. Establish `gmem : ∀ (c : AE D), c * c = c → ∀ y ∈ divPts Λ (c₁ + c₂) N, c • y ∈ divPts Λ c N`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c hc y hy`. Use `⟨by rw [smul_smul, hc], ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `hst c hc _ hy.2`. Set `g : ∀ (c : AE D), c * c = c → ↥(divPts Λ (c₁ + c₂) N) →+ ↥(divPts Λ c N)` to `fun c hc => { toFun := fun y => ⟨c • (y : WO S T), gmem c hc _ y.2⟩ map_zero' := Subtype.ext (smul_zero _) map_add' := fun x y => Subtype.ext (smul_add _ _ _) }`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : ↥(divPts Λ (c₁ + c₂) N) →+ DQ Λ c₁ N × DQ Λ c₂ N` to `((QuotientAddGroup.mk' _).comp (g c₁ h₁)).prod ((QuotientAddGroup.mk' _).comp (g c₂ h₂))`. Establish `hker : ∀ (c : AE D) (hc : c * c = c) (y : ↥(divPts Λ (c₁ + c₂) N)), (QuotientAddGroup.mk' ((Λ ⊓ GlobalTheory.PlaceModel.half S T c).addSubgroupOf (divPts Λ c N))) (g c hc y) = 0 ↔ c • (y : WO S T) ∈ Λ`. Introduce `c hc y`. Rewrite using `[QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, (GlobalTheory.PlaceModel.mem_half S T).2 (gmem c hc _ y.2).1⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hle : (Λ ⊓ GlobalTheory.PlaceModel.half S T (c₁ + c₂)).addSubgroupOf (divPts Λ (c₁ + c₂) N) ≤ φ.ker`. Introduce `y hy`. Rewrite `hy` using `[AddSubgroup.mem_addSubgroupOf]`. Rewrite using `[AddMonoidHom.mem_ker]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `(hker c₁ h₁ y).2 (hst c₁ h₁ _ hy.1)`. Conclude with `(hker c₂ h₂ y).2 (hst c₂ h₂ _ hy.1)`. Set `ψ'` to `QuotientAddGroup.lift _ φ hle`. Establish `hbij : Function.Bijective ψ'`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`. Establish `e` using `hq`.
+Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `φ y = 0 at e`. Establish `e1` using `(hker c₁ h₁ y).1 (congrArg Prod.fst e)`. Establish `e2` using `(hker c₂ h₂ y).1 (congrArg Prod.snd e)`. Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Establish `hy : (c₁ + c₂) • (y : WO S T) = y` using `y.2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, (GlobalTheory.PlaceModel.mem_half S T).2 hy⟩` and prove the remaining obligations. Rewrite using `[← hy, add_smul]`. Conclude with `Λ.add_mem e1 e2`. Introduce and unpack `⟨q₁, q₂⟩`. Proceed by induction on `q₁ using QuotientAddGroup.induction_on with`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `H y₁`. Proceed by induction on `q₂ using QuotientAddGroup.induction_on with`. Consider the case `H y₂`. Establish `a₁ : c₁ • (y₁ : WO S T) = y₁` using `y₁.2.1`. Establish `a₂ : c₂ • (y₂ : WO S T) = y₂` using `y₂.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `b₁ : c₁ • (y₂ : WO S T) = 0` using `orth c₁ c₂ h₁₂ _ a₂`. Establish `b₂ : c₂ • (y₁ : WO S T) = 0` using `orth c₂ c₁ h₂₁ _ a₁`. Establish `hmem : (y₁ : WO S T) + y₂ ∈ divPts Λ (c₁ + c₂) N`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_smul, smul_add, smul_add, a₁, a₂, b₁, b₂, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[nsmul_add]`. Conclude with `Λ.add_mem y₁.2.2 y₂.2.2`. Use `⟨QuotientAddGroup.mk ⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ ⟨_, hmem⟩ = _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `QuotientAddGroup.mk (g c₁ h₁ ⟨_, hmem⟩) = QuotientAddGroup.mk y₁`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `c₁ • ((y₁ : WO S T) + y₂) = y₁`. Rewrite using `[smul_add, a₁, b₁, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `QuotientAddGroup.mk (g c₂ h₂ ⟨_, hmem⟩) = QuotientAddGroup.mk y₂`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `c₂ • ((y₁ : WO S T) + y₂) = y₂`. Rewrite using `[smul_add, a₂, b₂, zero_add]`.
-
-Rewrite using `[Nat.card_congr (Equiv.ofBijective _ hbij), Nat.card_prod]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_add {D : D7} {S T : HSp D} (Λ : AddSubgroup (WO S T))
     (hst : ∀ c : AE D, c * c = c → ∀ u ∈ Λ, c • u ∈ Λ) (c₁ c₂ : AE D) (h₁ : c₁ * c₁ = c₁) (h₂ : c₂ * c₂ = c₂)
@@ -142,11 +140,9 @@ theorem card_add {D : D7} {S T : HSp D} (Λ : AddSubgroup (WO S T))
   rw [Nat.card_congr (Equiv.ofBijective _ hbij), Nat.card_prod]
 
 /- English proof (translation)
-Use `haveI : Subsingleton (DQ Λ (0 : AE D) N) := by`. Prove the components needed by the constructor for the conclusion. Introduce `q₁ q₂`. Proceed by induction on `q₁ using QuotientAddGroup.induction_on with`. Consider the case `H y₁`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `q₂ using QuotientAddGroup.induction_on with`. Consider the case `H y₂`. Establish `e₁ : y₁ = 0` using `Subtype.ext (by rw [← y₁.2.1, zero_smul]; rfl)`. Establish `e₂ : y₂ = 0` using `Subtype.ext (by rw [← y₂.2.1, zero_smul]; rfl)`. Rewrite using `[e₁, e₂]`.
-
-Conclude with `Nat.card_of_subsingleton (0 : DQ Λ (0 : AE D) N)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_zero {D : D7} {S T : HSp D} (Λ : AddSubgroup (WO S T)) (N : ℕ) :
     Nat.card (DQ Λ (0 : AE D) N) = 1 := by
@@ -165,9 +161,9 @@ theorem card_zero {D : D7} {S T : HSp D} (Λ : AddSubgroup (WO S T)) (N : ℕ) :
 end GlobalTheory.DivPtFourier.Prod
 
 /- English proof (translation)
-Introduce `D S T Λ hst ι s cs hi ho N`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using GlobalTheory.DivPtFourier.Prod.card_zero Λ N`. Consider the case `insert i s his ih`. Establish `hi' : ∀ j ∈ s, cs j * cs j = cs j` using `fun j hj => hi j (Finset.mem_insert_of_mem hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ho' : ∀ j ∈ s, ∀ k ∈ s, j ≠ k → cs j * cs k = 0` using `fun j hj k hk hjk => ho j (Finset.mem_insert_of_mem hj) k (Finset.mem_insert_of_mem hk) hjk`. Rewrite using `[Finset.sum_insert his, Finset.prod_insert his, GlobalTheory.DivPtFourier.Prod.card_add Λ hst _ _ (hi i (Finset.mem_insert_self i s)) (GlobalTheory.DivPtFourier.Prod.sum_idem s cs hi' ho') (GlobalTheory.DivPtFourier.Prod.sum_orth s cs i his fun j hj => ho i (Finset.mem_insert_sel …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.DivPtFourier.card_DQ_sum : ∀ {D : D7} {S T : HSp D} (Λ : AddSubgroup (WO S T)), (∀ c : AE D, c * c = c → ∀ u ∈ Λ, c • u ∈ Λ) → ∀ {ι : Type} (s : Finset ι) (cs : ι → AE D), (∀ i ∈ s, cs i * cs i = cs i) → (∀ i ∈ s, ∀ j ∈ s, i ≠ j → cs i * cs j = 0) → ∀ N : ℕ, Nat.card (GlobalTheory.DivPtFourier.DQ Λ (∑ i ∈ s, cs i) N) = ∏ i ∈ s, Nat.card (GlobalTheory.DivPtFourier.DQ Λ (cs i) N) := by
   intro D S T Λ hst ι s cs hi ho N

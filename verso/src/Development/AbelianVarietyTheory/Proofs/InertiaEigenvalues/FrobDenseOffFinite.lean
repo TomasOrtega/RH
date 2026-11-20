@@ -10,7 +10,7 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ T hT`. Use `(_root_.GlobalTheory.Published.chebotarevDegreeOne'.dense (F := F) (Ω := Ω) hT).mono ?_` and prove the remaining obligations. Introduce and unpack `σ ⟨v, hv, -, A, hA, hσ⟩`. Conclude with `⟨v, hv, A, hA, hσ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.frob_dense_off_finite : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (T : Set (HeightOneSpectrum (𝓞 F))), T.Finite →

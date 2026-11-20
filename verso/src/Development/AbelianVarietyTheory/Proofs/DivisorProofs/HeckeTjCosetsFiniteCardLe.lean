@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.TjCount
 
 /- English proof (translation)
-Unfold `Formalism.UG.Tj`. Rewrite using `[Set.indicator_apply_ne_zero, Set.indicator_apply_ne_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Tj_complex_ne_zero_iff {L : Type} [Field L] (n : ℕ) (O : Subring L) (ϖ : L) (j : ℕ)
     (g : GL (Fin n) L) : Formalism.UG.Tj ℂ n O ϖ j g ≠ 0 ↔ Formalism.UG.Tj ℤ n O ϖ j g ≠ 0 := by
@@ -15,11 +15,11 @@ theorem Tj_complex_ne_zero_iff {L : Type} [Field L] (n : ℕ) (O : Subring L) (�
   simp
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℤ) < q` using `by exact_mod_cast (by omega : 1 < q)`. Establish `hpos : ∀ i ∈ Finset.range j, (0 : ℤ) < (q : ℤ) ^ (n - i) - 1`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Establish `: (1 : ℤ) < (q : ℤ) ^ (n - i)` using `one_lt_pow₀ hq1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨Finset.prod_pos hpos, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod (fun i hi => (hpos i hi).le)` to reduce the goal to its premises. Introduce `i hi`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (q : ℤ) ^ (n - i) ≤ (q : ℤ) ^ n` using `pow_le_pow_right₀ hq1.le (Nat.sub_le n i)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (q : ℤ) ^ (n * j) := by rw [Finset.prod_const, Finset.card_range, ← pow_mul]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem prod_le_pow (q n j : ℕ) (hq : 2 ≤ q) (hj : j ≤ n) :
     0 < ∏ i ∈ Finset.range j, ((q : ℤ) ^ (n - i) - 1) ∧
@@ -40,9 +40,9 @@ theorem prod_le_pow (q n j : ℕ) (hq : 2 ≤ q) (hj : j ≤ n) :
     _ = (q : ℤ) ^ (n * j) := by rw [Finset.prod_const, Finset.card_range, ← pow_mul]
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℤ) < q` using `by exact_mod_cast (by omega : 1 < q)`. Establish `h1 : ∀ i ∈ Finset.range j, (1 : ℤ) ≤ (q : ℤ) ^ (i + 1) - 1`. Introduce `i _`. Establish `: (q : ℤ) ≤ (q : ℤ) ^ (i + 1)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 theorem one_le_prod (q j : ℕ) (hq : 2 ≤ q) : 1 ≤ ∏ i ∈ Finset.range j, ((q : ℤ) ^ (i + 1) - 1) := by
   have hq1 : (1 : ℤ) < q := by exact_mod_cast (by omega : 1 < q)
@@ -60,13 +60,13 @@ end GlobalTheory.TjCount
 open GlobalTheory.TjCount in
 
 /- English proof (translation)
-Introduce `E _ _ w n ϖ hϖ j hj`. Establish `h` using `Formalism.UG.P.Tj_double_coset_decomposition E w n ϖ (GlobalTheory.LFun.mem_Ov_of_isUnifV hϖ) hϖ j hj`. Establish `hq : 2 ≤ Formalism.UG.qV E w` using `GlobalTheory.LFun.one_lt_absNorm w`. Establish `hcard : Nat.card {q : GL (Fin n) (w.adicCompletion E) ⧸ GlobalTheory.LFun.KGL w n // Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j q.out ≠ 0} = Nat.card {x : GL (Fin n) (w.adicCompletion E) ⧸ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov E w) | Formalism.UG.Tj ℤ n (Formalism.UG.Ov …` using `Nat.card_congr (Equiv.subtypeEquivRight fun x => Tj_complex_ne_zero_iff _ _ _ _ _)`. Take `⟨hP, hB⟩` from `prod_le_pow (Formalism.UG.qV E w) n j hq hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `one_le_prod (Formalism.UG.qV E w) j hq`. Rewrite `h` using `[← hcard]`. Use `set C := Nat.card {q : GL (Fin n) (w.adicCompletion E) ⧸ GlobalTheory.LFun.KGL w n // Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j q.out ≠ 0} with hC`. Establish `hCpos : 0 < C`. Break down `Nat.eq_zero_or_pos C with h0 | h0` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h0]`. Simplify using `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h0`. Establish `hle : (C : ℤ) ≤ (Formalism.UG.qV E w : ℤ) ^ (n * j)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (C : ℤ) ≤ (C : ℤ) * ∏ i ∈ Finset.range j, ((Formalism.UG.qV E w : ℤ) ^ (i + 1) - 1)` using `le_mul_of_one_le_right (by positivity) hA`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, by exact_mod_cast hle⟩` and prove the remaining obligations. Establish `: Finite {q : GL (Fin n) (w.adicCompletion E) ⧸ GlobalTheory.LFun.KGL w n // Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j q.out ≠ 0}` using `Nat.finite_of_card_ne_zero hCpos.ne'`. Conclude with `Set.finite_coe_iff.mp (by exact this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TjCount.tj_cosets_finite_card_le : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (ϖ : w.adicCompletion E), Formalism.UG.IsUnifV E w ϖ → ∀ j ≤ n, {q : GL (Fin n) (w.adicCompletion E) ⧸ GlobalTheory.LFun.KGL w n | Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j q.out ≠ 0}.Finite ∧ Nat.card {q : GL (Fin n) (w.adicCompletion E) ⧸ GlobalTheory.LFun.KGL w n // Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j q.out ≠ 0} ≤ Formalism.UG.qV E w ^ (n * j) := by
   intro E _ _ w n ϖ hϖ j hj

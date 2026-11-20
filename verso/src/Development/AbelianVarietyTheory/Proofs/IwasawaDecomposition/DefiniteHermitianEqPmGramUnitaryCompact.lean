@@ -8,13 +8,11 @@ open Matrix
 namespace GlobalTheory.DefiniteFrame
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Establish `hP' : P.valᴴ * (reindex e e J) * P.val = Formalism.UG.Jpq p q` using `hP`. Use `⟨e, (P⁻¹).val.submatrix e e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_submatrix_equiv_self]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Units.mul_inv P`. Establish `h2 : (P⁻¹).valᴴ * P.valᴴ = 1`. Rewrite using `[← conjTranspose_mul, h1, conjTranspose_one]`. Rewrite using `[conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, ← hP']`. Establish `h3 : (P⁻¹).valᴴ * (P.valᴴ * (reindex e e J) * P.val) * (P⁻¹).val = reindex e e J`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[h3]`. Use extensionality with `i j`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_frame {n p q : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.UG.HasSignature J p q) :
     ∃ (e : Fin n ≃ Fin p ⊕ Fin q) (B : Matrix (Fin n) (Fin n) ℂ), IsUnit B.det ∧
@@ -40,15 +38,13 @@ theorem exists_frame {n p q : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} (h : Formali
     simp
 
 /- English proof (translation)
-Establish `hc : Continuous fun u : Matrix (Fin n) (Fin n) ℂ => B⁻¹ * u * B` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `h1 : B * B⁻¹ = 1` using `mul_nonsing_inv B hB`. Establish `h1' : B⁻¹ * B = 1` using `nonsing_inv_mul B hB`. Establish `h2 : (B⁻¹)ᴴ * Bᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Establish `h2' : Bᴴ * (B⁻¹)ᴴ = 1` using `by rw [← conjTranspose_mul, h1', conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.isCompact_unitaryGroup (Fin n) ℂ).image hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Formalism.QuantumDeterminants.UH, Set.mem_ofPred_eq, Set.mem_image, SetLike.mem_coe, Matrix.mem_unitaryGroup_iff', star_eq_conjTranspose]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨B * g * B⁻¹, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((B⁻¹)ᴴ * Bᴴ) * (B * B⁻¹) := by rw [hg]; simp only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, h2, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = g := by rw [h1', Matrix.one_mul, Matrix.mul_one]`. Introduce and unpack `⟨u, hu, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Bᴴ * B := by rw [h1, h2, Matrix.mul_one, Matrix.mul_one, hu, Matrix.mul_one]`.
+Assume the hypotheses and unpack their components. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCompact_UH_gram {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (hB : IsUnit B.det) :
     IsCompact (Formalism.QuantumDeterminants.UH (Bᴴ * B)) := by
@@ -79,24 +75,22 @@ theorem isCompact_UH_gram {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (hB : IsUni
       _ = Bᴴ * B := by rw [h1, h2, Matrix.mul_one, Matrix.mul_one, hu, Matrix.mul_one]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[Formalism.QuantumDeterminants.UH]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem UH_neg {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) : Formalism.QuantumDeterminants.UH (-H) = Formalism.QuantumDeterminants.UH H := by
   ext g
   simp [Formalism.QuantumDeterminants.UH]
 
 /- English proof (translation)
-Take `⟨e, B, hB, hJ⟩` from `exists_frame h`. Break down `hpq with rfl | rfl` into its components or cases. Establish `h1 : Formalism.UG.Jpq 0 q = -1`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `i.elim0`. Break down `j with j | j` into its components or cases. Conclude with `j.elim0`. Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Establish `h2 : J = -(Bᴴ * B)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hJ, h1, submatrix_neg]`. Simplify using the standard rewrite rules. Use `⟨⟨B, hB, Or.inr h2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, UH_neg]`. Conclude with `isCompact_UH_gram B hB`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1 : Formalism.UG.Jpq p 0 = 1`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Use `swap`. Conclude with `i.elim0`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `j with j | j` into its components or cases. Use `swap`. Conclude with `j.elim0`. Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Establish `h2 : J = Bᴴ * B`.
-
-Rewrite using `[hJ, h1]`. Simplify using the standard rewrite rules. Use `⟨⟨B, hB, Or.inl h2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `isCompact_UH_gram B hB`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem definite_frame (n p q : ℕ) (J : Matrix (Fin n) (Fin n) ℂ)
     (h : Formalism.UG.HasSignature J p q) (hpq : p = 0 ∨ q = 0) :

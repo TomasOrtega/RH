@@ -10,7 +10,7 @@ namespace GlobalTheory.PMon.ResR
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l}
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Fil_sum fun k _ => Fil_mul_left (hA i k) (hB k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fil_mul_entries {n : Type} [Fintype n] {A B : Matrix n n P.R.BdR}
     (hA : ∀ i j, A i j ∈ Fil P 0) (hB : ∀ i j, B i j ∈ Fil P 0) : ∀ i j, (A * B) i j ∈ Fil P 0 :=
@@ -19,7 +19,7 @@ theorem fil_mul_entries {n : Type} [Fintype n] {A B : Matrix n n P.R.BdR}
     exact Fil_sum fun k _ => Fil_mul_left (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.blockDiagonal_apply] split_ifs · exact h _ _ _ · exact Fil_zero_mem 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fil_blockDiagonal_entries {r : ℕ} {n : Type} [Fintype n] [DecidableEq n]
     (V : Fin r → Matrix n n P.R.BdR) (h : ∀ m i j, V m i j ∈ Fil P 0) :
@@ -30,7 +30,7 @@ theorem fil_blockDiagonal_entries {r : ℕ} {n : Type} [Fintype n] [DecidableEq 
   · exact Fil_zero_mem 0
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Units.coe_map] exact kd_mem_Fil P _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fil_kd_entries {m : Type} [Fintype m] [DecidableEq m] (g : GL m ↥(MaximalUnramifiedExtension l)) :
     ∀ a b, ((Units.map ((kd P).mapMatrix : Matrix m m ↥(MaximalUnramifiedExtension l) →+* Matrix m m P.R.BdR).toMonoidHom g :
@@ -39,9 +39,9 @@ theorem fil_kd_entries {m : Type} [Fintype m] [DecidableEq m] (g : GL m ↥(Maxi
   exact kd_mem_Fil P _
 
 /- English proof (translation)
-Introduce `l _ P r ω hdet n _ _ U hU`. Prove the components needed by the constructor for the conclusion. Unfold `U0`. Rewrite using `[Units.val_mul, ← map_inv]`. Conclude with `fil_mul_entries (fil_kd_entries _) (fil_blockDiagonal_entries _ fun m i j => (hU m).1 i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `U0`. Rewrite using `[mul_inv_rev, inv_inv, Units.val_mul]`. Conclude with `fil_mul_entries (fil_blockDiagonal_entries _ fun m i j => (hU m).2 i j) (fil_kd_entries _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitM_U0_of_unitM : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (r : ℕ) (ω : Fin r → ↥(MaximalUnramifiedExtension l))
     (hdet : (frobMat ω).det ≠ 0) (n : Type) [Fintype n] [DecidableEq n] (U : Fin r → GL n P.R.BdR),

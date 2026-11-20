@@ -15,21 +15,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n p G A Lb hS hI hfin hspan y v`. Use `letI : StarRing E := starRingOfComm`. Use `set Y : Matrix (Fin n) (Fin n) (E ⊗[F] (A.pl v).1.adicCompletion F) := Units.val (bc (prV (E := E) (A.pl v).1) y : GL (Fin n) (E ⊗[F] (A.pl v).1.adicCompletion F)) with hY`. Use `set f : E ⊗[F] (A.pl v).1.adicCompletion F →+* G.P.Qq v := ((A.eQ v).symm : (A.pl v).1.adicCompletion F →+* G.P.Qq v).comp (A.ph v) with hf`. Establish `hfac : ((facQ A v y : GL (Fin n) (G.P.Qq v)) : Matrix (Fin n) (Fin n) (G.P.Qq v)) = Y.map f`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hY]`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hmv : ∀ u : Fin n → E ⊗[F] (A.pl v).1.adicCompletion F, (fun k => (A.eQ v).symm (A.ph v ((Y *ᵥ u) k))) = ((facQ A v y : GL (Fin n) (G.P.Qq v)) : Matrix (Fin n) (Fin n) (G.P.Qq v)) *ᵥ (fun k => (A.eQ v).symm (A.ph v (u k)))`. Introduce `u`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hfac]`. Use function extensionality and compare the values at `k`. Conclude with `RingHom.map_mulVec f Y u k`. Use extensionality with `z'`. Rewrite using `[locSp_eq_image A hS hI v, Submodule.mem_map]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzz⟩`. Rewrite `hz` using `[GlobalTheory.LocCarry.mem_latS_latAd_iff y Lb hfin hspan]`. Use `set u := Units.val ((bc (prV (E := E) (A.pl v).1) y)⁻¹ : GL (Fin n) (E ⊗[F] (A.pl v).1.adicCompletion F)) *ᵥ z with hu`. Use `⟨fun k => (A.eQ v).symm (A.ph v (u k)), (locSp_eq_image A hS hI v Lb _).2 ⟨u, hz, fun k => rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hzu : z = Y *ᵥ u`. Rewrite using `[hu, hY, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Use `show (facQ A v y : Matrix (Fin n) (Fin n) (G.P.Qq v)) *ᵥ _ = z'`. Rewrite using `[← hmv, ← hzu]`. Use function extensionality and compare the values at `k`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hzz k`. Introduce and unpack `⟨w, hw, hwz⟩`. Take `⟨u, hu, huw⟩` from `(locSp_eq_image A hS hI v Lb w).1 hw`. Use `⟨Y *ᵥ u, ?_, ?_⟩` and prove the remaining obligations. Establish `hback : Units.val ((bc (prV (E` using `E) (A.pl v).1) y)⁻¹ : GL (Fin n) (E ⊗[F] (A.pl v).1.adicCompletion F)) *ᵥ (Y *ᵥ u) = u := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[hY, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Rewrite using `[GlobalTheory.LocCarry.mem_latS_latAd_iff y Lb hfin hspan]`. Rewrite using `[hback]`. Conclude with `hu`. Introduce `k`.
-
-Establish `hw' : w = fun k => (A.eQ v).symm (A.ph v (u k))` using `funext fun k => (huw k).symm`. Substitute `hwz` using the available equality. Substitute `hw'` using the available equality. Conclude with `congrFun (hmv u) k`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem latAdLoc_of : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n p : ℕ} {G : GAtP p} (A : LocAt F E n G) (Lb : Submodule (𝓞 E) (Fin n → E)), SplAlg A → LocInt A → Module.Finite (𝓞 E) Lb → Submodule.span E (Lb : Set (Fin n → E)) = ⊤ → LatAdLoc A Lb := by
   intro F E _ _ _ _ _ n p G A Lb hS hI hfin hspan y v

@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.FlatTw.PetTw
 
 /- English proof (translation)
-Distinguish the cases in `hz : z ∈ framesOn (U (goodOf c σ)) Z`. Rewrite using `[s.homN_mul_sig hG f hz, mul_comm]`. Establish `h1 : rdU (U (goodOf c σ)) (f * s.sig) z.1 z.2 = 0` using `rdU_eq_zero _ (mul_mem_suppOn f s.sig_mem_suppOn) hz`. Establish `h2 : rdU (U (goodOf c σ)) f z.1 z.2 = 0` using `rdU_eq_zero _ hf hz`. Use `show _ * (‖rdU (U (goodOf c σ)) (f * s.sig) z.1 z.2‖ * _) = s.cInf σ * (_ * (‖rdU (U (goodOf c σ)) f z.1 z.2‖ * _))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, norm_zero, zero_mul, zero_mul, mul_zero, mul_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem homN_mul_sig_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
@@ -29,7 +29,7 @@ theorem homN_mul_sig_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
     rw [h1, h2, norm_zero, zero_mul, zero_mul, mul_zero, mul_zero, mul_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x Z G₀ s G hG f hf σ D V dict μ`. Rewrite using `[petAt_eq, petAt_eq]`. Establish `e : (fun q : AutQ V => homN (U (goodOf c σ)) x (G + G₀) (f * s.sig) (dict q.out)) = s.cInf σ • fun q : AutQ V => homN (U (goodOf c σ)) x G f (dict q.out)`. Use function extensionality and compare the values at `fun q => homN_mul_sig_eq s hG hf σ (dict q.out)`. Rewrite using `[e, eLpNorm_const_smul, ENNReal.toReal_mul, Real.enorm_eq_ofReal (s.cInf_pos σ).le, ENNReal.toReal_ofReal (s.cInf_pos σ).le]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem petAt_mul_sig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (Z : Comp Xo c) (G₀ : WTZ E) (s : TwSec U x Z G₀) (G : WTZ E), Even G.2 → ∀ f ∈ suppOn Z, ∀ (σ : c.F →+* ℂ) (D : D7) (V : HSp D) (dict : GA D V → Σ k, Frame ((U (goodOf c σ)).X k).Ψ r) (μ : Measure (AutQ V)), petAt (U (goodOf c σ)) x V dict μ (G + G₀) (f * s.sig) = s.cInf σ * petAt (U (goodOf c σ)) x V dict μ G f := by
   intro E _ _ _ H Dw l Xo c r U x Z G₀ s G hG f hf σ D V dict μ

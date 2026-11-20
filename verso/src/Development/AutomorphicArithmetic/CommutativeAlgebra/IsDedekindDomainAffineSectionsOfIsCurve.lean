@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hF`. Establish `h` using `CurveCut.CoverPf.krullDim_eq_one c hc W hW hWn`. Rewrite `h` using `[ringKrullDim_eq_zero_of_isField hF]`. Evaluate the numerical expressions using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem not_isField_of_curve {k : Type} [Field k] {C : Scheme.{0}} (c : C ⟶ Sp k) (hc : IsCurve c)
     (W : C.Opens) (hW : IsAffineOpen W) (hWn : (W : Set C).Nonempty) : ¬ IsField Γ(C, W) := by
@@ -17,9 +17,7 @@ private theorem not_isField_of_curve {k : Type} [Field k] {C : Scheme.{0}} (c : 
   norm_num at h
 
 /- English proof (translation)
-Use `haveI := hc.1`. Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := y) (by simp)`. Establish `hne : (U : Set C).Nonempty` using `⟨y, hyU⟩`. Use `haveI : Nonempty U := ⟨⟨y, hyU⟩⟩`. Use `haveI : IsIntegrallyClosed Γ(C, U) := CurveCut.CoverPf.leafNormal _ c hc U hU hne`.
-
-Use `letI : Algebra Γ(C, U) (C.presheaf.stalk y) := C.presheaf.algebra_section_stalk ⟨y, hyU⟩`. Use `haveI := hU.isLocalization_stalk ⟨y, hyU⟩`. Conclude with `isIntegrallyClosed_of_isLocalization _ (hU.primeIdealOf ⟨y, hyU⟩).asIdeal.primeCompl (Ideal.primeCompl_le_nonZeroDivisors _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem stalk_isIntegrallyClosed {k : Type} [Field k] [IsAlgClosed k] {C : Scheme.{0}} (c : C ⟶ Sp k)
     (hc : IsCurve c) (y : C) : IsIntegrallyClosed (C.presheaf.stalk y) := by
@@ -34,7 +32,7 @@ private theorem stalk_isIntegrallyClosed {k : Type} [Field k] [IsAlgClosed k] {C
     (Ideal.primeCompl_le_nonZeroDivisors _)
 
 /- English proof (translation)
-Introduce `k _ _ C c hc`. Use `⟨fun W hW hWn => ⟨?_, not_isField_of_curve c hc W hW hWn⟩, stalk_isIntegrallyClosed c hc⟩` and prove the remaining obligations. Conclude with `LateralTheory.E.E4.CurveCut.CoverPf.LeafDedRing_of LateralTheory.E.E4.CurveCut.CoverPf.leafDim1 LateralTheory.E.E4.CurveCut.CoverPf.leafNormal k c hc W hW hWn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isDedekindDomain_affine_sections_of_isCurve :
     ∀ (k : Type) [Field k] [IsAlgClosed k] {C : Scheme.{0}} (c : C ⟶ Sp k), IsCurve c → (∀ W : C.Opens, IsAffineOpen W → (W : Set C).Nonempty → IsDedekindDomain Γ(C, W) ∧ ¬ IsField Γ(C, W)) ∧ ∀ y : C, IsIntegrallyClosed (C.presheaf.stalk y) := by

@@ -25,25 +25,21 @@ namespace GlobalTheory.KFixedVanish
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `f hf`. Establish `hB : BorelSpace (κ → mixedEmbedding.mixedSpace F)` using `inferInstance`. Use `haveI hO : @OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) (UniformSpace.toTopologicalSpace) _ := by`. Use `@BorelSpace.opensMeasurable _ _ _ hB` and compare the differences between its conclusion and the goal. Use `haveI hG : μ.HasTemperateGrowth := @Measure.IsAddHaarMeasure.instHasTemperateGrowth _ _ _ _ inferInstance (by convert hB) μ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `J : SInf F κ →ₗ[ℂ] Lp ℂ 2 μ` to `(SchwartzMap.toLpCLM ℂ ℂ 2 μ).toLinearMap`. Establish `hJ : ∀ g : SInf F κ, ((J g : Lp ℂ 2 μ) : (κ → mixedEmbedding.mixedSpace F) → ℂ) =ᵐ[μ] g` using `fun g => SchwartzMap.coeFn_toLp g 2 μ`. Establish `hnorm : ∀ g : SInf F κ, ‖J g‖ = ((∫⁻ x, ‖g x‖ₑ ^ 2 ∂μ) ^ (1 / 2 : ℝ)).toReal`. Introduce `g`. Rewrite using `[Lp.norm_def, eLpNorm_congr_ae (hJ g), eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by simp)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Simplify using `only [ENNReal.toReal_ofNat]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `ENNReal.rpow_two _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : ∀ g : SInf F κ, J g = 0 → g = 0`. Introduce `g hg`. Establish `h1 : (g : (κ → mixedEmbedding.mixedSpace F) → ℂ) =ᵐ[μ] (0 : (κ → mixedEmbedding.mixedSpace F) → ℂ)`. Use `(hJ g).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Conclude with `Lp.coeFn_zero _ _ _`. Establish `h2` using `(Continuous.ae_eq_iff_eq μ g.continuous continuous_const).1 h1`. Use extensionality with `x`. Conclude with `congrFun h2 x`. Use `haveI : FiniteDimensional ℂ U := Submodule.finiteDimensional_of_le hUV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `set H : Submodule ℂ (Lp ℂ 2 μ) := U.map J with hH`. Use `haveI : FiniteDimensional ℂ H := inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu, hpu⟩ : ∃ u ∈ U, J u = H.starProjection (J f) := by`. Establish `hm : H.starProjection (J f) ∈ H`. Rewrite using `[Submodule.starProjection_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(H.orthogonalProjectionOnto (J f)).2`. Take `⟨u, hu, e⟩` from `Submodule.mem_map.1 hm`. Conclude with `⟨u, hu, e⟩`. Use `⟨u, hu, fun A hA => ?_⟩` and prove the remaining obligations. Establish `hw : f - u ∈ V` using `V.sub_mem hf (hUV hu)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `horth : J (f - u) ∈ Hᗮ`. Rewrite using `[map_sub, hpu]`. Conclude with `H.sub_starProjection_mem_orthogonal (J f)`. Establish `h0 : inner ℂ (J (A (f - u) - (f - u))) (J (f - u)) = 0` using `Submodule.inner_right_of_mem_orthogonal (Submodule.mem_map_of_mem (hT A hA _ hw)) horth`. Establish `hn : ‖J (A (f - u))‖ = ‖J (f - u)‖` using `by rw [hnorm, hnorm, hiso A hA]`.
-
-Rewrite `h0` using `[map_sub, inner_sub_left, sub_eq_zero]`. Establish `hsq : ‖J (A (f - u)) - J (f - u)‖ ^ 2 = 0`. Rewrite using `[@norm_sub_sq ℂ, h0, hn, inner_self_eq_norm_sq (𝕜 := ℂ)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : J (A (f - u) - (f - u)) = 0`.
-
-Rewrite using `[map_sub]`. Conclude with `norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 hsq)`. Conclude with `sub_eq_zero.1 (hinj _ h3)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (μ : Measure (κ → mixedEmbedding.mixedSpace F)) [μ.IsAddHaarMeasure]
@@ -110,9 +106,9 @@ namespace GlobalTheory.KFixedVanish
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `⟨fun u hu => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `e : mat (k * k') - 1 = (mat k - 1) * mat k' + (mat k' - 1)`. Express the relevant statement in the definitionally equal form `mat k * mat k' - 1 = _`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e, smul_add, ← Matrix.smul_mul, hk.1 u hu, hk'.1 u hu, Matrix.zero_mul, add_zero]`. Express the relevant statement in the definitionally equal form `Commute ((mat k * mat k').map (piInf (τ w))) (X.θ w)`. Rewrite using `[Matrix.map_mul]`. Conclude with `(hk.2 w).mul_left (hk'.2 w)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kInf_mul {n : ℕ} {X : Spc F E n} {τ : ∀ w : InfinitePlace F, EmbOver E w} {k k' : UA σ X.J}
     (hk : k ∈ KInf σ X τ) (hk' : k' ∈ KInf σ X τ) : k * k' ∈ KInf σ X τ := by
@@ -127,9 +123,9 @@ theorem kInf_mul {n : ℕ} {X : Spc F E n} {τ : ∀ w : InfinitePlace F, EmbOve
     exact (hk.2 w).mul_left (hk'.2 w)
 
 /- English proof (translation)
-Use `⟨fun u _ => ?_, fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u • ((1 : Matrix (Fin n) (Fin n) (AE F E)) - 1) = 0`. Rewrite using `[sub_self, smul_zero]`. Express the relevant statement in the definitionally equal form `Commute ((1 : Matrix (Fin n) (Fin n) (AE F E)).map (piInf (τ w))) (X.θ w)`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Commute.one_left _`.
+A detailed English derivation is pending.
 -/
 theorem kInf_one {n : ℕ} {X : Spc F E n} {τ : ∀ w : InfinitePlace F, EmbOver E w} : (1 : UA σ X.J) ∈ KInf σ X τ := by
   refine ⟨fun u _ => ?_, fun w => ?_⟩

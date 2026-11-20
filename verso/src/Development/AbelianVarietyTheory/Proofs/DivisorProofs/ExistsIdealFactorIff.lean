@@ -14,15 +14,15 @@ open GlobalTheory.IwLevel
 namespace GlobalTheory.KerIdeal
 
 /- English proof (translation)
-Take `⟨I, e, he⟩` from `(IsClosedImmersion.Spec_iff (f := pullback.snd i (X.fromSpecStalk x₀ ≫ f))).1 inferInstance`. Use `⟨I, fun R' _ ψ => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Take `⟨w, -, hw⟩ : ∃ w : Spec (CommRingCat.of R') ⟶ pullback i (X.fromSpecStalk x₀ ≫ f), w ≫ pullback.fst i (X.fromSpecStalk x₀ ≫ f) = z ∧ w ≫ pullback.snd i (X.fromSpecStalk x₀ ≫ f) = Spec.map (CommRingCat.ofHom ψ)` from `⟨pullback.lift z (Spec.map (CommRingCat.ofHom ψ)) (hz.trans (Category.assoc _ _ _)), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[he, ← Category.assoc]`. Use `set w' := w ≫ e.hom`. Establish `h3 : CommRingCat.ofHom (Ideal.Quotient.mk I) ≫ Spec.preimage w' = CommRingCat.ofHom ψ`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_preimage]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw`. Introduce `a ha`. Rewrite using `[RingHom.mem_ker]`. Establish `h4` using `congrArg (fun u : _ ⟶ CommRingCat.of R' => u.hom a) h3`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.coe_comp, Function.comp_apply, Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero] at h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h4.symm`. Introduce `hI`. Use `⟨Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift I ψ (fun a ha => hI ha))) ≫ e.inv ≫ pullback.fst i (X.fromSpecStalk x₀ ≫ f), ?_⟩` and prove the remaining obligations. Establish `key : Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift I ψ (fun a ha => hI ha))) ≫ e.inv ≫ pullback.snd i (X.fromSpecStalk x₀ ≫ f) = Spec.map (CommRingCat.ofHom ψ)`. Rewrite using `[he, e.inv_hom_id_assoc, ← Spec.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition, reassoc_of% key]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ideal_factor_iff {X Y Z : Scheme.{0}} (i : Z ⟶ Y) [IsClosedImmersion i] (f : X ⟶ Y)
     (x₀ : X) :
@@ -67,7 +67,7 @@ end GlobalTheory.KerIdeal
 namespace GlobalTheory.KerIdeal
 
 /- English proof (translation)
-Introduce `k _ A B _ π _ x₀`. Use `haveI : IsClosedImmersion (η[B]).left := isClosedImmersion_of_comp_eq_id (Y := Sp k) B.hom _ (Over.w _)`. Conclude with `exists_ideal_factor_iff (η[B]).left π.left x₀`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kernel_ideal : ∀ (k : Type) [Field k] (A B : Over (Sp k)) [GrpObj B] (π : A ⟶ B), IsAbelianScheme B → ∀ x₀ : A.left,
     ∃ J : Ideal (A.left.presheaf.stalk x₀), ∀ (R' : Type) [CommRing R'] (ψ : A.left.presheaf.stalk x₀ →+* R'),

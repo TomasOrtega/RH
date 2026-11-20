@@ -29,12 +29,12 @@ namespace JSetup
 def NU (x : K) : Prop := ∃ y ∈ S.O, x = S.p * y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, S.O.zero_mem, by rw [mul_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem NU_zero : S.NU 0 := ⟨0, S.O.zero_mem, by rw [mul_zero]⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, S.O.add_mem ha hb, by rw [mul_add]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem NU_add {x y : K} (hx : S.NU x) (hy : S.NU y) : S.NU (x + y) := by
   obtain ⟨a, ha, rfl⟩ := hx
@@ -42,41 +42,41 @@ theorem NU_add {x y : K} (hx : S.NU x) (hy : S.NU y) : S.NU (x + y) := by
   exact ⟨a + b, S.O.add_mem ha hb, by rw [mul_add]⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨-a, S.O.neg_mem ha, by rw [mul_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem NU_neg {x : K} (hx : S.NU x) : S.NU (-x) := by
   obtain ⟨a, ha, rfl⟩ := hx
   exact ⟨-a, S.O.neg_mem ha, by rw [mul_neg]⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨z * a, S.O.mul_mem hz ha, by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem NU_mul {x z : K} (hz : z ∈ S.O) (hx : S.NU x) : S.NU (z * x) := by
   obtain ⟨a, ha, rfl⟩ := hx
   exact ⟨z * a, S.O.mul_mem hz ha, by ring⟩
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction _ S.NU (fun _ _ => S.NU_add) S.NU_zero h`.
+A detailed English derivation is pending.
 -/
 theorem NU_sum {ι : Type*} (s : Finset ι) (f : ι → K) (h : ∀ i ∈ s, S.NU (f i)) : S.NU (∑ i ∈ s, f i) := by
   exact Finset.sum_induction _ S.NU (fun _ _ => S.NU_add) S.NU_zero h
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hx S.NU_zero`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_not_NU {x : K} (hx : ¬ S.NU x) : x ≠ 0 := by
   rintro rfl
   exact hx S.NU_zero
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨S.σ a, S.hσO a ha, by rw [map_mul, S.hσp]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem NU_σ {x : K} (hx : S.NU x) : S.NU (S.σ x) := by
   obtain ⟨a, ha, rfl⟩ := hx
   exact ⟨S.σ a, S.hσO a ha, by rw [map_mul, S.hσp]⟩
 
 /- English proof (translation)
-Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h2` using `S.NU_σ h`. Rewrite `h2` using `[S.hσσ x hxO]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem not_NU_σ {x : K} (hxO : x ∈ S.O) (hx : ¬ S.NU x) : ¬ S.NU (S.σ x) := by
   intro h
@@ -85,7 +85,7 @@ theorem not_NU_σ {x : K} (hxO : x ∈ S.O) (hx : ¬ S.NU x) : ¬ S.NU (S.σ x) 
   rwa [S.hσσ x hxO] at h2
 
 /- English proof (translation)
-Establish `hx0 : x ≠ 0` using `S.ne_zero_of_not_NU hx`. Introduce and unpack `⟨a, ha, hxa⟩`. Apply `S.hone` to reduce the goal to its premises. Use `⟨x * a, S.O.mul_mem hxO ha, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem not_NU_inv {x : K} (hxO : x ∈ S.O) (hx : ¬ S.NU x) : ¬ S.NU x⁻¹ := by
   have hx0 : x ≠ 0 := S.ne_zero_of_not_NU hx
@@ -96,7 +96,7 @@ theorem not_NU_inv {x : K} (hxO : x ∈ S.O) (hx : ¬ S.NU x) : ¬ S.NU x⁻¹ :
     _ = S.p * (x * a) := by rw [hxa]; ring
 
 /- English proof (translation)
-Establish `hx0 : x ≠ 0` using `S.ne_zero_of_not_NU hx`. Establish `hxi : x⁻¹ ∈ S.O` using `S.hinv x hxO hx`. Take `⟨a, ha, hxa⟩` from `h`. Use `⟨x⁻¹ * a, S.O.mul_mem hxi ha, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem NU_of_mul {x y : K} (hxO : x ∈ S.O) (hx : ¬ S.NU x) (h : S.NU (x * y)) : S.NU y := by
   have hx0 : x ≠ 0 := S.ne_zero_of_not_NU hx
@@ -107,20 +107,20 @@ theorem NU_of_mul {x y : K} (hxO : x ∈ S.O) (hx : ¬ S.NU x) (h : S.NU (x * y)
     _ = S.p * (x⁻¹ * a) := by rw [hxa]; ring
 
 /- English proof (translation)
-Introduce `h` and use `hy (S.NU_of_mul hxO hx h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_NU_mul {x y : K} (hxO : x ∈ S.O) (hx : ¬ S.NU x) (hy : ¬ S.NU y) : ¬ S.NU (x * y) :=
   fun h => hy (S.NU_of_mul hxO hx h)
 
 /- English proof (translation)
-Establish `h` using `S.O.add_mem S.O.one_mem S.O.one_mem`. Rewrite `h` using `[one_add_one_eq_two]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem two_mem : (2 : K) ∈ S.O := by
   have h := S.O.add_mem S.O.one_mem S.O.one_mem
   rwa [one_add_one_eq_two] at h
 
 /- English proof (translation)
-Introduce and unpack `⟨a, ha, h2a⟩`. Apply `S.hone` to reduce the goal to its premises. Use `⟨(2 : K)⁻¹ * a, S.O.mul_mem S.htwo ha, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem not_NU_two : ¬ S.NU (2 : K) := by
   rintro ⟨a, ha, h2a⟩
@@ -130,7 +130,7 @@ theorem not_NU_two : ¬ S.NU (2 : K) := by
     _ = S.p * ((2 : K)⁻¹ * a) := by rw [h2a]; ring
 
 /- English proof (translation)
-Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h2` using `S.NU_add h (S.NU_neg hy)`. Rewrite `h2` using `[add_neg_cancel_right]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem not_NU_add {x y : K} (hx : ¬ S.NU x) (hy : S.NU y) : ¬ S.NU (x + y) := by
   intro h
@@ -154,7 +154,7 @@ def UM (Γ : Matrix ι ι K) : Prop :=
   ∀ x : ι → K, S.IntV x → (∀ i, S.NU ((Γ *ᵥ x) i)) → ∃ x', S.IntV x' ∧ Γ *ᵥ x = S.p • (Γ *ᵥ x')
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `S.O.sum_mem fun j _ => S.O.mul_mem (hΓ i j) (hx j)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IntV_mulVec {Γ : Matrix ι ι K} (hΓ : S.IntM Γ) {x : ι → K} (hx : S.IntV x) : S.IntV (Γ *ᵥ x) := by
   intro i
@@ -162,12 +162,12 @@ theorem IntV_mulVec {Γ : Matrix ι ι K} (hΓ : S.IntM Γ) {x : ι → K} (hx :
   exact S.O.sum_mem fun j _ => S.O.mul_mem (hΓ i j) (hx j)
 
 /- English proof (translation)
-Introduce `i` and use `S.hσO (x i) (hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntV_cv {x : ι → K} (hx : S.IntV x) : S.IntV (S.cv x) := fun i => S.hσO (x i) (hx i)
 
 /- English proof (translation)
-Unfold `hf`. Simplify using `only [dotProduct]`. Conclude with `S.O.sum_mem fun i _ => S.O.mul_mem (S.IntV_cv hx i) (S.IntV_mulVec hΓ hy i)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_mem {Γ : Matrix ι ι K} (hΓ : S.IntM Γ) {x y : ι → K} (hx : S.IntV x) (hy : S.IntV y) :
     S.hf Γ x y ∈ S.O := by
@@ -176,7 +176,7 @@ theorem hf_mem {Γ : Matrix ι ι K} (hΓ : S.IntM Γ) {x y : ι → K} (hx : S.
   exact S.O.sum_mem fun i _ => S.O.mul_mem (S.IntV_cv hx i) (S.IntV_mulVec hΓ hy i)
 
 /- English proof (translation)
-Unfold `hf cv`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[S.hσσ _ (hx _), hH]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -190,7 +190,7 @@ theorem hf_swap {Γ : Matrix ι ι K} (hΓ : S.IntM Γ) (hH : S.Herm Γ) {x y : 
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, Matrix.vecMul, dotProduct, map_sum, map_mul, cv, hH i]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem σ_mulVec {Γ : Matrix ι ι K} (hH : S.Herm Γ) (a : ι → K) (i : ι) :
     S.σ ((Γ *ᵥ a) i) = (S.cv a ᵥ* Γ) i := by
@@ -198,7 +198,7 @@ theorem σ_mulVec {Γ : Matrix ι ι K} (hH : S.Herm Γ) (a : ι → K) (i : ι)
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, Matrix.vecMul, dotProduct, map_sum, map_mul, cv]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[S.hσσ _ (ha i), hH i j, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem σ_vecMul {Γ : Matrix ι ι K} (hH : S.Herm Γ) {a : ι → K} (ha : S.IntV a) (j : ι) :
     S.σ ((S.cv a ᵥ* Γ) j) = (Γ *ᵥ a) j := by

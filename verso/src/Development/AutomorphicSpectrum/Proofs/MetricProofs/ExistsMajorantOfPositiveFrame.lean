@@ -19,42 +19,42 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 abbrev cj (A : Matrix ι ι ℂ) : Matrix ι ι ℂ := A.map (starRingEnd ℂ)
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[cj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cj_cj (A : Matrix ι ι ℂ) : cj (cj A) = A := by
   ext i k; simp [cj]
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective cj_cj`.
+A detailed English derivation is pending.
 -/
 theorem cj_injective : Function.Injective (cj : Matrix ι ι ℂ → Matrix ι ι ℂ) :=
   Function.LeftInverse.injective cj_cj
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem cj_mul (A B : Matrix ι ι ℂ) : cj (A * B) = cj A * cj B := Matrix.map_mul
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[cj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cj_eq (A : Matrix ι ι ℂ) : cj A = Aᴴᵀ := by
   ext i k; simp [cj]
 
 /- English proof (translation)
-Rewrite using `[cj_eq, cj_eq, conjTranspose_nonsing_inv, transpose_nonsing_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_inv (A : Matrix ι ι ℂ) : cj A⁻¹ = (cj A)⁻¹ := by
   rw [cj_eq, cj_eq, conjTranspose_nonsing_inv, transpose_nonsing_inv]
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[cj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cj_conjTranspose (A : Matrix ι ι ℂ) : cj Aᴴ = (cj A)ᴴ := by
   ext i k; simp [cj]
 
 /- English proof (translation)
-Establish `: cj P = Pᵀ` using `by rw [cj_eq, h.1.eq]`. Rewrite using `[this]`. Conclude with `h.transpose`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_cj {P : Matrix ι ι ℂ} (h : P.PosDef) : (cj P).PosDef := by
   have : cj P = Pᵀ := by rw [cj_eq, h.1.eq]
@@ -62,13 +62,13 @@ theorem posDef_cj {P : Matrix ι ι ℂ} (h : P.PosDef) : (cj P).PosDef := by
   exact h.transpose
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[cj, mulVec, dotProduct, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cj_mulVec (A : Matrix ι ι ℂ) (v : ι → ℂ) : cj A *ᵥ star v = star (A *ᵥ v) := by
   ext i; simp [cj, mulVec, dotProduct, map_sum]
 
 /- English proof (translation)
-Establish `hu : G *ᵥ star v = star (cj G *ᵥ v)`. Rewrite using `[← cj_mulVec, cj_cj]`. Rewrite using `[hu, cj_mulVec, star_dotProduct_star, dotProduct_comm]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_term_cj (P G : Matrix ι ι ℂ) (v : ι → ℂ) :
     (star (G *ᵥ star v) ⬝ᵥ (cj P *ᵥ (G *ᵥ star v))).re = (star (cj G *ᵥ v) ⬝ᵥ (P *ᵥ (cj G *ᵥ v))).re := by
@@ -78,7 +78,7 @@ theorem re_term_cj (P G : Matrix ι ι ℂ) (v : ι → ℂ) :
   simp
 
 /- English proof (translation)
-Establish `h : (G.map (starRingEnd ℂ))ᵀ * cj P * G = cj ((cj G)ᴴ * P * cj G)`. Rewrite using `[cj_mul, cj_mul, cj_conjTranspose, cj_cj]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `cj_injective.eq_iff`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_iff_cj (P G : Matrix ι ι ℂ) :
     (G.map (starRingEnd ℂ))ᵀ * cj P * G = cj P ↔ (cj G)ᴴ * P * cj G = P := by
@@ -97,14 +97,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
 
 omit [IsCMField E] in
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap (intEmb_injective s) a`.
+A detailed English derivation is pending.
 -/
 theorem embOf_coe (s : 𝓞 E →+* ℂ) (a : 𝓞 E) : embOf s (a : E) = s a :=
   IsFractionRing.lift_algebraMap (intEmb_injective s) a
 
 omit [IsCMField E] in
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (by ext a; simpa using embOf_coe (φ.comp (algebraMap (𝓞 E) E)) a)`.
+A detailed English derivation is pending.
 -/
 theorem embOf_comp (φ : E →+* ℂ) : embOf (φ.comp (algebraMap (𝓞 E) E)) = φ :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (by
@@ -112,7 +112,7 @@ theorem embOf_comp (φ : E →+* ℂ) : embOf (φ.comp (algebraMap (𝓞 E) E)) 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `s s' h`. Use extensionality with `a`. Use `congrArg (fun φ : E →+* ℂ => φ (a : E)) h` as an intermediate fact. Simplify `this` using `[embOf_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem embOf_injective : Function.Injective (embOf : (𝓞 E →+* ℂ) → (E →+* ℂ)) := by
   intro s s' h
@@ -121,17 +121,17 @@ theorem embOf_injective : Function.Injective (embOf : (𝓞 E →+* ℂ) → (E 
   simpa [embOf_coe] using this
 
 /- English proof (translation)
-Establish `hcm` using `F.cm`. Prove the components needed by the constructor for the conclusion. Introduce `τ τ' h`. Break down `InfinitePlace.mk_eq_iff.1 h with h | h` into its components or cases. Conclude with `hcm.1 (embOf_injective h)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `hs : F.σ τ' = (starRingEnd ℂ).comp (F.σ τ)`. Use extensionality with `a`. Use `congrArg (fun φ : E →+* ℂ => φ (a : E)) h` as an intermediate fact. Simplify `this.symm` using `[embOf_coe, ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((hcm.2 (F.σ τ)).1 ⟨τ, rfl⟩) ⟨τ', hs⟩`. Introduce `w set s : 𝓞 E →+* ℂ := w.embedding.comp (algebraMap (𝓞 E) E) with hs`. Distinguish the cases in `h : ∃ τ, F.σ τ = s`. Take `⟨τ, hτ⟩` from `h`. Use `⟨τ, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[plc, hτ, hs, embOf_comp, InfinitePlace.mk_embedding]`. Establish `h2 : ∃ τ, F.σ τ = (starRingEnd ℂ).comp s`. Assume the negation of the conclusion as `h3`. Conclude with `h ((hcm.2 s).2 h3)`. Take `⟨τ, hτ⟩` from `h2`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨τ, ?_⟩` and prove the remaining obligations. Establish `he : embOf (F.σ τ) = ComplexEmbedding.conjugate w.embedding`. Rewrite using `[hτ]`. Establish `: (starRingEnd ℂ).comp s = (ComplexEmbedding.conjugate w.embedding).comp (algebraMap (𝓞 E) E)`. Use extensionality with `a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hs, ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[this, embOf_comp]`. Rewrite using `[plc, he, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`.
+A detailed English derivation is pending.
 -/
 theorem plc_bijective (F : UnivFam E Ψ j j' n g Λ) : Function.Bijective (plc F) := by
   have hcm := F.cm
@@ -165,7 +165,7 @@ theorem plc_bijective (F : UnivFam E Ψ j j' n g Λ) : Function.Bijective (plc F
       rw [plc, he, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.embedding_mk_eq (embOf (F.σ τ))).resolve_left h`.
+A detailed English derivation is pending.
 -/
 theorem emb_ne (F : UnivFam E Ψ j j' n g Λ) (τ : Ψ) (h : (plc F τ).embedding ≠ embOf (F.σ τ)) :
     (plc F τ).embedding = ComplexEmbedding.conjugate (embOf (F.σ τ)) :=
@@ -179,14 +179,14 @@ def atPlc (F : UnivFam E Ψ j j' n g Λ) (Pt : Ψ → Matrix (Fin (j + j')) (Fin
 variable {F : UnivFam E Ψ j j' n g Λ} (C : LatEmb F)
 
 /- English proof (translation)
-Rewrite using `[gramAt, h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gramAt_of_eq {τ : Ψ} (h : (plc F τ).embedding = embOf (F.σ τ)) :
     gramAt C.h (Pi.basisFun E (Fin (j + j'))) (plc F τ) = C.gr τ := by
   rw [gramAt, h]; rfl
 
 /- English proof (translation)
-Rewrite using `[gramAt, emb_ne F τ h]`. Use extensionality with `i k`. Simplify using `[LatEmb.gr, ComplexEmbedding.conjugate_coe_eq]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramAt_of_ne {τ : Ψ} (h : (plc F τ).embedding ≠ embOf (F.σ τ)) :
     gramAt C.h (Pi.basisFun E (Fin (j + j'))) (plc F τ) = cj (C.gr τ) := by
@@ -195,7 +195,7 @@ theorem gramAt_of_ne {τ : Ψ} (h : (plc F τ).embedding ≠ embOf (F.σ τ)) :
   simp [LatEmb.gr, ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[vecAt, LatEmb.vec, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecAt_of_eq (x : Λ) {τ : Ψ} (h : (plc F τ).embedding = embOf (F.σ τ)) :
     vecAt (Pi.basisFun E (Fin (j + j'))) (C.e x) (plc F τ) = C.vec x τ := by
@@ -203,7 +203,7 @@ theorem vecAt_of_eq (x : Λ) {τ : Ψ} (h : (plc F τ).embedding = embOf (F.σ �
   simp [vecAt, LatEmb.vec, h]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[vecAt, LatEmb.vec, emb_ne F τ h, ComplexEmbedding.conjugate_coe_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecAt_of_ne (x : Λ) {τ : Ψ} (h : (plc F τ).embedding ≠ embOf (F.σ τ)) :
     vecAt (Pi.basisFun E (Fin (j + j'))) (C.e x) (plc F τ) = star (C.vec x τ) := by
@@ -211,28 +211,28 @@ theorem vecAt_of_ne (x : Λ) {τ : Ψ} (h : (plc F τ).embedding ≠ embOf (F.σ
   simp [vecAt, LatEmb.vec, emb_ne F τ h, ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Rewrite using `[LatEmb.tm, tauMat, if_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tm_of_eq (a : C.Arch) {τ : Ψ} (h : (plc F τ).embedding = embOf (F.σ τ)) :
     C.tm a τ = ((a : InfinitePlace E → GL (Fin (j + j')) ℂ) (plc F τ) : Matrix (Fin (j + j')) (Fin (j + j')) ℂ) := by
   rw [LatEmb.tm, tauMat, if_pos h]
 
 /- English proof (translation)
-Rewrite using `[LatEmb.tm, tauMat, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tm_of_ne (a : C.Arch) {τ : Ψ} (h : (plc F τ).embedding ≠ embOf (F.σ τ)) :
     C.tm a τ = cj ((a : InfinitePlace E → GL (Fin (j + j')) ℂ) (plc F τ) : Matrix (Fin (j + j')) (Fin (j + j')) ℂ) := by
   rw [LatEmb.tm, tauMat, if_neg h]
 
 /- English proof (translation)
-Rewrite using `[atPlc]`. Conclude with `if_pos h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atPlc_of_eq (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) {τ : Ψ}
     (h : (plc F τ).embedding = embOf (F.σ τ)) : atPlc F Pt τ = Pt τ := by
   rw [atPlc]; exact if_pos h
 
 /- English proof (translation)
-Rewrite using `[atPlc]`. Conclude with `if_neg h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atPlc_of_ne (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) {τ : Ψ}
     (h : (plc F τ).embedding ≠ embOf (F.σ τ)) : atPlc F Pt τ = cj (Pt τ) := by
@@ -259,7 +259,7 @@ def majOf (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (hP : ∀ τ, (
     · rw [atPlc_of_ne Pt h, gramAt_of_ne C h, ← cj_inv, ← cj_mul, ← cj_mul, hS τ]
 
 /- English proof (translation)
-Use `show atPlc F Pt ((Equiv.ofBijective _ (plc_bijective F)).symm (plc F τ)) = _`. Rewrite using `[Equiv.ofBijective_symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majOf_P (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (hP : ∀ τ, (Pt τ).PosDef)
     (hS : ∀ τ, Pt τ * (C.gr τ)⁻¹ * Pt τ = C.gr τ) (τ : Ψ) : (majOf C Pt hP hS).P (plc F τ) = atPlc F Pt τ := by
@@ -267,7 +267,7 @@ theorem majOf_P (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (hP : ∀
   rw [Equiv.ofBijective_symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[majOf_P]`. Distinguish the cases in `h : (plc F τ).embedding = embOf (F.σ τ)`. Rewrite using `[atPlc_of_eq Pt h, tm_of_eq C _ h, ← vecAt_of_eq C x h]`. Both sides reduce to the same expression. Rewrite using `[atPlc_of_ne Pt h, tm_of_ne C _ h, ← re_term_cj, ← vecAt_of_ne C x h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -284,7 +284,7 @@ theorem majOf_term (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (hP : 
     rfl
 
 /- English proof (translation)
-Rewrite using `[Majorant.len, Real.sq_sqrt]`. Rewrite using `[← (Equiv.ofBijective _ (plc_bijective F)).sum_comp]`. Conclude with `Finset.sum_congr rfl fun τ _ => majOf_term C Pt hP hS a x τ`. Conclude with `Finset.sum_nonneg fun w _ => ((majOf C Pt hP hS).posDef w).posSemidef.re_dotProduct_nonneg _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majOf_len (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (hP : ∀ τ, (Pt τ).PosDef)
     (hS : ∀ τ, Pt τ * (C.gr τ)⁻¹ * Pt τ = C.gr τ) (a : C.Arch) (x : Λ) :
@@ -296,11 +296,11 @@ theorem majOf_len (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (hP : �
   · exact Finset.sum_nonneg fun w _ => ((majOf C Pt hP hS).posDef w).posSemidef.re_dotProduct_nonneg _
 
 /- English proof (translation)
-Establish `hloc : ∀ τ, ((((c : InfinitePlace E → GL (Fin (j + j')) ℂ) (plc F τ) : Matrix (Fin (j + j')) (Fin (j + j')) ℂ)).map (starRingEnd ℂ))ᵀ * (majOf C Pt hP hS).P (plc F τ) * ((c : InfinitePlace E → GL (Fin (j + j')) ℂ) (plc F τ) : Matrix (Fin (j + j')) (Fin (j + j')) ℂ) = (majOf C Pt …`. Introduce `τ`. Rewrite using `[majOf_P]`. Distinguish the cases in `h : (plc F τ).embedding = embOf (F.σ τ)`. Rewrite using `[atPlc_of_eq Pt h, tm_of_eq C _ h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[atPlc_of_ne Pt h, tm_of_ne C _ h]`. Conclude with `stab_iff_cj _ _`. Rewrite using `[Majorant.stab, Subgroup.mem_subgroupOf, Subgroup.mem_pi]`. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc τ`. Conclude with `(hloc τ).1 (mem_unitaryGroupMatrix.1 (hc (plc F τ) (Set.mem_univ _)))`. Introduce `hc w _`. Take `⟨τ, rfl⟩` from `(plc_bijective F).2 w`. Conclude with `mem_unitaryGroupMatrix.2 ((hloc τ).2 (hc τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem majOf_stab (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (hP : ∀ τ, (Pt τ).PosDef)
     (hS : ∀ τ, Pt τ * (C.gr τ)⁻¹ * Pt τ = C.gr τ) (c : C.Arch) :
@@ -327,7 +327,7 @@ theorem majOf_stab (Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (hP : 
 end Arch
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C Pt hP hS`. Conclude with `⟨majOf C Pt hP hS, majOf_len C Pt hP hS, majOf_stab C Pt hP hS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_majorant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type)
     [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F)

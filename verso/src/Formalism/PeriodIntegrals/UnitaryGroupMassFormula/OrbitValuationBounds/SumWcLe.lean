@@ -11,17 +11,15 @@ namespace PI.OrbBoundFW
 variable {D : D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-Establish `hcap : ∀ s, (((orbLoc E p h u i z Th).cap s : ℕ) : ℝ) ≤ L.sc.b + L.etaSz + 1 + 3 * L.Sc`. Introduce `s`. Establish `hc` using `hS.capW u i hi (orbMap D p z s)`. Unfold `Formalism.MainNotions.OrbitPlaces.Ent.cap at hc`. Unfold `Formalism.MainNotions.product_zeroth_first_parts.Loc.cap`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `ht : IsTopPl D (orbMap D p z s)`. Establish `hs : s ∈ (orbLoc E p h u i z Th).TT` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, ht⟩`. Rewrite `hc` using `[if_pos ht]`. Use `split_ifs`. Conclude with `hc`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : s ∉ (orbLoc E p h u i z Th).TT` using `fun hs => ht (Finset.mem_filter.1 hs).2`. Rewrite `hc` using `[if_neg ht]`. Use `split_ifs`. Conclude with `hc`. Establish `hB0 : 0 ≤ L.sc.b + L.etaSz + 1 + 3 * L.Sc` using `le_trans (Nat.cast_nonneg _) (hcap 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hW : ∀ s, (((orbLoc E p h u i z Th).Wc s : ℕ) : ℝ) ≤ L.sc.b + L.etaSz + 1 + 3 * L.Sc`. Introduce `s`. Establish `h1 : (orbLoc E p h u i z Th).Wc s ≤ ⌊L.sc.b + L.etaSz + 1 + 3 * L.Sc⌋₊`. Unfold `Formalism.MainNotions.product_zeroth_first_parts.Loc.Wc`. Apply `csSup_le'` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Introduce and unpack `c ⟨j, -, -, rfl⟩`. Conclude with `Nat.le_floor (hcap _)`. Conclude with `(Nat.cast_le.2 h1).trans (Nat.floor_le hB0)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
-
-Use `_ = (topsOrb D p z : ℝ) * (L.sc.b + L.etaSz + 1 + 3 * L.Sc) := by`. Unfold `topsOrb`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_Wc_le {X : Inst D L} {E : Ent D} (hS : Shape D L X E) {p : ℕ} [Fact p.Prime] (h : OrbOK D p)
     (u : D.what₂.Word) {i : ℕ} (hi : i < D.R.m) (z : Pl D)

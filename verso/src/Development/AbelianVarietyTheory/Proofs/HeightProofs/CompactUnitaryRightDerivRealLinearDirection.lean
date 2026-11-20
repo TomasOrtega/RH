@@ -26,7 +26,7 @@ open Matrix
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (0 : Mx n)ᴴ * Jm ε + Jm ε * 0 = 0`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inK_zero' (ε : Fin n → Bool) : inK ε (0 : Mx n) := by
   refine ⟨?_, ?_⟩
@@ -35,9 +35,9 @@ theorem inK_zero' (ε : Fin n → Bool) : inK ε (0 : Mx n) := by
   · simp
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hX`. Take `⟨h3, h4⟩` from `hY`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1' : Xᴴ * Jm ε + Jm ε * X = 0` using `h1`. Establish `h3' : Yᴴ * Jm ε + Jm ε * Y = 0` using `h3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (X + Y)ᴴ * Jm ε + Jm ε * (X + Y) = 0`. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.add_mul, Matrix.mul_add, h2, h4]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inK_add'' {ε : Fin n → Bool} {X Y : Mx n} (hX : inK ε X) (hY : inK ε Y) : inK ε (X + Y) := by
   obtain ⟨h1, h2⟩ := hX
@@ -53,7 +53,7 @@ theorem inK_add'' {ε : Fin n → Bool} {X Y : Mx n} (hX : inK ε X) (hY : inK �
   · rw [Matrix.add_mul, Matrix.mul_add, h2, h4]
 
 /- English proof (translation)
-Use `Finset.sum_induction _ (inK ε) (fun _ _ ha hb => inK_add'' ha hb) (inK_zero' ε) ?_` and prove the remaining obligations. Introduce `j _`. Conclude with `inK_smul_real ε (hX j) (c j)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inK_sum_real {ε : Fin n → Bool} {r : ℕ} (X : Fin r → Mx n) (c : Fin r → ℝ) (hX : ∀ j, inK ε (X j)) :
     inK ε (∑ j, (c j : ℂ) • X j) := by
@@ -83,15 +83,13 @@ def entryDerStar (ε : Fin n → Bool) (k : KG ε) (a b : Fin n) : Mx n →ₗ[�
     ring
 
 /- English proof (translation)
-Take `⟨a, b, f⟩` from `c`. Establish `hent : ∀ (k : KG ε) (Y : Mx n), inK ε Y → HasDerivAt (fun t : ℝ => (toMK (k * expK ε Y t)) a b) (∑ l, toMK k a l * Y l b) 0`. Introduce `k Y hY`. Establish `e : (fun t : ℝ => (toMK (k * expK ε Y t)) a b) = fun t : ℝ => ∑ l, toMK k a l * (NormedSpace.exp ((t : ℂ) • Y)) l b`. Use function extensionality and compare the values at `t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [toMK_mul, toMK_expK hY, Matrix.mul_apply]`. Rewrite using `[e]`. Conclude with `HasDerivAt.fun_sum fun l _ => (hasDerivAt_exp_entry_real Y l b).const_mul _`. Consider the cases of `f`. Use `⟨fun k => entryDerStar ε k a b, fun k Y hY => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(hent k Y hY).star`. Establish `e1 : (fun t : ℝ => coord ε (a, b, false) (k * expK ε Y t)) = fun t => star ((toMK (k * expK ε Y t)) a b)`. Use function extensionality and compare the values at `t`. Simplify using `[coord]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Use `⟨fun k => entryDer ε k a b, fun k Y hY => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun t : ℝ => coord ε (a, b, true) (k * expK ε Y t)) = fun t => (toMK (k * expK ε Y t)) a b`. Use function extensionality and compare the values at `t`. Simplify using `[coord]`.
-
-Rewrite using `[e1]`. Conclude with `hent k Y hY`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_coord_lin {ε : Fin n → Bool} (c : Fin n × Fin n × Bool) :
     ∃ D : KG ε → Mx n →ₗ[ℝ] ℂ, ∀ (k : KG ε) (Y : Mx n), inK ε Y →
@@ -119,13 +117,13 @@ theorem hasDerivAt_coord_lin {ε : Fin n → Bool} (c : Fin n × Fin n × Bool) 
     rw [e1]; exact hent k Y hY
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil`. Use `⟨0, fun k Y _ => ?_⟩` and prove the remaining obligations. Simplify `hasDerivAt_const (0 : ℝ) (1 : ℂ)` using `[mono]`. Consider the case `cons c s ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Take `⟨Dc, hc⟩` from `hasDerivAt_coord_lin (ε := ε) c`. Take `⟨Ds, hs⟩` from `ih`. Use `⟨fun k => mono ε s k • Dc k + coord ε c k • Ds k, fun k Y hY => ?_⟩` and prove the remaining obligations. Establish `h` using `(hc k Y hY).mul (hs k Y hY)`. Establish `e : (fun t : ℝ => mono ε (c :: s) (k * expK ε Y t)) = fun t => coord ε c (k * expK ε Y t) * mono ε s (k * expK ε Y t)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Simplify using `[mono]`. Rewrite using `[e]`. Rewrite `h` using `[coord_mul_expK_zero hY, mono_mul_expK_zero hY]`. Use `h.congr_deriv ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasDerivAt_mono_lin {ε : Fin n → Bool} (s : List (Fin n × Fin n × Bool)) :
     ∃ D : KG ε → Mx n →ₗ[ℝ] ℂ, ∀ (k : KG ε) (Y : Mx n), inK ε Y →
@@ -149,11 +147,11 @@ theorem hasDerivAt_mono_lin {ε : Fin n → Bool} (s : List (Fin n × Fin n × B
     ring
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, -, rfl⟩` from `hx`. Conclude with `hasDerivAt_mono_lin s`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun k Y _ => by simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨D₁, d₁⟩` from `hx`. Take `⟨D₂, d₂⟩` from `hy`. Conclude with `⟨D₁ + D₂, fun k Y hY => (d₁ k Y hY).add (d₂ k Y hY)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul a x _ hx`. Take `⟨D, dD⟩` from `hx`. Conclude with `⟨a • D, fun k Y hY => by simpa using (dD k Y hY).const_mul a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_lin_of_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) :
     ∃ D : KG ε → Mx n →ₗ[ℝ] ℂ, ∀ (k : KG ε) (Y : Mx n), inK ε Y →
@@ -173,11 +171,11 @@ theorem hasDerivAt_lin_of_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → �
     exact ⟨a • D, fun k Y hY => by simpa using (dD k Y hY).const_mul a⟩
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `hasDerivAt_lin_of_mem hφ`. Establish `hr : ∀ (Y : Mx n), inK ε Y → ∀ k, rder ε [Y] φ k = D k Y`. Introduce `Y hY k`. Rewrite using `[rder_cons, rder_nil]`. Conclude with `(hD k Y hY).deriv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[hr _ (inK_sum_real X c hX) k, Finset.sum_apply]`. Establish `e : (∑ j, (c j : ℂ) • X j) = ∑ j, c j • X j` using `Finset.sum_congr rfl fun j _ => Complex.coe_smul (c j) (X j)`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Pi.smul_apply, hr _ (hX j) k, Complex.real_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem rder_real_linear {n : ℕ} (ε : Fin n → Bool) (d : ℕ) (φ : KG ε → ℂ) (hφ : φ ∈ polyV ε d)
     {r : ℕ} (X : Fin r → Mx n) (c : Fin r → ℝ) (hX : ∀ j, inK ε (X j)) :

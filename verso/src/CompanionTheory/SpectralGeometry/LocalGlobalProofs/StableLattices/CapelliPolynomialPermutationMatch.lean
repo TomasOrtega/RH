@@ -9,17 +9,17 @@ namespace GlobalTheory.CompanionTheory.RgCOBlock
 open Finset Polynomial
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`. Introduce `P hm hd`. Use `⟨fun _ => 0, ?_⟩` and prove the remaining obligations. Simplify `hd)` using `using eq_one_of_monic_natDegree_zero hm (by simpa`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a F ha ih`. Introduce `P hm hd`. Rewrite `hd` using `[Finset.card_insert_of_notMem ha]`. Establish `hdeg : P.degree ≠ 0`. Introduce `h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: P.natDegree = 0` using `natDegree_eq_zero_iff_degree_le_zero.mpr h.le`. Use linear arithmetic over natural numbers and integers. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root P hdeg`. Take `⟨Q, hQ⟩` from `dvd_iff_isRoot.mpr hz`. Establish `hmQ : Q.Monic`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hm`. Rewrite `h` using `[hQ]`. Conclude with `(monic_X_sub_C z).of_mul_monic_left h`. Establish `hdQ : Q.natDegree = F.card`. Establish `h` using `congrArg natDegree hQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[(monic_X_sub_C z).natDegree_mul hmQ, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Take `⟨r, hr⟩` from `ih Q hmQ hdQ`. Use `⟨Function.update r a z, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ha, Function.update_self, hQ, hr]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (fun h : b = a => ha (h ▸ hb))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linear_factors_indexed {ι : Type} [DecidableEq ι] (F : Finset ι) :
     ∀ P : ℂ[X], P.Monic → P.natDegree = F.card → ∃ r : ι → ℂ, P = ∏ a ∈ F, (X - C (r a)) := by
@@ -53,19 +53,17 @@ theorem exists_linear_factors_indexed {ι : Type} [DecidableEq ι] (F : Finset �
     rw [Function.update_of_ne (fun h : b = a => ha (h ▸ hb))]
 
 /- English proof (translation)
-Use `choose r hr using fun i => exists_linear_factors_indexed _ (P i) (hP i).1 (hP i).2`. Set `lv : Fin n → Fin M` to `fun a => ⟨lev a, hlev a⟩`. Set `g : Fin n → ℂ` to `fun a => s (lv a) - r (lv a) a`. Establish `hfil : ∀ i : Fin M, (univ.filter fun a => lev a = (i : ℕ)) = univ.filter fun a => lv a = i`. Introduce `i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `[lv, Fin.ext_iff]`. Establish `hg : ∀ i : Fin M, ∀ a ∈ univ.filter (fun a => lev a = (i : ℕ)), g a = s i - r i a`. Introduce `i a ha`. Establish `: lv a = i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[hfil]`. Conclude with `(Finset.mem_filter.mp ha).2`. Simplify using `only [g, this]`. Establish `hpoly : ∀ Y, Formalism.QuantumDeterminants.capP g Y = Formalism.QuantumDeterminants.capP χ Y`. Introduce `Y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hcap Y]`. Unfold `Formalism.QuantumDeterminants.capP`. Rewrite using `[← Finset.prod_fiberwise univ lv]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [hr i, eval_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hfil i]`. Use `Finset.prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[← hfil i]`. Rewrite using `[hg i a ha]`. Simplify using `only [eval_sub, eval_X, eval_C]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨σ, hσ⟩` from `GlobalTheory.CompanionTheory.CharOfLowK.exists_perm_of_capelliPolynomial_eq g χ hpoly`. Use `⟨σ, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ a ∈ univ.filter (fun a => lev a = (i : ℕ)), χ (σ a) = ∑ a ∈ univ.filter (fun a => lev a = (i : ℕ)), (s i - r i a)` using `Finset.sum_congr rfl fun a ha => by rw [← hσ a, hg i a ha]`. Rewrite using `[h1, Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]`.
-
-Use `conv_rhs => rw [hr i, prod_X_sub_C_nextCoeff]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_monic_factors (n M : ℕ) (lev : Fin n → ℕ) (χ : Fin n → ℂ) (P : Fin M → ℂ[X]) (s : Fin M → ℂ)
     (hlev : ∀ a, lev a < M)

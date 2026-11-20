@@ -14,37 +14,37 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {B : Type} [CommRing B] 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F E)
 
 /- English proof (translation)
-Apply `coord_injective b` to reduce the goal to its premises. Rewrite using `[map_add, coord_emb, coord_emb, coord_emb]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_add (c c' : ι → B) : emb b (c + c') = emb b c + emb b c' := by
   apply coord_injective b; rw [map_add, coord_emb, coord_emb, coord_emb]
 
 /- English proof (translation)
-Apply `coord_injective b` to reduce the goal to its premises. Rewrite using `[map_zero, coord_emb]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_zero : emb b (0 : ι → B) = 0 := by
   apply coord_injective b; rw [map_zero, coord_emb]
 
 /- English proof (translation)
-Apply `coord_injective b` to reduce the goal to its premises. Rewrite using `[map_neg, coord_emb, coord_emb]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_neg (c : ι → B) : emb b (-c) = -emb b c := by
   apply coord_injective b; rw [map_neg, coord_emb, coord_emb]
 
 /- English proof (translation)
-Apply `coord_injective b` to reduce the goal to its premises. Rewrite using `[map_sub, coord_emb, coord_emb, coord_emb]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_sub (c c' : ι → B) : emb b (c - c') = emb b c - emb b c' := by
   apply coord_injective b; rw [map_sub, coord_emb, coord_emb, coord_emb]
 
 /- English proof (translation)
-Apply `coord_injective b` to reduce the goal to its premises. Rewrite using `[map_nsmul, coord_emb, coord_emb]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_nsmul (N : ℕ) (c : ι → B) : emb b (N • c) = N • emb b c := by
   apply coord_injective b; rw [map_nsmul, coord_emb, coord_emb]
 
 /- English proof (translation)
-Establish `: {p | f p = g p} = {p | coord b (f p) = coord b (g p)}`. Use extensionality with `p`. Conclude with `(coord_injective b).eq_iff.symm`. Rewrite using `[this]`. Conclude with `isClosed_eq hf hg`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_eqA [TopologicalSpace B] [IsTopologicalRing B] [T2Space B] {X : Type*} [TopologicalSpace X]
     {f g : X → E ⊗[F] B} (hf : CtsA b f) (hg : CtsA b g) : IsClosed {p | f p = g p} := by
@@ -55,7 +55,7 @@ theorem isClosed_eqA [TopologicalSpace B] [IsTopologicalRing B] [T2Space B] {X :
 end General
 
 /- English proof (translation)
-The claim follows from `(hx w).mp hw`.
+A detailed English derivation is pending.
 -/
 theorem stab_mem {I : AutInst} {x : I.Gf} (hx : x ∈ I.Kset) {w : Fin I.n → I.E ⊗[I.F] Af I.F}
     (hw : w ∈ I.Lf) : I.fmat x *ᵥ w ∈ I.Lf := (hx w).mp hw
@@ -73,11 +73,9 @@ abbrev Co : Type := Fin I.n → Fin I.n → ιb I → Af I.F
 def matOf (P : Co I) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F) := fun i j => emb (bs I) (P i j)
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨⟨l, hl⟩, rfl⟩ := hx`. Conclude with `hM l hl`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[Subring.smul_def, Matrix.mulVec_smul, ← Subring.smul_def]`.
-
-Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_Lf (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))
     (hM : ∀ l ∈ I.L, M *ᵥ inclV (F := I.F) l ∈ I.Lf) : ∀ y ∈ I.Lf, M *ᵥ y ∈ I.Lf := by
@@ -91,23 +89,19 @@ theorem mulVec_mem_Lf (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))
     exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Set `S : AddSubgroup (Fin I.n → ιb I → Af I.F)` to `{ carrier := {w | (fun j => emb (bs I) (w j)) ∈ I.Lf} add_mem' := fun {w w'} hw hw' => by`. Establish `: (fun j => emb (bs I) ((w + w') j)) = (fun j => emb (bs I) (w j)) + fun j => emb (bs I) (w' j)`. Use function extensionality and compare the values at `j`. Simplify using `[emb_add]`. Use `show (fun j => emb (bs I) ((w + w') j)) ∈ I.Lf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `I.Lf.add_mem hw hw'`. Use the proof step `zero_mem' := by show (fun j => emb (bs I) ((0 : Fin I.n → ιb I → Af I.F) j)) ∈ I.Lf`. Establish `: (fun j => emb (bs I) ((0 : Fin I.n → ιb I → Af I.F) j)) = 0`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[emb_zero]`. Rewrite using `[this]`. Conclude with `I.Lf.zero_mem`. Use the proof step `neg_mem' := fun {w} hw => by`. Establish `: (fun j => emb (bs I) ((-w) j)) = -fun j => emb (bs I) (w j)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `j`. Simplify using `[emb_neg]`. Use `show (fun j => emb (bs I) ((-w) j)) ∈ I.Lf`. Rewrite using `[this]`. Conclude with `I.Lf.neg_mem hw }`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hnhds : (S : Set (Fin I.n → ιb I → Af I.F)) ∈ 𝓝 0`. Set `U` to `{w : Fin I.n → ιb I → Af I.F | ∀ j k, algebraMap I.F (Af I.F) ((d : I.F)⁻¹) * w j k ∈ Ohat I.F}`. Establish `hU : IsOpen U`. Establish `: U = ⋂ j, ⋂ k, (fun w : Fin I.n → ιb I → Af I.F => algebraMap I.F (Af I.F) ((d : I.F)⁻¹) * w j k) ⁻¹' Ohat I.F`. Use extensionality with `w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[U]`. Rewrite using `[this]`. Use `isOpen_iInter_of_finite fun j => isOpen_iInter_of_finite fun k => ?_` and prove the remaining obligations. Establish `hc : Continuous (fun w : Fin I.n → ιb I → Af I.F => algebraMap I.F (Af I.F) ((d : I.F)⁻¹) * w j k)` using `continuous_const.mul ((continuous_apply k).comp (continuous_apply j))`. Conclude with `hc.isOpen_preimage _ isOpen_Ohat`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h0 : (0 : Fin I.n → ιb I → Af I.F) ∈ U` using `fun j k => by simpa using ohat_zero`. Use `Filter.mem_of_superset (hU.mem_nhds h0) fun w hw => ?_` and prove the remaining obligations. Establish `hd0 : (d : I.F) ≠ 0` using `by exact_mod_cast hd.ne'`. Use `hlow (fun j => emb (bs I) (fun k => algebraMap I.F (Af I.F) ((d : I.F)⁻¹) * w j k)) (fun j k => by rw [coord_emb]; exact hw j k)` as an intermediate fact. Use `show (fun j => emb (bs I) (w j)) ∈ I.Lf`.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, ← emb_nsmul]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
-
-Rewrite using `[Pi.smul_apply, nsmul_eq_mul, ← mul_assoc, ← map_natCast (algebraMap I.F (Af I.F)), ← map_mul, mul_inv_cancel₀ hd0, map_one, one_mul]`. Conclude with `AddSubgroup.isClosed_of_isOpen S (S.isOpen_of_mem_nhds hnhds)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_LfC (d : ℕ) (hd : 0 < d)
     (hlow : ∀ y : Fin I.n → I.E ⊗[I.F] Af I.F, (∀ j, IntC (bs I) (y j)) → d • y ∈ I.Lf) :
@@ -154,9 +148,9 @@ theorem isClosed_LfC (d : ℕ) (hd : 0 < d)
   exact AddSubgroup.isClosed_of_isOpen S (S.isOpen_of_mem_nhds hnhds)
 
 /- English proof (translation)
-Introduce `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hij]`. Conclude with `intC_zero`.
+A detailed English derivation is pending.
 -/
 theorem intC_single (D1 : ℕ) (h1 : IntC (bs I) (D1 • (1 : I.E ⊗[I.F] Af I.F))) (j : Fin I.n) :
     ∀ i, IntC (bs I) ((Pi.single j (D1 • (1 : I.E ⊗[I.F] Af I.F)) : Fin I.n → I.E ⊗[I.F] Af I.F) i) := by
@@ -166,9 +160,9 @@ theorem intC_single (D1 : ℕ) (h1 : IntC (bs I) (D1 • (1 : I.E ⊗[I.F] Af I.
   · rw [Pi.single_eq_of_ne hij]; exact intC_zero
 
 /- English proof (translation)
-Establish `hl` using `hlow _ (intC_single I D1 h1 j)`. Establish `hxl` using `stab_mem hx hl`. Use `hup _ hxl i` as an intermediate fact. Establish `e : (I.fmat x *ᵥ (d • (Pi.single j (D1 • (1 : I.E ⊗[I.F] Af I.F)) : Fin I.n → I.E ⊗[I.F] Af I.F))) i = (d * D1) • I.fmat x i j`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, mul_smul_comm, smul_smul, mul_comm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e, smul_smul]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_K (d D D1 : ℕ)
     (hlow : ∀ y : Fin I.n → I.E ⊗[I.F] Af I.F, (∀ j, IntC (bs I) (y j)) → d • y ∈ I.Lf)

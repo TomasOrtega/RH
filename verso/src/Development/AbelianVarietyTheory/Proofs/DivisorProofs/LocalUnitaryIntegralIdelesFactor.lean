@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 namespace GlobalTheory.ThK.EulerUnr
 
 /- English proof (translation)
-Rewrite using `[Measure.map_prod_map _ _ hi.measurable hj.measurable, (hi.prodMap hj).integral_map]`. Establish `h : ∀ p : α' × β', g (Prod.map i j p) = r p.2` using `fun p => hg p.1 p.2`. Simplify using `only [h]`. Rewrite using `[integral_fun_snd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_map_prod_snd_of_prob {α β α' β' : Type} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace α']
     [MeasurableSpace β'] {i : α' → α} {j : β' → β} (hi : MeasurableEmbedding i) (hj : MeasurableEmbedding j)
@@ -19,9 +19,7 @@ theorem integral_map_prod_snd_of_prob {α β α' β' : Type} [MeasurableSpace α
   simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n X K hKc v μK hμK μE hμE g r hg`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `haveI : IsProbabilityMeasure μK := ⟨hμK.2⟩`.
-
-Use `haveI := hμE.1`. Establish `hK1 : IsClosed (KAt K (evFin F v) : Set (UA σ X.J))` using `hKc.inter (isClosed_UAtSub X _)`. Conclude with `integral_map_prod_snd_of_prob (MeasurableEmbedding.subtype_coe hK1.measurableSet) (MeasurableEmbedding.subtype_coe (isClosed_idelesAt (E := E) (evFin F v)).measurableSet) μK μE g r (fun a b => hg _ a.2 _ b.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_KAt_idelesAt_snd : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} {X : Spc F E n} (K : Subgroup (UA σ X.J)), IsClosed (K : Set (UA σ X.J)) → ∀ (v : Pl F) (μK : Measure (KAt K (evFin F v))), IsNormK K (evFin F v) μK → ∀ (μE : Measure (idelesAt E (evFin F v))), IsNormE E v μE → ∀ (g : UA σ X.J × (AE F E)ˣ → ℝ) (r : idelesAt E (evFin F v) → ℝ), (∀ k ∈ KAt K (evFin F v), ∀ (l : (AE F E)ˣ) (hl : l ∈ idelesAt E (evFin F v)), g (k, l) = r ⟨l, hl⟩) → ∫ q, g q ∂((μK.map Subtype.val).prod (μE.map Subtype.val)) = ∫ l, r l ∂μE := by
   intro F E _ _ _ _ _ σ n X K hKc v μK hμK μE hμE g r hg

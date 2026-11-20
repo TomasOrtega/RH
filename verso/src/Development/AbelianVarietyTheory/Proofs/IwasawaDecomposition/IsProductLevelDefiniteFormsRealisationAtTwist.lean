@@ -24,7 +24,7 @@ section Gen
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Use `show s.i 1 * (idemF (L := L) v) s.v = _`. Rewrite using `[map_one, one_mul, idemF_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_eA (s : SplitPlace L) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) :
     s.proj (eA L v) = if s.v = v then 1 else 0 := by
@@ -32,9 +32,7 @@ theorem proj_eA (s : SplitPlace L) (v : HeightOneSpectrum (𝓞 (maximalRealSubf
   rw [map_one, one_mul, idemF_apply]
 
 /- English proof (translation)
-Use `show ((cutGA (eA_mul v) (conj_eA v) κ).1 : Matrix (Fin n) (Fin n) (AL L)).map s.proj = _`. Rewrite using `[cutGA_val, map_cutMat, proj_eA]`. Use `split_ifs`. Rewrite using `[cutMat_one_left]`. Both sides reduce to the same expression.
-
-Rewrite using `[cutMat_zero_left]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locM_cut (s : SplitPlace L) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (κ : GAf L n) :
     locM s (cutGA (eA_mul v) (conj_eA v) κ) = if s.v = v then locM s κ else 1 := by
@@ -45,9 +43,9 @@ theorem locM_cut (s : SplitPlace L) (v : HeightOneSpectrum (𝓞 (maximalRealSub
   · rw [cutMat_zero_left]
 
 /- English proof (translation)
-Use `⟨inParah_one v r, fun a b _ _ => ⟨fun hba => ?_, fun hab => ?_⟩⟩` and prove the remaining obligations. Establish `h : a ≠ b` using `fun e => by subst e; exact lt_irrefl _ hba`. Rewrite using `[Matrix.one_apply_ne h, map_zero]`. Conclude with `WithZero.zero_lt_coe _`. Substitute `hab` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_eq, sub_self, map_zero]`. Conclude with `WithZero.zero_lt_coe _`.
+A detailed English derivation is pending.
 -/
 theorem inLevG_one (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : ℕ) :
     InLevG v r (1 : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) := by
@@ -62,11 +60,9 @@ theorem inLevG_one (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : �
 end Gen
 
 /- English proof (translation)
-Introduce `D X i b k Q ψ hA j κ hκ v`. Take `⟨hU, hG, hQ, hD⟩` from `((cell X b hA j).J_mem κ).1 hκ`. Use `⟨cutGA (eA_mul v) (conj_eA v) κ, ((cell X b hA j).J_mem _).2 ⟨cutGA_mem_Umax _ _ (eA_mem v) hU, fun kv => ?_, fun P hP => ?_, fun P hP => ?_⟩, triv_cut_eA v κ, cut_eA_at v κ⟩` and prove the remaining obligations. Rewrite using `[locM_cut]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG kv`. Conclude with `inLevG_one _ _`. Rewrite using `[locM_cut]`. Use `split_ifs`. Conclude with `hQ P hP`.
-
-Conclude with `inParah_one _ _`. Rewrite using `[locM_cut]`. Use `split_ifs`. Conclude with `hD P hP`. Conclude with `inParah_one _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (X : NExpTied D) (i : D.ntw.Tw) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host))
     (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) (hA : NX.AdmTw D i k Q ψ) (j : Fin D.R.m), NG.IsProdLevel (cell X b hA j).J := by

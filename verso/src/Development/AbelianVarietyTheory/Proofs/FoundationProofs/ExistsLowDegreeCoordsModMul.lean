@@ -4,11 +4,11 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set M := Algebra.leftMulMatrix b g with hM`. Establish `hCH : Polynomial.aeval g M.charpoly = 0`. Apply `Algebra.leftMulMatrix_injective b` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algHom_apply, map_zero, ← hM, Matrix.aeval_self_charpoly]`. Establish `hsplit` using `Polynomial.X_mul_divX_add M.charpoly`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : g * Polynomial.aeval g M.charpoly.divX + algebraMap k[X] A (M.charpoly.coeff 0) = 0`. Use `congrArg (Polynomial.aeval g) hsplit` as an intermediate fact. Rewrite `this` using `[hCH, map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C]`. Conclude with `this`. Establish `hdet : Algebra.norm k[X] g = (-1) ^ n * M.charpoly.coeff 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.norm_eq_matrix_det b, ← hM, Matrix.det_eq_sign_charpoly_coeff, Fintype.card_fin]`. Rewrite using `[hdet, map_mul, eq_neg_of_add_eq_zero_right h0]`. Conclude with `⟨-(algebraMap k[X] A ((-1) ^ n) * Polynomial.aeval g M.charpoly.divX), by ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem algebraMap_norm_dvd_polyX {k A : Type} [Field k] [CommRing A] [Algebra k[X] A] {n : ℕ}
     (b : Module.Basis (Fin n) k[X] A) (g : A) : g ∣ algebraMap k[X] A (Algebra.norm k[X] g) := by
@@ -28,15 +28,15 @@ theorem algebraMap_norm_dvd_polyX {k A : Type} [Field k] [CommRing A] [Algebra k
   exact ⟨-(algebraMap k[X] A ((-1) ^ n) * Polynomial.aeval g M.charpoly.divX), by ring⟩
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ n b g q d hg hq hdeg w`. Use `haveI : Module.Free k[X] A := Module.Free.of_basis b`. Use `haveI : Module.Finite k[X] A := Module.Finite.of_basis b`. Establish `hN : Algebra.norm k[X] g ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hg`. Use `set p₀ := Algebra.norm k[X] g * q with hp₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp₀0 : p₀ ≠ 0` using `mul_ne_zero hN hq`. Establish `hp₀deg : p₀.natDegree ≤ d + 1` using `by rw [hp₀, natDegree_mul hN hq]; exact hdeg`. Use `⟨fun i => b.repr w i % p₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Distinguish the cases in `h0 : b.repr w i % p₀ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h0]`. Establish `hlt : (b.repr w i % p₀).degree < p₀.degree` using `EuclideanDomain.mod_lt _ hp₀0`. Use `Polynomial.natDegree_lt_natDegree h0 hlt` as an intermediate fact. Use `show (b.repr w i % p₀).natDegree ≤ d`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : w - ∑ i, (b.repr w i % p₀) • b i = algebraMap k[X] A p₀ * ∑ i, (b.repr w i / p₀) • b i` using `by set a := b.repr w with ha`. Establish `hw : w = ∑ i, a i • b i` using `(b.sum_repr w).symm`. Rewrite using `[hw, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul, ← eq_sub_of_add_eq (EuclideanDomain.div_add_mod (a i) p₀), mul_smul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `algebraMap_norm_dvd_polyX b g`. Use `⟨c * ∑ i, (b.repr w i / p₀) • b i, ?_⟩` and prove the remaining obligations. Rewrite using `[hp₀, map_mul, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_lowDegree_coords_mod : ∀ (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k[X] A] (n : ℕ) (b : Module.Basis (Fin n) k[X] A) (g : A) (q : k[X]) (d : ℕ), g ≠ 0 → q ≠ 0 → (Algebra.norm k[X] g).natDegree + q.natDegree ≤ d + 1 →
  ∀ w : A, ∃ p : Fin n → k[X], (∀ i, (p i).natDegree ≤ d) ∧ w - ∑ i, p i • b i ∈ Ideal.span {g * algebraMap k[X] A q} := by

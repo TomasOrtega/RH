@@ -10,35 +10,31 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ V hV`. Use `haveI : ContinuousSMul F A.K := IsModuleTopology.toContinuousSMul F A.K`. Take `⟨-, -, hnd, -, -, -, -, -, -, hOpen, -, R, hR⟩` from `GlobalTheory.T.etaleHermitianPair_structure_facts F E A`. Establish `h0 : (0 : A.K) ∈ A.OK` using `by rw [← hR]; exact R.zero_mem`. Set `b` to `Module.finBasis F A.K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `d` to `(Algebra.traceForm F A.K).dualBasis hnd b`. Establish `hU : (⋂ i, {t : F | t • b i ∈ A.OK}) ∈ 𝓝 (0 : F)`. Use `Filter.iInter_mem.2 fun i => ?_` and prove the remaining obligations. Establish `hc : Continuous fun t : F => t • b i` using `continuous_id.smul continuous_const`. Establish `: A.OK ∈ 𝓝 ((fun t : F => t • b i) 0)` using `by simpa using hOpen.mem_nhds h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hc.continuousAt this`. Take `⟨ε, hε, hεU⟩` from `Metric.mem_nhds_iff.1 hU`. Take `⟨x₀, hx₀, -⟩` from `hψ.2`. Establish `hx₀0 : x₀ ≠ 0` using `by rintro rfl; exact hx₀ (AddChar.map_zero_eq_one ψ)`. Establish `key : ∀ t : F, (∀ l : F, ‖l‖ < ε → ψ (l * t) = 1) → ‖t‖ ≤ ‖x₀‖ / ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `t ht`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `at hlt`. Combine the linear relations using `[div_pos (norm_pos_iff.2 hx₀0) hε]`. Establish `hn : ‖x₀ / t‖ < ε`. Rewrite using `[norm_div, div_lt_iff₀ (norm_pos_iff.2 ht0)]`. Rewrite `hlt` using `[div_lt_iff₀ hε]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Apply `hx₀` to reduce the goal to its premises. Use `ht (x₀ / t) hn` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ x₀ ht0]`. Then use the resulting hypothesis. Use `set Rr := ‖x₀‖ / ε with hRr`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRr0 : 0 ≤ Rr` using `div_nonneg (norm_nonneg _) hε.le`. Set `g : (Fin (Module.finrank F A.K) → F) → A.K` to `fun t => ∑ i, t i • d i`. Establish `hg : Continuous g` using `continuous_finset_sum _ fun i _ => (continuous_apply i).smul continuous_const`. Establish `hg0 : g 0 = 0` using `by simp [g]`. Establish `hgV : g ⁻¹' V ∈ 𝓝 (0 : Fin (Module.finrank F A.K) → F)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hV` using `[← hg0]`. Conclude with `hg.continuousAt hV`. Take `⟨δ, hδ, hδV⟩` from `Metric.mem_nhds_iff.1 hgV`. Establish `hev : ∀ᶠ c in 𝓝 (0 : F), ‖c‖ * Rr < δ`. Establish `: Tendsto (fun c : F => ‖c‖ * Rr) (𝓝 0) (𝓝 (‖(0:F)‖ * Rr))` using `(continuous_norm.mul continuous_const).tendsto 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [norm_zero, zero_mul] at this`. Conclude with `this.eventually (gt_mem_nhds hδ)`. Use `filter_upwards [nhdsWithin_le_nhds hev, self_mem_nhdsWithin] with c hc hc0`. Introduce `y hy`. Establish `hc0' : c ≠ 0` using `hc0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbound : ∀ i, ‖Algebra.trace F A.K (y * b i)‖ ≤ ‖c‖ * Rr`. Introduce `i`. Establish `h1 : ‖c⁻¹ * Algebra.trace F A.K (b i * y)‖ ≤ Rr`. Apply `key` to reduce the goal to its premises. Introduce `l hl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : c • ((l * c⁻¹) • b i) ∈ A.OK`. Rewrite using `[smul_smul, mul_comm l, ← mul_assoc, mul_inv_cancel₀ hc0', one_mul]`. Establish `: l ∈ Metric.ball (0:F) ε` using `by simpa using hl`. Simplify using `using Set.mem_iInter.1 (hεU this) i`. Use `hy _ hmem` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Simplify using `only [Et.psiK, smul_mul_assoc, map_smul, smul_eq_mul] at this`. Rewrite using `[← this]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[norm_mul, norm_inv, inv_mul_le_iff₀ (norm_pos_iff.2 hc0')]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm y]` and apply the resulting hypothesis. Establish `hy' : y = g (fun i => Algebra.trace F A.K (y * b i))`. Simplify using `only [g]`. Use `conv_lhs => rw [← d.sum_repr y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply]`. Both sides reduce to the same expression. Rewrite using `[hy']`. Apply `hδV` to reduce the goal to its premises. Rewrite using `[Metric.mem_ball, dist_zero_right, pi_norm_lt_iff hδ]`.
-
-Introduce `i`. Conclude with `lt_of_le_of_lt (hbound i) hc`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dual_cinvOK_small : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ V ∈ 𝓝 (0 : A.K),

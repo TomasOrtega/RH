@@ -27,23 +27,23 @@ def LatticeFunctorComparison : Prop :=
             toVHH TT (ex A) (ex B) (HHten R.O TT (ex A) (ex B) M))
 
 /- English proof (translation)
-Establish `h0 : (Finset.univ.filter fun i : Fin (m + 1) => i.val < 1) = {0}`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.ext (by rw [Fin.val_zero]; omega)`. Introduce `h`. Substitute `h` using the available equality. Rewrite using `[Fin.val_zero]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hl : (Fin.last m : Fin (m + 1)) ≠ 0`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[Fin.val_last, Fin.val_zero]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `key : ∀ s : Fin n', (∑ i ∈ Finset.univ.filter (fun i : Fin (m + 1) => i.val < 1), lamAt (flatW m (fun s => A s - j s) (fun s => B s - j s)) s i) ≤ if s ∈ TT then (hhDeg (ex A) (ex B) s true : ℤ) else 0`. Introduce `s`. Rewrite using `[h0, Finset.sum_singleton]`. Distinguish the cases in `hs : s ∈ TT`. Establish `hA : ex A s = A ⟨s, hs⟩` using `dif_pos hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ex B s = B ⟨s, hs⟩` using `dif_pos hs`. Establish `f0 : flatW m (fun s => A s - j s) (fun s => B s - j s) s 0 = ((A ⟨s, hs⟩ - j ⟨s, hs⟩ : ℕ) : ℤ)`. Simplify using `[flatW, hs]`. Establish `fl : flatW m (fun s => A s - j s) (fun s => B s - j s) s (Fin.last m) = -((B ⟨s, hs⟩ - j ⟨s, hs⟩ : ℕ) : ℤ)`. Simplify using `[flatW, hs, hl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hs]`. Unfold `lamAt hhDeg`. Rewrite using `[if_pos rfl, hA, hB]`. Distinguish the cases in `he : Even s.val`. Rewrite using `[if_pos he, if_pos he, f0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.sub_le _ _` after adjusting the coercions. Rewrite using `[if_neg he, if_neg he] beta_reduce`. Rewrite using `[Fin.rev_zero, fl, neg_neg]`. Conclude with `Nat.sub_le _ _` after adjusting the coercions. Establish `hz : ∀ i, flatW m (fun s => A s - j s) (fun s => B s - j s) s i = 0` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `[flatW, hs]`. Rewrite using `[if_neg hs]`. Unfold `lamAt`. Distinguish the cases in `he : Even s.val`. Rewrite using `[if_pos he, hz]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg he] beta_reduce`. Rewrite using `[hz, neg_zero]`. Unfold `Ar AHH`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem Ar_le_AHH {n' : ℕ} (m : ℕ) (hm : 1 ≤ m) (TT : Finset (Fin n')) (A B j : TT → ℕ) :
     Ar 1 (flatW m (fun s => A s - j s) (fun s => B s - j s)) ≤ AHH TT (ex A) (ex B) := by
@@ -106,9 +106,9 @@ variable {O Kf V : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup V
   [IsScalarTower O Kf V]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hd`. Unfold `scale`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨(w ^ k) • x, M.smul_mem _ hx, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_restrictScalars, LinearMap.lsmul_apply]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[zpow_add₀ hw, zpow_natCast, mul_smul, ← map_pow, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_add_le (w : O) (hw : algebraMap O Kf w ≠ 0) (a d : ℤ) (hd : 0 ≤ d) (M : Submodule O V) :
     scale (algebraMap O Kf w ^ (a + d)) M ≤ scale (algebraMap O Kf w ^ a) M := by
@@ -122,49 +122,43 @@ theorem scale_add_le (w : O) (hw : algebraMap O Kf w ≠ 0) (a d : ℤ) (hd : 0 
 end Formal
 
 /- English proof (translation)
-Introduce `p n' R m hm TT a A B hdeg`. Take `⟨io, pr, hsum, hL⟩` from `h p n' R m hm TT a A B hdeg`. Generalize the expression as in `hu : TT.card * ⌈((m : ℝ) + 2) * lgA p a m⌉₊ = u at hL`. Use `set ω : R.Kf := algebraMap R.O R.Kf R.w with hω`. Establish `hω0 : ω ≠ 0` using `R.w_ne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpω : (p : R.Kf) = ω ^ 2` using `R.p_eq`. Set `lamj : (TT → ℕ) → Fin n' → Fin (m + 1) → ℤ` to `fun j => flatW m (fun s => A s - j s) (fun s => B s - j s)`. Set `d : (TT → ℕ) → ℤ` to `fun j => AHH TT (ex A) (ex B) - Ar 1 (lamj j)`. Establish `hd : ∀ j, 0 ≤ d j` using `fun j => sub_nonneg.2 (Ar_le_AHH m (by omega) TT A B j)`. Use `⟨fun j => (ω ^ (-d j)) • io j, fun j => (ω ^ (d j)) • pr j, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[← hsum x]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hsum x]`. Simplify using `only [LinearMap.smul_apply, map_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_add₀ hω0]`. Simplify using the standard rewrite rules. Introduce `t c e he j hj`. Establish `src : ∀ (M : Fin n' → Submodule R.O (Fin (m + 1) → R.Kf)), (∀ s, IsLattice R.O (M s)) → ∀ (E : ℤ) x, x ∈ scale (ω ^ E) (toVHH TT (ex A) (ex B) (HHten R.O TT (ex A) (ex B) M)) → ((p : R.Kf) ^ u) • ((ω ^ (d j)) • pr j) x ∈ scale (ω ^ (E + d j)) (toV (lamj j) (Hten R.O (lamj j) M))`. Introduce and unpack `M hM E x ⟨x0, hx0, rfl⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, (hL M hM j hj).1 x0 hx0, ?_⟩` and prove the remaining obligations. Use `show ω ^ (E + d j) • ((p : R.Kf) ^ u • pr j x0) = (p : R.Kf) ^ u • ((ω ^ (d j)) • pr j) (ω ^ E • x0)`. Rewrite using `[LinearMap.smul_apply, map_smul, smul_smul, smul_smul, smul_smul, zpow_add₀ hω0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `tst : ∀ (M : Fin n' → Submodule R.O (Fin (m + 1) → R.Kf)), (∀ s, IsLattice R.O (M s)) → ∀ (E : ℤ) Φ, Φ ∈ scale (ω ^ E) (Formalism.GradedWeylDivisibility.dualLat R.O R.Kf (toVHH TT (ex A) (ex B) (HHten R.O TT (ex A) (ex B) M))) → ((p : R.Kf) ^ (((2 * u : ℕ) : ℤ) + AHH TT (ex A) (e …`. Introduce and unpack `M hM E Φ ⟨Φ0, hΦ0, rfl⟩`. Use `⟨((p : R.Kf) ^ (2 * u)) • (Φ0 ∘ₗ io j), ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨b, hb⟩` from `hΦ0 _ ((hL M hM j hj).2 y hy)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(p : R.O) ^ u * b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hb, map_pow, map_natCast, LinearMap.smul_apply, LinearMap.comp_apply, map_smul]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `show ω ^ (E + d j) • ((p : R.Kf) ^ (2 * u) • (Φ0 ∘ₗ io j)) = (p : R.Kf) ^ (((2 * u : ℕ) : ℤ) + AHH TT (ex A) (ex B) - Ar 1 (lamj j)) • ((ω ^ E • Φ0) ∘ₗ ((ω ^ (-d j)) • io j))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, smul_eq_mul, map_smul]`. Establish `e1 : (p : R.Kf) ^ (((2 * u : ℕ) : ℤ) + AHH TT (ex A) (ex B) - Ar 1 (lamj j)) = (p : R.Kf) ^ (2 * u) * ω ^ (d j) * ω ^ (d j)`. Establish `hp0 : (p : R.Kf) ≠ 0` using `by rw [hpω]; exact pow_ne_zero _ hω0`. Establish `: ((2 * u : ℕ) : ℤ) + AHH TT (ex A) (ex B) - Ar 1 (lamj j) = ((2 * u : ℕ) : ℤ) + d j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [d]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, zpow_add₀ hp0, zpow_natCast, mul_assoc]`. Use `congr 1`. Rewrite using `[hpω, ← zpow_natCast, ← zpow_mul, ← zpow_add₀ hω0]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, zpow_add₀ hω0, zpow_neg]`. Establish `hne : ω ^ (d j) ≠ 0` using `zpow_ne_zero _ hω0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Clear the denominators using the available nonvanishing facts. Establish `latE : ∀ e' : Edge R.W R.Qq (m + 1), IsEdge p n' 1 e' → (∀ s : Fin n', IsLattice R.O (extO R.O R.ι R.σ s.val e'.src)) ∧ (∀ s : Fin n', IsLattice R.O (LeAt p R.ι R.σ R.w s.val e')) ∧ (∀ s : Fin n', IsLattice R.O (extO R.O R.ι R.σ s.val e'.tgt))`. Introduce `e' he'`. Take `⟨gs, hg, h1, h2, h3⟩` from `edgeLat_RS R e' he'`. Establish `hD : IsUnit (Formalism.MainNotions.G.LatticeSystems.lb_D (m + 1) 1 ω).det` using `Formalism.MainNotions.G.LatticeSystems.lb_D_det _ _ _ hω0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun s => ⟨gs s.val, hg _, h1 _⟩, fun s => ⟨_, ?_, h2 _⟩, fun s => ⟨_, ?_, h3 _⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `(hg _).mul hD`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `((hg _).mul hD).mul hD`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAr : ∀ E : ℤ, E + -AHH TT (ex A) (ex B) + d j = E + -Ar 1 (lamj j)` using `fun E => by simp only [d]; ring`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Take `⟨⟨hx1, hx2⟩, hx3⟩` from `hx`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `scale_add_le R.w hω0 _ _ (hd j) _ (src _ (latE e he).1 _ x hx1)`. Use `src _ (latE e he).2.1 _ x hx2` as an intermediate fact. Establish `e2 : -AHH TT (ex A) (ex B) + d j = -Ar 1 (lamj j)` using `by simp only [d]; ring`. Rewrite `this` using `[e2]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `SetLike.mem_coe.2 ((Submodule.mem_iInf _).2 fun e' => (Submodule.mem_iInf _).2 fun hc => ?_)` and prove the remaining obligations. Establish `hx4` using `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 (SetLike.mem_coe.1 hx3) e') hc`. Take `⟨x1, ⟨x0, hx0, rfl⟩, hx5⟩` from `hx4`. Establish `hx6 : x ∈ scale (ω ^ ((c : ℤ) + -AHH TT (ex A) (ex B))) (toVHH TT (ex A) (ex B) (HHten R.O TT (ex A) (ex B) fun s => LeAt p R.ι R.σ R.w s.val e'))`. Use `⟨x0, hx0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx5]`. Use `show ω ^ ((c : ℤ) + -AHH TT (ex A) (ex B)) • x0 = ω ^ (c : ℤ) • (ω ^ (-AHH TT (ex A) (ex B)) • x0)`. Rewrite using `[smul_smul, zpow_add₀ hω0]`. Take `⟨y0, hy0, hy1⟩` from `src _ (latE e' hc.1).2.1 _ x hx6`. Rewrite `hy1` using `[hAr]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ω ^ (-Ar 1 (lamj j)) • y0, ⟨y0, hy0, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy1]`. Use `show ω ^ (c : ℤ) • (ω ^ (-Ar 1 (lamj j)) • y0) = ω ^ ((c : ℤ) + -Ar 1 (lamj j)) • y0`. Rewrite using `[smul_smul, zpow_add₀ hω0]`. Introduce `Φ hΦ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨h1, h2⟩, h3⟩` from `hΦ`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `scale_add_le R.w hω0 _ _ (hd j) _ (tst _ (latE e he).2.2 _ Φ h1)`. Use `tst _ (latE e he).2.1 _ Φ h2` as an intermediate fact. Establish `e2 : -AHH TT (ex A) (ex B) + d j = -Ar 1 (lamj j)` using `by simp only [d]; ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e2]`. Conclude with `this`. Use `SetLike.mem_coe.2 ((Submodule.mem_iInf _).2 fun e' => (Submodule.mem_iInf _).2 fun hc => ?_)` and prove the remaining obligations. Establish `h4` using `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 (SetLike.mem_coe.1 h3) e') hc`. Take `⟨Φ1, ⟨Φ0, hΦ0, rfl⟩, h5⟩` from `h4`.
-
-Establish `h6 : Φ ∈ scale (ω ^ ((c : ℤ) + -AHH TT (ex A) (ex B))) (Formalism.GradedWeylDivisibility.dualLat R.O R.Kf (toVHH TT (ex A) (ex B) (HHten R.O TT (ex A) (ex B) fun s => LeAt p R.ι R.σ R.w s.val e')))`. Use `⟨Φ0, hΦ0, ?_⟩` and prove the remaining obligations. Rewrite using `[← h5]`. Use `show ω ^ ((c : ℤ) + -AHH TT (ex A) (ex B)) • Φ0 = ω ^ (c : ℤ) • (ω ^ (-AHH TT (ex A) (ex B)) • Φ0)`. Rewrite using `[smul_smul, zpow_add₀ hω0]`.
-
-Take `⟨y0, hy0, hy1⟩` from `tst _ (latE e' hc.1).2.1 _ Φ h6`. Rewrite `hy1` using `[hAr]`. Use `⟨ω ^ (-Ar 1 (lamj j)) • y0, ⟨y0, hy0, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy1]`. Use `show ω ^ (c : ℤ) • (ω ^ (-Ar 1 (lamj j)) • y0) = ω ^ ((c : ℤ) + -Ar 1 (lamj j)) • y0`.
-
-Rewrite using `[smul_smul, zpow_add₀ hω0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_maps_of_functor_comparison (h : LatticeFunctorComparison) : RhoSumLatticeMaps := by
   classical

@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, colAddGen, colAdd, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lsat_spec_colAddGen {R : Type*} [CommRing R] {r n : ℕ} (l j : Fin n) (c : R) :
     (aeval (fun o : Option (Fin r × Fin n) => Option.elim o (C c) X)).comp (colAddGen R l j) =
@@ -18,7 +18,7 @@ theorem lsat_spec_colAddGen {R : Type*} [CommRing R] {r n : ℕ} (l j : Fin n) (
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[rename_X]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem lsat_spec_rename {R : Type*} [CommRing R] {r n : ℕ} (c : R) :
     (aeval (fun o : Option (Fin r × Fin n) => Option.elim o (C c) X)).comp
@@ -28,7 +28,7 @@ theorem lsat_spec_rename {R : Type*} [CommRing R] {r n : ℕ} (c : R) :
   simp [rename_X]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, colAddGen, colAdd, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lsat_eval_colAddGen {R : Type*} [CommRing R] {r n : ℕ} (l j : Fin n)
     (x : Option (Fin r × Fin n) → R) :
@@ -39,13 +39,13 @@ theorem lsat_eval_colAddGen {R : Type*} [CommRing R] {r n : ℕ} (l j : Fin n)
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `R _ _ _ r n ν f`. Rewrite using `[lsat_mem_dualWeyl]`. Use `and_congr_right fun _ => forall₂_congr fun l j => imp_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ : Option (Fin r × Fin n) → MvPolynomial (Fin r × Fin n) R` to `fun o => Option.elim o (C c) X`. Establish `h1 : aeval ψ (colAddGen R l j f) = aeval ψ (rename some f)` using `by rw [h]`. Establish `e1 : aeval ψ (colAddGen R l j f) = colAdd R l j c f`. Rewrite using `[← AlgHom.comp_apply, lsat_spec_colAddGen]`. Establish `e2 : aeval ψ (rename some f) = f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← AlgHom.comp_apply, lsat_spec_rename, AlgHom.id_apply]`. Rewrite using `[← e1, h1, e2]`. Introduce `h`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrArg (fun φ => φ f) (lsat_eval_colAddGen (R := R) l j x)`. Simplify using `only [AlgHom.comp_apply, h] at e`. Express the relevant statement in the definitionally equal form `aeval x (colAddGen R l j f) = aeval x (rename some f)`. Rewrite using `[e, aeval_rename]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualWeylModuleMemIff : DualWeylPoint := by
   intro R _ _ _ r n ν f

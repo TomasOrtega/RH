@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
 namespace GlobalTheory.PolynomialPushoutEquivalence
 
 /- English proof (translation)
-Introduce `n`. Use `Function.bijective_iff_has_inverse.mpr ⟨pull R (inv f) F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`. Rewrite using `[← pull_comp, IsIso.hom_inv_id, pull_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eqv_iso (R : Type) [CommRing R] {E E' : Spc} (f : E ⟶ E') [IsIso f] (F : Shv R) : Eqv R f F := by
   intro n
@@ -17,7 +17,7 @@ theorem eqv_iso (R : Type) [CommRing R] {E E' : Spc} (f : E ⟶ E') [IsIso f] (F
   · rw [← pull_comp, IsIso.hom_inv_id, pull_id]
 
 /- English proof (translation)
-Introduce `n`. Establish `e : ⇑(pull R (f ≫ g) F n) = pull R f F n ∘ pull R g F n` using `funext (pull_comp R f g F n)`. Rewrite using `[e]`. Conclude with `(hf n).comp (hg n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqv_comp (R : Type) [CommRing R] {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') (F : Shv R)
     (hf : Eqv R f F) (hg : Eqv R g F) : Eqv R (f ≫ g) F := by
@@ -28,7 +28,7 @@ theorem eqv_comp (R : Type) [CommRing R] {E E' E'' : Spc} (f : E ⟶ E') (g : E'
   exact (hf n).comp (hg n)
 
 /- English proof (translation)
-Set `_ : Algebra A B` to `φ.toAlgebra`. Set `_ : Algebra (Polynomial A) (Polynomial B)` to `Polynomial.algebra A B`. Conclude with `CommRingCat.isPushout_of_isPushout A (Polynomial A) B (Polynomial B)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isPushout_poly {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) :
     IsPushout (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A)) (CommRingCat.ofHom φ)
@@ -39,9 +39,9 @@ theorem isPushout_poly {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) :
   exact CommRingCat.isPushout_of_isPushout A (Polynomial A) B (Polynomial B)
 
 /- English proof (translation)
-Use `set φ : A →+* A' := (Spec.preimage s).hom with hφ`. Establish `hs : s = Spec.map (CommRingCat.ofHom φ)` using `by simp [φ]`. Establish `sq : IsPullback (Spec.map (CommRingCat.ofHom (Polynomial.mapRingHom φ))) (Spec.map (CommRingCat.ofHom (Polynomial.C : A' →+* Polynomial A'))) (Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A)) ≫ 𝟙 (Spec (CommRingCat.of A))) s`. Rewrite using `[Category.comp_id, hs]`. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_poly φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : pullback.map (Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A)) ≫ 𝟙 (Spec (CommRingCat.of A))) s (𝟙 (Spec (CommRingCat.of A))) s (Spec.map (CommRingCat.ofHom Polynomial.C)) (𝟙 _) (𝟙 _) (by simp) (by simp) = sq.isoPullback.inv ≫ Spec.map (CommRingCat.ofHom (Poly …`. Rewrite using `[← Category.assoc, IsIso.eq_comp_inv, sq.isoPullback_inv_snd]`. Conclude with `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`. Rewrite using `[e, Functor.map_comp, Functor.map_comp]`. Conclude with `eqv_comp _ _ _ _ (eqv_iso _ _ _) (eqv_comp _ _ _ _ h (eqv_iso _ _ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (q : ℕ) (A : Type) [CommRing A] (i : ℤ) (A' : Type) [CommRing A']
     (s : Spec (CommRingCat.of A') ⟶ Spec (CommRingCat.of A))

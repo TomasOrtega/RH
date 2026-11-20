@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.Cartier
 
 /- English proof (translation)
-Use `haveI : Nonempty U := ⟨⟨_, hU⟩⟩`. Use `letI := (algX p U).toAlgebra`. Use `letI : Algebra F X.functionField := (Cartier.constFn p).toAlgebra`. Use `haveI : IsScalarTower F Γ(X, U) X.functionField := IsScalarTower.of_algebraMap_eq' (fnOf_comp_algX p U hU).symm`. Take `⟨P, hP, hPa⟩` from `ha`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hint : IsIntegral F a` using `(show IsAlgebraic F a from ⟨P, hP, by rw [Polynomial.aeval_def, RingHom.algebraMap_toAlgebra]; exact hPa⟩).isIntegral`. Take `⟨s, hs⟩` from `(IsIntegrallyClosedIn.isIntegral_iff (R := Γ(X, U)) (A := X.functionField)).1 hint.tower_top`. Conclude with `⟨s, hs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fnOf_eq_of_algebraic {F : Type} [Field F] {X : Scheme.{0}} [IsIntegral X]
     [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp F) (U : X.Opens) (hU : genericPoint X ∈ U)
@@ -34,7 +34,7 @@ theorem exists_fnOf_eq_of_algebraic {F : Type} [Field F] {X : Scheme.{0}} [IsInt
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-Establish `e` using `Scheme.Hom.appLE_comp_appLE π pW ⊤ ⊤ ⊤ le_top le_top`. Conclude with `congrArg (fun f => (CommRingCat.Hom.hom f).comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem appLE_comp_algX {F : Type} [CommRing F] {W V : Scheme.{0}} (pW : W ⟶ Sp F) (π : V ⟶ W) :
     (π.appLE ⊤ ⊤ le_top).hom.comp (algX pW ⊤) = algX (π ≫ pW) ⊤ := by
@@ -43,19 +43,19 @@ theorem appLE_comp_algX {F : Type} [CommRing F] {W V : Scheme.{0}} (pW : W ⟶ S
     (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom) e
 
 /- English proof (translation)
-Introduce `F _ W V _ _ _ pW pV π hπ hV a ha`. Substitute `hπ` using the available equality. Establish `hW : genericPoint W ∈ (⊤ : W.Opens)` using `trivial`. Establish `hV' : genericPoint V ∈ (⊤ : V.Opens)` using `trivial`. Set `φ : Γ(W, ⊤) →+* V.functionField` to `(fnOf ⊤ hV').comp (π.appLE ⊤ ⊤ le_top).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ : φ.comp (algX pW ⊤) = Cartier.constFn (π ≫ pW)`. Simplify using `only [φ, RingHom.comp_assoc, appLE_comp_algX]`. Both sides reduce to the same expression. Take `⟨s, hs⟩` from `exists_fnOf_eq_of_algebraic pW ⊤ hW ha`. Take `⟨P, hP, hPa⟩` from `ha`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0 : P.eval₂ (algX pW ⊤) s = 0` using `fnOf_injective ⊤ trivial (by`. Rewrite using `[Polynomial.hom_eval₂, fnOf_comp_algX pW ⊤ hW, hs, hPa, map_zero])`. Establish `hb : P.eval₂ (Cartier.constFn (π ≫ pW)) (φ s) = 0`. Rewrite using `[← hφ, ← Polynomial.hom_eval₂, h0, map_zero]`. Take `⟨c, hc⟩` from `hV _ ⟨P, hP, hb⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hne' : a - Cartier.constFn pW c ≠ 0` using `sub_ne_zero.2 (Ne.symm hne)`. Establish `ht : fnOf ⊤ hW (s - algX pW ⊤ c) = a - Cartier.constFn pW c`. Rewrite using `[map_sub, hs, ← fnOf_comp_algX pW ⊤ hW, RingHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφt : φ (s - algX pW ⊤ c) = 0`. Rewrite using `[map_sub, ← RingHom.comp_apply φ, hφ, hc, sub_self]`. Establish `hinv : ∃ Q : Polynomial F, Q ≠ 0 ∧ Q.eval₂ (Cartier.constFn pW) (a - Cartier.constFn pW c)⁻¹ = 0`. Use `letI : Algebra F W.functionField := (Cartier.constFn pW).toAlgebra`. Establish `h1 : IsAlgebraic F a` using `⟨P, hP, by rw [Polynomial.aeval_def, RingHom.algebraMap_toAlgebra]; exact hPa⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h2 : IsAlgebraic F (a - Cartier.constFn pW c)` using `h1.sub (isAlgebraic_algebraMap (A := W.functionField) c)`. Take `⟨Q, hQ, hQx⟩` from `h2.inv`. Conclude with `⟨Q, hQ, by rw [Polynomial.aeval_def, RingHom.algebraMap_toAlgebra] at hQx; exact hQx⟩`. Take `⟨u, hu⟩` from `exists_fnOf_eq_of_algebraic pW ⊤ hW hinv`. Establish `htu : (s - algX pW ⊤ c) * u = 1` using `fnOf_injective ⊤ trivial (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, ht, hu, map_one, mul_inv_cancel₀ hne'])`. Establish `h3` using `congrArg φ htu`. Rewrite `h3` using `[map_mul, hφt, zero_mul, map_one]`. Conclude with `zero_ne_one h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descent : ∀ (F : Type) [Field F] (W V : Scheme.{0}) [IsIntegral W] [IsIntegral V]
     [GlobalTheory.IsNormalScheme W] (pW : W ⟶ Sp F) (pV : V ⟶ Sp F) (π : V ⟶ W), π ≫ pW = pV →

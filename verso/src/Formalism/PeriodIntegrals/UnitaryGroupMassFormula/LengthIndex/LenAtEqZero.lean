@@ -15,19 +15,19 @@ section Gen
 variable (A : HLat K)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_cutE (f : Module.End K A.V) (M : Submodule (𝓞 K) A.V) (x : A.V) :
     x ∈ cutE A f M ↔ x ∈ M ∧ x ∈ LinearMap.range f := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_imgE (f : Module.End K A.V) (M : Submodule (𝓞 K) A.V) (x : A.V) :
     x ∈ imgE A f M ↔ ∃ y ∈ M, f y = x := Iff.rfl
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Establish `h` using `LinearMap.congr_fun hf y`. Simplify `h` using `[Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma idem_of {f : Module.End K A.V} (hf : f * f = f) {x : A.V} (hx : x ∈ LinearMap.range f) :
     f x = x := by
@@ -36,13 +36,13 @@ lemma idem_of {f : Module.End K A.V} (hf : f * f = f) {x : A.V} (hx : x ∈ Line
   simpa [Module.End.mul_apply] using h
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, sub_mul, one_mul, hf, sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma one_sub_idem {f : Module.End K A.V} (hf : f * f = f) : (1 - f) * (1 - f) = 1 - f := by
   rw [mul_sub, mul_one, sub_mul, one_mul, hf, sub_self, sub_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h : ((n : ℕ) : 𝓞 K) • (1 - f) x = ((n : ℕ) : 𝓞 K) • x - ((n : ℕ) : 𝓞 K) • f x`. Simplify using `[smul_sub]`. Rewrite using `[h]`. Conclude with `A.L.sub_mem (A.L.smul_mem _ hx) (hn x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma one_sub_int {f : Module.End K A.V} {n : ℕ}
     (hn : ∀ x ∈ A.L, ((n : ℕ) : 𝓞 K) • f x ∈ A.L) :
@@ -54,7 +54,7 @@ lemma one_sub_int {f : Module.End K A.V} {n : ℕ}
   exact A.L.sub_mem (A.L.smul_mem _ hx) (hn x hx)
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(mem_imgE A f A.L x).1 hx`. Use `(mem_cutE A f A.L _).2 ⟨hn y hy, ((n : ℕ) : 𝓞 K) • y, ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.map_smul_of_tower f _ y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma part1 {f : Module.End K A.V} {n : ℕ} (hn : ∀ x ∈ A.L, ((n : ℕ) : 𝓞 K) • f x ∈ A.L) :
     ∀ x ∈ imgE A f A.L, ((n : ℕ) : 𝓞 K) • x ∈ cutE A f A.L := by
@@ -64,7 +64,7 @@ lemma part1 {f : Module.End K A.V} {n : ℕ} (hn : ∀ x ∈ A.L, ((n : ℕ) : �
   exact LinearMap.map_smul_of_tower f _ y
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨hxL, hxr⟩` from `(mem_cutE A f A.L x).1 hx`. Conclude with `(mem_imgE A f A.L x).2 ⟨x, hxL, idem_of A hf hxr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma part2 {f : Module.End K A.V} (hf : f * f = f) : cutE A f A.L ≤ imgE A f A.L := by
   intro x hx
@@ -72,7 +72,7 @@ lemma part2 {f : Module.End K A.V} (hf : f * f = f) : cutE A f A.L ≤ imgE A f 
   exact (mem_imgE A f A.L x).2 ⟨x, hxL, idem_of A hf hxr⟩
 
 /- English proof (translation)
-Establish `h : (imgE A f A.L : Set A.V) = f '' (A.L : Set A.V)`. Simplify using `only [imgE, Submodule.map_coe, LinearMap.coe_restrictScalars]`. Rewrite using `[h, Submodule.span_image, hG.2.2, Submodule.map_top]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma span_imgE (hG : A.Good) (f : Module.End K A.V) :
     Submodule.span K (imgE A f A.L : Set A.V) = LinearMap.range f := by
@@ -81,11 +81,11 @@ lemma span_imgE (hG : A.Good) (f : Module.End K A.V) :
   rw [h, Submodule.span_image, hG.2.2, Submodule.map_top]
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.span_mono (part2 A hf))` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Establish `h1` using `part1 A hn x hx`. Establish `h2 : ((n : ℕ) : K) • x ∈ Submodule.span K (cutE A f A.L : Set A.V)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((n : ℕ) : K) • x = ((n : ℕ) : 𝓞 K) • x`. Rewrite using `[Nat.cast_smul_eq_nsmul K, Nat.cast_smul_eq_nsmul (𝓞 K)]`. Rewrite using `[this]`. Conclude with `Submodule.subset_span h1`. Establish `hnz : ((n : ℕ) : K) ≠ 0` using `by exact_mod_cast hn0.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Submodule.smul_mem _ ((n : ℕ) : K)⁻¹ h2`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ hnz, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma span_cut_eq {f : Module.End K A.V} (hf : f * f = f) {n : ℕ} (hn0 : 0 < n)
     (hn : ∀ x ∈ A.L, ((n : ℕ) : 𝓞 K) • f x ∈ A.L) :
@@ -104,18 +104,18 @@ lemma span_cut_eq {f : Module.End K A.V} (hf : f * f = f) {n : ℕ} (hn0 : 0 < n
   rwa [smul_smul, inv_mul_cancel₀ hnz, one_smul] at h3
 
 /- English proof (translation)
-The claim follows from `hG.2.1.map _`.
+A detailed English derivation is pending.
 -/
 lemma fg_img (hG : A.Good) (f : Module.End K A.V) : (imgE A f A.L).FG := hG.2.1.map _
 
 /- English proof (translation)
-The claim follows from `Submodule.FG.of_le hG.2.1 inf_le_left`.
+A detailed English derivation is pending.
 -/
 lemma fg_cut (hG : A.Good) (f : Module.End K A.V) : (cutE A f A.L).FG :=
   Submodule.FG.of_le hG.2.1 inf_le_left
 
 /- English proof (translation)
-Unfold `Formalism.HN.rkK dimE`. Rewrite using `[span_imgE A hG f]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma rk_img (hG : A.Good) (f : Module.End K A.V) : Formalism.HN.rkK (imgE A f A.L) = dimE A f := by
   unfold Formalism.HN.rkK dimE
@@ -126,13 +126,13 @@ def toQ (f : Module.End K A.V) :
   Submodule.mkQ _ ∘ₗ (f.restrictScalars (𝓞 K)).submoduleMap A.L
 
 /- English proof (translation)
-The claim follows from `(Submodule.mkQ_surjective _).comp (LinearMap.submoduleMap_surjective _ _)`.
+A detailed English derivation is pending.
 -/
 lemma toQ_surj (f : Module.End K A.V) : Function.Surjective (toQ A f) :=
   (Submodule.mkQ_surjective _).comp (LinearMap.submoduleMap_surjective _ _)
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `f a ∈ A.L ∧ f a ∈ LinearMap.range f ↔ f a ∈ A.L`. Conclude with `⟨fun h => h.1, fun h => ⟨h, a, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 -/
 lemma mem_ker_toQ (f : Module.End K A.V) (a : A.L) :
     a ∈ LinearMap.ker (toQ A f) ↔ f a ∈ A.L := by
@@ -143,9 +143,9 @@ lemma mem_ker_toQ (f : Module.End K A.V) (a : A.L) :
   exact ⟨fun h => h.1, fun h => ⟨h, a, rfl⟩⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[mem_ker_toQ, mem_ker_toQ]`. Establish `h : (1 - e) (a : A.V) = (a : A.V) - e a` using `by simp`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h1`. Conclude with `A.L.sub_mem a.2 h1`. Introduce `h1`. Use `A.L.sub_mem a.2 h1` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma ker_toQ_eq (e : Module.End K A.V) :
     LinearMap.ker (toQ A e) = LinearMap.ker (toQ A (1 - e)) := by
@@ -173,7 +173,7 @@ section Len
 variable {V W : Type} [AddCommGroup V] [Module (𝓞 K) V] [AddCommGroup W] [Module (𝓞 K) W]
 
 /- English proof (translation)
-Unfold `lenAt`. Set `_ : w.asIdeal.IsPrime` to `w.isPrime`. Conclude with `(IsLocalizedModule.mapEquiv w.asIdeal.primeCompl (LocalizedModule.mkLinearMap w.asIdeal.primeCompl _) (LocalizedModule.mkLinearMap w.asIdeal.primeCompl _) (Localization.AtPrime w.asIdeal) φ).length_eq`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma lenAt_congr (w : HeightOneSpectrum (𝓞 K)) (M N : Submodule (𝓞 K) V) (M' N' : Submodule (𝓞 K) W)
     (φ : (↥M ⧸ N.comap M.subtype) ≃ₗ[𝓞 K] (↥M' ⧸ N'.comap M'.subtype)) :
@@ -186,11 +186,11 @@ lemma lenAt_congr (w : HeightOneSpectrum (𝓞 K)) (M N : Submodule (𝓞 K) V) 
     (Localization.AtPrime w.asIdeal) φ).length_eq
 
 /- English proof (translation)
-Unfold `lenAt`. Set `_ : w.asIdeal.IsPrime` to `w.isPrime`. Establish `hs : Subsingleton (↥M ⧸ N.comap M.subtype)` using `⟨fun a b => by`. Use `Submodule.Quotient.induction_on _ a (fun a => ?_)` and prove the remaining obligations. Use `Submodule.Quotient.induction_on _ b (fun b => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha : (Submodule.Quotient.mk a : ↥M ⧸ N.comap M.subtype) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (show a ∈ N.comap M.subtype from h a.2)`. Establish `hb : (Submodule.Quotient.mk b : ↥M ⧸ N.comap M.subtype) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (show b ∈ N.comap M.subtype from h b.2)`. Rewrite using `[ha, hb]⟩`. Rewrite using `[Module.length_eq_zero_iff]`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `a using LocalizedModule.induction_on with`. Consider the case `h m s`. Proceed by induction on `b using LocalizedModule.induction_on with`. Consider the case `h m' s'`. Rewrite using `[Subsingleton.elim m 0, Subsingleton.elim m' 0, LocalizedModule.zero_mk, LocalizedModule.zero_mk]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma lenAt_eq_zero (w : HeightOneSpectrum (𝓞 K)) {M N : Submodule (𝓞 K) V} (h : M ≤ N) :
     lenAt w M N = 0 := by

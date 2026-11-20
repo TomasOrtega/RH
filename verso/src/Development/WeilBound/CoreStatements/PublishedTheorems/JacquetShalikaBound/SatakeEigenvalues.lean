@@ -19,37 +19,37 @@ open GLnLocal Iwasawa
 variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LFun.SatBoundGL.resCard_completion w`.
+A detailed English derivation is pending.
 -/
 theorem qF_eq : qF (w.adicCompletion E) = Ideal.absNorm w.asIdeal :=
   GlobalTheory.LFun.SatBoundGL.resCard_completion w
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `GroundTheory.Global.mem_valuationInteger_iff w x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem O_eq : 𝒪[w.adicCompletion E] = Formalism.UG.Ov E w := by
   ext x
   exact GroundTheory.Global.mem_valuationInteger_iff w x
 
 /- English proof (translation)
-The claim follows from `(congrArg (Formalism.UG.GLint (Fin n)) (O_eq w)).symm.trans rfl`.
+A detailed English derivation is pending.
 -/
 theorem KGL_eq (n : ℕ) : KGL w n = integralGL (w.adicCompletion E) n :=
   (congrArg (Formalism.UG.GLint (Fin n)) (O_eq w)).symm.trans rfl
 
 /- English proof (translation)
-The claim follows from `GroundTheory.BlockD.SatakeBound.valued_uniformizer_eq w`.
+A detailed English derivation is pending.
 -/
 theorem isUnifV_uniformizer :
     Formalism.UG.IsUnifV E w (uniformizer (w.adicCompletion E) : w.adicCompletion E) :=
   GroundTheory.BlockD.SatakeBound.valued_uniformizer_eq w
 
 /- English proof (translation)
-Unfold `satEig`. Rewrite using `[Multiset.map_map, Finset.esymm_map_val, GlobalTheory.CompanionTheory.JSBound.evalAt_esymmL_eq_sum_prod]`. Use `congr 1`. Establish `hq : (Formalism.UG.qV E w : ℂ) = ((qF (w.adicCompletion E) : ℝ) : ℂ)`. Rewrite using `[qF_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.UG.qV]`. Establish `he : ((r : ℂ) * ((n : ℂ) - r)) / 2 = ((((r * (n - r) : ℕ) : ℝ) / 2 : ℝ) : ℂ)`. Move the coercions through the operations in `[Nat.cast_sub hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq, he, ← Complex.ofReal_cpow (Nat.cast_nonneg _), sqrtQ, ← Complex.ofReal_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Real.coe_sqrt, NNReal.coe_natCast, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem satEig_eq {n r : ℕ} (hr : r ≤ n) (z : Fin n → ℂˣ) :
     satEig (Formalism.UG.qV E w) n (Finset.univ.val.map z) r =
@@ -71,21 +71,19 @@ theorem satEig_eq {n r : ℕ} (hr : r ≤ n) (z : Fin n → ℂˣ) :
   ring
 
 /- English proof (translation)
-Establish `hK : Formalism.UG.GLint (Fin n) (Formalism.UG.Ov E w) = integralGL (w.adicCompletion E) n` using `KGL_eq w n`. Establish `hD : Formalism.UG.diagJ n (uniformizer (w.adicCompletion E) : w.adicCompletion E) r = ((torusPow (w.adicCompletion E) n (lamS (initSeg hr)) : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Rewrite using `[coe_torusPow, Formalism.UG.diagJ]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[lamS_apply]`. Apply the tactic sequence `by_cases h : (i : ℕ) < r <;> simp [h, mem_initSeg]`. Establish `hα : torusPow (w.adicCompletion E) n (lamS (initSeg hr)) ∈ minusculeSet (w.adicCompletion E) n r`. Set `c₀ : Pairs (initSeg hr) → 𝓀[w.adicCompletion E]` to `fun _ => 0`. Establish `e : torusPow (w.adicCompletion E) n (lamS (initSeg hr)) = (unipC (initSeg hr) c₀)⁻¹ * gMat (initSeg hr) c₀ * 1`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[gMat, inv_mul_cancel_left, mul_one]`. Establish `h` using `mul_mem_minusculeSet (gMat_mem_minusculeSet _ c₀) ((integralGL (w.adicCompletion E) n).inv_mem (GroundTheory.BlockD.SatakeBound.unipC_mem_integralGL _ c₀)) (integralGL (w.adicCompletion E) n).one_mem`. Rewrite `h` using `[card_initSeg]`. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : {g : GL (Fin n) (w.adicCompletion E) | ∃ a ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov E w), ∃ b ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov E w), (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (a : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * Formalism.UG.diagJ n …`. Use extensionality with `g`. Rewrite using `[hK, hD]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e' : g = a * torusPow (w.adicCompletion E) n (lamS (initSeg hr)) * b` using `Units.ext (by rw [e, Units.val_mul, Units.val_mul])`. Rewrite using `[e']`. Conclude with `mul_mem_minusculeSet hα ha hb`. Introduce `hg`. Take `⟨S, hS, c, hc⟩` from `exists_gMat hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk : (gMat S c)⁻¹ * g ∈ integralGL (w.adicCompletion E) n` using `QuotientGroup.eq.1 hc`. Take `⟨P, hP, hPe⟩` from `GroundTheory.BlockD.SatakeBound.exists_torusPow_lamS_eq (F := w.adicCompletion E) (A := S) (B := initSeg hr) (by rw [hS, card_initSeg])`. Establish `e1 : g = gMat S c * ((gMat S c)⁻¹ * g)` using `by group`. Use `set k := (gMat S c)⁻¹ * g with hkdef`. Rewrite `e1` using `[gMat, hPe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨unipC S c * P⁻¹, (integralGL (w.adicCompletion E) n).mul_mem (GroundTheory.BlockD.SatakeBound.unipC_mem_integralGL S c) ((integralGL (w.adicCompletion E) n).inv_mem hP), P * k, (integralGL (w.adicCompletion E) n).mul_mem hP hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Rewrite using `[e1]`. Use `group`.
-
-Rewrite using `[Formalism.UG.Tj, hS]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Tj_eq {n r : ℕ} (hr : r ≤ n) :
     Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) (uniformizer (w.adicCompletion E) : w.adicCompletion E) r =
@@ -144,9 +142,9 @@ theorem Tj_eq {n r : ℕ} (hr : r ≤ n) :
 end SatakeEigenvalues
 
 /- English proof (translation)
-Introduce `E _ _ w`. Use `⟨SatakeEigenvalues.qF_eq w, ?_⟩` and prove the remaining obligations. Introduce `n V _ _ ρ v z h`. Take `⟨-, hfix, -, hT⟩` from `h`. Establish `hK` using `SatakeEigenvalues.KGL_eq w n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun g hg => GlobalTheory.LGrp.mem_fixed.1 hfix g (hK ▸ hg), fun r hr => ?_⟩` and prove the remaining obligations. Establish `h1` using `hT _ (SatakeEigenvalues.isUnifV_uniformizer w) r hr`. Rewrite `h1` using `[heckeVec, SatakeEigenvalues.Tj_eq w hr, SatakeEigenvalues.satEig_eq w hr]`. Rewrite `h1` using `[hK]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satake_eigenvalue_formula : lift_levelP_alt₂ := by
   intro E _ _ w

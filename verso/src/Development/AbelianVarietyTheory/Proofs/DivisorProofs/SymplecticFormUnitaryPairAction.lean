@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SymplOInv
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Eq.symm ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_congr rfl fun c _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_four_eq_trace {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (P : Matrix (Fin n) (Fin n) A)
     (Q : Matrix (Fin m) (Fin m) A) (x y : Matrix (Fin m) (Fin n) A) :
@@ -32,9 +32,9 @@ theorem sum_four_eq_trace {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `h1 : (P * (k.map σ)ᵀ * P') * k = 1`. Rewrite using `[Matrix.mul_assoc P, Matrix.mul_assoc P, hk, hP]`. Establish `h2 : k * (P * (k.map σ)ᵀ * P') = 1` using `mul_eq_one_comm.1 h1`. Establish `hP' : P' * P = 1` using `mul_eq_one_comm.1 hP`. Establish `hk' : k * P * (k.map σ)ᵀ = P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e : P * ((g * y * k).map σ)ᵀ * Q * (g * x * k) = (P * (k.map σ)ᵀ * ((y.map σ)ᵀ * ((g.map σ)ᵀ * Q * g) * x)) * k`. Simplify using `only [Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[sum_four_eq_trace, sum_four_eq_trace, e, hg, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc k, hk']`. Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_unitary {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (Q g : Matrix (Fin m) (Fin m) A)
     (P P' k : Matrix (Fin n) (Fin n) A) (hP : P * P' = 1) (hg : (g.map σ)ᵀ * Q * g = Q)
@@ -57,7 +57,7 @@ theorem sum_unitary {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (Q g : 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : S.gram⁻¹.map (incA D) * S.gram.map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit S)]`. Conclude with `Matrix.map_one _ (incA D).map_zero (incA D).map_one`. Conclude with `sum_unitary (cA D) (T.gram.map (incA D)) (mt T h) (S.gram⁻¹.map (incA D)) (S.gram.map (incA D)) (mt S g⁻¹) h1 h.2 (g⁻¹).2 x y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hO_actO {D : D7} (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) :
     hO S T (actO S T g h x) (actO S T g h y) = hO S T x y := by
@@ -68,7 +68,7 @@ theorem hO_actO {D : D7} (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) 
     h1 h.2 (g⁻¹).2 x y
 
 /- English proof (translation)
-Introduce `D S T g h x y`. Unfold `symplO`. Rewrite using `[hO_actO]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_actO : ∀ (D : D7) (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T), symplO S T (actO S T g h x) (actO S T g h y) = symplO S T x y := by
   intro D S T g h x y

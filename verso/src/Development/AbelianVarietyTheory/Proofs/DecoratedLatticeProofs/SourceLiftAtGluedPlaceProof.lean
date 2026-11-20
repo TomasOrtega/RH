@@ -23,9 +23,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
 /- English proof (translation)
-Simplify using `only [tensCol, blk_val]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, fromBlocks, Fintype.sum_sum_type]`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply, fromBlocks, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensCol_mul_blk (Ψ : Matrix n n' k → ℂ) (a : (n → k) → ℂ) (g : GL n' k) (x : Matrix n (n' ⊕ Fin 1) k) :
     tensCol Ψ a (x * (blk g).val) = tensCol (fun x₀ => Ψ (x₀ * g.val)) a x := by
@@ -37,11 +37,11 @@ theorem tensCol_mul_blk (Ψ : Matrix n n' k → ℂ) (a : (n → k) → ℂ) (g 
     simp [Matrix.mul_apply, fromBlocks, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Establish `hs : ∀ (h : GL n' k) (y : n' → k), h • y = h.val *ᵥ y` using `fun _ _ => rfl`. Unfold `phiOne`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Rewrite using `[maps_iff_hasVal, maps_iff_hasVal]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h y a hy`. Use `h (g • y) a (hy.gl_smul g)` as an intermediate fact. Simplify `this` using `[hs, Matrix.mulVec_mulVec]`. Introduce `h y a hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h (g⁻¹ • y) a (Pair.smul_hasVal.1 hy)` as an intermediate fact. Simplify `this` using `[hs, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem phiOne_smul_left (g : GL n' k) (P : Pair k n') (Q : Pair k n) (x : Matrix n n' k) :
     phiOne (g • P) Q x = phiOne P Q (x * g.val) := by
@@ -67,7 +67,7 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   {p : SplitPt D k} {n' : Type} [Fintype n'] [DecidableEq n']
 
 /- English proof (translation)
-Simplify using `[FFStar_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_FFStar {A : HSp D} (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (φ : Form k n' (CA A)) (P : Pair k n') :
     ((FFStar q χ φ P : CA A) : GA D A → ℂ) = FFStar q χ (fun P => (φ P : GA D A → ℂ)) P := by
@@ -77,7 +77,7 @@ def toCA {A : HSp D} (φ : Form k n' (GA D A → ℂ)) (h : ∀ P, IsContAut A (
   fun P => ⟨φ P, h P⟩
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite 𝓀[k]ˣ`. Use `⟨(mem_Mram _).2 fun P => Subtype.ext ?_, fun g P => Subtype.ext (hφ.1 g P)⟩` and prove the remaining obligations. Simplify `(mem_Mram φ).1 hφ.2.1 P` using `[toCA]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toCA_ram {A : HSp D} {α : Frame p A n'} {φ : Form k n' (GA D A → ℂ)} (hφ : IsRam α φ) :
     toCA φ hφ.2.2 ∈ Mram k n' (CA A) ∧ toCA φ hφ.2.2 ∈ EqForm (caRep α) := by
@@ -86,11 +86,11 @@ theorem toCA_ram {A : HSp D} {α : Frame p A n'} {φ : Form k n' (GA D A → ℂ
   simpa [toCA] using (mem_Mram φ).1 hφ.2.1 P
 
 /- English proof (translation)
-Establish `h1 : Module.finrank 𝓀[k] (Red P.ker) = Module.finrank 𝓀[k] (Red P.lat)`. Rewrite using `[Red.finrank_eq, Red.finrank_eq]`. Establish `h2 : Nontrivial (Red P.lat)`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `P.red_ne (LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero])`. Establish `h3 : 0 < Module.finrank 𝓀[k] (Red P.ker)` using `h1 ▸ Module.finrank_pos`. Take `⟨x, hx⟩` from `Module.finrank_pos_iff_exists_ne_zero.1 h3`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual 𝓀[k] (Red P.ker), f x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Use `push_neg at h`. Conclude with `hx ((Module.forall_dual_apply_eq_zero_iff 𝓀[k] x).1 h)`. Conclude with `⟨ofDual P.ker ⟨f, fun h0 => hf (by rw [h0]; rfl)⟩, ofDual_lat _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lat_eq (P : Pair k n') : ∃ P' : Pair k n', P'.lat = P.ker := by
   have h1 : Module.finrank 𝓀[k] (Red P.ker) = Module.finrank 𝓀[k] (Red P.lat) := by
@@ -120,7 +120,7 @@ Both sides reduce to the same expression.
 @[simp] theorem tensL_apply (a : (n → k) → ℂ) (Ψ : Matrix n n' k → ℂ) : tensL a Ψ = tensCol Ψ a := rfl
 
 /- English proof (translation)
-The claim follows from `(tensL a).map_add Ψ Ψ'`.
+A detailed English derivation is pending.
 -/
 theorem tensCol_add (Ψ Ψ' : Matrix n n' k → ℂ) (a : (n → k) → ℂ) : tensCol (Ψ + Ψ') a = tensCol Ψ a + tensCol Ψ' a :=
   (tensL a).map_add Ψ Ψ'
@@ -129,31 +129,29 @@ end GlobalTheory.FinPl.SrcGl
 
 open GlobalTheory.FinPl GlobalTheory.FinPl.SrcGl in
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n n' _ _ _ _ q χ₀ hχ χ hχχ ψ S A L T o ζ hL hA vA χS χT om hW _ hT α α₀ β hsum P P₁ Λ _`. Take `⟨lS, hlS, hθ⟩` from `GlobalTheory.T.exists_bilinear_equivariant_orthogonalSummandLift D k p n n' ψ S A L T o ζ hL hA vA χS χT om hW α α₀ β hsum`. Establish `hdet : ∀ L' : Submodule 𝒪[k] (n' → k), L'.IsLattice k → ∀ g ∈ latStab L', ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) = 1` using `fun L' hL' g hg => by`. Rewrite using `[GlobalTheory.T.unramifiedCharacter_det_latticeStabilizer_eq_one k n' L' hL' g hg lS (hlS hT), Units.val_one]`. Establish `hsb` using `GlobalTheory.T.schwartzBruhat_tensor_indicator_character_facts k n n'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ∀ (θ : CA A →ₗ[ℂ] (Matrix n (n' ⊕ Fin 1) k → ℂ) →ₗ[ℂ] (GA D T → WO L T → ℂ)), (∀ (g : GL n' k) (v : CA A) (Φ : Matrix n (n' ⊕ Fin 1) k → ℂ), Φ ∈ SB (Matrix n (n' ⊕ Fin 1) k) → θ (caRep α g v) (fun x => Φ (x * (blk g).val)) = ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ …`. Introduce `θ hθe a ha L' hL' g hg v Ψ hΨ`. Simplify using `only [LinearMap.compl₂_apply, tensL_apply]`. Use `hθe g v _ (hsb.1 Ψ a hΨ ha)` as an intermediate fact. Rewrite `this` using `[hdet L' hL' g hg, inv_one, one_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans (congrArg _ ?_) this` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Conclude with `(tensCol_mul_blk Ψ a g x).symm`. Take `⟨P', hP'⟩` from `exists_lat_eq P`. Take `⟨g, hg⟩` from `MulAction.exists_smul_eq (GL n' k) P' P₁`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨((resCard k : ℂ) ^ Fintype.card n)⁻¹ * ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `LS LT f₀ Ξ Ξ' hΞ hΞ' φ hφ`. Take `⟨θ, hθv, hθe⟩` from `hθ LS LT f₀ hΞ.1 hΞ.2.1 hΞ.2.2.1`. Take `⟨hram, heq⟩` from `toCA_ram hφ`. Use `set φc := toCA φ hφ.2.2 with hφc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hχ1 : χ ≠ 1` using `hχχ ▸ resChar_ne_one hχ q`. Rewrite using `[show liftA o om vA (φ P) Ξ = θ (φc P) _ from (hθv (φc P) _ _ hΞ).symm, ((GlobalTheory.T.gluedLattice_finite_expansions_localField k n n' q χ hχ1 Λ).1 P).1]`. Establish `e0 : θ (φc P) (tensCol (latInd P.ker Λ) (vecInd Λ)) = 0` using `GlobalTheory.LastSteps.lift_latInd P hram heq (hinv θ hθe _ (hsb.2.1 Λ inferInstance) P.ker inferInstance) Λ`. Establish `e1 : ∀ Q ∈ withLat Λ, θ (φc P) (tensCol (latInd P.ker Q.ker + GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mainDatum q χ 1 P Q) (charInd χ Q)) = ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) • liftA o om vA (FFStar q χ φ P₁) (Ξ' Q)`. Introduce `Q hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `hinv θ hθe _ (hsb.2.2 χ Q) P.ker inferInstance`. Establish `a0 : θ (φc P) (tensCol (latInd P.ker Q.ker) (charInd χ Q)) = 0` using `GlobalTheory.LastSteps.lift_latInd P hram heq hI Q.ker`. Establish `a1` using `GlobalTheory.LastSteps.lift_mainDatum q χ 1 heq hI Q rfl hP'`. Simplify using `only [LinearMap.compl₂_apply, tensL_apply, map_one, Module.End.one_apply] at a1`. Establish `a2` using `hθe g⁻¹ (FFStar q χ φc P₁) _ (hΞ' Q hQ).2.2.2.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b1 : caRep α g⁻¹ (FFStar q χ φc P₁) = FFStar q χ φc P'`. Rewrite using `[← hg, FFStar_mem_EqForm q χ heq g P', ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `b2 : (fun x => tensCol (phiOne P₁ Q) (charInd χ Q) (x * (blk g⁻¹).val)) = tensCol (phiOne P' Q) (charInd χ Q)`. Use function extensionality and compare the values at `x`. Rewrite using `[tensCol_mul_blk]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `x₀`. Rewrite using `[← hg, phiOne_smul_left, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Rewrite `a2` using `[b1, b2, hθv _ _ _ (hΞ' Q hQ), coe_FFStar]`. Rewrite using `[tensCol_add, map_add, a0, zero_add, a1, a2, map_inv, map_inv, Units.val_inv_eq_inv_val, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[map_smul, map_add, map_sum, e0, zero_add, Finset.sum_congr rfl e1, ← Finset.smul_sum, smul_smul]`. Introduce `LS LT f₀ Ξ a hor φ hφ`. Choose the witnesses or unpack the hypotheses as in `⟨L₁, hL₁, hO⟩ : ∃ L₁ : Submodule 𝒪[k] (n' → k), (L₁ = P.lat ∨ L₁ = P.ker) ∧ Over ψ α₀ β LS LT f₀ (tensCol (latInd L₁ Λ) a) Ξ := by`. Break down `hor with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Use `exacts [⟨_, Or.inl rfl, h⟩, ⟨_, Or.inr rfl, h⟩]`. Apply the tactic sequence `haveI : L₁.IsLattice k := by rcases hL₁ with rfl | rfl <;> infer_instance`. Take `⟨θ, hθv, hθe⟩` from `hθ LS LT f₀ hO.1 hO.2.1 hO.2.2.1`. Take `⟨hram, heq⟩` from `toCA_ram hφ`. Use `set φc := toCA φ hφ.2.2 with hφc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[show liftA o om vA (φ P) Ξ = θ (φc P) _ from (hθv (φc P) _ _ hO).symm]`. Establish `hinvL : ∀ g ∈ latStab L₁, ∀ w, θ (caRep α g w) (tensCol (latInd L₁ Λ) a) = θ w (tensCol (latInd L₁ Λ) a)`. Introduce `g hg w`. Use `hθe g w _ hO.2.2.2.1` as an intermediate fact. Rewrite `this` using `[hdet L₁ inferInstance g hg, inv_one, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Eq.trans (congrArg _ ?_) this` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[tensCol_mul_blk]`. Use `congr 1`. Use function extensionality and compare the values at `x₀`.
-
-Conclude with `(GlobalTheory.LastSteps.latInd_mul hg Λ x₀).symm`. Establish `hv : formOf (caRep α) P (evalEquiv (caRep α) P ⟨φc, heq⟩) = φc` using `congrArg Subtype.val ((evalEquiv (caRep α) P).left_inv ⟨φc, heq⟩)`. Conclude with `(GlobalTheory.PairOp.vanishing q).invariant_eq_zero (caRep α) P (evalEquiv (caRep α) P ⟨φc, heq⟩) (hv.symm ▸ hram) _ (θ.flip (tensCol (latInd L₁ Λ) a)) (by`. Break down `hL₁ with rfl | rfl` into its components or cases. Use `exacts [Or.inl fun g hg w => hinvL g hg w, Or.inr fun g hg w => hinvL g hg w])`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.sourceGlued : ∀ D : D7, GlobalTheory.FinPl.SourceGlued D := by
   intro D k _ _ _ _ p n n' _ _ _ _ q χ₀ hχ χ hχχ ψ S A L T o ζ hL hA vA χS χT om hW _ hT α α₀ β hsum P P₁ Λ _

@@ -19,14 +19,14 @@ namespace Frame
 variable {d : ℕ} (E : Frame Φ d)
 
 /- English proof (translation)
-Establish `h` using `E.add i σ σ σ`. Take the linear combination `-h`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem τ_self (i : Fin d) {T : C} (σ : E.D ⟶ T) : E.τ i σ σ = 0 := by
   have h := E.add i σ σ σ
   linear_combination -h
 
 /- English proof (translation)
-Establish `h` using `E.add i σ σ' σ`. Rewrite `h` using `[E.τ_self]`. Take the linear combination `-h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem τ_swap (i : Fin d) {T : C} (σ σ' : E.D ⟶ T) : E.τ i σ' σ = -E.τ i σ σ' := by
   have h := E.add i σ σ' σ
@@ -34,7 +34,7 @@ theorem τ_swap (i : Fin d) {T : C} (σ σ' : E.D ⟶ T) : E.τ i σ' σ = -E.τ
   linear_combination -h
 
 /- English proof (translation)
-The claim follows from `(E.bij σ (fun _ => 0) (fun _ => (Φ.J.S T).zero_mem)).unique (fun i => E.τ_self i σ) h`.
+A detailed English derivation is pending.
 -/
 theorem ext' {T : C} {σ σ' : E.D ⟶ T} (h : ∀ i, E.τ i σ σ' = 0) : σ = σ' :=
   (E.bij σ (fun _ => 0) (fun _ => (Φ.J.S T).zero_mem)).unique (fun i => E.τ_self i σ) h
@@ -52,19 +52,19 @@ def lift {T T' : C} (φ : T ⟶ T') (x : Φ.A.obj T') (hx : x ∈ Φ.J.S T') : Q
   Classical.choose (Q.univ φ x hx).exists
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (Q.univ φ x hx).exists).1`.
+A detailed English derivation is pending.
 -/
 theorem lift_j {T T' : C} (φ : T ⟶ T') (x : Φ.A.obj T') (hx : x ∈ Φ.J.S T') : Q.j T ≫ Q.lift φ x hx = φ :=
   (Classical.choose_spec (Q.univ φ x hx).exists).1
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (Q.univ φ x hx).exists).2`.
+A detailed English derivation is pending.
 -/
 theorem lift_X {T T' : C} (φ : T ⟶ T') (x : Φ.A.obj T') (hx : x ∈ Φ.J.S T') : (Φ.A.map (Q.lift φ x hx)).hom (Q.X T) = x :=
   (Classical.choose_spec (Q.univ φ x hx).exists).2
 
 /- English proof (translation)
-The claim follows from `(Q.univ (Q.j T ≫ ψ) _ (Φ.J.map_mem ψ (Q.X_mem T))).unique ⟨rfl, rfl⟩ ⟨hj.symm, hX.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {T T' : C} {ψ ψ' : Q.P T ⟶ T'} (hj : Q.j T ≫ ψ = Q.j T ≫ ψ')
     (hX : (Φ.A.map ψ).hom (Q.X T) = (Φ.A.map ψ').hom (Q.X T)) : ψ = ψ' :=
@@ -125,7 +125,7 @@ namespace Cut
 variable {E : Frame Φ (d + 1)}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {X Y : Cut E} {f g : X ⟶ Y} (h : f.1 = g.1) : f = g := Subtype.ext h
 
@@ -158,7 +158,7 @@ def sec (X : Pt E) : E.D ⟶ Q.P X.T :=
     · exact (Φ.J.S _).zero_mem)).exists
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (E.bij (X.s ≫ Q.j X.T) (fun i => if i = 0 then Q.X X.T else 0) (fun i => by split_ifs · exact Q.X_mem _ · exact (Φ.J.S _).zero_mem)).exists i`.
+A detailed English derivation is pending.
 -/
 theorem sec_spec (X : Pt E) (i : Fin (d + 1)) :
     E.τ i (X.s ≫ Q.j X.T) (sec Q X) = if i = 0 then Q.X X.T else 0 :=
@@ -168,7 +168,7 @@ theorem sec_spec (X : Pt E) (i : Fin (d + 1)) :
     · exact (Φ.J.S _).zero_mem)).exists i
 
 /- English proof (translation)
-Rewrite using `[E.add i _ (X.s ≫ Q.j X.T ≫ ψ) _, ← Category.assoc X.s, E.nat, E.τ_swap, sec_spec, map_neg]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem τ_sec (X : Pt E) {T' : C} (s' : E.D ⟶ T') (ψ : Q.P X.T ⟶ T') (i : Fin (d + 1)) :
     E.τ i (sec Q X ≫ ψ) s' = -(if i = 0 then (Φ.A.map ψ).hom (Q.X X.T) else 0) + E.τ i (X.s ≫ Q.j X.T ≫ ψ) s' := by
@@ -179,7 +179,7 @@ def val (X : Pt E) (Y : Pt E) (φ : X.T ⟶ Y.T) : Φ.A.obj (Q.P Y.T) :=
   Q.X Y.T + (Φ.A.map (Q.j Y.T)).hom (E.τ 0 (X.s ≫ φ) Y.s)
 
 /- English proof (translation)
-The claim follows from `Ideal.add_mem _ (Q.X_mem _) (Φ.J.map_mem _ (E.mem 0 _ _))`.
+A detailed English derivation is pending.
 -/
 theorem val_mem (X Y : Pt E) (φ : X.T ⟶ Y.T) : val Q X Y φ ∈ Φ.J.S _ :=
   Ideal.add_mem _ (Q.X_mem _) (Φ.J.map_mem _ (E.mem 0 _ _))
@@ -187,31 +187,31 @@ theorem val_mem (X Y : Pt E) (φ : X.T ⟶ Y.T) : val Q X Y φ ∈ Φ.J.S _ :=
 def Pmap {X Y : Pt E} (φ : X.T ⟶ Y.T) : Q.P X.T ⟶ Q.P Y.T := Q.lift (φ ≫ Q.j Y.T) (val Q X Y φ) (val_mem Q X Y φ)
 
 /- English proof (translation)
-Rewrite using `[Φ.A.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mapA_comp {T T' T'' : C} (f : T ⟶ T') (g : T' ⟶ T'') (x : Φ.A.obj T) :
     (Φ.A.map (f ≫ g)).hom x = (Φ.A.map g).hom ((Φ.A.map f).hom x) := by
   rw [Φ.A.map_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `Q.lift_j _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Pmap_j {X Y : Pt E} (φ : X.T ⟶ Y.T) : Q.j X.T ≫ Pmap Q φ = φ ≫ Q.j Y.T := Q.lift_j _ _ _
 
 /- English proof (translation)
-The claim follows from `Q.lift_X _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Pmap_X {X Y : Pt E} (φ : X.T ⟶ Y.T) : (Φ.A.map (Pmap Q φ)).hom (Q.X X.T) = val Q X Y φ := Q.lift_X _ _ _
 
 /- English proof (translation)
-Rewrite using `[E.add i _ (s₂ ≫ g), ← Category.assoc, E.nat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem τ_comp (i : Fin (d + 1)) {T₁ T₂ T₃ : C} (s₁ : E.D ⟶ T₁) (s₂ : E.D ⟶ T₂) (s₃ : E.D ⟶ T₃) (f : T₁ ⟶ T₂) (g : T₂ ⟶ T₃) :
     E.τ i (s₁ ≫ f ≫ g) s₃ = (Φ.A.map g).hom (E.τ i (s₁ ≫ f) s₂) + E.τ i (s₂ ≫ g) s₃ := by
   rw [E.add i _ (s₂ ≫ g), ← Category.assoc, E.nat]
 
 /- English proof (translation)
-Establish `h1 : (Φ.A.map (Pmap Q g)).hom ((Φ.A.map (Q.j Y.T)).hom (E.τ 0 (X.s ≫ f) Y.s)) = (Φ.A.map (Q.j Z.T)).hom ((Φ.A.map g).hom (E.τ 0 (X.s ≫ f) Y.s))`. Rewrite using `[← mapA_comp, ← mapA_comp, Pmap_j]`. Simplify using `only [val, map_add, Pmap_X, h1]`. Rewrite using `[τ_comp 0 X.s Y.s Z.s f g, map_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem val_comp {X Y Z : Pt E} (f : X.T ⟶ Y.T) (g : Y.T ⟶ Z.T) :
     val Q X Z (f ≫ g) = (Φ.A.map (Pmap Q g)).hom (val Q X Y f) := by
@@ -223,7 +223,7 @@ theorem val_comp {X Y Z : Pt E} (f : X.T ⟶ Y.T) (g : Y.T ⟶ Z.T) :
   abel
 
 /- English proof (translation)
-Rewrite using `[τ_sec, if_pos rfl, Pmap, Q.lift_X, Q.lift_j, E.add 0 _ (Y.s ≫ Q.j Y.T), ← Category.assoc, E.nat, sec_spec, if_pos rfl, val]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Pmap_cut {X Y : Pt E} (φ : X.T ⟶ Y.T) : E.τ 0 (sec Q X ≫ Pmap Q φ) (sec Q Y) = 0 := by
   rw [τ_sec, if_pos rfl, Pmap, Q.lift_X, Q.lift_j, E.add 0 _ (Y.s ≫ Q.j Y.T), ← Category.assoc,
@@ -249,9 +249,9 @@ def P0 : Pt E ⥤ Cut E where
       exact val_comp Q f g
 
 /- English proof (translation)
-Establish `e : ∀ ψ : (P0 Q).obj X ⟶ Y, (Φ.A.map ψ.1).hom (Q.X X.T) = E.τ 0 (X.s ≫ Q.j X.T ≫ ψ.1) Y.s`. Introduce `ψ`. Use `ψ.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `E.τ 0 (sec Q X ≫ ψ.1) Y.s = 0 at this`. Rewrite `this` using `[τ_sec, if_pos rfl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `-this`. Conclude with `hom_ext (Q.hom_ext h ((e ψ).trans ((congrArg (fun t => E.τ 0 (X.s ≫ t) Y.s) h).trans (e ψ').symm)))`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem truncation_hom_ext {X : Pt E} {Y : Cut E} {ψ ψ' : (P0 Q).obj X ⟶ Y} (h : Q.j X.T ≫ ψ.1 = Q.j X.T ≫ ψ'.1) : ψ = ψ' := by
   have e : ∀ ψ : (P0 Q).obj X ⟶ Y, (Φ.A.map ψ.1).hom (Q.X X.T) = E.τ 0 (X.s ≫ Q.j X.T ≫ ψ.1) Y.s := by
@@ -269,7 +269,7 @@ def adjInv (X : Pt E) (Y : Cut E) (φ : X.T ⟶ Y.T) : (P0 Q).obj X ⟶ Y :=
     ring⟩
 
 /- English proof (translation)
-The claim follows from `Q.lift_j φ _ (E.mem 0 (X.s ≫ φ) Y.s)`.
+A detailed English derivation is pending.
 -/
 theorem adjInv_j (X : Pt E) (Y : Cut E) (φ : X.T ⟶ Y.T) : Q.j X.T ≫ (adjInv Q X Y φ).1 = φ :=
   Q.lift_j φ _ (E.mem 0 (X.s ≫ φ) Y.s)

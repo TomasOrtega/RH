@@ -28,9 +28,9 @@ namespace GlobalTheory.UT.SmallZero
 open CoefBasic SmallPoint
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h q`. Establish `h₁` using `hS (insert i₀ (insert i₁ S)) ((Finset.subset_insert _ _).trans (Finset.subset_insert _ _))`. Establish `m₀ : i₀ ∈ insert i₀ (insert i₁ S)` using `Finset.mem_insert_self _ _`. Establish `m₁ : i₁ ∈ insert i₀ (insert i₁ S)` using `Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)`. Establish `h₂ : (q : WithTop ℚ) ≤ v (∑ i ∈ (insert i₀ (insert i₁ S)).erase i₀, f i)` using `v.map_le_sum fun i hi => hf i (Finset.ne_of_mem_erase hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : (q : WithTop ℚ) ≤ v (∑ i ∈ (insert i₀ (insert i₁ S)).erase i₁, g i)` using `v.map_le_sum fun i hi => hg i (Finset.ne_of_mem_erase hi)`. Rewrite `h₁` using `[Finset.sum_sub_distrib, ← Finset.add_sum_erase _ f m₀, ← Finset.add_sum_erase _ g m₁, zero_sub, v.map_neg]`. Use `v.map_le_add (v.map_le_sub h₁ h₂) h₃` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem le_of_sumV_sub {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {Ix : Type} {f g : Ix → F}
     (h : SumV v (fun i => f i - g i) 0) (i₀ i₁ : Ix) (q : ℚ) (hf : ∀ i, i ≠ i₀ → (q : WithTop ℚ) ≤ v (f i))
@@ -51,53 +51,51 @@ theorem le_of_sumV_sub {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {
   ring
 
 /- English proof (translation)
-Introduce `hL hT hVR hTW hUU V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv k hk d o l ho hl hlQ H`. Establish `hdb : d.b = 1` using `SmallPoint.main hL hT hVR hTW hUU V hc ϖ hϖ D Q hQ F v hv k hk d o l ho hl hlQ H`. Establish `I` using `GlobalTheory.UT.CoefVal.main hL hT hVR hTW hUU V hc ϖ hϖ D Q hQ F v hv`. Establish `I'` using `GlobalTheory.UT.CoefUnit.exists_fam_coef_val hL hT hVR hTW hUU V hc ϖ hϖ D Q hQ F v hv`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `K` using `GlobalTheory.UT.gt_onto_divisible_kernel hL V (maximalIdeal V) hA D F`. Establish `hob : o.b = 1` using `((isZero_iff o).1 ho).1`. Take `⟨l', hl', -⟩` from `(I d).1`. Establish `hll : ∀ χ, l χ = l' χ`. Take `⟨w, hw⟩` from `(coef_basic V D.toPre F 4 d).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ω, hω, -⟩` from `(I d).2.1 4 w hw`. Establish `le : ∀ l₁ l₂, GtV hϖ hv d l₁ → GtV hϖ hv d l₂ → ∀ χ, l₁ χ ≤ l₂ χ` using `fun l₁ l₂ h₁ h₂ χ => by`. Take `⟨s, hs, -, e⟩` from `I' 4 le_rfl d w l₂ ω hw h₂ hω χ`. Use `((I d).2.2.2.2.2.2 4 (by omega) w s hw).2 l₁ ω 0 h₁ hω hs χ` as an intermediate fact. Rewrite `this` using `[e, WithTop.coe_le_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `fun χ => le_antisymm (le _ _ hl hl' χ) (le _ _ hl' hl χ)`. Establish `hlow : ∀ m, -(Q m : ℚ) ≤ l' m` using `fun m => hll m ▸ (abs_le.1 (hlQ m)).1`. Take `⟨t, ht, -⟩` from `K.2.2.2.1 d hdb`. Establish `hto : IsTor 1 o` using `⟨hob, fun χ z J hJ => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[((isZero_iff o).1 ho).2 χ z J hJ, MonoidHom.one_apply, Units.val_one, Units.val_one, cst_eq, map_one]⟩`. Establish `hadd : o.IsAdd d d` using `(K.2.2.2.2 1 t o d d hto ht).2 (by rwa [_root_.one_mul])`. Establish `hQ0 : ∀ m, (0 : ℚ) ≤ Q m` using `fun m => (abs_nonneg _).trans (hlQ m)`. Establish `A : ∀ (κ₀ : D.toPre.X) (n j : ℕ), 4 ≤ n → j = k * n → (((j : ℚ) - 1 - 2 * Q κ₀ : ℚ) : WithTop ℚ) ≤ v ((t (Multiplicative.ofAdd κ₀)).val - 1)`. Introduce `κ₀ n j hn hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj4 : 4 ≤ j` using `hj ▸ le_trans hn (Nat.le_mul_of_pos_left _ hk)`. Establish `hj1 : 1 ≤ j` using `by omega`. Establish `hj0 : (0 : ℚ) < j` using `by exact_mod_cast hj1`. Establish `hj1' : (1 : ℚ) ≤ j` using `by exact_mod_cast hj1`. Take `⟨w₁, hw₁⟩` from `(coef_basic V D.toPre F j o).2.1 hob`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw'⟩` from `(coef_basic V D.toPre F j d).2.1 hdb`. Take `⟨w, hw, Hw⟩` from `H n j (by omega) hj w₁ hw₁`. Take `⟨c, hc0, vc, ec⟩` from `((coef_basic V D.toPre F j d).2.2 w' hw'.1).2.2.1 w hw`. Establish `et` using `((coef_basic V D.toPre F j o).2.2 w₁ hw₁.1).2.2.2 t d d w' ht hadd (fun z J hJ => (hw'.2 z J hJ).trans (hw₁.2 z J hJ).symm)`. Take `⟨ω, hcω⟩` from `WithTop.ne_top_iff_exists.1 (v.ne_top_iff.2 hc0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hω : GenV hϖ hv w ω`. Take `⟨φ₀, hφ, t₀, ht₀, x, hx, e⟩` from `(I d).2.2.1 j w' hw' hdb`. Use `⟨φ₀, hφ, t₀, ht₀, c * x, by rw [v.map_mul, hx, ← hcω]; simp, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[vc z J hJ, e z J hJ, cst_eq, cst_eq, cst_eq, map_mul, _root_.mul_assoc]`. Establish `hω₁` using `(I o).2.2.1 j w₁ hw₁ hob`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨S₁, n₁, -, e₁⟩` from `I' j hj4 o w₁ 0 0 hw₁.1 (gtV_zero ho) hω₁ κ₀`. Take `⟨S₂, n₂, z₂, e₂⟩` from `I' j hj4 o w₁ 0 0 hw₁.1 (gtV_zero ho) hω₁ 0`. Rewrite `e₁`, `e₂` using `[Pi.zero_apply, add_zero, add_zero]`. Rewrite `e₂` using `[QForm.Q_zero hϖ D hQ, Int.cast_zero, zero_div]`. Establish `hQj : ∀ mu, (Q (j • mu) : ℚ) / j = j * Q mu` using `fun mu => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Q_nsmul hϖ hQ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hQs : ∀ mu, (Q κ₀ : ℚ) / j + j * Q mu - Q mu - Q κ₀ ≤ (Q (κ₀ + j • mu) : ℚ) / j` using `fun mu => by`. Establish `h0` using `hQ0 (mu + κ₀)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Q (κ₀ + j • mu) : ℚ) / j = Q κ₀ / j + j * Q mu + (Q (mu + κ₀) - Q mu - Q κ₀)`. Rewrite using `[q_shift hϖ hQ, QForm.bOf]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `bo : ∀ S : Fam D.toPre F j, NuGe D Q F v j S 0 → ∀ χ, (((Q χ : ℚ) / j : ℚ) : WithTop ℚ) ≤ v (coef S o w₁ χ)` using `fun S hS χ => by`. Use `((I o).2.2.2.2.2.2 j hj1 w₁ S hw₁.1).2 0 0 0 (gtV_zero ho) hω₁ hS χ` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, add_zero, add_zero, zero_add]`. Then use the resulting hypothesis. Establish `bd : ∀ S : Fam D.toPre F j, NuGe D Q F v j S 0 → ∀ χ, (((Q χ : ℚ) / j + l' χ + ω : ℚ) : WithTop ℚ) ≤ v (coef S d w χ)` using `fun S hS χ => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `((I d).2.2.2.2.2.2 j hj1 w S hw).2 l' ω 0 hl' hω hS χ` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `hQ1 : ∀ mu : D.toPre.X, mu ≠ 0 → (1 : ℚ) ≤ Q mu` using `fun mu h => by`. Conclude with `QForm.Q_pos hϖ D hQ h` after adjusting the coercions. Establish `z₂' : ∀ (g : GtPtF D.toPre F) (u : Frm D.toPre F j g.b) (χ), (¬ ∃ mu, χ = j • mu) → coef S₂ g u χ = 0` using `fun g u χ e => coef_zero S₂ g u (z₂ χ fun mu h => e ⟨mu, by rw [h, zero_add]⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ¬ SumV v (coef S₂ o w₁) 0` using `fun h => by`. Use `le_of_sumV h 0 1 fun χ hχ => by` as an intermediate fact. Distinguish the cases in `e : ∃ mu, χ = j • mu`. Take `⟨mu, rfl⟩` from `e`. Use `le_trans (WithTop.coe_le_coe.2 ?_) (bo S₂ n₂ _)` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hQ1 mu fun e => hχ (by rw [e, smul_zero])` as an intermediate fact. Rewrite using `[hQj]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[z₂' o w₁ χ e, v.map_zero]`. Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[e₂, WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `le_of_sumV_sub (Hw S₁ S₂ hne κ₀) κ₀ 0 (ω + (Q κ₀ : ℚ) / j + ((j : ℚ) - 1 - 2 * Q κ₀)) (fun χ hχ => by`. Distinguish the cases in `e : ∃ mu, κ₀ - χ = j • mu`. Take `⟨mu, e⟩` from `e`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl : χ = κ₀ + j • (-mu)` from `by rw [smul_neg, ← e]; abel`. Establish `h1` using `hQ1 (-mu) fun e => hχ (by rw [e, smul_zero, add_zero])`. Rewrite using `[v.map_mul, e]`. Use `le_trans ?_ (add_le_add (bd S₁ n₁ _) (bo S₂ n₂ _))` and prove the remaining obligations. Rewrite using `[← WithTop.coe_add, WithTop.coe_le_coe, hQj, ← QForm.Q_neg hϖ D hQ mu, map_add, map_nsmul, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hQs (-mu)`. Establish `h3` using `hlow κ₀`. Establish `h4` using `mul_le_mul_of_nonneg_left (hlow (-mu)) hj0.le`. Establish `h5` using `mul_le_mul_of_nonneg_left h1 (sub_nonneg.2 hj1')`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[z₂' o w₁ _ e, MulZeroClass.mul_zero, v.map_zero]`. Conclude with `le_top)`. Use the proof step `(fun χ hχ => by`. Distinguish the cases in `e : ∃ mu, χ = j • mu`. Take `⟨mu, rfl⟩` from `e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hQ1 mu fun e => hχ (by rw [e, smul_zero])`. Rewrite using `[v.map_mul, sub_eq_add_neg κ₀, ← smul_neg]`. Use `le_trans ?_ (add_le_add (bd S₂ n₂ _) (bo S₁ n₁ _))` and prove the remaining obligations. Rewrite using `[← WithTop.coe_add, WithTop.coe_le_coe, hQj, map_nsmul, nsmul_eq_mul]`. Establish `h2` using `hQs (-mu)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[QForm.Q_neg hϖ D hQ mu]`. Establish `h3` using `hQ0 κ₀`. Establish `h4` using `mul_le_mul_of_nonneg_left (hlow mu) hj0.le`. Establish `h5` using `mul_le_mul_of_nonneg_left h1 (sub_nonneg.2 hj1')`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[z₂' d w _ e, MulZeroClass.zero_mul, v.map_zero]`. Conclude with `le_top)`. Rewrite `key` using `[sub_self, sub_zero, ec, ec, et, et, ofAdd_zero, map_one, Units.val_one, show c * ((t (Multiplicative.ofAdd κ₀)).val * coef S₁ o w₁ κ₀) * coef S₂ o w₁ 0 - c * (1 * coef S₂ o w₁ 0) * coef S₁ o w₁ κ₀ = c * coef S₁ o w₁ κ₀ * coef S₂ o w₁ 0 * ((t (Multiplicative.ofAdd κ₀)).val - 1) b …`. Conclude with `(WithTop.add_le_add_iff_left WithTop.coe_ne_top).1 key`. Establish `B : ∀ κ₀, (t (Multiplicative.ofAdd κ₀)).val = 1` using `fun κ₀ => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hx`. Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.1 (v.ne_top_iff.2 (sub_ne_zero.2 hx))`. Take `⟨n, hn⟩` from `exists_nat_gt (q + 1 + 2 * Q κ₀)`. Establish `e` using `A κ₀ (n + 4) _ (by omega) rfl`. Rewrite `e` using `[← hq, WithTop.coe_le_coe]`.
-
-Establish `: ((n + 4 : ℕ) : ℚ) ≤ ((k * (n + 4) : ℕ) : ℚ)` using `by exact_mod_cast Nat.le_mul_of_pos_left _ hk`. Move the coercions through the operations in `at this e`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(isZero_iff d).2 ⟨hdb, fun χ z J hJ => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[ht.2 χ z J hJ, B, cst_eq, map_one, Units.val_one]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllDV fun {V} _ _ _ {ϖ} hϖ D Q {F} _ _ {v} hv => ∀ (k : ℕ), 1 ≤ k → ∀ (d o : GtPtF D.toPre F) (l : D.toPre.X → ℚ), o.IsZero → GtV hϖ hv d l → (∀ m, |l m| ≤ Q m) → (∀ (n j : ℕ), 1 ≤ n → j = k * n → ∀ (w₁ : Frm D.toPre F j o.b), FrmOne w₁ → ∃ w : Frm D.toPre F j d.b, w.IsGen ∧ ∀ S₁ S₂ : Fam D.toPre F j, ¬ SumV v (coef S₂ o w₁) 0 → ∀ α, SumV v (fun χ => coef S₁ d w χ * coef S₂ o w₁ (α - χ) - coef S₂ d w χ * coef S₁ o w₁ (α - χ)) 0) → d.IsZero := by
   intro hL hT hVR hTW hUU V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv k hk d o l ho hl hlQ H

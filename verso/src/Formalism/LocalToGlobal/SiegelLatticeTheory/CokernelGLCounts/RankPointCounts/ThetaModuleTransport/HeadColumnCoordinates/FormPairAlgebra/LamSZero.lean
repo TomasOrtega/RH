@@ -15,7 +15,7 @@ def EtaNZD (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (T T' : E) : Prop :=
   ∀ u : E, (1 - T * T' * (kap O Z * cj (kap O Z))) * u = 0 → u = 0
 
 /- English proof (translation)
-Simplify using `only [lamL, LinearMap.coe_mk, AddHom.coe_mk, lamC, kap, Matrix.mulVec, dotProduct, Pi.single_apply]`. Simplify using `[apply_ite (fun x : O => (x : E)), mul_ite, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lamL_e' (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) :
     lamL O Z (Pi.single (Fin.last r) 1) = kap O Z := by
@@ -23,7 +23,7 @@ theorem lamL_e' (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) :
   simp [apply_ite (fun x : O => (x : E)), mul_ite, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Simplify using `only [lamS, lamStarC, kap, Matrix.mulVec, dotProduct, Pi.single_apply]`. Simplify using `[apply_ite (fun x : O => (x : E)), mul_ite, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lamS_e' (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) :
     lamS O cj Z (Pi.single (Fin.last r) 1) = cj (kap O Z) := by
@@ -31,14 +31,14 @@ theorem lamS_e' (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) :
   simp [apply_ite (fun x : O => (x : E)), mul_ite, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Simplify using `[lamS, lamStarC, Matrix.mulVec, dotProduct, Finset.mul_sum, Subring.smul_def, mul_left_comm, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamS_smul (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (c : O) (v : Fin (r + 1) → O) :
     lamS O cj Z (c • v) = (c : E) * lamS O cj Z v := by
   simp [lamS, lamStarC, Matrix.mulVec, dotProduct, Finset.mul_sum, Subring.smul_def, mul_left_comm, map_mul]
 
 /- English proof (translation)
-Simplify using `[lamS, lamStarC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamS_zero (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) : lamS O cj Z 0 = 0 := by
   simp [lamS, lamStarC]
@@ -57,9 +57,9 @@ variable (hO : ∀ x ∈ O, cj x ∈ O)
 include hO
 
 /- English proof (translation)
-Take `⟨w, hw, rfl⟩` from `(mem_headCols_iff Z k).1 hk`. Rewrite using `[mem_relC_iff O cj hO]`. Use `⟨0, w, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[elimL]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `[elimL, hw]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem elimL_mem (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (t t' : O) (k : Fin (r + 1) → O)
     (hk : k ∈ headCols Z) : elimL O k ∈ relC O cj (Z.map O.subtype) t t' := by
@@ -70,9 +70,9 @@ theorem elimL_mem (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (t t' : O) (k : Fin
   · funext j; simp [elimL, hw]
 
 /- English proof (translation)
-Take `⟨w, hw, rfl⟩` from `(mem_headCols_iff _ k).1 hk`. Rewrite using `[mem_relC_iff O cj hO]`. Use `⟨w, 0, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[elimR, hw]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `[elimR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem elimR_mem (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (t t' : O) (k : Fin (r + 1) → O)
     (hk : k ∈ headCols (cjT O cj hO Z)) : elimR O k ∈ relC O cj (Z.map O.subtype) t t' := by
@@ -107,7 +107,7 @@ theorem iR_mk (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (t t' : O) (y : Fin (r 
     iR O cj hO Z t t' (Submodule.Quotient.mk y) = Submodule.Quotient.mk (Sum.elim (0 : Fin (r + 1) → O) y) := rfl
 
 /- English proof (translation)
-Rewrite using `[iL_mk, iR_mk, ← Submodule.Quotient.mk_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mk_elim (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (t t' : O) (y y' : Fin (r + 1) → O) :
     (Submodule.Quotient.mk (Sum.elim y y') : (Ix r → O) ⧸ relC O cj (Z.map O.subtype) t t') =
@@ -118,15 +118,15 @@ theorem mk_elim (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (t t' : O) (y y' : Fi
   rcases i with i | i <;> simp
 
 /- English proof (translation)
-Rewrite `h` using `[Submodule.Quotient.mk_eq_zero, mem_relC_iff O cj hO Z t t']`. Take `⟨c₁, c₂, h₁, h₂⟩` from `h`. Establish `ha : a = Z.mulVec c₂ - (t * c₁ (Fin.last r)) • Pi.single (Fin.last r) 1` using `h₁`. Establish `ha' : a' = (cjT O cj hO Z).mulVec c₁ - (t' * c₂ (Fin.last r)) • Pi.single (Fin.last r) 1` using `h₂`. Establish `e1 : lamL O Z a = (c₂ (Fin.last r) : E) - (t : E) * (c₁ (Fin.last r) : E) * kap O Z`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ha, map_sub, map_smul, lamL_mulVec O Z hu, lamL_e', Subring.smul_def, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : lamS O cj Z a' = (c₁ (Fin.last r) : E) - (t' : E) * (c₂ (Fin.last r) : E) * cj (kap O Z)`. Rewrite using `[ha', lamS_sub, lamS_smul, lamS_mulVec O cj Z hO hu, lamS_e']`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hl` using `[e1]`. Rewrite `hl'` using `[e2]`. Establish `h0 : (c₁ (Fin.last r) : E) = 0`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hη` to reduce the goal to its premises. Take the linear combination `hl' + (t' : E) * cj (kap O Z) * hl`. Establish `h0' : (c₂ (Fin.last r) : E) = 0`. Take the linear combination `hl + (t : E) * kap O Z * h0`. Establish `z1 : c₁ (Fin.last r) = 0` using `Subtype.ext h0`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `z2 : c₂ (Fin.last r) = 0` using `Subtype.ext h0'`. Prove the components needed by the constructor for the conclusion. Rewrite using `[ha, z1, mul_zero, zero_smul, sub_zero, mk_mulVec, z2, zero_smul]`. Rewrite using `[ha', z2, mul_zero, zero_smul, sub_zero, mk_mulVec, z1, zero_smul]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_zero (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det) (t t' : O)
     (hη : EtaNZD O cj Z t t') (a a' : Fin (r + 1) → O)

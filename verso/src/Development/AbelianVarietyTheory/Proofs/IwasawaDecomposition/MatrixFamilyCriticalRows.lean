@@ -4,41 +4,35 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set B := Metric.ball (0 : ℂ) r with hB`. Establish `hBo : IsOpen B` using `Metric.isOpen_ball`. Establish `h0B : (0 : ℂ) ∈ B` using `Metric.mem_ball_self hr`. Set `I : ι → ℂ → Fin p → Fin q → ℂ` to `fun i t a b => (∑ k, M i t a (Sum.inl k) * (z₀ k b + t * w k b)) + ∑ k, M i t a (Sum.inr k) * (1 : Matrix (Fin q) (Fin q) ℂ) k b`. Establish `hI : ∀ i t a b, (M i t * Matrix.fromRows (z₀ + t • w) (1 : Matrix (Fin q) (Fin q) ℂ)) a b = I i t a b`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i t a b`. Simplify using `[I, Matrix.mul_apply, Fintype.sum_sum_type]`. Establish `hId : ∀ i a b, DifferentiableOn ℂ (fun t => I i t a b) B`. Introduce `i a b`. Use `DifferentiableOn.add (DifferentiableOn.fun_sum fun k _ => ?_) (DifferentiableOn.fun_sum fun k _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `(hd i a _).mul (by fun_prop)`. Conclude with `(hd i a _).mul (by fun_prop)`. Set `C : ι → Set ℂ` to `fun i => {t | t ∈ B → ∀ a b, I i t a b = 0}`. Establish `hC : ∀ i, IsClosed (C i)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hcompl : (C i)ᶜ = ⋃ a, ⋃ b, B ∩ (fun t => I i t a b) ⁻¹' {0}ᶜ`. Use extensionality with `t`. Simplify using `only [C, Set.mem_compl_iff, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff]`. Use `push_neg`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, a, b, h2⟩`. Conclude with `⟨a, b, h1, h2⟩`. Introduce and unpack `⟨a, b, h1, h2⟩`. Conclude with `⟨h1, a, b, h2⟩`. Rewrite using `[← isOpen_compl_iff, hcompl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `isOpen_iUnion fun a => isOpen_iUnion fun b => (hId i a b).continuousOn.isOpen_inter_preimage hBo isOpen_compl_singleton`. Establish `hU : ⋃ i, C i = Set.univ`. Use `Set.eq_univ_of_forall fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ B`. Take `⟨i, hi⟩` from `hk t ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Set.mem_iUnion.2 ⟨i, fun _ a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← hI, hi]`. Both sides reduce to the same expression. Establish `hne : Nonempty ι`. Take `⟨i, _⟩` from `hk 0 h0B`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i⟩`. Take `⟨i⟩` from `hne`. Conclude with `Set.mem_iUnion.2 ⟨i, fun h => absurd h ht⟩`. Establish `hdense` using `dense_iUnion_interior_of_closed hC hU`. Take `⟨t₀, ht₀B, ht₀⟩` from `hdense.inter_open_nonempty B hBo ⟨0, h0B⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `Set.mem_iUnion.1 ht₀`. Establish `hzero : ∀ a b, Set.EqOn (fun t => I i t a b) 0 B`. Introduce `a b`. Establish `han : AnalyticOnNhd ℂ (fun t => I i t a b) B` using `(hId i a b).analyticOnNhd hBo`. Use `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected ht₀B ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [isOpen_interior.mem_nhds hi, hBo.mem_nhds ht₀B] with t h1 h2`. Conclude with `interior_subset h1 h2 a b`. Establish `hM : ∀ a c, HasDerivAt (fun t => M i t a c) 0 0`. Introduce `a c`. Use `((hd i a c).differentiableAt (hBo.mem_nhds h0B)).hasDerivAt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[h0 i a c]`. Then use the resulting hypothesis. Establish `hder : ∀ a b, HasDerivAt (fun t => I i t a b) (∑ k, M i 0 a (Sum.inl k) * w k b) 0`. Introduce `a b`. Establish `h1 : HasDerivAt (fun t => ∑ k, M i t a (Sum.inl k) * (z₀ k b + t * w k b)) (∑ k, (0 * (z₀ k b + 0 * w k b) + M i 0 a (Sum.inl k) * (1 * w k b))) 0` using `HasDerivAt.fun_sum fun k _ => (hM a (Sum.inl k)).mul (((hasDerivAt_id (0 : ℂ)).mul_const (w k b)).const_add (z₀ k b))`. Establish `h2 : HasDerivAt (fun t => ∑ k, M i t a (Sum.inr k) * (1 : Matrix (Fin q) (Fin q) ℂ) k b) (∑ k, 0 * (1 : Matrix (Fin q) (Fin q) ℂ) k b) 0` using `HasDerivAt.fun_sum fun k _ => (hM a (Sum.inr k)).mul_const _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `h1.add h2`. Simplify using `only [zero_mul, zero_add, one_mul, Finset.sum_const_zero, add_zero] at h3`. Conclude with `h3`. Establish `hw : ∀ a b, ∑ k, M i 0 a (Sum.inl k) * w k b = 0`. Introduce `a b`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hev : (fun t => I i t a b) =ᶠ[nhds 0] fun _ => 0` using `by filter_upwards [hBo.mem_nhds h0B] with t ht`. Conclude with `hzero a b ht`. Conclude with `(hder a b).unique ((hasDerivAt_const (0 : ℂ) (0 : ℂ)).congr_of_eventuallyEq hev)`. Establish `hz : ∀ a b, (∑ k, M i 0 a (Sum.inl k) * z₀ k b) + M i 0 a (Sum.inr b) = 0`. Introduce `a b`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `hzero a b h0B` as an intermediate fact. Simplify `this` using `[I, Matrix.one_apply]`. Take `⟨R, hRi⟩` from `hR i`. Set `A : Matrix (Fin p) (Fin p) ℂ` to `Matrix.of fun a k => M i 0 a (Sum.inl k)`. Set `S : Matrix (Fin p) (Fin p) ℂ` to `Matrix.of fun k c => R (Sum.inl k) c - ∑ b, z₀ k b * R (Sum.inr b) c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hAw : A * w = 0`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply]`. Conclude with `hw a b`. Establish `hAS : A * S = 1`.
-
-Rewrite using `[← hRi]`. Use extensionality with `a c`. Establish `hb : ∀ b, M i 0 a (Sum.inr b) = -∑ k, M i 0 a (Sum.inl k) * z₀ k b` using `fun b => eq_neg_of_add_eq_zero_right (hz a b)`. Establish `key : ∑ b, (∑ k, M i 0 a (Sum.inl k) * z₀ k b) * R (Sum.inr b) c = ∑ k, M i 0 a (Sum.inl k) * ∑ b, z₀ k b * R (Sum.inr b) c`. Repeatedly rewrite using `[Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
-
-Conclude with `Finset.sum_comm`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [A, S, Matrix.of_apply, hb, neg_mul, Finset.sum_neg_distrib, key, mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hSA : S * A = 1` using `mul_eq_one_comm.1 hAS`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_family_killing_graph (p q : ℕ) (ι : Type) [Countable ι] (r : ℝ) (hr : 0 < r)
     (z₀ w : Matrix (Fin p) (Fin q) ℂ) (M : ι → ℂ → Matrix (Fin p) (Fin p ⊕ Fin q) ℂ)

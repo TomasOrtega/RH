@@ -16,11 +16,11 @@ namespace GlobalTheory.PDivGroup
 open GlobalTheory.PDiv
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, (∀ n, mulBy R (G.A n) (p ^ k) (B.1 n) = 0) → ∀ n, B.1 n = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `h n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(mulBy_of_cobOne_eq_zero (congrArg (fun x : G.cocycles => x.1 n) hB) (p ^ 0)).1`. Rewrite `h1` using `[h n, pow_zero, one_smul]`. Conclude with `h1.symm`. Consider the case `succ k ih`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `ih fun n => Test.mulP_injective G n ?_` and prove the remaining obligations. Rewrite using `[map_zero, map_mulBy, ← B.2 n, mulP_res, mulBy_mulBy, ← pow_succ, h]`. Use `Subtype.ext (funext (key N fun n => ?_))` and prove the remaining obligations. Rewrite using `[(mulBy_of_cobOne_eq_zero (congrArg (fun x : G.cocycles => x.1 n) hB) (p ^ N)).1, ← Nat.cast_smul_eq_nsmul R, Nat.cast_pow, hN, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cob_eq_zero_of_pow (p : ℕ) (R : Type) [CommRing R] (N : ℕ)
     (hN : (p : R) ^ N = 0) (G : PDivGroup p R) (B : G.funs) (hB : G.cob B = 0) : B = 0 := by

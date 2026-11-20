@@ -12,16 +12,16 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FreeQuotProof
 
 /- English proof (translation)
-Rewrite using `[CategoryTheory.Hom.smul_def, lift_fst_snd, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem action_eq_fst_smul_snd {S : Scheme.{0}} (G X : Over S) [GrpObj G] [ModObj G X] :
     (γ[G, X] : G ⊗ X ⟶ X) = (fst G X) • (snd G X) := by
   rw [CategoryTheory.Hom.smul_def, lift_fst_snd, Category.id_comp]
 
 /- English proof (translation)
-Introduce `S G X _ _`. Establish `hγ : (γ[G, X] : G ⊗ X ⟶ X) = fst G X • snd G X` using `GlobalTheory.CompanionTheory.FreeQuotProof.action_eq_fst_smul_snd G X`. Take `⟨σ, h₁, h₂⟩ : ∃ σ : G ⊗ X ⟶ G ⊗ X, σ ≫ snd G X = fst G X • snd G X ∧ σ ≫ fst G X = (fst G X)⁻¹` from `⟨lift (fst G X)⁻¹ (fst G X • snd G X), lift_snd _ _, lift_fst _ _⟩`. Establish `h₃ : σ ≫ (fst G X • snd G X) = snd G X`. Rewrite using `[CategoryTheory.ModObj.comp_smul, h₂, h₁, inv_smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₄ : σ ≫ σ = 𝟙 _`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₂, CategoryTheory.Hom.inv_def, ← Category.assoc, h₂, ← CategoryTheory.Hom.inv_def, inv_inv, Category.id_comp]`. Rewrite using `[Category.assoc, h₁, h₃, Category.id_comp]`. Conclude with `⟨σ, ⟨σ, h₄, h₄⟩, by rw [hγ]; exact h₁, by rw [hγ]; exact h₃⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_iso_swap_action_snd : ∀ {S : Scheme.{0}} (G X : Over S) [GrpObj G] [ModObj G X], ∃ σ : G ⊗ X ⟶ G ⊗ X, IsIso σ ∧ σ ≫ snd G X = γ[G, X] ∧ σ ≫ γ[G, X] = snd G X := by
   intro S G X _ _

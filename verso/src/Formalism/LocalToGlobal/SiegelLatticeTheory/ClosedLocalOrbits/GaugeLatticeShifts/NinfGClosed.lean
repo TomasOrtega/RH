@@ -36,13 +36,13 @@ def muSv (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) : Measure (Formalism.R
   ((muNv X u v).prod (muHv X u v)).map (fun q => q.1 * q.2)
 
 /- English proof (translation)
-The claim follows from `haarSub_isHaarS _ _`.
+A detailed English derivation is pending.
 -/
 theorem muNv_haar (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     IsHaarS (NLoc (X.B.I.ε v) (eV X v) (zV X u v)) (muNv X u v) :=
   haarSub_isHaarS _ _
 /- English proof (translation)
-The claim follows from `haarSub_isHaarS _ _`.
+A detailed English derivation is pending.
 -/
 theorem muHv_haar (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     IsHaarS (HLoc (X.B.I.ε v) (eV X v) (pV X v) (zV X u v)) (muHv X u v) :=
@@ -55,9 +55,9 @@ def NinfG (u : D.what₂.Word) : Subgroup X.B.I.Ginf := Subgroup.pi Set.univ (fu
 def HinfG (u : D.what₂.Word) : Subgroup X.B.I.Ginf := Subgroup.pi Set.univ (fun v => HGv X u v)
 
 /- English proof (translation)
-Use extensionality with `g`. Unfold `Ninf`. Simplify using `only [Set.mem_setOf_eq]`. Use `show (∀ v ∈ (Set.univ : Set (InfinitePlace X.B.I.F)), g v ∈ NGv X u v) ↔ _`. Simplify using `only [Set.mem_univ, true_implies]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 
-Conclude with `Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem NinfG_coe (u : D.what₂.Word) : (NinfG X u : Set X.B.I.Ginf) =
     Ninf X.B.I (fun a => crdOf X.B.I X.ιE X.bas (X.eX a)) (crdOf X.B.I X.ιE X.bas (X.zu u)) := by
@@ -69,11 +69,11 @@ theorem NinfG_coe (u : D.what₂.Word) : (NinfG X u : Set X.B.I.Ginf) =
   exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `g`. Unfold `Hset`. Simplify using `only [Set.mem_setOf_eq]`. Use `show (∀ v ∈ (Set.univ : Set (InfinitePlace X.B.I.F)), g v ∈ HGv X u v) ↔ _`. Simplify using `only [Set.mem_univ, true_implies]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun v => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨he, hp, hz⟩ x hx`. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hx` into its components or cases. Conclude with `he a`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hp a`. Rewrite using `[Set.mem_singleton_iff.1 hx]`. Conclude with `hz`. Introduce `h`. Conclude with `⟨fun a => h _ (Or.inl (Or.inl ⟨a, rfl⟩)), fun a => h _ (Or.inl (Or.inr ⟨a, rfl⟩)), h _ (Or.inr rfl)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem HinfG_coe (u : D.what₂.Word) : (HinfG X u : Set X.B.I.Ginf) =
     Hset X.B.I (Set.range (fun a => crdOf X.B.I X.ιE X.bas (X.eX a)) ∪
@@ -95,25 +95,23 @@ theorem HinfG_coe (u : D.what₂.Word) : (HinfG X u : Set X.B.I.Ginf) =
     exact ⟨fun a => h _ (Or.inl (Or.inl ⟨a, rfl⟩)), fun a => h _ (Or.inl (Or.inr ⟨a, rfl⟩)), h _ (Or.inr rfl)⟩
 
 /- English proof (translation)
-Use `show IsClosed (Set.univ.pi fun v => (NGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))`. Conclude with `isClosed_set_pi fun v _ => NilradicalHermitianFrames.NH.NG_closed _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem NinfG_closed (u : D.what₂.Word) : IsClosed (NinfG X u : Set X.B.I.Ginf) := by
   show IsClosed (Set.univ.pi fun v => (NGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))
   exact isClosed_set_pi fun v _ => NilradicalHermitianFrames.NH.NG_closed _ _ _
 
 /- English proof (translation)
-Use `show IsClosed (Set.univ.pi fun v => (HGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))`. Conclude with `isClosed_set_pi fun v _ => NilradicalHermitianFrames.NH.HG_closed _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem HinfG_closed (u : D.what₂.Word) : IsClosed (HinfG X u : Set X.B.I.Ginf) := by
   show IsClosed (Set.univ.pi fun v => (HGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))
   exact isClosed_set_pi fun v _ => NilradicalHermitianFrames.NH.HG_closed _ _ _ _
 
 /- English proof (translation)
-Take `⟨hσ, h0, hc, hi⟩` from `X.muN_haar u`. Use `haveI := hσ`. Establish `hv : ∀ v, IsHaarS (NGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))) (muNv X u v)` using `fun v => haarSub_isHaarS _ _`. Establish `hc' : X.muN u (NinfG X u : Set X.B.I.Ginf)ᶜ = 0` using `by rw [NinfG_coe]; exact hc`. Establish `hi' : ∀ h ∈ NinfG X u, (X.muN u).map (fun x => h * x) = X.muN u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← NinfG_coe]`. Conclude with `hh`. Use `PiM.uniq_on_closed (NinfG X u) (NinfG_closed X u) (X.muN u) (Measure.pi (muNv X u)) hc' ?_ hi' ?_ h0 (PiM.pi_ne_zero _ fun v => (hv v).1.2.1)` and prove the remaining obligations.
-
-Use `show Measure.pi (muNv X u) (Set.univ.pi fun v => (NGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))ᶜ = 0`. Conclude with `PiM.pi_conc _ _ fun v => (hv v).1.2.2.1`. Introduce `g hg`. Conclude with `PiM.pi_map_mul_left _ g fun v => (hv v).1.2.2.2 (g v) ((Subgroup.mem_pi _).mp hg v (Set.mem_univ v))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem muN_eq (u : D.what₂.Word) : ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ ∞ ∧ X.muN u = κ • Measure.pi (muNv X u) := by
   obtain ⟨hσ, h0, hc, hi⟩ := X.muN_haar u
@@ -134,11 +132,9 @@ theorem muN_eq (u : D.what₂.Word) : ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ �
     exact PiM.pi_map_mul_left _ g fun v => (hv v).1.2.2.2 (g v) ((Subgroup.mem_pi _).mp hg v (Set.mem_univ v))
 
 /- English proof (translation)
-Take `⟨hσ, h0, hc, hi⟩` from `X.muH_haar u`. Use `haveI := hσ`. Establish `hv : ∀ v, IsHaarS (HGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))) (muHv X u v)` using `fun v => haarSub_isHaarS _ _`. Establish `hc' : X.muH u (HinfG X u : Set X.B.I.Ginf)ᶜ = 0` using `by rw [HinfG_coe]; exact hc`. Establish `hi' : ∀ h ∈ HinfG X u, (X.muH u).map (fun x => h * x) = X.muH u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← HinfG_coe]`. Conclude with `hh`. Use `PiM.uniq_on_closed (HinfG X u) (HinfG_closed X u) (X.muH u) (Measure.pi (muHv X u)) hc' ?_ hi' ?_ h0 (PiM.pi_ne_zero _ fun v => (hv v).1.2.1)` and prove the remaining obligations.
-
-Use `show Measure.pi (muHv X u) (Set.univ.pi fun v => (HGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))ᶜ = 0`. Conclude with `PiM.pi_conc _ _ fun v => (hv v).1.2.2.1`. Introduce `g hg`. Conclude with `PiM.pi_map_mul_left _ g fun v => (hv v).1.2.2.2 (g v) ((Subgroup.mem_pi _).mp hg v (Set.mem_univ v))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem muH_eq (u : D.what₂.Word) : ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ ∞ ∧ X.muH u = κ • Measure.pi (muHv X u) := by
   obtain ⟨hσ, h0, hc, hi⟩ := X.muH_haar u
@@ -159,9 +155,9 @@ theorem muH_eq (u : D.what₂.Word) : ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ �
     exact PiM.pi_map_mul_left _ g fun v => (hv v).1.2.2.2 (g v) ((Subgroup.mem_pi _).mp hg v (Set.mem_univ v))
 
 /- English proof (translation)
-Take `⟨κ1, h1, h1', hN⟩` from `muN_eq X u`. Take `⟨κ2, h2, h2', hH⟩` from `muH_eq X u`. Establish `key : ((Measure.pi (muNv X u)).prod (Measure.pi (muHv X u))).map (fun p => p.1 * p.2) = Measure.pi (muSv X u)`. Rewrite using `[← (measurePreserving_piProd (muNv X u) (muHv X u)).map_eq, Measure.map_map (g := fun p : X.B.I.Ginf × X.B.I.Ginf => p.1 * p.2) (show Measurable (fun p : X.B.I.Ginf × X.B.I.Ginf => p.1 * p.2) from (continuous_fst.mul continuous_snd).measurable) piProdEquiv.measurable]`. Conclude with `Measure.pi_map_pi (f := fun v (q : Formalism.REAL.UJ (X.B.I.ε v) × Formalism.REAL.UJ (X.B.I.ε v)) => q.1 * q.2) (hμ := hσ) (fun v => (show Measurable (fun q : Formalism.REAL.UJ (X.B.I.ε v) × Formalism.REAL.UJ (X.B.I.ε v) => q.1 * q.2) from (continuous_fst.mul continuous_snd).meas …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ1 * κ2, mul_ne_zero h1 h2, ENNReal.mul_ne_top h1' h2', ?_⟩` and prove the remaining obligations. Use `show ((X.muN u).prod (X.muH u)).map (fun p => p.1 * p.2) = _`. Rewrite using `[hN, hH, Measure.prod_smul_left, Measure.prod_smul_right, Measure.map_smul, Measure.map_smul, key, smul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muS_eq (u : D.what₂.Word) (hσ : ∀ v, SigmaFinite (muSv X u v)) :
     ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ ∞ ∧ muS X u = κ • Measure.pi (muSv X u) := by

@@ -14,9 +14,9 @@ namespace GlobalTheory.ShiftCoords
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, mul_add]`. Consider the case `tmul b x`. Rewrite using `[TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `splitProj τ (compFin F E v ((a • b) ⊗ₜ[F] x)) = evFin F v a * splitProj τ (compFin F E v (b ⊗ₜ[F] x))`. Simplify using `[compFin, mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem piW_smul' {v : Pl F} (τ : E →ₐ[F] Fv F v) (a : AF F) (z : AE F E) :
     piW τ (a • z) = evFin F v a * piW τ z := by
@@ -29,14 +29,14 @@ theorem piW_smul' {v : Pl F} (τ : E →ₐ[F] Fv F v) (a : AF F) (z : AE F E) :
     simp [compFin, mul_assoc]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `splitProj τ (compFin F E v ((1 : AF F) ⊗ₜ[F] x)) = τ x`. Simplify using `[compFin]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem piW_inclR' {v : Pl F} (τ : E →ₐ[F] Fv F v) (x : E) : piW τ (inclR (F := F) (AF F) x) = τ x := by
   change splitProj τ (compFin F E v ((1 : AF F) ⊗ₜ[F] x)) = τ x
   simp [compFin]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem piW_cA'' {σ : E →ₐ[F] E} {v : Pl F} (τ : E →ₐ[F] Fv F v) (w : AE F E) :
     piW τ (cA σ w) = piW (τ.comp σ) w := by
@@ -50,7 +50,7 @@ end GlobalTheory.ShiftCoords
 namespace GlobalTheory.ShiftCoords
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, Matrix.vecMul, dotProduct]`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_comm]`. Simplify using `only [Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -71,7 +71,7 @@ namespace GlobalTheory.ShiftCoords
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_form {K : Type} [Field K] [Algebra F K] (σ : E →ₐ[F] E) (t : E →ₐ[F] K) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (z w : Fin n → E) :
@@ -79,7 +79,7 @@ theorem sum_form {K : Type} [Field K] [Algebra F K] (σ : E →ₐ[F] E) (t : E 
   simp only [form, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, cm_conj_conj hcm, hJ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_swap_skew {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = -J i j) (x y : Fin n → E) : form σ J y x = -σ (form σ J x y) := by

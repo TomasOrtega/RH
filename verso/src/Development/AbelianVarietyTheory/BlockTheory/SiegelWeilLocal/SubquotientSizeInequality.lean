@@ -29,7 +29,7 @@ def distAt (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : In
 
 omit [StarRing K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [NumberField K] in
 /- English proof (translation)
-Simplify using `[ptAt, normAt, cnorm, EuclideanSpace.norm_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_ptAt (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (y : V) : ‖ptAt b X v y‖ = normAt b X v y := by

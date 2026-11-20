@@ -1,25 +1,23 @@
 import Mathlib
 
 /- English proof (translation)
-Establish `B : ∀ (a : ℕ) (x : ℤ), (2 : ℤ) ^ (a + 1) ∣ x ^ 2 - 1 → (2 : ℤ) ^ a ∣ x - 1 ∨ (2 : ℤ) ^ a ∣ x + 1`. Introduce `a x h`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Use `left`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩ : ∃ b, a = b + 1` from `⟨a - 1, by omega⟩`. Break down `Int.even_or_odd' x with ⟨q, hq | hq⟩` into its components or cases. It suffices to derive a contradiction. Establish `h2 : (2 : ℤ) ∣ x ^ 2 - 1` using `(dvd_pow_self 2 (by omega : b + 1 + 1 ≠ 0)).trans h`. Rewrite `h2` using `[hq, show (2 * q) ^ 2 - 1 = 2 * (2 * q ^ 2) - 1 by ring]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Substitute `hq` using the available equality. Establish `e1 : (2 * q + 1) ^ 2 - 1 = 2 ^ 2 * (q * (q + 1))` using `by ring`. Rewrite `h` using `[e1, show b + 1 + 1 = 2 + b by omega, pow_add]`. Establish `h' : (2 : ℤ) ^ b ∣ q * (q + 1)` using `(mul_dvd_mul_iff_left (by norm_num)).1 h`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.even_or_odd q with hqe | hqo` into its components or cases. Establish `hc : IsCoprime ((2 : ℤ) ^ b) (q + 1)` using `(Int.isCoprime_two_left.2 hqe.add_one).pow_left left`. Establish `hd` using `hc.dvd_of_dvd_mul_right h'`. Rewrite using `[show 2 * q + 1 - 1 = 2 * q by ring, pow_succ, mul_comm ((2 : ℤ) ^ b) 2]`. Conclude with `mul_dvd_mul_left 2 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsCoprime ((2 : ℤ) ^ b) q` using `(Int.isCoprime_two_left.2 hqo).pow_left right`. Establish `hd` using `hc.dvd_of_dvd_mul_left h'`. Rewrite using `[show 2 * q + 1 + 1 = 2 * (q + 1) by ring, pow_succ, mul_comm ((2 : ℤ) ^ b) 2]`. Conclude with `mul_dvd_mul_left 2 hd`. Introduce `k`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `a x h`. Use `left`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Introduce `a x h`. Establish `h' : (2 : ℤ) ^ ((a + 1) + k) ∣ (x ^ 2) ^ (2 ^ k) - 1`. Rewrite using `[← pow_mul, ← pow_succ', show a + 1 + k = a + (k + 1) by omega]`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Break down `ih (a + 1) (x ^ 2) h' with h1 | h1` into its components or cases. Conclude with `B a x h1`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Use `left`. Simplify using the standard rewrite rules.
+Evaluate the numerical expressions. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Establish `h4 : (2 : ℤ) ^ 2 ∣ x ^ 2 + 1` using `(pow_dvd_pow 2 (by omega : 2 ≤ a + 1)).trans h1`. Evaluate the numerical expressions using `at h4`. Break down `Int.even_or_odd' x with ⟨q, hq | hq⟩` into its components or cases. Rewrite `h4` using `[hq, show (2 * q) ^ 2 + 1 = 4 * q ^ 2 + 1 by ring]`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite `h4` using `[hq, show (2 * q + 1) ^ 2 + 1 = 4 * (q ^ 2 + q) + 2 by ring]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.two_pow_dvd_sub_one_or_add_one_of_pow_two_pow :
     ∀ (k a : ℕ) (x : ℤ), (2 : ℤ) ^ (a + k) ∣ x ^ (2 ^ k) - 1 → (2 : ℤ) ^ a ∣ x - 1 ∨ (2 : ℤ) ^ a ∣ x + 1 := by

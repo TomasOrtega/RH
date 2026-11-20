@@ -27,9 +27,7 @@ Both sides reduce to the same expression.
 theorem qI_eq (a : AF F) : qI F a = evI F a := rfl
 
 /- English proof (translation)
-Establish `: Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
-
-Conclude with `this.comp continuous_fst`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_qI : Continuous (qI F) := by
   have : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
@@ -44,7 +42,7 @@ theorem continuous_qI : Continuous (qI F) := by
 def pt (x : mixedSpace F) (y : Af F) : AF F := mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm x) y
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply x`.
+A detailed English derivation is pending.
 -/
 theorem qI_pt (x : mixedSpace F) (y : Af F) : qI F (pt x y) = x :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply x
@@ -55,7 +53,7 @@ Both sides reduce to the same expression.
 theorem finite_projection_mixed_point (x : mixedSpace F) (y : Af F) : p2 (pt x y) = y := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `f (fun i => qI F (pt (x i) (y i))) * g y = _`. Simplify using `only [qI_pt]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem pureA_pt (f : (κ → mixedSpace F) → ℂ) (g : (κ → Af F) → ℂ) (x : κ → mixedSpace F) (y : κ → Af F) :
     pureA F f g (fun i => pt (x i) (y i)) = f x * g y := by
@@ -63,7 +61,7 @@ theorem pureA_pt (f : (κ → mixedSpace F) → ℂ) (g : (κ → Af F) → ℂ)
   simp only [qI_pt]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Function.ne_iff.1 hg`. Use extensionality with `x`. Use `congrFun h fun i => pt (x i) (y i)` as an intermediate fact. Rewrite `this` using `[pureA_pt, pureA_pt]`. Conclude with `mul_right_cancel₀ hy this`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureA_cancel {f f' : SInf F κ} {g : (κ → Af F) → ℂ} (hg : g ≠ 0) (h : pureA F f g = pureA F f' g) : f = f' := by
   obtain ⟨y, hy⟩ := Function.ne_iff.1 hg
@@ -73,19 +71,19 @@ theorem pureA_cancel {f f' : SInf F κ} {g : (κ → Af F) → ℂ} (hg : g ≠ 
   exact mul_right_cancel₀ hy this
 
 /- English proof (translation)
-The claim follows from `funext fun _ => mul_assoc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pureA_smul_left (c : ℂ) (f : SInf F κ) (g : (κ → Af F) → ℂ) : pureA F (c • f : SInf F κ) g = c • pureA F f g :=
   funext fun _ => mul_assoc _ _ _
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pureA_mem (f : SInf F κ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB _) : pureA F f g ∈ schA F κ :=
   Submodule.subset_span ⟨f, g, hg, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[map_eq_mul ψ, hψ.2.2 _ (at_mk _)]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `_ * ((Algebra.trace ℝ (mixedSpace F) (qI F a) : ℝ) : ℂ) = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_eq {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (a : AF F) : ψ a =
     Complex.exp (Complex.I * ((-(2 * Real.pi) * Algebra.trace ℝ (mixedSpace F) (qI F a) : ℝ) : ℂ)) * finChar ψ (p2 a) := by
@@ -108,27 +106,27 @@ def ev2 (w : (κ → AF F) × (κ → AF F)) : (κ → mixedSpace F) × (κ → 
 def fn2 (w : (κ → AF F) × (κ → AF F)) : (κ → Af F) × (κ → Af F) := (fun i => p2 (w.1 i), fun i => p2 (w.2 i))
 
 /- English proof (translation)
-Apply the tactic sequence `ext i <;> simp [ev2, Prod.fst_sum, Prod.snd_sum]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairEvaluation_linear_combination {m : ℕ} (y : Fin m → AF F) (c : Fin m → (κ → AF F) × (κ → AF F)) :
     ev2 (∑ j, y j • c j) = ∑ j, qI F (y j) • ev2 (c j) := by
   ext i <;> simp [ev2, Prod.fst_sum, Prod.snd_sum]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [fn2, Prod.fst_sum, Prod.snd_sum]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairFunctional_linear_combination {m : ℕ} (y : Fin m → AF F) (c : Fin m → (κ → AF F) × (κ → AF F)) :
     fn2 (∑ j, y j • c j) = ∑ j, p2 (y j) • fn2 (c j) := by
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [fn2, Prod.fst_sum, Prod.snd_sum]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i <;> simp [ev2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairEvaluation_smul (y : AF F) (c : (κ → AF F) × (κ → AF F)) : ev2 (y • c) = qI F y • ev2 c := by
   ext i <;> simp [ev2]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [fn2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairFunctional_smul (y : AF F) (c : (κ → AF F) × (κ → AF F)) : fn2 (y • c) = p2 y • fn2 c := by
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [fn2]
@@ -137,26 +135,26 @@ def fw (ψ : AddChar (AF F) ℂ) (b : (κ → Af F) × (κ → Af F)) (g : (κ �
   finS ψ g b.2 b.1 (p2 (⅟(2 : AF F)) * (b.1 ⬝ᵥ b.2))
 
 /- English proof (translation)
-The claim follows from `finS_mem ψ hψ.1 hg _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fw_mem {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (b : (κ → Af F) × (κ → Af F)) {g : (κ → Af F) → ℂ} (hg : g ∈ SB _) :
     fw ψ b g ∈ SB _ := finS_mem ψ hψ.1 hg _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[fw, finS]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fw_zero (ψ : AddChar (AF F) ℂ) (g : (κ → Af F) → ℂ) : fw ψ 0 g = g := by
   funext x
   simp [fw, finS]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h2 : qI F (⅟(2 : AF F)) = algebraMap ℝ _ (1 / 2 : ℝ)`. Establish `e : qI F (⅟(2 : AF F)) * 2 = 1` using `by rw [← map_ofNat (qI F) 2, ← map_mul, invOf_mul_self, map_one]`. Establish `e' : algebraMap ℝ (mixedSpace F) (1 / 2 : ℝ) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap ℝ (mixedSpace F)) 2, ← map_mul, ← map_one (algebraMap ℝ (mixedSpace F))]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Take the linear combination `(algebraMap ℝ (mixedSpace F) (1 / 2 : ℝ)) * e - qI F (⅟(2 : AF F)) * e'`. Express the relevant statement in the definitionally equal form `ψ _ * (f (fun i => qI F ((x + w.1) i)) * g (fun i => p2 ((x + w.1) i))) = S (aw0 F κ (ev2 w)) f (fun i => qI F (x i)) * (finChar ψ ((fun i => p2 (x i)) ⬝ᵥ (fn2 w).2 + _) * g ((fun i => p2 (x i)) + (fn2 w).1))`. Rewrite using `[S_apply, psi_eq hψ, ph]`. Establish `e1 : (fun i => qI F ((x + w.1) i)) = (fun i => qI F (x i)) + (aw0 F κ (ev2 w)).1` using `funext fun i => map_add _ _ _`.
+Evaluate the numerical expressions. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (fun i => p2 ((x + w.1) i)) = (fun i => p2 (x i)) + (fn2 w).1` using `funext fun i => map_add _ _ _`. Establish `e3 : p2 (x ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) = (fun i => p2 (x i)) ⬝ᵥ (fn2 w).2 + p2 (⅟(2 : AF F)) * ((fn2 w).1 ⬝ᵥ (fn2 w).2)`. Rewrite using `[map_add, map_mul, RingHom.map_dotProduct, RingHom.map_dotProduct]`. Both sides reduce to the same expression. Establish `e4 : -(2 * Real.pi) * Algebra.trace ℝ (mixedSpace F) (qI F (x ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2))) = (aw0 F κ (ev2 w)).2 (fun i => qI F (x i)) + (aw0 F κ (ev2 w)).2 (aw0 F κ (ev2 w)).1 / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_mul, RingHom.map_dotProduct, RingHom.map_dotProduct, h2, ← Algebra.smul_def, map_add, map_smul]`. Express the relevant statement in the definitionally equal form `_ = -(2 * Real.pi) * Algebra.trace ℝ (mixedSpace F) ((qI F ∘ x) ⬝ᵥ (qI F ∘ w.2)) + -(2 * Real.pi) * Algebra.trace ℝ (mixedSpace F) ((qI F ∘ w.1) ⬝ᵥ (qI F ∘ w.2)) / 2`. Rewrite using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, e3, e4]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -186,7 +184,7 @@ theorem schr_pure {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (w : (κ → AF F) 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, add_dotProduct]`. Rewrite using `[add_right_comm x w.1]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) • schr ψ w' (schr ψ w φ) := by
@@ -197,13 +195,11 @@ theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
   ring
 
 /- English proof (translation)
-Use `haveI := nonarch_finiteAdeleRing (F := F)`. Use `haveI := nonarch_pi (G := fun _ : κ => Af F)`. Take `⟨U, hU⟩` from `GlobalTheory.WeilM.HaarUniq.exists_invariant hg`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun b₀ => ?_` and prove the remaining obligations. Establish `hc : IsLocallyConstant fun z : ((κ → Af F) × (κ → Af F)) × (κ → Af F) => finChar ψ (z.2 ⬝ᵥ z.1.2 + p2 (⅟(2 : AF F)) * (z.1.1 ⬝ᵥ z.1.2))` using `(finChar_isLocallyConstant ψ hψ.1).comp_continuous ((continuous_snd.dotProduct continuous_fst.snd).add (continuous_const.mul (continuous_fst.fst.dotProduct continuous_fst.snd)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact (tsupport fun x => g (x + b₀.1))` using `hg.2.comp_homeomorph (Homeomorph.addRight b₀.1)`. Establish `h1` using `hK.eventually_forall_of_forall_eventually (x₀ := b₀) (P := fun b x => finChar ψ (x ⬝ᵥ b.2 + p2 (⅟(2 : AF F)) * (b.1 ⬝ᵥ b.2)) = finChar ψ (x ⬝ᵥ b₀.2 + p2 (⅟(2 : AF F)) * (b₀.1 ⬝ᵥ b₀.2))) fun x _ => by filter_upwards [hc.eventually_eq (b₀, x), (hc.comp_continuous (continuous_const. …`. Conclude with `h.trans h'.symm`. Establish `h2 : ∀ᶠ b : (κ → Af F) × (κ → Af F) in 𝓝 b₀, b.1 - b₀.1 ∈ U` using `(continuous_fst.sub continuous_const).continuousAt.eventually_mem (by simpa using U.mem_nhds_zero)`. Use `filter_upwards [h1, h2] with b hb hb'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `x`. Establish `e : g (x + b.1) = g (x + b₀.1)` using `by rw [← hU _ hb' (x + b₀.1)]; congr 1; abel`. Simplify using `only [fw, finS, e]`. Distinguish the cases in `hx : x ∈ tsupport fun x => g (x + b₀.1)`. Rewrite using `[hb x hx]`.
-
-Rewrite using `[show g (x + b₀.1) = 0 from image_eq_zero_of_notMem_tsupport (f := fun x => g (x + b₀.1)) hx, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fw_lc {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB _) :
     IsLocallyConstant fun b => fw ψ b g := by
@@ -236,13 +232,13 @@ theorem fw_lc {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {g : (κ → Af F) → 
 open GroundTheory.Global in
 
 /- English proof (translation)
-Set `χ : AddChar (AF F) Circle` to `{ toFun := fun x => ⟨ψ x, by simpa [Submonoid.unitSphere] using GlobalTheory.StdCharFromIsStd.norm_psi hψ x⟩ map_zero_eq_one' := Subtype.ext ψ.map_zero_eq_one map_add_eq_mul' := fun a b => Subtype.ext (ψ.map_add_eq_mul a b) }`. Take `⟨ξ, hξ, -⟩` from `existsUnique_eq_adelicChar_mul χ (hψ.1.subtype_mk _) fun k => Subtype.ext (hψ.2.1 k)`. Establish `h0 : ξ ≠ 0`. Introduce and unpack `rfl`. Take `⟨x, hx⟩` from `GlobalTheory.StdCharFromIsStd.exists_ne_one hψ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `hξ x` as an intermediate fact. Rewrite `this` using `[map_zero, zero_mul, AddChar.map_zero_eq_one]`. Conclude with `hx (congrArg Subtype.val this)`. Take `⟨d, hd, hd'⟩` from `exists_forall_mul_mem_of_mem_nhds hU`. Establish `hd0 : algebraMap (𝓞 F) F d ≠ 0` using `fun h => hd (RingOfIntegers.coe_injective (h.trans (map_zero _).symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, (isCompact_idealFiniteAdeles (traceDualIdeal F 1)).image (continuous_const_mul (algebraMap F (Af F) (ξ * algebraMap (𝓞 F) F d)⁻¹)), fun b hb => ⟨algebraMap F (Af F) (ξ * algebraMap (𝓞 F) F d) * b, ?_, ?_⟩⟩` and prove the remaining obligations. Use `(forall_finiteAdelicChar_mul_eq_one_iff 1 _).1 fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `hb _ (hd' x (by rw [← SetLike.mem_coe, ← idealFiniteAdeles_one]; exact hx))`. Establish `h2` using `hξ (finiteAdeleInr (algebraMap F (Af F) (algebraMap (𝓞 F) F d) * x * b))`. Rewrite `h2` using `[algebraMap_mul_finiteAdeleInr, ← finiteAdelicChar_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show x * (algebraMap F (Af F) (ξ * algebraMap (𝓞 F) F d) * b) = algebraMap F (Af F) ξ * (algebraMap F (Af F) (algebraMap (𝓞 F) F d) * x * b) by rw [map_mul]; ring, ← h2]`. Conclude with `Subtype.ext h1`. Use `beta_reduce`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ (mul_ne_zero h0 hd0), map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annih {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {U : Set (Af F)} (hU : U ∈ 𝓝 0) :
     ∃ C : Set (Af F), IsCompact C ∧ ∀ b, (∀ a ∈ U, finChar ψ (a * b) = 1) → b ∈ C := by
@@ -273,7 +269,7 @@ theorem annih {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {U : Set (Af F)} (hU : 
     rw [← mul_assoc, ← map_mul, inv_mul_cancel₀ (mul_ne_zero h0 hd0), map_one, one_mul]
 
 /- English proof (translation)
-Use `(latticeBasis F).ext_elem fun j => ?_` and prove the remaining obligations. Use `h (mixedEmbedding F ((integralBasis F).traceDual j))` as an intermediate fact. Rewrite `this` using `[← (latticeBasis F).sum_repr b]`. Simplify using `only [Finset.sum_mul, smul_mul_assoc, map_sum, map_smul, latticeBasis_apply, ← map_mul, GlobalTheory.ThK.Dbl.Dense.trace_emb, Module.Basis.trace_mul_traceDual] at this`. Simplify `this` using `[apply_ite]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trace_nondeg (b : mixedSpace F) (h : ∀ y, Algebra.trace ℝ (mixedSpace F) (b * y) = 0) : b = 0 := by
   refine (latticeBasis F).ext_elem fun j => ?_
@@ -284,7 +280,7 @@ theorem trace_nondeg (b : mixedSpace F) (h : ∀ y, Algebra.trace ℝ (mixedSpac
   simpa [apply_ite] using this
 
 /- English proof (translation)
-The claim follows from `exists_half ((LinearMap.toContinuousLinearMap (𝕜 := ℝ) (E := mixedSpace F) (F' := ℝ)).toLinearMap ∘ₗ Algebra.traceForm ℝ (mixedSpace F)) fun x hx => trace_nondeg x fun y => DFunLike.congr_fun hx y`.
+A detailed English derivation is pending.
 -/
 theorem exists_half_trace : ∃ K : ℝ, 0 ≤ K ∧ ∀ x : mixedSpace F, x ≠ 0 → ∃ a, ‖a‖ * ‖x‖ ≤ K ∧
     Algebra.trace ℝ (mixedSpace F) (x * a) = 1 / 2 :=
@@ -295,15 +291,13 @@ variable {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-Take `⟨ei, ev, h0, h1, h2⟩` from `he.loc`. Establish `: ∀ φ, φ ∈ SB (Fin n × Fin d → Af F) → ∃ φ₁ ∈ SB (Fin n₁ × Fin d₁ → Af F), ∀ f : SInf F _, e (pureA F f φ) = pureA F (ei f) φ₁` using `fun g hg => by`. Use `GlobalTheory.ThK.Dbl.Dense.mem_span_pf hg` as an intermediate fact. Use `clear hg`. Proceed by induction on `this using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨φ, hφ, rfl⟩` from `hx`. Establish `hv : ∀ᶠ v in cofinite, φ v = M.vac v` using `by filter_upwards [hφ.2, hM.std] with v a b using a.trans b.symm`. Use `⟨GlobalTheory.ThK.Dbl.Dense.pf fun v => ev v (φ v), GlobalTheory.ThK.Dbl.Dense.pf_mem ⟨fun v => (h1 v).2 ▸ ⟨_, hφ.1 v, rfl⟩, ?_⟩, fun f => h2 f φ hφ.1 hv⟩` and prove the remaining obligations. Use `filter_upwards [hv, hM₁.std] with v a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[a, (h1 v).1, b]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, zero_mem _, fun f => by simp only [GlobalTheory.ThK.Dbl.Dense.pureA_zero, map_zero]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ha'⟩` from `hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, hb, hb'⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb, fun f => by simp only [GlobalTheory.ThK.Dbl.Dense.pureA_add, map_add, ha', hb']⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, ha'⟩` from `hx`. Conclude with `⟨c • a, Submodule.smul_mem _ _ ha, fun f => by simp only [GlobalTheory.ThK.Dbl.Dense.pureA_smul, map_smul, ha']⟩`.
-
-Use `choose! ef h using this`. Conclude with `⟨ei, ef, h0, h⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ev_pure {B : Base F E} {M : Model σ X W} {M₁ : Model σ X₁ W₁} (hM : M.IsGood B.ψ) (hM₁ : M₁.IsGood B.ψ) {ι ι' I e}
     (he : IsEv B M M₁ ι ι' I e) : ∃ (ei : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁))

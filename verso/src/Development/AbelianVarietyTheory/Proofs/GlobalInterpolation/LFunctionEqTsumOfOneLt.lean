@@ -6,21 +6,19 @@ namespace GlobalTheory.DirichletTail
 open Filter Topology
 
 /- English proof (translation)
-Establish `hq : 0 < q` using `Nat.pos_of_ne_zero (NeZero.ne q)`. Establish `hper : ∑ a : ZMod q, χ a = ∑ n ∈ Finset.range q, χ (n : ZMod q)`. Use `Finset.sum_bij' (fun a _ ↦ a.val) (fun n _ ↦ (n : ZMod q)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _`. Conclude with `Finset.mem_range.mpr (ZMod.val_lt a)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n _`. Conclude with `Finset.mem_univ _`. Introduce `a _`. Conclude with `ZMod.natCast_zmod_val a`. Introduce `n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ZMod.val_cast_of_lt (Finset.mem_range.mp hn)`. Introduce `a _`. Rewrite using `[ZMod.natCast_zmod_val]`. Establish `hshift : ∀ k : ℕ, ∑ n ∈ Finset.range q, χ ((k + n : ℕ) : ZMod q) = 0`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [zero_add]`. Rewrite using `[← hper]`. Conclude with `MulChar.sum_eq_zero_of_ne_one hχ`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Establish `h1` using `Finset.sum_range_succ (fun n ↦ χ ((k + n : ℕ) : ZMod q)) q`. Establish `h2` using `Finset.sum_range_succ' (fun n ↦ χ ((k + n : ℕ) : ZMod q)) q`. Use `beta_reduce at h1 h2`. Establish `hkq : χ ((k + q : ℕ) : ZMod q) = χ ((k + 0 : ℕ) : ZMod q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Proceed by induction. Treat this case separately.
 
-Simplify using `[Nat.cast_add]`. Establish `hc : ∑ n ∈ Finset.range q, χ ((k + 1 + n : ℕ) : ZMod q) = ∑ n ∈ Finset.range q, χ ((k + (n + 1) : ℕ) : ZMod q)` using `Finset.sum_congr rfl fun n _ ↦ by rw [show k + 1 + n = k + (n + 1) by omega]`. Rewrite using `[hc]`. Take the linear combination `ih + hkq - h1.symm.trans h2`. Proceed by induction on `m using Nat.strong_induction_on with`.
+Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `_ m ih`. Distinguish the cases in `hm : m ≤ q`. Combine the equalities or inequalities in the displayed calculation. Take `⟨k, rfl⟩ : ∃ k, m = k + q` from `⟨m - q, by omega⟩`. Rewrite using `[Finset.sum_range_add]`.
-
-Establish `hb : ∑ x ∈ Finset.range q, χ ((k + x + 1 : ℕ) : ZMod q) = 0`. Rewrite using `[← hshift (k + 1)]`. Conclude with `Finset.sum_congr rfl fun x _ ↦ by rw [show k + x + 1 = k + 1 + x by omega]`. Rewrite using `[hb, add_zero]`. Conclude with `ih k (by omega)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sum_range_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (m : ℕ) :
     ‖∑ n ∈ Finset.range m, χ ((n + 1 : ℕ) : ZMod q)‖ ≤ q := by
@@ -72,13 +70,13 @@ theorem norm_sum_range_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (
       exact ih k (by omega)
 
 /- English proof (translation)
-Establish `hσ : 0 < s.re` using `lt_of_lt_of_le hδ hs`. Establish `hs0 : -s ≠ 0`. Introduce `h`. Rewrite `hσ` using `[neg_eq_zero.mp h, Complex.zero_re]`. Conclude with `lt_irrefl _ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hδ0 : δ ≠ 0` using `hδ.ne'`. Establish `hpos : ∀ t ∈ Set.Icc a b, 0 < t` using `fun t ht ↦ lt_of_lt_of_le one_pos (ha.trans ht.1)`. Establish `hf : ∀ t ∈ Set.Icc a b, HasDerivAt (fun x : ℝ ↦ (a : ℂ) ^ (-s) - (x : ℂ) ^ (-s)) (-(-s * (t : ℂ) ^ (-s - 1))) t` using `fun t ht ↦ (hasDerivAt_ofReal_cpow_const (hpos t ht).ne' hs0).const_sub _`. Establish `hB : ∀ t ∈ Set.Icc a b, HasDerivAt (fun x : ℝ ↦ ‖s‖ / δ * (a ^ (-δ) - x ^ (-δ))) (‖s‖ / δ * -((-δ) * t ^ (-δ - 1))) t` using `fun t ht ↦ ((Real.hasDerivAt_rpow_const (Or.inl (hpos t ht).ne')).const_sub _).const_mul _`. Use `image_norm_le_of_norm_deriv_right_le_deriv_boundary' (f := fun x : ℝ ↦ (a : ℂ) ^ (-s) - (x : ℂ) ^ (-s)) (a := a) (b := b) (f' := fun t ↦ -(-s * (t : ℂ) ^ (-s - 1))) (B := fun x : ℝ ↦ ‖s‖ / δ * (a ^ (-δ) - x ^ (-δ))) (B' := fun t ↦ ‖s‖ / δ * -((-δ) * t ^ (-δ - 1))) (fun t ht ↦ (hf …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `ht1 : 1 ≤ t` using `ha.trans ht.1`. Establish `htp : 0 < t` using `lt_of_lt_of_le one_pos ht1`. Rewrite using `[norm_neg, norm_mul, norm_neg, norm_cpow_eq_rpow_re_of_pos htp]`. Simplify using `only [Complex.sub_re, Complex.neg_re, Complex.one_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : t ^ (-s.re - 1) ≤ t ^ (-δ - 1)` using `Real.rpow_le_rpow_of_exponent_le ht1 (by linarith)`. Establish `h2 : ‖s‖ / δ * -((-δ) * t ^ (-δ - 1)) = ‖s‖ * t ^ (-δ - 1)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2]`. Conclude with `mul_le_mul_of_nonneg_left h1 (norm_nonneg _)`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cpow_sub_le {a b δ : ℝ} {s : ℂ} (ha : 1 ≤ a) (hab : a ≤ b) (hδ : 0 < δ)
     (hs : δ ≤ s.re) :
@@ -119,7 +117,7 @@ theorem norm_cpow_sub_le {a b δ : ℝ} {s : ℂ} (ha : 1 ≤ a) (hab : a ≤ b)
   exact mul_le_mul_of_nonneg_left h1 (norm_nonneg _)
 
 /- English proof (translation)
-Establish `h : Tendsto (fun n : ℕ ↦ ((n + N + 1 : ℕ) : ℝ)) atTop atTop` using `tendsto_natCast_atTop_atTop.comp ((tendsto_add_atTop_nat (N + 1)).congr fun n ↦ by omega)`. Conclude with `(tendsto_rpow_neg_atTop hδ).comp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_rpow_neg {δ : ℝ} (hδ : 0 < δ) (N : ℕ) :
     Tendsto (fun n : ℕ => ((n + N + 1 : ℕ) : ℝ) ^ (-δ)) atTop (𝓝 0) := by
@@ -128,13 +126,13 @@ theorem tendsto_rpow_neg {δ : ℝ} (hδ : 0 < δ) (N : ℕ) :
   exact (tendsto_rpow_neg_atTop hδ).comp h
 
 /- English proof (translation)
-Use `set g : ℕ → ℝ := fun n ↦ ((n + N + 1 : ℕ) : ℝ) ^ (-δ) with hg`. Establish `hstep : ∀ n, ((n + N + 1 : ℕ) : ℝ) ^ (-δ) - ((n + N + 1 + 1 : ℕ) : ℝ) ^ (-δ) = g n - g (n + 1)`. Introduce `n`. Simplify using `only [hg]`. Rewrite using `[show n + 1 + N + 1 = n + N + 1 + 1 by omega]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmono : ∀ n, 0 ≤ g n - g (n + 1)`. Introduce `n`. Use `sub_nonneg.mpr (Real.rpow_le_rpow_of_nonpos (by positivity) ?_ (by linarith))` and prove the remaining obligations. Conclude with `(show n + N + 1 ≤ n + 1 + N + 1 by omega)` after adjusting the coercions. Repeatedly rewrite using `[hstep]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[hasSum_iff_tendsto_nat_of_nonneg hmono]`. Repeatedly rewrite using `[Finset.sum_range_sub']`. Establish `h0 : g 0 = ((N + 1 : ℕ) : ℝ) ^ (-δ)`. Simplify using `only [hg, zero_add]`. Rewrite using `[← h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(tendsto_const_nhds (x := g 0)).sub (tendsto_rpow_neg hδ N)`. Rewrite `h` using `[sub_zero]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_telescope {δ : ℝ} (hδ : 0 < δ) (N : ℕ) :
     HasSum (fun n : ℕ => ((n + N + 1 : ℕ) : ℝ) ^ (-δ) - ((n + N + 1 + 1 : ℕ) : ℝ) ^ (-δ))
@@ -163,7 +161,7 @@ noncomputable def term {q : ℕ} (χ : DirichletCharacter ℂ q) (n : ℕ) (s : 
     (((n + 1 : ℕ) : ℂ) ^ (-s) - ((n + 1 + 1 : ℕ) : ℂ) ^ (-s))
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Simplify using `only [Finset.sum_range_succ, ih, term]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -179,9 +177,9 @@ theorem abel {q : ℕ} (χ : DirichletCharacter ℂ q) (s : ℂ) (N : ℕ) :
     ring
 
 /- English proof (translation)
-Establish `h1` using `norm_sum_range_le χ hχ (n + 1)`. Establish `h2` using `norm_cpow_sub_le (a := ((n + 1 : ℕ) : ℝ)) (b := ((n + 1 + 1 : ℕ) : ℝ)) (by exact_mod_cast Nat.succ_pos n) (by exact_mod_cast Nat.le_succ (n + 1)) hδ hs`. Simplify using `only [Complex.ofReal_natCast] at h2`. Establish `hd : 0 ≤ ((n + 1 : ℕ) : ℝ) ^ (-δ) - ((n + 1 + 1 : ℕ) : ℝ) ^ (-δ)`. Use `sub_nonneg.mpr (Real.rpow_le_rpow_of_nonpos (by positivity) ?_ (by linarith))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.le_succ (n + 1)` after adjusting the coercions. Rewrite using `[term, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_term_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (n : ℕ)
     {δ R : ℝ} {s : ℂ} (hδ : 0 < δ) (hs : δ ≤ s.re) (hR : ‖s‖ ≤ R) :
@@ -202,7 +200,7 @@ theorem norm_term_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ :
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hT : Summable (fun n : ℕ ↦ (q : ℝ) * (‖s‖ / s.re) * (((n + 1 : ℕ) : ℝ) ^ (-s.re) - ((n + 1 + 1 : ℕ) : ℝ) ^ (-s.re)))` using `((hasSum_telescope hs 0).summable.mul_left ((q : ℝ) * (‖s‖ / s.re))).congr fun n ↦ by`. Simplify using `only [add_zero]`. Conclude with `Summable.of_norm_bounded hT fun n ↦ norm_term_le χ hχ n hs le_rfl le_rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem summable_term {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1)
     {s : ℂ} (hs : 0 < s.re) : Summable (fun n => term χ n s) := by
@@ -213,7 +211,7 @@ theorem summable_term {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ 
   exact Summable.of_norm_bounded hT fun n ↦ norm_term_le χ hχ n hs le_rfl le_rfl
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_natCast_cpow_of_pos (Nat.succ_pos N), Complex.neg_re]`. Conclude with `mul_le_mul_of_nonneg_right (norm_sum_range_le χ hχ N) (Real.rpow_nonneg (Nat.cast_nonneg _) _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_boundary_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1)
     (s : ℂ) (N : ℕ) :
@@ -223,13 +221,13 @@ theorem norm_boundary_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (h
   exact mul_le_mul_of_nonneg_right (norm_sum_range_le χ hχ N) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
 
 /- English proof (translation)
-Establish `hs0 : 0 < s.re` using `by linarith`. Rewrite using `[DirichletCharacter.LFunction_eq_LSeries χ hs]`. Establish `hL : HasSum (fun n : ℕ ↦ χ ((n + 1 : ℕ) : ZMod q) * ((n + 1 : ℕ) : ℂ) ^ (-s)) (LSeries (χ ·) s)`. Establish `h` using `(DirichletCharacter.LSeriesSummable_of_one_lt_re χ hs).hasSum`. Rewrite `h` using `[← hasSum_nat_add_iff' 1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.range_one, Finset.sum_singleton, LSeries.term_zero, sub_zero] at h`. Establish `e : (fun n : ℕ ↦ χ ((n + 1 : ℕ) : ZMod q) * ((n + 1 : ℕ) : ℂ) ^ (-s)) = fun n ↦ LSeries.term (fun x ↦ χ x) s (n + 1)`. Use function extensionality and compare the values at `n`. Rewrite using `[LSeries.term_of_ne_zero (Nat.succ_ne_zero n), Complex.cpow_neg, div_eq_mul_inv]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hB : Tendsto (fun N : ℕ ↦ (∑ k ∈ Finset.range N, χ ((k + 1 : ℕ) : ZMod q)) * ((N + 1 : ℕ) : ℂ) ^ (-s)) atTop (𝓝 0)`. Use `squeeze_zero_norm (fun N ↦ norm_boundary_le χ hχ s N) ?_` and prove the remaining obligations. Simplify using `using (tendsto_rpow_neg hs0 0).const_mul (q : ℝ)`. Establish `h3` using `((summable_term χ hχ hs0).hasSum.tendsto_sum_nat).add hB`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[add_zero]`. Conclude with `tendsto_nhds_unique (hL.tendsto_sum_nat.congr fun N ↦ abel χ s N) h3`.
+A detailed English derivation is pending.
 -/
 theorem LFunction_eq_tsum_of_one_lt {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1)
     {s : ℂ} (hs : 1 < s.re) : LFunction χ s = ∑' n, term χ n s := by
@@ -255,13 +253,13 @@ theorem LFunction_eq_tsum_of_one_lt {q : ℕ} [NeZero q] (χ : DirichletCharacte
   exact tendsto_nhds_unique (hL.tendsto_sum_nat.congr fun N ↦ abel χ s N) h3
 
 /- English proof (translation)
-Establish `hUo : IsOpen {z : ℂ | 0 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hc : ∀ m : ℕ, Differentiable ℂ (fun w : ℂ ↦ ((m + 1 : ℕ) : ℂ) ^ (-w))` using `fun m w ↦ differentiableAt_id.neg.const_cpow (Or.inl (by exact_mod_cast Nat.succ_ne_zero m))`. Establish `hd : DifferentiableOn ℂ (fun z ↦ ∑' n, term χ n z) {z : ℂ | 0 < z.re}`. Introduce `z hz`. Establish `hz' : 0 < z.re` using `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hVo : IsOpen ({w : ℂ | z.re / 2 < w.re} ∩ Metric.ball 0 (‖z‖ + 1))` using `(isOpen_lt continuous_const Complex.continuous_re).inter Metric.isOpen_ball`. Establish `hzV : z ∈ {w : ℂ | z.re / 2 < w.re} ∩ Metric.ball 0 (‖z‖ + 1)` using `⟨show z.re / 2 < z.re by linarith, by simp⟩`. Establish `hsum : Summable (fun n : ℕ ↦ (q : ℝ) * ((‖z‖ + 1) / (z.re / 2)) * (((n + 1 : ℕ) : ℝ) ^ (-(z.re / 2)) - ((n + 1 + 1 : ℕ) : ℝ) ^ (-(z.re / 2))))` using `((hasSum_telescope (half_pos hz') 0).summable.mul_left ((q : ℝ) * ((‖z‖ + 1) / (z.re / 2)))).congr fun n ↦ by`. Simplify using `only [add_zero]`. Establish `hdiff : ∀ n : ℕ, DifferentiableOn ℂ (fun w ↦ term χ n w) ({w : ℂ | z.re / 2 < w.re} ∩ Metric.ball 0 (‖z‖ + 1))` using `fun n ↦ ((differentiable_const _).mul ((hc n).sub (hc (n + 1)))).differentiableOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `differentiableOn_tsum_of_summable_norm hsum hdiff hVo fun n w hw ↦ norm_term_le χ hχ n (half_pos hz') hw.1.le (mem_ball_zero_iff.mp hw.2).le` as an intermediate fact. Conclude with `((this z hzV).differentiableAt (hVo.mem_nhds hzV)).differentiableWithinAt`. Establish `hL` using `((differentiable_LFunction hχ).differentiableOn (s := {z : ℂ | 0 < z.re})).analyticOnNhd hUo`. Establish `hT` using `hd.analyticOnNhd hUo`. Establish `h2 : (2 : ℂ) ∈ {z : ℂ | 0 < z.re}` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : LFunction χ =ᶠ[𝓝 (2 : ℂ)] fun z ↦ ∑' n, term χ n z` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (show (1 : ℝ) < (2 : ℂ).re by simp)] with z hz`. Conclude with `LFunction_eq_tsum_of_one_lt χ hχ hz`. Conclude with `hL.eqOn_of_preconnected_of_eventuallyEq hT (convex_halfSpace_re_gt 0).isPreconnected h2 hev hs`.
+A detailed English derivation is pending.
 -/
 theorem LFunction_eq_tsum {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1)
     {s : ℂ} (hs : 0 < s.re) : LFunction χ s = ∑' n, term χ n s := by
@@ -296,17 +294,15 @@ theorem LFunction_eq_tsum {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (
   exact hL.eqOn_of_preconnected_of_eventuallyEq hT (convex_halfSpace_re_gt 0).isPreconnected h2 hev hs
 
 /- English proof (translation)
-Introduce `q _ χ hχ s hs N hN`. Establish `hsum : ∑ n ∈ Finset.Icc 1 N, χ (n : ZMod q) * (n : ℂ) ^ (-s) = ∑ n ∈ Finset.range N, χ ((n + 1 : ℕ) : ZMod q) * ((n + 1 : ℕ) : ℂ) ^ (-s)` using `by clear hN`. Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih => rw [Finset.sum_Icc_succ_top (by omega), ih, Finset.sum_range_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hsm` using `summable_term χ hχ hs`. Establish `hsplit` using `hsm.sum_add_tsum_nat_add N`. Rewrite using `[hsum, abel χ s N, LFunction_eq_tsum χ hχ hs, ← hsplit]`. Use `set c : ℝ := (q : ℝ) * (‖s‖ / s.re)`. Establish `htail : ‖∑' n, term χ (n + N) s‖ ≤ c * ((N + 1 : ℕ) : ℝ) ^ (-s.re)` using `tsum_of_norm_bounded ((hasSum_telescope hs N).mul_left c) fun n ↦ norm_term_le χ hχ (n + N) hs le_rfl le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd` using `norm_boundary_le χ hχ s N`. Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hmono : ((N + 1 : ℕ) : ℝ) ^ (-s.re) ≤ (N : ℝ) ^ (-s.re)` using `Real.rpow_le_rpow_of_nonpos hNpos (by push_cast; linarith) (by linarith)`. Establish `hpow : 0 ≤ ((N + 1 : ℕ) : ℝ) ^ (-s.re)` using `Real.rpow_nonneg (Nat.cast_nonneg _) _`. Establish `hc0 : 0 ≤ c` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (0 : ℝ) ≤ q` using `Nat.cast_nonneg _`. Establish `hr : 0 ≤ ‖s‖ / s.re` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `_ ≤ ‖∑' n, term χ (n + N) s‖ + ‖(∑ k ∈ Finset.range N, χ ((k + 1 : ℕ) : ZMod q)) * ((N + 1 : ℕ) : ℂ) ^ (-s)‖ := norm_sub_le _ _`. Use `_ ≤ c * ((N + 1 : ℕ) : ℝ) ^ (-s.re) + q * ((N + 1 : ℕ) : ℝ) ^ (-s.re) := add_le_add htail hbd`. Use `_ = q * (1 + ‖s‖ / s.re) * ((N + 1 : ℕ) : ℝ) ^ (-s.re) := by ring`. Use `_ ≤ q * (1 + ‖s‖ / s.re) * (N : ℝ) ^ (-s.re) := by gcongr`. Use `_ ≤ 2 * q * (1 + ‖s‖ / s.re) * (N : ℝ) ^ (-s.re) := by`.
-
-Establish `: 0 ≤ (q : ℝ) * (1 + ‖s‖ / s.re) * (N : ℝ) ^ (-s.re)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_LFunction_sub_sum_le :
     ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 → ∀ s : ℂ, 0 < s.re → ∀ N : ℕ, 1 ≤ N →

@@ -11,19 +11,17 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.strongInduction with`. Consider the case `H s ih`. Introduce `g hg hsum μ hμ`. Distinguish the cases in `hs : ∃ ν ∈ s, ν ≠ μ`. Take `⟨ν, hν, hne⟩` from `hs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, μ a ≠ ν a := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (funext h).symm`. Set `g' : (Fin n → ℤ) → V` to `fun ρ => (((ρ a - ν a : ℤ) : K)) • g ρ`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ' : (E a a - (ν a : K) • (1 : Module.End K V)) (∑ ρ ∈ s, g ρ) ∈ Z`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `Z.sub_mem (hZ a _ hsum) (Z.smul_mem _ hsum)`. Establish `heq : (E a a - (ν a : K) • (1 : Module.End K V)) (∑ ρ ∈ s, g ρ) = ∑ ρ ∈ s.erase ν, g' ρ`. Rewrite using `[map_sum, ← Finset.sum_erase_add _ _ hν]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (E a a - (ν a : K) • (1 : Module.End K V)) (g ν) = 0`. Use `(v2rep_mem_weightSp E ν (g ν)).mp (hg ν hν) a` as an intermediate fact. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, this, sub_self]`. Rewrite using `[h0, add_zero]`. Use `Finset.sum_congr rfl fun ρ hρ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(v2rep_mem_weightSp E ρ (g ρ)).mp (hg ρ (Finset.mem_of_mem_erase hρ)) a` as an intermediate fact. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, this, ← sub_smul]`. Simplify using `only [g', Int.cast_sub]`. Establish `hg' : ∀ ρ ∈ s.erase ν, g' ρ ∈ weightSp E ρ` using `fun ρ hρ => (weightSp E ρ).smul_mem _ (hg ρ (Finset.mem_of_mem_erase hρ))`. Establish `hIH` using `ih (s.erase ν) (Finset.erase_ssubset hν) g' hg' (heq ▸ hZ') μ (Finset.mem_erase.mpr ⟨hne.symm, hμ⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : (((μ a - ν a : ℤ)) : K) ≠ 0`. Conclude with `sub_ne_zero.mpr ha` after adjusting the coercions. Use `Z.smul_mem (((μ a - ν a : ℤ) : K))⁻¹ hIH` as an intermediate fact. Simplify using `only [g'] at this`. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
-
-Use `push_neg at hs`. Establish `: ∑ ν ∈ s, g ν = g μ` using `Finset.sum_eq_single_of_mem μ hμ (fun ν hν hne => absurd (hs ν hν) hne)`. Rewrite `hsum` using `[this]`. Conclude with `hsum`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v2rep_comp_mem [CharZero K] (E : GLOps n K V) (Z : Submodule K V) (hZ : ∀ a, ∀ x ∈ Z, E a a x ∈ Z)
     (s : Finset (Fin n → ℤ)) : ∀ g : (Fin n → ℤ) → V, (∀ ν ∈ s, g ν ∈ weightSp E ν) → ∑ ν ∈ s, g ν ∈ Z →
@@ -67,7 +65,7 @@ theorem v2rep_comp_mem [CharZero K] (E : GLOps n K V) (Z : Submodule K V) (hZ : 
     exact hsum
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).mp hw`. Establish `hsum : ∑ ν ∈ f.support, f ν ∈ Z` using `by simpa [Finsupp.sum] using hx`. Establish `key` using `v2rep_comp_mem E Z hZ f.support f (fun ν _ => hf ν) hsum`. Use `show ∑ ν ∈ f.support, f ν ∈ _`. Conclude with `Submodule.sum_mem _ fun ν hν => Submodule.mem_iSup_of_mem ν ⟨hf ν, key ν hν⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem v2rep_graded [CharZero K] (E : GLOps n K V) (Z : Submodule K V) (hZ : ∀ a, ∀ x ∈ Z, E a a x ∈ Z)
     (x : V) (hx : x ∈ Z) (hw : x ∈ ⨆ ν, weightSp E ν) : x ∈ ⨆ ν, weightSp E ν ⊓ Z := by
@@ -80,7 +78,7 @@ theorem v2rep_graded [CharZero K] (E : GLOps n K V) (Z : Submodule K V) (hZ : �
 def weightHeight' (ν : Fin n → ℤ) : ℤ := -∑ a : Fin n, (a.val : ℤ) * ν a
 
 /- English proof (translation)
-Establish `hab : ((a : ℕ) : ℤ) < ((b : ℕ) : ℤ)` using `by exact_mod_cast h`. Simplify using `only [weightHeight', rootW, Pi.add_apply, Pi.sub_apply, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem v2rep_ht_root (ν : Fin n → ℤ) (a b : Fin n) (h : a < b) : weightHeight' ν < weightHeight' (ν + rootW a b) := by
   have hab : ((a : ℕ) : ℤ) < ((b : ℕ) : ℤ) := by exact_mod_cast h
@@ -92,9 +90,9 @@ theorem v2rep_ht_root (ν : Fin n → ℤ) (a b : Fin n) (h : a < b) : weightHei
 def heightOperator' (E : GLOps n K V) : Module.End K V := -∑ a : Fin n, ((a.val : ℤ) : K) • E a a
 
 /- English proof (translation)
-Rewrite `hx` using `[v2rep_mem_weightSp]`. Establish `h1 : heightOperator' E x = -∑ a : Fin n, (((a.val : ℤ) : K) * (ν a : K)) • x`. Simplify using `only [heightOperator', LinearMap.neg_apply, LinearMap.sum_apply, LinearMap.smul_apply, hx, smul_smul]`. Rewrite using `[h1, ← Finset.sum_smul, ← neg_smul]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [weightHeight']`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem v2rep_H_apply (E : GLOps n K V) (ν : Fin n → ℤ) (x : V) (hx : x ∈ weightSp E ν) :
     heightOperator' E x = ((weightHeight' ν : ℤ) : K) • x := by
@@ -109,17 +107,17 @@ theorem v2rep_H_apply (E : GLOps n K V) (ν : Fin n → ℤ) (x : V) (hx : x ∈
   rfl
 
 /- English proof (translation)
-Establish `hHZ : ∀ x ∈ Z, heightOperator' E x ∈ Z`. Introduce `x hx`. Simplify using `only [heightOperator', LinearMap.neg_apply, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Z.neg_mem (Z.sum_mem fun a _ => Z.smul_mem _ (hZ a a x hx))`. Set `HZ : Module.End K Z` to `(heightOperator' E).restrict hHZ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S : Set ℤ` to `{h | ∃ ν v, v ∈ Z ∧ v ≠ 0 ∧ v ∈ weightSp E ν ∧ weightHeight' ν = h}`. Establish `hSeig : ∀ h ∈ S, HZ.HasEigenvalue (h : K)`. Introduce and unpack `h ⟨ν, v, hvZ, hv0, hvw, rfl⟩`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := ⟨v, hvZ⟩) ?_` and prove the remaining obligations. Rewrite using `[Module.End.hasEigenvector_iff]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Module.End.mem_eigenspace_iff.mpr (Subtype.ext ?_), fun h0 => hv0 (congrArg Subtype.val h0)⟩` and prove the remaining obligations. Conclude with `v2rep_H_apply E ν v hvw`. Establish `hSfin : S.Finite` using `((Module.End.finite_hasEigenvalue HZ).preimage (Int.cast_injective (α := K)).injOn).subset fun h hh => hSeig h hh`. Take `⟨x, hxZ, hx0⟩` from `(Submodule.ne_bot_iff Z).mp hne`. Establish `hgr` using `v2rep_graded E Z (fun a x hx => hZ a a x hx) x hxZ (hw hxZ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ν0, hν0⟩ : ∃ ν, weightSp E ν ⊓ Z ≠ ⊥ := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Simplify using `[hc] at hgr`. Conclude with `hx0 hgr`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v0, hv0m, hv00⟩` from `(Submodule.ne_bot_iff _).mp hν0`. Establish `hSne : S.Nonempty` using `⟨_, ν0, v0, hv0m.2, hv00, hv0m.1, rfl⟩`. Establish `hTne : hSfin.toFinset.Nonempty` using `(Set.Finite.toFinset_nonempty hSfin).mpr hSne`. Take `⟨ν, v, hvZ, hv0, hvw, hht⟩` from `(hSfin.mem_toFinset).mp (hSfin.toFinset.max'_mem hTne)`. Use `⟨ν, v, hvZ, hv0, hvw, fun a b hab => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne'`. Establish `hmem : weightHeight' (ν + rootW a b) ∈ S` using `⟨ν + rootW a b, E a b v, hZ a b v hvZ, hne', v2rep_shift E hR a b ν v hvw, rfl⟩`. Establish `h1` using `hSfin.toFinset.le_max' _ ((hSfin.mem_toFinset).mpr hmem)`. Establish `h2` using `v2rep_ht_root ν a b hab`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem v2rep_exists_hwv [CharZero K] (E : GLOps n K V) (hR : SatisfiesGLRelations E) (Z : Submodule K V)
     [FiniteDimensional K Z] (hZ : IsStableUnderOperators E Z) (hw : Z ≤ ⨆ ν, weightSp E ν) (hne : Z ≠ ⊥) :

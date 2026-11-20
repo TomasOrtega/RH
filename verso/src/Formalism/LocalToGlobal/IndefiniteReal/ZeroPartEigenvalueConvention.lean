@@ -270,7 +270,7 @@ structure WeakCharacterisation : Prop where
 variable {R F}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.base.lev, h.base.grp, h.base.fam, h.inert, h.base.models, RealDat.chain_of_weak h.base.chain e, RealDat.thP_of_weak h.base.thP e, h.fullY, h.fullX, h.fullP, h.scal, h.tup, h.phase, h.allPl⟩`.
+Supply the required witnesses or components.
 -/
 theorem characterisation_of_weak (h : R.WeakCharacterisation F) (e : R.toRealDat.ExAt) : R.Char3 F :=
   ⟨h.base.lev, h.base.grp, h.base.fam, h.inert, h.base.models, RealDat.chain_of_weak h.base.chain e,

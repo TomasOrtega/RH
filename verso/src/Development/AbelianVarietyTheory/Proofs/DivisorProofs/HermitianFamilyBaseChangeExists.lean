@@ -17,7 +17,7 @@ def stdGram (h : HermFam K (Fin m → K)) (σ : K' →+* ℂ) : Matrix (Fin m) (
   Matrix.of fun i j => h.form (σ.comp (algebraMap K K')) (Pi.single i 1) (Pi.single j 1)
 
 /- English proof (translation)
-Use `h.posDef (σ.comp (algebraMap K K')) m (fun i => Pi.single i 1) (by` as an intermediate fact. Establish `hb` using `(Pi.basisFun K (Fin m)).linearIndependent`. Rewrite using `[show ⇑(Pi.basisFun K (Fin m)) = fun i => Pi.single i 1 from funext (Pi.basisFun_apply K (Fin m))] at hb)` and apply the resulting hypothesis. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stdGram_posDef (h : HermFam K (Fin m → K)) (σ : K' →+* ℂ) : (stdGram h σ).PosDef := by
   have := h.posDef (σ.comp (algebraMap K K')) m (fun i => Pi.single i 1)
@@ -30,7 +30,7 @@ def extForm (h : HermFam K (Fin m → K)) (σ : K' →+* ℂ) (x y : Fin m → K
   star (fun i => σ (x i)) ⬝ᵥ (stdGram h σ *ᵥ fun i => σ (y i))
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [extForm, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extForm_gram (h : HermFam K (Fin m → K)) (σ : K' →+* ℂ) {n : ℕ} (v : Fin n → Fin m → K') :
     (Matrix.of fun k l => extForm h σ (v k) (v l)) =
@@ -68,11 +68,11 @@ def extFam (h : HermFam K (Fin m → K)) : HermFam K' (Fin m → K') where
     exact linearIndependent_algebraMap_comp_iff.2 hv
 
 /- English proof (translation)
-Introduce `σ i j`. Establish `e : ∀ j : Fin m, (fun k => σ ((Pi.single j (1 : K') : Fin m → K') k)) = Pi.single j 1`. Introduce `j`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Use `show extForm h σ _ _ = _`. Simplify using `only [extForm, e]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[stdGram, Matrix.mulVec_single_one, dotProduct, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem isBC_extFam (h : HermFam K (Fin m → K)) : IsBC h (extFam (K' := K') h) := by
   intro σ i j
@@ -85,7 +85,7 @@ theorem isBC_extFam (h : HermFam K (Fin m → K)) : IsBC h (extFam (K' := K') h)
   simp [stdGram, Matrix.mulVec_single_one, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ h` and use `⟨extFam h, isBC_extFam h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isBC : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (m : ℕ)
     (h : HermFam K (Fin m → K)), ∃ h' : HermFam K' (Fin m → K'), IsBC h h' :=

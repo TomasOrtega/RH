@@ -15,7 +15,7 @@ def linMapPiEquiv (R : Type) [Ring R] (X M : Type) [AddCommGroup X] [Module R X]
   right_inv g := by funext i; ext x; rfl
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (linMapPiEquiv R X M l), Nat.card_fun, Nat.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_linMap_pow (R : Type) [Ring R] (X M : Type) [AddCommGroup X] [Module R X]
     [AddCommGroup M] [Module R M] (l : ℕ) :
@@ -23,9 +23,9 @@ theorem card_linMap_pow (R : Type) [Ring R] (X M : Type) [AddCommGroup X] [Modul
   rw [Nat.card_congr (linMapPiEquiv R X M l), Nat.card_fun, Nat.card_fin]
 
 /- English proof (translation)
-Introduce `R _ M N _ _ _ _ _ _ l hl ⟨e⟩`. Use `GlobalTheory.T.nonempty_linearEquiv_of_card_hom_eq R M N ?_` and prove the remaining obligations. Introduce `X _ _ _`. Establish `h1 : Nat.card (X →ₗ[R] (Fin l → M)) = Nat.card (X →ₗ[R] (Fin l → N))` using `Nat.card_congr { toFun := fun f => e.toLinearMap.comp f invFun := fun g => e.symm.toLinearMap.comp g left_inv := fun f => by ext x; simp right_inv := fun g => by ext x; simp }`. Rewrite `h1` using `[card_linMap_pow, card_linMap_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.pow_left_injective hl.ne' h1`.
+A detailed English derivation is pending.
 -/
 theorem cancel_pow : ∀ (R : Type) [Ring R] (M N : Type) [AddCommGroup M] [Module R M] [Finite M]
     [AddCommGroup N] [Module R N] [Finite N] (l : ℕ), 0 < l →

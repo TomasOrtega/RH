@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.Pk
 open Formalism.BasicNotions Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory
 
 /- English proof (translation)
-Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 1, fun _ => 0⟩, fun Fm CH _ hL => ?_⟩⟩` and prove the remaining obligations. Establish `h : (1 : ℝ) ≤ CH` using `hL.2.2.1 CH (by simp [Formalism.MainNotions.FamP.cMid])`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem closed_CH (𝒞 : FamClass) : Closed 𝒞 fun _ CH => 0 < CH := by
   refine ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 1, fun _ => 0⟩, fun Fm CH _ hL => ?_⟩⟩
@@ -17,7 +17,7 @@ theorem closed_CH (𝒞 : FamClass) : Closed 𝒞 fun _ CH => 0 < CH := by
   linarith
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `J.setting_fam Fm hT ⟨Fm.x1 + 1, fun x hx i => (Fm.sizes x (lt_of_lt_of_le (lt_add_one _) hx) i).2.2.2.2.2.2.1.2.2.2.2.2.1⟩`. Conclude with `⟨x0, fun x hx _ i u => h x hx i u⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem settingF_pk {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm) : SettingEventually Fm := by
   obtain ⟨x0, h⟩ := J.setting_fam Fm hT
@@ -43,7 +43,7 @@ structure FamGL (𝒞 : FamClass) (C0 eL C3 crystallineComparison C22 : ℝ) : P
   t10 : Closed 𝒞 fun Fm _ => ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word), IncidenceTransportConditions (Fm.D x i) u
 
 /- English proof (translation)
-The claim follows from `((closed_CH 𝒞).and (h.s59.and (h.s22.and (h.s23.and (h.s24.and (h.s10.and (h.provedFourF.and (h.provedFiveF.and (h.hF3.and (h.tVol.and (h.tOm.and (h.tFree.and (h.tTh.and (h.t7.and (h.tCV.and h.t10))))))))))))))).imp fun Fm CH _ ⟨hCH, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, …`.
+A detailed English derivation is pending.
 -/
 theorem linkGLOBAL_pk (𝒞 : FamClass) (Cabs C0 eL C3 crystallineComparison C22 : ℝ) (hCabs : 0 ≤ Cabs) (heL : 0 ≤ eL) (hC0 : 1 ≤ C0)
     (h : FamGL 𝒞 C0 eL C3 crystallineComparison C22) :
@@ -54,7 +54,7 @@ theorem linkGLOBAL_pk (𝒞 : FamClass) (Cabs C0 eL C3 crystallineComparison C22
         (settingF_pk Fm hT) b14 b15 hCov hT
 
 /- English proof (translation)
-The claim follows from `((closed_CH 𝒞).and (h.s59.and (h.s22.and (h.s23.and (h.s24.and (h.s10.and (h.provedFourF.and (h.provedFiveF.and (h.hF3.and (h.tVol.and (h.tOm.and (h.tFree.and (h.tTh.and (h.t7.and (h.tCV.and h.t10))))))))))))))).imp fun Fm CH _ ⟨hCH, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, …`.
+A detailed English derivation is pending.
 -/
 theorem muRank_pk (𝒞 : FamClass) (C0 eL C3 crystallineComparison C22 : ℝ) (heL : 0 ≤ eL) (hC0 : 1 ≤ C0) (h : FamGL 𝒞 C0 eL C3 crystallineComparison C22) :
     Closed 𝒞 fun Fm CH => TuSize Fm → ChosenE Fm C0 CH → NuFullF Fm ∧ J.MuRank Fm :=

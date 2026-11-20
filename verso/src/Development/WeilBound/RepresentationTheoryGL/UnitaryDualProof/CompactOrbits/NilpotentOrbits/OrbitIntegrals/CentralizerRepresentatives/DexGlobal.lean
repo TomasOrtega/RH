@@ -9,67 +9,61 @@ open Module
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing R := IsArtinianRing.of_finite k R`. Set `M` to `MaximalSpectrum R`. Use `letI : Fintype M := Fintype.ofFinite M`. Establish `hfin : ∀ m : M, Module.Finite k (R ⧸ m.asIdeal)` using `fun m => Module.Finite.of_surjective (Ideal.Quotient.mkₐ k m.asIdeal).toLinearMap Ideal.Quotient.mk_surjective`. Set `L : M → Type` to `fun m => Fin (finrank k (R ⧸ m.asIdeal))`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b : ∀ m : M, Basis (L m) k (R ⧸ m.asIdeal)` to `fun m => by haveI := hfin m`. Conclude with `Module.finBasis k _`. Establish `hne : ∀ m, Nonempty (L m)` using `fun m => by haveI := hfin m haveI : Nontrivial (R ⧸ m.asIdeal) := Ideal.Quotient.nontrivial_iff.mpr m.isMaximal.ne_top`. Conclude with `⟨⟨0, Module.finrank_pos⟩⟩`. Use `⟨M, inferInstance, L, fun m => inferInstance, hne, fun z m p q => (b m).repr (Ideal.Quotient.mk _ z * b m p) q, fun m p => (b m).repr 1 p, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `N hN v`. Set `e : M → R` to `fun m => (IsArtinianRing.equivPi R).symm (Pi.single m 1)`. Establish `he : ∀ m, IsArtinianRing.equivPi R (e m) = Pi.single m 1` using `fun m => AlgEquiv.apply_symm_apply _ _`. Establish `hE1 : ∀ m, ∀ z ∈ m.asIdeal, z * e m = 0`. Introduce `m z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `(IsArtinianRing.equivPi R).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `m'`. Rewrite using `[map_mul, he, map_zero, Pi.mul_apply, Pi.zero_apply]`. Distinguish the cases in `h : m' = m`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same, mul_one, IsArtinianRing.equivPi_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hz`. Rewrite using `[Pi.single_eq_of_ne h, mul_zero]`. Establish `hE2 : ∑ m, e m = 1`. Apply `(IsArtinianRing.equivPi R).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, map_one]`. Use function extensionality and compare the values at `m'`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single m']`. Rewrite using `[he, Pi.single_eq_same, Pi.one_apply]`. Introduce `x _ hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[he, Pi.single_eq_of_ne (Ne.symm hx)]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hE3 : ∀ m m', m' ≠ m → e m' * e m = 0`. Introduce `m m' hmm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Apply `(IsArtinianRing.equivPi R).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[map_mul, he, he, map_zero, Pi.mul_apply, Pi.zero_apply]`. Distinguish the cases in `h : x = m`. Substitute `h` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne hmm.symm, zero_mul]`. Rewrite using `[Pi.single_eq_of_ne h, mul_zero]`. Establish `hE4 : ∀ m, e m * e m = e m`. Introduce `m`. Apply `(IsArtinianRing.equivPi R).injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[map_mul, he, Pi.mul_apply]`. Distinguish the cases in `h : x = m`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Pi.single_eq_of_ne h, mul_zero]`. Set `Vm : M → Submodule R V` to `fun m => LinearMap.range (LinearMap.lsmul R V (e m))`. Establish `hself : ∀ m (y : V), e m • y ∈ Vm m` using `fun m y => LinearMap.mem_range_self _ y`. Establish `hfix : ∀ m, ∀ y ∈ Vm m, e m • y = y`. Introduce and unpack `m y ⟨w, rfl⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.lsmul_apply, smul_smul, hE4]`. Establish `hkill : ∀ m m', m' ≠ m → ∀ y ∈ Vm m, e m' • y = 0`. Introduce and unpack `m m' hmm y ⟨w, rfl⟩`. Simplify using `only [LinearMap.lsmul_apply, smul_smul, hE3 m m' hmm, zero_smul]`. Establish `htor : ∀ m, ∀ z ∈ m.asIdeal, ∀ y : Vm m, z • y = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m z hz y`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, Submodule.coe_zero, ← hfix m y.1 y.2, smul_smul, hE1 m z hz, zero_smul]`. Use `haveI hVfin : ∀ m, FiniteDimensional k (Vm m) := fun m => Module.Finite.of_injective ((Vm m).subtype.restrictScalars k) Subtype.val_injective`. Establish `hNm : ∀ m, ∀ y ∈ Vm m, N y ∈ Vm m`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce and unpack `m y ⟨w, rfl⟩`. Rewrite using `[LinearMap.lsmul_apply, map_smul]`. Conclude with `hself m (N w)`. Establish `hpow : ∀ m (j : ℕ) (y : Vm m), (((N.restrict (hNm m)) ^ j) y : V) = (N ^ j) y`. Introduce `m j`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `j with`. Consider the case `zero => intro y`. Both sides reduce to the same expression. Consider the case `succ j ih`. Introduce `y`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_apply]`. Both sides reduce to the same expression. Establish `hNnil : ∀ m, IsNilpotent (N.restrict (hNm m))`. Introduce `m`. Take `⟨r, hr⟩` from `hN`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨r, LinearMap.ext fun y => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hpow, hr]`. Both sides reduce to the same expression. Establish `hblk (m : M)` using `dex_block_frame m.asIdeal (b m) (W := Vm m) (htor m) (N.restrict (hNm m)) (hNnil m) ⟨e m • v, hself m v⟩`. Use `choose ι fι l s βm hl hs hZ hN' hv hA using hblk`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hInt : DirectSum.IsInternal (fun m => (Vm m).restrictScalars k)`. Apply `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top` to reduce the goal to its premises. Rewrite using `[iSupIndep_def]`. Introduce `m`. Set `φ : V →ₗ[k] V` to `(LinearMap.lsmul R V (e m)).restrictScalars k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : (⨆ (j) (_ : j ≠ m), (Vm j).restrictScalars k) ≤ LinearMap.ker φ` using `iSup₂_le fun j hj y hy => by`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `hkill j m (Ne.symm hj) y hy`. Rewrite using `[Submodule.disjoint_def]`. Introduce `y hy hy'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1` using `hle hy'`. Rewrite `h1` using `[LinearMap.mem_ker]`. Rewrite using `[← hfix m y hy]`. Conclude with `h1`. Use `eq_top_iff.mpr fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : y = ∑ m, e m • y` using `by rw [← Finset.sum_smul, hE2, one_smul]`. Rewrite using `[hy]`. Conclude with `Submodule.sum_mem _ fun m _ => Submodule.mem_iSup_of_mem m (hself m y)`. Set `eqv : ∀ m, (Vm m) ≃ₗ[k] ((Vm m).restrictScalars k)` to `fun m => { toFun := fun x => ⟨x.1, x.2⟩ invFun := fun x => ⟨x.1, x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Set `β` to `hInt.collectedBasis (fun m => (βm m).map (eqv m))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hβ : ∀ m j, β ⟨m, j⟩ = ((βm m j : Vm m) : V)`. Introduce `m j`. Rewrite using `[DirectSum.IsInternal.collectedBasis_coe]`. Both sides reduce to the same expression. Use `⟨ι, fι, l, s, β, hl, hs, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `z m p j`. Rewrite using `[hβ, ← Submodule.coe_smul, hZ m z p j, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hβ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `m p a i`. Rewrite using `[hβ]`. Establish `: N ((βm m (p, ⟨a, i⟩) : Vm m) : V) = ((N.restrict (hNm m) (βm m (p, ⟨a, i⟩)) : Vm m) : V)` using `rfl`. Rewrite using `[this, hN' m p a i]`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hβ]`. Both sides reduce to the same expression. Establish `hvs : v = ∑ m, e m • v` using `by rw [← Finset.sum_smul, hE2, one_smul] conv_lhs => rw [hvs]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h1 : e m • v = ((⟨e m • v, hself m v⟩ : Vm m) : V)` using `rfl`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hv m, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ]`. Both sides reduce to the same expression. Both sides reduce to the same expression. Introduce `A hAN m p a i hi`. Establish `hAm : ∀ m, ∀ y ∈ Vm m, A y ∈ Vm m`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `m y ⟨w, rfl⟩`. Rewrite using `[LinearMap.lsmul_apply, map_smul]`. Conclude with `hself m (A w)`. Establish `hvs : v = ∑ m, e m • v` using `by rw [← Finset.sum_smul, hE2, one_smul]`. Establish `hAv : A v = ∑ m', ((A.restrict (hAm m') ⟨e m' • v, hself m' v⟩ : Vm m') : V)` using `by conv_lhs => rw [hvs]`.
-
-Rewrite using `[map_sum]`. Both sides reduce to the same expression. Rewrite using `[hAv, map_sum, Finsupp.finsetSum_apply]`. Use `Finset.sum_eq_zero fun m' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hmm : m' = m`.
-
-Substitute `hmm` using the available equality. Establish `hc : A.restrict (hAm m') ∘ₗ N.restrict (hNm m') = N.restrict (hNm m') ∘ₗ A.restrict (hAm m')`. Use `LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Conclude with `LinearMap.congr_fun hAN y.1`. Establish `key` using `DirectSum.IsInternal.collectedBasis_repr_of_mem hInt (fun m => (βm m).map (eqv m)) (x := ((A.restrict (hAm m') ⟨e m' • v, hself m' v⟩ : Vm m') : V)) (a := (p, ⟨a, i⟩)) (Subtype.mem _)`.
-
-Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[Basis.map_repr]`. Conclude with `hA m' (A.restrict (hAm m')) hc p a i hi`. Conclude with `DirectSum.IsInternal.collectedBasis_repr_of_mem_ne hInt _ hmm (Subtype.mem _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dex_global {R : Type} [CommRing R] [Algebra k R] [FiniteDimensional k R] [IsReduced R]
     {V : Type} [AddCommGroup V] [Module R V] [Module k V] [IsScalarTower k R V] [FiniteDimensional k V] :

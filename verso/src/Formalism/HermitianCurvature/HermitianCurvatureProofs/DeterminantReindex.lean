@@ -9,9 +9,9 @@ namespace DeterminantReindex
 open C2x2 CardInsertEmbedding
 
 /- English proof (translation)
-Use `choose τ' hτ' using hr`. Establish `hinj : Function.Injective τ'`. Introduce `x y hxy`. Apply `he` to reduce the goal to its premises. Rewrite using `[← hτ' x, ← hτ' y, hxy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Equiv.ofBijective τ' (Finite.injective_iff_bijective.mp hinj), fun t => ?_⟩` and prove the remaining obligations. Simplify using `[hτ']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma perm_of_range {m k : ℕ} (e ρ : Fin k → Fin m) (he : Function.Injective e)
     (hr : ∀ t, ∃ s, ρ s = e t) : ∃ τ : Equiv.Perm (Fin k), ∀ t, e t = ρ (τ t) := by
@@ -22,7 +22,7 @@ lemma perm_of_range {m k : ℕ} (e ρ : Fin k → Fin m) (he : Function.Injectiv
   simp [hτ']
 
 /- English proof (translation)
-Establish `: M.submatrix e f = (M.submatrix ρ f).submatrix τ id`. Use extensionality with `t s`. Simplify using `[h]`. Rewrite using `[this, Matrix.det_permute]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma det_reindex {m k : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (e ρ f : Fin k → Fin m) (τ : Equiv.Perm (Fin k))
     (h : ∀ t, e t = ρ (τ t)) :
@@ -32,21 +32,21 @@ lemma det_reindex {m k : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (e ρ f : Fin k �
   rw [this, Matrix.det_permute]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> rw [h] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sign_sq {k : ℕ} (τ : Equiv.Perm (Fin k)) :
     ((Equiv.Perm.sign τ : ℤ) : ℂ) * ((Equiv.Perm.sign τ : ℤ) : ℂ) = 1 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> rw [h] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sign_pm {k : ℕ} (τ : Equiv.Perm (Fin k)) :
     ((Equiv.Perm.sign τ : ℤ) : ℂ) = 1 ∨ ((Equiv.Perm.sign τ : ℤ) : ℂ) = -1 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Use extensionality with `t s`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[sum_emb hkm f hf]`. Introduce `j hj`. Rewrite using `[hU _ _ (by rw [Fin.lt_def, hf]; omega), mul_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma U_mul_sub {m k : ℕ} (hkm : k ≤ m) (M U : Matrix (Fin m) (Fin m) ℂ) (hU : ∀ i j, j < i → U i j = 0)
     (e f : Fin k → Fin m) (hf : ∀ t, (f t).val = t.val) :
@@ -58,7 +58,7 @@ lemma U_mul_sub {m k : ℕ} (hkm : k ≤ m) (M U : Matrix (Fin m) (Fin m) ℂ) (
   rw [hU _ _ (by rw [Fin.lt_def, hf]; omega), mul_zero]
 
 /- English proof (translation)
-Use extensionality with `t s`. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, C2.monoP, Matrix.of_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma submatrix_mul_monomialMatrix {m k : ℕ} (w : Equiv.Perm (Fin m)) (d : Fin m → ℂ) (M : Matrix (Fin m) (Fin m) ℂ)
     (e f : Fin k → Fin m) :
@@ -69,9 +69,9 @@ lemma submatrix_mul_monomialMatrix {m k : ℕ} (w : Equiv.Perm (Fin m)) (d : Fin
     mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Substitute `hkn` using the available equality. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun j => if h : j < m then d ⟨j, h⟩ else 1)]`. Use `Finset.prod_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Establish `hlt : t.val < m` using `by have := (e t).isLt; rw [he] at this; exact this`. Rewrite using `[dif_pos hlt]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Fin.ext (he t)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma prod_emb {m k n : ℕ} (hkn : k = n) (d : Fin m → ℂ) (e : Fin k → Fin m) (he : ∀ t, (e t).val = t.val) :
     ∏ t, d (e t) = ∏ j ∈ Finset.range n, (if h : j < m then d ⟨j, h⟩ else 1) := by

@@ -17,7 +17,7 @@ namespace GlobalTheory.ZH.ParTranslate
 open GlobalTheory.UT GlobalTheory.FieldBaseChange GlobalTheory.ThetaScalar GlobalTheory.ThetaTranslate ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Introduce `a` and use `by obtain ⟨U, hU, f, rfl⟩ := (Sp F).presheaf.exists_germ_eq a obtain rfl : U = ⊤ := eq_top_iff.2 fun y _ => (Subsingleton.elim (α := PrimeSpectrum F) z y) ▸ hU obtain ⟨x, rfl⟩ := (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 f exact ⟨x, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toStk_onto {F : Type} [Field F] (z : Sp F) : Function.Surjective (toStk z) := fun a => by
   obtain ⟨U, hU, f, rfl⟩ := (Sp F).presheaf.exists_germ_eq a
@@ -26,7 +26,7 @@ theorem toStk_onto {F : Type} [Field F] (z : Sp F) : Function.Surjective (toStk 
   exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isAdd_iff]`. Use `⟨h.1.trans (mul_comm _ _), fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Rewrite using `[C.s12, h.2 χ y J hJ, mul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAdd_comm {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {g g' g'' : GtPtF D F} (h : g.IsAdd g' g'') : g'.IsAdd g g'' := by
@@ -47,9 +47,9 @@ abbrev Carries (t : SecA A F k) (σ : U.SecGF F k) : Prop :=
     (snd (TFK (R := R) F) A.A).left (U.genF F).left t (UnifPre.gFK (G := G) F) (𝟙 _) σ
 
 /- English proof (translation)
-Set `n : TFK (R` to `R) F ⊗ A.A ⟶ UnifPre.GF (G := G) F := lift (fst _ _) (snd _ _ ≫ U.gen.inv)`. Establish `hn : n ≫ U.genF F = 𝟙 _`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [n]`. Establish `hn' : U.genF F ≫ n = 𝟙 _`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [n]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨-, i₂⟩` from `isoRelM_bijective (k := k) (m := (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left) (g₁ := (snd (TFK (R := R) F) A.A).left) (h₁ := (U.genF F).left) A.isLB U.LG.isLB hw (congrArg (fun q => q.left) (lift_snd _ _ : U.genF F ≫ snd _ _ = _)) n.left (congrArg (fun q => q.left) …`. Conclude with `(i₂ σ).exists`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_carries (hw : w.IsGen) (σ : U.SecGF F k) : ∃ t, Carries U F k w t σ := by
   let n : TFK (R := R) F ⊗ A.A ⟶ UnifPre.GF (G := G) F := lift (fst _ _) (snd _ _ ≫ U.gen.inv)
@@ -64,13 +64,13 @@ theorem exists_carries (hw : w.IsGen) (σ : U.SecGF F k) : ∃ t, Carries U F k 
   exact (i₂ σ).exists
 
 /- English proof (translation)
-Set `r : Sp F ⟶ (UnifPre.GF (G` to `G) F).left := (lift (𝟙 (TFK (R := R) F)) a).left`. Set `r' : Sp F ⟶ (TFK (R` to `R) F ⊗ A.A).left := (ptSecT A.A (a ≫ U.gen.hom)).left`. Establish `e₀ : r ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left = a.left := congrArg (fun q => q.left) (lift_snd (𝟙 (TFK (R := R) F)) a)`. Establish `e₁ : r ≫ (U.genF F).left = r'`. Establish `: lift (𝟙 (TFK (R` using `R) F)) a ≫ U.genF F = ptSecT A.A (a ≫ U.gen.hom) := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [ptSecT]`. Conclude with `congrArg (fun q => q.left) this`. Establish `e₂ : r' ≫ (snd (TFK (R` using `R) F) A.A).left = (r ≫ (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left) ≫ U.gen.hom.left := by`. Rewrite using `[e₀]`. Conclude with `congrArg (fun q => q.left) (lift_snd (𝟙 (TFK (R := R) F)) (a ≫ U.gen.hom))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `m₂ : ((r ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left) ≫ pullback.fst G.hom (jK R)) y ∈ U.LG.L.U l := by`. Rewrite using `[e₀]`. Conclude with `(top_le_iff_mem _ _ y).1 hl`. Establish `m₁ : ((r ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left) ≫ U.gen.hom.left) y ∈ A.L.U (J (r' ≫ (snd (TFK (R := R) F) A.A).left)) := by`. Rewrite using `[← e₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hJ _`. Use `⟨isoVal w (r ≫ (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left) y l (J (r' ≫ (snd (TFK (R := R) F) A.A).left)) ^ (k : ℤ), fun t σ h => ?_⟩` and prove the remaining obligations. Establish `H` using `(isoRelM_iff w _ k _ h.1 _ h.2.1 t σ).1 h (Sp F) r y l _ m₂ m₁`. Rewrite `H` using `[Category.comp_id, e₁]`. Conclude with `(toStk_valF_gs r _ y (mem_wchart.2 fun _ => m₂) _).trans H`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_carries (a : TFK (R := R) F ⟶ (Over.pullback (jK R)).obj G) (l : U.LG.L.ι)
     (hl : ⊤ ≤ (show Sp F ⟶ G.left from a.left ≫ pullback.fst G.hom (jK R)) ⁻¹ᵁ U.LG.L.U l) (y : Sp F)
@@ -105,13 +105,11 @@ theorem exists_unit_carries (a : TFK (R := R) F ⟶ (Over.pullback (jK R)).obj G
   exact (toStk_valF_gs r _ y (mem_wchart.2 fun _ => m₂) _).trans H
 
 /- English proof (translation)
-Set `y : Sp F` to `IsLocalRing.closedPoint F`. Take `⟨J, hJ⟩` from `GlobalTheory.UT.CoefBasic.exists_good' A.isLB y`. Take `⟨c, hc⟩` from `exists_unit_carries U F k w a l hl y J hJ`. Take `⟨c', hc'⟩` from `exists_unit_carries U F k w a' l' hl' y J hJ`. Set `r : Sp F ⟶ (TFK (R` to `R) F ⊗ A.A).left := (ptSecT A.A (a ≫ U.gen.hom)).left`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `e : r ≫ (translT A.A θ.pt).left = (ptSecT A.A (a' ≫ U.gen.hom)).left`. Rewrite using `[h]`. Conclude with `congrArg (fun q => q.left) (ptSecT_translT (a ≫ U.gen.hom) θ.pt)`. Take `⟨d, hd⟩` from `toStk_onto y (c * thetaVal θ r y J * c'⁻¹).val`. Use `⟨d, fun h0 => ?_, fun t t' σ σ' h₁ h₂ h₃ => (toStk y).injective ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Nontrivial ((Sp F).presheaf.stalk y)` using `inferInstance`. Rewrite `hd` using `[h0, map_zero]`. Conclude with `Units.ne_zero _ hd.symm`. Establish `a₁` using `h₃ (Sp F) r y J hJ`. Rewrite `a₁` using `[e]`.
-
-Rewrite using `[map_mul, hd, hc t' σ' h₂, hc' t σ h₁, Units.val_mul, Units.val_mul, _root_.mul_assoc, Units.inv_mul_cancel_left, _root_.mul_assoc]`. Conclude with `congrArg _ a₁`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const_actVal (θ : ThetaGrp A.A A.L (k : ℤ) (TFK (R := R) F))
     (a a' : TFK (R := R) F ⟶ (Over.pullback (jK R)).obj G) (h : a' ≫ U.gen.hom = θ.pt * (a ≫ U.gen.hom))
@@ -143,17 +141,17 @@ theorem exists_const_actVal (θ : ThetaGrp A.A A.L (k : ℤ) (TFK (R := R) F))
 end
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u k pk x a a' g g' hk hx ha hg hpar w' hw' l' hl'`. Establish `hG` using `hL.1.globalFns`. Establish `: CharZero u.V` using `((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V))).charZero`. Establish `hA : AdmBase u.V (IsLocalRing.maximalIdeal u.V)` using `⟨inferInstance, inferInstance, inferInstance, u.complete⟩`. Take `⟨w₀, hw₀⟩` from `u.U.toUnifPre.ext`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `exists_normalisation (D := u.D.toPre) (F := PadicAlgCl p) k pk.g.b`. Take `⟨ω₀, h₀⟩` from `exists_normalisation (D := u.D.toPre) (F := PadicAlgCl p) k g.b`. Take `⟨ω₁, h₁, -, hco⟩` from `CoefPhi.coef_phi hL u.V _ hA u.D (PadicAlgCl p) k hk pk v hv g g' (isAdd_comm hg) ω₀ h₀`. Use `replace hco := hco 1 k le_rfl (mul_one k).symm pk (one_smul _ _).symm rfl v ω₀ ω₁ ⟨hv, fun _ _ _ => (pow_one _).symm⟩ ⟨h₀, fun _ _ _ => (pow_one _).symm⟩ ⟨h₁, fun _ _ _ => (pow_one _).symm⟩`. Take `⟨c₁, hc₁, -, hfr⟩` from `((CoefBasic.coef_basic u.V u.D.toPre (PadicAlgCl p) k g').2.2 ω₁ h₁).2.2.1 w' hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, rfl, hθ⟩` from `exists_theta_actVal u.U (PadicAlgCl p) hG hL.1.kerPow hk pk x hx w₀ hw₀ v hv`. Take `⟨l, hl⟩` from `exists_chart u.U.LG.isLB (u.toG a (IsLocalRing.closedPoint (PadicAlgCl p)))`. Use `replace hl := (top_le_iff_mem _ _ _).2 hl`. Take `⟨κ, hκ, hsum⟩` from `hpar ω₀ h₀ l hl`. Take `⟨c₂, hc₂, hval⟩` from `exists_const_actVal u.U.toUnifPre (PadicAlgCl p) k w₀ θ a a' ha l l' hl hl'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he⟩` from `GlobalTheory.exists_linearEquiv_expandsF hG u.U (PadicAlgCl p) hk w₀ hw₀`. Use `⟨c₁ * (κ * c₂), mul_ne_zero hc₁ (mul_ne_zero hκ hc₂), fun σ s hs => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_carries u.U.toUnifPre (PadicAlgCl p) k w₀ hw₀ σ`. Take `⟨t', ht'⟩` from `exists_actVal u.A.isLB θ t`. Establish `hE : u.U.toUnifPre.ExpandsF (PadicAlgCl p) k w₀ t' (e t')` using `(he _ _).2 rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΦ` using `(hθ t t' s (e t') ⟨σ, ht, hs⟩ hE).2 ht'`. Take `⟨σ', hσ', hs'⟩` from `hE`. Establish `H` using `hsum σ' _ hs'`. Rewrite `H` using `[hval t t' σ σ' ht hσ' ht', ← (Equiv.addRight pk.y).hasSum_iff]`. Establish `H'` using `H.mul_left c₁`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.mul_assoc, _root_.mul_assoc]`. Use `(congrArg (HasSum · _) (funext fun χ => ?_)).mp H'` and prove the remaining obligations. Conclude with `(congrArg (c₁ * ·) (hco s _ hΦ χ)).trans (hfr s χ).symm`.
+A detailed English derivation is pending.
 -/
 theorem parAt_translate : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (k : ℕ) (pk : QkPt u.D.toPre (PadicAlgCl p) k) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A) (a a' : u.PtC) (g g' : GtPtF u.D.toPre (PadicAlgCl p)), 1 ≤ k → QkToAkU u.U.toUnifPre (PadicAlgCl p) k pk x → a' ≫ u.U.gen.hom = x * (a ≫ u.U.gen.hom) → GtPtF.IsAdd pk.g g g' → u.ParAt k a g → u.ParAt k a' g' := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u k pk x a a' g g' hk hx ha hg hpar w' hw' l' hl'

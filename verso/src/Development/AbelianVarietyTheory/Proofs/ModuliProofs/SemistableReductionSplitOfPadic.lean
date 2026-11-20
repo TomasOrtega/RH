@@ -17,13 +17,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Introduce `H V K _ _ _ _ _ _ _ _ hfin A`. Take `⟨p, hp, K₀, e, e₀, hK₀, he⟩` from `GlobalTheory.completeDVR_eq_integralClosure_padicInt.1 V K hfin`. Choose the witnesses or unpack the hypotheses as in `⟨P, ψ, hψ⟩ : ∃ (P : PolAV (Sp K₀)) (ψ : P.A.left ⟶ A.A.left), IsGrpPullback P.A A.A (spMap e.toRingHom) ψ := by`. Take `⟨P', g, hg, -, hm, -⟩` from `GlobalTheory.polBaseChange_holds _ _ (spMap e.toRingHom) A`. Use `⟨P', g, hg, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hg.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hg.w y), ← hm]`. Both sides reduce to the same expression. Take `⟨K', h, hloc, hK', G, gG, hG, hE, φ, hφ⟩` from `GlobalTheory.exists_semiAbelian_model_split_specialFibre H p K₀ P`. Take `⟨hdvr, hfr, hc, f, hf, hlf, hfx⟩` from `GlobalTheory.completeDVR_eq_integralClosure_padicInt.2 p K₀ K' h hK'`. Use `letI aV : Algebra V (integralClosure ℤ_[p] K') := (f.comp e₀.toRingHom).toAlgebra`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI aK : Algebra K K' := ((IntermediateField.inclusion h).toRingHom.comp e.toRingHom).toAlgebra`. Use `⟨integralClosure ℤ_[p] K', K', inferInstance, inferInstance, hdvr, inferInstance, aV, inferInstance, aK, hfr, ?_, ?_, ?_, hc, G, gG, ?_, hG, hE⟩` and prove the remaining obligations. Use `ext1 x`. Express the relevant statement in the definitionally equal form `((f (e₀ x) : integralClosure ℤ_[p] K') : K') = IntermediateField.inclusion h (e (algebraMap V K x))`. Rewrite using `[hfx, he]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `RingHom.Finite.comp hf (RingHom.Finite.of_surjective _ e₀.surjective)`. Use `haveI : IsLocalHom e₀.toRingHom := isLocalHom_of_leftInverse e₀.symm.toRingHom e₀.left_inv`. Conclude with `RingHom.isLocalHom_comp f e₀.toRingHom`. Take `⟨i, hi, -⟩` from `grpPullback_iso ((hφ.comp hψ).congr (GlobalTheory.SplitReduction.spMap_comp _ _) rfl) (isGrpPullback_pullback A.A (spMap (algebraMap K K')))`. Conclude with `⟨i, hi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem semistablePol_of_padic : GlobalTheory.Published.SemistableReductionSt → GlobalTheory.SS.SemistablePol := by
   intro H V K _ _ _ _ _ _ _ _ hfin A

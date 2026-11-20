@@ -15,15 +15,15 @@ open GlobalTheory.LFun (toCompl locMat locChar IsSplitChart IsInertChart IsFrame
 namespace GlobalTheory.LFun
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ χ v w h w' h' hne hall x`. Establish `key : ideleAt F E v x = locIdele F w (Units.map (toCompl h).toMonoidHom x) * locIdele F w' (Units.map (toCompl h').toMonoidHom x)`. Use `Units.ext (tens_ext ?_ ((finAdEquiv F E).injective (FiniteAdeleRing.ext _ fun u => ?_)))` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, infTens_locIdele, infTens_locIdele, mul_one]`. Conclude with `map_extUnit_zero (fstA F) _ _ (fun a => rfl) x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, map_mul (finTens F E), map_mul, finTens_locIdele, finTens_locIdele]`. Establish `hc : ∀ u' : HeightOneSpectrum (𝓞 F), Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u') (AlgHom.id F E) (finTens F E (ideleAt F E v x)) = (unitFin F E u' (ideleAt F E v x) : Fv F u' ⊗[F] E)` using `fun u' => by`. Express the relevant statement in the definitionally equal form `((Algebra.TensorProduct.map _ _).comp (Algebra.TensorProduct.map _ _)) _ = _`. Rewrite using `[← Algebra.TensorProduct.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = Neutral.B1.finiteSingle E w (Units.map (toCompl h).toMonoidHom x) u * Neutral.B1.finiteSingle E w' (Units.map (toCompl h').toMonoidHom x) u`. Distinguish the cases in `hu : u.under (𝓞 F) = v`. Rewrite using `[finAdEquiv_apply hu, hc, unitFin_ideleAt_self]`. Break down `(hall u).1 hu with rfl | rfl` into its components or cases. Rewrite using `[finSingle_self, finSingle_ne hne, mul_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[finSingle_self, finSingle_ne (Ne.symm hne), one_mul]`. Both sides reduce to the same expression. Rewrite using `[finAdEquiv_apply rfl, hc, unitFin_ideleAt_ne hu, Units.val_one, map_one, finSingle_ne (fun e => hu (by rw [e]; exact h)), finSingle_ne (fun e => hu (by rw [e]; exact h')), mul_one]`. Use `show ((χ (ideleAt F E v x) : Circle) : ℂ) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[key, map_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem charAt_eq_locChar_mul_locChar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (χ : (AF F ⊗[F] E)ˣ →* Circle), ∀ (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v), ∀ (w' : HeightOneSpectrum (𝓞 E)) (h' : w'.under (𝓞 F) = v), w ≠ w' → (∀ u : HeightOneSpectrum (𝓞 E), u.under (𝓞 F) = v ↔ u = w ∨ u = w') → ∀ x : (Fv F v ⊗[F] E)ˣ, ((charAt χ v x : Circle) : ℂ) = (locChar χ w (Units.map (toCompl h).toMonoidHom x) : ℂˣ) * (locChar χ w' (Units.map (toCompl h').toMonoidHom x) : ℂˣ) := by
   intro F E _ _ _ _ _ χ v w h w' h' hne hall x

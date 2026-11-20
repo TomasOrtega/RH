@@ -13,7 +13,7 @@ namespace GlobalTheory.MulPullSec
 variable {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Rewrite using `[gs_eq r z U h]`. Use `(Z.mem_basicOpen (U := r ⁻¹ᵁ U) ((r.app U).hom a) z h).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.preimage_basicOpen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isUnit_gs_iff (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z ∈ U) (a : Γ(Y, U)) :
     IsUnit (gs r z U a) ↔ r z ∈ Y.basicOpen a := by
@@ -23,9 +23,9 @@ theorem isUnit_gs_iff (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z ∈ U) (a : �
   rfl
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem φ r`. Use `Opens.mem_iSup.trans ⟨fun ⟨j, hj⟩ => ?_, fun h => ⟨_, (isUnit_gs_iff r z _ hm _).1 h⟩⟩` and prove the remaining obligations. Establish `hj' : r z ∈ LB.wchart L φ j` using `Y.basicOpen_le _ hj`. Establish `u` using `(isUnit_gs_iff r z _ hj' _).2 hj`. Rewrite `u` using `[sec_trans s r z hj' hm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_of_mul_isUnit_right u`.
+A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z)
     {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) : r z ∈ Out.nonzeroLocus s ↔ IsUnit (sval s r z J) := by
@@ -41,9 +41,9 @@ def powGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ 
   s := fun j => t.s j ^ N
 
 /- English proof (translation)
-Introduce `i j`. Establish `e` using `congrArg (· ^ N) (ht i j)`. Simplify using `only [mul_pow] at e`. Use `(map_pow _ _ _).trans (e.trans (congrArg₂ (· * ·) ?_ (map_pow _ _ _).symm))` and prove the remaining obligations. Use `(Finset.prod_pow _ _ _).symm.trans (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zpow_mul, zpow_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem powGen_isGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) (N : ℕ) :
     (powGen t N).IsGen := by
@@ -56,9 +56,9 @@ theorem powGen_isGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.Lin
   rfl
 
 /- English proof (translation)
-Take `⟨h', hh'⟩` from `exists_sec hL (φ' := fun _ : PUnit => 𝟙 X) (ε' := fun _ => (M : ℤ)) (fun U _ q => by`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Category.comp_id, Matrix.cons_val_zero, Matrix.cons_val_one, hM, neg_mul, one_mul, zpow_neg]`. Rewrite using `[mul_left_comm, mul_inv_cancel, mul_one])`. Use the proof step `(pullMulSec h f (powGen α N) (powGen_isGen hα N))`. Use `⟨h', Opens.ext (Set.ext fun y => ?_)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose J hJ using fun χ : X ⟶ X => exists_chart hL (χ y)`. Establish `a` using `mem_nonzeroLocus_iff h' (𝟙 X) y hJ`. Establish `b` using `mem_nonzeroLocus_iff h (𝟙 X ≫ f) y hJ`. Rewrite `a` using `[hh' _ _ y J hJ, sval_pullMulSec h f _ _ _ y hJ, Units.isUnit_mul_units]`. Conclude with `a.trans b.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull_sec (hL : L.IsLB) (f : X ⟶ X) (m : ℤ) (N M : ℕ) (hM : (M : ℤ) = m * N)
     (α : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 X, f] ![m, -1])) (hα : α.IsGen) (h : (lbPow L N).Sec) :
@@ -81,7 +81,7 @@ end GlobalTheory.MulPullSec
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ P N k h`. Take `⟨α, hα⟩` from `H (Sp K) P k`. Conclude with `MulPullSec.exists_pull_sec P.isLB _ ((k : ℤ) ^ 2) N _ (by push_cast; ring) α hα h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_mulPull_sec (H : Out.MulPullSt) :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N k : ℕ) (h : (lbPow P.L N).Sec),

@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.Chart.Assoc
 
 /- English proof (translation)
-Use `⟨fun i => by simp [h.1 i], fun m => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `h.2 m`. Use `⟨N, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hN f hf`. Conclude with `⟨φ c, by simp [hc, map_mul, map_pow, map_natCast]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isEval_comp (p : ℕ) {O A B σ : Type} [CommRing O] [CommRing A] [CommRing B] [Algebra O A]
     [Algebra O B] {x : σ → A} {E : MvPowerSeries σ O →ₐ[O] A} (φ : A →ₐ[O] B) (h : IsEval p x E) :
@@ -23,7 +23,7 @@ theorem isEval_comp (p : ℕ) {O A B σ : Type} [CommRing O] [CommRing A] [CommR
   exact ⟨φ c, by simp [hc, map_mul, map_pow, map_natCast]⟩
 
 /- English proof (translation)
-Establish `h : ∀ k, constantCoeff (Sum.elim u v k) = 0`. Apply the tactic sequence `rintro (k | k) <;> simp [hu, hv]`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h) h (hμ j)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem constantCoeff_op {O : Type} [CommRing O] {d : ℕ} {τ : Type}
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hμ : ∀ i, constantCoeff (μ i) = 0)
@@ -34,7 +34,7 @@ theorem constantCoeff_op {O : Type} [CommRing O] {d : ℕ} {τ : Type}
   exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h) h (hμ j)
 
 /- English proof (translation)
-Take `⟨N, c, hc⟩` from `h`. Conclude with `⟨N, φ c, by rw [← map_pow, hc, map_mul, map_natCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dvd_pow_map (p : ℕ) {O A B : Type} [CommRing O] [CommRing A] [CommRing B] [Algebra O A]
     [Algebra O B] (φ : A →ₐ[O] B) {a : A} (h : ∃ N : ℕ, (p : A) ∣ a ^ N) :
@@ -47,41 +47,39 @@ end GlobalTheory.Chart.Assoc
 namespace GlobalTheory.Chart.Assoc
 
 /- English proof (translation)
-Set `Φ₁ : A ⊗[O] A →ₐ[O] A ⊗[O] (A ⊗[O] A)` to `Algebra.TensorProduct.map (AlgHom.id O A) (Algebra.TensorProduct.includeLeft (S := O))`. Set `Φ₃ : A ⊗[O] A →ₐ[O] A ⊗[O] (A ⊗[O] A)` to `Algebra.TensorProduct.includeRight`. Set `Φ₂ : A ⊗[O] A →ₐ[O] A ⊗[O] (A ⊗[O] A)` to `(Algebra.TensorProduct.assoc O O O A A A).toAlgHom.comp (Algebra.TensorProduct.map (Bialgebra.comulAlgHom O A) (AlgHom.id O A))`. Set `Φ₄ : A ⊗[O] A →ₐ[O] A ⊗[O] (A ⊗[O] A)` to `Algebra.TensorProduct.map (AlgHom.id O A) (Bialgebra.comulAlgHom O A)`. Establish `hnil : ∀ k, ∃ N : ℕ, (p : A ⊗[O] (A ⊗[O] A)) ∣ (Sum.elim (fun i => x i ⊗ₜ[O] (1 : A ⊗[O] A)) (Sum.elim (fun i => (1 : A) ⊗ₜ[O] (x i ⊗ₜ[O] (1 : A))) fun i => (1 : A) ⊗ₜ[O] ((1 : A) ⊗ₜ[O] x i))) k ^ N`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `(k | k | k)`. Conclude with `dvd_pow_map p (Algebra.TensorProduct.includeLeft (R := O) (S := O) (A := A) (B := A ⊗[O] A)) (hx k)`. Conclude with `dvd_pow_map p (Φ₃.comp (Algebra.TensorProduct.includeLeft (R := O) (S := O) (A := A) (B := A))) (hx k)`. Conclude with `dvd_pow_map p (Φ₃.comp (Algebra.TensorProduct.includeRight (R := O) (A := A) (B := A))) (hx k)`. Establish `sub` using `((GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O _ _ _ hnil).2 E₃ h3).1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : ∀ j, constantCoeff (x1 (R` using `O) (d := d) j) = 0 := fun j => by simp [x1]`. Establish `c2 : ∀ j, constantCoeff (x2 (R` using `O) (d := d) j) = 0 := fun j => by simp [x2]`. Establish `c3 : ∀ j, constantCoeff (x3 (R` using `O) (d := d) j) = 0 := fun j => by simp [x3]`. Establish `ce : ∀ {u v : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) O}, (∀ j, constantCoeff (u j) = 0) → (∀ j, constantCoeff (v j) = 0) → ∀ k, constantCoeff (Sum.elim u v k) = 0`. Apply the tactic sequence `intro u v hu hv k; rcases k with k | k <;> simp [hu, hv]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `L1 : ∀ j, E₃ (op μ x1 x2 j) = Φ₁ (Coalgebra.comul (R` using `O) (x j)) := by`. Introduce `j`. Establish `e` using `isEval_comp p Φ₁ h2`. Use `sub _ (Sum.elim x1 x2) (Φ₁.comp E₂) (ce c1 c2) (by` as an intermediate fact. Use `e using 2 with k` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases k with k | k <;> simp [x1, x2, h3.1, Φ₁, Algebra.TensorProduct.one_def]) (μ j)`. Simplify using `only [op, at2]`. Rewrite using `[this, AlgHom.comp_apply, hc]`. Establish `L3 : ∀ j, E₃ (op μ x2 x3 j) = Φ₃ (Coalgebra.comul (R` using `O) (x j)) := by`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `e` using `isEval_comp p Φ₃ h2`. Use `sub _ (Sum.elim x2 x3) (Φ₃.comp E₂) (ce c2 c3) (by` as an intermediate fact. Use `e using 2 with k` and compare the differences between its conclusion and the goal. Apply the tactic sequence `rcases k with k | k <;> simp [x2, x3, h3.1, Φ₃, Algebra.TensorProduct.one_def]) (μ j)`. Simplify using `only [op, at2]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, AlgHom.comp_apply, hc]`. Introduce `i`. Establish `LL : E₃ (op μ (op μ x1 x2) x3 i) = Φ₂ (Coalgebra.comul (R` using `O) (x i)) := by`. Establish `e` using `isEval_comp p Φ₂ h2`. Use `sub _ (Sum.elim (op μ x1 x2) x3) (Φ₂.comp E₂) (ce (constantCoeff_op μ hμ _ _ c1 c2) c3) (by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `e using 2 with k` and compare the differences between its conclusion and the goal. Break down `k with k | k` into its components or cases. Simplify using `only [Sum.elim_inl]`. Rewrite using `[L1]`. Establish `key : ∀ c : A ⊗[O] A, Φ₁ c = (Algebra.TensorProduct.assoc O O O A A A) (c ⊗ₜ[O] 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `c`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Φ₁, Algebra.TensorProduct.one_def]`. Consider the case `add a b ha hb => rw [map_add, ha, hb, TensorProduct.add_tmul, map_add]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[key]`. Simplify using `[Φ₂]`. Simplify using `[x3, h3.1, Φ₂, Algebra.TensorProduct.one_def]) (μ i)`. Simplify using `only [op, at2] at this ⊢`. Rewrite using `[this, AlgHom.comp_apply, hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `RR : E₃ (op μ x1 (op μ x2 x3) i) = Φ₄ (Coalgebra.comul (R` using `O) (x i)) := by`. Establish `e` using `isEval_comp p Φ₄ h2`. Use `sub _ (Sum.elim x1 (op μ x2 x3)) (Φ₄.comp E₂) (ce c1 (constantCoeff_op μ hμ _ _ c2 c3)) (by` as an intermediate fact. Use `e using 2 with k` and compare the differences between its conclusion and the goal. Break down `k with k | k` into its components or cases.
+Apply an available result and prove the equalities needed to match it to the conclusion. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[x1, h3.1, Φ₄, Algebra.TensorProduct.one_def]`. Simplify using `only [Sum.elim_inr]`. Rewrite using `[L3]`. Simplify using `[Φ₃, Φ₄]) (μ i)`. Simplify using `only [op, at2] at this ⊢`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, AlgHom.comp_apply, hc]`. Rewrite using `[LL, RR]`. Establish `ka : ∀ w : (A ⊗[O] A) ⊗[O] A, (Algebra.TensorProduct.assoc O O O A A A) w = TensorProduct.assoc O A A A w`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul c b`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a a' => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add c c' hc hc' => rw [TensorProduct.add_tmul, map_add, hc, hc', map_add]`. Consider the case `add a b ha hb => rw [map_add, ha, hb, map_add]`. Establish `k2 : ∀ c : A ⊗[O] A, Φ₂ c = TensorProduct.assoc O A A A (LinearMap.rTensor A (Coalgebra.comul (R` using `O) (A := A)) c) := by`. Introduce `c`. Rewrite using `[← ka]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Φ₂]`. Consider the case `add a b ha hb => rw [map_add, ha, hb, map_add, map_add]`. Establish `k4 : ∀ c : A ⊗[O] A, Φ₄ c = LinearMap.lTensor A (Coalgebra.comul (R` using `O) (A := A)) c := by`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `c`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Φ₄]`. Consider the case `add a b ha hb => rw [map_add, ha, hb, map_add]`.
-
-Rewrite using `[k2, k4, Coalgebra.coassoc_apply]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assoc_eval (p : ℕ) (O A : Type) [CommRing O] [CommRing A] [Bialgebra O A]
     [IsAdicComplete (Ideal.span {(p : A ⊗[O] (A ⊗[O] A))}) (A ⊗[O] (A ⊗[O] A))] {d : ℕ}

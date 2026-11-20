@@ -12,9 +12,9 @@ open Filter Topology
 namespace InjectiveHolomorphicJacobianNeZero
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.det_toMatrix (Pi.basisFun ℂ (Fin 1)), Matrix.det_unique, LinearMap.toMatrix_apply]`. Simplify using `only [Pi.basisFun_apply, Pi.basisFun_repr]`. Establish `h1 : (Pi.single (default : Fin 1) (1 : ℂ) : Fin 1 → ℂ) = 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_fin_one (A : (Fin 1 → ℂ) →ₗ[ℂ] Fin 1 → ℂ) : LinearMap.det A = A 1 0 := by
   rw [← LinearMap.det_toMatrix (Pi.basisFun ℂ (Fin 1)), Matrix.det_unique, LinearMap.toMatrix_apply]
@@ -27,11 +27,11 @@ theorem det_fin_one (A : (Fin 1 → ℂ) →ₗ[ℂ] Fin 1 → ℂ) : LinearMap.
   rfl
 
 /- English proof (translation)
-Use `set e : (Fin 1 → ℂ) ≃L[ℂ] ℂ := ContinuousLinearEquiv.funUnique (Fin 1) ℂ ℂ with he`. Use `set φ : ℂ → ℂ := fun z => e (f (e.symm z)) with hφ`. Establish `hD : IsOpen (e.symm ⁻¹' U)` using `hU.preimage e.symm.continuous`. Establish `hφd : DifferentiableOn ℂ φ (e.symm ⁻¹' U)` using `e.differentiable.comp_differentiableOn (hf.comp e.symm.differentiable.differentiableOn fun _ h => h)`. Establish `hφi : Set.InjOn φ (e.symm ⁻¹' U)` using `fun s hs t ht h => e.symm.injective (hinj hs ht (e.injective h))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxD : e x ∈ e.symm ⁻¹' U` using `by simpa using hx`. Establish `hne` using `InjectiveHolomorphicDerivNeZero.proof _ φ hD hφd hφi (e x) hxD`. Establish `hfx : HasFDerivAt f (fderiv ℂ f x) x` using `(hf.differentiableAt (hU.mem_nhds hx)).hasFDerivAt`. Establish `hφx : HasFDerivAt φ ((e : (Fin 1 → ℂ) →L[ℂ] ℂ).comp ((fderiv ℂ f x).comp (e.symm : ℂ →L[ℂ] Fin 1 → ℂ))) (e x)`. Establish `h1 : HasFDerivAt f (fderiv ℂ f x) (e.symm (e x))` using `by simpa using hfx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.hasFDerivAt.comp (e x) (h1.comp (e x) e.symm.hasFDerivAt)`. Rewrite `hne` using `[hφx.hasDerivAt.deriv]`. Rewrite using `[det_fin_one]`. Simplify `hne` using `[he]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem one {U : Set (Fin 1 → ℂ)} {f : (Fin 1 → ℂ) → Fin 1 → ℂ} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) (hinj : Set.InjOn f U) {x : Fin 1 → ℂ} (hx : x ∈ U) :
@@ -57,17 +57,15 @@ theorem one {U : Set (Fin 1 → ℂ)} {f : (Fin 1 → ℂ) → Fin 1 → ℂ} (h
 end InjectiveHolomorphicJacobianNeZero
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `U f hU hf hinj x hx hdet`. Break down `Nat.lt_or_ge k 2 with hk | hk` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `interval_cases k`. Rewrite `hdet` using `[LinearMap.det_eq_one_of_subsingleton]`. Conclude with `one_ne_zero hdet`. Conclude with `InjectiveHolomorphicJacobianNeZero.one hU hf hinj hx hdet`. Distinguish the cases in `hall : ∀ b ∈ U, LinearMap.det (fderiv ℂ f b : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ) = 0 → fderiv ℂ f b = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC k U f x hk hU hf hx hdet hall hinj`. Use `push Not at hall`. Take `⟨b, hb, hdb, hne⟩` from `hall`. Use `set d := Module.finrank ℂ (LinearMap.ker (fderiv ℂ f b : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ)) with hd`. Establish `hd0 : 0 < d`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, Module.finrank_pos_iff_exists_ne_zero]`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (LinearMap.bot_lt_ker_of_det_eq_zero hdb).ne'`. Conclude with `⟨⟨v, hv⟩, by simpa using hv0⟩`. Establish `hdk : d < k`. Establish `hker : LinearMap.ker (fderiv ℂ f b : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ) ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, LinearMap.ker_eq_top]`. Introduce `h0`. Conclude with `hne (ContinuousLinearMap.coe_injective (by simpa using h0))`. Simplify `Submodule.finrank_lt hker` using `[Module.finrank_fin_fun]`. Take `⟨V, y, γ, ℓ, hV, hy, hγ, hmaps, hγinj, hfib, hzero⟩` from `hF k U f b hU hf hb d rfl`.
-
-Establish `hhd : DifferentiableOn ℂ (fun t => ℓ (f (γ t))) V` using `ℓ.differentiable.comp_differentiableOn (hf.comp hγ hmaps)`. Establish `hhinj : Set.InjOn (fun t => ℓ (f (γ t))) V` using `fun s hs t ht h => hγinj hs ht (hinj (hmaps hs) (hmaps ht) (hfib s hs t ht h))`. Apply `ih d hdk V _ hV hhd hhinj y hy` to reduce the goal to its premises. Rewrite using `[hzero, ContinuousLinearMap.toLinearMap_zero, LinearMap.det_zero, Module.finrank_fin_fun]`. Conclude with `zero_pow hd0.ne'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InjectiveHolomorphicJacobianNeZero.proof (hF : HolomorphicKernelFibre.Statement)
     (hC : CriticalFlatNotInjective.Statement) : InjectiveHolomorphicJacobianNeZero.Statement := by

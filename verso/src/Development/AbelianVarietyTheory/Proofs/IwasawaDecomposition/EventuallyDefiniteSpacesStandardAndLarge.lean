@@ -13,13 +13,13 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.StdSize
 
 /- English proof (translation)
-Use `GlobalTheory.Mem.Top.V4.TwoPass.ev_mono ?_ GlobalTheory.Mem.HostFrames.hostHyp_frames_ev` and prove the remaining obligations. Introduce `K hK X hX`. Take `⟨-, -, -, -, -, -, hVf, -⟩` from `hK X hX`. Take `⟨hR, -⟩` from `GlobalTheory.Mem.HostFrames.val_of_over hX`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `hVf i`. Rewrite using `[GlobalTheory.StdFrameCounterexample.vstd_iff]`. Use `⟨Matrix.ext fun a b => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[HSpace.gram, h1, Matrix.one_apply]`. Rewrite using `[h2, Module.Basis.mem_span_iff_repr_mem, Module.Basis.repr_sum_self]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun a => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨⟨x a, h⟩, rfl⟩`. Establish `h4` using `hR.2.2.2 show 8 * X.B.R.f * X.B.R.r + 4 ≤ X.B.R.r + X.B.R.t`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem vstd_size_ev : Top.Ev fun K => ∀ X : Stages, K.Over X.B.toPre →
     (∀ i, Formalism.IndefR.FWT.VStd X.toD7 i) ∧ 8 * X.toD7.R.f * X.toD7.R.r + 4 ≤ X.toD7.R.nV := by

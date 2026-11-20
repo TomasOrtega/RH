@@ -8,19 +8,17 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ K bk d d' S S' ρ ρ' T T' hT hT' f _ Y hY`. Use `set L := bk.evW with hL`. Use `set Φ : WCb l →+* WCb l := (frobW l).toRingHom with hΦ`. Establish `hc : ∀ x, L (frobS l bk.a x) = Φ (L x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hL, hΦ, BK.evW, RingHom.comp_apply, bk.ev_frob, AlgHom.coe_toRingHom]`. Conclude with `(frobW_inclW _).symm`. Establish `hsm : ∀ {m n : Type} (c : bk.S) (M : Matrix m n bk.S), (c • M).map L = L c • M.map L`. Introduce `m n c M`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Matrix.map_apply, Matrix.smul_apply]`. Establish `hTΦ : ∀ {m n : Type} (M : Matrix m n (WCb l)), M.map (frobW l) = M.map Φ` using `fun _ => rfl`. Establish `hz : (zW f).map Φ = zW f`. Use extensionality with `i j`. Simplify using `[zW, hΦ, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hYΦ : (Y.map (frobS l bk.a)).map L = (Y.map L).map Φ`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Conclude with `hc _`. Establish `φT` using `hT.φ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `φT'` using `hT'.φ`. Rewrite `φT`, `φT'` using `[hTΦ]`. Establish `hYf : T'.map Φ * (Y.map L).map Φ = zW f * T.map Φ`. Rewrite using `[← Matrix.map_mul, hY, Matrix.map_mul, hz]`. Establish `key : T' * (bk.E ^ S.a • (S'.A * Y.map (frobS l bk.a))).map L = T' * (bk.E ^ S'.a • (Y * S.A)).map L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsm, hsm, Matrix.map_mul, Matrix.map_mul, hYΦ, Matrix.mul_smul, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← φT', map_pow, map_pow, Matrix.smul_mul, smul_smul, hYf, hY, Matrix.mul_assoc, ← φT, Matrix.mul_smul, smul_smul, mul_comm]`. Take `⟨u, hu⟩` from `hT'.unit`. Establish `key2 : (bk.E ^ S.a • (S'.A * Y.map (frobS l bk.a))).map L = (bk.E ^ S'.a • (Y * S.A)).map L`. Use `congrArg (fun M => (↑u⁻¹ : Matrix (Fin d') (Fin d') (WCb l)) * M) key` as an intermediate fact. Simplify using `only [← hu, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] at this`.
-
-Conclude with `this`. Establish `hinj` using `(GlobalTheory.T.breuilKisin_evW_isUnit_injective_dvd l K bk).2.1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `hinj (congrFun (congrFun key2 i) j)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mreal_hom_frob : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d) (S' : Strat bk d') (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (ρ' : ↥(GK K) → Matrix (Fin d') (Fin d') ℤ_[l]) (T : Matrix (Fin d) (Fin d) (WCb l)) (T' : Matrix (Fin d') (Fin d') (WCb l)), MReal S ρ T → MReal S' ρ' T' → ∀ f : Matrix (Fin d') (Fin d) ℤ_[l], (∀ g, f * ρ g = ρ' g * f) → ∀ Y : Matrix (Fin d') (Fin d) bk.S, T' * Y.map bk.evW = zW f * T → bk.E ^ S.a • (S'.A * Y.map (frobS l bk.a)) = bk.E ^ S'.a • (Y * S.A) := by
   intro l _ K bk d d' S S' ρ ρ' T T' hT hT' f _ Y hY

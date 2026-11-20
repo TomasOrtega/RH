@@ -81,7 +81,7 @@ structure PrismData (p : ℕ) [Fact p.Prime] : Type 1 where
 attribute [instance] PrismData.projective PrismData.finite
 
 /- English proof (translation)
-Take `⟨M, map, φ, lie, du, l, e, h1, h2, h3, h4, h5⟩` from `h p`. Conclude with `⟨⟨M, map, φ, lie, du, l, e, fun S G => (h1 S G).1, fun S G => (h1 S G).2.1, fun S G => (h1 S G).2.2.1, fun S G => (h1 S G).2.2.2.1, fun S G => (h1 S G).2.2.2.2.1, fun S G => (h1 S G).2.2.2.2.2.1, fun S G => (h1 S G).2.2.2.2.2.2.1, fun S G => (h1 S G).2.2.2.2.2.2.2.1, fun S G => ( …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PrismData.nonempty (h : PrismaticDieudonnePerfd) (p : ℕ) [Fact p.Prime] : Nonempty (PrismData p) := by
   obtain ⟨M, map, φ, lie, du, l, e, h1, h2, h3, h4, h5⟩ := h p
@@ -93,7 +93,7 @@ theorem PrismData.nonempty (h : PrismaticDieudonnePerfd) (p : ℕ) [Fact p.Prime
     fun S => (h4 S).2.2.2.2.1, fun S => (h4 S).2.2.2.2.2, h5⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PrismData.nonempty, fun h p _ => (h p).elim fun D => ⟨D.M, D.map, D.φ, D.lie, D.du, D.l, D.e, fun S G => ⟨D.projective S G, D.finite S G, D.rank_eq S G, D.exists_φ_eq S G, D.lie_projective S G, D.lie_finite S G, D.lie_surjective S G, D.lie_eq_zero_iff S G, D.map_id S G⟩, D.map_c …`.
+Supply the required witnesses or components.
 -/
 theorem prismaticDieudonnePerfd_iff :
     PrismaticDieudonnePerfd ↔ ∀ (p : ℕ) [Fact p.Prime], Nonempty (PrismData p) :=
@@ -116,7 +116,7 @@ structure ConstTate (ε : (PDivGroup.mu p O).Tate) (G : PDivGroup p O) : Type wh
   pair : ∀ i j, pairing G O (t i) (t' j) = if i = j then ε else 0
 
 /- English proof (translation)
-The claim follows from `muRoot_ext fun n => by rw [muRoot_pairing, muRoot_pairing, ← charHom_app_muT] change χ.pt n ((dualChar G t).app n _) = _ rw [dualChar_app_muT, ← apply_charElem] rfl`.
+A detailed English derivation is pending.
 -/
 theorem pairing_bidual (G : PDivGroup p O) (t : G.Tate) (χ : G.dual.Tate) :
     pairing G.dual O χ (tateCongr O G.bidual t) = pairing G O t χ :=
@@ -127,7 +127,7 @@ theorem pairing_bidual (G : PDivGroup p O) (t : G.Tate) (χ : G.dual.Tate) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[← pairing_bidual]`. Conclude with `constHom_comp_charHom χ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constHom_comp_dualChar (G : PDivGroup p O) (t : G.Tate) (χ : G.dual.Tate) :
     constHom G.dual χ ≫ dualChar G t = constHom (PDivGroup.mu p O) (pairing G O t χ) := by
@@ -135,7 +135,7 @@ theorem constHom_comp_dualChar (G : PDivGroup p O) (t : G.Tate) (χ : G.dual.Tat
   exact constHom_comp_charHom χ _
 
 /- English proof (translation)
-Rewrite using `[← LinearEquiv.symm_apply_eq, constHom_symm_apply]`. Apply `(charHom G).injective` to reduce the goal to its premises. Rewrite using `[charHom_tateMap, charHom_constGen, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualHom_charHom (G : PDivGroup p O) (χ : G.dual.Tate) :
     dualHom G (PDivGroup.mu p O) (charHom G χ) = constHom G.dual χ := by
@@ -148,7 +148,7 @@ section BaseChange
 variable (O' : Type) [CommRing O'] [Algebra O O'] {G : PDivGroup p O}
 
 /- English proof (translation)
-The claim follows from `PDiv.bc_hom_ext fun a => by obtain ⟨b, rfl⟩ := G.res_surjective n a have h := map_nsmul (AddMonoidHom.mk' (baseChangeMap (G := G) (H := G) O') (baseChangeMap_add O')) p (𝟙 G) rw [← Nat.cast_smul_eq_nsmul ℤ_[p], ← Nat.cast_smul_eq_nsmul ℤ_[p]] at h have h1 : baseChangeMap O' ((p : …`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_mulP (G : PDivGroup p O) (n : ℕ) : (G.baseChange O').mulP n = PDiv.bcMap O' (G.mulP n) :=
   PDiv.bc_hom_ext fun a => by
@@ -177,7 +177,7 @@ Both sides reduce to the same expression.
 omit [Fact p.Prime] in
 
 /- English proof (translation)
-Simplify using `[(isGroupLikeElem_charElem χ n).counit_eq_one] comul_eq_tmul_self := by`. Simplify using `[TensorProduct.comul_tmul, (isGroupLikeElem_charElem χ n).comul_eq_tmul_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isGroupLikeElem_one_tmul (χ : G.dual.Tate) (n : ℕ) :
     IsGroupLikeElem O' ((1 : O') ⊗ₜ[O] charElem χ n) where
@@ -192,27 +192,27 @@ def bcChar (χ : G.dual.Tate) : (G.baseChange O').dual.Tate :=
     rfl⟩
 
 /- English proof (translation)
-The claim follows from `CartierDual.eq_of_forall_apply (R := O') fun φ => apply_charElem _ n φ`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem charElem_bcChar (χ : G.dual.Tate) (n : ℕ) : charElem (bcChar O' χ) n = 1 ⊗ₜ charElem χ n :=
   CartierDual.eq_of_forall_apply (R := O') fun φ => apply_charElem _ n φ
 
 /- English proof (translation)
-Rewrite using `[muRoot_pairing, muRoot_pairing, charElem_bcChar, bcTate_pt, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem muRoot_pairing_bc (t : G.Tate) (χ : G.dual.Tate) (n : ℕ) :
     muRoot (pairing _ O' (bcTate O' t) (bcChar O' χ)) n = algebraMap O O' (muRoot (pairing G O t χ) n) := by
   rw [muRoot_pairing, muRoot_pairing, charElem_bcChar, bcTate_pt, one_mul]
 
 /- English proof (translation)
-The claim follows from `TateOver.ext (funext fun _ => Algebra.TensorProduct.ext (Subsingleton.elim _ _) (AlgHom.ext fun _ => rfl))`.
+A detailed English derivation is pending.
 -/
 theorem tateMap_bcTate {H : PDivGroup p O} (f : G ⟶ H) (t : G.Tate) :
     tateMap _ _ O' (baseChangeMap O' f) (bcTate O' t) = bcTate O' (tateMap G H O f t) :=
   TateOver.ext (funext fun _ => Algebra.TensorProduct.ext (Subsingleton.elim _ _) (AlgHom.ext fun _ => rfl))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun n => by rw [dlog_val, charElem_bcChar, SemiHom.omega_val, dlog_val, PDiv.SemiBialgHom.cot_d, toBase_app])`.
+A detailed English derivation is pending.
 -/
 theorem dlog_bcChar (χ : G.dual.Tate) : dlog _ (bcChar O' χ) = (G.toBase O').omega (dlog G χ) :=
   Subtype.ext (funext fun n => by
@@ -234,7 +234,7 @@ def dualBaseChange (G : PDivGroup p O) : (G.baseChange O').dual ≅ G.dual.baseC
   inv_hom_id := hom_ext fun n => BialgHom.ext fun a => (CartierDual.baseChange O O' (G.A n)).symm_apply_apply a
 
 /- English proof (translation)
-The claim follows from `TateOver.ext (funext fun n => Algebra.TensorProduct.ext (Subsingleton.elim _ _) (AlgHom.ext fun φ => by change CartierDual.baseChange O O' (G.A n) (1 ⊗ₜ φ) (1 ⊗ₜ charElem χ n) = 1 * algebraMap O O' (χ.pt n φ) rw [CartierDual.baseChange_tmul_tmul, apply_charElem, one_mul, one_mul, …`.
+A detailed English derivation is pending.
 -/
 theorem tateMap_dualBaseChange (χ : G.dual.Tate) :
     tateMap _ _ O' (dualBaseChange O' G).hom (bcChar O' χ) = bcTate O' χ :=
@@ -263,7 +263,7 @@ def ofPerfect (t : Fin G.height → G.Tate) (t' : Fin G.height → G.dual.Tate) 
 variable (c : ConstTate ε G)
 
 /- English proof (translation)
-Rewrite using `[constHom_comp_charHom, c.pair]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem constHom_comp (i j : Fin G.height) : constHom G (c.t i) ≫ charHom G (c.t' j) =
     if i = j then constHom (PDivGroup.mu p O) ε else 0 := by
@@ -285,14 +285,14 @@ def ofIso {H : PDivGroup p O} (e : G ≅ H) (h : H.height = G.height) : ConstTat
 def toTate : (Fin G.height → ℤ_[p]) →ₗ[ℤ_[p]] G.Tate := Fintype.linearCombination ℤ_[p] c.t
 
 /- English proof (translation)
-Simplify using `[toTate, Fintype.linearCombination_apply, LinearMap.sum_apply, c.pair]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairing_toTate (x : Fin G.height → ℤ_[p]) (j : Fin G.height) :
     pairing G O (c.toTate x) (c.t' j) = x j • ε := by
   simp [toTate, Fintype.linearCombination_apply, LinearMap.sum_apply, c.pair]
 
 /- English proof (translation)
-The claim follows from `(injective_iff_map_eq_zero _).2 fun x hx => funext fun j => hε _ <| by rw [← c.pairing_toTate, hx, map_zero, LinearMap.zero_apply]`.
+A detailed English derivation is pending.
 -/
 theorem toTate_injective (hε : ∀ a : ℤ_[p], a • ε = 0 → a = 0) : Function.Injective c.toTate :=
   (injective_iff_map_eq_zero _).2 fun x hx => funext fun j => hε _ <| by
@@ -302,9 +302,9 @@ def Stable (f : End G) (ρ : Matrix (Fin G.height) (Fin G.height) ℤ_[p]) : Pro
   ∀ i, tateMap G G O f (c.t i) = ∑ k, ρ k i • c.t k
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x`. Simplify using `only [toTate, Fintype.linearCombination_apply, map_sum, map_smul, h _, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h i`. Simplify `h (Pi.single i 1)` using `[toTate, Fintype.linearCombination_apply, Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stable_iff (f : End G) (ρ : Matrix (Fin G.height) (Fin G.height) ℤ_[p]) :
     c.Stable f ρ ↔ ∀ x, tateMap G G O f (c.toTate x) = c.toTate (ρ.mulVec x) := by
@@ -318,7 +318,7 @@ theorem stable_iff (f : End G) (ρ : Matrix (Fin G.height) (Fin G.height) ℤ_[p
     simpa [toTate, Fintype.linearCombination_apply, Pi.single_apply] using h (Pi.single i 1)
 
 /- English proof (translation)
-The claim follows from `(c.stable_iff _ _).2 fun x => by rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec, map_smul c.toTate] exact LinearMap.congr_fun (map_smul (tateMap G G O) a (𝟙 G)) _`.
+A detailed English derivation is pending.
 -/
 theorem stable_algebraMap (a : ℤ_[p]) : c.Stable (algebraMap _ _ a) (algebraMap _ _ a) :=
   (c.stable_iff _ _).2 fun x => by
@@ -327,7 +327,7 @@ theorem stable_algebraMap (a : ℤ_[p]) : c.Stable (algebraMap _ _ a) (algebraMa
     exact LinearMap.congr_fun (map_smul (tateMap G G O) a (𝟙 G)) _
 
 /- English proof (translation)
-The claim follows from `(c.stable_iff _ _).2 fun x => by rw [Matrix.add_mulVec, map_add c.toTate, ← (c.stable_iff _ _).1 hf, ← (c.stable_iff _ _).1 hg] exact LinearMap.congr_fun (map_add (tateEnd G O) f g) _`.
+A detailed English derivation is pending.
 -/
 theorem Stable.add {c : ConstTate ε G} {f g : End G} {ρ σ : Matrix (Fin G.height) (Fin G.height) ℤ_[p]}
     (hf : c.Stable f ρ) (hg : c.Stable g σ) : c.Stable (f + g) (ρ + σ) :=
@@ -336,7 +336,7 @@ theorem Stable.add {c : ConstTate ε G} {f g : End G} {ρ σ : Matrix (Fin G.hei
     exact LinearMap.congr_fun (map_add (tateEnd G O) f g) _
 
 /- English proof (translation)
-The claim follows from `(c.stable_iff _ _).2 fun x => by rw [← Matrix.mulVec_mulVec, ← (c.stable_iff _ _).1 hf, ← (c.stable_iff _ _).1 hg] rfl`.
+A detailed English derivation is pending.
 -/
 theorem Stable.mul {c : ConstTate ε G} {f g : End G} {ρ σ : Matrix (Fin G.height) (Fin G.height) ℤ_[p]}
     (hf : c.Stable f ρ) (hg : c.Stable g σ) : c.Stable (f * g) (ρ * σ) :=
@@ -351,7 +351,7 @@ def alDual : G.Lie →ₗ[O] (Fin G.height → O) := LinearMap.pi fun j => Modul
 def W : Submodule O (Fin G.height → O) := LinearMap.ker c.al
 
 /- English proof (translation)
-The claim follows from `Fintype.linearCombination_apply ..`.
+A detailed English derivation is pending.
 -/
 theorem al_apply (x : Fin G.height → O) : c.al x = ∑ i, x i • hodgeTate G (c.t i) :=
   Fintype.linearCombination_apply ..
@@ -362,12 +362,12 @@ Both sides reduce to the same expression.
 @[simp] theorem alDual_apply (x : G.Lie) (j : Fin G.height) : c.alDual x j = x (dlog G (c.t' j)) := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_W (x : Fin G.height → O) : x ∈ c.W ↔ c.al x = 0 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[al_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hodgeTate_apply, ← dlog_tateMap, ← tateMap_comp, ← dualHom_bidual_inv, ← dualHom_comp, Iso.hom_inv_id, dualHom_id, tateMap_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem omegaMap_dual_al (y : Fin G.height → O) :
     omegaMap _ _ G.bidual.hom (c.dual.al y) = ∑ j, y j • dlog G (c.t' j) := by
@@ -378,7 +378,7 @@ theorem omegaMap_dual_al (y : Fin G.height → O) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [al_apply, map_sum, map_smul, ← hodgeTate_tateMap, hf _, hodgeTate_smul φ, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Stable.al {c : ConstTate ε G} {f : End G} {ρ : Matrix (Fin G.height) (Fin G.height) ℤ_[p]} (hf : c.Stable f ρ)
     (φ : ℤ_[p] →+* O) (x : Fin G.height → O) : c.al ((ρ.map φ).mulVec x) = omegaDualMap G G f (c.al x) := by
@@ -400,9 +400,9 @@ def ofMu (ε : (PDivGroup.mu p O).Tate) : ConstTate ε (PDivGroup.mu p O) where
     rw [pairing_apply, charHom_constGen, tateMap_id, if_pos (Subsingleton.elim (α := Fin 1) i j)]
 
 /- English proof (translation)
-Use `haveI := G.finite_tate C`. Use `haveI := G.free_tate C`. Set `b` to `Module.finBasisOfFinrankEq ℤ_[p] G.Tate (G.finrank_tate C)`. Use `choose χ hχ using fun j : Fin G.height => (G.pairing_flip_bijective C).2 (LinearMap.toSpanSingleton ℤ_[p] _ ε ∘ₗ b.coord j)`. Use `⟨⟨b, χ, fun i j => (LinearMap.congr_fun (hχ j) (b i)).trans ?_⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply]`. Establish `h : ∀ x, Fintype.linearCombination ℤ_[p] b x = b.equivFun.symm x` using `fun x => by`. Simplify using `[Fintype.linearCombination_apply]`. Conclude with `(funext h : ⇑(Fintype.linearCombination ℤ_[p] b) = _) ▸ b.equivFun.symm.bijective`.
+A detailed English derivation is pending.
 -/
 theorem exists_bijective (C : Type) [Field C] [Algebra O C] [IsIntegrallyClosedIn O C] [IsAlgClosed C] [CharZero C]
     (ε : (PDivGroup.mu p O).Tate) (G : PDivGroup p O) : ∃ c : ConstTate ε G, Function.Bijective c.toTate := by
@@ -465,11 +465,11 @@ def quotProj {N P : Submodule R X} (h : N ≤ P) (Q : Submodule R X) :
   Submodule.mapQ _ _ LinearMap.id fun _ hx => h hx
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : Submodule.inclusion h' x ∈ N.comap Q.subtype` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 h1`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hx => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : x ∈ P.comap Q.subtype` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Conclude with `⟨Submodule.Quotient.mk ⟨x.1, h1⟩, rfl⟩`. Introduce and unpack `⟨y, hy⟩`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `(Submodule.Quotient.mk_eq_zero (P.comap Q.subtype) (x := Submodule.inclusion h' y)).2 y.2`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quot_exact {N P Q : Submodule R X} (h : N ≤ P) (h' : P ≤ Q) : Function.Injective (quotIncl N h') ∧
     Function.Exact (quotIncl N h') (quotProj h Q) ∧ Function.Surjective (quotProj h Q) := by
@@ -501,7 +501,7 @@ instance thetaSurjective : RingHomSurjective (fontaineTheta S.R p) := ⟨S.surj�
 def eps : (PDivGroup.mu p S.R).Tate := muTate S.R (zeta S.ε) S.zeta_zero (zeta_succ_pow S.ε)
 
 /- English proof (translation)
-The claim follows from `muRoot_muTate ..`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem muRoot_eps (n : ℕ) : muRoot (eps S) n = zeta S.ε n := muRoot_muTate ..
 
@@ -515,21 +515,21 @@ def muN (n : ℕ) : Ainf p S.R := Sandwich.mu (root^[n] S.ε)
 def xiN (n : ℕ) : Ainf p S.R := xi (root^[n] S.ε)
 
 /- English proof (translation)
-Rewrite using `[muN, Function.iterate_succ_apply']`. Conclude with `xi_mul_nu _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiN_mul_muN (n : ℕ) : xiN S n * muN S (n + 1) = muN S n := by
   rw [muN, Function.iterate_succ_apply']
   exact xi_mul_nu _
 
 /- English proof (translation)
-Rewrite using `[muN, muN, Function.iterate_succ_apply']`. Conclude with `phiInv_mu _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiInv_muN (n : ℕ) : phiInv p S.R (muN S n) = muN S (n + 1) := by
   rw [muN, muN, Function.iterate_succ_apply']
   exact phiInv_mu _
 
 /- English proof (translation)
-Rewrite using `[xiN, xiN, Function.iterate_succ_apply', xi, xi, map_sum]`. Simplify using `only [map_pow, phiInv, WittVector.map_teichmuller]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem phiInv_xiN (n : ℕ) : phiInv p S.R (xiN S n) = xiN S (n + 1) := by
   rw [xiN, xiN, Function.iterate_succ_apply', xi, xi, map_sum]
@@ -537,27 +537,27 @@ theorem phiInv_xiN (n : ℕ) : phiInv p S.R (xiN S n) = xiN S (n + 1) := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[← phiInv_muN, Dieudonne.frobenius_phiInv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frobenius_muN (n : ℕ) : frobenius (muN S (n + 1)) = muN S n := by
   rw [← phiInv_muN, Dieudonne.frobenius_phiInv]
 
 /- English proof (translation)
-Rewrite using `[← phiInv_xiN, Dieudonne.frobenius_phiInv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frobenius_xiN (n : ℕ) : frobenius (xiN S (n + 1)) = xiN S n := by
   rw [← phiInv_xiN, Dieudonne.frobenius_phiInv]
 
 /- English proof (translation)
-Rewrite using `[muN, Sandwich.mu, map_sub, fontaineTheta_teichmuller, map_one, zeta]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_muN (n : ℕ) : fontaineTheta S.R p (muN S n) = zeta S.ε n - 1 := by
   rw [muN, Sandwich.mu, map_sub, fontaineTheta_teichmuller, map_one, zeta]
 
 /- English proof (translation)
-Establish `h : fontaineTheta S.R p (xi S.ε) = 0`. Rewrite using `[← RingHom.mem_ker, S.ker_eq]`. Conclude with `mem_span_singleton_self _`. Establish `h1 : ∑ i ∈ Finset.range p, zeta S.ε 1 ^ i = 0`. Simplify `h` using `[xi, fontaineTheta_teichmuller, zeta]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : (p : S.R) = -∑ i ∈ Finset.range p, (zeta S.ε 1 ^ i - 1)` using `by simp [h1]`. Rewrite using `[h2, dvd_neg]`. Conclude with `Finset.dvd_sum fun i _ => sub_one_dvd_pow_sub_one _ i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_one_sub_one_dvd : zeta S.ε 1 - 1 ∣ (p : S.R) := by
   have h : fontaineTheta S.R p (xi S.ε) = 0 := by
@@ -569,7 +569,7 @@ theorem zeta_one_sub_one_dvd : zeta S.ε 1 - 1 ∣ (p : S.R) := by
   exact Finset.dvd_sum fun i _ => sub_one_dvd_pow_sub_one _ i
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact dvd_rfl`. Consider the case `succ n ih => exact (zeta_succ_pow S.ε (n + 1) ▸ sub_one_dvd_pow_sub_one _ p).trans ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zeta_sub_one_dvd (n : ℕ) : zeta S.ε (n + 1) - 1 ∣ zeta S.ε 1 - 1 := by
   induction n with
@@ -577,14 +577,14 @@ theorem zeta_sub_one_dvd (n : ℕ) : zeta S.ε (n + 1) - 1 ∣ zeta S.ε 1 - 1 :
   | succ n ih => exact (zeta_succ_pow S.ε (n + 1) ▸ sub_one_dvd_pow_sub_one _ p).trans ih
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(zeta_sub_one_dvd S n).trans (zeta_one_sub_one_dvd S)`. Conclude with `IsSMulRegular.of_mul (a := a) (by rw [mul_comm, ← ha]; exact S.reg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSMulRegular_zeta_sub_one (n : ℕ) : IsSMulRegular S.R (zeta S.ε (n + 1) - 1) := by
   obtain ⟨a, ha⟩ := (zeta_sub_one_dvd S n).trans (zeta_one_sub_one_dvd S)
   exact IsSMulRegular.of_mul (a := a) (by rw [mul_comm, ← ha]; exact S.reg)
 
 /- English proof (translation)
-Introduce `h` and use `(Fact.out : ¬IsUnit (p : S.R)) <| by have h1 := isSMulRegular_zeta_sub_one S 0 rw [zero_add, h, sub_self] at h1 haveI := IsSMulRegular.zero_iff_subsingleton.1 h1 exact isUnit_of_subsingleton _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zeta_one_ne_one : zeta S.ε 1 ≠ 1 := fun h => (Fact.out : ¬IsUnit (p : S.R)) <| by
   have h1 := isSMulRegular_zeta_sub_one S 0
@@ -593,7 +593,7 @@ theorem zeta_one_ne_one : zeta S.ε 1 ≠ 1 := fun h => (Fact.out : ¬IsUnit (p 
   exact isUnit_of_subsingleton _
 
 /- English proof (translation)
-Introduce `h` and use `(Fact.out : ¬IsUnit (p : S.R)) <| by obtain ⟨r, hr⟩ := exists_add_pow_prime_eq (Fact.out : p.Prime) (zeta S.ε 1 - 1) 1 rw [sub_add_cancel, zeta_succ_pow, S.zeta_zero, one_pow] at hr exact isUnit_of_dvd_unit ⟨-((zeta S.ε 1 - 1) * r), by linear_combination -hr⟩ (h.pow p)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isUnit_zeta_sub_one : ¬IsUnit (zeta S.ε 1 - 1) := fun h => (Fact.out : ¬IsUnit (p : S.R)) <| by
   obtain ⟨r, hr⟩ := exists_add_pow_prime_eq (Fact.out : p.Prime) (zeta S.ε 1 - 1) 1
@@ -601,9 +601,9 @@ theorem not_isUnit_zeta_sub_one : ¬IsUnit (zeta S.ε 1 - 1) := fun h => (Fact.o
   exact isUnit_of_dvd_unit ⟨-((zeta S.ε 1 - 1) * r), by linear_combination -hr⟩ (h.pow p)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Rewrite `h` using `[PadicInt.unitCoeff_spec ha, mul_smul, ← Units.smul_def, smul_eq_zero_iff_eq, ← Nat.cast_pow]`. Establish `h1` using `congrArg (muRoot · (a.valuation + 1)) h`. Establish `h2 : ∀ k, zeta S.ε (k + 1) ^ p ^ k = zeta S.ε 1` using `fun k => by`. Proceed by induction on `k with`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, zeta_succ_pow, ih]`. Simplify using `only [muRoot_smul, muRoot_zero] at h1`. Rewrite `h1` using `[PDiv.pow_digit_natCast (muRoot_pow_self _ _), muRoot_eps, h2]`. Conclude with `zeta_one_ne_one S h1`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eps_eq_zero (a : ℤ_[p]) (h : a • eps S = 0) : a = 0 := by
   by_contra ha
@@ -618,9 +618,9 @@ theorem smul_eps_eq_zero (a : ℤ_[p]) (h : a • eps S = 0) : a = 0 := by
   exact zeta_one_ne_one S h1
 
 /- English proof (translation)
-Establish `h1 : α (muN S n) = muN S' n`. Proceed by induction on `n with`. Consider the case `zero => exact (map_sub α (teichmuller p S.ε) 1).trans (by rw [h.2.2, map_one]; rfl)`. Consider the case `succ n ih => exact Dieudonne.frobenius_injective (by rw [← h.2.1, frobenius_muN, frobenius_muN, ih])`. Establish `h2` using `h.1 (muN S n)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, theta_muN, theta_muN, map_sub, map_one, sub_left_inj, ← muRoot_eps, ← muRoot_eps]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem muRoot_eps_of_over {S S' : CycPerfd p} [Algebra S.R S'.R] {α : Ainf p S.R →+* Ainf p S'.R} (h : S.Over S' α)
     (n : ℕ) : muRoot (eps S') n = algebraMap S.R S'.R (muRoot (eps S) n) := by
@@ -634,7 +634,7 @@ theorem muRoot_eps_of_over {S S' : CycPerfd p} [Algebra S.R S'.R] {α : Ainf p S
 def base (h : ℕ) : Submodule S.R (Fin h → S.R) := (zeta S.ε 1 - 1) • ⊤
 
 /- English proof (translation)
-Simplify using `[base, Submodule.mem_smul_pointwise_iff_exists]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_base {h : ℕ} (x : Fin h → S.R) : x ∈ base S h ↔ ∃ y, (zeta S.ε 1 - 1) • y = x := by
   simp [base, Submodule.mem_smul_pointwise_iff_exists]
@@ -647,19 +647,19 @@ def PrismData.eCoord (S : CycPerfd p) : D.M S (const p S.R) ≃ₗ[Ainf p S.R] A
   (LinearEquiv.ofBijective _ (D.e_bijective S)).symm
 
 /- English proof (translation)
-The claim follows from `(LinearEquiv.ofBijective _ (D.e_bijective S)).symm_apply_apply a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem PrismData.eCoord_smul_e (a : Ainf p S.R) : D.eCoord S (a • D.e S) = a :=
   (LinearEquiv.ofBijective _ (D.e_bijective S)).symm_apply_apply a
 
 /- English proof (translation)
-The claim follows from `(LinearEquiv.ofBijective _ (D.e_bijective S)).apply_symm_apply m`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem PrismData.eCoord_smul (m : D.M S (const p S.R)) : D.eCoord S m • D.e S = m :=
   (LinearEquiv.ofBijective _ (D.e_bijective S)).apply_symm_apply m
 
 /- English proof (translation)
-Use `conv_lhs => rw [← D.eCoord_smul m, map_smulₛₗ, D.φ_e, D.eCoord_smul_e]`.
+A detailed English derivation is pending.
 -/
 theorem PrismData.eCoord_φ (m : D.M S (const p S.R)) : D.eCoord S (D.φ S _ m) = frobenius (D.eCoord S m) := by
   conv_lhs => rw [← D.eCoord_smul m, map_smulₛₗ, D.φ_e, D.eCoord_smul_e]
@@ -675,7 +675,7 @@ def PrismData.toLie (G : PDivGroup p S.R) : D.Cov G →ₛₗ[fontaineTheta S.R 
 def PrismData.Fil (G : PDivGroup p S.R) : Submodule (Ainf p S.R) (D.Cov G) := LinearMap.ker (D.toLie G)
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨m, hm⟩ := D.lie_surjective S G.dual (lieMap G _ G.bidual.hom x) refine ⟨m, (congrArg (lieMap _ G G.bidual.inv) hm).trans ?_⟩ rw [← LinearMap.comp_apply, ← lieMap_comp, Iso.hom_inv_id, lieMap_id, LinearMap.id_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PrismData.toLie_surjective (G : PDivGroup p S.R) : Function.Surjective (D.toLie G) := fun x => by
   obtain ⟨m, hm⟩ := D.lie_surjective S G.dual (lieMap G _ G.bidual.hom x)
@@ -683,7 +683,7 @@ theorem PrismData.toLie_surjective (G : PDivGroup p S.R) : Function.Surjective (
   rw [← LinearMap.comp_apply, ← lieMap_comp, Iso.hom_inv_id, lieMap_id, LinearMap.id_apply]
 
 /- English proof (translation)
-Rewrite using `[← D.lie_eq_zero_iff]`. Use `⟨fun h => ?_, fun h => (congrArg (lieMap _ G G.bidual.inv) h).trans (map_zero _)⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (lieMap_comp G.bidual.inv G.bidual.hom) (D.lie S G.dual m)`. Establish `h2 : lieMap _ G G.bidual.inv (D.lie S G.dual m) = 0` using `h`. Rewrite `h1` using `[Iso.inv_hom_id, lieMap_id, LinearMap.id_apply, LinearMap.comp_apply, h2, map_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem PrismData.mem_Fil (G : PDivGroup p S.R) (m : D.Cov G) :
     m ∈ D.Fil G ↔ ∃ n, D.φ S G.dual m = frobenius (xi S.ε) • n := by
@@ -702,7 +702,7 @@ def coord : D.Cov G →ₗ[Ainf p S.R] (Fin G.height → Ainf p S.R) :=
   LinearMap.pi fun j => (D.eCoord S).toLinearMap ∘ₗ D.map S (const p S.R) G.dual (constHom G.dual (c.t' j))
 
 /- English proof (translation)
-The claim follows from `Fintype.linearCombination_apply ..`.
+A detailed English derivation is pending.
 -/
 theorem inj_apply (x : Fin G.height → Ainf p S.R) :
     inj D c x = ∑ i, x i • D.map S G.dual (PDivGroup.mu p S.R) (dualChar G (c.t i)) (D.l S) :=
@@ -715,7 +715,7 @@ theorem coord_apply (m : D.Cov G) (j : Fin G.height) :
     coord D c m j = D.eCoord S (D.map S (const p S.R) G.dual (constHom G.dual (c.t' j)) m) := rfl
 
 /- English proof (translation)
-Rewrite using `[coord_apply, D.eCoord_smul, ← dualHom_charHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coord_smul_e (m : D.Cov G) (j : Fin G.height) :
     coord D c m j • D.e S = D.covMap G (PDivGroup.mu p S.R) (charHom G (c.t' j)) m := by
@@ -723,9 +723,9 @@ theorem coord_smul_e (m : D.Cov G) (j : Fin G.height) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `h : ∀ i, coord D c (D.map S G.dual (PDivGroup.mu p S.R) (dualChar G (c.t i)) (D.l S)) j = if i = j then Sandwich.mu S.ε else 0` using `fun i => by`. Rewrite using `[coord_apply, ← LinearMap.comp_apply, ← D.map_comp, constHom_comp_dualChar, c.pair]`. Use `split_ifs`. Rewrite using `[constHom_eps, D.map_eps, D.eCoord_smul_e]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[inj_apply, Finset.sum_apply, h, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_inj (x : Fin G.height → Ainf p S.R) : coord D c (inj D c x) = Sandwich.mu S.ε • x := by
   funext j
@@ -738,7 +738,7 @@ theorem coord_inj (x : Fin G.height → Ainf p S.R) : coord D c (inj D c x) = Sa
   simp [inj_apply, Finset.sum_apply, h, mul_comm]
 
 /- English proof (translation)
-The claim follows from `funext fun j => by rw [coord_apply, D.map_φ, D.eCoord_φ, piMap_apply, coord_apply]`.
+A detailed English derivation is pending.
 -/
 theorem coord_φ (m : D.Cov G) : coord D c (D.φ S G.dual m) = piMap frobenius _ (coord D c m) :=
   funext fun j => by rw [coord_apply, D.map_φ, D.eCoord_φ, piMap_apply, coord_apply]
@@ -757,20 +757,20 @@ Both sides reduce to the same expression.
 theorem K_succ (n : ℕ) : K D c (n + 1) = (K D c n).comap (piMap frobenius _) := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_K_zero (x : Fin G.height → Ainf p S.R) : x ∈ K D c 0 ↔ ∃ m, coord D c m = x := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_K_succ (n : ℕ) (x : Fin G.height → Ainf p S.R) :
     x ∈ K D c (n + 1) ↔ piMap frobenius _ x ∈ K D c n := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => exact ⟨fun ⟨m, h⟩ => ⟨m, congrFun h⟩, fun ⟨m, h⟩ => ⟨m, funext h⟩⟩`. Consider the case `succ n ih`. Rewrite using `[mem_K_succ, ih]`. Use `exists_congr fun m => forall_congr' fun j => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.iterate_succ_apply', piMap_apply]`. Conclude with `⟨fun h => by rw [h, Dieudonne.phiInv_frobenius], fun h => by rw [← h, Dieudonne.frobenius_phiInv]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_K (n : ℕ) (x : Fin G.height → Ainf p S.R) :
     x ∈ K D c n ↔ ∃ m, ∀ j, (phiInv p S.R)^[n] (coord D c m j) = x j := by
@@ -783,7 +783,7 @@ theorem mem_K (n : ℕ) (x : Fin G.height → Ainf p S.R) :
     exact ⟨fun h => by rw [h, Dieudonne.phiInv_frobenius], fun h => by rw [← h, Dieudonne.frobenius_phiInv]⟩
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => exact ⟨_, coord_inj D c x⟩`. Consider the case `succ n ih => rw [mem_K_succ, map_smulₛₗ, frobenius_muN]`. Conclude with `ih _`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem muN_smul_mem_K (n : ℕ) (x : Fin G.height → Ainf p S.R) : muN S n • x ∈ K D c n := by
   induction n generalizing x with
@@ -791,9 +791,9 @@ theorem muN_smul_mem_K (n : ℕ) (x : Fin G.height → Ainf p S.R) : muN S n •
   | succ n ih => rw [mem_K_succ, map_smulₛₗ, frobenius_muN]; exact ih _
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero`. Take `⟨m, hm⟩` from `hx`. Take `⟨k, hk⟩` from `D.exists_φ_eq S G.dual m`. Use `⟨k, funext fun j => Dieudonne.frobenius_injective ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrFun (coord_φ D c k) j`. Rewrite `h` using `[hk, map_smul, hm]`. Conclude with `h.symm.trans (map_mul (frobenius : Ainf p S.R →+* Ainf p S.R) _ _).symm`. Consider the case `succ n ih => rw [mem_K_succ, map_smulₛₗ, frobenius_xiN]`. Conclude with `ih hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem xiN_smul_mem_K (n : ℕ) {x : Fin G.height → Ainf p S.R} (hx : x ∈ K D c (n + 1)) : xiN S n • x ∈ K D c n := by
   induction n generalizing x with
@@ -807,7 +807,7 @@ theorem xiN_smul_mem_K (n : ℕ) {x : Fin G.height → Ainf p S.R} (hx : x ∈ K
   | succ n ih => rw [mem_K_succ, map_smulₛₗ, frobenius_xiN]; exact ih hx
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rintro _ ⟨m, rfl⟩`. Conclude with `⟨_, coord_φ D c m⟩`. Consider the case `succ n ih => exact Submodule.comap_mono ih`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 -/
 theorem K_le_succ (n : ℕ) : K D c n ≤ K D c (n + 1) := by
   induction n with
@@ -824,7 +824,7 @@ theorem b_apply (m : D.Cov G) (j : Fin G.height) : b D c m j = fontaineTheta S.R
 def thetaK (n : ℕ) : Submodule S.R (Fin G.height → S.R) := (K D c n).map (piMap (fontaineTheta S.R p) _)
 
 /- English proof (translation)
-The claim follows from `(LinearMap.range_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem thetaK_zero : thetaK D c 0 = LinearMap.range (b D c) := (LinearMap.range_comp _ _).symm
 
@@ -832,7 +832,7 @@ def H (n : ℕ) : Submodule S.R (Fin G.height → S.R) :=
   ((zeta S.ε 1 - 1) • thetaK D c (n + 1)).comap (LinearMap.lsmul S.R _ (zeta S.ε (n + 1) - 1))
 
 /- English proof (translation)
-Rewrite using `[H, Submodule.mem_comap, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨fun ⟨_, ⟨k, hk, rfl⟩, h⟩ => ⟨k, hk, h⟩, fun ⟨k, hk, h⟩ => ⟨_, ⟨k, hk, rfl⟩, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_H (n : ℕ) (x : Fin G.height → S.R) : x ∈ H D c n ↔ ∃ k ∈ K D c (n + 1),
     (zeta S.ε 1 - 1) • piMap (fontaineTheta S.R p) _ k = (zeta S.ε (n + 1) - 1) • x := by
@@ -840,7 +840,7 @@ theorem mem_H (n : ℕ) (x : Fin G.height → S.R) : x ∈ H D c n ↔ ∃ k ∈
   exact ⟨fun ⟨_, ⟨k, hk, rfl⟩, h⟩ => ⟨k, hk, h⟩, fun ⟨k, hk, h⟩ => ⟨_, ⟨k, hk, rfl⟩, h⟩⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_H]`. Conclude with `exists_congr fun k => and_congr_right fun _ => ⟨fun h => funext fun j => isSMulRegular_zeta_sub_one S 0 (congrFun h j), fun h => by rw [h]⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem H_zero : H D c 0 = thetaK D c 1 := by
   ext x
@@ -849,7 +849,7 @@ theorem H_zero : H D c 0 = thetaK D c 1 := by
     ⟨fun h => funext fun j => isSMulRegular_zeta_sub_one S 0 (congrFun h j), fun h => by rw [h]⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨y, rfl⟩ := (mem_base S x).1 hx choose k hk using fun j => S.surj (y j) refine (mem_H D c n _).2 ⟨_, muN_smul_mem_K D c (n + 1) k, ?_⟩ rw [map_smulₛₗ, theta_muN, smul_comm, show piMap (fontaineTheta S.R p) _ k = y from funext hk]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem base_le_H (n : ℕ) : base S G.height ≤ H D c n := fun x hx => by
   obtain ⟨y, rfl⟩ := (mem_base S x).1 hx
@@ -858,7 +858,7 @@ theorem base_le_H (n : ℕ) : base S G.height ≤ H D c n := fun x hx => by
   rw [map_smulₛₗ, theta_muN, smul_comm, show piMap (fontaineTheta S.R p) _ k = y from funext hk]
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨k, hk, h⟩ := (mem_H D c _ x).1 hx refine (mem_H D c n x).2 ⟨_, xiN_smul_mem_K D c (n + 1) hk, ?_⟩ rw [map_smulₛₗ, smul_comm, h, smul_smul, ← theta_muN, ← map_mul, xiN_mul_muN, theta_muN]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem H_succ_le (n : ℕ) : H D c (n + 1) ≤ H D c n := fun x hx => by
   obtain ⟨k, hk, h⟩ := (mem_H D c _ x).1 hx
@@ -874,13 +874,13 @@ def qqIncl (r : ℕ) : QQ D c (r + 1) →ₗ[S.R] QQ D c r := quotIncl _ (H_succ
 def qqProj (r : ℕ) : QQ D c r →ₗ[S.R] LL D c r := quotProj (base_le_H D c (r + 1)) _
 
 /- English proof (translation)
-The claim follows from `quot_exact (base_le_H D c (r + 1)) (H_succ_le D c r)`.
+A detailed English derivation is pending.
 -/
 theorem qq_exact (r : ℕ) : Function.Injective (qqIncl D c r) ∧ Function.Exact (qqIncl D c r) (qqProj D c r) ∧
     Function.Surjective (qqProj D c r) := quot_exact (base_le_H D c (r + 1)) (H_succ_le D c r)
 
 /- English proof (translation)
-Introduce `m` and use `by obtain ⟨a, ha⟩ := (D.l_bijective S).2 (D.map S _ _ (PDivGroup.mu p S.R).bidual.hom m) have h : dualChar (const p S.R) (constGen p S.R) = (PDivGroup.mu p S.R).bidual.inv := by rw [← dualHom_constHom, show constHom _ (constGen p S.R) = 𝟙 _ by rw [← LinearEquiv.eq_symm_apply, con …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inj_const_surjective : Function.Surjective (inj D (ConstTate.ofConst (eps S))) := fun m => by
   obtain ⟨a, ha⟩ := (D.l_bijective S).2 (D.map S _ _ (PDivGroup.mu p S.R).bidual.hom m)
@@ -893,13 +893,11 @@ theorem inj_const_surjective : Function.Surjective (inj D (ConstTate.ofConst (ep
     D.map_id, LinearMap.id_apply]
 
 /- English proof (translation)
-Establish `hK : ∀ n x, x ∈ K D c n → ∃ y, x = muN S n • y` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => rintro _ ⟨m, rfl⟩`. Take `⟨y, rfl⟩` from `h m`. Conclude with `⟨y, coord_inj D c y⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `x hx`. Take `⟨y, hy⟩` from `ih _ hx`. Use `⟨piMap (phiInv p S.R) _ y, ?_⟩` and prove the remaining obligations. Rewrite using `[← phiInv_muN, ← map_smulₛₗ, ← hy]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `funext fun j => (Dieudonne.phiInv_frobenius _).symm`. Use `le_antisymm (fun x hx => ?_) (base_le_H D c n)` and prove the remaining obligations. Take `⟨k, hk, hx⟩` from `(mem_H D c n x).1 hx`. Take `⟨y, rfl⟩` from `hK _ _ hk`. Rewrite `hx` using `[map_smulₛₗ, theta_muN, smul_comm]`.
-
-Conclude with `(mem_base S x).2 ⟨_, funext fun j => isSMulRegular_zeta_sub_one S n (congrFun hx j)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem H_eq_base (h : Function.Surjective (inj D c)) (n : ℕ) : H D c n = base S G.height := by
   have hK : ∀ n x, x ∈ K D c n → ∃ y, x = muN S n • y := fun n => by
@@ -918,14 +916,14 @@ theorem H_eq_base (h : Function.Surjective (inj D c)) (n : ℕ) : H D c n = base
   exact (mem_base S x).2 ⟨_, funext fun j => isSMulRegular_zeta_sub_one S n (congrFun hx j)⟩
 
 /- English proof (translation)
-The claim follows from `H_eq_base D _ (inj_const_surjective D) n`.
+A detailed English derivation is pending.
 -/
 theorem H_const (n : ℕ) : H D (ConstTate.ofConst (eps S)) n = base S 1 := H_eq_base D _ (inj_const_surjective D) n
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `eq_top_iff.2 fun x _ => ⟨x (0 : Fin 1) • D.e S, funext fun j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.eCoord S (D.map S _ _ (constHom (const p S.R) (constGen p S.R)) _) = _`. Rewrite using `[show constHom _ (constGen p S.R) = 𝟙 _ by rw [← LinearEquiv.eq_symm_apply, constHom_symm_apply, tateMap_id], D.map_id, LinearMap.id_apply, D.eCoord_smul_e, Subsingleton.elim (α := Fin 1) j 0]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih => rw [K_succ, ih, Submodule.comap_top]`.
+Treat this case separately.
 -/
 theorem K_mu (n : ℕ) : K D (ConstTate.ofMu (eps S)) n = ⊤ := by
   induction n with
@@ -937,7 +935,7 @@ theorem K_mu (n : ℕ) : K D (ConstTate.ofMu (eps S)) n = ⊤ := by
   | succ n ih => rw [K_succ, ih, Submodule.comap_top]
 
 /- English proof (translation)
-Rewrite using `[mem_base]`. Use `(mem_H D (ConstTate.ofMu (eps S)) n x).trans ⟨fun ⟨_, _, h⟩ => ⟨_, h⟩, fun ⟨y, h⟩ => ?_⟩` and prove the remaining obligations. Use `choose k hk using fun j => S.surj (y j)`. Conclude with `⟨k, by rw [K_mu]; trivial, (congrArg _ (funext hk)).trans h⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_H_mu (n : ℕ) (x : Fin 1 → S.R) :
     x ∈ H D (ConstTate.ofMu (eps S)) n ↔ (zeta S.ε (n + 1) - 1) • x ∈ base S 1 := by
@@ -947,7 +945,7 @@ theorem mem_H_mu (n : ℕ) (x : Fin 1 → S.R) :
   exact ⟨k, by rw [K_mu]; trivial, (congrArg _ (funext hk)).trans h⟩
 
 /- English proof (translation)
-Use `⟨eq_top_iff.2 fun x _ => (mem_H_mu D 0 x).2 ((mem_base S _).2 ⟨x, rfl⟩), fun h => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(mem_base S (1 : Fin 1 → S.R)).1 (h ▸ Submodule.mem_top)`. Conclude with `not_isUnit_zeta_sub_one S (IsUnit.of_mul_eq_one _ (congrFun hy 0))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem H_mu_zero : H D (ConstTate.ofMu (eps S)) 0 = ⊤ ∧ base S 1 ≠ ⊤ := by
   refine ⟨eq_top_iff.2 fun x _ => (mem_H_mu D 0 x).2 ((mem_base S _).2 ⟨x, rfl⟩), fun h => ?_⟩
@@ -957,7 +955,7 @@ theorem H_mu_zero : H D (ConstTate.ofMu (eps S)) 0 = ⊤ ∧ base S 1 ≠ ⊤ :=
 open scoped Formalism.Per in
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.MemLoc.Model.exists_isEps p`. Establish `hv` using `PadicComplexInt.integers p`. Use `haveI : IsIntegrallyClosedIn (Formalism.Per.OC p) ℂ_[p] := isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun hx => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 hx)⟩`. Establish `h` using `ConstTate.exists_bijective (p := p) (O := Formalism.Per.OC p) ℂ_[p]`. Conclude with `⟨CycPerfd.ofIntegers p (Formalism.Per.OC p) hv e he.isPrimitiveRoot_untilt, he.isPrimitiveRoot_untilt, h _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_constTate (p : ℕ) [Fact p.Prime] : ∃ S : CycPerfd p, IsPrimitiveRoot (zeta S.ε 1) p ∧
     ∀ G : PDivGroup p S.R, ∃ c : ConstTate (eps S) G, Function.Bijective c.toTate := by
@@ -969,13 +967,13 @@ theorem exists_constTate (p : ℕ) [Fact p.Prime] : ∃ S : CycPerfd p, IsPrimit
   exact ⟨CycPerfd.ofIntegers p (Formalism.Per.OC p) hv e he.isPrimitiveRoot_untilt, he.isPrimitiveRoot_untilt, h _⟩
 
 /- English proof (translation)
-The claim follows from `(exists_constTate p).imp fun _ h => ⟨(h.2 _).choose⟩`.
+A detailed English derivation is pending.
 -/
 example : ∃ S : CycPerfd p, Nonempty (ConstTate (eps S) (Test.prod (PDivGroup.mu p S.R) (const p S.R))) :=
   (exists_constTate p).imp fun _ h => ⟨(h.2 _).choose⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨eq_top_iff.2 fun _ _ => Subsingleton.elim (α := (const p S.R).omega) _ _, funext fun _ => (congrArg (muLieGen p S.R) (dlog_constGen (p := p) (O := S.R))).trans (muLieGen_dlogT p S.R), eq_top_iff.2 fun y _ => by choose k hk using fun j => S.surj (y j) exact ⟨k, by rw [K_mu]; triv …`.
+Supply the required witnesses or components.
 -/
 example : (ConstTate.ofMu (eps S)).W = ⊤ ∧ (ConstTate.ofMu (eps S)).alDual (muLieGen p S.R) = 1 ∧
     thetaK D (ConstTate.ofMu (eps S)) 0 = ⊤ :=
@@ -986,14 +984,14 @@ example : (ConstTate.ofMu (eps S)).W = ⊤ ∧ (ConstTate.ofMu (eps S)).alDual (
       exact ⟨k, by rw [K_mu]; trivial, funext hk⟩⟩
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := ((ConstTate.ofConst (eps S)).al_apply 1).trans (Fin.sum_univ_one _) exact (Test.hodgeTate_values (Fact.out : ¬IsUnit (p : S.R))).2 ((one_smul S.R _).symm.trans (h1.symm.trans h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : (ConstTate.ofConst (eps S)).al 1 ≠ 0 := fun h => by
   have h1 := ((ConstTate.ofConst (eps S)).al_apply 1).trans (Fin.sum_univ_one _)
   exact (Test.hodgeTate_values (Fact.out : ¬IsUnit (p : S.R))).2 ((one_smul S.R _).symm.trans (h1.symm.trans h))
 
 /- English proof (translation)
-The claim follows from `c.baseChange S'.R (muRoot_eps_of_over h)`.
+A detailed English derivation is pending.
 -/
 example {S' : CycPerfd p} [Algebra S.R S'.R] {α : Ainf p S.R →+* Ainf p S'.R} (h : S.Over S' α) :
     ConstTate (eps S') (G.baseChange S'.R) := c.baseChange S'.R (muRoot_eps_of_over h)

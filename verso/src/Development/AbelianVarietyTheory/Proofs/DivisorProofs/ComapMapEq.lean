@@ -13,16 +13,16 @@ open GlobalTheory GlobalTheory.USep
 namespace GlobalTheory.USepTrait
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sp_comp {R S U : Type} [CommRing R] [CommRing S] [CommRing U] (f : R →+* S) (g : S →+* U) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Establish `: FaithfulSMul R S` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hf`. Establish `: IsLocalHom (algebraMap R S)` using `‹IsLocalHom f›`. Establish `: Module.Flat R S` using `inferInstance`. Establish `: Module.FaithfullyFlat R S` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.comap_map_eq_self_of_faithfullyFlat (B := S) I`.
+A detailed English derivation is pending.
 -/
 theorem comap_map_eq {R S : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CommRing S] [IsDomain S]
     [IsLocalRing S] (f : R →+* S) (hf : Function.Injective f) [IsLocalHom f] (I : Ideal R) :

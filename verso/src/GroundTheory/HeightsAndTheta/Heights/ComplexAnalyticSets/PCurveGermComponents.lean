@@ -14,14 +14,14 @@ namespace CurveGermComponents
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [zeroSet, Set.mem_ofPred_eq, SetLike.le_def, RingHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_zeroSet_iff_le_ker (J : Ideal (MvPolynomial (Fin n) ℂ)) (x : Fin n → ℂ) :
     x ∈ zeroSet J ↔ J ≤ RingHom.ker (eval x : MvPolynomial (Fin n) ℂ →+* ℂ) := by
   simp only [zeroSet, Set.mem_ofPred_eq, SetLike.le_def, RingHom.mem_ker]
 
 /- English proof (translation)
-Establish `h : zeroSet J = ⋂ f ∈ J, {x : Fin n → ℂ | eval x f = 0}`. Use extensionality with `x`. Simplify using `[zeroSet]`. Rewrite using `[h]`. Conclude with `isClosed_biInter fun f _ => isClosed_eq (MvPolynomial.continuous_eval f) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_zeroSet (J : Ideal (MvPolynomial (Fin n) ℂ)) : IsClosed (zeroSet J) := by
   have h : zeroSet J = ⋂ f ∈ J, {x : Fin n → ℂ | eval x f = 0} := by
@@ -31,7 +31,7 @@ theorem isClosed_zeroSet (J : Ideal (MvPolynomial (Fin n) ℂ)) : IsClosed (zero
   exact isClosed_biInter fun f _ => isClosed_eq (MvPolynomial.continuous_eval f) continuous_const
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_zeroSet_iff_le_ker]`. Take `⟨W, hW, hle⟩` from `Ideal.exists_minimalPrimes_le hx`. Conclude with `⟨W, hW, (mem_zeroSet_iff_le_ker W x).2 hle⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_minimalPrime_mem_zeroSet {I : Ideal (MvPolynomial (Fin n) ℂ)} {x : Fin n → ℂ}
     (hx : x ∈ zeroSet I) : ∃ W ∈ I.minimalPrimes, x ∈ zeroSet W := by
@@ -40,15 +40,13 @@ theorem exists_minimalPrime_mem_zeroSet {I : Ideal (MvPolynomial (Fin n) ℂ)} {
   exact ⟨W, hW, (mem_zeroSet_iff_le_ker W x).2 hle⟩
 
 /- English proof (translation)
-Use `set m := RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ) with hmdef`. Set `L` to `Localization.AtPrime m`. Set `J : Ideal L` to `I.map (algebraMap (MvPolynomial (Fin n) ℂ) L)`. Express the relevant statement in the definitionally equal form `ringKrullDim (L ⧸ J) ≤ 0`. Establish `hK : Ring.KrullDimLE 0 (L ⧸ J)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ring.krullDimLE_zero_iff]`. Introduce `p hp`. Use `set Q := p.comap (Ideal.Quotient.mk J) with hQdef`. Establish `hQ : Q.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hP : (Q.comap (algebraMap (MvPolynomial (Fin n) ℂ) L)).IsPrime` using `Ideal.comap_isPrime _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hIP : I ≤ Q.comap (algebraMap (MvPolynomial (Fin n) ℂ) L)`. Rewrite using `[← Ideal.map_le_iff_le_comap]`. Introduce `y hy`. Rewrite using `[hQdef, Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 hy]`. Conclude with `p.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPm : Q.comap (algebraMap (MvPolynomial (Fin n) ℂ) L) ≤ m`. Conclude with `(Ideal.comap_mono (IsLocalRing.le_maximalIdeal hQ.ne_top)).trans (Localization.AtPrime.under_maximalIdeal (I := m)).le`. Establish `hPeq : Q.under (MvPolynomial (Fin n) ℂ) = m` using `le_antisymm hPm (hm.2 ⟨hP, hIP⟩ hPm)`. Establish `hQmax : Q = IsLocalRing.maximalIdeal L` using `Localization.AtPrime.eq_maximalIdeal_iff_under_eq.1 hPeq`. Establish `hQm : Q.IsMaximal` using `hQmax ▸ IsLocalRing.maximalIdeal.isMaximal L`.
-
-Establish `h` using `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective hQm`. Rewrite `h` using `[hQdef, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Conclude with `h.resolve_left hp.ne_top`. Conclude with `Ring.krullDimLE_iff.1 hK` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_curveLocalRing_le_zero {I : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
     (hm : RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ) ∈ I.minimalPrimes) :
@@ -80,17 +78,15 @@ theorem ringKrullDim_curveLocalRing_le_zero {I : Ideal (MvPolynomial (Fin n) ℂ
   exact_mod_cast Ring.krullDimLE_iff.1 hK
 
 /- English proof (translation)
-Use `set m := RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ) with hmdef`. Establish `hWm : W ≤ m` using `(mem_zeroSet_iff_le_ker W q).1 hq`. Establish `hWp : W.IsPrime` using `hW.1.1`. Set `L` to `Localization.AtPrime m`. Establish `hle : I.map (algebraMap (MvPolynomial (Fin n) ℂ) L) ≤ W.map (algebraMap (MvPolynomial (Fin n) ℂ) L)` using `Ideal.map_mono hW.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup : ringKrullDim (localRingAt W q) ≤ 1`. Rewrite using `[← hdim]`. Conclude with `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle)`. Establish `disj : Disjoint (m.primeCompl : Set (MvPolynomial (Fin n) ℂ)) W`. Rewrite using `[Set.disjoint_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a ha haW`. Conclude with `ha (hWm haW)`. Establish `hWL : (W.map (algebraMap (MvPolynomial (Fin n) ℂ) L)).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint m.primeCompl L W hWp disj`. Establish `hne : ¬ ringKrullDim (localRingAt W q) ≤ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Ring.KrullDimLE 0 (localRingAt W q)` using `Ring.krullDimLE_iff.2 (by exact_mod_cast h0)`. Establish `: IsDomain (localRingAt W q)` using `Ideal.Quotient.isDomain _`. Establish `hf : IsField (localRingAt W q)` using `Ring.KrullDimLE.isField_of_isDomain (R := localRingAt W q)`. Establish `hmax : (W.map (algebraMap (MvPolynomial (Fin n) ℂ) L)).IsMaximal` using `Ideal.Quotient.maximal_of_isField _ hf`. Establish `hWeq : W = m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `IsLocalization.under_map_of_isPrime_disjoint m.primeCompl L hWp disj`. Rewrite `h1` using `[IsLocalRing.eq_maximalIdeal hmax, Localization.AtPrime.under_maximalIdeal]`. Conclude with `h1.symm`. Rewrite `hW` using `[hWeq]`. Establish `h2` using `ringKrullDim_curveLocalRing_le_zero hW`.
-
-Rewrite `h2` using `[hdim]`. Conclude with `absurd h2 (by decide)`. Conclude with `le_antisymm hup (Order.succ_le_of_lt (lt_of_not_ge hne))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_localRingAt_eq_one {I W : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
     (hW : W ∈ I.minimalPrimes) (hq : q ∈ zeroSet W) (hdim : ringKrullDim (curveLocalRing I q) = 1) :
@@ -128,11 +124,11 @@ theorem ringKrullDim_localRingAt_eq_one {I W : Ideal (MvPolynomial (Fin n) ℂ)}
   exact le_antisymm hup (Order.succ_le_of_lt (lt_of_not_ge hne))
 
 /- English proof (translation)
-Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial (Fin n) ℂ ⧸ W)`. Establish `h1 : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) ≤ (n : ℕ)` using `(ringKrullDim_quotient_le W).trans (by simp)`. Generalize the expression as in `ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) = d at h0 h1 ⊢`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => simp at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top`. Rewrite `h1` using `[← WithBot.coe_natCast, WithBot.coe_le_coe]`. Conclude with `absurd h1 (not_le.2 (ENat.natCast_lt_top n))`.
+Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `coe e => exact ⟨e, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringKrullDim_quotient_eq_nat (W : Ideal (MvPolynomial (Fin n) ℂ)) [W.IsPrime] :
     ∃ e : ℕ, ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) = (e : ℕ) := by
@@ -150,13 +146,11 @@ theorem exists_ringKrullDim_quotient_eq_nat (W : Ideal (MvPolynomial (Fin n) ℂ
     | coe e => exact ⟨e, rfl⟩
 
 /- English proof (translation)
-Introduce `n I q hdim`. Establish `hfin : I.minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ I`. Use `⟨⋂ W ∈ {W ∈ I.minimalPrimes | q ∉ zeroSet W}, (zeroSet W)ᶜ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Filter.biInter_mem (hfin.subset (Set.sep_subset _ _))).2 fun W hW => (isClosed_zeroSet W).isOpen_compl.mem_nhds hW.2`. Introduce and unpack `x ⟨hxI, hxN⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hxW⟩` from `exists_minimalPrime_mem_zeroSet hxI`. Establish `hqW : q ∈ zeroSet W`. Assume the negation of the conclusion as `hq`. Conclude with `Set.mem_iInter₂.1 hxN W ⟨hW, hq⟩ hxW`. Use `⟨W, hW, ?_, hqW, hxW⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hWp : W.IsPrime` using `hW.1.1`. Take `⟨e, he⟩` from `exists_ringKrullDim_quotient_eq_nat W`. Establish `h1` using `LocalDimDomain.proof n e W hWp he q hqW`. Rewrite `h1` using `[ringKrullDim_localRingAt_eq_one hW hqW hdim]`. Rewrite using `[he]`.
-
-Conclude with `h1.symm` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : CurveGermComponents.Statement := by
   intro n I q hdim

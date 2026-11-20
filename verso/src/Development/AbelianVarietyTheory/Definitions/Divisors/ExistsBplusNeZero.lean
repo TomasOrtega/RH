@@ -19,17 +19,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨hloc, hsc, ht2, hbor, htg, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨hμ, ⟨θ, hθ⟩, hall⟩` from `h`. Take `⟨hμ', -, hall'⟩` from `h'`. Take `⟨⟨A, hA⟩, hallA⟩` from `hall θ hθ`. Take `⟨⟨m, hm⟩, hallm⟩` from `hallA A hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hvol` using `hallm m hm`. Establish `hvol'` using `(hall' θ hθ).2 A hA |>.2 m hm`. Use `choose C hC hC1 using fun ρ => exists_compact_mem_nhds (1 : Formalism.BasicNotions.UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2)`. Establish `hB : ∀ ρ, MeasurableSet (interior (C ρ))` using `fun ρ => isOpen_interior.measurableSet`. Establish `hpos : ∀ ρ, m ρ (interior (C ρ)) ≠ 0` using `fun ρ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg ρ (m ρ) (hm ρ)` as an intermediate fact. Conclude with `isOpen_interior.measure_ne_zero (m ρ) ⟨1, mem_interior_iff_mem_nhds.2 (hC1 ρ)⟩`. Establish `hfin : ∀ ρ, m ρ (interior (C ρ)) ≠ ⊤` using `fun ρ => by`. Use `hg ρ (m ρ) (hm ρ)` as an intermediate fact. Conclude with `((measure_mono interior_subset).trans_lt (hC ρ).measure_lt_top).ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hvol (fun ρ => interior (C ρ)) hB`. Establish `e2` using `hvol' (fun ρ => interior (C ρ)) hB`. Use `set P := ∏ ρ, m ρ (interior (C ρ)) with hPdef`. Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun ρ _ => hpos ρ`. Establish `hPtop : P ≠ ⊤` using `ENNReal.prod_ne_top fun ρ _ => hfin ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hμ` as an intermediate fact. Use `hμ'` as an intermediate fact. Take `⟨c, hs⟩ : ∃ c : NNReal, μ' = c • μ` from `⟨_, MeasureTheory.Measure.isMulLeftInvariant_eq_smul μ' μ⟩`. Establish `e3 : ∀ s, μ' s = c * μ s` using `fun s => by`. Simplify using `only [hs, MeasureTheory.Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
-
-Rewrite `e2` using `[e3, e1]`. Establish `hc1 : c = 1` using `by exact_mod_cast (ENNReal.mul_eq_right hP0 hPtop).1 e2`. Rewrite using `[hs, hc1, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMeasLevW_unique {V : HSp D} {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))} {good} {μ μ' : Measure (GA D V)}
     (hg : ∀ ρ m, good ρ m → m.IsHaarMeasure) (h : Lev.IsMeasLevW V K good μ) (h' : Lev.IsMeasLevW V K good μ') : μ = μ' := by
@@ -65,7 +63,7 @@ theorem isMeasLevW_unique {V : HSp D} {K : Subgroup (GL (Fin V.rank) (Lev.EAf D)
   rw [hs, hc1, one_smul]
 
 /- English proof (translation)
-Unfold `Vol.IsAt at h h'`. Use `split_ifs at h h'`. Conclude with `isMeasLevW_unique (fun _ _ hm => hm.1) h.1 h'.1`. Conclude with `isMeasLevW_unique (fun _ _ hm => hm.1) h.1 h'.1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isAt_unique {M M' : Vol G} {X : Node} {K} (h : M.IsAt X K) (h' : M'.IsAt X K) : M.ν X = M'.ν X := by
   unfold Vol.IsAt at h h'
@@ -76,9 +74,9 @@ theorem isAt_unique {M M' : Vol G} {X : Node} {K} (h : M.IsAt X K) (h' : M'.IsAt
 variable (W : G.Weil)
 
 /- English proof (translation)
-Take `⟨hloc, hsc, ht2, hbor, htg, hdisc, hcount⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V a.src)`. Establish `hν : M.ν a.src = M'.ν a.src` using `isAt_unique h h'`. Take `⟨hH, hfd⟩` from `h.haar_fund`. Take `⟨-, hfd'⟩` from `h'.haar_fund`. Rewrite `hfd'` using `[← hν]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[liftA_apply, liftA_apply, ← hν]`. Conclude with `hfd.setIntegral_eq hfd' fun γ y => hinv x γ γ.2 y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftA_indep {M M' : Vol G} (a : Arrow T) {K} (h : M.IsAt a.src K) (h' : M'.IsAt a.src K) (f : Sch G a) (F : Fn G a.src)
     (hinv : ∀ x, ∀ γ ∈ GQ (G.V a.src), ∀ g, W.kerA a f (γ * g) x * F (γ * g) = W.kerA a f g x * F g) :
@@ -93,7 +91,7 @@ theorem liftA_indep {M M' : Vol G} (a : Arrow T) {K} (h : M.IsAt a.src K) (h' : 
   exact hfd.setIntegral_eq hfd' fun γ y => hinv x γ γ.2 y
 
 /- English proof (translation)
-Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Take `⟨s, hc, hrel, hrat⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D _ _ (G.rowDec 0 hm).ι (G.rowDec 0 hm).isom`. Use `⟨s, hc, ?_, hrat⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Conclude with `((embRel_iff _ h (s h)).mp ((hrel h (s h)).mpr rfl)).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem embTop_hom : ∃ s : GA D (G.V (.top 0)) →* GA D (G.V (.grid D.R.m 0)), Continuous s ∧ embTop G = s ∧
     ∀ γ ∈ GQ (G.V (.top 0)), s γ ∈ GQ (G.V (.grid D.R.m 0)) := by
@@ -104,13 +102,13 @@ theorem embTop_hom : ∃ s : GA D (G.V (.top 0)) →* GA D (G.V (.grid D.R.m 0))
   exact ((embRel_iff _ h (s h)).mp ((hrel h (s h)).mpr rfl)).symm
 
 /- English proof (translation)
-Establish `key : ∀ x : Fin B.rank → D.host.E, (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat B A ι) * B.gram).mulVec x = 0 → (subOne B (n * g)).mulVec (ratV x) = (subOne B n).mulVec (ratV x)`. Introduce `x hx`. Establish `h2 : ((matHom B g).1 : Matrix _ _ _).mulVec (ratV x) = ratV x` using `hrel.2 x hx`. Rewrite using `[subOne, subOne, map_mul, Units.val_mul, Matrix.sub_mulVec, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, h2]`. Establish `hcol : ∀ i, (subOne B (n * g)).mulVec (ratV fun k => d.e k i) = (subOne B n).mulVec (ratV fun k => d.e k i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Apply `key` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `congrFun (congrFun d.e_perp j) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hz` using `key d.z d.z_perpA`. Establish `hP : IsBesVal ψ d (n * g) = IsBesVal ψ d n`. Use function extensionality and compare the values at `v`. Simplify using `only [IsBesVal, hcol, hz]`. Unfold `besChar`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hP]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem besChar_mul_eq_of_embRel {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (d : BesDat A B ι)
     (ψ : AddChar (AF D.host.F) ℂ) (g n : GA D B) (h : GA D A) (hrel : EmbRel B A ι g h) :
@@ -136,19 +134,15 @@ private theorem besChar_mul_eq_of_embRel {A B : HSp D} {ι : A.V →ₗ[D.host.E
   rw [hP]
 
 /- English proof (translation)
-Establish `hψ0 : ∀ x, W.ψ x ≠ 0` using `fun x h0 => by`. Use `W.ψ.map_add_eq_mul x (-x)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h0, zero_mul]`. Conclude with `one_ne_zero this`. Establish `hchi0 : ∀ g, besChar W.ψ G.besTop g ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Unfold `besChar`. Use `split_ifs with hv`. Take `⟨a, b, -, -, hval⟩` from `hv.choose_spec`. Rewrite using `[hval]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hψ0 _`. Conclude with `one_ne_zero`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hfun : besInt W (fun _ => (1 : ℂ)) (fun g => (star (besChar W.ψ G.besTop g))⁻¹) = fun _ _ => 1`. Use function extensionality and compare the values at `h n`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hrel : EmbRel _ _ (G.rowDec 0 hm).ι (embTop G h) h` using `(embRel_iff (G.rowDec 0 hm) h (embTop G h)).mpr rfl`. Simplify using `only [besInt, one_mul]`. Rewrite using `[besChar_mul_eq_of_embRel G.besTop W.ψ (embTop G h) (n : GA D _) h hrel]`. Conclude with `inv_mul_cancel₀ (star_ne_zero.2 (hchi0 _))`. Take `⟨-, -, hN⟩` from `hM.unip`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq` using `GlobalTheory.Mem.QuotVol.quot_volume_ne_zero_ne_top D _ (M.ν (.top 0)) (M.fd (.top 0)) hM.top.haar_fund`. Use `⟨fun _ => 1, fun g => (star (besChar W.ψ G.besTop g))⁻¹, ?_, ?_⟩` and prove the remaining obligations. Unfold `BplusConv`. Rewrite using `[hfun]`. Use `⟨fun h => integrableOn_const (by rw [hN]; simp), ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [setIntegral_const, Measure.real, hN]`. Conclude with `integrableOn_const hq.2`. Unfold `Bplus`. Rewrite using `[hfun]`. Simplify using `[Measure.real, hN]`.
-
-Conclude with `ENNReal.toReal_ne_zero.2 hq`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_Bplus_ne_zero {M : Vol G} (hM : M.IsRow) : ∃ φ F, BplusConv W M φ F ∧ Bplus W M φ F ≠ 0 := by
   have hψ0 : ∀ x, W.ψ x ≠ 0 := fun x h0 => by
@@ -185,7 +179,7 @@ theorem exists_Bplus_ne_zero {M : Vol G} (hM : M.IsRow) : ∃ φ F, BplusConv W 
     exact ENNReal.toReal_ne_zero.2 hq
 
 /- English proof (translation)
-Simplify using `[tensT, Finsupp.sum_single_index]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensT_single {X Y : Node} {p : Path T X Y} (P : PolT G p) (d : PureT G p) (c c' : ℂ) :
     tensT W (Finsupp.single P c) (Finsupp.single d c') =
@@ -198,7 +192,7 @@ Both sides reduce to the same expression.
 theorem levJ_col (t : T) (j : ℕ) : levJ G t (.grid 0 (j + 1)) = levCol L t j := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (t : T) : (givenPath t 3).arrows = [.down t 0 2, .down t 0 1, .down t 0 0, .right 0 0, .right 1 0, .right 2 0] ∧
     (oppPath t 3).arrows = [.right 0 3, .right 1 3, .right 2 3, .down t 3 2, .down t 3 1, .down t 3 0] := ⟨rfl, rfl⟩

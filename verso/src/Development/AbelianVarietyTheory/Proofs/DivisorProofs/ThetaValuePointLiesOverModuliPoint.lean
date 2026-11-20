@@ -13,21 +13,17 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-Introduce `g n F Z i W X₁ z₁ V₁ _ _ _ ev y hreg hy`. Use `set yw := jK V₁ ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ with hyw`. Use `set w := yw (IsLocalRing.closedPoint (FractionRing V₁)) with hw`. Establish `hle : X₁.S.R ≤ X₁.M.O w` using `fun a ha => hreg a ha`. Establish `hsp : yw (IsLocalRing.closedPoint (FractionRing V₁)) ⤳ w` using `specializes_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : X₁.S.R →+* X₁.M.Z.presheaf.stalk w` to `(X₁.M.stalkEquiv w).symm.toRingHom.comp (Subalgebra.inclusion hle).toRingHom`. Set `φ : X₁.M.Z.presheaf.stalk w →+* FractionRing V₁` to `(X₁.M.Z.presheaf.stalkSpecializes hsp ≫ Scheme.stalkClosedPointTo (R := CommRingCat.of (FractionRing V₁)) yw).hom`. Use `⟨(RatModel.valHom yw w (RatModel.range_eq_singleton yw _)).comp (Subalgebra.inclusion hle).toRingHom, fun a => rfl, ?_⟩` and prove the remaining obligations. Establish `hK : (RatModel.valHom yw w (RatModel.range_eq_singleton yw _)).comp (Subalgebra.inclusion hle).toRingHom = φ.comp ψ` using `RingHom.ext fun a => (RatModel.valLoc_eq_val yw hsp (Subalgebra.inclusion hle a)).symm`. Use `haveI := X₁.imm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsProper X₁.z := X₁.isProper_compactificationMap`. Use `haveI : Z.IsSeparated := by`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← terminal.comp_from X₁.z]`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `haveI : IsDominant (spMap (X₁.M.stalkHom w)) := by`. Use `⟨?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DenseRange (PrimeSpectrum.comap (X₁.M.stalkHom w))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (X₁.M.stalkHom_injective w)]`. Conclude with `bot_le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfs : ∀ {C : Type} [CommRing C] [IsLocalRing C] (q : Sp C ⟶ X₁.M.Z) (h : q (IsLocalRing.closedPoint C) ⤳ w), spMap (X₁.M.Z.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo (R` using `CommRingCat.of C) q).hom ≫ X₁.M.Z.fromSpecStalk w = q := by`. Introduce `C _ _ q h`. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of C) q`. Establish `e1 : spMap (X₁.M.stalkHom w) ≫ spMap ψ = spMap X₁.S.R.val.toRingHom`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun a => congrArg Subtype.val ((X₁.M.stalkEquiv w).apply_symm_apply (Subalgebra.inclusion hle a))`. Establish `e2 : spMap (X₁.M.stalkHom w) ≫ X₁.M.Z.fromSpecStalk w = X₁.M.pt` using `hfs X₁.M.pt (X₁.M.pt_specializes _ w)`. Establish `hab : spMap ψ ≫ X₁.u ≫ i = X₁.M.Z.fromSpecStalk w ≫ X₁.π`.
-
-Use `ext_of_isDominant (spMap (X₁.M.stalkHom w)) ?_` and prove the remaining obligations. Rewrite using `[reassoc_of% e1, reassoc_of% e2, X₁.comp]`. Establish `e3 : spMap φ ≫ X₁.M.Z.fromSpecStalk w = yw` using `hfs yw hsp`. Rewrite using `[← cancel_mono i, Category.assoc, hK]`. Express the relevant statement in the definitionally equal form `spMap (φ.comp ψ) ≫ X₁.u ≫ i = y ≫ i`.
-
-Rewrite using `[show spMap (φ.comp ψ) = spMap φ ≫ spMap ψ by`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp], Category.assoc, hab, reassoc_of% e3, ← hy]`. Simplify using `only [hyw, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valPt_lies_over : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (i : F.X ⟶ Z) (W : Matrix (Fin 8) (Fin 8) ℤ) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V₁) (y : Sp (FractionRing V₁) ⟶ F.X), RegAt X₁ z₁ ev → jK V₁ ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ ≫ X₁.π = y ≫ i → ∃ yK : X₁.S.R →+* FractionRing V₁, (∀ a, yK a = X₁.M.val (jK V₁ ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) a) ∧ spMap yK ≫ X₁.u = y := by
   intro g n F Z i W X₁ z₁ V₁ _ _ _ ev y hreg hy

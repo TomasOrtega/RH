@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formal
 namespace GlobalTheory.Mem.Col2
 
 /- English proof (translation)
-Establish `h` using `span_evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ`. Establish `h2 : ValC (Gr emb σ n) lam ≤ Submodule.span ℂ (Set.range fun i => evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ (bVV K lam i))`. Rewrite using `[← h, Submodule.span_le]`. Introduce and unpack `_ ⟨F, rfl⟩`. Rewrite using `[← (bVV K lam).sum_repr F, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `haveI := FiniteDimensional.span_of_finite ℂ (Set.finite_range fun i => evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ (bVV K lam i))`. Conclude with `Submodule.finiteDimensional_of_le h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valC_finiteDimensional {E K ι : Type} [Field E] [Field K] [CharZero K] [Fintype ι] {n : ℕ}
     (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n) :
@@ -28,9 +28,7 @@ theorem valC_finiteDimensional {E K ι : Type} [Field E] [Field K] [CharZero K] 
   exact Submodule.finiteDimensional_of_le h2
 
 /- English proof (translation)
-Use `haveI := hS.fin_orb`. Use `haveI := valC_finiteDimensional emb σ lam`. Set `f : S.Fi emb σ lam →ₗ[ℂ] (S.Cl → ValC (Gr emb σ n) lam)` to `{ toFun := fun φ c => ⟨φ.1 c, (φ.2 c).1⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `Module.Finite.of_injective f fun a b hab => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use function extensionality and compare the values at `c`. Conclude with `congrArg Subtype.val (congrFun hab c)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem GStep.fi_finiteDimensional {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K]
     [StarRing K] [Fintype ι] {n : ℕ} (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n)

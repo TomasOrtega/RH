@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Introduce `S _ x w hw a b u₁ u₂ h₁ h₂`. Establish `e₁ : u₁ = smT x a (ovT (t` using `Xo.univ.t) hw) := Over.OverMorphism.ext h₁`. Establish `e₂ : u₂ = smT x b (ovT (t` using `Xo.univ.t) hw) := Over.OverMorphism.ext h₂`. Rewrite using `[e₁, e₂, ← smT_add x _ (smT_zero_ovT hw)]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tanAdd_holds (Xo : Moduli Dw l) : TanAddSt Xo := by
   intro S _ x w hw a b u₁ u₂ h₁ h₂

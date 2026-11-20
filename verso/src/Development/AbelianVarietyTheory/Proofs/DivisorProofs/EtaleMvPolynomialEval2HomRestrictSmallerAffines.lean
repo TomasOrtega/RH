@@ -15,13 +15,11 @@ open scoped Classical
 namespace GlobalTheory.EtaleRestrict
 
 /- English proof (translation)
-Introduce `X Y q ι U U' hU' hU hU'a W W' hW' hW hW'a hWU hW'U' N hN`. Establish `h1 : (resG Y hW').Etale` using `GlobalTheory.TopForm.etale_resG hW hW'a hW'`. Establish `h2 : ((resG Y hW').comp (MvPolynomial.eval₂Hom (q.appLE U W hWU).hom N)).Etale` using `RingHom.Etale.stableUnderComposition _ _ hN h1`. Establish `h3 : (resG X hU').Etale` using `GlobalTheory.TopForm.etale_resG hU hU'a hU'`. Establish `h4 : (MvPolynomial.map (σ` using `ι) (resG X hU')).Etale := by algebraize [resG X hU']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := MvPolynomial.algebraMvPolynomial (σ := ι) (R := Γ(X, U)) (S := Γ(X, U'))`. Conclude with `RingHom.Etale.isStableUnderBaseChange Γ(X, U) Γ(X, U') (MvPolynomial ι Γ(X, U)) (MvPolynomial ι Γ(X, U')) h3`. Establish `h5 : (MvPolynomial.eval₂Hom (q.appLE U' W' hW'U').hom (fun a ↦ resG Y hW' (N a))).comp (MvPolynomial.map (resG X hU')) = (resG Y hW').comp (MvPolynomial.eval₂Hom (q.appLE U W hWU).hom N)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, MvPolynomial.map_C, MvPolynomial.eval₂Hom_C]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE, ← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_map]`. Introduce `i`. Simplify using the standard rewrite rules. Rewrite `h2` using `[← h5]`.
-
-Use `algebraize [MvPolynomial.map (σ := ι) (resG X hU'), MvPolynomial.eval₂Hom (q.appLE U' W' hW'U').hom (fun a ↦ resG Y hW' (N a)), (MvPolynomial.eval₂Hom (q.appLE U' W' hW'U').hom (fun a ↦ resG Y hW' (N a))).comp (MvPolynomial.map (resG X hU'))]`. Conclude with `Algebra.Etale.of_restrictScalars (R := MvPolynomial ι Γ(X, U)) _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_eval₂_res : ∀ (X Y : Scheme.{0}) (q : Y ⟶ X) (ι : Type) (U U' : X.Opens) (hU' : U' ≤ U), IsAffineOpen U → IsAffineOpen U' → ∀ (W W' : Y.Opens) (hW' : W' ≤ W), IsAffineOpen W → IsAffineOpen W' → ∀ (hWU : W ≤ q ⁻¹ᵁ U) (hW'U' : W' ≤ q ⁻¹ᵁ U') (N : ι → Γ(Y, W)), (MvPolynomial.eval₂Hom (q.appLE U W hWU).hom N).Etale → (MvPolynomial.eval₂Hom (q.appLE U' W' hW'U').hom (fun a ↦ resG Y hW' (N a))).Etale := by
   intro X Y q ι U U' hU' hU hU'a W W' hW' hW hW'a hWU hW'U' N hN

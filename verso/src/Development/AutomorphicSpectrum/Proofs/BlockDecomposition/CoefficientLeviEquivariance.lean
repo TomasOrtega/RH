@@ -22,7 +22,7 @@ open GlobalTheory.CompanionTheory.IwaAd (levi_mem_P adj_mul_adj_inv adj_inv_mul_
 variable {D : D7} {n ρ p : ℕ} {hn : ρ + p = n}
 
 /- English proof (translation)
-Establish `h` using `adj_add (0 : Mx D k l) 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_add.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_zero' {k l : ℕ} : adj (0 : Mx D k l) = 0 := by
   have h := adj_add (0 : Mx D k l) 0
@@ -30,14 +30,14 @@ theorem adj_zero' {k l : ℕ} : adj (0 : Mx D k l) = 0 := by
   exact left_eq_add.1 h
 
 /- English proof (translation)
-Simplify using `only [blkA, blk4, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id, Matrix.toBlocks_fromBlocks₁₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkA_blk4 {R : Type} {k : ℕ} (a b c d : Matrix (Fin k) (Fin k) R) : blkA (blk4 a b c d) = a := by
   simp only [blkA, blk4, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id,
     Matrix.toBlocks_fromBlocks₁₁]
 
 /- English proof (translation)
-Simplify using `only [bl, Matrix.fromBlocks_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem blockMatrix_zero' {R : Type} [CommRing R] (hn : ρ + p = n) :
     bl hn (0 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (0 : Matrix (Fin p) (Fin p) R) = 0 := by
@@ -45,9 +45,9 @@ theorem blockMatrix_zero' {R : Type} [CommRing R] (hn : ρ + p = n) :
   rfl
 
 /- English proof (translation)
-Establish `hE` using `M.emb_mat g₀ _ _ _ _ hg`. Apply `GlobalTheory.CompanionTheory.FourierN.mat_injective` to reduce the goal to its premises. Simplify using `only [mat_mul']`. Rewrite using `[hE, M.w_mat, M.nzx_mat, adj_zero']`. Simplify using `only [submatrix_fromBlocks_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [blockMatrix_zero' hn, blockMatrix_add', blockMatrix_multiply, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, neg_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_comm (M : Maps D hn) (ζ : hermA D ρ) (g₀ : G D p) (a : GL (Fin p) (AE D))
     (hg : mat g₀ = blk4 a.1 0 0 (adj (a⁻¹).1)) :
@@ -61,11 +61,9 @@ theorem emb_comm (M : Maps D hn) (ζ : hermA D ρ) (g₀ : G D p) (a : GL (Fin p
     zero_add, Matrix.mul_neg, Matrix.neg_mul, neg_zero]
 
 /- English proof (translation)
-Establish `h1 : HMul.hMul (mat g₀) (blk4 (a⁻¹).1 0 0 (adj a.1)) = (1 : Mx D (p + p) (p + p))`. Rewrite using `[hg, submatrix_fromBlocks_mul]`. Establish `e1 : a.1 * (a⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e2 : HMul.hMul (adj (a⁻¹).1) (adj a.1) = (1 : Mx D p p)` using `adj_inv_mul_adj a`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `block_matrix_one`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Conclude with `(Matrix.mul_one _).symm`. Use `_ = HMul.hMul (mat (g₀⁻¹ * g₀)) (blk4 (a⁻¹).1 0 0 (adj a.1)) := by`.
-
-Rewrite using `[mat_mul']`. Conclude with `(Matrix.mul_assoc _ _ _).symm`. Use `_ = blk4 (a⁻¹).1 0 0 (adj a.1) := by`. Rewrite using `[inv_mul_cancel]`. Conclude with `Matrix.one_mul _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_inv_levi (g₀ : G D p) (a : GL (Fin p) (AE D)) (hg : mat g₀ = blk4 a.1 0 0 (adj (a⁻¹).1)) :
     mat g₀⁻¹ = blk4 (a⁻¹).1 0 0 (adj a.1) := by
@@ -83,9 +81,9 @@ theorem mat_inv_levi (g₀ : G D p) (a : GL (Fin p) (AE D)) (hg : mat g₀ = blk
         rw [inv_mul_cancel]; exact Matrix.one_mul _
 
 /- English proof (translation)
-Establish `e : a.1 * (a⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e' : (a⁻¹).1 * a.1 = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Use `⟨⟨bl hn 1 0 0 a.1, bl hn 1 0 0 (a⁻¹).1, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[blockMatrix_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, add_zero, zero_add, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `blockMatrix_one hn`. Rewrite using `[blockMatrix_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, add_zero, zero_add, e']`. Conclude with `blockMatrix_one hn`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lv (hn : ρ + p = n) (a : GL (Fin p) (AE D)) :
     ∃ b : GL (Fin n) (AE D), b.1 = bl hn 1 0 0 a.1 := by
@@ -100,7 +98,7 @@ theorem exists_lv (hn : ρ + p = n) (a : GL (Fin p) (AE D)) :
     exact blockMatrix_one hn
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, hb]`. Simplify using `only [bl]`. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_lv (hn : ρ + p = n) (a : GL (Fin p) (AE D)) (b : GL (Fin n) (AE D)) (hb : b.1 = bl hn 1 0 0 a.1) :
     Matrix.GeneralLinearGroup.det b = Matrix.GeneralLinearGroup.det a := by
@@ -110,11 +108,11 @@ theorem det_lv (hn : ρ + p = n) (a : GL (Fin p) (AE D)) (b : GL (Fin n) (AE D))
   rw [Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul]
 
 /- English proof (translation)
-Introduce `D n ρ p hn M m ψ b₀ χ z f hf g₀ a hg x`. Establish `hE` using `M.emb_mat g₀ _ _ _ _ hg`. Establish `hE'` using `M.emb_mat g₀⁻¹ _ _ _ _ (mat_inv_levi g₀ a hg)`. Rewrite `hE`, `hE'` using `[blockMatrix_zero' hn]`. Establish `hP : M.emb g₀ ∈ P D n` using `levi_mem_P hE hE' (by rw [← map_mul, inv_mul_cancel, map_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `exists_lv hn a`. Establish `hA : blkA (mat (M.emb g₀)) = b.1`. Rewrite using `[hE, blkA_blk4, hb]`. Establish `e : ∀ ζ : hermA D ρ, f (M.w * M.nzx ζ 0 * (M.emb g₀ * x)) = (χ (Matrix.GeneralLinearGroup.det a) : ℂ) * npow (absA D (Matrix.GeneralLinearGroup.det a)) (z + (n : ℂ) / 2) * f (M.w * M.nzx ζ 0 * x)`. Introduce `ζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← mul_assoc, emb_comm M ζ g₀ a hg, mul_assoc, hf _ hP b hA, det_lv hn a b hb]`. Simplify using `only [Wz]`. Simplify using `only [e]`. Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul, integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wz_emb : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ)
   (χ : (AE D)ˣ →* Circle) (z : ℂ) (f : G D n → ℂ), IsLaw χ z f → ∀ (g₀ : G D p) (a : GL (Fin p) (AE D)),

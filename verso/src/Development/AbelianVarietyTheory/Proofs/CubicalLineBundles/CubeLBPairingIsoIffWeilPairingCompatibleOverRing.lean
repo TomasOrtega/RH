@@ -23,13 +23,13 @@ namespace GlobalTheory.PairingFibre
 variable {S S' : Scheme.{0}} {s : S' ⟶ S}
 
 /- English proof (translation)
-Set `w' : G' ⟶ H'` to `Over.homMk (hH.1.lift (φ ≫ w.left) G'.hom (by rw [Category.assoc, Over.w, hG.1.w])) (hH.1.lift_snd _ _ _)`. Establish `hw : w'.left ≫ ψ = φ ≫ w.left` using `hH.1.lift_fst _ _ _`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ G'), Geo.Tor.pushPt hH.1.w (x ≫ w') = Geo.Tor.pushPt hG.1.w x ≫ w` using `fun x => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hw, Category.assoc])`. Establish `mul : ∀ (T : Over S') (x y : T ⟶ G'), (x * y) ≫ w' = (x ≫ w') * (y ≫ w')`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T x y`. Apply `SymBaseChange.pushPt_injective hH` to reduce the goal to its premises. Establish `a : Geo.Tor.pushPt hG.1.w (x * y) = Geo.Tor.pushPt hG.1.w x * Geo.Tor.pushPt hG.1.w y` using `map_mul (Geo.Tor.pushHom hG T) x y`. Establish `b : Geo.Tor.pushPt hH.1.w ((x ≫ w') * (y ≫ w')) = Geo.Tor.pushPt hH.1.w (x ≫ w') * Geo.Tor.pushPt hH.1.w (y ≫ w')` using `map_mul (Geo.Tor.pushHom hH T) _ _`. Rewrite using `[pa, a, b, pa, pa, MonObj.mul_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w', ⟨?_, ?_⟩, hw⟩` and prove the remaining obligations. Establish `h` using `mul (𝟙_ _) 1 1`. Rewrite `h` using `[_root_.mul_one]`. Establish `h' : (1 : 𝟙_ (Over S') ⟶ G') ≫ w' = 1` using `mul_eq_left.1 h.symm`. Simplify `h'` using `[Hom.one_def]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `mul (G' ⊗ G') (fst _ _) (snd _ _)`. Rewrite `h` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[h]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem exists_hom {G H : Over S} {G' H' : Over S'} [GrpObj G] [GrpObj H] [GrpObj G'] [GrpObj H']
     {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left} (hG : IsGrpPullback G' G s φ) (hH : IsGrpPullback H' H s ψ)
@@ -58,7 +58,7 @@ theorem exists_hom {G H : Over S} {G' H' : Over S'} [GrpObj G] [GrpObj H] [GrpOb
     rw [h]; congr 1
 
 /- English proof (translation)
-Establish `hc : (cubeLB G x L).IsLB` using `DVR.linComb_isLB L hL _ _`. Use `LBIso.trans (B := cubeLB G' x' (L.pull φ)) (DVR.linComb_isLB L' hL' _ _) (DVR.linComb_isLB _ (Geo.Tor.pull_isLB hL φ) _ _) (Geo.Tor.pull_isLB hc U) (PowPrimitive.lbIso_linComb w _ _) ?_` and prove the remaining obligations. Conclude with `LBIso.chartPull (Geo.Tor.chartPullLinComb L φ _ _ _ U fun I => Geo.Tor.psum_push h x' x (Over.homMk U hU) (fun i => Over.OverMorphism.ext (hx i)) I.down) (Geo.Tor.chartPullPull _ U U rfl) (PolBaseChange.lbIso_refl hc)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cube_pull {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G s φ) {L : LB G.left} {L' : LB G'.left} (hL : L.IsLB)
@@ -73,9 +73,9 @@ theorem cube_pull {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpOb
     (Geo.Tor.chartPullPull _ U U rfl) (PolBaseChange.lbIso_refl hc)
 
 /- English proof (translation)
-Use `(PrimNorm.hasGen_iff hL _ _).2 ?_` and prove the remaining obligations. Establish `e : ∀ I : Finset (Fin 2), psum G (fun _ : Fin 2 => (1 : T ⟶ G)) I = 1` using `fun I => (Geo.Tor.psum_hom (1 : (T ⟶ G) →* (T ⟶ G)) (fun _ => 1) I).symm`. Simplify using `only [e]`. Establish `z : ∀ {M : Type} [CommGroup M] (c : M) (ε : ULift.{0} (Finset (Fin 2)) → ℤ), ∏ I, c ^ ε I = c ^ ∑ I, ε I` using `fun c ε => by`. Proceed by induction on `(Finset.univ : Finset (ULift.{0} (Finset (Fin 2)))) using Finset.cons_induction with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `empty => simp`. Consider the case `cons a t ha ih => rw [Finset.prod_cons, Finset.sum_cons, zpow_add, ih]`. Rewrite using `[z, show (∑ I : ULift.{0} (Finset (Fin 2)), (-1 : ℤ) ^ (2 - I.down.card)) = 0 by decide, zpow_zero]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_gen_cube_one {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB) (T : Over S) :
     ∃ t : LB.Gen (cubeLB G (fun _ : Fin 2 => (1 : T ⟶ G)) L), t.IsGen := by
@@ -91,7 +91,7 @@ theorem exists_gen_cube_one {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.l
   rw [z, show (∑ I : ULift.{0} (Finset (Fin 2)), (-1 : ℤ) ^ (2 - I.down.card)) = 0 by decide, zpow_zero]
 
 /- English proof (translation)
-Establish `: IsMonHom (Iso.refl G).hom` using `inferInstanceAs (IsMonHom (𝟙 G))`. Use `cube_pull (Geo.Tor.isGrpPullback_of_iso (Iso.refl G)) hL hL (LBIso.chartPull (Geo.Tor.chartPullId L) (Geo.Tor.chartPullPull L _ (𝟙 _) rfl) (PolBaseChange.lbIso_refl hL)) _ (by rw [eSec, Over.w, Category.comp_id]) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[eSec, ← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `fin_cases i <;> simp [Hom.one_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cube_zero {X Y G : Over S} [GrpObj X] [GrpObj Y] [GrpObj G] [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB)
     (f₁ : X ⟶ G) (f₂ : Y ⟶ G) [IsMonHom f₁] [IsMonHom f₂] :
@@ -106,13 +106,11 @@ theorem cube_zero {X Y G : Over S} [GrpObj X] [GrpObj Y] [GrpObj G] [IsCommMonOb
   fin_cases i <;> simp [Hom.one_def]
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (p : Over.mk t ⟶ X') (q : Over.mk t ⟶ Y') (c : kˣ), ((Out.WeilIs A' L' n (p ≫ f₁') (q ≫ f₂') (unitOn c) ↔ Out.WeilIs B' M' n (p ≫ g₁') (q ≫ g₂') (unitOn c)) ↔ (Out.WeilIs A L n (Geo.Tor.pushHom hX _ p ≫ f₁) (Geo.Tor.pushHom hY _ q ≫ f₂) (unitOn c) ↔ Out.WeilIs B M …`. Introduce `n p q c`. Use `iff_congr (weilIs_grpPullback_of_comm S S' A A' s a L L' hL hL' hA wL _ _ _ _ _ _ _ ?_ ?_) (weilIs_grpPullback_of_comm S S' B B' s b M M' hM hM' hB wM _ _ _ _ _ _ _ ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `all_goals show (_ ≫ _) ≫ _ = (_ ≫ _) ≫ _`. Simplify using `only [Category.assoc, e₁, e₂, e₃, e₄]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `pw : ∀ {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G s φ) (n : ℕ) (p : Over.mk t ⟶ G'), p ^ n = 1 ↔ Geo.Tor.pushHom h _ p ^ n = 1` using `fun h n p => by`. Rewrite using `[← map_pow]`. Conclude with `(map_eq_one_iff _ fun u v e => SymBaseChange.pushPt_injective h e).symm`. Establish `su : ∀ {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G s φ) (p₀ : Over.mk (t ≫ s) ⟶ G), ∃ p : Over.mk t ⟶ G', Geo.Tor.pushHom h _ p = p₀` using `fun h p₀ => ⟨Over.homMk (h.1.lift p₀.left t (Over.w p₀)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `H n p₀ q₀ c hn hp hq`. Take `⟨p, rfl⟩` from `su hX p₀`. Take `⟨q, rfl⟩` from `su hY q₀`. Conclude with `(key n p q c).1 (H n p q c hn ((pw hX n p).2 hp) ((pw hY n q).2 hq))`. Introduce `H n p q c hn hp hq`.
-
-Conclude with `(key n p q c).2 (H n _ _ c hn ((pw hX n p).1 hp) ((pw hY n q).1 hq))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weilEq_iff {X Y A B : Over S} {X' Y' A' B' : Over S'} [GrpObj X] [GrpObj Y] [GrpObj A] [GrpObj B]
     [IsCommMonObj A] [IsCommMonObj B] [GrpObj X'] [GrpObj Y'] [GrpObj A'] [GrpObj B']
@@ -150,31 +148,27 @@ theorem weilEq_iff {X Y A B : Over S} {X' Y' A' B' : Over S'} [GrpObj X] [GrpObj
     exact (key n p q c).2 (H n _ _ c hn ((pw hX n p).1 hp) ((pw hY n q).1 hq))
 
 /- English proof (translation)
-Introduce `laws R _ X Y A B f₁ f₂ g₁ g₂ _ _ _ _ k _ _ _ β`. Establish `bc : ∀ P : Out.PolAV (Sp R), ∃ (P' : Out.PolAV (Sp k)) (φ : P'.A.left ⟶ P.A.left), IsGrpPullback P'.A P.A (spMap β) φ ∧ LBIso P'.L (P.L.pull φ)` using `fun P => by`. Take `⟨P', φ, hφ, -, hm, t, ht⟩` from `laws.polBaseChange _ _ (spMap β) P`. Use `⟨P', φ, ⟨hφ, fun T x y x₀ y₀ hx hy => ?_⟩, LBIso.symm ⟨t, ht⟩⟩` and prove the remaining obligations. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hφ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hφ.w y), ← hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨X', x, hX, -⟩` from `bc X`. Take `⟨Y', y, hY, -⟩` from `bc Y`. Take `⟨A', a, hA, wL⟩` from `bc A`. Take `⟨B', b, hB, wM⟩` from `bc B`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `A.isAb.comm` as an intermediate fact. Use `B.isAb.comm` as an intermediate fact. Use `A'.isAb.comm` as an intermediate fact. Use `B'.isAb.comm` as an intermediate fact. Take `⟨f₁', m₁, e₁⟩` from `exists_hom hX hA f₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f₂', m₂, e₂⟩` from `exists_hom hY hA f₂`. Take `⟨g₁', m₃, e₃⟩` from `exists_hom hX hB g₁`. Take `⟨g₂', m₄, e₄⟩` from `exists_hom hY hB g₂`. Establish `W` using `weilEq_iff hX hY hA hB A.isLB B.isLB A'.isLB B'.isLB wL wM e₁ e₂ e₃ e₄ (𝟙 (Sp k))`. Rewrite `W` using `[Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `π : Over.mk ((X'.A ⊗ Y'.A).hom ≫ spMap β) ⟶ X.A ⊗ Y.A` to `lift (Geo.Tor.pushPt hX.1.w (fst X'.A Y'.A)) (Geo.Tor.pushPt hY.1.w (snd X'.A Y'.A))`. Establish `π₁ : π.left ≫ (fst X.A Y.A).left = (fst X'.A Y'.A).left ≫ x`. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Establish `π₂ : π.left ≫ (snd X.A Y.A).left = (snd X'.A Y'.A).left ≫ y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `hN : (cubeLB A.A ![fst X.A Y.A ≫ f₁, snd X.A Y.A ≫ f₂] A.L).IsLB` using `DVR.linComb_isLB _ A.isLB _ _`. Establish `hN' : (cubeLB B.A ![fst X.A Y.A ≫ g₁, snd X.A Y.A ≫ g₂] B.L).IsLB` using `DVR.linComb_isLB _ B.isLB _ _`. Establish `hP : (cubeLB A'.A ![fst X'.A Y'.A ≫ f₁', snd X'.A Y'.A ≫ f₂'] A'.L).IsLB` using `DVR.linComb_isLB _ A'.isLB _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP' : (cubeLB B'.A ![fst X'.A Y'.A ≫ g₁', snd X'.A Y'.A ≫ g₂'] B'.L).IsLB` using `DVR.linComb_isLB _ B'.isLB _ _`. Establish `cA` using `cube_pull hA A.isLB A'.isLB wL (T' := X'.A ⊗ Y'.A) π.left (Over.w π) ![fst X'.A Y'.A ≫ f₁', snd X'.A Y'.A ≫ f₂'] ![fst X.A Y.A ≫ f₁, snd X.A Y.A ≫ f₂] fun i => by fin_cases i`. Use `show (_ ≫ _) ≫ _ = _ ≫ _ ≫ _`. Rewrite using `[Category.assoc, e₁, reassoc_of% π₁]`. Use `show (_ ≫ _) ≫ _ = _ ≫ _ ≫ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, e₂, reassoc_of% π₂]`. Establish `cB` using `cube_pull hB B.isLB B'.isLB wM (T' := X'.A ⊗ Y'.A) π.left (Over.w π) ![fst X'.A Y'.A ≫ g₁', snd X'.A Y'.A ≫ g₂'] ![fst X.A Y.A ≫ g₁, snd X.A Y.A ≫ g₂] fun i => by fin_cases i`. Use `show (_ ≫ _) ≫ _ = _ ≫ _ ≫ _`. Rewrite using `[Category.assoc, e₃, reassoc_of% π₁]`. Use `show (_ ≫ _) ≫ _ = _ ≫ _ ≫ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, e₄, reassoc_of% π₂]`. Use `⟨fun H => W.1 (T.weil_pairing_eq_of_isomorphic_cube_pairings laws k X' Y' A' B' _ _ _ _ m₁ m₂ m₃ m₄ ?_), fun hR hβ H => ?_⟩` and prove the remaining obligations. Conclude with `cA.trans hP (Geo.Tor.pull_isLB hN _) hP' (LBIso.trans (Geo.Tor.pull_isLB hN _) (Geo.Tor.pull_isLB hN' _) hP' (PowPrimitive.lbIso_linComb H _ _) cB.symm)`. Establish `H'` using `GlobalTheory.CM.lamEq_of_weilEq laws k X' Y' A' B' _ _ _ _ m₁ m₂ m₃ m₄ (W.2 H)`. Establish `H''` using `cA.symm.trans (Geo.Tor.pull_isLB hN _) hP (Geo.Tor.pull_isLB hN' _) (LBIso.trans hP hP' (Geo.Tor.pull_isLB hN' _) H' cB)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F` to `pullback.fst (X.A ⊗ Y.A).hom (spMap β)`. Set `p` to `pullback.snd (X.A ⊗ Y.A).hom (spMap β)`. Establish `wF : F ≫ (X.A ⊗ Y.A).hom = p ≫ spMap β` using `pullback.condition`. Set `u : Over.mk p ⟶ X'.A` to `Over.homMk (hX.1.lift (F ≫ (fst X.A Y.A).left) p (by rw [Category.assoc, Over.w, wF])) (hX.1.lift_snd _ _ _)`. Set `v : Over.mk p ⟶ Y'.A` to `Over.homMk (hY.1.lift (F ≫ (snd X.A Y.A).left) p (by rw [Category.assoc, Over.w, wF])) (hY.1.lift_snd _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : u.left ≫ x = F ≫ (fst X.A Y.A).left` using `hX.1.lift_fst _ _ _`. Establish `hv : v.left ≫ y = F ≫ (snd X.A Y.A).left` using `hY.1.lift_fst _ _ _`. Establish `hr : F = (lift u v).left ≫ π.left`. Use `pullback.hom_ext (f := X.A.hom) (g := Y.A.hom) ?_ ?_` and prove the remaining obligations. Use `show F ≫ (fst X.A Y.A).left = (_ ≫ _) ≫ (fst X.A Y.A).left`.
-
-Rewrite using `[Category.assoc, π₁, ← Category.assoc, ← Over.comp_left, lift_fst, hu]`. Use `show F ≫ (snd X.A Y.A).left = (_ ≫ _) ≫ (snd X.A Y.A).left`. Rewrite using `[Category.assoc, π₂, ← Category.assoc, ← Over.comp_left, lift_snd, hv]`. Use `T.lineBundleIso_descends_field_to_dedekindDomain R k β hβ (X.A ⊗ Y.A) (AbelianSchemeGerms.isAbelianScheme_tensor _ _ X.isAb Y.isAb) _ F p (IsPullback.of_hasPullback _ _) _ _ hN hN' ?_ (LBIso.chartPull (Geo.Tor.chartPullSame _ _ _ _ (lift u v).left fun _ => hr) (Geo.Tor.chartPullS …` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_gen_cube_one A.isLB (𝟙_ _)`.
-
-Take `⟨t', ht'⟩` from `exists_gen_cube_one B.isLB (𝟙_ _)`. Conclude with `(cube_zero A.isLB f₁ f₂).symm.trans (Geo.Tor.pull_isLB hN _) (DVR.linComb_isLB _ A.isLB _ _) (Geo.Tor.pull_isLB hN' _) (LBIso.trans (DVR.linComb_isLB _ A.isLB _ _) (DVR.linComb_isLB _ B.isLB _ _) (Geo.Tor.pull_isLB hN' _) (IsoDescent.lbIso_of_gens A.isLB B.isLB _ _ _ _ t ht t' ht …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lamEq_weilEq_over_ring : Out.Laws → ∀ (R : Type) [CommRing R] (X Y A B : Out.PolAV (Sp R)) (f₁ : X.A ⟶ A.A) (f₂ : Y.A ⟶ A.A) (g₁ : X.A ⟶ B.A) (g₂ : Y.A ⟶ B.A), IsMonHom f₁ → IsMonHom f₂ → IsMonHom g₁ → IsMonHom g₂ → ∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (β : R →+* k),
     (LamEq A.L f₁ f₂ B.L g₁ g₂ → WeilEq A.L f₁ f₂ B.L g₁ g₂ (spMap β)) ∧ (IsDedekindDomain R → Function.Injective β → WeilEq A.L f₁ f₂ B.L g₁ g₂ (spMap β) → LamEq A.L f₁ f₂ B.L g₁ g₂) := by

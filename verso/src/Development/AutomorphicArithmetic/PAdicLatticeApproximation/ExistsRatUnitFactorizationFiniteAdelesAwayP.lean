@@ -6,7 +6,7 @@ open scoped TensorProduct
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
 /- English proof (translation)
-Simplify using `only [IsIntAf, mem_adicCompletionIntegers]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem isIntAf_iff_val {p : ℕ} (x : AfP p) :
     IsIntAf x ↔ ∀ v : AwayP p, Valued.v (AfP.eval v x) ≤ 1 := by
@@ -14,7 +14,7 @@ private theorem isIntAf_iff_val {p : ℕ} (x : AfP p) :
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
 /- English proof (translation)
-Rewrite using `[AlgHom.commutes]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.adicCompletion.valued_coe ℚ v.1 q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_algebraMap {p : ℕ} (v : AwayP p) (q : ℚ) :
     Valued.v (AfP.eval v (algebraMap ℚ (AfP p) q)) = v.1.valuation ℚ q := by
@@ -23,7 +23,7 @@ private theorem val_algebraMap {p : ℕ} (v : AwayP p) (q : ℚ) :
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
 /- English proof (translation)
-Establish `e : (n : ℚ) = algebraMap ℤ ℚ (n : ℤ)` using `by simp`. Rewrite using `[e, valuation_of_algebraMap]`. Conclude with `intValuation_eq_one_iff.mpr h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_nat_eq_one (v : HeightOneSpectrum ℤ) {n : ℕ} (h : (n : ℤ) ∉ v.asIdeal) :
     v.valuation ℚ (n : ℚ) = 1 := by
@@ -32,7 +32,7 @@ private theorem val_nat_eq_one (v : HeightOneSpectrum ℤ) {n : ℕ} (h : (n : �
   exact intValuation_eq_one_iff.mpr h
 
 /- English proof (translation)
-Break down `eq_or_ne t 0 with rfl | ht` into its components or cases. Simplify using the standard rewrite rules. Rewrite `h`, the goal using `[← WithZero.exp_log ht]`. Rewrite using `[← WithZero.exp_add, ← WithZero.exp_zero (M := ℤ), WithZero.exp_le_exp]`. Rewrite `h` using `[← WithZero.exp_zero (M := ℤ), WithZero.exp_lt_exp]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -47,11 +47,11 @@ private theorem lt_one_mul_exp_le {t : WithZero (Multiplicative ℤ)} (h : t < 1
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
 /- English proof (translation)
-Establish `hspan : v.asIdeal = Ideal.span {Submodule.IsPrincipal.generator v.asIdeal}` using `(Ideal.span_singleton_generator v.asIdeal).symm`. Use `⟨(Submodule.IsPrincipal.generator v.asIdeal).natAbs, ?_, by rw [Int.span_natAbs]; exact hspan⟩` and prove the remaining obligations. Establish `h0 : Submodule.IsPrincipal.generator v.asIdeal ≠ 0`. Introduce `h`. Apply `v.ne_bot` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hspan, h, Ideal.span_singleton_eq_bot.mpr rfl]`. Establish `h1 : (Submodule.IsPrincipal.generator v.asIdeal).natAbs ≠ 1`. Introduce `h`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[hspan, ← Int.span_natAbs, h, Nat.cast_one, Ideal.span_singleton_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Int.natAbs_pos.mpr h0` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem exists_gen (v : HeightOneSpectrum ℤ) :
     ∃ l : ℕ, 1 < l ∧ v.asIdeal = Ideal.span {(l : ℤ)} := by
@@ -70,17 +70,15 @@ private theorem exists_gen (v : HeightOneSpectrum ℤ) :
   omega
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hp1 : p ≠ 1` using `hp.one_lt.ne'`. Establish `hnum0 : 0 < r.num` using `Rat.num_pos.mpr hr`. Take `⟨e1, b, hb, hnum⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (n := r.num.toNat) (by omega) p hp1`. Take `⟨e2, a, ha, hden⟩` from `Nat.exists_eq_pow_mul_and_not_dvd r.den_nz p hp1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha0 : 0 < a`. Break down `Nat.eq_zero_or_pos a with h | h` into its components or cases. Rewrite `hden` using `[h, mul_zero]`. Conclude with `absurd hden r.den_nz`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hb0 : 0 < b`. Break down `Nat.eq_zero_or_pos b with h | h` into its components or cases. Rewrite `hnum` using `[h, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(e2 : ℤ) - e1, a, b, ha0, hb0, ((Nat.Prime.coprime_iff_not_dvd hp).mpr ha).symm, ((Nat.Prime.coprime_iff_not_dvd hp).mpr hb).symm, ?_⟩` and prove the remaining obligations. Establish `hp0 : (p : ℚ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hrn : r * ((p : ℚ) ^ e2 * a) = (p : ℚ) ^ e1 * b`. Establish `h1` using `Rat.mul_den_eq_num r`. Establish `h2 : ((r.num.toNat : ℕ) : ℚ) = (r.num : ℚ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((r.num.toNat : ℕ) : ℤ) = r.num` using `Int.toNat_of_nonneg hnum0.le`. Conclude with `this` after adjusting the coercions. Establish `hd : ((r.den : ℕ) : ℚ) = (p : ℚ) ^ e2 * a` using `by exact_mod_cast hden`. Establish `hn : ((r.num.toNat : ℕ) : ℚ) = (p : ℚ) ^ e1 * b` using `by exact_mod_cast hnum`. Rewrite using `[← hd, h1, ← h2, hn]`.
-
-Rewrite using `[zpow_sub₀ hp0, zpow_natCast, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hrn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem adjust (p : ℕ) [Fact p.Prime] (r : ℚ) (hr : 0 < r) :
     ∃ (n : ℤ) (a b : ℕ), 0 < a ∧ 0 < b ∧ a.Coprime p ∧ b.Coprime p ∧
@@ -116,9 +114,9 @@ private theorem adjust (p : ℕ) [Fact p.Prime] (r : ℚ) (hr : 0 < r) :
   linear_combination hrn
 
 /- English proof (translation)
-Introduce `hmem`. Take `⟨l, hl, hspan⟩` from `exists_gen v.1`. Rewrite `hmem` using `[hspan, Ideal.mem_span_singleton, Int.natCast_dvd_natCast]`. Break down `(Fact.out : p.Prime).eq_one_or_self_of_dvd l hmem with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `v.2 (by rw [hspan, h])`.
+A detailed English derivation is pending.
 -/
 private theorem natCast_prime_not_mem_awayP {p : ℕ} [Fact p.Prime] (v : AwayP p) :
     ((p : ℕ) : ℤ) ∉ v.1.asIdeal := by
@@ -131,7 +129,7 @@ private theorem natCast_prime_not_mem_awayP {p : ℕ} [Fact p.Prime] (v : AwayP 
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
 /- English proof (translation)
-Establish `e : (l : ℚ) = algebraMap ℤ ℚ (l : ℤ)` using `by simp`. Establish `hl0 : (l : ℤ) ≠ 0` using `by omega`. Rewrite using `[e, valuation_of_algebraMap, v.intValuation_eq_exp_neg_multiplicity hl0, ← hspan, multiplicity_self]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem valuation_generator_eq_exp_neg_one (v : HeightOneSpectrum ℤ) (l : ℕ) (hl : 1 < l)
     (hspan : v.asIdeal = Ideal.span {(l : ℤ)}) : v.valuation ℚ (l : ℚ) = WithZero.exp (-1) := by
@@ -143,9 +141,9 @@ private theorem valuation_generator_eq_exp_neg_one (v : HeightOneSpectrum ℤ) (
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
 /- English proof (translation)
-Apply `val_nat_eq_one` to reduce the goal to its premises. Introduce `hmem`. Apply `hvw` to reduce the goal to its premises. Establish `hle : v.asIdeal ≤ w.asIdeal`. Rewrite using `[hspan, Ideal.span_le, Set.singleton_subset_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem`. Conclude with `HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top hle)`.
+A detailed English derivation is pending.
 -/
 private theorem valuation_generator_other_eq_one (v w : HeightOneSpectrum ℤ) (l : ℕ)
     (hspan : v.asIdeal = Ideal.span {(l : ℤ)}) (hvw : v ≠ w) : w.valuation ℚ (l : ℚ) = 1 := by
@@ -159,29 +157,27 @@ private theorem valuation_generator_other_eq_one (v w : HeightOneSpectrum ℤ) (
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
 /- English proof (translation)
-Proceed by induction on `K using Nat.strong_induction_on with`. Consider the case `_ K ih`. Introduce `y hK hy hKy`. Distinguish the cases in `hall : ∀ v : AwayP p, Valued.v (AfP.eval v (y : AfP p)) = 1`. Conclude with `⟨1, one_pos, fun v => by rw [map_one, one_mul]; exact hall v⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Use `push_neg at hall`. Take `⟨v, hv⟩` from `hall`. Establish `hvlt : Valued.v (AfP.eval v (y : AfP p)) < 1` using `lt_of_le_of_ne ((isIntAf_iff_val _).mp hy v) hv`. Take `⟨l, hl, hspan⟩` from `exists_gen v.1`. Establish `hlK : l ∣ K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK1 : Valued.v (AfP.eval v (algebraMap ℚ (AfP p) K)) < 1`. Establish `e : algebraMap ℚ (AfP p) K = (y : AfP p) * (algebraMap ℚ (AfP p) K * ((y⁻¹ : (AfP p)ˣ) : AfP p))`. Rewrite using `[mul_left_comm, Units.mul_inv, mul_one]`. Rewrite using `[e, map_mul, Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(isIntAf_iff_val _).mp hKy v`. Use `_ < 1 := by rw [mul_one]; exact hvlt`. Rewrite `hK1` using `[val_algebraMap]`. Establish `e2 : (K : ℚ) = algebraMap ℤ ℚ (K : ℤ)` using `by simp`. Rewrite `hK1` using `[e2, valuation_lt_one_iff_mem, hspan, Ideal.mem_span_singleton, Int.natCast_dvd_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hK1`. Take `⟨K', rfl⟩` from `hlK`. Establish `hK' : 0 < K'` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hK)`. Establish `hK'lt : K' < l * K'` using `by nlinarith`. Establish `hl0 : (l : ℚ) ≠ 0` using `by exact_mod_cast (by omega : l ≠ 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlu : IsUnit (algebraMap ℚ (AfP p) (l : ℚ)⁻¹)` using `(isUnit_iff_ne_zero.mpr (inv_ne_zero hl0)).map _`. Establish `hy'val : ((y * hlu.unit : (AfP p)ˣ) : AfP p) = algebraMap ℚ (AfP p) (l : ℚ)⁻¹ * y`. Rewrite using `[Units.val_mul, IsUnit.unit_spec, mul_comm]`. Establish `hy' : IsIntAf ((y * hlu.unit : (AfP p)ˣ) : AfP p)`. Rewrite using `[isIntAf_iff_val]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `w`. Rewrite using `[hy'val, map_mul, Valuation.map_mul, val_algebraMap, map_inv₀]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[valuation_generator_eq_exp_neg_one _ l hl hspan, ← WithZero.exp_neg, neg_neg, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_one_mul_exp_le hvlt`. Rewrite using `[valuation_generator_other_eq_one v.1 w.1 l hspan (fun h => hw (Subtype.ext h).symm), inv_one, one_mul]`. Conclude with `(isIntAf_iff_val _).mp hy w`. Establish `hinv : (((y * hlu.unit)⁻¹ : (AfP p)ˣ) : AfP p) = algebraMap ℚ (AfP p) (l : ℚ) * ((y⁻¹ : (AfP p)ˣ) : AfP p)`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hy'val]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [inv_mul_cancel₀ hl0, map_one, Units.mul_inv, one_mul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hKy' : IsIntAf (algebraMap ℚ (AfP p) K' * (((y * hlu.unit)⁻¹ : (AfP p)ˣ) : AfP p))`. Establish `e : algebraMap ℚ (AfP p) K' * (((y * hlu.unit)⁻¹ : (AfP p)ˣ) : AfP p) = algebraMap ℚ (AfP p) ((l * K' : ℕ) : ℚ) * ((y⁻¹ : (AfP p)ˣ) : AfP p)`. Rewrite using `[hinv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hKy`. Take `⟨s', hs', hval⟩` from `ih K' hK'lt (y * hlu.unit) hK' hy' hKy'`. Use `⟨s' / l, div_pos hs' (by positivity), fun w => ?_⟩` and prove the remaining obligations. Establish `e : algebraMap ℚ (AfP p) (s' / l) * (y : AfP p) = algebraMap ℚ (AfP p) s' * ((y * hlu.unit : (AfP p)ˣ) : AfP p)`.
-
-Rewrite using `[hy'val, div_eq_mul_inv, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hval w`.
+A detailed English derivation is pending.
 -/
 private theorem exists_pos_rat_valuation_one_away {p : ℕ} [Fact p.Prime] (K : ℕ) : ∀ (y : (AfP p)ˣ), 0 < K →
     IsIntAf (y : AfP p) → IsIntAf (algebraMap ℚ (AfP p) K * ((y⁻¹ : (AfP p)ˣ) : AfP p)) →
@@ -259,17 +255,15 @@ private theorem exists_pos_rat_valuation_one_away {p : ℕ} [Fact p.Prime] (K : 
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
 /- English proof (translation)
-Take `⟨N, hN, hNc⟩` from `DenAway.exists_nat_adele ((c⁻¹ : (AfP p)ˣ) : AfP p)`. Take `⟨M, hM, hMc⟩` from `DenAway.exists_nat_adele (c : AfP p)`. Establish `hN0 : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hu : IsUnit (algebraMap ℚ (AfP p) (N : ℚ))` using `(isUnit_iff_ne_zero.mpr hN0).map _`. Establish `hyv : ((hu.unit * c⁻¹ : (AfP p)ˣ) : AfP p) = algebraMap ℚ (AfP p) N * ((c⁻¹ : (AfP p)ˣ) : AfP p)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, IsUnit.unit_spec]`. Establish `hy : IsIntAf ((hu.unit * c⁻¹ : (AfP p)ˣ) : AfP p)`. Rewrite using `[hyv, map_natCast]`. Conclude with `hNc`. Establish `hyinv : (((hu.unit * c⁻¹)⁻¹ : (AfP p)ˣ) : AfP p) = algebraMap ℚ (AfP p) (N : ℚ)⁻¹ * c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hyv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `_ = 1 := by rw [mul_inv_cancel₀ hN0, map_one, Units.inv_mul, one_mul]`. Establish `hKy : IsIntAf (algebraMap ℚ (AfP p) ((N * M : ℕ) : ℚ) * (((hu.unit * c⁻¹)⁻¹ : (AfP p)ˣ) : AfP p))`. Establish `e : algebraMap ℚ (AfP p) ((N * M : ℕ) : ℚ) * (((hu.unit * c⁻¹)⁻¹ : (AfP p)ˣ) : AfP p) = (M : AfP p) * c`. Rewrite using `[hyinv, ← mul_assoc, ← map_mul, show ((N * M : ℕ) : ℚ) * (N : ℚ)⁻¹ = ((M : ℕ) : ℚ) by push_cast; field_simp, map_natCast]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hMc`. Take `⟨s, hs, hval⟩` from `exists_pos_rat_valuation_one_away (N * M) (hu.unit * c⁻¹) (Nat.mul_pos hN hM) hy hKy`. Use `⟨s * N, mul_pos hs (by exact_mod_cast hN), fun v => ?_⟩` and prove the remaining obligations. Establish `e : algebraMap ℚ (AfP p) (s * N) * ((c⁻¹ : (AfP p)ˣ) : AfP p) = algebraMap ℚ (AfP p) s * ((hu.unit * c⁻¹ : (AfP p)ˣ) : AfP p)`. Rewrite using `[hyv, map_mul, mul_assoc]`.
-
-Rewrite using `[e]`. Conclude with `hval v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem scale {p : ℕ} [Fact p.Prime] (c : (AfP p)ˣ) :
     ∃ s₀ : ℚ, 0 < s₀ ∧ ∀ v : AwayP p,
@@ -309,17 +303,17 @@ private theorem scale {p : ℕ} [Fact p.Prime] (c : (AfP p)ˣ) :
   exact hval v
 
 /- English proof (translation)
-Introduce `p _ c s hs`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨s₀, hs₀, hval⟩` from `scale c`. Take `⟨n, a, b, ha, hb, hap, hbp, hab⟩` from `adjust p (s₀ / s) (div_pos hs₀ hs)`. Establish `hpn : (0 : ℚ) < (p : ℚ) ^ n` using `zpow_pos (by exact_mod_cast hp.pos) n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs₁ : 0 < s₀ * (p : ℚ) ^ n` using `mul_pos hs₀ hpn`. Establish `hu : IsUnit (algebraMap ℚ (AfP p) (s₀ * (p : ℚ) ^ n))` using `(isUnit_iff_ne_zero.mpr hs₁.ne').map _`. Establish `hεv : ((hu.unit * c⁻¹ : (AfP p)ˣ) : AfP p) = algebraMap ℚ (AfP p) ((p : ℚ) ^ n) * (algebraMap ℚ (AfP p) s₀ * ((c⁻¹ : (AfP p)ˣ) : AfP p))`. Rewrite using `[Units.val_mul, IsUnit.unit_spec, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hpv : ∀ v : AwayP p, Valued.v (AfP.eval v (algebraMap ℚ (AfP p) ((p : ℚ) ^ n))) = 1`. Introduce `v`. Rewrite using `[val_algebraMap, map_zpow₀, val_nat_eq_one v.1 (natCast_prime_not_mem_awayP v), one_zpow]`. Establish `h1 : ∀ v : AwayP p, Valued.v (AfP.eval v ((hu.unit * c⁻¹ : (AfP p)ˣ) : AfP p)) = 1`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hεv, map_mul, Valuation.map_mul, hpv v, hval v, one_mul]`. Use `⟨s₀ * (p : ℚ) ^ n, hu.unit * c⁻¹, a, b, hs₁, ?_, ?_, ?_, ha, hb, hap, hbp, ?_⟩` and prove the remaining obligations. Rewrite using `[isIntAf_iff_val]`. Introduce `v`. Conclude with `(h1 v).le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isIntAf_iff_val]`. Introduce `v`. Establish `hm : Valued.v (AfP.eval v ((hu.unit * c⁻¹ : (AfP p)ˣ) : AfP p)) * Valued.v (AfP.eval v (((hu.unit * c⁻¹)⁻¹ : (AfP p)ˣ) : AfP p)) = 1`. Rewrite using `[← Valuation.map_mul, ← map_mul, Units.mul_inv, map_one, Valuation.map_one]`. Rewrite `hm` using `[h1 v, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm.le`. Rewrite using `[Units.val_mul, IsUnit.unit_spec, mul_assoc, Units.inv_mul, mul_one]`. Establish `hs0 : s ≠ 0` using `hs.ne'`. Clear denominators, using `at hab` for the nonvanishing conditions. Take the linear combination `hab`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_rat_unit_factorization_finiteAdelesAwayP :
     ∀ (p : ℕ) [Fact p.Prime] (c : (AfP p)ˣ) (s : ℚ), 0 < s → ∃ (s₁ : ℚ) (ε : (AfP p)ˣ) (a b : ℕ), 0 < s₁ ∧ IsIntAf (ε : AfP p) ∧ IsIntAf ((ε⁻¹ : (AfP p)ˣ) : AfP p) ∧ algebraMap ℚ (AfP p) s₁ = (ε : AfP p) * (c : AfP p) ∧ 0 < a ∧ 0 < b ∧ a.Coprime p ∧ b.Coprime p ∧ s₁ * a = s * b := by

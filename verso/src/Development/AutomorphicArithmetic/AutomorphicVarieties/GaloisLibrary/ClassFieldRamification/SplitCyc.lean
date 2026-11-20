@@ -6,19 +6,17 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `N _ C _ _ _ v p hp hpv hpN hspl`. Use `haveI := Fact.mk hp`. Use `haveI := v.isMaximal`. Establish `hspan : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Establish `hvZ : v.asIdeal.under ℤ = Ideal.span {(p : ℤ)}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hspan.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top ?_).symm` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under, Ideal.mem_comap, map_natCast]`. Conclude with `hpv`. Use `haveI : v.asIdeal.LiesOver (Ideal.span {(p : ℤ)}) := ⟨hvZ.symm⟩`. Establish `hsurj : Function.Surjective (algebraMap ℤ (𝓞 ℚ))` using `fun y => ⟨Rat.ringOfIntegersEquiv y, by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `h : (Rat.ringOfIntegersEquiv.symm : ℤ →+* 𝓞 ℚ) = algebraMap ℤ (𝓞 ℚ)` using `Subsingleton.elim _ _`. Rewrite using `[← h]`. Conclude with `Rat.ringOfIntegersEquiv.symm_apply_apply y⟩`. Establish `hv1 : v.asIdeal.inertiaDeg ℤ = 1`. Use `letI := Ideal.Quotient.field (Ideal.span {(p : ℤ)})`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI := Ideal.Quotient.field v.asIdeal`. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal (Ideal.span {(p : ℤ)}) v.asIdeal, finrank_eq_one_iff_of_nonzero (1 : 𝓞 ℚ ⧸ v.asIdeal) one_ne_zero, eq_top_iff]`. Introduce and unpack `y -`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨a, rfl⟩` from `hsurj y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨Ideal.Quotient.mk _ a, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Take `⟨⟨P, hPp, hPl⟩⟩` from `v.asIdeal.nonempty_primesOver (S := 𝓞 C)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hPne : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P`. Establish `hs` using `hspl ⟨P, hPp, hPne⟩ hPl`. Use `haveI : P.LiesOver (Ideal.span {(p : ℤ)}) := Ideal.LiesOver.trans P v.asIdeal _`. Establish `ht` using `Ideal.inertiaDeg_tower (R := ℤ) v.asIdeal P`. Rewrite `ht` using `[hv1, one_mul, hs.2, IsCyclotomicExtension.Rat.inertiaDeg_eq_of_not_dvd p C P hpN]`.
-
-Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_one]`. Conclude with `orderOf_eq_one_iff.mp ht`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.splitCyc :
     ∀ (N : ℕ) [NeZero N] (C : Type) [Field C] [NumberField C] [IsCyclotomicExtension {N} ℚ C] (v : HeightOneSpectrum (𝓞 ℚ)) (p : ℕ), p.Prime → (p : 𝓞 ℚ) ∈ v.asIdeal → ¬ p ∣ N → GroundTheory.Global.SplitsCompletely C v → p ≡ 1 [MOD N] := by

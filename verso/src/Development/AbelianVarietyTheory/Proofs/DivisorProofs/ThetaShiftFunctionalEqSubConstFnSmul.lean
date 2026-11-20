@@ -27,14 +27,14 @@ def germConstHom (q : Z ⟶ Sp R) (z : Z) : R →+* Z.presheaf.stalk z :=
   (Z.presheaf.germ ⊤ z trivial).hom.comp (q.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
 
 /- English proof (translation)
-Rewrite using `[gs_eq (𝟙 Z) z ⊤ trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_id_scal_eq_germConstHom (q : Z ⟶ Sp R) (z : Z) (a : R) :
     gs (𝟙 Z) z ⊤ (scal q a) = germConstHom q z a := by
   rw [gs_eq (𝟙 Z) z ⊤ trivial]; rfl
 
 /- English proof (translation)
-Establish `: constFn p ⊤ a = (p.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)`. Unfold `constFn`. Rewrite using `[← Scheme.Hom.appLE_eq_app]`. Both sides reduce to the same expression. Conclude with `(congrArg (gs r z ⊤) this).trans ((gs_eq r z ⊤ trivial _).trans rfl)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gs_constFn_eq_germConstHom (p : Y ⟶ Sp R) (r : Z ⟶ Y) (z : Z) (a : R) :
     gs r z ⊤ (constFn p ⊤ a) = germConstHom (r ≫ p) z a := by
@@ -44,7 +44,7 @@ theorem gs_constFn_eq_germConstHom (p : Y ⟶ Sp R) (r : Z ⟶ Y) (z : Z) (a : R
   exact (congrArg (gs r z ⊤) this).trans ((gs_eq r z ⊤ trivial _).trans rfl)
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem φ r`. Establish `h₁ : sval (s' - constFn p ⊤ a • s) r z J + sval (constFn p ⊤ a • s) r z J = sval s' r z J` using `(gs_add r z _ hm _ _).symm.trans (congrArg (gs r z _) (sub_add_cancel _ _))`. Establish `h₂ : sval (constFn p ⊤ a • s) r z J = germConstHom (r ≫ p) z a * sval s r z J` using `(gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) ((gs_res r z le_top hm _).trans (gs_constFn_eq_germConstHom p r z a)) rfl)`. Rewrite using `[← h₁, h₂, add_sub_cancel_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sval_sub_constFn_smul {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (p : Y ⟶ Sp R)
     (s s' : LB.Sec (LB.LinComb L φ ε)) (a : R) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -60,9 +60,9 @@ theorem sval_sub_constFn_smul {L : LB X} {K : Type} [Fintype K] {φ : K → (Y �
 end Values
 
 /- English proof (translation)
-Introduce `R _ _ Q k mu α σ σ' σ₁ σ₁' c e e₁ h₀ h₁ u hu hc z J hJ`. Establish `a₀` using `h₀ u hu hc z J hJ`. Establish `a₁` using `h₁ u hu hc z J hJ`. Rewrite `a₁` using `[sval_sub_constFn_smul _ _ _ _ _ _ hJ, sval_sub_constFn_smul _ _ _ _ _ _ hJ, Over.w, Over.w, gs_id_scal_eq_germConstHom]`. Rewrite `a₀` using `[gs_id_scal_eq_germConstHom, map_zero, zero_mul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[gs_id_scal_eq_germConstHom, map_sub, map_add]`. Take the linear combination `a₁ + germConstHom (DegPre.BF Q (FractionRing R)).hom z e * a₀`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem shiftEq_of_sub_constFn_smul : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (k : ℕ) (mu α : Q.X) (σ σ' : Q.SecB k α) (σ₁ σ₁' : Q.SecB k (α + k • mu)) (c e e₁ : R), ShiftEq Q k mu α σ σ₁ 0 σ₁ → ShiftEq Q k mu α (σ' - constFn Q.P.A.hom ⊤ e • σ) (σ₁' - constFn Q.P.A.hom ⊤ e₁ • σ₁) c σ₁ → ShiftEq Q k mu α σ' σ₁' (c + e₁ - e) σ₁ := by
   intro R _ _ Q k mu α σ σ' σ₁ σ₁' c e e₁ h₀ h₁ u hu hc z J hJ

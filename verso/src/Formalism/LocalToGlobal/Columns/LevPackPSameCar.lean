@@ -13,16 +13,16 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => one_dvd r, fun _ P hP => absurd hP (Finset.notMem_empty P)⟩ cop := isCoprime_one_left`.
+Supply the required witnesses or components.
 -/
 theorem hp_basePi_one (E : Type) [Field E] [NumberField E] [StarRing E] : BasePi (∅ : Finset (Pl E)) (1 : 𝓞 E) where
   dvd r := ⟨fun _ => one_dvd r, fun _ P hP => absurd hP (Finset.notMem_empty P)⟩
   cop := isCoprime_one_left
 
 /- English proof (translation)
-Use `le_antisymm (rll_baseLb_le n ∅) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[rll_baseLb_eq n (hp_basePi_one E), rll_mem_dLat]`. Rewrite `hx` using `[mem_stdLat]`. Use `⟨fun i _ => hx i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, inv_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx _`.
+A detailed English derivation is pending.
 -/
 theorem hp_baseLb_empty (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) [NeZero n] :
     baseLb E n (∅ : Finset (Pl E)) = stdLat E n := by
@@ -103,9 +103,9 @@ def levPackP (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) Pr.vGs) (hs : ∀ c, 
   exact levPackP₁ hc hPr σ₀ Λ s hS hs
 
 /- English proof (translation)
-Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Take `⟨n', hn, J, rfl, l0, hl0, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : l0 = baseLb X.E n' (∅ : Finset (Pl X.E))` from `hl0.trans (Formalism.L2.Forms.reL_rfl _)`. Take `rfl : lat = fun c => (s c).1.N` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `th_sameCar_refl _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem levelPacking_sameCarrier (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) Pr.vGs) (hs : ∀ c, decoCls n ∅ Pr.vGs Λ.grp (s c) = c)
     (H : HCrdP X n fun c => (s c).1.N) (Q : StepCrd Pr σ₀ n fun c => (s c).1.N) :
@@ -123,7 +123,7 @@ theorem levelPacking_sameCarrier (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) P
   exact th_sameCar_refl _ _ _ _ _
 
 /- English proof (translation)
-Take `⟨n', hn, J, rfl, l0, hl0, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : l0 = baseLb X.E n' (∅ : Finset (Pl X.E))` from `hl0.trans (Formalism.L2.Forms.reL_rfl _)`. Take `rfl : lat = fun c => (s c).1.N` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`. Conclude with `Formalism.L2.Forms.reGL_rfl _ _`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem levelPacking_stabilizer (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) Pr.vGs) (hs : ∀ c, decoCls n ∅ Pr.vGs Λ.grp (s c) = c)
     (H : HCrdP X n fun c => (s c).1.N) (c : DecoCl n (∅ : Finset (Pl X.E)) Pr.vGs Λ.grp)

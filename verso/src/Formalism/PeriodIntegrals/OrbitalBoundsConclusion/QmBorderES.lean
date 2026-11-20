@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmColExp
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmRowExp
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.QmBorderES.qmBorderES_of quantum_minor_column_expansion quantum_minor_row_expansion`.
+A detailed English derivation is pending.
 -/
 theorem quantum_minor_border_es : PI.QmBorderES := PI.UnitaryGroupMassFormula.QmBorderES.qmBorderES_of quantum_minor_column_expansion quantum_minor_row_expansion

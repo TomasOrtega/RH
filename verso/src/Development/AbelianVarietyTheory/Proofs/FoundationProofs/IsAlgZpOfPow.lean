@@ -32,11 +32,9 @@ def contr (N : ℤ) (hN : 0 < N) (b : Lau p) : Lau p where
     nlinarith
 
 /- English proof (translation)
-Establish `hN' : (0 : ℤ) < N` using `by exact_mod_cast hN`. Establish `h0` using `Int.emod_nonneg r hN'.ne'`. Establish `h1` using `Int.emod_lt_of_pos r hN'`. Rewrite using `[Finset.sum_eq_single (⟨(r % (N : ℤ)).toNat, by omega⟩ : Fin N)]`. Rewrite using `[if_pos (by simp only; omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _ hi`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hi (Fin.ext (by simp only; omega))`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_ite {M : Type} [AddCommMonoid M] (N : ℕ) (hN : 0 < N) (r : ℤ) (f : ℕ → M) :
     ∑ i : Fin N, (if r % (N : ℤ) = ((i : ℕ) : ℤ) then f i else 0) = f (r % (N : ℤ)).toNat := by
@@ -52,13 +50,13 @@ theorem sum_ite {M : Type} [AddCommMonoid M] (N : ℕ) (hN : 0 < N) (r : ℤ) (f
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Polynomial.X ^ N - 1, by simpa using Polynomial.X_pow_sub_C_ne_zero hN (1 : ℤ_[p]), by simp [h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAlgZp_of_pow {z : Ω} {N : ℕ} (hN : 0 < N) (h : z ^ N = 1) : IsAlgZp p z :=
   ⟨Polynomial.X ^ N - 1, by simpa using Polynomial.X_pow_sub_C_ne_zero hN (1 : ℤ_[p]), by simp [h]⟩
 
 /- English proof (translation)
-The claim follows from `IsIntegral.of_pow hN (by rw [h]; exact isIntegral_one)`.
+A detailed English derivation is pending.
 -/
 theorem isInt_of_pow {z : Ω} {N : ℕ} (hN : 0 < N) (h : z ^ N = 1) : IsInt p z :=
   IsIntegral.of_pow hN (by rw [h]; exact isIntegral_one)

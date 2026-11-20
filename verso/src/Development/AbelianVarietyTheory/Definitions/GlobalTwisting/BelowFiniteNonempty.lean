@@ -114,9 +114,9 @@ section Position
 variable {Pr : Primes X} {u : Pr.Word} {SG : Finset (HeightOneSpectrum (𝓞 X.E))} {n : ℕ}
 
 /- English proof (translation)
-Use `⟨(moveHyp_of_ok hPr u P).ne, (moveHyp_of_ok hPr u P).st, fun w => ⟨fun e => ?_, fun e => ?_⟩⟩` and prove the remaining obligations. Apply `h w.1 w.2` to reduce the goal to its premises. Rewrite using `[e]`. Conclude with `T_mem hPr u P`. Apply `h w.1 w.2` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mem_conjP, map_natCast]`. Conclude with `T_mem hPr u P`.
+A detailed English derivation is pending.
 -/
 theorem moveHyp_of_notMem (hPr : Pr.Ok) (h : ∀ w ∈ SG, (Pr.T u : 𝓞 X.E) ∉ w.asIdeal) (P : Pr.vT u) :
     MoveHyp (Pr.vT u) SG P := by
@@ -129,7 +129,7 @@ theorem moveHyp_of_notMem (hPr : Pr.Ok) (h : ∀ w ∈ SG, (Pr.T u : 𝓞 X.E) �
     exact T_mem hPr u P
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨d'.upSet_finite P _, d'.upSet_nonempty P hP (T_unif hX hPr u P).1 (T_unif hX hPr u P).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem above_finite_nonempty (hX : X.Ok) (hPr : Pr.Ok) {P : Pr.vT u} (hP : MoveHyp (Pr.vT u) SG P)
     (d' : DecoSet X.E n (Pr.vT u) SG) :
@@ -138,7 +138,7 @@ theorem above_finite_nonempty (hX : X.Ok) (hPr : Pr.Ok) {P : Pr.vT u} (hP : Move
   ⟨d'.upSet_finite P _, d'.upSet_nonempty P hP (T_unif hX hPr u P).1 (T_unif hX hPr u P).2⟩
 
 /- English proof (translation)
-The claim follows from `Set.ext fun d₀ => DecoSet.mem_upSet_iff_mem_dnSet hP (T_unif hX hPr u P).1 (T_unif hX hPr u P).2 d₀ d`.
+A detailed English derivation is pending.
 -/
 theorem below_eq_dnSet (hX : X.Ok) (hPr : Pr.Ok) {P : Pr.vT u} (hP : MoveHyp (Pr.vT u) SG P)
     (d : DecoSet X.E n (Pr.vT u) SG) :
@@ -146,7 +146,7 @@ theorem below_eq_dnSet (hX : X.Ok) (hPr : Pr.Ok) {P : Pr.vT u} (hP : MoveHyp (Pr
   Set.ext fun d₀ => DecoSet.mem_upSet_iff_mem_dnSet hP (T_unif hX hPr u P).1 (T_unif hX hPr u P).2 d₀ d
 
 /- English proof (translation)
-Rewrite using `[below_eq_dnSet hX hPr hP]`. Conclude with `⟨d.dnSet_finite P hP.ne _, d.dnSet_nonempty P hP (T_unif hX hPr u P).1 (T_unif hX hPr u P).2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem below_finite_nonempty (hX : X.Ok) (hPr : Pr.Ok) {P : Pr.vT u} (hP : MoveHyp (Pr.vT u) SG P)
     (d : DecoSet X.E n (Pr.vT u) SG) :
@@ -160,15 +160,13 @@ end Position
 variable {sel u} in
 
 /- English proof (translation)
-Introduce `w hw hm`. Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Conclude with `T_notMem_vGs hPr u ⟨w, h⟩ hm`. Unfold `QE at h split_ifs at h with hf`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv' : v ∈ Qprime (mu : Chr X.F X.E X.K)` using `hf.mem_toFinset.1 hv`. Establish `hg : GoodPl X.E S v`. Assume the negation of the conclusion as `hg`. Conclude with `hv' (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 mu.2.2 v) hg)`. Establish `h1 : (Pr.T u : 𝓞 X.F) ∈ v.asIdeal`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hsel v, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hm`. Apply `hg.2.2` to reduce the goal to its premises. Establish `h2 : ringChar (𝓞 X.F ⧸ v.asIdeal) = Pr.T u`. Use `v.isPrime` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((Pr.T u : ℕ) : 𝓞 X.F ⧸ v.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h1`. Conclude with `((Nat.dvd_prime (hPr.T_prime u)).1 (ringChar.dvd h3)).resolve_left CharP.ringChar_ne_one`. Use `show ringChar (𝓞 X.F ⧸ v.asIdeal) ∈ S`.
-
-Rewrite using `[h2]`. Conclude with `hT`. Simplify using `at h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem T_notMem_rowSG (hPr : Pr.Ok) (hsel : IsSel X sel) (hT : Pr.T u ∈ S) :
     ∀ w ∈ rowSG Pr sel mu, (Pr.T u : 𝓞 X.E) ∉ w.asIdeal := by
@@ -201,9 +199,9 @@ theorem T_notMem_rowSG (hPr : Pr.Ok) (hsel : IsSel X sel) (hT : Pr.T u ∈ S) :
 variable {W u j} in
 
 /- English proof (translation)
-Introduce `τ s t`. Establish `h1` using `h.two_spread_lt u j hj τ`. Establish `h0` using `R.N_pos j`. Rewrite `h1` using `[DomWeight.spread, dif_pos h0]`. Establish `h2 : (W.lamTrue u j τ).w s ≤ (W.lamTrue u j τ).w ⟨0, h0⟩` using `(W.lamTrue u j τ).anti (Nat.zero_le _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (W.lamTrue u j τ).w ⟨R.N j - 1, by omega⟩ ≤ (W.lamTrue u j τ).w t` using `(W.lamTrue u j τ).anti (show t.1 ≤ R.N j - 1 by have := t.2; omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem alcoveAt_of_sizes {a : ℝ} (h : Sizes Pr W a) (hj : j ≤ R.m) : AlcoveAt W u j := by
   intro τ s t
@@ -222,21 +220,19 @@ variable {Z : Dat} {H : D7} {s : Seam H Z.X} {cc : Ideal (𝓞 H.host.K)} {δ : 
   {cst : LocCst Z.X (rowSG Z.Pr sel mu)} {u : Z.Pr.Word}
 
 /- English proof (translation)
-The claim follows from `h.host (Or.inr ⟨u, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem T_mem (h : Hyp Z s cc δ χ cD sel S mu cst u) : Z.Pr.T u ∈ S := h.host (Or.inr ⟨u, rfl⟩)
 
 /- English proof (translation)
-Apply `h.host` to reduce the goal to its premises. Apply the tactic sequence `fin_cases k <;> simp [hostS]`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem g_mem (h : Hyp Z s cc δ χ cD sel S mu cst u) (k : Fin 2) : Z.Pr.g k ∈ S := by
   apply h.host
   fin_cases k <;> simp [hostS]
 
 /- English proof (translation)
-Break down `hp.dvd_mul.1 hd with h1 | h1` into its components or cases. Break down `hp.dvd_mul.1 h1 with h2 | h2` into its components or cases. Conclude with `h.small p (Nat.mem_primeFactors.2 ⟨hp, h2, H.host.QS_pos.ne'⟩)`. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hp H.host.hyp.1).1 h2]`. Conclude with `h.host (by simp [hostS])`.
-
-Rewrite using `[(Nat.prime_dvd_prime_iff_eq hp H.host.hyp.2.1).1 h1]`. Conclude with `h.host (by simp [hostS])`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ram_mem (h : Hyp Z s cc δ χ cD sel S mu cst u) {p : ℕ} (hp : p.Prime) (hd : p ∣ H.host.condN) : p ∈ S := by
   rcases hp.dvd_mul.1 hd with h1 | h1
@@ -248,14 +244,14 @@ theorem ram_mem (h : Hyp Z s cc δ χ cD sel S mu cst u) {p : ℕ} (hp : p.Prime
     exact h.host (by simp [hostS])
 
 /- English proof (translation)
-The claim follows from `moveHyp_of_notMem h.ok.primes (fun w hw => T_notMem_rowSG mu h.ok.primes h.isSel h.T_mem w (hSG hw)) P`.
+A detailed English derivation is pending.
 -/
 theorem moveHyp (h : Hyp Z s cc δ χ cD sel S mu cst u) {SG : Finset (HeightOneSpectrum (𝓞 Z.X.E))}
     (hSG : SG ⊆ rowSG Z.Pr sel mu) (P : Z.Pr.vT u) : MoveHyp (Z.Pr.vT u) SG P :=
   moveHyp_of_notMem h.ok.primes (fun w hw => T_notMem_rowSG mu h.ok.primes h.isSel h.T_mem w (hSG hw)) P
 
 /- English proof (translation)
-The claim follows from `alcoveAt_of_sizes h.ok.sizes hj`.
+A detailed English derivation is pending.
 -/
 theorem alcoveAt (h : Hyp Z s cc δ χ cD sel S mu cst u) {j : ℕ} (hj : j ≤ Z.R.m) : AlcoveAt Z.W u j :=
   alcoveAt_of_sizes h.ok.sizes hj
@@ -265,9 +261,9 @@ end Hyp
 open Classical in
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Establish `h : x ∈ homAt (rowSG Pr sel mu) N N'`. Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg h)`. Conclude with `Submodule.smul_mem _ _ h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz, rfl⟩` from `hy`. Establish `h : ((cBof sel mu cst u : 𝓞 X.E) • (LinearMap.id : HomE X.E a b →ₗ[𝓞 X.E] HomE X.E a b)) z ∈ homAt (rowSG Pr sel mu) N N'` using `Submodule.smul_mem _ _ hz`. Simplify using `only [Submodule.add_mem_iff_left _ h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem offBox_indicator {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) :
     InBoxOfRowSelection sel mu cst u N N' fun x => if x ∈ homAt (rowSG Pr sel mu) N N' then (1 : X.K) else 0 := by
@@ -282,25 +278,25 @@ theorem offBox_indicator {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' :
     simp only [Submodule.add_mem_iff_left _ h]
 
 /- English proof (translation)
-Introduce `_ _` and use `Iff.rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example {n : ℕ} (SB : Finset (HeightOneSpectrum (𝓞 X.E))) : Framed (SB := SB) (stdLat X.E n) fun _ => 1 := fun _ _ => Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨moveHyp_of_notMem hPr (by simp) P, moveHyp_of_ok hPr u P⟩`.
+Supply the required witnesses or components.
 -/
 example (hPr : Pr.Ok) (P : Pr.vT u) : MoveHyp (Pr.vT u) ∅ P ∧ MoveHyp (Pr.vT u) Pr.vGs P :=
   ⟨moveHyp_of_notMem hPr (by simp) P, moveHyp_of_ok hPr u P⟩
 
 /- English proof (translation)
-Introduce `h` and use `(h.sg ⟨P.1, Finset.mem_singleton_self _⟩).1 rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (P : Pr.vT u) : ¬ MoveHyp (Pr.vT u) {P.1} P := fun h => (h.sg ⟨P.1, Finset.mem_singleton_self _⟩).1 rfl
 
 /- English proof (translation)
-Establish `h : phiT X.K d₁.1 d₁'.1 = phiT X.K d₂.1 d₂'.1`. Use function extensionality and compare the values at `x`. Unfold `phiT Deco.at`. Rewrite using `[hN, hf, hN', hf']`. Unfold `term`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, hN, hN']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem term_congr {SG₁ SG₂ SG₁' SG₂' : Finset (HeightOneSpectrum (𝓞 X.E))} (d₁ : DecoSet X.E (R.N i) (Pr.vT u) SG₁)
     (d₂ : DecoSet X.E (R.N i) (Pr.vT u) SG₂) (d₁' : DecoSet X.E (R.N j) (Pr.vT u) SG₁') (d₂' : DecoSet X.E (R.N j) (Pr.vT u) SG₂')
@@ -315,7 +311,7 @@ theorem term_congr {SG₁ SG₂ SG₁' SG₂' : Finset (HeightOneSpectrum (𝓞 
   rw [h, hN, hN']
 
 /- English proof (translation)
-Simplify using `[term, ker, kerOf, latSum]`.
+Simplify using the standard rewrite rules.
 -/
 example {SG SG' : Finset (HeightOneSpectrum (𝓞 X.E))} (d : DecoSet X.E (R.N i) (Pr.vT u) SG)
     (fr : Frs X.E (R.N i) (rowSG Pr sel mu)) (d' : DecoSet X.E (R.N j) (Pr.vT u) SG') (fr' : Frs X.E (R.N j) (rowSG Pr sel mu)) :

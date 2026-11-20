@@ -4,17 +4,17 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU y`. Establish `hfr : Module.finrank F E = 2` using `hU.finrank_eq`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Set `σ : E ≃ₐ[F] E` to `AlgEquiv.ofRingEquiv (f := (starRingAut : RingAut E)) (fun x => hU.star_fix x)`. Establish `hσ : ∀ z, σ z = star z` using `fun z => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (1 : E ≃ₐ[F] E) ≠ σ`. Introduce `h`. Take `⟨z, hz⟩` from `hU.star_ne`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← hσ, ← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hle : Nat.card (E ≃ₐ[F] E) ≤ 2`. Rewrite using `[← hfr]`. Conclude with `(Nat.card_le_card_of_injective _ AlgEquiv.coe_algHom_injective).trans (card_algHom_le_finrank F E E)`. Establish `hcard : Fintype.card (E ≃ₐ[F] E) = 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Nat.card_eq_fintype_card]`. Use `le_antisymm hle ?_` and prove the remaining obligations. Establish `: Fintype.card (E ≃ₐ[F] E) ≥ 2`. Establish `h2 : (({1, σ} : Finset (E ≃ₐ[F] E))).card = 2` using `Finset.card_pair hne`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.card_le_univ _`. Rewrite using `[Nat.card_eq_fintype_card]` and apply the resulting hypothesis. Use `haveI : IsGalois F E := IsGalois.of_card_aut_eq_finrank F E (by rw [Nat.card_eq_fintype_card, hcard, hfr])`. Rewrite using `[trace_eq_sum_automorphisms]`. Establish `huniv : (Finset.univ : Finset (E ≃ₐ[F] E)) = {1, σ}`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Finset.eq_of_subset_of_card_le (Finset.subset_univ _) ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, hcard, Finset.card_pair hne]`. Rewrite using `[huniv, Finset.sum_pair hne]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trace_eq_add_star : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E], ∀ y : E, algebraMap F E (Algebra.trace F E y) = y + star y := by

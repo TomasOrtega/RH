@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC
 namespace GlobalTheory.CompanionTheory.Dblock.SzFinProof
 
 /- English proof (translation)
-Use `delta PositivityTheory.Rg.BcB.cW GlobalTheory.CuspRep.pLoc GlobalTheory.CuspRep.pFin`. Establish `h` using `RestrictedProduct.eventually _ _ (RingHom.snd (InfiniteAdeleRing E) (Af E) a)`. Use `(Filter.eventually_cofinite.mp h).subset ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_ofPred_eq, RingHom.comp_apply, RestrictedProduct.evalRingHom_apply] at hw ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hmem`. Conclude with `absurd hw (not_lt.mpr (Valued.toNormedField.norm_le_one_iff.mpr ((IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mp hmem)))`.
+A detailed English derivation is pending.
 -/
 theorem finite_one_lt_norm_cW {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (a : Ad E) :
     {w : HeightOneSpectrum (𝓞 E) | 1 < ‖cW w a‖}.Finite := by
@@ -22,9 +22,9 @@ theorem finite_one_lt_norm_cW {E : Type} [Field E] [NumberField E] [IsTotallyCom
     ((IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mp hmem)))
 
 /- English proof (translation)
-Introduce `E _ _ _ ι κ _ _ A`. Use `(Set.Finite.biUnion (s := (Set.univ : Set (ι × κ))) Set.finite_univ fun p _ => finite_one_lt_norm_cW (A p.1 p.2)).subset ?_` and prove the remaining obligations. Introduce `w hw`. Express the relevant statement in the definitionally equal form `1 < ⨆ p : ι × κ, ‖(A.map (PositivityTheory.Rg.BcB.cW w)) p.1 p.2‖ at hw`. Break down `isEmpty_or_nonempty (ι × κ) with hι | hι` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hw` using `[Real.iSup_of_isEmpty]`. Conclude with `absurd hw (by norm_num)`. Take `⟨p, hp⟩` from `exists_lt_of_lt_ciSup hw`. Conclude with `Set.mem_biUnion (Set.mem_univ p) hp`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem szFin : SzFin := by
   intro E _ _ _ ι κ _ _ A

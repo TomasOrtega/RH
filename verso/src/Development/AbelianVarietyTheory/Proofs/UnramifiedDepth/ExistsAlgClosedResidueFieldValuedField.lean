@@ -16,7 +16,7 @@ namespace GlobalTheory.AlphaPair.ResField
 variable {C : Type} [Field C] (V : VF C)
 
 /- English proof (translation)
-Establish `h : ((0 : ℝ) : WithTop ℝ) ≤ V.v (x : C)` using `x.2`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nonneg (x : V.RR) : 0 ≤ V.v (x : C) := by
   have h : ((0 : ℝ) : WithTop ℝ) ≤ V.v (x : C) := x.2
@@ -32,13 +32,13 @@ def mm : Ideal V.RR where
     exact lt_of_lt_of_le hx (le_add_of_nonneg_left (nonneg V c))
 
 /- English proof (translation)
-Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨fun h => ?_, fun J x _ hx hxJ => ?_⟩` and prove the remaining obligations. Establish `h1 : 0 < V.v ((1 : V.RR) : C)` using `h`. Simplify using `at h1`. Establish `hx' : ¬ 0 < V.v (x : C)` using `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx0 : V.v (x : C) = 0` using `le_antisymm (not_lt.mp hx') (nonneg V x)`. Establish `hne : (x : C) ≠ 0`. Introduce `h`. Rewrite `hx0` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_zero hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ((0 : ℝ) : WithTop ℝ) ≤ V.v ((x : C)⁻¹)`. Rewrite using `[AddValuation.map_inv, hx0]`. Simplify using the standard rewrite rules. Set `y : V.RR` to `⟨(x : C)⁻¹, hinv⟩`. Establish `hyx : y * x = 1` using `Subtype.ext (by simp [y, hne])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hyx]`. Conclude with `J.mul_mem_left y hxJ`.
+A detailed English derivation is pending.
 -/
 theorem mm_isMaximal : (mm V).IsMaximal := by
   rw [Ideal.isMaximal_iff]
@@ -60,7 +60,7 @@ theorem mm_isMaximal : (mm V).IsMaximal := by
     exact J.mul_mem_left y hxJ
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective map_le_one := fun r => by show 0 ≤ V.v (r : C) exact nonneg V r exists_of_le_one := fun {r} h => by have h' : 0 ≤ V.v r := h refine ⟨⟨r, ?_⟩, rfl⟩ show ((0 : ℝ) : WithTop ℝ) ≤ V.v r simpa using h'`.
+A detailed English derivation is pending.
 -/
 theorem integers : (AddValuation.toValuation V.v).Integers V.RR where
   hom_inj := Subtype.val_injective
@@ -74,11 +74,11 @@ theorem integers : (AddValuation.toValuation V.v).Integers V.RR where
     simpa using h'
 
 /- English proof (translation)
-Use `IsAlgClosed.of_exists_root Ω fun p hp hirr => ?_` and prove the remaining obligations. Take `⟨q, hqmap, hqdeg, hqmon⟩` from `Polynomial.lifts_and_degree_eq_and_monic ((Polynomial.mem_lifts p).2 (Polynomial.map_surjective ρ hρ p)) hp`. Establish `hdeg : (q.map (algebraMap V.RR C)).degree ≠ 0`. Rewrite using `[Polynomial.degree_map_eq_of_injective (integers V).hom_inj, hqdeg]`. Conclude with `(Polynomial.degree_pos_of_irreducible hirr).ne'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `IsAlgClosed.exists_root _ hdeg`. Rewrite `hz` using `[Polynomial.IsRoot, Polynomial.eval_map]`. Establish `hint : IsIntegral V.RR z` using `⟨q, hqmon, hz⟩`. Take `⟨y, rfl⟩` from `(integers V).exists_of_le_one ((integers V).mem_of_integral hint)`. Rewrite `hz` using `[Polynomial.eval₂_at_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : q.eval y = 0` using `(integers V).hom_inj (by rw [hz, map_zero])`. Use `⟨ρ y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hqmap, Polynomial.eval_map, Polynomial.eval₂_at_apply, hy, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgClosed_of_surjective [IsAlgClosed C] {Ω : Type} [Field Ω] (ρ : V.RR →+* Ω)
     (hρ : Function.Surjective ρ) : IsAlgClosed Ω := by
@@ -98,11 +98,9 @@ theorem isAlgClosed_of_surjective [IsAlgClosed C] {Ω : Type} [Field Ω] (ρ : V
   rw [← hqmap, Polynomial.eval_map, Polynomial.eval₂_at_apply, hy, map_zero]
 
 /- English proof (translation)
-Introduce `C _ V _`. Use `mm_isMaximal V` as an intermediate fact. Set `_ : Field (V.RR ⧸ mm V)` to `Ideal.Quotient.field (mm V)`. Establish `hl : ((V.l : ℕ) : V.RR ⧸ mm V) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (mm V)), Ideal.Quotient.eq_zero_iff_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show 0 < V.v (((V.l : ℕ) : V.RR) : C)`. Establish `hc : (((V.l : ℕ) : V.RR) : C) = ((V.l : ℕ) : C)` using `by simp`. Rewrite using `[hc, V.v_l]`. Conclude with `zero_lt_one`. Establish `: CharP (V.RR ⧸ mm V) V.l` using `(CharP.charP_iff_prime_eq_zero V.l_prime).2 hl`.
-
-Conclude with `⟨V.RR ⧸ mm V, inferInstance, isAlgClosed_of_surjective V _ Ideal.Quotient.mk_surjective, inferInstance, Ideal.Quotient.mk (mm V), fun x => Ideal.Quotient.eq_zero_iff_mem⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_residueField : ∀ (C : Type) [Field C] (V : VF C), IsAlgClosed C → ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (_ : CharP Ω V.l) (ρ : V.RR →+* Ω), ∀ x : V.RR, ρ x = 0 ↔ V.MM (x : C) := by
   intro C _ V _

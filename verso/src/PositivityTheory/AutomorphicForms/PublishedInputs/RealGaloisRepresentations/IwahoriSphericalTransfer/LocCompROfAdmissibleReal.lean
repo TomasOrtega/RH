@@ -20,14 +20,14 @@ variable {K V : Type} [Group K] [AddCommGroup V] [Module ℂ V]
 def orb (κ : Representation ℂ K V) (x : V) : (K →₀ ℂ) →ₗ[ℂ] V := Finsupp.linearCombination ℂ fun k => κ k x
 
 /- English proof (translation)
-Simplify using `only [orb, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul, hT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem orb_comm (κ : Representation ℂ K V) (T : Module.End ℂ V) (hT : ∀ k x, T (κ k x) = κ k (T x)) (x : V)
     (c : K →₀ ℂ) : orb κ (T x) c = T (orb κ x c) := by
   simp only [orb, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul, hT]
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add c c' h h' => rw [Finsupp.mapDomain_add, map_add, map_add, map_add, h, h']`. Consider the case `single a b => simp [orb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem orb_act (κ : Representation ℂ K V) (x : V) (k : K) (c : K →₀ ℂ) :
     orb κ x (c.mapDomain (k * ·)) = κ k (orb κ x c) := by
@@ -48,15 +48,15 @@ def annPart (κ : Representation ℂ K V) (φ : V) : Submodule ℂ V where
     simpa [hx c hc] using this
 
 /- English proof (translation)
-Establish `hO : ∀ k, ∀ y ∈ LinearMap.range (orb κ φ), κ k y ∈ LinearMap.range (orb κ φ)`. Introduce and unpack `k _ ⟨c, rfl⟩`. Conclude with `⟨_, orb_act κ φ k c⟩`. Use `haveI : FiniteDimensional ℂ (LinearMap.range (orb κ φ)) := by`. Rewrite using `[orb, Finsupp.range_linearCombination]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hφ`. Set `b` to `Module.finBasis ℂ (LinearMap.range (orb κ φ))`. Take `⟨s, hs⟩` from `(orb κ φ).rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict _)`. Use `⟨_, (LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp (sub κ _ hO), fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : ∀ c, orb κ x (s ((orb κ φ).rangeRestrict c)) = orb κ x c` using `fun c => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `hx _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun hs ((orb κ φ).rangeRestrict c))`. Use `⟨orb κ x ∘ₗ s ∘ₗ b.equivFun.symm.toLinearMap, fun k v => ?_, ⟨b.equivFun ((orb κ φ).rangeRestrict (Finsupp.single 1 1)), ?_⟩, fun v => ⟨_, rfl⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `b.equivFun.surjective v`. Take `⟨c, rfl⟩` from `(orb κ φ).surjective_rangeRestrict y`. Establish `h1 : (LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp (sub κ _ hO) k *ᵥ b.equivFun ((orb κ φ).rangeRestrict c) = b.equivFun ((orb κ φ).rangeRestrict (c.mapDomain (k * ·)))`. Establish `h2 : (orb κ φ).rangeRestrict (c.mapDomain (k * ·)) = sub κ _ hO k ((orb κ φ).rangeRestrict c)` using `Subtype.ext (orb_act κ φ k c)`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.toMatrix_mulVec_repr b b _ _`. Rewrite using `[h1]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, key, orb_act]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, key]`. Simplify using `[orb]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_type (κ : Representation ℂ K V) (φ : V)
     (hφ : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => κ k φ))) :
@@ -95,7 +95,7 @@ end Gen
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {n : ℕ}
 
 /- English proof (translation)
-Introduce `v` and use `by convert (π.cusp v.1 v.2).1.level using 1 ext k exact Subtype.ext_iff`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_fin (π : UpperTheory.V.TR.CuspSub F n) : IsSmooth π.finPart := fun v => by
   convert (π.cusp v.1 v.2).1.level using 1
@@ -103,13 +103,13 @@ theorem smooth_fin (π : UpperTheory.V.TR.CuspSub F n) : IsSmooth π.finPart := 
   exact Subtype.ext_iff
 
 /- English proof (translation)
-Introduce `v` and use `(smooth_fin π v).preimage (GlobalTheory.CuspRep.CuspSub.continuous_locGL w)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_loc (π : UpperTheory.V.TR.CuspSub F n) (w : HeightOneSpectrum (𝓞 F)) : IsSmooth (π.locRep w) := fun v =>
   (smooth_fin π v).preimage (GlobalTheory.CuspRep.CuspSub.continuous_locGL w)
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(UpperTheory.V.TR.rt F n (UpperTheory.V.TR.infGL F n (Unitary.toUnits k)) * UpperTheory.V.TR.rt F n (finGL F n g)) y.1 = (UpperTheory.V.TR.rt F n (finGL F n g) * UpperTheory.V.TR.rt F n (UpperTheory.V.TR.infGL F n (Unitary.toUnits k))) y.1`. Rewrite using `[← map_mul, ← map_mul, UpperTheory.V.TR.infGL_comm]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cpt_fin (π : UpperTheory.V.TR.CuspSub F n) (k : UpperTheory.V.TR.Kinf F n) (g : GL (Fin n) (Af F)) (y : π.V) :
     π.op (.cpt k) (π.finPart g y) = π.finPart g (π.op (.cpt k) y) := by
@@ -119,7 +119,7 @@ theorem cpt_fin (π : UpperTheory.V.TR.CuspSub F n) (k : UpperTheory.V.TR.Kinf F
   rw [← map_mul, ← map_mul, UpperTheory.V.TR.infGL_comm]
 
 /- English proof (translation)
-Simplify using `only [UpperTheory.V.TR.CuspSub.locRep, MonoidHom.comp_apply]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, GlobalTheory.CuspRep.LocUniq.comm_locGL w hk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_loc (π : UpperTheory.V.TR.CuspSub F n) (w : HeightOneSpectrum (𝓞 F)) {k : GL (Fin n) (Af F)}
     (hk : GeneralLinearGroup.map (pLoc F w) k = 1) (g : GL (Fin n) (w.adicCompletion F)) (y : π.V) :
@@ -128,11 +128,11 @@ theorem fin_loc (π : UpperTheory.V.TR.CuspSub F n) (w : HeightOneSpectrum (𝓞
   rw [← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, GlobalTheory.CuspRep.LocUniq.comm_locGL w hk]
 
 /- English proof (translation)
-Establish `hi` using `Submodule.map_injective_of_injective π.V.injective_subtype`. Establish `hop : ∀ o, ∀ x ∈ W, π.op o x ∈ W` using `fun o x hx => by`. Consider the cases of `o with`. Consider the case `fin k`. Establish `h3` using `h1 (GeneralLinearGroup.map (pLoc F w) k) _ (h2 (π.finPart ((locGL F n w (GeneralLinearGroup.map (pLoc F w) k))⁻¹ * k)) (fin_loc π w (map_pLoc_inv_mul w k)) x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `h3` using `[UpperTheory.V.TR.CuspSub.locRep, MonoidHom.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Then use the resulting hypothesis. Consider the case `cpt k => exact h2 _ (fun g y => cpt_fin π k _ y) x hx`. Consider the case `lie X => exact h2 _ (fun g y => Subtype.ext (LinearMap.congr_fun (UpperTheory.V.TR.lie_rt_fin X (locGL F n w g)) y.1)) x hx`. Break down `π.irred (W.map π.V.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `o _ ⟨x, hx, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, hop o x hx, rfl⟩) with h | h`. Conclude with `Or.inl (hi (h.trans (Submodule.map_bot _).symm))`. Conclude with `Or.inr (hi (h.trans (Submodule.map_subtype_top _).symm))`.
+Supply the required witnesses or components. Prove the first alternative. Prove the second alternative.
 -/
 theorem bot_or_top (π : UpperTheory.V.TR.CuspSub F n) (w : HeightOneSpectrum (𝓞 F)) (W : Submodule ℂ π.V)
     (h1 : ∀ g, ∀ x ∈ W, π.locRep w g x ∈ W)
@@ -155,11 +155,9 @@ theorem bot_or_top (π : UpperTheory.V.TR.CuspSub F n) (w : HeightOneSpectrum (�
   · exact Or.inr (hi (h.trans (Submodule.map_subtype_top _).symm))
 
 /- English proof (translation)
-Use `⟨Submodule.nontrivial_iff_ne_bot.2 π.ne_bot, ?_⟩` and prove the remaining obligations. Use `(bot_or_top π w _ (fun g x hx => ?_) (fun T hT x hx => ?_)).resolve_left fun e => ?_` and prove the remaining obligations. Use `Submodule.mem_comap.1 ((iSup_le (a := Submodule.comap (π.locRep w g) _) fun f => ?_) hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem f ⟨σ.ρ g v, f.2 g v⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_comap.1 ((iSup_le (a := Submodule.comap T _) fun f => ?_) hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem ⟨T ∘ₗ f.1, fun g v => by`. Rewrite using `[LinearMap.comp_apply, f.2]`. Conclude with `hT g _⟩ ⟨v, rfl⟩`.
-
-Take `⟨f, h0, hf⟩` from `h`. Conclude with `h0 (LinearMap.range_eq_bot.1 ((iSup_eq_bot.1 e) ⟨f, hf⟩))`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isotypic (π : UpperTheory.V.TR.CuspSub F n) (w : HeightOneSpectrum (𝓞 F)) (σ : SmIrr (GL (Fin n) (w.adicCompletion F)))
     (h : π.IsLocComp w σ) : UpperTheory.V.Af.LocIsotypic π.finPart w σ := by
@@ -179,19 +177,17 @@ def cptPart (π : UpperTheory.V.TR.CuspSub F n) : Representation ℂ (UpperTheor
   sub (UpperTheory.V.TR.cptRep F n) π.V fun k => π.stable (.cpt k)
 
 /- English proof (translation)
-Take `⟨φ₀, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `set φ : π.V := ⟨φ₀, hφ⟩`. Establish `h0' : φ ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Use `set L := stab π.finPart φ`. Establish `hL : IsOpen (L : Set (GL (Fin n) (Af F)))` using `smooth_fin π _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, ho, hc, hK⟩` from `exists_compact_open w _ hL`. Establish `hfd : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptPart π k φ))`. Use `(π.cusp φ₀ hφ).1.kfin` as an intermediate fact. Use `FiniteDimensional.of_injective ((π.V.subtype ∘ₗ Submodule.subtype _).codRestrict (Submodule.span ℂ (Set.range fun k => UpperTheory.V.TR.cptRep F n k φ₀)) fun v => ?_) fun v v' e => Subtype.ext (Subtype.ext (by have e' := congrArg Subtype.val e; exact e'))` and prove the remaining obligations. Use `Submodule.mem_comap.1 ((Submodule.span_le (p := Submodule.comap π.V.subtype _)).2 ?_ v.2)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Take `⟨d, ξ, hξ⟩` from `exists_type (cptPart π) φ hfd`. Establish `hcomm : ∀ g k x, π.finPart g (cptPart π k x) = cptPart π k (π.finPart g x)` using `fun g k x => (cpt_fin π k g x).symm`. Set `U : Submodule ℂ π.V` to `annPart (cptPart π) φ ⊓ fixed π.finPart (L ⊓ (GeneralLinearGroup.map (n := Fin n) (pLoc F w)).ker)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ, hσ, -⟩` from `exists_irred (smooth_loc π w) ho (fun W hW e => by`. Break down `bot_or_top π w (nullPart (π.locRep w) K) (fun g x hx => nullPart_act _ K g hx) (fun T hT x hx => nullPart_comm _ K T hT hx) with h2 | h2` into its components or cases. Conclude with `le_bot_iff.1 (h2 ▸ le_nullPart (smooth_loc π w) hc W hW e)`. Conclude with `absurd (eq_zero_of_mem_nullPart (smooth_loc π w) hc (mem_fix.2 hK) (h2 ▸ Submodule.mem_top)) h0')`. Use `U (fun g x hx => ⟨fun c hc => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[UpperTheory.V.TR.CuspSub.locRep, MonoidHom.comp_apply, orb_comm _ _ (hcomm _), hx.1 c hc, map_zero],`. Use the proof step `mem_fix.2 fun k hk => by rw [fin_loc π w hk.2, mem_fix.1 hx.2 k hk]⟩)`. Use the proof step `((Submodule.ne_bot_iff _).2 ⟨φ, ⟨fun _ hc => hc, mem_fix.2 fun k hk => hk.1⟩, h0'⟩) (fun K' hK' => by`. Take `⟨W, hW, hWf⟩` from `h F n π (L ⊓ (K' ⊓ L.comap (locGL F n w)).comap (GeneralLinearGroup.map (pLoc F w))) (hL.inter ((hK'.inter (hL.preimage (GlobalTheory.CuspRep.CuspSub.continuous_locGL w))).preimage (continuous_map_pLoc w))) d ξ`. Use `Submodule.finiteDimensional_of_le (S₂ := W) fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, hx1, hf2⟩` from `hξ x hx.1.1`. Use `hWf f hf (fun k hk v => ?_) hx1` and prove the remaining obligations. Establish `h1` using `mem_fix.1 hx.1.2 _ ⟨L.mul_mem (L.inv_mem hk.2.2) hk.1, map_pLoc_inv_mul w k⟩`. Establish `h2` using `mem_fix.1 hx.2 _ hk.2.1`. Establish `h3 : π.finPart k x = x`.
-
-Rewrite using `[← mul_inv_cancel_left (locGL F n w (GeneralLinearGroup.map (pLoc F w) k)) k, map_mul, Module.End.mul_apply, h1]`. Conclude with `h2`. Take `⟨c, hc⟩` from `hf2 v`. Rewrite using `[hc, ← orb_comm _ _ (hcomm k), h3])`. Conclude with `⟨σ, hσ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_comp (h : UpperTheory.V.Published.AdmissibleReal) (π : UpperTheory.V.TR.CuspSub F n) (w : HeightOneSpectrum (𝓞 F)) :
     ∃ σ, π.IsLocComp w σ := by
@@ -246,7 +242,7 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `h _ _ _ _ _ π w` and use `⟨GlobalTheory.RealGal.LocCompRProof.exists_comp h π w, GlobalTheory.RealGal.LocCompRProof.isotypic π w⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.RealGal.locCompR_of_admissibleReal : AdmissibleReal → LocCompR := fun h _ _ _ _ _ π w =>
   ⟨GlobalTheory.RealGal.LocCompRProof.exists_comp h π w, GlobalTheory.RealGal.LocCompRProof.isotypic π w⟩

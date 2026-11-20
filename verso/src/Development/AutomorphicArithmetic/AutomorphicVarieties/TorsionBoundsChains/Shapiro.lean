@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `G X _ _ _ x n`. Take `⟨e⟩` from `indPerm G X x`. Set `i1` to `(groupHomology.functor ℤ G n).mapIso e.symm`. Set `i2` to `groupHomology.indIso (MulAction.stabilizer G x) (Rep.trivial ℤ (MulAction.stabilizer G x) ℤ) n`. Conclude with `⟨(i1 ≪≫ i2).toLinearEquiv.toAddEquiv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.KH.shapiro :
     ∀ (G X : Type) [Group G] [MulAction G X] [MulAction.IsPretransitive G X] (x : X) (n : ℕ),

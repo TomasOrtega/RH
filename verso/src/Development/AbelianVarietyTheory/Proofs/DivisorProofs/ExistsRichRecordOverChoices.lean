@@ -21,21 +21,19 @@ def RichRec (D : D7) : Prop :=
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `GlobalTheory.EX.exists_sizeData_explicit eps C cD ch h0 h1 hC hcD hch`. Use `⟨x0, ?_⟩` and prove the remaining obligations. Introduce `s P q1 a b c Lv hs hx hP hG`. Take `⟨F, hfd, hrich, hsz⟩` from `exists_rich_small_of_rayField hR (StdFrameObj.coordPre P Lv)`. Take `⟨B, hB, hF, -⟩` from `exists_base_of_rich _ F hfd hrich ∅ ∅ (by simp) (by simp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hxp : 0 < s.x` using `by linarith [s.one_lt_alt]`. Establish `hDel : (0 : ℚ) < (Delv s cD : ℚ)`. Establish `: 0 < Delv s cD` using `Nat.ceil_pos.2 (by positivity)`. Conclude with `this` after adjusting the coercions. Establish `hlev : ∀ p ∈ Lv.host.levelPrimes, Lv.host.cls p = .splitK` using `(StdFrameObj.coordPre P Lv).level_split`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ Q : Pre, Q = StdFrameObj.coordPre P Lv → ∃ letter : Q.Word → Fin (Q.R.k - 2) → Bool, Function.Injective letter ∧ (∀ w τ (l : ℕ) (h : l + 1 < Q.R.k - 1), (Q.hcW w τ).v ⟨l, by omega⟩ - (Q.hcW w τ).v ⟨l + 1, h⟩ = 4 * (Delv s cD : ℚ)) ∧ ∀ w τ (l : ℕ) (h : l < Q.R.k - 2), (Q.h …`. Introduce and unpack `Q rfl`. Use `⟨c, hP.inj, fun w τ l h => ?_, fun w τ l h => hP.code w τ l h⟩` and prove the remaining obligations. Establish `h' : l + 1 < P.R.k - 1` using `h`. Establish `a1` using `(hP.hc w).1 τ ⟨l, by omega⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `(hP.hc w).1 τ ⟨l + 1, h'⟩`. Use `(congrArg₂ (· - ·) a1 a2).trans ?_` and prove the remaining obligations. Establish `: P.R.k - 2 - l = (P.R.k - 2 - (l + 1)) + 1` using `by omega`. Simplify using `only [this]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨letter, k1, k2, k3⟩` from `key B.toPre hB`. Take `⟨X, rfl, e1, e2, e3, e4⟩` from `GlobalTheory.T.exists_stages_with_delta B (Delv s cD : ℚ) letter (6 * s.x ^ (-C.P.CF)) hDel (by positivity) k1 k2 k3`. Use `clear key k1 k2 k3 letter`. Establish `hJ : JointQ X.toD7` using `jointQ_of_small_field X F (hB ▸ hrich) ((congrArg (fun Q : Pre => ∀ L : ℝ, HostSz Q.host L → Sz F (poR Q.R L) (poR Q.R L)) hB).mpr hsz) hF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ` using `(fieldOK0_and_zeta_mem X F (hB ▸ hrich) hF _ (Or.inl rfl)).2`. Establish `hE : Nonempty (ErrX X.toD7)` using `GlobalTheory.T.error_data_of_norm_generators X ((congrArg (fun Q : Pre => ∀ i, ∃ π : 𝓞 Q.host.E, (π : Q.host.E) ∈ Q.host.K ∧ (π : Q.host.E) * Q.host.conj (π : Q.host.E) = (Q.host.g i : Q.host.E)) hB).mpr hP.arith.1)`. Use `clear hF hrich hsz`. Take `⟨B, Cc, W, V, S, N, Gj⟩` from `X`. Consider the cases of `B`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at hB`. Substitute `hB` using the available equality. Use `set D := Stages.toD7 _ with hD`. Use `⟨D, ⟨hJ, hZ⟩, hE, e3, ⟨hP.arith.1, hP.arith.2.1, hP.arith.2.2.1, hlev⟩, ?_⟩` and prove the remaining obligations. Take `⟨L, l1, -, -, l4⟩` from `hx0 s D (fun t => a t.1) (fun t => b t.1) hs hx hP.rank hP.val (hP.hc P.u₀) hP.dlog e1 hP.ct2 hP.card e2 (fun u => by`.
-
-Establish `e : (D.mem u).A.GamP = Lv.GamP` using `Cc.A_GamP u`. Rewrite using `[e, hG, GamS, Real.log_exp]`. Use the proof step `rfl)`. Use the proof step `(fun t => hP.win t.1 t.2) (fun τ t h ht => hP.top P.u₀ τ t h ht) e4`. Conclude with `⟨L, l1, l4⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rich_record_over_choices (hR : GlobalTheory.NT.RayField) (eps cD ch : ℝ) (C : FC) (h0 : 0 < eps) (h1 : eps < 1 / 52)
     (hC : Std C) (hcD : 0 ≤ cD) (hch : 402 ≤ ch) : ∃ x0 : ℝ, ∀ (s : Scale) (P : PreCh) (q1 : ℕ)
@@ -92,23 +90,21 @@ theorem exists_rich_record_over_choices (hR : GlobalTheory.NT.RayField) (eps cD 
   exact ⟨L, l1, l4⟩
 
 /- English proof (translation)
-Introduce `p1 p2 p3 p4 p5 p6 p7 p8 p9 hR x`. Establish `hH` using `DC.hostExQ_of_hostEx (smallPrimeOne_of_tzRat p6) (hostEx_of_zeroFreeRegion p1 p2 p3 p4 p5 p6 p7 p8 p9)`. Establish `hLP` using `(normPrimes_and_levelPrime p9).2`. Establish `he : (0 : ℝ) < 1 / 53` using `by norm_num`. Establish `he52 : (1 / 53 : ℝ) < 1 / 52` using `by norm_num`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨CT2, C8, C5, c6, Cb, hC8, -, -, -, hK⟩` from `exists_chGood_unb hH _ he he52`. Take `⟨C, hStd, hCT2, hCp, -⟩` from `exists_std_large ⟨0, 0, fun _ => 0, fun _ => 0⟩ ⟨0, 0, fun _ => 0, fun _ => 0⟩ CT2 C8 hC8`. Take `⟨c1, hN⟩` from `szRow_numAt _ he he52 C hStd`. Take `⟨c2, hN⟩` from `hN (max c1 0) (le_max_left _ _)`. Take `⟨x1, hN⟩` from `hN (max c2 402) (le_max_left _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hK` using `hK C hStd hCT2 hCp (max c1 0) (le_max_right _ _) (max c2 402) (le_max_right _ _)`. Take `⟨x3, h3⟩` from `exists_levCh_of_levelPrime hLP _ 1 C he he52 one_pos hStd`. Take `⟨x4, h4⟩` from `exists_rich_record_over_choices hR _ (max c1 0) (max c2 402) C he he52 hStd (le_max_right _ _) (le_max_right _ _)`. Take `⟨s, hs, hy, hK⟩` from `hK (max (10 ^ 60) (max x1 (max x3 (max x4 (max x (C.T.CP ^ 20))))))`. Simplify using `only [max_le_iff] at hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨hy60, hy1, hy3, hy4, hyx, hyP⟩` from `hy`. Take `⟨P, a, b, c, hP, -⟩` from `hK 0`. Establish `hfk : (0 : ℝ) < (P.R.f : ℝ) * P.R.k`. Establish `h1` using `P.R.m_add_three_le_k`. Establish `h2 : 0 < P.R.f` using `by have := P.R.ord_pos; show 0 < 2 * P.R.ord; omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 < P.R.k` using `by omega`. Check the signs of the components of the expression. Take `⟨Ds, hDs, hlog⟩` from `exists_window_start _ (1 * P.R.m * s.L) (GamS C s P.R) hfk (Real.exp_pos _)`. Take `⟨Lv, -, -, l3⟩` from `h3 _ _ s P _ a b c (fun _ => 1) Ds hs hy3 hP.ok (fun _ => one_pos) hDs (fun _ => hlog)`. Take `⟨D, ⟨⟨h1, h2, h3, h4, h5⟩, hZ⟩, hE, hkap, hA, L, hsc, hV⟩` from `h4 s P _ a b c Lv hs hy4 hP.ok l3`.
+Establish an intermediate fact. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsx : L.sc.x = s.x` using `by rw [hsc]`. Establish `hse : L.sc.eps = 1 / 53` using `by rw [hsc, hs]`. Take `⟨⟨N⟩, -, -⟩` from `hN _ _ hse (hy1.trans hsx.ge) hV hA`. Establish `hCP : N.parT.CP = C.T.CP` using `(List.cons.inj N.parT_K).1`. Establish `hg : ∀ j, Real.log (D.host.g j) ≤ 9 * L.sc.L + 1` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 ≤ L.sc.L`. Unfold `Scale.L`. Conclude with `Real.rpow_nonneg (zero_le_one.trans L.sc.one_lt_alt.le) _`. Establish `hlo : 0 < ((D.host.g j : ℕ) : ℝ)` using `by exact_mod_cast (D.host.g_prime j).pos`. Use `(Real.log_le_iff_le_exp hlo).2 (N.g_le j)` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hHS, hFS⟩` from `hostSz_of_sizes D L N.params N.parT N.sizes hg (hy60.trans hsx.ge)`. Use `⟨D, ⟨h1, h2, h3, h4, hE, L, N.params, N.parT, hkap, N.sizes, N.CnW_eq.trans hStd.1.2.2.2.2.2.2.2.1, hg, ?_, ?_, hyx.trans hsx.ge, hFS (h5 _ hHS)⟩, (GlobalTheory.Mem.Chr.ncard_places_eq_primesOver D.host.pde_prime).trans hA.2.2.1.1, (GlobalTheory.Mem.Chr.ncard_places_eq_primesOver …` and prove the remaining obligations. Rewrite using `[hCP]`. Conclude with `hStd.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
-
-Rewrite using `[hCP]`. Conclude with `hyP.trans (hsx.ge.trans (x_le_zBase_of_pow_le_n L N.win.1.1))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_richRec_of_zeroFreeRegion : GlobalTheory.Mem.An.ExplZeta → GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount → Formalism.ZeroFreeDirichlet.ZFRDirichlet → GlobalTheory.Mem.An.TZRat → GlobalTheory.Mem.An.PageThm → GlobalTheory.Mem.An.Jutila → GlobalTheory.Mem.An.QuadraticHeckeZeroEstimates → GlobalTheory.NT.RayField → ∀ x : ℝ, ∃ D : D7, RecOK D x ∧ RichRec D := by
   intro p1 p2 p3 p4 p5 p6 p7 p8 p9 hR x

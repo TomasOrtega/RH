@@ -8,7 +8,7 @@ open PI.UpqRep Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynom
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Unfold `evM detPoly`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma pe_evM_detPoly {N : ℕ} (g : Matrix (Fin N) (Fin N) ℂ) : evM g (detPoly N) = g.det := by
   unfold evM detPoly
@@ -18,13 +18,13 @@ lemma pe_evM_detPoly {N : ℕ} (g : Matrix (Fin N) (Fin N) ℂ) : evM g (detPoly
   simp
 
 /- English proof (translation)
-Use `⟨one_mem _, by simp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 lemma pe_one_mem (N : ℕ) : (1 : Matrix (Fin N) (Fin N) ℂ) ∈ Kset (allPos N) := by
   refine ⟨one_mem _, by simp⟩
 
 /- English proof (translation)
-Use `⟨mul_mem hg.1 hh.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma pe_mul_mem {N : ℕ} {g h : Matrix (Fin N) (Fin N) ℂ} (hg : g ∈ Kset (allPos N)) (hh : h ∈ Kset (allPos N)) :
     g * h ∈ Kset (allPos N) := by
@@ -32,9 +32,9 @@ lemma pe_mul_mem {N : ℕ} {g h : Matrix (Fin N) (Fin N) ℂ} (hg : g ∈ Kset (
   rw [Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hJ : Jm (allPos N) = 1`. Unfold `Jm allPos`. Simplify using the standard rewrite rules. Use `⟨?_, by rw [hJ]; simp⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 lemma pe_unitary_mem {N : ℕ} (u : Matrix (Fin N) (Fin N) ℂ) (hu : uᴴ * u = 1) : u ∈ Kset (allPos N) := by
   have hJ : Jm (allPos N) = 1 := by
@@ -45,9 +45,9 @@ lemma pe_unitary_mem {N : ℕ} (u : Matrix (Fin N) (Fin N) ℂ) (hu : uᴴ * u =
   exact hu
 
 /- English proof (translation)
-Use `⟨bind₁ (fun pq : Fin N × Fin N => ∑ r, X (pq.1, r) * C (h r pq.2)) Q, fun g => ?_⟩` and prove the remaining obligations. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [evM]`. Consider the case `add p q hp hq => simp only [map_add, evM] at *`. Rewrite using `[hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X p n hp`. Simplify using `only [map_mul, evM, bind₁_X_right] at *`. Rewrite using `[hp]`. Simplify using `[Matrix.mul_apply]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma pe_right {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (Q : MvPolynomial (Fin N × Fin N) ℂ) :
     ∃ Q' : MvPolynomial (Fin N × Fin N) ℂ, ∀ g, evM g Q' = evM (g * h) Q := by
@@ -61,9 +61,9 @@ lemma pe_right {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (Q : MvPolynomial (Fin
     simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Use `⟨bind₁ (fun pq : Fin N × Fin N => ∑ r, C (g pq.1 r) * X (r, pq.2)) Q, fun h => ?_⟩` and prove the remaining obligations. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [evM]`. Consider the case `add p q hp hq => simp only [map_add, evM] at *`. Rewrite using `[hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X p n hp`. Simplify using `only [map_mul, evM, bind₁_X_right] at *`. Rewrite using `[hp]`. Simplify using `[Matrix.mul_apply]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma pe_left {N : ℕ} (g : Matrix (Fin N) (Fin N) ℂ) (Q : MvPolynomial (Fin N × Fin N) ℂ) :
     ∃ Q' : MvPolynomial (Fin N × Fin N) ℂ, ∀ h, evM h Q' = evM (g * h) Q := by

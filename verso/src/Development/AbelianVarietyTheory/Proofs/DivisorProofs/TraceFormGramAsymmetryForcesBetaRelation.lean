@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.TwLat
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem betaSym_expand {K : GlobalTheory.UnitLemma.UQ} {B : GlobalTheory.UnitLemma.InvAlg K} {m : ℕ}
     (b : Module.Basis (Fin m) K.E B.A) (f : B.A →ₗ[K.E] K.E) (a : B.A) :
@@ -19,7 +19,7 @@ theorem betaSym_expand {K : GlobalTheory.UnitLemma.UQ} {B : GlobalTheory.UnitLem
     _ = ∑ k, b.repr a k * f (b k) := by rw [map_sum]; simp only [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h` using `Algebra.trace_eq_of_equiv_equiv K.c B.σ (by ext e; simp [B.σ_alg]) y`. Rewrite using `[h, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem betaSym_trace_sigma {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLemma.InvAlg K) (y : B.A) :
     Algebra.trace K.E B.A (B.σ y) = K.c (Algebra.trace K.E B.A y) := by
@@ -27,39 +27,37 @@ theorem betaSym_trace_sigma {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.Un
   rw [h, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ w K e he B m b u β hnd hG hsym`. Set `f : B.A → (B.A →ₗ[K.E] K.E)` to `fun z => (Algebra.trace K.E B.A).comp ((LinearMap.mulRight K.E (B.σ z)).comp (LinearMap.mulLeft K.E β))`. Establish `hf : ∀ y z, f z y = Algebra.trace K.E B.A (β * y * B.σ z)` using `fun y z => rfl`. Establish `hsgn : ((-1 : B.A) ^ (m - 1)) = algebraMap K.E B.A ((-1) ^ (m - 1))` using `by simp`. Use `set x : B.A := B.σ β - β * ((-1) ^ (m - 1) * u) with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ i j, Algebra.trace K.E B.A (x * b j * B.σ (b i)) = 0`. Introduce `i j`. Establish `h` using `congrFun (congrFun hsym i) j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.transpose_apply, gram, mulMat, Matrix.of_apply, LinearMap.toMatrix_apply, LinearMap.mulLeft_apply, GlobalTheory.UnitLemma.InvAlg.herm] at h`. Establish `hA : Algebra.trace K.E B.A (B.σ β * b j * B.σ (b i)) = K.c (Algebra.trace K.E B.A (β * b i * B.σ (b j)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← betaSym_trace_sigma B]`. Use `congr 1`. Rewrite using `[map_mul, map_mul, B.σ_σ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB : Algebra.trace K.E B.A (β * ((-1) ^ (m - 1) * u) * b j * B.σ (b i)) = (-1) ^ (m - 1) * ∑ k, b.repr (u * b j) k * Algebra.trace K.E B.A (β * b k * B.σ (b i))`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: β * ((-1) ^ (m - 1) * u) * b j * B.σ (b i) = ((-1 : K.E) ^ (m - 1)) • (β * (u * b j) * B.σ (b i))`. Rewrite using `[Algebra.smul_def, ← hsgn]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_smul, smul_eq_mul, ← hf, betaSym_expand b (f (b i)) (u * b j)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hsub : x * b j * B.σ (b i) = B.σ β * b j * B.σ (b i) - β * ((-1) ^ (m - 1) * u) * b j * B.σ (b i)`. Rewrite using `[hx]`. Expand and normalize the polynomial expressions, which then agree. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hsub, map_sub, hA, hB, map_sub e, map_zero, he, h, map_mul e, map_sum e, map_pow, map_neg, map_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul e]`. Rewrite using `[sub_eq_zero]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h2 : ∀ i a, Algebra.trace K.E B.A (x * B.σ (b i) * a) = 0`. Introduce `i a`. Establish `h` using `betaSym_expand b ((Algebra.trace K.E B.A).comp (LinearMap.mulLeft K.E (x * B.σ (b i)))) a`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply] at h`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[show x * B.σ (b i) * b j = x * b j * B.σ (b i) by ring, h1, mul_zero]`. Establish `h3 : ∀ a, Algebra.trace K.E B.A (x * a) = 0`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : ∀ i, Algebra.trace K.E B.A (B.σ (x * a) * b i) = 0`. Introduce `i`. Establish `h` using `h2 i a`. Rewrite `h` using `[show x * B.σ (b i) * a = B.σ (B.σ (x * a) * b i) by rw [map_mul, B.σ_σ]; ring, betaSym_trace_sigma]`. Conclude with `(map_eq_zero_iff K.c K.c.injective).mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `betaSym_expand b ((Algebra.trace K.E B.A).comp (LinearMap.mulLeft K.E (B.σ (x * a)))) 1`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, mul_one, hs, mul_zero, Finset.sum_const_zero, betaSym_trace_sigma] at h4`. Conclude with `(map_eq_zero_iff K.c K.c.injective).mp h4`. Establish `hx0 : x = 0` using `hnd.1 x (fun n => by simpa [Algebra.traceForm_apply] using h3 n)`. Use `⟨by rw [hx] at hx0; exact sub_eq_zero.mp hx0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hβ`. Establish `hinj : ¬ Function.Injective (LinearMap.mulLeft K.E β)`. Introduce `hi`. Establish `hs` using `(LinearMap.injective_iff_surjective (f := LinearMap.mulLeft K.E β)).mp hi`. Take `⟨a, ha⟩` from `hs 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha' : β * a = 1` using `ha`. Conclude with `hβ ⟨⟨β, a, ha', by rw [mul_comm]; exact ha'⟩, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha0, hβa⟩ : ∃ a, a ≠ 0 ∧ β * a = 0 := by`. Rewrite `hinj` using `[injective_iff_map_eq_zero]`. Use `push_neg at hinj`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨a, h, ha⟩` from `hinj`. Conclude with `⟨a, ha, h⟩`. Set `v : Fin m → w.adicCompletion E` to `fun i => e (b.repr a i)`. Establish `hv : Matrix.vecMul v (gram e b β) = 0`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `betaSym_expand b (f (b j)) a`. Simplify using `only [hf] at h`. Simplify using `only [Matrix.vecMul, dotProduct, gram, Matrix.of_apply, GlobalTheory.UnitLemma.InvAlg.herm, v, Pi.zero_apply]`. Repeatedly rewrite using `[← map_mul e]`. Rewrite using `[← map_sum e, ← h, hβa]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hvz : v = 0`. Establish `hdet` using `(Matrix.isUnit_iff_isUnit_det _).mp hG`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hdet, Matrix.vecMul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `_ = 0 := by rw [← Matrix.vecMul_vecMul, hv, Matrix.zero_vecMul]`. Apply `ha0` to reduce the goal to its premises. Establish `hr : b.repr a = 0`. Use extensionality with `i`. Establish `h` using `congrFun hvz i`.
-
-Simplify `h` using `[v]`. Simplify using `using hr`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem betaSym : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (m : ℕ) (b : Module.Basis (Fin m) K.E B.A) (u β : B.A), (Algebra.traceForm K.E B.A).Nondegenerate → IsUnit (GlobalTheory.TwLat.gram e b β) → (cj w).mapMatrix (GlobalTheory.TwLat.gram e b β) = (-1 : w.adicCompletion E) ^ (m - 1) • ((GlobalTheory.TwLat.gram e b β)ᵀ * GlobalTheory.TwLat.mulMat e b u) → B.σ β = β * ((-1) ^ (m - 1) * u) ∧ IsUnit β := by
   intro E _ _ _ w K e he B m b u β hnd hG hsym

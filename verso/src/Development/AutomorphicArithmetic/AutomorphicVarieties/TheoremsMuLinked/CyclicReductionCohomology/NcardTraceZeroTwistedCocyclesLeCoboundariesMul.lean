@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dg_mem {A C : Type} [CommRing A] [AddCommGroup C] [Module A C] (a : A) (x : C) :
     x ∈ (Ideal.span {a} • ⊤ : Submodule A C) ↔ ∃ c, a • c = x := by
@@ -14,9 +14,9 @@ private theorem dg_mem {A C : Type} [CommRing A] [AddCommGroup C] [Module A C] (
   simp
 
 /- English proof (translation)
-Establish `hi : Function.Injective (T.liftQ R h.ge)`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ h.le`. Establish `e` using `Submodule.equivMapOfInjective _ hi (S.map T.mkQ)`. Rewrite `e` using `[← Submodule.map_comp, Submodule.liftQ_mkQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨e.toEquiv⟩`.
+A detailed English derivation is pending.
 -/
 private theorem dg_equiv {A C D : Type} [CommRing A] [AddCommGroup C] [Module A C] [AddCommGroup D] [Module A D]
     (R : C →ₗ[A] D) (T S : Submodule A C) (h : LinearMap.ker R = T) : Nonempty (S.map T.mkQ ≃ (R '' S : Set D)) := by
@@ -27,41 +27,35 @@ private theorem dg_equiv {A C D : Type} [CommRing A] [AddCommGroup C] [Module A 
   exact ⟨e.toEquiv⟩
 
 /- English proof (translation)
-Establish `htf' : ∀ (n : ℕ) (y : P), t ^ n • y = 0 → y = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y hy`. Simplify using `using hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih => exact fun y hy => htf y (ih _ (by rw [smul_smul, ← pow_succ, hy]))`. Set `C : Submodule A (G → P)` to `{ carrier := {f | ∀ m, IsLocallyConstant (red m ∘ f)} add_mem' := fun {a b} ha hb m => by`. Establish `: red m ∘ (a + b) = red m ∘ a + red m ∘ b` using `by funext g; simp`. Rewrite using `[this]`. Conclude with `(ha m).add (hb m)`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `zero_mem' := fun m => by`. Establish `: red m ∘ (0 : G → P) = fun _ => 0` using `by funext g; simp`. Rewrite using `[this]`. Conclude with `IsLocallyConstant.const _`. Use the proof step `smul_mem' := fun c a ha m => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: red m ∘ (c • a) = (fun y => c • y) ∘ (red m ∘ a)` using `by funext g; simp`. Rewrite using `[this]`. Conclude with `(ha m).comp _ }`. Establish `mC' : ∀ m (y : ι → P), y ∈ (Ideal.span {t ^ m} • ⊤ : Submodule A (ι → P)) ↔ ∀ i, red m (y i) = 0`. Introduce `m y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dg_mem]`. Simplify using `only [hker]`. Conclude with `⟨fun ⟨c, hc⟩ i => ⟨c i, congrFun hc i⟩, fun h => by choose c hc using h; exact ⟨c, funext hc⟩⟩`. Establish `mC : ∀ m (f : C), f ∈ (Ideal.span {t ^ m} • ⊤ : Submodule A C) ↔ ∀ g, red m (f.1 g) = 0`. Introduce `m f`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[dg_mem]`. Simplify using `only [hker]`. Use `⟨fun ⟨c, hc⟩ i => ⟨c.1 i, congrFun (congrArg Subtype.val hc) i⟩, fun h => ?_⟩` and prove the remaining obligations. Use `choose c hc using h`. Use `⟨⟨c, fun N => ?_⟩, Subtype.ext (funext hc)⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `f.2 (m + N)`. Rewrite `h1`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Use `fun g => (h1 g).mono fun g' e => ?_` and prove the remaining obligations. Simplify using `only [Function.comp] at e ⊢`. Rewrite `e`, the goal using `[← sub_eq_zero, ← map_sub, hker]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨p, hp⟩` from `e`. Use `⟨p, sub_eq_zero.1 (htf' m _ ?_)⟩` and prove the remaining obligations. Rewrite using `[smul_sub, smul_sub, hc, hc, smul_smul, ← pow_add, hp, sub_self]`. Set `R : ∀ m, C →ₗ[A] (G → Pm m)` to `fun m => ((red m).compLeft G).comp C.subtype`. Establish `hR : ∀ m, LinearMap.ker (R m) = (Ideal.span {t ^ m} • ⊤ : Submodule A C)` using `fun m => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `f`. Rewrite using `[mC, LinearMap.mem_ker, funext_iff]`. Both sides reduce to the same expression. Establish `hS : ∀ m, R m '' ((Ideal.span {t ^ m} • ⊤ : Submodule A (ι → P)).comap (Φ.comp C.subtype) : Submodule A C) = Z m` using `fun m => by`. Use extensionality with `h`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `(hZ m f.1).2 ⟨f.2 m, (mC' m _).1 hf⟩`. Introduce `hh`. Take `⟨s, hs⟩` from `(hsurj m).hasRightInverse`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : red m ∘ (s ∘ h) = h` using `funext fun g => hs _`. Establish `h2` using `(hZ m (s ∘ h)).1 (by rw [e]; exact hh)`. Rewrite `h2` using `[e]`. Conclude with `⟨⟨s ∘ h, fun N => h2.1.comp (red N ∘ s)⟩, (mC' m _).2 h2.2, e⟩`. Establish `hH : IsHausdorff (Ideal.span {t}) C` using `⟨fun f hf => Subtype.ext (funext fun g => hsep _ fun m => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hf m` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, Ideal.span_singleton_pow, sub_zero, mC]`. Conclude with `this g)⟩`. Establish `hH' : IsHausdorff (Ideal.span {t}) (ι → P)` using `⟨fun f hf => funext fun g => hsep _ fun m => by`. Use `hf m` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[SModEq.sub_mem, Ideal.span_singleton_pow, sub_zero, mC']`. Conclude with `this g⟩`. Establish `hP : IsPrecomplete (Ideal.span {t}) C` using `⟨fun u hu => by`. Establish `h1 : ∀ g, ∃ L, ∀ m, red m ((u m).1 g) = red m L` using `fun g => hcomp _ fun m n hmn => by`. Use `hu hmn` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[SModEq.sub_mem, Ideal.span_singleton_pow, mC]`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `this g`. Use `choose L hL using h1`. Use `⟨⟨L, fun m => ?_⟩, fun m => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: red m ∘ L = red m ∘ (u m).1` using `funext fun g => (hL g m).symm`. Rewrite using `[this]`. Conclude with `(u m).2 m`. Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, mC]`. Introduce `g`.
-
-Conclude with `(map_sub _ _ _).trans (sub_eq_zero.2 (hL g m))⟩`. Take `⟨-, e, he⟩` from `solCnt A C (ι → P) t (Φ.comp C.subtype) (B.comap C.subtype) ht (fun y hy => Subtype.ext (funext fun g => htf _ (congrFun (congrArg Subtype.val hy) g))) (fun y hy => funext fun g => htf _ (congrFun hy g)) hA {} hH' (by`. Take `⟨e⟩` from `dg_equiv (R 1) _ ((Ideal.span {t ^ 1} • ⊤ : Submodule A (ι → P)).comap (Φ.comp C.subtype)) (hR 1)`. Rewrite `e` using `[hS, pow_one]`. Use `hZ1.to_subtype` as an intermediate fact.
-
-Conclude with `Finite.of_equiv _ e.symm)`. Use the proof step `(fun b hb => (hB _ hb).1) (fun z hz => hdet z.1 z.2 hz)`. Use `⟨e, fun m => ?_⟩` and prove the remaining obligations. Take `⟨e1⟩` from `dg_equiv (R m) _ ((Ideal.span {t ^ m} • ⊤ : Submodule A (ι → P)).comap (Φ.comp C.subtype)) (hR m)`. Take `⟨e2⟩` from `dg_equiv (R m) _ (B.comap C.subtype) (hR m)`.
-
-Establish `h3` using `(he m).2`. Rewrite `h3` using `[Nat.card_congr e1, Nat.card_congr e2, hS, Nat.card_coe_set_eq, Nat.card_coe_set_eq]`. Use `h3.trans (Nat.mul_le_mul_right _ (Set.ncard_le_ncard ?_ (hBm m)))` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `(hB _ hb).2 m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem dg_abs (A P G ι : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [Finite (IsLocalRing.ResidueField A)] [AddCommGroup P] [Module A P] [TopologicalSpace G] (t : A)
@@ -171,9 +165,7 @@ private theorem dg_abs (A P G ι : Type) [CommRing A] [IsDomain A] [IsDiscreteVa
   exact (hB _ hb).2 m
 
 /- English proof (translation)
-Use `⟨fun h i j => h.comp fun Z => Z i j, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`. Establish `: ∀ᶠ g in nhds g0, ∀ i j, f g i j = f g0 i j` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (h i j).eventually_eq g0`. Use `filter_upwards [this] with g hg`.
-
-Conclude with `Matrix.ext hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem dg_lc {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → Matrix (Fin n) (Fin n) R) :
     IsLocallyConstant f ↔ ∀ i j, IsLocallyConstant fun g => f g i j := by
@@ -196,9 +188,9 @@ private def dgPhi {R : Type} [CommRing R] (ρ : G → Matrix (Fin n) (Fin n) R) 
   | .inr (.inr j) => Matrix.of fun _ _ => (z (sg j.1) * ρ (sg j.1) ^ j.2).trace
 
 /- English proof (translation)
-Simplify using `only [Sum.forall, Prod.forall, dgPhi, sub_eq_zero]`. Use `and_congr Iff.rfl (and_congr Iff.rfl (forall₂_congr fun j k => ⟨fun h => ?_, fun h => ?_⟩))` and prove the remaining obligations. Break down `isEmpty_or_nonempty (Fin n) with hn | ⟨⟨i⟩⟩` into its components or cases. Simplify using `[Matrix.trace]`. Conclude with `congrFun (congrFun h i) i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem dgPhi_iff {R : Type} [CommRing R] (ρ : G → Matrix (Fin n) (Fin n) R) (e : G → R)
     (P : Matrix (Fin n) (Fin n) R) (cj : G → G) (sg : Fin q → G) (z : G → Matrix (Fin n) (Fin n) R) :
@@ -233,7 +225,7 @@ private def dgL {R : Type} [CommRing R] (ρ : G → Matrix (Fin n) (Fin n) R) (e
       simp [dgPhi]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem dg_smul {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (a : R) (Z : Matrix (Fin n) (Fin n) R) :
     φ.mapMatrix (a • Z) = φ a • φ.mapMatrix Z := by
@@ -247,9 +239,9 @@ private theorem dg_tr {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (Z
     φ.mapMatrix Zᵀ = (φ.mapMatrix Z)ᵀ := rfl
 
 /- English proof (translation)
-Break down `i with p | g | j` into its components or cases. Simplify using `only [dgPhi, map_sub, map_add, dg_smul, map_mul]`. Simplify using `only [dgPhi, map_sub, map_mul, dg_tr]`. Use `ext1 a b`. Simplify using `only [dgPhi]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← map_mul, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, ← AddMonoidHom.map_trace φ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem dgPhi_nat {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (ρ : G → Matrix (Fin n) (Fin n) R)
     (e : G → R) (P : Matrix (Fin n) (Fin n) R) (cj : G → G) (sg : Fin q → G) (z : G → Matrix (Fin n) (Fin n) R) (i) :
@@ -281,25 +273,21 @@ private def dgB {R : Type} [CommRing R] (ρ : G → Matrix (Fin n) (Fin n) R) (e
 end phi
 
 /- English proof (translation)
-Introduce `l _ L G0 O _ _ _ hO _ n y q sg hΦ hD`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hm : maximalIdeal O = Ideal.span {t}` using `ht.maximalIdeal_eq`. Use `haveI : Finite (ResidueField O) := hO.finite`. Establish `hA : IsAdicComplete (maximalIdeal O) O` using `hO.complete`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : ∀ (m : ℕ) (a : O), Ideal.Quotient.mk (maximalIdeal O ^ m) a = 0 ↔ ∃ p, t ^ m • p = a` using `fun m a => by`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `⟨fun ⟨p, hp⟩ => ⟨p, hp.symm⟩, fun ⟨p, hp⟩ => ⟨p, hp.symm⟩⟩`. Establish `hq : ∀ (m : ℕ) (a b : O), a ≡ b [SMOD (maximalIdeal O ^ m • ⊤ : Submodule O O)] ↔ Ideal.Quotient.mk (maximalIdeal O ^ m) a = Ideal.Quotient.mk (maximalIdeal O ^ m) b` using `fun m a b => by`. Rewrite using `[SModEq.sub_mem, Ideal.Quotient.eq, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ρ : G0.G₀ → Matrix (Fin n) (Fin n) O` to `fun g => mat y.ρ g`. Set `e : G0.G₀ → O` to `fun g => algebraMap ℤ_[l] O (G0.ε g : ℤ_[l])`. Set `Φ` to `dgL ρ e y.P G0.frame.conj sg`. Use `dg_abs O _ G0.G₀ _ t (fun m => Mm O n m) (fun m => (Ideal.Quotient.mkₐ O (maximalIdeal O ^ m)).mapMatrix.toLinearMap) Φ (dgB ρ e y.P ⊓ LinearMap.ker Φ) (fun m => {z | z ∈ Tw y m ∧ ∀ j (k : ℕ), (z (sg j) * y.ρ0 m (sg j) ^ k).trace = 0}) (fun m => TwB y m) ht (hm ▸ hA) (fun m Z => …` and prove the remaining obligations. Use `choose Y hY using fun i j => Ideal.Quotient.mk_surjective (I := maximalIdeal O ^ m) (Z i j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨Matrix.of Y, Matrix.ext hY⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h choose Y hY using fun i j => (hk m (Z i j)).1 (congrFun (congrFun h i) j)`. Conclude with `⟨Matrix.of Y, Matrix.ext hY⟩`. Introduce and unpack `⟨Y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `Matrix.ext fun i j => (hk m _).2 ⟨Y i j, rfl⟩`. Use `choose Y hY using fun i j => hA.toIsPrecomplete.prec (f := fun m => u m i j) fun {a b} hab => (hq _ _ _).2 (congrFun (congrFun (h a b hab) i) j)`. Conclude with `⟨Matrix.of Y, fun m => Matrix.ext fun i j => (hq _ _ _).1 (hY i j m)⟩`. Establish `e1 : (∀ i, (Ideal.Quotient.mk (maximalIdeal O ^ m)).mapMatrix (dgPhi ρ e y.P G0.frame.conj sg f i) = 0) ↔ _` using `(forall_congr' fun i => by rw [dgPhi_nat]).trans (dgPhi_iff _ _ _ _ sg _)`. Use `⟨fun ⟨⟨a1, a2, a3⟩, a4⟩ => ⟨a1, e1.2 ⟨a2, a3, a4⟩⟩, fun ⟨a1, a2⟩ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨b1, b2, b3⟩` from `e1.1 a2`. Conclude with `⟨⟨a1, b1, b2⟩, b3⟩`. Use `haveI := ((omFacts l O).2 m).1 haveI : Finite (Mm O n m) := inferInstanceAs (Finite (Fin n → Fin n → Om O m))`. Use `(Set.finite_range fun (Y : Mm O n m) (g : G0.G₀) => epsm O G0 m g • (y.ρ0 m g * Y * y.ρ0 m g⁻¹) - Y).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Y, -, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Y, rfl⟩`. Introduce and unpack `_ ⟨⟨Y, a2, rfl⟩, h0⟩`. Use `⟨h0, fun m => ⟨(Ideal.Quotient.mk (maximalIdeal O ^ m)).mapMatrix Y, ?_, funext fun g => ?_⟩⟩` and prove the remaining obligations. Use `congrArg (Ideal.Quotient.mk (maximalIdeal O ^ m)).mapMatrix a2` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Express the relevant statement in the definitionally equal form `(Ideal.Quotient.mk (maximalIdeal O ^ m)).mapMatrix (_ - _) = _`. Rewrite using `[map_sub, dg_smul, map_mul, map_mul]`. Both sides reduce to the same expression. Take `⟨b1, b2, b3⟩` from `(dgPhi_iff ρ e y.P G0.frame.conj sg f).1 (congrFun h0)`.
-
-Take `⟨a, Y, ha, h1, h2⟩` from `hD f (fun i j m => (dg_lc _).1 (hf m) i j) b1 b2 (by rintro _ ⟨j, rfl⟩ k; exact b3 j k)`. Take `⟨s, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ha ht`. Use `⟨s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ ⟨Y, h1, funext h2⟩`.
-
-Conclude with `Submodule.smul_mem _ _ (LinearMap.mem_ker.2 h0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.ncard_traceZero_twisted_cocycles_le_coboundaries_mul :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (q : ℕ) (sg : Fin q → G0.G₀), PhiCond G0.Γ l → DetO y (Set.range sg) → ∃ C : ℕ, ∀ m, {z | z ∈ Tw y m ∧ ∀ j (k : ℕ), (z (sg j) * y.ρ0 m (sg j) ^ k).trace = 0}.ncard ≤ (TwB y m).ncard * Nat.card (ResidueField O) ^ C := by

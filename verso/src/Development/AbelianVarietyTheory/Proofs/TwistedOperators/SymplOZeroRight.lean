@@ -15,28 +15,28 @@ namespace GlobalTheory.AscFin.AnnPieces
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `hO`. Simplify using `only [Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hO_add_right (S T : HSp D) (x y y' : WO S T) : hO S T x (y + y') = hO S T x y + hO S T x y' := by
   unfold hO
   simp only [Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hO`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hO_zero_right (S T : HSp D) (x : WO S T) : hO S T x 0 = 0 := by
   unfold hO
   simp
 
 /- English proof (translation)
-Unfold `hO`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hO_zero_left (S T : HSp D) (y : WO S T) : hO S T 0 y = 0 := by
   unfold hO
   simp
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[hO_add_right, mul_add, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_add_right (S T : HSp D) (x y y' : WO S T) :
     symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
@@ -44,14 +44,14 @@ theorem symplO_add_right (S T : HSp D) (x y y' : WO S T) :
   rw [hO_add_right, mul_add, map_add]
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[hO_zero_right, mul_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_zero_right (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
   unfold symplO
   rw [hO_zero_right, mul_zero, map_zero]
 
 /- English proof (translation)
-Establish `h` using `symplO_add_right S T x y (-y)`. Rewrite `h` using `[add_neg_cancel, symplO_zero_right]`. Conclude with `(neg_eq_of_add_eq_zero_right h.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplO_neg_right (S T : HSp D) (x y : WO S T) : symplO S T x (-y) = -symplO S T x y := by
   have h := symplO_add_right S T x y (-y)
@@ -59,7 +59,7 @@ theorem symplO_neg_right (S T : HSp D) (x y : WO S T) : symplO S T x (-y) = -sym
   exact (neg_eq_of_add_eq_zero_right h.symm).symm
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (ha i l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_mul {P : GlobalTheory.FinPl.Pl D → Prop} {m n k : ℕ} {a : Mx D m n} (ha : MxAt P a) (M : Mx D n k) : MxAt P (a ⬝ M) :=
   fun i j => by
@@ -67,18 +67,18 @@ theorem mxAt_mul {P : GlobalTheory.FinPl.Pl D → Prop} {m n k : ℕ} {a : Mx D 
     exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (ha i l)
 
 /- English proof (translation)
-Introduce `_ _` and use `zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_zero {P : GlobalTheory.FinPl.Pl D → Prop} {m n : ℕ} : MxAt P (0 : Mx D m n) := fun _ _ => zero_mem _
 
 /- English proof (translation)
-Introduce `i j` and use `add_mem (ha i j) (hb i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_add {P : GlobalTheory.FinPl.Pl D → Prop} {m n : ℕ} {a b : Mx D m n} (ha : MxAt P a) (hb : MxAt P b) : MxAt P (a + b) :=
   fun i j => add_mem (ha i j) (hb i j)
 
 /- English proof (translation)
-Introduce `i j` and use `neg_mem (ha i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_neg {P : GlobalTheory.FinPl.Pl D → Prop} {m n : ℕ} {a : Mx D m n} (ha : MxAt P a) : MxAt P (-a) :=
   fun i j => neg_mem (ha i j)
@@ -86,7 +86,7 @@ theorem mxAt_neg {P : GlobalTheory.FinPl.Pl D → Prop} {m n : ℕ} {a : Mx D m 
 variable {V V₀ W : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ)
 
 /- English proof (translation)
-Rewrite using `[d.hO_coordS, d.hO_coordS]`. Simplify using `only [HypDec.extY_apply, HypDec.extX_apply, Matrix.mul_assoc, HypDec.pY_jX, HypDec.pY_j0, HypDec.pY_jY, HypDec.pX_jX, HypDec.pX_j0, HypDec.pX_jY, Matrix.mul_zero, Matrix.mul_one, hO_zero_right, pairS, adj_zero, Matrix.zero_mul, Matrix.trace_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hO_extY_right (u : WO V W) (a' : Mx D W.rank ρ) : hO V W u (d.extY W a') = hO V W (d.extX W (u ⬝ d.jX)) (d.extY W a') := by
   rw [d.hO_coordS, d.hO_coordS]
@@ -95,7 +95,7 @@ theorem hO_extY_right (u : WO V W) (a' : Mx D W.rank ρ) : hO V W u (d.extY W a'
     Matrix.zero_mul, Matrix.trace_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[d.hO_coordS, d.hO_coordS]`. Simplify using `only [HypDec.extY_apply, HypDec.extX_apply, Matrix.mul_assoc, HypDec.pY_jX, HypDec.pY_j0, HypDec.pY_jY, HypDec.pX_jX, HypDec.pX_j0, HypDec.pX_jY, Matrix.mul_zero, Matrix.mul_one, pairS, Matrix.zero_mul, Matrix.mul_zero, Matrix.trace_zero, add_zero, zero_add, hO_zero_left, hO_zero …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hO_extX_left (a : Mx D W.rank ρ) (u' : WO V W) : hO V W (d.extX W a) u' = hO V W (d.extX W a) (d.extY W (u' ⬝ d.jY)) := by
   rw [d.hO_coordS, d.hO_coordS]
@@ -110,7 +110,7 @@ namespace GlobalTheory.AscFin.AnnPieces
 variable {D : D7} {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (d : HypDec V V₀ ρ) (ψ : AddChar (AF D.host.F) ℂ) (Γ : AddSubgroup (WO V W))
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[hO_extY_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_extY_right (u : WO V W) (a' : Mx D W.rank ρ) :
     symplO V W u (d.extY W a') = symplO V W (d.extX W (u ⬝ d.jX)) (d.extY W a') := by
@@ -118,7 +118,7 @@ theorem symplO_extY_right (u : WO V W) (a' : Mx D W.rank ρ) :
   rw [hO_extY_right]
 
 /- English proof (translation)
-Unfold `symplO`. Rewrite using `[← hO_extX_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_extX_left (a : Mx D W.rank ρ) (u' : WO V W) :
     symplO V W (d.extX W a) u' = symplO V W (d.extX W a) (d.extY W (u' ⬝ d.jY)) := by
@@ -126,13 +126,13 @@ theorem symplO_extX_left (a : Mx D W.rank ρ) (u' : WO V W) :
   rw [← hO_extX_left]
 
 /- English proof (translation)
-Rewrite using `[HypDec.extY_apply, Matrix.mul_assoc, HypDec.pY_jY, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extY_mul_jY (a' : Mx D W.rank ρ) : d.extY W a' ⬝ d.jY = a' := by
   rw [HypDec.extY_apply, Matrix.mul_assoc, HypDec.pY_jY, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[HypDec.extX_apply, Matrix.mul_assoc, HypDec.pX_jX, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extX_mul_jX (a : Mx D W.rank ρ) : d.extX W a ⬝ d.jX = a := by
   rw [HypDec.extX_apply, Matrix.mul_assoc, HypDec.pX_jX, Matrix.mul_one]
@@ -150,20 +150,20 @@ def annSet : Set (WO V W) := {u' | MxAt (fun _ => True) u' ∧ ∀ u ∈ Γ, ψ 
 variable {d ψ Γ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mxAt_mul ha'.1 _, fun u hu => by rw [symplO_extY_right]; exact ha'.2 _ (hX u hu)⟩`.
+Supply the required witnesses or components.
 -/
 theorem extY_mem_annSet (hX : ∀ u ∈ Γ, d.extX W (u ⬝ d.jX) ∈ Γ) {a' : Mx D W.rank ρ} (ha' : a' ∈ annY d ψ Γ) :
     d.extY W a' ∈ annSet ψ Γ :=
   ⟨mxAt_mul ha'.1 _, fun u hu => by rw [symplO_extY_right]; exact ha'.2 _ (hX u hu)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mxAt_mul hu'.1 _, fun a ha => by rw [← symplO_extX_left]; exact hu'.2 _ ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_jY_mem_annY {u' : WO V W} (hu' : u' ∈ annSet ψ Γ) : u' ⬝ d.jY ∈ annY d ψ Γ :=
   ⟨mxAt_mul hu'.1 _, fun a ha => by rw [← symplO_extX_left]; exact hu'.2 _ ha⟩
 
 /- English proof (translation)
-The claim follows from `Set.ext fun a' => ⟨fun h => ⟨_, extY_mem_annSet hX h, extY_mul_jY d a'⟩, by rintro ⟨u, hu, rfl⟩ exact mul_jY_mem_annY hu⟩`.
+A detailed English derivation is pending.
 -/
 theorem annY_eq_image (hX : ∀ u ∈ Γ, d.extX W (u ⬝ d.jX) ∈ Γ) :
     (annY d ψ Γ : Set (Mx D W.rank ρ)) = (fun u : WO V W => u ⬝ d.jY) '' annSet ψ Γ :=
@@ -172,7 +172,7 @@ theorem annY_eq_image (hX : ∀ u ∈ Γ, d.extX W (u ⬝ d.jX) ∈ Γ) :
     exact mul_jY_mem_annY hu⟩
 
 /- English proof (translation)
-Use `show AddSubgroup.closure (annY d ψ Γ : Set (Mx D W.rank ρ)) = _`. Conclude with `AddSubgroup.closure_eq _`.
+A detailed English derivation is pending.
 -/
 theorem A₂_eq (dW : HypDec W W₀ σ) (Γ₂ : AddSubgroup (WO V W)) :
     (piecesOf d dW ψ Γ Γ₂).A₂ = annY d ψ Γ := by
@@ -180,13 +180,11 @@ theorem A₂_eq (dW : HypDec W W₀ σ) (Γ₂ : AddSubgroup (WO V W)) :
   exact AddSubgroup.closure_eq _
 
 /- English proof (translation)
-Rewrite using `[A₂_eq]`. Use `⟨⟨fun a' ha' => ha'.1, ?_, ?_⟩, fun a ha => ⟨fun h a' ha' => ha'.2 a h, fun h => ?_⟩, fun a' ha' => ⟨fun h a ha => h.2 a ha, fun h => ⟨ha', h⟩⟩⟩` and prove the remaining obligations. Rewrite using `[annY_eq_image hX]`. Conclude with `hc.image (continuous_id.matrix_mul continuous_const)`. Take `⟨U, hU, h0, hUm⟩` from `ho`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(fun a' => d.extY W a') ⁻¹' U, hU.preimage (continuous_id.matrix_mul continuous_const), ?_, ?_⟩` and prove the remaining obligations. Use `show d.extY W 0 ∈ U`. Rewrite using `[map_zero]`. Conclude with `h0`. Introduce `a' ha' hfin`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨hfin, fun b hb' => ?_⟩` and prove the remaining obligations. Use `hUm _ ha' (mxAt_mul hfin _) _ hb'` as an intermediate fact. Rewrite `this` using `[symplO_extY_right, extX_mul_jX]`. Then use the resulting hypothesis. Use `show d.extX W a ∈ Γ`. Use `hb _ (mxAt_mul ha _) fun u' hu' => ?_` and prove the remaining obligations.
-
-Rewrite using `[symplO_extX_left]`. Conclude with `h _ (mul_jY_mem_annY hu')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pieces_dualA (dW : HypDec W W₀ σ) (Γ₂ : AddSubgroup (WO V W))
     (hX : ∀ u ∈ Γ, d.extX W (u ⬝ d.jX) ∈ Γ)

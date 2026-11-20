@@ -28,7 +28,7 @@ section General
 variable {X Y : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => (mem_nonzeroLocus s y).2 ⟨_, hJ.mem φ (𝟙 Y), h⟩⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `isUnit_sval s (𝟙 Y) y hJ k hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff_sval {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (y : Y) {J : (Y ⟶ X) → L.ι} (hJ : Good L y J) :

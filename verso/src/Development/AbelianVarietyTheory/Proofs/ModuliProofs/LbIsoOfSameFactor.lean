@@ -21,7 +21,7 @@ namespace SameFactor
 variable {A : Over (Sp ℂ)} [GrpObj A] {M M' : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-Simplify using `only [LB.div] at h ⊢`. Rewrite using `[Units.val_mul, valAt'_mul, valAt'_units_inv x h, GlobalTheory.HolSecAlg.val_res_unit x _ _ h, GlobalTheory.HolSecAlg.val_res_unit x _ _ h]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_div_g {X : Scheme.{0}} (M M' : LB X) (x : Sp ℂ ⟶ X) (p q : (LB.div M' M).ι)
     (h : ⊤ ≤ x ⁻¹ᵁ ((LB.div M' M).U p ⊓ (LB.div M' M).U q)) :
@@ -63,9 +63,7 @@ def divUnif (u : HolUnif A M g) (u' : HolUnif A M' g) (hex : u'.ex = u.ex) : Hol
     ring
 
 /- English proof (translation)
-Establish `hunit : ∀ i, IsUnit (s.f i)` using `fun i => GlobalTheory.ThetaBundleSym.isUnit_of_complex_points u.ex_onto (s.f i) fun z hz => by`. Rewrite using `[hs i z hz]`. Conclude with `mul_ne_zero (hθ z) (u.fr_ne i z hz)`. Use `⟨⟨fun i => (hunit i).unit⟩, fun i j => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul]`.
-
-Conclude with `s.compat i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_isFn [LocallyOfFiniteType A.hom] (u : HolUnif A M g) (s : M.Sec) (θ : (Fin g → ℂ) → ℂ)
     (hs : u.IsFn s θ) (hθ : ∀ z, θ z ≠ 0) : ∃ t : LB.Gen M, t.IsGen := by
@@ -81,13 +79,11 @@ theorem exists_gen_of_isFn [LocallyOfFiniteType A.hom] (u : HolUnif A M g) (s : 
 end SameFactor
 
 /- English proof (translation)
-Introduce `hL hL2 hTh hU P M M' u u' hM hM' hex hfac`. Establish `: LocallyOfFiniteType P.A.hom`. Use `P.isAb.proper` as an intermediate fact. Use `infer_instance`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_algebraic_section_of_holomorphic_theta hL hL2 hTh hU P (LB.div M' M) (SameFactor.divUnif u u' hex) (fun _ => 1) (LB.isLB_div hM' hM) (differentiable_const 1) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l p z hz`. Take `⟨h1, h2⟩` from `(top_le_preimage_inf _ _ _).1 hz`. Establish `hl : u.ex (z + l) = u.ex z` using `GlobalTheory.HolSecAlg.ex_add_lattice u z l.2`. Establish `n0 : u.fr p.2 z ≠ 0` using `u.fr_ne _ _ h2`. Establish `n1 : u.fr p.2 (z + l) ≠ 0` using `u.fr_ne _ _ (by rw [hl]; exact h2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hfac l p.2 p.1 z h2 h1`. Use `show (1 : ℂ) * (u'.fr p.1 (z + l) * (u.fr p.2 (z + l))⁻¹) = 1 * (u'.fr p.1 z * (u.fr p.2 z)⁻¹)`. Rewrite using `[_root_.one_mul, _root_.one_mul, ← div_eq_mul_inv, ← div_eq_mul_inv, div_eq_div_iff n1 n0]`. Take the linear combination `key)`. Take `⟨t, ht⟩` from `SameFactor.exists_gen_of_isFn _ s (fun _ => 1) hs fun _ => one_ne_zero`.
-
-Conclude with `⟨t, ht⟩`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lbIso_of_same_factor : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (P : Out.PolAV (Sp ℂ)) (M M' : LB P.A.left) (u : HolUnif P.A M P.g) (u' : HolUnif P.A M' P.g), M.IsLB → M'.IsLB → u'.ex = u.ex → (∀ (l : u.Λ) i j z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ M.U i → ⊤ ≤ (u.ex z).left ⁻¹ᵁ M'.U j → u.fr i z * u'.fr j (z + l) = u.fr i (z + l) * u'.fr j z) → LBIso M M' := by
   intro hL hL2 hTh hU P M M' u u' hM hM' hex hfac

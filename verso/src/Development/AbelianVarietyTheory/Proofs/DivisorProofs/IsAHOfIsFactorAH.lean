@@ -24,14 +24,14 @@ def IsFactorAH (u : HolUnif A L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ 
         Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ)))) * u.fr i (z + l)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.2.1, h.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFactorAH_of_isAH {u : HolUnif A L g} {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (h : u.IsAH Hm χ) : IsFactorAH u Hm χ :=
   ⟨h.1, h.2.2.1, h.2.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, pos, h.2.1, h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAH_of_isFactorAH {u : HolUnif A L g} {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (h : IsFactorAH u Hm χ) (pos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) : u.IsAH Hm χ :=

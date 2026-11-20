@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Loc
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Establish `hu : IsUnit (a * w)`. Establish `hx : a * w = ν + p * h` using `by rw [← e]; ring`. Rewrite using `[hx]`. Assume the negation of the conclusion as `hn`. Establish `h1 : ν + p * h ∈ maximalIdeal R` using `(mem_maximalIdeal _).2 hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : p * h ∈ maximalIdeal R` using `Ideal.mul_mem_right _ _ hp`. Establish `h3 : ν ∈ maximalIdeal R` using `by simpa using Ideal.sub_mem _ h1 h2`. Conclude with `(mem_maximalIdeal _).1 h3 hν`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.GradeZeroInterpolatingElement.sixBlock_unit {R : Type} [CommRing R] [IsLocalRing R] {ν a w p h : R} (hν : IsUnit ν)
     (hp : p ∈ maximalIdeal R) (e : a * w - p * h = ν) : IsUnit a := by
@@ -20,15 +20,15 @@ private theorem UpperTheory.V.GradeZeroInterpolatingElement.sixBlock_unit {R : T
   exact isUnit_of_mul_isUnit_left hu
 
 /- English proof (translation)
-Introduce `R _ _ ν g hν hg hoff h01 h03 h21 h10 h30 h12`. Establish `hg' : adj g * g = ν • 1` using `hg`. Establish `E : ∀ i j, (adj g * g) i j = (ν • (1 : M4 R)) i j` using `fun i j => by rw [hg']`. Establish `errorNonneg` using `E 0 0`. Establish `bivariateExponentMonomial` using `E 0 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E11` using `E 1 1`. Establish `E10` using `E 1 0`. Establish `E13` using `E 1 3`. Establish `E20` using `E 2 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, h01, h03, h21, h10, h30, h12, Matrix.one_apply] at errorNonneg bivariateExponentMonomial E11 E10 E13 E20`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `u00 : IsUnit (g 0 0)` using `UpperTheory.V.GradeZeroInterpolatingElement.sixBlock_unit (w := g 3 3) (h := g 2 0) hν (hoff 1 3 (by decide)) (by rw [← errorNonneg]; ring)`. Establish `u11 : IsUnit (g 1 1)` using `UpperTheory.V.GradeZeroInterpolatingElement.sixBlock_unit (w := g 2 2) (h := g 3 1) hν (hoff 0 2 (by decide)) (by rw [← E11]; ring)`. Establish `h23 : g 2 3 = 0` using `u11.mul_left_eq_zero.1 bivariateExponentMonomial`. Establish `h32 : g 3 2 = 0` using `u00.mul_left_eq_zero.1 E10`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `intro i j hij fin_cases i <;> fin_cases j <;> simp [lamW, h01, h03, h21, h23, h10, h12, h30, h32] at hij ⊢`. Introduce `hν1 h02 h20 h00 h11`. Substitute `hν1` using the available equality. Establish `h22 : g 2 2 = 1` using `by simpa [h11, h02] using E11`. Establish `h33 : g 3 3 = 1` using `by simpa [h00, h20] using errorNonneg`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h13 : g 1 3 = 0` using `by simpa [h22, h02] using E13`. Establish `h31 : g 3 1 = 0` using `by simpa [h11, h20, h00] using E20`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.one_apply, h00, h01, h02, h03, h10, h11, h12, h13, h20, h21, h22, h23, h30, h31, h32, h33]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.sixBlock :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (ν : R) (g : M4 R), IsUnit ν → IsGSp ν g → (∀ i j, i ≠ j → g i j ∈ maximalIdeal R) → g 0 1 = 0 → g 0 3 = 0 → g 2 1 = 0 → g 1 0 = 0 → g 3 0 = 0 → g 1 2 = 0 → IsBlock g ∧ (ν = 1 → g 0 2 = 0 → g 2 0 = 0 → g 0 0 = 1 → g 1 1 = 1 → g = 1) := by

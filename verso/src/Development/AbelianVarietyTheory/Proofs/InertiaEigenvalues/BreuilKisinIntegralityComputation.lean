@@ -13,13 +13,13 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   [IsUnitBall O K] {l e a : ℕ} [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.breuilRing_eq_integral_add_eisensteinFiltration O K l e j hj f hf`.
+A detailed English derivation is pending.
 -/
 theorem S_eq_A_add_Fil {j : ℕ} (hj : j < l) {f : K⟦X⟧} (hf : f ∈ S O K e) :
     ∃ g ∈ A O K, ∃ φ ∈ Fil O K l e j, f = g + (φ : K⟦X⟧) := GlobalTheory.T.breuilRing_eq_integral_add_eisensteinFiltration O K l e j hj f hf
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_eisensteinFiltration_eq_eisenstein_pow_mul_disc O K l e j φ hφ`.
+A detailed English derivation is pending.
 -/
 theorem Fil_le_E_pow (j : ℕ) {φ : S O K e} (hφ : φ ∈ Fil O K l e j) :
     ∃ q ∈ Rpi O K l e, (φ : K⟦X⟧) = E K l e ^ j * q := GlobalTheory.T.mem_eisensteinFiltration_eq_eisenstein_pow_mul_disc O K l e j φ hφ
@@ -29,9 +29,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 def colVec (P : PhiMod O K l e a ι) (τ : ZMod a) (i : ι) : Vec K a ι := Pi.single τ ((P.mx τ).col i)
 
 /- English proof (translation)
-Use `mem_tot.2 fun σ => ?_` and prove the remaining obligations. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `only [colVec, Pi.single_eq_same]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [colVec, Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem colVec_mem_MM (P : PhiMod O K l e a ι) (τ : ZMod a) (i : ι) : colVec P τ i ∈ P.MM := by
   refine mem_tot.2 fun σ => ?_
@@ -43,9 +43,9 @@ theorem colVec_mem_MM (P : PhiMod O K l e a ι) (τ : ZMod a) (i : ι) : colVec 
     exact zero_mem _
 
 /- English proof (translation)
-Use extensionality with `τ k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, colVec, Pi.single_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single τ]`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Introduce `b _ hb`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_colVec (P : PhiMod O K l e a ι) (c : ZMod a → ι → K⟦X⟧) :
     (∑ τ, ∑ i, c τ i • colVec P τ i) = fun τ => P.mx τ *ᵥ c τ := by
@@ -57,11 +57,9 @@ theorem sum_colVec (P : PhiMod O K l e a ι) (c : ZMod a → ι → K⟦X⟧) :
   · simp
 
 /- English proof (translation)
-Establish `hs (τ : ZMod a) (i : ι) : (P.mxInv τ *ᵥ m τ) i ∈ S O K e` using `P.mem_extc_iff.1 (mem_tot.1 hm τ) i`. Use `choose g hg φ hφ hgφ using fun τ i => S_eq_A_add_Fil (O := O) (l := l) hj (hs τ i)`. Establish `hm' (τ : ZMod a) : m τ = P.mx τ *ᵥ (P.mxInv τ *ᵥ m τ)`. Rewrite using `[Matrix.mulVec_mulVec, P.mx_mul_mxInv, Matrix.one_mulVec]`. Use `⟨fun τ => P.mx τ *ᵥ g τ, mem_tot.2 fun τ => P.mem_extc.2 ⟨g τ, fun i => hg τ i, rfl⟩, ∑ τ, ∑ i, φ τ i • colVec P τ i, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun τ _ => Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hφ τ i) (colVec_mem_MM P τ i)`. Establish `: (∑ τ, ∑ i, φ τ i • colVec P τ i) = ∑ τ, ∑ i, (φ τ i : K⟦X⟧) • colVec P τ i` using `rfl`. Rewrite using `[this, sum_colVec]`. Use `ext1 τ`. Rewrite using `[Pi.add_apply, ← Matrix.mulVec_add, hm' τ]`.
-
-Use `congr 1`. Use `ext1 i`. Conclude with `hgφ τ i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem MM_eq_L_add_FilMM (P : PhiMod O K l e a ι) {j : ℕ} (hj : j < l) {m : Vec K a ι}
     (hm : m ∈ P.MM) : ∃ p ∈ P.L, ∃ f ∈ P.FilMM j, m = p + f := by
@@ -87,13 +85,11 @@ section Dat
 variable [TameDescentExponentData K l e a] {η H : ℕ} (D : BKDat O K l e a ι η H)
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hf (fun φ hφ m hm => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Take `⟨q, hq, hφq⟩` from `Fil_le_E_pow (O := O) (10 * H) hφ`. Establish `hEm` using `D.smul_mem_Mext (A_le_S l e) hm`. Establish `key : Ezpow K l e (-(2 * H : ℤ)) • φ • m = (E K l e ^ (8 * H - η) * q) • (E K l e ^ η • m)`. Establish `h1 : Ezpow K l e (-(2 * H : ℤ)) * E K l e ^ (10 * H) = E K l e ^ (8 * H - η) * E K l e ^ η`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, show 8 * H - η + η = 8 * H by omega, ← Ezpow_natCast, ← Ezpow_natCast, ← Ezpow_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show φ • m = (φ : K⟦X⟧) • m from rfl, hφq, smul_smul, smul_smul, ← mul_assoc, h1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `D.smul_mem_Man (mul_mem (pow_mem (E_mem l e _) _) hq) (D.Mext_mono (S_le_R l e) hEm)`. Rewrite using `[smul_add]`.
-
-Conclude with `add_mem hx hy`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ezpow_smul_FilMM_mem (hηH : η < H) {f : Vec K a ι} (hf : f ∈ D.FilMM (10 * H)) :
     Ezpow K l e (-(2 * H : ℤ)) • f ∈ D.Man := by
@@ -118,13 +114,13 @@ theorem Ezpow_smul_FilMM_mem (hηH : η < H) {f : Vec K a ι} (hf : f ∈ D.FilM
     exact add_mem hx hy
 
 /- English proof (translation)
-Establish `hl0 : E K l e ^ (H + η) • y ∈ D.L`. Rewrite using `[pow_add, mul_smul]`. Conclude with `D.lower _ hy`. Establish `hMM : E K l e ^ (H + η) • y ∈ D.MM` using `D.ext_mono (A_le_S l e) hl0`. Establish `hc : D.conn (E K l e ^ (H + η) • y) ∈ D.MM` using `D.conn_mem_MM hMM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : E K l e ^ (H - η) * E K l e ∈ S O K e` using `mul_mem (pow_mem (E_mem l e _) _) (E_mem l e _)`. Take `⟨p, hp, f, hf, hpf⟩` from `MM_eq_L_add_FilMM D.toPhiMod (j := 10 * H) (by omega) (D.MM.smul_mem ⟨_, hA⟩ hc)`. Establish `hB : E K l e ^ (H - η) * (((H + η : ℕ) : K⟦X⟧) * N K (E K l e)) ∈ A O K` using `mul_mem (pow_mem (E_mem l e _) _) (mul_mem (natCast_mem _ _) (by`. Rewrite using `[N_E]`. Conclude with `mul_mem (natCast_mem _ _) (pow_mem HasU.X_mem _)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨p - (E K l e ^ (H - η) * (((H + η : ℕ) : K⟦X⟧) * N K (E K l e))) • (E K l e ^ (H + η) • y), sub_mem hp (D.L.smul_mem ⟨_, hB⟩ hl0), f, hf, ?_⟩` and prove the remaining obligations. Establish `h1 : E K l e ^ (2 * H) • D.EN y = E K l e ^ (H - η) • (E K l e ^ (H + η) • D.EN y)`. Rewrite using `[smul_smul, ← pow_add, show H - η + (H + η) = 2 * H by omega]`. Rewrite using `[h1, PhiMod.E_pow_smul_EN, PhiMod.EN_apply, smul_sub, smul_smul, smul_smul]`. Establish `h2 : (E K l e ^ (H - η) * E K l e) • D.conn (E K l e ^ (H + η) • y) = p + f` using `hpf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[h2]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem E_pow_smul_EN_mem (hηH : η < H) (hl : 10 * H + 2 ≤ l) {y : Vec K a ι} (hy : y ∈ D.EM η) :
     ∃ p ∈ D.L, ∃ f ∈ D.FilMM (10 * H), E K l e ^ (2 * H) • D.EN y = p + f := by
@@ -153,7 +149,7 @@ end Dat
 end GlobalTheory.IntegralityComp
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D hηH hl`. Conclude with `⟨fun m hm => GlobalTheory.IntegralityComp.MM_eq_L_add_FilMM D.toPhiMod (by omega) hm, fun f hf => GlobalTheory.IntegralityComp.Ezpow_smul_FilMM_mem D hηH hf, fun y hy => GlobalTheory.IntegralityComp.E_pow_smul_EN_mem D hηH hl hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.IntegralityComp.integralityComputation : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H), η < H → 10 * H + 2 ≤ l → GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.IntegralityComputation D := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D hηH hl

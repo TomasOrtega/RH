@@ -23,14 +23,14 @@ def place (q : SplitPt D k) : GlobalTheory.LocMod.Place D k where
   cont_ι := q.cont_sec
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `[Formalism.L2.Theta.mt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem suppAt_one (e : AE D) (S : HSp D) : SuppAt e S 1 := by
   intro i j
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Use `⟨suppAt_one _ _, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.L2.Theta.mt, F.βγ, place]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isLoc_one (q : SplitPt D k) {S : HSp D} {Y : Type} [Fintype Y] [DecidableEq Y]
     (F : GlobalTheory.LocMod.Frame k S.rank Y) : (place q).IsLoc F 1 1 := by
@@ -38,7 +38,7 @@ theorem isLoc_one (q : SplitPt D k) {S : HSp D} {Y : Type} [Fintype Y] [Decidabl
   simp [Formalism.L2.Theta.mt, F.βγ, place]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.splitPlace_localGroupElements_jacobi_bessel D k (place q)).1 S Y F`.
+A detailed English derivation is pending.
 -/
 theorem locGrp (q : SplitPt D k) (S : HSp D) (Y : Type) [Fintype Y] [DecidableEq Y]
     (F : GlobalTheory.LocMod.Frame k S.rank Y) :
@@ -65,20 +65,18 @@ def stdLat (k : Type) [Field k] [ValuativeRel k] (Y : Type) : Submodule 𝒪[k] 
   Submodule.pi Set.univ fun _ => (1 : Submodule 𝒪[k] k)
 
 /- English proof (translation)
-Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`. Conclude with `forall_congr' fun i => ⟨fun ⟨c, hc⟩ => hc ▸ c.2, fun h => ⟨⟨y i, h⟩, rfl⟩⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_std {Y : Type} (y : Y → k) : y ∈ stdLat k Y ↔ ∀ i, y i ∈ 𝒪[k] := by
   simp only [stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]
   exact forall_congr' fun i => ⟨fun ⟨c, hc⟩ => hc ▸ c.2, fun h => ⟨⟨y i, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx'` using `(mem_std x).1 hx`. Establish `: x = ∑ i, (⟨x i, hx' i⟩ : 𝒪[k]) • (Pi.single i 1 : Y → k)`. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply, Subring.smul_def, smul_eq_mul]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_std _).2 fun i => ?_` and prove the remaining obligations. Use `show (Pi.single j (1 : k) : Y → k) i ∈ 𝒪[k]`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_eq_span (Y : Type) [Fintype Y] [DecidableEq Y] :
     stdLat k Y = Submodule.span 𝒪[k] (Set.range fun i : Y => (Pi.single i 1 : Y → k)) := by
@@ -100,9 +98,9 @@ theorem std_eq_span (Y : Type) [Fintype Y] [DecidableEq Y] :
     · exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[std_eq_span]; exact Submodule.fg_span (Set.finite_range _) span_eq_top := by`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Rewrite using `[← (Pi.basisFun k Y).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(mem_std _).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_std (Y : Type) [Fintype Y] [DecidableEq Y] : Submodule.IsLattice k (stdLat k Y) where
   fg := by rw [std_eq_span]; exact Submodule.fg_span (Set.finite_range _)
@@ -118,7 +116,7 @@ theorem isLattice_std (Y : Type) [Fintype Y] [DecidableEq Y] : Submodule.IsLatti
     · exact zero_mem _
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 ha`. Use `Submodule.mem_inf.2 ⟨h1, (Submodule.mem_iInf _).2 fun w => ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.mem_iInf _).1 h2 ⟨w.1, fun hw => w.2 (hPQ _ hw)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem idAt_mono {P Q : Pl D → Prop} (hPQ : ∀ w, P w → Q w) : idAt D P ≤ idAt D Q := by
   intro a ha
@@ -127,15 +125,15 @@ theorem idAt_mono {P Q : Pl D → Prop} (hPQ : ∀ w, P w → Q w) : idAt D P �
   exact (Submodule.mem_iInf _).1 h2 ⟨w.1, fun hw => w.2 (hPQ _ hw)⟩
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨⟨ε, -, -, hεint, hεat, -⟩, hSv⟩` from `GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)`. Establish `hyv` using `((hSv S).2.2.2 L y hL).1 hy`. Establish `hoff` using `((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· ≠ v₀)).2 S).2.2.2`. Establish `hy₀ : y ∈ latV S L (· ≠ v₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hoff L y hL]`. Use `⟨fun i => idAt_mono (fun w hw => hw ▸ hv) (hyv.1 i), fun u _ e he => ?_⟩` and prove the remaining obligations. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Conclude with `hyv.2 u rfl e he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨εu, -, -, -, hεuat, hεuoff⟩, -⟩` from `GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = u)`. Establish `hz : e • y = 0`. Use function extensionality and compare the values at `i`. Establish `hyi : y i ∈ idOff D (· = u)` using `(Submodule.mem_iInf _).2 fun w => (Submodule.mem_iInf _).1 (Submodule.mem_inf.1 (hyv.1 i)).2 ⟨w.1, fun hw => huv (w.2.symm.trans hw)⟩`. Express the relevant statement in the definitionally equal form `e * y i = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hεuat e).1 he.1, mul_comm εu e, mul_assoc, (hεuoff (y i)).1 hyi, mul_zero]`. Rewrite using `[hz]`. Conclude with `zero_mem _`. Rewrite `hy₀` using `[h]`. Establish `h2` using `((hoff L' y hL').1 hy₀).2 v hv ε hεint`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hεy : ε • y = y` using `funext fun i => (hεat (y i)).1 (hyv.1 i)`. Rewrite `h2` using `[hεy]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem latV_le_of_off {S : HSp D} {L L' : Lat S} (hL : Submodule.IsLattice D.host.E L)
     (hL' : Submodule.IsLattice D.host.E L') {v₀ v : Pl D} (hv : v ≠ v₀)
@@ -166,7 +164,7 @@ theorem latV_le_of_off {S : HSp D} {L L' : Lat S} (hL : Submodule.IsLattice D.ho
   rwa [hεy] at h2
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q S Y _ _ F L₀ hL₀`. Take `⟨M, hM, hMΛ, hoff⟩` from `GlobalTheory.T.exists_selfDual_lattice_with_prescribed_splitComponent D k q S Y (frameOf q S Y F) L₀ (stdLat k Y) hL₀ (isLattice_std Y)`. Use `⟨M, hM, fun v hv => le_antisymm (latV_le_of_off hM.1 hL₀.1 hv hoff) (latV_le_of_off hL₀.1 hM.1 hv hoff.symm), fun y => ?_⟩` and prove the remaining obligations. Conclude with `(mem_std y).symm.trans (hMΛ y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_selfDual_frame : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k) (S : HSp D) (Y : Type) [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k S.rank Y) (L₀ : Lat S), IsSelfDualC S L₀ → ∃ L : Lat S, IsSelfDualC S L ∧ (∀ v, v ≠ q.v → latV S L (· = v) = latV S L₀ (· = v)) ∧ ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((F.β *ᵥ y) i)) ∈ latV S L (· = q.v) := by
   intro D k _ _ _ _ q S Y _ _ F L₀ hL₀

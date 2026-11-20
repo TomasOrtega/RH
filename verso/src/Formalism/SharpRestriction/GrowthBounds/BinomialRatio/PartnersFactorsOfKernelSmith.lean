@@ -21,14 +21,14 @@ def SmithData {r s t : ℕ} (form : SegVs O r s t → SegVs O r s t → KK O) (L
     Submodule.span O (Set.range al) = L ∧ Submodule.span O (Set.range be) = L
 
 /- English proof (translation)
-Unfold `vK ordW`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem vK_zero (p : ℕ) : vK p (0 : KK O) = ⊤ := by
   unfold vK ordW
   simp
 
 /- English proof (translation)
-Introduce `hκ`. Substitute `hκ` using the available equality. Take `⟨q, hq, -⟩` from `h`. Rewrite `hq` using `[vK_zero]`. Conclude with `WithTop.top_ne_coe hq`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vLE_ne_zero {p : ℕ} {κ : KK O} {D : ℝ} (h : vLE p κ D) : κ ≠ 0 := by
   intro hκ
@@ -38,11 +38,9 @@ theorem vLE_ne_zero {p : ℕ} {κ : KK O} {D : ℝ} (h : vLE p κ D) : κ ≠ 0 
   exact WithTop.top_ne_coe hq
 
 /- English proof (translation)
-Establish `hκ` using `vLE_ne_zero h`. Break down `ValuationRing.isInteger_or_isInteger O κ with ⟨z, hz⟩ | ⟨c, hc⟩` into its components or cases. Use `⟨1, z, ?_, ?_, by rw [map_one, one_mul, hz]⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hκ (by rw [← hz, map_zero])`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Unfold `vLEO vO`. Rewrite using `[hz]`. Conclude with `h`. Use `⟨c, 1, one_ne_zero, ?_, by rw [hc, map_one, inv_mul_cancel₀ hκ]⟩` and prove the remaining obligations. Rewrite using `[vLEO_iff hw h2 one_ne_zero, dvr_order_unit_eq_zero isUnit_one]`.
-
-Simplify using `using hD`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem scale_to_O {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) {κ : KK O} {D : ℝ} (hD : 0 ≤ D)
     (h : vLE p κ D) : ∃ c z : O, z ≠ 0 ∧ vLEO p z D ∧ algebraMap O (KK O) c * κ = algebraMap O (KK O) z := by
@@ -59,11 +57,11 @@ theorem scale_to_O {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O))
     simpa using hD
 
 /- English proof (translation)
-Unfold `segForm`. Distinguish the cases in `hc : algebraMap O (KK O) c = 0`. Rewrite using `[hc, zero_mul]`. Establish `: ∀ b, ((specConst p S b : ℕ) : KK O) * fock (f b) ((c • g) b) = 0` using `fun b => by`. Rewrite using `[Pi.smul_apply, ← algebraMap_smul (KK O) c (g b), hc, zero_smul]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `fock`. Simplify using the standard rewrite rules. Rewrite using `[finsum_congr this, finsum_zero]`. Use `AddMonoidHom.map_finsum_of_injective (AddMonoidHom.mulLeft (algebraMap O (KK O) c)) (mul_right_injective₀ hc) (fun b => ((specConst p S b : ℕ) : KK O) * fock (f b) (g b))` as an intermediate fact. Simplify using `only [AddMonoidHom.coe_mulLeft] at this`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `finsum_congr fun b => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, ← algebraMap_smul (KK O) c (g b), fock_form_smul_right, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem segForm_smul_right (p r : ℕ) {s : ℕ} (S : SegData s) (c : O) (f g : SegVs O r s S.t) :
     segForm O p r S f (c • g) = algebraMap O (KK O) c * segForm O p r S f g := by
@@ -86,13 +84,11 @@ theorem segForm_smul_right (p r : ℕ) {s : ℕ} (S : SegData s) (c : O) (f g : 
 open Classical in
 
 /- English proof (translation)
-Take `⟨hmem, hsupp, horth, -, -, -⟩` from `hS`. Use `set good := Finset.univ.filter fun i => vLE p (segForm O p r S (al i) (be i)) D with hgood`. Set `e : Fin g → Fin n` to `fun i => ((good.equivFin).symm (Fin.castLE hg i)).1`. Establish `he : Function.Injective e` using `fun a b hab => by`. Establish `h1` using `Subtype.ext hab`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(good.equivFin).symm.injective h1`. Conclude with `Fin.castLE_injective hg h3`. Establish `hegood : ∀ i, vLE p (segForm O p r S (al (e i)) (be (e i))) D` using `fun i => (Finset.mem_filter.1 ((good.equivFin).symm (Fin.castLE hg i)).2).2`. Use `choose c z hz0 hzD hcz using fun i => scale_to_O hw h2 hD (hegood i)`. Use `⟨fun i => al (e i), fun i => c i • be (e i), fun i => β (e i), z, fun i => ⟨(hmem _).1, L.smul_mem _ (hmem _).2⟩, fun i b hb => ⟨(hsupp _ b hb).1, ?_⟩, fun i => ⟨hz0 i, hzD i⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show c i • be (e i) b = 0`. Rewrite using `[(hsupp _ b hb).2, smul_zero]`. Introduce `i l show segForm O p r S (al (e i)) (c l • be (e l)) = _`. Rewrite using `[segForm_smul_right]`. Distinguish the cases in `hil : i = l`.
-
-Substitute `hil` using the available equality. Rewrite using `[if_pos rfl, hcz]`. Rewrite using `[if_neg hil, horth _ _ (fun h => hil (he h)), mul_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockDiag_of_smith {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) {r s : ℕ} (S : SegData s)
     (L : Submodule O (SegVs O r s S.t)) {n : ℕ} {al be : Fin n → SegVs O r s S.t} {β : Fin n → SegBlock s r}
@@ -148,7 +144,7 @@ def CountSmithAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ) : Prop :=
           (Finset.univ.filter fun i => vLE X.p (segForm O X.p X.m (X.seg C0 CE1 CE2 j) (al i) (be i)) Dj).card
 
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc j Dj L₁ hD hG`. Take `⟨n, al, be, β, hd⟩` from `hSm X W Qq O Kf ι σ jO w hS hH hc j`. Conclude with `blockDiag_of_smith hS.2.1 hS.1.w_sq _ _ hd hD _ (hCn X W Qq O Kf ι σ jO w hS hH hc j Dj L₁ hD hG n al be β hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem partners_factors_at_of_smith {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ} (hSm : SmithAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc)
     (hCn : CountSmithAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc) : PartnersToFactorsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc := by
@@ -162,7 +158,7 @@ def RestCountSmith : Prop :=
   TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc => CountSmithAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => partners_factors_at_of_smith h.1 h.2) (TransportedAlt.and hSm hCn)`.
+A detailed English derivation is pending.
 -/
 theorem partners_factors_of_smith_count (hSm : RestSmith) (hCn : RestCountSmith) : PartnersToFactors :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => partners_factors_at_of_smith h.1 h.2) (TransportedAlt.and hSm hCn)
@@ -172,13 +168,13 @@ section Rank
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `hle' : L₁ ≤ Submodule.span O (Set.range al)` using `hle.trans hspan.ge`. Set `π : L₁ →ₗ[O] (good → O)` to `LinearMap.pi fun i => (Finsupp.lapply (i : Fin n)).comp (hli.repr.comp (Submodule.inclusion hle'))`. Establish `hπ : Function.Injective π`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrep` using `hli.linearCombination_repr (Submodule.inclusion hle' x)`. Rewrite `hrep` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (fun i => zero_smul O (al i))]`. Establish `hz : (fun i => hli.repr (Submodule.inclusion hle' x) i) = 0`. Use `hker _ ?_ (fun i hi => congr_fun hx ⟨i, hi⟩)` and prove the remaining obligations. Use `show (∑ i, hli.repr (Submodule.inclusion hle' x) i • al i) ∈ L₁`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrep, Submodule.coe_inclusion]`. Conclude with `x.2`. Establish `hz' : ∀ i, hli.repr (Submodule.inclusion hle' x) i = 0` using `fun i => congr_fun hz i`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_zero, ← Submodule.coe_inclusion hle' x, ← hrep]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[hz']`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem rank_le_of_ker {V : Type} [AddCommGroup V] [Module O V] {n : ℕ} (al : Fin n → V) (hli : LinearIndependent O al)
     (L L₁ : Submodule O V) (hspan : Submodule.span O (Set.range al) = L) (hle : L₁ ≤ L) (good : Finset (Fin n))
@@ -224,7 +220,7 @@ def KerSmithAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ) : Prop :=
 
 open Classical in
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hC j Dj L₁ hD hG n al be β hSm`. Conclude with `rank_le_of_ker al hSm.2.2.2.1 _ L₁ hSm.2.2.2.2.1 hG.1.1 _ (fun a ha h0 => h X W Qq O Kf ι σ jO w hS hH hC j Dj L₁ hD hG n al be β hSm a ha (fun i hi => h0 i (Finset.mem_filter.mpr ⟨Finset.mem_univ i, hi⟩)))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem countSmithAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ}
     (h : KerSmithAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc) : CountSmithAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc := by
@@ -237,7 +233,7 @@ def RestKerSmith : Prop :=
   TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc => KerSmithAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc
 
 /- English proof (translation)
-The claim follows from `partners_factors_of_smith_count hSm (TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => countSmithAt_of h) hK)`.
+A detailed English derivation is pending.
 -/
 theorem partners_factors_of_kernel_smith (hSm : RestSmith) (hK : RestKerSmith) : PartnersToFactors :=
   partners_factors_of_smith_count hSm (TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => countSmithAt_of h) hK)
@@ -247,14 +243,14 @@ section Ker
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Introduce `h` and use `vLE_ne_zero h rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bad_zero (p : ℕ) (D : ℝ) : ¬ vLE p (0 : KK O) D := fun h => vLE_ne_zero h rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨q, hq, hqD⟩`. Establish `h` using `valuation_add_ge_min p x y`. Rewrite `h` using `[hq]`. Break down `min_le_iff.1 h with h1 | h1` into its components or cases. Take `⟨q', hq', hle⟩` from `WithTop.le_coe_iff.1 h1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hx ⟨q', hq', le_trans (by exact_mod_cast hle) hqD⟩`. Take `⟨q', hq', hle⟩` from `WithTop.le_coe_iff.1 h1`. Conclude with `hy ⟨q', hq', le_trans (by exact_mod_cast hle) hqD⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bad_add {p : ℕ} {D : ℝ} {x y : KK O} (hx : ¬ vLE p x D) (hy : ¬ vLE p y D) : ¬ vLE p (x + y) D := by
   rintro ⟨q, hq, hqD⟩
@@ -267,9 +263,9 @@ theorem bad_add {p : ℕ} {D : ℝ} {x y : KK O} (hx : ¬ vLE p x D) (hy : ¬ vL
     exact hy ⟨q', hq', le_trans (by exact_mod_cast hle) hqD⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨q, hq, hqD⟩`. Rewrite `hq` using `[valuation_mul_alt]`. Establish `h0` using `vK_alg_nonneg p o`. Establish `h1 : vK p x ≤ (q : WithTop ℚ)`. Rewrite using `[← hq]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_add_of_nonneg_left h0`. Take `⟨q', hq', hle⟩` from `WithTop.le_coe_iff.1 h1`. Conclude with `hx ⟨q', hq', le_trans (by exact_mod_cast hle) hqD⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bad_mul {p : ℕ} {D : ℝ} (o : O) {x : KK O} (hx : ¬ vLE p x D) : ¬ vLE p (algebraMap O (KK O) o * x) D := by
   rintro ⟨q, hq, hqD⟩
@@ -282,9 +278,9 @@ theorem bad_mul {p : ℕ} {D : ℝ} (o : O) {x : KK O} (hx : ¬ vLE p x D) : ¬ 
   exact hx ⟨q', hq', le_trans (by exact_mod_cast hle) hqD⟩
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `using bad_zero (O := O) p D`. Introduce `i s hi ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert hi]`. Conclude with `bad_add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+A detailed English derivation is pending.
 -/
 theorem bad_sum {p : ℕ} {D : ℝ} {ι : Type} (s : Finset ι) (f : ι → KK O) (h : ∀ i ∈ s, ¬ vLE p (f i) D) :
     ¬ vLE p (∑ i ∈ s, f i) D := by
@@ -300,17 +296,15 @@ theorem bad_sum {p : ℕ} {D : ℝ} {ι : Type} (s : Finset ι) (f : ι → KK O
 open Classical in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, a j ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `ha (funext hne)`. Set `S` to `Finset.univ.filter fun i => a i ≠ 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : S.Nonempty` using `⟨j, by simp [S, hj]⟩`. Take `⟨i0, hi0S, hmin⟩` from `S.exists_min_image (fun i => dvrOrderNat (a i)) hS`. Establish `hi0 : a i0 ≠ 0` using `(Finset.mem_filter.mp hi0S).2`. Establish `hex : ∀ i, ∃ b : O, a i = w ^ dvrOrderNat (a i0) * b ∧ (i = i0 → IsUnit b)`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : a i = 0`. Use `⟨0, by rw [hi, mul_zero], fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `absurd hi hi0`. Take `⟨u, hu⟩` from `eq_unit_pow hw hi`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : dvrOrderNat (a i0) ≤ dvrOrderNat (a i)` using `hmin i (by simp [S, hi])`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hle`. Use `⟨(u : O) * w ^ d, ?_, fun h => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hu, hd]`. Rewrite using `[pow_add]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Substitute `h` using the available equality. Establish `hd0 : d = 0` using `by omega`. Rewrite using `[hd0, pow_zero, mul_one]`. Conclude with `u.isUnit`.
-
-Use `choose a' ha' using hex`. Conclude with `⟨dvrOrderNat (a i0), a', fun i => (ha' i).1, i0, (ha' i0).2 rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem prim_div {w : O} (hw : Irreducible w) {n : ℕ} (a : Fin n → O) (ha : a ≠ 0) :
     ∃ (k : ℕ) (a' : Fin n → O), (∀ i, a i = w ^ k * a' i) ∧ ∃ i0, IsUnit (a' i0) := by
@@ -343,19 +337,17 @@ theorem prim_div {w : O} (hw : Irreducible w) {n : ℕ} (a : Fin n → O) (ha : 
   exact ⟨dvrOrderNat (a i0), a', fun i => (ha' i).1, i0, (ha' i0).2 rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨k, a', ha', i0, hu⟩` from `prim_div hw a hne`. Establish `hwk : w ^ k ≠ 0` using `pow_ne_zero _ hw.ne_zero`. Establish `hL : (∑ i, a' i • al i) ∈ L`. Rewrite using `[← hA]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hsm : w ^ k • (∑ i, a' i • al i) = ∑ i, a i • al i`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [smul_smul, ← ha']`. Establish `h1 : (∑ i, a' i • al i) ∈ L₁` using `hG.1.2 _ _ hwk hL (by rw [hsm]; exact ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprim : PrimIn L₁ (∑ i, a' i • al i)`. Use `⟨h1, fun c x hx hcx => ?_⟩` and prove the remaining obligations. Establish `hxL : x ∈ Submodule.span O (Set.range al)` using `by rw [hA]; exact hG.1.1 hx`. Take `⟨ξ, hξ⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hxL`. Establish `hz : ∑ i, (a' i - c * ξ i) • al i = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul]`. Rewrite using `[← Finset.smul_sum, hξ, ← hcx, sub_self]`. Use `Fintype.linearIndependent_iff.1 hli _ hz i0` as an intermediate fact. Establish `h2 : a' i0 = c * ξ i0` using `sub_eq_zero.1 this`. Rewrite `hu` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `isUnit_of_mul_isUnit_left hu`. Take `⟨y, hyL, hy⟩` from `hG.2 _ hprim`. Establish `hyS : y ∈ Submodule.span O (Set.range be)` using `by rw [hB]; exact hyL`. Take `⟨η, hη⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hyS`. Rewrite `hy` using `[← hη, hbil]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `bad_sum _ _ (fun i _ => ?_) hy` and prove the remaining obligations. Distinguish the cases in `hi : vLE p (form (al i) (be i)) D`. Establish `: a' i = 0`. Establish `h3` using `h0 i hi`. Rewrite `h3` using `[ha']`.
-
-Conclude with `(mul_eq_zero.1 h3).resolve_left hwk`. Rewrite using `[this, zero_mul, map_zero, zero_mul]`. Conclude with `bad_zero p D`. Conclude with `bad_mul _ hi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_core {p : ℕ} {w : O} (hw : Irreducible w) {V : Type} [AddCommGroup V] [Module O V]
     (form : V → V → KK O) (L L₁ : Submodule O V) {n : ℕ} (al be : Fin n → V) (hli : LinearIndependent O al)
@@ -413,7 +405,7 @@ def BilinAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ) : Prop :=
           ∑ i, algebraMap O (KK O) (a i * η i) * segForm O X.p X.m (X.seg C0 CE1 CE2 j) (al i) (be i)
 
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hC j Dj L₁ hD hG n al be β hSm a ha h0`. Conclude with `ker_core hS.2.1 _ _ L₁ al be hSm.2.2.2.1 hSm.2.2.2.2.1 hSm.2.2.2.2.2 (h X W Qq O Kf ι σ jO w hS hH hC j n al be β hSm) hG a ha h0`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kerSmithAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ}
     (h : BilinAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc) : KerSmithAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc := by
@@ -426,16 +418,16 @@ section Bilin
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `fock`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem fock_zero_left {σ : Type} (G : MvPolynomial σ (KK O)) : fock (0 : MvPolynomial σ (KK O)) G = 0 := by
   unfold fock
   simp
 
 /- English proof (translation)
-Unfold `segForm`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `b hb`. Assume the negation of the conclusion as `hn`. Apply `hb` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show ((specConst p S b : ℕ) : KK O) * fock (f b) (g b) = 0`. Rewrite using `[hT b (by simpa using hn), fock_zero_left, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segForm_eq_sum (p r : ℕ) {s : ℕ} (S : SegData s) (T : Finset (SegBlock s r)) (f g : SegVs O r s S.t)
     (hT : ∀ b, b ∉ T → f b = 0) :
@@ -449,7 +441,7 @@ theorem segForm_eq_sum (p r : ℕ) {s : ℕ} (S : SegData s) (T : Finset (SegBlo
   rw [hT b (by simpa using hn), fock_zero_left, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[← fockBilinear_apply, map_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (KK O) (a i) (F i), ← algebraMap_smul (KK O) (η l) (G l), map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, fockBilinear_apply, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -464,13 +456,11 @@ theorem fock_bilin {σ : Type} {n : ℕ} (F G : Fin n → MvPolynomial σ (KK O)
   ring
 
 /- English proof (translation)
-Establish `h0 : ∀ b, b ∉ T → (∑ i, a i • al i) b = 0` using `fun b hb => by`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [Pi.smul_apply, hT i b hb, smul_zero]`. Rewrite using `[segForm_eq_sum p r S T _ _ h0]`. Establish `e1 : ∀ i l, segForm O p r S (al i) (be l) = ∑ b ∈ T, ((specConst p S b : ℕ) : KK O) * fock (al i b) (be l b)` using `fun i l => segForm_eq_sum p r S T _ _ (hT i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e1]`. Establish `key : ∀ b, fock ((∑ i, a i • al i) b) ((∑ i, η i • be i) b) = ∑ i, ∑ l, algebraMap O (KK O) (a i * η l) * fock (al i b) (be l b)` using `fun b => by`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply]`. Conclude with `fock_bilin (fun i => al i b) (fun l => be l b) a η`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[key b, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Use `_ = ∑ i, ∑ b ∈ T, ∑ l, algebraMap O (KK O) (a i * η l) * (((specConst p S b : ℕ) : KK O) * fock (al i b) (be l b)) := Finset.sum_comm`. Use `_ = ∑ i, ∑ l, ∑ b ∈ T, algebraMap O (KK O) (a i * η l) * (((specConst p S b : ℕ) : KK O) * fock (al i b) (be l b)) := Finset.sum_congr rfl fun i _ => Finset.sum_comm`. Use `_ = _ := by simp only [Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segForm_bilin (p r : ℕ) {s : ℕ} (S : SegData s) (T : Finset (SegBlock s r)) {n : ℕ}
     (al be : Fin n → SegVs O r s S.t) (hT : ∀ i b, b ∉ T → al i b = 0) (a η : Fin n → O) :
@@ -507,11 +497,11 @@ theorem segForm_bilin (p r : ℕ) {s : ℕ} (S : SegData s) (T : Finset (SegBloc
 end Bilin
 
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hC j n al be β hSm a η`. Establish `hT : ∀ i b, b ∉ Finset.univ.image β → al i b = 0`. Introduce `i b hb`. Use `(hSm.2.1 i b fun hbi => hb ?_).1` and prove the remaining obligations. Rewrite using `[hbi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_image_of_mem β (Finset.mem_univ i)`. Rewrite using `[segForm_bilin X.p X.m (X.seg C0 CE1 CE2 j) (Finset.univ.image β) al be hT a η]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Introduce `l _ hl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSm.2.2.1 i l (Ne.symm hl), mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bilinAt_all (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ) : BilinAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc := by
   intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hC j n al be β hSm a η
@@ -530,7 +520,7 @@ theorem bilinAt_all (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ) : BilinAt C0 CYb C
     exact absurd (Finset.mem_univ i) hi
 
 /- English proof (translation)
-The claim follows from `partners_factors_of_kernel_smith hSm (TransportedAlt.of_all fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc => kerSmithAt_of (bilinAt_all C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc))`.
+A detailed English derivation is pending.
 -/
 theorem partners_factors_of_smith_bases (hSm : RestSmith) : PartnersToFactors :=
   partners_factors_of_kernel_smith hSm (TransportedAlt.of_all fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc =>

@@ -17,7 +17,7 @@ namespace GlobalTheory
 open CechPic
 
 /- English proof (translation)
-Rewrite using `[lam, lam, ← map_mul, ← map_one (pushHom h T')]`. Simplify using `only [← pull_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem CechPic.lam_pull_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' T' : Over S'} [GrpObj G] [GrpObj G']
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (c : Pic G.left) (x y : T' ⟶ G') :
@@ -27,21 +27,19 @@ theorem CechPic.lam_pull_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' T
   rfl
 
 /- English proof (translation)
-Introduce `hG S _ A _ _ L u v hA hL hamp hu hv hd`. Use `hA.smooth` as an intermediate fact. Establish `: IsReduced A.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced A.hom`. Establish `hp : IsPullback (snd A A).left (fst A A).left A.hom A.hom` using `(IsPullback.of_hasPullback A.hom A.hom).flip`. Establish `h₁ : (cubeLB A ![fst A A ≫ u, snd A A] L).IsLB` using `LB.isLB_linComb hL _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ : (cubeLB A ![fst A A, snd A A ≫ v] L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hN` using `LB.isLB_div h₂ h₁`. Use `GlobalTheory.T.seesaw_reduced_base_abelianScheme_of_dense_fibres hG S A L hA hL hamp A.left (A ⊗ A).left A.hom (snd A A).left (fst A A).left _ hp hN ((hd.preimage A.hom.isOpenMap).mono ?_) (lift (𝟙 A) (1 : A ⟶ A)).left ?_ ?_` and prove the remaining obligations. Introduce and unpack `a ⟨K, _, x, G, _, _, φ, L', u', v', ⟨q, hq⟩, h, hL', hiso, hu', hv', H⟩`. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback h.1 a q hq.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Set `U : Over.mk ((G ⊗ G).hom ≫ x) ⟶ A ⊗ A` to `lift (pushHom h _ (fst G G)) (pushHom h _ (snd G G))`. Establish `e₁ : U.left ≫ (fst A A).left = (fst G G).left ≫ φ` using `congrArg (fun q => q.left) (lift_fst (pushHom h _ (fst G G)) (pushHom h _ (snd G G)))`. Establish `e₂ : U.left ≫ (snd A A).left = (snd G G).left ≫ φ` using `congrArg (fun q => q.left) (lift_snd (pushHom h _ (fst G G)) (pushHom h _ (snd G G)))`. Establish `P : IsPullback U.left (fst G G).left (fst A A).left φ`. Establish `B` using `(IsPullback.of_hasPullback G.hom G.hom).flip.paste_horiz h.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPullback.of_right ?_ e₁ hp` and prove the remaining obligations. Rewrite using `[e₂, h.1.w]`. Conclude with `B`. Establish `push : ∀ {w' : G ⟶ G} {w : A ⟶ A}, w'.left ≫ φ = φ ≫ w.left → ∀ y : G ⊗ G ⟶ G, pushHom h _ (y ≫ w') = pushHom h _ y ≫ w` using `fun hw y => Over.OverMorphism.ext (by show (y.left ≫ _) ≫ _ = (y.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hw, Category.assoc])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨G.left.residueField z, inferInstance, G.left.fromSpecResidueField z ≫ φ, pullback (fst G G).left (G.left.fromSpecResidueField z), pullback.fst _ _ ≫ U.left, pullback.snd _ _, ⟨IsLocalRing.closedPoint (G.left.residueField z), ?_⟩, (IsPullback.of_hasPullback _ _).paste_horiz P, ?_ …` and prove the remaining obligations. Rewrite using `[← hz]`. Conclude with `congrArg φ (Scheme.fromSpecResidueField_apply z _)`. Establish `h₁' : (cubeLB G ![fst G G ≫ u', snd G G] L').IsLB` using `LB.isLB_linComb hL' _ _`. Establish `h₂' : (cubeLB G ![fst G G, snd G G ≫ v'] L').IsLB` using `LB.isLB_linComb hL' _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `H'` using `(cls_eq_iff h₁' h₂').2 H`. Rewrite `H'` using `[cls_cube_two hL', cls_cube_two hL', (cls_eq_iff hL' (pull_isLB hL φ)).2 hiso, cls_pull hL, lam_pull_of_isGrpPullback h, lam_pull_of_isGrpPullback h, push hu', push hv']`. Establish `j : pull U.left (cls _ h₂ - cls _ h₁) = 0`. Rewrite using `[cls_cube_two hL, cls_cube_two hL, map_sub, pull_lam, pull_lam, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc]`. Conclude with `sub_eq_zero.2 H'.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(cls_eq_zero_iff (pull_isLB hN _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hN, cls_div h₂ h₁]`. Conclude with `(pull_comp _ _ _).trans ((congrArg _ j).trans (map_zero _))`. Rewrite using `[← Over.comp_left, lift_fst, Over.id_left]`. Use `(cls_eq_zero_iff (pull_isLB hN _)).1 ?_` and prove the remaining obligations.
-
-Rewrite using `[cls_pull hN, cls_div h₂ h₁, cls_cube_two hL, cls_cube_two hL, map_sub, pull_lam, pull_lam, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc, MonObj.one_comp, lam_one_right, lam_one_right, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_cubeLB_of_dense_fibres : Out.GlobalFnsSt → ∀ (S : Scheme.{0}) [IsReduced S] (A : Over S) [GrpObj A] [IsCommMonObj A] (L : LB A.left) (u v : A ⟶ A), IsAbelianScheme A → L.IsLB → Out.RelAmple A L → IsMonHom u → IsMonHom v → Dense {p : S | ∃ (K : Type) (_ : Field K) (x : Sp K ⟶ S) (G : Over (Sp K)) (_ : GrpObj G) (_ : IsCommMonObj G) (φ : G.left ⟶ A.left) (L' : LB G.left) (u' v' : G ⟶ G), p ∈ Set.range x ∧ IsGrpPullback G A x φ ∧ L'.IsLB ∧ LBIso L' (L.pull φ) ∧ u'.left ≫ φ = φ ≫ u.left ∧ v'.left ≫ φ = φ ≫ v.left ∧ LBIso (cubeLB G ![fst G G ≫ u', snd G G] L') (cubeLB G ![fst G G, snd G G ≫ v'] L')} → LBIso (cubeLB A ![fst A A ≫ u, snd A A] L) (cubeLB A ![fst A A, snd A A ≫ v] L) := by
   intro hG S _ A _ _ L u v hA hL hamp hu hv hd

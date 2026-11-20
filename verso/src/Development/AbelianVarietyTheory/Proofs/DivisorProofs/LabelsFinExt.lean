@@ -18,7 +18,7 @@ namespace GlobalTheory.LabExt
 open GlobalTheory.ArcPull GlobalTheory.TorusExt
 
 /- English proof (translation)
-Establish `e : spMap (RingHom.id C) = 𝟙 _` using `Spec.map_id _`. Use `⟨rfl, by rw [e, Category.id_comp], fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `corr_of_val D.P.isLB fun y J hJ => ((val_pull hJ _ _ _).trans (congrArg (fun r => val (p.g.s χ) r y J) (Category.id_comp _))).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qkExt_refl {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {C : Type} [Field C]
     [Algebra (FractionRing R) C] {k : ℕ} (p : QkPt D C k) : QkExt (RingHom.id C) p p := by
@@ -29,7 +29,7 @@ theorem qkExt_refl {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {C : Type
     ((val_pull hJ _ _ _).trans (congrArg (fun r => val (p.g.s χ) r y J) (Category.id_comp _))).symm
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A →+* B) (f : B →+* C) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -45,14 +45,14 @@ def pre (hρ : IsPullDeg ρ D D₁) (hG : GlobalFnsSt) (hF : Compat ρ (Kb R₁)
   Classical.choose (pullQk_surjective hρ hG hF hB hB₁ P)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => τ.symm.commutes x`.
+A detailed English derivation is pending.
 -/
 theorem symm_comp (τ : Kb R ≃ₐ[FractionRing R] Kb R₁) :
     (τ.symm : Kb R₁ →+* Kb R).comp (algebraMap (FractionRing R) (Kb R₁)) = algebraMap (FractionRing R) (Kb R) :=
   RingHom.ext fun x => τ.symm.commutes x
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => τ.commutes x`.
+A detailed English derivation is pending.
 -/
 theorem tau_comp (τ : Kb R ≃ₐ[FractionRing R] Kb R₁) :
     (τ : Kb R →+* Kb R₁).comp (algebraMap (FractionRing R) (Kb R)) = algebraMap (FractionRing R) (Kb R₁) :=
@@ -64,7 +64,7 @@ def down (hB : D.TauBimult) (τ : Kb R ≃ₐ[FractionRing R] Kb R₁) {k : ℕ}
 variable {A : PolAV (Sp (FractionRing R))} {A₁ : PolAV (Sp (FractionRing R₁))}
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Over.w x]`. Express the relevant statement in the definitionally equal form `spMap (τ : Kb R →+* Kb R₁) ≫ spMap (algebraMap (FractionRing R) (Kb R)) = spMap (algebraMap (FractionRing R₁) (Kb R₁)) ≫ spMap gb`. Rewrite using `[spMap_comp', spMap_comp', tau_comp, hgbK]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_w (τ : Kb R ≃ₐ[FractionRing R] Kb R₁) (gb : FractionRing R →+* FractionRing R₁)
     (hgbK : (algebraMap (FractionRing R₁) (Kb R₁)).comp gb = algebraMap (FractionRing R) (Kb R₁))

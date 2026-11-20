@@ -17,9 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, K, hK, hc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V`. Establish `h` using `hK.image (QuotientAddGroup.continuous_mk (N := (ratL W V : AddSubgroup (WO V W))))`. Use `⟨(Set.eq_univ_of_forall fun q => ?_ : _ = Set.univ) ▸ h⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨γ, hγ, hk⟩` from `hc w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, hk, QuotientAddGroup.eq.2 (by simpa using hγ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem cocompact (V W : HSp D) : Cocompact V W := by
   obtain ⟨-, -, -, -, -, K, hK, hc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D W V
@@ -30,7 +30,7 @@ theorem cocompact (V W : HSp D) : Cocompact V W := by
   exact ⟨_, hk, QuotientAddGroup.eq.2 (by simpa using hγ)⟩
 
 /- English proof (translation)
-Use `symplOH_add_right w 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplOH_zero_right (w : WO V W) : symplOH V W w 0 = 0 := by
   have := symplOH_add_right w 0 0
@@ -38,7 +38,7 @@ theorem symplOH_zero_right (w : WO V W) : symplOH V W w 0 = 0 := by
   exact left_eq_add.1 this
 
 /- English proof (translation)
-Use `symplOH_add_left 0 0 w` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplOH_zero_left (w : WO V W) : symplOH V W 0 w = 0 := by
   have := symplOH_add_left 0 0 w
@@ -46,22 +46,22 @@ theorem symplOH_zero_left (w : WO V W) : symplOH V W 0 w = 0 := by
   exact left_eq_add.1 this
 
 /- English proof (translation)
-Use `symplOH_add_left (-u) u u` as an intermediate fact. Rewrite `this` using `[neg_add_cancel, symplOH_zero_left, symplOH_self, add_zero, eq_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem symplOH_neg_self (u : WO V W) : symplOH V W (-u) u = 0 := by
   have := symplOH_add_left (-u) u u
   rwa [neg_add_cancel, symplOH_zero_left, symplOH_self, add_zero, eq_comm] at this
 
 /- English proof (translation)
-Introduce `_ h` and use `⟨theta_norm_periodic hψ h, theta_bounded hψ h, fun _ _ hμ h𝓕 => GlobalTheory.Size.memLp_theta hψ hμ h𝓕 h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem squareIntegrable (hψ : IsStdChar D ψ (-1)) : SquareIntegrable ψ V W :=
   fun _ h => ⟨theta_norm_periodic hψ h, theta_bounded hψ h, fun _ _ hμ h𝓕 => GlobalTheory.Size.memLp_theta hψ hμ h𝓕 h⟩
 
 /- English proof (translation)
-Use `⟨heisO_heisO, fun u f => ?_, fun u f h => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ h u, fun _ _ hμ h𝓕 u _ _ h h' => GlobalTheory.Size.ipO_heisO hψ hμ h𝓕 h h' u, ?_⟩` and prove the remaining obligations. Rewrite using `[heisO_heisO, symplOH_neg_self, ψ.map_zero_eq_one, one_smul, neg_add_cancel, heisO_zero]`. Introduce and unpack `_ ⟨γ, rfl⟩ f h`. Establish `e` using `h.quasi γ 0`. Rewrite `e` using `[symplOH_zero_right, neg_zero, ψ.map_zero_eq_one, one_mul, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ψ (symplOH V W 0 (ratW W V γ)) * f (0 + ratW W V γ) = f 0`. Rewrite using `[symplOH_zero_left, ψ.map_zero_eq_one, one_mul, zero_add, e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisUnitary (hψ : IsStdChar D ψ (-1)) : HeisUnitary ψ V W := by
   refine ⟨heisO_heisO, fun u f => ?_, fun u f h => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ h u,
@@ -74,22 +74,20 @@ theorem heisUnitary (hψ : IsStdChar D ψ (-1)) : HeisUnitary ψ V W := by
     rw [symplOH_zero_left, ψ.map_zero_eq_one, one_mul, zero_add, e]
 
 /- English proof (translation)
-Rewrite using `[heisO, norm_mul, hψ.1.2.1, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_heisO (hψ : IsStdChar D ψ (-1)) (u : WO V W) (f : WO V W → ℂ) (x : WO V W) :
     ‖heisO ψ V W u f x‖ = ‖f (x + u)‖ := by
   rw [heisO, norm_mul, hψ.1.2.1, one_mul]
 
 /- English proof (translation)
-Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `isFiniteMeasure_restrict.2 (GlobalTheory.Size.measure_dom hμ h𝓕).2`. Establish `hd` using `theta_dLine hθ hψ hL h`. Establish `hd'` using `theta_dLine hθ hψ hL h'`. Establish `hI` using `fun {g g'} => GlobalTheory.Size.integrableOn_mul_conj (f := g) (f' := g') hψ hμ h𝓕`. Establish `hT` using `fun {g} (hg : IsThetaFunO ψ V W g) t => theta_heisO_real hθ hψ (hL.2 t) hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `theta_bounded hψ h`. Take `⟨b, hb⟩` from `theta_bounded hψ h'`. Take `⟨c, hc⟩` from `theta_bounded hψ hd`. Take `⟨d, hd0⟩` from `theta_bounded hψ hd'`. Establish `key` using `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict 𝓕) (𝕜 := ℝ) (x₀ := (0 : ℝ)) (s := Set.univ) (bound := fun _ => c * b + a * d) (F := fun t x => heisO ψ V W (L t) f x * conj (heisO ψ V W (L t) f' x)) (F' := fun t x => heisO ψ V W (L t) (dLine ψ V W L f) x * conj …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `refine (norm_add_le _ _).trans (add_le_add ?_ ?_) <;>`. Rewrite using `[norm_mul, Complex.norm_conj, norm_heisO hψ, norm_heisO hψ]`. Conclude with `mul_le_mul (hc _) (hb _) (norm_nonneg _) ((norm_nonneg _).trans (hc 0))`. Conclude with `mul_le_mul (ha _) (hd0 _) (norm_nonneg _) ((norm_nonneg _).trans (ha 0)))`. Use the proof step `(integrable_const _)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(.of_forall fun x t _ => (hasDerivAt_heisO hθ hψ hL h x t).mul (hasDerivAt_heisO hθ hψ hL h' x t).star)).2`. Establish `e : (fun t => ∫ x in 𝓕, heisO ψ V W (L t) f x * conj (heisO ψ V W (L t) f' x) ∂μ) = fun _ => ipO μ 𝓕 f f'`. Use function extensionality and compare the values at `fun t => GlobalTheory.Size.ipO_heisO hψ hμ h𝓕 h h' (L t)`. Rewrite `key` using `[e]`. Establish `k` using `key.unique (hasDerivAt_const _ _)`.
-
-Simplify using `only [map_zero, heisO_zero] at k`. Rewrite `k` using `[integral_add (hI hd h') (hI h hd')]`. Conclude with `eq_neg_of_add_eq_zero_left k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipO_dLine (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {L : ℝ →+ WO V W} (hL : IsRealDir W V L)
     {μ : Measure (WO V W)} {𝓕 : Set (WO V W)} (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 μ)
@@ -130,7 +128,7 @@ theorem ipO_dLine (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {L : ℝ →+ 
   exact eq_neg_of_add_eq_zero_left k
 
 /- English proof (translation)
-Introduce `τ z`. Establish `hL` using `isRealDir_lineAt (S := V) (T := W) hθ τ z`. Use `⟨fun f h x => ?_, fun f h => theta_dRho hθ hψ τ z h, fun μ 𝓕 hμ h𝓕 f f' h h' => ipO_dLine hψ hθ hL hμ h𝓕 h h'⟩` and prove the remaining obligations. Conclude with `(hasDerivAt_heisO hθ hψ hL h x 0).differentiableAt.hasDerivAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem derSkew (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) : DerSkew ψ θ V W := by
   intro τ z
@@ -139,7 +137,7 @@ theorem derSkew (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) : DerSkew ψ θ 
   exact (hasDerivAt_heisO hθ hψ hL h x 0).differentiableAt.hasDerivAt
 
 /- English proof (translation)
-Unfold `commScalar GlobalTheory.FockIndep.omDir`. Use `split_ifs`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commScalar_eq (τ τ' : D.what₂.Tau) (z w : Matrix (Fin W.rank) (Fin V.rank) ℂ) :
     commScalar V W τ τ' z w = -(2 * Real.pi * Complex.I) * (GlobalTheory.FockIndep.omDir V W τ z τ' w : ℝ) := by
@@ -149,15 +147,15 @@ theorem commScalar_eq (τ τ' : D.what₂.Tau) (z w : Matrix (Fin W.rank) (Fin V
   · simp
 
 /- English proof (translation)
-Rewrite using `[symplOH, ← add_mul, ← map_add, add_halves, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_eq (x y : WO V W) : symplO V W x y = symplOH V W x y + symplOH V W x y := by
   rw [symplOH, ← add_mul, ← map_add, add_halves, map_one, one_mul]
 
 /- English proof (translation)
-Introduce `τ τ' z w`. Rewrite using `[commScalar_eq]`. Use `⟨fun s t => ?_, fun f h => sub_eq_of_eq_add (GlobalTheory.FockIndep.dRho_comm hψ hθ τ z τ' w h)⟩` and prove the remaining obligations. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `e` using `(smooth_iff_sm_and_real_lines D θ σ h W V).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[symplO_eq, AddChar.map_add_eq_mul, e _ (isRealDir_lineAt hθ τ z) s, e _ (isRealDir_lineAt hθ τ' w) t, psi_symplOH h hψ, h.pi_iota, LinearMap.map_smul₂, map_smul, GlobalTheory.FockIndep.piW_lineAt hθ, GlobalTheory.FockIndep.piW_lineAt hθ, GlobalTheory.FockIndep.omO_single, ← Comp …`. Use `congr 1`. Simplify using `only [smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derComm (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) : DerComm ψ θ V W := by
   intro τ τ' z w
@@ -174,14 +172,14 @@ theorem derComm (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) : DerComm ψ θ 
   ring
 
 /- English proof (translation)
-Use `fun u hu => ⟨fun v hv f => ?_, fun τ z f _ => (GlobalTheory.FinTranslate.dRho_heisO hθ hu τ z f).symm⟩` and prove the remaining obligations. Rewrite using `[heisO_heisO, heisO_heisO, (symplOH_fin_real hu hv).1, (symplOH_fin_real hu hv).2, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finRealComm (hθ : IsInfFam θ) : FinRealComm ψ θ V W := by
   refine fun u hu => ⟨fun v hv f => ?_, fun τ z f _ => (GlobalTheory.FinTranslate.dRho_heisO hθ hu τ z f).symm⟩
   rw [heisO_heisO, heisO_heisO, (symplOH_fin_real hu hv).1, (symplOH_fin_real hu hv).2, add_comm]
 
 /- English proof (translation)
-Introduce `V W` and use `⟨cocompact V W, fun _ hψ => ⟨squareIntegrable hψ, heisUnitary hψ, fun _ hθ => ⟨derSkew hψ hθ, derComm hψ hθ, finRealComm hθ⟩⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem theta_square_integrable (D : D7) : ThetaSquareIntegrable D :=
   fun V W => ⟨cocompact V W, fun _ hψ => ⟨squareIntegrable hψ, heisUnitary hψ,

@@ -11,7 +11,7 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.FlagEmb.CellClosed
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -19,7 +19,7 @@ theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →
   rfl
 
 /- English proof (translation)
-Establish `e` using `Spec.map_injective h`. Use extensionality with `a`. Conclude with `congrArg (fun t => t.hom a) e`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g := by
   have e := Spec.map_injective h
@@ -27,12 +27,12 @@ theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spM
   exact congrArg (fun t => t.hom a) e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage f).hom, by simp [spMap]⟩`.
+Supply the required witnesses or components.
 -/
 theorem sp_surj {A B : Type} [CommRing A] [CommRing B] (f : Sp B ⟶ Sp A) : ∃ g : A →+* B, f = spMap g := ⟨(Spec.preimage f).hom, by simp [spMap]⟩
 
 /- English proof (translation)
-Establish `hb : b = b'` using `sp_inj (by rw [← pt_str b v hv, ← pt_str b' v' hv', h])`. Substitute `hb` using the available equality. Conclude with `(pt_eq_pt_iff b hv hv').1 h`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem unit_of_pt_eq {O A : Type} [CommRing O] [CommRing A] {N : ℕ} {b b' : O →+* A} {v v' : Fin (N + 1) → A} {hv hv'}
     (h : pt b v hv = pt b' v' hv') : ∃ u : Aˣ, v' = u • v := by
@@ -41,7 +41,7 @@ theorem unit_of_pt_eq {O A : Type} [CommRing O] [CommRing A] {N : ℕ} {b b' : O
   exact (pt_eq_pt_iff b hv hv').1 h
 
 /- English proof (translation)
-Simplify using `[lform, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_lform {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') {M k : ℕ} {ι : Type}
     (D : ι → Fin (M + 1) → S) (ρ : Fin k → ι) (q) : φ (lform D ρ q) = lform (fun z => φ ∘ D z) ρ q := by
@@ -53,7 +53,7 @@ variable {X : Scheme.{0}} {T : Type} {m : T → ℕ} {M : ℕ} {U : X.affineOpen
   {w : Pm m} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[map_plk]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[uvec, map_cellVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_uvec (ψ : CR m U →+* R) {k : ℕ} (e : Fin k → Let m) :
     ψ ∘ plk (uvec c w) e = plk (cellVec (fun z => ψ.comp MvPolynomial.C ∘ c z) w (ψ ∘ MvPolynomial.X)) e := by
@@ -64,9 +64,9 @@ theorem map_uvec (ψ : CR m U →+* R) {k : ℕ} (e : Fin k → Let m) :
   rfl
 
 /- English proof (translation)
-Establish `hL` using `LeftInv.map (ψ.comp MvPolynomial.C) hD`. Establish `key` using `(GlobalTheory.T.cauchyBinet_plucker_and_cellCoordinates.2 T m R M _ _ w (ψ ∘ MvPolynomial.X) hL).1 k e he`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, Units.smul_def, smul_eq_mul, map_uvec, map_lform]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = u := by rw [key, mul_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lead_eq (hD : LeftInv D c) (ψ : CR m U →+* R) {k : ℕ} {e : Fin k → Let m} (he : Down e) (u : Rˣ) :
     ∑ q, ψ.comp MvPolynomial.C (lform D (wLet w ∘ e) q) * (u • ψ ∘ plk (uvec c w) e) q = u := by
@@ -86,9 +86,9 @@ def rd (w : Pm m) (x : CellVar m) : Fin (x.2.1.2 + 1) → Let m := fun l =>
 abbrev vEn (x : CellVar m) : En m := stdEn x.1 (x.2.1.2 + 1) (Nat.succ_le_of_lt x.2.1.2.2)
 
 /- English proof (translation)
-Take `⟨τ, ⟨⟨i, j⟩, hij⟩⟩` from `x`. Establish `hL` using `LeftInv.map (ψ.comp MvPolynomial.C) hD`. Establish `key` using `(GlobalTheory.T.cauchyBinet_plucker_and_cellCoordinates.2 T m R M _ _ w (ψ ∘ MvPolynomial.X) hL).2 τ i j hij`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Units.smul_def, smul_eq_mul, map_uvec, map_lform]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = u * ψ (MvPolynomial.X ⟨τ, ⟨(i, j), hij⟩⟩) := by`. Conclude with `congrArg ((u : R) * ·) key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem read_eq (hD : LeftInv D c) (ψ : CR m U →+* R) (x : CellVar m) (u : Rˣ) :
     ∑ q, ψ.comp MvPolynomial.C (lform D (rd w x) q) * (u • ψ ∘ plk (uvec c w) (vEn x).2.1) q =
@@ -115,7 +115,7 @@ variable {O : Type} [CommRing O] {X : Scheme.{0}} {T : Type} {m : T → ℕ} {M 
   {p : ∀ en : En m, P ⟶ PSpace O (plN M en.1)} {h : Sp (CR m U) ⟶ P} {a : O →+* CR m U}
 
 /- English proof (translation)
-Establish `: IsOpenImmersion U.2.fromSpec` using `U.2.isOpenImmersion_fromSpec`. Establish `: Mono U.2.fromSpec` using `IsOpenImmersion.mono _`. Conclude with `sp_inj ((cancel_mono U.2.fromSpec).1 e)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem over_inj {R : Type} [CommRing R] {φ φ' : Γ(X, U.1) →+* R}
     (e : spMap φ ≫ U.2.fromSpec = spMap φ' ≫ U.2.fromSpec) : φ = φ' := by
@@ -124,14 +124,14 @@ theorem over_inj {R : Type} [CommRing R] {φ φ' : Γ(X, U.1) →+* R}
   exact sp_inj ((cancel_mono U.2.fromSpec).1 e)
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, hb, cbase, ← Category.assoc, sp_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem base_eq (hb : h ≫ p0 = cbase m U) {R : Type} [CommRing R] (ψ : CR m U →+* R) :
     (spMap ψ ≫ h) ≫ p0 = spMap (ψ.comp MvPolynomial.C) ≫ U.2.fromSpec := by
   rw [Category.assoc, hb, cbase, ← Category.assoc, sp_comp]
 
 /- English proof (translation)
-Take `⟨hu, he⟩` from `hp en`. Rewrite `e` using `[Category.assoc, he, spMap_pt]`. Conclude with `unit_of_pt_eq e`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_eq (hp : ∀ en, ∃ hu, h ≫ p en = pt a (plk (uvec c w) en.2.1) hu) {R : Type} [CommRing R]
     (ψ : CR m U →+* R) (en : En m) {b : O →+* R} {v hv} (e : (spMap ψ ≫ h) ≫ p en = pt b v hv) :
@@ -141,11 +141,11 @@ theorem unit_of_eq (hp : ∀ en, ∃ hu, h ≫ p en = pt a (plk (uvec c w) en.2.
   exact unit_of_pt_eq e
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Set `y' : PrimeSpectrum (CR m U)` to `y`. Set `k` to `y'.asIdeal.ResidueField`. Set `f : CR m U →+* k` to `algebraMap (CR m U) k`. Establish `hz : Set.range (spMap f ≫ h) ⊆ W`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(hW k (spMap f ≫ h)).2 ⟨f.comp MvPolynomial.C, base_eq hb f, ?_⟩` and prove the remaining obligations. Introduce `τ j hj b v hv e`. Take `⟨u, rfl⟩` from `unit_of_eq hp f _ e`. Establish `hl` using `lead_eq (w := w) hD f (down_std τ j hj) u`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `u.ne_zero (hl.symm.trans h0)`. Establish `hy : (spMap f) (show Sp k from (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)) = y`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `Ideal.ker_algebraMap_residueField _`. Conclude with `hz ⟨_, by rw [Scheme.Hom.comp_apply, hy]⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem range_le (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
     (hp : ∀ en, ∃ hu, h ≫ p en = pt a (plk (uvec c w) en.2.1) hu) {W : P.Opens} (hW : IsCellOpen p0 p U D w W) :
@@ -167,15 +167,13 @@ theorem range_le (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
   exact hz ⟨_, by rw [Scheme.Hom.comp_apply, hy]⟩
 
 /- English proof (translation)
-Take `⟨ψ₁, rfl⟩` from `sp_surj (A := CR m U) (B := R) t₁`. Take `⟨ψ₂, rfl⟩` from `sp_surj (A := CR m U) (B := R) t₂`. Establish `hC : ψ₁.comp MvPolynomial.C = ψ₂.comp MvPolynomial.C` using `over_inj (by rw [← base_eq hb ψ₁, ← base_eq hb ψ₂, e])`. Use `congr 1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `r`. Conclude with `congrArg (fun f => f r) hC`. Introduce `x`. Take `⟨hu₂, he₂⟩` from `hp (vEn x)`. Establish `e₂ : (spMap ψ₁ ≫ h) ≫ p (vEn x) = pt (ψ₂.comp a) (ψ₂ ∘ plk (uvec c w) (vEn x).2.1) (span_range_comp_eq_top _ hu₂ ψ₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Category.assoc, he₂, spMap_pt]`. Take `⟨u, hu⟩` from `unit_of_eq hp ψ₁ (vEn x) e₂`. Establish `l₁` using `lead_eq (w := w) hD ψ₁ (vEn x).2.2 u`. Establish `l₂` using `lead_eq (w := w) hD ψ₂ (vEn x).2.2 1`. Establish `r₁` using `read_eq (w := w) hD ψ₁ x u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r₂` using `read_eq (w := w) hD ψ₂ x 1`. Rewrite `l₂`, `r₂` using `[one_smul, hu, ← hC]`. Establish `hu₁ : (u : R) = 1` using `l₁.symm.trans (by rw [l₂, Units.val_one])`. Establish `key` using `r₁.symm.trans r₂`. Rewrite `key` using `[hu₁, Units.val_one, one_mul, one_mul]`.
-
-Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mono_cell_lemma (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
     (hp : ∀ en, ∃ hu, h ≫ p en = pt a (plk (uvec c w) en.2.1) hu) {R : CommRingCat}
@@ -205,7 +203,7 @@ private theorem mono_cell_lemma (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
     exact key
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `Z g₁ g₂ e`. Use `Z.affineCover.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Conclude with `mono_cell_lemma hD hb hp _ _ ((Category.assoc _ _ _).trans ((congrArg (Z.affineCover.f i ≫ ·) e).trans (Category.assoc _ _ _).symm))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mono_cell (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
     (hp : ∀ en, ∃ hu, h ≫ p en = pt a (plk (uvec c w) en.2.1) hu) : Mono h := by
@@ -216,35 +214,33 @@ theorem mono_cell (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
     ((Category.assoc _ _ _).trans ((congrArg (Z.affineCover.f i ≫ ·) e).trans (Category.assoc _ _ _).symm))
 
 /- English proof (translation)
-Establish `: IsOpenImmersion U.2.fromSpec` using `U.2.isOpenImmersion_fromSpec`. Set `k` to `IsLocalRing.ResidueField R`. Set `π : R →+* k` to `IsLocalRing.residue R`. Establish `hzk : Set.range (spMap π ≫ z) ⊆ W` using `fun _ ⟨t, ht⟩ => hz ⟨(spMap π) t, by rw [← ht, Scheme.Hom.comp_apply]⟩`. Take `⟨φk, hφk, hmin⟩` from `(hW k (spMap π ≫ z)).1 hzk`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU : Set.range (z ≫ p0) ⊆ Set.range U.2.fromSpec`. Rewrite using `[U.2.range_fromSpec]`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `h0 : (z ≫ p0) (show Sp R from IsLocalRing.closedPoint R) ∈ (U.1 : Set X)`. Establish `h1 : (spMap π ≫ z ≫ p0) (show Sp k from IsLocalRing.closedPoint k) ∈ Set.range U.2.fromSpec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hφk, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Rewrite `h1` using `[U.2.range_fromSpec, Scheme.Hom.comp_apply]`. Establish `hc : (spMap π) (show Sp k from IsLocalRing.closedPoint k) = IsLocalRing.closedPoint R` using `IsLocalRing.comap_closedPoint π`. Rewrite `h1` using `[hc]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `((IsLocalRing.specializes_closedPoint (show PrimeSpectrum R from y)).map (z ≫ p0).continuous).mem_open U.1.isOpen h0`. Take `⟨φ0, hφ0⟩` from `sp_surj (A := Γ(X, U.1)) (B := R) (IsOpenImmersion.lift U.2.fromSpec (z ≫ p0) hU)`. Establish `hz0 : z ≫ p0 = spMap φ0 ≫ U.2.fromSpec` using `by rw [← hφ0, IsOpenImmersion.lift_fac]`. Establish `hC : ψ.comp MvPolynomial.C = (algebraMap R K).comp φ0` using `over_inj (by rw [← base_eq hb ψ, e, Category.assoc, hz0, ← Category.assoc, sp_comp])`. Establish `hk : φk = π.comp φ0` using `over_inj (by rw [← hφk, Category.assoc, hz0, ← Category.assoc, sp_comp])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨bO, hbO⟩` from `sp_surj (A := O) (B := R) (z ≫ p0 ≫ s)`. Establish `hpt : ∀ en, ∃ (v : Fin (plN M en.1 + 1) → R) (hv : Ideal.span (Set.range v) = ⊤), z ≫ p en = pt bO v hv` using `fun en => exists_eq_pt bO (z ≫ p en) (by rw [Category.assoc, hs, hbO])`. Use `choose V hV hzV using hpt`. Establish `key : ∀ x : CellVar m, ∃ r : R, algebraMap R K r = ψ (MvPolynomial.X x)`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `unit_of_eq hp ψ (vEn x) (b := (algebraMap R K).comp bO) (v := algebraMap R K ∘ V (vEn x)) (hv := span_range_comp_eq_top _ (hV _) _) (by rw [e, Category.assoc, hzV, spMap_pt])`. Establish `hL : algebraMap R K (∑ q, φ0 (lform D (wLet w ∘ (vEn x).2.1) q) * V (vEn x) q) = u`. Rewrite using `[map_sum, ← lead_eq (w := w) hD ψ (vEn x).2.2 u]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hu, hC]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hR : algebraMap R K (∑ q, φ0 (lform D (rd w x) q) * V (vEn x) q) = u * ψ (MvPolynomial.X x)`. Rewrite using `[map_sum, ← read_eq hD ψ x u]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hu, hC]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hne : π (∑ q, φ0 (lform D (wLet w ∘ (vEn x).2.1) q) * V (vEn x) q) ≠ 0`. Use `hmin x.1 (x.2.1.2 + 1) (Nat.succ_le_of_lt x.2.1.2.2) (π.comp bO) (π ∘ V (vEn x)) (span_range_comp_eq_top _ (hV _) π) (by rw [Category.assoc, hzV, spMap_pt])` as an intermediate fact. Rewrite `this` using `[hk]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_mul]`. Conclude with `this`. Take `⟨t, ht⟩` from `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 hne`. Establish `ht' : algebraMap R K (t : R) = u` using `by rw [ht, hL]`. Establish `h1 : algebraMap R K (↑t⁻¹ : R) * (u : K) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht', ← map_mul, Units.inv_mul, map_one]`. Use `⟨(∑ q, φ0 (lform D (rd w x) q) * V (vEn x) q) * ↑t⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hR]`. Combine the equalities or inequalities in the displayed calculation. Use `choose r hr using key`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hχ : (algebraMap R K).comp (MvPolynomial.eval₂Hom φ0 r) = ψ`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]`. Conclude with `(congrArg (fun f => f a) hC).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']`. Conclude with `hr x`. Use `⟨MvPolynomial.eval₂Hom φ0 r, hχ, ?_⟩` and prove the remaining obligations. Establish `: IsDominant (spMap (algebraMap R K))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[DenseRange, dense_iff_closure_eq, Set.eq_univ_iff_forall]`. Introduce `y`. Establish `hg : (show Sp R from (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)) ∈ Set.range (spMap (algebraMap R K))` using `⟨show Sp K from (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K), PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R K))⟩`. Use `closure_mono (Set.singleton_subset_iff.2 hg) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (show PrimeSpectrum R from y) ∈ closure ({⟨⊥, Ideal.isPrime_bot⟩} : Set (PrimeSpectrum R))`. Rewrite using `[PrimeSpectrum.closure_singleton, PrimeSpectrum.mem_zeroLocus]`. Introduce `a ha`. Rewrite `ha` using `[SetLike.mem_coe, Ideal.mem_bot]`. Rewrite using `[ha]`.
-
-Conclude with `Submodule.zero_mem _`. Use `ext_of_isDominant_of_isSeparated (p0 ≫ s) ?_ (spMap (algebraMap R K)) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, base_eq hb, MvPolynomial.eval₂Hom_comp_C, ← hz0, Category.assoc]`. Rewrite using `[← Category.assoc, sp_comp, hχ, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
     (hp : ∀ en, ∃ hu, h ≫ p en = pt a (plk (uvec c w) en.2.1) hu) {W : P.Opens} (hW : IsCellOpen p0 p U D w W)
@@ -339,21 +335,19 @@ theorem exists_lift (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
   · rw [← Category.assoc, sp_comp, hχ, e]
 
 /- English proof (translation)
-Establish `hr : Set.range h ⊆ Set.range W.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `range_le hD hb hp hW`. Set `h'` to `IsOpenImmersion.lift W.ι h hr`. Establish `hfac : h' ≫ W.ι = h` using `IsOpenImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h', hfac, ?_⟩` and prove the remaining obligations. Establish `: Mono h` using `mono_cell hD hb hp`. Establish `: Mono h'` using `mono_of_mono_fac hfac`. Establish `: IsAffine (Sp (CR m U))` using `inferInstanceAs (IsAffine (Spec _))`. Establish `: IsAffine (Sp O)` using `inferInstanceAs (IsAffine (Spec _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffineHom (h' ≫ W.ι ≫ p0 ≫ s)` using `isAffineHom_of_isAffine _`. Establish `: QuasiCompact (h' ≫ W.ι ≫ p0 ≫ s)` using `quasiCompact_iff_forall_isAffineOpen.mpr fun _ hU => (hU.preimage _).isCompact`. Establish `: QuasiCompact h'` using `QuasiCompact.of_comp h' (W.ι ≫ p0 ≫ s)`. Establish `: LocallyOfFiniteType (h' ≫ W.ι ≫ p0)`. Rewrite using `[← Category.assoc, hfac, hb, cbase]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType (spMap (MvPolynomial.C : Γ(X, U.1) →+* CR m U))`. Rewrite using `[spMap, HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.finiteType_algebraMap.2 inferInstance`. Establish `: IsOpenImmersion U.2.fromSpec` using `U.2.isOpenImmersion_fromSpec`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: LocallyOfFiniteType h'` using `locallyOfFiniteType_of_comp h' (W.ι ≫ p0)`. Establish `hV : ValuativeCriterion h'`. Rewrite using `[ValuativeCriterion.iff]`. Use `⟨fun S => ?_, IsSeparated.valuativeCriterion h'⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `sp_surj (A := CR m U) (B := S.K) S.i₁`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : Set.range (S.i₂ ≫ W.ι) ⊆ W`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, ← Scheme.Opens.range_ι W]`. Conclude with `Set.image_subset_range _ _`. Establish `e : spMap ψ ≫ h = spMap (algebraMap S.R S.K) ≫ (S.i₂ ≫ W.ι)`. Rewrite using `[← hψ, ← hfac, ← Category.assoc, S.commSq.w, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨χ, hχ₁, hχ₂⟩` from `exists_lift hD hb hp hW hs _ hz ψ e`. Use `CommSq.HasLift.mk' ⟨spMap χ, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (algebraMap S.R S.K) ≫ spMap χ = S.i₁`. Rewrite using `[sp_comp, hχ₁, hψ]`. Rewrite using `[← cancel_mono W.ι, Category.assoc, hfac, hχ₂]`.
-
-Establish `: IsProper h'` using `IsProper.of_valuativeCriterion h' hV`. Conclude with `(IsClosedImmersion.iff_isProper_and_mono h').2 ⟨inferInstance, inferInstance⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem closed_of [Finite T] (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
     (hp : ∀ en, ∃ hu, h ≫ p en = pt a (plk (uvec c w) en.2.1) hu) {W : P.Opens} (hW : IsCellOpen p0 p U D w W)
@@ -401,9 +395,9 @@ theorem closed_of [Finite T] (hD : LeftInv D c) (hb : h ≫ p0 = cbase m U)
 end
 
 /- English proof (translation)
-Introduce `O K _ _ β X s T _ m M B V α c D P p0 p h hcov hpl _ _ b w W hW`. Take `⟨N, i, hi, hi'⟩` from `hpl.proj`. Establish `: IsSeparated (PSpace.str O N)` using `inferInstance`. Establish `: IsSeparated (p0 ≫ s)`. Rewrite using `[← hi']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Conclude with `closed_of (hcov.inv b) (hpl.base b w) (hpl.plk b w) hW hpl.ovr`.
+A detailed English derivation is pending.
 -/
 theorem cell_closed : ∀ (O K : Type) [CommRing O] [Field K] (β : O →+* K) (X : Scheme.{0}) (s : X ⟶ Sp O) (T : Type) [Finite T] (m : T → ℕ) (M : ℕ) (B : Type) (V : B → X.affineOpens) (α : ∀ b, K →+* Γ(X, (V b).1)) (c D : ∀ b, Let m → Fin (M + 1) → Γ(X, (V b).1)) (P : Scheme.{0}) (p0 : P ⟶ X) (p : ∀ en : En m, P ⟶ PSpace O (plN M en.1)) (h : ∀ b, Pm m → (Sp (CR m (V b)) ⟶ P)), IsCover β s V α c D → IsPlk β s V α c p0 p h → IsNoetherianRing O → IsProjOver s → ∀ b w (W : P.Opens), IsCellOpen p0 p (V b) (D b) w W → ∃ h' : Sp (CR m (V b)) ⟶ W.toScheme, h' ≫ W.ι = h b w ∧ IsClosedImmersion h' := by
   intro O K _ _ β X s T _ m M B V α c D P p0 p h hcov hpl _ _ b w W hW

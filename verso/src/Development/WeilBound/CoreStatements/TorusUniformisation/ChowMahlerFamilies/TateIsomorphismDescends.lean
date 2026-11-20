@@ -23,7 +23,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace PositivityTheory.Xgn.TateIsomorphismDescent
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CommutatorPairing.existsUnique_weilIs GlobalTheory.abelianSchemeLaws_all.1.globalFns (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube GlobalTheory.AbLaw.CubeAssembly.cube_and_sections.1).1).2.2 S P k T x y hx hy).exists`.
+A detailed English derivation is pending.
 -/
 theorem exists_weilIs (S : Scheme.{0}) (P : Out.PolAV S) (k : ℕ) (T : Over S) (x y : T ⟶ P.A) (hx : x ^ k = 1)
     (hy : y ^ k = 1) : ∃ c : Γ(T.left, ⊤)ˣ, Out.WeilIs P.A P.L k x y c :=
@@ -32,11 +32,11 @@ theorem exists_weilIs (S : Scheme.{0}) (P : Out.PolAV S) (k : ℕ) (T : Over S) 
     S P k T x y hx hy).exists
 
 /- English proof (translation)
-Establish `hz' : (z : Ω) ^ n = 1` using `by rw [← Units.val_pow_eq_pow_val, hz, Units.val_one]`. Establish `hs : (Polynomial.X ^ n - Polynomial.C 1 : Polynomial K).Splits` using `IsAlgClosed.splits _`. Establish `hne : (Polynomial.X ^ n - Polynomial.C 1 : Polynomial K) ≠ 0` using `Polynomial.X_pow_sub_C_ne_zero hn 1`. Establish `hm : (z : Ω) ∈ ((Polynomial.X ^ n - Polynomial.C 1 : Polynomial K).map i).roots`. Rewrite using `[Polynomial.mem_roots (Polynomial.map_ne_zero hne)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hz']`. Rewrite `hm` using `[hs.roots_map_of_injective i.injective]`. Take `⟨w, -, hw⟩` from `Multiset.mem_map.1 hm`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `z.ne_zero (hw.symm.trans (map_zero i))`. Conclude with `⟨Units.mk0 w hw0, Units.ext hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_root {K Ω : Type} [Field K] [Field Ω] [IsAlgClosed K] (i : K →+* Ω) {n : ℕ} (hn : 0 < n) (z : Ωˣ)
     (hz : z ^ n = 1) : ∃ w : Kˣ, Units.map i.toMonoidHom w = z := by
@@ -56,29 +56,23 @@ theorem exists_root {K Ω : Type} [Field K] [Field Ω] [IsAlgClosed K] (i : K �
 end PositivityTheory.Xgn.TateIsomorphismDescent
 
 /- English proof (translation)
-Introduce `E _ _ _ H D S P act hact K Ω _ _ _ _ _ i x x' u hu I'`. Establish `laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `: CharZero Ω` using `(RingHom.charZero_iff i.injective).1 ‹_›`. Set `f : (Over.mk x ⟶ P.A) →* (Over.mk x' ⟶ P.A)` to `MonoidHom.mk' (u ≫ ·) (MonObj.comp_mul u)`. Establish `hinj : Function.Injective f` using `GlobalTheory.TorsionFieldExt.comp_injective u P.A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ginj : Function.Injective (Units.map i.toMonoidHom : Kˣ →* Ωˣ)` using `Units.map_injective i.injective`. Establish `hu' : ∀ c : Kˣ, unitOn (Units.map i.toMonoidHom c) = Units.map u.left.appTop.hom.toMonoidHom (unitOn c)` using `fun c => by`. Rewrite using `[hu]`. Conclude with `Units.ext (congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom i)))`. Establish `hev : ∀ (n : ℕ) (v : D.La), ∃ y : Over.mk x ⟶ P.A, (n = 0 → y = 1) ∧ (0 < n → f y = I'.ev n v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n v`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨1, fun _ => rfl, fun h => absurd h (lt_irrefl 0)⟩`. Take `⟨y, -, hy⟩` from `GlobalTheory.TorsionFieldExt.exists_of_isAlgClosed laws P u (Nat.cast_ne_zero.2 hn.ne') (Nat.cast_ne_zero.2 hn.ne') (I'.ev n v) ((I'.onto n hn _).2 ⟨v, rfl⟩)`. Conclude with `⟨y, fun h => absurd h hn.ne', fun _ => hy⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose ev ev0 evp using hev`. Establish `hζ : ∀ n : ℕ, ∃ w : Kˣ, 0 < n → Units.map i.toMonoidHom w = I'.ζ n`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨1, fun h => absurd h (lt_irrefl 0)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, hw⟩` from `PositivityTheory.Xgn.TateIsomorphismDescent.exists_root i hn (I'.ζ n) (I'.ζ_prim n hn).pow_eq_one`. Conclude with `⟨w, fun _ => hw⟩`. Use `choose ζ hζ using hζ`. Establish `tors : ∀ n, 0 < n → ∀ a, ev n a ^ n = 1` using `fun n hn a => hinj (by`. Rewrite using `[map_pow, evp n a hn, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(I'.onto n hn _).2 ⟨a, rfl⟩)`. Use `⟨{ ζ := ζ ζ_prim := fun n hn => IsPrimitiveRoot.of_map_of_injective (f := (Units.map i.toMonoidHom : Kˣ →* Ωˣ)) (by rw [hζ n hn]; exact I'.ζ_prim n hn) ginj ζ_pow := fun n m hn hm => ginj (by` and prove the remaining obligations. Rewrite using `[map_pow, hζ _ (Nat.mul_pos hn hm), hζ n hn, I'.ζ_pow n m hn hm])`. Use `ev := ev`. Use `add := fun n a b => ?_`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lin := fun n c a => ?_`. Use `ker := fun n hn a => by rw [← I'.ker n hn a, ← evp n a hn, map_eq_one_iff f hinj]`. Use `onto := fun n hn z => ⟨fun hz => ?_, ?_⟩`. Use `tower := fun n m hn hm a => hinj (by`. Rewrite using `[map_pow, evp _ a (Nat.mul_pos hn hm), evp n a hn, I'.tower n m hn hm])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `isom := fun n hn a b => ?_ }, fun n v hn => (evp n v hn).symm⟩`. Break down `Nat.eq_zero_or_pos n with h | hn` into its components or cases. Rewrite using `[ev0 n _ h, ev0 n _ h, ev0 n _ h, _root_.mul_one]`. Conclude with `hinj (by rw [map_mul, evp n _ hn, evp n _ hn, evp n _ hn, I'.add])`. Break down `Nat.eq_zero_or_pos n with h | hn` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hact c` as an intermediate fact. Rewrite using `[ev0 n _ h, ev0 n _ h]`. Conclude with `(MonObj.one_comp (act c)).symm`. Use `hinj ?_` and prove the remaining obligations. Rewrite using `[evp n _ hn, I'.lin, ← evp n a hn]`.
-
-Conclude with `Category.assoc u (ev n a) (act c)`. Take `⟨a, ha⟩` from `(I'.onto n hn (f z)).1 (by rw [← map_pow, hz, map_one])`. Conclude with `⟨a, hinj ((evp n a hn).trans ha)⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `tors n hn a`.
-
-Take `⟨c, hc⟩` from `PositivityTheory.Xgn.TateIsomorphismDescent.exists_weilIs S P n _ _ _ (tors n hn a) (tors n hn b)`. Take `⟨w, rfl⟩ : ∃ w : Kˣ, unitOn w = c` from `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.toMonoidHom c, Units.ext (CommRingCat.inv_hom_apply (Scheme.ΓSpecIso (CommRingCat.of K)) c.val)⟩`. Establish `h₁` using `GlobalTheory.CommPairing.weilIs_pull laws.globalFns P.isAb P.isLB u hc`. Rewrite `h₁` using `[← hu']`. Establish `h₂` using `I'.isom n hn a b`.
-
-Rewrite `h₂` using `[← evp n a hn, ← evp n b hn, ← hζ n hn, ← map_zpow]`. Establish `e` using `ginj (GlobalTheory.weilIs_unique_fieldPoint S P.A P.L P.isLB Ω x' n _ _ _ _ h₁ h₂)`. Rewrite using `[← e]`. Conclude with `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.tate_isomorphism_descends : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (S : Scheme.{0}) (P : Out.PolAV S) (act : 𝓞 E → (P.A ⟶ P.A)), (∀ c, IsMonHom (act c)) → ∀ (K Ω : Type) [Field K] [Field Ω] [IsAlgClosed K] [IsAlgClosed Ω] [CharZero K] (i : K →+* Ω) (x : Sp K ⟶ S) (x' : Sp Ω ⟶ S) (u : Over.mk x' ⟶ Over.mk x), u.left = spMap i → ∀ I' : TateIso D Ω (Over.mk x' ⟶ P.A) (fun c y => y ≫ act c) (fun n y y' c => Out.WeilIs P.A P.L n y y' (unitOn c)), ∃ I : TateIso D K (Over.mk x ⟶ P.A) (fun c y => y ≫ act c) (fun n y y' c => Out.WeilIs P.A P.L n y y' (unitOn c)), ∀ n v, 0 < n → I'.ev n v = u ≫ I.ev n v := by
   intro E _ _ _ H D S P act hact K Ω _ _ _ _ _ i x x' u hu I'

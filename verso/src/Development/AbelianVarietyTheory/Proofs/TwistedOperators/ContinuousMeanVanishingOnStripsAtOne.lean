@@ -18,75 +18,65 @@ namespace GlobalTheory.StripVanish
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D W vW R K hRc hsplit hKf hKc hKo μR hμR hμRinv 𝓡 𝓑 h𝓡 h𝓑 f hfm hfl hfi hfiR hTc hfK hsupp hstrip`. Use `haveI := vW.haar`. Use `haveI : LocallyCompactSpace R := hRc.locallyCompactSpace`. Use `haveI : μR.IsMulRightInvariant := by rw [← Measure.inv_eq_self μR]; infer_instance`. Take `⟨hinfC, -, hcomm, ⟨e, he⟩, -⟩` from `GlobalTheory.AdelicSplit.adelic_split D W`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hΓc, hΓd, -⟩` from `GlobalTheory.RationalSubgroupFund.countable_discrete_exists_fundamentalDomain D W (GQ W ⊓ R) inf_le_left`. Use `set T : GA D W → ℂ := fun h => ∫ r in 𝓡, f ((r : GA D W) * h) ∂μR with hTdef`. Establish `hQ` using `GlobalTheory.quot_fubini_mean (GA D W) vW.μ R (GQ W ⊓ R) inf_le_right hRc hΓc hΓd μR hμR 𝓡 𝓑 h𝓡 h𝓑 f hfm hfl hfi hfiR`. Establish `hTl : ∀ s ∈ R, ∀ x, T (s * x) = T x` using `fun s hs x => hQ.left hs x`. Establish `hTr : ∀ k ∈ K, ∀ x, T (x * k) = T x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `k hk x`. Simplify using `only [hTdef]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Rewrite using `[← mul_assoc, hfK k hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : T 1 = ∫ r in 𝓡, f (r : GA D W) ∂μR` using `by simp [hTdef]`. Rewrite using `[← h1]`. Assume the negation of the conclusion as `hT1`. Establish `hsupT : ∀ x, T x ≠ 0 → ∃ q ∈ R, ∃ a ∈ GinfC W, ∃ k ∈ K, x = q * a * k`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hno`. Apply `hx` to reduce the goal to its premises. Establish `hz : ∀ r : R, f ((r : GA D W) * x) = 0`. Introduce `r`. Assume the negation of the conclusion as `hr`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨r₁, hr₁, a, ha, k, hk, hrx⟩` from `hsupp _ hr`. Use `hno ⟨(r : GA D W)⁻¹ * r₁, R.mul_mem (R.inv_mem r.2) hr₁, a, ha, k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[show x = (r : GA D W)⁻¹ * ((r : GA D W) * x) by group, hrx]`. Use `group`. Simplify using `[hTdef, hz]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ C : Set (GA D W), C ⊆ GinfC W → ∀ x ∈ strip W R C, T x ≠ 0 → ∃ c ∈ C, T x = T c`. Introduce and unpack `C hC x ⟨r, hr, c, hc, b, hb, rfl⟩ hx`. Take `⟨q, hq, a, ha, k, hk, hx'⟩` from `hsupT _ hx`. Establish `hkb : k * b⁻¹ ∈ GfC W` using `(GfC W).mul_mem (hKf hk) ((GfC W).inv_mem hb)`. Establish `hc' : c⁻¹ ∈ GinfC W` using `(GinfC W).inv_mem (hC hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hac : a * c⁻¹ ∈ GinfC W` using `(GinfC W).mul_mem ha hc'`. Establish `e1 : c⁻¹ * (k * b⁻¹) = (k * b⁻¹) * c⁻¹` using `hcomm _ hc' _ hkb`. Establish `hmem : (a * c⁻¹) * (k * b⁻¹) ∈ R`. Establish `: (a * c⁻¹) * (k * b⁻¹) = q⁻¹ * r`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `R.mul_mem (R.inv_mem hq) hr`. Take `⟨hacR, -⟩` from `hsplit _ hac _ hkb hmem`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set U : Set (GA D W) := {h | (1 : ℝ) / 2 < (T h / T 1).re} with hUdef`. Establish `hUo : IsOpen U` using `isOpen_lt continuous_const (Complex.continuous_re.comp (hTc.div_const (T 1)))`. Establish `h1U : (1 : GA D W) ∈ U` using `by show (1 : ℝ) / 2 < (T 1 / T 1).re`. Rewrite using `[div_self hT1]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : LocallyCompactSpace (GinfC W) := hinfC.locallyCompactSpace`. Establish `hU'o : IsOpen ((Subtype.val : GinfC W → GA D W) ⁻¹' U)` using `hUo.preimage continuous_subtype_val`. Take `⟨C', hC'n, hC'U, hC'c⟩` from `local_compact_nhds (hU'o.mem_nhds (show ((1 : GinfC W) : GA D W) ∈ U from h1U))`. Use `set C : Set (GA D W) := Subtype.val '' C' with hCdef`. Establish `hCinf : C ⊆ GinfC W` using `by rintro _ ⟨y, -, rfl⟩; exact y.2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hCU : C ⊆ U` using `by rintro _ ⟨y, hy, rfl⟩; exact hC'U hy`. Take `⟨hSm, hS0⟩` from `hstrip C (hC'c.image continuous_subtype_val) hCinf`. Use `set S := strip W R C with hSdef`. Establish `hSinv : ∀ s ∈ R, ∀ x, s * x ∈ S ↔ x ∈ S`. Introduce `s hs x`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, c, hc, b, hb, hx⟩`. Use `⟨s⁻¹ * r, R.mul_mem (R.inv_mem hs) hr, c, hc, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[show x = s⁻¹ * (s * x) by group, hx]; group`. Introduce and unpack `⟨r, hr, c, hc, b, hb, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `⟨s * r, R.mul_mem hs hr, c, hc, b, hb, by group⟩`. Establish `hfSl : ∀ γ ∈ GQ W ⊓ R, ∀ g, S.indicator f (γ * g) = S.indicator f g`. Introduce `γ hγ g`. Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem ((hSinv γ hγ.2 g).2 hg), hfl γ hγ g]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (mt (hSinv γ hγ.2 g).1 hg)]`. Establish `hfSi : ∀ h, IntegrableOn (fun r : R => S.indicator f ((r : GA D W) * h)) 𝓡 μR`. Introduce `h`. Distinguish the cases in `hh : h ∈ S`. Establish `: (fun r : R => S.indicator f ((r : GA D W) * h)) = fun r : R => f ((r : GA D W) * h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `fun r => Set.indicator_of_mem ((hSinv _ r.2 h).2 hh) _`. Rewrite using `[this]`. Conclude with `hfiR h`. Establish `: (fun r : R => S.indicator f ((r : GA D W) * h)) = fun _ => 0`. Use function extensionality and compare the values at `fun r => by simp [Set.indicator_apply, hSinv _ r.2 h, hh]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `integrableOn_zero`. Establish `hQS` using `GlobalTheory.quot_fubini_mean (GA D W) vW.μ R (GQ W ⊓ R) inf_le_right hRc hΓc hΓd μR hμR 𝓡 𝓑 h𝓡 h𝓑 (S.indicator f) (hfm.indicator hSm) hfSl (hfi.indicator hSm) hfSi`. Establish `hQS' : IsQuotIntL1 μR vW.μ (S.indicator T) 0`. Establish `e1 : (fun h => ∫ r in 𝓡, S.indicator f ((r : GA D W) * h) ∂μR) = S.indicator T`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Distinguish the cases in `hh : h ∈ S`. Rewrite using `[Set.indicator_of_mem hh]`. Simplify using `only [hTdef]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `r`. Conclude with `Set.indicator_of_mem ((hSinv _ r.2 h).2 hh) _`. Simplify using `[Set.indicator_apply, hSinv _ (Subtype.property _) h, hh]`. Establish `e2 : ∫ g in 𝓑, S.indicator f g ∂vW.μ = 0` using `by rw [setIntegral_indicator hSm, hS0]`. Rewrite `hQS` using `[e1, e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hQS`. Take `⟨β, -, hβ⟩` from `GlobalTheory.Tw.exists_isCosetCutoff (μT := μR) hRc`. Take `⟨hβi, hβ0⟩` from `hQS'.cutoff hβ`. Establish `hre : ∀ x, 0 ≤ (S.indicator T x / T 1).re ∧ (x ∈ S → T x ≠ 0 → (1 : ℝ) / 2 < (S.indicator T x / T 1).re)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hxS : x ∈ S`. Rewrite using `[Set.indicator_of_mem hxS]`. Distinguish the cases in `hx : T x = 0`. Simplify using `[hx]`. Take `⟨c, hc, hTc'⟩` from `hP C hCinf x hxS hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (1 : ℝ) / 2 < (T x / T 1).re` using `by rw [hTc']; exact hCU hc`. Conclude with `⟨by linarith, fun _ _ => h2⟩`. Simplify using `[Set.indicator_of_notMem hxS, hxS]`. Use `set φ : GA D W → ℝ := fun x => ((β x : ℝ) • S.indicator T x / T 1).re with hφdef`. Establish `hφ : ∀ x, φ x = (β x : ℝ) * (S.indicator T x / T 1).re`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `only [hφdef, Complex.real_smul, mul_div_assoc, Complex.re_ofReal_mul]`. Establish `hφnn : 0 ≤ φ` using `fun x => by rw [hφ]; exact mul_nonneg (NNReal.coe_nonneg _) (hre x).1`. Establish `hφi : Integrable φ vW.μ` using `(hβi.div_const (T 1)).re`. Establish `hφ0 : ∫ x, φ x ∂vW.μ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `integral_re (hβi.div_const (T 1))`. Simplify using `only [RCLike.re_to_complex] at h`. Simplify using `only [hφdef]`. Rewrite using `[h, integral_div, ← hβ0, zero_div, Complex.zero_re]`. Establish `hφae` using `(integral_eq_zero_iff_of_nonneg hφnn hφi).1 hφ0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set A : Set (GA D W) := S ∩ {x | T x ≠ 0} with hAdef`. Establish `hAm : MeasurableSet A` using `hSm.inter (hTc.measurable (measurableSet_singleton (0 : ℂ)).compl)`. Establish `hAinv : ∀ s ∈ R, ∀ x, s * x ∈ A ↔ x ∈ A`. Introduce `s hs x`. Simplify using `only [hAdef, Set.mem_inter_iff, Set.mem_setOf_eq, hSinv s hs x, hTl s hs x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set g : GA D W → ENNReal := A.indicator fun x => (β x : ENNReal) with hgdef`. Establish `hgm : Measurable g` using `hβ.1.coe_nnreal_ennreal.indicator hAm`. Establish `hg0 : ∫⁻ x, g x ∂vW.μ = 0`. Rewrite using `[lintegral_eq_zero_iff hgm]`. Use `filter_upwards [hφae] with x hx`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hxA : x ∈ A`. Establish `h2` using `(hre x).2 hxA.1 hxA.2`. Rewrite `hx` using `[Pi.zero_apply, hφ]`. Establish `: (β x : ℝ) = 0`. Break down `mul_eq_zero.1 hx with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hgdef, Set.indicator_of_mem hxA, Pi.zero_apply, NNReal.coe_eq_zero.1 this]`. Simplify using `[hgdef, Set.indicator_of_notMem hxA]`. Establish `hA0 : vW.μ A = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hmul : Measurable fun p : GA D W × R => (p.2 : GA D W) * p.1` using `(measurable_subtype_coe.comp measurable_snd).mul measurable_fst`. Establish `e1 : vW.μ A = ∫⁻ x, ∫⁻ t : R, g ((t : GA D W) * x) ∂μR ∂vW.μ`. Rewrite using `[← lintegral_indicator_one hAm]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hxA : x ∈ A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∀ t : R, g ((t : GA D W) * x) = β ((t : GA D W) * x)` using `fun t => by`. Simplify using `[hgdef, Set.indicator_of_mem ((hAinv _ t.2 x).2 hxA)]`. Simplify using `only [this, hβ.2 x, Set.indicator_of_mem hxA, Pi.one_apply]`. Establish `: ∀ t : R, g ((t : GA D W) * x) = 0` using `fun t => by`. Simplify using `[hgdef, Set.indicator_of_notMem (mt (hAinv _ t.2 x).1 hxA)]`.
-
-Simplify using `[this, Set.indicator_of_notMem hxA]`. Rewrite using `[e1, lintegral_lintegral_swap (f := fun x (t : R) => g ((t : GA D W) * x)) (hgm.comp hmul).aemeasurable]`. Establish `e2 : ∀ t : R, ∫⁻ x, g ((t : GA D W) * x) ∂vW.μ = 0` using `fun t => by`. Rewrite using `[lintegral_mul_left_eq_self, hg0]`. Simplify using `[e2]`.
-
-Use `set O : Set (GA D W) := e '' (interior C' ×ˢ ((K.subgroupOf (GfC W) : Subgroup (GfC W)) : Set (GfC W))) with hOdef`. Establish `hOo : IsOpen O` using `e.isOpenMap _ (isOpen_interior.prod hKo)`. Establish `h1O : (1 : GA D W) ∈ O` using `⟨(1, 1), ⟨mem_interior_iff_mem_nhds.2 hC'n, (K.subgroupOf (GfC W)).one_mem⟩, by rw [he]; simp⟩`. Establish `hOA : O ⊆ A`. Introduce and unpack `_ ⟨p, ⟨hp1, hp2⟩, rfl⟩`.
-
-Rewrite using `[he]`. Establish `hk : (p.2 : GA D W) ∈ K` using `Subgroup.mem_subgroupOf.1 hp2`. Use `⟨⟨1, R.one_mem, p.1, ⟨p.1, interior_subset hp1, rfl⟩, p.2, p.2.2, by simp⟩, ?_⟩` and prove the remaining obligations. Use `show T (p.1 * p.2) ≠ 0`. Rewrite using `[hTr _ hk]`.
-
-Introduce `h0`. Use `hC'U (interior_subset hp1)` as an intermediate fact. Simplify using `only [Set.mem_preimage, hUdef, Set.mem_setOf_eq, h0, zero_div, Complex.zero_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos` using `hOo.measure_pos vW.μ ⟨1, h1O⟩`.
-
-Conclude with `hpos.ne' (measure_mono_null hOA hA0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mean_eq_zero_of_strips : ∀ (D : D7) (W : HSp D) (vW : GlobalTheory.Unf.Vol W) (R K : Subgroup (GA D W)), IsClosed (R : Set (GA D W)) → (∀ a ∈ GinfC W, ∀ b ∈ GfC W, a * b ∈ R → a ∈ R ∧ b ∈ R) → K ≤ GfC W → IsCompact (K : Set (GA D W)) → IsOpen ((K.subgroupOf (GfC W) : Subgroup (GfC W)) : Set (GfC W)) → ∀ (μR : Measure R), μR.IsHaarMeasure → μR.IsInvInvariant → ∀ (𝓡 : Set R) (𝓑 : Set (GA D W)), IsFundamentalDomain ((GQ W ⊓ R).subgroupOf R) 𝓡 μR → IsFundamentalDomain (GQ W ⊓ R : Subgroup (GA D W)) 𝓑 vW.μ → ∀ f : GA D W → ℂ, Measurable f → (∀ γ ∈ GQ W ⊓ R, ∀ g, f (γ * g) = f g) → IntegrableOn f 𝓑 vW.μ → (∀ h, IntegrableOn (fun r : R => f (r * h)) 𝓡 μR) → (Continuous fun h => ∫ r in 𝓡, f ((r : GA D W) * h) ∂μR) → (∀ k ∈ K, ∀ g, f (g * k) = f g) → (∀ h, f h ≠ 0 → ∃ r ∈ R, ∃ a ∈ GinfC W, ∃ k ∈ K, h = r * a * k) → (∀ C : Set (GA D W), IsCompact C → C ⊆ GinfC W → MeasurableSet (strip W R C) ∧ ∫ h in 𝓑 ∩ strip W R C, f h ∂vW.μ = 0) → ∫ r in 𝓡, f r ∂μR = 0 := by
   intro D W vW R K hRc hsplit hKf hKc hKo μR hμR hμRinv 𝓡 𝓑 h𝓡 h𝓑 f hfm hfl hfi hfiR hTc hfK hsupp hstrip

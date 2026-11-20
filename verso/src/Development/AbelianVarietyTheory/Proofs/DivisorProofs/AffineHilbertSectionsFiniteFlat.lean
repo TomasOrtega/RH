@@ -5,9 +5,9 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 namespace GlobalTheory.HilbAff
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `y.2.2`. Use `haveI : IsFinite (subStr A B y) := h1`. Use `haveI : Flat (subStr A B y) := h2`. Prove the components needed by the constructor for the conclusion. Conclude with `IsFinite.finite_app (subStr A B y) W W.2`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hV : IsAffineOpen (subStr A B y ⁻¹ᵁ (W : Z.Opens))` using `W.2.preimage (subStr A B y)`. Establish `h` using `Scheme.Hom.flat_appLE (subStr A B y) W.2 hV le_rfl`. Rewrite `h` using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem sec_finite_flat (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (r : ℕ)
     (Z : Scheme.{0}) (y : (GlobalTheory.HilbAff.functor A B r).obj (op Z)) (W : Z.affineOpens) :

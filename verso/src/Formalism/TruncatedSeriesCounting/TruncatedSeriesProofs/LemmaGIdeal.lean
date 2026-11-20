@@ -41,7 +41,7 @@ private theorem winDiff (ℓ : ℕ) [Fact ℓ.Prime] (j₀ lo : ℤ) (L D : ℕ)
 /- English proof (authored)
 Let S₁ = [b−a+1,b]. The hypothesis b ≥ 2a+η+1 puts S₁ strictly above the low interval for S₂, and the other interval for S₂ starts at b+1. Thus the two sets are disjoint. The Lagrange ideal lifting theorem supplies ideal membership at exponent E, the supremum over j₀ in S₁ of the valuation sum on S₂ and on S₁ with j₀ removed. Its association hypothesis is exactly the one assumed for the differences of c.
 
-For a fixed j₀, split the sum into S₁ with j₀ removed and the high and low portions of S₂. Their differences j₀−j lie in windows of lengths a, S+a, and 2η+a, respectively. All differences are nonzero by disjointness and the removal of j₀. The interval endpoints and b+S ≤ h give |j₀−j| ≤ h+η. Apply winDiff three times. The lengths add to 3a+S+2η, and each logarithm is at most lam(ℓ,h+η). This bounds every value in the supremum and hence E. If S₁ is empty, E is zero and the bound follows by nonnegativity.
+For a fixed j₀, split the sum into S₁ with j₀ removed and the high and low portions of S₂. Their differences j₀−j lie in windows of lengths a, S+a, and 2η+a, respectively. All differences are nonzero by disjointness and the removal of j₀. The interval endpoints and b+S ≤ h give |j₀−j| ≤ h+η. Apply the window valuation estimate to each of the three parts. The lengths add to 3a+S+2η, and each logarithm is at most lam(ℓ,h+η). This bounds every value in the supremum and hence E. If S₁ is empty, E is zero and the bound follows by nonnegativity.
 -/
 theorem g_ideal_valuation_statement : LemmaGIdeal := by
   intro ℓ _ R _ _ c hc h η S b a S₂ hb hbS hS₂

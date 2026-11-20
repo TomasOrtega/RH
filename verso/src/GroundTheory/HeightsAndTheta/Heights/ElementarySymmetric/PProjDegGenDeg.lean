@@ -19,7 +19,7 @@ namespace GroundTheory.Heights₂.Heights.Swarm
 open GroundTheory.Heights₂.Heights.HilbertSamuel
 
 /- English proof (translation)
-The claim follows from `HilbertPrime.proof HilbertDimZero.proof (HilbertIncrement.proof IntersectionRecursion.proof) (MixedNumberPolynomial.proof (MultigradedHilbertPolynomial.proof EventualPolynomial.proof)) (ModulesFromPrimes.proof MultigradedFiltration.proof FiltrationHilbSum.proof DegLTGrowth.proof)`.
+A detailed English derivation is pending.
 -/
 theorem HilbertPrime.closed : HilbertPrime.Statement.{0} :=
   HilbertPrime.proof HilbertDimZero.proof (HilbertIncrement.proof IntersectionRecursion.proof)
@@ -27,14 +27,14 @@ theorem HilbertPrime.closed : HilbertPrime.Statement.{0} :=
     (ModulesFromPrimes.proof MultigradedFiltration.proof FiltrationHilbSum.proof DegLTGrowth.proof)
 
 /- English proof (translation)
-The claim follows from `RankOfSections.proof HilbertPrime.closed (MixedNumberPolynomial.proof (MultigradedHilbertPolynomial.proof EventualPolynomial.proof))`.
+A detailed English derivation is pending.
 -/
 theorem RankOfSections.closed : RankOfSections.Statement :=
   RankOfSections.proof HilbertPrime.closed
     (MixedNumberPolynomial.proof (MultigradedHilbertPolynomial.proof EventualPolynomial.proof))
 
 /- English proof (translation)
-The claim follows from `HilbertSamuel.ProjDegGenDeg.proof RankOfSections.closed`.
+A detailed English derivation is pending.
 -/
 theorem ProjDegGenDeg.proof : ProjDegGenDeg.Statement :=
   HilbertSamuel.ProjDegGenDeg.proof RankOfSections.closed

@@ -6,7 +6,7 @@ import Formalism.FormalDegreeBessel.StatementG
 open Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DefiniteUnitaryCasimir.casimir_eq_neg_sum_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FQuadraticGelfandInvariantEqNegSumSqDefinite.lean&line=126#L126)
 -/

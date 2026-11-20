@@ -14,7 +14,7 @@ open Classical
 open GlobalTheory.Mem.R3.HasLabelling
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.R3.LabEig.eig_parts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsSphericalEigensystemOfFiniteTypeWithParts.lean&line=163#L163)
 -/

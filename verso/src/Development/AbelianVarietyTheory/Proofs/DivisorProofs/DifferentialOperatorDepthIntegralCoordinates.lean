@@ -13,7 +13,7 @@ noncomputable section
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero h`.
+A detailed English derivation is pending.
 -/
 theorem hs0 {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (h : ∀ s, constantCoeff (a s) = 0) : HasSubst a := hasSubst_of_constantCoeff_zero h
@@ -25,7 +25,7 @@ theorem cX {σ : Type} (s : σ) : constantCoeff (X s : MvPowerSeries σ C) = 0 :
 
 open MvPowerSeries in
 /- English proof (translation)
-Rewrite using `[← coe_substAlgHom hb, map_sum]`. Simplify using `only [map_smul, coe_substAlgHom, subst_X hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma subst_sum_smul_X' {C : Type} [Field C] {σ τ ι : Type} [Fintype ι]
     {b : σ → MvPowerSeries τ C} (hb : HasSubst b) (c : ι → C) (g : ι → σ) :
@@ -35,7 +35,7 @@ private lemma subst_sum_smul_X' {C : Type} [Field C] {σ τ ι : Type} [Fintype 
 
 open MvPowerSeries in
 /- English proof (translation)
-Introduce `α`. Use `show 0 ≤ v (coeff α (X s : MvPowerSeries σ C))`. Rewrite using `[coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma mvIsInt_X_divisor {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {σ : Type}
     (s : σ) : _root_.ReciprocityTheory.PGsh.MvIsInt v (X s : MvPowerSeries σ C) := by
@@ -49,33 +49,31 @@ open MvPowerSeries in
 variable {C : Type} [Field C] in
 
 /- English proof (translation)
-Introduce `C _ _ v i d c G u Φ Ψ hΦΨ hinv t ht0 ht`. Establish `hΦ : HasSubst Φ` using `hasSubst_of_constantCoeff_zero fun a => (hΦΨ a).2.1`. Establish `hΨ : HasSubst Ψ` using `hasSubst_of_constantCoeff_zero fun a => (hΦΨ a).2.2.2`. Establish `htS : HasSubst t` using `hasSubst_of_constantCoeff_zero ht0`. Establish `hlg : HasSubst G.lg` using `hasSubst_of_constantCoeff_zero G.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex0 : ∀ a, constantCoeff (_root_.GlobalTheory.FGDepth.expOf G a) = 0` using `(_root_.GlobalTheory.FGDepth.isExp_expOf G).1`. Establish `hexS : HasSubst (_root_.GlobalTheory.FGDepth.expOf G)` using `hasSubst_of_constantCoeff_zero hex0`. Establish `hLin0 : ∀ e, constantCoeff (∑ a, u a e • (X a : MvPowerSeries (Fin i) C)) = 0`. Introduce `e`. Simplify using `[map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hLinS : HasSubst fun e => ∑ a, u a e • (X a : MvPowerSeries (Fin i) C)` using `hasSubst_of_constantCoeff_zero hLin0`. Establish `hΦtS : HasSubst fun a => subst t (Φ a)` using `hasSubst_of_constantCoeff_zero fun a => constantCoeff_subst_eq_zero htS ht0 (hΦΨ a).2.1`. Establish `hΦt : ∀ a, subst t (Φ a) =`. Substitute `(fun e => ∑ b, u b e • (X b : MvPowerSeries (Fin i) C)) (_root_.GlobalTheory.FGDepth.expOf G a) := by` using the available equality. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (fun e => ∑ b, u b e • (X b : MvPowerSeries (Fin i) C)) = fun e => subst (fun a => subst t (Φ a)) (G.lg e)`. Use function extensionality and compare the values at `e`. Rewrite using `[← subst_comp_subst_apply hΦ htS, ht]`. Rewrite using `[h1, ← subst_comp_subst_apply hlg hΦtS, _root_.GlobalTheory.FGDepth.subst_lg_expOf, subst_X hΦtS]`. Establish `ht_eq : ∀ e, t e = subst (fun e => ∑ b, u b e • (X b : MvPowerSeries (Fin i) C)) (subst (_root_.GlobalTheory.FGDepth.expOf G) (Ψ e))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e`. Rewrite using `[subst_comp_subst_apply hexS hLinS]`. Combine the equalities or inequalities in the displayed calculation. Establish `hXb : ∀ b : Fin i, HasSubst fun a : Fin i => (X ⟨b, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin i) C)` using `fun b => hasSubst_of_constantCoeff_zero fun a => constantCoeff_X _`. Establish `hXd : ∀ b : Fin i, HasSubst fun a : Fin d => (X ⟨b, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C)` using `fun b => hasSubst_of_constantCoeff_zero fun a => constantCoeff_X _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLinB0 : ∀ (b : Fin i) (e : Fin d), constantCoeff (∑ a, u a e • (X ⟨b, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin i) C)) = 0`. Introduce `b e`. Simplify using `[map_sum]`. Establish `hLinBS : ∀ b : Fin i, HasSubst fun e => ∑ a, u a e • (X ⟨b, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin i) C)` using `fun b => hasSubst_of_constantCoeff_zero (hLinB0 b)`. Establish `hE0 : ∀ x, constantCoeff (_root_.GlobalTheory.FGDepth.expAlong (fun _ : Fin i => G) (fun _ : Fin i => u) x) = 0` using `fun x => constantCoeff_subst_eq_zero (hLinBS x.1) (hLinB0 x.1) (hex0 x.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hES : HasSubst (_root_.GlobalTheory.FGDepth.expAlong (fun _ : Fin i => G) (fun _ : Fin i => u))` using `hasSubst_of_constantCoeff_zero hE0`. Establish `hΨ0 : ∀ x : (Σ _ : Fin i, Fin d), constantCoeff (subst (fun a : Fin d => (X ⟨x.1, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C)) (Ψ x.2)) = 0` using `fun x => constantCoeff_subst_eq_zero (hXd x.1) (fun a => constantCoeff_X _) (hΦΨ x.2).2.2.2`. Establish `hΨS : HasSubst fun x : (Σ _ : Fin i, Fin d) =>`. Substitute `(fun a : Fin d => (X ⟨x.1, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C)) (Ψ x.2) :=` using the available equality. Use `hasSubst_of_constantCoeff_zero hΨ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hΦ0 : ∀ x : (Σ _ : Fin i, Fin d), constantCoeff (subst (fun a : Fin d => (X ⟨x.1, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C)) (Φ x.2)) = 0` using `fun x => constantCoeff_subst_eq_zero (hXd x.1) (fun a => constantCoeff_X _) (hΦΨ x.2).2.1`. Establish `hΦS : HasSubst fun x : (Σ _ : Fin i, Fin d) =>`. Substitute `(fun a : Fin d => (X ⟨x.1, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C)) (Φ x.2) :=` using the available equality. Use `hasSubst_of_constantCoeff_zero hΦ0`. Establish `key : ∀ x : (Σ _ : Fin i, Fin d),`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `(fun a : Fin i => (X ⟨x.1, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin i) C)) (t x.2) =` using the available equality. Substitute `(_root_.GlobalTheory.FGDepth.expAlong (fun _ : Fin i => G) (fun _ : Fin i => u)) (subst (fun a : Fin d => (X ⟨x.1, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C)) (Ψ x.2)) := by` using the available equality. Introduce and unpack `⟨b, e⟩`. Establish `hlin : (fun e' => subst (fun a : Fin i => (X ⟨b, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin i) C)) (∑ a, u a e' • (X a : MvPowerSeries (Fin i) C))) = fun e' => ∑ a, u a e' • (X ⟨b, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin i) C)`. Use function extensionality and compare the values at `e'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `subst_sum_smul_X' (hXb b) (fun a => u a e') id`. Rewrite using `[ht_eq e, subst_comp_subst_apply hLinS (hXb b), hlin, subst_comp_subst_apply hexS (hLinBS b), subst_comp_subst_apply (hXd b) hES]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[subst_X hES]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Establish `hround : (fun x : (Σ _ : Fin i, Fin d) => subst (fun x : (Σ _ : Fin i, Fin d) =>`. Substitute `(fun a : Fin d => (X ⟨x.1, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C)) (Ψ x.2))` using the available equality. Use the proof step `(subst (fun a : Fin d => (X ⟨x.1, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C)) (Φ x.2))) =`. Use `X := by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[subst_comp_subst_apply (hXd x.1) hΨS]`. Repeatedly rewrite using `[subst_X hΨS]`. Rewrite using `[← subst_comp_subst_apply hΨ (hXd x.1), (hinv x.2).1, subst_X (hXd x.1)]`. Unfold `_root_.GlobalTheory.FGDepth.detDepth _root_.GlobalTheory.FGDepth.depth`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[key]`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_iInf fun f => ?_` and prove the remaining obligations. Rewrite using `[← subst_comp_subst_apply hΨS hES]`. Conclude with `iInf_le_of_le ⟨_, _root_.ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v f.2 (fun x => _root_.ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v (hΦΨ x.2).2.2.1 (fun a => mvIsInt_X_divisor v _) (fun a => constantCoeff_X _)) hΨ0⟩ le_rfl`.
-
-Use `le_iInf fun f => ?_` and prove the remaining obligations. Use `iInf_le_of_le ⟨_, _root_.ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v f.2 (fun x => _root_.ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v (hΦΨ x.2).1 (fun a => mvIsInt_X_divisor v _) (fun a => constantCoeff_X _)) hΦ0⟩ ?_` and prove the remaining obligations. Rewrite using `[← subst_comp_subst_apply hΨS hES, subst_comp_subst_apply hΦS hΨS, hround, subst_self]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FGDepth.Coord.depth_in_coords : ∀ (C : Type) [Field C] [CharZero C]
     (v : AddValuation C (WithTop ℝ)) (i d c : ℕ) (G : _root_.ReciprocityTheory.PGsh.LogFGL v d) (u : Fin i → Fin d → C)

@@ -14,19 +14,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Imports
 
 /- English proof (translation)
-Use `haveI : CharP (PowerSeries K) l := charP_of_injective_ringHom (PowerSeries.C_injective (R := K)) l`. Establish `tf : ∀ g ∈ N, ∀ a b (m : ℕ), 0 < m → (ψ a g / ψ b g) ^ m = 1 → ψ a g / ψ b g = 1`. Introduce `g hg a b m hm h`. Apply `Units.ext` to reduce the goal to its premises. Apply `UpperTheory.V.Pr.T.oneUnitTF l _ m hm.ne'` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff]`. Establish `hinv : PowerSeries.constantCoeff ((ψ b g)⁻¹ : (PowerSeries K)ˣ).val * PowerSeries.constantCoeff ((ψ b g : (PowerSeries K)ˣ) : PowerSeries K) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hc : PowerSeries.constantCoeff (((ψ a g / ψ b g : (PowerSeries K)ˣ) : PowerSeries K) - 1) = 0`. Rewrite using `[map_sub, div_eq_mul_inv, Units.val_mul, map_mul, hred g hg a b, mul_comm, hinv, map_one, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `not_isUnit_zero`. Rewrite using `[← Units.val_pow_eq_pow_val, h, Units.val_one]`. Set `χ : {p : Fin n × Fin n // p.1 ≠ p.2} → ↥(N ⊓ V) →* (PowerSeries K)ˣ` to `fun p => (ψ p.1.1 / ψ p.1.2).comp (N ⊓ V).subtype`. Take `⟨h, hh⟩` from `UpperTheory.V.Pr.commonFree ↥(N ⊓ V) (PowerSeries K)ˣ {p : Fin n × Fin n // p.1 ≠ p.2} χ 1 one_pos (by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p h m hm hpow`. Rewrite using `[pow_one]`. Conclude with `tf h (Subgroup.mem_inf.mp h.2).1 _ _ m hm hpow)`. Use the proof step `(by`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hgN, hne⟩` from `hsep _ _ p.2`. Take `⟨k, hk, -, hkV⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero hV g`. Use `⟨⟨g ^ k, Subgroup.mem_inf.mpr ⟨N.pow_mem hgN k, hkV⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Introduce `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hne` to reduce the goal to its premises. Establish `h2 : (ψ p.1.1 g / ψ p.1.2 g) ^ k = 1`. Simplify `h1` using `[χ, div_pow, map_pow]`. Conclude with `div_eq_one.mp (tf g hgN _ _ k hk h2))`. Use `⟨h, (Subgroup.mem_inf.mp h.2).1, (Subgroup.mem_inf.mp h.2).2, ?_⟩` and prove the remaining obligations.
-
-Introduce `a b hab m hm heq`. Apply `hh ⟨(a, b), hab⟩ m hm` to reduce the goal to its premises. Simplify using `[χ, div_pow, heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_element_separating_powers {G K : Type} [Group G] [Field K] (l : ℕ) [Fact l.Prime] [CharP K l] {n : ℕ}
     (ψ : Fin n → G →* (PowerSeries K)ˣ) (N V : Subgroup G) (hV : V.index ≠ 0)
@@ -72,23 +70,19 @@ private theorem exists_element_separating_powers {G K : Type} [Group G] [Field K
   simp [χ, div_pow, heq]
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F n T x L y j hj hnice hmat hψ U hU v`. Use `haveI : CharP (IsLocalRing.ResidueField O) l := UpperTheory.V.Fr.IsCoef.char`. Use `haveI : CharP y.K l := charP_of_injective_algebraMap (algebraMap (IsLocalRing.ResidueField O) y.K).injective l`. Set `N : Subgroup (T.G.Gv v)` to `(F.Nv (T.K.e v)).comap (T.K.lam v).toMonoidHom`. Set `V : Subgroup (T.G.Gv v)` to `U.comap (T.G.φ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : V.index ≠ 0`. Rewrite using `[Subgroup.index_ne_zero_iff_finite]`. Conclude with `Subgroup.quotient_finite_of_isOpen V (hU.preimage (T.G.φ_cont v))`. Establish `hred : ∀ g ∈ N, ∀ a b, PowerSeries.constantCoeff (y.ψ v a g : PowerSeries y.K) = PowerSeries.constantCoeff (y.ψ v b g : PowerSeries y.K)`. Introduce `g hg a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ i, PowerSeries.constantCoeff (y.ψ v i g : PowerSeries y.K) = algebraMap (IsLocalRing.ResidueField O) y.K (T.r.psib v i g : IsLocalRing.ResidueField O)` using `fun i => congrArg Units.val (DFunLike.congr_fun (y.ψ_red v i) g)`. Establish `hΨ : F.Ψ ((F.loc0 (T.K.e v) (T.K.lam v g) : F.del.ker) : F.Γ) = 1` using `T.ok.Ψ_N (T.K.e v) (T.K.lam v g) hg`. Rewrite using `[key a, key b, T.K.psib, T.K.psib, T.K.chib, T.K.chib, ← T.K.lam_loc, hΨ, one_zpow, one_zpow]`. Establish `hsep : ∀ a b, a ≠ b → ∃ g ∈ N, y.ψ v a g ≠ y.ψ v b g`. Introduce `a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `hnice.sep (T.K.e v) a b hab`. Simplify using `only [UpperTheory.V.Fr.NRep.Coin, not_forall] at hc`. Take `⟨g', hg', hne⟩` from `hc`. Use `⟨(T.K.lam v).symm g', ?_, ?_⟩` and prove the remaining obligations. Use `show (T.K.lam v) ((T.K.lam v).symm g') ∈ F.Nv (T.K.e v)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hg'`. Introduce `heq`. Apply `hne` to reduce the goal to its premises. Rewrite `heq` using `[hψ]`. Simplify using `only [UpperTheory.V.Pr.TwLink.twψ, MonoidHom.mul_apply, MonoidHom.comp_apply] at heq`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h2` using `congrArg Units.val (mul_right_cancel heq)`. Simplify using `[UpperTheory.V.Fr.NRep.map] at h2`. Rewrite using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Use `h2 using 4` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals exact ((T.K.lam v).apply_symm_apply g').symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨g, hgN, hgV, hfree⟩` from `exists_element_separating_powers l (y.ψ v) N V hV hred hsep`. Use `⟨g, ⟨hgV, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show T.G.ε ((T.G.φ v g : T.G.η.ker) : T.G.Γ) = 1`. Rewrite using `[← T.K.π_eps, ← T.K.lam_loc]`. Conclude with `(Subgroup.mem_inf.mp hgN).2`.
-
-Introduce `a b hab m hm heq`. Apply `hfree a b hab m hm` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Apply `IsFractionRing.injective y.A y.Fr` to reduce the goal to its premises. Establish `h2` using `congrArg Units.val heq`.
-
-Simplify `h2` using `[Units.val_pow_eq_pow_val, map_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.niceSep :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (n : ℕ) (T : UpperTheory.V.Pr.Setup F n) (x : Ideal T.S.A) (L : T.S.Loc x) (y : UpperTheory.V.W.Point T.r) (j : L.R →ₐ[O] y.A), IsLocalHom j → UpperTheory.V.Pr.Nice L.ρ (RingHom.ker j) → UpperTheory.V.W.mat y.ρ = T.K.tw (L.ρ.map (j : L.R →+* y.A)) → y.ψ = T.K.twψ (L.ρ.map (j : L.R →+* y.A)) → ∀ U : Subgroup T.G.G₀, IsOpen (U : Set T.G.G₀) → ∀ v, ∃ g : T.G.Gv v, T.G.φ v g ∈ U ⊓ T.G.G' ∧ UpperTheory.V.Pr.FreeRatios fun i => y.ψ v i g |> Units.map (algebraMap y.A y.Fr).toMonoidHom := by

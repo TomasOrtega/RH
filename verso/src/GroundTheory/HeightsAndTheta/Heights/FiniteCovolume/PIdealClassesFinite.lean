@@ -29,7 +29,7 @@ def scaledIdeal (I : AddSubgroup E) (hI : ∀ a : 𝓞 E, ∀ x ∈ I, (a : E) *
     ring
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_scaledIdeal {I : AddSubgroup E} {hI : ∀ a : 𝓞 E, ∀ x ∈ I, (a : E) * x ∈ I} {b : E}
     {y : 𝓞 E} : y ∈ scaledIdeal I hI b ↔ b⁻¹ * (y : E) ∈ I := Iff.rfl
@@ -37,33 +37,31 @@ theorem mem_scaledIdeal {I : AddSubgroup E} {hI : ∀ a : 𝓞 E, ∀ x ∈ I, (
 end Numbers
 
 /- English proof (translation)
-Set `rep : ClassGroup (𝓞 E) → nonZeroDivisors (Ideal (𝓞 E))` to `fun c => (ClassGroup.mk0_surjective c).choose`. Establish `hrep : ∀ c, ClassGroup.mk0 (rep c) = c` using `fun c => (ClassGroup.mk0_surjective c).choose_spec`. Set `J : ClassGroup (𝓞 E) → AddSubgroup E` to `fun c => ((rep c : Ideal (𝓞 E)).toAddSubgroup).map (algebraMap (𝓞 E) E).toAddMonoidHom`. Use `⟨Set.range J, Set.finite_range J, ?_⟩` and prove the remaining obligations. Introduce `I hfg hne hI`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨S, hS⟩` from `hfg`. Take `⟨⟨b, hb0⟩, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 E)) (S : Finset E)`. Establish `hbne : (b : E) ≠ 0`. Establish `: b ≠ 0` using `nonZeroDivisors.ne_zero hb0`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ x ∈ I, ∃ w : 𝓞 E, (w : E) = b * x`. Introduce `x hx`. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hb x hx`. Conclude with `⟨w, by rw [Algebra.smul_def] at hw; exact hw⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w, hw⟩` from `hx`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `hy`. Conclude with `⟨w + v, by push_cast; linear_combination hw + hv⟩`. Consider the case `neg x _ hx`. Take `⟨w, hw⟩` from `hx`. Conclude with `⟨-w, by push_cast; linear_combination -hw⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `𝔞` to `scaledIdeal I hI (b : E)`. Establish `hmem : ∀ z ∈ I, ∀ w : 𝓞 E, (w : E) = b * z → w ∈ 𝔞`. Introduce `z hz w hw`. Rewrite using `[mem_scaledIdeal, hw, ← mul_assoc, inv_mul_cancel₀ hbne, one_mul]`. Conclude with `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h𝔞 : 𝔞 ∈ nonZeroDivisors (Ideal (𝓞 E))`. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Take `⟨z, hz, hz0⟩` from `(AddSubgroup.bot_or_exists_ne_zero I).resolve_left hne`. Take `⟨w, hw⟩` from `hint z hz`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw𝔞 : w ∈ 𝔞` using `hmem z hz w hw`. Rewrite `hw𝔞` using `[h0, Submodule.zero_eq_bot, Ideal.mem_bot]`. Rewrite `hw` using `[hw𝔞]`. Move the coercions through the operations in `at hw`. Conclude with `hz0 ((mul_eq_zero.1 hw.symm).resolve_left hbne)`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := ClassGroup.mk0 ⟨𝔞, h𝔞⟩`. Take `⟨x, y, hx, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.1 (hrep c).symm`. Establish `hxE : (x : E) ≠ 0` using `by exact_mod_cast hx`. Establish `hyE : (y : E) ≠ 0` using `by exact_mod_cast hy`. Use `⟨J c, ⟨c, rfl⟩, (y : E) / ((x : E) * b), div_ne_zero hyE (mul_ne_zero hxE hbne), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨w, hw⟩` from `hint z hz`. Establish `hxw : x * w ∈ Ideal.span {y} * (rep c : Ideal (𝓞 E))` using `hxy ▸ Ideal.mem_span_singleton_mul.2 ⟨w, hmem z hz w hw, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv, hvw⟩` from `Ideal.mem_span_singleton_mul.1 hxw`. Establish `hvw' : (y : E) * v = x * (b * z)`. Rewrite using `[← hw]`. Conclude with `hvw` after adjusting the coercions. Use `AddSubgroup.mem_map.2 ⟨(v : E), AddSubgroup.mem_map.2 ⟨v, hv, rfl⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [AddMonoidHom.coe_mulLeft]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hvw'`. Introduce `hz`. Take `⟨u, hu, rfl⟩` from `AddSubgroup.mem_map.1 hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv, rfl⟩` from `AddSubgroup.mem_map.1 hu`. Establish `hyv : y * v ∈ Ideal.span {x} * 𝔞` using `hxy.symm ▸ Ideal.mem_span_singleton_mul.2 ⟨v, hv, rfl⟩`. Take `⟨w, hw, hwv⟩` from `Ideal.mem_span_singleton_mul.1 hyv`. Establish `hwv' : (x : E) * w = y * v` using `by exact_mod_cast hwv`. Rewrite `hw` using `[mem_scaledIdeal]`.
-
-Use `hw using 1` and compare the differences between its conclusion and the goal. Simplify using `only [AddMonoidHom.coe_mulLeft, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hwv'`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem IdealClassesFinite.proof (E) [Field E] [NumberField E] : IdealClassesFinite.Statement E := by
   classical

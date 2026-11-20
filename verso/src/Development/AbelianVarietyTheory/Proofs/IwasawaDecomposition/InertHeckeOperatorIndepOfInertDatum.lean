@@ -11,9 +11,9 @@ section Field
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Use `show Formalism.UG.cT σ' (((M : Matrix (Fin n) (Fin n) K)).map (g : K →+* K)) * Formalism.UG.antiJ K n * ((M : Matrix (Fin n) (Fin n) K)).map (g : K →+* K) = Formalism.UG.antiJ K n ↔ Formalism.UG.cT σ (M : Matrix (Fin n) (Fin n) K) * Formalism.UG.antiJ K n * (M : Matrix (Fin n) (F …`. Establish `e : Formalism.UG.cT σ' (((M : Matrix (Fin n) (Fin n) K)).map (g : K →+* K)) * Formalism.UG.antiJ K n * ((M : Matrix (Fin n) (Fin n) K)).map (g : K →+* K) = (Formalism.UG.cT σ (M : Matrix (Fin n) (Fin n) K) * Formalism.UG.antiJ K n * (M : Matrix (Fin n) (Fin n) K)).map (g : K →+* …`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, antiJ_map, cT_map (g : K →+* K) σ σ' hg]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `Matrix.map_injective g.injective (h.trans (antiJ_map (g : K →+* K) n).symm)`. Introduce `h`. Rewrite using `[h, antiJ_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indepDatum_memGU_iff (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) = σ' (g x)) {n : ℕ}
     (M : GL (Fin n) K) :
@@ -35,7 +35,7 @@ theorem indepDatum_memGU_iff (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g
     rw [h, antiJ_map]
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `hM`. Use `⟨Formalism.UG.bc (n := Fin n) ((g : K →+* K).restrict (Formalism.UG.intL K) (Formalism.UG.intL K) (fun x hx => hint x hx)) p, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem indepDatum_intRange (g : K ≃+* K) (hint : ∀ x, x ∈ Formalism.UG.intL K → g x ∈ Formalism.UG.intL K) {n : ℕ}
     (M : GL (Fin n) K) (hM : M ∈ (Formalism.UG.bc (n := Fin n) (Formalism.UG.intL K).subtype).range) :
@@ -52,7 +52,7 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
   {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {w : HeightOneSpectrum (𝓞 L)}
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `(gEquiv_e Dv Dv' _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem indepDatum_bc_e (Dv Dv' : InertDatum L n v w)
     (Y : GL (Fin n) (L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L))) :
@@ -70,7 +70,7 @@ def indepDatumK (Dv Dv' : InertDatum L n v w) : GL (Fin n) (w.adicCompletion L) 
     w.adicCompletion L →+* w.adicCompletion L) Dv.P)⁻¹ * Dv'.P
 
 /- English proof (translation)
-Simplify using `only [InertDatum.loc, indepDatumK, map_mul, map_inv, indepDatum_bc_e Dv Dv']`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem indepDatum_loc (Dv Dv' : InertDatum L n v w) (x : GAf L n) :
     Dv'.loc x = (indepDatumK Dv Dv')⁻¹ * Formalism.UG.bc (n := Fin n) ((gEquiv Dv Dv' :
@@ -80,11 +80,9 @@ theorem indepDatum_loc (Dv Dv' : InertDatum L n v w) (x : GAf L n) :
   group
 
 /- English proof (translation)
-Use `set g : w.adicCompletion L →+* w.adicCompletion L := ((gEquiv Dv Dv' : w.adicCompletion L ≃+* w.adicCompletion L) : w.adicCompletion L →+* w.adicCompletion L) with hgdef`. Use `set Q : Matrix (Fin n) (Fin n) (w.adicCompletion L) := ((Formalism.UG.bc (n := Fin n) g Dv.P : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) with hQdef`. Use `set Qi : Matrix (Fin n) (Fin n) (w.adicCompletion L) := (((Formalism.UG.bc (n := Fin n) g Dv.P)⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) with hQidef`. Establish `hQ : Formalism.UG.cT Dv'.σw Q * Q = Formalism.UG.antiJ (w.adicCompletion L) n`. Establish `hmap : Q = (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)).map g` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hmap, cT_map g Dv.σw Dv'.σw (gEquiv_comm Dv Dv'), ← Matrix.map_mul, Dv.Panti, antiJ_map]`. Establish `h1 : Q * Qi = 1` using `by rw [hQdef, hQidef, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : Formalism.UG.cT Dv'.σw Qi * Formalism.UG.cT Dv'.σw Q = 1` using `by rw [← Formalism.UG.cT_mul, h1, Formalism.UG.cT_one]`. Use `show Formalism.UG.cT Dv'.σw (Qi * (Dv'.P : Matrix (Fin n) (Fin n) (w.adicCompletion L))) * Formalism.UG.antiJ (w.adicCompletion L) n * (Qi * (Dv'.P : Matrix (Fin n) (Fin n) (w.adicCompletion L))) = Formalism.UG.antiJ (w.adicCompletion L) n`. Rewrite using `[← hQ, Formalism.UG.cT_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT Dv'.σw (Dv'.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)) * (Dv'.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)) := by`. Rewrite using `[h1, h2, Matrix.mul_one, Matrix.mul_one]`. Use `_ = Formalism.UG.cT Dv'.σw Q * Q := by rw [Dv'.Panti, hQ]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indepDatumK_memGU (Dv Dv' : InertDatum L n v w) : indepDatumK Dv Dv' ∈ Formalism.UG.GU Dv'.σw n := by
   set g : w.adicCompletion L →+* w.adicCompletion L := ((gEquiv Dv Dv' : w.adicCompletion L ≃+* w.adicCompletion L) :
@@ -114,9 +112,9 @@ theorem indepDatumK_memGU (Dv Dv' : InertDatum L n v w) : indepDatumK Dv Dv' ∈
     _ = Formalism.UG.cT Dv'.σw Q * Q := by rw [Dv'.Panti, hQ]
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.KU, Subgroup.mem_subgroupOf]`. Use `⟨indepDatumK_memGU Dv Dv', ?_⟩` and prove the remaining obligations. Take `⟨p1, hp1⟩` from `indepDatum_intRange (gEquiv Dv Dv') (fun x hx => (gEquiv_intL Dv Dv' x).1 hx) _ Dv.Pint`. Take `⟨p2, hp2⟩` from `Dv'.Pint`. Use `⟨p1⁻¹ * p2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_inv, hp1, hp2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem indepDatumK_memKU (Dv Dv' : InertDatum L n v w) :
     (⟨indepDatumK Dv Dv', indepDatumK_memGU Dv Dv'⟩ : Formalism.UG.GU Dv'.σw n) ∈ Formalism.UG.KU Dv'.σw n := by
@@ -129,17 +127,15 @@ theorem indepDatumK_memKU (Dv Dv' : InertDatum L n v w) :
   rfl
 
 /- English proof (translation)
-Establish `hk` using `indepDatumK_memGU Dv Dv'`. Establish `hloc` using `indepDatum_loc Dv Dv' x`. Use `set g : w.adicCompletion L →+* w.adicCompletion L := ((gEquiv Dv Dv' : w.adicCompletion L ≃+* w.adicCompletion L) : w.adicCompletion L →+* w.adicCompletion L) with hgdef`. Unfold `InertDatum.hval`. Distinguish the cases in `hy : Dv.loc x ∈ Formalism.UG.GU Dv.σw n`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hgy : Formalism.UG.bc (n` using `Fin n) g (Dv.loc x) ∈ Formalism.UG.GU Dv'.σw n := (indepDatum_memGU_iff (gEquiv Dv Dv') (gEquiv_comm Dv Dv') _).2 hy`. Establish `hy' : Dv'.loc x ∈ Formalism.UG.GU Dv'.σw n`. Rewrite using `[hloc]`. Conclude with `mul_mem (mul_mem (inv_mem hk) hgy) hk`. Rewrite using `[dif_pos hy', dif_pos hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb` using `hbi (⟨⟨indepDatumK Dv Dv', hk⟩, indepDatumK_memKU Dv Dv'⟩ : Formalism.UG.KU Dv'.σw n)⁻¹ ⟨⟨indepDatumK Dv Dv', hk⟩, indepDatumK_memKU Dv Dv'⟩ (guMap (gEquiv Dv Dv') (gEquiv_comm Dv Dv') n ⟨Dv.loc x, hy⟩)`. Use `Eq.trans (congrArg h' ?_) hb` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Dv'.loc x = _`. Rewrite using `[hloc]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hy' : Dv'.loc x ∉ Formalism.UG.GU Dv'.σw n`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Rewrite using `[← indepDatum_memGU_iff (gEquiv Dv Dv') (gEquiv_comm Dv Dv')]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : Formalism.UG.bc (n` using `Fin n) g (Dv.loc x) = indepDatumK Dv Dv' * Dv'.loc x * (indepDatumK Dv Dv')⁻¹ := by`. Rewrite using `[hloc]`. Use `group`. Rewrite using `[he]`. Conclude with `mul_mem (mul_mem hk h) (inv_mem hk)`.
-
-Rewrite using `[dif_neg hy', dif_neg hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indepDatum_hval (Dv Dv' : InertDatum L n v w) (h' : Formalism.UG.GU Dv'.σw n → ℂ)
     (hbi : IsBiInv (Formalism.UG.KU Dv'.σw n) h') (x : GAf L n) :
@@ -176,9 +172,9 @@ theorem indepDatum_hval (Dv Dv' : InertDatum L n v w) (h' : Formalism.UG.GU Dv'.
     rw [dif_neg hy', dif_neg hy]
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv Dv' U W _ _ h' hbi f`. Use function extensionality and compare the values at `g`. Unfold `heckeFunI`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : ∃ x : GAf L n, (x : GAf L n ⧸ U) = c ∧ TrivOutside {v} x`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos hc, dif_pos hc, indepDatum_hval Dv Dv' h' hbi]`. Rewrite using `[dif_neg hc, dif_neg hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeFunI_indepDatum : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L))

@@ -14,7 +14,7 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 open Formalism.MainNotions.G (HH)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d.shapeComb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FShapeNormalisedThetaCombinationsDualBasesAtD.lean&line=197#L197)
 -/

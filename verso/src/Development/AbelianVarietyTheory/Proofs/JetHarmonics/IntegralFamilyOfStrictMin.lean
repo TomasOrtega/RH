@@ -29,7 +29,7 @@ def ordFn (hϖ : Irreducible ϖ) (c : FractionRing V) : WithTop ℚ :=
   if h : c = 0 then ⊤ else (((hasVal_of_ne_zero hϖ h).choose : ℚ) : WithTop ℚ)
 
 /- English proof (translation)
-Establish `h0` using `ne_zero_of_hasVal hϖ h`. Rewrite using `[ordFn, dif_neg h0, hasVal_unique hϖ (hasVal_of_ne_zero hϖ h0).choose_spec h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordFn_of_hasVal (hϖ : Irreducible ϖ) {c : FractionRing V} {n : ℤ} (h : HasVal ϖ c n) :
     ordFn hϖ c = ((n : ℚ) : WithTop ℚ) := by
@@ -37,18 +37,18 @@ theorem ordFn_of_hasVal (hϖ : Irreducible ϖ) {c : FractionRing V} {n : ℤ} (h
   rw [ordFn, dif_neg h0, hasVal_unique hϖ (hasVal_of_ne_zero hϖ h0).choose_spec h]
 
 /- English proof (translation)
-Rewrite using `[ordFn, dif_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordFn_zero (hϖ : Irreducible ϖ) : ordFn hϖ 0 = ⊤ := by rw [ordFn, dif_pos rfl]
 
 /- English proof (translation)
-Establish `hπ : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).mpr hϖ.ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hc : c = 0`. Conclude with `⟨0, by simp [hc]⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨m, hm⟩` from `hasVal_of_ne_zero hϖ hc`. Rewrite `h` using `[ordFn_of_hasVal hϖ hm]`. Establish `hnm : n ≤ m` using `by exact_mod_cast h`. Take `⟨d, rfl⟩ : ∃ d : ℕ, m = n + d` from `⟨(m - n).toNat, by omega⟩`. Take `⟨u, hu⟩` from `hm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ϖ ^ d * u, by rw [hu, zpow_add₀ hπ, zpow_natCast, map_mul, map_pow, _root_.mul_assoc]⟩`. Introduce and unpack `⟨b, rfl⟩`. Distinguish the cases in `hb : b = 0`. Rewrite using `[hb, map_zero, mul_zero, ordFn_zero]`. Conclude with `le_top`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨d, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb hϖ`. Rewrite using `[ordFn_of_hasVal hϖ (n := n + d) ⟨u, by rw [zpow_add₀ hπ, zpow_natCast, map_mul, map_pow]; ring⟩]`. Conclude with `(by omega : n ≤ n + d)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_ordFn_iff (hϖ : Irreducible ϖ) (c : FractionRing V) (n : ℤ) :
     ((n : ℚ) : WithTop ℚ) ≤ ordFn hϖ c ↔
@@ -103,17 +103,15 @@ def ordVal (hϖ : Irreducible ϖ) : AddValuation (FractionRing V) (WithTop ℚ) 
       push_cast; rfl)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `ordFn_of_hasVal hϖ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valOver_ordVal (hϖ : Irreducible ϖ) : ValOver ϖ (FractionRing V) (ordVal hϖ) :=
   fun _ _ h => ordFn_of_hasVal hϖ h
 
 /- English proof (translation)
-Establish `h1 : (((1 : ℤ) : ℚ) : WithTop ℚ) ≤ ordFn hϖ c`. Distinguish the cases in `hc : c = 0`. Rewrite using `[hc, ordFn_zero]`. Conclude with `le_top`. Take `⟨m, hm⟩` from `hasVal_of_ne_zero hϖ hc`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `0 < ordFn hϖ c at h`. Rewrite `h`, the goal using `[ordFn_of_hasVal hϖ hm]`. Establish `: (0 : ℤ) < m` using `by exact_mod_cast h`. Conclude with `(by omega : (1 : ℤ) ≤ m)` after adjusting the coercions. Take `⟨b, hb⟩` from `(le_ordFn_iff hϖ c 1).1 h1`.
-
-Conclude with `⟨b, by rw [hb, zpow_one, map_mul]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_pos (hϖ : Irreducible ϖ) {c : FractionRing V} (h : 0 < ordVal hϖ c) :
     ∃ b : V, c = algebraMap V (FractionRing V) (ϖ * b) := by
@@ -137,7 +135,7 @@ def secLin {X : Scheme.{0}} {L : LB X} {n : ℕ} (c : Fin n → Γ(X, ⊤)) (t :
 variable {D : DegData V (maximalIdeal V)}
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Establish `hformF : FormEq (fun i => (DegPre.prB D.toPre F).left ≫ D.toPre.famφB α i) (DegPre.famε k) (DegPre.famφ D.toPre F α) (DegPre.famε k)` using `fun U _ g => Finset.prod_congr rfl fun i _ => by rw [GC.famφ_eq]`. Take `⟨t, ht⟩` from `exists_sec hL hformF (pullSec D.toPre.P.L _ _ β (DegPre.prB D.toPre F).left)`. Conclude with `⟨t, SectionScalarValuation.secScal_of_sval hL fun y J hJ => ((ht _ _ y J hJ).trans (SectionScalarValuation.sval_pullSec _ _ _ _ _ y hJ)).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pull {F : Type} [Field F] [Algebra (FractionRing V) F] {k : ℕ} {α : D.toPre.X}
     (β : D.toPre.SecB k α) :
@@ -153,13 +151,11 @@ theorem exists_pull {F : Type} [Field F] [Algebra (FractionRing V) F] {k : ℕ} 
     ((ht _ _ y J hJ).trans (SectionScalarValuation.sval_pullSec _ _ _ _ _ y hJ)).symm⟩
 
 /- English proof (translation)
-Take `⟨n, a, σ, σF, hσ, hva, hsum⟩` from `hs`. Use `choose b hb using fun i => exists_eq_of_pos hϖ (lt_of_lt_of_le (by exact_mod_cast hr) (hva i))`. Use `⟨secLin (fun i => scal D.toPre.P.A.hom (ϖ * b i)) σ, secLin (fun i => scal D.toPre.P.A.hom (b i)) σ, SectionScalarValuation.secScal_of_sval D.toPre.P.isLB fun y J hJ => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[SectionScalarValuation.sval_lin (fun i => scal D.toPre.P.A.hom (ϖ * b i)) σ (fun _ => rfl) _ y hJ, SectionScalarValuation.sval_lin (fun i => gF D.toPre (FractionRing V) (a i)) σF (fun j => hsum j) (𝟙 _) y hJ]`. Use `Finset.sum_congr rfl fun i _ => congrArg₂ (· * ·) ?_ (SectionScalarValuation.secScal_sval (hσ i) _ y hJ)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : gs (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) y ⊤ (scal D.toPre.P.A.hom (ϖ * b i)) = cst ((𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) ≫ D.toPre.P.A.hom) y (ϖ * b i)` using `gs_pull _ _ y ⊤ trivial _`. Establish `e2 : gs (𝟙 _) y ⊤ (gF D.toPre (FractionRing V) (a i)) = cst (𝟙 _ ≫ (fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left) y (a i) := gs_pull _ (fst (TF (R := V) (FractionRing V)) D.toPre.P.A).left y ⊤ trivial _`. Establish `e3 : (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) ≫ D.toPre.P.A.hom = ((𝟙 _ ≫ (fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left) ≫ spMap (algebraMap (FractionRing V) (FractionRing V))) ≫ spMap (algebraMap V (FractionRing V)) := by`. Rewrite using `[Category.id_comp, Category.id_comp, Category.assoc, Over.w]`. Conclude with `(Over.w (fst (TF (R := V) (FractionRing V)) D.toPre.P.A)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, e2, e3, cst_comp, cst_comp, hb i]`. Both sides reduce to the same expression. Use `show ∑ i, resTop _ (scal D.toPre.P.A.hom (ϖ * b i)) * (σ i).f j = resTop _ (scal D.toPre.P.A.hom ϖ) * ∑ i, resTop _ (scal D.toPre.P.A.hom (b i)) * (σ i).f j`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [scal, resTop, map_mul, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_int_of_vge (hϖ : Irreducible ϖ) {k : ℕ} {α : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε k))} {r : ℚ}
@@ -197,17 +193,17 @@ theorem exists_int_of_vge (hϖ : Irreducible ϖ) {k : ℕ} {α : D.toPre.X}
 end FamInt
 
 /- English proof (translation)
-Introduce `hL V _ _ _ ϖ hϖ D Q hQ q hq χ β hmin`. Take `⟨σ, hσ⟩` from `FamInt.exists_pull (F := FractionRing V) β`. Take `⟨Φ, hΦ, hΦ0⟩` from `UUA.exists_fam_rep (F := FractionRing V) hL.globalFns D.tau_bimult q χ (fun a b h => by`. Establish `h' : (q : ℤ) • a = (q : ℤ) • b`. Rewrite using `[natCast_zsmul, natCast_zsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_left_cancel h`. Conclude with `smul_right_injective D.toPre.X (by omega : (q : ℤ) ≠ 0) h') σ`. Establish `h0 : VGe D (FractionRing V) (FamInt.ordVal hϖ) q χ (Φ.s χ) 0`. Use `⟨1, fun _ => 1, fun _ => β, fun _ => Φ.s χ, fun _ => hΦ ▸ hσ, fun _ => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[DegPre.constBF]`. Establish `key : ∀ α : D.toPre.X, ∃ f : D.toPre.SecB q α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε q) (Φ.s α) (D.toPre.famφB α) (DegPre.famε q) f (DegPre.prB D.toPre (FractionRing V)).left 1 ∧ (∀ h : χ = α, f = h ▸ β) ∧ ((∀ z, α ≠ χ + q • z …`. Introduce `α`. Distinguish the cases in `hα : χ = α`. Substitute `hα` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨β, hΦ ▸ hσ, fun _ => rfl, fun h => absurd (by simp) (h 0), fun h => absurd rfl h⟩`. Distinguish the cases in `hc : ∃ z, α = χ + q • z`. Take `⟨z, rfl⟩` from `hc`. Establish `hz : z ≠ 0` using `by rintro rfl; exact hα (by simp)`. Establish `H` using `SectionScalarValuation.fe_move hϖ hQ (FamInt.valOver_ordVal hϖ) q z χ Φ h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlt` using `hmin z hz`. Rewrite `hlt` using `[q_shift hϖ hQ, lt_add_iff_pos_right]`. Establish `hpos : (0 : ℤ) < q * Q z + QForm.bOf D.toPre Q z χ` using `(pos_iff_pos_of_mul_pos hlt).1 (by omega)`. Take `⟨f, f', h1, h2⟩` from `FamInt.exists_int_of_vge hϖ (by rw [zero_add]; exact_mod_cast hpos) H`. Conclude with `⟨f, h1, fun h => absurd h hα, fun h => absurd rfl (h z), fun _ => ⟨f', h2⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨SecOps.secZero, SectionScalarValuation.secScal_of_sval D.toPre.P.isLB fun y J hJ => ?_, fun h => absurd h hα, fun _ _ => rfl, fun _ => ⟨SecOps.secZero, fun j => (mul_zero _).symm⟩⟩` and prove the remaining obligations. Rewrite using `[UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _), UUA.sval_zero_of (hΦ0 α fun mu e => hc ⟨mu, e.symm⟩) _ y J (hJ.mem _ _)]`. Use `choose f h1 h2 h3 h4 using key`. Conclude with `⟨Φ, f, h1, h2 χ rfl, h3, h4⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integralFamily_of_strictMin : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), QForm.IsQ D.toPre ϖ Q → ∀ (q : ℕ), 1 ≤ q → ∀ (χ : D.toPre.X) (β : D.toPre.SecB q χ), (∀ z, z ≠ 0 → Q χ < Q (χ + q • z)) → ∃ (Φ : Fam D.toPre (FractionRing V) q) (f : ∀ α, D.toPre.SecB q α), (∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε q) (Φ.s α) (D.toPre.famφB α) (DegPre.famε q) (f α) (DegPre.prB D.toPre (FractionRing V)).left 1) ∧ f χ = β ∧ (∀ α, (∀ z, α ≠ χ + q • z) → ∀ j, (f α).f j = 0) ∧ ∀ α, α ≠ χ → ∃ f' : D.toPre.SecB q α, SecIsMul D.toPre.P.A.hom ϖ (f α) f' := by
   intro hL V _ _ _ ϖ hϖ D Q hQ q hq χ β hmin

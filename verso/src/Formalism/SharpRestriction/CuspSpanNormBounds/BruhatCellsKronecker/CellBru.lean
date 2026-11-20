@@ -12,25 +12,25 @@ section Bru
 variable {K : Type} [Field K] {n : ℕ}
 
 /- English proof (translation)
-Introduce `i j` and use `⟨fun h => Matrix.one_apply_ne (ne_of_lt h), fun h => by subst h; exact Matrix.one_apply_eq i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem bru_lo_one : IsLoUni (1 : Matrix (Fin n) (Fin n) K) := fun i j =>
   ⟨fun h => Matrix.one_apply_ne (ne_of_lt h), fun h => by subst h; exact Matrix.one_apply_eq i⟩
 
 /- English proof (translation)
-Introduce `i j` and use `⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => by subst h; exact Matrix.one_apply_eq i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem bru_up_one : IsUpUni (1 : Matrix (Fin n) (Fin n) K) := fun i j =>
   ⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => by subst h; exact Matrix.one_apply_eq i⟩
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : i < k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[(hA i k).1 hk, zero_mul]`. Rewrite using `[(hB k j).1 (lt_of_le_of_lt (not_lt.1 hk) hij), mul_zero]`. Substitute `hij` using the available equality. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[(hA i i).2 rfl, (hB i i).2 rfl, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[(hB k i).1 h, mul_zero]`. Rewrite using `[(hA i k).1 h, zero_mul]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem bru_lo_mul {A B : Matrix (Fin n) (Fin n) K} (hA : IsLoUni A) (hB : IsLoUni B) : IsLoUni (A * B) := by
   intro i j
@@ -51,7 +51,7 @@ theorem bru_lo_mul {A B : Matrix (Fin n) (Fin n) K} (hA : IsLoUni A) (hB : IsLoU
       exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact GlobalTheory.UpperUnipotentMul.isUpUni_mul .. | (apply GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (intros; apply GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (intr …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bru_up_mul {A B : Matrix (Fin n) (Fin n) K} (hA : IsUpUni A) (hB : IsUpUni B) : IsUpUni (A * B) := by
   first | exact GlobalTheory.UpperUnipotentMul.isUpUni_mul .. | (apply GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (intros; apply GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (intros; apply @GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> first | assumption | infer_instance) | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n A B hA hB | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n A B hA | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n A B | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n A | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K
@@ -75,7 +75,7 @@ theorem bruU_apply (w : Fin n → K) (q k c : Fin n) :
     bruU w q k c = (if k = c then 1 else 0) + (if k = q then 1 else 0) * w c := rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, bruL, add_mul, Finset.sum_add_distrib]`. Use `congr 1`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bru_left (u : Fin n → K) (p : Fin n) (X : Matrix (Fin n) (Fin n) K) (a c : Fin n) :
     (bruL u p * X) a c = X a c + u a * X p c := by
@@ -85,7 +85,7 @@ theorem bru_left (u : Fin n → K) (p : Fin n) (X : Matrix (Fin n) (Fin n) K) (a
   · simp
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, bruU, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bru_right (w : Fin n → K) (q : Fin n) (X : Matrix (Fin n) (Fin n) K) (a c : Fin n) :
     (X * bruU w q) a c = X a c + X a q * w c := by
@@ -101,49 +101,45 @@ def bruRed (m : ℕ) (M : Matrix (Fin n) (Fin n) K) (σ : Fin n → Fin n) : Pro
   (∀ b : Fin n, b.val < m → ∀ c, c ≠ b → M (σ b) c = 0)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Take `⟨q, hq⟩ : ∃ q : Fin n, q.val = m` from `⟨⟨m, hm⟩, rfl⟩`. Establish `hne : ∃ a, M a q ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hdet (Matrix.det_eq_zero_of_column_eq_zero q hc)`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hmin⟩ : ∃ p, M p q ≠ 0 ∧ ∀ a, a < p → M a q = 0 := by`. Establish `hs : (Finset.univ.filter (fun a => M a q ≠ 0)).Nonempty`. Take `⟨a, ha⟩` from `hne`. Conclude with `⟨a, by simp [ha]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(Finset.univ.filter (fun a => M a q ≠ 0)).min' hs, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.min'_mem _ hs` as an intermediate fact. Simplify using `using this`. Introduce `a ha`. Assume the negation of the conclusion as `hc`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : a ∈ Finset.univ.filter (fun a => M a q ≠ 0)` using `by simp [hc]`. Conclude with `absurd (Finset.min'_le _ a hmem) (not_le.2 ha)`. Establish `hqb : ∀ b : Fin n, b.val < m → q ≠ b`. Introduce `b hb e`. Rewrite `hb` using `[← e, hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ hb`. Establish `hpσ : ∀ b : Fin n, b.val < m → p ≠ σ b`. Introduce `b hb e`. Conclude with `hp (e ▸ h4 b hb q (hqb b hb))`. Establish `hrow : ∀ c : Fin n, c.val < m → M p c = 0` using `fun c hc => h3 c hc p (hpσ c hc)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative.
 
-Establish `hcase : ∀ b : Fin n, b.val < m + 1 → b = q ∨ b.val < m`. Introduce `b hb`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hb with h | h` into its components or cases. Conclude with `Or.inr h`. Conclude with `Or.inl (Fin.ext (h.trans hq.symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩ : ∃ u : Fin n → K, ∀ a, u a = if a = p then 0 else M a q / M p q` from `⟨_, fun _ => rfl⟩`. Take `⟨w, hw⟩ : ∃ w : Fin n → K, ∀ c, w c = if c = q then 0 else M p c / M p q` from `⟨_, fun _ => rfl⟩`. Take `⟨M', hM'⟩ : ∃ M' : Matrix (Fin n) (Fin n) K, ∀ a c, M' a c = if a = p then (if c = q then M p q else 0) else M a c - M a q / M p q * M p c` from `⟨Matrix.of fun a c => if a = p then (if c = q then M p q else 0) else M a c - M a q / M p q * M p c, fun _ _ => rfl⟩`. Use `⟨bruL u p, bruU w q, M', Function.update σ q p, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[bruL_apply, if_neg (ne_of_lt hij), zero_add]`. Distinguish the cases in `hj : j = p`. Substitute `hj` using the available equality. Rewrite using `[hu, if_neg (ne_of_lt hij), hmin i hij, zero_div, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hj, mul_zero]`. Substitute `hij` using the available equality. Rewrite using `[bruL_apply, if_pos rfl, hu]`. Distinguish the cases in `hi : i = p`. Rewrite using `[if_pos hi, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg hi, if_neg hi, mul_zero, add_zero]`. Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[bruU_apply, if_neg (ne_of_gt hij), zero_add]`. Distinguish the cases in `hi : i = q`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hi` using the available equality. Rewrite using `[hw, if_neg (ne_of_lt hij), hrow j (by rw [← hq]; exact hij), zero_div, mul_zero]`. Rewrite using `[if_neg hi, zero_mul]`. Substitute `hij` using the available equality. Rewrite using `[bruU_apply, if_pos rfl, hw]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : i = q`. Rewrite using `[if_pos hi, if_pos hi, mul_zero, add_zero]`. Rewrite using `[if_neg hi, zero_mul, add_zero]`. Use extensionality with `a c`. Rewrite using `[bru_right, bru_left, bru_left, hu, hw, hM', hM', hM', hM']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `ha : a = p`. Substitute `ha` using the available equality. Distinguish the cases in `hc : c = q`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [if_true, if_neg hc]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hc : c = q`. Substitute `hc` using the available equality.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [if_true, if_neg ha]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_true, if_neg ha, if_neg hc]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `b b' hb hb' e`. Break down `hcase b hb with rfl | hb1` into its components or cases. Break down `hcase b' hb' with rfl | hb1'` into its components or cases. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e` using `[Function.update_self, Function.update_of_ne (hqb b' hb1').symm]`. Conclude with `absurd e (hpσ b' hb1')`. Break down `hcase b' hb' with rfl | hb1'` into its components or cases. Rewrite `e` using `[Function.update_self, Function.update_of_ne (hqb b hb1).symm]`. Conclude with `absurd e.symm (hpσ b hb1)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `e` using `[Function.update_of_ne (hqb b hb1).symm, Function.update_of_ne (hqb b' hb1').symm]`. Conclude with `h1 b b' hb1 hb1' e`. Introduce `b hb`. Break down `hcase b hb with rfl | hb1` into its components or cases. Rewrite using `[Function.update_self, hM', if_pos rfl, if_pos rfl]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hp`. Rewrite using `[Function.update_of_ne (hqb b hb1).symm, hM', if_neg (hpσ b hb1).symm, h4 b hb1 q (hqb b hb1), zero_div, zero_mul, sub_zero]`. Conclude with `h2 b hb1`. Introduce `b hb a ha`. Break down `hcase b hb with rfl | hb1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ha` using `[Function.update_self]`. Rewrite using `[hM', if_neg ha, div_mul_cancel₀ _ hp, sub_self]`. Rewrite `ha` using `[Function.update_of_ne (hqb b hb1).symm]`. Rewrite using `[hM']`. Distinguish the cases in `hap : a = p`.
-
-Rewrite using `[if_pos hap, if_neg (hqb b hb1).symm]`. Rewrite using `[if_neg hap, h3 b hb1 a ha, hrow b hb1, mul_zero, sub_zero]`. Introduce `b hb c hc`. Break down `hcase b hb with rfl | hb1` into its components or cases. Rewrite using `[Function.update_self, hM', if_pos rfl, if_neg hc]`.
-
-Rewrite using `[Function.update_of_ne (hqb b hb1).symm, hM', if_neg (hpσ b hb1).symm, h4 b hb1 c hc, h4 b hb1 q (hqb b hb1), zero_div, zero_mul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bru_step {m : ℕ} (hm : m < n) (M : Matrix (Fin n) (Fin n) K) (hdet : M.det ≠ 0) (σ : Fin n → Fin n)
     (h : bruRed m M σ) :
@@ -263,13 +259,13 @@ theorem bru_step {m : ℕ} (hm : m < n) (M : Matrix (Fin n) (Fin n) K) (hdet : M
         h4 b hb1 c hc, h4 b hb1 q (hqb b hb1), zero_div, zero_mul, sub_zero]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `_`. Conclude with `⟨1, 1, Z, id, bru_lo_one, bru_up_one, by simp, fun b _ hb => absurd hb (Nat.not_lt_zero _), fun b hb => absurd hb (Nat.not_lt_zero _), fun b hb => absurd hb (Nat.not_lt_zero _), fun b hb => absurd hb (Nat.not_lt_zero _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ m ih`. Introduce `hm`. Take `⟨L, U, M, σ, hL, hU, hZ, hR⟩` from `ih (Nat.le_of_succ_le hm)`. Establish `hM : M.det ≠ 0`. Introduce `h0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hdet` to reduce the goal to its premises. Rewrite using `[hZ, Matrix.det_mul, Matrix.det_mul, h0, mul_zero, zero_mul]`. Take `⟨L1, U1, M', σ', hL1, hU1, hM', hR'⟩` from `bru_step (Nat.lt_of_succ_le hm) M hM σ hR`. Use `⟨L * L1, U1 * U, M', σ', bru_lo_mul hL hL1, bru_up_mul hU1 hU, ?_, hR'⟩` and prove the remaining obligations. Rewrite using `[hZ, hM']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bru_all (Z : Matrix (Fin n) (Fin n) K) (hdet : Z.det ≠ 0) : ∀ m : ℕ, m ≤ n →
     ∃ (L U M : Matrix (Fin n) (Fin n) K) (σ : Fin n → Fin n), IsLoUni L ∧ IsUpUni U ∧ Z = L * M * U ∧ bruRed m M σ := by
@@ -295,11 +291,11 @@ theorem bru_all (Z : Matrix (Fin n) (Fin n) K) (hdet : Z.det ≠ 0) : ∀ m : �
 end Bru
 
 /- English proof (translation)
-Introduce `K _ n Z hdet`. Take `⟨L, U, M, σ, hL, hU, hZ, h1, h2, h3, _⟩` from `bru_all Z hdet n le_rfl`. Establish `hinj : Function.Injective σ` using `fun b b' e => h1 b b' b.isLt b'.isLt e`. Use `⟨L, U, σ, fun b => M (σ b) b, hL, hU, Finite.injective_iff_bijective.1 hinj, fun b => h2 b b.isLt, ?_⟩` and prove the remaining obligations. Establish `hMm : M = mono σ (fun b => M (σ b) b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `a b`. Unfold `mono`. Distinguish the cases in `hab : a = σ b`. Rewrite using `[if_pos hab, hab]`. Rewrite using `[if_neg hab, h3 b b.isLt a hab]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hMm]`. Conclude with `hZ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_bruhat : BruhatDecomposition := by
   intro K _ n Z hdet

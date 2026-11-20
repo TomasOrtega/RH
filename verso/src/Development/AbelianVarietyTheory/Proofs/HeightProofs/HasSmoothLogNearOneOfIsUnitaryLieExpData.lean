@@ -7,9 +7,9 @@ open scoped ContDiff Topology
 namespace GlobalTheory.SmoothForms
 
 /- English proof (translation)
-Use `haveI : CompleteSpace 𝔸 := FiniteDimensional.complete ℝ 𝔸`. Establish `hp : ∀ n : ℕ, σ (X ^ n) = σ X ^ n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using one`. Consider the case `succ n ih => rw [pow_succ, anti, ih, pow_succ']`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) X).map σ.toAddMonoidHom σ.continuous_of_finiteDimensional`. Use `h1.unique ?_` and prove the remaining obligations. Use `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) (σ X) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Simplify using `[hp]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem anti_map_exp {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [FiniteDimensional ℝ 𝔸] (σ : 𝔸 →ₗ[ℝ] 𝔸)
     (anti : ∀ a b, σ (a * b) = σ b * σ a) (one : σ 1 = 1) (X : 𝔸) :
@@ -27,9 +27,9 @@ theorem anti_map_exp {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [F
   simp [hp]
 
 /- English proof (translation)
-Use `haveI : CompleteSpace 𝔸 := FiniteDimensional.complete ℝ 𝔸`. Establish `hc : ContDiffAt ℝ ∞ (NormedSpace.exp : 𝔸 → 𝔸) 0` using `(NormedSpace.exp_analytic (𝕂 := ℝ) 0).contDiffAt`. Establish `hd : HasFDerivAt (NormedSpace.exp : 𝔸 → 𝔸) ((ContinuousLinearEquiv.refl ℝ 𝔸 : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸) 0` using `hasFDerivAt_exp_zero`. Establish `hn : (∞ : WithTop ℕ∞) ≠ 0` using `by simp`. Use `⟨hc.localInverse hd hn, ?_, ?_, (hc.hasStrictFDerivAt' hd hn).eventually_left_inverse⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hc.to_localInverse hd hn` as an intermediate fact. Rewrite `this` using `[NormedSpace.exp_zero]`. Then use the resulting hypothesis. Use `(hc.hasStrictFDerivAt' hd hn).eventually_right_inverse` as an intermediate fact. Rewrite `this` using `[NormedSpace.exp_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_log (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [FiniteDimensional ℝ 𝔸] :
     ∃ l : 𝔸 → 𝔸, ContDiffAt ℝ ∞ l 1 ∧ (∀ᶠ h in 𝓝 (1 : 𝔸), NormedSpace.exp (l h) = h) ∧
@@ -47,17 +47,15 @@ theorem exists_local_log (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸
     exact this
 
 /- English proof (translation)
-Use `haveI : CompleteSpace 𝔸 := FiniteDimensional.complete ℝ 𝔸`. Use `letI : NormedAlgebra ℚ 𝔸 := NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Use `haveI : FiniteDimensional ℝ L := FiniteDimensional.of_injective j H.inj`. Take `⟨l, h1, h2, h3⟩` from `exists_local_log 𝔸`. Take `⟨p, hp⟩` from `j.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 H.inj)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : ∀ Y, p (j Y) = Y` using `fun Y => LinearMap.congr_fun hp Y`. Establish `hl : l 1 = 0` using `by simpa using h3.self_of_nhds`. Use `⟨fun h => p (l h), (LinearMap.toContinuousLinearMap p).contDiff.contDiffAt.comp 1 h1, ?_, ?_⟩` and prove the remaining obligations. Establish `ht : Filter.Tendsto (fun h => -σ (l h)) (𝓝 1) (𝓝 0)`. Use `(σ.continuous_of_finiteDimensional.continuousAt.comp h1.continuousAt).neg.tendsto` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (-(⇑σ ∘ l)) 1 = 0` using `by simp [hl]`. Rewrite `this` using `[e]`. Conclude with `this`. Use `filter_upwards [h2, ht.eventually h3] with h ha hb hu`. Establish `e1 : NormedSpace.exp (σ (l h)) * h = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← anti_map_exp σ H.anti H.one, ha, hu]`. Establish `e2 : NormedSpace.exp (-σ (l h)) * NormedSpace.exp (σ (l h)) = 1`. Rewrite using `[← NormedSpace.exp_add_of_commute (Commute.refl _).neg_left, neg_add_cancel, NormedSpace.exp_zero]`. Establish `e3 : NormedSpace.exp (-σ (l h)) = h`. Rewrite using `[← mul_one (NormedSpace.exp (-σ (l h))), ← e1, ← mul_assoc, e2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hb` using `[e3]`. Take `⟨Y, hY⟩` from `(H.skew (l h)).1 (neg_eq_iff_eq_neg.1 hb.symm)`. Rewrite using `[← hY, hp', hY, ha]`. Establish `ht : Filter.Tendsto j (𝓝 0) (𝓝 0)`. Simplify using `using j.continuous_of_finiteDimensional.tendsto 0`.
-
-Use `filter_upwards [ht.eventually h3] with X hX`. Rewrite using `[hX, hp']`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasLog_of_isLieData (𝔸 L G : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [FiniteDimensional ℝ 𝔸]
     [NormedAddCommGroup L] [NormedSpace ℝ L] [Group G] (σ : 𝔸 →ₗ[ℝ] 𝔸) (j : L →ₗ[ℝ] 𝔸) (s : 𝔸 → G)

@@ -23,9 +23,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
 /- English proof (translation)
-Establish `key` using `PI.CoefExt.finrank_iInf_ker_equiv (AlgebraTensorModule.congr e (LinearEquiv.refl Qp B)) (actVB PD ρ) (actVB PD ρ') (fun g x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v c => simp [actVB, he])`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Unfold `IsCrys at h ⊢`. Rewrite using `[← e.finrank_eq, ← h]`. Conclude with `key`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrys_transport {ρ : Representation LL G V} {ρ' : Representation LL G V'} (e : V ≃ₗ[LL] V')
     (he : ∀ g v, e (ρ g v) = ρ' g (e v)) (h : IsCrys PD ρ) : IsCrys PD ρ' := by
@@ -40,9 +40,9 @@ theorem isCrys_transport {ρ : Representation LL G V} {ρ' : Representation LL G
   exact key
 
 /- English proof (translation)
-Use `letI : TopologicalSpace G := ⊥`. Establish `h1 : IsCrys PD (CJ.rep ((LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp ρ))`. Use `isCrys_transport PD b.equivFun (fun g v => ?_) h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (LinearMap.toMatrix b b (ρ g)).mulVec (b.repr v)`. Rewrite using `[LinearMap.toMatrix_mulVec_repr]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `PI.CoefExt.coefCrysGen_of PI.CoefExt.invBaseChange PD f _ h1`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCrys_matrix_ext (f : LL →ₐ[Qp] LL') {k : ℕ} (b : Module.Basis (Fin k) LL V)
     (ρ : Representation LL G V) (h : IsCrys PD ρ) :
@@ -60,7 +60,7 @@ theorem isCrys_matrix_ext (f : LL →ₐ[Qp] LL') {k : ℕ} (b : Module.Basis (F
 end Gen
 
 /- English proof (translation)
-Introduce `l _ Pl K' h hN hF hS LL LL' hL T k b hb hT`. Conclude with `isCrys_matrix_ext (pc Pl h hN hF hS).PD' (incl hL) b ((pc Pl h hN hF hS).resH T.ρ) hT`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPotCrys_extLat : ∀ (l : ℕ) [Fact l.Prime] (Pl : LocPrime l) (K' : FinExt l) (h : (Formalism.MainNotions.ElementDenominator.qlExt l).1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex) (hS : ∀ (g : Gl l) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'), (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)).actB g (algebraMap ↥(K0 K') Pl.R.B c) = algebraMap ↥(K0 K') Pl.R.B c') (LL LL' : FinExt l) (hL : LL.1 ≤ LL'.1) (T : LocLat (Gl l) ℚ_[l] ↥LL.1 ↥(OL LL)) (k : ℕ) (b : Module.Basis (Fin k) ↥LL.1 T.V) (hb : IsLatBasis T b), (pc Pl h hN hF hS).IsPotCrys T.ρ → (pc Pl h hN hF hS).IsPotCrys (extLat hL T b hb).ρ := by
   intro l _ Pl K' h hN hF hS LL LL' hL T k b hb hT

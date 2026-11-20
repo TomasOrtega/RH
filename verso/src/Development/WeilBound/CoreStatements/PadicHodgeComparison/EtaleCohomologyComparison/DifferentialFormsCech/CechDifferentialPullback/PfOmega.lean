@@ -13,9 +13,9 @@ namespace CrystallineSemistableComparison.Om.Cech
 open GroundTheory.Arith.SchemeCoh GlobalTheory.SheafPull
 
 /- English proof (translation)
-Introduce `K _ X Y q p u hu a j y`. Apply `(GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega q a) j).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply]`. Take `⟨w, rfl⟩` from `(GlobalTheory.SiteCoh.terminalEquiv ((GlobalTheory.toAbSheaf Y).obj (GlobalTheory.HodgeCoh.Omega p a)) j isTerminalTop).surjective y`. Take `⟨z, rfl⟩` from `(GlobalTheory.cohOn.toH' (GlobalTheory.HodgeCoh.Omega p a) ⊤ j).surjective w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : (GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega p a) j).symm (GlobalTheory.SiteCoh.terminalEquiv _ j isTerminalTop (GlobalTheory.cohOn.toH' _ ⊤ j z)) = z` using `(GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega p a) j).symm_apply_apply z`. Rewrite using `[hz]`. Express the relevant statement in the definitionally equal form `GlobalTheory.SiteCoh.terminalEquiv _ j isTerminalTop (GlobalTheory.SheafPull.pull u.base (GlobalTheory.toAbSheafPush (GlobalTheory.HodgeCoh.omegaPull hu a)) j (homOfLE le_top) ((GlobalTheory.SiteCoh.terminalEquiv _ j isTerminalTop).symm (GlobalTheory.SiteCoh.terminalEquiv _ j isT …`. Rewrite using `[AddEquiv.symm_apply_apply]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem hPull_omega_pf : ∀ {K : Type} [Field K] {X Y : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     (p : Y ⟶ Spec (CommRingCat.of K)) (u : X ⟶ Y) (hu : u ≫ p = q) (a j : ℕ)

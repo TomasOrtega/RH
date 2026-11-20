@@ -14,14 +14,14 @@ section Abstract
 variable {A B E : Type} [CommRing A] [CommRing B] [CommRing E] {a t : A} {f : A →+* B}
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hf.hom_ext (g := ι.comp s) (h := (d : E →+* E).comp ι) e) b`.
+A detailed English derivation is pending.
 -/
 theorem comm_equiv (hf : IsFrac f a t) (ι : B →+* E) (s : B →+* B) (d : E ≃+* E)
     (e : ∀ x, ι (s (f x)) = d (ι (f x))) (b : B) : ι (s b) = d (ι b) :=
   RingHom.congr_fun (hf.hom_ext (g := ι.comp s) (h := (d : E →+* E).comp ι) e) b
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (hf.hom_ext (g := u.comp s) (h := s.comp u) e) b`.
+A detailed English derivation is pending.
 -/
 theorem comm_self (hf : IsFrac f a t) (u s : B →+* B)
     (e : ∀ x, u (s (f x)) = s (u (f x))) (b : B) : u (s b) = s (u b) :=
@@ -32,12 +32,12 @@ end Abstract
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem toBot_one : Per6.toBot (1 : GQ l) = 1 := AlgEquiv.ext fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem toBot_mul (g h : GQ l) : Per6.toBot (g * h) = Per6.toBot g * Per6.toBot h :=
   AlgEquiv.ext fun _ => rfl
@@ -48,13 +48,13 @@ Both sides reduce to the same expression.
 theorem σD_eq (g : GQ l) : Per6.σD g = galBdRField (Per6.toBot g) := rfl
 
 /- English proof (translation)
-Rewrite using `[σD_eq, gal_smul_bDeRham_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σD_eq_smul (g : GQ l) (x : Per6.BdR l) : Per6.σD g x = Per6.toBot g • x := by
   rw [σD_eq, gal_smul_bDeRham_def]
 
 /- English proof (translation)
-Rewrite using `[σD_eq, galBdRField_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σD_algebraMap (g : GQ l) (y : Per6.BdRp l) :
     Per6.σD g (algebraMap (Per6.BdRp l) (Per6.BdR l) y) =
@@ -62,14 +62,14 @@ theorem σD_algebraMap (g : GQ l) (y : Per6.BdRp l) :
   rw [σD_eq, galBdRField_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[cD_apply, cD_apply, σD_algebraMap, ← ACris.gal_smul_def, ACris.iota_gal_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cD_galCris (g : GQ l) (x : ACris.ACris ℂ_[l] l) :
     cD l (ACris.galCris (Per6.toBot g) x) = Per6.σD g (cD l x) := by
   rw [cD_apply, cD_apply, σD_algebraMap, ← ACris.gal_smul_def, ACris.iota_gal_smul]
 
 /- English proof (translation)
-The claim follows from `comm_equiv (cB_isFrac l) _ _ _ (fun x => ((congrArg (ιCD l) (σB_cB g x)).trans (ιCD_cB _)).trans ((cD_galCris g x).trans (congrArg (Per6.σD g) (ιCD_cB x).symm))) b`.
+A detailed English derivation is pending.
 -/
 theorem ιCD_σB_aux (g : GQ l) (b : Per6.Bcris l) : ιCD l (Per6.σB g b) = Per6.σD g (ιCD l b) :=
   comm_equiv (cB_isFrac l) _ _ _ (fun x =>
@@ -77,13 +77,13 @@ theorem ιCD_σB_aux (g : GQ l) (b : Per6.Bcris l) : ιCD l (Per6.σB g b) = Per
       ((cD_galCris g x).trans (congrArg (Per6.σD g) (ιCD_cB x).symm))) b
 
 /- English proof (translation)
-Rewrite using `[σD_eq_smul, toBot_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σD_one_aux (b : Per6.BdR l) : Per6.σD (1 : GQ l) b = b := by
   rw [σD_eq_smul, toBot_one, one_smul]
 
 /- English proof (translation)
-Rewrite using `[σD_eq_smul, σD_eq_smul, σD_eq_smul, toBot_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σD_mul_aux (g h : GQ l) (b : Per6.BdR l) :
     Per6.σD (g * h) b = Per6.σD g (Per6.σD h b) := by
@@ -96,7 +96,7 @@ theorem oD_apply (x : Om l) :
     oD l x = algebraMap (Per6.BdRp l) (Per6.BdR l) (algClToBdR l x) := rfl
 
 /- English proof (translation)
-Rewrite using `[← ACris.gal_smul_def, ← ACris.gal_smul_def, ACris.phi_gal_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_galCris (g : GQ l) (x : ACris.ACris ℂ_[l] l) :
     ACris.phi ℂ_[l] l (ACris.galCris (Per6.toBot g) x) =
@@ -110,14 +110,14 @@ theorem coe_χQ (g : GQ l) :
     ((χQ l g : ℚ_[l]ˣ) : ℚ_[l]) = ((cycloChar ⊥ (Per6.toBot g) : ℤ_[l]) : ℚ_[l]) := rfl
 
 /- English proof (translation)
-Rewrite using `[cD_apply, Per6.χA, ACris.iota_padicInt, oD_apply, AlgHom.commutes, coe_χQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cD_χA (g : GQ l) : cD l (Per6.χA (Per6.toBot g)) =
     oD l (algebraMap ℚ_[l] (Om l) ((χQ l g : ℚ_[l]ˣ) : ℚ_[l])) := by
   rw [cD_apply, Per6.χA, ACris.iota_padicInt, oD_apply, AlgHom.commutes, coe_χQ]
 
 /- English proof (translation)
-The claim follows from `ιCD_injective (((ιCD_cB _).trans (cD_χA g)).trans (ιCD_qB _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem cB_χA (g : GQ l) : Per6.cB l (Per6.χA (Per6.toBot g)) = qB l ((χQ l g : ℚ_[l]ˣ) : ℚ_[l]) :=
   ιCD_injective (((ιCD_cB _).trans (cD_χA g)).trans (ιCD_qB _).symm)
@@ -134,45 +134,45 @@ open GaloisCommutant
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `ιCD_injective ((ιCD_σB_aux 1 b).trans (σD_one_aux _))`.
+A detailed English derivation is pending.
 -/
 theorem σB_one (b : Per6.Bcris l) : Per6.σB (1 : GQ l) b = b :=
   ιCD_injective ((ιCD_σB_aux 1 b).trans (σD_one_aux _))
 
 /- English proof (translation)
-The claim follows from `ιCD_injective (((ιCD_σB_aux (g * h) b).trans (σD_mul_aux g h _)).trans ((ιCD_σB_aux g _).trans (congrArg (Per6.σD g) (ιCD_σB_aux h b))).symm)`.
+A detailed English derivation is pending.
 -/
 theorem σB_mul (g h : GQ l) (b : Per6.Bcris l) : Per6.σB (g * h) b = Per6.σB g (Per6.σB h b) :=
   ιCD_injective (((ιCD_σB_aux (g * h) b).trans (σD_mul_aux g h _)).trans
     ((ιCD_σB_aux g _).trans (congrArg (Per6.σD g) (ιCD_σB_aux h b))).symm)
 
 /- English proof (translation)
-The claim follows from `σD_one_aux b`.
+A detailed English derivation is pending.
 -/
 theorem σD_one (b : Per6.BdR l) : Per6.σD (1 : GQ l) b = b :=
   σD_one_aux b
 
 /- English proof (translation)
-The claim follows from `σD_mul_aux g h b`.
+A detailed English derivation is pending.
 -/
 theorem σD_mul (g h : GQ l) (b : Per6.BdR l) : Per6.σD (g * h) b = Per6.σD g (Per6.σD h b) :=
   σD_mul_aux g h b
 
 /- English proof (translation)
-The claim follows from `ιCD_σB_aux g b`.
+A detailed English derivation is pending.
 -/
 theorem ιCD_σB (g : GQ l) (b : Per6.Bcris l) : ιCD l (Per6.σB g b) = Per6.σD g (ιCD l b) :=
   ιCD_σB_aux g b
 
 /- English proof (translation)
-Rewrite using `[oD_apply, oD_apply, σD_algebraMap, gal_smul_algClToBdR]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem σD_oD (g : GQ l) (x : Om l) : Per6.σD g (oD l x) = oD l (g x) := by
   rw [oD_apply, oD_apply, σD_algebraMap, gal_smul_algClToBdR]
   rfl
 
 /- English proof (translation)
-The claim follows from `comm_self (cB_isFrac l) _ _ (fun x => (((congrArg (Per6.φB l) (σB_cB g x)).trans (φB_cB _)).trans (congrArg (Per6.cB l) (phi_galCris g x))).trans ((congrArg (Per6.σB g) (φB_cB x)).trans (σB_cB g _)).symm) b`.
+A detailed English derivation is pending.
 -/
 theorem φB_σB (g : GQ l) (b : Per6.Bcris l) : Per6.φB l (Per6.σB g b) = Per6.σB g (Per6.φB l b) :=
   comm_self (cB_isFrac l) _ _ (fun x =>
@@ -181,7 +181,7 @@ theorem φB_σB (g : GQ l) (b : Per6.Bcris l) : Per6.φB l (Per6.σB g b) = Per6
       ((congrArg (Per6.σB g) (φB_cB x)).trans (σB_cB g _)).symm) b
 
 /- English proof (translation)
-Rewrite using `[σD_eq_smul]`. Conclude with `(gal_smul_mem_fil_iff (Per6.toBot g) a x).2 hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem σD_mem_FilD (g : GQ l) (a : ℤ) (x : Per6.BdR l) (hx : x ∈ Per6.FilD l a) :
     Per6.σD g x ∈ Per6.FilD l a := by
@@ -189,15 +189,15 @@ theorem σD_mem_FilD (g : GQ l) (a : ℤ) (x : Per6.BdR l) (hx : x ∈ Per6.FilD
   exact (gal_smul_mem_fil_iff (Per6.toBot g) a x).2 hx
 
 /- English proof (translation)
-Rewrite using `[tB_eq, σB_cB, Per6.galCris_tA, map_mul, cB_χA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σB_tB (g : GQ l) : Per6.σB g (tB l) = qB l ((χQ l g : ℚ_[l]ˣ) : ℚ_[l]) * tB l := by
   rw [tB_eq, σB_cB, Per6.galCris_tA, map_mul, cB_χA]
 
 /- English proof (translation)
-Use `⟨((cycloChar ⊥ (Per6.toBot g) : ℤ_[l]).toZModPow m).val, ?_, cycloChar_spec ⊥ (Per6.toBot g) hζ⟩` and prove the remaining obligations. Rewrite using `[coe_χQ]`. Generalize the expression as in `(cycloChar ⊥ (Per6.toBot g) : ℤ_[l]) = z`. Establish `h1 : z - ((z.toZModPow m).val : ℤ_[l]) ∈ Ideal.span {(l : ℤ_[l]) ^ m}`. Establish `: NeZero (l ^ m)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Establish `h2` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ m).2 h1`. Rewrite `h2` using `[PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem χQ_cyc (g : GQ l) (m : ℕ) (ζ : Om l) (hζ : ζ ^ (l ^ m) = 1) :
     ∃ a : ℕ, ‖(χQ l g : ℚ_[l]) - (a : ℚ_[l])‖ ≤ (l : ℝ) ^ (-(m : ℤ)) ∧ g ζ = ζ ^ a := by

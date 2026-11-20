@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial
 
 /- English proof (translation)
-Establish `h0` using `hw _ hP`. Rewrite `h0` using `[Polynomial.hom_eval₂, eval_X]`. Establish `hcomp : (eval w).comp (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n ⊕ Fin m) ℂ).toRingHom = eval (firstCoords w)`. Use extensionality with `q`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[firstCoords]`. Rewrite `h0` using `[hcomp, Polynomial.eval₂_eq_eval_map]`. Conclude with `h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRoot_map_eval_of_mem_zeroSetIn {n m : ℕ} {I : Ideal (MvPolynomial (Fin n ⊕ Fin m) ℂ)}
     {w : Fin n ⊕ Fin m → ℂ} (hw : w ∈ zeroSetIn I) (i : Fin m) (P : Polynomial (MvPolynomial (Fin n) ℂ))
@@ -28,11 +28,11 @@ theorem isRoot_map_eval_of_mem_zeroSetIn {n m : ℕ} {I : Ideal (MvPolynomial (F
   exact h0
 
 /- English proof (translation)
-Establish `hQm : (P.map (eval x)).Monic` using `hPm.map _`. Establish `hlt` using `Polynomial.IsRoot.norm_lt_cauchyBound hQm.ne_zero ha`. Establish `hcb : Polynomial.cauchyBound (P.map (eval x)) ≤ (∑ j ∈ Finset.range P.natDegree, ‖eval x (P.coeff j)‖₊) + 1`. Rewrite using `[Polynomial.cauchyBound, hQm.leadingCoeff, nnnorm_one, div_one, hPm.natDegree_map]`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sup_le fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map]`. Conclude with `Finset.single_le_sum (f := fun j => ‖eval x (P.coeff j)‖₊) (fun _ _ => zero_le) hj`. Establish `h` using `hlt.trans_le hcb`. Rewrite `h` using `[← NNReal.coe_lt_coe, NNReal.coe_add, NNReal.coe_sum, coe_nnnorm, NNReal.coe_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [coe_nnnorm] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem norm_lt_of_isRoot_map_eval {n : ℕ} {P : Polynomial (MvPolynomial (Fin n) ℂ)} (hPm : P.Monic)
     (x : Fin n → ℂ) {a : ℂ} (ha : (P.map (eval x)).IsRoot a) :
@@ -52,15 +52,13 @@ theorem norm_lt_of_isRoot_map_eval {n : ℕ} {P : Polynomial (MvPolynomial (Fin 
   linarith
 
 /- English proof (translation)
-Introduce `n J M K hK`. Use `choose P hPm hP using M.integral`. Use `set f : (Fin n → ℂ) → ℝ := fun x => ∑ i, ∑ j ∈ Finset.range (P i).natDegree, ‖eval x ((P i).coeff j)‖ with hf`. Establish `hfc : Continuous f`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(MvPolynomial.continuous_eval _).norm`. Take `⟨C, hC⟩` from `hK.isCompact_closure.exists_bound_of_continuousOn hfc.continuousOn`. Take `⟨R, hR⟩` from `isBounded_iff_forall_norm_le.1 hK`. Use `isBounded_iff_forall_norm_le.2 ⟨max R (1 + C), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨hwZ, hwK⟩` from `hw`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxR : ‖firstCoords w‖ ≤ R` using `hR _ hwK`. Establish `hR0 : 0 ≤ max R (1 + C)` using `(norm_nonneg _).trans (hxR.trans (le_max_left _ _))`. Use `(pi_norm_le_iff_of_nonneg hR0).2 fun s => ?_` and prove the remaining obligations. Break down `s with j | i` into its components or cases. Conclude with `((norm_le_pi_norm (firstCoords w) j).trans hxR).trans (le_max_left _ _)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroot` using `isRoot_map_eval_of_mem_zeroSetIn hwZ i (P i) (hP i)`. Establish `hlt` using `norm_lt_of_isRoot_map_eval (hPm i) (firstCoords w) hroot`. Establish `hfi : ∑ j ∈ Finset.range (P i).natDegree, ‖eval (firstCoords w) ((P i).coeff j)‖ ≤ f (firstCoords w)` using `Finset.single_le_sum (f := fun i => ∑ j ∈ Finset.range (P i).natDegree, ‖eval (firstCoords w) ((P i).coeff j)‖) (fun i _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Establish `hfC : f (firstCoords w) ≤ C`. Use `hC _ (subset_closure hwK)` as an intermediate fact.
-
-Conclude with `(le_abs_self _).trans (by simpa [Real.norm_eq_abs] using this)`. Conclude with `(hlt.le.trans (by linarith)).trans (le_max_right _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem NormalModelProper.proof : NormalModelProper.Statement := by
   intro n J M K hK

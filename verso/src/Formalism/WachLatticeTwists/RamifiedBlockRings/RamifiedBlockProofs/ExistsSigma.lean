@@ -18,7 +18,7 @@ variable {O O' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Co
   {D' : RingData O' X d G t bl}
 
 /- English proof (translation)
-Unfold `blockPoly`. Rewrite using `[← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem blockPoly_map_lemma {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) {d : Type*}
     [Fintype d] [DecidableEq d] (e a : Matrix d d A) :
@@ -30,9 +30,9 @@ private theorem blockPoly_map_lemma {A B : Type*} [CommRing A] [CommRing B] (f :
   by_cases h : i = j <;> simp [h, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h1 : bcM O' eB x = (eB x).map (algebraMap O O')` using `rfl`. Establish `h3 : bcR O' r g₀ x = (r g₀ x).map (algebraMap O O')` using `rfl`. Establish `hs : bcM O' s x = (s x).map (algebraMap O O')` using `rfl`. Establish `h2 : bcM O' eB x * bcR O' r g₀ x * bcM O' eB x + bcM O' s x = (eB x * r g₀ x * eB x + s x).map (algebraMap O O')`. Rewrite using `[h1, h3, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.add_apply, map_sum, map_mul, map_add]`. Rewrite using `[h2, h1, blockPoly_map_lemma, blockPoly_map_lemma]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockPoly_bc (x : X) :
     blockPoly ((bcM O' eB x).map (algebraMap O' (FractionRing O')))
@@ -50,27 +50,25 @@ theorem blockPoly_bc (x : X) :
   rw [h2, h1, blockPoly_map_lemma, blockPoly_map_lemma]
 
 /- English proof (translation)
-Establish `hι'inj : Function.Injective (algebraMap O' (FractionRing O'))` using `IsFractionRing.injective O' (FractionRing O')`. Establish `hD0` using `hD`. Establish `hD'0` using `hD'`. Simplify using `only [RingDef] at hD0 hD'0`. Take `⟨-, huniq, -, -, hpπ, hrrπ, -⟩` from `hD0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨hfac', -, -, -, hpπ', hrrπ', -⟩` from `hD'0`. Unfold `DistinctEigenvalueCornerPerturbation at hX`. Take `⟨-, -, -, -, hαX⟩` from `hX`. Establish `key : ∀ y' : D'.X', ∃! x' : D.X', D.p x' = D'.p y' ∧ ∀ i, i < t → algebraMap O O' ((D.rr i : D.X' → O) x') = (D'.rr i : D'.X' → O') y'`. Introduce `y'`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((blockPoly (eB (D'.p y')) (eB (D'.p y') * r g₀ (D'.p y') * eB (D'.p y') + s (D'.p y'))).map (algebraMap O O')).map (algebraMap O' (FractionRing O')) = ∏ i ∈ Finset.range t, (Polynomial.X - Polynomial.C (algebraMap O' (FractionRing O') ((D'.rr i : D'.X' → O') y')))`. Rewrite using `[← blockPoly_bc]`. Conclude with `hfac' y'`. Take `⟨α, -, hα⟩` from `hαX (D'.p y')`. Rewrite `hα` using `[blockPoly_map_lemma]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨β, -, hβ⟩` from `rootsInt O _ t α hα`. Establish `hroot : ∀ i, i < t → ∃ b : O, algebraMap O O' b = (D'.rr i : D'.X' → O') y'`. Introduce `i hi`. Establish `h2` using `congrArg (Polynomial.eval (algebraMap O' (FractionRing O') ((D'.rr i : D'.X' → O') y'))) h1`. Rewrite `h2` using `[hβ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at h2`. Establish `h3 : ∏ k ∈ Finset.range t, (algebraMap O' (FractionRing O') ((D'.rr i : D'.X' → O') y') - algebraMap O' (FractionRing O') ((D'.rr k : D'.X' → O') y')) = 0` using `Finset.prod_eq_zero (Finset.mem_range.2 hi) (sub_self _)`. Rewrite `h2` using `[h3, Finset.prod_eq_zero_iff]`. Take `⟨j, -, hj0⟩` from `h2`. Conclude with `⟨β j, hι'inj (sub_eq_zero.1 hj0).symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `choose b hb using hroot`. Set `α' : ℕ → O` to `fun i => if h : i < t then b i h else 0`. Establish `hα' : ∀ i, i < t → algebraMap O O' (α' i) = (D'.rr i : D'.X' → O') y'`. Introduce `i hi`. Simplify using `only [α', dif_pos hi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hb i hi`. Establish `hPinj : Function.Injective (Polynomial.map ((algebraMap O' (FractionRing O')).comp (algebraMap O O')))` using `Polynomial.map_injective _ (hι'inj.comp hj)`. Establish `hP2 : blockPoly (eB (D'.p y')) (eB (D'.p y') * r g₀ (D'.p y') * eB (D'.p y') + s (D'.p y')) = ∏ i ∈ Finset.range t, (Polynomial.X - Polynomial.C (α' i))`. Apply `hPinj` to reduce the goal to its premises. Rewrite using `[← Polynomial.map_map, h1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, RingHom.comp_apply]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hα' i (Finset.mem_range.1 hi)]`. Establish `hfacO : blockPoly ((eB (D'.p y')).map (algebraMap O (FractionRing O))) ((eB (D'.p y') * r g₀ (D'.p y') * eB (D'.p y') + s (D'.p y')).map (algebraMap O (FractionRing O))) = ∏ i ∈ Finset.range t, (Polynomial.X - Polynomial.C (algebraMap O (FractionRing O) (α' i)))`. Rewrite using `[blockPoly_map_lemma, hP2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Take `⟨x', ⟨hx'1, hx'2⟩, hx'u⟩` from `huniq (D'.p y') α' hfacO`. Use `⟨x', ⟨hx'1, fun i hi => by rw [hx'2 i hi, hα' i hi]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hz1, hz2⟩`. Use `hx'u z ⟨hz1, fun i hi => hj ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz2 i hi, hα' i hi]`. Use `choose σ hσ using fun y' => (key y').exists`. Use `⟨σ, fun y' => (hσ y').1, fun y' i hi => (hσ y').2 i hi, ?_⟩` and prove the remaining obligations. Use `(key D'.π').unique (hσ D'.π') ⟨by rw [hpπ, hpπ'], fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[hrrπ i hi, hrrπ' i hi]`.
-
-Simplify using `[bcChar]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sigma (hj : Function.Injective (algebraMap O O')) (hX : DistinctEigenvalueCornerPerturbation O T r π t g₀ eB s)
     (hD : RingDef O T r π χ₁ ε g₀ eB e₁ s D)
@@ -148,15 +146,15 @@ theorem exists_sigma (hj : Function.Injective (algebraMap O O')) (hX : DistinctE
   simp [bcChar]
 
 /- English proof (translation)
-Simplify using `only [RingDef] at hD hD'`. Take `⟨-, -, hT, -⟩` from `hD`. Take `⟨-, -, hT', -⟩` from `hD'`. Rewrite `hf` using `[hT]`. Rewrite using `[hT']`.
+Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Break down `hx with ⟨g, hg, rfl⟩ | ⟨i, hi, rfl⟩` into its components or cases. Use `Or.inl ⟨algebraMap O O' ∘ g, Algebra.subset_adjoin ⟨g, hg, rfl⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y'`. Simplify using `[hσ1 y']`. Conclude with `Or.inr ⟨i, hi, funext fun y' => hσ2 y' i hi⟩`. Consider the case `algebraMap c`. Use `Subalgebra.algebraMap_mem (Algebra.adjoin O' _) (algebraMap O O' c) using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Prove the second alternative. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `y'`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ ihx ihy`. Use `Subalgebra.add_mem _ ihx ihy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `mul x y _ _ ihx ihy`. Use `Subalgebra.mul_mem _ ihx ihy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y'`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bcT'_mem (hD : RingDef O T r π χ₁ ε g₀ eB e₁ s D)
     (hD' : RingDef O' (bcT O' T) (bcR O' r) π (bcChar O' χ₁) (bcChar O' ε) g₀ (bcM O' eB) (bcM O' e₁)
@@ -191,11 +189,11 @@ theorem bcT'_mem (hD : RingDef O T r π χ₁ ε g₀ eB e₁ s D)
     simp
 
 /- English proof (translation)
-Establish `hmem : ∀ f ∈ D.T', (fun y' => algebraMap O O' (f (σ y'))) ∈ D'.T'` using `fun f hf => bcT'_mem hD hD' σ hσ1 hσ2 hf`. Simplify using `only [RingDef] at hD hD'`. Take `⟨-, -, -, -, -, -, hr, hR, -⟩` from `hD`. Take `⟨-, -, -, -, -, -, hr', hR', -⟩` from `hD'`. Establish `ha2` using `(hR a).1 ha`.
+Establish an intermediate fact. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hR' _).2 ?_` and prove the remaining obligations. Simplify using `only [tSpan, Set.mem_setOf_eq] at ha2 ⊢`. Take `⟨s0, c, hc, rfl⟩` from `ha2`. Use `⟨s0, fun g y' => algebraMap O O' (c g (σ y')), fun g => hmem _ (hc g), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use extensionality with `i j`. Simplify using `[Finset.sum_apply, Matrix.sum_apply, map_sum, hr, hr', hσ1, hκ, bcR, bcM]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, hκ, hκ, ← IsScalarTower.algebraMap_apply O O' (FractionRing O')]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcR'_mem (hD : RingDef O T r π χ₁ ε g₀ eB e₁ s D)
     (hD' : RingDef O' (bcT O' T) (bcR O' r) π (bcChar O' χ₁) (bcChar O' ε) g₀ (bcM O' eB) (bcM O' e₁)

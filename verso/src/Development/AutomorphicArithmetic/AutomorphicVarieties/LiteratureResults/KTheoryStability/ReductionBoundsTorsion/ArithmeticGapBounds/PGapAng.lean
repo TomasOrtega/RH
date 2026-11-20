@@ -8,7 +8,7 @@ open scoped InnerProductSpace
 namespace PositivityTheory.KB.SpectralGap.PGap
 
 /- English proof (translation)
-The claim follows from `|z| ≤ (t * p + q / t) / 10 := by have hts : t * (q / t) = q := by field_simp have hw : 0 ≤ (t * p + q / t) / 10 := by positivity have h4 : z ^ 2 ≤ ((t * p + q / t) / 10) ^ 2 := by nlinarith [sq_nonneg (t * p - q / t)] exact abs_le_of_sq_le_sq' h4 hw |> fun h => abs_le.mpr h`.
+A detailed English derivation is pending.
 -/
 theorem pt_bound {z p q t : ℝ} (hp : 0 ≤ p) (hq : 0 ≤ q) (ht : 0 < t) (h : z ^ 2 ≤ 1 / 25 * (p * q)) :
     |z| ≤ (t * p + q / t) / 10 := by
@@ -28,11 +28,11 @@ variable {Λ S : Type} [Group Λ] [Countable Λ] [Group S] [MeasurableSpace S] [
 include hU hj hDB
 
 /- English proof (translation)
-Establish `hm` using `good_avg hU hj hDB hBK hiK hDK ha`. Establish `hmK : LInv j K (avg j B K a)` using `u_inv μ hU hj hBK hiK ha.2.1`. Establish `hmW` using `mem_W_of_inv hU hj hDB hBK hiK hDK hm hmK`. Establish `h0` using `Submodule.inner_right_of_mem_orthogonal hmW hperp`. Rewrite `h0` using `[cls_inner hm ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∫ x in DB, avg j B K a x ^ 2 ∂μ = ∫ x in DB, avg j B K a x * a x ∂μ`. Establish `e : (fun x => avg j B K a x ^ 2) = fun x => avg j B K a x * avg j B K a x`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, u_int_eq μ hU hj hBK hiK hDK hDB (u := fun x => avg j B K a x * avg j B K a x) (hm.1.mul hm.1) (linv_mul j hm.2.1 hm.2.1) (integrableOn_mul hm.2.2 hm.2.2), u_int_eq μ hU hj hBK hiK hDK hDB (u := fun x => avg j B K a x * a x) (hm.1.mul ha.1) (linv_mul j hm.2.1 ha.2.1) (integra …`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `x`. Rewrite using `[avg_mul_left j hmK, avg_mul_left j hmK, u_id μ hU hj hBK hiK hmK]`. Establish `hn : ‖cls j B μ DB (avg j B K a)‖ ^ 2 = 0` using `by rw [cls_norm_sq hm, key, h0]`. Conclude with `norm_eq_zero.1 ((pow_eq_zero_iff two_ne_zero).1 hn)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perp_avg {K : Subgroup Λ} (hBK : B ≤ K) (hiK : (B.subgroupOf K).index ≠ 0) {DK : Set S}
     (hDK : IsFundamentalDomain (K.map j) DK μ) {a : S → ℝ} (ha : Good j B μ DB a)
@@ -55,7 +55,7 @@ theorem perp_avg {K : Subgroup Λ} (hBK : B ≤ K) (hiK : (B.subgroupOf K).index
   exact norm_eq_zero.1 ((pow_eq_zero_iff two_ne_zero).1 hn)
 
 /- English proof (translation)
-The claim follows from `|∫ x in DB, a x * b x ∂μ| ≤ 1 / 5 * (Real.sqrt (∫ x in DB, a x ^ 2 ∂μ) * Real.sqrt (∫ x in DB, b x ^ 2 ∂μ)) := by have hBK : B ≤ K := hB ▸ inf_le_left.trans hEK have hab := integrableOn_mul ha.2.2 hb.2.2 have haa := integrableOn_mul ha.2.2 ha.2.2 have hbb := integrableOn_mul hb.2 …`.
+A detailed English derivation is pending.
 -/
 theorem core (hD : Design) {E E' K : Subgroup Λ} (hB : B = E ⊓ E') (hEK : E ≤ K) (hE'K : E' ≤ K)
     (hiK : (B.subgroupOf K).index ≠ 0) (htwo : TwoTr E K) (hbig : 25 ≤ (B.subgroupOf E').index)
@@ -109,7 +109,7 @@ theorem core (hD : Design) {E E' K : Subgroup Λ} (hB : B = E ⊓ E') (hEK : E �
       linear_combination (-(1 / 5 * (Real.sqrt X * Real.sqrt Y))) * hs
 
 /- English proof (translation)
-The claim follows from `|⟪u, u'⟫_ℝ| ≤ 1 / 5 * (‖u‖ * ‖u'‖) := by intro u hu hperp u' hu' have hBE : B ≤ E := hB ▸ inf_le_left have hBE' : B ≤ E' := hB ▸ inf_le_right have hBK : B ≤ K := hBE.trans hEK have hiE := (idx_ne hBE hEK hiK).1 have hiE' := (idx_ne hBE' hE'K hiK).1 obtain ⟨a, ha, rfl⟩ := cls_surj …`.
+A detailed English derivation is pending.
 -/
 theorem angle (hD : Design) {E E' K : Subgroup Λ} (hB : B = E ⊓ E') (hEK : E ≤ K) (hE'K : E' ≤ K)
     (hiK : (B.subgroupOf K).index ≠ 0) (htwo : TwoTr E K) (hbig : 25 ≤ (B.subgroupOf E').index)

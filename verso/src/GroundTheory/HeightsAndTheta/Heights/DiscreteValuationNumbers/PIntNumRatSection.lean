@@ -10,9 +10,9 @@ open GroundTheory.Heights₂.Heights.FieldNumbers
 universe u
 
 /- English proof (translation)
-Unfold `relDim`. Rewrite using `[h]`. Use `show ((((n + Fintype.card K : ℕ) : ℤ) - Fintype.card K : ℤ) : WithBot (WithTop ℤ)) = _`. Use `push_cast`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem relDim_eq_of_ringKrullDim {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K]
     {ι : K → Type} (I : Ideal (MRing ι F)) (n : ℕ)
@@ -26,9 +26,9 @@ theorem relDim_eq_of_ringKrullDim {F : Type u} [Field F] {K : Type} [Fintype K] 
   rfl
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ n V hV hdim L A f g α β hf hg hfV hgV hA`. Establish `hrel : relDim V = ((n + 1 : ℕ) : WithBot (WithTop ℤ))` using `relDim_eq_of_ringKrullDim V (n + 1) hdim`. Establish `hAeq : (fun k => (α k : ℤ) - β k) = A` using `funext hA`. Use `h F K ι V hV n hrel α β f g hf hg hfV hgV L` as an intermediate fact. Rewrite `this` using `[hAeq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem IntNumRatSection.proof (h : CutRational.Statement.{u}) : IntNumRatSection.Statement.{u} := by
   intro F _ K _ _ ι _ n V hV hdim L A f g α β hf hg hfV hgV hA

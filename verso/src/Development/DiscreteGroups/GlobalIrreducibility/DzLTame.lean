@@ -21,9 +21,9 @@ namespace DiscreteGroups.sglob.DzType
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `choose e he using hex`. Establish `hne : ∀ s, e s ≠ 0` using `fun s h0 => DzCliff.rho_ne_zero ρ (f s) hu (by rw [he s, h0, zero_smul])`. Use `⟨{ toFun := fun s => Units.mk0 (e s) (hne s), map_one' := ?_, map_mul' := ?_ }, fun s => he s⟩` and prove the remaining obligations. Use `ext`. Simplify using `only [Units.val_mk0, Units.val_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `DzCliff.eig_unique hu (he 1) (by rw [map_one, map_one, Module.End.one_apply, one_smul])`. Introduce `s t`. Use `ext`. Simplify using `only [Units.val_mk0, Units.val_mul]`. Conclude with `DzCliff.eig_unique hu (he (s * t)) (by rw [map_mul, map_mul, Module.End.mul_apply, he t, map_smul, he s, smul_smul, mul_comm])`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eigenChar {H W V : Type*} [Group H] [Group W] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : Representation ℂ W V) (f : H →* W) {u : V} (hu : u ≠ 0) (hex : ∀ s, ∃ e : ℂ, ρ (f s) u = e • u) :
@@ -41,59 +41,53 @@ theorem exists_eigenChar {H W V : Type*} [Group H] [Group W] [AddCommGroup V] [M
       (by rw [map_mul, map_mul, Module.End.mul_apply, he t, map_smul, he s, smul_smul, mul_comm])
 
 /- English proof (translation)
-Introduce `E E' Ω _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' i hi n hn hg hN a' ha' K _ _ red hr hk y hirr htame hdim`. Establish `hq : normV w = g` using `normV_eq_of_padic w g i hi`. Establish `hq' : normV w' = normV w ^ n` using `by rw [hq, hN]`. Take `⟨m, a, hya, hirr_a⟩` from `hirr`. Take `⟨m2, a2, hya2, htame2⟩` from `htame`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hiso : a2.Iso a` using `WD.mk_eq_mk.mp (hya2.trans hya.symm)`. Establish `htame_a : ∀ σ : Weil h, Formalism.MainNotions.BlochKatoReduction.IsWild A (σ : G E Ω) → a.ρ σ = 1` using `fun σ hσ => hiso.ρ_eq_one (htame2 σ hσ)`. Establish `hdim_a : finrank ℂ (Fin m → ℂ) = n` using `by rw [← hdim, ← hya, WD.lpDim_mk]`. Set `I : Subgroup (Weil h)` to `(Ine (F := E) A).comap (Weil h).subtype`. Use `haveI hInorm : I.Normal := ⟨fun t ht g0 => by show ((g0 * t * g0⁻¹ : Weil h) : G E Ω) ∈ Ine (F := E) A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `conj_mem_Ine (Weil_le_Dec h g0.2) ht⟩`. Establish `hgen : ∀ σ : Weil h, ∃ k : ℤ, ∃ t ∈ I, σ = frob h ^ k * t` using `fun σ => by`. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) σ`. Conclude with `⟨deg σ, ineIncl h τ, τ.2, hτ⟩`. Establish `hcomm : ∀ s ∈ I, ∀ t ∈ I, a.ρ s * a.ρ t = a.ρ t * a.ρ s`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `s hs t ht`. Set `s' : Ine (F` to `E) A := ⟨s, hs⟩`. Set `t' : Ine (F` to `E) A := ⟨t, ht⟩`. Establish `h1 : a.ρ (ineIncl h (s' * t' * s'⁻¹ * t'⁻¹)) = 1` using `htame_a _ (isWild_commutator s' t')`. Establish `h2 : ineIncl h (s' * t' * s'⁻¹ * t'⁻¹) = s * t * s⁻¹ * t⁻¹` using `Subtype.ext rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Establish `e : s * t = (s * t * s⁻¹ * t⁻¹) * (t * s)` using `by group`. Rewrite using `[← map_mul, ← map_mul, e, map_mul, h1, one_mul]`. Establish `hfrob : ∀ t ∈ I, a.ρ (frob h * t * (frob h)⁻¹) = a.ρ t ^ normV w`. Introduce `t ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `t' : Ine (F` to `E) A := ⟨t, ht⟩`. Set `c' : Ine (F` to `E) A := ⟨(frob h : G E Ω) * t' * (frob h : G E Ω)⁻¹, conj_mem_Ine (isFrob_frob (h := h)).1 t'.2⟩`. Establish `h1 : a.ρ (ineIncl h (c' * (t' ^ normV w)⁻¹)) = 1` using `htame_a _ (isWild_frob (isFrob_frob (h := h)) t')`. Establish `h2 : ineIncl h (c' * (t' ^ normV w)⁻¹) = frob h * t * (frob h)⁻¹ * (t ^ normV w)⁻¹` using `Subtype.ext rfl`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : frob h * t * (frob h)⁻¹ = (frob h * t * (frob h)⁻¹ * (t ^ normV w)⁻¹) * t ^ normV w` using `by group`. Rewrite using `[e, map_mul, h1, one_mul, map_pow]`. Take `⟨η, u, c, hu, huI, hφn, hchar, hper, hmin⟩` from `DzCliff.clifford a.ρ hirr_a I (frob h) (normV w) n hdim_a hn hgen hcomm hfrob`. Establish `hc0 : c ≠ 0` using `fun h0 => DzCliff.rho_ne_zero a.ρ (frob h ^ n) hu (by rw [hφn, h0, zero_smul])`. Establish `hcinv : a.ρ (frob h ^ n)⁻¹ u = c⁻¹ • u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `DzCliff.rho_inv_apply a.ρ (frob h ^ n) u`. Rewrite `h1` using `[hφn, map_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Use `_ = c⁻¹ • u := by rw [h1]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hz : ∀ k : ℤ, a.ρ ((frob h ^ n) ^ k) u = c ^ k • u`. Introduce `k`. Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_add_one, map_mul, Module.End.mul_apply, hφn, map_smul, ih, smul_smul, zpow_add_one₀ hc0, mul_comm]`. Consider the case `pred k ih`. Rewrite using `[zpow_sub_one, map_mul, Module.End.mul_apply, hcinv, map_smul, ih, smul_smul, zpow_sub_one₀ hc0, mul_comm]`. Establish `hex : ∀ σ : Weil h', ∃ e : ℂ, a.ρ (resW h h' hq' σ) u = e • u`. Introduce `σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) (resW h h' hq' σ)`. Rewrite using `[hτ, deg_resW, map_mul, Module.End.mul_apply, huI (ineIncl h τ) τ.2, map_smul, show frob h ^ ((n : ℤ) * deg σ) = (frob h ^ n) ^ deg σ by rw [zpow_mul, zpow_natCast], hz, smul_smul]`. Conclude with `⟨_, rfl⟩`. Take `⟨η', hη'⟩` from `exists_eigenChar a.ρ (resW h h' hq') hu hex`. Establish `hval : ∀ t : Ine (F` using `E') A, ((η' (ineIncl h' t) : ℂˣ) : ℂ) = η (ineIncl h (resI t)) := fun t => DzCliff.eig_unique hu (hη' _) (by rw [resW_ineIncl]; exact huI (ineIncl h (resI t)) (resI t).2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsm : IsSmooth η'`. Use `IsSmooth.of_open (U := resI ⁻¹' {s : Ine (F := E) A | a.ρ (ineIncl h s) = 1}) (IsOpen.preimage continuous_resI a.smooth) (by simp) ?_` and prove the remaining obligations. Introduce `t ht`. Establish `h1 : a.ρ (resW h h' hq' (ineIncl h' t)) u = (1 : ℂ) • u`. Rewrite using `[resW_ineIncl, ht, Module.End.one_apply, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Units.ext (DzCliff.eig_unique hu (hη' _) h1)`. Establish `hηN : ∀ t : Ine (F` using `E') A, η' (ineIncl h' t) ^ (g ^ n - 1) = 1 := by`. Introduce `t`. Establish `hp` using `hper (ineIncl h (resI t)) (resI t).2`. Rewrite `hp` using `[hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : η (ineIncl h (resI t)) ≠ 0` using `by rw [← hval]; exact Units.ne_zero _`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, hval, Units.val_one]`. Establish `h1 : η (ineIncl h (resI t)) ^ (g ^ n - 1) * η (ineIncl h (resI t)) = 1 * η (ineIncl h (resI t))`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (Nat.one_le_pow _ _ (Fact.out : g.Prime).pos), hp, one_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `mul_right_cancel₀ hs0 h1`. Take `⟨ξ, hξ⟩` from `exists_resChar g A w' h' n hn hN a' ha' K red hr hk η' hsm hηN`. Use `⟨ξ, ?_, ?_⟩` and prove the remaining obligations. Introduce `i0 j0 hi0 hj0 hij`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `wlog hlt : i0 < j0 generalizing i0 j0`. Conclude with `this j0 i0 hj0 hi0 hij.symm (Ne.symm hne) (by omega)`. Take `⟨s, hsI, hs⟩` from `hmin (j0 - i0) (by omega) (by omega)`. Take `⟨t0, ht0, hres⟩` from `ine_lift g A w h w' h' n hn hg hN (s : G E Ω) hsI`. Set `t : Ine (F` to `E') A := ⟨t0, ht0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hts : ineIncl h (resI t) = s` using `Subtype.ext hres`. Establish `hunit : Valued.v ((a' (ineIncl h' t) : (w'.adicCompletion E')ˣ) : w'.adicCompletion E') = 1`. Establish `h1` using `ha'.ord_eq (ineIncl h' t)`. Rewrite `h1` using `[GlobalTheory.SmGL.SphCompletion.ord_completion, deg_ineIncl]`. Establish `hv0 : Valued.v ((a' (ineIncl h' t) : (w'.adicCompletion E')ˣ) : w'.adicCompletion E') ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ne, Valuation.zero_iff]`. Conclude with `Units.ne_zero _`. Establish `hl : WithZero.log (Valued.v ((a' (ineIncl h' t) : (w'.adicCompletion E')ˣ) : w'.adicCompletion E')) = 0`. Simplify using `using h1`. Rewrite using `[← WithZero.exp_log hv0, hl, WithZero.exp_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `exists_int_approx_compl w' _ hunit.le`. Establish `hxw : red x ≠ 0`. Introduce `h0`. Establish `hxm : x ∈ w'.asIdeal` using `by rw [← hk, RingHom.mem_ker]; exact h0`. Establish `hvx : Valued.v (algebraMap E' (w'.adicCompletion E') (x : E')) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Valued.v (algebraMap E' (w'.adicCompletion E') (x : E')) = w'.valuation E' (x : E')` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 E') w' (x : E')`. Rewrite using `[e]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E') w' x).mpr hxm`. Establish `hlt1 : Valued.v ((a' (ineIncl h' t) : (w'.adicCompletion E')ˣ) : w'.adicCompletion E') < 1`. Establish `e : ((a' (ineIncl h' t) : (w'.adicCompletion E')ˣ) : w'.adicCompletion E') = (((a' (ineIncl h' t) : (w'.adicCompletion E')ˣ) : w'.adicCompletion E') - algebraMap E' (w'.adicCompletion E') (x : E')) + algebraMap E' (w'.adicCompletion E') (x : E')` using `by ring`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ hx hvx`. Rewrite `hlt1` using `[hunit]`. Conclude with `lt_irrefl _ hlt1`. Establish `hξz` using `hξ t x (Units.mk0 (red x) hxw) rfl hx`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (ξ (Units.mk0 (red x) hxw)) ^ g ^ i0 = (ξ (Units.mk0 (red x) hxw)) ^ g ^ j0`. Use `congrArg (fun χ : Kˣ →* ℂˣ => χ (Units.mk0 (red x) hxw)) hij` as an intermediate fact. Simplify using `using this`. Rewrite `h1` using `[hξz]`. Establish `h2 : ((η' (ineIncl h' t) : ℂˣ) : ℂ) ^ g ^ i0 = ((η' (ineIncl h' t) : ℂˣ) : ℂ) ^ g ^ j0`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Units.val h1` as an intermediate fact. Simplify `this` using `only [Units.val_pow_eq_pow_val]`. Rewrite `h2` using `[hval, hts]`. Establish `hp` using `hper s hsI`. Rewrite `hp`, `hs` using `[hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hs` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
-
-Use `_ = (η s ^ g ^ j0) ^ g ^ (n - i0) := by rw [pow_mul]`. Use `_ = (η s ^ g ^ i0) ^ g ^ (n - i0) := by rw [h2]`. Use `_ = η s ^ (g ^ i0 * g ^ (n - i0)) := by rw [← pow_mul]`. Use `_ = η s ^ g ^ n := by rw [← pow_add, Nat.add_sub_cancel' (le_of_lt hi0)]`. Use `_ = η s := hp`.
-
-Introduce `t x z hxz hv`. Establish `hξz` using `hξ t x z hxz hv`. Rewrite using `[WD.inePol_of_mem_Ine y (res_mem_Ine t.2), ← hya, WD.charPol_mk]`. Rewrite using `[show ineIncl h ⟨AlgEquiv.restrictScalars E (t : G E' Ω), res_mem_Ine t.2⟩ = ineIncl h (resI t) from rfl, hchar (ineIncl h (resI t)) (resI t).2, hq]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_pow ξ, Units.val_pow_eq_pow_val, hξz, hval]`.
+A detailed English derivation is pending.
 -/
 theorem lTame : LTame := by
   intro E E' Ω _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' i hi n hn hg hN a' ha' K _ _ red hr hk y hirr htame hdim

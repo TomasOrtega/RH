@@ -8,9 +8,9 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.TuranPowerSumBounds
 
 /- English proof (translation)
-Establish `e : ∑ i, ((η : ℂ) / w i) ^ j = (η : ℂ) ^ j * ∑ i, 1 / (w i) ^ j`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[div_pow, mul_one_div]`. Rewrite using `[e, norm_mul, norm_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using `using abs_of_nonneg hη`.
+Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_u_sum (η : ℝ) {N : ℕ} (w : Fin N → ℂ) (j : ℕ) (hη : 0 ≤ η) :
     ‖∑ i, ((η : ℂ) / w i) ^ j‖ = η ^ j * ‖∑ i, 1 / (w i) ^ j‖ := by
@@ -23,53 +23,51 @@ theorem norm_u_sum (η : ℝ) {N : ℕ} (w : Fin N → ℂ) (j : ℕ) (hη : 0 �
   simpa using abs_of_nonneg hη
 
 /- English proof (translation)
-Use `set D := Real.log (max CT 1) with hD_def`. Establish `hD : 0 ≤ D` using `Real.log_nonneg (le_max_right _ _)`. Establish `hL0 : 0 < L` using `by linarith`. Establish `hη : 0 < η` using `lt_of_lt_of_le (by positivity) hηZ`. Establish `hr` using `rr_gt a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : 0 < rr a` using `by linarith`. Establish `hε0` using `eps_pos a`. Establish `hε1` using `eps_le a`. Establish `hth` using `th_pos a`. Establish `hκ` using `kap_pos a ha D hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκth` using `kap_le a ha D hD`. Establish `hE0 : 0 < E0 a D` using `Real.exp_pos _`. Establish `hG : 0 < GG a CP cZ cS c₁` using `by unfold GG; positivity`. Establish `hK0 : 0 < K0 a D CP cZ cS c₁` using `by unfold K0; positivity`. Establish `hKpos : 0 < K` using `lt_trans hK0 hK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hthK : E0 a D * GG a CP cZ cS c₁ < th a * K`. Establish `h1 : K0 a D CP cZ cS c₁ * th a = E0 a D * GG a CP cZ cS c₁` using `by unfold K0; field_simp`. Establish `h2 : K0 a D CP cZ cS c₁ * th a < K * th a` using `mul_lt_mul_of_pos_right hK hth`. Combine the linear relations using `only [h1, h2]`. Establish `hexpK : Real.exp (-K) ≤ 1` using `Real.exp_le_one_iff.mpr (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXc : lam * L ^ 3 ≤ c₁`. Rewrite using `[hX]`. Use `mul_le_mul_of_nonneg_left hexpK hc₁.le` as an intermediate fact. Combine the linear relations using `only [this]`. Establish `hlη1 : lam / η ≤ 2 * (lam * L) / cZ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_div_iff₀ hη hcZ]`. Establish `h1 : cZ ≤ 2 * L * η` using `by rw [div_le_iff₀ (by positivity)] at hηZ; linarith only [hηZ]`. Use `mul_le_mul_of_nonneg_left h1 hlam.le` as an intermediate fact. Combine the linear relations using `only [this]`. Establish `hlamL : lam * L ≤ lam * L ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ L ^ 2` using `one_le_pow₀ hL`. Establish `h3 : L ≤ L ^ 3`. Establish `: L ^ 3 = L * L ^ 2` using `by ring`. Rewrite using `[this]`. Use `mul_le_mul_of_nonneg_left h2 hL0.le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [this]`. Conclude with `mul_le_mul_of_nonneg_left h3 hlam.le`. Establish `hlη2 : lam / η ≤ 1 / 2`. Establish `h1 : 2 * (lam * L) / cZ ≤ 1 / 2`. Rewrite using `[div_le_iff₀ hcZ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [hlamL, hXc, hc₁Z]`. Combine the linear relations using `only [h1, hlη1]`. Use `set u : Fin N → ℂ := fun i => (η : ℂ) / w i with hu_def`. Establish `hu : ∀ i, ‖u i‖ ^ 2 ≤ (u i).re` using `fun i => Formalism.HermitianLattices.Ext.PrimesInProgressions.DHF.u_disc η hη (w i) (hw i)`. Establish `hi : ∃ i, 1 / 2 ≤ ‖u i‖`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨i, hi⟩` from `hi0`. Use `⟨i, ?_⟩` and prove the remaining obligations. Simplify using `only [hu_def, hi, norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hη, abs_of_pos (by linarith : (0 : ℝ) < η + η)]`. Rewrite using `[le_div_iff₀ (by linarith)]; linarith`. Use `set S : ℝ := ∑ i, (u i).re with hS_def`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg (fun i _ => le_trans (by positivity) (hu i))`. Establish `hS_eq : S = η * (∑ i, 1 / w i).re`. Use `Formalism.HermitianLattices.Ext.PrimesInProgressions.DHF.u_sum_re η w 1` as an intermediate fact. Simplify using `only [pow_one] at this`. Rewrite using `[hS_def, ← this, Complex.re_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSle : S ≤ 2 * (lam / η) + 25 * CF * (η * L)`. Rewrite using `[hS_eq]`. Establish `h2` using `mul_le_mul_of_nonneg_left hS hη.le`. Establish `h3 : η * (2 * lam / η ^ 2 + CF * L * 25) = 2 * (lam / η) + 25 * CF * (η * L)`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear relations using `only [h2, h3]`. Establish `h25c : 25 * CF * c₂ ≤ kap a D`. Rewrite using `[le_div_iff₀ (by positivity)] at hc₂κ; linarith only [hc₂κ]`. Establish `hCFηL : 25 * CF * (η * L) ≤ kap a D * K`. Establish `h1 : 25 * CF * (η * L) ≤ 25 * CF * (c₂ * K)` using `mul_le_mul_of_nonneg_left hηL.le (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `mul_le_mul_of_nonneg_right h25c hKpos.le`. Combine the linear relations using `only [h1, h2]`. Establish `hSK : S ≤ 1 + kap a D * K` using `by linarith only [hSle, hCFηL, hlη2]`. Use `set m := ⌈th a * K⌉₊ with hm_def`. Establish `hm1 : 1 ≤ m` using `Nat.one_le_iff_ne_zero.mpr (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hm_def]; exact (Nat.ceil_pos.mpr (by positivity)).ne')`. Establish `hmle : (m : ℝ) < th a * K + 1` using `Nat.ceil_lt_add_one (by positivity)`. Establish `hmge : th a * K ≤ m` using `Nat.le_ceil _`. Take `⟨j, n, hmj, hjan, hn1, hnS, hLB⟩` from `exists_power_sum_lower_bound CT a hCT hT (eps a) hε0 (by linarith) N u hu hi m hm1`. Establish `hjr1 : (m : ℝ) + 1 ≤ j` using `by exact_mod_cast hmj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjr : th a * K < j` using `by linarith only [hjr1, hmge]`. Establish `hj1 : 1 ≤ j` using `by omega`. Establish `hj2 : 2 ≤ j` using `by omega`. Establish `hnε : (n : ℝ) * eps a ^ 2 ≤ 1 + kap a D * K` using `le_trans hnS hSK`. Establish `hjan' : (j : ℝ) ≤ m + a * n` using `by exact_mod_cast hjan`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hjup : (j : ℝ) ≤ 2 * th a * K + j0 a`. Establish `h1 : (a : ℝ) * n ≤ a / eps a ^ 2 + a * kap a D / eps a ^ 2 * K`. Establish `: (n : ℝ) ≤ (1 + kap a D * K) / eps a ^ 2` using `by rw [le_div_iff₀ (by positivity)]; exact hnε`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : a * kap a D / eps a ^ 2 * K ≤ th a * K` using `mul_le_mul_of_nonneg_right (akap_le' a ha D hD) hKpos.le`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `j0`. Combine the linear relations using `only [h1, h2, hjan', hmle]`. Establish `hanD : (a : ℝ) * n * D ≤ a * D / eps a ^ 2 + j`. Establish `h1 : (a : ℝ) * n * D = (a * D / eps a ^ 2) * (n * eps a ^ 2)` using `by field_simp`. Establish `h2` using `akapD_le a ha D hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : (a * D / eps a ^ 2) * (n * eps a ^ 2) ≤ (a * D / eps a ^ 2) * (1 + kap a D * K)` using `mul_le_mul_of_nonneg_left hnε (by positivity)`. Establish `h4 : (a * D / eps a ^ 2) * (1 + kap a D * K) = a * D / eps a ^ 2 + (a * D * kap a D / eps a ^ 2) * K` using `by ring`. Establish `h5` using `mul_le_mul_of_nonneg_right h2 hKpos.le`. Combine the linear relations using `only [h1, h3, h4, h5, hjr]`. Establish `hLB2 : 1 / (E0 a D * (rr a / 8) ^ j) ≤ ‖∑ i, u i ^ j‖ + eps a ^ (j - 2) * S` using `le_trans (lb_part a D m n j _ (by omega) hanD (turan_lb CT hCT a n m hn1)) hLB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hU : ‖∑ i, u i ^ j‖ ≤ (8 * CP / cZ + 4 / cZ + 32 * CP / cS) * ((j : ℝ) + 1) ^ 2 * (lam * L ^ 3) + (1 + rr a) * ((j : ℝ) + 1) ^ 2 / rr a ^ j`. Establish `h1 : ‖∑ i, u i ^ j‖ = η ^ j * ‖∑ i, 1 / (w i) ^ j‖` using `norm_u_sum η w j hη.le`. Establish `h2` using `mul_le_mul_of_nonneg_left (hpow j hj1) (pow_pos hη j).le`. Establish `hc₂P' : 2 * Real.exp 1 * CP * c₂ * rr a ≤ th a`. Rewrite using `[le_div_iff₀ (by positivity)] at hc₂P; linarith only [hc₂P]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `ub_terms a CP CF cZ cS c₂ (kap a D) L ℓ lam η Mr K j hj1 hCP hCF hcZ hcS hc₂ hL hℓ0 hℓ hlam hη hMr hKpos hlη1 hM hηc hηL h25c hκth hc₂P' hjr`. Rewrite using `[h1]`. Conclude with `le_trans h2 h3`. Establish `hF : eps a ^ (j - 2) * S ≤ rr a ^ 2 * ((j : ℝ) + 1) ^ 2 / rr a ^ j` using `far_part a S j hj2 (by linarith only [hSK, hjr, mul_le_mul_of_nonneg_right hκth hKpos.le])`. Establish `hXj` using `x_part a c₁ K hc₁ j hjup`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hXj` using `[← hX]`. Use `set cA := 8 * CP / cZ + 4 / cZ + 32 * CP / cS with hcA`. Establish `hcA0 : 0 ≤ cA` using `by positivity`. Establish `hJ0 : 0 ≤ ((j : ℝ) + 1) ^ 2` using `by positivity`. Establish `hU2 : cA * ((j : ℝ) + 1) ^ 2 * (lam * L ^ 3) ≤ cA * ((j : ℝ) + 1) ^ 2 * (c₁ * Real.exp (j0 a * Real.log (rr a)) / rr a ^ j)` using `mul_le_mul_of_nonneg_left hXj (by positivity)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `htot : 1 / (E0 a D * (rr a / 8) ^ j) ≤ GG a CP cZ cS c₁ * ((j : ℝ) + 1) ^ 2 / rr a ^ j`. Establish `: GG a CP cZ cS c₁ * ((j : ℝ) + 1) ^ 2 / rr a ^ j = cA * ((j : ℝ) + 1) ^ 2 * (c₁ * Real.exp (j0 a * Real.log (rr a)) / rr a ^ j) + (1 + rr a) * ((j : ℝ) + 1) ^ 2 / rr a ^ j + rr a ^ 2 * ((j : ℝ) + 1) ^ 2 / rr a ^ j`. Unfold `GG`. Rewrite using `[hcA]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Combine the linear relations using `only [hLB2, hU, hF, hU2]`. Conclude with `final_step a (E0 a D) (GG a CP cZ cS c₁) hE0 hG j (by linarith only [hthK, hjr]) htot`.
+A detailed English derivation is pending.
 -/
 theorem core2 (CT : ℝ) (a : ℕ) (hCT : 0 < CT) (ha : 1 ≤ a)
     (hT : ∀ (n m : ℕ) (z : Fin n → ℂ), 1 ≤ n → (∀ i, ‖z i‖ ≤ 1) → (∃ i, ‖z i‖ = 1) →

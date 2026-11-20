@@ -13,17 +13,17 @@ open NumberField GroundTheory.Automorphic Module Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `key` using `majorant_mul_inv_mul hM`. Take `⟨hP, hH, hdet, hPHP⟩` from `hM`. Establish `hPdet : IsUnit P.det` using `isUnit_iff_ne_zero.mpr (ne_of_gt hP.det_pos)`. Use `set c := P⁻¹ *ᵥ (H *ᵥ b) with hc`. Establish `h1 : P *ᵥ c = H *ᵥ b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, mulVec_mulVec, Matrix.mul_nonsing_inv _ hPdet, one_mulVec]`. Establish `hPinv : (P⁻¹)ᴴ = P⁻¹` using `by rw [conjTranspose_nonsing_inv, hP.1.eq]`. Establish `h2 : star c ⬝ᵥ (P *ᵥ c) = star b ⬝ᵥ (P *ᵥ b)`. Rewrite using `[h1, hc, star_mulVec, star_mulVec, hPinv, hH.eq, vecMul_vecMul, ← dotProduct_mulVec, mulVec_mulVec, key]`. Set `_` to `P.toSeminormedAddCommGroup hP.posSemidef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_` to `P.toInnerProductSpace hP.posSemidef`. Establish `cs` using `inner_mul_inner_self_le (𝕜 := ℂ) a c`. Establish `e1 : (inner ℂ a c : ℂ) = star a ⬝ᵥ (H *ᵥ b)`. Express the relevant statement in the definitionally equal form `(P *ᵥ c) ⬝ᵥ star a = _`. Rewrite using `[dotProduct_comm, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (inner ℂ c a : ℂ) = star (star a ⬝ᵥ (H *ᵥ b))`. Rewrite using `[← e1]`. Conclude with `(inner_conj_symm (𝕜 := ℂ) c a).symm`. Establish `e3 : (inner ℂ a a : ℂ) = star a ⬝ᵥ (P *ᵥ a)`. Express the relevant statement in the definitionally equal form `(P *ᵥ a) ⬝ᵥ star a = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dotProduct_comm]`. Establish `e4 : (inner ℂ c c : ℂ) = star b ⬝ᵥ (P *ᵥ b)`. Express the relevant statement in the definitionally equal form `(P *ᵥ c) ⬝ᵥ star c = _`. Rewrite using `[dotProduct_comm, h2]`. Rewrite `cs` using `[e1, e2, e3, e4, norm_star]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [RCLike.re_to_complex] at cs`. Establish `ha : 0 ≤ (star a ⬝ᵥ (P *ᵥ a)).re` using `hP.posSemidef.re_dotProduct_nonneg a`. Establish `hb : 0 ≤ (star b ⬝ᵥ (P *ᵥ b)).re` using `hP.posSemidef.re_dotProduct_nonneg b`. Rewrite using `[← Real.sqrt_mul ha]`. Conclude with `Real.le_sqrt_of_sq_le (by nlinarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majorant_cauchySchwarz {ι : Type*} [Fintype ι] [DecidableEq ι] {H P : Matrix ι ι ℂ}
     (hM : IsMajorantOf H P) (a b : ι → ℂ) :
@@ -67,7 +67,7 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨M.posDef w, (GramAtData.proof h v w).1, (GramAtData.proof h v w).2, M.siegel w⟩`.
+Supply the required witnesses or components.
 -/
 theorem Majorant.isMajorantOf {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v)
     (w : InfinitePlace E) : IsMajorantOf (gramAt h v w) (M.P w) :=
@@ -76,7 +76,7 @@ theorem Majorant.isMajorantOf {h : HermitianForm F E W} {v : Basis ι E W} (M : 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Unfold `Majorant.len`. Conclude with `Real.sqrt_le_sqrt (Finset.single_le_sum (f := fun w => (star (y w) ⬝ᵥ (M.P w *ᵥ y w)).re) (fun u _ => LenSq.re_nonneg (M.posDef u) (y u)) (Finset.mem_univ w))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Majorant.sqrt_le_len {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v)
     (y : InfinitePlace E → ι → ℂ) (w : InfinitePlace E) :
@@ -86,7 +86,7 @@ theorem Majorant.sqrt_le_len {h : HermitianForm F E W} {v : Basis ι E W} (M : M
     (fun u _ => LenSq.re_nonneg (M.posDef u) (y u)) (Finset.mem_univ w))
 
 /- English proof (translation)
-Introduce `M g x y w`. Rewrite using `[HermAtPlace.proof h v w x y, ← ArchInvariant.proof h v g (vecAt v x) (vecAt v y) w]`. Use `(majorant_cauchySchwarz (M.isMajorantOf w) _ _).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul (M.sqrt_le_len _ w) (M.sqrt_le_len _ w) (Real.sqrt_nonneg _) ((Real.sqrt_nonneg _).trans (M.sqrt_le_len _ w))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LenCauchySchwarz.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     LenCauchySchwarz.Statement h v := by

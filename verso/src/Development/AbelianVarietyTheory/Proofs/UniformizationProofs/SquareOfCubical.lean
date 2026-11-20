@@ -20,16 +20,16 @@ section General
 variable {X Y : Scheme.{0}} {L : LB X} {K K' K'' : Type} [Fintype K] [Fintype K'] [Fintype K'']
 
 /- English proof (translation)
-Rewrite using `[map_zpow, ← zpow_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_zpow_zpow {M N : Type} [Group M] [Group N] (F : M →* N) (x : M) (n e : ℤ) :
     F (x ^ n) ^ e = F x ^ (n * e) := by
   rw [map_zpow, ← zpow_mul]
 
 /- English proof (translation)
-Unfold `LB.LinComb GlobalTheory.AbLaw.pw`. Use `congr 1`. Use function extensionality and compare the values at `j j'`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zpow_zpow _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem linComb_pw (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (n : ℤ) :
     LB.LinComb (pw L n) φ ε = LB.LinComb L φ (fun k => n * ε k) := by
@@ -41,7 +41,7 @@ theorem linComb_pw (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (n : ℤ) 
   exact map_zpow_zpow _ _ _ _
 
 /- English proof (translation)
-Introduce `ψ`. Establish `e` using `congrArg Multiplicative.toAdd (h (Multiplicative ℤ) (fun χ => Multiplicative.ofAdd (if χ = ψ then (1 : ℤ) else 0)))`. Simplify using `only [toAdd_prod, toAdd_zpow, toAdd_ofAdd, smul_eq_mul, mul_ite, mul_zero] at e`. Apply the tactic sequence `convert e <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sameSum_of_prod_pow_eq' {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] {φ₁ : K₁ → (Y ⟶ X)} {ε₁ : K₁ → ℤ}
     {φ₂ : K₂ → (Y ⟶ X)} {ε₂ : K₂ → ℤ}
@@ -55,9 +55,9 @@ private theorem sameSum_of_prod_pow_eq' {K₁ K₂ : Type} [Fintype K₁] [Finty
   convert e <;> simp
 
 /- English proof (translation)
-Take `⟨t₁, ht₁⟩` from `h₁`. Take `⟨t₂, ht₂⟩` from `h₂`. Establish `hs : LB.SameSum (Sum.elim φ φ') (Sum.elim ε ε') φ'' ε''` using `sameSum_of_prod_pow_eq' fun U _ f => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr]`. Conclude with `h U f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, -⟩` from `DVR.gen_transport hL hs (LB.mulGen L φ ε φ' ε' t₁ t₂) (DVR.mulGen_isGen L φ ε φ' ε' t₁ t₂ ht₁ ht₂)`. Conclude with `⟨t, ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem triv_mul (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     {φ'' : K'' → (Y ⟶ X)} {ε'' : K'' → ℤ} (h₁ : Triv (LB.LinComb L φ ε)) (h₂ : Triv (LB.LinComb L φ' ε'))
@@ -73,7 +73,7 @@ theorem triv_mul (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K'
   exact ⟨t, ht⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Conclude with `⟨LB.invGen L φ ε t, DVR.invGen_isGen L φ ε t ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem triv_inv {φ : K → (Y ⟶ X)} {ε : K → ℤ} (h : Triv (LB.LinComb L φ ε)) :
     Triv (LB.LinComb L φ fun k => -ε k) := by
@@ -88,7 +88,7 @@ variable {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B] {L : RigLB B}
 omit [IsCommMonObj B] in
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `DVR.exists_gen_of_local (V := A) L.L L.isLB (fun k => (x k).left) ε`. Conclude with `⟨LB.pullGen L.L (fun k => (x k).left) ε e (fst (Over.mk t) B).left, DVR.pullGen_isGen L.L _ ε e he _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem triv_const {K : Type} [Fintype K] (x : K → (Over.mk t ⟶ B)) (ε : K → ℤ) :
     Triv (LB.LinComb L.L (fun k => (fst (Over.mk t) B ≫ x k).left) ε) := by
@@ -97,28 +97,28 @@ theorem triv_const {K : Type} [Fintype K] (x : K → (Over.mk t ⟶ B)) (ε : K 
     DVR.pullGen_isGen L.L _ ε e he _⟩
 
 /- English proof (translation)
-Unfold `translPt`. Rewrite using `[Hom.mul_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem translPt_eq_fst_comp_mul_snd {T : Over S} (w : T ⟶ B) : translPt B w = (fst T B ≫ w) * snd T B := by
   unfold translPt
   rw [Hom.mul_def]
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem over_comp_mul {T T' : Over S} (f : T' ⟶ T) (g h : T ⟶ B) : f ≫ (g * h) = (f ≫ g) * (f ≫ h) := by
   rw [Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]
 
 /- English proof (translation)
-Simplify using `[Hom.one_def]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem over_comp_one {T T' : Over S} (f : T' ⟶ T) : f ≫ (1 : T ⟶ B) = 1 := by
   simp [Hom.one_def]
 
 /- English proof (translation)
-Establish `h₁ : Triv (LB.LinComb L.L (fun k => (lift (fst (Over.mk t) B ≫ x) (lift (fst (Over.mk t) B ≫ y) (snd (Over.mk t) B))).left ≫ thφ B (x3 B) k) thε)` using `⟨LB.pullGen L.L (thφ B (x3 B)) thε c.t _, DVR.pullGen_isGen L.L _ _ c.t c.isGen _⟩`. Establish `h₂` using `triv_const (L := L) (t := t) (K := Fin 4) ![x * y, x, y, 1] ![1, -1, -1, 1]`. Use `triv_mul L.isLB h₁ h₂ fun U _ f => ?_` and prove the remaining obligations. Rewrite using `[Geo.Tor.prod_cub]`. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, zpow_one, zpow_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [translPt_eq_fst_comp_mul_snd, over_comp_mul, over_comp_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem triv_square (c : CubicalStr B L) (x y : Over.mk t ⟶ B) :
     Triv (LB.LinComb L.L (K := Fin 4) ![(translPt B (x * y)).left, (snd (Over.mk t) B).left, (translPt B x).left,
@@ -137,13 +137,13 @@ theorem triv_square (c : CubicalStr B L) (x y : Over.mk t ⟶ B) :
   abel
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Establish `h₀` using `triv_const (L := L) (t := t) (K := Fin 0) ![] ![]`. Use `triv_mul L.isLB h₀ h₀ fun U _ f => ?_` and prove the remaining obligations. Rewrite using `[pow_zero, translPt_eq_fst_comp_mul_snd, over_comp_one, _root_.one_mul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, _root_.mul_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`. Use `push_cast`. Use `module`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Treat this case separately.
 
-Consider the case `succ r ih`. Establish `hs` using `triv_square c (x ^ r) x`. Use `triv_mul L.isLB hs ih fun U _ f => ?_` and prove the remaining obligations. Rewrite using `[pow_succ]`. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, _root_.mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`. Use `push_cast`. Use `module`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem triv_pow (c : CubicalStr B L) (r : ℕ) (x : Over.mk t ⟶ B) :
     Triv (LB.LinComb L.L (K := Fin 3) ![(translPt B (x ^ r)).left, (translPt B x).left, (snd (Over.mk t) B).left]
@@ -169,13 +169,13 @@ theorem triv_pow (c : CubicalStr B L) (r : ℕ) (x : Over.mk t ⟶ B) :
     module
 
 /- English proof (translation)
-Introduce `S B _ _ L c A _ _ t`. Use `⟨fun x y => triv_square c x y, fun r x => ?_⟩` and prove the remaining obligations. Establish `hP` using `triv_pow c r x`. Unfold `translDiff`. Rewrite using `[linComb_pw]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Hom.mul_def]`. Simplify using `only [translPt_eq_fst_comp_mul_snd] at hP`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `triv_mul L.isLB h hP fun U _ f => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`. Use `module`. Introduce `h`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `triv_mul L.isLB h (triv_inv hP) fun U _ f => ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`. Use `module`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem square_of_cubical : ∀ (S : Scheme.{0}) (B : Over S) [GrpObj B] [IsCommMonObj B] (L : RigLB B) (_ : CubicalStr B L) (A : Type) [CommRing A] [IsLocalRing A] (t : Spec (CommRingCat.of A) ⟶ S), (∀ x y : Over.mk t ⟶ B, Triv (LB.LinComb L.L (K := Fin 4) ![(translPt B (x * y)).left, (snd (Over.mk t) B).left, (translPt B x).left, (translPt B y).left] ![1, 1, -1, -1])) ∧ ∀ (r : ℕ) (x : Over.mk t ⟶ B), Triv (translDiff B (pw L.L r) x) ↔ Triv (translDiff B L.L (x ^ r)) := by
   intro S B _ _ L c A _ _ t

@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Map
 open Polynomial UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `E.sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `E.zsmul_mem (E.prod_mem fun i _ => hM _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_mem_subfield_of_entries_mem {K : Type} [Field K] (E : Subfield K) (M : Matrix (Fin 4) (Fin 4) K)
     (hM : ∀ i j, M i j ∈ E) : M.det ∈ E := by
@@ -13,19 +13,17 @@ private theorem det_mem_subfield_of_entries_mem {K : Type} [Field K] (E : Subfie
   exact E.zsmul_mem (E.prod_mem fun i _ => hM _ _) _
 
 /- English proof (translation)
-Use `set V : Matrix (Fin 4) (Fin 4) K := Matrix.of fun b k => d k ^ (b : ℕ) with hV`. Establish `hVE : ∀ i j, V i j ∈ E` using `fun i j => E.pow_mem (hdE j) _`. Establish `hdet : V.det ≠ 0`. Establish `: V = (Matrix.vandermonde d).transpose`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hV, Matrix.vandermonde]`. Rewrite using `[this, Matrix.det_transpose]`. Conclude with `Matrix.det_vandermonde_ne_zero_iff.mpr hd`. Establish `hx : x = V⁻¹.mulVec (V.mulVec x)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : ∀ i j, V⁻¹ i j ∈ E`. Introduce `i j`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul]`. Use `E.mul_mem (E.inv_mem (det_mem_subfield_of_entries_mem E V hVE)) ?_` and prove the remaining obligations. Rewrite using `[Matrix.adjugate_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `det_mem_subfield_of_entries_mem E _ fun a b => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a = j`. Substitute `hab` using the available equality. Simplify using `only [Matrix.updateRow_self]`. Distinguish the cases in `hbi : b = i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hbi` using the available equality. Simplify using `[E.one_mem]`. Simplify using `[hbi, E.zero_mem]`. Rewrite using `[Matrix.updateRow_ne hab]`. Conclude with `hVE a b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : ∀ b, V.mulVec x b ∈ E`. Introduce `b`. Establish `: V.mulVec x b = ∑ j, d j ^ (b : ℕ) * x j`. Simplify using `[hV, Matrix.mulVec, dotProduct]`. Rewrite using `[this]`.
-
-Conclude with `h b`. Introduce `j`. Rewrite using `[hx]`. Use `show ∑ b, V⁻¹ j b * V.mulVec x b ∈ E`. Conclude with `E.sum_mem fun b _ => E.mul_mem (hinv j b) (hy b)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_subfield_of_vandermonde_sums_mem {K : Type} [Field K] (E : Subfield K) (d x : Fin 4 → K)
     (hd : Function.Injective d) (hdE : ∀ i, d i ∈ E)
@@ -63,9 +61,9 @@ private theorem mem_subfield_of_vandermonde_sums_mem {K : Type} [Field K] (E : S
   exact E.sum_mem fun b _ => E.mul_mem (hinv j b) (hy b)
 
 /- English proof (translation)
-Introduce `x`. Apply `mem_subfield_of_vandermonde_sums_mem E d (fun i => r x i i) hd hdE` to reduce the goal to its premises. Introduce `b`. Establish `h` using `htr (g0 ^ (b : ℕ) * x)`. Rewrite `h` using `[map_mul, map_pow, hD, Matrix.diagonal_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[Matrix.trace, Matrix.diagonal_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem diag_entries_mem_of_trace_mem_of_regular_diag {Γ K : Type} [Group Γ] [Field K] (E : Subfield K) (r : Γ →* Matrix (Fin 4) (Fin 4) K)
     (g0 : Γ) (d : Fin 4 → K) (hD : r g0 = Matrix.diagonal d) (hd : Function.Injective d) (hdE : ∀ i, d i ∈ E)
@@ -78,9 +76,9 @@ private theorem diag_entries_mem_of_trace_mem_of_regular_diag {Γ K : Type} [Gro
   simpa [Matrix.trace, Matrix.diagonal_mul] using h
 
 /- English proof (translation)
-Introduce `u y`. Apply `mem_subfield_of_vandermonde_sums_mem E d (fun i => r u 0 i * r y i 0) hd hdE` to reduce the goal to its premises. Introduce `b`. Establish `h` using `diag_entries_mem_of_trace_mem_of_regular_diag E r g0 d hD hd hdE htr (u * g0 ^ (b : ℕ) * y) 0`. Rewrite `h` using `[map_mul, map_mul, map_pow, hD, Matrix.diagonal_pow, Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [Pi.pow_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem entry_products_mem_of_trace_mem_of_regular_diag {Γ K : Type} [Group Γ] [Field K] (E : Subfield K) (r : Γ →* Matrix (Fin 4) (Fin 4) K)
     (g0 : Γ) (d : Fin 4 → K) (hD : r g0 = Matrix.diagonal d) (hd : Function.Injective d) (hdE : ∀ i, d i ∈ E)
@@ -96,9 +94,9 @@ private theorem entry_products_mem_of_trace_mem_of_regular_diag {Γ K : Type} [G
   ring
 
 /- English proof (translation)
-Introduce `u g w i`. Apply `mem_subfield_of_vandermonde_sums_mem E d (fun j => r u 0 i * r g i j * r w j 0) hd hdE` to reduce the goal to its premises. Introduce `c`. Establish `h` using `entry_products_mem_of_trace_mem_of_regular_diag E r g0 d hD hd hdE htr u (g * g0 ^ (c : ℕ) * w) i`. Rewrite `h` using `[map_mul, map_mul, map_pow, hD, Matrix.diagonal_pow, Matrix.mul_apply, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h using 2 with j` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [Pi.pow_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem triple_entry_products_mem_of_trace_regular_diag {Γ K : Type} [Group Γ] [Field K] (E : Subfield K) (r : Γ →* Matrix (Fin 4) (Fin 4) K)
     (g0 : Γ) (d : Fin 4 → K) (hD : r g0 = Matrix.diagonal d) (hd : Function.Injective d) (hdE : ∀ i, d i ∈ E)
@@ -114,15 +112,13 @@ private theorem triple_entry_products_mem_of_trace_regular_diag {Γ K : Type} [G
   ring
 
 /- English proof (translation)
-Introduce `i j`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Set `W : Submodule K (Matrix (Fin 4) (Fin 4) K)` to `{ carrier := {M | M i j = 0} add_mem' := by`. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Matrix.add_apply] at *`. Rewrite using `[ha, hb, add_zero]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := by`. Introduce `c x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq, Matrix.smul_apply, smul_eq_mul] at *`. Rewrite using `[hx, mul_zero] }`. Establish `hle : Submodule.span K (Set.range r) ≤ W`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h g`. Establish `hr' : Submodule.span K (Set.range r) = ⊤` using `hr`. Rewrite `hle` using `[hr']`. Establish `hmem : (Matrix.of fun _ _ => (1 : K)) ∈ W` using `hle Submodule.mem_top`. Establish `h1 : (1 : K) = 0` using `hmem`.
-
-Conclude with `one_ne_zero h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_entry_ne_zero_of_irr {Γ K : Type} [Group Γ] [Field K] (r : Γ →* Matrix (Fin 4) (Fin 4) K)
     (hr : Irr r) : ∀ i j, ∃ g, r g i j ≠ 0 := by
@@ -151,9 +147,9 @@ private theorem exists_entry_ne_zero_of_irr {Γ K : Type} [Group Γ] [Field K] (
   exact one_ne_zero h1
 
 /- English proof (translation)
-Establish `h1 : adj (r g) = ν g • r g⁻¹`. Establish `e : r g * r g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `congrFun (congrFun h1 1) 3`. Simplify using `[adj, sgn] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem neg_entry_zero_two_eq_nu_mul_inv_entry_of_isGSp {Γ K : Type} [Group Γ] [Field K] (r : Γ →* Matrix (Fin 4) (Fin 4) K)
     (ν : Γ → K) (hG : ∀ g, IsGSp (ν g) (r g)) (g : Γ) : -(r g 0 2) = ν g * r g⁻¹ 1 3 := by
@@ -167,27 +163,21 @@ private theorem neg_entry_zero_two_eq_nu_mul_inv_entry_of_isGSp {Γ K : Type} [G
   rw [← h2]
 
 /- English proof (translation)
-Introduce `Γ K _ _ r ν g0 hG hdiag hdist hirr`. Use `choose gs hgs using exists_entry_ne_zero_of_irr r hirr`. Use `⟨r (gs 0 1) 0 1, r (gs 0 2) 0 2, fun E hs ht hν htr hdE => ?_⟩` and prove the remaining obligations. Use `set d : Fin 4 → K := fun i => r g0 i i with hdd`. Establish `hD : r g0 = Matrix.diagonal d` using `hdiag.diagonal_diag.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : Function.Injective d`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Conclude with `hdist i j hne hij`. Establish `hT` using `triple_entry_products_mem_of_trace_regular_diag E r g0 d hD hd hdE htr`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `entry_products_mem_of_trace_mem_of_regular_diag E r g0 d hD hd hdE htr`. Establish `hx0 : r (gs 0 0) 0 0 ∈ E` using `diag_entries_mem_of_trace_mem_of_regular_diag E r g0 d hD hd hdE htr _ 0`. Establish `hy : ∀ j, r (gs 0 j) 0 j ∈ E → r (gs j 0) j 0 ∈ E`. Introduce `j hj`. Establish `he` using `hS (gs 0 j) (gs j 0) j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `: r (gs j 0) j 0 = r (gs 0 j) 0 j * r (gs j 0) j 0 / r (gs 0 j) 0 j`. Clear denominators, using `[hgs 0 j]` for the nonvanishing conditions. Rewrite using `[this]`. Conclude with `E.div_mem he hj`. Establish `hx3 : r (gs 0 3) 0 3 ∈ E` using `by set g2 := gs 0 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hG2` using `neg_entry_zero_two_eq_nu_mul_inv_entry_of_isGSp r ν hG g2`. Establish `hne : r g2⁻¹ 1 3 ≠ 0`. Introduce `h0`. Rewrite `hG2` using `[h0, mul_zero, neg_eq_zero]`. Conclude with `hgs 0 2 hG2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν0 : ν g2 ≠ 0`. Introduce `h0`. Rewrite `hG2` using `[h0, zero_mul, neg_eq_zero]`. Conclude with `hgs 0 2 hG2`. Establish `hf` using `hT (gs 0 1) g2⁻¹ (gs 3 0) 1 3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `he` using `hS (gs 0 3) (gs 3 0) 3`. Establish `hinvE : r g2⁻¹ 1 3 ∈ E`. Establish `: r g2⁻¹ 1 3 = -(r g2 0 2) / ν g2` using `by rw [hG2]; field_simp`. Rewrite using `[this]`. Conclude with `E.div_mem (E.neg_mem ht) (hν g2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: r (gs 0 3) 0 3 = r (gs 0 1) 0 1 * r g2⁻¹ 1 3 * (r (gs 0 3) 0 3 * r (gs 3 0) 3 0) / (r (gs 0 1) 0 1 * r g2⁻¹ 1 3 * r (gs 3 0) 3 0)`. Clear denominators, using `[hgs 0 1, hne, hgs 3 0]` for the nonvanishing conditions. Rewrite using `[this]`. Conclude with `E.div_mem (E.mul_mem (E.mul_mem hs hinvE) he) hf`. Establish `hx : ∀ i, r (gs 0 i) 0 i ∈ E`.
-
-Introduce `i`. Use `fin_cases i`. Conclude with `hx0`. Conclude with `hs`. Conclude with `ht`.
-
-Conclude with `hx3`. Introduce `g i j`. Establish `h1` using `hT (gs 0 i) g (gs j 0) i j`. Establish `: r g i j = r (gs 0 i) 0 i * r g i j * r (gs j 0) j 0 / (r (gs 0 i) 0 i * r (gs j 0) j 0)`. Clear denominators, using `[hgs 0 i, hgs j 0]` for the nonvanishing conditions.
-
-Rewrite using `[this]`. Conclude with `E.div_mem h1 (E.mul_mem (hx i) (hy j (hx j)))`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.fibTorus :
     ∀ {Γ K : Type} [Group Γ] [Field K] (r : Γ →* M4 K) (ν : Γ → K) (g0 : Γ), (∀ g, IsGSp (ν g) (r g)) → (r g0).IsDiag →

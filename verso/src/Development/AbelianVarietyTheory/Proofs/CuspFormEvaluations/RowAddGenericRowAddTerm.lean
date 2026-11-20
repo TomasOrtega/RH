@@ -16,9 +16,9 @@ noncomputable def rowAddGeneric (u w : ι → σ) :
   aeval fun s => Polynomial.C (X s) + Polynomial.X * Polynomial.C (rowAddTerm K u w s)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [rowAddGeneric, Polynomial.algebraMap_apply]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p s hp`. Rewrite using `[map_mul, Polynomial.eval_mul, hp, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[rowAddGeneric, rowAddTerm, Finset.mul_sum, Polynomial.eval_finsetSum]`. Simplify using `only [mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eval_rowAddGeneric (u w : ι → σ) (t : K) (P : MvPolynomial σ K) :
     Polynomial.eval (C t) (rowAddGeneric u w P) =
@@ -33,7 +33,7 @@ theorem eval_rowAddGeneric (u w : ι → σ) (t : K) (P : MvPolynomial σ K) :
     simp only [mul_comm]
 
 /- English proof (translation)
-Establish `h` using `eval_rowAddGeneric u w (0 : K) P`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eval_zero_rowAddGeneric (u w : ι → σ) (P : MvPolynomial σ K) :
     Polynomial.eval 0 (rowAddGeneric u w P) = P := by
@@ -41,9 +41,9 @@ theorem eval_zero_rowAddGeneric (u w : ι → σ) (P : MvPolynomial σ K) :
   simpa using h
 
 /- English proof (translation)
-Establish `h0 : ∀ k, rowAddTerm K u w (u k) = 0` using `fun k => by`. Simplify using `[rowAddTerm, huw k]`. Use `conv_lhs => rw [rowAddTerm]`. Use `conv_rhs => rw [rowAddTerm]`. Rewrite using `[map_sum, map_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using `[rowAddGeneric, h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowAddGeneric_rowAddTerm (u w : ι → σ) (huw : ∀ k l, u k ≠ w l) (s : σ) :
     rowAddGeneric u w (rowAddTerm K u w s) = Polynomial.C (rowAddTerm K u w s) := by
@@ -58,7 +58,7 @@ theorem rowAddGeneric_rowAddTerm (u w : ι → σ) (huw : ∀ k l, u k ≠ w l) 
   · simp
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `[pderiv_X_of_ne h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_X_mul_pderiv_X (u w : ι → σ) (s : σ) :
     ∑ k, X (u k) * pderiv (w k) (X s : MvPolynomial σ K) = rowAddTerm K u w s := by
@@ -68,11 +68,11 @@ theorem sum_X_mul_pderiv_X (u w : ι → σ) (s : σ) :
   · simp [pderiv_X_of_ne h]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [rowAddGeneric, Polynomial.algebraMap_apply]`. Consider the case `add p q hp hq`. Simplify using `only [map_add, mul_add, Finset.sum_add_distrib, hp, hq]`. Consider the case `mul_X p s hp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `h : ∑ k, X (u k) * pderiv (w k) (p * X s) = (∑ k, X (u k) * pderiv (w k) p) * X s + p * rowAddTerm K u w s`. Rewrite using `[← sum_X_mul_pderiv_X, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, map_add, map_mul (rowAddGeneric u w), map_mul (rowAddGeneric u w), map_mul (rowAddGeneric u w), Polynomial.derivative_mul, hp, rowAddGeneric_rowAddTerm u w huw]`. Establish `hX : Polynomial.derivative (rowAddGeneric u w (X s : MvPolynomial σ K)) = Polynomial.C (rowAddTerm K u w s)`. Simplify using `[rowAddGeneric]`. Rewrite using `[hX]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivative_rowAddGeneric (u w : ι → σ) (huw : ∀ k l, u k ≠ w l)
     (P : MvPolynomial σ K) :
@@ -102,15 +102,13 @@ end RowAdd
 set_option linter.unusedVariables false in
 
 /- English proof (translation)
-Use `tfae_have 2 → 1 := fun h t => h t`. Use `tfae_have 1 → 3 := by`. Introduce `h`. Establish `hc : rowAddGeneric u w P = Polynomial.C P`. Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective fun t : ℤ => (C (t : K) : MvPolynomial σ K)` using `fun a b hab => Int.cast_injective (C_injective σ K hab)`. Use `Set.infinite_of_injective_forall_mem hinj fun t => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Polynomial.eval_C]`. Rewrite using `[eval_rowAddGeneric, h t]`. Establish `hd` using `derivative_rowAddGeneric u w huw P`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hd` using `[hc, Polynomial.derivative_C]`. Rewrite using `[← eval_zero_rowAddGeneric u w (∑ k, X (u k) * pderiv (w k) P), ← hd, Polynomial.eval_zero]`. Use `tfae_have 3 → 2 := by`. Introduce `h t`. Establish `hd` using `derivative_rowAddGeneric u w huw P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[h, map_zero]`. Establish `hc` using `Polynomial.eq_C_of_derivative_eq_zero hd`. Rewrite using `[← eval_rowAddGeneric]`. Use `conv_rhs => rw [← eval_zero_rowAddGeneric u w P]`. Rewrite using `[hc, Polynomial.eval_C, Polynomial.eval_C]`.
-
-Use `tfae_finish`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowAdd_invariant_iff {K σ ι : Type*} [Field K] [CharZero K] [DecidableEq σ] [Fintype ι]
     (u w : ι → σ) (hw : Function.Injective w)

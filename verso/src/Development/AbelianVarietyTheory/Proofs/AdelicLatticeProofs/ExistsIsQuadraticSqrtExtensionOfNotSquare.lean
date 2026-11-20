@@ -7,21 +7,21 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `F _ _ δ hδ`. Establish `hroot : ∀ b : F, b ^ 2 ≠ δ` using `fun b hb => hδ ⟨b, by rw [← hb, sq]⟩`. Establish `hirr : Irreducible (Polynomial.X ^ 2 - Polynomial.C δ)` using `X_pow_sub_C_irreducible_of_prime Nat.prime_two hroot`. Establish `hmon : (Polynomial.X ^ 2 - Polynomial.C δ).Monic` using `Polynomial.monic_X_pow_sub_C δ two_ne_zero`. Establish `hdeg : (Polynomial.X ^ 2 - Polynomial.C δ).natDegree = 2` using `Polynomial.natDegree_X_pow_sub_C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fact (Irreducible (Polynomial.X ^ 2 - Polynomial.C δ))` using `⟨hirr⟩`. Use `set p : Polynomial F := Polynomial.X ^ 2 - Polynomial.C δ with hp`. Establish `hsq : AdjoinRoot.root p ^ 2 = AdjoinRoot.of p δ`. Establish `h` using `AdjoinRoot.eval₂_root p`. Rewrite `h` using `[hp, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp h`. Establish `hneg : Polynomial.eval₂ (↑(Algebra.ofId F (AdjoinRoot p)) : F →+* AdjoinRoot p) (-AdjoinRoot.root p) (Polynomial.X ^ 2 - Polynomial.C δ) = 0`. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, neg_sq, hsq, sub_eq_zero]`. Both sides reduce to the same expression. Set `τ : AdjoinRoot p →ₐ[F] AdjoinRoot p` to `AdjoinRoot.liftAlgHom p (Algebra.ofId F (AdjoinRoot p)) (-AdjoinRoot.root p) hneg`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : τ (AdjoinRoot.root p) = -AdjoinRoot.root p` using `AdjoinRoot.liftAlgHom_root _ _ _ _`. Establish `hττ : τ.comp τ = AlgHom.id F (AdjoinRoot p)`. Apply `AdjoinRoot.algHom_ext` to reduce the goal to its premises. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, hτ, map_neg, neg_neg]`. Establish `hp0 : p ≠ 0` using `hmon.ne_zero`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite F (AdjoinRoot p)` using `(AdjoinRoot.powerBasis hp0).finite`. Establish `: CharZero (AdjoinRoot p)` using `charZero_of_injective_algebraMap (algebraMap F (AdjoinRoot p)).injective`. Establish `: FiniteDimensional ℚ (AdjoinRoot p)` using `Module.Finite.trans F (AdjoinRoot p)`. Use `⟨AdjoinRoot p, inferInstance, { }, inferInstance, AdjoinRoot.root p, AlgEquiv.ofAlgHom τ τ hττ hττ, ⟨hδ, ?_, hτ, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[AdjoinRoot.algebraMap_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hsq`. Introduce `x`. Take `⟨g, rfl⟩` from `AdjoinRoot.mk_surjective x`. Establish `hp1 : p ≠ 1` using `fun h => by`. Rewrite using `[h, Polynomial.natDegree_one] at hdeg; exact absurd hdeg (by norm_num)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt` using `Polynomial.natDegree_modByMonic_lt g hmon hp1`. Rewrite `hlt` using `[hdeg]`. Establish `hr` using `Polynomial.eq_X_add_C_of_natDegree_le_one (Nat.lt_succ_iff.mp hlt)`. Use `⟨(g %ₘ p).coeff 0, (g %ₘ p).coeff 1, ?_⟩` and prove the remaining obligations. Establish `hmk : AdjoinRoot.mk p g = AdjoinRoot.mk p (g %ₘ p)` using `by conv_lhs => rw [← Polynomial.modByMonic_add_div g p]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_mul, AdjoinRoot.mk_self, zero_mul, add_zero]`. Rewrite using `[hmk]`. Use `conv_lhs => rw [hr]`. Rewrite using `[map_add, map_mul, AdjoinRoot.mk_C, AdjoinRoot.mk_C, AdjoinRoot.mk_X, AdjoinRoot.algebraMap_eq, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isQuad : ∀ (F : Type) [Field F] [NumberField F] (δ : F), ¬ IsSquare δ →
     ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : Algebra F E) (θ : E) (σ : E ≃ₐ[F] E),

@@ -6,7 +6,7 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Establish `: cInf c = 1` using `hc`. Simplify using `[cEmb, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem cEmb_fin {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (τ : E →+* ℂ) {c : UA E n}
     (hc : c ∈ finU E n) : cEmb τ c = 1 := by
@@ -14,29 +14,27 @@ private theorem cEmb_fin {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
   simp [cEmb, this]
 
 /- English proof (translation)
-Introduce `hN hE hT hTB hK hP hD hF E _ _ _ l _ ι a ha w₀ hl hs v' hs' hap K hKl hKv Kv hKo W f hf τ hτ X b hb ε hε`. Take `⟨C, hC, hKC, hneat, hint, hfC⟩` from `hN E l Fact.out a ha w₀ hl hs v' hs' hap K hKl hKv Kv hKo W f hf`. Take `⟨ℓ, hℓ⟩` from `hE E a C hC.fin hneat`. Take `⟨R, hR0, hR⟩` from `hTB E l ι a C hC ℓ hℓ W f X b hb`. Take `⟨κ, hκr, hκi, hκ1, hκc, hκI⟩` from `hK E l ι a v' τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : CompactSpace C := isCompact_iff_compactSpace.1 hC.compact`. Set `φ : C →* GL (Fin a) ℂ` to `κ.comp C.subtype`. Establish `hφI : ∀ c : C, IntGL ι (φ c)` using `fun c => hκI _ (hint _ c.2)`. Take `⟨Q, _, c, P, hQ⟩` from `hP l ι a C φ (fun i j => (hκc i j).comp continuous_subtype_val) hφI ((Kv.comap (cLoc v')).subgroupOf C) (hKo.preimage ((GlobalTheory.BCT.GlobLev.continuous_cLoc v').comp continuous_subtype_val)) (fun x hx => by`. Establish `h1 : cLoc v' x.1 = 1` using `(hκ1 _).1 hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `cLoc v' x.1 ∈ Kv`. Rewrite using `[h1]`. Conclude with `Kv.one_mem) (ε / R) (div_pos hε hR0)`. Use `choose F hFC hFv using fun q => hT E a C hC ℓ hℓ W f (c q)`. Set `M : UA E a → GL (Fin a) ℂ` to `fun g => (cEmb τ g)⁻¹ * κ g`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `n : UA E a → GL (Fin a) ℂ` to `fun g => φ (ℓ g) * (M g)⁻¹`. Establish `hn : IsNrm τ C n`. Use `⟨fun γ hγ g => ?_, fun k hk g => ?_, fun x hx g => ?_⟩` and prove the remaining obligations. Simplify using `only [n, M, hℓ.left γ hγ, map_mul, hκr γ hγ] group`. Use `hℓ.lev ⟨k, hk⟩ g` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : φ ⟨k, hk⟩ = κ k` using `rfl`. Simplify using `only [n, M] at this ⊢`. Rewrite using `[this]`. Simplify using `only [map_mul, cEmb_fin τ (hC.fin hk), e]`. Use `group`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [n, M, hℓ.inf x hx, map_mul, hκi x hx] group`. Take `⟨d, hd⟩` from `hF E a τ C hC n hn W Q F hFC P`. Use `⟨d, M, fun g h hh h1 => ?_, fun ν => ?_⟩` and prove the remaining obligations. Simplify using `only [M, map_mul, cEmb_fin τ hh, (hκ1 h).2 h1, mul_one]`. Establish `hfam` using `hd ν fun q => (φ (c q))⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, ⟨hfam.aut, fun k hk => hfam.fix k (hKC hk), hfam.inf, hfam.up, hfam.le, hfam.ge, hfam.fin⟩, fun g i => ?_⟩` and prove the remaining obligations. Take `⟨q₀, h0, h1, h2, h3⟩` from `hQ (ℓ g)`. Establish `hnM : n g * M g = φ (ℓ g)` using `by simp only [n]; group`. Establish `hε' : 0 ≤ ε / R` using `(div_pos hε hR0).le`. Establish `hv : f.1 (b g i) g = (F q₀).1 (b g i) g`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hFv, ← hfC ((c q₀)⁻¹ * ℓ g : C) ⟨Subtype.prop _, h0⟩ (b g i) (g * ((ℓ g)⁻¹ * c q₀ : C))]`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Establish `hδ : ∀ q, (φ (c q))⁻¹ * φ (ℓ g) = φ ((c q)⁻¹ * ℓ g)` using `fun q => by rw [map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[famOf_apply, hv, hnM]`. Establish `e : (F q₀).1 (b g i) g - ∑ q, pev (P q) (φ (ℓ g)) * delta ν ((φ (c q))⁻¹ * φ (ℓ g)) * (F q).1 (b g i) g = ∑ q, ((if q = q₀ then 1 else 0) - pev (P q) (φ (ℓ g)) * delta ν (φ ((c q)⁻¹ * ℓ g))) * (F q).1 (b g i) g`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, hδ]`. Rewrite using `[e, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hε.le fun q _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[map_mul, norm_mul, hFv, ← div_mul_cancel₀ ε hR0.ne']`. Use `mul_le_mul ?_ (hR _ _ _) (norm_nonneg _) hε'` and prove the remaining obligations. Take `⟨hb1, hb2⟩` from `hD l ι a ν _ (hφI ((c q)⁻¹ * ℓ g))`. Distinguish the cases in `hq : q = q₀`. Substitute `hq` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb3` using `hb2 _ hε' h1`. Rewrite using `[if_pos rfl]`. Establish `e2 : 1 - pev (P q) (φ (ℓ g)) * delta ν (φ ((c q)⁻¹ * ℓ g)) = -((pev (P q) (φ (ℓ g)) - 1) * delta ν (φ ((c q)⁻¹ * ℓ g)) + (delta ν (φ ((c q)⁻¹ * ℓ g)) - 1))` using `by ring`. Rewrite using `[e2, map_neg, norm_neg, map_add]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ hb3)` and prove the remaining obligations.
-
-Rewrite using `[map_mul, norm_mul]`. Conclude with `(mul_le_mul h2 hb1 (norm_nonneg _) hε').trans_eq (mul_one _)`. Rewrite using `[if_neg hq, zero_sub, map_neg, norm_neg, map_mul, norm_mul]`. Conclude with `(mul_le_mul (h3 q hq) hb1 (norm_nonneg _) hε').trans_eq (mul_one _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.famEx_of : NeatLev → EllC → Twist → TwistBd → Kap0 → Pieces → DeltaNear → FamOf → FamEx := by
   intro hN hE hT hTB hK hP hD hF E _ _ _ l _ ι a ha w₀ hl hs v' hs' hap K hKl hKv Kv hKo W f hf τ hτ X b hb ε hε

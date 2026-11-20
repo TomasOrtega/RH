@@ -24,13 +24,13 @@ def secComb {L : LB X} {I : Type} [Fintype I] (c : I → Γ(X, ⊤)) (s : I → 
     exact Finset.sum_congr rfl fun i _ => (SecOps.secScale (c i) (s i)).compat j j'
 
 /- English proof (translation)
-Simplify using `only [resTop, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem resTop_mul (W : X.Opens) (a b : Γ(X, ⊤)) : resTop W (a * b) = resTop W a * resTop W b := by
   simp only [resTop, map_mul]
 
 /- English proof (translation)
-Simplify using `only [resTop, Scheme.Hom.appTop]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.naturality, CommRingCat.comp_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem app_resTop (h : Y ⟶ X) (W : X.Opens) (a : Γ(X, ⊤)) :
     (h.app W).hom (resTop W a) = resTop _ (h.appTop.hom a) := by
@@ -39,7 +39,7 @@ theorem app_resTop (h : Y ⟶ X) (W : X.Opens) (a : Γ(X, ⊤)) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [resTop, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem presheaf_map_resTop_eq_resTop {W W' : X.Opens} (h : W' ≤ W) (c : Γ(X, ⊤)) :
     (X.presheaf.map (homOfLE h).op).hom (resTop W c) = resTop W' c := by
@@ -47,7 +47,7 @@ private theorem presheaf_map_resTop_eq_resTop {W W' : X.Opens} (h : W' ≤ W) (c
   rfl
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Simplify using `only [map_sum, map_mul, presheaf_map_resTop_eq_resTop]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem res_comb {W W' : X.Opens} (hW : W' ≤ W) {I : Type} [Fintype I] (a : I → Γ(X, ⊤)) (y : I → Γ(X, W))
     (x : Γ(X, W)) (hx : x = ∑ l, resTop W (a l) * y l) :
@@ -56,7 +56,7 @@ theorem res_comb {W W' : X.Opens} (hW : W' ≤ W) {I : Type} [Fintype I] (a : I 
   simp only [map_sum, map_mul, presheaf_map_resTop_eq_resTop]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Simplify using `only [map_sum, map_mul, app_resTop, presheaf_map_resTop_eq_resTop]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem pull_comb (h : Y ⟶ X) {W : X.Opens} {W' : Y.Opens} (hW : W' ≤ h ⁻¹ᵁ W) {I : Type} [Fintype I]
     (a : I → Γ(X, ⊤)) (y : I → Γ(X, W)) (x : Γ(X, W)) (hx : x = ∑ l, resTop W (a l) * y l) :
@@ -66,7 +66,7 @@ theorem pull_comb (h : Y ⟶ X) {W : X.Opens} {W' : Y.Opens} (hW : W' ≤ h ⁻�
   simp only [map_sum, map_mul, app_resTop, presheaf_map_resTop_eq_resTop]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_equiv e (fun i => C' i * P (e i).1 (e i).2) (fun x => A x.1 * C x.1 x.2 * P x.1 x.2) (fun i => by rw [hC]), Fintype.sum_sigma]`. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => (mul_assoc _ _ _).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_mul_sum_eq_sum_reindex_sigma {M : Type} [CommRing M] {I : Type} [Fintype I] {m : I → ℕ} {N : ℕ}
     (e : Fin N ≃ Σ l, Fin (m l)) (A : I → M) (C P : ∀ l, Fin (m l) → M) (C' : Fin N → M)
@@ -78,7 +78,7 @@ private theorem sum_mul_sum_eq_sum_reindex_sigma {M : Type} [CommRing M] {I : Ty
   exact Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Introduce `j₁ j₂ hc`. Rewrite using `[res_comb (W := L.wchart φ₁ j₁) _ a (fun l => (s l).f j₁) (s₀.f j₁) (h₀ j₁)]`. Establish `H'` using `fun l => H l j₁ j₂ hc`. Simplify using `only [H']`. Conclude with `sum_mul_sum_eq_sum_reindex_sigma e _ _ _ _ (fun i => by rw [hc', resTop_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secLin_comb (L : LB X) {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     (φ₁ : K₁ → (Y' ⟶ X)) (ε₁ : K₁ → ℤ) (φ₂ : K₂ → (Y ⟶ X)) (ε₂ : K₂ → ℤ) (h : Y' ⟶ Y)
@@ -95,7 +95,7 @@ theorem secLin_comb (L : LB X) {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
   exact sum_mul_sum_eq_sum_reindex_sigma e _ _ _ _ (fun i => by rw [hc', resTop_mul])
 
 /- English proof (translation)
-Use `⟨e₁, e₂, fun p j₁ j₂ hj₁ hj₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[pull_comb h₂ (W := L₂.wchart (fun _ => g₂) j₂) _ β (fun l => (b l).f j₂) (b₀.f j₂) (hb j₂), pull_comb h₁ (W := L₁.wchart (fun _ => g₁) j₁) _ α (fun l => (a l).f j₁) (a₀.f j₁) (ha j₁), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[(H l).2.2 p j₁ j₂ hj₁ hj₂, ← hαβ l, mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoRelM_comb {X₁ X₂ Z₁ Z₂ : Scheme.{0}} (L₁ : LB X₁) (L₂ : LB X₂)
     (f₁ : Y ⟶ X₁) (f₂ : Y ⟶ X₂) (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)) (m : Y' ⟶ Y)
@@ -117,7 +117,7 @@ theorem isoRelM_comb {X₁ X₂ Z₁ Z₂ : Scheme.{0}} (L₁ : LB X₁) (L₂ :
   rw [(H l).2.2 p j₁ j₂ hj₁ hj₂, ← hαβ l, mul_left_comm]
 
 /- English proof (translation)
-Simplify using `only [scal, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_mul {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (a b : R) :
     scal p (a * b) = scal p a * scal p b := by
@@ -126,7 +126,7 @@ theorem scal_mul {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (a 
 end General
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ (fun a S ha ih => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fam_sum_f {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {k : ℕ} {I : Type} (S : Finset I) (s : I → Fam D F k) (α : D.X) (j) :
@@ -139,7 +139,7 @@ theorem fam_sum_f {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type}
     rfl
 
 /- English proof (translation)
-Unfold `UnifPre.genF`. Rewrite using `[← Over.comp_left, lift_fst]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem genF_left_comp_fst_TFK {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
@@ -149,7 +149,7 @@ private theorem genF_left_comp_fst_TFK {R : Type} [CommRing R] [IsDomain R] {I :
   rw [← Over.comp_left, lift_fst]
 
 /- English proof (translation)
-Unfold `UnifPre.genF`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem genF_left_comp_snd_TFK {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
@@ -160,11 +160,9 @@ private theorem genF_left_comp_snd_TFK {R : Type} [CommRing R] [IsDomain R] {I :
   rw [← Over.comp_left, lift_snd, Over.comp_left]
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U F _ _ k w hw n c t s t₀ ht h0`. Use `choose σ hσ using ht`. Use `choose m cc σ₁ f hE hS hF using fun l => (hσ l).2`. Establish `e₂ : 𝟙 _ ≫ UnifPre.gFK (G` using `G) F = (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left ≫ pullback.fst G.hom (jK R) := by`. Unfold `UnifPre.gFK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Category.id_comp _`. Use `⟨secComb (fun l => scal (fst (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left (c l)) σ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isoRelM_comb A.L U.LG.L _ _ w _ k _ _ _ _ (genF_left_comp_snd_TFK U F) e₂ t σ (fun l => scal (fst (TFK (R := R) F) A.A).left (c l)) _ (fun l => by rw [← genF_left_comp_fst_TFK U F]; rfl) t₀ _ h0 (fun _ => rfl) (fun l => (hσ l).1)`. Use `⟨∑ l, m l, fun i => c (finSigmaFinEquiv.symm i).1 * cc _ (finSigmaFinEquiv.symm i).2, fun i => σ₁ _ (finSigmaFinEquiv.symm i).2, fun i => f _ (finSigmaFinEquiv.symm i).2, fun i e => hE _ _ e, ?_, fun α => ?_⟩` and prove the remaining obligations. Conclude with `secLin_comb U.LG.L _ _ _ _ _ _ σ _ (fun _ => rfl) σ₁ _ hS finSigmaFinEquiv.symm _ (fun i => scal_mul _ _ _)`.
-
-Use `secLin_comb D.toPre.P.L _ _ _ _ _ (fun l => scal (fst (TF (R := R) F) D.toPre.P.A).left (c l)) (fun l => (s l).s α) _ (fun j => by rw [fam_sum_f]; rfl) (fun l i => f l i α) _ (fun l => hF l α) finSigmaFinEquiv.symm _ (fun i => scal_mul _ _ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem expandsF_sum : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (w : LB.Iso (A.L.pull U.gen.hom.left) (U.LG.L.pull (pullback.fst G.hom (jK R)))), w.IsGen → ∀ (n : ℕ) (c : Fin n → F) (t : Fin n → LB.Sec (LB.LinComb A.L (K := Fin 1) (fun _ => (snd (TFK (R := R) F) A.A).left) (fun _ => (k : ℤ)))) (s : Fin n → Fam D.toPre F k) (t₀ : LB.Sec (LB.LinComb A.L (K := Fin 1) (fun _ => (snd (TFK (R := R) F) A.A).left) (fun _ => (k : ℤ)))), (∀ l, U.ExpandsF F k w (t l) (s l)) → (∀ jj, t₀.f jj = ∑ l, liftFun A.A _ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c l)) * (t l).f jj) → U.ExpandsF F k w t₀ (∑ l, c l • s l) := by
   intro R _ _ I D A G _ _ U F _ _ k w hw n c t s t₀ ht h0

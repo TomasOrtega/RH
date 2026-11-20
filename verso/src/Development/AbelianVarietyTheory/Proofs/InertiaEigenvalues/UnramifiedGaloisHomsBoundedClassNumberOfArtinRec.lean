@@ -14,27 +14,25 @@ namespace GlobalTheory.UnramifiedClassBound
 open Neutral.HilbertClassField
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ Av hAv l _ O _ _ _ _ _ hl M _ _ hM ρ hρ S hS hU`. Take `⟨eM⟩` from `hM`. Take `⟨art, hsurj, hker, -⟩` from `GlobalTheory.T.hilbertClassField_of_globalArtinReciprocity hA E Ω`. Set `ψ : (Additive (ClassGroup (𝓞 E)) →+ M) →ₗ[O] coZ1s ρ` to `{ toFun := fun f => ⟨fun g => f (Additive.ofMul (art g)), fun g h => by show f (Additive.ofMul (art (g * h))) = f (Additive.ofMul (art g)) + ρ g (f (Additive.ofMul (art h)))`. Rewrite using `[hρ, map_mul, ofMul_mul, map_add]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_add' := fun f f' => rfl`. Use the proof step `map_smul' := fun r f => rfl }`. Set `Φ` to `(Submodule.mkQ ((coB1 ρ).comap (coZ1s ρ).subtype)) ∘ₗ ψ`. Establish `hle : S ≤ LinearMap.range Φ`. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, rfl, hlc⟩` from `hS x hx`. Establish `hz : ∀ g h : G E Ω, (z : G E Ω → M) (g * h) = (z : G E Ω → M) g + (z : G E Ω → M) h`. Introduce `g h`. Use `z.2 g h` as an intermediate fact. Rewrite `this` using `[hρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Establish `hI : ∀ v, ∀ σ ∈ Ine (F` using `E) (Av v), (z : G E Ω → M) σ = 0 := by`. Introduce `v σ hσ`. Establish `h1` using `hU v hx`. Rewrite `h1` using `[unrH1, LinearMap.mem_ker, Formalism.NG.resH1, Submodule.mkQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw⟩` from `h1`. Use `congrFun hw ⟨σ, hσ⟩` as an intermediate fact. Simplify using `only [coD0, resRep, LinearMap.coe_mk, AddHom.coe_mk] at this`. Conclude with `(show (z : G E Ω → M) σ = _ from this.symm).trans (by simp [hρ])`. Establish `hkill` using `GlobalTheory.T.hilbertSubgroup_le_ker_of_kills_inertia E Ω Av hAv M z hz hlc hI (fun c hc => GlobalTheory.T.galoisAddHom_vanishes_complexConjugation E Ω l O hl M z hz c hc)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `zH : G E Ω →* Multiplicative M` to `{ toFun := fun g => Multiplicative.ofAdd ((z : G E Ω → M) g) map_one' := by`. Use `hz 1 1` as an intermediate fact. Simplify using `only [mul_one] at this`. Establish `h0 : (z : G E Ω → M) 1 = 0`. Use `congrArg (fun t => t - (z : G E Ω → M) 1) this` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this.symm`. Simplify using `[h0]`. Use the proof step `map_mul' := fun g h => by simp [hz g h] }`. Establish `hk : art.ker ≤ zH.ker`. Introduce `σ hσ`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hσ` using `[hker]`. Simplify using `[zH, MonoidHom.mem_ker, hkill σ hσ]`. Set `Lf` to `(MonoidHom.liftOfSurjective art hsurj) ⟨zH, hk⟩`. Set `f : Additive (ClassGroup (𝓞 E)) →+ M` to `{ toFun := fun a => Multiplicative.toAdd (Lf (Additive.toMul a)) map_zero' := by simp map_add' := fun a b => by simp }`. Use `⟨f, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Submodule.mkQ _ (ψ f) = Submodule.mkQ _ z`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show Multiplicative.toAdd (Lf (art g)) = (z : G E Ω → M) g`.
+Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.liftOfRightInverse_comp_apply]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Use `GlobalTheory.T.length_addMonoidHom_finite_group_fractionQuotient_le l O M eM (Additive (ClassGroup (𝓞 E)))` as an intermediate fact. Rewrite using `[show Nat.card (Additive (ClassGroup (𝓞 E))) = classNumber E from by` and apply the resulting hypothesis.
-
-Rewrite using `[NumberField.classNumber, ← Nat.card_eq_fintype_card]`. Use the proof step `rfl] at this`.
+A detailed English derivation is pending.
 -/
 theorem vhE_of_globalArtinReciprocity (hA : GlobalTheory.Published.GlobalArtinReciprocity) : ReciprocityTheory.ChartRestriction.T2.VhE := by
   intro E Ω _ _ _ _ _ Av hAv l _ O _ _ _ _ _ hl M _ _ hM ρ hρ S hS hU

@@ -18,13 +18,13 @@ noncomputable section
 namespace GlobalTheory.HeatV
 
 /- English proof (translation)
-Introduce `X L hL Ω _ _ x g k σ ω hv i hi`. Use `set z := IsLocalRing.closedPoint Ω`. Establish `hxz : x z ∈ L.U i` using `hi (show z ∈ (⊤ : (Sp Ω).Opens) from trivial)`. Take `⟨J, hJ, hJi⟩` from `exists_good L hL z (K := PUnit) (fun _ => x ≫ 𝟙 X) (fun _ => i) (fun _ _ _ => rfl) (fun _ => hxz)`. Establish `h` using `hv (Sp Ω) (𝟙 _) z J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : J ((𝟙 (Sp Ω) ≫ x) ≫ 𝟙 X) = i` using `by simpa using hJi PUnit.unit`. Establish `e2 : J (𝟙 (Sp Ω) ≫ x ≫ 𝟙 X) = i` using `by simpa using hJi PUnit.unit`. Rewrite `h` using `[sval_of σ (𝟙 _ ≫ x) z J (fun _ => i) (fun _ => e1), val_of g (𝟙 _) z J (fun _ => i) (fun _ => e2), Category.id_comp]`. Establish `m1 : (𝟙 (Sp Ω)) z ∈ (⊤ : (Sp Ω).Opens)` using `trivial`. Establish `a1 : valR x _ (σ.f fun _ => i) = (stalkClosedPointIso (CommRingCat.of Ω)).hom.hom (gs x z _ (σ.f fun _ => i))` using `GlobalTheory.ZH.ThetaData.valR_eq_gs x _ (Set.mem_iInter.2 fun _ => hxz) _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mG : (𝟙 (Sp Ω)) z ∈ LB.wchart L (fun _ : PUnit => x ≫ 𝟙 X) (fun _ => i)` using `Set.mem_iInter.2 fun _ => hxz`. Establish `a2 : valR (𝟙 (Sp Ω)) _ (g.s fun _ => i).val = (stalkClosedPointIso (CommRingCat.of Ω)).hom.hom (gs (𝟙 (Sp Ω)) z _ (g.s fun _ => i).val)` using `GlobalTheory.ZH.ThetaData.valR_eq_gs (𝟙 _) _ mG _`. Establish `a3 : gs (𝟙 (Sp Ω)) z _ (g.s fun _ => i).val = (gm (𝟙 (Sp Ω)) z _ (g.s fun _ => i)).val` using `gs_unit _ _ _ mG _`. Establish `hω : (stalkClosedPointIso (CommRingCat.of Ω)).hom.hom (gs (𝟙 (Sp Ω)) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom ω)) = ω`. Rewrite using `[← GlobalTheory.ZH.ThetaData.valR_eq_gs (𝟙 _) ⊤ m1, GlobalTheory.ZH.CrdCalc.valR_eq _ _ le_rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.ZH.CrdCalc.valHom, Scheme.Hom.appLE]`. Rewrite using `[a1, a2, a3]`. Establish `h'` using `congrArg (stalkClosedPointIso (CommRingCat.of Ω)).hom.hom h`. Rewrite `h'` using `[map_mul, hω, Units.val_pow_eq_pow_val, map_pow]`. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_of_isValue : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (Ω : Type) [CommRing Ω] [IsLocalRing Ω] (x : Sp Ω ⟶ X) (g : GlobalTheory.RayEv.Transport.Frame L (x ≫ 𝟙 X)) (k : ℕ) (σ : SecM (𝟙 X) L k) (ω : Ω), IsValue (𝟙 X) L x g k σ ω → ∀ i, ⊤ ≤ x ⁻¹ᵁ L.U i → valR x _ (σ.f fun _ => i) = ω * (valR (𝟙 (Sp Ω)) _ (g.s fun _ => i).val) ^ k := by
   intro X L hL Ω _ _ x g k σ ω hv i hi

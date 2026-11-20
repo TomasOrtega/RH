@@ -6,7 +6,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `hU hBig` and use `GroundTheory.Heights₂.Heights.HilbertSamuel.G3.proof GroundTheory.Heights₂.Heights.HilbertSamuel.LocalRep.proof GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantShift.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeBig.of_moriwakiBig_only hBig) hU.g7 GlobalT …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem selfIntersection_le_of_boundedInjection_use :
     PositivityTheory.MbHsUse.HSUse → MoriwakiBigStatement → GroundTheory.Heights₂.Heights.HilbertSamuel.G3.Statement :=

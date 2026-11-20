@@ -8,23 +8,23 @@ open TensorProduct MainStatements.Hodge
 namespace GlobalTheory.CompanionTheory.PerfUnit
 
 /- English proof (translation)
-Introduce `R A₀ A₁ P₀ P₁ _ _ _ _ _ _ _ _ _ d₀ a₀ ψ₀ ψ₁ e hchain hde hq he`. Establish `lid_nat : ∀ {X Y : Type} [AddCommGroup X] [Module R X] [AddCommGroup Y] [Module R Y] (f : X →ₗ[R] Y) (t : R ⊗[R] X), f (TensorProduct.lid R X t) = TensorProduct.lid R Y (f.lTensor R t)`. Introduce `X Y _ _ _ _ f t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r x => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Take `⟨x, y, hx, hxy⟩` from `(hq R).2 ((1 : R) ⊗ₜ[R] e) (by simp [hde])`. Establish `hxe : ψ₀.lTensor R x = (1 : R) ⊗ₜ[R] e`. Simplify `hxy` using `[sub_eq_zero]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨TensorProduct.lid R P₀ x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[lid_nat, hx, map_zero]`. Establish `hu : ψ₀ (TensorProduct.lid R P₀ x) = e`. Rewrite using `[lid_nat, hxe]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set u := TensorProduct.lid R P₀ x with hudef`. Establish `hu0 : a₀ u = 0` using `by rw [hudef, lid_nat, hx, map_zero]`. Introduce `M _ _`. Establish `hψ : ∀ m : M, ψ₀.lTensor M (m ⊗ₜ[R] u) = m ⊗ₜ[R] e`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hu]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `m m' h`. Apply `(he M).1` to reduce the goal to its premises. Establish `h' : m ⊗ₜ[R] u = m' ⊗ₜ[R] u` using `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show m ⊗ₜ[R] e = m' ⊗ₜ[R] e`. Rewrite using `[← hψ, ← hψ, h']`. Introduce `z hz`. Establish `hd : d₀.lTensor M (ψ₀.lTensor M z) = 0`. Establish `h1 : (d₀.lTensor M) ∘ₗ (ψ₀.lTensor M) = (ψ₁.lTensor M) ∘ₗ (a₀.lTensor M)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.lTensor_comp, ← LinearMap.lTensor_comp, hchain]`. Establish `h2` using `LinearMap.congr_fun h1 z`. Simplify `h2` using `[hz]`. Take `⟨m, hm⟩` from `(he M).2 _ hd`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha : a₀.lTensor M (z - m ⊗ₜ[R] u) = 0`. Simplify using `[hz, hu0]`. Establish `hp : ψ₀.lTensor M (z - m ⊗ₜ[R] u) = 0`. Rewrite using `[map_sub, hψ, hm, sub_self]`. Take `⟨y', hy'⟩` from `(hq M).1 _ ha ⟨0, by simp [hp]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: z - m ⊗ₜ[R] u = 0`. Rewrite using `[← hy']`. Simplify using the standard rewrite rules. Conclude with `(sub_eq_zero.mp this).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit_on_model : ∀ (R A₀ A₁ P₀ P₁ : Type) [CommRing R] [AddCommGroup A₀] [Module R A₀] [AddCommGroup A₁] [Module R A₁] [AddCommGroup P₀] [Module R P₀] [AddCommGroup P₁] [Module R P₁] (d₀ : A₀ →ₗ[R] A₁) (a₀ : P₀ →ₗ[R] P₁) (ψ₀ : P₀ →ₗ[R] A₀) (ψ₁ : P₁ →ₗ[R] A₁) (e : A₀), ψ₁ ∘ₗ a₀ = d₀ ∘ₗ ψ₀ → d₀ e = 0 → (∀ (M : Type) [AddCommGroup M] [Module R M], QIsoAt (0 : R →ₗ[R] M ⊗[R] P₀) (a₀.lTensor M) (0 : R →ₗ[R] M ⊗[R] A₀) (d₀.lTensor M) (ψ₀.lTensor M)) → (∀ (M : Type) [AddCommGroup M] [Module R M], Function.Injective (fun m : M ↦ m ⊗ₜ[R] e) ∧ ∀ x : M ⊗[R] A₀, d₀.lTensor M x = 0 → ∃ m : M, m ⊗ₜ[R] e = x) → ∃ u : P₀, a₀ u = 0 ∧ ∀ (M : Type) [AddCommGroup M] [Module R M], Function.Injective (fun m : M ↦ m ⊗ₜ[R] u) ∧ ∀ x : M ⊗[R] P₀, a₀.lTensor M x = 0 → ∃ m : M, m ⊗ₜ[R] u = x := by
   intro R A₀ A₁ P₀ P₁ _ _ _ _ _ _ _ _ _ d₀ a₀ ψ₀ ψ₁ e hchain hde hq he

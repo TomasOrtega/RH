@@ -15,16 +15,14 @@ namespace GlobalTheory.CompanionTheory.IwFacts
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ThetaPull.thetaGL_apply, map_mul, GlobalTheory.PrincCong.v_cj, map_pow, Valuation.map_neg, map_one, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem v_thetaGL_apply (w : Pl E) (a : ℕ) (g : GLw a w) (i j : Fin a) :
     Valued.v ((thetaGL a (cj w) g).val i j) = Valued.v ((g⁻¹).val j.rev i.rev) := by
   rw [GlobalTheory.ThetaPull.thetaGL_apply, map_mul, GlobalTheory.PrincCong.v_cj, map_pow, Valuation.map_neg, map_one, one_pow, one_mul]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.CompanionTheory.IwEntries.mem_KGL_iff w a k).1 hk`. Use `(GlobalTheory.CompanionTheory.IwEntries.mem_KGL_iff w a _).2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[v_thetaGL_apply]`. Conclude with `h2 _ _`. Rewrite using `[← map_inv, v_thetaGL_apply, inv_inv]`.
-
-Conclude with `h1 _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaGL_mem_KGL (w : Pl E) (a : ℕ) {k : GLw a w} (hk : k ∈ GlobalTheory.LFun.KGL w a) :
     thetaGL a (cj w) k ∈ GlobalTheory.LFun.KGL w a := by
@@ -36,9 +34,9 @@ theorem thetaGL_mem_KGL (w : Pl E) (a : ℕ) {k : GLw a w} (hk : k ∈ GlobalThe
     exact h1 _ _
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `((GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w a k).1).1 hk`. Take `⟨-, -, h3⟩` from `((GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w a k⁻¹).1).1 (inv_mem hk)`. Use `((GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w a _).1).2 ⟨fun i j => ?_, fun i j => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[v_thetaGL_apply]`. Conclude with `h2 _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv, v_thetaGL_apply, inv_inv]`. Conclude with `h1 _ _`. Rewrite using `[v_thetaGL_apply]`. Conclude with `h3 _ _ (Fin.rev_lt_rev.2 hij)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaGL_mem_iwGL (w : Pl E) (a : ℕ) {k : GLw a w} (hk : k ∈ iwGL a w) :
     thetaGL a (cj w) k ∈ iwGL a w := by
@@ -53,11 +51,11 @@ theorem thetaGL_mem_iwGL (w : Pl E) (a : ℕ) {k : GLw a w} (hk : k ∈ iwGL a w
     exact h3 _ _ (Fin.rev_lt_rev.2 hij)
 
 /- English proof (translation)
-Establish `hI : IsCompact (iwGL a w : Set (GLw a w))` using `GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori (w.adicCompletion E) (Fin a)`. Establish `hS : IsCompact ((fun p : GLw a w × GLw a w => p.1 * t * p.2) '' ((iwGL a w : Set (GLw a w)) ×ˢ (iwGL a w : Set (GLw a w))))` using `(hI.prod hI).image ((continuous_fst.mul continuous_const).mul continuous_snd)`. Use `hS using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, dcos, Set.mem_image, Set.mem_prod, SetLike.mem_coe, Prod.exists]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hn`. Use `h (if_neg ?_)` and prove the remaining obligations. Introduce and unpack `⟨x, hx, y, hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hn ⟨x, y, ⟨hx, hy⟩, rfl⟩`. Introduce and unpack `⟨x, y, ⟨hx, hy⟩, rfl⟩`. Rewrite using `[if_pos ⟨x, hx, y, hy, rfl⟩]`. Conclude with `one_ne_zero`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_support_dcos (w : Pl E) (a : ℕ) (t : GLw a w) :
     IsCompact {g : GLw a w | dcos a w t g ≠ 0} := by
@@ -80,11 +78,11 @@ theorem isCompact_support_dcos (w : Pl E) (a : ℕ) (t : GLw a w) :
     exact one_ne_zero
 
 /- English proof (translation)
-Introduce `E _ _ _ w hw a t`. Establish `hth : thL a w = thetaGL a (cj w)`. Unfold `thL`. Rewrite using `[if_neg hw]`. Establish `hKo : IsOpen (GlobalTheory.LFun.KGL w a : Set (GLw a w))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.CompanionTheory.IwLevels.KGL_eq_KO]`. Conclude with `GlobalTheory.SplitFlip.isOpen_KO`. Establish `hKc` using `GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a`. Establish `hIo : IsOpen (iwGL a w : Set (GLw a w))` using `GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin a)`. Establish `hIK` using `GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hKo, hKc, fun k hk => ?_, ⟨hIo, hIK, fun k hk => ?_⟩, ⟨hIo, hIK, fun k hk => hk⟩, GlobalTheory.CompanionTheory.IwLevels.relIndex_ne_zero hIo hKc, isCompact_support_dcos w a t⟩` and prove the remaining obligations. Rewrite using `[hth]`. Conclude with `thetaGL_mem_KGL w a hk`. Rewrite using `[hth]`. Conclude with `thetaGL_mem_iwGL w a hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iw_facts : P_iw_facts := by
   intro E _ _ _ w hw a t

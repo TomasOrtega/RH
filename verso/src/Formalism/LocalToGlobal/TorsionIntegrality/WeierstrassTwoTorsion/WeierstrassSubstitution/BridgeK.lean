@@ -8,11 +8,11 @@ noncomputable section
 namespace Formalism.L2.Th1.A
 
 /- English proof (translation)
-Unfold `ShortInv`. Introduce `K _ _ g2 g3`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [shortW, WeierstrassCurve.b₂]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `g₂`. Simplify using `only [shortW, WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄]`. Expand and normalize the polynomial expressions, which then agree. Unfold `g₃`. Simplify using `only [shortW, WeierstrassCurve.c₆, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [shortW, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem short_weierstrass_inverse : ShortInv := by
   unfold ShortInv
@@ -36,7 +36,7 @@ namespace BridgeK
 open Formalism.L2.Th1.CM
 
 /- English proof (translation)
-Use `conv_lhs => unfold cW`. Rewrite using `[Nat.strongRecOn_eq]`. Simplify using `only [dite_eq_ite]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cW_eq {K : Type} [Field K] (g2 g3 : K) (k : ℕ) :
     cW g2 g3 k = if k = 2 then g2 / 20 else if k = 3 then g3 / 28 else
@@ -50,32 +50,32 @@ theorem cW_eq {K : Type} [Field K] (g2 g3 : K) (k : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[cW_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cW_zero {K : Type} [Field K] (g2 g3 : K) : cW g2 g3 0 = 0 := by
   rw [cW_eq]
   simp
 
 /- English proof (translation)
-Take `⟨_, h0, _, h2, h4⟩` from `hS K W`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Break down `Nat.lt_or_ge k 3 with hk | hk` into its components or cases. Use `interval_cases k`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cW_eq]`. Simplify using `[h0]`. Rewrite using `[cW_eq]`. Simplify using `[h2]`. Rewrite using `[cW_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h4]`. Establish `hrec` using `hR K W k hk`. Rewrite using `[cW_eq, if_neg (show k + 1 ≠ 2 by omega), if_neg (show k + 1 ≠ 3 by omega), if_pos (show 4 ≤ k + 1 by omega)]`. Establish `hsum : (∑ m : Fin (k + 1 - 3), cW (g₂ W) (g₃ W) (m.val + 2) * cW (g₂ W) (g₃ W) (k + 1 - (m.val + 2))) = ∑ i ∈ Finset.Icc 1 (k - 2), coeff (2 * i) (wpReg W) * coeff (2 * (k - 1 - i)) (wpReg W)`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun m => cW (g₂ W) (g₃ W) (m + 2) * cW (g₂ W) (g₃ W) (k + 1 - (m + 2))) (k + 1 - 3)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_nbij' (fun m => m + 1) (fun i => i - 1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_range]`. Rewrite using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite `ha` using `[Finset.mem_Icc]`. Rewrite using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Introduce `a _ show a + 1 - 1 = a`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_Icc]`. Use `show a - 1 + 1 = a`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `m hm`. Rewrite `hm` using `[Finset.mem_range]`. Use `show cW (g₂ W) (g₃ W) (m + 2) * cW (g₂ W) (g₃ W) (k + 1 - (m + 2)) = coeff (2 * (m + 1)) (wpReg W) * coeff (2 * (k - 1 - (m + 1))) (wpReg W)`. Rewrite using `[show m + 2 = m + 1 + 1 by omega, show k + 1 - (m + 1 + 1) = k - 2 - m + 1 by omega, ih (m + 1) (by omega), ih (k - 2 - m) (by omega), show k - 1 - (m + 1) = k - 2 - m by omega]`. Rewrite using `[hsum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hne1 : (2 * ((k : K) + 1) + 1) ≠ 0`. Establish `e : ((2 * k + 3 : ℕ) : K) = 2 * ((k : K) + 1) + 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `(show 2 * k + 3 ≠ 0 by omega)` after adjusting the coercions. Establish `hne2 : ((k : K) + 1 - 3) ≠ 0`. Establish `e : ((k - 2 : ℕ) : K) = (k : K) + 1 - 3`. Move the coercions through the operations in `[Nat.cast_sub (show 2 ≤ k by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← e]`. Conclude with `(show k - 2 ≠ 0 by omega)` after adjusting the coercions. Use `push_cast`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff (mul_ne_zero hne1 hne2)]`. Take the linear combination `-hrec`.
+A detailed English derivation is pending.
 -/
 theorem cW_succ (hS : WpShape.{0}) (hR : WpRecursion.{0}) {K : Type} [Field K] [CharZero K]
     (W : WeierstrassCurve K) (k : ℕ) :
@@ -138,7 +138,7 @@ theorem cW_succ (hS : WpShape.{0}) (hR : WpRecursion.{0}) {K : Type} [Field K] [
       linear_combination -hrec
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ k`. Rewrite using `[coeff_succ_X_mul, coeff_derivative]`. Use `push_cast`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -155,17 +155,17 @@ end BridgeK
 
 open BridgeK Formalism.L2.Th1.CM in
 /- English proof (translation)
-Unfold `WpNumEq`. Introduce `K _ _ W`. Take `⟨_, h0, hodd, _, _⟩` from `hS K W`. Prove the components needed by the constructor for the conclusion. Use extensionality with `n`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components.
 
-Unfold `wpNum`. Rewrite using `[coeff_mk, map_add, coeff_one, coeff_X_pow_mul']`. Take `⟨j, rfl | rfl⟩` from `Nat.even_or_odd' n`. Break down `Nat.lt_or_ge j 1 with hj | hj` into its components or cases. Use `interval_cases j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Rewrite using `[if_neg (show 2 * (i + 1) ≠ 0 by omega), if_pos (even_two_mul (i + 1)), if_neg (show 2 * (i + 1) ≠ 0 by omega), if_pos (show 2 ≤ 2 * (i + 1) by omega), Nat.mul_div_cancel_left (i + 1) (by norm_num : 0 < 2), show 2 * (i + 1) - 2 = 2 * i by omega, cW_succ hS hR W i, zero_add]`. Rewrite using `[if_neg (show 2 * j + 1 ≠ 0 by omega), if_neg (Nat.not_even_iff_odd.mpr (odd_two_mul_add_one j)), if_neg (show 2 * j + 1 ≠ 0 by omega), zero_add] split_ifs with h`. Rewrite using `[show 2 * j + 1 - 2 = 2 * (j - 1) + 1 by omega, hodd _ (odd_two_mul_add_one (j - 1))]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use extensionality with `n`. Unfold `wpDen`. Rewrite using `[coeff_mk, map_sub, coeff_one, mul_assoc (C (1 / 2 : K)) (X ^ 3) (derivative K (wpReg W)), coeff_C_mul, coeff_X_pow_mul']`. Take `⟨j, rfl | rfl⟩` from `Nat.even_or_odd' n`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge j 2 with hj | hj` into its components or cases. Apply the tactic sequence `interval_cases j <;> simp`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1 + 1` from `⟨j - 2, by omega⟩`. Rewrite using `[if_neg (show 2 * (i + 1 + 1) ≠ 0 by omega), if_pos (even_two_mul (i + 1 + 1)), if_neg (show 2 * (i + 1 + 1) ≠ 0 by omega), if_pos (show 3 ≤ 2 * (i + 1 + 1) by omega), Nat.mul_div_cancel_left (i + 1 + 1) (by norm_num : 0 < 2), show 2 * (i + 1 + 1) - 3 = 2 * i + 1 by omega, coeff_ …`. Use `push_cast`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (show 2 * j + 1 ≠ 0 by omega), if_neg (Nat.not_even_iff_odd.mpr (odd_two_mul_add_one j)), if_neg (show 2 * j + 1 ≠ 0 by omega)] split_ifs with h`. Rewrite using `[show 2 * j + 1 - 3 = 2 * (j - 1) by omega, coeff_derivative, hodd _ (odd_two_mul_add_one (j - 1))]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wpNumEq_of (hS : WpShape.{0}) (hR : WpRecursion.{0}) : WpNumEq := by
   unfold WpNumEq
@@ -215,9 +215,9 @@ theorem wpNumEq_of (hS : WpShape.{0}) (hR : WpRecursion.{0}) : WpNumEq := by
       · ring
 
 /- English proof (translation)
-Unfold `WpRegInv`. Introduce `K _ _ W W' h2 h3`. Use extensionality with `n`. Take `⟨k, rfl | rfl⟩` from `Nat.even_or_odd' n`. Rewrite using `[← BridgeK.cW_succ hS hR W k, ← BridgeK.cW_succ hS hR W' k, h2, h3]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hS K W).2.2.1 _ (odd_two_mul_add_one k), (hS K W').2.2.1 _ (odd_two_mul_add_one k)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wpRegInv_of (hS : WpShape.{0}) (hR : WpRecursion.{0}) : WpRegInv := by
   unfold WpRegInv
@@ -228,23 +228,23 @@ theorem wpRegInv_of (hS : WpShape.{0}) (hR : WpRecursion.{0}) : WpRegInv := by
   · rw [(hS K W).2.2.1 _ (odd_two_mul_add_one k), (hS K W').2.2.1 _ (odd_two_mul_add_one k)]
 
 /- English proof (translation)
-Introduce `K _ _ g2 g3`. Take `⟨hb, hg2, hg3, -⟩` from `short_weierstrass_inverse K g2 g3`. Use `set W := shortW g2 g3 with hW`. Take `⟨hnum, hden⟩` from `wpNumEq_of hS hR K W`. Rewrite `hnum`, `hden` using `[hg2, hg3]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hshape, -⟩` from `hS K W`. Take `⟨hd, -⟩` from `wpODE.{0} K W`. Take `⟨-, hfl⟩` from `flowZ.{0} K W`. Establish `hx : wpL W = xZ W`. Rewrite using `[wpL, hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `ha1 : W.a₁ = 0` using `rfl`. Establish `ha3 : W.a₃ = 0` using `rfl`. Rewrite `hd` using `[ha1, ha3, map_zero, zero_mul, add_zero, add_zero]`. Establish `hrel : toL (expSer W) * dL (wpL W) = -2 * wpL W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, hx]`. Take the linear combination `2 * hfl`. Rewrite `hrel` using `[hshape, map_add, dL_uPow, dL_toL]`. Establish `h3 : (uPow (-2 - 1) : LaurentSeries K) * toL (X ^ 3) = 1`. Rewrite using `[← uPow_natCast]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `uPow_neg_mul 3`. Establish `h2 : (uPow (-2) : LaurentSeries K) * toL (X ^ 3) = toL X`. Rewrite using `[← uPow_natCast, ← uPow_add, ← uPow_one]`. Evaluate the numerical expressions. Establish `hC : (HahnSeries.C (((-2 : ℤ)) : K) : LaurentSeries K) = toL (C (-2 : K))`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[toL_C]`. Evaluate the numerical expressions. Establish `hps : expSer W * (C (-2 : K) + X ^ 3 * derivative K (wpReg W)) = C (-2 : K) * (X + X ^ 3 * wpReg W)`. Apply `toL_injective` to reduce the goal to its premises. Establish `hm2 : (toL (C (-2 : K)) : LaurentSeries K) = -2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_neg C, map_neg toL]`. Use `congr 1`. Rewrite using `[map_ofNat C, map_ofNat toL]`. Simplify using `only [map_mul, map_add]`. Rewrite `hrel` using `[hC]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `toL (X ^ 3) * hrel - toL (expSer W) * toL (C (-2 : K)) * h3 - 2 * h2 - (toL X + toL (X ^ 3) * toL (wpReg W)) * hm2`. Establish `hab : (C (1 / 2 : K) : K⟦X⟧) * C (-2 : K) = -1`. Rewrite using `[← map_mul]`. Evaluate the numerical expressions. Establish `hcc : constantCoeff (CM.wpDen g2 g3) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hden]`. Simplify using the standard rewrite rules. Use `symm`. Rewrite using `[CM.uSer, eq_mul_inv_iff_mul_eq hcc, hnum, hden]`. Take the linear combination `-(C (1 / 2 : K) : K⟦X⟧) * hps + (expSer W - X - X ^ 3 * wpReg W) * hab`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem uSerEq_of (hS : WpShape.{0}) (hR : WpRecursion.{0}) : USerEq := by
   intro K _ _ g2 g3

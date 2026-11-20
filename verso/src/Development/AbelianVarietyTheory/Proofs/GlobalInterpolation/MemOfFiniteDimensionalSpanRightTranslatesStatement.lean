@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemOfFiniteDi
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UnitaryBC.mem_of_finiteDimensional_span_rightTranslates` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FMemOfFiniteDimensionalSpanRightTranslates.lean&line=80#L80)
 -/

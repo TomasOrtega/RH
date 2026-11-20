@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CoeffRational
 
 /- English proof (translation)
-Establish `: Subgroup.closure S ≤ (Subgroup.closure S).comap (MulAut.conj γ).toMonoidHom` using `(Subgroup.closure_le _).2 fun n hn => Subgroup.subset_closure (h n hn)`. Conclude with `fun n hn => this hn`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conj_closure {G : Type} [Group G] (S : Set G) (γ : G) (h : ∀ n ∈ S, γ * n * γ⁻¹ ∈ S) :
     ∀ n ∈ Subgroup.closure S, γ * n * γ⁻¹ ∈ Subgroup.closure S := by
@@ -34,13 +34,13 @@ def conjN (N : Subgroup G) (γ : G) (h1 : ∀ n ∈ N, γ * n * γ⁻¹ ∈ N) (
   continuous_invFun := Continuous.subtype_mk (by fun_prop) _
 
 /- English proof (translation)
-Set `c` to `conjN N γ h1 h2`. Set `cm : N ≃ᵐ N` to `c.toHomeomorph.toMeasurableEquiv`. Establish `hmp : MeasurePreserving cm ν (ν.map cm)` using `⟨cm.measurable, rfl⟩`. Establish `hpre : cm ⁻¹' (cm.symm ⁻¹' 𝓝) = 𝓝`. Use extensionality with `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use `⟨ν.map cm, cm.symm ⁻¹' 𝓝, ⟨c.isHaarMeasure_map ν, ?_, ?_⟩, fun f => ?_⟩` and prove the remaining obligations. Set `e : Q.subgroupOf N → Q.subgroupOf N` to `fun q => ⟨c q.1, Subgroup.mem_subgroupOf.2 (Q.mul_mem (Q.mul_mem (Q.inv_mem hγ) (Subgroup.mem_subgroupOf.1 q.2)) hγ)⟩`. Establish `he : Function.Bijective e`. Use `⟨fun a b h => Subtype.ext (c.injective (congrArg Subtype.val h)), fun q => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨⟨c.symm q.1, Subgroup.mem_subgroupOf.2 (Q.mul_mem (Q.mul_mem hγ (Subgroup.mem_subgroupOf.1 q.2)) (Q.inv_mem hγ))⟩, Subtype.ext (c.apply_symm_apply _)⟩`. Use `hF.preimage_of_equiv (hmp.symm cm).quasiMeasurePreserving he fun q x => ?_` and prove the remaining obligations. Use `show c.symm (c q.1 * x) = q.1 * c.symm x`. Rewrite using `[map_mul, c.symm_apply_apply]`. Rewrite using `[cm.map_apply, hpre, hv]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[setIntegral_map_equiv, hpre]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_pair [MeasurableSpace G] [BorelSpace G] (N Q : Subgroup G) (γ : G) (hγ : γ ∈ Q)
     (h1 : ∀ n ∈ N, γ * n * γ⁻¹ ∈ N) (h2 : ∀ n ∈ N, γ⁻¹ * n * γ ∈ N) (ν : Measure N) (𝓝 : Set N)
@@ -76,14 +76,14 @@ open GlobalTheory.BesselCompare
 variable {D : D7} {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
 
 /- English proof (translation)
-The claim follows from `hγ.2 (co B v) (by funext i; rw [frameMat_eq, cT_mulVec]; exact hv _)`.
+A detailed English derivation is pending.
 -/
 theorem emb_fix {γ : GA D B} {h : GA D A} (hγ : EmbRel B A ι γ h) {v : B.V} (hv : ∀ x, B.hD v (ι x) = 0) :
     (mt B γ).mulVec (vecA B v) = vecA B v :=
   hγ.2 (co B v) (by funext i; rw [frameMat_eq, cT_mulVec]; exact hv _)
 
 /- English proof (translation)
-Unfold `iA`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Conclude with `congrArg (fun M => Matrix.mulVec M t) hγ.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_iA {γ : GA D B} {h : GA D A} (hγ : EmbRel B A ι γ h) (t : Fin A.rank → AE D) :
     (mt B γ).mulVec (iA ι t) = iA ι ((mt A h).mulVec t) := by
@@ -92,13 +92,13 @@ theorem emb_iA {γ : GA D B} {h : GA D A} (hγ : EmbRel B A ι γ h) (t : Fin A.
   exact congrArg (fun M => Matrix.mulVec M t) hγ.1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[vecA]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecA_add (v w : B.V) : vecA B (v + w) = vecA B v + vecA B w := by
   funext k; simp [vecA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Establish `h1` using `RingHom.map_mulVec (incA D) (frameMat B A ι) (A.frame.repr a) k`. Rewrite `h1` using `[frameMat, LinearMap.toMatrix_mulVec_repr]`. Conclude with `h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecA_emb (a : A.V) : vecA B (ι a) = iA ι (vecA A a) := by
   funext k
@@ -107,9 +107,9 @@ theorem vecA_emb (a : A.V) : vecA B (ι a) = iA ι (vecA A a) := by
   exact h1
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_rep A ((B.hT x).comp ι)`. Establish `h1 : ∀ y, B.hD (x - ι a) (ι y) = 0` using `fun y => hD_swap_zero (by show B.hT (x - ι a) (ι y) = 0`. Rewrite using `[map_sub, LinearMap.sub_apply, hι a y, ha, LinearMap.comp_apply, sub_self])`. Establish `h2 : vecA B x = vecA B (x - ι a) + iA ι (vecA A a)`. Rewrite using `[← vecA_emb, ← vecA_add, sub_add_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(mt A h).mulVec (vecA A a) + -vecA A a, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, Matrix.mulVec_add, emb_fix hγ h1, emb_iA hγ, iA_add, iA_neg]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem emb_move (hι : HSpace.IsIsomEmb A B ι) {γ : GA D B} {h : GA D A} (hγ : EmbRel B A ι γ h) (x : B.V) :
     ∃ t, (mt B γ).mulVec (vecA B x) = vecA B x + iA ι t := by
@@ -125,15 +125,15 @@ theorem emb_move (hι : HSpace.IsIsomEmb A B ι) {γ : GA D B} {h : GA D A} (hγ
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hsum : ∀ c : Fin d.ρ → AE D, (mt B γ).mulVec (∑ l, c l • vecA B (d.e l)) = ∑ l, c l • vecA B (d.e l)`. Introduce `c`. Rewrite using `[← Matrix.mulVecLin_apply, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Matrix.mulVecLin_apply, emb_fix hγ (d.eA l)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `hn.1 i`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Unfold `actV at e ⊢`. Rewrite using `[mulVec_mul, mulVec_mul, emb_fix hγ' (d.eA i), e, Matrix.mulVec_add, emb_fix hγ (d.eA i), hsum]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `emb_move d.isom hγ' x`. Take `⟨c, e⟩` from `hn.2 x hx`. Use `choose a ha using fun k => hn.2 (ι (A.frame k)) fun i => hD_swap_zero (d.eA i _)`. Unfold `actV at e ha ⊢`. Establish `e2 : (mt B n).mulVec (iA ι t) = iA ι t + ∑ l, (∑ k, t k * a k l) • vecA B (d.e l)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iA, frameMat_eq, eMat_mulVec, ← Matrix.mulVecLin_apply, map_sum]`. Simplify using `only [map_smul, Matrix.mulVecLin_apply, ha, smul_add, Finset.sum_add_distrib, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `⟨fun l => c l + ∑ k, t k * a k l, ?_⟩` and prove the remaining obligations. Establish `e3 : (mt B n).mulVec ((mt B γ⁻¹).mulVec (vecA B x)) = (mt B γ⁻¹).mulVec (vecA B x) + ∑ l, (c l + ∑ k, t k * a k l) • vecA B (d.e l)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, Matrix.mulVec_add, e, e2]`. Simplify using `only [add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[mulVec_mul, mulVec_mul, e3, Matrix.mulVec_add]`. Conclude with `congrArg₂ (· + ·) (mulVec_cancel_inv γ (vecA B x)) (hsum fun l => c l + ∑ k, t k * a k l)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_NSet (d : BesselDatum A B ι) {γ : GA D B} {h h' : GA D A} (hγ : EmbRel B A ι γ h)
     (hγ' : EmbRel B A ι γ⁻¹ h') {n : GA D B} (hn : n ∈ d.NSet) : γ * n * γ⁻¹ ∈ d.NSet := by
@@ -166,7 +166,7 @@ theorem conj_NSet (d : BesselDatum A B ι) {γ : GA D B} {h h' : GA D A} (hγ : 
     exact congrArg₂ (· + ·) (mulVec_cancel_inv γ (vecA B x)) (hsum fun l => c l + ∑ k, t k * a k l)
 
 /- English proof (translation)
-Establish `h1 : ∀ n ∈ d.NSet, γ * n * γ⁻¹ ∈ d.NSet` using `fun n hn => conj_NSet d hγ hγ' hn`. Establish `h2` using `conj_closure (G := GA D B) d.NSet γ h1`. Unfold `BesselDatum.N`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem conj_N (d : BesselDatum A B ι) {γ : GA D B} {h h' : GA D A} (hγ : EmbRel B A ι γ h)
     (hγ' : EmbRel B A ι γ⁻¹ h') : ∀ n ∈ d.N, γ * n * γ⁻¹ ∈ d.N := by
@@ -176,7 +176,7 @@ theorem conj_N (d : BesselDatum A B ι) {γ : GA D B} {h h' : GA D A} (hγ : Emb
   exact h2
 
 /- English proof (translation)
-Unfold `BesselDatum.psiN BesselDatum.simpleSum actV`. Use `congr 3`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mulVec_mul, mulVec_mul, emb_fix hγ (besselDatum_auxiliaryVector_orthogonal_image d _), hA_mt_left, inv_inv, emb_fix hγ (d.fA i)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiN_conj (d : BesselDatum A B ι) (ψ : AddChar (AF D.host.F) ℂ) {γ : GA D B} {h : GA D A}
     (hγ : EmbRel B A ι γ h) (n : GA D B) : d.psiN ψ (γ⁻¹ * n * γ) = d.psiN ψ n := by
@@ -188,13 +188,13 @@ theorem psiN_conj (d : BesselDatum A B ι) (ψ : AddChar (AF D.host.F) ℂ) {γ 
 end Conj
 
 /- English proof (translation)
-Introduce `D A B ι d ψ hψ F hF ν 𝓝 hν γ h hγ hQ g`. Use `haveI : BorelSpace (GA D B) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (GA D B) := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B).2.2.2.2.1`. Take `⟨s, -, hs, -⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι d.isom`. Establish `hγ' : EmbRel B A ι γ⁻¹ h⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hγ`, the goal using `[hs]`. Rewrite using `[hγ, map_inv]`. Establish `h1` using `conj_N d hγ hγ'`. Establish `h2 : ∀ n ∈ d.N, γ⁻¹ * n * γ ∈ d.N` using `fun n hn => by`. Use `conj_N d hγ' (by rwa [inv_inv]) n hn` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Take `⟨ν', 𝓝', hν', hint⟩` from `exists_pair d.N (GQ B) γ hQ h1 h2 ν 𝓝 hν.1 hν.2.1 hν.2.2`. Establish `e` using `congrFun ((GlobalTheory.Mem.BesselCoeffIndep.coeff_indep_and_equivariant D A B ι d ψ hψ F hF ν 𝓝 hν).1 ν' 𝓝' hν') g`. Rewrite using `[← e]`. Unfold `BesselDatum.coeff`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hint fun n => F (n * g) * star (d.psiN ψ n)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Use `show F (n * (γ * g)) * star (d.psiN ψ n) = F (γ⁻¹ * n * γ * g) * star (d.psiN ψ (γ⁻¹ * n * γ))`. Rewrite using `[psiN_conj d ψ hγ, mul_assoc, mul_assoc, hF _ ((GQ B).inv_mem hQ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_rational : ∀ (D : D7) (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : BesselDatum A B ι) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ F : GA D B → ℂ, (∀ γ ∈ GQ B, ∀ g, F (γ * g) = F g) → ∀ ν 𝓝, d.IsUnitPair ν 𝓝 → ∀ γ h, EmbRel B A ι γ h → γ ∈ GQ B → ∀ g, d.coeff ψ ν 𝓝 F (γ * g) = d.coeff ψ ν 𝓝 F g := by
   intro D A B ι d ψ hψ F hF ν 𝓝 hν γ h hγ hQ g

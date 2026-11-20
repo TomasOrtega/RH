@@ -18,7 +18,7 @@ namespace SectionsLatticeFS
 open ProjScheme
 
 /- English proof (translation)
-Rewrite using `[ProjSpace.polyToChart, MvPolynomial.eval₂Hom_comp_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma chart_structureMap_eq (A : Type u) [CommRing A] (N : ℕ) (j : Fin (N + 1)) :
     (HomogeneousLocalization.fromZeroRingHom (ProjSpace.grading A N)
@@ -28,7 +28,7 @@ lemma chart_structureMap_eq (A : Type u) [CommRing A] (N : ℕ) (j : Fin (N + 1)
   rw [ProjSpace.polyToChart, MvPolynomial.eval₂Hom_comp_C]
 
 /- English proof (translation)
-Rewrite using `[chart_structureMap_eq]`. Use `RingHom.Flat.comp ?_ (RingHom.Flat.of_bijective (ProjSpace.chartEquiv A j).symm.bijective)` and prove the remaining obligations. Rewrite using `[← MvPolynomial.algebraMap_eq, RingHom.flat_algebraMap_iff]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma flat_chart_structureMap (A : Type u) [CommRing A] (N : ℕ) (j : Fin (N + 1)) :
     ((HomogeneousLocalization.fromZeroRingHom (ProjSpace.grading A N)
@@ -40,11 +40,11 @@ lemma flat_chart_structureMap (A : Type u) [CommRing A] (N : ℕ) (j : Fin (N + 
   infer_instance
 
 /- English proof (translation)
-Introduce `A _ N`. Express the relevant statement in the definitionally equal form `Flat (𝟙 _ ≫ ProjSpace.toSpecBase A N)`. Rewrite using `[Category.id_comp]`. Establish `: IsZariskiLocalAtSource @Flat` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `(IsZariskiLocalAtSource.iff_of_iSup_eq_top _ (ProjSpace.iSup_stdOpen (A := A) (n := N))).mpr fun j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Flat ((Proj.basicOpen (ProjSpace.grading A N) (X j)).ι ≫ ProjSpace.toSpecBase A N)`. Establish `e : (Proj.basicOpen (ProjSpace.grading A N) (X j)).ι = (Proj.basicOpenIsoSpec (ProjSpace.grading A N) (X j) (ProjSpace.X_mem j) one_pos).hom ≫ Proj.awayι (ProjSpace.grading A N) (X j) (ProjSpace.X_mem j) one_pos`. Rewrite using `[← Proj.basicOpenIsoSpec_inv_ι, Iso.hom_inv_id_assoc]`. Establish `h : Flat (Proj.awayι (ProjSpace.grading A N) (X j) (ProjSpace.X_mem j) one_pos ≫ ProjSpace.toSpecBase A N)`. Rewrite using `[ProjSpace.toSpecBase, Proj.awayι_toSpecZero_assoc, ← Spec.map_comp, Flat.SpecMap_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `flat_chart_structureMap A N j`. Rewrite using `[e, Category.assoc]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PNFlat.proof : PNFlat.Statement.{u} := by
   intro A _ N

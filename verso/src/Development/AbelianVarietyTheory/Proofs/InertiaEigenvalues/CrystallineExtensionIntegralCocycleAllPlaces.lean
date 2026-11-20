@@ -26,14 +26,14 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, LinearMap.map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smulA {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (a : LetA O n) (x : W.DD T) :
     W.map f (a • x) = a • W.map f x := by
   rw [← algebraMap_smul W.EE a x, LinearMap.map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
@@ -41,7 +41,7 @@ theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [LocWach.φA, letφ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply, letE, Pi.single_apply, sub_left_inj]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem φA_letE (i : ZMod n) : W.φA (letE (i - 1) : LetA O n) = letE i := by
   funext j
@@ -50,16 +50,16 @@ theorem φA_letE (i : ZMod n) : W.φA (letE (i - 1) : LetA O n) = letE i := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[letE, Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_letE [NeZero n] : ∑ i : ZMod n, (letE i : LetA O n) = 1 := by
   funext j
   simp [letE, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih`. Rewrite using `[pow_succ', AlgHom.mul_apply]`. Establish `: algebraMap (LetA O n) W.EE (W.φA ((W.φA ^ k) a)) = W.φE (algebraMap (LetA O n) W.EE ((W.φA ^ k) a))` using `(W.φE_ext _).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `ih.map W.φE`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_φA_pow (k : ℕ) (a : LetA O n) (ha : IsUnit (algebraMap (LetA O n) W.EE a)) :
     IsUnit (algebraMap (LetA O n) W.EE ((W.φA ^ k) a)) := by
@@ -73,17 +73,17 @@ theorem isUnit_φA_pow (k : ℕ) (a : LetA O n) (ha : IsUnit (algebraMap (LetA O
     exact ih.map W.φE
 
 /- English proof (translation)
-The claim follows from `isUnit_φA_pow W (W.s - 1) letπ W.EE_π`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_X : IsUnit (algebraMap (LetA O n) W.EE W.X) :=
   isUnit_φA_pow W (W.s - 1) letπ W.EE_π
 
 /- English proof (translation)
-Establish `hx' : x = ∑ i : ZMod n, (letE i : LetA O n) • x`. Rewrite using `[← Finset.sum_smul, sum_letE, one_smul]`. Rewrite using `[hx', map_sum, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hle : M (i + 1) ≤ mx M` using `le_ciSup (Set.finite_range M).bddAbove (i + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmem : (letE i : LetA O n) • x ∈ W.Nl T (i + 1 - 1)`. Rewrite using `[add_sub_cancel_right]`. Conclude with `⟨x, hx, by simp⟩`. Establish `h1` using `hM (i + 1) _ hmem`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ h1`.
+A detailed English derivation is pending.
 -/
 theorem Q_pow_φ_mem [NeZero n] (T : LocLat G Qp LL O) (M : ZMod n → ℕ)
     (hM : ∀ i, ∀ x ∈ W.Nl T (i - 1), W.Q ^ (M i) • W.φD T x ∈ W.N T)
@@ -101,15 +101,15 @@ theorem Q_pow_φ_mem [NeZero n] (T : LocLat G Qp LL O) (M : ZMod n → ℕ)
   exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h0 : W.map π (W.φD Tp x - x) = 0`. Rewrite using `[map_sub, W.map_φ, hc, (W.φD W.one).map_smul, he, sub_self]`. Take `⟨y, hy⟩` from `hex _ h0`. Use `⟨y, hsat _ ?_, hy⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `W.map ι (W.Q ^ mx M • y) ∈ W.N Tp`. Rewrite using `[map_smulA, hy, smul_sub]`. Conclude with `Submodule.sub_mem _ (Q_pow_φ_mem W Tp M hφ x hx) (Submodule.smul_mem _ _ hx)`. Take `⟨w, hw, hw'⟩` from `hγ x hx`. Express the relevant statement in the definitionally equal form `W.X • w = W.γ Tp x - x at hw'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hX0 : W.X • W.map π w = 0`. Rewrite using `[← map_smulA, hw', map_sub, LocWach.γ, W.map_γ, hc, (W.γD W.one W.gam).map_smul, hge, sub_self]`. Establish `h0 : W.map π w = 0`. Take `⟨u, hu⟩` from `isUnit_X W`. Rewrite `hX0` using `[← algebraMap_smul W.EE W.X, ← hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun y => ((u⁻¹ : W.EEˣ) : W.EE) • y) hX0` as an intermediate fact. Simplify `this` using `[smul_smul]`. Take `⟨z, hz⟩` from `hex _ h0`. Establish `hzN : z ∈ W.N T` using `hsat z (hz ▸ hw)`. Use `⟨W.X • z, ⟨z, hzN, rfl⟩, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smulA, hz]`. Conclude with `hw'`.
+A detailed English derivation is pending.
 -/
 theorem core [NeZero n] (T Tp : LocLat G Qp LL O) (ι : LatHom T.L Tp.L) (π : LatHom Tp.L W.one.L)
     (M : ZMod n → ℕ)
@@ -150,11 +150,11 @@ end Generic
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm l _ K s LL h T M hh hT hjT Tp ι π hses hTp e heN hφe hγe x hx c hc`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Establish `hexact` using `(GlobalTheory.EtaleExact.DD_exact D HW F (GlobalTheory.Decompl.fontaine_and_decompletion D HW F) l K s LL h T Tp ((HW l).W K s LL h).one ι π hses).2.1`. Establish `hsat` using `GlobalTheory.T.mem_wachN_of_map_mem_saturated D HW F l K s LL h T Tp ((HW l).W K s LL h).one ι π hT hTp (GlobalTheory.NL.one_crys (HW l) h) hses`. Establish `hjs` using `GlobalTheory.NL.JumpsSES.jumps_ses_and_one D HW l K s LL h T Tp ((HW l).W K s LL h).one ι π hTp hses`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjTp : JumpsLet ((HW l).W K s LL h) Tp M hh`. Introduce `τ i hτ a ha`. Break down `(hjs.1 τ a).1 ha with h1 | h1` into its components or cases. Conclude with `hjT τ i hτ a h1`. Rewrite using `[hjs.2 τ a h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨by simp, by simp⟩`. Establish `h5` using `(GlobalTheory.T.wachLattice_heights_from_hodgeJumps D HW F Cm l K s LL h Tp M hh hTp hjTp).1`. Establish `h2` using `(GlobalTheory.NL.WachLatticeTrivialModUniformizer.wachLattice_galois_trivial_mod_uniformizer D HW F Cm l K s LL h Tp hTp).2.2`. Conclude with `core _ T Tp ι π M (fun y hy => (hexact y).1 hy) hsat h5 h2 e hφe hγe x hx c hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem crystalline_extension_integral_cocycle_all_places : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F), P8 D HW F := by

@@ -14,7 +14,7 @@ open scoped Matrix
 namespace GlobalTheory.Ord2.UnramAtL
 
 /- English proof (translation)
-Use `⟨⟨!![0, 1; -1, 0], !![0, -1; 1, 0], by simp [Matrix.one_fin_two], by simp [Matrix.one_fin_two]⟩, fun s => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.det_fin_two] <;> ring`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k) :
     DualTw r (Matrix.GeneralLinearGroup.det.comp r) := by
@@ -23,9 +23,7 @@ theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k)
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.det_fin_two] <;> ring
 
 /- English proof (translation)
-Establish `hpr : Prime (l : 𝓞 ℚ)`. Establish `e : (l : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm (l : ℤ)` using `by simp`. Rewrite using `[e]`. Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).mpr (Nat.prime_iff_prime_int.1 hl.out)`. Establish `hm : (Ideal.span {(l : 𝓞 ℚ)}).IsMaximal` using `((Ideal.span_singleton_prime hpr.ne_zero).2 hpr).isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hpr.ne_zero)`.
-
-Conclude with `HeightOneSpectrum.ext ((hm.eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hv)).symm.trans (hm.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem place_unique (l : ℕ) [hl : Fact l.Prime] {v w : Pl} (hv : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal)
     (hw : ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal) : v = w := by
@@ -44,23 +42,21 @@ end GlobalTheory.Ord2.UnramAtL
 open GlobalTheory.Ord2.UnramAtL in
 
 /- English proof (translation)
-Introduce `P l _ Ω _ _ _ ι e V A κ g hl he hcont hirr hAway hKill hOver hfl hκ _ π hreg hatt w hw`. Take `⟨M, hM, haway⟩` from `hAway`. Take `⟨M', hM', hkill⟩` from `hKill`. Take `⟨v, hAv, hlv⟩` from `hOver`. Take `rfl : w = v` from `place_unique l hw hlv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hAl : A.valuation (l : Ω) < 1` using `by simpa using (hAv _).2 hlv`. Set `m : Fin 2 → ℤ` to `![(e : ℤ), -(e : ℤ)]`. Establish `hκm : ∀ i (s : ↥(Dec (F` using `ℚ) A)), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ i s = cycBar ℚ Ω l s ^ m i * (1 : G ℚ Ω →* (Qbar l)ˣ) s := by`. Introduce `i s hs`. Use `fin_cases i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(hκ s hs).1` using `[m]`. Simplify `(hκ s hs).2` using `[m]`. Establish `hor : ∀ i j, κ i ≠ κ j * (cycBar ℚ Ω l).comp (Dec (F` using `ℚ) A).subtype := by`. Introduce `i j hij`. Apply the tactic sequence `obtain ⟨s, hs, hne⟩ := UpperTheory.V.Ws.Pt.cycIne ℚ Ω l A hAl (m i - m j - 1) (by fin_cases i <;> fin_cases j <;> simp [m] <;> omega)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun f => f ⟨s, Ine_le_Dec A hs⟩) hij`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, Subgroup.coe_subtype] at h1`. Rewrite `h1` using `[hκm i _ hs, hκm j _ hs]`. Apply `hne` to reduce the goal to its premises. Simplify using `only [MonoidHom.one_apply, mul_one] at h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub, zpow_sub, h1, zpow_one]`. Use `group`. Establish `hlev : Level l M m V` using `⟨hcont, haway, fun w' hw' => by`. Take `rfl : w = w'` from `place_unique l hlv hw'`. Conclude with `⟨A, hAv, fun _ => 1, κ, fun _ _ _ => rfl, hfl, hκm, Or.inl hor⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdual : ∃ θ, IsCycWt l 0 θ ∧ DualTw V θ` using `⟨dt V, ⟨M', dt V, hM', hkill, by simp⟩, dualTw_det V⟩`. Establish `hanti : StrictAnti m`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [m] at hij ⊢ <;> omega`. Establish `hL : GlobalTheory.Published.LocalLanglandsGL` using `GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein P.litN.loc.llc P.litN.loc.conv P.litN.loc.dzc P.litN.loc.dzi P.litN.loc.brauer P.litN.loc.chev P.litN.aut.art P.litN.loc.exh P.litN.loc.multi P.litN.loc.cos P.litN.loc.zel P.litN.loc.geo P.litN.loc …`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rc, hrc, -⟩` from `hL.1 ℚ Ω A w hAv`. Take `⟨j, L0, hj, hB⟩` from `GlobalTheory.PlaceBridge.exists_locBridge l ℚ Ω w A hw hAv`. Take `⟨Bw, hBj, -⟩` from `hB L0 le_rfl`. Establish `hI : GlobalTheory.Pst.Induces Bw` using `fun x => by rw [hBj]; exact hj x`. Take `⟨c1, c2⟩` from `compatAtLQ P 2 le_rfl 0 l hl Ω ι V π hcont hirr M m hM hanti hlev hdual hreg hatt w A hAv _ Bw hI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨σ, hσ⟩, hiso⟩` from `locCompR P ℚ 2 π w`. Take `⟨x, hx0, hx⟩` from `Lev.fixedAll P ℚ Ω l ι 2 1 le_rfl m V hcont w A hAv _ Bw hI κ ⟨fun _ => 1, fun _ _ _ => rfl, hfl, hκm⟩ c1 rc hrc σ (fun ⟨μ, hμ⟩ => c2 σ hσ rc hrc (Or.inl ((Lev.ssCalc ℚ Ω A w hAv).1 2 _ μ hμ))) (Or.inr (Or.inl hor))`. Establish `hK : HasFixed σ.ρ (GlobalTheory.LFun.KGL w 2)` using `⟨x, hx0, fun u hu => hx u (locGL_mem_KLev 2 w (by`. Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 w.isPrime.ne_top) hu)⟩`.
-
-Take `⟨B, hB⟩` from `(satLoc P ℚ 2 w σ).1 hK`. Conclude with `⟨B, ((satLoc P ℚ 2 w σ).2 _ π.finPart (hiso σ hσ) B).2 hB⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Ord2.unram_at_l : Af.Hypotheses₂ → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (V : R2 Ω l) (A : ValuationSubring Ω) (κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ) (g : Newform (2 * e + 1)), l ≠ 2 → 1 ≤ e → Continuous V → IsIrr V → (∃ M : ℕ, 1 ≤ M ∧ LevelAway l M V) → (∃ M : ℕ, 1 ≤ M ∧ KillsMu M (dt V)) → OverL l A → IsFlagOn V (Dec (F := ℚ) A) κ → (∀ s : ↥(Dec (F := ℚ) A), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ 0 s = cycBar ℚ Ω l s ^ (e : ℤ) ∧ κ 1 s = cycBar ℚ Ω l s ^ (-(e : ℤ))) → g.Att ι (tw V (cycBar ℚ Ω l ^ (-(e : ℤ)))) → ∀ π : TR.CuspSub ℚ 2, π.IsRegAlg → AttR ι V π → ∀ w : Pl, ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal → ∃ Bs, π.HasSat w Bs := by
   intro P l _ Ω _ _ _ ι e V A κ g hl he hcont hirr hAway hKill hOver hfl hκ _ π hreg hatt w hw
@@ -120,7 +116,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Ord2.unram_at_l | exact GlobalTheory.Ord2.unram_at_l | (intros; apply GlobalTheory.Ord2.unram_at_l <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.newform_flag_local_of_irreducible : Af.Hypotheses₂ → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (V : R2 Ω l) (A : ValuationSubring Ω) (κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ) (g : Newform (2 * e + 1)), l ≠ 2 → 1 ≤ e → Continuous V → IsIrr V → (∃ M : ℕ, 1 ≤ M ∧ LevelAway l M V) → (∃ M : ℕ, 1 ≤ M ∧ KillsMu M (dt V)) → OverL l A → IsFlagOn V (Dec (F := ℚ) A) κ → (∀ s : ↥(Dec (F := ℚ) A), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ 0 s = cycBar ℚ Ω l s ^ (e : ℤ) ∧ κ 1 s = cycBar ℚ Ω l s ^ (-(e : ℤ))) → g.Att ι (tw V (cycBar ℚ Ω l ^ (-(e : ℤ)))) → ∀ π : TR.CuspSub ℚ 2, π.IsRegAlg → AttR ι V π → ∀ w : Pl, ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal → ∃ Bs, π.HasSat w Bs := by
   first | exact @GlobalTheory.Ord2.unram_at_l | exact GlobalTheory.Ord2.unram_at_l | (intros; apply GlobalTheory.Ord2.unram_at_l <;> assumption)

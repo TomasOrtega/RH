@@ -14,9 +14,9 @@ variable {k : Type} [Field k] [Invertible (2 : k)] {K : Type} [CommRing K] [Alge
 
 omit [Invertible (2 : k)] [DecidableEq α] [DecidableEq β] in
 /- English proof (translation)
-Unfold `hTens`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hTens_transpose (JA : Matrix α α K) (JB : Matrix β β K) (x y : Matrix β α K) :
     hTens c JB JA x y = hTens c JA JB xᵀ yᵀ := by
@@ -36,7 +36,7 @@ def lagY {ξ : K} {JA : Matrix α α K} {JB : Matrix β β K} (d : Darboux (symp
 
 omit [DecidableEq α] [DecidableEq β] [DecidableEq ν] in
 /- English proof (translation)
-Simplify using `[lagY, LinearMap.mem_range]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lagY {ξ : K} {JA : Matrix α α K} {JB : Matrix β β K} {d : Darboux (symp (R := k) c ξ JB JA) κ} {Cy : Matrix β ν K}
     {w : (κ → k) × (κ → k)} : w ∈ lagY d Cy ↔ ∃ z : Matrix ν α K, d.e (Cy * z) = w := by
@@ -44,9 +44,9 @@ theorem mem_lagY {ξ : K} {JA : Matrix α α K} {JB : Matrix β β K} {d : Darbo
 
 omit [DecidableEq α] [DecidableEq β] [DecidableEq ν] in
 /- English proof (translation)
-Introduce `w hw w' hw'`. Take `⟨z, rfl⟩` from `mem_lagY.1 hw`. Take `⟨z', rfl⟩` from `mem_lagY.1 hw'`. Establish `h0` using `d.form (Cy * z) (Cy * z')`. Establish `hs : symp (R` using `k) c ξ JB JA (Cy * z) (Cy * z') = 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `symp`. Rewrite using `[hTens_transpose, transpose_mul, transpose_mul, GlobalTheory.CompanionTheory.SplitUnique.hTens_eq_zero c JA h zᵀ z'ᵀ, mul_zero, map_zero]`. Rewrite `h0` using `[hs]`. Conclude with `sub_eq_zero.1 h0.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagY_iso {ξ : K} {JA : Matrix α α K} {JB : Matrix β β K} (d : Darboux (symp (R := k) c ξ JB JA) κ) {Cy : Matrix β ν K}
     (h : Cyᵀ * JB * Cy.map c = 0) : ∀ w ∈ lagY d Cy, ∀ w' ∈ lagY d Cy, w.1 ⬝ᵥ w'.2 = w'.1 ⬝ᵥ w.2 := by
@@ -63,7 +63,7 @@ theorem lagY_iso {ξ : K} {JA : Matrix α α K} {JB : Matrix β β K} (d : Darbo
 
 omit [Invertible (2 : k)] in
 /- English proof (translation)
-Take `⟨-, Cx, M, -, h1, h2⟩` from `h`. Set `f : (β → K) ≃ₗ[K] (ν ⊕ ν → K)` to `LinearEquiv.ofLinearMap (Matrix.toLin' M) (Matrix.toLin' (fromCols Cy Cx)) (by rw [← Matrix.toLin'_mul, h2, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, h1, Matrix.toLin'_one])`. Rewrite using `[card_eq_of_linearEquiv K f, Fintype.card_sum, two_mul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_lagr [Nontrivial K] {JB : Matrix β β K} {Cy : Matrix β ν K} (h : IsLagr c JB Cy) :
     Fintype.card β = 2 * Fintype.card ν := by
@@ -77,9 +77,9 @@ theorem card_lagr [Nontrivial K] {JB : Matrix β β K} {Cy : Matrix β ν K} (h 
 omit [Invertible (2 : k)] [Fintype α] [DecidableEq α] in
 
 /- English proof (translation)
-Establish `hrows : fromRows z z' = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `e1` using `congrArg Matrix.toRows₁ hrows`. Establish `e2` using `congrArg Matrix.toRows₂ hrows`. Simplify using `only [toRows₁_fromRows, toRows₂_fromRows] at e1 e2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine ⟨e1.trans ?_, e2.trans ?_⟩ <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem indep {Cy Cx : Matrix β ν K} {M : Matrix (ν ⊕ ν) β K} (h2 : M * fromCols Cy Cx = 1) {z z' : Matrix ν α K}
     (h : Cy * z + Cx * z' = 0) : z = 0 ∧ z' = 0 := by
@@ -94,13 +94,13 @@ theorem indep {Cy Cx : Matrix β ν K} {M : Matrix (ν ⊕ ν) β K} (h2 : M * f
 
 omit [DecidableEq α] in
 /- English proof (translation)
-Take `⟨b, -, -⟩` from `hq.basis`. Establish `: Module.Free k K` using `Module.Free.of_basis b`. Establish `: Module.Finite k K` using `Module.Finite.of_basis b`. Establish `hK : Module.finrank k K = 2` using `by rw [Module.finrank_eq_card_basis b, Fintype.card_fin]`. Establish `hcard` using `card_lagr h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, Cx, M, -, -, hM⟩` from `h`. Establish `hd` using `d.e.finrank_eq`. Rewrite `hd` using `[Module.finrank_matrix, Module.finrank_prod, Module.finrank_fintype_fun_eq_card, hK, hcard]`. Unfold `lagY`. Rewrite using `[LinearMap.finrank_range_of_inj, Module.finrank_matrix, hK]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `z z' hz`. Establish `hz' : Cy * z = Cy * z'` using `d.e.injective hz`. Establish `h3 : Cy * (z - z') + Cx * (0 : Matrix ν α K) = 0`. Rewrite using `[Matrix.mul_sub, hz', sub_self, Matrix.mul_zero, add_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 (indep hM h3).1`.
+A detailed English derivation is pending.
 -/
 theorem lagY_dim [Nontrivial K] {ξ₀ : K} (hq : IsQuad c ξ₀) {ξ : K} {JA : Matrix α α K} {JB : Matrix β β K}
     (d : Darboux (symp (R := k) c ξ JB JA) κ) {Cy : Matrix β ν K} (h : IsLagr c JB Cy) :
@@ -125,15 +125,15 @@ theorem lagY_dim [Nontrivial K] {ξ₀ : K} (hq : IsQuad c ξ₀) {ξ : K} {JA :
 omit [Invertible (2 : k)] in
 
 /- English proof (translation)
-Take `⟨b, -, -⟩` from `hq.basis`. Establish `: Module.Free k K` using `Module.Free.of_basis b`. Establish `: Module.Finite k K` using `Module.Finite.of_basis b`. Use `⟨Module.finrank k (Matrix ν α K), (Module.finBasis k (Matrix ν α K)).equivFun.symm, fun t => ?_⟩` and prove the remaining obligations. Use `set e := (Module.finBasis k (Matrix ν α K)).equivFun.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `TK : GL α K → Matrix ν α K →ₗ[K] Matrix ν α K` to `fun s => { toFun := fun x => x * (s : Matrix α α K)ᵀ map_add' := fun x y => Matrix.add_mul x y _ map_smul' := fun a x => Matrix.smul_mul a x _ }`. Set `F : GL α K → (Fin (Module.finrank k (Matrix ν α K)) → k) →ₗ[k] (Fin (Module.finrank k (Matrix ν α K)) → k)` to `fun s => (e.symm : Matrix ν α K →ₗ[k] _) ∘ₗ (TK s).restrictScalars k ∘ₗ (e.symm.symm : _ →ₗ[k] Matrix ν α K)`. Establish `hF : ∀ s x, F s x = e.symm (e x * (s : Matrix α α K)ᵀ)` using `fun s x => rfl`. Establish `hinv : ∀ s s' : GL α K, s' * s = 1 → F s' ∘ₗ F s = LinearMap.id`. Introduce `s s' hss`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hF, hF, LinearEquiv.apply_symm_apply, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, hss, Units.val_one, Matrix.transpose_one, Matrix.mul_one, LinearEquiv.symm_apply_apply, LinearMap.id_apply]`. Set `g : GL (Fin (Module.finrank k (Matrix ν α K))) k` to `⟨LinearMap.toMatrix' (F t), LinearMap.toMatrix' (F t⁻¹), by rw [← LinearMap.toMatrix'_comp, hinv _ _ (mul_inv_cancel t), LinearMap.toMatrix'_id], by rw [← LinearMap.toMatrix'_comp, hinv _ _ (inv_mul_cancel t), LinearMap.toMatrix'_id]⟩`. Use `⟨g, fun x => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (LinearMap.toMatrix' (F t) *ᵥ x) = _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.toMatrix'_mulVec, hF, LinearEquiv.apply_symm_apply]`. Establish `hpi : (Matrix.ofLinearEquiv K).symm.toLinearMap ∘ₗ TK t ∘ₗ (Matrix.ofLinearEquiv K).symm.symm.toLinearMap = LinearMap.pi (fun i : ν => (Matrix.toLin' (t : Matrix α α K)).comp (LinearMap.proj i))`. Use `LinearMap.ext fun x => funext fun i => funext fun j => ?_` and prove the remaining obligations. Simplify using `[TK, Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Establish `hdetK : LinearMap.det (TK t) = Matrix.det (t : Matrix α α K) ^ Fintype.card ν`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.det_conj (TK t) (Matrix.ofLinearEquiv K).symm, hpi, LinearMap.det_pi, Finset.prod_const, Finset.card_univ, LinearMap.det_toLin']`. Use `ext`. Express the relevant statement in the definitionally equal form `Matrix.det (LinearMap.toMatrix' (F t)) = _`. Rewrite using `[LinearMap.det_toMatrix', LinearMap.det_conj, LinearMap.det_restrictScalars, hdetK, map_pow]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord {ξ₀ : K} (hq : IsQuad c ξ₀) (ν α : Type) [Fintype ν] [Fintype α] [DecidableEq α] :
     ∃ (r : ℕ) (e : (Fin r → k) ≃ₗ[k] Matrix ν α K), ∀ t : GL α K, ∃ g : GL (Fin r) k,
@@ -181,9 +181,9 @@ theorem exists_coord {ξ₀ : K} (hq : IsQuad c ξ₀) (ν α : Type) [Fintype �
 omit [DecidableEq α] [DecidableEq β] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `hd : ∀ u v : κ ⊕ κ' → k, u ⬝ᵥ v = (u ∘ Sum.inl) ⬝ᵥ (v ∘ Sum.inl) + (u ∘ Sum.inr) ⬝ᵥ (v ∘ Sum.inr)` using `fun u v => by`. Simplify using `[dotProduct, Fintype.sum_sum_type]`. Establish `e1 : (x + w.1) ∘ Sum.inl = x ∘ Sum.inl + w.1 ∘ Sum.inl` using `rfl`. Establish `e2 : (x + w.1) ∘ Sum.inr = x ∘ Sum.inr + w.1 ∘ Sum.inr` using `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [schr, boxFun]`. Rewrite using `[e1, e2, hd x w.2, hd w.1 w.2]`. Establish `e3 : (x ∘ Sum.inl) ⬝ᵥ (w.2 ∘ Sum.inl) + (x ∘ Sum.inr) ⬝ᵥ (w.2 ∘ Sum.inr) + ⅟(2 : k) * ((w.1 ∘ Sum.inl) ⬝ᵥ (w.2 ∘ Sum.inl) + (w.1 ∘ Sum.inr) ⬝ᵥ (w.2 ∘ Sum.inr)) = ((x ∘ Sum.inl) ⬝ᵥ (w.2 ∘ Sum.inl) + ⅟(2 : k) * ((w.1 ∘ Sum.inl) ⬝ᵥ (w.2 ∘ Sum.inl))) + ((x ∘ Sum.inr) ⬝ᵥ (w.2 ∘ Sum.in …` using `by ring`. Rewrite using `[e3, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_box (ψ : AddChar k ℂ) {κ' : Type} [Fintype κ'] (w : (κ ⊕ κ' → k) × (κ ⊕ κ' → k)) (φ₁ : (κ → k) → ℂ)
     (φ₂ : (κ' → k) → ℂ) : schr ψ w (boxFun φ₁ φ₂) =

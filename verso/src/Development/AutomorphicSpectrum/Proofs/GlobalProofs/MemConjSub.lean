@@ -10,7 +10,7 @@ def Lvl {n : ℕ} (O : Subring F) (c : F) (X : Matrix (Fin n) (Fin n) F) : Prop 
   ∀ a b, ∃ o ∈ O, X a b = c * o
 
 /- English proof (translation)
-Introduce `a b` and use `by obtain ⟨o, ho, h⟩ := hX a b obtain ⟨o', ho', h'⟩ := hY a b exact ⟨o + o', O.add_mem ho ho', by simp [h, h', mul_add]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Lvl.add {n : ℕ} {O : Subring F} {c : F} {X Y : Matrix (Fin n) (Fin n) F} (hX : Lvl O c X)
     (hY : Lvl O c Y) : Lvl O c (X + Y) := fun a b => by
@@ -19,7 +19,7 @@ theorem Lvl.add {n : ℕ} {O : Subring F} {c : F} {X Y : Matrix (Fin n) (Fin n) 
   exact ⟨o + o', O.add_mem ho ho', by simp [h, h', mul_add]⟩
 
 /- English proof (translation)
-Introduce `a b` and use `by obtain ⟨o, ho, h⟩ := hX a b exact ⟨-o, O.neg_mem ho, by simp [h]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Lvl.neg {n : ℕ} {O : Subring F} {c : F} {X : Matrix (Fin n) (Fin n) F} (hX : Lvl O c X) :
     Lvl O c (-X) := fun a b => by
@@ -27,7 +27,7 @@ theorem Lvl.neg {n : ℕ} {O : Subring F} {c : F} {X : Matrix (Fin n) (Fin n) F}
   exact ⟨-o, O.neg_mem ho, by simp [h]⟩
 
 /- English proof (translation)
-Introduce `a b` and use `by choose f hf hf' using hX refine ⟨∑ k, Y a k * f k b, O.sum_mem fun k _ => O.mul_mem (hY a k) (hf k b), ?_⟩ rw [Matrix.mul_apply, Finset.mul_sum] exact Finset.sum_congr rfl fun k _ => by rw [hf' k b]; ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Lvl.int_mul {n : ℕ} {O : Subring F} {c : F} {X Y : Matrix (Fin n) (Fin n) F}
     (hY : IsInt O Y) (hX : Lvl O c X) : Lvl O c (Y * X) := fun a b => by
@@ -79,9 +79,9 @@ def conjSub {G : Type} [Group G] (H : Subgroup G) (d : G) : Subgroup G :=
   H.map (MulAut.conj d⁻¹).toMonoidHom
 
 /- English proof (translation)
-Simplify using `only [conjSub, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Simplify `hh` using `[mul_assoc]`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, by simp [mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_conjSub {G : Type} [Group G] (H : Subgroup G) (d p : G) :
     p ∈ conjSub H d ↔ d * p * d⁻¹ ∈ H := by

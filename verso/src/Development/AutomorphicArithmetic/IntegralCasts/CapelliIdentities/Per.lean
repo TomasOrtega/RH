@@ -3,7 +3,7 @@ import Mathlib
 namespace PeriodicSumRangeMul
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[show (k + 1) * P + x = (k * P + x) + P by ring, h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private lemma per {N : Type} [AddCommGroup N] (g : ℕ → N) (P : ℕ)
     (h : ∀ (i : ℕ), g (i + P) = g i) (k x : ℕ) : g (k * P + x) = g x := by
@@ -15,9 +15,9 @@ private lemma per {N : Type} [AddCommGroup N] (g : ℕ → N) (P : ℕ)
 end PeriodicSumRangeMul
 
 /- English proof (translation)
-Introduce `N _ g P h k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[show (k + 1) * P = k * P + P by ring, Finset.sum_range_add, ih, succ_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl (fun x _ => PeriodicSumRangeMul.per g P h k x)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yra7.main :
     ∀ {N : Type} [inst : AddCommGroup N] (g : ℕ → N) (P : ℕ),

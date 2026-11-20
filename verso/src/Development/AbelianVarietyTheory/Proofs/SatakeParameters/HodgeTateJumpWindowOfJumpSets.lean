@@ -10,15 +10,15 @@ namespace GlobalTheory.BlockWindow
 open Formalism.MainNotions.AdmissibleParameterJ in
 
 /- English proof (translation)
-Establish `hc : (Jp D j ρ).ncard = D.R.nV` using `(hb j h1 h2 ρ).2.2.2.2.2`. Establish `hf : (Jp D j ρ).Finite` using `Set.finite_of_ncard_pos (by omega)`. Consider the cases of `up with`. Consider the case `true => simpa [JJ] using And.intro hf hc`. Consider the case `false`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hinj : Function.Injective (AdmissibleParameterJ.refl D)`. Introduce `a b hab`. Simplify using `only [AdmissibleParameterJ.refl] at hab`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEq : Jm D j ρ = AdmissibleParameterJ.refl D '' Jp D j ρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use extensionality with `q`. Simplify using `only [Jm, reflS, Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, by simp [AdmissibleParameterJ.refl]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: AdmissibleParameterJ.refl D (AdmissibleParameterJ.refl D u) = u` using `by simp [AdmissibleParameterJ.refl]`. Rewrite using `[this]` and apply the resulting hypothesis. Simplify using `only [JJ, Bool.false_eq_true, if_false]`. Rewrite using `[hEq]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hf.image _, by rw [Set.ncard_image_of_injective _ hinj, hc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem JJ_finite_ncard {D : D7} (L : SizeData₂ D) (hb : AdmissibleParameterJ.CloudCentreDistance L) (hn : 0 < D.R.nV) (up : Bool) (j : ℕ) (h1 : 1 ≤ j)
     (h2 : j ≤ D.R.m) (ρ : D.what₂.Tau) : (JJ D up j ρ).Finite ∧ (JJ D up j ρ).ncard = D.R.nV := by
@@ -45,21 +45,21 @@ theorem JJ_finite_ncard {D : D7} (L : SizeData₂ D) (hb : AdmissibleParameterJ.
     exact ⟨hf.image _, by rw [Set.ncard_image_of_injective _ hinj, hc]⟩
 
 /- English proof (translation)
-Introduce `D large₂ hJ hP`. Take `⟨⟨ep, hA⟩, hb, -, -, he, -, -⟩` from `hJ`. Establish `hn : 0 < D.R.nV`. Use `D.R.rank_add_five_le` as an intermediate fact. Unfold `Ranks.nV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Establish `hS` using `large₂.Sc_pos`. Establish `hη` using `large₂.etaSz_pos`. Establish `hP' : large₂.Sc + large₂.etaSz + (D.R.t : ℝ) + 2 ≤ large₂.sc.b` using `hP`. Establish `ht0 : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Nat.le_floor (by linarith), ?_⟩` and prove the remaining obligations. Introduce `i r hr π w hw CL h τ`. Take `⟨g, ρ, -, hx, -⟩` from `hA i r hr w hw ⟨CL, h⟩ τ`. Establish `hj` using `D.nd.j_range i`. Take `⟨hfin, hcard⟩` from `JJ_finite_ncard large₂ hb hn (decide (AdmissibleParameterJ.TypeU D ep g)) (D.nd.j i) hj.1 hj.2 ρ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpre : ((fun a : ℤ => (a : ℚ)) ⁻¹' AdmissibleParameterJ.JJ D (decide (AdmissibleParameterJ.TypeU D ep g)) (D.nd.j i) ρ).Finite` using `hfin.preimage (Int.cast_injective.injOn)`. Use `⟨hpre.toFinset, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcard, ← Set.ncard_eq_toFinset_card _ hpre, ← Set.ncard_image_of_injective _ (Int.cast_injective (α := ℚ))]`. Conclude with `Set.ncard_le_ncard (Set.image_preimage_subset _ _) hfin`. Introduce `u hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu' : (u : ℚ) ∈ AdmissibleParameterJ.JJ D (decide (AdmissibleParameterJ.TypeU D ep g)) (D.nd.j i) ρ`. Simplify using `using hu`. Establish `hbd` using `he.1 _ hj.1 hj.2 ρ _ _ hu'`. Establish `hc0 : ((AdmissibleParameterJ.c0 D : ℚ) : ℝ) = ((D.R.t : ℝ) - 1) / 2`. Simplify using `[AdmissibleParameterJ.c0]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hbd` using `[hc0]`. Establish `habs : ((u.natAbs : ℕ) : ℝ) = |((u : ℚ) : ℝ)|`. Simplify using `[Nat.cast_natAbs]`. Establish `hle : u.natAbs + 1 ≤ ⌊2 * large₂.sc.b⌋₊`. Apply `Nat.le_floor` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[habs]`. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (a : ℚ) ∈ AdmissibleParameterJ.JJ D (decide (AdmissibleParameterJ.TypeU D ep g)) (D.nd.j i) ρ` using `(hx π a).1.1 ha`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem jumpWindow_of_jumpSets : ∀ (D : D7) (large₂ : SizeData₂ D), AdmissibleParameterJ.JumpConditions large₂ → EmbeddingTypeJumps.ParametersPolynomiallyBounded large₂ → D.R.t ≤ ⌊2 * large₂.sc.b⌋₊ ∧ ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r → ∀ π : D.nd.X i, GlobalTheory.BlockWindow.JumpWindow D i r π ⌊2 * large₂.sc.b⌋₊ := by
   classical

@@ -23,9 +23,9 @@ def stepV (M : FlagModel y Ψ N j) (p : Ψ × Fin N) : (Σ k, stepIdx M p k) →
   fun q => ⟨q.1.1, q.2⟩
 
 /- English proof (translation)
-Use `⟨Subtype.val_injective, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨k, hk⟩, m⟩ ⟨⟨k', hk'⟩, m'⟩ h`. Simplify using `only [stepV, Sigma.mk.inj_iff] at h`. Take `⟨rfl, h2⟩` from `h`. Consider the cases of `h2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨k, m⟩ ⟨k', rfl⟩`. Conclude with `⟨⟨k', m⟩, rfl⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isBlockMap_stepV (M : FlagModel y Ψ N j) (p : Ψ × Fin N) :
     IsBlockMap (Subtype.val : PartialFlagBlocks M p → K) (stepV M p) := by
@@ -39,9 +39,9 @@ theorem isBlockMap_stepV (M : FlagModel y Ψ N j) (p : Ψ × Fin N) :
     exact ⟨⟨k', m⟩, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨k', hk'⟩, rfl⟩`. Break down `hk' with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨p, rfl, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Introduce and unpack `(h | ⟨p', rfl, h⟩)`. Conclude with `⟨⟨k, Or.inl h⟩, rfl⟩`. Conclude with `⟨⟨k, Or.inr h⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem mem_range_step (M : FlagModel y Ψ N j) (p : Ψ × Fin N) (k : K) :
     k ∈ Set.range (Subtype.val : PartialFlagBlocks M p → K) ↔

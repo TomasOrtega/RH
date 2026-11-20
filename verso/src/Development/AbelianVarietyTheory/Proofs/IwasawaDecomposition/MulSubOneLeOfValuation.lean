@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.MulSubOneValuation
 
 /- English proof (translation)
-Establish `hM : A * B - 1 = (A - 1) + (B - 1) + (A - 1) * (B - 1)` using `by noncomm_ring`. Establish `he : (A * B) r s - (1 : Matrix (Fin n) (Fin n) K) r s = (A - 1) r s + (B - 1) r s + ((A - 1) * (B - 1)) r s`. Simplify `congrArg (fun M : Matrix (Fin n) (Fin n) K => M r s) hM` using `[Matrix.sub_apply, Matrix.add_apply]`. Rewrite using `[he, Matrix.mul_apply]`. Use `v.map_add_le (v.map_add_le (hA r s) (hB r s)) (v.map_sum_le fun k _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_sub_one_le_of_valuation {K Γ : Type*} [CommRing K] [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation K Γ) {n : ℕ} {γ : Γ} (hγ : γ ≤ 1) {A B : Matrix (Fin n) (Fin n) K}
@@ -24,7 +24,7 @@ theorem mul_sub_one_le_of_valuation {K Γ : Type*} [CommRing K] [LinearOrderedCo
     _ ≤ γ := mul_le_of_le_one_right' hγ
 
 /- English proof (translation)
-Establish `hγ : WithZero.exp (-(N : ℤ)) ≤ 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Conclude with `mul_sub_one_le_of_valuation Valued.v hγ hA hB r s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mul_sub_one_le {E : Type} [Field E] [NumberField E]
     {P : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)} {n N : ℕ}

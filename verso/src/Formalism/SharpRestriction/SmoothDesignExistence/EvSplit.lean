@@ -10,7 +10,7 @@ def EvL {eps : ℝ} (Fm : FamP eps) (P : ∀ x, Fm.x1 < x → Fm.Ix x → Prop) 
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), P x hx i
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hP`. Take `⟨b, hb⟩` from `hQ`. Conclude with `⟨max a b, fun x hx h1 i => ⟨ha x (le_trans (le_max_left _ _) hx) h1 i, hb x (le_trans (le_max_right _ _) hx) h1 i⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem EvL.and {eps : ℝ} {Fm : FamP eps} {P Q : ∀ x, Fm.x1 < x → Fm.Ix x → Prop} (hP : EvL Fm P) (hQ : EvL Fm Q) :
     EvL Fm fun x hx i => P x hx i ∧ Q x hx i := by
@@ -20,7 +20,7 @@ theorem EvL.and {eps : ℝ} {Fm : FamP eps} {P Q : ∀ x, Fm.x1 < x → Fm.Ix x 
     ⟨ha x (le_trans (le_max_left _ _) hx) h1 i, hb x (le_trans (le_max_right _ _) hx) h1 i⟩⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hP`. Conclude with `⟨a, fun x hx h1 i => h x h1 i (ha x hx h1 i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem EvL.mono {eps : ℝ} {Fm : FamP eps} {P Q : ∀ x, Fm.x1 < x → Fm.Ix x → Prop} (hP : EvL Fm P)
     (h : ∀ x hx i, P x hx i → Q x hx i) : EvL Fm Q := by
@@ -28,7 +28,7 @@ theorem EvL.mono {eps : ℝ} {Fm : FamP eps} {P Q : ∀ x, Fm.x1 < x → Fm.Ix x
   exact ⟨a, fun x hx h1 i => h x h1 i (ha x hx h1 i)⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Conclude with `⟨a, fun x hx _ i => ha x hx i⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem EvD.toL {eps : ℝ} {Fm : FamP eps} {P : D7 → Prop} (h : EvD Fm P) : EvL Fm fun x _ i => P (Fm.D x i) := by
   obtain ⟨a, ha⟩ := h

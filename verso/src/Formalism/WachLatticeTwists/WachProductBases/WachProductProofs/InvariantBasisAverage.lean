@@ -7,29 +7,25 @@ namespace Formalism.RepresentationBoundsCohomology.N1
 open Finset
 
 /- English proof (translation)
-Introduce `A _ Δ _ _ _ N _ _ κ _ b ρ π hmul hone hsl hπ hcard htriv`. Take `⟨r, hr⟩` from `hcard.exists_left_inv`. Establish `hnat : ∀ (d : Δ) (m : ℕ), d • (m : A) = (m : A)` using `fun d m => map_natCast (MulSemiringAction.toRingHom Δ A d) m`. Establish `hrinv : ∀ d : Δ, d • r = r`. Introduce `d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (d • r) * ((Fintype.card Δ : ℕ) : A) = 1`. Use `congrArg (fun a => d • a) hr` as an intermediate fact. Simplify `this` using `[smul_mul', hnat]`. Combine the equalities or inequalities in the displayed calculation. Set `b' : κ → N` to `fun k => r • ∑ d, ρ d (b k)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Establish `hinv : ∀ d k, ρ d (b' k) = b' k`. Introduce `d k`. Simplify using `only [b']`. Rewrite using `[hsl, hrinv, map_sum]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [← hmul]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft d) _ _ (fun _ => rfl)`. Establish `hcong : ∀ k, ∃ y, b k = b' k - π • y`. Introduce `k`. Use `choose x' hx' using fun d => htriv d (b k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨r • ∑ d, x' d, ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ d, ρ d (b k) = ((Fintype.card Δ : ℕ) : A) • b k + π • ∑ d, x' d`. Rewrite using `[smul_sum, Nat.cast_smul_eq_nsmul, ← card_univ, ← sum_const, ← sum_add_distrib]`. Use `sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← hx' d]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [b']`. Rewrite using `[h1, smul_add, smul_smul, hr, one_smul, smul_comm r π]`. Normalize the expressions using the abelian group laws. Establish `hspan : (⊤ : Submodule A N) ≤ Submodule.span A (Set.range b')`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.le_of_le_smul_of_le_jacobson_bot (I := Ideal.span {π}) (Module.Finite.of_basis b).fg_top` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce `x hx`. Rewrite using `[Set.mem_singleton_iff.1 hx]`. Conclude with `hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Take `⟨y, hy⟩` from `hcong k`. Rewrite using `[hy]`. Use `Submodule.sub_mem _ (Submodule.mem_sup_left (Submodule.subset_span ⟨k, rfl⟩)) (Submodule.mem_sup_right ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[b.span_eq]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self π) Submodule.mem_top`. Set `f : N →ₗ[A] N` to `b.constr A b'`. Establish `hf : ∀ k, f (b k) = b' k` using `fun k => b.constr_basis A b' k`. Establish `hsurj : Function.Surjective f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, b.constr_range]`. Conclude with `hspan`. Use `haveI : Module.Finite A N := Module.Finite.of_basis b`. Establish `hinj : Function.Injective f` using `OrzechProperty.injective_of_surjective_endomorphism f hsurj`. Set `e : N ≃ₗ[A] N` to `LinearEquiv.ofBijective f ⟨hinj, hsurj⟩`.
-
-Use `⟨b.map e, fun d k => ?_⟩` and prove the remaining obligations. Establish `: (b.map e) k = b' k`. Rewrite using `[Module.Basis.map_apply]`. Conclude with `hf k`. Rewrite using `[this]`.
-
-Conclude with `hinv d k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_basis_average : InvariantBasisAverage := by
   intro A _ Δ _ _ _ N _ _ κ _ b ρ π hmul hone hsl hπ hcard htriv

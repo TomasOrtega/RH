@@ -20,21 +20,21 @@ variable {κ κ' : Type} [Field κ] [Field κ'] [Algebra ℂ κ] [Algebra ℂ κ
 private def graphDiff (a : κ) : κ ⊗[ℂ] κ' := a ⊗ₜ[ℂ] (1 : κ') - (1 : κ) ⊗ₜ[ℂ] ρ a
 
 /- English proof (translation)
-Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tmul_one_mul (a b : κ) :
     (a * b) ⊗ₜ[ℂ] (1 : κ') = (a ⊗ₜ[ℂ] (1 : κ')) * (b ⊗ₜ[ℂ] (1 : κ')) := by
   simp [Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem one_tmul_mul (a b : κ') :
     (1 : κ) ⊗ₜ[ℂ] (a * b) = ((1 : κ) ⊗ₜ[ℂ] a) * ((1 : κ) ⊗ₜ[ℂ] b) := by
   simp [Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Simplify using `only [graphDiff, map_mul, tmul_one_mul, one_tmul_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem graphDiff_mul (a b : κ) :
     graphDiff ρ (a * b) = (a ⊗ₜ[ℂ] (1 : κ')) * graphDiff ρ b + ((1 : κ) ⊗ₜ[ℂ] ρ b) * graphDiff ρ a := by
@@ -42,7 +42,7 @@ private theorem graphDiff_mul (a b : κ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [graphDiff, map_mul, tmul_one_mul, one_tmul_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem graphDiff_mul' (a b : κ) :
     graphDiff ρ (a * b) - ((a ⊗ₜ[ℂ] (1 : κ')) * graphDiff ρ b + (b ⊗ₜ[ℂ] (1 : κ')) * graphDiff ρ a) =
@@ -51,21 +51,21 @@ private theorem graphDiff_mul' (a b : κ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [graphDiff, map_add, TensorProduct.add_tmul, TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem graphDiff_add (a b : κ) : graphDiff ρ (a + b) = graphDiff ρ a + graphDiff ρ b := by
   simp only [graphDiff, map_add, TensorProduct.add_tmul, TensorProduct.tmul_add]
   abel
 
 /- English proof (translation)
-Simplify using `only [graphDiff, AlgHom.commutes]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem graphDiff_algebraMap (r : ℂ) : graphDiff ρ (algebraMap ℂ κ r) = 0 := by
   simp only [graphDiff, AlgHom.commutes]
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, sub_self]
 
 /- English proof (translation)
-Establish `h1 : ρ a⁻¹ * ρ a = 1` using `by rw [← map_mul, inv_mul_cancel₀ ha, map_one]`. Simplify using `only [graphDiff, mul_sub, Algebra.TensorProduct.tmul_mul_tmul, inv_mul_cancel₀ ha, mul_one, one_mul, h1]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem graphDiff_inv (a : κ) (ha : a ≠ 0) :
     graphDiff ρ a⁻¹ = -((a⁻¹ ⊗ₜ[ℂ] ρ a⁻¹) * graphDiff ρ a) := by
@@ -92,11 +92,11 @@ private def closureField (L : Ideal (κ ⊗[ℂ] κ')) : IntermediateField ℂ �
       exact L.neg_mem (L.mul_mem_left _ ha)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[Algebra.TensorProduct.productMap_apply_tmul]`. Establish `e : a ⊗ₜ[ℂ] b - (1 : κ) ⊗ₜ[ℂ] (ρ a * (AlgHom.id ℂ κ') b) = graphDiff ρ a * ((1 : κ) ⊗ₜ[ℂ] b)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[graphDiff, sub_mul, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨a, rfl⟩)`. Consider the case `add x y hx hy`. Rewrite using `[map_add, TensorProduct.tmul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Ideal.add_mem _ hx hy using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem sub_mem_span (x : κ ⊗[ℂ] κ') :
     x - (1 : κ) ⊗ₜ[ℂ] (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ') x) ∈
@@ -115,14 +115,14 @@ private theorem sub_mem_span (x : κ ⊗[ℂ] κ') :
     abel
 
 /- English proof (translation)
-Simplify using `[graphDiff, RingHom.mem_ker, Algebra.TensorProduct.productMap_apply_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem graphDiff_mem_ker (a : κ) :
     graphDiff ρ a ∈ RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ')) := by
   simp [graphDiff, RingHom.mem_ker, Algebra.TensorProduct.productMap_apply_tmul]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h` using `sub_mem_span ρ x`. Rewrite `hx` using `[RingHom.mem_ker]`. Rewrite `h` using `[hx, TensorProduct.tmul_zero, sub_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem ker_le_span :
     RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ')) ≤
@@ -133,15 +133,15 @@ private theorem ker_le_span :
   rwa [hx, TensorProduct.tmul_zero, sub_zero] at h
 
 /- English proof (translation)
-Set `D0 : κ →ₗ[ℂ] (κ ⊗[ℂ] κ') ⧸ L` to `(Ideal.Quotient.mkₐ ℂ L).toLinearMap ∘ₗ ((TensorProduct.mk ℂ κ κ').flip 1 - (TensorProduct.mk ℂ κ κ' 1) ∘ₗ ρ.toLinearMap)`. Establish `hD0 : ∀ a, D0 a = Ideal.Quotient.mk L (graphDiff ρ a)` using `fun a => rfl`. Establish `hsmul : ∀ (a : κ) (y : κ ⊗[ℂ] κ'), a • Ideal.Quotient.mk L y = Ideal.Quotient.mk L ((a ⊗ₜ[ℂ] (1 : κ')) * y)`. Introduce `a y`. Rewrite using `[← Ideal.Quotient.mkₐ_eq_mk κ, ← map_smul, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `D : Derivation ℂ κ ((κ ⊗[ℂ] κ') ⧸ L)` to `Derivation.mk' D0 (fun a b => by`. Rewrite using `[hD0, hD0, hD0, hsmul, hsmul, ← map_add, Ideal.Quotient.eq, graphDiff_mul']`. Conclude with `L.neg_mem (hL (Ideal.mul_mem_mul (graphDiff_mem_ker ρ a) (graphDiff_mem_ker ρ b))))`. Establish `hD : ∀ a, D a = Ideal.Quotient.mk L (graphDiff ρ a)` using `fun a => rfl`. Use `letI : Module K ((κ ⊗[ℂ] κ') ⧸ L) := Module.compHom _ (algebraMap K κ)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `key` using `Derivation.apply_aeval_eq' (0 : Derivation ℂ K ((κ ⊗[ℂ] κ') ⧸ L)) D 0 (fun c => by`. Rewrite using `[LinearMap.zero_apply, hD, eq_comm, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hK c.2) x (minpoly K x)`. Simplify using `only [minpoly.aeval, map_zero, LinearMap.zero_apply, zero_add] at key`. Establish `hne` using `Polynomial.Separable.aeval_derivative_ne_zero (Algebra.IsSeparable.isSeparable K x) (minpoly.aeval K x)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : D x = 0`. Establish `hz : ∀ q, PolynomialModule.map κ (0 : ((κ ⊗[ℂ] κ') ⧸ L) →ₗ[K] ((κ ⊗[ℂ] κ') ⧸ L)) q = 0`. Introduce `q`. Use extensionality with `i`. Simplify using `[PolynomialModule.map]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key'` using `key.symm`. Rewrite `key'` using `[hz, map_zero, zero_add]`. Establish `h2` using `congrArg (fun v => ((Polynomial.aeval x) (Polynomial.derivative (minpoly K x)))⁻¹ • v) key'`. Simplify `h2` using `only [smul_smul, inv_mul_cancel₀ hne, one_smul, smul_zero]`. Rewrite `h0` using `[hD, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem graphDiff_mem_of_isAlgebraic (L : Ideal (κ ⊗[ℂ] κ'))
     (hL : RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ')) *
@@ -182,27 +182,23 @@ private theorem graphDiff_mem_of_isAlgebraic (L : Ideal (κ ⊗[ℂ] κ'))
 end Graph
 
 /- English proof (translation)
-Introduce `κ κ' _ _ _ _ k z ρ O hz hO`. Use `set J := RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ')) with hJ`. Use `set I := Ideal.span (Set.range fun i => (TensorProduct.tmul ℂ (z i) (1 : κ') - TensorProduct.tmul ℂ (1 : κ) (ρ (z i)))) with hI`. Establish `hfg : J.FG`. Use `letI := ((algebraMap ℂ κ).codRestrict O hO.const_mem).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Algebra.EssFiniteType ℂ O := hO.essFiniteType`. Take `⟨s, hs⟩` from `Algebra.EssFiniteType.cond (R := ℂ) (S := O)`. Use `set L₀ : Ideal (κ ⊗[ℂ] κ') := Ideal.span (graphDiff ρ '' ((↑) '' (s : Set O))) with hL₀`. Establish `hadj : ∀ w : O, w ∈ Algebra.adjoin ℂ (s : Set O) → (w : κ) ∈ closureField ρ L₀`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Ideal.subset_span ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Consider the case `algebraMap r => exact (closureField ρ L₀).algebraMap_mem r`. Consider the case `add x y _ _ hx hy => exact (closureField ρ L₀).add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact (closureField ρ L₀).mul_mem hx hy`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hO' : ∀ y : O, (y : κ) ∈ closureField ρ L₀`. Introduce `y`. Take `⟨⟨a, u⟩, e⟩` from `@IsLocalization.surj _ _ _ _ _ _ hs y`. Establish `hu : IsUnit ((u : Algebra.adjoin ℂ (s : Set O)) : O)` using `u.2`. Establish `hu0 : (((u : Algebra.adjoin ℂ (s : Set O)) : O) : κ) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Conclude with `hu.ne_zero (Subtype.ext h0)`. Establish `e' : (y : κ) * (((u : Algebra.adjoin ℂ (s : Set O)) : O) : κ) = ((a : O) : κ)` using `congrArg Subtype.val e`. Rewrite `e'` using `[← eq_div_iff hu0]`. Rewrite using `[e', div_eq_mul_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(closureField ρ L₀).mul_mem (hadj _ a.2) ((closureField ρ L₀).inv_mem (hadj _ (u : Algebra.adjoin ℂ (s : Set O)).2))`. Establish `hall : ∀ x : κ, x ∈ closureField ρ L₀`. Introduce `x`. Take `⟨a, ha, b, hb, hb0, e⟩` from `hO.frac x`. Rewrite `e` using `[← eq_div_iff hb0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, div_eq_mul_inv]`. Conclude with `(closureField ρ L₀).mul_mem (hO' ⟨a, ha⟩) ((closureField ρ L₀).inv_mem (hO' ⟨b, hb⟩))`. Establish `hJL : J = L₀` using `le_antisymm ((ker_le_span ρ).trans (Ideal.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hall a))) (Ideal.span_le.2 (by rintro _ ⟨a, -, rfl⟩; exact graphDiff_mem_ker ρ a))`. Rewrite using `[hJL, hL₀]`. Conclude with `Submodule.fg_span ((s.finite_toSet.image _).image _)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hle : J ≤ I ⊔ J * J`. Establish `hz' : IsTranscendenceBasis ℂ z`. Establish `e : (algebraMap ℂ κ).toAlgebra = ‹Algebra ℂ κ›` using `Algebra.algebra_ext _ _ fun _ => rfl`. Unfold `TrBasis at hz`. Rewrite `hz` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hz'.isAlgebraic_field`. Establish `hK : IntermediateField.adjoin ℂ (Set.range z) ≤ closureField ρ (I ⊔ J * J)`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Ideal.mem_sup_left (Ideal.subset_span ⟨i, rfl⟩)`.
-
-Use `(ker_le_span ρ).trans (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `graphDiff_mem_of_isAlgebraic ρ _ le_sup_right _ hK a`. Take `⟨r, hr1, hr⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup hfg le_rfl hle`. Use `⟨r, ?_, fun a ha => ?_⟩` and prove the remaining obligations.
-
-Rewrite `hr1` using `[hJ, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `hr1`. Use `hr (Submodule.smul_mem_pointwise_smul a r J ha)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_mul_ker_mem_span_trBasis_diff :
     ∀ {κ κ' : Type} [Field κ] [Field κ'] [Algebra ℂ κ] [Algebra ℂ κ'] (k : ℕ) (z : Fin k → κ) (ρ : κ →ₐ[ℂ] κ') (O : Subring κ), TrBasis (algebraMap ℂ κ) z → IsLocModel (algebraMap ℂ κ) O → ∃ e : TensorProduct ℂ κ κ', Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ') e = 1 ∧ ∀ a ∈ RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ')), e * a ∈ Ideal.span (Set.range fun i => (TensorProduct.tmul ℂ (z i) (1 : κ') - TensorProduct.tmul ℂ (1 : κ) (ρ (z i)))) := by

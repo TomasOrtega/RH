@@ -10,15 +10,15 @@ noncomputable def adX (X : Mat C N) : Module.End C (Mat C N) :=
   LinearMap.mulLeft C X - LinearMap.mulRight C X
 
 /- English proof (translation)
-Simplify using `[adX]`.
+Simplify using the standard rewrite rules.
 -/
 lemma adX_apply (X Y : Mat C N) : adX X Y = X * Y - Y * X := by
   simp [adX]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro Y hY`. Simplify using `using hY`. Consider the case `succ k ih => intro Y hY`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf _ (ih Y hY)`.
+A detailed English derivation is pending.
 -/
 lemma pow_mem (f : Module.End C (Mat C N)) (g : Submodule C (Mat C N))
     (hf : ∀ Y ∈ g, f Y ∈ g) (k : ℕ) : ∀ Y ∈ g, (f ^ k) Y ∈ g := by
@@ -27,9 +27,9 @@ lemma pow_mem (f : Module.End C (Mat C N)) (g : Submodule C (Mat C N))
   | succ k ih => intro Y hY; rw [pow_succ', Module.End.mul_apply]; exact hf _ (ih Y hY)
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Introduce `Y hY`. Simplify using `only [map_add, LinearMap.add_apply]`. Conclude with `g.add_mem (hp Y hY) (hq Y hY)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `monomial k a`. Introduce `Y hY`. Rewrite using `[aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Conclude with `g.smul_mem _ (pow_mem f g hf k Y hY)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma aeval_mem (f : Module.End C (Mat C N)) (g : Submodule C (Mat C N))
     (hf : ∀ Y ∈ g, f Y ∈ g) (q : C[X]) : ∀ Y ∈ g, aeval f q Y ∈ g := by
@@ -42,7 +42,7 @@ lemma aeval_mem (f : Module.End C (Mat C N)) (g : Submodule C (Mat C N))
     exact g.smul_mem _ (pow_mem f g hf k Y hY)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, h, smul_smul, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma pow_eig (f : Module.End C (Mat C N)) (Z : Mat C N) (c : C) (h : f Z = c • Z) (k : ℕ) :
     (f ^ k) Z = c ^ k • Z := by
@@ -51,7 +51,7 @@ lemma pow_eig (f : Module.End C (Mat C N)) (Z : Mat C N) (c : C) (h : f Z = c �
   | succ k ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, h, smul_smul, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq, eval_add, add_smul]`. Consider the case `monomial k a`. Rewrite using `[aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, pow_eig f Z c h, smul_smul, eval_monomial]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma aeval_eig (f : Module.End C (Mat C N)) (Z : Mat C N) (c : C) (h : f Z = c • Z) (q : C[X]) :
     aeval f q Z = q.eval c • Z := by
@@ -62,19 +62,19 @@ lemma aeval_eig (f : Module.End C (Mat C N)) (Z : Mat C N) (c : C) (h : f Z = c 
       eval_monomial]
 
 /- English proof (translation)
-Establish `inj` using `isLac_inj hL`. Establish `h' : e i + e l = e k + e j` using `by linear_combination h`. Assume the negation of the conclusion as `hne`. Establish `hki : k ≠ i`. Introduce `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h'` using `[hk]`. Conclude with `hne ⟨hk, inj (by linear_combination h')⟩`. Establish `hlj : l ≠ j`. Introduce `hl`. Rewrite `h'` using `[hl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hne ⟨(inj (by linear_combination h')).symm, hl⟩`. Establish `hkl : k ≠ l`. Introduce `hk; rw [hk] at h; exact hij (inj (by linear_combination h))`. Distinguish the cases in `hil : i = l`. Substitute `hil` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality. Conclude with `hki (inj (mul_left_cancel₀ (two_ne_zero (α := C)) (by linear_combination -h')))`. Use `hL {i} {k, j} (by simp) (by simp) (by simp [Finset.disjoint_left]; exact ⟨hki.symm, hij⟩)` as an intermediate fact. Apply `this` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Finset.card_pair hkj, Finset.sum_pair hkj]`. Simplify using the standard rewrite rules. Take the linear combination `h'`. Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `hL {i, l} {k} (by simp) (by simp) (by simp [Finset.disjoint_left]; exact ⟨hij, hlj⟩)` as an intermediate fact. Apply `this` to reduce the goal to its premises. Rewrite using `[Finset.card_pair hil, Finset.sum_pair hil]`. Simplify using the standard rewrite rules. Take the linear combination `h'`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `hL {i, l} {k, j} (by simp) (by simp) (by simp [Finset.disjoint_left]; exact ⟨⟨hki.symm, hij⟩, hkl.symm, hlj⟩)` as an intermediate fact. Apply `this` to reduce the goal to its premises. Rewrite using `[Finset.card_pair hil, Finset.sum_pair hil, Finset.card_pair hkj, Finset.sum_pair hkj]`. Rewrite using `[h']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lac_key [CharZero C] {e : Fin n → C} (hL : IsLac e) {i j k l : Fin n} (hij : i ≠ j)
     (h : e i - e j = e k - e l) : k = i ∧ l = j := by
@@ -117,27 +117,27 @@ namespace LateralTheory.DivDb
 open LateralTheory.DivDb.GradePf
 
 /- English proof (translation)
-Introduce `C _ _ N n p e g hS hL hg Y hY i j hij`. Use `set X := ∑ i, e i • p i with hXdef`. Establish `hco` using `hS.1`. Establish `hid : ∀ k, p k * p k = p k` using `fun k => hco.idem k`. Establish `hor : ∀ k l, k ≠ l → p k * p l = 0` using `fun k l h => hco.ortho h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑ k, p k = 1` using `hco.complete`. Establish `hXp : ∀ k, X * p k = e k • p k`. Introduce `k`. Rewrite using `[hXdef, Finset.sum_mul]`. Simplify using `only [smul_mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[hid]`. Introduce `b _ hb`. Rewrite using `[hor b k hb, smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpX : ∀ k, p k * X = e k • p k`. Introduce `k`. Rewrite using `[hXdef, Finset.mul_sum]`. Simplify using `only [mul_smul_comm]`. Rewrite using `[Finset.sum_eq_single k]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hid]`. Introduce `b _ hb`. Rewrite using `[hor k b (Ne.symm hb), smul_zero]`. Simplify using the standard rewrite rules. Establish `hdec : Y = ∑ kl : Fin n × Fin n, p kl.1 * Y * p kl.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (∑ k, p k) * Y * (∑ l, p l) = ∑ kl : Fin n × Fin n, p kl.1 * Y * p kl.2`. Rewrite using `[Finset.sum_mul, Finset.sum_mul, Fintype.sum_prod_type]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[← this, hsum, one_mul, mul_one]`. Establish `heig : ∀ kl : Fin n × Fin n, adX X (p kl.1 * Y * p kl.2) = (e kl.1 - e kl.2) • (p kl.1 * Y * p kl.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `kl`. Rewrite using `[adX_apply, ← mul_assoc, ← mul_assoc, hXp, mul_assoc (p kl.1 * Y), hpX]`. Simplify using `[sub_smul, smul_mul_assoc, mul_smul_comm]`. Establish `hstab : ∀ Z ∈ g, adX X Z ∈ g` using `fun Z hZ => by rw [adX_apply]; exact hg Z hZ`. Set `q : C[X]` to `∏ kl ∈ (Finset.univ : Finset (Fin n × Fin n)).erase (i, j), (Polynomial.X - Polynomial.C (e kl.1 - e kl.2))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : aeval (adX X) q Y = q.eval (e i - e j) • (p i * Y * p j)` using `by conv_lhs => rw [hdec]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[aeval_eig (adX X) _ _ (heig _)]`. Rewrite using `[Finset.sum_eq_single (i, j)]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: q.eval (e b.1 - e b.2) = 0`. Simplify using `only [q, eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hb, Finset.mem_univ _⟩) (by simp)`. Rewrite using `[this, zero_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hq0 : q.eval (e i - e j) ≠ 0`. Simplify using `only [q, eval_prod]`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `kl hkl`. Simplify using `only [eval_sub, eval_X, eval_C]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Use `lac_key hL hij (sub_eq_zero.mp h0)` as an intermediate fact. Conclude with `(Finset.mem_erase.mp hkl).1 (Prod.ext this.1 this.2)`. Establish `hm` using `g.smul_mem (q.eval (e i - e j))⁻¹ (aeval_mem (adX X) g hstab q Y hY)`. Rewrite `hm` using `[hq, smul_smul, inv_mul_cancel₀ hq0, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Grade_of : Grade := by
   intro C _ _ N n p e g hS hL hg Y hY i j hij

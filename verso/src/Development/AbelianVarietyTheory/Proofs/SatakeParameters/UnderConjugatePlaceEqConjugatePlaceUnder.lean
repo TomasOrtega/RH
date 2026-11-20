@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.ConjUnder
 
 /- English proof (translation)
-Take `⟨j⟩ : Nonempty (M →+* ℂ)` from `inferInstance`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj M j]`. Conclude with `(IsCMField.complexEmbedding_complexConj K (j.comp (algebraMap K M)) x).symm`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complexConj_algebraMap {K M : Type} [Field K] [NumberField K] [IsCMField K] [Field M] [NumberField M] [IsCMField M]
     [Algebra K M] (x : K) :
@@ -24,7 +24,7 @@ theorem complexConj_algebraMap {K M : Type} [Field K] [NumberField K] [IsCMField
   exact (IsCMField.complexEmbedding_complexConj K (j.comp (algebraMap K M)) x).symm
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w)`.
+A detailed English derivation is pending.
 -/
 theorem cPl_asIdeal {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)) :
     (UpperTheory.V.Af.Bc.cPl w).asIdeal =
@@ -32,9 +32,9 @@ theorem cPl_asIdeal {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Heig
   (GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w)
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _ w`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[cPl_asIdeal]`. Express the relevant statement in the definitionally equal form `(UpperTheory.V.Af.Bc.cPl w).asIdeal.comap (algebraMap (𝓞 K) (𝓞 M)) = (w.asIdeal.comap (algebraMap (𝓞 K) (𝓞 M))).comap _`. Rewrite using `[cPl_asIdeal, Ideal.comap_comap, Ideal.comap_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Conclude with `complexConj_algebraMap (x : K)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cPl_under : ∀ (K M : Type) [Field K] [NumberField K] [IsCMField K] [Field M] [NumberField M] [IsCMField M]
     [Algebra K M] (w : HeightOneSpectrum (𝓞 M)),

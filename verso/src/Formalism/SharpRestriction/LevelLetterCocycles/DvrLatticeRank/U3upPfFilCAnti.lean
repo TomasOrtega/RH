@@ -23,11 +23,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `hs : ∀ k : ℤ, FildR PD T.ρ τ (k + 1) ≤ FildR PD T.ρ τ k`. Introduce `k`. Use `inf_le_inf_left _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `tmul u w => exact ⟨u ⊗ₜ ⟨(w : BdR), PD.Fil_anti k w.2⟩, rfl⟩`. Consider the case `add z z' hz hz' => rw [map_add]`. Conclude with `Submodule.add_mem _ hz hz'`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hA : Antitone fun k => FildR PD T.ρ τ k` using `antitone_int_of_succ_le hs`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.FilC`. Conclude with `sup_le_sup_right (hA h) _`.
+A detailed English derivation is pending.
 -/
 theorem u3upPf_FilC_anti (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) {a a' : ℤ} (h : a' ≤ a) :
     Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ a ≤ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ a' := by
@@ -44,15 +44,13 @@ theorem u3upPf_FilC_anti (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) {a a' : �
   exact sup_le_sup_right (hA h) _
 
 /- English proof (translation)
-Take `⟨a, ha, hea, hΛ, hup0, -, -⟩` from `hf`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨1, fun _ => ⟨a, ha⟩, fun _ => x, ⟨fun _ => hx, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one] show TensorProduct.map (LinearMap.mulLeft O (algebraMap (LetA O n) W.EE (Eπ ^ h'))) LinearMap.id (f ⊗ₜ mkL W T π' c x hx) = algebraMap (LetA O n) W.EE ((letE c : LetA O n) * a) ⊗ₜ mkL W T π' c x hx`. Rewrite using `[TensorProduct.map_tmul, LinearMap.mulLeft_apply, LinearMap.id_apply, hΛ, hea]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ ζ hpt i`. Establish `hO` using `hPt ζ τ hpt`. Establish `hu` using `hup τ hO`. Establish `hv : valAt W T c ζ x ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (b τ) := hFil τ hO hu ζ hpt`. Use `show (∑ j : Fin 1, serC (W.lev c ζ a) (valAt W T c ζ x) i) ∈ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_one]`. Unfold `serC`. Use `split_ifs with hi`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hi`. Simplify using `only [Int.toNat_natCast]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hlt : k + b τ < h'`. Rewrite using `[hup0 τ ζ hpt hu k hlt, zero_smul]`. Conclude with `Submodule.zero_mem _`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Use `u3upPf_FilC_anti T τ ?_ hv` and prove the remaining obligations.
-
-Use `push_neg at hlt`. Use linear arithmetic over natural numbers and integers. Conclude with `Submodule.zero_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem u3upPf_memNL (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop)
     (π' Eπ : LetA O n) (h' S : ℕ) (up : (K →ₐ[Qp] LL) → Bool) (b : (K →ₐ[Qp] LL) → ℕ) (c : ZMod n)
@@ -88,9 +86,9 @@ theorem u3upPf_memNL (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp
     · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Take `⟨hz1, hz2⟩` from `Submodule.mem_inf.1 hz`. Use `Submodule.mem_inf.2 ⟨?_, hz2⟩` and prove the remaining obligations. Rewrite `hz1`, the goal using `[Submodule.restrictScalars_mem]`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.aN at hz1 ⊢`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hz1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mem_map.2 ⟨π' ^ (M - 1) • w, (W.N T).smul_mem _ hw, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.DeltaInvariantLattices.smulA, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[smul_smul, ← pow_add, Nat.add_sub_cancel' hM]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem u3upPf_PiNS_one (T : LocLat G Qp LL O) (π' : LetA O n) {M : ℕ} (hM : 1 ≤ M) {z : W.DD T}
     (hz : z ∈ PiNS W T π' M) : z ∈ PiNS W T π' 1 := by
@@ -104,13 +102,13 @@ theorem u3upPf_PiNS_one (T : LocLat G Qp LL O) (π' : LetA O n) {M : ℕ} (hM : 
   rw [smul_smul, ← pow_add, Nat.add_sub_cancel' hM]
 
 /- English proof (translation)
-Take `⟨n₂, hn₂, hn₂N, hα₂⟩` from `hMF.1 x hx hxN`. Establish `hd : y - n₂ ∈ PiNS W T₂ π' M`. Use `(hMF.2.2.1 M hM le_rfl).1 0 (Submodule.zero_mem _) (y - n₂) (Submodule.sub_mem _ hy hn₂) ?_ (Submodule.zero_mem _)` and prove the remaining obligations. Establish `h0 : (⟨0, Submodule.zero_mem _⟩ : ↥(LamLA W T₂ π' Eπ h' c ⊤)) = 0` using `rfl`. Rewrite using `[h0, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `show Submodule.Quotient.mk ((⟨y, hy⟩ : ↥(LamPS W T₂ Eπ h' c)) - ⟨n₂, hn₂⟩) = (0 : QLamP W T₂ π' Eπ h' M c)`. Rewrite using `[Submodule.Quotient.mk_sub, sub_eq_zero]`. Conclude with `hα.symm.trans hα₂`. Establish `hyN : y ∈ NcS W T₂ c`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, hΔ, hl⟩` from `(mem_LamPS W T₂ Eπ h' c y).1 hy`. Use `(mem_NcS W T₂ c y).2 ⟨?_, hΔ, hl⟩` and prove the remaining obligations. Establish `h1` using `PiNS_le_N W T₂ π' M hd`. Establish `h2` using `((mem_NcS W T₂ c n₂).1 hn₂N).1`. Establish `h3` using `Submodule.add_mem _ h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Take `⟨n₁, hn₁, hF⟩` from `hW c n₂ hn₂N`. Use `⟨(mem_InvS W T₂ π' Eπ h' 1 c y).2 ⟨hy, (Submodule.mem_inf.1 (hG2 c y hyN)).1⟩, n₁, (mem_InvS W T₁ π' Eπ h' 1 c n₁).2 ⟨hNL c hn₁, (Submodule.mem_inf.1 (hG1 c n₁ hn₁)).1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hF, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ (u3upPf_PiNS_one W T₂ π' hM hd)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u3upPf_lift {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n) (h' M ρ : ℕ) (c : ZMod n)
@@ -147,9 +145,9 @@ theorem u3upPf_lift {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
 end Local
 
 /- English proof (translation)
-Take `⟨τs, ⟨hemb, -⟩, hres⟩` from `hpt`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `z`. Establish `hzK : (z : Om l) ∈ Ks K 1` using `(le_sup_left : K0 K ≤ Ks K 1) z.2`. Rewrite using `[AlgHom.comp_apply, hres (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1 z) ⟨z, hzK⟩ rfl]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hemb z ⟨z, hzK⟩ rfl`.
+A detailed English derivation is pending.
 -/
 theorem u3upPf_pt_over (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] {K LL : FinExt l}
     (hG : Good K 1 LL) (c : ZMod (finrank ℚ_[l] ↥(K0 K))) (ζ : ↥LL.1) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1)
@@ -162,9 +160,9 @@ theorem u3upPf_pt_over (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] {K LL
   exact hemb z ⟨z, hzK⟩ rfl
 
 /- English proof (translation)
-Establish `hs` using `frobpin_sK_pos hl K LL hG`. Establish `h4 : (0 : ℝ) < 4 * (h' : ℝ)`. Establish `: (1 : ℝ) ≤ h'` using `by exact_mod_cast hh'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs' : (0 : ℝ) < (sK l K : ℝ)` using `by exact_mod_cast hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `Nat.ceil_pos.2 (div_pos h4 hs')`.
+A detailed English derivation is pending.
 -/
 theorem u3upPf_MK_pos {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL) (h' : ℕ)
     (hh' : 1 ≤ h') : 1 ≤ MK l K h' := by
@@ -176,15 +174,15 @@ theorem u3upPf_MK_pos {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) 
   exact Nat.ceil_pos.2 (div_pos h4 hs')
 
 /- English proof (translation)
-Introduce `l _ hl K LL hG π' E hπ T₁ T₂ F S η m h' up b c α β hfr hN hall`. Introduce `f hf x hx hFil h1 y hy hα`. Take `⟨hc1, hc2, hon, hj1, hj2, hηb, hbS, hh', -, -⟩` from `hN`. Establish `hjI : ∀ (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), (∀ τ, JumpsInV ((D.loc l).PD K) T.ρ τ (deep (up τ) (b τ) S ∪ Set.Icc (-(η : ℤ)) η)) → ∀ τ, JumpsInV ((D.loc l).PD K) T.ρ τ (Set.Icc (-(h' : ℤ)) h')`. Introduce `T hj τ a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd` using `hj τ a ha`. Establish `hb` using `hbS τ`. Establish `hη` using `hηb τ`. Rewrite using `[Set.mem_Icc]`. Break down `hd with hd | hd` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `unfold deep at hd split_ifs at hd <;> (rw [Set.mem_Icc] at hd; constructor <;> omega)`. Rewrite `hd` using `[Set.mem_Icc]`. Apply the tactic sequence `constructor <;> omega`. Establish `hM` using `u3upPf_MK_pos hl K LL hG h' hh'`. Establish `hMF2` using `hMF l hl K LL hG π' E hπ h' hh' c α β hfr T₂ hc2 (hjI T₂ hj2)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW'` using `hW l hl K LL hG π' E hπ T₁ T₂ F h' hc1 hc2 hon (hjI T₁ hj1)`. Establish `hNL1` using `hNL l hl K LL hG π' E hπ T₁ h' hc1 (hjI T₁ hj1)`. Establish `hG1` using `hGP l hl K LL hG π' E hπ T₁ hc1`. Establish `hG2` using `hGP l hl K LL hG π' E hπ T₂ hc2`. Establish `hxN` using `u3upPf_memNL _ T₂ _ π' _ h' S up b c (fun ζ τ hpt => u3upPf_pt_over D HW hG c ζ τ hpt) hall f hf x hx hFil`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `u3upPf_lift _ F _ π' _ h' _ _ c α β hMF2 hM hW' hNL1 hG1 hG2 _ h1 hxN y hy hα`.
+A detailed English derivation is pending.
 -/
 theorem u3upPf_ofR (D : D7) (HW : HWOf D.loc) (hMF : modelFR D HW) (hW : wKillR D HW)
     (hNL : ninLamR D HW) (hGP : gamPiR D HW) : UpSlotProposition D HW := by
@@ -215,7 +213,7 @@ theorem u3upPf_ofR (D : D7) (HW : HWOf D.loc) (hMF : modelFR D HW) (hW : wKillR 
   exact u3upPf_lift _ F _ π' _ h' _ _ c α β hMF2 hM hW' hNL1 hG1 hG2 _ h1 hxN y hy hα
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA`. Conclude with `u3upPf_ofR D HW (hMF D HW F Cm CA CB CK hA) (hW D HW F Cm CA CB CK hA) (ninlam_pf D HW F Cm CA CB CK hA) (gamPiCondition D HW F Cm CA CB CK hA)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem u3upPf_step (hMF : ModelFStep) (hW : WStep) : UpSlotHypothesis := by
   intro D HW F Cm CA CB CK hA

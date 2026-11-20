@@ -16,11 +16,9 @@ open GlobalTheory.SeeSaw GlobalTheory.Unf
 namespace GlobalTheory.AdForm.VacAllRat
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hμ hom c₀ g h hg hh H r r' hr hr'`. Establish `hp` using `(GlobalTheory.AdForm.StdStepsT.stdPair_steps_all I hI hP l Z ψ θ hψ hθ).1 i hi`. Establish `htw` using `(GlobalTheory.Mem.ReadTwist.isTwist_of_reads B.R B.host _ B.embLL I.S (I.tup a) (I.xi a) (hI.xi_reads a)).1`. Take `⟨n, hn, hord⟩` from `htw.1`. Use `choose e he using fun τ => (B.hc τ).e_int ⟨i, hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinf` using `Formalism.L2.Host.HChar.HasInfQ.mul_triv (I.C.isMu0 ⟨i, hi⟩).inf (Formalism.L2.Host.HChar.inf_eq_one_of_order hn hord)`. Establish `hexp` using `(GlobalTheory.HeckeInfExp.hasInfExp_iff_hasInfQ (I.rec7 l Z) _ _ _ hμ).2 hinf`. Establish `hv` using `hvac.2`. Conclude with `GlobalTheory.AdForm.RatMove.move_rat _ _ hp hom (fun τ => -e τ) (fun τ => by`. Establish `e1 : ((-e τ : ℤ) : ℚ) = -(B.hc τ).e ⟨i, hi⟩` using `by rw [Int.cast_neg, ← he τ]`.
-
-Conclude with `e1 ▸ hexp τ) ⟨hv.theta, hv.fock⟩ (Th.VacIn.toRec (D := I.rec7 l Z) I.J.V)`. Use the proof step `(GlobalTheory.AdForm.RatMove.curveIdeal_top _) hI.amb_ok.delta c₀ hg hh H hr hr'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem moveT_rat : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) ψ θ, IsStdChar (I.rec7 l Z) ψ (-1) → IsInfFam θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m) vac, IsVacO ψ θ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) (fun _ => 1) (fun _ => 1) (intVec _ _) (intVec _ _) vac → ∀ (a : I.ι) μ om, ChrEq μ (I.C.mu0 ⟨i, hi⟩ * I.xi a) → IsWeilDatumO ψ _ _ μ μ om → ∀ c₀ g h, g ∈ GfC _ → h ∈ GfC _ → GlobalTheory.AdForm.VacAll.MoveT I l Z θ i hi c₀ μ om vac (g) (h) → ∀ r r', IsRatFin _ r → IsRatFin _ r' → GlobalTheory.AdForm.VacAll.MoveT I l Z θ i hi c₀ μ om vac (r * g) (r' * h) := by
   intro B X I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hμ hom c₀ g h hg hh H r r' hr hr'

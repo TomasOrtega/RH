@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ba
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.UnitaryBC
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UnitaryDecomp.exists_poly_mul_autForm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FAutFormDefiniteUnitaryEqSumPolynomialMulAutForm.lean&line=99#L99)
 -/

@@ -8,11 +8,11 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ n S π K' hlev w hw hK`. Take `⟨φ, hφ, h0, hfix⟩` from `hlev`. Use `⟨φ, hφ, h0, fun x hx hk => hfix w hw x hx ?_⟩` and prove the remaining obligations. Establish `hmem : cLoc w x ∈ UL n w`. Distinguish the cases in `hs : IsSplitAt w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Unfold `UL`. Rewrite using `[if_pos hs]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `GlobalTheory.LocInj.cLoc_mem_UL hs x`. Use `⟨⟨cLoc w x, hmem⟩, ?_, rfl⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK]`. Conclude with `Subgroup.mem_subgroupOf.2 hk`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.unramOf :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.UnramOf := by

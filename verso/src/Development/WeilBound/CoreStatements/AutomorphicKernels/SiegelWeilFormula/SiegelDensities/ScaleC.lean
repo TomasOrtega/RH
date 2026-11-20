@@ -9,25 +9,23 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureThe
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ n T hT _ g T' hT' hrel hSW d b laminf lam hinf hv μ 𝓕 hH hF minf m hminf hm`. Establish `hinv` using `(HaarCoord.conj_facts hcm).1`. Take `⟨G, hG⟩ : ∃ G : Matrix (Fin n) (Fin n) E, G = (g : Matrix (Fin n) (Fin n) E)` from `⟨_, rfl⟩`. Take `⟨H, hHd⟩ : ∃ H : Matrix (Fin n) (Fin n) E, H = ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)` from `⟨_, rfl⟩`. Establish `hGH : G * H = 1` using `by rw [hG, hHd]; exact Units.mul_inv g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hHG : H * G = 1` using `by rw [hG, hHd]; exact Units.inv_mul g`. Rewrite `hrel` using `[← hG]`. Establish `hdetH : H.det ≠ 0`. Introduce `h0`. Establish `: H.det * G.det = 1` using `by rw [← Matrix.det_mul, hHG, Matrix.det_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`. Establish `hrel' : cT (σ : E →+* E) H * T' * H = T`. Rewrite using `[hrel]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = T := by rw [← cT_mul, hGH, cT_one, Matrix.one_mul, Matrix.mul_one]`. Take `⟨ai, a, hau, hai, hav⟩` from `GlobalTheory.T.right_multiplication_euler_product F E σ hcm n M H hdetH`. Take `⟨ci, c, hcu, hci, hcv⟩` from `GlobalTheory.T.hermitian_matrix_euler_product F E σ hcm n H hdetH`. Take `⟨-, -, -, -, hq, -⟩` from `GlobalTheory.T.unit_product_closure_properties F ai ci a c hau hcu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hci0, hc0, -⟩` from `GlobalTheory.T.unit_product_closure_properties F ci ai c a hcu hau`. Establish `hrI : IsLocR (Ainf F)` using `isLocR_Ainf F hcm.1`. Establish `hrV : ∀ v, IsLocR (Fv F v)` using `fun v => LocFv.isLocR_Fv F v`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : ∀ v, BorelSpace (Fv F v) := fun _ => ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sInf` using `unitary_conjugate_local σ hcm hinv J hJ (Ainf F) hrI b laminf hinf.1 minf hminf H T T' hdetH hT hT' hrel' ai ci hci0 hai hci`. Establish `sV` using `fun v => unitary_conjugate_local σ hcm hinv J hJ (Fv F v) (hrV v) b (lam v) (hv v).1 (m v) (hm v) H T T' hdetH hT hT' hrel' (a v) (c v) (hc0 v) (hav v) (hcv v)`. Take `⟨⟨t1, t2, t3⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Establish `me` using `measurable_rmul σ hcm (AF F) n M (H.map (inclR (F := F) (AF F)))`. Establish `mi : Measurable fun X : Fin n → Fin M → Ainf F ⊗[F] E => rmul (Ainf F) X (H.map (inclR (F` using `F) (Ainf F))) := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r1, r2, r3, r4, -⟩` from `hrI`. Conclude with `measurable_rmul σ hcm (Ainf F) n M _`. Establish `mv : ∀ v, Measurable fun X : Fin n → Fin M → Fv F v ⊗[F] E => rmul (Fv F v) X (H.map (inclR (F` using `F) (Fv F v))) := by`. Introduce `v`. Take `⟨r1, r2, r3, r4, -⟩` from `hrV v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `measurable_rmul σ hcm (Fv F v) n M _`. Take `⟨κ, hE, hκ⟩` from `hSW d b laminf lam hinf hv μ 𝓕 hH hF minf m hminf hm`. Use `⟨κ, ?_, hκ⟩` and prove the remaining obligations. Establish `hth` using `theta_map σ hcm J hJ μ 𝓕 hH hF G H T T' hGH hHG hrel' hrel.symm me`. Establish `hlat` using `(GlobalTheory.T.adelic_tuple_projections F E σ hcm d b n M).2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : ∀ v, (cfac E v • m v (hermOf (Fv F v) σ T hT)) (latV b v) < ⊤`. Introduce `v`. Take `⟨r1, r2, r3, r4, -⟩` from `id (hrV v)`. Take `⟨-, hW, hHm⟩` from `coord_measures_haar F E σ hcm (Fv F v) d b (lam v) (hv v).1`. Use `haveI := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm M J hJ (Fv F v) (hrV v) n _ _ (m v) (hW n M) (hHm n) (hm v) (hermOf (Fv F v) σ T hT)).1`.
-
-Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (hlat.1 v).1.measure_lt_top`. Rewrite using `[isEulerProd_const_iff, ← hth]`. Conclude with `GlobalTheory.T.euler_product_measure_transport F E σ hcm d b n M _ (κ • minf (hermOf (Ainf F) σ T' hT')) (κ • minf (hermOf (Ainf F) σ T hT)) (fun v => cfac E v • m v (hermOf (Fv F v) σ T' hT')) (fun v => cfac E v • m v (hermOf (Fv F v) σ T hT)) (fun X => rmul (AF F) X (H.map (inc …`.
+A detailed English derivation is pending.
 -/
 theorem scaleC : ScaleC := by
   intro F E _ _ _ _ _ σ hcm M J hJ n T hT _ g T' hT' hrel hSW d b laminf lam hinf hv μ 𝓕 hH hF minf m

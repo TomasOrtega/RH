@@ -11,7 +11,7 @@ def OrbitCenterPrime.Statement : Prop :=
     BlockNonzero x → ∀ v : FinitePlace (coordField x), (orbitCenter x v).IsPrime
 
 /- English proof (translation)
-The claim follows from `samplePoint_blockNonzero`.
+A detailed English derivation is pending.
 -/
 example : BlockNonzero samplePoint := samplePoint_blockNonzero
 

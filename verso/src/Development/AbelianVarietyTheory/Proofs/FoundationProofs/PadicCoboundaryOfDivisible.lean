@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.PadicH2Separated
 
 /- English proof (translation)
-Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toZModPow_eq_iff {l : ℕ} [Fact l.Prime] (r : ℕ) (x y : ℤ_[l]) :
     PadicInt.toZModPow r x = PadicInt.toZModPow r y ↔ ‖x - y‖ ≤ (l : ℝ) ^ (-(r : ℤ)) := by
@@ -13,7 +13,7 @@ theorem toZModPow_eq_iff {l : ℕ} [Fact l.Prime] (r : ℕ) (x y : ℤ_[l]) :
     sub_eq_zero]
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_eventually_eq _).2 (fun x => ?_) |>.continuous` and prove the remaining obligations. Establish `hl : (0 : ℝ) < (l : ℝ) ^ (-(r : ℤ))` using `zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds x hl] with y hy`. Rewrite using `[toZModPow_eq_iff]`. Simplify `hy` using `[dist_eq_norm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_reduction {l : ℕ} [Fact l.Prime] (r : ℕ) :
     Continuous (PadicInt.toZModPow r : ℤ_[l] → ZMod (l ^ r)) := by
@@ -25,11 +25,11 @@ theorem continuous_reduction {l : ℕ} [Fact l.Prime] (r : ℕ) :
   simpa [dist_eq_norm] using hy
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Rewrite using `[Metric.continuousAt_iff']`. Introduce `ε hε`. Take `⟨k, hk⟩` from `PadicInt.exists_pow_neg_lt l hε`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).one_le`. Establish `hk' : (l : ℝ) ^ (-((k + 1 : ℕ) : ℤ)) ≤ (l : ℝ) ^ (-(k : ℤ))` using `zpow_le_zpow_right₀ h1 (by push_cast; omega)`. Establish `hlc` using `((IsLocallyConstant.iff_continuous _).2 (hb k)).eventually_eq x`. Use `filter_upwards [hlc] with y hy`. Rewrite `hy` using `[toZModPow_eq_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dist_eq_norm]`. Conclude with `lt_of_le_of_lt (hy.trans hk') hk`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_reductions {l : ℕ} [Fact l.Prime] {X : Type} [TopologicalSpace X]
     (b : X → ℤ_[l]) (hb : ∀ s : ℕ, Continuous fun x => PadicInt.toZModPow (s + 1) (b x)) :
@@ -49,9 +49,9 @@ theorem continuous_of_reductions {l : ℕ} [Fact l.Prime] {X : Type} [Topologica
   exact lt_of_le_of_lt (hy.trans hk') hk
 
 /- English proof (translation)
-Establish `hB : Finite (B1 rho)` using `Finite.of_surjective _ (LinearMap.surjective_rangeRestrict (d0 rho))`. Establish `hB' : Finite ((B1 rho).comap (Z1 rho).subtype)` using `Finite.of_injective (fun x => (⟨x.1.1, x.2⟩ : B1 rho)) (fun x y h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun t : B1 rho => (t : G → M)) h)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : Finite ((B1 rho).comap (Z1 rho).subtype).toAddSubgroup` using `hB'`. Establish `h2 : Finite (Z1 rho ⧸ ((B1 rho).comap (Z1 rho).subtype).toAddSubgroup)` using `inferInstanceAs (Finite (H1 rho))`. Conclude with `Finite.of_addSubgroup_quotient ((B1 rho).comap (Z1 rho).subtype).toAddSubgroup`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_cocycles_compact_ultrametric_rep {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G] [AddCommGroup M]
     [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
@@ -68,11 +68,9 @@ theorem finite_cocycles_compact_ultrametric_rep {R G M : Type} [CommRing R] [Gro
   exact Finite.of_addSubgroup_quotient ((B1 rho).comap (Z1 rho).subtype).toAddSubgroup
 
 /- English proof (translation)
-Break down `Set.eq_empty_or_nonempty {β : G → M | Continuous β ∧ d1 rho β = z} with h | ⟨c, hc⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Set.finite_empty`. Establish `hZ : (Z1 rho : Set (G → M)).Finite` using `finite_cocycles_compact_ultrametric_rep rho`. Use `(hZ.image (fun f => f + c)).subset ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `β ⟨hβ, hd⟩`. Use `⟨β - c, ⟨hβ.sub hc.1, fun g h => ?_⟩, by simp⟩` and prove the remaining obligations. Establish `e : d1 rho (β - c) (g, h) = 0` using `by rw [map_sub, hd, hc.2, sub_self]; rfl`. Rewrite `e` using `[d1_apply]`. Establish `: (β - c) g + rho g ((β - c) h) - (β - c) (g * h) = 0` using `by rw [← e]; abel`.
-
-Conclude with `(sub_eq_zero.1 this).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_primitives {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
@@ -90,21 +88,19 @@ theorem finite_primitives {R G M : Type} [CommRing R] [Group G] [TopologicalSpac
   exact (sub_eq_zero.1 this).symm
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ ρ ρr hρ hfin z _ hz`. Establish `hd : ∀ (s : ℕ) (b : Γ → ℤ_[l]), d1 (ρr s) (fun g => PadicInt.toZModPow s (b g)) = fun p => PadicInt.toZModPow s (d1 ρ b p)`. Introduce `s b`. Use function extensionality and compare the values at `⟨g, h⟩`. Simplify using `only [d1_apply, map_add, map_sub, hρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Set `α : ∀ s : ℕ, Set (Γ → ZMod (l ^ s))` to `fun s => {β | Continuous β ∧ d1 (ρr s) β = fun p => PadicInt.toZModPow s (z p)}`. Establish `hα : ∀ s, (α (s + 1)).Finite`. Introduce `s`. Use `haveI : NeZero (l ^ (s + 1)) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `haveI := hfin (s + 1) (Nat.succ_pos s)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `finite_primitives (ρr (s + 1)) _`. Set `T : ℕ → Set (Γ → ℤ_[l])` to `fun r => ⋂ s, ⋂ (_ : s ≤ r), (fun (b : Γ → ℤ_[l]) g => PadicInt.toZModPow (s + 1) (b g)) ⁻¹' α (s + 1)`. Establish `hcl : ∀ r, IsClosed (T r)` using `fun r => isClosed_iInter fun s => isClosed_iInter fun _ => (hα s).isClosed.preimage (continuous_pi fun g => (continuous_reduction _).comp (continuous_apply g))`. Establish `hne : ∀ r, (T r).Nonempty`. Introduce `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, -, c, hc, hcd⟩` from `hz (r + 1)`. Use `⟨c, Set.mem_iInter₂.2 fun s hs => ⟨(continuous_reduction _).comp hc, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hd, hcd]`. Use function extensionality and compare the values at `p`. Establish `h0 : PadicInt.toZModPow (s + 1) ((l : ℤ_[l]) ^ (r + 1)) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_eq_zero_iff]`. Conclude with `pow_dvd_pow _ (by omega)`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul, h0, zero_mul, sub_zero]`. Establish `hdec : ∀ r, T (r + 1) ⊆ T r` using `fun r b hb => Set.mem_iInter₂.2 fun s hs => Set.mem_iInter₂.1 hb s (hs.trans (Nat.le_succ r))`. Take `⟨b, hb⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed T hdec hne (hcl 0).isCompact hcl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hb' : ∀ s, (fun g => PadicInt.toZModPow (s + 1) (b g)) ∈ α (s + 1)` using `fun s => Set.mem_iInter₂.1 (Set.mem_iInter.1 hb s) s le_rfl`. Use `⟨b, continuous_of_reductions b fun s => (hb' s).1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Rewrite using `[← PadicInt.ext_of_toZModPow]`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the cases of `n with`. Consider the case `zero => haveI : Subsingleton (ZMod (l ^ 0)) := by rw [pow_zero]; infer_instance`. Conclude with `Subsingleton.elim _ _`. Consider the case `succ n`. Use `(hb' n).2` as an intermediate fact.
-
-Rewrite `this` using `[hd]`. Conclude with `congrFun this p`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_coboundaries_of_forall_pow : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] (ρ : Representation ℤ_[l] Γ ℤ_[l]) (ρr : ∀ r : ℕ, Representation (ZMod (l ^ r)) Γ (ZMod (l ^ r))), (∀ r g x, PadicInt.toZModPow r (ρ g x) = ρr r g (PadicInt.toZModPow r x)) → (∀ r, 0 < r → Finite (H1 (ρr r))) → ∀ z ∈ Z2 ρ, (∀ r : ℕ, ∃ w ∈ Z2 ρ, z - (l : ℤ_[l]) ^ r • w ∈ B2 ρ) → z ∈ B2 ρ := by
   intro l _ Γ _ _ ρ ρr hρ hfin z _ hz

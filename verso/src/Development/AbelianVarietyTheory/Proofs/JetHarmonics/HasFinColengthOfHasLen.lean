@@ -43,23 +43,21 @@ def HasFinColength (F : Fin d → PS O 2 d) {s : ℕ} (u : Fin s → Fin d → O
 variable {v}
 
 /- English proof (translation)
-Use `isLocal_of_integers hv` as an intermediate fact. Take `⟨m, c, ⟨e⟩, rfl⟩` from `hx`. Take `⟨n, b, ⟨e'⟩, rfl⟩` from `hy`. Set `f` to `e'.toLinearMap ∘ₗ π ∘ₗ e.symm.toLinearMap`. Establish `hf : Function.Surjective f` using `e'.surjective.comp (hπ.comp e.symm.surjective)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `q : Fin m → ((j : Fin n) → O ⧸ Ideal.span {b j})` to `fun i => f (Pi.single i (1 : O ⧸ Ideal.span {c i}))`. Establish `hq : Submodule.span O (Set.range q) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Take `⟨z, rfl⟩` from `hf z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz : z = ∑ i, (Quotient.out (z i) : O) • Pi.single i (1 : O ⧸ Ideal.span {c i})`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k]`. Simplify using `only [Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def, _root_.mul_one, Ideal.Quotient.algebraMap_eq]`. Conclude with `(Ideal.Quotient.mk_out (z k)).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne' hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`. Rewrite using `[hz, map_sum]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hT : ∀ k, ∑ i, (Matrix.diagonal c) k i • q i = 0`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.sum_eq_single k]`. Simplify using `only [Matrix.diagonal_apply_eq, q, ← map_smul]`. Establish `: c k • (Pi.single k (1 : O ⧸ Ideal.span {c k}) : (i : Fin m) → O ⧸ Ideal.span {c i}) = 0`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `hj` using the available equality. Simplify using `only [Pi.smul_apply, Pi.single_eq_same, Pi.zero_apply, Algebra.smul_def, _root_.mul_one, Ideal.Quotient.algebraMap_eq]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`. Simplify using `[Pi.single_eq_of_ne hj]`. Rewrite using `[this, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `b _ hb`. Simplify using `[Matrix.diagonal_apply_ne _ (Ne.symm hb)]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`. Establish `h` using `det_mem_span_prod n b m q hq (Matrix.diagonal c) hT`.
-
-Rewrite `h` using `[Matrix.det_diagonal]`. Simplify `hv.le_of_dvd (Ideal.mem_span_singleton.1 h)` using `only [map_prod]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasLen_le_of_surjective (hv : v.Integers O) {M N : Type} [AddCommGroup M] [Module O M]
     [AddCommGroup N] [Module O N] (π : M →ₗ[O] N) (hπ : Function.Surjective π) {x y : NNReal}
@@ -108,7 +106,7 @@ theorem hasLen_le_of_surjective (hv : v.Integers O) {M N : Type} [AddCommGroup M
   simpa only [map_prod] using hv.le_of_dvd (Ideal.mem_span_singleton.1 h)
 
 /- English proof (translation)
-Take `⟨S, -, hS, hx⟩` from `hx`. Establish `hle : Submodule.span O {l | ∃ χ ∈ S, l = fun i => linCoeff χ ⬝ᵥ u i} ≤ dlogSpan F u` using `Submodule.span_mono fun l ⟨χ, h, hl⟩ => ⟨χ, hS χ h, hl⟩`. Conclude with `hasLen_le_of_surjective hv (Submodule.factor hle) (Submodule.factor_surjective hle) hx hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem HasFinColength.le (hv : v.Integers O) {F : Fin d → PS O 2 d} {s : ℕ}
     {u : Fin s → Fin d → O} {x y : NNReal} (hx : HasFinColength v F u x)
@@ -126,9 +124,9 @@ variable {E : Type} [Field E] [NumberField E] {C : Type} [Field C] [CharZero C]
   {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C]
 
 /- English proof (translation)
-Establish `hτ : Function.Injective τ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `h`. Take `⟨n, hn⟩` from `(Submodule.ne_bot_iff _).1 (Ideal.IsIntegral.comap_ne_bot ℤ (I := RingHom.ker τ) h)`. Establish `h1 : τ (algebraMap ℤ (𝓞 E) n) = 0` using `hn.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[hn.2] at h1`. Use `⟨IsFractionRing.lift (K := E) hτ, fun a => IsFractionRing.lift_algebraMap hτ a, fun σ h => IsFractionRing.ringHom_ext (A := 𝓞 E) fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[IsFractionRing.lift_algebraMap]`. Conclude with `h a`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend (τ : 𝓞 E →+* C) : ∃! σ : E →+* C, ∀ a : 𝓞 E, σ a = τ a := by
   have hτ : Function.Injective τ := by
@@ -143,7 +141,7 @@ theorem exists_extend (τ : 𝓞 E →+* C) : ∃! σ : E →+* C, ∀ a : 𝓞 
   rw [IsFractionRing.lift_algebraMap]; exact h a
 
 /- English proof (translation)
-Establish `h : ∀ a : 𝓞 E, ∃ z : O, algebraMap O C z = σ a` using `fun a => by`. Establish `h1 : IsIntegral ℤ (σ a)` using `a.isIntegral_coe.map σ.toIntAlgHom`. Conclude with `hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 h1.tower_top)`. Use `choose f hf using h`. Apply the tactic sequence `refine ⟨{ toFun := f, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun a => (hf a).symm⟩ <;> intros <;> apply hv.hom_inj <;> simp [hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_restrict (hv : v.Integers O) (σ : E →+* C) :
     ∃ τ : 𝓞 E →+* O, ∀ a : 𝓞 E, σ a = algebraMap O C (τ a) := by

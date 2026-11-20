@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.PBFc
 
 /- English proof (translation)
-Substitute `e` using the available equality. Substitute `hN` using the available equality. Conclude with `Pair.cup_spec (twPair q a b) S rfl α β γ h`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cup_cast_mk_of_isAW_rec (q : ℕ) {S : Spc} (a b k n m N : ℤ) (e : a + b = k) (hN : n + m = N)
     (α : Cocycle ((chains (ZMod q)).obj S) (res _ (tw q a)) n)
@@ -19,7 +19,7 @@ theorem cup_cast_mk_of_isAW_rec (q : ℕ) {S : Spc} (a b k n m N : ℤ) (e : a +
   exact Pair.cup_spec (twPair q a b) S rfl α β γ h
 
 /- English proof (translation)
-Introduce `q S i j m α β γ h`. Conclude with `cup_cast_mk_of_isAW_rec q (i - (j : ℤ)) (j : ℤ) i (m - 2 * (j : ℤ)) (2 * (j : ℤ)) m (sub_add_cancel i _) (sub_add_cancel m _) α β γ h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cup_cast_mk_of_isAW : ∀ (q : ℕ) {S : Spc} (i : ℤ) (j : ℕ) (m : ℤ) (α : Cocycle ((chains (ZMod q)).obj S) (res _ (tw q (i - (j : ℤ)))) (m - 2 * (j : ℤ))) (β : Cocycle ((chains (ZMod q)).obj S) (res _ (tw q (j : ℤ))) (2 * (j : ℤ))) (γ : Cocycle ((chains (ZMod q)).obj S) (res _ (tw q i)) m), (twPairI q i (j : ℤ)).IsAW (sub_add_cancel m _) α.1 β.1 γ.1 → ((cup q (CohomologyClass.mk α) (CohomologyClass.mk β)).cast (by ring) (by ring) : Ht q S m i) = CohomologyClass.mk γ := by
   intro q S i j m α β γ h

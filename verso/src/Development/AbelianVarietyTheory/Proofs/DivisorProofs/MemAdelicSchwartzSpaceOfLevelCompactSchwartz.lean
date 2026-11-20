@@ -9,33 +9,29 @@ noncomputable section
 namespace GlobalTheory.LevelSchwartz
 
 /- English proof (translation)
-Introduce `F _ _ N Φ ⟨U, hUo, hU⟩ ⟨K, hK, hKs⟩ hS`. Set `e` to `InfiniteAdeleRing.ringEquiv_mixedSpace F`. Set `ι : (Fin N → Af F) →+ (Fin N → AF F)` to `{ toFun := fun v i => pairA F 0 (v i) map_zero' := rfl map_add' := fun a b => by`. Use function extensionality and compare the values at `i`. Use `show (((0 : Ainf F), a i + b i) : Ainf F × Af F) = ((0 : Ainf F), a i) + ((0 : Ainf F), b i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `}`. Establish `hιc : Continuous ι` using `continuous_pi fun i => (show Continuous fun v : Fin N → Af F => (((0 : Ainf F), v i) : Ainf F × Af F) from continuous_const.prodMk (continuous_apply i))`. Establish `hιinf : ∀ v, inf (ι v) = 0` using `fun v => rfl`. Establish `hfin : ∀ a t, fin (ι a + embR t) = a` using `fun a t => by`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show (a i + 0 : Af F) = a i`. Conclude with `add_zero _`. Establish `hdec : ∀ y : Fin N → AF F, y = ι (fin y) + embR (fun i => e (y i).1)` using `fun y => by`. Use function extensionality and compare the values at `i`. Use `show (y i : Ainf F × Af F) = (((0 : Ainf F), (y i).2) : Ainf F × Af F) + ((e.symm (e (y i).1), (0 : Af F)))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[RingEquiv.symm_apply_apply]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp`. Set `W : AddSubgroup (Fin N → Af F)` to `U.comap ι`. Establish `hWo : IsOpen (W : Set (Fin N → Af F))` using `hUo.preimage hιc`. Establish `hWcl : IsClosed (W : Set (Fin N → Af F))` using `AddSubgroup.isClosed_of_isOpen W hWo`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hinv : ∀ a b, -a + b ∈ W → ∀ z, Φ (ι b + z) = Φ (ι a + z)`. Introduce `a b hab z`. Rewrite using `[← hU (ι (-a + b)) hab (hιinf _) (ι a + z)]`. Use `congr 1`. Rewrite using `[map_add, map_neg]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Normalize the expressions using the abelian group laws. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun a : Fin N → Af F => {b | -a + b ∈ W}) (fun a => hWo.preimage (continuous_const.add continuous_id)) (fun b _ => Set.mem_iUnion.2 ⟨b, show -b + b ∈ W by rw [neg_add_cancel]; exact W.zero_mem⟩)`. Set `T : Finset ((Fin N → Af F) ⧸ W)` to `t.image QuotientAddGroup.mk`. Use `choose g hg using fun q : (Fin N → Af F) ⧸ W => hS (ι q.out)`. Set `ind : ((Fin N → Af F) ⧸ W) → (Fin N → Af F) → ℂ` to `fun q a => if (QuotientAddGroup.mk a : (Fin N → Af F) ⧸ W) = q then 1 else 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Φ = ∑ q ∈ T, GlobalTheory.WeilM.pureA F (g q) (ind q)`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply]`. Use `show Φ y = ∑ q ∈ T, g q (fun i => e (y i).1) * (if (QuotientAddGroup.mk (fin y) : (Fin N → Af F) ⧸ W) = q then (1 : ℂ) else 0)`. Simplify using `only [mul_ite, mul_one, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hT`. Rewrite using `[hg] conv_lhs => rw [hdec y]`. Conclude with `hinv _ _ (QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' _)) _`. Assume the negation of the conclusion as `hne`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, hab⟩` from `Set.mem_iUnion₂.1 (ht (hKs y hne))`. Conclude with `hT (Finset.mem_image.2 ⟨b, hb, QuotientAddGroup.eq.2 hab⟩)`. Rewrite using `[key]`. Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : ∀ s, g q s = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: GlobalTheory.WeilM.pureA F (g q) (ind q) = 0`. Use function extensionality and compare the values at `y`. Simplify using `[GlobalTheory.WeilM.pureA, h0]`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `push_neg at h0`. Take `⟨s0, hs0⟩` from `h0`. Use `Submodule.subset_span ⟨g q, ind q, ?_, rfl⟩` and prove the remaining obligations. Set `C : Set (Fin N → Af F)` to `{a | -q.out + a ∈ W}`. Establish `hCcl : IsClosed C` using `hWcl.preimage (continuous_const.add continuous_id)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hCK : C ⊆ K`. Introduce `a ha`. Establish `h1 : Φ (ι a + embR s0) ≠ 0`. Rewrite using `[hinv _ _ ha, ← hg]`. Conclude with `hs0`.
-
-Simplify `hKs _ h1` using `[hfin]`. Establish `hmk : IsLocallyConstant (fun a : Fin N → Af F => (a : (Fin N → Af F) ⧸ W))` using `(IsLocallyConstant.iff_exists_open _).2 fun x => ⟨{b | -b + x ∈ W}, hWo.preimage (continuous_neg.add continuous_const), by simp, fun b hb => QuotientAddGroup.eq.2 hb⟩`. Use `⟨hmk.comp fun q' => if q' = q then (1 : ℂ) else 0, ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro' (hK.of_isClosed_subset hCcl hCK) hCcl fun x hx => ?_` and prove the remaining obligations. Use `show (if (QuotientAddGroup.mk x : (Fin N → Af F) ⧸ W) = q then (1 : ℂ) else 0) = 0`.
-
-Rewrite using `[if_neg]`. Introduce `hq`. Apply `hx` to reduce the goal to its premises. Use `show -q.out + x ∈ W`. Conclude with `QuotientAddGroup.eq.1 (by rw [hq, QuotientAddGroup.out_eq'])`.
+A detailed English derivation is pending.
 -/
 theorem mem_schA_of_level : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (Φ : (Fin N → AF F) → ℂ),
     (∃ U : AddSubgroup (Fin N → AF F), IsOpen (U : Set (Fin N → AF F)) ∧ ∀ u ∈ U, inf u = 0 → ∀ x, Φ (x + u) = Φ x) →

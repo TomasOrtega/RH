@@ -15,21 +15,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.FibreInv
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm h S`. Establish `hR'` using `hR`. Take `⟨_, _, _, _, -, -, -, -⟩` from `hR'`. Take `⟨_, _, _, _, -, -, -, hbor, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Establish `hbor'` using `hbor n M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, hlift⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R n`. Take `⟨g, hgc, hgf⟩` from `hlift M J hJ`. Take `⟨_, -, -, -, -, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ R`. Take `⟨hcont, hone, hmul, hgr⟩` from `hact n`. Establish `hcg : ∀ k : HA R σ J, Continuous (actW R σ J k : (Fin n → Fin M → R ⊗[F] E) → _)` using `fun k => hcont.comp (Continuous.prodMk_right k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `e : (Fin n → Fin M → R ⊗[F] E) ≃ₜ (Fin n → Fin M → R ⊗[F] E)` to `{ toFun := actW R σ J h invFun := actW R σ J h⁻¹ left_inv := fun X => by rw [← hmul, inv_mul_cancel, hone] right_inv := fun X => by rw [← hmul, mul_inv_cancel, hone] continuous_toFun := hcg h continuous_invFun := hcg h⁻¹ }`. Establish `he : (e : (Fin n → Fin M → R ⊗[F] E) → _) = actW R σ J h` using `rfl`. Set `B : Set (HermR R σ n)` to `{S | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det}`. Establish `hB : IsOpen B`. Establish `hop` using `(GlobalTheory.T.units_open_embedding_local_tensor F E σ hσ R hR).isOpen_range`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBe : B = (fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det) ⁻¹' Set.range (Units.val : (R ⊗[F] E)ˣ → R ⊗[F] E)`. Use extensionality with `T`. Simplify using `[B, IsUnit]`. Rewrite using `[hBe]`. Conclude with `hop.preimage (Continuous.matrix_det continuous_subtype_val)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU : {X | IsUnit (gramR R σ J X).det} = g ⁻¹' B`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, B, hgf]`. Establish `hm' : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (g ⁻¹' B) ν B m`. Rewrite using `[← hU]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm`. Establish `hgi : ∀ X, g (e X) = (Homeomorph.refl (HermR R σ n)) (g X)`. Introduce `X`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (g (actW R σ J h X) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = g X`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hgf, ← hgf, hgr]`. Establish `ht` using `GlobalTheory.CompanionTheory.SW.isFibreFamily_transport _ (HermR R σ n) _ μ ν (gramR R σ J) g Subtype.val Subtype.val_injective hgc hgf _ (gramR R σ J) g hgc hgf e (Homeomorph.refl _) hgi B hB m hm'`. Establish `himg : (Homeomorph.refl (HermR R σ n)) '' B = B` using `by simp`. Establish `hνm : ν.map (Homeomorph.refl (HermR R σ n)) = ν`. Simplify using `using Measure.map_id (μ := ν)`.
-
-Establish `hμm : μ.map e = μ` using `GlobalTheory.T.unitary_action_preserves_haar_local F E σ hσ M J hJ R hR n μ hμ h`. Rewrite `ht` using `[himg, hνm, hμm, ← hU]`. Conclude with `(GlobalTheory.T.gram_fiber_measures_unique F E σ hσ M J hJ R hR n μ ν _ hμ hν ht m hm S)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_actW_fibre : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n : ℕ), ∀ (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)) (m : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFib R σ J n μ ν m → ∀ (h : HA R σ J) (S : HermR R σ n), (m S).map (actW R σ J h) = m S := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm h S

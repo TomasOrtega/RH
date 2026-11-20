@@ -14,7 +14,7 @@ namespace GlobalTheory.QLog.FrobQL
 variable {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q]
 
 /- English proof (translation)
-Introduce `α` and use `by obtain ⟨a, ha, e⟩ := hf α obtain ⟨b, hb, e'⟩ := hg α exact ⟨a + b, N.add_mem ha hb, by rw [map_add, e, e', map_add]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem in_add {σ : Type} {N : Ideal B} {f g : MvPowerSeries σ Q} (hf : In N f) (hg : In N g) :
     In N (f + g) := fun α => by
@@ -23,7 +23,7 @@ theorem in_add {σ : Type} {N : Ideal B} {f g : MvPowerSeries σ Q} (hf : In N f
   exact ⟨a + b, N.add_mem ha hb, by rw [map_add, e, e', map_add]⟩
 
 /- English proof (translation)
-Introduce `α` and use `by obtain ⟨a, ha, e⟩ := hf α exact ⟨a, h ha, e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem in_mono {σ : Type} {N N' : Ideal B} (h : N ≤ N') {f : MvPowerSeries σ Q} (hf : In N f) :
     In N' f := fun α => by
@@ -31,7 +31,7 @@ theorem in_mono {σ : Type} {N N' : Ideal B} (h : N ≤ N') {f : MvPowerSeries �
   exact ⟨a, h ha, e⟩
 
 /- English proof (translation)
-Introduce `α` and use `by obtain ⟨a, ha, e⟩ := hf α exact ⟨t a, hN a ha, by rw [coeff_map, e, hs]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem in_map {σ : Type} (t : B →+* B) (s : Q →+* Q)
     (hs : ∀ b, s (algebraMap B Q b) = algebraMap B Q (t b))
@@ -41,7 +41,7 @@ theorem in_map {σ : Type} (t : B →+* B) (s : Q →+* Q)
   exact ⟨t a, hN a ha, by rw [coeff_map, e, hs]⟩
 
 /- English proof (translation)
-Introduce `α` and use `by by_cases h : ∀ i, p ∣ α i · obtain ⟨m, hm⟩ : ∃ m : σ →₀ ℕ, p • m = α := ⟨α.mapRange (fun a ↦ a / p) (by simp), by ext i; simp [Nat.mul_div_cancel' (h i)]⟩ rw [← hm, coeff_expand_smul] exact hf m · push_neg at h obtain ⟨i, hi⟩ := h exact ⟨0, N.zero_mem, by rw [coeff_expand_of_n …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem in_expand {σ : Type} (p : ℕ) (hp : p ≠ 0) {N : Ideal B} {f : MvPowerSeries σ Q}
     (hf : In N f) : In N (expand p hp f) := fun α => by
@@ -55,11 +55,9 @@ theorem in_expand {σ : Type} (p : ℕ) (hp : p ≠ 0) {N : Ideal B} {f : MvPowe
     exact ⟨0, N.zero_mem, by rw [coeff_expand_of_not_dvd p hp f hi, map_zero]⟩
 
 /- English proof (translation)
-Use `set I : Ideal B := Ideal.span {(p : B)}`. Use `haveI : CharP (B ⧸ I) p := CharP.quotient B p (by simpa [mem_nonunits_iff] using hu)`. Use `haveI : ExpChar (B ⧸ I) p := ExpChar.prime Fact.out`. Establish `hw : map (Ideal.Quotient.mk I) (map t w) = map (frobenius (B ⧸ I) p) (map (Ideal.Quotient.mk I) w)`. Use extensionality with `n`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [coeff_map, frobenius_def]`. Rewrite using `[← map_pow, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `ht _`. Establish `key : map (Ideal.Quotient.mk I) (w ^ p - expand p (Fact.out : p.Prime).ne_zero (map t w)) = 0`. Rewrite using `[map_sub, map_pow, map_expand, hw, ← map_expand, map_frobenius_expand, sub_self]`.
-
-Use `congrArg (coeff α) key` as an intermediate fact. Rewrite `this` using `[coeff_map, map_zero, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem frob_congr (p : ℕ) [Fact p.Prime] (t : B →+* B) (ht : ∀ b, (p : B) ∣ t b - b ^ p)
     (hu : ¬IsUnit (p : B)) {τ : Type} (w : MvPowerSeries τ B) (α : τ →₀ ℕ) :
@@ -87,40 +85,40 @@ namespace GlobalTheory.QLog.FrobQL
 variable {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q]
 
 /- English proof (translation)
-Simplify using `only [frob, expand, substAlgHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frob_eq_expand (p : ℕ) (hp : p ≠ 0) {σ : Type} (s : Q →+* Q) (f : MvPowerSeries σ Q) :
     frob p s f = expand p hp (map s f) := by
   simp only [frob, expand, substAlgHom_apply]
 
 /- English proof (translation)
-Establish `hU : HasSubst (up Q μ)` using `hasSubst_of_constantCoeff_zero fun i => by`. Simplify using `[up, constantCoeff_map, h0]`. Establish `hXp : HasSubst (fun i : Fin d => (X i : MvPowerSeries (Fin d) Q) ^ p)` using `HasSubst.X_pow hp`. Establish `hL : HasSubst (fun i : Fin d => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) Q))` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hR : HasSubst (fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) Q))` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : ∀ {σ : Type} (g : MvPowerSeries σ Q), expand p hp g = subst (fun i => X i ^ p) g` using `fun g => by simp only [expand, substAlgHom_apply]`. Establish `hmapU : (fun i => map s (up Q μ i)) = up Q (fun i => map t (μ i))`. Use function extensionality and compare the values at `i`. Use extensionality with `n`. Simplify using `[up, coeff_map, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e1 : subst (up Q μ) (expand p hp (map s f)) = subst (up Q fun i => μ i ^ p) (map s f)`. Rewrite using `[hexp, subst_comp_subst_apply hXp hU]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[subst_pow hU, subst_X hU]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[up, map_pow]`. Establish `e2 : inL (expand p hp (map s f)) = subst (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) Q) ^ p) (map s f)`. Rewrite using `[inL, hexp, subst_comp_subst_apply hXp hL]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[subst_pow hL, subst_X hL]`. Establish `e3 : inR (expand p hp (map s f)) = subst (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) Q) ^ p) (map s f)`. Rewrite using `[inR, hexp, subst_comp_subst_apply hXp hR]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[subst_pow hR, subst_X hR]`. Establish `hV : HasSubst (up Q fun i => map t (μ i))` using `hasSubst_of_constantCoeff_zero fun i => by`. Simplify using `[up, constantCoeff_map, h0]`. Establish `m1 : map s (subst (up Q μ) f) = subst (up Q fun i => map t (μ i)) (map s f)`. Rewrite using `[map_subst hU, hmapU]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `m2 : map s (subst (fun i : Fin d => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) Q)) f) =`. Substitute `(fun i : Fin d => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) Q)) (map s f) := by` using the available equality. Rewrite using `[map_subst hL]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Establish `m3 : map s (subst (fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) Q)) f) =`. Substitute `(fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) Q)) (map s f) := by` using the available equality. Rewrite using `[map_subst hR]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `x1 : expand p hp (subst (up Q fun i => map t (μ i)) (map s f)) =`. Substitute `(up Q fun i => expand p hp (map t (μ i))) (map s f) := by` using the available equality. Rewrite using `[expand_subst p hp hV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[up, map_expand]`. Establish `x2 : expand p hp (subst (fun i : Fin d => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) Q)) (map s f)) =`. Substitute `(fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) Q) ^ p) (map s f) := by` using the available equality.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[expand_subst p hp hL]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `x3 : expand p hp (subst (fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) Q)) (map s f)) =`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `(fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) Q) ^ p) (map s f) := by` using the available equality. Rewrite using `[expand_subst p hp hR]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e4 : expand p hp (map s (cob1 (up Q μ) f)) =`. Substitute `(up Q fun i => expand p hp (map t (μ i))) (map s f) -` using the available equality. Substitute `(fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) Q) ^ p) (map s f) -` using the available equality. Substitute `(fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) Q) ^ p) (map s f) := by` using the available equality. Simplify using `only [cob1, inL, inR, map_sub, m1, m2, m3, x1, x2, x3]`.
+Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[cob1, e1, e2, e3, e4]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cob1_expand_frobenius_map (p : ℕ) (hp : p ≠ 0) (t : B →+* B) (s : Q →+* Q)
     (hs : ∀ b, s (algebraMap B Q b) = algebraMap B Q (t b)) {d : ℕ}
@@ -191,21 +189,21 @@ namespace GlobalTheory.QLog
 open GlobalTheory.QLog.FrobQL in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ ε hε F G d c μ' hμ _ f hf`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hp : p ≠ 0` using `hpp.ne_zero`. Establish `hu : ¬IsUnit (p : F.B)` using `fun h => (Fact.out : ¬IsUnit (p : O)) (by simpa using h.map F.θ)`. Rewrite using `[frob_eq_expand p hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : constantCoeff (expand p hp (map F.s f)) = 0`. Rewrite using `[constantCoeff_expand, constantCoeff_map, hf.1, map_zero]`. Establish `hlin : ∀ i, lin (expand p hp (map F.s f)) i = 0` using `fun i => by`. Unfold `lin`. Conclude with `coeff_expand_of_not_dvd p hp _ (i := i) (by simpa using hpp.not_dvd_one)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hJ : ∀ x ∈ Ideal.span {(p : F.B)}, ∃ y ∈ Ideal.span {(p : F.B)}, x ^ p = p * y`. Introduce `x hx`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Establish `e : (p : F.B) ^ p = p * p ^ (p - 1)`. Rewrite using `[← pow_succ']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `hpp.one_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨(p : F.B) ^ (p - 1) * b ^ p, Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ (by have := hpp.one_lt; omega)), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, e]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hD : DIn (⊤ : Ideal F.B) (map F.s f)`. Establish `h` using `GlobalTheory.T.divided_in_of_quasi_logarithm p F.B O F.Q F.θ F.frame d μ' hμ ⊤ f hf`. Introduce `α i`. Take `⟨b, _, e⟩` from `h α i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨F.σ b, trivial, by rw [coeff_map, ← map_natCast F.s, ← map_mul, e, F.s_alg]⟩`. Establish `hK` using `GlobalTheory.T.subst_sub_subst_mem_mul_of_coeff_sub_mem p F.B O F.Q F.θ F.frame _ hJ (Fin d) (Fin d ⊕ Fin d) ⊤ (map F.s f) (fun i => μ' i ^ p) (fun i => expand p hp (map F.σ (μ' i))) hD (fun i => by rw [map_pow, hμ.const i, zero_pow hp]) (fun i => by rw [constantCoeff_expand, con …`. Rewrite `hK` using `[Ideal.mul_top]`. Simplify using `only [QL]`. Rewrite using `[cob1_expand_frobenius_map p hp F.σ F.s F.s_alg μ' hμ.const f]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hc0, fun i => ⟨0, trivial, by rw [hlin, map_zero]⟩, in_add (in_mono le_top hK) (in_expand p hp (in_map F.σ F.s F.s_alg (N' := ⊤) (fun _ _ => Submodule.mem_top) hf.2.2))⟩, fun hker => ⟨hc0, fun i => ⟨0, Ideal.zero_mem _, by rw [hlin, map_zero]⟩, in_add hK (in_expand p hp (in_map …` and prove the remaining obligations. Introduce `b hb`. Rewrite `hb` using `[RingHom.mem_ker]`. Take `⟨y, _, hy⟩` from `F.frame.pd b hb`. Take `⟨z, hz⟩` from `F.σ_pow b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `⟨z + y, by rw [mul_add, ← hz, ← hy]; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ql_frob : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]

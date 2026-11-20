@@ -16,7 +16,7 @@ namespace PositivityTheory.SiegelWeilFormula.KFP
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ}
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_smul'_k (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (c : ℂ) (φ : d.Fn) :
     d.dd.rho d.B.ψ w (c • φ) = c • d.dd.rho d.B.ψ w φ := by
@@ -24,14 +24,14 @@ theorem rho_smul'_k (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (c : �
   simp only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul]
   ring
 /- English proof (translation)
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T, _root_.PositivityTheory.SiegelWeilFormula.KFP.rho_smul'_k, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem T_smul'_k (c : ℂ) (φ : d.Fn) (X : Mx F E d.m d.n) : d.T (c • φ) X = c * d.T φ X := by
   simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T, _root_.PositivityTheory.SiegelWeilFormula.KFP.rho_smul'_k, map_smul, smul_eq_mul]
 /- English proof (translation)
-Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Establish `hrho : ∀ w, ∀ φ ∈ d.sch, d.dd.rho d.B.ψ w φ ∈ d.sch` using `fun w φ hφ => GlobalTheory.SchrKeepsSchA.schr_mem_schA F d.B.ψ hψ d.κ _ φ hφ`. Use `set a := Z * (incM F d.b.1.toCols₂)ᵀ`. Use `set b := Z' * (incM F d.b.1.toCols₁)ᵀ`. Establish `h1` using `Tpar.rho_rho (dd := d.dd) (ψ := d.B.ψ) a b Φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : d.dd.rho d.B.ψ (a + b) Φ = d.B.ψ (-(⅟(2 : AF F) * _root_.PositivityTheory.SiegelWeilFormula.KFP.spf_k d a b)) • d.dd.rho d.B.ψ a (d.dd.rho d.B.ψ b Φ)`. Rewrite using `[h1, smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul]`. Rewrite using `[h2, _root_.PositivityTheory.SiegelWeilFormula.KFP.T_smul'_k, (hH F E σ d _ (hrho b Φ hΦ) Z X).1, (hH F E σ d Φ hΦ Z' (X + Z)).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_rho_sum'_k (hH : _root_.PositivityTheory.SiegelWeilFormula.THeis_k) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (Z Z' X : Mx F E d.m d.n) :
     d.T (d.dd.rho d.B.ψ (Z * (incM F d.b.1.toCols₂)ᵀ + Z' * (incM F d.b.1.toCols₁)ᵀ) Φ) X =

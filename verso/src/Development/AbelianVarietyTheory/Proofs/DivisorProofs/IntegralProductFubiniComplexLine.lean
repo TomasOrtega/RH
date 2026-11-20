@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.BcUnique
 
 /- English proof (translation)
-Rewrite using `[MeasurableEquiv.symm_apply_eq, GlobalTheory.LocFub.headLastMeas_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Use `show p.2 = appendV 1 1 (p.1, EuclideanSpace.single 0 p.2) (Fin.last 1)`. Rewrite using `[appendV_last]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem headLastMeas_symm_one (p : V 1 × ℂ) :
     (GlobalTheory.LocFub.headLastMeas 1).symm p = appendV 1 1 (p.1, EuclideanSpace.single 0 p.2) := by
@@ -28,7 +28,7 @@ theorem headLastMeas_symm_one (p : V 1 × ℂ) :
     simp
 
 /- English proof (translation)
-Establish `hmp` using `(GlobalTheory.LocFub.headLastMeas_measurePreserving 1).symm (GlobalTheory.LocFub.headLastMeas 1)`. Establish `hI : Integrable (f ∘ (GlobalTheory.LocFub.headLastMeas 1).symm) ((volume : Measure (V 1)).prod (volume : Measure ℂ))` using `(hmp.integrable_comp_emb (GlobalTheory.LocFub.headLastMeas 1).symm.measurableEmbedding).2 hf`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem integral_eq_integral_last_head (f : V (1 + 1) → ℝ) (hf : Integrable f) :
     ∫ x, f x = ∫ w : ℂ, ∫ v : V 1, f (appendV 1 1 (v, EuclideanSpace.single 0 w)) := by

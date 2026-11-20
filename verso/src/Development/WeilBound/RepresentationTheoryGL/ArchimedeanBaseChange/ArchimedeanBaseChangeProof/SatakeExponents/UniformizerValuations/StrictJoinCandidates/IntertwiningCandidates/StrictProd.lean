@@ -18,13 +18,13 @@ namespace PositivityTheory.Rg.BcB.F.FX.Bo
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS
 
 /- English proof (translation)
-Introduce `E _ _ _ n P P' hS w`. Take `⟨c, N, h, V, σ, m, pos, disc, loc, inf⟩` from `P`. Take `⟨c', N', h', V', σ', m', pos', disc', loc', inf'⟩` from `P'`. Take `⟨hF, hc, -⟩` from `hS`. Simplify using `only at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Substitute `hc` using the available equality. Establish `key : ∀ i : Fin c, SIso (E` using `E) ⟨N i, V i⟩ ⟨N' i, V' i⟩ := by`. Introduce `i`. Use `(List.forall₂_iff_get.1 hF).2 i.1 (by simp [parts]) (by simp [parts])` as an intermediate fact. Simplify `this` using `[parts]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hN : N = N'` using `funext fun i => (key i).1`. Substitute `hN` using the available equality. Establish `hσ : ∀ i, Nonempty ((σ i w).ρ.Equiv (σ' i w).ρ)`. Introduce `i`. Take `⟨hNi, hiso⟩` from `key i`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hl : IsLocCompGL (V' i) w (σ i w)` using `Bo.LocIso_holds E (N i) (V i) (V' i) hiso w (σ i w) (loc i w)`. Conclude with `GlobalTheory.LocGL.IrrGL.of_eq_of.1 (Bo.LocUniq_holds E (N i) (V' i) (disc' i) w _ _ hl (loc' i w))`. Conclude with `⟨GlobalTheory.LocGL.multiProdEquiv _ fun i => (hσ i).some⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem StrictProd_holds : StrictProd := by
   intro E _ _ _ n P P' hS w

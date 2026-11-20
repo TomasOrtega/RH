@@ -15,9 +15,9 @@ open scoped Classical TensorProduct
 namespace UpperTheory.ConvolutionTheory.G3
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `K.mul_mem (K.mul_mem hk h) (K.inv_mem (hK k hk))`. Establish `e : k * (k⁻¹ * z * θ k) * (θ k)⁻¹ = z` using `by group`. Rewrite `h'` using `[e]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Conclude with `K.mul_mem (K.mul_mem (K.inv_mem hk) h) (hK k hk)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem unit_conj_mem {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (hK : ∀ k ∈ K, θ k ∈ K)
     (z k : G) (hk : k ∈ K) : k⁻¹ * z * θ k ∈ K ↔ z ∈ K := by
@@ -30,11 +30,9 @@ private theorem unit_conj_mem {G : Type} [Group G] (θ : G →* G) (K : Subgroup
     exact K.mul_mem (K.mul_mem (K.inv_mem hk) h) (hK k hk)
 
 /- English proof (translation)
-Establish `key : ∀ k : K, (K : Set G).indicator (1 : G → ℂ) ((x * k)⁻¹ * δ * θ (x * k)) = (K : Set G).indicator (1 : G → ℂ) (x⁻¹ * δ * θ x)`. Introduce `k`. Establish `e : (x * (k : G))⁻¹ * δ * θ (x * k) = (k : G)⁻¹ * (x⁻¹ * δ * θ x) * θ k`. Rewrite using `[map_mul]`. Use `group`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.indicator_apply, SetLike.mem_coe, e, unit_conj_mem θ K hK _ _ k.2, Pi.one_apply]`. Establish `top : (rStab fun k : K => (K : Set G).indicator (1 : G → ℂ) ((x * k)⁻¹ * δ * θ (x * k))) = ⊤`. Use `(Subgroup.eq_top_iff' _).2 fun k y => ?_` and prove the remaining obligations. Conclude with `(key _).trans (key _).symm`. Rewrite using `[top, Subgroup.index_top]`.
-
-Conclude with `one_ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_index {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (hK : ∀ k ∈ K, θ k ∈ K) (δ x : G) :
     (rStab fun k : K => (K : Set G).indicator (1 : G → ℂ) ((x * k)⁻¹ * δ * θ (x * k))).index ≠ 0 := by
@@ -51,14 +49,14 @@ private theorem unit_index {G : Type} [Group G] (θ : G →* G) (K : Subgroup G)
   exact one_ne_zero
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `h`. Conclude with `⟨g⁻¹, by rw [map_inv]; group⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem tw_symm {G : Type} [Group G] {θ : G →* G} {x y : G} (h : Tw θ x y) : Tw θ y x := by
   obtain ⟨g, rfl⟩ := h
   exact ⟨g⁻¹, by rw [map_inv]; group⟩
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `h`. Take `⟨g', rfl⟩` from `h'`. Conclude with `⟨g * g', by rw [map_mul]; group⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem tw_trans {G : Type} [Group G] {θ : G →* G} {x y z : G} (h : Tw θ x y) (h' : Tw θ y z) :
     Tw θ x z := by
@@ -69,7 +67,7 @@ private theorem tw_trans {G : Type} [Group G] {θ : G →* G} {x y z : G} (h : T
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `h`. Unfold `lpol`. Rewrite using `[ThBasic.nrmL_twist hU, Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lpol_tw (hU : Unr E) (n : ℕ) (w : Pl E) {x y : GLw n w} (h : Tw (thL n w) x y) :
     lpol w y = lpol w x := by
@@ -79,14 +77,14 @@ private theorem lpol_tw (hU : Unr E) (n : ℕ) (w : Pl E) {x y : GLw n w} (h : T
     ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]
 
 /- English proof (translation)
-The claim follows from `ThBasic.charpoly_nrmL hU n w δ`.
+A detailed English derivation is pending.
 -/
 private theorem lpol_locEl (hU : Unr E) (n : ℕ) (w : Pl E) (δ : GL (Fin n) E) :
     lpol w (locEl n w δ) = atPl w (gpol δ) :=
   ThBasic.charpoly_nrmL hU n w δ
 
 /- English proof (translation)
-The claim follows from `i y hy ((lpol_tw hU n w h).trans (lpol_locEl hU n w δ))`.
+A detailed English derivation is pending.
 -/
 private theorem unit_uniq (hU : Unr E) (n : ℕ) (w : Pl E) (δ : GL (Fin n) E)
     (i : ∀ y ∈ GlobalTheory.LFun.KGL w n, lpol w y = atPl w (gpol δ) →
@@ -96,19 +94,19 @@ private theorem unit_uniq (hU : Unr E) (n : ℕ) (w : Pl E) (δ : GL (Fin n) E)
   i y hy ((lpol_tw hU n w h).trans (lpol_locEl hU n w δ))
 
 /- English proof (translation)
-Introduce `E _ _ _ hU a b δ₁ δ₂ h₁ h₂`. Use `filter_upwards [intUniq E hU a δ₁ h₁, intUniq E hU b δ₂ h₂, cptInt E hU a δ₁ h₁, cptInt E hU b δ₂ h₂] with w i₁ i₂ c₁ c₂ y₁ y₂ l₁ l₂`. Establish `hK₁` using `ThBasic.thL_mem_KGL hU a w`. Establish `hK₂` using `ThBasic.thL_mem_KGL hU b w`. Establish `hK : ∀ k ∈ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b), (thL a w).prodMap (thL b w) k ∈ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)` using `fun k hk => Subgroup.mem_prod.2 ⟨hK₁ _ (Subgroup.mem_prod.1 hk).1, hK₂ _ (Subgroup.mem_prod.1 hk).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : Tw (thL a w) (locEl a w δ₁) y₁ ∧ Tw (thL b w) (locEl b w δ₂) y₂`. Rewrite using `[if_pos ht]`. Take `⟨⟨g₁, rfl⟩, ⟨g₂, rfl⟩⟩` from `ht`. Establish `e : ((g₁⁻¹ * locEl a w δ₁ * thL a w g₁, g₂⁻¹ * locEl b w δ₂ * thL b w g₂) : GLw a w × GLw b w) = (g₁, g₂)⁻¹ * (locEl a w δ₁, locEl b w δ₂) * (thL a w).prodMap (thL b w) (g₁, g₂)` using `rfl`. Rewrite using `[e, GlobalTheory.TwOrbConj.twOrb_twConj _ _ _ _ _ _ fun x => unit_index _ _ hK _ x]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `orbUnit _ _ _ _ hK (Subgroup.mem_prod.2 ⟨i₁.1, i₂.1⟩) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨z₁, z₂⟩ hz ⟨⟨x₁, x₂⟩, hx⟩`. Establish `hz'` using `Subgroup.mem_prod.1 hz`. Establish `e₁ : z₁ = x₁⁻¹ * locEl a w δ₁ * thL a w x₁` using `congrArg Prod.fst hx`. Establish `e₂ : z₂ = x₂⁻¹ * locEl b w δ₂ * thL b w x₂` using `congrArg Prod.snd hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, hk₁, f₁⟩` from `unit_uniq hU a w δ₁ i₁.2 z₁ hz'.1 ⟨x₁, e₁⟩`. Take `⟨k₂, hk₂, f₂⟩` from `unit_uniq hU b w δ₂ i₂.2 z₂ hz'.2 ⟨x₂, e₂⟩`. Conclude with `⟨(k₁, k₂), Subgroup.mem_prod.2 ⟨hk₁, hk₂⟩, Prod.ext f₁ f₂⟩`. Rewrite using `[OrbProd.twCent_prod, KapMul.cptPart_prod, c₁, c₂, OrbProd.prod_inf_prod]`. Rewrite using `[if_neg ht]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `orbZero _ _ _ _ _ fun z hz => ?_` and prove the remaining obligations. Use `Set.indicator_of_notMem (fun hzK => ht ?_) _` and prove the remaining obligations. Establish `hz'` using `Subgroup.mem_prod.1 hzK`. Take `⟨⟨x₁, x₂⟩, hx⟩` from `hz`. Establish `e₁ : z.1 = x₁⁻¹ * y₁ * thL a w x₁` using `congrArg Prod.fst hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : z.2 = x₂⁻¹ * y₂ * thL b w x₂` using `congrArg Prod.snd hx`. Establish `t₁ : Tw (thL a w) y₁ z.1` using `⟨x₁, e₁⟩`. Establish `t₂ : Tw (thL b w) y₂ z.2` using `⟨x₂, e₂⟩`. Take `⟨k₁, hk₁, f₁⟩` from `i₁.2 z.1 hz'.1 ((lpol_tw hU a w t₁).trans l₁)`. Take `⟨k₂, hk₂, f₂⟩` from `i₂.2 z.2 hz'.2 ((lpol_tw hU b w t₂).trans l₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨tw_trans ⟨k₁, f₁⟩ (tw_symm t₁), tw_trans ⟨k₂, f₂⟩ (tw_symm t₂)⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.ConvolutionTheory.G3.unitAe : UnitAe := by
   intro E _ _ _ hU a b δ₁ δ₂ h₁ h₂

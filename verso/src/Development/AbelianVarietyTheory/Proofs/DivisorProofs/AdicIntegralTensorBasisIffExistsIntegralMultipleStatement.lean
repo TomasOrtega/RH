@@ -7,7 +7,7 @@ open Matrix NumberField IsDedekindDomain GlobalTheory.AdicSpan
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.AdicSpan.isIntB_one_tmul_iff_exists_isIntegral) | (exact GlobalTheory.AdicSpan.isIntB_one_tmul_iff_exists_isIntegral) | (intros; apply GlobalTheory.AdicSpan.isIntB_one_tmul_iff_exists_isIntegral <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.adicIntegralTensorBasis_iff_exists_integral_multiple : ∀ (L : Type) [Field L] [NumberField L] (κ : Type) (ℓ : Module.Basis κ ℚ L),
     ∃ S : Finset (HeightOneSpectrum ℤ), ∀ v ∉ S, ∀ z : L,

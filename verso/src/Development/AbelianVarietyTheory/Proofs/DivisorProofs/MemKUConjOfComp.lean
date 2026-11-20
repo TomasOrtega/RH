@@ -20,7 +20,7 @@ def thAt (u : Pl E) : GLw n (cPl E u) →* GLw n u :=
     ((invT n (u.adicCompletion E)).comp (GeneralLinearGroup.map (conjLoc (IsCMField.complexConj E).toRingEquiv u)))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.phi_mul_apply _ i j`.
+A detailed English derivation is pending.
 -/
 theorem thAt_apply (u : Pl E) (h : GLw n (cPl E u)) (i j : Fin n) :
     (thAt u h).val i j =
@@ -28,7 +28,7 @@ theorem thAt_apply (u : Pl E) (h : GLw n (cPl E u)) (i j : Fin n) :
   GlobalTheory.ThetaPull.phi_mul_apply _ i j
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h` using `GlobalTheory.ThetaPull.thetaGL_apply (a := n) (conjFin (IsCMField.complexConj E).toRingEquiv) g i j`. Express the relevant statement in the definitionally equal form `pLoc E u ((thetaGL n (conjFin (IsCMField.complexConj E).toRingEquiv) g).val i j) = _`. Rewrite using `[h, thAt_apply, map_mul, map_pow, map_neg, map_one, pLoc_conjFin]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_thF (u : Pl E) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     GeneralLinearGroup.map (pLoc E u) (thF E n g) = thAt u (GeneralLinearGroup.map (pLoc E (cPl E u)) g) := by
@@ -39,11 +39,11 @@ theorem map_thF (u : Pl E) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
   rfl
 
 /- English proof (translation)
-Establish `hv : ∀ (h : GLw n (cPl E u)) (i j : Fin n), Valued.v ((thAt u h).val i j) = Valued.v ((h⁻¹).val j.rev i.rev)`. Introduce `h i j`. Rewrite using `[thAt_apply, Valuation.map_mul, Valuation.map_pow, Valuation.map_neg, Valuation.map_one, one_pow, one_mul]`. Conclude with `(conjLoc_spec (IsCMField.complexConj E).toRingEquiv u).2.2 _`. Rewrite `hk`, the goal using `[GlobLev.mem_KGL_iff_val]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hk`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `h2 j.rev i.rev` as an intermediate fact. Rewrite `this` using `[← map_inv, hv, inv_inv, Fin.rev_rev, Fin.rev_rev]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `h1 j.rev i.rev` as an intermediate fact. Rewrite `this` using `[hv, Fin.rev_rev, Fin.rev_rev]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_KGL_of_thAt (u : Pl E) (k : GLw n (cPl E u)) (hk : thAt u k ∈ GlobalTheory.LFun.KGL u n) :
     k ∈ GlobalTheory.LFun.KGL (cPl E u) n := by

@@ -23,7 +23,7 @@ instance secondCountable_KV (v : Pl) : SecondCountableTopology (KV v) :=
   TopologicalSpace.Subtype.secondCountableTopology _
 
 /- English proof (translation)
-The claim follows from `(RestrictedProduct.continuous_eval v).comp (continuous_snd.comp (AdelicGLn.restrictedProductEquiv ℚ 2).continuous)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finAt (v : Pl) : Continuous (finAt v : G2 → GL (Fin 2) (Qv v)) :=
   (RestrictedProduct.continuous_eval v).comp
@@ -39,20 +39,20 @@ def proj (S : Finset Pl) : KA →* ∀ v : S, KV v.1 where
     exact Subtype.ext (finAt_mul v.1 a.1 b.1)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun v => Continuous.subtype_mk ((continuous_finAt v.1).comp continuous_subtype_val) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_proj (S : Finset Pl) : Continuous (proj S) :=
   continuous_pi fun v =>
     Continuous.subtype_mk ((continuous_finAt v.1).comp continuous_subtype_val) _
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, fun v _ => finAt_one v, fun w => infAt_one w⟩`. Consider the case `insert a T ha ih`. Take `⟨h, h1, h2, h3⟩` from `ih`. Take `⟨l, l1, l2, l3⟩` from `hL a (y a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨h * l, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[finAt_mul]`. Break down `Finset.mem_insert.1 hv with rfl | hvT` into its components or cases. Rewrite using `[h2 _ ha, l1, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1 v hvT, l2 v (by rintro rfl; exact ha hvT), mul_one]`. Introduce `v hv`. Establish `hv' : v ≠ a ∧ v ∉ T` using `by simpa [Finset.mem_insert, not_or] using hv`. Rewrite using `[finAt_mul, h2 v hv'.2, l2 v hv'.1, mul_one]`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[infAt_mul, h3, l3, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift (hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc2 v x h)
     (y : ∀ v : Pl, GL (Fin 2) (Qv v)) (T : Finset Pl) :
@@ -76,13 +76,11 @@ theorem exists_lift (hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc2 v 
       rw [infAt_mul, h3, l3, mul_one]
 
 /- English proof (translation)
-Introduce `y`. Take `⟨h, h1, h2, h3⟩` from `exists_lift hL (fun v => if hv : v ∈ S then (y ⟨v, hv⟩).1 else 1) S`. Establish `hK : h ∈ (maxCompact : Subgroup G2)`. Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[h1 v hv, dif_pos hv]`. Conclude with `(y ⟨v, hv⟩).2`. Rewrite using `[h2 v hv]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `one_mem _`. Use `⟨⟨h, hK⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finAt v.1 h = (y v).1`.
-
-Rewrite using `[h1 v.1 v.2, dif_pos v.2]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_surjective (hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc2 v x h)
     (S : Finset Pl) : Function.Surjective (proj S) := by
@@ -106,11 +104,9 @@ theorem proj_surjective (hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc
   rw [h1 v.1 v.2, dif_pos v.2]
 
 /- English proof (translation)
-Introduce `hB mK _ _ m hm S A hA`. Establish `hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc2 v x h` using `fun v => (hB.1 v).2.2.2.2.2.1`. Use `haveI : ∀ v : S, (m v.1).IsHaarMeasure := fun v => (hm v.1).1`. Use `haveI : ∀ v : S, IsProbabilityMeasure (m v.1) := fun v => (hm v.1).2`. Establish `hc` using `continuous_proj S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : (Measure.map (proj S) mK).IsHaarMeasure := Measure.isHaarMeasure_map mK (proj S) hc (proj_surjective hL S) (by`. Rewrite using `[Filter.cocompact_eq_bot]`. Conclude with `Filter.tendsto_bot)`. Use `haveI : IsProbabilityMeasure (Measure.map (proj S) mK) := Measure.isProbabilityMeasure_map hc.aemeasurable`. Establish `hmap : Measure.map (proj S) mK = Measure.pi fun v : S => m v.1` using `Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _`.
-
-Establish `hF : Continuous fun y : (∀ v : S, KV v.1) => ∏ v : S, A v (y v).1` using `continuous_finset_prod _ fun v _ => (hA v).continuous.comp (continuous_subtype_val.comp (continuous_apply v))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integral_prod_finAt : Ad3.R.B0 → Ad3.R.E3 := by
   intro hB mK _ _ m hm S A hA

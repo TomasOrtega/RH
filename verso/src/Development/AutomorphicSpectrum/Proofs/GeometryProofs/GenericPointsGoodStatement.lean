@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFo
 namespace GlobalTheory.CompanionTheory.Ggeo
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Ar.PB.BaseCount.generic_points_good_for_intersection`.
+A detailed English derivation is pending.
 -/
 theorem blockProjection_genericPoints_good : GroundTheory.Heights₂.Heights.Inter.GenericPointsAvoidBadLocus.Statement :=
   GlobalTheory.CompanionTheory.Ar.PB.BaseCount.generic_points_good_for_intersection

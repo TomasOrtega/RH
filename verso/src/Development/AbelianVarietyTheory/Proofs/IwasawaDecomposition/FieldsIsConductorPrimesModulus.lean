@@ -11,7 +11,7 @@ open Formalism.L2.Col
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Introduce `B X j`. Conclude with `UpperTheory.Ram.isCond_condN B.host j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Base.fields_isCond : ∀ (B : Base) (X : PreX B.toPre), B.fields.IsCond (B.primes X).cond := by
   intro B X j

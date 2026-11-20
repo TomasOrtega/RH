@@ -7,13 +7,13 @@ open TensorProduct
 namespace GlobalTheory.LocalCoord
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite k`. Use `letI := Ideal.Quotient.field m`. Use `haveI : Module.Finite k (A ⧸ m) := finite_of_finite_type_of_isJacobsonRing k (A ⧸ m)`. Use `haveI : Finite (A ⧸ m) := Module.finite_of_finite k`. Use `letI := Fintype.ofFinite (A ⧸ m)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ (n : ℕ) (a : A), (FiniteField.frobeniusAlgHom k A ^ n) a = a ^ (Fintype.card k ^ n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro a`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ n ih`. Introduce `a`. Rewrite using `[pow_succ', AlgHom.mul_apply, ih, FiniteField.coe_frobeniusAlgHom, pow_succ, pow_mul]`. Establish `hc : Fintype.card (A ⧸ m) = Fintype.card k ^ Module.finrank k (A ⧸ m)` using `Module.card_eq_pow_finrank`. Use `⟨FiniteField.frobeniusAlgHom k A ^ Module.finrank k (A ⧸ m), fun a => ?_, fun a => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hpow, ← hc, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, FiniteField.pow_card, sub_self]`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (Fintype.one_lt_card (α := A ⧸ m))`. Conclude with `⟨a ^ d, by rw [hpow, ← hc, hd]; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frobenius (k A : Type) [Field k] [Finite k] [CommRing A] [Algebra k A]
     [Algebra.FiniteType k A] (m : Ideal A) (hm : m.IsMaximal) :
@@ -40,25 +40,23 @@ theorem exists_frobenius (k A : Type) [Field k] [Finite k] [CommRing A] [Algebra
     exact ⟨a ^ d, by rw [hpow, ← hc, hd]; ring⟩
 
 /- English proof (translation)
-Set `E : K ⊗[k] A →ₗ[K] W` to `D.liftBaseChange K`. Establish `hψ : ∀ (c : K) (a : A), χ (φ (c ⊗ₜ a)) = c * χ (φ (1 ⊗ₜ a))`. Introduce `c a`. Rewrite using `[← smul_eq_mul, ← map_smul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `hE : ∀ x y, E (x * y) = χ (φ x) • E y + χ (φ y) • E x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' h h' => simp only [add_mul, map_add, h, h', add_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws.
 
-Consider the case `tmul c a`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' h h' => simp only [mul_add, map_add, h, h', add_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws.
 
-Consider the case `tmul d b`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hψ c, hψ d]`. Simplify using `only [E, LinearMap.liftBaseChange_tmul, hD, smul_add, smul_smul]`. Apply the tactic sequence `congr 2 <;> ring`. Establish `hEN : ∀ x ∈ nilradical (K ⊗[k] A), E x = 0`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `x hx`. Use `haveI : IsReduced (A ⧸ nilradical A) := (Ideal.isRadical_iff_quotient_reduced _).mp (Ideal.radical_isRadical _)`. Use `haveI := GlobalTheory.ReducedAlg.isReduced_field_tensor (k := k) K (A ⧸ nilradical A)`. Set `π` to `Algebra.TensorProduct.map (AlgHom.id k K) (Ideal.Quotient.mkₐ k (nilradical A))`. Establish `h0 : π x = 0` using `((mem_nilradical.mp hx).map π).eq_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `D' : (A ⧸ nilradical A) →ₗ[k] W` to `(((nilradical A).restrictScalars k).liftQ D (fun a ha => hN a ha)).comp (Submodule.Quotient.restrictScalarsEquiv k (nilradical A)).symm.toLinearMap`. Establish `key : ∀ y, E y = D'.liftBaseChange K (π y)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' h h' => simp only [map_add, h, h']`. Consider the case `tmul d b => rfl`. Rewrite using `[key, h0, map_zero]`. Use `choose l hl using hφ`. Use `⟨fun i => E (l (t i)), fun a ha => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.mp (hb _ ha)`. Establish `h1 : E (l s * 1 ⊗ₜ a - ∑ i, l (c i) * l (t i)) = 0`. Use `hEN _ (hker ?_)` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_sum]`. Simplify using `only [map_mul, hl, hc, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sub, map_sum, sub_eq_zero]`. Simplify using `only [hE, hl, ha, ht, zero_smul, add_zero] at h1`. Establish `h2 : E (1 ⊗ₜ a) = D a` using `by simp [E]`. Rewrite `h1` using `[h2]`. Rewrite using `[← Submodule.smul_mem_iff _ hs, h1]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_of_derivation {k A K B W : Type} [Field k] [PerfectField k] [CommRing A]
     [Algebra k A] [Field K] [Algebra k K] [CommRing B] [Algebra K B] [AddCommGroup W]
@@ -122,61 +120,55 @@ theorem span_of_derivation {k A K B W : Type} [Field k] [PerfectField k] [CommRi
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `k A K B _ _ _ _ _ _ _ _ _ φ χ g m hφ hker hm hmax ⟨t, s, hs, ht, hb⟩ _`. Use `letI := Ideal.Quotient.field m`. Use `haveI : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing k A`. Take `⟨F, hF, hF2⟩` from `exists_frobenius k A m hmax`. Set `ι : A →ₐ[k] K` to `((χ.comp φ).restrictScalars k).comp Algebra.TensorProduct.includeRight`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι : ∀ a, ι a = χ (φ (1 ⊗ₜ a))` using `fun a => rfl`. Set `ι' : (A ⧸ m) →+* K` to `Ideal.Quotient.lift m ι fun a ha => (hm a).mp ha`. Set `N' : Submodule (A ⧸ m) m.Cotangent` to `Submodule.span _ {y | ∃ x : m, (x : A) ∈ nilradical A ∧ m.toCotangent x = y}`. Use `haveI : Module.Finite A m.Cotangent := Module.Finite.of_surjective m.toCotangent m.toCotangent_surjective`. Use `haveI : Module.Finite (A ⧸ m) m.Cotangent := Module.Finite.of_restrictScalars_finite A _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `r` to `Module.finrank (A ⧸ m) (m.Cotangent ⧸ N')`. Set `b` to `Module.finBasis (A ⧸ m) (m.Cotangent ⧸ N')`. Set `p : m → m.Cotangent ⧸ N'` to `fun x => N'.mkQ (m.toCotangent x)`. Establish `hpadd : ∀ x y, p (x + y) = p x + p y` using `fun x y => by simp only [p, map_add]`. Establish `hpsmul : ∀ (a : A) x, p (a • x) = Ideal.Quotient.mk m a • p x` using `fun a x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [p, map_smul]`. Both sides reduce to the same expression. Establish `hpsurj : Function.Surjective p` using `N'.mkQ_surjective.comp m.toCotangent_surjective`. Set `L : m → Fin r → K` to `fun x j => ι' (b.repr (p x) j)`. Establish `hLadd : ∀ x y, L (x + y) = L x + L y` using `fun x y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `j`. Simplify using `only [L, hpadd, map_add, Finsupp.add_apply, Pi.add_apply]`. Establish `hLsmul : ∀ (a : A) x, L (a • x) = ι a • L x` using `fun a x => by`. Use extensionality with `j`. Simplify using `only [L, hpsmul, map_smul, Finsupp.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `D : A →ₗ[k] Fin r → K` to `{ toFun := fun a => L ⟨a - F a, hF a⟩ map_add' := fun a a' => by`. Rewrite using `[← hLadd]`. Use `congr 1`. Use `ext`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, Submodule.coe_add]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[RingHom.id_apply, ← algebraMap_smul K c (L _), ← ι.commutes, ← hLsmul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ext`. Express the relevant statement in the definitionally equal form `c • a - F (c • a) = algebraMap k A c * (a - F a)`. Rewrite using `[map_smul, ← Algebra.smul_def, smul_sub] }`. Establish `hιF : ∀ a, ι (F a) = ι a` using `fun a => by`. Use `(hm _).mp (hF a)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hι, map_sub, sub_eq_zero]`. Conclude with `this.symm`. Take `⟨w, hw⟩` from `span_of_derivation φ χ hφ hker t s hs ht hb D (fun a a' => by`. Express the relevant statement in the definitionally equal form `L _ = ι a • L _ + ι a' • L _`. Rewrite using `[← hιF a', ← hLsmul, ← hLsmul, ← hLadd]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `ext`. Simplify using `only [map_mul, Submodule.coe_add, SetLike.val_smul, smul_eq_mul]`. Use the proof step `ring) (fun a ha => by`. Establish `: p ⟨a - F a, hF a⟩ = 0`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(Submodule.Quotient.mk_eq_zero _).mpr (Submodule.subset_span ⟨_, ?_, rfl⟩)` and prove the remaining obligations. Conclude with `sub_mem ha ((mem_nilradical.mp ha).map F)`. Express the relevant statement in the definitionally equal form `L _ = 0`. Use extensionality with `j`. Simplify using `[L, this])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `choose v hv using hpsurj`. Establish `hDL : ∀ x : m, D x = L x` using `fun x => by`. Take `⟨c, hc⟩` from `hF2 x`. Establish `h1 : L x = L ⟨x - F x, hF x⟩ + L ((x * c : A) • x)`. Rewrite using `[← hLadd]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use `ext`. Simplify using `only [hc, Submodule.coe_add, SetLike.val_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hLsmul, map_mul, hι, (hm _).mp x.2, zero_mul, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hrg : r ≤ g`. Establish `htop : Submodule.span K (Set.range w) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin r)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: Pi.basisFun K (Fin r) j = D (v (b j))`. Rewrite using `[hDL]`. Use extensionality with `i`. Simplify using `only [L, hv, Module.Basis.repr_self, Pi.basisFun_apply, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `h : j = i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Rewrite using `[this]`. Conclude with `hw _ ((hm _).mp (v (b j)).2)`. Use `finrank_range_le_card (R := K) w` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite `this` using `[Set.finrank, htop, finrank_top, Module.finrank_fin_fun, Fintype.card_fin]`. Then use the resulting hypothesis. Set `u : Fin g → A` to `fun i => if h : i.1 < r then (v (b ⟨i.1, h⟩) : A) else 0`. Establish `hu : ∀ j : Fin r, (v (b j) : A) ∈ Ideal.span (Set.range u)` using `fun j => Ideal.subset_span ⟨⟨j.1, lt_of_lt_of_le j.2 hrg⟩, by simp [u]⟩`. Establish `hle : m ≤ (Ideal.span (Set.range u) ⊔ nilradical A) ⊔ m • m` using `by set J := (Ideal.span (Set.range u) ⊔ nilradical A) ⊔ m • m with hJ`. Establish `hk : ∀ y ∈ N', ∀ x : m, m.toCotangent x = y → (x : A) ∈ J`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y hy`. Establish `: ∃ z : m, (z : A) ∈ nilradical A ∧ m.toCotangent z = y`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h => exact h`. Consider the case `zero => exact ⟨0, zero_mem _, map_zero _⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Consider the case `add y y' _ _ h h'`. Take `⟨z, hz, rfl⟩` from `h`. Take `⟨z', hz', rfl⟩` from `h'`. Conclude with `⟨z + z', add_mem hz hz', map_add _ _ _⟩`. Consider the case `smul c y _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz, rfl⟩` from `h`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Conclude with `⟨c • z, Ideal.mul_mem_left _ _ hz, by rw [map_smul]; rfl⟩`. Take `⟨z, hz, rfl⟩` from `this`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Establish `h2` using `m.toCotangent_eq.mp hx`. Establish `: (x : A) = z + (x - z)` using `by ring`. Rewrite using `[this]`. Use `add_mem (Ideal.mem_sup_left (Ideal.mem_sup_right hz)) (Ideal.mem_sup_right ?_)` and prove the remaining obligations. Rewrite `h2` using `[pow_two]`. Then use the resulting hypothesis.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Establish `hall : ∀ y : m.Cotangent ⧸ N', ∃ z : m, (z : A) ∈ J ∧ p z = y`. Introduce `y`. Establish `hy : y ∈ Submodule.span (A ⧸ m) (Set.range b)` using `by rw [b.span_eq]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `h`. Conclude with `⟨v (b j), Ideal.mem_sup_left (Ideal.mem_sup_left (hu j)), hv _⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by simp [p]⟩`. Consider the case `add y y' _ _ h h'`. Take `⟨z, hz, rfl⟩` from `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z', hz', rfl⟩` from `h'`. Conclude with `⟨z + z', add_mem hz hz', hpadd _ _⟩`. Consider the case `smul c y _ h`. Take `⟨z, hz, rfl⟩` from `h`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨c • z, Ideal.mul_mem_left _ _ hz, hpsmul _ _⟩`. Introduce `a ha`. Take `⟨z, hz, hp⟩` from `hall (p ⟨a, ha⟩)`. Establish `h3` using `hk _ ((Submodule.Quotient.eq N').mp hp.symm) (⟨a, ha⟩ - z) (map_sub _ _ _)`. Establish `: a = (a - z) + z` using `by ring`.
-
-Rewrite using `[this]`. Conclude with `add_mem h3 hz`. Take `⟨c, hc, hcle⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (IsNoetherian.noetherian m) le_rfl hle`. Use `⟨u, c, fun h => hmax.ne_top ?_, fun i => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one]`.
-
-Use `sub_mem h hc` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Simplify using `only [u] split_ifs`. Conclude with `Subtype.prop _`. Conclude with `zero_mem _`.
-
-Conclude with `hcle (Submodule.smul_mem_pointwise_smul a c m ha)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_local_coordinates :
     ∀ (k A K B : Type) [Field k] [Finite k] [CommRing A] [Algebra k A] [Algebra.FiniteType k A] [Field K] [Algebra k K] [CommRing B] [Algebra K B] (φ : TensorProduct k K A →ₐ[K] B) (χ : B →ₐ[K] K) (g : ℕ) (m : Ideal A), Function.Surjective φ → RingHom.ker φ ≤ nilradical _ → (∀ a : A, a ∈ m ↔ χ (φ (1 ⊗ₜ a)) = 0) → m.IsMaximal → (∃ (t : Fin g → B) (s : B), χ s ≠ 0 ∧ (∀ i, χ (t i) = 0) ∧ ∀ b, χ b = 0 → s * b ∈ Ideal.span (Set.range t)) → IsReduced B → ∃ (u : Fin g → A) (s : A), s ∉ m ∧ (∀ i, u i ∈ m) ∧ ∀ a ∈ m, s * a ∈ Ideal.span (Set.range u) ⊔ nilradical A := by

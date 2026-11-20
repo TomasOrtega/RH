@@ -18,7 +18,7 @@ def tvU {r : ℕ} (a b : Fin r) (hab : a ≠ b) (t : ℂ) : GL (Fin r) ℂ where
     rw [Formalism.UG.P.wlocal_E_mul_E, if_neg hab, neg_add_cancel, add_zero, Formalism.UG.P.wlocal_E_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.P.wlocal_E, Matrix.transvection, Matrix.one_apply]`. Rewrite using `[Matrix.single_apply]`. Apply the tactic sequence `exact if_congr (by constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1.symm, h2.symm⟩) rfl rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma wlocal_E_eq_tv {r : ℕ} (a b : Fin r) (t : ℂ) :
     Formalism.UG.P.wlocal_E a b t = Matrix.transvection a b t := by
@@ -28,7 +28,7 @@ lemma wlocal_E_eq_tv {r : ℕ} (a b : Fin r) (t : ℂ) :
   exact if_congr (by constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1.symm, h2.symm⟩) rfl rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Formalism.UG.P.wlocal_E]`. Use `congr 1`. Conclude with `if_congr eq_comm rfl rfl`. Conclude with `if_congr and_comm rfl rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma wlocal_E_transpose {r : ℕ} (a b : Fin r) (t : ℂ) :
     (Formalism.UG.P.wlocal_E a b t).transpose = Formalism.UG.P.wlocal_E b a t := by
@@ -39,13 +39,13 @@ lemma wlocal_E_transpose {r : ℕ} (a b : Fin r) (t : ℂ) :
   · exact if_congr and_comm rfl rfl
 
 /- English proof (translation)
-Establish `hdet : Matrix.GeneralLinearGroup.det u = 1`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, hu, wlocal_E_eq_tv, Matrix.det_transvection_of_ne _ _ hab]`. Unfold `sqAct detPow`. Rewrite using `[hdet, one_zpow, Units.val_one, one_smul, hu, wlocal_E_transpose]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `f using MvPolynomial.induction_on`. Use `next c => simp [Formalism.GradedWeylDivisibility.rowAct, Formalism.GradedWeylDivisibility.rowGen]`. Use `next p q hp hq => simp only [map_add, Polynomial.eval_add, hp, hq]`. Use `next p v hp =>`. Rewrite using `[map_mul, map_mul, Polynomial.eval_mul, hp]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Take `⟨i, j⟩` from `v`. Simplify using `only [Formalism.GradedWeylDivisibility.rowAct, Formalism.GradedWeylDivisibility.rowGen, MvPolynomial.aeval_X]`. Distinguish the cases in `hi : i = b`. Substitute `hi` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.UG.P.wlocal_E, add_mul, Finset.sum_add_distrib, ite_and]`. Rewrite using `[Finset.sum_eq_single a (fun x _ hx => by simp [hx]) (by simp), if_pos rfl, mul_comm]`. Simplify using `[Formalism.UG.P.wlocal_E, add_mul, Finset.sum_add_distrib, hi]`.
+A detailed English derivation is pending.
 -/
 lemma sqAct_tv {r : ℕ} (ν : DomWeight r) (a b : Fin r) (hab : a ≠ b) (t : ℂ) (u : GL (Fin r) ℂ)
     (hu : (u : Matrix (Fin r) (Fin r) ℂ) = Formalism.UG.P.wlocal_E a b t) (f : MvPolynomial (Fin r × Fin r) ℂ) :
@@ -71,9 +71,9 @@ lemma sqAct_tv {r : ℕ} (ν : DomWeight r) (a b : Fin r) (hab : a ≠ b) (t : �
     · simp [Formalism.UG.P.wlocal_E, add_mul, Finset.sum_add_distrib, hi]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `he : ∀ x : Fin n, eRow (rfl : n + 1 = n + 1) x = Fin.castSucc x` using `fun x => Fin.ext rfl`. Establish `hl : ∀ x : Fin n, (Fin.last n = Fin.castSucc x) ↔ False` using `fun x => ⟨fun e => (Fin.castSucc_lt_last x).ne' e, False.elim⟩`. Use extensionality with `i j`. Simplify using `only [he]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[PI.embGL, PI.blkHom, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, tvU]`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j <;>`. Simplify using `[Formalism.UG.P.wlocal_E, hl]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma embGL_tv {n N : ℕ} (h : n + 1 = N) (a b : Fin n) (hab : a ≠ b) (t : ℂ) :
     ((PI.embGL ℂ n N h (tvU a b hab t) : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) =
@@ -91,17 +91,17 @@ lemma embGL_tv {n N : ℕ} (h : n + 1 = N) (a b : Fin n) (hab : a ≠ b) (t : �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Take `⟨d, hdP, hdQ⟩ : ∃ d, P.natDegree < d ∧ Q.natDegree < d` from `⟨P.natDegree + Q.natDegree + 1, by omega, by omega⟩`. Establish `hP : ∀ t : ℂ, P.eval (C t) = ∑ i ∈ Finset.range d, t ^ i • P.coeff i`. Introduce `t`. Rewrite using `[Polynomial.eval_eq_sum_range' hdP]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_pow, mul_comm]`. Establish `hQ : ∀ t : ℂ, Q.eval (C t) = ∑ i ∈ Finset.range d, t ^ i • Q.coeff i`. Introduce `t`. Rewrite using `[Polynomial.eval_eq_sum_range' hdQ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_pow, mul_comm]`. Distinguish the cases in `hk : k < d`. Use `MvPolynomial.ext _ _ fun m => ?_` and prove the remaining obligations. Set `p : Polynomial ℂ` to `∑ i ∈ Finset.range d, Polynomial.monomial i (MvPolynomial.coeff m (φ (P.coeff i)))`. Set `q : Polynomial ℂ` to `∑ i ∈ Finset.range d, Polynomial.monomial i (MvPolynomial.coeff m (Q.coeff i))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hpq : p = q`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `t`. Establish `e` using `congrArg (MvPolynomial.coeff m) (hPQ t)`. Rewrite `e` using `[hP t, hQ t, map_sum]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_smul, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul] at e`. Simplify using `only [p, q, Polynomial.eval_finset_sum, Polynomial.eval_monomial]`. Simplify `e` using `[mul_comm]`. Establish `e2` using `congrArg (fun r => Polynomial.coeff r k) hpq`. Simplify `e2` using `[p, q, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : P.coeff k = 0` using `Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)`. Establish `h2 : Q.coeff k = 0` using `Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)`. Rewrite using `[h1, h2, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coeff_eq_of_eval_lemma {σ τ : Type*}
     (φ : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial τ ℂ)
@@ -141,9 +141,9 @@ private theorem coeff_eq_of_eval_lemma {σ τ : Type*}
     rw [h1, h2, map_zero]
 
 /- English proof (translation)
-Introduce `n N h mu lam φ hφ a b hab k s hs`. Unfold `IsEqv at hφ`. Establish `hab' : eRow h a ≠ eRow h b` using `fun he => hab (Fin.ext (by simpa [eRow] using congrArg Fin.val he))`. Conclude with `coeff_eq_of_eval_lemma φ (rowGen ℂ a b s) (rowGen ℂ (eRow h a) (eRow h b) (φ s)) (fun t => by`. Establish `e1` using `hφ.2 (tvU a b hab t) s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[sqAct_tv mu a b hab t _ rfl s, sqAct_tv lam (eRow h a) (eRow h b) hab' t _ (embGL_tv h a b hab t) (φ s)] at e1) k` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem equivariant_divisibility : EqvDiv := by
   intro n N h mu lam φ hφ a b hab k s hs

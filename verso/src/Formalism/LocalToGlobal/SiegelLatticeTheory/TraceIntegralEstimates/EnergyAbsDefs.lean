@@ -19,7 +19,7 @@ def Yop (μS ν : Measure G) (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → 
   ∑ i, (innerSL ℂ (stdOrthonormalBasis ℂ V i)).smulRight (yv μS ν σ w W Ω (stdOrthonormalBasis ℂ V i))
 
 /- English proof (translation)
-Simplify using `only [Yop, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Yop_apply (μS ν : Measure G) (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (Ω : Set G) (e : V) :
     Yop μS ν σ w W Ω e =
@@ -28,9 +28,9 @@ theorem Yop_apply (μS ν : Measure G) (σ : G → (HH →L[ℂ] HH)) (w : HH) (
     ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[Yop_apply, Finset.sum_eq_single j]`. Rewrite using `[orthonormal_iff_ite.mp (stdOrthonormalBasis ℂ V).orthonormal]`. Simplify using the standard rewrite rules. Introduce `i _ hij`. Rewrite using `[orthonormal_iff_ite.mp (stdOrthonormalBasis ℂ V).orthonormal, if_neg hij, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Yop_apply_basis (μS ν : Measure G) (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (Ω : Set G)
     (j : Fin (Module.finrank ℂ V)) :

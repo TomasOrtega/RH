@@ -20,7 +20,7 @@ namespace GlobalTheory.FieldPair.AdjUnit
 variable {k L : Type} [Field k] [Field L] {c : k →+* L}
 
 /- English proof (translation)
-Use `letI := (c.codRestrict Q hQ.const_mem).toAlgebra`. Use `haveI : Algebra.EssFiniteType k Q := hQ.essFiniteType`. Conclude with `Algebra.EssFiniteType.isNoetherianRing k Q`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isNoetherianRing {Q : Subring L} (hQ : IsLocModel c Q) : IsNoetherianRing Q := by
   letI := (c.codRestrict Q hQ.const_mem).toAlgebra
@@ -28,7 +28,7 @@ theorem isNoetherianRing {Q : Subring L} (hQ : IsLocModel c Q) : IsNoetherianRin
   exact Algebra.EssFiniteType.isNoetherianRing k Q
 
 /- English proof (translation)
-Use `IsFractionRing.of_field Q L fun z => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, e⟩` from `hQ.frac z`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, eq_div_of_mul_eq hb0 e⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFractionRing {Q : Subring L} (hQ : IsLocModel c Q) : IsFractionRing Q L := by
   refine IsFractionRing.of_field Q L fun z => ?_
@@ -36,15 +36,13 @@ theorem isFractionRing {Q : Subring L} (hQ : IsLocModel c Q) : IsFractionRing Q 
   exact ⟨⟨a, ha⟩, ⟨b, hb⟩, eq_div_of_mul_eq hb0 e⟩
 
 /- English proof (translation)
-Set `c0` to `c.codRestrict Q hQ.const_mem`. Use `haveI : IsNoetherianRing Q := isNoetherianRing hQ`. Use `haveI : IsFractionRing Q L := isFractionRing hQ`. Establish `hp : p.primeCompl ≤ nonZeroDivisors Q` using `p.primeCompl_le_nonZeroDivisors`. Set `A : Subalgebra Q L` to `Localization.subalgebra.ofField L p.primeCompl hp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Use `haveI hA : IsLocalization p.primeCompl A := Localization.subalgebra.isLocalization_ofField L _ hp`. Use `haveI : IsLocalization.AtPrime A p := hA`. Use `haveI : IsDiscreteValuationRing A := GlobalTheory.isDiscreteValuationRing_of_height_eq_one p hp1 A`. Use `haveI : IsFractionRing A L := Localization.subalgebra.isFractionRing_ofField L _ hp`. Set `V : ValuationSubring L` to `{ A.toSubring with mem_or_inv_mem' := fun x => by`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Break down `ValuationRing.isInteger_or_isInteger A x with ⟨a, e⟩ | ⟨a, e⟩` into its components or cases. Conclude with `Or.inl (e ▸ a.2)`. Conclude with `Or.inr (e ▸ a.2) }`. Establish `hc : ∀ a, c a ∈ V` using `fun a => A.algebraMap_mem (c0 a)`. Set `S : Place c` to `⟨V, hc, ‹IsDiscreteValuationRing A›, by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e : c.codRestrict V hc = (algebraMap Q A).comp c0` using `rfl`. Rewrite using `[e]`. Conclude with `RingHom.EssFiniteType.comp hQ.essFiniteType ((RingHom.essFiniteType_algebraMap (R := Q) (S := A)).2 (Algebra.EssFiniteType.of_isLocalization A p.primeCompl))⟩`. Establish `hu : ∀ b : Q, b ∉ p → IsUnit (algebraMap Q A b)` using `fun b hb => IsLocalization.map_units A (⟨b, hb⟩ : p.primeCompl)`. Use `⟨S, ⟨fun q hq => A.algebraMap_mem ⟨q, hq⟩, fun f hf => ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations.
-
-Take `⟨⟨a, b⟩, e⟩` from `IsLocalization.surj p.primeCompl (⟨f, hf⟩ : A)`. Conclude with `⟨a, a.2, b.1, b.1.2, fun h => b.2 (by rw [show b.1 = 0 from Subtype.ext h]; exact p.zero_mem), S.ord_eq_zero (u := algebraMap Q A b.1) (hu _ b.2), congrArg Subtype.val e⟩`. Take `⟨⟨a, b⟩, e⟩` from `IsLocalization.surj p.primeCompl (⟨f, hf⟩ : A)`. Establish `e' : f * (b.1 : L) = a` using `congrArg Subtype.val e`. Conclude with `⟨b.1, b.2, by rw [mul_comm, e']; exact a.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_place_of_height_eq_one {Q : Subring L} (hQ : IsLocModel c Q) [IsIntegrallyClosed Q]
     (p : Ideal Q) [p.IsPrime] (hp1 : p.height = 1) :
@@ -82,9 +80,7 @@ theorem exists_place_of_height_eq_one {Q : Subring L} (hQ : IsLocModel c Q) [IsI
     exact ⟨b.1, b.2, by rw [mul_comm, e']; exact a.2⟩
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing Q := isNoetherianRing hQ`. Use `haveI : IsFractionRing Q L := isFractionRing hQ`. Take `⟨y, hy⟩` from `(GlobalTheory.mem_range_algebraMap_iff_forall_height_eq_one (A := Q) (K := L) a).2 fun p _ hp1 => by`. Take `⟨P, hP, hs⟩` from `exists_place_of_height_eq_one hQ p hp1`. Take `⟨s, hsp, hsa⟩` from `hs a (h P hP)`.
-
-Conclude with `(GlobalTheory.mem_primeLocalSubalgebra_iff p a).2 ⟨s, hsp, ⟨⟨_, hsa⟩, rfl⟩⟩`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_isPrimeOf {Q : Subring L} (hQ : IsLocModel c Q) [IsIntegrallyClosed Q]
     (a : L) (h : ∀ P : Place c, P.IsPrimeOf Q → a ∈ P.ring) : a ∈ Q := by
@@ -103,29 +99,25 @@ end GlobalTheory.FieldPair.AdjUnit
 namespace GlobalTheory.FieldPair.AdjUnit
 
 /- English proof (translation)
-Introduce `L _ cL Q hQ t u hm hd E hE hu G hG hP`. Use `letI := hQ.isLocalRing`. Use `haveI : IsNoetherianRing Q := isNoetherianRing hQ`. Establish `hsp : (Ideal.span {t, u} : Ideal Q).spanFinrank ≤ 2` using `(Submodule.spanFinrank_span_le_ncard_of_finite (Set.toFinite _)).trans ((Set.ncard_insert_le _ _).trans (by rw [Set.ncard_singleton]))`. Use `haveI : IsRegularLocalRing Q := IsRegularLocalRing.of_spanFinrank_maximalIdeal_le Q (by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hm, hd]`. Conclude with `hsp)` after adjusting the coercions. Establish `huL : (u : L) ≠ 0`. Introduce `h`. Rewrite `hu` using `[h, Place.ord, map_zero, WithZero.log_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one hu`. Establish `hu0 : u ≠ 0` using `fun h => huL (by rw [h]; rfl)`. Establish `hum : u ∈ IsLocalRing.maximalIdeal Q` using `hm ▸ Ideal.subset_span (by simp)`. Establish `htm : t ∈ IsLocalRing.maximalIdeal Q` using `hm ▸ Ideal.subset_span (by simp)`. Establish `hu2 : u ∉ IsLocalRing.maximalIdeal Q ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h2`. Establish `hle : IsLocalRing.maximalIdeal Q ≤ Ideal.span {t}`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal Q) (IsNoetherian.noetherian _) (IsLocalRing.maximalIdeal_le_jacobson ⊥) ?_` and prove the remaining obligations. Rewrite using `[← hm, Ideal.span_le, Set.insert_subset_iff, Set.singleton_subset_iff]`. Use `⟨Submodule.mem_sup_left (Ideal.subset_span rfl), Submodule.mem_sup_right ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, smul_eq_mul, ← pow_two]`. Conclude with `h2`. Establish `heq : IsLocalRing.maximalIdeal Q = Ideal.span {t}` using `le_antisymm hle ((Ideal.span_singleton_le_iff_mem _).2 htm)`. Establish `h1 : (IsLocalRing.maximalIdeal Q).spanFinrank ≤ 1`. Rewrite using `[heq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Conclude with `(Submodule.spanFinrank_span_le_ncard_of_finite (Set.toFinite _)).trans (by rw [Set.ncard_singleton])`. Establish `h3` using `ringKrullDim_le_spanFinrank_maximalIdeal Q`. Rewrite `h3` using `[hd]`. Establish `h4 : ((IsLocalRing.maximalIdeal Q).spanFinrank : WithBot ℕ∞) ≤ 1` using `by exact_mod_cast h1`. Use `h3.trans h4` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Evaluate the numerical expressions using `at this`. Use `haveI : IsRegularLocalRing (Q ⧸ Ideal.span ({u} : Set Q)) := ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.quotient_span_singleton hum hu2`. Establish `hdom : IsDomain (Q ⧸ Ideal.span ({u} : Set Q))` using `inferInstance`. Establish `hpr : Prime u` using `(Ideal.span_singleton_prime hu0).1 ((Ideal.Quotient.isDomain_iff_prime _).1 hdom)`. Take `⟨S, -, -, hSo⟩` from `GlobalTheory.FieldPair.AdjModel.exists_place hQ hpr`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hES : E.ring = S.ring`. Assume the negation of the conclusion as `h`. Use `hSo E hE h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `haveI : IsIntegrallyClosed Q := (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing Q).2`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set b := E.ord G with hb`. Use `set G' : L := G * (u : L) ^ (-b) with hG'`. Establish `hG'0 : G' ≠ 0` using `mul_ne_zero hG (zpow_ne_zero _ huL)`. Establish `hord : ∀ P : Place cL, P.IsPrimeOf Q → P.ord G' = 0`. Introduce `P hPQ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hG', P.ord_mul hG (zpow_ne_zero _ huL), P.ord_zpow]`. Distinguish the cases in `hPE : P.ring = E.ring`. Take `rfl : P = E` from `Place.ext hPE`. Rewrite using `[hu, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hP P hPQ hPE, hSo P hPQ (hES ▸ hPE)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : G' ∈ Q` using `mem_of_forall_isPrimeOf hQ G' fun P hPQ => (P.ord_nonneg_iff hG'0).1 (by rw [hord P hPQ])`. Establish `h2 : G'⁻¹ ∈ Q` using `mem_of_forall_isPrimeOf hQ G'⁻¹ fun P hPQ => (P.ord_nonneg_iff (inv_ne_zero hG'0)).1 (by rw [P.ord_inv, hord P hPQ]; rfl)`. Use `⟨⟨G', h1⟩, IsUnit.of_mul_eq_one (a := (⟨G', h1⟩ : Q)) (⟨G'⁻¹, h2⟩ : Q) (Subtype.ext (mul_inv_cancel₀ hG'0)), ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `G = G * (u : L) ^ (-b) * (u : L) ^ b`. Rewrite using `[mul_assoc, ← zpow_add₀ huL, neg_add_cancel, zpow_zero, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_unit_mul_zpow : ∀ {L : Type} [Field L] (cL : ℂ →+* L) (Q : Subring L) (hQ : IsLocModel cL Q) (t u : Q),
     Ideal.span {t, u} = (letI := hQ.isLocalRing; IsLocalRing.maximalIdeal Q) → ringKrullDim Q = 2 →

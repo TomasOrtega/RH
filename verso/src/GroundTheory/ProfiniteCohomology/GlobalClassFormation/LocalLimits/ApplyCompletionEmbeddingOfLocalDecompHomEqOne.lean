@@ -20,9 +20,9 @@ section Surjective
 variable (F : FiniteSubfield) [Fact (K ≤ F)] [F.1.fixingSubgroup.Normal]
 
 /- English proof (translation)
-Introduce `τ`. Set `_ : Algebra ((placeOfEmbedding ι F).1.adicCompletion F.1) (AlgebraicClosure (v.adicCompletion K.1))` to `(completionEmbedding ι F).toRingHom.toAlgebra`. Establish `: IsScalarTower (v.adicCompletion K.1) ((placeOfEmbedding ι F).1.adicCompletion F.1) (AlgebraicClosure (v.adicCompletion K.1))` using `IsScalarTower.of_algebraMap_eq fun a ↦ ((completionEmbedding ι F).commutes a).symm`. Set `ψ` to `decompositionToLocal v (placeOfEmbedding ι F).1 τ`. Use `⟨ψ.liftNormal (AlgebraicClosure (v.adicCompletion K.1)), Subtype.ext ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coe_localDecompHom, decompHom_eq_iff]`. Introduce `x`. Rewrite using `[embedLevel_apply, embedLevel_apply, ← completionEmbedding_algebraMap, ← completionEmbedding_algebraMap]`. Express the relevant statement in the definitionally equal form `algebraMap _ (AlgebraicClosure (v.adicCompletion K.1)) (algebraMap F.1 ((placeOfEmbedding ι F).1.adicCompletion F.1) (τ.1 x)) = (ψ.liftNormal (AlgebraicClosure (v.adicCompletion K.1))) (algebraMap _ _ (algebraMap F.1 ((placeOfEmbedding ι F).1.adicCompletion F.1) x))`. Rewrite using `[AlgEquiv.liftNormal_commutes, decompositionToLocal_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem localDecompHom_surjective : Function.Surjective (localDecompHom ι F) := by
   intro τ
@@ -50,7 +50,7 @@ section Generic
 variable {L : Type*} [NormedField L]
 
 /- English proof (translation)
-Use `⟨1 + ∑ i ∈ Finset.range a.natDegree, ‖a.coeff i‖, ?_, fun i hi ↦ ?_⟩` and prove the remaining obligations. Establish `: 0 ≤ ∑ i ∈ Finset.range a.natDegree, ‖a.coeff i‖` using `Finset.sum_nonneg fun _ _ ↦ norm_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Finset.single_le_sum (f := fun j ↦ ‖a.coeff j‖) (fun j _ ↦ norm_nonneg _) (Finset.mem_range.2 hi)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_norm_coeff_le (a : L[X]) :
     ∃ M : ℝ, 1 ≤ M ∧ ∀ i < a.natDegree, ‖a.coeff i‖ ≤ M := by
@@ -63,11 +63,11 @@ theorem exists_norm_coeff_le (a : L[X]) :
     linarith
 
 /- English proof (translation)
-Establish `hM0 : 0 < M` using `zero_lt_one.trans_le hM`. Establish `hc1 : ‖c‖ ≤ 1` using `hc.trans (inv_le_one_of_one_le₀ hM)`. Rewrite using `[coeff_scaleRoots, norm_mul, norm_pow]`. Distinguish the cases in `hi : i < a.natDegree`. Establish `h2 : ‖c‖ ^ (a.natDegree - i) ≤ ‖c‖` using `pow_le_of_le_one (norm_nonneg _) hc1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h3 : ‖a.coeff i‖ * ‖c‖ ≤ M * M⁻¹` using `mul_le_mul (haM i hi) hc (norm_nonneg _) hM0.le`. Rewrite `h3` using `[mul_inv_cancel₀ hM0.ne']`. Conclude with `(mul_le_mul_of_nonneg_left h2 (norm_nonneg _)).trans h3`. Rewrite using `[Nat.sub_eq_zero_of_le (not_lt.1 hi), pow_zero, mul_one]`. Break down `(not_lt.1 hi).eq_or_lt with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, ha.coeff_natDegree, norm_one]`. Rewrite using `[coeff_eq_zero_of_natDegree_lt h, norm_zero]`. Conclude with `zero_le_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_scaleRoots_le_one {a : L[X]} (ha : a.Monic) {M : ℝ} (hM : 1 ≤ M)
     (haM : ∀ i < a.natDegree, ‖a.coeff i‖ ≤ M) {c : L} (hc : ‖c‖ ≤ M⁻¹) (i : ℕ) :
@@ -88,7 +88,7 @@ theorem norm_coeff_scaleRoots_le_one {a : L[X]} (ha : a.Monic) {M : ℝ} (hM : 1
       exact zero_le_one
 
 /- English proof (translation)
-Simplify using `only [GroundTheory.LocalField.monicOfCoeffs, Polynomial.map_add, Polynomial.map_pow, map_X, Polynomial.map_sum, Polynomial.map_mul, map_C]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_monicOfCoeffs {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ}
     (c : Fin n → R) :
@@ -97,19 +97,17 @@ theorem map_monicOfCoeffs {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* 
     Polynomial.map_sum, Polynomial.map_mul, map_C]
 
 /- English proof (translation)
-Take `⟨ε, hε, hK⟩` from `GroundTheory.LocalField.exists_adjoin_eq_of_norm_coeff_sub_lt f hfm hirr hsep Ω`. Take `⟨n, hn⟩ : ∃ n, f.natDegree = n` from `⟨_, rfl⟩`. Rewrite `hpos` using `[hn]`. Establish `happrox : ∀ i : Fin n, ∃ x : k, ‖algebraMap k L x - f.coeff i‖ < min ε 1` using `fun i ↦ by`. Take `⟨x, hx⟩` from `hk.exists_dist_lt (f.coeff i) (lt_min hε one_pos)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, by rwa [dist_comm, dist_eq_norm] at hx⟩`. Use `choose x hx using happrox`. Establish `hg₀m : (GroundTheory.LocalField.monicOfCoeffs x).Monic` using `GroundTheory.LocalField.monic_monicOfCoeffs x`. Establish `hdeg : (GroundTheory.LocalField.monicOfCoeffs x).degree ≠ 0`. Rewrite using `[degree_eq_natDegree hg₀m.ne_zero, GroundTheory.LocalField.natDegree_monicOfCoeffs]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hpos.ne'` after adjusting the coercions. Take `⟨β, hβ⟩` from `IsAlgClosed.exists_aeval_eq_zero Ω _ hdeg`. Establish `hgc` using `map_monicOfCoeffs (algebraMap k L) x`. Establish `hfc' : f = GroundTheory.LocalField.monicOfCoeffs (fun i : Fin n ↦ f.coeff i)` using `GroundTheory.LocalField.eq_monicOfCoeffs hfm hn`. Use `⟨_, hg₀m, β, hβ, hK ((GroundTheory.LocalField.monicOfCoeffs x).map (algebraMap k L)) (hg₀m.map _) ?_ ?_ ?_ β (by rw [aeval_map_algebraMap]; exact hβ)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hg₀m.natDegree_map, GroundTheory.LocalField.natDegree_monicOfCoeffs, hn]`. Introduce `i`. Rewrite using `[hgc, GroundTheory.LocalField.monicOfCoeffs, coeff_add, coeff_X_pow, GroundTheory.LocalField.coeff_sum_fin_C_mul_X_pow]`. Use `split_ifs with h1 h2 h2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[add_zero, norm_one]`. Rewrite using `[zero_add]`. Use `IsUltrametricDist.norm_add_le_max (algebraMap k L (x ⟨i, h2⟩) - f.coeff i) (f.coeff i)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans (max_le ((hx _).le.trans (min_le_right _ _)) (hfc i))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_zero, norm_zero]`. Conclude with `zero_le_one`. Introduce `i`. Rewrite using `[← coeff_sub, hgc]`. Use `conv_lhs => rw [hfc']`.
-
-Rewrite using `[GroundTheory.LocalField.monicOfCoeffs_sub_monicOfCoeffs, GroundTheory.LocalField.coeff_sum_fin_C_mul_X_pow]`. Use `split_ifs with h`. Conclude with `(hx _).trans_le (min_le_left _ _)`. Rewrite using `[norm_zero]`. Conclude with `hε`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adjoin_eq_of_dense {k L : Type*} [Field k] [NontriviallyNormedField L] [CompleteSpace L]
     [IsUltrametricDist L] [Algebra k L] (hk : DenseRange (algebraMap k L)) {f : L[X]}
@@ -176,9 +174,9 @@ abbrev nontriviallyNormedFieldAdicCompletion :
 attribute [local instance] nontriviallyNormedFieldAdicCompletion
 
 /- English proof (translation)
-Take `⟨x, hx0, hx⟩` from `NormedField.exists_norm_lt (v.adicCompletion K.1) (half_pos hε)`. Take `⟨c, hc⟩` from `(HeightOneSpectrum.denseRange_algebraMap K.1 v).exists_dist_lt x hx0`. Rewrite `hc` using `[dist_eq_norm]`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Use `norm_sub_norm_le x (x - algebraMap K.1 _ c)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `norm_le_insert' (algebraMap K.1 (v.adicCompletion K.1) c) x` as an intermediate fact. Rewrite `this` using `[← norm_neg (algebraMap K.1 _ c - x), neg_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_norm_algebraMap_lt {ε : ℝ} (hε : 0 < ε) :
     ∃ c : K.1, 0 < ‖algebraMap K.1 (v.adicCompletion K.1) c‖ ∧
@@ -195,9 +193,9 @@ theorem exists_norm_algebraMap_lt {ε : ℝ} (hε : 0 < ε) :
     linarith
 
 /- English proof (translation)
-Establish `hint : ∀ x : AlgebraicClosure (v.adicCompletion K.1), IsIntegral (v.adicCompletion K.1) x` using `fun x ↦ Algebra.IsIntegral.isIntegral x`. Establish `hdvd : ∀ (d : v.adicCompletion K.1) (x : AlgebraicClosure (v.adicCompletion K.1)), minpoly (v.adicCompletion K.1) (algebraMap _ _ d * x) ∣ scaleRoots (minpoly (v.adicCompletion K.1) x) d` using `fun d x ↦ minpoly.dvd _ _ (scaleRoots_aeval_eq_zero (minpoly.aeval _ x))`. Establish `hmon : ∀ (d : v.adicCompletion K.1) (x : AlgebraicClosure (v.adicCompletion K.1)), (scaleRoots (minpoly (v.adicCompletion K.1) x) d).Monic` using `fun d x ↦ (monic_scaleRoots_iff d).2 (minpoly.monic (hint x))`. Use `(eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic (hint _)) (hmon c α) (hdvd c α) ?_).symm` and prove the remaining obligations. Rewrite using `[natDegree_scaleRoots]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `natDegree_le_of_dvd (hdvd c⁻¹ (algebraMap _ _ c * α)) (hmon _ _).ne_zero`. Rewrite `h2` using `[natDegree_scaleRoots, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc, map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem minpoly_algebraMap_mul {c : v.adicCompletion K.1} (hc : c ≠ 0)
     (α : AlgebraicClosure (v.adicCompletion K.1)) :
@@ -218,9 +216,9 @@ theorem minpoly_algebraMap_mul {c : v.adicCompletion K.1} (hc : c ≠ 0)
   rwa [natDegree_scaleRoots, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc, map_one, one_mul] at h2
 
 /- English proof (translation)
-Establish `hs : (g.map (algebraMap K.1 ℚ̄)).Splits` using `IsAlgClosed.splits _`. Establish `hne : g.map (algebraMap K.1 ℚ̄) ≠ 0` using `Polynomial.map_ne_zero hg`. Establish `hroot : ((g.map (algebraMap K.1 ℚ̄)).map (ι : ℚ̄ →+* _)).IsRoot β`. Rewrite using `[Polynomial.map_map, AlgHom.comp_algebraMap, IsRoot.def, eval_map, ← aeval_def]`. Conclude with `hβ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `hs.mem_range_of_isRoot hne hroot`. Conclude with `⟨r, hr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ι_eq_of_aeval_eq_zero {g : K.1[X]} (hg : g ≠ 0)
     {β : AlgebraicClosure (v.adicCompletion K.1)} (hβ : aeval β g = 0) : ∃ r : ℚ̄, ι r = β := by
@@ -233,7 +231,7 @@ theorem exists_ι_eq_of_aeval_eq_zero {g : K.1[X]} (hg : g ≠ 0)
   exact ⟨r, hr⟩
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ ℚ⟮r⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral r)`. Take `⟨p, hp⟩` from `GLevel.exists_le (K := K) ⟨ℚ⟮r⟯, this⟩`. Conclude with `⟨p, (show ℚ⟮r⟯ ≤ p.1.1 from hp) (mem_adjoin_simple_self ℚ r)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_level_mem (r : ℚ̄) : ∃ p : GLevel K, r ∈ p.1.1 := by
   have : FiniteDimensional ℚ ℚ⟮r⟯ := adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral r)
@@ -241,15 +239,15 @@ theorem exists_level_mem (r : ℚ̄) : ∃ p : GLevel K, r ∈ p.1.1 := by
   exact ⟨p, (show ℚ⟮r⟯ ≤ p.1.1 from hp) (mem_adjoin_simple_self ℚ r)⟩
 
 /- English proof (translation)
-Establish `hint : ∀ x : AlgebraicClosure (v.adicCompletion K.1), IsIntegral (v.adicCompletion K.1) x` using `fun x ↦ Algebra.IsIntegral.isIntegral x`. Take `⟨M, hM, haM⟩` from `exists_norm_coeff_le (minpoly (v.adicCompletion K.1) α)`. Take `⟨c, hc0, hcM⟩` from `exists_norm_algebraMap_lt (v := v) (ε := M⁻¹) (by positivity)`. Establish `hc'0 : algebraMap K.1 (v.adicCompletion K.1) c ≠ 0` using `norm_pos_iff.1 hc0`. Establish `hfc` using `norm_coeff_scaleRoots_le_one (minpoly.monic (hint α)) hM haM hcM.le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hfc` using `[← minpoly_algebraMap_mul hc'0 α]`. Take `⟨g₀, hg₀m, β, hβ, α', hα', hadj⟩` from `exists_adjoin_eq_of_dense (HeightOneSpectrum.denseRange_algebraMap K.1 v) (minpoly.monic (hint _)) (minpoly.irreducible (hint _)) (minpoly.irreducible (hint _)).separable hfc (minpoly.natDegree_pos (hint _)) (AlgebraicClosure (v.adicCompletion K.1))`. Take `⟨r, hr⟩` from `exists_ι_eq_of_aeval_eq_zero ι hg₀m.ne_zero hβ`. Take `⟨p, hrp⟩` from `exists_level_mem (K := K) r`. Establish `hβmem : β ∈ (completionEmbedding ι p.1).fieldRange` using `⟨algebraMap p.1.1 _ ⟨r, hrp⟩, (completionEmbedding_algebraMap ι p.1 ⟨r, hrp⟩).trans hr⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hα'mem : α' ∈ (completionEmbedding ι p.1).fieldRange`. Establish `: (v.adicCompletion K.1)⟮α'⟯ ≤ (completionEmbedding ι p.1).fieldRange`. Rewrite using `[hadj, adjoin_simple_le_iff]`. Conclude with `hβmem`. Conclude with `this (mem_adjoin_simple_self _ α')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'⟩` from `hα'mem`. Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root (hint _).isAlgebraic hα'`. Use `⟨p, algebraMap (v.adicCompletion K.1) _ (algebraMap K.1 (v.adicCompletion K.1) c)⁻¹ * (localDecompHom ι p.1 σ • y'), ?_⟩` and prove the remaining obligations. Establish `e1 : completionEmbedding ι p.1 (localDecompHom ι p.1 σ • y') = algebraMap (v.adicCompletion K.1) _ (algebraMap K.1 (v.adicCompletion K.1) c) * α`. Rewrite using `[completionEmbedding_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg σ hy').trans hσ`. Establish `e2` using `(completionEmbedding ι p.1).commutes (algebraMap K.1 (v.adicCompletion K.1) c)⁻¹`. Use `((map_mul (completionEmbedding ι p.1) _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[e1, e2, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc'0, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level_completionEmbedding_eq (α : AlgebraicClosure (v.adicCompletion K.1)) :
     ∃ (p : GLevel K) (y : (placeOfEmbedding ι p.1).1.adicCompletion p.1.1),
@@ -292,7 +290,7 @@ theorem exists_level_completionEmbedding_eq (α : AlgebraicClosure (v.adicComple
   rw [e1, e2, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc'0, map_one, one_mul]
 
 /- English proof (translation)
-Establish `: Fact (p.1 ≤ q.1)` using `⟨h⟩`. Conclude with `⟨_, completionEmbedding_completionMap ι y⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_completionEmbedding_eq_of_le {p q : GLevel K} (h : p ≤ q)
     (y : (placeOfEmbedding ι p.1).1.adicCompletion p.1.1) :
@@ -302,7 +300,7 @@ theorem exists_completionEmbedding_eq_of_le {p q : GLevel K} (h : p ≤ q)
   exact ⟨_, completionEmbedding_completionMap ι y⟩
 
 /- English proof (translation)
-Use `choose lev y hy using fun α ↦ exists_level_completionEmbedding_eq ι α`. Take `⟨p, hp⟩` from `Finset.exists_le (S.image lev)`. Use `⟨p, fun α hα ↦ ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `exists_completionEmbedding_eq_of_le ι (hp _ (Finset.mem_image_of_mem _ hα)) (y α)`. Conclude with `⟨z, hz.trans (hy α)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_level_forall_mem (S : Finset (AlgebraicClosure (v.adicCompletion K.1))) :
     ∃ p : GLevel K, ∀ α ∈ S, ∃ y : (placeOfEmbedding ι p.1).1.adicCompletion p.1.1,
@@ -316,11 +314,11 @@ theorem exists_level_forall_mem (S : Finset (AlgebraicClosure (v.adicCompletion 
   exact ⟨z, hz.trans (hy α)⟩
 
 /- English proof (translation)
-Set `b` to `Module.finBasis (v.adicCompletion K.1) E`. Take `⟨p, hp⟩` from `exists_level_forall_mem ι (Finset.univ.image fun i ↦ (b i : AlgebraicClosure _))`. Use `⟨p, fun x hx ↦ ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ i, ((b.repr ⟨x, hx⟩ i • b i : E) : AlgebraicClosure (v.adicCompletion K.1)) = x`. Rewrite using `[← IntermediateField.coe_sum, b.sum_repr]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsum]`. Use `IntermediateField.sum_mem _ fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_smul]`. Use `IntermediateField.smul_mem _ ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hp _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_level_le_fieldRange (E : IntermediateField (v.adicCompletion K.1)
     (AlgebraicClosure (v.adicCompletion K.1))) [FiniteDimensional (v.adicCompletion K.1) E] :
@@ -339,7 +337,7 @@ theorem exists_level_le_fieldRange (E : IntermediateField (v.adicCompletion K.1)
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Establish `: σ.toAlgHom.comp (completionEmbedding ι F) = completionEmbedding ι F` using `algHom_ext_adicCompletion F fun x ↦ by`. Express the relevant statement in the definitionally equal form `σ (completionEmbedding ι F (algebraMap F.1 _ x)) = completionEmbedding ι F (algebraMap F.1 _ x)`. Rewrite using `[completionEmbedding_algebraMap, ← ι_localDecompHom_apply, hσ, OneMemClass.coe_one, AlgEquiv.one_apply]`. Conclude with `DFunLike.congr_fun this y`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_completionEmbedding_of_localDecompHom_eq_one (F : FiniteSubfield) [Fact (K ≤ F)]
     [F.1.fixingSubgroup.Normal]
@@ -355,7 +353,7 @@ theorem apply_completionEmbedding_of_localDecompHom_eq_one (F : FiniteSubfield) 
   exact DFunLike.congr_fun this y
 
 /- English proof (translation)
-Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff _ _ U).1 hU`. Take `⟨p, hp⟩` from `exists_level_le_fieldRange ι E`. Use `⟨p, fun σ hσ ↦ hEU ((IntermediateField.mem_fixingSubgroup_iff E σ).2 fun x hx ↦ ?_)⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `AlgHom.mem_fieldRange.1 (hp hx)`. Conclude with `apply_completionEmbedding_of_localDecompHom_eq_one ι p.1 hσ y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_level_ker_le {U : Set Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1)}
     (hU : U ∈ nhds 1) : ∃ p : GLevel K, ∀ σ, localDecompHom ι p.1 σ = 1 → σ ∈ U := by

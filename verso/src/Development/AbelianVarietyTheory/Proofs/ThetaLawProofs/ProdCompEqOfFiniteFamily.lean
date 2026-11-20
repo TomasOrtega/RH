@@ -17,9 +17,9 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `choose! φ hφA hφ using h`. Establish `hinj : Set.InjOn φ A` using `fun f hf k hk hfk => by rw [hφ f hf, hφ k hk, hfk]`. Establish `himg : A.image φ = A`. Use `Finset.eq_of_subset_of_card_le (fun y hy => ?_) ?_` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφA f hf`. Rewrite using `[Finset.card_image_of_injOn hinj]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem prod_comp_eq_of_finite_family {S : Type} (A : Finset (S → ℂ)) (a : S → S)
     (h : ∀ f ∈ A, ∃ f' ∈ A, f = f' ∘ a) (w : ℂ) (x : S) :
@@ -38,7 +38,7 @@ theorem prod_comp_eq_of_finite_family {S : Type} (A : Finset (S → ℂ)) (a : S
         Finset.prod_congr rfl (fun f hf => congrArg (w - ·) (congrFun (hφ f hf) x).symm)
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j B hj ih`. Simplify using `only [Finset.prod_insert hj]`. Conclude with `(h j (Finset.mem_insert_self j B)).mul (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_finite_prod {K E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {s : Set E} (A : Finset K) {f : K → E → ℂ} (h : ∀ i ∈ A, DifferentiableOn ℂ (f i) s) :
@@ -51,35 +51,31 @@ theorem differentiableOn_finite_prod {K E : Type} [NormedAddCommGroup E] [Normed
     exact (h j (Finset.mem_insert_self j B)).mul (ih fun k hk => h k (Finset.mem_insert_of_mem hk))
 
 /- English proof (translation)
-Introduce `hPh g I _ F hg hF h i`. Establish `: Fintype I` using `Fintype.ofFinite I`. Set `S` to `ReciprocityTheory.PTheta.SiegelH (Fin g)`. Establish `hmem : ∀ τ ∈ S, τ.IsSymm ∧ (τ.map Complex.im).PosDef` using `fun τ hτ => hτ`. Set `G : I → (S → ℂ)` to `fun j τ => F j τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A : Finset (S → ℂ)` to `Finset.univ.image G`. Establish `hGA : ∀ j, G j ∈ A` using `fun j => Finset.mem_image_of_mem _ (Finset.mem_univ _)`. Establish `hA : ∀ f ∈ A, ∃ j, G j = f` using `fun f hf => by simpa [A] using hf`. Establish `: Nonempty I` using `⟨i⟩`. Use `choose! rep hrep using hA`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heval : ∀ f ∈ A, ∀ τ (hτ : τ ∈ S), F (rep f) τ = f ⟨τ, hτ⟩` using `fun f hf τ hτ => congrFun (hrep f hf) ⟨τ, hτ⟩`. Establish `hsym : ∀ τ ∈ S, Key.phSym τ = τ`. Introduce `τ hτ`. Establish `ht : Matrix.transpose τ = τ` using `(hmem τ hτ).1.eq`. Simplify using `only [Key.phSym, ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `p q`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hholo : ∀ w : ℂ, Key.IsHoloSiegel g (fun τ => ∏ f ∈ A, (w - F (rep f) τ))`. Introduce `w`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `differentiableOn_finite_prod A (f := fun f x => w - F (rep f) (Key.phSym (Matrix.of x))) (fun f _ => (differentiableOn_const w).sub (hF (rep f)))`. Establish `hinv : ∀ w : ℂ, Key.IsSpInvariant g (fun τ => ∏ f ∈ A, (w - F (rep f) τ))`. Introduce `w gm hgm τ hτ`. Use `choose J hJ using h gm hgm`. Set `act : S → S` to `fun σ => ⟨Key.Chi.spAct gm σ, Key.Chi.spAct_mem hgm σ.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfam : ∀ f ∈ A, ∃ f' ∈ A, f = f' ∘ act`. Introduce `f hf`. Use `⟨G (J (rep f)), hGA _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `σ`. Conclude with `(congrFun (hrep f hf) σ).symm.trans (hJ (rep f) σ.1 σ.2)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails.
 
-Establish `hstep` using `prod_comp_eq_of_finite_family A act hfam w ⟨τ, hτ⟩`. Establish `hact : Key.phAct gm τ = Key.Chi.spAct gm τ` using `rfl`. Use `show ∏ f ∈ A, (w - F (rep f) (Key.phAct gm τ)) = ∏ f ∈ A, (w - F (rep f) τ)`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hne : S.Nonempty`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `swap`. Conclude with `⟨0, fun τ hτ => (hne ⟨τ, hτ⟩).elim⟩`. Take `⟨τ0, hτ0⟩` from `hne`. Use `⟨F i τ0, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `hval : ∀ τ ∈ S, F i τ ∈ ((A.image (fun f => F (rep f) τ0) : Finset ℂ) : Set ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ hτ`. Take `⟨c, hc⟩` from `hPh g hg _ (hholo (F i τ)) (hinv (F i τ))`. Establish `h0 : ∏ f ∈ A, (F i τ - F (rep f) τ) = 0`. Apply `Finset.prod_eq_zero (hGA i)` to reduce the goal to its premises. Rewrite using `[heval _ (hGA i) τ hτ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_self _`. Establish `h1 : ∏ f ∈ A, (F i τ - F (rep f) τ0) = 0` using `(hc τ0 hτ0).trans ((hc τ hτ).symm.trans h0)`. Take `⟨f, hf, hz⟩` from `Finset.prod_eq_zero_iff.1 h1`. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨f, hf, (sub_eq_zero.1 hz).symm⟩)`. Establish `hcont : ContinuousOn (F i) S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc0` using `(hF i).continuousOn`. Use `(hc0.mono (fun σ hσ => ?_)).congr (fun σ hσ => ?_)` and prove the remaining obligations. Use `show Key.phSym σ ∈ S`. Rewrite using `[hsym σ hσ]`. Conclude with `hσ`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `show F i σ = F i (Key.phSym σ)`. Rewrite using `[hsym σ hσ]`. Establish `hconv : Convex ℝ S`. Introduce `x hx y hy s t hs ht hst`. Take `⟨hx1, hx2⟩` from `hmem x hx`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Take `⟨hy1, hy2⟩` from `hmem y hy`. Express the relevant statement in the definitionally equal form `Matrix.IsSymm (s • x + t • y) ∧ ((s • x + t • y).map Complex.im).PosDef`. Use `⟨(hx1.smul s).add (hy1.smul t), ?_⟩` and prove the remaining obligations. Establish `hm : (s • x + t • y).map Complex.im = s • x.map Complex.im + t • y.map Complex.im`. Use extensionality with `p q`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hm]`. Break down `hs.lt_or_eq with hs' | hs'` into its components or cases. Conclude with `(hx2.smul hs').add_posSemidef (hy2.posSemidef.smul ht)`. Substitute `hs'` using the available equality.
-
-Rewrite `hst` using `[zero_add]`. Substitute `hst` using the available equality. Simplify using `using hy2`. Conclude with `hconv.isPreconnected.constant_of_mapsTo DiscreteTopology.isDiscrete hcont (fun σ hσ => hval σ hσ) hτ hτ0`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem const_of_finite_family_spAct :
     Key.PhHoloStatement → ∀ (g : ℕ) (I : Type) [Finite I] (F : I → Matrix (Fin g) (Fin g) ℂ → ℂ), 2 ≤ g → (∀ i, Key.IsHoloSiegel g (F i)) → (∀ sp ∈ Matrix.symplecticGroup (Fin g) ℤ, ∀ i, ∃ j, ∀ τ ∈ ReciprocityTheory.PTheta.SiegelH (Fin g), F i τ = F j (Key.Chi.spAct sp τ)) → ∀ i, ∃ c, ∀ τ ∈ ReciprocityTheory.PTheta.SiegelH (Fin g), F i τ = c := by

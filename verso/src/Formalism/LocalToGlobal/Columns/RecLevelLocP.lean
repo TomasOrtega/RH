@@ -17,9 +17,9 @@ variable (hc : Formalism.BasicNotions.CMData F E)
 include hc
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (cO E (algebraMap (𝓞 F) (𝓞 E) a)) = algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a)`. Rewrite using `[algebraMap_cO]`. Establish `e : algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a) = algebraMap F E (algebraMap (𝓞 F) F a)`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(hc.fixed _).2 ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rll_cO_algebraMap (a : 𝓞 F) : cO E (algebraMap (𝓞 F) (𝓞 E) a) = algebraMap (𝓞 F) (𝓞 E) a := by
   apply RingOfIntegers.ext
@@ -31,7 +31,7 @@ theorem rll_cO_algebraMap (a : 𝓞 F) : cO E (algebraMap (𝓞 F) (𝓞 E) a) =
   exact (hc.fixed _).2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Unfold `IsOver at h ⊢`. Rewrite using `[h]`. Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, mem_conjP, rll_cO_algebraMap hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsOver.conj {v : HeightOneSpectrum (𝓞 F)} {P : Pl E} (h : IsOver v P) : IsOver v (conjPrime₂ P) := by
   unfold IsOver at h ⊢
@@ -40,11 +40,11 @@ theorem IsOver.conj {v : HeightOneSpectrum (𝓞 F)} {P : Pl E} (h : IsOver v P)
   rw [Ideal.mem_comap, Ideal.mem_comap, mem_conjP, rll_cO_algebraMap hc]
 
 /- English proof (translation)
-Establish `h1 : star (algebraMap (𝓞 E) E (a * cO E a)) = algebraMap (𝓞 E) E (a * cO E a)`. Rewrite using `[map_mul, algebraMap_cO, star_mul', star_star, mul_comm]`. Take `⟨x, hx⟩` from `(hc.fixed _).1 h1`. Establish `hi : IsIntegral ℤ x`. Establish `h2 : IsIntegral ℤ (algebraMap F E x)` using `by rw [hx]; exact RingOfIntegers.isIntegral_coe _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(isIntegral_algebraMap_iff (algebraMap F E).injective).1 h2`. Take `⟨b, hb⟩ : ∃ b : 𝓞 F, algebraMap (𝓞 F) F b = x` from `⟨⟨x, hi⟩, rfl⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) b) = algebraMap (𝓞 E) E (a * cO E a)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx, ← hb, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+A detailed English derivation is pending.
 -/
 theorem rll_norm_mem (a : 𝓞 E) : ∃ b : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) b = a * cO E a := by
   have h1 : star (algebraMap (𝓞 E) E (a * cO E a)) = algebraMap (𝓞 E) E (a * cO E a) := by
@@ -60,15 +60,13 @@ theorem rll_norm_mem (a : 𝓞 E) : ∃ b : 𝓞 F, algebraMap (𝓞 F) (𝓞 E)
   rw [← hx, ← hb, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨a, ha⟩` from `Formalism.L2.DIV.crtPl ({Q, P, conjPrime₂ P} : Finset (Pl E)) (fun R => if R = Q then 0 else 1)`. Establish `h1 : a ∈ Q.asIdeal`. Use `ha Q (by simp)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hnot : ∀ R : Pl E, R ≠ Q → R ∈ ({Q, P, conjPrime₂ P} : Finset (Pl E)) → a ∉ R.asIdeal`. Introduce `R hR hm haR`. Use `ha R hm` as an intermediate fact. Rewrite `this` using `[if_neg hR]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Ideal.ne_top_iff_one _).1 R.isPrime.ne_top (by`. Establish `h2` using `Ideal.sub_mem _ haR this`. Simplify using `using h2)`. Establish `h2` using `hnot P (Ne.symm hne.1) (by simp)`. Establish `h3` using `hnot (conjPrime₂ P) (Ne.symm hne.2) (by simp)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `rll_norm_mem hc a`. Establish `hbv : b ∈ v.asIdeal`. Rewrite using `[hQ, Ideal.mem_comap, hb]`. Conclude with `Ideal.mul_mem_right _ _ h1`. Rewrite `hbv` using `[hP, Ideal.mem_comap, hb]`.
-
-Break down `P.isPrime.mem_or_mem hbv with h | h` into its components or cases. Conclude with `h2 h`. Conclude with `h3 ((mem_conjP P a).2 h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem rll_over_cases {v : HeightOneSpectrum (𝓞 F)} {P Q : Pl E} (hP : IsOver v P) (hQ : IsOver v Q) :
     Q = P ∨ Q = conjPrime₂ P := by
@@ -97,9 +95,7 @@ theorem rll_over_cases {v : HeightOneSpectrum (𝓞 F)} {P Q : Pl E} (hP : IsOve
   · exact h3 ((mem_conjP P a).2 h)
 
 /- English proof (translation)
-Introduce `Q hQ hQv`. Break down `rll_over_cases hc hov hQv with e | e` into its components or cases. Conclude with `e`. It suffices to derive a contradiction. Establish `h1 : π ∈ (conjPrime₂ P).asIdeal` using `e ▸ h.mem hQ`.
-
-Conclude with `h.conj_notMem hP ((mem_conjP P π).1 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem BasePi.over_unique {ST : Finset (Pl E)} {π : 𝓞 E} (h : BasePi ST π) {v : HeightOneSpectrum (𝓞 F)} {P : Pl E}
     (hP : P ∈ ST) (hov : IsOver v P) : ∀ Q ∈ ST, IsOver v Q → Q = P := by
@@ -111,11 +107,11 @@ theorem BasePi.over_unique {ST : Finset (Pl E)} {π : 𝓞 E} (h : BasePi ST π)
     exact h.conj_notMem hP ((mem_conjP P π).1 h1)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, hv⟩`. Rewrite using `[hv, Ideal.mem_comap, map_natCast, ← hN]`. Conclude with `Ideal.mul_mem_right _ _ ((hS P).1 hP)`. Introduce `hv`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP⟩` from `Formalism.L2.DIV.exists_overPl (E := E) v`. Establish `hP' : IsOver v P` using `hP`. Establish `h1 : (N : 𝓞 E) ∈ P.asIdeal`. Rewrite `hv` using `[hP, Ideal.mem_comap, map_natCast]`. Conclude with `hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[← hN]`. Break down `P.isPrime.mem_or_mem h1 with h | h` into its components or cases. Conclude with `⟨P, (hS P).2 h, hP'⟩`. Conclude with `⟨conjPrime₂ P, (hS _).2 ((mem_conjP P ϖ).2 h), hP'.conj hc⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_plUnder_iff_norm {S : Finset (Pl E)} {ϖ : 𝓞 E} (hS : ∀ P : Pl E, P ∈ S ↔ ϖ ∈ P.asIdeal) (N : ℕ)
     (hN : ϖ * cO E ϖ = (N : 𝓞 E)) (v : HeightOneSpectrum (𝓞 F)) : v ∈ plUnder F S ↔ (N : 𝓞 F) ∈ v.asIdeal := by
@@ -140,11 +136,9 @@ section Host
 variable {X : Fields} {Pr : Primes X}
 
 /- English proof (translation)
-Establish `h0 : Pr.piT u ≠ 0`. Introduce `h0`. Take `⟨a, b, hab⟩` from `hPr.piT_cop u`. Rewrite `hab` using `[h0, map_zero, mul_zero, mul_zero, add_zero]`. Conclude with `zero_ne_one hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hr`. Conclude with `piT_dvd_of_mem hX hPr u r fun P => hr P.1 P.2`. Introduce and unpack `⟨q, rfl⟩ P hP`. Conclude with `Ideal.mul_mem_right _ _ ((mem_divs h0 P).1 hP)`.
-
-Use `cop := hPr.piT_cop u`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem basePi_of_ok (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) : BasePi (Pr.vT u) (Pr.piT u) where
   dvd r := by
@@ -163,13 +157,13 @@ theorem basePi_of_ok (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) : BasePi (Pr.vT u) 
 open Classical in
 
 /- English proof (translation)
-Establish `key : ∀ i, v ∈ plUnder X.F (Pr.vG i) ↔ (Pr.g i : 𝓞 X.F) ∈ v.asIdeal` using `fun i => by`. Establish `hne : X.conjO (Pr.piG i) ≠ 0`. Introduce `h0`. Use `hPr.piG_norm i` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.cast_ne_zero.2 (hPr.g_prime i).ne_zero) this.symm`. Use `mem_plUnder_iff_norm hc (fun P => mem_divs hne P) (Pr.g i) ?_ v` and prove the remaining obligations. Establish `h2 : cO X.E (X.conjO (Pr.piG i)) = Pr.piG i` using `RingOfIntegers.ext (star_star _)`. Rewrite using `[h2, mul_comm]`. Conclude with `hPr.piG_norm i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← key 0, ← key 1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, ho⟩`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Conclude with `Or.inl ⟨P, h, ho⟩`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inr ⟨P, h, ho⟩`. Introduce and unpack `(⟨P, hP, ho⟩ | ⟨P, hP, ho⟩)`. Conclude with `⟨P, Finset.mem_union_left _ hP, ho⟩`. Conclude with `⟨P, Finset.mem_union_right _ hP, ho⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem plUnder_vGs (hc : Formalism.BasicNotions.CMData X.F X.E) (hPr : Pr.Ok) (v : HeightOneSpectrum (𝓞 X.F)) :
     v ∈ plUnder X.F Pr.vGs ↔ (Pr.g 0 : 𝓞 X.F) ∈ v.asIdeal ∨ (Pr.g 1 : 𝓞 X.F) ∈ v.asIdeal := by

@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h` using `o.eta_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h |>.symm ▸ rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Obj.eta_zero {b : Base D R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s) : o.eta 0 = 1 := by
   have h := o.eta_add 0 0
@@ -19,7 +19,7 @@ theorem Obj.eta_zero {b : Base D R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} 
   exact left_eq_mul.mp h |>.symm ▸ rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, pow_zero, o.eta_zero]`. Consider the case `succ k ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Obj.eta_nsmul {b : Base D R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s) (k : ℕ) (y : D.La) :
     o.eta (k • y) = o.eta y ^ k := by
@@ -28,7 +28,7 @@ theorem Obj.eta_nsmul {b : Base D R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R}
   | succ k ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, comp_one]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_pow_pts {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] (f : T' ⟶ T) (e : T ⟶ A) (k : ℕ) :
     f ≫ e ^ k = (f ≫ e) ^ k := by

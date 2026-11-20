@@ -10,7 +10,7 @@ namespace GlobalTheory.BdRLatticeGens
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨b0, rfl⟩` from `T.eB.surjective b`. Establish `h1` using `(P.PD K).ι_comm g b0`. Rewrite `h1` using `[P.PD_ι, P.PD_ι, P.PD_actB, P.PD_actdR]`. Rewrite using `[← T.actB, ← hF.ι, ← hF.ι, h1, T.actD]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_sigma {K : FinExt l} {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : Core l}
     (hF : Fits T C) (g : ↥(GK K)) (b : Per.Bcris l) :
@@ -21,16 +21,16 @@ theorem iota_sigma {K : FinExt l} {P : LocPrime l} {AI : LocAinf l P} {T : LocTi
   rw [← T.actB, ← hF.ι, ← hF.ι, h1, T.actD]
 
 /- English proof (translation)
-Rewrite using `[← T.zB, ← hF.ι, AlgHom.commutes, T.zD]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_zB {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : Core l}
     (hF : Fits T C) (a : ℤ_[l]) : C.ι (Per.zB l a) = Per.zD l a := by
   rw [← T.zB, ← hF.ι, AlgHom.commutes, T.zD]
 
 /- English proof (translation)
-Establish `h1 : U.map (Per.σB (g : GQ l)) * U'.map (Per.σB (g : GQ l)) = 1`. Rewrite using `[← Matrix.map_mul, hUU, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : (ρ g).map (Per.zB l) = U * U'.map (Per.σB (g : GQ l))` using `by conv_rhs => rw [← hU g]`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `h3 : U' * U = 1` using `mul_eq_one_comm.1 hUU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, ← Matrix.mul_assoc, h3, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_U' {d : ℕ} {K : FinExt l} (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l]))
     (U U' : Matrix (Fin d) (Fin d) (Per.Bcris l)) (hUU : U * U' = 1)
@@ -45,11 +45,11 @@ theorem sigma_U' {d : ℕ} {K : FinExt l} (ρ : ↥(GK K) → Matrix (Fin d) (Fi
   rw [h2, ← Matrix.mul_assoc, h3, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_mulVec]`. Establish `e1 : (U'.map C.ι).map (Per.σD (g : GQ l)) = U'.map C.ι * (ρ g).map (Per.zD l)`. Establish `: (U'.map C.ι).map (Per.σD (g : GQ l)) = (U'.map (Per.σB (g : GQ l))).map C.ι`. Use extensionality with `a b`. Simplify using `[iota_sigma hF g]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, sigma_U' ρ U U' hUU hU g, Matrix.map_mul]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[iota_zB hF]`. Rewrite using `[e1, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (congrArg _ (hv g)) r`.
+A detailed English derivation is pending.
 -/
 theorem inv_vec {K : FinExt l} {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : Core l}
     (hF : Fits T C) {d : ℕ} (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l]))
@@ -70,14 +70,14 @@ theorem inv_vec {K : FinExt l} {P : LocPrime l} {AI : LocAinf l P} {T : LocTied 
   exact congrFun (congrArg _ (hv g)) r
 
 /- English proof (translation)
-Rewrite using `[PadicInt.unitCoeff_spec hy, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast]`. Conclude with `((PadicInt.unitCoeff hy).isUnit.map _).map _ |>.mul ((isUnit_l_BdRp l).pow _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_aDp_zA {y : ℤ_[l]} (hy : y ≠ 0) : IsUnit (aDp l (Per.zA l y)) := by
   rw [PadicInt.unitCoeff_spec hy, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast]
   exact ((PadicInt.unitCoeff hy).isUnit.map _).map _ |>.mul ((isUnit_l_BdRp l).pow _)
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Use `congr 1`. Simplify using `only [Core.oD, RingHom.comp_apply, C.o_sec.z]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem oD_int (C : Core l) (y : ℤ_[l]) (x : Om l) :
     C.oD (algebraMap ℚ_[l] (Om l) (y : ℚ_[l]) * x) =
@@ -87,9 +87,9 @@ theorem oD_int (C : Core l) (y : ℤ_[l]) (x : Om l) :
   simp only [Core.oD, RingHom.comp_apply, C.o_sec.z]
 
 /- English proof (translation)
-Establish `hx : ∀ r, ∃ x ∈ K.1, C.oD x = w r` using `fun r => hI K (w r) (fun g hg => hw ⟨g, hg⟩ r)`. Use `choose x hxK hxw using hx`. Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Take `⟨y, hy0, hint⟩` from `exists_integral_multiples ℤ_[l] ℚ_[l] (Finset.univ.image fun r => (⟨x r, hxK r⟩ : ↥K.1))`. Use `⟨y, fun r => ⟨y • ⟨x r, hxK r⟩, hint _ (Finset.mem_image_of_mem _ (Finset.mem_univ r))⟩, hy0, fun r => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hxw r, ← oD_int]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((y • (⟨x r, hxK r⟩ : ↥K.1) : ↥K.1) : Om l) = _`. Rewrite using `[← algebraMap_smul ℚ_[l] y, Algebra.smul_def]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem descend {K : FinExt l} (C : Core l) (hI : C.InvdR) {d : ℕ} (w : Fin d → Per.BdR l)
     (hw : ∀ (g : ↥(GK K)) r, Per.σD (g : GQ l) (w r) = w r) :
@@ -110,31 +110,27 @@ theorem descend {K : FinExt l} (C : Core l) (hI : C.InvdR) {d : ℕ} (w : Fin d 
   simp
 
 /- English proof (translation)
-Introduce `l _ K P AI T C hF hI d ρ U U' hUU hU hfam N₀`. Establish `hfil` using `GlobalTheory.T.bdR_filtration_ker_theta_generator_facts l C (xi C.ε) C.ker_theta.symm`. Take `⟨-, -, hmono, -, hbd, -, -⟩` from `hfil`. Use `choose m k c v hv hvF hcF hsum using hfam`. Establish `hUι : U.map C.ι * U'.map C.ι = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, hUU, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hcol : ∀ (j : Fin d) (a : Fin (m j)), ∃ (y : ℤ_[l]) (z : Fin d → ↥(OL K)), y ≠ 0 ∧ ∀ r, (U.map C.ι).mulVec (fun s => C.oD (K.1.val.toRingHom ((OL K).val.toRingHom (z s)))) r = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (Per.zA l y)) * v j a r`. Introduce `j a`. Take `⟨y, z, hy0, hz⟩` from `descend (K := K) C hI ((U'.map C.ι).mulVec (v j a)) (inv_vec hF ρ U U' hUU hU (v j a) (hv j a))`. Use `⟨y, z, hy0, fun r => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (fun s => C.oD (K.1.val.toRingHom ((OL K).val.toRingHom (z s)))) = (algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (Per.zA l y))) • (U'.map C.ι).mulVec (v j a)`. Use extensionality with `s`. Rewrite using `[hz s]`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hUι, Matrix.one_mulVec]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `choose y z hy0 hz using hcol`. Use `choose n hn using hbd`. Set `e : Fin (∑ j, m j) ≃ (Σ j : Fin d, Fin (m j))` to `finSigmaFinEquiv.symm`. Set `inv : (p : Σ j : Fin d, Fin (m j)) → Per.BdRp l` to `fun p => ((isUnit_aDp_zA (hy0 p.1 p.2)).unit⁻¹ : (Per.BdRp l)ˣ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `kk : Fin (∑ j, m j) → ℤ` to `fun i => k (e i).1 (e i).2`. Set `cc : Matrix (Fin d) (Fin (∑ j, m j)) ↥(OL K)` to `fun r i => z (e i).1 (e i).2 r`. Set `β : Matrix (Fin (∑ j, m j)) (Fin d) (Per.BdR l)` to `fun i j' => if (e i).1 = j' then algebraMap (Per.BdRp l) (Per.BdR l) (inv (e i)) * c (e i).1 (e i).2 else 0`. Set `N : ℕ` to `max N₀ (max (Finset.univ.sup fun i => (kk i).natAbs) (Finset.univ.sup fun q : Fin d × Fin d => n (C.ι (U q.1 q.2))))`. Establish `hA : ∀ r i, (U.map C.ι * cc.map (C.oD.comp (K.1.val.toRingHom.comp (OL K).val.toRingHom))) r i = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (Per.zA l (y (e i).1 (e i).2))) * v (e i).1 (e i).2 r`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `r i`. Rewrite using `[← hz]`. Both sides reduce to the same expression. Use `⟨N, ∑ j, m j, kk, cc, β, le_max_left _ _, fun i => ?_, fun r s => ?_, fun r i => ?_, fun i j' => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (kk i).natAbs ≤ N` using `le_trans (Finset.le_sup (f := fun i => (kk i).natAbs) (Finset.mem_univ i)) (le_trans (le_max_left _ _) (le_max_right _ _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.abs_eq_natAbs]`. Conclude with `h1` after adjusting the coercions. Establish `h1 : n (C.ι (U r s)) ≤ N` using `le_trans (Finset.le_sup (f := fun q : Fin d × Fin d => n (C.ι (U q.1 q.2))) (Finset.mem_univ (r, s))) (le_trans (le_max_right _ _) (le_max_right _ _))`. Conclude with `hmono _ _ (by simpa using h1) (hn _)`. Rewrite using `[hA, ← Algebra.smul_def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (hvF _ _ _)`. Simplify using `only [β] split_ifs`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (hcF _ _)`. Conclude with `Submodule.zero_mem _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `r j'`. Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[hA]`. Set `G : (Σ j : Fin d, Fin (m j)) → Per.BdR l` to `fun p => algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (Per.zA l (y p.1 p.2))) * v p.1 p.2 r * (if p.1 = j' then algebraMap (Per.BdRp l) (Per.BdR l) (inv p) * c p.1 p.2 else 0)`. Establish `e1 : ∀ i, algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (Per.zA l (y (e i).1 (e i).2))) * v (e i).1 (e i).2 r * β i j' = G (e i)` using `fun i => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Repeatedly rewrite using `[e1]`. Rewrite using `[Equiv.sum_comp e G, Fintype.sum_sigma, Finset.sum_eq_single j']`. Establish `hs : ∀ a : Fin (m j'), G ⟨j', a⟩ = c j' a * v j' a r`. Introduce `a`. Use `show algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (Per.zA l (y j' a))) * v j' a r * (if j' = j' then algebraMap (Per.BdRp l) (Per.BdR l) (inv ⟨j', a⟩) * c j' a else 0) = _`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Establish `hu : algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (Per.zA l (y j' a))) * algebraMap (Per.BdRp l) (Per.BdR l) (inv ⟨j', a⟩) = 1`. Rewrite using `[← map_mul, show aDp l (Per.zA l (y j' a)) * inv ⟨j', a⟩ = 1 from (isUnit_aDp_zA (hy0 j' a)).mul_val_inv, map_one]`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hs]`.
-
-Establish `h2` using `congrFun (hsum j') r`. Rewrite `h2` using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`. Rewrite using `[← h2, Pi.single_apply, Matrix.one_apply]`. Introduce `j _ hj`.
-
-Conclude with `Finset.sum_eq_zero fun a _ => by simp [G, hj]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j') h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_lattice_generators : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l), Fits T C → C.InvdR → ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])) (U U' : Matrix (Fin d) (Fin d) (Per.Bcris l)), U * U' = 1 → (∀ g : ↥(GK K), (ρ g).map (Per.zB l) * U.map (Per.σB (g : GQ l)) = U) → (∀ j : Fin d, ∃ (m : ℕ) (k : Fin m → ℤ) (c : Fin m → Per.BdR l) (v : Fin m → Fin d → Per.BdR l), (∀ i (g : ↥(GK K)), ((ρ g).map (Per.zD l)).mulVec (fun r => Per.σD (g : GQ l) (v i r)) = v i) ∧ (∀ i r, v i r ∈ Per.FilD l (k i)) ∧ (∀ i, c i ∈ Per.FilD l (-k i)) ∧ (Pi.single j 1 : Fin d → Per.BdR l) = ∑ i, c i • v i) → ∀ N₀ : ℕ, ∃ (N m : ℕ) (k : Fin m → ℤ) (c : Matrix (Fin d) (Fin m) (↥(OL K))) (β : Matrix (Fin m) (Fin d) (Per.BdR l)), N₀ ≤ N ∧ (∀ i, |k i| ≤ N) ∧ (∀ r s, C.ι (U r s) ∈ Per.FilD l (-(N : ℤ))) ∧ (∀ r i, (U.map C.ι * c.map (C.oD.comp (K.1.val.toRingHom.comp (OL K).val.toRingHom))) r i ∈ Per.FilD l (k i)) ∧ (∀ i j, β i j ∈ Per.FilD l (-k i)) ∧ U.map C.ι * c.map (C.oD.comp (K.1.val.toRingHom.comp (OL K).val.toRingHom)) * β = 1 := by
   intro l _ K P AI T C hF hI d ρ U U' hUU hU hfam N₀

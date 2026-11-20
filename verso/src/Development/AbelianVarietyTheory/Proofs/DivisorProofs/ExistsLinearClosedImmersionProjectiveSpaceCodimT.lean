@@ -13,21 +13,19 @@ namespace GlobalTheory.LinearCodimTwo
 open GlobalTheory.ProjSpace GlobalTheory.Adelic
 
 /- English proof (translation)
-Introduce `F _ N`. Establish `h1 : Function.Injective (Fin.castSucc : Fin (N + 1) → Fin (N + 1 + 1))` using `Fin.castSucc_injective _`. Establish `h2 : Function.Injective (Fin.castSucc : Fin (N + 1 + 1) → Fin (N + 2 + 1))` using `Fin.castSucc_injective _`. Set `ℓ₁ : PSpace F N ⟶ PSpace F (N + 1)` to `linearι F h1`. Set `ℓ₂ : PSpace F (N + 1) ⟶ PSpace F (N + 2)` to `linearι F h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨ℓ₁ ≫ ℓ₂, inferInstance, by rw [Category.assoc, linearι_str, linearι_str], fun y => ?_⟩` and prove the remaining obligations. Establish `last1 : Fin.last (N + 1) ∉ Set.range (Fin.castSucc : Fin (N + 1) → Fin (N + 1 + 1))`. Introduce and unpack `⟨i, hi⟩`. Conclude with `Fin.castSucc_ne_last i hi`. Establish `last2 : Fin.last (N + 2) ∉ Set.range (Fin.castSucc : Fin (N + 1 + 1) → Fin (N + 2 + 1))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, hi⟩`. Conclude with `Fin.castSucc_ne_last i hi`. Establish `n1 : ℓ₁ y ∉ chart F (N + 1) (Fin.last (N + 1))` using `fun h => by`. Establish `: y ∈ ℓ₁ ⁻¹ᵁ chart F (N + 1) (Fin.last (N + 1))` using `h`. Rewrite `this` using `[linearι_preimage_chart_of_notMem F h1 last1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `n2 (z : PSpace F (N + 1)) : ℓ₂ z ∉ chart F (N + 2) (Fin.last (N + 2))` using `fun h => by`. Establish `: z ∈ ℓ₂ ⁻¹ᵁ chart F (N + 2) (Fin.last (N + 2))` using `h`. Rewrite `this` using `[linearι_preimage_chart_of_notMem F h2 last2]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `s1 : projSys.gen F (N + 1) ⤳ ℓ₁ y` using `specializes_iff_mem_closure.2 ((ProjectiveSpectrum.le_iff_mem_closure _ _ _).1 (show ⊥ ≤ (ℓ₁ y).asHomogeneousIdeal from bot_le))`. Establish `s2 : projSys.gen F (N + 2) ⤳ ℓ₂ (projSys.gen F (N + 1))` using `specializes_iff_mem_closure.2 ((ProjectiveSpectrum.le_iff_mem_closure _ _ _).1 (show ⊥ ≤ (ℓ₂ (projSys.gen F (N + 1))).asHomogeneousIdeal from bot_le))`. Establish `lt1 : ℓ₂ (ℓ₁ y) < ℓ₂ (projSys.gen F (N + 1))`. Use `lt_of_le_not_ge ((Scheme.le_iff_specializes).2 (s1.map ℓ₂.continuous)) fun h => ?_` and prove the remaining obligations. Use `ℓ₂.isClosedEmbedding.injective ((Scheme.le_iff_specializes.1 h).antisymm (s1.map ℓ₂.continuous)).eq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `n1 (this ▸ projSys.gen_mem F (N + 1) (Fin.last (N + 1)))`. Establish `lt2 : ℓ₂ (projSys.gen F (N + 1)) < projSys.gen F (N + 2)`. Use `lt_of_le_not_ge ((Scheme.le_iff_specializes).2 s2) fun h => ?_` and prove the remaining obligations. Establish `e : ℓ₂ (projSys.gen F (N + 1)) = projSys.gen F (N + 2)` using `((Scheme.le_iff_specializes.1 h).antisymm s2).eq`. Conclude with `n2 _ (by rw [e]; exact projSys.gen_mem F (N + 2) (Fin.last (N + 2)))`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (2 : ℕ∞) ≤ Order.coheight (ℓ₂ (ℓ₁ y))`. Establish `a` using `Order.coheight_add_one_le lt1`. Establish `b` using `Order.coheight_add_one_le lt2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Scheme.Hom.comp_apply, ringKrullDim_stalk_eq_coheight]`.
-
-Use `WithBot.coe_le_coe.2 hc` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_linear_closedImmersion_two_le_ringKrullDim_stalk :
     ∀ (F : Type) [Field F] (N : ℕ), ∃ ℓ : PSpace F N ⟶ PSpace F (N + 2), IsClosedImmersion ℓ ∧

@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.LevelLaw
 
 /- English proof (translation)
-The claim follows from `{ h with }`.
+A detailed English derivation is pending.
 -/
 theorem ok_reRep {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {S : GStep E K n}
     {ST : Finset (HeightOneSpectrum (𝓞 E))} {A : TDat S ST} {T : ℕ} (pref : ∀ b, S.D b → Prop) (h : A.Ok T) :
@@ -19,7 +19,7 @@ theorem ok_reRep {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {S :
   { h with }
 
 /- English proof (translation)
-The claim follows from `{ h with }`.
+A detailed English derivation is pending.
 -/
 theorem tied_reRep {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ} {S : GStep E K n}
     {ST : Finset (HeightOneSpectrum (𝓞 E))} {A : TDat S ST} {T : ℕ} (pref : ∀ b, S.D b → Prop) (h : A.Tied T) :
@@ -27,7 +27,7 @@ theorem tied_reRep {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K]
   { h with }
 
 /- English proof (translation)
-Introduce `B X I h u a`. Take `⟨hX, hPr, -, -, hbig⟩` from `base_fields_primes_ok B X`. Establish `hQ : ∀ w ∈ I.Q a, ((B.primes X).T u : 𝓞 B.fields.E) ∉ w.asIdeal` using `T_notMem_QE I.sel (I.tup a) u hPr h.sel_ok (h.T_mem u)`. Conclude with `{ T_prime := hPr.T_prime u card_ST := (hPr.vT_card u).trans B.fields_f card_res := fun P => (card_res P.1).trans (hPr.vT_norm u P.1 P.2) lev := fun j => ok_reRep (I.pref u a j) (tdatAt_ok I.sel (I.tup a) (I.cst a) (I.idx a) (I.Tp a) hX hPr u j) tied := fun j => tied_reRep (I.pref …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem atIn_ok : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ u a, (I.atIn u a).Ok := by
   intro B X I h u a

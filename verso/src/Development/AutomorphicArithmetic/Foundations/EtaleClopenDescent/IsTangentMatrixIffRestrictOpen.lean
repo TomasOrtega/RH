@@ -17,19 +17,17 @@ private def Wit {B : Type} [CommRing B] [Algebra ℂ B] (d : ℕ) (ev : B → �
       (∀ i, ev (b i) = 0) ∧ ω = ∑ i, b i • ω' i
 
 /- English proof (translation)
-Take `⟨φ, hs, h1, h2, hk⟩` from `h`. Use `letI mB' : Module B' (Fin d → ℂ) := Module.compHom _ e'`. Use `letI mB : Module B (Fin d → ℂ) := Module.compHom _ e`. Establish `smulB' : ∀ (b : B') (x : Fin d → ℂ), b • x = e' b • x` using `fun _ _ => rfl`. Establish `smulB : ∀ (b : B) (x : Fin d → ℂ), b • x = e b • x` using `fun _ _ => rfl`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower B B' (Fin d → ℂ) := ⟨fun b b' x => by`. Rewrite using `[Algebra.smul_def, smulB', smulB', smulB, map_mul, he, mul_smul]⟩`. Use `haveI : IsScalarTower ℂ B' (Fin d → ℂ) := ⟨fun a b' x => by`. Rewrite using `[Algebra.smul_def, smulB', smulB', map_mul, hc, mul_smul]⟩`. Set `φB : Ω[B⁄ℂ] →ₗ[B] (Fin d → ℂ)` to `{ toFun := φ, map_add' := φ.map_add, map_smul' := fun b ω => hs b ω }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI hl := KaehlerDifferential.isLocalizedModule_map ℂ B B' M`. Establish `hbc` using `IsLocalizedModule.isBaseChange M B' (KaehlerDifferential.map ℂ ℂ B B')`. Set `φ' : Ω[B'⁄ℂ] →ₗ[B'] (Fin d → ℂ)` to `hbc.lift φB`. Establish `hφ' : ∀ ω, φ' (KaehlerDifferential.map ℂ ℂ B B' ω) = φ ω` using `fun ω => hbc.lift_eq φB ω`. Establish `hD : ∀ b : B, φ' (D ℂ B' (algebraMap B B' b)) = φ (D ℂ B b)` using `fun b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hφ', KaehlerDifferential.map_D]`. Use `⟨φ'.restrictScalars ℂ, fun b ω => φ'.map_smul b ω, fun l => ?_, fun j => ?_, fun ω hω => ?_⟩` and prove the remaining obligations. Conclude with `(hD _).trans (h1 l)`. Conclude with `(hD _).trans (h2 j)`. Take `⟨⟨ω₀, c⟩, hc'⟩` from `IsLocalizedModule.surj M (KaehlerDifferential.map ℂ ℂ B B') ω`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hω' : φ' ω = 0` using `hω`. Establish `hc'' : algebraMap B B' (c : B) • ω = KaehlerDifferential.map ℂ ℂ B B' ω₀`. Rewrite using `[algebraMap_smul]`. Conclude with `hc'`. Establish `h0 : φ ω₀ = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hφ', ← hc'', map_smul, hω', smul_zero]`. Take `⟨m, b, ω₁, hb, rfl⟩` from `hk ω₀ h0`. Take `⟨u, hu⟩` from `IsLocalization.map_units B' c |>.exists_left_inv`. Use `⟨m, fun i => algebraMap B B' (b i), fun i => u • KaehlerDifferential.map ℂ ℂ B B' (ω₁ i), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
-
-Conclude with `hb i`. Establish `: ω = u • (algebraMap B B' (c : B) • ω)` using `by rw [smul_smul, hu, one_smul]`. Rewrite using `[this, hc'', map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul B' (b i), smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Wit.loc {B B' : Type} [CommRing B] [CommRing B'] [Algebra ℂ B] [Algebra ℂ B'] [Algebra B B']
     [IsScalarTower ℂ B B'] (M : Submonoid B) [IsLocalization M B'] (e : B →+* ℂ) (e' : B' →+* ℂ)
@@ -73,11 +71,9 @@ private theorem Wit.loc {B B' : Type} [CommRing B] [CommRing B'] [Algebra ℂ B]
       rw [map_smul, ← algebraMap_smul B' (b i), smul_comm]
 
 /- English proof (translation)
-Use `letI : Algebra B B' := ρ.toAlgHom.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ B B' := .of_algebraMap_eq fun a => (ρ.commutes a).symm`. Use `haveI : IsLocalization (⊥ : Submonoid B) B' := { map_units := fun c => by`. Take `⟨c, hc'⟩` from `c`. Rewrite `hc'` using `[Submonoid.mem_bot]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hc'` using the available equality. Simplify using the standard rewrite rules. Use `surj := fun z => ⟨(ρ.symm z, 1), by`. Express the relevant statement in the definitionally equal form `z * ρ 1 = ρ (ρ.symm z)`. Use the proof step `simp⟩`.
-
-Use `exists_of_eq := fun {x y} h => ⟨1, by`. Establish `: x = y` using `ρ.injective h`. Rewrite using `[this]⟩ }`. Conclude with `Wit.loc ⊥ e e' he hc h`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Wit.equiv {B B' : Type} [CommRing B] [CommRing B'] [Algebra ℂ B] [Algebra ℂ B'] (ρ : B ≃ₐ[ℂ] B')
     (e : B →+* ℂ) (e' : B' →+* ℂ) (he : ∀ b, e' (ρ b) = e b) (hc : ∀ a : ℂ, e' (algebraMap ℂ B' a) = a)
@@ -104,15 +100,13 @@ section Geo
 variable {Z Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ}
 
 /- English proof (translation)
-Take `⟨f₁, h₁, a₁⟩` from `hU.exists_basicOpen_le ⟨a, ha'⟩ ha`. Take `⟨f₂, h₂, b₂⟩` from `hU.exists_basicOpen_le ⟨b, hb'⟩ hb`. Distinguish the cases in `c₁ : b ∈ X.basicOpen f₁`. Conclude with `⟨f₁, h₁, a₁, c₁⟩`. Distinguish the cases in `c₂ : a ∈ X.basicOpen f₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨f₂, h₂, c₂, b₂⟩`. Establish `key : ∀ (x : X) (hx : x ∈ U), x ∈ X.basicOpen (f₁ + f₂) ↔ IsUnit ((X.presheaf.germ U x hx).hom f₁ + (X.presheaf.germ U x hx).hom f₂)` using `fun x hx => by`. Rewrite using `[Scheme.mem_basicOpen _ _ _ hx, map_add]`. Establish `mix : ∀ {R : Type} [CommRing R] [IsLocalRing R] {u v : R}, IsUnit u → ¬ IsUnit v → IsUnit (u + v)` using `fun {R} _ _ {u v} hu hv => by`. Establish `h : IsUnit ((u + v) + (-v))` using `by simpa using hu`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (by simpa using h) hv`. Use `⟨f₁ + f₂, fun x hx => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hxU : x ∈ U` using `X.basicOpen_le _ hx`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add ((key x hxU).1 hx) with h | h` into its components or cases. Conclude with `h₁ ((Scheme.mem_basicOpen _ _ _ hxU).2 h)`. Conclude with `h₂ ((Scheme.mem_basicOpen _ _ _ hxU).2 h)`. Use `(key a ha).2 (mix ((Scheme.mem_basicOpen _ _ _ ha).1 a₁) fun h => c₂ ?_)` and prove the remaining obligations. Conclude with `(Scheme.mem_basicOpen _ _ _ ha).2 h`.
-
-Rewrite using `[key b hb, add_comm]`. Use `mix ((Scheme.mem_basicOpen _ _ _ hb).1 b₂) fun h => c₁ ?_` and prove the remaining obligations. Conclude with `(Scheme.mem_basicOpen _ _ _ hb).2 h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_basicOpen_two {X : Scheme.{0}} {U O : X.Opens} (hU : IsAffineOpen U) {a b : X} (ha : a ∈ U)
     (hb : b ∈ U) (ha' : a ∈ O) (hb' : b ∈ O) :
@@ -147,14 +141,14 @@ private def evS (y : CxPts s' (RingHom.id ℂ)) {V : Y.Opens} (h : y ∈ CxPts.p
   CxPts.evHom h
 
 /- English proof (translation)
-The claim follows from `(CxPts.ev_eq h b).symm`.
+A detailed English derivation is pending.
 -/
 private theorem evS_apply (y : CxPts s' (RingHom.id ℂ)) {V : Y.Opens} (h : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) V)
     (b : Sec s' V) : evS y h b = CxPts.ev s' (RingHom.id ℂ) V b y :=
   (CxPts.ev_eq h b).symm
 
 /- English proof (translation)
-Rewrite using `[evS_apply]`. Conclude with `CxPts.ev_algX h a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem evS_algebraMap (y : CxPts s' (RingHom.id ℂ)) {V : Y.Opens} (h : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) V)
     (a : ℂ) : evS y h (algebraMap ℂ (Sec s' V) a) = a := by
@@ -162,7 +156,7 @@ private theorem evS_algebraMap (y : CxPts s' (RingHom.id ℂ)) {V : Y.Opens} (h 
   exact CxPts.ev_algX h a
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Z.presheaf.map (homOfLE hU).op ≫ c.app U₂ ≫ Y.presheaf.map (homOfLE hV₂).op).hom t = (c.app U ≫ Y.presheaf.map (homOfLE hV).op ≫ Y.presheaf.map (homOfLE hVV).op).hom t`. Use `congr 2`. Rewrite using `[Scheme.Hom.naturality_assoc, ← Functor.map_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem res_app_res (c : Y ⟶ Z) (hc : c ≫ s = s') {U U₂ : Z.Opens} (hU : U₂ ≤ U) {V V₂ : Y.Opens} (hV : V ≤ c ⁻¹ᵁ U)
     (hV₂ : V₂ ≤ c ⁻¹ᵁ U₂) (hVV : V₂ ≤ V) (t : Sec s U) :
@@ -174,23 +168,21 @@ private theorem res_app_res (c : Y ⟶ Z) (hc : c ≫ s = s') {U U₂ : Z.Opens}
   rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem image_preimage_ι {X : Scheme.{0}} (O : X.Opens) {U : X.Opens} (h : U ≤ O) : O.ι ''ᵁ O.ι ⁻¹ᵁ U = U := by
   rw [Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]
   exact inf_eq_right.2 h
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.isAffineOpen_iff_of_isOpenImmersion O.ι, image_preimage_ι O h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem isAffineOpen_ι_preimage_iff {X : Scheme.{0}} (O : X.Opens) {U : X.Opens} (h : U ≤ O) :
     IsAffineOpen (O.ι ⁻¹ᵁ U) ↔ IsAffineOpen U := by
   rw [← Scheme.Hom.isAffineOpen_iff_of_isOpenImmersion O.ι, image_preimage_ι O h]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Opens.ι_app]`. Establish `key : ∀ {A B : X.Opens} (f : A ⟶ B), A = B → IsIso (X.presheaf.map f.op)`. Introduce and unpack `A B f rfl`. Rewrite using `[Subsingleton.elim f (𝟙 A), op_id, CategoryTheory.Functor.map_id]`. Use `infer_instance`.
-
-Conclude with `key _ (image_preimage_ι O h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_ι_app {X : Scheme.{0}} (O : X.Opens) {U : X.Opens} (h : U ≤ O) : IsIso (O.ι.app U) := by
   rw [Scheme.Opens.ι_app]
@@ -209,7 +201,7 @@ private def appAlg {X : Scheme.{0}} (p : X ⟶ Sp ℂ) (O : X.Opens) {U : X.Open
      ConcreteCategory.bijective_of_isIso (O.ι.app U))
 
 /- English proof (translation)
-Introduce `x hx`. Establish `key : i (c' x) = c (j x)` using `congrArg (fun f : Y₂ ⟶ Z => f x) e`. Express the relevant statement in the definitionally equal form `i (c' x) ∈ U`. Rewrite using `[key]`. Conclude with `h hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_down {Z₂ Y₂ : Scheme.{0}} (i : Z₂ ⟶ Z) (j : Y₂ ⟶ Y) (c : Y ⟶ Z) (c' : Y₂ ⟶ Z₂) (e : c' ≫ i = j ≫ c)
     {U : Z.Opens} {V : Y.Opens} (h : V ≤ c ⁻¹ᵁ U) : j ⁻¹ᵁ V ≤ c' ⁻¹ᵁ (i ⁻¹ᵁ U) := by
@@ -220,9 +212,9 @@ private theorem le_down {Z₂ Y₂ : Scheme.{0}} (i : Z₂ ⟶ Z) (j : Y₂ ⟶ 
   exact h hx
 
 /- English proof (translation)
-Introduce `x hx`. Set `x' : Wo.toScheme` to `⟨x, hV hx⟩`. Establish `key : FinalForm.ι (c' x') = c (Wo.ι x')` using `congrArg (fun f : Wo.toScheme ⟶ Z => f x') e`. Establish `hx' : x' ∈ Wo.ι ⁻¹ᵁ V` using `hx`. Establish `h2 : FinalForm.ι (c' x') ∈ U` using `h hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[key]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_up (FinalForm : Z.Opens) (Wo : Y.Opens) (c : Y ⟶ Z) (c' : Wo.toScheme ⟶ FinalForm.toScheme)
     (e : c' ≫ FinalForm.ι = Wo.ι ≫ c) {U : Z.Opens} {V : Y.Opens} (hV : V ≤ Wo)
@@ -236,11 +228,11 @@ private theorem le_up (FinalForm : Z.Opens) (Wo : Y.Opens) (c : Y ⟶ Z) (c' : W
   exact h2
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(c.app U ≫ Y.presheaf.map (homOfLE hV).op ≫ j.app V).hom t = (i.app U ≫ c'.app (i ⁻¹ᵁ U) ≫ Y₂.presheaf.map (homOfLE hV').op).hom t`. Establish `key : ∀ (f g : Y₂ ⟶ Z) (_ : f = g) (h : j ⁻¹ᵁ V ≤ f ⁻¹ᵁ U) (h' : j ⁻¹ᵁ V ≤ g ⁻¹ᵁ U), f.appLE U (j ⁻¹ᵁ V) h = g.appLE U (j ⁻¹ᵁ V) h'`. Introduce and unpack `f g rfl h h'`. Both sides reduce to the same expression. Establish `l : c.app U ≫ Y.presheaf.map (homOfLE hV).op ≫ j.app V = (j ≫ c).appLE U (j ⁻¹ᵁ V) (fun x hx => hV hx)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, ← appLE_comp_app c j V U hV (fun x hx => hV hx)]`. Both sides reduce to the same expression. Establish `hV'' : j ⁻¹ᵁ V ≤ (c' ≫ i) ⁻¹ᵁ U` using `hV'`. Establish `r : i.app U ≫ c'.app (i ⁻¹ᵁ U) ≫ Y₂.presheaf.map (homOfLE hV').op = (c' ≫ i).appLE U (j ⁻¹ᵁ V) hV''`. Rewrite using `[Scheme.Hom.comp_appLE]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `congrArg (fun q => q.hom t) ((l.trans (key _ _ e.symm _ _)).trans r.symm)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem app_res_app {Z₂ Y₂ : Scheme.{0}} {s₂ : Z₂ ⟶ Sp ℂ} {s₂' : Y₂ ⟶ Sp ℂ} (i : Z₂ ⟶ Z) (j : Y₂ ⟶ Y)
     (c : Y ⟶ Z) (c' : Y₂ ⟶ Z₂) (e : c' ≫ i = j ≫ c) {U : Z.Opens} {V : Y.Opens} (hV : V ≤ c ⁻¹ᵁ U)
@@ -264,17 +256,15 @@ private theorem app_res_app {Z₂ Y₂ : Scheme.{0}} {s₂ : Z₂ ⟶ Sp ℂ} {s
   exact congrArg (fun q => q.hom t) ((l.trans (key _ _ e.symm _ _)).trans r.symm)
 
 /- English proof (translation)
-Take `⟨U, V, hV1, hV2, t, hy, hU, hV, hw⟩` from `h`. Establish `hw' : Wit d (fun b : Sec s' V => CxPts.ev s' (RingHom.id ℂ) V b y) (fun l => Sec.res s' hV1 (appSec s s' c1 U (t l))) (fun l => Sec.res s' hV2 (appSec s s' c2 U (t l))) A` using `hw`. Establish `hyV` using `CxPts.mem_ptsIn.1 hy`. Take `⟨f, hf, hfa, hfb⟩` from `exists_basicOpen_two hU (hV1 hyV) (hV2 hyV) a1 a2`. Establish `hU₂ : Z.basicOpen f ≤ U` using `Z.basicOpen_le f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyO : y.1 (IsLocalRing.closedPoint ℂ) ∈ (Wo ⊓ (c1 ⁻¹ᵁ Z.basicOpen f ⊓ c2 ⁻¹ᵁ Z.basicOpen f) : Y.Opens)` using `⟨a3, hfa, hfb⟩`. Take `⟨g, hg, hgy⟩` from `hV.exists_basicOpen_le ⟨_, hyO⟩ hyV`. Establish `hVV : Y.basicOpen g ≤ V` using `Y.basicOpen_le g`. Establish `hy₂ : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) (Y.basicOpen g)` using `CxPts.mem_ptsIn.2 hgy`. Establish `hV₁ : Y.basicOpen g ≤ c1 ⁻¹ᵁ Z.basicOpen f` using `fun x hx => (hg hx).2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV₂ : Y.basicOpen g ≤ c2 ⁻¹ᵁ Z.basicOpen f` using `fun x hx => (hg hx).2.2`. Use `⟨Z.basicOpen f, Y.basicOpen g, hV₁, hV₂, fun l => Sec.res s hU₂ (t l), hf, fun x hx => (hg hx).1, hy₂, hU.basicOpen f, hV.basicOpen g, ?_⟩` and prove the remaining obligations. Use `letI : Algebra (Sec s' V) (Sec s' (Y.basicOpen g)) := (Sec.res s' hVV).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ (Sec s' V) (Sec s' (Y.basicOpen g)) := .of_algebraMap_eq fun a => ((Sec.res s' hVV).commutes a).symm`. Use `haveI : IsLocalization (Submonoid.powers (show Sec s' V from g)) (Sec s' (Y.basicOpen g)) := hV.isLocalization_basicOpen g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ∀ b : Sec s' V, evS y hy₂ (algebraMap (Sec s' V) (Sec s' (Y.basicOpen g)) b) = evS y hy b` using `fun b => by`. Rewrite using `[evS_apply, evS_apply]`. Conclude with `CxPts.ev_res hVV hy₂ b`. Establish `E₀ : (fun b : Sec s' V => CxPts.ev s' (RingHom.id ℂ) V b y) = ⇑(evS y hy)`. Use function extensionality and compare the values at `fun b => (evS_apply y hy b).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `E : (fun b : Sec s' (Y.basicOpen g) => CxPts.ev s' (RingHom.id ℂ) (Y.basicOpen g) b y) = ⇑(evS y hy₂)`. Use function extensionality and compare the values at `fun b => (evS_apply y hy₂ b).symm`. Rewrite `hw'` using `[E₀]`. Establish `key` using `Wit.loc (B := Sec s' V) (B' := Sec s' (Y.basicOpen g)) (Submonoid.powers (show Sec s' V from g)) (evS y hy) (evS y hy₂) he (evS_algebraMap y hy₂) hw'`. Rewrite using `[E, funext fun l => res_app_res c1 h1 hU₂ hV1 hV₁ hVV (t l),`.
-
-Use function extensionality and compare the values at `fun l => res_app_res c2 h2 hU₂ hV2 hV₂ hVV (t l)]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem shrink {d : ℕ} {c1 c2 : Y ⟶ Z} (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') {y : CxPts s' (RingHom.id ℂ)}
     {A : Matrix (Fin d) (Fin d) ℂ} (h : IsTan d c1 c2 h1 h2 y A) (FinalForm : Z.Opens) (Wo : Y.Opens)
@@ -320,15 +310,13 @@ private theorem shrink {d : ℕ} {c1 c2 : Y ⟶ Z} (h1 : c1 ≫ s = s') (h2 : c2
   exact key
 
 /- English proof (translation)
-Establish `hy' : y' ∈ CxPts.ptsIn (Wo.ι ≫ s') (RingHom.id ℂ) (Wo.ι ⁻¹ᵁ V)`. Rewrite using `[CxPts.mem_ptsIn]`. Use `CxPts.mem_ptsIn.1 hyV` as an intermediate fact. Rewrite `this` using `[← hy]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `ρ` to `appAlg s' Wo hV`. Establish `he : ∀ b, evS y' hy' (ρ b) = evS y hyV b` using `fun b => by`. Rewrite using `[evS_apply, evS_apply]`. Express the relevant statement in the definitionally equal form `valR y'.1 _ _ = valR y.1 _ _`. Rewrite using `[← hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.Points.valR_comp y'.1 Wo.ι V (show Γ(Y, V) from b)).symm`. Establish `E₀ : (fun b : Sec s' V => CxPts.ev s' (RingHom.id ℂ) V b y) = ⇑(evS y hyV)`. Use function extensionality and compare the values at `fun b => (evS_apply y hyV b).symm`. Establish `E₁ : (fun b : Sec (Wo.ι ≫ s') (Wo.ι ⁻¹ᵁ V) => CxPts.ev (Wo.ι ≫ s') (RingHom.id ℂ) (Wo.ι ⁻¹ᵁ V) b y') = ⇑(evS y' hy')` using `funext fun b => (evS_apply y' hy' b).symm`. Establish `C1 : ∀ l, ρ (Sec.res s' hV1 (appSec s s' c1 U (t l))) = Sec.res (Wo.ι ≫ s') hV1' (appSec (FinalForm.ι ≫ s) (Wo.ι ≫ s') c1' (FinalForm.ι ⁻¹ᵁ U) (appSec s (FinalForm.ι ≫ s) FinalForm.ι U (t l)))` using `fun l => app_res_app FinalForm.ι Wo.ι c1 c1' e1 hV1 hV1' (t l)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `C2 : ∀ l, ρ (Sec.res s' hV2 (appSec s s' c2 U (t l))) = Sec.res (Wo.ι ≫ s') hV2' (appSec (FinalForm.ι ≫ s) (Wo.ι ≫ s') c2' (FinalForm.ι ⁻¹ᵁ U) (appSec s (FinalForm.ι ≫ s) FinalForm.ι U (t l)))` using `fun l => app_res_app FinalForm.ι Wo.ι c2 c2' e2 hV2 hV2' (t l)`. Rewrite using `[E₀, E₁, ← funext C1, ← funext C2]`. Prove the components needed by the constructor for the conclusion. Conclude with `Wit.equiv ρ _ _ he (evS_algebraMap y' hy')`. Introduce `h`.
-
-Establish `key` using `Wit.equiv ρ.symm (evS y' hy') (evS y hyV) (fun b => by rw [← he, AlgEquiv.apply_symm_apply]) (evS_algebraMap y hyV) h`. Simplify `key` using `only [AlgEquiv.symm_apply_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem wit_iff {d : ℕ} (FinalForm : Z.Opens) (Wo : Y.Opens) {c1 c2 : Y ⟶ Z} {c1' c2' : Wo.toScheme ⟶ FinalForm.toScheme}
     (e1 : c1' ≫ FinalForm.ι = Wo.ι ≫ c1) (e2 : c2' ≫ FinalForm.ι = Wo.ι ≫ c2) {y : CxPts s' (RingHom.id ℂ)}
@@ -378,21 +366,19 @@ end Geo
 end UpperTheory.TanRes
 
 /- English proof (translation)
-Introduce `Z Y s s' d c1 c2 h1 h2 V W c1' c2' e1 e2 y y' hy A`. Establish `hpt : W.ι (y'.1 (IsLocalRing.closedPoint ℂ)) = y.1 (IsLocalRing.closedPoint ℂ)`. Rewrite using `[← hy]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `a3 : y.1 (IsLocalRing.closedPoint ℂ) ∈ W`. Rewrite using `[← hpt]`. Conclude with `(y'.1 (IsLocalRing.closedPoint ℂ)).2`. Establish `a1 : c1 (y.1 (IsLocalRing.closedPoint ℂ)) ∈ V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpt]`. Establish `key : V.ι (c1' (y'.1 (IsLocalRing.closedPoint ℂ))) = c1 (W.ι (y'.1 (IsLocalRing.closedPoint ℂ)))` using `congrArg (fun f : W.toScheme ⟶ Z => f (y'.1 (IsLocalRing.closedPoint ℂ))) e1`. Rewrite using `[← key]`. Conclude with `(c1' (y'.1 (IsLocalRing.closedPoint ℂ))).2`. Establish `a2 : c2 (y.1 (IsLocalRing.closedPoint ℂ)) ∈ V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hpt]`. Establish `key : V.ι (c2' (y'.1 (IsLocalRing.closedPoint ℂ))) = c2 (W.ι (y'.1 (IsLocalRing.closedPoint ℂ)))` using `congrArg (fun f : W.toScheme ⟶ Z => f (y'.1 (IsLocalRing.closedPoint ℂ))) e2`. Rewrite using `[← key]`. Conclude with `(c2' (y'.1 (IsLocalRing.closedPoint ℂ))).2`. Take `⟨U, V₀, hV1, hV2, t, hUle, hVle, hyV, hUa, hVa, hw⟩` from `UpperTheory.TanRes.shrink h1 h2 h V W a1 a2 a3`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hV1'` using `UpperTheory.TanRes.le_down V.ι W.ι c1 c1' e1 hV1`. Establish `hV2'` using `UpperTheory.TanRes.le_down V.ι W.ι c2 c2' e2 hV2`. Use `⟨V.ι ⁻¹ᵁ U, W.ι ⁻¹ᵁ V₀, hV1', hV2', fun l => appSec s (V.ι ≫ s) V.ι U (t l), ?_, (UpperTheory.TanRes.isAffineOpen_ι_preimage_iff V hUle).2 hUa, (UpperTheory.TanRes.isAffineOpen_ι_preimage_iff W hVle).2 hVa, ?_⟩` and prove the remaining obligations. Rewrite using `[CxPts.mem_ptsIn]`. Use `CxPts.mem_ptsIn.1 hyV` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[← hy]`. Conclude with `this`. Conclude with `(UpperTheory.TanRes.wit_iff V W e1 e2 hy hVle hyV hV1 hV2 hV1' hV2' t A).1 hw`. Introduce and unpack `⟨U₁, V₁, hV1', hV2', t₁, hy₁, hU₁, hV₁a, hw⟩`. Take `⟨U, hU, rfl⟩ : ∃ U : Z.Opens, U ≤ V ∧ U₁ = V.ι ⁻¹ᵁ U` from `⟨V.ι ''ᵁ U₁, Scheme.Opens.ι_image_le _ _, (Scheme.Hom.preimage_image_eq _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V₀, hV₀, rfl⟩ : ∃ V₀ : Y.Opens, V₀ ≤ W ∧ V₁ = W.ι ⁻¹ᵁ V₀` from `⟨W.ι ''ᵁ V₁, Scheme.Opens.ι_image_le _ _, (Scheme.Hom.preimage_image_eq _ _).symm⟩`. Take `⟨t, rfl⟩ : ∃ t : Fin d → Sec s U, t₁ = fun l => appSec s (V.ι ≫ s) V.ι U (t l)` from `⟨fun l => (UpperTheory.TanRes.appAlg s V hU).symm (t₁ l), funext fun l => ((UpperTheory.TanRes.appAlg s V hU).apply_symm_apply (t₁ l)).symm⟩`. Establish `hV1` using `UpperTheory.TanRes.le_up V W c1 c1' e1 hV₀ hV1'`. Establish `hV2` using `UpperTheory.TanRes.le_up V W c2 c2' e2 hV₀ hV2'`. Establish `hyV : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) V₀`.
-
-Rewrite using `[CxPts.mem_ptsIn]`. Use `CxPts.mem_ptsIn.1 hy₁` as an intermediate fact. Rewrite using `[← hy]`. Conclude with `this`. Conclude with `⟨U, V₀, hV1, hV2, t, hyV, (UpperTheory.TanRes.isAffineOpen_ι_preimage_iff V hU).1 hU₁, (UpperTheory.TanRes.isAffineOpen_ι_preimage_iff W hV₀).1 hV₁a, (UpperTheory.TanRes.wit_iff V W e1 e2 hy hV₀ hyV hV1 hV2 hV1' hV2' t A).2 hw⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.isTangentMatrix_iff_restrict_open :
     ∀ (Z Y : Scheme.{0}) (s : Z ⟶ Sp ℂ) (s' : Y ⟶ Sp ℂ) (d : ℕ) (c1 c2 : Y ⟶ Z) (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') (V : Z.Opens) (W : Y.Opens) (c1' c2' : W.toScheme ⟶ V.toScheme) (e1 : c1' ≫ V.ι = W.ι ≫ c1) (e2 : c2' ≫ V.ι = W.ι ≫ c2) (y : CxPts s' (RingHom.id ℂ)) (y' : CxPts (W.ι ≫ s') (RingHom.id ℂ)), y'.1 ≫ W.ι = y.1 → ∀ A : Matrix (Fin d) (Fin d) ℂ, (IsTan d c1 c2 h1 h2 y A ↔ IsTan (s := V.ι ≫ s) d c1' c2' (by rw [← Category.assoc, e1, Category.assoc, h1]) (by rw [← Category.assoc, e2, Category.assoc, h2]) y' A) := by

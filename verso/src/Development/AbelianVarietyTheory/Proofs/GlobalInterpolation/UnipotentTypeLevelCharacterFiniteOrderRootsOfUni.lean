@@ -9,9 +9,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (IsLocalRing.residue (v.adicCompletionIntegers F)), IsLocalRing.residue_eq_zero_iff]`. Use `(Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (v.adicCompletion F) _)) (a := (p : v.adicCompletionIntegers F))).2 ?_` and prove the remaining obligations. Establish `h1 : ((p : v.adicCompletionIntegers F) : v.adicCompletion F) = algebraMap F (v.adicCompletion F) ((p : 𝓞 F) : F)`. Simplify using the standard rewrite rules. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v ((p : 𝓞 F) : F)`. Establish `h3` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := F) v (p : 𝓞 F)).2 h`. Conclude with `h2.trans_lt h3`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_residueField_completion_eq_zero (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) (h : (p : 𝓞 F) ∈ v.asIdeal) : (p : kv F v) = 0 := by
@@ -27,13 +27,13 @@ theorem natCast_residueField_completion_eq_zero (F : Type) [Field F] [NumberFiel
   exact h2.trans_lt h3
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J T f bad S gp G a t skip fc zl L K _ s hp hζ`. Use `⟨gp 0 * gp 1, Nat.mul_pos (hp 0).pos (hp 1).pos, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[L.chi_eq x]`. Set `P : ℂ → Prop` to `fun z => z ^ (gp 0 * gp 1) = 1 ∧ ∃ r : K, s r = z`. Establish `h1 : P 1` using `⟨one_pow _, 1, map_one s⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : ∀ y z, P y → P z → P (y * z)`. Introduce and unpack `y z ⟨hy, r, rfl⟩ ⟨hz, q, rfl⟩`. Conclude with `⟨by rw [mul_pow, hy, hz, one_mul], r * q, map_mul s r q⟩`. Express the relevant statement in the definitionally equal form `P _`. Use `Finset.prod_induction _ P hm h1 fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `finprod_induction P h1 hm fun v => ?_` and prove the remaining obligations. Use `finprod_induction P h1 hm fun h => ?_` and prove the remaining obligations. Take `⟨⟨r, hr⟩, hpow⟩` from `GlobalTheory.T.level_character_no_blocks_pth_root_of_unity (kv F v) K s (gp i) (hp i) (natCast_residueField_completion_eq_zero F v (gp i) h) (hζ i) n (G.psi0 i v h) (G.chiB i v h) a t skip (redM F v (G.mat i v h (L.fr i v h) (bc (prV (E := E) v) x.1)))`. Use `⟨?_, r⁻¹, by rw [map_inv₀, hr]⟩` and prove the remaining obligations. Establish `hd : gp i ∣ gp 0 * gp 1` using `by fin_cases i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Take `⟨c, hc⟩` from `hd`. Rewrite using `[inv_pow, hc, pow_mul, hpow, one_pow, inv_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotent_type_character_finite_order : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (S : StepLevel F E σ J T f bad) (gp : Fin 2 → ℕ) (G : GLoc F E σ gp) (a t skip fc : ℕ) (zl : Bool) (_ : GLev S G a t 0 skip fc zl) (K : Type) [Field K] (s : K →+* ℂ), (∀ i, (gp i).Prime) → (∀ i, ∃ ζ : K, IsPrimitiveRoot ζ (gp i)) → ∃ N : ℕ, 0 < N ∧ ∀ x : S.U, ((S.chi x : ℂˣ) : ℂ) ^ N = 1 ∧ ∃ r : K, s r = ((S.chi x : ℂˣ) : ℂ) := by
   intro F E _ _ _ _ _ σ n J T f bad S gp G a t skip fc zl L K _ s hp hζ

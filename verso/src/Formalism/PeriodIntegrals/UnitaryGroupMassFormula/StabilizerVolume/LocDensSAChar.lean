@@ -22,15 +22,15 @@ def AddIntF : Prop :=
     ∀ g : F →+ ℂ, (∀ a ∈ Λ, ∃ n : ℤ, g a = n) → ∀ a, g a = 0
 
 /- English proof (translation)
-Introduce `F _ _ Λ hne hnot χ hχ hΛ x`. Take `⟨ℓ, hℓc, hℓ⟩` from `hL F χ hχ`. Establish `h2 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Set `g : F →+ ℂ` to `(AddMonoidHom.mulLeft (2 * (Real.pi : ℂ) * Complex.I)⁻¹).comp (ℓ.comp (algebraMap F (InfiniteAdeleRing F)).toAddMonoidHom)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hgv : ∀ a, g a = (2 * (Real.pi : ℂ) * Complex.I)⁻¹ * ℓ (algebraMap F _ a)` using `fun a => rfl`. Establish `hgint : ∀ a ∈ Λ, ∃ n : ℤ, g a = n`. Introduce `a ha`. Establish `h1` using `hΛ a ha`. Rewrite `h1` using `[hℓ, Complex.exp_eq_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn⟩` from `h1`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hgv, hn, inv_mul_eq_iff_eq_mul₀ h2, mul_comm]`. Establish `hg0` using `hA F Λ hne hnot g hgint`. Establish `hℓ0 : ∀ a : F, ℓ (algebraMap F (InfiniteAdeleRing F) a) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Establish `h3` using `hg0 a`. Rewrite `h3` using `[hgv]`. Conclude with `(mul_eq_zero.mp h3).resolve_left (inv_ne_zero h2)`. Establish `hfun : (ℓ : InfiniteAdeleRing F → ℂ) = fun _ => 0` using `(InfiniteAdeleRing.denseRange_algebraMap F).equalizer hℓc continuous_const (funext fun a => hℓ0 a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hℓ, congrFun hfun x, Complex.exp_zero]`.
+A detailed English derivation is pending.
 -/
 theorem chInf_of (hL : ChLift) (hA : AddIntF) : ChInf := by
   intro F _ _ Λ hne hnot χ hχ hΛ x

@@ -20,13 +20,13 @@ variable {D : D7}
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp [trA]`. Consider the case `tmul a e`. Simplify using `only [trA]`. Rewrite using `[GlobalTheory.SplitAdeleTrace.trace_baseChange_tmul (AF D.host.F) a e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Establish `h : (Algebra.trace D.host.F D.host.E e : D.host.E) = e + star e` using `GlobalTheory.TraceAddStar.trace_eq_add_star e`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `_ = a ⊗ₜ[D.host.F] e + cA D (a ⊗ₜ[D.host.F] e) := by`. Rewrite using `[h, TensorProduct.tmul_add]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Simplify using `only [trA, map_add] at hx hy ⊢`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, hy]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem incl_trA (z : AE D) : algebraMap (AF D.host.F) (AE D) (trA z) = z + cA D z := by
   induction z using TensorProduct.induction_on with
@@ -48,9 +48,9 @@ theorem incl_trA (z : AE D) : algebraMap (AF D.host.F) (AE D) (trA z) = z + cA D
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hsnd : sndA D.host.F a = 0`. Apply `Algebra.TensorProduct.includeLeft_injective (S := Af D.host.F) (algebraMap D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `ha`. Establish `ha' : a = pairA D.host.F (fstA D.host.F a) 0` using `Prod.ext rfl hsnd`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ψ a = psiInf D.host.F ψ (fstA D.host.F a)` using `by conv_lhs => rw [ha']`. Both sides reduce to the same expression. Rewrite using `[h1, hl, eq_thetaC D hθ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psi_eq_of_fin {θ : InfFam D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} {l : D.what₂.Tau → ℝ}
     (hl : HasRealPar ψ θ l) (a : AF D.host.F) (ha : finPart D (algebraMap (AF D.host.F) (AE D) a) = 0) :
@@ -69,13 +69,13 @@ theorem psi_eq_of_fin {θ : InfFam D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.ho
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hfin : finPart D (algebraMap (AF D.host.F) (AE D) (trA z)) = 0`. Rewrite using `[incl_trA, RingHom.map_add, hzf, cA, Formalism.IndefR.Eqv.finPart_sigR, hzf, RingHom.map_zero, add_zero]`. Rewrite using `[psi_eq_of_fin hθ hl _ hfin, incl_trA]`. Establish `hs : ∑ τ', (l τ' : ℂ) * psiT D τ' (z + cA D z) = (l τ : ℂ) * (2 * ((psiT D τ z).re : ℂ))`. Rewrite using `[Finset.sum_eq_single τ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_add, cA, psiT_sigR, Complex.add_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `τ' _ hne`. Rewrite using `[RingHom.map_add, cA, psiT_sigR, hz τ' hne, map_zero, add_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`. Rewrite using `[hs]`. Use `congr 1`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem psi_trA_tau {θ : InfFam D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} {l : D.what₂.Tau → ℝ}
     (hl : HasRealPar ψ θ l) (τ : D.what₂.Tau) (z : AE D) (hz : ∀ τ', τ' ≠ τ → psiT D τ' z = 0)

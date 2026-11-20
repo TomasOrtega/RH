@@ -8,17 +8,17 @@ open scoped Classical
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Establish `hl : ∀ n, 𝓕.lam 0 n ≤ 2 * vonMangoldt n` using `fun n => le_trans (Finset.single_le_sum (f := fun g => 𝓕.lam g n) (fun g _ => 𝓕.lam_nonneg g n) (Finset.mem_univ _)) (𝓕.lam_le n)`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not _ (fun n : ℕ => n.Prime)]`. Apply `add_le_add` to reduce the goal to its premises. Establish `h1 : ∑ n ∈ (Finset.Ioc ⌊X⌋₊ ⌊Y⌋₊).filter (fun n : ℕ => n.Prime), 𝓕.lam 0 n = ∑ n ∈ GlobalTheory.Mem.An.normPrimes d M X Y, 𝓕.lam 0 n`. Use `symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `p hp`. Simplify using `only [GlobalTheory.Mem.An.normPrimes, Finset.mem_filter] at hp ⊢`. Conclude with `⟨hp.1, hp.2.1⟩`. Introduce `p hp hq`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [GlobalTheory.Mem.An.normPrimes, Finset.mem_filter] at hp hq`. Assume the negation of the conclusion as `h`. Conclude with `hq ⟨hp.1, hp.2, hN p hp.2 h⟩`. Rewrite using `[h1, mul_comm, ← nsmul_eq_mul]`. Apply `Finset.sum_le_card_nsmul` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Simplify using `only [GlobalTheory.Mem.An.normPrimes, Finset.mem_filter, Finset.mem_Ioc] at hp`. Establish `h2 : (p : ℝ) ≤ Y` using `(Nat.le_floor_iff (by linarith)).1 hp.1.2`. Establish `h3 : Real.log p ≤ Real.log Y` using `Real.log_le_log (by exact_mod_cast hp.2.1.pos) h2`. Establish `h4` using `hl p`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[vonMangoldt_apply_prime hp.2.1]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Chebyshev.psi_sub_theta_eq_sum_not_prime, Finset.mul_sum]`. Use `le_trans (Finset.sum_le_sum fun n _ => hl n) ?_` and prove the remaining obligations. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.filter_subset_filter _ (Finset.Ioc_subset_Ioc_left (Nat.zero_le _))`. Introduce `n _ _`. Use `@vonMangoldt_nonneg n` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem sum_lam_zero_le_card_normPrimes (𝓕 : LFam) (d M : ℕ)
     (hN : ∀ p : ℕ, p.Prime → 𝓕.lam 0 p ≠ 0 → GlobalTheory.Mem.An.NormOne d M p) (X Y : ℝ) (hY : 1 ≤ Y) :
@@ -60,23 +60,23 @@ theorem sum_lam_zero_le_card_normPrimes (𝓕 : LFam) (d M : ℕ)
       positivity
 
 /- English proof (translation)
-Use `set s := Real.sqrt (Real.log X) with hs`. Establish `hL : 0 ≤ Real.log X` using `Real.log_nonneg hX`. Establish `hs0 : 0 ≤ s` using `Real.sqrt_nonneg _`. Establish `hss : s * s = Real.log X` using `Real.mul_self_sqrt hL`. Establish `hB0 : 0 < B` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB1 : 1 ≤ Real.log B`. Rewrite using `[Real.le_log_iff_exp_le hB0]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set T := 2 * (1 + A) + 2 + K with hT`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0 : 0 < T` using `by positivity`. Establish `hcT' : c * T ≤ 1` using `by rwa [le_div_iff₀ hT0] at hcT`. Establish `hsT : T ≤ s`. Assume the negation of the conclusion as `h'`. Establish `: c * s < c * T` using `mul_lt_mul_of_pos_left (not_le.1 h') hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc1 : c ≤ 1` using `by nlinarith`. Establish `hs1 : 1 ≤ s` using `by linarith`. Use `⟨by nlinarith, ?_⟩` and prove the remaining obligations. Establish `hX0 : 0 < X` using `by linarith`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : Real.sqrt X = Real.exp (s * s / 2)`. Rewrite using `[hss, Real.sqrt_eq_rpow, Real.rpow_def_of_pos hX0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hXe : X = Real.exp (s * s)` using `by rw [hss, Real.exp_log hX0]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcs : c * s ≤ s` using `by nlinarith`. Establish `hBA : B ^ A ≤ Real.exp (A * s)`. Rewrite using `[Real.rpow_def_of_pos hB0]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh' : Real.exp (-s) ≤ h` using `le_trans (Real.exp_le_exp.2 (by linarith)) hh`. Establish `hKe : K ≤ Real.exp (s * s / 2 - (1 + A) * s)`. Use `Real.add_one_le_exp (s * s / 2 - (1 + A) * s)` as an intermediate fact. Establish `h5 : s * 1 ≤ s * (s / 2 - (1 + A))` using `mul_le_mul_of_nonneg_left (by linarith) hs0`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBA0 : 0 < B ^ A` using `Real.rpow_pos_of_pos hB0 A`. Rewrite using `[le_div_iff₀ hBA0, hsq]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Real.exp_add]`. Use `congr 1`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ h * X := by`. Rewrite using `[← hXe]`. Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_le_short_main {A K c B X h : ℝ} (hA : 0 < A) (hK : 0 < K) (hc : 0 < c)
     (hcT : c ≤ 1 / (2 * (1 + A) + 2 + K)) (hB : 4 ≤ B) (hX : 1 ≤ X)
@@ -128,25 +128,23 @@ theorem sqrt_le_short_main {A K c B X h : ℝ} (hA : 0 < A) (hK : 0 < K) (hc : 0
         rw [← hXe]; gcongr
 
 /- English proof (translation)
-Take `⟨A, c₀, e, hA, hc₀, he, H⟩` from `GlobalTheory.T.exists_lam_zero_sum_shortInterval_ge`. Take `⟨C, hC⟩` from `Chebyshev.psi_sub_theta_le_mul_sqrt`. Use `set K : ℝ := 8 * (|C| + 1) / e with hKdef`. Establish `hK : 0 < K` using `by positivity`. Use `⟨A, min c₀ (1 / (2 * (1 + A) + 2 + K)), e / 8, hA, lt_min hc₀ (by positivity), by positivity, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d M X h hd hd4 hd100 hM hX hB hh hh1`. Take `⟨𝓕, hFB, hN⟩` from `GlobalTheory.T.exists_lFam_normOne_of_mod_four_eq_three d M hd hd4 hd100 hM`. Rewrite `hB`, the goal using `[← hFB]`. Use `set c := min c₀ (1 / (2 * (1 + A) + 2 + K)) with hc`. Establish `hc0 : 0 < c` using `lt_min hc₀ (by positivity)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : c * Real.sqrt (Real.log X) ≤ c₀ * Real.sqrt (Real.log X)` using `mul_le_mul_of_nonneg_right (min_le_left _ _) (Real.sqrt_nonneg _)`. Establish `h0 : 0 < h` using `lt_of_lt_of_le (Real.exp_pos _) hh`. Establish `H1` using `H 𝓕 X h hX (hB.trans hcc) (le_trans (Real.exp_le_exp.2 (by linarith)) hh) hh1`. Take `⟨hL, hS⟩` from `sqrt_le_short_main hA hK hc0 (min_le_right _ _) 𝓕.B_ge hX hB hh`. Establish `hY1 : 1 ≤ X * (1 + h)` using `by nlinarith`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY2 : X * (1 + h) ≤ 2 * X` using `by nlinarith`. Establish `H2` using `sum_lam_zero_le_card_normPrimes 𝓕 d M hN X (X * (1 + h)) hY1`. Establish `hlog : Real.log (X * (1 + h)) ≤ 2 * Real.log X`. Rewrite using `[Real.log_mul (by linarith) (by linarith)]`. Use `Real.log_le_sub_one_of_pos (show 0 < 1 + h by linarith)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq : Real.sqrt (X * (1 + h)) ≤ 2 * Real.sqrt X`. Rewrite using `[Real.sqrt_le_left (by positivity), mul_pow, Real.sq_sqrt (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `H3 : Chebyshev.psi (X * (1 + h)) - Chebyshev.theta (X * (1 + h)) ≤ (|C| + 1) * (2 * Real.sqrt X)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hC _).trans ?_` and prove the remaining obligations. Use `le_abs_self C` as an intermediate fact. Use `abs_nonneg C` as an intermediate fact. Use `Real.sqrt_nonneg (X * (1 + h))` as an intermediate fact. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBA0 : 0 < 𝓕.B ^ A` using `Real.rpow_pos_of_pos (by linarith [𝓕.B_ge]) A`. Use `set N : ℝ := ((GlobalTheory.Mem.An.normPrimes d M X (X * (1 + h))).card : ℝ) with hNdef`. Establish `hN0 : 0 ≤ N` using `Nat.cast_nonneg _`. Establish `H4 : 8 * (|C| + 1) * Real.sqrt X ≤ e * (h * X / 𝓕.B ^ A)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `: 8 * (|C| + 1) * Real.sqrt X = e * (K * Real.sqrt X)`. Rewrite using `[hKdef]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `H5 : e * h * X / 𝓕.B ^ A = e * (h * X / 𝓕.B ^ A)` using `by ring`. Establish `H6 : 2 * Real.log (X * (1 + h)) * N ≤ 4 * Real.log X * N`. Apply `mul_le_mul_of_nonneg_right _ hN0` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `H7 : e / 8 * h * X / (𝓕.B ^ A * Real.log X) = e * (h * X / 𝓕.B ^ A) / (8 * Real.log X)`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[H7, div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem normPrimes_short_interval_lower : ∃ A c c' : ℝ, 0 < A ∧ 0 < c ∧ 0 < c' ∧ ∀ (d M : ℕ) (X h : ℝ), d.Prime → d % 4 = 3 → 100 ≤ d → 3 ≤ M → 1 ≤ X → Real.log (4 * (d : ℝ) * (M : ℝ) ^ 2) ≤ c * Real.sqrt (Real.log X) → Real.exp (-c * Real.sqrt (Real.log X)) ≤ h → h ≤ 1 → c' * h * X / ((4 * (d : ℝ) * (M : ℝ) ^ 2) ^ A * Real.log X) ≤ ((GlobalTheory.Mem.An.normPrimes d M X (X * (1 + h))).card : ℝ) := by
   obtain ⟨A, c₀, e, hA, hc₀, he, H⟩ := GlobalTheory.T.exists_lam_zero_sum_shortInterval_ge

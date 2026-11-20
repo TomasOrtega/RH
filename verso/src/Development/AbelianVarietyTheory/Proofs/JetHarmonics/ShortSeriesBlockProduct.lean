@@ -26,9 +26,9 @@ variable {T : Type} {r : T → ℕ} {n m : ℕ} {k : Type} [Field k]
 def col (g : Fin n → Fin m) (ℓ : Letter T r n) : Letter T r m := ⟨ℓ.1, ℓ.2.1, g ℓ.2.2⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨σ, i, b⟩ ⟨σ', i', b'⟩ h`. Simplify using `only [col, Sigma.mk.inj_iff] at h`. Take `⟨rfl, h⟩` from `h`. Simplify using `only [heq_eq_eq, Prod.mk.injEq] at h`. Take `⟨rfl, h⟩` from `h`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem col_injective {g : Fin n → Fin m} (hg : Function.Injective g) :
     Function.Injective (col g : Letter T r n → Letter T r m) := by
@@ -40,7 +40,7 @@ theorem col_injective {g : Fin n → Fin m} (hg : Function.Injective g) :
   rw [hg h]
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨σ', i', x⟩, h⟩`. Simplify using `only [col, Sigma.mk.inj_iff] at h`. Take `⟨rfl, h⟩` from `h`. Simplify using `only [heq_eq_eq, Prod.mk.injEq] at h`. Conclude with `hb x h.2`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem notMem_range_col {g : Fin n → Fin m} {b : Fin m} (hb : ∀ x, g x ≠ b) (σ : T) (i : Fin (r σ)) :
     (⟨σ, i, b⟩ : Letter T r m) ∉ Set.range (col g : Letter T r n → Letter T r m) := by
@@ -51,9 +51,9 @@ theorem notMem_range_col {g : Fin n → Fin m} {b : Fin m} (hb : ∀ x, g x ≠ 
   exact hb x h.2
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p ℓ hp`. Rewrite using `[map_mul, Derivation.leibniz, hp, rename_X, pderiv_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (col g ℓ) ≠ (⟨σ, i, b⟩ : Formalism.L2.Pj.Letter T r m)` using `fun h => notMem_range_col hb σ i ⟨ℓ, h⟩`. Simplify using `[hne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_rename_col_of_ne {g : Fin n → Fin m} {b : Fin m} (hb : ∀ x, g x ≠ b) (σ : T) (i : Fin (r σ))
     (P : MvPolynomial (Letter T r n) k) : pderiv (⟨σ, i, b⟩ : Letter T r m) (rename (col g) P) = 0 := by
@@ -67,7 +67,7 @@ theorem pderiv_rename_col_of_ne {g : Fin n → Fin m} {b : Fin m} (hb : ∀ x, g
     simp [hne]
 
 /- English proof (translation)
-Unfold `harmK`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Unfold `lap`. Simplify using `[Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_harmK_iff (cc : T → T) (isX : T → Prop) (P : MvPolynomial (Letter T r n) k) :
     P ∈ harmK r n k cc isX (fun _ => 1) ↔ ∀ τ, isX τ → ∀ (i : Fin (r τ)) (i' : Fin (r (cc τ))),
@@ -78,15 +78,15 @@ theorem mem_harmK_iff (cc : T → T) (isX : T → Prop) (P : MvPolynomial (Lette
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Unfold `rowShift`. Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨τ, j, x⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Simplify using `only [AlgHom.comp_apply, rename_X, aeval_X, col]`. Distinguish the cases in `h : ∃ b, (⟨τ, (j, x)⟩ : Formalism.L2.Pj.Letter T r n) = ⟨σ, (i, b)⟩`. Take `⟨b, hb⟩` from `h`. Simplify using `only [Sigma.mk.inj_iff] at hb`. Take `⟨rfl, hb⟩` from `hb`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [heq_eq_eq, Prod.mk.injEq] at hb`. Take `⟨rfl, rfl⟩` from `hb`. Rewrite using `[if_pos ⟨g x, rfl⟩, if_pos ⟨x, rfl⟩]`. Simplify using `[col]`. Establish `h' : ¬ ∃ b, (⟨τ, (j, g x)⟩ : Formalism.L2.Pj.Letter T r m) = ⟨σ, (i, b)⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `⟨b, hb⟩`. Simplify using `only [Sigma.mk.inj_iff] at hb`. Take `⟨rfl, hb⟩` from `hb`. Simplify using `only [heq_eq_eq, Prod.mk.injEq] at hb`. Conclude with `h ⟨x, by rw [hb.1]⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg h']`. Simplify using `[col]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowShift_rename_col (g : Fin n → Fin m) (σ : T) (i i' : Fin (r σ)) (t : k)
     (P : MvPolynomial (Letter T r n) k) :
@@ -117,7 +117,7 @@ theorem rowShift_rename_col (g : Fin n → Fin m) (σ : T) (i i' : Fin (r σ)) (
 variable {n₁ n₂ : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem castAdd_ne_natAdd (x : Fin n₁) (y : Fin n₂) : Fin.castAdd n₂ x ≠ Fin.natAdd n₁ y := by
   intro h
@@ -126,7 +126,7 @@ theorem castAdd_ne_natAdd (x : Fin n₁) (y : Fin n₂) : Fin.castAdd n₂ x ≠
   omega
 
 /- English proof (translation)
-Introduce `a b h`. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natAdd_inj' : Function.Injective (Fin.natAdd n₁ : Fin n₂ → Fin (n₁ + n₂)) := by
   intro a b h
@@ -136,7 +136,7 @@ theorem natAdd_inj' : Function.Injective (Fin.natAdd n₁ : Fin n₂ → Fin (n�
   omega
 
 /- English proof (translation)
-Introduce `a b h`. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Simplify `this` using `only [Fin.val_castAdd]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem castAdd_inj' : Function.Injective (Fin.castAdd n₂ : Fin n₁ → Fin (n₁ + n₂)) := by
   intro a b h
@@ -145,7 +145,7 @@ theorem castAdd_inj' : Function.Injective (Fin.castAdd n₂ : Fin n₁ → Fin (
   simpa only [Fin.val_castAdd] using this
 
 /- English proof (translation)
-Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_of_notMem_range _ _ (notMem_range_col (fun x => (castAdd_ne_natAdd b x).symm) σ i), add_zero]`. Conclude with `Finsupp.mapDomain_apply (col_injective castAdd_inj') m₁ ⟨σ, (i, b)⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_apply_left (m₁ : Letter T r n₁ →₀ ℕ) (m₂ : Letter T r n₂ →₀ ℕ) (σ : T) (i : Fin (r σ)) (b : Fin n₁) :
     (m₁.mapDomain (col (Fin.castAdd n₂)) + m₂.mapDomain (col (Fin.natAdd n₁)) : Letter T r (n₁ + n₂) →₀ ℕ)
@@ -155,7 +155,7 @@ theorem block_apply_left (m₁ : Letter T r n₁ →₀ ℕ) (m₂ : Letter T r 
   exact Finsupp.mapDomain_apply (col_injective castAdd_inj') m₁ ⟨σ, (i, b)⟩
 
 /- English proof (translation)
-Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_of_notMem_range _ _ (notMem_range_col (fun x => castAdd_ne_natAdd x b) σ i), zero_add]`. Conclude with `Finsupp.mapDomain_apply (col_injective natAdd_inj') m₂ ⟨σ, (i, b)⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_apply_right (m₁ : Letter T r n₁ →₀ ℕ) (m₂ : Letter T r n₂ →₀ ℕ) (σ : T) (i : Fin (r σ)) (b : Fin n₂) :
     (m₁.mapDomain (col (Fin.castAdd n₂)) + m₂.mapDomain (col (Fin.natAdd n₁)) : Letter T r (n₁ + n₂) →₀ ℕ)
@@ -165,19 +165,19 @@ theorem block_apply_right (m₁ : Letter T r n₁ →₀ ℕ) (m₂ : Letter T r
   exact Finsupp.mapDomain_apply (col_injective natAdd_inj') m₂ ⟨σ, (i, b)⟩
 
 /- English proof (translation)
-Unfold `HHa at *`. Unfold `RowInv RowDeg at *`. Simplify using `only [Set.mem_ofPred_eq] at *`. Take `⟨h₁H, h₁I, h₁D⟩` from `h₁`. Take `⟨h₂H, h₂I, h₂D⟩` from `h₂`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `h₁H`, `h₂H`, the goal using `[mem_harmK_iff]`. Introduce `τ hτ i i'`. Rewrite using `[Fin.sum_univ_add]`. Establish `hL : ∀ x : Fin n₁, pderiv (⟨τ, (i, Fin.castAdd n₂ x)⟩ : Formalism.L2.Pj.Letter T r (n₁ + n₂)) (pderiv (⟨cc τ, (i', Fin.castAdd n₂ x)⟩ : Formalism.L2.Pj.Letter T r (n₁ + n₂)) (rename (col (Fin.castAdd n₂)) P₁ * rename (col (Fin.natAdd n₁)) P₂)) = rename (col (Fin.natAdd n₁)) P₂ * …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Establish `e1 : ∀ (ρ : T) (j : Fin (r ρ)), (⟨ρ, (j, Fin.castAdd n₂ x)⟩ : Formalism.L2.Pj.Letter T r (n₁ + n₂)) = col (Fin.castAdd n₂) ⟨ρ, (j, x)⟩` using `fun _ _ => rfl`. Establish `z : ∀ (ρ : T) (j : Fin (r ρ)), pderiv (⟨ρ, (j, Fin.castAdd n₂ x)⟩ : Formalism.L2.Pj.Letter T r (n₁ + n₂)) (rename (col (Fin.natAdd n₁)) P₂) = 0` using `fun ρ j => pderiv_rename_col_of_ne (fun y => (castAdd_ne_natAdd x y).symm) ρ j P₂`. Rewrite using `[Derivation.leibniz, z, smul_zero, zero_add, smul_eq_mul, Derivation.leibniz, z, smul_zero, add_zero, smul_eq_mul, e1 τ i, e1 (cc τ) i', pderiv_rename (col_injective castAdd_inj'), pderiv_rename (col_injective castAdd_inj')]`. Establish `hR : ∀ x : Fin n₂, pderiv (⟨τ, (i, Fin.natAdd n₁ x)⟩ : Formalism.L2.Pj.Letter T r (n₁ + n₂)) (pderiv (⟨cc τ, (i', Fin.natAdd n₁ x)⟩ : Formalism.L2.Pj.Letter T r (n₁ + n₂)) (rename (col (Fin.castAdd n₂)) P₁ * rename (col (Fin.natAdd n₁)) P₂)) = rename (col (Fin.castAdd n₂)) P₁ * r …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Establish `e1 : ∀ (ρ : T) (j : Fin (r ρ)), (⟨ρ, (j, Fin.natAdd n₁ x)⟩ : Formalism.L2.Pj.Letter T r (n₁ + n₂)) = col (Fin.natAdd n₁) ⟨ρ, (j, x)⟩` using `fun _ _ => rfl`. Establish `z : ∀ (ρ : T) (j : Fin (r ρ)), pderiv (⟨ρ, (j, Fin.natAdd n₁ x)⟩ : Formalism.L2.Pj.Letter T r (n₁ + n₂)) (rename (col (Fin.castAdd n₂)) P₁) = 0` using `fun ρ j => pderiv_rename_col_of_ne (fun y => castAdd_ne_natAdd y x) ρ j P₁`. Rewrite using `[Derivation.leibniz, z, smul_zero, add_zero, smul_eq_mul, Derivation.leibniz, z, smul_zero, add_zero, smul_eq_mul, e1 τ i, e1 (cc τ) i', pderiv_rename (col_injective natAdd_inj'), pderiv_rename (col_injective natAdd_inj')]`. Rewrite using `[Finset.sum_congr rfl (fun x _ => hL x), Finset.sum_congr rfl (fun x _ => hR x), ← Finset.mul_sum, ← Finset.mul_sum, ← map_sum, ← map_sum, h₁H τ hτ i i', h₂H τ hτ i i', map_zero, map_zero, mul_zero, mul_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ i i' hii' t`. Rewrite using `[map_mul, rowShift_rename_col, rowShift_rename_col, h₁I σ i i' hii' t, h₂I σ i i' hii' t]`. Introduce `m hm σ i`. Take `⟨m₁', hm₁, m₂', hm₂, rfl⟩` from `Finset.mem_add.mp (support_mul _ _ hm)`. Rewrite `hm₁` using `[support_rename_of_injective (col_injective castAdd_inj')]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm₂` using `[support_rename_of_injective (col_injective natAdd_inj')]`. Take `⟨m₁, hn₁, rfl⟩` from `Finset.mem_image.mp hm₁`. Take `⟨m₂, hn₂, rfl⟩` from `Finset.mem_image.mp hm₂`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [block_apply_left, block_apply_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h₁D m₁ hn₁ σ i, h₂D m₂ hn₂ σ i]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_HHa (cc : T → T) (isX : T → Prop) {a₁ a₂ : T → ℕ → ℕ}
     {P₁ : MvPolynomial (Letter T r n₁) k} {P₂ : MvPolynomial (Letter T r n₂) k}
@@ -240,9 +240,9 @@ theorem mul_mem_HHa (cc : T → T) (isX : T → Prop) {a₁ a₂ : T → ℕ →
     rw [h₁D m₁ hn₁ σ i, h₂D m₂ hn₂ σ i]
 
 /- English proof (translation)
-Unfold `totalDegree`. Rewrite using `[support_rename_of_injective hf, Finset.sup_image]`. Use `congr 1`. Use extensionality with `m`. Simplify using `only [Function.comp_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Finsupp.sum_mapDomain_index_inj hf`.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_rename_eq {σ τ : Type} {f : σ → τ} (hf : Function.Injective f) (P : MvPolynomial σ k) :
     (rename f P).totalDegree = P.totalDegree := by
@@ -267,7 +267,7 @@ def pairing {σ S : Type} [CommRing S] [Algebra k S] (G : (σ →₀ ℕ) → S)
     simp only [coeff_add, map_add, add_mul]
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[pairing]`. Simplify using `[pairing, support_monomial, ha, coeff_monomial]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pairing_monomial {σ S : Type} [CommRing S] [Algebra k S] (G : (σ →₀ ℕ) → S) (mo : σ →₀ ℕ) (a : k) :
     pairing G (monomial mo a) = algebraMap k S a * G mo := by
@@ -277,9 +277,9 @@ theorem pairing_monomial {σ S : Type} [CommRing S] [Algebra k S] (G : (σ →�
   · simp [pairing, support_monomial, ha, coeff_monomial]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' P₁ ?_ ?_` and prove the remaining obligations. Introduce `m₁ a`. Use `MvPolynomial.induction_on' P₂ ?_ ?_` and prove the remaining obligations. Introduce `m₂ b`. Rewrite using `[rename_monomial, rename_monomial, monomial_mul, pairing_monomial, pairing_monomial, pairing_monomial, hG, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `p q hp hq`. Rewrite using `[map_add, mul_add, map_add, hp, hq, map_add, mul_add]`. Introduce `p q hp hq`. Rewrite using `[map_add, add_mul, map_add, hp, hq, map_add, add_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_mul {σ₁ σ₂ σ S : Type} [CommRing S] [Algebra k S] (f₁ : σ₁ → σ) (f₂ : σ₂ → σ)
     (G₁ : (σ₁ →₀ ℕ) → S) (G₂ : (σ₂ →₀ ℕ) → S) (G : (σ →₀ ℕ) → S)
@@ -304,15 +304,15 @@ end Poly
 section Index
 
 /- English proof (translation)
-Set `e : (Fin (n₁ + n₂) → V) →+ (Fin n₁ → V) × (Fin n₂ → V)` to `{ toFun := fun v => (fun j => v (Fin.castAdd n₂ j), fun j => v (Fin.natAdd n₁ j)) map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `he : Function.Surjective e`. Introduce and unpack `⟨u₁, u₂⟩`. Use `⟨Fin.append u₁ u₂, ?_⟩` and prove the remaining obligations. Simplify using `[e, Fin.append_left, Fin.append_right]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hA' : A = (A₁.prod A₂).comap e`. Use extensionality with `v`. Simplify using `[hA, AddSubgroup.mem_prod, e]`. Establish `hB' : B = (B₁.prod B₂).comap e`. Use extensionality with `v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hB, AddSubgroup.mem_prod, e]`. Establish `key` using `AddSubgroup.relIndex_comap (A₁.prod A₂) e B`. Rewrite using `[hA']`. Use `show (AddSubgroup.comap e (A₁.prod A₂)).relIndex B = A₁.relIndex B₁ * A₂.relIndex B₂`. Rewrite using `[key, hB', AddSubgroup.map_comap_eq_self_of_surjective he]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.relIndex, AddSubgroup.relIndex, AddSubgroup.relIndex]`. Establish `hc : (A₁.prod A₂).addSubgroupOf (B₁.prod B₂) = ((A₁.addSubgroupOf B₁).prod (A₂.addSubgroupOf B₂)).comap (B₁.prodEquiv B₂).toAddMonoidHom`. Use extensionality with `⟨x, hx⟩`. Simplify using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_prod, AddSubgroup.prodEquiv]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, AddSubgroup.index_comap_of_surjective _ (B₁.prodEquiv B₂).surjective, AddSubgroup.index_prod]`.
+A detailed English derivation is pending.
 -/
 theorem index_block {V : Type} [AddCommGroup V] {n₁ n₂ : ℕ} (A₁ B₁ : AddSubgroup (Fin n₁ → V))
     (A₂ B₂ : AddSubgroup (Fin n₂ → V)) (A B : AddSubgroup (Fin (n₁ + n₂) → V))
@@ -347,18 +347,18 @@ variable {E : Type} [Field E] [NumberField E] {n₁ n₂ : ℕ}
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_span_smul_iff {n : ℕ} (a : 𝓞 E) (M : Submodule (𝓞 E) (Fin n → E)) (v : Fin n → E) :
     v ∈ Ideal.span {a} • M ↔ ∃ u ∈ M, a • u = v := by
   rw [Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
 
 /- English proof (translation)
-Simplify using `only [mem_span_smul_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite `hu` using `[GlobalTheory.ShortLawsCompare.mem_std_block]`. Conclude with `⟨⟨_, hu.1, rfl⟩, ⟨_, hu.2, rfl⟩⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨u₁, hu₁, h₁⟩, ⟨u₂, hu₂, h₂⟩⟩`. Use `⟨Fin.append u₁ u₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ShortLawsCompare.mem_std_block]`. Simplify `And.intro hu₁ hu₂` using `[Fin.append_left, Fin.append_right]`. Use function extensionality and compare the values at `j`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Fin.addCases (fun x => ?_) (fun y => ?_) j` and prove the remaining obligations. Use `congrFun h₁ x` as an intermediate fact. Simplify `this` using `[Fin.append_left]`. Use `congrFun h₂ y` as an intermediate fact. Simplify `this` using `[Fin.append_right]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_smul_std_block (a : 𝓞 E) (v : Fin (n₁ + n₂) → E) :
     v ∈ Ideal.span {a} • stdLat E (n₁ + n₂) ↔ (fun j => v (Fin.castAdd n₂ j)) ∈ Ideal.span {a} • stdLat E n₁ ∧
@@ -380,9 +380,9 @@ theorem mem_smul_std_block (a : 𝓞 E) (v : Fin (n₁ + n₂) → E) :
         simpa [Fin.append_right] using this
 
 /- English proof (translation)
-Unfold `GenLat.zCard`. Rewrite using `[← mul_pow]`. Use `congr 1`. Apply `index_block` to reduce the goal to its premises. Introduce `v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.mem_toAddSubgroup]`. Conclude with `mem_smul_std_block _ v`. Introduce `v`. Simplify using `only [Submodule.mem_toAddSubgroup]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem zCard_block (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) (N r : ℕ) :
     (BlockLatticeAdmissibility.blockLat Λ₁ Λ₂).zCard N r = Λ₁.zCard N r * Λ₂.zCard N r := by
@@ -398,11 +398,11 @@ theorem zCard_block (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) (N r : ℕ) 
     exact Iff.rfl
 
 /- English proof (translation)
-Unfold `GenLat.mIdx GenLat.Ln`. Rewrite using `[← mul_pow]`. Use `congr 1`. Apply `index_block` to reduce the goal to its premises. Introduce `v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.mem_toAddSubgroup]`. Conclude with `mem_smul_std_block _ v`. Introduce `v`. Simplify using `only [Submodule.mem_toAddSubgroup, Submodule.mem_inf, GlobalTheory.ShortLawsCompare.mem_std_block]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1.1, h2.1⟩, ⟨h1.2, h2.2⟩⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1.1, h2.1⟩, ⟨h1.2, h2.2⟩⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mIdx_block (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) (N r : ℕ) :
     (BlockLatticeAdmissibility.blockLat Λ₁ Λ₂).mIdx N r = Λ₁.mIdx N r * Λ₂.mIdx N r := by
@@ -427,13 +427,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Unfold `symO at *`. Proceed by induction on `hP using Subring.closure_induction with`. Consider the case `mem x hx`. Apply `Subring.subset_closure` to reduce the goal to its premises. Break down `hx with ⟨o, rfl⟩ | ⟨σ, i, b, hb, rfl⟩` into its components or cases.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Conclude with `⟨o, by simp⟩`. Use `right`. Take `⟨b', hb', e⟩` from `h b hb`. Conclude with `⟨σ, i, b', hb', e σ i⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
-
-Conclude with `neg_mem hx`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rename_mem_symO {n m : ℕ} (g : Fin n → Fin m) (Λ : GenLat E n) (Λ' : GenLat E m)
     (h : ∀ b ∈ Λ.La, ∃ b' ∈ Λ'.La, ∀ (σ : E →+* ℂ) (i : Fin (Dw.mult σ)),
@@ -456,21 +454,21 @@ theorem rename_mem_symO {n m : ℕ} (g : Fin n → Fin m) (Λ : GenLat E n) (Λ'
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
 /- English proof (translation)
-Use `⟨mul_mem_HHa _ _ h₁.1 h₂.1, ?_⟩` and prove the remaining obligations. Unfold `BlockLatticeAdmissibility.blockPoly`. Apply `mul_mem` to reduce the goal to its premises. Use `rename_mem_symO (Fin.castAdd n₂) Λ₁ _ ?_ h₁.2` and prove the remaining obligations. Introduce `b hb`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Fin.append b 0, ?_, ?_⟩` and prove the remaining obligations. Unfold `BlockLatticeAdmissibility.blockLat`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`. Use `hb using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.funLeft_apply, Fin.append_left]`. Rewrite using `[Submodule.mem_comap]`. Use `Λ₂.La.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[LinearMap.funLeft_apply, Fin.append_right]`. Introduce `σ i`. Unfold `letB`. Simplify using `only [map_sum, map_mul, rename_C, rename_X]`. Rewrite using `[Fin.sum_univ_add]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fin.append_left, Fin.append_right, col]`. Use `rename_mem_symO (Fin.natAdd n₁) Λ₂ _ ?_ h₂.2` and prove the remaining obligations. Introduce `b hb`. Use `⟨Fin.append 0 b, ?_, ?_⟩` and prove the remaining obligations. Unfold `BlockLatticeAdmissibility.blockLat`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`. Use `Λ₁.La.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.funLeft_apply, Fin.append_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.mem_comap]`. Use `hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.funLeft_apply, Fin.append_right]`. Introduce `σ i`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `letB`. Simplify using `only [map_sum, map_mul, rename_C, rename_X]`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right, col]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockPoly_mem_harmL {n₁ n₂ : ℕ} {Λ₁ : GenLat E n₁} {Λ₂ : GenLat E n₂} {a₁ a₂ : (E →+* ℂ) × ℕ → ℕ}
     {P₁ : MvPolynomial (LtN Dw n₁) c.F} {P₂ : MvPolynomial (LtN Dw n₂) c.F}
@@ -517,11 +515,11 @@ theorem blockPoly_mem_harmL {n₁ n₂ : ℕ} {Λ₁ : GenLat E n₁} {Λ₂ : G
       simp [Fin.append_left, Fin.append_right, col]
 
 /- English proof (translation)
-Unfold `InZh at ha`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Establish `key` using `ha.2 (Matrix.of fun _ j => ρ j) ?_ (fun _ j => cm j) (fun i j => by simp [hcm]) ⟨0, hn⟩`. Rewrite `key` using `[List.prod_ofFn]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using key`. Introduce `v hv`. Unfold `stdLat`. Rewrite using `[Submodule.mem_pi]`. Introduce `i _`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hρ v hv`.
+A detailed English derivation is pending.
 -/
 theorem inZh_row {n : ℕ} {Λ : GenLat E n} {N : ℕ} {T : Over Xo.X} {a : Fin n → (T ⟶ Xo.univ.t.G)}
     (ha : InZh Xo Λ N a) (ρ : Fin n → E) (hρ : ∀ v ∈ Λ.La, ρ ⬝ᵥ v ∈ (1 : Submodule (𝓞 E) E))
@@ -540,27 +538,27 @@ theorem inZh_row {n : ℕ} {Λ : GenLat E n} {N : ℕ} {T : Over Xo.X} {a : Fin 
       exact hρ v hv
 
 /- English proof (translation)
-Establish `h₁'` using `h₁`. Establish `h₂'` using `h₂`. Unfold `InZh at *`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.addCases (fun j => ?_) (fun j => ?_) b` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `h₁.1 j`. Rewrite using `[Fin.append_right]`. Conclude with `h₂.1 j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `mu hmu cm hcm i`. Rewrite using `[List.prod_ofFn, Fin.prod_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Establish `e1 : ∏ j : Fin n₁, a₁ j ≫ Xo.univ.t.act.act (cm i (Fin.castAdd n₂ j)) = 1`. Use `inZh_row h₁' (fun j => mu i (Fin.castAdd n₂ j)) ?_ (fun j => cm i (Fin.castAdd n₂ j)) (fun j => hcm i _)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `hv' : (Fin.append v 0 : Fin (n₁ + n₂) → E) ∈ (BlockLatticeAdmissibility.blockLat Λ₁ Λ₂).La`. Unfold `BlockLatticeAdmissibility.blockLat`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hv using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.funLeft_apply, Fin.append_left]`. Rewrite using `[Submodule.mem_comap]`. Use `Λ₂.La.zero_mem using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.funLeft_apply, Fin.append_right]`. Establish `hm` using `hmu _ hv'`. Unfold `stdLat at hm`. Rewrite `hm` using `[Submodule.mem_pi]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hi` using `hm i (Set.mem_univ _)`. Use `hi using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_add, Fin.append_left, Fin.append_right]`. Establish `e2 : ∏ j : Fin n₂, a₂ j ≫ Xo.univ.t.act.act (cm i (Fin.natAdd n₁ j)) = 1`. Use `inZh_row h₂' (fun j => mu i (Fin.natAdd n₁ j)) ?_ (fun j => cm i (Fin.natAdd n₁ j)) (fun j => hcm i _)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `hv' : (Fin.append 0 v : Fin (n₁ + n₂) → E) ∈ (BlockLatticeAdmissibility.blockLat Λ₁ Λ₂).La`. Unfold `BlockLatticeAdmissibility.blockLat`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Λ₁.La.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.funLeft_apply, Fin.append_left]`. Rewrite using `[Submodule.mem_comap]`. Use `hv using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.funLeft_apply, Fin.append_right]`. Establish `hm` using `hmu _ hv'`. Unfold `stdLat at hm`. Rewrite `hm` using `[Submodule.mem_pi]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hi` using `hm i (Set.mem_univ _)`. Use `hi using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_add, Fin.append_left, Fin.append_right]`. Rewrite using `[e1, e2, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inZh_append {n₁ n₂ : ℕ} {Λ₁ : GenLat E n₁} {Λ₂ : GenLat E n₂} {N : ℕ} {T : Over Xo.X}
     {a₁ : Fin n₁ → (T ⟶ Xo.univ.t.G)} {a₂ : Fin n₂ → (T ⟶ Xo.univ.t.G)}
@@ -619,11 +617,11 @@ theorem inZh_append {n₁ n₂ : ℕ} {Λ₁ : GenLat E n₁} {Λ₂ : GenLat E 
     rw [e1, e2, _root_.one_mul]
 
 /- English proof (translation)
-Unfold `GeoInj at *`. Introduce `k _ ψ g hg i i' hii`. Establish `h1` using `h₁ k ψ g hg`. Establish `h2` using `h₂ k ψ g hg`. Apply `e.injective` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Prod.ext` to reduce the goal to its premises. Apply `h1` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Use `congrFun hii (Fin.castAdd n₂ b)` as an intermediate fact. Simplify `this` using `[Fin.append_left]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `h2` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Use `congrFun hii (Fin.natAdd n₁ b)` as an intermediate fact. Simplify `this` using `[Fin.append_right]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem geoInj_append {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {n₁ n₂ : ℕ} {J J₁ J₂ : Type} (e : J ≃ J₁ × J₂)
     {z₁ : J₁ → Fin n₁ → (ptO Xo x ⟶ Xo.univ.t.G)} {z₂ : J₂ → Fin n₂ → (ptO Xo x ⟶ Xo.univ.t.G)}
@@ -645,15 +643,13 @@ theorem geoInj_append {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {n₁ n₂ : �
     simpa [Fin.append_right] using this
 
 /- English proof (translation)
-Establish `hL : BlockLatticeAdmissibility.letL Dw n₁ n₂ = col (Fin.castAdd n₂)` using `rfl`. Establish `hR : BlockLatticeAdmissibility.letR Dw n₁ n₂ = col (Fin.natAdd n₁)` using `rfl`. Establish `key` using `pairing_mul (k := c.F) (S := S) (BlockLatticeAdmissibility.letL Dw n₁ n₂) (BlockLatticeAdmissibility.letR Dw n₁ n₂) (fun m => ∏ b, D (F₁ b) (colOf m b)) (fun m => ∏ b, D (F₂ b) (colOf m b)) (fun m => ∏ b, D (Fin.append F₁ F₂ b) (colOf m b)) ?_ P₁ P₂`. Conclude with `key`. Introduce `m₁ m₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, hR, Fin.prod_univ_add]`. Use `congr 1`. Use `Finset.prod_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `ℓ`. Unfold `colOf`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`. Conclude with `block_apply_left m₁ m₂ ℓ.1 ℓ.2 b`. Use `Finset.prod_congr rfl (fun b _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Fin.append_right]`. Use `congr 1`. Use extensionality with `ℓ`. Unfold `colOf`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`.
-
-Conclude with `block_apply_right m₁ m₂ ℓ.1 ℓ.2 b`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_blockPoly {S : Type} [CommRing S] [Algebra c.F S] {n₁ n₂ : ℕ} {A : Type} (D : A → (Lt1 Dw →₀ ℕ) → S)
     (F₁ : Fin n₁ → A) (F₂ : Fin n₂ → A) (P₁ : MvPolynomial (LtN Dw n₁) c.F) (P₂ : MvPolynomial (LtN Dw n₂) c.F) :
@@ -687,9 +683,9 @@ theorem sum_blockPoly {S : Type} [CommRing S] [Algebra c.F S] {n₁ n₂ : ℕ} 
       exact block_apply_right m₁ m₂ ℓ.1 ℓ.2 b
 
 /- English proof (translation)
-Establish `hL : Function.Injective (BlockLatticeAdmissibility.letL Dw n₁ n₂)` using `col_injective castAdd_inj'`. Establish `hR : Function.Injective (BlockLatticeAdmissibility.letR Dw n₁ n₂)` using `col_injective natAdd_inj'`. Establish `h1' : rename (BlockLatticeAdmissibility.letL Dw n₁ n₂) P₁ ≠ 0` using `fun h => h₁ (rename_injective _ hL (by rw [h, map_zero]))`. Establish `h2' : rename (BlockLatticeAdmissibility.letR Dw n₁ n₂) P₂ ≠ 0` using `fun h => h₂ (rename_injective _ hR (by rw [h, map_zero]))`. Unfold `BlockLatticeAdmissibility.blockPoly`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[totalDegree_mul_of_isDomain h1' h2', totalDegree_rename_eq hL, totalDegree_rename_eq hR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem totalDegree_blockPoly {n₁ n₂ : ℕ} {P₁ : MvPolynomial (LtN Dw n₁) c.F} {P₂ : MvPolynomial (LtN Dw n₂) c.F}
     (h₁ : P₁ ≠ 0) (h₂ : P₂ ≠ 0) : (BlockLatticeAdmissibility.blockPoly P₁ P₂).totalDegree = P₁.totalDegree + P₂.totalDegree := by
@@ -701,13 +697,13 @@ theorem totalDegree_blockPoly {n₁ n₂ : ℕ} {P₁ : MvPolynomial (LtN Dw n�
   rw [totalDegree_mul_of_isDomain h1' h2', totalDegree_rename_eq hL, totalDegree_rename_eq hR]
 
 /- English proof (translation)
-Use `haveI : Fintype Q := Fintype.ofFinite Q`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.sum_mul_sum, ← Fintype.sum_prod_type']`. Set `eq : (Fin (n₁ + n₂) → Q) ≃ (Fin n₁ → Q) × (Fin n₂ → Q)` to `{ toFun := fun q => (fun i => q (Fin.castAdd n₂ i), fun j => q (Fin.natAdd n₁ j)) invFun := fun p => Fin.append p.1 p.2 left_inv := by`. Introduce `q`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.addCases (fun i => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `right_inv := by`. Introduce `p`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext i <;> simp }`. Use `Fintype.sum_equiv eq _ _ (fun q => ?_)` and prove the remaining obligations. Simplify using `only [eq, Equiv.coe_fn_mk]`. Establish `hJ : ∀ (a : Fin n₁ → Q) (b : Fin n₂ → Q), ∑ i : J, A₁ a (e i).1 * A₂ b (e i).2 = (∑ i, A₁ a i) * ∑ j, A₂ b j`. Introduce `a b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul_sum, ← Fintype.sum_prod_type']`. Conclude with `Fintype.sum_equiv e _ _ (fun _ => rfl)`. Rewrite using `[hJ, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finsum_block {K S Q J J₁ J₂ : Type} [Field K] [CommRing S] [Algebra K S] [Finite Q] [Fintype J] [Fintype J₁]
     [Fintype J₂] (e : J ≃ J₁ × J₂) {n₁ n₂ : ℕ} (w₁ : (Fin n₁ → Q) → K) (w₂ : (Fin n₂ → Q) → K)
@@ -742,7 +738,7 @@ theorem finsum_block {K S Q J J₁ J₂ : Type} [Field K] [CommRing S] [Algebra 
   ring
 
 /- English proof (translation)
-Unfold `dualMap`. Apply the tactic sequence `ext x <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dualMap_comp_jet_harmonics {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) := by
@@ -750,9 +746,9 @@ private theorem dualMap_comp_jet_harmonics {S T U : Type} [CommRing S] [CommRing
   ext x <;> simp
 
 /- English proof (translation)
-Unfold `PPx LPow LB.LinComb`. Simplify using `only`. Unfold `LB.wchart`. Introduce `p hp`. Rewrite `hp` using `[← h]`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Scheme.Hom.comp_base, TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage] at hp`. Simplify using `using hp`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem PPx_le_preimage {S T : Type} [CommRing S] [CommRing T] (x : Sp S ⟶ Xo.X) (x' : Sp T ⟶ Xo.X)
     (pm : (Over.mk x' ⊗ Xo.univ.t.G).left ⟶ (Over.mk x ⊗ Xo.univ.t.G).left)
@@ -767,11 +763,11 @@ private theorem PPx_le_preimage {S T : Type} [CommRing S] [CommRing T] (x : Sp S
   simpa using hp
 
 /- English proof (translation)
-Take `⟨hx₁, hu₁, pm₁, hs₁, hf₁, ha₁⟩` from `h₁`. Take `⟨hx₂, hu₂, pm₂, hs₂, hf₂, ha₂⟩` from `h₂`. Use `⟨?_, ?_, pm₂ ≫ pm₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx₂, hx₁, ← Category.assoc, FramedBaseChange.spMap_spMap]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `τ i`. Rewrite using `[hu₂, hu₁, ← Category.assoc, FramedBaseChange.spMap_spMap, ← dualMap_comp_jet_harmonics]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, hs₁, hs₂]`. Rewrite using `[Category.assoc, hf₁, ← Category.assoc, hf₂, Category.assoc, FramedBaseChange.spMap_spMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `i h`. Establish `e₁` using `PPx_le_preimage y.x y'.x pm₁ hs₁ i`. Establish `e₂` using `PPx_le_preimage y'.x y''.x pm₂ hs₂ i`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE pm₂ pm₁ _ _ _ e₁ e₂, CommRingCat.hom_comp, RingHom.comp_apply, ha₁ i e₁, ha₂ i e₂]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem frMap_comp' {S T U : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     [CommRing U] [Algebra c.F U] {φ : S →ₐ[c.F] T} {ψ : T →ₐ[c.F] U} {y : FrPt Xo c S} {y' : FrPt Xo c T}
@@ -794,21 +790,21 @@ private theorem frMap_comp' {S T U : Type} [CommRing S] [Algebra c.F S] [CommRin
       ha₁ i e₁, ha₂ i e₂]
 
 /- English proof (translation)
-Take `⟨hx₁, hu₁, pm₁, hs₁, hf₁, ha₁⟩` from `h₁`. Take `⟨hx₂, hu₂, pm₂, hs₂, hf₂, ha₂⟩` from `h₂`. Establish `hx : y''.x = spMap ψ.toRingHom ≫ y'.x`. Rewrite using `[hx₂, hx₁, ← Category.assoc, FramedBaseChange.spMap_spMap]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨hx, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ i`. Rewrite using `[hu₂, hu₁, ← Category.assoc, FramedBaseChange.spMap_spMap, ← dualMap_comp_jet_harmonics]`. Both sides reduce to the same expression. Establish `tf : ∀ {R : Type} [CommRing R] (x : Sp R ⟶ Xo.X), Over.Hom.left (fst (Over.mk x) Xo.univ.t.G) = Limits.pullback.fst x Xo.univ.t.G.hom` using `fun _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `ts : ∀ {R : Type} [CommRing R] (x : Sp R ⟶ Xo.X), Over.Hom.left (snd (Over.mk x) Xo.univ.t.G) = Limits.pullback.snd x Xo.univ.t.G.hom` using `fun _ => rfl`. Rewrite `hf₁`, `hf₂` using `[tf, tf]`. Rewrite `hs₁`, `hs₂` using `[ts, ts]`. Set `pm : Gx y''.x ⟶ Gx y'.x` to `Limits.pullback.lift (Limits.pullback.fst y''.x Xo.univ.t.G.hom ≫ spMap ψ.toRingHom) (Limits.pullback.snd y''.x Xo.univ.t.G.hom) (by`. Express the relevant statement in the definitionally equal form `(Limits.pullback.fst y''.x Xo.univ.t.G.hom ≫ spMap ψ.toRingHom) ≫ y'.x = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Category.assoc, ← hx]`. Conclude with `Limits.pullback.condition)`. Establish `hsn : pm ≫ Limits.pullback.snd y'.x Xo.univ.t.G.hom = Limits.pullback.snd y''.x Xo.univ.t.G.hom` using `Limits.pullback.lift_snd _ _ _`. Establish `hfn : pm ≫ Limits.pullback.fst y'.x Xo.univ.t.G.hom = Limits.pullback.fst y''.x Xo.univ.t.G.hom ≫ spMap ψ.toRingHom` using `Limits.pullback.lift_fst _ _ _`. Establish `hpm : pm ≫ pm₁ = pm₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.mk_hom]`. Rewrite using `[Category.assoc, hf₁, ← Category.assoc, hfn, Category.assoc, FramedBaseChange.spMap_spMap, hf₂]`. Both sides reduce to the same expression. Simplify using `only [Over.mk_hom]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hs₁, hsn, hs₂]`. Use `⟨pm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ts, ts]`. Conclude with `hsn`. Rewrite using `[tf, tf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hfn`. Introduce `i h`. Establish `e₁` using `PPx_le_preimage y.x y'.x pm₁ (by rw [ts, ts]; exact hs₁) i`. Establish `e₂` using `PPx_le_preimage y.x y''.x pm₂ (by rw [ts, ts]; exact hs₂) i`. Rewrite using `[← ha₁ i e₁, ← ha₂ i e₂, ← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Establish `key : ∀ (g : Gx y''.x ⟶ Gx y.x) (hg : g = pm₂) (hh : (PPx y''.x).U i ≤ g ⁻¹ᵁ (PPx y.x).U i), (Scheme.Hom.appLE g ((PPx y.x).U i) ((PPx y''.x).U i) hh).hom (y.s.f i) = (Scheme.Hom.appLE pm₂ ((PPx y.x).U i) ((PPx y''.x).U i) e₂).hom (y.s.f i)`. Introduce and unpack `g rfl hh`. Both sides reduce to the same expression. Conclude with `key _ hpm _`.
+A detailed English derivation is pending.
 -/
 private theorem frMap_cancel' {S T U : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     [CommRing U] [Algebra c.F U] {φ : S →ₐ[c.F] T} {ψ : T →ₐ[c.F] U} {y : FrPt Xo c S} {y' : FrPt Xo c T}
@@ -863,17 +859,15 @@ private theorem frMap_cancel' {S T U : Type} [CommRing S] [Algebra c.F S] [CommR
       exact key _ hpm _
 
 /- English proof (translation)
-Set `_ : Algebra S S₁` to `φ₁.toRingHom.toAlgebra`. Set `_ : Algebra S S₂` to `φ₂.toRingHom.toAlgebra`. Establish `_ : Module.FaithfullyFlat S S₁` using `h₁`. Establish `_ : Module.FaithfullyFlat S S₂` using `h₂`. Set `_ : Algebra c.F (TensorProduct S S₁ S₂)` to `((algebraMap S (TensorProduct S S₁ S₂)).comp (algebraMap c.F S)).toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hl : ∀ s : S, (φ₁ s ⊗ₜ[S] (1 : S₂)) = algebraMap S (TensorProduct S S₁ S₂) s` using `fun s => (Algebra.TensorProduct.algebraMap_apply s).symm`. Establish `hr : ∀ s : S, ((1 : S₁) ⊗ₜ[S] φ₂ s) = algebraMap S (TensorProduct S S₁ S₂) s` using `fun s => (Algebra.TensorProduct.algebraMap_apply' s).symm`. Set `ψ₁ : S₁ →ₐ[c.F] TensorProduct S S₁ S₂` to `{ Algebra.TensorProduct.includeLeftRingHom with commutes' := fun r => by`. Simplify using `only [RingHom.toMonoidHom_eq_coe, OneHom.toFun_eq_coe, MonoidHom.toOneHom_coe, MonoidHom.coe_coe, Algebra.TensorProduct.includeLeftRingHom_apply]`. Rewrite using `[← φ₁.commutes r, hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `rfl }`. Set `ψ₂ : S₂ →ₐ[c.F] TensorProduct S S₁ S₂` to `{ (Algebra.TensorProduct.includeRight : S₂ →ₐ[S] TensorProduct S S₁ S₂).toRingHom with commutes' := fun r => by`. Simplify using `only [RingHom.toMonoidHom_eq_coe, OneHom.toFun_eq_coe, MonoidHom.toOneHom_coe, MonoidHom.coe_coe, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[← φ₂.commutes r, hr]`. Use `rfl }`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `heq : ψ₁.comp φ₁ = ψ₂.comp φ₂`. Use extensionality with `s`. Express the relevant statement in the definitionally equal form `φ₁ s ⊗ₜ[S] (1 : S₂) = (1 : S₁) ⊗ₜ[S] φ₂ s`. Rewrite using `[hl, hr]`. Use `⟨TensorProduct S S₁ S₂, inferInstance, inferInstance, ψ₁, ψ₂, heq, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : (ψ₁.comp φ₁).toRingHom = algebraMap S (TensorProduct S S₁ S₂)`. Use extensionality with `s`. Conclude with `hl s`. Express the relevant statement in the definitionally equal form `RingHom.FaithfullyFlat (ψ₁.comp φ₁).toRingHom`. Rewrite using `[hc, RingHom.faithfullyFlat_algebraMap_iff]`.
-
-Conclude with `Module.FaithfullyFlat.trans S S₁ (TensorProduct S S₁ S₂)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_faithfullyFlat_refinement {S S₁ S₂ : Type} [CommRing S] [Algebra c.F S] [CommRing S₁] [Algebra c.F S₁]
     [CommRing S₂] [Algebra c.F S₂] (φ₁ : S →ₐ[c.F] S₁) (φ₂ : S →ₐ[c.F] S₂) (h₁ : φ₁.FaithfullyFlat)
@@ -917,27 +911,25 @@ private theorem exists_faithfullyFlat_refinement {S S₁ S₂ : Type} [CommRing 
   exact Module.FaithfullyFlat.trans S S₁ (TensorProduct S S₁ S₂)
 
 /- English proof (translation)
-Establish `hH₁ : P₁ ∈ HHa Dw.mult n₁ c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a₁ (τ, i))`. Unfold `harmL at p₁`. Conclude with `p₁.1`. Establish `hH₂ : P₂ ∈ HHa Dw.mult n₂ c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a₂ (τ, i))`. Unfold `harmL at p₂`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Conclude with `p₂.1`. Unfold `ShortValAt at h₁ h₂`. Take `⟨S₁, _, _, φ₁, y₁, z₁, tp₁, F₁, hφ₁, hm₁, hz₁, hg₁, ht₁, hF₁, hv₁⟩` from `h₁`. Take `⟨S₂, _, _, φ₂, y₂, z₂, tp₂, F₂, hφ₂, hm₂, hz₂, hg₂, ht₂, hF₂, hv₂⟩` from `h₂`. Take `⟨T, _, _, ψ₁, ψ₂, heq, hff⟩` from `exists_faithfullyFlat_refinement φ₁ φ₂ hφ₁ hφ₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨yT, hyT⟩` from `FramedBaseChange.exists_frMap abelianSchemeLaws_all.1 E H Dw l Xo c S₁ T ψ₁ y₁`. Establish `hmT : FrMap (ψ₁.comp φ₁) y yT` using `frMap_comp' hm₁ hyT`. Establish `hyT₂ : FrMap ψ₂ y₂ yT` using `frMap_cancel' hm₂ (heq ▸ hmT)`. Take `⟨z₁', tp₁', F₁', hz₁', hg₁', ht₁', hF₁', hs₁'⟩` from `ShortCompare.exists_pull hC nab hn Λ₁ N a₁ P₁ hH₁ ψ₁ y₁ yT hyT z₁ tp₁ F₁ hz₁ hg₁ ht₁ hF₁`. Take `⟨z₂', tp₂', F₂', hz₂', hg₂', ht₂', hF₂', hs₂'⟩` from `ShortCompare.exists_pull hC nab hn Λ₂ N a₂ P₂ hH₂ ψ₂ y₂ yT hyT₂ z₂ tp₂ F₂ hz₂ hg₂ ht₂ hF₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hzc` using `zCard_block Λ₁ Λ₂ N (Dw.p + Dw.q)`. Set `e : Fin ((BlockLatticeAdmissibility.blockLat Λ₁ Λ₂).zCard N (Dw.p + Dw.q)) ≃ Fin (Λ₁.zCard N (Dw.p + Dw.q)) × Fin (Λ₂.zCard N (Dw.p + Dw.q))` to `(finCongr hzc).trans finProdFinEquiv.symm`. Unfold `ShortValAt`. Use `⟨T, inferInstance, inferInstance, ψ₁.comp φ₁, yT, fun i => Fin.append (z₁' (e i).1) (z₂' (e i).2), fun q => Fin.append (tp₁' (fun j => q (Fin.castAdd n₂ j))) (tp₂' (fun j => q (Fin.natAdd n₁ j))), fun q i => Fin.append (F₁' (fun j => q (Fin.castAdd n₂ j)) (e i).1) (F₂' (fun j => …` and prove the remaining obligations. Introduce `i`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inZh_append (hz₁' _) (hz₂' _)`. Conclude with `geoInj_append e hg₁' hg₂'`. Introduce `q b`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) b` and prove the remaining obligations. Simplify using `only [Fin.append_left]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `ht₁' _ j`. Simplify using `only [Fin.append_right]`. Conclude with `ht₂' _ j`. Introduce `q i b`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) b` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Fin.append_left]`. Conclude with `hF₁' _ _ j`. Simplify using `only [Fin.append_right]`. Conclude with `hF₂' _ _ j`. Establish `hψφ : ∀ s, (ψ₁.comp φ₁) s = ψ₁ (φ₁ s)` using `fun s => rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hψφ₂ : ∀ s, ψ₁ (φ₁ s) = ψ₂ (φ₂ s)` using `fun s => by rw [← hψφ, heq]; rfl`. Rewrite using `[map_mul, hψφ, hψφ, hψφ₂ v₂, hv₁, hv₂]`. Establish `fin₁` using `GlobalTheory.ShortValue.finite_levelQuotient Dw l`. Simplify using `only [map_mul ψ₁, map_mul ψ₂, AlgHom.commutes]`. Rewrite using `[map_finsum ψ₁ (Set.toFinite _), map_finsum ψ₂ (Set.toFinite _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul ψ₁, map_mul ψ₂, AlgHom.commutes, hs₁', hs₂']`. Establish `key : ∀ (q : Fin (n₁ + n₂) → LevQ Dw l) (i : Fin ((BlockLatticeAdmissibility.blockLat Λ₁ Λ₂).zCard N (Dw.p + Dw.q))), (∑ m ∈ (BlockLatticeAdmissibility.blockPoly P₁ P₂).support, algebraMap c.F T ((BlockLatticeAdmissibility.blockPoly P₁ P₂).coeff m) * ∏ b, nab yT ((N : ℤ) ^ 2) (Fi …` using `fun q i => sum_blockPoly (fun F m => nab yT ((N : ℤ) ^ 2) F m) _ _ P₁ P₂`. Simplify using `only [key, BlockLatticeAdmissibility.blockDat]`. Establish `hfb` using `finsum_block (K := c.F) (S := T) e w₁ w₂ (fun q j => ∑ m ∈ P₁.support, algebraMap c.F T (P₁.coeff m) * ∏ b, nab yT ((N : ℤ) ^ 2) (F₁' q j b) (colOf m b)) (fun q j => ∑ m ∈ P₂.support, algebraMap c.F T (P₂.coeff m) * ∏ b, nab yT ((N : ℤ) ^ 2) (F₂' q j b) (colOf m b))`. Use `beta_reduce at hfb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hfb]`. Distinguish the cases in `h0 : P₁ = 0 ∨ P₂ = 0`. Apply the tactic sequence `rcases h0 with h0 | h0 <;> subst h0 <;> simp`. Simplify using `only [not_or] at h0`. Establish `hcard : Nat.card (Fin (n₁ + n₂) → LevQ Dw l) = Nat.card (Fin n₁ → LevQ Dw l) * Nat.card (Fin n₂ → LevQ Dw l)`.
-
-Simplify using `[Nat.card_fun, pow_add]`. Rewrite using `[totalDegree_blockPoly h0.1 h0.2, mIdx_block, hcard]`. Simplify using `only [map_mul, Nat.cast_mul, pow_add, mul_inv, inv_one, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem shortValAt_mul (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (hn : IsNab Xo c nab)
     {n₁ n₂ : ℕ} {Λ₁ : GenLat E n₁} {Λ₂ : GenLat E n₂} {N : ℕ} {a₁ a₂ : (E →+* ℂ) × ℕ → ℕ}
@@ -1028,13 +1020,11 @@ namespace GlobalTheory
 open NumberField Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `hC E _ _ _ H Dw l Xo c _ nab hn bad n₁ n₂ Λ₁ Λ₂ h₁ h₂ N k₁ k₂`. Establish `hA : IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.LatAdm l bad (IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.blockLat Λ₁ Λ₂)`. Rewrite using `[ShortLawsCompare.latAdm_iff, ShortLawsCompare.blockLat_eq]`. Conclude with `ShortLawsCompare.latOK_block ((ShortLawsCompare.latAdm_iff bad Λ₁).1 h₁) ((ShortLawsCompare.latAdm_iff bad Λ₂).1 h₂)`. Establish `hK : (IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.blockLat Λ₁ Λ₂).LevOK N l.M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ShortLawsCompare.blockLat_eq]`. Conclude with `ShortLawsCompare.levOK_block k₁ k₂`. Use `⟨⟨hA, hK⟩, fun a₁ a₂ P₁ P₂ p₁ p₂ => ⟨ShortBlock.blockPoly_mem_harmL p₁ p₂, ?_⟩⟩` and prove the remaining obligations. Introduce `w₁ w₂ S _ _ y v₁ v₂ v s₁ s₂`. Establish `hm` using `ShortBlock.shortValAt_mul hC nab hn p₁ p₂ w₁ w₂ y s₁ s₂`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `hP` using `ShortBlock.blockPoly_mem_harmL p₁ p₂`. Conclude with `((shortThetaValue_existsUnique_natural abelianSchemeLaws_all.1 hC E H Dw l Xo c nab hn (n₁ + n₂) (IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.blockLat Λ₁ Λ₂) N hA.1 hA.2.2 hK (a₁ + a₂) _ hP.1 (IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.blockDat w₁ w₂) 1).1 S y) …`. Introduce and unpack `rfl`.
-
-Conclude with `hm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem shortSeries_blockProduct : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ bad : ℕ, GlobalTheory.IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.BlockProduct Xo c nab bad := by
   intro hC E _ _ _ H Dw l Xo c _ nab hn bad n₁ n₂ Λ₁ Λ₂ h₁ h₂ N k₁ k₂

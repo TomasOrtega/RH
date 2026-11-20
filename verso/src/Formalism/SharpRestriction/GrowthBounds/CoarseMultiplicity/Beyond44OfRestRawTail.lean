@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.MainNotions.ColumnSystems.Pf
 
 /- English proof (translation)
-The claim follows from `lemma44_of_raw_tail_kept hRT restKeptBL`.
+A detailed English derivation is pending.
 -/
 theorem beyond44_of_restRawTail (hRT : RestRawTail) : BinomialRatioBeyondThreshold := lemma44_of_raw_tail_kept hRT restKeptBL
 

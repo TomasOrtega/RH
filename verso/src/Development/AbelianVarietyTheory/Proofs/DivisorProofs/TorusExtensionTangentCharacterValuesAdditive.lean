@@ -23,9 +23,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.TorusModel
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 
 /- English proof (translation)
-Take `⟨u, hu, vu⟩` from `exists_gen D.P.isLB (φ' := DegPre.gtφT D T g.b χ) (ε' := DegPre.gtε) (fun U _ h => Eq.symm (by`. Use `(prod_pt g.b χ h).trans ?_` and prove the remaining obligations. Rewrite using `[hb, _root_.mul_one]`. Use the proof step `simp)) (LB.oneGen D.P.L (Y := T.left))`. Use the proof step `(fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ρ, hρ⟩` from `Geo.Tor.exists_ratio D.P.isLB rfl (g.s χ) u (g.isGen χ) hu`. Conclude with `⟨ρ, fun Z q z J hJ => by rw [hρ Z q z J hJ, vu Z q z J hJ, val_one, _root_.mul_one]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit {T : Over (Sp R)} (g : GtPt D T) (hb : g.b = 1) (χ : D.X) :
     ∃ ρ : Γ(T.left, ⊤)ˣ, ∀ (Z : Scheme.{0}) (q : Z ⟶ T.left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι),
@@ -41,7 +41,7 @@ theorem exists_unit {T : Over (Sp R)} (g : GtPt D T) (hb : g.b = 1) (χ : D.X) :
 
 omit [IsDomain R] in
 /- English proof (translation)
-Rewrite using `[gs_eq _ _ ⊤ trivial]`. Establish `e` using `congrArg (fun k => k.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Conclude with `congrArg ((Sp B).presheaf.germ ⊤ z trivial).hom e.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gs_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (z : Sp B) (a : A) :
     gs (spMap f) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a) = toStkA z (f a) := by
@@ -51,19 +51,17 @@ theorem gs_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (z : Sp 
   exact congrArg ((Sp B).presheaf.germ ⊤ z trivial).hom e.symm
 
 /- English proof (translation)
-Introduce `R _ _ _ D gm ⟨o, ho, hp⟩ hb`. Establish `: IsLocalRing (DualNumber R)` using `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by`. Simplify `IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst` using `only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one]`. Establish `hb1 : gm.b = 1` using `hb`. Use `choose ρ hρ using exists_unit gm hb1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose u hu using fun χ => (Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).commRingCatIsoToRingEquiv.symm.surjective (ρ χ).val`. Establish `hv : ∀ (χ : D.X) (Z : Scheme.{0}) (q : Z ⟶ (epsR R).left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → (val (gm.s χ) q z J).val = gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (u χ))` using `fun χ Z q z J hJ => (congrArg Units.val (hρ χ Z q z J hJ)).trans ((gs_unit q z ⊤ trivial _).symm.trans (congrArg (gs q z ⊤) (hu χ).symm))`. Establish `h1 : ∀ χ, TrivSqZeroExt.fst (u χ : DualNumber R) = 1` using `fun χ => by`. Take `⟨J, hJ⟩` from `TorusCoord.exists_good' D.P.isLB (cpt R)`. Establish `e : val (gm.s χ) (redE R) (cpt R) J = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `(val_corr hJ (hp.2 χ) (𝟙 (Sp R))).trans (val_pull hJ _ _ _)`. Establish `e₂` using `(val_corr hJ (ho.2 χ) (𝟙 (Sp R))).trans (val_one _)`. Rewrite using `[← e₂, e₁]`. Use `congr 1`. Establish `e'` using `hv χ _ (redE R) (cpt R) J hJ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e'` using `[e]`. Use `toStkA_injective (A := R) ?_` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `(gs_spMap (TrivSqZeroExt.fstHom R R R).toRingHom (cpt R) (u χ)).symm.trans e'.symm`. Establish `hm : ∀ χ χ', (u (χ + χ') : DualNumber R) = u χ * u χ'` using `fun χ χ' => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `TorusCoord.exists_good' D.P.isLB (cpt (DualNumber R))`. Establish `C : IsCub (th D (T` using `epsR R) (cpt (DualNumber R)) J) := isCub_cubV D.cub hJ`. Establish `e` using `cv_add gm hJ χ χ'`. Rewrite `e` using `[hb1, C.face₃, _root_.mul_one]`. Establish `k : ∀ χ, (cv gm χ (cpt (DualNumber R)) J).val = toStkA (cpt (DualNumber R)) (u χ)` using `fun χ => (hv χ _ (𝟙 _) _ J hJ).trans (gs_eq _ _ ⊤ trivial _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `toStkA_injective (A := DualNumber R) ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(k _).symm.trans ((congrArg Units.val e).trans ((Units.val_mul _ _).trans (congrArg₂ (· * ·) (k _) (k _))))`. Use `⟨AddMonoidHom.mk' (fun χ => TrivSqZeroExt.snd (u χ : DualNumber R)) fun χ χ' => ?_, fun χ Z q z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, DualNumber.snd_mul, h1, h1]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `(hv χ Z q z J hJ).trans (congrArg (fun x => gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom x)) ?_)` and prove the remaining obligations. Conclude with `TrivSqZeroExt.ext (by simp [h1]) (by simp)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (gm : GtPt D (epsR R)), GtTan gm → gm.b = DegPre.zeroT D (epsR R) → ∃ l : D.X →+ R, ∀ (χ : D.X) (Z : Scheme.{0}) (q : Z ⟶ (epsR R).left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), ReciprocityTheory.ChartRestriction.G.Geo.Tor.Good D.P.L z J → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.val (gm.s χ) q z J).val = ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr (l χ))) := by
   intro R _ _ _ D gm ⟨o, ho, hp⟩ hb

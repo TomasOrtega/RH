@@ -35,14 +35,14 @@ variable {k r : ℕ}
 def p0 (k r : ℕ) : Fin (2 * r + k + 1) := wI k r 0
 
 /- English proof (translation)
-Use `show r + (0 : Fin (k + 1)).val = r`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstMiddle_val : (p0 k r).val = r := by
   show r + (0 : Fin (k + 1)).val = r
   simp
 
 /- English proof (translation)
-Establish `hv` using `firstMiddle_val (k := k) (r := r)`. Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs with h1 h2 h3 h4 <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem splitHermForm_firstMiddle_apply (j : Fin (2 * r + k + 1)) (hj : j ≠ p0 k r) : Hpk k r (p0 k r) j = 0 := by
   have hv := firstMiddle_val (k := k) (r := r)
@@ -50,7 +50,7 @@ theorem splitHermForm_firstMiddle_apply (j : Fin (2 * r + k + 1)) (hj : j ≠ p0
   split_ifs with h1 h2 h3 h4 <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hv` using `firstMiddle_val (k := k) (r := r)`. Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs with h1 h2 h3 h4 <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem splitHermForm_apply_firstMiddle (i : Fin (2 * r + k + 1)) (hi : i ≠ p0 k r) : Hpk k r i (p0 k r) = 0 := by
   have hv := firstMiddle_val (k := k) (r := r)
@@ -60,11 +60,11 @@ theorem splitHermForm_apply_firstMiddle (i : Fin (2 * r + k + 1)) (hi : i ≠ p0
 def dg (k r : ℕ) (u : ℂ) : Mat k r := diagonal fun i => if i = p0 k r then u else 1
 
 /- English proof (translation)
-Use `show (dg k r u)ᴴ * Hpk k r * dg k r u = Hpk k r`. Unfold `dg`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul]`. Apply the tactic sequence `by_cases hi : i = p0 k r <;> by_cases hj : j = p0 k r`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Substitute `hj` using the available equality. Simplify using `only [Pi.star_apply, if_true]`. Take the linear combination `(Hpk k r (p0 k r) (p0 k r)) * hu`. Substitute `hi` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.star_apply, if_true, if_neg hj, splitHermForm_firstMiddle_apply j hj, mul_zero, zero_mul]`. Substitute `hj` using the available equality. Simplify using `only [Pi.star_apply, if_true, if_neg hi, splitHermForm_apply_firstMiddle i hi, mul_zero, zero_mul]`. Simplify using `only [Pi.star_apply, if_neg hi, if_neg hj, star_one, one_mul, mul_one]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dg_uh (u : ℂ) (hu : star u * u = 1) : dg k r u ∈ UH (Hpk k r) := by
   show (dg k r u)ᴴ * Hpk k r * dg k r u = Hpk k r
@@ -83,9 +83,9 @@ theorem dg_uh (u : ℂ) (hu : star u * u = 1) : dg k r u ∈ UH (Hpk k r) := by
   · simp only [Pi.star_apply, if_neg hi, if_neg hj, star_one, one_mul, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `dg`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `hx : x = e`. Substitute `hx` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[he]`. Simplify using `[bvec, hx]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dg_fix (u : ℂ) (e : Fin (2 * r + k + 1)) (he : e ≠ p0 k r) : dg k r u *ᵥ bvec e = bvec e := by
   funext x
@@ -97,11 +97,11 @@ theorem dg_fix (u : ℂ) (e : Fin (2 * r + k + 1)) (he : e ≠ p0 k r) : dg k r 
   · simp [bvec, hx]
 
 /- English proof (translation)
-Use `show dg k r u ∈ UH (Hpk k r) ∧ ∀ a : Fin r, dg k r u *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ dg k r u *ᵥ bvec (esI k r a) = bvec (esI k r a)`. Establish `hv` using `firstMiddle_val (k := k) (r := r)`. Use `⟨dg_uh u hu, fun a => ⟨dg_fix u _ ?_, dg_fix u _ ?_⟩⟩` and prove the remaining obligations. Introduce `h`. Establish `h1 : (eI k r a).val = (p0 k r).val` using `congrArg Fin.val h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (eI k r a).val = a.val` using `rfl`. Establish `h3` using `a.isLt`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `h1 : (esI k r a).val = (p0 k r).val` using `congrArg Fin.val h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Establish `h3` using `a.isLt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dg_mem (u : ℂ) (hu : star u * u = 1) : dg k r u ∈ UWb k r := by
   show dg k r u ∈ UH (Hpk k r) ∧ ∀ a : Fin r, dg k r u *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧
@@ -122,9 +122,9 @@ theorem dg_mem (u : ℂ) (hu : star u * u = 1) : dg k r u ∈ UWb k r := by
 def dV (k r : ℕ) : Fin (2 * r + k + 1) → ℂ := fun i => if i = p0 k r then Complex.I else 0
 
 /- English proof (translation)
-Unfold `dg`. Rewrite using `[← Matrix.diagonal_smul, Matrix.exp_diagonal, Pi.exp_def]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, dV, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Rewrite using `[Complex.exp_eq_exp_ℂ]`. Rewrite using `[mul_zero, NormedSpace.exp_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_dV (t : ℝ) : NormedSpace.exp ((t : ℂ) • diagonal (dV k r)) = dg k r (Complex.exp (t * Complex.I)) := by
   unfold dg
@@ -137,16 +137,16 @@ theorem exp_dV (t : ℝ) : NormedSpace.exp ((t : ℂ) • diagonal (dV k r)) = d
   · rw [mul_zero, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unit_exp (t : ℝ) : star (Complex.exp (t * Complex.I)) * Complex.exp (t * Complex.I) = 1 := by
   rw [Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]
   simp
 
 /- English proof (translation)
-Rewrite using `[Submodule.nontrivial_iff_ne_bot, Submodule.ne_bot_iff]`. Use `⟨(WithLp.equiv 2 _).symm (realifyFun (diagonal (dV k r))), Submodule.subset_span ⟨diagonal (dV k r), (show diagonal (dV k r) ∈ lieOf (UWb k r) from fun t => by` and prove the remaining obligations. Rewrite using `[exp_dV]`. Conclude with `dg_mem _ (unit_exp t)), rfl⟩, ?_⟩`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool) => x (p0 k r, p0 k r, true)) h`. Simplify using `[realifyFun, dV] at h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_nontrivial : Nontrivial (lieE (UWb k r)) := by
   rw [Submodule.nontrivial_iff_ne_bot, Submodule.ne_bot_iff]
@@ -160,9 +160,9 @@ theorem lie_nontrivial : Nontrivial (lieE (UWb k r)) := by
   simp [realifyFun, dV] at h1
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `h.1 infer_instance` as an intermediate fact. Introduce `h0`. Apply `h.2.1` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `congrArg (fun μ : Measure (Mt k r) => μ Set.univ) h0`. Simplify `h1` using `[hc]`. Rewrite using `[Measure.smul_apply, h.2.2.1, smul_zero]`. Rewrite using `[Measure.map_smul, h.2.2.2 s hs]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem haarOn_smul (S : Set (Mat k r)) (ν : Measure (Mt k r)) (c : ℝ≥0) (hc : c ≠ 0) (h : IsHaarOn S ν) :
     IsHaarOn S (c • ν) := by
@@ -178,7 +178,7 @@ theorem haarOn_smul (S : Set (Mat k r)) (ν : Measure (Mt k r)) (c : ℝ≥0) (h
   · rw [Measure.map_smul, h.2.2.2 s hs]
 
 /- English proof (translation)
-Establish `hinv` using `HU.uwb_inv hm`. Establish `hB : MeasurableSet (bBall k r ρ)` using `measurableSet_expBall k r (UWb k r) ρ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem tBall_mass (ν : Measure (Mt k r)) (h : IsHaarOn (UWb k r) ν) (m : Mat k r) (hm : m ∈ UWb k r) (ρ : ℝ) :
     ν (tBall k r m ρ) = ν (bBall k r ρ) := by
@@ -193,21 +193,19 @@ end GE
 open GE in
 
 /- English proof (translation)
-Introduce `k r hk`. Take `⟨νh, hνh, δ, hδc, hδ0, hδt, ε, hε, hball⟩` from `hH k r hk`. Use `set c : ℝ≥0 := ((δ 0).toNNReal)⁻¹ with hcdef`. Establish `hc : c ≠ 0` using `inv_ne_zero (ENNReal.toNNReal_pos hδ0 hδt).ne'`. Establish `hg : IsHaarOn (UWb k r) (c • νh)` using `haarOn_smul _ _ c hc hνh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup : ∀ᶠ x in 𝓝 (0 : lieE (UWb k r)), δ x < δ 0 + 1` using `hδc.eventually (gt_mem_nhds (ENNReal.lt_add_right hδt one_ne_zero))`. Establish `hlo : ∀ᶠ x in 𝓝 (0 : lieE (UWb k r)), δ 0 / 2 < δ x` using `hδc.eventually (lt_mem_nhds (ENNReal.half_lt_self hδ0 hδt))`. Take `⟨ε', hε', hε'b⟩` from `Metric.eventually_nhds_iff.mp (hup.and hlo)`. Use `⟨c • νh, hg, ⟨min ε ε', lt_min hε hε', fun ρ hρ hρε => ?_⟩, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hρ1 : ρ < ε` using `hρε.trans_le (min_le_left _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ2 : ρ < ε'` using `hρε.trans_le (min_le_right _ _)`. Establish `hbd : ∀ x ∈ Metric.ball (0 : lieE (UWb k r)) ρ, δ x < δ 0 + 1 ∧ δ 0 / 2 < δ x` using `fun x hx => hε'b ((Metric.mem_ball.mp hx).trans hρ2)`. Establish `hmeas : MeasurableSet (Metric.ball (0 : lieE (UWb k r)) ρ)` using `measurableSet_ball`. Establish `hvpos : 0 < volume (Metric.ball (0 : lieE (UWb k r)) ρ)` using `Metric.measure_ball_pos _ _ hρ`. Establish `hvfin : volume (Metric.ball (0 : lieE (UWb k r)) ρ) < ⊤` using `measure_ball_lt_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : νh (bBall k r ρ) = ∫⁻ x in Metric.ball 0 ρ, δ x` using `hball ρ hρ hρ1`. Establish `hlow : δ 0 / 2 * volume (Metric.ball (0 : lieE (UWb k r)) ρ) ≤ νh (bBall k r ρ)`. Rewrite using `[hI, ← setLIntegral_const]`. Conclude with `setLIntegral_mono' hmeas fun x hx => (hbd x hx).2.le`. Establish `hhigh : νh (bBall k r ρ) ≤ (δ 0 + 1) * volume (Metric.ball (0 : lieE (UWb k r)) ρ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI, ← setLIntegral_const]`. Conclude with `setLIntegral_mono' hmeas fun x hx => (hbd x hx).1.le`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Conclude with `ENNReal.mul_pos (by exact_mod_cast hc) (lt_of_lt_of_le (ENNReal.mul_pos (ENNReal.half_pos hδ0).ne' hvpos.ne') hlow).ne'`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (lt_of_le_of_lt hhigh (ENNReal.mul_lt_top (ENNReal.add_lt_top.mpr ⟨hδt.lt_top, ENNReal.one_lt_top⟩) hvfin))`. Use `lie_nontrivial (k := k) (r := r)` as an intermediate fact. Establish `hlim` using `hL (lieE (UWb k r)) (Mt k r) (expC k r) νh δ hδc hδt ⟨ε, hε, fun ρ h1 h2 => by rw [← bBall_eq]; exact hball ρ h1 h2⟩`. Establish `key : (fun ρ : ℝ => ((c • νh) (tBall k r m ρ)).toReal / bVol k r ρ) = fun ρ => (c : ℝ) * ((νh (expC k r '' Metric.ball 0 ρ)).toReal / (volume (Metric.ball (0 : lieE (UWb k r)) ρ)).toReal)`. Use function extensionality and compare the values at `ρ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tBall_mass _ hg m hm ρ, Measure.smul_apply, ENNReal.toReal_smul, NNReal.smul_def, smul_eq_mul, bBall_eq, bVol, mul_div_assoc]`. Establish `h1 : (c : ℝ) * (δ 0).toReal = 1`. Rewrite using `[hcdef, NNReal.coe_inv, ENNReal.coe_toNNReal_eq_toReal]`. Conclude with `inv_mul_cancel₀ (ENNReal.toReal_pos hδ0 hδt).ne'`. Rewrite using `[key]`.
-
-Establish `h2` using `hlim.const_mul (c : ℝ)`. Rewrite `h2` using `[h1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gaugeExists_of (hH : HaarDens) (hL : ChartLim) : GaugeExists := by
   intro k r hk
@@ -257,7 +255,7 @@ theorem gaugeExists_of (hH : HaarDens) (hL : ChartLim) : GaugeExists := by
     rwa [h1] at h2
 
 /- English proof (translation)
-The claim follows from `gaugeExists_of hH chartLim`.
+A detailed English derivation is pending.
 -/
 theorem gaugeExists_of_dens (hH : HaarDens) : GaugeExists := gaugeExists_of hH chartLim
 

@@ -18,14 +18,14 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `B.hsInner`. Simplify using `using inner_self_eq_norm_sq (𝕜 := ℂ) (B.hsVec A)`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hs_self_re (A : Wq →L[ℂ] Wp) : (B.hsInner A A).re = ‖B.hsVec A‖ ^ 2 := by
   unfold B.hsInner
   simpa using inner_self_eq_norm_sq (𝕜 := ℂ) (B.hsVec A)
 
 /- English proof (translation)
-Unfold `B.hsInner`. Establish `h1` using `norm_inner_le_norm (𝕜 := ℂ) (B.hsVec C) (B.hsVec A)`. Rewrite using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Simplify using `only [norm_pow, RCLike.norm_ofReal, Complex.norm_real, abs_norm, norm_norm]`. Use polynomial arithmetic with `[norm_nonneg (B.hsVec A), norm_nonneg (B.hsVec C), sq_nonneg (‖B.hsVec A‖ - ‖B.hsVec C‖)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_hs_le (A C : Wq →L[ℂ] Wp) : ‖B.hsInner A C‖ ≤ ‖B.hsInner A A‖ + ‖B.hsInner C C‖ := by
   unfold B.hsInner
@@ -43,9 +43,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Take `⟨s, hs⟩ : ∃ s : Set (Mt k r), s = (fun x : Mt k r => (c, Matrix.of x)) ⁻¹' DomR k r z z'` from `⟨_, rfl⟩`. Establish `hsm : MeasurableSet s`. Rewrite using `[hs, DomR_eq, Set.preimage_inter]`. Conclude with `((P.Qx5.isOpen_OpR k r z z').preimage (cslice_continuous c)).measurableSet.inter (((P.Qx5.Glev_closed (Fin.last r)).preimage continuous_snd).preimage (cslice_continuous c)).measurableSet`. Establish `hA : ∀ Ξ : RadSp k r z z' π π', ContinuousOn (fun x : Mt k r => (Ξ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x)) s` using `fun Ξ => (radSp_continuousOn Ξ).comp ((cslice_continuous c).continuousOn : ContinuousOn _ s) (fun x hx => by rw [hs] at hx; exact hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `measurable_of_continuousOn_zero hsm ((P.B6.hsInner_continuous (Wp := Wp) (Wq := Wq)).comp_continuousOn ((hA Φ).prodMk (hA Ψ))) ?_` and prove the remaining obligations. Introduce `x hx`. Establish `h0 : (Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x) = 0` using `radSp_zero_off Φ (x := (c, Matrix.of x)) (by rw [hs] at hx; exact hx)`. Use `show B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x)) _ = 0`. Rewrite using `[h0, hsInner_zero_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_pair_measurable (c : Fin r → ℂ) (Φ Ψ : RadSp k r z z' π π') :
     Measurable (fun x : Mt k r => B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x))
@@ -71,7 +71,7 @@ def SliceSquareIntegrable (μ : Measure (Mt k r)) (Φ : RadSp k r z z' π π') (
     ((Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x))) μ
 
 /- English proof (translation)
-The claim follows from `Integrable.mono' (hΦ.norm.add hΨ.norm) (slice_pair_measurable c Φ Ψ).aestronglyMeasurable (ae_of_all _ fun x => norm_hs_le _ _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_pair_of_square_integrable (μ : Measure (Mt k r)) {Φ Ψ : RadSp k r z z' π π'} {c : Fin r → ℂ} (hΦ : SliceSquareIntegrable μ Φ c)
     (hΨ : SliceSquareIntegrable μ Ψ c) :
@@ -80,9 +80,9 @@ theorem integrable_pair_of_square_integrable (μ : Measure (Mt k r)) {Φ Ψ : Ra
   (ae_of_all _ fun x => norm_hs_le _ _)
 
 /- English proof (translation)
-Establish `h0 : ∀ A : Wq →L[ℂ] Wp, B.hsInner 0 A = 0`. Introduce `A`. Establish `h : B.hsVec (0 : Wq →L[ℂ] Wp) = 0`. Unfold `B.hsVec`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Unfold `B.hsInner`. Rewrite using `[h, inner_zero_right]`. Unfold `SliceSquareIntegrable`. Simplify `(integrable_zero (Mt k r) ℂ μ)` using `[h0]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem slice_square_integrable_zero (μ : Measure (Mt k r)) (c : Fin r → ℂ) : SliceSquareIntegrable μ (0 : RadSp k r z z' π π') c := by
   have h0 : ∀ A : Wq →L[ℂ] Wp, B.hsInner 0 A = 0 := by
@@ -95,7 +95,7 @@ theorem slice_square_integrable_zero (μ : Measure (Mt k r)) (c : Fin r → ℂ)
   simpa [h0] using (integrable_zero (Mt k r) ℂ μ)
 
 /- English proof (translation)
-Establish `hΦΨ` using `integrable_pair_of_square_integrable μ hΦ hΨ`. Establish `hΨΦ` using `integrable_pair_of_square_integrable μ hΨ hΦ`. Unfold `SliceSquareIntegrable at *`. Simplify using `only [Submodule.coe_add, Pi.add_apply, hs_add_left, hs_add_right]`. Conclude with `(hΦ.add hΨΦ).add (hΦΨ.add hΨ)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slice_square_integrable_add (μ : Measure (Mt k r)) {Φ Ψ : RadSp k r z z' π π'} {c : Fin r → ℂ} (hΦ : SliceSquareIntegrable μ Φ c)
     (hΨ : SliceSquareIntegrable μ Ψ c) : SliceSquareIntegrable μ (Φ + Ψ) c := by
@@ -106,7 +106,7 @@ theorem slice_square_integrable_add (μ : Measure (Mt k r)) {Φ Ψ : RadSp k r z
   exact (hΦ.add hΨΦ).add (hΦΨ.add hΨ)
 
 /- English proof (translation)
-Unfold `SliceSquareIntegrable at *`. Establish `e : ∀ x : Mt k r, B.hsInner (((a • Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x)) (((a • Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x)) = a * (conj a * B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x)) ((Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matr …`. Introduce `x`. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, hs_smul_left, hs_smul_right]`. Conclude with `((hΦ.const_mul (conj a)).const_mul a).congr (ae_of_all _ fun x => (e x).symm)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_square_integrable_smul (μ : Measure (Mt k r)) (a : ℂ) {Φ : RadSp k r z z' π π'} {c : Fin r → ℂ} (hΦ : SliceSquareIntegrable μ Φ c) :
     SliceSquareIntegrable μ (a • Φ) c := by
@@ -128,7 +128,7 @@ def wop (X : ActualOps k r z z' π π') (w : List Lt) : Module.End ℂ (RadSp k 
   (w.map (lop X)).prod
 
 /- English proof (translation)
-Simplify using `[wop, List.prod_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wop_append_single (X : ActualOps k r z z' π π') (w : List Lt) (l : Lt) :
     wop X (w ++ [l]) = wop X w * lop X l := by
@@ -155,19 +155,17 @@ def TopCls (X : ActualOps k r z z' π π') (μ : Measure (Mt k r)) : Submodule �
     · rw [map_smul]; exact slice_square_integrable_smul μ a (hΦw w)
 
 /- English proof (translation)
-Introduce `g hg hG`. Distinguish the cases in `hd : (c, g) ∈ DomR k r z z'`. Break down `l with ⟨a, b, Y⟩ | j` into its components or cases. Use `show (X.t Y a b Φ : Fn k r (Wq →L[ℂ] Wp)) c g = 0`. Establish `e` using `X.t_apply Y a b Φ (c, g) hd`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at e`. Rewrite using `[e]`. Use `set D : Set (Mx k r) := {g | 0 < GGl k r z z' g ∧ GGl k r z z' g < ε} with hDdef`. Establish `hDo : IsOpen D` using `(isOpen_lt continuous_const (P.Qx5.GGl_continuous k r z z')).inter (isOpen_lt (P.Qx5.GGl_continuous k r z z') continuous_const)`. Establish `hDG : D ⊆ {g | 0 < GGl k r z z' g}` using `fun g hg => hg.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgD : g ∈ Glev k r (Fin.last r) ∩ D` using `⟨hg, hd.2.2, hG⟩`. Establish `hS1` using `smoothLev_slice Φ c hc D hDG`. Establish `hS0 : SmoothLev k r (Fin.last r) D (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp))`. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `Formalism.FourierDecayAlt.P.transfer_linear_local (Wq →L[ℂ] Wp) k r z z' (Fin.last r) D Y a b (fun g => (Φ : Fn k r (Wq →L[ℂ] Wp)) c g) (fun _ => 0) 1 hDo hS1 hS0 g hgD`. Establish `hL0` using `Formalism.FourierDecayAlt.P.transfer_linear_local (Wq →L[ℂ] Wp) k r z z' (Fin.last r) D Y a b (fun _ => (0 : Wq →L[ℂ] Wp)) (fun _ => 0) 1 hDo hS0 hS0 g hgD`. Establish `h00 : tL k r z z' (Fin.last r) Y a b (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp)) g = 0`. Establish `h` using `hL0.1`. Simplify using `only [smul_zero, add_zero, one_smul] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : tL k r z z' (Fin.last r) Y a b (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp)) g + tL k r z z' (Fin.last r) Y a b (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp)) g = tL k r z z' (Fin.last r) Y a b (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp)) g + 0`. Rewrite using `[add_zero]`. Conclude with `h.symm`. Conclude with `add_left_cancel h2`. Establish `hloc` using `hL.2 (fun x hx => h0 x hx.1 hx.2.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (Φ : Fn k r (Wq →L[ℂ] Wp)) c = fun g => (Φ : Fn k r (Wq →L[ℂ] Wp)) c g from rfl, hloc, h00]`. Use `show (X.fn j Φ : Fn k r (Wq →L[ℂ] Wp)) c g = 0`. Establish `e` using `X.fn_apply j Φ (c, g) hd`. Simplify using `only at e`. Rewrite using `[e, h0 g hg hG, smul_zero]`.
-
-Conclude with `radSp_zero_off (lop X l Φ) (x := (c, g)) hd`.
+A detailed English derivation is pending.
 -/
 theorem lop_vanish (X : ActualOps k r z z' π π') (l : Lt) (Φ : RadSp k r z z' π π') (c : Fin r → ℂ)
     (hc : c ∈ OmX r) (ε : ℝ)
@@ -210,9 +208,9 @@ theorem lop_vanish (X : ActualOps k r z z' π π') (l : Lt) (Φ : RadSp k r z z'
   · exact radSp_zero_off (lop X l Φ) (x := (c, g)) hd
 
 /- English proof (translation)
-Introduce `Φ hΦ c hc`. Take `⟨⟨ε, hε, h0⟩, hw⟩` from `hΦ c hc`. Use `⟨⟨ε, hε, lop_vanish X l Φ c hc ε h0⟩, fun w => ?_⟩` and prove the remaining obligations. Use `hw (w ++ [l])` as an intermediate fact. Rewrite `this` using `[wop_append_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem lop_mem (X : ActualOps k r z z' π π') (μ : Measure (Mt k r)) (l : Lt) :
     ∀ Φ ∈ TopCls X μ, lop X l Φ ∈ TopCls X μ := by
@@ -224,7 +222,7 @@ theorem lop_mem (X : ActualOps k r z z' π π') (μ : Measure (Mt k r)) (l : Lt)
   exact this
 
 /- English proof (translation)
-Use `(hΦ c hc).2 []` as an intermediate fact. Simplify `this` using `[wop]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem square_integrable_slice_of_mem (X : ActualOps k r z z' π π') (μ : Measure (Mt k r)) {Φ : RadSp k r z z' π π'}
     (hΦ : Φ ∈ TopCls X μ) {c : Fin r → ℂ} (hc : c ∈ OmX r) : SliceSquareIntegrable μ Φ c := by
@@ -232,7 +230,7 @@ theorem square_integrable_slice_of_mem (X : ActualOps k r z z' π π') (μ : Mea
   simpa [wop] using this
 
 /- English proof (translation)
-Introduce `c hc Φ hΦ Ψ hΨ` and use `integrable_pair_of_square_integrable μ (square_integrable_slice_of_mem X μ hΦ hc) (square_integrable_slice_of_mem X μ hΨ hc)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intOn_topCls (X : ActualOps k r z z' π π') (μ : Measure (Mt k r)) : IntOn μ (TopCls X μ) := fun c hc Φ hΦ Ψ hΨ => integrable_pair_of_square_integrable μ (square_integrable_slice_of_mem X μ hΦ hc) (square_integrable_slice_of_mem X μ hΨ hc)
 
@@ -249,11 +247,9 @@ def UpperLeftBlockAdjoint (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (
     pairAt μ (X.t Y 0 0 Φ) Ψ c = pairAt μ Φ (X.t (star Y) 0 0 Ψ) c
 
 /- English proof (translation)
-Use `⟨lop_mem X μ (Sum.inl (a, b, Y)), lop_mem X μ (Sum.inl (b, a, star Y)), fun c hc Φ hΦ Ψ hΨ => ?_⟩` and prove the remaining obligations. Use `show pairAt μ (X.t Y a b Φ) Ψ c = pairAt μ Φ (X.t (star Y) b a Ψ) c`. Distinguish the cases in `hab : a = 0 ∧ b = 0`. Take `⟨rfl, rfl⟩` from `hab`. Conclude with `h11 Y hY c hc Φ hΦ Ψ hΨ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hab' : a ≠ 0 ∨ b ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hab h`. Take `⟨⟨ε1, h1, h10⟩, -⟩` from `hΦ c hc`.
-
-Take `⟨⟨ε2, h2, h20⟩, -⟩` from `hΨ c hc`. Establish `hm` using `fun (l : Lt) (Θ : RadSp P.k P.r z z' π π') (hΘ : Θ ∈ TopCls X μ) => square_integrable_slice_of_mem X μ (lop_mem X μ l Θ hΘ) hc`. Conclude with `pairAt_t_adj_cut P z z' π π' hP X μ hμ Φ Ψ c hc (min ε1 ε2) (lt_min h1 h2) (fun g hg hG => h10 g hg (lt_of_lt_of_le hG (min_le_left _ _))) (fun g hg hG => h20 g hg (lt_of_lt_of_le hG (min_le_right _ _))) Y a b hab' (integrable_pair_of_square_integrable μ (hm (Sum.inl (a, b, Y)) Φ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem QQ_mem_adjAlg_top (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (hP : IsPlace P z z' π π') (X : ActualOps P.k P.r z z' π π')
@@ -282,7 +278,7 @@ theorem QQ_mem_adjAlg_top (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (
       (integrable_pair_of_square_integrable μ (square_integrable_slice_of_mem X μ hΦ hc) (hm (Sum.inl (1, 1, star Y)) Ψ hΨ))
 
 /- English proof (translation)
-Conclude with `adjTop_of_tAdj (S := S) P z z' π π' X μ L st K l0 hD (TopCls X μ) (intOn_topCls X μ) hK (fun j Φ hΦ => lop_mem X μ (Sum.inr j) Φ hΦ) (fun Y hY a b => QQ_mem_adjAlg_top P z z' π π' hD.1 X μ hD.2.1 h11 Y hY a b)`.
+A detailed English derivation is pending.
 -/
 theorem adjTop_topCls (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))

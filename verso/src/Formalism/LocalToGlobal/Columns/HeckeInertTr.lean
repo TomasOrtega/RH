@@ -29,7 +29,7 @@ section Tr
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Use `show ∑ d₁ ∈ (((1 : UF X.E n), a⁻¹) • d).inertNb P s, ψ d₁ = ∑ d₁ ∈ d.inertNb P s, ψ (((1 : UF X.E n), a⁻¹) • d₁)`. Conclude with `DecoSet.sum_inertNb_smul P s _ d ψ`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem trF_nbFunI {V : Type} [AddCommGroup V] [Module X.K V] (a : GLG X.E n SG) (P : Ideal (𝓞 X.E)) (s : List ℕ)
     (ψ : DecoSet X.E n ST SG → V) :
@@ -42,7 +42,7 @@ theorem trF_nbFunI {V : Type} [AddCommGroup V] [Module X.K V] (a : GLG X.E n SG)
 variable (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Use `show ((heckeI (Formalism.L2.DIV.formPts C Λ) y.1.1.asIdeal y.2).op φ : DecoSet X.E n ST SG → C.V) d = ∑ d₁ ∈ DecoSet.inertNb y.1.1.asIdeal y.2 d, (φ : DecoSet X.E n ST SG → C.V) d₁`. Rewrite using `[heckeI_op_apply]`. Simplify using `[DecoPts.nbI, Formalism.L2.DIV.formPts]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heckeFamI_formPts_apply (S0 : Set (HeightOneSpectrum (𝓞 X.E))) (y : LevOffI ST SG S0 × List ℕ)
     (φ : (formGSD C Λ).EqFun) :
@@ -55,9 +55,9 @@ theorem heckeFamI_formPts_apply (S0 : Set (HeightOneSpectrum (𝓞 X.E))) (y : L
   simp [DecoPts.nbI, Formalism.L2.DIV.formPts]
 
 /- English proof (translation)
-Use `show trRep C Λ ι hι a * heckeFamI (Formalism.L2.DIV.formPts C Λ) S0 y = heckeFamI (Formalism.L2.DIV.formPts C Λ) S0 y * trRep C Λ ι hι a`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show trF X n ST SG C.V (ι a) ((heckeFamI (Formalism.L2.DIV.formPts C Λ) S0 y φ : (formGSD C Λ).EqFun) : DecoSet X.E n ST SG → C.V) = ((heckeFamI (Formalism.L2.DIV.formPts C Λ) S0 y (trRep C Λ ι hι a φ) : (formGSD C Λ).EqFun) : DecoSet X.E n ST SG → C.V)`. Rewrite using `[heckeFamI_formPts_apply, heckeFamI_formPts_apply, trF_nbFunI]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem heckeFamI_comm_trRep {A : Type} [Group A] (ι : A →* GLG X.E n SG) (hι : ∀ a w, (Λ w).NormBy (ι a w))
     (S0 : Set (HeightOneSpectrum (𝓞 X.E))) (y : LevOffI ST SG S0 × List ℕ) (a : A) :

@@ -5,11 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.BijectiveRestri
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 /- English proof (translation)
-Take `⟨I, _, Ai, _, _, e, hA⟩` from `(Algebra.Etale.iff_exists_algEquiv_prod k B).mp inferInstance`. Establish `hI : Nonempty I`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Establish `: Subsingleton (Π i, Ai i)` using `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `not_subsingleton B e.toEquiv.subsingleton`. Take `⟨i⟩` from `hI`. Use `haveI := (hA i).1`. Use `haveI := (hA i).2`. Set `u : k ≃ₐ[k] Ai i` to `AlgEquiv.ofBijective (Algebra.ofId k (Ai i)) ⟨(algebraMap k (Ai i)).injective, IsSepClosed.algebraMap_surjective k (Ai i)⟩`.
-
-Conclude with `⟨(u.symm.toAlgHom.comp (Pi.evalAlgHom k Ai i)).comp e.toAlgHom⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_algHom_of_etale (k B : Type) [Field k] [IsSepClosed k] [CommRing B]
     [Nontrivial B] [Algebra k B] [Algebra.Etale k B] : Nonempty (B →ₐ[k] k) := by
@@ -27,15 +25,13 @@ private theorem exists_algHom_of_etale (k B : Type) [Field k] [IsSepClosed k] [C
   exact ⟨(u.symm.toAlgHom.comp (Pi.evalAlgHom k Ai i)).comp e.toAlgHom⟩
 
 /- English proof (translation)
-Take `⟨x0⟩ : Nonempty (Spec (CommRingCat.of k))` from `inferInstance`. Take `⟨p, -⟩` from `q.surjective x0`. Set `U` to `P.affineOpenCover`. Set `j` to `U.idx p`. Use `haveI : IsOpenImmersion (U.f j) := U.map_prop j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : CommRingCat.of k ⟶ U.X j` to `Spec.preimage (U.f j ≫ q)`. Establish `hφ : Spec.map φ = U.f j ≫ q` using `Spec.map_preimage _`. Establish `hE : Etale (Spec.map φ)`. Rewrite using `[hφ]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `het : φ.hom.Etale` using `HasRingHomProperty.Spec_iff.mp hE`. Use `letI : Algebra k (U.X j) := φ.hom.toAlgebra`. Use `haveI : Algebra.Etale k (U.X j) := het`. Take `⟨y, -⟩` from `U.covers p`. Use `haveI : Nontrivial (U.X j) := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `y.isPrime.ne_top (Subsingleton.elim _ _)`. Take `⟨ψ⟩` from `exists_algHom_of_etale k (U.X j)`. Use `⟨Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ U.f j, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`. Use `conv_rhs => rw [← Spec.map_id]`. Use `congr 1`. Use extensionality with `c`. Conclude with `ψ.commutes c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem exists_section_of_etale_field {k : Type} [Field k] [IsSepClosed k] {P : Scheme.{0}}
     (q : P ⟶ Spec (CommRingCat.of k)) [Etale q] [Surjective q] :
@@ -67,9 +63,9 @@ private theorem exists_section_of_etale_field {k : Type} [Field k] [IsSepClosed 
   exact ψ.commutes c
 
 /- English proof (translation)
-Set `κ` to `IsLocalRing.ResidueField A`. Set `i : Spec (CommRingCat.of κ) ⟶ Spec (CommRingCat.of A)` to `Spec.map (CommRingCat.ofHom (IsLocalRing.residue A))`. Establish `hb` using `GlobalTheory.bijective_restrictPoints_of_etale_of_henselian f A (𝟙 _)`. Take `⟨σ, hσ⟩` from `exists_section_of_etale_field (pullback.snd f i)`. Establish `hg : (σ ≫ pullback.fst f i) ≫ f = i ≫ 𝟙 _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hσ, Category.id_comp, Category.comp_id]`. Take `⟨⟨s, hs⟩, _⟩` from `hb.2 ⟨σ ≫ pullback.fst f i, hg⟩`. Conclude with `⟨s, hs⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_section_of_etale_henselian (A : Type) [CommRing A] [HenselianLocalRing A]
     [IsSepClosed (IsLocalRing.ResidueField A)] {Y : Scheme.{0}} (f : Y ⟶ Spec (CommRingCat.of A))
@@ -86,11 +82,11 @@ private theorem exists_section_of_etale_henselian (A : Type) [CommRing A] [Hense
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-Introduce `R _ A _ hA F n hn`. Take `⟨hHen, hSep⟩` from `hA`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z : H R (sp A) F n, z = 0`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Y, f, hE, hS, hz⟩` from `GlobalTheory.T.positiveDegreeClasses_die_on_etaleCover R (Spec (CommRingCat.of A)) F n hn z`. Take `⟨s, hs⟩` from `exists_section_of_etale_henselian A f`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[CategoryTheory.Functor.map_comp, pull_comp]`. Use `_ = 0 := by rw [hz, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key x, key y]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.etaleCohomology_functorialityAxioms_hold_of_sheafAxioms :
     GlobalTheory.EtC.B2 := by

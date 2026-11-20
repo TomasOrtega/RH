@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.PiTensor
 
 /- English proof (translation)
-Establish `hg : ∀ i, ∃ g : N i →ₗ[K] M i, g ∘ₗ f i = LinearMap.id` using `fun i => LinearMap.exists_leftInverse_of_injective (f i) (LinearMap.ker_eq_bot.2 (hf i))`. Use `choose g hg using hg`. Establish `hcomp : PiTensorProduct.map g ∘ₗ PiTensorProduct.map f = LinearMap.id`. Rewrite using `[← PiTensorProduct.map_comp]`. Simplify using `only [hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `PiTensorProduct.map_id`. Use `Function.LeftInverse.injective (g := PiTensorProduct.map g) fun x => ?_` and prove the remaining obligations. Conclude with `LinearMap.congr_fun hcomp x`.
+A detailed English derivation is pending.
 -/
 theorem map_injective_of_injective
     (K : Type) [Field K] (ι : Type) [Fintype ι] [DecidableEq ι] (M N : ι → Type)

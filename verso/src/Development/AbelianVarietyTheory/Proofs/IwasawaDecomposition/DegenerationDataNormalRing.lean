@@ -19,7 +19,7 @@ namespace GlobalTheory.UnifLamFibre
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : x = x'` from `Over.OverMorphism.ext hx`. Take `rfl : y = y'` from `Over.OverMorphism.ext hy`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem lam_congr {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S} (h : a = b) (c : Pic G.left)
     (x y : Over.mk a ⟶ G) (x' y' : Over.mk b ⟶ G) (hx : x.left = x'.left) (hy : y.left = y'.left) :
@@ -30,18 +30,16 @@ theorem lam_congr {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S} (h 
   rfl
 
 /- English proof (translation)
-The claim follows from `(IsPullback.of_hasPullback G.hom G.hom).hom_ext (ha.1.trans hb.1.symm) (ha.2.trans hb.2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem isSquare_unique {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} {φ : G'.left ⟶ G.left}
     {a b : (G' ⊗ G').left ⟶ (G ⊗ G).left} (ha : IsSquare φ a) (hb : IsSquare φ b) : a = b :=
   (IsPullback.of_hasPullback G.hom G.hom).hom_ext (ha.1.trans hb.1.symm) (ha.2.trans hb.2.symm)
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Spec.map_surjective x`. Establish `hP' : ∀ s : R, s ∈ P ↔ f.hom s = 0` using `fun s => by`. Rewrite using `[← hP]`. Use `show f.hom s ∈ IsLocalRing.maximalIdeal K ↔ _`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_ne_zero, not_not]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `l` to `IsLocalization.lift (M := P.primeCompl) (S := Localization.AtPrime P) (g := f.hom) fun s => isUnit_iff_ne_zero.2 fun h0 => s.2 ((hP' s).2 h0)`. Use `⟨Spec.map (CommRingCat.ofHom l), ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`.
-
-Conclude with `IsLocalization.lift_eq _ r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_factor_atPrime {R K : Type} [CommRing R] [Field K] (x : Sp K ⟶ Sp R) (P : Ideal R) [P.IsPrime]
     (hP : (x (closedPoint K)).asIdeal = P) :
@@ -60,9 +58,7 @@ theorem exists_factor_atPrime {R K : Type} [CommRing R] [Field K] (x : Sp K ⟶ 
   exact IsLocalization.lift_eq _ r
 
 /- English proof (translation)
-Use `⟨IsOpenImmersion.lift j _ ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : (spMap (algebraMap R (Localization.AtPrime P)) q) ⤳ (⟨P, inferInstance⟩ : Sp R)` using `by show (PrimeSpectrum.comap (algebraMap R (Localization.AtPrime P)) q) ⤳ (⟨P, inferInstance⟩ : PrimeSpectrum R)`. Rewrite using `[← PrimeSpectrum.le_iff_specializes]`. Use `show Ideal.comap _ q.asIdeal ≤ P`.
-
-Conclude with `(Ideal.comap_mono (IsLocalRing.le_maximalIdeal q.isPrime.ne_top)).trans (IsLocalization.AtPrime.comap_maximalIdeal (Localization.AtPrime P) P).le`. Conclude with `(hq.map (ξ.base.hom.continuous)).mem_open j.isOpenEmbedding.isOpen_range h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_open {R : Type} [CommRing R] (P : Ideal R) [P.IsPrime] {S Z : Scheme.{0}} (ξ : Sp R ⟶ S)
     (j : Z ⟶ S) [IsOpenImmersion j] (h : ξ ⟨P, inferInstance⟩ ∈ Set.range j) :
@@ -80,9 +76,9 @@ theorem exists_factor_open {R : Type} [CommRing R] (P : Ideal R) [P.IsPrime] {S 
 attribute [-instance] instAlgebraAtPrimeFractionRing in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap R (Localization.AtPrime P))` using `IsLocalization.injective _ P.primeCompl_le_nonZeroDivisors`. Use `⟨spMap (IsLocalization.map (M := nonZeroDivisors R) (T := nonZeroDivisors (Localization.AtPrime P)) _ (algebraMap R (Localization.AtPrime P)) (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective _ hinj)), ?_⟩` and prove the remaining obligations. Simplify using `only [spMap, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, IsLocalization.map_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_generic_factor {R : Type} [CommRing R] [IsDomain R] (P : Ideal R) [P.IsPrime] :
     ∃ κ : Sp (FractionRing (Localization.AtPrime P)) ⟶ Sp (FractionRing R),
@@ -97,24 +93,24 @@ theorem exists_generic_factor {R : Type} [CommRing R] [IsDomain R] (P : Ideal R)
   rw [RingHom.comp_apply, RingHom.comp_apply, IsLocalization.map_eq]
 
 /- English proof (translation)
-The claim follows from `(IsPullback.of_hasPullback G.hom G.hom).hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem square_ext {S Z : Scheme.{0}} {G : Over S} {a b : Z ⟶ (G ⊗ G).left} (h₁ : a ≫ (fst G G).left = b ≫ (fst G G).left)
     (h₂ : a ≫ (snd G G).left = b ≫ (snd G G).left) : a = b :=
   (IsPullback.of_hasPullback G.hom G.hom).hom_ext h₁ h₂
 
 /- English proof (translation)
-Set `T : Over (Sp Rp)` to `Over.mk (pullback.fst (G2 Gp).hom (jK Rp) ≫ (G2 Gp).hom)`. Set `Fm : T ⟶ G2 Gp` to `Over.homMk (pullback.fst (G2 Gp).hom (jK Rp)) rfl`. Express the relevant statement in the definitionally equal form `pull Fm.left _ = pull Fm.left _`. Rewrite using `[pull_lam, ← pull_comp, lam_pull_of_isGrpPullback hβp]`. Set `t` to `pullback.snd (G2 Gp).hom (jK Rp) ≫ κ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `ht : T.hom ≫ loc = t ≫ jK R`. Simplify using `only [T, t, Over.mk_hom, Category.assoc, ← hι]`. Rewrite using `[pullback.condition_assoc]`. Establish `hK` using `isGrpPullback_pullback G' (jK R)`. Establish `hw : ∀ u : T ⟶ Gp, (u.left ≫ βp) ≫ G'.hom = t ≫ jK R` using `fun u => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hβp.1.w, ← Category.assoc, Over.w u, ht]`. Set `v : (T ⟶ Gp) → (Over.mk t ⟶ (Over.pullback (jK R)).obj G')` to `fun u => Over.homMk (pullback.lift (u.left ≫ βp) t (hw u)) (pullback.lift_snd _ _ _)`. Establish `hv : ∀ u, (v u).left ≫ pullback.fst G'.hom (jK R) = u.left ≫ βp` using `fun u => pullback.lift_fst _ _ _`. Establish `e₁ : lam cL (pushHom hβp T (Fm ≫ fst Gp Gp)) (pushHom hβp T (Fm ≫ snd Gp Gp)) = lam cL (pushHom hK _ (v (Fm ≫ fst Gp Gp))) (pushHom hK _ (v (Fm ≫ snd Gp Gp)))` using `lam_congr ht _ _ _ _ _ (hv _).symm (hv _).symm`. Rewrite using `[e₁, ← lam_pull_of_isGrpPullback hK, ← hext, lam_pull gen.hom]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set w₁ := v (Fm ≫ fst Gp Gp) ≫ gen.hom`. Use `set w₂ := v (Fm ≫ snd Gp Gp) ≫ gen.hom`. Establish `e₂ : lam cA w₁ w₂ = pull (lift w₁ w₂).left (lam cA (fst A A) (snd A A))`. Rewrite using `[pull_lam, lift_fst, lift_snd]`. Rewrite using `[e₂, hΛ, ← pull_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ u : T ⟶ Gp, (v u ≫ gen.hom).left ≫ α0 = u.left ≫ αp` using `fun u => by`. Rewrite using `[← cancel_mono e]`. Simplify using `only [Over.comp_left, Category.assoc, hgen, hαp]`. Rewrite using `[reassoc_of% (hv u)]`. Use `congrArg (fun m => pull m cP) (square_ext ?_ ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, hsq0.1, hsqp.1, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_fst, key]`. Rewrite using `[Category.assoc, Category.assoc, hsq0.2, hsqp.2, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_snd, key]`.
+A detailed English derivation is pending.
 -/
 theorem generic_eq {R Rp : Type} [CommRing R] [CommRing Rp]
     (loc : Sp Rp ⟶ Sp R) (κ : Sp (FractionRing Rp) ⟶ Sp (FractionRing R)) (hι : jK Rp ≫ loc = κ ≫ jK R)
@@ -164,39 +160,33 @@ theorem generic_eq {R Rp : Type} [CommRing R] [CommRing Rp]
       ← Over.comp_left, lift_snd, key]
 
 /- English proof (translation)
-Introduce `o _ ζ g n F S j _ G _ e he R _ _ hRn hRi I ξ G' _ _ π D A U hU K _ x y B _ β α α₂ hyx hβ hα hαβ hα₂`. Take `⟨hπ, y0, α0, α0₂, hy0, hα0, hsq0, hΛ0, hgen0⟩` from `hU`. Use `haveI := hRn`. Use `haveI := hRi`. Take `⟨P, hP⟩ : ∃ P : Ideal R, (x (closedPoint K)).asIdeal = P` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : P.IsPrime := hP ▸ (x (closedPoint K)).isPrime`. Use `haveI : IsIntegrallyClosed (Localization.AtPrime P) := isIntegrallyClosed_of_isLocalization _ P.primeCompl P.primeCompl_le_nonZeroDivisors`. Take `⟨xp, hxp⟩` from `exists_factor_atPrime x P hP`. Establish `hxP : (x (closedPoint K) : Sp R) = ⟨P, inferInstance⟩` using `PrimeSpectrum.ext hP`. Take `⟨yp, hyp⟩` from `exists_factor_open P ξ j ⟨y (closedPoint K), by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hxP]`. Conclude with `congrArg (fun f : Sp K ⟶ S => f (closedPoint K)) hyx⟩`. Use `set loc := spMap (algebraMap R (Localization.AtPrime P))`. Set `Gp` to `(Over.pullback loc).obj G'`. Establish `hβp : IsGrpPullback Gp G' loc (pullback.fst G'.hom loc)` using `isGrpPullback_pullback G' loc`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set βp := pullback.fst G'.hom loc`. Establish `hc : (βp ≫ π) ≫ G.hom = (Gp.hom ≫ yp) ≫ j`. Rewrite using `[Category.assoc, hπ.1.w, ← Category.assoc, hβp.1.w, Category.assoc, Category.assoc, hyp]`. Set `αp : Gp.left ⟶ F.univ.A.left` to `he.1.lift (βp ≫ π) (Gp.hom ≫ yp) hc`. Establish `hαpe : αp ≫ e = βp ≫ π` using `he.1.lift_fst _ _ _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαpw : αp ≫ F.univ.A.hom = Gp.hom ≫ yp` using `he.1.lift_snd _ _ _`. Establish `hαp : IsGrpPullback Gp F.univ.A yp αp` using `IsGrpPullback.cancel he (by rw [hyp, hαpe]; exact hβp.comp hπ) hαpw`. Use `haveI hab : IsAbelianScheme Gp := PolPull.isAbelianScheme_of_isGrpPullback F.univ.ab hαp`. Use `haveI := hab.smooth`. Use `haveI := hab.geomConnected`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := hab.proper`. Use `haveI : IsOpenImmersion e := MorphismProperty.of_isPullback (P := @IsOpenImmersion) he.1.flip inferInstance`. Set `αp₂ : (G2 Gp).left ⟶ (G2 F.univ.A).left` to `(IsPullback.of_hasPullback F.univ.A.hom F.univ.A.hom).lift ((fst Gp Gp).left ≫ αp) ((snd Gp Gp).left ≫ αp) (by`. Rewrite using `[Category.assoc, Category.assoc, hαpw, ← Category.assoc, ← Category.assoc, Over.w (fst Gp Gp), Over.w (snd Gp Gp)])`. Establish `hsqp : IsSquare αp αp₂` using `⟨(IsPullback.of_hasPullback F.univ.A.hom F.univ.A.hom).lift_fst _ _ _, (IsPullback.of_hasPullback F.univ.A.hom F.univ.A.hom).lift_snd _ _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL` using `U.LG.isLB`. Establish `hLp` using `pull_isLB hL βp`. Establish `h₁ : (abelian₂ Gp (U.LG.L.pull βp)).IsLB` using `LB.isLB_linComb hLp _ _`. Establish `h₂ : (F.univ.P.pull αp₂).IsLB` using `pull_isLB F.univ.isLB _`. Establish `c₁ : cls _ h₁ = lam (CechPic.pull βp (cls _ hL)) (fst Gp Gp) (snd Gp Gp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cls_pull hL βp hLp]`. Conclude with `cls_cube_two hLp _ _ h₁`. Establish `hsm : Smooth (G2 Gp).hom` using `smooth_square_hom Gp`. Establish `hqc : QuasiCompact (G2 Gp).hom`. Rewrite using `[← Over.w (fst Gp Gp)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show QuasiCompact (pullback.fst Gp.hom Gp.hom ≫ Gp.hom)`. Use `infer_instance`. Establish `hgi : GeometricallyIntegral (G2 Gp).hom` using `geometricallyIntegral_square_hom Gp`. Establish `key : LBIso (abelian₂ Gp (U.LG.L.pull βp)) (F.univ.P.pull αp₂)`. Use `GlobalTheory.T.lineBundleIso_of_generic_iso_normal_local_base (Localization.AtPrime P) inferInstance inferInstance (G2 Gp).left (G2 Gp).hom η[G2 Gp].left hsm hqc hgi (Over.w η[G2 Gp]) _ _ h₁ h₂ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(cls_eq_iff (pull_isLB h₁ _) (pull_isLB h₂ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull h₁, cls_pull h₂, c₁, cls_pull F.univ.isLB]`. Take `⟨κ, hι⟩` from `exists_generic_factor P`. Establish `hA` using `A.isLB`. Establish `hext : CechPic.pull U.gen.hom.left (cls _ hA) = CechPic.pull (pullback.fst G'.hom (jK R)) (cls _ hL)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(cls_eq_iff (pull_isLB hA U.gen.hom.left) (pull_isLB hL (pullback.fst G'.hom (jK R)))).2 U.ext` as an intermediate fact. Rewrite `this` using `[cls_pull hA, cls_pull hL]`. Then use the resulting hypothesis. Establish `hΛ : lam (cls _ hA) (fst A.A A.A) (snd A.A A.A) = CechPic.pull α0₂ (cls _ F.univ.isLB)`. Establish `hl : (abelian₂ A.A A.L).IsLB` using `LB.isLB_linComb hA _ _`. Use `(cls_eq_iff hl (pull_isLB F.univ.isLB α0₂)).2 hΛ0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[cls_pull F.univ.isLB]`. Conclude with `(cls_cube_two hA _ _ hl).symm.trans this`. Use `haveI := U.gen_hom`. Conclude with `generic_eq loc κ hι hβp U.gen e π α0 α0₂ hsq0 hgen0 αp αp₂ hsqp hαpe _ _ _ hext hΛ`. Establish `hw₀ : β ≫ G'.hom = (B.hom ≫ xp) ≫ loc` using `by rw [hβ.1.w, Category.assoc, hxp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `δ : B.left ⟶ Gp.left` to `pullback.lift β (B.hom ≫ xp) hw₀`. Establish `hδβ : δ ≫ βp = β` using `pullback.lift_fst _ _ _`. Establish `hδw : δ ≫ Gp.hom = B.hom ≫ xp` using `pullback.lift_snd _ _ _`. Establish `hδ : IsGrpPullback B Gp xp δ` using `IsGrpPullback.cancel hβp (by rw [hδβ, hxp]; exact hβ) hδw`. Establish `hαδ : δ ≫ αp = α`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono e, Category.assoc, hαpe, reassoc_of% hδβ, hαβ]`. Set `Q : Over.mk ((G2 B).hom ≫ xp) ⟶ G2 Gp` to `lift (pushHom hδ _ (fst B B)) (pushHom hδ _ (snd B B))`. Establish `hQ : Q.left ≫ αp₂ = α₂`. Use `isSquare_unique (φ := α) ⟨?_, ?_⟩ hα₂` and prove the remaining obligations. Rewrite using `[Category.assoc, hsqp.1, ← Category.assoc, ← Over.comp_left, lift_fst] show ((fst B B).left ≫ δ) ≫ αp = _`.
-
-Rewrite using `[Category.assoc, hαδ]`. Rewrite using `[Category.assoc, hsqp.2, ← Category.assoc, ← Over.comp_left, lift_snd] show ((snd B B).left ≫ δ) ≫ αp = _`. Rewrite using `[Category.assoc, hαδ]`. Establish `hLβ` using `pull_isLB hL β`. Establish `hB₁ : (abelian₂ B (U.LG.L.pull β)).IsLB` using `LB.isLB_linComb hLβ _ _`.
-
-Establish `c₂ : cls _ hB₁ = lam (CechPic.pull β (cls _ hL)) (fst B B) (snd B B)`. Rewrite using `[← cls_pull hL β hLβ]`. Conclude with `cls_cube_two hLβ _ _ hB₁`. Establish `k` using `(cls_eq_iff h₁ h₂).2 key`. Rewrite `k` using `[c₁, cls_pull F.univ.isLB]`.
-
-Use `(cls_eq_iff hB₁ (pull_isLB F.univ.isLB α₂)).1 ?_` and prove the remaining obligations. Rewrite using `[c₂, cls_pull F.univ.isLB, ← hδβ, pull_comp, lam_pull_of_isGrpPullback hδ]`. Establish `e₃ : lam (CechPic.pull βp (cls _ hL)) (pushHom hδ _ (fst B B)) (pushHom hδ _ (snd B B)) = CechPic.pull Q.left (lam (CechPic.pull βp (cls _ hL)) (fst Gp Gp) (snd Gp Gp))`. Rewrite using `[pull_lam, lift_fst, lift_snd]`. Rewrite using `[e₃, k, ← pull_comp, hQ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_pull_eq_univ : ∀ (o : Type) [CommRing o] (ζ : o) (g n : ℕ) (F : SFam g n ζ) (S : Scheme.{0}) (j : F.X ⟶ S) [IsOpenImmersion j] (G : Over S) [GrpObj G] (e : F.univ.A.left ⟶ G.left), IsGrpPullback F.univ.A G j e → ∀ (R : Type) [CommRing R] [IsDomain R], IsNoetherianRing R → IsIntegrallyClosed R → ∀ (I : Ideal R) (ξ : Sp R ⟶ S) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'] (π : G'.left ⟶ G.left) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (U : Unif I D A G'), IsUnifOf F j e ξ π U → ∀ (K : Type) [Field K] (x : Sp K ⟶ Sp R) (y : Sp K ⟶ F.X) (B : Over (Sp K)) [GrpObj B] (β : B.left ⟶ G'.left) (α : B.left ⟶ F.univ.A.left) (α₂ : (G2 B).left ⟶ (G2 F.univ.A).left), y ≫ j = x ≫ ξ → IsGrpPullback B G' x β → IsGrpPullback B F.univ.A y α → α ≫ e = β ≫ π → IsSquare α α₂ → LBIso (abelian₂ B (U.LG.L.pull β)) (F.univ.P.pull α₂) := by
   intro o _ ζ g n F S j _ G _ e he R _ _ hRn hRi I ξ G' _ _ π D A U hU K _ x y B _ β α α₂ hyx hβ hα hαβ hα₂

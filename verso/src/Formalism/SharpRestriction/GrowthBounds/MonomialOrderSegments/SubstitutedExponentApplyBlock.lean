@@ -11,16 +11,16 @@ namespace Formalism.MainNotions.PlaneGram
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Conclude with `vala_iff_Aset sg S θ F`.
+A detailed English derivation is pending.
 -/
 theorem vala_iff_Aset' {L : Type} [DecidableEq L] {r : ℕ} (sg : L → Bool) (S : Finset L) (θ : ℝ)
     (F : MvPolynomial (L × Fin r) K) : vala sg S θ F ↔ F ∈ Aset sg S ⌈θ⌉ := by
   exact vala_iff_Aset sg S θ F
 
 /- English proof (translation)
-Unfold `lg`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp`. Establish `hpos : (0 : ℝ) < (a : ℝ) + r`. Establish `: (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hle : (a : ℝ) + r ≤ (b : ℝ) + r`. Establish `: (a : ℝ) ≤ b` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[Real.logb_le_logb_of_le hp1 hpos hle]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lg_mono' {p : ℕ} (hp : 2 ≤ p) {r : ℕ} (hr : 1 ≤ r) {a b : ℕ} (hab : a ≤ b) :
     lg p r a ≤ lg p r b := by
@@ -35,9 +35,9 @@ theorem lg_mono' {p : ℕ} (hp : 2 ≤ p) {r : ℕ} (hr : 1 ≤ r) {a b : ℕ} (
   linarith [Real.logb_le_logb_of_le hp1 hpos hle]
 
 /- English proof (translation)
-Unfold `lg`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp`. Establish `h1 : (1 : ℝ) ≤ (a : ℝ) + r`. Establish `: (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `: (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[Real.logb_nonneg hp1 h1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lg_nonneg' {p : ℕ} (hp : 2 ≤ p) {r : ℕ} (hr : 1 ≤ r) (a : ℕ) : 0 ≤ lg p r a := by
   unfold lg
@@ -49,9 +49,9 @@ theorem lg_nonneg' {p : ℕ} (hp : 2 ≤ p) {r : ℕ} (hr : 1 ≤ r) (a : ℕ) :
   linarith [Real.logb_nonneg hp1 h1]
 
 /- English proof (translation)
-Rewrite using `[PolK, MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Establish `hm'` using `MvPolynomial.support_monomial_subset (Finset.mem_coe.1 hm)`. Rewrite `hm'` using `[Finset.mem_singleton]`. Substitute `hm'` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Introduce `i`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem monomial_mem_PolK {L : Type} {r : ℕ} (ζ : L × Fin r →₀ ℕ) (c : K) :
     monomial ζ c ∈ PolK K r (fun i => ldeg ζ i) := by
@@ -68,11 +68,11 @@ namespace TwistData
 variable (D : TwistData K)
 
 /- English proof (translation)
-Establish `key : ∀ a : Fin D.J, (a.val + D.J - 1) % D.J = if a.val = 0 then D.J - 1 else a.val - 1`. Introduce `a`. Use `a.isLt` as an intermediate fact. Use `split_ifs with h`. Rewrite using `[h, Nat.zero_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mod_eq_of_lt (by omega)`. Rewrite using `[show a.val + D.J - 1 = (a.val - 1) + D.J by omega, Nat.add_mod_right]`. Conclude with `Nat.mod_eq_of_lt (by omega)`. Introduce `a b h`. Establish `e : (a.val + D.J - 1) % D.J = (b.val + D.J - 1) % D.J` using `congrArg Fin.val h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `e` using `[key a, key b]`. Apply `Fin.ext` to reduce the goal to its premises. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Apply the tactic sequence `split_ifs at e <;> omega`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem primed_embedding_injective : Function.Injective D.aux₃ := by
   have key : ∀ a : Fin D.J, (a.val + D.J - 1) % D.J = if a.val = 0 then D.J - 1 else a.val - 1 := by
@@ -92,14 +92,14 @@ theorem primed_embedding_injective : Function.Injective D.aux₃ := by
   split_ifs at e <;> omega
 
 /- English proof (translation)
-Simplify using `[chainSet, wSet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_chainSet (j : Fin D.J) (i : Fin (D.nch j)) (z : D.ML) :
     z ∈ D.chainSet j i ↔ (∃ b ∈ D.chain j i, D.mb b = z) ∨ ∃ m : Fin D.r, D.mw (D.aux₃ j, m) = z := by
   simp [chainSet, wSet]
 
 /- English proof (translation)
-Simplify using `[Yset, wSet, or_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Yset (j : Fin D.J) (m : Fin D.r) (z : D.ML) :
     z ∈ D.Yset j m ↔ (∃ m' : Fin D.r, D.mw (D.aux₃ j, m') = z) ∨ (∃ b ∈ D.LLj j, D.mb b = z) ∨
@@ -107,7 +107,7 @@ theorem mem_Yset (j : Fin D.J) (m : Fin D.r) (z : D.ML) :
   simp [Yset, wSet, or_assoc]
 
 /- English proof (translation)
-Rewrite using `[D.mem_chainSet]`. Apply the tactic sequence `rintro (⟨b, _, h⟩ | ⟨m, h⟩) <;> simp [mlab, mb, mw] at h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mlab_notMem_chainSet (j : Fin D.J) (i : Fin (D.nch j)) (t : D.Tau) :
     D.mlab t ∉ D.chainSet j i := by
@@ -115,7 +115,7 @@ theorem mlab_notMem_chainSet (j : Fin D.J) (i : Fin (D.nch j)) (t : D.Tau) :
   rintro (⟨b, _, h⟩ | ⟨m, h⟩) <;> simp [mlab, mb, mw] at h
 
 /- English proof (translation)
-Rewrite using `[D.mem_chainSet]`. Apply the tactic sequence `rintro (⟨b, _, h⟩ | ⟨m, h⟩) <;> simp [mtp, mb, mw] at h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mtp_notMem_chainSet (j : Fin D.J) (i : Fin (D.nch j)) (t : D.Tau) :
     D.mtp t ∉ D.chainSet j i := by
@@ -123,18 +123,18 @@ theorem mtp_notMem_chainSet (j : Fin D.J) (i : Fin (D.nch j)) (t : D.Tau) :
   rintro (⟨b, _, h⟩ | ⟨m, h⟩) <;> simp [mtp, mb, mw] at h
 
 /- English proof (translation)
-Conclude with `Finset.union_subset_union (Finset.image_subset_image h) (Finset.Subset.refl _)`.
+A detailed English derivation is pending.
 -/
 theorem chainSet_mono (j : Fin D.J) (i i' : Fin (D.nch j)) (h : D.chain j i ⊆ D.chain j i') :
     D.chainSet j i ⊆ D.chainSet j i' := by
   exact Finset.union_subset_union (Finset.image_subset_image h) (Finset.Subset.refl _)
 
 /- English proof (translation)
-Rewrite using `[Finset.disjoint_left]`. Introduce `z hz hz'`. Rewrite `hz`, `hz'` using `[D.mem_chainSet]`. Apply the tactic sequence `rcases hz with ⟨b, hb, rfl⟩ | ⟨m, rfl⟩ <;> rcases hz' with ⟨b', hb', h⟩ | ⟨m', h⟩`. Simplify using `only [mb, Sum.inl.injEq] at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Establish `h1` using `hch j i hb`. Establish `h2` using `hch j' i' hb'`. Simplify using `only [LLj, Finset.mem_filter, Finset.mem_univ, true_and] at h1 h2`. Conclude with `hj (h1.symm.trans h2)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[mw, mb] at h`. Simplify using `[mw, mb] at h`. Simplify using `only [mw, Sum.inr.injEq, Sum.inl.injEq, Prod.mk.injEq] at h`. Conclude with `hj (D.primed_embedding_injective h.1).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chainSet_disjoint (hch : ∀ j i, D.chain j i ⊆ D.LLj j) (j j' : Fin D.J) (hj : j ≠ j')
     (i : Fin (D.nch j)) (i' : Fin (D.nch j')) : Disjoint (D.chainSet j i) (D.chainSet j' i') := by
@@ -154,11 +154,9 @@ theorem chainSet_disjoint (hch : ∀ j i, D.chain j i ⊆ D.LLj j) (j j' : Fin D
     exact hj (D.primed_embedding_injective h.1).symm
 
 /- English proof (translation)
-Take `⟨j, i⟩` from `x`. Take `⟨j', i'⟩` from `y`. Distinguish the cases in `hj : j = j'`. Substitute `hj` using the available equality. Break down `lt_trichotomy i i' with h | h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Conclude with `D.chainSet_mono j i i' (hnest j i i' h).1`. Use `left`. Rewrite using `[h]`. Use `right`.
-
-Use `left`. Conclude with `D.chainSet_mono j i' i (hnest j i' i h).1`. Use `right`. Use `right`. Conclude with `D.chainSet_disjoint hch j j' hj i i'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainSet_pair (hch : ∀ j i, D.chain j i ⊆ D.LLj j)
     (hnest : ∀ (j : Fin D.J) (i i' : Fin (D.nch j)), i < i' → D.chain j i ⊂ D.chain j i')
@@ -180,17 +178,15 @@ theorem chainSet_pair (hch : ∀ j i, D.chain j i ⊆ D.LLj j)
     exact D.chainSet_disjoint hch j j' hj i i'
 
 /- English proof (translation)
-Distinguish the cases in `hj : j = j'`. Substitute `hj left` using the available equality. Introduce `z hz`. Rewrite `hz` using `[D.mem_chainSet]`. Rewrite using `[D.mem_Yset]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `hz with ⟨b, hb, rfl⟩ | ⟨m', rfl⟩` into its components or cases. Use `right`. Use `left`. Conclude with `⟨b, hch j i hb, rfl⟩`. Use `left`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨m', rfl⟩`. Use `right`. Rewrite using `[Finset.disjoint_left]`. Introduce `z hz hz'`. Rewrite `hz` using `[D.mem_chainSet]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite `hz'` using `[D.mem_Yset]`. Apply the tactic sequence `rcases hz with ⟨b, hb, rfl⟩ | ⟨m1, rfl⟩ <;>`. Break down `hz' with ⟨m2, h⟩ | ⟨b2, hb2, h⟩ | ⟨m2, _, h⟩` into its components or cases. Simplify using `[mw, mb] at h`. Simplify using `only [mb, Sum.inl.injEq] at h`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Establish `h1` using `hch j i hb`. Simplify using `only [LLj, Finset.mem_filter, Finset.mem_univ, true_and] at h1 hb2`. Conclude with `hj (h1.symm.trans hb2)`. Simplify using `[mtp, mb] at h`.
-
-Simplify using `only [mw, Sum.inr.injEq, Sum.inl.injEq, Prod.mk.injEq] at h`. Conclude with `hj (D.primed_embedding_injective h.1).symm`. Simplify using `[mw, mb] at h`. Simplify using `[mtp, mw] at h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chainSet_Yset (hch : ∀ j i, D.chain j i ⊆ D.LLj j) (j : Fin D.J) (i : Fin (D.nch j))
     (j' : Fin D.J) (m : Fin D.r) :
@@ -226,13 +222,11 @@ theorem chainSet_Yset (hch : ∀ j i, D.chain j i ⊆ D.LLj j) (j : Fin D.J) (i 
     · simp [mtp, mw] at h
 
 /- English proof (translation)
-Take `⟨_, _, hb, ht, _⟩` from `h`. Unfold `totDeg`. Simplify using `only [Fintype.sum_sum_type, dO, Sum.elim_inl, Sum.elim_inr]`. Establish `e1 : ∑ b : D.Lb, ldeg ζ (Sum.inl b) = ∑ b : D.Lb, D.dB b` using `Finset.sum_congr rfl (fun b _ => hb b)`. Establish `e2 : ∀ t : D.Tau, ldeg ζ (Sum.inr (Sum.inl t)) + (ldeg ζ (Sum.inr (Sum.inr (Sum.inl t))) + ldeg ζ (Sum.inr (Sum.inr (Sum.inr t)))) ≤ D.dT t`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Establish `h1` using `ht t`. Establish `hP : 0 < D.P p t` using `by show 0 < p ^ D.g t`. Conclude with `Nat.pow_pos hp`. Establish `h2 : ldeg ζ (D.mw t) ≤ D.P p t * ldeg ζ (D.mw t)` using `Nat.le_mul_of_pos_left _ hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `show ldeg ζ (D.mlab t) + (ldeg ζ (D.mw t) + ldeg ζ (D.mtp t)) ≤ D.dT t`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`. Apply `Nat.add_le_add_left` to reduce the goal to its premises. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
-
-Conclude with `Finset.sum_le_sum (fun t _ => e2 t)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ldeg_le (p : ℕ) (hp : 0 < p) (ζ : D.EM) (h : D.GoodE p ζ) :
     ∑ i : D.ML, ldeg ζ i ≤ D.totDeg := by
@@ -259,7 +253,7 @@ theorem sum_ldeg_le (p : ℕ) (hp : 0 < p) (ζ : D.EM) (h : D.GoodE p ζ) :
 end TwistData
 
 /- English proof (translation)
-Conclude with `valS_sum_le sg S s f n h`.
+A detailed English derivation is pending.
 -/
 theorem Aset_sum {L : Type} [DecidableEq L] {r : ℕ} (sg : L → Bool) (S : Finset L) (n : ℤ) {ι : Type}
     (s : Finset ι) (f : ι → MvPolynomial (L × Fin r) K) (h : ∀ i ∈ s, f i ∈ Aset sg S n) :
@@ -267,44 +261,40 @@ theorem Aset_sum {L : Type} [DecidableEq L] {r : ℕ} (sg : L → Bool) (S : Fin
   exact valS_sum_le sg S s f n h
 
 /- English proof (translation)
-Conclude with `le_trans h (valS_smul_le sg S a F)`.
+A detailed English derivation is pending.
 -/
 theorem Aset_smul {L : Type} [DecidableEq L] {r : ℕ} (sg : L → Bool) (S : Finset L) (n : ℤ) (a : K)
     {F : MvPolynomial (L × Fin r) K} (h : F ∈ Aset sg S n) : a • F ∈ Aset sg S n := by
   exact le_trans h (valS_smul_le sg S a F)
 
 /- English proof (translation)
-Introduce `hD D hV`. Take `⟨hr, hJ, hc, hch, hnest, hthl, hga⟩` from `hV`. Use `haveI : NeZero D.r := ⟨hr.ne'⟩`. Establish `hp0 : 0 < p` using `hD.prime.pos`. Establish `hp2 : 2 ≤ p` using `by have := hD.five_le; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Sx : (Σ j : Fin D.J, Fin (D.nch j)) → Finset D.ML` to `fun x => D.chainSet x.1 x.2`. Set `thx : (Σ j : Fin D.J, Fin (D.nch j)) → ℤ` to `fun x => ⌈D.th x.1 x.2 - D.sl x.1 x.2⌉`. Establish `hpair : ∀ x ∈ (Finset.univ : Finset (Σ j : Fin D.J, Fin (D.nch j))), ∀ y ∈ Finset.univ, Sx x ⊆ Sx y ∨ Sx y ⊆ Sx x ∨ Disjoint (Sx x) (Sx y)` using `fun x _ y _ => D.chainSet_pair hch hnest x y`. Establish `hex` using `fun d : D.ML → ℕ => prodProj (L := D.ML) (sg := D.msg) (r := D.r) (d := d) hP hD Finset.univ Sx thx hpair`. Use `choose Pr h1 h2 h3 h4 h5 h6 using hex`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨Pj, hPj⟩ : ∃ Pj : MvPolynomial (D.ML × Fin D.r) K →ₗ[K] MvPolynomial (D.ML × Fin D.r) K, ∀ ζ : D.EM, Pj (monomial ζ 1) = Pr (fun i => ldeg ζ i) (monomial ζ 1) := by`. Use `⟨(MvPolynomial.basisMonomials (D.ML × Fin D.r) K).constr K (fun ζ => Pr (fun i => ldeg ζ i) (monomial ζ 1)), fun ζ => ?_⟩` and prove the remaining obligations. Establish `e` using `(MvPolynomial.basisMonomials (D.ML × Fin D.r) K).constr_basis K (fun ζ => Pr (fun i => ldeg ζ i) (monomial ζ 1)) ζ`. Rewrite `e` using `[MvPolynomial.coe_basisMonomials]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmono : ∀ (ζ : D.EM) (c : K), monomial ζ c = c • (monomial ζ 1 : MvPolynomial (D.ML × Fin D.r) K)`. Introduce `ζ c`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Establish `hlin : ∀ Z : MvPolynomial (D.ML × Fin D.r) K, Pj Z = ∑ ζ ∈ Z.support, Z.coeff ζ • Pr (fun i => ldeg ζ i) (monomial ζ 1)`. Introduce `Z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [Z.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun ζ _ => ?_)` and prove the remaining obligations. Rewrite using `[hmono, map_smul, hPj]`. Establish `hhom : ∀ (d : D.ML → ℕ), ∀ F ∈ PolK K D.r d, Pj F = Pr d F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `d F hF`. Rewrite using `[hlin]`. Use `conv_rhs => rw [F.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun ζ hζ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : (fun i => ldeg ζ i) = d` using `funext ((mem_PolK_iff d F).1 hF ζ hζ)`. Rewrite using `[hd, hmono ζ (F.coeff ζ), map_smul]`. Use `⟨Pj, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ζ ζ' hmem`. Rewrite `hmem` using `[hPj]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hdeg, hfix⟩` from `prodProj_entries D.msg (fun i => ldeg ζ i) Finset.univ Sx (Pr (fun i => ldeg ζ i)) (h1 _) (h6 _) ζ (fun k => rfl) ζ' hmem`. Conclude with `⟨hdeg, fun t a => hfix _ rfl (fun x _ => D.mlab_notMem_chainSet x.1 x.2 t) a, fun t a => hfix _ rfl (fun x _ => D.mtp_notMem_chainSet x.1 x.2 t) a⟩`. Introduce `ζ hG`. Establish `hbm : bge v (vN v (fact ζ) / 2) (monomial ζ (1 : K))` using `by classical`. Introduce `α`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[vge, vR, AddValuation.map_one]`. Simplify using `[vge, vR, AddValuation.map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hb` using `h4 (fun i => ldeg ζ i) (monomial ζ 1) (monomial_mem_PolK ζ 1) _ hbm`. Rewrite using `[hPj]`. Use `bge_mono (hab := ?_) (h := hb)` and prove the remaining obligations. Establish `hcard : ((Finset.univ : Finset (Σ j : Fin D.J, Fin (D.nch j))).card : ℝ) = ∑ j, (D.nch j : ℝ)`. Rewrite using `[Finset.card_univ, Fintype.card_sigma]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Fintype.card_fin]`. Establish `hlg : lg p D.r (2 * ∑ i, ldeg ζ i) ≤ lg p D.r (2 * D.totDeg)` using `lg_mono' hp2 hr (by have := D.sum_ldeg_le p hp0 ζ hG; omega)`. Establish `hDm : D.Dm p C0 = (∑ j, (D.nch j : ℝ)) * ((D.r : ℝ) ^ 2 * lg p D.r (2 * D.totDeg))`. Unfold `TwistData.Dm TwistData.eC`. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hnn : (0 : ℝ) ≤ ∑ j, (D.nch j : ℝ)` using `Finset.sum_nonneg (fun j _ => Nat.cast_nonneg _)`. Establish `hm : (∑ j, (D.nch j : ℝ)) * ((D.r : ℝ) ^ 2 * lg p D.r (2 * ∑ i, ldeg ζ i)) ≤ (∑ j, (D.nch j : ℝ)) * ((D.r : ℝ) ^ 2 * lg p D.r (2 * D.totDeg))` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hlg (sq_nonneg _)) hnn`. Rewrite using `[hcard, hDm]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `Z j i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vala_iff_Aset, hlin]`. Apply `Aset_sum` to reduce the goal to its premises. Introduce `ζ _`. Apply `Aset_smul` to reduce the goal to its premises. Conclude with `h2 _ _ (monomial_mem_PolK ζ 1) ⟨j, i⟩ (Finset.mem_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `A ζ hA hvA`. Rewrite using `[hPj]`. Conclude with `h3 _ A hA (fun x _ => (vala_iff_Aset _ _ _ _).1 (hvA x.1 x.2)) _ (monomial_mem_PolK ζ 1)`. Introduce `j m θ Z hZ`. Establish `hsplit : Pj Z = ∑ d ∈ Z.support.image (fun α i => ldeg α i), Pr d (hcomp d Z)` using `by conv_lhs => rw [sum_hcomp Z]`.
-
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl (fun d _ => hhom d _ (hcomp_mem_PolK d Z))`. Rewrite using `[vala_iff_Aset, hsplit]`. Apply `Aset_sum` to reduce the goal to its premises. Introduce `d _`.
-
-Conclude with `h5 d (D.Yset j m) ⌈θ⌉ (fun x _ => D.chainSet_Yset hch x.1 x.2 j m) _ (hcomp_mem_PolK d Z) ((vala_iff_Aset _ _ _ _).1 (vala_hcomp d hZ))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stepP_of [CharZero K] (v : AddValuation K (WithTop ℚ)) (p : ℕ) (C0 : ℝ) (h1 : 1 ≤ C0)
     (hP : PROJ K v p C0) : StepP K v p C0 := by

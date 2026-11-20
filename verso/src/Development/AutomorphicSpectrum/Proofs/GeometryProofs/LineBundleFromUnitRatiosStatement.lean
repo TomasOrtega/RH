@@ -19,7 +19,7 @@ open ReciprocityTheory.ChartRestriction.G.TB.ValAt ReciprocityTheory.ChartRestri
 open GlobalTheory.CompanionTheory.Ar.Flat.GagaC
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Flat.GagaC.Transition.exists_transition` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLineBundleFromUnitRatios.lean&line=42#L42)
 -/

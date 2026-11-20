@@ -17,11 +17,9 @@ open Matrix Filter Topology Formalism.FourierDecayAlt Formalism.FourierDecayAlt.
 noncomputable section
 
 /- English proof (translation)
-Establish `hT : ∀ (v : ℂ) (i j : Fin t), Commute (Tm E v (a i) (b j)) x`. Introduce `v i j`. Unfold `Tm`. Use `Commute.add_left ?_ (h i j)` and prove the remaining obligations. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `Algebra.commutes v x`. Conclude with `Commute.zero_left x`. Unfold `qminor`. Use `Commute.sum_left _ _ _ fun σ _ => ?_` and prove the remaining obligations. Use `(Int.cast_commute _ x).mul_left (Commute.list_prod_left _ _ fun y hy => ?_)` and prove the remaining obligations.
-
-Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hy`. Conclude with `hT _ _ i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem qminor_commute {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A) (x : A)
     (a b : Fin t → Fin n) (u : ℂ) (h : ∀ i j : Fin t, Commute (E (a i) (b j)) x) : Commute (qminor E a b u) x := by
@@ -41,15 +39,13 @@ theorem qminor_commute {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin 
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Mx k r)}
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Use `show ∀ v : VS k r 0 D E, LeftEq k r z 0 D (v : Mx k r → E) → LeftEq k r z 0 D ((x v : VS k r 0 D E) : Mx k r → E)`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨⟨p, q⟩, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv g hg n hn`. Establish `h` using `(generator_action_preserved E k r z 0 D (PBG.c0 p) (PBG.c0 q) v v 0 hD v.2.1 v.2.1).2.1 hDN hv g hg n hn`. Establish `hng : n * g ∈ Glev k r 0 ∩ D` using `⟨Qx3.glev_mul hn.2 hg.1, hDN g hg n hn⟩`. Use `show ((Eh hD _ _ v : VS k r 0 D E) : Mx k r → E) _ = _ • ((Eh hD _ _ v : VS k r 0 D E) : Mx k r → E) _`. Rewrite using `[ev_E hD _ _ v hng, ev_E hD _ _ v hg, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `algebraMap c`. Introduce `v hv g hg n hn`. Simplify using `only [Module.algebraMap_end_apply, Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[hv g hg n hn, smul_comm]`. Consider the case `add y1 y2 _ _ h1 h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v hv g hg n hn`. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply]`. Rewrite using `[h1 v hv g hg n hn, h2 v hv g hg n hn, smul_add]`. Consider the case `mul y1 y2 _ _ h1 h2`. Introduce `v hv`.
-
-Conclude with `h1 _ (h2 v hv)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leftEq_adjoin (z : Fin (2 * r + k + 1) → ℂ) (hD : IsOpen D)
     (hDN : ∀ g ∈ Glev k r 0 ∩ D, ∀ n ∈ Nlev k r 0, n * g ∈ D) (x : LevelPointCoordinates.SB E hD) :
@@ -87,7 +83,7 @@ def mn (hD : IsOpen D) (Y : ℂ) (m : ℕ) (hm : m ≤ r) : LevelPointCoordinate
 variable {g : Mx k r} {c : Fin r → ℂ}
 
 /- English proof (translation)
-Unfold `resG`. Use `congr 1`. Conclude with `cut_of_mem J ⟨cell_mem hg hc, hx⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem res_ap_one (hD : IsOpen D) {J : Mx k r → E} (hS : SmoothLev k r 0 D J) (hg : g ∈ Glev k r (Fin.last r))
     (hc : c ∈ OmX r) (hx : wCell k r (Fin.last r) c * g ∈ D) :
@@ -97,11 +93,11 @@ theorem res_ap_one (hD : IsOpen D) {J : Mx k r → E} (hS : SmoothLev k r 0 D J)
   exact cut_of_mem J ⟨cell_mem hg hc, hx⟩
 
 /- English proof (translation)
-Establish `hxG : wCell k r (Fin.last r) c * g ∈ Glev k r 0 ∩ D` using `⟨cell_mem hg hc, hx⟩`. Rewrite using `[torus_rule (Ψ := ap hD J hS x) ((x : Module.End ℂ (VS k r 0 D E)) (PBG.vK hD J hS)).2.1 hg hc hx a]`. Establish `e : ap hD J hS (Tm (LevelPointCoordinates.EB hD) (Y + ((2 * r + k : ℕ) : ℂ) / 2 - (a.val : ℂ)) (eI k r a) (eI k r a) * x) (wCell k r (Fin.last r) c * g) = (Y + ((2 * r + k : ℕ) : ℂ) / 2 - (a.val : ℂ)) • ap hD J hS x (wCell k r (Fin.last r) c * g) + EH k r (eI k r a) (eI k r a) (a …`. Establish `h` using `ev_E hD (PBG.c0 (eI k r a)) (PBG.c0 (eI k r a)) ((x : Module.End ℂ (VS k r 0 D E)) (PBG.vK hD J hS)) hxG`. Rewrite `h` using `[PBG.position_level_zero_coord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `ap`. Rewrite using `[← h, Tm, if_pos rfl, add_mul, ← Algebra.smul_def]`. Both sides reduce to the same expression. Simplify using `only [resG, e]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem res_ap_torus (hD : IsOpen D) {J : Mx k r → E} (hS : SmoothLev k r 0 D J) (hg : g ∈ Glev k r (Fin.last r))
     (hc : c ∈ OmX r) (hx : wCell k r (Fin.last r) c * g ∈ D) (Y : ℂ) (a : Fin r) (x : LevelPointCoordinates.SB E hD) :
@@ -125,13 +121,13 @@ theorem res_ap_torus (hD : IsOpen D) {J : Mx k r → E} (hS : SmoothLev k r 0 D 
   module
 
 /- English proof (translation)
-Simplify using `[mn, qminor]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mn_zero (hD : IsOpen D) (Y : ℂ) : mn (E := E) hD Y 0 (Nat.zero_le r) = 1 := by
   simp [mn, qminor]
 
 /- English proof (translation)
-Rewrite using `[mn_zero, mul_one]`. Simplify using `[mn, qminor, C3.xR]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mn_one (hD : IsOpen D) (Y : ℂ) (h : 1 ≤ r) : mn (E := E) hD Y 1 h =
     Tm (LevelPointCoordinates.EB hD) (Y + ((2 * r + k : ℕ) : ℂ) / 2 - (((⟨0, h⟩ : Fin r).val : ℕ) : ℂ)) (eI k r ⟨0, h⟩) (eI k r ⟨0, h⟩) *
@@ -141,19 +137,17 @@ theorem mn_one (hD : IsOpen D) (Y : ℂ) (h : 1 ≤ r) : mn (E := E) hD Y 1 h =
   rfl
 
 /- English proof (translation)
-Establish `hxG : wCell k r (Fin.last r) c * g ∈ Glev k r 0 ∩ D` using `⟨cell_mem hg hc, hx⟩`. Establish `hN : ∀ n ∈ Formalism.QuantumDeterminants.Nset k r, n ∈ Nlev k r 0` using `fun n hn => ⟨hn, SingleEntryHermitianProducts.glev0 hn.1⟩`. Establish `hRr : ∀ g ∈ Glev k r 0 ∩ D, ∀ p q, C3.InNp k r p q → EH k r p q J g = C3.dpsiP k r z' p q • J g` using `fun g hg p q hpq => rule_of_eq E k r z' J g hz' (fun n hn => hR g hg n (hN n hn)) p q hpq`. Set `La' : LevelPointCoordinates.SB E hD →ₗ[ℂ] E` to `(PBG.La hD J hS (wCell k r (Fin.last r) c * g)).comp (LevelPointCoordinates.SB E hD).val.toLinearMap`. Establish `hLa' : ∀ x, La' x = ap hD J hS x (wCell k r (Fin.last r) c * g)` using `fun x => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hRR : C3.RightRuleFn k r z' (LevelPointCoordinates.EB hD) La'` using `fun x p q hpq => PBG.La_rule hD z' J hS hRr _ x.1 p q hpq`. Establish `hvK : LeftEq k r z 0 D (PBG.vK hD J hS : Mx k r → E)`. Introduce `g hg n hn`. Establish `hng : n * g ∈ Glev k r 0 ∩ D` using `⟨Qx3.glev_mul hn.2 hg.1, hDN g hg n hn⟩`. Use `show cut k r 0 D J _ = _ • cut k r 0 D J g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cut_of_mem J hng, cut_of_mem J hg, hL g hg n hn]`. Establish `hLL : C3.LeftRuleBig k r c (LevelPointCoordinates.EB hD) La'`. Introduce `x a b hab`. Rewrite using `[hLa', hLa', ← left_rule hz hg hc (ap hD J hS x) (fun n hn => leftEq_adjoin z hD hDN x _ hvK _ hxG n (hN n hn)) hab]`. Establish `h` using `ev_E hD (PBG.c0 (eI k r a)) (PBG.c0 (eI k r b)) ((x : Module.End ℂ (VS k r 0 D E)) (PBG.vK hD J hS)) hxG`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[PBG.position_level_zero_coord, PBG.position_level_zero_coord]`. Conclude with `h`. Establish `hch` using `chain_first_identity (LevelPointCoordinates.SB E hD) E k r z' c (LevelPointCoordinates.EB hD) La' (LevelPointCoordinates.EB_gl hD) hc hRR hLL m hm (Y + ((2 * r + k : ℕ) : ℂ) / 2)`. Establish `hcomm : Commute (mn (E` using `E) hD Y (m + 1) (by omega)) (Tm (LevelPointCoordinates.EB hD) (Y + ((2 * r + k : ℕ) : ℂ) / 2 - ((m + 1 : ℕ) : ℂ)) (eI k r ⟨m + 1, by omega⟩) (eI k r ⟨m + 1, by omega⟩)) := by`. Unfold `Tm`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos rfl]`. Use `Commute.add_right (Algebra.commutes _ _).symm (qminor_commute _ _ _ _ _ fun i j => ?_)` and prove the remaining obligations. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Establish `h` using `LevelPointCoordinates.EB_gl (E := E) hD (C3.xR k r (m + 1) (by omega) i) (C3.xR k r (m + 1) (by omega) j) (eI k r ⟨m + 1, by omega⟩) (eI k r ⟨m + 1, by omega⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[if_neg (by simp only [C3.xR, Fin.ext_iff, eI_val, Fin.val_castLE]; omega), if_neg (by simp only [C3.xR, Fin.ext_iff, eI_val, Fin.val_castLE]; omega), sub_zero, sub_eq_zero]`. Conclude with `h`. Rewrite using `[← res_ap_torus hD hS hg hc hx Y ⟨m + 1, by omega⟩, ← hcomm.eq]`. Simplify using `only [resG, ← hLa']`. Rewrite using `[smul_comm (c _ / c _), ← smul_sub]`.
-
-Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem res_mn_succ {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') (hD : IsOpen D)
     (hDN : ∀ g ∈ Glev k r 0 ∩ D, ∀ n ∈ Nlev k r 0, n * g ∈ D) {J : Mx k r → E} (hS : SmoothLev k r 0 D J)
@@ -206,15 +200,15 @@ theorem res_mn_succ {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' 
   congr 1
 
 /- English proof (translation)
-Establish `hxG : wCell k r (Fin.last r) c * g ∈ Glev k r 0 ∩ D` using `⟨cell_mem hg hc, hx⟩`. Establish `hxi : ∀ a p, PBG.xi0 (wCell k r (Fin.last r) c * g) a p = if eI k r a = p then c a else 0`. Introduce `a p`. Rewrite using `[← row_es hg]`. Simplify using `[PBG.xi0, herm, bvec, Matrix.mulVec, dotProduct, Pi.single_apply, Qx3.hpk_row_e]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [resG]`. Rewrite using `[smul_comm (∏ a, c a), ← PBG.La_AAx hD J hS _ hxG, SignAntidiagonal.AAx_head k r _ _ r le_rfl (Matrix.diagonal c) _ ?_ ?_, map_smul, Matrix.det_diagonal]`. Use `congr 2`. Unfold `ap mn`. Use `PBN.MC.map_qminor (LevelPointCoordinates.SB E hD).val (LevelPointCoordinates.EB hD) (C3.xR k r r le_rfl) (C3.xR k r r le_rfl) (Y + ((2 * r + k : ℕ) : ℂ) / 2)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `show _ = (((LevelPointCoordinates.SB E hD).val _ (PBG.vK hD J hS) : VS k r 0 D E) : Mx k r → E) _`. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `a p ha hp`. Rewrite using `[hxi, if_neg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hp` using `[eI_val]`. Use linear arithmetic over natural numbers and integers. Introduce `a b`. Rewrite using `[hxi, Matrix.diagonal_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[C3.xR, Fin.ext_iff, eI_val]`.
+A detailed English derivation is pending.
 -/
 theorem res_AAop (hD : IsOpen D) {J : Mx k r → E} (hS : SmoothLev k r 0 D J) (hg : g ∈ Glev k r (Fin.last r))
     (hc : c ∈ OmX r) (hx : wCell k r (Fin.last r) c * g ∈ D) (Y : ℂ) :
@@ -244,9 +238,9 @@ theorem res_AAop (hD : IsOpen D) {J : Mx k r → E} (hS : SmoothLev k r 0 D J) (
     simp [C3.xR, Fin.ext_iff, eI_val]
 
 /- English proof (translation)
-Use `⟨(Matrix.of fun a l : Fin r => MvPolynomial.X (Sum.inl (esI k r a, b l))).det, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_apply]`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun σ _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_smul_le _ _).trans ((MvPolynomial.totalDegree_finset_prod _ _).trans ?_)` and prove the remaining obligations. Simplify `hκ` using `[MvPolynomial.totalDegree_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[RingHom.map_det]`. Use `congrArg Matrix.det ?_` and prove the remaining obligations. Use extensionality with `a l`. Simplify using `[herm, bvec, Matrix.mulVec, dotProduct, Pi.single_apply, Qx3.hpk_row_e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isPolyDeg_pluecker (κ : ℕ) (hκ : r ≤ κ) (b : Fin r → Fin (2 * r + k + 1)) :
     U.IsPolyDeg κ fun g : B.Mat k r => (Matrix.of fun a l : Fin r =>
@@ -267,11 +261,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨Θ, hΘ, he⟩` from `GlobalTheory.HatNF.MinorPoly.minor_polyOp Wp Wq k r r κ (Fin r → Fin (2 * r + k + 1)) (fun _ => C3.xR k r r le_rfl) (fun b => b) u (fun b g => if StrictMono b then (Matrix.of fun a l : Fin r => herm (Hpk k r) (g *ᵥ bvec (b l)) (bvec (eI k r (Fin.castLE le_rfl a)))).det else 0) (f …`. Distinguish the cases in `hb : StrictMono b`. Simplify using `only [if_pos hb]`. Conclude with `isPolyDeg_pluecker κ hκ b`. Simplify using `only [if_neg hb]; exact ⟨0, by simp, fun g => by simp⟩)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Θ, fun T hT => ⟨(hΘ T hT).1.trans ho, (hΘ T hT).2⟩, fun F g hg V hV hgV hF => ?_⟩` and prove the remaining obligations. Rewrite using `[he F g hg V hV hgV hF]`. Unfold `C3.AAop`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_polyOp_AAop (k r o κ : ℕ) (ho : r ≤ o) (hκ : r ≤ κ) (u : ℂ) :
     ∃ Θ : B.DiffOp k r Wp Wq, CutMP.PolyOp o κ Θ ∧ ∀ F : B.Mat k r → (Wq →L[ℂ] Wp), ∀ g ∈ B.GV k r,
@@ -296,9 +290,9 @@ variable {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)
 
 omit [FiniteDimensional ℂ Wp] in
 /- English proof (translation)
-Establish `key : ∀ a : Fin 2, ((JCx2.rma_pref L Y (n + 1) a 0).1 Φ : Fn k r (Wq →L[ℂ] Wp)) = TL k ⟨n, hn⟩ Y a 0 ((JCx2.rma_pref L Y n 0 0).1 Φ : Fn k r (Wq →L[ℂ] Wp)) + TL k ⟨n, hn⟩ Y a 1 ((JCx2.rma_pref L Y n 1 0).1 Φ : Fn k r (Wq →L[ℂ] Wp))`. Introduce `a`. Rewrite using `[← JCx2.rma_T_fst X L hL, ← JCx2.rma_T_fst X L hL, JCx2.rma_pref, dif_pos hn, Matrix.mul_apply, Fin.sum_univ_two]`. Both sides reduce to the same expression. Rewrite using `[key, key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[TL, crd, Tmat, cOp, ciOp, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pref_succ (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (Y : ℂ) (n : ℕ) (hn : n < r) (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) (g : Mx k r) :
@@ -320,9 +314,9 @@ theorem pref_succ (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k 
 
 omit [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] in
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp only [List.map_nil, List.prod_nil, one_smul]`. Both sides reduce to the same expression. Consider the case `cons a l ih`. Simplify using `only [List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_smul, ← ih, hL.2.2.1 a]`. Use `show (X.op a 1 (((l.map L.c).prod).1 Ψ) : Fn k r (Wq →L[ℂ] Wp)) c g = _`. Rewrite using `[X.op_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_c_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (c : Fin r → ℂ) (g : Mx k r) (l : List (Fin r)) (Ψ : RadSp k r z z' π π') :
@@ -339,23 +333,21 @@ theorem prod_c_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp
 omit [FiniteDimensional ℂ Wp] in
 
 /- English proof (translation)
-Introduce and unpack `⟨c₀, g⟩ ⟨hc₀, hg, hG⟩`. Establish `hDom` using `JCx2.rma_isDom_omPlus hz hz'`. Establish `hD` using `hDom.1`. Establish `hx : ∀ c ∈ OmX r, wCell k r (Fin.last r) c * g ∈ OmPlus k r z z'` using `fun c hc => P5.Rad.wCell_mem_omPlus hz hz' hc hg hG`. Establish `hDN : ∀ g ∈ Glev k r 0 ∩ OmPlus k r z z', ∀ n ∈ Nlev k r 0, n * g ∈ OmPlus k r z z'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg n hn`. Establish `h1 : (1 : Mx k r) ∈ Nlev k r 0` using `⟨(nSubgroup k r).1, Qx3.glev_one 0⟩`. Use `hDom.2 g hg (1 * n) ⟨1, BigCellZetaMinors.one_uw z, n, hn, rfl⟩ (1 * 1) ⟨1, BigCellZetaMinors.one_uw z', 1, h1, rfl⟩` as an intermediate fact. Simplify using `using this`. Establish `hp : ∀ (l : Fin r) (f₁ f₂ : (Fin r → ℂ) → (Wq →L[ℂ] Wp)), (∀ c ∈ OmX r, f₁ c = f₂ c) → ∀ c ∈ OmX r, pOp l f₁ c = pOp l f₂ c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `l f₁ f₂ h c hc`. Simplify using `only [pOp, wirt, (JCx2.rma_eq_nhds hc h).fderiv_eq]`. Establish `h0 : ∀ c ∈ OmX r, ((JCx2.rma_pref L Y 0 0 0).1 Φ : Fn k r (Wq →L[ℂ] Wp)) c g = resG k r (Fin.last r) (ap hD J hJ.1 (mn hD Y 0 (Nat.zero_le r))) c g`. Introduce `c hc`. Rewrite using `[mn_zero, res_ap_one hD hJ.1 hg hc (hx c hc), ← hΦ (c, g) ⟨hc, hg, hG⟩, JCx2.rma_pref, Matrix.one_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key : ∀ (m : ℕ) (hm : m + 1 ≤ r), (∀ c ∈ OmX r, ((JCx2.rma_pref L Y m 0 0).1 Φ : Fn k r (Wq →L[ℂ] Wp)) c g = resG k r (Fin.last r) (ap hD J hJ.1 (mn hD Y m (by omega))) c g) ∧ ∀ c ∈ OmX r, ((JCx2.rma_pref L Y (m + 1) 0 0).1 Φ : Fn k r (Wq →L[ℂ] Wp)) c g = resG k r (Fin.last r) (a …`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `hm`. Use `⟨h0, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[(pref_succ X L hL Y 0 hm Φ c g).1, hp _ _ _ h0 c hc, h0 c hc]`. Establish `e : ((JCx2.rma_pref L Y 0 1 0).1 Φ : Fn k r (Wq →L[ℂ] Wp)) c g = 0`. Rewrite using `[JCx2.rma_pref, Matrix.one_apply_ne (by decide)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, smul_zero, sub_zero, ← res_ap_torus hD hJ.1 hg hc (hx c hc) Y ⟨0, hm⟩, ← mn_one]`. Consider the case `succ m ih`. Introduce `hm`. Take `⟨i1, i2⟩` from `ih (by omega)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨i2, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[(pref_succ X L hL Y (m + 1) hm Φ c g).1, (pref_succ X L hL Y m (by omega) Φ c g).2, hp _ _ _ i2 c hc, i2 c hc, i1 c hc, res_mn_succ hz hz' hD hDN hJ.1 hJ.2.1 hJ.2.2.1 hg hc (hx c hc) Y m hm, smul_smul, div_eq_mul_inv]`. Establish `hr : ((JCx2.rma_pref L Y r 0 0).1 Φ : Fn k r (Wq →L[ℂ] Wp)) c₀ g = resG k r (Fin.last r) (ap hD J hJ.1 (mn hD Y r le_rfl)) c₀ g`. Establish `: ∀ (m : ℕ) (hm : m ≤ r), ((JCx2.rma_pref L Y m 0 0).1 Φ : Fn k r (Wq →L[ℂ] Wp)) c₀ g = resG k r (Fin.last r) (ap hD J hJ.1 (mn hD Y m hm)) c₀ g`. Introduce `m hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `m with`. Consider the case `zero => exact h0 c₀ hc₀`. Consider the case `succ m => exact (key m hm).2 c₀ hc₀`. Conclude with `this r le_rfl`. Use `show ((L.Dr).1 ((L.Tprod Y 0 0).1 Φ) : Fn k r (Wq →L[ℂ] Wp)) c₀ g = _`.
-
-Rewrite using `[res_AAop hD hJ.1 hg hc₀ (hx c₀ hc₀), ← hr, TLB.rma_pref_take, ← TLB.tprod_take_all, R.LevelData.Dr, List.ofFn_eq_map, prod_c_apply X L hL, ← List.ofFn_eq_map, List.prod_ofFn]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ahat_apply (hz : inWb k r z) (hz' : inWb k r z') (X : ActualOps k r z z' π π')
     (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (hL : IsActualLevel X L) (Y : ℂ)
@@ -427,11 +419,11 @@ namespace GlobalTheory.HatNF
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.Fr Formalism.REAL Formalism.QuantumDeterminants MeasureTheory GlobalTheory.HatNF
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 d _ hNF y`. Take `⟨Θ, hΘ, he⟩` from `TodaLift.exists_polyOp_AAop (Wp := Wp) (Wq := Wq) P.k P.r (2 * P.r + P.k + 1) (8 * (P.r + 1) * (2 * P.r + P.k + 1)) (by omega) (by nlinarith [Nat.zero_le P.r, Nat.zero_le P.k]) ((y : ℂ) + ((2 * P.r + P.k : ℕ) : ℂ) / 2)`. Use `SmoothLift.polyLift_of_smooth_comm P Bs _ _ Θ _ hΘ (fun p hp f hf g hg => ?_) (fun J hJ Φ hΦ x hx => ?_)` and prove the remaining obligations. Rewrite using `[he _ g hg.1 Set.univ isOpen_univ trivial (by simpa using Formalism.FourierDecayAlt.P.B5.ckOn_rho Bs hp hf), ← (Formalism.FourierDecayAlt.P.PBG.rho_AA Bs hf P.r le_rfl _ 0 hp hg.1).1]`. Simplify using `only [B.rho]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[he f _ (Formalism.FourierDecayAlt.P.B7.sgs_mem Bs hp hg.1) Set.univ isOpen_univ trivial (by simpa using hf)]`. Rewrite using `[TodaLift.ahat_apply Bs.z_mem Bs.z'_mem X d.L hNF.1 y hJ Φ hΦ x hx]`. Simplify using `only [Q.resG]`. Rewrite using `[he J _ (Formalism.FourierDecayAlt.P.TLB.wCell_gv Bs hx) (Q.OmPlus P.k P.r Bs.z Bs.z') (Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus Bs.z_mem Bs.z'_mem).1 (Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus Bs.z_mem Bs.z'_mem hx.1 hx.2.1 hx.2.2) ?_]`. Introduce `g₀ hg₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, F, a, b, c, e⟩` from `hJ.1 g₀ ⟨Formalism.FourierDecayAlt.P.SingleEntryHermitianProducts.glev0 hg₀.1, hg₀.2⟩`. Conclude with `⟨U, F, a, b, c, fun w hw hwG => e w hw (Formalism.FourierDecayAlt.P.SingleEntryHermitianProducts.glev0 hwG)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem polyLift_ahat : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π') (μ : Measure (Mt P.k P.r)) (L : LevelData (RA P Bs) P.r) (st : Start (RA P Bs)) (l0 : ℕ) (d : Q.NFData P (RA P Bs)), P5.IsData P Bs.z Bs.z' Bs.π Bs.π' X μ L st l0 → IsNF X d → ∀ y : ℝ, PolyLift P Bs (2 * P.r + P.k + 1) (8 * (P.r + 1) * (2 * P.r + P.k + 1)) (d.L.Ahat y) := by
   intro Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 d _ hNF y

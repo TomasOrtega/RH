@@ -14,14 +14,14 @@ section Lattices
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Simplify using `[stdLat, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdLat (R : Subalgebra o Ω) {κ : Type} (v : κ → Ω) :
     v ∈ stdLat R κ ↔ ∀ i, v i ∈ R := by
   simp [stdLat, AddSubgroup.mem_pi]
 
 /- English proof (translation)
-Simplify using `[dotDual, AddSubgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dotDual (R : Subalgebra o Ω) {m : ℕ} (L : AddSubgroup (Fin m → Ω)) (v : Fin m → Ω) :
     v ∈ dotDual R L ↔ ∀ l ∈ L, l ⬝ᵥ v ∈ R := by
@@ -30,13 +30,13 @@ theorem mem_dotDual (R : Subalgebra o Ω) {m : ℕ} (L : AddSubgroup (Fin m → 
 variable {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ}
 
 /- English proof (translation)
-Establish `hl1 : D.l1 R p ≤ stdLat R _`. Use `sup_le hB.M_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `(mem_stdLat R _).2 fun i => ?_` and prove the remaining obligations. Use `(mem_stdLat R f).1 hf i` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using R.mul_mem (natCast_mem R p) this`. Introduce `l hl`. Use `(mem_stdLat R l).2 fun i => ?_` and prove the remaining obligations. Establish `h` using `(mem_stdLat R _).1 (hl1 hl) (Pi.single i 1)`. Establish `e : (linMap n χ) l (Pi.single i 1) = l i`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [linMap, Fintype.linearCombination_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[h1]`. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj, h0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e' : (linMap n χ).toAddMonoidHom l (Pi.single i 1) = l i` using `e`. Rewrite `h` using `[e']`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem af_le_std (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (hB : D.Base R p w)
     (χ : F → Ω) (h0 : χ 0 = 0) (h1 : χ 1 = 1) : D.af R p χ ≤ stdLat R (Fin n) := by
@@ -60,7 +60,7 @@ theorem af_le_std (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : 
   rwa [e'] at h
 
 /- English proof (translation)
-Introduce `v hv`. Use `(mem_dotDual R _ v).2 fun l hl => ?_` and prove the remaining obligations. Establish `hl'` using `(mem_stdLat R l).1 (af_le_std D R p w hB χ h0 h1 hl)`. Establish `hv'` using `(mem_stdLat R v).1 hv`. Conclude with `sum_mem fun i _ => R.mul_mem (hl' i) (hv' i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem std_le_hh (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (hB : D.Base R p w)
     (χ : F → Ω) (h0 : χ 0 = 0) (h1 : χ 1 = 1) : stdLat R (Fin n) ≤ D.hh R p χ := by
@@ -71,9 +71,9 @@ theorem std_le_hh (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : 
   exact sum_mem fun i _ => R.mul_mem (hl' i) (hv' i)
 
 /- English proof (translation)
-Use `(mem_stdLat R _).2 fun i => ?_` and prove the remaining obligations. Establish `hi : (Pi.single i 1 : Fin n → Ω) ∈ stdLat R (Fin n)`. Use `(mem_stdLat R _).2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[one_mem]`. Simplify using `[Pi.single_eq_of_ne hj, zero_mem]`. Establish `hm : w • (Pi.single i 1 : Fin n → Ω) ∈ D.af R p χ` using `h ⟨_, hi, rfl⟩`. Use `(mem_dotDual R _ b).1 hb _ hm` as an intermediate fact. Simplify `this` using `[smul_dotProduct, single_one_dotProduct]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_mem_std_of_mem_hh (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω)
     (χ : F → Ω) (h : mulLat w (stdLat R _) ≤ D.af R p χ) {b : Fin n → Ω} (hb : b ∈ D.hh R p χ) :
@@ -89,7 +89,7 @@ theorem smul_mem_std_of_mem_hh (D : LieLatticeData Ω F n Sg r s) (R : Subalgebr
   simpa [smul_dotProduct, single_one_dotProduct] using this
 
 /- English proof (translation)
-Simplify using `[LieLatticeData.kerH, AddSubgroup.mem_map, AddSubgroup.mem_inf, AddSubgroup.mem_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_kerH (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (τ : Sg) (χ : F → Ω)
     (v : Fin (r τ) → Ω) :
@@ -97,7 +97,7 @@ theorem mem_kerH (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : �
   simp [LieLatticeData.kerH, AddSubgroup.mem_map, AddSubgroup.mem_inf, AddSubgroup.mem_prod]
 
 /- English proof (translation)
-Simplify using `[LieLatticeData.imH, AddSubgroup.mem_map, AddSubgroup.mem_inf, AddSubgroup.mem_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_imH (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (τ : Sg) (χ : F → Ω)
     (c : Fin (s τ) → Ω) :
@@ -113,7 +113,7 @@ def delH (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (τ 
   D.Del τ ⊓ (D.hh R p χ).prod (⊤ : AddSubgroup (Fin (s τ) → Ω))
 
 /- English proof (translation)
-Simplify using `[gamH, AddSubgroup.mem_inf, AddSubgroup.mem_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_gamH (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (τ : Sg) (χ : F → Ω)
     (a : Fin (r τ) → Ω) (b : Fin n → Ω) :
@@ -121,7 +121,7 @@ theorem mem_gamH (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : �
   simp [gamH, AddSubgroup.mem_inf, AddSubgroup.mem_prod]
 
 /- English proof (translation)
-Simplify using `[delH, AddSubgroup.mem_inf, AddSubgroup.mem_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_delH (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (τ : Sg) (χ : F → Ω)
     (b : Fin n → Ω) (c : Fin (s τ) → Ω) :
@@ -137,11 +137,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 variable {V V₁ : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup V₁] [Module Ω V₁]
 
 /- English proof (translation)
-Use `⟨fun c hc a ha v hv => ?_, fun c t hc ht v hv => ?_⟩` and prove the remaining obligations. Establish `h2` using `(AddSubgroup.mem_prod.1 hv.2).2`. Conclude with `⟨hG.1 c hc a ha v hv.1, AddSubgroup.mem_prod.2 ⟨trivial, hH.1 c hc a ha _ h2⟩⟩`. Establish `h2` using `(AddSubgroup.mem_prod.1 hv.2).2`. Take `⟨m₁, h₁⟩` from `hG.2 c t hc ht v hv.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, h₂⟩` from `hH.2 c t hc ht _ h2`. Establish `hq` using `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing (o := o) (mseg x) t c`. Use `⟨m₂ + m₁, ?_, AddSubgroup.mem_prod.2 ⟨trivial, ?_⟩⟩` and prove the remaining obligations. Use `hG.1 t ht _ (pow_mem hq m₂) _ h₁` as an intermediate fact. Rewrite `this` using `[smul_smul, ← pow_add]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hH.1 t ht _ (pow_mem hq m₁) _ h₂` as an intermediate fact. Rewrite `this` using `[smul_smul, ← pow_add, add_comm]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isLatFamily_inf_prod_right (x : (Σ k, ι k) → Ω) {G : (∀ k, ι k) → AddSubgroup (V × V₁)}
     {H : (∀ k, ι k) → AddSubgroup V₁} (hG : IsLatFamily o x G) (hH : IsLatFamily o x H) :
@@ -161,11 +161,11 @@ theorem isLatFamily_inf_prod_right (x : (Σ k, ι k) → Ω) {G : (∀ k, ι k) 
       simpa using this
 
 /- English proof (translation)
-Use `⟨fun c hc a ha v hv => ?_, fun c t hc ht v hv => ?_⟩` and prove the remaining obligations. Establish `h2` using `(AddSubgroup.mem_prod.1 hv.2).1`. Conclude with `⟨hG.1 c hc a ha v hv.1, AddSubgroup.mem_prod.2 ⟨hH.1 c hc a ha _ h2, trivial⟩⟩`. Establish `h2` using `(AddSubgroup.mem_prod.1 hv.2).1`. Take `⟨m₁, h₁⟩` from `hG.2 c t hc ht v hv.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, h₂⟩` from `hH.2 c t hc ht _ h2`. Establish `hq` using `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing (o := o) (mseg x) t c`. Use `⟨m₂ + m₁, ?_, AddSubgroup.mem_prod.2 ⟨?_, trivial⟩⟩` and prove the remaining obligations. Use `hG.1 t ht _ (pow_mem hq m₂) _ h₁` as an intermediate fact. Rewrite `this` using `[smul_smul, ← pow_add]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hH.1 t ht _ (pow_mem hq m₁) _ h₂` as an intermediate fact. Rewrite `this` using `[smul_smul, ← pow_add, add_comm]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isLatFamily_inf_prod_left (x : (Σ k, ι k) → Ω) {G : (∀ k, ι k) → AddSubgroup (V × V₁)}
     {H : (∀ k, ι k) → AddSubgroup V} (hG : IsLatFamily o x G) (hH : IsLatFamily o x H) :
@@ -187,27 +187,25 @@ theorem isLatFamily_inf_prod_left (x : (Σ k, ι k) → Ω) {G : (∀ k, ι k) �
 end Families
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x hinj F _ _ _ n Sg _ r s p hp w χ φ D hD hG hF τ`. Establish `hhfam` using `(((GlobalTheory.T.lattice_family_injective_model_facts O Ω K ι x hinj p hp w χ φ D hD).2 τ).2.2.2.2 hG).1`. Take `⟨-, -, -, -, hGam, hDel, -⟩` from `hD.fam τ`. Establish `h0 : χ τ 0 = 0` using `(hD.char.2.2.2.2 τ).1`. Establish `h1 : χ τ 1 = 1` using `(hD.char.2.2.2.2 τ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : algebraMap O Ω (χ τ 0) = 0` using `by rw [h0, map_zero]`. Establish `h1' : algebraMap O Ω (χ τ 1) = 1` using `by rw [h1, map_one]`. Establish `hstd : ∀ c, mseg x c ≠ 0 → stdLat (chartRing O (mseg x) c) (Fin n) ≤ (D c).hh (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a))` using `fun c hc => std_le_hh (D c) _ p _ (hD.base c hc) _ h0' h1'`. Use `⟨fun c => gamH (D c) (chartRing O (mseg x) c) p τ (fun a => algebraMap O Ω (χ τ a)), fun c => delH (D c) (chartRing O (mseg x) c) p τ (fun a => algebraMap O Ω (χ τ a)), ⟨isLatFamily_inf_prod_right O x hGam hhfam, fun c hc => ?_⟩, ⟨isLatFamily_inf_prod_left O x hDel hhfam, fun c h …` and prove the remaining obligations. Establish `hB` using `hD.base c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk` using `(hF c hc).ker τ`. Use `⟨fun v b hvb => ?_, fun v hv => ?_, fun b => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h` using `(mem_gamH _ _ _ _ _ _ _).1 hvb`. Use `⟨?_, h.2⟩` and prove the remaining obligations. Use `beta_reduce`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hk]`. Conclude with `(mem_kerH _ _ _ _ _ _).2 ⟨b, h⟩`. Use `beta_reduce at hv`. Rewrite `hv` using `[← hk]`. Take `⟨b, h⟩` from `(mem_kerH _ _ _ _ _ _).1 hv`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨b, (mem_gamH _ _ _ _ _ _ _).2 h⟩`. Rewrite using `[mem_gamH]`. Conclude with `⟨fun h => ((hB.gam τ).2.1 b).1 h.1, fun h => ⟨((hB.gam τ).2.1 b).2 h, hstd c hc h⟩⟩`. Conclude with `(mem_gamH _ _ _ _ _ _ _).2 ⟨((hB.gam τ).2.2 v).2 hv, zero_mem _⟩`. Establish `hB` using `hD.base c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi` using `(hF c hc).im τ`. Use `⟨fun b e hbe => ?_, fun b hb => ?_, fun e => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Establish `h` using `(mem_delH _ _ _ _ _ _ _).1 hbe`. Use `⟨h.2, ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hi]`. Conclude with `(mem_imH _ _ _ _ _ _).2 ⟨b, h⟩`. Take `⟨e, he⟩` from `((hB.del τ).1 b).2 (smul_mem_std_of_mem_hh (D c) _ p _ _ ((hF c hc).le_af τ) hb)`. Conclude with `⟨e, (mem_delH _ _ _ _ _ _ _).2 ⟨he, hb⟩⟩`. Rewrite using `[mem_delH]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨fun h => ((hB.del τ).2.2.1 e).1 h.1, fun h => ⟨((hB.del τ).2.2.1 e).2 h, zero_mem _⟩⟩`. Use `(mem_delH _ _ _ _ _ _ _).2 ⟨((hB.del τ).2.2.2 b).2 ⟨0, ((hB.gam τ).2.1 b).2 hb⟩, hstd c hc hb⟩` and prove the remaining obligations. Establish `hB` using `hD.base c hc`. Establish `hi` using `(hF c hc).im τ`. Use `⟨fun v hv => ?_, fun e he => ?_, fun b => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `((hB.gam τ).2.2 v).1 ((mem_gamH _ _ _ _ _ _ _).1 hv).1`. Use `beta_reduce at he`. Rewrite `he` using `[← hi]`. Take `⟨b, h⟩` from `(mem_imH _ _ _ _ _ _).1 he`. Conclude with `⟨b, (mem_delH _ _ _ _ _ _ _).2 h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[mem_delH]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hb⟩`. Take `⟨a, ha⟩` from `((hB.del τ).2.2.2 b).1 h`. Conclude with `⟨a, (mem_gamH _ _ _ _ _ _ _).2 ⟨ha, hb⟩⟩`.
-
-Introduce and unpack `⟨a, ha⟩`. Establish `h` using `(mem_gamH _ _ _ _ _ _ _).1 ha`. Conclude with `⟨((hB.del τ).2.2.2 b).2 ⟨a, h.1⟩, h.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem relSeq : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω), Function.Injective (algebraMap O Ω) → ∀ {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} [Fintype Sg] {r s : Sg → ℕ} (p : ℕ), p.Prime → ∀ (w : O) (χ : Sg → F → O) (φ : Equiv.Perm Sg) (D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s), IsLatticeFamily O x p w χ φ D → (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → (∀ c, mseg x c ≠ 0 → (D c).Facts (chartRing O (mseg x) c) p (algebraMap O Ω w) (fun τ a => algebraMap O Ω (χ τ a)) φ) → ∀ τ, QuotExact O x (fun c => divLat (algebraMap O Ω w) ((D c).lie τ)) (fun c => (D c).W τ) (fun c => (D c).hh (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a))) (fun c => stdLat (chartRing O (mseg x) c) (Fin n)) (fun c => (D c).om τ) (fun c => (D c).omHT τ) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x hinj F _ _ _ n Sg _ r s p hp w χ φ D hD hG hF τ

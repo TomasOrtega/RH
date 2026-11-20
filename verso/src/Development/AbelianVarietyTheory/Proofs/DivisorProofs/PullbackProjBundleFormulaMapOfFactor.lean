@@ -10,14 +10,14 @@ noncomputable section
 namespace GlobalTheory.EtC.PbfNatl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pull_htCast' (q : ℕ) {E E' : Spc} (f : E ⟶ E') {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E' n i) :
     pull _ f _ _ (Ht.cast hn hi x) = Ht.cast hn hi (pull _ f _ _ x : Ht q E n i) := by
   subst hn; subst hi; rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [cpow_zero, cpow_zero, pull_htCast', (hA q).2.1 f hE']`. Consider the case `succ k ih => rw [cpow_succ, cpow_succ, pull_htCast', (hA q).1, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pull_cpow' (q : ℕ) [NeZero q] (hA : DivisorNaturality) {E E' : Spc} (f : E ⟶ E') (hE' : Inv q E') (x : Ht q E' 2 1) (k : ℕ) :
     pull _ f _ _ (cpow q x k) = cpow q (pull _ f _ _ x : Ht q E 2 1) k := by
@@ -26,7 +26,7 @@ theorem pull_cpow' (q : ℕ) [NeZero q] (hA : DivisorNaturality) {E E' : Spc} (f
   | succ k ih => rw [cpow_succ, cpow_succ, pull_htCast', (hA q).1, ih]
 
 /- English proof (translation)
-Introduce `hA q _ E B P N V L θ f g hB hP hf hg n i a`. Unfold `pbfMap`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pull_htCast', (hA q).1, ← pull_comp, hf, pull_cpow' q hA _ hP, (hA q).2.2.1 _ _ hP, pull_cpow' q hA _ hB, (hA q).2.2.1 _ _ hB, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_pbfMap_of_factor : DivisorNaturality → ∀ (q : ℕ) [NeZero q] {E B P : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N))
     (L : B ⟶ ofCat (glCat 1)) (θ : P ⟶ pullback V (PGL.pr N)) (f : P ⟶ E) (g : P ⟶ B), Inv q B →

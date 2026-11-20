@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsL
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.E4
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsLocalGenerator.exists_local_generator I p`.
+A detailed English derivation is pending.
 -/
 private lemma exists_local_generator {B : Type} [CommRing B] [IsDedekindDomain B]
     (I : Ideal B) (p : Ideal B) [hp : p.IsPrime] :
@@ -12,23 +12,21 @@ private lemma exists_local_generator {B : Type} [CommRing B] [IsDedekindDomain B
   _root_.UpperTheory.Reformulated.B.ExistsLocalGenerator.exists_local_generator I p
 
 /- English proof (translation)
-Introduce `B _ _ W`. Set `S : Set (PrimeSpectrum B)` to `((W : Set (Spec (CommRingCat.of B)))ᶜ : Set (Spec (CommRingCat.of B)))`. Establish `hS : IsClosed S` using `W.isOpen.isClosed_compl`. Set `I : Ideal B` to `PrimeSpectrum.vanishingIdeal S`. Establish `hWc : PrimeSpectrum.zeroLocus (I : Set B) = S`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure]`. Conclude with `hS.closure_eq`. Set `D : B → (Spec (CommRingCat.of B)).Opens` to `fun r => PrimeSpectrum.basicOpen (R := CommRingCat.of B) r`. Establish `hbasic : ∀ r : B, IsAffineOpen (D r)`. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `(isAffineOpen_top (Spec (CommRingCat.of B))).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of B)).inv r)`. Rewrite `h` using `[basicOpen_eq_of_affine]`. Then use the resulting hypothesis. Establish `hmain : IsAffineHom W.ι`. Use `isAffineHom_of_forall_exists_isAffineOpen _ fun x => ?_` and prove the remaining obligations. Take `⟨π, hπ, s, hs, hsI⟩` from `@exists_local_generator B _ _ I x.asIdeal x.isPrime`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D s, hs, hbasic s, ?_⟩` and prove the remaining obligations. Establish `hEq : W ⊓ D s = D (s * π)`. Use extensionality with `q`. Establish `hq : q ∈ W ↔ ¬ (I : Set B) ⊆ q.asIdeal`. Establish `h1 : (I : Set B) ⊆ q.asIdeal ↔ q ∉ W` using `Set.ext_iff.1 hWc q`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, not_not]`. Establish `hDm : ∀ r : B, q ∈ D r ↔ r ∉ q.asIdeal` using `fun r => Iff.rfl`. Express the relevant statement in the definitionally equal form `q ∈ W ∧ q ∈ D s ↔ q ∈ D (s * π)`. Rewrite using `[hDm, hDm, hq]`. Establish `hqp : q.asIdeal.IsPrime` using `q.isPrime`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hIq, hsq⟩ hm`. Break down `hqp.mem_or_mem hm with h | h` into its components or cases. Conclude with `hsq h`. Use `hIq fun y hy => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : s * y ∈ q.asIdeal` using `(Ideal.span_singleton_le_iff_mem q.asIdeal).2 h (hsI y hy)`. Conclude with `(hqp.mem_or_mem h2).resolve_left hsq`. Introduce `hm`. Use `⟨fun hsub => hm (Ideal.mul_mem_left _ _ (hsub hπ)), fun h => hm (Ideal.mul_mem_right _ _ h)⟩` and prove the remaining obligations. Establish `h` using `hbasic (s * π)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[← hEq]`. Establish `h2` using `h.preimage_of_isOpenImmersion W.ι (by simp)`. Establish `e : W.ι ⁻¹ᵁ (W ⊓ D s) = W.ι ⁻¹ᵁ D s`. Use extensionality with `y`. Conclude with `⟨fun hy => hy.2, fun hy => ⟨y.2, hy⟩⟩`.
-
-Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `: IsAffine W.toScheme` using `isAffine_of_isAffineHom W.ι`. Conclude with `this`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.dedekind_spec_open_isAffine :
     ∀ (B : Type) [CommRing B] [IsDedekindDomain B] (W : (Spec (CommRingCat.of B)).Opens), IsAffineOpen W := by

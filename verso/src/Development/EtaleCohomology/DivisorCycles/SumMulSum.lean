@@ -7,7 +7,7 @@ open LateralTheory.DivDb
 variable {C : Type} [Field C] {N n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Finset.sum_eq_single k]`. Rewrite using `[smul_mul_assoc, (hS.1.idem k).eq]`. Introduce `j _ hj`. Rewrite using `[smul_mul_assoc, hS.1.ortho hj, smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_mul_p {p : Fin n → Mat C N} (hS : Sys p) (d : Fin n → C) (k : Fin n) :
     (∑ j, d j • p j) * p k = d k • p k := by
@@ -17,7 +17,7 @@ theorem sum_mul_p {p : Fin n → Mat C N} (hS : Sys p) (d : Fin n → C) (k : Fi
   · simp
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, Finset.sum_eq_single k]`. Rewrite using `[mul_smul_comm, (hS.1.idem k).eq]`. Introduce `j _ hj`. Rewrite using `[mul_smul_comm, hS.1.ortho (Ne.symm hj), smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem p_mul_sum {p : Fin n → Mat C N} (hS : Sys p) (d : Fin n → C) (k : Fin n) :
     p k * (∑ j, d j • p j) = d k • p k := by
@@ -27,7 +27,7 @@ theorem p_mul_sum {p : Fin n → Mat C N} (hS : Sys p) (d : Fin n → C) (k : Fi
   · simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, p_mul_sum hS, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mul_sum {p : Fin n → Mat C N} (hS : Sys p) (d d' : Fin n → C) :
     (∑ j, d j • p j) * (∑ j, d' j • p j) = ∑ j, (d j * d' j) • p j := by
@@ -35,7 +35,7 @@ theorem sum_mul_sum {p : Fin n → Mat C N} (hS : Sys p) (d d' : Fin n → C) :
   rw [smul_mul_assoc, p_mul_sum hS, smul_smul]
 
 /- English proof (translation)
-Rewrite using `[sum_mul_sum hS, sum_mul_sum hS]`. Simplify using `only [mul_inv_cancel₀ (hd _), inv_mul_cancel₀ (hd _), one_smul, hS.1.complete, and_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_inv {p : Fin n → Mat C N} (hS : Sys p) (d : Fin n → C) (hd : ∀ j, d j ≠ 0) :
     (∑ j, d j • p j) * (∑ j, (d j)⁻¹ • p j) = 1 ∧ (∑ j, (d j)⁻¹ • p j) * (∑ j, d j • p j) = 1 := by
@@ -43,16 +43,16 @@ theorem sum_inv {p : Fin n → Mat C N} (hS : Sys p) (d : Fin n → C) (hd : ∀
   simp only [mul_inv_cancel₀ (hd _), inv_mul_cancel₀ (hd _), one_smul, hS.1.complete, and_self]
 
 /- English proof (translation)
-The claim follows from `Subalgebra.sum_mem _ fun j _ => Subalgebra.smul_mem _ (hp j) _`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem {p : Fin n → Mat C N} (A : Subalgebra C (Mat C N)) (hp : ∀ i, p i ∈ A) (d : Fin n → C) :
     (∑ j, d j • p j) ∈ A :=
   Subalgebra.sum_mem _ fun j _ => Subalgebra.smul_mem _ (hp j) _
 
 /- English proof (translation)
-Set `a : A` to `⟨v, hvA⟩`. Establish `hinj : Function.Injective A.val` using `Subtype.val_injective`. Establish `ha : a ∈ nonZeroDivisors A` using `comap_nonZeroDivisors_le_of_injective hinj hv.mem_nonZeroDivisors`. Use `haveI : Module.Finite C A := FiniteDimensional.finiteDimensional_submodule (Subalgebra.toSubmodule A)`. Establish `hu : IsUnit a` using `IsArtinianRing.isUnit_of_nonZeroDivisor_of_isIntegral' (R := C) ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hu`. Use `⟨((b⁻¹ : Aˣ) : A), ((b⁻¹ : Aˣ) : A).2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val b.mul_inv` as an intermediate fact. Rewrite `this` using `[hb]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_in (A : Subalgebra C (Mat C N)) {v : Mat C N} (hvA : v ∈ A) (hv : IsUnit v) :
     ∃ w ∈ A, v * w = 1 := by
@@ -67,12 +67,12 @@ theorem inv_in (A : Subalgebra C (Mat C N)) {v : Mat C N} (hvA : v ∈ A) (hv : 
   rw [hb] at this; exact this
 
 /- English proof (translation)
-Introduce `x hx _ hf` and use `hf x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zcl_sub (S : Set (Mat C N)) : S ⊆ Zcl S := fun x hx _ hf => hf x hx
 
 /- English proof (translation)
-Introduce `y hy f hf` and use `hy f fun x hx => hf x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zcl_mono {S T : Set (Mat C N)} (h : S ⊆ T) : Zcl S ⊆ Zcl T :=
   fun y hy f hf => hy f fun x hx => hf x (h hx)
@@ -84,13 +84,11 @@ open LateralTheory.DivDb
 variable {C : Type} [Field C] {N n : ℕ}
 
 /- English proof (translation)
-Establish `h2' : ∀ X, Ri * (R * X) = X` using `h2`. Use `⟨⟨⟨fun i => ?_, fun i j hij => ?_⟩, ?_⟩, fun i h => hS.2 i ?_⟩` and prove the remaining obligations. Use `show Ri * p i * R * (Ri * p i * R) = Ri * p i * R`. Simplify using `only [mul_assoc, h1]`. Rewrite using `[← mul_assoc (p i), (hS.1.idem i).eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show Ri * p i * R * (Ri * p j * R) = 0`. Simplify using `only [mul_assoc, h1]`. Rewrite using `[← mul_assoc (p i), hS.1.ortho hij]`. Simplify using the standard rewrite rules. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum, hS.1.complete, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h2 1` as an intermediate fact. Simplify using `using this`. Use `congrArg (fun Y => R * Y * Ri) h` as an intermediate fact. Simplify using `only [mul_assoc, h1, mul_zero, zero_mul] at this`. Establish `e' : R * Ri = 1` using `by simpa using h1 1`.
-
-Rewrite `this` using `[e', mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sys_conj {p : Fin n → Mat C N} (hS : Sys p) (R Ri : Mat C N) (h1 : ∀ X, R * (Ri * X) = X)
     (h2 : ∀ X, Ri * (R * X) = X) : Sys (fun j => Ri * p j * R) := by
@@ -108,9 +106,9 @@ theorem sys_conj {p : Fin n → Mat C N} (hS : Sys p) (R Ri : Mat C N) (h1 : ∀
     rwa [e', mul_one] at this
 
 /- English proof (translation)
-Introduce `u hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, j, k, hjk, rfl⟩` from `hx`. Apply `hUn C N ρS _ (hT a ha j k hjk)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: p k * p j = 0` using `hS.1.ortho (Ne.symm hjk)`. Combine the equalities or inequalities in the displayed calculation. Consider the case `one => exact zcl_sub _ ρS.one_mem`. Consider the case `mul x y _ _ hx hy => exact hZM C N ρS x hx y hy`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 -/
 theorem tv_zcl {ρS : Submonoid (Mat C N)} (hZM : ZclMul) (hUn : Unip) [CharZero C]
     (A : Subalgebra C (Mat C N)) (p : Fin n → Mat C N) (hS : Sys p)
@@ -128,39 +126,37 @@ theorem tv_zcl {ρS : Submonoid (Mat C N)} (hZM : ZclMul) (hUn : Unip) [CharZero
   | mul x y _ _ hx hy => exact hZM C N ρS x hx y hy
 
 /- English proof (translation)
-Introduce `Γ C _ _ _ _ N n ρ e p hDeg hLac hG U hU hUf g`. Take `⟨hS, hX, hCo, hNN, hNo, _hKe, hOff⟩` from `hG`. Establish `hRiR : (ρ g⁻¹ : Mat C N) * (ρ g : Mat C N) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `hRRi : (ρ g : Mat C N) * (ρ g⁻¹ : Mat C N) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Use `set R : Mat C N := (ρ g : Mat C N) with hRdef`. Use `set Ri : Mat C N := (ρ g⁻¹ : Mat C N) with hRidef`. Establish `h1 : ∀ X, R * (Ri * X) = X` using `fun X => by rw [← mul_assoc, hRRi, one_mul]`. Establish `h2 : ∀ X, Ri * (R * X) = X` using `fun X => by rw [← mul_assoc, hRiR, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A := env ρ`. Establish `hSq` using `sys_conj hS R Ri h1 h2`. Establish `hCq : Corner A (fun j => Ri * p j * R)`. Use `⟨fun i => ?_, fun a ha i => ?_⟩` and prove the remaining obligations. Use `hNo g⁻¹ (p i) (hCo.1 i)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `hCo.2 _ (hNo g a ha) i`. Use `⟨c, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `_ = c • (Ri * p i * R) := by rw [hc]; simp only [mul_smul_comm, smul_mul_assoc]`. Take `⟨v, hvA, hvU, π, hvπ, hπ⟩` from `hIC C N n A p _ hS hCo hSq hCq hNN`. Take `⟨E, hE⟩` from `hMU C N n A p hS hCo hNN`. Take `⟨u, huT, d, hd, hvud⟩` from `hUF C N n A p E hS hE v hvA hvU`. Take `⟨hDD', hD'D⟩` from `sum_inv hS d hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : u = v * ∑ j, (d j)⁻¹ • p j` using `by rw [hvud, mul_assoc, hDD', mul_one]`. Establish `hup : ∀ j, u * p j = Ri * p (π j) * R * u`. Introduce `j`. Establish `e1 : u * p j = v * ((d j)⁻¹ • p j)` using `by rw [hu, mul_assoc, sum_mul_p hS]`. Establish `e2 : Ri * p (π j) * R * u = v * ((d j)⁻¹ • p j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hu, ← mul_assoc, ← hvπ j, mul_assoc, p_mul_sum hS]`. Rewrite using `[e1, e2]`. Establish `hxp : ∀ j, R * u * p j = p (π j) * (R * u)`. Introduce `j`. Rewrite using `[mul_assoc, hup]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc, h1]`. Establish `hD'U : IsUnit (∑ j, (d j)⁻¹ • p j)` using `⟨⟨_, _, hD'D, hDD'⟩, rfl⟩`. Establish `huU : IsUnit u` using `by rw [hu]; exact hvU.mul hD'U`. Establish `hxU : IsUnit (R * u)` using `(Units.isUnit (ρ g)).mul huU`. Take `⟨B, hBf, hB⟩` from `hGS C N n p (R * u) π hS hxU hxp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hXT` using `hTI Γ C N ρ U hU hUf hX`. Take `⟨τ, hτ, htZ, hτB⟩` from `hTP C N n (img ρ U) p e hS hLac hXT B hBf`. Establish `hdisj` using `hB τ hτ hτB`. Take `⟨hTT', hT'T⟩` from `sum_inv hS τ hτ`. Use `set t := ∑ j, τ j • p j with htdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huZ : u ∈ Zcl (img ρ U : Set (Mat C N))` using `tv_zcl hZM hUn A p hS (fun a ha j k hjk => hTI Γ C N ρ U hU hUf (hOff a ha j k hjk)) u huT`. Establish `hmZ` using `hZM C N (img ρ U) u huZ t htZ`. Establish `htU : IsUnit t` using `⟨⟨_, _, hTT', hT'T⟩, rfl⟩`. Establish `hyU : IsUnit (R * u * t)` using `hxU.mul htU`. Establish `hyp : ∀ j, R * u * t * p j = p (π j) * (R * u * t)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Rewrite using `[mul_assoc, sum_mul_p hS, ← mul_assoc (p _), ← hxp, mul_assoc, mul_assoc, p_mul_sum hS]`. Simplify using `only [mul_assoc]`. Establish `himg : ∀ y ∈ img ρ U, y ∈ img ρ ⊤` using `fun y hy => by`. Take `⟨w, -, rfl⟩` from `Submonoid.mem_map.mp hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submonoid.mem_map.mpr ⟨w, by simp, rfl⟩`. Establish `hdegS : ∀ x ∈ img ρ ⊤, Deg n x` using `fun x hx => by`. Take `⟨w, -, rfl⟩` from `Submonoid.mem_map.mp hx`. Conclude with `hDeg w`. Establish `hRZ : R ∈ Zcl (img ρ ⊤ : Set (Mat C N))` using `zcl_sub _ (Submonoid.mem_map.mpr ⟨g, by simp, rfl⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hyZ : R * u * t ∈ Zcl (img ρ ⊤ : Set (Mat C N))`. Rewrite using `[mul_assoc]`. Conclude with `hZM C N _ R hRZ _ (zcl_mono himg hmZ)`. Establish `hyDeg` using `(hTD C N n (img ρ ⊤) hdegS).1 _ hyZ`. Take `⟨hEig, hfix⟩` from `hCC C N n p (R * u * t) π hS hyU hyp hyDeg hdisj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨⟨u * t, hmZ, by rw [← mul_assoc]; exact hEig⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `i ⟨a, haA, hne⟩`. Establish `ha' : Ri * a * R ∈ A` using `by have := hNo g⁻¹ a haA; rwa [inv_inv] at this`. Establish `hπi : π i = i`. Use `hπ i ⟨Ri * a * R, ha', fun h => hne ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun Y => R * Y) h` as an intermediate fact. Simplify using `only [mul_assoc, h1, mul_zero] at this`. Simplify `this` using `[mul_assoc]`. Take `⟨c, hc⟩` from `hfix i hπi`. Establish `hpy : p i * (R * u * t) = c • p i` using `by rw [← hc, hyp i, hπi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Take `⟨vi, hviA, hvvi⟩` from `inv_in A hvA hvU`. Use `set D := ∑ j, d j • p j`. Use `set T' := ∑ j, (τ j)⁻¹ • p j`. Establish `hm1 : u * t * (T' * D * vi) = 1`. Establish `ht' : ∀ X, t * (T' * X) = X` using `fun X => by rw [← mul_assoc, hTT', one_mul]`.
-
-Establish `hd' : ∀ X, (∑ j, (d j)⁻¹ • p j) * (D * X) = X` using `fun X => by rw [← mul_assoc, hD'D, one_mul]`. Rewrite using `[hu]`. Simplify using `only [mul_assoc, ht', hd', hvvi]`. Use `⟨c • (T' * D * vi), Subalgebra.smul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (sum_mem A hCo.1 _) (sum_mem A hCo.1 _)) hviA) _, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem Key_of (hIC : IdemConj) (hMU : MatrixUnits₂) (hUF : UnitFactorization) (hTI : TanIndex) (hUn : Unip)
     (hZM : ZclMul) (hGS : GenSpec) (hTP : TorusPt) (hTD : TanDeg) (hCC : CycleCount) : Key := by

@@ -14,13 +14,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.ES
 
 /- English proof (translation)
-Introduce `p _ D R _ _ b N hN hNp hp r w j c hw hu hj hc hm M`. Use `haveI : LocallyOfFiniteType M.s := by haveI : Smooth M.s := M.smooth.smooth infer_instance`. Use `haveI : IsLocallyNoetherian M.X := LocallyOfFiniteType.isLocallyNoetherian M.s`. Take `⟨Y, o₀, m₀, o', ψ, hfin, het, hisog, htj, huniv⟩` from `GlobalTheory.T.harrisTaylor_typeTj_isogenies_representable p D R b N hN hNp hp r w j c hw hu hj hc hm M.X M.s M.univ`. Take `⟨t, ⟨ht, ⟨mt⟩⟩, -⟩` from `M.rep Y.left (Y.hom ≫ M.s) o'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h3, h4⟩` from `GlobalTheory.T.harrisTaylor_typeTj_correspondence_target_finite_etale p D R b N hN hNp hp r w j c hw hu hj hc hm M Y.left Y.hom t ht.symm o₀ o' m₀ mt ψ hisog htj hfin het huniv`. Establish `hsurj : Surjective Y.hom`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨k, _, _, a, ha⟩` from `GlobalTheory.FinEt.exists_algClosed_point M.X x`. Take `⟨o₁, ⟨m⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N M.X (Sp k) M.s a M.univ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨o₁', ψ₁, h1, h2⟩` from `GlobalTheory.T.harrisTaylor_exists_typeTj_pIsogeny p D R b N hN hNp hp r w j c hw hu hj hc hm k (a ≫ M.s) o₁`. Take `⟨y, ⟨hy, -⟩, -⟩` from `huniv (Sp k) a o₁ o₁' m ψ₁ h1 h2`. Establish `hx : x ∈ Set.range a.base` using `by rw [ha]; rfl`. Take `⟨z', rfl⟩` from `hx`. Conclude with `⟨y.base z', by rw [← hy]; rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `T : TjCorr M.toRepFam r w j c` to `{ Y := Y.left, s := Y.hom, t := t, st := ht.symm, o := o₀, o' := o', ms := m₀, mt := mt, ψ := ψ, isog := hisog, tj := htj, wPrime := hw.isPrime, uLe := hu, pReg := fun U f hf => pReg_of_isUnit (Y.hom ≫ M.s) hp U f hf, sFin := hfin, tFin := h3, sSurj := hsurj }`. Conclude with `⟨T, hfin, het, hsurj, h3, h4, fun S x o₁ o₁' m ψ₁ _ h1 h2 => huniv S x o₁ o₁' m ψ₁ h1 h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_tjCorr_finiteEtale : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → IsUnit ((p : ℕ) : R) → ∀ (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ), w.IsMaximal → uIdeal D r ≤ w → j ≤ D.n → (∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) → D.m = 1 → ∀ M : Model b N, ∃ T : TjCorr M.toRepFam r w j c, IsFinite T.s ∧ Etale T.s ∧ Surjective T.s ∧ IsFinite T.t ∧ Etale T.t ∧ ∀ (S : Scheme.{0}) (x : S ⟶ M.X) (o₁ o₁' : Obj b N (x ≫ M.s)) (m : ObjMap o₁ M.univ x) (ψ₁ : o₁.A ⟶ o₁'.A), IsUnit ((p : ℕ) : Γ(S, ⊤)) → IsPIsog c o₁ o₁' ψ₁ → IsTj r w j o₁ o₁' ψ₁ → ∃! y : S ⟶ T.Y, y ≫ T.s = x ∧ ∃ (m₀ : ObjMap o₁ T.o y) (m₁ : ObjMap o₁' T.o' y), m₀.φ ≫ T.ψ.left = ψ₁.left ≫ m₁.φ := by
   intro p _ D R _ _ b N hN hNp hp r w j c hw hu hj hc hm M

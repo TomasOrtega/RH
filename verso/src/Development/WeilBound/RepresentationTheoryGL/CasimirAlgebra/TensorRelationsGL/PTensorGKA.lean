@@ -15,21 +15,21 @@ def mAt (p : P) (A : Matrix (Fin n) (Fin n) ℂ) : Module.End ℂ (TV n M P) :=
   LinearMap.pi fun I => ∑ j, A (I p) j • LinearMap.proj (Function.update I p j)
 
 /- English proof (translation)
-Simplify using `only [Aop, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Aop_apply (K : P → Matrix (Fin n) (Fin n) ℂ) (f : TV n M P) (I : P → Fin n) :
     Aop K f I = ∑ J, (∏ q, K q (I q) (J q)) • f J := by
   simp only [Aop, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply]
 
 /- English proof (translation)
-Simplify using `only [mAt, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mAt_apply (p : P) (A : Matrix (Fin n) (Fin n) ℂ) (f : TV n M P) (I : P → Fin n) :
     mAt p A f I = ∑ j, A (I p) j • f (Function.update I p j) := by
   simp only [mAt, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Rewrite using `[actT_apply, Module.End.mul_apply, lift_apply, Aop_apply, map_sum]`. Simplify using `only [map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actT_eq {ι Γ : Type} (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (ρ : Γ → Module.End ℂ M)
     (γ : Γ) : actT lab κ ρ γ = lift (ρ γ) * Aop (fun q => κ (lab q) γ) := by
@@ -38,14 +38,14 @@ theorem actT_eq {ι Γ : Type} (lab : P → ι) (κ : ι → Γ → Matrix (Fin 
   simp only [map_smul]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, lift_apply, Aop_apply, map_sum, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_comm_Aop (B : Module.End ℂ M) (K : P → Matrix (Fin n) (Fin n) ℂ) : Commute (lift B) (Aop K) := by
   refine LinearMap.ext fun f => funext fun I => ?_
   simp only [Module.End.mul_apply, lift_apply, Aop_apply, map_sum, map_smul]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, lift_apply, mAt_apply, map_sum, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_comm_mAt (B : Module.End ℂ M) (p : P) (A : Matrix (Fin n) (Fin n) ℂ) :
     Commute (lift B) (mAt p A : Module.End ℂ (TV n M P)) := by
@@ -53,7 +53,7 @@ theorem lift_comm_mAt (B : Module.End ℂ M) (p : P) (A : Matrix (Fin n) (Fin n)
   simp only [Module.End.mul_apply, lift_apply, mAt_apply, map_sum, map_smul]
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Take `⟨q, hq⟩` from `Function.ne_iff.mp h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ q) (Matrix.one_apply_ne hq)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prod_one_apply (I J : P → Fin n) :
     ∏ q, (1 : Matrix (Fin n) (Fin n) ℂ) (I q) (J q) = if I = J then 1 else 0 := by
@@ -63,7 +63,7 @@ theorem prod_one_apply (I J : P → Fin n) :
     exact Finset.prod_eq_zero (Finset.mem_univ q) (Matrix.one_apply_ne hq)
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Simplify using `only [Aop_apply, prod_one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Module.End.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Aop_one : (Aop (fun _ : P => (1 : Matrix (Fin n) (Fin n) ℂ)) : Module.End ℂ (TV n M P)) = 1 := by
   refine LinearMap.ext fun f => funext fun I => ?_
@@ -71,9 +71,9 @@ theorem Aop_one : (Aop (fun _ : P => (1 : Matrix (Fin n) (Fin n) ℂ)) : Module.
     if_true, Module.End.one_apply]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Aop_apply, Aop_apply]`. Repeatedly rewrite using `[Aop_apply, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun J' _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Repeatedly rewrite using `[Matrix.mul_apply]`. Rewrite using `[Fintype.prod_sum]`. Simplify using `only [Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Aop_mul (K L : P → Matrix (Fin n) (Fin n) ℂ) :
     (Aop (fun q => K q * L q) : Module.End ℂ (TV n M P)) = Aop K * Aop L := by
@@ -89,9 +89,9 @@ theorem Aop_mul (K L : P → Matrix (Fin n) (Fin n) ℂ) :
   simp only [Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Rewrite using `[eAt_apply, mAt_apply]`. Simplify using `only [Matrix.single_apply]`. Break down `eq_or_ne (I p) a with h | h` into its components or cases. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eAt_eq (p : P) (a b : Fin n) :
     (eAt p a b : Module.End ℂ (TV n M P)) = mAt p (Matrix.single a b 1) := by
@@ -113,19 +113,19 @@ def mAtL (p : P) : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (TV n M
       Finset.smul_sum, RingHom.id_apply]
 
 /- English proof (translation)
-The claim follows from `(Finset.mul_prod_erase _ g (Finset.mem_univ p)).symm`.
+A detailed English derivation is pending.
 -/
 theorem prod_split (p : P) (g : P → ℂ) : ∏ q, g q = g p * ∏ q ∈ Finset.univ.erase p, g q :=
   (Finset.mul_prod_erase _ g (Finset.mem_univ p)).symm
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, mAt_apply, Aop_apply]`. Repeatedly rewrite using `[Aop_apply, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[prod_split p (fun q => Function.update K p (A * K p) q (I q) (J q))]`. Simplify using `only [Function.update_self, Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[prod_split p (fun q => K q (Function.update I p j q) (J q))]`. Simplify using `only [Function.update_self]`. Rewrite using `[mul_assoc]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun q hq => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hq), Function.update_of_ne (Finset.ne_of_mem_erase hq)]`.
+A detailed English derivation is pending.
 -/
 theorem mAt_mul_Aop (p : P) (A : Matrix (Fin n) (Fin n) ℂ) (K : P → Matrix (Fin n) (Fin n) ℂ) :
     (mAt p A * Aop K : Module.End ℂ (TV n M P)) = Aop (Function.update K p (A * K p)) := by
@@ -147,17 +147,17 @@ theorem mAt_mul_Aop (p : P) (A : Matrix (Fin n) (Fin n) ℂ) (K : P → Matrix (
     rw [Function.update_of_ne (Finset.ne_of_mem_erase hq), Function.update_of_ne (Finset.ne_of_mem_erase hq)]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Aop_apply, Aop_apply]`. Repeatedly rewrite using `[mAt_apply, Finset.smul_sum, smul_smul]`. Set `φ : (P → Fin n) × Fin n → (P → Fin n) × Fin n` to `fun x => (Function.update x.1 p x.2, x.1 p)`. Establish `hφ : Function.Involutive φ` using `fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [φ, Function.update_idem, Function.update_self, Function.update_eq_self]`. Set `H : (P → Fin n) × Fin n → M` to `fun x => ((∏ q, K q (I q) (Function.update x.1 p x.2 q)) * A x.2 (x.1 p)) • f x.1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Fintype.sum_prod_type']`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [H, φ, Function.update_idem, Function.update_self, Function.update_eq_self]`. Use `_ = ∑ x : (P → Fin n) × Fin n, H x := Equiv.sum_comp (hφ.toPerm φ) H`. Use `_ = _ := by`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [H]`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[prod_split p (fun q => Function.update K p (K p * A) q (I q) (J q))]`. Simplify using `only [Function.update_self, Matrix.mul_apply, Finset.sum_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[prod_split p (fun q => K q (I q) (Function.update J p i q))]`. Simplify using `only [Function.update_self]`. Establish `hr : ∏ q ∈ Finset.univ.erase p, K q (I q) (Function.update J p i q) = ∏ q ∈ Finset.univ.erase p, Function.update K p (K p * A) q (I q) (J q)` using `Finset.prod_congr rfl fun q hq => by`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hq), Function.update_of_ne (Finset.ne_of_mem_erase hq)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem Aop_mul_mAt (p : P) (A : Matrix (Fin n) (Fin n) ℂ) (K : P → Matrix (Fin n) (Fin n) ℂ) :
     (Aop K * mAt p A : Module.End ℂ (TV n M P)) = Aop (Function.update K p (K p * A)) := by
@@ -194,9 +194,9 @@ theorem Aop_mul_mAt (p : P) (A : Matrix (Fin n) (Fin n) ℂ) (K : P → Matrix (
         ring
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, pm_apply, Aop_apply]`. Use `Fintype.sum_equiv (Equiv.arrowCongr σ (Equiv.refl (Fin n)) : (P → Fin n) ≃ (P → Fin n)) _ _ fun J => ?_` and prove the remaining obligations. Simplify using `only [Equiv.arrowCongr_apply, Equiv.coe_refl, Function.comp_def, id, Equiv.symm_apply_apply]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [← Equiv.prod_comp σ]`. Simplify using `[hK]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pm_Aop (σ : Equiv.Perm P) (K : P → Matrix (Fin n) (Fin n) ℂ) (hK : ∀ q, K (σ q) = K q) :
     (pm σ * Aop K : Module.End ℂ (TV n M P)) = Aop K * pm σ := by
@@ -209,7 +209,7 @@ theorem pm_Aop (σ : Equiv.Perm P) (K : P → Matrix (Fin n) (Fin n) ℂ) (hK : 
   simp [hK]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, eAt_apply, Function.update_of_ne h, Function.update_of_ne h.symm, Function.update_comm h b d I]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eAt_comm (p q : P) (h : p ≠ q) (a b c d : Fin n) :
     Commute (eAt p a b : Module.End ℂ (TV n M P)) (eAt q c d) := by
@@ -219,9 +219,9 @@ theorem eAt_comm (p q : P) (h : p ≠ q) (a b c d : Fin n) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Unfold `tE`. Use `Commute.add_left (Commute.add_right ?_ ?_) (Commute.add_right ?_ ?_)` and prove the remaining obligations. Conclude with `(hcomm τ τ' h a b c d).map (liftA n M P)`. Conclude with `Commute.sum_right _ _ _ fun p _ => lift_comm_eAt _ _ _ _`. Conclude with `Commute.sum_left _ _ _ fun p _ => (lift_comm_eAt _ _ _ _).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `Commute.sum_left _ _ _ fun p hp => Commute.sum_right _ _ _ fun q hq => eAt_comm p q ?_ _ _ _ _` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `only [fib, Finset.mem_filter] at hp hq`. Conclude with `h (hp.2.symm.trans hq.2)`.
+A detailed English derivation is pending.
 -/
 theorem tE_comm {ι : Type} [DecidableEq ι] (E : ι → Fin n → Fin n → Module.End ℂ M)
     (hcomm : ∀ τ τ', τ ≠ τ' → ∀ a b c d, Commute (E τ a b) (E τ' c d)) (lab : P → ι) (τ τ' : ι) (h : τ ≠ τ')
@@ -237,7 +237,7 @@ theorem tE_comm {ι : Type} [DecidableEq ι] (E : ι → Fin n → Fin n → Mod
     exact h (hp.2.symm.trans hq.2)
 
 /- English proof (translation)
-Rewrite using `[actT_eq]`. Simplify using `only [hκ, hρ, Aop_one, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem actT_one {ι Γ : Type} [Group Γ] (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ)
     (ρ : Γ → Module.End ℂ M) (hκ : ∀ τ, κ τ 1 = 1) (hρ : ρ 1 = 1) : actT lab κ ρ 1 = 1 := by
@@ -246,7 +246,7 @@ theorem actT_one {ι Γ : Type} [Group Γ] (lab : P → ι) (κ : ι → Γ → 
   rfl
 
 /- English proof (translation)
-Simplify using `only [actT_eq, hκ, hρ, Aop_mul, lift_mul, mul_assoc]`. Use `congr 1`. Rewrite using `[← mul_assoc, (lift_comm_Aop _ _).eq, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem actT_mul {ι Γ : Type} [Group Γ] (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ)
     (ρ : Γ → Module.End ℂ M) (hκ : ∀ τ γ δ, κ τ (γ * δ) = κ τ γ * κ τ δ) (hρ : ∀ γ δ, ρ (γ * δ) = ρ γ * ρ δ)
@@ -256,7 +256,7 @@ theorem actT_mul {ι Γ : Type} [Group Γ] (lab : P → ι) (κ : ι → Γ → 
   rw [← mul_assoc, (lift_comm_Aop _ _).eq, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.sum_apply, Matrix.single_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_single (U : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     ∑ c, ∑ d, (U c a * star (U d b)) • Matrix.single c d (1 : ℂ) = U * Matrix.single a b 1 * Uᴴ := by
@@ -265,11 +265,11 @@ theorem conj_single (U : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]
 
 /- English proof (translation)
-Simplify using `only [tE, smul_add, Finset.sum_add_distrib, Finset.smul_sum, eAt_eq]`. Use `congr 1`. Use `LinearMap.ext fun f => funext fun I => ?_` and prove the remaining obligations. Simplify using `[LinearMap.sum_apply, Finset.sum_apply]`. Establish `: ∀ p, (mAt p (∑ c, ∑ d, k c d • Matrix.single c d (1 : ℂ)) : Module.End ℂ (TV n M P)) = ∑ c, ∑ d, k c d • mAt p (Matrix.single c d 1)` using `fun p => by`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[show (mAt p : _ → Module.End ℂ (TV n M P)) = mAtL p from rfl]`. Simplify using `only [map_sum, map_smul]`. Simplify using `only [this]`. Use `conv_lhs => arg 2`. Use extensionality with `c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tE_sum (S : Finset P) (E : Fin n → Fin n → Module.End ℂ M) (k : Fin n → Fin n → ℂ) :
     ∑ c, ∑ d, k c d • tE S E c d =
@@ -287,11 +287,11 @@ theorem tE_sum (S : Finset P) (E : Fin n → Fin n → Module.End ℂ M) (k : Fi
     rw [Finset.sum_comm]
 
 /- English proof (translation)
-Rewrite using `[actT_eq, tE_sum]`. Unfold `tE`. Simplify using `only [eAt_eq]`. Rewrite using `[mul_add, add_mul, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_assoc, ← (lift_comm_Aop _ _).eq, ← mul_assoc, ← lift_mul, had, lift_mul, mul_assoc]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Simplify using `only [fib, Finset.mem_filter] at hp`. Rewrite using `[mul_assoc, Aop_mul_mAt, ← mul_assoc (mAt _ _), ← (lift_comm_mAt _ _ _).eq, mul_assoc, mAt_mul_Aop]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hp.2]`. Rewrite using `[conj_single (κ τ γ) a b, mul_assoc, mul_eq_one_comm.mp (hu τ γ), mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actT_ad {ι Γ : Type} [DecidableEq ι] (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ)
     (E : ι → Fin n → Fin n → Module.End ℂ M) (ρ : Γ → Module.End ℂ M)
@@ -314,7 +314,7 @@ theorem actT_ad {ι Γ : Type} [DecidableEq ι] (lab : P → ι) (κ : ι → Γ
     rw [conj_single (κ τ γ) a b, mul_assoc, mul_eq_one_comm.mp (hu τ γ), mul_one]
 
 /- English proof (translation)
-Rewrite using `[actT_eq]`. Use `Commute.mul_right (lift_comm_pm _ _).symm ?_` and prove the remaining obligations. Conclude with `pm_Aop σ _ fun q => by simp only [hσ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pm_actT {ι Γ : Type} (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (ρ : Γ → Module.End ℂ M)
     (σ : Equiv.Perm P) (hσ : ∀ p, lab (σ p) = lab p) (γ : Γ) : Commute (pm σ) (actT lab κ ρ γ) := by

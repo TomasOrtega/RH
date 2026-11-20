@@ -6,17 +6,15 @@ open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl
 namespace GlobalTheory.CompanionTheory.Affgl
 
 /- English proof (translation)
-Establish `hmemA : ∀ p : Polynomial ℂ, Polynomial.aeval z p ∈ A`. Introduce `p`. Establish `e : Polynomial.aeval z p = ((Polynomial.aeval (⟨z, hz⟩ : A) p : A) : R)`. Simplify using `using (Polynomial.aeval_algHom_apply A.val (⟨z, hz⟩ : A) p)`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.property _`. Set `f : Polynomial ℂ →ₗ[ℂ] R ⧸ I` to `I.mkQ ∘ₗ (Polynomial.aeval z).toLinearMap`. Establish `hf : ∀ p, f p ∈ V.map I.mkQ`. Introduce `p`. Take `⟨v, hv, i, hi, e⟩` from `Submodule.mem_sup.1 (h _ (hmemA p))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `I.mkQ v = I.mkQ (Polynomial.aeval z p)`. Establish `hi0 : I.mkQ i = 0` using `by simpa using hi`. Rewrite using `[← e, map_add, hi0, add_zero]`. Set `g : Polynomial ℂ →ₗ[ℂ] V.map I.mkQ` to `f.codRestrict _ hf`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hnot : ¬ Function.Injective g` using `fun hinj => Polynomial.not_finite (R := ℂ) (Module.Finite.of_injective g hinj)`. Choose the witnesses or unpack the hypotheses as in `⟨p, hgp, hp⟩ : ∃ p, g p = 0 ∧ p ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hnot ((injective_iff_map_eq_zero g).2 fun p hp => hcon p hp)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hI : Polynomial.aeval z p ∈ I`. Establish `: f p = 0` using `congrArg Subtype.val hgp`. Simplify `this` using `[f]`. Use `⟨p * Polynomial.C p.leadingCoeff⁻¹, Polynomial.monic_mul_leadingCoeff_inv hp, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Polynomial.aeval_C, ← Algebra.commutes, ← Algebra.smul_def]`.
-
-Conclude with `I.smul_mem _ hI`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monic_aeval_mem_of_le_sup {R : Type*} [Ring R] [Algebra ℂ R] (A : Subalgebra ℂ R)
     (V I : Submodule ℂ R) [FiniteDimensional ℂ V] (h : ∀ z ∈ A, z ∈ V ⊔ I) (z : R) (hz : z ∈ A) :
@@ -50,11 +48,11 @@ theorem exists_monic_aeval_mem_of_le_sup {R : Type*} [Ring R] [Algebra ℂ R] (A
   exact I.smul_mem _ hI
 
 /- English proof (translation)
-Take `⟨-, V, hV, hcov⟩` from `hJ`. Take `⟨p, hp, hI⟩` from `exists_monic_aeval_mem_of_le_sup (Zalg E a) V _ hcov z hz`. Use `⟨p, hp, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ y ∈ Submodule.span ℂ {y | ∃ x ∈ Zalg E a, ∃ j ∈ J, y = x * j}, y φ = 0`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, -, j, hj, rfl⟩` from `hy`. Simplify using `[hφ j hj]`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add u v _ _ hu hv => simp [hu, hv]`. Consider the case `smul c u _ hu => simp [hu]`. Conclude with `key _ hI`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_monic_aeval_apply_eq_zero (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     (a : ℕ) (J : Set (Module.End ℂ (Sm E a))) (hJ : Cofin J) (z : Module.End ℂ (Sm E a))
@@ -76,7 +74,7 @@ theorem exists_monic_aeval_apply_eq_zero (E : Type) [Field E] [NumberField E] [I
   exact key _ hI
 
 /- English proof (translation)
-Introduce `E _ _ _ a J hJ z hz` and use `exists_monic_aeval_apply_eq_zero E a J hJ z hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem minpoly_on_killed : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     ∀ J : Set (Module.End ℂ (Sm E a)), Cofin J → ∀ z ∈ Zalg E a, ∃ p : Polynomial ℂ, p.Monic ∧

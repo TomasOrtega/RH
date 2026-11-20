@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.UnramTorsion GlobalTheory.BXOf GlobalTheory.TauTwist
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Establish `hu' : (x : K) ^ m = algebraMap W K u` using `(congrArg Units.val hu).symm`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.exists_algebraMap_eq_of_isIntegral_pow (R := W) (K := K) (x := (x : K)) hm (hu' ▸ isIntegral_algebraMap)`. Establish `e : y ^ m = u` using `IsFractionRing.injective W K (by rw [map_pow, hy, hu'])`. Establish `hyu : IsUnit y` using `(isUnit_pow_iff hm.ne').1 (e ▸ u.isUnit)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hyu.unit, Units.ext hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_range_units_of_pow {W K : Type} [CommRing W] [IsDomain W] [IsIntegrallyClosed W] [Field K] [Algebra W K]
     [IsFractionRing W K] {m : ℕ} (hm : 0 < m) {x : Kˣ}
@@ -30,31 +30,25 @@ theorem mem_range_units_of_pow {W K : Type} [CommRing W] [IsDomain W] [IsIntegra
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Take `⟨hc, hκ⟩` from `hT`. Use `choose J₀ h₀ using fun x : D.P.A.left => exists_chart D.P.isLB x`. Set `W` to `Localization.AtPrime P.asIdeal`. Establish `: IsFractionRing W (FractionRing R)` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization P.asIdeal.primeCompl _ _`. Establish `: IsIntegrallyClosed W` using `isIntegrallyClosed_of_isLocalization W P.asIdeal.primeCompl P.asIdeal.primeCompl_le_nonZeroDivisors`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `i : W →+* FractionRing R` to `algebraMap W (FractionRing R)`. Set `φ : R →+* W` to `algebraMap R W`. Establish `sq : spMap i ≫ spMap φ = jK R`. Rewrite using `[← spMap_comp]`. Conclude with `congrArg spMap (IsScalarTower.algebraMap_eq R W (FractionRing R)).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.P.isAb.proper` as an intermediate fact. Establish `: D.P.A.left.IsSeparated` using `⟨by rw [← terminal.comp_from D.P.A.hom]; infer_instance⟩`. Take `⟨J, hJ, eJ⟩` from `exists_good_ext D.P.isLB i (IsFractionRing.injective W (FractionRing R)) J₀ h₀`. Set `z : (TK R).left` to `closedPoint (FractionRing R)`. Establish `hJ : Good D.P.L z J` using `hJ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `H : Subgroup (FractionRing R)ˣ` to `(Units.map (algebraMap W (FractionRing R)).toMonoidHom).range`. Take `⟨w, hw⟩ : ∃ w : ((TK R).left.presheaf.stalk z)ˣ →* (FractionRing R)ˣ ⧸ H, ∀ u, w u = 1 ↔ sig (FractionRing R) u ∈ H` from `⟨(QuotientGroup.mk' H).comp (sig (FractionRing R)), fun _ => QuotientGroup.eq_one_iff _⟩`. Establish `tf : ∀ (m : ℕ) u, 0 < m → w u ^ m = 1 → w u = 1` using `fun m u hm e => by`. Rewrite `e` using `[← map_pow, hw]`. Conclude with `(hw u).2 (mem_range_units_of_pow hm ((map_pow (sig (FractionRing R)) u m) ▸ e))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hint : ∀ (Y : Scheme.{0}) (K : Type) [Fintype K] (ψ : K → (Y ⟶ D.P.A.left)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb D.P.L ψ ε)) (r : Sp R ⟶ Y) (q : (TK R).left ⟶ Y), q = jK R ≫ r → w (val t q z J) = 1`. Introduce `Y K _ ψ ε t r q hq`. Take `⟨u, hu⟩` from `val_integral i h₀ eJ t (spMap φ ≫ r)`. Establish `: q = spMap i ≫ spMap φ ≫ r` using `by rw [hq, ← Category.assoc, sq]`. Substitute `this` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hw _).2 ⟨u, Units.ext hu.symm⟩`. Set `p : D.X → (FractionRing R)ˣ ⧸ H` to `fun a => w (val (D.psi a) (𝟙 (TK R).left) z J)`. Establish `hadd : ∀ a b, p (a + b) = p a * p b` using `fun a b => by`. Establish `e₁ : val (D.tau a b) (𝟙 (TK R).left) z J ^ n ^ 2 = val (D.tau (n • a) (n • b)) (𝟙 (TK R).left) z J * val (canK hc a b) (𝟙 (TK R).left) z J` using `val_tau_pow hc hB a b (𝟙 (TK R)) hJ`. Rewrite `e₁` using `[← unitAt_kappa hc a b hJ, hκ, map_one, _root_.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂ : w (val (canK hc a b) (𝟙 (TK R).left) z J) = 1` using `(congrArg w (val_pull hJ _ _ _)).trans (hint _ _ _ _ _ (𝟙 _) _ ((Category.id_comp _).trans (Category.comp_id _).symm))`. Establish `e₃ : w (val D.rigK (𝟙 (TK R).left) z J) = 1` using `(congrArg w (val_pull hJ _ _ _)).trans (hint _ _ _ _ _ (𝟙 _) _ ((Category.id_comp _).trans (Category.comp_id _).symm))`. Establish `e₄` using `tf _ _ (pow_pos hn 2) ((map_pow w _ _).symm.trans ((congrArg w e₁).trans e₂))`. Rewrite `e₄` using `[val_tau D a b _ hJ, map_mul, map_mul, map_mul, map_inv, map_inv, map_inv, e₃, inv_one, _root_.mul_one, mul_inv_eq_one, mul_inv_eq_iff_eq_mul, mul_comm]`. Conclude with `e₄`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heven : p (-y) = p y`. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _))).symm.trans (val_corr hJ (hE y) (𝟙 (TK R).left))`. Establish `r` using `hint _ _ _ _ D.sym (D.c y).left (𝟙 (TK R).left ≫ D.xK y) (Category.id_comp _)`. Conclude with `((congrArg w e).symm.trans ((map_mul _ _ _).trans ((congrArg (_ * ·) r).trans (_root_.mul_one _)))).symm`. Establish `p0 : p 0 = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `py : p y = 1` using `tf 2 _ two_pos (by`. Use `hadd y (-y)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[add_neg_cancel, p0, heven]`. Conclude with `(pow_two _).trans this.symm)`. Establish `hcp : spMap φ (closedPoint W) = P` using `PrimeSpectrum.ext (Localization.AtPrime.comap_maximalIdeal (I := P.asIdeal))`. Establish `hj : J (𝟙 (TK R).left ≫ D.xK y) = J₀ ((D.c y).left P)`. Establish `h : 𝟙 (TK R).left ≫ D.xK y = spMap i ≫ spMap φ ≫ (show Sp R ⟶ D.P.A.left from (D.c y).left)`.
-
-Rewrite using `[← Category.assoc, sq]`. Conclude with `Category.id_comp _`. Conclude with `(congrArg J h).trans ((eJ _).trans (congrArg (fun q => J₀ ((D.c y).left q)) hcp))`. Take `⟨u, hu⟩` from `(hw _).1 py`. Rewrite `hu` using `[val_of (D.psi y) _ z J (fun _ => J₀ ((D.c y).left P)) fun _ => hj]`.
-
-Establish `e : (psiLoc D y (J₀ ((D.c y).left P)) : FractionRing R) = algebraMap W (FractionRing R) u` using `(congrArg Units.val hu).symm`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj P.asIdeal.primeCompl (u : W)`. Use `psiUnitOn_near y P _ (h₀ _) r s ?_ s.2 ?_` and prove the remaining obligations. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff W P.asIdeal r).1 (hrs ▸ u.isUnit.mul (IsLocalization.map_units _ s))`. Rewrite using `[e, IsScalarTower.algebraMap_apply R W (FractionRing R), IsScalarTower.algebraMap_apply R W (FractionRing R) r, ← map_mul]`.
-
-Conclude with `congrArg _ hrs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiUnitOn_near_of_tauCan [IsIntegrallyClosed R] (D : DegPre R) {n : ℕ} (hn : 0 < n) (hE : D.PsiEven)
     (hB : D.TauBimult) (hT : TauCan D n) (y : D.X) (P : PrimeSpectrum R) :
@@ -134,7 +128,7 @@ theorem psiUnitOn_near_of_tauCan [IsIntegrallyClosed R] (D : DegPre R) {n : ℕ}
     exact congrArg _ hrs
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ D₀ _ hn hE hB hT y` and use `GlobalTheory.PsiAbelian.psiUnitOn_of_height_one D₀ y _ fun P _ _ => psiUnitOn_near_of_tauCan D₀ hn hE hB hT y P`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem psiUnitOn_of_tauCan : Known → ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
     (D₀ : Out.DegPre R) (n : ℕ), 0 < n → D₀.PsiEven → D₀.TauBimult → TauCan D₀ n → ∀ y, PsiUnitOn D₀ y Set.univ :=

@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 open TensorProduct CrystallineSemistableComparison CrystallineSemistableComparison.Tw
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.TwCok.lim_cokernel_bounded` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FBoundedCokernelLimitToLevel.lean&line=85#L85)
 -/

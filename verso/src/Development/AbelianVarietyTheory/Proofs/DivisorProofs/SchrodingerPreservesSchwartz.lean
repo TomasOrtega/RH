@@ -9,7 +9,7 @@ open scoped GlobalTheory.VacAny
 namespace GlobalTheory.WeylFour.SchrKeep
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ w Φ hΦ`. Conclude with `GlobalTheory.ConeMeasV.schr_mem_schA hψ w hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schr_mem_schA : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (w : (κ → AF F) × (κ → AF F)), ∀ Φ ∈ schA F κ, schr ψ w Φ ∈ schA F κ := by

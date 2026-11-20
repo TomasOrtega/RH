@@ -7,11 +7,11 @@ open IsLocalRing
 namespace GlobalTheory.FiniteLocalCompleteness
 
 /- English proof (translation)
-Rewrite using `[← AdicCompletion.of_surjective_iff]`. Introduce `y`. Take `⟨t, rfl⟩` from `AdicCompletion.ofTensorProduct_surjective_of_finite I M y`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r x`. Take `⟨a, rfl⟩` from `AdicCompletion.of_surjective I R r`. Use `⟨a • x, ?_⟩` and prove the remaining obligations. Rewrite using `[AdicCompletion.ofTensorProduct_tmul, map_smul]`. Establish `: AdicCompletion.of I R a = algebraMap R (AdicCompletion I R) a` using `rfl`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, algebraMap_smul]`. Consider the case `add s t hs ht`. Take `⟨a, ha⟩` from `hs`. Take `⟨b, hb⟩` from `ht`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem precomplete_of_finite {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (M : Type) [AddCommGroup M]
     [Module R M] [Module.Finite R M] : IsPrecomplete I M := by
@@ -32,9 +32,9 @@ theorem precomplete_of_finite {R : Type} [CommRing R] (I : Ideal R) [IsPrecomple
     exact ⟨a + b, by rw [map_add, map_add, ha, hb]⟩
 
 /- English proof (translation)
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ n, (J ^ ((k + 1) * n) • ⊤ : Submodule S S) ≤ I ^ n • ⊤` using `fun n => by`. Use `Submodule.smul_mono_left ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_right_mono hk n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `hI.prec (f := fun n => f ((k + 1) * n)) (fun {m n} h => (hf (Nat.mul_le_mul_left _ h)).mono (h1 m))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Use `(hf (show n ≤ (k + 1) * n by nlinarith)).trans ((hL n).mono ?_)` and prove the remaining obligations. Conclude with `Submodule.smul_mono_left (Ideal.pow_right_mono hIJ n)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem precomplete_of_pow_le {S : Type} [CommRing S] (I J : Ideal S) [hI : IsPrecomplete I S] (hIJ : I ≤ J) (k : ℕ)
     (hk : J ^ (k + 1) ≤ I) : IsPrecomplete J S := by
@@ -50,27 +50,25 @@ theorem precomplete_of_pow_le {S : Type} [CommRing S] (I J : Ideal S) [hI : IsPr
   exact Submodule.smul_mono_left (Ideal.pow_right_mono hIJ n)
 
 /- English proof (translation)
-Establish `hjac` using `IsAdicComplete.le_jacobson_bot I`. Establish `hu : ∀ z ∈ I, IsUnit (1 - z)` using `fun z hz => by`. Use `Ideal.mem_jacobson_bot.1 (hjac (I.neg_mem hz)) 1` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg, add_comm]`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, y', hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd (Ideal.Quotient.mk I x) (1 : S ⧸ I)`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y'`. Simplify using `only [smul_eq_mul, mul_one] at hy`. Use `set X := Ideal.Quotient.mk I x with hX`. Use `set Y := Ideal.Quotient.mk I y with hY`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Establish `hk : ∀ k : ℕ, X ^ n * (X * Y) ^ k = X ^ n` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `he : ((X * Y) ^ n) ^ 2 = (X * Y) ^ n`. Combine the equalities or inequalities in the displayed calculation. Establish `hE : Ideal.Quotient.mk I ((x * y) ^ n) = (X * Y) ^ n` using `by simp [hX, hY]`. Take `⟨a, ha, hae⟩` from `HenselianRing.is_henselian (I := I) (Polynomial.X ^ 2 - Polynomial.X : Polynomial S) (by monicity!) ((x * y) ^ n) (by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, map_sub]`. Rewrite using `[map_pow, hE, he, sub_self])`. Use the proof step `(by`. Establish `: Ideal.Quotient.mk I (Polynomial.eval ((x * y) ^ n) (Polynomial.derivative (Polynomial.X ^ 2 - Polynomial.X : Polynomial S))) = 2 * (X * Y) ^ n - 1`. Rewrite using `[← hE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[one_add_one_eq_two, map_ofNat]`. Rewrite using `[this]`. Conclude with `IsUnit.of_mul_eq_one (2 * (X * Y) ^ n - 1) (by linear_combination 4 * he))`. Establish `ha' : a * (a - 1) = 0`. Establish `: a ^ 2 - a = 0` using `by simpa using ha`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Take the linear combination `this`. Break down `mul_eq_zero.1 ha' with h0 | h0` into its components or cases. Use `right`. Substitute `h0` using the available equality. Establish `h2 : (X * Y) ^ n = 0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hE, Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using hae`. Establish `h3 : x ^ n ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_pow, ← hX, ← hk n, h2, mul_zero]`. Conclude with `isUnit_of_dvd_unit (one_sub_dvd_one_sub_pow x n) (hu _ h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `rfl : a = 1` from `sub_eq_zero.1 h0`. Establish `h2` using `hu _ hae`. Rewrite `h2` using `[sub_sub_cancel]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `h3` using `hk 1 left`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : 1 - x * y ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [pow_zero, pow_one, one_mul] at h3`. Rewrite using `[map_sub, map_one, map_mul, ← hX, ← hY, h3, sub_self]`. Establish `h5` using `hu _ h4`.
-
-Rewrite `h5` using `[sub_sub_cancel]`. Conclude with `isUnit_of_mul_isUnit_left h5`. Use `left`. Conclude with `isUnit_of_mul_isUnit_left ((isUnit_pow_iff hn.ne').1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_of_complete {S : Type} [CommRing S] [IsDomain S] (I : Ideal S) [IsAdicComplete I S]
     [IsArtinianRing (S ⧸ I)] : IsLocalRing S := by
@@ -136,17 +134,13 @@ theorem isLocalRing_of_complete {S : Type} [CommRing S] [IsDomain S] (I : Ideal 
       exact isUnit_of_mul_isUnit_left ((isUnit_pow_iff hn.ne').1 h2)
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing S := IsNoetherianRing.of_finite R S`. Use `haveI : IsPrecomplete (maximalIdeal R) S := precomplete_of_finite _ S`. Use `haveI : IsAdicComplete (maximalIdeal R) S := ⟨⟩`. Use `set I := (maximalIdeal R).map (algebraMap R S) with hI`. Use `haveI : IsAdicComplete I S := (IsAdicComplete.map_algebraMap_iff _ _).2 inferInstance`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : IsArtinianRing (S ⧸ I) := by`. Use `letI : Field (R ⧸ maximalIdeal R) := Ideal.Quotient.field _`. Use `haveI : Module.Finite (R ⧸ maximalIdeal R) (S ⧸ I) := Module.Finite.of_restrictScalars_finite R _ _`. Conclude with `IsArtinianRing.of_finite (R ⧸ maximalIdeal R) _`. Use `haveI hl : IsLocalRing S := isLocalRing_of_complete I`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hl, ?_⟩` and prove the remaining obligations. Establish `hne : I ≠ ⊤`. Introduce `h`. Use `IsAdicComplete.le_jacobson_bot I` as an intermediate fact. Rewrite `this` using `[h, IsLocalRing.jacobson_eq_maximalIdeal _ bot_ne_top]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(maximalIdeal.isMaximal S).ne_top (top_le_iff.1 this)`. Establish `hrad : maximalIdeal S ≤ I.radical`. Introduce `x hx`. Take `⟨n, y', hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd (Ideal.Quotient.mk I x) (1 : S ⧸ I)`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y'`.
-
-Simplify using `only [smul_eq_mul, mul_one, Nat.succ_eq_add_one] at hy`. Establish `hu : IsUnit (1 - x * y)` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ (Ideal.mul_mem_right y (maximalIdeal S) hx)`. Use `⟨n, (Ideal.mul_unit_mem_iff_mem I hu).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [map_mul, map_pow, map_sub, map_one]`.
-
-Take the linear combination `-hy`. Take `⟨k, hk⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Use `haveI : IsPrecomplete (maximalIdeal S) S := precomplete_of_pow_le I _ (le_maximalIdeal hne) k ((Ideal.pow_le_pow_right (Nat.le_succ k)).trans hk)`. Conclude with `⟨⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem local_complete_of_finite (R S : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] [CommRing S] [IsDomain S] [Algebra R S] [Module.Finite R S] :
@@ -184,13 +178,9 @@ theorem local_complete_of_finite (R S : Type) [CommRing R] [IsLocalRing R] [IsNo
   exact ⟨⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hR`. Use `letI : Algebra (FractionRing R) (FractionRing D) := FractionRing.liftAlgebra R (FractionRing D)`. Use `haveI : IsScalarTower R (FractionRing R) (FractionRing D) := FractionRing.isScalarTower_liftAlgebra R _`. Use `haveI : FiniteDimensional (FractionRing R) (FractionRing D) := Module.Finite.of_isLocalization R D (nonZeroDivisors R) (Rₚ := FractionRing R) (Sₚ := FractionRing D)`. Use `haveI : CharZero (FractionRing R) := IsFractionRing.charZero_of_isFractionRing R`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsIntegral (FractionRing R) (FractionRing D) := Algebra.IsIntegral.of_finite _ _`. Use `haveI : Algebra.IsSeparable (FractionRing R) (FractionRing D) := Algebra.IsSeparable.of_integral _ _`. Set `S` to `integralClosure R (FractionRing D)`. Use `haveI : Module.Finite R S := IsIntegralClosure.finite R (FractionRing R) (FractionRing D) S`. Use `haveI : IsIntegrallyClosed S := integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing R)`.
-
-Establish `hL : Function.Injective (algebraMap R (FractionRing D))` using `FaithfulSMul.algebraMap_injective R _`. Establish `hS : Function.Injective (algebraMap R S)` using `fun a b h => hL (congrArg Subtype.val h)`. Use `haveI : FaithfulSMul R S := (faithfulSMul_iff_algebraMap_injective _ _).2 hS`. Take `⟨hl, hc⟩` from `local_complete_of_finite R S`. Set `ψ : D →ₐ[R] FractionRing D` to `IsScalarTower.toAlgHom R D _`.
-
-Set `σ : D →ₐ[R] S` to `ψ.codRestrict S fun c => (Algebra.IsIntegral.isIntegral c).map ψ`. Use `haveI : Algebra.IsIntegral R S := Algebra.IsIntegral.of_finite _ _`. Use `⟨S, inferInstance, inferInstance, hl, algebraMap R S, σ.toRingHom, ⟨IsNoetherianRing.of_finite R S, inferInstance, hc, charZero_of_injective_algebraMap hS⟩, hS, RingHom.finite_algebraMap.2 inferInstance, Algebra.IsIntegral.isLocalHom R S, σ.comp_algebraMap⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_normal (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : Type) [CommRing D] [IsDomain D]
     [Algebra R D] [Module.Finite R D] [FaithfulSMul R D] (hR : GlobalTheory.TorRef.IsCN R) :
@@ -219,11 +209,11 @@ theorem exists_normal (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : 
     RingHom.finite_algebraMap.2 inferInstance, Algebra.IsIntegral.isLocalHom R S, σ.comp_algebraMap⟩
 
 /- English proof (translation)
-Use `letI : Algebra R C := φ.toAlgebra`. Use `haveI : Module.Finite R C := hfin`. Take `⟨P, -, hP, hPc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (R := R) (S := C) (⊥ : Ideal R) ⊥ (by rw [← RingHom.ker_eq_comap_bot]; exact ((RingHom.injective_iff_ker_eq_bot _).1 hφ).le)`. Establish `hD : Function.Injective (algebraMap R (C ⧸ P))`. Rewrite using `[injective_iff_map_eq_zero]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Establish `: a ∈ P.comap (algebraMap R C)`. Rewrite using `[Ideal.mem_comap, ← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `ha`. Rewrite `this` using `[hPc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : FaithfulSMul R (C ⧸ P) := (faithfulSMul_iff_algebraMap_injective _ _).2 hD`. Take `⟨R', i1, i2, i3, ρ, σ, h1, h2, h3, h4, h5⟩` from `exists_normal R (C ⧸ P) hR`. Conclude with `⟨R', i1, i2, i3, ρ, σ.comp (Ideal.Quotient.mk P), h1, h2, h3, h4, h5⟩`.
+A detailed English derivation is pending.
 -/
 theorem main (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (C : Type) [CommRing C] (φ : R →+* C)
     (hR : GlobalTheory.TorRef.IsCN R) (hφ : Function.Injective φ) (hfin : φ.Finite) :

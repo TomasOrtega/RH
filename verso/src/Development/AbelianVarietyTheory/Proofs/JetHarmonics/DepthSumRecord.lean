@@ -33,18 +33,18 @@ noncomputable def primeBound (N Q q d : ℕ) (g : Fin 2 → ℕ) (a b : ℝ) (p 
     ∑ i : Fin 2, if p = g i then (N : ℝ) / ((g i : ℝ) - 1) else 0
 
 /- English proof (translation)
-Establish `: (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Conclude with `div_nonneg (by positivity) (by linarith)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem div_pred_nonneg (N : ℕ) {p : ℕ} (hp : p.Prime) : 0 ≤ (N : ℝ) / ((p : ℝ) - 1) := by
   have : (1 : ℝ) < p := by exact_mod_cast hp.one_lt
   exact div_nonneg (by positivity) (by linarith)
 
 /- English proof (translation)
-Establish `hQ : ∑ p ∈ S, (padicValNat p Q : ℝ) * a * Real.log p = a * Real.log Q`. Rewrite using `[Real.log_nat_eq_sum_factorization, Finsupp.sum, Nat.support_factorization, Finset.mul_sum]`. Use `symm`. Use `Finset.sum_subset_zero_on_sdiff h2 (fun p hp => ?_) fun p hp => ?_` and prove the remaining obligations. Take `⟨h3, h4⟩` from `Finset.mem_sdiff.1 hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Nat.factorization_def _ (hS p h3), Finsupp.notMem_support_iff.1 (Nat.support_factorization Q ▸ h4)]`. Simplify using the standard rewrite rules. Rewrite using `[Nat.factorization_def _ (Nat.prime_of_mem_primeFactors hp)]`. Expand and normalize the polynomial expressions, which then agree. Unfold `primeBound`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Simplify using `only [add_mul, Finset.sum_add_distrib, ite_mul, zero_mul, Finset.sum_mul]`. Rewrite using `[hQ, Finset.sum_ite_mem, Finset.inter_eq_right.2 hA, Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq', hq, hd, hg, if_true, Finset.mul_sum]`. Use `congr 2`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -69,47 +69,41 @@ theorem sum_primeBound (N Q q d : ℕ) (g : Fin 2 → ℕ) (a b : ℝ) (S : Fins
   ring
 
 /- English proof (translation)
-Establish `hq : D.host.q.Prime` using `D.host.hyp.1`. Establish `hd : D.host.d.Prime` using `D.host.hyp.2.1`. Establish `hg` using `D.host.g_prime`. Establish `hn1 : 1 ≤ w.n`. Establish `hf : 1 ≤ D.R.f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Ranks.f Ranks.n`. Use `And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hr : 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `: 1 ≤ 2 * D.R.f * D.R.r` using `Nat.mul_pos (by omega) hr`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hpos : ∀ la, 0 ≤ nusOf B w nu la`. Introduce `la`. Unfold `nusOf`. Use `split_ifs with ha hb hc`. Rewrite using `[mul_div_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (by positivity) (div_pred_nonneg _ (hg _))`. Apply the tactic sequence `all_goals exact mul_nonneg (by positivity) (add_nonneg (h0 la) (by positivity))`. Use `set N := WeightAlgebra.DF w with hN`. Use `set A := (Finset.range (N + 1)).filter Nat.Prime with hA`. Use `set S : Finset ℕ := A ∪ (D.host.small ∪ {D.host.q, D.host.d, D.host.g 0, D.host.g 1}) with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgS : ∀ i, D.host.g i ∈ S`. Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp [hS]`. Establish `e1 : ∀ p, 0 ≤ (if p ∈ A then (N : ℝ) / ((p : ℝ) - 1) else 0)`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `split_ifs with hp`. Conclude with `div_pred_nonneg _ (Finset.mem_filter.1 hp).2`. Conclude with `le_rfl`. Establish `e2 : ∀ (p x c : ℕ), (0 : ℝ) ≤ (if p = x then (c : ℝ) else 0)`. Introduce `p x c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> positivity`. Establish `e3 : ∀ p i, 0 ≤ (if p = D.host.g i then (N : ℝ) / ((D.host.g i : ℝ) - 1) else 0)`. Introduce `p i`. Use `split_ifs with hp`. Conclude with `div_pred_nonneg _ (hg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_rfl`. Establish `e4 : ∀ la : HeightOneSpectrum (𝓞 B.KO), nu la ≤ (if resCharOf la ∈ A then (N : ℝ) / ((resCharOf la : ℝ) - 1) else 0)`. Introduce `la`. Use `split_ifs with hp`. Conclude with `h1 la`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(h2 la ?_).le` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hp (Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), Crude.resCharOf_prime la⟩)`. Establish `hsm : D.host.small ⊆ S` using `Finset.subset_union_left.trans Finset.subset_union_right`. Establish `hSp : ∀ p ∈ S, p.Prime`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp`. Simplify using `only [hS, Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] at hp`. Break down `hp with hp | hp | rfl | rfl | rfl | rfl` into its components or cases. Use `exacts [(Finset.mem_filter.1 hp).2, (D.host.mem_small_iff.1 hp).1, hq, hd, hg _, hg _]`. Establish `hQ : ∀ la : HeightOneSpectrum (𝓞 B.KO), ((D.host.QS : ℕ) : 𝓞 B.KO) ∈ la.asIdeal ↔ resCharOf la ∈ D.host.small` using `fun la => (UpperTheory.cmDatum_natCast_mem_heightOneSpectrum_iff D.host.toHostRaw B.KO la).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : ∀ p : ℕ, (0 : ℝ) ≤ (padicValNat p D.host.QS : ℝ) * (c2 D w : ℝ)` using `fun p => by positivity`. Establish `key` using `GlobalTheory.T.sum_finitePlaces_le_sum_over_primes B.KO (primeBound N D.host.QS D.host.q D.host.d D.host.g (c2 D w) (cHalf w)) S hSp ?_ (nusOf B w nu) hpos ?_ ?_`. Use `⟨hpos, key.1, key.2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[sum_primeBound _ _ _ _ _ _ _ S Finset.subset_union_left hsm hSp (by simp [hS]) (by simp [hS]) hgS]`. Use `le_trans ?_ (GlobalTheory.T.sum_log_prime_depth_bounds_le_mul_weight_size D large₂ j w hn1 hL)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left (GlobalTheory.T.sum_prime_log_div_pred_le_log_add N) (Nat.cast_nonneg (α := ℝ) N)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `p`. Unfold `primeBound`. Conclude with `add_nonneg (add_nonneg (e1 p) (add_nonneg (add_nonneg (e5 _) (e2 _ _ _)) (e2 _ _ _))) (Finset.sum_nonneg fun i _ => e3 p i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `la`. Establish `s3` using `Finset.sum_nonneg fun i (_ : i ∈ Finset.univ) => e3 (resCharOf la) i`. Establish `a1` using `e1 (resCharOf la)`. Establish `a2` using `e5 (resCharOf la)`. Establish `a3` using `e2 (resCharOf la) D.host.q (cHalf w)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `a4` using `e2 (resCharOf la) D.host.d (cHalf w)`. Establish `a5` using `e4 la`. Unfold `nusOf primeBound`. Rewrite using `[H1algLink.eWL_eq]`. Distinguish the cases in `ha : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 B.KO) ∈ la.asIdeal`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ha, mul_div_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `hc` using `(H1algLink.prime_mem_iff la (hg _)).1 (Classical.choose_spec ha)`. Use `Finset.single_le_sum (fun i (_ : i ∈ Finset.univ) => e3 (resCharOf la) i) (Finset.mem_univ (Classical.choose ha))` as an intermediate fact. Rewrite `this` using `[if_pos hc]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[dif_neg ha]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Distinguish the cases in `hb : ((D.host.QS : ℕ) : 𝓞 B.KO) ∈ la.asIdeal`. Rewrite using `[if_pos hb, show ringChar (𝓞 B.KO ⧸ la.asIdeal) = resCharOf la from rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hb]`. Distinguish the cases in `hc : ((D.host.q : ℕ) : 𝓞 B.KO) ∈ la.asIdeal ∨ ((D.host.d : ℕ) : 𝓞 B.KO) ∈ la.asIdeal`. Rewrite using `[if_pos hc]`. Rewrite `hc` using `[H1algLink.prime_mem_iff la hq, H1algLink.prime_mem_iff la hd]`.
-
-Break down `hc with hc | hc` into its components or cases. Rewrite using `[if_pos hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_pos hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite using `[if_neg hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `la hla`. Establish `hne : ∀ p ∈ S, p.Prime → ((p : ℕ) : 𝓞 B.KO) ∉ la.asIdeal` using `fun p hp hpp hm => hla ((H1algLink.prime_mem_iff la hpp).1 hm ▸ hp)`. Establish `hnA : resCharOf la ∉ A` using `fun h => hla (Finset.mem_union_left _ h)`.
-
-Establish `a5` using `e4 la`. Rewrite `a5` using `[if_neg hnA]`. Unfold `nusOf`. Rewrite using `[dif_neg (fun ⟨i, hi⟩ => hne _ (hgS i) (hg i) hi), if_neg (fun h => hla (hsm ((hQ la).1 h))), if_neg (not_or.2 ⟨hne _ (by simp [hS]) hq, hne _ (by simp [hS]) hd⟩), le_antisymm a5 (h0 la)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem depth_sum {D : D7} (B : WeightFamilies.Prov D) {j : ℕ} (large₂ : SizeData₂ D) (w : WeightFamilies.Wt D j)
     (hn : 2 * D.R.f * D.R.r ≤ w.n) (hL : Real.log (WeightAlgebra.DF w) ≤ 2 * large₂.sc.L)
@@ -232,7 +226,7 @@ theorem depth_sum {D : D7} (B : WeightFamilies.Prov D) {j : ℕ} (large₂ : Siz
     simp
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ w hn hL`. Establish `hb` using `GlobalTheory.T.unscaledWeightDepth_finite_bounded_above_charts D T h j hj w hn`. Establish `key` using `depth_sum (recB h.toLawsCore) large₂ w hn hL (nuWt T w) (fun la => (hb la).2.1) (fun la => (hb la).2.2.1) (fun la => (hb la).2.2.2.1)`. Conclude with `⟨key, fun _ => key⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem depth_sum_record : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (w : WeightFamilies.Wt D j), 2 * D.R.f * D.R.r ≤ w.n → Real.log (WeightAlgebra.DF w) ≤ 2 * large₂.sc.L → WeightedPrimeSumBoundAlt large₂ (recPJ h j hj) w (nusOf (recB h.toLawsCore) w (nuWt T w)) ∧ ∀ (Nd : NormDatum (recB h.toLawsCore)), WeightedPrimeSumBoundAlt large₂ (Nd.X' (recPJ h j hj) (extAll h j hj) (intAtExt_extAll h j hj)) w (nusOf (recB h.toLawsCore) w (nuWt T w)) := by
   intro D T h j hj large₂ w hn hL

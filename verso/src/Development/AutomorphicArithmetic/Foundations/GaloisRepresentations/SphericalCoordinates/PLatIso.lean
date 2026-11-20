@@ -11,7 +11,7 @@ namespace UpperTheory.Gal.W2.LatticeIsomorphism
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G)
 
 /- English proof (translation)
-Simplify using `only [rd, TensorProduct.tmul_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rd_add (x : (AfP p ⊗[ℚ] G.C)ˣ) (h : G.GAf) (u v : VQ D) :
     rd L x h (u + v) = rd L x h u + rd L x h v := by
@@ -21,21 +21,21 @@ private noncomputable def rdHom (x : (AfP p ⊗[ℚ] G.C)ˣ) (h : G.GAf) : VQ D 
   AddMonoidHom.mk' (rd L x h) (rd_add L x h)
 
 /- English proof (translation)
-Conclude with `map_sub (rdHom L x h) u v`.
+A detailed English derivation is pending.
 -/
 private theorem rd_sub (x : (AfP p ⊗[ℚ] G.C)ˣ) (h : G.GAf) (u v : VQ D) :
     rd L x h (u - v) = rd L x h u - rd L x h v := by
   exact map_sub (rdHom L x h) u v
 
 /- English proof (translation)
-Conclude with `map_nsmul (rdHom L x h) n u`.
+A detailed English derivation is pending.
 -/
 private theorem rd_nsmul (x : (AfP p ⊗[ℚ] G.C)ˣ) (h : G.GAf) (n : ℕ) (u : VQ D) :
     rd L x h (n • u) = n • rd L x h u := by
   exact map_nsmul (rdHom L x h) n u
 
 /- English proof (translation)
-Use `show L.rep _ (L.rep _ w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem actY_inv {β : G.Cˣ} (y : GlobalTheory.LKCx.grp G β) (w : VQ D) : actY L y (actY L y⁻¹ w) = w := by
   show L.rep _ (L.rep _ w) = w
@@ -43,7 +43,7 @@ private theorem actY_inv {β : G.Cˣ} (y : GlobalTheory.LKCx.grp G β) (w : VQ D
   simp
 
 /- English proof (translation)
-Use `show L.rep ((y⁻¹ : GlobalTheory.LKCx.grp G β) : G.Cˣ × ℚˣ).1 (L.rep ((y : G.Cˣ × ℚˣ).1 : G.C) w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem inv_actY {β : G.Cˣ} (y : GlobalTheory.LKCx.grp G β) (w : VQ D) : actY L y⁻¹ (actY L y w) = w := by
   show L.rep ((y⁻¹ : GlobalTheory.LKCx.grp G β) : G.Cˣ × ℚˣ).1 (L.rep ((y : G.Cˣ × ℚˣ).1 : G.C) w) = w
@@ -61,13 +61,13 @@ private theorem placeY_apply {β : G.Cˣ} (y : GlobalTheory.LKCx.grp G β) {D'' 
     (u : D''.La) : placeY L y j'' u = actY L y (j'' u) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ w, rd L (trivX B) (B.toAf y * h) (actY L y w) = rd L (trivX B) h w`. Introduce `w`. Rewrite using `[hR p D G L B y (B.toAf y * h) h w]`. Establish `e : (B.toAf y * h)⁻¹ * B.toAf y * h = 1` using `by group`. Rewrite using `[e, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun w => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `hw : w = actY L y (actY L y⁻¹ w)` using `(actY_inv L y w).symm`. Rewrite using `[hw, key, ← hc.1 (actY L y⁻¹ w), ← hw]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, u, hu⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨r, u, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[placeY_apply]`. Rewrite using `[← map_nsmul, hu, inv_actY]`. Introduce and unpack `⟨r, u, hu⟩`. Use `⟨r, u, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[placeY_apply, ← hu, map_nsmul, actY_inv]`. Take `⟨w1, hw1, e⟩` from `hc.2 a`. Conclude with `⟨w1, hw1, by rw [placeY_apply, key, e]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem coordA_placeY (hR : RdAct) (B : GlobalTheory.LKCx.Form G) (y : GlobalTheory.LKCx.grp G B.β) {N : ℕ}
     {D'' : PLat D.O D.inv} {t'' : D.La → D''.La} {j'' : D''.La →+ VQ D} {h : G.GAf}
@@ -93,11 +93,11 @@ private theorem coordA_placeY (hR : RdAct) (B : GlobalTheory.LKCx.Form G) (y : G
     exact ⟨w1, hw1, by rw [placeY_apply, key, e]⟩
 
 /- English proof (translation)
-Introduce `w`. Establish `hw : w = actY L y (actY L y⁻¹ w)` using `(actY_inv L y w).symm`. Rewrite using `[hw, PD.equiv y hp, ← hl (actY L y⁻¹ w), ← hw]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, u, hm, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨m, u, hm, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[placeY_apply]`. Rewrite using `[← map_nsmul, hu, inv_actY]`. Introduce and unpack `⟨m, u, hm, hu⟩`. Use `⟨m, u, hm, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[placeY_apply, ← hu, map_nsmul, actY_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem locP_placeY {β : G.Cˣ} (PD : PDic L β) (y : GlobalTheory.LKCx.grp G β) {D'' : PLat D.O D.inv}
     {j'' : D''.La →+ VQ D} {hp : Gr G 1} (hl : IsLocP D'' j'' (PD.lat hp)) :
@@ -115,9 +115,9 @@ private theorem locP_placeY {β : G.Cˣ} (PD : PDic L β) (y : GlobalTheory.LKCx
     rw [placeY_apply, ← hu, map_nsmul, actY_inv]
 
 /- English proof (translation)
-Take `⟨r, u₂, hu₂⟩` from `(hc₂.1 (j₁ u)).2 ((hc₁.1 (j₁ u)).1 ⟨0, u, by simp⟩)`. Take `⟨m, u₃, hm, hu₃⟩` from `(hl₂ (j₁ u)).2 ((hl₁ (j₁ u)).1 ⟨1, u, Nat.coprime_one_left p, one_smul _ _⟩)`. Establish `hcop : IsCoprime ((p ^ r : ℕ) : ℤ) (m : ℤ)` using `Nat.isCoprime_iff_coprime.2 (Nat.Coprime.pow_left r hm.symm)`. Take `⟨a, b, hab⟩` from `hcop`. Use `⟨a • u₂ + b • u₃, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hu₂, ← hu₃, add_smul, mul_smul, mul_smul, natCast_zsmul, natCast_zsmul]`. Use `_ = j₁ u := by rw [hab, one_smul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem range_le {x : (AfP p ⊗[ℚ] G.C)ˣ} {N : ℕ} {D₁ D₂ : PLat D.O D.inv} {t₁ : D.La → D₁.La}
     {t₂ : D.La → D₂.La} {j₁ : D₁.La →+ VQ D} {j₂ : D₂.La →+ VQ D} {h : G.GAf} {M : AddSubgroup (VQ D)}
@@ -135,13 +135,13 @@ private theorem range_le {x : (AfP p ⊗[ℚ] G.C)ˣ} {N : ℕ} {D₁ D₂ : PLa
     _ = j₁ u := by rw [hab, one_smul]
 
 /- English proof (translation)
-Establish `hN : (N : ℚ) ≠ 0` using `by exact_mod_cast hN0.ne'`. Use `set w : VQ D := (N : ℚ)⁻¹ • j d with hwdef`. Establish `hNw : N • w = j d`. Rewrite using `[hwdef, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul, mul_inv_cancel₀ hN, one_smul]`. Establish `e : rd L x h w = w₃`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (N : ℚ) • rd L x h w = (N : ℚ) • w₃`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, ← rd_nsmul, hNw, hd]`. Establish `h2` using `congrArg (fun z => (N : ℚ)⁻¹ • z) h1`. Simplify `h2` using `only [smul_smul, inv_mul_cancel₀ hN, one_smul]`. Take `⟨r, u, hu⟩` from `(hc w).2 (e ▸ hw₃)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : j (p ^ r • d) = j (N • u)`. Rewrite using `[map_nsmul, map_nsmul, ← hNw, ← hu, smul_comm]`. Establish `h4` using `hj h3`. Establish `hcop : IsCoprime (N : ℤ) ((p ^ r : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 (Nat.Coprime.pow_right r hNp)`. Take `⟨a, b, hab⟩` from `hcop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a • d + b • u, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_smul, mul_smul, mul_smul, natCast_zsmul, natCast_zsmul, h4, smul_add, smul_comm N a d, smul_comm N b u]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mark_div {x : (AfP p ⊗[ℚ] G.C)ˣ} {N : ℕ} (hN0 : 0 < N) (hNp : N.Coprime p) {D₁ : PLat D.O D.inv}
     {j : D₁.La →+ VQ D} (hj : Function.Injective j) {h : G.GAf}
@@ -175,39 +175,37 @@ end UpperTheory.Gal.W2.LatticeIsomorphism
 open UpperTheory.Gal.W2.LatticeIsomorphism
 
 /- English proof (translation)
-Introduce `hR hK hS hA p _ D G L B PD N hN hNp D' t D'' t'' j j'' a a'' N₁ N₂ t₁ t₂ hc₁ hc₂ hpl hpl'' hca hca'' hlp hlp'' y`. Establish `hcaY : IsCoordA L (trivX B) N D'' t'' (placeY L y j'') (B.toAf y * a''.1)` using `coordA_placeY L hR B y hca''`. Establish `hlpY : IsLocP D'' (placeY L y j'') (PD.lat (GlobalTheory.LKCx.toP1 G B.β y * a''.2))` using `locP_placeY L PD y hlp''`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hm1, hm2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hcaY' : IsCoordA L (trivX B) N D'' t'' (placeY L y j'') a.1` using `(hK p D G L (trivX B) N hN hNp D'' t'' (placeY L y j'') _ _ hcaY).2 (by rwa [← _root_.mul_assoc])`. Establish `hlat : PD.lat a.2 = PD.lat (GlobalTheory.LKCx.toP1 G B.β y * a''.2)` using `(PD.inj _ _).2 (by rwa [← _root_.mul_assoc])`. Establish `hlpY' : IsLocP D'' (placeY L y j'') (PD.lat a.2)`. Rewrite using `[hlat]`. Conclude with `hlpY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hex : ∀ u : D''.La, ∃ u', j u' = placeY L y j'' u` using `range_le L hcaY' hca hlpY' hlp`. Establish `hex' : ∀ u' : D'.La, ∃ u, placeY L y j'' u = j u'` using `range_le L hca hcaY' hlp hlpY'`. Use `choose f hf using hex`. Establish `hinj` using `hpl.1`. Establish `hadd : ∀ u v, f (u + v) = f u + f v` using `fun u v => hinj (by simp only [map_add, hf])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsmul : ∀ (c : D.O) u, f (c • u) = c • f u` using `fun c u => hinj (by`. Rewrite using `[hf, hpl.2.1, hf, placeY_apply, placeY_apply, hpl''.2.1, (hA p D G L B.β y).2.1])`. Set `fl : D''.La →ₗ[D.O] D'.La` to `{ toFun := f, map_add' := hadd, map_smul' := hsmul }`. Establish `hYinj : Function.Injective (placeY L y j'')`. Introduce `u v huv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `huv` using `[placeY_apply, placeY_apply]`. Establish `e` using `congrArg (actY L y⁻¹) huv`. Rewrite `e` using `[inv_actY, inv_actY]`. Conclude with `hpl''.1 e`. Establish `hbij : Function.Bijective fl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨fun u v huv => hYinj ?_, fun u' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ← hf]`. Conclude with `congrArg j huv`. Take `⟨u, hu⟩` from `hex' u'`. Conclude with `⟨u, hinj ((hf u).trans hu)⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `w` to `LinearEquiv.ofBijective fl hbij`. Establish `hjw : ∀ u, j (w u) = actY L y (j'' u)` using `fun u => hf u`. Take `⟨s, hs, hsf⟩` from `hpl.2.2.2`. Take `⟨s'', hs'', hsf''⟩` from `hpl''.2.2.2`. Establish `hy2 : (0 : ℚ) < (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)` using `y.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hsc : ∀ u u' : D''.La, (((D'.EF (w u)) (w u') : ℤ) : ℚ) = s * (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) / s'' * (((D''.EF u) u' : ℤ) : ℚ)`. Introduce `u u'`. Rewrite using `[hsf, hjw, hjw, (hA p D G L B.β y).1, hsf'']`. Clear the denominators using the available nonvanishing facts. Establish `hr` using `hS p D N₁ N₂ D' t₁ D'' t₂ hc₁ hc₂ w.toAddEquiv _ (by positivity) hsc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hiso : IsIsom D'' D' w`. Introduce `u u'`. Establish `e` using `hsc u u'`. Rewrite `e` using `[hr, _root_.one_mul]`. Conclude with `e` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w, ⟨hiso, fun a0 => ?_⟩, hjw⟩` and prove the remaining obligations. Take `⟨w1, hw1, e1⟩` from `hca.2 a0`. Take `⟨w2, hw2, e2⟩` from `hcaY'.2 a0`. Establish `hd : rd L (trivX B) a.1 (j (w (t'' a0) - t a0)) = N • (w2 - w1)`. Rewrite using `[map_sub, rd_sub, hjw, ← placeY_apply, e2, e1, smul_sub]`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Take `⟨e, he⟩` from `mark_div L hN hNp hinj hca.1 _ (sub_mem hw2 hw1) hd`. Conclude with `⟨e, eq_add_of_sub_eq' he⟩`. Introduce and unpack `⟨w, ⟨hiso, hmark⟩, hjw⟩`. Establish `hjY : ∀ u, placeY L y j'' u = j (w u)` using `fun u => (hjw u).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hcaY' : IsCoordA L (trivX B) N D'' t'' (placeY L y j'') a.1`. Use `⟨fun w0 => ?_, fun a0 => ?_⟩` and prove the remaining obligations. Rewrite using `[← hca.1 w0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, u, hu⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r, w u, by rw [hu, hjY]⟩`. Introduce and unpack `⟨r, u, hu⟩`. Conclude with `⟨r, w.symm u, by rw [hu, hjY, LinearEquiv.apply_symm_apply]⟩`. Take `⟨e, he⟩` from `hmark a0`. Take `⟨w1, hw1, e1⟩` from `hca.2 a0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : rd L (trivX B) a.1 (j e) ∈ LaHat D` using `(hca.1 (j e)).1 ⟨0, e, by simp⟩`. Use `⟨w1 + rd L (trivX B) a.1 (j e), add_mem hw1 he', ?_⟩` and prove the remaining obligations. Rewrite using `[hjY, he, map_add, map_nsmul, rd_add, rd_nsmul, e1, smul_add, add_assoc]`. Establish `hkn` using `(hK p D G L (trivX B) N hN hNp D'' t'' (placeY L y j'') _ _ hcaY).1 hcaY'`. Establish `hlpY' : IsLocP D'' (placeY L y j'') (PD.lat a.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `w0`. Rewrite using `[← hlp w0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, u, hm, hu⟩`. Conclude with `⟨m, w u, hm, by rw [hu, hjY]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨m, u, hm, hu⟩`. Conclude with `⟨m, w.symm u, hm, by rw [hu, hjY, LinearEquiv.apply_symm_apply]⟩`. Establish `hlat : PD.lat a.2 = PD.lat (GlobalTheory.LKCx.toP1 G B.β y * a''.2)`. Use extensionality with `w0`. Rewrite using `[← hlpY' w0, ← hlpY w0]`.
-
-Establish `hkh` using `(PD.inj _ _).1 hlat`. Conclude with `⟨by rw [_root_.mul_assoc]; exact hkn, by rw [_root_.mul_assoc]; exact hkh⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.latIso_of :
     UpperTheory.Gal.W2.RdAct → UpperTheory.Gal.W2.CoordKN → UpperTheory.Gal.W2.ClsScalar → UpperTheory.Gal.W2.ActY → UpperTheory.Gal.W2.LatIso := by

@@ -38,19 +38,17 @@ def valSet (la : HeightOneSpectrum (𝓞 c.F)) : Set (Rul Xo c → EReal) :=
 variable {Xo c cls}
 
 /- English proof (translation)
-Take `⟨⟨g, hg⟩, T, io, e, hO, y0, hcls, eta, hl, heq⟩` from `y`. Unfold `vAtV`. Simplify using `only`. Unfold `profI at heq`. Establish `hg1` using `congrArg Prod.fst heq`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `only at hg1`. Substitute `hg1` using the available equality. Establish `h0 : evI y0 (0 : Rul Xo c) = 0`. Rewrite using `[← zero_smul c.F (0 : Rul Xo c), evI_smul, map_zero, zero_mul]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show nval T.V e (evI y0 0) = ⊤`. Rewrite using `[h0, nval_zero]`. Introduce `r show nval T.V e (evI y0 r) ≠ ⊥`. Distinguish the cases in `hr : evI y0 r = 0`. Rewrite using `[hr, nval_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[nval_of_ne hr]`. Conclude with `EReal.coe_ne_bot _`. Introduce `r s show min (nval T.V e (evI y0 r)) (nval T.V e (evI y0 s)) ≤ nval T.V e (evI y0 (r + s))`. Rewrite using `[evI_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `nval_add e _ _`. Introduce `a r ha show nval T.V e (evI y0 (a • r)) = (((vLa la a : ℤ) : ℝ) : EReal) + nval T.V e (evI y0 r)`. Establish `hio : nval T.V e (io a) = (((vLa la a : ℤ) : ℝ) : EReal)`. Rewrite using `[nval_of_ne ((map_ne_zero io).2 ha), hO.2 a]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Establish `he : (e : ℝ) ≠ 0` using `by exact_mod_cast hO.1.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[evI_smul, nval_mul, hio]`. Introduce `r s show nval T.V e (evI y0 (r * s)) = nval T.V e (evI y0 r) + nval T.V e (evI y0 s)`.
-
-Rewrite using `[evI_mul, nval_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVal_vAt {PY : Type} {lies : ∀ (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY → Prop}
     {la : HeightOneSpectrum (𝓞 c.F)} (y : PtV Xo c cls PY lies la) : IsVal la (vAtV y) := by
@@ -91,7 +89,7 @@ theorem isVal_vAt {PY : Type} {lies : ∀ (T : CDVR) (ι : c.F →+* T.Fr), IntF
     rw [evI_mul, nval_mul]
 
 /- English proof (translation)
-Introduce and unpack `v ⟨y, rfl⟩`. Conclude with `isVal_vAt y`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isVal_valSet (la : HeightOneSpectrum (𝓞 c.F)) : ∀ v ∈ valSet Xo c cls la, IsVal la v := by
   rintro v ⟨y, rfl⟩
@@ -107,11 +105,11 @@ def LiesTotal (PY : HeightOneSpectrum (𝓞 c.F) → Type)
 variable {Xo c cls}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H la y`. Take `⟨⟨g, hg⟩, T, io, e, hO, y0, hcls, eta, hl, heq⟩` from `y`. Establish `hg1` using `congrArg Prod.fst heq`. Simplify using `only at hg1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Substitute `hg1` using the available equality. Establish `hv` using `H la (vAtV (⟨profI Xo c Unit e y0 (), T, io, e, hO, y0, hcls, (), trivial, rfl⟩ : PtV Xo c cls Unit (fun _ _ _ _ => True) la)) ⟨_, rfl⟩`. Conclude with `hv`. Introduce and unpack `H la v ⟨y, rfl⟩`. Take `⟨⟨g, hg⟩, T, io, e, hO, y0, hcls, eta, hl, heq⟩` from `y`.
+Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg1` using `congrArg Prod.fst heq`. Simplify using `only at hg1`. Substitute `hg1` using the available equality. Take `⟨η, hη⟩` from `h la T io e hO y0 hcls`. Conclude with `H la ⟨profI Xo c (PY la) e y0 η, T, io, e, hO, y0, hcls, η, hη, rfl⟩`.
+Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonneg_iff_of_liesTotal {PY : HeightOneSpectrum (𝓞 c.F) → Type}
     {lies : ∀ la (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY la → Prop}

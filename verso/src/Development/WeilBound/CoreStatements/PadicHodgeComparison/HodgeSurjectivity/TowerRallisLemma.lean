@@ -31,7 +31,7 @@ def DiagEt3 : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l
     LinearIndependent ℚ_[l] (fun s => M.toV _ (a₀ s)) ∧ ∑ s, M.toV 0 (b₀ s) = N • M.toV 0 one
 
 /- English proof (translation)
-Introduce `l _ K _ M d hd hM hs S _` and use `h l K M d hd hM hs S`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem diagEt3_of (h : DiagEt2) : DiagEt3 := fun l _ K _ M d hd hM hs S _ => h l K M d hd hM hs S
 

@@ -22,11 +22,11 @@ variable {K : Type} [Field K] {ι : Type}
   {borR : ∀ {S : Type} [CommRing S] [Algebra K S], (ι → Sˣ) → pts S → pts S → Prop}
 
 /- English proof (translation)
-Unfold `evalAt`. Rewrite using `[dif_pos hy, dif_pos hy']`. Apply `eq_of_locM (K := K)` to reduce the goal to its premises. Introduce `m hm`. Take `⟨A, u, c, c', B, uB, uB', tB, π, π', cB, hc, hc', hπ, hπ', hbB, e1, e2, e3⟩` from `h S t y y' hb m`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, chartAt_val hf hc' hy'.choose_spec.choose_spec.choose_spec, chartAt_val hf hc hy.choose_spec.choose_spec.choose_spec, ← e1, ← e2, AlgHom.comp_apply, AlgHom.comp_apply, ← hf A B π u uB hπ, ← hf A B π' u uB' hπ', hw B tB uB uB' hbB, map_mul]`. Use `congr 1`. Establish `key : ∀ i, Units.map cB.toRingHom.toMonoidHom (tB i) = Units.map (locM K m).toRingHom.toMonoidHom (t i)` using `fun i => Units.ext (by simpa using e3 i)`. Establish `h1 : cB ((∏ i, tB i ^ e i : (B.R)ˣ) : B.R) = ((Units.map cB.toRingHom.toMonoidHom (∏ i, tB i ^ e i) : (Localization.AtPrime m)ˣ) : Localization.AtPrime m)` using `rfl`. Establish `h2 : locM K m ((∏ i, t i ^ e i : Sˣ) : S) = ((Units.map (locM K m).toRingHom.toMonoidHom (∏ i, t i ^ e i) : (Localization.AtPrime m)ˣ) : Localization.AtPrime m)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, map_prod, map_prod]`. Repeatedly rewrite using `[map_zpow, key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem evalAt_bor_zpow [Fintype ι] (h : BorChart pts mapR borR) (e : ι → ℤ) {f : Rules pts}
     (hf : IsNatural pts mapR f)
@@ -86,17 +86,17 @@ theorem absHom_apply (p : ℕ) [Fact p.Prime] (la : HeightOneSpectrum (𝓞 c.F)
     absHom p la T e x = absT p la T e x := rfl
 
 /- English proof (translation)
-Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Rewrite `hs` using `[nval_zero]`. Conclude with `EReal.coe_ne_top _ hs.symm`. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : (ramOverZ la : ℝ) ≠ 0` using `by exact_mod_cast hr.ne'`. Establish `hv : (vV T.V g : ℝ) / e = ramOverZ la * s`. Rewrite `hs` using `[nval_of_ne hg0]`. Conclude with `hs` after adjusting the coercions. Establish `hag : absT p la T e g = (p : ℝ) ^ (-s)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `absT`. Rewrite using `[if_neg hg0]`. Use `congr 1`. Rewrite using `[← div_div, hv]`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : absT p la T e ((∏ i, t i ^ n i : T.Frˣ) : T.Fr) = ∏ j, (tOf p la T e t j ^ n j)⁻¹`. Rewrite using `[Units.coe_prod, ← absHom_apply, map_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, absHom_apply, tOf, inv_zpow, inv_inv]`. Establish `hm : absT p la T e g = absT p la T e ((∏ i, t i ^ n i : T.Frˣ) : T.Fr) * absT p la T e w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hg, ← absHom_apply, map_mul]`. Both sides reduce to the same expression. Establish `hne : ∀ j, tOf p la T e t j ^ n j ≠ 0` using `fun j => zpow_ne_zero _ (tOf_pos la T e t j).ne'`. Establish `hP : (∏ j, tOf p la T e t j ^ n j) * ∏ j, (tOf p la T e t j ^ n j)⁻¹ = 1`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `Finset.prod_eq_one fun j _ => mul_inv_cancel₀ (hne j)`. Rewrite using `[← hag, hm, hu]`. Take the linear combination `(-absT p la T e w) * hP`.
+A detailed English derivation is pending.
 -/
 theorem absT_of_nval {p : ℕ} [hp : Fact p.Prime] {la : HeightOneSpectrum (𝓞 c.F)} {T : CDVR} {e : ℕ} (he : 0 < e)
     (hr : 0 < ramOverZ la) (t : Ix Dw → T.Frˣ) (n : Ix Dw → ℤ) {g w : T.Fr}
@@ -135,17 +135,17 @@ theorem absT_of_nval {p : ℕ} [hp : Fact p.Prime] {la : HeightOneSpectrum (𝓞
 end Abs
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hev la T io e y evT zT t hI x hx a f hf`. Use `letI := io.toAlgebra`. Use `letI := Small.cstAlg Or`. Take `⟨hp, hO, -, -, -, hn, ⟨q, φ, ψ, yq, hφ, hψ, hA⟩, hb⟩` from `hI`. Establish `hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt` using `GlobalTheory.firstFiveLaws.1.secBaseChange`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hWD` using `(GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hS E H Dw l Xo c).2.2.1`. Establish `hrd : Fr.rd f = φ (f q yq)` using `Fr.rd_eq_of_frMap hWD hf.1 q φ yq hφ`. Take `⟨hmem, hψe⟩` from `hA (f q yq)`. Establish `hm : Fr.rd f ∈ A` using `hrd ▸ hmem`. Establish `hft : Formalism.L2.Pj.FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) zT := ⟨q, ψ, yq, hψ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzT : evR Xo c f zT = ψ (f q yq)`. Unfold `evR evalAt`. Rewrite using `[dif_pos hft]`. Conclude with `hWD f hf.1 T.Fr _ q _ ψ _ yq zT hft.choose_spec.choose_spec.choose_spec hψ`. Establish `hbor : evI y f = ((∏ i, t i ^ exZ Dw a i : T.Frˣ) : T.Fr) * evR Xo c f zT` using `evalAt_bor_zpow (GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hS E H Dw l Xo c).2.1 (exZ Dw a) hf.1 (fun p t y y' hb => by rw [hf.2 p t y y' hb, Units.coe_prod]) T.Fr t zT y.1 hft y.2.1 hb`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ‖ev ⟨Fr.rd f, hm⟩‖ = absT p la T e (evR Xo c f zT)`. Rewrite using `[hn, hzT, hψe]`. Conclude with `congrArg (absT p la T e) (congrArg evT (Subtype.ext hrd))`. Use `⟨ev ⟨Fr.rd f, hm⟩, hev ⟨Fr.rd f, hm⟩, fun htop => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h0 : evI y f = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Rewrite `htop` using `[hx, nval_of_ne hne]`. Conclude with `EReal.coe_ne_top _ htop`. Establish `hw : evR Xo c f zT = 0`. Rewrite `hbor` using `[h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 hbor.symm).resolve_left (Units.ne_zero _)`. Rewrite using `[← norm_eq_zero, hnorm, hw]`. Simplify using `[absT]`. Rewrite using `[hnorm]`. Conclude with `absT_of_nval hO.1 (ram_pos hp) t (exZ Dw a) hbor (by rw [← hx]; exact hs)`.
+A detailed English derivation is pending.
 -/
 theorem readsZ_of_isIntPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or), ∀ (A : Subring RM.Ω) (p : ℕ) [Fact p.Prime] (z : (Σ k, RM.ι k) → PadicAlgCl p) (ev : A →+* PadicAlgCl p), z ∈ Small.algPts p (mCoordIdeal RM.y) → (∀ x : A, Small.HasVal RM.y 0 (x : RM.Ω) z (ev x)) → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y : IntFr Xo c T io) (evT : A →+* T.Fr) (zT : letI := io.toAlgebra; FrPt Xo c T.Fr) (t : Ix Dw → T.Frˣ), FinRd.IsIntPt Fr A ev la T io e y evT zT t → ∀ x : (Ref.pjSys Xo c).Pt la, (∀ f, (Ref.pjSys Xo c).val x f = nval T.V e (evI y f)) → FinRd.ReadsZ Fr z x (FinRd.tOf p la T e t) := by
   intro E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hev la T io e y evT zT t hI x hx a f hf

@@ -25,7 +25,7 @@ private def muFix (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (M : ℕ) : 
   inv_mem' := fun {a} ha ζ h => (AlgEquiv.symm_apply_eq a).2 (ha ζ h).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun s hs t ζ h => by have h2 : (t⁻¹ ζ) ^ M = 1 := by rw [← map_pow, h, map_one] change t (s (t⁻¹ ζ)) = ζ rw [hs _ h2] exact t.apply_symm_apply ζ⟩`.
+Supply the required witnesses or components.
 -/
 private theorem muFix_normal (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (M : ℕ) : (muFix F Ω M).Normal :=
   ⟨fun s hs t ζ h => by
@@ -35,9 +35,7 @@ private theorem muFix_normal (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (
     exact t.apply_symm_apply ζ⟩
 
 /- English proof (translation)
-Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite` using `(Multiset.finite_toSet (Polynomial.nthRoots M (1 : Ω))).subset fun z hz => (Polynomial.mem_nthRoots hM).2 hz`. Use `haveI : Finite ↥{ζ : Ω | ζ ^ M = 1} := hfin.to_subtype`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : FiniteDimensional F (IntermediateField.adjoin F {ζ : Ω | ζ ^ M = 1}) := IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral`. Use `Subgroup.isOpen_mono (H₁ := (IntermediateField.adjoin F {ζ : Ω | ζ ^ M = 1}).fixingSubgroup) ?_ (IntermediateField.fixingSubgroup_isOpen _)` and prove the remaining obligations.
-
-Introduce `s hs ζ h`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hs ζ (IntermediateField.subset_adjoin _ _ h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem muFix_open (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {M : ℕ} (hM : 1 ≤ M) :
     IsOpen (muFix F Ω M : Set (G F Ω)) := by
@@ -53,15 +51,13 @@ private theorem muFix_open (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] [Is
   exact (IntermediateField.mem_fixingSubgroup_iff _ _).1 hs ζ (IntermediateField.subset_adjoin _ _ h)
 
 /- English proof (translation)
-Introduce `hP F Ω _ _ _ _ _ _ l _ n M m r hM hm hr A hA κ hfl hne`. Take `⟨χ, hχ, ⟨P, hPt⟩, hIn⟩` from `hfl`. Take `⟨w, hw, hAw⟩` from `GlobalTheory.DecLocal.exists_place_below (p := l) (F := F) A hA`. Take `⟨j, rfl⟩` from `(Loc.decEmb (F := F) (Ω := Ω) (v := l)).1 A w hAw hw`. Take `⟨-, φ, hφ, hφj, -, hIq, hcyc, -⟩` from `(Loc.decEmb (F := F) (Ω := Ω) (v := l)).2 j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcl : IsClosed (φ.range : Set (Loc.GQ l))` using `φ.range.isClosed_of_isOpen hφ.isOpen_range`. Use `haveI : CompactSpace ↥(Dec (F := F) (Loc.placeJ j)) := (Topology.IsClosedEmbedding.mk hφ.isEmbedding hcl).compactSpace`. Use `haveI : T2Space ↥(Dec (F := F) (Loc.placeJ j)) := hφ.isEmbedding.t2Space`. Set `H : Subgroup ↥(Dec (F` to `F) (Loc.placeJ j)) := (muFix F Ω M).subgroupOf _`. Use `haveI : (muFix F Ω M).Normal := muFix_normal F Ω M`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : H.Normal := Subgroup.Normal.subgroupOf inferInstance _`. Establish `hH : IsOpen (H : Set ↥(Dec (F` using `F) (Loc.placeJ j))) := (muFix_open F Ω hM).preimage continuous_subtype_val`. Establish `hcb : ∀ g : ↥(Dec (F` using `F) (Loc.placeJ j)), Loc.cycA l l (Loc.Om l) (φ g) = cycBar F Ω l (g : G F Ω) := fun g => by`. Express the relevant statement in the definitionally equal form `Units.map _ (Loc.cyc l l (φ g)) = _`. Rewrite using `[hcyc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨E', r', hr', hcr⟩` from `UpperTheory.V.Z.Keep.crDescend hP φ hφ H hH (r.comp (Dec (F := F) (Loc.placeJ j)).subtype) (Units.continuous_val.comp (hr.comp continuous_subtype_val)) P κ m hPt hm (fun i g hg hg' => by`. Establish `h1` using `hIn i g ((hIq g).1 hg')`. Rewrite `h1` using `[hχ i g.1 hg, mul_one]`. Rewrite using `[hcb, h1])`.
-
-Use the proof step `(fun i j' e => hne i j' (MonoidHom.ext fun g => by`. Establish `h1` using `DFunLike.congr_fun e g`. Rewrite `h1` using `[MonoidHom.mul_apply, MonoidHom.comp_apply, hcb]`. Conclude with `h1))`. Conclude with `Loc.potCrysOf j (φ.comp H.subtype) ((Dec (F := F) (Loc.placeJ j)).subtype.comp H.subtype) (hφ.comp hH.isOpenEmbedding_subtypeVal) (fun h y => hφj h y) r hr E' r' hr' hcr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Keep.potOfUnl :
     Loc.LocalPublishedTheorems → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [CharZero Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n M : ℕ) (m : Fin n → ℤ) (r : G F Ω →* GL (Fin n) (Qbar l)), 1 ≤ M → StrictAnti m → Continuous r → ∀ (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 → ∀ κ, Af.FlagAt M m r A κ → (∀ i j, κ i ≠ κ j * (cycBar F Ω l).comp (Dec (F := F) A).subtype) → Af.PotCrysAt r A := by

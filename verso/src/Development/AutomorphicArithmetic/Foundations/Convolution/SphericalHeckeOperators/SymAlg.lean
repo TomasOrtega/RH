@@ -3,15 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeO
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
 
 /- English proof (translation)
-Introduce `n l y`. Establish `hb : ∀ (a : Fin n → ℤ) (c : ℂ), bc l (AddMonoidAlgebra.single a c : LaurentRing n) = AddMonoidAlgebra.single ((l : ℤ) • a) c`. Introduce `a c`. Simplify using `[bc, AddMonoidAlgebra.mapDomainAlgHom, AddMonoidAlgebra.mapDomain_single]`. Establish `hc : ∀ (σ : Equiv.Perm (Fin n)) (y : LaurentRing n), bc l (permAct σ y) = permAct σ (bc l y)` using `fun σ y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (bc l).comp (permAct σ) = (permAct σ).comp (bc (n` using `n) l) := AddMonoidAlgebra.algHom_ext (fun a => by`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, permAct_single, hb, hb, permAct_single]`. Use the proof step `rfl) (Subsingleton.elim _ _)`. Conclude with `AlgHom.congr_fun this y`. Use `⟨fun τ => ?_, ?_, fun p hp => ?_, fun hy σ => ?_, fun z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[symSum, map_sum]`. Simplify using `only [permAct_permAct]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft τ) _ _ fun σ => rfl`. Rewrite using `[symSum, symSum, map_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => hc σ y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symSum, symSum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun σ _ => by rw [map_mul, hp σ]`. Rewrite using `[← hc, hy σ]`. Establish `: (evalAt z).comp (bc l) = evalAt (z ^ l)` using `AddMonoidAlgebra.algHom_ext (fun a => by`. Rewrite using `[AlgHom.comp_apply, hb, evalAt_single, evalAt_single, monomialChar_apply, monomialChar_apply]`.
-
-Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, zpow_mul, zpow_natCast, Pi.pow_apply]) (Subsingleton.elim _ _)`. Conclude with `AlgHom.congr_fun this y`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.H.symAlg :
     ∀ (n l : ℕ) (y : LaurentRing n), symSum y ∈ symmetricLaurent n ∧ bc l (symSum y) = symSum (bc l y) ∧

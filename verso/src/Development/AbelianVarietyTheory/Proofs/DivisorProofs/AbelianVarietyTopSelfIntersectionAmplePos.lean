@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.AV.AmpleTopPos
 
 /- English proof (translation)
-Unfold `inter`. Rewrite using `[GlobalTheory.multiDiff_comp_equiv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inter_comp_equiv {K : Type} [Field K] (A : AbVar K) {J J' : Type} [Fintype J] [Fintype J']
     (e : J' ≃ J) (c : J → Pic A.X.left) : inter A (c ∘ e) = inter A c := by
@@ -27,11 +27,11 @@ theorem inter_comp_equiv {K : Type} [Field K] (A : AbVar K) {J J' : Type} [Finty
   rw [GlobalTheory.multiDiff_comp_equiv]
 
 /- English proof (translation)
-Introduce `K _ A c hc J _ hJ`. Take `⟨L, hL, hr, rfl⟩` from `hc`. Establish `hA : IsAmpleLB L` using `(GlobalTheory.AmpleClsIff.isAmpleCls_cls_iff K A L hL).1 ⟨L, hL, hr, rfl⟩`. Establish `e : Fin A.dim ≃ J` using `(Fintype.equivFinOfCardEq hJ).symm`. Establish `h1 : inter A (fun _ : J => cls L hL) = inter A (fun _ : Fin A.dim => cls L hL)` using `(inter_comp_equiv A e (fun _ : J => cls L hL)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, GlobalTheory.T.abelianVariety_intersection_eq_lineBundleIntersection K A (Fin A.dim) (fun _ => L) (fun _ => hL)]`. Use `letI := A.algΓ`. Take `⟨hI, -, -⟩` from `GlobalTheory.AV.AbVar.isIntegral_isLocallyNoetherian_compactSpace K A`. Take `⟨hs, hp⟩` from `GlobalTheory.AV.AbVarProj.strHom_eq_and_isProjOver K A`. Establish `hp' : IsProjOver (strHom K A.X.left)` using `by rw [hs]; exact hp`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.CompanionTheory.NefKleiman.interNum_top_pos_of_isAmpleLB K A.X.left hp' A.dim (GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim K A) L hA`.
+A detailed English derivation is pending.
 -/
 theorem inter_top_pos : ∀ (K : Type) [Field K] (A : AbVar K) (c : Pic A.X.left), IsAmpleCls c →
     ∀ (J : Type) [Fintype J], Fintype.card J = A.dim → 0 < inter A (fun _ : J => c) := by

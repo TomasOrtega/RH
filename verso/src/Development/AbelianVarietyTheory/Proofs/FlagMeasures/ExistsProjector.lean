@@ -7,29 +7,27 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.WittInt
 
 /- English proof (translation)
-Establish `hmul : ∀ y : V, ∃ s : nonZeroDivisors O, s • y ∈ Λ` using `fun y => by`. Establish `hy : y ∈ Submodule.span K (Λ : Set V)` using `by rw [hspan]; trivial`. Take `⟨s, hs⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors O) K (Λ : Set V) y hy`. Rewrite `hs` using `[Submodule.span_eq]`. Conclude with `⟨s, hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `hunit : ∀ s : nonZeroDivisors O, IsUnit (algebraMap O (Module.End O V) s)` using `fun s => by`. Use `isLocalizedModule_id (nonZeroDivisors O) V K` as an intermediate fact. Conclude with `IsLocalizedModule.map_units (S := nonZeroDivisors O) (LinearMap.id : V →ₗ[O] V) s`. Establish `hloc : IsLocalizedModule (nonZeroDivisors O) Λ.subtype` using `{ map_units := hunit surj := fun y => by`. Take `⟨s, hs⟩` from `hmul y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(⟨_, hs⟩, s), rfl⟩`. Use `exists_of_eq := fun h => ⟨1, by rw [Subtype.ext h]⟩ }`. Establish `hne : ∀ s : nonZeroDivisors O, algebraMap O K s ≠ 0` using `fun s => IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Establish `hsat : ∀ (s : nonZeroDivisors O) (v : V), (s : O) • v ∈ W → v ∈ W` using `fun s v h => by`. Rewrite `h` using `[← algebraMap_smul K]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(W.smul_mem_iff (hne s)).1 h`. Establish `: Module.Finite O Λ` using `Module.Finite.iff_fg.2 hfg`. Set `Q : Submodule O Λ` to `(W.restrictScalars O).comap Λ.subtype`. Establish `: Module.Flat O (Λ ⧸ Q)`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `q hq`. Take `⟨v, rfl⟩` from `Q.mkQ_surjective q`. Take `⟨c, hc⟩` from `hq`. Establish `h1 : Q.mkQ ((c : O) • v) = 0` using `by rw [map_smul]; exact hc`. Rewrite `h1` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hsat c v h1`. Establish `: Module.FinitePresentation O (Λ ⧸ Q)` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective O (Λ ⧸ Q)` using `Module.Flat.projective_of_finitePresentation`. Take `⟨s, hs⟩` from `Module.projective_lifting_property Q.mkQ LinearMap.id Q.mkQ_surjective`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `π : Λ →ₗ[O] Λ` to `LinearMap.id - s ∘ₗ Q.mkQ`. Establish `hπ : ∀ v, π v ∈ Q`. Introduce `v`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Establish `h1 : Q.mkQ (s (Q.mkQ v)) = Q.mkQ v` using `LinearMap.congr_fun hs _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [π, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, h1, sub_self]`. Establish `hπ' : ∀ v ∈ Q, π v = v`. Introduce `v hv`. Establish `h1 : Q.mkQ v = 0` using `by rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Simplify using `only [π, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, h1, map_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `g : V →ₗ[K] V` to `LinearMap.extendScalarsOfIsLocalization (nonZeroDivisors O) K (IsLocalizedModule.lift (nonZeroDivisors O) Λ.subtype (Λ.subtype ∘ₗ π) hunit)`. Establish `hg : ∀ y : Λ, g y = π y` using `fun y => IsLocalizedModule.lift_apply (nonZeroDivisors O) Λ.subtype _ hunit y`. Use `⟨g, fun z hz => ?_, fun z => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hg ⟨z, hz⟩]`. Conclude with `(π _).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hmul z`. Use `hsat c _ ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.map_smul_of_tower]`. Use `hg ⟨_, hc⟩` as an intermediate fact. Rewrite using `[show g ((c : O) • z) = _ from this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hπ _`. Take `⟨c, hc⟩` from `hmul z`. Establish `h1` using `hg ⟨_, hc⟩`. Rewrite `h1` using `[hπ' ⟨_, hc⟩ ((W.restrictScalars O).smul_mem (c : O) hz)]`. Establish `h2 : g (algebraMap O K c • z) = algebraMap O K c • z`.
-
-Rewrite using `[algebraMap_smul]`. Conclude with `h1`. Rewrite `h2` using `[map_smul]`. Conclude with `smul_right_injective V (hne c) h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_projector {O K V : Type} [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K]
     [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
@@ -104,14 +102,14 @@ section Form
 variable {E : Type} [Field E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← star_dotProduct_star, star_star, star_mulVec, hJ, dotProduct_mulVec, dotProduct_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_star {J : Matrix (Fin n) (Fin n) E} (hJ : Jᴴ = J) (x y : Fin n → E) :
     star (star x ⬝ᵥ (J *ᵥ y)) = star y ⬝ᵥ (J *ᵥ x) := by
   rw [← star_dotProduct_star, star_star, star_mulVec, hJ, dotProduct_mulVec, dotProduct_comm]
 
 /- English proof (translation)
-Rewrite using `[mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ (Ne.isUnit hd), Matrix.one_mul, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_adj {J : Matrix (Fin n) (Fin n) E} (hd : J.det ≠ 0) (M : Matrix (Fin n) (Fin n) E)
     (x y : Fin n → E) :
@@ -120,7 +118,7 @@ theorem form_adj {J : Matrix (Fin n) (Fin n) E} (hd : J.det ≠ 0) (M : Matrix (
     Matrix.one_mul, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec]
 
 /- English proof (translation)
-Apply `eq_zero_of_mulVec_eq_zero hd` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `h (Pi.single i 1)` as an intermediate fact. Simplify `this` using `[← Pi.single_star]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_nondeg {J : Matrix (Fin n) (Fin n) E} (hd : J.det ≠ 0) (y : Fin n → E)
     (h : ∀ x : Fin n → E, star x ⬝ᵥ (J *ᵥ y) = 0) : y = 0 := by
@@ -130,7 +128,7 @@ theorem form_nondeg {J : Matrix (Fin n) (Fin n) E} (hd : J.det ≠ 0) (y : Fin n
   simpa [← Pi.single_star] using this
 
 /- English proof (translation)
-Take `⟨M, rfl⟩` from `Matrix.toLin'.surjective P`. Use `⟨Matrix.toLin' (J⁻¹ * Mᴴ * J), fun x y => form_adj hd M x y, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.trace_toLin'_eq, Matrix.trace_toLin'_eq, Matrix.trace_mul_cycle, mul_nonsing_inv _ (Ne.isUnit hd), Matrix.one_mul, trace_conjTranspose]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_adjoint {J : Matrix (Fin n) (Fin n) E} (hd : J.det ≠ 0)
     (P : (Fin n → E) →ₗ[E] (Fin n → E)) :
@@ -145,23 +143,23 @@ theorem exists_adjoint {J : Matrix (Fin n) (Fin n) E} (hd : J.det ≠ 0)
 end Form
 
 /- English proof (translation)
-Take `⟨P, hPΛ, hPW, hPid⟩` from `exists_projector Λ hΛ.fg hΛ.span_eq_top W`. Take `⟨Q, hPQ, htr⟩` from `exists_adjoint hd P`. Establish `hQP : ∀ x y, star (Q x) ⬝ᵥ (J *ᵥ y) = star x ⬝ᵥ (J *ᵥ P y)` using `fun x y => by`. Rewrite using `[← form_star hJ, ← hPQ, form_star hJ]`. Establish `hQΛ : ∀ z ∈ Λ, Q z ∈ Λ` using `fun z hz => (hself _).2 fun y hy => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hPQ]`. Conclude with `(hself z).1 hz _ (hPΛ y hy)`. Establish `hQ0 : ∀ y, (∀ x ∈ W, star x ⬝ᵥ (J *ᵥ y) = 0) → Q y = 0` using `fun y hy => form_nondeg hd _ fun x => by rw [← hPQ]; exact hy _ (hPW x)`. Establish `hQW : ∀ y ∈ W, Q y = 0` using `fun y hy => hQ0 y fun x hx => hW x hx y hy`. Establish `hPP : ∀ y, P (P y) = P y` using `fun y => hPid _ (hPW y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQQ : ∀ y, Q (Q y) = Q y` using `fun y => by`. Rewrite using `[← sub_eq_zero]`. Use `form_nondeg hd _ fun x => ?_` and prove the remaining obligations. Rewrite using `[mulVec_sub, dotProduct_sub, ← hPQ, ← hPQ, hPP, hPQ, sub_self]`. Establish `hQPz : ∀ y, Q (P y) = 0` using `fun y => hQW _ (hPW y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : (Fin n → E) →ₗ[E] (Fin n → E)` to `Q - (w : E) • (P ∘ₗ Q)`. Establish `hT : ∀ y, T y = Q y - (w : E) • P (Q y)` using `fun y => rfl`. Establish `hQT : ∀ y, Q (T y) = Q y` using `fun y => by`. Rewrite using `[hT, map_sub, map_smul, hQPz, hQQ, smul_zero, sub_zero]`. Establish `hTT : ∀ y, T (T y) = T y` using `fun y => by rw [hT (T y), hQT, hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWT : ∀ x ∈ W, ∀ y, star x ⬝ᵥ (J *ᵥ T y) = star x ⬝ᵥ (J *ᵥ y)` using `fun x hx y => by`. Rewrite using `[hT, mulVec_sub, dotProduct_sub, hW x hx _ (W.smul_mem _ (hPW _)), sub_zero, ← hPQ, hPid x hx]`. Establish `hTl : ∀ x y, star (T x) ⬝ᵥ (J *ᵥ y) = star x ⬝ᵥ (J *ᵥ (P y - star (w : E) • P (Q y)))` using `fun x y => by`. Rewrite using `[hT, star_sub, star_smul, sub_dotProduct, smul_dotProduct, hPQ, hQP, hQP, mulVec_sub, dotProduct_sub, mulVec_smul, dotProduct_smul]`. Use `⟨LinearMap.range T, ?_, ?_, ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Rewrite using `[hTl, hQT, hT, map_sub, map_smul, hPP, sub_sub, ← add_smul, hw, one_smul, sub_self, mulVec_zero, dotProduct_zero]`. Establish `h1 : LinearMap.IsProj W P` using `⟨hPW, hPid⟩`. Establish `h2 : LinearMap.IsProj (LinearMap.range T) T` using `⟨fun x => ⟨x, rfl⟩, by rintro _ ⟨x, rfl⟩; exact hTT x⟩`. Establish `h3 : Q ∘ₗ P = 0` using `LinearMap.ext hQPz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : LinearMap.trace E _ T = LinearMap.trace E _ Q`. Simplify using `only [T]`. Rewrite using `[map_sub, map_smul, LinearMap.trace_comp_comm', h3, map_zero, smul_zero, sub_zero]`. Rewrite `h4` using `[h2.trace, htr, h1.trace, star_natCast]`. Conclude with `h4` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, rfl⟩ hy`. Establish `h0 : Q y = 0` using `hQ0 y fun x hx => by rw [← hWT x hx]; exact hy x hx`. Rewrite using `[hT, h0, map_zero, smul_zero, sub_zero]`. Establish `hTz : T z ∈ Λ` using `Λ.sub_mem (hQΛ z hz) (Λ.smul_mem w (hPΛ _ (hQΛ z hz)))`. Establish `hu : z - T z ∈ Λ` using `Λ.sub_mem hz hTz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxW : P (z - T z) ∈ W` using `hPW _`. Establish `hQu : Q (z - T z) = 0` using `by rw [map_sub, hQT, sub_self]`. Use `⟨P (z - T z), hPΛ _ hu, T z, hTz, hxW, ⟨z, rfl⟩, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, _, ⟨b, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 ht`. Rewrite using `[star_add, add_dotProduct, hTl, sub_right_comm, map_sub P (z - T z), map_sub Q (z - T z), hQu, hQPz, hPP, sub_self, sub_self, map_zero, smul_zero, sub_self, mulVec_zero, dotProduct_zero, add_zero, mulVec_sub, mulVec_sub, dotProduct_sub, dotProduct_sub, hWT a ha, hW a ha _ hxW, su …`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_of_trace (E : Type) [Field E] [NumberField E] [StarRing E] (w : 𝓞 E)
     (hw : (w : E) + star (w : E) = 1) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : Jᴴ = J) (hd : J.det ≠ 0)
@@ -226,7 +224,7 @@ theorem split_of_trace (E : Type) [Field E] [NumberField E] [StarRing E] (w : �
       mulVec_sub, dotProduct_sub, dotProduct_sub, hWT a ha, hW a ha _ hxW, sub_self, sub_self]
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n J hJ hd Λ hΛ hs W hW`. Take `⟨w, hw⟩` from `GlobalTheory.TraceOnto.exists_trace_one E hE`. Conclude with `split_of_trace E w hw n J hJ hd Λ hΛ hs W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [StarRing E], Formalism.HermitianLatticesTheory.IsCMUnram E → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), Jᴴ = J → J.det ≠ 0 → ∀ Λ : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E Λ → (∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, star y ⬝ᵥ (J *ᵥ x) ∈ (algebraMap (𝓞 E) E).range) → ∀ W : Submodule E (Fin n → E), (∀ x ∈ W, ∀ y ∈ W, star x ⬝ᵥ (J *ᵥ y) = 0) → ∃ W' : Submodule E (Fin n → E), (∀ x ∈ W', ∀ y ∈ W', star x ⬝ᵥ (J *ᵥ y) = 0) ∧ Module.finrank E W' = Module.finrank E W ∧ (∀ y ∈ W', (∀ x ∈ W, star x ⬝ᵥ (J *ᵥ y) = 0) → y = 0) ∧ ∀ z ∈ Λ, ∃ x ∈ Λ, ∃ y ∈ Λ, x ∈ W ∧ y ∈ W' ∧ ∀ t ∈ W ⊔ W', star t ⬝ᵥ (J *ᵥ (z - x - y)) = 0 := by
   intro E _ _ _ hE n J hJ hd Λ hΛ hs W hW

@@ -14,11 +14,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.L
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Establish `hC : IsOpen (irreducibleComponent z)` using `GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents (irreducibleComponent_mem_irreducibleComponents z)`. Take `⟨U, hU, hzU, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := z) (U := V ⊓ ⟨irreducibleComponent z, hC⟩) ⟨hz, mem_irreducibleComponent⟩`. Establish `hpre : IsPreirreducible (U : Set X)` using `(isIrreducible_irreducibleComponent (x := z)).2.open_subset U.2 fun q hq => (hle hq).2`. Establish `hirr : IsIrreducible (U : Set X)` using `⟨⟨z, hzU⟩, hpre⟩`. Establish `: IrreducibleSpace U.toScheme` using `Subtype.irreducibleSpace hirr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty U` using `⟨⟨z, hzU⟩⟩`. Establish `: IsIntegral U.toScheme` using `GlobalTheory.IsNormalScheme.isIntegral_of_irreducibleSpace _`. Establish `: Nonempty (Spec Γ(X, U))` using `⟨hU.isoSpec.hom ⟨z, hzU⟩⟩`. Establish `: IsIntegral (Spec Γ(X, U))` using `isIntegral_of_isOpenImmersion hU.isoSpec.inv`. Establish `hd : IsDomain Γ(X, U)` using `(affine_isIntegral_iff _).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨U, hU, hd, hzU, fun q hq => (hle hq).1, (GlobalTheory.IsNormalScheme.spec_iff_of_isDomain _).1 (GlobalTheory.IsNormalScheme.spec_of_isAffineOpen hU)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_affine_normal_domain {X : Scheme.{0}} [GlobalTheory.IsNormalScheme X] [IsLocallyNoetherian X] (V : X.Opens) {z : X}
     (hz : z ∈ V) : ∃ (U : X.Opens) (_ : IsAffineOpen U) (_ : IsDomain Γ(X, U)),
@@ -40,11 +40,11 @@ theorem exists_affine_normal_domain {X : Scheme.{0}} [GlobalTheory.IsNormalSchem
     (GlobalTheory.IsNormalScheme.spec_iff_of_isDomain _).1 (GlobalTheory.IsNormalScheme.spec_of_isAffineOpen hU)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l' Xo' c' W Y p hp hW x`. Establish `hN : GlobalTheory.IsNormalScheme Y.X` using `(GlobalTheory.isNormalScheme_iff _).2 Y.normal`. Use `GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff c' hp.ne_zero hW` as an intermediate fact. Establish `: IsProper Y.s` using `projProper _ _ _ Y.proj`. Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, g, e, hxV, he⟩` from `exists_affine_isTanBasis E H Y.X Y.t Y.X (𝟙 _) x`. Take `⟨U, hU, hd, hxU, hle, hic⟩` from `exists_affine_normal_domain V.1 hxV`. Take `⟨ρ, eρ⟩ : ∃ ρ : Γ(Y.X, V.1) →+* Γ(Y.X, U), spMap ρ ≫ V.2.fromSpec = hU.fromSpec` from `⟨(Y.X.presheaf.map (homOfLE hle).op).hom, V.2.map_fromSpec hU _⟩`. Establish `hb` using `isTanBasis_bc he ρ`. Rewrite `hb` using `[Category.comp_id, eρ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨Γ(Y.X, U), inferInstance, hd, hic, hU.fromSpec, g, _, inferInstance, ?_, hb⟩` and prove the remaining obligations. Rewrite using `[hU.range_fromSpec]`. Conclude with `hxU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartSt : ChartSt := by
   intro E _ _ _ H Dw l' Xo' c' W Y p hp hW x

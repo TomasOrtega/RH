@@ -8,7 +8,7 @@ namespace GlobalTheory.LocalUnitaryUnimod
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ v`. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v` as an intermediate fact. Conclude with `GlobalTheory.ArchUnitaryUnimod.unimodularOver_of_artinian (Fv F v) hσ hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unimodularOver_adicCompletion :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]

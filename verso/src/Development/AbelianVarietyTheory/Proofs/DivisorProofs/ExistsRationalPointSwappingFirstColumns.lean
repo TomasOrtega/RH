@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Formalism.UG.cT, col0]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_col0_mul_col0 (σ : E →ₐ[F] E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (X Y : Matrix (Fin n) (Fin (r + 1)) E) :
@@ -29,7 +29,7 @@ theorem cT_col0_mul_col0 (σ : E →ₐ[F] E) {n r : ℕ} (J : Matrix (Fin n) (F
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add' (σ : E →ₐ[F] E) {a b : Type} (M N : Matrix a b E) :
     Formalism.UG.cT (σ : E →+* E) (M + N) = Formalism.UG.cT (σ : E →+* E) M + Formalism.UG.cT (σ : E →+* E) N := by
@@ -37,14 +37,14 @@ theorem cT_add' (σ : E →ₐ[F] E) {a b : Type} (M N : Matrix a b E) :
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub' (σ : E →ₐ[F] E) {a b : Type} (M N : Matrix a b E) :
     Formalism.UG.cT (σ : E →+* E) (M - N) = Formalism.UG.cT (σ : E →+* E) M - Formalism.UG.cT (σ : E →+* E) N := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, GlobalTheory.SiegelSet.sigma_sigma hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT_of_isCMExt {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {a b : Type} (M : Matrix a b E) :
     Formalism.UG.cT (σ : E →+* E) (Formalism.UG.cT (σ : E →+* E) M) = M := by
@@ -52,7 +52,7 @@ theorem cT_cT_of_isCMExt {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {a b : Type
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify `hJ.1 i j` using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cT_eq_of_isHermND {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) :
     Formalism.UG.cT (σ : E →+* E) J = J := by
@@ -61,27 +61,25 @@ theorem cT_eq_of_isHermND {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fi
 end Swap
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y hσ hJ hW`. Use `set x := col0 X with hxdef`. Use `set y := col0 Y with hydef`. Establish `hxx : Formalism.UG.cT (σ : E →+* E) x * J * x = 0`. Rewrite using `[hxdef, cT_col0_mul_col0, hW.xx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hyy : Formalism.UG.cT (σ : E →+* E) y * J * y = 0`. Rewrite using `[hydef, cT_col0_mul_col0, hW.yy]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hxy : Formalism.UG.cT (σ : E →+* E) x * J * y = 1`. Rewrite using `[hxdef, hydef, cT_col0_mul_col0, hW.xy]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Subsingleton.elim i j]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ'` using `cT_eq_of_isHermND hJ`. Establish `hyx : Formalism.UG.cT (σ : E →+* E) y * J * x = 1`. Establish `h` using `congrArg (Formalism.UG.cT (σ : E →+* E)) hxy`. Rewrite `h` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, cT_cT_of_isCMExt hσ, hJ', Formalism.UG.cT_one]`. Simplify `h` using `[Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set u := x - y with hu`. Use `set v := Formalism.UG.cT (σ : E →+* E) u * J with hv`. Establish `hvy : v * y = 1`. Rewrite using `[hv, hu, cT_sub', Matrix.sub_mul, Matrix.sub_mul, hxy, hyy, sub_zero]`. Establish `hvx : v * x = -1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hv, hu, cT_sub', Matrix.sub_mul, Matrix.sub_mul, hxx, hyx, zero_sub]`. Use `set w0 : Matrix (Fin n) (Fin n) E := 1 + u * v with hw0`. Establish `hw0y : w0 * y = x`. Rewrite using `[hw0, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hvy, Matrix.mul_one, hu]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw0x : w0 * x = y`. Rewrite using `[hw0, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hvx, Matrix.mul_neg, Matrix.mul_one, hu]`. Normalize the expressions using the abelian group laws. Establish `hw0u : w0 * u = -u`. Rewrite using `[hu, Matrix.mul_sub, hw0y, hw0x]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hsq : w0 * w0 = 1` using `by conv_lhs => rw [show w0 * w0 = w0 * (1 + u * v) from rfl]`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, hw0u, hw0, Matrix.neg_mul]`. Normalize the expressions using the abelian group laws. Establish `hcw : Formalism.UG.cT (σ : E →+* E) w0 * J = J * w0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hw0, cT_add', Formalism.UG.cT_one, Formalism.UG.cT_mul, hv, Formalism.UG.cT_mul, cT_cT_of_isCMExt hσ, hJ', Matrix.add_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hunit : Formalism.UG.cT (σ : E →+* E) w0 * J * w0 = J`. Rewrite using `[hcw, Matrix.mul_assoc, hsq, Matrix.mul_one]`. Set `U : GL (Fin n) E` to `⟨w0, w0, hsq, hsq⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hU : U ∈ Formalism.UG.UJ (σ : E →+* E) J` using `hunit`. Use `⟨GlobalTheory.AdelicU.ratEmb σ J ⟨U, hU⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.AdelicU.range_ratEmb]`. Conclude with `⟨_, rfl⟩`. Express the relevant statement in the definitionally equal form `w0.map (inclR (F := F) (AF F)) * adMat F y = adMat F x`.
-
-Simplify using `only [adMat]`. Rewrite using `[← Matrix.map_mul, hw0y]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratPts_swap_col0 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),

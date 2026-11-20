@@ -12,28 +12,28 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r τ G x y`. Simplify using `[hermC, herm, Data.emb, map_sum, map_mul, emb_cc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sEmb : SEmb E := by
   intro r τ G x y
   simp [hermC, herm, Data.emb, map_sum, map_mul, emb_cc]
 
 /- English proof (translation)
-Introduce `r X x x' hx hx' h`. Conclude with `(((orthonormalFlagTranslate_holds (E := E)) r X).2.2 x hx x' hx' h).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sMajFlag : SMajFlag E := by
   intro r X x x' hx hx' h
   exact (((orthonormalFlagTranslate_holds (E := E)) r X).2.2 x hx x' hx' h).2
 
 /- English proof (translation)
-Introduce `r X x hx ho ρ hρ hρ1 Z hZ τ v`. Conclude with `((h r X x hx ho ρ hρ hρ1).1 Z hZ).2.2 τ v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem majorant_chart_of_normControl (h : OrthonormalChartNormControl (E := E)) : SMajXZ E := by
   intro r X x hx ho ρ hρ hρ1 Z hZ τ v
   exact ((h r X x hx ho ρ hρ hρ1).1 Z hZ).2.2 τ v
 
 /- English proof (translation)
-Introduce `r X x0 hx0 ho ρ' h1 h2 Z1 hZ1 z hz hsf τ v`. Establish `hdom : X.xZ x0 Z1 ∈ X.dom` using `OrthonormalChartBounds.xZ_mem_dom X hx0 ho (by linarith)`. Rewrite using `[sMajFlag r X z _ hz hdom hsf]`. Conclude with `hm r X x0 hx0 ho ρ' h1 h2 Z1 hZ1 τ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sCmp_of (hm : SMajXZ E) : SCmp E := by
   intro r X x0 hx0 ho ρ' h1 h2 Z1 hZ1 z hz hsf τ v
@@ -42,9 +42,9 @@ theorem sCmp_of (hm : SMajXZ E) : SCmp E := by
   exact hm r X x0 hx0 ho ρ' h1 h2 Z1 hZ1 τ v
 
 /- English proof (translation)
-Introduce `r X x y n h τ`. Establish `hcol : ∀ (z : Frame X.Ψ r) (a : Fin r), col (mat (X.lmulC n z) τ) a = (n τ).mulVec (col (mat z τ) a)`. Introduce `z a`. Use function extensionality and compare the values at `k`. Simplify using `[col, mat, Data.lmulC, Matrix.of_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [hcol]`. Establish `hr : ∀ z : Frame X.Ψ r, (Set.range fun a : Fin X.p0 => (n τ).mulVec (col (mat z τ) (Fin.castLE X.p0_le a))) = (Matrix.mulVecLin (n τ)) '' Set.range (fun a : Fin X.p0 => col (mat z τ) (Fin.castLE X.p0_le a))` using `fun z => by rw [← Set.range_comp]; rfl`. Rewrite using `[hr, hr, Submodule.span_image, Submodule.span_image, h τ]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sFlagMap : SFlagMap E := by
   intro r X x y n h τ
@@ -62,7 +62,7 @@ theorem sFlagMap : SFlagMap E := by
   rw [hr, hr, Submodule.span_image, Submodule.span_image, h τ]
 
 /- English proof (translation)
-Introduce `c1 w hc1 hw`. Unfold `d6rh`. Establish `hπ` using `Real.pi_gt_three`. Establish `hpos : 0 < 12 * Real.pi * (c1 + w)` using `by positivity`. Use `⟨by positivity, one_div_le_one_div_of_le (by norm_num) ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -75,9 +75,9 @@ theorem radius_pos_le_tenth : RadiusPosLeTenth := by
   nlinarith
 
 /- English proof (translation)
-Introduce `r f d rd NA NC ep t hd hrd hNA hep ht ht1`. Unfold `frameIndexBound`. Establish `hP0 : 0 ≤ (f : ℝ) * ((2 * f * (r - 2) : ℕ) : ℝ) ^ 3 * d * NA` using `mul_nonneg (mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg (Nat.cast_nonneg _) 3)) hd) hNA`. Establish `hS : Real.sqrt (NC ^ 2 * rd / (t * ep)) = Real.sqrt (NC ^ 2 * rd / ep) / Real.sqrt t`. Rewrite using `[← Real.sqrt_div' _ ht.le, div_div, mul_comm ep t]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htt : t ≤ Real.sqrt t`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, mul_nonneg hP0 (Real.sqrt_nonneg _)⟩` and prove the remaining obligations. Rewrite using `[hS]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_left (Real.sqrt_nonneg _) ht htt) hP0) (le_of_eq (mul_div_assoc _ _ _).symm)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kato_norm_relation_tame_prime : KatoClassHeckeEulerFactorRelation := by
   intro r f d rd NA NC ep t hd hrd hNA hep ht ht1
@@ -95,13 +95,13 @@ theorem kato_norm_relation_tame_prime : KatoClassHeckeEulerFactorRelation := by
     (div_le_div_of_nonneg_left (Real.sqrt_nonneg _) ht htt) hP0) (le_of_eq (mul_div_assoc _ _ _).symm)
 
 /- English proof (translation)
-Introduce `ρ κ hρ hρ1 hκ0 hκ`. Use `set s := ρ / 100 with hs`. Use `set q := (1 - s) / (1 + s) with hqdef`. Establish `hs0 : 0 < s` using `by positivity`. Establish `hs1 : s ≤ 1 / 1000` using `by rw [hs]; linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : 0 < q` using `div_pos (by linarith) (by linarith)`. Establish `hq : 998 / 1000 ≤ q`. Rewrite using `[hqdef, le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hκ' : κ ≤ ρ / 998` using `le_trans hκ (div_le_div_of_nonneg_left hρ.le (by norm_num) (by linarith))`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : 3 * κ / q * (1 + s) ≤ ρ / 300`. Rewrite using `[div_mul_eq_mul_div, div_le_div_iff₀ hq0 (by norm_num)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hκ' (by linarith : (0 : ℝ) ≤ 1 + s), mul_le_mul_of_nonneg_left hq hρ.le]`. Establish `ha0 : 0 ≤ 3 * κ / q * (1 + s)` using `mul_nonneg (div_nonneg (by linarith) hq0.le) (by linarith)`. Establish `ha1 : 3 * κ / q * (1 + s) ≤ 1 / 3000` using `by linarith`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by linarith, by linarith, ?_⟩` and prove the remaining obligations. Rewrite using `[div_lt_iff₀ (by linarith)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left ha1 hρ.le]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem final_numerical_inequalities : UnipotentMoveNumericalInequalities := by
   intro ρ κ hρ hρ1 hκ0 hκ
@@ -127,7 +127,7 @@ theorem final_numerical_inequalities : UnipotentMoveNumericalInequalities := by
   nlinarith [mul_le_mul_of_nonneg_left ha1 hρ.le]
 
 /- English proof (translation)
-Establish `h` using `NumberField.IsTotallyComplex.finrank E`. Establish `hp : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Unfold `fdeg`. Rewrite `hp`, the goal using `[h]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fdeg_pos : 0 < fdeg E := by
   have h := NumberField.IsTotallyComplex.finrank E
@@ -137,7 +137,7 @@ theorem fdeg_pos : 0 < fdeg E := by
   omega
 
 /- English proof (translation)
-Establish `hl : 0 ≤ Real.log (2 * K * (4 * f))` using `Real.log_nonneg (by nlinarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private lemma add_log_add_pos_of_one_le (w f K : ℝ) (hw : 1 ≤ w) (hf : 1 ≤ f) (hK : 1 ≤ K) :
     0 < w + 4 * f * Real.log (2 * K * (4 * f)) + 4 * f + 2 := by
@@ -145,11 +145,9 @@ private lemma add_log_add_pos_of_one_le (w f K : ℝ) (hw : 1 ≤ w) (hf : 1 ≤
   nlinarith
 
 /- English proof (translation)
-Introduce `r X c1 w hc1 hw`. Establish `hf : (1 : ℝ) ≤ fdeg E` using `by exact_mod_cast fdeg_pos`. Establish `hd : 0 < dE E`. Unfold `dE`. Conclude with `abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero E))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hg : (0 : ℝ) < X.g` using `by exact_mod_cast X.g_pos`. Establish `hNC : (0 : ℝ) < X.NC` using `by exact_mod_cast X.NC_pos`. Simplify using `only [flowEpsilonBound]`. Use `lt_min one_pos (div_pos (pow_pos (by linarith) 2) ?_)` and prove the remaining obligations. Use `mul_pos (mul_pos (mul_pos (pow_pos (mul_pos hg (pow_pos hd 2)) 2) (pow_pos hNC 2)) hc1) ?_` and prove the remaining obligations.
-
-Conclude with `add_log_add_pos_of_one_le w _ _ hw hf (le_add_of_nonneg_right (mul_nonneg (by positivity) (by linarith)))`.
+Establish an intermediate fact. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem epsilonZero_pos : EpsilonZeroPos E := by
   intro r X c1 w hc1 hw

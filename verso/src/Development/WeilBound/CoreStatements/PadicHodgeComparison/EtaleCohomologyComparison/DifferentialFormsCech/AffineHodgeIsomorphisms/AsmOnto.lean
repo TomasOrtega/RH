@@ -12,9 +12,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 namespace CrystallineSemistableComparison.Om.L2
 
 /- English proof (translation)
-Introduce `K _ _`. Use `⟨fun q _ _ a => Classical.choose (hEx K q a), fun _ _ => 1, fun _ _ => Or.inl rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X Y q p _ _ _ _ u hu a x`. Conclude with `hNat q p u hu a _ _ (Classical.choose_spec (hEx K q a)) (Classical.choose_spec (hEx K p a)) x`. Introduce `X q _ _ a b c h x y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_smul]`. Conclude with `hCup q a b c h _ _ _ (Classical.choose_spec (hEx K q a)) (Classical.choose_spec (hEx K q b)) (Classical.choose_spec (hEx K q c)) x y`. Introduce `X q _ _`. Conclude with `hOne q _ (Classical.choose_spec (hEx K q 0))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem asm_of
     (hEx : ∀ (K : Type) [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [IsAffine X] [Smooth q] (a : ℕ),
@@ -51,7 +51,7 @@ theorem asm_of
     exact hOne q _ (Classical.choose_spec (hEx K q 0))
 
 /- English proof (translation)
-Conclude with `asm_of (fun K _ _ _ q _ _ a => hTop q a (hGlue hA hN K q a)) hNat hCup hOne`.
+A detailed English derivation is pending.
 -/
 theorem asm_onto (hA : CrystallineSemistableComparison.Onto.AffOm) (hN : CrystallineSemistableComparison.Onto.OmNat)
     (hTop : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (a : ℕ),

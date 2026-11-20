@@ -34,9 +34,9 @@ theorem map_self (S : Submodule k U) : S.map S.mkQ = ⊥ := by
   simp
 
 /- English proof (translation)
-Establish `e` using `quotEquiv A S S le_rfl`. Establish `h2 : (S.map S.mkQ).submoduleOf (A.map S.mkQ) = ⊥`. Rewrite using `[map_self]`. Simplify using `[Submodule.submoduleOf]`. Establish `e2` using `e.trans (Submodule.quotEquivOfEqBot _ h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `e2.finiteDimensional`.
+A detailed English derivation is pending.
 -/
 theorem fin_map (A S : Submodule k U) (h : FiniteDimensional k (↥A ⧸ S.submoduleOf A)) :
     FiniteDimensional k (A.map S.mkQ) := by
@@ -47,7 +47,7 @@ theorem fin_map (A S : Submodule k U) (h : FiniteDimensional k (↥A ⧸ S.submo
   exact e2.finiteDimensional
 
 /- English proof (translation)
-Rewrite using `[(quotEquiv A B S hSB).finrank_eq, ← Submodule.finrank_quotient_add_finrank ((B.map S.mkQ).submoduleOf (A.map S.mkQ)), (Submodule.submoduleOfEquivOfLe (Submodule.map_mono hBA)).finrank_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_quot (A B S : Submodule k U) (hSB : S ≤ B) (hBA : B ≤ A)
     [FiniteDimensional k (A.map S.mkQ)] :
@@ -58,9 +58,9 @@ theorem finrank_quot (A B S : Submodule k U) (hSB : S ≤ B) (hBA : B ≤ A)
     (Submodule.submoduleOfEquivOfLe (Submodule.map_mono hBA)).finrank_eq]
 
 /- English proof (translation)
-Apply `le_antisymm (Submodule.map_inf_le _)` to reduce the goal to its premises. Introduce and unpack `y ⟨⟨a, ha, rfl⟩, b, hb, hab⟩`. Use `⟨b, ⟨?_, hb⟩, hab⟩` and prove the remaining obligations. Establish `: b - a ∈ S`. Simplify `hab` using `[Submodule.Quotient.eq]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using A.add_mem (hA this) ha`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_inf_mkQ (A B S : Submodule k U) (hA : S ≤ A) :
     (A ⊓ B).map S.mkQ = A.map S.mkQ ⊓ B.map S.mkQ := by
@@ -72,9 +72,9 @@ theorem map_inf_mkQ (A B S : Submodule k U) (hA : S ≤ A) :
   simpa using A.add_mem (hA this) ha
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro y hy`. Simplify using `using hy`. Consider the case `succ m ih => intro y hy`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQ _ (ih y hy)`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem (N : Module.End k U) (Q : Submodule k U) (hQ : ∀ y ∈ Q, N y ∈ Q) (m : ℕ) :
     ∀ y ∈ Q, (N ^ m) y ∈ Q := by
@@ -83,9 +83,9 @@ theorem pow_mem (N : Module.End k U) (Q : Submodule k U) (hQ : ∀ y ∈ Q, N y 
   | succ m ih => intro y hy; rw [pow_succ', Module.End.mul_apply]; exact hQ _ (ih y hy)
 
 /- English proof (translation)
-Establish `hmono : Monotone (fun m : ℕ => Q.comap (N ^ m))`. Apply `monotone_nat_of_le_succ` to reduce the goal to its premises. Introduce `m z hz`. Simplify using `only [Submodule.mem_comap] at hz ⊢`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQ _ hz`. Rewrite using `[Submodule.mem_iSup_of_directed _ hmono.directed_le]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_gen (N : Module.End k U) (Q : Submodule k U) (hQ : ∀ y ∈ Q, N y ∈ Q) (y : U) :
     y ∈ (⨆ m : ℕ, Q.comap (N ^ m)) ↔ ∃ m : ℕ, (N ^ m) y ∈ Q := by
@@ -98,9 +98,9 @@ theorem mem_gen (N : Module.End k U) (Q : Submodule k U) (hQ : ∀ y ∈ Q, N y 
   rfl
 
 /- English proof (translation)
-Establish `hle : ∀ j : ℕ, (Q.map (N ^ j)).map S.mkQ ≤ Q.map S.mkQ` using `fun j => Submodule.map_mono (by rintro _ ⟨y, hy, rfl⟩; exact pow_mem N Q hQ j y hy)`. Establish `hfin : ∀ j : ℕ, FiniteDimensional k ((Q.map (N ^ j)).map S.mkQ)` using `fun j => Submodule.finiteDimensional_of_le (hle j)`. Take `⟨M, hM⟩ : ∃ M : ℕ, ∀ j : ℕ, Module.finrank k ((Q.map (N ^ M)).map S.mkQ) ≤ Module.finrank k ((Q.map (N ^ j)).map S.mkQ)` from `⟨Function.argmin (fun j : ℕ => Module.finrank k ((Q.map (N ^ j)).map S.mkQ)), fun j => Function.argmin_le (fun j : ℕ => Module.finrank k ((Q.map (N ^ j)).map S.mkQ)) j⟩`. Use `⟨M, fun m => ?_⟩` and prove the remaining obligations. Establish `h1 : (Q.map (N ^ (M + m))).map S.mkQ ≤ (Q.map (N ^ M)).map S.mkQ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Submodule.map_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨(N ^ m) y, pow_mem N Q hQ m y hy, by rw [pow_add, Module.End.mul_apply]⟩`. Use `haveI := hfin M`. Conclude with `(Submodule.eq_of_le_of_finrank_le h1 (hM _)).ge`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stab (N : Module.End k U) (Q S : Submodule k U) (hQ : ∀ y ∈ Q, N y ∈ Q)
     [FiniteDimensional k (Q.map S.mkQ)] :
@@ -122,13 +122,13 @@ theorem stab (N : Module.End k U) (Q S : Submodule k U) (hQ : ∀ y ∈ Q, N y �
   exact (Submodule.eq_of_le_of_finrank_le h1 (hM _)).ge
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `u ⟨huP, hu⟩`. Take `⟨m, hm⟩` from `(mem_gen N Q hQ u).1 hu`. Take `⟨M, hM⟩` from `stab N Q S hQ`. Take `⟨_, ⟨q, hq, rfl⟩, h⟩` from `hM m (Submodule.mem_map_of_mem (Submodule.mem_map_of_mem (f := N ^ M) hm))`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h' : (N ^ M) ((N ^ m) u) - (N ^ (M + m)) q ∈ S`. Simplify `h.symm` using `[Submodule.Quotient.eq]`. Establish `hu' : u = (u - q) + q` using `by abel`. Rewrite using `[hu']`. Use `Submodule.add_mem_sup ⟨P.sub_mem huP (hQP hq), (mem_gen N S hS _).2 ⟨M + m, ?_⟩⟩ hq` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub]`. Use `h' using 2` and compare the differences between its conclusion and the goal. Rewrite using `[pow_add, Module.End.mul_apply]`. Use `sup_le (inf_le_inf_left _ (iSup_mono fun m => Submodule.comap_mono hSQ)) (le_inf hQP ?_)` and prove the remaining obligations. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_gen N Q hQ y).2 ⟨0, by simpa using hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_sup (N : Module.End k U) (P Q S : Submodule k U) (hSQ : S ≤ Q) (hQP : Q ≤ P)
     (hQ : ∀ y ∈ Q, N y ∈ Q) (hS : ∀ y ∈ S, N y ∈ S) [FiniteDimensional k (Q.map S.mkQ)] :
@@ -152,17 +152,15 @@ theorem gen_sup (N : Module.End k U) (P Q S : Submodule k U) (hSQ : S ≤ Q) (hQ
     exact (mem_gen N Q hQ y).2 ⟨0, by simpa using hy⟩
 
 /- English proof (translation)
-Introduce `k U _ _ _ T P Q S hSQ hQP _ hQ hS hfin x`. Unfold `gmult`. Use `set N := T - algebraMap k (Module.End k U) x with hN`. Establish `hst : ∀ A : Submodule k U, (∀ y ∈ A, T y ∈ A) → ∀ y ∈ A, N y ∈ A`. Introduce `A hA y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: N y = T y - x • y` using `by simp [hN, Module.algebraMap_end_apply]`. Rewrite using `[this]`. Conclude with `A.sub_mem (hA y hy) (A.smul_mem x hy)`. Use `haveI hP := fin_map P S hfin`. Establish `hf : ∀ A : Submodule k U, A ≤ P → FiniteDimensional k (A.map S.mkQ)` using `fun A hA => Submodule.finiteDimensional_of_le (Submodule.map_mono hA)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hf Q hQP`. Establish `hSG : S ≤ ⨆ m : ℕ, S.comap (N ^ m)` using `fun y hy => (mem_gen N S (hst S hS) y).2 ⟨0, by simpa using hy⟩`. Establish `h1` using `gen_sup N P Q S hSQ hQP (hst Q hQ) (hst S hS)`. Use `set G := ⨆ m : ℕ, S.comap (N ^ m) with hG`. Establish `h2 : Q ⊓ G = (P ⊓ G) ⊓ Q`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inf_right_comm, inf_eq_right.2 hQP]`. Rewrite using `[h1, h2]`. Use `set A := P ⊓ G with hA`. Establish `hSA : S ≤ A` using `le_inf (hSQ.trans hQP) hSG`. Use `haveI := hf A inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `haveI := hf (A ⊔ Q) (sup_le inf_le_left hQP)`. Use `haveI := hf (A ⊓ Q) (inf_le_right.trans hQP)`. Establish `e1` using `finrank_quot A S S le_rfl hSA`. Establish `e2` using `finrank_quot (A ⊔ Q) Q S hSQ le_sup_right`. Establish `e3` using `finrank_quot (A ⊓ Q) S S le_rfl (le_inf hSA hSQ)`.
-
-Establish `e4` using `Submodule.finrank_sup_add_finrank_inf_eq (A.map S.mkQ) (Q.map S.mkQ)`. Rewrite `e4` using `[← Submodule.map_sup, ← map_inf_mkQ A Q S hSA]`. Rewrite `e1`, `e3` using `[map_self, finrank_bot]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {k U : Type} [Field k] [AddCommGroup U] [Module k U] (T : Module.End k U) (P Q S : Submodule k U), S ≤ Q → Q ≤ P → (∀ x ∈ P, T x ∈ P) → (∀ x ∈ Q, T x ∈ Q) → (∀ x ∈ S, T x ∈ S) → FiniteDimensional k (↥P ⧸ S.submoduleOf P) → ∀ x : k, gmult T P S x = gmult T P Q x + gmult T Q S x := by
   intro k U _ _ _ T P Q S hSQ hQP _ hQ hS hfin x

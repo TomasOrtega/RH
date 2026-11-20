@@ -5,25 +5,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Use `set U : Subgroup C := (powR φ.range l).comap φ.rangeRestrict with hUdef`. Establish `hU : ∀ x, x ∈ U ↔ ∃ y, (φ y) ^ l = φ x`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, y, rfl⟩, hy⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨y, congrArg Subtype.val hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨⟨φ y, y, rfl⟩, Subtype.ext hy⟩`. Establish `h1 : Nat.card (φ.range ⊓ torK C l : Subgroup C) = U.index`. Rewrite using `[hUdef, Subgroup.index_comap_of_surjective _ φ.rangeRestrict_surjective, (cardTors φ.range).1 l]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.card_congr ⟨fun x => ⟨⟨x.1, x.2.1⟩, Subtype.ext x.2.2⟩, fun x => ⟨x.1.1, x.1.2, congrArg Subtype.val x.2⟩, fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations. Establish `hle : U ≤ U.comap ψ`. Introduce `x hx`. Take `⟨y, hy⟩` from `(hU x).1 hx`. Conclude with `(hU _).2 ⟨ψ y, by rw [hc, hc, ← hy, map_pow]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set S : C ⧸ U →* C ⧸ U := QuotientGroup.map U U ψ hle with hS`. Set `T : AddMonoid.End (Additive (C ⧸ U))` to `MonoidHom.toAdditive S`. Establish `hT : ∀ n (x : C), (T ^ n) (Additive.ofMul (x : C ⧸ U)) = Additive.ofMul ((ψ^[n] x : C) : C ⧸ U)`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `x`. Rewrite using `[pow_succ, Function.iterate_succ_apply, ← ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hT0 : T ^ N = 0`. Use `AddMonoidHom.ext fun v => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `QuotientGroup.mk_surjective (Additive.toMul v)`. Establish `: v = Additive.ofMul (x : C ⧸ U)` using `by rw [hx]; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `this` using the available equality. Establish `h` using `hT N x`. Rewrite `h` using `[(QuotientGroup.eq_one_iff _).2 ((hU _).2 (hN x))]`. Conclude with `h`. Establish `h2` using `nilCard _ T N hT0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : (AddMonoidHom.range T).index = S.range.index` using `rfl`. Establish `h4 : S.range.index ∣ (powR C l ⊔ ψ.range).index`. Rewrite using `[← Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective U)]`. Use `Subgroup.index_dvd_of_le (sup_le ?_ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `((QuotientGroup.eq_one_iff _).2 ((hU _).2 ⟨x, by simp⟩)).symm`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨(x : C ⧸ U), rfl⟩`.
-
-Rewrite using `[h1]`. Use `le_trans (le_of_eq ?_) (h2.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite using `[h3]`. Conclude with `Nat.pow_le_pow_left (Nat.le_of_dvd (Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite) h4) N`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.FW.card_range_inf_torsion_le_index_pow (l : ℕ) [Fact l.Prime] (C : Type) [CommGroup C] [Finite C]
     (φ ψ : C →* C) (N : ℕ) (hc : ∀ x, φ (ψ x) = ψ (φ x))
@@ -83,21 +81,19 @@ private theorem UpperTheory.V.FW.card_range_inf_torsion_le_index_pow (l : ℕ) [
     exact Nat.pow_le_pow_left (Nat.le_of_dvd (Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite) h4) N
 
 /- English proof (translation)
-Introduce `l _ G C _ _ _ ρ J γ Jc γc θ N hJJ hJ hγ hθ hmem`. Establish `key : ∀ (g : G) (gc : C →* C), (∀ x, ρ g (Additive.ofMul x) = Additive.ofMul (gc x)) → ∀ x, ρ.asAlgebraHom (1 - MonoidAlgebra.of ℤ G g) (Additive.ofMul x) = Additive.ofMul ((MonoidHom.id C / gc) x)`. Introduce `g gc h x`. Rewrite using `[map_sub, map_one, Representation.asAlgebraHom_of, LinearMap.sub_apply, h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hφ` using `key J Jc hJ`. Establish `hψ` using `key γ γc hγ`. Use `set φ := MonoidHom.id C / Jc`. Use `set ψ := MonoidHom.id C / γc`. Use `set a := 1 - MonoidAlgebra.of ℤ G J with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `set b := 1 - MonoidAlgebra.of ℤ G γ with hb`. Establish `hit : ∀ n x, ρ.asAlgebraHom (b ^ n) (Additive.ofMul x) = Additive.ofMul (ψ^[n] x)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x`. Rewrite using `[pow_succ, map_mul, Module.End.mul_apply, hψ, ih, Function.iterate_succ_apply]`. Use `card_range_inf_torsion_le_index_pow l C φ ψ N (fun x => ?_) (fun x => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[← hφ, ← hψ, ← hψ, ← hφ, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]`. Establish `hmem' : b ^ N ∈ Ideal.span {θ, 1 + MonoidAlgebra.of ℤ G J, (l : MonoidAlgebra ℤ G)}`. Establish `: b = -(MonoidAlgebra.of ℤ G γ - 1)` using `by rw [hb, neg_sub]`. Rewrite using `[this, neg_pow]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ hmem`. Take `⟨u, w, hw, h1⟩` from `Ideal.mem_span_insert.1 hmem'`. Take `⟨v, z, h2⟩` from `Ideal.mem_span_pair.1 hw`. Establish `hJ2 : MonoidAlgebra.of ℤ G J * MonoidAlgebra.of ℤ G J = 1`. Rewrite using `[← map_mul, hJJ, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3 : a * b ^ N = u * (θ * a) + l • (a * z)`. Rewrite using `[h1, ← h2, ha, nsmul_eq_mul]`. Take the linear combination `(-v) * hJ2`. Use `⟨Additive.toMul (ρ.asAlgebraHom z (Additive.ofMul x)), ?_⟩` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
-
-Rewrite using `[ofMul_pow, ← hφ, ← hφ, ← hit, ofMul_toMul, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, h3, map_add, map_mul _ u, hθ, mul_zero, zero_add, map_nsmul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.core :
     ∀ (l : ℕ) [Fact l.Prime] (G C : Type) [CommGroup G] [CommGroup C] [Finite C] (ρ : Representation ℤ G (Additive C)) (J γ : G) (Jc γc : C →* C) (θ : MonoidAlgebra ℤ G) (N : ℕ), J * J = 1 → (∀ x, ρ J (Additive.ofMul x) = Additive.ofMul (Jc x)) → (∀ x, ρ γ (Additive.ofMul x) = Additive.ofMul (γc x)) → ρ.asAlgebraHom (θ * (1 - MonoidAlgebra.of ℤ G J)) = 0 → (MonoidAlgebra.of ℤ G γ - 1) ^ N ∈ Ideal.span {θ, 1 + MonoidAlgebra.of ℤ G J, (l : MonoidAlgebra ℤ G)} → Nat.card (difR Jc ⊓ torK C l : Subgroup C) ≤ (powR C l ⊔ difR γc).index ^ N := by

@@ -13,7 +13,7 @@ variable {p : ℕ} {A K C B : Type*} [CommRing A] [CommRing K] [CommRing C] [Com
   {i : C →+* B} {κ : K →+* B} {a : A →+* K}
 
 /- English proof (translation)
-Introduce `M hM` and use `by obtain ⟨D, hD⟩ := hL M hM refine ⟨D + 1, fun k => ?_⟩ obtain ⟨b, hb⟩ := hD (k + 1) have h1 : D + (k + 1) / M ≤ D + 1 + k / M := by rw [Nat.succ_div] split_ifs <;> omega obtain ⟨e, he⟩ := Nat.exists_eq_add_of_le h1 refine ⟨(p : A) ^ e * b, ?_⟩ rw [coeff_mk, he, pow_add, map_mul …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem OnDisc.shiftSeries {L : PowerSeries K} (hL : OnDisc p a L) :
     OnDisc p a (PowerSeries.mk fun k => coeff (k + 1) L) := fun M hM => by
@@ -29,13 +29,13 @@ theorem OnDisc.shiftSeries {L : PowerSeries K} (hL : OnDisc p a L) :
   ring
 
 /- English proof (translation)
-Introduce `r` and use `(h r).imp fun N hN n hn => hN (n + 1) (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Tends.shiftIndex {s : ℕ → B} {y : B} (h : Tends p i s y) : Tends p i (fun n => s (n + 1)) y :=
   fun r => (h r).imp fun N hN n hn => hN (n + 1) (by omega)
 
 /- English proof (translation)
-Establish `e : ∀ k ∈ range n, κ (coeff (k + 1) L) * x ^ (k + 1) = x * (κ (coeff k (PowerSeries.mk fun k => coeff (k + 1) L)) * x ^ k)` using `fun k _ => by`. Rewrite using `[coeff_mk, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[psum, psum, sum_range_succ', sum_congr rfl e, ← Finset.mul_sum, pow_zero, mul_one, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem psum_succ_shift (L : PowerSeries K) (x : B) (n : ℕ) :
     psum κ L x (n + 1) = κ (coeff 0 L) + x * psum κ (PowerSeries.mk fun k => coeff (k + 1) L) x n := by
@@ -46,7 +46,7 @@ theorem psum_succ_shift (L : PowerSeries K) (x : B) (n : ℕ) :
   rw [psum, psum, sum_range_succ', sum_congr rfl e, ← Finset.mul_sum, pow_zero, mul_one, add_comm]
 
 /- English proof (translation)
-Establish `h1 : Tends p i (fun n => psum κ L (i x) (n + 1)) (κ (coeff 0 L) + i x * u)`. Use `Tends.add (Tends.const (p := p) (i := i) (κ (coeff 0 L))) (Tends.mul_left hp ⟨0, x, by rw [pow_zero, one_mul]⟩ hu)` as an intermediate fact. Simplify `this` using `only [psum_succ_shift]`. Conclude with `Tends.unique hi (Tends.shiftIndex h) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsEval.shift [IsHausdorff (Ideal.span {(p : C)}) C] (hi : Function.Injective i) (hp : IsUnit (p : B))
     {L : PowerSeries K} {x : C} {y u : B} (h : IsEval p i κ L (i x) y)
@@ -66,7 +66,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per
 
 /- English proof (translation)
-Introduce `l _ K L hL x hx y hy`. Establish `hL'` using `OnDisc.shiftSeries hL`. Take `⟨u, hu, -⟩` from `existsUnique_ev hL' hx`. Conclude with `⟨_, u, hL', fun k => PowerSeries.coeff_mk _ _, hu, IsEval.shift (toB_injective K) (isUnit_l K) hy hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ev_shift : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (L : PowerSeries ↥K.1), OnDisc l (oK K) L →
     ∀ (x : AK K), thetaK K x = 0 → ∀ y : GlobalTheory.AcrisK.BK K, Ev L x y →

@@ -11,35 +11,31 @@ namespace GlobalTheory.CompanionTheory.Ar
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `F _ _ Ω _ _ R _ σ hσ`. Establish `hinj : Function.Injective σ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ)` to reduce the goal to its premises. Use extensionality with `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `[RingHom.mem_ker, Ideal.mem_comap]`. Use `set I : Ideal (𝓞 F) := differentIdeal ℤ (𝓞 F) with hIdef`. Establish `hI0 : I ≠ ⊥` using `differentIdeal_ne_bot`. Set `J : FractionalIdeal (𝓞 F)⁰ F` to `(I : FractionalIdeal (𝓞 F)⁰ F)`. Establish `hJ0 : J ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hI0` using `[J]`. Establish `hJ : J * J⁻¹ = 1` using `mul_inv_cancel₀ hJ0`. Set `σ' : 𝓞 F →+* R` to `σ.codRestrict R hσ`. Set `P : Ideal (𝓞 F)` to `(IsLocalRing.maximalIdeal R).comap σ'`. Establish `hP1 : (1 : 𝓞 F) ∉ P`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: (1 : R) ∈ IsLocalRing.maximalIdeal R` using `by simpa [P] using h`. Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal R).ne_top this`. Establish `hex : ∃ x ∈ I, ∃ y ∈ J⁻¹, ∃ u : 𝓞 F, algebraMap (𝓞 F) F u = algebraMap (𝓞 F) F x * y ∧ u ∉ P`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hcon`. Establish `hle : J * J⁻¹ ≤ (P : FractionalIdeal (𝓞 F)⁰ F)`. Rewrite using `[FractionalIdeal.mul_le]`. Introduce `a ha b hb`. Take `⟨x, hx, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hab : algebraMap (𝓞 F) F x * b ∈ (1 : FractionalIdeal (𝓞 F)⁰ F)`. Rewrite using `[← hJ]`. Conclude with `FractionalIdeal.mul_mem_mul ha hb`. Take `⟨u, hu⟩` from `(FractionalIdeal.mem_one_iff _).1 hab`. Rewrite using `[← hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(FractionalIdeal.mem_coeIdeal _).2 ⟨u, hcon x hx b hb u hu, rfl⟩`. Establish `h1 : (1 : F) ∈ (P : FractionalIdeal (𝓞 F)⁰ F)` using `hle (by rw [hJ]; exact FractionalIdeal.one_mem_one _)`. Take `⟨w, hw, hw1⟩` from `(FractionalIdeal.mem_coeIdeal _).1 h1`. Establish `: w = 1`. Apply `IsFractionRing.injective (𝓞 F) F` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `using hw1`. Conclude with `hP1 (this ▸ hw)`. Take `⟨x, hx, y, hy, u, hu, huP⟩` from `hex`. Establish `hunit : IsUnit (σ' u)`. Assume the negation of the conclusion as `hnu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `huP ((IsLocalRing.mem_maximalIdeal _).2 hnu)`. Establish `hσu : σ u ≠ 0`. Introduce `h0`. Establish `: σ' u = 0` using `Subtype.ext h0`. Rewrite `hunit` using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `not_isUnit_zero hunit`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Establish `: u = 0`. Apply `IsFractionRing.injective (𝓞 F) F` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hu`. Conclude with `hσu (by simp [this])`. Use `⟨x, hx, fun h => hx0 (hinj (by simpa using h)), fun d hd => ?_⟩` and prove the remaining obligations. Establish `hdJ : algebraMap (𝓞 F) F d ∈ J` using `(FractionalIdeal.mem_coeIdeal _).2 ⟨d, hd, rfl⟩`. Establish `hdy : algebraMap (𝓞 F) F d * y ∈ (1 : FractionalIdeal (𝓞 F)⁰ F)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hJ]`. Conclude with `FractionalIdeal.mul_mem_mul hdJ hy`. Take `⟨v, hv⟩` from `(FractionalIdeal.mem_one_iff _).1 hdy`. Establish `hrel : d * u = x * v`. Apply `IsFractionRing.injective (𝓞 F) F` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hu, hv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrel' : σ d * σ u = σ x * σ v` using `by rw [← map_mul, ← map_mul, hrel]`. Establish `hσx : σ x ≠ 0` using `fun h => hx0 (hinj (by simpa using h))`. Take `⟨w, hw⟩` from `hunit.exists_right_inv`.
-
-Establish `hw' : σ u * (w : Ω) = 1` using `congrArg Subtype.val hw`. Establish `key : σ d / σ x = σ v * (w : Ω)`. Rewrite using `[div_eq_iff hσx]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`.
-
-Conclude with `R.mul_mem (hσ v) w.2`.
+A detailed English derivation is pending.
 -/
 theorem differentIdeal_principal_in_localSubring :
     ∀ (F : Type) [Field F] [NumberField F] (Ω : Type) [Field Ω] [CharZero Ω] (R : Subring Ω)

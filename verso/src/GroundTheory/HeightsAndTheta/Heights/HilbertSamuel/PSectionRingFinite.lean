@@ -10,29 +10,27 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y a q w hy hw hgen`. Take `⟨n₀, hn₀⟩` from `hS K ι Ω y a q w hy hw hgen`. Use `choose G hG using fun m : ℕ => hL K ι Ω y a m hy`. Use `set P : Finset (ℕ × Ω) := (Finset.range (n₀ + 1)).biUnion fun m => (G m).image fun g => (m, g) with hP`. Establish `memP : ∀ m g, m ≤ n₀ → g ∈ G m → (m, g) ∈ P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m g hm hg`. Rewrite using `[hP, Finset.mem_biUnion]`. Conclude with `⟨m, Finset.mem_range.2 (Nat.lt_succ_of_le hm), Finset.mem_image.2 ⟨g, hg, rfl⟩⟩`. Establish `ofP : ∀ x ∈ P, x.2 ∈ chartLat y a x.1`. Introduce `x hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[hP, Finset.mem_biUnion]`. Take `⟨m, _, hx⟩` from `hx`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hx`. Rewrite using `[← hG m]`. Conclude with `AddSubgroup.subset_closure hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Fin P.card → ℕ × Ω` to `fun i => (P.equivFin.symm i).1`. Set `T : ℕ → Set Ω` to `fun n => {s | ∃ (i : Fin P.card) (μ : Fin q → ℕ), (f i).1 + ∑ j, μ j = n ∧ s = (f i).2 * ∏ j, w j ^ μ j}`. Establish `base : ∀ n, n ≤ n₀ → chartLat y a n ≤ AddSubgroup.closure (T n)`. Introduce `n hn`. Rewrite using `[← hG n, AddSubgroup.closure_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `g hg`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Apply the tactic sequence `refine ⟨P.equivFin ⟨(n, g), memP n g hn hg⟩, 0, ?_, ?_⟩ <;> simp [f]`. Establish `step : ∀ n (j : Fin q), ∀ s ∈ AddSubgroup.closure (T n), s * w j ∈ AddSubgroup.closure (T (n + 1))`. Introduce `n j s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, μ, hdeg, rfl⟩` from `hx`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨i, μ + Pi.single j 1, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, Finset.sum_add_distrib]`. Rewrite using `[← hdeg, Finset.sum_pi_single']`. Simplify using `[add_assoc]`. Establish `hprod : ∏ k, w k ^ ((μ + Pi.single j 1 : Fin q → ℕ) k) = (∏ k, w k ^ μ k) * w j`. Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[Fintype.prod_eq_single j]`. Simplify using the standard rewrite rules. Introduce `k hk`. Simplify using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hprod, mul_assoc]`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [add_mul]`. Conclude with `add_mem hx hz`. Consider the case `neg x _ hx => rw [neg_mul]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `neg_mem hx`. Use `⟨P.card, fun i => (f i).1, fun i => (f i).2, fun i => ofP _ (P.equivFin.symm i).2, ?_⟩` and prove the remaining obligations. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact base 0 (Nat.zero_le _)`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Distinguish the cases in `h : n + 1 ≤ n₀`. Conclude with `base _ h`. Establish `hn : n₀ ≤ n` using `by omega`. Use `(hn₀ n hn).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `t ⟨s, hs, j, rfl⟩`. Conclude with `step n j s (ih hs)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem SectionRingFinite.proof (hL : SectionLatticeFinite.Statement) (hS : SectionSpanStep.Statement) :
     SectionRingFinite.Statement := by

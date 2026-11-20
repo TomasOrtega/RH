@@ -5,7 +5,7 @@ import Formalism.GradedWeylDivisibility.FockSpaceTableaux.DualWeylNonDom
 namespace GlobalTheory.NonDomZero
 
 /- English proof (translation)
-Simplify using `only [Antitone, not_forall] at hν`. Take `⟨a, b, hab, hlt⟩` from `hν`. Use `⟨a, b, lt_of_le_of_ne hab ?_, lt_of_not_ge hlt⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hlt le_rfl`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_lt_lt_of_not_antitone {N : ℕ} {ν : Fin N → ℕ} (hν : ¬ Antitone ν) :
     ∃ a b : Fin N, a < b ∧ ν a < ν b := by
@@ -16,7 +16,7 @@ theorem exists_lt_lt_of_not_antitone {N : ℕ} {ν : Fin N → ℕ} (hν : ¬ An
   exact hlt le_rfl
 
 /- English proof (translation)
-Introduce `O _ _ _ N ν hν`. Conclude with `Formalism.GradedWeylDivisibility.dualWeylModuleNonDominant O N N ν (exists_lt_lt_of_not_antitone hν)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dualWeyl_eq_bot_of_not_antitone :
     ∀ (O : Type) [CommRing O] [IsDomain O] [CharZero O] (N : ℕ) (ν : Fin N → ℕ),

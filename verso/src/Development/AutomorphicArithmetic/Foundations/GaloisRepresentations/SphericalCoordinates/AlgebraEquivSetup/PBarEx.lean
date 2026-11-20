@@ -4,7 +4,7 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _`. Use `⟨(IsCMField.ringOfIntegersComplexConj E).toRingEquiv, fun a => ?_⟩` and prove the remaining obligations. Conclude with `IsCMField.coe_ringOfIntegersComplexConj E a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pBarEx :
     BarEx := by

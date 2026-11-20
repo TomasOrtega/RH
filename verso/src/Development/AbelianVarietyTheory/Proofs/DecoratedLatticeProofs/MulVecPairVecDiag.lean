@@ -22,7 +22,7 @@ def diagSnd (M : Matrix (Fin (n + n)) (Fin (n + n)) A) : Matrix (Fin n) (Fin n) 
   (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ + (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂
 
 /- English proof (translation)
-Rewrite using `[mulVec_pairVec, leviMat, diagSnd, add_mulVec, add_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_pairVec_diag (M : Matrix (Fin (n + n)) (Fin (n + n)) A) (x : Fin n → A) :
     M *ᵥ pairVec finSumFinEquiv x x =
@@ -30,20 +30,18 @@ theorem mulVec_pairVec_diag (M : Matrix (Fin (n + n)) (Fin (n + n)) A) (x : Fin 
   rw [mulVec_pairVec, leviMat, diagSnd, add_mulVec, add_mulVec]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[diagSnd, toBlocks₂₁, toBlocks₂₂]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem diagSnd_map (f : A →+* B) (M : Matrix (Fin (n + n)) (Fin (n + n)) A) :
     diagSnd (M.map f) = (diagSnd M).map f := by
   ext i j; simp [diagSnd, toBlocks₂₁, toBlocks₂₂]
 
 /- English proof (translation)
-Establish `h1 : Formalism.UG.cT σ (M.submatrix finSumFinEquiv finSumFinEquiv) * fromBlocks J 0 0 (-J) * M.submatrix finSumFinEquiv finSumFinEquiv = fromBlocks J 0 0 (-J)`. Rewrite using `[← submatrix_blkMat finSumFinEquiv, show Formalism.UG.cT σ (M.submatrix finSumFinEquiv finSumFinEquiv) = (Formalism.UG.cT σ M).submatrix finSumFinEquiv finSumFinEquiv from rfl, submatrix_mul_equiv, submatrix_mul_equiv]`. Conclude with `congrArg (fun X => X.submatrix finSumFinEquiv finSumFinEquiv) hM`. Rewrite `h1` using `[← fromBlocks_toBlocks (M.submatrix finSumFinEquiv finSumFinEquiv)]`. Simplify using `only [Formalism.UG.cT, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, fromBlocks_inj] at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨h11, h12, h21, h22⟩` from `h1`. Simplify using `only [Formalism.UG.cT, leviMat, diagSnd, Matrix.map_add _ (map_add σ), transpose_add, Matrix.add_mul, Matrix.mul_add]`. Use `set a := (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₁`. Use `set b := (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂`. Use `set c := (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set d := (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂`. Rewrite using `[← sub_eq_zero]`. Use `congrArg₂ (fun a b => a + b) (congrArg₂ (fun a b => a + b) h11 h12) (congrArg₂ (fun a b => a + b) h21 h22)` as an intermediate fact. Simplify using `only [add_zero, add_neg_cancel] at this`. Rewrite `this` using `[← sub_eq_zero]`.
-
-Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem isotropic_diag {σ : A →+* A} {J : Matrix (Fin n) (Fin n) A} {M : Matrix (Fin (n + n)) (Fin (n + n)) A}
     (hM : Formalism.UG.cT σ M * dblGram finSumFinEquiv J * M = dblGram finSumFinEquiv J) :
@@ -81,7 +79,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨g, hg, e⟩` from `hγ`. Establish `e' : matHom W γ = Formalism.UG.bc (incA D) g` using `e.symm`. Use `⟨g, hg, congrArg Units.val e', ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, e', ← map_inv]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_rat (W : HSp D) {γ : GA D W} (hγ : γ ∈ GQ W) :
     ∃ g : GL (Fin W.rank) D.host.E, g ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) W.gram ∧
@@ -93,9 +91,9 @@ theorem exists_rat (W : HSp D) {γ : GA D W} (hγ : γ ∈ GQ W) :
   rfl
 
 /- English proof (translation)
-Establish `hm : Formalism.UG.bc (incA D) g ∈ HR (AF D.host.F) D.sp.cm.sig W.gram`. Establish `hc : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) ((g : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D)) = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E)).map (incA D)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sigR, inclR]`. Establish `hg' : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E) * W.gram * (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E) = W.gram` using `hg`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) ((g : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D)) * W.gram.map (incA D) * (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D) = W.gram.map (incA D)`. Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hg']`. Conclude with `⟨⟨_, hm⟩, ⟨g, hg, rfl⟩, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_of_rat (W : HSp D) {g : GL (Fin W.rank) D.host.E}
     (hg : g ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) W.gram) :

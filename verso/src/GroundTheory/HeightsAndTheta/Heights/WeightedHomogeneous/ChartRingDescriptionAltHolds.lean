@@ -16,7 +16,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 omit [Fintype ι] in
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : Ideal.Quotient.mk P.ideal (X ⟨k, c k⟩) = 0` using `IsFractionRing.injective (CoordRing P) (FunField P) (h.trans (map_zero _).symm)`. Conclude with `hc k (Ideal.Quotient.eq_zero_iff_mem.mp h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genPt_ne_zero_of_isLive {P : ArithVariety n} {c : (k : ι) → Fin (n k + 1)}
     (hc : IsLive P c) (k : ι) : genPt P ⟨k, c k⟩ ≠ 0 := by
@@ -26,7 +26,7 @@ theorem genPt_ne_zero_of_isLive {P : ArithVariety n} {c : (k : ι) → Fin (n k 
   exact hc k (Ideal.Quotient.eq_zero_iff_mem.mp h1)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ (genPt_ne_zero_of_isLive hc k)`.
+A detailed English derivation is pending.
 -/
 theorem chartPow_ne_zero_of_isLive {P : ArithVariety n} {c : (k : ι) → Fin (n k + 1)}
     (hc : IsLive P c) (a : ι → ℤ) : chartPow P c a ≠ 0 :=
@@ -37,20 +37,18 @@ namespace AddBlockData
 variable {P : ArithVariety n} (D : AddBlockData P)
 
 /- English proof (translation)
-The claim follows from `mul_div_mul_right _ _ (chartPow_ne_zero_of_isLive hc _)`.
+A detailed English derivation is pending.
 -/
 theorem ξ_div_ξ_eq {c : (k : ι) → Fin (n k + 1)} (hc : IsLive P c) (i j : Fin (D.m + 1)) :
     D.ξ c i / D.ξ c j = D.x i / D.x j :=
   mul_div_mul_right _ _ (chartPow_ne_zero_of_isLive hc _)
 
 /- English proof (translation)
-Establish `hrange : (Set.range fun p : Coord D.dims ↦ D.yPlus p / D.yPlus ⟨p.1, D.chartPlus c j p.1⟩) = (Set.range fun v : Coord n ↦ genPt P v / genPt P ⟨v.1, c v.1⟩) ∪ Set.range fun i ↦ D.ξ c i / D.ξ c j`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_ | k, i⟩, rfl⟩`. Conclude with `Or.inr ⟨i, D.ξ_div_ξ_eq hc i j⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the second alternative.
 
-Conclude with `Or.inl ⟨⟨k, i⟩, rfl⟩`. Introduce and unpack `(⟨v, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `⟨⟨some v.1, v.2⟩, rfl⟩`. Conclude with `⟨⟨none, i⟩, (D.ξ_div_ξ_eq hc i j).symm⟩`. Rewrite using `[chartRingZ, hrange]`.
+Prove the first alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `Algebra.adjoin_mono (Set.union_subset_union_left _ fun x hx ↦ ?_)` and prove the remaining obligations. Conclude with `Algebra.subset_adjoin hx`. Rewrite using `[Algebra.adjoin_le_iff]`. Use `Set.union_subset (fun x hx ↦ ?_) fun x hx ↦ Algebra.subset_adjoin (Or.inr hx)` and prove the remaining obligations.
-
-Conclude with `Algebra.adjoin_mono Set.subset_union_left hx`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chartRingZ_chartPlus_eq {c : (k : ι) → Fin (n k + 1)} (hc : IsLive P c)
     (j : Fin (D.m + 1)) :
@@ -77,15 +75,13 @@ theorem chartRingZ_chartPlus_eq {c : (k : ι) → Fin (n k + 1)} (hc : IsLive P 
     exact Algebra.adjoin_mono Set.subset_union_left hx
 
 /- English proof (translation)
-Use `set S := Algebra.adjoin ℤ ((chartRing P c : Set (FunField P)) ∪ {(D.ξ c j)⁻¹})`. Use `set T := Algebra.adjoin ℤ ((chartRing P c : Set (FunField P)) ∪ Set.range fun i ↦ D.ξ c i / D.ξ c j)`. Establish `hAS : (chartRing P c : Set (FunField P)) ⊆ S` using `fun x hx ↦ Algebra.subset_adjoin (Or.inl hx)`. Establish `hAT : (chartRing P c : Set (FunField P)) ⊆ T` using `fun x hx ↦ Algebra.subset_adjoin (Or.inl hx)`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `x (hx | ⟨i, rfl⟩)`. Conclude with `hAS hx`. Use `show D.ξ c i / D.ξ c j ∈ S`. Rewrite using `[div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `S.mul_mem (hAS (D.chart c hc i)) (Algebra.subset_adjoin (Or.inr rfl))`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `x (hx | hx)`. Conclude with `hAT hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Substitute `hx` using the available equality. Take `⟨u, hu, hsum⟩` from `D.unit c hc`. Establish `h : (D.ξ c j)⁻¹ = ∑ i, u i * (D.ξ c i / D.ξ c j)`. Rewrite using `[← one_mul (D.ξ c j)⁻¹, ← hsum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
-
-Simplify using `only [ξ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `T.sum_mem fun i _ ↦ T.mul_mem (hAT (hu i)) (Algebra.subset_adjoin (Or.inr ⟨i, rfl⟩))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_ξ_div_eq_adjoin_inv {c : (k : ι) → Fin (n k + 1)} (hc : IsLive P c)
     (j : Fin (D.m + 1)) :
@@ -120,7 +116,7 @@ theorem adjoin_ξ_div_eq_adjoin_inv {c : (k : ι) → Fin (n k + 1)} (hc : IsLiv
 end AddBlockData
 
 /- English proof (translation)
-Introduce `ι _ _ n P D c hc j`. Conclude with `⟨D.chartRingZ_chartPlus_eq hc j, (D.chartRingZ_chartPlus_eq hc j).trans (D.adjoin_ξ_div_eq_adjoin_inv hc j)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ChartRingDescription.chartRingDescription_alt_holds : ChartRingDescription.Statement := by
   intro ι _ _ n P D c hc j
@@ -128,7 +124,7 @@ theorem ChartRingDescription.chartRingDescription_alt_holds : ChartRingDescripti
     (D.chartRingZ_chartPlus_eq hc j).trans (D.adjoin_ξ_div_eq_adjoin_inv hc j)⟩
 
 /- English proof (translation)
-The claim follows from `iff_of_true GroundTheory.Heights₂.Heights.ChartRingDescription.proof ChartRingDescription.chartRingDescription_alt_holds`.
+A detailed English derivation is pending.
 -/
 theorem ChartRingDescription.equiv :
     GroundTheory.Heights₂.Heights.ChartRingDescription.Statement ↔

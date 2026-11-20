@@ -21,7 +21,7 @@ section Geo
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => Subtype.ext (funext fun v => ?_))` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin a) (v.adicCompletion E) => x i j) (H v)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem af_ext {a : ℕ} {g h : GL (Fin a) (Af E)}
     (H : ∀ v, GeneralLinearGroup.map (pLoc E v) g = GeneralLinearGroup.map (pLoc E v) h) : g = h := by
@@ -29,7 +29,7 @@ theorem af_ext {a : ℕ} {g h : GL (Fin a) (Af E)}
   exact congrArg (fun x : GL (Fin a) (v.adicCompletion E) => x i j) (H v)
 
 /- English proof (translation)
-Use `af_ext fun v => ?_` and prove the remaining obligations. Distinguish the cases in `e : v = w`. Substitute `e` using the available equality. Simplify using `[map_mul, hy, pLoc_locGL]`. Simplify using `[map_mul, pLoc_locGL_of_ne e]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem comm_y {a : ℕ} (w : HeightOneSpectrum (𝓞 E)) {y : GL (Fin a) (Af E)}
     (hy : GeneralLinearGroup.map (pLoc E w) y = 1) (h : GL (Fin a) (w.adicCompletion E)) :
@@ -41,7 +41,7 @@ theorem comm_y {a : ℕ} (w : HeightOneSpectrum (𝓞 E)) {y : GL (Fin a) (Af E)
   · simp [map_mul, pLoc_locGL_of_ne e]
 
 /- English proof (translation)
-Use `⟨g * (locGL E a w (GeneralLinearGroup.map (pLoc E w) g))⁻¹, GeneralLinearGroup.map (pLoc E w) g, ?_, by simp⟩` and prove the remaining obligations. Simplify using `[map_mul, map_inv, pLoc_locGL]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_y {a : ℕ} (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (Af E)) :
     ∃ (y : GL (Fin a) (Af E)) (h : GL (Fin a) (w.adicCompletion E)),
@@ -50,9 +50,9 @@ theorem exists_y {a : ℕ} (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (Af 
   simp [map_mul, map_inv, pLoc_locGL]
 
 /- English proof (translation)
-Use `af_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.CTFin.Slice1.map_lev]`. Distinguish the cases in `e : v = w`. Substitute `e` using the available equality. Simplify using `only [pLoc_locGL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [pLoc_locGL_of_ne e]`. Conclude with `map_one _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lev_locGL (w : HeightOneSpectrum (𝓞 E)) (m : GLw r w × GLw s w) :
     lev (Af E) r s (locGL E r w m.1, locGL E s w m.2) = locGL E (r + s) w (lev (w.adicCompletion E) r s m) := by
@@ -65,7 +65,7 @@ theorem lev_locGL (w : HeightOneSpectrum (𝓞 E)) (m : GLw r w × GLw s w) :
     exact map_one _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `lev (Ad E) r s (finGL E r (locGL E r w m.1), finGL E s (locGL E s w m.2)) = finGL E (r + s) _`. Rewrite using `[GlobalTheory.CompanionTheory.CTFin.Slice1.lev_finGL, lev_locGL]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_lw (w : HeightOneSpectrum (𝓞 E)) (m : GLw r w × GLw s w) :
     lev (Ad E) r s (lw w m) = embW (r + s) w (lev (w.adicCompletion E) r s m) := by
@@ -73,11 +73,11 @@ theorem lev_lw (w : HeightOneSpectrum (𝓞 E)) (m : GLw r w × GLw s w) :
   rw [GlobalTheory.CompanionTheory.CTFin.Slice1.lev_finGL, lev_locGL]
 
 /- English proof (translation)
-Use `af_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.CTFin.IwaAd.map_unip]`. Distinguish the cases in `e : v = w`. Substitute `e` using the available equality. Rewrite using `[pLoc_locGL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `(Pi.single_eq_same (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) v (u p)).symm`. Rewrite using `[pLoc_locGL_of_ne e]`. Establish `: (fun p => pLoc E v (sLoc E w (u p))) = 0`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Conclude with `Pi.single_eq_of_ne (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) e (u p)`. Rewrite using `[this, unip_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locGL_unip (w : HeightOneSpectrum (𝓞 E)) (u : BlockIx (r + s) r → w.adicCompletion E) :
     locGL E (r + s) w (unip u) = unip fun p => sLoc E w (u p) := by
@@ -96,9 +96,9 @@ theorem locGL_unip (w : HeightOneSpectrum (𝓞 E)) (u : BlockIx (r + s) r → w
     rw [this, unip_zero]
 
 /- English proof (translation)
-Use `⟨fun p => sFin E (sLoc E w (u p)), ?_⟩` and prove the remaining obligations. Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[embW, MonoidHom.comp_apply, pInf_finGL, GlobalTheory.CompanionTheory.CTFin.IwaAd.map_unip]`. Establish `: (fun p => pInf E (sFin E (sLoc E w (u p)))) = 0`. Use function extensionality and compare the values at `p`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `map_zero (infEq E).symm`. Rewrite using `[this, unip_zero]`. Rewrite using `[embW, MonoidHom.comp_apply, pFin_finGL, GlobalTheory.CompanionTheory.CTFin.IwaAd.map_unip, locGL_unip]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem embW_unip (w : HeightOneSpectrum (𝓞 E)) (u : BlockIx (r + s) r → w.adicCompletion E) :
     ∃ v : BlockIx (r + s) r → Ad E, embW (r + s) w (unip u) = unip v := by
@@ -113,7 +113,7 @@ theorem embW_unip (w : HeightOneSpectrum (𝓞 E)) (u : BlockIx (r + s) r → w.
     rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(χ : _ →* ℂˣ) (GeneralLinearGroup.det (finGL E a (locGL E a w g))) = _`. Rewrite using `[det_finGL, finId_det_locGL]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chiDet_embW (χ : HChar E) {a : ℕ} (w : HeightOneSpectrum (𝓞 E)) (g : GLw a w) :
     chiDet a χ (embW a w g) = χ.loc w (GeneralLinearGroup.det g) := by
@@ -122,11 +122,11 @@ theorem chiDet_embW (χ : HChar E) {a : ℕ} (w : HeightOneSpectrum (𝓞 E)) (g
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `hL : (((Model.absC E z).loc w x : ℂˣ) : ℂ) = Complex.exp (z * GlobalTheory.Mem.Chr.CharModel.logNorm E (GlobalTheory.Mem.Chr.localIdele E w x))` using `rfl`. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Use `set n : ℤ := -WithZero.log (Valued.v (x : w.adicCompletion E)) with hn`. Establish `hx : Valued.v (x : w.adicCompletion E) = WithZero.exp (-n)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, neg_neg, WithZero.exp_log h0]`. Establish `hN : (0 : ℝ) < ((Ideal.absNorm w.asIdeal : ℕ) : ℝ)`. Establish `: (Ideal.absNorm w.asIdeal : ℕ) ≠ 0` using `by simpa [Ideal.absNorm_eq_zero_iff] using w.ne_bot`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Rewrite using `[hL, GlobalTheory.SmGL.val_absPow, GlobalTheory.Mem.Chr.CharModel.logNorm_local w x n hx, GlobalTheory.LGrp.BorelCompletion.nabs_completion, show WithZero.log (Valued.v (x : w.adicCompletion E)) = -n by rw [hn, neg_neg]]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : ((Formalism.UG.qV E w : ℕ) : ℝ) = ((Ideal.absNorm w.asIdeal : ℕ) : ℝ)` using `rfl`. Rewrite using `[hq, Complex.cpow_def_of_ne_zero (by exact_mod_cast (zpow_pos hN _).ne'), ← Complex.ofReal_log (zpow_pos hN _).le, Real.log_zpow]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem absC_loc (z : ℂ) (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompletion E)ˣ) :
     (Model.absC E z).loc w x = GlobalTheory.SmGL.absPow (w.adicCompletion E) z x := by
@@ -149,7 +149,7 @@ theorem absC_loc (z : ℂ) (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompleti
   ring
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmGL.deltaHalf_two]`. Establish `e : cc E r s (lw w m) = chiDet r (Model.absC E ((s : ℂ) / 2)) (embW r w m.1) * chiDet s (Model.absC E (-(r : ℂ) / 2)) (embW s w m.2)` using `rfl`. Rewrite using `[e, chiDet_embW, chiDet_embW, absC_loc, absC_loc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_lw (w : HeightOneSpectrum (𝓞 E)) (m : GLw r w × GLw s w) :
     cc E r s (lw w m) = GlobalTheory.SmGL.deltaHalf (w.adicCompletion E) (GlobalTheory.SmGL.Two (Fin r) (Fin s))
@@ -161,13 +161,13 @@ theorem cc_lw (w : HeightOneSpectrum (𝓞 E)) (m : GLw r w × GLw s w) :
   simp
 
 /- English proof (translation)
-Establish `key : ∀ q ∈ GlobalTheory.SmGL.parab (w.adicCompletion E) (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s))), ∀ i j : Fin (r + s), r ≤ (i : ℕ) → (j : ℕ) < r → (q : Matrix _ _ (w.adicCompletion E)) i j = 0`. Introduce `q hq i j hi hj`. Use `(GlobalTheory.SmGL.mem_parab_two _).1 hq (⟨i - r, by omega⟩ : Fin s) (⟨j, hj⟩ : Fin r)` as an intermediate fact. Apply the tactic sequence `convert this using 2 <;> apply Fin.ext <;> simp`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨u, m, h⟩` from `GlobalTheory.CompanionTheory.CTFin.IwaFin.exists_unip_mul_lev r s p.1 (key _ p.2) (key _ (inv_mem p.2))`. Use `⟨u, m, h, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Consider the cases of `x with`. Consider the case `false`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.SmGL.leviProj_apply, h, GlobalTheory.SmGL.two_false, GlobalTheory.SmGL.two_false]`. Establish `e : ∀ i : Fin r, GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl i) = Fin.castAdd s i` using `fun i => Fin.ext (by simp)`. Rewrite using `[e, e, unip_lev_cc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `true`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.SmGL.leviProj_apply, h, GlobalTheory.SmGL.two_true, GlobalTheory.SmGL.two_true]`. Establish `e : ∀ i : Fin s, GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr i) = Fin.natAdd r i` using `fun i => Fin.ext (by simp)`. Rewrite using `[e, e, unip_lev_nn]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -198,18 +198,18 @@ theorem parab_dec {w : HeightOneSpectrum (𝓞 E)} (p : GlobalTheory.SmGL.parab 
     rfl
 
 /- English proof (translation)
-Rewrite using `[cf, cf, map_mul, ← mul_assoc, infGL_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_fin_mul (k : Kinf E (r + s)) (a b : GL (Fin (r + s)) (Af E)) :
     cf (r + s) k (a * b) = finGL E (r + s) a * cf (r + s) k b := by
   rw [cf, cf, map_mul, ← mul_assoc, infGL_comm, mul_assoc]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `embW_unip w u`. Take `⟨v', hv'⟩` from `lev_mul_unip m v`. Establish `hc` using `comm_y w hy`. Establish `e0 : y * locGL E (r + s) w (unip u * lev (w.adicCompletion E) r s m₀ * g) = locGL E (r + s) w (unip u) * (locGL E (r + s) w (lev (w.adicCompletion E) r s m₀) * (y * locGL E (r + s) w g))`. Rewrite using `[map_mul, map_mul, ← mul_assoc, ← mul_assoc, hc, mul_assoc _ y, hc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Establish `hA : finGL E (r + s) (locGL E (r + s) w (unip u)) = unip v` using `hv`. Establish `e : lev (Ad E) r s m * cf (r + s) k (y * locGL E (r + s) w (unip u * lev (w.adicCompletion E) r s m₀ * g)) = unip v' * (lev (Ad E) r s (m * lw w m₀) * cf (r + s) k (y * locGL E (r + s) w g))`. Rewrite using `[e0, cf_fin_mul, cf_fin_mul, hA, map_mul, lev_lw, ← mul_assoc, hv']`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[sl_apply, sl_apply, e, hφ]`. Establish `hcc : ((cc E r s (lw w m₀) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hcm : ((cc E r s m : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Simplify using `only [map_mul (cc E r s), mul_inv, Units.val_mul, Units.val_inv_eq_inv_val]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -257,9 +257,9 @@ def smSub (ρ : Representation ℂ G V) : Submodule ℂ V where
     rw [map_smul, GlobalTheory.LGrp.mem_fixed.1 ha u hu]
 
 /- English proof (translation)
-Take `⟨U, hU, h⟩` from `hx`. Use `⟨U.comap (MulAut.conj g⁻¹).toMonoidHom, hU.preimage (by` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun a : G => g⁻¹ * a * g⁻¹⁻¹`. Use the proof step `fun_prop), GlobalTheory.LGrp.mem_fixed.2 fun u hu => ?_⟩`. Establish `e` using `GlobalTheory.LGrp.mem_fixed.1 h _ hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : u * g = g * ((MulAut.conj g⁻¹).toMonoidHom u)` using `by simp [MulAut.conj_apply, mul_assoc]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e', map_mul, Module.End.mul_apply, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smVec_translate [IsTopologicalGroup G] (ρ : Representation ℂ G V) {x : V} (hx : SmVec ρ x) (g : G) : SmVec ρ (ρ g x) := by
   obtain ⟨U, hU, h⟩ := hx
@@ -271,9 +271,9 @@ theorem smVec_translate [IsTopologicalGroup G] (ρ : Representation ℂ G V) {x 
   rw [← Module.End.mul_apply, ← map_mul, e', map_mul, Module.End.mul_apply, e]
 
 /- English proof (translation)
-Set `H : Subgroup G` to `{ carrier := {g | ρ g x = x} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `ρ (a * b) x = x`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := fun {a} ha => by`. Express the relevant statement in the definitionally equal form `ρ a⁻¹ x = x`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Conclude with `H.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (hU.mem_nhds (one_mem U)) fun u hu => h u hu)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_fix [IsTopologicalGroup G] (ρ : Representation ℂ G V) {x : V} {U : Subgroup G} (hU : IsOpen (U : Set G))
     (h : ∀ u ∈ U, ρ u x = x) : IsOpen {g | ρ g x = x} := by
@@ -296,7 +296,7 @@ section Node
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r s : ℕ} {t₁ : Tr E r} {t₂ : Tr E s}
 
 /- English proof (translation)
-Rewrite using `[Tr.space]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem node_space (t₁ : Tr E r) (t₂ : Tr E s) : (Tr.node t₁ t₂).space =
     Submodule.span ℂ {φ | MemInd2 (tw t₁.space ((s : ℂ) / 2)) (tw t₂.space (-(r : ℂ) / 2)) φ ∧
@@ -304,9 +304,9 @@ theorem node_space (t₁ : Tr E r) (t₂ : Tr E s) : (Tr.node t₁ t₂).space =
   rw [Tr.space]
 
 /- English proof (translation)
-Rewrite `hφ` using `[node_space]`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h => exact h.1.1 x g`. Consider the case `zero => rfl`. Consider the case `add a b _ _ ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `a.1 _ + b.1 _ = a.1 g + b.1 g`. Rewrite using `[ha, hb]`. Consider the case `smul c a _ ha`. Express the relevant statement in the definitionally equal form `c * a.1 _ = c * a.1 g`. Rewrite using `[ha]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem node_unip {φ : Sm E (r + s)} (hφ : φ ∈ (Tr.node t₁ t₂).space) (x : BlockIx (r + s) r → Ad E) (g : GA E (r + s)) :
     φ.1 (unip x * g) = φ.1 g := by
@@ -322,15 +322,15 @@ theorem node_unip {φ : Sm E (r + s)} (hφ : φ ∈ (Tr.node t₁ t₂).space) (
     rw [ha]
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `h`. Take `⟨a, ha, rfl⟩` from `Submodule.mem_map.1 h₁`. Take `⟨b, hb, rfl⟩` from `Submodule.mem_map.1 h₂`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨a, ha, b, hb, funext fun m => ?_⟩` and prove the remaining obligations. Establish `e : ((cc E r s m : ℂˣ) : ℂ) = ((chiDet r (Model.absC E ((s : ℂ) / 2)) m.1 : ℂˣ) : ℂ) * ((chiDet s (Model.absC E (-(r : ℂ) / 2)) m.2 : ℂˣ) : ℂ)` using `rfl`. Establish `h0 : ((cc E r s m : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Express the relevant statement in the definitionally equal form `(((cc E r s m)⁻¹ : ℂˣ) : ℂ) * (a.1 m.1 * ((chiDet r (Model.absC E ((s : ℂ) / 2)) m.1 : ℂˣ) : ℂ) * (b.1 m.2 * ((chiDet s (Model.absC E (-(r : ℂ) / 2)) m.2 : ℂˣ) : ℂ))) = _`. Rewrite `*` using `[Units.val_inv_eq_inv_val, e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Consider the case `zero`. Use `Submodule.zero_mem (tens2 V₁ V₂) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add a b _ _ ha hb`. Use `add_mem ha hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `[mul_add]`. Consider the case `smul c a _ ha`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `Submodule.smul_mem _ c ha using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tw_tens {V₁ : Submodule ℂ (Sm E r)} {V₂ : Submodule ℂ (Sm E s)} {F : GA E r × GA E s → ℂ}
     (hF : F ∈ tens2 (tw V₁ ((s : ℂ) / 2)) (tw V₂ (-(r : ℂ) / 2))) :
@@ -363,9 +363,9 @@ theorem tw_tens {V₁ : Submodule ℂ (Sm E r)} {V₂ : Submodule ℂ (Sm E s)} 
     ring
 
 /- English proof (translation)
-Rewrite `hφ` using `[node_space]`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h => exact tw_tens (h.1.2 k y)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem node_tens {φ : Sm E (r + s)} (hφ : φ ∈ (Tr.node t₁ t₂).space) (k : Kinf E (r + s)) (y : GL (Fin (r + s)) (Af E)) :
     sl k y φ ∈ tens2 t₁.space t₂.space := by
@@ -377,15 +377,13 @@ theorem node_tens {φ : Sm E (r + s)} (hφ : φ ∈ (Tr.node t₁ t₂).space) (
   | smul c a _ ha => rw [map_smul]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Rewrite `hφ`, the goal using `[node_space]`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Use `Submodule.subset_span ⟨⟨fun x y => ?_, fun k y => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (unip x * y * finGL E (r + s) g) = φ.1 (y * finGL E (r + s) g)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_assoc, h.1.1]`. Use `h.1.2 k (y * g) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Express the relevant statement in the definitionally equal form `φ.1 (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) y) * finGL E (r + s) g) = _`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Use `finVec_rt h.2 1 g` as an intermediate fact. Establish `e : cf (r + s) (1 : Kinf E (r + s)) g = finGL E (r + s) g` using `by simp [cf]`. Rewrite `this` using `[e]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem node_fin {φ : Sm E (r + s)} (hφ : φ ∈ (Tr.node t₁ t₂).space) (g : GL (Fin (r + s)) (Af E)) :
     finRep E (r + s) g φ ∈ (Tr.node t₁ t₂).space := by
@@ -415,7 +413,7 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r s : ℕ} {t₁ : Tr E r} {t₂ : Tr E s}
 
 /- English proof (translation)
-Rewrite using `[map_mul, ← mul_assoc, ← sl_fin]`. Use `congr 1`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 hfix u hu`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem slice_fixed {w : Pl E} {φ : Sm E (r + s)} (hφ : φ ∈ (Tr.node t₁ t₂).space)
     {U : Subgroup (GLw (r + s) w)} (hfix : φ ∈ GlobalTheory.PRep.fixed ((finRep E (r + s)).comp (locGL E (r + s) w)) U)
@@ -426,15 +424,15 @@ theorem slice_fixed {w : Pl E} {φ : Sm E (r + s)} (hφ : φ ∈ (Tr.node t₁ t
   exact GlobalTheory.LGrp.mem_fixed.1 hfix u hu
 
 /- English proof (translation)
-Take `⟨U, hU, hfix⟩` from `hs`. Establish `hx` using `prodFn_prodInv (node_tens hφ k (y * locGL E (r + s) w g))`. Set `K` to `w.adicCompletion E`. Set `D : GLw r w × GLw s w →* ℂˣ` to `(GlobalTheory.SmGL.deltaHalf K (GlobalTheory.SmGL.Two (Fin r) (Fin s))).comp (GlobalTheory.SmGL.leviTwo K (Fin r) (Fin s)).toMonoidHom`. Set `C : GLw r w × GLw s w →* GLw (r + s) w` to `(MulAut.conj g⁻¹).toMonoidHom.comp (lev K r s)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hlev : Continuous (lev K r s)` using `(GlobalTheory.SmGL.continuous_leviEmb K _).comp (GlobalTheory.SmGL.continuous_leviTwo K)`. Establish `hC : Continuous C`. Express the relevant statement in the definitionally equal form `Continuous fun a => g⁻¹ * lev K r s a * g⁻¹⁻¹`. Conclude with `(continuous_const.mul hlev).mul continuous_const`. Establish `hD : IsOpen (D.ker : Set (GLw r w × GLw s w))` using `(GlobalTheory.SmGL.isSmoothChar_deltaHalf K).comp (GlobalTheory.SmGL.leviTwo K (Fin r) (Fin s)).toMonoidHom (GlobalTheory.SmGL.continuous_leviTwo K)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U.comap C ⊓ D.ker, (hU.preimage hC).inter hD, GlobalTheory.LGrp.mem_fixed.2 fun u hu => ?_⟩` and prove the remaining obligations. Apply `prodFn_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Rewrite using `[prodFn_rt, hx]`. Establish `hl` using `sl_law w (fun x h => node_unip hφ x h) k hy 0 u g m`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : cc E r s (lw w u) = 1`. Rewrite using `[cc_lw]`. Conclude with `hu.2`. Establish `e2 : (unip (0 : BlockIx (r + s) r → K) * lev K r s u * g : GLw (r + s) w) = g * C u`. Rewrite using `[unip_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[C, MulAut.conj_apply, mul_assoc]`. Rewrite `hl` using `[e1, e2, slice_fixed hφ hfix k y g _ hu.1, Units.val_one, one_mul]`. Conclude with `hl.symm`.
+A detailed English derivation is pending.
 -/
 theorem smooth_slice {w : Pl E} (h₁ : ∀ g, ∀ x ∈ t₁.space, ((finRep E r).comp (locGL E r w)) g x ∈ t₁.space)
     (h₂ : ∀ g, ∀ x ∈ t₂.space, ((finRep E s).comp (locGL E s w)) g x ∈ t₂.space)
@@ -478,7 +476,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r s : ℕ} {t₁ : 
   {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
 
 /- English proof (translation)
-Take `⟨U, hU, hf⟩` from `ha`. Conclude with `⟨U, hU, GlobalTheory.LGrp.mem_fixed.2 fun u hu => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hf u hu)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smVec_sub {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     {S : Submodule ℂ V} (h : ∀ g, ∀ x ∈ S, ρ g x ∈ S) {a : S} (ha : SmVec (GlobalTheory.PRep.sub ρ S h) a) : SmVec ρ a.1 := by
@@ -486,11 +484,11 @@ theorem smVec_sub {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [
   exact ⟨U, hU, GlobalTheory.LGrp.mem_fixed.2 fun u hu => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hf u hu)⟩
 
 /- English proof (translation)
-Take `⟨u, m₀, hp, hl⟩` from `parab_dec p`. Use `set x := prodInv t₁.space t₂.space (sl k (y * locGL E (r + s) w g) φ) with hxd`. Establish `hx : prodFn t₁.space t₂.space x = sl k (y * locGL E (r + s) w g) φ` using `prodFn_prodInv (node_tens hφ k _)`. Establish `hx'` using `prodFn_prodInv (node_tens hφ k (y * locGL E (r + s) w (p.1 * g)))`. Establish `key : prodInv t₁.space t₂.space (sl k (y * locGL E (r + s) w (p.1 * g)) φ) = ((cc E r s (lw w m₀) : ℂˣ) : ℂ) • GlobalTheory.SmGL.extTensor (GlobalTheory.PRep.sub _ t₁.space h₁) (GlobalTheory.PRep.sub _ t₂.space h₂) m₀ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `prodFn_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Rewrite using `[hx', map_smul, Pi.smul_apply, prodFn_rt, hx, hp]`. Conclude with `sl_law w (fun a b => node_unip hφ a b) k hy u m₀ g m`. Rewrite using `[key, map_smul, tens_equiv (GlobalTheory.PRep.sub _ t₁.space h₁) (GlobalTheory.PRep.sub _ t₂.space h₂) τ₁ τ₂ _ _ (fun g a ha => e₁ g a.1 a.2 (smVec_sub h₁ ha)) (fun g a ha => e₂ g a.1 a.2 (smVec_sub h₂ ha)) (smooth_slice h₁ h₂ hφ hs k hy g) m₀]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = ((GlobalTheory.SmGL.deltaHalf (w.adicCompletion E) (GlobalTheory.SmGL.Two (Fin r) (Fin s)) (GlobalTheory.SmGL.leviProj (w.adicCompletion E) _ p) : ℂˣ) : ℂ) • (GlobalTheory.SmGL.extTensor τ₁ τ₂) ((GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin r) (Fin s)).symm (GlobalTheo …`. Rewrite using `[hl, MulEquiv.symm_apply_apply, cc_lw]`.
+A detailed English derivation is pending.
 -/
 theorem tens_law (h₁ : ∀ g, ∀ x ∈ t₁.space, ((finRep E r).comp (locGL E r w)) g x ∈ t₁.space)
     (h₂ : ∀ g, ∀ x ∈ t₂.space, ((finRep E s).comp (locGL E s w)) g x ∈ t₂.space)
@@ -528,15 +526,15 @@ theorem tens_law (h₁ : ∀ g, ∀ x ∈ t₁.space, ((finRep E r).comp (locGL 
   rw [hl, MulEquiv.symm_apply_apply, cc_lw]
 
 /- English proof (translation)
-Set `T` to `TensorProduct.map (ℓ₁ ∘ₗ t₁.space.subtype) (ℓ₂ ∘ₗ t₂.space.subtype)`. Set `Sb` to `(Tr.node t₁ t₂).space ⊓ smSub ((finRep E (r + s)).comp (locGL E (r + s) w))`. Set `F : Sb → GLw (r + s) w → X ⊗[ℂ] Y` to `fun φ g => T (prodInv t₁.space t₂.space (sl k (y * locGL E (r + s) w g) φ.1))`. Set `H` to `GlobalTheory.SmGL.parab (w.adicCompletion E) (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)))`. Set `σ : Representation ℂ H (X ⊗[ℂ] Y)` to `(GlobalTheory.SmGL.twist ((GlobalTheory.SmGL.extTensor τ₁ τ₂).comp (GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin r) (Fin s)).symm.toMonoidHom) (GlobalTheory.SmGL.deltaHalf (w.adicCompletion E) (GlobalTheory.SmGL.Two (Fin r) (Fin s)))).comp (GlobalTheory.SmGL.leviProj (w.ad …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hlaw : ∀ φ : Sb, F φ ∈ GlobalTheory.PRep.indSpace H σ` using `fun φ p g => tens_law h₁ h₂ ℓ₁ ℓ₂ τ₁ τ₂ e₁ e₂ φ.2.1 φ.2.2 k hy p g`. Establish `hop : ∀ φ : Sb, (⟨F φ, hlaw φ⟩ : GlobalTheory.PRep.indSpace H σ) ∈ GlobalTheory.PRep.smoothPart (GlobalTheory.PRep.ind H σ)` using `fun φ => by`. Take `⟨U, hU, hfix⟩` from `φ.2.2`. Use `isOpen_fix (GlobalTheory.PRep.ind H σ) hU fun u hu => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F φ (g * u) = F φ g`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [F]`. Rewrite using `[slice_fixed φ.2.1 hfix k y g u hu]`. Set `Λ₀ : Sb →ₗ[ℂ] GlobalTheory.SmGL.IndSp (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s))) ((GlobalTheory.SmGL.extTensor τ₁ τ₂).comp (GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin r) (Fin s)).symm.toMonoidHom)` to `{ toFun := fun φ => ⟨⟨F φ, hlaw φ⟩, hop φ⟩ map_add' := fun a b => Subtype.ext (Subtype.ext (funext fun g => by`. Express the relevant statement in the definitionally equal form `T _ = T _ + T _`. Simplify using `only [Submodule.coe_add, map_add]))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun c a => Subtype.ext (Subtype.ext (funext fun g => by`. Express the relevant statement in the definitionally equal form `T _ = c • T _`. Simplify using `only [Submodule.coe_smul, map_smul])) }`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend Λ₀`. Use `⟨Λ, fun φ hφ hs g => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hΛ (⟨φ, hφ, hs⟩ : Sb)` as an intermediate fact. Express the relevant statement in the definitionally equal form `Λ φ = Λ₀ _ at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_ind (h₁ : ∀ g, ∀ x ∈ t₁.space, ((finRep E r).comp (locGL E r w)) g x ∈ t₁.space)
     (h₂ : ∀ g, ∀ x ∈ t₂.space, ((finRep E s).comp (locGL E s w)) g x ∈ t₂.space)
@@ -588,19 +586,17 @@ end GlobalTheory.CompanionTheory.NodeSep
 open GlobalTheory.CompanionTheory.NodeSep in
 
 /- English proof (translation)
-Introduce `E _ _ _ r s t₁ t₂ w X Y _ _ _ _ τ₁ τ₂ H₁ H₂`. Take `⟨h₁, J₁, L₁, e₁, p₁⟩` from `H₁`. Take `⟨h₂, J₂, L₂, e₂, p₂⟩` from `H₂`. Establish `ex` using `fun (j : J₁ × J₂ × Kinf E (r + s) × {y : GL (Fin (r + s)) (Af E) // GeneralLinearGroup.map (pLoc E w) y = 1}) => exists_ind (t₁ := t₁) (t₂ := t₂) h₁ h₂ (L₁ j.1) (L₂ j.2.1) τ₁ τ₂ (fun g x hx hs => e₁ j.1 g x hx hs) (fun g x hx hs => e₂ j.2.1 g x hx hs) j.2.2.1 j.2.2.2.2`. Use `choose Λ hΛ using ex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g φ hφ => node_fin hφ _, _, Λ, fun j g φ hφ hs => ?_, fun φ hφ hs h0 => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Establish `hρ : ((finRep E (r + s)).comp (locGL E (r + s) w)) g φ ∈ (Tr.node t₁ t₂).space` using `node_fin hφ (locGL E (r + s) w g)`. Establish `hs'` using `smVec_translate ((finRep E (r + s)).comp (locGL E (r + s) w)) hs g`. Establish `a1` using `hΛ j _ hρ hs' x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `hΛ j _ hφ hs (x * g)`. Establish `e : sl j.2.2.1 (j.2.2.2.1 * locGL E (r + s) w x) (((finRep E (r + s)).comp (locGL E (r + s) w)) g φ) = sl j.2.2.1 (j.2.2.2.1 * locGL E (r + s) w (x * g)) φ`. Rewrite using `[MonoidHom.comp_apply, sl_fin, map_mul, mul_assoc]`. Rewrite `a1` using `[e]`. Conclude with `a1.trans a2.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ (k : Kinf E (r + s)) (g₀ : GL (Fin (r + s)) (Af E)) (m : GA E r × GA E s), φ.1 (lev (Ad E) r s m * cf (r + s) k g₀) = 0`. Introduce `k g₀ m`. Take `⟨y, h, hy, rfl⟩` from `exists_y w g₀`. Establish `hx0 : prodInv t₁.space t₂.space (sl k (y * locGL E (r + s) w h) φ) = 0`. Use `tens_sep (GlobalTheory.PRep.sub _ t₁.space h₁) (GlobalTheory.PRep.sub _ t₂.space h₂) (fun j => L₁ j ∘ₗ t₁.space.subtype) (fun j => L₂ j ∘ₗ t₂.space.subtype) (fun a ha hj => Subtype.ext (p₁ a.1 a.2 (smVec_sub h₁ ha) hj)) (fun a ha hj => Subtype.ext (p₂ a.1 a.2 (smVec_sub h₂ ha) hj …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hΛ (j₁, j₂, k, ⟨y, hy⟩) φ hφ hs h` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this.symm`. Establish `hsl : sl k (y * locGL E (r + s) w h) φ = 0`. Rewrite using `[← prodFn_prodInv (node_tens hφ k _), hx0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun hsl m` as an intermediate fact. Rewrite `this` using `[sl_apply]`. Conclude with `(mul_eq_zero.1 this).resolve_left (Units.ne_zero _)`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Take `⟨v, m, k, g, rfl⟩` from `exists_decomp x`.
-
-Rewrite using `[mul_assoc, node_unip hφ]`. Conclude with `hz k g m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.NodeSep.nodeMod : PositivityTheory.Rg.BcB.F.RS.NodeMod := by
   intro E _ _ _ r s t₁ t₂ w X Y _ _ _ _ τ₁ τ₂ H₁ H₂

@@ -5,13 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Establish `hv : ∀ i : ℕ, ∃ v : K, {m | PowerSeries.coeff i (c m) = v} ∈ (U : Filter ℕ)`. Introduce `i`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hall : ∀ v : K, {m | PowerSeries.coeff i (c m) = v}ᶜ ∈ U` using `fun v => Ultrafilter.compl_mem_iff_notMem.2 (hno v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinter : (⋂ v : K, {m | PowerSeries.coeff i (c m) = v}ᶜ) ∈ (U : Filter ℕ)` using `Filter.iInter_mem.2 hall`. Take `⟨m, hm⟩` from `Filter.nonempty_of_mem hinter`. Simplify using `only [Set.mem_iInter, Set.mem_compl_iff, Set.mem_setOf_eq] at hm`. Conclude with `hm _ rfl`. Use `choose v hv using hv`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨PowerSeries.mk v, fun j => ?_⟩` and prove the remaining obligations. Establish `hj : ∀ᶠ m in (U : Filter ℕ), ∀ i : Fin j, PowerSeries.coeff (i : ℕ) (c m) = v i` using `Filter.eventually_all.2 fun i => hv i`. Use `filter_upwards [hj] with m hm`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `i hi`.
-
-Simplify using `[map_sub, hm ⟨i, hi⟩, PowerSeries.coeff_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem power_series_exists_ultrafilter_limit {K : Type} [Field K] [Finite K] (U : Ultrafilter ℕ) (c : ℕ → PowerSeries K) :
     ∃ c0 : PowerSeries K, ∀ j, ∀ᶠ m in (U : Filter ℕ), (PowerSeries.X : PowerSeries K) ^ j ∣ c m - c0 := by
@@ -36,7 +34,7 @@ private theorem power_series_exists_ultrafilter_limit {K : Type} [Field K] [Fini
   simp [map_sub, hm ⟨i, hi⟩, PowerSeries.coeff_mk]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use extensionality with `n`. Establish `h` using `H (n + 1)`. Rewrite `h` using `[PowerSeries.X_pow_dvd_iff]`. Simplify using `using h n (Nat.lt_succ_self n)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem power_series_eq_of_dvd_all_powers {K : Type} [Field K] (a b : PowerSeries K)
     (H : ∀ j, (PowerSeries.X : PowerSeries K) ^ j ∣ a - b) : a = b := by
@@ -47,7 +45,7 @@ private theorem power_series_eq_of_dvd_all_powers {K : Type} [Field K] (a b : Po
   simpa using h n (Nat.lt_succ_self n)
 
 /- English proof (translation)
-Introduce `y`. Use `choose pre hpre using hf`. Conclude with `⟨⟨pre y.a, fun j => pre (y.ep j), fun j => pre (y.ep' j), pre y.eta⟩, DD.ext (hpre _) (funext fun j => hpre _) (funext fun j => hpre _) (hpre _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem dual_numbers_map_surjective {A X X' : Type} [CommRing A] [CommRing X] [CommRing X'] [Algebra A X] [Algebra A X'] (g : ℕ)
     (f : X →ₐ[A] X') (hf : Function.Surjective f) : Function.Surjective (DD.map g f) := by
@@ -57,33 +55,27 @@ private theorem dual_numbers_map_surjective {A X X' : Type} [CommRing A] [CommRi
     DD.ext (hpre _) (funext fun j => hpre _) (funext fun j => hpre _) (hpre _)⟩
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x k hTop hB2 z hz`. Take `⟨C, hC⟩` from `hB2`. Use `set q : ∀ m : ℕ, x.A →ₐ[x.A] x.Am m := fun m => Ideal.Quotient.mkₐ x.A (Ideal.span {x.t ^ m}) with hqdef`. Establish `hsurj : ∀ m, Function.Surjective (q m)` using `fun m => Ideal.Quotient.mkₐ_surjective _ _`. Establish `hqeq : ∀ m (u v : x.A), q m u = q m v ↔ (PowerSeries.X : PowerSeries x.K) ^ m ∣ u - v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m u v`. Apply the tactic sequence `simp only [hqdef, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq, Ideal.mem_span_singleton] <;> rfl`. Establish `hzm : ∀ m i j, (fun g => (z i j g).map (q m)) ∈ SelP h x (x.Am m)` using `fun m i j => (sel_red l L G G0 h n x k x.A (x.Am m) (q m)).1 _ (hz i j)`. Use `choose cm hcu Ψm hΨm hΨe using fun m => hC m (fun i j g => (z i j g).map (q m)) (hzm m)`. Use `choose Ψt hΨt using fun m (g : G.G₀) (a b : Fin n) => dual_numbers_map_surjective k.g (q m) (hsurj m) (Ψm m g a b)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set Z : ℕ → G.G₀ → Matrix (Fin n) (Fin n) (DD x.A k.g) := fun m g => Matrix.of (fun a b => Ψt m g a b) with hZdef`. Establish `hZ : ∀ m, (fun g => (Z m g).map (x.redD k.g m)) = Ψm m`. Introduce `m`. Use function extensionality and compare the values at `g`. Conclude with `Matrix.ext fun a b => hΨt m g a b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `set U := Ultrafilter.of (atTop : Filter ℕ) with hUdef`. Establish `hU : (U : Filter ℕ) ≤ atTop` using `Ultrafilter.of_le _`. Take `⟨Ψ, hΨ, hlim⟩` from `selmer_second_exists_ultrafilter_limit l L G G0 h n x k U Z hTop hU (fun m => by rw [hZ m]; exact hΨm m)`. Use `choose c0 hc0 using fun i : Fin (k.g + 1) => power_series_exists_ultrafilter_limit U (fun m => cm m i)`. Use `choose idx hidx using hcu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi0 : ∃ i0, ∀ᶠ m in (U : Filter ℕ), idx m = i0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hinter : ∀ᶠ m in (U : Filter ℕ), ∀ i, ¬ idx m = i` using `Filter.eventually_all.2 fun i => by simpa using hno i`. Take `⟨m, hm⟩` from `hinter.exists`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm _ rfl`. Take `⟨i0, hi0⟩` from `hi0`. Use `⟨fun i => x.t ^ C * c0 i, ?_, Ψ, hΨ, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1 : x.t ^ C * c0 i0 = 0` using `congrFun h0 i0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc00 : c0 i0 = 0`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (pow_ne_zero _ PowerSeries.X_ne_zero)`. Conclude with `h2`. Take `⟨m, hm1, hm2⟩` from `(hi0.and (hc0 i0 1)).exists`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `hidx m`. Rewrite `hu` using `[hm1]`. Establish `h3 : (PowerSeries.X : PowerSeries x.K) ∣ cm m i0`. Simplify `hm2` using `[hc00]`. Establish `h7` using `isUnit_of_dvd_unit h3 hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[PowerSeries.isUnit_iff_constantCoeff] at h7`. Introduce `j γ a b`. Apply `power_series_eq_of_dvd_all_powers` to reduce the goal to its premises. Introduce `J`. Take `⟨m, hm1, hm2, hm3⟩` from `((hlim J).and ((Filter.eventually_all.2 fun i => hc0 i J).and ((Filter.eventually_ge_atTop J).filter_mono hU))).exists`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `d1 : (PowerSeries.X : PowerSeries x.K) ^ J ∣ (Ψ γ a b).ep' j - (Ψt m γ a b).ep' j`. Establish `e` using `congrArg (fun M => (M a b).ep' j) (hm1 γ)`. Conclude with `(hqeq J ((Ψ γ a b).ep' j) ((Ψt m γ a b).ep' j)).1 e`. Establish `d2 : (PowerSeries.X : PowerSeries x.K) ^ J ∣ (Ψt m γ a b).ep' j - x.t ^ C * ∑ i, cm m i * z i j γ a b`. Establish `e` using `hΨe m j γ a b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[← hΨt m γ a b]`. Establish `e2 : q m ((Ψt m γ a b).ep' j) = q m (x.t ^ C * ∑ i, cm m i * z i j γ a b)`. Rewrite using `[show q m ((Ψt m γ a b).ep' j) = (DD.map k.g (q m) (Ψt m γ a b)).ep' j from rfl, e]`. Simplify using `only [Matrix.smul_apply, Matrix.sum_apply, Matrix.map_apply]`. Rewrite using `[map_mul, map_sum]`.
-
-Simplify using `only [map_mul]`. Rewrite using `[Algebra.smul_def, ← (q m).commutes, Algebra.algebraMap_self, RingHom.id_apply]`. Use `congr 1`. Conclude with `(pow_dvd_pow _ hm3).trans ((hqeq m _ _).1 e2)`. Establish `d3 : (PowerSeries.X : PowerSeries x.K) ^ J ∣ x.t ^ C * ∑ i, cm m i * z i j γ a b - (∑ i, (x.t ^ C * c0 i) • z i j γ) a b`.
-
-Establish `e : x.t ^ C * ∑ i, cm m i * z i j γ a b - (∑ i, (x.t ^ C * c0 i) • z i j γ) a b = x.t ^ C * ∑ i, (cm m i - c0 i) * z i j γ a b`. Simplify using `[Matrix.sum_apply, Finset.mul_sum, ← Finset.sum_sub_distrib, sub_mul, mul_sub, mul_assoc]`. Rewrite using `[e]`. Conclude with `Dvd.dvd.mul_left (Finset.dvd_sum fun i _ => Dvd.dvd.mul_right (hm2 i) _) _`. Use `dvd_add (dvd_add d1 d2) d3` as an intermediate fact.
-
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.secondCohomologyBound_of_boundaryBound :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x), TopFG G.Γ → SecondSelmerSpanBoundAtAllLevels h k → K2 h k := by

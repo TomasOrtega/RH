@@ -21,7 +21,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hP hab hc hB hT E _ _ _ H Dw l Xo c hpq hg` and use `intFrNe_of (GlobalTheory.T.algebraicPoints_moduli_every_place hc E H Dw l Xo c hpq) (GlobalTheory.T.intFrExt_of_good_level hP hab hB hT E H Dw l Xo c hpq hg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integralAlgebraicFramedPoint_exists : PartI → N1ab → N1c → Out.SecBaseChangeSt → Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → IntFrNe Xo c (Formalism.L2.PjFree.algCls Xo c) :=
   fun hP hab hc hB hT E _ _ _ H Dw l Xo c hpq hg =>

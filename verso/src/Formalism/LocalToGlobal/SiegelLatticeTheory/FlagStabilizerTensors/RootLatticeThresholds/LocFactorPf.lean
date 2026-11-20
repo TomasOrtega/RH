@@ -17,11 +17,11 @@ section Easy
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
 /- English proof (translation)
-Establish `hds` using `Formalism.L2.SG.Pf.dsTr C τ`. Take `⟨hrep, hiso⟩` from `Formalism.L2.SG.Pf.WuBL.sigB_rep C τ`. Take `⟨P, hP, hmem⟩` from `C.y_low τ`. Establish `hy` using `C.y_mem τ`. Establish `hw1 : ‖X.B.w (vOf X τ)‖ = 1` using `(X.low (vOf X τ)).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlow : IsLowUnitH D.R.k D.R.rS (epsSH D.R) (lamD D τ) (sigB X (C.Q τ) (C.Qi τ) τ) (sigB X (C.Q τ) (C.Qi τ) τ (C.y τ) (X.B.w (vOf X τ)))` using `⟨P, hP, by rw [hiso _ hy, hw1], hmem⟩`. Establish `hv0` using `Formalism.L2.SG.Pf.WuDec.lowSmoothSK hds hlow`. Establish `hyi : (C.y τ)⁻¹ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `WlocSk.HM.uh_inv hy`. Establish `hsm` using `Formalism.L2.SG.BesselSplit.smooth_translate_ds hds hv0 hyi`. Establish `hinvy : (C.y τ)⁻¹ * C.y τ = 1` using `Matrix.nonsing_inv_mul _ (WlocSk.HM.isUnit_of_uh hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : sigB X (C.Q τ) (C.Qi τ) τ (C.y τ)⁻¹ (sigB X (C.Q τ) (C.Qi τ) τ (C.y τ) (X.B.w (vOf X τ))) = X.B.w (vOf X τ)`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep.2 _ hyi _ hy, hinvy, hrep.1]`. Both sides reduce to the same expression. Rewrite `hsm` using `[e]`. Conclude with `hsm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_smooth (C : Choice X θ) (τ : D.what₂.Tau) :
     X.B.w (vOf X τ) ∈ smoothVecs (k := D.R.k) (r := D.R.rS) (sigB X (C.Q τ) (C.Qi τ) τ) := by
@@ -44,7 +44,7 @@ theorem w_smooth (C : Choice X θ) (τ : D.what₂.Tau) :
   exact hsm
 
 /- English proof (translation)
-Establish `hθ` using `Formalism.L2.SG.Pf.WuBL.theta_pos C u τ`. Take `⟨hz, hTz⟩` from `zTr C u τ`. Establish `hT : 0 < Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ)` using `by rw [hTz]; exact Tr_pos D u`. Conclude with `isHaarOn_muS hz hT (C.muW_haar u τ) (C.muW_one u τ) (kapN_ne_zero D hθ) (kapN_ne_top D θ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem muS_haar (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.Sset D.R.k D.R.rS (zB X (C.Qi τ) u τ)) (muS (C.muW u τ) (muNB D θ)) := by
@@ -87,14 +87,14 @@ def ReprodAll : Prop :=
   ∀ (D : D7), Formalism.L2.SG.ConcreteSettingExists.GapHyp D → ∀ (X : HidaSetting D) (θ : ℝ) (C : Choice X θ), ReprodClause C
 
 /- English proof (translation)
-Introduce `u τ` and use `⟨w_smooth C τ, (X.low (vOf X τ)).1, muS_haar C u τ, hC u τ, hE u τ, hR u τ, (hL u τ).1, (hL u τ).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem locFactor_of_clauses (C : Choice X θ) (hC : ContClause C) (hE : EquivClause C) (hR : ReprodClause C)
     (hL : L2ChoiceCondition C) : LocFactor C :=
   fun u τ => ⟨w_smooth C τ, (X.low (vOf X τ)).1, muS_haar C u τ, hC u τ, hE u τ, hR u τ, (hL u τ).1, (hL u τ).2⟩
 
 /- English proof (translation)
-The claim follows from `locFactor_of_clauses C (hCA D X θ C) (hEA D X θ C) (hRA D hG X θ C) (hLA D hG X θ C)`.
+A detailed English derivation is pending.
 -/
 theorem locFactor_of (hCA : ContAll) (hEA : EquivAll) (hRA : ReprodAll) (hLA : L2ConditionAllChoices)
     (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) (C : Choice X θ) : LocFactor C :=

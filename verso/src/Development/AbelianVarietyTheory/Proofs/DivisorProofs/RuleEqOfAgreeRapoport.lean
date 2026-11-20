@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RealMult.rule_eq_of_agree_rapoport_of_level GlobalTheory.RealMult.exists_faithfullyFlat_level`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RealMult.rule_eq_of_agree_rapoport : GlobalTheory.Published.DelignePappasModel → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀]
   (k : ℕ) (r s : Rule (trivialObjectCondition 𝔠) R₀ k),

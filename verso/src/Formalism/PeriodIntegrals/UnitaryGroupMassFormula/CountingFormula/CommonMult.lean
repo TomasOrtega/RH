@@ -12,13 +12,13 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hP`. Use `⟨Set.range (fun r : s → Fin N.natAbs => ∑ g : s, ((r g : ℕ) : ℤ) • (g : M)), Set.finite_range _, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[← hs]`. Take `⟨f, -, hf⟩` from `Submodule.mem_span_finset.1 hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨∑ g ∈ s, (f g / N) • g, ?_, ∑ g ∈ s, (f g % N) • g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `Submodule.sum_mem _ fun g hg => Submodule.smul_mem _ _ (Submodule.subset_span hg)`. Use `⟨fun g => ⟨(f g % N).toNat, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `Int.emod_nonneg (f g) hN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Int.emod_lt (f g) hN`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Finset.sum_coe_sort s]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg (Int.emod_nonneg _ hN)]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← add_smul, Int.mul_ediv_add_emod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_red {M : Type*} [AddCommGroup M] (P : Submodule ℤ M) (hP : P.FG) (N : ℤ) (hN : N ≠ 0) :
     ∃ Rs : Set M, Rs.Finite ∧ ∀ x ∈ P, ∃ q ∈ P, ∃ ρ ∈ Rs, x = N • q + ρ := by
@@ -42,7 +42,7 @@ theorem gen_red {M : Type*} [AddCommGroup M] (P : Submodule ℤ M) (hP : P.FG) (
     rw [smul_smul, ← add_smul, Int.mul_ediv_add_emod]
 
 /- English proof (translation)
-Use `IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)` as an intermediate fact. Use `Algebra.IsAlgebraic.trans ℤ ℚ D.host.E` as an intermediate fact. Take `⟨n, hn, h⟩` from `Algebra.IsAlgebraic.exists_integral_multiples ℤ s`. Conclude with `⟨n, hn, fun k hk => ⟨⟨n • k, h k hk⟩, zsmul_eq_mul k n⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem int_mult (D : Formalism.BasicNotions.D7) (s : Finset D.host.E) :
     ∃ n : ℤ, n ≠ 0 ∧ ∀ k ∈ s, ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = (n : D.host.E) * k := by
@@ -52,22 +52,22 @@ theorem int_mult (D : Formalism.BasicNotions.D7) (s : Finset D.host.E) :
   exact ⟨n, hn, fun k hk => ⟨⟨n • k, h k hk⟩, zsmul_eq_mul k n⟩⟩
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult .. | (apply UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult <;> assumption) | (intros; apply UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult <;> assumption) | (apply @UpperTheory.Reformulated.B.Loc …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lat_mult (D : Formalism.BasicNotions.D7) {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule.IsLattice D.host.E Λ)
     (v : (VS D).V) : ∃ n : ℤ, n ≠ 0 ∧ (n : D.host.E) • v ∈ Λ := by
   first | exact UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult .. | (apply UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult <;> assumption) | (intros; apply UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult <;> assumption) | (apply @UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult <;> assumption) | (apply @UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult D Λ hΛ v | exact @UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult D Λ hΛ | exact @UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult D Λ | exact @UpperTheory.Reformulated.B.LocalTheoryWindows.lat_mult D
 
 /- English proof (translation)
-Establish `hv : ∃ n : ℤ, n ≠ 0 ∧ ∀ v ∈ vs, (n : D.host.E) • v ∈ Λ`. Proceed by induction on `vs using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert v vs hv ih`. Take `⟨n, hn, h⟩` from `ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hmv⟩` from `lat_mult D hΛ v`. Use `⟨m * n, mul_ne_zero hm hn, fun w hw => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Establish `: ((m * n : ℤ) : D.host.E) • w = (n : D.host.E) • ((m : D.host.E) • w)`. Rewrite using `[smul_smul, Int.cast_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]; exact smul_int_mem D ⟨n, by simp⟩ hmv`. Establish `: ((m * n : ℤ) : D.host.E) • w = (m : D.host.E) • ((n : D.host.E) • w)`. Rewrite using `[smul_smul, Int.cast_mul]`. Rewrite using `[this]; exact smul_int_mem D ⟨m, by simp⟩ (h w hw)`. Take `⟨n, hn, h1⟩` from `hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, h2⟩` from `int_mult D ks`. Use `⟨n * m, mul_ne_zero hn hm, fun v hv => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Establish `: ((n * m : ℤ) : D.host.E) • v = (m : D.host.E) • ((n : D.host.E) • v)`. Rewrite using `[smul_smul, Int.cast_mul, mul_comm]`. Rewrite using `[this]; exact smul_int_mem D ⟨m, by simp⟩ (h1 v hv)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨o, ho⟩` from `h2 k hk`. Use `⟨(n : 𝓞 D.host.E) * o, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ho, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem common_mult (D : Formalism.BasicNotions.D7) {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule.IsLattice D.host.E Λ)
     (vs : Finset (VS D).V) (ks : Finset D.host.E) :

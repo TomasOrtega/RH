@@ -14,32 +14,32 @@ section Mat
 variable {R : Type} [CommRing R] {m r : ℕ}
 
 /- English proof (translation)
-Simplify using `[eqv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eqv_symm_inl_val (a : Fin (m + 1)) : (((eqv m r).symm (Sum.inl a)) : ℕ) = a := by simp [eqv]
 
 /- English proof (translation)
-Simplify using `[eqv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eqv_symm_inr_val (b : Fin (r + 1)) : (((eqv m r).symm (Sum.inr b)) : ℕ) = m + 1 + b := by simp [eqv]
 
 /- English proof (translation)
-Unfold `unblk`. Conclude with `Matrix.submatrix_mul_equiv P Q _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unblk_mul (P Q : Matrix (Fin (m + 1) ⊕ Fin (r + 1)) (Fin (m + 1) ⊕ Fin (r + 1)) R) :
     unblk P * unblk Q = unblk (P * Q) := by
   unfold unblk; exact Matrix.submatrix_mul_equiv P Q _ _ _
 
 /- English proof (translation)
-Unfold `unblk`. Conclude with `Matrix.submatrix_one_equiv _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unblk_one : (unblk (1 : Matrix (Fin (m + 1) ⊕ Fin (r + 1)) (Fin (m + 1) ⊕ Fin (r + 1)) R)) = 1 := by
   unfold unblk; exact Matrix.submatrix_one_equiv _
 
 /- English proof (translation)
-Rewrite using `[fromBlocks_multiply]`. Establish `h1 : B * D⁻¹ * uD * (cD * (D⁻¹ * C)) = B * D⁻¹ * C`. Rewrite using `[Matrix.mul_assoc (B * D⁻¹) uD, ← Matrix.mul_assoc uD, hD', Matrix.mul_nonsing_inv_cancel_left _ _ hD]`. Establish `h2 : B * D⁻¹ * uD * cD = B`. Rewrite using `[Matrix.mul_assoc (B * D⁻¹) uD, hD', Matrix.nonsing_inv_mul_cancel_right _ _ hD]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h3 : uD * (cD * (D⁻¹ * C)) = C`. Rewrite using `[← Matrix.mul_assoc, hD', Matrix.mul_nonsing_inv_cancel_left _ _ hD]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, zero_add, add_zero, h1, h2, h3, hD', hA, sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fromBlocks_decomp {a b : ℕ} (A : Matrix (Fin a) (Fin a) R) (B : Matrix (Fin a) (Fin b) R)
     (C : Matrix (Fin b) (Fin a) R) (D : Matrix (Fin b) (Fin b) R) (uA cA : Matrix (Fin a) (Fin a) R)
@@ -82,9 +82,9 @@ theorem coe_gEl (a : GA E (m + 1)) (d : GA E (r + 1)) (Y : Matrix (Fin (r + 1)) 
       unblk (fromBlocks (a : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) 0 ((d : Matrix (Fin (r + 1)) (Fin (r + 1)) (Ad E)) * Y) d) := rfl
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Establish `ha : Continuous fun z : GA E (m + 1) × GA E (r + 1) × Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E) => ((z.1 : GA E (m + 1)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E))` using `Units.continuous_val.comp continuous_fst`. Establish `ha' : Continuous fun z : GA E (m + 1) × GA E (r + 1) × Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E) => ((z.1⁻¹ : GA E (m + 1)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E))` using `Units.continuous_coe_inv.comp continuous_fst`. Establish `hd : Continuous fun z : GA E (m + 1) × GA E (r + 1) × Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E) => ((z.2.1 : GA E (r + 1)) : Matrix (Fin (r + 1)) (Fin (r + 1)) (Ad E))` using `Units.continuous_val.comp (continuous_fst.comp continuous_snd)`. Establish `hd' : Continuous fun z : GA E (m + 1) × GA E (r + 1) × Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E) => ((z.2.1⁻¹ : GA E (r + 1)) : Matrix (Fin (r + 1)) (Fin (r + 1)) (Ad E))` using `Units.continuous_coe_inv.comp (continuous_fst.comp continuous_snd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : Continuous fun z : GA E (m + 1) × GA E (r + 1) × Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E) => z.2.2` using `continuous_snd.comp continuous_snd`. Establish `h0 : Continuous fun _ : GA E (m + 1) × GA E (r + 1) × Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E) => (0 : Matrix (Fin (m + 1)) (Fin (r + 1)) (Ad E))` using `continuous_const`. Prove the components needed by the constructor for the conclusion. Conclude with `(Continuous.matrix_fromBlocks ha h0 (hd.matrix_mul hY) hd).matrix_submatrix _ _`. Conclude with `(Continuous.matrix_fromBlocks ha' h0 (hY.matrix_mul ha').neg hd').matrix_submatrix _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_gEl :
     Continuous fun z : GA E (m + 1) × GA E (r + 1) × Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E) => gEl z.1 z.2.1 z.2.2 := by
@@ -108,15 +108,13 @@ theorem continuous_gEl :
   · exact (Continuous.matrix_fromBlocks ha' h0 (hY.matrix_mul ha').neg hd').matrix_submatrix _ _
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun i j hij => ?_, fun i => ?_⟩ <;> rw [hu]`. Take `⟨x, rfl⟩` from `(eqv m r).symm.surjective i`. Take `⟨y, rfl⟩` from `(eqv m r).symm.surjective j`. Simplify using `only [unblk, submatrix_apply, Equiv.apply_symm_apply]`. Rewrite `hij` using `[Fin.lt_iff_val_lt_val]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rcases x with a | a <;> rcases y with b | b`. Simplify using `only [eqv_symm_inl_val] at hij`. Rewrite using `[fromBlocks_apply₁₁]`. Conclude with `huA.1 a b (Fin.lt_iff_val_lt_val.2 hij)`. Simplify using `only [eqv_symm_inl_val, eqv_symm_inr_val] at hij`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hij (by have := a.isLt; omega)`. Rewrite using `[fromBlocks_apply₂₁, Matrix.zero_apply]`. Simplify using `only [eqv_symm_inr_val] at hij`. Rewrite using `[fromBlocks_apply₂₂]; exact huD.1 a b (Fin.lt_iff_val_lt_val.2 (by omega))`. Take `⟨x, rfl⟩` from `(eqv m r).symm.surjective i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [unblk, submatrix_apply, Equiv.apply_symm_apply]`. Break down `x with a | a` into its components or cases. Rewrite using `[fromBlocks_apply₁₁]`. Conclude with `huA.2 a`. Rewrite using `[fromBlocks_apply₂₂]`.
-
-Conclude with `huD.2 a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_NA_of_blocks (uA : GA E (m + 1)) (uD : GA E (r + 1)) (huA : uA ∈ GlobalTheory.JSW.NA E (m + 1))
     (huD : uD ∈ GlobalTheory.JSW.NA E (r + 1)) (X : Matrix (Fin (m + 1)) (Fin (r + 1)) (Ad E)) (u : GA E (m + r + 1 + 1))
@@ -149,7 +147,7 @@ def adOf (z : (Fin (r + 1) → Fin (m + 1) → Cinf E) × (Fin (r + 1) → Fin (
   fun i j => ((infEq E (z.1 i j), z.2 i j) : InfiniteAdeleRing E × Af E)
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `((continuous_infEq E).comp ((continuous_apply j).comp ((continuous_apply i).comp continuous_fst))).prodMk ((continuous_apply j).comp ((continuous_apply i).comp continuous_snd))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_adOf : Continuous (adOf (E := E) (m := m) (r := r)) := by
   refine continuous_matrix fun i j => ?_
@@ -161,35 +159,31 @@ end GlobalTheory.SchurExtCpt
 open Matrix GlobalTheory.SchurExtCpt in
 
 /- English proof (translation)
-Introduce `E _ _ _ m r S β b₁ χ ⟨Cβ, hCβ, hβ⟩ ⟨C₁, hC₁, hb⟩ hχ`. Set `K : Set (Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E))` to `adOf '' (tsupport χ ×ˢ Set.univ.pi fun _ => Set.univ.pi fun _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (Af E)))`. Establish `hK : IsCompact K` using `(hχ.isCompact.prod (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => GroundTheory.Global.isCompact_integralFiniteAdeles E)).image continuous_adOf`. Use `⟨(fun z : GA E (m + 1) × GA E (r + 1) × Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E) => gEl z.1 z.2.1 z.2.2) '' (Cβ ×ˢ C₁ ×ˢ K), (hCβ.prod (hC₁.prod hK)).image continuous_gEl, ?_⟩` and prove the remaining obligations. Introduce `p hp hF`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hD : IsUnit (Dof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).det`. Use `swap`. Conclude with `absurd (by unfold schurF; rw [if_neg hD]) hF`. Unfold `schurF at hF`. Rewrite `hF` using `[if_pos hD]`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨⟨-, h2⟩, h3⟩, h4⟩` from `(mul_ne_zero_iff.1 hF) |>.imp (mul_ne_zero_iff.1) id |>.imp (fun h => h.imp mul_ne_zero_iff.1 id) id`. Establish `hdet : IsUnit (Scof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).det` using `by haveI : Invertible (blk (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).toBlocks₂₂ := Matrix.invertibleOfIsUnitDet _ hD`. Establish `he : (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)).det = (Dof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).det * (Scof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).det`. Rewrite using `[← Matrix.det_submatrix_equiv_self (eqv m r).symm (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))]`. Express the relevant statement in the definitionally equal form `(blk (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).det = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Matrix.fromBlocks_toBlocks (blk (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))), Matrix.det_fromBlocks₂₂, Matrix.invOf_eq_nonsing_inv]`. Both sides reduce to the same expression. Establish `hu` using `Matrix.isUnits_det_units p`. Rewrite `hu` using `[he]`. Conclude with `isUnit_of_mul_isUnit_right hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsup : mkGL (Scof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))) ∈ GlobalTheory.JSW.supS E (m + 1) S`. Introduce `w hw`. Establish `hpw` using `congrArg Units.val (hp.1 w hw)`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(mkGL (Scof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)).map ((pLoc E w).comp (pFin E)) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)).map ((pLoc E w).comp (pFin E)) = 1 at hpw`. Rewrite using `[coe_mkGL hdet]`. Establish `hbl : (blk (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).map ((pLoc E w).comp (pFin E)) = 1`. Rewrite using `[show (blk (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).map ((pLoc E w).comp (pFin E)) = blk ((p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)).map ((pLoc E w).comp (pFin E))) from rfl, hpw]`. Conclude with `Matrix.submatrix_one_equiv _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : (Aof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).map ((pLoc E w).comp (pFin E)) = 1`. Rewrite using `[show (Aof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).map ((pLoc E w).comp (pFin E)) = ((blk (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).map ((pLoc E w).comp (pFin E))).toBlocks₁₁ from rfl, hbl, ← Matrix.fromBlocks_one, Matrix.toBlocks_f …`. Establish `hB : (Bof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).map ((pLoc E w).comp (pFin E)) = 0`. Rewrite using `[show (Bof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).map ((pLoc E w).comp (pFin E)) = ((blk (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).map ((pLoc E w).comp (pFin E))).toBlocks₁₂ from rfl, hbl, ← Matrix.fromBlocks_one, Matrix.toBlocks_f …`. Unfold `Scof`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.map_sub _ (map_sub ((pLoc E w).comp (pFin E))), Matrix.map_mul, Matrix.map_mul, hA, hB]`. Simplify using the standard rewrite rules. Take `⟨uA, huA, hcA⟩` from `hβ _ hsup h2`. Take `⟨uD, huD, hcD⟩` from `hb _ h3`. Establish `hY : Yof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) ∈ K`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Unfold `chiF at h4`. Take `⟨h41, h42⟩` from `mul_ne_zero_iff.1 h4`. Establish `hint : ∀ i j, pFin E (Yof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) i j) ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 E) E`. Assume the negation of the conclusion as `hc`. Rewrite `h42` using `[if_neg hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h42 rfl`. Use `⟨(fun i j => pInf E (Yof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) i j), fun i j => pFin E (Yof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) i j)), ⟨subset_tsupport _ ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `h41` to reduce the goal to its premises. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `only [Set.mem_univ_pi]`. Conclude with `fun i j => hint i j`. Use function extensionality and compare the values at `i j`. Use `ad_ext ?_ rfl` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show (infEq E).symm (infEq E _) = _`. Conclude with `RingEquiv.symm_apply_apply _ _`. Use `⟨p * (gEl (uA⁻¹ * mkGL (Scof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)))) (uD⁻¹ * mkGL (Dof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)))) (Yof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))))⁻¹, ?_, ⟨(_, _, _), ⟨hcA, hcD, …` and prove the remaining obligations. Use `mem_NA_of_blocks uA uD huA huD (Bof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) * (Dof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)))⁻¹ * (uD : Matrix (Fin (r + 1)) (Fin (r + 1)) (Ad E))) _ ?_` and prove the remaining obligations. Establish `hpU : (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) = unblk (fromBlocks (uA : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Bof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) * (Dof (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)))⁻ …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_gEl, unblk_mul]`. Use `conv_lhs => rw [← unblk_blk (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))]`. Use `congr 1`. Rewrite using `[← Matrix.fromBlocks_toBlocks (blk (p : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)))]`. Use `(fromBlocks_decomp _ _ _ _ _ _ _ _ hD ?_ ?_).symm` and prove the remaining obligations.
-
-Rewrite using `[← Units.val_mul, mul_inv_cancel_left, coe_mkGL hdet]`. Apply the tactic sequence `try rfl`. Rewrite using `[← Units.val_mul, mul_inv_cancel_left, coe_mkGL hD]`. Apply the tactic sequence `try rfl`. Rewrite using `[Units.val_mul, Units.mul_inv_eq_iff_eq_mul]`.
-
-Conclude with `hpU`. Rewrite using `[_root_.mul_inv_rev, inv_inv, inv_mul_cancel_right]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SchurExtCpt.exists_compact_support : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ), (∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ h ∈ GlobalTheory.JSW.supS E (m + 1) S, β h ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * h ∈ C) → (∃ C : Set (GA E (r + 1)), IsCompact C ∧ ∀ p, b₁ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (r + 1), u⁻¹ * p ∈ C) → HasCompactSupport χ → ∃ C : Set (GA E (m + r + 1 + 1)), IsCompact C ∧ ∀ p ∈ GlobalTheory.JSW.mirS E S (m + r + 1), schurF β b₁ χ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + r + 1 + 1), u⁻¹ * p ∈ C := by
   intro E _ _ _ m r S β b₁ χ ⟨Cβ, hCβ, hβ⟩ ⟨C₁, hC₁, hb⟩ hχ

@@ -7,9 +7,9 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Use `Units.ext <| Matrix.ext fun a b => FiniteAdeleRing.ext K fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((AdelicGLn.finiteRestrictedEquiv K n).symm _ : AdelicGLn.FiniteAdelicGL K n) a b v = _`. Rewrite using `[AdelicGLn.finiteRestrictedEquiv_symm_apply, RestrictedProduct.coe_mulSingle_apply]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `(congrArg (fun x : GL (Fin n) (v.adicCompletion K) => x a b) (GlobalTheory.CuspRep.pLoc_locGL v g)).symm`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `(congrArg (fun x : GL (Fin n) (v.adicCompletion K) => x a b) (GlobalTheory.CuspRep.pLoc_locGL_of_ne h g)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem localEmbedding_eq {K : Type} [Field K] [NumberField K] {n : ℕ}
     (w : HeightOneSpectrum (𝓞 K)) (g : GL (Fin n) (w.adicCompletion K)) :
@@ -26,7 +26,7 @@ private theorem localEmbedding_eq {K : Type} [Field K] [NumberField K] {n : ℕ}
     exact (congrArg (fun x : GL (Fin n) (v.adicCompletion K) => x a b) (GlobalTheory.CuspRep.pLoc_locGL_of_ne h g)).symm
 
 /- English proof (translation)
-Rewrite using `[← Fb.finEmb_eq]`. Conclude with `Subtype.ext rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finProj_eq {K : Type} [Field K] [NumberField K] {n : ℕ} (u : AdelicGLn.FiniteAdelicGL K n) :
     MultiplicityOne.finProj K n u = retractOne (finGL K n u) := by
@@ -34,7 +34,7 @@ private theorem finProj_eq {K : Type} [Field K] [NumberField K] {n : ℕ} (u : A
   exact Subtype.ext rfl
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ w g v`. Express the relevant statement in the definitionally equal form `rightRegularRep (rationalGLOne K n) μ (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) v = rightRegularRep (rationalGLOne K n) μ (retractOne (finGL K n (locGL K n w g))) v`. Rewrite using `[finProj_eq, localEmbedding_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.rhoLoc :
     UpperTheory.ConvolutionTheory.Dp.RhoLoc := by

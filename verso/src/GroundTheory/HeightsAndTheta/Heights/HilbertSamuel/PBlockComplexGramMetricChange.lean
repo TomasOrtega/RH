@@ -21,9 +21,9 @@ variable {D : ℕ} {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀
   {Ω : Type} [Field Ω] [CharZero Ω]
 
 /- English proof (translation)
-Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg` using `hF m hm`. Establish `hc : ∏ p : (Σ k, ι k), c p.1 ^ m p = c k₀ ^ n`. Rewrite using `[Fintype.prod_sigma]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Finset.prod_pow_eq_pow_sum, hdeg]`. Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [blockDeg, hk]]`. Simplify using `[blockDeg]`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_torus {F : MvPolynomial (Σ k, ι k) ℂ} {k₀ : K} {n : ℕ} (hF : IsMultiHomog F (blockDeg k₀ n))
     (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
@@ -40,43 +40,43 @@ theorem eval_torus {F : MvPolynomial (Σ k, ι k) ℂ} {k₀ : K} {n : ℕ} (hF 
   ring
 
 /- English proof (translation)
-Introduce `m hm` and use `hf m (support_map_subset _ _ hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_mapQ {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) :
     IsMultiHomog (map (Int.castRingHom ℚ) f) a := fun m hm => hf m (support_map_subset _ _ hm)
 
 /- English proof (translation)
-Introduce `m hm` and use `hb m (support_map_subset _ _ hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_mapC {b : MvPolynomial (Σ k, ι k) ℚ} {a : K → ℕ} (hb : IsMultiHomog b a) :
     IsMultiHomog (map (algebraMap ℚ ℂ) b) a := fun m hm => hb m (support_map_subset _ _ hm)
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [unitDeg, hk]]`. Simplify using `[unitDeg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_norm_unitDeg (c : K → ℂ) (k₀ : K) : ∏ k, ‖c k‖ ^ unitDeg k₀ k = ‖c k₀‖ := by
   rw [Fintype.prod_eq_single k₀ fun k hk => by simp [unitDeg, hk]]
   simp [unitDeg]
 
 /- English proof (translation)
-Rewrite using `[B.smul c z hc, hB, prod_norm_unitDeg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_torus (B : HermLine ι) {k₀ : K} (hB : B.a = unitDeg k₀) (c : K → ℂ) (hc : ∀ k, c k ≠ 0)
     (z : (Σ k, ι k) → ℂ) : B.h (fun p => c p.1 * z p) = ‖c k₀‖ * B.h z := by
   rw [B.smul c z hc, hB, prod_norm_unitDeg]
 
 /- English proof (translation)
-The claim follows from `(d.R.mem y y (d.R.mem_U y)).1`.
+A detailed English derivation is pending.
 -/
 theorem blockPt_mem (d : HSMBlockDatum D K ι Ω) (y : d.R.X) : ∀ k, ∃ i, blockPt d y ⟨k, i⟩ ≠ 0 :=
   (d.R.mem y y (d.R.mem_U y)).1
 
 /- English proof (translation)
-Establish `hρ : 0 < B.h z` using `B.pos z hz`. Establish `hcn : 0 < ‖c k₀‖` using `norm_pos_iff.2 (hc k₀)`. Establish `hexp : Real.exp (-(n : ℝ) * (2 * Real.log (B.h (fun p => c p.1 * z p)))) = ((‖c k₀‖ * B.h z) ^ (2 * n))⁻¹`. Rewrite using `[h_torus B hB c hc, show -(n : ℝ) * (2 * Real.log (‖c k₀‖ * B.h z)) = -(((2 * n : ℕ) : ℝ) * Real.log (‖c k₀‖ * B.h z)) by push_cast; ring, Real.exp_neg, Real.exp_nat_mul, Real.exp_log (mul_pos hcn hρ)]`. Establish `hcc : c k₀ ^ n * conj (c k₀) ^ n = ((‖c k₀‖ : ℝ) : ℂ) ^ (2 * n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow, Complex.mul_conj, Complex.normSq_eq_norm_sq, pow_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp, eval_torus (isMultiHomog_mapC hb), eval_torus (isMultiHomog_mapC hb'), pairValH]`. Establish `hρc : ((B.h z : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hρ.ne'`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcc' : ((‖c k₀‖ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hcn.ne'`. Simplify using `only [map_mul, map_pow]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(eval z (map (algebraMap ℚ ℂ) b) * conj (eval z (map (algebraMap ℚ ℂ) b')) * ((B.h z : ℝ) : ℂ) ^ (2 * n)) * hcc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pair_torus (B : HermLine ι) {k₀ : K} (hB : B.a = unitDeg k₀) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {n : ℕ}
@@ -107,11 +107,11 @@ theorem pair_torus (B : HermLine ι) {k₀ : K} (hB : B.a = unitDeg k₀) {z : (
     ((B.h z : ℝ) : ℂ) ^ (2 * n)) * hcc
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Establish `hx : x ∈ (A.chart (chartIdx A x)).source` using `Classical.choose_spec (A.cover x)`. Use `set j := chartIdx A x`. Establish `hT : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source = (A.chart j).target` using `Set.inter_eq_left.2 fun y hy => (A.chart j).map_target hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `(W₁.smooth j j).continuousOn`. Establish `h₀` using `(W₀.smooth j j).continuousOn`. Rewrite `h₁`, `h₀` using `[hT]`. Establish `hg` using `(h₁.sub h₀).continuousAt ((A.chart j).open_target.mem_nhds ((A.chart j).map_source hx))`. Use `(hg.comp ((A.chart j).continuousAt hx)).congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [(A.chart j).open_source.mem_nhds hx] with y hy`. Simplify using `only [Pi.sub_apply, Function.comp_apply, (A.chart j).left_inv hy]`. Conclude with `(Weight.diff_eq W₁ W₀ j hy).symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_diff {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X} {L : HolLineBundle A}
     (W₁ W₀ : Weight L) : Continuous (Weight.diff W₁ W₀) := by
@@ -131,11 +131,11 @@ theorem continuous_diff {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X} {L
   exact (Weight.diff_eq W₁ W₀ j hy).symm
 
 /- English proof (translation)
-Take `⟨D', rfl⟩ : ∃ D', D = D' + 1` from `⟨D - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Take `⟨N, hN⟩` from `exists_nat_ge (|C| * 2 ^ D' / ε)`. Use `filter_upwards [eventually_ge_atTop (max N 1)] with n hn`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast le_of_max_le_right hn`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnN : (N : ℝ) ≤ n` using `by exact_mod_cast le_of_max_le_left hn`. Establish `hkey : |C| * 2 ^ D' ≤ ε * n`. Use `hN.trans hnN` as an intermediate fact. Rewrite `this` using `[div_le_iff₀ hε]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem eventually_pow_le (C ε : ℝ) (hε : 0 < ε) (hD : 1 ≤ D) :
     ∀ᶠ n : ℕ in atTop, C * ((n : ℝ) + 1) ^ (D - 1) ≤ ε * (n : ℝ) ^ D := by
@@ -162,45 +162,41 @@ end BlockComplexGramMetricChange
 open BlockComplexGramMetricChange in
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ d A' P0' hdeg hc hle hp`. Take `⟨A, L, W₀, W₁, dV, σ, -, hW₀, hW₁, hμ, hsec, hval, hdens⟩` from `hPair D K ι Ω d A' P0' hdeg hle hp`. Use `choose c hc0 hσ hφ₀ hφ₁ using hval`. Establish `hex : ∀ n, ∃ q : (Σ r : ℕ, Fin r → MvPolynomial (Σ k, ι k) ℚ), IsSecBasisM d.y d.k₀ n q.2` using `fun n => SupBoundCount.exists_isSecBasisM d.y d.k₀ n`. Set `p : ℕ → (Σ r : ℕ, Fin r → MvPolynomial (Σ k, ι k) ℚ)` to `fun n => (hex n).choose`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hp' : ∀ n, IsSecBasisM d.y d.k₀ n (p n).2` using `fun n => (hex n).choose_spec`. Establish `hhom : ∀ n k, IsMultiHomog ((p n).2 k) (blockDeg d.k₀ n)` using `fun n k => by`. Take `⟨f, hf, hfe⟩` from `(hp' n).1 k`. Rewrite using `[hfe]`. Conclude with `isMultiHomog_mapQ hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v : ∀ n, Fin (p n).1 → Fin A.n → d.R.X → ℂ` to `fun n k => σ n ((p n).2 k)`. Establish `hli : ∀ n, LinearIndependent ℂ (v n)`. Introduce `n`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : g = 0` using `hInd D K ι Ω d n _ (p n).2 (hp' n) g fun y => by`. Establish `h` using `congrFun (congrFun hg (chartIdx A y)) y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, v, hσ y n _ (hhom n _), eval_torus (isMultiHomog_mapC (hhom n _))] at h`. Establish `hcn : c y d.k₀ ^ n ≠ 0` using `pow_ne_zero _ (hc0 y d.k₀)`. Apply `(mul_right_inj' hcn).1` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_zero, Finset.mul_sum, ← h]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `k`. Rewrite using `[h0]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `V : ℕ → Submodule ℂ (Fin A.n → d.R.X → ℂ)` to `fun n => Submodule.span ℂ (Set.range (v n))`. Establish `: ∀ n, FiniteDimensional ℂ (V n)` using `fun n => FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Establish `hrank : ∀ n, Module.finrank ℂ (V n) = (p n).1` using `fun n => (finrank_span_eq_card (hli n)).trans (Fintype.card_fin _)`. Set `eB : ∀ n, Module.Basis (Fin (Module.finrank ℂ (V n))) ℂ (V n)` to `fun n => (Module.Basis.span (hli n)).reindex (finCongr (hrank n).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgram : ∀ (W : Weight L) (B : HermLine ι), B.a = unitDeg d.k₀ → (∀ y, W.φ (chartIdx A y) y = 2 * Real.log (B.h (fun q => c y q.1 * blockPt d y q))) → ∀ n, chiGram W dV n (fun a => ((eB n a : V n) : Fin A.n → d.R.X → ℂ)) = -(1 / 2) * Real.log (Matrix.det (fun k l => ∫ y, pairValH …`. Introduce `W B hB hW n`. Establish `he : (fun a => ((eB n a : V n) : Fin A.n → d.R.X → ℂ)) = fun a => v n ((finCongr (hrank n).symm).symm a)`. Use function extensionality and compare the values at `a`. Simplify using `only [eB, Module.Basis.reindex_apply, Module.Basis.span_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hsub : gram W dV n (fun a => v n ((finCongr (hrank n).symm).symm a)) = (gram W dV n (v n)).submatrix (finCongr (hrank n).symm).symm (finCongr (hrank n).symm).symm`. Use extensionality with `a a'`. Both sides reduce to the same expression. Establish `hg : gram W dV n (v n) = fun k l => ∫ y, pairValH B n ((p n).2 k) ((p n).2 l) (blockPt d y) ∂d.dV`. Use extensionality with `k l`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [gram, Matrix.of_apply, hμ, v]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hσ y n _ (hhom n k), hσ y n _ (hhom n l), hW y]`. Conclude with `pair_torus B hB (blockPt_mem d y) (hc0 y) (hhom n k) (hhom n l)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chiGram, he, hsub, Matrix.det_submatrix_equiv_self, hg]`. Establish `hC₀ : ∀ n, blockCChi d n = -(1 / 2) * Real.log (Matrix.det (fun k l => ∫ y, pairValH d.A n ((p n).2 k) ((p n).2 l) (blockPt d y) ∂d.dV : Matrix (Fin (p n).1) (Fin (p n).1) ℂ)).re` using `fun n => by`. Rewrite using `[blockCChi, dif_pos (hex n)]`. Both sides reduce to the same expression. Establish `hC₁ : ∀ n, blockCChi (d.withMetric A' P0' hdeg hc hle hp) n = -(1 / 2) * Real.log (Matrix.det (fun k l => ∫ y, pairValH A' n ((p n).2 k) ((p n).2 l) (blockPt d y) ∂d.dV : Matrix (Fin (p n).1) (Fin (p n).1) ℂ)).re` using `fun n => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[blockCChi, dif_pos (show ∃ q : (Σ r : ℕ, Fin r → MvPolynomial (Σ k, ι k) ℚ), IsSecBasisM (d.withMetric A' P0' hdeg hc hle hp).y (d.withMetric A' P0' hdeg hc hle hp).k₀ n q.2 from hex n)]`. Both sides reduce to the same expression. Establish `hdim : ∀ t ∈ Set.Icc (0 : ℝ) 1, ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, (∫ y, bergmanDens (W₀.lerp W₁ t) dV y ∂dV.μ - ε) * (n : ℝ) ^ D ≤ Module.finrank ℂ (V n)`. Introduce `t ht ε hε`. Take `⟨C, hr⟩` from `hDeg D K ι Ω d d.A A' d.deg hdeg d.semipos.1 hp.1 t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hI` using `hdens t ht (fun _ => 1) continuous_const`. Simplify using `only [one_mul] at hI`. Rewrite using `[hI]`. Use `filter_upwards [eventually_pow_le C ε hε d.one_le] with n hn`. Rewrite using `[hrank n, ← SupBoundCount.finrank_secM (hp' n)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h` using `(abs_le.1 (hr n)).1`. Use `set δ := mInt d.R.A (fun _ => blockInterpPot d d.A A' t) fun _ => 1`. Establish `e1 : (δ / (D.factorial : ℝ) - ε) * (n : ℝ) ^ D = δ * (n : ℝ) ^ D / (D.factorial : ℝ) - ε * (n : ℝ) ^ D` using `by ring`. Rewrite using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hVle : ∀ n, V n ≤ L.sections n` using `fun n => Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hsec n _ (hhom n k))`. Establish `hM` using `hMC A L W₀ W₁ dV hW₀ hW₁ V hVle hdim eB`. Establish `hdiff : ∀ y, Weight.diff W₁ W₀ y = 2 * Real.log (A'.h (blockPt d y) / d.A.h (blockPt d y))`. Introduce `y`. Establish `hz` using `blockPt_mem d y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcn : ‖c y d.k₀‖ ≠ 0` using `norm_ne_zero_iff.2 (hc0 y d.k₀)`. Rewrite using `[Weight.diff, hφ₁ y, hφ₀ y, h_torus A' hdeg _ (hc0 y), h_torus d.A d.deg _ (hc0 y), Real.log_mul hcn (A'.pos _ hz).ne', Real.log_mul hcn (d.A.pos _ hz).ne', Real.log_div (A'.pos _ hz).ne' (d.A.pos _ hz).ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `hcont : Continuous fun y => Real.log (A'.h (blockPt d y) / d.A.h (blockPt d y))`. Establish `h : (fun y => Real.log (A'.h (blockPt d y) / d.A.h (blockPt d y))) = fun y => Weight.diff W₁ W₀ y / 2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[hdiff]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `(continuous_diff W₁ W₀).div_const 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK : ∫ t in (0 : ℝ)..1, ∫ y, Weight.diff W₁ W₀ y * bergmanDens (W₀.lerp W₁ t) dV y ∂dV.μ = 2 / (D.factorial : ℝ) * blockMetricInt d A'`. Rewrite using `[blockMetricInt, ← intervalIntegral.integral_const_mul]`. Use `intervalIntegral.integral_congr fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[Set.uIcc_of_le zero_le_one]`. Simplify using `only [hdiff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hdens t ht _ hcont`. Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul, h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[isLittleO_iff]`.
-
-Introduce `ε hε`. Use `filter_upwards [hM ε hε] with n hn`. Rewrite `hn` using `[hgram W₁ A' hdeg hφ₁ n, hgram W₀ d.A d.deg hφ₀ n, hK]`. Rewrite using `[hC₁ n, hC₀ n, Real.norm_eq_abs, Real.norm_eq_abs, pw, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (n : ℝ) ^ (D + 1))]`. Establish `e2 : (n : ℝ) ^ (D + 1) / 2 * (2 / (D.factorial : ℝ) * blockMetricInt d A') = (n : ℝ) ^ (D + 1) / (D.factorial : ℝ) * blockMetricInt d A'` using `by ring`.
-
-Rewrite `hn` using `[e2]`. Conclude with `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlockComplexGramMetricChange.proof (hMC : MetricChange.Statement)
     (hPair : BlockResolutionMetricPair.Statement) (hInd : BlockResolutionFormsIndependent.Statement)

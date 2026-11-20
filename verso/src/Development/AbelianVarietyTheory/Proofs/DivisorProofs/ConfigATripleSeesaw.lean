@@ -28,13 +28,13 @@ def IsMixedA (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) (H' : Plane E d d�
       incM F H.ι * z * (incM F H'.ι)ᵀ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, 0, by simp, by ext i j; simp [Matrix.vecMulVec_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMixedA_zero (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) (H' : Plane E d d₁) : IsMixedA M₁ H H' 0 :=
   ⟨0, 0, 0, by simp, by ext i j; simp [Matrix.vecMulVec_apply]⟩
 
 /- English proof (translation)
-Take `⟨y, v, z, hz, rfl⟩` from `h`. Take `⟨y', v', z', hz', rfl⟩` from `h'`. Use `⟨y + y', v + v', z + z', by simp [hz, hz'], ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_vecMulVec, Matrix.mulVec_add, Matrix.vecMulVec_add, Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem IsMixedA.add {M₁ : Model σ X₁ W₁} {H : Plane E n n₁} {H' : Plane E d d₁} {m m' : Matrix (Fin n) (Fin d) (AE F E)}
     (h : IsMixedA M₁ H H' m) (h' : IsMixedA M₁ H H' m') : IsMixedA M₁ H H' (m + m') := by
@@ -45,7 +45,7 @@ theorem IsMixedA.add {M₁ : Model σ X₁ W₁} {H : Plane E n n₁} {H' : Plan
   abel
 
 /- English proof (translation)
-Take `⟨y, v, z, hz, rfl⟩` from `h`. Use `⟨t • y, t • v, t • z, by simp [hz], ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_add, Matrix.smul_vecMulVec, Matrix.mulVec_smul, Matrix.vecMulVec_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsMixedA.smul {M₁ : Model σ X₁ W₁} {H : Plane E n n₁} {H' : Plane E d d₁} {m : Matrix (Fin n) (Fin d) (AE F E)}
     (h : IsMixedA M₁ H H' m) (t : AF F) : IsMixedA M₁ H H' (t • m) := by
@@ -64,7 +64,7 @@ def lagrA (M : Model σ X W) (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) (H
     exact ha.smul _
 
 /- English proof (translation)
-Rewrite using `[incM_one, Matrix.one_mul]`. Use extensionality with `i j`. Simplify using `only [Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piece_b_eq (H : Plane E n n₁) (H' : Plane E d d₁) (v : Fin d₁ → AE F E) :
     Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ v) =
@@ -75,31 +75,31 @@ theorem piece_b_eq (H : Plane E n n₁) (H' : Plane E d d₁) (v : Fin d₁ → 
   exact Finset.sum_congr rfl fun l _ => by ring
 
 /- English proof (translation)
-Rewrite using `[incM_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem piece_c_left_identity (H : Plane E n n₁) (H' : Plane E d d₁) (z : Matrix (Fin n₁) (Fin d₁) (AE F E)) :
     incM F H.ι * z * (incM F H'.ι)ᵀ = incM F (1 : Matrix (Fin n) (Fin n) E) * (incM F H.ι * z) * (incM F H'.ι)ᵀ := by
   rw [incM_one, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[incM_one, Matrix.transpose_one, Matrix.mul_one, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem piece_c_right_identity (H : Plane E n n₁) (H' : Plane E d d₁) (z : Matrix (Fin n₁) (Fin d₁) (AE F E)) :
     incM F H.ι * z * (incM F H'.ι)ᵀ = incM F H.ι * (z * (incM F H'.ι)ᵀ) * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ := by
   rw [incM_one, Matrix.transpose_one, Matrix.mul_one, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨y, v, z, hz, rfl⟩` from `h`. Take `⟨y', v', z', hz', rfl⟩` from `h'`. Establish `hQ : ∀ a b, (M.co.e a).1 ⬝ᵥ (M.co.e b).2 - (M.co.e b).1 ⬝ᵥ (M.co.e a).2 = symp (cA σ) (-1) (incM F X.J) (incM F W.J) a b` using `fun a b => (M.co.form a b).symm`. Establish `ha : Matrix.vecMulVec y (incV F H'.x) ∈ (iso0 n H' : Set (Matrix (Fin n) (Fin d) (AE F E)))` using `⟨y, rfl⟩`. Establish `ha' : Matrix.vecMulVec y' (incV F H'.x) ∈ (iso0 n H' : Set (Matrix (Fin n) (Fin d) (AE F E)))` using `⟨y', rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcross` using `GlobalTheory.T.symplectic_isotropic_embedded_vanishes_adelic F E σ n d d₁ X.J W.J H' (fun u => (hH'.orth u).1)`. Establish `h_aa` using `GlobalTheory.T.symplectic_isotropic_plane_vanishes_adelic F E σ n d d₁ X.J W.J H' hH'.xx _ ha _ ha'`. Establish `h_ba'` using `hcross _ ha' (Matrix.vecMulVec (incV F H.x) v)`. Establish `h_b'a` using `hcross _ ha (Matrix.vecMulVec (incV F H.x) v')`. Establish `h_ca'` using `hcross _ ha' (incM F H.ι * z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h_c'a` using `hcross _ ha (incM F H.ι * z')`. Establish `h_bb'` using `symp_eq_zero (JB := W.J) _ _ _ (piece_xx hH (incM F H'.ι *ᵥ v) (incM F H'.ι *ᵥ v'))`. Establish `h_cb'` using `symp_eq_zero (JB := W.J) _ _ _ (piece_ix hH (z * (incM F H'.ι)ᵀ) (incM F H'.ι *ᵥ v'))`. Establish `h_c'b` using `symp_eq_zero (JB := W.J) _ _ _ (piece_ix hH (z' * (incM F H'.ι)ᵀ) (incM F H'.ι *ᵥ v))`. Establish `h_cc : symp (cA σ) (-1) (incM F X.J) (incM F W.J) (incM F H.ι * z * (incM F H'.ι)ᵀ) (incM F H.ι * z' * (incM F H'.ι)ᵀ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[piece_c_left_identity H H' z, piece_c_left_identity H H' z', GlobalTheory.T.symplectic_form_restricted_plane F E σ n d d₁ X.J W.J W₁.J H'.ι hH'.gram]`. Establish `e1` using `piece_ii (d := d₁) hH z z'`. Establish `e2` using `piece_ii (d := d₁) hH z' z`. Simplify using `only [incM_one, Matrix.transpose_one, Matrix.mul_one] at e1 e2`. Establish `: symp (cA σ) (-1) (incM F X.J) (incM F W₁.J) (incM F H.ι * z) (incM F H.ι * z') = symp (cA σ) (-1) (incM F X₁.J) (incM F W₁.J) z z'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [symp, hTens_eq, e1, e2]`. Rewrite using `[this, M₁.co.form, hz, hz', zero_dotProduct, zero_dotProduct, sub_self]`. Rewrite `h_ba'`, `h_b'a` using `[← piece_b_eq]`. Rewrite `h_ca'`, `h_c'a` using `[← piece_c_left_identity]`. Rewrite `h_cb'`, `h_c'b` using `[← piece_c_right_identity]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h_aa`, `h_ba'`, `h_b'a`, `h_ca'`, `h_c'a`, `h_bb'`, `h_cb'`, `h_c'b`, `h_cc` using `[← hQ]`. Simplify using `only [map_add, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Take the linear combination `h_aa + h_ba' - h_b'a + h_ca' - h_c'a + h_bb' + h_cb' - h_c'b + h_cc`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symp_mixedA {B : Base F E} {j₀ j₁ i₀ i₁ : ℕ} {H : Plane E n n₁} {H' : Plane E d d₁}
     (hH : H.IsAdapted σ B X X₁ j₀ j₁) (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
@@ -144,39 +144,37 @@ namespace GlobalTheory.MixedLagrA
 open Matrix GlobalTheory.MixedLagrX
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.quadratic_model_rational_coordinates F E σ n d X W M B.ψ hM h2`. Take `⟨Φ₁, hΦ₁⟩` from `GlobalTheory.T.quadratic_model_rational_coordinates F E σ n₁ d₁ X₁ W₁ M₁ B.ψ hM₁ h2`. Set `f₁ : Matrix (Fin n₁) (Fin d₁) E →ₗ[F] (Fin n₁ × Fin d₁ → F)` to `(LinearMap.fst F _ _).comp Φ₁.toLinearMap`. Establish `hf₁ : Function.Surjective f₁` using `fun v => ⟨Φ₁.symm (v, 0), by simp [f₁]⟩`. Establish `hZ : Module.finrank F (LinearMap.ker f₁) = n₁ * d₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearMap.finrank_range_add_finrank_ker f₁` as an intermediate fact. Rewrite `this` using `[LinearMap.range_eq_top.mpr hf₁, finrank_top, LinearEquiv.finrank_eq Φ₁, Module.finrank_prod, Module.finrank_fintype_fun_eq_card, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Set `G : (Fin n → E) × (Fin d₁ → E) × LinearMap.ker f₁ →ₗ[F] Matrix (Fin n) (Fin d) E` to `{ toFun := fun p => Matrix.vecMulVec p.1 H'.x + Matrix.vecMulVec H.x (H'.ι *ᵥ p.2.1) + H.ι * (p.2.2 : Matrix (Fin n₁) (Fin d₁) E) * H'.ιᵀ map_add' := fun p q => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, Submodule.coe_add, Matrix.add_vecMulVec, Matrix.mulVec_add, Matrix.vecMulVec_add, Matrix.mul_add, Matrix.add_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c p => by`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul, RingHom.id_apply, Matrix.smul_vecMulVec, Matrix.mulVec_smul, Matrix.vecMulVec_smul, Matrix.mul_smul, Matrix.smul_mul, smul_add] }`. Establish `hmem : ∀ p, Φ (G p) ∈ lagrA M M₁ H H'`. Introduce `p`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show IsMixedA M₁ H H' (M.co.e.symm (GlobalTheory.MixedLagr.hat (Φ (G p))))`. Establish `: GlobalTheory.MixedLagr.hat (Φ (G p)) = M.co.e (incM F (G p))` using `(hΦ _).symm`. Rewrite using `[this, LinearEquiv.symm_apply_apply]`. Use `⟨incV F p.1, incV F p.2.1, incM F (p.2.2 : Matrix (Fin n₁) (Fin d₁) E), ?_, ?_⟩` and prove the remaining obligations. Establish `hz : (Φ₁ (p.2.2 : Matrix (Fin n₁) (Fin d₁) E)).1 = 0` using `p.2.2.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hΦ₁, hz]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[incM_mulVec, ← incM_transpose, ← incM_mul, ← incM_mul]`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [incM, incV, G, LinearMap.coe_mk, AddHom.coe_mk, Matrix.map_apply, Matrix.add_apply, Matrix.vecMulVec_apply, map_add, map_mul]`. Establish `hGinj : ∀ p, G p = 0 → p = 0`. Introduce and unpack `⟨y, v, z⟩ h`. Express the relevant statement in the definitionally equal form `Matrix.vecMulVec y H'.x + Matrix.vecMulVec H.x (H'.ι *ᵥ v) + H.ι * (z : Matrix (Fin n₁) (Fin d₁) E) * H'.ιᵀ = 0 at h`. Establish `hy : y = 0`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `hrow : (fun j => (Matrix.vecMulVec y H'.x + Matrix.vecMulVec H.x (H'.ι *ᵥ v) + H.ι * (z : Matrix (Fin n₁) (Fin d₁) E) * H'.ιᵀ) i j) = y i • H'.x + H.x i • (H'.ι *ᵥ v) + H'.ι *ᵥ (fun l => (H.ι * (z : Matrix (Fin n₁) (Fin d₁) E)) i l)`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Establish `hi` using `congrArg (fun A : Fin d → E => form σ W.J A H'.y) hrow`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [h, Matrix.zero_apply] at hi`. Rewrite `hi` using `[form_add_left, form_add_left, form_smul_left, form_smul_left, hH'.xy, (hH'.orth _).2, (hH'.orth _).2, mul_one, mul_zero, add_zero, add_zero]`. Rewrite using `[← hi]`. Simplify using `[form]`. Substitute `hy` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.mul_assoc]`. Establish `hv0 : H'.ι *ᵥ v = 0`. Use function extensionality and compare the values at `j`. Establish `hcol : (fun i => (Matrix.vecMulVec (0 : Fin n → E) H'.x + Matrix.vecMulVec H.x (H'.ι *ᵥ v) + H.ι * ((z : Matrix (Fin n₁) (Fin d₁) E) * H'.ιᵀ) : Matrix (Fin n) (Fin d) E) i j) = (H'.ι *ᵥ v) j • H.x + H.ι *ᵥ (fun k => ((z : Matrix (Fin n₁) (Fin d₁) E) * H'.ιᵀ) k j)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Pi.zero_apply, zero_mul, zero_add, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply (M := H.ι), Matrix.mulVec, dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Establish `hj` using `congrArg (fun A : Fin n → E => form σ X.J A H.y) hcol`. Simplify using `only [h, Matrix.zero_apply] at hj`. Rewrite `hj` using `[form_add_left, form_smul_left, hH.xy, (hH.orth _).2, mul_one, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hj]`. Simplify using `[form]`. Establish `hv : v = 0`. Use `GlobalTheory.MixedLagr.mul_transpose_injective F E σ 1 d d₁ W.J W₁.J H'.ι hH'.gram hdW (a₁ := Matrix.of fun _ l => v l) (a₂ := 0) (by beta_reduce` as an intermediate fact. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun hv0 j` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this`. Rewrite using `[Matrix.zero_mul, Matrix.zero_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply]`. Conclude with `(Finset.sum_congr rfl fun l _ => mul_comm (v l) (H'.ι j l)).trans this)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Conclude with `congrFun (congrFun this 0) l`. Substitute `hv` using the available equality. Establish `h0 : H.ι * ((z : Matrix (Fin n₁) (Fin d₁) E) * H'.ιᵀ) = 0`. Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`. Establish `hιZ : H.ι * (z : Matrix (Fin n₁) (Fin d₁) E) = 0` using `GlobalTheory.MixedLagr.mul_transpose_injective F E σ n d d₁ W.J W₁.J H'.ι hH'.gram hdW (a₁ := H.ι * (z : Matrix (Fin n₁) (Fin d₁) E)) (a₂ := 0) (by beta_reduce; rw [Matrix.zero_mul]; rw [Matrix.mul_assoc]; exact h0)`. Establish `hZt : (z : Matrix (Fin n₁) (Fin d₁) E)ᵀ = 0` using `GlobalTheory.MixedLagr.mul_transpose_injective F E σ d₁ n n₁ X.J X₁.J H.ι hH.gram hdX (a₁ := (z : Matrix (Fin n₁) (Fin d₁) E)ᵀ) (a₂ := 0) (by beta_reduce; rw [Matrix.zero_mul, ← Matrix.transpose_mul, hιZ, Matrix.transpose_zero])`. Establish `hZ0 : (z : Matrix (Fin n₁) (Fin d₁) E) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.transpose_transpose (z : Matrix (Fin n₁) (Fin d₁) E), hZt, Matrix.transpose_zero]`. Conclude with `Prod.ext rfl (Prod.ext rfl (Subtype.ext hZ0))`. Set `T : (Fin n → E) × (Fin d₁ → E) × LinearMap.ker f₁ →ₗ[F] lagrA M M₁ H H'` to `(Φ.toLinearMap.comp G).codRestrict _ hmem`. Establish `hT : Function.Injective T`. Introduce `p q hpq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hG : G p = G q` using `Φ.injective (congrArg Subtype.val hpq)`. Rewrite `hG` using `[← sub_eq_zero, ← map_sub]`. Conclude with `sub_eq_zero.mp (hGinj _ hG)`. Establish `hle` using `LinearMap.finrank_le_finrank_of_injective hT`. Rewrite `hle` using `[Module.finrank_prod, Module.finrank_prod, hZ, Module.finrank_pi_fintype, Module.finrank_pi_fintype]`.
-
-Simplify using `only [h2, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hle`. Establish `key : n * d = n * 2 + (d₁ * 2 + n₁ * d₁)` using `by rw [hH.rank, hH'.rank]; ring`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem le_finrank_lagrA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
@@ -287,19 +285,19 @@ namespace GlobalTheory.MixedLagrA
 open Matrix GlobalTheory.MixedLagrX
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hP₁` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT₁).1`. Establish `hH` using `hC.hH`. Establish `hH'` using `hC.hH'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Module.finrank F E = 2` using `hP.base.cm.2.2.1`. Establish `hdX : G₁.V.J.det ≠ 0`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Introduce `h0`. Apply `GlobalTheory.T.det_ne_zero_of_hasSig_divisor b _ _ _ (hP₁.herm.sig w)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `RingHom.map_det (B.emb w).1 G₁.V.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`. Establish `hdW : G₁.W.J.det ≠ 0` using `GlobalTheory.T.skew_determinant_ne_zero_first_space F E σ B _ G₁.W _ _ hP₁.skew`. Establish `hiso : ∀ p ∈ lagrA G.M G₁.M H H', ∀ q ∈ lagrA G.M G₁.M H H', p.1 ⬝ᵥ q.2 = q.1 ⬝ᵥ p.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp q hq`. Establish `h` using `symp_mixedA hH hH' G.M G₁.M hp hq`. Simplify using `only [LinearEquiv.apply_symm_apply, GlobalTheory.MixedLagr.hat] at h`. Rewrite using `[← sub_eq_zero]`. Apply `AdeleRing.algebraMap_injective (𝓞 F) F` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_zero, RingHom.map_dotProduct, RingHom.map_dotProduct]`. Conclude with `h`. Use `⟨lagrA G.M G₁.M H H', hiso, le_antisymm (GlobalTheory.T.finrank_isotropic_le_card F _ _ hiso) (le_finrank_lagrA B G.M G₁.M H H' hH hH' hP.good hP₁.good h2 hdX hdW), ?_⟩` and prove the remaining obligations. Introduce `t w hw`. Take `⟨y, v, z, hz, hm⟩` from `(show IsMixedA G₁.M H H' (G.M.co.e.symm (GlobalTheory.MixedLagr.hat w)) from hw).smul t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Matrix.vecMulVec y (incV F H'.x), ⟨y, rfl⟩, Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ v), ⟨v, rfl⟩, z, hz, fun φ => ?_⟩` and prove the remaining obligations. Establish `key : t • GlobalTheory.MixedLagr.hat w = G.M.co.e (Matrix.vecMulVec y (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ v) + incM F H.ι * z * (incM F H'.ι)ᵀ)`. Rewrite using `[← hm, LinearEquiv.map_smul, LinearEquiv.apply_symm_apply]`. Establish `ha : IsMixedA G₁.M H H' (Matrix.vecMulVec y (incV F H'.x))` using `⟨y, 0, 0, by simp, by ext i j; simp [Matrix.vecMulVec_apply]⟩`. Establish `hb : IsMixedA G₁.M H H' (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ v))` using `⟨0, v, 0, by simp, by ext i j; simp [Matrix.vecMulVec_apply]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hc : IsMixedA G₁.M H H' (incM F H.ι * z * (incM F H'.ι)ᵀ)` using `⟨0, 0, z, hz, by ext i j; simp [Matrix.vecMulVec_apply]⟩`. Express the relevant statement in the definitionally equal form `schr B.ψ (t • GlobalTheory.MixedLagr.hat w) φ = schr B.ψ (G.M.co.e _) (schr B.ψ (G.M.co.e _) (schr B.ψ (G.M.co.e _) φ))`. Rewrite using `[GlobalTheory.MixedLagr.schr_comp B.ψ (G.M.co.e (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ v))), symp_mixedA hH hH' G.M G₁.M hb hc, mul_zero, AddChar.map_zero_eq_one, one_smul, ← map_add, GlobalTheory.MixedLagr.schr_comp, symp_mixedA hH hH' G.M G₁.M ha (hb.add hc), mul_zero, …`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagrangian_isoA : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

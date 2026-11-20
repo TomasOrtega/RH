@@ -4,21 +4,19 @@ open NumberField Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `B` to `Module.Basis.ofSpan (K := E) (V := Fin N → E) (s := (Λ : Set (Fin N → E))) hspan.ge`. Set `e` to `B.indexEquiv (Pi.basisFun E (Fin N))`. Set `b : Fin N → (Fin N → E)` to `fun l => B (e.symm l)`. Establish `hbΛ : ∀ l, b l ∈ Λ` using `fun l => by`. Use `Module.Basis.ofSpan_subset (K := E) (V := Fin N → E) hspan.ge` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this (Set.mem_range_self _)`. Establish `hbE : LinearIndependent E b` using `B.linearIndependent.comp _ e.symm.injective`. Establish `hbO : LinearIndependent (𝓞 E) b` using `hbE.restrict_scalars' (𝓞 E)`. Set `f : La →ₗ[𝓞 E] (Fin N → E)` to `Λ.subtype ∘ₗ φ.toLinearMap`. Establish `hf : LinearMap.ker f = ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ker_eq_bot.mpr` to reduce the goal to its premises. Conclude with `Subtype.val_injective.comp φ.injective`. Set `a : Fin N → La` to `fun l => φ.symm ⟨b l, hbΛ l⟩`. Establish `hfa : f ∘ a = b`. Use function extensionality and compare the values at `l`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[f, a]`. Establish `ha : LinearIndependent (𝓞 E) a`. Apply `LinearIndependent.of_comp f` to reduce the goal to its premises. Rewrite using `[hfa]`. Conclude with `hbO`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨a, fun gam τ => ?_⟩` and prove the remaining obligations. Establish `h1 : LinearIndependent (𝓞 E) (gam ∘ a)` using `ha.map' gam.toLinearMap gam.ker`. Establish `h2 : LinearIndependent (𝓞 E) (f ∘ (gam ∘ a))` using `h1.map' f hf`. Establish `h3 : LinearIndependent E (f ∘ (gam ∘ a))` using `(LinearIndependent.iff_fractionRing (𝓞 E) E).mp h2`. Set `M : Matrix (Fin N) (Fin N) E` to `Matrix.of fun m l => (φ (gam (a l)) : Fin N → E) m`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hM : IsUnit M`. Apply `(Matrix.linearIndependent_cols_iff_isUnit).mp` to reduce the goal to its premises. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l m`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hdet : IsUnit M.det` using `(Matrix.isUnit_iff_isUnit_det M).mp hM`. Establish `: (Matrix.of fun m l => τ ((φ (gam (a l)) : Fin N → E) m) : Matrix (Fin N) (Fin N) ℂ) = τ.mapMatrix M`. Use extensionality with `m l`. Simplify using `[M]`. Rewrite using `[this, ← RingHom.map_det]`.
-
-Conclude with `hdet.map τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_exists_independent_family_all_embeddings
     (E : Type) [Field E] [NumberField E] (N : ℕ) (La : Type) [AddCommGroup La] [Module (𝓞 E) La]

@@ -14,7 +14,7 @@ variable {K : Type} {ι : K → Type}
 def incl (S : K → Prop) : (Σ k : {k // S k}, ι k.1) → (Σ k, ι k) := fun q => ⟨q.1.1, q.2⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨k, hk⟩, i⟩ ⟨⟨k', hk'⟩, i'⟩ h`. Simplify using `only [incl, Sigma.mk.inj_iff] at h`. Take `⟨rfl, h2⟩` from `h`. Consider the cases of `h2`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem incl_injective (S : K → Prop) : Function.Injective (incl (ι := ι) S) := by
   rintro ⟨⟨k, hk⟩, i⟩ ⟨⟨k', hk'⟩, i'⟩ h
@@ -24,11 +24,11 @@ theorem incl_injective (S : K → Prop) : Function.Injective (incl (ι := ι) S)
   rfl
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_rename_of_injective (incl_injective S), Finset.mem_image]`. Take `⟨m₀, hm₀, rfl⟩` from `hm`. Distinguish the cases in `hk : S k`. Establish `he : Function.extend Subtype.val a 0 k = a ⟨k, hk⟩` using `Subtype.val_injective.extend_apply a 0 ⟨k, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[he, ← hD m₀ hm₀ ⟨k, hk⟩]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Finsupp.mapDomain_apply (incl_injective S) m₀ ⟨⟨k, hk⟩, i⟩`. Rewrite using `[Function.extend_apply' _ _ _ (by rintro ⟨c, rfl⟩; exact hk c.2), Pi.zero_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finsupp.mapDomain_notin_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨q, hq⟩`. Conclude with `hk ((Sigma.mk.inj_iff.mp hq).1 ▸ q.1.2)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_rename_incl [Fintype K] [∀ k, Fintype (ι k)] (S : K → Prop)
     {D : MRing (fun k : {k // S k} => ι k.1)} {a : {k // S k} → ℕ} (hD : IsMultiHomog D a) :
@@ -49,9 +49,9 @@ theorem isMultiHomog_rename_incl [Fintype K] [∀ k, Fintype (ι k)] (S : K → 
     exact hk ((Sigma.mk.inj_iff.mp hq).1 ▸ q.1.2)
 
 /- English proof (translation)
-Proceed by induction on `D using MvPolynomial.induction_on with`. Consider the case `C r => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p q hp`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `simp only [mConeMap, aeval_X, map_mul, rename_C, rename_X, map_C, map_X, hy] <;> rfl`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mConeMap_rename_incl {Ω Φ : Type} [Field Ω] [Field Φ] [Algebra Ω Φ] (S : K → Prop)
     (x : (Σ k : {k // S k}, ι k.1) → Ω) (y : (Σ k, ι k) → Φ)
@@ -67,9 +67,9 @@ theorem mConeMap_rename_incl {Ω Φ : Type} [Field Ω] [Field Φ] [Algebra Ω Φ
     simp only [mConeMap, aeval_X, map_mul, rename_C, rename_X, map_C, map_X, hy] <;> rfl
 
 /- English proof (translation)
-Introduce `hmem`. Apply `hD` to reduce the goal to its premises. Establish `e : mConeMap y (rename (incl (ι` using `ι) S) D) = 0 := hmem`. Rewrite `e` using `[mConeMap_rename_incl S x y hy D]`. Establish `e2 : rename Subtype.val (mConeMap x D) = 0` using `MvPolynomial.map_injective _ (algebraMap Ω Φ).injective (e.trans (map_zero _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show mConeMap x D = 0`. Conclude with `MvPolynomial.rename_injective _ Subtype.val_injective (e2.trans (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem rename_incl_notMem {Ω Φ : Type} [Field Ω] [Field Φ] [Algebra Ω Φ] (S : K → Prop)
     (x : (Σ k : {k // S k}, ι k.1) → Ω) (y : (Σ k, ι k) → Φ)
@@ -85,7 +85,7 @@ theorem rename_incl_notMem {Ω Φ : Type} [Field Ω] [Field Φ] [Algebra Ω Φ] 
   exact MvPolynomial.rename_injective _ Subtype.val_injective (e2.trans (map_zero _).symm)
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv d _ _ D a hD hDx`. Use `⟨rename (incl (ι := ι) fun k => ∀ p, M.blk p ≠ some k) D, Function.extend Subtype.val a 0, isMultiHomog_rename_incl _ hD, rename_incl_notMem _ M.x y (fun q => M.y_base q) hDx, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[map_rename, eval_rename]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_form : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 2) → IsArithVar (mCoordIdeal y') (d + 2) → ∀ (D : MRing (baseIdx ι M.blk)) (a : NonPluckerBlocks M.blk → ℕ), IsMultiHomog D a → D ∉ mCoordIdeal M.x → ∃ (G : MRing ι) (a' : K → ℕ), IsMultiHomog G a' ∧ G ∉ mCoordIdeal y ∧ ∀ w : (Σ k, ι k) → ℂ, eval w (map (Int.castRingHom ℂ) G) = eval (basePart M.blk w) (map (Int.castRingHom ℂ) D) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv d _ _ D a hD hDx

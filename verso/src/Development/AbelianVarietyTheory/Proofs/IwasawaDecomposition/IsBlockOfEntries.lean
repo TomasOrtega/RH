@@ -11,7 +11,7 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.Col2.TC.BlockMatrixCriteria
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single ⟨c, hc⟩]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg]`. Conclude with `fun h => hj (Fin.ext h)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
 Simplify using the standard rewrite rules.
 -/
@@ -25,20 +25,20 @@ theorem sum_ite_val {m : ℕ} (f : Fin m → ℂ) (c : ℕ) (hc : c < m) :
   · simp
 
 /- English proof (translation)
-The claim follows from `Finset.sum_eq_zero fun j _ => if_neg (by have := j.2; omega)`.
+A detailed English derivation is pending.
 -/
 theorem sum_ite_val_zero {m : ℕ} (f : Fin m → ℂ) (c : ℕ) (hc : m ≤ c) :
     ∑ j : Fin m, (if (j : ℕ) = c then f j else 0) = 0 :=
   Finset.sum_eq_zero fun j _ => if_neg (by have := j.2; omega)
 
 /- English proof (translation)
-Substitute `hp hq hN` using the available equality. Use `⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun h1 (Br.iC rfl a)) b`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, mul_ite, mul_one, mul_zero, ite_mul, one_mul, zero_mul] at e`. Simplify using `only [eq_comm (a := ((Br.iC rfl a : Fin (q+1)) : ℕ))] at e`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[sum_ite_val _ _ (by have := b.2; omega), sum_ite_val _ _ (show ((Br.iC rfl a : Fin (q+1)) : ℕ) < q from a.2)]`. Conclude with `e`. Establish `e` using `congrFun h2 (Br.iC rfl a)`. Simplify using `only [Matrix.mulVec, dotProduct, mul_ite, mul_one, mul_zero] at e`. Rewrite `e` using `[sum_ite_val _ _ (by omega), if_neg (by have := a.2; simp [Br.iC]; omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e`. Establish `e` using `congrFun (congrFun h1 (Br.iL rfl)) a`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, mul_ite, mul_one, mul_zero, ite_mul, one_mul, zero_mul] at e`. Simplify using `only [eq_comm (a := ((Br.iL rfl : Fin (q+1)) : ℕ))] at e`. Rewrite `e` using `[sum_ite_val _ _ (by have := a.2; omega), sum_ite_val_zero _ _ (by simp [Br.iL])]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e`. Establish `e` using `congrFun h2 (Br.iL rfl)`. Simplify using `only [Matrix.mulVec, dotProduct, mul_ite, mul_one, mul_zero] at e`. Rewrite `e` using `[sum_ite_val _ _ (by omega), if_pos (by simp [Br.iL])]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBlock_of_frame {p q N n : ℕ} (hp : p = N) (hq : q = n) (hN : N = n + 1) (M : Matrix (Fin p) (Fin p) ℂ)
     (M' : Matrix (Fin q) (Fin q) ℂ)
@@ -73,7 +73,7 @@ end GlobalTheory.Mem.Col2.TC.BlockMatrixCriteria
 namespace GlobalTheory.Mem.Col2.TC.BlockMatrixCriteria
 
 /- English proof (translation)
-Establish `e1 : A = fun i j => M (Fin.cast hp.symm i) (Fin.cast hp.symm j)` using `funext fun i => funext fun j => hA i j`. Establish `e2 : A' = fun i j => M' (Fin.cast hq.symm i) (Fin.cast hq.symm j)` using `funext fun i => funext fun j => hA' i j`. Substitute `e1 e2` using the available equality. Conclude with `isBlock_of_frame hp hq hN M M' h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isBlock_of_entries {p q N n : ℕ} (hp : p = N) (hq : q = n) (hN : N = n + 1) (M : Matrix (Fin p) (Fin p) ℂ)
     (M' : Matrix (Fin q) (Fin q) ℂ) (A : Matrix (Fin N) (Fin N) ℂ) (A' : Matrix (Fin n) (Fin n) ℂ)

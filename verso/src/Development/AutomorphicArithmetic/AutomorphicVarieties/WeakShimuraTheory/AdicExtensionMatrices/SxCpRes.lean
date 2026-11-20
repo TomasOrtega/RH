@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `h1 : (Matrix.reindex σ.symm σ.symm M).charpoly = M.charpoly` using `Matrix.charpoly_reindex _ _`. Rewrite using `[← h1, ← Matrix.charpoly_transpose, Matrix.charpoly_of_upperTriangular]`. Simplify using `using Equiv.prod_comp σ fun i => X - C (M i i)`. Introduce `i j hij`. Simplify using `using h j i hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cp_low {R : Type} [CommRing R] (M : M4 R) (σ : Equiv.Perm (Fin 4))
     (h : ∀ i j, i < j → M (σ i) (σ j) = 0) : M.charpoly = ∏ i, (X - C (M i i)) := by
@@ -14,9 +14,9 @@ private theorem cp_low {R : Type} [CommRing R] (M : M4 R) (σ : Equiv.Perm (Fin 
     simpa using h j i hij
 
 /- English proof (translation)
-Introduce `O Γ _ _ Φ R _ a P h g`. Simplify using `only [← h.diag g]`. Break down `h.shape with ⟨h1, -⟩ | h1` into its components or cases. Use `cp_low _ (Equiv.swap 1 2) fun i j hij => h1 g _ _ ?_ ?_` and prove the remaining obligations. Conclude with `fun e => hij.ne ((Equiv.swap 1 2).injective e)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `revert i j`. Evaluate the decidable proposition. Use `cp_low _ 1 fun i j hij => h1 g _ _ hij.ne ?_ revert i j` and prove the remaining obligations. Evaluate the decidable proposition.
+Evaluate the decidable proposition. Reduce the conclusion to the remaining proof obligations. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxCpRes :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] {Φ : Fr O Γ} {R : Type} [CommRing R] (a : O →+* R) (P : PD Φ.ι Γ R), Φ.Res a P → ∀ g, (P.r g).charpoly = ∏ i, (X - C (a (Φ.χ i g))) := by

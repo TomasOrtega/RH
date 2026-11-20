@@ -14,27 +14,23 @@ noncomputable section
 namespace PositivityTheory.ThKW.PhaseFourierInjectivity
 open PositivityTheory.ThKW.ModulusFactorDefinition
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ ν 𝓕 hν h𝓕 χS ωd hω γ hγ t ht f hf`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT`. Establish `: BorelSpace (WOF F E nS nT)` using `⟨rfl⟩`. Establish `: Countable (ratLF F E nS nT)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ y : WOF F E nS (nT + nT), symplOHF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ 0 y = 0` using `fun y => by`. Simplify using `[symplOHF, symplOF, hOF]`. Establish `h1 : ∀ w : WOF F E nS nT, ωd (1, γ) f (dC (AF F ⊗[F] E) nT * w) = f (dC (AF F ⊗[F] E) nT * ((t⁻¹).1 * w))`. Introduce `w`. Establish `hact : actOF σ JS _ 1 γ (dC (AF F ⊗[F] E) nT * ((t⁻¹).1 * w)) = dC (AF F ⊗[F] E) nT * w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `actOF`. Rewrite using `[inv_one, show mtF σ JS 1 = 1 from rfl, Matrix.mul_one, ← Matrix.mul_assoc, ht, Matrix.mul_assoc, ← Matrix.mul_assoc t.1, Units.mul_inv, Matrix.one_mul]`. Establish `h2` using `congrFun (hω.om_heis 1 γ (dC (AF F ⊗[F] E) nT * ((t⁻¹).1 * w)) f hf) 0`. Rewrite `h2` using `[hω.om_aut 1 (one_mem _) γ hγ _ (_root_.GlobalTheory.HeisThetaF.isThetaFunOF_heisOF_k F E σ B hB _ _ JS _ ξ₀ _ f hf), hact]`. Simplify using `only [heisOF, h0, AddChar.map_zero_eq_one, one_mul, zero_add] at h2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h2.symm`. Take `⟨g₀, -, hg⟩` from `hγ`. Establish `hg' : mtF σ _ γ = g₀.1.map (incAF F E)` using `(congrArg Units.val hg).symm`. Choose the witnesses or unpack the hypotheses as in `⟨s₀, hs₀⟩ : ∃ s₀ : Matrix (Fin nT) (Fin nT) E, t.1 = incM F s₀ := by`. Use `⟨(g₀.1 * GlobalTheory.LagrThetaInv.dC E nT).submatrix (fun p => finSumFinEquiv (Sum.inl p)) id, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (g₀.1 * GlobalTheory.LagrThetaInv.dC E nT).map (incAF F E) = dC (AF F ⊗[F] E) nT * t.1`. Rewrite using `[Matrix.map_mul, ← hg', ← ht]`. Use `congr 1`. Use `GlobalTheory.LagrThetaInv.dC_mul_rat (F := F) (1 : Matrix (Fin nT) (Fin nT) E)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `this.symm`. Use extensionality with `i j`. Rewrite using `[← GlobalTheory.LagrThetaInv.dC_mul_inl t.1, ← e]`. Both sides reduce to the same expression. Establish `hd` using `GlobalTheory.DiagThetaRatF.det_ne_zero_of_unit t s₀ hs₀`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs₁ : (t⁻¹).1 = incM F s₀⁻¹`. Rewrite using `[Matrix.coe_units_inv]`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[hs₀]`. Use `show s₀.map (inclR (F := F) (AF F)) * s₀⁻¹.map (inclR (F := F) (AF F)) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hm : ∀ (s : Matrix (Fin nT) (Fin nT) E) (x : WOF F E nS nT), x ∈ ratLF F E nS nT → (incM F s * x : Matrix (Fin nT) (Fin nS) (AF F ⊗[F] E)) ∈ ratLF F E nS nT`. Introduce and unpack `s _ ⟨y, rfl⟩`. Use `⟨s * y, ?_⟩` and prove the remaining obligations. Use `show (s * y).map (incAF F E) = s.map (incAF F E) * y.map (incAF F E)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_mul`. Set `e : WOF F E nS nT ≃+ WOF F E nS nT` to `{ toFun := fun w => (t⁻¹).1 * w invFun := fun w => t.1 * w left_inv := fun w => by simp only [← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul] right_inv := fun w => by simp only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] map_add' := fun v w => Matrix.mul_add _ v w }`. Unfold `GlobalTheory.LagrTheta.lagrInt`. Simplify using `only [h1]`. Conclude with `GlobalTheory.DiagThetaRatF.setIntegral_comp_aut (ratLF F E nS nT) hK hKc ν h𝓕 e (continuous_const.matrix_mul continuous_id) (continuous_const.matrix_mul continuous_id) (fun x hx => by show (t⁻¹).1 * x ∈ _`.
-
-Rewrite using `[hs₁]`. Conclude with `hm _ x hx)`. Use the proof step `(fun x hx => by show t.1 * x ∈ _`. Rewrite using `[hs₀]`. Conclude with `hm _ x hx)`.
-
-Use the proof step `(fun w => f (dC (AF F ⊗[F] E) nT * w)) (periodic hf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

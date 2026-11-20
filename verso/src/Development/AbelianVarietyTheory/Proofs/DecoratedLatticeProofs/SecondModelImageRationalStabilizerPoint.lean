@@ -7,11 +7,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Mi
 
 /- English proof (translation)
-Introduce `D X h u ψ B a ha`. Establish `hrat : embA B.d B.o a ∈ GQ (D.sp.Y 0)`. Establish `e : embA B.d B.o a = B.d.emb0 (B.o.emb (a, 1))` using `rfl`. Rewrite using `[e]`. Conclude with `B.d.wittDecomp_anisotropicEmbedding_mem_rationalPoints (B.o.emb_mem_GQ ha (one_mem _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k : ∀ {I I' : Formalism.MainNotions.S.AutInst} (e : I = I') (x : I.GA), x ∈ I.GFset → castGA e x ∈ I'.GFset`. Introduce `I I' e x hx`. Substitute `e` using the available equality. Conclude with `hx`. Establish `hr : iotaX X h (embA B.d B.o a) ∈ X.B.I.GFset` using `k h.symm _ ((Formalism.IndefR.RationalEmbedding.iota_rat D _).1 hrat)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hH` using `(B.tieH (embA B.d B.o a)).1 ⟨a, rfl⟩`. Conclude with `⟨⟨iotaX X h (embA B.d B.o a), Subgroup.mem_inf.2 ⟨hr, Subgroup.mem_prod.2 hH⟩⟩, rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem toH_rat : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (B : SBes X h u ψ (D.sp.X 0)) (a : GA D (D.sp.X 0)), a ∈ GQ (D.sp.X 0) → ∃ γ : Gam X u, iotaI X u γ = (B.toH a).1 ∧ iotaF X u γ = (B.toH a).2 := by
   intro D X h u ψ B a ha

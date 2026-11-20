@@ -24,7 +24,7 @@ def PtC {b : Base D R} {N : ℕ} {S : Scheme.{0}} {t : S ⟶ Sp R} (o : Obj b N 
     ∀ a c, Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) M (f a) (f c) (unitOn (z ^ (2 * omegaStd a c)))
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Take `rfl : f = f'` from `funext fun a => Over.OverMorphism.ext (hf a)`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem ptC_congr {b : Base D R} {N : ℕ} {S : Scheme.{0}} {t : S ⟶ Sp R} (o : Obj b N t) (h M : ℕ) (k : Type)
     [Field k] (z : kˣ) {y y' : Sp k ⟶ S} (hy : y = y') (f : (Fin h ⊕ Fin h → ℤ) → (Over.mk y ⟶ o.A))
@@ -35,63 +35,57 @@ theorem ptC_congr {b : Base D R} {N : ℕ} {S : Scheme.{0}} {t : S ⟶ Sp R} (o 
   rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_cyclotomicAway_finiteEtale_cover`.
+A detailed English derivation is pending.
 -/
 theorem lemCyc : ∀ (M : ℕ) (S : Scheme.{0}), 0 < M → IsUnit (M : Γ(S, ⊤)) → ∃ (S' : Over S) (t₀ : S'.left ⟶ Sp (cycAway M)), IsFinite S'.hom ∧ Etale S'.hom ∧ ∀ (T : Scheme.{0}) (f : T ⟶ S) (t₁ : T ⟶ Sp (cycAway M)), ∃! g : T ⟶ S'.left, g ≫ S'.hom = f ∧ g ≫ t₀ = t₁ := GlobalTheory.T.exists_cyclotomicAway_finiteEtale_cover
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.torsionFamily_kernel_exact_isClopen_geometric`.
+A detailed English derivation is pending.
 -/
 theorem lemKer : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsAbelianScheme G → ∀ (M h : ℕ), 0 < M → IsUnit (M : Γ(S, ⊤)) → ∀ (Z : Over S) (e : (Fin h ⊕ Fin h → ℤ) → (Z ⟶ G)), (∀ a c, e (a + c) = e a * e c) → (∀ a, e a ^ M = 1) → GlobalTheory.HkClopen.Loc (S := Z.left) (fun k _ _ x => ∀ a, (Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ e a = 1 ↔ ∃ c, a = M • c) := GlobalTheory.T.torsionFamily_kernel_exact_isClopen_geometric
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.torsionFamily_surjective_iff_geometricPoint`.
+A detailed English derivation is pending.
 -/
 theorem lemOnto : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ), 0 < M → M.Coprime p → ∀ (S : Scheme.{0}) (t : S ⟶ Sp R) (o : Obj b N t) (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ S) (e : (Fin h ⊕ Fin h → ℤ) → (Over.mk y ⟶ o.A)), (∀ a c, e (a + c) = e a * e c) → (∀ a, e a ^ M = 1) → (∀ a, e a = 1 ↔ ∃ c, a = M • c) → ((∀ g : Over.mk y ⟶ o.A, g ^ M = 1 → ∃ a, e a = g) ↔ (M = 1 ∨ 2 * h = Module.finrank ℤ D.La)) := GlobalTheory.T.torsionFamily_surjective_iff_geometricPoint
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.weilPairing_condition_locus_isClopen`.
+A detailed English derivation is pending.
 -/
 theorem lemWeil : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ), 0 < M → M.Coprime p → ∀ (S : Scheme.{0}) (t : S ⟶ Sp R) (o : Obj b N t) (Z : Over S) (t₁ : Z.left ⟶ Sp (cycAway M)) (e : (Fin h ⊕ Fin h → ℤ) → (Z ⟶ o.A)), (∀ a c, e (a + c) = e a * e c) → (∀ a, e a ^ M = 1) → GlobalTheory.HkClopen.Loc (S := Z.left) (fun k _ _ x => ∀ (β : cycAway M →+* k) (z : kˣ), x ≫ t₁ = spMap β → (z : k) = β (zetaAway M) → ∀ a c, Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) M ((Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ e a) ((Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ e c) (unitOn (z ^ (2 * omegaStd a c)))) := GlobalTheory.T.weilPairing_condition_locus_isClopen
 
 /- English proof (translation)
-Introduce `p _ D R _ b N h M hM hcop S t o`. Establish `hM0 : M ≠ 0` using `hM.ne'`. Establish `hMS : IsUnit (M : Γ(S, ⊤))`. Use `(b.unit M hcop).map (GlobalTheory.LevCover.fnOn t)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨Z, et, hfin, het, eadd, epow, huniv⟩` from `GlobalTheory.exists_finiteEtale_latticeTorsionHom S o.A M (Fin h ⊕ Fin h → ℤ) o.ab hMS`. Use `haveI := hfin`. Use `haveI := het`. Take `⟨S', t₀, hS1, hS2, hSu⟩` from `lemCyc M S hM hMS`. Use `haveI := hS1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := hS2`. Take `⟨hW1, hW2⟩` from `GlobalTheory.LevCover.finiteEtale_tensor Z S'`. Use `haveI := hW1`. Use `haveI := hW2`. Set `W : Over S` to `Z ⊗ S'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `e : (Fin h ⊕ Fin h → ℤ) → (W ⟶ o.A)` to `fun a => fst Z S' ≫ et a`. Set `τ : W.left ⟶ Sp (cycAway M)` to `(snd Z S').left ≫ t₀`. Establish `eadd' : ∀ a c, e (a + c) = e a * e c` using `fun a c => by simp only [e, eadd, MonObj.comp_mul]`. Establish `epow' : ∀ a, e a ^ M = 1` using `fun a => by simp only [e]; rw [← MonObj.comp_pow, epow, MonObj.comp_one]`. Set `C : Prop` to `M = 1 ∨ 2 * h = Module.finrank ℤ D.La`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Vs, hVs, HV⟩` from `(lemKer S o.A o.ab M h hM hMS W e eadd' epow').and ((GlobalTheory.HkClopen.Loc.const (S := W.left) C).and (lemWeil p D R b N h M hM hcop S t o W τ e eadd' epow'))`. Set `U : W.left.Opens` to `⟨Vs, hVs.isOpen⟩`. Take `⟨Y, i, hY1, hY2, hmono, Hi⟩` from `GlobalTheory.LevCover.exists_sub U hVs.isClosed`. Establish `memIff : ∀ (T : Over S) (w : T ⟶ W) (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ T.left) (β : cycAway M →+* k) (z : kˣ), (x ≫ w.left) ≫ τ = spMap β → (z : k) = β (zetaAway M) → ((x ≫ w.left) (default : PrimeSpectrum k) ∈ Vs ↔ PtC o h M k (x ≫ T.hom) z (fun a => (Over.homMk x …`. Introduce `T w k _ _ x β z hβ hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[HV k (x ≫ w.left), ← ptC_congr o h M k z (show (x ≫ w.left) ≫ W.hom = x ≫ T.hom by`. Rewrite using `[Category.assoc, Over.w w]) (fun a => (Over.homMk (x ≫ w.left) rfl : Over.mk ((x ≫ w.left) ≫ W.hom) ⟶ W) ≫ e a)`. Use `_ (fun a => by simp)]`. Establish `ha : ∀ a c, (Over.homMk (x ≫ w.left) rfl : Over.mk ((x ≫ w.left) ≫ W.hom) ⟶ W) ≫ e (a + c) = ((Over.homMk (x ≫ w.left) rfl : Over.mk ((x ≫ w.left) ≫ W.hom) ⟶ W) ≫ e a) * ((Over.homMk (x ≫ w.left) rfl : Over.mk ((x ≫ w.left) ≫ W.hom) ⟶ W) ≫ e c)` using `fun a c => by`. Rewrite using `[eadd', MonObj.comp_mul]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hp : ∀ a, ((Over.homMk (x ≫ w.left) rfl : Over.mk ((x ≫ w.left) ≫ W.hom) ⟶ W) ≫ e a) ^ M = 1` using `fun a => by rw [← MonObj.comp_pow, epow', MonObj.comp_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hk, hC, hw⟩`. Conclude with `⟨hk, (lemOnto p D R b N h M hM hcop S t o k _ _ ha hp hk).2 hC, hw β z hβ hz⟩`. Introduce and unpack `⟨hk, ho, hw⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hk, (lemOnto p D R b N h M hM hcop S t o k _ _ ha hp hk).1 ho, fun β' z' hβ' hz' => ?_⟩` and prove the remaining obligations. Take `rfl : β' = β` from `GlobalTheory.LevCover.spMap_inj' (hβ'.symm.trans hβ)`. Take `rfl : z' = z` from `Units.ext (hz'.trans hz.symm)`. Conclude with `hw`. Establish `unitζ : ∀ (k : Type) [Field k] (β : cycAway M →+* k), IsUnit (β (zetaAway M))` using `fun k _ β => IsUnit.of_pow_eq_one (by rw [← map_pow, GlobalTheory.HTSympCover.zetaAway_pow_self M hM0, map_one]) hM0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨Y, i.left ≫ τ, fun a => i ≫ e a, hY1, hY2, fun T t₁' lv => ⟨fun hL => ?_, fun hex => ?_⟩⟩` and prove the remaining obligations. Take `⟨hadd, hpow, hgeo⟩` from `hL`. Take `⟨u, hu, huu⟩` from `huniv T lv hadd hpow`. Take `⟨g, ⟨hg1, hg2⟩, hgu⟩` from `hSu T.left T.hom t₁'`. Set `v : T ⟶ S'` to `Over.homMk g hg1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `w : T ⟶ W` to `lift u v`. Establish `hwe : ∀ a, w ≫ e a = lv a` using `fun a => by`. Simplify using `only [w, e]`. Rewrite using `[← Category.assoc, lift_fst, hu]`. Establish `hwτ : w.left ≫ τ = t₁'`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [τ]`. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_snd]`. Conclude with `hg2`. Establish `hr : Set.range w.left ⊆ U`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨k, _, _, x, hx⟩` from `GlobalTheory.FinEt.exists_algClosed_point T.left q`. Take `⟨β, hβ⟩` from `GlobalTheory.LevCover.exists_spMap (x ≫ t₁')`. Establish `hm : (x ≫ w.left) (default : PrimeSpectrum k) ∈ Vs`. Use `(memIff T w k x β (unitζ k β).unit (by rw [Category.assoc, hwτ, hβ]) rfl).2 ?_` and prove the remaining obligations. Use `hgeo k x β (unitζ k β).unit hβ rfl` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hwe]`. Conclude with `this`. Establish `hp' : x (default : PrimeSpectrum k) = q`. Establish `: x (default : PrimeSpectrum k) ∈ Set.range x` using `⟨_, rfl⟩`. Rewrite `this` using `[hx]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(show (x ≫ w.left) (default : PrimeSpectrum k) = w.left q by rw [← hp']; rfl) ▸ hm`. Take `⟨f, hf⟩` from `(Hi T w).1 hr`. Use `⟨f, ⟨by rw [← Category.assoc, ← Over.comp_left, hf, hwτ], fun a => by` and prove the remaining obligations. Rewrite using `[← Category.assoc, hf, hwe]⟩, fun f' ⟨hf'1, hf'2⟩ => ?_⟩`. Establish `e1 : f' ≫ i ≫ fst Z S' = u` using `huu _ fun a => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hf'2 a` as an intermediate fact. Simplify using `only [e, Category.assoc] at this ⊢`. Conclude with `this`. Establish `e2 : f' ≫ i ≫ snd Z S' = v`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hgu _ ⟨Over.w (f' ≫ i ≫ snd Z S'), ?_⟩` and prove the remaining obligations. Rewrite using `[← hf'1]`. Simplify using `[τ]`. Establish `e3 : f' ≫ i = w`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
-
-Rewrite using `[Category.assoc, e1]`. Conclude with `(lift_fst u v).symm`. Rewrite using `[Category.assoc, e2]`. Conclude with `(lift_snd u v).symm`. Conclude with `(cancel_mono i).1 (e3.trans hf.symm)`.
-
-Take `⟨f, hf1, hf2⟩` from `hex`. Establish `hlv : ∀ a, lv a = (f ≫ i) ≫ e a` using `fun a => by rw [Category.assoc]; exact (hf2 a).symm`. Use `⟨fun a c => by rw [hlv, hlv, hlv, eadd', MonObj.comp_mul], fun a => by rw [hlv, ← MonObj.comp_pow, epow', MonObj.comp_one], fun k _ _ x β z hx hz => ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (f ≫ i).left ⊆ U` using `(Hi T (f ≫ i)).2 ⟨f, rfl⟩`. Establish `hm : (x ≫ (f ≫ i).left) (default : PrimeSpectrum k) ∈ Vs` using `hr ⟨x (default : PrimeSpectrum k), rfl⟩`.
-
-Establish `hG` using `(memIff T (f ≫ i) k x β z (by rw [← hx, ← hf1]; simp) hz).1 hm`. Simplify using `only [← hlv] at hG`. Conclude with `hG`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sympLevScheme : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ), 0 < M →
   M.Coprime p → ∀ (S : Scheme.{0}) (t : S ⟶ Sp R) (o : Obj b N t),

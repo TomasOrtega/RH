@@ -6,9 +6,9 @@ namespace GlobalTheory
 open AdicCompletion in
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LinearMapDifferenceFormula.main`. Consider the case `exact _root_.GlobalTheory.LinearMapDifferenceFormula.main`. Consider the case `(apply _root_.GlobalTheory.LinearMapDifferenceFormula.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LinearMapDifferenceFormula.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LinearMapDifferenceFormula.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LinearMapDifferenceFormula.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem adicCompletion_map_invariants : ∀ (A : Type) [CommRing A] [IsNoetherianRing A] (J : Ideal A) (N M : Type) [AddCommGroup N] [Module A N]
     [AddCommGroup M] [Module A M] [Module.Finite A M] (f : N →ₗ[A] M) (Γ : Type) [Finite Γ] (g : Γ → (M →ₗ[A] M)),

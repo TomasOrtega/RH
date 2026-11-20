@@ -10,13 +10,13 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ P AI T K V _ _ _ ρ hρ`. Take `⟨ι, -, hι⟩` from `GlobalTheory.T.exists_equivariant_log_semistable_to_deRham l P AI T`. Set `b` to `Module.finBasis ℚ_[l] V`. Take `⟨Q, hQ⟩` from `GlobalTheory.T.exists_semistable_period_matrix_of_isSemistable l P AI T _ K V b ρ hρ`. Use `GlobalTheory.T.isDeRham_of_invertible_periodMatrix l P _ K V b ρ (Matrix.GeneralLinearGroup.map ι.toRingHom Q) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Establish `hmap : ((Matrix.GeneralLinearGroup.map ι.toRingHom Q : GL (Fin (finrank ℚ_[l] V)) P.R.BdR) : Matrix (Fin (finrank ℚ_[l] V)) (Fin (finrank ℚ_[l] V)) P.R.BdR) = (Q : Matrix (Fin (finrank ℚ_[l] V)) (Fin (finrank ℚ_[l] V)) (Bst P)).map ι` using `rfl`. Establish `h` using `congrArg (fun M => M.map ι) (hQ g)`. Simplify using `only [Matrix.map_mul, Matrix.map_map] at h`. Rewrite using `[hmap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← h]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `(ι.commutes _).symm`. Rewrite using `[Matrix.map_map]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `(hι _ x).symm`.
+A detailed English derivation is pending.
 -/
 theorem sst_isDR : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), IsSst P ρ → IsDR (P.PD K) ρ := by
   intro l _ P AI T K V _ _ _ ρ hρ

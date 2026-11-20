@@ -16,9 +16,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Establish `hd : (τ.mapMatrix Gm).det ≠ 0`. Rewrite using `[← RingHom.map_det]`. Conclude with `(map_ne_zero τ).2 hG`. Rewrite using `[← sub_eq_zero]`. Apply `Matrix.eq_zero_of_vecMul_eq_zero hd` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_vecMul, sub_eq_zero]`. Use function extensionality and compare the values at `b`. Use `h (Pi.single b 1)` as an intermediate fact. Simplify `this` using `[FD.hermC, Pi.single_apply, apply_ite, vecMul, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma eq_of_hermC_eq (τ : E →+* ℂ) (Gm : Matrix (Fin r) (Fin r) E) (hG : Gm.det ≠ 0)
     (v w : Fin r → ℂ) (h : ∀ u, FD.hermC τ Gm v u = FD.hermC τ Gm w u) : v = w := by
@@ -33,19 +33,19 @@ lemma eq_of_hermC_eq (τ : E →+* ℂ) (Gm : Matrix (Fin r) (Fin r) E) (hG : Gm
   simpa [FD.hermC, Pi.single_apply, apply_ite, vecMul, dotProduct] using this
 
 /- English proof (translation)
-Establish `hMu : IsUnit M.det` using `isUnit_iff_ne_zero.2 hM`. Prove the components needed by the constructor for the conclusion. Introduce `a c ha`. Establish `h1 : FD.col M' a = ∑ e, K a e • FD.col M e`. Apply `eq_of_hermC_eq τ Gm hG` to reduce the goal to its premises.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u`. Use `congrFun (h u) a` as an intermediate fact. Rewrite `this` using `[locPer_apply, if_pos ha]`. Rewrite using `[this, FD.hermC_sum_left, mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[FD.hermC_smul_left, locPer_apply]`. Distinguish the cases in `he : (e : ℕ) < q`. Rewrite using `[if_pos he]`. Rewrite using `[hK a e (by simp [ha, he])]; simp`. Rewrite `h1` using `[← FD.Data.mulVec_eq_sum_col]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : M⁻¹ *ᵥ FD.col M' a = K a`. Rewrite using `[h1, mulVec_mulVec, Matrix.nonsing_inv_mul _ hMu, one_mulVec]`. Rewrite using `[← h2]`. Both sides reduce to the same expression. Introduce `a c ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha' : ¬ (a : ℕ) < q` using `not_lt.2 ha`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hMu]`. Establish `h1` using `congrFun (h (M *ᵥ Pi.single c 1)) a`. Rewrite `h1` using `[locPer_apply, if_neg ha', mulVec_mulVec]`. Establish `h2 : (K *ᵥ locPer τ Gm q M (M *ᵥ Pi.single c 1)) a = (K *ᵥ Pi.single c 1) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mulVec, mulVec, dotProduct, dotProduct]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Distinguish the cases in `he : (e : ℕ) < q`. Rewrite using `[hK a e (by simp [ha', he])]; simp`. Rewrite using `[locPer_apply, if_neg he, mulVec_mulVec, Matrix.nonsing_inv_mul _ hMu, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Simplify using `using h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma loc_compare (τ : E →+* ℂ) (Gm : Matrix (Fin r) (Fin r) E) (hG : Gm.det ≠ 0) (q : ℕ)
     (M M' K : Matrix (Fin r) (Fin r) ℂ) (hM : M.det ≠ 0) (hM' : M'.det ≠ 0)
@@ -88,7 +88,7 @@ lemma loc_compare (τ : E →+* ℂ) (Gm : Matrix (Fin r) (Fin r) E) (hG : Gm.de
     simpa using h1.symm
 
 /- English proof (translation)
-Rewrite using `[allPer_apply, allPer_apply, locPer_apply, locPer_apply]`. Use `split_ifs`. Rewrite using `[FD.hermC_smul_right]`. Rewrite using `[mulVec_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma allPer_scale {Ψ : Finset (E →+* ℂ)} (Gm : Matrix (Fin r) (Fin r) E) (q : ℕ) (x : FD.Frame Ψ r)
     {g : ℕ} (idx : Fin g ≃ Ψ × Fin r) (c : Ψ → ℂ) (y : Ψ → Fin r → ℂ) (k : Fin g) :
@@ -100,17 +100,17 @@ lemma allPer_scale {Ψ : Finset (E →+* ℂ)} (Gm : Matrix (Fin r) (Fin r) E) (
   · rw [mulVec_smul]; rfl
 
 /- English proof (translation)
-Establish `key : ∀ c : Ψ → ℂ, ((if ((idx k).2 : ℕ) < q then conj (c (idx k).1) else c (idx k).1) - (if ((idx k').2 : ℕ) < q then conj (c (idx k').1) else c (idx k').1)) * h k k' = 0`. Introduce `c`. Take `⟨y, hy⟩` from `hs (Pi.single k' 1)`. Establish `h1` using `congrFun (hh (fun τ => c τ • y τ)) k`. Rewrite `h1` using `[allPer_scale, hh, hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : allPer Gm q x idx (fun τ => c τ • y τ) = Pi.single k' (if ((idx k').2 : ℕ) < q then conj (c (idx k').1) else c (idx k').1)`. Use function extensionality and compare the values at `l`. Rewrite using `[allPer_scale, hy]`. Distinguish the cases in `hl : l = k'`. Substitute `hl` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hl]`. Rewrite `h1` using `[h2]`. Simplify using `only [mulVec_single, Pi.smul_apply, col_apply, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, mul_one] at h1`. Take the linear combination `h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Distinguish the cases in `h1 : (idx k).1 = (idx k').1`. Establish `h2` using `key (fun _ => Complex.I)`. Establish `hI : (2 * Complex.I) ≠ 0` using `by simp`. Apply the tactic sequence `by_cases ha : ((idx k).2 : ℕ) < q <;> by_cases hb : ((idx k').2 : ℕ) < q`. Conclude with `absurd ⟨h1, by simp [ha, hb]⟩ hk`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[if_pos ha, if_neg hb, Complex.conj_I]`. Apply `mul_left_cancel₀ hI` to reduce the goal to its premises. Take the linear combination `-h2`. Rewrite `h2` using `[if_neg ha, if_pos hb, Complex.conj_I]`. Apply `mul_left_cancel₀ hI` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h2`. Conclude with `absurd ⟨h1, by simp [ha, hb]⟩ hk`. Establish `h2` using `key (Pi.single (idx k).1 1)`. Simplify `h2` using `[Ne.symm h1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma block_of_allPer {Ψ : Finset (E →+* ℂ)} (Gm : Matrix (Fin r) (Fin r) E) (q : ℕ)
     (x x' : FD.Frame Ψ r) {g : ℕ} (idx : Fin g ≃ Ψ × Fin r) (h : Matrix (Fin g) (Fin g) ℂ)
@@ -151,31 +151,29 @@ lemma block_of_allPer {Ψ : Finset (E →+* ℂ)} (Gm : Matrix (Fin r) (Fin r) E
     simpa [Ne.symm h1] using h2
 
 /- English proof (translation)
-Introduce `E _ _ _ H D r ξ Gm φ Ψ hΨ g idx ty hty hξ hpos ⟨hφ, hspan, hG, hdet, hEF⟩ P x hx x' hx' hP P' hP' h hh`. Establish `hcm` using `cmType H Ψ hΨ`. Establish `hloc` using `fun τ : Ψ => (exists_loc τ.1 Gm hG D.q (FD.mat x τ) (hx τ).1 (hx τ).2).1`. Establish `hbij` using `allPer_bijective Gm D.q x idx hloc`. Establish `hQ : ∀ v, P v = allPer Gm D.q x idx (CMLattice.embAll Ψ r (φ v))` using `fun v =>`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun k => hP v k`. Establish `hQ' : ∀ v, P' v = allPer Gm D.q x' idx (CMLattice.embAll Ψ r (φ v))` using `fun v =>`. Use function extensionality and compare the values at `fun k => hP' v k`. Use `D.fin` as an intermediate fact. Take `⟨b, hb⟩` from `CMLattice.exists_basis_of_cmType Ψ hcm r (LinearMap.range φ) (Module.Finite.iff_fg.1 inferInstance) (by rw [LinearMap.coe_range]; exact hspan)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hall : ∀ y, allPer Gm D.q x' idx y = h *ᵥ allPer Gm D.q x idx y`. Establish `: allPer Gm D.q x' idx = (h.mulVecLin.restrictScalars ℝ) ∘ₗ allPer Gm D.q x idx`. Apply `b.ext` to reduce the goal to its premises. Introduce `i`. Take `⟨_, ⟨v, rfl⟩, hv⟩` from `(hb (b i)).1 (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hv, ← hQ', hh, hQ]`. Both sides reduce to the same expression. Introduce `y`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hblock` using `block_of_allPer Gm D.q x x' idx h hbij.2 hall`. Set `K : Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun τ => Matrix.of fun a c => h (idx.symm (τ, a)) (idx.symm (τ, c))`. Establish `hK0 : ∀ τ (a c : Fin r), ¬ ((a : ℕ) < D.q ↔ (c : ℕ) < D.q) → K τ a c = 0`. Introduce `τ a c hac`. Apply `hblock` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hac`. Establish `hK : ∀ (τ : Ψ) u, locPer τ.1 Gm D.q (FD.mat x' τ) u = K τ *ᵥ locPer τ.1 Gm D.q (FD.mat x τ) u`. Introduce `τ u`. Use function extensionality and compare the values at `a`. Establish `h1` using `congrFun (allPer_symm Gm D.q x' idx (fun _ => u) τ) a`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← h1, hall, mulVec, mulVec, dotProduct, dotProduct, ← idx.symm.sum_comp, Fintype.sum_prod_type, Finset.sum_eq_single τ]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← allPer_symm Gm D.q x idx (fun _ => u) τ]`. Both sides reduce to the same expression. Introduce `σ _ hσ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hblock, zero_mul]`. Simplify using `[hσ.symm]`. Simplify using the standard rewrite rules. Establish `hc` using `fun τ : Ψ => loc_compare τ.1 Gm hdet D.q (FD.mat x τ) (FD.mat x' τ) (K τ) (hx τ).1 (hx' τ).1 (hK0 τ) (hK τ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hhK : ∀ k k', (idx k).1 = (idx k').1 → h k k' = K (idx k).1 (idx k).2 (idx k').2`. Introduce `k k' e`. Simplify using `only [K, of_apply]`. Use `conv_rhs => rw [Prod.mk.eta, e, Prod.mk.eta]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun τ => ((FD.mat x τ)⁻¹ * FD.mat x' τ : Matrix (Fin r) (Fin r) ℂ), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_nonsing_inv_cancel_left (FD.mat x τ) (FD.mat x' τ) (isUnit_iff_ne_zero.2 (hx τ).1)).symm`. Introduce `τ a c hcq ha`. Conclude with `((hc τ).1 c a hcq).symm.trans (hK0 τ c a (by simp [hcq, ha]))`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k k' e h1 _`. Rewrite using `[hhK k k' e]`. Conclude with `(hc _).1 _ _ h1`. Introduce `k k' e h1 _`. Rewrite using `[hhK k k' e]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hc _).2 _ _ h1`. Introduce `k k' hne`. Apply `hblock` to reduce the goal to its premises. Introduce and unpack `⟨e1, e2⟩`. Apply `hne` to reduce the goal to its premises.
-
-Rewrite using `[hty, hty, e1]`. Simplify using `only [e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_of_period_linear : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (r : ℕ) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ : D.La →ₗ[𝓞 E] (Fin r → E)) (Ψ : Finset (E →+* ℂ)) (hΨ : ∀ τ, τ ∈ Ψ ↔ τ (H.rt : E) = H.rt0) (g : ℕ) (idx : Fin g ≃ Ψ × Fin r) (ty : Fin g → (E →+* ℂ)) (hty : ∀ k, ty k = if ((idx k).2 : ℕ) < D.q then ComplexEmbedding.conjugate (idx k).1.1 else (idx k).1.1), FD.cc ξ = -ξ → (∀ τ ∈ Ψ, 0 < (τ ξ).im) → (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, FD.cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * FD.herm Gm (φ x) (φ y))) → ∀ (P : D.La →+ (Fin g → ℂ)), ∀ x ∈ FD.GG Ψ Gm D.q, ∀ x' ∈ FD.GG Ψ Gm D.q, (∀ v k, P v k = if ((idx k).2 : ℕ) < D.q then FD.hermC (idx k).1.1 Gm (FD.col (FD.mat x (idx k).1) (idx k).2) (FD.Data.emb (idx k).1.1 (φ v)) else ((FD.mat x (idx k).1)⁻¹ *ᵥ FD.Data.emb (idx k).1.1 (φ v)) (idx k).2) → ∀ (P' : D.La →+ (Fin g → ℂ)), (∀ v k, P' v k = if ((idx k).2 : ℕ) < D.q then FD.hermC (idx k).1.1 Gm (FD.col (FD.mat x' (idx k).1) (idx k).2) (FD.Data.emb (idx k).1.1 (φ v)) else ((FD.mat x' (idx k).1)⁻¹ *ᵥ FD.Data.emb (idx k).1.1 (φ v)) (idx k).2) → ∀ h : Matrix (Fin g) (Fin g) ℂ, (∀ v, P' v = h *ᵥ P v) → ∃ b : FD.Frame Ψ r, x' = FD.rmul x b ∧ (∀ τ (a c : Fin r), (c : ℕ) < D.q → D.q ≤ (a : ℕ) → b τ a c = 0) ∧ (∀ k k', (idx k).1 = (idx k').1 → ((idx k).2 : ℕ) < D.q → ((idx k').2 : ℕ) < D.q → h k k' = b (idx k).1 (idx k').2 (idx k).2) ∧ (∀ k k', (idx k).1 = (idx k').1 → D.q ≤ ((idx k).2 : ℕ) → D.q ≤ ((idx k').2 : ℕ) → h k k' = (FD.mat b (idx k).1)⁻¹ (idx k).2 (idx k').2) ∧ ∀ k k', ty k ≠ ty k' → h k k' = 0 := by
   classical

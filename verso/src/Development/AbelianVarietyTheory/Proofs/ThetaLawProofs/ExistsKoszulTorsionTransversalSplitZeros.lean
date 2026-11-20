@@ -31,11 +31,11 @@ def Ex {K Ix : Type} [CommRing K] [Fintype Ix] (D : Matrix Ix Ix K) : Prop :=
   ∀ v, D.mulVec v = 0 → ∃ w, D.mulVec w = v
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Take `⟨ρ, hρ⟩` from `(Algebra.linearMap k Ω).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 f.injective)`. Establish `hρ' : ∀ a, ρ (f a) = a` using `fun a => LinearMap.congr_fun hρ a`. Introduce `v hv`. Take `⟨w, hw⟩` from `h (f ∘ v) (funext fun p => by`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← RingHom.map_mulVec, hv]`. Use the proof step `simp)`. Use `⟨ρ ∘ w, funext fun p => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg ρ (congrFun hw p)`. Rewrite `e` using `[Function.comp_apply, hρ']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply, Function.comp_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Conclude with `((ρ.map_smul (D p q) (w q)).trans (smul_eq_mul _ _)).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Ex.descend {k Ω Ix : Type} [Field k] [Field Ω] [Fintype Ix] (f : k →+* Ω) (D : Matrix Ix Ix k)
     (h : Ex (D.map f)) : Ex D := by
@@ -55,11 +55,11 @@ theorem Ex.descend {k Ω Ix : Type} [Field k] [Field Ω] [Fintype Ix] (f : k →
   exact ((ρ.map_smul (D p q) (w q)).trans (smul_eq_mul _ _)).symm
 
 /- English proof (translation)
-Establish `h : ∑ p : KIx g d N, (-1 : ℤ) ^ kdeg p = 0`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun p : KIx g d N => Even (kdeg p)), Finset.sum_congr rfl (fun (p : {p : KIx g d N // Even (kdeg p)}) _ => p.2.neg_one_pow), Finset.sum_congr rfl (fun (p : {p : KIx g d N // ¬ Even (kdeg p)}) _ => (Nat.not_even_iff_odd.1 p.2).neg_one_pow)]`. Simplify using `only [Finset.sum_const, Finset.card_univ]`. Rewrite using `[Fintype.card_congr e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[Fintype.sum_sum_type, Fintype.sum_sigma]`. Simplify using `only [kdeg, Finset.sum_const, Finset.card_univ, Fintype.card_fin, pow_zero] at h`. Establish `h2` using `Finset.sum_powerset_apply_card (fun j => N j • (-1 : ℤ) ^ (j + 1)) (x := (Finset.univ : Finset (Fin g)))`. Rewrite `h2` using `[Finset.powerset_univ, Finset.card_univ, Fintype.card_fin]`. Rewrite `h` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[nsmul_eq_mul, _root_.mul_one]`. Rewrite using `[eq_neg_of_add_eq_zero_right h, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem count_eq {g d : ℕ} {N : ℕ → ℕ}
     (e : {p : KIx g d N // Even (kdeg p)} ≃ {p : KIx g d N // ¬ Even (kdeg p)}) :
@@ -92,7 +92,7 @@ def Resolves (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K) (ev : M
   ∀ c, ev.mulVec c = 0 → ∃ w : Fin g → Fin (N 1) → K, c = ∑ i, (m i 0 1).mulVec (w i)
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, kosD, zero_mul, Finset.sum_const_zero, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_inl (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K) (ev : ∀ j, Matrix (Fin d) (Fin (N j)) K)
     (v : KIx g d N → K) (p) :
@@ -100,7 +100,7 @@ theorem mulVec_inl (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K) (
   simp only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, kosD, zero_mul, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, kosD, zero_mul, Finset.sum_const_zero, add_zero, Fintype.sum_sigma]`. Rewrite using `[Finset.sum_eq_single ∅ (fun J _ hJ => by simp [hJ]) (by simp)]`. Simplify using `only [if_true]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mulVec_inr (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K) (ev : ∀ j, Matrix (Fin d) (Fin (N j)) K)
     (v : KIx g d N → K) (a) :
@@ -112,7 +112,7 @@ theorem mulVec_inr (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K) (
   rfl
 
 /- English proof (translation)
-Simplify using `only [kosD]`. Conclude with `Finset.sum_eq_zero fun i _ => if_neg fun h => Finset.insert_ne_empty _ _ h.2.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kosD_inl_empty (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K) (ev : ∀ j, Matrix (Fin d) (Fin (N j)) K)
     (p) (k) : kosD m ev (.inl p) (.inl ⟨∅, k⟩) = 0 := by
@@ -120,7 +120,7 @@ theorem kosD_inl_empty (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) 
   exact Finset.sum_eq_zero fun i _ => if_neg fun h => Finset.insert_ne_empty _ _ h.2.symm
 
 /- English proof (translation)
-Simplify using `only [kosD]`. Use `Finset.sum_eq_zero fun i' _ => if_neg fun h => hp ?_` and prove the remaining obligations. Use `congrArg Finset.card h.2` as an intermediate fact. Rewrite `this` using `[Finset.card_insert_of_notMem h.1, Finset.card_singleton]`. Conclude with `Finset.card_eq_zero.1 (by omega)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kosD_single_ne (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K) (ev : ∀ j, Matrix (Fin d) (Fin (N j)) K)
     (p : Σ I : Finset (Fin g), Fin (N I.card)) (hp : p.1 ≠ ∅) (i) (k) : kosD m ev (.inl p) (.inl ⟨{i}, k⟩) = 0 := by
@@ -131,7 +131,7 @@ theorem kosD_single_ne (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) 
   exact Finset.card_eq_zero.1 (by omega)
 
 /- English proof (translation)
-Simplify using `only [kosD]`. Rewrite using `[Finset.sum_eq_single i (fun i' _ h => if_neg fun h' => h (by simpa using h'.2.symm)) (by simp), if_pos (by simp)]`. Simplify using `only [Finset.filter_empty, Finset.card_empty, pow_zero, _root_.one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem kosD_single_empty (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K)
     (ev : ∀ j, Matrix (Fin d) (Fin (N j)) K) (k' : Fin (N 0)) (i) (k : Fin (N 1)) :
@@ -143,23 +143,23 @@ theorem kosD_single_empty (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j'
   rfl
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃⟩` from `h`. Introduce `v hv`. Take `⟨w₀, hw₀⟩` from `h₁ (Sum.elim (fun q => v (.inl q)) Fin.elim0) (funext fun p => by`. Break down `p with p | p` into its components or cases. Conclude with `(mulVec_inl m _ _ p).trans ((mulVec_inl m ev v p).symm.trans (congrFun hv _))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `p.elim0)`. Take `⟨c, hc⟩` from `h₂ (fun a => v (.inr a))`. Take `⟨F, hF₀, hF⟩ : ∃ F : ∀ I : Finset (Fin g), Fin (N I.card) → K, F ∅ = c ∧ ∀ I, I ≠ ∅ → F I = fun k => w₀ (.inl ⟨I, k⟩)` from `⟨Function.update (fun I k => w₀ (.inl ⟨I, k⟩)) ∅ c, Function.update_self .., fun I h => Function.update_of_ne h ..⟩`. Set `w₁ : KIx g d N → K` to `Sum.elim (fun q => F q.1 q.2) (fun _ => 0)`. Establish `e₁ : ∀ p, (kosD m ev).mulVec w₁ (.inl p) = (kosD (d` using `0) m (fun _ => 0)).mulVec w₀ (.inl p) := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p`. Rewrite using `[mulVec_inl, mulVec_inl]`. Use `Finset.sum_congr rfl fun ⟨I, k⟩ _ => ?_` and prove the remaining obligations. Distinguish the cases in `hI : I = ∅`. Substitute `hI` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[kosD_inl_empty, zero_mul, zero_mul]`. Simplify using `only [w₁, Sum.elim_inl, hF I hI]`. Establish `e₂ : ∀ a, (kosD m ev).mulVec w₁ (.inr a) = v (.inr a)`. Introduce `a`. Rewrite using `[mulVec_inr, ← congrFun hc a, ← hF₀]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e₃ : (kosD m ev).mulVec (v - (kosD m ev).mulVec w₁) = 0`. Rewrite using `[Matrix.mulVec_sub, hv, Matrix.mulVec_mulVec, hD, Matrix.zero_mulVec, sub_zero]`. Take `⟨w, hw⟩` from `h₃ (fun k => (v - (kosD m ev).mulVec w₁) (.inl ⟨∅, k⟩)) (funext fun a => (mulVec_inr m ev _ a).symm.trans (congrFun e₃ _))`. Set `w₂ : KIx g d N → K` to `∑ i, ∑ k : Fin (N 1), w i k • Pi.single (.inl ⟨{i}, k⟩) 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e₄ : ∀ p, (kosD m ev).mulVec w₂ p = ∑ i, ∑ k : Fin (N 1), kosD m ev p (.inl ⟨{i}, k⟩) * w i k`. Introduce `p`. Simplify using `only [w₂, Matrix.mulVec_sum, Matrix.mulVec_smul, Matrix.mulVec_single_one, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.col_apply, _root_.mul_comm]`. Use `⟨w₁ + w₂, funext fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, Pi.add_apply, e₄]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Break down `p with ⟨I, k⟩ | a` into its components or cases. Distinguish the cases in `hI : I = ∅`. Substitute `hI` using the available equality. Use `congrFun hw k` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, sub_eq_iff_eq_add']`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this]`. Use `congr 1`. Use `Eq.trans ?_ (Finset.sum_apply (k : Fin (N 0)) Finset.univ fun i => (m i 0 1).mulVec (w i)).symm` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k' _ => congrArg (· * w i k') (kosD_single_empty m ev k i k')`. Rewrite using `[e₁, ← hw₀ ⟨I, k⟩ hI]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `add_eq_left.2 (Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun k' _ => ?_)` and prove the remaining obligations. Conclude with `(congrArg (· * w i k') (kosD_single_ne m ev ⟨I, k⟩ hI i k')).trans (zero_mul _)`. Rewrite using `[e₂]`. Simplify using `[kosD]`.
+A detailed English derivation is pending.
 -/
 theorem Resolves.ex {m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K} {ev : ∀ j, Matrix (Fin d) (Fin (N j)) K}
     (h : Resolves m (ev 0)) (hD : kosD m ev * kosD m ev = 0) : Ex (kosD m ev) := by
@@ -215,9 +215,9 @@ theorem Resolves.ex {m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K} 
     simp [kosD]
 
 /- English proof (translation)
-Establish `e : ∀ c a, ev.mulVec c a = ev'.mulVec c a * u a` using `fun c a => by`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_mul, ← hu]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `⟨h.1, fun t => ?_, fun c hc => h.2.2 c (funext fun a => ?_)⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.2.1 (fun a => t a * ((u a)⁻¹ : Kˣ))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, funext fun a => by rw [e, hc]; simp⟩`. Conclude with `(u a).isUnit.mul_left_eq_zero.1 ((e c a).symm.trans (congrFun hc a))`.
+A detailed English derivation is pending.
 -/
 theorem Resolves.scale {m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K} {ev ev' : Matrix (Fin d) (Fin (N 0)) K}
     (h : Resolves m ev') (u : Fin d → Kˣ) (hu : ∀ a k, ev' a k * u a = ev a k) : Resolves m ev := by
@@ -230,7 +230,7 @@ theorem Resolves.scale {m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) 
   · exact (u a).isUnit.mul_left_eq_zero.1 ((e c a).symm.trans (congrFun hc a))
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem Resolves.cast {g' : ℕ} (hg : g' = g) (M : ℕ → ℕ)
     (m : Fin g → ∀ j j', Matrix (Fin (M j ^ g)) (Fin (M j' ^ g)) K) (ev : Matrix (Fin d) (Fin (M 0 ^ g)) K)
@@ -241,7 +241,7 @@ theorem Resolves.cast {g' : ℕ} (hg : g' = g) (M : ℕ → ℕ)
   exact h
 
 /- English proof (translation)
-Use extensionality with `p q`. Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q <;> simp [kosD, apply_ite f]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kosD_map {K' : Type} [CommRing K'] (f : K →+* K') (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K)
     (ev : ∀ j, Matrix (Fin d) (Fin (N j)) K) :
@@ -263,13 +263,11 @@ def comb {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {L : LB X} {S
     ring
 
 /- English proof (translation)
-Establish `hp : z p ∈ U` using `h (show p ∈ ⊤ from trivial)`. Establish `e₁ : IsUnit (gs (𝟙 X) (z p) U a) ↔ z p ∈ X.basicOpen a`. Rewrite using `[gs_eq (𝟙 X) (z p) U hp]`. Conclude with `(X.mem_basicOpen a (z p) hp).symm`. Establish `e₂ : z p ∈ X.basicOpen a ↔ p ∈ (Sp K).basicOpen ((z.appLE U ⊤ h).hom a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Scheme.basicOpen_appLE z ⊤ U h a` as an intermediate fact. Conclude with `⟨fun hy => this.ge ⟨trivial, hy⟩, fun hy => (this.le hy).2⟩`. Establish `e₃ : (z.appLE U ⊤ h).hom a = (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (valT z U a)`. Rewrite using `[EtBaseChange.valT_eq z U h]`. Conclude with `((Scheme.ΓSpecIso (CommRingCat.of K)).hom_inv_id_apply _).symm`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, e₁, e₂, e₃]`. Distinguish the cases in `h0 : valT z U a = 0`. Simplify using `[h0]`. Simplify using `only [h0, iff_false, not_not]`. Rewrite using `[Scheme.basicOpen_of_isUnit _ ((IsUnit.mk0 _ h0).map _)]`.
-
-Discharge the goal by the elementary cases of `trivial`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem gs_mem_iff {K : Type} [Field K] {X : Scheme.{0}} (z : Sp K ⟶ X) (U : X.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) (p : Sp K)
     (a : Γ(X, U)) : gs (𝟙 X) (z p) U a ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk (z p)) ↔ valT z U a = 0 := by
@@ -291,16 +289,16 @@ theorem gs_mem_iff {K : Type} [Field K] {X : Scheme.{0}} (z : Sp K ⟶ X) (U : X
     trivial
 
 /- English proof (translation)
-Simplify using `only [gs_eq (𝟙 X) y U h, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sub {X : Scheme.{0}} (y : X) (U : X.Opens) (h : y ∈ U) (a b : Γ(X, U)) :
     gs (𝟙 X) y U (a - b) = gs (𝟙 X) y U a - gs (𝟙 X) y U b := by
   simp only [gs_eq (𝟙 X) y U h, map_sub]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Establish `hk' : y ∈ L.U k` using `X.basicOpen_le _ hk`. Establish `hm : (𝟙 X : X ⟶ X) y ∈ L.U i ⊓ L.U k` using `⟨hi, hk'⟩`. Establish `e` using `(gs_res (𝟙 X) y _ hm _).symm.trans ((congrArg (gs (𝟙 X) y _) (s.compat i k)).trans ((gs_mul (𝟙 X) y _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 X) y _ hm _) (gs_res (𝟙 X) y _ hm _))))`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Units.isUnit _).mul ?_` and prove the remaining obligations. Rewrite using `[gs_eq (𝟙 X) y _ hk']`. Conclude with `(X.mem_basicOpen _ _ hk').1 hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_gs {X : Scheme.{0}} {L : LB X} (s : L.Sec) (y : X) (h : y ∈ Out.nonzeroLocus s) (i : L.ι)
     (hi : y ∈ L.U i) : IsUnit (gs (𝟙 X) y (L.U i) (s.f i)) := by
@@ -317,7 +315,7 @@ theorem isUnit_gs {X : Scheme.{0}} {L : LB X} (s : L.Sec) (y : X) (h : y ∈ Out
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨s, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_cast (x : KeyIn R) {l l' : ℕ} (h : l = l') (s : RR x l) :
     ∃ s' : RR x l', ∀ i, (show Γ(x.P.A.left, x.P.L.U i) from s'.f i) = s.f i := by
@@ -325,7 +323,7 @@ theorem exists_cast (x : KeyIn R) {l l' : ℕ} (h : l = l') (s : RR x l) :
   exact ⟨s, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `(congrArg (valT (T := R) z.left (x.P.L.U i)) (hc i)).trans ((EtBaseChange.valT_eq (T := R) z.left _ h _).trans ((map_sum _ _ _).trans (Finset.sum_congr rfl fun k _ => (map_mul _ _ _).trans ((_root_.mul_comm _ _).trans ?_))))` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (EtBaseChange.valT_eq (T := R) z.left _ h _).symm ((EtBaseChange.valT_eq (T := R) z.left _ h _).symm.trans (KoszulCx.valH_cst x z _ h _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valT_coords (x : KeyIn R) {l N : ℕ} (b : Fin N → RR x l) (c : Fin N → R) (f) (hc : Coords x b c f)
     (z : Pt x) (i : x.P.L.ι) (h : ⊤ ≤ z.left ⁻¹ᵁ x.P.L.U i) :
@@ -336,7 +334,7 @@ theorem valT_coords (x : KeyIn R) {l N : ℕ} (b : Fin N → RR x l) (c : Fin N 
     ((EtBaseChange.valT_eq (T := R) z.left _ h _).symm.trans (KoszulCx.valH_cst x z _ h _))
 
 /- English proof (translation)
-Introduce `i`. Use `(Finset.sum_congr rfl fun a _ => hc a i).trans (Finset.sum_comm.trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, map_sum, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coords_sum (x : KeyIn R) {l N : ℕ} {S : Type} [Fintype S] (b : Fin N → RR x l) (c : S → Fin N → R)
     (f : S → ∀ i, Γ(x.P.A.left, x.P.L.U i)) (hc : ∀ a, Coords x b (c a) (f a)) :
@@ -347,25 +345,23 @@ theorem coords_sum (x : KeyIn R) {l N : ℕ} {S : Type} [Fintype S] (b : Fin N �
   rw [Finset.sum_apply, map_sum, Finset.sum_mul]
 
 /- English proof (translation)
-Take `⟨hz₁, hz₂, hz₃, hz₄, hz₅⟩` from `hz`. Set `p : Sp K` to `IsLocalRing.closedPoint K`. Establish `hp : ∀ q : Sp K, q = p` using `fun q => Subsingleton.elim (α := PrimeSpectrum K) q p`. Set `y : Fin d → x.P.A.left` to `fun a => (z a).left p`. Establish `hy : Function.Injective y` using `fun a a' e => by_contra fun h => hz₄ a a' h p e`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hyU : ∀ a, y a ∈ x.P.L.U (ch a)` using `fun a => hz₁ a (show p ∈ ⊤ from trivial)`. Establish `hzero : ∀ t, (∀ i, t ∉ Out.nonzeroLocus (s i)) → ∃ a, y a = t` using `fun t ht => by`. Take `⟨a, q, hq⟩` from `hz₅ t ht`. Conclude with `⟨a, (congrArg (z a).left (hp q)).symm.trans hq⟩`. Establish `hmax : ∀ a, Ideal.span (Set.range fun i => gs (𝟙 _) (y a) (x.P.L.U (ch a)) ((s i).f (ch a))) = IsLocalRing.maximalIdeal (x.P.A.left.presheaf.stalk (y a))` using `fun a => (GlobalTheory.KeyKa.jac_ne_zero_iff_span_eq_maximalIdeal K x n s (z a) (ch a) p (hz₁ a) (hz₂ a)).1 (hz₃ a).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hzero' : ∀ a i, y a ∉ Out.nonzeroLocus (s i)` using `fun a i h => by`. Use `(IsLocalRing.mem_maximalIdeal _).1 ((gs_mem_iff (K := K) (z a).left _ (hz₁ a) p _).2 (hz₂ a i)) ?_` and prove the remaining obligations. Conclude with `isUnit_gs (s i) (y a) h (ch a) (hyU a)`. Use `choose c₀ hc₀ using fun t : x.P.A.left => exists_chart x.P.isLB t`. Set `c : x.P.A.left → x.P.L.ι` to `Function.extend y ch c₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ a, c (y a) = ch a` using `fun a => hy.extend_apply _ _ a`. Establish `hcU : ∀ t, t ∈ x.P.L.U (c t)` using `fun t => by`. Distinguish the cases in `h : ∃ a, y a = t`. Take `⟨a, rfl⟩` from `h`. Rewrite using `[hc]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hyU a`. Rewrite using `[show c t = c₀ t from Function.extend_apply' _ _ _ h]`. Conclude with `hc₀ t`. Establish `hfin : FinZ x s` using `(Set.finite_range y).subset fun t ht => hzero t ht`. Take `⟨h₁, h₂, h₃⟩` from `GlobalTheory.T.koszul_sections_exact_algClosed_polarisedAV hL K x n l s b m c hn hl hfin hb hm hcU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl0 : l = l - 0 * n` using `by simp`. Use `⟨h₁, fun t => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨sg, hsg⟩` from `h₂ fun q => gs (𝟙 _) q (x.P.L.U (c q)) (AbLaw.cst x.P.A.hom (x.P.L.U (c q)) (Function.extend y t 0 q))`. Take `⟨sg', hsg'⟩` from `exists_cast x hl0 sg`. Take `⟨v, hv, -⟩` from `hb 0 (Nat.zero_le _) sg'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨v, funext fun a => (valT_coords x (b 0) v _ hv (z a) (ch a) (hz₁ a)).symm.trans ?_⟩` and prove the remaining obligations. Establish `e` using `hsg (y a) (hzero' a)`. Rewrite `e` using `[hc a, hmax a, hy.extend_apply]`. Establish `e'` using `(gs_mem_iff (K := K) (z a).left _ (hz₁ a) p _).1 ((gs_sub (y a) _ (hyU a) _ _).symm ▸ e)`. Use `replace e' := sub_eq_zero.1 ((map_sub _ _ _).symm.trans ((EtBaseChange.valT_eq (T := K) _ _ (hz₁ a) _).symm.trans e'))`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(congrArg (valT (T := K) (z a).left (x.P.L.U (ch a))) (hsg' (ch a))).trans ?_` and prove the remaining obligations. Conclude with `(EtBaseChange.valT_eq (T := K) _ _ (hz₁ a) _).trans (e'.trans ((EtBaseChange.valT_eq (T := K) _ _ (hz₁ a) _).symm.trans (KoszulCx.valH_cst x (z a) _ (hz₁ a) _)))`. Set `sg' : RR x (l - 0 * n)` to `comb x.P.A.hom v (b 0)`. Establish `hv' : Coords x (b 0) v sg'.f` using `fun _ => rfl`. Take `⟨sg, hsg⟩` from `exists_cast x hl0.symm sg'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ta, hta⟩` from `h₃ sg fun t ht => by`. Take `⟨a, rfl⟩` from `hzero t ht`. Rewrite using `[hc a, hmax a]`. Use `(gs_mem_iff (K := K) (z a).left _ (hz₁ a) p _).2 ?_` and prove the remaining obligations. Use `(congrArg (valT (T := K) (z a).left (x.P.L.U (ch a))) (hsg (ch a))).trans ?_` and prove the remaining obligations.
-
-Conclude with `(valT_coords x (b 0) v _ hv' (z a) (ch a) (hz₁ a)).trans (congrFun hv a)`. Use `choose w hw using fun i : Fin x.P.g => (hb 1 i.pos (ta i)).exists`. Use `⟨w, (hb 0 (Nat.zero_le _) sg').unique hv' ?_⟩` and prove the remaining obligations. Establish `e` using `coords_sum x (b 0) _ _ fun i : Fin x.P.g => KoszulCx.coords_mul x (b 0) (b 1) (m i 0 1) _ _ _ (hm i 0 i.pos) (hw i)`. Conclude with `fun i => (hsg i).symm.trans ((hta i).trans (e i))`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem resolves_field (hL : Out.Laws) (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (n l d : ℕ)
     (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (z : Fin d → Pt x)
@@ -432,7 +428,7 @@ end Geo
 section Main
 
 /- English proof (translation)
-Introduce `j i hle`. Take `rfl : c = a + b` from `by exact_mod_cast h`. Use `(map_mul _ _ _).trans ((congrArg₂ (· * ·) (hs j i hle) (ht j i hle)).trans ?_)` and prove the remaining obligations. Conclude with `(mul_mul_mul_comm _ _ _ _).trans (congrArg₂ (· * ·) (pow_add _ _ _).symm (map_mul _ _ _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem secVia_mul {R R' : Type} [CommRing R] [CommRing R'] {x : KeyIn R} {x' : KeyIn R'} {φ w} {a b c : ℕ}
     (h : (c : ℤ) = a + b) {s : RR x a} {s' : RR x' a} {t : RR x b} {t' : RR x' b} (hs : SecVia x' x φ w s' s)
@@ -444,7 +440,7 @@ theorem secVia_mul {R R' : Type} [CommRing R] [CommRing R'] {x : KeyIn R} {x' : 
   exact (mul_mul_mul_comm _ _ _ _).trans (congrArg₂ (· * ·) (pow_add _ _ _).symm (map_mul _ _ _).symm)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hb`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isBasis_cast {R : Type} [CommRing R] {x : KeyIn R} {l N N' : ℕ} (h : N' = N) {b : Fin N → RR x l}
     (hb : IsBasis x b) : IsBasis x (fun k => b (k.cast h)) := by
@@ -452,7 +448,7 @@ theorem isBasis_cast {R : Type} [CommRing R] {x : KeyIn R} {l N N' : ℕ} (h : N
   exact hb
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hb`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem coords_cast {R : Type} [CommRing R] {x : KeyIn R} {l N N' : ℕ} (h : N' = N) {b : Fin N → RR x l} {c f}
     (hb : Coords x b c f) : Coords x (fun k => b (k.cast h)) (fun k => c (k.cast h)) f := by
@@ -460,15 +456,13 @@ theorem coords_cast {R : Type} [CommRing R] {x : KeyIn R} {l N N' : ℕ} (h : N'
   exact hb
 
 /- English proof (translation)
-Take `⟨x', hx'⟩` from `GlobalTheory.KeyPow.keyIn_baseChange hL.polBaseChange R K x f`. Take `⟨hv₁, hv₂⟩` from `GlobalTheory.KeyVia.main R K x x' f`. Take `⟨φ, w, hw⟩` from `hv₁.1 hx'`. Take `⟨hsec, -, hco⟩` from `hv₂ φ w hw`. Establish `hg : x'.P.g = x.P.g` using `hw.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose pb hpb using fun l s => (hsec l s).exists`. Establish `hN : ∀ j, (l - j * n) ^ x'.P.g = (l - j * n) ^ x.P.g` using `fun j => congrArg ((l - j * n) ^ ·) hg`. Set `s' : Fin x'.P.g → RR x' n` to `fun i => pb n (s (i.cast hg))`. Set `b' : ∀ j, Fin ((l - j * n) ^ x'.P.g) → RR x' (l - j * n)` to `fun j k => pb _ (b j (k.cast (hN j)))`. Take `⟨z', ch', u, hz', -, hu⟩` from `etZ_baseChange R K x x' f φ w n d hg s s' z ch hw (fun i => hpb _ _) hz`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb' : ∀ j ≤ x'.P.g, IsBasis x' (b' j)` using `fun j hj => by`. Establish `hj' : j ≤ x.P.g` using `hg ▸ hj`. Establish `h1 : 1 ≤ l - j * n`. Use `Nat.mul_le_mul_right n hj'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `isBasis_cast (hN j) ((GlobalTheory.KeyBasis.main hL R x (l - j * n) h1).2 (b j) (hb j hj') K f x' φ w (fun k => pb _ (b j k)) hw fun k => hpb _ _)`. Establish `hm' : IsMul x' l s' b' (fun i j j' k k' => f (m (i.cast hg) j j' (k.cast (hN j)) (k'.cast (hN j'))))`. Introduce `i j hj k`. Establish `hj' : j < x.P.g` using `hg ▸ hj`. Conclude with `coords_cast (hN j) (hco _ _ (b j) (fun k => pb _ (b j k)) _ _ _ (fun k => hpb _ _) (secVia_mul (KoszulCx.cast_step hl hj') (hpb _ (s (i.cast hg))) (hpb _ (b (j + 1) (k.cast (hN (j + 1)))))) (hm (i.cast hg) j hj' (k.cast (hN (j + 1)))))`.
-
-Establish `H` using `resolves_field hL K x' n l d s' b' z' ch' hn (hg.symm ▸ hl) hb' hz' _ hm'`. Use `Resolves.cast hg (fun j => l - j * n) _ _ (H.scale (fun a => u a ^ (l - 0 * n)) fun a k => ?_)` and prove the remaining obligations. Conclude with `(congrArg (_ * ·) (Units.val_pow_eq_pow_val _ _)).trans (hu _ _ _ a (hpb _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resolves_map (hL : Out.Laws) (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (x : KeyIn R)
     (n l d : ℕ) (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (z : Fin d → Pt x)
@@ -504,11 +498,11 @@ theorem resolves_map (hL : Out.Laws) (R : Type) [CommRing R] [IsLocalRing R] [Is
   exact (congrArg (_ * ·) (Units.val_pow_eq_pow_val _ _)).trans (hu _ _ _ a (hpb _ _))
 
 /- English proof (translation)
-Introduce `hL R _ _ _ x n l d s b z ch hn hl hb hz`. Take `⟨⟨m, hm⟩, hcx⟩` from `KoszulCx.koszul_isCx R x n l d s b z ch hl hb`. Establish `hD` using `hcx m hm hz.1 hz.2.1`. Set `k` to `IsLocalRing.ResidueField R`. Set `f : k →+* AlgebraicClosure k` to `algebraMap _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `H` using `resolves_map hL R x n l d s b z ch hn hl hb hz m hm (AlgebraicClosure k) (f.comp (IsLocalRing.residue R))`. Take `⟨t, ht⟩` from `GlobalTheory.TorsExists.exists_torsSq R _ kdeg _ hD (Ex.descend f _ (by`. Rewrite using `[Matrix.map_map, ← RingHom.coe_comp, kosD_map]`. Use `Resolves.ex H ?_` and prove the remaining obligations. Rewrite using `[← kosD_map, ← Matrix.map_mul, hD.2, Matrix.map_zero _ (map_zero _)]))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, u, rfl⟩` from `GlobalTheory.TorsionUnique.torsSq_unique R _ kdeg _ t t hD ht ht`. Use `⟨?_, u, m, hm, ht⟩` and prove the remaining obligations. Take `⟨_, -, -, e, -⟩` from `ht`. Establish `e'` using `(count_eq (N := fun j => (l - j * n) ^ x.P.g) e).trans (GlobalTheory.alternating_sum_choose_mul_sub_pow x.P.g n l hl.le)`. Conclude with `e'` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_kosVal : Out.Laws → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (x : KeyIn R) (n l d : ℕ) (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), 1 ≤ n → x.P.g * n < l → (∀ j ≤ x.P.g, IsBasis x (b j)) → EtZ x s z ch → d = x.P.g.factorial * n ^ x.P.g ∧ ∃ t : Rˣ, KosVal x l s z ch b t := by
   intro hL R _ _ _ x n l d s b z ch hn hl hb hz

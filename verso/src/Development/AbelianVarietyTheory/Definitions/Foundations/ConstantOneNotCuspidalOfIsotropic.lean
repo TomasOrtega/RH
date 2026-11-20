@@ -14,11 +14,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [MeasurableSpace G] [BorelSpace G] [T2Space G] {Γ N : Subgroup G} [DiscreteTopology Γ] {μ : Measure G}
 
 /- English proof (translation)
-Establish `hT` using `finite_mem_compact (Γ := Γ) (hC.mul hC.inv)`. Use `⟨hT.toFinset.card, fun ψ hl hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← lintegral_indicator hC.measurableSet, lintegral_eq_lintegral_tsum (Γ := Γ) ((hc.enorm.measurable.indicator hC.measurableSet).aemeasurable), ← lintegral_const_mul' _ _ (ENNReal.natCast_ne_top _)]`. Use `lintegral_mono fun q => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≤ _ * ‖ψ q.out‖ₑ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Generalize the expression as in `q.out = x`. Distinguish the cases in `h : ∃ γ₀ : Γ, (γ₀ : G) * x ∈ C`. Take `⟨γ₀, h0⟩` from `h`. Rewrite using `[← (Equiv.mulRight γ₀).tsum_eq, tsum_eq_sum (s := hT.toFinset) fun δ hδ => indicator_of_notMem (fun h1 => hδ (hT.mem_toFinset.2 ⟨_, h1, _, inv_mem_inv.2 h0, by simp [mul_assoc]⟩)) _, ← nsmul_eq_mul]`. Use `Finset.sum_le_card_nsmul _ _ _ fun δ _ => (indicator_le_self _ _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg _ (hl _ (Subtype.property _) x)`. Use `push Not at h`. Simplify using `[indicator_of_notMem (h _)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lintegral_compact_le [μ.IsMulLeftInvariant] {C : Set G} (hC : IsCompact C) :
     ∃ m : ℕ, ∀ ψ : G → ℂ, LeftInv Γ ψ → Continuous ψ →
@@ -41,15 +41,13 @@ theorem exists_lintegral_compact_le [μ.IsMulLeftInvariant] {C : Set G} (hC : Is
     simp [indicator_of_notMem (h _)]
 
 /- English proof (translation)
-Use `hc.isProbabilityMeasure` as an intermediate fact. Take `⟨K, hK, hs⟩` from `id hc`. Establish `hKU : IsCompact ((Subtype.val '' K) * U)` using `(hK.image continuous_subtype_val).mul hU`. Take `⟨m, hm⟩` from `exists_lintegral_compact_le (Γ := Γ) (μ := μ) hKU`. Use `⟨m, fun ψ hl hψ h1 => le_trans ?_ (hm ψ hl hψ)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ (q : Quot (Γ.subgroupOf N)) (x : G), ψ ((q.out : N) * x) = ψ ((sec _ q : N) * x)` using `fun q x => ((leftInv_integrand (N := N) hl x) _ (existsUnique_stdDom _ q.out).choose.2 q.out).symm`. Establish `hmeas : Measurable fun p : G × Quot (Γ.subgroupOf N) => ‖ψ ((p.2.out : N) * p.1)‖ₑ`. Simplify using `only [e]`. Conclude with `hψ.enorm.measurable.comp ((measurable_subtype_coe.comp (measurableEmbedding_sec.measurable.comp measurable_snd)).mul measurable_fst)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `enorm_integral_le_lintegral_enorm (μ := probMeasure Γ N) fun q => ψ ((q.out : N) * x)` as an intermediate fact. Rewrite `this` using `[show ∫ q, ψ ((q.out : N) * x) ∂probMeasure Γ N = 1 from h1 x, enorm_one]`. Then use the resulting hypothesis. Use `_ = ∫⁻ q, ∫⁻ x in U, ‖ψ ((q.out : N) * x)‖ₑ ∂μ ∂probMeasure Γ N := lintegral_lintegral_swap hmeas.aemeasurable`. Use `_ ≤ ∫⁻ _, ∫⁻ x in (Subtype.val '' K) * U, ‖ψ x‖ₑ ∂μ ∂probMeasure Γ N := lintegral_mono fun q => by`. Take `⟨γ, hγ, hk⟩` from `hs q.out`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Establish `e2 : ∀ x, ψ ((q.out : N) * x) = ψ ((γ * q.out : N) * x)` using `fun x => ((leftInv_integrand (N := N) hl x) _ hγ q.out).symm`. Simplify using `only [e2]`. Generalize the expression as in `γ * q.out = k at hk`. Rewrite using `[← (measurePreserving_mul_left μ (k : G)).setLIntegral_comp_preimage_emb (measurableEmbedding_mulLeft _) (fun x => ‖ψ x‖ₑ) (Subtype.val '' K * U)]`. Conclude with `lintegral_mono_set fun x hx => mul_mem_mul (mem_image_of_mem _ hk) hx`.
-
-Use `_ = _ := by simp`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_measure_le [LocallyCompactSpace N] [μ.IsMulLeftInvariant] [SFinite μ] (hc : Cocompact Γ N) {U : Set G}
     (hU : IsCompact U) : ∃ m : ℕ, ∀ ψ : G → ℂ, LeftInv Γ ψ → Continuous ψ → (∀ x, constTermOn Γ N ψ x = 1) →
@@ -96,7 +94,7 @@ variable (V) in
 def constantOneDividedPowerChartLift : DividedPowerChartLift V μ := (memL2_const (Γ := GQ V) (μ := μ) 1).toL2
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := (memL2_const (Γ := GQ V) (μ := μ) 1).coeFn_toL2 rw [show (memL2_const (Γ := GQ V) (μ := μ) 1).toL2 = 0 from h] at h1 obtain ⟨q, hq⟩ := ((Lp.coeFn_zero ℂ 2 _).symm.trans h1).exists exact zero_ne_one hq`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem constant_one_L2_ne_zero : constantOneDividedPowerChartLift V μ ≠ 0 := fun h => by
   have h1 := (memL2_const (Γ := GQ V) (μ := μ) 1).coeFn_toL2
@@ -105,17 +103,17 @@ theorem constant_one_L2_ne_zero : constantOneDividedPowerChartLift V μ ≠ 0 :=
   exact zero_ne_one hq
 
 /- English proof (translation)
-Take `⟨W, hW⟩` from `wittIndex_pos_iff.1 h`. Establish `hc` using `cocompact_single hW`. Establish `: T2Space (GA D V)`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hU1⟩` from `exists_compact_mem_nhds (1 : GA D V)`. Take `⟨m, hm⟩` from `exists_measure_le (μ := μ) hc hU`. Set `c : ℝ≥0∞` to `quotMeasure (GQ V) μ univ ^ (1 / (1 : ℝ≥0∞).toReal - 1 / (2 : ℝ≥0∞).toReal)`. Establish `hc' : c ≠ ⊤` using `ENNReal.rpow_ne_top_of_nonneg (by norm_num) (measure_ne_top _ _)`. Establish `hcl : IsClosed {F : DividedPowerChartLift V μ | μ U ≤ (m * c) * ‖constantOneDividedPowerChartLift V μ - F‖ₑ}` using `isClosed_le continuous_const ((ENNReal.continuous_const_mul (ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) hc')).comp (continuous_const.sub continuous_id).enorm)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Establish `h2 : μ U ≤ (m * c) * ‖constantOneDividedPowerChartLift V μ - constantOneDividedPowerChartLift V μ‖ₑ`. Use `closure_minimal (s := (cuspContinuousL2 V μ : Set (DividedPowerChartLift V μ))) ?_ hcl h1` and prove the remaining obligations. Introduce and unpack `F ⟨φ, hφ, e⟩`. Establish `hl : LeftInv (GQ V) ((fun _ => 1) + (-1 : ℂ) • φ)` using `fun γ hγ g => by simp [hφ.2.1 γ hγ g]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hm _ hl (continuous_const.add (hφ.1.const_smul _)) fun x => ?_).trans ?_` and prove the remaining obligations. Rewrite using `[hc.constTermOn_add (fun _ _ _ => rfl) continuous_const (fun γ hγ g => by simp [hφ.2.1 γ hγ g]) (hφ.1.const_smul _), hc.constTermOn_const, constTermOn_smul, show constTermOn _ _ φ x = 0 from congrFun ((isCuspFun_iff hφ.2.1).1 hφ.2.2 W hW) x]`. Simplify using the standard rewrite rules. Rewrite using `[mul_assoc, mul_comm c, Lp.enorm_def] gcongr`. Use `le_trans (le_of_eq ?_) (eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) one_le_two (Lp.aestronglyMeasurable _))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eLpNorm_one_eq_lintegral_enorm]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Establish `e' : ∀ᵐ q ∂quotMeasure (GQ V) μ, F q = descend (GQ V) φ q` using `ae_quotMeasure_iff.2 (e.mono fun g hg => hg.trans (hφ.2.1.descend_mk g).symm)`. Use `filter_upwards [e', Lp.coeFn_sub (constantOneDividedPowerChartLift V μ) F, (memL2_const (Γ := GQ V) (μ := μ) 1).coeFn_toL2] with q a b d`. Rewrite using `[b, Pi.sub_apply, a, show constantOneDividedPowerChartLift V μ q = _ from d]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[AutomorphicL2Unitary.descend, sub_eq_add_neg]`. Simplify using `only [sub_self, enorm_zero, mul_zero, nonpos_iff_eq_zero] at h2`. Conclude with `(Measure.measure_pos_of_mem_nhds μ hU1).ne' h2`.
+A detailed English derivation is pending.
 -/
 theorem constant_one_not_cuspidal_of_isotropic (h : 0 < wittIndex V) : constantOneDividedPowerChartLift V μ ∉ L2cusp V μ := by
   obtain ⟨W, hW⟩ := wittIndex_pos_iff.1 h
@@ -154,26 +152,26 @@ theorem constant_one_not_cuspidal_of_isotropic (h : 0 < wittIndex V) : constantO
   exact (Measure.measure_pos_of_mem_nhds μ hU1).ne' h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by_contra fun h0 => constant_one_not_cuspidal_of_isotropic μ (Nat.pos_of_ne_zero h0) h, fun h => toL2_mem_cuspidal _ ⟨continuous_const, fun _ _ _ => rfl, fun r C hC => absurd hC (wittIndex_eq_zero_iff_isAniso.1 h r C)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem constant_one_cuspidal_iff_anisotropic : constantOneDividedPowerChartLift V μ ∈ L2cusp V μ ↔ wittIndex V = 0 :=
   ⟨fun h => by_contra fun h0 => constant_one_not_cuspidal_of_isotropic μ (Nat.pos_of_ne_zero h0) h, fun h => toL2_mem_cuspidal _
     ⟨continuous_const, fun _ _ _ => rfl, fun r C hC => absurd hC (wittIndex_eq_zero_iff_isAniso.1 h r C)⟩⟩
 
 /- English proof (translation)
-Introduce `h` and use `constant_one_not_cuspidal_of_isotropic μ (by rw [wittIndex_plane]; exact one_pos) (h ▸ Submodule.mem_top)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem L2cusp_plane_ne_top (μ : Measure (GA D (plane D))) [μ.IsHaarMeasure] : L2cusp (plane D) μ ≠ ⊤ := fun h =>
   constant_one_not_cuspidal_of_isotropic μ (by rw [wittIndex_plane]; exact one_pos) (h ▸ Submodule.mem_top)
 
 /- English proof (translation)
-Introduce `e` and use `constant_one_L2_ne_zero μ ((Submodule.mem_bot ℂ).1 (e ▸ (constant_one_cuspidal_iff_anisotropic μ).2 h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem L2cusp_ne_bot (h : wittIndex V = 0) : L2cusp V μ ≠ ⊥ := fun e =>
   constant_one_L2_ne_zero μ ((Submodule.mem_bot ℂ).1 (e ▸ (constant_one_cuspidal_iff_anisotropic μ).2 h))
 
 /- English proof (translation)
-Establish `h : 2 * wittIndex (line D) ≤ 1` using `two_mul_wittIndex_le (line D)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem wittIndex_line (D : D7) : wittIndex (line D) = 0 := by
   have h : 2 * wittIndex (line D) ≤ 1 := two_mul_wittIndex_le (line D)
@@ -182,13 +180,13 @@ theorem wittIndex_line (D : D7) : wittIndex (line D) = 0 := by
 omit [μ.IsHaarMeasure] in
 
 /- English proof (translation)
-Introduce `𝔉 h'` and use `absurd (exists_proper_iff.1 ⟨𝔉, h'⟩) (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCuspAE_of_aniso (h : wittIndex V = 0) (F : DividedPowerChartLift V μ) : IsCuspAE V μ F := fun 𝔉 h' =>
   absurd (exists_proper_iff.1 ⟨𝔉, h'⟩) (by omega)
 
 /- English proof (translation)
-Establish `h : _ + 2 * 1 = 2` using `rank_minusHyp (wittIndex_plane D).ge`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_minusHyp_plane (D : D7) : (minusHyp (plane D) 1 (wittIndex_plane D).ge).rank = 0 := by
   have h : _ + 2 * 1 = 2 := rank_minusHyp (wittIndex_plane D).ge
@@ -205,11 +203,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def four (D : D7) : HSp D := Examples₂.stdSpace Examples₂.star_isIntegral 4 ![false, false, true, true] 2 2
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.2 fun g h => ?_` and prove the remaining obligations. Establish `h' : ∑ i : Fin 2, g i • (!![1, 0; 0, 1; 1, 0; 0, 1] : Matrix (Fin 4) (Fin 2) D.host.E).transpose i = (0 : Fin 4 → D.host.E)` using `h`. Establish `h0` using `congrFun h' 0`. Establish `h1` using `congrFun h' 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Simplify `h0` using `[Fin.sum_univ_two]`. Simplify `h1` using `[Fin.sum_univ_two]`. Establish `hg : ∀ i j : Fin 4, (four D).gram i j = if i = j then (Examples₂.sgn (![false, false, true, true] i) : D.host.E) else 0` using `Examples₂.stdSpace_gram_apply Examples₂.star_isIntegral 4 ![false, false, true, true] 2 2`. Use function extensionality and compare the values at `a b`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `∑ j : Fin 4, (∑ i : Fin 4, D.sp.cm.sig ((!![1, 0; 0, 1; 1, 0; 0, 1] : Matrix (Fin 4) (Fin 2) D.host.E) i a) * (four D).gram i j) * (!![1, 0; 0, 1; 1, 0; 0, 1] : Matrix (Fin 4) (Fin 2) D.host.E) j b = 0`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Fin.sum_univ_four, hg, Examples₂.sgn]`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isIsoSub_four (D : D7) :
     IsIsoSub (four D) (i := 2) (!![1, 0; 0, 1; 1, 0; 0, 1] : Matrix (Fin 4) (Fin 2) D.host.E) := by
@@ -236,7 +234,7 @@ Both sides reduce to the same expression.
 theorem k_columnFlag_four (D : D7) : (columnFlag (isIsoSub_four D)).k = 2 := rfl
 
 /- English proof (translation)
-Establish `h1 : 2 * wittIndex (four D) ≤ 4` using `two_mul_wittIndex_le (four D)`. Establish `h2 : 2 ≤ wittIndex (four D)` using `(columnFlag (isIsoSub_four D)).k_le_wittIndex`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem wittIndex_four (D : D7) : wittIndex (four D) = 2 := by
   have h1 : 2 * wittIndex (four D) ≤ 4 := two_mul_wittIndex_le (four D)

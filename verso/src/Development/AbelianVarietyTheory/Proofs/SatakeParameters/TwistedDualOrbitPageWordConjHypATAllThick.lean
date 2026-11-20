@@ -12,15 +12,15 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Take `⟨hC, hw, hr, hwb, -, hb⟩` from `h`. Establish `he` using `L.etaSz_pos`. Establish `hS` using `L.Sc_pos`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hL : (0 : ℝ) ≤ D.host.Lw` using `Nat.cast_nonneg _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : (0 : ℝ) ≤ L.sc.b'` using `by linarith`. Establish `hCL : (100 : ℝ) ≤ C * ((D.host.Lw : ℝ) + 1)` using `by nlinarith`. Establish `hbb : 100 * L.sc.b' ≤ L.sc.b` using `le_trans (mul_le_mul_of_nonneg_right hCL hb') hb`. Establish `h1 : (etaHat L : ℝ) ≤ L.etaSz + D.R.t + 2`. Use `Nat.floor_le he.le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `etaHat`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (sHat L : ℝ) ≤ L.Sc` using `Nat.floor_le hS.le`. Establish `h3 : ⌈L.sc.b⌉₊ ≤ bHat L + D.R.t`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `bHat`. Use linear arithmetic over natural numbers and integers. Establish `h4 : L.sc.b ≤ (bHat L : ℝ) + D.R.t`. Establish `h5 : ((⌈L.sc.b⌉₊ : ℕ) : ℝ) ≤ (bHat L : ℝ) + D.R.t` using `by exact_mod_cast h3`. Conclude with `le_trans (Nat.le_ceil _) h5`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem bHat_large_of_roomy {D : D7} (L : SizeData₂ D) (C : ℝ) (h : Roomy L C) :
     (100 : ℝ) ≤ bHat L ∧ 2 * (etaHat L : ℝ) + sHat L ≤ (bHat L : ℝ) / 10 := by
@@ -47,17 +47,17 @@ theorem bHat_large_of_roomy {D : D7} (L : SizeData₂ D) (C : ℝ) (h : Roomy L 
   constructor <;> linarith
 
 /- English proof (translation)
-Take `⟨hord, hplc⟩` from `GlobalTheory.T.complexConjugation_orbit_one_realPlace τ`. Establish `hth : ∀ i, (pageWord L j ε τ (D.R.cc)).thick i`. Introduce `i`. Rewrite using `[GlobalTheory.T.twistedDualOrbitPageWord_thick_iff_thickEmbedding L C j ε τ (D.R.cc) hR i]`. Unfold `Thick at hτ ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hplc i]`. Conclude with `hτ`. Use `⟨⟨?_, ?_, ?_⟩, hth⟩` and prove the remaining obligations. Rewrite using `[hord]`. Conclude with `even_two`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(GlobalTheory.T.embeddingSign_alternate_of_sign_neg ε τ (D.R.cc) rfl).2`. Introduce `M hM i`. Take `⟨hB, hroom⟩` from `bHat_large_of_roomy L C hR`. Establish `hη : (0 : ℝ) ≤ etaHat L` using `Nat.cast_nonneg _`. Establish `hS : (0 : ℝ) ≤ sHat L` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ k, (bHat L : ℝ) ≤ ((pageWord L j ε τ (D.R.cc)).sz k : ℝ) ∧ ((pageWord L j ε τ (D.R.cc)).sz k : ℝ) ≤ (bHat L : ℝ) + etaHat L`. Introduce `k`. Take `⟨h1, h2⟩` from `hth k`. Establish `h1' : ((bHat L : ℕ) : ℤ) ≤ (pageWord L j ε τ (D.R.cc)).sz k` using `h1`. Establish `h2' : (pageWord L j ε τ (D.R.cc)).sz k ≤ ((bHat L : ℕ) : ℤ) + ((etaHat L : ℕ) : ℤ)` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨by exact_mod_cast h1', by exact_mod_cast h2'⟩`. Take `⟨k, hk⟩` from `hM.1`. Establish `hMk` using `key k`. Rewrite `hMk` using `[hk]`. Establish `hi` using `key i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.alternatingWord_large_size_numerical_bounds l (bHat L) (etaHat L) (sHat L) (M : ℝ) ((pageWord L j ε τ (D.R.cc)).sz i : ℝ) hl hB hη hS hroom (abs_le.2 ⟨by linarith [hMk.1], by linarith [hMk.2]⟩) (abs_le.2 ⟨by linarith [hi.1], by linarith [hi.2]⟩)`. Use `⟨?_, h1, h2⟩` and prove the remaining obligations. Establish `: (1 : ℝ) ≤ ((pageWord L j ε τ (D.R.cc)).sz i : ℝ)` using `by linarith [hi.1]`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem conjWord_hypAT {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (ε : ℤˣ) (τ : D.R.GG) (l : ℕ)
     (hR : Roomy L C) (hl : 11 ≤ l) (hτ : Thick D.host τ) :

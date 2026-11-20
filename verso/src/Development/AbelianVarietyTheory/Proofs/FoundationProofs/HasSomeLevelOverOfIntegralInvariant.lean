@@ -15,9 +15,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Establish `key : ∀ x : ℤ, (x : ZMod N) = ZMod.castHom hd (ZMod N) (x : ZMod N')` using `fun x => by`. Rewrite using `[map_intCast]`. Take `⟨h1, h2, h3, h4⟩` from `hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, h1, map_one]`. Rewrite using `[key, h2, map_zero]`. Rewrite using `[key, h3, map_zero]`. Rewrite using `[key, h4, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gamma_le_of_dvd' {N N' : ℕ} (hd : N ∣ N') :
     CongruenceSubgroup.Gamma N' ≤ CongruenceSubgroup.Gamma N := by
@@ -33,7 +33,7 @@ private theorem gamma_le_of_dvd' {N N' : ℕ} (hd : N ∣ N') :
   · rw [key, h4, map_one]
 
 /- English proof (translation)
-Use `choose Nj wj hNj hLv using hr`. Establish `hpos : 0 < M * ∏ j, Nj j` using `Nat.mul_pos hM (Finset.prod_pos fun j _ => hNj j)`. Use `⟨M * ∏ j, Nj j, ∑ j, wj j, hpos, dvd_mul_right _ _, fun j => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.lv_mono_of_dvd_of_le E (Nj j) _ (wj j) _ (r j) hpos (Dvd.dvd.mul_left (Finset.dvd_prod_of_mem _ (Finset.mem_univ j)) M) (Finset.single_le_sum (fun i _ => Nat.zero_le (wj i)) (Finset.mem_univ j)) (hLv j)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_common_lv {E : Subring ℂ} {n : ℕ} (M : ℕ) (hM : 0 < M) (r : Fin n → ℍ → ℂ)
     (hr : ∀ j, InR E (r j)) : ∃ N w : ℕ, 0 < N ∧ M ∣ N ∧ ∀ j, Lv E N w (r j) := by
@@ -45,14 +45,14 @@ theorem exists_common_lv {E : Subring ℂ} {n : ℕ} (M : ℕ) (hM : 0 < M) (r :
     (Finset.single_le_sum (fun i _ => Nat.zero_le (wj i)) (Finset.mem_univ j)) (hLv j)
 
 /- English proof (translation)
-The claim follows from `CuspForm.discriminant.holo'`.
+A detailed English derivation is pending.
 -/
 theorem mdifferentiable_DD : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) DD := CuspForm.discriminant.holo'
 
 /- English proof (translation)
-Establish `e : (fun τ => h (γ • τ)) = h ∣[(0 : ℤ)] γ`. Use function extensionality and compare the values at `τ`. Rewrite using `[ModularForm.SL_slash_apply]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hh.slash 0 _`.
+A detailed English derivation is pending.
 -/
 theorem mdifferentiable_comp_smul {h : ℍ → ℂ} (hh : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) h) (γ : SL(2, ℤ)) :
     MDifferentiable 𝓘(ℂ) 𝓘(ℂ) fun τ => h (γ • τ) := by
@@ -64,9 +64,9 @@ theorem mdifferentiable_comp_smul {h : ℍ → ℂ} (hh : MDifferentiable 𝓘(�
   exact hh.slash 0 _
 
 /- English proof (translation)
-Establish `hT : (ModularGroup.T ^ (N : ℤ)) • τ = (N : ℝ) +ᵥ τ`. Rewrite using `[UpperHalfPlane.modular_T_zpow_smul]`. Simplify using the standard rewrite rules. Establish `hden : UpperHalfPlane.denom (ModularGroup.T ^ (N : ℤ) : SL(2, ℤ)) τ = 1`. Rewrite using `[ModularGroup.denom_apply, ModularGroup.coe_T_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← hT, ReciprocityTheory.ChartRestriction.L1.DD_smul, hden, one_pow, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem DD_vadd (N : ℕ) (τ : ℍ) : DD ((N : ℝ) +ᵥ τ) = DD τ := by
   have hT : (ModularGroup.T ^ (N : ℤ)) • τ = (N : ℝ) +ᵥ τ := by
@@ -76,9 +76,9 @@ theorem DD_vadd (N : ℕ) (τ : ℍ) : DD ((N : ℝ) +ᵥ τ) = DD τ := by
   rw [← hT, ReciprocityTheory.ChartRestriction.L1.DD_smul, hden, one_pow, one_mul]
 
 /- English proof (translation)
-Establish `hT : (ModularGroup.T ^ (N : ℤ)) • τ = (N : ℝ) +ᵥ τ`. Rewrite using `[UpperHalfPlane.modular_T_zpow_smul]`. Simplify using the standard rewrite rules. Establish `h1 : ModularGroup.T ^ (N : ℤ) ∈ CongruenceSubgroup.Gamma N`. Simplify using `using CongruenceSubgroup.ModularGroup_T_pow_mem_Gamma (N : ℤ) (N : ℤ) dvd_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `(CongruenceSubgroup.Gamma_normal N).conj_mem _ h1 γ`. Rewrite using `[← hT, ← mul_smul, show γ * ModularGroup.T ^ (N : ℤ) = (γ * ModularGroup.T ^ (N : ℤ) * γ⁻¹) * γ by group, mul_smul]`. Conclude with `hinv _ h2 _`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_smul_vadd {N : ℕ} {h : ℍ → ℂ}
     (hinv : ∀ γ ∈ CongruenceSubgroup.Gamma N, ∀ τ : ℍ, h (γ • τ) = h τ) (γ : SL(2, ℤ)) (τ : ℍ) :
@@ -93,21 +93,21 @@ theorem comp_smul_vadd {N : ℕ} {h : ℍ → ℂ}
   exact hinv _ h2 _
 
 /- English proof (translation)
-Introduce `Ω _ _ ε M n h r hM hh hinv hr heq`. Take `⟨N, w, hN, hMN, hlv⟩` from `exists_common_lv M hM r hr`. Establish `hinvN : ∀ γ ∈ CongruenceSubgroup.Gamma N, ∀ τ : ℍ, h (γ • τ) = h τ` using `fun γ hγ τ => hinv γ (gamma_le_of_dvd' hMN hγ) τ`. Use `⟨N, w, hN, hinvN, fun γ => ?_⟩` and prove the remaining obligations. Establish `hH : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (fun τ => DD τ ^ w * h (γ • τ))` using `(mdifferentiable_DD.pow w).mul (mdifferentiable_comp_smul hh γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hper : ∀ τ : ℍ, DD ((N : ℝ) +ᵥ τ) ^ w * h (γ • ((N : ℝ) +ᵥ τ)) = DD τ ^ w * h (γ • τ)`. Introduce `τ`. Rewrite using `[DD_vadd, comp_smul_vadd hinvN γ τ]`. Set `s : Fin n → ℍ → ℂ` to `fun j τ => DD τ ^ (w * (n - (j : ℕ))) * r j (γ • τ)`. Establish `hs : ∀ j, QAll (· ∈ ε.range) N (s j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j`. Establish `h1` using `(hlv j).2 γ`. Establish `h2 : QAll (· ∈ ε.range) N fun τ => DD τ ^ (w * (n - 1 - (j : ℕ)))` using `QAllSubring.pow _ (eis_qAll N hN DD (Or.inr (Or.inr rfl)) ε.range)`. Use `(congrArg (QAll (· ∈ ε.range) N) (funext fun τ => ?_)).mp (QAllSubring.mul h2 h1)` and prove the remaining obligations. Establish `hj` using `j.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : w * (n - 1 - (j : ℕ)) + w = w * (n - (j : ℕ))`. Rewrite using `[← Nat.mul_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Simplify using `only [s]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← pow_add, e]`. Establish `heqH : ∀ τ, (DD τ ^ w * h (γ • τ)) ^ n + ∑ j, s j τ * (DD τ ^ w * h (γ • τ)) ^ (j : ℕ) = 0`. Introduce `τ`. Establish `e` using `heq (γ • τ)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_add, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[mul_pow, pow_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj` using `j.isLt`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : w * n = w * (n - (j : ℕ)) + w * (j : ℕ)`. Rewrite using `[← Nat.mul_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Simplify using `only [s]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, pow_add, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [e, mul_zero]`. Conclude with `GlobalTheory.T.qExpansionAllCoeffs_range_of_monic_root Ω ε N n _ s hN hH hper hs heqH`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inR_of_integral : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (M n : ℕ) (h : ℍ → ℂ)
     (r : Fin n → ℍ → ℂ), 0 < M → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) h →

@@ -43,7 +43,7 @@ def PoitouTateOdd : Prop :=
         ∀ n, 3 ≤ n → Subsingleton (Hn ρ n)
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ r hl` and use `h F Ω l r (Or.inl hl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PoitouTateDuality.odd (h : PoitouTateDuality) : PoitouTateOdd :=
   fun F Ω _ _ _ _ _ l _ r hl => h F Ω l r (Or.inl hl)
@@ -51,7 +51,7 @@ theorem PoitouTateDuality.odd (h : PoitouTateDuality) : PoitouTateOdd :=
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.Published.PoitouTateTotallyComplex`. Introduce `F Ω _ _ _ _ _ _ l _ r hr ζ hζ`. Take `⟨inv, hloc, hall⟩` from `h F Ω l r (Or.inr inferInstance) hr ζ hζ`. Conclude with `⟨inv, hloc, fun S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ => ⟨(hall S hS Av hAv μ hμ M ρ hρ).1, (hall S hS Av hAv μ hμ M ρ hρ).2.1⟩⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.Published.PoitouTateDuality.totallyComplex (h : _root_.GlobalTheory.Published.PoitouTateDuality) :
     _root_.GlobalTheory.Published.PoitouTateTotallyComplex := by
@@ -64,7 +64,7 @@ theorem _root_.GlobalTheory.Published.PoitouTateDuality.totallyComplex (h : _roo
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ r)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Published.exists_primitiveRoot_pow (F Ω : Type) [Field F] [NumberField F]
     [Field Ω] [Algebra F Ω]
@@ -77,11 +77,11 @@ theorem _root_.GlobalTheory.Published.exists_primitiveRoot_pow (F Ω : Type) [Fi
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.Published.CohDimTwoGlobal`. Introduce `F Ω _ _ _ _ _ _ l _ r M _ _ _ _ _ S rhoS hS hρ n hn`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Use `haveI : Subsingleton (ZMod (l ^ 0)) := by rw [pow_zero]; infer_instance haveI : Subsingleton M := Module.subsingleton (ZMod (l ^ 0)) M`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.GlobalTheory.Published.subsingleton_Hn_succ_iff]`. Introduce `f _ _`. Conclude with `⟨0, continuous_zero, Subsingleton.elim _ _⟩`. Take `⟨ζ, hζ⟩` from `_root_.GlobalTheory.Published.exists_primitiveRoot_pow F Ω l r`. Take `⟨inv, _, hall⟩` from `h F Ω l r (Or.inr inferInstance) hr ζ hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ⟩` from `_root_.GlobalTheory.Published.PoitouTate.exists_lift_cycMod (Ω := Ω) (r := r) hS`. Conclude with `(hall S hS (fun v => (_root_.ReciprocityTheory.Gal.exists_isPlaceOver Ω v.1).choose) (fun v => (_root_.ReciprocityTheory.Gal.exists_isPlaceOver Ω v.1).choose_spec) μ hμ M rhoS hρ).2.2 n hn`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Published.PoitouTateDuality.cohDimTwoGlobal
     (h : _root_.GlobalTheory.Published.PoitouTateDuality) : _root_.GlobalTheory.Published.CohDimTwoGlobal := by

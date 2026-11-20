@@ -5,11 +5,11 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k F K _ _ _ _ _ _ _ _ _ d u hu A _ hA B hB`. Substitute `hB` using the available equality. Establish `e : MvPolynomial (Fin d) k ≃ₐ[k] A`. Substitute `hA` using the available equality. Conclude with `hu.aevalEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hAft : Algebra.FiniteType k A` using `Algebra.FiniteType.equiv inferInstance e`. Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing k A`. Establish `: IsIntegrallyClosed A` using `IsIntegrallyClosed.of_equiv e.toRingEquiv`. Establish `: CharZero F` using `charZero_of_injective_algebraMap (algebraMap k F).injective`. Establish `: Algebra.IsSeparable F K` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite A (integralClosure A K)` using `IsIntegralClosure.finite A F K (integralClosure A K)`. Establish `: Algebra.FiniteType A (integralClosure A K)` using `inferInstance`. Establish `: Algebra.FiniteType k (integralClosure A K)` using `Algebra.FiniteType.trans hAft this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integralClosure_finiteType_of_charZero :
     ∀ (k F K : Type) [Field k] [CharZero k] [Field F] [Field K] [Algebra k F] [Algebra k K]

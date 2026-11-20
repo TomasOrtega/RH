@@ -17,9 +17,9 @@ namespace GlobalTheory.AdForm.VacRead
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Use function extensionality and compare the values at `i j`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)` and prove the remaining obligations. Establish `e1 : finPart D (w i j) = 0` using `congrFun (congrFun hw i) j`. Establish `e2 : finPart D (w' i j) = 0` using `congrFun (congrFun hw' i) j`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_sub, e1, e2, sub_zero]`. Establish `e : θ τ (infPart D (w i j)) = θ τ (infPart D (w' i j))` using `congrFun (congrFun (h τ) i) j`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, e, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_comp {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (w w' : Mx D m n)
     (hw : w.map (finPart D) = 0) (hw' : w'.map (finPart D) = 0) (h : ∀ τ, compAt θ τ w = compAt θ τ w') : w = w' := by
@@ -33,7 +33,7 @@ theorem eq_of_comp {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (w w' : Mx D 
     rw [RingHom.map_sub, RingHom.map_sub, e, sub_self]
 
 /- English proof (translation)
-Establish `hs : (realPt θ z).map (finPart D) = 0 ∧ ∀ τ, compAt θ τ (realPt θ z) = z τ`. Unfold `realPt`. Conclude with `Classical.epsilon_spec (p := fun w : Mx D m n => w.map (finPart D) = 0 ∧ ∀ τ, compAt θ τ w = z τ) ⟨w, hw, hz⟩`. Conclude with `eq_of_comp hθ _ _ hs.1 hw fun τ => (hs.2 τ).trans (hz τ).symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem realPt_eq {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) (w : Mx D m n)
     (hw : w.map (finPart D) = 0) (hz : ∀ τ, compAt θ τ w = z τ) : realPt θ z = w := by
@@ -43,11 +43,11 @@ theorem realPt_eq {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (z : D.what₂
   exact eq_of_comp hθ _ _ hs.1 hw fun τ => (hs.2 τ).trans (hz τ).symm
 
 /- English proof (translation)
-Establish `h1 : gramAt D S τ = 1`. Unfold `gramAt`. Rewrite using `[hS]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h2 : gramAt D T τ = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `gramAt`. Rewrite using `[hT]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Unfold `GlobalTheory.VacUnique.hAt`. Rewrite using `[h1, h2, inv_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, RCLike.star_def]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem hAt_one (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1) (τ : D.what₂.Tau)
     (x y : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
@@ -68,11 +68,11 @@ namespace GlobalTheory.AdForm.VacRead
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `hS hT` using the available equality. Use `GlobalTheory.TwistFactorCompare.theta_eq_zero_of_real hf fun w hw => ?_` and prove the remaining obligations. Establish `h1` using `congrFun h0 (fun τ i j => -(δ * compAt θ τ w i j))`. Establish `hp : realPt θ (fun τ => Matrix.of fun i j => -(δ⁻¹ * (fun τ i j => -(δ * compAt θ τ w i j) : VCx D.what₂.Tau S.rank T.rank) τ (Fin.cast rfl i) (Fin.cast rfl j))) = w`. Use `realPt_eq hθ _ w hw fun τ => ?_` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i j`. Simplify using `only [Matrix.of_apply, Fin.cast_eq_self]`. Clear the denominators using the available nonvanishing facts. Unfold `xiN at h1`. Rewrite `h1` using `[hp, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h1).resolve_left (Complex.exp_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem xiN_eq_zero (θ : InfFam D) (hθ : IsInfFam θ) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b)
     (δ : ℂ) (sc : ℝ) (hδ : δ ≠ 0) (ψ : AddChar (AF D.host.F) ℂ) (f : WO S T → ℂ) (hf : IsThetaFunO ψ S T f)
@@ -95,7 +95,7 @@ end GlobalTheory.AdForm.VacRead
 namespace GlobalTheory.AdForm.VacRead
 
 /- English proof (translation)
-Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem key_sum {ι : Type} [Fintype ι] (r0 k : ℝ) (s : ι → ℂ) :
     ((∑ τ, 2 * (Complex.I * (r0 : ℂ) * (k : ℂ) * s τ).re : ℝ) : ℂ) +
@@ -120,33 +120,31 @@ variable {D : D7}
 open GlobalTheory.FockCompare
 
 /- English proof (translation)
-Substitute `hS hT` using the available equality. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hP.inf`. Take `⟨hF, hann⟩` from `GlobalTheory.VacUnique.Ann.vacuum_annihilation D θ σ hσ ψ hP.std S T (fun _ => 1) (fun _ => 1) f hf.1 hf.2`. Use `set F : RW T S → ℂ := fun z => f (iotaW σ T S z) with hFdef`. Use `set r : ℝ := sc / 2 with hr`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L : RW T S →L[ℂ] RW T S` to `(-δ⁻¹) • ContinuousLinearMap.id ℂ (RW T S)`. Establish `hL : ∀ Z τ i j, L Z τ i j = -(δ⁻¹ * Z τ i j)` using `fun Z τ i j => by simp [L]`. Use `set E : RW T S → ℂ := fun Z => Complex.exp ((Real.pi * r * ∑ τ, ∑ i, ∑ j, ‖Z τ i j‖ ^ 2 : ℝ) : ℂ) with hE`. Establish `hxi : xiN θ S T rfl rfl δ sc f = fun Z => F (L Z) * E Z`. Use function extensionality and compare the values at `Z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `xiN`. Establish `hp : realPt θ (fun τ => Matrix.of fun i j => -(δ⁻¹ * Z τ (Fin.cast rfl i) (Fin.cast rfl j))) = iotaW σ T S (L Z)`. Use `realPt_eq hP.inf _ _ (by funext i j; exact hσ.fin _) fun τ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Use `show θ τ (infPart D (σ fun τ' => L Z τ' i j)) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hσ.comp]`. Simplify using `[hL]`. Rewrite using `[hp, mul_comm]`. Use `congr 2`. Use `show (Real.pi : ℂ) / 2 * ((sc : ℂ) * ∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Z τ i j)) = _`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hxi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdG : ∀ Z Y, fderiv ℝ (fun Z => F (L Z)) Z Y = fderiv ℝ F (L Z) (L Y)` using `fun Z Y => by`. Establish `h : HasFDerivAt (fun Z => F (L Z)) ((fderiv ℝ F (L Z)).comp (L.restrictScalars ℝ)) Z` using `(hF (L Z)).hasFDerivAt.comp Z (L.restrictScalars ℝ).hasFDerivAt`. Rewrite using `[h.fderiv]`. Both sides reduce to the same expression. Use `GlobalTheory.FockPos.differentiable_mul_of_cr (fun Z => F (L Z)) E (fun Z Y => (2 * Real.pi * r * ∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j) : ℂ)) (hF.comp (L.restrictScalars ℝ).differentiable) (GlobalTheory.FockPos.gauss_cr r).1 (fun Z Y => ?_) (GlobalTheory.FockPos.gauss_ …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdG, hdG]`. Establish `hj : GlobalTheory.VacUnique.jO S T (fun _ => 1) (fun _ => 1) (L Y) = L (Complex.I • Y)`. Rewrite using `[L.map_smul]`. Use function extensionality and compare the values at `τ`. Rewrite using `[GlobalTheory.VacUnique.jO_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Complex.I • ((1 : Matrix (Fin T.rank) (Fin T.rank) ℂ) * Matrix.of (L Y τ) * (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ)) = _`. Rewrite using `[Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression. Establish `h` using `hann (L Z) (L Y)`. Rewrite `h` using `[hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hdd : δ⁻¹ * starRingEnd ℂ δ⁻¹ = (((‖δ‖ ^ 2)⁻¹ : ℝ) : ℂ)`. Rewrite using `[Complex.mul_conj, Complex.normSq_inv, Complex.normSq_eq_norm_sq]`. Establish `hom : ∀ Y' : RW T S, GlobalTheory.VacUnique.omO S T (L Z) (L Y') = ∑ τ, 2 * (Complex.I * (((Real.sqrt D.host.d)⁻¹ : ℝ) : ℂ) * (((‖δ‖ ^ 2)⁻¹ : ℝ) : ℂ) * ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y' τ i j)).re`. Introduce `Y'`. Rewrite using `[GlobalTheory.VacUnique.omO_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `show 2 * (tauE D τ D.host.xi0 * GlobalTheory.VacUnique.hAt S T τ (L Z τ) (L Y' τ)).re = _`. Rewrite using `[hP.xi τ]`. Use `erw [hAt_one S T hP.gS hP.gT τ (L Z τ) (L Y' τ)]`. Establish `hs : ∑ i, ∑ j, L Z τ i j * starRingEnd ℂ (L Y' τ i j) = (((‖δ‖ ^ 2)⁻¹ : ℝ) : ℂ) * ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y' τ i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hL, hL, ← hdd]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_neg, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hom, hom]`. Establish `hs2 : ∀ τ, (∑ i, ∑ j, Z τ i j * starRingEnd ℂ ((Complex.I • Y) τ i j)) = -Complex.I * ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j)` using `fun τ => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Complex.conj_I, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Simplify using `only [hs2] at h`.
-
-Establish `key` using `key_sum ((Real.sqrt D.host.d)⁻¹) ((‖δ‖ ^ 2)⁻¹) fun τ => ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j)`. Establish `hrk : (Real.sqrt D.host.d)⁻¹ * (‖δ‖ ^ 2)⁻¹ = r` using `scale_eq _ _ _ (pow_ne_zero 2 (norm_ne_zero_iff.2 hP.ne)) hP.scale`. Rewrite `key` using `[hrk]`. Use `show _ = -((2 * Real.pi * r * ∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j) : ℂ) * F (L Z))`. Take the linear combination `h + Real.pi * Complex.I * F (L Z) * key + 2 * Real.pi * r * (∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j)) * F (L Z) * Complex.I_sq`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem xiN_differentiable (θ : InfFam D) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b)
     (δ : ℂ) (sc : ℝ) (ψ : AddChar (AF D.host.F) ℂ) (hP : StdPair θ S T δ sc ψ) (f : WO S T → ℂ)
@@ -234,7 +232,7 @@ end GlobalTheory.AdForm.VacRead
 namespace GlobalTheory.AdForm.VacRead
 
 /- English proof (translation)
-Introduce `D ψ θ S T a b hS hT δ sc hP`. Conclude with `⟨fun f hf => xiN_differentiable θ S T hS hT δ sc ψ hP f hf, fun f hf h0 => xiN_eq_zero θ hP.inf S T hS hT δ sc hP.ne ψ f hf h0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem xiN_entire_and_injective : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ)
     (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ →

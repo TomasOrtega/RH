@@ -11,13 +11,13 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.CoordinateConeArithVar
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y d hbir harith`. Take `⟨_, ⟨hprime, _, hrel⟩, hhor, hdim⟩` from `harith`. Establish `hne : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0, map_zero, zero_mul]`. Establish `htr` using `ConeTrdeg.full K ι Ω y hbir hne hhor`. Establish `hA` using `IntDomainDim.full (MRing ι ⧸ mCoordIdeal y) (algebraMap_injective _ hhor)`. Rewrite `hdim` using `[hA, htr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (Algebra.trdeg ℤ Ω + (Fintype.card K : Cardinal)).toENat + 1 = ((d + 1 + Fintype.card K : ℕ) : ℕ∞)` using `WithBot.coe_injective hdim`. Rewrite `h1` using `[map_add, Cardinal.toENat_nat]`. Establish `h2 : (Algebra.trdeg ℤ Ω).toENat = (d : ℕ∞)`. Establish `h3 : (Algebra.trdeg ℤ Ω).toENat + ((Fintype.card K + 1 : ℕ) : ℕ∞) = (d : ℕ∞) + ((Fintype.card K + 1 : ℕ) : ℕ∞)`. Move the coercions through the operations in `at h1 ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← add_assoc, h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `WithTop.add_right_cancel (ENat.coe_ne_top _) h3`. Conclude with `Cardinal.toENat_eq_natCast.mp h2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem FnFieldTrdeg.full : FnFieldTrdeg.Statement := by
   intro K _ ι _ Ω _ y d hbir harith

@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CenTheta
 
 /- English proof (translation)
-Introduce `K _ _ h2 c v m hok a g`. Establish `hstd : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Establish `hχc : Continuous ((GP.psiF v)⁻¹ : AddChar (Qv v) Circle)`. Establish `: (((GP.psiF v)⁻¹ : AddChar (Qv v) Circle) : Qv v → Circle) = fun x => (GP.psiF v x)⁻¹`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `AddChar.inv_apply' _ _`. Rewrite using `[this]`. Conclude with `hstd.1.inv`. Establish `hχ1 : (GP.psiF v)⁻¹ ≠ 1` using `inv_ne_one.mpr hstd.2.1`. Consider the cases of `m with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `@sp w₁ w₂ i₁ i₂ Φ`. Conclude with `GlobalTheory.CompanionTheory.SplitCentre.sCen (Qv v) _ hχc hχ1 _ _ (GlobalTheory.CompanionTheory.LocalWhittakerNorm.isUnit1_cAt' c v w₁) (GlobalTheory.CompanionTheory.LocalWhittakerNorm.isUnit1_cAt' c v w₂) Φ ⟨hok.2.1, hok.2.2⟩ a g`. Consider the case `@ns w i σ η Φ => haveI := i`. Take `⟨-, hσ, hη, hΦ⟩` from `hok`. Conclude with `GlobalTheory.CompanionTheory.WeilCentral.wCen (Qv v) _ hχc hχ1 (Kv K w) (GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl K h2 v w i σ hσ) (continuous_adicCompletionMap v w) σ hσ η hη (localChar c w) Φ hΦ a g`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem W_central : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (m : LM c v), m.ok → ∀ (a : (Qv v)ˣ) (g : GL (Fin 2) (Qv v)), m.W (dg2 a a * g) = omW m a * m.W g := by
   intro K _ _ h2 c v m hok a g

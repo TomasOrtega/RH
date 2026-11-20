@@ -32,13 +32,13 @@ def IsCarried (ψ : AddChar (AF D.host.F) ℂ) (om : WRep S T) (L : (GA D T → 
 variable {ψ : AddChar (AF D.host.F) ℂ} (om : WRep S T)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun f => f, fun _ hf => hf, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCarried_id : IsCarried ψ om fun φ => φ :=
   ⟨fun f => f, fun _ hf => hf, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-Use `⟨fun _ => 0, fun _ _ => (GlobalTheory.RealWeil.thetaSub ψ S T).zero_mem, fun _ _ _ _ => by simp, fun c _ _ => by simp, fun f _ g w => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isCarried_zero : IsCarried ψ om fun _ => 0 := by
   refine ⟨fun _ => 0, fun _ _ => (GlobalTheory.RealWeil.thetaSub ψ S T).zero_mem, fun _ _ _ _ => by simp,
@@ -47,9 +47,9 @@ theorem isCarried_zero : IsCarried ψ om fun _ => 0 := by
   simp
 
 /- English proof (translation)
-Take `⟨Δ₁, t₁, a₁, s₁, e₁⟩` from `h₁`. Take `⟨Δ₂, t₂, a₂, s₂, e₂⟩` from `h₂`. Use `⟨fun f => Δ₁ (Δ₂ f), fun f hf => t₁ _ (t₂ f hf), fun f f' hf hf' => ?_, fun c f hf => ?_, fun f hf g w => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[a₂ f f' hf hf', a₁ _ _ (t₂ f hf) (t₂ f' hf')]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[s₂ c f hf, s₁ c _ (t₂ f hf)]`. Use `beta_reduce`. Rewrite using `[e₂ f hf g w, e₁ _ (t₂ f hf) g w]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCarried_comp {L₁ L₂ : (GA D T → ℂ) → (GA D T → ℂ)} (h₁ : IsCarried ψ om L₁)
     (h₂ : IsCarried ψ om L₂) : IsCarried ψ om fun φ => L₁ (L₂ φ) := by
@@ -65,11 +65,9 @@ theorem isCarried_comp {L₁ L₂ : (GA D T → ℂ) → (GA D T → ℂ)} (h₁
     rw [e₂ f hf g w, e₁ _ (t₂ f hf) g w]
 
 /- English proof (translation)
-Take `⟨Δ₁, t₁, a₁, s₁, e₁⟩` from `h₁`. Take `⟨Δ₂, t₂, a₂, s₂, e₂⟩` from `h₂`. Use `⟨fun f => Δ₁ f + Δ₂ f, fun f hf => (GlobalTheory.RealWeil.thetaSub ψ S T).add_mem (t₁ f hf) (t₂ f hf), fun f f' hf hf' => ?_, fun c f hf => ?_, fun f hf g w => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[a₁ f f' hf hf', a₂ f f' hf hf']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Use `beta_reduce`. Rewrite using `[s₁ c f hf, s₂ c f hf, smul_add]`. Use `beta_reduce`. Rewrite using `[e₁ f hf g w, e₂ f hf g w]`.
-
-Use function extensionality and compare the values at `h`. Simplify using `only [Pi.add_apply, map_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCarried_add {L₁ L₂ : (GA D T → ℂ) → (GA D T → ℂ)} (h₁ : IsCarried ψ om L₁)
     (h₂ : IsCarried ψ om L₂) : IsCarried ψ om fun φ => L₁ φ + L₂ φ := by
@@ -88,9 +86,9 @@ theorem isCarried_add {L₁ L₂ : (GA D T → ℂ) → (GA D T → ℂ)} (h₁ 
     simp only [Pi.add_apply, map_add]
 
 /- English proof (translation)
-Take `⟨Δ, t, a, s, e⟩` from `hL`. Use `⟨fun f => c • Δ f, fun f hf => (GlobalTheory.RealWeil.thetaSub ψ S T).smul_mem c (t f hf), fun f f' hf hf' => ?_, fun c' f hf => ?_, fun f hf g w => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[a f f' hf hf', smul_add]`. Use `beta_reduce`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[s c' f hf, smul_comm c c']`. Use `beta_reduce`. Rewrite using `[e f hf g w]`. Use function extensionality and compare the values at `h`. Simplify using `only [Pi.smul_apply, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCarried_smul (c : ℂ) {L : (GA D T → ℂ) → (GA D T → ℂ)} (hL : IsCarried ψ om L) :
     IsCarried ψ om fun φ => c • L φ := by
@@ -107,7 +105,7 @@ theorem isCarried_smul (c : ℂ) {L : (GA D T → ℂ) → (GA D T → ℂ)} (hL
     simp only [Pi.smul_apply, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa only [Finset.sum_empty] using isCarried_zero (ψ := ψ) om`. Consider the case `insert a s ha ih`. Use `isCarried_add om (hL a (Finset.mem_insert_self a s)) (ih fun i hi => hL i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Simplify `this` using `only [Finset.sum_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isCarried_sum {ι : Type*} (s : Finset ι) (L : ι → (GA D T → ℂ) → (GA D T → ℂ))
     (hL : ∀ i ∈ s, IsCarried ψ om (L i)) : IsCarried ψ om fun φ => ∑ i ∈ s, L i φ := by
@@ -120,7 +118,7 @@ theorem isCarried_sum {ι : Type*} (s : Finset ι) (L : ι → (GA D T → ℂ) 
     simpa only [Finset.sum_insert ha] using this
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa only [List.foldr_nil] using isCarried_id (ψ := ψ) om`. Consider the case `cons i l ih`. Use `isCarried_comp om (hA i (List.mem_cons.2 (Or.inl rfl))) (ih fun j hj => hA j (List.mem_cons.2 (Or.inr hj)))` as an intermediate fact. Simplify `this` using `only [List.foldr_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isCarried_foldr {ι : Type*} (A : ι → (GA D T → ℂ) → (GA D T → ℂ)) (l : List ι)
     (hA : ∀ i ∈ l, IsCarried ψ om (A i)) : IsCarried ψ om fun φ => l.foldr (fun i g => A i g) φ := by
@@ -132,7 +130,7 @@ theorem isCarried_foldr {ι : Type*} (A : ι → (GA D T → ℂ) → (GA D T �
     simpa only [List.foldr_cons] using this
 
 /- English proof (translation)
-Use `isCarried_sum om Finset.univ _ fun idx _ => ?_` and prove the remaining obligations. Use `isCarried_foldr om (fun L => L) _ fun L hL => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hL`. Conclude with `hR _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCarried_gelf (θ : InfFam D) (τ : D.what₂.Tau)
     (hR : ∀ Z, IsCarried ψ om (Formalism.L2.Theta.RderC θ T τ Z)) (k : ℕ) :
@@ -143,7 +141,7 @@ theorem isCarried_gelf (θ : InfFam D) (τ : D.what₂.Tau)
   exact hR _
 
 /- English proof (translation)
-Use `isCarried_sum om z.support _ fun k _ => isCarried_smul om _ ?_` and prove the remaining obligations. Conclude with `isCarried_foldr om _ _ fun i _ => isCarried_gelf om θ τ hR i`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCarried_centreAct (θ : InfFam D) (τ : D.what₂.Tau)
     (hR : ∀ Z, IsCarried ψ om (Formalism.L2.Theta.RderC θ T τ Z)) (z : MvPolynomial ℕ ℂ) :
@@ -156,13 +154,11 @@ end GlobalTheory.Core.Rk.ZcComm
 open GlobalTheory.Core.Rk.ZcComm in
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om hθ hω τ z`. Establish `hR : ∀ Z, IsCarried ψ om (Formalism.L2.Theta.RderC θ T τ Z)` using `fun Z => GlobalTheory.Core.Rk.ZcDer.rderC_om D ψ θ S T χS χT om hθ hω τ Z`. Take `⟨Δ, -, ha, hs, he⟩` from `isCarried_centreAct om θ τ hR z`. Establish `key : ∀ f, IsThetaFunO ψ S T f → omCentreT om θ τ z f = Δ f`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `w`. Use `show centreAct θ τ T z (fun h => om (1, h) f w) 1 = Δ f w`. Rewrite using `[he f hf 1 w]`. Use `show om (1, 1) (Δ f) w = Δ f w`. Rewrite using `[show ((1 : GA D S), (1 : GA D T)) = 1 from rfl, map_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `⟨fun f f' hf hf' => ?_, fun c f hf => ?_, fun f hf g h => ?_⟩` and prove the remaining obligations. Rewrite using `[key _ ((GlobalTheory.RealWeil.thetaSub ψ S T).add_mem hf hf'), key f hf, key f' hf', ha f f' hf hf']`. Rewrite using `[key _ ((GlobalTheory.RealWeil.thetaSub ψ S T).smul_mem c hf), key f hf, hs c f hf]`. Rewrite using `[key f hf] show om (g, h) (Δ f) 0 = centreAct θ τ T z (fun h' => om (g, h') f 0) h`.
-
-Rewrite using `[he f hf g 0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Rk.ZcComm.omCentreT_comm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T), IsInfFam θ → IsWeilDatumO ψ S T χS χT om → ∀ (τ : D.what₂.Tau) (z : MvPolynomial ℕ ℂ), (∀ f f', IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → omCentreT om θ τ z (f + f') = omCentreT om θ τ z f + omCentreT om θ τ z f') ∧ (∀ (c : ℂ) f, IsThetaFunO ψ S T f → omCentreT om θ τ z (c • f) = c • omCentreT om θ τ z f) ∧ ∀ f, IsThetaFunO ψ S T f → ∀ g h, thetaKO om g h (omCentreT om θ τ z f) = centreAct θ τ T z (fun h' => thetaKO om g h' f) h := by
   intro D ψ θ S T χS χT om hθ hω τ z

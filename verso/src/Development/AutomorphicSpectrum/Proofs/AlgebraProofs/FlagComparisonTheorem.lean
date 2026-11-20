@@ -33,7 +33,7 @@ section Val
 variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton.1 (h (Ideal.mem_span_singleton_self a))`. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' (hv.map_le_one u)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma v_le_of_span_le (hv : v.Integers R) {a b : R} (h : Ideal.span {a} ≤ Ideal.span {b}) :
     v (algebraMap R C a) ≤ v (algebraMap R C b) := by
@@ -42,18 +42,16 @@ lemma v_le_of_span_le (hv : v.Integers R) {a b : R} (h : Ideal.span {a} ≤ Idea
   exact mul_le_of_le_one_right' (hv.map_le_one u)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (v_le_of_span_le hv h.le) (v_le_of_span_le hv h.ge)`.
+A detailed English derivation is pending.
 -/
 lemma v_eq_of_span_eq (hv : v.Integers R) {a b : R} (h : Ideal.span {a} = Ideal.span {b}) :
     v (algebraMap R C a) = v (algebraMap R C b) :=
   le_antisymm (v_le_of_span_le hv h.le) (v_le_of_span_le hv h.ge)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton.1 (h (Ideal.mem_span_singleton_self c))`. Establish `hu0 : u ≠ 0` using `by rintro rfl; simp at hc`. Establish `hd0 : d ≠ 0` using `by rintro rfl; simp at hc`. Establish `hinj` using `hv.hom_inj`. Establish `hd1 : algebraMap R C d ≠ 0` using `fun e => hd0 (hinj (by simpa using e))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : algebraMap R C u ≠ 0` using `fun e => hu0 (hinj (by simpa using e))`. Establish `hvd : v (algebraMap R C d) ≠ 0` using `(Valuation.ne_zero_iff v).2 hd1`. Establish `hvu : v (algebraMap R C u) = 1`. Rewrite `hvv` using `[map_mul, map_mul]`. Conclude with `mul_left_cancel₀ hvd (by rw [hvv, mul_one])`.
-
-Conclude with `Ideal.span_singleton_mul_right_unit (hv.isUnit_of_one (IsUnit.mk0 _ hu1) hvu) d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma span_eq_of_le_of_v_eq (hv : v.Integers R) {c d : R} (hc : c ≠ 0)
     (h : Ideal.span {c} ≤ Ideal.span {d})
@@ -72,7 +70,7 @@ lemma span_eq_of_le_of_v_eq (hv : v.Integers R) {c d : R} (hc : c ≠ 0)
   exact Ideal.span_singleton_mul_right_unit (hv.isUnit_of_one (IsUnit.mk0 _ hu1) hvu) d
 
 /- English proof (translation)
-Take `⟨m, c, -, rfl⟩` from `h`. Conclude with `Finset.prod_le_one' fun i _ => hv.map_le_one _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma hasLen_le_one' (hv : v.Integers R) {M : Type} [AddCommGroup M] [Module R M] {x : NNReal}
     (h : HasLen v R M x) : x ≤ 1 := by
@@ -82,7 +80,7 @@ lemma hasLen_le_one' (hv : v.Integers R) {M : Type} [AddCommGroup M] [Module R M
 end Val
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => G (i + 1)), Fin.prod_univ_eq_prod_range G]`. Establish `h1` using `Finset.prod_range_succ' G f`. Establish `h2` using `Finset.prod_range_succ G f`. Rewrite `h2` using `[h1, h]`. Conclude with `mul_right_cancel₀ h0 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma prod_fin_shift (f : ℕ) (G : ℕ → NNReal) (h : G f = G 0) (h0 : G 0 ≠ 0) :
     ∏ s : Fin f, G ((s : ℕ) + 1) = ∏ s : Fin f, G s := by
@@ -97,21 +95,21 @@ section Char
 variable {R : Type} [CommRing R] {F : Type} [Field F] [Fintype F]
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[MulChar.pow_apply_coe, ← map_pow, FiniteField.pow_card]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 lemma pow_card_char (χ : MulChar F R) : χ ^ Fintype.card F = χ := by
   ext a
   rw [MulChar.pow_apply_coe, ← map_pow, FiniteField.pow_card]
 
 /- English proof (translation)
-Rewrite using `[pow_add, pow_mul, ← hf, pow_card_char]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pow_period {p f : ℕ} (hf : Fintype.card F = p ^ f) (σ : MulChar F R) (s : ℕ) :
     σ ^ p ^ (s + f) = σ ^ p ^ s := by
   rw [pow_add, pow_mul, ← hf, pow_card_char]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Nat.mul_succ, ← add_assoc, pow_period hf, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma pow_period_mul {p f : ℕ} (hf : Fintype.card F = p ^ f) (σ : MulChar F R) (s k : ℕ) :
     σ ^ p ^ (s + f * k) = σ ^ p ^ s := by
@@ -120,7 +118,7 @@ lemma pow_period_mul {p f : ℕ} (hf : Fintype.card F = p ^ f) (σ : MulChar F R
   | succ k ih => rw [Nat.mul_succ, ← add_assoc, pow_period hf, ih]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Nat.mod_add_div s f]`. Rewrite using `[pow_period_mul hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pow_mod {p f : ℕ} (hf : Fintype.card F = p ^ f) (σ : MulChar F R) (s : ℕ) :
     σ ^ p ^ (s % f) = σ ^ p ^ s := by
@@ -128,19 +126,19 @@ lemma pow_mod {p f : ℕ} (hf : Fintype.card F = p ^ f) (σ : MulChar F R) (s : 
   rw [pow_period_mul hf]
 
 /- English proof (translation)
-Establish `hp2` using `hp.two_le`. Establish `hle : ∀ n < f, 1 ≤ p ^ n ∧ p ^ n ≤ p ^ f - 1`. Introduce `n hn`. Use `⟨Nat.one_le_pow _ _ hp.pos, ?_⟩` and prove the remaining obligations. Establish `h2 : p ^ (n + 1) ≤ p ^ f` using `Nat.pow_le_pow_right hp.pos hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : p ^ (n + 1) = p ^ n * p` using `pow_succ p n`. Establish `h4 : 1 ≤ p ^ n` using `Nat.one_le_pow _ _ hp.pos`. Establish `h5 : p ^ n * 2 ≤ p ^ n * p` using `Nat.mul_le_mul_left _ hp2`. Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective (fun s : Fin f => p ^ (s : ℕ))` using `fun a b e => Fin.ext (Nat.pow_right_injective hp2 e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `himg : ∏ s : Fin f, L (σ ^ p ^ (s : ℕ)) = ∏ m ∈ (Finset.univ : Finset (Fin f)).image (fun s : Fin f => p ^ (s : ℕ)), L (σ ^ m)`. Rewrite using `[Finset.prod_image (fun a _ b _ e => hinj e)]`. Rewrite using `[himg]`. Use `symm`. Apply `Finset.prod_subset` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `m hm`. Take `⟨s, -, rfl⟩` from `Finset.mem_image.1 hm`. Conclude with `Finset.mem_Icc.2 (hle s s.2)`. Introduce `m hm hnot`. Apply `h1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hfm`. Take `⟨n, hn, e⟩` from `hfund m hfm`. Apply `hnot` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨⟨n, hn⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Take `⟨hm1, hm2⟩` from `Finset.mem_Icc.1 hm`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hn1, hn2⟩` from `hle n hn`. Establish `hmod : m ≡ p ^ n [MOD orderOf σ]` using `pow_eq_pow_iff_modEq.1 e`. Rewrite `hmod` using `[ho]`. Use `(Nat.ModEq.eq_of_abs_lt hmod ?_).symm` and prove the remaining obligations. Rewrite using `[abs_lt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 lemma prod_chars {p f : ℕ} (hp : p.Prime) (hf : 0 < f) (σ : MulChar F R)
     (ho : orderOf σ = p ^ f - 1)
@@ -190,57 +188,49 @@ namespace GlobalTheory.CompanionTheory.Ar.GR
 open FlagClose in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp F _ _ _ _ N _ _ _ _ AA hFS hT n b hG σ hσ`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf0, hf⟩ : ∃ f : ℕ, 0 < f ∧ Fintype.card F = p ^ f := by`. Take `⟨k, -, e⟩` from `FiniteField.card F p`. Conclude with `⟨k, k.pos, e⟩`. Establish `hpp : p.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨hord, -, hfp, hfund, -⟩` from `GlobalTheory.T.teichmuller_character_order_generates p C v R hv hp F f hf σ hσ`. Establish `hFp : ∀ s, IsFund p (σ ^ p ^ s)` using `hfp`. Establish `hbK : ∀ i : Fin n, b i ∉ flagSub b i` using `fun i => b.linearIndependent.notMem_span_image (by simp)`. Establish `hstep` using `fun i : Fin n => GlobalTheory.T.stable_hopf_order_subgroup_translation p C v R hv hp F f hf N AA hFS (flagSub b i) (b i) (hbK i)`. Use `choose S hSc hSF using fun i => (hstep i).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : ∀ i : Fin n, stepOrder AA.carrier (flagSub b i) (b i) = stepOrderRes AA.carrier (flagSub b i) (b i)` using `fun i => (hstep i).2`. Use `choose c hc0 hcX using fun (i : Fin n) (s : ℕ) => (GlobalTheory.T.character_ideal_principal_eigen p C v R hv hp F f hf (S i) (hSF i) (σ ^ p ^ s)).1`. Establish `hom` using `fun i : Fin n => GlobalTheory.T.fundamental_ideal_frobenius_product p C v R hv hp F f hf (S i) (hSF i) σ hσ (c i) (hcX i)`. Use `choose δ hδ using fun (i : Fin n) (s : ℕ) => (hom i s).2.1`. Establish `hδL : ∀ (i : Fin n) (s : ℕ), HasLen v R (OmType (S i).carrier (σ ^ p ^ (s + 1))) (v (algebraMap R C (δ i s)))` using `fun i s => (hom i s).2.2 _ (hδ i s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hstepL : ∀ (i : Fin n) (s : ℕ), HasLen v R (OmType (stepOrder AA.carrier (flagSub b i) (b i)) (σ ^ p ^ (s + 1))) (v (algebraMap R C (δ i s)))`. Introduce `i s`. Rewrite using `[← hSc i]`. Conclude with `hδL i s`. Establish `hXc : ∀ (i : Fin n) (s : ℕ), idealX AA.carrier (flagSub b i) (b i) (σ ^ p ^ s) = Ideal.span {c i s}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `i s`. Use `show xIdeal (stepOrder AA.carrier (flagSub b i) (b i)) (σ ^ p ^ s) = _`. Rewrite using `[← hSc i]`. Conclude with `hcX i s`. Take `⟨d, hdD, hdL⟩` from `GlobalTheory.T.stable_hopf_order_fundamental_lengths p C v R hv hp F f hf N AA hFS σ hσ n b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨cA, cN, cO, hcA, hcN, hcO, e1, e2⟩` from `hT`. Take `⟨hLex, hLprod⟩` from `GlobalTheory.T.stable_hopf_order_fundamental_ideal p C v R hv hp F f hf N AA hFS σ hσ`. Use `choose L hL0 hL using hLex`. Establish `hnf : ∀ χ : MulChar F R, ¬ IsFund p χ → L χ = 1`. Introduce `χ hχ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsub : ∀ i : Fin n, HasLen v R (OmType (stepOrder AA.carrier (flagSub b i) (b i)) χ) 1`. Introduce `i`. Rewrite using `[← hSc i]`. Establish `hle` using `GlobalTheory.T.non_fundamental_eigen_le_square_augmentation p C v R hv hp F f hf (S i) (hSF i) χ hχ`. Use `haveI : Subsingleton (OmType (S i).carrier χ) := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 ?_)` and prove the remaining obligations. Introduce `x _`. Conclude with `hle x.2`. Conclude with `hasLen_subsingleton v R _`. Establish `h1` using `GlobalTheory.T.stable_hopf_order_basis_lengths p C v R hv hp F f hf N AA hFS n b χ (fun _ => 1) (L χ) hsub (hL χ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_antisymm (hasLen_le_one' hv (hL χ)) (by simpa using h1)`. Establish `hcN0 : cN ≠ 0`. Take `⟨B, hB, h⟩` from `AA.lat`. Establish `e` using `GlobalTheory.HopfOrderCheck.hasColen_unique v (fun r => hv.map_le_one r) hcN ⟨B, h, rfl⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Valuation.ne_zero_iff v).2 hB.ne_zero`. Establish `hvc0 : ∀ (i : Fin n) (s : ℕ), v (algebraMap R C (c i s)) ≠ 0` using `fun i s => (Valuation.ne_zero_iff v).2 fun e => hc0 i s (hv.hom_inj (by simpa using e))`. Establish `hcmod : ∀ (i : Fin n) (s : ℕ), Ideal.span {c i (s % f)} = Ideal.span {c i s}`. Introduce `i s`. Rewrite using `[← hXc, ← hXc, pow_mod hf]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvper : ∀ (i : Fin n), v (algebraMap R C (c i f)) = v (algebraMap R C (c i 0))`. Introduce `i`. Establish `h` using `hcmod i f`. Rewrite `h` using `[Nat.mod_self]`. Conclude with `(v_eq_of_span_eq hv h).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hxD : ∀ (t : Fin n) (s : Fin f), v (algebraMap R C (c t s)) ≤ v (algebraMap R C (d t s))`. Introduce `t s`. Establish `h` using `GlobalTheory.T.stable_hopf_order_subgroup_generation p C v R hv hp F f hf N AA hFS (flagSub b t) (b t) (hbK t) (hG t) (σ ^ p ^ (s : ℕ)) (hFp s)`. Rewrite `h` using `[hXc, hdD]`. Conclude with `v_le_of_span_le hv h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hDA : ∏ t, ∏ s, v (algebraMap R C (d t s)) = cA` using `hasLen_unique hv hdL hcA`. Use `choose cs hcs using fun i : Fin n => hasColen_of_lat v (S i).lat`. Establish `hcsq : ∀ i : Fin n, cs i ^ 2 = (∏ s : Fin f, v (algebraMap R C (c i s))) ^ (p ^ f * (p - 1))` using `fun i => (GlobalTheory.T.fundamental_ideal_frobenius_valuation p C v R hv hp F f hf (S i) (hSF i) σ hσ (c i) (hcX i)).2 _ (hcs i)`. Establish `hcfl : cN ^ (p ^ f) = (∏ i, cs i) ^ Fintype.card N` using `GlobalTheory.T.stable_hopf_order_basis_ideals p C v R hv hp F f hf N AA hFS n b cs cN (fun i => by rw [← hSc i]; exact hcs i) hcN`. Establish `hxN : (∏ t, ∏ s : Fin f, v (algebraMap R C (c t s))) ^ (Fintype.card N * (p - 1)) = cN ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : p ^ f ≠ 0` using `pow_ne_zero _ hpp.ne_zero`. Use `(pow_left_inj₀ zero_le' zero_le' hq).1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_pow, ← pow_mul, ← pow_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (∏ t, cs t ^ 2) ^ Fintype.card N := by simp only [hcsq]`. Use `_ = (cN ^ 2) ^ p ^ f := by`. Rewrite using `[Finset.prod_pow, ← pow_mul, pow_right_comm cN, hcfl, ← pow_mul, mul_comm 2]`. Establish `hdx : ∏ t, ∏ s : Fin f, v (algebraMap R C (δ t s)) = (∏ t, ∏ s : Fin f, v (algebraMap R C (c t s))) ^ (p - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `hP : ∏ s : Fin f, v (algebraMap R C (c t s)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => hvc0 t s`. Establish `hsh` using `prod_fin_shift f (fun s => v (algebraMap R C (c t s))) (hvper t) (hvc0 t 0)`. Establish `hmul : (∏ s : Fin f, v (algebraMap R C (c t s))) ^ p = (∏ s : Fin f, v (algebraMap R C (δ t s))) * ∏ s : Fin f, v (algebraMap R C (c t s))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_pow]`. Use `conv_rhs => rw [← hsh]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, hδ, map_mul, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : p = (p - 1) + 1` using `(Nat.sub_add_cancel hpp.one_le).symm`. Establish `h2 : (∏ s : Fin f, v (algebraMap R C (c t s))) ^ (p - 1) * ∏ s : Fin f, v (algebraMap R C (c t s)) = (∏ s : Fin f, v (algebraMap R C (c t s))) ^ p`. Rewrite using `[← pow_succ, ← hp1]`. Conclude with `(mul_right_cancel₀ hP (h2.trans hmul)).symm`. Establish `hrle : ∀ s : Fin f, ∏ t, v (algebraMap R C (δ t s)) ≤ L (σ ^ p ^ ((s : ℕ) + 1))` using `fun s => GlobalTheory.T.stable_hopf_order_basis_lengths p C v R hv hp F f hf N AA hFS n b (σ ^ p ^ ((s : ℕ) + 1)) (fun i => v (algebraMap R C (δ i s))) _ (fun i => hstepL i s) (hL _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrO : ∏ s : Fin f, L (σ ^ p ^ ((s : ℕ) + 1)) = cO`. Establish `h1` using `prod_fin_shift f (fun s => L (σ ^ p ^ s)) (by simpa using congrArg L (pow_period hf σ 0)) (hL0 _)`. Establish `h2` using `prod_chars hpp hf0 σ hord (fun m hm => hfund _ hm) L hnf`. Establish `h3` using `hasLen_unique hv (hLprod (fun m => L (σ ^ m)) (fun m _ => hL _)) hcO`. Conclude with `h1.trans (h2.symm.trans h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hDx, hlen⟩` from `GlobalTheory.T.product_inequalities_force_equality (Fin n) (Fin f) (Fintype.card N) (p - 1) Fintype.card_pos (Nat.sub_pos_of_lt hpp.one_lt) (fun t s => v (algebraMap R C (c t s))) (fun t s => v (algebraMap R C (d t s))) (fun t s => v (algebraMap R C (δ t s))) (fun s => L (σ ^ p ^ …`. Establish `hCD : ∀ (i : Fin n) (s : Fin f), Ideal.span {c i s} = Ideal.span {d i s}`. Introduce `i s`. Use `span_eq_of_le_of_v_eq hv (hc0 i s) ?_ (hDx i s).symm` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.stable_hopf_order_subgroup_generation p C v R hv hp F f hf N AA hFS (flagSub b i) (b i) (hbK i) (hG i) (σ ^ p ^ (s : ℕ)) (hFp s)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hXc, hdD]`. Then use the resulting hypothesis. Establish `hD : ∀ (i : Fin n) (s : ℕ), idealD p AA.carrier (flagSub b i) (b i) (σ ^ p ^ s) = Ideal.span {c i s}`. Introduce `i s`. Establish `hs : s % f < f` using `Nat.mod_lt _ hf0`. Establish `h` using `hdD i ⟨s % f, hs⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h'` using `hCD i ⟨s % f, hs⟩`. Simplify using `only at h h'`. Rewrite `h` using `[pow_mod hf]`. Rewrite using `[h, ← h', hcmod]`. Establish `hsucc : ∀ s : ℕ, σ ^ p ^ (s % f + 1) = σ ^ p ^ (s + 1)`.
-
-Introduce `s`. Rewrite using `[pow_succ, pow_succ, pow_mul, pow_mul, pow_mod hf]`. Establish `hall : ∀ s : ℕ, HasLen v R (OmType AA.carrier (σ ^ p ^ (s + 1))) (∏ i, v (algebraMap R C (δ i s)))`. Introduce `s`. Establish `hs : s % f < f` using `Nat.mod_lt _ hf0`.
-
-Establish `h` using `hlen ⟨s % f, hs⟩`. Simplify using `only at h`. Establish `hδe : ∀ i : Fin n, v (algebraMap R C (δ i s)) = v (algebraMap R C (δ i (s % f)))`. Introduce `i`. Establish `h2` using `hδL i (s % f)`.
-
-Rewrite `h2` using `[hsucc]`. Conclude with `hasLen_unique hv (hδL i s) h2`. Simplify using `only [hδe]`. Rewrite using `[h, hsucc]`. Conclude with `hL _`.
-
-Use `⟨c, δ, fun i s => ⟨hc0 i s, hXc i s, ?_, hD i s, hδ i s, hstepL i s⟩, hall, ?_⟩` and prove the remaining obligations. Rewrite using `[← hres i, ← hSc i]`. Conclude with `hcX i s`. Introduce `j s`. Conclude with `GlobalTheory.T.stable_hopf_order_basis_colength p C v R hv hp F f hf N AA hFS n b (σ ^ p ^ (s + 1)) (fun i => v (algebraMap R C (δ i s))) (fun i => hstepL i s) (hall s) j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem flagStatement_holds : FlagStatement := by
   intro p _ C _ _ _ v R _ _ hv hp F _ _ _ _ N _ _ _ _ AA hFS hT n b hG σ hσ

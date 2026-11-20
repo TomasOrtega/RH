@@ -15,7 +15,7 @@ section Abstract
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (G ⧸ K) := QuotientGroup.discreteTopology hKo`. Establish `hc : IsCompact ((QuotientGroup.mk : G → G ⧸ K) '' tsupport φ)` using `hφ.isCompact.image QuotientGroup.continuous_mk`. Use `hc.finite_of_discrete.subset fun q hq => ?_` and prove the remaining obligations. Conclude with `⟨q.out, subset_tsupport φ hq, QuotientGroup.out_eq' q⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_out_ne_zero (K : Subgroup G) (hKo : IsOpen (K : Set G)) {φ : G → ℂ} (hφ : HasCompactSupport φ) :
     {q : G ⧸ K | φ q.out ≠ 0}.Finite := by
@@ -28,9 +28,9 @@ theorem finite_out_ne_zero (K : Subgroup G) (hKo : IsOpen (K : Set G)) {φ : G �
 variable [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `e : (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {q} = (fun h => q.out⁻¹ * h) ⁻¹' (K : Set G)`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe]`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Conclude with `eq_comm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, measure_preimage_mul]`.
+A detailed English derivation is pending.
 -/
 theorem measure_coset (μ : Measure G) [μ.IsMulLeftInvariant] (K : Subgroup G) (q : G ⧸ K) :
     μ ((QuotientGroup.mk : G → G ⧸ K) ⁻¹' {q}) = μ (K : Set G) := by
@@ -42,17 +42,15 @@ theorem measure_coset (μ : Measure G) [μ.IsMulLeftInvariant] (K : Subgroup G) 
   rw [e, measure_preimage_mul]
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (G ⧸ K) := QuotientGroup.discreteTopology hKo`. Establish `hF` using `finite_out_ne_zero K hKo hφ`. Use `set S : Finset (G ⧸ K) := hF.toFinset with hS`. Establish `hmeas : ∀ q : G ⧸ K, MeasurableSet ((QuotientGroup.mk : G → G ⧸ K) ⁻¹' {q})` using `fun q => ((isOpen_discrete ({q} : Set (G ⧸ K))).preimage QuotientGroup.continuous_mk).measurableSet`. Establish `hout : ∀ g : G, φ ((g : G ⧸ K)).out = φ g` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K g`. Rewrite using `[hk, hr g k k.2]`. Establish `hsum : φ = fun g => ∑ q ∈ S, ((QuotientGroup.mk : G → G ⧸ K) ⁻¹' {q}).indicator (fun _ => φ q.out) g`. Use function extensionality and compare the values at `g`. Establish `: ∀ q : G ⧸ K, ((QuotientGroup.mk : G → G ⧸ K) ⁻¹' {q}).indicator (fun _ => φ q.out) g = if (g : G ⧸ K) = q then φ q.out else 0` using `fun q => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator_apply]`. Simplify using `only [this, Finset.sum_ite_eq]`. Use `split_ifs with h`. Conclude with `(hout g).symm`. Establish `: φ ((g : G ⧸ K)).out = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h0`. Conclude with `h (hF.mem_toFinset.2 h0)`. Rewrite using `[← hout g, this]`. Establish `hint : ∀ q ∈ S, Integrable (((QuotientGroup.mk : G → G ⧸ K) ⁻¹' {q}).indicator (fun _ => φ q.out)) μ`. Introduce `q _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(integrable_indicator_iff (hmeas q)).2 (integrableOn_const ?_)` and prove the remaining obligations. Rewrite using `[measure_coset]`. Conclude with `hfin`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S) _ (fun q hq => hF.mem_toFinset.2 hq)]`. Use `conv_lhs => rw [hsum]`.
-
-Rewrite using `[integral_finset_sum S hint, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hmeas q)]`. Simplify using `only [Measure.real, measure_coset]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_eq_sum (μ : Measure G) [μ.IsMulLeftInvariant] (K : Subgroup G) (hKo : IsOpen (K : Set G))
     (hfin : μ (K : Set G) ≠ ⊤) {φ : G → ℂ} (hφ : HasCompactSupport φ)
@@ -92,19 +90,17 @@ theorem integral_eq_sum (μ : Measure G) [μ.IsMulLeftInvariant] (K : Subgroup G
   simp only [Measure.real, measure_coset]
 
 /- English proof (translation)
-Establish `hfin : μ (K : Set G) ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `hpos : μ.real (K : Set G) ≠ 0` using `(ENNReal.toReal_pos (hKo.measure_pos μ ⟨1, K.one_mem⟩).ne' hfin).ne'`. Use `set φ₁ : G → ℂ := fun g => e g * B (ρ g v) w with hφ₁`. Use `set φ₂ : G → ℂ := fun g => e g⁻¹ * B v (ρ g w) with hφ₂`. Establish `hinv : ∀ g, φ₂ g = φ₁ g⁻¹` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hB g (ρ g⁻¹ v) w`. Rewrite `h` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Simplify using `only [hφ₁, hφ₂, h]`. Establish `he' : HasCompactSupport (fun g : G => e g⁻¹)` using `he.comp_homeomorph (Homeomorph.inv G)`. Establish `hc₁ : HasCompactSupport φ₁` using `he.mul_right`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₂ : HasCompactSupport φ₂` using `he'.mul_right`. Establish `hr₁ : ∀ g, ∀ k ∈ K, φ₁ (g * k) = φ₁ g` using `fun g k hk => by`. Establish `h1 : e (g * k) = e g` using `by simpa using hbi 1 K.one_mem k hk g`. Simplify using `only [hφ₁, h1, map_mul, Module.End.mul_apply, hv k hk]`. Establish `hr₂ : ∀ g, ∀ k ∈ K, φ₂ (g * k) = φ₂ g` using `fun g k hk => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : e (g * k)⁻¹ = e g⁻¹`. Rewrite using `[mul_inv_rev]`. Simplify using `using hbi k⁻¹ (K.inv_mem hk) 1 K.one_mem g⁻¹`. Simplify using `only [hφ₂, h1, map_mul, Module.End.mul_apply, hw k hk]`. Establish `hs₁ : (Function.support fun q : G ⧸ K => e q.out • ρ q.out v).Finite` using `(finite_out_ne_zero K hKo he).subset fun q hq h0 => hq (by simp [show e q.out = 0 from h0])`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs₂ : (Function.support fun q : G ⧸ K => starRingEnd ℂ (e q.out⁻¹) • ρ q.out w).Finite` using `(finite_out_ne_zero K hKo he').subset fun q hq h0 => hq (by simp [show e q.out⁻¹ = 0 from h0])`. Establish `l₁ : B (∑ᶠ q : G ⧸ K, e q.out • ρ q.out v) w = ∑ᶠ q : G ⧸ K, φ₁ q.out`. Use `AddMonoidHom.map_finsum (AddMonoidHom.mk' (fun x => B x w) (by simp)) hs₁` as an intermediate fact. Simplify `this` using `[hφ₁]`. Establish `l₂ : B v (∑ᶠ q : G ⧸ K, starRingEnd ℂ (e q.out⁻¹) • ρ q.out w) = ∑ᶠ q : G ⧸ K, φ₂ q.out`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `AddMonoidHom.map_finsum (AddMonoidHom.mk' (fun x => B v x) (by simp)) hs₂` as an intermediate fact. Simplify `this` using `[hφ₂]`. Establish `hI : ∫ g, φ₂ g ∂μ = ∫ g, φ₁ g ∂μ`. Simplify using `only [hinv]`. Conclude with `integral_inv_eq_self φ₁ μ`.
-
-Rewrite `hI` using `[integral_eq_sum μ K hKo hfin hc₁ hr₁, integral_eq_sum μ K hKo hfin hc₂ hr₂]`. Rewrite using `[l₁, l₂]`. Conclude with `(smul_right_injective ℂ hpos hI).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_of_inv (μ : Measure G) [μ.IsHaarMeasure] [μ.IsInvInvariant] (K : Subgroup G)
     (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G)) (e : G → ℂ) (he : HasCompactSupport e)
@@ -158,11 +154,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul μ.inv μ`. Establish `hne : μ (K : Set (GL ι F)) ≠ 0` using `(hKo.measure_pos μ ⟨1, K.one_mem⟩).ne'`. Establish `hnt : μ (K : Set (GL ι F)) ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `h2` using `congrArg (fun m : Measure (GL ι F) => m (K : Set (GL ι F))) hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKi : (K : Set (GL ι F))⁻¹ = K`. Use extensionality with `x`. Simplify using the standard rewrite rules. Simplify using `only [Measure.inv_apply, hKi, Measure.coe_nnreal_smul_apply] at h2`. Establish `h3 : ((Measure.haarScalarFactor μ.inv μ : NNReal) : ENNReal) = 1` using `(ENNReal.mul_left_inj hne hnt).1 (by rw [one_mul]; exact h2.symm)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : Measure.haarScalarFactor μ.inv μ = 1` using `by exact_mod_cast h3`. Rewrite using `[hc, h4, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isInvInvariant [MeasurableSpace F] [BorelSpace F] (μ : Measure (GL ι F)) [μ.IsHaarMeasure]
     (K : Subgroup (GL ι F)) (hKo : IsOpen (K : Set (GL ι F))) (hKc : IsCompact (K : Set (GL ι F))) :
@@ -184,9 +180,9 @@ theorem isInvInvariant [MeasurableSpace F] [BorelSpace F] (μ : Measure (GL ι F
 end GeneralLinearIntegers
 
 /- English proof (translation)
-Introduce `F _ _ _ _ ι _ _ K e he`. Take `⟨hKo, hKc, hc, hbi⟩` from `he`. Use `⟨⟨hKo, hKc, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : HasCompactSupport (fun g : GL ι F => e g⁻¹)` using `hc.comp_homeomorph (Homeomorph.inv _)`. Conclude with `h1.comp_left (g := starRingEnd ℂ) (map_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k₁ h₁ k₂ h₂ g show starRingEnd ℂ (e (k₁ * g * k₂)⁻¹) = starRingEnd ℂ (e g⁻¹)`. Rewrite using `[show (k₁ * g * k₂)⁻¹ = k₂⁻¹ * g⁻¹ * k₁⁻¹ by group, hbi _ (K.inv_mem h₂) _ (K.inv_mem h₁)]`. Introduce `V _ _ ρ B hB v hv w hw borelize F haveI := isInvInvariant (Measure.haar : Measure (GL ι F)) K hKo hKc`. Conclude with `adjoint_of_inv Measure.haar K hKo hKc e hc hbi ρ B hB v w (fun k hk => by simpa using hv ⟨k, hk⟩) (fun k hk => by simpa using hw ⟨k, hk⟩)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hk_adjoint : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     (ι : Type) [Fintype ι] [DecidableEq ι] (K : Subgroup (GL ι F)) (e : GL ι F → ℂ), IsHk K e →

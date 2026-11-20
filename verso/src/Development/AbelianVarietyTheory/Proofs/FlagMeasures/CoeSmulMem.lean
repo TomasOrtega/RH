@@ -5,7 +5,7 @@ namespace GlobalTheory.IntegralMultiple
 open NumberField
 
 /- English proof (translation)
-Establish `halg : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) c)`. Take `⟨y, hy, hint⟩` from `halg.exists_integral_multiple`. Use `⟨y, hy, ⟨y • c, hint⟩, ?_⟩` and prove the remaining obligations. Simplify using `[zsmul_eq_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_int_mul_integral {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ m : ℤ, m ≠ 0 ∧ ∃ a : 𝓞 E, (a : E) = (m : E) * c := by
@@ -16,7 +16,7 @@ theorem exists_int_mul_integral {E : Type} [Field E] [NumberField E] (c : E) :
   simp [zsmul_eq_mul]
 
 /- English proof (translation)
-Use `Λ.smul_mem r hv` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul E r v]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coe_smul_mem {E : Type} [Field E] [NumberField E] {j : ℕ}
     (Λ : Submodule (𝓞 E) (Fin j → E)) (r : 𝓞 E) {v : Fin j → E} (hv : v ∈ Λ) :
@@ -25,17 +25,15 @@ theorem coe_smul_mem {E : Type} [Field E] [NumberField E] {j : ℕ}
   rwa [← algebraMap_smul E r v] at this
 
 /- English proof (translation)
-Introduce `E _ _ j Λ hΛ x`. Set `S : Submodule E (Fin j → E)` to `{ carrier := {x | ∃ n : ℤ, n ≠ 0 ∧ (n : E) • x ∈ Λ} add_mem' := by`. Introduce and unpack `a b ⟨n, hn, ha⟩ ⟨m, hm, hb⟩`. Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Establish `h1` using `coe_smul_mem Λ (m : 𝓞 E) ha`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `coe_smul_mem Λ (n : 𝓞 E) hb`. Use `Λ.add_mem h1 h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [smul_add, smul_smul, map_intCast, Int.cast_mul]`. Use `push_cast`. Rewrite using `[mul_comm (m : E) (n : E)]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := ⟨1, one_ne_zero, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c v ⟨n, hn, hv⟩`. Take `⟨m, hm, a, ha⟩` from `exists_int_mul_integral c`. Use `⟨m * n, mul_ne_zero hm hn, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h` using `coe_smul_mem Λ a hv`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_smul, smul_smul, ha]`. Use `push_cast`. Use `ring_nf }`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Submodule.span E (Λ : Set (Fin j → E)) ≤ S`. Rewrite using `[Submodule.span_le]`. Introduce `v hv`. Conclude with `⟨1, one_ne_zero, by simpa using hv⟩`. Rewrite `hle` using `[hΛ.span_eq_top]`.
-
-Conclude with `hle Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {E : Type} [inst : Field E] [NumberField E] {j : ℕ}
     (Λ : Submodule (NumberField.RingOfIntegers E) (Fin j → E)),

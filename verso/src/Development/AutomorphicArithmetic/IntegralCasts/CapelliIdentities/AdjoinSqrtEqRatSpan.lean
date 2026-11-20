@@ -1,17 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `E _ _ d s hs x hx`. Establish `hint : IsIntegral ℚ s`. Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises. Rewrite using `[hs]`. Establish `h : (-(d : E)) = algebraMap ℚ E (-(d : ℚ))` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `isIntegral_algebraMap`. Establish `hx' : x ∈ Algebra.adjoin ℚ ({s} : Set E)`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Use `clear hx`. Proceed by induction on `hx' using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Conclude with `⟨0, 1, by simp [hy]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨c, e, rfl⟩` from `hz`. Conclude with `⟨a + c, b + e, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `mul y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨c, e, rfl⟩` from `hz`. Use `⟨a * c - d * b * e, a * e + b * c, ?_⟩` and prove the remaining obligations. Use `push_cast`.
-
-Take the linear combination `(b : E) * (e : E) * hs`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.adjoin_sqrt_eq_rat_span :
     ∀ (E : Type) [Field E] [CharZero E] (d : ℕ) (s : E), s ^ 2 = -(d : E) → ∀ x : E, x ∈ IntermediateField.adjoin ℚ ({s} : Set E) → ∃ a b : ℚ, x = (a : E) + (b : E) * s := by

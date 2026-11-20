@@ -21,9 +21,9 @@ variable {A R X : Type} [CommRing A] [CommRing R] [AddCommGroup X]
 include hb
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h.exists_right_inv`. Take `⟨b, rfl⟩` from `hb.2 t`. Establish `e : AddMonoidAlgebra.single (0 : X) c * b = 1`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, AddMonoidAlgebra.liftNCRingHom_single, ofAdd_zero, map_one, _root_.mul_one, ht]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e'` using `congrArg (AddMonoidAlgebra.liftNCRingHom (RingHom.id A) (1 : Multiplicative X →* A) (fun _ _ => Commute.all _ _)) e`. Rewrite `e'` using `[map_mul, map_one, AddMonoidAlgebra.liftNCRingHom_single, ofAdd_zero, map_one, _root_.mul_one]`. Conclude with `IsUnit.of_mul_eq_one _ e'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_map {c : A} (h : IsUnit (f c)) : IsUnit c := by
   obtain ⟨t, ht⟩ := h.exists_right_inv
@@ -37,7 +37,7 @@ theorem isUnit_of_map {c : A} (h : IsUnit (f c)) : IsUnit c := by
   exact IsUnit.of_mul_eq_one _ e'
 
 /- English proof (translation)
-Use `cf_ext hb fun χ => ?_` and prove the remaining obligations. Rewrite using `[cf_mono]`. Use `split_ifs with e`. Rewrite using `[e]`. Conclude with `h χ fun e' => e e'.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_mono {s : R} {α : X} (h : ∀ χ, χ ≠ α → cf hb χ s = 0) :
     s = f (cf hb α s) * m (Multiplicative.ofAdd α) := by
@@ -48,9 +48,9 @@ theorem eq_mono {s : R} {α : X} (h : ∀ χ, χ ≠ α → cf hb χ s = 0) :
   · exact h χ fun e' => e e'.symm
 
 /- English proof (translation)
-Use `GlobalTheory.groupAlgebra_subring_eq_top A X I e (S.comap (AddMonoidAlgebra.liftNCRingHom f m (fun _ _ => Commute.all _ _))) (fun a => by` as an intermediate fact. Rewrite using `[Subring.mem_comap, AddMonoidAlgebra.liftNCRingHom_single, ofAdd_zero, map_one, _root_.mul_one]`. Conclude with `h0 a)`. Use the proof step `(fun i => by`. Simplify `h i)` using `only [Subring.mem_comap, AddMonoidAlgebra.liftNCRingHom_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `s _`. Take `⟨b, rfl⟩` from `hb.2 s`. Conclude with `Subring.mem_comap.1 (this.ge (Subring.mem_top b))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subring_eq_top {I : Type} (e : Module.Basis I ℤ X) (S : Subring R) (h0 : ∀ a, f a ∈ S)
     (h : ∀ i, Ideal.span {a : A | f a * m (Multiplicative.ofAdd (e i)) ∈ S} = ⊤ ∧
@@ -72,9 +72,9 @@ end Alg
 variable {k : Type} [Field k] (Φ : FibPre k)
 
 /- English proof (translation)
-Establish `e` using `eq_mono (Φ.D.coord (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l)) (s := φ.f l) (α := α) (fun χ hχ => by`. Assume the negation of the conclusion as `hne`. Conclude with `hχ (hφ ⟨l, hne⟩))`. Take `⟨c, hc⟩` from `res_mono Φ.D (Φ.le l) (h.trans (Φ.le l)) h α`. Use `⟨resG _ h (Φ.wt φ α l) * c, (congrArg (resG _ (Φ.D.q.left.preimage_mono h)) e).trans ((map_mul (resG _ (Φ.D.q.left.preimage_mono h)) _ _).trans ?_)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, rapp, map_mul, _root_.mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pure_res {α : Φ.E.X} {φ : (Φ.H 1).Sec} (hφ : Φ.Pure α φ) (l : Φ.N₀.ι) {W : Φ.E.B.left.Opens}
     (h : W ≤ Φ.N₀.U l) : ∃ c : Γ(Φ.E.B.left, W), resG _ (Φ.D.q.left.preimage_mono h) (φ.f l) =
@@ -90,13 +90,13 @@ theorem pure_res {α : Φ.E.X} {φ : (Φ.H 1).Sec} (hφ : Φ.Pure α φ) (l : Φ
   rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `pure_res Φ hφ l h`. Take `⟨c₀, hc₀⟩` from `pure_res Φ hφ₀ l h`. Rewrite `hc₀` using `[ofAdd_zero, map_one, _root_.mul_one]`. Establish `hu` using `GlobalTheory.SecRatio.isUnit_res φ₀ l ((Φ.D.q.left.preimage_mono hWV).trans hV) (Φ.D.q.left.preimage_mono h)`. Establish `hu' : IsUnit ((Φ.D.q.left.app W).hom c₀)` using `hc₀ ▸ hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, rfl⟩` from `isUnit_of_map (Φ.D.coord (Φ.ch l) W hW (h.trans (Φ.le l))) hu'`. Establish `hle : Φ.D.q.left ⁻¹ᵁ W ≤ Φ.D.q.left ⁻¹ᵁ V ⊓ (Φ.H 1).U l` using `le_inf (Φ.D.q.left.preimage_mono hWV) (Φ.D.q.left.preimage_mono h)`. Establish `e` using `congrArg (resG _ hle) (hr l)`. Rewrite `e` using `[map_mul, rr, rr, rr]`. Establish `e' : (Φ.D.q.left.app W).hom c * mono Φ.D (Φ.ch l) W (h.trans (Φ.le l)) (Multiplicative.ofAdd α) = resG _ (Φ.D.q.left.preimage_mono hWV) r * (Φ.D.q.left.app W).hom u` using `hc.symm.trans (e.trans (congrArg _ hc₀))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨c * ↑u⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_right_comm, e', _root_.mul_assoc, ← map_mul, Units.mul_inv, map_one, _root_.mul_one]`. Establish `hv` using `GlobalTheory.SecRatio.isUnit_res φ l (inf_le_right : Φ.D.q.left ⁻¹ᵁ W ⊓ Out.nonzeroLocus φ ≤ _) (inf_le_left.trans (Φ.D.q.left.preimage_mono h))`. Establish `e₂` using `congrArg (resG _ (inf_le_left : Φ.D.q.left ⁻¹ᵁ W ⊓ Out.nonzeroLocus φ ≤ _)) hc`. Establish `e₄` using `(rr _ _ _).symm.trans (e₂.trans (map_mul _ _ _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv'` using `isUnit_of_mul_isUnit_left (e₄ ▸ hv)`. Establish `e₃` using `Φ.G.left.basicOpen_of_isUnit hv'`. Rewrite using `[Scheme.basicOpen_mul, Φ.E.B.left.basicOpen_of_isUnit (Units.isUnit _), inf_eq_left.2 (Φ.E.B.left.basicOpen_le c), Scheme.preimage_basicOpen, ← e₃]`. Use `erw [Scheme.basicOpen_res]`. Conclude with `inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_res {α : Φ.E.X} {φ φ₀ : (Φ.H 1).Sec} (hφ : Φ.Pure α φ) (hφ₀ : Φ.Pure 0 φ₀)
     {V W : Φ.E.B.left.Opens} (hV : Φ.D.q.left ⁻¹ᵁ V ≤ Out.nonzeroLocus φ₀) (hW : IsAffineOpen W)
@@ -134,13 +134,13 @@ theorem ratio_res {α : Φ.E.X} {φ φ₀ : (Φ.H 1).Sec} (hφ : Φ.Pure α φ) 
     exact inf_le_right
 
 /- English proof (translation)
-Rewrite using `[← hW.iSup_basicOpen_eq_self_iff]`. Use `le_antisymm (iSup_le fun a => Φ.E.B.left.basicOpen_le _) ?_` and prove the remaining obligations. Use `set U : Φ.E.B.left.Opens := ⨆ a : {a : Γ(Φ.E.B.left, W) | (Φ.D.q.left.app W).hom a * mono Φ.D (Φ.ch l) W (h.trans (Φ.le l)) (Multiplicative.ofAdd α) ∈ S}, Φ.E.B.left.basicOpen (a : Γ(Φ.E.B.left, W)) with hU`. Assume the negation of the conclusion as `hn`. Use `Φ.E.isAbelian.proper` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: JacobsonSpace Φ.E.B.left` using `LocallyOfFiniteType.jacobsonSpace Φ.E.B.hom`. Establish `hne : ((W : Set Φ.E.B.left) ∩ (U : Set Φ.E.B.left)ᶜ).Nonempty`. Take `⟨y, hy, hy'⟩` from `Set.not_subset.1 hn`. Conclude with `⟨y, hy, hy'⟩`. Take `⟨b, ⟨hbW, hbU⟩, hb⟩` from `nonempty_inter_closedPoints hne (W.isOpen.isLocallyClosed.inter U.isOpen.isClosed_compl.isLocallyClosed)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxb⟩` from `(GlobalTheory.TorsLift.points_lift k Φ.E Φ.G Φ.D 1 le_rfl).1 (Over.homMk (pointOfClosedPoint Φ.E.B.hom b hb) (pointOfClosedPoint_comp Φ.E.B.hom b hb))`. Take `⟨φ, hφ, hxφ⟩` from `hx x`. Take `⟨r, hr, -⟩` from `GlobalTheory.SecRatio.existsUnique_isRatio (Φ.H_isLB 1) φ φ₀ _ hV`. Take `⟨a, ha, ha'⟩` from `ratio_res Φ hφ hφ₀ hV hW hWV l h hr`. Set `p : Sp k` to `IsLocalRing.closedPoint k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : Φ.D.q.left (x.left p) = b` using `(Scheme.Hom.comp_apply x.left Φ.D.q.left p).symm.trans ((congrArg (fun z => z.left p) hxb).trans (pointOfClosedPoint_apply Φ.E.B.hom b hb p))`. Establish `h1 : x.left p ∈ Φ.D.q.left ⁻¹ᵁ Φ.E.B.left.basicOpen a` using `ha' ⟨show Φ.D.q.left (x.left p) ∈ W from hq ▸ hbW, hxφ (show p ∈ ⊤ from trivial)⟩`. Establish `h2 : b ∈ Φ.E.B.left.basicOpen a` using `hq ▸ h1`. Conclude with `hbU (TopologicalSpace.Opens.mem_iSup.2 ⟨⟨a, show _ ∈ S from ha ▸ hS φ r hφ hr⟩, h2⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_eq_top [IsAlgClosed k] {α : Φ.E.X} {φ₀ : (Φ.H 1).Sec} (hφ₀ : Φ.Pure 0 φ₀)
     {V W : Φ.E.B.left.Opens} (hV : Φ.D.q.left ⁻¹ᵁ V ≤ Out.nonzeroLocus φ₀) (hW : IsAffineOpen W)
@@ -199,25 +199,21 @@ def satur {C C' : Type} [CommRing C] [CommRing C'] (σ : C →+* C') (F : C) (R 
     exact ⟨n, -r, R.neg_mem hr, by rw [map_neg, ← e, mul_neg]⟩
 
 /- English proof (translation)
-Introduce `k _ _ Φ I e φ₀ V hV hφ₀ hVφ hx R h0 hR`. Rewrite using `[eq_top_iff]`. Introduce `s _`. Set `J : Ideal Γ(Φ.E.B.left, V)` to `{ carrier := {a | (Φ.D.q.left.app V).hom a * s ∈ R} zero_mem' := by show _ ∈ R`. Rewrite using `[map_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `R.zero_mem`. Use the proof step `add_mem' := fun {a b} ha hb => by show _ ∈ R`. Rewrite using `[map_add, add_mul]`. Conclude with `R.add_mem ha hb`. Use the proof step `smul_mem' := fun c a ha => by show _ ∈ R`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[smul_eq_mul, map_mul, _root_.mul_assoc]`. Conclude with `R.mul_mem (h0 c) ha }`. It suffices to establish `hJ : J = ⊤ by`. Establish `h1 : (Φ.D.q.left.app V).hom 1 * s ∈ R` using `(hJ.ge (Submodule.mem_top : (1 : Γ(Φ.E.B.left, V)) ∈ ⊤) :)`. Rewrite `h1` using `[map_one, _root_.one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.span_eq J, ← hV.iSup_basicOpen_eq_self_iff]`. Use `le_antisymm (iSup_le fun a => Φ.E.B.left.basicOpen_le _) fun b hb => ?_` and prove the remaining obligations. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 (Φ.isLB.cover.ge (show b ∈ ⊤ from trivial))`. Take `⟨f, hfl, hbf⟩` from `hV.exists_basicOpen_le ⟨b, hl⟩ hb`. Establish `hW` using `hV.basicOpen f`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hWV` using `Φ.E.B.left.basicOpen_le f`. Set `σ` to `resG _ (Φ.D.q.left.preimage_mono hWV)`. Set `F` to `(Φ.D.q.left.app V).hom f`. Establish `hS : satur σ F R (h0 f) = ⊤`. Use `subring_eq_top (Φ.D.coord (Φ.ch l) _ hW (hfl.trans (Φ.le l))) e _ (fun a => ?_) fun i => ⟨span_eq_top Φ hφ₀ hVφ hW hWV l hfl (hx _) _ fun φ r hφ hr => ⟨0, r, hR i φ r (Or.inl hφ) hr, by rw [pow_zero, _root_.one_mul]⟩, span_eq_top Φ hφ₀ hVφ hW hWV l hfl (hx _) _ fun φ r hφ hr => ⟨ …` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hV.isLocalization_basicOpen f` as an intermediate fact. Take `⟨⟨a', _, n, rfl⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers f) a`. Use `⟨n, _, h0 a', ?_⟩` and prove the remaining obligations. Establish `ha' : a * resG _ hWV (f ^ n) = resG _ hWV a'` using `ha`. Express the relevant statement in the definitionally equal form `resG _ _ _ ^ n * _ = resG _ _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[rapp _ hWV, rapp _ hWV, ← ha', map_mul, map_pow, map_pow, mul_comm]`. Take `⟨n, r, hr, hnr⟩ : σ s ∈ satur σ F R (h0 f)` from `hS.ge (Subring.mem_top _)`. Use `Φ.D.q_affine` as an intermediate fact. Establish `hz : resG _ (Φ.G.left.basicOpen_le F) (F ^ n * s - r) = 0`. Establish `hle : Φ.G.left.basicOpen F ≤ Φ.D.q.left ⁻¹ᵁ Φ.E.B.left.basicOpen f` using `(Scheme.preimage_basicOpen _ _).ge`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: σ (F ^ n * s - r) = 0` using `by rw [map_sub, map_mul, map_pow, hnr, sub_self]`. Rewrite using `[← rr (Φ.D.q.left.preimage_mono hWV) hle]`. Conclude with `(congrArg (resG _ hle) this).trans (map_zero _)`. Take `⟨m, hm⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen Φ.G.left (hV.preimage Φ.D.q.left) (F ^ n * s - r) F hz`. Establish `hmem : f ^ (m + n + 1) ∈ J` using `by show _ ∈ R`.
-
-Establish `: F ^ (m + n + 1) * s = F ^ (m + 1) * r` using `by linear_combination F * hm`. Rewrite using `[map_pow, this]`. Conclude with `R.mul_mem (R.pow_mem (h0 f) _) hr`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.basicOpen_pow _ _ (Nat.succ_pos _)]`.
-
-Conclude with `hbf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratios_generate : (∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (I : Type) (e : Module.Basis I ℤ Φ.E.X) (φ₀ : (Φ.H 1).Sec) (V : Φ.E.B.left.Opens), IsAffineOpen V → Φ.Pure 0 φ₀ → Φ.D.q.left ⁻¹ᵁ V ≤ Out.nonzeroLocus φ₀ → (∀ (α : Φ.E.X) (x : Φ.Pt), ∃ φ : (Φ.H 1).Sec, Φ.Pure α φ ∧ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus φ) → ∀ R : Subring Γ(Φ.G.left, Φ.D.q.left ⁻¹ᵁ V), (∀ a, (Φ.D.q.left.app V).hom a ∈ R) → (∀ i (φ : (Φ.H 1).Sec) r, (Φ.Pure (e i) φ ∨ Φ.Pure (-e i) φ) → IsRatio φ φ₀ _ r → r ∈ R) → R = ⊤) := by
   intro k _ _ Φ I e φ₀ V hV hφ₀ hVφ hx R h0 hR

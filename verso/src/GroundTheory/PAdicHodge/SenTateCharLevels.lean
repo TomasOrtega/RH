@@ -22,13 +22,11 @@ variable (K η) in
 def artinLevel (n : ℕ) : ℕ := sInf {k | ¬ artinImage K η n ≤ unitsOneAdd p (k + 1)}
 
 /- English proof (translation)
-Establish `hne : {k | ¬ artinImage K η n ≤ unitsOneAdd p (k + 1)}.Nonempty`. Take `⟨a, ha1⟩` from `(Subgroup.ne_bot_iff_exists_ne_one).1 h`. Take `⟨s, -, hs'⟩` from `exists_level (p := p) (a := (a : ℤ_[p]ˣ)) (fun h' => ha1 (Subtype.ext h'))`. Conclude with `⟨s, fun hle => hs' (hle a.2)⟩`. Establish `hmem` using `Nat.sInf_mem hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_eq_succ_pred (artinLevel K η n) with h0 | h0` into its components or cases. Rewrite using `[h0, unitsOneAdd_zero]`. Conclude with `le_top`. Establish `hlt : Nat.pred (artinLevel K η n) < artinLevel K η n` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.notMem_of_lt_sInf hlt` as an intermediate fact. Simplify using `only [Set.mem_ofPred_eq, not_not] at this`. Rewrite using `[h0]`. Conclude with `this`. Establish `hmem' : ¬ artinImage K η n ≤ unitsOneAdd p (artinLevel K η n + 1)` using `hmem`.
-
-Conclude with `SetLike.not_le_iff_exists.1 hmem'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem artinLevel_spec {n : ℕ} (h : artinImage K η n ≠ ⊥) :
     artinImage K η n ≤ unitsOneAdd p (artinLevel K η n) ∧
@@ -50,9 +48,7 @@ theorem artinLevel_spec {n : ℕ} (h : artinImage K η n ≠ ⊥) :
     exact SetLike.not_le_iff_exists.1 hmem'
 
 /- English proof (translation)
-Introduce `n n' hnn'`. Take `⟨-, a, ha, ha'⟩` from `artinLevel_spec (hA n')`. Establish `h1` using `(artinLevel_spec (hA n)).1 (artinImage_antitone η hnn' ha)`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
-
-Conclude with `ha' (unitsOneAdd_antitone (by omega) h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem artinLevel_mono (hA : ∀ n, artinImage K η n ≠ ⊥) : Monotone (artinLevel K η) := by
   intro n n' hnn'
@@ -63,13 +59,11 @@ theorem artinLevel_mono (hA : ∀ n, artinImage K η n ≠ ⊥) : Monotone (arti
   exact ha' (unitsOneAdd_antitone (by omega) h1)
 
 /- English proof (translation)
-Establish `heq` using `artinImage_add_eq_map_pow hη hpow`. Take `⟨hle, a, ha, ha'⟩` from `artinLevel_spec (hA n)`. Take `⟨hle', b, hb, hb'⟩` from `artinLevel_spec (hA (n + e))`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hap : a ^ p ∈ artinImage K η (n + e)` using `by rw [heq]; exact ⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hap' : a ^ p ∉ unitsOneAdd p (artinLevel K η n + 2)` using `fun h => ha' (((pow_prime_mem_iff h2 (hle ha)).2).1 h)`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Conclude with `hap' (unitsOneAdd_antitone (by omega) (hle' hap))`. Establish `hle2 : artinImage K η (n + e) ≤ unitsOneAdd p (artinLevel K η n + 1)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[heq]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `(pow_prime_mem_iff h2 (hle hc)).1`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
-
-Conclude with `hb' (unitsOneAdd_antitone (by omega) (hle2 hb))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem artinLevel_add (hη : Continuous η) (hA : ∀ n, artinImage K η n ≠ ⊥) {n e : ℕ}
     (h2 : 2 ≤ artinLevel K η n)
@@ -96,11 +90,9 @@ theorem artinLevel_add (hη : Continuous η) (hA : ∀ n, artinImage K η n ≠ 
     exact hb' (unitsOneAdd_antitone (by omega) (hle2 hb))
 
 /- English proof (translation)
-Take `⟨hle, a, ha, ha'⟩` from `artinLevel_spec hA`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le (hle.trans (unitsOneAdd_antitone (min_le_left _ _))) (unitsOneAdd_antitone (min_le_right _ _))`. Introduce `b hb`. Break down `le_total k (artinLevel K η n) with hk | hk` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[min_eq_right hk]`. Conclude with `Subgroup.mem_sup_right hb`. Rewrite `hb` using `[min_eq_left hk]`. Take `⟨j, hj⟩` from `exists_mul_inv_pow_mem h2 (hle ha) ha' hb k`. Establish `e : b = a ^ j * (b * (a ^ j)⁻¹)` using `by rw [mul_comm, inv_mul_cancel_right]`.
-
-Rewrite using `[e]`. Conclude with `Subgroup.mul_mem_sup (pow_mem ha j) hj`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artinImage_sup_unitsOneAdd {n : ℕ} (hA : artinImage K η n ≠ ⊥) (h2 : 2 ≤ artinLevel K η n)
     (k : ℕ) : artinImage K η n ⊔ unitsOneAdd p k = unitsOneAdd p (min (artinLevel K η n) k) := by
@@ -119,7 +111,7 @@ theorem artinImage_sup_unitsOneAdd {n : ℕ} (hA : artinImage K η n ≠ ⊥) (h
       exact Subgroup.mul_mem_sup (pow_mem ha j) hj
 
 /- English proof (translation)
-Rewrite using `[restrictNormalHom_mem_upperRamificationGroup_iff hη, artinImage_sup_unitsOneAdd hA h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictNormalHom_mem_upperRamificationGroup_iff_level (hη : Continuous η) {k n : ℕ}
     (hA : artinImage K η n ≠ ⊥) (h2 : 2 ≤ artinLevel K η n)
@@ -130,11 +122,11 @@ theorem restrictNormalHom_mem_upperRamificationGroup_iff_level (hη : Continuous
   rw [restrictNormalHom_mem_upperRamificationGroup_iff hη, artinImage_sup_unitsOneAdd hA h2]
 
 /- English proof (translation)
-Use extensionality with `g`. Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := charTower η k) (E := PadicAlgCl p) g`. Rewrite using `[restrictNormalHom_mem_upperRamificationGroup_iff_level hη hA h2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨σ, h, rfl⟩`. Introduce and unpack `⟨σ', hσ', heq⟩`. Establish `h1 : AlgEquiv.restrictNormalHom (charTower η k) (σ'⁻¹ * σ) = 1`. Rewrite using `[map_mul, map_inv, heq, inv_mul_cancel]`. Establish `h2'` using `(restrictNormalHom_charTower_eq_one_iff hη k _).1 h1`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : η σ = η σ' * η (σ'⁻¹ * σ)` using `by rw [map_mul, map_inv, mul_inv_cancel_left]`. Rewrite using `[e]`. Conclude with `mul_mem hσ' (unitsOneAdd_antitone (min_le_right _ _) h2')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperRamificationGroup_charTower_eq_map (hη : Continuous η) {k n : ℕ}
     (hA : artinImage K η n ≠ ⊥) (h2 : 2 ≤ artinLevel K η n)
@@ -160,7 +152,7 @@ theorem upperRamificationGroup_charTower_eq_map (hη : Continuous η) {k n : ℕ
 omit [FiniteDimensional ℚ_[p] K] in
 
 /- English proof (translation)
-Rewrite using `[charTowerGal, charTowerGal, Subgroup.relIndex_comap, Subgroup.map_comap_eq, ← Subgroup.inf_relIndex_right, inf_comm η.range, ← inf_assoc, inf_eq_left.2 (unitsOneAdd_antitone hst)]`. Establish `h` using `relIndex_unitsOneAdd_inf hs η.range haR ha ha' (t - s)`. Rewrite `h` using `[Nat.add_sub_cancel' hst]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem relIndex_charTowerGal {s t : ℕ} (hs : 2 ≤ s) (hst : s ≤ t) {a : ℤ_[p]ˣ} (haR : a ∈ η.range)
     (ha : a ∈ unitsOneAdd p s) (ha' : a ∉ unitsOneAdd p (s + 1)) :
@@ -172,7 +164,7 @@ theorem relIndex_charTowerGal {s t : ℕ} (hs : 2 ≤ s) (hst : s ≤ t) {a : �
   rwa [Nat.add_sub_cancel' hst] at h
 
 /- English proof (translation)
-Establish `hmono` using `artinLevel_mono hA hn'j`. Establish `h2j : 2 ≤ artinLevel K η j` using `h2.trans hmono`. Rewrite using `[upperRamificationGroup_charTower_eq_map hη (hA j) h2j, upperRamificationGroup_charTower_eq_map hη (hA n') h2, Subgroup.relIndex_map_map, (charTower η k).restrictNormalHom_ker, fixingSubgroup_charTower hη, min_eq_left hjk, min_eq_left (hmono.trans hjk), sup_eq_left.2 (charTowerGa …`. Take `⟨hle, a, ha, ha'⟩` from `artinLevel_spec (hA n')`. Conclude with `relIndex_charTowerGal h2 hmono (Subgroup.map_le_range η _ ha) (hle ha) ha'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem relIndex_upperRamificationGroup_charTower (hη : Continuous η)
     (hA : ∀ n, artinImage K η n ≠ ⊥) {k n' j : ℕ} (hn'j : n' ≤ j) (h2 : 2 ≤ artinLevel K η n')
@@ -192,7 +184,7 @@ theorem relIndex_upperRamificationGroup_charTower (hη : Continuous η)
   exact relIndex_charTowerGal h2 hmono (Subgroup.map_le_range η _ ha) (hle ha) ha'
 
 /- English proof (translation)
-Rewrite using `[upperRamificationGroup_charTower_eq_map hη (hA n') h2, min_eq_left hk, ← Subgroup.relIndex_bot_left, ← Subgroup.relIndex_comap, MonoidHom.comap_bot, (charTower η k).restrictNormalHom_ker, fixingSubgroup_charTower hη]`. Take `⟨hle, a, ha, ha'⟩` from `artinLevel_spec (hA n')`. Conclude with `relIndex_charTowerGal h2 hk (Subgroup.map_le_range η _ ha) (hle ha) ha'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_upperRamificationGroup_charTower (hη : Continuous η)
     (hA : ∀ n, artinImage K η n ≠ ⊥) {k n' : ℕ} (h2 : 2 ≤ artinLevel K η n')
@@ -206,13 +198,13 @@ theorem card_upperRamificationGroup_charTower (hη : Continuous η)
   exact relIndex_charTowerGal h2 hk (Subgroup.map_le_range η _ ha) (hle ha) ha'
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[Finset.sum_Ioc_succ_top (Nat.zero_le N), ← ih, ← intervalIntegral.integral_add_adjacent_intervals (hint 0 N) (hint N ((N + 1 : ℕ) : ℝ))]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hc : ∫ w in (N : ℝ)..((N + 1 : ℕ) : ℝ), f w = ∫ _ in (N : ℝ)..((N + 1 : ℕ) : ℝ), f ((N + 1 : ℕ) : ℝ)`. Use `intervalIntegral.integral_congr_ae (Filter.Eventually.of_forall fun w hw => ?_)` and prove the remaining obligations. Establish `hle : (N : ℝ) ≤ ((N + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.le_succ N`. Rewrite `hw` using `[Set.uIoc_of_le hle]`. Rewrite using `[hf w]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `: ⌈w⌉ = ((N + 1 : ℕ) : ℤ)`. Rewrite using `[Int.ceil_eq_iff]`. Move the coercions through the operations in `at hw ⊢`. Apply the tactic sequence `constructor <;> linarith [hw.1, hw.2]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Use `norm_cast`. Rewrite `hc`, the goal using `[Nat.cast_succ]`. Rewrite using `[hc, intervalIntegral.integral_const, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_eq_sum_of_eq_ceil {f : ℝ → ℝ} (hf : ∀ w, f w = f (⌈w⌉ : ℝ))
     (hint : ∀ a b : ℝ, IntervalIntegrable f MeasureTheory.volume a b) (N : ℕ) :
@@ -241,7 +233,7 @@ theorem integral_eq_sum_of_eq_ceil {f : ℝ → ℝ} (hf : ∀ w, f w = f (⌈w�
     ring
 
 /- English proof (translation)
-The claim follows from `| 0, _ => by simp | q + 1, hq => by rw [show e * (q + 1) = e * q + e by ring] at hq ⊢ have ih := sum_zpow_block_le μ hμ hper hN hb q (by omega) have hiter : ∀ i j, n₀ ≤ j → μ (j + e * i) = μ j + i := by intro i induction i with | zero => simp | succ i ihi => intro j hj rw [mul_ad …`.
+A detailed English derivation is pending.
 -/
 theorem sum_zpow_block_le (μ : ℕ → ℕ) (hμ : Monotone μ) {e n₀ : ℕ}
     (hper : ∀ n, n₀ ≤ n → μ (n + e) = μ n + 1) {N k : ℕ} (hN : k + 1 ≤ μ (N + 1)) {b : ℝ}
@@ -284,7 +276,7 @@ theorem sum_zpow_block_le (μ : ℕ → ℕ) (hμ : Monotone μ) {e n₀ : ℕ}
           omega
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [mul_add, mul_one, ← add_assoc, hper _ (by omega), ih, add_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem artinLevel_add_mul {n₀ e : ℕ}
     (hper : ∀ n, n₀ ≤ n → artinLevel K η (n + e) = artinLevel K η n + 1) (i : ℕ) :
@@ -294,13 +286,13 @@ theorem artinLevel_add_mul {n₀ e : ℕ}
   | succ i ih => rw [mul_add, mul_one, ← add_assoc, hper _ (by omega), ih, add_assoc]
 
 /- English proof (translation)
-Establish `hmono` using `artinLevel_mono hA`. Establish `hiter` using `artinLevel_add_mul hper`. Establish `hex : ∃ n, k < artinLevel K η n` using `⟨n₀ + e * (k - artinLevel K η n₀ + 1), by rw [hiter]; omega⟩`. Establish `hF : k < artinLevel K η (Nat.find hex)` using `Nat.find_spec hex`. Establish `hF0 : Nat.find hex ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hF` using `[h0]`. Use `hmono (Nat.zero_le n₀)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨N, hNF⟩ : ∃ N, N + 1 = Nat.find hex` from `⟨Nat.find hex - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use `⟨N, ?_, by rw [hNF]; exact hF, ?_⟩` and prove the remaining obligations. Use `Nat.find_min hex (show N < Nat.find hex by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hlt push Not at hlt`. Use `hmono (show Nat.find hex ≤ n₀ + e * (k - artinLevel K η n₀) by omega)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[hiter]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_last_artinLevel_le (hA : ∀ n, artinImage K η n ≠ ⊥) {n₀ e : ℕ}
     (hper : ∀ n, n₀ ≤ n → artinLevel K η (n + e) = artinLevel K η n + 1) {k : ℕ}
@@ -329,25 +321,23 @@ theorem exists_last_artinLevel_le (hA : ∀ n, artinImage K η n ≠ ⊥) {n₀ 
     omega
 
 /- English proof (translation)
-Establish `hmono` using `artinLevel_mono hA`. Establish `hn'N : n' ≤ N` using `le_trans hn' (le_trans (Nat.le_add_right _ _) hNq)`. Establish `hsk : artinLevel K η n' ≤ k` using `(hmono hn'N).trans hNk`. Establish `hn'0 : upperRamificationGroup K (charTower η (k + 1)) n' ≤ lowerRamificationGroup K (charTower η (k + 1)) 0`. Rewrite using `[← upperRamificationGroup_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `upperRamificationGroup_antitone K _ (Nat.cast_nonneg n')`. Take `⟨c, hc⟩ : ∃ c, (upperRamificationGroup K (charTower η (k + 1)) n').relIndex (lowerRamificationGroup K (charTower η (k + 1)) 0) = c` from `⟨_, rfl⟩`. Establish `hE : ramificationIndex K (charTower η (k + 1)) = c * p ^ (k + 1 - artinLevel K η n')`. Rewrite using `[← card_lowerRamificationGroup_zero, ← Subgroup.relIndex_bot_left, ← Subgroup.relIndex_mul_relIndex _ _ _ bot_le hn'0, Subgroup.relIndex_bot_left, card_upperRamificationGroup_charTower hη hA h2 (by omega), hc, mul_comm]`. Establish `hψsum : herbrandPsi K (charTower η (k + 1)) N = ∑ j ∈ Finset.Ioc 0 N, (upperIndex K (charTower η (k + 1)) j : ℝ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[herbrandPsi_eq_integral (Nat.cast_nonneg N)]`. Use `integral_eq_sum_of_eq_ceil (fun w => ?_) (fun a b => intervalIntegrable_upperIndex a b) N` and prove the remaining obligations. Simplify using `only [upperIndex]`. Rewrite using `[upperRamificationGroup_eq_ceil (L := charTower η (k + 1)) w]`. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast hp.out.one_lt.le`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hterm : ∀ j ∈ Finset.Ioc (N - e * (k - artinLevel K η n₀)) N, (upperIndex K (charTower η (k + 1)) j : ℝ) = (c : ℝ) * (p : ℝ) ^ (-(artinLevel K η n' : ℤ)) * (p : ℝ) ^ (artinLevel K η j : ℤ)`. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_Ioc]`. Establish `hn'j : n' ≤ j` using `by omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjk : artinLevel K η j ≤ k + 1` using `by have := hmono hj.2; omega`. Establish `hsj : artinLevel K η n' ≤ artinLevel K η j` using `hmono hn'j`. Rewrite using `[upperIndex, ← Subgroup.relIndex_mul_relIndex _ _ _ (upperRamificationGroup_antitone K _ (by exact_mod_cast hn'j)) hn'0, relIndex_upperRamificationGroup_charTower hη hA hn'j h2 hjk, hc]`. Use `push_cast`. Rewrite using `[← zpow_natCast, Nat.cast_sub hsj, zpow_sub₀ hp0.ne', zpow_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hψlow : (c : ℝ) * (p : ℝ) ^ (-(artinLevel K η n' : ℤ)) * ((e : ℝ) * ∑ i ∈ Finset.range (k - artinLevel K η n₀), (p : ℝ) ^ ((k : ℤ) - i)) ≤ herbrandPsi K (charTower η (k + 1)) N`. Rewrite using `[hψsum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j hj => (hterm j hj).symm`. Use `_ ≤ ∑ j ∈ Finset.Ioc 0 N, (upperIndex K (charTower η (k + 1)) j : ℝ) := Finset.sum_le_sum_of_subset_of_nonneg (Finset.Ioc_subset_Ioc_left (Nat.zero_le _)) (fun _ _ _ => Nat.cast_nonneg _)`. Establish `hE0 : (0 : ℝ) < ramificationIndex K (charTower η (k + 1))`. Conclude with `ramificationIndex_pos K (charTower η (k + 1))` after adjusting the coercions. Rewrite using `[le_div_iff₀ hE0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `le_trans (le_of_eq ?_) hψlow` and prove the remaining obligations. Rewrite using `[hE]`. Use `push_cast`. Establish `hsum : ∑ i ∈ Finset.range (k - artinLevel K η n₀), (p : ℝ) ^ ((k : ℤ) - i) = (p : ℝ) ^ (k : ℤ) * ∑ i ∈ Finset.range (k - artinLevel K η n₀), (p : ℝ) ^ (-(i : ℤ))`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ hp0.ne']`. Put the polynomial expressions in normal form. Rewrite using `[hsum, ← zpow_natCast (p : ℝ) (k + 1 - artinLevel K η n'), Nat.cast_sub (by omega), zpow_sub₀ hp0.ne', zpow_neg]`. Use `push_cast`.
-
-Rewrite using `[zpow_add₀ hp0.ne', zpow_one]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem le_herbrandPsi_div_ramificationIndex (hη : Continuous η) (hA : ∀ n, artinImage K η n ≠ ⊥)
     {n' n₀ e : ℕ} (hn' : n' ≤ n₀) (h2 : 2 ≤ artinLevel K η n')
@@ -430,21 +420,17 @@ theorem le_herbrandPsi_div_ramificationIndex (hη : Continuous η) (hA : ∀ n, 
   field_simp
 
 /- English proof (translation)
-Establish `: FiniteDimensional K (charTower η (k + 1))` using `finiteDimensional_charTower hη (k + 1)`. Establish `: IsAbelianGalois K (charTower η (k + 1))` using `isAbelianGalois_charTower hη (k + 1)`. Establish `hmono` using `artinLevel_mono hA`. Take `⟨N, hNk, hN1, hNq⟩` from `exists_last_artinLevel_le hA hper hk`. Establish `hn'N : n' ≤ N` using `le_trans hn' (le_trans (Nat.le_add_right _ _) hNq)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2N : 2 ≤ artinLevel K η N` using `h2.trans (hmono hn'N)`. Establish `hσN : AlgEquiv.restrictNormalHom (charTower η (k + 1)) σ ∈ upperRamificationGroup K (charTower η (k + 1)) N`. Rewrite using `[restrictNormalHom_mem_upperRamificationGroup_iff_level hη (hA N) h2N, min_eq_left (by omega)]`. Conclude with `unitsOneAdd_antitone hNk hσ`. Establish `hψ0 : 0 ≤ herbrandPsi K (charTower η (k + 1)) N`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← herbrandPsi_zero (K := K) (L := charTower η (k + 1))]`. Conclude with `herbrandPsi_strictMono.monotone (Nat.cast_nonneg N)`. Take `⟨i, hi⟩ : ∃ i : ℕ, (i : ℤ) = ⌈herbrandPsi K (charTower η (k + 1)) N⌉` from `⟨_, Int.toNat_of_nonneg (Int.ceil_nonneg hψ0)⟩`. Establish `hmem : AlgEquiv.restrictNormalHom (charTower η (k + 1)) σ ∈ lowerRamificationGroup K (charTower η (k + 1)) (i : ℤ)`. Rewrite using `[hi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hσN`. Establish `h1` using `nrm_sub_le_of_mem_lowerRamificationGroup (charTower η (k + 1)) hmem ⟨y, hy⟩`. Use `h1.trans (mul_le_mul_of_nonneg_right ?_ (nrm_nonneg _))` and prove the remaining obligations. Establish `hX` using `le_herbrandPsi_div_ramificationIndex hη hA hn' h2 hper hNk hN1 hNq`. Establish `hu0 : 0 < unifNrm (charTower η (k + 1))` using `unifNrm_pos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : unifNrm (charTower η (k + 1)) < 1` using `unifNrm_lt_one _`. Establish `huE : unifNrm (charTower η (k + 1)) ^ ramificationIndex K (charTower η (k + 1)) = baseUnifNrm K (PadicAlgCl p)` using `unifNrm_pow_ramificationIndex _`. Establish `hE0 : (0 : ℝ) < ramificationIndex K (charTower η (k + 1))`. Conclude with `ramificationIndex_pos K (charTower η (k + 1))` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Use `Real.rpow_le_rpow_of_exponent_ge hu0 hu1.le ?_` and prove the remaining obligations. Establish `: ((⌈herbrandPsi K (charTower η (k + 1)) N⌉ : ℤ) : ℝ) = (i : ℝ)`. Rewrite using `[← hi]`. Use `norm_cast`. Rewrite using `[← this]`.
-
-Conclude with `Int.le_ceil _`. Use `_ = baseUnifNrm K (PadicAlgCl p) ^ (herbrandPsi K (charTower η (k + 1)) N / ramificationIndex K (charTower η (k + 1))) := by`. Rewrite using `[← huE, ← Real.rpow_natCast, ← Real.rpow_mul hu0.le]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
-
-Use `_ ≤ baseUnifNrm K (PadicAlgCl p) ^ ((e : ℝ) / p * ∑ i ∈ Finset.range (k - artinLevel K η n₀), (p : ℝ) ^ (-(i : ℤ))) := Real.rpow_le_rpow_of_exponent_ge baseUnifNrm_pos (by rw [← huE]; exact pow_le_one₀ hu0.le hu1.le) hX`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem nrm_sub_le_of_mem_unitsOneAdd (hη : Continuous η) (hA : ∀ n, artinImage K η n ≠ ⊥)
     {n' n₀ e : ℕ} (hn' : n' ≤ n₀) (h2 : 2 ≤ artinLevel K η n')

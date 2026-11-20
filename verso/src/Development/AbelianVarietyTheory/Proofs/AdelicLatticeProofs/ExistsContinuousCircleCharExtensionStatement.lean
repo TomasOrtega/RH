@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsContinu
 open scoped Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_continuous_circle_char_extension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FExistsContinuousCircleCharExtension.lean&line=22#L22)
 -/

@@ -21,7 +21,7 @@ def gExt (g : ∀ τ : {τ // τ ≠ τ₀}, κ τ.1) (k : κ τ₀) : ∀ τ, �
   fun τ => if h : τ = τ₀ then (by subst h; exact k) else g ⟨τ, h⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Unfold `gRest gExt`. Rewrite using `[dif_neg τ.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gRest_gExt (g : ∀ τ : {τ // τ ≠ τ₀}, κ τ.1) (k : κ τ₀) : gRest τ₀ κ (gExt τ₀ κ g k) = g := by
   funext τ
@@ -29,16 +29,16 @@ theorem gRest_gExt (g : ∀ τ : {τ // τ ≠ τ₀}, κ τ.1) (k : κ τ₀) :
   rw [dif_neg τ.2]
 
 /- English proof (translation)
-Unfold `gExt`. Rewrite using `[dif_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gExt_self (g : ∀ τ : {τ // τ ≠ τ₀}, κ τ.1) (k : κ τ₀) : gExt τ₀ κ g k τ₀ = k := by
   unfold gExt
   rw [dif_pos rfl]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Forms.ten`. Simplify using `only [mvPolynomialProductExtension, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[Finset.sum_eq_single (gRest τ₀ κ g)]`. Rewrite using `[Pi.single_eq_same]`. Conclude with `Fintype.prod_eq_mul_prod_subtype_ne _ τ₀`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g' _ hg'`. Rewrite using `[Pi.single_eq_of_ne hg', map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ten_eq_psi (g : ∀ τ, κ τ) :
     Formalism.L2.Forms.ten (fun τ => b τ (g τ)) = mvPolynomialProductExtension τ₀ κ b (Pi.single (gRest τ₀ κ g) (b τ₀ (g τ₀))) := by
@@ -54,17 +54,15 @@ theorem ten_eq_psi (g : ∀ τ, κ τ) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[tenSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Simplify using `only`. Rewrite using `[ten_eq_psi τ₀ κ b g]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Pi.single (gRest τ₀ κ g) (b τ₀ (g τ₀)), ?_, rfl⟩` and prove the remaining obligations. Introduce `g' _`. Distinguish the cases in `hg : g' = gRest τ₀ κ g`. Substitute `hg` using the available equality. Rewrite using `[Pi.single_eq_same, hΛ]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨g τ₀, rfl⟩`. Rewrite using `[Pi.single_eq_of_ne hg]`. Conclude with `Λ.zero_mem`. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Establish `hsingle : ∀ (g' : ∀ τ : {τ // τ ≠ τ₀}, κ τ.1) (v : MvPolynomial (Fin N × Fin N) ℂ), v ∈ Λ → mvPolynomialProductExtension τ₀ κ b (Pi.single g' v) ∈ tenSpan κ b O`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g' v hv`. Establish `hle : Λ ≤ (tenSpan κ b O).comap (((mvPolynomialProductExtension τ₀ κ b).restrictScalars O).comp (LinearMap.single O (fun _ : (∀ τ : {τ // τ ≠ τ₀}, κ τ.1) => MvPolynomial (Fin N × Fin N) ℂ) g'))`. Rewrite using `[hΛ, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `h1` using `ten_eq_psi τ₀ κ b (gExt τ₀ κ g' k)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[gRest_gExt, gExt_self]`. Use `show mvPolynomialProductExtension τ₀ κ b (Pi.single g' (b τ₀ k)) ∈ tenSpan κ b O`. Rewrite using `[← h1]`. Conclude with `Submodule.subset_span ⟨gExt τ₀ κ g' k, rfl⟩`. Conclude with `hle hv`.
-
-Establish `hsum : h = ∑ g', Pi.single g' (h g')` using `(Finset.univ_sum_single h).symm`. Use `show mvPolynomialProductExtension τ₀ κ b h ∈ tenSpan κ b O`. Rewrite using `[hsum, map_sum]`. Conclude with `Submodule.sum_mem _ fun g' _ => hsingle g' (h g') (hh g' (Set.mem_univ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tenSpan_eq_psi (Λ : Submodule O (MvPolynomial (Fin N × Fin N) ℂ))
     (hΛ : Λ = Submodule.span O (Set.range (b τ₀))) :
@@ -104,13 +102,13 @@ theorem tenSpan_eq_psi (Λ : Submodule O (MvPolynomial (Fin N × Fin N) ℂ))
     exact Submodule.sum_mem _ fun g' _ => hsingle g' (h g') (hh g' (Set.mem_univ _))
 
 /- English proof (translation)
-Establish `hren : ∀ (τ : ι) (q : MvPolynomial (Fin N × Fin N) ℂ), Formalism.L2.Forms.subP o (rename (Prod.mk τ) q) = rename (Prod.mk τ) (Formalism.GradedWeylDivisibility.rowAct ℂ (o τ) q)`. Introduce `τ q`. Establish `h1 : (Formalism.L2.Forms.subP o).comp (rename (Prod.mk τ)) = (rename (Prod.mk τ)).comp (Formalism.GradedWeylDivisibility.rowAct ℂ (o τ))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Formalism.L2.Forms.subP, Formalism.GradedWeylDivisibility.rowAct, rename_X, map_sum]`. Conclude with `AlgHom.congr_fun h1 q`. Establish `hone : ∀ q : MvPolynomial (Fin N × Fin N) ℂ, Formalism.GradedWeylDivisibility.rowAct ℂ (1 : Matrix (Fin N) (Fin N) ℂ) q = q`. Introduce `q`. Establish `h1 : Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `N) (1 : Matrix (Fin N) (Fin N) ℂ) = AlgHom.id ℂ _ := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply]`. Rewrite using `[h1, AlgHom.id_apply]`. Simplify using `only [mvPolynomialProductExtension, LinearMap.coe_mk, AddHom.coe_mk, map_sum, map_mul, map_prod, hren]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[ho τ.1 τ.2, hone]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_subP (o : ι → Matrix (Fin N) (Fin N) ℂ) (ho : ∀ τ, τ ≠ τ₀ → o τ = 1)
     (h : (∀ τ : {τ // τ ≠ τ₀}, κ τ.1) → MvPolynomial (Fin N × Fin N) ℂ) :
@@ -137,11 +135,11 @@ theorem psi_subP (o : ι → Matrix (Fin N) (Fin N) ℂ) (ho : ∀ τ, τ ≠ τ
   rw [ho τ.1 τ.2, hone]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨h, hh, rfl⟩, rfl⟩`. Use `⟨fun g => L (h g), fun g _ => ⟨h g, hh g (Set.mem_univ _), rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hc h).symm`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h', hh', rfl⟩`. Establish `hh'' : ∀ g, ∃ y ∈ Λ, L y = h' g` using `fun g => hh' g (Set.mem_univ _)`. Use `choose h hh hhe using hh''`. Use `⟨mvPolynomialProductExtension τ₀ κ b h, ⟨h, fun g _ => hh g, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show L' (mvPolynomialProductExtension τ₀ κ b h) = mvPolynomialProductExtension τ₀ κ b h'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hc]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Conclude with `hhe g`.
+A detailed English derivation is pending.
 -/
 theorem map_psi_pi (L : MvPolynomial (Fin N × Fin N) ℂ →ₗ[O] MvPolynomial (Fin N × Fin N) ℂ)
     (L' : MvPolynomial (ι × Fin N × Fin N) ℂ →ₗ[O] MvPolynomial (ι × Fin N × Fin N) ℂ)
@@ -171,11 +169,9 @@ abbrev scO (σ : Type) (c : ℂ) : MvPolynomial σ ℂ →ₗ[O] MvPolynomial σ
   (c • LinearMap.id : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ ℂ).restrictScalars O
 
 /- English proof (translation)
-Establish `hrow : (tenSpan κ b O).map ((Formalism.L2.Forms.subP o).toLinearMap.restrictScalars O) = (Submodule.pi Set.univ fun _ : (∀ τ : {τ // τ ≠ τ₀}, κ τ.1) => Λ.map (mvPolynomialRowLinearMap O (o τ₀))).map ((mvPolynomialProductExtension τ₀ κ b).restrictScalars O)`. Rewrite using `[tenSpan_eq_psi τ₀ κ b O Λ hΛ]`. Conclude with `map_psi_pi τ₀ κ b O (mvPolynomialRowLinearMap O (o τ₀)) ((Formalism.L2.Forms.subP o).toLinearMap.restrictScalars O) (fun h => psi_subP τ₀ κ b o ho h) Λ`. Establish `hsc : ∀ (c : ℂ) (Λ' : Submodule O (MvPolynomial (Fin N × Fin N) ℂ)), ((Submodule.pi Set.univ fun _ : (∀ τ : {τ // τ ≠ τ₀}, κ τ.1) => Λ').map ((mvPolynomialProductExtension τ₀ κ b).restrictScalars O)).map (scO O _ c) = (Submodule.pi Set.univ fun _ : (∀ τ : {τ // τ ≠ τ₀}, κ τ.1) => …`. Introduce `c Λ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_psi_pi τ₀ κ b O (mvPolynomialScalingMap O c) (scO O _ c) (fun h => ?_) Λ'` and prove the remaining obligations. Use `show c • mvPolynomialProductExtension τ₀ κ b h = mvPolynomialProductExtension τ₀ κ b (fun g => c • h g)`. Rewrite using `[← map_smul]`. Both sides reduce to the same expression. Rewrite using `[hrow, hsc, tenSpan_eq_psi τ₀ κ b O Λ hΛ, hsc]`.
-
-Conclude with `length_quot_map_positionMap τ₀ κ b hb O _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_len (hb : ∀ τ, τ ≠ τ₀ → LinearIndependent ℂ (b τ)) (Λ : Submodule O (MvPolynomial (Fin N × Fin N) ℂ))
     (hΛ : Λ = Submodule.span O (Set.range (b τ₀))) (o : ι → Matrix (Fin N) (Fin N) ℂ) (ho : ∀ τ, τ ≠ τ₀ → o τ = 1)

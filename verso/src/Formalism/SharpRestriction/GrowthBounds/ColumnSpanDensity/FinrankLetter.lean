@@ -7,11 +7,11 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames
 
 /- English proof (translation)
-Unfold `hwt`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ j`. Rewrite using `[Fin.cons_succ, if_neg (Fin.succ_ne_zero j)]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [Fin.succ_last]`. Consider the case `cast j`. Rewrite using `[Fin.snoc_castSucc, if_neg]`. Introduce `h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hwt_apply (m A B : ℕ) (i : Fin (m + 2)) :
     hwt m A B i = if i = 0 then (A : ℤ) else if i = Fin.last (m + 1) then -(B : ℤ) else 0 := by
@@ -30,11 +30,11 @@ theorem hwt_apply (m A B : ℕ) (i : Fin (m + 2)) :
       omega
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Rewrite using `[Fin.cons_zero, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Consider the case `succ j`. Rewrite using `[Fin.cons_succ]`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [Fin.succ_last]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j`. Rewrite using `[Fin.snoc_castSucc, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -59,7 +59,7 @@ theorem cov_apply (m : ℕ) (d : ℤ) (i : Fin (m + 2)) :
       omega
 
 /- English proof (translation)
-Unfold `dimHar`. Rewrite using `[mul_comm (dimPol k A), mul_comm (dimPol k (A - 1))]`. Simplify using `only [or_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dimHar_comm (k A B : ℕ) : dimHar k A B = dimHar k B A := by
   unfold dimHar
@@ -67,7 +67,7 @@ theorem dimHar_comm (k A B : ℕ) : dimHar k A B = dimHar k B A := by
   simp only [or_comm]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem last_ne_zero' (m : ℕ) : Fin.last (m + 1) ≠ 0 := by
   intro h
@@ -75,9 +75,9 @@ theorem last_ne_zero' (m : ℕ) : Fin.last (m + 1) ≠ 0 := by
   simp at this
 
 /- English proof (translation)
-Establish `h1 : ∏ s : Fin n', (if h : s ∈ TT then f ⟨s, h⟩ else 1) = ∏ s ∈ TT, (if h : s ∈ TT then f ⟨s, h⟩ else 1)`. Use `symm`. Apply `Finset.prod_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `s _ hs`. Rewrite using `[dif_neg hs]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← Finset.prod_attach, Finset.univ_eq_attach]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos s.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_tops {n' : ℕ} (TT : Finset (Fin n')) (f : TT → ℚ) :
     ∏ s : Fin n', (if h : s ∈ TT then f ⟨s, h⟩ else 1) = ∏ s : TT, f s := by
@@ -93,9 +93,9 @@ theorem prod_tops {n' : ℕ} (TT : Finset (Fin n')) (f : TT → ℚ) :
   rw [dif_pos s.2]
 
 /- English proof (translation)
-Introduce `s i j hij`. Unfold `flatW`. Apply the tactic sequence `split_ifs with hs h1 h2 h3 h4 h5 h6 h7 <;> first | omega | skip`. Apply the tactic sequence `all_goals first`. Consider the case `(exfalso subst_vars first`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact absurd (Fin.le_zero_iff.1 hij) (by assumption)`. Consider the case `exact absurd (le_antisymm (Fin.le_last _) hij) (by assumption))`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem flatW_dom {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (A B : TT → ℕ) : IsDominant (flatW (m + 1) A B) := by
   intro s i j hij
@@ -110,21 +110,21 @@ theorem flatW_dom {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (A B : TT → ℕ)
        | exact absurd (le_antisymm (Fin.le_last _) hij) (by assumption))
 
 /- English proof (translation)
-Distinguish the cases in `hs : s ∈ TT`. Rewrite using `[dif_pos hs]`. Unfold `lamAt`. Use `split_ifs with he`. Establish `: flatW (m + 1) A B s = hwt m (A ⟨s, hs⟩) (B ⟨s, hs⟩)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hwt_apply]`. Simplify using `[flatW, hs]`. Rewrite using `[this, weylDim_hwt_eq]`. Establish `: (fun i : Fin (m + 1 + 1) => -flatW (m + 1) A B s i.rev) = hwt m (B ⟨s, hs⟩) (A ⟨s, hs⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hwt_apply]`. Simplify using `only [flatW, hs, dif_pos]`. Distinguish the cases in `h0 : i = 0`. Substitute `h0` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.rev_zero, if_neg (last_ne_zero' m)]`. Simplify using the standard rewrite rules. Distinguish the cases in `hl : i = Fin.last (m + 1)`. Substitute `hl` using the available equality. Rewrite using `[Fin.rev_last]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[last_ne_zero' m]`. Establish `h1 : i.rev ≠ 0`. Introduce `h`. Apply `hl` to reduce the goal to its premises. Rewrite using `[← Fin.rev_rev i, h, Fin.rev_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : i.rev ≠ Fin.last (m + 1)`. Introduce `h`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← Fin.rev_rev i, h, Fin.rev_last]`. Rewrite using `[if_neg h1, if_neg h2, if_neg h0, if_neg hl, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, weylDim_hwt_eq, dimHar_comm]`. Rewrite using `[dif_neg hs]`. Establish `: lamAt (flatW (m + 1) A B) s = fun _ => (0 : ℤ)`. Unfold `lamAt`. Apply the tactic sequence `split_ifs <;> funext i <;> simp [flatW, hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, weylDim_zero]`.
+A detailed English derivation is pending.
 -/
 theorem lamAt_flat {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (A B : TT → ℕ) (s : Fin n') :
     weylDim (m + 2) (lamAt (flatW (m + 1) A B) s) =
@@ -167,7 +167,7 @@ theorem lamAt_flat {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (A B : TT → ℕ
     rw [this, weylDim_zero]
 
 /- English proof (translation)
-Rewrite using `[h3 K n nu hnu]`. Unfold `weylDim`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem finrank_weyl (D : Formalism.BasicNotions.D7) (h3 : Formalism.MainNotions.ColumnSystems.adm3 D) (K : Type) [Field K] [CharZero K] (n : ℕ)
     (nu : Fin n → ℕ) (hnu : Antitone nu) :
@@ -179,23 +179,21 @@ theorem finrank_weyl (D : Formalism.BasicNotions.D7) (h3 : Formalism.MainNotions
   rfl
 
 /- English proof (translation)
-Establish `hq : (Module.finrank K (Formalism.GradedWeylDivisibility.dualWeyl K (m + 1 + 1) (m + 1 + 1) (nuOf (letterWt (m + 1) d vec))) : ℚ) = (dimPol (m + 1) d : ℚ)`. Consider the cases of `vec with`. Consider the case `true`. Establish `hnu : nuOf (letterWt (m + 1) d true) = fun i => if i = 0 then d else 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [nuOf, letterWt, if_true, if_neg (last_ne_zero' m), sub_zero]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hanti : Antitone (nuOf (letterWt (m + 1) d true))`. Rewrite using `[hnu]`. Introduce `i j hij`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only`. Apply the tactic sequence `split_ifs with h1 h2 <;> first | omega | skip`. Conclude with `absurd (Fin.le_zero_iff.1 (h1 ▸ hij)) h2`. Rewrite using `[finrank_weyl D h3 K _ _ hanti, ← weylDim_vec]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `hwt_apply m d 0 i` as an intermediate fact. Unfold `hwt at this`. Simplify using `only [Nat.cast_zero, neg_zero] at this`. Rewrite using `[this, hnu]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h : i = 0 <;> simp [h]`. Consider the case `false`. Establish `hnu : nuOf (letterWt (m + 1) d false) = fun i => if i = Fin.last (m + 1) then 0 else d`. Use function extensionality and compare the values at `i`. Simplify using `only [nuOf, letterWt, Bool.false_eq_true, if_false, if_true]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hanti : Antitone (nuOf (letterWt (m + 1) d false))`. Rewrite using `[hnu]`. Introduce `i j hij`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = Fin.last (m + 1)`. Rewrite using `[if_pos hj]`. Conclude with `Nat.zero_le _`. Establish `hi : i ≠ Fin.last (m + 1)` using `fun h => hj (le_antisymm (Fin.le_last _) (h ▸ hij))`. Rewrite using `[if_neg hj, if_neg hi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[finrank_weyl D h3 K _ _ hanti, ← weylDim_cov]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[cov_apply, hnu]`. Apply the tactic sequence `by_cases h : i = Fin.last (m + 1) <;> simp [h]`.
-
-Conclude with `hq` after adjusting the coercions.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem finrank_letter (D : Formalism.BasicNotions.D7) (h3 : Formalism.MainNotions.ColumnSystems.adm3 D) (K : Type) [Field K] [CharZero K] (m d : ℕ)
     (vec : Bool) :
@@ -244,17 +242,15 @@ theorem finrank_letter (D : Formalism.BasicNotions.D7) (h3 : Formalism.MainNotio
   exact_mod_cast hq
 
 /- English proof (translation)
-Introduce `p n' R m hm TT A B`. Take `⟨m, rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Use `R.charZero` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Unfold `dimHH VHH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[finrank_tensor, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_bool]`. Unfold `hhWt`. Rewrite using `[finrank_letter D h3, finrank_letter D h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ex A s.val = A s` using `by unfold ex; rw [dif_pos s.2]`. Establish `hB : ex B s.val = B s` using `by unfold ex; rw [dif_pos s.2]`. Unfold `hhDeg`. Simplify using `only [if_true, Bool.false_eq_true, if_false, hA, hB]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `mul_comm _ _`. Establish `h` using `hW R.Kf n' (m + 1) (flatW (m + 1) A B) (flatW_dom m A B)`. Establish `h2 : ((dimV R.Kf (flatW (m + 1) A B) : ℕ) : ℚ) = ∏ s : Fin n', weylDim (m + 2) (lamAt (flatW (m + 1) A B) s)`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `weylDim`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [lamAt_flat] at h2`.
-
-Rewrite `h2` using `[prod_tops TT (fun s => (dimHar (m + 1) (A s) (B s) : ℚ))]`. Conclude with `h2` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restDims_of (D : Formalism.BasicNotions.D7) (h3 : Formalism.MainNotions.ColumnSystems.adm3 D) (hW : WeylV) : RestDims := by
   classical

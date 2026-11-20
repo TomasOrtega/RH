@@ -5,11 +5,11 @@ namespace Formalism.CL
 open Finset
 
 /- English proof (translation)
-Unfold `Legendre`. Introduce `p hp m`. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by have := hp.out.one_lt; omega⟩`. Establish `hq : 0 < q` using `by have := hp.out.one_lt; omega`. Establish `key : q * padicValNat (q + 1) m.factorial ≤ m`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `sub_one_mul_padicValNat_factorial (p := q + 1) m`. Rewrite `h` using `[Nat.add_sub_cancel]`. Use linear arithmetic over natural numbers and integers. Establish `hN : (m + padicValNat (q + 1) m.factorial) * q ≤ m * (q + 1)` using `by nlinarith [key]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `try simp only [add_sub_cancel_right]`. Rewrite using `[le_div_iff₀ (by exact_mod_cast hq)]`. Conclude with `hN` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem legendreBound : Legendre := by
   unfold Legendre

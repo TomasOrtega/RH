@@ -7,14 +7,14 @@ open Formalism.DivisionValues (vw lw conjPl)
 namespace Formalism.PairingDivisionLocalBalance
 
 /- English proof (translation)
-Unfold `Formalism.DivisionValues.lw`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lw_nonneg {K : Type} [Field K] [NumberField K] (w : Pl K) : 0 ≤ lw w := by
   unfold Formalism.DivisionValues.lw
   exact div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Use `Formalism.DivisionValues.ValuationRepresentative.vw_int_nonneg w (n : 𝓞 K)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vw_natCast_nonneg {K : Type} [Field K] [NumberField K] [StarRing K] (w : Pl K) (n : ℕ) :
     0 ≤ vw w (n : K) := by
@@ -22,15 +22,15 @@ theorem vw_natCast_nonneg {K : Type} [Field K] [NumberField K] [StarRing K] (w :
   simpa using this
 
 /- English proof (translation)
-Introduce `K _ _ _ _ S c`. Establish `hs : ∀ l ∈ S, (Function.support fun w : Pl K => c l * (lw w * (vw w (l : K) : ℝ))).Finite`. Introduce `l _`. Use `(sum_valuation_nat K l).1.subset ?_` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.mem_support] at hw ⊢`. Conclude with `right_ne_zero_of_mul hw`. Establish `he : (fun w : Pl K => lw w * wt S c w) = fun w => ∑ l ∈ S, c l * (lw w * (vw w (l : K) : ℝ))`. Use function extensionality and compare the values at `w`. Unfold `wt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Use `(Set.Finite.biUnion S.finite_toSet hs).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w hw`. Simplify using `only [Function.mem_support] at hw`. Take `⟨l, hl, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hw`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨l, hl, hne⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he, finsum_sum_comm _ _ hs]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_finsum, (sum_valuation_nat K l).2]`. Introduce `hc w`. Conclude with `Finset.sum_nonneg fun l hl => mul_nonneg (hc l hl) (by exact_mod_cast vw_natCast_nonneg w l)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weight_sum' : WtSum := by
   intro K _ _ _ _ S c
@@ -59,7 +59,7 @@ theorem weight_sum' : WtSum := by
     exact Finset.sum_nonneg fun l hl => mul_nonneg (hc l hl) (by exact_mod_cast vw_natCast_nonneg w l)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [Formalism.DivisionValues.ValuationRepresentative.vw_one]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ (pow_ne_zero n ha) ha, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -71,27 +71,27 @@ theorem vw_pow {K : Type} [Field K] [NumberField K] [StarRing K] (w : Pl K) (a :
     rw [pow_succ, Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ (pow_ne_zero n ha) ha, ih]; push_cast; ring
 
 /- English proof (translation)
-Introduce `K _ _ _ _ a De M nff o vA S N0 ha hDe hD hlo hhi hN hL2`. Use `set β : K := a ^ 12 * (De ^ M)⁻¹ with hβ`. Establish `hβ0 : β ≠ 0` using `mul_ne_zero (pow_ne_zero _ ha) (inv_ne_zero (pow_ne_zero _ hDe))`. Establish `hvβ : ∀ w : Pl K, vw w β = 12 * (vw w a + M * o w)`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ, Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ (pow_ne_zero _ ha) (inv_ne_zero (pow_ne_zero _ hDe)), Formalism.DivisionValues.ValuationRepresentative.vw_inv, vw_pow w a ha, vw_pow w De hDe, hD w]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨pf1, pf2⟩` from `Formalism.DivisionValues.prod_formula' K β hβ0`. Take `⟨n1, n2⟩` from `sum_valuation_nat K nff`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w1, w2, w3⟩` from `weight_sum' K S N0`. Establish `hfin : (Function.support fun w : Pl K => lw w * |(vA w : ℝ)|).Finite`. Use `(pf1.union n1).subset ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Function.mem_support, Set.mem_union] at hw ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨c1, c2⟩` from `hcon`. Establish `hl : lw w ≠ 0` using `left_ne_zero_of_mul hw`. Establish `d1 : vw w β = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(mul_eq_zero.mp c1).resolve_left hl` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `d2 : vw w (nff : K) = 0`. Use `(mul_eq_zero.mp c2).resolve_left hl` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `hvβ w`. Establish `e2` using `hlo w`. Establish `e3` using `hhi w`. Rewrite `e3` using `[d2]`. Establish `: vA w = 0` using `by omega`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hw` to reduce the goal to its premises. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ w : Pl K, lw w * |(vA w : ℝ)| ≤ (1 / 12) * (lw w * (vw w β : ℝ)) + (M : ℝ) * (lw w * (vw w (nff : K) : ℝ)) + 2 * (lw w * wt S N0 w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Establish `h0` using `lw_nonneg w`. Establish `h1 : ((vw w β : ℤ) : ℝ) = 12 * ((vw w a : ℝ) + M * o w)` using `by rw [hvβ w]; push_cast; ring`. Establish `h2 : (vA w : ℝ) ≤ (vw w a : ℝ) + M * o w + M * vw w (nff : K)` using `by exact_mod_cast hhi w`. Establish `h3` using `hL2 w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h4` using `w3 hN w`. Establish `h5 : |(vA w : ℝ)| ≤ (vA w : ℝ) + 2 * wt S N0 w`. Apply the tactic sequence `rcases abs_cases (vA w : ℝ) with ⟨h, _⟩ | ⟨h, _⟩ <;> rw [h] <;> linarith`. Establish `h6 : |(vA w : ℝ)| ≤ (1 / 12) * (vw w β : ℝ) + M * vw w (nff : K) + 2 * wt S N0 w`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `s1 : (Function.support fun w : Pl K => (1 / 12 : ℝ) * (lw w * (vw w β : ℝ))).Finite` using `pf1.subset fun w hw => right_ne_zero_of_mul hw`. Establish `s2 : (Function.support fun w : Pl K => (M : ℝ) * (lw w * (vw w (nff : K) : ℝ))).Finite` using `n1.subset fun w hw => right_ne_zero_of_mul hw`. Establish `s3 : (Function.support fun w : Pl K => (2 : ℝ) * (lw w * wt S N0 w)).Finite` using `w1.subset fun w hw => right_ne_zero_of_mul hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `s12 : (Function.support fun w : Pl K => (1 / 12 : ℝ) * (lw w * (vw w β : ℝ)) + (M : ℝ) * (lw w * (vw w (nff : K) : ℝ))).Finite` using `(s1.union s2).subset (Function.support_add _ _)`. Establish `s123 : (Function.support fun w : Pl K => (1 / 12 : ℝ) * (lw w * (vw w β : ℝ)) + (M : ℝ) * (lw w * (vw w (nff : K) : ℝ)) + 2 * (lw w * wt S N0 w)).Finite` using `(s12.union s3).subset (Function.support_add _ _)`. Use `(finsum_le_finsum' hfin s123 hpt).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[finsum_add_distrib s12 s3, finsum_add_distrib s1 s2, ← mul_finsum, ← mul_finsum, ← mul_finsum, ← pf2, n2, w2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem height_bound_essential : HeightCore := by
   intro K _ _ _ _ a De M nff o vA S N0 ha hDe hD hlo hhi hN hL2

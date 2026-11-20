@@ -11,19 +11,19 @@ namespace GlobalTheory.AutGrowth
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `set L := lmul X with hL`. Set `b` to `Module.finBasis ℝ (Lie E a)`. Set `c : Fin (Module.finrank ℝ (Lie E a)) → Lie E a → ℂ` to `fun i x => α x * (b.repr (L x) i : ℝ)`. Establish `hc : ∀ i, IsTest (invSet E a) (c i)` using `fun i => hα.mul (Complex.ofRealCLM.contDiff.comp ((LinearMap.toContinuousLinearMap (b.coord i)).contDiff.comp L.contDiff))`. Establish `hG' : ∀ v, ContinuousOn (fun x => fderiv ℝ G x v) (invSet E a)` using `fun v => (hG.continuousOn_fderiv_of_isOpen isOpen_invSet (by simp)).clm_apply continuousOn_const`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ x, α x * fderiv ℝ G x (L x) = ∑ i, c i x * fderiv ℝ G x (b i)` using `fun x => by conv_lhs => rw [← b.sum_repr (L x)]`. Simplify using `only [map_sum, map_smul, Finset.mul_sum, c, Complex.real_smul, mul_assoc]`. Establish `hdc : ∀ i x, fderiv ℝ (c i) x (b i) = α x * (b.repr (L (b i)) i : ℝ) + (b.repr (L x) i : ℝ) * fderiv ℝ α x (b i)`. Introduce `i x`. Establish `h1 : HasFDerivAt (fun x => ((b.repr (L x) i : ℝ) : ℂ)) (Complex.ofRealCLM.comp ((LinearMap.toContinuousLinearMap (b.coord i)).comp L)) x` using `(Complex.ofRealCLM.comp ((LinearMap.toContinuousLinearMap (b.coord i)).comp L)).hasFDerivAt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `((hα.1.differentiable (by simp) x).hasFDerivAt).mul h1`. Rewrite using `[show c i = (α * fun x => ((b.repr (L x) i : ℝ) : ℂ)) from rfl, h2.fderiv]`. Simplify using `[Module.Basis.coord_apply, smul_eq_mul]`. Establish `key : ∀ x, ∑ i, fderiv ℝ (c i) x (b i) = -dens X α x`. Introduce `x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3 : fderiv ℝ α x (L x) = ∑ i, (b.repr (L x) i : ℝ) * fderiv ℝ α x (b i)`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (LinearMap.trace ℝ (Lie E a) L.toLinearMap : ℂ) = ∑ i, ((b.repr (L (b i)) i : ℝ) : ℂ)`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]`. Simplify using `[LinearMap.toMatrix_apply]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hdc, Finset.sum_add_distrib, dens, neg_neg, ← hL, h3, h4, Finset.sum_mul]`. Rewrite using `[add_comm]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun i _ => by ring`. Establish `hi1 : ∀ i, Integrable (fun x => c i x * fderiv ℝ G x (b i)) ν` using `fun i => (hc i).integrable_mul ν isOpen_invSet (hG' _)`. Establish `hi2 : ∀ i, Integrable (fun x => fderiv ℝ (c i) x (b i) * G x) ν` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (((hc i).fderiv (b i)).mul contDiff_const (β := fun _ => (1 : ℂ))).integrable_mul ν isOpen_invSet hG.continuousOn`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (hi2 i) (hi1 i) ((hc i).integrable_mul ν isOpen_invSet hG.continuousOn) (fun x _ => (hc i).1.differentiable (by simp) x) (fun x hx => (hG.contDiffAt (isOpen_invSet.mem_nhds ((hc i).2.2 hx))).differentiableAt (by simp)), integra …`. Use `_ = ∫ x, ∑ i, -(fderiv ℝ (c i) x (b i) * G x) ∂ν := (integral_finset_sum _ fun i _ => (hi2 i).neg).symm`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `_ = ∫ x, dens X α x * G x ∂ν := by`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finset.sum_neg_distrib, ← Finset.sum_mul, key, neg_mul, neg_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul_fderiv_lmul_eq_dens (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] {α : Lie E a → ℂ}
     (hα : IsTest (invSet E a) α) (X : Lie E a) {G : Lie E a → ℂ} (hG : ContDiffOn ℝ ∞ G (invSet E a)) :
@@ -83,7 +83,7 @@ namespace SmoothingDeriv
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Set `R : Lie E a →ₗ[ℝ] (Lie E a →L[ℝ] Lie E a)` to `{ toFun := rmul map_add' := fun x y => ContinuousLinearMap.ext fun z => show Matrix.of z * Matrix.of (x + y) = Matrix.of z * Matrix.of x + Matrix.of z * Matrix.of y by`. Rewrite using `[← Matrix.of_add_of, Matrix.mul_add]`. Use the proof step `map_smul' := fun c x => ContinuousLinearMap.ext fun z => show Matrix.of z * Matrix.of (c • x) = c • (Matrix.of z * Matrix.of x) by`. Rewrite using `[← Matrix.smul_of, Matrix.mul_smul] }`. Conclude with `R.continuous_of_finiteDimensional`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_rmul_fun : Continuous (fun y : Lie E a => rmul y) := by
   let R : Lie E a →ₗ[ℝ] (Lie E a →L[ℝ] Lie E a) :=
@@ -98,24 +98,24 @@ theorem continuous_rmul_fun : Continuous (fun y : Lie E a => rmul y) := by
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `one_mul (Matrix.of y)`.
+A detailed English derivation is pending.
 -/
 theorem lmul_oneL (y : Lie E a) : lmul (oneL E a) y = y := one_mul (Matrix.of y)
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `Continuous.matrix_mul (A := fun p : Lie E a × Lie E a => Matrix.of p.1) (B := fun p : Lie E a × Lie E a => Matrix.of p.2) continuous_fst continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lmul_pair : Continuous fun p : Lie E a × Lie E a => lmul p.1 p.2 :=
   Continuous.matrix_mul (A := fun p : Lie E a × Lie E a => Matrix.of p.1) (B := fun p : Lie E a × Lie E a => Matrix.of p.2)
     continuous_fst continuous_snd
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Distinguish the cases in `h : IsUnit (Matrix.of z)`. Take `⟨u, hu⟩` from `h`. Take `rfl : z = toL u.val` from `hu.symm`. Rewrite using `[chart_val, smoothing, chart_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h' : ∀ y, chart ψ g (lmul z y) = 0` using `fun y => by`. Establish `hn : ¬ IsUnit (Matrix.of (lmul z y))` using `fun hy => h (by`. Establish `h2` using `(Matrix.isUnit_iff_isUnit_det _).1 hy`. Express the relevant statement in the definitionally equal form `IsUnit (Matrix.of z * Matrix.of y).det at h2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h2` using `[Matrix.det_mul]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_left h2))`. Simplify using `[chart, hn]`. Simplify using `only [h', mul_zero, integral_zero]`. Simplify using `[chart, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chart_smoothing (ν : Measure (Lie E a)) (α : Lie E a → ℂ) (ψ : GA E a → ℂ) (g : GA E a) :
     chart (smoothing ν α ψ) g = fun z => ∫ y, α y * chart ψ g (lmul z y) ∂ν := by
@@ -140,23 +140,21 @@ end SmoothingDeriv
 open SmoothingDeriv in
 
 /- English proof (translation)
-Use `set f := chart ψ g with hf`. Establish `hfs : ContDiffOn ℝ ∞ f (invSet E a)` using `hψ g`. Establish `hfd : ContinuousOn (fderiv ℝ f) (invSet E a)` using `hfs.continuousOn_fderiv_of_isOpen isOpen_invSet (by simp)`. Establish `hmul : ∀ z y, z ∈ invSet E a → y ∈ invSet E a → lmul z y ∈ invSet E a` using `fun z y hz hy => IsUnit.mul hz hy`. Take `⟨ε, ε0, hε⟩` from `Metric.isOpen_iff.1 isOpen_invSet (oneL E a) isUnit_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : 0 < ε / 2` using `half_pos ε0`. Establish `hball : Metric.closedBall (oneL E a) (ε / 2) ⊆ invSet E a` using `(Metric.closedBall_subset_ball (half_lt_self ε0)).trans hε`. Use `set K := (fun p : Lie E a × Lie E a => lmul p.1 p.2) '' (Metric.closedBall (oneL E a) (ε / 2) ×ˢ tsupport α)`. Establish `hKc : IsCompact K` using `((isCompact_closedBall _ _).prod hα.2.1.isCompact).image continuous_lmul_pair`. Establish `hKs : K ⊆ invSet E a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨p, ⟨hp1, hp2⟩, rfl⟩`. Conclude with `hmul _ _ (hball hp1) (hα.2.2 hp2)`. Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn (hfd.mono hKs)`. Set `F : Lie E a → Lie E a → ℂ` to `fun z y => α y * f (lmul z y)`. Set `F' : Lie E a → Lie E a → (Lie E a →L[ℝ] ℂ)` to `fun z y => α y • (fderiv ℝ f (lmul z y)).comp (rmul y)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcontOn : ∀ z ∈ invSet E a, ContinuousOn (fun y => f (lmul z y)) (invSet E a)` using `fun z hz => hfs.continuousOn.comp (lmul z).continuous.continuousOn fun y hy => hmul z y hz hy`. Establish `hF'c : Continuous (F' (oneL E a))`. Use `continuous_of_tsupport fun y hy => ?_` and prove the remaining obligations. Establish `hy' : y ∈ invSet E a` using `hα.2.2 (tsupport_smul_subset_left _ _ hy)`. Simplify using `only [F', lmul_oneL]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `hα.1.continuous.continuousAt.smul ((hfd.continuousAt (isOpen_invSet.mem_nhds hy')).clm_comp continuous_rmul_fun.continuousAt)`. Establish `hbound : ∀ y, ∀ z ∈ Metric.ball (oneL E a) (ε / 2), ‖F' z y‖ ≤ ‖α y‖ * (C * ‖rmul y‖)`. Introduce `y z hz`. Distinguish the cases in `h0 : α y = 0`. Simplify using `[F', h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : y ∈ tsupport α` using `subset_tsupport _ h0`. Establish `hK : lmul z y ∈ K` using `⟨(z, y), ⟨Metric.ball_subset_closedBall hz, hy⟩, rfl⟩`. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left ((ContinuousLinearMap.opNorm_comp_le _ _).trans (mul_le_mul_of_nonneg_right (hC _ hK) (norm_nonneg _))) (norm_nonneg _)`. Establish `hbi : Integrable (fun y => ‖α y‖ * (C * ‖rmul y‖)) ν` using `(hα.1.continuous.norm.mul (continuous_const.mul continuous_rmul_fun.norm)).integrable_of_hasCompactSupport hα.2.1.norm.mul_right`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdiff : ∀ y, ∀ z ∈ Metric.ball (oneL E a) (ε / 2), HasFDerivAt (fun z => F z y) (F' z y) z`. Introduce `y z hz`. Distinguish the cases in `h0 : α y = 0`. Simplify using `only [F, F', h0, zero_mul, zero_smul]`. Conclude with `hasFDerivAt_const 0 z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : y ∈ invSet E a` using `hα.2.2 (subset_tsupport _ h0)`. Establish `hw : lmul z y ∈ invSet E a` using `hmul _ _ (hball (Metric.ball_subset_closedBall hz)) hy`. Establish `h1 : HasFDerivAt f (fderiv ℝ f (lmul z y)) (rmul y z)` using `((hfs.contDiffAt (isOpen_invSet.mem_nhds hw)).differentiableAt (by simp)).hasFDerivAt`. Conclude with `(h1.comp z (rmul y).hasFDerivAt).const_mul (α y)`. Establish `hmain` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := ν) (F := F) (F' := F') (Metric.ball_mem_nhds _ hr) (Filter.eventually_of_mem (Metric.ball_mem_nhds _ hr) fun z hz => (hα.continuous_mul isOpen_invSet (hcontOn z (hball (Metric.ball_subset_closedBall hz)))).aestronglyMeasurable) …`.
-
-Establish `hint : Integrable (F' (oneL E a)) ν` using `hbi.mono' hF'c.aestronglyMeasurable (.of_forall fun y => hbound y _ (Metric.mem_ball_self hr))`. Rewrite using `[lieD, chart_smoothing, ← hf, hmain.fderiv, ContinuousLinearMap.integral_apply hint, smoothing, ← integral_mul_fderiv_lmul_eq_dens ν hα X hfs]`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [F', lmul_oneL, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lieD_smoothing (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] {α : Lie E a → ℂ}
     (hα : IsTest (invSet E a) α) {ψ : GA E a → ℂ} (hψ : ψ ∈ Sm E a) (X : Lie E a) (g : GA E a) :
@@ -222,7 +220,7 @@ theorem lieD_smoothing (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] {α : Lie 
   rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ ν _ _ hα _ hψ X g` and use `lieD_smoothing ν hα hψ X g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lieD_smoothing_eq_dens : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] (α : Lie E a → ℂ), IsTest (invSet E a) α → ∀ ψ ∈ Sm E a,

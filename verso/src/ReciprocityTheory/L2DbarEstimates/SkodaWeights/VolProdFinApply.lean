@@ -14,11 +14,9 @@ variable {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M
   [MeasurableSpace M] [BorelSpace M]
 
 /- English proof (translation)
-Establish `hfst : IsLocalHomeomorph (Prod.fst : M × Fin p → M)`. Rewrite using `[isLocalHomeomorph_iff_isOpenEmbedding_restrict]`. Introduce `q`. Use `⟨Prod.snd ⁻¹' {q.2}, ((isOpen_discrete _).preimage continuous_snd).mem_nhds (by simp), ?_⟩` and prove the remaining obligations. Set `H : (Prod.snd ⁻¹' {q.2} : Set (M × Fin p)) ≃ₜ M` to `{ toFun := fun u => u.1.1 invFun := fun x => ⟨(x, q.2), by simp⟩ left_inv := fun u => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨⟨x, j⟩, hj⟩` from `u`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hj`. Substitute `hj` using the available equality. Both sides reduce to the same expression. Use `right_inv := fun x => rfl`.
-
-Use `continuous_toFun := continuous_fst.comp continuous_subtype_val`. Use `continuous_invFun := Continuous.subtype_mk (by fun_prop) fun x => by simp }`. Conclude with `H.isOpenEmbedding`. Conclude with `hz.comp hfst`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem isLocalHomeomorph_fun_prod_fin_fst (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z)
     (p : ℕ) : IsLocalHomeomorph (fun q : M × Fin p => z q.1) := by
@@ -41,15 +39,15 @@ private theorem isLocalHomeomorph_fun_prod_fin_fst (n : ℕ) (z : M → V n) (hz
   exact hz.comp hfst
 
 /- English proof (translation)
-Establish `hzq` using `isLocalHomeomorph_fun_prod_fin_fst n z hz p`. Establish `hcover : S = ⋃ i, S ∩ Prod.snd ⁻¹' {i}`. Use extensionality with `q`. Simplify using the standard rewrite rules. Establish `hmeas : ∀ i : Fin p, MeasurableSet (S ∩ Prod.snd ⁻¹' {i})` using `fun i => hS.inter (measurable_snd (measurableSet_singleton i))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdisj : Pairwise (Function.onFun Disjoint fun i : Fin p => S ∩ Prod.snd ⁻¹' {i})`. Introduce `i j hij`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `q ⟨_, hi⟩ ⟨_, hj⟩`. Conclude with `hij ((Set.mem_singleton_iff.1 hi).symm.trans (Set.mem_singleton_iff.1 hj))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hcover]`. Rewrite using `[measure_iUnion hdisj hmeas, tsum_fintype]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[vol_apply n _ hzq _ (hmeas i), vol_apply n z hz _ (hS.preimage (by fun_prop : Measurable fun x : M => (x, i)))]`. Unfold `volFun`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `hset : (S ∩ Prod.snd ⁻¹' {i}) ∩ (fun q : M × Fin p => z q.1) ⁻¹' {y} = (fun x : M => (x, i)) '' ((fun x : M => (x, i)) ⁻¹' S ∩ z ⁻¹' {y})`. Use extensionality with `⟨x, j⟩`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_image, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨hxS, rfl⟩, hy⟩`. Conclude with `⟨x, ⟨hxS, hy⟩, rfl, rfl⟩`. Introduce and unpack `⟨x', ⟨hxS, hy⟩, rfl, rfl⟩`. Conclude with `⟨⟨hxS, rfl⟩, hy⟩`. Rewrite using `[hset, Set.InjOn.encard_image (fun a _ b _ h => congrArg Prod.fst h)]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_prodFin_apply (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ)
     (S : Set (M × Fin p)) (hS : MeasurableSet S) :
@@ -85,9 +83,9 @@ theorem vol_prodFin_apply (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (
   rw [hset, Set.InjOn.encard_image (fun a _ b _ h => congrArg Prod.fst h)]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[ae_iff]`. Take `⟨T, hsub, hT, hT0⟩` from `exists_measurable_superset_of_null h`. Establish `hsub' : {q : M × Fin p | ¬P q.1} ⊆ Prod.fst ⁻¹' T` using `fun q hq => hsub hq`. Use `measure_mono_null hsub' ?_` and prove the remaining obligations. Rewrite using `[vol_prodFin_apply n z hz p _ (hT.preimage measurable_fst)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun i _ => hT0`.
+A detailed English derivation is pending.
 -/
 theorem ae_fst_prodFin (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ) {P : M → Prop}
     (h : ∀ᵐ x ∂vol n z, P x) : ∀ᵐ q ∂vol n (fun q : M × Fin p => z q.1), P q.1 := by
@@ -99,9 +97,9 @@ theorem ae_fst_prodFin (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p :
   exact Finset.sum_eq_zero fun i _ => hT0
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[ae_iff]`. Take `⟨T, hsub, hT, hT0⟩` from `exists_measurable_superset_of_null h`. Establish `hsub' : {x : M | ¬P (x, i)} ⊆ (fun x : M => (x, i)) ⁻¹' T` using `fun x hx => hsub hx`. Use `measure_mono_null hsub' ?_` and prove the remaining obligations. Establish `hsum` using `vol_prodFin_apply n z hz p T hT`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hsum` using `[hT0]`. Conclude with `(Finset.sum_eq_zero_iff.1 hsum.symm) i (Finset.mem_univ i)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_slice_prodFin (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ)
     {P : M × Fin p → Prop} (h : ∀ᵐ q ∂vol n (fun q : M × Fin p => z q.1), P q) (i : Fin p) :
@@ -115,9 +113,9 @@ theorem ae_slice_prodFin (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p
   exact (Finset.sum_eq_zero_iff.1 hsum.symm) i (Finset.mem_univ i)
 
 /- English proof (translation)
-Establish `h : Holo n z (∑ i, F i)` using `Finset.sum_induction F (fun f : M → ℂ => Holo n z f) (fun a b ha hb => Holo.add n z a b ha hb) (Holo.const n z 0) (fun i _ => hF i)`. Establish `e : (fun x => ∑ i, F i x) = ∑ i, F i`. Use extensionality with `x`. Simplify using `[Finset.sum_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem holo_finsum (n : ℕ) (z : M → V n) {p : ℕ} (F : Fin p → M → ℂ) (hF : ∀ i, Holo n z (F i)) :
     Holo n z (fun x => ∑ i, F i x) := by
@@ -133,53 +131,47 @@ theorem holo_finsum (n : ℕ) (z : M → V n) {p : ℕ} (F : Fin p → M → ℂ
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `X p g ph0 t f hp hg hnz hs hl ht hf hA`. Establish `hz` using `X.isLocalHomeomorph`. Establish `hz' : IsLocalHomeomorph (fun q : M × Fin p => X.z q.1)` using `isLocalHomeomorph_comp_fst n X.z hz p`. Establish `hp1 : 1 ≤ p` using `by omega`. Establish `hp1r : (1 : ℝ) ≤ p` using `by exact_mod_cast hp1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 < t` using `by linarith`. Establish `hgv : ∀ x, gv g x ≠ 0` using `fun x h => by`. Take `⟨i, hi⟩` from `hnz x`. Conclude with `hi (congrFun h i)`. Establish `hN : ∀ x, 0 < vsq (gv g x)` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hnz x`. Conclude with `Finset.sum_pos' (fun j _ => sq_nonneg _) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.2 hi) 2⟩`. Establish `hgc : ∀ i, Continuous (g i)` using `fun i => Smooth.continuous n X.z hz _ (Holo.smooth n X.z _ (hg i))`. Establish `hfc : Continuous f` using `Smooth.continuous n X.z hz _ (Holo.smooth n X.z _ hf)`. Establish `hNc : Continuous fun x => vsq (gv g x)` using `continuous_finsetSum _ fun i _ => ((hgc i).norm.pow 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `skodaWeight n M X.z hz p g ph0 t hg hgv hs hl ht0.le`. Establish `hφc : Continuous (skW g ph0 t)` using `(Complex.continuous_re.comp (Smooth.continuous n X.z hz _ hW.1)).congr fun x => Complex.ofReal_re _`. Establish `hψ₂c : Continuous fun x => skW g ph0 t x + Real.log (vsq (gv g x))` using `hφc.add (hNc.log fun x => (hN x).ne')`. Establish `hψ₁c : Continuous fun x : M × Fin p => skW g ph0 t x.1` using `hφc.comp continuous_fst`. Establish `hl2` using `l2w n M X.z _ hψ₂c.measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl1` using `l2w n (M × Fin p) (fun q => X.z q.1) _ hψ₁c.measurable`. Take `⟨G, Gs, hG, hGs, hadj, hiso⟩` from `skodaOps n M X p g (skW g ph0 t) hg hgv hφc`. Establish `hKc` using `hB p (fun q => X.z q.1) hz' _ hψ₁c`. Establish `: CompleteSpace (holSub n (fun q : M × Fin p => X.z q.1) (fun x => skW g ph0 t x.1))` using `hKc.completeSpace_coe`. Use `set K := holSub n (fun q : M × Fin p => X.z q.1) (fun x => skW g ph0 t x.1) with hKdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Q := holSub n X.z (fun x => skW g ph0 t x + Real.log (vsq (gv g x))) with hQdef`. Use `set c : ℝ := (t - ((p : ℝ) - 1)) / t with hcdef`. Establish `hc : 0 < c` using `div_pos (by linarith) ht0`. Establish `hc' : ∀ r : ℝ, c * r = r - ((p : ℝ) - 1) / t * r` using `fun r => by`. Rewrite using `[hcdef]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hnear : ∀ u ∈ Q, c * ‖u‖ ^ 2 ≤ ‖K.orthogonalProjectionOnto (Gs u)‖ ^ 2`. Introduce `u hu`. Take `⟨u', hu', huu'⟩` from `hu`. Establish `huv : (u : M → ℂ) =ᵐ[vol n X.z] u'` using `(hl2.1 _).1 huu'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0 : (Gs u : M × Fin p → ℂ) =ᵐ[vol n (fun q : M × Fin p => X.z q.1)] fun x => u' x.1 * (starRingEnd ℂ) (g x.2 x.1) / ((vsq (gv g x.1) : ℝ) : ℂ)` using `by filter_upwards [hGs u, ae_fst_prodFin n X.z hz p huv] with q h1 h2`. Rewrite using `[h1, h2]`. Take `⟨F, hFK, hFd⟩` from `skodaNear n M X p g ph0 t (hH p) hp1 hg hgv hs hl ht0 u u' hu' huv (Gs u) hF0`. Establish `hya : Gs u - K.starProjection (Gs u) ∈ Kᗮ` using `K.sub_starProjection_mem_orthogonal (Gs u)`. Establish `hperp : ⟪K.starProjection (Gs u), Gs u - K.starProjection (Gs u)⟫_ℂ = 0` using `Submodule.inner_right_of_mem_orthogonal (K.orthogonalProjectionOnto (Gs u)).2 hya`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpy` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ hperp`. Rewrite `hpy` using `[add_sub_cancel, hiso u]`. Establish `hmin : ‖Gs u - K.starProjection (Gs u)‖ ≤ ‖Gs u - F‖`. Rewrite using `[Submodule.starProjection_minimal (U := K) (Gs u)]`. Conclude with `ciInf_le ⟨0, Set.forall_mem_range.2 fun _ => norm_nonneg _⟩ (⟨F, hFK⟩ : K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hmin2` using `pow_le_pow_left₀ (norm_nonneg _) hmin 2`. Establish `hnorm : ‖K.orthogonalProjectionOnto (Gs u)‖ = ‖K.starProjection (Gs u)‖` using `rfl`. Rewrite using `[hnorm, hc']`. Use polynomial arithmetic with `[hpy, hmin2, hFd]`. Establish `hAeq : ∫⁻ x, ENNReal.ofReal (‖f x‖ ^ 2 * (∑ i, ‖g i x‖ ^ 2) ^ (-(t + 1)) * Real.exp (-ph0 x)) ∂vol n X.z = wint n X.z f (fun x => skW g ph0 t x + Real.log (vsq (gv g x)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `wint`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[show (∑ i, ‖g i x‖ ^ 2) = vsq (gv g x) from rfl, Real.rpow_def_of_pos (hN x), mul_assoc, ← Real.exp_add]`. Use `congr 3`. Simplify using `only [skW]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨fL, hfL⟩` from `hl2.2.2 f hfc.aestronglyMeasurable (hAeq ▸ hA)`. Establish `hfLQ : fL ∈ Q` using `⟨f, hf, (hl2.1 _).2 hfL⟩`. Take `⟨⟨hv, hvK⟩, hhG, -, hhn⟩` from `ontoWithBound ℂ K _ ((G : _ →ₗ[ℂ] _).comp K.subtype) ((K.orthogonalProjectionOnto.comp Gs : _ →L[ℂ] K) : _ →ₗ[ℂ] K) 0 Q c hc (fun u _ x => by simp [hadj]) (fun u hu e => by simpa using hnear u hu) fL hfLQ`. Establish `hhn' : c * ‖hv‖ ^ 2 ≤ ‖fL‖ ^ 2` using `hhn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hh', hhol', hae'⟩` from `hvK`. Establish `hae'v : (hv : M × Fin p → ℂ) =ᵐ[vol n (fun q : M × Fin p => X.z q.1)] hh'` using `(hl1.1 _).1 hae'`. Establish `hslice : ∀ᵐ x ∂vol n X.z, ∀ i, (hv : M × Fin p → ℂ) (x, i) = hh' (x, i)` using `ae_all_iff.2 fun i => ae_slice_prodFin n X.z hz p hae'v i`. Establish `hhol : ∀ i, Holo n X.z (fun x => hh' (x, i))` using `(holo_prodFin_iff n X.z hz p hh').1 hhol'`. Establish `hSh : Holo n X.z (fun x => ∑ i, g i x * hh' (x, i))` using `holo_finsum n X.z _ fun i => Holo.mul n X.z _ _ (hg i) (hhol i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hGS : (G hv : M → ℂ) =ᵐ[vol n X.z] fun x => ∑ i, g i x * hh' (x, i)` using `by filter_upwards [hG hv, hslice] with x h1 h2`. Rewrite using `[h1]; exact Finset.sum_congr rfl fun i _ => by rw [h2 i]`. Establish `hGQ : G hv ∈ Q` using `⟨_, hSh, (hl2.1 _).2 hGS⟩`. Establish `hGf : G hv = fL`. Establish `h1` using `hhG (G hv - fL) (Q.sub_mem hGQ hfLQ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.coe_comp, ContinuousLinearMap.coe_coe, Function.comp_apply, Submodule.coe_subtype] at h1`. Rewrite `h1` using `[← sub_eq_zero, ← inner_sub_right]`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h1)`. Establish `hfS : ∀ x, f x = ∑ i, g i x * hh' (x, i)`. Establish `hae : ∀ᵐ x ∂vol n X.z, f x = ∑ i, g i x * hh' (x, i)` using `by filter_upwards [hGS, hfL] with x h1 h2`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h2, ← hGf, h1]`. Establish `hSc : Continuous fun x => ∑ i, g i x * hh' (x, i)` using `Smooth.continuous n X.z hz _ (Holo.smooth n X.z _ hSh)`. Assume the negation of the conclusion as `hne`. Take `⟨x0, hx0⟩` from `not_forall.1 hne`. Establish `hpos` using `volOpenPos n M X.z hz _ (isOpen_ne_fun hfc hSc) ⟨x0, hx0⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hae` using `[ae_iff]`. Conclude with `hpos.ne' hae`. Establish `hh'c : Continuous hh'` using `Smooth.continuous n _ hz' _ (Holo.smooth n _ _ hhol')`. Establish `hmeas : ∀ i, Measurable fun x => ENNReal.ofReal (‖hh' (x, i)‖ ^ 2 * Real.exp (-skW g ph0 t x))` using `fun i => (ENNReal.continuous_ofReal.comp (((hh'c.comp (continuous_id.prodMk continuous_const)).norm.pow 2).mul (Real.continuous_exp.comp hφc.neg))).measurable`. Use `⟨fun i x => hh' (x, i), hhol, hfS, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_finsetSum _ (fun i _ => hmeas i)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun i _ => by positivity)]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[show (∑ i, ‖g i x‖ ^ 2) = vsq (gv g x) from rfl, Real.rpow_def_of_pos (hN x), Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [skW]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = wint n (fun q : M × Fin p => X.z q.1) hh' (fun x => skW g ph0 t x.1) := by`. Unfold `wint`. Establish `hm : Measurable fun q : M × Fin p => ENNReal.ofReal (‖hh' q‖ ^ 2 * Real.exp (-skW g ph0 t q.1))` using `(ENNReal.continuous_ofReal.comp ((hh'c.norm.pow 2).mul (Real.continuous_exp.comp hψ₁c.neg))).measurable`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[lintegral_vol_prodFin n X.z hz p _ hm]`. Use `_ = wint n (fun q : M × Fin p => X.z q.1) hv (fun x => skW g ph0 t x.1) := by`. Unfold `wint`. Conclude with `lintegral_congr_ae (by filter_upwards [hae'v] with q hq; rw [hq])`. Use `_ = ENNReal.ofReal (‖hv‖ ^ 2) := by`.
-
-Rewrite using `[(hl1.2.1 hv).2, ENNReal.ofReal_toReal (hl1.2.1 hv).1.ne]`. Use `_ ≤ ENNReal.ofReal (t / (t - ((p : ℝ) - 1)) * ‖fL‖ ^ 2) := by`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hci : t / (t - ((p : ℝ) - 1)) = c⁻¹` using `by rw [hcdef, inv_div]`. Rewrite using `[hci, ← div_eq_inv_mul, le_div_iff₀ hc]`.
-
-Combine the linear relations using `[hhn']`. Use `_ = ENNReal.ofReal (t / (t - ((p : ℝ) - 1))) * wint n X.z f (fun x => skW g ph0 t x + Real.log (vsq (gv g x))) := by`. Rewrite using `[ENNReal.ofReal_mul (div_nonneg ht0.le (by linarith)), (hl2.2.1 fL).2, ENNReal.ofReal_toReal (hl2.2.1 fL).1.ne]`. Use `congr 1`. Unfold `wint`.
-
-Conclude with `lintegral_congr_ae (by filter_upwards [hfL] with x hx; rw [hx])`. Use `_ = _ := by rw [hAeq]`.
+A detailed English derivation is pending.
 -/
 theorem skoda (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M]

@@ -18,15 +18,15 @@ namespace GlobalTheory.Mum
 
 open GlobalTheory.MulPull in
 /- English proof (translation)
-Establish `hL : C.P.L.L.IsLB` using `C.P.L.isLB`. Establish `hcube : HasGen C.P.L.L (thφ C.G (x3 C.G)) thε` using `⟨C.P.c.t, C.P.c.isGen⟩`. Establish `hrig : HasGen C.P.L.L (K` using `PUnit) (fun _ => eSec C.G) (fun _ => 1) := ⟨C.P.L.rig, C.P.L.rigGen⟩`. Establish `hone : HasGen C.P.L.L (K` using `Fin 1) ![(1 : C.G ⟶ C.G).left] ![1] := by`. Use `(hrig.pull (toUnit C.G).left).of_formEq hL (fun U _ h => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.univ_unique, Finset.prod_singleton, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, _root_.mul_one]`. Both sides reduce to the same expression. Establish `hsym0 : HasGen C.P.L.L (K` using `Fin 2) ![(ι[C.G]).left, 𝟙 C.G.left] ![1, -1] := ⟨C.P.sym, C.P.sym_gen⟩`. Establish `e1 : ((𝟙 C.G)⁻¹ : C.G ⟶ C.G).left = (ι[C.G]).left` using `by show ((𝟙 C.G) ≫ ι[C.G]).left = _`. Rewrite using `[Category.id_comp]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (𝟙 C.G : C.G ⟶ C.G).left = 𝟙 C.G.left` using `rfl`. Establish `hsym : HasGen C.P.L.L (K` using `Fin 2) ![(𝟙 C.G : C.G ⟶ C.G).left, ((𝟙 C.G)⁻¹ : C.G ⟶ C.G).left] ![1, -1] := by`. Use `hsym0.inv.of_formEq hL (fun U _ h => ?_)` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, e1, e2]`. Simplify using `only [neg_neg, zpow_one, _root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `mul_comm _ _`. Establish `H` using `hasGen_pow hL hcube (𝟙 C.G) hone hsym m`. Establish `e3 : ((𝟙 C.G) ^ m : C.G ⟶ C.G).left = (mulA C.G m).left`. Rewrite using `[← GlobalTheory.ZH.TorsFrame.comp_mulA]`. Use `H.of_formEq hL (fun U _ h => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, e2, e3]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mulPull_gen_labCover {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D : DegData R (maximalIdeal R)}
     (C : LabCover D) (m : ℕ) :
@@ -61,11 +61,11 @@ theorem mulPull_gen_labCover {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `mulPull_gen_labCover C m`. Establish `hL : C.P.L.L.IsLB` using `C.P.L.isLB`. Establish `hc : (mulA C.A.A m).left ≫ C.α = C.α ≫ (mulA C.G m).left` using `GlobalTheory.ZH.TorsFrame.mulA_comm C.α_cart m`. Set `S₀` to `pullMulSec θ₀ (mulA C.A.A m).left (LB.pullGen C.P.L.L _ _ u C.α) (DVR.pullGen_isGen C.P.L.L _ _ u hu C.α)`. Establish `hf : FormEq (Sum.elim (fun _ : Fin 1 => (mulA C.A.A m).left ≫ C.α) (fun k : Fin 2 => C.α ≫ (![𝟙 C.G.left, (mulA C.G m).left] : Fin 2 → _) k)) (Sum.elim (fun _ : Fin 1 => ((1 : ℕ) : ℤ)) (![((m ^ 2 : ℕ) : ℤ), -((1 : ℕ) : ℤ)] : Fin 2 → ℤ)) (fun _ : Fin 1 => C.α) (fun _ => ((m ^ 2 : …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `U _ h`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, Matrix.cons_val_one, Category.comp_id, hc]`. Simplify using `only [Nat.cast_one, zpow_one, zpow_neg, _root_.mul_one]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one]`. Take `⟨S, hS⟩` from `exists_sec hL hf S₀`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨S, u, hu, fun Z p z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hS Z p z J hJ, sval_pullMulSec θ₀ _ _ _ p z hJ, val_pull hJ, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mulSecK (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (_hR : Base R) (D : DegData R (maximalIdeal R))
     (C : LabCover D) (m : ℕ) (_hm : Odd m) (θ₀ : SecK C.P.L.L C.α 1) :

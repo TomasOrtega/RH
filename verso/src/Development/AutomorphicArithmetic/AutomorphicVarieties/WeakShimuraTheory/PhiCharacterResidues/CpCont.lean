@@ -4,9 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `N`. Establish `e : (fun s => Ideal.Quotient.mk (I ^ N) (f s * g s)) = fun s => Ideal.Quotient.mk (I ^ N) (f s) * Ideal.Quotient.mk (I ^ N) (g s)`. Use function extensionality and compare the values at `s`. Conclude with `map_mul _ _ _`. Rewrite using `[e]`.
-
-Conclude with `(hf N).comp₂ (hg N) (· * ·)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ac_mul {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ideal R} {f g : Γ → R}
     (hf : AdicCont I f) (hg : AdicCont I g) : AdicCont I fun s => f s * g s := by
@@ -19,9 +17,7 @@ private theorem ac_mul {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ide
   exact (hf N).comp₂ (hg N) (· * ·)
 
 /- English proof (translation)
-Introduce `N`. Establish `e : (fun s => Ideal.Quotient.mk (I ^ N) (f s ^ k)) = (fun x => x ^ k) ∘ fun s => Ideal.Quotient.mk (I ^ N) (f s)`. Use function extensionality and compare the values at `s`. Conclude with `map_pow _ _ _`. Rewrite using `[e]`.
-
-Conclude with `(hf N).comp _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ac_pow {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ideal R} {f : Γ → R}
     (hf : AdicCont I f) (k : ℕ) : AdicCont I fun s => f s ^ k := by
@@ -34,11 +30,11 @@ private theorem ac_pow {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ide
   exact (hf N).comp _
 
 /- English proof (translation)
-Use `haveI : IsLocalHom (algebraMap O R) := IsCO.isLocalHom`. Establish `hm : maximalIdeal O ≤ (maximalIdeal R).comap (algebraMap O R)`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((mem_maximalIdeal _).mp hx) (isUnit_of_map_unit _ _ hu)`. Introduce `N`. Establish `hN : maximalIdeal O ^ N ≤ (maximalIdeal R ^ N).comap (algebraMap O R)` using `(Ideal.pow_right_mono hm N).trans (Ideal.le_comap_pow _ N)`. Establish `e : (fun s => Ideal.Quotient.mk (maximalIdeal R ^ N) (algebraMap O R (f s))) = (Ideal.quotientMap (maximalIdeal R ^ N) (algebraMap O R) hN) ∘ fun s => Ideal.Quotient.mk (maximalIdeal O ^ N) (f s)`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ideal.quotientMap_mk]`. Rewrite using `[e]`. Conclude with `(hf N).comp _`.
+A detailed English derivation is pending.
 -/
 private theorem ac_alg {Γ O R : Type} [TopologicalSpace Γ] [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
     {f : Γ → O} (hf : AdicCont (maximalIdeal O) f) : AdicCont (maximalIdeal R) fun s => algebraMap O R (f s) := by
@@ -60,11 +56,9 @@ private theorem ac_alg {Γ O R : Type} [TopologicalSpace Γ] [CommRing O] [IsLoc
   exact (hf N).comp _
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h K X n j`. Establish `e : (fun g => (K.cpT X n g).coeff j) = fun g => (X.cp (resLe T.F_le g)).coeff j * (algebraMap c'.O X.B ((K.κ g : c'.O)) * algebraMap c'.O X.B ((K.β g : c'.O)) ^ n) ^ (4 - j)`. Use function extensionality and compare the values at `g`. Unfold `Link.cpT`. Rewrite using `[Polynomial.coeff_scaleRoots, (phiCpMap K X n g).2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Link.sc, map_mul, map_pow]`. Rewrite using `[e]`. Establish `hcp : AdicCont (maximalIdeal X.B) fun g => (X.cp (resLe T.F_le g)).coeff j`. Introduce `N`. Conclude with `(X.cp_cont j N).comp_continuous (continuous_resLe T.F_le)`.
-
-Conclude with `ac_mul hcp (ac_pow (ac_mul (ac_alg K.κ_cont) (ac_pow (ac_alg K.β_cont) n)) _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.phiCpCont :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (n : ℕ), ∀ j, AdicCont (maximalIdeal X.B) fun g => (K.cpT X n g).coeff j := by

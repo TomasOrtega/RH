@@ -15,7 +15,7 @@ open Formalism.UG (cT)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hw` using `IsTotallyReal.isReal w`. Establish `e` using `congrArg (fun z => z.1 ⟨w, hw⟩) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (algebraMap ℝ (mixedEmbedding.mixedSpace F) t))`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw]`. Conclude with `congrArg _ e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realAd_inf [IsTotallyReal F] (w : InfinitePlace F) (t : ℝ) :
     InfinitePlace.Completion.extensionEmbedding w ((realAd F t).1 w) = t := by
@@ -26,12 +26,12 @@ theorem realAd_inf [IsTotallyReal F] (w : InfinitePlace F) (t : ℝ) :
   exact congrArg _ e
 
 /- English proof (translation)
-The claim follows from `add_zero _`.
+A detailed English derivation is pending.
 -/
 theorem rId_snd (t : ℝ) : (rId F t).2 = 1 := add_zero _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w (1 + (realAd F (Real.exp t - 1)).1 w) = _`. Rewrite using `[map_add, map_one, realAd_inf]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rId_inf [IsTotallyReal F] (w : InfinitePlace F) (t : ℝ) :
     InfinitePlace.Completion.extensionEmbedding w ((rId F t).1 w) = Real.exp t := by
@@ -41,7 +41,7 @@ theorem rId_inf [IsTotallyReal F] (w : InfinitePlace F) (t : ℝ) :
   ring
 
 /- English proof (translation)
-Use `Prod.ext (funext fun w => (InfinitePlace.Completion.extensionEmbedding w).injective ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = InfinitePlace.Completion.extensionEmbedding w ((rId F s).1 w * (rId F t).1 w)`. Rewrite using `[map_mul, rId_inf, rId_inf, rId_inf, Real.exp_add, Complex.ofReal_mul]`. Express the relevant statement in the definitionally equal form `_ = (rId F s).2 * (rId F t).2`. Rewrite using `[rId_snd, rId_snd, rId_snd, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rId_add [IsTotallyReal F] (s t : ℝ) : rId F (s + t) = rId F s * rId F t := by
   refine Prod.ext (funext fun w => (InfinitePlace.Completion.extensionEmbedding w).injective ?_) ?_
@@ -51,7 +51,7 @@ theorem rId_add [IsTotallyReal F] (s t : ℝ) : rId F (s + t) = rId F s * rId F 
     rw [rId_snd, rId_snd, rId_snd, mul_one]
 
 /- English proof (translation)
-Rewrite using `[rId, Real.exp_zero, sub_self, realAd, map_zero, map_zero, map_zero]`. Conclude with `add_zero (1 : AF F)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rId_zero' : rId F 0 = 1 := by
   rw [rId, Real.exp_zero, sub_self, realAd, map_zero, map_zero, map_zero]

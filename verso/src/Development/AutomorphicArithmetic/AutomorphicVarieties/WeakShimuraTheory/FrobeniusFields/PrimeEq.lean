@@ -6,11 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Establish `hi : ∀ n : ℤ, A.valuation (n : Ω) ≤ 1` using `fun n => (A.valuation_le_one_iff _).2 (intCast_mem A n)`. Establish `h3 : A.valuation ((a : Ω) * (p : Ω) + (b : Ω) * (q : Ω)) < 1`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hi a)) h1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hi b)) h2`. Establish `h4 : (a : Ω) * (p : Ω) + (b : Ω) * (q : Ω) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) hab`.
-
-Rewrite `h3` using `[h4, map_one]`. Conclude with `lt_irrefl _ h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prime_eq {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
     (h1 : A.valuation (p : Ω) < 1) (h2 : A.valuation (q : Ω) < 1) : p = q := by
@@ -26,13 +24,13 @@ private theorem prime_eq {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (p q :
   exact lt_irrefl _ h3
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hD`. Establish `hom : IsOmT c D.om` using `⟨hD.om_pow, fun σ => by`. Rewrite using `[← residue_eq_zero_iff, map_sub, sub_eq_zero]`. Conclude with `hD.om_bar σ⟩`. Take `⟨-, -, -, -, hcc, hunr, -, -⟩` from `(omT Ω l c).2 D.om hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → ∀ g ∈ Ine (F` using `ℚ) A, D.om g = 1 ∧ D.Psi g = D.ψ g := fun A hA g hg => by`. Use `⟨hunr A hA hg, ?_⟩` and prove the remaining obligations. Establish `h1 : cycZ ℚ Ω l g = 1` using `(places ℚ Ω l A).2.2.2 hA hg`. Establish `h3 : chiO ℚ Ω l c.O g = 1` using `by rw [chiO, MonoidHom.comp_apply, h1, map_one]`. Use `show chiO ℚ Ω l c.O g ^ (D.e : ℤ) * D.ψ g = D.ψ g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3, one_zpow, one_mul]`. Use `⟨prime_eq, h2, fun A hA g hg => ?_, fun σ hσ => hcc σ hσ hD.l_odd, fun A p hp hS hA => ?_⟩` and prove the remaining obligations. Take `⟨u, -, hu⟩` from `(UpperTheory.V.Chr.placesQ Ω).2.2 l A (D.pl l) hl.out hA (hD.pl_over l hl.out)`. Establish `h1` using `hD.xi_unrT l (Finset.mem_insert_self _ _) (hu g hg)`. Rewrite `h1` using `[MonoidHom.mem_ker, map_mul, map_mul, map_inv, inv_mul_cancel_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Establish `ha : Raw.Away D.S A` using `fun q hq h => hS (prime_eq A p q hp (hD.S_prime q hq) hA h ▸ hq)`. Use `⟨ha, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `h2 A (ha l hD.l_mem) g hg`. Conclude with `⟨e2.trans (hD.psi_unr A ha hg), hD.xi_unr A ha hg, e1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.away :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → (∀ (A : ValuationSubring Ω) (p q : ℕ), p.Prime → q.Prime → A.valuation (p : Ω) < 1 → A.valuation (q : Ω) < 1 → p = q) ∧ (∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → ∀ g ∈ Ine (F := ℚ) A, D.om g = 1 ∧ D.Psi g = D.ψ g) ∧ (∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → Ine (F := ℚ) A ≤ D.ξ.ker) ∧ (∀ σ : G ℚ Ω, IsCC σ → D.om σ = -1) ∧ ∀ (A : ValuationSubring Ω) (p : ℕ), p.Prime → p ∉ D.S → A.valuation (p : Ω) < 1 → Raw.Away D.S A ∧ ∀ g ∈ Ine (F := ℚ) A, D.Psi g = 1 ∧ D.ξ g = 1 ∧ D.om g = 1 := by

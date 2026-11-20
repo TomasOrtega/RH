@@ -21,17 +21,15 @@ namespace GlobalTheory.ParamEigen
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Establish `m1 : ∀ γ ∈ R, ∃ k₁ ∈ (K : Set (GA D V)), ∃ k₂ ∈ (K : Set (GA D V)), γ = k₁ * α' * k₂` using `fun γ hγ => by`. Take `⟨-, k₁, h₁, k₂, h₂, rfl⟩` from `hR.1 γ hγ`. Conclude with `⟨k₁ * a⁻¹, K.mul_mem h₁ (K.inv_mem ha), b⁻¹ * k₂, K.mul_mem (K.inv_mem hb) h₂, by rw [hα]; group⟩`. Establish `m2 : ∀ γ ∈ R', ∃ k₁ ∈ (K : Set (GA D V)), ∃ k₂ ∈ (K : Set (GA D V)), γ = k₁ * α * k₂` using `fun γ hγ => by`. Take `⟨-, k₁, h₁, k₂, h₂, rfl⟩` from `hR'.1 γ hγ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k₁ * a, K.mul_mem h₁ ha, b * k₂, K.mul_mem hb h₂, by rw [hα]; group⟩`. Establish `inv : ∀ x y : GA D V, x⁻¹ * y ∈ K → y⁻¹ * x ∈ K` using `fun x y h => by`. Simplify using `using K.inv_mem h`. Use function extensionality and compare the values at `g`. Simplify using `only [heckeLin, LinearMap.coe_mk, AddHom.coe_mk]`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_bij' (fun γ hγ => (hR'.2 γ (m1 γ hγ)).exists.choose) (fun γ hγ => (hR.2 γ (m2 γ hγ)).exists.choose) (fun γ hγ => (hR'.2 γ (m1 γ hγ)).exists.choose_spec.1) (fun γ hγ => (hR.2 γ (m2 γ hγ)).exists.choose_spec.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `γ hγ`. Establish `s1` using `(hR'.2 γ (m1 γ hγ)).exists.choose_spec`. Use `set γ' := (hR'.2 γ (m1 γ hγ)).exists.choose`. Establish `s2` using `(hR.2 γ' (m2 γ' s1.1)).exists.choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hR.2 γ' (m2 γ' s1.1)).unique s2 ⟨hγ, inv _ _ s1.2⟩`. Introduce `γ hγ`. Establish `s1` using `(hR.2 γ (m2 γ hγ)).exists.choose_spec`. Use `set γ' := (hR.2 γ (m2 γ hγ)).exists.choose`. Establish `s2` using `(hR'.2 γ' (m1 γ' s1.1)).exists.choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hR'.2 γ' (m1 γ' s1.1)).unique s2 ⟨hγ, inv _ _ s1.2⟩`. Introduce `γ hγ`. Establish `s1` using `(hR'.2 γ (m1 γ hγ)).exists.choose_spec`. Use `set γ' := (hR'.2 γ (m1 γ hγ)).exists.choose`. Establish `e : g * γ = g * γ' * (γ'⁻¹ * γ)` using `by group`.
-
-Rewrite using `[e, hf _ s1.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeLin_eq_of_rep {K : Subgroup (GA D V)} {α α' : GA D V} {R R' : Finset (GA D V)}
     (hR : IsCosetRep V (K : Set (GA D V)) α R) (hR' : IsCosetRep V (K : Set (GA D V)) α' R')
@@ -77,13 +75,11 @@ variable {D : D7} {V : HSp D}
 open GlobalTheory.AdelicU GlobalTheory.PRep in
 
 /- English proof (translation)
-Set `H : Subgroup (GA D V)` to `(stabLoc D.sp.cm.sig V.gram (frameLat V) v).map (emb D.sp.cm.sig V.gram v)`. Establish `hKH : K = (H : Set (GA D V))` using `Set.ext fun x => (hK x).trans (by simp [H])`. Substitute `hKH` using the available equality. Use `GlobalTheory.HeckeDual.isLattice_frameLat V` as an intermediate fact. Take `⟨R₀, r1, r2⟩` from `GlobalTheory.HeckeDual.exists_rep _ (isOpen_stabLoc D.sp.cm.sig V.gram (frameLat V) v) (isCompact_stabLoc D.sp.cm.sig V.gram (frameLat V) v) g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, s2⟩` from `GlobalTheory.LFun.rep_image (emb D.sp.cm.sig V.gram v) (emb_injective _ _ v) hK r1 r2`. Establish `hR₀ : IsCosetRep V (H : Set (GA D V)) (emb D.sp.cm.sig V.gram v g) (R₀.image (emb D.sp.cm.sig V.gram v))` using `⟨fun γ hγ => ⟨by`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hγ`. Conclude with `mem_finPts.2 (projInf_emb _ _ v y), s1 γ hγ⟩, s2⟩`. Establish `hinv : ∀ k ∈ H, ∀ x, φ (x * k) = φ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩ x`. Conclude with `congrFun (GlobalTheory.LGrp.mem_fixed.1 hφ k hk) x`. Rewrite using `[heckeLin_eq_of_rep hR hR₀ (one_mem H) (one_mem H) (by group) hinv, GlobalTheory.LFun.heckeVec_dosetInd hφ (R := R₀) (fun γ hγ => DoubleCoset.mem_doubleCoset.2 (r1 γ hγ)) fun x hx => r2 x (DoubleCoset.mem_doubleCoset.1 hx)]`. Use function extensionality and compare the values at `x`. Rewrite using `[heckeLin_apply, Finset.sum_image (emb_injective _ _ v).injOn, Finset.sum_apply]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem heckeLin_eq_heckeVec {v : HeightOneSpectrum (𝓞 D.host.F)} {K : Set (GA D V)}
     (hK : ∀ x, x ∈ K ↔ ∃ k ∈ stabLoc D.sp.cm.sig V.gram (frameLat V) v, emb D.sp.cm.sig V.gram v k = x)
@@ -116,7 +112,7 @@ theorem heckeLin_eq_heckeVec {v : HeightOneSpectrum (𝓞 D.host.F)} {K : Set (G
   rfl
 
 /- English proof (translation)
-Break down `id hP with ⟨hi, rfl⟩ | ⟨rfl, -, -⟩` into its components or cases. Take `⟨a, ⟨ha, ha'⟩, b, ⟨hb, hb'⟩, hab⟩` from `GlobalTheory.SplitLabel.split_label V P e ϖ ϖ' d α α' hi h1 h2 h1' h2' hα hα' hD hD'`. Conclude with `⟨a, b, ha, ha', hb, hb', hab⟩`. Conclude with `(GlobalTheory.InertDoubleCoset.inert_double_cosets V P _ hP (GlobalTheory.SphLabelOps.exists_real_unif D P) α hα).2.2 ϖ ϖ' d α' h1 h2 h1' h2' hd hα' hD hD'`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem doubleCoset_of_divAt {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : AE D} (hP : IsPrimeIdem P e f)
     {ϖ ϖ' : 𝓞 D.host.E} (h1 : ϖ ∈ P.asIdeal) (h2 : ϖ ∉ P.asIdeal ^ 2) (h1' : ϖ' ∈ P.asIdeal)
@@ -140,19 +136,19 @@ variable {D : D7} {V : HSp D}
 open GlobalTheory.AdelicU GlobalTheory.PRep in
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ R, Hecke₂ V J χ Sb P d R`. Use `swap`. Conclude with `⟨0, fun f _ R hR => absurd ⟨R, hR⟩ h⟩`. Take `⟨R₀, e₀, f₀, ϖ₀, α₀, hS, hP₀, p1, p2, hd, hJ1, -, hα₀, hD₀, -, hR₀⟩` from `h`. Establish `hv : P.under (𝓞 D.host.F) ∉ Sb` using `GlobalTheory.LFun.offS_iff.1 hS`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `Supp.suppF_iff_of_isPrimeIdem V hP₀ rfl`. Establish `hK : ∀ x, x ∈ {k | k ∈ J ∧ SuppF V f₀ k} ↔ ∃ k ∈ stabLoc D.sp.cm.sig V.gram (frameLat V) (P.under (𝓞 D.host.F)), emb D.sp.cm.sig V.gram _ k = x` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m1, m2⟩`. Take `⟨k, rfl⟩` from `(hs x).1 m2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨k, (Supp.emb_mem_KsphC V k).1 ((hJ1 _ m2).1 m1), rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Use `(hs _).2 ⟨k, rfl⟩` as an intermediate fact. Conclude with `⟨(hJ1 _ this).2 ((Supp.emb_mem_KsphC V k).2 hk), this⟩`. Set `H : Subgroup (GA D V)` to `(stabLoc D.sp.cm.sig V.gram (frameLat V) (P.under (𝓞 D.host.F))).map (emb D.sp.cm.sig V.gram _)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hKH : {k | k ∈ J ∧ SuppF V f₀ k} = (H : Set (GA D V))` using `Set.ext fun x => (hK x).trans (by simp [H])`. Take `⟨g₀, rfl⟩` from `(hs α₀).1 hα₀`. Take `⟨z, hz⟩` from `GlobalTheory.T.sphericalHeckeOperator_eq_smul_of_localParameter _ _ D.sp.cm.sig V.rank V.gram (frameLat V) _ P rfl (B P) _ (Formalism.UG.Final.DosetIndMem _ (stabLoc D.sp.cm.sig V.gram (frameLat V) (P.under (𝓞 D.host.F))) ℂ g₀)`. Use `⟨z, fun f hf R hR => ?_⟩` and prove the remaining obligations. Take `⟨e, f', ϖ, α, -, hP', q1, q2, -, -, -, hα, hD, -, hRc⟩` from `hR`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, rfl⟩` from `((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 P e₀ f₀ hP₀).2.2.2.1 e f' hP'`. Establish `hpv` using `hf _ hv P rfl`. Establish `hfix` using `hpv.mem_fixed`. Take `⟨a, b, ha, ha', hb, hb', hab⟩` from `doubleCoset_of_divAt hP₀ p1 p2 q1 q2 hd hα₀ hα hD₀ hD`. Establish `hmem : ∀ k, k ∈ KsphC V ∅ → SuppF V f' k → k ∈ H` using `fun k hk hk' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← SetLike.mem_coe, ← hKH]`. Conclude with `⟨(hJ1 k hk').2 hk, hk'⟩`. Establish `hinv : ∀ k ∈ H, ∀ x, f (x * k) = f x`. Introduce and unpack `_ ⟨k, hk, rfl⟩ x`. Conclude with `congrFun (GlobalTheory.LGrp.mem_fixed.1 hfix k hk) x`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hRc`, `hR₀` using `[hKH]`. Rewrite using `[heckeLin_eq_of_rep hRc hR₀ (H.inv_mem (hmem a ha ha')) (H.inv_mem (hmem b hb hb')) (by rw [hab]; group) hinv, heckeLin_eq_heckeVec hK g₀ (hKH ▸ hR₀) hfix, hz _ _ f hpv]`.
+A detailed English derivation is pending.
 -/
 theorem exists_eig {J : Set (GA D V)} {χ : GA D V → ℂ} {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))}
     (hJ : SphOff J χ Sb) (B : GlobalTheory.LFun.Fam D.host.E) (P : HeightOneSpectrum (𝓞 D.host.E)) (d : List ℤ) :
@@ -203,7 +199,7 @@ end GlobalTheory.ParamEigen
 namespace GlobalTheory.ParamEigen
 
 /- English proof (translation)
-Introduce `D V J χ Sb hJ B`. Use `choose a ha using exists_eig (V := V) hJ B`. Conclude with `⟨a, fun f hf P d R hR => ha P d f hf R hR⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eig_of_param : ∀ (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ)
     (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), SphOff J χ Sb → ∀ B : GlobalTheory.LFun.Fam D.host.E,

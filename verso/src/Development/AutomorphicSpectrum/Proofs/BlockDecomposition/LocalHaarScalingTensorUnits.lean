@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.UnitScale
 open GlobalTheory.CompanionTheory.SW.WBox (cK eW)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.FactorConjugationCancel.map_eq_of_conj m s ν c hs h`.
+A detailed English derivation is pending.
 -/
 theorem map_eq_of_conj {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -26,7 +26,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
   (b : Module.Basis (Fin d) F E)
 
 /- English proof (translation)
-Establish `e : (r ⊗ₜ[F] (1 : E)) * y = r • y`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Simplify using `[cK, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem cK_tmul_mul' (r : R) (y : R ⊗[F] E) (k : Fin d) :
     cK R b ((r ⊗ₜ[F] (1 : E)) * y) k = r * cK R b y k := by
@@ -38,7 +38,7 @@ theorem cK_tmul_mul' (r : R) (y : R ⊗[F] E) (k : Fin d) :
 end Coord
 
 /- English proof (translation)
-Use `haveI : SigmaFinite (lam.map f) := by rw [h]; infer_instance`. Rewrite using `[Measure.pi_map_pi (fun _ => hf.aemeasurable)]`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Simplify using `only [h, Measure.smul_apply, Measure.pi_pi, ENNReal.smul_def, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pi_map_mul {R ι : Type} [Fintype ι] [CommRing R] [MeasurableSpace R] (lam : Measure R) [SigmaFinite lam]
     (f : R → R) (hf : Measurable f) (c : ℝ≥0) (h : lam.map f = c • lam) :
@@ -51,7 +51,7 @@ theorem pi_map_mul {R ι : Type} [Fintype ι] [CommRing R] [MeasurableSpace R] (
     Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `tmul r e => simp [sigR, hσ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (sigR R σ z) = z := by
@@ -61,7 +61,7 @@ theorem sigR_sigR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [Com
   | tmul r e => simp [sigR, hσ]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2, hcm.2.2.2]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
@@ -107,27 +107,23 @@ def sigT {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologicalRing S] (f :
     hf.comp (continuous_apply_apply a i)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm R _ _ _ _ _ _ _ _ _ hR d b lam hlam y n c hn hc`. Establish `hd : d = 2`. Use `Module.finrank_eq_card_basis b` as an intermediate fact. Rewrite `this` using `[hcm.2.2.1]`. Simplify using `using this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hd` using the available equality. Take `⟨iTR, iLC, iSC, iT2, hsc, -, hK', hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R`. Use `haveI := iTR`. Use `haveI := iLC`. Use `haveI := iSC`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := iT2`. Use `haveI := hB 1 1`. Use `haveI := hlam`. Establish `hK : IsHomeomorph (cK (F` using `F) (E := E) R b) := hK' 2 b`. Use `haveI hν : (coordW R b lam 1 1).IsAddHaarMeasure := (GlobalTheory.T.coordinate_haar_measure F E σ hcm R 2 b lam hlam).2.1 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv` using `sigR_sigR R σ (conj_conj σ hcm)`. Use `set π : Measure (Fin 1 × Fin 1 × Fin 2 → R) := Measure.pi fun _ => lam with hπ`. Establish `hmp` using `GlobalTheory.CompanionTheory.SW.WBox.map_coordW R hK lam 1 1`. Establish `hf : Measurable (fun t : R => (n : R) * t)` using `(continuous_const.mul continuous_id).measurable`. Establish `hTm : Measurable (fun (t : Fin 1 × Fin 1 × Fin 2 → R) i => (n : R) * t i)` using `measurable_pi_lambda _ fun i => hf.comp (measurable_pi_apply i)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : π.map (fun t i => (n : R) * t i) = (c * c) • π`. Establish `h1` using `pi_map_mul (ι := Fin 1 × Fin 1 × Fin 2) lam _ hf c hc`. Establish `e : c ^ Fintype.card (Fin 1 × Fin 1 × Fin 2) = c * c`. Simplify using `[pow_two]`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `h1`. Establish `hνπ : coordW R b lam 1 1 = π.map (eW R hK 1 1).symm`. Rewrite using `[hπ, ← hmp.map_eq, Measure.map_map (eW R hK 1 1).symm.measurable (eW R hK 1 1).measurable, MeasurableEquiv.symm_comp_self, Measure.map_id]`. Establish `hNc : Continuous (fun (X : Fin 1 → Fin 1 → R ⊗[F] E) a i => ((n : R) ⊗ₜ[F] (1 : E)) * X a i)` using `continuous_pi fun a => continuous_pi fun i => continuous_const.mul (continuous_apply_apply a i)`. Establish `hNm` using `hNc.measurable`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomm : (fun (X : Fin 1 → Fin 1 → R ⊗[F] E) a i => ((n : R) ⊗ₜ[F] (1 : E)) * X a i) ∘ (eW R hK 1 1).symm = (eW R hK 1 1).symm ∘ (fun t i => (n : R) * t i)`. Use function extensionality and compare the values at `t`. Apply `(eW R hK 1 1).injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, MeasurableEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `p`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `congrFun ((eW R hK 1 1).apply_symm_apply t) p`. Rewrite `h1` using `[GlobalTheory.CompanionTheory.SW.WBox.eW_apply]`. Rewrite using `[GlobalTheory.CompanionTheory.SW.WBox.eW_apply, cK_tmul_mul', h1]`. Establish `hN : (coordW R b lam 1 1).map (fun (X : Fin 1 → Fin 1 → R ⊗[F] E) a i => ((n : R) ⊗ₜ[F] (1 : E)) * X a i) = (c * c) • coordW R b lam 1 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_map hNm (eW R hK 1 1).symm.measurable, hcomm]`. Use `_ = (π.map (fun t i => (n : R) * t i)).map (eW R hK 1 1).symm := by`. Rewrite using `[Measure.map_map (eW R hK 1 1).symm.measurable hTm]`. Use `_ = _ := by rw [hT, Measure.map_smul, ← hνπ]`. Use `map_eq_of_conj (mulT y) (sigT (sigR R σ) hsc hinv) _ c (fun X => ?_) ?_` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `a i`. Conclude with `hinv _`. Establish `e : (fun X => sigT (sigR R σ) hsc hinv (mulT y (sigT (sigR R σ) hsc hinv (mulT y X)))) = (fun (X : Fin 1 → Fin 1 → R ⊗[F] E) a i => ((n : R) ⊗ₜ[F] (1 : E)) * X a i)`. Use function extensionality and compare the values at `X a i`. Express the relevant statement in the definitionally equal form `sigR R σ ((y : R ⊗[F] E) * sigR R σ ((y : R ⊗[F] E) * X a i)) = _`.
-
-Rewrite using `[map_mul, hinv, hn, mul_assoc]`. Rewrite using `[e, hN]`.
+A detailed English derivation is pending.
 -/
 theorem map_coordW_unit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ (y : (R ⊗[F] E)ˣ) (n : Rˣ) (c : ℝ≥0), (n : R) ⊗ₜ[F] (1 : E) = sigR R σ y * y → lam.map (fun t => (n : R) * t) = c • lam → (coordW R b lam 1 1).map (fun (X : Fin 1 → Fin 1 → R ⊗[F] E) a i => (y : R ⊗[F] E) * X a i) = c • coordW R b lam 1 1 := by
   intro F E _ _ _ _ _ σ hcm R _ _ _ _ _ _ _ _ _ hR d b lam hlam y n c hn hc

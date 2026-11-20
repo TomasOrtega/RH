@@ -15,7 +15,7 @@ noncomputable section
 namespace SectionsRank
 
 /- English proof (translation)
-Unfold `sec`. Rewrite using `[← MvPolynomial.homogeneousSubmodule_one_pow, Submodule.map_pow, MvPolynomial.homogeneousSubmodule_one_eq_span_X, Submodule.map_span, ← Set.range_comp, Submodule.span_pow]`. Use `congr 3`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sec_eq_span (o : Type*) [CommRing o] {Ω : Type*} [CommRing Ω] [Algebra o Ω] {ι : Type*}
     (x : ι → Ω) (n : ℕ) : sec o x n = Submodule.span o (Set.range x ^ n) := by
@@ -28,13 +28,13 @@ theorem sec_eq_span (o : Type*) [CommRing o] {Ω : Type*} [CommRing Ω] [Algebra
   simp
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C q`. Use `⟨q.den, q.pos, C q.num, ?_⟩` and prove the remaining obligations. Rewrite using `[map_C, smul_eq_C_mul, ← C_mul, Rat.den_mul_eq_num]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add f g hf hg`. Take `⟨a, ha, p, hp⟩` from `hf`. Take `⟨b, hb, r, hr⟩` from `hg`. Use `⟨a * b, Nat.mul_pos ha hb, (b : ℤ) • p + (a : ℤ) • r, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, smul_eq_C_mul, smul_eq_C_mul, map_mul, map_mul, hp, hr, map_C, map_C]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_C_mul, eq_intCast, Int.cast_natCast, Nat.cast_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X f i hf`. Take `⟨a, ha, p, hp⟩` from `hf`. Use `⟨a, ha, p * X i, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hp, map_X, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_int_multiple {ι : Type*} (f : MvPolynomial ι ℚ) :
     ∃ N : ℕ, 0 < N ∧ ∃ p : MvPolynomial ι ℤ, map (Int.castRingHom ℚ) p = (N : ℚ) • f := by
@@ -58,15 +58,15 @@ theorem exists_int_multiple {ι : Type*} (f : MvPolynomial ι ℚ) :
 variable {Ω : Type} [Field Ω] [CharZero Ω] {J : Type}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hle : (coordIdeal ℤ x).map (MvPolynomial.map (Int.castRingHom ℚ)) ≤ RingHom.ker (aeval x : MvPolynomial J ℚ →ₐ[ℚ] Ω)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← algebraMap_int_eq]`. Express the relevant statement in the definitionally equal form `aeval x (MvPolynomial.map (algebraMap ℤ ℚ) p) = 0`. Rewrite using `[aeval_map_algebraMap]`. Conclude with `aeval_eq_zero_of_mem_coordIdeal hp`. Conclude with `hle h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨N, hN, p, hp⟩` from `exists_int_multiple f`. Establish `hpn : p.IsHomogeneous n`. Use `IsHomogeneous.of_map (f := Int.castRingHom ℚ) (RingHom.injective_int _) ?_` and prove the remaining obligations. Rewrite using `[hp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_homogeneousSubmodule n _).mp (Submodule.smul_mem _ _ ((mem_homogeneousSubmodule n f).mpr hf))`. Establish `hp0 : aeval x p = 0`. Rewrite using `[← aeval_map_algebraMap ℚ, algebraMap_int_eq, hp, map_smul, h, smul_zero]`. Establish `hmem` using `Ideal.mem_map_of_mem (MvPolynomial.map (Int.castRingHom ℚ)) (mem_coordIdeal_of_isHomogeneous ℤ x hpn hp0)`. Rewrite `hmem` using `[hp, smul_eq_C_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hN' : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `Ideal.mul_mem_left _ (C (N : ℚ)⁻¹) hmem` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← C_mul, inv_mul_cancel₀ hN', C_1, one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_map_coordIdeal_iff [Fintype J] (x : J → Ω) {n : ℕ} {f : MvPolynomial J ℚ}
     (hf : f.IsHomogeneous n) :
@@ -99,9 +99,9 @@ theorem mem_map_coordIdeal_iff [Fintype J] (x : J → Ω) {n : ℕ} {f : MvPolyn
     rwa [← mul_assoc, ← C_mul, inv_mul_cancel₀ hN', C_1, one_mul] at this
 
 /- English proof (translation)
-Establish `ef : V.map f = LinearMap.range (f ∘ₗ V.subtype)`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Establish `eg : V.map g = LinearMap.range (g ∘ₗ V.subtype)`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Establish `hk : LinearMap.ker (f ∘ₗ V.subtype) = LinearMap.ker (g ∘ₗ V.subtype)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `using h v v.2`. Rewrite using `[ef, eg]`. Conclude with `((f ∘ₗ V.subtype).quotKerEquivRange.symm.trans ((Submodule.quotEquivOfEq _ _ hk).trans (g ∘ₗ V.subtype).quotKerEquivRange)).finrank_eq`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_map_eq {K M N N' : Type*} [Field K] [AddCommGroup M] [Module K M]
     [AddCommGroup N] [Module K N] [AddCommGroup N'] [Module K N'] (V : Submodule K M)
@@ -119,11 +119,11 @@ theorem finrank_map_eq {K M N N' : Type*} [Field K] [AddCommGroup M] [Module K M
     ((Submodule.quotEquivOfEq _ _ hk).trans (g ∘ₗ V.subtype).quotKerEquivRange)).finrank_eq
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ (sec ℤ x n)` using `Module.Finite.iff_fg.mpr (sec_fg x n)`. Set `b` to `Module.Free.chooseBasis ℤ (sec ℤ x n)`. Set `v : Module.Free.ChooseBasisIndex ℤ (sec ℤ x n) → Ω` to `fun i => (b i : Ω)`. Establish `hli : LinearIndependent ℤ v` using `b.linearIndependent.map' (sec ℤ x n).subtype (Submodule.ker_subtype _)`. Establish `hliQ : LinearIndependent ℚ v` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp hli`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspanZ : Submodule.span ℤ (Set.range v) = sec ℤ x n`. Establish `: Set.range v = (sec ℤ x n).subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hspanQ : Submodule.span ℚ (Set.range v) = sec ℚ x n`. Rewrite using `[← Submodule.span_span_of_tower ℤ, hspanZ, sec_eq_span ℤ, sec_eq_span ℚ, Submodule.span_span_of_tower]`. Rewrite using `[Module.finrank_eq_card_chooseBasisIndex, ← hspanQ, finrank_span_eq_card hliQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_sec_int [Fintype J] (x : J → Ω) (n : ℕ) :
     Module.finrank ℤ (sec ℤ x n) = Module.finrank ℚ (sec ℚ x n) := by
@@ -147,15 +147,15 @@ end SectionsRank
 open SectionsRank in
 
 /- English proof (translation)
-Introduce `Ω _ _ κ _ x n`. Use `set q := (coordIdeal ℤ x).map (MvPolynomial.map (Int.castRingHom ℚ))`. Establish `hw : GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight (GlobalTheory κ) = fun _ _ => 1`. Use function extensionality and compare the values at `v u`. Simplify using `[GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hV : weightedHomogeneousSubmodule ℚ (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight (GlobalTheory κ)) (fun _ => n) = homogeneousSubmodule (Ix κ) ℚ n`. Use extensionality with `f`. Rewrite using `[mem_weightedHomogeneousSubmodule, mem_homogeneousSubmodule, hw]`. Establish `hwt : ∀ d : Ix κ →₀ ℕ, Finsupp.weight (fun _ _ => (1 : ℕ) : Ix κ → Unit → ℕ) d = fun _ => Finsupp.weight 1 d`. Introduce `d`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `u`. Simplify using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Simplify using `only [IsHomogeneous, IsWeightedHomogeneous, hwt, funext_iff, forall_const]`. Establish `hg : ∀ m : Unit → ℕ, m = (fun _ => n) → GroundTheory.Heights₂.Heights.NumbersDVR.gradedPiece q m = (homogeneousSubmodule (Ix κ) ℚ n).map (Ideal.Quotient.mkₐ ℚ q).toLinearMap`. Introduce and unpack `m rfl`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Unfold `GroundTheory.Heights₂.Heights.NumbersDVR.gradedPiece`. Rewrite using `[hV]`. Unfold `GroundTheory.Heights₂.Heights.NumbersDVR.hilbFn`. Rewrite using `[if_pos (fun _ => Int.natCast_nonneg n), hg _ (by funext; simp), finrank_sec_int]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `finrank_map_eq _ _ _ fun f hf => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem, AlgHom.toLinearMap_apply]`. Conclude with `mem_map_coordIdeal_iff x ((mem_homogeneousSubmodule n f).mp hf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SectionsRank.proof : SectionsRank.Statement := by
   intro Ω _ _ κ _ x n

@@ -21,7 +21,7 @@ def thetaExt (x : Per6.BdR l) : ℂ_[l] :=
   if h : ∃ y : Per6.BdRp l, x = algebraMap (Per6.BdRp l) (Per6.BdR l) y then Per6.θD l h.choose else 0
 
 /- English proof (translation)
-Establish `h0 : ∃ y : Per6.BdRp l, x = algebraMap (Per6.BdRp l) (Per6.BdR l) y` using `⟨y, h⟩`. Establish `h1 : h0.choose = y` using `IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) (h0.choose_spec.symm.trans h)`. Rewrite using `[thetaExt, dif_pos h0, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaExt_of_eq {x : Per6.BdR l} {y : Per6.BdRp l}
     (h : x = algebraMap (Per6.BdRp l) (Per6.BdR l) y) : thetaExt x = Per6.θD l y := by
@@ -32,7 +32,7 @@ theorem thetaExt_of_eq {x : Per6.BdR l} {y : Per6.BdRp l}
   rw [thetaExt, dif_pos h0, h1]
 
 /- English proof (translation)
-Rewrite using `[Per6.θD, thetaBDeRhamPlusField_gal_smul, ← galCp_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem theta_gal (g : GQ l) (y : Per6.BdRp l) :
     Per6.θD l (Per6.toBot g • y) = actC l g (Per6.θD l y) := by
@@ -40,9 +40,9 @@ theorem theta_gal (g : GQ l) (y : Per6.BdRp l) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[θD_aD, frob_ainfMap_teich, WittVector.fontaineTheta_teichmuller]`. Establish `h1` using `(PreTilt.mk_untilt_eq_coeff_zero (Per6.tiltMap l x)).trans (frob_coeff_tiltMap x 0 y h)`. Rewrite `h1` using `[Ideal.Quotient.eq]`. Establish `h2` using `(mem_span_singleton_pow_iff (K := ℂ_[l]) (a := (l : normInteger ℂ_[l])) (x := PreTilt.untilt (Per6.tiltMap l x) - Per6.intEquiv l y) 1).1 (by rwa [pow_one])`. Rewrite `h2` using `[pow_one, AddSubgroupClass.coe_sub, Subring.coe_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem theta_teich (x : OCb l) (y : OC l)
     (h : PreTilt.coeff 0 x = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) y) :
@@ -56,7 +56,7 @@ theorem theta_teich (x : OCb l) (y : OC l)
   exact h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨_, ⟨b, rfl⟩, by rw [zpow_add_one₀ ht]; ring⟩`. Introduce and unpack `⟨_, ⟨b, rfl⟩, rfl⟩`. Conclude with `⟨b, by rw [zpow_add_one₀ ht]; ring⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem zpow_succ_mul_iff {R F : Type} [CommRing R] [Field F] (f : R →+* F) {t : F} (ht : t ≠ 0)
     (a : ℤ) (x : F) : (∃ b, x = t ^ (a + 1) * f b) ↔ ∃ y, (∃ b, y = t ^ a * f b) ∧ x = t * y := by
@@ -67,7 +67,7 @@ theorem zpow_succ_mul_iff {R F : Type} [CommRing R] [Field F] (f : R →+* F) {t
     exact ⟨b, by rw [zpow_add_one₀ ht]; ring⟩
 
 /- English proof (translation)
-Use `(IsPerfectoidField.mem_fil_iff hπ).trans ((zpow_succ_mul_iff _ (IsPerfectoidField.algebraMap_ne_zero_of_maximalIdeal_eq_span hπ) a x).trans ?_)` and prove the remaining obligations. Conclude with `exists_congr fun y => and_congr_left fun _ => (IsPerfectoidField.mem_fil_iff hπ).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem filD_succ_iff {π : Per6.BdRp l}
     (hπ : IsLocalRing.maximalIdeal (Per6.BdRp l) = Ideal.span {π}) (a : ℤ) (x : Per6.BdR l) :
@@ -78,7 +78,7 @@ theorem filD_succ_iff {π : Per6.BdRp l}
   exact exists_congr fun y => and_congr_left fun _ => (IsPerfectoidField.mem_fil_iff hπ).symm
 
 /- English proof (translation)
-Establish `h` using `(isLog_iff ε _).2 ⟨hε, rfl⟩ 2`. Establish `h2 : fontaineT (Per6.tiltMap l ε) hε - (Per6.aD l (WittVector.teichmuller l ε) - 1) ∈ RingHom.ker (Per6.θD l) ^ 2`. Simplify using `using h`. Rewrite using `[map_sub, map_one, ← neg_sub]`. Conclude with `neg_mem h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_sub_t_mem (ε : OCb l) (hε : PreTilt.untilt (Per6.tiltMap l ε) = 1) :
     Per6.aD l (WittVector.teichmuller l ε - 1) - fontaineT (Per6.tiltMap l ε) hε ∈
@@ -93,7 +93,7 @@ theorem mu_sub_t_mem (ε : OCb l) (hε : PreTilt.untilt (Per6.tiltMap l ε) = 1)
 variable {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI)
 
 /- English proof (translation)
-The claim follows from `thetaExt_of_eq (tie_a T a)`.
+A detailed English derivation is pending.
 -/
 theorem tie_theta_a (a : Ainf l) : thetaExt (T.eD (P.ιB (AI.ιA a))) = Per6.θD l (Per6.aD l a) :=
   thetaExt_of_eq (tie_a T a)
@@ -148,14 +148,14 @@ def thetaL : ThetaL P AI where
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨thetaL T⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_thetaL_of_tied (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (T : LocTied6 l P AI) : Nonempty (ThetaL P AI) :=
   ⟨thetaL T⟩
 
 /- English proof (translation)
-Introduce `D l _` and use `GlobalTheory.MemLoc.TiedTheta.nonempty_thetaL l _ _ (D.locT l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_thetaL :
     ∀ (D : Formalism.BasicNotions.D7) (l : ℕ) [Fact l.Prime], Nonempty (ThetaL (D.loc l) (D.locA l)) :=

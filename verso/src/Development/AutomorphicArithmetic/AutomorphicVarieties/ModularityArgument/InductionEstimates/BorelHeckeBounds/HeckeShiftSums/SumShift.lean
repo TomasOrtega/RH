@@ -16,7 +16,7 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 namespace UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.HeckeShiftDescent
 
 /- English proof (translation)
-Establish `h : (QuotientGroup.rightRel P) ((Quotient.mk (QuotientGroup.rightRel P) a).out) a` using `Quotient.mk_out (s := QuotientGroup.rightRel P) a`. Use `Quotient.sound ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(QuotientGroup.rightRel P) _ _`. Rewrite `h`, the goal using `[QuotientGroup.rightRel_apply]`. Simplify `h` using `[mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mk_shift {G : Type*} [Group G] (P : Subgroup G) (a b : G) :
     (Quotient.mk (QuotientGroup.rightRel P) ((Quotient.mk (QuotientGroup.rightRel P) a).out * b)) =
@@ -29,7 +29,7 @@ private theorem mk_shift {G : Type*} [Group G] (P : Subgroup G) (a b : G) :
   simpa [mul_assoc] using h
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨fun q => Quotient.mk (QuotientGroup.rightRel P) (q.out * b⁻¹), fun q => ?_, fun q => ?_⟩` and prove the remaining obligations. Simplify using `only [mk_shift, mul_inv_cancel_right, Quotient.out_eq]`. Simplify using `only [mk_shift, inv_mul_cancel_right, Quotient.out_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem shift_bij {G : Type*} [Group G] (P : Subgroup G) (b : G) :
     Function.Bijective fun q : Quotient (QuotientGroup.rightRel P) =>
@@ -42,7 +42,7 @@ private theorem shift_bij {G : Type*} [Group G] (P : Subgroup G) (b : G) :
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hout : ∀ (c : Gam K (2 + 2)) (g : G1 K (2 + 2)), F ((((Quotient.mk _ c : Cos K).out : Gam K (2 + 2)) : G1 K (2 + 2)) * g) = F (c * g)` using `fun c g => by`. Take `⟨δ, hδ, h⟩` from `(pkLaws (K := K)).2.2.2 c`. Rewrite using `[h, mul_assoc, hP δ hδ]`. Use `finsum_eq_of_bijective _ (shift_bij (ParΓ K 2 2) ⟨γ, hγ⟩) fun q => ?_` and prove the remaining obligations. Rewrite using `[hout, Subgroup.coe_mul, mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_shift {M : Type*} [AddCommMonoid M] (F : G1 K (2 + 2) → M)
     (hP : ∀ γ ∈ PK K, ∀ g, F (γ * g) = F g) (γ : G1 K (2 + 2)) (hγ : γ ∈ Gam K (2 + 2))
@@ -56,9 +56,9 @@ private theorem sum_shift {M : Type*} [AddCommMonoid M] (F : G1 K (2 + 2) → M)
   rw [hout, Subgroup.coe_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[(isOpenQuotientMap_mk (Gam K (2 + 2))).isQuotientMap.continuous_iff]`. Establish `: (fun y : RightCosetSpace (Gam K (2 + 2)) => f (Quotient.out y)) ∘ mk (Gam K (2 + 2)) = f` using `funext fun g => by`. Take `⟨γ, hγ⟩` from `(mk_eq_mk_iff (Γ := Gam K (2 + 2)) (g := (mk (Gam K (2 + 2)) g).out) (h := g)).1 (Quotient.out_eq _)`. Express the relevant statement in the definitionally equal form `f _ = _`. Rewrite using `[← hγ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi γ γ.2 g`. Rewrite using `[this]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem desc_cont {Y : Type*} [TopologicalSpace Y] (f : G1 K (2 + 2) → Y) (hc : Continuous f)
     (hi : ∀ γ ∈ Gam K (2 + 2), ∀ x, f (γ * x) = f x) :
@@ -72,7 +72,7 @@ private theorem desc_cont {Y : Type*} [TopologicalSpace Y] (f : G1 K (2 + 2) →
   rwa [this]
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology (RightCosetSpace (Gam K (2 + 2))) := (isOpenQuotientMap_mk (Gam K (2 + 2))).isQuotientMap.secondCountableTopology (isOpenQuotientMap_mk (Gam K (2 + 2))).isOpenMap`. Conclude with `(desc_cont f hc hi).stronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 private theorem desc_sm {Y : Type*} [TopologicalSpace Y] [TopologicalSpace.PseudoMetrizableSpace Y]
     (f : G1 K (2 + 2) → Y) (hc : Continuous f) (hi : ∀ γ ∈ Gam K (2 + 2), ∀ x, f (γ * x) = f x) :
@@ -85,14 +85,14 @@ private theorem desc_sm {Y : Type*} [TopologicalSpace Y] [TopologicalSpace.Pseud
 private noncomputable def ramp (T : ℝ) (n : ℕ) (h : ℝ) : ℝ := max 0 (min 1 (((n : ℝ) + 1) * (h - T)))
 
 /- English proof (translation)
-Unfold `ramp`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem ramp_cont (T : ℝ) (n : ℕ) : Continuous (ramp T n) := by
   unfold ramp
   fun_prop
 
 /- English proof (translation)
-Establish `: ((n : ℝ) + 1) * (h - T) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by positivity) (sub_nonpos.2 hh)`. Conclude with `max_eq_left ((min_le_right _ _).trans this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ramp_zero {T h : ℝ} (n : ℕ) (hh : h ≤ T) : ramp T n h = 0 := by
   have : ((n : ℝ) + 1) * (h - T) ≤ 0 :=
@@ -100,13 +100,13 @@ private theorem ramp_zero {T h : ℝ} (n : ℕ) (hh : h ≤ T) : ramp T n h = 0 
   exact max_eq_left ((min_le_right _ _).trans this)
 
 /- English proof (translation)
-Use `split_ifs with hh`. Take `⟨N, hN⟩` from `exists_nat_gt (1 / (h - T))`. Establish `hp : 0 < h - T` using `sub_pos.2 hh`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop N] with n hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ ((n : ℝ) + 1) * (h - T)`. Establish `h2 : (N : ℝ) ≤ n` using `by exact_mod_cast hn`. Rewrite `hN` using `[div_lt_iff₀ hp]`. Use the polynomial consequences of the given equalities and inequalities. Establish `: ramp T n h = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ramp`. Rewrite using `[min_eq_left h1]`. Conclude with `max_eq_right zero_le_one`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `tendsto_const_nhds.congr fun n => ?_` and prove the remaining obligations. Rewrite using `[ramp_zero n (not_lt.1 hh)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem ramp_lim (T h : ℝ) :
     Tendsto (fun n : ℕ => ((ramp T n h : ℝ) : ℂ)) atTop (𝓝 (if T < h then 1 else 0)) := by
@@ -133,25 +133,23 @@ end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.HeckeShiftDescent
 
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.HeckeShiftDescent in
 /- English proof (translation)
-Introduce `K _ _ μ _ a T`. Take `⟨kc, hkc, hin⟩` from `(ctKv μ a).1 2`. Establish `hlaw` using `(ctKv μ a).2`. Establish `hH` using `hpSpec (K := K)`. Establish `hkP : ∀ γ ∈ PK K, ∀ z, kc (γ * z) = kc z` using `fun γ hγ z => ext_inner_right ℂ fun φ => by rw [hin, hin, (hlaw φ).2.2.2.1 γ hγ z]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A : (ℝ → ℂ) → G1 K (2 + 2) → L2 μ` to `fun w x => kv μ a x - ∑ᶠ q : Cos K, w (HH ((q.out : G1 K (2 + 2)) * x)) • kc ((q.out : G1 K (2 + 2)) * x)`. Establish `hAinv : ∀ w, ∀ γ ∈ Gam K (2 + 2), ∀ x, A w (γ * x) = A w x` using `fun w γ hγ x => by`. Establish `h1` using `(ropAe K (2 + 2) μ a).2 γ hγ x`. Establish `h2` using `sum_shift (K := K) (fun g => w (HH g) • kc g) (fun δ hδ g => by simp only [hkP δ hδ g, hH.2.2.1 δ hδ g]) γ hγ x`. Simplify using `only [A, h1, h2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `ind : ℝ → ℂ` to `fun h => if T < h then 1 else 0`. Establish `hfin : ∀ x : G1 K (2 + 2), {q : Cos K | T ≤ HH ((q.out : G1 K (2 + 2)) * x)}.Finite` using `fun x => (locFin {x} T isCompact_singleton).subset fun q hq => ⟨x, rfl, hq⟩`. Establish `hsupp : ∀ (w : ℝ → ℂ), (∀ h, h < T → w h = 0) → ∀ x : G1 K (2 + 2), (Function.support fun q : Cos K => w (HH ((q.out : G1 K (2 + 2)) * x)) • kc ((q.out : G1 K (2 + 2)) * x)) ⊆ {q : Cos K | T ≤ HH ((q.out : G1 K (2 + 2)) * x)}` using `fun w hw x q hq => by`. Assume the negation of the conclusion as `hlt`. Conclude with `hq (by beta_reduce; rw [hw _ (not_le.1 hlt), zero_smul])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hind : ∀ h, h < T → ind h = 0` using `fun h hh => if_neg (not_lt.2 hh.le)`. Establish `hrz : ∀ n : ℕ, ∀ h, h < T → ((ramp T n h : ℝ) : ℂ) = 0` using `fun n h hh => by`. Rewrite using `[ramp_zero n hh.le]`. Simplify using the standard rewrite rules. Use `⟨A ind, fun x φ => ?_, hAinv ind, fun x hx => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `ip : L2 μ →+ ℂ` to `{ toFun := fun v => ⟪v, φ⟫_ℂ, map_zero' := inner_zero_left _, map_add' := fun u v => inner_add_left _ _ _ }`. Establish `hsum : ⟪∑ᶠ q : Cos K, ind (HH ((q.out : G1 K (2 + 2)) * x)) • kc ((q.out : G1 K (2 + 2)) * x), φ⟫_ℂ = ∑ᶠ q : Cos K, ⟪ind (HH ((q.out : G1 K (2 + 2)) * x)) • kc ((q.out : G1 K (2 + 2)) * x), φ⟫_ℂ` using `ip.map_finsum ((hfin x).subset (hsupp ind hind x))`. Simplify using `only [A, inner_sub_left, inner_kv, hsum, lam, th, hi]`. Use `congr 1`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_smul_left, hin]`. Distinguish the cases in `h : T < HH ((q.out : G1 K (2 + 2)) * x)`. Simplify using `[ind, h]`. Simplify using `[ind, h]`. Establish `: ∀ q : Cos K, ind (HH ((q.out : G1 K (2 + 2)) * x)) • kc ((q.out : G1 K (2 + 2)) * x) = 0` using `fun q => by`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ind (HH ((q.out : G1 K (2 + 2)) * x)) = 0` using `if_neg (not_lt.2 (hx q))`. Rewrite using `[this, zero_smul]`. Simplify using `only [A, this, finsum_zero, sub_zero]`. Establish `hcont : ∀ n : ℕ, Continuous (A fun h => ((ramp T n h : ℝ) : ℂ))` using `fun n => by`. Use `(kvCont K (2 + 2) μ a).sub (continuous_finsum (fun q => ?_) fun x => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : Continuous fun x : G1 K (2 + 2) => (q.out : G1 K (2 + 2)) * x` using `continuous_const.mul continuous_id`. Conclude with `(Complex.continuous_ofReal.comp ((ramp_cont T n).comp (hH.2.2.2.1.comp hm))).smul (hkc.comp hm)`. Take `⟨C, hC, hx⟩` from `exists_compact_mem_nhds x`. Use `⟨C, hx, (locFin C T hC).subset fun q ⟨g, hg, hgC⟩ => ⟨g, hgC, ?_⟩⟩` and prove the remaining obligations. Conclude with `hsupp _ (hrz n) g hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdesc : ∀ n : ℕ, StronglyMeasurable fun y : RightCosetSpace (Gam K (2 + 2)) => A (fun h => ((ramp T n h : ℝ) : ℂ)) (Quotient.out y)` using `fun n => desc_sm (A fun h => ((ramp T n h : ℝ) : ℂ)) (hcont n) (hAinv fun h => ((ramp T n h : ℝ) : ℂ))`. Use `stronglyMeasurable_of_tendsto atTop hdesc (tendsto_pi_nhds.2 fun y => ?_)` and prove the remaining obligations. Use `set x : G1 K (2 + 2) := Quotient.out y`. Establish `e : ∀ w : ℝ → ℂ, (∀ h, h < T → w h = 0) → A w x = kv μ a x - ∑ q ∈ (hfin x).toFinset, w (HH ((q.out : G1 K (2 + 2)) * x)) • kc ((q.out : G1 K (2 + 2)) * x)` using `fun w hw => by`. Simplify using `only [A]`.
-
-Rewrite using `[finsum_eq_sum_of_support_subset (s := (hfin x).toFinset) _ (by rw [Set.Finite.coe_toFinset]; exact hsupp w hw x)]`. Simplify using `only [e _ (hrz _), e ind hind]`. Use `tendsto_const_nhds.sub (tendsto_finset_sum _ fun q _ => ?_)` and prove the remaining obligations. Conclude with `(ramp_lim T _).smul_const _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.kT :
     ∀ {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (a : CC K (2 + 2)) (T : ℝ), ∃ kk : G1 K (2 + 2) → L2 μ,

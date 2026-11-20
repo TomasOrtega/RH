@@ -29,7 +29,7 @@ def normalFrameVectorSequences (D : D7) : ∀ j : ℕ, (ℕ → (D.sp.Y j).V) ×
     else (0, 0, 0)
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => exact isAuxiliaryHyperbolicPart_initialChainSpace`. Consider the case `succ j`. Simplify using `only [normalFrameVectorSequences, dif_pos hj]`. Conclude with `Classical.choose_spec (Classical.choose_spec (Classical.choose_spec (GlobalTheory.StandardGramVectors.exists_auxiliaryHyperbolicVectors D (j + 1) hj)))`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normal_frame_level_conditions_at (j : ℕ) (hj : j < D.R.m) : IsAuxiliaryHeckeCharacter D j (normalFrameVectorSequences D j).1 (normalFrameVectorSequences D j).2.1 (normalFrameVectorSequences D j).2.2 := by
   cases j with
@@ -41,9 +41,9 @@ theorem normal_frame_level_conditions_at (j : ℕ) (hj : j < D.R.m) : IsAuxiliar
 def gam (D : D7) (j : ℕ) : GL (Fin (D.sp.X j).rank) (Ef D) := Classical.choose (exists_base (D.sp.X j))
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.L2.Herm.crdLat, l0X, Submodule.mem_map, Submodule.mem_comap, Formalism.L2.Herm.crd, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx`. Conclude with `⟨_, hx, V.frame.equivFun.apply_symm_apply x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem crdLat_eq_l0X (V : HSp D) : Formalism.L2.Herm.crdLat V V.L0 = l0X V := by
   ext x
@@ -56,9 +56,9 @@ theorem crdLat_eq_l0X (V : HSp D) : Formalism.L2.Herm.crdLat V V.L0 = l0X V := b
     exact ⟨_, hx, V.frame.equivFun.apply_symm_apply x⟩
 
 /- English proof (translation)
-Take `⟨e, he, hM⟩` from `h`. Establish `h1` using `congrArg (cpt PP) (hM i j)`. Rewrite `h1` using `[map_mul, map_mul, (cpt_of_isIdemAt he).1, one_mul, one_mul]`. Use `cpt_ext fun Q => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hQ : Q = PP`. Substitute `hQ` using the available equality. Rewrite using `[h1]`. Rewrite using `[(cpt_of_isIdemAt hei).2 Q hQ, zero_mul, zero_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem agree_all {PP : Pl D.host.E} {a b : ℕ} {M M' : Matrix (Fin a) (Fin b) (Ef D)} (h : AgreeAt PP M M')
     {ei : AE D} (hei : Formalism.L2.NTheta.IsIdemAt ei PP) (i : Fin a) (j : Fin b) :
@@ -82,18 +82,16 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices GlobalTheory.StdFrame
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g l) (D.host.g_prime l) (D.nd.g_split l) PP (P.overP h)).1`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_of_div (P : Formalism.L2.Host.PiBar D.host) {l : Fin 2} {PP : Pl D.host.E} (h : P.Div l PP) :
     Ideal.absNorm PP.asIdeal = D.host.g l :=
   (GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g l) (D.host.g_prime l) (D.nd.g_split l) PP (P.overP h)).1
 
 /- English proof (translation)
-Introduce `hTm`. Establish `hg : ((D.host.g l : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `P.overP h`. Establish `hmod : D.sp.T % D.host.g l = 1`. Rewrite using `[D.sp_T]`. Conclude with `D.T_mod_g D.u₀ l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiv` using `Nat.div_add_mod D.sp.T (D.host.g l)`. Rewrite `hdiv` using `[hmod]`. Establish `hE : ((D.sp.T : ℕ) : 𝓞 D.host.E) = ((D.host.g l : ℕ) : 𝓞 D.host.E) * ((D.sp.T / D.host.g l : ℕ) : 𝓞 D.host.E) + 1`. Conclude with `hdiv.symm` after adjusting the coercions. Rewrite `hTm` using `[hE]`.
-
-Establish `h1 : (1 : 𝓞 D.host.E) ∈ PP.asIdeal` using `(Ideal.add_mem_iff_right _ (Ideal.mul_mem_right _ _ hg)).mp hTm`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_not_mem (P : Formalism.L2.Host.PiBar D.host) {l : Fin 2} {PP : Pl D.host.E} (h : P.Div l PP) :
     ((D.sp.T : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal := by
@@ -113,7 +111,7 @@ theorem T_not_mem (P : Formalism.L2.Host.PiBar D.host) {l : Fin 2} {PP : Pl D.ho
   exact PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)
 
 /- English proof (translation)
-Establish `: ((D.sp.T : ℕ) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E ((D.sp.T : ℕ) : 𝓞 D.host.E)` using `by simp`. Rewrite using `[this, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `T_not_mem P h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_splitTraceElement_eq_one (P : Formalism.L2.Host.PiBar D.host) {l : Fin 2} {PP : Pl D.host.E} (h : P.Div l PP) :
     PP.valuation D.host.E ((D.sp.T : ℕ) : D.host.E) = 1 := by
@@ -128,9 +126,9 @@ def sgT (D : D7) (j : ℕ) : D.host.E := if Even j then -(D.sp.T : D.host.E) els
 def kap (D : D7) (j i : ℕ) : D.host.E := if i + 1 = bI D j then sgT D j else 1
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp [nfScal, show ¬ bI D j ≤ 0 by omega]`. Consider the case `succ i ih`. Simplify using `only [nfScal, ih, kap]`. Distinguish the cases in `h1 : i + 1 = bI D j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1, if_neg (by omega), if_pos (by omega), mul_one]`. Rewrite using `[if_neg h1, one_mul]`. Distinguish the cases in `h2 : bI D j ≤ i`. Rewrite using `[if_pos h2, if_pos (by omega)]`. Rewrite using `[if_neg h2, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nfScal_kap (j : ℕ) (hb : 0 < bI D j) (i : ℕ) :
     nfScal (kap D) (fun _ => 1) j i = if bI D j ≤ i then sgT D j else 1 := by
@@ -146,9 +144,7 @@ theorem nfScal_kap (j : ℕ) (hb : 0 < bI D j) (i : ℕ) :
       · rw [if_neg h2, if_neg (by omega)]
 
 /- English proof (translation)
-Establish `hT : (D.sp.T : D.host.E) ≠ 0`. Establish `hmod : D.sp.T % D.host.g 0 = 1` using `by rw [D.sp_T]; exact D.T_mod_g D.u₀ 0`. Establish `: D.sp.T ≠ 0` using `fun h => by rw [h] at hmod; simp at hmod`. Conclude with `this` after adjusting the coercions. Unfold `sgT`.
-
-Use `split_ifs`. Conclude with `neg_ne_zero.2 hT`. Conclude with `hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sgT_ne {j : ℕ} : sgT D j ≠ 0 := by
   have hT : (D.sp.T : D.host.E) ≠ 0 := by
@@ -160,7 +156,7 @@ theorem sgT_ne {j : ℕ} : sgT D j ≠ 0 := by
   · exact hT
 
 /- English proof (translation)
-Unfold `kap`. Use `split_ifs`. Conclude with `sgT_ne`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kap_ne (j i : ℕ) : kap D j i ≠ 0 := by
   unfold kap; split_ifs
@@ -168,7 +164,7 @@ theorem kap_ne (j i : ℕ) : kap D j i ≠ 0 := by
   · exact one_ne_zero
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hs`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem shape_cast {T : Type} (L : LevCh D T) (γ : ∀ j, GL (Fin (D.sp.X j).rank) (Ef D))
     (E Ev : ∀ j, ℕ → (D.sp.Y j).V) (z : ∀ j, (D.sp.Y j).V) (n j : ℕ) (h : n = j)
@@ -178,7 +174,7 @@ theorem shape_cast {T : Type} (L : LevCh D T) (γ : ∀ j, GL (Fin (D.sp.X j).ra
   exact hs
 
 /- English proof (translation)
-Unfold `Seed.Frm.betaYOf`. Rewrite using `[dif_pos hj]`. Conclude with `shape_cast L γ E Ev z (min j D.R.m) j (Nat.min_eq_left hj) _ (βY j) hs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shape_betaYOf {T : Type} (L : LevCh D T) (γ : ∀ j, GL (Fin (D.sp.X j).rank) (Ef D))
     (E Ev : ∀ j, ℕ → (D.sp.Y j).V) (z : ∀ j, (D.sp.Y j).V) (βY : ∀ j, GL (Fin (Yc D j).rank) (EAf D)) (j : ℕ)
@@ -197,7 +193,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices GlobalTheory.StdFrame
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ht`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem transport_cast (Pg : Finset (Pl D.host.E)) (W : HSp D) (βW : GL (Fin W.rank) (Ef D)) (n : ℕ) (h : n = 0)
     (hT : GL (Fin (D.sp.Y n).rank) (EAf D) = GL (Fin (D.sp.Y 0).rank) (EAf D)) (β : GL (Fin (D.sp.Y n).rank) (EAf D))
@@ -206,7 +202,7 @@ theorem transport_cast (Pg : Finset (Pl D.host.E)) (W : HSp D) (βW : GL (Fin W.
   exact ht
 
 /- English proof (translation)
-Unfold `Seed.Frm.betaYOf`. Rewrite using `[dif_pos (Nat.zero_le _)]`. Conclude with `transport_cast Pg W βW (min 0 D.R.m) (Nat.zero_min _) (by rw [Nat.zero_min]) (βY 0) ht`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_betaYOf (Pg : Finset (Pl D.host.E)) (W : HSp D) (βW : GL (Fin W.rank) (Ef D))
     (βY : ∀ j, GL (Fin (Yc D j).rank) (EAf D)) (ht : Transport Pg W (Yc D 0) βW (βY 0)) :
@@ -220,13 +216,13 @@ section Gen
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hx : x = βA.val * y * (βB⁻¹).val`. Rewrite using `[← hxy, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Establish `h1 : x * (βB.val * y' * (βA⁻¹).val) = 1`. Rewrite using `[hx]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (βB⁻¹).val, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, ← Matrix.mul_assoc y, hyy, Matrix.one_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : (βB.val * y' * (βA⁻¹).val) * x = 1`. Rewrite using `[hx]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (βA⁻¹).val, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, ← Matrix.mul_assoc y', hy'y, Matrix.one_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨x.submatrix e.symm id, (βB.val * y' * (βA⁻¹).val).submatrix id e.symm, ?_, ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, h1, Matrix.submatrix_one_equiv]`. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ e.symm.bijective, h2, Matrix.submatrix_id_id]`. Establish `hy : (βA⁻¹).val * x * βB.val = y`. Rewrite using `[Matrix.mul_assoc, hxy, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (βA⁻¹).val.submatrix e.symm e.symm * x.submatrix e.symm id * βB.val = _`. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ e.symm.bijective, ← hy]`. Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gl_of_transport {a b : ℕ} (x y : Matrix (Fin a) (Fin b) R) (y' : Matrix (Fin b) (Fin a) R)
     (βA : GL (Fin a) R) (βB : GL (Fin b) R) (hxy : x * βB.val = βA.val * y) (hyy : y * y' = 1) (hy'y : y' * y = 1)
@@ -256,7 +252,7 @@ theorem exists_gl_of_transport {a b : ℕ} (x y : Matrix (Fin a) (Fin b) R) (y' 
     simp only [Matrix.mul_apply, Matrix.submatrix_apply, id]
 
 /- English proof (translation)
-Rewrite using `[Matrix.reindex_apply]`. Establish `: Formalism.UG.cT σ (x.submatrix e.symm id) = (Formalism.UG.cT σ x).submatrix id e.symm`. Use extensionality with `i k`. Simplify using `[Formalism.UG.cT]`. Rewrite using `[this, ← Matrix.submatrix_mul _ _ _ _ _ e.symm.bijective, ← Matrix.submatrix_mul _ _ _ _ _ e.symm.bijective, Matrix.submatrix_id_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_reindex_mul {a b : ℕ} (σ : R →+* R) (x : Matrix (Fin a) (Fin b) R) (G : Matrix (Fin a) (Fin a) R)
     (e : Fin a ≃ Fin b) :
@@ -270,17 +266,17 @@ theorem cT_reindex_mul {a b : ℕ} (σ : R →+* R) (x : Matrix (Fin a) (Fin b) 
 end Gen
 
 /- English proof (translation)
-Take `⟨x, y, y', hiso, hxy, -, -, hyy', hy'y, hag⟩` from `ht`. Take `⟨ι, hι, hM⟩` from `exists_gl_of_transport x y y' βY0 βW hxy hyy' hy'y (finCongr hr)`. Use `⟨finCongr hr, ι, fun k => rfl, ?_, fun PP hPP ei hei => ?_⟩` and prove the remaining obligations. Rewrite using `[hι, Matrix.reindex_apply, ← Matrix.submatrix_map, ← Matrix.reindex_apply]`. Conclude with `(cT_reindex_mul _ x _ (finCongr hr)).trans hiso`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hint, hres⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D ei PP hei`. Establish `hS : toEAf D ei • ((βY0⁻¹ : GL (Fin (D.sp.Y 0).rank) (Ef D)).val.reindex (finCongr hr) (finCongr hr) * ι.val * βW.val) = toEAf D ei • (1 : Matrix (Fin (D.sp.W j).rank) (Fin (D.sp.W j).rank) (Ef D))`. Rewrite using `[hM]`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.submatrix_apply, id, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[agree_all (hag PP hPP) hei _ b, Matrix.of_apply, Matrix.one_apply]`. Use `congr 1`. Simplify using `[Fin.ext_iff]`. Rewrite using `[hS]`. Establish `hmem : ∀ a b, (toEAf D ei • (1 : Matrix (Fin (D.sp.W j).rank) (Fin (D.sp.W j).rank) (Ef D))) a b ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun a b => by`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `mul_mem hint (one_entry_mem _ a b)`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Unfold `redM`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos (hmem a b), Matrix.one_apply]`. Distinguish the cases in `hab : a = b`. Rewrite using `[if_pos hab]`. Substitute `hab` using the available equality. Use `hres using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hab]`. Use `map_zero (Formalism.L2.DIV.resS D.host.F PP) using 2` and compare the differences between its conclusion and the goal. Simplify using `[hab]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vertexAt_of_transport (Pg : Finset (Pl D.host.E)) (j : ℕ) (hr : (D.sp.Y 0).rank = (D.sp.W j).rank)
     (βY0 : GL (Fin (D.sp.Y 0).rank) (Ef D)) (βW : GL (Fin (D.sp.W j).rank) (Ef D))
@@ -334,7 +330,7 @@ def evC (D : D7) (j i : ℕ) : Fin (D.sp.Y j).rank → D.host.E := ⇑((D.sp.Y j
 def zC (D : D7) (j : ℕ) : Fin (D.sp.Y j).rank → D.host.E := ⇑((D.sp.Y j).frame.repr (normalFrameVectorSequences D j).2.2)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `D.R.m_even`. Rewrite using `[Nat.even_iff]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem even_iff_odd_c {j : ℕ} (hj : j < D.R.m) : Even j ↔ (D.R.m - 1 - j) % 2 = 1 := by
   obtain ⟨a, ha⟩ := D.R.m_even
@@ -342,14 +338,14 @@ theorem even_iff_odd_c {j : ℕ} (hj : j < D.R.m) : Even j ↔ (D.R.m - 1 - j) %
   omega
 
 /- English proof (translation)
-Use extensionality with `r l`. Simplify using `[xMat, ratM, xInY, frameMat, LinearMap.toMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem xMat_eq (j : ℕ) : xMat (D := D) j = ratM (frameMat (D.sp.Y j) (D.sp.X j) (D.sp.iXY j)) := by
   ext r l
   simp [xMat, ratM, xInY, frameMat, LinearMap.toMatrix_apply]
 
 /- English proof (translation)
-Unfold `colX`. Rewrite using `[dif_pos h, xMat_eq]`. Simplify using `only [mulM, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colX_eq (j : ℕ) (γ : GL (Fin (D.sp.X j).rank) (Ef D)) (n : ℕ) (h : n < (D.sp.X j).rank)
     (r : Fin (D.sp.Y j).rank) : colX D j γ n r = (xMat (D := D) j).mulVec (fun i => γ.val i ⟨n, h⟩) r := by
@@ -366,7 +362,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices GlobalTheory.StdFrame
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← (D.sp.Y j).herm.eq y x, h]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hT_swap {j : ℕ} (x y : (D.sp.Y j).V) {c : D.host.E} (h : (D.sp.Y j).hT y x = c) (hc : star c = c) :
     (D.sp.Y j).hT x y = c := by
@@ -374,15 +370,13 @@ theorem hT_swap {j : ℕ} (x y : (D.sp.Y j).V) {c : D.host.E} (h : (D.sp.Y j).hT
   exact hc
 
 /- English proof (translation)
-Introduce `j hj`. Take `⟨hA, hB, hC⟩` from `normal_frame_level_conditions_at j hj`. Establish `hpar` using `even_iff_odd_c hj`. Simplify using `only [nAux] at hA hB hC`. Simplify using `only [eC, evC, zC, Seed.Frm.vecY_repr]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨fun i hi l hl => ⟨?_, ?_, ?_⟩, fun hc => ?_, fun x i' hi' => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine hT_swap _ _ (hA i hi l hl).2.2 ?_ split_ifs <;> simp`. Conclude with `(hA l hl i hi).1`. Conclude with `(hA l hl i hi).2.1`. Take `⟨h1, -, h3⟩` from `hC (hpar.2 hc)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Conclude with `⟨h1, fun i hi => ⟨(h3 i hi).1, (h3 i hi).2⟩⟩`. Unfold `adaptedVector split_ifs with h1 h2`. Simplify using `only [eC, Seed.Frm.vecY_repr]`. Conclude with `(hB _ h1 x).1`. Simplify using `only [zC, Seed.Frm.vecY_repr]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hC (hpar.2 h2.1)).2.1 x`. Simplify using `only [evC, Seed.Frm.vecY_repr]`. Use `(hB _ ?_ x).2` and prove the remaining obligations. Distinguish the cases in `hc : (D.R.m - 1 - j) % 2 = 1`. Establish `: i' ≠ (D.R.m - 1 - j) / 2` using `fun h => h2 ⟨hc, h⟩`.
-
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem normal_frame_level_conditions_C : IsAdaptedVectorSystem (eC D) (evC D) (zC D) := by
   intro j hj

@@ -7,11 +7,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 namespace UpperTheory.V.Ws.Pt
 
 /- English proof (translation)
-Take `⟨a, ha1, ha0, hbd⟩` from `((coPt c R).1 y).2`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g0`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hε ha1`. Establish `hopen` using `(hf N).isOpen_fiber (Ideal.Quotient.mk (maximalIdeal R ^ N) (f g0))`. Use `filter_upwards [hopen.mem_nhds rfl] with g hg`. Establish `hmem : f g - f g0 ∈ maximalIdeal R ^ N` using `Ideal.Quotient.eq.mp hg`. Rewrite using `[dist_eq_norm, ← map_sub]`.
-
-Conclude with `lt_of_le_of_lt (hbd N _ hmem) hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adicPt {l : ℕ} [Fact l.Prime] (c : Coef l) {R : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R]
     (y : R →ₐ[c.O] PadicAlgCl l) {Γ : Type} [TopologicalSpace Γ] (f : Γ → R) (hf : AdicCont (maximalIdeal R) f) :
@@ -29,13 +27,13 @@ theorem adicPt {l : ℕ} [Fact l.Prime] (c : Coef l) {R : Type} [CommRing R] [Al
   exact lt_of_le_of_lt (hbd N _ hmem) hN
 
 /- English proof (translation)
-Establish `hr' : Submodule.span k (Set.range r) = ⊤` using `hr`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `hE : Matrix.single j i (1 : k) ∈ Submodule.span k (Set.range r)`. Rewrite using `[hr']`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hE`. Establish `key : ∀ g, r g i j = c.sum fun h a => a * (r (g * h)).trace`. Introduce `g`. Establish `h1 : r g i j = (r g * Matrix.single j i 1).trace`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i (by intro b _ hb; simp [Ne.symm hb]) (by simp), Finset.sum_eq_single j (by intro b _ hb; simp [Ne.symm hb]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[h1, ← hc, Finsupp.sum, Matrix.mul_sum, Matrix.trace_sum, Finsupp.sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfun : (fun g => r g i j) = fun g => c.sum fun h a => a * (r (g * h)).trace`. Use function extensionality and compare the values at `key`. Rewrite using `[hfun]`. Conclude with `continuous_finset_sum _ fun h _ => continuous_const.mul (ht.comp (continuous_id.mul continuous_const))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trCont {Γ k ι : Type} [Group Γ] [TopologicalSpace Γ] [ContinuousMul Γ] [CommRing k] [TopologicalSpace k]
     [IsTopologicalRing k] [Fintype ι] [DecidableEq ι] (r : Γ →* Matrix ι ι k) (hr : Irr r)
@@ -63,7 +61,7 @@ theorem trCont {Γ k ι : Type} [Group Γ] [TopologicalSpace Γ] [ContinuousMul 
     continuous_const.mul (ht.comp (continuous_id.mul continuous_const))
 
 /- English proof (translation)
-Use `letI : Algebra F L := (IntermediateField.inclusion hFL).toAlgebra`. Use `haveI : IsScalarTower F L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `Af.continuous_restrictScalarsHom F L Ω`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem resLe_cont {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {F L : IntermediateField ℚ Ω} [NumberField F]
     [NumberField L] (hFL : F ≤ L) : Continuous (resLe hFL) := by
@@ -72,7 +70,7 @@ theorem resLe_cont {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {F
   exact Af.continuous_restrictScalarsHom F L Ω
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Use `⟨h, (h.comp continuous_inv).congr fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp, map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem continuous_monoidHom_units_of_continuous_coe {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [ContinuousInv Γ]
     [Monoid M] [TopologicalSpace M] (φ : Γ →* Mˣ) (h : Continuous fun g => (φ g : M)) :
@@ -82,7 +80,7 @@ private theorem continuous_monoidHom_units_of_continuous_coe {Γ M : Type} [Grou
   simp only [Function.comp, map_inv]
 
 /- English proof (translation)
-Use `letI := V.frame.tv v`. Establish `h1` using `adicPt c x _ (W.Resid.IsPsi.cont (B.u.psi v i))`. Conclude with `continuous_monoidHom_units_of_continuous_coe _ (h1.congr fun g => rfl)`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_cont {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} {V : s.Lev} {c : Coef l} {n : ℕ} {r : W.Resid V.frame c.O n} {B : W.UniversalOrdinaryDeterminantRing r}
@@ -95,9 +93,9 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [F
   {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h)
 
 /- English proof (translation)
-Use `continuous_monoidHom_units_of_continuous_coe _ ?_` and prove the remaining obligations. Establish `hA : AdicCont (maximalIdeal c'.O) fun g => ((K.κ g : c'.O) : c'.O) * ((K.β g : c'.O)) ^ n`. Introduce `N`. Use `(K.κ_cont N).comp₂ (K.β_cont N) (fun a b => a * b ^ n)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `g`. Simplify using `[map_mul, map_pow]`. Establish `h1` using `adicPt c' (Algebra.ofId c'.O (PadicAlgCl l)) _ hA`. Use `h1.congr fun g => ?_` and prove the remaining obligations. Rewrite using `[Link.twc_val]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -116,7 +114,7 @@ theorem twc_cont (n : ℕ) : Continuous (K.twc n) := by
   rfl
 
 /- English proof (translation)
-Use `continuous_monoidHom_units_of_continuous_coe _ ?_` and prove the remaining obligations. Establish `h1 : Continuous fun g => ((K.twc n g : (PadicAlgCl l)ˣ) : PadicAlgCl l)` using `Units.continuous_val.comp (twc_cont K n)`. Establish `h2` using `h1.smul (hr.comp (resLe_cont T.F_le))`. Use `h2.congr fun g => ?_` and prove the remaining obligations. Rewrite using `[Link.rho_val]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -132,9 +130,9 @@ theorem rho_cont (n : ℕ) {r : G T.F Ω →* M4 (PadicAlgCl l)} (hr : Continuou
 variable {K}
 
 /- English proof (translation)
-Apply `trCont _ hy` to reduce the goal to its premises. Establish `hcoef` using `adicPt c' (y.comp (IsScalarTower.toAlgHom c'.O X.B X.A)) _ (X.cp_cont 3)`. Use `hcoef.neg.congr fun g => ?_` and prove the remaining obligations. Use `show -(y.comp (IsScalarTower.toAlgHom c'.O X.B X.A)) ((X.cp g).coeff 3) = ((X.P.r g).map (y : X.A →+* PadicAlgCl l)).trace`. Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Matrix.charpoly_map, ← X.cp_map g, Polynomial.map_map, Polynomial.coeff_map]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem pt_cont (X : Space (T.fr ∅) (inc h)) (y : X.A →ₐ[c'.O] PadicAlgCl l)
     (hy : Irr (X.P.map (y : X.A →+* PadicAlgCl l)).r) : Continuous (X.P.map (y : X.A →+* PadicAlgCl l)).r := by

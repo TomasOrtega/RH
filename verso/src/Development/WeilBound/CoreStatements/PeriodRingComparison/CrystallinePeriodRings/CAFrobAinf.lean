@@ -9,7 +9,7 @@ namespace Cmp6
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[Reformulated.AutPerF.Acris.frob_algebraMap, cA_algebraMap, cA_algebraMap]`. Conclude with `PositivityTheory.LocInh.frob_phi_ainfMap w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_frob_ainf (w : Reformulated.AutPerF.Ainf l (OC l)) :
     cA l (Reformulated.AutPerF.Acris.frob l (OC l) (algebraMap (Reformulated.AutPerF.Ainf l (OC l)) (Reformulated.AutPerF.Acris l (OC l)) w)) =
@@ -18,9 +18,9 @@ theorem cA_frob_ainf (w : Reformulated.AutPerF.Ainf l (OC l)) :
   exact PositivityTheory.LocInh.frob_phi_ainfMap w
 
 /- English proof (translation)
-Establish `h : (cA l).toRingHom.comp (Reformulated.AutPerF.Acris.frob l (OC l)) = (ACris.phi ℂ_[l] l).comp (cA l).toRingHom`. Use `Reformulated.AutPerF.Acris.hom_ext fun a => ?_` and prove the remaining obligations. Use `zero_ext l (F := ((cA l).toRingHom.comp (Reformulated.AutPerF.Acris.frob l (OC l))).comp (algebraMap (Reformulated.AutPerF.AcrisZero l (OC l)) (Reformulated.AutPerF.Acris l (OC l)))) (G := ((ACris.phi ℂ_[l] l).comp (cA l).toRingHom).comp (algebraMap (Reformulated.AutPerF.AcrisZer …` as an intermediate fact. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cA_frob_ainf l w) a`. Simplify `this` using `only [RingHom.comp_apply]`. Conclude with `RingHom.congr_fun h x`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cA_frob (x : Reformulated.AutPerF.Acris l (OC l)) :
     cA l (Reformulated.AutPerF.Acris.frob l (OC l) x) = ACris.phi ℂ_[l] l (cA l x) := by

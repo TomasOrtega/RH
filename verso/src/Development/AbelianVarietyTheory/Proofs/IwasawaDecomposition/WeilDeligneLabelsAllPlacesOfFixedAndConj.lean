@@ -20,15 +20,13 @@ namespace GlobalTheory.LabAllOf
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
 /- English proof (translation)
-Introduce `D T hT hC`. Establish `key : ∀ (k : Fin 2) (w : PlE D.host), ∃ γ : G D.host.E D.nd.Om, (∀ v, w = D.naut.plGw k v → γ = D.ntypes.tg k v) ∧ ∀ v, IsConjPl D.host (D.naut.plGw k v) w → ∃ c : D.nd.Om ≃+* D.nd.Om, (∀ x : D.host.E, c (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x …` using `⟨D.host.g_prime k⟩ D.naut.items₂ k w a = GlobalTheory.WeilDeligne.WD.lab (D.ntypes.teichC k) γ (T.e w a) := by`. Introduce `k w`. Distinguish the cases in `h : ∃ v, IsConjPl D.host (D.naut.plGw k v) w`. Take `⟨v, hv⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨c, γ, h1, h2, h3, h4⟩` from `hC k v w hv`. Use `⟨γ, fun v' e => absurd (e ▸ hv) (D.naut.plGw_nconj k v v'), fun v' hv' => ?_⟩` and prove the remaining obligations. Take `rfl : v = v'` from `D.naut.plGw_inj k (GlobalTheory.HeightCounting.LabConjModel.eq_of_isConjPl hv hv')`. Conclude with `⟨c, h1, h2, h3, h4⟩`. Use `⟨Function.extend (D.naut.plGw k) (D.ntypes.tg k) (fun _ => 1) w, fun v e => ?_, fun v hv => absurd ⟨v, hv⟩ h⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `(D.naut.plGw_inj k).extend_apply _ _ v`. Use `choose γ h1 h2 using key`. Use `⟨γ, fun k v => h1 k _ v rfl, fun k v w' hw' => ?_, fun k w hw a => ?_⟩` and prove the remaining obligations. Take `⟨c, hc1, hc2, hc3, -⟩` from `h2 k w' v hw'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, hc1, hc2, hc3⟩`. Take `⟨v, rfl | hv⟩` from `GlobalTheory.TypePlaceCover.place_cover D k w hw`. Rewrite using `[h1 k _ v rfl]`. Conclude with `hT k v a`. Take `⟨c, -, -, -, h4⟩` from `h2 k w v hv`.
-
-Conclude with `h4 a`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem labAll_of_labTrue_labConj : ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), LabTrue D T → LabConj D T →
     GlobalTheory.PendOf.LabAll D T := by

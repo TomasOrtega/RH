@@ -20,11 +20,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.UG Formalism.
 open GlobalTheory.IndefiniteRowSideFullHecke
 
 /- English proof (translation)
-Take `⟨hfin, hst, hsum⟩` from `hm`. Use `letI : Fintype (ClassSet Γ K) := Fintype.ofFinite _`. Establish `e : ∀ y : G, StabiliserCardinality.stab Γ K y ≃ stabAt Γ K y` using `fun y => { toFun := fun γ => ⟨⟨γ.1, ((StabiliserCardinality.mem_stab Γ K y _).1 γ.2).1⟩, ((StabiliserCardinality.mem_stab Γ K y _).1 γ.2).2⟩ invFun := fun γ => ⟨γ.1.1, (StabiliserCardinality.mem_stab Γ K y _).2 ⟨γ.1.2, γ.2⟩⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hs : ∀ c : ClassSet Γ K, DoubleCoset.mk Γ K (Quotient.out c) = c` using `fun c => Quotient.out_eq' c`. Establish `h` using `(GlobalTheory.Proof.DoubleCosetCountGlobalInterpolation.doubleCosetCount G Γ U K hUK ⟨hidx⟩ (fun y => have := hst y; Finite.of_equiv _ (e y).symm) (fun x => (Subgroup.eq_bot_iff_forall _).2 fun γ hγ => hfree x γ ((StabiliserCardinality.mem_stab Γ U x γ).1 hγ).1 ((StabiliserCardin …`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (fun q : ℚ => (q : ℝ)) h`. Move the coercions through the operations in `at h'`. Rewrite using `[h', ← hsum _ hs]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_div, Nat.card_congr (e _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq_index_mul_mass {G : Type} [Group G] (Γ U K : Subgroup G) (m : ℝ) (hUK : U ≤ K)
     (hidx : U.relIndex K ≠ 0) (hm : ClassesDoubleCosets.CosetMass Γ K m)
@@ -56,15 +56,15 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   [Algebra F E] (sp : Spaces R F E)
 
 /- English proof (translation)
-Set `e : (sp.X 0).V ≃ₗ[𝓞 E] (Fin R.k → E)` to `sp.crd0.restrictScalars (𝓞 E)`. Establish `hmem : ∀ x, x ∈ N.map (e.symm : (Fin R.k → E) →ₗ[𝓞 E] (sp.X 0).V) ↔ sp.crd0 x ∈ N` using `fun x => by`. Rewrite using `[Submodule.mem_map_equiv]`. Both sides reduce to the same expression. Use `⟨N.map (e.symm : (Fin R.k → E) →ₗ[𝓞 E] (sp.X 0).V), ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Module.Finite.iff_fg.1 hfin).map _`. Establish `: ((N.map (e.symm : (Fin R.k → E) →ₗ[𝓞 E] (sp.X 0).V) : Submodule (𝓞 E) _) : Set (sp.X 0).V) = (sp.crd0.symm : (Fin R.k → E) →ₗ[E] (sp.X 0).V) '' (N : Set _)` using `rfl`. Rewrite using `[this, Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]`. Use extensionality with `x`. Rewrite using `[hmem, ← SetLike.mem_coe (p := N), ← hdual]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one, hmem, sp.hermitianForm_base_coordinates, dualSet, Set.mem_setOf_eq, RingHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Use `h (sp.crd0.symm y) (by simpa using hy)` as an intermediate fact. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h y hy`. Conclude with `h _ hy`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `(hmem x).1 hx`. Introduce `hy`. Conclude with `⟨sp.crd0.symm y, (hmem _).2 (by simpa using hy), by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lattice (N : Submodule (𝓞 E) (Fin R.k → E)) (hfin : Module.Finite (𝓞 E) N)
     (hspan : Submodule.span E (N : Set (Fin R.k → E)) = ⊤)
@@ -100,9 +100,7 @@ theorem exists_lattice (N : Submodule (𝓞 E) (Fin R.k → E)) (hfin : Module.F
 end Lattice
 
 /- English proof (translation)
-Establish `h : ∀ g k : ℕ, g.Prime → 0 < idxColLoc g k`. Introduce `g k hg`. Use `haveI : NeZero g := ⟨hg.ne_zero⟩`. Use `haveI : Nonempty {A : GL (Fin k) (ZMod g) // IsUnitri (A : Matrix (Fin k) (Fin k) (ZMod g))} := ⟨⟨1, fun i j h => by simp [h.ne'], fun i => by simp⟩⟩`. Conclude with `div_pos (Nat.cast_pos.2 Nat.card_pos) (Nat.cast_pos.2 Nat.card_pos)`.
-
-Conclude with `mul_pos (pow_pos (h _ _ (D.host.g_prime 0)) _) (pow_pos (h _ _ (D.host.g_prime 1)) _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idx_pos (D : D7) : 0 < idxPi D (D.host.g 0) (D.host.g 1) := by
   have h : ∀ g k : ℕ, g.Prime → 0 < idxColLoc g k := by
@@ -114,7 +112,7 @@ theorem idx_pos (D : D7) : 0 < idxPi D (D.host.g 0) (D.host.g 1) := by
   exact mul_pos (pow_pos (h _ _ (D.host.g_prime 0)) _) (pow_pos (h _ _ (D.host.g_prime 1)) _)
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `M hM hu`. Rewrite using `[← D.sp.rank0]`. Conclude with `GlobalTheory.genusMassStd D { D.sp.X 0 with L0 := M, standardTuple_isLattice := hM, baseLattice_isUnimodular := hu } (D.sp.X_sig 0) (baseSpace_posDef _ _ D.sp)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_selfDualLattice_firstSpace_eq (D : D7) : letI := D.host.cmStar
     ∀ M : Submodule (𝓞 D.host.E) (D.sp.X 0).V, Submodule.IsLattice D.host.E M →
@@ -126,15 +124,15 @@ theorem mass_selfDualLattice_firstSpace_eq (D : D7) : letI := D.host.cmStar
     (baseSpace_posDef _ _ D.sp)
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `hg hs u hT`. Take `⟨-, N, ⟨hfin, hspan, hdual, -⟩, -, -, hUK⟩` from `hover D Lv u hT`. Take `⟨M, hM, hu, rfl⟩` from `exists_lattice D.sp N hfin hspan hdual`. Establish `hidx` using `hindex D Lv u hs hT _ ⟨hfin, hspan, hdual.symm⟩ hUK`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `hcos.2 D Lv u M hM hu`. Rewrite `hm` using `[mass_selfDualLattice_firstSpace_eq D M hM hu]`. Establish `hrel` using `Subgroup.relIndex_subgroupOf (H := SelfDualLatticeIndex.levelU D Lv u) (SelfDualLatticeIndex.stabHat_le D (D.sp.crdLat0 M))`. Establish `hne : (SelfDualLatticeIndex.levelU D Lv u).relIndex (SelfDualLatticeIndex.stabHat D (D.sp.crdLat0 M)) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hidx` using `[h0, Nat.cast_zero]`. Conclude with `(mul_pos (idx_pos D) (SelfDualLatticeIndex.factorT_pos D u)).ne hidx`. Establish `h` using `card_eq_index_mul_mass _ ((Lv u).U.subgroupOf _) _ _ (Subgroup.comap_mono hUK) (hrel.trans_ne hne) hm (by`. Introduce `x γ hγ hx`. Establish `h1` using `ColumnStabiliser.map_colStab D Lv u x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hstab D Lv u hg hs x, Subgroup.map_bot]`. Establish `h2 : γ.1 ∈ (⊥ : Subgroup _)`. Rewrite using `[h1]`. Conclude with `⟨hγ, ⟨_, hx, by simp [mul_assoc]⟩⟩`. Conclude with `Subtype.ext (Subgroup.mem_bot.1 h2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.card_eq_of_bijective _ (Lv u).y_bij]`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc (massI D D.R.k), mul_comm (massI D D.R.k)]`. Conclude with `congrArg (· * massI D D.R.k) ((congrArg (fun n : ℕ => (n : ℝ)) hrel).trans hidx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classNumber (hover : SplittingProjection.SelfDualOverBase) (hindex : SelfDualLatticeIndex.StabiliserLevelIndexFormula)
     (hcos : ClassesDoubleCosets.ClassesAsDoubleCosets) (hstab : ColumnStabiliser.ColStabTrivial)
@@ -167,7 +165,7 @@ theorem classNumber (hover : SplittingProjection.SelfDualOverBase) (hindex : Sel
   exact congrArg (· * massI D D.R.k) ((congrArg (fun n : ℕ => (n : ℝ)) hrel).trans hidx)
 
 /- English proof (translation)
-The claim follows from `classNumber hover hindex (GlobalTheory.Proof.CosetGroupEquiv.massAsCosetSum_iff.1 GlobalTheory.Proof.TotallyDefiniteMass.massAsCosetSum) (GlobalTheory.Proof.StabilizerGroupMap.columnStabilisersTrivial_iff.1 GlobalTheory.Proof.EqOneOfMembership.columnStabilisersTrivial) D Lv`.
+A detailed English derivation is pending.
 -/
 theorem classNumber_of_index (hover : SplittingProjection.SelfDualOverBase) (hindex : SelfDualLatticeIndex.StabiliserLevelIndexFormula)
     (D : D7) (Lv : LevelData D) : ClassNumberFormula₂ D Lv :=

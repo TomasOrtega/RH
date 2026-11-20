@@ -12,29 +12,27 @@ namespace GlobalTheory.ResidueEisenstein.Swap
 open GlobalTheory.ResLine.Swap
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y hσ hJ hW`. Establish `hxx : Formalism.UG.cT (σ : E →+* E) X * J * X = 0` using `hW.xx`. Establish `hyy : Formalism.UG.cT (σ : E →+* E) Y * J * Y = 0` using `hW.yy`. Establish `hxy : Formalism.UG.cT (σ : E →+* E) X * J * Y = 1` using `hW.xy`. Establish `hJ'` using `cT_eq_of_isHermND hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyx : Formalism.UG.cT (σ : E →+* E) Y * J * X = 1`. Establish `h` using `congrArg (Formalism.UG.cT (σ : E →+* E)) hxy`. Rewrite `h` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, cT_cT_of_isCMExt hσ, hJ', Formalism.UG.cT_one]`. Simplify `h` using `[Matrix.mul_assoc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : ((Fin (r + 1) → E) × (Fin (r + 1) → E)) →ₗ[E] (Fin n → E)` to `Y.mulVecLin.comp (LinearMap.fst E _ _) + X.mulVecLin.comp (LinearMap.snd E _ _)`. Establish `hf : Function.Injective f`. Introduce `p q hpq`. Establish `hp : ∀ p : (Fin (r + 1) → E) × (Fin (r + 1) → E), (Formalism.UG.cT (σ : E →+* E) X * J) *ᵥ f p = p.1 ∧ (Formalism.UG.cT (σ : E →+* E) Y * J) *ᵥ f p = p.2`. Introduce `p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [f, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.fst_apply, LinearMap.snd_apply, Matrix.mulVecLin_apply, Matrix.mulVec_add, Matrix.mulVec_mulVec, hxx, hyy, hxy, hyx, Matrix.one_mulVec, Matrix.zero_mulVec, add_zero, zero_add]`. Conclude with `⟨trivial, trivial⟩`. Establish `h1` using `hp p`. Establish `h2` using `hp q`. Rewrite `h1` using `[hpq]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Prod.ext (h1.1.symm.trans h2.1) (h1.2.symm.trans h2.2)`. Establish `h` using `LinearMap.finrank_le_finrank_of_injective hf`. Simplify `h` using `[Module.finrank_prod, two_mul]`. Use `set u := X - Y with hu`. Use `set v := Formalism.UG.cT (σ : E →+* E) u * J with hv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvy : v * Y = 1`. Rewrite using `[hv, hu, cT_sub', Matrix.sub_mul, Matrix.sub_mul, hxy, hyy, sub_zero]`. Establish `hvx : v * X = -1`. Rewrite using `[hv, hu, cT_sub', Matrix.sub_mul, Matrix.sub_mul, hxx, hyx, zero_sub]`. Use `set w0 : Matrix (Fin n) (Fin n) E := 1 + u * v with hw0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hw0y : w0 * Y = X`. Rewrite using `[hw0, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hvy, Matrix.mul_one, hu]`. Normalize the expressions using the abelian group laws. Establish `hw0x : w0 * X = Y`. Rewrite using `[hw0, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hvx, Matrix.mul_neg, Matrix.mul_one, hu]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `hw0u : w0 * u = -u`. Rewrite using `[hu, Matrix.mul_sub, hw0y, hw0x]`. Normalize the expressions using the abelian group laws. Establish `hsq : w0 * w0 = 1` using `by conv_lhs => rw [show w0 * w0 = w0 * (1 + u * v) from rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, hw0u, hw0, Matrix.neg_mul]`. Normalize the expressions using the abelian group laws. Establish `hcw : Formalism.UG.cT (σ : E →+* E) w0 * J = J * w0`. Rewrite using `[hw0, cT_add', Formalism.UG.cT_one, Formalism.UG.cT_mul, hv, Formalism.UG.cT_mul, cT_cT_of_isCMExt hσ, hJ', Matrix.add_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hunit : Formalism.UG.cT (σ : E →+* E) w0 * J * w0 = J`. Rewrite using `[hcw, Matrix.mul_assoc, hsq, Matrix.mul_one]`. Set `U : GL (Fin n) E` to `⟨w0, w0, hsq, hsq⟩`. Establish `hU : U ∈ Formalism.UG.UJ (σ : E →+* E) J` using `hunit`. Use `⟨GlobalTheory.AdelicU.ratEmb σ J ⟨U, hU⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[← GlobalTheory.AdelicU.range_ratEmb]`. Conclude with `⟨_, rfl⟩`. Express the relevant statement in the definitionally equal form `w0.map (inclR (F := F) (AF F)) * adMat F Y = adMat F X`. Simplify using `only [adMat]`. Rewrite using `[← Matrix.map_mul, hw0y]`.
-
-Express the relevant statement in the definitionally equal form `w0.map (inclR (F := F) (AF F)) * adMat F X = adMat F Y`. Simplify using `only [adMat]`. Rewrite using `[← Matrix.map_mul, hw0x]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_le_and_exists_ratPts_swap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),

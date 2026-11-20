@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit segr
 open ReciprocityTheory.ChartRestriction.G.AI.I2 (IsRatSectionOn logNormRat)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.finsum_fibre_eq | exact GlobalTheory.CompanionTheory.MixZ.ArchEq.finsum_fibre_eq | (intros; apply GlobalTheory.CompanionTheory.MixZ.ArchEq.finsum_fibre_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.sheet_integral_projection_formula : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ)
     (Ψ : GlobalTheory.CompanionTheory.MixZ.ArchEq.LinProj n D) (N : Pol n),

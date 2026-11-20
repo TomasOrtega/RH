@@ -19,7 +19,7 @@ def ConclAlt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (cf : CharFr
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨lay0 D, ⟨D.Z_tie, D.Zgood_tie⟩, D.etaJ_tie, A, h1, h2, h3, h4, rfl, HEq.rfl, HEq.rfl, HEq.rfl, h5, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, h6⟩`.
+Supply the required witnesses or components.
 -/
 theorem conclusion_of_au_true_and_types_true (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb)
     (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE) (h1 : Nonempty (_root_.GlobalTheory.HeightCounting.CGTrueT hL D A.wdT))
@@ -32,7 +32,7 @@ theorem conclusion_of_au_true_and_types_true (hL : _root_.UpperTheory.Zero.LLC.R
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨L', hZ', hη', A, h1, h2, h3, h4, e1, e2, e3, e4, h5, e5, e6, e7, e8, e9, h6⟩` from `h`. Conclude with `⟨L', hZ', hη', A, h1, h2, h3, h4, e1.trans k1, e2.trans k2, e3.trans k3, e4.trans k4, h5, e5.trans k5, e6.trans k6, e7.trans k7, e8.trans k8, e9.trans k9, h6⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem concl_setK_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb)
     (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r) (L : Lay0 D) (hZ : L.ZOk) (hη : L.EtaOk)
@@ -48,15 +48,15 @@ theorem concl_setK_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (c
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨Pl⟩` from `GlobalTheory.HeightCounting.nonempty_plSide D`. Take `⟨X, h1, h0, e1, e2, e3, e4, e5, ⟨par⟩, hι⟩` from `GlobalTheory.ParRay.exists_types hR hC D hE jE Pl hray`. Take `⟨Γ', hΓ⟩` from `exists_grp_setTy D hE X h1 h0 e1 e2 e3 Γ`. Take `⟨wd⟩` from `GlobalTheory.HeightCounting.exists_wdSide hdR (setTy D hE X h1 h0) T`. Take `⟨cg⟩` from `hcg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `cf' : CharFrame (setTy D hE X h1 h0)` to `⟨cf.P, cf.W, cf.mu0, cf.eta, cf.chiPsi, cf.del, cf.del', cf.isMu0, cf.isEta, cf.isChi, cf.isDel, cf.isDel'⟩`. Establish `hlab' : LabTrue (setTy D hE X h1 h0) T`. Introduce `k v a`. Use `hlab k v a` as an intermediate fact. Rewrite `this` using `[← e1, ← e2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hconj' : LabConj (setTy D hE X h1 h0) T`. Introduce `k v w hw`. Use `hconj k v w hw` as an intermediate fact. Rewrite `this` using `[← e1, ← e2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hχ' : ChiTOk (setTy D hE X h1 h0) cf'`. Introduce `k v j u hu`. Use `hχ k v j u hu` as an intermediate fact. Rewrite `this` using `[← e1, ← e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hT' : GlobalTheory.Mem.Top.TypesTrue X cf.P cf.W` using `⟨hT.pl, fun k => (congrFun e2 k).trans (hT.teich k), hT.chi, fun k p => (congrFun (congrFun e3 k) p).trans (hT.ser k p)⟩`. Establish `H : _root_.GlobalTheory.HeightCounting.TopA.ConclAlt hL (setTy D hE X h1 h0) cf' jE rep` using `_root_.GlobalTheory.HeightCounting.TopA.conclusion_of_au_true_and_types_true hL (setTy D hE X h1 h0) cf' jE rep { bare := hE, wdT := T, lab := hlab', chr := { chr with }, row := ⟨Rs.locR, Rs.satR, Rs.lab_eq⟩ pl := ⟨Pl.ι, Pl.ι_w, Pl.plB, Pl.plB_eq, Pl.plκ⟩, iota := hι ⟨Γ⟩, wd := w …`. Conclude with `_root_.GlobalTheory.HeightCounting.TopA.concl_setK_alt hL D cf jE rep (lay0 (setTy D hE X h1 h0)) ⟨fun i => hE.elim i, fun i => hE.elim i⟩ D.etaJ_tie`. Use `rfl HEq.rfl (heq_of_eq e4) (heq_of_eq e5) rfl HEq.rfl HEq.rfl HEq.rfl HEq.rfl H`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conclusion_of_automorphic_side_true (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hdR : GlobalTheory.Published.DeRhamPotSemistable) (hR : GlobalTheory.Published.RayClassFieldSt)
     (hC : GlobalTheory.Published.ChebotarevDegreeOne) (D : D7) (hE : IsEmpty D.nd.Loc) (cf : CharFrame D) (jE : D.host.E →+* Qb)
@@ -103,9 +103,9 @@ theorem conclusion_of_automorphic_side_true (hL : _root_.UpperTheory.Zero.LLC.Re
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨C, au, hau⟩` from `_root_.GlobalTheory.T.exists_nbc_auSide_true_of_isEmpty_loc hL D hE T`. Take `⟨cg⟩` from `hcg`. Set `cf' : CharFrame (setBC D C)` to `⟨cf.P, cf.W, cf.mu0, cf.eta, cf.chiPsi, cf.del, cf.del', cf.isMu0, cf.isEta, cf.isChi, cf.isDel, cf.isDel'⟩`. Establish `H : _root_.GlobalTheory.HeightCounting.TopA.ConclAlt hL (setBC D C) cf' jE rep` using `_root_.GlobalTheory.HeightCounting.TopA.conclusion_of_automorphic_side_true hL hdR hR hC (setBC D C) hE cf' jE rep hray hT { Γ with } hζ hχ T hlab hconj ⟨Rs.locR, Rs.satR, Rs.lab_eq⟩ hrow ⟨{ cg with }⟩ { chr with } au hau`. Conclude with `_root_.GlobalTheory.HeightCounting.TopA.concl_setK_alt hL D cf jE rep (lay0 (setBC D C)) ⟨fun i => hE.elim i, fun i => hE.elim i⟩ D.etaJ_tie`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Use `rfl HEq.rfl HEq.rfl HEq.rfl rfl HEq.rfl HEq.rfl HEq.rfl HEq.rfl H`.
+A detailed English derivation is pending.
 -/
 theorem conclusion_of_cusp_galois_true (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hdR : GlobalTheory.Published.DeRhamPotSemistable) (hR : GlobalTheory.Published.RayClassFieldSt)
     (hC : GlobalTheory.Published.ChebotarevDegreeOne) (D : D7) (hE : IsEmpty D.nd.Loc) (cf : CharFrame D) (jE : D.host.E →+* Qb)
@@ -129,7 +129,7 @@ theorem conclusion_of_cusp_galois_true (hL : _root_.UpperTheory.Zero.LLC.RecTExi
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨K, hcg, ⟨chr⟩⟩` from `_root_.UpperTheory.One.M.New.exists_cgTrue_charSide hL hA D hE T cf hT.pl`. Establish `H : _root_.GlobalTheory.HeightCounting.TopA.ConclAlt hL (setCG D hE K) (cfCG hE K cf) jE rep` using `_root_.GlobalTheory.HeightCounting.TopA.conclusion_of_cusp_galois_true hL hdR hR hC (setCG D hE K) hE (cfCG hE K cf) jE rep hray ⟨hT.pl, hT.teich, hT.chi, hT.ser⟩ { Γ with } hζ hχ (wdCG hE K T) hlab hconj ⟨Rs.locR, Rs.satR, Rs.lab_eq⟩ hrow hcg chr`. Conclude with `_root_.GlobalTheory.HeightCounting.TopA.concl_setK_alt hL D cf jE rep (lay0 (setCG D hE K)) ⟨fun i => hE.elim i, fun i => hE.elim i⟩ D.etaJ_tie`. Use `rfl HEq.rfl HEq.rfl HEq.rfl rfl HEq.rfl HEq.rfl HEq.rfl HEq.rfl H`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conclusion_of_local_parameters_true (hA : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hdR : GlobalTheory.Published.DeRhamPotSemistable) (hR : GlobalTheory.Published.RayClassFieldSt)
     (hC : GlobalTheory.Published.ChebotarevDegreeOne) (D : D7) (hE : IsEmpty D.nd.Loc) (cf : CharFrame D) (jE : D.host.E →+* Qb)
@@ -150,13 +150,13 @@ theorem conclusion_of_local_parameters_true (hA : GlobalTheory.Published.Automor
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨Rw, hRw⟩` from `_root_.GlobalTheory.RowPar.exists_rowWD_rowTrue_m_alt hL D rep hd`. Take `⟨lab, h, A, C, tm, tg, hl, hpl, T, hlab, hconj, Rs, hp, hs⟩` from `GlobalTheory.HeightCounting.exists_setAut_wdTie_labConj D hE Rw`. Set `cf' : CharFrame (setAut D hE lab h A C tm tg hl)` to `⟨cf.P, cf.W, cf.mu0, cf.eta, cf.chiPsi, cf.del, cf.del', cf.isMu0, cf.isEta, cf.isChi, cf.isDel, cf.isDel'⟩`. Establish `hk` using `fun k v => haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ exists_kv_of_eq D (hpl k v) (D.ntypes.tg k v) (Γ.ζ k) (Γ.kv k v) (Γ.tg_tame k v)`. Use `choose kv hkv using hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ' : ChiTOk (setAut D hE lab h A C tm tg hl) cf'`. Introduce `k v j u hu`. Use `hχ k v j u hu` as an intermediate fact. Rewrite `this` using `[← hpl k v]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrow : _root_.GlobalTheory.HeightCounting.RepresentationParametersHold hL (setAut D hE lab h A C tm tg hl) rep (fun σ w => T.e w (Rs.locR σ w)) Rs.satR`. Establish `e1 : (fun σ w => T.e w (Rs.locR σ w)) = Rw.par` using `funext fun σ => funext fun w => hp σ w`. Establish `e2 : Rs.satR = Rw.sat` using `funext fun σ => funext fun w => hs σ w`. Rewrite using `[e1, e2]`. Conclude with `hRw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `hT' : GlobalTheory.Mem.Top.TypesTrue (setAut D hE lab h A C tm tg hl).ntypes cf.P cf.W` using `⟨fun k v => (hpl k v).symm ▸ hT.pl k v, hT.teich, hT.chi, hT.ser⟩`. Establish `H : _root_.GlobalTheory.HeightCounting.TopA.ConclAlt hL (setAut D hE lab h A C tm tg hl) cf' jE rep` using `_root_.GlobalTheory.HeightCounting.TopA.conclusion_of_local_parameters_true hA hL hdR hR hC (setAut D hE lab h A C tm tg hl) hE cf' jE rep hray hT' { Γ with kv := kv, tg_tame := hkv } hζ hχ' T hlab hconj Rs hrow`. Conclude with `_root_.GlobalTheory.HeightCounting.TopA.concl_setK_alt hL D cf jE rep (lay0 (setAut D hE lab h A C tm tg hl)) ⟨fun i => hE.elim i, fun i => hE.elim i⟩ D.etaJ_tie`. Use `rfl (heq_of_eq (funext fun k => funext fun v => hpl k v)) HEq.rfl HEq.rfl rfl HEq.rfl HEq.rfl HEq.rfl HEq.rfl H`.
+A detailed English derivation is pending.
 -/
 theorem conclusion_of_group_side (hA : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hdR : GlobalTheory.Published.DeRhamPotSemistable) (hR : GlobalTheory.Published.RayClassFieldSt)
     (hC : GlobalTheory.Published.ChebotarevDegreeOne) (D : D7) (hE : IsEmpty D.nd.Loc) (cf : CharFrame D) (jE : D.host.E →+* Qb)
@@ -193,9 +193,9 @@ theorem conclusion_of_group_side (hA : GlobalTheory.Published.AutomorphicFormsFi
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `hL hA hdR hG hAr hR hC D hE cf jE rep hz hT hd hray`. Take `⟨L, hZ, hη, hE', hT', k1, k2, k3, k4, ⟨Γ, hζ⟩, hχ, k5, k6, k7, k8, k9⟩` from `GlobalTheory.T.exists_tame_generators_green_cuspidal_labelling hG hAr D hE cf hz hT`. Establish `hd' : RowDepth (setK D L hZ hη) rep`. Introduce `σ k v`. Take `⟨v₀, e⟩` from `exists_eq_of_heq k1 k2 k v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, τ, h1, h2⟩` from `hd σ k v₀`. Conclude with `⟨s, τ, h1.trans e, h2⟩`. Conclude with `_root_.GlobalTheory.HeightCounting.TopA.concl_setK_alt hL D cf jE rep L hZ hη k1 k2 k3 k4 k5 k6 k7 k8 k9 (_root_.GlobalTheory.HeightCounting.TopA.conclusion_of_group_side hA hL hdR hR hC (setK D L hZ hη) hE' (cfK L hZ hη cf) jE rep hray hT' Γ hζ hχ hd')`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sideA_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, GlobalTheory.Published.AutomorphicFormsFiniteGL → GlobalTheory.Published.DeRhamPotSemistable → GlobalTheory.Published.GreenCuspidal → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.Published.ChebotarevDegreeOne → ∀ (D : D7) (hE : IsEmpty D.nd.Loc) (cf : CharFrame D) (jE : D.host.E →+* Qb) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r), (∀ j g, ∃ z : ℤ, eExp D j g = z) → GlobalTheory.Mem.Top.TypesTrue D.ntypes cf.P cf.W → RowDepth D rep → (∀ k, IsRayPrime (KQbar D jE) (D.host.QS * D.host.q * D.host.d) (D.host.g k)) → ∃ (L : Lay0 D) (hZ : L.ZOk) (hη : L.EtaOk) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding (setK D L hZ hη) (cfK L hZ hη cf) jE), Nonempty (_root_.GlobalTheory.HeightCounting.CGTrueT hL _ A.wdT) ∧ _root_.GlobalTheory.HeightCounting.AutomorphicSideRealised hL _ A.wdT A.au ∧ _root_.GlobalTheory.HeightCounting.RepresentationParametersHold hL (setK D L hZ hη) rep (fun σ w => A.wdT.e w (A.row.locR σ w)) A.row.satR ∧ GlobalTheory.Mem.Top.TypesTrue L.ntypes cf.P cf.W ∧ L.nd.PlG = D.nd.PlG ∧ HEq L.naut.plGw D.naut.plGw ∧ HEq L.ntypes.cenAmb D.ntypes.cenAmb ∧ HEq L.ntypes.cenMt D.ntypes.cenMt ∧ (∀ k, haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩; A.grp.ζ k = (GlobalTheory.Mem.TypePl.labDat (D.host.g k)).gen) ∧ L.loc = D.loc ∧ HEq (@NData.Om _ _ _ L.nd) (@NData.Om _ _ _ D.nd) ∧ HEq (@NData.instOm _ _ _ L.nd) (@NData.instOm _ _ _ D.nd) ∧ HEq (@NData.algOm _ _ _ L.nd) (@NData.algOm _ _ _ D.nd) ∧ HEq (@NData.plOm _ _ _ L.nd) (@NData.plOm _ _ _ D.nd) ∧ LabConj _ A.wdT := by
   intro hL hA hdR hG hAr hR hC D hE cf jE rep hz hT hd hray

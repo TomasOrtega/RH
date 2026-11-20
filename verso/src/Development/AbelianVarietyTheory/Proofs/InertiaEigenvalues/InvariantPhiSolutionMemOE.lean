@@ -10,9 +10,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact fun x b _ _ _ j => ⟨0, bk.OE.zero_mem, by simp⟩`. Consider the case `succ n ih`. Introduce `x b hb hx hg j`. Take `⟨v, x', b', hv, hb', hxv, hx', hg'⟩` from `GlobalTheory.T.ladic_descent_step_to_OE l K bk κ x b c hc hb hx hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hv', y, hy⟩` from `ih x' b' hb' hx' hg' j`. Use `⟨v j + ((l : ℕ) : WCb l) * v', bk.OE.add_mem (hv j) (bk.OE.mul_mem (natCast_mem bk.OE l) hv'), y, ?_⟩` and prove the remaining obligations. Rewrite using `[hxv j]`. Take the linear combination `((l : ℕ) : WCb l) * hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem invariant_phi_solution_approx (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (κ : Type) [Fintype κ]
     (c : κ → κ → WCb l) (hc : ∀ i j, c i j ∈ bk.OE) (n : ℕ) :
@@ -30,7 +30,7 @@ theorem invariant_phi_solution_approx (l : ℕ) [Fact l.Prime] (K : FinExt l) (b
     linear_combination ((l : ℕ) : WCb l) * hy
 
 /- English proof (translation)
-Introduce `l _ K bk κ _ x c hc hx hg j`. Use `(GlobalTheory.T.breuilKisin_OE_stability_properties l K bk).2.1 (x j) fun n => ?_` and prove the remaining obligations. Conclude with `invariant_phi_solution_approx l K bk κ c hc n x (fun _ => 0) (fun _ => bk.OE.zero_mem) (fun j => by rw [add_zero]; exact hx j) hg j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem invariant_phi_solution_mem_OE : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (κ : Type) [Fintype κ]
     (x : κ → WCb l) (c : κ → κ → WCb l), (∀ i j, c i j ∈ bk.OE) → (∀ j, x j = ∑ i, frobW l (x i) * c i j) →

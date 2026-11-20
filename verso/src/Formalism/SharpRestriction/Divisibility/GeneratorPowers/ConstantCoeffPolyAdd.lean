@@ -34,11 +34,11 @@ namespace KAV
 open MvPowerSeries
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro F N`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `F N`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.iterate_succ_apply, ih, MvPowerSeries.coeff_pderiv, Finset.prod_range_succ]`. Establish `e1 : (N + k • Finsupp.single i 1 : σ →₀ ℕ) i = N i + k` using `by simp`. Establish `e2 : N + k • Finsupp.single i 1 + Finsupp.single i 1 = N + (k + 1) • Finsupp.single i 1`. Rewrite using `[add_smul, one_smul, add_assoc]`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeff_iterate_pderiv {σ R : Type} [CommRing R] (i : σ) (k : ℕ) :
     ∀ (F : MvPowerSeries σ R) (N : σ →₀ ℕ), coeff N ((pderiv R i)^[k] F) =
@@ -56,7 +56,7 @@ theorem coeff_iterate_pderiv {σ R : Type} [CommRing R] (i : σ) (k : ℕ) :
     ring
 
 /- English proof (translation)
-The claim follows from `| [], _, _, N, _ => by simp | p :: L, hnd, hinj, N, hN => by rw [List.foldr_cons, coeff_iterate_pderiv, hN p (List.mem_cons_self ..), coeff_foldr φ m F L (List.nodup_cons.1 hnd).2 (fun a ha b hb => hinj a (List.mem_cons_of_mem _ ha) b (List.mem_cons_of_mem _ hb))] · rw [List.map_ …`.
+A detailed English derivation is pending.
 -/
 theorem coeff_foldr {σ κ R : Type} [CommRing R] (φ : κ → σ) (m : κ → ℕ) (F : MvPowerSeries σ R) :
     ∀ (L : List κ), L.Nodup → (∀ p ∈ L, ∀ q ∈ L, φ p = φ q → p = q) → ∀ N : σ →₀ ℕ, (∀ p ∈ L, N (φ p) = 0) →
@@ -80,9 +80,9 @@ theorem coeff_foldr {σ κ R : Type} [CommRing R] (φ : κ → σ) (m : κ → �
       simp [hN q (List.mem_cons_of_mem _ hq), hpq.symm]
 
 /- English proof (translation)
-Unfold `TB.dAdd`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `j' _ hj'`. Simplify using `[Pi.single_apply, hj']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dAdd_single {S : Type} [CommRing S] {d n : ℕ} (j : Fin d) (b : Fin n) (G : Germ.PS S n d) :
     TB.dAdd (Pi.single j 1) b G = pderiv S (b, j) G := by
@@ -95,16 +95,16 @@ theorem dAdd_single {S : Type} [CommRing S] {d n : ℕ} (j : Fin d) (b : Fin n) 
     exact absurd (Finset.mem_univ j) h
 
 /- English proof (translation)
-The claim follows from `funext fun G => dAdd_single j b G`.
+A detailed English derivation is pending.
 -/
 theorem dAdd_single' {S : Type} [CommRing S] {d n : ℕ} (j : Fin d) (b : Fin n) :
     (TB.dAdd (Pi.single j 1) b : Germ.PS S n d → Germ.PS S n d) = pderiv S (b, j) :=
   funext fun G => dAdd_single j b G
 
 /- English proof (translation)
-Unfold `TB.polyAdd`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.constantCoeff_C]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [dAdd_single']`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_foldr (fun p : ι × Fin n => (p.2, e p.1)) m G _ (Finset.nodup_toList _) ?_ 0 (fun _ _ => by simp), zero_add, Finset.prod_map_toList, Finset.sum_map_toList]`. Introduce `p _ q _ h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (he h.2) h.1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_polyAdd {S : Type} [CommRing S] {d n : ℕ} {ι : Type} [Fintype ι] (e : ι → Fin d)
     (he : Function.Injective e) (P : MvPolynomial (ι × Fin n) S) (G : Germ.PS S n d) :
@@ -132,9 +132,9 @@ namespace KAV
 open MvPowerSeries
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (ltEquiv Dw n)` using `(ltEquiv Dw n).injective`. Unfold `encP`. Rewrite using `[MvPolynomial.map_rename, MvPolynomial.support_rename_of_injective hinj, Finset.sum_image (fun x _ y _ h => Finsupp.mapDomain_injective hinj h)]`. Simplify using `only [MvPolynomial.coeff_rename_mapDomain _ hinj, MvPolynomial.coeff_map, Finsupp.equivMapDomain_eq_mapDomain]`. Use `Finset.sum_subset (MvPolynomial.support_map_subset _ _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m _ hm`. Rewrite `hm` using `[MvPolynomial.notMem_support_iff, MvPolynomial.coeff_map]`. Rewrite using `[hm, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_encP {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {n : ℕ}
     {K S : Type} [CommRing K] [CommRing S] (φ : K →+* S) (P : MvPolynomial (LtN Dw n) K)
@@ -160,9 +160,9 @@ namespace KAV
 open MvPowerSeries
 
 /- English proof (translation)
-Unfold `mVal colIdx`. Use `congr 1`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => by simp)]`. Conclude with `Fintype.prod_equiv (ltEquiv Dw n).symm _ _ (fun p => by simp [Finsupp.equivMapDomain_apply])`. Use `congr 2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.mapDomain, Finsupp.sum_fintype _ _ (fun _ => by simp)]`. Use `Fintype.sum_equiv (ltEquiv Dw n).symm _ _ (fun p => ?_)` and prove the remaining obligations. Apply the tactic sequence `rw [Finsupp.equivMapDomain_apply, Finsupp.smul_single_one] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem val_encP {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {n : ℕ}
     {S : Type} [CommRing S] (G : MvPowerSeries (Fin n × Fin (dL Dw)) S) (m : LtN Dw n →₀ ℕ) :
@@ -180,17 +180,17 @@ theorem val_encP {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     rw [Finsupp.equivMapDomain_apply, Finsupp.smul_single_one] <;> rfl
 
 /- English proof (translation)
-The claim follows from `star_star φ`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj {E : Type} [Field E] (φ : E →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ := star_star φ
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial s a`. Simplify using `only [MvPolynomial.pderiv_monomial]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Both sides reduce to the same expression. Rewrite using `[tsub_right_comm]`. Use `congr 1`. Simplify using `[Finsupp.single_apply, hij, Ne.symm hij]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Treat this case separately.
 -/
 theorem pderiv_comm {σ R : Type} [CommRing R] (i j : σ) (P : MvPolynomial σ R) :
     MvPolynomial.pderiv i (MvPolynomial.pderiv j P) = MvPolynomial.pderiv j (MvPolynomial.pderiv i P) := by
@@ -208,13 +208,11 @@ theorem pderiv_comm {σ R : Type} [CommRing R] (i j : σ) (P : MvPolynomial σ R
   | add p q hp hq => simp only [map_add, hp, hq]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (ltEquiv Dw n)` using `(ltEquiv Dw n).injective`. Establish `hgen : ∀ ℓ ℓ' : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), InPsi H ℓ.1 → ℓ'.1 = ComplexEmbedding.conjugate ℓ.1 → ∑ b : Fin n, MvPolynomial.pderiv (ℓ, b) (MvPolynomial.pderiv (ℓ', b) (encP P)) = 0`. Introduce and unpack `⟨τ, i⟩ ⟨τ', i'⟩ hτ h`. Simplify using `only at h hτ`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Establish `key` using `CIndEncPf.colSum_zero c a n P hP τ hτ i i'`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Unfold `encP`. Rewrite using `[show ((⟨ComplexEmbedding.conjugate τ, i'⟩ : Σ τ : E →+* ℂ, Fin (Dw.mult τ)), b) = ltEquiv Dw n ⟨ComplexEmbedding.conjugate τ, i', b⟩ from rfl, MvPolynomial.pderiv_rename hinj, show ((⟨τ, i⟩ : Σ τ : E →+* ℂ, Fin (Dw.mult τ)), b) = ltEquiv Dw n ⟨τ, i, b⟩ from rfl, MvPolynomial.pde …`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = 0 := by rw [← map_sum, key, map_zero]`. Break down `hPsi ℓ.1 with h1 | h1` into its components or cases. Conclude with `hgen ℓ ℓ' h1 hℓ`. Establish `h2` using `hgen ℓ' ℓ (by rw [hℓ]; exact h1) (by rw [hℓ, conj_conj])`. Rewrite using `[Finset.sum_congr rfl fun b _ => pderiv_comm (ℓ, b) (ℓ', b) (encP P)]`.
-
-Conclude with `h2`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colSum_conj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     (c : Coeff l) (hPsi : PsiCoverSt H) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (P : MvPolynomial (LtN Dw n) c.F)
@@ -249,17 +247,17 @@ theorem colSum_conj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
     exact h2
 
 /- English proof (translation)
-Use `set Q := MvPolynomial.map (algebraMap c.F S) (encP P) with hQ`. Establish `hcol : ∀ ℓ ℓ' : Lt1 Dw, ℓ'.1 = ComplexEmbedding.conjugate ℓ.1 → ∑ b : Fin n, MvPolynomial.pderiv (ℓ, b) (MvPolynomial.pderiv (ℓ', b) Q) = 0`. Introduce `ℓ ℓ' h`. Simplify using `only [hQ, MvPolynomial.pderiv_map]`. Rewrite using `[← map_sum, colSum_conj c hPsi a n P hP ℓ ℓ' h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcol' : ∀ ℓ ℓ' : Lt1 Dw, ℓ.1 = ComplexEmbedding.conjugate ℓ'.1 → ∑ b : Fin n, MvPolynomial.pderiv (ℓ, b) (MvPolynomial.pderiv (ℓ', b) Q) = 0`. Introduce `ℓ ℓ' h`. Rewrite using `[Finset.sum_congr rfl fun b _ => pderiv_comm (ℓ, b) (ℓ', b) Q]`. Conclude with `hcol ℓ' ℓ h`. Establish `hdot : ∀ i j, dotProduct (Pi.single i 1) (β.mulVec (Pi.single j 1)) = β i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Simplify using `[dotProduct, Matrix.mulVec, Pi.single_apply]`. Unfold `TB.secondOrder`. Simplify using `only [hdot, Fintype.sum_prod_type, apply_ite MvPolynomial.C, map_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `Finset.sum_eq_zero fun ℓ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun ℓ' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, map_add, add_mul]`. Establish `h1 : MvPolynomial.C (β (ltIdx Dw ℓ) (ltIdx Dw ℓ')) * ∑ b : Fin n, MvPolynomial.pderiv (ℓ, b) (MvPolynomial.pderiv (ℓ', b) Q) = 0`. Distinguish the cases in `hb : β (ltIdx Dw ℓ) (ltIdx Dw ℓ') = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, map_zero, zero_mul]`. Rewrite using `[hcol ℓ ℓ' (by simpa using hβ _ _ hb), mul_zero]`. Establish `h2 : MvPolynomial.C (β (ltIdx Dw ℓ') (ltIdx Dw ℓ)) * ∑ b : Fin n, MvPolynomial.pderiv (ℓ, b) (MvPolynomial.pderiv (ℓ', b) Q) = 0`. Distinguish the cases in `hb : β (ltIdx Dw ℓ') (ltIdx Dw ℓ) = 0`. Rewrite using `[hb, map_zero, zero_mul]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcol' ℓ ℓ' (by simpa using hβ _ _ hb), mul_zero]`. Rewrite using `[h1, h2, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem secondOrder_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} (c : Coeff l) {S : Type} [CommRing S] [Algebra c.F S] (hPsi : PsiCoverSt H)
@@ -307,7 +305,7 @@ theorem secondOrder_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
 end KAV
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l c S _ _ _ k n G β hPsi hβ a P hP`. Establish `hK` using `h S (dL Dw) n (Lt1 Dw) (fun ℓ => Pi.single (ltIdx Dw ℓ) 1) β (MvPolynomial.map (algebraMap c.F S) (encP P)) (KAV.secondOrder_zero c hPsi β hβ a n P hP) (-(k : S)) G`. Simplify using `only [KAV.constantCoeff_polyAdd (ltIdx Dw) (ltIdx Dw).injective, KAV.sum_encP, KAV.val_encP] at hK`. Conclude with `hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem killAddValCol_of (h : TB.KillAddSt) : KillAddValColSt := by
   intro E _ _ _ H Dw l c S _ _ _ k n G β hPsi hβ a P hP
@@ -321,7 +319,7 @@ namespace KAV
 open MvPowerSeries
 
 /- English proof (translation)
-Introduce `p q h` and use `by simp only [Prod.mk.injEq] at h exact Prod.ext (Subsingleton.elim _ _) h.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem colEmb_inj {n d : ℕ} (b : Fin n) : Function.Injective (fun p : Fin 1 × Fin d => ((b, p.2) : Fin n × Fin d)) :=
   fun p q h => by
@@ -332,9 +330,9 @@ def colPart {n d : ℕ} (b : Fin n) (M : Fin n × Fin d →₀ ℕ) : Fin 1 × F
   Finsupp.comapDomain (fun p : Fin 1 × Fin d => ((b, p.2) : Fin n × Fin d)) M (colEmb_inj b).injOn
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_rename]`. Rewrite using `[Finset.sum_eq_single x]`. Introduce `y hy hne`. It suffices to derive a contradiction. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
 
-Conclude with `hne (Finsupp.mapDomain_injective hf hy)`. Introduce `h`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coeff_rename_mapDomain_lemma {σ τ R : Type} (f : σ → τ) [Filter.TendstoCofinite f]
     [CommSemiring R] (hf : Function.Injective f) (p : MvPowerSeries σ R) (x : σ →₀ ℕ) :
@@ -352,29 +350,25 @@ private theorem coeff_rename_mapDomain_lemma {σ τ R : Type} (f : σ → τ) [F
     simp
 
 /- English proof (translation)
-Set `ι : Fin n → Fin 1 × Fin d → Fin n × Fin d` to `fun b p => (b, p.2)`. Set `Mb : Fin n → (Fin n × Fin d →₀ ℕ)` to `fun b => Finsupp.mapDomain (ι b) (colPart b M)`. Establish `hMb : ∀ b q, Mb b q = if q.1 = b then M q else 0`. Introduce `b q`. Take `⟨b', j⟩` from `q`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Use `show Finsupp.mapDomain (ι b') (colPart b' M) (ι b' (0, j)) = M (b', j)`. Rewrite using `[Finsupp.mapDomain_apply (colEmb_inj b')]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[colPart, Finsupp.comapDomain_apply, ι]`. Rewrite using `[if_neg h]`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨p, hp⟩`. Simplify using `only [ι, Prod.mk.injEq] at hp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h hp.1.symm`. Rewrite using `[MvPowerSeries.coeff_prod]`. Rewrite using `[Finset.sum_eq_single (Finsupp.equivFunOnFinite.symm Mb)]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.coe_equivFunOnFinite_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `coeff_rename_mapDomain_lemma _ (colEmb_inj b) _ _`. Introduce `l hl hne`. Assume the negation of the conclusion as `hprod`. Apply `hne` to reduce the goal to its premises. Establish `hsupp : ∀ b q, q.1 ≠ b → l b q = 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b q hq`. Assume the negation of the conclusion as `hlq`. Apply `hprod` to reduce the goal to its premises. Use `Finset.prod_eq_zero (Finset.mem_univ b) ?_` and prove the remaining obligations. Apply `MvPowerSeries.coeff_rename_eq_zero` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx⟩`. Apply `hlq` to reduce the goal to its premises. Rewrite using `[← hx]`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨p, hp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq (by rw [← hp])`. Establish `hsum` using `(Finset.mem_finsuppAntidiag.1 hl).1`. Use `Finsupp.ext fun b => Finsupp.ext fun q => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.coe_equivFunOnFinite_symm, hMb]`. Use `split_ifs with hqb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq` using `congrArg (fun F : Fin n × Fin d →₀ ℕ => F q) hsum`. Simplify using `only [Finsupp.finset_sum_apply] at hq`. Rewrite using `[← hq, Finset.sum_eq_single b]`. Introduce `b' _ hb'`. Conclude with `hsupp b' q (by rw [hqb]; exact Ne.symm hb')`.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`. Conclude with `hsupp b q hqb`. Introduce `h`. It suffices to derive a contradiction.
-
-Apply `h` to reduce the goal to its premises. Rewrite using `[Finset.mem_finsuppAntidiag]`. Use `⟨?_, Finset.subset_univ _⟩` and prove the remaining obligations. Use extensionality with `q`. Rewrite using `[Finsupp.finset_sum_apply]`.
-
-Simplify using `only [Finsupp.coe_equivFunOnFinite_symm, hMb]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_prod_cols {S : Type} [CommRing S] {n d : ℕ} (g : Fin n → MvPowerSeries (Fin 1 × Fin d) S)
     (M : Fin n × Fin d →₀ ℕ) :
@@ -448,19 +442,17 @@ def ProdColSt : Prop :=
       ∏ b, expVal (g b) (colOf m b)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw S _ n g m`. Unfold `mVal expVal`. Rewrite using `[KAV.coeff_prod_cols, Finset.prod_mul_distrib]`. Establish `hcol : ∀ b ℓ, colOf m b ℓ = m ⟨ℓ.1, ℓ.2, b⟩` using `fun b ℓ => rfl`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => by simp)]`. Simplify using `only [fun b => Finsupp.prod_fintype (colOf m b) (fun _ e => (e.factorial : S)) (fun _ => by simp), hcol]`. Rewrite using `[Finset.prod_comm, ← Fintype.prod_prod_type']`. Conclude with `Fintype.prod_equiv (ltEquiv Dw n) _ _ (fun p => rfl)`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Establish `hκ : Function.Injective (fun p : LtN Dw n => (p.2.2, ltIdx Dw ⟨p.1, p.2.1⟩))`. Introduce `p q h`. Simplify using `only [Prod.mk.injEq] at h`. Apply `(ltEquiv Dw n).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show ((⟨p.1, p.2.1⟩ : Lt1 Dw), p.2.2) = ((⟨q.1, q.2.1⟩ : Lt1 Dw), q.2.2)`. Rewrite using `[(ltIdx Dw).injective h.2, h.1]`. Establish `hι : Function.Injective (fun ℓ : Lt1 Dw => ((0 : Fin 1), ltIdx Dw ℓ))`. Introduce `p q h`. Simplify using `only [Prod.mk.injEq] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(ltIdx Dw).injective h.2`. Use `Finsupp.ext fun ⟨z, j⟩ => ?_` and prove the remaining obligations. Use `set ℓ := (ltIdx Dw).symm j with hℓ`. Establish `e1 : ((z, j) : Fin 1 × Fin (dL Dw)) = ((0 : Fin 1), ltIdx Dw ℓ)`. Rewrite using `[hℓ, Equiv.apply_symm_apply, Subsingleton.elim z 0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[e1, Finsupp.mapDomain_apply hι]`. Unfold `KAV.colPart colIdx`. Rewrite using `[Finsupp.comapDomain_apply]`. Simplify using `only`. Rewrite using `[show ((b, ltIdx Dw ℓ) : Fin n × Fin (dL Dw)) = (fun p : LtN Dw n => (p.2.2, ltIdx Dw ⟨p.1, p.2.1⟩)) (⟨ℓ.1, ℓ.2, b⟩ : LtN Dw n) from rfl, Finsupp.mapDomain_apply hκ]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prodCol_holds : ProdColSt := by
   classical

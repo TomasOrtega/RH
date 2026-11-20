@@ -20,23 +20,23 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory.CodimOneExtend
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hvU, hUW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hv W.isOpen`. Establish `hUW : U ≤ W` using `hUW`. Take `⟨a, ha, b, hb⟩` from `loc_surj (nonZeroDivisors R) H hU (resG XK (J.preimage_mono hUW) f)`. Establish `hb' : ∀ z, J z ∈ U → gs (𝟙 XK) z (J ⁻¹ᵁ U) ((J.app U).hom b) = cst (J ≫ p) z a * gs (𝟙 XK) z (J ⁻¹ᵁ W) f` using `fun z hz ↦ by`. Rewrite using `[gs_pull (𝟙 XK) J z U hz, Category.id_comp, hb z hz, gs_res (𝟙 XK) z _ hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∀ t, J (B t) = φ (A t)` using `fun t ↦ by`. Rewrite using `[← Scheme.Hom.comp_apply, w, Scheme.Hom.comp_apply]`. Establish `e : (φ.app U).hom b = constFn (φ ≫ p) _ a * resG XV (φ.preimage_mono hUW) s`. Use `hA _ (fn_ext fun t ht ↦ ?_)` and prove the remaining obligations. Establish `ht' : J (B t) ∈ U` using `by rw [hw]; exact ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `k` using `congrArg (B.stalkMap t).hom (hb' (B t) ht')`. Rewrite `k` using `[map_mul, ← gs_stalkMap B t _ ht', ← gs_stalkMap B t _ (hUW ht'), H1.cst_stalkMap, gs_pull B J t U ht', w]`. Establish `k'` using `congrArg (gs (𝟙 XF) t _) hs`. Rewrite `k'` using `[gs_appLE A _ _ _ (𝟙 XF) t (hUW ht), gs_appLE B _ _ _ (𝟙 XF) t (hUW ht), Category.id_comp, Category.id_comp]`. Rewrite using `[gs_pull (𝟙 XF) A t _ ht, gs_pull (𝟙 XF) A t _ ht, Category.id_comp, gs_mul A t _ ht, gs_pull A φ t U ht, gs_constFn _ _ A t ht, gs_res A t _ ht, k, k', reassoc_of% w]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : cst p (φ v) a ∣ gs (𝟙 X) (φ v) U b`. Use `dvd_descend φ v ?_` and prove the remaining obligations. Establish `k` using `congrArg (gs (𝟙 XV) v _) e`. Rewrite `k` using `[gs_pull (𝟙 XV) φ v U hvU, gs_mul (𝟙 XV) v _ hvU, gs_constFn _ _ (𝟙 XV) v hvU, Category.id_comp, Category.id_comp]`. Rewrite using `[← gs_stalkMap φ v U hvU, H1.cst_stalkMap, k]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_mul_right _ _`. Take `⟨t, ht⟩` from `hd`. Take `⟨U', hU', c, rfl⟩` from `X.presheaf.exists_germ_eq t`. Establish `hm : φ v ∈ U ⊓ U'` using `⟨hvU, hU'⟩`. Establish `e₁ : gs (𝟙 X) (φ v) (U ⊓ U') (resG X inf_le_left b) = gs (𝟙 X) (φ v) (U ⊓ U') (constFn p (U ⊓ U') a * resG X inf_le_right c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gs_res (𝟙 X) (φ v) _ hm, gs_mul (𝟙 X) (φ v) _ hm, gs_res (𝟙 X) (φ v) _ hm, gs_constFn p _ (𝟙 X) (φ v) hm, Category.id_comp, ht, gs_eq (𝟙 X) (φ v) U' hU']`. Both sides reduce to the same expression. Rewrite `e₁` using `[gs_eq (𝟙 X) (φ v) _ hm, gs_eq (𝟙 X) (φ v) _ hm]`. Take `⟨O, hO, i₁, i₂, e'⟩` from `X.presheaf.germ_eq (φ v) hm hm _ _ e₁`. Establish `le : O ≤ U ⊓ U'` using `i₁.le`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨O, le.trans (inf_le_left.trans hUW), resG X (le.trans inf_le_right) c, hO, fn_ext fun z hz ↦ ?_⟩` and prove the remaining obligations. Establish `hz' : J z ∈ U ⊓ U'` using `le hz`. Establish `k` using `(gs_res J z le hz _).symm.trans ((congrArg (gs J z O) e').trans (gs_res J z le hz _))`. Establish `k' : gs J z (U ⊓ U') (resG X inf_le_left b) = gs J z (U ⊓ U') (constFn p (U ⊓ U') a * resG X inf_le_right c)` using `k`. Rewrite `k'` using `[gs_res J z _ hz', gs_mul J z _ hz', gs_res J z _ hz', gs_constFn p _ J z hz']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k₂` using `hb' z hz'.1`. Rewrite `k₂` using `[gs_pull (𝟙 XK) J z U hz'.1, Category.id_comp, k']`. Establish `hu : IsUnit (cst (J ≫ p) z a)`. Rewrite using `[H.w, cst_comp]`. Use `IsUnit.of_mul_eq_one (cst q z (algebraMap R K a)⁻¹) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← H1.cst_mul, mul_inv_cancel₀ (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors ha), H1.cst_one]`. Rewrite using `[gs_appLE J _ _ _ (𝟙 XK) z hz, Category.id_comp, gs_res J z _ hz, gs_res (𝟙 XK) z _ hz]`. Conclude with `hu.mul_left_cancel k₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extAt_of_flat {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     {X XK XV XF : Scheme.{0}} {p : X ⟶ Sp R} {J : XK ⟶ X} {q : XK ⟶ Sp K}
@@ -98,11 +98,9 @@ theorem extAt_of_flat {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra 
   exact hu.mul_left_cancel k₂
 
 /- English proof (translation)
-Use `((GlobalTheory.normal_domain_height_one.{0, 0, 0} R (FractionRing R)).1 𝔭 h).1` as an intermediate fact. Establish `hi : Function.Injective (algebraMap R (Localization.AtPrime 𝔭))` using `IsLocalization.injective _ 𝔭.primeCompl_le_nonZeroDivisors`. Establish `: CharZero (Localization.AtPrime 𝔭)` using `charZero_of_injective_algebraMap hi`. Take `⟨V, _, _, _, hV, j, hj, hl⟩` from `GlobalTheory.DvrCompletion.exists_cDvr_of_isDiscreteValuationRing (Localization.AtPrime 𝔭)`. Use `⟨V, _, _, _, hV, j.comp (algebraMap R _), hj.comp hi, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.Flat.comp (RingHom.flat_algebraMap_iff.2 inferInstance) ?_` and prove the remaining obligations. Set `_` to `j.toAlgebra`. Establish `: FaithfulSMul (Localization.AtPrime 𝔭) V` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hj`. Conclude with `(inferInstance : Module.Flat (Localization.AtPrime 𝔭) V)`. Rewrite using `[← Ideal.comap_comap, IsLocalRing.maximalIdeal_comap]`.
-
-Conclude with `Localization.AtPrime.under_maximalIdeal`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cDvr_flat (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
     [CharZero R] (𝔭 : Ideal R) [𝔭.IsPrime] (h : 𝔭.height = 1) :
@@ -123,7 +121,7 @@ theorem exists_cDvr_flat (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing 
     exact Localization.AtPrime.under_maximalIdeal
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsLocalization.map (M := nonZeroDivisors R) (T := nonZeroDivisors V) (FractionRing V) φ (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective φ hφ), IsLocalization.map_comp _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_map_fractionRing {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (φ : R →+* V)
     (hφ : Function.Injective φ) : ∃ φK : FractionRing R →+* FractionRing V,
@@ -132,19 +130,19 @@ theorem exists_map_fractionRing {R V : Type} [CommRing R] [IsDomain R] [CommRing
     (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective φ hφ), IsLocalization.map_comp _⟩
 
 /- English proof (translation)
-Introduce `S G _ hG R _ _ _ _ _ χ W f hf y hy h1 hr`. Use `hG.smooth` as an intermediate fact. Establish `fl : ∀ T : Over S, Flat (fst T G).left` using `fun T ↦ MorphismProperty.of_isPullback (IsPullback.of_hasPullback T.hom G.hom).flip inferInstance`. Use `fl (Over.mk χ)` as an intermediate fact. Establish `H` using `ThetaRuleCompare.isPullback_whisker (A := G) (Over.homMk (spMap (algebraMap R (FractionRing R))) rfl : Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⟶ Over.mk χ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x : PrimeSpectrum R` to `(fst (Over.mk χ) G).left y`. Establish `hx1 : Order.coheight ((fst (Over.mk χ) G).left y) ≤ 1` using `GenericExtend.coheight_apply_le_one _ h1`. Establish `hx0 : x.asIdeal ≠ ⊥` using `fun h0 ↦ hr (by`. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback H y (⊥ : PrimeSpectrum (FractionRing R)) (by`. Use `PrimeSpectrum.ext (h0.trans ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Ideal.comap_bot_of_injective _ (IsFractionRing.injective R (FractionRing R))).symm)`. Conclude with `⟨z, hz⟩)`. Establish `hx : x.asIdeal.height = 1`. Use `le_antisymm ?_ (ENat.one_le_iff_ne_zero.2 fun h0 ↦ hx0 (Ideal.height_eq_zero_iff_eq_bot.1 h0))` and prove the remaining obligations. Conclude with `(idealHeight_eq_coheight (CommRingCat.of R) x).trans_le hx1`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, _, _, _, hV, φ, hφ, hfl, hc⟩` from `exists_cDvr_flat R x.asIdeal hx`. Take `⟨φK, hK⟩` from `exists_map_fractionRing φ hφ`. Establish `hK' : spMap φK ≫ spMap (algebraMap R (FractionRing R)) = spMap (algebraMap V (FractionRing V)) ≫ spMap φ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hK]`. Take `⟨s, hs⟩` from `hf V hV φ φK (by rw [reassoc_of% hK']) hK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `HV` using `ThetaRuleCompare.isPullback_whisker (A := G) (Over.homMk (spMap φ) rfl : Over.mk (spMap φ ≫ χ) ⟶ Over.mk χ)`. Establish `HF` using `ThetaRuleCompare.isPullback_whisker (A := G) (Over.homMk (spMap (algebraMap V (FractionRing V))) rfl : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ) ⟶ Over.mk (spMap φ ≫ χ))`. Establish `hφf : Flat (spMap φ)` using `Flat.SpecMap_iff.2 hfl`. Use `MorphismProperty.of_isPullback (P := @Flat) HV.flip hφf` as an intermediate fact. Use `fl (Over.mk (spMap φ ≫ χ))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback HV y (IsLocalRing.closedPoint V) (PrimeSpectrum.ext hc.symm)`. Establish `w : ((Over.homMk (spMap φK) (by simp only [Over.mk_hom]; rw [reassoc_of% hK']) : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ) ⟶ Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ)) ▷ G).left ≫ ((Over.homMk (spMap (algebraMap R (FractionRing R))) rfl : Over.mk (sp …`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← comp_whiskerRight, ← comp_whiskerRight]`. Use `congr 2`. Conclude with `Over.OverMorphism.ext hK'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hA` using `Exist.CubicalExtension.app_injective_generic HF`. Establish `h₂` using `congrArg (· ⁻¹ᵁ W) w`. Simplify using `only [Scheme.Hom.comp_preimage] at h₂`. Conclude with `extAt_of_flat H _ _ hA _ w W f s h₂.ge (hs _ le_rfl h₂.ge) v hy`.
+A detailed English derivation is pending.
 -/
 theorem extAt_of_coheight_le_one : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], IsSemiAbelian G → ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (χ : Sp R ⟶ S) (W : (Over.mk χ ⊗ G).left.Opens) (f : Γ((Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⊗ G).left, ((Over.homMk (spMap (algebraMap R (FractionRing R))) rfl : Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⟶ Over.mk χ) ▷ G).left ⁻¹ᵁ W)), (∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (φ : R →+* V) (φK : FractionRing R →+* FractionRing V) (h : spMap φK ≫ spMap (algebraMap R (FractionRing R)) ≫ χ = spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ), φK.comp (algebraMap R (FractionRing R)) = (algebraMap V (FractionRing V)).comp φ → ∃ s : Γ((Over.mk (spMap φ ≫ χ) ⊗ G).left, ((Over.homMk (spMap φ) rfl : Over.mk (spMap φ ≫ χ) ⟶ Over.mk χ) ▷ G).left ⁻¹ᵁ W), ∀ (O : (Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ) ⊗ G).left.Opens) (h₁ : O ≤ ((Over.homMk (spMap (algebraMap V (FractionRing V))) rfl : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ) ⟶ Over.mk (spMap φ ≫ χ)) ▷ G).left ⁻¹ᵁ (((Over.homMk (spMap φ) rfl : Over.mk (spMap φ ≫ χ) ⟶ Over.mk χ) ▷ G).left ⁻¹ᵁ W)) (h₂ : O ≤ ((Over.homMk (spMap φK) h : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ) ⟶ Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ)) ▷ G).left ⁻¹ᵁ (((Over.homMk (spMap (algebraMap R (FractionRing R))) rfl : Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⟶ Over.mk χ) ▷ G).left ⁻¹ᵁ W)), (((Over.homMk (spMap (algebraMap V (FractionRing V))) rfl : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ) ⟶ Over.mk (spMap φ ≫ χ)) ▷ G).left.appLE _ O h₁).hom s = (((Over.homMk (spMap φK) h : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ) ⟶ Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ)) ▷ G).left.appLE _ O h₂).hom f) → ∀ y ∈ W, Order.coheight y ≤ 1 → y ∉ Set.range ((Over.homMk (spMap (algebraMap R (FractionRing R))) rfl : Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⟶ Over.mk χ) ▷ G).left → GlobalTheory.GenericExtend.ExtAt ((Over.homMk (spMap (algebraMap R (FractionRing R))) rfl : Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⟶ Over.mk χ) ▷ G).left W f y := by
   intro S G _ hG R _ _ _ _ _ χ W f hf y hy h1 hr

@@ -13,15 +13,15 @@ namespace DualEmbeddingBijective
 variable {K : Type} [Field K] [NumberField K] {i : ℕ}
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `F.fg`. Take `⟨d, hd0, hd⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image y ∪ S.biUnion fun g => Finset.univ.image g)`. Establish `hint : ∀ z : K, IsIntegral ℤ z → z ∈ (algebraMap (𝓞 K) K).range` using `fun z hz => ⟨⟨z, hz⟩, rfl⟩`. Use `⟨d * d, mul_ne_zero hd0 hd0, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[← hS]`. Use `Submodule.span_induction (p := fun x _ => ((d * d) • y) ⬝ᵥ x ∈ (algebraMap (𝓞 K) K).range) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce `g hg`. Establish `hsum : ((d * d) • y) ⬝ᵥ g = ∑ j, (d • y j) * (d • g j)`. Simplify using `only [dotProduct, Pi.smul_apply, zsmul_eq_mul, Int.cast_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Use `sum_mem fun j _ => mul_mem (hint _ (hd _ ?_)) (hint _ (hd _ ?_))` and prove the remaining obligations. Conclude with `Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ j))`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_union_right _ (Finset.mem_biUnion.mpr ⟨g, Finset.mem_coe.mp hg, Finset.mem_image_of_mem _ (Finset.mem_univ j)⟩)`. Rewrite using `[dotProduct_zero]`. Conclude with `zero_mem _`. Introduce `x z _ _ hx hz`. Rewrite using `[dotProduct_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `add_mem hx hz`. Introduce `a x _ hx`. Take `⟨c, hc⟩` from `hx`. Conclude with `⟨a * c, by rw [dotProduct_smul, map_mul, hc]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_zsmul_mem_dualLattice (F : HermLattice K i) (y : Fin i → K) :
     ∃ N : ℤ, N ≠ 0 ∧ N • y ∈ dualLattice F := by
@@ -61,9 +61,9 @@ def pairing (w : (K →+* ℂ) × Fin i → ℂ) : (Fin i → K) →+ ℂ where
   map_add' φ ψ := by simp [add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [pairing, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[mul_comm]`. Introduce `j' _ hj'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_eq_of_ne hj']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pairing_single (w : (K →+* ℂ) × Fin i → ℂ) (j : Fin i) (x : K) :
     pairing w (Pi.single j x) = ∑ σ : K →+* ℂ, w (σ, j) * σ x := by
@@ -77,15 +77,15 @@ theorem pairing_single (w : (K →+* ℂ) × Fin i → ℂ) (j : Fin i) (x : K) 
   · simp
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Establish `hb : ∀ t, pairing w (b t : Fin i → K) = 0` using `fun t => by`. Establish `h` using `congrFun hw t`. Simplify `h` using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, dualEmbMatrix, pairing]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hL : ∀ φ : dualLattice F, pairing w φ = 0`. Introduce `φ`. Rewrite using `[← b.sum_repr φ, Submodule.coe_sum, map_sum]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, map_zsmul, hb, smul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : ∀ y, pairing w y = 0`. Introduce `y`. Take `⟨N, hN, hy⟩` from `exists_zsmul_mem_dualLattice F y`. Establish `h` using `hL ⟨_, hy⟩`. Rewrite `h` using `[Submodule.coe_mk, map_zsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(smul_eq_zero.mp h).resolve_left hN`. Use function extensionality and compare the values at `p`. Take `⟨σ, j⟩` from `p`. Establish `hli` using `(linearIndependent_monoidHom K ℂ).comp (fun σ : K →+* ℂ => σ.toMonoidHom) (fun σ τ h => RingHom.ext fun x => DFunLike.congr_fun h x)`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hli (fun σ => w (σ, j)) ?_ σ` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `h` using `hK (Pi.single j x)`. Rewrite `h` using `[pairing_single]`. Simplify `h` using `[Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem injective (F : HermLattice K i) {T : Type} [Fintype T] [DecidableEq T]
     (b : Module.Basis T ℤ (dualLattice F)) :
@@ -118,9 +118,9 @@ theorem injective (F : HermLattice K i) {T : Type} [Fintype T] [DecidableEq T]
   simpa [Finset.sum_apply] using h
 
 /- English proof (translation)
-Establish `h1 : LinearIndependent ℤ (fun t => (b t : Fin i → K))` using `b.linearIndependent.map' (dualLattice F).subtype (Submodule.ker_subtype _)`. Establish `h2 : LinearIndependent ℚ (fun t => (b t : Fin i → K))` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp h1`. Establish `h3` using `h2.fintype_card_le_finrank`. Rewrite `h3` using `[Module.finrank_pi_fintype]`. Rewrite using `[Fintype.card_prod, NumberField.Embeddings.card K ℂ, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at h3`. Rewrite using `[mul_comm]`. Conclude with `h3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le (F : HermLattice K i) {T : Type} [Fintype T]
     (b : Module.Basis T ℤ (dualLattice F)) :
@@ -139,9 +139,9 @@ theorem card_le (F : HermLattice K i) {T : Type} [Fintype T]
 end DualEmbeddingBijective
 
 /- English proof (translation)
-Introduce `K _ _ i F T _ _ b`. Establish `hinj` using `DualEmbeddingBijective.injective F b`. Establish `hle` using `LinearMap.finrank_le_finrank_of_injective hinj`. Establish `hcard` using `DualEmbeddingBijective.card_le F b`. Simplify using `only [Module.finrank_fintype_fun_eq_card] at hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).mp hinj⟩` and prove the remaining obligations. Simplify using `only [Module.finrank_fintype_fun_eq_card]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem DualEmbBijective.proof : DualEmbBijective.Statement := by
   intro K _ _ i F T _ _ b

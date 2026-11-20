@@ -22,9 +22,9 @@ namespace UpperTheory.GalN
 open GlobalTheory.ParLawsBare GlobalTheory.RowTie GlobalTheory.NPin Polynomial
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Introduce `a π ha _ _ w`. Use `GlobalTheory.CuspRep.host_isCMField D.host` as an intermediate fact. Use `⟨fun e => tempered_of_rank_le_one D T h1 a π e.le w, fun hu α hα => ?_⟩` and prove the remaining obligations. Take `⟨-, hU, hS⟩` from `_root_.GlobalTheory.HeightCounting.Blocks.readsCusp_alt hF C`. Take `⟨B, hB, e⟩` from `hS a π w ha hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hα` using `[e]`. Take `⟨b, hb, rfl⟩` from `Multiset.mem_map.1 hα`. Establish `k : OpenB (Formalism.ConjugateSelfDual.normV w) (b : ℂ)` using `PositivityTheory.JacquetShalikaLocal.jacquetShalikaBound D.host.E a _ (hU a π ha) w B hB b hb`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `k.inv (one_lt_q w)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tempered_of_true_cuspidal_alt (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7}
     {T : WDTie D.nd D.naut} (C : _root_.GlobalTheory.HeightCounting.CGTrueT hL D T) (h1 : RankOneUnitary T) : AllCuspidalOpenBound D.nd D.naut := by
@@ -39,23 +39,23 @@ theorem tempered_of_true_cuspidal_alt (hF : GlobalTheory.Published.AutomorphicFo
   rw [Units.val_inv_eq_inv_val]
   exact k.inv (one_lt_q w)
 /- English proof (translation)
-Introduce `hF _ hL D P` and use `_root_.UpperTheory.GalN.tempered_of_true_cuspidal_alt hF P.cg (_root_.GlobalTheory.TempGal.rankOneUnitary_of_charSide hF hL D P)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem allCuspidalOpenBound_of_cuspU_character_choice : GlobalTheory.Published.AutomorphicFormsFiniteGL → _root_.UpperTheory.GalS.CuspUAlt →
     ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), AllCuspidalOpenBound D.nd D.naut :=
   fun hF _ hL D P => _root_.UpperTheory.GalN.tempered_of_true_cuspidal_alt hF P.cg (_root_.GlobalTheory.TempGal.rankOneUnitary_of_charSide hF hL D P)
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.GalN.tempered_of_true_cuspidal_alt hP.what₂.fin X.cg (_root_.GlobalTheory.ParLawsBare.rankOneUnitary_of_charSide X.T X.cg X.chr)`.
+A detailed English derivation is pending.
 -/
 theorem allCuspidalOpenBound_of_parIn (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {cf : CharFrame D} {rep Rw}
     (X : _root_.GlobalTheory.HeightCounting.Up.ParityConditions hL D cf rep Rw) : AllCuspidalOpenBound D.nd D.naut :=
   _root_.UpperTheory.GalN.tempered_of_true_cuspidal_alt hP.what₂.fin X.cg (_root_.GlobalTheory.ParLawsBare.rankOneUnitary_of_charSide X.T X.cg X.chr)
 /- English proof (translation)
-Introduce `hP hL D cf rep Rw hE X`. Establish `hrig : IsobaricRigid D.nd D.naut`. Use `GlobalTheory.CuspRep.host_isCMField D.host` as an intermediate fact. Conclude with `GlobalTheory.RowPar.isobaricRigid_of_jacquetShalika hP.what₂.js.1 (_root_.GlobalTheory.HeightCounting.Blocks.readsCusp_alt hP.what₂.fin X.cg)`. Establish `han1` using `GlobalTheory.RowClose.isobaricCuspidalMultiplicityOne_of_twisted _ _ _ D.nd D.naut hrig`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `han2` using `GlobalTheory.SpehRigid.isobaricDiscreteSelfDualMultOne_of_isobaricSumMultOne _ _ _ D.nd D.naut hrig`. Establish `hcheb` using `GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb D`. Establish `ha5 : Formalism.MainNotions.SumRepresentations.adm5 D` using `(Formalism.MainNotions.SumRepresentations.condition_iff_additive_maps D).2 ⟨han1, han2, fun Sg hSg => by`. Establish `hd` using `(hcheb hSg.toFinset).closure_eq`. Use `hd using 4 with σ` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.Finite.mem_toFinset]⟩`. Establish `htie0 : Formalism.MainNotions.SumRepresentations.tie0 D` using `⟨GlobalTheory.RowTieLP.main D X.T, tieAut_of_side X.chr hE, tieGal_bare hE⟩`. Conclude with `⟨htie0, ha5, _root_.UpperTheory.GalN.allCuspidalOpenBound_of_parIn hP X, tieLab_of_lab X.T X.lab, heckeSplitOne_of_side X.chr, cancel_of_tie X.T, fun k v => GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem par_laws_bare : _root_.GlobalTheory.ParLawsBare.mainTheorem := by
   intro hP hL D cf rep Rw hE X

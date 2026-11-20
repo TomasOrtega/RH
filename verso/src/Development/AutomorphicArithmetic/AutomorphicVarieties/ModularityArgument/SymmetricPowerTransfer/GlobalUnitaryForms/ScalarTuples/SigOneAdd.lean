@@ -9,11 +9,11 @@ open QuadraticAlgebra NumberField UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc Up
 namespace UpperTheory.V.Z.Sym.Glob.GlobalDataExistence
 
 /- English proof (translation)
-Take `⟨⟨p0, q0⟩, ⟨p1, q1⟩⟩` from `d`. Establish `h1 : p0 ^ 2 - Δ * q0 ^ 2 - (p1 ^ 2 - Δ * q1 ^ 2) = 0`. Use `congrArg (fun z : EL Δ τ => z.re.re) hd` as an intermediate fact. Simplify using `[sigL, ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] at this`. Take the linear combination `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2 : 2 * (p0 * p1 - Δ * q0 * q1) + τ * (p1 ^ 2 - Δ * q1 ^ 2) = 1`. Use `congrArg (fun z : EL Δ τ => z.im.re) hd` as an intermediate fact. Simplify using `[sigL, ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] at this`. Take the linear combination `this`. Establish `g1` using `congrArg f h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `g2` using `congrArg f h2`. Simplify using `only [map_sub, map_add, map_mul, map_pow, map_zero, map_one, map_ofNat] at g1 g2`. Conclude with `⟨f p0 + f p1 * a, f q0 + f q1 * a, by linear_combination g1 + a * g2 + (f p1 ^ 2 - f Δ * f q1 ^ 2) * ha⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem sq_of_norm {K R : Type} [Field K] [Field R] (f : K →+* R) {Δ τ : K} (a : R) (ha : a ^ 2 = f τ * a - 1)
     (d : EL Δ τ) (hd : d * sigL d = ofE Δ (ω : Etau K τ)) : ∃ x y : R, x ^ 2 - f Δ * y ^ 2 = a := by
@@ -32,9 +32,9 @@ private theorem sq_of_norm {K R : Type} [Field K] [Field R] (f : K →+* R) {Δ 
   exact ⟨f p0 + f p1 * a, f q0 + f q1 * a, by linear_combination g1 + a * g2 + (f p1 ^ 2 - f Δ * f q1 ^ 2) * ha⟩
 
 /- English proof (translation)
-Take `⟨p0, p1⟩` from `x`. Take `⟨q0, q1⟩` from `y`. Establish `h1` using `congrArg QuadraticAlgebra.re h`. Establish `h2` using `congrArg QuadraticAlgebra.im h`. Simplify using `[pow_two] at h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨⟨⟨p0, q0⟩, ⟨p1, q1⟩⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [sigL, ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Take the linear combination `h1`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `h2`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -53,21 +53,19 @@ private theorem norm_of_sq {K : Type} [Field K] {Δ τ : K} (x y : Etau K τ)
   · ring
 
 /- English proof (translation)
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`. Establish `key : hs (algebraMap F E Δ) a = 1`. Use `hsHasse E _ a ((map_ne_zero _).2 hΔ) ha0 (fun σ => ?_) fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-It suffices to derive a contradiction. Establish `h1` using `hτ (σ.comp (algebraMap F E))`. Establish `h2` using `congrArg σ ha`. Simplify using `only [map_sub, map_mul, map_pow, map_one, map_ofNat, RingHom.comp_apply] at h1 h2`. Use polynomial arithmetic with `[sq_nonneg (2 * σ a - σ (algebraMap F E τ))]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Set `v : Pl F` to `w.under (𝓞 F) haveI : w.asIdeal.LiesOver v.asIdeal := ⟨rfl⟩`. Establish `hf : ∀ x : F, KStar.Choice.complMap v w (cv v x) = cv w (algebraMap F E x)` using `KStar.Choice.complMap_algebraMap v w`. Unfold `hs`. Rewrite using `[if_pos]`. Distinguish the cases in `hv : v ∈ D.Sg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨s, hs⟩` from `h.split v hv`. Establish `e` using `congrArg (KStar.Choice.complMap v w) hs`. Rewrite `e` using `[hf, map_mul]`. Use `set r := KStar.Choice.complMap v w s`. Establish `hr : r ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h0`. Rewrite `e` using `[h0, mul_zero, map_eq_zero, map_eq_zero]`. Conclude with `hΔ e`. Use `haveI : CharZero (Kv w) := algebraRat.charZero _`. Use `⟨(cv w a + 1) / 2, (cv w a - 1) / (2 * r), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd⟩` from `locNorm (Ov v) (Kv v) (cv v Δ) (cv v τ) (h.off v hv) (hi v hv)`. Rewrite using `[← hf]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `sq_of_norm _ _ ?_ d hd` and prove the remaining obligations. Rewrite using `[hf, ← map_pow, ha, map_sub, map_mul, map_one]`. Unfold `hs at key`. Assume the negation of the conclusion as `hn`. Rewrite `key` using `[if_neg hn]`.
-
-Evaluate the numerical expressions using `at key`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 private theorem hasse {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) (h : D.Ok) (τ : F) (hτ : IsCM τ)
     (hi : ∀ v ∉ D.Sg, cv v τ ∈ (algebraMap (Ov v) (Kv v)).range) (hΔ : Δ ≠ 0)
@@ -113,9 +111,9 @@ private theorem hasse {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ)
   norm_num at key
 
 /- English proof (translation)
-Establish `hΔ : Δ ≠ 0` using `fun h0 => by simpa [h0] using h.neg σ`. Use `haveI : Fact (∀ r : F, r ^ 2 ≠ -1 + τ * r) := ⟨fun r hr => by`. Establish `h1` using `hτ σ`. Establish `h2` using `congrArg σ hr`. Simplify using `only [map_sub, map_add, map_neg, map_mul, map_pow, map_one, map_ofNat] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[sq_nonneg (2 * σ r - σ τ)]⟩`. Use `haveI : NumberField (Etau F τ) := NumberField.of_module_finite F _`. Apply the tactic sequence `obtain ⟨x, y, hxy⟩ := hasse D h τ hτ hi hΔ (Etau F τ) ω (by ext <;> simp [pow_two, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one])`. Conclude with `norm_of_sq x y hxy`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem d_ex {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) (h : D.Ok) (τ : F) (hτ : IsCM τ)
     (hi : ∀ v ∉ D.Sg, cv v τ ∈ (algebraMap (Ov v) (Kv v)).range) (σ : F →+* ℝ) :
@@ -131,7 +129,7 @@ private theorem d_ex {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) 
   exact norm_of_sq x y hxy
 
 /- English proof (translation)
-Take `⟨⟨p0, q0⟩, ⟨p1, q1⟩⟩` from `y`. Simplify using `[sigL, QuadraticAlgebra.trace_def, two_mul, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem tr_re {K : Type} [Field K] {Δ τ : K} (y : EL Δ τ) :
     (QuadraticAlgebra.trace (y * star (sigL y))).re =
@@ -141,13 +139,13 @@ private theorem tr_re {K : Type} [Field K] {Δ τ : K} (y : EL Δ τ) :
   ring
 
 /- English proof (translation)
-Use polynomial arithmetic with `[sq_nonneg (2 * p + t * q), mul_nonneg (sub_nonneg.2 (show t ^ 2 ≤ 4 by linarith)) (sq_nonneg q)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem q_nonneg {t : ℝ} (ht : t ^ 2 - 4 < 0) (p q : ℝ) : 0 ≤ p ^ 2 + t * p * q + q ^ 2 := by
   nlinarith [sq_nonneg (2 * p + t * q), mul_nonneg (sub_nonneg.2 (show t ^ 2 ≤ 4 by linarith)) (sq_nonneg q)]
 
 /- English proof (translation)
-Establish `hq : q = 0`. Assume the negation of the conclusion as `hq`. Use polynomial arithmetic with `[sq_nonneg (2 * p + t * q), mul_pos (sub_pos.2 (show t ^ 2 < 4 by linarith)) (sq_pos_of_ne_zero hq)]`. Substitute `hq` using the available equality. Conclude with `⟨by simpa using h, rfl⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem q_zero {t : ℝ} (ht : t ^ 2 - 4 < 0) {p q : ℝ} (h : p ^ 2 + t * p * q + q ^ 2 = 0) : p = 0 ∧ q = 0 := by
   have hq : q = 0 := by
@@ -157,11 +155,11 @@ private theorem q_zero {t : ℝ} (ht : t ^ 2 - 4 < 0) {p q : ℝ} (h : p ^ 2 + t
   exact ⟨by simpa using h, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[tr_re]`. Simplify using `only [map_sub, map_add, map_mul, map_pow, map_ofNat] at hτ ⊢`. Establish `h1` using `q_nonneg hτ (σ y.re.re) (σ y.im.re)`. Establish `h2` using `q_nonneg hτ (σ y.re.im) (σ y.im.im)`. Establish `h3` using `mul_nonneg (neg_pos.2 hΔ).le h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨by linarith, fun hy => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `e1` using `q_zero hτ (le_antisymm (by linarith) h1)`. Establish `e2` using `q_zero hτ ((mul_eq_zero.1 (le_antisymm (by linarith) h3)).resolve_left (neg_pos.2 hΔ).ne')`. Simplify using `only [map_eq_zero] at e1 e2`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `exact hy (by ext <;> simp [e1.1, e1.2, e2.1, e2.2])`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tr_pos {K : Type} [Field K] {Δ τ : K} (σ : K →+* ℝ) (hΔ : σ Δ < 0) (hτ : σ (τ ^ 2 - 4) < 0) (y : EL Δ τ) :
     0 ≤ σ (QuadraticAlgebra.trace (y * star (sigL y))).re ∧ (y ≠ 0 → 0 < σ (QuadraticAlgebra.trace (y * star (sigL y))).re) := by
@@ -178,39 +176,39 @@ private theorem tr_pos {K : Type} [Field K] {Δ τ : K} (σ : K →+* ℝ) (hΔ 
   exact hy (by ext <;> simp [e1.1, e1.2, e2.1, e2.2])
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sig_mul {K : Type} [Field K] {Δ τ : K} (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := by
   ext <;> simp [sigL] <;> ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sig_sig {K : Type} [Field K] {Δ τ : K} (x : EL Δ τ) : sigL (sigL x) = x := by
   ext <;> simp [sigL]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sig_star {K : Type} [Field K] {Δ τ : K} (x : EL Δ τ) : sigL (star x) = star (sigL x) := by
   ext <;> simp [sigL]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sig_one_add {K : Type} [Field K] {Δ τ : K} (x : EL Δ τ) : sigL (1 + x) = 1 + sigL x := by
   ext <;> simp [sigL, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨p, q⟩, x⟩ hx σ`. Establish `e : (1 + sigL d * star d) * x * star (sigL x) = x * star (sigL x) + (sigL d * x) * star (sigL (sigL d * x))`. Rewrite using `[sig_mul, sig_sig, star_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (herm 1 (1 + sigL d * star d) (⟨p, q⟩, x) (⟨p, q⟩, x)).re = p ^ 2 - Δ * q ^ 2 + ((QuadraticAlgebra.trace (x * star (sigL x))).re + (QuadraticAlgebra.trace ((sigL d * x) * star (sigL (sigL d * x)))).re)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [herm]`. Rewrite using `[e, map_add, map_one, one_mul]`. Simplify using `only [QuadraticAlgebra.re_add, QuadraticAlgebra.re_mul, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `tr_pos σ (hΔ σ) (hτ σ) x`. Establish `h2` using `(tr_pos σ (hΔ σ) (hτ σ) (sigL d * x)).1`. Simplify using `only [map_add σ, map_sub σ, map_mul σ, map_pow σ]`. Establish `h3` using `mul_nonneg (neg_pos.2 (hΔ σ)).le (sq_nonneg (σ q))`. Establish `h4` using `sq_nonneg (σ p)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : x = 0`. Assume the negation of the conclusion as `hn`. Establish `hp : σ p ^ 2 = 0` using `le_antisymm (by linarith [h1.1]) h4`. Establish `hq : σ q ^ 2 = 0` using `(mul_eq_zero.1 (le_antisymm (by linarith [h1.1]) h3)).resolve_left (neg_pos.2 (hΔ σ)).ne'`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, pow_eq_zero_iff, map_eq_zero] at hp hq`.
+Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hx (by rw [hp, hq, h0]; rfl)`. Combine the linear relations using `[h1.2 h0]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem posF {F : Type} [Field F] {Δ τ : F} (hΔ : ∀ σ : F →+* ℝ, σ Δ < 0) (hτ : IsCM τ) (d : EL Δ τ) :
     PosF 1 (1 + sigL d * star d) := by
@@ -242,13 +240,13 @@ end UpperTheory.V.Z.Sym.Glob.GlobalDataExistence
 
 open UpperTheory.V.Z.Sym.Glob.GlobalDataExistence in
 /- English proof (translation)
-Introduce `F _ _ Δ D h τ hτ hi`. Use `haveI := h.real`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Set `σ : F →+* ℝ` to `InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w)`. Take `⟨d, hd⟩` from `d_ex D h τ hτ hi σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp` using `posF h.neg hτ d`. Use `⟨d, _, ⟨fun h0 => by simpa [h0] using hτ σ, one_ne_zero, hd, ?_, ?_, ?_⟩, hp⟩` and prove the remaining obligations. Use `haveI : Module.Finite F (EL Δ τ) := Module.Finite.trans (Lsq F Δ) _ haveI : IsArtinianRing (EL Δ τ) := IsArtinianRing.of_finite F _`. Use `IsArtinianRing.isUnit_iff_mem_nonZeroDivisors.2 (mem_nonZeroDivisors_iff_left.2 fun x hx => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hp (0, x) (fun e => h0 (congrArg Prod.snd e)) σ` as an intermediate fact. Simplify using `[herm, hx] at this`. Rewrite using `[sig_one_add, sig_mul, sig_sig, sig_star, star_add, star_one, star_mul, star_star]`. Establish `e : (d * sigL d) * star (d * sigL d) = 1`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Rewrite `e` using `[star_mul]`. Rewrite using `[sig_one_add, sig_mul, sig_sig, sig_star]`. Take the linear combination `-e`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Glob.datEx :
     UpperTheory.V.Z.Sym.Glob.DatEx := by

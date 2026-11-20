@@ -21,13 +21,11 @@ noncomputable section
 namespace GlobalTheory.UU.TorPtEx
 
 /- English proof (translation)
-Establish `h1 : (LB.oneGen D.P.L (Y` using `T.left)).IsGen := fun _ _ => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm`. Establish `key : ∀ χ : D.X, ∃ t : LB.Gen (LB.LinComb D.P.L (DegPre.gtφT D T 1 χ) DegPre.gtε), t.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ T.left) (z : Z) (J), Good D.P.L z J → val t r z J = gm r z ⊤ (a (Multiplicative.ofAdd χ))`. Introduce `χ`. Take `⟨t, ht, hv⟩` from `exists_gen D.P.isLB (φ' := DegPre.gtφT D T 1 χ) (ε' := DegPre.gtε) (fun U _ h => by`. Establish `e₁ : padd D.P.A (DegPre.cT D T χ) 1 = DegPre.cT D T χ` using `_root_.mul_one (DegPre.cT D T χ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₂ : DegPre.zeroT D T = 1` using `rfl`. Simplify using `[DegPre.gtφT, DegPre.gtε, Fin.prod_univ_succ, e₁, e₂])`. Use the proof step `(DVR.scaleGen (a (Multiplicative.ofAdd χ)) (LB.oneGen D.P.L)) (DVR.scaleGen_isGen _ _ h1)`. Use `⟨t, ht, fun Z r z J hJ => (hv Z r z J hJ).trans ?_⟩` and prove the remaining obligations. Conclude with `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top (hJ.mem PEmpty.elim r) _) (val_one r))).trans (_root_.mul_one _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose s hs hv using key`. Use `⟨⟨1, s, hs, corr_of_val D.P.isLB fun y J hJ => ?_, fun χ χ' => corr_of_val D.P.isLB fun y J hJ => ?_⟩, rfl, hv⟩` and prove the remaining obligations. Rewrite using `[hv 0 _ _ y J hJ, val_one, ofAdd_zero, map_one, map_one]`. Establish `c` using `(val_cub D.cub (𝟙 T) hJ (DegPre.cT D T χ) (DegPre.cT D T χ') 1).trans ((congrArg (cubV D.cub y J _ _) (Category.id_comp (1 : T ⟶ D.P.A))).trans ((isCub_cubV D.cub hJ).face₃ _ _))`. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (hv _ _ _ y J hJ) c)).trans (Eq.trans ?_ ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (hv _ _ _ y J hJ) (hv _ _ _ y J hJ))).symm)` and prove the remaining obligations.
-
-Rewrite using `[_root_.mul_one, ofAdd_add, map_mul, map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gtPt {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Over (Spec (CommRingCat.of R)))
     (a : Multiplicative D.X →* Γ(T.left, ⊤)ˣ) : ∃ g : GtPt D T, g.b = 1 ∧
@@ -57,9 +55,9 @@ theorem exists_gtPt {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Ove
     rw [_root_.mul_one, ofAdd_add, map_mul, map_mul]; rfl
 
 /- English proof (translation)
-Introduce `V _ _ _ hV D A G _ _ U W _ _ _ hW a`. Take `⟨g, hb, hv⟩` from `exists_gtPt D (TA V W) ((Units.map (Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom.toMonoidHom).comp a)`. Take `⟨x, hx, -⟩` from `RedOnto.main V hV D A G U W hW g`. Use `⟨x, fun e Z r xe h => ?_⟩` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `hx e Z r xe h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hb ▸ h₁, fun χ z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[h₂ χ z J hJ, hv χ Z r z J hJ, gm_val r z ⊤ trivial, gs_eq _ z ⊤ trivial]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem main : AllPre fun {V} _ _ _ {D} {_} {G} _ _ U => ∀ (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W], FinExt V W → ∀ a : Multiplicative D.X →* Wˣ, ∃ x : TA V W ⟶ G, U.TorPt a x := by
   intro V _ _ _ hV D A G _ _ U W _ _ _ hW a

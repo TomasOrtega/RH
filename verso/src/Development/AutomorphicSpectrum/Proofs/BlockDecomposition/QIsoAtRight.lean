@@ -23,9 +23,9 @@ variable {R A₀ A₁ A₂ B₀ B₁ B₂ C₀ C₁ C₂ : Type} [CommRing R]
   {g₀ : B₀ →ₗ[R] C₀} {g₁ : B₁ →ₗ[R] C₁} {g₂ : B₂ →ₗ[R] C₂} {k : A₁ →ₗ[R] C₁}
 
 /- English proof (translation)
-Use `⟨fun x hx ⟨y, hy⟩ ↦ ?_, fun z hz ↦ ?_⟩` and prove the remaining obligations. Establish `hc : b₁ (f₁ x) = 0` using `by rw [← hf₂, hx, map_zero]`. Conclude with `hf.1 x hx (hg.1 (f₁ x) hc ⟨y, by rw [hy, hk]⟩)`. Take `⟨w, y, hw, hy⟩` from `hg.2 z hz`. Take `⟨x, y', hx, hy'⟩` from `hf.2 w hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, y + g₀ y', hx, ?_⟩` and prove the remaining obligations. Establish `e : f₁ x = w + b₀ y'` using `by rw [← hy']; abel`. Rewrite using `[hk, e, map_add, hg₀, map_add, ← hy]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem qIsoAt_comp (hf₂ : ∀ x, f₂ (a₁ x) = b₁ (f₁ x)) (hg₀ : ∀ x, g₁ (b₀ x) = c₀ (g₀ x))
     (hk : ∀ x, k x = g₁ (f₁ x)) (hf : QIsoAt a₀ a₁ b₀ b₁ f₁) (hg : QIsoAt b₀ b₁ c₀ c₁ g₁) :
@@ -41,11 +41,11 @@ theorem qIsoAt_comp (hf₂ : ∀ x, f₂ (a₁ x) = b₁ (f₁ x)) (hg₀ : ∀ 
     abel
 
 /- English proof (translation)
-Use `⟨fun x hx ⟨y, hy⟩ ↦ ?_, fun z hz ↦ ?_⟩` and prove the remaining obligations. Take `⟨u, v, hu, hv⟩` from `hf.2 x hx`. Establish `e : f₁ u = x + b₀ v` using `by rw [← hv]; abel`. Take `⟨w, hw⟩` from `hK.1 u hu ⟨y + g₀ v, by rw [hk, e, map_add, map_add, hg₀, hy]⟩`. Use `⟨f₀ w - v, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, ← hf₀, hw, e]`. Normalize the expressions using the abelian group laws. Take `⟨x, y, hx, hy⟩` from `hK.2 z hz`. Use `⟨f₁ x, y, by rw [← hf₂, hx, map_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[← hk]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem qIsoAt_right (hf₀ : ∀ x, f₁ (a₀ x) = b₀ (f₀ x)) (hf₂ : ∀ x, f₂ (a₁ x) = b₁ (f₁ x))
     (hg₀ : ∀ x, g₁ (b₀ x) = c₀ (g₀ x)) (hk : ∀ x, k x = g₁ (f₁ x))
@@ -64,9 +64,9 @@ theorem qIsoAt_right (hf₀ : ∀ x, f₁ (a₀ x) = b₀ (f₀ x)) (hf₂ : ∀
     exact hy
 
 /- English proof (translation)
-Use `⟨fun x hx ⟨y, hy⟩ ↦ ?_, fun z hz ↦ ?_⟩` and prove the remaining obligations. Conclude with `hK.1 x hx ⟨g₀ y, by rw [← hg₀, hy, hk]⟩`. Establish `hc : c₁ (g₁ z) = 0` using `by rw [← hg₂, hz, map_zero]`. Take `⟨x, y, hx, hy⟩` from `hK.2 (g₁ z) hc`. Establish `hd : b₁ (f₁ x - z) = 0` using `by rw [map_sub, ← hf₂, hx, hz, map_zero, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'⟩` from `hg.1 (f₁ x - z) hd ⟨y, by rw [map_sub, ← hk, hy]⟩`. Conclude with `⟨x, y', hx, hy'.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem qIsoAt_left (hf₂ : ∀ x, f₂ (a₁ x) = b₁ (f₁ x))
     (hg₀ : ∀ x, g₁ (b₀ x) = c₀ (g₀ x)) (hg₂ : ∀ x, g₂ (b₁ x) = c₁ (g₁ x))
@@ -84,11 +84,9 @@ theorem qIsoAt_left (hf₂ : ∀ x, f₂ (a₁ x) = b₁ (f₁ x))
 end Linear
 
 /- English proof (translation)
-Introduce `hCx R _ C _ F D E _ _ G H m n k hk`. Establish `cm : ∀ i x, pulln m (i + 1) (dn F i x) = dn G i (pulln m i x)` using `fun i x ↦ LinearMap.congr_fun ((hCx R C F).2 D G m i) x`. Establish `cn : ∀ i x, pulln n (i + 1) (dn G i x) = dn H i (pulln n i x)` using `fun i x ↦ LinearMap.congr_fun ((hCx R D G).2 E H n i) x`. Establish `zf : ∀ x : R, pulln m 0 ((0 : R →ₗ[R] Cn F 0) x) = (0 : R →ₗ[R] Cn G 0) ((0 : R →ₗ[R] R) x)` using `fun x ↦ by simp`. Establish `zg : ∀ x : R, pulln n 0 ((0 : R →ₗ[R] Cn G 0) x) = (0 : R →ₗ[R] Cn H 0) ((0 : R →ₗ[R] R) x)` using `fun x ↦ by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun h₁ h₂ ↦ ⟨?_, fun i ↦ ?_⟩, fun h₁ h₂ ↦ ⟨?_, fun i ↦ ?_⟩, fun h₁ h₂ ↦ ⟨?_, fun i ↦ ?_⟩⟩` and prove the remaining obligations. Conclude with `qIsoAt_comp (cm 0) zg (hk 0) h₁.1 h₂.1`. Conclude with `qIsoAt_comp (cm (i + 1)) (cn i) (hk (i + 1)) (h₁.2 i) (h₂.2 i)`. Conclude with `qIsoAt_right zf (cm 0) zg (hk 0) h₁.1 h₂.1`. Conclude with `qIsoAt_right (cm i) (cm (i + 1)) (cn i) (hk (i + 1)) (h₁.2 i) (h₂.2 i)`.
-
-Conclude with `qIsoAt_left (cm 0) zg (cn 0) (hk 0) h₁.1 h₂.1`. Conclude with `qIsoAt_left (cm (i + 1)) (cn i) (cn (i + 1)) (hk (i + 1)) (h₁.2 i) (h₂.2 i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qCalcSt : CxSt → QCalcSt := by
   intro hCx R _ C _ F D E _ _ G H m n k hk

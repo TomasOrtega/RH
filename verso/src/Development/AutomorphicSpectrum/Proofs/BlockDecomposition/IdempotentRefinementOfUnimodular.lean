@@ -11,9 +11,9 @@ section Ring
 variable {S : Type*} [CommRing S]
 
 /- English proof (translation)
-Take `⟨x, y, hxy⟩` from `Ideal.mem_span_pair.1 (Ideal.eq_top_iff_one _ |>.1 h)`. Prove the components needed by the constructor for the conclusion. Establish `e : d = x * (d * f) + (d * y) * g`. Take the linear combination `(-d) * hxy`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self g))`. Establish `e : 1 - d = ((1 - d) * x) * f + y * ((1 - d) * g)`. Take the linear combination `(-(1 - d)) * hxy`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self f)) (Ideal.mul_mem_left _ _ h2)`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_compare {f g d : S} (h : Ideal.span {f, g} = ⊤) (h1 : d * f ∈ Ideal.span {g})
     (h2 : (1 - d) * g ∈ Ideal.span {f}) : d ∈ Ideal.span {g} ∧ 1 - d ∈ Ideal.span {f} := by
@@ -31,7 +31,7 @@ theorem mem_of_compare {f g d : S} (h : Ideal.span {f, g} = ⊤) (h1 : d * f ∈
       (Ideal.mul_mem_left _ _ h2)
 
 /- English proof (translation)
-Unfold `IsIdempotentElem`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => h k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_prod {ι : Type*} (t : Finset ι) (f : ι → S) (h : ∀ k, IsIdempotentElem (f k)) :
     IsIdempotentElem (∏ k ∈ t, f k) := by
@@ -40,9 +40,9 @@ theorem idem_prod {ι : Type*} (t : Finset ι) (f : ι → S) (h : ∀ k, IsIdem
   exact Finset.prod_congr rfl fun k _ => h k
 
 /- English proof (translation)
-Rewrite using `[Ideal.eq_top_iff_one, ← Ideal.Quotient.eq_zero_iff_mem]`. Establish `hk : ∀ k, Ideal.Quotient.mk (Ideal.span (Set.range e)) (1 - e k) = 1` using `fun k => by`. Establish `h0 : Ideal.Quotient.mk (Ideal.span (Set.range e)) (e k) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span (Set.mem_range_self k))`. Rewrite using `[map_sub, map_one, h0, sub_zero]`. Use `congrArg (Ideal.Quotient.mk (Ideal.span (Set.range e))) h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[map_prod, Finset.prod_congr rfl fun k _ => hk k, Finset.prod_const_one, map_zero]`. Rewrite using `[map_one, this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_top_of_prod {m : ℕ} (e : Fin m → S) (h : ∏ k, (1 - e k) = 0) :
     Ideal.span (Set.range e) = ⊤ := by
@@ -56,23 +56,21 @@ theorem span_top_of_prod {m : ℕ} (e : Fin m → S) (h : ∏ k, (1 - e k) = 0) 
   rw [map_one, this]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `s c _ hc`. Establish `h0 : c = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hc` using `[Set.range_eq_empty, Ideal.span_empty]`. Conclude with `(Submodule.mem_bot _).1 hc`. Conclude with `⟨Fin.elim0, fun k => k.elim0, fun k => k.elim0, by rw [h0, zero_mul]⟩`. Consider the case `succ m ih`. Introduce `s c hc hcs`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr : Set.range s = insert (s 0) (Set.range (Fin.tail s))` using `by conv_lhs => rw [← Fin.cons_self_tail s]`. Conclude with `Fin.range_cons _ _`. Rewrite `hcs` using `[hr, Ideal.mem_span_insert]`. Take `⟨a, r, hr', hcr⟩` from `hcs`. Establish `htop : Ideal.span {s 0, r + (1 - c)} = ⊤`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Ideal.eq_top_iff_one, Ideal.mem_span_pair]`. Conclude with `⟨a, 1, by linear_combination -hcr⟩`. Take `⟨d, hd, h1, h2⟩` from `hV _ _ htop`. Take `⟨hdg, hds⟩` from `mem_of_compare htop h1 h2`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hdg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : c * c = c` using `hc`. Establish `hcd : IsIdempotentElem (c * d)` using `hc.mul hd`. Establish `hmem : c * d ∈ Ideal.span (Set.range (Fin.tail s))`. Establish `e : c * d = (t * c) * r`. Rewrite using `[← ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-t) * hcc`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ hr'`. Take `⟨e', hi, hm, hp⟩` from `ih (Fin.tail s) (c * d) hcd hmem`. Use `⟨Fin.cons (1 - d) e', ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `k`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `using hd.one_sub`. Simplify using `using hi i`. Introduce `k`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `using hds`. Simplify `hm i` using `[Fin.tail]`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`.
-
-Take the linear combination `hp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem idem_refine
     (hV : ∀ f g : S, Ideal.span {f, g} = ⊤ →
@@ -126,13 +124,11 @@ theorem idem_refine
 end Ring
 
 /- English proof (translation)
-Introduce `l _ A hA m s hs`. Establish `hV : ∀ f g : A.U, Ideal.span {f, g} = ⊤ → ∃ e : A.U, IsIdempotentElem e ∧ e * f ∈ Ideal.span {g} ∧ (1 - e) * g ∈ Ideal.span {f}` using `fun f g h => hA.val_aic.1 f g ⟨0, by rw [pow_zero, h]; trivial⟩`. Take `⟨u, hi, hm, hp⟩` from `idem_refine hV m s 1 IsIdempotentElem.one (by rw [hs]; trivial)`. Rewrite `hp` using `[one_mul]`. Establish `hex : ∀ k, ∃ e₀ : A.A, IsIdempotentElem e₀ ∧ A.sharp e₀ = u k` using `fun k => (RL.idem_au A (u k) (hi k)).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `choose e he hsh using hex`. Establish `hc` using `(RL.sharp_cong A).2.2`. Establish `hzero : A.sharp 0 = 0`. Use `hc 1 IsIdempotentElem.one` as an intermediate fact. Rewrite `this` using `[sub_self, map_one, sub_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hsp : A.sharp (∏ k, (1 - e k)) = 0`. Rewrite using `[map_prod, ← hp]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [hc _ (he k), hsh]`. Establish `hidem : IsIdempotentElem (∏ k, (1 - e k))` using `idem_prod _ _ fun k => (he k).one_sub`. Establish `h0 : ∏ k, (1 - e k) = 0` using `(RL.idem_au A 0 IsIdempotentElem.zero).unique ⟨hidem, hsp⟩ ⟨IsIdempotentElem.zero, hzero⟩`.
-
-Conclude with `⟨e, he, span_top_of_prod e h0, fun k => by rw [hsh]; exact hm k⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem test_cover : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), A.IsTest → ∀ {m : ℕ} (s : Fin m → A.U),
     Ideal.span (Set.range s) = ⊤ → ∃ e : Fin m → A.A, (∀ k, IsIdempotentElem (e k)) ∧

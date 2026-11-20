@@ -8,19 +8,17 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.LineLattice
 
 /- English proof (translation)
-Establish `hfin : Module.Finite LL V` using `Module.finite_of_finrank_eq_succ h1`. Set `b` to `Module.Free.chooseBasis O T`. Establish `hli : LinearIndependent O (fun i => (b i : V))` using `b.linearIndependent.map' T.subtype T.ker_subtype`. Establish `hli' : LinearIndependent LL (fun i => (b i : V))` using `(LinearIndependent.iff_fractionRing O LL).1 hli`. Establish `hT : T = Submodule.span O (Set.range fun i => (b i : V))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (Submodule.map T.subtype) b.span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `h.symm`. Establish `hfi : Finite (Module.Free.ChooseBasisIndex O T)` using `hli'.finite`. Use `letI := Fintype.ofFinite (Module.Free.ChooseBasisIndex O T)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hc` using `hli'.fintype_card_le_finrank`. Rewrite `hc` using `[h1]`. Establish `hsub : Subsingleton (Module.Free.ChooseBasisIndex O T)` using `Fintype.card_le_one_iff_subsingleton.1 hc`. Break down `isEmpty_or_nonempty (Module.Free.ChooseBasisIndex O T) with he | ⟨⟨i⟩⟩` into its components or cases. It suffices to derive a contradiction.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hT` using `[Set.range_eq_empty, Submodule.span_empty]`. Establish `hb : Submodule.span LL (T : Set V) = ⊥`. Rewrite using `[hT]`. Simplify using the standard rewrite rules. Establish `: Nontrivial V` using `Module.nontrivial_of_finrank_eq_succ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `bot_ne_top (hb.symm.trans hsp)`. Use `⟨b i, hli.ne_zero i, ?_⟩` and prove the remaining obligations. Use `hT.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Rewrite using `[Subsingleton.elim j i]`. Both sides reduce to the same expression. Introduce and unpack `rfl`.
-
-Conclude with `⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_generator {LL : Type} [Field LL] {O : Type} [CommRing O] [IsDomain O]
     [Algebra O LL] [IsFractionRing O LL] {V : Type} [AddCommGroup V] [Module LL V] [Module O V]
@@ -62,23 +60,23 @@ theorem exists_generator {LL : Type} [Field LL] {O : Type} [CommRing O] [IsDomai
       exact ⟨i, rfl⟩
 
 /- English proof (translation)
-Use `haveI := L.free`. Take `⟨v, hv, hT⟩` from `exists_generator L.T L.span h1`. Establish `hsurj : ∀ w : V, ∃ c : LL, c • v = w` using `(finrank_eq_one_iff_of_nonzero' v hv).1 h1`. Establish `hmem : ∀ x : LL, x • v ∈ L.T ↔ x ∈ Set.range (algebraMap O LL)`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[← algebraMap_smul LL c v]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `smul_left_injective LL hv hc`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨c, (algebraMap_smul LL c v).symm⟩`. Use `⟨⟨LinearEquiv.ofBijective (LinearMap.toSpanSingleton LL V v) ⟨smul_left_injective LL hv, hsurj⟩, hmem⟩, ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `ha' : algebraMap O LL a ≠ 0`. Simplify using `using ha`. Establish `hx : L.T.mkQ ((algebraMap O LL a)⁻¹ • v) ∈ Submodule.torsionBy O (V ⧸ L.T) a`. Rewrite using `[Submodule.mem_torsionBy_iff, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, ← algebraMap_smul LL a, smul_smul, hmem, mul_inv_cancel₀ ha']`. Conclude with `⟨1, map_one _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : O →ₗ[O] Submodule.torsionBy O (V ⧸ L.T) a` to `LinearMap.toSpanSingleton O _ ⟨_, hx⟩`. Establish `hf : ∀ c : O, (f c : V ⧸ L.T) = L.T.mkQ ((algebraMap O LL c * (algebraMap O LL a)⁻¹) • v)`. Introduce `c`. Rewrite using `[← smul_smul, algebraMap_smul, map_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hfs : Function.Surjective f`. Introduce and unpack `⟨y, hy⟩`. Take `⟨w, rfl⟩` from `L.T.mkQ_surjective y`. Take `⟨x, rfl⟩` from `hsurj w`. Rewrite `hy` using `[Submodule.mem_torsionBy_iff, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, ← algebraMap_smul LL a, smul_smul, hmem]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `hy`. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hc, mul_comm (algebraMap O LL a) x, mul_assoc, mul_inv_cancel₀ ha', mul_one]`. Establish `hk : LinearMap.ker f = Ideal.span {a}`. Use extensionality with `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, Subtype.ext_iff, hf, Ideal.mem_span_singleton']`. Rewrite using `[Submodule.coe_zero, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd⟩`. Use `⟨d, IsFractionRing.injective O LL ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_mul, hd, mul_assoc, inv_mul_cancel₀ ha', mul_one]`. Introduce and unpack `⟨d, rfl⟩`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, mul_inv_cancel₀ ha', mul_one]`. Conclude with `⟨(f.quotKerEquivOfSurjective hfs).symm.trans (Submodule.quotEquivOfEq _ _ hk)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lattice_rank_one {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O]
     [IsDomain O] [Algebra O LL] [IsFractionRing O LL] {V : Type} [AddCommGroup V] [Module LL V]

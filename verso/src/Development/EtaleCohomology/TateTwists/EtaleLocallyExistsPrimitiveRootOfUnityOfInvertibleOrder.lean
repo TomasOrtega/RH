@@ -7,19 +7,19 @@ namespace LateralTheory.EtaleFoundations.PrimLocExPf
 noncomputable abbrev cyc (A : Type) [CommRing A] (q : ℕ) : A[X] := (cyclotomic q ℤ).map (Int.castRingHom A)
 
 /- English proof (translation)
-The claim follows from `(cyclotomic.monic q ℤ).map _`.
+A detailed English derivation is pending.
 -/
 theorem cyc_monic (A : Type) [CommRing A] (q : ℕ) : (cyc A q).Monic :=
   (cyclotomic.monic q ℤ).map _
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `hh' : (X ^ q - 1 : A[X]) = cyc A q * h.map (Int.castRingHom A)`. Use `congrArg (Polynomial.map (Int.castRingHom A)) hh` as an intermediate fact. Simplify `this` using `[Polynomial.map_mul]`. Use `set H := h.map (Int.castRingHom A)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hd : (C (q : A)) * X ^ (q - 1) = derivative (cyc A q) * H + cyc A q * derivative H`. Use `congrArg derivative hh'` as an intermediate fact. Rewrite `this` using `[derivative_mul]`. Rewrite using `[← this]`. Simplify using `[derivative_X_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hq`. Use `⟨C (↑u⁻¹ : A) * X * H, C (↑u⁻¹ : A) * (X * derivative H - C (q : A) * H), ?_⟩` and prove the remaining obligations. Establish `hX : X * X ^ (q - 1) = (X ^ q : A[X])`. Rewrite using `[← pow_succ', Nat.sub_add_cancel (Nat.pos_of_neZero q)]`. Establish `key : C (q : A) * X ^ q = X * (derivative (cyc A q) * H + cyc A q * derivative H)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hd, ← hX]`. Expand and normalize the polynomial expressions, which then agree. Establish `hXq : (X ^ q : A[X]) = cyc A q * H + 1` using `by rw [← hh']; ring`. Establish `hCu : C (↑u⁻¹ : A) * C (q : A) = 1` using `by rw [← C_mul, ← hu, Units.inv_mul, C_1]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cyc_cond (A : Type) [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)) :
     ∃ p₁ p₂ : A[X], derivative (cyc A q) * p₁ + cyc A q * p₂ = 1 := by
@@ -54,9 +54,9 @@ noncomputable def pair (A : Type) [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit
   cond := by obtain ⟨p₁, p₂, h⟩ := cyc_cond A q hq; exact ⟨p₁, p₂, 0, by simpa using h⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: (pair A q hq).f = cyc A q` using `rfl`. Rewrite using `[this, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]`. Establish `: (pair A q hq).g = 1` using `rfl`. Rewrite using `[this, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem hasMap_root (A : Type) [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)) :
     (pair A q hq).HasMap (AdjoinRoot.root (cyc A q)) := by
@@ -81,7 +81,7 @@ noncomputable def equivB (A : Type) [CommRing A] (q : ℕ) [NeZero q] (hq : IsUn
       (pair A q hq).hasMap_X.1) (StandardEtalePair.lift_X _ _ _)).trans (AdjoinRoot.liftAlgHom_root _ _ _ _)
 
 /- English proof (translation)
-Use `haveI : Algebra.IsStandardEtale A (AdjoinRoot (cyc A q)) := Algebra.IsStandardEtale.of_equiv (equivB A q hq)`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem etaleB (A : Type) [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)) :
     Algebra.Etale A (AdjoinRoot (cyc A q)) := by
@@ -90,11 +90,9 @@ theorem etaleB (A : Type) [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)
   infer_instance
 
 /- English proof (translation)
-Introduce `p`. Use `haveI : Nontrivial A := ⟨⟨0, 1, fun h => p.2.ne_top (by rw [Ideal.eq_top_iff_one, ← h]; exact p.1.zero_mem)⟩⟩`. Establish `hm` using `cyc_monic A q`. Establish `hdeg : 0 < (cyc A q).natDegree` using `by show 0 < ((cyclotomic q ℤ).map (Int.castRingHom A)).natDegree`. Rewrite using `[(cyclotomic.monic q ℤ).natDegree_map, natDegree_cyclotomic]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.totient_pos.mpr (Nat.pos_of_neZero q)`. Use `haveI : Module.Free A (AdjoinRoot (cyc A q)) := .of_basis (AdjoinRoot.powerBasis' hm).basis`. Use `haveI : Nontrivial (AdjoinRoot (cyc A q)) := by`. Establish `hne : (AdjoinRoot.powerBasis' hm).basis ⟨0, hdeg⟩ ≠ 0` using `(AdjoinRoot.powerBasis' hm).basis.ne_zero _`. Conclude with `nontrivial_of_ne _ _ hne`.
-
-Conclude with `PrimeSpectrum.comap_surjective_of_faithfullyFlat p`.
+A detailed English derivation is pending.
 -/
 theorem surjB (A : Type) [CommRing A] (q : ℕ) [NeZero q] :
     Function.Surjective (PrimeSpectrum.comap (algebraMap A (AdjoinRoot (cyc A q)))) := by
@@ -121,7 +119,7 @@ def primMap {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (q : ℕ) (�
     simpa using h⟩
 
 /- English proof (translation)
-Use `⟨by simpa using hq.map (algebraMap A (AdjoinRoot (cyc A q))), ?_⟩` and prove the remaining obligations. Establish `: cyc A q = (cyclotomic q ℤ).map (algebraMap ℤ A)` using `by rw [algebraMap_int_eq]`. Rewrite using `[← Polynomial.aeval_map_algebraMap A, ← this, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem root_prim (A : Type) [CommRing A] (q : ℕ) (hq : IsUnit (q : A)) :
     IsUnit (q : AdjoinRoot (cyc A q)) ∧
@@ -131,7 +129,7 @@ theorem root_prim (A : Type) [CommRing A] (q : ℕ) (hq : IsUnit (q : A)) :
   rw [← Polynomial.aeval_map_algebraMap A, ← this, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]
 
 /- English proof (translation)
-Introduce and unpack `V W g k ⟨ζ⟩`. Conclude with `⟨primMap k.appTop.hom q ζ⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mono_prim (q : ℕ) {U : Scheme.{0}} : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V),
     Nonempty (Prim q Γ(V, ⊤)) → Nonempty (Prim q Γ(W, ⊤)) := by
@@ -144,13 +142,13 @@ namespace LateralTheory.EtaleFoundations
 
 open PrimLocExPf in
 /- English proof (translation)
-Introduce `q _ U hq`. Rewrite using `[etale_sheaf_section_locally_iff_of_presheaf_facts U (fun V _ => Nonempty (Prim q Γ(V, ⊤))) (mono_prim q)]`. Introduce `y`. Take `⟨W, hWa, hyW, -⟩ : ∃ W : U.Opens, IsAffineOpen W ∧ y ∈ W ∧ W ≤ ⊤` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp U.isBasis_affineOpens) (show y ∈ (⊤ : U.Opens) from trivial)`. Establish `hqA : IsUnit (q : Γ(U, W))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using hq.map (U.presheaf.map (homOfLE le_top).op).hom`. Establish `hE` using `etaleB Γ(U, W) q hqA`. Set `φ : Γ(U, W) ⟶ CommRingCat.of (AdjoinRoot (cyc Γ(U, W) q))` to `CommRingCat.ofHom (algebraMap _ _)`. Establish `hφ : Etale (Spec.map φ)` using `HasRingHomProperty.Spec_iff.mpr ((RingHom.etale_algebraMap (R := Γ(U, W)) (S := AdjoinRoot (cyc Γ(U, W) q))).mpr hE)`. Use `⟨_, Spec.map φ ≫ hWa.fromSpec, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : y ∈ Set.range hWa.fromSpec` using `by rw [hWa.range_fromSpec]; exact hyW`. Take `⟨p, rfl⟩` from `hy`. Take `⟨r, hr⟩` from `surjB Γ(U, W) q p`. Conclude with `⟨r, congrArg hWa.fromSpec hr⟩`. Establish `h` using `root_prim Γ(U, W) q hqA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨primMap (Scheme.ΓSpecIso (CommRingCat.of (AdjoinRoot (cyc Γ(U, W) q)))).inv.hom q ⟨AdjoinRoot.root _, h.1, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem etale_locally_exists_primitive_root_of_unity_of_invertible_order : EtaleLocallyExistsPrimitiveRootOfUnityOfInvertibleOrder := by
   intro q _ U hq

@@ -10,7 +10,7 @@ namespace GlobalTheory.NormSum.PartSupp
 open Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum.VacInt
 
 /- English proof (translation)
-Introduce `k`. Take `⟨m, hm, hc, s, hs, h⟩` from `hz k`. Conclude with `⟨m, hm, hc, e * s, mul_mem he hs, by linear_combination e * h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zeroAt_mul_left (D : Formalism.BasicNotions.D7) {q : ℕ} {e z : AE D} (he : e ∈ OhE D) (hz : ZeroAt D q z) :
     ZeroAt D q (e * z) := by
@@ -19,9 +19,9 @@ theorem zeroAt_mul_left (D : Formalism.BasicNotions.D7) {q : ℕ} {e z : AE D} (
   exact ⟨m, hm, hc, e * s, mul_mem he hs, by linear_combination e * h⟩
 
 /- English proof (translation)
-Introduce `i j`. Use `zeroAt_mul_left D (e := eps D.host.E P) (eps_mem P) (h i j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `show cutM _ _ _ i j - _ = _`. Rewrite using `[cutM_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem trivAt_part_of_trivAt (D : Formalism.BasicNotions.D7) {N : ℕ} (P : ℕ → Prop) (g : GA D N) {q : ℕ}
     (h : TrivAt D q (g : GL (Fin N) (AE D))) : TrivAt D q (part D P g : GL (Fin N) (AE D)) := by
@@ -33,7 +33,7 @@ theorem trivAt_part_of_trivAt (D : Formalism.BasicNotions.D7) {N : ℕ} (P : ℕ
   ring
 
 /- English proof (translation)
-Introduce `{D} {_} P y hy q hq h` and use `trivAt_part_of_trivAt D P y (hy q hq h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppInert_part_of_suppInert : ∀ {D : Formalism.BasicNotions.D7} {N : ℕ} (P : ℕ → Prop) (y : Formalism.MainNotions.StandardLatticesGL3.GA D N),
     Formalism.MainNotions.StandardLatticesGL3.SuppInert D (y : GL (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) →

@@ -15,15 +15,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ P T`. Establish `hs : ∀ t : Localization.Away P, ∃ (f : Polynomial k) (n : ℕ), IsLocalization.mk' (Localization.Away P) f (⟨P ^ n, n, rfl⟩ : Submonoid.powers P) = t`. Introduce `t`. Take `⟨⟨f, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers P) t`. Take `⟨n, hn⟩` from `s.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, n, by congr 1; exact Subtype.ext hn⟩`. Use `choose f n hfn using hs`. Use `⟨T.biUnion (fun t => (f t).coeffs), ?_⟩` and prove the remaining obligations. Introduce `R hF P₁ h hP t ht`. Establish `hlift : f t ∈ Polynomial.lifts R.subtype`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `m`. Distinguish the cases in `hm : (f t).coeff m = 0`. Conclude with `⟨0, by simp [hm]⟩`. Establish `: (f t).coeff m ∈ (T.biUnion (fun t => (f t).coeffs) : Set k)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.coe_biUnion, Set.mem_iUnion, Finset.mem_coe]`. Conclude with `⟨t, ht, Polynomial.coeff_mem_coeffs hm⟩`. Conclude with `⟨⟨_, hF this⟩, rfl⟩`. Take `⟨f₁, hf₁⟩` from `(Polynomial.mem_lifts _).mp hlift`. Use `⟨IsLocalization.mk' (Localization.Away P₁) f₁ (⟨P₁ ^ n t, n t, rfl⟩ : Submonoid.powers P₁), ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalization.Away.lift, IsLocalization.lift_mk'_spec]`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, Polynomial.coe_mapRingHom, hf₁, Polynomial.map_pow, hP]`. Establish `key` using `IsLocalization.mk'_spec' (Localization.Away P) (f t) (⟨P ^ n t, n t, rfl⟩ : Submonoid.powers P)`. Rewrite `key` using `[hfn t]`. Conclude with `key.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_away_descent_range :
  ∀ (k : Type) [Field k] (P : Polynomial k) (T : Finset (Localization.Away P)), ∃ F : Finset k, ∀ (R : Subring k), (F : Set k) ⊆ R → ∀ (P₁ : Polynomial R) (h : IsUnit (((algebraMap (Polynomial k) (Localization.Away P)).comp (Polynomial.mapRingHom R.subtype)) P₁)), P₁.map R.subtype = P → ∀ t ∈ T, t ∈ (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ h).range := by

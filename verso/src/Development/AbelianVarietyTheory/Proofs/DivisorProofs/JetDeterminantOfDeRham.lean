@@ -24,9 +24,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LatJet.An.Det
 
 /- English proof (translation)
-Take `⟨N, f, g, -, -, e⟩` from `Module.Finite.exists_comp_eq_id_of_projective R M`. Use `⟨N, fun a ↦ f (Pi.single a 1), fun a ↦ LinearMap.proj a ∘ₗ g, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : f (g x) = x` using `LinearMap.congr_fun e x`. Use `conv_lhs => rw [← h1, LinearMap.pi_apply_eq_sum_univ]`. Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use extensionality with `b`. Simplify using `[Pi.single_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_frame (R : Type) [CommRing R] (M : Type 1) [AddCommGroup M] [Module R M] [Module.Finite R M]
     [Module.Projective R M] :
@@ -48,19 +48,17 @@ def DetFormula {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type}
     (∀ j, IsLieImage (x j) (v j).hom) → δ' v = ∑ a, σ (r a) * ∏ j, x j (m.pull (c (a j)))
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `H.1.prim X.ab X.dim`. Take `⟨N, c, h, hc⟩` from `exists_frame R (primDR X.A)`. Establish `L` using `(H.2.1 R X.A _ X.ab X.dim).1`. Use `⟨N, c, fun a ↦ δ fun j ↦ L.toLie X.rm (h (a j)), ?_⟩` and prove the remaining obligations. Introduce `R' _ σ X' φ hX m δ' hδ x v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Algebra R R' := σ.toAlgebra`. Establish `L'` using `(H.2.1 R' X'.A _ X'.ab X'.dim).1`. Establish `hb : GrpMor.IsBC (show GrpMor (dp0 R) (𝟙 _) X.A (dp0 R') (𝟙 _) X'.A (algebraMap R R') (spMap σ) φ from m)` using `(H.2.2.1 R X.A _ X.ab X.dim R' X'.A φ hX.grp).1`. Use `choose h' hh' using fun a ↦ hb.exists (h a)`. Establish `hx : ∀ y : HdR X'.A, y = ∑ a, y (m.pull (c a)) • h' a` using `fun y ↦ by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun z ↦ ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hb.2 z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul s z`. Rewrite using `[liftSemi_tmul, map_smul, map_smul, LinearMap.sum_apply]`. Use `congr 1`. Simplify using `only [LinearMap.smul_apply, hh' _ z]`. Use `conv_lhs => rw [hc z]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sum, LinearMap.map_smulₛₗ, map_smul, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun a _ ↦ mul_comm _ _`. Establish `hv' : v = fun j ↦ ∑ a, x j (m.pull (c a)) • L'.toLie X'.rm (h' a)` using `funext fun j ↦ by`. Rewrite using `[← (L'.toLie_eq_iff X'.rm).2 (hv j)]`. Use `conv_lhs => rw [hx (x j)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, map_smul]`. Rewrite using `[hv']`. Use `(δ'.toMultilinearMap.map_sum _).trans (Finset.sum_congr rfl fun a _ ↦ ?_)` and prove the remaining obligations. Use `(δ'.toMultilinearMap.map_smul_univ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`.
-
-Use `congr 1`. Conclude with `hδ _ _ fun j ↦ Obj.lieCorr_of_isLieImage H σ hX m (hh' (a j)) ((L.toLie_eq_iff X.rm).1 rfl) ((L'.toLie_eq_iff X'.rm).1 rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_det_formula (H : GlobalTheory.Published.AbelianDeRham) {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R]
     (X : Obj F 𝔠 (Sp R)) (δ : X.DetOmega) :
@@ -109,15 +107,15 @@ abbrev hol : (Λ →₀ ℂ) →ₗ[ℂ] (Fin g → ℂ) := Finsupp.linearCombin
 abbrev ahol : (Λ →₀ ℂ) →ₗ[ℂ] (Fin g → ℂ) := Finsupp.linearCombination ℂ fun x : Λ ↦ star (x : Fin g → ℂ)
 
 /- English proof (translation)
-Establish `key : ∀ w : Fin g → ℂ, ∃ c, hol Λ c = w ∧ ahol Λ c = star w` using `fun w ↦ by`. Establish `hw : w ∈ Submodule.span ℝ (Λ : Set (Fin g → ℂ))` using `h ▸ Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨Finsupp.single ⟨x, hx⟩ 1, by simp, by simp⟩`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨c, h1, h2⟩` from `hx`. Take `⟨d, h3, h4⟩` from `hy`. Conclude with `⟨c + d, by rw [map_add, h1, h3], by rw [map_add, h2, h4, star_add]⟩`. Consider the case `smul r x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨c, h1, h2⟩` from `hx`. Use `⟨(r : ℂ) • c, by rw [map_smul, h1]; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, h2]`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨c, h1, h2⟩` from `key w`. Take `⟨d, h3, h4⟩` from `key (Complex.I • w)`. Use `⟨(2 : ℂ)⁻¹ • (c - Complex.I • d), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_sub, map_smul, h1, h3, smul_smul, Complex.I_mul_I]`. Use extensionality with `a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_smul, map_sub, map_smul, h2, h4, star_smul, smul_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_comb (h : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (w : Fin g → ℂ) :
     ∃ c, hol Λ c = w ∧ ahol Λ c = 0 := by
@@ -149,11 +147,11 @@ theorem exists_comb (h : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (w
 end Lat
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => exact ⟨1, by simpa using isLieImage_one_iff.2 (zero_mem _), by simpa using UnifDifferential.isDiff_one u⟩`. Consider the case `add c d hc hd`. Take `⟨v, h1, h2⟩` from `hc`. Take `⟨w, h3, h4⟩` from `hd`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, map_add]`. Conclude with `⟨v * w, h1.add h3, UnifDifferential.isDiff_mul u ((Chart.isTan_iff _).2 h1.1) ((Chart.isTan_iff _).2 h3.1) h2 h4⟩`. Consider the case `single x r`. Take `⟨v, h1, h2⟩` from `h x`. Rewrite using `[Finsupp.linearCombination_single, Finsupp.linearCombination_single]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, h1.smul r, UnifDifferential.isDiff_scale u h2 r⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lie_comb {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) {S : Type} (P : S → HdR A)
     (W : S → Fin g → ℂ) (h : ∀ x, ∃ v, IsLieImage (P x) v ∧ u.IsDiff (W x) v) (c : S →₀ ℂ) :
@@ -171,13 +169,11 @@ theorem exists_lie_comb {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
     exact ⟨_, h1.smul r, UnifDifferential.isDiff_scale u h2 r⟩
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add c c' hc hc'`. Simplify using `only [map_add, LinearMap.add_apply, hc, hc', Pi.add_apply, ← mul_add, ← Finset.sum_add_distrib]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun a _ ↦ by ring`. Consider the case `single x r`. Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add d d' hd hd'`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, hd, hd', Pi.add_apply, ← mul_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ ↦ by ring`. Consider the case `single x' r'`. Simplify using `only [Finsupp.linearCombination_single, map_smul, LinearMap.smul_apply, hψ, smul_eq_mul, Pi.smul_apply, Complex.im_eq_sub_conj, dotProduct, Matrix.mulVec_diagonal, map_sum, map_mul, Pi.star_apply, RCLike.star_def, Complex.conj_ofReal, Complex.conj_conj, ← Finset.sum_sub_distrib, …`.
-
-Conclude with `Finset.sum_congr rfl fun a _ ↦ by ring`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_comb {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) {M : Type 1} [AddCommGroup M] [Module ℂ M] (P : Λ → M)
     (ψ : LinearMap.BilinForm ℂ M) (h : Fin g → ℝ) (k : ℂ)
@@ -209,11 +205,11 @@ variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {𝔠 : Fra
 omit [Fintype I] in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hc`. Establish `hb1 : algebraMap (OF E) E b ≠ 0`. Rewrite using `[IsScalarTower.algebraMap_apply (OF E) (maximalRealSubfield E) E]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hb0`. Establish `e : φ i = ComplexEmbedding.conjugate (φ j)`. Use `IsFractionRing.ringHom_ext (A := 𝓞 E) fun x ↦ ?_` and prove the remaining obligations. Establish `h1` using `hh _ (algebraMap_mem_orderC c b)`. Establish `h2` using `hh (algebraMap (OF E) E b * algebraMap (𝓞 E) E x) (Subring.subset_closure (Or.inr ⟨_, Ideal.mul_mem_right x _ (Ideal.mem_map_of_mem _ hb), by rw [map_mul, ← IsScalarTower.algebraMap_apply]⟩))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_mul, map_mul, map_mul, ← h1]`. Conclude with `mul_left_cancel₀ ((map_ne_zero _).2 hb1) h2`. Take `rfl : i = j` from `(hφ (φ i)).unique (Or.inl rfl) (Or.inr e)`. Conclude with `IsTotallyComplex.complexEmbedding_not_isReal (φ i) (ComplexEmbedding.isReal_iff.2 e.symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_sep [IsCMField E] (hφ : IsCMType φ) {c : Ideal (OF E)} (hc : c ≠ ⊥) (i j : I) :
     ∃ a ∈ orderC c, φ i a ≠ starRingEnd ℂ (φ j a) := by
@@ -234,21 +230,21 @@ theorem exists_sep [IsCMField E] (hφ : IsCMType φ) {c : Ideal (OF E)} (hc : c 
   exact IsTotallyComplex.complexEmbedding_not_isReal (φ i) (ComplexEmbedding.isReal_iff.2 e.symm)
 
 /- English proof (translation)
-Take `⟨hs, -, -, hend, hpol⟩` from `hP`. Take `⟨χ, hχ⟩` from `T.U.ah`. Establish `hψ` using `pair_comb _ P T.ψ (fun a ↦ T.U.h (T.U.e a)) _ (hpol _ χ T.ψ hχ T.pol) d`. Take `⟨a, ha, hne⟩` from `exists_sep hφ hc i (T.U.e j)`. Set `M : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `LinearMap.pi fun b ↦ φ (T.U.e b) a • LinearMap.proj b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hM : ∀ x ∈ T.U.u.Λ, M x ∈ T.U.u.Λ` using `fun x hx ↦ by`. Take `⟨x, hx', rfl⟩` from `(T.U.lat x).1 hx`. Conclude with `(T.U.lat _).2 ⟨a * x, mul_mem_lattice ha hx', by ext b; simp [M, GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]⟩`. Take `⟨α, hα, hex⟩` from `HolUnifEnd.exists_isMonHom_of_map_lattice T.X.A _ T.X.ab T.X.dim _ T.U.u M hM`. Establish `hy` using `(T.cm i).1 a α hex`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨d', hd'⟩ : T.y i ∈ LinearMap.range (Finsupp.linearCombination ℂ P) := by`. Rewrite using `[Finsupp.range_linearCombination, hs]`. Discharge the goal by the elementary cases of `trivial`. Establish `key : ∀ f : T.U.u.Λ →₀ ℂ, ∃ f', Finsupp.linearCombination ℂ P f' = push (dp0 ℂ) (𝟙 _) α (Finsupp.linearCombination ℂ P f) ∧ ahol _ f' j = starRingEnd ℂ (φ (T.U.e j) a) * ahol _ f j` using `fun f ↦ by`. Proceed by induction on `f using Finsupp.induction_linear with`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add f g hf hg`. Take `⟨f', e1, e2⟩` from `hf`. Take `⟨g', e3, e4⟩` from `hg`. Conclude with `⟨f' + g', by simp only [map_add, e1, e3], by simp only [map_add, Pi.add_apply, e2, e4, mul_add]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `single x r`. Use `⟨Finsupp.single ⟨M x, hM _ x.2⟩ r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.linearCombination_single, Finsupp.linearCombination_single, map_smul, hend α M hex x ⟨M x, hM _ x.2⟩ rfl]`. Simplify using `[M]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨d'', e1, e2⟩` from `key d'`. Establish `f1` using `hψ d'`. Establish `f2` using `hψ d''`. Rewrite `f2` using `[e1, hd', hy, map_smul, smul_eq_mul]`. Rewrite `f1` using `[hd']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1, h2, Pi.zero_apply, zero_mul, sub_zero, Pi.single_apply, ite_mul, _root_.one_mul, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at f1 f2`. Establish `h0 : T.ψ (Finsupp.linearCombination ℂ P d) (T.y i) = 0`. Use `(mul_eq_zero.1 ?_).resolve_left (sub_ne_zero.2 hne)` and prove the remaining obligations. Rewrite using `[sub_mul, f2, f1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `[CxPt.low, h0]`.
+A detailed English derivation is pending.
 -/
 theorem low_eq_zero [IsCMField E] (hφ : IsCMType φ) {c : Ideal (OF E)} (hc : c ≠ ⊥) {y : (Af E)ˣ} (T : CxPt 𝔠 φ (lattice c y))
     {ε : ℤˣ} {P : T.U.u.Λ →+ HdR T.X.A} (hP : IsPeriodMap ε T.U.u P) {d : T.U.u.Λ →₀ ℂ} {j : Fin (Module.finrank ℚ (FR E))}
@@ -301,26 +297,26 @@ def HasJet (f : (I → ℂ) → ℂ) (b : J.B) : Prop := AnalyticAt ℂ f 0 ∧ 
 variable {J}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨analyticAt_const, Check.jet_const J a⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasJet_const (a : ℂ) : HasJet J (fun _ ↦ a) (algebraMap ℂ J.B a) := ⟨analyticAt_const, Check.jet_const J a⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.mul k.1, h.2 ▸ k.2 ▸ ((hC I n J).2.1 f g h.1 k.1).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasJet.mul (hC : JetCalc) {f g : (I → ℂ) → ℂ} {a b : J.B} (h : HasJet J f a) (k : HasJet J g b) :
     HasJet J (fun z ↦ f z * g z) (a * b) :=
   ⟨h.1.mul k.1, h.2 ▸ k.2 ▸ ((hC I n J).2.1 f g h.1 k.1).1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.add k.1, h.2 ▸ k.2 ▸ ((hC I n J).2.1 f g h.1 k.1).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasJet.add (hC : JetCalc) {f g : (I → ℂ) → ℂ} {a b : J.B} (h : HasJet J f a) (k : HasJet J g b) :
     HasJet J (fun z ↦ f z + g z) (a + b) :=
   ⟨h.1.add k.1, h.2 ▸ k.2 ▸ ((hC I n J).2.1 f g h.1 k.1).2⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hasJet_const (J := J) 0`. Consider the case `insert x s hx ih => simpa only [Finset.sum_insert hx] using (h x).add hC ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hasJet_sum (hC : JetCalc) {S : Type} (s : Finset S) {f : S → (I → ℂ) → ℂ} {a : S → J.B} (h : ∀ x, HasJet J (f x) (a x)) :
     HasJet J (fun z ↦ ∑ x ∈ s, f x z) (∑ x ∈ s, a x) := by
@@ -329,7 +325,7 @@ theorem hasJet_sum (hC : JetCalc) {S : Type} (s : Finset S) {f : S → (I → �
   | insert x s hx ih => simpa only [Finset.sum_insert hx] using (h x).add hC ih
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hasJet_const (J := J) 1`. Consider the case `insert x s hx ih => simpa only [Finset.prod_insert hx] using (h x).mul hC ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hasJet_prod (hC : JetCalc) {S : Type} (s : Finset S) {f : S → (I → ℂ) → ℂ} {a : S → J.B} (h : ∀ x, HasJet J (f x) (a x)) :
     HasJet J (fun z ↦ ∏ x ∈ s, f x z) (∏ x ∈ s, a x) := by
@@ -338,9 +334,7 @@ theorem hasJet_prod (hC : JetCalc) {S : Type} (s : Finset S) {f : S → (I → �
   | insert x s hx ih => simpa only [Finset.prod_insert hx] using (h x).mul hC ih
 
 /- English proof (translation)
-Establish `e : (𝟙 _ : Sp ℂ ⟶ Sp ℂ) = spMap (RingHom.id ℂ)` using `(Cris.spMap_id ℂ).symm`. Establish `h` using `(GlobalTheory.CrysConn.isGrpPullback_refl X.A).congr e rfl`. Establish `key : ∀ (t : Sp ℂ ⟶ Sp ℂ), t = spMap (RingHom.id ℂ) → ∀ m : GrpMor (dp0 ℂ) t X.A J.κ (spMap J.π) X.A (algebraMap ℂ J.B) (𝟙 _) (Over.Hom.left (𝟙 X.A)), m.IsBC`. Introduce and unpack `_ rfl m`. Conclude with `GlobalTheory.CrysConn.isBC_of_lift H X.ab X.dim (isDPNilpotent_bot ℂ) Function.surjective_id ((RingHom.injective_iff_ker_eq_bot _).1 Function.injective_id) h J.nil (fun r ↦ ⟨_, J.π_algebraMap r⟩) rfl m (GlobalTheory.CrysConn.isGrpPullback_refl X.A)`.
-
-Conclude with `key _ e m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isBC (H : GlobalTheory.Published.AbelianDeRham) {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (X : Obj F 𝔠 (Sp ℂ))
     (m : GrpMor (dp0 ℂ) (𝟙 _) X.A J.κ (spMap J.π) X.A (algebraMap ℂ J.B) (𝟙 _) (Over.Hom.left (𝟙 X.A))) : m.IsBC := by
@@ -363,13 +357,11 @@ variable {n : ℕ} {L : Set E} {T : CxPt 𝔠 φ L} {J : JetRing ℂ I n} {Y : F
   {d : Fin (Module.finrank ℚ (FR E)) → T.U.u.Λ →₀ ℂ}
 
 /- English proof (translation)
-Use `choose v hv hv' using fun j ↦ exists_lie_comb (K.U z hz).u (K.P z) _ (K.lie z hz) (d j)`. Establish `hW : ∀ j, Finsupp.linearCombination ℂ (fun (x : T.U.u.Λ) a ↦ x.1 a + K.ζ z (T.U.e a) * starRingEnd ℂ (x.1 a)) (d j) = (1 : Matrix _ _ ℂ) j` using `fun j ↦ by`. Use extensionality with `a`. Establish `e1` using `congrFun (hd1 j) a`. Establish `e2` using `congrFun (hd2 j) a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finsupp.linearCombination_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.star_apply, RCLike.star_def, Pi.zero_apply] at e1 e2 ⊢`. Simplify using `only [mul_add, Finset.sum_add_distrib, e1, mul_left_comm _ (K.ζ z _), ← Finset.mul_sum, e2]`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Establish `e1` using `K.det z hz (fun j ↦ Serre.Lie.mk (K.X z).rm (v j) (hv j).1) 1 fun j ↦ by`. Rewrite using `[← hW j]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hv' j`. Establish `e2` using `hδ ℂ (G.y z : G.B →+* ℂ) (K.X z) (K.q z) (K.pull z) (K.mor z) (K.δ z).1 (K.corr z) (fun j ↦ Finsupp.linearCombination ℂ (K.P z) (d j)) (fun j ↦ Serre.Lie.mk (K.X z).rm (v j) (hv j).1) hv`. Use `replace e1 := e1.trans ((congrArg (K.C z * ·) Matrix.det_one).trans (_root_.mul_one _))`. Use `(e1.symm.trans e2).trans (Finset.sum_congr rfl fun a _ ↦ congrArg _ (Finset.prod_congr rfl fun j _ ↦ ?_))` and prove the remaining obligations. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coeff_fibre (K : Coord ε G) (hδ : DetFormula G.X G.δ.1 cl r) (hd1 : ∀ j, hol _ (d j) = Pi.single j 1)
     (hd2 : ∀ j, ahol _ (d j) = 0) (z : I → ℂ) (hz : z ∈ K.V) :
@@ -394,15 +386,13 @@ theorem coeff_fibre (K : Coord ε G) (hδ : DetFormula G.X G.δ.1 cl r) (hd1 : �
   rfl
 
 /- English proof (translation)
-Take `⟨D', hD'⟩ : ∃ D' : Fin (Module.finrank ℚ (FR E)) → Crys J.κ (spMap J.π) T.X.A, ∀ j cc, D' j cc = ∑ x ∈ (d j).support, algebraMap ℂ J.B (d j x) * D x cc` from `⟨fun j ↦ ∑ x ∈ (d j).support, algebraMap ℂ J.B (d j x) • D x, fun j cc ↦ LinearMap.sum_apply _ _ _⟩`. Establish `L'` using `(H.2.1 _ Y.X'.A _ Y.X'.ab Y.X'.dim).1`. Use `choose v hv hv' using fun j ↦ exists_lie_comb T.U.u P _ hP.2.2.1 (d j)`. Establish `e1` using `T.det (fun j ↦ Serre.Lie.mk T.X.rm (v j) (hv j).1) 1 fun j ↦ by`. Establish `: (1 : Matrix _ _ ℂ) j = hol _ (d j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd1]`. Use extensionality with `a`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[this]`. Conclude with `hv' j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `replace e1 := e1.trans ((congrArg (T.C * ·) Matrix.det_one).trans (_root_.mul_one _))`. Establish `hL : ∀ j, IsLieImage (crysToDR J.κ Y.pull.grp (D' j)) (L'.toLie Y.X'.rm (crysToDR J.κ Y.pull.grp (D' j))).hom` using `fun j ↦ (L'.toLie_eq_iff Y.X'.rm).1 rfl`. Establish `hJ : ∀ j, IsJetElt J T.X T.low Y.mor (Finsupp.linearCombination ℂ P (d j)) (D' j)` using `fun j cc ↦ by`. Rewrite using `[hD', Finset.sum_eq_zero (s := Finset.univ) fun i _ ↦ by rw [hlow, LinearMap.zero_apply, map_zero, mul_zero], add_zero, Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun x _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hD x cc, ← map_mul]`. Both sides reduce to the same expression. Establish `e2` using `Y.gen (fun j ↦ Finsupp.linearCombination ℂ P (d j)) D' (fun j ↦ Serre.Lie.mk T.X.rm (v j) (hv j).1) (fun j ↦ L'.toLie Y.X'.rm (crysToDR J.κ Y.pull.grp (D' j))) fun j ↦ ⟨hJ j, hv j, hL j⟩`. Establish `e3` using `hδ J.B (G.j : G.B →+* J.B) Y.X' G.q G.pull m' G.δ''.1 G.corr _ _ hL`. Use `Eq.trans ?_ (e2.trans (congrArg _ e1))` and prove the remaining obligations.
-
-Use `Eq.trans ?_ (DFunLike.congr_fun G.he _).symm` and prove the remaining obligations. Use `congrArg (G.e * ·) (Eq.trans ?_ e3.symm)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun a _ ↦ congrArg _ (Finset.prod_congr rfl fun j _ ↦ (hD' j _).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coeff_origin (H : GlobalTheory.Published.AbelianDeRham) {P : T.U.u.Λ →+ HdR T.X.A} (hP : IsPeriodMap ε T.U.u P)
     (hδ : DetFormula G.X G.δ.1 cl r) (hd1 : ∀ j, hol _ (d j) = Pi.single j 1)
@@ -442,9 +432,9 @@ theorem coeff_origin (H : GlobalTheory.Published.AbelianDeRham) {P : T.U.u.Λ �
 end Main
 
 /- English proof (translation)
-Introduce `H hC ε E _ _ _ I _ 𝔠 φ c y hφ hc n T J Y G K`. Take `⟨N, cl, r, hδ⟩` from `exists_det_formula H G.X G.δ.1`. Use `choose d hd1 hd2 using fun j : Fin (Module.finrank ℚ (FR E)) ↦ exists_comb _ T.U.u.full (Pi.single j 1)`. Establish `hV` using `K.isOpen.mem_nhds K.zero`. Establish `m' : GrpMor (dp0 G.B) (𝟙 _) G.X.A (dp0 J.B) (𝟙 _) Y.X'.A (G.j : G.B →+* J.B) (spMap (G.j : G.B →+* J.B)) G.q` using `GrpMor.of_isGrpPullback (isDPMorphism_of_eq_bot _ rfl _ _) ((Category.comp_id _).trans (Category.id_comp _).symm) G.pull.grp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose D hD using fun x : T.U.u.Λ ↦ (isBC H T.X Y.mor).exists (K.P₀ x)`. Establish `hJ : HasJet J (fun z ↦ ∑ a, G.y z (r a) * ∏ j, ∑ x ∈ (d j).support, d j x * K.P z x ((K.mor z).pull (cl (a j)))) (∑ a, G.j (r a) * ∏ j, ∑ x ∈ (d j).support, algebraMap ℂ J.B (d j x) * crysToDR J.κ Y.pull.grp (D x) (m'.pull (cl (a j))))` using `hasJet_sum hC Finset.univ fun a ↦ HasJet.mul hC ⟨SCV.analyticAt_of_differentiableOn (G.hol (r a)) (G.isOpen.mem_nhds G.zero), (G.jet_eq (r a)).symm⟩ (hasJet_prod hC Finset.univ fun j ↦ hasJet_sum hC (d j).support fun x ↦ (hasJet_const (d j x)).mul hC ⟨SCV.analyticAt_of_differenti …`. Establish `hev` using `Filter.eventually_of_mem hV (coeff_fibre K hδ hd1 hd2)`. Use `⟨hJ.1.congr (Filter.EventuallyEq.symm hev), ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (G.e * ·) ((Check.jet_congr J hev).trans hJ.2)).trans (coeff_origin H K.per hδ hd1 (fun j ↦ low_eq_zero hφ hc T K.per (hd1 j) (hd2 j)) m' hD)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jetDet : GlobalTheory.Published.AbelianDeRham → JetCalc → JetDet := by
   intro H hC ε E _ _ _ I _ 𝔠 φ c y hφ hc n T J Y G K

@@ -5,7 +5,7 @@ open scoped commutatorElement Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `n hn g`. Establish `h1 : ⁅g, n⁆ ∈ M` using `h (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top n))`. Establish `h2` using `M.mul_mem h1 hn`. Simplify `h2` using `[commutatorElement_def]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normal_of_commutator_le {G : Type} [Group G] (M : Subgroup G)
     (h : ⁅(⊤ : Subgroup G), ⊤⁆ ≤ M) : M.Normal := by

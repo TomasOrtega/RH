@@ -25,7 +25,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.Adeli
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, inclR, Matrix.vecMulVec_apply, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul', Algebra.smul_def, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tmul_smul_gen {n d : ℕ} (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (a : Fv F v) (o : 𝓞 E) (c : AF F) (x : Fin n → E)
     (y : Fin d → E) :
@@ -36,13 +36,11 @@ theorem tmul_smul_gen {n d : ℕ} (v : GlobalTheory.IndefiniteRowSideFullHecke.W
     Algebra.smul_def, mul_assoc]
 
 /- English proof (translation)
-Introduce `γ hγ`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨c, hc, hci, x, hx, y, hy, rfl⟩` from `hz`. Rewrite using `[tmul_smul_gen]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v a * c, ?_, ?_, o • x, X.L.smul_mem o hx, y, hy, rfl⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_eq_mul, mul_left_comm, ← smul_eq_mul u c, hc u hu, mul_zero]`. Rewrite using `[map_mul, GlobalTheory.LatVac.evFin_liftV]`. Conclude with `mul_mem ha hci`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tmul_smul_mem {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {a : Fv F v}
     (ha : a ∈ v.adicCompletionIntegers F) (o : 𝓞 E) :
@@ -62,11 +60,11 @@ theorem tmul_smul_mem {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : GlobalThe
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Use `intLoc_induction (p := fun y => ∃ e : AE F E, compFin F E v e = y ∧ ∀ γ ∈ latAtV X Y v, e • γ ∈ latAtV X Y v) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `a ha o`. Use `⟨GlobalTheory.LatVac.liftV v a ⊗ₜ[F] (o : E), ?_, tmul_smul_mem X Y v ha o⟩` and prove the remaining obligations. Simplify using `[compFin, GlobalTheory.LatVac.evFin_liftV]`. Conclude with `⟨0, map_zero _, fun γ _ => by rw [zero_smul]; exact zero_mem _⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `y z hy hz`. Take `⟨e, he, he'⟩` from `hy`. Take `⟨f, hf, hf'⟩` from `hz`. Conclude with `⟨e + f, by rw [map_add, he, hf], fun γ hγ => by rw [add_smul]; exact add_mem (he' γ hγ) (hf' γ hγ)⟩`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e, he, he'⟩` from `hy`. Conclude with `⟨-e, by rw [map_neg, he], fun γ hγ => by rw [neg_smul]; exact neg_mem (he' γ hγ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     {y : Fv F v ⊗[F] E} (hy : y ∈ intLoc F E v) :
@@ -86,7 +84,7 @@ theorem exists_lift {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : GlobalTheor
     exact ⟨-e, by rw [map_neg, he], fun γ hγ => by rw [neg_smul]; exact neg_mem (he' γ hγ)⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.smul_apply, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_piW_smul {n d : ℕ} {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v) (e : AE F E)
     (γ : Matrix (Fin n) (Fin d) (AE F E)) : (e • γ).map (piW t) = piW t e • γ.map (piW t) := by
@@ -100,11 +98,11 @@ namespace GlobalTheory.SplitPlaceLat
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU
 
 /- English proof (translation)
-Introduce `D a a' Bs Γ X om om' hTr L₁ L₂ γ hγ`. Establish `h` using `hTr.base.cm`. Take `⟨e, he, he'⟩` from `GlobalTheory.SplitPlaceLat.exists_lift {Γ.V' with L := L₁} {Γ.W with L := L₂} Bs.v₁ (splitIdem_mem h Bs.τ₁)`. Establish `p1 : piW Bs.τ₁ e = 1`. Express the relevant statement in the definitionally equal form `splitProj Bs.τ₁ (compFin _ _ _ e) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[he]`. Conclude with `splitProj_splitIdem h _`. Establish `p2 : piW (Bs.τ₁.comp D.sp.cm.sig) e = 0`. Express the relevant statement in the definitionally equal form `splitProj (Bs.τ₁.comp D.sp.cm.sig) (compFin _ _ _ e) = 0`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `splitProj_comp_splitIdem h _`. Use `⟨γ - e • γ, sub_mem hγ (he' γ hγ), e • γ, he' γ hγ, (sub_add_cancel _ _).symm, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, map_sub, map_mul, p1]`. Rewrite using `[GlobalTheory.SplitPlaceLat.map_piW_smul, p2, zero_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAtV_eq_add_parts : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

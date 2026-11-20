@@ -17,7 +17,7 @@ def hM (α : Fin m → ℂ) (μ : Fin m → ℕ) : Matrix (Fin m) (Fin m) ℂ :=
   Matrix.of fun k j => hZ ((μ j : ℤ) - (k.rev : ℕ)) α
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, hE m α i (μ j), Matrix.mul_apply]`. Simplify using `only [eM, hM, Matrix.of_apply]`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun r => (-1 : ℂ) ^ r * eEx α i r * hZ ((μ j : ℤ) - (r : ℤ)) α)]`. Conclude with `(Fintype.sum_equiv Fin.revPerm _ _ (fun k => rfl)).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor (hE : ERel) (α : Fin m → ℂ) (μ : Fin m → ℕ) :
     (Matrix.of fun i j => α i ^ μ j) = eM α * hM α μ := by
@@ -28,13 +28,13 @@ theorem factor (hE : ERel) (α : Fin m → ℂ) (μ : Fin m → ℕ) :
   exact (Fintype.sum_equiv Fin.revPerm _ _ (fun k => rfl)).symm
 
 /- English proof (translation)
-Simplify using `[hZ, hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hZ_neg (α : Fin m → ℂ) {z : ℤ} (hz : z < 0) : hZ z α = 0 := by
   simp [hZ, hz]
 
 /- English proof (translation)
-Simplify using `only [hZ, hN, lt_irrefl, if_false, Int.toNat_zero]`. Rewrite using `[Nat.antidiagonalTuple_zero_right]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hZ_zero (α : Fin m → ℂ) : hZ 0 α = 1 := by
   simp only [hZ, hN, lt_irrefl, if_false, Int.toNat_zero]
@@ -42,13 +42,13 @@ theorem hZ_zero (α : Fin m → ℂ) : hZ 0 α = 1 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `k _`. Simplify using `only [hM, Matrix.of_apply]`. Establish `hk : ((stair m k : ℕ) : ℤ) - ((k.rev : ℕ) : ℤ) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [stair, Fin.val_rev]`. Use `k.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hk]`. Conclude with `hZ_zero α`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Simplify using `only [hM, Matrix.of_apply]`. Apply `hZ_neg` to reduce the goal to its premises. Establish `hlt : (i : ℕ) < j` using `hij`. Simplify using `only [stair, Fin.val_rev]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem det_hM_stair (α : Fin m → ℂ) : (hM α (stair m)).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
@@ -70,9 +70,9 @@ theorem det_hM_stair (α : Fin m → ℂ) : (hM α (stair m)).det = 1 := by
     omega
 
 /- English proof (translation)
-Use extensionality with `k j`. Simplify using `only [hM, Matrix.of_apply, Pi.add_apply, stair, Fin.val_rev]`. Use `congr 1`. Establish `hj` using `j.isLt`. Establish `hk` using `k.isLt`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hM_add_stair (α : Fin m → ℂ) (l : Fin m → ℕ) :
     hM α (l + stair m) = Matrix.of fun i j : Fin m => hZ ((l j : ℤ) - j + i) α := by
@@ -88,7 +88,7 @@ end SkewJacobiTrudiStaircase
 
 open SkewJacobiTrudiStaircase in
 /- English proof (translation)
-Introduce `hE m α l`. Unfold `altN jt`. Rewrite using `[factor hE α, factor hE α, det_mul, det_mul, det_hM_stair, mul_one, hM_add_stair]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem alternating_jacobi_trudi_of_relation : ERel → AltJT := by
   intro hE m α l

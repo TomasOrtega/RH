@@ -16,7 +16,7 @@ structure IsZHatGenerator (σ : G) : Prop where
     IsOpen (φ.ker : Set G) ∧ φ σ = Multiplicative.ofAdd 1
 
 /- English proof (translation)
-Set `_ : TopologicalSpace Y` to `⊥`. Establish `: DiscreteTopology Y` using `⟨rfl⟩`. Conclude with `Continuous.ext_on hs hf.continuous hg.continuous h`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.IsLocallyConstant.eq_of_eqOn_dense {X Y : Type*} [TopologicalSpace X] {f g : X → Y}
     (hf : IsLocallyConstant f) (hg : IsLocallyConstant g) {s : Set X} (hs : Dense s)
@@ -30,7 +30,7 @@ namespace IsTopologicalGenerator
 variable {σ : G}
 
 /- English proof (translation)
-The claim follows from `hf.eq_of_eqOn_dense hg hσ fun _ ⟨n, hn⟩ => hn ▸ h n`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_forall_zpow (hσ : IsTopologicalGenerator σ) {Y : Type*} {f g : G → Y}
     (hf : IsLocallyConstant f) (hg : IsLocallyConstant g) (h : ∀ n : ℤ, f (σ ^ n) = g (σ ^ n)) :
@@ -38,7 +38,7 @@ theorem eq_of_forall_zpow (hσ : IsTopologicalGenerator σ) {Y : Type*} {f g : G
   hf.eq_of_eqOn_dense hg hσ fun _ ⟨n, hn⟩ => hn ▸ h n
 
 /- English proof (translation)
-Use `hf.eq_of_eqOn_dense hg (s := Set.univ.pi fun _ => (Subgroup.zpowers σ : Set G)) (dense_pi Set.univ fun _ _ => hσ) fun x hx => ?_` and prove the remaining obligations. Use `choose m hm using fun i => hx i (Set.mem_univ i)`. Establish `hx' : x = fun i => σ ^ m i` using `funext fun i => (hm i).symm`. Rewrite using `[hx']`. Conclude with `h m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_forall_zpow_pi (hσ : IsTopologicalGenerator σ) {n : ℕ} {Y : Type*}
     {f g : (Fin n → G) → Y} (hf : IsLocallyConstant f) (hg : IsLocallyConstant g)

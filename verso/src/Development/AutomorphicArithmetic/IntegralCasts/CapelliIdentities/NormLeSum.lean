@@ -5,9 +5,9 @@ import Mathlib
     fun (P Q : Nat) ↦ Matrix (Sum (Fin P) (Fin Q)) (Sum (Fin P) (Fin Q)) Complex
 
 /- English proof (translation)
-Introduce `P Q X`. Establish `h` using `Matrix.linfty_opNorm_def (A := X)`. Use `le_trans (le_of_eq h) ?_` and prove the remaining obligations. Establish `key : ((Finset.univ : Finset (Sum (Fin P) (Fin Q))).sup fun i => ∑ j : Sum (Fin P) (Fin Q), ‖X i j‖₊) ≤ ∑ i : Sum (Fin P) (Fin Q), ∑ j : Sum (Fin P) (Fin Q), ‖X i j‖₊` using `Finset.sup_le fun i hi => Finset.single_le_sum (f := fun i => ∑ j : Sum (Fin P) (Fin Q), ‖X i j‖₊) (fun _ _ => by positivity) hi`. Establish `key'` using `NNReal.coe_le_coe.mpr key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `key'` using `only [NNReal.coe_sum, coe_nnnorm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.Reformulated.B.Qk34.norm_le_sum :
     ∀ (P Q : Nat) (X : UpperTheory.Reformulated.B.Qk34.MM P Q),

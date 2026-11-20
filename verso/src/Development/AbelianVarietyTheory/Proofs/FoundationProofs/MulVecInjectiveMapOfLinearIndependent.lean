@@ -14,7 +14,7 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.TestLat
 
 /- English proof (translation)
-Use `letI : Algebra K L := σ.toAlgebra`. Rewrite using `[Matrix.mulVec_injective_iff]`. Establish `h` using `(linearIndependent_algebraMap_comp_iff (S := L) (v := e)).2 he`. Conclude with `h`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mulVec_injective_map_of_linearIndependent {K L : Type} [Field K] [Field L] (σ : K →+* L) {d j : ℕ}
     (e : Fin j → Fin d → K) (he : LinearIndependent K e) :
@@ -25,7 +25,7 @@ theorem mulVec_injective_map_of_linearIndependent {K L : Type} [Field K] [Field 
   exact h
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gram, Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Matrix.of_apply]`. Rewrite using `[Matrix.mul_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_eq_conjTranspose_mul {K : Type} [Field K] [NumberField K] [StarRing K] {d j : ℕ}
     (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (v : InfinitePlace K) (e : Fin j → Fin d → K) :
@@ -36,19 +36,17 @@ theorem gram_eq_conjTranspose_mul {K : Type} [Field K] [NumberField K] [StarRing
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ _ _ v0 hv0 d j H X hX e he`. Establish `hpos : ∀ v, (gram X v e).PosDef`. Introduce `v`. Rewrite using `[gram_eq_conjTranspose_mul]`. Use `Matrix.PosDef.conjTranspose_mul_self _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Function.Injective ((X v)⁻¹).mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_nonsing_inv_det _ (hX v).1))`. Establish `h2` using `mulVec_injective_map_of_linearIndependent v.embedding e he`. Introduce `x y hxy`. Rewrite `hxy` using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `h2 (h1 hxy)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hpos⟩` and prove the remaining obligations. Establish `key : v0.embedding (gramR H e) = (gram X v0 e).det`. Unfold `gramR`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `set σ := v0.embedding`. Establish `hM : H.map σ = ((X v0)⁻¹).conjTranspose * (X v0)⁻¹` using `(hX v0).2.symm`. Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, Matrix.of_apply, RingHom.map_dotProduct]`. Establish `hmv : (⇑σ ∘ (H *ᵥ e b)) = H.map σ *ᵥ (⇑σ ∘ e b)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun i => RingHom.map_mulVec σ _ _ i`. Establish `hs : (⇑σ ∘ star (e a)) = star (⇑σ ∘ e a)`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, Pi.star_apply]`. Rewrite using `[← starRingEnd_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hv0 (e a i)`. Rewrite using `[hmv, hs, hM, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Simplify using `only [gram, Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Matrix.of_apply]`. Both sides reduce to the same expression. Introduce `h0`.
-
-Rewrite `key` using `[h0, map_zero]`. Conclude with `(hpos v0).det_pos.ne key`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramR_ne_zero_and_gram_posDef : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (v₀ : InfinitePlace K), IsConjAt v₀ → ∀ (d j : ℕ) (H : Matrix (Fin d) (Fin d) K) (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ), IsMetric H X → ∀ e : Fin j → Fin d → K, LinearIndependent K e → gramR H e ≠ 0 ∧ ∀ v, (gram X v e).PosDef := by
   intro K _ _ _ _ v0 hv0 d j H X hX e he

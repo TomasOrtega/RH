@@ -6,7 +6,7 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ w f X hf g k hk`. Establish `h1 : rt E 2 (finGL E 2 (locGL E 2 w k)) f = f` using `Subtype.ext (funext fun x => hf x k hk)`. Establish `h2 : lie E 2 X (rt E 2 (finGL E 2 (locGL E 2 w k)) f) = rt E 2 (finGL E 2 (locGL E 2 w k)) (lie E 2 X f)` using `LinearMap.congr_fun (lie_rt_fin X (locGL E 2 w k)) f`. Rewrite `h2` using `[h1]`. Conclude with `(congrArg (fun u : Sm E 2 => u.1 g) h2).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lie_action_preserves_fixed_at_place :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (w : H.P E) (f : Sm E 2) (X : Lie E 2), H.Fix w f.1 → H.Fix w (lie E 2 X f).1 := by

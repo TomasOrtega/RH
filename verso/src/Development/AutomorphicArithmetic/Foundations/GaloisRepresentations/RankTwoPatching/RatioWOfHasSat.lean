@@ -14,12 +14,12 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.Gal.SV
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem exRS' (h : ExRS) : ExRS := h
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hl σ _ hB H` and use `frob_of hl σ hB H`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem satFrobL : GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ)
     [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)), Continuous r →
@@ -30,7 +30,7 @@ theorem satFrobL : GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (F Ω : Type)
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hl σ _ hB H => frob_of hl σ hB H
 
 /- English proof (translation)
-Introduce `P` and use `satFrobL P.litN`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem satFrobP : Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ)
     [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)), Continuous r →
@@ -40,14 +40,14 @@ theorem satFrobP : Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F]
       IsWDOf ι r (rc (algNorm σ))) → FrobEig ι r w (algSat n (normV w) B) := fun P => satFrobL P.litN
 
 /- English proof (translation)
-Introduce `_ hA F _ _ _` and use `unrAt_of_isoTwist hA F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrAt_alt : type_of% @GlobalTheory.RealGal.unrAt_of_isoTwist := fun _ hA F _ _ _ => unrAt_of_isoTwist hA F
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `H.ratio w hl A h (H.plain w B hB)`.
+A detailed English derivation is pending.
 -/
 theorem ratioW_of_hasSat [IsTotallyReal F] (_P : Hypotheses₂) {n : ℕ} {π : TR.CuspSub F n} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     {wt : ℤ} {HT : (F →+* Qbar l) → Multiset ℤ} (H : IsGalRS π ι r wt HT) {w : HeightOneSpectrum (𝓞 F)}
@@ -55,7 +55,7 @@ theorem ratioW_of_hasSat [IsTotallyReal F] (_P : Hypotheses₂) {n : ℕ} {π : 
     UpperTheory.GalN.V.RatioW (wdOf h hl ι r) := H.ratio w hl A h (H.plain w B hB)
 
 /- English proof (translation)
-Establish `hB : π.HasSat w S` using `((GlobalTheory.T.satakeParameters_local F n w σ).2 _ π.finPart ((GlobalTheory.T.local_global_compatibility_real admissibleReal F n π w).2 σ hσ) S).2 hS`. Establish `hp` using `H.plain w S hB σ hσ`. Conclude with `(((H.loc w σ hσ hp).1 A h rc hrc).1 hl).isWDOf (gdOf F Ω A w h rc hrc n σ hp)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isWDOf_satR [IsTotallyReal F] {n : ℕ} {π : TR.CuspSub F n} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     {wt : ℤ} {HT : (F →+* Qbar l) → Multiset ℤ} (H : IsGalRS π ι r wt HT) {w : HeightOneSpectrum (𝓞 F)}

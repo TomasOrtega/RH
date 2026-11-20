@@ -18,7 +18,7 @@ local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 local notation "jK" => algebraMap (𝓞 K) K
 
 /- English proof (translation)
-Rewrite using `[div_mul_eq_mul_div, mul_left_comm, mul_div_cancel_left₀ _ hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem div_mul_mul' {x y z : K} (hz : z ≠ 0) : x / z * (z * y) = x * y := by
   rw [div_mul_eq_mul_div, mul_left_comm, mul_div_cancel_left₀ _ hz]
@@ -42,32 +42,32 @@ variable (J : JD h L 𝔭 b a)
 include J
 
 /- English proof (translation)
-Introduce `_` and use `Submodule.mem_top`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bX : ∀ i, b i ∈ (⊤ : Submodule K V) := fun _ => Submodule.mem_top
 
 /- English proof (translation)
-The claim follows from `J.max.isPrime; crd h b a x i ∈ HU.SP K 𝔭 := mem_B J.orth J.diag J.ne J.bX J.loc J.max.isPrime J.lat x`.
+A detailed English derivation is pending.
 -/
 theorem memB (x : V) : x ∈ locF 𝔭 L ↔ ∀ i, haveI := J.max.isPrime; crd h b a x i ∈ HU.SP K 𝔭 :=
   mem_B J.orth J.diag J.ne J.bX J.loc J.max.isPrime J.lat x
 
 /- English proof (translation)
-The claim follows from `J.max.isPrime; jK (ι (a i)) * crd h b a x i ∈ HU.SP K 𝔭 := mem_A J.orth J.diag J.ne J.bX J.loc J.fix J.max J.lat x`.
+A detailed English derivation is pending.
 -/
 theorem memA (x : V) : x ∈ locF 𝔭 (dualIn h ⊤ L) ↔
     ∀ i, haveI := J.max.isPrime; jK (ι (a i)) * crd h b a x i ∈ HU.SP K 𝔭 :=
   mem_A J.orth J.diag J.ne J.bX J.loc J.fix J.max J.lat x
 
 /- English proof (translation)
-The claim follows from `crd_gmap J.orth J.diag J.ne Y x k`.
+A detailed English derivation is pending.
 -/
 theorem crdG (Y : Matrix (Fin m) (Fin m) (𝓞 K)) (x : V) (k : Fin m) :
     crd h b a (gmap h b a Y x) k = ∑ j, jK (Y k j) * crd h b a x j :=
   crd_gmap J.orth J.diag J.ne Y x k
 
 /- English proof (translation)
-The claim follows from `J.max.isPrime; h x' y' - h x y ∈ HU.SP K 𝔭 := by have := J.max.isPrime have hAB := h_AB J.orth J.diag J.ne J.bX J.loc J.fix J.max J.lat have e : h x' y' - h x y = h x (y' - y) + h (x' - x) y + h (x' - x) (y' - y) := by simp only [map_sub, LinearMap.sub_apply]; ring rw [e] refine …`.
+A detailed English derivation is pending.
 -/
 theorem h_sub_mem (x y x' y' : V) (hx : x ∈ locF 𝔭 (dualIn h ⊤ L)) (hy : y ∈ locF 𝔭 (dualIn h ⊤ L))
     (hx' : x' - x ∈ locF 𝔭 L) (hy' : y' - y ∈ locF 𝔭 L) :
@@ -94,13 +94,13 @@ theorem E_mk (Y : Matrix (Fin m) (Fin m) (𝓞 K)) (hY) (x : ↥(locF 𝔭 (dual
       ⟨gmap h b a Y x, gmap_A J.orth J.diag J.ne J.bX J.loc J.fix J.max J.lat Y hY x x.2⟩ := rfl
 
 /- English proof (translation)
-Use `J.max.isPrime` as an intermediate fact. Introduce `x y x' y' hx hy`. Rewrite `hx`, `hy` using `[E_mk, Submodule.Quotient.eq, Submodule.mem_comap]`. Simplify using `only [Submodule.subtype_apply, Submodule.coe_sub] at hx hy`. Establish `gA` using `gmap_A J.orth J.diag J.ne J.bX J.loc J.fix J.max J.lat Y hY`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← HU.mem_SP_iff_locF]`. Establish `e : h (x' : V) (y' : V) - h (x : V) (y : V) = (h (x' : V) (y' : V) - h (gmap h b a Y x) (gmap h b a Y y)) + (h (gmap h b a Y x) (gmap h b a Y y) - h (x : V) (y : V))` using `by ring`. Rewrite using `[e]`. Use `add_mem (J.h_sub_mem _ _ _ _ (gA _ x.2) (gA _ y.2) hx hy) ?_` and prove the remaining obligations. Rewrite using `[form_identity J.orth J.diag J.ne J.bX J.loc J.fix J.max J.lat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sum_mem fun i _ => sum_mem fun j _ => ?_` and prove the remaining obligations. Establish `hxA` using `(J.memA x).1 x.2 i`. Establish `hyA` using `(J.memA y).1 y.2 j`. Establish `hne : jK (ι (a i)) * jK (ι (a j)) ≠ 0` using `mul_ne_zero (jK_ι_ne_zero (J.ne i)) (jK_ι_ne_zero (J.ne j))`. Establish `e2 : star (jK (ι (a i)) * crd h b a x i) * (jK (gramO a Y i j) / (jK (ι (a i)) * jK (ι (a j)))) * (jK (ι (a j)) * crd h b a y j) = star (crd h b a x i) * jK (gramO a Y i j) * crd h b a y j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_mul', star_jK_ι J.fix, show jK (ι (a i)) * star (crd h b a x i) * (jK (gramO a Y i j) / (jK (ι (a i)) * jK (ι (a j)))) * (jK (ι (a j)) * crd h b a y j) = star (crd h b a x i) * jK (gramO a Y i j) * crd h b a y j * ((jK (ι (a i)) * jK (ι (a j))) / (jK (ι (a i)) * jK (ι (a j) …`. Rewrite using `[← e2]`. Conclude with `mul_mem (mul_mem (star_mem_SP J.fix hxA) (hW i j)) hyA`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem E_isom (Y : Matrix (Fin m) (Fin m) (𝓞 K)) (hY)
     (hW : ∀ i j, haveI := J.max.isPrime;
@@ -136,11 +136,11 @@ theorem E_isom (Y : Matrix (Fin m) (Fin m) (𝓞 K)) (hY)
   exact mul_mem (mul_mem (star_mem_SP J.fix hxA) (hW i j)) hyA
 
 /- English proof (translation)
-Use `J.max.isPrime` as an intermediate fact. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, E_mk]`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[J.memB]`. Introduce `k`. Rewrite using `[crd_sub, J.crdG, J.crdG, ← Finset.sum_sub_distrib]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, ← map_sub, ← div_mul_mul' (jK_ι_ne_zero (J.ne j))]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (hd k j) ((J.memA x).1 x.2 j)`.
+A detailed English derivation is pending.
 -/
 theorem E_eq_of (Y Y' : Matrix (Fin m) (Fin m) (𝓞 K)) (hY hY')
     (hd : ∀ i j, haveI := J.max.isPrime; jK (Y i j - Y' i j) / jK (ι (a j)) ∈ HU.SP K 𝔭) :
@@ -158,7 +158,7 @@ theorem E_eq_of (Y Y' : Matrix (Fin m) (Fin m) (𝓞 K)) (hY hY')
   exact mul_mem (hd k j) ((J.memA x).1 x.2 j)
 
 /- English proof (translation)
-Rewrite using `[crd, h_phi J.orth J.diag J.ne]`. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hl]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem crd_u (j l : Fin m) :
     crd h b a (phi (K := K) b a (Pi.single j 1)) l = if l = j then 1 / jK (ι (a j)) else 0 := by
@@ -168,7 +168,7 @@ theorem crd_u (j l : Fin m) :
   · simp [Pi.single_apply, hl]
 
 /- English proof (translation)
-Use `J.max.isPrime` as an intermediate fact. Rewrite using `[J.memA]`. Introduce `i`. Rewrite using `[← h_b J.orth J.diag J.ne, h_phi J.orth J.diag J.ne]`. Conclude with `HU.jK_mem_SP _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_mem (j : Fin m) : phi (K := K) b a (Pi.single j 1) ∈ locF 𝔭 (dualIn h ⊤ L) := by
   have := J.max.isPrime
@@ -178,9 +178,9 @@ theorem u_mem (j : Fin m) : phi (K := K) b a (Pi.single j 1) ∈ locF 𝔭 (dual
   exact HU.jK_mem_SP _
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[J.crd_u, if_pos rfl, mul_one_div]`. Introduce `l _ hl`. Rewrite using `[J.crd_u, if_neg hl, mul_zero]`. Introduce `hj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ j) hj`.
+A detailed English derivation is pending.
 -/
 theorem sum_crd_u (f : Fin m → K) (j : Fin m) :
     ∑ l, f l * crd h b a (phi (K := K) b a (Pi.single j 1)) l = f j / jK (ι (a j)) := by
@@ -190,7 +190,7 @@ theorem sum_crd_u (f : Fin m → K) (j : Fin m) :
   · intro hj; exact absurd (Finset.mem_univ j) hj
 
 /- English proof (translation)
-The claim follows from `J.max.isPrime; jK (Y i j - Y' i j) / jK (ι (a j)) ∈ HU.SP K 𝔭 := by have := J.max.isPrime have h1 := congrArg (fun f => f (Submodule.Quotient.mk ⟨_, J.u_mem j⟩)) he simp only [E_mk] at h1 rw [Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, …`.
+A detailed English derivation is pending.
 -/
 theorem entry_of_E_eq (Y Y' : Matrix (Fin m) (Fin m) (𝓞 K)) (hY hY') (he : J.E Y hY = J.E Y' hY')
     (i j : Fin m) : haveI := J.max.isPrime; jK (Y i j - Y' i j) / jK (ι (a j)) ∈ HU.SP K 𝔭 := by

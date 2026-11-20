@@ -7,11 +7,11 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Establish `hr : ∀ (x : A) (i : ι), b'.repr (ψ x) i = φ (b.repr x i)`. Introduce `x i`. Establish `h1 : ψ x = ∑ j, φ (b.repr x j) • b' j` using `by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, hψ, hb]`. Rewrite using `[h1, b'.repr_sum_self]`. Rewrite using `[Algebra.norm_eq_matrix_det b, Algebra.norm_eq_matrix_det b', RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, ← hb, ← map_mul, hr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_map_of_basis {F L A B ι : Type} [CommRing F] [CommRing L] [CommRing A] [CommRing B]
     [Algebra F A] [Algebra L B] [Fintype ι] [DecidableEq ι] (φ : F →+* L) (ψ : A →+* B)
@@ -33,7 +33,7 @@ theorem norm_map_of_basis {F L A B ι : Type} [CommRing F] [CommRing L] [CommRin
     Algebra.leftMulMatrix_eq_repr_mul, ← hb, ← map_mul, hr]
 
 /- English proof (translation)
-Establish `hne : (X ^ p - C a : L[X]) ≠ 0` using `X_pow_sub_C_ne_zero hp a`. Establish `hd : (AdjoinRoot.powerBasis hne).dim = p`. Rewrite using `[AdjoinRoot.powerBasis_dim, natDegree_X_pow_sub_C]`. Use `⟨(AdjoinRoot.powerBasis hne).basis.reindex (finCongr hd), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, PowerBasis.basis_eq_pow, AdjoinRoot.powerBasis_gen]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -48,15 +48,15 @@ theorem exists_basis_pow_root {L : Type} [Field L] {p : ℕ} (hp : 0 < p) (a : L
   simp
 
 /- English proof (translation)
-Introduce `p hp`. Prove the components needed by the constructor for the conclusion. Introduce `F L _ _ φ δ x hx`. Take `⟨r, hr⟩` from `(mem_powSub p φ x).1 hx`. Establish `hr0 : r ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hr` using `[zero_pow hp.ne']`. Conclude with `(map_ne_zero φ).2 x.ne_zero hr.symm`. Take `⟨b, -⟩` from `exists_basis_pow_root hp (φ δ)`. Use `(mem_kNorm p φ δ x).2 ⟨Units.map (algebraMap L (AdjoinRoot (X ^ p - C (φ δ) : L[X]))).toMonoidHom (Units.mk0 r hr0), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Algebra.norm L (algebraMap L _ r) = _`. Rewrite using `[Algebra.norm_algebraMap_of_basis b, Fintype.card_fin, hr]`. Introduce `F L _ _ φ δ x hx`. Take `⟨y, hy⟩` from `(mem_kNorm p (RingHom.id F) δ x).1 hx`. Take `⟨b, hb⟩` from `exists_basis_pow_root hp (RingHom.id F δ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb'⟩` from `exists_basis_pow_root hp (φ δ)`. Establish `hdv : (X ^ p - C (φ δ) : L[X]) ∣ (X ^ p - C (RingHom.id F δ) : F[X]).map φ`. Simplify using the standard rewrite rules. Set `ψ` to `AdjoinRoot.map φ _ _ hdv`. Use `(mem_kNorm p φ δ x).2 ⟨Units.map ψ.toMonoidHom y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Algebra.norm L (ψ y) = _`. Rewrite using `[norm_map_of_basis φ ψ (fun c => by simp [ψ]) b b' (fun i => by simp [hb, hb', ψ]) y, hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem powSub_le_kNorm_and_kNorm_map : ∀ (p : ℕ), 0 < p → (∀ (F L : Type) [Field F] [Field L] (φ : F →+* L) (δ : F), powSub p φ ≤ kNorm p φ δ) ∧ ∀ (F L : Type) [Field F] [Field L] (φ : F →+* L) (δ : F), kNorm p (RingHom.id F) δ ≤ kNorm p φ δ := by
   intro p hp

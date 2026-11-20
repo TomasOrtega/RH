@@ -12,9 +12,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.RetractGeneric
 
 /- English proof (translation)
-Establish `hl : i.left ≫ r.left = 𝟙 _` using `by rw [← Over.comp_left, h, Over.id_left]`. Establish `h1 : IsSeparated (r.left ≫ X.hom)` using `by rw [Over.w r]; infer_instance`. Establish `h2 : IsSeparated r.left` using `IsSeparated.of_comp r.left X.hom`. Establish `h3 : IsClosedImmersion (i.left ≫ r.left)` using `by rw [hl]; infer_instance`. Establish `h4 : IsClosedImmersion i.left` using `IsClosedImmersion.of_comp i.left r.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.w i]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_of_retract {S : Scheme.{0}} {X Y : Over S} (i : X ⟶ Y) (r : Y ⟶ X)
     (h : i ≫ r = 𝟙 X) (hY : IsProper Y.hom) : IsProper X.hom := by
@@ -27,7 +27,7 @@ theorem isProper_of_retract {S : Scheme.{0}} {X Y : Over S} (i : X ⟶ Y) (r : Y
   infer_instance
 
 /- English proof (translation)
-Introduce `R _ _ A' G' _ _ _ e G _ _ hG inc pr _ _ h`. Establish `hK` using `IsSemiAbelian.pullback (jK R) G hG`. Establish `hp : IsProper ((Over.pullback (jK R)).obj G).hom` using `isProper_of_retract ((Over.pullback (jK R)).map inc ≫ e.hom) (e.inv ≫ (Over.pullback (jK R)).map pr) (by rw [Category.assoc, e.hom_inv_id_assoc, ← CategoryTheory.Functor.map_comp, h, CategoryTheory.Functor.map_id]) A'.isAb.proper`. Conclude with `⟨hK.comm, hK.smooth, hp, hK.geomConnected⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isAbelianScheme_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (A' : PolAV (Sp (FractionRing R))) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ((Over.pullback (jK R)).obj G' ≅ A'.A) → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (inc : G ⟶ G') (pr : G' ⟶ G), IsMonHom inc → IsMonHom pr → inc ≫ pr = 𝟙 G → IsAbelianScheme ((Over.pullback (jK R)).obj G) := by
   intro R _ _ A' G' _ _ _ e G _ _ hG inc pr _ _ h

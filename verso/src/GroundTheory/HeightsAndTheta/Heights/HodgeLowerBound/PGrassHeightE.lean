@@ -13,13 +13,13 @@ noncomputable section
 namespace GrassHeightEAux
 
 /- English proof (translation)
-Use `set S : ℝ := ∑ I : PlIdx j m, ‖(colsOf (onePipe Z) I).det‖ ^ 2 with hSdef`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hnorm : ‖WithLp.toLp 2 v‖ = ‖a‖ * Real.sqrt S`. Rewrite using `[EuclideanSpace.norm_eq]`. Establish `hs : ∑ I, ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (PlIdx j m)) I‖ ^ 2 = ‖a‖ ^ 2 * S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSdef, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Simplify using `[hv, mul_pow]`. Rewrite using `[hs, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`. Establish `ha' : 0 < ‖a‖` using `norm_pos_iff.mpr ha`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : S = (1 + Z * Zᴴ).det.re`. Rewrite using `[← PlueckerNormSq.full j m Z, Complex.ofReal_re]`. Establish `hb` using `he Zᴴ fun a b => by rw [conjTranspose_apply, norm_star, hZ b a]`. Rewrite `hb` using `[conjTranspose_conjTranspose, det_one_add_mul_comm, ← hdet]`. Rewrite using `[hnorm, div_mul_cancel_left₀ ha'.ne', Real.log_inv, Real.log_sqrt hS0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem log_block (j m : ℕ) (e : ℝ) (he : UnitDetBound m j e) (Z : Matrix (Fin j) (Fin m) ℂ)
     (hZ : ∀ a b, ‖Z a b‖ = 1) (a : ℂ) (ha : a ≠ 0) (v : PlIdx j m → ℂ)
@@ -47,15 +47,13 @@ end GrassHeightEAux
 open GrassHeightEAux in
 
 /- English proof (translation)
-Introduce `f j m e ζ he hζ z hz`. Establish `h₁` using `RootAnchorNonzero.proof`. Establish `hpos : ∀ τ : Fin f, 0 < ‖WithLp.toLp 2 (fun I : PlIdx j m => z ⟨τ, I⟩)‖` using `fun τ => (fsMetric (PlIdx j m)).pos _ fun h0 => by`. Take `⟨i, hi⟩` from `hz.1 τ`. Conclude with `hi (congrFun h0 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ τ : Fin f, -e ≤ Real.log (‖z ⟨τ, plAnchor j m⟩‖ / ‖WithLp.toLp 2 (fun I : PlIdx j m => z ⟨τ, I⟩)‖)`. Introduce `τ`. Take `⟨ζ', hζ', hz'⟩` from `RootPointConj.full f j m ζ hζ z hz τ`. Conclude with `log_block j m e he ζ' (fun a b => by`. Take `⟨k, hk, h⟩` from `hζ' a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.norm_eq_one_of_pow_eq_one h hk.ne')`. Use `_ (h₁ f j m ζ hζ z hz τ) _ hz'`. Establish `hne : ∀ τ ∈ (Finset.univ : Finset (Fin f)), ‖z ⟨τ, plAnchor j m⟩‖ / ‖WithLp.toLp 2 (fun I : PlIdx j m => z ⟨τ, I⟩)‖ ≠ 0` using `fun τ _ => div_ne_zero (norm_ne_zero_iff.mpr (h₁ f j m ζ hζ z hz τ)) (hpos τ).ne'`. Establish `e' : logNorm (fsMulti (plBlocks f j m)) (rootAnchorSection f j m) z = ∑ τ, Real.log (‖z ⟨τ, plAnchor j m⟩‖ / ‖WithLp.toLp 2 (fun I : PlIdx j m => z ⟨τ, I⟩)‖)`. Rewrite using `[← Real.log_prod hne]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[logNorm, fsMulti, HermLine.ofMetrics, fsMetric, rootAnchorSection, Finset.prod_div_distrib]`. Rewrite using `[e']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ _ := Finset.sum_le_sum fun τ _ => key τ`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem RootLogNormBoundE.full : RootLogNormBoundE.Statement := by
   intro f j m e ζ he hζ z hz
@@ -85,19 +83,19 @@ theorem RootLogNormBoundE.full : RootLogNormBoundE.Statement := by
     _ ≤ _ := Finset.sum_le_sum fun τ _ => key τ
 
 /- English proof (translation)
-Introduce `f j m e ζ hf he hζ II hII`. Establish `: Nonempty (Fin f)` using `⟨⟨0, hf⟩⟩`. Establish `hV` using `RootArithVar.full f j m ζ hf hζ`. Establish `hmem : rootAnchorSection f j m ∉ rootPointIdeal ζ`. Rewrite using `[rootPointIdeal, MultiHomogMemCoord.proof (Fin f) (plBlocks f j m) ℂ (rootCoord ζ) _ _ (anchor_homog f j m)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[rootAnchorSection, rootCoord, anchor_minor]`. Establish `hsm : IsSmoothHerm (fsMulti (plBlocks f j m))` using `FsLineSmooth.proof _ _`. Establish `hR` using `(hII (Fin f) (plBlocks f j m)).2.2 (rootPointIdeal ζ) 0 Fin.elim0 (fsMulti (plBlocks f j m)) (rootAnchorSection f j m) (fun _ => 1) hV (fun j => j.elim0) hsm (fun _ => by simp [fsMulti, HermLine.ofMetrics]) (anchor_homog f j m) hmem`. Establish `e1 : (Fin.snoc (Fin.elim0 : Fin 0 → ReciprocityTheory.ChartRestriction.G.Geo.HermLine (plBlocks f j m)) (fsMulti (plBlocks f j m)) : Fin (0 + 1) → ReciprocityTheory.ChartRestriction.G.Geo.HermLine (plBlocks f j m)) = ![fsMulti (plBlocks f j m)]`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases i`. Both sides reduce to the same expression. Rewrite `hR` using `[e1]`. Establish `hlow` using `PtsIntegralZeroLowerNE.proof (Fin f) (plBlocks f j m) (rootPointIdeal ζ) (fun i z => Real.log (((Fin.elim0 : Fin 0 → ReciprocityTheory.ChartRestriction.G.Geo.HermLine (plBlocks f j m)) i).h z)) (logNorm (fsMulti (plBlocks f j m)) (rootAnchorSection f j m)) (-((f : ℝ) * e)) hV.2.1 …`. Establish `: recR (II (Fin f) (plBlocks f j m)) (rootPointIdeal ζ) (Fin.elim0 : Fin 0 → ReciprocityTheory.ChartRestriction.G.Geo.HermLine (plBlocks f j m)) (fsMulti (plBlocks f j m)) (rootAnchorSection f j m) = - arInt (rootPointIdeal ζ) (rootAnchorSection f j m) (fsMulti (plBlocks f j m)) …`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[recR, RootDivSuppEmpty.proof f j m ζ hζ]`. Rewrite `hR` using `[this]`. Use `show II _ _ _ 1 _ ≤ _`. Rewrite using `[hR]`. Simplify using `only [arInt]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `hlow` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce `u z hu hz`. Establish `hh` using `(fsMulti (plBlocks f j m)).smul u z hu`. Establish `hfa : (fsMulti (plBlocks f j m)).a = fun _ => 1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [logNorm, hh, hfa, zpow_one]`. Establish `hs : eval (fun p : (Σ _ : Fin f, PlIdx j m) => u p.1 * z p) (map (Int.castRingHom ℂ) (rootAnchorSection f j m)) = (∏ k, u k) * eval z (map (Int.castRingHom ℂ) (rootAnchorSection f j m))`. Simplify using `[rootAnchorSection, Finset.prod_mul_distrib]`. Establish `hu0 : (∏ k, ‖u k‖) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => norm_ne_zero_iff.mpr (hu k)`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `erw [hs]`. Rewrite using `[norm_mul, norm_prod]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem RootHeightE.full : RootHeightE.Statement := by
   intro f j m e ζ hf he hζ II hII
@@ -143,9 +141,7 @@ theorem RootHeightE.full : RootHeightE.Statement := by
     field_simp
 
 /- English proof (translation)
-Introduce `hZ2 f j m e hf he II hII`. Use `hZ2 (Fin f) (plBlocks f j m) (grassIdeal f j m) ⊥ (f * j * m) (fsMulti (plBlocks f j m)) ((f : ℝ) * e) (rootFamily f j m) II hII (GrassArithVar.full f j m hf) bot_le (FsLineSemipositive.full _ _ _) (NefOfNonneg.proof _ _ _ _ fun _ => ?_) (FsConjInvariant.proof _ _) ?_ (RootDense. …` and prove the remaining obligations. Use `show (0 : ℤ) ≤ 1`. Conclude with `zero_le_one`. Introduce and unpack `W ⟨ζ, hζ, rfl⟩`.
-
-Conclude with `⟨RootArithVar.full f j m ζ hf hζ, GrassLeRoot.proof f j m ζ, RootHeightE.full f j m e ζ hf he hζ II hII⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GrassHeightE.full : GrassHeightE.Statement := by
   intro hZ2 f j m e hf he II hII

@@ -19,9 +19,9 @@ section Crit
 open ComplexEmbedding InfinitePlace IntermediateField
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CMFieldCriterion.isCMField_of_forall_isConj`. Consider the case `exact _root_.GlobalTheory.CMFieldCriterion.isCMField_of_forall_isConj`. Consider the case `(apply _root_.GlobalTheory.CMFieldCriterion.isCMField_of_forall_isConj <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CMFieldCriterion.isCMField_of_forall_isConj <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CMFieldCriterion.isCMField_of_forall_isConj <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CMFieldCriterion.isCMField_of_forall_isConj ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isCMField_of_forall_isConj (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
     {σ : K ≃ₐ[ℚ] K} (hσ : ∀ φ : K →+* ℂ, IsConj φ σ) : IsCMField K := by
@@ -55,7 +55,7 @@ def conjStable (Ω : Type) [Field Ω] : Subfield Ω where
 variable {Ω : Type} [Field Ω] {E : Type} [Field E] [NumberField E] [Algebra E Ω] [IsAlgClosure E Ω]
 
 /- English proof (translation)
-Set `ψ : E →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Use `letI : Algebra E ℂ := ψ.toAlgebra`. Use `haveI : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic`. Conclude with `⟨(IsAlgClosed.lift : Ω →ₐ[E] ℂ).toRingHom⟩`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_ringHom_complex (E Ω : Type) [Field Ω] [Field E] [NumberField E] [Algebra E Ω]
     [IsAlgClosure E Ω] : Nonempty (Ω →+* ℂ) := by
@@ -65,7 +65,7 @@ theorem nonempty_ringHom_complex (E Ω : Type) [Field Ω] [Field E] [NumberField
   exact ⟨(IsAlgClosed.lift : Ω →ₐ[E] ℂ).toRingHom⟩
 
 /- English proof (translation)
-Use `letI : Algebra M ℂ := ψ.toAlgebra`. Use `haveI : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Algebra.IsAlgebraic M Ω := Algebra.IsAlgebraic.tower_top (K := E) M`. Set `f : Ω →ₐ[M] ℂ` to `IsAlgClosed.lift`. Conclude with `⟨f.toRingHom, fun x => f.commutes x⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extend (M : IntermediateField E Ω) (ψ : M →+* ℂ) :
     ∃ φ : Ω →+* ℂ, ∀ x : M, φ x = ψ x := by
@@ -76,9 +76,9 @@ theorem exists_extend (M : IntermediateField E Ω) (ψ : M →+* ℂ) :
   exact ⟨f.toRingHom, fun x => f.commutes x⟩
 
 /- English proof (translation)
-Use `haveI : IsGalois E Ω := IsAlgClosure.isGalois E Ω`. Take `⟨φ₀⟩` from `nonempty_ringHom_complex E Ω`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup L, IntermediateField.mem_fixedField_iff]`. Introduce `τ hτ`. Establish `hτx : τ x = x` using `(mem_fixingSubgroup_iff _).mp hτ x hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `φ₀.injective` to reduce the goal to its premises. Establish `h1 : φ₀ (τ y) = starRingEnd ℂ (φ₀ (τ x))` using `hy (φ₀.comp τ.toRingHom)`. Rewrite using `[h1, hτx, hy φ₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_conj {L : IntermediateField E Ω} {x y : Ω} (hx : x ∈ L)
     (hy : ∀ φ : Ω →+* ℂ, φ y = starRingEnd ℂ (φ x)) : y ∈ L := by
@@ -92,7 +92,7 @@ theorem mem_of_conj {L : IntermediateField E Ω} {x y : Ω} (hx : x ∈ L)
   rw [h1, hτx, hy φ₀]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨algebraMap E Ω (IsCMField.complexConj E e), fun φ => IsCMField.complexEmbedding_complexConj E (φ.comp (algebraMap E Ω)) e⟩`.
+Supply the required witnesses or components.
 -/
 theorem algebraMap_mem_conjStable [IsCMField E] (e : E) : algebraMap E Ω e ∈ conjStable Ω :=
   ⟨algebraMap E Ω (IsCMField.complexConj E e), fun φ =>
@@ -103,7 +103,7 @@ def conjField (E Ω : Type) [Field Ω] [Field E] [NumberField E] [IsCMField E] [
   (conjStable Ω).toIntermediateField algebraMap_mem_conjStable
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨(IsCMField.complexConj M ⟨x, hx⟩ : M), fun φ => IsCMField.complexEmbedding_complexConj M (φ.comp (algebraMap M Ω)) ⟨x, hx⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_conjField [IsCMField E] (M : IntermediateField E Ω) [NumberField M] [IsCMField M] :
     M ≤ conjField E Ω := fun x hx =>
@@ -111,13 +111,13 @@ theorem le_conjField [IsCMField E] (M : IntermediateField E Ω) [NumberField M] 
     IsCMField.complexEmbedding_complexConj M (φ.comp (algebraMap M Ω)) ⟨x, hx⟩⟩
 
 /- English proof (translation)
-Use `haveI : IsTotallyComplex M := isTotallyComplex_of_algebra E M`. Establish `hc : ∀ x : M, ∃ y : M, ∀ φ : Ω →+* ℂ, φ y = starRingEnd ℂ (φ x)` using `fun x => by`. Take `⟨y, hy⟩` from `h x.2`. Conclude with `⟨⟨y, mem_of_conj x.2 hy⟩, hy⟩`. Use `choose c hc using hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ₀⟩` from `nonempty_ringHom_complex E Ω`. Establish `inj : ∀ a b : M, φ₀ a = φ₀ b → a = b` using `fun a b hab => Subtype.ext (φ₀.injective hab)`. Set `f : M →+* M` to `{ toFun := c map_one' := inj _ _ (by simp [hc]) map_mul' := fun a b => inj _ _ (by simp [hc]) map_zero' := inj _ _ (by simp [hc]) map_add' := fun a b => inj _ _ (by simp [hc]) }`. Establish `hff : ∀ x, c (c x) = x` using `fun x => inj _ _ (by simp [hc])`. Set `g : M ≃+* M` to `RingEquiv.ofRingHom f f (by ext x; exact congrArg Subtype.val (hff x)) (by ext x; exact congrArg Subtype.val (hff x))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `σ : M ≃ₐ[ℚ] M` to `AlgEquiv.ofRingEquiv (f := g) (fun q => by`. Rewrite using `[eq_ratCast (algebraMap ℚ M) q, map_ratCast])`. Use `isCMField_of_forall_isConj M (σ := σ) fun ψ => ?_` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `exists_extend M ψ`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply]`. Establish `e1 : ((σ : M →+* M) x) = c x` using `rfl`. Rewrite using `[e1, ← hφ, ← hφ, hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCMField_of_le [IsCMField E] (M : IntermediateField E Ω) [NumberField M]
     (h : M ≤ conjField E Ω) : IsCMField M := by
@@ -147,7 +147,7 @@ theorem isCMField_of_le [IsCMField E] (M : IntermediateField E Ω) [NumberField 
   rw [e1, ← hφ, ← hφ, hc]
 
 /- English proof (translation)
-Introduce `Ω _ E _ _ _ _ _`. Use `⟨fun M N _ _ _ hM hN => isCMField_of_le _ (sup_le (le_conjField M) (le_conjField N)), fun M N _ _ hNM hM => isCMField_of_le _ (hNM.trans (le_conjField M)), fun M _ S hS hMS => isCMField_of_le _ ?_⟩` and prove the remaining obligations. Rewrite using `[hMS, IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Conclude with `⟨x, fun φ => (Complex.conj_eq_iff_im.mpr (hS x hx φ)).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isCMField_sup_le_adjoin : ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra E Ω] [IsAlgClosure E Ω], (∀ (M N : IntermediateField E Ω) [NumberField M] [NumberField N] [NumberField ↥(M ⊔ N)], IsCMField M → IsCMField N → IsCMField ↥(M ⊔ N)) ∧ (∀ (M N : IntermediateField E Ω) [NumberField M] [NumberField N], N ≤ M → IsCMField M → IsCMField N) ∧ ∀ (M : IntermediateField E Ω) [NumberField M] (S : Set Ω), (∀ x ∈ S, ∀ φ : Ω →+* ℂ, (φ x).im = 0) → M = IntermediateField.adjoin E S → IsCMField M := by
   intro Ω _ E _ _ _ _ _

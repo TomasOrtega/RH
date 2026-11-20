@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.HTW.Rec
 
 /- English proof (translation)
-Introduce `l _ P K LL`. Establish `h` using `(GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc).2.1`. Establish `e : (fun g => ((cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1)) = fun g : ↥(GK K) => algebraMap ℚ_[l] ↥LL.1 (P.χQ (g : GQ l) : ℚ_[l])`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] ↥LL.1 (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[P.PD_χ]`. Rewrite using `[e]`. Use `Continuous.subtype_mk (f := fun g : ↥(GK K) => algebraMap ℚ_[l] (Om l) (P.χQ (g : GQ l) : ℚ_[l])) ?_ _` and prove the remaining obligations. Conclude with `(continuous_algebraMap ℚ_[l] (Om l)).comp (h.comp continuous_subtype_val)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_cycLL_period : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l),
     Continuous (fun s => ((cycLL (P.PD K) ↥LL.1 s : (↥LL.1)ˣ) : ↥LL.1)) := by

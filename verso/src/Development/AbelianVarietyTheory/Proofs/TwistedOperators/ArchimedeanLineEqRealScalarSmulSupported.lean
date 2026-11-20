@@ -16,9 +16,7 @@ noncomputable section
 namespace GlobalTheory.LineRealAd
 
 /- English proof (translation)
-Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace K).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace K).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mixedSpace_symm (K : Type) [Field K] [NumberField K] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm := by
@@ -34,7 +32,7 @@ theorem continuous_mixedSpace_symm (K : Type) [Field K] [NumberField K] :
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infPart_smul (a : AF D.host.F) (x : AE D) :
     infPart D (a • x) = (a.1 ⊗ₜ[D.host.F] (1 : D.host.E)) * infPart D x := by
@@ -42,7 +40,7 @@ theorem infPart_smul (a : AF D.host.F) (x : AE D) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_smul (a : AF D.host.F) (x : AE D) :
     finPart D (a • x) = (a.2 ⊗ₜ[D.host.F] (1 : D.host.E)) * finPart D x := by
@@ -50,7 +48,7 @@ theorem finPart_smul (a : AF D.host.F) (x : AE D) :
   rfl
 
 /- English proof (translation)
-Set `g : ℝ →+* ℂ` to `(θ ρ).comp ((Algebra.TensorProduct.includeLeftRingHom (R := D.host.F) (B := D.host.E)).comp ((InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm.toRingHom.comp (algebraMap ℝ _)))`. Establish `hg : Continuous g` using `(hθ ρ).2.comp ((continuous_mixedSpace_symm _).comp (continuous_algebraMap ℝ _))`. Establish `h : g (t • (1 : ℝ)) = t • g 1` using `map_real_smul g.toAddMonoidHom hg t 1`. Rewrite `h` using `[smul_eq_mul, mul_one, map_one, Complex.real_smul, mul_one]`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_realAd {θ : InfFam D} (hθ : IsInfFam θ) (ρ : D.what₂.Tau) (t : ℝ) :
     θ ρ ((GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t).1 ⊗ₜ[D.host.F] (1 : D.host.E)) = t := by
@@ -67,13 +65,13 @@ end GlobalTheory.LineRealAd
 namespace GlobalTheory.LineRealAd
 
 /- English proof (translation)
-Introduce `D θ hθ m n τ z`. Establish `hL : IsLineAt θ τ z (lineAt θ τ z)` using `Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n τ z)`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hfin : ∀ t i j, finPart D (lineAt θ τ z t i j) = 0` using `fun t i j => congrFun (congrFun (hL.2.1 t) i) j`. Establish `hcomp : ∀ t τ' i j, θ τ' (infPart D (lineAt θ τ z t i j)) = (if τ' = τ then (t : ℂ) • z else 0) i j` using `fun t τ' i j => congrFun (congrFun (hL.2.2 t τ') i) j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun t => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ' => ?_)` and prove the remaining obligations. Use `show finPart D (lineAt θ τ z t i j - GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • lineAt θ τ z 1 i j) = 0`. Rewrite using `[RingHom.map_sub, finPart_smul, hfin, hfin, mul_zero, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show θ τ' (infPart D (lineAt θ τ z t i j - GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • lineAt θ τ z 1 i j)) = 0`. Rewrite using `[RingHom.map_sub, infPart_smul, RingHom.map_sub, RingHom.map_mul, theta_realAd hθ, hcomp, hcomp]`. Apply the tactic sequence `split_ifs <;> simp`. Use function extensionality and compare the values at `i j`. Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).map_eq_zero_iff.1 hu`.
+Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hσ.ext _ ?_ fun τ' => ?_` and prove the remaining obligations. Use `show finPart D (u • lineAt θ τ z 1 i j) = 0`. Rewrite using `[finPart_smul, hfin, mul_zero]`. Use `show θ τ' (infPart D (u • lineAt θ τ z 1 i j)) = 0`. Rewrite using `[infPart_smul, hu1, TensorProduct.zero_tmul, zero_mul, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineAt_realAd_smul : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ {m n : ℕ} (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ),
     (∀ t : ℝ, lineAt θ τ z t = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • lineAt θ τ z 1) ∧

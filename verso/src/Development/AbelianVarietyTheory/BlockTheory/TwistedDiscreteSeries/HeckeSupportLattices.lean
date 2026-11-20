@@ -83,7 +83,7 @@ def hkC {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : R
   ((((R.C.mu0 i).val P : ℂˣ) : ℂ) ^ k)⁻¹ * (((Nat.card (kP P) : ℕ) : ℂ) ^ (k * (D.R.nV / 2)))⁻¹
 
 /- English proof (translation)
-The claim follows from `Nat.two_mul_div_two_of_even (kapDom D).2`.
+A detailed English derivation is pending.
 -/
 theorem two_mul_half : 2 * (D.R.nV / 2) = D.R.nV := Nat.two_mul_div_two_of_even (kapDom D).2
 
@@ -106,7 +106,7 @@ def ConstPinned (i : Fin D.R.m) : Prop :=
     O.OneMapOf (κ i) (v₀ i (sg0 D A)) (T.cE ((i : ℕ) + 1) O.s0) ph
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨O i, (hc hr).choose, hp.1, hp.2, (hc hr).choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem constPinned_of (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (i : Fin D.R.m) (hp : OMPins T R κ v₀ O i)
     (hr : OneMapRow0 T R κ v₀ O i) (hc : CTie T R κ v₀ O i) : ConstPinned T R κ v₀ i :=
@@ -119,7 +119,7 @@ structure ReadAt0 (i : Fin D.R.m) : Prop where
   const : ConstPinned T R κ v₀ i
 
 /- English proof (translation)
-The claim follows from `hj i _ (base_embedding_good T R fw.alg_eq fw.laws.pins.2.2.1) hV inj := by refine (injective_iff_map_eq_zero _).2 fun x hx => ?_ by_contra h have h1 := (hu i (sg0 D A)).1 1 (fun _ => x) (linearIndependent_unique_iff.2 h) exact h1.ne_zero 0 hx rho := (hu i (sg0 D A)).2.2 const := …`.
+A detailed English derivation is pending.
 -/
 theorem readAt0_of (hj : JEvExists T R κ v₀) (fw : FWTie T R κ v₀) (hu : R.LUnif) (i : Fin D.R.m)
     (hc : ConstPinned T R κ v₀ i) : ReadAt0 T R κ v₀ i where

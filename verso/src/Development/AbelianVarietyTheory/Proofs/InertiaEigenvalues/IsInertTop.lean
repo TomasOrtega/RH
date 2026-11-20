@@ -135,7 +135,7 @@ def IsInert (A : ValuationSubring ℂ) (K : Subfield ℂ) : Prop :=
 def intOf (A : ValuationSubring ℂ) (K : Subfield ℂ) : Subring ℂ := A.toSubring ⊓ K.toSubring
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intOf {A : ValuationSubring ℂ} {K : Subfield ℂ} {x : ℂ} : x ∈ intOf A K ↔ x ∈ A ∧ x ∈ K := Iff.rfl
 
@@ -157,14 +157,14 @@ def formLat (O : Subring ℂ) {c : Coeff l} (la : HeightOneSpectrum (𝓞 c.F)) 
     φ = (lieFac Dw (xiR D) a : ℂ) • adel W dict (muPin W dict mu cc) (rdU (U σ) f)}
 
 /- English proof (translation)
-Introduce `τ h x _ _` and use `by rw [h x trivial, sub_self] exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInert_top (A : ValuationSubring ℂ) : IsInert A ⊤ := fun τ h x _ _ => by
   rw [h x trivial, sub_self]
   exact zero_mem _
 
 /- English proof (translation)
-Introduce `τ hτ` and use `h τ fun x hx => hτ x (hK hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsInert.mono {A : ValuationSubring ℂ} {K K' : Subfield ℂ} (h : IsInert A K) (hK : K ≤ K') : IsInert A K' :=
   fun τ hτ => h τ fun x hx => hτ x (hK hx)

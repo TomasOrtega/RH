@@ -7,14 +7,14 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial
 
 /- English proof (translation)
-The claim follows from `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : n => ℂ) j).analyticAt z`.
+A detailed English derivation is pending.
 -/
 theorem gbap_analyticAt_apply {n : Type} [Fintype n] (j : n) (z : n → ℂ) :
     AnalyticAt ℂ (fun z : n → ℂ => z j) z :=
   (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : n => ℂ) j).analyticAt z
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Break down `Fin.eq_self_or_eq_succAbove k j with rfl | ⟨i, rfl⟩` into its components or cases. Simplify using `[hk]`. Simplify using `[hb]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gbap_insertNth_eq {D : ℕ} (k : Fin (D + 1)) (a : ℂ) (b : Fin D → ℂ) (w : Fin (D + 1) → ℂ)
     (hk : w k = a) (hb : ∀ i, w (k.succAbove i) = b i) : Fin.insertNth k a b = w := by
@@ -24,73 +24,65 @@ theorem gbap_insertNth_eq {D : ℕ} (k : Fin (D + 1)) (a : ℂ) (b : Fin D → �
   · simp [hb]
 
 /- English proof (translation)
-Establish `hF0 : ∀ i, eval p (F i) = 0` using `(hZ p hp0 hph).1 hp`. Take `⟨σ, U, V, g, hU, hpU, hV, hg, hbij, hproj⟩` from `ReciprocityTheory.AnForm.exists_analytic_graph_chart_mvPolynomial F p hF0 hjac`. Take `⟨π, hπ⟩ : ∃ π : (Fin (D + 1 + c) → ℂ) → Fin (D + 1) → ℂ, π = fun z i => z (σ (Fin.castAdd c i))` from `⟨_, rfl⟩`. Establish `hπa : ∀ z i, π z i = z (σ (Fin.castAdd c i))` using `fun z i => by rw [hπ]`. Establish `hπs : ∀ (t : ℂ) z, π (t • z) = t • π z` using `fun t z => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[hπa]`. Establish `hπg : ∀ w ∈ V, π (g w) = w` using `fun w hw => by`. Rewrite using `[hπ]`. Conclude with `hproj w hw`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hπan : ∀ j z, AnalyticAt ℂ (fun z => π z j) z` using `fun j z => by`. Rewrite using `[hπ]`. Conclude with `gbap_analyticAt_apply _ z`. Establish `htgt : ∀ z, z ≠ 0 → z ∈ Z → z ∈ U → eval z h ≠ 0 → ∃ w ∈ V, g w = z ∧ w = π z`. Introduce `z hz0 hzZ hzU hzh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, hw, hgw⟩` from `hbij.surjOn ⟨hzU, (hZ z hz0 hzh).1 hzZ⟩`. Conclude with `⟨w, hw, hgw, by rw [← hgw, hπg w hw]⟩`. Take `⟨w₀, hw₀V, hgw₀, hw₀⟩` from `htgt p hp0 hp hpU hph`. Establish `hπp : π p ≠ 0`. Introduce `hπ0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWo : IsOpen (U ∩ {z | eval z h ≠ 0} ∩ {z | z ≠ 0})` using `(hU.inter (isOpen_ne_fun (MvPolynomial.continuous_eval h) continuous_const)).inter isOpen_ne`. Establish `hc : ContinuousAt (fun t : ℂ => t • p) 1` using `(continuous_id.smul continuous_const).continuousAt`. Establish `hev : ∀ᶠ t in nhds (1 : ℂ), t • p ∈ U ∩ {z | eval z h ≠ 0} ∩ {z | z ≠ 0}` using `hc.preimage_mem_nhds (by rw [one_smul]; exact hWo.mem_nhds ⟨⟨hpU, hph⟩, hp0⟩)`. Take `⟨t, ⟨⟨htU, hth⟩, htp0⟩, ht1⟩` from `((hev.filter_mono nhdsWithin_le_nhds).and (self_mem_nhdsWithin (s := ({1}ᶜ : Set ℂ)))).exists`. Establish `ht0 : t ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `rfl`. Conclude with `htp0 (zero_smul ℂ p)`. Take `⟨w, hwV, hgw, hw⟩` from `htgt (t • p) htp0 (hZc p hp t ht0) htU hth`. Establish `hw0 : w = w₀`. Rewrite using `[hw, hw₀, hπs, hπ0, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `htp : t • p = p` using `by rw [← hgw, hw0, hgw₀]`. Establish `: (t - 1) • p = 0` using `by rw [sub_smul, one_smul, htp, sub_self]`. Break down `smul_eq_zero.1 this with h1 | h1` into its components or cases. Conclude with `ht1 (sub_eq_zero.1 h1)`. Conclude with `hp0 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `Function.ne_iff.1 hπp`. Use `set a := π p k with ha_def`. Establish `ha : a ≠ 0` using `hk`. Take `⟨W, hW⟩ : ∃ W : (Fin D → ℂ) → Fin (D + 1) → ℂ, W = fun y => Fin.insertNth k a (fun i => π p (k.succAbove i) + y i)` from `⟨_, rfl⟩`. Establish `hWk : ∀ y, W y k = a` using `fun y => by rw [hW]; simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWs : ∀ y i, W y (k.succAbove i) = π p (k.succAbove i) + y i` using `fun y i => by`. Rewrite using `[hW]`. Simplify using the standard rewrite rules. Establish `hW0 : W 0 = π p`. Rewrite using `[hW]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `gbap_insertNth_eq k a _ (π p) rfl (fun i => by simp)`. Establish `hWan : ∀ y, AnalyticAt ℂ W y`. Introduce `y`. Rewrite using `[hW]`. Use `analyticAt_pi_iff.2 fun j => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Break down `Fin.eq_self_or_eq_succAbove k j with rfl | ⟨i, rfl⟩` into its components or cases. Simplify using `only [Fin.insertNth_apply_same]`. Conclude with `analyticAt_const`. Simplify using `only [Fin.insertNth_apply_succAbove]`. Conclude with `analyticAt_const.add (gbap_analyticAt_apply i y)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWc : Continuous W` using `continuous_iff_continuousAt.2 fun y => (hWan y).continuousAt`. Establish `hGo : IsOpen (V ∩ g ⁻¹' {z | eval z h ≠ 0})` using `hg.continuousOn.isOpen_inter_preimage hV (isOpen_ne_fun (MvPolynomial.continuous_eval h) continuous_const)`. Establish `h0G : (0 : Fin D → ℂ) ∈ W ⁻¹' (V ∩ g ⁻¹' {z | eval z h ≠ 0})`. Simplify using `only [Set.mem_preimage, Set.mem_inter_iff, hW0, ← hw₀]`. Conclude with `⟨hw₀V, by rw [Set.mem_ofPred_eq, hgw₀]; exact hph⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ρ₀, hρ₀, hball⟩` from `Metric.isOpen_iff.1 (hGo.preimage hWc) 0 h0G`. Establish `hyV : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, W y ∈ V ∧ eval (g (W y)) h ≠ 0` using `fun y hy => hball hy`. Establish `hγmem : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, g (W y) ∈ U ∧ ∀ i, eval (g (W y)) (F i) = 0` using `fun y hy => hbij.mapsTo (hyV y hy).1`. Establish `hπγ : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, π (g (W y)) = W y` using `fun y hy => hπg _ (hyV y hy).1`. Establish `hγ0 : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, g (W y) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy h0`. Use `congrFun (hπγ y hy) k` as an intermediate fact. Rewrite `this` using `[h0, hWk, hπa]`. Conclude with `ha (by simpa using this.symm)`. Establish `hγZ : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, g (W y) ∈ Z` using `fun y hy => (hZ _ (hγ0 y hy) (hyV y hy).2).2 (hγmem y hy).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨q, hq⟩ : ∃ q : (Fin (D + 1 + c) → ℂ) → Fin D → ℂ, q = fun z i => π z (k.succAbove i) * a / π z k - π p (k.succAbove i)` from `⟨_, rfl⟩`. Establish `hqa : ∀ z i, q z i = π z (k.succAbove i) * a / π z k - π p (k.succAbove i)` using `fun z i => by rw [hq]`. Take `⟨ν, hν⟩ : ∃ ν : (Fin (D + 1 + c) → ℂ) → Fin (D + 1 + c) → ℂ, ν = fun z => (a / π z k) • z` from `⟨_, rfl⟩`. Establish `hνa : ∀ z, ν z = (a / π z k) • z` using `fun z => by rw [hν]`. Use `set A : Set (Fin (D + 1 + c) → ℂ) := {z | π z k ≠ 0} with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hAo : IsOpen A` using `isOpen_ne_fun (continuous_iff_continuousAt.2 fun z => (hπan k z).continuousAt) continuous_const`. Establish `hqan : ∀ z ∈ A, AnalyticAt ℂ q z`. Introduce `z hz`. Rewrite using `[hq]`. Use `analyticAt_pi_iff.2 fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(((hπan _ z).mul analyticAt_const).div (hπan k z) hz).sub analyticAt_const`. Establish `hνan : ∀ z ∈ A, AnalyticAt ℂ ν z`. Introduce `z hz`. Rewrite using `[hν]`. Use `analyticAt_pi_iff.2 fun j => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `(analyticAt_const.div (hπan k z) hz).mul (gbap_analyticAt_apply j z)`. Use `set O : Set (Fin (D + 1 + c) → ℂ) := A ∩ ν ⁻¹' (U ∩ {z | eval z h ≠ 0}) ∩ q ⁻¹' Metric.ball 0 ρ₀ with hO`. Establish `hOo : IsOpen O`. Establish `h1 : IsOpen (A ∩ ν ⁻¹' (U ∩ {z | eval z h ≠ 0}))` using `ContinuousOn.isOpen_inter_preimage (show ContinuousOn ν A from fun z hz => (hνan z hz).continuousAt.continuousWithinAt) hAo (hU.inter (isOpen_ne_fun (MvPolynomial.continuous_eval h) continuous_const))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Conclude with `ContinuousOn.isOpen_inter_preimage (show ContinuousOn q (A ∩ ν ⁻¹' (U ∩ {z | eval z h ≠ 0})) from fun z hz => (hqan z hz.1).continuousAt.continuousWithinAt) h1 Metric.isOpen_ball`. Establish `hπks : ∀ z (t : ℂ), π (t • z) k = t * π z k` using `fun z t => by rw [hπs]; rfl`. Establish `hνs : ∀ z (t : ℂ), t ≠ 0 → π z k ≠ 0 → ν (t • z) = ν z`. Introduce `z t ht hz`. Rewrite using `[hνa, hνa, hπks, smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hqs : ∀ z (t : ℂ), t ≠ 0 → π z k ≠ 0 → q (t • z) = q z`. Introduce `z t ht hz`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hqa, hqa, hπs]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hqγ : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, q (g (W y)) = y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Use function extensionality and compare the values at `i`. Rewrite using `[hqa, hπγ y hy, hWk, hWs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨ρ₀, fun y => g (W y), hρ₀, ?_, hγZ, ⟨O, q, hOo, fun z hz => hqan z hz.1.1, ?_, ?_, hqγ⟩, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Conclude with `(hg _ (hyV y hy).1).comp (hWan y)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨⟨hzA, hzU, hzh⟩, hzq⟩, hzZ⟩`. Establish `hzA' : π z k ≠ 0` using `hzA`. Establish `hc : a / π z k ≠ 0` using `div_ne_zero ha hzA'`. Establish `hνZ : ν z ∈ Z` using `by rw [hνa]; exact hZc z hzZ _ hc`. Establish `hν0 : ν z ≠ 0`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Introduce `h0`. Use `hπks z (a / π z k)` as an intermediate fact. Rewrite `this` using `[← hνa, h0]`. Rewrite `this` using `[hπa]`. Simplify using `only [Pi.zero_apply] at this`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear denominators, using `at this` for the nonvanishing conditions. Conclude with `ha this.symm`. Take `⟨w, hwV, hgw, hw⟩` from `htgt (ν z) hν0 hνZ hzU hzh`. Establish `hWq : W (q z) = π (ν z)`. Rewrite using `[hW]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `gbap_insertNth_eq` to reduce the goal to its premises. Rewrite using `[hνa, hπks]`. Clear the denominators using the available nonvanishing facts. Introduce `i`. Rewrite using `[hνa, hπs, hqa]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨q z, hzq, π z k / a, div_ne_zero hzA' ha, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hWq, ← hw, hgw, hνa, smul_smul]`. Rewrite using `[div_mul_div_comm, mul_comm (π z k) a, div_self (mul_ne_zero ha hzA'), one_smul]`. Introduce and unpack `⟨y, hy, t, ht, rfl⟩`. Establish `hwk : π (g (W y)) k = a` using `by rw [hπγ y hy, hWk]`. Establish `hwk0 : π (g (W y)) k ≠ 0` using `by rw [hwk]; exact ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hνw : ν (t • g (W y)) = g (W y)`. Rewrite using `[hνs _ _ ht hwk0, hνa, hwk, div_self ha, one_smul]`. Use `⟨⟨⟨?_, ?_⟩, ?_⟩, hZc _ (hγZ y hy) t ht⟩` and prove the remaining obligations. Use `show π (t • g (W y)) k ≠ 0`. Rewrite using `[hπks]`.
-
-Conclude with `mul_ne_zero ht hwk0`. Simplify using `only [Set.mem_preimage, hνw]`. Conclude with `⟨(hγmem y hy).1, (hyV y hy).2⟩`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[hqs _ _ ht hwk0, hqγ y hy]`.
-
-Conclude with `hy`. Introduce `z hz t ht`. Establish `hzA : π z k ≠ 0` using `hz.1.1`. Use `⟨⟨⟨?_, ?_⟩, ?_⟩, hqs z t ht hzA⟩` and prove the remaining obligations. Use `show π (t • z) k ≠ 0`.
-
-Rewrite using `[hπks]`. Conclude with `mul_ne_zero ht hzA`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[hνs z t ht hzA]`. Conclude with `hz.1.2`.
-
-Simplify using `only [Set.mem_preimage]`. Rewrite using `[hqs z t ht hzA]`. Conclude with `hz.2`. Simplify using `only`. Rewrite using `[hW0, ← hw₀, hgw₀]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gbap_param_of_cut {D c : ℕ} (Z : Set (Fin (D + 1 + c) → ℂ))
     (hZc : ∀ z ∈ Z, ∀ t : ℂ, t ≠ 0 → t • z ∈ Z)
@@ -304,9 +296,9 @@ section Pts
 variable {Ω : Type} [Field Ω] [CharZero Ω]
 
 /- English proof (translation)
-Rewrite using `[eval_eq, eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : d.degree = n`. Assume the negation of the conclusion as `h`. Conclude with `(mem_support_iff.mp hd) (hφ.coeff_eq_zero h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Establish `hs : d.degree = ∑ i ∈ d.support, d i` using `rfl`. Rewrite using `[← hdeg, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gbap_eval_smul {ι : Type*} {φ : MvPolynomial ι ℂ} {n : ℕ}
     (hφ : φ.IsHomogeneous n) (c : ℂ) (z : ι → ℂ) :
@@ -324,7 +316,7 @@ theorem gbap_eval_smul {ι : Type*} {φ : MvPolynomial ι ℂ} {n : ℕ}
   ring
 
 /- English proof (translation)
-Use `⟨smul_ne_zero hc hz.1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hH` using `coordIdeal_isHomogIdeal ℤ x`. Rewrite using `[← sum_homogeneousComponent f, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[gbap_eval_smul ((homogeneousComponent_isHomogeneous d f).map _), hz.2 _ (hH f hf d), mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gbap_smul_mem_pts {J : Type} [Fintype J] (x : J → Ω) {z : J → ℂ}
     (hz : z ∈ pts (coordIdeal ℤ x)) {c : ℂ} (hc : c ≠ 0) : c • z ∈ pts (coordIdeal ℤ x) := by
@@ -336,13 +328,13 @@ theorem gbap_smul_mem_pts {J : Type} [Fintype J] (x : J → Ω) {z : J → ℂ}
     hz.2 _ (hH f hf d), mul_zero]
 
 /- English proof (translation)
-Establish `hZ : IsClosed {z : J → ℂ | ∀ f ∈ P, eval z (map (Int.castRingHom ℂ) f) = 0}`. Establish `: {z : J → ℂ | ∀ f ∈ P, eval z (map (Int.castRingHom ℂ) f) = 0} = ⋂ f ∈ P, {z : J → ℂ | eval z (map (Int.castRingHom ℂ) f) = 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_biInter fun f _ => isClosed_eq (MvPolynomial.continuous_eval _) continuous_const`. Establish `: pts P ∩ Metric.sphere (0 : J → ℂ) 1 = {z : J → ℂ | ∀ f ∈ P, eval z (map (Int.castRingHom ℂ) f) = 0} ∩ Metric.sphere 0 1`. Use extensionality with `z`. Simplify using `only [pts, conePts, Set.mem_inter_iff, Set.mem_ofPred_eq, mem_sphere_zero_iff_norm]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨_, h⟩, h1⟩`. Conclude with `⟨h, h1⟩`. Introduce and unpack `⟨h, h1⟩`. Use `⟨⟨fun h0 => ?_, h⟩, h1⟩` and prove the remaining obligations. Rewrite `h1` using `[h0, norm_zero]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_ne_one h1`. Rewrite using `[this]`. Conclude with `(isCompact_sphere 0 1).inter_left hZ`.
+A detailed English derivation is pending.
 -/
 theorem gbap_isCompact_pts_sphere {J : Type} [Fintype J] (P : Ideal (MvPolynomial J ℤ)) :
     IsCompact (pts P ∩ Metric.sphere (0 : J → ℂ) 1) := by

@@ -16,9 +16,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 namespace GlobalTheory.TrueGeo.TrivNef
 
 /- English proof (translation)
-Distinguish the cases in `h : RegAt (under y) f`. Take `⟨U, hU, a, rfl⟩` from `h.exists_fnOf`. Establish `hy : y ∈ CxPts.ptsIn q σ U` using `CxPts.mem_ptsIn.2 hU`. Rewrite using `[ratVal_fnOf hy, OfModel.valAt_fnOf y.1 hU hy, CxPts.ev_eq hy]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[ratVal, dif_neg h, valAt, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ratVal_eq_valAt {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp k} {σ : k →+* ℂ}
     (f : Z.functionField) (y : CxPts q σ) : ratVal f y = valAt y.1 f := by
@@ -30,7 +30,7 @@ theorem ratVal_eq_valAt {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] 
   · rw [ratVal, dif_neg h, valAt, dif_neg h]
 
 /- English proof (translation)
-Establish `h₁` using `finsum_mem_eq_finite_toFinset_sum (fun y => -Real.log (w (f y))) hp`. Establish `h₂` using `finprod_mem_eq_finite_toFinset_prod f hp`. Use `h₁.trans (Eq.trans ?_ (congrArg (fun a => -Real.log (w a)) h₂).symm)` and prove the remaining obligations. Rewrite using `[map_prod, Real.log_prod fun y hy => hw _ (hf y (hp.mem_toFinset.1 hy)), Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_neg_log {α K : Type} [Field K] (w : K →* ℝ) (hw : ∀ a, a ≠ 0 → w a ≠ 0) {p : α → Prop}
     (hp : {y | p y}.Finite) (f : α → K) (hf : ∀ y, p y → f y ≠ 0) :

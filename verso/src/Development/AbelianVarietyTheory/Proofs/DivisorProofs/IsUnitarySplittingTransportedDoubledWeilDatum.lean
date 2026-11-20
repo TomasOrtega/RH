@@ -30,7 +30,7 @@ variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E
 variable {α β γ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype γ] [DecidableEq γ]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.actAB, GlobalTheory.WeilM.actB, reG_val, OneMemClass.coe_one, Units.val_one, Matrix.one_mul, Matrix.transpose_submatrix]`. Conclude with `Matrix.submatrix_mul_equiv _ _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actAB_one_reG (e : γ ≃ β) {JA : Matrix α α E} {J : Matrix β β E} {J' : Matrix γ γ E} (h : J' = J.submatrix e e)
     (g : GlobalTheory.WeilM.UG c J) (w : Matrix α β E) :
@@ -41,7 +41,7 @@ theorem actAB_one_reG (e : γ ≃ β) {JA : Matrix α α E} {J : Matrix β β E}
   exact Matrix.submatrix_mul_equiv _ _ _ _ _
 
 /- English proof (translation)
-Unfold `reG`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `(Continuous.units_map (Matrix.reindexAlgEquiv E E e.symm).toAlgHom.toMonoidHom ?_).comp continuous_subtype_val` and prove the remaining obligations. Conclude with `(continuous_id (X := Matrix β β E)).matrix_reindex e.symm e.symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_reG [TopologicalSpace E] (e : γ ≃ β) {J : Matrix β β E} {J' : Matrix γ γ E}
     (h : J' = J.submatrix e e) : Continuous (reG c e h) := by
@@ -57,7 +57,7 @@ section Read
 variable {D : D7} [Invertible (2 : AF D.host.F)]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.Darboux.rho ddr`. Rewrite using `[reD_e, Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dblD_rho_eq {S T : HSp D} {ξ : AF D.host.F ⊗[D.host.F] D.host.E} {JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E}
     {JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E} {κ : Type} [Fintype κ]
@@ -77,17 +77,17 @@ namespace GlobalTheory.DblSchr
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hξ κ _ co hco ωd hωd omd₀ htr`. Establish `h1 : IsHeckeChar D 1` using `⟨continuous_const, fun _ => rfl⟩`. Establish `r1 : ResEta D 1 (GlobalTheory.Doubling.dblSp S).rank` using `GlobalTheory.Core.Rk.IP.FockModel.resEta_one_dbl S rT`. Establish `hξd` using `GlobalTheory.DblSchr.dblGram_xi D S JB ξ hξ`. Establish `hrat` using `GlobalTheory.DblSchr.ddr_rat D S T JA JB ξ κ co hco`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hpres, himpl⟩` from `GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ (GlobalTheory.Doubling.dblSp S) T 1 χT h1 hT r1 rT JA (JBd S JB) ξ hJA hξd (κ ⊕ κ) (ddr co) hrat ωd hωd omd₀ htr`. Establish `hadm` using `GlobalTheory.T.transportedWeilDatum_keeps_admissible_forms D ψ hψ (GlobalTheory.Doubling.dblSp S) T 1 χT h1 hT r1 rT JA (JBd S JB) ξ hJA hξd (κ ⊕ κ) (ddr co) hrat ωd hωd omd₀ htr`. Establish `hunit` using `GlobalTheory.T.transportedWeilDatum_isUnitary_adelicSchwartz D ψ hψ (GlobalTheory.Doubling.dblSp S) T 1 χT h1 hT r1 rT JA (JBd S JB) ξ hJA hξd (κ ⊕ κ) (ddr co) hrat ωd hωd omd₀ htr`. Establish `hcont` using `GlobalTheory.T.continuous_transported_weilDatum_adelicSchwartz D ψ hψ (GlobalTheory.Doubling.dblSp S) T 1 χT h1 hT r1 rT JA (JBd S JB) ξ hJA hξd (κ ⊕ κ) (ddr co) hrat ωd hωd omd₀ htr`. Establish `hom : ∀ g, omdOf omd₀ g = omd₀ (1, reG _ finSumFinEquiv.symm (incM_JBd S JB) g)` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `{ pres := ?_, impl := ?_, adm := ?_, unit := ?_, cont := ?_ }` and prove the remaining obligations. Introduce `g φ hφ`. Rewrite using `[hom]`. Conclude with `hpres _ φ hφ`. Introduce `g w φ hφ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1` using `dblD_rho_eq co ψ w`. Establish `e2` using `dblD_rho_eq co ψ (GlobalTheory.WeilM.actB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) g w)`. Establish `e3` using `himpl (1, reG _ finSumFinEquiv.symm (incM_JBd S JB) g) (w.submatrix id finSumFinEquiv.symm) φ hφ`. Establish `e4` using `actAB_one_reG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) finSumFinEquiv.symm (JA := incM D.host.F JA) (incM_JBd S JB) g w`. Rewrite `e3` using `[e4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hom]`. Conclude with `(congrArg (fun f => omd₀ _ (f φ)) e1).trans (e3.trans (congrFun e2 _).symm)`. Introduce `g l hl`. Rewrite using `[hom]`. Conclude with `hadm _ l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hunit.comp _`. Establish `hr` using `continuous_reG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) finSumFinEquiv.symm (incM_JBd S JB)`. Establish `hp : Continuous fun g => ((1 : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JA)), reG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) finSumFinEquiv.symm (incM_JBd S JB) g)` using `continuous_const.prodMk hr`. Introduce `l hl φ hφ`. Conclude with `Continuous.congr ((hcont l hl φ hφ).comp hp) (fun g => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem isUSplitting_omdOf : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

@@ -4,29 +4,23 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI hcH : Countable (Γ.comap ι) := by`. Establish `: Function.Injective (fun δ : Γ.comap ι => (⟨ι δ, δ.2⟩ : Γ))`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hι` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrArg Subtype.val hab`. Conclude with `this.countable`. Establish `step : ∀ g : G, ∫⁻ h, F (g * ι h) ∂μ ≤ ∑' δ : Γ.comap ι, ∫⁻ k in Kc, F (g * ι ((δ:H)⁻¹) * ι k) ∂μ`. Introduce `g`. Establish `hcov : (Set.univ : Set H) = ⋃ δ : Γ.comap ι, (fun h => (δ:H) * h) ⁻¹' Kc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `h`. Simplify using `only [Set.mem_univ, Set.mem_iUnion, Set.mem_preimage, true_iff]`. Take `⟨δ, hδ, hδK⟩` from `hK h`. Conclude with `⟨⟨δ, hδ⟩, hδK⟩`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hcov, Measure.restrict_univ]`. Use `_ ≤ ∑' δ : Γ.comap ι, ∫⁻ h in (fun h => (δ:H) * h) ⁻¹' Kc, F (g * ι h) ∂μ := lintegral_iUnion_le _ _`. Use `_ = ∑' δ : Γ.comap ι, ∫⁻ k in Kc, F (g * ι ((δ:H)⁻¹) * ι k) ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `δ`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set e := MeasurableEquiv.mulLeft ((δ:H)⁻¹) with he`. Establish `hmap : μ.map e = μ`. Rewrite using `[MeasurableEquiv.coe_mulLeft]`. Conclude with `map_mul_left_eq_self μ _`. Establish `hpre : e ⁻¹' ((fun h => (δ:H) * h) ⁻¹' Kc) = Kc`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e.restrict_map]`. Use `_ = ∫⁻ k, F (g * ι (e k)) ∂(μ.restrict (e ⁻¹' ((fun h => (δ:H) * h) ⁻¹' Kc))) := lintegral_map_equiv _ _`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [hpre]; simp [e, mul_assoc]`. Use `haveI : Countable (Γ ⧸ ι.range.subgroupOf Γ) := QuotientGroup.mk_surjective.countable`. Set `φ : (Γ ⧸ ι.range.subgroupOf Γ) × Γ.comap ι → Γ` to `fun p => (p.1.out : Γ) * ⟨ι ((p.2 : H)⁻¹), by simpa using Γ.inv_mem p.2.2⟩`. Establish `hφ : Function.Injective φ`. Introduce and unpack `⟨q₁, δ₁⟩ ⟨q₂, δ₂⟩ h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hv` using `congrArg Subtype.val h`. Simplify using `only [φ, Subgroup.coe_mul] at hv`. Establish `hq : q₁ = q₂`. Rewrite using `[← QuotientGroup.out_eq' q₁, ← QuotientGroup.out_eq' q₂, QuotientGroup.eq, Subgroup.mem_subgroupOf, MonoidHom.mem_range]`. Use `⟨(δ₁:H)⁻¹ * (δ₂:H), ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[show ((q₁.out : Γ) : G)⁻¹ * ((q₂.out : Γ) : G) = ((q₁.out : Γ) : G)⁻¹ * (((q₂.out : Γ) : G) * ι ((δ₂:H)⁻¹)) * ι (δ₂:H) by`. Rewrite using `[map_inv]`. Use the proof step `group, ← hv]`. Simplify using `only [map_mul, map_inv]`.
-
-Use `group`. Substitute `hq` using the available equality. Establish `h2 : ι ((δ₁:H)⁻¹) = ι ((δ₂:H)⁻¹)` using `mul_left_cancel hv`. Establish `h3 : (δ₁:H)⁻¹ = (δ₂:H)⁻¹` using `hι h2`. Simplify using `only [Prod.mk.injEq, true_and]`.
-
-Conclude with `Subtype.ext (inv_injective h3)`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun q => ?_` and prove the remaining obligations. Conclude with `step _`. Use `_ = ∑' p, ∫⁻ k in Kc, F ((φ p : G) * ι k) ∂μ := ENNReal.tsum_prod.symm`.
-
-Use `_ = ∫⁻ k in Kc, ∑' p, F ((φ p : G) * ι k) ∂μ := (lintegral_tsum fun p => (hF _).aemeasurable).symm`. Use `_ ≤ ∫⁻ h in Kc, ∑' γ : Γ, F (γ * ι h) ∂μ := lintegral_mono fun k => ENNReal.tsum_comp_le_tsum_of_injective hφ (fun γ : Γ => F (γ * ι k))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unfolding_cover_bound (G H : Type) [Group G] [Group H] [MeasurableSpace H] [MeasurableMul H]
     (μ : Measure H) [μ.IsMulLeftInvariant] (ι : H →* G) (hι : Function.Injective ι)

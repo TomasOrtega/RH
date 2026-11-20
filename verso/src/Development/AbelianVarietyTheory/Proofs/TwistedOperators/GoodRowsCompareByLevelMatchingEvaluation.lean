@@ -20,14 +20,14 @@ section SlopeTestRemainingChoices
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.mp (LinearMap.mem_ker.mp hS.2)`.
+A detailed English derivation is pending.
 -/
 theorem postOn_eq_of_mem (R : RealDat D A Ks) (F : Face D A) {S : MMap (MP R)} (hS : S ∈ EP R F) :
     postOn (MP R) R.e0 S = S :=
   sub_eq_zero.mp (LinearMap.mem_ker.mp hS.2)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the calculation `calc Gd.Rg (star φ) = star (star (Gd.Rg (star φ))) := (star_star _).symm _ = star φ := by rw [h2]`.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem rg_fix (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Gd : GoodOp X) (φ : L2X X) (h2 : star (Gd.Rg (star φ)) = φ) :
     Gd.Rg (star φ) = star φ :=
@@ -35,7 +35,7 @@ theorem rg_fix (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Gd : GoodOp X) (
     _ = star φ := by rw [h2]
 
 /- English proof (translation)
-Simplify using `[ev_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ev_sub (R : RealDat D A Ks) (v₀ : (MP R).Vec) (S S' : MMap (MP R)) (y : GA D (Yc D 0)) :
     ev (MP R) v₀ (S - S') y = ev (MP R) v₀ S y - ev (MP R) v₀ S' y := by
@@ -45,25 +45,21 @@ theorem ev_sub (R : RealDat D A Ks) (v₀ : (MP R).Vec) (S S' : MMap (MP R)) (y 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hDS D G _ _ Pl0 T A Ks _ _ _ R F X h hLev hGrp hMod hHost hE Gd t ht hConj hRow`. Take `⟨c, hc, hsm⟩` from `GlobalTheory.T.exists_linearIsometryEquiv_intertwining_modelRep hDS R F X h hLev hGrp hMod hHost hE`. Set `v₀ : (MP R).Vec` to `fun τ => ⟨(c τ).symm (X.B.w (X.pl.symm τ)), hsm τ⟩`. Establish `hv₀ : ∀ τ, c τ (v₀ τ : (MP R).H τ) = X.B.w (X.pl.symm τ)` using `fun τ => by`. Simplify using `[v₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hnorm : ∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1` using `fun τ => by show ‖(c τ).symm (X.B.w (X.pl.symm τ))‖ = 1`. Rewrite using `[LinearIsometryEquiv.norm_map]`. Conclude with `(X.low _).1`. Establish `hne : ∀ τ, (v₀ τ : (MP R).H τ) ≠ 0` using `fun τ h0 => by`. Use `hnorm τ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Take `⟨σ, red, hA, -, -⟩` from `id hRow`. Take `⟨c0, hc0, hN⟩` from `GlobalTheory.T.translatedRowEvaluation_squareIntegrable_norm R F X h hLev hGrp hMod t ht`. Use `⟨c0, Formalism.IndefR.AutomorphicEvaluation.evalTieT_of _ _ _ _ X Gd _ t c0 v₀ hnorm ?_ ?_ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `S hS`. Take `⟨hmem, hint, -⟩` from `hN v₀ hnorm S hS`. Establish `hHH` using `GlobalTheory.T.conj_rowEvaluation_translate_mem_rowSpace R F X h hLev hGrp hMod hHost hE t c v₀ ht hA hc hv₀ S hS _ hmem.coeFn_toLp`. Establish `h1` using `GlobalTheory.T.goodOp_star_translatedEval_eq_goodProjector R F X h hLev hGrp hMod Gd t v₀ hRow S hS.1 _ hmem.coeFn_toLp`. Rewrite `h1` using `[postOn_eq_of_mem R F hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfix : Gd.Rg (star (hmem.toLp _)) = star (hmem.toLp _)` using `rg_fix X Gd _ (Lp.ext (h1.trans hmem.coeFn_toLp.symm))`. Use `⟨⟨hmem.toLp _, Submodule.mem_inf.mpr ⟨hHH, LinearMap.mem_ker.mpr (sub_eq_zero.mpr hfix)⟩⟩, hmem.coeFn_toLp, ?_⟩` and prove the remaining obligations. Use `show ‖(hmem.toLp _ : L2X X)‖ ^ 2 = _`. Rewrite using `[Formalism.IndefR.AutomorphicEvaluation.norm_sq_toLp hmem]`. Conclude with `hint`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `Φ`. Establish `hF : star (Φ : L2X X) ∈ goodSub X Gd` using `Φ.2`. Establish `hfix : Gd.Rg (star (Φ : L2X X)) = star (Φ : L2X X)` using `sub_eq_zero.mp (LinearMap.mem_ker.mp (Submodule.mem_inf.mp hF).2)`. Take `⟨S, hSM, hSF⟩` from `GlobalTheory.T.conjRow_eq_translatedEvaluation_cuspFormMap hDS R F X h hLev hGrp hMod hHost hE t c v₀ ht hConj hc hv₀ (Φ : L2X X) (Submodule.mem_inf.mp hF).1`. Establish `h1` using `GlobalTheory.T.goodOp_star_translatedEval_eq_goodProjector R F X h hLev hGrp hMod Gd t v₀ hRow S hSM _ hSF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Rewrite `h1` using `[hfix, star_star]`. Establish `hz` using `GlobalTheory.T.multiplicityMap_eq_zero_of_translated_evaluation_ae_zero R F X h hLev hGrp hMod t v₀ hne S hSM _ rfl (by filter_upwards [h1, hSF] with x h1x h2x`. Use `(ev_sub R v₀ _ _ _).trans ?_` and prove the remaining obligations. Conclude with `sub_eq_zero.mpr (h1x.symm.trans h2x))`. Conclude with `⟨S, ⟨hSM, LinearMap.mem_ker.mpr hz⟩, hSF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `S hS h0`. Take `⟨-, hint, hzero⟩` from `hN v₀ hnorm S hS`. Establish `hI : ∫ x, ‖(fun x => ev (MP R) v₀ S (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)) x‖ ^ 2 ∂(muX X) = 0`. Use `(integral_congr_ae ?_).trans (integral_zero _ _)` and prove the remaining obligations. Use `filter_upwards [h0] with x hx`.
-
-Establish `: ev (MP R) v₀ S (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t) = 0` using `hx`. Simplify using `[this]`. Rewrite `hint` using `[hI]`. Establish `hre : (ipM (MP R) R.ν0 R.fd0 S S).re = 0`. Break down `mul_eq_zero.mp hint.symm with h' | h'` into its components or cases.
-
-Conclude with `absurd h' hc0.ne'`. Conclude with `h'`. Conclude with `hzero hre`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem evalTieT_of_levelMatch : GlobalTheory.Published.DiscreteSeriesClassification → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → HostHyp D → (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (Gd : GoodOp X) (t : GA D (Yc D 0)), t ∈ GfC (Yc D 0) → ConjLevel (t)⁻¹ (levS (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) (levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) ((iotaX X h).toMulEquiv ⁻¹' {x : X.B.I.GA | x.1 = 1 ∧ x.2 ∈ X.K2}) (fun k => star (X.chi2 ((iotaX X h).toMulEquiv k).2)) → RowLevelMatchAt R F X h t → ∃ c' : ℝ, EvalTieT (R.MY 0) R.ν0 R.fd0 (R.EEat (R.levR F true)) X Gd (iotaX X h).toMulEquiv t c' := by
   intro hDS D G _ _ Pl0 T A Ks _ _ _ R F X h hLev hGrp hMod hHost hE Gd t ht hConj hRow

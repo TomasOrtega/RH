@@ -12,17 +12,15 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 namespace GlobalTheory.VertForm
 
 /- English proof (translation)
-Introduce `k _ _ X Y p q hp hq π hπ L l hl hL Z i _ _ κ _ _ _ _ hd`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Use `letI : Algebra (ZMod l) κ := ZMod.algebra κ l`. Use `letI : Algebra (ZMod l) Γ(Z, ⊤) := ((algebraMap κ Γ(Z, ⊤)).comp (algebraMap (ZMod l) κ)).toAlgebra`. Use `haveI : IsScalarTower (ZMod l) κ Γ(Z, ⊤) := IsScalarTower.of_algebraMap_eq' rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, j, _, hj⟩` from `hp`. Take `⟨N', j', _, hj'⟩` from `hq`. Use `isProper_str k N` as an intermediate fact. Use `isProper_str k N'` as an intermediate fact. Establish `: IsProper q` using `hj' ▸ inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper p` using `hj ▸ inferInstance`. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `hp' : IsProper (π ≫ p)` using `by rw [hπ]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper π` using `.of_comp π p`. Establish `hg : IsProper ((i ≫ π) ≫ p ≫ spMap (Int.castRingHom k))` using `inferInstance`. Establish `h` using `GlobalTheory.ArInt.topSelf_pull_nonneg l (p ≫ spMap (Int.castRingHom k)) hd L.isLB (i ≫ π) fun Z' i' _ _ _ hd' => hL Z' i' (ZMod l) hd'`. Establish `e : cls ((L.pull π hπ).B.pull i) (pull_isLB (L.pull π hπ).isLB i) = cls (L.B.pull (i ≫ π)) (pull_isLB L.isLB _)`. Use `(cls_pull (L.pull π hπ).isLB i _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (cls_pull L.isLB (i ≫ π) _).symm` and prove the remaining obligations. Conclude with `(pull_comp i π (cls L.B L.isLB)).symm`. Rewrite `h` using `[← topSelf_congr (ZMod l) (pull_isLB (L.pull π hπ).isLB i) (pull_isLB L.isLB _) ((cls_eq_iff _ _).1 e)]`. Establish `e2` using `GlobalTheory.T.lineBundleIntersectionNumber_groundFieldChange (ZMod l) κ Z (structureModule Z) (fun _ : Fin 1 => (L.pull π hπ).B.pull i)`. Rewrite `h`, the goal using `[topSelf_def]`.
-
-Rewrite `h` using `[e2]`. Use `haveI : Module.Finite (ZMod l) κ := Module.Finite.of_finite`. Establish `hpos : (0 : ℤ) < (Module.finrank (ZMod l) κ : ℤ)`. Conclude with `Module.finrank_pos` after adjusting the coercions. Conclude with `(mul_nonneg_iff_of_pos_left hpos).mp h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nefOver_pull : ∀ (k : Type) [CommRing k] [Module.Finite ℤ k] (X Y : Scheme.{0}) (p : X ⟶ Sp k)
     (q : Y ⟶ Sp k), IsProjOver p → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q) (L : HermLB p) (l : ℕ),

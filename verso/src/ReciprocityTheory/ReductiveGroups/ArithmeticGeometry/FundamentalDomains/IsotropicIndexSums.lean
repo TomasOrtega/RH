@@ -16,21 +16,21 @@ section Sesq
 variable (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hermC_add_left_eq_add (u v w : Fin r → ℂ) :
     hermC τ G (u + v) w = hermC τ G u w + hermC τ G v w := by
   simp only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hermC_add_right_eq_add (u v w : Fin r → ℂ) :
     hermC τ G u (v + w) = hermC τ G u v + hermC τ G u w := by
   simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma hermC_const_smul_left (c : ℂ) (u w : Fin r → ℂ) :
     hermC τ G (c • u) w = c * hermC τ G u w := by
@@ -39,7 +39,7 @@ private lemma hermC_const_smul_left (c : ℂ) (u w : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma hermC_smul_right_section (c : ℂ) (u w : Fin r → ℂ) :
     hermC τ G u (c • w) = conj c * hermC τ G u w := by
@@ -48,7 +48,7 @@ private lemma hermC_smul_right_section (c : ℂ) (u w : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hermC]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_right_eq_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma hC_sum_right {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ) (u : Fin r → ℂ) :
     hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
@@ -58,7 +58,7 @@ lemma hC_sum_right {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ) (u : 
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_right_eq_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hermC]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_left_eq_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private lemma hermC_finset_sum_left_eq_sum {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ) (w : Fin r → ℂ) :
     hermC τ G (∑ i ∈ s, f i) w = ∑ i ∈ s, hermC τ G (f i) w := by
@@ -68,7 +68,7 @@ private lemma hermC_finset_sum_left_eq_sum {ι : Type*} (s : Finset ι) (f : ι 
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_left_eq_add, ih]
 
 /- English proof (translation)
-Rewrite using `[hermC_finset_sum_left_eq_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_const_smul_left, hC_sum_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_right_section]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -83,7 +83,7 @@ lemma hC_comb {n : ℕ} (c : Fin n → ℂ) (v : Fin n → Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[hC_comb, ReciprocityTheory.MultiplicativeHeights.jForm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [hf, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, ReciprocityTheory.MultiplicativeHeights.sgn]`. Apply the tactic sequence `split_ifs <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hC_comb_ortho {n p : ℕ} (f : Fin n → Fin r → ℂ)
     (hf : ∀ k l, hermC τ G (f k) (f l) = if k = l then (if (k : ℕ) < p then 1 else -1) else 0)
@@ -95,9 +95,9 @@ lemma hC_comb_ortho {n p : ℕ} (f : Fin n → Fin r → ℂ)
   split_ifs <;> ring
 
 /- English proof (translation)
-Establish `key : ∀ (d : Fin n → ℂ) (m : Fin n), hermC τ G (∑ k, d k • f k) (f m) = d m * (if (m : ℕ) < p then 1 else -1)`. Introduce `d m`. Rewrite using `[hermC_finset_sum_left_eq_sum]`. Simplify using `only [hermC_const_smul_left, hf, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use function extensionality and compare the values at `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e` using `congrArg (fun w => hermC τ G w (f m)) h`. Simplify using `only [key] at e`. Apply the tactic sequence `have hs : (if (m : ℕ) < p then (1 : ℂ) else -1) ≠ 0 := by split_ifs <;> norm_num`. Conclude with `mul_right_cancel₀ hs e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma coeff_unique {n p : ℕ} (f : Fin n → Fin r → ℂ)
     (hf : ∀ k l, hermC τ G (f k) (f l) = if k = l then (if (k : ℕ) < p then 1 else -1) else 0)
@@ -114,7 +114,7 @@ lemma coeff_unique {n p : ℕ} (f : Fin n → Fin r → ℂ)
   exact mul_right_cancel₀ hs e
 
 /- English proof (translation)
-Rewrite `h` using `[Finset.sum_congr rfl fun a _ => Complex.mul_conj (c a), ← Complex.ofReal_sum]`. Establish `h' : ∑ a, Complex.normSq (c a) = 0` using `by exact_mod_cast h`. Use function extensionality and compare the values at `a`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Complex.normSq_nonneg (c i))).1 h' a (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma sum_mul_conj_eq_zero {n : ℕ} {c : Fin n → ℂ} (h : ∑ a, c a * conj (c a) = 0) : c = 0 := by
   rw [Finset.sum_congr rfl fun a _ => Complex.mul_conj (c a), ← Complex.ofReal_sum] at h
@@ -131,7 +131,7 @@ section Sig
 variable (X : Data E r)
 
 /- English proof (translation)
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Use `congrFun h a` as an intermediate fact. Simplify `this` using `[Data.emb]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma emb_ne {ξ : Fin r → E} (hne : ξ ≠ 0) (τ : E →+* ℂ) : Data.emb τ ξ ≠ 0 := by
   intro h
@@ -141,25 +141,25 @@ lemma emb_ne {ξ : Fin r → E} (hne : ξ ≠ 0) (τ : E →+* ℂ) : Data.emb �
   simpa [Data.emb] using this
 
 /- English proof (translation)
-Take `⟨P, hP, hg⟩` from `X.signature τ`. Use `set w : Fin r → ℂ := Data.emb τ.1 ξ with hw`. Establish `hw0 : w ≠ 0` using `emb_ne hne τ.1`. Establish `hww : hermC τ.1 X.Gm w w = 0`. Establish `e : hermC τ.1 X.Gm w w = τ.1 (herm X.Gm ξ ξ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hw, hermC, herm, Data.emb, map_sum, map_mul, cc, IsCMField.complexEmbedding_complexConj]`. Rewrite using `[e, hξ, map_zero]`. Use `set z : Fin r → ℂ := P⁻¹ *ᵥ w with hz`. Establish `hwz : w = ∑ k, z k • col P k`. Establish `h1 : P *ᵥ z = w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hz, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hP), Matrix.one_mulVec]`. Use function extensionality and compare the values at `a`. Rewrite using `[← h1]`. Simplify using `[Matrix.mulVec, dotProduct, col, Finset.sum_apply, mul_comm]`. Establish `hcol : ∀ k l, hermC τ.1 X.Gm (col P k) (col P l) = if k = l then (if (k : ℕ) < X.p0 then 1 else -1) else 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k l`. Establish `e` using `congrFun (congrFun hg k) l`. Simplify using `only [gram, Matrix.of_apply, Matrix.diagonal_apply, sgn] at e`. Rewrite using `[e]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj` using `hC_comb_ortho τ.1 X.Gm (col P) hcol z`. Rewrite `hj` using `[← hwz, hww]`. Establish `hz0 : z ≠ 0`. Introduce `h0`. Apply `hw0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hwz, h0]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hlt`. Establish `hp : X.p0 = 0` using `by omega`.
+Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hz0` to reduce the goal to its premises. Apply `sum_mul_conj_eq_zero` to reduce the goal to its premises. Establish `e : ReciprocityTheory.MultiplicativeHeights.jForm X.p0 z z = -∑ a, z a * conj (z a)`. Rewrite using `[ReciprocityTheory.MultiplicativeHeights.jForm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [ReciprocityTheory.MultiplicativeHeights.sgn, hp, Nat.not_lt_zero, if_false]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hj` using `[e]`. Take the linear combination `hj`. Assume the negation of the conclusion as `hle push Not at hle`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hz0` to reduce the goal to its premises. Apply `sum_mul_conj_eq_zero` to reduce the goal to its premises. Establish `e : ReciprocityTheory.MultiplicativeHeights.jForm X.p0 z z = ∑ a, z a * conj (z a)`. Rewrite using `[ReciprocityTheory.MultiplicativeHeights.jForm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[ReciprocityTheory.MultiplicativeHeights.sgn, if_pos (lt_of_lt_of_le a.isLt hle)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hj` using `[e]`. Take the linear combination `-hj`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma isotropicIndex_bounds {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (hne : ξ ≠ 0) (τ : X.Ψ) :
     1 ≤ X.p0 ∧ X.p0 < r := by
@@ -223,7 +223,7 @@ section Ucomp
 variable (X : Data E r)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [Data.embV, Data.emb, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma embV_add_smul (v : Fin r → E) (e : E) (ξ : Fin r → E) (τ : X.Ψ) :
     X.embV (v + e • ξ) τ = X.embV v τ + τ.1 e • Data.emb τ.1 ξ := by
@@ -238,9 +238,9 @@ lemma ucomp_apply (x : Frame X.Ψ r) (ξ : Fin r → E) (U : X.Ψ → Fin r → 
       X.Hf x τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ)) • Data.emb τ.1 ξ := rfl
 
 /- English proof (translation)
-Unfold `Data.ppos`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← add_smul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_add_left_eq_add, hermC_const_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma ppos_add_smul (x : Frame X.Ψ r) (τ : X.Ψ) (u w : Fin r → ℂ) (c : ℂ) :
     X.ppos x τ (u + c • w) = X.ppos x τ u + c • X.ppos x τ w := by
@@ -254,11 +254,11 @@ private lemma ppos_add_smul (x : Frame X.Ψ r) (τ : X.Ψ) (u w : Fin r → ℂ)
   ring
 
 /- English proof (translation)
-Establish `hw0 : Data.emb τ.1 ξ ≠ 0` using `emb_ne hne τ.1`. Establish `hH : X.Hf x τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) ≠ 0`. Rewrite using `[Data.Hf_self X hx]`. Conclude with `(Data.maj_pos X hx τ hw0).ne'` after adjusting the coercions. Establish `hlin : ∀ (u w : Fin r → ℂ) (c : ℂ), X.Hf x τ (u + c • w) (Data.emb τ.1 ξ) = X.Hf x τ u (Data.emb τ.1 ξ) + c * X.Hf x τ w (Data.emb τ.1 ξ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u w c`. Simplify using `only [Data.Hf, ppos_add_smul]`. Rewrite using `[show (2 : ℂ) • (X.ppos x τ u + c • X.ppos x τ w) - (u + c • w) = ((2 : ℂ) • X.ppos x τ u - u) + c • ((2 : ℂ) • X.ppos x τ w - w) by module]`. Rewrite using `[hermC_add_left_eq_add, hermC_const_smul_left]`. Rewrite using `[ucomp_apply, ucomp_apply, embV_add_smul, hlin, add_div, mul_div_cancel_right₀ _ hH, add_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 lemma ucomp_drop {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hne : ξ ≠ 0)
     (v : Fin r → E) (e : E) (τ : X.Ψ) :

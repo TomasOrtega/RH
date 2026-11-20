@@ -18,7 +18,7 @@ namespace GlobalTheory.MixedLocalChains.PullFrob
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-Use `⟨IsClosedImmersion.lift _ _ ?_, IsClosedImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Introduce `U`. Rewrite using `[fibI, Scheme.IdealSheafData.ofIdealTop_ideal, Scheme.Hom.ker_apply, Ideal.map_span, Ideal.span_le, Set.image_singleton, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker, map_natCast, map_natCast]`. Conclude with `GlobalTheory.SS.FrobField.cast_zero (FrobQuot.natCast_eq_zero_fibI p B') _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fib_lift {B B' : Vert.Model O} (f : Vert.Model.Hom B' B) :
     ∃ f₀ : (fibI p B').subscheme ⟶ (fibI p B).subscheme,
@@ -31,17 +31,15 @@ theorem exists_fib_lift {B B' : Vert.Model O} (f : Vert.Model.Hom B' B) :
   exact GlobalTheory.SS.FrobField.cast_zero (FrobQuot.natCast_eq_zero_fibI p B') _
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ B B' f P P' ⟨h, ⟨e⟩⟩`. Take `⟨f₀, hf₀⟩` from `exists_fib_lift p f`. Establish `h'` using `FrobQuot.natCast_eq_zero_fibI p B'`. Use `⟨h', ⟨?_⟩⟩` and prove the remaining obligations. Set `i` to `(fibI p B).subschemeι`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `i'` to `(fibI p B').subschemeι`. Set `Fr` to `GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out h`. Set `Fr'` to `GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out h'`. Use `haveI : P.E.IsQuasicoherent := P.vb.isQuasicoherent`. Use `haveI : P.E'.IsQuasicoherent := P.vb'.isQuasicoherent`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : P.mod.IsQuasicoherent := by unfold Pres.mod; infer_instance`. Set `G` to `(Scheme.Modules.pullback (Fr ≫ i)).obj P.mod`. Establish `eM : (P'.pull f).mod ≅ (Scheme.Modules.pullback f.f).obj ((Scheme.Modules.pushforward i).obj G)` using `P'.pullModIso f ≪≫ (Scheme.Modules.pullback f.f).mapIso e`. Use `haveI : (P'.pull f).E.IsQuasicoherent := (P'.pull f).vb.isQuasicoherent`. Use `haveI : (P'.pull f).E'.IsQuasicoherent := (P'.pull f).vb'.isQuasicoherent`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : (P'.pull f).mod.IsQuasicoherent := by unfold Pres.mod; infer_instance`. Establish `hk : smulHom (P'.pull f).mod (p : Γ(B'.X, ⊤)) = 0`. Establish `h1 : smulHom ((Scheme.Modules.pullback f.f).obj ((Scheme.Modules.pushforward i).obj G)) (p : Γ(B'.X, ⊤)) = 0`. Use `VB.pullback_map_smulHom (F := (Scheme.Modules.pushforward i).obj G) f.f (p : Γ(B.X, ⊤))` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← this, smulHom_pushforward, map_natCast, h, smulHom_zero, Functor.map_zero, Functor.map_zero]`. Establish `h2` using `smulHom_comp eM.hom (p : Γ(B'.X, ⊤))`. Rewrite `h2` using `[h1, comp_zero]`. Conclude with `(cancel_mono eM.hom).1 (h2.trans zero_comp.symm)`. Use `haveI := FrobQuot.isIso_unit_fibI p B' _ hk`.
-
-Use `haveI := GlobalTheory.T.ideal_subscheme_counit_iso (fibI p B) G`. Establish `hsq : f₀ ≫ Fr ≫ i = (Fr' ≫ i') ≫ f.f`. Rewrite using `[← Category.assoc, ← GlobalTheory.SS.FrobField.absFrob_nat f₀ p 1 Fact.out h' h, Category.assoc, hf₀, Category.assoc]`. Use `asIso ((Scheme.Modules.pullbackPushforwardAdjunction i').unit.app (P'.pull f).mod) ≪≫ (Scheme.Modules.pushforward i').mapIso ?_` and prove the remaining obligations. Conclude with `(Scheme.Modules.pullback i').mapIso eM ≪≫ (Scheme.Modules.pullbackComp i' f.f).app _ ≪≫ (Scheme.Modules.pullbackCongr hf₀.symm).app _ ≪≫ ((Scheme.Modules.pullbackComp f₀ i).app _).symm ≪≫ (Scheme.Modules.pullback f₀).mapIso (asIso ((Scheme.Modules.pullbackPushforwardAdjunction i) …`.
+A detailed English derivation is pending.
 -/
 theorem isFrob_pull : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
     (B B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B) (P P' : Pres B),

@@ -16,15 +16,13 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStep.ScaleNonUnit
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Establish `hu : IsUnit x` using `hx.isUnit`. Establish `hc : ((distribHaarChar (Fv F v) hu.unit : ℝ≥0) : ℝ) = ‖x‖`. Use `GlobalTheory.GaugeProdFormula.modu_finite F v x hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[GlobalTheory.GaugeEx.modu, dif_pos hu]`. Conclude with `this`. Establish `hc' : distribHaarChar (Fv F v) hu.unit⁻¹ = (‖x‖₊)⁻¹`. Rewrite using `[map_inv]`. Apply `NNReal.coe_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[hc]`. Establish `hm : Measurable fun y : Fv F v => x * y` using `(continuous_const.mul continuous_id).measurable`. Use extensionality with `B hB`. Rewrite using `[Measure.map_apply hm hB, Measure.smul_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `open scoped Pointwise in`. Establish `e : (fun y => x * y) ⁻¹' B = hu.unit⁻¹ • B`. Use extensionality with `y`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Simplify using `[Units.smul_def]`.
-
-Rewrite using `[e, ← distribHaarChar_mul, hc']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lam_map_mul {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v))
     [lam.IsAddHaarMeasure] (x : Fv F v) (hx : x ≠ 0) :
@@ -53,11 +51,11 @@ theorem lam_map_mul {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum 
   rfl
 
 /- English proof (translation)
-Establish `h0 : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Establish `hv : Valued.v x = WithZero.exp (WithZero.log (Valued.v x))` using `(WithZero.exp_log h0).symm`. Use `set n : ℤ := WithZero.log (Valued.v x) with hn`. Establish `hlt : n < 0`. Rewrite `h` using `[hv, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h2 : 2 ≤ Ideal.absNorm v.asIdeal` using `GlobalTheory.CompanionTheory.SW.Growth.two_le_norm v`. Rewrite using `[FinitePlace.norm_def, hv, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Use `push_cast`. Express the relevant statement in the definitionally equal form `((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ n ≤ _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : (1 : ℝ) ≤ ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ Ideal.absNorm v.asIdeal)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_val_lt {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v)
     (hx : x ≠ 0) (h : Valued.v x < 1) : ‖x‖ ≤ 1 / (Ideal.absNorm v.asIdeal : ℝ) := by
@@ -77,53 +75,49 @@ theorem norm_le_of_val_lt {F : Type} [Field F] [NumberField F] (v : HeightOneSpe
     _ = _ := by rw [zpow_neg_one, one_div]
 
 /- English proof (translation)
-Establish `hloc` using `GlobalTheory.T.completion_is_local_ring F v`. Take `⟨i1, i2, i3, i4, -⟩` from `id hloc`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI : lam.IsAddHaarMeasure := hlam.1`. Take `⟨j1, j2, j3, j4, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Fv F v)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Take `⟨hK, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hσ (Fv F v) d b lam ‹_›`. Use `haveI := hK`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Use `set s : Fv F v := Algebra.norm (Fv F v) (u : Fv F v ⊗[F] E) with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsu : IsUnit s` using `u.isUnit.map (Algebra.norm (Fv F v))`. Establish `hs0 : s ≠ 0` using `hsu.ne_zero`. Establish `hN' : algebraMap (Fv F v) (Fv F v ⊗[F] E) s = (u : Fv F v ⊗[F] E) * sigR (Fv F v) σ u` using `GlobalTheory.Doubling.algebraMap_norm_eq hσ _`. Use `set q : ℝ≥0 := ‖s‖₊ with hq`. Establish `hq0 : q ≠ 0` using `by rw [hq]; exact nnnorm_ne_zero_iff.2 hs0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hsigs : sigR (Fv F v) σ (algebraMap (Fv F v) (Fv F v ⊗[F] E) s) = algebraMap (Fv F v) (Fv F v ⊗[F] E) s`. Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`. Set `g : Matrix (Fin 1) (Fin 1) (Fv F v ⊗[F] E)` to `Matrix.of fun _ _ => (u : Fv F v ⊗[F] E)`. Establish `hg : IsUnit g.det`. Rewrite using `[Matrix.det_fin_one]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `u.isUnit`. Set `T : (Fin 1 → Fin N → Fv F v ⊗[F] E) → Fin 1 → Fin N → Fv F v ⊗[F] E` to `fun X a i => (u : Fv F v ⊗[F] E) * X a i`. Set `Ti : (Fin 1 → Fin N → Fv F v ⊗[F] E) → Fin 1 → Fin N → Fv F v ⊗[F] E` to `fun X a i => ((u⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * X a i`. Establish `hrm : (fun X : Fin 1 → Fin N → Fv F v ⊗[F] E => rmul (Fv F v) X g) = T`. Use function extensionality and compare the values at `X p i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [rmul, Fin.sum_univ_one, g, Matrix.of_apply, T]`. Rewrite using `[Subsingleton.elim p 0, mul_comm]`. Establish `hTc : Continuous T` using `continuous_pi fun a => continuous_pi fun i => continuous_const.mul ((continuous_apply i).comp (continuous_apply a))`. Establish `hTic : Continuous Ti` using `continuous_pi fun a => continuous_pi fun i => continuous_const.mul ((continuous_apply i).comp (continuous_apply a))`. Establish `hTT : ∀ X, T (Ti X) = X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `X`. Use function extensionality and compare the values at `a i`. Simplify using `[T, Ti]`. Establish `hTiT : ∀ X, Ti (T X) = X`. Introduce `X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `a i`. Simplify using `[T, Ti]`. Establish `hWb : BorelSpace (Fin 1 → Fin N → Fv F v ⊗[F] E)` using `by infer_instance`. Establish `hTm : Measurable T` using `hTc.measurable`. Establish `hTim : Measurable Ti` using `hTic.measurable`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `himg : ∀ C : Set (Fin 1 → Fin N → Fv F v ⊗[F] E), T '' C = Ti ⁻¹' C`. Introduce `C`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Y, hY, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hY` using `[hTiT]`. Introduce `hX`. Conclude with `⟨Ti X, hX, hTT X⟩`. Establish `himg' : ∀ C : Set (Fin 1 → Fin N → Fv F v ⊗[F] E), T ⁻¹' C = Ti '' C`. Introduce `C`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Conclude with `⟨T X, hX, hTiT X⟩`. Introduce and unpack `⟨Y, hY, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `hY` using `[hTT]`. Establish `hnorm_inv : ‖Algebra.norm (Fv F v) ((u⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)‖₊ = q⁻¹`. Establish `h1 : Algebra.norm (Fv F v) ((u⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * s = 1`. Rewrite using `[hs, ← map_mul, Units.inv_mul, map_one]`. Establish `h2` using `congrArg (fun x : Fv F v => ‖x‖₊) h1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [nnnorm_mul, nnnorm_one] at h2`. Conclude with `eq_inv_of_mul_eq_one_left h2`. Establish `hmu : (coordW (Fv F v) b lam 1 N).map (fun X => rmul (Fv F v) X g) = (q⁻¹ ^ N) • coordW (Fv F v) b lam 1 N`. Rewrite using `[hrm]`. Use extensionality with `C hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_apply hTm hC, himg', Measure.smul_apply]`. Use `GlobalTheory.CompanionTheory.SW.coordW_image_unit_mul F E σ hσ N d b v lam hlam u⁻¹ C hC` as an intermediate fact. Rewrite using `[show (Ti '' C) = ((fun (X : Fin 1 → Fin N → Fv F v ⊗[F] E) (p : Fin 1) (k : Fin N) => ((u⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * X p k) '' C) from rfl, this, hnorm_inv, ENNReal.smul_def, smul_eq_mul, ENNReal.coe_pow]`. Set `τ : HermR (Fv F v) σ 1 → HermR (Fv F v) σ 1` to `fun S => ⟨fun i j => algebraMap (Fv F v) (Fv F v ⊗[F] E) s * (S : Matrix (Fin 1) (Fin 1) (Fv F v ⊗[F] E)) i j, by`. Introduce `a c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `S.2 a c` as an intermediate fact. Simplify using `only [map_mul, hsigs]`. Rewrite using `[this]⟩`. Establish `hτe : ∀ S i j, (τ S : Matrix (Fin 1) (Fin 1) (Fv F v ⊗[F] E)) i j = algebraMap (Fv F v) (Fv F v ⊗[F] E) s * (S : Matrix (Fin 1) (Fin 1) (Fv F v ⊗[F] E)) i j` using `fun _ _ _ => rfl`. Establish `hτm : Measurable τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨-, -, -, hBH, -⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ (Fv F v) 1`. Use `haveI := hBH`. Use `Continuous.measurable ?_` and prove the remaining obligations. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuous_const.mul ((continuous_apply_apply i j).comp continuous_subtype_val)`. Establish `hτ : ∀ S, (τ S : Matrix (Fin 1) (Fin 1) (Fv F v ⊗[F] E)) = cT (sigR (Fv F v) σ) g * S * g`. Introduce `S`. Use extensionality with `i j`. Rewrite using `[hτe, hN']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Fin.sum_univ_one, cT, Matrix.map_apply, Matrix.transpose_apply, g, Matrix.of_apply]`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc` using `GlobalTheory.CompanionTheory.SW.Dil.coordHerm_map (Fv F v) σ hσ b lam s hs0 q⁻¹ (lam_map_mul v lam s hs0) τ hτm hτe`. Establish `hfree : IsOpen {X : Fin 1 → Fin N → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X}` using `GlobalTheory.CompanionTheory.WeilSiegel.Free.Scale.isOpen_free b (Fv F v) hloc (PI.VolStabSW.TensAllW.lip_field _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key` using `GlobalTheory.CompanionTheory.WeilSiegel.Free.Scale.free_rmul σ hσ J hJ (Fv F v) hloc 1 (coordW (Fv F v) b lam 1 N) (coordHerm (Fv F v) σ b lam 1) m (hW 1 N) (hH 1) hm hfree g hg τ hτ _ _ hmu hc 0`. Establish `hτ0 : τ 0 = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `algebraMap (Fv F v) (Fv F v ⊗[F] E) s * 0 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_zero]`. Rewrite `key` using `[hτ0, hrm]`. Establish `hTB : MeasurableSet (T '' B)`. Rewrite using `[himg]`. Conclude with `hTim hB`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key2` using `congrArg (fun μ' : Measure (Fin 1 → Fin N → Fv F v ⊗[F] E) => μ' (T '' B)) key`. Simplify using `only [Measure.smul_apply, Measure.map_apply hTm hTB] at key2`. Establish `hpre : T ⁻¹' (T '' B) = B`. Rewrite using `[himg, ← Set.preimage_comp]`. Establish `: Ti ∘ T = id` using `funext hTiT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Set.preimage_id]`. Rewrite `key2` using `[hpre]`. Establish `hcoe : (q : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.2 hq0`. Express the relevant statement in the definitionally equal form `m 0 (T '' B) = _`. Simplify using `only [ENNReal.smul_def, smul_eq_mul] at key2`.
-
-Establish `e1 : ((q ^ N : ℝ≥0) : ℝ≥0∞) * ((q⁻¹ ^ N : ℝ≥0) : ℝ≥0∞) = 1`. Rewrite using `[← ENNReal.coe_mul, ← mul_pow, mul_inv_cancel₀ hq0, one_pow, ENNReal.coe_one]`. Establish `e2 : ((q ^ N : ℝ≥0) : ℝ≥0∞) * ((q⁻¹ : ℝ≥0) : ℝ≥0∞) = ((q ^ (N - 1) : ℝ≥0) : ℝ≥0∞)`. Rewrite using `[← ENNReal.coe_mul]`. Use `congr 1`.
-
-Take `⟨k, rfl⟩ : ∃ k, N = k + 1` from `⟨N - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel, pow_succ, mul_assoc, mul_inv_cancel₀ hq0, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, e1, one_mul]`. Use `_ = _ := by rw [key2, ← mul_assoc, e2]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_zero_image_mul (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (N : ℕ) (hN : 1 ≤ N) (J : Matrix (Fin N) (Fin N) E) (hJ : IsHermND σ J)
@@ -261,11 +255,11 @@ theorem fibre_zero_image_mul (F E : Type) [Field F] [NumberField F] [Field E] [N
     _ = _ := by rw [key2, ← mul_assoc, e2]
 
 /- English proof (translation)
-Establish `h1` using `HeightOneSpectrum.Support.finite (𝓞 F) a`. Establish `h2` using `HeightOneSpectrum.Support.finite (𝓞 F) a⁻¹`. Use `Filter.eventually_cofinite.2 ((h1.union h2).subset ?_)` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hc1 : ¬ 1 < v.valuation F a` using `fun h => hc (Or.inl h)`. Establish `hc2 : ¬ 1 < v.valuation F a⁻¹` using `fun h => hc (Or.inr h)`. Apply `hv` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.SW.Growth.val_alg]`. Establish `hne : v.valuation F a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc1`, `hc2` using `[not_lt]`. Rewrite `hc2` using `[map_inv₀]`. Conclude with `le_antisymm hc1 ((inv_le_one₀ (zero_lt_iff.2 hne)).1 hc2)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_one_eventually {F : Type} [Field F] [NumberField F] (a : F) (ha : a ≠ 0) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, Valued.v (algebraMap F (Fv F v) a) = 1 := by
@@ -284,23 +278,19 @@ theorem val_eq_one_eventually {F : Type} [Field F] [NumberField F] (a : F) (ha :
   exact le_antisymm hc1 ((inv_le_one₀ (zero_lt_iff.2 hne)).1 hc2)
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Establish `hb1 : b.repr 1 ≠ 0`. Introduce `h`. Conclude with `one_ne_zero (b.repr.map_eq_zero_iff.1 h)`. Choose the witnesses or unpack the hypotheses as in `⟨k0, hk0⟩ : ∃ k, b.repr 1 k ≠ 0 := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hb1 (Finsupp.ext hcon)`. Use `filter_upwards [GlobalTheory.CompanionTheory.SW.GoodRing.good_ring F E σ hσ d b, val_eq_one_eventually _ hk0] with v hgood hv O hO c hc hcu`. Take `⟨O', hO', hσO', -⟩` from `hgood`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set s : Fv F v := Algebra.norm (Fv F v) (c : Fv F v ⊗[F] E) with hs`. Establish `hs0 : s ≠ 0` using `(hcu.map (Algebra.norm (Fv F v))).ne_zero`. Establish `hN' : algebraMap (Fv F v) (Fv F v ⊗[F] E) s = (c : Fv F v ⊗[F] E) * sigR (Fv F v) σ c` using `GlobalTheory.Doubling.algebraMap_norm_eq hσ _`. Establish `hσc : sigR (Fv F v) σ c ∈ O` using `(hO _).2 ((hO' _).1 (hσO' _ ((hO' _).2 ((hO _).1 c.2))))`. Establish `hy : algebraMap (Fv F v) (Fv F v ⊗[F] E) s ∈ O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hN']`. Conclude with `O.mul_mem c.2 hσc`. Establish `hrepr : ∀ (r : Fv F v) (y : Fv F v ⊗[F] E) (k : Fin d), (Algebra.TensorProduct.basis (Fv F v) b).repr (algebraMap (Fv F v) (Fv F v ⊗[F] E) r * y) k = r * (Algebra.TensorProduct.basis (Fv F v) b).repr y k`. Introduce `r y k`. Rewrite using `[← Algebra.smul_def, map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hone : (Algebra.TensorProduct.basis (Fv F v) b).repr (1 : Fv F v ⊗[F] E) k0 = algebraMap F (Fv F v) (b.repr 1 k0)`. Rewrite using `[Algebra.TensorProduct.one_def, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules. Establish `hs1 : Valued.v s ≤ 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(hO _).1 hy k0`. Rewrite `h` using `[← mul_one (algebraMap (Fv F v) (Fv F v ⊗[F] E) s), hrepr, hone, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, hv, mul_one]`. Conclude with `h`. Establish `hlt : Valued.v s < 1`. Use `lt_of_le_of_ne hs1 fun h1 => hc ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hw : algebraMap (Fv F v) (Fv F v ⊗[F] E) s⁻¹ * sigR (Fv F v) σ c ∈ O`. Use `(hO _).2 fun k => ?_` and prove the remaining obligations. Establish `h` using `(hO _).1 hσc k`. Rewrite `h`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[hrepr, map_mul, map_inv₀, h1, inv_one, one_mul]`.
-
-Conclude with `h`. Establish `hcw : c * (⟨_, hw⟩ : O) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(c : Fv F v ⊗[F] E) * (algebraMap (Fv F v) (Fv F v ⊗[F] E) s⁻¹ * sigR (Fv F v) σ c) = 1`. Rewrite using `[mul_left_comm, ← hN', ← map_mul, inv_mul_cancel₀ hs0, map_one]`.
-
-Conclude with `IsUnit.of_mul_eq_one _ hcw`. Conclude with `norm_le_of_val_lt v s hs0 hlt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_nonunit (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (d : ℕ) (b : Module.Basis (Fin d) F E) :
@@ -359,15 +349,15 @@ theorem norm_le_of_nonunit (F E : Type) [Field F] [NumberField F] [Field E] [Num
   exact norm_le_of_val_lt v s hs0 hlt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ N J hJ hN d b`. Use `filter_upwards [norm_le_of_nonunit F E σ hσ d b] with v hv O hO lam hlam m hm h₂ c hc hcu B hB`. Establish `hn` using `hv O hO c hc hcu`. Take `⟨u, hu⟩` from `hcu`. Establish `h0 : hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Simplify using `[hermOf]`. Rewrite using `[h0]`. Establish `key` using `fibre_zero_image_mul F E σ hσ N (by omega) J hJ d b v lam hlam m hm u B hB`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hu]`. Rewrite using `[key]`. Use `gcongr`. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `push_cast`. Use `set x : ℝ := ‖Algebra.norm (Fv F v) (c : Fv F v ⊗[F] E)‖ with hx`. Establish `hx0 : 0 ≤ x` using `norm_nonneg _`. Establish `h2 : (2 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ)` using `by exact_mod_cast GlobalTheory.CompanionTheory.SW.Growth.two_le_norm v`. Establish `hq1 : 1 / (Ideal.absNorm v.asIdeal : ℝ) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[div_le_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx1 : x ≤ 1` using `hn.trans hq1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fibre_zero_image_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (N : ℕ) (J : Matrix (Fin N) (Fin N) E), IsHermND σ J → 3 ≤ N → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ O : Subring (Fv F v ⊗[F] E), (∀ y, y ∈ O ↔ ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F) → ∀ lam : Measure (Fv F v), IsStdV v lam → ∀ m : HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin N → Fv F v ⊗[F] E), IsGramFibFree (Fv F v) σ J 1 (coordW (Fv F v) b lam 1 N) (coordHerm (Fv F v) σ b lam 1) m → ∀ (h₂ : ∀ a b : Fin 1, σ ((0 : Matrix (Fin 1) (Fin 1) E) b a) = (0 : Matrix (Fin 1) (Fin 1) E) a b) (c : O), ¬ IsUnit c → IsUnit (c : Fv F v ⊗[F] E) → ∀ B : Set (Fin 1 → Fin N → Fv F v ⊗[F] E), MeasurableSet B → m (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) ((fun (X : Fin 1 → Fin N → Fv F v ⊗[F] E) a i => (c : Fv F v ⊗[F] E) * X a i) '' B) ≤ ENNReal.ofReal (1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2) * m (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) B := by
   intro F E _ _ _ _ _ σ hσ N J hJ hN d b

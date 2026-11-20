@@ -10,25 +10,25 @@ namespace PI.UnitaryGroupMassFormula.UJClassFin
 open PI.UJClassFin
 
 /- English proof (translation)
-Unfold `UJClassFin`. Introduce `F E _ _ _ _ _ _ σ M J L h1 h2 h3 h4 h5`. Establish `hRL` using `hR F E σ M J L h4 h5`. Take `⟨S, hSf, hS⟩` from `hC F E σ M J L h1 h2 h3 h4 h5`. Set `rel : HA (AF F) σ J → HA (AF F) σ J → Prop` to `fun x y => ∃ γ ∈ GamG σ J, ∃ k ∈ SFin σ J L, x = γ * y * k`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hrefl : ∀ x, rel x x` using `fun x => ⟨1, one_mem _, 1, one_mem _, by simp⟩`. Establish `hsymm : ∀ {x y}, rel x y → rel y x`. Introduce and unpack `x y ⟨γ, hγ, k, hk, rfl⟩`. Conclude with `⟨γ⁻¹, inv_mem hγ, k⁻¹, inv_mem hk, by group⟩`. Establish `htrans : ∀ {x y z}, rel x y → rel y z → rel x z`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `x y z ⟨γ, hγ, k, hk, rfl⟩ ⟨γ', hγ', k', hk', rfl⟩`. Conclude with `⟨γ * γ', mul_mem hγ hγ', k' * k, mul_mem hk' hk, by group⟩`. Set `st : Setoid (HA (AF F) σ J)` to `⟨rel, ⟨hrefl, hsymm, htrans⟩⟩`. Use `choose f hfS g hg using hS`. Establish `key : ∀ x y, f x = f y → rel y x`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Establish `hL : abelian₂ σ J L (emb σ J (g y * (g x)⁻¹) * x) = abelian₂ σ J L y`. Rewrite using `[Lam_emb_mul (σ := σ) (J := J) L, hg x, hg y, Set.image_image, hxy]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel_right]`. Establish `hk` using `sfin_of_Lam_eq (σ := σ) (J := J) L hRL _ _ hL`. Conclude with `⟨emb σ J (g y * (g x)⁻¹), emb_mem (σ := σ) (J := J) _, _, hk, (mul_inv_cancel_left _ _).symm⟩`. Establish `hQ : Finite (Quotient st)`. Establish `hfin : (Set.range f).Finite` using `hSf.subset (by rintro _ ⟨x, rfl⟩; exact hfS x)`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (Set.range f)` using `hfin.to_subtype`. Use `Finite.of_surjective (fun s : Set.range f => Quotient.mk st s.2.choose) ?_` and prove the remaining obligations. Introduce `q`. Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨f x, x, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `Quotient.sound (s := st) (key _ _ (Exists.choose_spec (⟨x, rfl⟩ : f x ∈ Set.range f)).symm)`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin (Quotient st)`. Use `⟨n, fun i => (e.symm i).out, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq : rel (Quotient.mk st x).out x` using `Quotient.exact (Quotient.out_eq (Quotient.mk st x))`. Take `⟨γ, hγ, k, hk, hx⟩` from `hsymm hq`. Use `⟨e (Quotient.mk st x), ⟨γ, hγ⟩, ⟨k, hk⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i j γ γ' k k' hEq`. Simplify using `only at hEq`. Establish `hr : rel (e.symm i).out (e.symm j).out`. Use `⟨(γ : HA (AF F) σ J)⁻¹ * γ', mul_mem (inv_mem γ.2) γ'.2, (k' : HA (AF F) σ J) * (k : HA (AF F) σ J)⁻¹, mul_mem k'.2 (inv_mem k.2), ?_⟩` and prove the remaining obligations. Establish `h0 : (e.symm i).out = (γ : HA (AF F) σ J)⁻¹ * (γ * (e.symm i).out * k) * (k : HA (AF F) σ J)⁻¹` using `by group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h0, hEq]`. Use `group`. Use `Quotient.sound (s := st) hr` as an intermediate fact. Rewrite `this` using `[Quotient.out_eq, Quotient.out_eq]`. Conclude with `e.symm.injective this`.
+A detailed English derivation is pending.
 -/
 theorem uJClassFin_of (hR : RatDense) (hC : ClassFinite) : UJClassFin := by
   unfold UJClassFin

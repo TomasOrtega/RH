@@ -2,17 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.Z.Desc.V0
 
 /- English proof (translation)
-Introduce `S R _ _ f hf n x hx`. Take `⟨hlow, hdiag⟩` from `(mem_unipB R).1 hx`. Set `A : Matrix (Fin n) (Fin n) S` to `fun i j => if i < j then Function.surjInv hf ((x : Matrix (Fin n) (Fin n) R) i j) else if i = j then 1 else 0`. Establish `hA : A.BlockTriangular id`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ¬ i < j` using `not_lt.2 (le_of_lt hij)`. Establish `h2 : i ≠ j` using `ne_of_gt hij`. Simplify using `[A, h1, h2]`. Establish `hdet : A.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun i _ => by simp [A]`. Establish `hunit : IsUnit A.det` using `by simp [hdet, isUnit_one]`. Establish `hcoe : ((GeneralLinearGroup.mk'' A hunit : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) = A` using `rfl`. Use `⟨GeneralLinearGroup.mk'' A hunit, (mem_unipB S).2 ⟨fun i j hji => ?_, fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hcoe]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA hji`. Rewrite using `[hcoe]`. Simplify using `[A]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : ((GeneralLinearGroup.map (n` using `Fin n) f (GeneralLinearGroup.mk'' A hunit) : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i j = f (A i j) := rfl`. Rewrite using `[hmap]`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `only [A, if_pos h]`. Conclude with `Function.surjInv_eq hf _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify using `[A, hdiag]`. Establish `h1 : ¬ i < j` using `not_lt.2 (le_of_lt h)`. Establish `h2 : i ≠ j` using `ne_of_gt h`. Simplify using `[A, h1, h2, hlow i j h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unipotent_upper_map_surjective :
     ∀ {S R : Type} [CommRing S] [CommRing R] (f : S →+* R), Function.Surjective f → ∀ (n : ℕ) (x : GL (Fin n) R), x ∈ unipB R (Fin n) →

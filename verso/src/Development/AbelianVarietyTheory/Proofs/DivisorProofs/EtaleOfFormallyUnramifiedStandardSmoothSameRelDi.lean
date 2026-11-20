@@ -9,19 +9,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A B C _ _ _ _ _ _ _ g hB hC hU`. Establish `: Algebra.IsStandardSmooth A B` using `Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth g`. Establish `: Algebra.IsStandardSmooth A C` using `Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth g`. Establish `hs : Function.Surjective (KaehlerDifferential.mapBaseChange A B C)` using `fun x => (KaehlerDifferential.exact_mapBaseChange_map A B C x).mp (Subsingleton.elim _ _)`. Establish `hinj : Function.Injective (KaehlerDifferential.mapBaseChange A B C)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `subsingleton_or_nontrivial C with hC0 | hC0` into its components or cases. Introduce `x y _`. Conclude with `Subsingleton.elim (α := TensorProduct B C Ω[B⁄A]) x y`. Establish `: Nontrivial B` using `(algebraMap B C).domain_nontrivial`. Establish `: Module.Free B Ω[B⁄A]` using `Algebra.IsStandardSmooth.free_kaehlerDifferential`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Free C Ω[C⁄A]` using `Algebra.IsStandardSmooth.free_kaehlerDifferential`. Establish `hr : Module.rank C Ω[C⁄A] = Module.rank C (TensorProduct B C Ω[B⁄A])`. Rewrite using `[Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential g, Module.rank_baseChange, Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential g]`. Simplify using the standard rewrite rules. Take `⟨e⟩` from `nonempty_linearEquiv_of_rank_eq hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : Function.Surjective (e.toLinearMap ∘ₗ KaehlerDifferential.mapBaseChange A B C)` using `e.surjective.comp hs`. Establish `h3` using `OrzechProperty.injective_of_surjective_endomorphism _ h2`. Conclude with `fun x y hxy => h3 (by simp [hxy])`. Establish `: Algebra.FormallySmooth B C`. Rewrite using `[Algebra.formallySmooth_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `Module.Projective.of_free`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Establish `h₁ : Algebra.H1Cotangent.δ A B C x = 0`. Apply `hinj` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_zero]`. Conclude with `(Algebra.H1Cotangent.exact_δ_mapBaseChange A B C).apply_apply_eq_zero x`. Take `⟨y, rfl⟩` from `(Algebra.H1Cotangent.exact_map_δ A B C x).mp h₁`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Establish `: Algebra.FormallyEtale B C` using `Algebra.FormallyEtale.of_formallyUnramified_and_formallySmooth`.
-
-Establish `: Algebra.FinitePresentation B C` using `Algebra.FinitePresentation.of_restrict_scalars_finitePresentation A B C`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etale_of_formallyUnramified_of_relDim : ∀ (A B C : Type) [CommRing A] [CommRing B]
     [CommRing C] [Algebra A B] [Algebra B C] [Algebra A C] [IsScalarTower A B C] (g : ℕ),

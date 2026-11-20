@@ -15,13 +15,13 @@ variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Take `⟨Z, hZ, rfl⟩` from `exists_exp_eq_of_mem_Kset hk`. Establish `hE` using `hD.glRep`. Establish `hv0 : v ∈ layer ε E V0 0` using `hv`. Take `⟨C, hC0, hC⟩` from `exists_norm_actM_pow_le_of_inK hE hVK hVf hZ 0`. Establish `hs : Summable fun m : ℕ => C ^ m * ‖v‖ * |(1 : ℝ) - 0| ^ m / (m.factorial : ℝ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(Real.summable_pow_div_factorial C).mul_right ‖v‖` as an intermediate fact. Use `this.congr fun m => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hsum` using `hasSum_orbit_of_bound hσ hD hZ.1 v (fun m => C ^ m * ‖v‖) (fun m => hC v hv0 m) 0 1 hs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `hsum` using `[exp_zero_smul, hσ.1.1]`. Simplify using `only [Complex.ofReal_one, one_smul, ContinuousLinearMap.one_apply] at hsum`. Establish `: FiniteDimensional ℂ (V0.map D.subtype)` using `Module.Finite.map _ _`. Establish `hcl : IsClosed ((V0.map D.subtype : Submodule ℂ H) : Set H)` using `Submodule.closed_of_finiteDimensional _`. Use `hcl.mem_of_tendsto hsum.tendsto_sum_nat (Filter.Eventually.of_forall fun N => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_map_of_mem (actM_pow_mem_layer_of_inK hE hVK hZ hv0 m)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tf_kstable_fin (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {V0 : Submodule ℂ D}
     (hVf : FiniteDimensional ℂ V0) (hVK : IsKStableSub ε E V0) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
@@ -45,7 +45,7 @@ theorem tf_kstable_fin (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D 
   exact Submodule.mem_map_of_mem (actM_pow_mem_layer_of_inK hE hVK hZ hv0 m)
 
 /- English proof (translation)
-Establish `hu : kᴴ * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk.1`. Establish `hinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv hu`. Use function extensionality and compare the values at `c`. Simplify using `only [tensGrp, kDiag, hinv, Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tf_tensGrp_kDiag (dual : Bool) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (f : Fin n → H) :
     tensGrp dual σ k f = kDiag dual σ k f := by
@@ -55,17 +55,15 @@ theorem tf_tensGrp_kDiag (dual : Bool) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k 
   simp only [tensGrp, kDiag, hinv, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Use `hV.1` as an intermediate fact. Use `⟨Module.Finite.map _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b hab _ ⟨x, hx, rfl⟩`. Conclude with `⟨E₁ a b x, hV.2.1 a b hab x hx, hΨ a b x hx⟩`. Introduce `S' hS' hst`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : IsKStableSub ε E₁ (S'.comap Ψ ⊓ V)`. Introduce and unpack `a b hab x ⟨hx1, hx2⟩`. Use `⟨?_, hV.2.1 a b hab x hx2⟩` and prove the remaining obligations. Use `show Ψ (E₁ a b x) ∈ S'`. Rewrite using `[hΨ a b x hx2]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hst a b hab _ hx1`. Break down `hV.2.2.1 _ inf_le_right hT with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `s hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx, rfl⟩` from `hS' hs`. Establish `hx0 : x ∈ S'.comap Ψ ⊓ V` using `⟨hs, hx⟩`. Rewrite `hx0` using `[h, Submodule.mem_bot]`. Rewrite using `[hx0, map_zero]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `right`. Use `le_antisymm hS' ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ S'.comap Ψ ⊓ V` using `by rw [h]; exact hx`. Conclude with `hx'.1`.
-
-Take `⟨w, hwV, hw0, hw1, hw2⟩` from `hV.2.2.2`. Use `⟨Ψ w, ⟨w, hwV, rfl⟩, fun h => hw0 (hinj w hwV h), fun a => ?_, fun a b hab h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hΨ a a w hwV, hw1 a, map_smul]`. Rewrite using `[← hΨ a b w hwV, hw2 a b hab h, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tf_kirr_map {M M' : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M']
     {E₁ : Fin n → Fin n → Module.End ℂ M} {E₂ : Fin n → Fin n → Module.End ℂ M'} {Λ : Fin n → ℝ}
@@ -103,15 +101,13 @@ theorem tf_kirr_map {M M' : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup
     · rw [← hΨ a b w hwV, hw2 a b hab h, map_zero]
 
 /- English proof (translation)
-Establish `hE` using `hD.glRep`. Establish `hmono : Monotone (layer ε E V)` using `fun k l hkl => layer_mono hkl`. Establish `hlay : ∀ c, ∃ m, f c ∈ layer ε E V m` using `fun c => by`. Establish `h1` using `(tset_mem.1 hf) c`. Rewrite `h1` using `[genSub_eq_iSup_layer hE hVk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_iSup_of_directed _ hmono.directed_le).1 h1`. Use `choose m hm using hlay`. Use `set M := Finset.univ.sup m with hM`. Establish `hfM : ∀ c, f c ∈ layer ε E V M` using `fun c => layer_mono (Finset.le_sup (mem_univ c)) (hm c)`. Establish `hLf : FiniteDimensional ℂ (layer ε E V M)` using `finiteDimensional_layer hVf M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLk : IsKStableSub ε E (layer ε E V M)` using `layer_kStable hE hVk M`. Use `⟨tensSub (layer ε E V M), ?_, tset_mem.2 hfM, fun w hw => tset_mem.2 fun c => layer_le_genSub M ((tset_mem.1 hw) c), ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.of_injective (LinearMap.pi fun c => LinearMap.codRestrict (layer ε E V M) ((LinearMap.proj c : (Fin n → D) →ₗ[ℂ] D) ∘ₗ (tensSub (layer ε E V M)).subtype) fun f => tset_mem.mp f.2 c) (fun f f' h => Subtype.ext (funext fun c => congrArg Subtype.val (congrFun h c)))`. Introduce `k hk w hw`. Establish `hu : ∀ d, ∃ u ∈ layer ε E V M, (u : H) = σ k ((w d : D) : H)` using `fun d => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨u, hu, e⟩` from `tf_kstable_fin hσ hD hLf hLk hk ((tset_mem.1 hw) d)`. Conclude with `⟨u, hu, e⟩`. Use `choose u hu hue using hu`. Use `⟨fun c => ∑ d, (cond dual (star (k c d)) (k c d)) • u d, tset_mem.2 fun c => Submodule.sum_mem _ fun d _ => Submodule.smul_mem _ _ (hu d), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
-
-Simplify using `only [kDiag, Submodule.coe_sum, Submodule.coe_smul, hue]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tf_kfin_tens (dual : Bool) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {V : Submodule ℂ D}
     (hVf : FiniteDimensional ℂ V) (hVk : IsKStableSub ε E V) {f : Fin n → D} (hf : f ∈ tensSub (genSub E V)) :
@@ -149,11 +145,11 @@ section Datum
 variable [CompleteSpace H]
 
 /- English proof (translation)
-Establish `hce` using `fun c f hf => coef_embed dual hσ hD hsm hgap hV hc hVK hW _ (tf_single_smul_mem c (tfSgn ε c) hy) f hf`. Simplify using `only [tf_coe_single] at hce`. Set `Φ : tensSub (n` to `n) (genSub E V) →ₗ[ℂ] smD ε (tfRdiag ε) := { toFun := fun f => ⟨tfPh dual ε σ (y : H) (fun c => ((f.1 c : D) : H)), tfRdiag_smooth fun c => toL2_mem_smD_of_isSmoothL2 (hce c f.1 f.2).1⟩ map_add' := fun f f' => Subtype.ext (vectorL2_ext fun c => by`. Use `Eq.trans ?_ (toL2_add_smooth ε ((hce c f.1 f.2).1.2 []) ((hce c f'.1 f'.2).1.2 []))` and prove the remaining obligations. Use `toL2_congr_of_eq_on_UJset fun g _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[coefMap, tensGrp, sum_add_distrib])`. Use the proof step `map_smul' := fun a f => Subtype.ext (vectorL2_ext fun c => by`. Use `Eq.trans ?_ (toL2_smul_smooth ε a _)` and prove the remaining obligations. Use `toL2_congr_of_eq_on_UJset fun g _ => ?_` and prove the remaining obligations. Simplify using `[coefMap, tensGrp, mul_sum, mul_left_comm]) }`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Φ, fun f => rfl, fun a b f => Subtype.ext (vectorL2_ext fun c => ?_)⟩` and prove the remaining obligations. Use `(tfRdiag_smE (fun c => toL2_mem_smD_of_isSmoothL2 (hce c f.1 f.2).1) a b c).trans ?_` and prove the remaining obligations. Use `(rightDerivative_toL2 (hce c f.1 f.2).1 a b).trans (toL2_congr_of_eq_on_UJset fun g hg => ?_)` and prove the remaining obligations. Conclude with `(hce c f.1 f.2).2.1 a b g hg`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tf_phi (dual : Bool) {lam : Fin n → ℝ} (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hsm : ∀ v : D, IsSmoothVecU ε σ v) {V : Submodule ℂ D} (hgap : StdGap ε lam)

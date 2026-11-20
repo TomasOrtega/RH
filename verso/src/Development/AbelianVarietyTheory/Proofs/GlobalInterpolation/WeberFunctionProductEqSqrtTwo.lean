@@ -16,7 +16,7 @@ def eulerProd (x : ℂ) : ℂ := ∏' n : ℕ, (1 - x ^ (n + 1))
 def oddProd (x : ℂ) : ℂ := ∏' k : ℕ, (1 - x ^ (2 * k + 1))
 
 /- English proof (translation)
-Establish `h2 : ‖x‖ ^ 2 < 1` using `by nlinarith [norm_nonneg x]`. Establish `hs : Summable fun k : ℕ ↦ ‖x‖ * (‖x‖ ^ 2) ^ k` using `(summable_geometric_of_lt_one (by positivity) h2).mul_left _`. Use `multipliable_one_add_of_summable (f := fun k : ℕ ↦ -x ^ (2 * k + 1)) (hs.congr fun k ↦ by simp [norm_pow, pow_succ, pow_mul]; ring)` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem multipliable_odd {x : ℂ} (hx : ‖x‖ < 1) :
     Multipliable fun k : ℕ ↦ 1 - x ^ (2 * k + 1) := by
@@ -28,16 +28,16 @@ theorem multipliable_odd {x : ℂ} (hx : ‖x‖ < 1) :
   simpa [sub_eq_add_neg] using this
 
 /- English proof (translation)
-The claim follows from `ModularForm.multipliable_one_sub_pow hx`.
+A detailed English derivation is pending.
 -/
 theorem multipliable_euler {x : ℂ} (hx : ‖x‖ < 1) :
     Multipliable fun n : ℕ ↦ 1 - x ^ (n + 1) :=
   ModularForm.multipliable_one_sub_pow hx
 
 /- English proof (translation)
-Establish `hy2 : ‖y ^ 2‖ < 1` using `by rw [norm_pow]; nlinarith [norm_nonneg y]`. Establish `e1 : (fun k : ℕ ↦ (fun n : ℕ ↦ 1 - y ^ (n + 1)) (2 * k)) = fun k ↦ 1 - y ^ (2 * k + 1)` using `rfl`. Establish `e2 : (fun k : ℕ ↦ (fun n : ℕ ↦ 1 - y ^ (n + 1)) (2 * k + 1)) = fun k ↦ 1 - (y ^ 2) ^ (k + 1)`. Use function extensionality and compare the values at `k`. Rewrite using `[← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Establish `h` using `tprod_even_mul_odd (f := fun n : ℕ ↦ 1 - y ^ (n + 1)) (by rw [e1]; exact multipliable_odd hy) (by rw [e2]; exact multipliable_euler hy2)`. Rewrite `h` using `[e1, e2]`. Rewrite using `[eulerProd, eulerProd, oddProd, h]`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eulerProd_split {y : ℂ} (hy : ‖y‖ < 1) : eulerProd y = oddProd y * eulerProd (y ^ 2) := by
   have hy2 : ‖y ^ 2‖ < 1 := by rw [norm_pow]; nlinarith [norm_nonneg y]
@@ -51,7 +51,7 @@ theorem eulerProd_split {y : ℂ} (hy : ‖y‖ < 1) : eulerProd y = oddProd y *
   rw [eulerProd, eulerProd, oddProd, h]
 
 /- English proof (translation)
-Establish `hn : ‖-t‖ < 1` using `by rwa [norm_neg]`. Rewrite using `[oddProd, oddProd, oddProd, ← (multipliable_odd hn).tprod_mul (multipliable_odd ht)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Odd.neg_pow ⟨k, rfl⟩, ← pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Put the polynomial expressions in normal form.
 -/
@@ -64,11 +64,11 @@ theorem oddProd_neg_mul {t : ℂ} (ht : ‖t‖ < 1) : oddProd (-t) * oddProd t 
   ring_nf
 
 /- English proof (translation)
-Establish `hn : ‖-t‖ < 1` using `by rwa [norm_neg]`. Establish `h2 : ‖t ^ 2‖ < 1` using `by rw [norm_pow]; nlinarith [norm_nonneg t]`. Establish `a` using `eulerProd_split hn`. Establish `b` using `eulerProd_split ht`. Establish `c` using `eulerProd_split h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a` using `[neg_sq]`. Rewrite `c` using `[← pow_mul]`. Evaluate the numerical expressions using `at c`. Establish `d` using `oddProd_neg_mul ht`. Evaluate the numerical expressions using `at c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Take the linear combination `(eulerProd t * eulerProd (t ^ 4)) * a + (oddProd (-t) * eulerProd (t ^ 2) * eulerProd (t ^ 4)) * b + (eulerProd (t ^ 2) ^ 2 * eulerProd (t ^ 4)) * d - eulerProd (t ^ 2) ^ 2 * c`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eulerProd_identity {t : ℂ} (ht : ‖t‖ < 1) :
     eulerProd (-t) * eulerProd t * eulerProd (t ^ 4) = eulerProd (t ^ 2) ^ 3 := by
@@ -92,19 +92,19 @@ theorem eta_eq (z : ℂ) : ModularForm.eta z = Function.Periodic.qParam 24 z * e
   rfl
 
 /- English proof (translation)
-Use `set t := cexp (π * I * (τ : ℂ)) with ht_def`. Establish `ht : ‖t‖ < 1`. Rewrite using `[ht_def, Complex.norm_exp, Real.exp_lt_one_iff]`. Use `τ.im_pos` as an intermediate fact. Simplify using `only [mul_re, ofReal_re, Complex.I_re, ofReal_im, Complex.I_im, mul_im, coe_re, coe_im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[Real.pi_pos]`. Establish `q1 : Function.Periodic.qParam 1 (((τ : ℂ) + 1) / 2) = -t`. Rewrite using `[Function.Periodic.qParam, ht_def, ← mul_neg_one, ← Complex.exp_pi_mul_I, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `q2 : Function.Periodic.qParam 1 ((τ : ℂ) / 2) = t`. Rewrite using `[Function.Periodic.qParam, ht_def]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `q3 : Function.Periodic.qParam 1 (2 * (τ : ℂ)) = t ^ 4`. Rewrite using `[Function.Periodic.qParam, ht_def, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `q4 : Function.Periodic.qParam 1 (τ : ℂ) = t ^ 2`. Rewrite using `[Function.Periodic.qParam, ht_def, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hq : cexp (-(π * I / 24)) * Function.Periodic.qParam 24 (((τ : ℂ) + 1) / 2) * Function.Periodic.qParam 24 ((τ : ℂ) / 2) * Function.Periodic.qParam 24 (2 * (τ : ℂ)) = Function.Periodic.qParam 24 (τ : ℂ) ^ 3`. Simplify using `only [Function.Periodic.qParam, ← Complex.exp_add, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eta_eq, eta_eq, eta_eq, eta_eq, q1, q2, q3, q4]`. Establish `key` using `eulerProd_identity ht`. Take the linear combination `(eulerProd (-t) * eulerProd t * eulerProd (t ^ 4)) * hq + Function.Periodic.qParam 24 (τ : ℂ) ^ 3 * key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eta_relation (τ : ℍ) :
     cexp (-(π * I / 24)) * ModularForm.eta (((τ : ℂ) + 1) / 2) * ModularForm.eta ((τ : ℂ) / 2) *
@@ -135,7 +135,7 @@ theorem eta_relation (τ : ℍ) :
     Function.Periodic.qParam 24 (τ : ℂ) ^ 3 * key
 
 /- English proof (translation)
-Establish `h0 : ModularForm.eta τ ≠ 0` using `ModularForm.eta_ne_zero τ.2`. Establish `key` using `eta_relation τ`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.weberF, GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.weberF₁, GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.weberF₂]`. Rewrite using `[div_mul_div_comm, div_mul_div_comm, div_eq_iff (by simp [h0])]`. Take the linear combination `((Real.sqrt 2 : ℝ) : ℂ) * key`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem weber_prod (τ : ℍ) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.weberF τ * GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.weberF₁ τ * GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.weberF₂ τ =

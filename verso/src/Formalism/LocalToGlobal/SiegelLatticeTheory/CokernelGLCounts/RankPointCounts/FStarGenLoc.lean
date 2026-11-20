@@ -18,11 +18,11 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Introduce `γ w hγ p`. Establish `hR : IsRowLat D F0 γ.lam` using `hP.2.1.1 γ.lam γ.mem`. Take `⟨hgen, hG⟩` from `hγ.1`. Take `⟨h2, h2e⟩` from `starRepF_rep γ`. Take `⟨F', ⟨h1, h1e⟩, hF'⟩` from `hgen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrel` using `(Formalism.L2.SG.Pf.double_coset_equivalence γ.lam (lf D F0) (PD D γ.lam (lf D F0) u') ⟨F', h1⟩ ⟨repF γ, h2⟩).1 (h1e.trans h2e.symm)`. Establish `hgenR : IsGeneric γ.lam (gS D) (lf D F0) (repF γ)` using `(PI.TermAttrConst.UnitaryGroupMassFormula.genericity_constant_double_cosets D u u' F0 γ.lam hR ⟨F', h1⟩ ⟨repF γ, h2⟩ hrel).1 hF'`. Establish `hrel2` using `(Formalism.L2.SG.Pf.double_coset_equivalence γ.lam (lf D F0) (PD D γ.lam (lf D F0) u') (Quot.out γ.cls) ⟨repF γ, h2⟩).1 ((Quot.out_eq γ.cls).trans h2e.symm)`. Establish `hGv : Gval (lf D F0) (repF γ) ≠ 0`. Rewrite using `[Formalism.L2.SG.Pf.gval_rel (lf D F0) hrel2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG`. Conclude with `(Formalism.L2.SG.Pf.frameGenLoc_holds D Zd F0 γ.lam (repF γ) hR h2 (Formalism.L2.SG.Pf.m_plus_independent _ _ _ _) hGv).1 hgenR p`.
+A detailed English derivation is pending.
 -/
 theorem starGenLoc_of_P (hP : CtxP u u' F0 what₂) : StarGenLoc Zd u u' F0 what₂ := by
   intro γ w hγ p

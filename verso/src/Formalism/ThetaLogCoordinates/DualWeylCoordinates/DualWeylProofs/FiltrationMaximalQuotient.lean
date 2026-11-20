@@ -9,9 +9,9 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 variable {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-Introduce `c hc t`. Apply `card_le_card` to reduce the goal to its premises. Apply `filter_subset_filter` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb`, the goal using `[qb_mem_canT]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `lt_of_lt_of_le hb ?_` and prove the remaining obligations. Unfold `colH`. Use `card_le_card fun m hm => ?_` and prove the remaining obligations. Simplify using `only [mem_filter, mem_univ, true_and] at hm ⊢`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma qb_std_can (mu : Fin n → ℤ) : StdT (canT mu) := by
   intro c hc t
@@ -29,7 +29,7 @@ def standardBasis (hS : SBasis) (mu : Fin n → ℤ) (hmu : Dominant mu) : Basis
   (Basis.span (hS n mu hmu).1).map (LinearEquiv.ofEq _ _ (hS n mu hmu).2)
 
 /- English proof (translation)
-Simplify using `[standardBasis]`.
+Simplify using the standard rewrite rules.
 -/
 lemma standardBasis_coe (hS : SBasis) (mu : Fin n → ℤ) (hmu : Dominant mu) (I : {I : TIdx mu // StdT I}) :
     ((standardBasis hS mu hmu I : ↥(SMu mu)) : GLCoord ℤ n) = brk mu I.1 := by
@@ -39,7 +39,7 @@ def qb_bS (hS : SBasis) {nu mu : Fin n → ℤ} (hnu : Dominant nu) (h : nu = mu
     Basis {I : TIdx nu // StdT I} ℤ ↥(SMu mu) := h ▸ standardBasis hS nu hnu
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `standardBasis_coe hS nu hnu I`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma qb_bS_coe (hS : SBasis) {nu mu : Fin n → ℤ} (hnu : Dominant nu) (h : nu = mu) (I : {I : TIdx nu // StdT I}) :
     ((qb_bS hS hnu h I : ↥(SMu mu)) : GLCoord ℤ n) = brk nu I.1 := by
@@ -50,13 +50,13 @@ def qb_canIdx {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ) (j : {j : CF.J 
   ⟨j.1, canT _, qb_std_can _⟩
 
 /- English proof (translation)
-Introduce `j j' h` and use `Subtype.ext (congrArg Sigma.fst h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma qb_canIdx_inj {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ) : Function.Injective (qb_canIdx CF mu) :=
   fun j j' h => Subtype.ext (congrArg Sigma.fst h)
 
 /- English proof (translation)
-Establish `h` using `(qb_basisR hA CF ℤ).1`. Rewrite `h` using `[qb_vecF_int]`. Conclude with `h.comp (qb_canIdx CF mu) (qb_canIdx_inj CF mu)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qb_can_li (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ) :
     LinearIndependent ℤ (fun j : {j : CF.J // CF.mu j = mu} => CF.vec j.1 (canT (CF.mu j.1))) := by
@@ -65,9 +65,9 @@ lemma qb_can_li (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ)
   exact h.comp (qb_canIdx CF mu) (qb_canIdx_inj CF mu)
 
 /- English proof (translation)
-Unfold `ColFam.MM`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨j, hj⟩, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨j, hj, rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨⟨j, hj⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma qb_can_span {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ) :
     Submodule.span ℤ (Set.range fun j : {j : CF.J // CF.mu j = mu} => CF.vec j.1 (canT (CF.mu j.1))) = CF.MM mu := by
@@ -83,7 +83,7 @@ def qb_bM (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ) :
   (Basis.span (qb_can_li hA CF mu)).map (LinearEquiv.ofEq _ _ (qb_can_span CF mu))
 
 /- English proof (translation)
-Simplify using `[qb_bM]`.
+Simplify using the standard rewrite rules.
 -/
 lemma qb_bM_coe (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ) (j : {j : CF.J // CF.mu j = mu}) :
     ((qb_bM hA CF mu j : ↥(CF.MM mu)) : M.ι → ℤ) = CF.vec j.1 (canT (CF.mu j.1)) := by
@@ -98,7 +98,7 @@ def qb_aT (bA : ∀ k, Basis (φ k) R A) (bB : Basis κ R B) : Basis (Σ k, φ k
   (Finsupp.basis bA).map (TensorProduct.equivFinsuppOfBasisRight bB).symm
 
 /- English proof (translation)
-Rewrite using `[qb_aT, Basis.map_apply, Finsupp.coe_basis, TensorProduct.equivFinsuppOfBasisRight_symm_apply]`. Conclude with `Finsupp.sum_single_index (TensorProduct.zero_tmul _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qb_aT_apply (bA : ∀ k, Basis (φ k) R A) (bB : Basis κ R B) (x : Σ k, φ k) :
     qb_aT bA bB x = bA x.1 x.2 ⊗ₜ bB x.1 := by
@@ -109,9 +109,9 @@ def qb_aPsi (b : Basis ι R V) (s : Set ι) (c : Basis ↥s R W) : V →ₗ[R] W
   c.repr.symm.toLinearMap ∘ₗ Finsupp.lsubtypeDomain s ∘ₗ b.repr.toLinearMap
 
 /- English proof (translation)
-Simplify using `only [qb_aPsi, LinearMap.comp_apply, LinearEquiv.coe_coe, Basis.repr_self]`. Rewrite using `[← Basis.repr_symm_single_one]`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [Finsupp.lsubtypeDomain_apply, Finsupp.subtypeDomain_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `propext ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma qb_aPsi_basis (b : Basis ι R V) (s : Set ι) (c : Basis ↥s R W) (i : ι) (hi : i ∈ s) :
     qb_aPsi b s c (b i) = c ⟨i, hi⟩ := by
@@ -125,9 +125,9 @@ lemma qb_aPsi_basis (b : Basis ι R V) (s : Set ι) (c : Basis ↥s R W) (i : ι
   exact propext ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩
 
 /- English proof (translation)
-Simplify using `only [qb_aPsi, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.map_eq_zero_iff]`. Rewrite using `[Finsupp.ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `h ⟨y, hy⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h ⟨y, hy⟩`. Conclude with `h y hy`.
+A detailed English derivation is pending.
 -/
 lemma qb_aPsi_eq_zero_iff (b : Basis ι R V) (s : Set ι) (c : Basis ↥s R W) (x : V) :
     qb_aPsi b s c x = 0 ↔ ∀ i ∈ s, b.repr x i = 0 := by
@@ -138,7 +138,7 @@ lemma qb_aPsi_eq_zero_iff (b : Basis ι R V) (s : Set ι) (c : Basis ↥s R W) (
   · rintro h ⟨y, hy⟩; exact h y hy
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Conclude with `⟨f.quotKerEquivOfSurjective hs, fun x => f.quotKerEquivOfSurjective_apply_mk hs x⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 lemma qb_quot_equiv {N T : Type*} [AddCommGroup N] [Module R N] [AddCommGroup T] [Module R T]
     (f : N →ₗ[R] T) (hs : Function.Surjective f) (p : Submodule R N) (hk : LinearMap.ker f = p) :
@@ -147,13 +147,13 @@ lemma qb_quot_equiv {N T : Type*} [AddCommGroup N] [Module R N] [AddCommGroup T]
   exact ⟨f.quotKerEquivOfSurjective hs, fun x => f.quotKerEquivOfSurjective_apply_mk hs x⟩
 
 /- English proof (translation)
-Substitute `hP hQ` using the available equality. Establish `hker : LinearMap.ker (qb_aPsi b s c ∘ₗ (Submodule.span R (b '' t)).subtype) = (Submodule.span R (b '' (t \ s))).comap (Submodule.span R (b '' t)).subtype`. Use extensionality with `x`. Establish `hx : ((b.repr x.1).support : Set ι) ⊆ t` using `(Basis.mem_span_image b).1 x.2`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Basis.mem_span_image]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `⟨hx hy, fun hy' => (Finsupp.mem_support_iff.1 hy) ((qb_aPsi_eq_zero_iff b s c x.1).1 h y hy')⟩`. Introduce `h`. Use `(qb_aPsi_eq_zero_iff b s c x.1).2 fun y hy => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Conclude with `(h (Finsupp.mem_support_iff.2 hne)).2 hy`. Establish `hsurj : Function.Surjective (qb_aPsi b s c ∘ₗ (Submodule.span R (b '' t)).subtype)`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← c.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨⟨y, hy⟩, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨b y, Submodule.subset_span ⟨y, hst hy, rfl⟩⟩, qb_aPsi_basis b s c y hy⟩`. Take `⟨Phi, hPhi⟩` from `qb_quot_equiv _ hsurj _ hker`. Use `⟨Phi, fun x i hi hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hPhi, LinearMap.comp_apply, Submodule.subtype_apply, hx, qb_aPsi_basis b s c i hi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qb_aQuot (b : Basis ι R V) (s t : Set ι) (hst : s ⊆ t) (c : Basis ↥s R W) (P Q : Submodule R V)
     (hP : P = Submodule.span R (b '' t)) (hQ : Q = Submodule.span R (b '' (t \ s))) :
@@ -192,11 +192,9 @@ def qb_eqS {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ) :
   right_inv := fun ⟨⟨_, _⟩, _⟩ => rfl
 
 /- English proof (translation)
-Introduce `hA hS n _ M CF pi hpi mu hmu hmax`. Establish `hlow : DomLowerSet (pi \ {mu})` using `⟨fun nu h => hpi.1 nu h.1, fun nu h la hla hle => ⟨hpi.2 nu h.1 la hla hle, fun heq => h.2 (hmax nu h.1 (by rw [← (heq : la = mu)]; exact hle))⟩⟩`. Take `⟨Phi, hPhi⟩` from `qb_aQuot (qb_basis hA CF ℤ) (qb_sMu CF mu) {y | CF.mu y.1 ∈ pi} (fun y hy => by rw [Set.mem_setOf_eq, (hy : CF.mu y.1 = mu)]; exact hmu) ((qb_aT (fun j : {j : CF.J // CF.mu j = mu} => qb_bS hS (CF.dom j.1) j.2) (qb_bM hA CF mu)).reindex (qb_eqS CF mu)) (CF.Mpi pi) (CF.Mpi (pi \ { …`. Use `⟨Phi.toAddEquiv.toIntLinearEquiv, ?_⟩` and prove the remaining obligations. Introduce `j I x y z hj hI hx hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hPhi x ⟨j, I, hI⟩ hj (by rw [hx, qb_basis_apply, qb_vecF_int])`. Rewrite `h1` using `[Basis.reindex_apply, qb_aT_apply]`. Use `Eq.trans h1 ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Subtype.ext ((qb_bS_coe hS _ _ _).trans hy.symm)`.
-
-Conclude with `Subtype.ext ((qb_bM_coe hA CF mu _).trans hz.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem filtration_maximal_quotient_of : LemmaA → SBasis → FiltrationMaximalQuotient := by
   intro hA hS n _ M CF pi hpi mu hmu hmax

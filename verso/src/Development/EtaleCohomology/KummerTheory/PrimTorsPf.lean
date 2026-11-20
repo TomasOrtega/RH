@@ -6,14 +6,14 @@ open Polynomial IsLocalRing GlobalTheory.EtC
 namespace LateralTheory.KummerTheory.PrimitiveRootTorsion
 
 /- English proof (translation)
-Rewrite using `[aeval_def, eval₂_eq_eval_map, algebraMap_int_eq, map_cyclotomic_int]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_cyc {S : Type} [CommRing S] (q : ℕ) (x : S) :
     aeval x (cyclotomic q ℤ) = eval x (cyclotomic q S) := by
   rw [aeval_def, eval₂_eq_eval_map, algebraMap_int_eq, map_cyclotomic_int]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `h` using `congrArg (aeval ζ.1) hg`. Rewrite `h` using `[map_mul, ζ.2.2, zero_mul]`. Simplify `h` using `[sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prim_pow {q : ℕ} {B : Type} [CommRing B] (ζ : Prim q B) : ζ.1 ^ q = 1 := by
   obtain ⟨g, hg⟩ := cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -22,7 +22,7 @@ theorem prim_pow {q : ℕ} {B : Type} [CommRing B] (ζ : Prim q B) : ζ.1 ^ q = 
   simpa [sub_eq_zero] using h
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Nat.div_add_mod n q, pow_add, pow_mul, h, one_pow, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pow_mod_q {q : ℕ} {B : Type} [CommRing B] {x : B} (h : x ^ q = 1) (n : ℕ) : x ^ n = x ^ (n % q) := by
   conv_lhs => rw [← Nat.div_add_mod n q, pow_add, pow_mul, h, one_pow, one_mul]
@@ -30,17 +30,17 @@ theorem pow_mod_q {q : ℕ} {B : Type} [CommRing B] {x : B} (h : x ^ q = 1) (n :
 variable {q : ℕ} [NeZero q] {B : Type} [CommRing B] [IsLocalRing B]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simpa using (hq.map (residue B)).ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem neZero_res (hq : IsUnit (q : B)) : NeZero (q : ResidueField B) :=
   ⟨by simpa using (hq.map (residue B)).ne_zero⟩
 
 /- English proof (translation)
-Establish `hq'` using `neZero_res hq`. Establish `hS : IsUnit (∑ i ∈ Finset.range q, u ^ i * v ^ (q - 1 - i))`. Apply `isUnit_of_map_unit (residue B)` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [map_mul, map_pow, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[geom_sum₂_self]`. Establish `hv' : residue B v ^ q = 1` using `by rw [← map_pow, hv, map_one]`. Establish `hu1 : IsUnit (residue B v)` using `IsUnit.of_pow_eq_one hv' (NeZero.ne q)`. Conclude with `(isUnit_iff_ne_zero.2 (NeZero.ne _)).mul (hu1.pow _)`. Establish `e` using `geom_sum₂_mul u v q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hu, hv, sub_self]`. Conclude with `sub_eq_zero.1 ((hS.mul_right_eq_zero).1 e)`.
+A detailed English derivation is pending.
 -/
 theorem uniq (hq : IsUnit (q : B)) {u v : B} (hu : u ^ q = 1) (hv : v ^ q = 1)
     (h : residue B u = residue B v) : u = v := by
@@ -58,7 +58,7 @@ theorem uniq (hq : IsUnit (q : B)) {u v : B} (hu : u ^ q = 1) (hv : v ^ q = 1)
   exact sub_eq_zero.1 ((hS.mul_right_eq_zero).1 e)
 
 /- English proof (translation)
-Use `neZero_res hq` as an intermediate fact. Rewrite using `[← isRoot_cyclotomic_iff, IsRoot, ← aeval_cyc]`. Establish `e` using `Polynomial.aeval_algHom_apply (residue B).toIntAlgHom ζ.1 (cyclotomic q ℤ)`. Rewrite `e` using `[ζ.2.2, map_zero]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_res (hq : IsUnit (q : B)) (ζ : Prim q B) : IsPrimitiveRoot (residue B ζ.1) q := by
   have := neZero_res hq
@@ -68,9 +68,9 @@ theorem prim_res (hq : IsUnit (q : B)) (ζ : Prim q B) : IsPrimitiveRoot (residu
   exact e
 
 /- English proof (translation)
-Establish `hζ` using `prim_res hq ζ`. Establish `hξ` using `prim_res hq ξ`. Take `⟨i, hi, he⟩` from `hζ.eq_pow_of_pow_eq_one hξ.pow_eq_one`. Establish `hc : i.Coprime q` using `(hζ.pow_iff_coprime (Nat.pos_of_ne_zero (NeZero.ne q)) i).1 (he ▸ hξ)`. Use `⟨ZMod.unitOfCoprime i hc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hval : ((ZMod.unitOfCoprime i hc : (ZMod q)ˣ) : ZMod q).val = i`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi]`. Rewrite using `[hval]`. Use `uniq hq (prim_pow ξ) (by rw [← pow_mul, mul_comm, pow_mul, prim_pow ζ, one_pow]) ?_` and prove the remaining obligations. Rewrite using `[map_pow, he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_idx (hq : IsUnit (q : B)) (ζ ξ : Prim q B) :
     ∃ a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val := by
@@ -86,7 +86,7 @@ theorem exists_idx (hq : IsUnit (q : B)) (ζ ξ : Prim q B) :
   rw [map_pow, he]
 
 /- English proof (translation)
-Establish `h'` using `congrArg (residue B) h`. Rewrite `h'` using `[map_pow, map_pow]`. Conclude with `Units.ext (ZMod.val_injective q ((prim_res hq ζ).pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_unique (hq : IsUnit (q : B)) (ζ : Prim q B) {a b : (ZMod q)ˣ}
     (h : ζ.1 ^ (a : ZMod q).val = ζ.1 ^ (b : ZMod q).val) : a = b := by
@@ -95,7 +95,7 @@ theorem idx_unique (hq : IsUnit (q : B)) (ζ : Prim q B) {a b : (ZMod q)ˣ}
   exact Units.ext (ZMod.val_injective q ((prim_res hq ζ).pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h'))
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, ZMod.val_mul, ← pow_mod_q (prim_pow ζ0), ha, hb, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idx_mul {ζ0 ζ ξ : Prim q B} {a b : (ZMod q)ˣ} (hb : ζ.1 = ζ0.1 ^ (b : ZMod q).val)
     (ha : ξ.1 = ζ.1 ^ (a : ZMod q).val) : ξ.1 = ζ0.1 ^ ((a * b : (ZMod q)ˣ) : ZMod q).val := by
@@ -106,11 +106,11 @@ end LateralTheory.KummerTheory.PrimitiveRootTorsion
 namespace LateralTheory.KummerTheory.PrimitiveRootTorsion
 
 /- English proof (translation)
-Use `neZero_res hq` as an intermediate fact. Take `⟨μ, hμ⟩` from `IsSepClosed.exists_root (cyclotomic q (ResidueField B)) (degree_cyclotomic_pos q _ (Nat.pos_of_ne_zero (NeZero.ne q))).ne' (separable_cyclotomic q _)`. Take `⟨a0, rfl⟩` from `residue_surjective μ`. Establish `hev : residue B (eval a0 (cyclotomic q B)) = eval (residue B a0) (cyclotomic q (ResidueField B))`. Rewrite using `[← Polynomial.eval₂_hom, ← Polynomial.eval_map, map_cyclotomic]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hder : residue B (eval a0 (derivative (cyclotomic q B))) = eval (residue B a0) (derivative (cyclotomic q (ResidueField B)))`. Rewrite using `[← Polynomial.eval₂_hom, ← Polynomial.eval_map, ← Polynomial.derivative_map, map_cyclotomic]`. Take `⟨a, ha, -⟩` from `HenselianLocalRing.is_henselian (cyclotomic q B) (cyclotomic.monic q B) a0 (by rw [← residue_eq_zero_iff, hev]; exact hμ) (by`. Apply `isUnit_of_map_unit (residue B)` to reduce the goal to its premises. Rewrite using `[hder, isUnit_iff_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(separable_cyclotomic q (ResidueField B)).aeval_derivative_ne_zero (x := residue B a0) (by rw [Polynomial.coe_aeval_eq_eval]; exact hμ)`. Rewrite using `[Polynomial.coe_aeval_eq_eval] at h)` and apply the resulting hypothesis. Conclude with `⟨⟨a, hq, by rw [aeval_cyc]; exact ha⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem exists_prim {q : ℕ} [NeZero q] {B : Type} [CommRing B] [HenselianLocalRing B]
     [IsSepClosed (ResidueField B)] (hq : IsUnit (q : B)) : Nonempty (Prim q B) := by
@@ -139,23 +139,23 @@ namespace LateralTheory.KummerTheory
 open LateralTheory.KummerTheory.PrimitiveRootTorsion
 
 /- English proof (translation)
-Introduce `q _ B _ hSH hq`. Take `⟨_, _⟩` from `hSH`. Use `⟨exists_prim hq, fun i ζ => ?_⟩` and prove the remaining obligations. Establish `hex : ∀ ξ : Prim q B, ∃ a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val` using `fun ξ => exists_idx hq ζ ξ`. Set `ind : Prim q B → (ZMod q)ˣ` to `fun ξ => (hex ξ).choose`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hind : ∀ ξ, ξ.1 = ζ.1 ^ (ind ξ : ZMod q).val` using `fun ξ => (hex ξ).choose_spec`. Set `v : Prim q B → ULift.{1} (ZMod q)` to `fun ξ => ULift.up (((ind ξ) ^ i : (ZMod q)ˣ) : ZMod q)`. Set `φ` to `Finsupp.linearCombination (ULift.{1} (ZMod q)) v`. Establish `hker : twRel q i B ≤ LinearMap.ker φ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨ζ', ξ, a, h, rfl⟩`. Establish `hi : ind ξ = a * ind ζ'` using `idx_unique hq ζ (by rw [← hind ξ]; exact idx_mul (hind ζ') h)`. Express the relevant statement in the definitionally equal form `φ _ = 0`. Rewrite using `[map_sub, Finsupp.linearCombination_single, Finsupp.linearCombination_single, sub_eq_zero]`. Apply `ULift.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[v, hi, mul_zpow]`. Set `ψ` to `(twRel q i B).liftQ φ hker`. Prove the components needed by the constructor for the conclusion. Introduce `t t' h`. Establish `h2` using `congrArg ψ h`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.map_smul, ψ, Submodule.liftQ_apply, φ, Finsupp.linearCombination_single, one_smul] at h2`. Establish `h3` using `congrArg ULift.down h2`. Express the relevant statement in the definitionally equal form `t * (((ind ζ) ^ i : (ZMod q)ˣ) : ZMod q) = t' * (((ind ζ) ^ i : (ZMod q)ˣ) : ZMod q) at h3`. Conclude with `(Units.mul_left_inj _).1 h3`. Introduce `y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add f g hf hg`. Take `⟨a, ha⟩` from `hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hg`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Simplify using `only at ha hb ⊢`. Rewrite using `[Submodule.Quotient.mk_add, ← ha, ← hb, ← add_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `single ξ c`. Establish `hmem : Finsupp.single ξ 1 - Finsupp.single ζ (ULift.up (((ind ξ) ^ i : (ZMod q)ˣ) : ZMod q)) ∈ twRel q i B` using `Submodule.subset_span ⟨ζ, ξ, ind ξ, hind ξ, rfl⟩`. Establish `he : (Submodule.Quotient.mk (Finsupp.single ξ 1) : _ ⧸ twRel q i B) = Submodule.Quotient.mk (Finsupp.single ζ (ULift.up (((ind ξ) ^ i : (ZMod q)ˣ) : ZMod q)))` using `(Submodule.Quotient.eq _).2 hmem`. Use `⟨(c * ULift.up (((ind ξ) ^ i : (ZMod q)ˣ) : ZMod q)).down, ?_⟩` and prove the remaining obligations. Establish `hs : Finsupp.single ζ (ULift.up (((ind ξ) ^ i : (ZMod q)ˣ) : ZMod q)) = (ULift.up (((ind ξ) ^ i : (ZMod q)ˣ) : ZMod q)) • Finsupp.single ζ (1 : ULift.{1} (ZMod q))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.smul_single_one]`. Simplify using `only [ULift.up_down]`. Rewrite using `[← Finsupp.smul_single_one ξ c, Submodule.Quotient.mk_smul, he, hs, Submodule.Quotient.mk_smul, smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PrimTors_of : PrimTors := by
   intro q _ B _ hSH hq

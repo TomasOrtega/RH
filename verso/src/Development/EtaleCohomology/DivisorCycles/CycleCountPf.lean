@@ -16,7 +16,7 @@ def FixScal : Prop := ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (N n
   ∀ i, π i = i → ∃ c : C, y * p i = c • p i
 
 /- English proof (translation)
-Introduce `C _ _ _ N n p y π hp hy hyp hdeg hd`. Take `⟨l, hl, hr⟩` from `h1 C N n p y π hp hy hyp hd`. Conclude with `⟨⟨l, hl, fun j => (hr j).1⟩, h2 C N n p y π l hp hyp hdeg hd hl (fun j => (hr j).2)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CycleCount_of (h1 : CycSpec) (h2 : FixScal) : CycleCount := by
   intro C _ _ _ N n p y π hp hy hyp hdeg hd

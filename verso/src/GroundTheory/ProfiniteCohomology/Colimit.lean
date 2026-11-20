@@ -19,7 +19,7 @@ namespace OpenNormalSubgroup
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Take `⟨W, hW⟩` from `Finset.exists_le (α := (OpenNormalSubgroup G)ᵒᵈ) (Finset.univ.image fun i => OrderDual.toDual (V i))`. Conclude with `⟨OrderDual.ofDual W, fun i => hW _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_le_of_finite {ι : Type*} [Finite ι] (V : ι → OpenNormalSubgroup G) :
     ∃ W : OpenNormalSubgroup G, ∀ i, W ≤ V i := by
@@ -32,9 +32,9 @@ theorem exists_le_of_finite {ι : Type*} [Finite ι] (V : ι → OpenNormalSubgr
 end OpenNormalSubgroup
 
 /- English proof (translation)
-Establish `: NeZero n` using `⟨hn⟩`. Set `e` to `(TateCohomology.isoGroupCohomology (R := k) (G := Q) n).app M`. Take `⟨t, rfl⟩ : ∃ t, e.hom.hom t = x` from `⟨e.inv.hom x, Iso.inv_hom_id_apply e x⟩`. Establish `h` using `congrArg e.hom.hom (GroundTheory.GroupCoh.card_smul_tateCohomology M n t)`. Rewrite `h` using `[map_nsmul, map_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem card_smul_groupCohomology {Q : Type u} [Group Q] [Fintype Q] (M : Rep.{u} k Q) {n : ℕ}
     (hn : n ≠ 0) (x : groupCohomology M n) : Fintype.card Q • x = 0 := by
@@ -50,9 +50,9 @@ section Level
 variable (A : Rep.{u} k G) [IsDiscreteRep A]
 
 /- English proof (translation)
-Introduce `x y hxy`. Apply `inhomogeneousCochains.ext` to reduce the goal to its premises. Introduce `q`. Establish `h : ((x fun i => (((q i).out : G) : G ⧸ (U : Subgroup G))) : A) = ((y fun i => (((q i).out : G) : G ⧸ (U : Subgroup G))) : A)` using `congrArg (fun c => ((cochainsComplexι A).f n).hom c fun i => (q i).out) hxy`. Simplify using `only [QuotientGroup.out_eq'] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem inflationCochains_f_injective (U : OpenNormalSubgroup G) (n : ℕ) :
     Function.Injective ((inflationCochains A U).f n).hom := by
@@ -68,11 +68,9 @@ theorem inflationCochains_f_injective (U : OpenNormalSubgroup G) (n : ℕ) :
 variable [CompactSpace G] [TotallyDisconnectedSpace G]
 
 /- English proof (translation)
-Establish `hx : IsLocallyConstant (((cochainsComplexι A).f n).hom x : (Fin n → G) → A)` using `(show locallyConstantCochains A n from x).2`. Take `⟨U₁, g, hg⟩` from `exists_openNormalSubgroup_factor_fin_of_isLocallyConstant hx`. Establish `hV : ∀ p, ∃ V : OpenNormalSubgroup G, g p ∈ Representation.invariants (A.ρ.comp (V : Subgroup G).subtype)` using `fun p => (isDiscreteRep_iff_forall_exists_openNormalSubgroup A).1 ‹_› (g p)`. Use `choose V hV using hV`. Take `⟨W, hW⟩` from `OpenNormalSubgroup.exists_le_of_finite V`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU₁ : W ⊓ U₁ ≤ U₁` using `inf_le_right`. Use `⟨W ⊓ U₁, fun q => ⟨g fun i => quotientMapOfLE hU₁ (q i), invariants_comp_subtype_antitone A (fun _ hz => (inf_le_left.trans (hW _)) hz) (hV _)⟩, ?_⟩` and prove the remaining obligations. Apply `(ModuleCat.mono_iff_injective ((cochainsComplexι A).f n)).1 inferInstance` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Rewrite using `[inflationCochains_f_hom_apply]`.
-
-Conclude with `(congrFun hg h).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inflationCochains_f_eq (n : ℕ) (x : (cochainsComplex A).X n) :
     ∃ (U : OpenNormalSubgroup G)
@@ -95,7 +93,7 @@ theorem exists_inflationCochains_f_eq (n : ℕ) (x : (cochainsComplex A).X n) :
   exact (congrFun hg h).symm
 
 /- English proof (translation)
-Take `⟨U, y, hy⟩` from `exists_inflationCochains_f_eq A n x`. Conclude with `⟨Opposite.op U, y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inflationCochainsCocone_surj (n : ℕ) (x : (inflationCochainsCocone A).pt.X n) :
     ∃ (U : (OpenNormalSubgroup G)ᵒᵖ) (y : ((levelCochains A).obj U).X n),
@@ -105,7 +103,7 @@ theorem inflationCochainsCocone_surj (n : ℕ) (x : (inflationCochainsCocone A).
 
 omit [CompactSpace G] [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-Use `⟨U, 𝟙 U, ?_⟩` and prove the remaining obligations. Simplify using `only [CategoryTheory.Functor.map_id, HomologicalComplex.id_f, ModuleCat.hom_id, LinearMap.id_apply]`. Conclude with `inflationCochains_f_injective A U.unop n (hy.trans (map_zero _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inflationCochainsCocone_inj (n : ℕ) (U : (OpenNormalSubgroup G)ᵒᵖ)
     (y : ((levelCochains A).obj U).X n)
@@ -117,7 +115,7 @@ theorem inflationCochainsCocone_inj (n : ℕ) (U : (OpenNormalSubgroup G)ᵒᵖ)
   exact inflationCochains_f_injective A U.unop n (hy.trans (map_zero _).symm)
 
 /- English proof (translation)
-Take `⟨U, y, hy⟩` from `exists_homologyMap_eq_of_cocone (inflationCochainsCocone A) n (inflationCochainsCocone_surj A n) (inflationCochainsCocone_inj A _) x`. Conclude with `⟨U.unop, y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_inflation_eq (n : ℕ) (x : cohomology A n) :
     ∃ (U : OpenNormalSubgroup G)
@@ -128,7 +126,7 @@ theorem exists_inflation_eq (n : ℕ) (x : cohomology A n) :
   exact ⟨U.unop, y, hy⟩
 
 /- English proof (translation)
-Take `⟨V, f, hf⟩` from `exists_homologyMap_map_eq_zero_of_cocone (inflationCochainsCocone A) n (inflationCochainsCocone_surj A _) (inflationCochainsCocone_inj A n) (Opposite.op U) y hy`. Conclude with `⟨V.unop, leOfHom f.unop, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_transition_eq_zero (n : ℕ) (U : OpenNormalSubgroup G)
     (y : groupCohomology (A.quotientToInvariants (U : Subgroup G)) n)
@@ -146,7 +144,7 @@ noncomputable def cohomologyIsoColimit (n : ℕ) : cohomology A n ≅ colimit (l
   (isColimitInflationCocone A n).coconePointUniqueUpToIso (colimit.isColimit _)
 
 /- English proof (translation)
-Take `⟨U, y, rfl⟩` from `exists_inflation_eq A n x`. Use `Fintype.ofFinite (G ⧸ (U : Subgroup G))` as an intermediate fact. Use `⟨U, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, ← map_nsmul, card_smul_groupCohomology _ hn y, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_card_smul_eq_zero {n : ℕ} (hn : n ≠ 0) (x : cohomology A n) :
     ∃ U : OpenNormalSubgroup G, Nat.card (G ⧸ (U : Subgroup G)) • x = 0 := by
@@ -156,7 +154,7 @@ theorem exists_card_smul_eq_zero {n : ℕ} (hn : n ≠ 0) (x : cohomology A n) :
   rw [Nat.card_eq_fintype_card, ← map_nsmul, card_smul_groupCohomology _ hn y, map_zero]
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨U, hU⟩ := exists_card_smul_eq_zero A (Nat.one_le_iff_ne_zero.1 hn) x exact isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨_, Nat.card_pos, hU⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isTorsion_cohomology {n : ℕ} (hn : 1 ≤ n) : IsAddTorsion (cohomology A n) :=
   fun x => by

@@ -22,13 +22,13 @@ abbrev padicRingEquiv : v.adicCompletion ℚ ≃+* ℚ_[prime v] :=
   RingEquivClass.toRingEquiv (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v)
 
 /- English proof (translation)
-The claim follows from `map_continuous (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_padicRingEquiv : Continuous (padicRingEquiv v) :=
   map_continuous (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v)
 
 /- English proof (translation)
-The claim follows from `HomeomorphClass.inv_continuous (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_padicRingEquiv_symm : Continuous (padicRingEquiv v).symm :=
   HomeomorphClass.inv_continuous (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v)
@@ -38,7 +38,7 @@ def closureEquiv :
   IsAlgClosure.equivOfEquiv _ _ (padicRingEquiv v)
 
 /- English proof (translation)
-The claim follows from `IsAlgClosure.equivOfEquiv_algebraMap _ _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem closureEquiv_algebraMap (x : v.adicCompletion ℚ) :
     closureEquiv v (algebraMap _ (AlgebraicClosure (v.adicCompletion ℚ)) x) =
@@ -46,7 +46,7 @@ theorem closureEquiv_algebraMap (x : v.adicCompletion ℚ) :
   IsAlgClosure.equivOfEquiv_algebraMap _ _ _ x
 
 /- English proof (translation)
-Rewrite using `[← LocalField.mem_maximalAbelianExtension_transport_iff (padicRingEquiv v) (closureEquiv v) (closureEquiv_algebraMap v), LocalField.Padic.maximalAbelianExtension_eq_adjoin_rootsOfUnity]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨n, hn, by rw [← map_pow, hy, map_one]⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_maximalAbelianExtension_of_pow_eq_one {y : AlgebraicClosure (v.adicCompletion ℚ)}
     {n : ℕ} (hn : 0 < n) (hy : y ^ n = 1) :
@@ -57,7 +57,7 @@ theorem mem_maximalAbelianExtension_of_pow_eq_one {y : AlgebraicClosure (v.adicC
   exact IntermediateField.subset_adjoin _ _ ⟨n, hn, by rw [← map_pow, hy, map_one]⟩
 
 /- English proof (translation)
-Establish `h` using `LocalField.transport_localArtinMap_apply_of_continuous (padicRingEquiv v) (continuous_padicRingEquiv v) (continuous_padicRingEquiv_symm v) (closureEquiv v) (closureEquiv_algebraMap v) x hy`. Rewrite `h` using `[LocalField.localArtinMap_apply, LocalField.localArtinMap_apply, ← hτ, ← hτ', LocalField.topologicalAbelianizationEquiv_mk_apply, LocalField.topologicalAbelianizationEquiv_mk_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closureEquiv_apply_of_localReciprocityLimit (x : (v.adicCompletion ℚ)ˣ)
     {τ : AlgebraicClosure (v.adicCompletion ℚ) ≃ₐ[v.adicCompletion ℚ]
@@ -83,7 +83,7 @@ theorem closureEquiv_apply_of_localReciprocityLimit (x : (v.adicCompletion ℚ)�
   exact h
 
 /- English proof (translation)
-The claim follows from `Nat.pos_of_ne_zero fun h ↦ by subst h exact (Fact.out : (prime v).Prime).one_lt.ne' ((Nat.coprime_zero_left _).1 hm)`.
+A detailed English derivation is pending.
 -/
 theorem pos_of_coprime {m : ℕ} (hm : m.Coprime (prime v)) : 0 < m :=
   Nat.pos_of_ne_zero fun h ↦ by
@@ -91,7 +91,7 @@ theorem pos_of_coprime {m : ℕ} (hm : m.Coprime (prime v)) : 0 < m :=
     exact (Fact.out : (prime v).Prime).one_lt.ne' ((Nat.coprime_zero_left _).1 hm)
 
 /- English proof (translation)
-Take `⟨τ', hτ'⟩` from `QuotientGroup.mk_surjective (LocalField.localReciprocityLimit ℚ_[prime v] (AlgebraicClosure ℚ_[prime v]) (Units.map (padicRingEquiv v).toRingHom.toMonoidHom x))`. Establish `hmem` using `mem_maximalAbelianExtension_of_pow_eq_one v (pow_pos (Fact.out : (prime v).Prime).pos n) hy`. Apply `(closureEquiv v).injective` to reduce the goal to its premises. Rewrite using `[closureEquiv_apply_of_localReciprocityLimit v x hτ hτ' hmem, map_pow]`. Conclude with `LocalField.Padic.apply_of_pow_eq_one_of_prime_pow (prime v) _ u r (by rw [Units.coe_map]; exact hx) hτ' (by rw [← map_pow, hy, map_one])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_of_pow_eq_one_of_prime_pow (x : (v.adicCompletion ℚ)ˣ) (u : ℤ_[prime v]ˣ) (r : ℤ)
     (hx : padicRingEquiv v x = ((u : ℤ_[prime v]) : ℚ_[prime v]) * (prime v : ℚ_[prime v]) ^ r)
@@ -112,7 +112,7 @@ theorem apply_of_pow_eq_one_of_prime_pow (x : (v.adicCompletion ℚ)ˣ) (u : ℤ
     (by rw [Units.coe_map]; exact hx) hτ' (by rw [← map_pow, hy, map_one])
 
 /- English proof (translation)
-Take `⟨τ', hτ'⟩` from `QuotientGroup.mk_surjective (LocalField.localReciprocityLimit ℚ_[prime v] (AlgebraicClosure ℚ_[prime v]) (Units.map (padicRingEquiv v).toRingHom.toMonoidHom x))`. Establish `hmem` using `mem_maximalAbelianExtension_of_pow_eq_one v (pos_of_coprime v hm) hy`. Apply `(closureEquiv v).injective` to reduce the goal to its premises. Rewrite using `[closureEquiv_apply_of_localReciprocityLimit v x hτ hτ' hmem, map_pow]`. Conclude with `LocalField.Padic.apply_of_pow_eq_one_of_coprime_of_nat (prime v) _ u r (by rw [Units.coe_map]; exact hx) hτ' hm (by rw [← map_pow, hy, map_one])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_of_pow_eq_one_of_coprime (x : (v.adicCompletion ℚ)ˣ) (u : ℤ_[prime v]ˣ) (r : ℕ)
     (hx : padicRingEquiv v x = ((u : ℤ_[prime v]) : ℚ_[prime v]) * (prime v : ℚ_[prime v]) ^ r)
@@ -138,7 +138,7 @@ open SemiLocal
 variable (L : Type*) [Field L] [NumberField L] [IsGalois ℚ L] [IsMulCommutative (L ≃ₐ[ℚ] L)]
 
 /- English proof (translation)
-Rewrite using `[algebraMap_localSymbol_apply L v w x l]`. Conclude with `normResidueSymbol_spec _ hτ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueEmbedding_localSymbol_apply (w : PlacesOver L v) (x : (v.adicCompletion ℚ)ˣ)
     {τ : AlgebraicClosure (v.adicCompletion ℚ) ≃ₐ[v.adicCompletion ℚ]
@@ -155,9 +155,9 @@ theorem residueEmbedding_localSymbol_apply (w : PlacesOver L v) (x : (v.adicComp
   exact normResidueSymbol_spec _ hτ _
 
 /- English proof (translation)
-Take `⟨w⟩` from `nonempty_placesOver L v`. Take `⟨τ, hτ⟩` from `exists_mk_eq_localReciprocityLimit (k := v.adicCompletion ℚ) x`. Use `set i := residueEmbedding (v.adicCompletion ℚ) (w.1.adicCompletion L)`. Establish `hj : Function.Injective fun l : L ↦ i (algebraMap L (w.1.adicCompletion L) l)` using `i.toRingHom.injective.comp (algebraMap L (w.1.adicCompletion L)).injective`. Apply `hj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[residueEmbedding_localSymbol_apply v L w x hτ, map_pow, map_pow]`. Conclude with `apply_of_pow_eq_one_of_prime_pow v x u r hx hτ (by rw [← map_pow, ← map_pow, hζ, map_one, map_one])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localSymbol_apply_of_pow_eq_one_of_prime_pow (x : (v.adicCompletion ℚ)ˣ) (u : ℤ_[prime v]ˣ)
     (r : ℤ)
@@ -176,9 +176,9 @@ theorem localSymbol_apply_of_pow_eq_one_of_prime_pow (x : (v.adicCompletion ℚ)
     (by rw [← map_pow, ← map_pow, hζ, map_one, map_one])
 
 /- English proof (translation)
-Take `⟨w⟩` from `nonempty_placesOver L v`. Take `⟨τ, hτ⟩` from `exists_mk_eq_localReciprocityLimit (k := v.adicCompletion ℚ) x`. Use `set i := residueEmbedding (v.adicCompletion ℚ) (w.1.adicCompletion L)`. Establish `hj : Function.Injective fun l : L ↦ i (algebraMap L (w.1.adicCompletion L) l)` using `i.toRingHom.injective.comp (algebraMap L (w.1.adicCompletion L)).injective`. Apply `hj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[residueEmbedding_localSymbol_apply v L w x hτ, map_pow, map_pow]`. Conclude with `apply_of_pow_eq_one_of_coprime v x u r hx hτ hm (by rw [← map_pow, ← map_pow, hζ, map_one, map_one])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localSymbol_apply_of_pow_eq_one_of_coprime (x : (v.adicCompletion ℚ)ˣ) (u : ℤ_[prime v]ˣ)
     (r : ℕ)

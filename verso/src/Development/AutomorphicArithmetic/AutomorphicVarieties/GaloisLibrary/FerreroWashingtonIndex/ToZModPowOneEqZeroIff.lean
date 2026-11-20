@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Rewrite using `[PadicInt.norm_lt_one_iff_dvd, ← RingHom.mem_ker, PadicInt.ker_toZModPow, Ideal.mem_span_singleton, pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem toZModPow_one_eq_zero_iff {l : ℕ} [Fact l.Prime] (x : ℤ_[l]) :
     PadicInt.toZModPow 1 x = 0 ↔ ‖x‖ < 1 := by
@@ -11,19 +11,17 @@ private theorem toZModPow_one_eq_zero_iff {l : ℕ} [Fact l.Prime] (x : ℤ_[l])
     Ideal.mem_span_singleton, pow_one]
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `haveI : Fact (1 < l ^ 1) := ⟨by rw [pow_one]; exact hl.one_lt⟩`. Establish `ht : Nat.totient (l ^ 1) = l - 1` using `by rw [pow_one, Nat.totient_prime hl]`. Establish `hu : u ^ (l - 1) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ht, ← ZMod.card_units_eq_totient]`. Conclude with `pow_card_eq_one`. Establish `hn : l - 1 ≠ 0` using `by have := hl.two_le; omega`. Take `⟨a, ha⟩ : ∃ a : ℤ_[l], PadicInt.toZModPow 1 a = (u : ZMod (l ^ 1))` from `⟨((u : ZMod (l ^ 1)).val : ℤ_[l]), by simp⟩`. Use `set F : Polynomial ℤ := Polynomial.X ^ (l - 1) - 1 with hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFa : ‖F.aeval a‖ < 1`. Rewrite using `[← toZModPow_one_eq_zero_iff]`. Establish `: ((u : ZMod (l ^ 1))) ^ (l - 1) = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, hu, Units.val_one]`. Simplify using `[hF, ha, this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdF : ‖(Polynomial.derivative F).aeval a‖ = 1`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.mp fun h => ?_)` and prove the remaining obligations. Rewrite `h` using `[← toZModPow_one_eq_zero_iff]`. Establish `hmul : PadicInt.toZModPow 1 ((Polynomial.derivative F).aeval a) = ((l - 1 : ℕ) : ZMod (l ^ 1)) * ((u : ZMod (l ^ 1))) ^ (l - 1 - 1)`. Rewrite using `[hF, Polynomial.derivative_sub, Polynomial.derivative_one, sub_zero, Polynomial.derivative_X_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[ha]`. Establish `hcast : ((l - 1 : ℕ) : ZMod (l ^ 1)) = -1`. Rewrite using `[Nat.cast_sub hl.one_le, Nat.cast_one, pow_one, ZMod.natCast_self, zero_sub]`. Rewrite `h` using `[hmul, hcast, neg_one_mul, neg_eq_zero, ← Units.val_pow_eq_pow_val]`. Conclude with `Units.ne_zero _ h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz, hza, -, -⟩` from `hensels_lemma (F := F) (a := a) (by rw [hdF]; simpa using hFa)`. Rewrite `hza` using `[hdF, ← toZModPow_one_eq_zero_iff, map_sub, sub_eq_zero, ha]`. Establish `hz1 : z ^ (l - 1) = 1`. Simplify `hz` using `[hF, sub_eq_zero]`. Use `⟨Units.ofPowEqOne z (l - 1) hz1 hn, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[ht, mem_rootsOfUnity]`. Conclude with `Units.pow_ofPowEqOne _ _`. Conclude with `Units.ext (by simp [redU, hza])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_root_lift {l : ℕ} [Fact l.Prime] (u : (ZMod (l ^ 1))ˣ) :
     ∃ ζ ∈ rootsOfUnity (Nat.totient (l ^ 1)) ℤ_[l], redU l 1 ζ = u := by
@@ -65,24 +63,24 @@ private theorem exists_root_lift {l : ℕ} [Fact l.Prime] (u : (ZMod (l ^ 1))ˣ)
   · exact Units.ext (by simp [redU, hza])
 
 /- English proof (translation)
-Use `revert u`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem units_four (u : (ZMod (2 ^ 2))ˣ) : u = 1 ∨ u = -1 := by
   revert u
   decide
 
 /- English proof (translation)
-Introduce `l _`. Establish `hl : l.Prime` using `Fact.out`. Establish `hsurj : Function.Surjective ((redU l (ee l)).comp (WW l).subtype)`. Distinguish the cases in `h2 : l = 2`. Substitute `h2` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `u`. Establish `ht : Nat.totient (2 ^ ee 2) = 2` using `by decide`. Break down `units_four u with h | h` into its components or cases. Apply the tactic sequence `exact ⟨1, by simp [h] <;> rfl⟩`. Use `⟨⟨-1, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (-1 : ℤ_[2]ˣ) ∈ rootsOfUnity (Nat.totient (2 ^ ee 2)) ℤ_[2]`. Rewrite using `[ht, mem_rootsOfUnity]`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Apply the tactic sequence `exact Units.ext (by simp [redU] <;> rfl)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `he : ee l = 1` using `if_neg h2`. Establish `key : ∀ u : (ZMod (l ^ 1))ˣ, ∃ a : WW l, (redU l 1) a = u`. Introduce `u`. Take `⟨ζ, hζ, hred⟩` from `exists_root_lift u`. Conclude with `⟨⟨ζ, by simpa [WW, he] using hζ⟩, hred⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Introduce `u`. Take `⟨a, ha⟩` from `key u`. Conclude with `⟨a, ha⟩`. Establish `hfin : Finite (WW l)` using `by show Finite (rootsOfUnity _ ℤ_[l]) infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero (l ^ ee l) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Establish `hc` using `card_rootsOfUnity ℤ_[l] (Nat.totient (l ^ ee l))`. Use `hsurj.bijective_of_nat_card_le (le_trans hc (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.teich :
     ∀ (l : ℕ) [Fact l.Prime], Function.Bijective ((redU l (ee l)).comp (WW l).subtype) := by

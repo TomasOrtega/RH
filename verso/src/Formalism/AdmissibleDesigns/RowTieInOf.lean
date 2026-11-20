@@ -28,15 +28,11 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `⟨?_, ?_, hMat, ?_, ?_, hcob⟩` and prove the remaining obligations. Use `first`. Consider the case `exact rowSub_S (hc := hc) ..`. Consider the case `exact rowSub_S ..`. Consider the case `(have hD' := hD`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, -, hr', -, hsm, -, -, hχ, -⟩` from `hD'`. Establish `hFF` using `idempotent_part_finite_and_free (hD := hD) ..`. Use `haveI := hFF.1`. Use `haveI := hFF.2`. Introduce `n _ hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `rowSub_at (hr' := hr') (hsm := hsm) (hχ := hχ) (hn := hn) ..)`. Use `first`. Consider the case `exact rowOrb_S (hc := hc) ..`. Consider the case `exact rowOrb_S i r π dc g0 eB e₁ s Dd hD hc`. Use `first`.
-
-Consider the case `exact rowTop1_S i dc r π g0 eB e₁ s Dd hD`. Consider the case `exact rowTop1_S (dc := dc) (hD := hD)`. Consider the case `exact fun n hn hn' c hcont => rowTop1_S (hD := hD) .. n hn hn' c hcont`. Use `first`. Consider the case `exact rowFin_S ..`.
-
-Consider the case `exact rowFin_S i r π dc g0 eB e₁ s Dd hD hc`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rowTieIn_of
     (hMat : KRow.RowMat i dc (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R))

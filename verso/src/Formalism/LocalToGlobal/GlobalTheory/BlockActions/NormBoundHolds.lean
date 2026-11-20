@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.GlobalTheory.BlockActions.SymmetricClausesOfForms
 namespace Formalism.L2.GlobalTheoryTheory.Br
 
 /- English proof (translation)
-The claim follows from `norm_bound_of_injective_stable class_injective_holds stabiliser_bijective_holds`.
+A detailed English derivation is pending.
 -/
 theorem norm_bound_holds : NormBoundAtInfinity := norm_bound_of_injective_stable class_injective_holds stabiliser_bijective_holds
 

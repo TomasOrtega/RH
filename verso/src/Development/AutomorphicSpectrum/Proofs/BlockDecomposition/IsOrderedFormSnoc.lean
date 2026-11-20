@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.ExhGood
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hι : Function.Injective (GlobalTheory.ParIndExact.extTensorMapRight σ f)` using `Module.Flat.lTensor_preserves_injective_linearMap f.toLinearMap hf`. Establish `hι' : Function.Injective (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ f) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom)` using `hι`. Conclude with `⟨parIndMap (two e) (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ f) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom), GlobalTheory.ParIndExact.parIndMap_injective _ _ hι'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ind₂_map_injective_right {r t N : ℕ} (e : Fin r ⊕ Fin t ≃ Fin N) {U W W' : Type} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (σ : Representation ℂ (GL (Fin r) k) U)
@@ -33,7 +33,7 @@ theorem ind₂_map_injective_right {r t N : ℕ} (e : Fin r ⊕ Fin t ≃ Fin N)
     GlobalTheory.ParIndExact.parIndMap_injective _ _ hι'⟩
 
 /- English proof (translation)
-Substitute `ha h` using the available equality. Conclude with `nonempty_prod₂_equiv_prodIrr_rep y hd`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pair_equiv {N : ℕ} (y : Fin 2 → IrrGL k) (hd : ∑ i, (y i).1 = N) {a : IrrGL k} (ha : y 0 = a)
     (h : a.1 + (y 1).1 = N) :
@@ -42,11 +42,11 @@ theorem pair_equiv {N : ℕ} (y : Fin 2 → IrrGL k) (hd : ∑ i, (y i).1 = N) {
   exact nonempty_prod₂_equiv_prodIrr_rep y hd
 
 /- English proof (translation)
-Establish `e : t = fun i => v i.succ` using `funext fun i => (hs i).symm`. Substitute `e` using the available equality. Establish `h : (v 0).1 + (y 1).1 = N`. Rewrite using `[← h0, ← hd, Fin.sum_univ_two]`. Establish `A0` using `pair_equiv y hd h0 h`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `B0` using `GlobalTheory.ProdReorder.multiProd_head (k := k) (d := fun i => (v i).1) (fun i => (v i).rep) (stdBlocks (fun i => (v i).1) hv) h (stdBlocks (fun i : Fin c => (v i.succ).1) ht)`. Establish `F0` using `ind₂_map_injective_right (stdSum h) (v 0).rep g hg`. Take `⟨A⟩` from `A0`. Take `⟨B⟩` from `B0`. Take `⟨F, hF⟩` from `F0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(B.symm.toIntertwiningMap.comp F).comp A.symm.toIntertwiningMap, B.symm.toLinearEquiv.injective.comp (hF.comp A.symm.toLinearEquiv.injective)⟩`.
+Supply the required witnesses or components.
 -/
 theorem embed_family {N c : ℕ} (y : Fin 2 → IrrGL k) (v : Fin (c + 1) → IrrGL k) (t : Fin c → IrrGL k)
     (h0 : y 0 = v 0) (hs : ∀ i, v i.succ = t i) (hd : ∑ i, (y i).1 = N) (hv : ∑ i, (v i).1 = N)
@@ -67,11 +67,11 @@ theorem embed_family {N c : ℕ} (y : Fin 2 → IrrGL k) (v : Fin (c + 1) → Ir
     B.symm.toLinearEquiv.injective.comp (hF.comp A.symm.toLinearEquiv.injective)⟩
 
 /- English proof (translation)
-Use `⟨?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[← H.1, Fin.univ_val_map, Fin.univ_val_map, List.ofFn_succ']`. Simplify using `using (Multiset.coe_add _ [s]).symm`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately.
 
-Take `⟨i, rfl⟩ : ∃ i', Fin.castSucc i' = i` from `⟨i.castPred (Fin.ne_last_of_lt hij), by simp⟩`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Conclude with `hs _ (H.1 ▸ Multiset.mem_map_of_mem _ (Finset.mem_univ_val i))`. Consider the case `cast j`. Take `⟨i, rfl⟩ : ∃ i', Fin.castSucc i' = i` from `⟨i.castPred (Fin.ne_last_of_lt hij), by simp⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.snoc_castSucc]`. Conclude with `H.2 i j (by simpa using hij)`.
+A detailed English derivation is pending.
 -/
 theorem isOrderedForm_snoc {h : ℕ} {Δ : Fin h → Segment k} {𝔫 : Multiset (Segment k)} (H : IsOrderedForm Δ 𝔫)
     (s : Segment k) (hs : ∀ D ∈ 𝔫, ¬ D.Precedes s) :
@@ -92,17 +92,17 @@ theorem isOrderedForm_snoc {h : ℕ} {Δ : Fin h → Segment k} {𝔫 : Multiset
       exact H.2 i j (by simpa using hij)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `hf`. Establish `hn'` using `hn`. Take `⟨h, z, hz, ⟨Δ, hΔ, hzL⟩, -⟩` from `hn'`. Use `set s := Segment.single (y 0) hc with hs`. Set `w : Fin (h + 1) → IrrGL k` to `Fin.snoc (α := fun _ => IrrGL k) z (y 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hwL : LFactors (𝔫 + {s}) w`. Use `⟨_, isOrderedForm_snoc hΔ s hp, fun i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Establish `e : w (Fin.last h) = y 0` using `Fin.snoc_last (α := fun _ => IrrGL k) _ _`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Fin.snoc_last]`. Conclude with `(single_spec hc).2.1`. Consider the case `cast i`. Establish `e : w i.castSucc = z i` using `Fin.snoc_castSucc (α := fun _ => IrrGL k) _ _ _`. Rewrite using `[e, Fin.snoc_castSucc]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hzL i`. Establish `hwd : ∑ a, (w a).1 = x.1`. Rewrite using `[Fin.sum_univ_castSucc, ← hd, Fin.sum_univ_two, add_comm, ← hz]`. Simplify using `[w]`. Establish `hwr : ∑ a, (w (Fin.rev a)).1 = x.1` using `(Equiv.sum_comp Fin.revPerm fun a => (w a).1).trans hwd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzr : ∑ a, (z (Fin.rev a)).1 = (y 1).1` using `(Equiv.sum_comp Fin.revPerm fun a => (z a).1).trans hz`. Take `⟨π, hπ⟩` from `HS k (𝔫 + {s}) (h + 1) x.1 w hwd hwL`. Establish `hπL : IsL (𝔫 + {s}) π.ρ` using `⟨_, w, hwd, hwL, hπ⟩`. Establish `hsoc` using `HL (𝔫 + {s}) (h + 1) x.1 w hwr hwL π.ρ hπL`. Establish `hsoc₁` using `HL 𝔫 h (y 1).1 z hzr ⟨Δ, hΔ, hzL⟩ (y 1).rep hn`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, g, hg, -⟩` from `hsoc₁`. Take `⟨F, hF⟩` from `embed_family y (w ∘ Fin.rev) (z ∘ Fin.rev) (by simp [w, Function.comp]) (fun i => by simp [w, Function.comp, Fin.rev_succ]) hd hwr hzr g hg`. Take `⟨e⟩` from `hsoc.equiv_of_embeds x.2.rep.irr ⟨F.comp f, hF.comp hf⟩`. Conclude with `hπL.of_equiv e.symm`.
+A detailed English derivation is pending.
 -/
 theorem exh_good [CharZero k] (HS : GlobalTheory.Published.StandardCosocleGL) (HL : LSocleGL k) (x : IrrGL k) (y : Fin 2 → IrrGL k)
     (hd : ∑ a, (y a).1 = x.1) (hc : (y 0).IsCusp) (𝔫 : Multiset (Segment k)) (hn : IsL 𝔫 (y 1).rep)

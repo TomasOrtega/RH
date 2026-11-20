@@ -13,11 +13,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 open PolynomialDegreeClosure in
 /- English proof (translation)
-Introduce `k r z z'`. Establish `hD : ∀ l : Fin (r + 2), IsPolyDeg l.val (fun g : B.Mat k r => Dmin k r z z' g l)` using `fun l => pd_det l.val (fun g => (Zhat k r z z' g).submatrix (Fin.castLE (Nat.le_of_lt_succ l.isLt)) (Fin.castLE (Nat.le_of_lt_succ l.isLt))) fun i j => pd_herm (Hpk k r) (fvec k r z' (Fin.castLE (Nat.le_of_lt_succ l.isLt) j)) (fvec k r z (Fin.castLE (Nat.le_of_lt_succ l.isLt) i))`. Establish `hDs : ∀ l : Fin (r + 2), IsPolyDeg l.val (fun g : B.Mat k r => star (Dmin k r z z' g l))` using `fun l => pd_det_star l.val (fun g => (Zhat k r z z' g).submatrix (Fin.castLE (Nat.le_of_lt_succ l.isLt)) (Fin.castLE (Nat.le_of_lt_succ l.isLt))) fun i j => pd_herm_star (Hpk k r) (fvec k r z' (Fin.castLE (Nat.le_of_lt_succ l.isLt) j)) (fvec k r z (Fin.castLE (Nat.le_of_lt_succ l …`. Establish `e : (fun g : B.Mat k r => ((Gf k r z z' g : ℝ) : ℂ)) = fun g => Dmin k r z z' g (Fin.last (r + 1)) * star (Dmin k r z z' g (Fin.last (r + 1))) - ((Tz k r z * Tz k r z' : ℝ) : ℂ) * (Dmin k r z z' g ⟨r, by omega⟩ * star (Dmin k r z z' g ⟨r, by omega⟩))`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Gf]`. Use `push_cast`. Rewrite using `[← Complex.mul_conj, ← Complex.mul_conj]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `pd_sub (pd_mono ?_ (pd_mul (hD _) (hDs _))) (pd_mono ?_ (pd_cmul _ (pd_mul (hD _) (hDs _))))` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 -/
 theorem generating_function_polynomial : GfPoly := by
   intro k r z z'

@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SkewPairing
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_one_tmul {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     [CommRing R] [Algebra F R] (x : E) :
@@ -20,7 +20,7 @@ theorem trace_one_tmul {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteD
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `trace_one_tmul x`.
+A detailed English derivation is pending.
 -/
 theorem trace_incA (x : D.host.E) :
     Algebra.trace (AF D.host.F) (AE D) (incA D x) =
@@ -28,7 +28,7 @@ theorem trace_incA (x : D.host.E) :
   trace_one_tmul x
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rfl`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_smul (c : AF D.host.F) (a : AE D) : cA D (c • a) = c • cA D a := by
   induction a using TensorProduct.induction_on with
@@ -37,16 +37,16 @@ theorem cA_smul (c : AF D.host.F) (a : AE D) : cA D (c • a) = c • cA D a := 
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-The claim follows from `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective D.sp.cm.sig D.sp.cm.sig.bijective) x`.
+A detailed English derivation is pending.
 -/
 theorem trace_star (x : D.host.E) :
     Algebra.trace D.host.F D.host.E (star x) = Algebra.trace D.host.F D.host.E x :=
   Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective D.sp.cm.sig D.sp.cm.sig.bijective) x
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hq`. Take `⟨I, hI, hP⟩` from `Ring.not_isField_iff_exists_prime.1 (RingOfIntegers.not_isField D.host.F)`. Take `⟨y, hy⟩` from `GlobalTheory.StdCharLocal.psiV_ne_one D ψ hψ ⟨I, hP, hI⟩`. Establish `h1` using `h (pairA D.host.F 0 (singleV D.host.F ⟨I, hP, hI⟩ y) * algebraMap D.host.F (AF D.host.F) q⁻¹)`. Rewrite `h1` using `[mul_assoc, ← map_mul, inv_mul_cancel₀ hq, map_one, mul_one]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_char {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {q : D.host.F}
     (h : ∀ t : AF D.host.F, ψ (t * algebraMap D.host.F (AF D.host.F) q) = 1) : q = 0 := by
@@ -58,17 +58,15 @@ theorem eq_zero_of_char {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (
   exact hy h1
 
 /- English proof (translation)
-Introduce `D ψ hψ ρ M hM h`. Establish `key : ∀ A : Matrix (Fin ρ) (Fin ρ) D.host.E, Algebra.trace D.host.F D.host.E (M * A).trace = 0`. Introduce `A`. Use `eq_zero_of_char hψ fun t => ?_` and prove the remaining obligations. Establish `hN : adj (rat (A - Aᴴ) : Mx D ρ ρ) = -rat (A - Aᴴ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← rat_conjTranspose, ← rat_neg, conjTranspose_sub, conjTranspose_conjTranspose, neg_sub]`. Establish `hc : t • (rat (A - Aᴴ) : Mx D ρ ρ) ∈ skewA D ρ`. Rewrite using `[mem_skewA, ← smul_neg, ← hN]`. Use function extensionality and compare the values at `i j`. Conclude with `cA_smul t (rat (A - Aᴴ) j i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `h ⟨_, hc⟩`. Establish `e1 : (M * (A - Aᴴ)).trace = (M * A).trace + star (M * A).trace`. Rewrite using `[← trace_conjTranspose, conjTranspose_mul, hM, Matrix.mul_neg, trace_neg, trace_mul_comm Aᴴ, Matrix.mul_sub, trace_sub, sub_eq_add_neg]`. Establish `e2 : ((rat M : Mx D ρ ρ) ⬝ (t • (rat (A - Aᴴ) : Mx D ρ ρ))).trace = t • incA D (M * (A - Aᴴ)).trace`. Rewrite using `[Matrix.mul_smul, trace_smul, ← rat_mul, AddMonoidHom.map_trace (incA D)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e3 : algebraMap D.host.F (AF D.host.F) (1 / 2) * Algebra.trace (AF D.host.F) (AE D) ((rat M : Mx D ρ ρ) ⬝ (t • (rat (A - Aᴴ) : Mx D ρ ρ))).trace = t * algebraMap D.host.F (AF D.host.F) (Algebra.trace D.host.F D.host.E (M * A).trace)`. Rewrite using `[e2, map_smul, trace_incA, e1, map_add, trace_star, smul_eq_mul, mul_left_comm, ← map_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e3]`. Conclude with `h1`. Use function extensionality and compare the values at `j i`. Use `(traceForm_nondegenerate D.host.F D.host.E).1 (M j i) fun s => ?_` and prove the remaining obligations. Use `key (Matrix.single i j s)` as an intermediate fact.
-
-Rewrite `this` using `[trace_mul_single]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem skew_perfect : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ρ : ℕ) (M : Matrix (Fin ρ) (Fin ρ) D.host.E), Mᴴ = -M → (∀ c : skewA D ρ, ψ (algebraMap D.host.F (AF D.host.F) (1 / 2) * Algebra.trace (AF D.host.F) (AE D) ((rat M : Mx D ρ ρ) ⬝ c.1).trace) = 1) → M = 0 := by
   intro D ψ hψ ρ M hM h

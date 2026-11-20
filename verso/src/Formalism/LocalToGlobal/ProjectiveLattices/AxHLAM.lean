@@ -30,7 +30,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Set `φ : Rul Xo c →* Om Z` to `{ toFun := evC h Z map_one' := evalAt_one _ _ _ (hgt Z) map_mul' := fun a b => evalAt_mul _ _ a b _ }`. Conclude with `map_prod φ f Finset.univ`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem evC_prod (h : GenFrEx Xo c) (hgt : GenFromTest Xo c h) (Z : Comp Xo c) {n : ℕ} (f : Fin n → Rul Xo c) :
     evC h Z (∏ k, f k) = ∏ k, evC h Z (f k) := by
@@ -41,24 +41,24 @@ theorem evC_prod (h : GenFrEx Xo c) (hgt : GenFromTest Xo c h) (Z : Comp Xo c) {
   exact map_prod φ f Finset.univ
 
 /- English proof (translation)
-The claim follows from `evalAt_add _ _ f g _`.
+A detailed English derivation is pending.
 -/
 theorem evC_add (h : GenFrEx Xo c) (Z : Comp Xo c) (f g : Rul Xo c) :
     evC h Z (f + g) = evC h Z f + evC h Z g := evalAt_add _ _ f g _
 
 /- English proof (translation)
-The claim follows from `evalAt_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem evC_zero (h : GenFrEx Xo c) (Z : Comp Xo c) : evC h Z (0 : Rul Xo c) = 0 := evalAt_zero _ _ _
 
 /- English proof (translation)
-The claim follows from `evalAt_smul _ _ a f _`.
+A detailed English derivation is pending.
 -/
 theorem evC_smul (h : GenFrEx Xo c) (Z : Comp Xo c) (a : c.F) (f : Rul Xo c) :
     evC h Z (a • f) = algebraMap c.F (Om Z) a * evC h Z f := evalAt_smul _ _ a f _
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [AddMonoidAlgebra.smul_single]`. Consider the case `erw [AddMonoidAlgebra.smul_single]`. Rewrite using `[Algebra.smul_def]`. Use `congr 1`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem smul_single_AC (Z : Comp Xo c) (a : 𝓞 c.F) (G : WTZ E) (e : Om Z) :
     a • (AddMonoidAlgebra.single G e : AC Z) = AddMonoidAlgebra.single G (algebraMap c.F (Om Z) (a : c.F) * e) := by
@@ -69,7 +69,7 @@ theorem smul_single_AC (Z : Comp Xo c) (a : 𝓞 c.F) (G : WTZ E) (e : Om Z) :
   congr 1
 
 /- English proof (translation)
-Simplify using `only [valC, evC_smul]`. Conclude with `(smul_single_AC Z a _ _).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valC_smul (h : GenFrEx Xo c) (a : 𝓞 c.F) (u : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c) (Z : Comp Xo c) :
     valC h u n ((a : c.F) • f) Z = a • valC h u n f Z := by
@@ -91,21 +91,21 @@ def LamConst (large₂ : SizeData₂ D) (C A : ℝ) (ka : WeightFamilies.Wt D j)
   WeightFamilies.PP0v D large₂ C A * (1 + Real.log ka.size) * ka.size ≤ P * n * s
 
 /- English proof (translation)
-Introduce `Z g hg hgZ`. Take `⟨F, hFM, rfl⟩ : ∃ F : (recB hL).Cusp j ka, F ∈ (recB hL).Mlat j ka ∧ g = valC h (wtA ka) ka.n (F : Tc.R j)` from `by clear hgZ`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hFM, hF⟩` from `hprod s`. Use `⟨F, hFM, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z`. Rewrite using `[hF]`. Use `beta_reduce`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_apply]`. Express the relevant statement in the definitionally equal form `∏ k, AddMonoidAlgebra.single (wtZ uL.1 uL.2) (evC h Z (wR (s k))) = AddMonoidAlgebra.single (wtZ (wtA ka) ka.n) (evC h Z (∏ k, wR (s k)))`. Rewrite using `[AddMonoidAlgebra.prod_single, hka, Finset.sum_const, Finset.card_univ, Fintype.card_fin, evC_prod h hgt Z]`. Consider the case `zero`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `Z`. Simplify using `[valC, evC_zero]`. Consider the case `add x y _ _ hx hy`. Take `⟨F, hFM, rfl⟩` from `hx`. Take `⟨G, hGM, rfl⟩` from `hy`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F + G, Submodule.add_mem _ hFM hGM, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z`. Simplify using `[valC, evC_add, AddMonoidAlgebra.single_add]`. Consider the case `smul a x _ hx`. Take `⟨F, hFM, rfl⟩` from `hx`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a • F, Submodule.smul_mem _ a hFM, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z`. Use `show a • valC h (wtA ka) ka.n (F : Tc.R j) Z = valC h (wtA ka) ka.n ((a • F : (recB hL).Cusp j ka) : Tc.R j) Z`. Rewrite using `[coe_smul_cusp hL j ka a F]`. Conclude with `(valC_smul h a _ _ _ Z).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev : evC h Z (F : Tc.R j) ≠ 0` using `fun h0 => hgZ (by simp [valC, h0])`. Take `⟨F', hF'M, hF'0, hle⟩` from `hsup Z F hFM hev`. Establish `hl` using `hlam F' hF'M hF'0`. Use `(neg_le_neg hc).trans (hl.trans ?_)` and prove the remaining obligations. Unfold `WeightFamilies.meanLogSup meanK`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `div_le_div_of_nonneg_right (Finset.sum_le_sum fun sg _ => ?_) (Nat.cast_nonneg _)` and prove the remaining obligations. Establish `hpos : 0 < (recB hL).supN j ka sg F'` using `lt_of_le_of_ne ((recB hL).supN_nonneg _ _ _ _) (fun h0 => hF'0 (((recB hL).supN_eq_zero _ _ _ _).1 h0.symm))`. Use `Real.log_le_log hpos ((hle sg).trans (le_of_eq ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ⨆ P : PT (Ω := Om Z) sg, nrmC fn (yP Z) (_ • wtZ uL.1 uL.2) _ P`. Rewrite using `[hka]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htLAM_of [Fintype (Comp (Tc.Q.Xo j) Tc.Q.c)] (h : GenFrEx (Tc.Q.Xo j) Tc.Q.c)
     (δ : ∀ Z : Comp (Tc.Q.Xo j) Tc.Q.c, AddValuation (Om Z) (WithTop ℤ) → Ix (Tc.Q.Dw j) → ℤ)

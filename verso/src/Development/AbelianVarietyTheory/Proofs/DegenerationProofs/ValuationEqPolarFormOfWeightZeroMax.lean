@@ -15,7 +15,7 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH.ValLat
 
 /- English proof (translation)
-Rewrite using `[← h.tsum_eq]`. Conclude with `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg hr hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_hasSum {I C : Type} [NormedAddCommGroup C] [IsUltrametricDist C] {f : I → C} {a : C}
     (h : HasSum f a) {r : ℝ} (hr : 0 ≤ r) (hf : ∀ x, ‖f x‖ ≤ r) : ‖a‖ ≤ r := by
@@ -23,15 +23,13 @@ theorem norm_le_of_hasSum {I C : Type} [NormedAddCommGroup C] [IsUltrametricDist
   exact IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg hr hf
 
 /- English proof (translation)
-Break down `(norm_nonneg (f b)).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `norm_nonneg _`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr0, hrb, hr⟩ : ∃ r, 0 ≤ r ∧ r < ‖f b‖ ∧ ∀ x, x ≠ b → ‖f x‖ ≤ r := by`. Establish `ht` using `(tendsto_zero_iff_norm_tendsto_zero.1 h.summable.tendsto_cofinite_zero).eventually (gt_mem_nhds (half_pos h0))`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : {x | x ≠ b ∧ ‖f b‖ / 2 ≤ ‖f x‖}.Finite` using `(Filter.eventually_cofinite.1 ht).subset fun x hx => not_lt.2 hx.2`. Break down `Set.eq_empty_or_nonempty {x | x ≠ b ∧ ‖f b‖ / 2 ≤ ‖f x‖} with he | he` into its components or cases. Use `⟨‖f b‖ / 2, by positivity, half_lt_self h0, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `(Set.eq_empty_iff_forall_notMem.1 he x) ⟨hx, (not_le.1 hc).le⟩`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hm⟩` from `Set.exists_max_image _ (fun x => ‖f x‖) hfin he`. Use `⟨‖f y‖, norm_nonneg _, hf y hy.1, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : ‖f b‖ / 2 ≤ ‖f x‖`. Conclude with `hm x ⟨hx, hc⟩`. Conclude with `(not_le.1 hc).le.trans hy.2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `norm_le_of_hasSum (h.update b 0) hr0 fun x => by`. Break down `eq_or_ne x b with rfl | hx` into its components or cases. Simplify using `using hr0`. Rewrite using `[Function.update_of_ne hx]`. Conclude with `hr x hx`.
-
-Assume the negation of the conclusion as `hc`. Establish `h2` using `IsUltrametricDist.norm_add_le_max a (-(0 - f b + a))`. Rewrite `h2` using `[norm_neg, show a + -(0 - f b + a) = f b by abel]`. Conclude with `h2.not_gt (max_lt (not_le.1 hc) (h1.trans_lt hrb))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_norm_of_hasSum {I C : Type} [NormedAddCommGroup C] [IsUltrametricDist C] {f : I → C} {a : C}
     (h : HasSum f a) {b : I} (hf : ∀ x, x ≠ b → ‖f x‖ < ‖f b‖) : ‖f b‖ ≤ ‖a‖ := by
@@ -61,33 +59,33 @@ theorem le_norm_of_hasSum {I C : Type} [NormedAddCommGroup C] [IsUltrametricDist
   exact h2.not_gt (max_lt (not_le.1 hc) (h1.trans_lt hrb))
 
 /- English proof (translation)
-Introduce `X _ _ _ q g N J cls p _ w ν hq hg hN _ ⟨t, κ, hκ, hsum, hcls, hsz⟩ ⟨i₀, hi₀, hmax⟩`. Establish `hQ` using `GlobalTheory.posDef_realExt_of_tendsto q hq`. Establish `hN0 : (0 : ℝ) < N` using `lt_trans (by positivity) hN`. Take `⟨m, hm⟩` from `ClassMin.exists_global_min (ClassMin.realExtension_eq_realExt q ▸ hQ) ν one_pos`. Simplify using `only [div_one] at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Set `ν' : X →+ ℝ` to `ν + (QuadraticMap.polarBilin q m).toAddMonoidHom`. Establish `hν' : ∀ x, ν' x = ν x + QuadraticMap.polar q m x` using `fun x => rfl`. Distinguish the cases in `h0 : ν' = 0`. Use `⟨-m, fun α => ?_⟩` and prove the remaining obligations. Use `hν' α` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Rewrite using `[QuadraticMap.polar_neg_left]`. Simplify using `only [AddMonoidHom.zero_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction.
 
-Take `⟨α, -, h1, h2⟩` from `ClassMin.exists_shifted_lt_of_le (N := (N : ℤ)) hg hQ (by exact_mod_cast hN) h0 fun y => by`. Use `hm (m + y)` as an intermediate fact. Rewrite `this` using `[map_add ν]`. Rewrite using `[hν', QuadraticMap.polar]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [natCast_zsmul, Int.cast_natCast] at h1 h2`. Establish `hshift : ∀ x, q (x + N • m) / N + ν (x + N • m) = q x / N + ν' x + N * (q m + ν m)` using `fun x => by`. Establish `e` using `ClassMin.map_add_zsmul q x m (N : ℤ)`. Rewrite `e` using `[natCast_zsmul]`. Rewrite using `[e, hν', map_add, map_nsmul, nsmul_eq_mul, QuadraticMap.polar_comm q m x]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨i, hi⟩` from `(hsz (α + N • m)).2`. Take `⟨u, hu⟩` from `hcls (α + N • m) i (by`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← norm_pos_iff, hi]`. Use the proof step `positivity)`. Establish `hA : ‖t (α + N • m) i‖ ≤ ‖w i‖` using `le_norm_of_hasSum (f := fun x => t x i) (hsum i) fun x hx => by`. Distinguish the cases in `hz : t x i = 0`. Rewrite using `[hz, norm_zero, hi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Take `⟨v, hv⟩` from `hcls x i hz`. Establish `e : x = α + N • (v - u) + N • m`. Rewrite using `[hv, add_right_comm, hu, smul_sub]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `h3` using `h1 (v - u) fun h => hx (by rw [e, h, smul_zero, add_zero])`. Use `((hsz x).1 i).trans_lt ?_` and prove the remaining obligations. Rewrite using `[hi]`. Use `mul_lt_mul_of_pos_left (Real.exp_lt_exp.2 ?_) hκ` and prove the remaining obligations. Establish `e1` using `hshift (α + N • (v - u))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[← e]`. Establish `e2` using `hshift α`. Rewrite using `[sub_div, sub_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : ‖w i₀‖ ≤ κ * Real.exp (-(N * (q m + ν m)))` using `norm_le_of_hasSum (hsum i₀) (by positivity) fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hz : t x i₀ = 0`. Rewrite using `[hz, norm_zero]`. Check the signs of the components of the expression. Take `⟨v, hv⟩` from `hcls x i₀ hz`. Use `((hsz x).1 i₀).trans (mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hκ.le)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `ClassMin.shifted_zsmul (Q := q) (N := (N : ℤ)) (by exact_mod_cast hN0.ne') ν v`. Simplify using `only [natCast_zsmul, Int.cast_natCast] at e`. Rewrite using `[hv, hi₀, zero_add, map_zero, sub_zero, e]`. Conclude with `neg_le_neg (mul_le_mul_of_nonneg_left (hm v) hN0.le)`. Establish `hC` using `(hA.trans (hmax i)).trans hB`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hC` using `[hi]`. Establish `hD` using `Real.exp_le_exp.1 (le_of_mul_le_mul_left hC hκ)`. Establish `h3` using `h2 (m - u)`. Establish `e : α + N • (m - u) = cls i`. Rewrite using `[smul_sub, ← add_sub_assoc, hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite `h3` using `[e]`. Establish `e2` using `hshift α`. Rewrite `hD` using `[sub_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (q : QuadraticMap ℤ X ℝ) (g N : ℕ) (J : Type) (cls : J → X) (p : ℕ) [Fact p.Prime] (w : J → PadicAlgCl p) (ν : X →+ ℝ), Filter.Tendsto q Filter.cofinite Filter.atTop → Module.finrank ℤ X ≤ g → 1 + 2 * (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2) < N → (∀ i, Short q N (cls i)) → Ser q N cls w ν → (∃ i₀, cls i₀ = 0 ∧ ∀ i, ‖w i‖ ≤ ‖w i₀‖) → ∃ m, ∀ α, ν α = QuadraticMap.polar q m α := by
   intro X _ _ _ q g N J cls p _ w ν hq hg hN _ ⟨t, κ, hκ, hsum, hcls, hsz⟩ ⟨i₀, hi₀, hmax⟩

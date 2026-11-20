@@ -13,13 +13,11 @@ noncomputable section
 namespace GlobalTheory.PullbackSub
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Establish `hz : (e ≫ pullback.fst b ι) ≫ b ≫ cokernel.π ι = 0`. Rewrite using `[Category.assoc, ← Category.assoc (pullback.fst b ι), pullback.condition, Category.assoc, cokernel.condition, comp_zero, comp_zero]`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Establish `hmf : Mono (e ≫ pullback.fst b ι)` using `inferInstance`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk` using `Abelian.monoIsKernelOfCokernel _ (cokernelIsCokernel ι)`. Use `ShortComplex.ShortExact.mk' (ShortComplex.exact_of_f_is_kernel _ ?_) hmf (inferInstanceAs (Epi (b ≫ cokernel.π ι)))` and prove the remaining obligations. Set `ei : A ≅ pullback b ι` to `asIso e`. Establish `hei : ei.hom = e` using `rfl`. Establish `key : ∀ {T : C} (x : T ⟶ pullback b ι), (x ≫ ei.inv) ≫ e ≫ pullback.fst b ι = x ≫ pullback.fst b ι`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T x`. Rewrite using `[← hei, Category.assoc, Iso.inv_hom_id_assoc]`. Use `KernelFork.IsLimit.ofι _ _ (fun {T} g hg => pullback.lift g (KernelFork.IsLimit.lift' hk (g ≫ b) (by simpa [Category.assoc] using hg)).1 (KernelFork.IsLimit.lift' hk (g ≫ b) (by simpa [Category.assoc] using hg)).2.symm ≫ ei.inv) (fun {T} g hg => ?_) (fun {T} g hg m hm => ?_)` and prove the remaining obligations. Conclude with `(key _).trans (pullback.lift_fst _ _ _)`. Rewrite using `[← cancel_mono (e ≫ pullback.fst b ι)]`.
-
-Conclude with `hm.trans ((key _).trans (pullback.lift_fst _ _ _)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortExact_pullback_mono {C : Type*} [Category C] [Abelian C] {A E₂ E₃ F : C}
     (b : E₂ ⟶ E₃) (ι : F ⟶ E₃) [Epi b] [Mono ι]
@@ -48,7 +46,7 @@ theorem shortExact_pullback_mono {C : Type*} [Category C] [Abelian C] {A E₂ E�
     exact hm.trans ((key _).trans (pullback.lift_fst _ _ _)).symm
 
 /- English proof (translation)
-Introduce `X _ _ _ _ b ι _ _ f e _ hf` and use `shortExact_pullback_mono b ι f e hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem shortExact_preimage_of_epi_mono : ∀ (X : Scheme.{0}) {A E₂ E₃ F : X.Modules} (b : E₂ ⟶ E₃) (ι : F ⟶ E₃) [Epi b] [Mono ι]
     (f : A ⟶ E₂) (e : A ⟶ pullback b ι) [IsIso e], f = e ≫ pullback.fst b ι →

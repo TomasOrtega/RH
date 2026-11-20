@@ -8,13 +8,13 @@ open scoped IntermediateField
 namespace GlobalTheory.TorsionIntegral
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.weierstrass_uniformisation.2.1 L`. Take `⟨h1, e1⟩` from `he w hw`. Take `⟨h2', e2⟩` from `he _ h2`. Establish `hy : L.derivWeierstrassP w ≠ 0` using `fun h => h2 ((GlobalTheory.derivWeierstrassP_eq_zero_iff L hw).1 h)`. Establish `hne : L.derivWeierstrassP w / 2 ≠ (GlobalTheory.latticeCurve L).toAffine.negY (L.weierstrassP w) (L.derivWeierstrassP w / 2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[GlobalTheory.latticeCurve]`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Take the linear combination `h`. Rewrite `e2` using `[QuotientAddGroup.mk_add, map_add, e1, WeierstrassCurve.Affine.Point.add_self_of_Y_ne hne]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3` using `(WeierstrassCurve.Affine.Point.some.inj e2).1`. Rewrite `e3` using `[WeierstrassCurve.Affine.slope_of_Y_ne rfl hne]`. Simplify using `[GlobalTheory.latticeCurve] at e3`. Establish `hsq` using `L.derivWeierstrassP_sq w hw`. Rewrite using `[← e3, ← hsq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hsq]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dbl (L : PeriodPair) {w : ℂ} (hw : w ∉ L.lattice) (h2 : w + w ∉ L.lattice) :
     L.weierstrassP (w + w) * (4 * L.weierstrassP w ^ 3 - L.g₂ * L.weierstrassP w - L.g₃) =
@@ -38,7 +38,7 @@ theorem dbl (L : PeriodPair) {w : ℂ} (hw : w ∉ L.lattice) (h2 : w + w ∉ L.
   ring
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.weierstrass_uniformisation.1 L).isUnit.ne_zero`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Simplify using `[GlobalTheory.latticeCurve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Take the linear combination `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem disc (L : PeriodPair) : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 ≠ 0 := by
   have h := (GlobalTheory.weierstrass_uniformisation.1 L).isUnit.ne_zero
@@ -49,17 +49,17 @@ theorem disc (L : PeriodPair) : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 ≠ 0 := by
   linear_combination h0
 
 /- English proof (translation)
-Establish `h3` using `(GlobalTheory.weierstrassP_add L hz hw hne).1`. Establish `hw' : -w ∉ L.lattice` using `fun h => hw (by simpa using neg_mem h)`. Establish `h4` using `(GlobalTheory.weierstrassP_add L hz hw' (by rwa [L.weierstrassP_neg])).1`. Rewrite `h4` using `[L.weierstrassP_neg, L.derivWeierstrassP_neg, ← sub_eq_add_neg]`. Establish `s1` using `L.derivWeierstrassP_sq z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `s2` using `L.derivWeierstrassP_sq w hw`. Establish `hd : L.weierstrassP z - L.weierstrassP w ≠ 0` using `sub_ne_zero.2 hne`. Generalize the expression as in `L.weierstrassP (z + w) = x3 at *`. Generalize the expression as in `L.weierstrassP (z - w) = x4 at *`. Generalize the expression as in `L.weierstrassP z = x1 at *`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `L.weierstrassP w = x2 at *`. Generalize the expression as in `L.derivWeierstrassP z = y1 at *`. Generalize the expression as in `L.derivWeierstrassP w = y2 at *`. Establish `a3 : x3 * (x1 - x2) ^ 2 = (y1 ^ 2 + y2 ^ 2) / 4 - (x1 - x2) ^ 2 * (x1 + x2) - y1 * y2 / 2`. Rewrite using `[h3]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `a4 : x4 * (x1 - x2) ^ 2 = (y1 ^ 2 + y2 ^ 2) / 4 - (x1 - x2) ^ 2 * (x1 + x2) + y1 * y2 / 2`. Rewrite using `[h4]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Take the linear combination `a3 + a4 + s1 / 2 + s2 / 2`. Apply `mul_right_cancel₀ (pow_ne_zero 2 hd)` to reduce the goal to its premises. Establish `: (x3 * (x1 - x2) ^ 2) * (x4 * (x1 - x2) ^ 2) = ((y1 ^ 2 + y2 ^ 2) / 4 - (x1 - x2) ^ 2 * (x1 + x2)) ^ 2 - y1 ^ 2 * y2 ^ 2 / 4`.
+Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[a3, a4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[s1, s2]`. Take the linear combination `this`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sum_prod (L : PeriodPair) {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.lattice)
     (hne : L.weierstrassP z ≠ L.weierstrassP w) :
@@ -99,9 +99,9 @@ def IsRecip (L : PeriodPair) (z s : ℂ) : Prop :=
   (z ∈ L.lattice ∧ s = 0) ∨ (z ∉ L.lattice ∧ L.weierstrassP z * s = 1)
 
 /- English proof (translation)
-Establish `h` using `dbl L hw h2`. Establish `hx : L.weierstrassP w ≠ 0` using `left_ne_zero_of_mul_eq_one hs`. Take `rfl : s = (L.weierstrassP w)⁻¹` from `eq_inv_of_mul_eq_one_right hs`. Generalize the expression as in `L.weierstrassP (w + w) = y at *`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `32 * h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dbl_recip (L : PeriodPair) {w s : ℂ} (hw : w ∉ L.lattice) (hs : L.weierstrassP w * s = 1)
     (h2 : w + w ∉ L.lattice) :
@@ -115,37 +115,35 @@ theorem dbl_recip (L : PeriodPair) {w s : ℂ} (hw : w ∉ L.lattice) (hs : L.we
   linear_combination 32 * h
 
 /- English proof (translation)
-Establish `hx2 : L.weierstrassP w ≠ 0` using `left_ne_zero_of_mul_eq_one h2`. Break down `h1 with ⟨hz, rfl⟩ | ⟨hz, h1⟩` into its components or cases. Establish `a : z + w ∉ L.lattice` using `fun h => hw (by simpa using sub_mem h hz)`. Establish `b : z - w ∉ L.lattice` using `fun h => hw (by simpa using sub_mem hz h)`. Establish `c : L.weierstrassP (z + w) = L.weierstrassP w` using `(GlobalTheory.weierstrassP_eq_iff L a hw).2 (Or.inl (by simpa using hz))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d : L.weierstrassP (z - w) = L.weierstrassP w` using `(GlobalTheory.weierstrassP_eq_iff L b hw).2 (Or.inr (by simpa using hz))`. Break down `h4 with h4 | h4` into its components or cases. Conclude with `absurd h4.1 b`. Use `Or.inr ⟨a, ?_⟩` and prove the remaining obligations. Rewrite `h4` using `[d]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c]`. Simplify using `only [mul_zero, zero_mul, add_zero, zero_add, one_pow, div_one, sub_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow]`. Take the linear combination `2 * h2 - h4.2`. Establish `hx1 : L.weierstrassP z ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Distinguish the cases in `hne : L.weierstrassP z = L.weierstrassP w`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hs : s1 = s2`. Rewrite `h1` using `[hne]`. Conclude with `mul_left_cancel₀ hx2 (h1.trans h2.symm)`. Substitute `hs` using the available equality. Distinguish the cases in `hm : z - w ∈ L.lattice`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h40 : s4 = 0`. Break down `h4 with h4 | h4` into its components or cases. Conclude with `h4.2`. Conclude with `absurd hm h4.1`. Substitute `h40` using the available equality.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hww : w + w ∈ L.lattice`. Use `Or.inl ⟨by simpa [sub_add_add_cancel, add_assoc] using add_mem hm hww, ?_⟩` and prove the remaining obligations. Establish `hy` using `(GlobalTheory.derivWeierstrassP_eq_zero_iff L hw).2 hww`. Establish `hsq` using `L.derivWeierstrassP_sq w hw`. Rewrite `hsq` using `[hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[sub_zero, div_eq_zero_iff]`. Use `left`. Take `rfl : s1 = (L.weierstrassP w)⁻¹` from `eq_inv_of_mul_eq_one_right h2`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-2 * hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a : z + w ∉ L.lattice` using `fun h => hww (by`. Use `sub_mem h hm` as an intermediate fact. Rewrite using `[show z + w - (z - w) = w + w by ring] at this)` and apply the resulting hypothesis. Establish `c : L.weierstrassP (z + w) = L.weierstrassP (w + w)` using `(GlobalTheory.weierstrassP_eq_iff L a hww).2 (Or.inl (by simpa using hm))`. Use `Or.inr ⟨a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[c, sub_zero, ← mul_div_assoc, dbl_recip L hw h2 hww, div_self hD]`. Establish `hp : z + w ∈ L.lattice` using `((GlobalTheory.weierstrassP_eq_iff L hz hw).1 hne).resolve_left hm`. Establish `hww : w + w ∉ L.lattice` using `fun h => hm (by`. Use `sub_mem hp h` as an intermediate fact. Rewrite using `[show z + w - (w + w) = z - w by ring] at this)` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c : L.weierstrassP (z - w) = L.weierstrassP (w + w)` using `(GlobalTheory.weierstrassP_eq_iff L hm hww).2 (Or.inr (by`. Rewrite using `[show z - w + (w + w) = z + w by ring]))` and apply the resulting hypothesis. Establish `h4'` using `(h4.resolve_left (fun h => hm h.1)).2`. Rewrite `h4'` using `[c]`. Use `Or.inl ⟨hp, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_zero, div_eq_iff hD, ← dbl_recip L hw h2 hww]`. Take the linear combination `(-(2 * (s1 + s1) - L.g₂ / 2 * s1 * s1 * (s1 + s1) - L.g₃ * s1 ^ 2 * s1 ^ 2)) * h4'`. Establish `hn` using `mt (GlobalTheory.weierstrassP_eq_iff L hz hw).2 hne`. Rewrite `hn` using `[not_or]`. Establish `h4'` using `(h4.resolve_left (fun h => hn.1 h.1)).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨hs, hp⟩` from `sum_prod L hz hw hne`. Use `Or.inr ⟨hn.2, ?_⟩` and prove the remaining obligations. Generalize the expression as in `L.weierstrassP (z + w) = x3 at *`. Generalize the expression as in `L.weierstrassP (z - w) = x4 at *`. Generalize the expression as in `L.weierstrassP z = x1 at *`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Clear the denominators using the available nonvanishing facts.
 
-Generalize the expression as in `L.weierstrassP w = x2 at *`. Establish `eN : 2 * (s1 + s2) - L.g₂ / 2 * s1 * s2 * (s1 + s2) - L.g₃ * s1 ^ 2 * s2 ^ 2 = (x3 + x4) * ((x1 - x2) ^ 2 * s1 ^ 2 * s2 ^ 2)`. Take `rfl : s1 = x1⁻¹` from `eq_inv_of_mul_eq_one_right h1`. Take `rfl : s2 = x2⁻¹` from `eq_inv_of_mul_eq_one_right h2`. Clear the denominators using the available nonvanishing facts.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `-2 * hs`. Establish `eD : (1 + L.g₂ / 4 * s1 * s2) ^ 2 + L.g₃ * s1 * s2 * (s1 + s2) = (x3 * x4) * ((x1 - x2) ^ 2 * s1 ^ 2 * s2 ^ 2)`. Take `rfl : s1 = x1⁻¹` from `eq_inv_of_mul_eq_one_right h1`. Take `rfl : s2 = x2⁻¹` from `eq_inv_of_mul_eq_one_right h2`. Clear the denominators using the available nonvanishing facts.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `-16 * hp`. Rewrite `hD` using `[eD]`. Rewrite using `[eN, eD, mul_div_mul_right _ _ (right_ne_zero_of_mul hD)]`. Establish `h34` using `left_ne_zero_of_mul hD`. Establish `hx3` using `left_ne_zero_of_mul h34`.
-
-Establish `hx4` using `right_ne_zero_of_mul h34`. Take `rfl : s4 = x4⁻¹` from `eq_inv_of_mul_eq_one_right h4'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem recip_add (L : PeriodPair) {z w s1 s2 s4 : ℂ} (h1 : IsRecip L z s1)
     (hw : w ∉ L.lattice) (h2 : L.weierstrassP w * s2 = 1) (h4 : IsRecip L (z - w) s4)
@@ -240,21 +238,21 @@ theorem recip_add (L : PeriodPair) {z w s1 s2 s4 : ℂ} (h1 : IsRecip L z s1)
 
 open IsLocalRing in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Conclude with `⟨⟨0, by simp, Or.inl (by simp)⟩, ⟨1, by simp, Or.inr (by simpa using ⟨ht, hs⟩)⟩⟩`. Consider the case `succ k ih`. Take `⟨⟨b, hb, rb⟩, ⟨a, ha, ra⟩⟩` from `ih`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨a, ha, ra⟩, ?_⟩` and prove the remaining obligations. Set `h : W` to `⟨2⁻¹, h2⟩`. Set `g2 : W` to `⟨L.g₂, hg2⟩`. Set `g3 : W` to `⟨L.g₃, hg3⟩`. Set `D : W` to `(1 + g2 * h ^ 2 * a * s ^ 2) ^ 2 + g3 * a * s ^ 3 * (a + 1)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `N : W` to `2 * (a + 1) - g2 * h * a * s ^ 2 * (a + 1) - g3 * a ^ 2 * s ^ 3`. Establish `hD1 : residue W D = 1` using `by simp [D, hs0]`. Establish `hN1 : residue W N = 2 * (residue W a + 1)` using `by simp [N, hs0, map_ofNat]`. Establish `hDu : IsUnit D` using `(residue_ne_zero_iff_isUnit D).1 (by rw [hD1]; exact one_ne_zero)`. Take `⟨d, hd⟩` from `hDu.exists_right_inv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hd1 : residue W d = 1`. Use `congrArg (residue W) hd` as an intermediate fact. Rewrite `this` using `[map_mul, hD1, one_mul, map_one]`. Then use the resulting hypothesis. Establish `hdC : (D : ℂ) * d = 1` using `by exact_mod_cast congrArg (fun x : W => (x : ℂ)) hd`. Establish `eD : (1 + L.g₂ / 4 * (a * s) * s) ^ 2 + L.g₃ * (a * s) * s * (a * s + s) = (D : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[D, h, g2, g3]`. Expand and normalize the polynomial expressions, which then agree. Establish `eN : 2 * (a * s + s) - L.g₂ / 2 * (a * s) * s * (a * s + s) - L.g₃ * (a * s) ^ 2 * s ^ 2 = (N : ℂ) * s`. Establish `: ((2 : W) : ℂ) = 2` using `rfl`. Simplify using `[N, h, g2, g3, this]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hD0 : (D : ℂ) ≠ 0` using `left_ne_zero_of_mul_eq_one hdC`. Establish `key` using `recip_add L (s4 := b * s) ra ht hs (by rwa [show ((k + 1 : ℕ) : ℂ) * t - t = k * t by push_cast; ring]) (by rw [eD]; exact hD0)`. Rewrite `key` using `[eD, eN]`. Use `⟨N * d - b, ?_, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, map_mul, hN1, hd1, ha, hb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `key using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_eq_mul_inv, ← eq_inv_of_mul_eq_one_right hdC]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem multiples (L : PeriodPair) (W : ValuationSubring ℂ) (h2 : (2 : ℂ)⁻¹ ∈ W)
     (hg2 : L.g₂ ∈ W) (hg3 : L.g₃ ∈ W) {t : ℂ} (ht : t ∉ L.lattice) (s : W)
@@ -299,11 +297,11 @@ theorem multiples (L : PeriodPair) (W : ValuationSubring ℂ) (h2 : (2 : ℂ)⁻
 
 open IsLocalRing in
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `hx0 : L.weierstrassP t ≠ 0` using `fun h => hx (h ▸ W.zero_mem)`. Take `⟨hs, hs0⟩` from `ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal.1 ((W.inv_mem_nonunits_iff).2 (Or.inr hx))`. Take `⟨a, ha, ra⟩` from `(multiples L W h2 hg2 hg3 ht ⟨_, hs⟩ (mul_inv_cancel₀ hx0) ((residue_eq_zero_iff _).2 hs0) m).1`. Establish `h0` using `(ra.resolve_right (fun h => h.1 hmt)).2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha0 : a = 0`. Simplify `h0` using `[hx0]`. Establish `hu : (m : W) * ⟨_, hm⟩ = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hm0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `congrArg (residue W) hu` as an intermediate fact. Rewrite `ha` using `[ha0, map_zero]`. Rewrite `this` using `[map_mul, map_natCast, pow_eq_zero_iff two_ne_zero |>.1 ha.symm, zero_mul, map_one]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral (L : PeriodPair) (W : ValuationSubring ℂ) (m : ℕ) (h2 : (2 : ℂ)⁻¹ ∈ W)
     (hg2 : L.g₂ ∈ W) (hg3 : L.g₃ ∈ W) (hm0 : m ≠ 0) (hm : (m : ℂ)⁻¹ ∈ W) {t : ℂ}
@@ -328,27 +326,27 @@ theorem integral (L : PeriodPair) (W : ValuationSubring ℂ) (m : ℕ) (h2 : (2 
 open IsLocalRing in
 
 /- English proof (translation)
-Introduce `L W m h2 _ hg2 hg3 hΔ hodd hm`. Establish `hI : ∀ t, (m : ℂ) * t ∈ L.lattice → t ∉ L.lattice → L.weierstrassP t ∈ W` using `fun t a b => integral L W m h2 hg2 hg3 hodd.pos.ne' hm a b`. Use `⟨hI, fun t t' a b a' b' hn => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Establish `hne : L.weierstrassP t ≠ L.weierstrassP t'` using `mt (GlobalTheory.weierstrassP_eq_iff L b b').1 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hc` using `[not_or]`. Take `⟨hs, hp⟩` from `sum_prod L b b' hne`. Set `x1 : W` to `⟨_, hI t a b⟩`. Set `x2 : W` to `⟨_, hI t' a' b'⟩`. Set `x3 : W` to `⟨_, hI (t + t') (by rw [mul_add]; exact add_mem a a') hc.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x4 : W` to `⟨_, hI (t - t') (by rw [mul_sub]; exact sub_mem a a') hc.1⟩`. Set `g2 : W` to `⟨L.g₂, hg2⟩`. Set `g3 : W` to `⟨L.g₃, hg3⟩`. Set `h : W` to `⟨2⁻¹, h2⟩`. Set `e : W` to `⟨_, hΔ⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `c2 : ((2 : W) : ℂ) = 2` using `rfl`. Establish `c27 : ((27 : W) : ℂ) = 27` using `rfl`. Establish `e1 : (x3 + x4) * (x1 - x2) ^ 2 = 2 * x1 * x2 * (x1 + x2) - g2 * h * (x1 + x2) - g3`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[x1, x2, x3, x4, g2, g3, h, c2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `hs`. Establish `e2 : x3 * x4 * (x1 - x2) ^ 2 = (x1 * x2 + g2 * h ^ 2) ^ 2 + g3 * (x1 + x2)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[x1, x2, x3, x4, g2, g3, h]`. Take the linear combination `hp`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e3 : 2 * h = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[h, c2]`. Establish `e4 : (g2 ^ 3 - 27 * g3 ^ 2) * e = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[g2, g3, e, c27, disc L]`. Establish `e5 : residue W (x1 - x2) = 0` using `(residue_eq_zero_iff _).2 (ValuationSubring.coe_mem_nonunits_iff.1 hn)`. Establish `f1` using `congrArg (residue W) e1`. Establish `f2` using `congrArg (residue W) e2`. Establish `f3` using `congrArg (residue W) e3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f4` using `congrArg (residue W) e4`. Simplify using `only [map_mul, map_add, map_sub, map_pow, map_ofNat, map_one] at f1 f2 f3 f4 e5`. Rewrite `e5` using `[sub_eq_zero]`. Rewrite `f1`, `f2` using `[← e5]`. Generalize the expression as in `residue W x1 = x at *`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `residue W g2 = A at *`. Generalize the expression as in `residue W g3 = B at *`. Generalize the expression as in `residue W h = u at *`. Establish `k1 : 4 * x ^ 3 - A * x - B = 0` using `by linear_combination (A * x) * f3 - f1`. Establish `k2 : (4 * x ^ 2 + A) ^ 2 + 32 * B * x = 0`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 4 * (x * x + A * u ^ 2) = 4 * x ^ 2 + A`. Take the linear combination `A * (2 * u + 1) * f3`. Rewrite using `[← hA]`. Take the linear combination `-16 * f2`. Establish `k3 : A ^ 3 - 27 * B ^ 2 = 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(A - 3 * x ^ 2) * k2 + (12 * x ^ 3 + 5 * A * x + 27 * B) * k1`. Rewrite `f4` using `[k3, zero_mul]`. Conclude with `zero_ne_one f4`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_integral_distinct : ∀ (L : PeriodPair) (W : ValuationSubring ℂ) (m : ℕ),
     (2 : ℂ)⁻¹ ∈ W → (3 : ℂ)⁻¹ ∈ W → L.g₂ ∈ W → L.g₃ ∈ W → (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)⁻¹ ∈ W →

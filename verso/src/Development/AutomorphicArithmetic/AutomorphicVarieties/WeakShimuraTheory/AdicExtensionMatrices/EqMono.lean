@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Conclude with `h.ne_zero ((res_eq_zero_iff Λ S x).2 hn)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem eqMono_unit {Λ S : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing S] [Algebra Λ S] [IsCO Λ S] {x : S}
     (h : IsUnit (res Λ S x)) : IsUnit x := by
@@ -12,7 +12,7 @@ private theorem eqMono_unit {Λ S : Type} [CommRing Λ] [IsLocalRing Λ] [CommRi
   exact h.ne_zero ((res_eq_zero_iff Λ S x).2 hn)
 
 /- English proof (translation)
-Rewrite `h` using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]`. Establish `h2 : IsUnit (∏ j ∈ Finset.univ.erase i, (x - c j))` using `IsUnit.prod_iff.2 fun j hj => hu j (Finset.ne_of_mem_erase hj)`. Conclude with `sub_eq_zero.1 (h2.mul_left_eq_zero.1 h)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eqMono_root {S : Type} [CommRing S] (x : S) (c : Fin 4 → S) (i : Fin 4)
     (h : ∏ j, (x - c j) = 0) (hu : ∀ j, j ≠ i → IsUnit (x - c j)) : x = c i := by
@@ -22,41 +22,39 @@ private theorem eqMono_root {S : Type} [CommRing S] (x : S) (c : Fin 4 → S) (i
   exact sub_eq_zero.1 (h2.mul_left_eq_zero.1 h)
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ Φ Λ _ _ _ _ a R _ _ _ D W _ hOk hNear hGr D' hD' cp hcp R' _ _ _ f f' hff' x hx`. Set `φA : W.gr 0 →ₐ[Λ] R` to `{ toRingHom := (W.A.val : W.A →+* R).comp (algebraMap (W.gr 0) W.A) commutes' := fun c => rfl }`. Establish `hAinj : Function.Injective (algebraMap (W.gr 0) W.A)` using `fun b c h => Subtype.ext h`. Set `E : Subring R` to `(AlgHom.equalizer f f').toSubring.map (φA : W.gr 0 →+* R)`. Establish `hmem : ∀ b : W.gr 0, f b = f' b → φA b ∈ E` using `fun b hb => Subring.mem_map.mpr ⟨b, hb, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrep` using `hNear.rep`. Establish `hdex : ∀ i : Fin 4, ∃ d : W.gr 0, φA d = D.r Φ.g0 i i`. Introduce `i`. Establish `h` using `hGr.ent Φ.g0 i i`. Rewrite `h` using `[(wt_eq_zero i i).mpr rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨⟨_, W.part_le_A h⟩, h⟩, rfl⟩`. Use `choose d hd using hdex`. Establish `hresd : ∀ i, res Λ (W.gr 0) (d i) = residue Λ (a ↑((Φ.χ i) Φ.g0))`. Introduce `i`. Rewrite using `[← res_map φA, hd]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hNear.diag Φ.g0 i`. Establish `hdist : ∀ i j, i ≠ j → IsUnit (res Λ (W.gr 0) (d i - d j))`. Introduce `i j hij`. Establish `h` using `hOk.dist i j hij`. Simplify using `only [RingHom.comp_apply] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, hresd, hresd, ← map_sub]`. Conclude with `h`. Establish `hD'r : ∀ g, D.r g = (D'.r g).map (W.A.val : W.A →+* R)`. Introduce `g`. Rewrite using `[← hD']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hD'g0 : D'.r Φ.g0 = Matrix.diagonal (fun i => algebraMap (W.gr 0) W.A (d i))`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(W.A.val : W.A →+* R) (D'.r Φ.g0 i j) = (W.A.val : W.A →+* R) _`. Establish `h1 : (W.A.val : W.A →+* R) (D'.r Φ.g0 i j) = D.r Φ.g0 i j`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hD'r]`. Both sides reduce to the same expression. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, h1, ← hd i]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[Matrix.diagonal_apply_ne _ hij, map_zero, h1]`. Conclude with `hrep.nrm hij`. Establish `hcp0 : cp Φ.g0 = ∏ j, (X - C (d j))`. Apply `Polynomial.map_injective _ hAinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hcp, hD'g0, Matrix.charpoly_diagonal, Polynomial.map_prod]`. Simplify using the standard rewrite rules. Establish `hmapeq : (cp Φ.g0).map (f : W.gr 0 →+* R') = (cp Φ.g0).map (f' : W.gr 0 →+* R')`. Use extensionality with `n`. Simplify using `using hff' Φ.g0 n`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ i, f (d i) = f' (d i)`. Introduce `i`. Establish `hroot : ∏ j, (f' (d i) - f (d j)) = 0`. Establish `h1 : ((cp Φ.g0).map (f' : W.gr 0 →+* R')).eval (f' (d i)) = 0`. Rewrite using `[hcp0, Polynomial.map_prod, Polynomial.eval_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Finset.prod_eq_zero (Finset.mem_univ i)` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite `h1` using `[← hmapeq, hcp0, Polynomial.map_prod, Polynomial.eval_prod]`. Simplify using `using h1`. Establish `hu : ∀ j, j ≠ i → IsUnit (f' (d i) - f (d j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j hji`. Apply `eqMono_unit (Λ := Λ)` to reduce the goal to its premises. Rewrite using `[map_sub, res_map, res_map, ← map_sub]`. Conclude with `hdist i j (Ne.symm hji)`. Conclude with `(eqMono_root (f' (d i)) (fun j => f (d j)) i hroot hu).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hν : ∀ g, ∃ ν ∈ E, IsGSp ν (D.r g)` using `fun g => ⟨_, hmem (algebraMap Λ (W.gr 0) (a ↑(Φ.ν g))) (by rw [f.commutes, f'.commutes]), hrep.mult g⟩`. Establish `htr : ∀ g, Matrix.trace (D.r g) ∈ E`. Introduce `g`. Establish `h2 : Matrix.trace (D'.r g) = algebraMap (W.gr 0) W.A (-(cp g).coeff 3)`. Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Fintype.card_fin, ← hcp, Polynomial.coeff_map, map_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h3 : Matrix.trace (D.r g) = (W.A.val : W.A →+* R) (Matrix.trace (D'.r g))`. Rewrite using `[hD'r g]`. Simplify using `[Matrix.trace, map_sum]`. Establish `h1 : Matrix.trace (D.r g) = φA (-(cp g).coeff 3)`. Rewrite using `[h3, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `hmem _ (by rw [map_neg, map_neg, hff' g 3])`. Establish `hEdiag : ∀ i, D.r Φ.g0 i i ∈ E` using `fun i => by`. Rewrite using `[← hd i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmem _ (hfix i)`. Establish `hsep : ∀ i j, i ≠ j → ∃ u ∈ E, u * (D.r Φ.g0 i i - D.r Φ.g0 j j) = 1`. Introduce `i j hij`. Take `⟨U, hU⟩` from `eqMono_unit (Λ := Λ) (S := W.gr 0) (hdist i j hij)`. Establish `hfe : f (d i - d j) = f' (d i - d j)` using `by rw [map_sub, map_sub, hfix, hfix]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : f ↑U⁻¹ * f (d i - d j) = 1` using `by rw [← hU, ← map_mul, Units.inv_mul, map_one]`. Establish `e2 : f' ↑U⁻¹ * f' (d i - d j) = 1` using `by rw [← hU, ← map_mul, Units.inv_mul, map_one]`. Establish `hinv : f (↑U⁻¹ : W.gr 0) = f' ↑U⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `⟨φA ↑U⁻¹, hmem _ hinv, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hd i, ← hd j, ← map_sub, ← map_mul, ← hU, Units.inv_mul, map_one]`. Establish `hsub` using `sxMonoZero E D.r Φ.g0 hν htr hrep.nrm hEdiag hsep`. Take `⟨b, hb, hbx⟩` from `Subring.mem_map.mp (hsub hx)`. Conclude with `⟨b, hbx, hb⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxEqMono :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] {a : O →+* Λ} {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] {D : RD Φ R} {W : WPres Λ (ℤ × ℤ) R} [IsCO Λ (W.gr 0)], Φ.Ok ((residue Λ).comp a) → Φ.Near a 0 D → D.Graded W → ∀ (D' : RD Φ W.A), D'.map (W.A.val : W.A →+* R) = D → ∀ cp : Γ → (W.gr 0)[X], (∀ g, (cp g).map (algebraMap (W.gr 0) W.A) = (D'.r g).charpoly) → ∀ (R' : Type) [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] (f f' : W.gr 0 →ₐ[Λ] R'), (∀ g n, f ((cp g).coeff n) = f' ((cp g).coeff n)) → ∀ x ∈ mono D.r 0, ∃ b : W.gr 0, ((b : W.A) : R) = x ∧ f b = f' b := by

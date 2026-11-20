@@ -22,14 +22,14 @@ namespace GlobalTheory.CuspMult.CutFull
 open GlobalTheory.CuspMult GlobalTheory.CuspMult.EqCut
 
 /- English proof (translation)
-Simplify using `only [mem_killed, Set.mem_union, or_imp, forall_and]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_killed_union {H X : Type} [Group H] [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ H X)
     (I I' : Set (MonoidAlgebra ℂ H)) (v : X) : v ∈ killed ρ (I ∪ I') ↔ v ∈ killed ρ I ∧ v ∈ killed ρ I' := by
   simp only [mem_killed, Set.mem_union, or_imp, forall_and]
 
 /- English proof (translation)
-Unfold `partFull`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, MultilinearMap.ext_iff, funext_iff]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_partFull_iff {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
     (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ)
@@ -42,17 +42,17 @@ theorem mem_partFull_iff {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
   rfl
 
 /- English proof (translation)
-Introduce `D V S θ M β L G _ _ eG c P SF a hs hQ hlift`. Establish `h0` using `good_hecke_eq_killed θ M β L eG c P (∅ : Set Empty) Empty.elim Empty.elim Empty.elim hs hQ hlift`. Establish `h1 : ∀ T : MMap M, T ∈ goodPart θ M (levS V β (withP L P)) (levChi V β (withP L P)) (gaL V β L eG c) ↔ T ∈ allMaps θ M ∧ T ∈ killed (finRep M) (eqSet V β L eG c P (∅ : Set Empty) Empty.elim Empty.elim Empty.elim)`. Introduce `T`. Rewrite using `[← Submodule.mem_inf, ← h0, Submodule.mem_inf, mem_hPart]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => ⟨h, fun p => p.elim⟩, fun h => h.1⟩`. Use extensionality with `T`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, mem_killed_union, ← and_assoc, ← h1, mem_partFull_iff]`. Use `and_congr_right fun hg => ?_` and prove the remaining obligations. Rewrite using `[mem_killed]`.
+Supply the required witnesses or components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hh⟩ x ⟨Q, d, B, hB, rfl⟩`. Use `(alg_sum M B (fun γ => γ) (fun _ => 1) _ T).2 fun v x => ?_` and prove the remaining obligations. Use `hh Q d _ hB v x` as an intermediate fact. Rewrite `this` using `[Finset.sum_map]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [one_mul]`. Conclude with `this`. Introduce `hk`. Establish `hm` using `(GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ T).1 hg.1`. Use `⟨(GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ T).2 ⟨hm.aut, hm.cusp, fun v k hkk x => ?_, hm.equiv, hm.cont⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hasType_flag1 P (F := T v) (fun k hk h => hm.lev v k hk h) k hkk x`. Introduce `Q d R hR v x classical`. Establish `hf : ∀ γ ∈ R, γ ∈ GfC V`. Take `⟨e, f, ϖ, α, -, -, -, -, -, -, -, -, -, -, h⟩` from `hR`. Conclude with `fun γ hγ => (h.1 γ hγ).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, rfl⟩ : ∃ B : Finset (GfC V), B.map ⟨Subtype.val, Subtype.val_injective⟩ = R` from `⟨R.subtype (· ∈ GfC V), Finset.subtype_map_of_mem hf⟩`. Use `(alg_sum M B (fun γ => γ) (fun _ => 1) _ T).1 (hk _ ⟨Q, d, B, hR, rfl⟩) v x` as an intermediate fact. Simplify using `only [one_mul] at this`. Rewrite using `[Finset.sum_map]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_partFull_eq_killed : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : DSModel V S) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ) (P : LevelP L.Pg L.r ℂ) (SF : Finset (HeightOneSpectrum (𝓞 D.host.F))) (a : Pl D.host.E → List ℤ → ℂ), L.s = 0 → L.Q = ∅ → LiftsExist V β L → goodPart θ M (levS V β (withP L P)) (levChi V β (withP L P)) (gaL V β L eG c) ⊓ partFull θ M (levS V β (withP L (LevelP.triv L.Pg L.r ℂ))) (levChi V β (withP L (LevelP.triv L.Pg L.r ℂ))) SF a = GlobalTheory.CuspMult.allMaps θ M ⊓ GlobalTheory.CuspMult.killed (GlobalTheory.CuspMult.finRep M) (GlobalTheory.CuspMult.eqSet V β L eG c P (∅ : Set Empty) Empty.elim Empty.elim Empty.elim ∪ {x | ∃ (Q : Pl D.host.E) (d : List ℤ) (B : Finset (GfC V)), Hecke₂ V (levS V β (withP L (LevelP.triv L.Pg L.r ℂ))) (levChi V β (withP L (LevelP.triv L.Pg L.r ℂ))) SF Q d (B.map ⟨Subtype.val, Subtype.val_injective⟩) ∧ x = ∑ γ ∈ B, MonoidAlgebra.single γ 1 - MonoidAlgebra.single 1 (a Q d)}) := by
   intro D V S θ M β L G _ _ eG c P SF a hs hQ hlift

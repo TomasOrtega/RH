@@ -44,7 +44,7 @@ variable {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
   [NormedAddCommGroup V'] [InnerProductSpace ℂ V']
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `key : ⟪B w, x⟫_ℂ = ⟪w, B.symm x⟫_ℂ`. Rewrite using `[← B.inner_map_map w (B.symm x), LinearIsometryEquiv.apply_symm_apply]`. Simplify using `[TermOp.rk1, inner_smul_left, smul_smul, key, map_smul]`. Apply the tactic sequence `try ring_nf`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rank_one_smul_isometry (a b : ℂ) (A : V ≃ₗᵢ[ℂ] V) (B : V' ≃ₗᵢ[ℂ] V') (v : V) (w : V') :
     TermOp.rk1 (a • A v) (b • B w) =
@@ -58,11 +58,11 @@ theorem rank_one_smul_isometry (a b : ℂ) (A : V ≃ₗᵢ[ℂ] V) (B : V' ≃�
   try ring_nf
 
 /- English proof (translation)
-Unfold `TermOp.OO`. Rewrite using `[Measure.restrict_univ]`. Rewrite using `[← integral_mul_left_eq_self (fun x => TermOp.rk1 (Ph x) (Ph' ((s * γ * s'⁻¹)⁻¹ * x))) s]`. Establish `e : ∀ y, TermOp.rk1 (Ph (s * y)) (Ph' ((s * γ * s'⁻¹)⁻¹ * (s * y))) = (a * conj b) • (ContinuousLinearEquiv.arrowCongr B.toContinuousLinearEquiv A.toContinuousLinearEquiv (TermOp.rk1 (Ph y) (Ph' (γ⁻¹ * y))))`. Introduce `y`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : (s * γ * s'⁻¹)⁻¹ * (s * y) = s' * (γ⁻¹ * y)` using `by group`. Rewrite using `[hy, hA, hB, rank_one_smul_isometry]`. Use `congr 1`. Simplify using `only [e]`. Rewrite using `[integral_smul, ContinuousLinearEquiv.integral_comp_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `try (ext x; simp [ContinuousLinearEquiv.arrowCongr_apply])`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem OO_equiv {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
     [CompleteSpace V] [CompleteSpace V'] (Ph : G → V) (Ph' : G → V') (γ s s' : G) (a b : ℂ)
@@ -88,7 +88,7 @@ theorem OO_equiv {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ
   try (ext x; simp [ContinuousLinearEquiv.arrowCongr_apply])
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (b.sum_sq_norm_inner_right x).symm`. Consider the case `exact (b.sum_sq_norm_inner_left x).symm`. Consider the case `(rw [← b.repr.norm_map x, EuclideanSpace.norm_sq_eq]; simp [b.repr_apply_apply])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem norm_sq_eq_sum_norm_inner_sq_orthonormalBasis {W : Type*} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ι : Type*} [Fintype ι]
     (b : OrthonormalBasis ι ℂ W) (x : W) : ‖x‖ ^ 2 = ∑ i, ‖⟪b i, x⟫_ℂ‖ ^ 2 := by
@@ -98,7 +98,7 @@ private theorem norm_sq_eq_sum_norm_inner_sq_orthonormalBasis {W : Type*} [Norme
   | (rw [← b.repr.norm_map x, EuclideanSpace.norm_sq_eq]; simp [b.repr_apply_apply])
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.adjoint_inner_right, norm_inner_symm]`. Use `_ = ∑ k, ‖(ContinuousLinearMap.adjoint A) (stdOrthonormalBasis ℂ V k)‖ ^ 2 := Finset.sum_congr rfl fun k _ => (norm_sq_eq_sum_norm_inner_sq_orthonormalBasis b _).symm`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsb_eq_adj [FiniteDimensional ℂ V] [CompleteSpace V] [CompleteSpace V'] {ι : Type*} [Fintype ι]
     (b : OrthonormalBasis ι ℂ V') (A : V' →L[ℂ] V) :
@@ -114,7 +114,7 @@ theorem hsb_eq_adj [FiniteDimensional ℂ V] [CompleteSpace V] [CompleteSpace V'
         Finset.sum_congr rfl fun k _ => (norm_sq_eq_sum_norm_inner_sq_orthonormalBasis b _).symm
 
 /- English proof (translation)
-Use `haveI : CompleteSpace V := FiniteDimensional.complete ℂ V`. Use `haveI : CompleteSpace V' := FiniteDimensional.complete ℂ V'`. Rewrite using `[hsb_eq_adj b A, hsb_eq_adj c A]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsb_indep [FiniteDimensional ℂ V] [FiniteDimensional ℂ V'] {ι κ : Type*} [Fintype ι] [Fintype κ]
     (b : OrthonormalBasis ι ℂ V') (c : OrthonormalBasis κ ℂ V') (A : V' →L[ℂ] V) :
@@ -125,7 +125,7 @@ theorem hsb_indep [FiniteDimensional ℂ V] [FiniteDimensional ℂ V'] {ι κ : 
   rw [hsb_eq_adj b A, hsb_eq_adj c A]
 
 /- English proof (translation)
-Simplify using `only [hs2, ContinuousLinearMap.comp_apply, hT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hilbert_schmidt_comp_left [FiniteDimensional ℂ V'] (A : V' →L[ℂ] V) (T : V →L[ℂ] V) (hT : ∀ x, ‖T x‖ = ‖x‖) :
     hs2 (T.comp A) = hs2 A := by
@@ -133,7 +133,7 @@ theorem hilbert_schmidt_comp_left [FiniteDimensional ℂ V'] (A : V' →L[ℂ] V
   simp only [hs2, ContinuousLinearMap.comp_apply, hT]
 
 /- English proof (translation)
-Unfold `hs2`. Establish `h` using `hsb_indep ((stdOrthonormalBasis ℂ V').map B) (stdOrthonormalBasis ℂ V') A`. Simplify using `only [OrthonormalBasis.map_apply] at h`. Simplify using `using h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hilbert_schmidt_comp_right [FiniteDimensional ℂ V] [FiniteDimensional ℂ V'] (A : V' →L[ℂ] V) (B : V' ≃ₗᵢ[ℂ] V') :
     hs2 (A.comp (B.toContinuousLinearEquiv : V' →L[ℂ] V')) = hs2 A := by
@@ -144,7 +144,7 @@ theorem hilbert_schmidt_comp_right [FiniteDimensional ℂ V] [FiniteDimensional 
   simpa using h
 
 /- English proof (translation)
-Simplify using `only [hs2, ContinuousLinearMap.smul_apply, norm_smul, mul_pow, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hilbert_schmidt_smul [FiniteDimensional ℂ V'] (c : ℂ) (A : V' →L[ℂ] V) : hs2 (c • A) = ‖c‖ ^ 2 * hs2 A := by
 
@@ -157,21 +157,19 @@ section Conc
 open Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-Establish `pres : ∀ a : ℕ, ∀ y ∈ spanLt e a, g *ᵥ y ∈ spanLt e a`. Introduce `a y hy`. Establish `hle : spanLt e a ≤ (spanLt e a).comap (Matrix.mulVecLin g)`. Unfold `spanLt`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `hb' : (b : ℕ) < a` using `hb`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`. Establish `e1 : g *ᵥ e b = e b + (g - 1) *ᵥ e b`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Use `Submodule.add_mem _ (Submodule.subset_span ⟨b, hb', rfl⟩) ?_` and prove the remaining obligations. Use `Submodule.span_mono ?_ (hg.1 b)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨c, lt_trans hc hb', rfl⟩`. Conclude with `hle hy`. Establish `ginj : Function.Injective (Matrix.mulVecLin g)`. Introduce `x y hxy`. Use `congrArg (fun t => gi *ᵥ t) hxy` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h1]`. Establish `ipres : ∀ a : ℕ, ∀ y ∈ spanLt e a, gi *ᵥ y ∈ spanLt e a`. Introduce `a y hy`. Establish `hle : (spanLt e a).map (Matrix.mulVecLin g) ≤ spanLt e a`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `pres a x hx`. Establish `heq : (spanLt e a).map (Matrix.mulVecLin g) = spanLt e a` using `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ ginj (spanLt e a))).symm`. Rewrite `hy` using `[← heq]`. Take `⟨x, hx, rfl⟩` from `hy`. Simplify `hx` using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ y : Fin n → ℂ, (gi - 1) *ᵥ y = -(gi *ᵥ ((g - 1) *ᵥ y))` using `fun y => by`. Simplify using `[Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, h1]`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `Submodule.neg_mem _ (ipres a.1 _ (hg.1 a))`.
-
-Rewrite using `[key]`. Conclude with `Submodule.neg_mem _ (ipres r _ hg.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inS_inv {n r : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (g gi : Matrix (Fin n) (Fin n) ℂ)
     (h1 : gi * g = 1) (hg : InS e z g) : InS e z gi := by
@@ -213,7 +211,7 @@ theorem inS_inv {n r : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (g
   · rw [key]; exact Submodule.neg_mem _ (ipres r _ hg.2)
 
 /- English proof (translation)
-Simplify using `[uMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uMat_inv_mul' {n : ℕ} {ε : Fin n → Bool} (a : Formalism.REAL.UJ ε) : uMat a⁻¹ * uMat a = 1 := by
   simp [uMat]
@@ -221,16 +219,16 @@ theorem uMat_inv_mul' {n : ℕ} {ε : Fin n → Bool} (a : Formalism.REAL.UJ ε)
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Introduce `v`. Conclude with `inS_inv _ _ (uMat (s v)) (uMat (s⁻¹ v)) (uMat_inv_mul' (s v)) (hs v)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sinfU_inv (u : D.what₂.Word) {s : X.B.I.Ginf} (hs : s ∈ X.SinfU u) : s⁻¹ ∈ X.SinfU u := by
   intro v
   exact inS_inv _ _ (uMat (s v)) (uMat (s⁻¹ v)) (uMat_inv_mul' (s v)) (hs v)
 
 /- English proof (translation)
-Introduce `v`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `hv : uMat (h v) *ᵥ rv X.B.I v (X.eR a) = rv X.B.I v (X.eR a)` using `hh v _ (Or.inl (Or.inl ⟨a, rfl⟩))`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `(sub_eq_zero.mpr hv) ▸ Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : uMat (h v) *ᵥ rv X.B.I v (X.zR u) = rv X.B.I v (X.zR u)` using `hh v _ (Or.inr rfl)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `(sub_eq_zero.mpr hv) ▸ Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsetU_sub (u : D.what₂.Word) {h : X.B.I.Ginf} (hh : h ∈ HsetU X u) : h ∈ X.SinfU u := by
   intro v
@@ -244,7 +242,7 @@ theorem hsetU_sub (u : D.what₂.Word) {h : X.B.I.Ginf} (hh : h ∈ HsetU X u) :
     exact (sub_eq_zero.mpr hv) ▸ Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `v x hx`. Establish `hv` using `hh v x hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, show uMat (h⁻¹ v) * uMat (h v) = 1 from uMat_inv_mul' (h v), Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem hsetU_inv (u : D.what₂.Word) {h : X.B.I.Ginf} (hh : h ∈ HsetU X u) : h⁻¹ ∈ HsetU X u := by
   intro v x hx
@@ -263,7 +261,7 @@ theorem piIso_apply (u : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ X.SinfU u)
     piIso X u s hs x = X.piU u s x := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `piIso_apply X u s hs x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem piIso_coe (u : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ X.SinfU u) :
     ((piIso X u s hs).toContinuousLinearEquiv : X.Vpi u →L[ℂ] X.Vpi u) = X.piU u s := by
@@ -272,7 +270,7 @@ theorem piIso_coe (u : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ X.SinfU u) :
   exact piIso_apply X u s hs x
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show (piIso X u s hs).symm x = X.piU u s⁻¹ x`. Rewrite using `[LinearIsometryEquiv.symm_apply_eq, piIso_apply, ← ContinuousLinearMap.mul_apply, ← (X.piU_rep u).2.1 s hs s⁻¹ (sinfU_inv X u hs), mul_inv_cancel, (X.piU_rep u).1, ContinuousLinearMap.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piIso_symm (u : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ X.SinfU u) :
     ((piIso X u s hs).symm.toContinuousLinearEquiv : X.Vpi u →L[ℂ] X.Vpi u) = X.piU u s⁻¹ := by
@@ -283,9 +281,9 @@ theorem piIso_symm (u : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ X.SinfU u) 
     ContinuousLinearMap.one_apply]
 
 /- English proof (translation)
-Unfold `psiR`. Establish `hS : ∀ x : ℂ, x + star x = ((2 * x.re : ℝ) : ℂ)` using `fun x => by`. Rewrite using `[Complex.star_def, Complex.add_conj]`. Apply the tactic sequence `try push_cast`. Apply the tactic sequence `try ring`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hS]`. Rewrite using `[Complex.norm_exp]`. Simplify using `[Complex.mul_re, Complex.div_re, Complex.div_im]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_psiR {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
     (g : Matrix (Fin n) (Fin n) ℂ) : ‖psiR ε gg e f z g‖ = 1 := by
@@ -300,7 +298,7 @@ theorem norm_psiR {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → 
   simp [Complex.mul_re, Complex.div_re, Complex.div_im]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.HidaSetting.HidaSetting.psiInfU psiInf`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_eq_one fun v _ => norm_psiR _ _ _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_psiInfU (u : D.what₂.Word) (s : X.B.I.Ginf) : ‖X.psiInfU u s‖ = 1 := by
   unfold Formalism.L2.SG.HidaSetting.HidaSetting.psiInfU psiInf
@@ -308,9 +306,9 @@ theorem norm_psiInfU (u : D.what₂.Word) (s : X.B.I.Ginf) : ‖X.psiInfU u s‖
   exact Finset.prod_eq_one fun v _ => norm_psiR _ _ _ _ _ _
 
 /- English proof (translation)
-Introduce `γ s hs s' hs'`. Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u)`. Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u')`. Establish `hA : ∀ x, X.Wu u (s * x) = X.psiInfU u s • piIso X u s hs (X.Wu u x)` using `fun x => (X.Wu_spec u).1 s hs x`. Establish `hB : ∀ x, X.Wu u' (s' * x) = X.psiInfU u' s' • piIso X u' s' hs' (X.Wu u' x)` using `fun x => (X.Wu_spec u').1 s' hs' x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `OOinf`. Rewrite using `[OO_equiv _ _ _ γ s s' _ _ (piIso X u s hs) (piIso X u' s' hs') hA hB, piIso_symm, piIso_coe]`.
+A detailed English derivation is pending.
 -/
 theorem ooEquivar (u u' : D.what₂.Word) : OOEquivar X u u' := by
   intro γ s hs s' hs'
@@ -324,7 +322,7 @@ theorem ooEquivar (u u' : D.what₂.Word) : OOEquivar X u u' := by
   rw [OO_equiv _ _ _ γ s s' _ _ (piIso X u s hs) (piIso X u' s' hs') hA hB, piIso_symm, piIso_coe]
 
 /- English proof (translation)
-Establish `hs'i` using `sinfU_inv X u' hs'`. Establish `hT : ∀ x, ‖X.piU u s x‖ = ‖x‖` using `fun x => by`. Rewrite using `[← piIso_apply X u s hs x]`. Conclude with `(piIso X u s hs).norm_map x`. Rewrite using `[hilbert_schmidt_smul, hc, one_pow, one_mul, hilbert_schmidt_comp_left _ _ hT, ← piIso_coe X u' s'⁻¹ hs'i, hilbert_schmidt_comp_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_unitary_conj (u u' : D.what₂.Word) (A : X.Vpi u' →L[ℂ] X.Vpi u) (s s' : X.B.I.Ginf)
     (hs : s ∈ X.SinfU u) (hs' : s' ∈ X.SinfU u') (c : ℂ) (hc : ‖c‖ = 1) :
@@ -337,7 +335,7 @@ theorem hilbert_schmidt_unitary_conj (u u' : D.what₂.Word) (A : X.Vpi u' →L[
   rw [hilbert_schmidt_smul, hc, one_pow, one_mul, hilbert_schmidt_comp_left _ _ hT, ← piIso_coe X u' s'⁻¹ hs'i, hilbert_schmidt_comp_right]
 
 /- English proof (translation)
-Introduce `c hc γ γ' h1 h2`. Take `⟨s, hs, s', hs', rfl⟩` from `hDC D X u u' sc c hc γ γ' h1 h2`. Rewrite using `[ooEquivar X u u' γ s hs s' hs', hilbert_schmidt_unitary_conj X u u' _ s s' hs hs']`. Rewrite using `[norm_mul, Complex.norm_conj, norm_psiInfU, norm_psiInfU, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ooIndep_of_step (hDC : StepDiagDC) (u u' : D.what₂.Word) (sc : ℝ) : OOIndep X u u' sc := by
   intro c hc γ γ' h1 h2
@@ -346,9 +344,9 @@ theorem ooIndep_of_step (hDC : StepDiagDC) (u u' : D.what₂.Word) (sc : ℝ) : 
   rw [norm_mul, Complex.norm_conj, norm_psiInfU, norm_psiInfU, one_mul]
 
 /- English proof (translation)
-Unfold `Dl`. Distinguish the cases in `h : l ≤ r + 1`. Simplify using `only [h, dif_pos] first`. Consider the case `exact (continuous_id.matrix_submatrix _ _).matrix_det`. Consider the case `fun_prop`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Simplify using `only [h, dif_neg, not_false_eq_true]`. Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dl_cont {r : ℕ} (l : ℕ) : Continuous (fun Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ => Dl Z l) := by
 
@@ -362,9 +360,9 @@ theorem dl_cont {r : ℕ} (l : ℕ) : Continuous (fun Z : Matrix (Fin (r + 1)) (
     exact continuous_const
 
 /- English proof (translation)
-Unfold `wt`. Use `continuous_finset_prod _ fun v _ => ?_` and prove the remaining obligations. Establish `hd : Continuous (fun c : Cinf X => Matrix.diagonal (c v))` using `(continuous_apply v).matrix_diagonal`. Establish `hD : ∀ l, Continuous (fun c : Cinf X => Dl (Matrix.diagonal (c v)) l)` using `fun l => (dl_cont l).comp hd`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Gv`. Conclude with `((((hD _).norm.pow 2).sub (continuous_const.mul ((hD _).norm.pow 2)))).pow _`. Unfold `JacV modC`. Conclude with `continuous_finset_prod _ fun l _ => ((hD l).norm.pow 2).pow 2`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wt_cont (u u' : D.what₂.Word) : Continuous (wt X u u') := by
   unfold wt
@@ -378,7 +376,7 @@ theorem wt_cont (u u' : D.what₂.Word) : Continuous (wt X u u') := by
     exact continuous_finset_prod _ fun l _ => ((hD l).norm.pow 2).pow 2
 
 /- English proof (translation)
-The claim follows from `inNuX_of_meas X u u' sc (wt_cont X u u').measurable`.
+A detailed English derivation is pending.
 -/
 theorem inNuX (u u' : D.what₂.Word) (sc : ℝ) : InNuX X u u' sc :=
   inNuX_of_meas X u u' sc (wt_cont X u u').measurable

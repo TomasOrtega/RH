@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [initW, shapeDeg, Finset.card_filter]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_initW_eq_shapeDeg {n K : ℕ} (sz : Fin K → ℕ) :
     (∑ k : Fin K, initW n (sz k)) = shapeDeg sz := by
@@ -18,7 +18,7 @@ theorem sum_initW_eq_shapeDeg {n K : ℕ} (sz : Fin K → ℕ) :
   simp only [initW, shapeDeg, Finset.card_filter]
 
 /- English proof (translation)
-Introduce `R _ r n K sz hsz I`. Conclude with `dualWeyl_of_eq (dualWeyl_prod Finset.univ (fun k => initW n (sz k)) (fun k => initMinor R (I k) (hsz k)) (fun k _ => initMinor_mem (I k) (hsz k))) (sum_initW_eq_shapeDeg sz)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bideterminantMem : BideterminantMem := by
   intro R _ r n K sz hsz I

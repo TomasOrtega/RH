@@ -11,7 +11,7 @@ def realPlaceStdParam (p q : ℕ) : Ix p q → ℚ :=
   Sum.elim (fun i => -((i : ℕ) : ℚ)) (fun j => -(((p + j : ℕ)) : ℚ))
 
 /- English proof (translation)
-Break down `a with i | j` into its components or cases. Conclude with `⟨-((i : ℕ) : ℤ), by simp [realPlaceStdParam]⟩`. Conclude with `⟨-((p + j : ℕ) : ℤ), by simp [realPlaceStdParam]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem realPlaceStdParam_int (p q : ℕ) (a : Ix p q) :
     ∃ k : ℤ, realPlaceStdParam p q a = k := by
@@ -20,17 +20,15 @@ theorem realPlaceStdParam_int (p q : ℕ) (a : Ix p q) :
   · exact ⟨-((p + j : ℕ) : ℤ), by simp [realPlaceStdParam]⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | j) (i' | j') h`. Simplify using `only [realPlaceStdParam, Sum.elim_inl, neg_inj, Nat.cast_inj] at h`. Conclude with `congrArg Sum.inl (Fin.ext h)`. Simplify using `only [realPlaceStdParam, Sum.elim_inl, Sum.elim_inr, neg_inj, Nat.cast_inj] at h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [realPlaceStdParam, Sum.elim_inl, Sum.elim_inr, neg_inj, Nat.cast_inj] at h`. Use `i'.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `only [realPlaceStdParam, Sum.elim_inr, neg_inj, Nat.cast_inj] at h`. Conclude with `congrArg Sum.inr (Fin.ext (by omega))`. Introduce and unpack `(i | j) (i' | j') h`. Establish `h' : (i : ℕ) < i'` using `h`. Simplify using `only [realPlaceStdParam, Sum.elim_inl, neg_lt_neg_iff, Nat.cast_lt]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h'`. Conclude with `absurd h (by simp [posC])`. Conclude with `absurd h (by simp [posC])`. Establish `h' : (j : ℕ) < j'` using `h`. Simplify using `only [realPlaceStdParam, Sum.elim_inr, neg_lt_neg_iff, Nat.cast_lt]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a`. Take `⟨k, hk⟩` from `realPlaceStdParam_int p q a`. Conclude with `⟨2 * k, by rw [hk]; push_cast; ring⟩`. Introduce `a b`.
-
-Take `⟨k, hk⟩` from `realPlaceStdParam_int p q a`. Take `⟨l, hl⟩` from `realPlaceStdParam_int p q b`. Conclude with `⟨k - l, by rw [hk, hl]; push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realPlaceStdParam_isParam (p q : ℕ) : IsParam (realPlaceStdParam p q) := by
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -63,11 +61,11 @@ theorem realPlaceStdParam_isParam (p q : ℕ) : IsParam (realPlaceStdParam p q) 
     exact ⟨k - l, by rw [hk, hl]; push_cast; ring⟩
 
 /- English proof (translation)
-Introduce `H`. Set `grp : ∀ p q : ℕ, GrpData p q` to `fun p q => Classical.choice (GlobalTheory.DetSqrtCover.nonempty_grpData p q)`. Establish `key : ∀ (p q : ℕ) (lam : Ix p q → ℚ), ∃ R : DSRep (grp p q), IsParam lam → Formalism.L2.Theta.HasParam R lam`. Introduce `p q lam`. Distinguish the cases in `h : IsParam lam`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨R, hR⟩` from `H p q (grp p q) lam h`. Conclude with `⟨R, fun _ => hR⟩`. Take `⟨R, -⟩` from `H p q (grp p q) _ (realPlaceStdParam_isParam p q)`. Conclude with `⟨R, fun h' => absurd h' h⟩`. Use `choose ds hds using key`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨grp, fun p q r s => Classical.choice (GlobalTheory.T.nonempty_fockModel_of_unitary_pair_covers p q r s _ _ _), ds⟩, hds⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_provA_of_forall_exists_hasParam :
     (∀ (p q : ℕ) (T : GrpData p q) (lam : Ix p q → ℚ), IsParam lam →

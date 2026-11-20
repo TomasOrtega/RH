@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinZeta.TrivCount
 
 /- English proof (translation)
-Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => x * starRingEnd ℂ y) (fun _ _ _ => add_mul _ _ _) (fun _ _ _ => by simp [mul_assoc]) (fun _ _ _ => by simp [mul_add]) (fun _ _ _ => by simp [mul_left_comm]), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w`. Simplify using `[mul_comm]`. Introduce `v hv`. Simplify `hv` using `[Complex.mul_conj]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g v w`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem trivial_isUnitarisable {G : Type} [Group G] :
     IsUnitarisable (Representation.trivial ℂ G ℂ) := by
@@ -28,13 +28,13 @@ theorem trivial_isUnitarisable {G : Type} [Group G] :
   · intro g v w; simp
 
 /- English proof (translation)
-Use `set D := DoubleCoset.doubleCoset t (K : Set G) K`. Establish `hfin : {a : G ⧸ K | a.out ∈ D}.Finite`. Use `(Formalism.UG.P.finite_support_cosets hK (Formalism.UG.Final.DosetIndMem G K ℂ t).2).subset ?_` and prove the remaining obligations. Introduce `a ha`. Establish `h' : a.out ∈ D` using `ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, dosetInd]`. Rewrite using `[Set.indicator_of_mem h']`. Simplify using the standard rewrite rules. Establish `e : (fun c : G ⧸ K => dosetInd ℂ K t c.out • (Representation.trivial ℂ G ℂ) c.out (1 : ℂ)) = Set.indicator {a : G ⧸ K | a.out ∈ D} 1`. Use function extensionality and compare the values at `c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h : c.out ∈ D <;> simp [dosetInd, D, h, Set.indicator]`. Rewrite using `[heckeVec, e, ← finsum_mem_def, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `hc : Nat.card {a : G ⧸ K // a.out ∈ D} = hfin.toFinset.card`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hfin]`. Conclude with `Nat.card_coe_set_eq {a : G ⧸ K | a.out ∈ D}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem heckeVec_trivial_dosetInd {G : Type} [Group G] {K : Subgroup G} (hK : IsCommensurated K) (t : G) :
     heckeVec (Representation.trivial ℂ G ℂ) K (dosetInd ℂ K t) 1 =
@@ -60,11 +60,11 @@ theorem heckeVec_trivial_dosetInd {G : Type} [Group G] {K : Subgroup G} (hK : Is
   simp
 
 /- English proof (translation)
-Introduce `hP E _ _ w r ϖ hϖ T hT`. Establish `hK : IsCommensurated (KGL w r)` using `Formalism.UG.Final.GLintComm E w r`. Set `ρ` to `Representation.trivial ℂ (GL (Fin r) (w.adicCompletion E)) ℂ`. Establish `hu : IsUnitarisable ρ` using `trivial_isUnitarisable`. Establish `hfix : (1 : ℂ) ∈ fixed ρ (KGL w r)` using `GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heig : ∀ h ∈ Hecke ℂ (KGL w r), ∃ c : ℂ, heckeVec ρ (KGL w r) h 1 = c • (1 : ℂ)` using `fun h _ => ⟨heckeVec ρ (KGL w r) h 1, by rw [smul_eq_mul, mul_one]⟩`. Take `⟨B, hB, hbd⟩` from `GlobalTheory.T.exists_satakeParam_trivialBound_unitaryGL E w r ℂ ρ hu 1 one_ne_zero hfix heig`. Establish `hc : ∀ d, heckeVec ρ (KGL w r) (dosetInd ℂ (KGL w r) (T d)) 1 = (fun d => ((Nat.card {a : GL (Fin r) (w.adicCompletion E) ⧸ KGL w r // a.out ∈ DoubleCoset.doubleCoset (T d) (KGL w r : Set (GL (Fin r) (w.adicCompletion E))) (KGL w r)} : ℝ) : ℂ)) d • (1 : ℂ)` using `fun d => heckeVec_trivial_dosetInd hK (T d)`. Use `⟨B, hbd, ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.hasSum_heckeEigenvalue_generatingSeries_GL hP E w r ℂ ρ 1 B hB ϖ hϖ T hT _ hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `beta_reduce at key`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_card_cosets_diag : GlobalTheory.Published.UnramifiedDoublingGL → ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (r : ℕ) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → ∀ T : (Fin r → ℤ) → GL (Fin r) (w.adicCompletion E), (∀ d, (T d).1 = Matrix.diagonal fun i => ϖ ^ d i) → ∃ B₀ : Multiset ℂˣ, (∀ β ∈ B₀, ‖(β : ℂ)‖ ≤ (qV E w : ℝ) ^ (((r : ℝ) - 1) / 2) ∧ ‖((β⁻¹ : ℂˣ) : ℂ)‖ ≤ (qV E w : ℝ) ^ (((r : ℝ) - 1) / 2)) ∧ ∃ δ : ℝ, 0 < δ ∧ ∀ X : ℝ, 0 < X → X < δ → HasSum (fun d : {d : Fin r → ℤ // Antitone d} => ((Nat.card {a : GL (Fin r) (w.adicCompletion E) ⧸ KGL w r // a.out ∈ DoubleCoset.doubleCoset (T d.1) (KGL w r : Set (GL (Fin r) (w.adicCompletion E))) (KGL w r)} : ℝ) : ℂ) * (X : ℂ) ^ (∑ i, |d.1 i|).toNat) (eulerFac B₀ ((qV E w : ℂ) ^ (((r : ℂ) - 1) / 2) * X) * eulerFac (B₀.map (·⁻¹)) ((qV E w : ℂ) ^ (((r : ℂ) - 1) / 2) * X) * ∏ i ∈ Finset.range r, (1 - (qV E w : ℂ) ^ i * (X : ℂ) ^ 2)) := by
   intro hP E _ _ w r ϖ hϖ T hT

@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.SequenceFromIteration
 
 /- English proof (translation)
-Use `choose g hgP hgQ using hstep`. Set `G : (n : ℕ) → {a : A // P n a}` to `fun n => Nat.rec (motive := fun n => {a : A // P n a}) ⟨a₀, h₀⟩ (fun k x => ⟨g k x.1 x.2, hgP k x.1 x.2⟩) n`. Conclude with `⟨fun n => (G n).1, rfl, fun n => ⟨(G n).2, hgQ n (G n).1 (G n).2⟩⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_seq_of_step {A : Type} (P : ℕ → A → Prop) (Q : ℕ → A → A → Prop) (a₀ : A)
     (h₀ : P 0 a₀) (hstep : ∀ (n : ℕ) (a : A), P n a → ∃ b : A, P (n + 1) b ∧ Q n a b) :

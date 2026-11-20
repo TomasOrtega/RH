@@ -12,9 +12,9 @@ noncomputable section
 variable {P X Y Z : Scheme.{u}} {fst : P ⟶ X} {snd : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z}
 
 /- English proof (translation)
-Establish `: IsAffine V.toScheme` using `hV`. Establish `hP` using `(isPullback_morphismRestrict fst V).paste_vert H`. Establish `hA` using `isPushout_appTop_of_isPullback hP`. Use `hA.of_iso (Iso.refl _) (Scheme.Opens.topIso V) (Iso.refl _) (Scheme.Opens.topIso (fst ⁻¹ᵁ V)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [Iso.refl_hom, Category.id_comp, Scheme.Hom.comp_appTop, Scheme.Opens.topIso_hom, Scheme.Opens.ι_appTop, Scheme.Hom.appLE] erw [Category.assoc, ← Functor.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using `only [Scheme.Opens.topIso_hom, morphismRestrict_appTop] erw [Category.assoc, ← Functor.map_comp, ← Scheme.Hom.naturality]`. Both sides reduce to the same expression. Simplify using `only [Iso.refl_hom, Category.id_comp, Scheme.Hom.comp_appTop, Scheme.Opens.topIso_hom, Scheme.Opens.ι_appTop, Scheme.Hom.appLE] erw [Category.assoc, ← Functor.map_comp]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

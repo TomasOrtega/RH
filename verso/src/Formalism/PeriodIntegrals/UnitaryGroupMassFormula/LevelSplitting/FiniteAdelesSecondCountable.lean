@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.T
 namespace PI.LevelKSplit.W.SC
 
 /- English proof (translation)
-Introduce `F _ _` and use `PI.VolStabSW.TopoAF.secondCountable_finiteAdeleRing F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_adeles_secondCountable : PI.LevelKSplit.W.ExS.SCAf := fun F _ _ =>
   PI.VolStabSW.TopoAF.secondCountable_finiteAdeleRing F

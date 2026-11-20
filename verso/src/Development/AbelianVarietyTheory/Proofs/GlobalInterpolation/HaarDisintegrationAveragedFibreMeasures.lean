@@ -7,9 +7,9 @@ open scoped Pointwise ENNReal NNReal
 namespace GlobalTheory.QuadFibre
 
 /- English proof (translation)
-Use `⟨distribHaarChar K (Units.mk0 a ha), (distribHaarChar_pos).ne', ?_⟩` and prove the remaining obligations. Use extensionality with `S hS`. Establish `hpre : (fun t : K => t / a) ⁻¹' S = (Units.mk0 a ha) • S`. Use extensionality with `t`. Rewrite using `[Set.mem_preimage, Set.mem_smul_set_iff_inv_smul_mem, Units.smul_def, Units.val_inv_eq_inv_val, Units.val_mk0, smul_eq_mul, div_eq_inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : Measurable (fun t : K => t / a)` using `(continuous_id.div_const a).measurable`. Rewrite using `[Measure.map_apply hf hS, hpre, ← distribHaarChar_mul ν, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_map_div_eq_smul {K : Type} [NontriviallyNormedField K] [ProperSpace K]
     [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [ν.IsAddHaarMeasure] {a : K} (ha : a ≠ 0) :
@@ -25,11 +25,11 @@ theorem exists_map_div_eq_smul {K : Type} [NontriviallyNormedField K] [ProperSpa
     Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨c, hc0, hc⟩` from `exists_map_div_eq_smul ν ha`. Establish `hf : Measurable (fun t : K => t / a)` using `(continuous_id.div_const a).measurable`. Establish `hcU : ν {r | r / a ∈ U} = c * ν U`. Establish `h : (Measure.map (fun t : K => t / a) ν) U = (c • ν) U` using `by rw [hc]`. Rewrite `h` using `[Measure.map_apply hf hU, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hcI : ∫⁻ t, g (t / a) ∂ν = c * ∫⁻ u, g u ∂ν`. Rewrite using `[← lintegral_map hg hf, hc, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Establish `hc0' : (c : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hc0`. Establish `hcc : (c : ℝ≥0∞)⁻¹ * c = 1` using `ENNReal.inv_mul_cancel hc0' ENNReal.coe_ne_top`. Rewrite using `[hcU, hcI, ENNReal.mul_inv (Or.inl hc0') (Or.inl ENNReal.coe_ne_top)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem avg_div_eq {K : Type} [NontriviallyNormedField K] [ProperSpace K]
     [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [ν.IsAddHaarMeasure] {a : K} (ha : a ≠ 0)
@@ -50,55 +50,47 @@ theorem avg_div_eq {K : Type} [NontriviallyNormedField K] [ProperSpace K]
     _ = (ν U)⁻¹ * ∫⁻ u, g u ∂ν := by rw [hcc, mul_one]
 
 /- English proof (translation)
-Take `⟨hUo, hUc, h1U, hmulU, hinvU, hnormU, hs, hsq⟩` from `hU`. Establish `hUm : MeasurableSet U` using `hUo.measurableSet`. Establish `hνU0 : ν U ≠ 0` using `hUo.measure_ne_zero ν ⟨1, h1U⟩`. Establish `hνUt : ν U ≠ ∞` using `hUc.measure_lt_top.ne`. Establish `hqm : Measurable q` using `hq.measurable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : Measurable s` using `hs.measurable`. Establish `h0U : (0 : K) ∉ U` using `fun h => by simpa using hnormU 0 h`. Establish `hdiv : Measurable (fun p : K × K => p.1 / p.2)`. Repeatedly rewrite using `[div_eq_mul_inv]`. Conclude with `measurable_fst.mul measurable_snd.inv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `hself : ∀ t : K, t ∈ t • U` using `fun t => by simpa using Set.smul_mem_smul_set (a := t) h1U`. Establish `hstab : ∀ u ∈ U, u • U = U`. Introduce `u hu`. Establish `hu0 : u ≠ 0` using `fun h => h0U (h ▸ hu)`. Use extensionality with `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ hu0, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hmulU _ hu _ h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, mul_inv_cancel₀ hu0, one_mul]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hmulU _ (hinvU _ hu) _ h`. Establish `hshift : ∀ t : K, ∀ t' ∈ t • U, t' • U = t • U`. Introduce `t t' ht'`. Take `⟨u, hu, rfl⟩` from `ht'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(t • u) • U = t • U`. Rewrite using `[smul_eq_mul, ← smul_smul, hstab u hu]`. Establish `hmem : ∀ t : K, t ≠ 0 → ∀ y : K, y ∈ t • U ↔ t / y ∈ U`. Introduce `t ht y`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ ht, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hinvU _ h` as an intermediate fact. Rewrite `this` using `[mul_inv, inv_inv, ← div_eq_mul_inv]`. Then use the resulting hypothesis. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hinvU _ h` as an intermediate fact. Rewrite `this` using `[inv_div, div_eq_inv_mul]`. Then use the resulting hypothesis. Establish `hpos : ∀ t : K, t ≠ 0 → ν (t • U) ≠ 0` using `fun t ht => (hUo.smul₀ ht).measure_ne_zero ν ⟨t, hself t⟩`. Establish `hmeas : Measurable (fun t : K => ν (t • U))`. Use `measurable_of_continuousOn_compl_singleton 0 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `ht0 : t ≠ 0` using `ht`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Establish `hnb : t • U ∈ 𝓝 t` using `(hUo.smul₀ ht0).mem_nhds (hself t)`. Establish `hev : (fun _ : K => ν (t • U)) =ᶠ[𝓝 t] fun t' => ν (t' • U)` using `by filter_upwards [hnb] with t' ht'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hshift t t' ht']`. Conclude with `continuousAt_const.congr hev`. Establish `hGm : Measurable (fun p : K × V => (ν (p.1 • U))⁻¹ * {p : K × V | p.1 / q p.2 ∈ U}.indicator (fun p => φ (s (p.1 / q p.2) • p.2)) p)`. Use `(hmeas.comp measurable_fst).inv.mul (Measurable.indicator ?_ ?_)` and prove the remaining obligations. Conclude with `hφ.comp ((hsm.comp (hdiv.comp (measurable_fst.prodMk (hqm.comp measurable_snd)))).smul measurable_snd)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `(hdiv.comp (measurable_fst.prodMk (hqm.comp measurable_snd))) hUm`. Establish `hA : ∀ t : K, ∫⁻ x, φ x ∂(fibOf μ ν q U s t) = ∫⁻ x, (ν (t • U))⁻¹ * {p : K × V | p.1 / q p.2 ∈ U}.indicator (fun p => φ (s (p.1 / q p.2) • p.2)) (t, x) ∂μ`. Introduce `t`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fibOf_zero, lintegral_zero_measure]`. Simplify using `[h0U]`. Establish `hfm : Measurable (fun x : V => s (t / q x) • x)` using `(hsm.comp (hdiv.comp (measurable_const.prodMk hqm))).smul measurable_id`. Establish `hSm : MeasurableSet (q ⁻¹' (t • U))` using `hqm (hUo.smul₀ ht).measurableSet`. Rewrite using `[fibOf_ne μ ν q U s ht, lintegral_smul_measure, smul_eq_mul, lintegral_map hφ hfm, ← lintegral_indicator hSm, ← lintegral_const_mul' _ _ (ENNReal.inv_ne_top.mpr (hpos t ht))]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `h : t / q x ∈ U`. Rewrite using `[Set.indicator_of_mem (show x ∈ q ⁻¹' (t • U) from (hmem t ht (q x)).mpr h), Set.indicator_of_mem (show (t, x) ∈ {p : K × V | p.1 / q p.2 ∈ U} from h)]`. Rewrite using `[Set.indicator_of_notMem (show x ∉ q ⁻¹' (t • U) from fun h' => h ((hmem t ht (q x)).mp h')), Set.indicator_of_notMem (show (t, x) ∉ {p : K × V | p.1 / q p.2 ∈ U} from h)]`. Establish `hC : ∀ x : V, q x ≠ 0 → ∫⁻ t, (ν (t • U))⁻¹ * {p : K × V | p.1 / q p.2 ∈ U}.indicator (fun p => φ (s (p.1 / q p.2) • p.2)) (t, x) ∂ν = (ν U)⁻¹ * ∫⁻ u, U.indicator (fun u => φ (s u • x)) u ∂ν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hset : {r : K | r / q x ∈ U} = q x • U`. Use extensionality with `r`. Rewrite using `[Set.mem_ofPred_eq, Set.mem_smul_set_iff_inv_smul_mem₀ hx, smul_eq_mul, div_eq_inv_mul]`. Establish `hpt : ∀ t : K, (ν (t • U))⁻¹ * {p : K × V | p.1 / q p.2 ∈ U}.indicator (fun p => φ (s (p.1 / q p.2) • p.2)) (t, x) = (ν {r : K | r / q x ∈ U})⁻¹ * U.indicator (fun u => φ (s u • x)) (t / q x)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `t`. Distinguish the cases in `h : t / q x ∈ U`. Establish `ht' : t ∈ q x • U`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ hx, smul_eq_mul, ← div_eq_inv_mul]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (show (t, x) ∈ {p : K × V | p.1 / q p.2 ∈ U} from h), Set.indicator_of_mem h, hset, hshift (q x) t ht']`. Rewrite using `[Set.indicator_of_notMem (show (t, x) ∉ {p : K × V | p.1 / q p.2 ∈ U} from h), Set.indicator_of_notMem h, mul_zero, mul_zero]`. Establish `hgm : Measurable (U.indicator (fun u => φ (s u • x)))` using `(hφ.comp (hsm.smul measurable_const)).indicator hUm`. Establish `hne : ν {r : K | r / q x ∈ U} ≠ 0`. Rewrite using `[hset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hpos _ hx`. Rewrite using `[lintegral_congr hpt, lintegral_const_mul' _ _ (ENNReal.inv_ne_top.mpr hne)]`. Conclude with `avg_div_eq ν hx hUm hgm`. Establish `hunit : ∀ u ∈ U, ∫⁻ x, φ (s u • x) ∂μ = ∫⁻ x, φ x ∂μ`. Introduce `u hu`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hn : ‖s u‖ = 1`. Establish `h` using `congrArg norm (hsq u hu)`. Rewrite `h` using `[norm_pow, hnormU u hu]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hae : ∀ᵐ x ∂μ, q x ≠ 0`. Rewrite using `[ae_iff]`. Simplify using `using h0`. Establish `hM2 : Measurable (Function.uncurry fun (u : K) (x : V) => U.indicator (fun u => φ (s u • x)) u)`. Establish `: (Function.uncurry fun (u : K) (x : V) => U.indicator (fun u => φ (s u • x)) u) = (Prod.fst ⁻¹' U).indicator (fun p : K × V => φ (s p.1 • p.2))`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Distinguish the cases in `h : p.1 ∈ U`. Rewrite using `[Function.uncurry_apply_pair, Set.indicator_of_mem h, Set.indicator_of_mem (show p ∈ Prod.fst ⁻¹' U from h)]`. Rewrite using `[Function.uncurry_apply_pair, Set.indicator_of_notMem h, Set.indicator_of_notMem (show p ∉ Prod.fst ⁻¹' U from h)]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hφ.comp ((hsm.comp measurable_fst).smul measurable_snd)).indicator (measurable_fst hUm)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel hνU0 hνUt, one_mul]`. Use `_ = (ν U)⁻¹ * ∫⁻ u, U.indicator (fun _ => ∫⁻ x, φ x ∂μ) u ∂ν := by`. Rewrite using `[lintegral_indicator_const hUm, mul_comm (ν U)]`.
-
-Use `_ = (ν U)⁻¹ * ∫⁻ u, ∫⁻ x, U.indicator (fun u => φ (s u • x)) u ∂μ ∂ν := by`. Use `congr 1`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ U`. Simplify using `[hu, hunit u hu]`.
-
-Simplify using `[hu]`. Use `_ = (ν U)⁻¹ * ∫⁻ x, ∫⁻ u, U.indicator (fun u => φ (s u • x)) u ∂ν ∂μ := by`. Rewrite using `[lintegral_lintegral_swap hM2.aemeasurable]`. Use `_ = ∫⁻ x, (ν U)⁻¹ * ∫⁻ u, U.indicator (fun u => φ (s u • x)) u ∂ν ∂μ := by`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.inv_ne_top.mpr hνU0)]`.
-
-Use `_ = ∫⁻ x, ∫⁻ t, (ν (t • U))⁻¹ * {p : K × V | p.1 / q p.2 ∈ U}.indicator (fun p => φ (s (p.1 / q p.2) • p.2)) (t, x) ∂ν ∂μ := by`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Conclude with `(hC x hx).symm`. Use `_ = ∫⁻ t, ∫⁻ x, (ν (t • U))⁻¹ * {p : K × V | p.1 / q p.2 ∈ U}.indicator (fun p => φ (s (p.1 / q p.2) • p.2)) (t, x) ∂μ ∂ν := (lintegral_lintegral_swap hGm.aemeasurable).symm`.
-
-Use `_ = ∫⁻ t, ∫⁻ x, φ x ∂(fibOf μ ν q U s t) ∂ν := lintegral_congr fun t => (hA t).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem disintegration (K V : Type) [NontriviallyNormedField K] [IsUltrametricDist K]
     [ProperSpace K] [MeasurableSpace K] [BorelSpace K] [AddCommGroup V] [Module K V]

@@ -17,9 +17,9 @@ open GlobalTheory.RegSch (ikS projS Lvl)
 namespace PositivityTheory.Rg.Rsw.L.LThCoef
 
 /- English proof (translation)
-Establish `hr : LinearMap.range x.mulVecLin = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[← Matrix.rank, h]`. Simplify using the standard rewrite rules. Take `⟨g, hg⟩` from `x.mulVecLin.exists_rightInverse_of_surjective hr`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `e : LinearMap.toMatrix' (x.mulVecLin ∘ₗ g) = x * LinearMap.toMatrix' g` using `by show LinearMap.toMatrix' (Matrix.toLin' x ∘ₗ g) = _`. Rewrite using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']`. Rewrite using `[← e, hg, LinearMap.toMatrix'_id]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rinv_of_rank {K : Type*} [Field K] {m n : ℕ} (x : Matrix (Fin m) (Fin n) K) (h : x.rank = m) :
     ∃ x' : Matrix (Fin n) (Fin m) K, x * x' = 1 := by
@@ -35,15 +35,13 @@ theorem rinv_of_rank {K : Type*} [Field K] {m n : ℕ} (x : Matrix (Fin m) (Fin 
   rw [← e, hg, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Establish `hL : y'ᴴ * yᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hy, Matrix.conjTranspose_one]`. Establish `h0 : J * (y * (1 - x' * x)) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hL, Matrix.one_mul, Matrix.mul_assoc]`. Use `_ = y'ᴴ * (yᴴ * (J * y)) * (1 - x' * x) := by rw [Matrix.mul_assoc y'ᴴ]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = y'ᴴ * (xᴴ * (J * x)) * (1 - x' * x) := by rw [h]`. Use `_ = y'ᴴ * xᴴ * J * (x - x * x' * x) := by`. Simplify using `only [Matrix.mul_sub, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hx, Matrix.one_mul, sub_self, Matrix.mul_zero]`. Establish `h1 : y * (1 - x' * x) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun M => J⁻¹ * M) h0` as an intermediate fact. Simplify using `only [Matrix.mul_zero] at this`. Rewrite `this` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJ, Matrix.one_mul]`. Then use the resulting hypothesis. Use `⟨y * x', ?_, ?_⟩` and prove the remaining obligations. Establish `: y - y * (x' * x) = 0` using `by rw [← h1, Matrix.mul_sub, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc]`. Conclude with `(sub_eq_zero.1 this).symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = x'ᴴ * (xᴴ * (J * x)) * x' := by rw [h]`. Use `_ = (x * x')ᴴ * (J * (x * x')) := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [hx, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbit_mat {K : Type*} [Field K] [StarRing K] {m n : ℕ} (J : Matrix (Fin m) (Fin m) K) (hJ : IsUnit J.det)
     (x y : Matrix (Fin m) (Fin n) K) (x' y' : Matrix (Fin n) (Fin m) K) (hx : x * x' = 1) (hy : y * y' = 1)
@@ -80,7 +78,7 @@ Both sides reduce to the same expression.
 theorem gramQ_eq' (W : HSp D) {n : ℕ} (x : Matrix (Fin W.rank) (Fin n) D.host.E) : gramQ W x = xᴴ * (HSpace.gram W * x) := rfl
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `(mem_GQ_iff W γ.1).1 γ.2`. Conclude with `⟨δ, hδ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rat (W : HSp D) (γ : GQ W) : ∃ δ : Matrix (Fin W.rank) (Fin W.rank) D.host.E, rat δ = mt W γ := by
   obtain ⟨δ, hδ⟩ := (mem_GQ_iff W γ.1).1 γ.2
@@ -89,12 +87,12 @@ theorem exists_rat (W : HSp D) (γ : GQ W) : ∃ δ : Matrix (Fin W.rank) (Fin W
 def dl (W : HSp D) (γ : GQ W) : Matrix (Fin W.rank) (Fin W.rank) D.host.E := Classical.choose (exists_rat W γ)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_rat W γ)`.
+A detailed English derivation is pending.
 -/
 theorem rat_dl (W : HSp D) (γ : GQ W) : rat (dl W γ) = mt W γ := Classical.choose_spec (exists_rat W γ)
 
 /- English proof (translation)
-Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose, rat_dl]`. Conclude with `mt_unitary W γ.1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dl_unitary (W : HSp D) (γ : GQ W) : (dl W γ)ᴴ * (HSpace.gram W * dl W γ) = HSpace.gram W := by
   apply rat_injective
@@ -102,7 +100,7 @@ theorem dl_unitary (W : HSp D) (γ : GQ W) : (dl W γ)ᴴ * (HSpace.gram W * dl 
   exact mt_unitary W γ.1
 
 /- English proof (translation)
-Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_mul, rat_dl, rat_dl, rat_one]`. Conclude with `mt_inv_mul W γ.1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dl_inv_mul (W : HSp D) (γ : GQ W) : dl W γ⁻¹ * dl W γ = 1 := by
   apply rat_injective
@@ -110,19 +108,17 @@ theorem dl_inv_mul (W : HSp D) (γ : GQ W) : dl W γ⁻¹ * dl W γ = 1 := by
   exact mt_inv_mul W γ.1
 
 /- English proof (translation)
-Take `⟨x', hx'⟩` from `rinv_of_rank x₀ hx₀`. Establish `hrk : ∀ γ : GQ W, (dl W γ * x₀).rank = W.rank` using `fun γ => by`. Use `le_antisymm (Matrix.rank_le_height _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hgr : ∀ γ : GQ W, gramQ W (dl W γ * x₀) = gramQ W x₀` using `fun γ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[gramQ_eq', gramQ_eq', Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Set `f : GQ W → {y : Matrix (Fin W.rank) (Fin n) D.host.E // y.rank = W.rank ∧ gramQ W y = gramQ W x₀}` to `fun γ => ⟨dl W γ * x₀, hrk γ, hgr γ⟩`. Establish `hinj : Function.Injective f`. Introduce `γ γ' hγ`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : dl W γ * x₀ = dl W γ' * x₀` using `congrArg Subtype.val hγ`. Establish `h2 : dl W γ = dl W γ'`. Use `congrArg (· * x') h1` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, hx', Matrix.mul_one]`. Establish `h3 : mt W γ = mt W γ'` using `by rw [← rat_dl, ← rat_dl, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (mt_injective W h3)`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨y, hyr, hyg⟩`. Take `⟨y', hy'⟩` from `rinv_of_rank y hyr`. Take `⟨g, hgx, hgu⟩` from `orbit_mat (HSpace.gram W) (gram_isUnit_det W) x₀ y x' y' hx' hy' (by rw [← gramQ_eq', ← gramQ_eq', hyg])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM : adj (rat g) * (gA W * rat g) = gA W`. Rewrite using `[← rat_conjTranspose, gA, ← rat_mul, ← rat_mul, hgu]`. Set `γ : GA D W` to `ofMat W (rat g) hM`. Establish `hγ : γ ∈ GQ W` using `(mem_GQ_iff W γ).2 (by rw [mt_ofMat]; exact ⟨g, rfl⟩)`. Use `⟨⟨γ, hγ⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: dl W ⟨γ, hγ⟩ = g` using `rat_injective (by rw [rat_dl]; exact mt_ofMat W _ hM)`. Use `show dl W ⟨γ, hγ⟩ * x₀ = y`. Rewrite using `[this, hgx]`. Use `⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, fun γ => ?_⟩` and prove the remaining obligations. Use `show rat (dl W γ * x₀) = _`.
-
-Rewrite using `[rat_mul, rat_dl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_equiv (W : HSp D) {n : ℕ} (x₀ : Matrix (Fin W.rank) (Fin n) D.host.E) (hx₀ : x₀.rank = W.rank) :
     ∃ e : GQ W ≃ {y : Matrix (Fin W.rank) (Fin n) D.host.E // y.rank = W.rank ∧ gramQ W y = gramQ W x₀},

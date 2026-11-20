@@ -10,47 +10,45 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `K Ω _ _ n k _ _ _ hinj x c hcx y j hyj hprop hy`. Set `u : Fin k × Fin n → Ω` to `fun im => algebraMap (MvPolynomial (Fin k × Fin n) K) Ω (X im)`. Set `z : Fin n → Ω` to `fun m => y m * (y j)⁻¹`. Set `x' : Fin n → Ω` to `fun m => algebraMap K Ω (x m)`. Set `c' : Fin n → Ω` to `fun m => algebraMap K Ω (c m)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s : Fin k → Ω` to `fun i => ∑ l, u (i, l) * x' l`. Establish `hC : ∀ a : K, algebraMap (MvPolynomial (Fin k × Fin n) K) Ω (C a) = algebraMap K Ω a` using `fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply K (MvPolynomial (Fin k × Fin n) K) Ω, MvPolynomial.algebraMap_eq]`. Establish `heq : ∀ i, ∑ m, u (i, m) * z m = s i * ∑ m, c' m * z m`. Introduce `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hy i`. Simplify using `only [genSubst, map_sub, map_mul, map_sum, hC] at h`. Establish `h' : ∑ m, u (i, m) * y m = s i * ∑ m, c' m * y m`. Rewrite using `[← sub_eq_zero, Finset.mul_sum, ← Finset.sum_sub_distrib, ← h]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [u, s, x', c']`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [z, ← mul_assoc, ← Finset.sum_mul]`. Rewrite using `[h']`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, x p ≠ 0 := by`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Simplify using `[h] at hcx`. Establish `hx'p : x' p ≠ 0` using `by simpa [x'] using hp`. Choose the witnesses or unpack the hypotheses as in `⟨q, hD⟩ : ∃ q, x' p * z q - x' q * z p ≠ 0 := by`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hprop (y j * (z p * (x' p)⁻¹))` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Establish `hm` using `h m`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [z, x'] at hm hx'p ⊢`. Establish `hm2 : (algebraMap K Ω (x p) * y m - algebraMap K Ω (x m) * y p) * (y j)⁻¹ = 0`. Rewrite using `[← hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm3` using `(mul_eq_zero.1 hm2).resolve_right (inv_ne_zero hyj)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e : y j * (y p * (y j)⁻¹ * (algebraMap K Ω (x p))⁻¹) * algebraMap K Ω (x m) = y p * algebraMap K Ω (x m) * (algebraMap K Ω (x p))⁻¹`. Rewrite using `[show y j * (y p * (y j)⁻¹ * (algebraMap K Ω (x p))⁻¹) * algebraMap K Ω (x m) = (y j * (y j)⁻¹) * (y p * algebraMap K Ω (x m)) * (algebraMap K Ω (x p))⁻¹ by ring, mul_inv_cancel₀ hyj, one_mul]`. Rewrite using `[e, eq_mul_inv_iff_mul_eq₀ hx'p]`. Take the linear combination `hm3`. Use `set D := x' p * z q - x' q * z p with hDdef`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Establish `hqp : q ≠ p`. Introduce and unpack `rfl`. Conclude with `hD (by simp [D])`. Set `E` to `(Finset.univ.erase p).erase q`. Establish `hqE : q ∈ Finset.univ.erase p` using `Finset.mem_erase.2 ⟨hqp, Finset.mem_univ q⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hsplit : ∀ g : Fin n → Ω, ∑ m, g m = g p + g q + ∑ m ∈ E, g m` using `fun g => by`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ p), ← Finset.add_sum_erase _ _ hqE, add_assoc]`. Set `t : Fin k ⊕ (Fin k × E) → Ω` to `fun a => Sum.elim s (fun b => u (b.1, b.2.1)) a`. Set `B` to `Algebra.adjoin K (Set.range z ∪ Set.range t)`. Establish `hzB : ∀ m, z m ∈ B` using `fun m => Algebra.subset_adjoin (Or.inl ⟨m, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsB : ∀ i, s i ∈ B` using `fun i => Algebra.subset_adjoin (Or.inr ⟨Sum.inl i, rfl⟩)`. Establish `huB : ∀ i, ∀ m ∈ E, u (i, m) ∈ B` using `fun i m hm => Algebra.subset_adjoin (Or.inr ⟨Sum.inr (i, ⟨m, hm⟩), rfl⟩)`. Establish `hKB : ∀ a : K, algebraMap K Ω a ∈ B` using `fun a => B.algebraMap_mem a`. Establish `hczB : ∑ m, c' m * z m ∈ B` using `B.sum_mem fun m _ => B.mul_mem (hKB _) (hzB m)`. Establish `hDB : D ∈ B` using `B.sub_mem (B.mul_mem (hKB _) (hzB q)) (B.mul_mem (hKB _) (hzB p))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `halg : ∀ v, D * v ∈ B → IsAlgebraic B v` using `fun v hv => IsAlgebraic.of_mul (y := D) (mem_nonZeroDivisors_of_ne_zero hD) (isAlgebraic_algebraMap (⟨D, hDB⟩ : B)) (isAlgebraic_algebraMap (⟨D * v, hv⟩ : B))`. Establish `hw : ∀ im, IsAlgebraic B (u im)`. Introduce and unpack `⟨i, m⟩`. Establish `hSx : ∑ m ∈ E, u (i, m) * x' m ∈ B` using `B.sum_mem fun m hm => B.mul_mem (huB i m hm) (hKB _)`. Establish `hSz : ∑ m ∈ E, u (i, m) * z m ∈ B` using `B.sum_mem fun m hm => B.mul_mem (huB i m hm) (hzB m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e1` using `hsplit (fun m => u (i, m) * x' m)`. Establish `e2` using `hsplit (fun m => u (i, m) * z m)`. Rewrite `e2` using `[heq i]`. Express the relevant statement in the definitionally equal form `s i = _ at e1`. Distinguish the cases in `hmp : m = p`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hmp` using the available equality. Use `halg _ ?_` and prove the remaining obligations. Establish `: D * u (i, m) = z q * (s i - ∑ m ∈ E, u (i, m) * x' m) - x' q * (s i * ∑ m, c' m * z m - ∑ m ∈ E, u (i, m) * z m)`. Rewrite using `[hDdef]`. Take the linear combination `-z q * e1 + x' q * e2`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `B.sub_mem (B.mul_mem (hzB q) (B.sub_mem (hsB i) hSx)) (B.mul_mem (hKB _) (B.sub_mem (B.mul_mem (hsB i) hczB) hSz))`. Distinguish the cases in `hmq : m = q`. Substitute `hmq` using the available equality. Use `halg _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: D * u (i, m) = x' p * (s i * ∑ m, c' m * z m - ∑ m ∈ E, u (i, m) * z m) - z p * (s i - ∑ m ∈ E, u (i, m) * x' m)`. Rewrite using `[hDdef]`. Take the linear combination `-x' p * e2 + z p * e1`. Rewrite using `[this]`. Conclude with `B.sub_mem (B.mul_mem (hKB _) (B.sub_mem (B.mul_mem (hsB i) hczB) hSz)) (B.mul_mem (hzB p) (B.sub_mem (hsB i) hSx))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isAlgebraic_algebraMap (⟨u (i, m), huB i m (Finset.mem_erase.2 ⟨hmq, Finset.mem_erase.2 ⟨hmp, Finset.mem_univ m⟩⟩)⟩ : B)`. Establish `hle` using `hT K Ω (Set.range z) (Fin k ⊕ (Fin k × E)) t (Fin k × Fin n) u hw`. Establish `hadj : Algebra.adjoin K (Set.range u) = (IsScalarTower.toAlgHom K (MvPolynomial (Fin k × Fin n) K) Ω).range`. Rewrite using `[← Algebra.map_top, ← MvPolynomial.adjoin_range_X, AlgHom.map_adjoin, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hinj' : Function.Injective (IsScalarTower.toAlgHom K (MvPolynomial (Fin k × Fin n) K) Ω)` using `hinj`. Establish `htr : Algebra.trdeg K (Algebra.adjoin K (Set.range u)) = ((k * n : ℕ) : Cardinal)`. Rewrite using `[hadj, ← (AlgEquiv.ofInjective _ hinj').trdeg_eq, MvPolynomial.trdeg_of_isDomain]`. Simplify using the standard rewrite rules. Establish `hcard : Fintype.card (Fin k ⊕ (Fin k × E)) = k + k * (n - 2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Fintype.card_sum, Fintype.card_prod, Fintype.card_fin, Fintype.card_coe, Finset.card_erase_of_mem hqE, Finset.card_erase_of_mem (Finset.mem_univ p), Finset.card_univ, Fintype.card_fin]`. Both sides reduce to the same expression. Rewrite `hle` using `[htr, hcard]`. Establish `hn : 2 ≤ n`. Use `Fin.val_ne_of_ne hqp` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Break down `lt_or_ge (Algebra.trdeg K (Algebra.adjoin K (Set.range z))) Cardinal.aleph0 with hfin | hinf` into its components or cases. Take `⟨d, hd⟩` from `Cardinal.lt_aleph0.1 hfin`. Rewrite `hle`, the goal using `[hd]`. Normalize the coercions in `at hle ⊢`.
-
-Take `⟨r, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Simplify using `only [Nat.add_sub_cancel_left] at hle`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(Cardinal.natCast_lt_aleph0 (n := k)).le.trans hinf`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ThroughTwoPointsTrdeg.proof (hT : TrdegAdjoinLe.Statement) : ThroughTwoPointsTrdeg.Statement := by
   intro K Ω _ _ n k _ _ _ hinj x c hcx y j hyj hprop hy

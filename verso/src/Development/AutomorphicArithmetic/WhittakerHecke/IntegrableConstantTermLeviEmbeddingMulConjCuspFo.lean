@@ -14,11 +14,11 @@ open GroundTheory.Automorphic.AutomorphicForm
 variable {E : Type} [Field E] [NumberField E] {r s : ℕ}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmGL.val_emb₂]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i = i'`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j = j'`. Establish `h0 : (0 : ℝ) ≤ locHeight A` using `(locHeight_pos A).le`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j'`. Simplify `norm_apply_le_locHeight A i' j'` using `[hA]`. Simplify using `using h0`. Simplify using `using h0`. Distinguish the cases in `h : i' = j'`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `using one_le_locHeight A`. Simplify `h0` using `[Matrix.one_apply_ne h]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem lev_entry_le {F : Type*} [NormedField F] (ev : Ad E →+* F) (a : GA E r) (A : GL (Fin r) F)
     (hA : ∀ i j, (A : Matrix (Fin r) (Fin r) F) i j = ev ((a : Matrix (Fin r) (Fin r) (Ad E)) i j)) (i j : Fin (r + s)) :
@@ -38,13 +38,13 @@ private theorem lev_entry_le {F : Type*} [NormedField F] (ev : Ad E →+* F) (a 
     · simpa [Matrix.one_apply_ne h] using h0
 
 /- English proof (translation)
-Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lev_inv (a : GA E r) : (lev (Ad E) r s (a, 1))⁻¹ = lev (Ad E) r s (a⁻¹, 1) := by
   rw [← map_inv, Prod.inv_mk, inv_one]
 
 /- English proof (translation)
-Use `locHeight_le (one_le_locHeight _) (fun i j => lev_entry_le (infEval w) a _ (fun _ _ => rfl) i j) fun i j => ?_` and prove the remaining obligations. Rewrite using `[← infAt_inv, lev_inv, ← locHeight_inv (infAt w a), ← infAt_inv]`. Conclude with `lev_entry_le (infEval w) a⁻¹ _ (fun _ _ => rfl) i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem locHeight_inf_le (w : InfinitePlace E) (a : GA E r) :
     locHeight (infAt w (lev (Ad E) r s (a, 1))) ≤ locHeight (infAt w a) := by
@@ -53,7 +53,7 @@ private theorem locHeight_inf_le (w : InfinitePlace E) (a : GA E r) :
   exact lev_entry_le (infEval w) a⁻¹ _ (fun _ _ => rfl) i j
 
 /- English proof (translation)
-Use `locHeight_le (one_le_locHeight _) (fun i j => lev_entry_le (finEval v) a _ (fun _ _ => rfl) i j) fun i j => ?_` and prove the remaining obligations. Rewrite using `[← finAt_inv, lev_inv, ← locHeight_inv (finAt v a), ← finAt_inv]`. Conclude with `lev_entry_le (finEval v) a⁻¹ _ (fun _ _ => rfl) i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem locHeight_fin_le (v : HeightOneSpectrum (𝓞 E)) (a : GA E r) :
     locHeight (finAt v (lev (Ad E) r s (a, 1))) ≤ locHeight (finAt v a) := by
@@ -62,11 +62,9 @@ private theorem locHeight_fin_le (v : HeightOneSpectrum (𝓞 E)) (a : GA E r) :
   exact lev_entry_le (finEval v) a⁻¹ _ (fun _ _ => rfl) i j
 
 /- English proof (translation)
-Use `set x : GA E (r + s) := lev (Ad E) r s (a, 1) with hx`. Use `set t := (finite_mulSupport_locHeight_finAt x).union (finite_mulSupport_locHeight_finAt a)`. Establish `e1 : ∏ᶠ v : HeightOneSpectrum (𝓞 E), locHeight (finAt v x) = ∏ v ∈ t.toFinset, locHeight (finAt v x)` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv => by`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_union]`. Conclude with `Or.inl hv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the first alternative. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∏ᶠ v : HeightOneSpectrum (𝓞 E), locHeight (finAt v a) = ∏ v ∈ t.toFinset, locHeight (finAt v a)` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv => by`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_union]`. Conclude with `Or.inr hv`. Unfold `AutomorphicForm.height`. Use `mul_le_mul ?_ ?_ (le_trans zero_le_one (one_le_finprod_locHeight _)) (le_trans zero_le_one (one_le_prod_locHeight _))` and prove the remaining obligations.
-
-Conclude with `Finset.prod_le_prod (fun w _ => pow_nonneg (locHeight_pos _).le _) fun w _ => pow_le_pow_left₀ (locHeight_pos _).le (locHeight_inf_le w a) _`. Rewrite using `[e1, e2]`. Conclude with `Finset.prod_le_prod (fun v _ => (locHeight_pos _).le) fun v _ => locHeight_fin_le v a`.
+Prove the second alternative. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem height_lev_le (s : ℕ) (a : GA E r) : AutomorphicForm.height (lev (Ad E) r s (a, 1)) ≤ AutomorphicForm.height a := by
   classical
@@ -86,11 +84,11 @@ private theorem height_lev_le (s : ℕ) (a : GA E r) : AutomorphicForm.height (l
     exact Finset.prod_le_prod (fun v _ => (locHeight_pos _).le) fun v _ => locHeight_fin_le v a
 
 /- English proof (translation)
-Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := E) (n := n) (r := r)`. Take `⟨M, hM⟩` from `CuspidalSpectrum.exists_height_le_of_isCompact (hC.image (continuous_unipGL (K := E) (n := n) (r := r)))`. Establish `hc : 1 ≤ heightConst E n` using `one_le_heightConst`. Establish `hμ : unipMeasure E n r (unipFundamentalDomain E n r) < ⊤` using `(measure_mono hDC).trans_lt hC.measure_lt_top`. Use `⟨|B| * (heightConst E n * max M 1) ^ N * (unipMeasure E n r).real (unipFundamentalDomain E n r), fun g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg` using `height_pos g`. Establish `hb : ∀ X ∈ unipFundamentalDomain E n r, ‖φ (unipGL X * g)‖ ≤ |B| * (heightConst E n * max M 1) ^ N * AutomorphicForm.height g ^ N`. Introduce `X hX`. Establish `h1 : AutomorphicForm.height (unipGL X * g) ≤ heightConst E n * max M 1 * AutomorphicForm.height g` using `(height_mul_le _ _).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left ((hM _ ⟨X, hDC hX, rfl⟩).trans (le_max_left _ _)) (by linarith)) hg.le)`. Use `(hφ _).trans ((mul_le_mul_of_nonneg_right (le_abs_self B) (pow_nonneg (height_pos _).le _)).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos _).le h1 _) (abs_nonneg _)`. Use `norm_setIntegral_le_of_norm_le_const hμ hb` as an intermediate fact. Use `this.trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem ct_growth {n : ℕ} (r : ℕ) (φ : GA E n → ℂ) {B : ℝ} {N : ℕ} (hφ : ∀ g, ‖φ g‖ ≤ B * AutomorphicForm.height g ^ N) :
     ∃ C : ℝ, ∀ g, ‖constantTerm r φ g‖ ≤ C * AutomorphicForm.height g ^ N := by
@@ -115,31 +113,29 @@ private theorem ct_growth {n : ℕ} (r : ℕ) (φ : GA E n → ℂ) {B : ℝ} {N
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ S r s b φ hφ g m`. Take `⟨F, hF, -, hFl, -⟩` from `UpperTheory.ConvolutionTheory.BW.ctOps E r s φ hφ`. Establish `hcφ : Continuous φ.1` using `((UpperTheory.ConvolutionTheory.BW.umgOps E (r + s)).2 φ hφ).1`. Take `⟨hfU, hfC⟩` from `UpperTheory.ConvolutionTheory.BW.cuspUmg E r b.f b.cusp`. Establish `hcf : Continuous b.f.1` using `((UpperTheory.ConvolutionTheory.BW.umgOps E r).2 b.f hfU).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hN⟩` from `hφ.growth`. Take `⟨B, hB⟩` from `hN 1`. Establish `hB' : ∀ g, ‖φ.1 g‖ ≤ B * AutomorphicForm.height g ^ N` using `fun g => by`. Simplify using `using hB g`. Take `⟨C, hC⟩` from `ct_growth r φ.1 hB'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD⟩` from `UpperTheory.ConvolutionTheory.BW.rapidDecay E r b.f hfU hfC N`. Set `H : GA E r → ℂ` to `fun x => AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (x * g, m)) * starRingEnd ℂ (b.f.1 x)`. Establish `hct : ∀ (γ : GL (Fin r) E) (x : GA E r), AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (ratGL E r γ * x * g, m)) = AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (x * g, m))` using `fun γ x => by`. Establish `e : lev (Ad E) r s (ratGL E r γ * x * g, m) = lev (Ad E) r s (ratGL E r γ, ratGL E s 1) * lev (Ad E) r s (x * g, m)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, map_one, one_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF, e]`. Conclude with `hFl (γ, 1) _`. Establish `hHl : AutomorphicForm.IsLeftInvariant H` using `fun γ x => by`. Express the relevant statement in the definitionally equal form `AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (ratGL E r γ * x * g, m)) * starRingEnd ℂ (b.f.1 (ratGL E r γ * x)) = _`. Rewrite using `[hct]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg _ (congrArg _ (hfU.left γ x))`. Establish `hHc : Continuous H`. Use `((UpperTheory.continuous_constantTerm E (r + s) r φ.1 hcφ).comp ?_).mul (Complex.continuous_conj.comp hcf)` and prove the remaining obligations. Conclude with `((GlobalTheory.SmGL.continuous_leviEmb (Ad E) _).comp (GlobalTheory.SmGL.continuous_leviTwo (Ad E))).comp ((continuous_id.mul continuous_const).prodMk continuous_const)`. Use `set L := AutomorphicForm.height (lev (Ad E) r s (g, m)) with hL`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL0 : 0 < L` using `AutomorphicForm.height_pos _`. Establish `hc0 : 0 < AutomorphicForm.heightConst E (r + s)` using `one_pos.trans_le AutomorphicForm.one_le_heightConst`. Establish `hbound : ∀ y : normOneGL E r, ‖H (y : GA E r)‖ ≤ |C| * (2 * AutomorphicForm.heightConst E (r + s) * L) ^ N * D`. Introduce `y`. Establish `hq1 : 1 ≤ PositivityTheory.Rg.Tf.Core.qht y` using `le_ciInf fun γ => AutomorphicForm.one_le_height _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, hγ⟩` from `exists_lt_of_ciInf_lt (show PositivityTheory.Rg.Tf.Core.qht y < 2 * PositivityTheory.Rg.Tf.Core.qht y by linarith)`. Take `⟨γ', hγ'⟩` from `Subgroup.mem_subgroupOf.1 γ.2`. Establish `hγ'' : ((γ : normOneGL E r) : GA E r) = ratGL E r γ'` using `hγ'.symm`. Use `set y' : GA E r := ratGL E r γ' * (y : GA E r) with hy'`. Establish `hy'h : AutomorphicForm.height y' < 2 * PositivityTheory.Rg.Tf.Core.qht y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hy', ← hγ'']`. Conclude with `hγ`. Establish `e1 : H (y : GA E r) = H y'` using `(hHl γ' _).symm`. Establish `e2 : ‖b.f.1 y'‖ = ‖b.f.1 (y : GA E r)‖` using `congrArg _ (hfU.left γ' _)`. Establish `h3 : AutomorphicForm.height (lev (Ad E) r s (y' * g, m)) ≤ 2 * AutomorphicForm.heightConst E (r + s) * L * PositivityTheory.Rg.Tf.Core.qht y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e : lev (Ad E) r s (y' * g, m) = lev (Ad E) r s (y', 1) * lev (Ad E) r s (g, m)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e]`. Use `(AutomorphicForm.height_mul_le _ _).trans ?_` and prove the remaining obligations. Establish `h4` using `(height_lev_le s y').trans hy'h.le`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hq0 : 0 ≤ PositivityTheory.Rg.Tf.Core.qht y` using `by linarith`. Establish `h5 : ‖AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (y' * g, m))‖ ≤ |C| * (2 * AutomorphicForm.heightConst E (r + s) * L) ^ N * PositivityTheory.Rg.Tf.Core.qht y ^ N`. Use `(hC _).trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (AutomorphicForm.height_pos _).le _)).trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hK : 0 ≤ |C| * (2 * AutomorphicForm.heightConst E (r + s) * L) ^ N` using `by positivity`. Rewrite using `[e1]`. Express the relevant statement in the definitionally equal form `‖_ * _‖ ≤ _`. Rewrite using `[norm_mul, RCLike.norm_conj, e2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isFiniteMeasure_quotientMeasure (K := E) (n := r) (mu1 E r)` as an intermediate fact. Establish `he : (fun y : RightCosetSpace (rationalGLOne E r) => AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (((Quotient.out y : normOneGL E r) : GA E r) * g, m)) * starRingEnd ℂ (b.f.1 ((Quotient.out y : normOneGL E r) : GA E r))) = CuspidalSpectrum.cuspQuot hHl` using `funext fun y => by`. Establish `h` using `CuspidalSpectrum.cuspQuot_mk hHl (Quotient.out y)`. Rewrite `h` using `[show RightCosetSpace.mk (rationalGLOne E r) (Quotient.out y) = y from Quotient.out_eq y]`. Conclude with `h.symm`.
-
-Rewrite using `[he]`. Use `Integrable.of_bound (CuspidalSpectrum.continuous_cuspQuot hHl hHc).aestronglyMeasurable (|C| * (2 * AutomorphicForm.heightConst E (r + s) * L) ^ N * D) (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `mk_surjective (rationalGLOne E r) q`. Rewrite using `[CuspidalSpectrum.cuspQuot_mk]`. Conclude with `hbound y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integrable_constantTerm_leviEmbedding_mul_conj_cuspForm :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (S : Set (Pl E)) (r s : ℕ) (b : Blo S r) (φ : Sm E (r + s)), Umg φ → ∀ (g : GA E r) (m : GA E s),

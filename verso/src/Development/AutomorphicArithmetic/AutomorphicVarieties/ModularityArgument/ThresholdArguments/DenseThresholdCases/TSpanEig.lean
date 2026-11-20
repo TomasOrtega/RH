@@ -16,23 +16,21 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
 /- English proof (translation)
-Introduce `hLit L _ _ _ n V _ _ _ π hπ w hw W ψ ⟨hsm, τ, hτ, ⟨e⟩⟩ hψ φ hφ hc`. Take `⟨s1, -, s3, -⟩` from `secSpec L n w hw`. Set `N : Submodule ℂ (UA L n → V)` to `Submodule.span ℂ {ψ' | ∃ x ∈ locU n w, ψ' = fun g => φ (g * x)}`. Set `ρ : Representation ℂ (GL (Fin n) (Kw w)) (UA L n → V)` to `(rightReg ℂ (UA L n) V).comp (secW n w)`. Establish `hρ : ∀ h (a : UA L n → V) g, ρ h a g = a (g * secW n w h)` using `fun _ _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hst : ∀ h, ∀ a ∈ N, ρ h a ∈ N`. Introduce `h a ha`. Use `Submodule.span_induction (p := fun a _ => ρ h a ∈ N) ?_ (by simp) (fun _ _ _ _ h1 h2 => by` and prove the remaining obligations. Rewrite using `[map_add]; exact N.add_mem h1 h2) (fun c _ _ h1 => by rw [map_smul]; exact N.smul_mem c h1) ha`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `Submodule.subset_span ⟨secW n w h * x, (locU n w).mul_mem (s1 h) hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[hρ, mul_assoc]`. Set `ν : Representation ℂ (GL (Fin n) (Kw w)) N` to `{ toFun := fun h => (ρ h).restrict (hst h) map_one' := by ext; simp map_mul' := fun x y => by ext; simp }`. Establish `hν : ∀ h (a : N), ((ν h a : N) : UA L n → V) = ρ h a` using `fun _ _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφN : φ ∈ N` using `Submodule.subset_span ⟨1, (locU n w).one_mem, by funext g; rw [mul_one]⟩`. Establish `hco : ∀ a : N, CoefIn (a : UA L n → V) π` using `fun a => (spanKeep L n V w φ a a.2).1 π hπ hc`. Set `b` to `Module.finBasis ℂ V`. Set `q : Fin (Module.finrank ℂ V) → N →ₗ[ℂ] π` to `fun i => { toFun := fun a => ⟨b.coord i ∘ (a : UA L n → V), hco a _⟩ map_add' := fun x y => Subtype.ext (by funext g; simp) map_smul' := fun c x => Subtype.ext (by funext g; simp) }`. Use `haveI : Nontrivial N := ⟨⟨⟨φ, hφN⟩, 0, fun h => hφ (congrArg Subtype.val h)⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf0, hf⟩` from `(isoCopy _ _ _ τ.ρ ((repOn hπ).comp (secW n w)) τ.irred (isoTypic L n π hπ w hw τ hτ)).2 N (Fin (Module.finrank ℂ V)) ν q (fun i h x => Subtype.ext rfl) (fun x hx => Subtype.ext (by`. Use function extensionality and compare the values at `g`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations. Establish `: b.repr ((x : UA L n → V) g) i = 0` using `congrFun (congrArg Subtype.val (hx i)) g`. Simplify using `using this)) inferInstance`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f` using `by haveI := τ.irred`. Set `Φ : τ.ρ.IntertwiningMap ν` to `{ toFun := f map_add' := f.map_add map_smul' := f.map_smul isIntertwining' := fun g => LinearMap.ext fun x => hf g x }`. Use `(Representation.IsIrreducible.injective_or_eq_zero Φ).resolve_right fun h => hf0 ?_` and prove the remaining obligations. Conclude with `LinearMap.ext fun x => congrArg (fun Ψ : τ.ρ.IntertwiningMap ν => Ψ x) h`. Take `⟨v, hv0, hvJ, hvE⟩` from `_root_.UpperTheory.V.Z.Sym.Al.exists_fixd_dc_eq_expo_smul_of_equiv_prinSeries hLit (Kw w) n W ψ hsm hψ τ.V τ.ρ ⟨e⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨f v, fun h => hv0 (hinj (Subtype.ext (by simpa using h))), (f v).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx hJ g`. Establish `h1` using `hf (cLoc w x) v`. Rewrite `h1` using `[hvJ _ hJ]`. Establish `h2` using `congrFun (congrArg Subtype.val h1) g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[hν, hρ, s3 x hx]`. Conclude with `h2.symm`. Introduce `d hd`. Establish `h1` using `dcMap W τ.ρ ρ (N.subtype ∘ₗ f) (fun h x => by simp [hf, hν]) (Sig.dg d) v`. Rewrite `h1` using `[hvE d hd]`.
-
-Simplify `h1.symm` using `[EigAt, ρ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.exists_eigenvector_in_span_of_comp_eq_trivial :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (π : Submodule ℂ (UA L n → ℂ)), IsAutRepU π →

@@ -21,9 +21,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory.PairStep
 
 /- English proof (translation)
-Use `letI := algebraΓOfHom p`. Use `⟨1, CartierDiv.principal g + l • A, one_pos, CartierDiv.mem_sections_iff_eff.1 hg, rfl, ?_⟩` and prove the remaining obligations. Introduce `C hC`. Establish `e1 : toPic (CartierDiv.principal g + l • A) = l • cls N hN.isLB`. Rewrite using `[map_add, map_nsmul, toPic_principal, e, zero_add]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : cls (toLB (CartierDiv.principal g + l • A)) (isLB_toLB _) = cls (lbPow N l) (isLB_lbPow hN.isLB l)`. Rewrite using `[← toPic_apply, e1, GlobalTheory.CechPic.cls_lbPow hN.isLB]`. Rewrite using `[interNumRed_one_congr _ _ e2 C, hC.interNumRed_lbPow hN hN.isLB l]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qNum_principal_add_nsmul {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (p : X ⟶ Sp ℂ) {N : LB X} (hN : IsAmpleLB N) {A : CartierDiv X} (e : toPic A = cls N hN.isLB)
@@ -42,21 +42,19 @@ theorem qNum_principal_add_nsmul {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoeth
   ring
 
 /- English proof (translation)
-Introduce `hPr _ _ X _ _ _ p n hproj hdim Δ m G N D P z k h hΔ hklt hm hG hN hD hP hk hZ hz hh hnum`. Use `letI := algebraΓOfHom p`. Take `⟨A, hA⟩` from `toPic_surjective (X := X) (cls N hN.isLB)`. Establish `hAN : cls (toLB A) (isLB_toLB A) = cls N hN.isLB` using `by rw [← toPic_apply, hA]`. Establish `hAamp : IsAmpleLB (toLB A)` using `(isAmpleLB_congr (isLB_toLB A) hN.isLB ((GlobalTheory.CechPic.cls_eq_iff _ _).1 hAN)).2 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcongr : (interNumRed ℂ (Closeds.closure ({z} : Set X)) fun _ : Fin k => toLB A) = interNumRed ℂ (Closeds.closure ({z} : Set X)) fun _ : Fin k => N`. Rewrite using `[interNumRed_def, interNumRed_def, interNumSub_def, interNumSub_def, interNumOn_def, interNumOn_def]`. Conclude with `interNum_congr_cls (k := ℂ) (F := _) (fun _ => isLB_toLB A) (fun _ => hN.isLB) fun _ => hAN`. Establish `hnumA : (P.card : ℚ) * (k : ℚ) ^ k < h ^ k * (interNumRed ℂ (Closeds.closure ({z} : Set X)) fun _ : Fin k => toLB A : ℤ)`. Rewrite using `[hcongr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hnum`. Take `⟨l₁, hl₁⟩` from `GlobalTheory.GeneralLift.exists_lift_klt hPr X p n hproj hdim Δ D m G A z hm hG hD hAamp`. Take `⟨l, hll, hl, f₀, hf₀, hgen, δ₀, hδ0, hδ1, hmain⟩` from `GlobalTheory.T.exists_global_section_angehrnSiu_inductive_step hPr X p n hproj hdim Δ m G A D P z k h hΔ hklt hm hG hAamp hD hP hk hZ hz hh hnumA l₁`. Take `⟨u, hu, hvan, hoff⟩` from `hl₁ l hll f₀ hf₀`. Establish `hgen' : (l • A).GeneratesAt z (f₀ + u)` using `GlobalTheory.Cartier.CommonEqn.generatesAt_add hgen hvan`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : X.functionFieldˣ := Units.mk0 (f₀ + u) hgen'.ne_zero with hg_def`. Establish `hgval : (g : X.functionField) = f₀ + u` using `rfl`. Establish `hgmem : (g : X.functionField) ∈ (l • A).sections`. Rewrite using `[hgval]`. Conclude with `add_mem hf₀ hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlpos : (0 : ℚ) < l` using `lt_trans hh hl`. Establish `hEff : (CartierDiv.principal g + l • A).Eff` using `CartierDiv.mem_sections_iff_eff.1 hgmem`. Establish `hzs : z ∉ (CartierDiv.principal g + l • A).supp`. Rewrite using `[CartierDiv.notMem_supp_iff]`. Establish `h1 : (CartierDiv.principal g).GeneratesAt z (g : X.functionField)⁻¹` using `CartierDiv.isEqn_iff_generatesAt_inv.1 (CartierDiv.isEqn_principal g z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (l • A).GeneratesAt z (g : X.functionField)` using `by rw [hgval]; exact hgen'`. Establish `h3` using `h1.mul h2`. Rewrite `h3` using `[inv_mul_cancel₀ (Units.ne_zero g)]`. Then use the resulting hypothesis. Use `⟨(h / l) • qWeil (CartierDiv.principal g + l • A) 1, δ₀, hδ0, hδ1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `qNum_principal_add_nsmul p hN hA l hgmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `qNum_smul X p hproj N (l : ℚ) (h / l) _ (div_nonneg hh.le hlpos.le) h1`. Rewrite `h2` using `[div_mul_cancel₀ h hlpos.ne']`. Then use the resulting hypothesis. Introduce `w hw`. Establish `h0` using `(off_qWeil_iff_notMem_supp X (CartierDiv.principal g + l • A) 1 z hEff one_pos).2 hzs`. Rewrite using `[Pi.smul_apply, h0 w hw, smul_zero]`.
-
-Introduce `δ h0 h1 x hx`. Conclude with `hmain u hu hvan g hgval δ h0 h1 x hx`. Introduce `y hy a ha hka`. Conclude with `hoff g hgval y hy a (h / l) ha ((div_lt_one hlpos).2 hl) hka`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_step_divisor : GlobalTheory.Published.Principalisation → GlobalTheory.Published.NadelVanishingPair → GlobalTheory.Published.NefNumerics → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → letI := algebraΓOfHom p; ∀ (Δ : X → ℚ) (m : ℕ) (G : CartierDiv X) (N : LB X) (D : X → ℚ) (P : Finset X) (z : X) (k : ℕ) (h : ℚ), IsEffQDiv Δ → (∀ y, KltAt p n Δ y) → 0 < m → IsLogCanonicalMultiple p n Δ m G → IsAmpleLB N → IsQCart D → (∀ x ∈ P, IsClosed ({x} : Set X) ∧ z ⤳ x) → 1 ≤ k → topologicalKrullDim (closure ({z} : Set X)) = k → (z = genericPoint X ∨ IsNkltCentre p n (Δ + D) z) → 0 < h → (P.card : ℚ) * (k : ℚ) ^ k < h ^ k * (interNumRed ℂ (Closeds.closure ({z} : Set X)) fun _ : Fin k => N : ℤ) → ∃ (B : X → ℚ) (δ₀ : ℚ), 0 < δ₀ ∧ δ₀ ≤ 1 ∧ QNum p N h B ∧ Off B z ∧ (∀ δ : ℚ, 0 ≤ δ → δ ≤ δ₀ → ∀ x ∈ P, ¬ KltAt p n (Δ + (1 - δ) • D + B) x) ∧ (∀ y, ¬ z ⤳ y → ∀ a : ℚ, 0 ≤ a → KltAt p n (Δ + a • D) y → KltAt p n (Δ + a • D + B) y) := by
   intro hPr _ _ X _ _ _ p n hproj hdim Δ m G N D P z k h hΔ hklt hm hG hN hD hP hk hZ hz hh hnum

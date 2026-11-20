@@ -6,17 +6,17 @@ open CompanionTheory.Rg.FlB
 namespace GlobalTheory.CompanionTheory.LocalHensel
 
 /- English proof (translation)
-Introduce `L _ _ _ s hs c d hsc hsd hc hd`. Take `⟨-, hn, -⟩` from `hs`. Establish `hcont : Continuous s` using `(AddMonoidHomClass.isometry_of_norm s hn).continuous`. Establish `hXc : IsClosed {u : L | s u = u ∧ ‖u‖ ≤ 1}` using `(isClosed_eq hcont continuous_id).inter (isClosed_le continuous_norm continuous_const)`. Use `haveI : CompleteSpace {u : L | s u = u ∧ ‖u‖ ≤ 1} := hXc.completeSpace_coe`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Nonempty {u : L | s u = u ∧ ‖u‖ ≤ 1} := ⟨⟨0, map_zero s, by simp⟩⟩`. Establish `hmaps : ∀ u : L, s u = u ∧ ‖u‖ ≤ 1 → s (-d - c * u ^ 2) = -d - c * u ^ 2 ∧ ‖-d - c * u ^ 2‖ ≤ 1`. Introduce and unpack `u ⟨hu, hu1⟩`. Use `⟨by simp only [map_sub, map_neg, map_mul, map_pow, hu, hsc, hsd], ?_⟩` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (by simpa using hd) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul, norm_pow]`. Establish `h2 : ‖u‖ ^ 2 ≤ 1` using `pow_le_one₀ (norm_nonneg _) hu1`. Conclude with `mul_le_one₀ hc.le (by positivity) h2`. Set `F : {u : L | s u = u ∧ ‖u‖ ≤ 1} → {u : L | s u = u ∧ ‖u‖ ≤ 1}` to `fun u => ⟨-d - c * (u : L) ^ 2, hmaps u u.2⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF : ContractingWith ‖c‖₊ F`. Use `⟨by exact_mod_cast hc, LipschitzWith.of_dist_le_mul ?_⟩` and prove the remaining obligations. Introduce `x y`. Establish `hxy : ‖(x : L) + y‖ ≤ 1` using `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le x.2.2 y.2.2)`. Establish `key : (-d - c * (x : L) ^ 2) - (-d - c * (y : L) ^ 2) = -(c * (((x : L) + y) * ((x : L) - y)))` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subtype.dist_eq, Subtype.dist_eq, dist_eq_norm, dist_eq_norm]`. Express the relevant statement in the definitionally equal form `‖(-d - c * (x : L) ^ 2) - (-d - c * (y : L) ^ 2)‖ ≤ _`. Rewrite using `[key, norm_neg, norm_mul, norm_mul, coe_nnnorm]`. Establish `h0 : 0 ≤ ‖(x : L) - y‖` using `norm_nonneg _`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_of_le_one_left h0 hxy) (norm_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hfix` using `hF.fixedPoint_isFixedPt`. Use `set u := ContractingWith.fixedPoint F hF with hu`. Establish `hval : -d - c * (u : L) ^ 2 = u` using `congrArg Subtype.val hfix`. Use `⟨u, u.2.1, u.2.2, ?_⟩` and prove the remaining obligations. Take the linear combination `-hval`.
+A detailed English derivation is pending.
 -/
 theorem stHensel_holds : StHensel := by
   intro L _ _ _ s hs c d hsc hsd hc hd

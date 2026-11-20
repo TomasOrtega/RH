@@ -6,17 +6,17 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.DeligneRibet
 
 /- English proof (translation)
-Introduce `F _ _ l hl 𝔟 h hdvd`. Establish `h1 : (1 : 𝓞 F) ∈ 𝔟 ⊔ Ideal.span {(l : 𝓞 F)}`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Take `⟨b, hb, c, hc, hbc⟩` from `Submodule.mem_sup.mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hc`. Distinguish the cases in `h𝔟 : 𝔟 = ⊥`. Substitute `h𝔟` using the available equality. Rewrite `h` using `[bot_sup_eq]`. Establish `hnorm` using `Ideal.absNorm_span_singleton (l : 𝓞 F)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hnorm` using `[h, Ideal.absNorm_top]`. Establish `hcast : (l : 𝓞 F) = algebraMap ℤ (𝓞 F) (l : ℤ)` using `by simp`. Rewrite `hnorm` using `[hcast, Algebra.norm_algebraMap, Int.natAbs_pow, Int.natAbs_natCast]`. Establish `hpos : 0 < Module.finrank ℤ (𝓞 F)` using `Module.finrank_pos`. Break down `Nat.pow_eq_one.mp hnorm.symm with h' | h'` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hl.one_lt.ne' h'`. Use linear arithmetic over natural numbers and integers. Use `haveI := Ideal.finiteQuotientOfFreeOfNeBot 𝔟 h𝔟 haveI := Fact.mk hl`. Rewrite `hdvd` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' l hdvd`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlx : (l : 𝓞 F ⧸ 𝔟) * x = 0`. Rewrite using `[← nsmul_eq_mul, ← hx, addOrderOf_nsmul_eq_zero]`. Establish `hunit : Ideal.Quotient.mk 𝔟 a * (l : 𝓞 F ⧸ 𝔟) = 1`. Establish `key` using `congrArg (Ideal.Quotient.mk 𝔟) hbc`. Rewrite `key` using `[map_add, Ideal.Quotient.eq_zero_iff_mem.mpr hb, zero_add, map_mul, map_natCast, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`. Establish `hx0 : x = 0`. Rewrite using `[← one_mul x, ← hunit, mul_assoc, hlx, mul_zero]`. Rewrite `hx` using `[hx0, addOrderOf_zero]`. Conclude with `hl.one_lt.ne hx`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_not_dvd_of_sup_span_eq_top :
     ∀ (F : Type) [Field F] [NumberField F] (l : ℕ), l.Prime → ∀ 𝔟 : Ideal (𝓞 F),

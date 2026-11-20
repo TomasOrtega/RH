@@ -19,7 +19,7 @@ namespace GlobalTheory.PairingLawsCompare
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFullHecke.WeilPairingLaws
 
 /- English proof (translation)
-Use `((GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube GlobalTheory.AbLaw.CubeAssembly.cube_and_sections.1).1).1 S P k T θ.pt).1 ?_` and prove the remaining obligations. Introduce `p`. Use `⟨⊤, trivial, (GlobalTheory.KerPow.pull_iff _ _ _).2 ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.KerPow.HasGen.pull ⟨θ.φ, θ.isGen⟩ _ fun _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theta_pt_pow {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S}
     (θ : ThetaGrp P.A P.L (k : ℤ) T) : θ.pt ^ k = 1 := by
@@ -30,9 +30,9 @@ theorem theta_pt_pow {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S}
   exact GlobalTheory.KerPow.HasGen.pull ⟨θ.φ, θ.isGen⟩ _ fun _ => rfl
 
 /- English proof (translation)
-Use `ext1`. Use `Scheme.hom_ext_of_forall _ _ fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, θ, hθ⟩` from `h p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Establish `e : overResι V ≫ (x ^ k) = overResι V ≫ (1 : T ⟶ P.A)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_pow, MonObj.comp_one, ← hθ, theta_pt_pow]`. Conclude with `congrArg (fun q => q.left) e`.
+A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_local_lift {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S} (x : T ⟶ P.A)
     (h : ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧
@@ -46,9 +46,9 @@ theorem pow_eq_one_of_local_lift {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : O
   exact congrArg (fun q => q.left) e
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `pow_eq_one_of_local_lift P k x fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, ⟨θx, θy, hx, -⟩, -⟩` from `h p`. Conclude with `⟨V, hV, θx, hx⟩`. Use `pow_eq_one_of_local_lift P k y fun p => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V, hV, ⟨θx, θy, -, hy⟩, -⟩` from `h p`. Conclude with `⟨V, hV, θy, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_tors_of_weilIs {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S} {x y : T ⟶ P.A}
     {c : Γ(T.left, ⊤)ˣ} (h : WeilIs P.A P.L (k : ℤ) x y c) :

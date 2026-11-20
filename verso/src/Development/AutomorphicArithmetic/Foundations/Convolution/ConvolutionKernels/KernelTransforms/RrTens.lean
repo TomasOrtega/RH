@@ -8,9 +8,9 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n hn μ _ ν _ m _ hC β e`. Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Establish `h1` using `inner_integrated_ccToL1_eq (rightRegularRep (rationalGLOne K n) μ) μ (tens β e) w v`. Establish `h2` using `(UpperTheory.ConvolutionTheory.Tf.commInt (normOneGL K n) (archGroup K n) (AdelicGLn.FiniteAdelicGL K n) (LL μ) (rightRegularRep (rationalGLOne K n) μ) (archP K n) continuous_archP (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj ν m β e).1 w v`. Establish `h3` using `hC β e (fun g => ⟪w, rightRegularRep (rationalGLOne K n) μ g v⟫_ℂ) (continuous_const.inner ((rightRegularRep (rationalGLOne K n) μ).continuous_orbit v))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.trans (h3.trans h2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.rrTens :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure], Compat μ ν m →

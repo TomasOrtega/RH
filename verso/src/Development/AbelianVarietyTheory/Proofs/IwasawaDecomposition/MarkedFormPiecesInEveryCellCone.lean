@@ -11,17 +11,17 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.OrbMark
 
 /- English proof (translation)
-Introduce `E _ _ _ H φ htw X₀ _ _ _ m₀ δ₀ h₀ t ht X Y _ _ _ _ _ _ π hπ τ f hτ hf hsm u hu β hβ m δ hδ c hc hβc i hi`. Set `S : Finset (Fin m₀)` to `Finset.univ.filter fun j => 0 < t j`. Set `s : Fin S.card ↪ Fin m₀` to `(S.orderEmbOfFin rfl).toEmbedding`. Establish `hrange : Set.range s = (S : Set (Fin m₀))` using `Finset.range_orderEmbOfFin S rfl`. Establish `hs : ∀ j, 0 < t (s j)` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: s j ∈ (S : Set (Fin m₀))` using `hrange ▸ Set.mem_range_self j`. Simplify `this` using `[S]`. Establish `hmem : ∀ j, 0 < t j → j ∈ Set.range s` using `fun j hj => by`. Rewrite using `[hrange]`. Simplify `hj` using `[S]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : φ.LinearOn (fun j => δ₀ (s j))` using `linearOn_comp h₀.linear s`. Establish `e1 : (fun j => δ₀ (s j)) = fun j => pull π (u (s j))` using `funext fun j => ((hu _ (hs j)).1).symm`. Rewrite `h1` using `[e1]`. Establish `h2 : φ.LinearOn (fun j => u (s j))` using `(linearOn_pull_iff hπ).1 h1`. Establish `h3 : φ.LinearOn (fun j => pullAdd f (u (s j)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `hz : ∀ j, φ.evalZ (pullAdd f (u (s j))) = φ.evalZ (u (s j))` using `fun j => eval_pull_semilinear_of_isTwInv E H φ htw τ hτ f hf hsm fun x y => ((u (s j) x y : ℤ) : ℝ)`. Use `h2 a ha` as an intermediate fact. Simplify using `only [hz]`. Rewrite using `[← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eval_pull_semilinear_of_isTwInv E H φ htw τ hτ f hf hsm fun x y => ∑ j, a j * ((u (s j) x y : ℤ) : ℝ)`. Establish `hsum : toReal β = ∑ j, t (s j) • toReal (pullAdd f (u (s j)))`. Rewrite using `[hβ]`. Use `(Fintype.sum_of_injective s s.injective _ _ (fun j hj => ?_) (fun j => rfl)).symm` and prove the remaining obligations. Establish `: t j = 0` using `le_antisymm (not_lt.1 fun h => hj (hmem j h)) (ht j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_smul]`. Take `⟨j, rfl⟩` from `hmem i hi`. Conclude with `GlobalTheory.T.inRealCone_cell_of_linearPiece_through_cellPoint H.bar φ δ (fun j => pullAdd f (u (s j))) hδ (fun j => (hu _ (hs j)).2.1) (fun j => (hu _ (hs j)).2.2) h3 β c (fun j => t (s j)) hc hs hβc hsum j`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inRCone_pullAdd_of_isCell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)),
   IsTwInv H φ →

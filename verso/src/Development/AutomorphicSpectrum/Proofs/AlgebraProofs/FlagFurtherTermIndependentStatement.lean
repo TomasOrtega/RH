@@ -15,11 +15,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.FurtherIndep
 open MvPolynomial GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-Rewrite using `[SegreFlagIndep.prod_X_natAdd, SegreFlagIndep.polyNum_mul_monomial, SegreFlagIndep.monoList_ones]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hdeg : α.degree = c`. Use `hG (mem_support_iff.mp hα)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.degree_eq_weight_one]` and apply the resulting hypothesis. Establish `hlen : (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList d α ++ List.ofFn Y).length = e`. Rewrite using `[List.length_append, SegreFlagIndep.length_monoList, hdeg, List.length_ofFn, hcn]`. Rewrite using `[SegreFlagIndep.listNum, dif_pos hlen, Numbers.agree FieldNumbers.IntNumUnique.full (IntNumPoint.proof FieldNumbers.IntNumBase.full) FieldNumbers.IntNumBase.full I hI V e _ hV, BundleExamples.intNum_get_cast F V _ e hlen]`. Use `FlagTypings.intNumL_perm F V (List.Perm.append_right _ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[BundleExamples.monoList_eq]`. Conclude with `FlagTypings.monoList_perm d α`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyNum_eq_sum {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     [∀ k, Fintype (ι k)] (I : ReciprocityTheory.ChartRestriction.G.AI.I1.IFamily F ι)
@@ -47,9 +47,9 @@ theorem polyNum_eq_sum {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq 
   exact FlagTypings.monoList_perm d α
 
 /- English proof (translation)
-Introduce `x e hV N E _ _ B fl₁ fl₂ I hI G hG c n Y hGc hcn`. Take `⟨w, hw⟩` from `BundleExamples.FlagFrameOfFullFlag.proof F Ω K ι x e hV N E B fl₁`. Take `⟨v, hv⟩` from `BundleExamples.FlagFrameOfFullFlag.proof F Ω K ι x e hV N E B fl₂`. Rewrite using `[polyNum_eq_sum I hI _ e hV _ G c n Y hGc hcn, polyNum_eq_sum I hI _ e hV _ G c n Y hGc hcn]`. Establish `hI'` using `VocabMultiHomogIdeal.proof VocabMultiHomog.proof F K ι (pointIdeal F x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : IsMultiProjPrime (pointIdeal F x)` using `⟨hV.1.1, hI'.1 hV.1.2.1, hV.1.2.2⟩`. Conclude with `GlobalTheory.T.sum_intNumL_classList_eq_of_isSymmetric F Ω K ι x e hP hV.2 N E B w v _ _ hw hv c G hG hGc (List.ofFn Y) (by rw [List.length_ofFn]; omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem segreFlagIndep (F : Type) [Field F] (Ω : Type) [Field Ω] [Algebra F Ω] (K : Type) [Fintype K]
     (ι : K → Type) [∀ k, Fintype (ι k)] :
@@ -69,7 +69,7 @@ end GlobalTheory.CompanionTheory.Ar.Num.FurtherIndep
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.NumbersDVR.flagFurtherTerm_independent.proof GroundTheory.Heights₂.Heights.NumbersDVR.VerticalDivisorFibreVariety.proof (GroundTheory.Heights₂.Heights.NumbersDVR.FullFlagVerticalSymmetric.proof GroundTheory.Heights₂.Heights.NumbersDVR.VerticalDivisor …`.
+A detailed English derivation is pending.
 -/
 theorem flag_further_term_independent :
     GroundTheory.Heights₂.Heights.NumbersDVR.flagFurtherTerm_independent.Statement :=

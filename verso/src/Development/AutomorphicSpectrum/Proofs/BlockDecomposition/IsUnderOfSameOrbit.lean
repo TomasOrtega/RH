@@ -14,7 +14,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit)
 namespace GlobalTheory.CompanionTheory.MixZ.Orbit
 
 /- English proof (translation)
-Introduce and unpack `m n w z z' h ⟨c, hc, rfl⟩ k i`. Use `⟨(h k i).1.trans ?_, fun j hy => ((h k i).2 j hy).trans ?_⟩` and prove the remaining obligations. Use `show z ⟨k, i⟩ ≠ 0 ↔ c k * z ⟨k, i⟩ ≠ 0`. Simplify using `[hc k]`. Conclude with `(mul_div_mul_left _ _ (hc k)).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnder_of_sameOrbit : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (w : GlobalTheory.CxPts (mpStr ℤ m n) σ₀) (z z' : (Σ k, Bk n k) → ℂ),
     IsUnder w z → SameOrbit z' z → IsUnder w z' := by

@@ -16,7 +16,7 @@ namespace GlobalTheory.RootEx.QuotStep
 section Abstract
 
 /- English proof (translation)
-Rewrite using `[← integral_map hT.measurable.aemeasurable (by rwa [hT.map_eq]), hT.map_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_comp_mp {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] {μ : Measure X} {ρ : Measure Y}
     {T : X → Y} (hT : MeasurePreserving T μ ρ) {f : Y → ℂ} (hf : AEStronglyMeasurable f ρ) :
@@ -24,7 +24,7 @@ theorem integral_comp_mp {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] {�
   rw [← integral_map hT.measurable.aemeasurable (by rwa [hT.map_eq]), hT.map_eq]
 
 /- English proof (translation)
-Establish `h1 : ∫ x, ∫ y, Φ (x, y) ∂(β.prod ρ) ∂μ = ∫ x, ∫ b, ∫ u, Φ (x, (b, u)) ∂ρ ∂β ∂μ` using `integral_congr_ae (hΦ.prod_right_ae.mono fun x hx => integral_prod _ hx)`. Establish `h2 : Integrable (Φ ∘ MeasurableEquiv.prodAssoc) ((μ.prod β).prod ρ)` using `((measurePreserving_prodAssoc μ β ρ).integrable_comp_emb MeasurableEquiv.prodAssoc.measurableEmbedding).2 hΦ`. Rewrite using `[h1]`. Conclude with `integral_integral_swap (f := fun x b => ∫ u, Φ (x, (b, u)) ∂ρ) h2.integral_prod_left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_swap_three {X B U : Type} [MeasurableSpace X] [MeasurableSpace B] [MeasurableSpace U]
     (μ : Measure X) (β : Measure B) (ρ : Measure U) [SFinite μ] [SFinite β] [SFinite ρ]
@@ -39,31 +39,29 @@ theorem integral_swap_three {X B U : Type} [MeasurableSpace X] [MeasurableSpace 
   exact integral_integral_swap (f := fun x b => ∫ u, Φ (x, (b, u)) ∂ρ) h2.integral_prod_left
 
 /- English proof (translation)
-Use `set C : Set G := Ω * (K : Set G) with hC`. Establish `hCc : IsCompact C` using `hΩ.mul hKc`. Establish `hlc : ∀ {Y : Type} (a : G → Y), (∀ h, ∀ κ ∈ K, a (h * κ) = a h) → IsLocallyConstant a`. Introduce `Y a ha`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: IsOpen {y : G | h⁻¹ * y ∈ K}` using `hKo.preimage (continuous_const.mul continuous_id)`. Use `filter_upwards [this.mem_nhds (show h⁻¹ * h ∈ K by simp [one_mem])] with y hy`. Rewrite using `[← ha h _ hy, mul_inv_cancel_left]`. Set `χ : G → ℝ` to `C.indicator fun _ => 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hCK : ∀ h, ∀ κ ∈ K, h ∈ C → h * κ ∈ C`. Introduce and unpack `_ κ hκ ⟨w, hw, j, hj, rfl⟩`. Conclude with `⟨w, hw, j * κ, mul_mem hj hκ, (mul_assoc _ _ _).symm⟩`. Establish `hχK : ∀ h, ∀ κ ∈ K, χ (h * κ) = χ h`. Introduce `h κ hκ`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hh : h ∈ C`. Simplify using `[χ, hh, hCK h κ hκ hh]`. Establish `: h * κ ∉ C` using `fun h' => hh (by simpa using hCK _ _ (inv_mem hκ) h')`. Simplify using `[χ, hh, this]`. Establish `hχ` using `hlc χ hχK`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `A : G → ℂ` to `fun h => ∫ x, ∫ u, (δ x : ℂ) * (χ (ι (x, u) * h) : ℂ) ∂ρ ∂μ`. Establish `hA : IsLocallyConstant A` using `hlc A fun h κ hκ => by`. Simplify using `only [A, ← mul_assoc, hχK _ κ hκ]`. Establish `hAι : ∀ t h, A (ι t * h) = A h` using `fun t h => by`. Simplify using `only [A, ← mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hinv (fun g => (χ (g * h) : ℂ)) (Complex.continuous_ofReal.comp (hχ.continuous.comp (continuous_id.mul continuous_const))) t`. Establish `hA0 : ∀ w ∈ Ω, A w ≠ 0`. Introduce `w hw`. Set `a : X × U → ℝ` to `fun t => δ t.1 * χ (ι t * w)`. Establish `ha : Continuous a` using `(hδ.comp continuous_fst).mul (hχ.continuous.comp (hι.mul continuous_const))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨D, hD, hD'⟩` from `hprop _ (hCc.image (continuous_mul_right w⁻¹))`. Establish `hs : HasCompactSupport a`. Use `HasCompactSupport.of_support_subset_isCompact hD fun t ht => hD' t ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `ht ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ι t * w ∉ C` using `fun h' => hn ⟨_, h', by simp⟩`. Simplify using `[a, χ, this]`. Establish `hpos : 0 < ∫ t, a t ∂(μ.prod ρ)`. Use `ha.integral_pos_of_hasCompactSupport_nonneg_nonzero hs (x := t₁) (fun t => mul_nonneg (hδ0 _).le (Set.indicator_nonneg (fun _ _ => zero_le_one) _)) ?_` and prove the remaining obligations. Establish `: w ∈ C` using `⟨w, hw, 1, one_mem _, mul_one _⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[a, χ, h₁, this, (hδ0 _).ne']`. Rewrite `hpos` using `[integral_prod _ (ha.integrable_of_hasCompactSupport hs)]`. Establish `e : A w = ((∫ x, ∫ u, a (x, u) ∂ρ ∂μ : ℝ) : ℂ)`. Simplify using `only [A, a, ← integral_complex_ofReal, Complex.ofReal_mul]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hpos.ne'` after adjusting the coercions. Use `⟨fun h => f h * (A h)⁻¹ * (χ h : ℂ), ⟨(hf.mul (hA.comp fun z => z⁻¹)).mul (hχ.comp fun z : ℝ => (z : ℂ)), ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.of_support_subset_isCompact hCc fun t ht => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `ht (by simp [χ, hn])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `e : ∀ x u, f (ι (x, u) * h) * (A (ι (x, u) * h))⁻¹ * (χ (ι (x, u) * h) : ℂ) = f h * (A h)⁻¹ * ((δ x : ℂ) * (χ (ι (x, u) * h) : ℂ))` using `fun x u => by`. Rewrite using `[hfδ, hAι]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, integral_const_mul]`. Distinguish the cases in `h0 : f h = 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[h0]`. Take `⟨t, w, hw, rfl⟩` from `hsupp h h0`. Use `hA0 w hw` as an intermediate fact. Rewrite `this` using `[← hAι t]`. Establish `e2 : (∫ x, (δ x : ℂ) * ∫ u, (χ (ι (x, u) * (ι t * w)) : ℂ) ∂ρ ∂μ) = A (ι t * w)`.
-
-Simplify using `only [A, integral_const_mul]`. Rewrite using `[e2, inv_mul_cancel_right₀ this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_average {G X U : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [TopologicalSpace X] [TopologicalSpace U] [MeasurableSpace X] [MeasurableSpace U]
@@ -158,14 +156,14 @@ def ext (S : ι × ι → Prop) (e : {rs // S rs} → k) : Matrix ι ι k :=
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[ext, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ext_pos {S : ι × ι → Prop} (e : {rs // S rs} → k) {r s : ι} (h : S (r, s)) :
     ext S e r s = e ⟨(r, s), h⟩ := by simp [ext, h]
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[ext, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ext_neg {S : ι × ι → Prop} (e : {rs // S rs} → k) {r s : ι} (h : ¬ S (r, s)) :
     ext S e r s = 0 := by simp [ext, h]
@@ -186,21 +184,21 @@ Both sides reduce to the same expression.
 theorem chart_val (e : {rs // S rs} → k) : (chart hS e).val = 1 + ext S e := rfl
 
 /- English proof (translation)
-Establish `: i.1.1 ≠ i.1.2` using `fun h => absurd (hS _ i.2) (by rw [h]; exact lt_irrefl _)`. Rewrite using `[chart_val, Matrix.add_apply, Matrix.one_apply_ne this, zero_add, ext_pos e i.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_pos (e : {rs // S rs} → k) (i : {rs // S rs}) : (chart hS e).val i.1.1 i.1.2 = e i := by
   have : i.1.1 ≠ i.1.2 := fun h => absurd (hS _ i.2) (by rw [h]; exact lt_irrefl _)
   rw [chart_val, Matrix.add_apply, Matrix.one_apply_ne this, zero_add, ext_pos e i.2]
 
 /- English proof (translation)
-Rewrite using `[chart_val, Matrix.add_apply, ext_neg e h, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_neg (e : {rs // S rs} → k) {r s : ι} (h : ¬ S (r, s)) :
     (chart hS e).val r s = (1 : Matrix ι ι k) r s := by
   rw [chart_val, Matrix.add_apply, ext_neg e h, add_zero]
 
 /- English proof (translation)
-Use extensionality with `r s`. Distinguish the cases in `h : S (r, s)`. Conclude with `chart_pos hS _ ⟨(r, s), h⟩`. Rewrite using `[chart_neg hS _ h, hg r s h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_entries (g : GL ι k) (hg : ∀ r s, ¬ S (r, s) → g.val r s = (1 : Matrix ι ι k) r s) :
     chart hS (fun i => g.val i.1.1 i.1.2) = g := by
@@ -210,7 +208,7 @@ theorem chart_entries (g : GL ι k) (hg : ∀ r s, ¬ S (r, s) → g.val r s = (
   · rw [chart_neg hS _ h, hg r s h]
 
 /- English proof (translation)
-Use `Eq.trans ?_ (chart_entries hS 1 fun _ _ _ => rfl)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `: i.1.1 ≠ i.1.2` using `fun h => absurd (hS _ i.2) (by rw [h]; exact lt_irrefl _)`. Simplify using `[Matrix.one_apply_ne this]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chart_zero : chart hS (0 : {rs // S rs} → k) = 1 := by
   refine Eq.trans ?_ (chart_entries hS 1 fun _ _ _ => rfl)
@@ -223,7 +221,7 @@ variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 omit [Fintype ι] [DecidableEq ι] [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Distinguish the cases in `h : S (r, s)`. Simplify using `only [ext_pos _ h]`. Conclude with `continuous_apply _`. Simplify using `only [ext_neg _ h]`. Conclude with `continuous_const`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_ext (S : ι × ι → Prop) (r s : ι) : Continuous fun e : {rs // S rs} → k => ext S e r s := by
   by_cases h : S (r, s)
@@ -231,7 +229,7 @@ theorem continuous_ext (S : ι × ι → Prop) (r s : ι) : Continuous fun e : {
   · simp only [ext_neg _ h]; exact continuous_const
 
 /- English proof (translation)
-Rewrite using `[SplitFlip.isEmbedding_val_GL.continuous_iff]`. Conclude with `continuous_matrix fun r s => continuous_const.add (continuous_ext S r s)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_chart : Continuous (chart hS : ({rs // S rs} → k) → GL ι k) := by
   rw [SplitFlip.isEmbedding_val_GL.continuous_iff]
@@ -240,15 +238,13 @@ theorem continuous_chart : Continuous (chart hS : ({rs // S rs} → k) → GL ι
 variable [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `hT` using `GlobalTheory.SgLoc.TriShift.measurePreserving_triangular ν (fun i : {rs // S rs} => b i.1.2) (fun i e => (m.val - 1) i.1.1 i.1.2 + ∑ t, ext S e i.1.1 t * (m.val - 1) t i.1.2) (fun i => (continuous_const.add (continuous_finset_sum _ fun t _ => (continuous_ext S _ _).mul continuous …`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : S (t, i.1.2)`. Distinguish the cases in `h1 : S (i.1.1, t)`. Rewrite using `[ext_pos _ h1, ext_pos _ h1, hxy _ (hS _ h2)]`. Rewrite using `[ext_neg _ h1, ext_neg _ h1]`. Rewrite using `[Matrix.sub_apply, hm _ _ h2, sub_self, mul_zero, mul_zero])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_comp_mp hT (f := fun e => φ (chart hS e)) (hφ.comp (continuous_chart hS)).aestronglyMeasurable]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun e => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← chart_entries hS _ (hm' e)]`. Use `congr 2`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `hne : i.1.1 ≠ i.1.2` using `fun h => absurd (hS _ i.2) (by rw [h]; exact lt_irrefl _)`. Establish `: (chart hS e * m).val = 1 + (ext S e + ((m.val - 1) + ext S e * (m.val - 1)))`. Rewrite using `[Units.val_mul, chart_val]`. Use `noncomm_ring`.
-
-Rewrite using `[this, Matrix.add_apply, Matrix.one_apply_ne hne, zero_add, Matrix.add_apply, ext_pos e i.2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_chart_mul_right [Fintype {rs // S rs}] (m : GL ι k)
     (hm : ∀ r s, ¬ S (r, s) → m.val r s = (1 : Matrix ι ι k) r s)
@@ -282,29 +278,25 @@ theorem integral_chart_mul_right [Fintype {rs // S rs}] (m : GL ι k)
   rfl
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Set `S' : ι × ι → Prop` to `fun rs => b rs.1 < b rs.2`. Set `σ : n ⊕ {rs // S rs} ≃ {rs // S' rs}` to `Equiv.ofBijective (Sum.elim (fun x => ⟨j x, hjb x⟩) fun i => ⟨i.1, hS _ i.2⟩) (by`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rintro (x | x) (y | y) h <;> simp only [Sum.elim_inl, Sum.elim_inr, Subtype.mk.injEq] at h`. Rewrite using `[hj h]`. Conclude with `absurd (h ▸ y.2) (hjS x)`. Conclude with `absurd (h ▸ x.2) (hjS y)`. Rewrite using `[Subtype.ext h]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨rs, h⟩`. Break down `hcov rs h with h' | ⟨x, rfl⟩` into its components or cases. Conclude with `⟨Sum.inr ⟨rs, h'⟩, rfl⟩`. Conclude with `⟨Sum.inl x, rfl⟩)`. Establish `hT` using `GlobalTheory.SgLoc.TriShift.measurePreserving_triangular ν (fun i : {rs // S' rs} => b i.1.2 - b i.1.1) (fun i e => ∑ t, (if S (i.1.1, t) then ext S' e i.1.1 t else 0) * (if S (t, i.1.2) then 0 else ext S' e t i.1.2)) (fun i => (continuous_finset_sum _ fun t _ => by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `refine Continuous.mul ?_ ?_ <;> split_ifs <;> first | exact continuous_const | exact continuous_ext S' _ _).measurable)`. Use the proof step `(fun i x y hxy => by`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : S' (i.1.1, t)`. Distinguish the cases in `h2 : S' (t, i.1.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1' : b i.1.1 < b t` using `h1`. Establish `h2' : b t < b i.1.2` using `h2`. Rewrite using `[ext_pos _ h1, ext_pos _ h1, ext_pos _ h2, ext_pos _ h2, hxy ⟨_, h1⟩ (by dsimp only; omega), hxy ⟨_, h2⟩ (by dsimp only; omega)]`. Simplify using `[ext_neg _ h2]`. Simplify using `[ext_neg _ h1])`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ` using `(measurePreserving_piCongrLeft (fun _ : {rs // S' rs} => ν) σ).comp (measurePreserving_sumPiEquivProdPi_symm (fun _ : n ⊕ {rs // S rs} => ν))`. Use `hT.comp hJ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `⟨β, e⟩ i`. Use `set ε := (MeasurableEquiv.piCongrLeft (fun _ : {rs // S' rs} => k) σ ((MeasurableEquiv.sumPiEquivProdPi fun _ : n ⊕ {rs // S rs} => k).symm (β, e))) with hε`. Establish `h1 : ∀ x, ε (σ (Sum.inl x)) = β x` using `fun x => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hε, MeasurableEquiv.piCongrLeft_apply_apply]`. Both sides reduce to the same expression. Establish `h2 : ∀ x, ε (σ (Sum.inr x)) = e x` using `fun x => by`. Rewrite using `[hε, MeasurableEquiv.piCongrLeft_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hA : ∀ r s, (if S (r, s) then ext S' ε r s else 0) = ext S e r s` using `fun r s => by split_ifs with h`. Rewrite using `[ext_pos _ h, ext_pos (S := S') _ (hS _ h)]`. Conclude with `h2 ⟨_, h⟩`. Rewrite using `[ext_neg _ h]`. Establish `hB : ∀ r s, (if S (r, s) then 0 else ext S' ε r s) = ((E β).val - 1) r s` using `fun r s => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : ∃ x, j x = (r, s)`. Take `⟨x, hx⟩` from `hx`. Take `rfl : (j x).1 = r` from `congrArg Prod.fst hx`. Take `rfl : (j x).2 = s` from `congrArg Prod.snd hx`. Establish `hne : (j x).1 ≠ (j x).2` using `fun h => absurd (hjb x) (by rw [h]; exact lt_irrefl _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[if_neg (hjS x), ext_pos (S := S') _ (hjb x), Matrix.sub_apply, Matrix.one_apply_ne hne, sub_zero, hE]`. Conclude with `h1 x`. Rewrite using `[Matrix.sub_apply, hE' β r s fun x h => hx ⟨x, h⟩, sub_self] split_ifs with h`. Both sides reduce to the same expression. Conclude with `ext_neg _ fun h' => (hcov _ h').elim h hx`.
-
-Establish `hne : i.1.1 ≠ i.1.2` using `fun h => absurd i.2 (by rw [h]; exact lt_irrefl _)`. Establish `: (chart hS e * E β).val = 1 + ((ext S e + ((E β).val - 1)) + ext S e * ((E β).val - 1))`. Rewrite using `[Units.val_mul, chart_val]`. Use `noncomm_ring`. Express the relevant statement in the definitionally equal form `_ = ε i + ∑ t, (if S (i.1.1, t) then ext S' ε i.1.1 t else 0) * (if S (t, i.1.2) then 0 else ext S' ε t i.1.2)`.
-
-Simplify using `only [hA, hB]`. Rewrite using `[this, Matrix.add_apply, Matrix.one_apply_ne hne, zero_add, Matrix.add_apply, Matrix.add_apply, ← hA, ← hB, ext_pos (S := S') ε i.2]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem measurePreserving_mul {n : Type} [Fintype n] [Fintype {rs // S rs}]
     [Fintype {rs : ι × ι // b rs.1 < b rs.2}] (j : n → ι × ι) (hj : Function.Injective j)
@@ -399,22 +391,22 @@ abbrev chartB (p : ℕ) (e : {rs // Both n c p rs} → k) : GL (n ⊕ Fin c) k :
   chart (b := lev p) (S := Both n c p) (fun _ h => h.1) e
 
 /- English proof (translation)
-The claim follows from `(Radical.mem_N_iff _).2 fun _ _ h => chart_neg _ _ (not_lt.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem chartN_mem (q : ℕ) (e) : (chartN q e : GL (n ⊕ Fin c) k) ∈ N k n c q :=
   (Radical.mem_N_iff _).2 fun _ _ h => chart_neg _ _ (not_lt.2 h)
 
 /- English proof (translation)
-The claim follows from `chart_entries _ g fun r s h => (Radical.mem_N_iff _).1 hg r s (not_lt.1 h)`.
+A detailed English derivation is pending.
 -/
 theorem chartN_entries {q : ℕ} {g : GL (n ⊕ Fin c) k} (hg : g ∈ N k n c q) :
     chartN q (fun i => g.val i.1.1 i.1.2) = g :=
   chart_entries _ g fun r s h => (Radical.mem_N_iff _).1 hg r s (not_lt.1 h)
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_inf, Radical.mem_N_iff, Radical.mem_N_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ r s h`. Break down `not_and_or.1 h with h | h` into its components or cases. Conclude with `h1 r s (not_lt.1 h)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `h2 r s (not_lt.1 h)`. Conclude with `fun h => ⟨fun r s hrs => h r s fun h' => absurd h'.1 (not_lt.2 hrs), fun r s hrs => h r s fun h' => absurd h'.2 (not_lt.2 hrs)⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_inf_iff {p : ℕ} (g : GL (n ⊕ Fin c) k) : g ∈ N k n c p ⊓ N k n c (p + 1) ↔
     ∀ r s, ¬ Both n c p (r, s) → g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s := by
@@ -428,15 +420,15 @@ theorem mem_inf_iff {p : ℕ} (g : GL (n ⊕ Fin c) k) : g ∈ N k n c p ⊓ N k
       fun r s hrs => h r s fun h' => absurd h'.2 (not_lt.2 hrs)⟩
 
 /- English proof (translation)
-The claim follows from `(mem_inf_iff _).2 fun _ _ h => chart_neg _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem chartB_mem (p : ℕ) (e) : (chartB p e : GL (n ⊕ Fin c) k) ∈ N k n c p ⊓ N k n c (p + 1) :=
   (mem_inf_iff _).2 fun _ _ h => chart_neg _ _ h
 
 /- English proof (translation)
-Take `⟨x, g, hg, rfl⟩` from `Radical.exists_of_mem_R hr.1`. Take `⟨y, g', hg', e⟩` from `Radical.exists_of_mem_R hr.2`. Choose the witnesses or unpack the hypotheses as in `rfl : y = x := by`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← Radical.toBlocks₁₁_embX_mul x hg, ← Radical.toBlocks₁₁_embX_mul y hg', e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : g = g'` from `mul_left_cancel e`. Conclude with `⟨y, _, by rw [chartB, chart_entries _ g ((mem_inf_iff g).1 ⟨hg, hg'⟩)]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_mem_inf {p : ℕ} {r : GL (n ⊕ Fin c) k} (hr : r ∈ R k n c p ⊓ R k n c (p + 1)) :
     ∃ x e, r = embX c x * chartB p e := by
@@ -449,7 +441,7 @@ theorem exists_of_mem_inf {p : ℕ} {r : GL (n ⊕ Fin c) k} (hr : r ∈ R k n c
   exact ⟨y, _, by rw [chartB, chart_entries _ g ((mem_inf_iff g).1 ⟨hg, hg'⟩)]⟩
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [colE, upU, Units.val_mul, fromBlocks_multiply, Units.val_one, ← fromBlocks_one]`. Apply the tactic sequence `congr 1 <;> simp`. Use extensionality with `r i`. Apply the tactic sequence `by_cases h : i.val + 1 = q <;> simp [h]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colE_neg (q : ℕ) (β : n → k) : colE c q β * colE c q (-β) = 1 := by
   apply Units.ext
@@ -459,9 +451,9 @@ theorem colE_neg (q : ℕ) (β : n → k) : colE c q β * colE c q (-β) = 1 := 
   by_cases h : i.val + 1 = q <;> simp [h]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Radical.conj_val]`. Simplify using `only [colE, upU, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, Matrix.mul_one, Units.mul_inv, Matrix.zero_mul]`. Use `congr 1`. Use extensionality with `r i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp [mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_colE (q : ℕ) (x : GL n k) (β : n → k) :
     embX c x * colE c q β * (embX c x)⁻¹ = colE c q (x.val.mulVec β) := by
@@ -475,9 +467,9 @@ theorem conj_colE (q : ℕ) (x : GL n k) (β : n → k) :
   split_ifs <;> simp [mulVec, dotProduct]
 
 /- English proof (translation)
-Establish `h1` using `(Radical.mem_N_iff _).1 hg.2`. Establish `h2 : ∀ y, g.val (Sum.inl x) (Sum.inl y) = (1 : Matrix n n k) x y` using `fun y => by`. Rewrite using `[h1 _ _ (by simp [lev])]; simp [Matrix.one_apply]`. Establish `h3 : g.val (Sum.inl x) (Sum.inr ⟨p, hp⟩) = 0`. Rewrite using `[h1 _ _ (by simp [lev])]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[colE, upU, Matrix.mul_apply, Fintype.sum_sum_type, h2, h3, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem col_apply {p : ℕ} (hp : p < c) {g : GL (n ⊕ Fin c) k} (hg : g ∈ N k n c p ⊓ N k n c (p + 1)) (β : n → k)
     (x : n) : (g * colE c (p + 1) β).val (Sum.inl x) (Sum.inr ⟨p, hp⟩) = β x := by
@@ -491,16 +483,14 @@ theorem col_apply {p : ℕ} (hp : p < c) {g : GL (n ⊕ Fin c) k} (hg : g ∈ N 
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[SplitFlip.isEmbedding_val_GL.continuous_iff]`. Conclude with `Units.continuous_val.matrix_fromBlocks continuous_const continuous_const continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_embX : Continuous (embX c : GL n k → GL (n ⊕ Fin c) k) := by
   rw [SplitFlip.isEmbedding_val_GL.continuous_iff]
   exact Units.continuous_val.matrix_fromBlocks continuous_const continuous_const continuous_const
 
 /- English proof (translation)
-Rewrite using `[SplitFlip.isEmbedding_val_GL.continuous_iff]`. Use `Continuous.matrix_fromBlocks continuous_const (continuous_matrix fun r i => ?_) continuous_const continuous_const` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`.
-
-Conclude with `continuous_const`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_colE (q : ℕ) : Continuous (colE c q : (n → k) → GL (n ⊕ Fin c) k) := by
   rw [SplitFlip.isEmbedding_val_GL.continuous_iff]
@@ -512,11 +502,11 @@ theorem continuous_colE (q : ℕ) : Continuous (colE c q : (n → k) → GL (n �
   · exact continuous_const
 
 /- English proof (translation)
-Use `haveI := t2Space k`. Establish `c1 : Continuous fun g : GL (n ⊕ Fin c) k => g.val.toBlocks₁₁` using `continuous_matrix fun r s => Units.continuous_val.matrix_elem _ _`. Establish `hX` using `(Units.isClosedEmbedding_embedProduct (α := Matrix n n k)).isCompact_preimage ((hC.image c1).prod ((hC.image (c1.comp continuous_inv)).image MulOpposite.continuous_op))`. Establish `c2 : Continuous fun (y : GL n k × GL (n ⊕ Fin c) k) (i : {rs // S rs}) => ((embX c y.1)⁻¹ * y.2).val i.1.1 i.1.2` using `continuous_pi fun i => (Units.continuous_val.comp ((continuous_embX.comp continuous_fst).inv.mul continuous_snd)).matrix_elem _ _`. Use `⟨_, hX.prod ((hX.prod hC).image c2), fun t ht => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : t.1 ∈ Units.embedProduct (Matrix n n k) ⁻¹' ((fun g : GL (n ⊕ Fin c) k => g.val.toBlocks₁₁) '' C) ×ˢ (MulOpposite.op '' (((fun g : GL (n ⊕ Fin c) k => g.val.toBlocks₁₁) ∘ fun a => a⁻¹) '' C))`. Use `⟨⟨_, ht, Radical.toBlocks₁₁_embX_mul _ (hq _)⟩, _, ⟨_, ht, rfl⟩, congrArg MulOpposite.op ?_⟩` and prove the remaining obligations. Rewrite using `[← Radical.toBlocks₁₁_embX_mul t.1⁻¹ (Radical.conj_mem t.1 (inv_mem (hq t.2))), map_inv, mul_assoc, inv_mul_cancel_left, ← _root_.mul_inv_rev]`. Both sides reduce to the same expression. Use `⟨h1, (t.1, _), ⟨h1, ht⟩, funext fun i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [inv_mul_cancel_left]`. Conclude with `chart_pos hS _ i`.
+A detailed English derivation is pending.
 -/
 theorem proper_chart {q : ℕ} {b : n ⊕ Fin c → ℕ} {S : (n ⊕ Fin c) × (n ⊕ Fin c) → Prop}
     (hS : ∀ rs, S rs → b rs.1 < b rs.2) (hq : ∀ e, (chart hS e : GL (n ⊕ Fin c) k) ∈ N k n c q)
@@ -545,9 +535,9 @@ theorem proper_chart {q : ℕ} {b : n ⊕ Fin c → ℕ} {S : (n ⊕ Fin c) × (
 variable [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Set `eqv : N k n c q ≃ᵐ ({rs : (n ⊕ Fin c) × (n ⊕ Fin c) // lev q rs.1 < lev q rs.2} → k)` to `{ toFun := fun g rs => (g : GL (n ⊕ Fin c) k).val rs.1.1 rs.1.2 invFun := fun e => ⟨chartN q e, chartN_mem q e⟩ left_inv := fun g => Subtype.ext (chartN_entries g.2) right_inv := fun e => funext fun i => chart_pos (b := lev q) (fun _ h => h) e i measurable_toFun := (continuous_pi …`. Establish `: volN ν n c q = (Measure.pi fun _ => ν).map eqv.symm`. Rewrite using `[MeasurableEquiv.map_symm]`. Unfold `volN`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr!`. Rewrite using `[this, integral_map_equiv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_volN (q : ℕ) (φ : GL (n ⊕ Fin c) k → ℂ) :
     ∫ u : N k n c q, φ u ∂(volN ν n c q) = ∫ e, φ (chartN q e) ∂(Measure.pi fun _ => ν) := by
@@ -574,7 +564,7 @@ def IsSplit (p q : ℕ) (E : (n → k) → GL (n ⊕ Fin c) k) : Prop :=
       ∀ y, chartN q (T y) = chartB p y.2 * E y.1
 
 /- English proof (translation)
-Use `⟨_, measurePreserving_mul (b := lev p) (S := Both n c p) (fun _ h => h.1) ν (fun x => (Sum.inl x, Sum.inr ⟨p, hp⟩)) (fun x y h => by simpa using h) (fun x => by simp [lev]) (fun x => by simp [lev]) ?_ (colE c (p + 1)) (fun β x => by simp [colE, upU]) ?_, fun y => chartN_entries ( …` and prove the remaining obligations. Apply the tactic sequence `rintro ⟨r | r, s | s⟩ <;> simp [Both, lev, Fin.ext_iff] <;> omega`. Apply the tactic sequence `rintro β (r | r) (s | s) h <;> simp [colE, upU, Matrix.one_apply]`. Introduce `hs`. Conclude with `absurd (by simp [Fin.ext_iff, hs]) (h r)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isSplit_col {p : ℕ} (hp : p < c) : IsSplit (n := n) ν p p (colE c (p + 1)) := by
   refine ⟨_, measurePreserving_mul (b := lev p) (S := Both n c p) (fun _ h => h.1) ν
@@ -587,7 +577,7 @@ theorem isSplit_col {p : ℕ} (hp : p < c) : IsSplit (n := n) ν p p (colE c (p 
     exact absurd (by simp [Fin.ext_iff, hs]) (h r)
 
 /- English proof (translation)
-Use `⟨_, measurePreserving_mul (b := lev (p + 1)) (S := Both n c p) (fun _ h => h.2) ν (fun x => (Sum.inr ⟨p - 1, by omega⟩, Sum.inl x)) (fun x y h => by simpa using h) (fun x => by simp [lev]; omega) (fun x => by simp [lev]; omega) ?_ (rowE c p) (fun β x => by simp [rowE, lowU]; omeg …` and prove the remaining obligations. Apply the tactic sequence `rintro ⟨r | r, s | s⟩ <;> simp [Both, lev, Fin.ext_iff] <;> omega`. Apply the tactic sequence `rintro β (r | r) (s | s) h <;> simp [rowE, lowU, Matrix.one_apply]`. Introduce `hs`. Conclude with `absurd (by simp [Fin.ext_iff, ← hs]) (h s)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isSplit_row {p : ℕ} (hp1 : 1 ≤ p) (hp : p < c) : IsSplit (n := n) ν p (p + 1) (rowE c p) := by
   refine ⟨_, measurePreserving_mul (b := lev (p + 1)) (S := Both n c p) (fun _ h => h.2) ν
@@ -601,13 +591,11 @@ theorem isSplit_row {p : ℕ} (hp1 : 1 ≤ p) (hp : p < c) : IsSplit (n := n) ν
     exact absurd (by simp [Fin.ext_iff, ← hs]) (h s)
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Take `⟨T, hT, hT'⟩` from `hE`. Set `a : GL n k × ({rs : (n ⊕ Fin c) × (n ⊕ Fin c) // lev q rs.1 < lev q rs.2} → k) → ℂ` to `fun t => F (embX c t.1 * chartN q t.2 * h)`. Establish `ha : Continuous a` using `hF.1.continuous.comp (((continuous_embX.comp continuous_fst).mul ((continuous_chart _).comp continuous_snd)).mul continuous_const)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨D, hD, hD'⟩` from `proper_chart _ (chartN_mem (k := k) (n := n) (c := c) q) _ (hF.2.isCompact.image (continuous_mul_right h⁻¹))`. Establish `hs : HasCompactSupport a` using `HasCompactSupport.of_support_subset_isCompact hD fun t ht => hD' t ⟨_, subset_tsupport _ ht, by simp⟩`. Establish `hi` using `((MeasurePreserving.id μX).prod hT).integrable_comp_of_integrable (ha.integrable_of_hasCompactSupport hs)`. Establish `h3` using `integral_swap_three μX _ _ _ hi`. Simplify using `only [Function.comp_apply, Prod.map, id, a, hT', mul_assoc] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[← h3]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_volN ν q fun u => F (embX c x * (u * h)), ← integral_comp_mp hT (f := fun e => F (embX c x * (chartN q e * h))) (hF.1.continuous.comp (continuous_const.mul ((continuous_chart _).mul continuous_const))).aestronglyMeasurable]`.
-
-Simplify using `only [hT', mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem average_step {p q : ℕ} {E : (n → k) → GL (n ⊕ Fin c) k} (hE : IsSplit ν p q E)
     (μX : Measure (GL n k)) [μX.IsHaarMeasure] {F : GL (n ⊕ Fin c) k → ℂ} (hF : F ∈ SB (GL (n ⊕ Fin c) k))
@@ -639,21 +627,19 @@ theorem average_step {p q : ℕ} {E : (n → k) → GL (n ⊕ Fin c) k} (hE : Is
   simp only [hT', mul_assoc]
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Take `⟨T, hT, hT'⟩` from `isSplit_col (n := n) ν hp`. Use `set K : Set (n → k) := Set.pi Set.univ fun _ => (𝒪[k] : Set k) with hK`. Establish `hKo : IsOpen K` using `isOpen_set_pi Set.finite_univ fun _ _ => Model.isOpen_int`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hKc : IsCompact K` using `isCompact_univ_pi fun _ => Model.isCompact_int`. Set `ρ : (n → k) → ℂ` to `K.indicator fun _ => 1`. Establish `hρ : Continuous ρ` using `IsClopen.continuous_indicator ⟨hKc.isClosed, hKo⟩ continuous_const`. Establish `hρ0 : ∫ β, ρ β ∂(Measure.pi fun _ => ν) ≠ 0`. Establish `h0 : (Measure.pi fun _ : n => ν) K ≠ 0` using `(hKo.measure_pos _ ⟨0, fun _ _ => zero_mem _⟩).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `ht : (Measure.pi fun _ : n => ν) K ≠ ⊤` using `hKc.measure_lt_top.ne`. Simplify using `only [ρ, integral_indicator_const _ hKo.measurableSet]`. Simplify using `[Measure.real, ENNReal.toReal_eq_zero_iff, h0, ht]`. Set `B : GL (n ⊕ Fin c) k → n → k` to `fun g y => g.val (Sum.inl y) (Sum.inr ⟨p, hp⟩)`. Establish `hB : Continuous B` using `continuous_pi fun y => Units.continuous_val.matrix_elem _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : GL (n ⊕ Fin c) k → ℂ` to `fun g => ρ (B g) * ψ (g * colE c (p + 1) (-B g))`. Establish `hφ : Continuous φ` using `(hρ.comp hB).mul (hψ.comp (continuous_id.mul ((continuous_colE _).comp hB.neg)))`. Establish `hφ' : ∀ g ∈ N k n c p ⊓ N k n c (p + 1), ∀ β, φ (g * colE c (p + 1) β) = ρ β * ψ g` using `fun g hg β => by`. Establish `: B (g * colE c (p + 1) β) = β` using `funext (col_apply hp hg β)`. Simplify using `only [φ, this, mul_assoc, colE_neg, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `(VolN.volN_haar_and_modulus k n c p hp1 hp.le ν).2.2.2.2 x φ`. Rewrite `key` using `[integral_volN ν p fun u => φ (embX c x * u * (embX c x)⁻¹), integral_volN ν p φ, ← integral_comp_mp hT (f := fun e => φ (embX c x * chartN p e * (embX c x)⁻¹)) (hφ.comp ((continuous_const.mul (continuous_chart _)).mul continuous_const)).aestronglyMeasurable, ← integral_comp_mp h …`. Establish `e1 : ∀ y : (n → k) × ({rs // Both n c p rs} → k), φ (embX c x * (chartB p y.2 * colE c (p + 1) y.1) * (embX c x)⁻¹) = ρ (x.val.mulVec y.1) * ψ (embX c x * chartB p y.2 * (embX c x)⁻¹)` using `fun y => by`. Rewrite using `[← hφ' _ ⟨Radical.conj_mem x (chartB_mem p _).1, Radical.conj_mem x (chartB_mem p _).2⟩, ← conj_colE]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Simplify using `only [hT', e1, hφ' _ (chartB_mem p _)] at key`. Rewrite `key` using `[integral_prod_mul (fun β => ρ (x.val.mulVec β)) fun e => ψ (embX c x * chartB p e * (embX c x)⁻¹), integral_prod_mul ρ fun e => ψ (chartB p e), integral_comp_mulVec_eq_smul]`. Establish `hpos` using `nabs_pos' (Matrix.GeneralLinearGroup.det x)`. Use `set A := nabs k (Matrix.GeneralLinearGroup.det x)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : A ^ (-((c : ℝ) - 2 * p)) = A * A ^ (-((c : ℝ) + 1 - 2 * p))`. Rewrite using `[show -((c : ℝ) - 2 * p) = 1 + -((c : ℝ) + 1 - 2 * p) by ring, Real.rpow_add hpos, Real.rpow_one]`. Establish `hA : (A : ℂ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Rewrite `key` using `[Complex.real_smul, Complex.real_smul, Complex.ofReal_inv]`. Rewrite using `[e2, Complex.ofReal_mul]`.
-
-Use `mul_left_cancel₀ (mul_ne_zero (inv_ne_zero hA) hρ0) ?_` and prove the remaining obligations. Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem integral_conj {p : ℕ} (hp1 : 1 ≤ p) (hp : p < c) (x : GL n k) (ψ : GL (n ⊕ Fin c) k → ℂ)
     (hψ : Continuous ψ) :
@@ -708,19 +694,17 @@ theorem integral_conj {p : ℕ} (hp1 : 1 ≤ p) (hp : p < c) (x : GL n k) (ψ : 
 end Concrete
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c p hp1 hp ν _ μX _ μG _ f hf hΩ hfe`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Take `⟨Ω, hΩ, hsupp⟩` from `hΩ`. Set `δ : GL n k → ℝ` to `fun x => nabs k (Matrix.GeneralLinearGroup.det x) ^ ((c : ℝ) - 2 * p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hδm : ∀ x y, δ (x * y) = δ x * δ y` using `fun x y => by`. Simplify using `only [δ, map_mul, Model.nabs_mul]`. Conclude with `Real.mul_rpow (nabs_pos' _).le (nabs_pos' _).le`. Establish `hδc : Continuous δ` using `(((isLocallyConstant_nabs k).comp_continuous Matrix.GeneralLinearGroup.continuous_det).comp (fun t : ℝ => t ^ ((c : ℝ) - 2 * p))).continuous`. Use `(exists_average μX (Measure.pi fun _ : {rs // Both n c p rs} => ν) (KO k (n ⊕ Fin c)) SplitFlip.isOpen_KO SplitFlip.isCompact_KO (fun t => embX c t.1 * chartB p t.2) ((continuous_embX.comp continuous_fst).mul ((continuous_chart _).comp continuous_snd)) (1, 0) (by simp [chart_zero …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `φ hφ ⟨y, m⟩`. Establish `e : ∀ x, ∫ u, (δ x : ℂ) * φ (embX c x * chartB p u * (embX c y * chartB p m)) ∂(Measure.pi fun _ => ν) = ∫ u, (δ (x * y) : ℂ) * φ (embX c (x * y) * chartB p u) ∂(Measure.pi fun _ => ν)` using `fun x => by`. Establish `h1` using `integral_conj ν hp1 hp y⁻¹ (fun g => φ (embX c (x * y) * (g * chartB p m))) (hφ.comp (continuous_const.mul (continuous_id.mul continuous_const)))`. Establish `h2` using `integral_chart_mul_right (b := lev p) (S := Both n c p) (fun _ h => h.1) ν (chartB p m) ((mem_inf_iff _).1 (chartB_mem p m)) (fun e => (mem_inf_iff _).1 (mul_mem (chartB_mem p e) (chartB_mem p m))) (fun g => φ (embX c (x * y) * g)) (hφ.comp (continuous_const.mul continuous_id))`. Establish `h3 : nabs k (Matrix.GeneralLinearGroup.det y⁻¹) ^ (-((c : ℝ) - 2 * p)) = δ y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: nabs k (Matrix.GeneralLinearGroup.det y⁻¹) = (nabs k (Matrix.GeneralLinearGroup.det y))⁻¹`. Simplify using `[nabs]`. Rewrite using `[this, Real.inv_rpow (nabs_pos' _).le, Real.rpow_neg (nabs_pos' _).le, inv_inv]`. Rewrite `h1` using `[h2, h3]`. Rewrite using `[integral_const_mul, integral_const_mul, hδm, Complex.ofReal_mul, mul_assoc, ← h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_mul, map_inv, inv_inv, mul_assoc, mul_inv_cancel_left]`. Use `(integral_congr_ae (Filter.Eventually.of_forall e)).trans ?_` and prove the remaining obligations. Conclude with `integral_mul_right_eq_self (fun x => ∫ u, (δ x : ℂ) * φ (embX c x * chartB p u) ∂(Measure.pi fun _ => ν)) y`. Introduce `h hh`. Take `⟨r, hr, w, hw, rfl⟩` from `hsupp h hh`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨x, e, rfl⟩` from `exists_of_mem_inf hr`. Conclude with `⟨(x, e), w, hw, rfl⟩`. Use `⟨∫ h, F h ∂μG, ⟨F, hF, fun h => ?_, rfl⟩, ⟨F, hF, fun h => ?_, rfl⟩⟩` and prove the remaining obligations. Simplify using `only [hav]`. Conclude with `average_step ν (isSplit_col ν hp) μX hF h`.
-
-Simplify using `only [hav]`. Conclude with `average_step ν (isSplit_row ν hp1 hp) μX hF h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotInt_step : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ) (_ : 1 ≤ p) (_ : p < c) (ν : Measure k) [ν.IsAddHaarMeasure] (μX : Measure (GL n k)) [μX.IsHaarMeasure] (μG : Measure (GL (n ⊕ Fin c) k)) [μG.IsHaarMeasure] (f : GL (n ⊕ Fin c) k → ℂ) (_ : IsLocallyConstant f) (_ : ∃ Ω, IsCompact Ω ∧ ∀ h, f h ≠ 0 → ∃ r ∈ R k n c p ⊓ R k n c (p + 1), ∃ w ∈ Ω, h = r * w) (_ : ∀ (x : GL n k), ∀ u ∈ N k n c p ⊓ N k n c (p + 1), ∀ h, f (embX c x * u * h) = ((nabs k (Matrix.GeneralLinearGroup.det x) ^ ((c : ℝ) - 2 * p) : ℝ) : ℂ) * f h), ∃ z, IsQuotInt ν μX μG p (fun h => ∫ β : n → k, f (colE c (p + 1) β * h) ∂(Measure.pi fun _ => ν)) z ∧ IsQuotInt ν μX μG (p + 1) (fun h => ∫ u : n → k, f (rowE c p u * h) ∂(Measure.pi fun _ => ν)) z := by
   intro k _ _ _ _ _ _ n _ _ c p hp1 hp ν _ μX _ μG _ f hf hΩ hfe

@@ -5,11 +5,11 @@ open ReciprocityTheory.DiscreteGroups.LocalClassField GlobalTheory.LKRes GlobalT
 namespace GlobalTheory.LKRes.ResSplit
 
 /- English proof (translation)
-Establish `hper : ζ ^ p ^ r = ζ`. Establish `h1 : 1 ≤ p ^ r` using `Nat.one_le_pow _ _ hp`. Rewrite using `[show p ^ r = (p ^ r - 1) + 1 by omega, pow_succ, hζ, one_mul]`. Establish `hmod : ∀ m, ζ ^ p ^ m = ζ ^ p ^ (m % r)`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [← Nat.mod_add_div m r]`. Generalize the expression as in `m / r = n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.mul_succ, ← add_assoc, pow_add, mul_comm, pow_mul, hper, ih]`. Rewrite using `[hmod m₁, hmod m₂, (ZMod.natCast_eq_natCast_iff' m₁ m₂ r).1 h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_pow_eq_of_zmod {p : ℕ} {F : Type} [CommMonoid F] {r : ℕ} {ζ : F} (hζ : ζ ^ (p ^ r - 1) = 1)
     (hp : 0 < p) {m₁ m₂ : ℕ} (h : (m₁ : ZMod r) = m₂) : ζ ^ p ^ m₁ = ζ ^ p ^ m₂ := by
@@ -27,23 +27,19 @@ theorem pow_pow_eq_of_zmod {p : ℕ} {F : Type} [CommMonoid F] {r : ℕ} {ζ : F
   rw [hmod m₁, hmod m₂, (ZMod.natCast_eq_natCast_iff' m₁ m₂ r).1 h]
 
 /- English proof (translation)
-Establish `hp : 1 < p` using `(Fact.out : p.Prime).one_lt`. Use `set d := Nat.gcd f r with hd`. Establish `hd0 : 0 < d` using `Nat.gcd_pos_of_pos_right f hr`. Use `⟨s % d, Nat.mod_lt _ hd0, ?_⟩` and prove the remaining obligations. Use `haveI : NeZero r := ⟨hr.ne'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a : ℕ := ((f.gcdA r : ℤ) : ZMod r).val with ha`. Establish `hfa : ((f : ZMod r) * (a : ZMod r)) = (d : ZMod r)`. Rewrite using `[ha, ZMod.natCast_zmod_val]`. Establish `h` using `Nat.gcd_eq_gcd_ab f r`. Establish `h2 : ((d : ℤ) : ZMod r) = (((f : ℤ) * f.gcdA r + (r : ℤ) * f.gcdB r : ℤ) : ZMod r)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hd, h]`. Move the coercions through the operations in `at h2`. Rewrite `h2` using `[ZMod.natCast_self, zero_mul, add_zero]`. Conclude with `h2.symm`. Use `set k := a * (s / d) with hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hcong : ((s % d + f * k : ℕ) : ZMod r) = (s : ZMod r)`. Rewrite using `[hk]`. Use `push_cast`. Rewrite using `[← mul_assoc, hfa]`. Use `conv_rhs => rw [← Nat.mod_add_div s d]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hpN : ¬ p ∣ p ^ r - 1`. Introduce `hdvd`. Establish `h1 : p ∣ p ^ r` using `dvd_pow_self p hr.ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ p ^ r` using `Nat.one_le_pow _ _ (by omega)`. Establish `h3 : p ∣ p ^ r - (p ^ r - 1)` using `Nat.dvd_sub h1 hdvd`. Rewrite `h3` using `[show p ^ r - (p ^ r - 1) = 1 by omega]`. Conclude with `(Fact.out : p.Prime).one_lt.ne' (Nat.dvd_one.1 h3)`. Use `set i := s % d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hζi : (ζ ^ p ^ i) ^ (p ^ r - 1) = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Establish `hφ : (frobK p K ^ k) (ζ ^ p ^ i) = ζ ^ p ^ s`. Rewrite using `[IsFrob.pow_apply hK (isFrob_frobK hK) hpN k hζi, hq, ← pow_mul, ← pow_mul, ← pow_add]`. Conclude with `pow_pow_eq_of_zmod hζ (by omega) hcong`.
-
-Use `set φ := frobK p K ^ k`. Establish `hsum : φ (∑ j : Fin r, (c j : PadicAlgCl p) * (ζ ^ p ^ i) ^ (j : ℕ)) = ∑ j : Fin r, (c j : PadicAlgCl p) * (ζ ^ p ^ s) ^ (j : ℕ)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hφ]`.
-
-Use `congr 1`. Conclude with `φ.commutes (c j)`. Rewrite using `[← hsum, norm_GK]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spread_main (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     (hK : FiniteDimensional ℚ_[p] K) (f r : ℕ) (hq : qK p K = p ^ f) (hr : 0 < r)
@@ -100,7 +96,7 @@ theorem spread_main (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (Pad
 end GlobalTheory.LKRes.ResSplit
 
 /- English proof (translation)
-Introduce `p _ K hK f r hq hr ζ hζ c s` and use `GlobalTheory.LKRes.ResSplit.spread_main p K hK f r hq hr ζ hζ c s`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LKRes.ResSplit.spread : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)), FiniteDimensional ℚ_[p] K → ∀ (f r : ℕ), qK p K = p ^ f → 0 < r → ∀ (ζ : PadicAlgCl p), ζ ^ (p ^ r - 1) = 1 → ∀ (c : Fin r → K) (s : ℕ), ∃ i < Nat.gcd f r, ‖∑ j : Fin r, (c j : PadicAlgCl p) * (ζ ^ p ^ s) ^ (j : ℕ)‖ = ‖∑ j : Fin r, (c j : PadicAlgCl p) * (ζ ^ p ^ i) ^ (j : ℕ)‖ :=
   fun p _ K hK f r hq hr ζ hζ c s => GlobalTheory.LKRes.ResSplit.spread_main p K hK f r hq hr ζ hζ c s

@@ -7,9 +7,9 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace GlobalTheory.CompanionTheory.GeoFT
 
 /- English proof (translation)
-Establish `h1 : (q.appLE ⊤ W le_top).hom.FiniteType` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) q inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ le_top`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).2`. Establish `h3 : (strV q W).FiniteType`. Establish `: strV q W = (q.appLE ⊤ W le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` using `rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.comp h2`. Use `letI := (strV q W).toAlgebra`. Conclude with `RingHom.finiteType_algebraMap.1 h3`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finiteType_affine {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     [LocallyOfFiniteType q] {W : X.Opens} (hW : IsAffineOpen W) :

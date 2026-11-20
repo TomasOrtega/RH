@@ -13,7 +13,7 @@ variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountable
   [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La]
 
 /- English proof (translation)
-Use `(h.comp e.continuousOn e.mapsTo).congr ?_` and prove the remaining obligations. Introduce `y hy`. Simplify using `[Function.comp, e.left_inv hy]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem continuousOn_source_of {E : Type*} [TopologicalSpace E] (e : OpenPartialHomeomorph Y (V n))
     (f : Y → E) (h : ContinuousOn (f ∘ e.symm) e.target) : ContinuousOn f e.source := by
@@ -22,9 +22,9 @@ theorem continuousOn_source_of {E : Type*} [TopologicalSpace E] (e : OpenPartial
   simp [Function.comp, e.left_inv hy]
 
 /- English proof (translation)
-Unfold `nsq`. Establish `hj : y ∈ (A.chart (A.pick y)).source` using `A.mem_pick y`. Establish `htr` using `hF.2 i (A.pick y) y (Set.mem_univ _) hy hj`. Establish `hph` using `A.ph_trans la i (A.pick y) y hy hj`. Establish `hg` using `A.g_ne la i (A.pick y) y hy hj`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgp : 0 < ‖A.g la i (A.pick y) y‖ ^ 2` using `by positivity`. Establish `he : Real.exp (-(A.ph la i y - Real.log (‖A.g la i (A.pick y) y‖ ^ 2))) = ‖A.g la i (A.pick y) y‖ ^ 2 * Real.exp (-A.ph la i y)`. Rewrite using `[show -(A.ph la i y - Real.log (‖A.g la i (A.pick y) y‖ ^ 2)) = -A.ph la i y + Real.log (‖A.g la i (A.pick y) y‖ ^ 2) by ring, Real.exp_add, Real.exp_log hgp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hph, he, htr, norm_mul, mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -47,11 +47,11 @@ theorem nsq_eq_chart (A : WeightedAtlas n Y ι La) (la : La) (F : ι → Y → �
   ring
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Establish `hs : (A.chart (A.pick y)).source ∈ 𝓝 y` using `(A.chart (A.pick y)).open_source.mem_nhds (A.mem_pick y)`. Establish `hFc : ContinuousOn (F (A.pick y)) (A.chart (A.pick y)).source`. Apply `continuousOn_source_of` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(hF.1 (A.pick y)).continuousOn` as an intermediate fact. Simplify using `using this`. Establish `hph : ContinuousOn (A.ph la (A.pick y)) (A.chart (A.pick y)).source` using `continuousOn_source_of _ _ ((A.smooth_ph la (A.pick y)).continuousOn)`. Establish `hc : ContinuousOn (fun x => ‖F (A.pick y) x‖ ^ 2 * Real.exp (-A.ph la (A.pick y) x)) (A.chart (A.pick y)).source` using `(hFc.norm.pow 2).mul (Real.continuous_exp.comp_continuousOn hph.neg)`. Use `(hc.continuousAt hs).congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hs] with x hx`. Conclude with `(nsq_eq_chart A la F hF _ x hx).symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nsq (A : WeightedAtlas n Y ι La) (la : La) (F : ι → Y → ℂ)
     (hF : A.IsSec la F) : Continuous (A.nsq la F) := by
@@ -73,14 +73,14 @@ theorem continuous_nsq (A : WeightedAtlas n Y ι La) (la : La) (F : ι → Y →
   exact (nsq_eq_chart A la F hF _ x hx).symm
 
 /- English proof (translation)
-Unfold `nsq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem nsq_nonneg (A : WeightedAtlas n Y ι La) (la : La) (F : ι → Y → ℂ) (y : Y) :
     0 ≤ A.nsq la F y := by
   unfold nsq; positivity
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun k _ => nsq_nonneg A la (w k) y`.
+A detailed English derivation is pending.
 -/
 theorem sqn_nonneg {N : ℕ} (A : WeightedAtlas n Y ι La) (la : La) (w : Fin N → ι → Y → ℂ)
     (y : Y) : 0 ≤ A.sqn la w y :=

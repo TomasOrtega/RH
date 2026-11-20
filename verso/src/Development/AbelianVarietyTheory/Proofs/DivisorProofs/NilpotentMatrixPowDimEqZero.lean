@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `d X hX`. Establish `h` using `Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent hX`. Establish `h0 : X.charpoly = Polynomial.X ^ Fintype.card (Fin d)` using `sub_eq_zero.mp (IsNilpotent.eq_zero h)`. Establish `hc` using `Matrix.aeval_self_charpoly X`. Rewrite `hc` using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hc`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem matrix_pow_dim_eq_zero_of_isNilpotent :
     ∀ (d : ℕ) (X : Matrix (Fin d) (Fin d) ℂ), IsNilpotent X → X ^ d = 0 := by

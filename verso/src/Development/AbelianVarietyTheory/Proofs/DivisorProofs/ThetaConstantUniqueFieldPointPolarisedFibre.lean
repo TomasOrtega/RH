@@ -13,15 +13,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin
 
 /- English proof (translation)
-Introduce `S G _ _ L ρ hL hρ g m R _ _ x K _ i hm hu hP th pt c c' H H'`. Take `⟨P, α, -, hp, w, hw⟩` from `hP`. Take `⟨ρ₁, -, hr⟩` from `GlobalTheory.Ex.OneGen.exists_rigidificationPullbackCompatibleIso hp hw hL P.isLB hρ`. Set `T : Over (Sp R)` to `Over.mk (spMap i)`. Set `T₀ : Over S` to `Over.mk (spMap i ≫ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hτ : 𝟙 (Sp K) ≫ T₀.hom = T.hom ≫ x` using `Category.id_comp _`. Take `⟨th₁, hth⟩` from `GlobalTheory.ThetaPtMove.exists_secRel hp (T := T) (T₀ := T₀) (𝟙 _) hτ hw hL P.isLB th`. Establish `hsq : pt.left ≫ G.hom = spMap i ≫ x` using `Over.w pt`. Set `x₁ : T ⟶ P.A` to `Over.homMk (hp.1.lift pt.left (spMap i) hsq) (hp.1.lift_snd _ _ _)`. Establish `hx : 𝟙 (Sp K) ≫ pt.left = x₁.left ≫ α`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Category.id_comp]`. Conclude with `(hp.1.lift_fst _ _ _).symm`. Establish `hn : x₁ ^ (m ^ 2) = 1`. Establish `h1` using `GlobalTheory.ThetaPtMove.over_pow hp (T := T) (T₀ := T₀) (𝟙 _) hτ hx (m ^ 2)`. Rewrite `h1` using `[H.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.ThetaPtMove.over_one hp (T := T) (T₀ := T₀) (𝟙 _) hτ`. Conclude with `Over.OverMorphism.ext (hp.1.hom_ext (h1.symm.trans h2) ((Over.w _).trans (Over.w _).symm))`. Establish `hu' : IsUnit ((m ^ 2 : ℕ) : Γ(Sp R, ⊤))`. Rewrite using `[Nat.cast_pow, ← map_natCast (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom m, ← map_pow]`. Conclude with `(hu.pow 2).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : ThG P.A P.L ρ₁ m th₁ x₁ ((𝟙 (Sp K) : Sp K ⟶ Sp K).appTop.hom (fn c))` using `ThG.move (T := T) (T₀ := T₀) hp (𝟙 _) hτ hw hL P.isLB hr hx hn hth H`. Establish `m2 : ThG P.A P.L ρ₁ m th₁ x₁ ((𝟙 (Sp K) : Sp K ⟶ Sp K).appTop.hom (fn c'))` using `ThG.move (T := T) (T₀ := T₀) hp (𝟙 _) hτ hw hL P.isLB hr hx hn hth H'`. Establish `e` using `ThG.unique (T := T) abelianSchemeLaws_all.1 P hm hu' m1 m2`. Establish `e2` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom e`. Simplify using `using e2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem thG_unique_of_polFib : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m : ℕ) (R : Type) [CommRing R] [IsNoetherianRing R] (x : Sp R ⟶ S) (K : Type) [Field K] (i : R →+* K), Odd m → IsUnit (m : R) → PolFib G L g x → ∀ (th : SecAt G L (spMap i ≫ x)) (pt : Over.mk (spMap i ≫ x) ⟶ G) (c c' : K), ThG G L ρ m th pt (fn c) → ThG G L ρ m th pt (fn c') → c = c' := by
   intro S G _ _ L ρ hL hρ g m R _ _ x K _ i hm hu hP th pt c c' H H'

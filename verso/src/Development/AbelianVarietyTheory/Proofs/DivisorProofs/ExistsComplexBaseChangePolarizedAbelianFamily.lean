@@ -13,13 +13,11 @@ noncomputable section
 namespace GlobalTheory.PELU
 
 /- English proof (translation)
-Introduce `O _ g R _ σ Λ F`. Set `f : pullback F.s (spMap σ) ⟶ F.X` to `pullback.fst _ _`. Set `A' : Over (pullback F.s (spMap σ))` to `(Over.pullback f).obj F.A`. Use `letI : GrpObj A' := Functor.grpObjObj`. Establish `hP : IsGrpPullback A' F.A f (pullback.fst F.A.hom f)` using `isGrpPullback_pullback F.A f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsCommMonObj A' := GlobalTheory.PolPull.isCommMonObj_of_isGrpPullback hP`. Take `⟨act', ⟨hh, h1, hm, ha⟩, hc⟩` from `GlobalTheory.ActPull.exists_act_pull _ _ f F.A A' _ hP Oᵐᵒᵖ (fun a => F.act a.unop) (fun a => F.hom _) F.act_one (fun a b => F.act_mul b.unop a.unop) (fun a b => F.act_add _ _)`. Establish `hLB` using `LB.isLB_pull F.isLB (pullback.fst F.A.hom f)`. Establish `hpol` using `GlobalTheory.pol_pull _ _ F.A A' f _ F.L (F.L.pull _) F.isLB hLB F.ab hP (GlobalTheory.PolBaseChange.lbIso_refl hLB)`. Establish `hdim : SmoothOfRelativeDimension g A'.hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} g` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) hP.1 F.dim`. Set `eta' : Λ → (𝟙_ (Over (pullback F.s (spMap σ))) ⟶ A')` to `fun a => Over.homMk (hP.1.lift (f ≫ (F.eta a).left) (𝟙 _) (by`. Rewrite using `[Category.assoc, Over.w]`. Use the proof step `simp)) (hP.1.lift_snd _ _ _)`.
-
-Use `⟨Fam.mk (pullback F.s (spMap σ)) (pullback.snd _ _) A' hpol.1 hdim (fun a => act' (MulOpposite.op a)) (fun a => hh _) h1 (fun a b => by rw [MulOpposite.op_mul]; exact hm _ _) (fun a b => by rw [MulOpposite.op_add]; exact ha _ _) (F.L.pull (pullback.fst F.A.hom f)) hLB (hpol.2.1 F …` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isBC : ∀ (O : Type) [Ring O] (g : ℕ) (R : Type) [CommRing R] (σ : R →+* ℂ) (Λ : Type) (F : Fam R O Λ g),
     ∃ F' : Fam ℂ O Λ g, IsBC F' F σ := by

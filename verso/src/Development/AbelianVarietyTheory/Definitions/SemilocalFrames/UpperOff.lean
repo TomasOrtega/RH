@@ -117,13 +117,13 @@ def HasDens {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) (μ : Measure (Fin 
 def volUn (j : ℕ) : ℝ := ∏ i ∈ Finset.range j, (2 * Real.pi) ^ (i + 1) / (i.factorial : ℝ)
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [upper]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : upper (r := 2) (fun _ => 3) = !![1, 3; 0, 1] := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [upper]
 
 /- English proof (translation)
-Simplify using `[volUn]`.
+Simplify using the standard rewrite rules.
 -/
 example : volUn 1 = 2 * Real.pi := by simp [volUn]
 

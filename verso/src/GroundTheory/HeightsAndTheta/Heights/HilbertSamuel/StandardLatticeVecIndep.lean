@@ -63,7 +63,7 @@ section HadExamples
 variable (K : Type) [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `Module.finrank_fin_fun (𝓞 K)`.
+A detailed English derivation is pending.
 -/
 theorem rk_standard (n : ℕ) : rk (HermitianBundle.standard.{0} K n) = n :=
   Module.finrank_fin_fun (𝓞 K)
@@ -73,9 +73,7 @@ def standardVec (n : ℕ) : Fin (rk (HermitianBundle.standard.{0} K n)) →
   fun i ↦ (Pi.single (Fin.cast (rk_standard K n) i) 1 : Fin n → 𝓞 K)
 
 /- English proof (translation)
-Establish `h : LinearIndependent (𝓞 K) (fun j : Fin n ↦ (Pi.single j 1 : Fin n → 𝓞 K))`. Establish `e : ⇑(Pi.basisFun (𝓞 K) (Fin n)) = fun j : Fin n ↦ (Pi.single j 1 : Fin n → 𝓞 K)`. Use function extensionality and compare the values at `j`. Conclude with `Pi.basisFun_apply (𝓞 K) (Fin n) j`. Rewrite using `[← e]`.
-
-Conclude with `(Pi.basisFun (𝓞 K) (Fin n)).linearIndependent`. Conclude with `h.comp (Fin.cast (rk_standard K n)) (Fin.cast_injective _)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standardVec_indep (n : ℕ) : LinearIndependent (𝓞 K) (standardVec K n) := by
   have h : LinearIndependent (𝓞 K) (fun j : Fin n ↦ (Pi.single j 1 : Fin n → 𝓞 K)) := by
@@ -85,9 +83,9 @@ theorem standardVec_indep (n : ℕ) : LinearIndependent (𝓞 K) (standardVec K 
   exact h.comp (Fin.cast (rk_standard K n)) (Fin.cast_injective _)
 
 /- English proof (translation)
-Establish `h` using `norm_fibreVec_sq (HermitianBundle.standard.{0} K n).metric σ (standardVec K n i)`. Establish `h1` using `HermitianMetric.standard_inner_single K n σ (Fin.cast (rk_standard K n) i)`. Establish `h1' : ((HermitianBundle.standard.{0} K n).metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] standardVec K n i) (1 ⊗ₜ[𝓞 K] standardVec K n i) = 1` using `h1`. Establish `h2 : ‖fibreVec (HermitianBundle.standard.{0} K n).metric σ (standardVec K n i)‖ ^ 2 = 1`. Rewrite using `[h, h1', Complex.one_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `norm_nonneg (fibreVec (HermitianBundle.standard.{0} K n).metric σ (standardVec K n i))`. Use polynomial arithmetic with `[sq_nonneg (‖fibreVec (HermitianBundle.standard.{0} K n).metric σ (standardVec K n i)‖ - 1)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem standardVec_norm (n : ℕ) (σ : K →+* ℂ) (i : Fin (rk (HermitianBundle.standard.{0} K n))) :
     ‖fibreVec (HermitianBundle.standard.{0} K n).metric σ (standardVec K n i)‖ = 1 := by
@@ -120,12 +118,12 @@ def Had.Data.identity (n : ℕ) : Had.Data K where
   family := SmallFamily.standard K n
 
 /- English proof (translation)
-The claim follows from `Had.Data.identity ℚ 2`.
+A detailed English derivation is pending.
 -/
 example : Had.Data ℚ := Had.Data.identity ℚ 2
 
 /- English proof (translation)
-The claim follows from `Had.Data.identity GaussianField 2`.
+A detailed English derivation is pending.
 -/
 example : Had.Data GaussianField := Had.Data.identity GaussianField 2
 
@@ -179,7 +177,7 @@ def standardLatticeVec (R : ℕ) : Fin R → (EuclidLattice.standard R).carrier 
   fun i ↦ ⟨(EuclideanSpace.basisFun (Fin R) ℝ).toBasis i, Submodule.subset_span ⟨i, rfl⟩⟩
 
 /- English proof (translation)
-Apply `LinearIndependent.of_comp (EuclidLattice.standard R).carrier.subtype` to reduce the goal to its premises. Conclude with `((EuclideanSpace.basisFun (Fin R) ℝ).toBasis.linearIndependent).restrict_scalars' (R := ℤ)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem standardLatticeVec_indep (R : ℕ) : LinearIndependent ℤ (standardLatticeVec R) := by
   apply LinearIndependent.of_comp (EuclidLattice.standard R).carrier.subtype
@@ -195,7 +193,7 @@ def LatticeCount.Data.standard (R : ℕ) : LatticeCount.Data R where
     simp [standardLatticeVec, OrthonormalBasis.coe_toBasis]
 
 /- English proof (translation)
-The claim follows from `LatticeCount.Data.standard 3`.
+A detailed English derivation is pending.
 -/
 example : LatticeCount.Data 3 := LatticeCount.Data.standard 3
 
@@ -252,7 +250,7 @@ def Halving.Statement : Prop :=
   ∀ d : Halving.Data, Tendsto d.a atTop (𝓝 0)
 
 /- English proof (translation)
-The claim follows from `tendsto_one_div_add_atTop_nhds_zero_nat`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_inv_succ : Tendsto (fun n : ℕ ↦ 1 / ((n : ℝ) + 1)) atTop (𝓝 0) :=
   tendsto_one_div_add_atTop_nhds_zero_nat

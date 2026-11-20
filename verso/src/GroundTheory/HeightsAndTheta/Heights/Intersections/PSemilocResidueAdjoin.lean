@@ -10,7 +10,7 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hP`. Use `⟨MvPolynomial.map φ '' S, ?_, Ideal.map_span _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a, fun m hm => ha m (MvPolynomial.support_map_subset _ _ hm)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SemilocResidueAdjoin.isMultiHomogIdeal_map {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {R : Type} [CommRing R] (φ : ℤ →+* R) {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) :
@@ -22,13 +22,13 @@ theorem SemilocResidueAdjoin.isMultiHomogIdeal_map {K : Type} [Fintype K] {ι : 
   exact ⟨a, fun m hm => ha m (MvPolynomial.support_map_subset _ _ hm)⟩
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c`. Take `⟨a, b, hb, rfl⟩` from `hF c`. Use `⟨C a, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[map_C, ← C_mul, mul_div_cancel₀ _ hb, eq_intCast]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add f g hf hg`. Take `⟨g₁, d₁, h₁, e₁⟩` from `hf`. Take `⟨g₂, d₂, h₂, e₂⟩` from `hg`. Use `⟨C d₂ * g₁ + C d₁ * g₂, d₁ * d₂, by push_cast; exact mul_ne_zero h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_C, map_C, ← e₁, ← e₂, eq_intCast, eq_intCast]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[C_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X f q hf`. Take `⟨g, d, h, e⟩` from `hf`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g * X q, d, h, by rw [map_mul, map_X, ← e, mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem SemilocResidueAdjoin.exists_int_mul {σ F : Type} [Field F]
     (hF : ∀ c : F, ∃ a b : ℤ, (b : F) ≠ 0 ∧ c = a / b) (f : MvPolynomial σ F) :
@@ -51,11 +51,11 @@ theorem SemilocResidueAdjoin.exists_int_mul {σ F : Type} [Field F]
     exact ⟨g * X q, d, h, by rw [map_mul, map_X, ← e, mul_assoc]⟩
 
 /- English proof (translation)
-Establish `e : ∀ g : MRing ι, aeval x (MvPolynomial.map (Int.castRingHom F) g) = aeval x g` using `fun g => by`. Rewrite using `[← algebraMap_int_eq, MvPolynomial.aeval_map_algebraMap]`. It suffices to establish `h : RingHom.ker (aeval x : MRingOver F ι →ₐ[F] Ω) = (RingHom.ker (aeval x : MRing ι →ₐ[ℤ] Ω)).map (MvPolynomial.map (Int.castRingHom F)) by`. Rewrite using `[h]`. Conclude with `SemilocResidueAdjoin.isMultiHomogIdeal_map _ hmh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (fun f hf => ?_) (Ideal.map_le_iff_le_comap.2 fun g hg => ?_)` and prove the remaining obligations. Take `⟨g, d, hd, hg⟩` from `SemilocResidueAdjoin.exists_int_mul hF f`. Establish `hg0 : g ∈ RingHom.ker (aeval x : MRing ι →ₐ[ℤ] Ω)`. Rewrite using `[RingHom.mem_ker, ← e, ← hg, map_mul, (RingHom.mem_ker).1 hf, mul_zero]`. Establish `hf' : f = C (d : F)⁻¹ * MvPolynomial.map (Int.castRingHom F) g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hd, C_1, one_mul]`. Rewrite using `[hf']`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hg0)`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, e]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SemilocResidueAdjoin.isMultiHomogIdeal_ker {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (hF : ∀ c : F, ∃ a b : ℤ, (b : F) ≠ 0 ∧ c = a / b)
@@ -79,9 +79,9 @@ theorem SemilocResidueAdjoin.isMultiHomogIdeal_ker {K : Type} [Fintype K] {ι : 
     exact hg
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hZ hs hsP hW W' hW' _ G' i' hi'`. Set `F` to `(⊥ : Subfield G'.Φ)`. Establish `hF : ∀ c : F, ∃ a b : ℤ, (b : F) ≠ 0 ∧ c = a / b` using `primeSubfield_exists_div`. Establish `hx : ∀ k', G'.x' ⟨k', i' k'⟩ ≠ 0` using `fun k' h => hi' k' (by`. Rewrite using `[← G'.genericFibre_ker_target, RingHom.mem_ker, aeval_X, h])`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmh` using `SemilocResidueAdjoin.isMultiHomogIdeal_ker hF G'.x' (by rw [G'.genericFibre_ker_target]; exact hW'.1.2.1)`. Rewrite using `[hR K ι K' ι' κ v P' n s α W hv hP' hZ hs hsP hW W' hW' G' i' hi' F hF, SemilocRankAdjoin.chain hT G' i' F hv hx hmh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem SemilocResidueAdjoin.proof (hR : SemilocResidueFrac.Statement) (hT : ChartScalingIndep.Statement) :
     SemilocResidueAdjoin.Statement := by

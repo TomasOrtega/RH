@@ -22,7 +22,7 @@ variable {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [Fini
   [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
 /- English proof (translation)
-Use `FiniteDimensional.complete ℂ Wq` as an intermediate fact. Rewrite using `[LinearMap.trace_eq_sum_inner _ b, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right]`. Conclude with `(inner_self_eq_norm_sq (𝕜 := ℂ) _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_norm_sq_eq_trace {ι : Type} [Fintype ι] (A : Wq →L[ℂ] Wp) (b : OrthonormalBasis ι ℂ Wq) :
     ∑ i, ‖A (b i)‖ ^ 2 =
@@ -35,9 +35,9 @@ theorem sum_norm_sq_eq_trace {ι : Type} [Fintype ι] (A : Wq →L[ℂ] Wp) (b :
   exact (inner_self_eq_norm_sq (𝕜 := ℂ) _).symm
 
 /- English proof (translation)
-Establish `h0 : hsNormSq A = ∑ i, ‖A (stdOrthonormalBasis ℂ Wq i)‖ ^ 2`. Unfold `hsNormSq hsInner`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, sum_norm_sq_eq_trace A b, sum_norm_sq_eq_trace A (stdOrthonormalBasis ℂ Wq)]`.
+A detailed English derivation is pending.
 -/
 theorem hsNormSq_eq_sum {ι : Type} [Fintype ι] (A : Wq →L[ℂ] Wp) (b : OrthonormalBasis ι ℂ Wq) :
     hsNormSq A = ∑ i, ‖A (b i)‖ ^ 2 := by
@@ -52,7 +52,7 @@ variable {Wq' Wp' : Type} [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] [
   [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] [CompleteSpace Wp']
 
 /- English proof (translation)
-Set `b` to `stdOrthonormalBasis ℂ Wq`. Rewrite using `[hsNormSq_eq_sum A' (b.map V), hsNormSq_eq_sum A b]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[OrthonormalBasis.map_apply, h, hg]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hsNormSq_of_iso (A : Wq →L[ℂ] Wp) (A' : Wq' →L[ℂ] Wp') (V : Wq ≃ₗᵢ[ℂ] Wq') (g : Wp → Wp')
     (hg : ∀ y, ‖g y‖ = ‖y‖) (h : ∀ x, A' (V x) = g (A x)) : hsNormSq A' = hsNormSq A := by
@@ -62,13 +62,13 @@ theorem hsNormSq_of_iso (A : Wq →L[ℂ] Wp) (A' : Wq' →L[ℂ] Wp') (V : Wq �
   rw [OrthonormalBasis.map_apply, h, hg]
 
 /- English proof (translation)
-Set `b` to `stdOrthonormalBasis ℂ Wq`. Establish `hon : Orthonormal ℂ (fun i => f (b i))`. Rewrite using `[orthonormal_iff_ite]`. Introduce `i j`. Rewrite using `[hfi, (orthonormal_iff_ite.1 b.orthonormal) j i]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Simplify using `[hij]`. Simplify using `[hij, Ne.symm hij]`. Establish `hsp : ⊤ ≤ Submodule.span ℂ (Set.range fun i => f (b i))`. Introduce `y _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `hsurj y`. Establish `hx : f x = ∑ i, conj (⟪b i, x⟫_ℂ) • f (b i)` using `by conv_lhs => rw [← b.sum_repr' x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hfs _ _`. Rewrite using `[hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `b'` to `OrthonormalBasis.mk hon hsp`. Rewrite using `[hsNormSq_eq_sum A' b', hsNormSq_eq_sum A b]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[OrthonormalBasis.coe_mk, h, hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsNormSq_of_semi (A : Wq →L[ℂ] Wp) (A' : Wq' →L[ℂ] Wp') (f : Wq →+ Wq')
     (hfs : ∀ (c : ℂ) x, f (c • x) = conj c • f x) (hfi : ∀ x y, ⟪f x, f y⟫_ℂ = ⟪y, x⟫_ℂ)
@@ -97,15 +97,13 @@ theorem hsNormSq_of_semi (A : Wq →L[ℂ] Wp) (A' : Wq' →L[ℂ] Wp') (f : Wq 
   rw [OrthonormalBasis.coe_mk, h, hg]
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun x => ?_` and prove the remaining obligations. Set `b` to `stdOrthonormalBasis ℂ Wq`. Establish `hcomp : ∀ i, ‖A (b i)‖ ≤ ‖Formalism.L2.SG.PackageTie.hsEmb A‖`. Introduce `i`. Establish `h1 : ‖A (b i)‖ ^ 2 ≤ ‖Formalism.L2.SG.PackageTie.hsEmb A‖ ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Conclude with `Finset.single_le_sum (f := fun j => ‖(Formalism.L2.SG.PackageTie.hsEmb A) j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)`. Conclude with `(sq_le_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_smul]`. Use `_ ≤ ∑ i, ‖⟪b i, x⟫_ℂ • A (b i)‖ := norm_sum_le _ _`. Use `_ ≤ ∑ _i : Fin (Module.finrank ℂ Wq), ‖x‖ * ‖Formalism.L2.SG.PackageTie.hsEmb A‖ := by`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖⟪b i, x⟫_ℂ‖ ≤ ‖x‖`. Use `norm_inner_le_norm (𝕜 := ℂ) (b i) x` as an intermediate fact. Rewrite `this` using `[b.orthonormal.1 i, one_mul]`. Then use the resulting hypothesis. Conclude with `mul_le_mul h1 (hcomp i) (norm_nonneg _) (norm_nonneg _)`. Use `_ = (Module.finrank ℂ Wq : ℝ) * ‖Formalism.L2.SG.PackageTie.hsEmb A‖ * ‖x‖ := by`.
-
-Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem opNorm_le_hs (A : Wq →L[ℂ] Wp) :
     ‖A‖ ≤ (Module.finrank ℂ Wq : ℝ) * ‖Formalism.L2.SG.PackageTie.hsEmb A‖ := by
@@ -142,13 +140,13 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   {sig : E →ₐ[F] E} {Word Tau : Type} [Fintype Tau] {hc : Word → Tau → HCParam R}
 
 /- English proof (translation)
-Use `FiniteDimensional.complete ℂ (s.Cu u)` as an intermediate fact. Use `FiniteDimensional.complete ℂ (s.Cu u')` as an intermediate fact. Use `FiniteDimensional.complete ℂ s.HH` as an intermediate fact. Use `FiniteDimensional.complete ℂ (s'.Cu u)` as an intermediate fact. Use `FiniteDimensional.complete ℂ (s'.Cu u')` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `FiniteDimensional.complete ℂ s'.HH` as an intermediate fact. Establish `hc0 : ∀ w, Formalism.MainNotions.S.c0 s w = Formalism.MainNotions.S.c0 s' w` using `fun w => by unfold Formalism.MainNotions.S.c0; rw [I.volN, I.volH]`. Establish `hadj : ∀ y, ContinuousLinearMap.adjoint (s'.Pu u) (I.eHH y) = I.eCu u (ContinuousLinearMap.adjoint (s.Pu u) y)`. Introduce `y`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, rfl⟩` from `(I.eCu u).surjective w`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right, ← I.Pu_eq, LinearIsometryEquiv.inner_map_map, LinearIsometryEquiv.inner_map_map, ContinuousLinearMap.adjoint_inner_right]`. Unfold `Kmat`. Rewrite using `[hc0 u, hc0 u']`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, map_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← I.Pu_eq, hadj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kmat_iso (s s' : Formalism.MainNotions.S.Draft.SData R F E sig Word Tau hc) (I : SIso s s') (u u' : Word)
     (x : s.Cu u') : Kmat s' u u' (I.eCu u' x) = I.eCu u (Kmat s u u' x) := by
@@ -172,7 +170,7 @@ theorem kmat_iso (s s' : Formalism.MainNotions.S.Draft.SData R F E sig Word Tau 
   rw [← I.Pu_eq, hadj]
 
 /- English proof (translation)
-Introduce `R F E _ _ _ _ _ sig Word Tau _ hc s s' I u u'`. Use `FiniteDimensional.complete ℂ (s.Cu u)` as an intermediate fact. Use `FiniteDimensional.complete ℂ (s'.Cu u)` as an intermediate fact. Conclude with `(hsNormSq_of_iso (Kmat s u u') (Kmat s' u u') (I.eCu u') (I.eCu u) (fun y => (I.eCu u).norm_map y) (kmat_iso s s' I u u')).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isoNorm : IsoNorm := by
   intro R F E _ _ _ _ _ sig Word Tau _ hc s s' I u u'
@@ -190,7 +188,7 @@ variable {D : D7} {X : HidaSetting D} {u u' : D.what₂.Word} {hK : X.LevelSubgr
   {hinj : Function.Injective (sharp hK cs)} {hinj' : Function.Injective (sharp hK cs')}
 
 /- English proof (translation)
-Establish `h1 : ‖shT hinj T‖ ^ 2 = ‖T‖ ^ 2`. Rewrite using `[norm_sq_eq_re_inner (𝕜 := ℂ), norm_sq_eq_re_inner (𝕜 := ℂ) T, inner_colT hinj T T]`. Conclude with `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_shT (T : ColT hinj) : ‖shT hinj T‖ = ‖T‖ := by
   have h1 : ‖shT hinj T‖ ^ 2 = ‖T‖ ^ 2 := by
@@ -205,13 +203,13 @@ def shTAdd (hinj : Function.Injective (sharp hK cs)) : ColT hinj →+ CM cs wher
 variable (hb : Function.Bijective (shT hinj)) (hb' : Function.Bijective (shT hinj'))
 
 /- English proof (translation)
-Rewrite using `[← norm_shT, shT_shInv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_shInv (x : CM cs) : ‖shInv hb x‖ = ‖x‖ := by
   rw [← norm_shT, shT_shInv]
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun T' => ?_` and prove the remaining obligations. Rewrite using `[tr_apply, norm_shInv, ← norm_shT T']`. Conclude with `A.le_opNorm _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_tr_le (A : CM cs' →L[ℂ] CM cs) : ‖tr hb hb' A‖ ≤ ‖A‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun T' => ?_
@@ -230,7 +228,7 @@ def trAdd : (CM cs' →L[ℂ] CM cs) →+ (ColT hinj' →L[ℂ] ColT hinj) where
     rw [ContinuousLinearMap.add_apply, tr_apply, tr_apply, tr_apply, ContinuousLinearMap.add_apply, shInv_add]
 
 /- English proof (translation)
-The claim follows from `AddMonoidHomClass.continuous_of_bound (trAdd hb hb') 1 fun A => by rw [one_mul] exact norm_tr_le hb hb' A`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trAdd : Continuous (trAdd hb hb') :=
   AddMonoidHomClass.continuous_of_bound (trAdd hb hb') 1 fun A => by
@@ -246,13 +244,13 @@ open Formalism.L2.SG.Full
 variable {D : D7} {X : HidaSetting D} {Y : Full X} (hF : FinX Y)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun _ _ => Nat.cast_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem dimPi_nonneg (u : D.what₂.Word) : 0 ≤ dimPi (hc := D.hcW) u :=
   Finset.prod_nonneg fun _ _ => Nat.cast_nonneg _
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.c0`. Conclude with `div_nonneg (mul_nonneg (hF.volPos u).1.le (hF.volPos u).2.le) (dimPi_nonneg u)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem weightConst_nonneg (u : D.what₂.Word) : 0 ≤ Formalism.MainNotions.S.c0 (sOf hF) u := by
   unfold Formalism.MainNotions.S.c0
@@ -261,20 +259,20 @@ theorem weightConst_nonneg (u : D.what₂.Word) : 0 ≤ Formalism.MainNotions.S.
 include hF in
 
 /- English proof (translation)
-Rewrite using `[Y.poincare_constant_eq u, hd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normalizing_constant_eq_of_dimTie {u : D.what₂.Word} (hd : DimTie (X := X) u) : c0X X u (Y.FN u) = Formalism.MainNotions.S.c0 (sOf hF) u := by
   rw [Y.poincare_constant_eq u, hd]
   rfl
 
 /- English proof (translation)
-Use `finiteDimensional_colT (hF.shBij u)` as an intermediate fact. Use `finiteDimensional_colT (hF.shBij u')` as an intermediate fact. Use `FiniteDimensional.complete ℂ (ColT (hF.shInj u))` as an intermediate fact. Use `FiniteDimensional.complete ℂ (ColT (hF.shInj u'))` as an intermediate fact. Establish `: FiniteDimensional ℂ (HHX X)` using `hF.finHH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `FiniteDimensional.complete ℂ (HHX X)` as an intermediate fact. Establish `aux : ∀ (T : ColT (hF.shInj u)) (T' : ColT (hF.shInj u')), ⟪T, (Kmat (sOf hF) u u' T' : ColT (hF.shInj u))⟫_ℂ = ⟪T, tr (hF.shBij u) (hF.shBij u') K T'⟫_ℂ`. Introduce `T T'`. Rewrite using `[inner_colT _ T (tr _ _ K T'), shT_tr]`. Use `Eq.trans ?_ (hK T T')` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : (Formalism.MainNotions.S.c0 (sOf hF) u * Formalism.MainNotions.S.c0 (sOf hF) u') ^ (-(1 / 2 : ℝ)) = (Real.sqrt (c0X X u (Y.FN u) * c0X X u' (Y.FN u')))⁻¹`. Rewrite using `[normalizing_constant_eq_of_dimTie hF hd, normalizing_constant_eq_of_dimTie hF hd', Real.sqrt_eq_rpow, ← Real.rpow_neg (mul_nonneg (weightConst_nonneg hF u) (weightConst_nonneg hF u'))]`. Express the relevant statement in the definitionally equal form `⟪T, (((Formalism.MainNotions.S.c0 (sOf hF) u * Formalism.MainNotions.S.c0 (sOf hF) u') ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) • (ContinuousLinearMap.adjoint (puC hF u)) (puC hF u' T')⟫_ℂ = _`. Rewrite using `[inner_smul_right, ContinuousLinearMap.adjoint_inner_right, hc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `ContinuousLinearMap.ext fun T' => ext_inner_left ℂ fun T => aux T T'`.
+A detailed English derivation is pending.
 -/
 theorem kmat_eq {u u' : D.what₂.Word} (hd : DimTie (X := X) u) (hd' : DimTie (X := X) u')
     (K : CM (Y.cs u') →L[ℂ] CM (Y.cs u))
@@ -305,7 +303,7 @@ theorem kmat_eq {u u' : D.what₂.Word} (hd : DimTie (X := X) u) (hd' : DimTie (
 
 include hF in
 /- English proof (translation)
-Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun s => ?_) (hA.1.mul_left (Module.finrank ℂ (CM (Y.cs u')) : ℝ))` and prove the remaining obligations. Conclude with `(norm_tr_le _ _ _).trans (opNorm_le_hs _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem summable_op_fib {u u' : D.what₂.Word} (hA : (Y.tO u u').AbsConv) :
     Summable fun s : TT Y u u' => ‖aT hF u u' s‖ := by
@@ -314,15 +312,15 @@ theorem summable_op_fib {u u' : D.what₂.Word} (hA : (Y.tO u u').AbsConv) :
   exact (norm_tr_le _ _ _).trans (opNorm_le_hs _)
 
 /- English proof (translation)
-Introduce `hd hd' hE hA`. Take `⟨K, hsum, hK⟩` from `hE`. Establish `hKm` using `kmat_eq hF hd hd' K hK`. Establish `h1 : HasSum (fun s : TT Y u u' => aT hF u u' s) (tr (hF.shBij u) (hF.shBij u') K)` using `hsum.map (trAdd (hF.shBij u) (hF.shBij u')) (continuous_trAdd _ _)`. Set `e` to `Equiv.sigmaFiberEquiv (fun s : TT Y u u' => s.toTerm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `HasSum (fun t => aR hF u u' t) (Kmat (sOf hF) u u')`. Rewrite using `[hKm]`. Establish `h2` using `(e.hasSum_iff (f := fun s : TT Y u u' => aT hF u u' s)).2 h1`. Use `h2.sigma fun t => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Fintype {x : TT Y u u' // x.toTerm = t} := hF.fibFT t`. Unfold `aR`. Conclude with `hasSum_fintype _`. Express the relevant statement in the definitionally equal form `Summable fun t => ‖aR hF u u' t‖`. Establish `hs` using `(e.summable_iff (f := fun s : TT Y u u' => ‖aT hF u u' s‖)).2 (summable_op_fib hF hA)`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs2` using `(summable_sigma_of_nonneg (fun _ => norm_nonneg _)).1 hs`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun t => ?_) hs2.2` and prove the remaining obligations. Use `letI : Fintype {x : TT Y u u' // x.toTerm = t} := hF.fibFT t`. Rewrite using `[tsum_fintype]`. Unfold `aR`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kTie (u u' : D.what₂.Word) : KTie hF u u' := by
   intro hd hd' hE hA
@@ -350,11 +348,11 @@ theorem kTie (u u' : D.what₂.Word) : KTie hF u u' := by
     rfl
 
 /- English proof (translation)
-Introduce `hd hd' hE hA hId hK2`. Take `⟨K, hsum, hK⟩` from `hE`. Establish `hKm` using `kmat_eq hF hd hd' K hK`. Establish `hs : ∀ S : Set (TT Y u u'), Summable (S.indicator (Y.tO u u').op)` using `fun S => Summable.of_norm_bounded hA.1 fun t => by`. Distinguish the cases in `h : t ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem h]`. Rewrite using `[Set.indicator_of_notMem h, norm_zero]`. Conclude with `norm_nonneg _`. Rewrite using `[Formalism.L2.SG.PackageTie.K0_eq_K_of_degSet_eq_zero hs hId hK2]`. Establish `hKK : (Y.tO u u').K = Formalism.L2.SG.PackageTie.hsEmb K` using `(hsum.map (Formalism.L2.SG.PackageTie.hsEmb (Wq := CM (Y.cs u')) (Wp := CM (Y.cs u))) (LinearMap.continuous_of_finiteDimensional _)).tsum_eq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hKK, Formalism.L2.SG.PackageTie.norm_hsEmb_sq, hKm]`. Use `finiteDimensional_colT (hF.shBij u)` as an intermediate fact. Use `finiteDimensional_colT (hF.shBij u')` as an intermediate fact. Use `FiniteDimensional.complete ℂ (ColT (hF.shInj u))` as an intermediate fact. Conclude with `(hsNormSq_of_semi (tr (hF.shBij u) (hF.shBij u') K) K (shTAdd (hF.shInj u')) (fun c x => shT_smul _ c x) (fun x y => (inner_colT _ y x).symm) (hF.shBij u').2 (shT (hF.shInj u)) norm_shT (fun x => (shT_tr _ _ K x).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normTie (u u' : D.what₂.Word) : NormTie hF u u' := by
   intro hd hd' hE hA hId hK2
@@ -384,9 +382,9 @@ section Dim
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `hanti : StrictAnti (fun i => ((D.hcW u (X.pl v)).u i : ℝ))` using `(Formalism.MainNotions.S.Inh.obj_isHCParam_u D.R (D.hcW u (X.pl v))).1`. Establish `h1` using `ReciprocityTheory.ChartRestriction.DS.HW.weyl_dimension_formula_unitary D.R.k _ (X.Vloc u v) (X.piLoc u v) hanti (X.piLoc_type u v)`. Establish `hne : {d | ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (π : Matrix (Fin D.R.k) (Fin D.R.k) ℂ → (H →L[ℂ] H)), IsHCTypeU D.R.k (fun i => ((D.hcW u (X.pl v)).u i : ℝ)) π ∧ Module.finrank ℂ H = d}.Nonempty` using `⟨_, X.Vloc u v, inferInstance, inferInstance, X.piLoc u v, X.piLoc_type u v, rfl⟩`. Take `⟨H, i1, i2, π, hπ, hd⟩` from `Nat.sInf_mem hne`. Unfold `dimPiU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hd, h1]`. Conclude with `(ReciprocityTheory.ChartRestriction.DS.HW.weyl_dimension_formula_unitary D.R.k _ H π hanti hπ).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_loc (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     (Module.finrank ℂ (X.Vloc u v) : ℝ) =
@@ -404,25 +402,23 @@ theorem finrank_loc (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
   exact (ReciprocityTheory.ChartRestriction.DS.HW.weyl_dimension_formula_unitary D.R.k _ H π hanti hπ).symm
 
 /- English proof (translation)
-Use `set b := fun v => stdOrthonormalBasis ℂ (X.Vloc u v)`. Use `set e := fun i : (∀ v, Fin (Module.finrank ℂ (X.Vloc u v))) => X.tensU u (fun v => b v (i v)) with he_def`. Establish `he : Orthonormal ℂ e`. Rewrite using `[orthonormal_iff_ite]`. Introduce `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [e, X.tensU_inner]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `Finset.prod_eq_one fun v _ => by rw [orthonormal_iff_ite.1 (b v).orthonormal, if_pos rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[if_neg hij]`. Take `⟨v, hv⟩` from `Function.ne_iff.1 hij`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (by rw [orthonormal_iff_ite.1 (b v).orthonormal, if_neg hv])`. Establish `hc : ∀ i, ‖⟪e i, X.tensU u x⟫_ℂ‖ ^ 2 = ∏ v, ‖⟪b v (i v), x v⟫_ℂ‖ ^ 2`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he_def]`. Simplify using `only [X.tensU_inner, norm_prod, Finset.prod_pow]`. Establish `hy : ‖X.tensU u x‖ ^ 2 = ∏ v, ‖x v‖ ^ 2`. Establish `h` using `congrArg norm (X.tensU_inner u x x)`. Rewrite `h` using `[norm_prod]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [inner_self_eq_norm_sq_to_K, norm_pow, RCLike.norm_ofReal, abs_norm] at h`. Conclude with `h`. Use `set y := X.tensU u x`. Use `set c := fun i => ⟪e i, y⟫_ℂ`. Use `set s := ∑ i, c i • e i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hss : ⟪s, s⟫_ℂ = ∑ i, conj (c i) * c i` using `he.inner_sum c c Finset.univ`. Establish `hsy : ⟪s, y⟫_ℂ = ∑ i, conj (c i) * c i`. Simplify using `only [s, sum_inner, inner_smul_left, c]`. Establish `hnorm_s : ‖s‖ ^ 2 = ∑ i, ‖c i‖ ^ 2`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), hss, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[RCLike.conj_mul, ← RCLike.ofReal_pow, RCLike.ofReal_re]`. Establish `hnorm_y : ‖y‖ ^ 2 = ∑ i, ‖c i‖ ^ 2`. Simplify using `only [c, hc]`. Rewrite using `[hy, ← Fintype.prod_sum (fun v j => ‖⟪b v j, x v⟫_ℂ‖ ^ 2)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← (b v).repr.norm_map (x v), EuclideanSpace.norm_sq_eq]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[OrthonormalBasis.repr_apply_apply]`. Establish `horth : ⟪s, y - s⟫_ℂ = 0` using `by rw [inner_sub_right, hsy, hss, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpy : ‖y‖ ^ 2 = ‖s‖ ^ 2 + ‖y - s‖ ^ 2`. Use `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero s (y - s) horth` as an intermediate fact. Rewrite using `[sq, sq, sq]`. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `h0 : ‖y - s‖ = 0`.
-
-Establish `: ‖y - s‖ ^ 2 = 0` using `by linarith`. Conclude with `pow_eq_zero_iff (two_ne_zero) |>.1 this`. Establish `hys : y = s` using `sub_eq_zero.1 (norm_eq_zero.1 h0)`. Rewrite using `[hys]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem tens_mem_span (u : D.what₂.Word) (x : ∀ v, X.Vloc u v) :
     X.tensU u x ∈ Submodule.span ℂ (Set.range fun i : (∀ v, Fin (Module.finrank ℂ (X.Vloc u v))) =>
@@ -479,13 +475,11 @@ theorem tens_mem_span (u : D.what₂.Word) (x : ∀ v, X.Vloc u v) :
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `set b := fun v => stdOrthonormalBasis ℂ (X.Vloc u v)`. Use `set e := fun i : (∀ v, Fin (Module.finrank ℂ (X.Vloc u v))) => X.tensU u (fun v => b v (i v))`. Establish `he : Orthonormal ℂ e`. Rewrite using `[orthonormal_iff_ite]`. Introduce `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [e, X.tensU_inner]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `Finset.prod_eq_one fun v _ => by rw [orthonormal_iff_ite.1 (b v).orthonormal, if_pos rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[if_neg hij]`. Take `⟨v, hv⟩` from `Function.ne_iff.1 hij`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (by rw [orthonormal_iff_ite.1 (b v).orthonormal, if_neg hv])`. Establish `htop : ⊤ ≤ Submodule.span ℂ (Set.range e)`. Rewrite using `[← X.tensU_span u, Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `tens_mem_span X u x`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.mk he.linearIndependent htop), Fintype.card_pi]`. Simplify using `only [Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_Vpi (u : D.what₂.Word) :
     Module.finrank ℂ (X.Vpi u) = ∏ v, Module.finrank ℂ (X.Vloc u v) := by
@@ -510,7 +504,7 @@ theorem finrank_Vpi (u : D.what₂.Word) :
   simp only [Fintype.card_fin]
 
 /- English proof (translation)
-Unfold `DimTie dimPi`. Rewrite using `[finrank_Vpi, Nat.cast_prod]`. Conclude with `Fintype.prod_equiv X.pl _ _ fun v => finrank_loc X u v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimTie (u : D.what₂.Word) : DimTie (X := X) u := by
   unfold DimTie dimPi
@@ -526,23 +520,21 @@ open Formalism.L2.SG.Full
 variable {D : D7} {X : HidaSetting D} (Y : Full X)
 
 /- English proof (translation)
-Establish `hst : Formalism.L2.SG.ColsDim.StabTriv (iotaF X u) (Ku X u Y.hK)` using `Formalism.L2.SG.ColsDim.stabTriv_mono (iotaF X u) hCL.1 hCL.2.1`. Set `cls : (Y.cs u).Cl → Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u Y.hK)` to `fun ρ => DoubleCoset.mk (iotaF X u).range (Ku X u Y.hK) ((Y.cs u).h ρ)`. Establish `hcls : Function.Bijective cls`. Use `⟨fun ρ ρ' h => ?_, fun c => ?_⟩` and prove the remaining obligations. Take `⟨a, ⟨γ, rfl⟩, κ, hκ, hab⟩` from `(DoubleCoset.eq _ _ _ _).1 h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ0, _, huniq⟩` from `Y.colReps u ((Y.cs u).h ρ')`. Establish `h1` using `huniq ρ ⟨γ, ⟨κ, hκ⟩, hab⟩`. Establish `h2` using `huniq ρ' ⟨1, 1, by simp⟩`. Conclude with `h1.trans h2.symm`. Proceed by induction on `c using Quotient.inductionOn' with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `h g`. Take `⟨ρ, ⟨γ, κ, hg⟩, _⟩` from `Y.colReps u g`. Use `⟨ρ, ?_⟩` and prove the remaining obligations. Use `show DoubleCoset.mk _ _ _ = DoubleCoset.mk _ _ g`. Rewrite using `[DoubleCoset.eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨iotaF X u γ, ⟨γ, rfl⟩, κ, κ.2, hg⟩`. Set `ec` to `Equiv.ofBijective cls hcls`. Set `s : Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u Y.hK) → Hfin X u` to `fun c => (Y.cs u).h (ec.symm c)`. Establish `hs : ∀ c, DoubleCoset.mk (iotaF X u).range (Ku X u Y.hK) (s c) = c` using `fun c => ec.apply_symm_apply c`. Take `⟨e, he⟩` from `Formalism.L2.SG.ColsDim.columns_decomposition (Gam X u) (Hinf X u) (Hfin X u) ℂ (X.Vpi u) (iotaI X u) (iotaF X u) (Ku X u Y.hK) (psiK X u Y.hK) (piRep X u) s hs hst`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ T ρ, (sharp Y.hK (Y.cs u) T) ρ = (InnerProductSpace.toDual ℂ (X.Vpi u)).symm (LinearMap.toContinuousLinearMap (e T (cls ρ)))`. Introduce `T ρ`. Establish `hsρ : s (cls ρ) = (Y.cs u).h ρ` using `by show (Y.cs u).h (ec.symm (ec ρ)) = _`. Rewrite using `[ec.symm_apply_apply]`. Use `show (InnerProductSpace.toDual ℂ (X.Vpi u)).symm (LinearMap.toContinuousLinearMap ((LinearMap.proj ((1 : Hinf X u), (Y.cs u).h ρ)).comp T.1)) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use `LinearMap.ext fun ξ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (he T (cls ρ) ξ).symm` and prove the remaining obligations. Rewrite using `[hsρ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun T T' h => ?_, fun x => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Take `⟨ρ, rfl⟩` from `hcls.2 c`. Establish `h1 : (sharp Y.hK (Y.cs u) T) ρ = (sharp Y.hK (Y.cs u) T') ρ` using `by rw [h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[key T ρ, key T' ρ]`. Conclude with `LinearMap.toContinuousLinearMap.injective ((InnerProductSpace.toDual ℂ (X.Vpi u)).symm.injective h1)`. Set `d : Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u Y.hK) → Module.Dual ℂ (X.Vpi u)` to `fun c => LinearMap.toContinuousLinearMap.symm (InnerProductSpace.toDual ℂ (X.Vpi u) (x (ec.symm c)))`. Use `⟨e.symm d, ?_⟩` and prove the remaining obligations. Use extensionality with `ρ`.
-
-Use `(key (e.symm d) ρ).trans ?_` and prove the remaining obligations. Rewrite using `[e.apply_symm_apply]`. Use `show (InnerProductSpace.toDual ℂ (X.Vpi u)).symm (LinearMap.toContinuousLinearMap (LinearMap.toContinuousLinearMap.symm (InnerProductSpace.toDual ℂ (X.Vpi u) (x (ec.symm (ec ρ)))))) = x ρ`. Rewrite using `[LinearEquiv.apply_symm_apply, LinearIsometryEquiv.symm_apply_apply, ec.symm_apply_apply]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_bij (u : D.what₂.Word) (hCL : ColsLink X u Y.hK) :
     Function.Bijective (sharp Y.hK (Y.cs u)) := by
@@ -600,7 +592,7 @@ theorem sharp_bij (u : D.what₂.Word) (hCL : ColsLink X u Y.hK) :
     rw [LinearEquiv.apply_symm_apply, LinearIsometryEquiv.symm_apply_apply, ec.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `(sharp_bij Y u (hCL u)).1 shSurj u := (sharp_bij Y u (hCL u)).2 inHH := hin puLin u := Formalism.L2.SG.PoincareInHH.Cut.puLinear_holds X u Y.hK (Y.Dt u) finHH := hfin fibFin := hfib pairIndep := hpi Greal := hG cdEx n ε := cd_haar_scaling D.cd n ε volPos u := hvol D X Y u (Formal …`.
+A detailed English derivation is pending.
 -/
 theorem finX_of (hCL : ∀ u, ColsLink X u Y.hK) (hin : ∀ u, InHH X u Y.hK) (hfin : FiniteDimensional ℂ (HHX X))
     (hfib : ∀ u u' (t : RT Y u u'), Finite (fib Y t))

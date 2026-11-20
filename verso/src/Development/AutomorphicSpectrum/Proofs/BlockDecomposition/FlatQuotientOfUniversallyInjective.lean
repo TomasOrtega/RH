@@ -4,7 +4,7 @@ open TensorProduct
 namespace GlobalTheory.CompanionTheory.FlatCoker
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.congr_fun (LinearMap.lTensor_comp_rTensor P i g) t`. Establish `h2` using `LinearMap.congr_fun (LinearMap.rTensor_comp_lTensor P i g) t`. Conclude with `h1.trans h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lTensor_rTensor_comm {R P Q X Y : Type} [CommRing R]
     [AddCommGroup P] [Module R P] [AddCommGroup Q] [Module R Q]
@@ -16,15 +16,15 @@ theorem lTensor_rTensor_comm {R P Q X Y : Type} [CommRing R]
   exact h1.trans h2.symm
 
 /- English proof (translation)
-Rewrite using `[Module.Flat.iff_rTensor_injective']`. Introduce `I`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Establish `hRrow` using `lTensor_exact R (LinearMap.exact_map_mkQ_range f) (Submodule.mkQ_surjective (LinearMap.range f))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hIrow` using `lTensor_exact (↥I) (LinearMap.exact_map_mkQ_range f) (Submodule.mkQ_surjective (LinearMap.range f))`. Establish `hAcol` using `rTensor_exact A (LinearMap.exact_subtype_mkQ I) (Submodule.mkQ_surjective I)`. Establish `hBcol` using `rTensor_exact B (LinearMap.exact_subtype_mkQ I) (Submodule.mkQ_surjective I)`. Establish `hBinj : Function.Injective (LinearMap.rTensor B I.subtype)` using `Module.Flat.rTensor_preserves_injective_linearMap _ (Submodule.injective_subtype I)`. Take `⟨y, rfl⟩` from `LinearMap.lTensor_surjective (↥I) (Submodule.mkQ_surjective (LinearMap.range f)) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hz` using `[← lTensor_rTensor_comm I.subtype (LinearMap.range f).mkQ y]`. Take `⟨x, hx⟩` from `(hRrow _).mp hz`. Establish `hq : LinearMap.lTensor (R ⧸ I) f (LinearMap.rTensor A I.mkQ x) = 0`. Rewrite using `[lTensor_rTensor_comm I.mkQ f x, hx]`. Conclude with `(hBcol _).mpr ⟨y, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq0 : LinearMap.rTensor A I.mkQ x = 0` using `(injective_iff_map_eq_zero (LinearMap.lTensor (R ⧸ I) f)).mp (hf (R ⧸ I)) _ hq`. Take `⟨w, rfl⟩` from `(hAcol x).mp hq0`. Establish `hyw : LinearMap.lTensor (↥I) f w = y`. Apply `hBinj` to reduce the goal to its premises. Rewrite using `[← hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(lTensor_rTensor_comm I.subtype f w).symm`. Rewrite using `[← hyw]`. Conclude with `(hIrow _).mpr ⟨w, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem flat_quotient_range_of_lTensor_injective
     (R A B : Type) [CommRing R] [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]

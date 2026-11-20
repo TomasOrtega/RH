@@ -10,7 +10,7 @@ variable {R R' M M' : Type*} [CommRing R] [CommRing R'] [AddCommGroup M] [Module
   [Module R' M']
 
 /- English proof (translation)
-Use `letI := RingHomInvPair.of_ringEquiv φ`. Use `letI := RingHomInvPair.symm (φ : R →+* R') (φ.symm : R' →+* R)`. Set `e : M ≃ₛₗ[(φ : R →+* R')] M'` to `LinearEquiv.ofBijective f hf`. Rewrite using `[Module.length_eq_height, Module.length_eq_height, ← Order.height_orderIso (Submodule.orderIsoMapComap e) ⊤, OrderIso.map_top]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_eq_of_bijective (φ : R ≃+* R') (f : M →ₛₗ[(φ : R →+* R')] M') (hf : Function.Bijective f) :
     Module.length R' M' = Module.length R M := by
@@ -21,11 +21,11 @@ theorem length_eq_of_bijective (φ : R ≃+* R') (f : M →ₛₗ[(φ : R →+* 
     ← Order.height_orderIso (Submodule.orderIsoMapComap e) ⊤, OrderIso.map_top]
 
 /- English proof (translation)
-Set `g : (M ⧸ q) →ₛₗ[(φ : R →+* R')] (M' ⧸ q')` to `q.mapQ q' f (fun x hx => (h x).2 hx)`. Use `length_eq_of_bijective φ g ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective q y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hy' : (Submodule.Quotient.mk (f a) : M' ⧸ q') = 0` using `hy`. Rewrite `hy'` using `[Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `(h a).1 hy'`. Introduce `y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective q' y`. Take `⟨a, rfl⟩` from `hf.2 b`. Conclude with `⟨Submodule.Quotient.mk a, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem length_quotient_eq_of_bijective_semilinear (φ : R ≃+* R') (f : M →ₛₗ[(φ : R →+* R')] M')
     (hf : Function.Bijective f) (q : Submodule R M) (q' : Submodule R' M')
@@ -46,7 +46,7 @@ private theorem length_quotient_eq_of_bijective_semilinear (φ : R ≃+* R') (f 
     exact ⟨Submodule.Quotient.mk a, rfl⟩
 
 /- English proof (translation)
-The claim follows from `RingHomInvPair.of_ringEquiv φ Module.length R' (↥(p.map f) ⧸ (q.map f).comap (p.map f).subtype) = Module.length R (↥p ⧸ q.comap p.subtype) := by letI := RingHomInvPair.of_ringEquiv φ let g : ↥p →ₛₗ[(φ : R →+* R')] ↥(p.map f) := { toFun := fun x => ⟨f x, Submodule.mem_map_of_mem x …`.
+A detailed English derivation is pending.
 -/
 theorem length_quot_map (φ : R ≃+* R') (f : M →ₛₗ[(φ : R →+* R')] M') (hf : Function.Injective f)
     (p q : Submodule R M) :
@@ -75,9 +75,9 @@ theorem length_quot_map (φ : R ≃+* R') (f : M →ₛₗ[(φ : R →+* R')] M'
       exact Submodule.mem_map_of_mem hx
 
 /- English proof (translation)
-Set `F : R →ₛₗ[(φ : R →+* R')] R'` to `{ toFun := φ map_add' := map_add φ map_smul' := fun r x => by simp only [smul_eq_mul, map_mul, RingEquiv.coe_toRingHom] }`. Use `length_quotient_eq_of_bijective_semilinear φ F φ.bijective _ _ ?_` and prove the remaining obligations. Introduce `x`. Use `show φ x ∈ Ideal.span {(n : R')} ↔ x ∈ Ideal.span {(n : R)}`. Rewrite using `[Ideal.mem_span_singleton, Ideal.mem_span_singleton]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨φ.symm c, by apply φ.injective; simp [hc]⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨φ c, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem length_quot_natCast (φ : R ≃+* R') (n : ℕ) :
     Module.length R' (R' ⧸ Ideal.span {(n : R')}) = Module.length R (R ⧸ Ideal.span {(n : R)}) := by

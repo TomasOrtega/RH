@@ -32,9 +32,9 @@ def moveL (P : PosDatum A B ι) (l : List (Fin P.n)) (β : GA D B → ℂ) : GA 
   l.foldr (fun a β' => toPosF P.bes (P.ε a) (P.m a) (P.p a) β') β
 
 /- English proof (translation)
-Take `⟨U, hU, hk⟩` from `h`. Use `⟨U, hU, fun k k1 k2 => ?_⟩` and prove the remaining obligations. Proceed by induction on `l with`. Consider the case `nil => exact hk k k1 k2`. Consider the case `cons i l ih`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `g`. Use `show ∫ u, exL d ε m l β ((u : GA D B) * (g * k)) ∂(m i) = ∫ u, exL d ε m l β ((u : GA D B) * g) ∂(m i)`. Simplify using `only [← mul_assoc, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lvl_exL (d : BesselDatum A B ι) (ε : AE D) (m) (l) {β : GA D B → ℂ} (h : Lvl β) : Lvl (exL d ε m l β) := by
   obtain ⟨U, hU, hk⟩ := h
@@ -47,9 +47,9 @@ theorem lvl_exL (d : BesselDatum A B ι) (ε : AE D) (m) (l) {β : GA D B → �
     simp only [← mul_assoc, ih]
 
 /- English proof (translation)
-Introduce `n hn hs`. Proceed by induction on `l with`. Consider the case `nil => exact h n hn hs`. Consider the case `cons i l ih`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ∫ u, exL d ε m l β ((u : GA D B) * (n * g)) ∂(m i) = _ * ∫ u, exL d ε m l β ((u : GA D B) * g) ∂(m i)`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show exL d ε m l β ((u : GA D B) * (n * g)) = _ * exL d ε m l β ((u : GA D B) * g)`. Rewrite using `[← mul_assoc, ← commute_of_apart hε hs (suppAt_of_mem_Ex u.2), mul_assoc, ih]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqv_exL (d : BesselDatum A B ι) (ψ) {ε ε' : AE D} (hε : (ε' + cA D ε') * (ε + cA D ε) = 0) (m) (l)
     {β : GA D B → ℂ} (h : Eqv d ψ ε' β) : Eqv d ψ ε' (exL d ε m l β) := by
@@ -65,15 +65,13 @@ theorem eqv_exL (d : BesselDatum A B ι) (ψ) {ε ε' : AE D} (hε : (ε' + cA D
     rw [← mul_assoc, ← commute_of_apart hε hs (suppAt_of_mem_Ex u.2), mul_assoc, ih]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `n hn g`. Use `hn 1 (one_mem _)` as an intermediate fact. Simplify using `only [one_mul, inv_one, mul_one] at this`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this.2.2]`. Conclude with `h n this.1 this.2.1 g`. Consider the case `cons i l ih`. Introduce `n hn g`. Use `show ∫ u, exL d ε m l β ((u : GA D B) * (n * g)) ∂(m i) = _ * ∫ u, exL d ε m l β ((u : GA D B) * g) ∂(m i)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show exL d ε m l β ((u : GA D B) * (n * g)) = _ * exL d ε m l β ((u : GA D B) * g)`. Establish `hu : (u : GA D B) ∈ ExGe d ε p` using `Ex_le_ExGe d ε (hl i List.mem_cons_self) u.2`. Establish `e : (u : GA D B) * (n * g) = (u * n * (u : GA D B)⁻¹) * (u * g)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Rewrite using `[e]`. Use `ih (fun j hj => hl j (List.mem_cons_of_mem _ hj)) _ (fun b hb => ?_) _` and prove the remaining obligations. Establish `e2 : b * (u * n * (u : GA D B)⁻¹) * b⁻¹ = (b * u) * n * (b * u)⁻¹`. Simplify using `only [mul_assoc, _root_.mul_inv_rev]`.
-
-Rewrite using `[e2]`. Conclude with `hn _ (mul_mem hb hu)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exL_left (d : BesselDatum A B ι) (ψ) (ε : AE D) (m) {β : GA D B → ℂ} (h : Eqv d ψ ε β) (p : ℕ) (c : ℂ)
     (l : List (Fin (d.ρ + 1))) (hl : ∀ i ∈ l, p ≤ i.1) :
@@ -103,19 +101,19 @@ theorem exL_left (d : BesselDatum A B ι) (ψ) (ε : AE D) (m) {β : GA D B → 
     exact hn _ (mul_mem hb hu)
 
 /- English proof (translation)
-The claim follows from `mt_ext fun x => by rw [h x, h' x]`.
+A detailed English derivation is pending.
 -/
 theorem isK_unique {v y : Fin B.rank → AE D} {k k' : GA D B} (h : IsK B v y k) (h' : IsK B v y k') : k = k' :=
   mt_ext fun x => by rw [h x, h' x]
 
 /- English proof (translation)
-Introduce `x` and use `by rw [GlobalTheory.BesselCompare.mt_one, Matrix.one_mulVec, hA_zero_right, zero_smul, smul_zero, add_zero, sub_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isK_zero (v : Fin B.rank → AE D) : IsK B v 0 1 := fun x => by
   rw [GlobalTheory.BesselCompare.mt_one, Matrix.one_mulVec, hA_zero_right, zero_smul, smul_zero, add_zero, sub_zero]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE D) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing`. Unfold `iA`. Conclude with `continuous_const.matrix_mulVec continuous_id`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_iA : Continuous (iA (A := A) (B := B) ι) := by
   haveI : IsTopologicalRing (AE D) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing
@@ -123,7 +121,7 @@ theorem continuous_iA : Continuous (iA (A := A) (B := B) ι) := by
   exact continuous_const.matrix_mulVec continuous_id
 
 /- English proof (translation)
-Take `⟨K, hK, hk⟩` from `GlobalTheory.RootUnip.exists_continuous_isK D B η hη (vecA B v)`. Use `⟨fun t => K ⟨iA ι t.1, by rw [← iA_smul, t.2], hA_vec_iA hv _⟩, hK.comp (Continuous.subtype_mk (continuous_iA.comp continuous_subtype_val) _), fun t => hk _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_K (η : AE D) (hη : η * cA D η = 0) {v : B.V} (hv : ∀ x, B.hD v (ι x) = 0) :
     ∃ K : {t : Fin A.rank → AE D // η • t = t} → GA D B, Continuous K ∧ ∀ t, IsK B (vecA B v) (iA ι t.1) (K t) := by
@@ -132,9 +130,9 @@ theorem exists_K (η : AE D) (hη : η * cA D η = 0) {v : B.V} (hv : ∀ x, B.h
     hK.comp (Continuous.subtype_mk (continuous_iA.comp continuous_subtype_val) _), fun t => hk _⟩
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D B) := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B).2.2.2.2.1`. Take `⟨U, hU, hk⟩` from `h`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `u`. Use `⟨(fun u' : H => g⁻¹ * ((u : GA D B)⁻¹ * u') * g) ⁻¹' U, hU.preimage (by fun_prop), by simp, fun u' hu' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn : (GfC B).Normal` using `MonoidHom.normal_ker _`. Use `hk _ hu' (hn.conj_mem' _ (hH (u⁻¹ * u').2) g) (u * g)` as an intermediate fact. Rewrite using `[← this]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_of_lvl {β : GA D B → ℂ} (h : Lvl β) (H : Subgroup (GA D B)) (hH : H ≤ GfC B) (g : GA D B) :
     IsLocallyConstant fun u : H => β ((u : GA D B) * g) := by
@@ -149,23 +147,21 @@ theorem isLocallyConstant_of_lvl {β : GA D B → ℂ} (h : Lvl β) (H : Subgrou
   simp only [mul_assoc, mul_inv_cancel_left]
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Use `haveI : IsTopologicalRing (AE D) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F`. Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (AF D.host.F)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : T2Space (AE D) := e0.isEmbedding.t2Space`. Establish `hL` using `lvl_exL d ε m l h1`. Use `⟨isLocallyConstant_of_lvl hL _ (fun u hu => mem_GfC hε (suppAt_of_mem_Ex hu)) g, ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩ : ∃ j : Fin d.ρ, i = j.succ` from `(Fin.eq_zero_or_eq_succ i).resolve_left (by rintro rfl; simp at hi)`. Take `⟨U, hU, hk⟩` from `hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, hK, hKk⟩` from `exists_K (ι := ι) (cA D ε) (by rw [cA_cA, mul_comm, hε.2.1]) (d.eA j)`. Take `⟨K₀, hK₀, hK₀k⟩` from `exists_K (ι := ι) ε hε.2.1 (dual_perp d j.succ)`. Establish `hmem : ∀ t, K₀ t ∈ d.Ex ε j.succ` using `fun t => (GlobalTheory.RootExch.ExStruct.mem_Ex_iff D A B ι d ε hε _ _).2 ⟨t.1, t.2, hK₀k t⟩`. Establish `hopen : IsOpen ((fun t => g⁻¹ * K t * g) ⁻¹' (U : Set (GA D B)))` using `hU.preimage (by fun_prop)`. Take `⟨V, hV, hVe⟩` from `isOpen_induced_iff.1 hopen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (0 : Fin A.rank → AE D) ∈ V`. Establish `: (⟨0, smul_zero _⟩ : {t : Fin A.rank → AE D // cA D ε • t = t}) ∈ Subtype.val ⁻¹' V`. Rewrite using `[hVe]`. Establish `e : K ⟨0, smul_zero _⟩ = 1` using `isK_unique (hKk _) (by`. Establish `: iA (A` using `A) (B := B) ι 0 = 0 := Matrix.mulVec_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `isK_zero _)`. Simplify using `[e]`. Conclude with `this`. Take `⟨C, hC, hCm⟩` from `GlobalTheory.PosLinVec.annihilator_subset_compact D ψ hψ ε hε A d.θ d.θ_ne V (hV.mem_nhds h0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl : IsClosed {t : Fin A.rank → AE D | ε • t = t}` using `isClosed_eq (continuous_const_smul ε) continuous_id`. Establish `hC' : IsCompact ((Subtype.val : {t : Fin A.rank → AE D // ε • t = t} → _) ⁻¹' C)` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hC`. Use `HasCompactSupport.intro (hC'.image (f := fun t => (⟨K₀ t, hmem t⟩ : d.Ex ε j.succ)) (hK₀.subtype_mk _)) fun u hu => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨t₀, ht₀, hu₀⟩` from `(GlobalTheory.RootExch.ExStruct.mem_Ex_iff D A B ι d ε hε _ _).1 u.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hu ⟨⟨t₀, ht₀⟩, hCm t₀ ht₀ fun t htV ht => ?_, Subtype.ext (isK_unique (hK₀k _) hu₀)⟩` and prove the remaining obligations. Take `⟨k1, k2⟩` from `GlobalTheory.T.unitaryRootExchange_mirror_identity D A B ι d ψ ε hε j t₀ t u (K ⟨t, ht⟩) ht₀ ht hu₀ (hKk _)`. Establish `e1` using `exL_left d ψ ε m h2 (j.1 + 2) _ l hl _ k2 (u * g)`. Establish `hn : (GfC B).Normal` using `MonoidHom.normal_ker _`. Establish `hU' : g⁻¹ * K ⟨t, ht⟩ * g ∈ U`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (⟨t, ht⟩ : {t : Fin A.rank → AE D // cA D ε • t = t}) ∈ Subtype.val ⁻¹' V` using `htV`. Rewrite `this` using `[hVe]`. Conclude with `this`. Establish `e2` using `hk _ hU' (hn.conj_mem' _ (mem_GfC hε k1) g) (u * g)`. Establish `e3 : (u : GA D B) * g * (g⁻¹ * K ⟨t, ht⟩ * g) = u * K ⟨t, ht⟩ * (u : GA D B)⁻¹ * (u * g)`.
-
-Simplify using `only [mul_assoc, mul_inv_cancel_left, inv_mul_cancel_left]`. Rewrite `e2` using `[e3, e1]`. Conclude with `mul_right_cancel₀ hne (e2.trans (one_mul _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exch_finite (d : BesselDatum A B ι) {ψ} (hψ : IsStdChar D ψ (-1)) {ε : AE D} (hε : IsSplitIdem D ε) (m)
     {β : GA D B → ℂ} (h1 : Lvl β) (h2 : Eqv d ψ ε β) (i : Fin (d.ρ + 1)) (hi : 1 ≤ i.1)
@@ -219,9 +215,9 @@ theorem exch_finite (d : BesselDatum A B ι) {ψ} (hψ : IsStdChar D ψ (-1)) {�
   exact mul_right_cancel₀ hne (e2.trans (one_mul _).symm)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Use function extensionality and compare the values at `g`. Use `show ∫ u, exL d ε m l (c • β) ((u : GA D B) * g) ∂(m i) = c * ∫ u, exL d ε m l β ((u : GA D B) * g) ∂(m i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih, ← integral_const_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exL_smul (d : BesselDatum A B ι) (ε : AE D) (m) (l) (c : ℂ) (β : GA D B → ℂ) :
     exL d ε m l (c • β) = c • exL d ε m l β := by
@@ -234,11 +230,11 @@ theorem exL_smul (d : BesselDatum A B ι) (ε : AE D) (m) (l) (c : ℂ) (β : GA
     rfl
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ∫ u, exL d ε m l (β + β') ((u : GA D B) * g) ∂(m i) = ∫ u, exL d ε m l β ((u : GA D B) * g) ∂(m i) + ∫ u, exL d ε m l β' ((u : GA D B) * g) ∂(m i)`. Establish `hi` using `hl i List.mem_cons_self`. Establish `hj : ∀ j ∈ l, i.1 + 1 ≤ j.1` using `fun j hj => (List.pairwise_cons.1 hs).1 j hj`. Take `⟨a1, a2⟩` from `exch_finite d hψ hε m h1 h2 i hi l hj g`. Take `⟨b1, b2⟩` from `exch_finite d hψ hε m h1' h2' i hi l hj g`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hm i`. Rewrite using `[ih (fun j hj => hl j (List.mem_cons_of_mem _ hj)) (List.pairwise_cons.1 hs).2, ← integral_add (a1.continuous.integrable_of_hasCompactSupport a2) (b1.continuous.integrable_of_hasCompactSupport b2)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exL_add (d : BesselDatum A B ι) {ψ} (hψ : IsStdChar D ψ (-1)) {ε : AE D} (hε : IsSplitIdem D ε) (m)
     (hm : ∀ i, (m i).IsHaarMeasure) {β β' : GA D B → ℂ} (h1 : Lvl β) (h2 : Eqv d ψ ε β) (h1' : Lvl β')
@@ -261,7 +257,7 @@ theorem exL_add (d : BesselDatum A B ι) {ψ} (hψ : IsStdChar D ψ (-1)) {ε : 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons a l ih => exact lvl_exL P.bes (P.ε a) (P.m a) _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lvl_moveL (P : PosDatum A B ι) (l) {β : GA D B → ℂ} (h : Lvl β) : Lvl (moveL P l β) := by
   induction l with
@@ -269,7 +265,7 @@ theorem lvl_moveL (P : PosDatum A B ι) (l) {β : GA D B → ℂ} (h : Lvl β) :
   | cons a l ih => exact lvl_exL P.bes (P.ε a) (P.m a) _ ih
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons a l ih`. Conclude with `eqv_exL P.bes ψ (hl a List.mem_cons_self) (P.m a) _ (ih fun b hb => hl b (List.mem_cons_of_mem _ hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eqv_moveL (P : PosDatum A B ι) (ψ) {ε : AE D} (l : List (Fin P.n))
     (hl : ∀ a ∈ l, (ε + cA D ε) * (P.ε a + cA D (P.ε a)) = 0) {β : GA D B → ℂ} (h : Eqv P.bes ψ ε β) :
@@ -280,7 +276,7 @@ theorem eqv_moveL (P : PosDatum A B ι) (ψ) {ε : AE D} (l : List (Fin P.n))
     exact eqv_exL P.bes ψ (hl a List.mem_cons_self) (P.m a) _ (ih fun b hb => hl b (List.mem_cons_of_mem _ hb))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => show toPosF P.bes (P.ε a) (P.m a) (P.p a) (moveL P l (c • β)) = c • toPosF P.bes (P.ε a) (P.m a) (P.p a) (moveL P l β)`. Rewrite using `[ih]`. Conclude with `exL_smul P.bes (P.ε a) (P.m a) _ c _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moveL_smul (P : PosDatum A B ι) (l) (c : ℂ) (β : GA D B → ℂ) : moveL P l (c • β) = c • moveL P l β := by
   induction l with
@@ -291,9 +287,9 @@ theorem moveL_smul (P : PosDatum A B ι) (l) (c : ℂ) (β : GA D B → ℂ) : m
     exact exL_smul P.bes (P.ε a) (P.m a) _ c _
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => show toPosF P.bes (P.ε a) (P.m a) (P.p a) (moveL P l (β + β')) = toPosF P.bes (P.ε a) (P.m a) (P.p a) (moveL P l β) + toPosF P.bes (P.ε a) (P.m a) (P.p a) (moveL P l β')`. Take `⟨ha, hl'⟩` from `List.nodup_cons.1 hl`. Establish `hap : ∀ b ∈ l, (P.ε a + cA D (P.ε a)) * (P.ε b + cA D (P.ε b)) = 0` using `fun b hb => P.apart a b fun e => ha (e ▸ hb)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ih hl']`. Use `exL_add P.bes hψ (P.split a) (P.m a) (P.haar a) (lvl_moveL P l h1) (eqv_moveL P ψ l hap (h2 _)) (lvl_moveL P l h1') (eqv_moveL P ψ l hap (h2' _)) _ (fun j hj => ?_) ((List.pairwise_lt_finRange _).filter _)` and prove the remaining obligations. Conclude with `(P.one_le a).trans (of_decide_eq_true (List.mem_filter.1 hj).2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem moveL_add (P : PosDatum A B ι) {ψ} (hψ : IsStdChar D ψ (-1)) {β β' : GA D B → ℂ} (h1 : Lvl β)
     (h2 : ∀ ε, Eqv P.bes ψ ε β) (h1' : Lvl β') (h2' : ∀ ε, Eqv P.bes ψ ε β') (l : List (Fin P.n)) (hl : l.Nodup) :
@@ -316,28 +312,28 @@ def perF (d : BesselDatum A B ι) (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure
   fun g => d.period ψ μ 𝓕 ν 𝓝 s φ (rTr B g F)
 
 /- English proof (translation)
-Simplify using `only [BesselDatum.coeff, rTr, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_rTr (d : BesselDatum A B ι) (ψ ν 𝓝) (F : GA D B → ℂ) (g x : GA D B) :
     d.coeff ψ ν 𝓝 (rTr B g F) x = d.coeff ψ ν 𝓝 F (x * g) := by
   simp only [BesselDatum.coeff, rTr, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [perF, BesselDatum.period, coeff_rTr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem perF_apply (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s φ) (F : GA D B → ℂ) (g) :
     perF d ψ μ 𝓕 ν 𝓝 s φ F g = ∫ h in 𝓕, φ h * d.coeff ψ ν 𝓝 F (s h * g) ∂μ := by
   simp only [perF, BesselDatum.period, coeff_rTr]
 
 /- English proof (translation)
-The claim follows from `move_rTr P _ F`.
+A detailed English derivation is pending.
 -/
 theorem period_eq (P : PosDatum A B ι) (ψ μ 𝓕 ν 𝓝 s φ) (F : GA D B → ℂ) :
     (fun g => P.period ψ μ 𝓕 ν 𝓝 s φ (rTr B g F)) = moveL P (List.finRange P.n) (perF P.bes ψ μ 𝓕 ν 𝓝 s φ F) :=
   move_rTr P _ F
 
 /- English proof (translation)
-Rewrite using `[← period_eq]`. Simplify using `only [rTr_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem period_eq' (P : PosDatum A B ι) (ψ μ 𝓕 ν 𝓝 s φ) (F : GA D B → ℂ) :
     P.period ψ μ 𝓕 ν 𝓝 s φ F = moveL P (List.finRange P.n) (perF P.bes ψ μ 𝓕 ν 𝓝 s φ F) 1 := by
@@ -345,7 +341,7 @@ theorem period_eq' (P : PosDatum A B ι) (ψ μ 𝓕 ν 𝓝 s φ) (F : GA D B �
   simp only [rTr_one]
 
 /- English proof (translation)
-Take `⟨U, hU, hk⟩` from `hF.level`. Use `⟨U, hU, fun k k1 k2 g => ?_⟩` and prove the remaining obligations. Establish `: rTr B (g * k) F = rTr B g F` using `funext fun x => by simp only [rTr, ← mul_assoc, hk k k1 k2]`. Simplify using `only [perF, this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lvl_perF (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s φ) {F : GA D B → ℂ} (hF : IsAutFun B F) :
     Lvl (perF d ψ μ 𝓕 ν 𝓝 s φ F) := by
@@ -355,9 +351,9 @@ theorem lvl_perF (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s φ) {F : GA D B 
   simp only [perF, this]
 
 /- English proof (translation)
-Introduce `n hn _ g`. Rewrite using `[perF_apply, perF_apply, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show φ h * d.coeff ψ ν 𝓝 F (s h * (n * g)) = _ * (φ h * d.coeff ψ ν 𝓝 F (s h * g))`. Establish `e : s h * (n * g) = (s h * n * (s h)⁻¹) * (s h * g)` using `by simp only [mul_assoc, inv_mul_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.CoeffRational.psiN_conj d ψ (hs h) (s h * n * (s h)⁻¹)`. Establish `e3 : (s h)⁻¹ * (s h * n * (s h)⁻¹) * s h = n` using `by group`. Rewrite `e2` using `[e3]`. Rewrite using `[e, (GlobalTheory.Mem.BesselCoeffIndep.coeff_indep_and_equivariant D A B ι d ψ hψ F hF.left ν 𝓝 hν).2 _ (GlobalTheory.BesselConvDefinite.conj_mem_N d (hs h) hn), ← e2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eqv_perF (d : BesselDatum A B ι) {ψ} (hψ : IsStdChar D ψ (-1)) (μ 𝓕) {ν 𝓝} (hν : d.IsUnitPair ν 𝓝) {s}
     (hs : ∀ h, EmbRel B A ι (s h) h) (φ) {F : GA D B → ℂ} (hF : IsAutFun B F) (ε) :
@@ -375,9 +371,9 @@ theorem eqv_perF (d : BesselDatum A B ι) {ψ} (hψ : IsStdChar D ψ (-1)) (μ �
   ring
 
 /- English proof (translation)
-Introduce `A B ι P ψ hψ _ μ 𝓕 _ ν 𝓝 hν s hs φ F _ hF _ ε hε hap m _ i hi`. Establish `e : (fun u : P.bes.Ex ε i => P.bes.toPos ε m (i.1 + 1) (P.period ψ μ 𝓕 ν 𝓝 s φ) (rTr B (u : GA D B) F)) = fun u : P.bes.Ex ε i => exL P.bes ε m ((List.finRange (P.bes.ρ + 1)).filter fun j => decide (i.1 + 1 ≤ j.1)) (moveL P (List.finRange P.n) (perF P.bes ψ μ 𝓕 ν 𝓝 s φ F)) ((u : …`. Use function extensionality and compare the values at `u`. Rewrite using `[mul_one, ← period_eq]`. Conclude with `congrFun (toPos_rTr P.bes ε m (i.1 + 1) _ F) u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `exch_finite P.bes hψ hε m (lvl_moveL P _ (lvl_perF _ _ _ _ _ _ _ _ hF)) (eqv_moveL P ψ _ (fun a _ => hap a) (eqv_perF _ hψ μ 𝓕 hν hs φ hF ε)) i hi _ (fun j hj => of_decide_eq_true (List.mem_filter.1 hj).2) 1`.
+A detailed English derivation is pending.
 -/
 theorem exchangeFinite (D : D7) : ExchangeFinite D := by
   intro A B ι P ψ hψ _ μ 𝓕 _ ν 𝓝 hν s hs φ F _ hF _ ε hε hap m _ i hi
@@ -393,18 +389,18 @@ theorem exchangeFinite (D : D7) : ExchangeFinite D := by
     (fun j hj => of_decide_eq_true (List.mem_filter.1 hj).2) 1
 
 /- English proof (translation)
-Take `⟨U, hU, hk⟩` from `h.level`. Conclude with `⟨fun γ hγ g => by rw [h.left γ hγ], ⟨U, hU, fun k k1 k2 g => by rw [hk k k1 k2]⟩, h.cont.star⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAutFun_star {φ : GA D A → ℂ} (h : IsAutFun A φ) : IsAutFun A fun g => star (φ g) := by
   obtain ⟨U, hU, hk⟩ := h.level
   exact ⟨fun γ hγ g => by rw [h.left γ hγ], ⟨U, hU, fun k k1 k2 g => by rw [hk k k1 k2]⟩, h.cont.star⟩
 
 /- English proof (translation)
-Take `⟨s₀, -, hrel, hQ⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι d.isom`. Take `rfl : s = s₀` from `funext fun h => (hrel h _).1 (hs h)`. Take `rfl : s' = s₀` from `funext fun h => (hrel h _).1 (hs' h)`. Take `rfl : μ' = μ` from `(GlobalTheory.Mem.VolMeasure.existsUnique_isVolMeasG D A hA).unique hμ'.1 hμ.1`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hμ.1.1` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup (GQ A)` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup (GQ A) μ'` as an intermediate fact. Use function extensionality and compare the values at `g`. Rewrite using `[perF_apply, perF_apply, (GlobalTheory.Mem.BesselCoeffIndep.coeff_indep_and_equivariant D A B ι d ψ hψ F hF.left ν 𝓝 hν).1 ν' 𝓝' hν']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `hμ'.2.setIntegral_eq hμ.2 fun γ x => ?_` and prove the remaining obligations. Use `show φ (γ.1 * x) * d.coeff ψ ν 𝓝 F (s₀ (γ.1 * x) * g) = _`. Rewrite using `[hφ.left _ γ.2, map_mul, mul_assoc, GlobalTheory.CoeffRational.coeff_rational D A B ι d ψ hψ F hF.left ν 𝓝 hν _ _ (hs γ.1) (hQ _ γ.2)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perF_indep (d : BesselDatum A B ι) {ψ} (hψ : IsStdChar D ψ (-1)) (hA : A.SigOK) {μ 𝓕 μ' 𝓕'}
     (hμ : IsVolPair D A μ 𝓕) (hμ' : IsVolPair D A μ' 𝓕') {ν 𝓝 ν' 𝓝'} (hν : d.IsUnitPair ν 𝓝)
@@ -428,7 +424,7 @@ theorem perF_indep (d : BesselDatum A B ι) {ψ} (hψ : IsStdChar D ψ (-1)) (hA
     GlobalTheory.CoeffRational.coeff_rational D A B ι d ψ hψ F hF.left ν 𝓝 hν _ _ (hs γ.1) (hQ _ γ.2)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [perF_apply, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem perF_smul_left (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s) (c : ℂ) (φ : GA D A → ℂ) (F : GA D B → ℂ) :
     perF d ψ μ 𝓕 ν 𝓝 s (c • φ) F = c • perF d ψ μ 𝓕 ν 𝓝 s φ F := by
@@ -436,7 +432,7 @@ theorem perF_smul_left (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s) (c : ℂ)
   simp only [perF_apply, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `e : ∀ x, d.coeff ψ ν 𝓝 (c • F) x = c * d.coeff ψ ν 𝓝 F x` using `fun x => by`. Simplify using `only [BesselDatum.coeff, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`. Simplify using `only [perF_apply, e, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem perF_smul_right (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s) (c : ℂ) (φ : GA D A → ℂ) (F : GA D B → ℂ) :
     perF d ψ μ 𝓕 ν 𝓝 s φ (c • F) = c • perF d ψ μ 𝓕 ν 𝓝 s φ F := by
@@ -446,7 +442,7 @@ theorem perF_smul_right (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s) (c : ℂ
   simp only [perF_apply, e, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [perF, BesselDatum.period, Pi.add_apply, add_mul]`. Conclude with `integral_add (h g) (h' g)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perF_add_left (d : BesselDatum A B ι) {ψ μ 𝓕 ν 𝓝 s} {φ φ' : GA D A → ℂ} {F : GA D B → ℂ}
     (h : d.Converges ψ μ 𝓕 ν 𝓝 s φ F) (h' : d.Converges ψ μ 𝓕 ν 𝓝 s φ' F) :
@@ -456,9 +452,9 @@ theorem perF_add_left (d : BesselDatum A B ι) {ψ μ 𝓕 ν 𝓝 s} {φ φ' : 
   exact integral_add (h g) (h' g)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `e : ∀ x, d.coeff ψ ν 𝓝 (F + F') x = d.coeff ψ ν 𝓝 F x + d.coeff ψ ν 𝓝 F' x` using `fun x => by`. Simplify using `only [BesselDatum.coeff, Pi.add_apply, add_mul]`. Conclude with `integral_add ((GlobalTheory.RootExch.CoefInt.coeff_integrable_continuous D A B ι d ψ hψ ν 𝓝 hν F hF.cont hF.left).1 x) ((GlobalTheory.RootExch.CoefInt.coeff_integrable_continuous D A B ι d ψ hψ ν 𝓝 hν F' hF'.cont hF'.left).1 x)`. Establish `k` using `h g`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k'` using `h' g`. Simplify using `only [coeff_rTr] at k k'`. Simplify using `only [perF_apply, e, Pi.add_apply, mul_add]`. Conclude with `integral_add k k'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perF_add_right (d : BesselDatum A B ι) {ψ} (hψ : IsCharAF D.host.F ψ) {μ 𝓕 ν 𝓝 s} (hν : d.IsUnitPair ν 𝓝)
     {φ : GA D A → ℂ} {F F' : GA D B → ℂ} (hF : IsAutFun B F) (hF' : IsAutFun B F')
@@ -477,15 +473,15 @@ theorem perF_add_right (d : BesselDatum A B ι) {ψ} (hψ : IsCharAF D.host.F ψ
   exact integral_add k k'
 
 /- English proof (translation)
-Introduce `D`. Use `⟨GlobalTheory.BesselConvDefinite.convergesDef D, exchangeFinite D, fun θ hθ ψ hψ A B ι P hA hd => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hex : ∃ μ 𝓕 ν 𝓝, ∃ s : GA D A → GA D B, IsVolPair D A μ 𝓕 ∧ P.bes.IsUnitPair ν 𝓝 ∧ ∀ h, EmbRel B A ι (s h) h`. Use `swap`. Conclude with `⟨0, fun μ 𝓕 hμ ν 𝓝 hν s hs => absurd ⟨μ, 𝓕, ν, 𝓝, s, hμ, hν, hs⟩ hex⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, 𝓕, ν, 𝓝, s, hμ, hν, hs⟩` from `hex`. Establish `a1 : ∀ φ : AFs θ A, IsAutFun A fun g => star (φ.1 g)` using `fun φ => isAutFun_star ((GlobalTheory.Mem.AutSpace.mem_AFs_iff D θ hθ A φ.1).1 φ.2).toIsAutFun`. Establish `a2 : ∀ F : CuspS θ B, IsAutFun B F.1` using `fun F => ((GlobalTheory.Mem.AutSpace.mem_AFs_iff D θ hθ B F.1).1 (CuspS_le θ B F.2)).toIsAutFun`. Establish `cv : ∀ (φ : AFs θ A) (F : CuspS θ B), P.bes.Converges ψ μ 𝓕 ν 𝓝 s (fun g => star (φ.1 g)) F.1` using `fun φ F => GlobalTheory.BesselConvDefinite.convergesDef D A B ι P.bes ψ hψ.1 hA hd μ 𝓕 hμ ν 𝓝 hν s hs _ _ (a1 φ) (a2 F)`. Establish `ad : ∀ φ φ' (F F' : CuspS θ B), moveL P (List.finRange P.n) (perF P.bes ψ μ 𝓕 ν 𝓝 s φ F.1 + perF P.bes ψ μ 𝓕 ν 𝓝 s φ' F'.1) = moveL P (List.finRange P.n) (perF P.bes ψ μ 𝓕 ν 𝓝 s φ F.1) + moveL P (List.finRange P.n) (perF P.bes ψ μ 𝓕 ν 𝓝 s φ' F'.1)` using `fun φ φ' F F' => moveL_add P hψ (lvl_perF _ _ _ _ _ _ _ _ (a2 F)) (eqv_perF _ hψ μ 𝓕 hν hs φ (a2 F)) (lvl_perF _ _ _ _ _ _ _ _ (a2 F')) (eqv_perF _ hψ μ 𝓕 hν hs φ' (a2 F')) _ (List.nodup_finRange _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun (φ : AFs θ A) (F : CuspS θ B) => moveL P (List.finRange P.n) (perF P.bes ψ μ 𝓕 ν 𝓝 s (fun g => star (φ.1 g)) F.1) 1) (fun φ φ' F => ?_) (fun c φ F => ?_) (fun φ F F' => ?_) (fun c φ F => ?_), fun μ' 𝓕' hμ' ν' 𝓝' hν' s' hs' φ F …` and prove the remaining obligations. Establish `e : (fun g => star ((φ + φ').1 g)) = (fun g => star (φ.1 g)) + fun g => star (φ'.1 g)`. Use function extensionality and compare the values at `fun g => star_add _ _`. Rewrite using `[e, perF_add_left _ (cv φ F) (cv φ' F), ad]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e : (fun g => star ((c • φ).1 g)) = starRingEnd ℂ c • fun g => star (φ.1 g)`. Use function extensionality and compare the values at `fun g => star_mul' _ _`. Rewrite using `[e, perF_smul_left, moveL_smul]`. Both sides reduce to the same expression. Rewrite using `[Submodule.coe_add, perF_add_right _ hψ.1 hν (a2 F) (a2 F') (cv φ F) (cv φ F'), ad]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[Submodule.coe_smul, perF_smul_right, moveL_smul]`. Both sides reduce to the same expression. Rewrite using `[period_eq', perF_indep P.bes hψ hA hμ hμ' hν hν' hs hs' (a1 φ) (a2 F)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem posLin : ∀ D : D7, PosLin D := by
   intro D

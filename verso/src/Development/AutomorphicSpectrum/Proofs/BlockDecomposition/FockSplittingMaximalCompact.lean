@@ -23,19 +23,15 @@ open NumberField IsDedekindDomain
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : ℕ}
 
 /- English proof (translation)
-Use `⟨fun v => ?_, ?_, fun X => ?_⟩` and prove the remaining obligations. Use `haveI : T2Space (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E) := (GlobalTheory.CompanionTheory.SW.TopK.coordHomeo (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) b).isEmbedding.t2Space`. Establish `hcl : IsClopen (A v)` using `⟨(hA v).1.isClosed, (hA v).2⟩`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_, HasCompactSupport.intro (hA v).1 fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ A v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨A v, (hA v).2, hx, fun y hy => by beta_reduce`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hy]`. Use the proof step `rfl⟩`. Conclude with `⟨(A v)ᶜ, hcl.compl.isOpen, hx, fun y hy => by beta_reduce`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `Filter.eventually_cofinite.2 (S.finite_toSet.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `hv ?_` and prove the remaining obligations. Use `show (A v).indicator 1 = _`. Rewrite using `[hS v h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hX : X ∈ GlobalTheory.CompanionTheory.WhitFree.boxF A`. Rewrite using `[Set.indicator_of_mem hX]`. Conclude with `(finprod_eq_one_of_forall_eq_one fun v => Set.indicator_of_mem (hX v) _).symm`. Rewrite using `[Set.indicator_of_notMem hX]`. Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v, HeckeCharacterZeroLocus.SiegelWeilU.projV v X ∉ A v := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hX h`. Use `(finprod_eq_zero _ v₀ (Set.indicator_of_notMem hv₀ _) ?_).symm` and prove the remaining obligations. Establish `hfin` using `Filter.eventually_cofinite.1 (GlobalTheory.CompanionTheory.SW.MeasProj.eventually_mem_latV b X)`.
-
-Use `(hfin.union S.finite_toSet).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_union, not_or, Set.mem_setOf_eq, not_not, Finset.mem_coe] at h`. Apply `hv` to reduce the goal to its premises. Use `show (A v).indicator 1 (HeckeCharacterZeroLocus.SiegelWeilU.projV v X) = 1`.
-
-Rewrite using `[hS v h.2]`. Conclude with `Set.indicator_of_mem h.1 _`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPureFin_box (b : Module.Basis (Fin d) F E) {n M : ℕ}
     (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E))
@@ -84,11 +80,11 @@ theorem isPureFin_box (b : Module.Basis (Fin d) F E) {n M : ℕ}
 end Box
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact ⟨1, fun _ => x, by simp, fun _ => h⟩`. Consider the case `zero => exact ⟨0, Fin.elim0, by simp, fun j => j.elim0⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨N, f, rfl, hf⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨N', f', rfl, hf'⟩` from `hy`. Use `⟨N + N', Fin.append f f', by simp [Fin.sum_univ_add, Fin.append_left, Fin.append_right], fun j => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify `hf i` using `[Fin.append_left]`. Simplify `hf' i` using `[Fin.append_right]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `smul a x _ hx`. Take `⟨N, f, rfl, hf⟩` from `hx`. Conclude with `⟨N, fun j => a • f j, by rw [Finset.smul_sum], fun j => hs a _ (hf j)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fin_sum {M : Type*} [AddCommGroup M] [Module ℂ M] {P : M → Prop}
     (hs : ∀ (a : ℂ) (x : M), P x → P (a • x)) {x : M} (hx : x ∈ Submodule.span ℂ {y | P y}) :
@@ -110,7 +106,7 @@ theorem exists_fin_sum {M : Type*} [AddCommGroup M] [Module ℂ M] {P : M → Pr
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [evalPoly, MvPolynomial.eval_monomial, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalPoly_monomial_mul {m : ℕ} (e : D.what₂.Tau × Fin m × Fin n × Bool →₀ ℕ) (a c : ℂ)
     (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) :
@@ -118,7 +114,7 @@ theorem evalPoly_monomial_mul {m : ℕ} (e : D.what₂.Tau × Fin m × Fin n × 
   simp only [evalPoly, MvPolynomial.eval_monomial, mul_assoc]
 
 /- English proof (translation)
-Take `⟨e, c, g, d, bs, gv, hp, rfl⟩` from `h`. Use `⟨e, a * c, g, d, bs, gv, hp, funext fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, evalPoly_monomial_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isMonoFock_smul {θ : InfFam D} {V : HSp D} {l : D.what₂.Tau → ℝ}
     {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {φ : Mx D V.rank n → ℂ} (a : ℂ)
@@ -128,15 +124,15 @@ theorem isMonoFock_smul {θ : InfFam D} {V : HSp D} {l : D.what₂.Tau → ℝ}
   simp only [Pi.smul_apply, smul_eq_mul, evalPoly_monomial_mul, mul_assoc]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Set `b` to `Module.finBasis D.host.F D.host.E`. Set `tr : (Fin n → Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) ≃ₜ (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)` to `{ toFun := fun X i j => X j i invFun := fun Z j i => Z i j left_inv := fun _ => rfl right_inv := fun _ => rfl continuous_toFun := continuous_pi fun i => continuous_pi fun j => (continuous_apply i).comp (continuous_apply j) continuous_invFun := continuous_pi fun j => continuous_pi …`. Set `g' : (Fin n → Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ` to `fun X => g (tr X)`. Establish `hg' : IsSB g'` using `⟨hg.1.comp_continuous tr.continuous, hg.2.comp_homeomorph tr⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, A, S, hA, hS, hdec⟩` from `Box.exists_box_combN b g' hg'`. Set `ind : (Fin n → Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) → (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ` to `fun a Z => (GlobalTheory.CompanionTheory.WhitFree.boxF (A a)).indicator (fun _ => (1 : ℂ)) (fun j i => Z i j)`. Establish `hpure : ∀ a ∈ t, HeckeCharacterZeroLocus.SiegelWeilU.IsPureFin b (fun X => ind a fun i j => X j i) (fun v => (A a v).indicator 1)` using `fun a ha => isPureFin_box b (A a) S (hA a) (hS a ha)`. Establish `hφ : (fun x : Mx D V.rank n => evalPoly p (fun τ => compAt θ τ x) * gauss V l s (fun τ => compAt θ τ x) * g (fun i j => finPart D (x i j))) = ∑ e ∈ p.support, ∑ a ∈ t, g' a • (fun x : Mx D V.rank n => evalPoly (MvPolynomial.monomial e (p.coeff e)) (fun τ => compAt θ τ x) * gauss …`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hp : evalPoly p (fun τ => compAt θ τ x) = ∑ e ∈ p.support, evalPoly (MvPolynomial.monomial e (p.coeff e)) (fun τ => compAt θ τ x)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← p.as_sum]`. Use `_ = _ := by simp only [evalPoly, map_sum]`. Establish `hgx : g (fun i j => finPart D (x i j)) = ∑ a ∈ t, g' a * ind a (fun i j => finPart D (x i j))` using `hdec (fun j i => finPart D (x i j))`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp, hgx, Finset.sum_mul, Finset.sum_mul, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hφ]`. Use `Submodule.sum_mem _ fun e _ => Submodule.sum_mem _ fun a ha => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨e, p.coeff e, ind a, _, b, _, hpure a ha, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gen_mem_span (θ : InfFam D) (V : HSp D) (l : D.what₂.Tau → ℝ)
     (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
@@ -192,7 +188,7 @@ theorem gen_mem_span (θ : InfFam D) (V : HSp D) (l : D.what₂.Tau → ℝ)
   exact Submodule.subset_span ⟨e, p.coeff e, ind a, _, b, _, hpure a ha, rfl⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨p, g, hg, rfl⟩`. Conclude with `gen_mem_span θ V l s p g hg`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fockA_le_span (θ : InfFam D) (V : HSp D) (l : D.what₂.Tau → ℝ)
     (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) :
@@ -206,7 +202,7 @@ end GlobalTheory.CompanionTheory.PfSWUS.FockSplit
 namespace GlobalTheory.CompanionTheory.PfSWUS
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν Φ hStd _ k hk`. Conclude with `FockSplit.exists_fin_sum (fun a _ h => FockSplit.isMonoFock_smul a h) (FockSplit.fockA_le_span θ V l s (fockKStable D n V ψ χ θ μ ω H l s ν Φ hStd k hk))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fockSplitK : PositivityTheory.PfSWUS.FockSplitK := by
   intro D n V ψ χ θ μ ω H l s ν Φ hStd _ k hk

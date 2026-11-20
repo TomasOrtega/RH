@@ -27,11 +27,9 @@ open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 namespace GlobalTheory.Core.Rk.NonVanAt
 
 /- English proof (translation)
-Establish `hL : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ A) (fun g => thetaKO om g h f * u g)`. Introduce `γ hγ g`. Establish `e : ((γ * g, h) : GA D A × GA D W) = (γ, 1) * (g, h)` using `by simp`. Establish `h1 : thetaKO om (γ * g) h f = thetaKO om g h f`. Unfold `thetaKO`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hW.om_aut γ hγ 1 (one_mem _) _ (hW.om_pres _ _ hf)`. Use `show thetaKO om (γ * g) h f * u (γ * g) = thetaKO om g h f * u g`. Rewrite using `[h1, hu γ hγ g]`. Rewrite using `[GlobalTheory.Core.Rk.IP.up, GlobalTheory.AutomorphicL2Unitary.autMeasure, GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure hX]`.
-
-Simplify using `only [hL.descend_mk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem up_eq_setIntegral {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A W : HSp D} {χA χW : (AE D)ˣ →* Circle}
     {om : GlobalTheory.Core.Rk.IP.WRep A W} (hW : IsWeilDatumO ψ A W χA χW om) {m : Measure (GA D A)} {X : Set (GA D A)}
@@ -51,7 +49,7 @@ theorem up_eq_setIntegral {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A W : HSp D
   simp only [hL.descend_mk]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.Core.Rk.IP.rcoef, GlobalTheory.Cusp.petersson, GlobalTheory.AutomorphicL2Unitary.pet, GlobalTheory.AutomorphicL2Unitary.descend]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rcoef_zero {D : D7} {A : HSp D} (m : Measure (GA D A)) (b : GA D A) : GlobalTheory.Core.Rk.IP.rcoef m 0 0 b = 0 := by
   simp [GlobalTheory.Core.Rk.IP.rcoef, GlobalTheory.Cusp.petersson, GlobalTheory.AutomorphicL2Unitary.pet, GlobalTheory.AutomorphicL2Unitary.descend]
@@ -59,21 +57,19 @@ theorem rcoef_zero {D : D7} {A : HSp D} (m : Measure (GA D A)) (b : GA D A) : Gl
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D hD G _ _ Pl0 T A Ks _ _ _ R F hG hP i t h hh s hs y hy hy0`. Take `⟨⟨cA, a, hdef⟩, hpl, hun, hunr, hη, hsig, hrW, hr0, hrV, -, -, -⟩` from `GlobalTheory.T.thetaLiftPair_definite_place_character_data D G Pl0 T A Ks R F hG hP i t`. Take `⟨hlev, hX⟩` from `hG.core.models.νV i t`. Establish `hm : (R.νV i t).IsHaarMeasure` using `hlev.1`. Establish `hW` using `hG.core.thP.ωP i t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, P, hreal⟩` from `GlobalTheory.T.realIntegral_thetaLift_definiteForm_ne_zero D G Pl0 T A Ks R F hG hP i t y hy0 (R.νV i t) hm`. Take `⟨hA0, hfix⟩` from `GlobalTheory.T.linearForm_extV_mem_A0_and_prin_invariant D G Pl0 T A Ks R F hG hP i t cA a hdef y l`. Take `⟨B, c, hB, hHyp⟩` from `GlobalTheory.T.satake_string_gives_simple_pole_hypotheses D G Pl0 T A Ks R F hG hP i t s hs`. Take `⟨hcart, hfock, hsph, hfixΦ⟩` from `GlobalTheory.T.thetaLiftFockVectors_spherical_principalFixed D G Pl0 T A Ks R F hG hP i t P`. Establish `hu0 : (fun g => l (R.extV i t y g)) ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.Size.exists_isCovolOne (Vc D i) (Wc D i)`. Take `⟨i1, i2, i3, i4, i5, i6, -⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D (Vc D i)`. Establish `: LocallyCompactSpace (GinfC (Vc D i))` using `i6.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: BorelSpace (GinfC (Vc D i))` using `Subtype.borelSpace _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hreal ν 𝓕 hν Measure.haar inferInstance ?_` and prove the remaining obligations. Rewrite using `[h0]`. Simplify using `only [rcoef_zero, mul_zero, integral_zero]`. Establish `hpar` using `GlobalTheory.T.scalarComponent_parameters_contain_string D G Pl0 T A Ks R F hG hP i t h hh s y hy l hu0 B hB`. Establish `hpar' : GlobalTheory.LFun.IsParamFunV (Vc D i) (under (R.Pg ∪ R.Q t)) (fun g => l (R.extV i t y g)) B` using `hun.symm ▸ hpar`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHyp' : GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.Hyp (under (D` using `D) (R.Pg ∪ R.Q t) : Set (HeightOneSpectrum (𝓞 D.host.F))) (Wc D i).rank D.R.t c B (GlobalTheory.LFun.val (F := D.host.F) (chiV R i t)) (GlobalTheory.LFun.val (F := D.host.F) (chiV R i t)) := by`. Rewrite using `[hrW, hun]`. Conclude with `hHyp`. Establish `hF : Form R.θ (Vc D i) cA (R.βV i) (R.Pg ∪ R.Q t) (chiV R i t) (Wc D i).rank D.R.t (fun g => l (R.extV i t y g)) B`. Use `⟨hA0, hfix, ?_, hunr, c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hpar'`. Conclude with `hHyp'`. Establish `hO : Occ R.ψ R.θ (cart (R.MW i (sg0 D A))) (R.ωP i t) (R.νV i t) (R.βV i) (R.Pg ∪ R.Q t) (fun g => l (R.extV i t y g)) (R.ptP i t P)` using `⟨hcart, hfock, hsph, hfixΦ, hreal⟩`. Establish `hW' : IsWeilDatumO R.ψ (Vc D i) (Wc D i) (chiW R i t) (chiV R i t) (R.ωP i t)` using `hW`. Establish `hr1 : 0 < (Wc D i).rank` using `by rw [hrW]; exact hr0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hr2 : (Vc D i).rank = (Wc D i).rank + D.R.t` using `by rw [hrW]; exact hrV`. Establish `key` using `hD R.ψ R.θ (Vc D i) (Wc D i) D.R.t (chiW R i t) (chiV R i t) (R.ωP i t) cA a (R.βV i) (R.Pg ∪ R.Q t) (R.νV i t) (fun g => l (R.extV i t y g)) B (cart (R.MW i (sg0 D A))) (R.ptP i t P) hdef hsig hr1 hr2 hη hW' hpl hm hF hO`. Assume the negation of the conclusion as `hno`. Use `key fun f hf g => ?_` and prove the remaining obligations. Rewrite using `[up_eq_setIntegral hW hm hX hf (GlobalTheory.AutomorphicL2Unitary.leftInv_of_isAutFun (Submodule.mem_inf.1 hA0).1.1.toIsAutFun)]`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hno ⟨f, l, g, hf, hne⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem nonVan_of_downNe : ∀ (D : D7) (_ : DownNe D) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t, NonVan R i t := by
   intro D hD G _ _ Pl0 T A Ks _ _ _ R F hG hP i t h hh s hs y hy hy0

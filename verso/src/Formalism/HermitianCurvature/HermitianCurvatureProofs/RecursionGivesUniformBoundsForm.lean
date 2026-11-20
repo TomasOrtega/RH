@@ -6,7 +6,7 @@ open scoped ComplexConjugate ComplexOrder Matrix
 namespace Formalism.FourierDecayAlt.P.Jx6
 
 /- English proof (translation)
-Unfold `TB.PSDOn at *`. Conclude with `hk.hadamard hk'`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psd_mul {α : Type} {F : Finset α} {k k' : α → α → ℂ} (hk : TB.PSDOn F k)
     (hk' : TB.PSDOn F k') : TB.PSDOn F (fun x y => k x y * k' x y) := by
@@ -14,9 +14,7 @@ theorem psd_mul {α : Type} {F : Finset α} {k k' : α → α → ℂ} (hk : TB.
   exact hk.hadamard hk'
 
 /- English proof (translation)
-Unfold `TB.PSDOn at *`. Establish `e : (Matrix.of fun x y : G => k' x y) = (Matrix.of fun x y : F => k x y).submatrix f f`. Use extensionality with `x y`. Conclude with `h x y`. Rewrite using `[e]`.
-
-Conclude with `hk.submatrix f`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_pull {α β : Type} {G : Finset β} {F : Finset α} (f : G → F) {k : α → α → ℂ}
     {k' : β → β → ℂ} (h : ∀ x y : G, k' x y = k (f x) (f y)) (hk : TB.PSDOn F k) : TB.PSDOn G k' := by
@@ -26,9 +24,9 @@ theorem psd_pull {α β : Type} {G : Finset β} {F : Finset α} (f : G → F) {k
   rw [e]; exact hk.submatrix f
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply, Pi.star_apply, Finset.mul_sum]`. Rewrite using `[← Finset.sum_coe_sort F (fun x => ∑ y ∈ F, conj (a x) * k x y * a y)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x _`. Rewrite using `[← Finset.sum_coe_sort F (fun y => conj (a x) * k x y * a y)]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `y _`. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quadM {α : Type} (F : Finset α) (k : α → α → ℂ) (a : α → ℂ) :
     star (fun x : F => a x) ⬝ᵥ (Matrix.of fun x y : F => k x y) *ᵥ (fun x : F => a x) =
@@ -41,9 +39,9 @@ theorem quadM {α : Type} (F : Finset α) (k : α → α → ℂ) (a : α → �
   simp only [RCLike.star_def]; ring
 
 /- English proof (translation)
-Unfold `TB.PSDOn at hk`. Rewrite `hk` using `[Matrix.posSemidef_iff_dotProduct_mulVec]`. Establish `h` using `hk.2 (fun x : F => (fun _ : α => (1 : ℂ)) x)`. Rewrite `h` using `[quadM F k (fun _ => 1)]`. Establish `h2` using `(Complex.le_def.1 h).1`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_nonneg_of_psd {α : Type} {F : Finset α} {k : α → α → ℂ} (hk : TB.PSDOn F k) :
     0 ≤ (∑ x ∈ F, ∑ y ∈ F, k x y).re := by
@@ -55,16 +53,14 @@ theorem sum_nonneg_of_psd {α : Type} {F : Finset α} {k : α → α → ℂ} (h
   simpa using h2
 
 /- English proof (translation)
-The claim follows from `sum_nonneg_of_psd (psd_mul hk hk')`.
+A detailed English derivation is pending.
 -/
 theorem sum_mul_nonneg {α : Type} {F : Finset α} {k k' : α → α → ℂ} (hk : TB.PSDOn F k)
     (hk' : TB.PSDOn F k') : 0 ≤ (∑ x ∈ F, ∑ y ∈ F, k x y * k' x y).re :=
   sum_nonneg_of_psd (psd_mul hk hk')
 
 /- English proof (translation)
-Unfold `TB.Data.maj`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `v _`. Conclude with `le_min zero_le_one (pow_nonneg (div_nonneg (h v).1 (hav v)) _)`. Introduce `v _`.
-
-Conclude with `min_le_min le_rfl (pow_le_pow_left₀ (div_nonneg (h v).1 (hav v)) (div_le_div_of_nonneg_right (h v).2 (hav v)) _)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem maj_mono {E W : Type} [Field E] (D : TB.Data E W) (ρ ρ' : Fin D.f → ℝ) (l : E)
     (h : ∀ v, 0 ≤ ρ v ∧ ρ v ≤ ρ' v) (hav : ∀ v, 0 ≤ D.av v l) : D.maj ρ l ≤ D.maj ρ' l := by
@@ -77,7 +73,7 @@ theorem maj_mono {E W : Type} [Field E] (D : TB.Data E W) (ρ ρ' : Fin D.f → 
       (div_le_div_of_nonneg_right (h v).2 (hav v)) _)
 
 /- English proof (translation)
-Unfold `TB.Data.N0`. Conclude with `div_nonneg (sum_mul_nonneg hκ (hG ε hε k w Y)) (hW w).le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem baseGram_nonneg {E W : Type} [Field E] (D : TB.Data E W) (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ}
     (hε : 0 < ε) (k : ℕ) (w : W) (Y : Finset (TB.Pt E)) {κ : TB.Pt E → TB.Pt E → ℂ}
@@ -86,7 +82,7 @@ theorem baseGram_nonneg {E W : Type} [Field E] (D : TB.Data E W) (hG : D.GramPSD
   exact div_nonneg (sum_mul_nonneg hκ (hG ε hε k w Y)) (hW w).le
 
 /- English proof (translation)
-Unfold `TB.Data.Nst`. Rewrite using `[Complex.div_ofReal_re]`. Use `div_nonneg (sum_mul_nonneg hκ ?_) (hW w).le` and prove the remaining obligations. Establish `hm : ∀ x ∈ Y, TB.join x s t ∈ Y.image (fun h => TB.join h s t)` using `fun x hx => Finset.mem_image_of_mem _ hx`. Conclude with `psd_pull (F := Y.image (fun h => TB.join h s t)) (fun x : Y => ⟨TB.join x.1 s t, hm x.1 x.2⟩) (fun _ _ => rfl) (hG ε hε i w _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Nst_nonneg {E W : Type} [Field E] (D : TB.Data E W) (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ}
     (hε : 0 < ε) (i s : ℕ) (w : W) (Y : Finset (TB.Pt E)) {κ : TB.Pt E → TB.Pt E → ℂ}
@@ -101,7 +97,7 @@ theorem Nst_nonneg {E W : Type} [Field E] (D : TB.Data E W) (hG : D.GramPSD) (hW
     (fun x : Y => ⟨TB.join x.1 s t, hm x.1 x.2⟩) (fun _ _ => rfl) (hG ε hε i w _)
 
 /- English proof (translation)
-Establish `hm : ∀ x ∈ Y, TB.join x s t ∈ TB.pts Y s S`. Introduce `x hx`. Unfold `TB.pts`. Conclude with `Finset.mem_image.2 ⟨(x, t), Finset.mem_product.2 ⟨hx, ht⟩, rfl⟩`. Conclude with `psd_pull (fun x : Y => ⟨TB.join x.1 s t, hm x.1 x.2⟩) (fun _ _ => rfl) hκ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem blk_psd {E : Type} [Field E] {Y : Finset (TB.Pt E)} {S : Finset E} {s : ℕ}
     {κ : TB.Pt E → TB.Pt E → ℂ} (hκ : TB.PSDOn (TB.pts Y s S) κ) {t : E} (ht : t ∈ S) :
@@ -120,15 +116,15 @@ namespace Formalism.FourierDecayAlt.P
 open Jx6
 
 /- English proof (translation)
-Introduce `E W _ D szD' szL' vol' C₄ hC4 hav hD hL hV hG hW`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h ε hε i hi1 hi2 w hw hcnt`. Take `⟨θ, hθ, H⟩` from `h ε hε i hi1 hi2 w hw hcnt`. Use `⟨θ, hθ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Y hY κ hκ`. Take `⟨e0, el⟩` from `H Y hY κ hκ`. Use `⟨e0, fun l hl hl0 => ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `el l hl hl0`. Use `⟨A, le_trans hA ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul_of_nonneg_right (maj_mono D (D.szD i) (szD' i) l (fun v => hD i v) (fun v => hav v l)) (Finset.sum_nonneg fun w' _ => mul_nonneg ((hθ A).1 w') (baseGram_nonneg D hG hW hε _ w' Y hκ))`. Introduce `h ε hε i s hs hsi hi hns w hw hcnt`. Take `⟨θ, hθ, H⟩` from `h ε hε i s hs hsi hi hns w hw hcnt`. Use `⟨θ, hθ, ?_⟩` and prove the remaining obligations. Introduce `Y S κ hY hκ t ht t' ht' h0 h0' hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `H Y S κ hY hκ t ht t' ht' h0 h0' hne`. Use `⟨π, le_trans hπ ?_⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (maj_mono D (D.szL (i - s + 1) s) (szL' (i - s + 1) s) _ (fun v => hL _ _ v) (fun v => hav v _)) (Finset.sum_nonneg fun x _ => mul_nonneg ((hθ π).1 x) (div_nonneg (add_nonneg (Nst_nonneg D hG hW hε i s x.1 Y (blk_psd hκ ht) t) (Nst_nonneg D hG hW hε i s …`. Introduce `h ε hε i s hs hsi hi w hw hcnt hvol`. Take `⟨θ, hθ, H⟩` from `h ε hε i s hs hsi hi w hw hcnt (le_trans (hV _ _).2 hvol)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨θ, hθ, ?_⟩` and prove the remaining obligations. Introduce `Y hY κ hκ t₀ S hS`. Use `le_trans (H Y hY κ hκ t₀ S hS) ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun s' _ => (hV _ s').1) (fun s' _ => (hV _ s').2)) (pow_nonneg hC4 _)) (Finset.sum_nonneg fun w' _ => mul_nonneg (hθ.1 w') (baseGram_nonneg D hG hW hε _ w' Y hκ))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem estimates_mono : Formalism.FourierDecayAlt.J.EstimatesMono := by
   intro E W _ D szD' szL' vol' C₄ hC4 hav hD hL hV hG hW
@@ -167,7 +163,7 @@ theorem estimates_mono : Formalism.FourierDecayAlt.J.EstimatesMono := by
       (Finset.sum_nonneg fun w' _ => mul_nonneg (hθ.1 w') (baseGram_nonneg D hG hW hε _ w' Y hκ))
 
 /- English proof (translation)
-Introduce `r e sd h0 h1`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), h1, Finset.prod_eq_one, one_mul]`. Introduce `i hi`. Rewrite using `[h0 i hi, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem product_of_energies : Formalism.FourierDecayAlt.J.ProductOfE := by
   intro r e sd h0 h1
@@ -175,11 +171,11 @@ theorem product_of_energies : Formalism.FourierDecayAlt.J.ProductOfE := by
   intro i hi; rw [h0 i hi, add_zero]
 
 /- English proof (translation)
-Introduce `hA C₁ C₄ h1 h4`. Take `⟨C, C', h⟩` from `hA C₁ C₄ h1 h4`. Use `⟨C, C', ?_⟩` and prove the remaining obligations. Introduce `E W _ D Θ jn H _ _ _ Vt c hyp hC' hr he P _ B hI hδ hS`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17⟩` from `hyp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `S3.MassData.InTheoremA`. Apply `hS` to reduce the goal to its premises. Introduce `R`. Use `h E W D Θ jn H Vt c a1 a2 a3 hC' hr a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 R` as an intermediate fact. Rewrite `this` using `[Finset.prod_eq_one (fun i hi => by rw [he i hi, add_zero]), mul_one]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hδ, hI]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recursion_gives_explicit_form : Formalism.FourierDecayAlt.J.RecursionGivesBounds := by
   intro hA C₁ C₄ h1 h4
@@ -195,11 +191,11 @@ theorem recursion_gives_explicit_form : Formalism.FourierDecayAlt.J.RecursionGiv
   rw [hδ, hI]; exact this
 
 /- English proof (translation)
-Introduce `hA C₁ C₄ h1 h4`. Take `⟨C, C', h⟩` from `hA C₁ C₄ h1 h4`. Use `⟨C, C', ?_⟩` and prove the remaining obligations. Introduce `E W _ D Θ jn H _ _ _ Vt c hyp hC' hr he P _ B he1 hI hδ hS`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17⟩` from `hyp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hprod : ∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i) = B.e1`. Rewrite using `[Finset.prod_Icc_succ_top (by omega : 1 ≤ D.r + 1), Finset.prod_eq_one (fun i hi => by rw [he i hi, add_zero]), one_mul, he1]`. Establish `key` using `hS ((1 + B.δ) * B.e1 * B.IntN) (fun R => by`. Use `h E W D Θ jn H Vt c a1 a2 a3 hC' hr a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 R` as an intermediate fact. Rewrite `this` using `[hprod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hδ, hI]`. Conclude with `this)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem recursion_gives_form : Formalism.FourierDecayAlt.J.RecursionGivesForm := by
   intro hA C₁ C₄ h1 h4
@@ -218,7 +214,7 @@ theorem recursion_gives_form : Formalism.FourierDecayAlt.J.RecursionGivesForm :=
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `sd e h hs`. Establish `h1 : (1 : ℝ) ≤ max sd 1` using `le_max_right _ _`. Establish `h2 : sd ≤ max sd 1` using `le_max_left _ _`. Establish `h3 : max sd 1 ≤ 2` using `max_le hs (by norm_num)`. Use `⟨by linarith, by linarith, by linarith⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem top_energy : Formalism.FourierDecayAlt.J.TopE := by
   intro sd e h hs
@@ -228,11 +224,11 @@ theorem top_energy : Formalism.FourierDecayAlt.J.TopE := by
   refine ⟨by linarith, by linarith, by linarith⟩
 
 /- English proof (translation)
-Introduce `P _ B hpos hk hA`. Unfold `S3.MassData.InTheoremA S3.MassData.Smod at hA`. Take `⟨hk1, hk2⟩` from `hk`. Establish `hp` using `hpos.2`. Establish `hvN : 0 < B.volN` using `by tauto`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvH : 0 < B.volH` using `by tauto`. Establish `hvN' : 0 < B.volN'` using `by tauto`. Establish `hvH' : 0 < B.volH'` using `by tauto`. Establish `hd : 0 < B.dimπ` using `by tauto`. Establish `hd' : 0 < B.dimπ'` using `by tauto`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : 0 < B.n0c` using `by tauto`. Establish `hs : 0 ≤ B.supdens` using `by tauto`. Establish `c0 : 0 ≤ B.c0 * B.c0'` using `by unfold S3.MassData.c0 S3.MassData.c0'; positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem each_level_counted_once : Formalism.FourierDecayAlt.J.OnceOnly := by
   intro P _ B hpos hk hA
@@ -255,13 +251,9 @@ theorem each_level_counted_once : Formalism.FourierDecayAlt.J.OnceOnly := by
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `hM P _ B hPos he hKV h2A hF hMass hform hJ hNu hInf hVol hLev hMas hCol hOrd hTyp hInd`. Take `⟨a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35⟩` from `hPos`. Establish `hn : 0 < B.n0c` using `a33`. Establish `hen : 0 < B.e1 * B.n0c` using `mul_pos he hn`. Establish `key` using `hM P { B with supdens := B.e1, KtopV := B.KV / (B.e1 * B.n0c) } ⟨a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, he.le, a35⟩ h2A hF (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `show B.KV ≤ B.e1 * B.n0c * (B.KV / (B.e1 * B.n0c))`. Rewrite using `[mul_div_cancel₀ _ hen.ne']`. Use `show 0 ≤ B.KV / (B.e1 * B.n0c)`. Conclude with `div_nonneg hKV hen.le)`.
-
-Use `hMass`. Use the proof step `(by show B.e1 ≤ B.e1; exact le_refl _)`. Use the proof step `(by show B.c0 * B.c0' * (B.KV / (B.e1 * B.n0c)) ≤ (1 + B.δ) * B.IntN`. Rewrite using `[← mul_div_assoc, div_le_iff₀ hen]`. Establish `e : (1 + B.δ) * B.e1 * (B.n0c * B.IntN) = (1 + B.δ) * B.IntN * (B.e1 * B.n0c)` using `by ring`.
-
-Use the proof step `linarith)`. Use `hJ hNu hInf hVol hLev hMas hCol hOrd hTyp hInd`. Conclude with `key`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem form_gives_theorem_A : Formalism.FourierDecayAlt.J.FormGivesMain := by
   intro hM P _ B hPos he hKV h2A hF hMass hform hJ hNu hInf hVol hLev hMas hCol hOrd hTyp hInd

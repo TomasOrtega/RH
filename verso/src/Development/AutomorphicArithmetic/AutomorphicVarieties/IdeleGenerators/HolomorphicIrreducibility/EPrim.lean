@@ -1,19 +1,15 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall
 
 /- English proof (translation)
-Introduce `l M w φ θ χ D`. Establish `hM` using `D.one_lt`. Establish `hw` using `D.prime`. Use `haveI : NeZero M := ⟨by omega⟩`. Use `haveI : NeZero w := ⟨hw.ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `haveI : NeZero (M * w) := ⟨mul_ne_zero (NeZero.ne M) (NeZero.ne w)⟩`. Use `set A := DirichletCharacter.changeLevel (dvd_mul_right M w) φ with hA`. Use `set B := DirichletCharacter.changeLevel (dvd_mul_left w M) θ with hB`. Establish `hχ : χ = A * B`. Use extensionality with `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `D.mul (u : ZMod (M * w)).val`. Rewrite using `[MulChar.mul_apply, hA, hB, DirichletCharacter.changeLevel_eq_cast_of_dvd, DirichletCharacter.changeLevel_eq_cast_of_dvd, ← ZMod.natCast_val, ← ZMod.natCast_val, ← h1, ZMod.natCast_zmod_val]`. Establish `hAc : A.conductor = M`. Rewrite using `[hA, DirichletCharacter.conductor_changeLevel]`. Conclude with `D.prim`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBc : B.conductor = w`. Rewrite using `[hB, DirichletCharacter.conductor_changeLevel]`. Break down `(Nat.dvd_prime hw).mp θ.conductor_dvd_level with h | h` into its components or cases. Conclude with `absurd (DirichletCharacter.eq_one_iff_conductor_eq_one.mpr h) D.θne`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : M.Coprime w` using `((Nat.Prime.coprime_iff_not_dvd hw).mpr D.wM).symm`. Establish `h1 : M ∣ χ.conductor`. Establish `h` using `DirichletCharacter.conductor_mul_dvd_lcm_conductor χ B⁻¹`. Rewrite `h` using `[DirichletCharacter.conductor_inv, hBc]`. Establish `e : χ * B⁻¹ = A` using `by rw [hχ, mul_inv_cancel_right]`.
-
-Rewrite `h` using `[e, hAc]`. Conclude with `hcop.dvd_of_dvd_mul_right (h.trans (Nat.lcm_dvd_mul _ _))`. Establish `h2 : w ∣ χ.conductor`. Establish `h` using `DirichletCharacter.conductor_mul_dvd_lcm_conductor A⁻¹ χ`. Rewrite `h` using `[DirichletCharacter.conductor_inv, hAc]`.
-
-Establish `e : A⁻¹ * χ = B` using `by rw [hχ, inv_mul_cancel_left]`. Rewrite `h` using `[e, hBc]`. Conclude with `hcop.symm.dvd_of_dvd_mul_left (h.trans (Nat.lcm_dvd_mul _ _))`. Conclude with `Nat.dvd_antisymm χ.conductor_dvd_level (hcop.mul_dvd_of_dvd_of_dvd h1 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.ePrim :
     UpperTheory.V.Sd.EPrim := by

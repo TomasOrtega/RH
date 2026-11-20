@@ -12,13 +12,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SmoothDescent
 
 /- English proof (translation)
-Introduce `K _ _ X Y π s d _ _ _ hd`. Establish `: Smooth (π ≫ s)` using `SmoothOfRelativeDimension.smooth d _`. Establish `: Smooth s` using `smooth_of_comp_of_etale_of_surjective π s`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension d)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `choose n W hW hn using H1.exists_dim s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key (y : Y) : n y = d`. Take `⟨x, rfl⟩` from `π.surjective y`. Use `hn (π x)` as an intermediate fact. Establish `h₁ : SmoothOfRelativeDimension (0 + n (π x)) ((π ∣_ W (π x)) ≫ (W (π x)).ι ≫ s)` using `inferInstance`. Rewrite `h₁` using `[← Category.assoc, morphismRestrict_ι, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : SmoothOfRelativeDimension (0 + d) ((π ⁻¹ᵁ W (π x)).ι ≫ π ≫ s)` using `inferInstance`. Simplify using `using H1.dim_unique _ h₁ h₂ ⟨x, hW (π x)⟩`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension d) W ?_ fun y => key y ▸ hn y` and prove the remaining obligations. Rewrite using `[← top_le_iff]`. Introduce and unpack `y -`.
-
-Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨y, hW y⟩`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_etale_cover_noetherian :
     ∀ (K : Type) [CommRing K] [IsNoetherianRing K] (X Y : Scheme.{0}) (π : X ⟶ Y) (s : Y ⟶ Sp K) (d : ℕ), Etale π → Surjective π → LocallyOfFiniteType s → SmoothOfRelativeDimension d (π ≫ s) → SmoothOfRelativeDimension d s := by

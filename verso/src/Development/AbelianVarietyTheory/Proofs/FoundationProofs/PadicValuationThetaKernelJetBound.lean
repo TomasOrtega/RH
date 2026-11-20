@@ -19,34 +19,34 @@ section
 variable {p : ℕ} [Fact p.Prime] {lam : Qbar →+* ℂ_[p]}
 
 /- English proof (translation)
-Simplify using `[lamC, x.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamC_coe (x : Qbar) : lamC lam (x : ℂ) = lam x := by
   simp [lamC, x.2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x.2, by rwa [lamC_coe]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Bd.coe {B : ℝ} {x : Qbar} (h : ‖lam x‖ ≤ B) : Bd lam B (x : ℂ) :=
   ⟨x.2, by rwa [lamC_coe]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.trans hB⟩`.
+Supply the required witnesses or components.
 -/
 theorem Bd.mono {B B' : ℝ} {x : ℂ} (h : Bd lam B x) (hB : B ≤ B') : Bd lam B' x :=
   ⟨h.1, h.2.trans hB⟩
 
 /- English proof (translation)
-Use `Bd.coe (lam := lam) (B := B) (x := 0) (by simpa using hB)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Bd.zero {B : ℝ} (hB : 0 ≤ B) : Bd lam B 0 := by
   have := Bd.coe (lam := lam) (B := B) (x := 0) (by simpa using hB)
   simpa using this
 
 /- English proof (translation)
-Take `⟨hx, h1⟩` from `hx`. Take `⟨hy, h2⟩` from `hy`. Use `lift x to Qbar using hx`. Use `lift y to Qbar using hy`. Rewrite `h1`, `h2` using `[lamC_coe]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Bd.coe (lam := lam) (B := B) (x := x + y) (by` as an intermediate fact. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2))`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Bd.add {B : ℝ} {x y : ℂ} (hx : Bd lam B x) (hy : Bd lam B y) : Bd lam B (x + y) := by
   obtain ⟨hx, h1⟩ := hx
@@ -60,9 +60,9 @@ theorem Bd.add {B : ℝ} {x y : ℂ} (hx : Bd lam B x) (hy : Bd lam B y) : Bd la
   simpa using this
 
 /- English proof (translation)
-Take `⟨hx, h1⟩` from `hx`. Take `⟨hy, h2⟩` from `hy`. Use `lift x to Qbar using hx`. Use `lift y to Qbar using hy`. Rewrite `h1`, `h2` using `[lamC_coe]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Bd.coe (lam := lam) (B := A * B) (x := x * y) (by` as an intermediate fact. Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_mul h1 h2 (norm_nonneg _) ((norm_nonneg _).trans h1))`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Bd.mul {A B : ℝ} {x y : ℂ} (hx : Bd lam A x) (hy : Bd lam B y) : Bd lam (A * B) (x * y) := by
   obtain ⟨hx, h1⟩ := hx
@@ -76,14 +76,14 @@ theorem Bd.mul {A B : ℝ} {x y : ℂ} (hx : Bd lam A x) (hy : Bd lam B y) : Bd 
   simpa using this
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (Bd lam B) (fun _ _ => Bd.add) (Bd.zero hB) h`.
+A detailed English derivation is pending.
 -/
 theorem Bd.sum {ι : Type*} {B : ℝ} (hB : 0 ≤ B) (s : Finset ι) (f : ι → ℂ) (h : ∀ i ∈ s, Bd lam B (f i)) :
     Bd lam B (∑ i ∈ s, f i) :=
   Finset.sum_induction f (Bd lam B) (fun _ _ => Bd.add) (Bd.zero hB) h
 
 /- English proof (translation)
-Use `Bd.coe (lam := lam) (B := 1) (x := (z : Qbar)) (by` as an intermediate fact. Rewrite using `[map_intCast]`. Conclude with `IsUltrametricDist.norm_intCast_le_one _ z)`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Bd.intCast (z : ℤ) : Bd lam 1 (z : ℂ) := by
   have := Bd.coe (lam := lam) (B := 1) (x := (z : Qbar)) (by
@@ -92,7 +92,7 @@ theorem Bd.intCast (z : ℤ) : Bd lam 1 (z : ℂ) := by
   simpa using this
 
 /- English proof (translation)
-Use `Bd.coe (lam := lam) (B := A ^ n) (x := ∏ i, c i) (by` as an intermediate fact. Rewrite using `[map_prod, norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Bd.prod_coe {n : ℕ} {A : ℝ} (c : Fin n → Qbar) (h : ∀ i, ‖lam (c i)‖ ≤ A) :
     Bd lam (A ^ n) (∏ i, (c i : ℂ)) := by
@@ -104,13 +104,11 @@ theorem Bd.prod_coe {n : ℕ} {A : ℝ} (c : Fin n → Qbar) (h : ∀ i, ‖lam 
   simpa using this
 
 /- English proof (translation)
-Establish `h' : ∀ m, m = n → ∀ f : Fin m → GL3Theta.Idx D a d, Bd lam B (iteratedFDeriv ℂ m G 0 (fun i => coordV D (f i)))`. Introduce and unpack `m rfl`. Conclude with `h`. Use `Bd.sum hB _ _ fun α hα => ?_` and prove the remaining obligations. Establish `hα' : MvPolynomial.coeff α P ≠ 0` using `MvPolynomial.mem_support_iff.1 (MvPolynomial.support_map_subset _ _ hα)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : Multiset.card α.toMultiset = n`. Establish `h1` using `hP hα'`. Rewrite using `[Finsupp.card_toMultiset]`. Rewrite using `[← h1, Finsupp.weight_apply]`. Simplify using `only [Pi.one_apply, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hne : (α.prod fun _ n => (n.factorial : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Rewrite using `[taylor, mul_assoc, mul_div_cancel₀ _ hne, MvPolynomial.coeff_map]`. Use `(Bd.intCast (lam := lam) (MvPolynomial.coeff α P)).mul (h' _ hdeg (fun i => α.toMultiset.toList.get ⟨i, by simpa using i.2⟩))` as an intermediate fact. Rewrite `this` using `[one_mul]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bd_applyAt0 (D : D7) {a d n : ℕ} {B : ℝ} (hB : 0 ≤ B) (G : VC D a d → ℂ)
     (P : MvPolynomial (GL3Theta.Idx D a d) ℤ) (hP : P.IsHomogeneous n)
@@ -137,11 +135,11 @@ theorem bd_applyAt0 (D : D7) {a d n : ℕ} {B : ℝ} (hB : 0 ≤ B) (G : VC D a 
   exact this
 
 /- English proof (translation)
-Use `choose m c y hy hc he using hL`. Establish `h1 : (fun i => coordV D (f i)) = fun i => ∑ j, (c (f i) j : ℂ) • embV D T (y (f i) j)`. Use function extensionality and compare the values at `i`. Rewrite using `[he]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ s t`. Simplify using `[embV, hT]`. Rewrite using `[h1, φ.map_sum]`. Use `Bd.sum (by positivity) _ _ fun r _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[φ.map_smul_univ, smul_eq_mul]`. Conclude with `(Bd.prod_coe (fun i => c (f i) (r i)) fun i => hc _ _).mul (h _ fun i => hy _ _)`.
+A detailed English derivation is pending.
 -/
 theorem bd_coord (D : D7) {a d n : ℕ} {A B : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (T : Tor D) (hT : ∀ τ x, T.emb τ x = embT D τ x)
     (Y : Set (Matrix (Fin d) (Fin a) D.host.E))
@@ -171,7 +169,7 @@ def minorZ (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n) : 
     (MvPolynomial.X (τ, (T τ j).1 i, i') : MvPolynomial (GL3Theta.Idx D a d) ℤ)).det
 
 /- English proof (translation)
-Simplify using `only [minorZ, minorPol, map_prod, RingHom.map_det]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i i' : 2`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_minorZ (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n) :
     MvPolynomial.map (Int.castRingHom ℂ) (minorZ D T) = minorPol D T := by
@@ -182,9 +180,9 @@ theorem map_minorZ (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a
   simp
 
 /- English proof (translation)
-Establish `h : a * ∑ τ, n τ = ∑ τ, ∑ _j : Fin (n τ), a`. Simplify using `[Finset.mul_sum, mul_comm]`. Rewrite using `[h]`. Use `MvPolynomial.IsHomogeneous.prod _ _ _ fun τ _ => MvPolynomial.IsHomogeneous.prod _ _ _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_apply']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Establish `h2` using `MvPolynomial.IsHomogeneous.prod (Finset.univ : Finset (Fin a)) (fun i => (MvPolynomial.X (τ, (T τ j).1 (σ i), i) : MvPolynomial (GL3Theta.Idx D a d) ℤ)) (fun _ => 1) (fun i _ => MvPolynomial.isHomogeneous_X _ _)`. Establish `h3` using `(MvPolynomial.isHomogeneous_C (GL3Theta.Idx D a d) ((Equiv.Perm.sign σ : ℤˣ) : ℤ)).mul h2`. Simplify using `using h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem minorZ_homogeneous (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n) :
     (minorZ D T).IsHomogeneous (a * ∑ τ, n τ) := by
@@ -201,9 +199,9 @@ theorem minorZ_homogeneous (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T :
   simpa using h3
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ h`. Establish `hs : Differentiable ℂ (sgStar (lamOf D cc δ))`. Use `(GlobalTheory.OddTheta.sgStar_laws _ ⟨L.ω₁, L.ω₂, L.indep, ?_⟩).1.1` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[hL, PeriodPair.lattice, ← Submodule.span_int_eq_addSubgroupClosure]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `GL3Theta.th0 U1`. Use `fun_prop`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_evenTheta (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) (h : Crv D cc δ) :
     Differentiable ℂ (GL3Theta.th0 (lamOf D cc δ) t0) := by
@@ -217,9 +215,9 @@ theorem differentiable_evenTheta (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : 
   fun_prop
 
 /- English proof (translation)
-Establish `hg' : ContDiff ℂ n g` using `hg.contDiff`. Establish `h1 : ContDiff ℂ n (pullB D T b g)`. Unfold `pullB coordB`. Use `contDiff_prod fun j _ => ?_` and prove the remaining obligations. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `U Hf`. Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_U_pullB (D : D7) (T : Tor D) {a d r : ℕ} (b : Fin r → Matrix (Fin d) (Fin a) D.host.E)
     (g : ℂ → ℂ) (hg : Differentiable ℂ g) (s : VC D a d) (n : ℕ) : ContDiff ℂ n (U D T s (pullB D T b g)) := by
@@ -232,7 +230,7 @@ theorem contDiff_U_pullB (D : D7) (T : Tor D) {a d r : ℕ} (b : Fin r → Matri
   fun_prop
 
 /- English proof (translation)
-Establish `h1 : (Q : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (Q : ℚ_[p])` using `by simp`. Rewrite using `[h1, norm_algebraMap', Padic.norm_eq_zpow_neg_valuation (by exact_mod_cast hQ), Padic.valuation_natCast]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_natCast_inv (p : ℕ) [Fact p.Prime] {Q : ℕ} (hQ : Q ≠ 0) :
     ‖(Q : ℂ_[p])‖⁻¹ = (p : ℝ) ^ (padicValNat p Q : ℝ) := by
@@ -241,9 +239,9 @@ theorem norm_natCast_inv (p : ℕ) [Fact p.Prime] {Q : ℕ} (hQ : Q ≠ 0) :
   simp
 
 /- English proof (translation)
-Establish `h1 : (fun z => ∑ i, r i * G i z) = ∑ i, r i • G i`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[h1, iteratedFDeriv_sum_apply (f := fun i => r i • G i) (fun i _ => ((hG i).const_smul (r i)).contDiffAt), sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[iteratedFDeriv_const_smul_apply (hG i).contDiffAt, smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iteratedFDeriv_comb {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {k : ℕ} (n : ℕ)
     (r : Fin k → ℂ) (G : Fin k → V → ℂ) (hG : ∀ i, ContDiff ℂ n (G i)) (y : Fin n → V) :
@@ -256,9 +254,9 @@ theorem iteratedFDeriv_comb {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ 
   rw [iteratedFDeriv_const_smul_apply (hG i).contDiffAt, smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `he' : (if c then x ^ ((n : ℝ) / 4) else 1) = x ^ ((n : ℝ) * (if c then 1 / 4 else 0))` using `by split_ifs`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[he', ← Real.rpow_mul_natCast hx.le, ← Real.rpow_mul_natCast hx.le, ← Real.rpow_mul_natCast hx.le, ← Real.rpow_add hx, ← Real.rpow_add hx, ← Real.rpow_add hx]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rpow_collect {x : ℝ} (hx : 0 < x) (c : Prop) [Decidable c] (n m : ℕ) (u v : ℝ) :
     (x ^ u) ^ n * ((x ^ v) ^ m * ((x ^ v) ^ n * (if c then x ^ ((n : ℝ) / 4) else 1))) =
@@ -273,13 +271,13 @@ theorem rpow_collect {x : ℝ} (hx : 0 < x) (c : Prop) [Decidable c] (n m : ℕ)
   ring
 
 /- English proof (translation)
-Introduce `D hI S dl hL δ t0 Q hC ht hQ P p _ lam g g' k' hk hg hg' T`. Take `⟨b, k, M, r, s, hb, hloc, hM, hMp, hs, hr, hF⟩` from `GlobalTheory.T.kernelAtPrime_eq_sum_torsionTranslates D hI δ t0 Q hC ht hQ.1 P p lam g g' k' hk hg hg'`. Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hQn` using `norm_natCast_inv p hQ.1.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ‖((M * Q : ℕ) : ℂ_[p])‖⁻¹ = (p : ℝ) ^ (padicValNat p Q : ℝ)`. Rewrite using `[norm_natCast_inv p (Nat.mul_pos hM hQ.1).ne', padicValNat.mul hM.ne' hQ.1.ne', padicValNat.eq_zero_of_not_dvd (hp.coprime_iff_not_dvd.1 hMp.symm), zero_add]`. Establish `hsp : p ∣ M * Q → SplitIn D p` using `fun h => hQ.2 p hp (hMp.symm.dvd_of_dvd_mul_left h)`. Apply the tactic sequence `have he0 : 0 ≤ (if p = D.host.d then (p : ℝ) ^ (((P.a * ∑ τ, P.n τ : ℕ) : ℝ) / 4) else 1) := by split_ifs <;> positivity`. Rewrite using `[← rpow_collect hp0, Pair.term, ← map_minorZ, hF]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `bd_applyAt0 (lam := lam) D (by positivity) _ _ (minorZ_homogeneous D T) fun f => ?_` and prove the remaining obligations. Use `bd_coord D (by positivity) (by positivity) (tor0 D ⊤ δ) (fun _ _ => rfl) (YYl D (stdL D P.a) (stdL D P.d)) (hL.2.2.2.2 p lam P.a P.d) _ (fun y hy => ?_) f` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_comb _ (fun i => (r i : ℂ)) (fun i => U D (tor0 D ⊤ δ) (s i) (pullB D (tor0 D ⊤ δ) b (GL3Theta.th0 (lamOf D ⊤ δ) t0))) fun i => contDiff_U_pullB D _ b _ (differentiable_evenTheta D ⊤ δ t0 hC) (s i) _]`. Use `Bd.sum (by positivity) _ _ fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `hr i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[hQn]`. Use `(Bd.coe h1).mul ?_` and prove the remaining obligations. Use `GlobalTheory.T.jets_torsion_translates_cm_theta_product D hI p lam ⊤ δ hC (by simp) t0 ht P.a P.d _ b hb hloc (s i) (M * Q) (Nat.mul_pos hM hQ.1) (hs i) hsp _ y hy` as an intermediate fact. Rewrite `this` using `[hN]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_bound : ∀ (D : D7), Inp D → ∀ (S : Finset ℕ) (dl : ℕ → ℝ), Letters D S dl → ∀ (δ t0 : ℂ) (Q : ℕ), Crv D ⊤ δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D ⊤ δ) t0 → GoodLevel D Q → ∀ (P : Pair D ⊤ δ t0 Q) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (g : GA D P.a) (g' k' : GA D P.d), k' ∈ intG D P.d → TrivAt D p (g : GL (Fin P.a) (AE D)) → TrivAt D p ((g' * k' : GA D P.d) : GL (Fin P.d) (AE D)) → ∀ T, P.term g g' T ∈ Qbar ∧ ‖lamC lam (P.term g g' T)‖ ≤ (p : ℝ) ^ (((P.a * ∑ τ, P.n τ : ℕ) : ℝ) * (dl p + (if p = D.host.d then 1 / 4 else 0) + (padicValNat p Q : ℝ)) + ((P.a * P.d : ℕ) : ℝ) * (padicValNat p Q : ℝ)) := by
   intro D hI S dl hL δ t0 Q hC ht hQ P p _ lam g g' k' hk hg hg' T

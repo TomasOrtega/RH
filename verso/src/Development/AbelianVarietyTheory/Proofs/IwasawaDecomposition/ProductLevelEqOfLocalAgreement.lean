@@ -24,9 +24,9 @@ def compHom (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) :
   (Matrix.GeneralLinearGroup.map (compAt L v)).comp (ReciprocityTheory.Aut.GA L n).subtype
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Units.val h` as an intermediate fact. Simplify `this` using `[compHom]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify `this` using `[compHom]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem compHom_eq_one_iff (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x : GAf L n) :
     compHom v x = 1 ↔ (x.1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) = 1 := by
@@ -40,9 +40,9 @@ theorem compHom_eq_one_iff (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))
     simpa [compHom] using this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Units.val h` as an intermediate fact. Simplify `this` using `[compHom]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify `this` using `[compHom]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem compHom_eq_iff (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x y : GAf L n) :
     compHom v x = compHom v y ↔
@@ -57,31 +57,29 @@ theorem compHom_eq_iff (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x
     simpa [compHom] using this
 
 /- English proof (translation)
-Establish `hone : ∀ u κ, TrivOutside {u} κ → ∀ hκ : κ ∈ J, ∃ h' : κ ∈ J', χ ⟨κ, hκ⟩ = χ' ⟨κ, h'⟩`. Introduce `u κ hu hκ`. Distinguish the cases in `huS : u ∈ S`. Take `⟨h1, h2⟩` from `hloc u huS κ hu`. Conclude with `⟨h1.mp hκ, h2 hκ (h1.mp hκ)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `ht : TrivOutside Sᶜ κ`. Introduce `v hv`. Apply `hu v` to reduce the goal to its premises. Introduce and unpack `rfl`. Conclude with `huS (not_not.mp hv)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2⟩` from `hO κ ht`. Take `⟨b1, b2⟩` from `hO' κ ht`. Establish `h' : κ ∈ J'` using `b1.mpr (a1.mp hκ)`. Conclude with `⟨h', by rw [a2 hκ, b2 h']⟩`. Establish `key : ∀ T : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield L))), ∀ κ (hκ : κ ∈ J), TrivOutside (Sᶜ ∪ (T : Set _)) κ → ∃ h' : κ ∈ J', χ ⟨κ, hκ⟩ = χ' ⟨κ, h'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `κ hκ ht`. Establish `ht' : TrivOutside Sᶜ κ`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Conclude with `ht v (by simpa using hv)`. Take `⟨a1, a2⟩` from `hO κ ht'`. Take `⟨b1, b2⟩` from `hO' κ ht'`. Establish `h' : κ ∈ J'` using `b1.mpr (a1.mp hκ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨h', by rw [a2 hκ, b2 h']⟩`. Consider the case `insert u T huT ih`. Introduce `κ hκ ht`. Take `⟨κu, hκu, hu, hcomp⟩` from `hJ κ hκ u`. Establish `hκ1 : κ * κu⁻¹ ∈ J` using `J.mul_mem hκ (J.inv_mem hκu)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht1 : TrivOutside (Sᶜ ∪ (T : Set _)) (κ * κu⁻¹)`. Introduce `v hv`. Rewrite using `[← compHom_eq_one_iff, map_mul, map_inv, mul_inv_eq_one]`. Distinguish the cases in `hvu : v = u`. Substitute `hvu` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((compHom_eq_iff v κ κu).mpr hcomp.symm)`. Establish `e1 : compHom v κ = 1`. Rewrite using `[compHom_eq_one_iff]`. Apply `ht v` to reduce the goal to its premises. Simplify using `only [Finset.coe_insert, Set.mem_union, Set.mem_insert_iff, not_or] at hv ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hv.1, hvu, hv.2⟩`. Establish `e2 : compHom v κu = 1`. Rewrite using `[compHom_eq_one_iff]`. Conclude with `hu v (by simpa using hvu)`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1', e1⟩` from `ih (κ * κu⁻¹) hκ1 ht1`. Take `⟨h2', e2⟩` from `hone u κu hu hκu`. Establish `hprod : κ = κ * κu⁻¹ * κu` using `by group`. Establish `h' : κ ∈ J'`. Rewrite using `[hprod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J'.mul_mem h1' h2'`. Use `⟨h', ?_⟩` and prove the remaining obligations. Establish `s1 : (⟨κ, hκ⟩ : J) = ⟨κ * κu⁻¹, hκ1⟩ * ⟨κu, hκu⟩` using `Subtype.ext hprod`. Establish `s2 : (⟨κ, h'⟩ : J') = ⟨κ * κu⁻¹, h1'⟩ * ⟨κu, h2'⟩` using `Subtype.ext hprod`. Rewrite using `[s1, s2, map_mul, map_mul, e1, e2]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails.
 
-Apply `key hS.toFinset κ hκ` to reduce the goal to its premises. Introduce `v hv`. It suffices to derive a contradiction. Apply `hv` to reduce the goal to its premises. Distinguish the cases in `h : v ∈ S`.
-
-Use `right`. Simplify using `using h`. Use `left`. Conclude with `h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_agree {J J' : Subgroup (GAf L n)} {χ : J →* ℂˣ} {χ' : J' →* ℂˣ}
     {S : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))} (hS : S.Finite) (hJ : NG.IsProdLevel J)
@@ -154,7 +152,7 @@ theorem mem_of_agree {J J' : Subgroup (GAf L n)} {χ : J →* ℂˣ} {χ' : J' �
   · left; exact h
 
 /- English proof (translation)
-Introduce `L _ _ _ n J J' χ χ' S hS hJ hJ' hO hO' hloc`. Establish `hloc' : ∀ u ∈ S, ∀ κ, TrivOutside {u} κ → (κ ∈ J' ↔ κ ∈ J) ∧ ∀ (h : κ ∈ J') (h' : κ ∈ J), χ' ⟨κ, h⟩ = χ ⟨κ, h'⟩` using `fun u hu κ hκ => ⟨(hloc u hu κ hκ).1.symm, fun h h' => ((hloc u hu κ hκ).2 h' h).symm⟩`. Use `⟨le_antisymm (fun κ hκ => (mem_of_agree hS hJ hO hO' hloc κ hκ).1) (fun κ hκ => (mem_of_agree hS hJ' hO' hO hloc' κ hκ).1), fun κ h h' => ?_⟩` and prove the remaining obligations. Take `⟨h'', e⟩` from `mem_of_agree hS hJ hO hO' hloc κ h`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem levEq_of_agree : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (J J' : Subgroup (GAf L n)) (χ : J →* ℂˣ) (χ' : J' →* ℂˣ) (S : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))), S.Finite → NG.IsProdLevel J → NG.IsProdLevel J' → NG.HypOutside J χ S → NG.HypOutside J' χ' S → (∀ u ∈ S, ∀ κ, TrivOutside {u} κ → (κ ∈ J ↔ κ ∈ J') ∧ ∀ (h : κ ∈ J) (h' : κ ∈ J'), χ ⟨κ, h⟩ = χ' ⟨κ, h'⟩) → LevEq J χ J' χ' := by
   intro L _ _ _ n J J' χ χ' S hS hJ hJ' hO hO' hloc

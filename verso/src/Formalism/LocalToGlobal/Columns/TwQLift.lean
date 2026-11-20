@@ -20,15 +20,15 @@ def qdPair {R : Type} [CommRing R] (k : GL (Fin n) R) : Matrix (Fin n) (Fin n) (
   fun i j => ((k : Matrix (Fin n) (Fin n) R) i j, ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) j i)
 
 /- English proof (translation)
-Establish `h1 : (k : Matrix (Fin n) (Fin n) R) * ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = 1` using `Units.mul_inv k`. Use extensionality with `i j`. Use `show (∑ l, ((k : Matrix (Fin n) (Fin n) R) i l, ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l i) * (((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l j, ((k⁻¹⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) j l)).1 = _`. Rewrite using `[Prod.fst_sum]`. Use `congrArg (fun A : Matrix (Fin n) (Fin n) R => A i j) h1` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply] at this`. Rewrite `this`, the goal using `[Matrix.one_apply]`. Simplify using `only [Prod.fst_mul]`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `show (∑ l, ((k : Matrix (Fin n) (Fin n) R) i l, ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l i) * (((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l j, ((k⁻¹⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) j l)).2 = _`. Rewrite using `[Prod.snd_sum, inv_inv]`. Use `congrArg (fun A : Matrix (Fin n) (Fin n) R => A j i) h1` as an intermediate fact. Simplify using `only [Matrix.mul_apply] at this`. Simplify using `only [Prod.snd_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `this`, the goal using `[Matrix.one_apply]`. Rewrite using `[show (∑ l, ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l i * (k : Matrix (Fin n) (Fin n) R) j l) = ∑ l, (k : Matrix (Fin n) (Fin n) R) j l * ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l i from Finset.sum_congr rfl fun l _ => mul_comm _ _, this]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_neg (Ne.symm h), if_neg h]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem qdPair_mul_inv {R : Type} [CommRing R] (k : GL (Fin n) R) : qdPair k * qdPair k⁻¹ = 1 := by
   have h1 : (k : Matrix (Fin n) (Fin n) R) * ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = 1 := Units.mul_inv k
@@ -63,7 +63,7 @@ def qdLift (q : QLoc hc n Q Θ) (P : Q) (k : GL (Fin n) ((qv F P.1).adicCompleti
   bc (q.sp P).symm.toRingHom (qdPairGL k)
 
 /- English proof (translation)
-Apply `(q.sp P).injective` to reduce the goal to its premises. Rewrite using `[q.sp_sig, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qdf_sig_symm (q : QLoc hc n Q Θ) (P : Q) (a b : (qv F P.1).adicCompletion F) :
     sigR hc.sig ((qv F P.1).adicCompletion F) ((q.sp P).symm (a, b)) = (q.sp P).symm (b, a) := by
@@ -72,7 +72,7 @@ theorem qdf_sig_symm (q : QLoc hc n Q Θ) (P : Q) (a b : (qv F P.1).adicCompleti
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show ((q.sp P) ((q.sp P).symm (qdPair k i j))).1 = _`. Rewrite using `[RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem qdLift_fst (q : QLoc hc n Q Θ) (P : Q) (k : GL (Fin n) ((qv F P.1).adicCompletion F)) :
     bc ((RingHom.fst _ _).comp (q.sp P).toRingHom) (qdLift q P k) = k := by
@@ -83,17 +83,15 @@ theorem qdLift_fst (q : QLoc hc n Q Θ) (P : Q) (k : GL (Fin n) ((qv F P.1).adic
   rfl
 
 /- English proof (translation)
-Introduce `P k hk`. Use `⟨qdLift q P k, ?_, ?_, qdLift_fst q P k⟩` and prove the remaining obligations. Use `show cT (sigR hc.sig ((qv F P.1).adicCompletion F)) ((qdLift q P k : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) * (1 : Matrix (Fin n) (Fin n) E).map (inclE (F := F) ((qv F P.1).adicCompletion F)) * ((qdLift q P k : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) = (1 : Matrix (Fin n) (F …`. Establish `hone : (1 : Matrix (Fin n) (Fin n) E).map (inclE (F` using `F) ((qv F P.1).adicCompletion F)) = 1 := Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hcT : cT (sigR hc.sig ((qv F P.1).adicCompletion F)) ((qdLift q P k : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) = ((qdLift q P k⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show sigR hc.sig ((qv F P.1).adicCompletion F) ((q.sp P).symm (qdPair k j i)) = (q.sp P).symm (qdPair k⁻¹ i j)`. Rewrite using `[qdf_sig_symm]`. Both sides reduce to the same expression. Rewrite using `[hone, mul_one, hcT]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, qdLift, qdLift, ← map_mul]`. Establish `: qdPairGL k⁻¹ * qdPairGL k = 1` using `Units.ext (by`. Establish `h` using `qdPair_mul_inv k⁻¹`. Rewrite `h` using `[inv_inv]`. Conclude with `h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, map_one, Units.val_one]`. Rewrite using `[rll_locL_std, Formalism.UG.P.afsplit_stab_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `show (q.sp P).symm (qdPair k i j) ∈ Formalism.BasicNotions.intV E (qv F P.1)`. Rewrite using `[q.sp_int, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨hk.1 i j, hk.2 j i⟩`. Use `show (q.sp P).symm (qdPair k⁻¹ i j) ∈ Formalism.BasicNotions.intV E (qv F P.1)`. Rewrite using `[q.sp_int, RingEquiv.apply_symm_apply]`. Use `⟨hk.2 i j, ?_⟩` and prove the remaining obligations. Establish `e : (k⁻¹⁻¹ : GL (Fin n) ((qv F P.1).adicCompletion F)) = k` using `inv_inv k`.
-
-Use `show ((↑(k⁻¹⁻¹) : Matrix (Fin n) (Fin n) ((qv F P.1).adicCompletion F)) j i) ∈ _`. Rewrite using `[e]`. Conclude with `hk.1 j i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdf_lift (q : QLoc hc n Q Θ) : QLift q := by
   intro P k hk

@@ -27,17 +27,17 @@ def IsBaseChangeSection {T U : Scheme.{u}} (g : T ⟶ U) (N : U.Modules) : Prop 
       ∀ n, ψ' (pullbackSection g N n) = ψ n
 
 /- English proof (translation)
-Introduce `Q _ _ ψ hψ`. Set `: Module Γ(T, ⊤) Q` to `Module.compHom Q f.appTop.hom`. Establish `hsm : ∀ (t : Γ(T, ⊤)) (q : Q), t • q = f.appTop t • q` using `fun _ _ => rfl`. Take `⟨ψ₁, hψ₁, u₁⟩` from `hg Q ψ (fun a n => by`. Rewrite using `[hψ, hsm, Scheme.Hom.comp_appTop]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Take `⟨ψ₂, hψ₂, u₂⟩` from `hf Q ψ₁.toAddMonoidHom (fun t x => ψ₁.map_smul t x)`. Set `c` to `(Scheme.Modules.pullbackComp f g).app N`. Establish `hc : ∀ n, c.inv.app ⊤ (pullbackSection (f ≫ g) N n) = pullbackSection f _ (pullbackSection g N n)` using `pullbackComp_inv_pullbackSection f g N`. Establish `hchi : ∀ x, c.hom.app ⊤ (c.inv.app ⊤ x) = x` using `fun x => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, c.inv_hom_id]`. Both sides reduce to the same expression. Establish `hchi' : ∀ x, c.inv.app ⊤ (c.hom.app ⊤ x) = x` using `fun x => by`. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, c.hom_inv_id]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ₂ ∘ₗ sectionLinear c.inv, fun n => ?_, fun ψ'' hψ'' => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, sectionLinear_apply, hc, hψ₂]`. Conclude with `hψ₁ n`. Set `χ : Γ((Scheme.Modules.pullback f).obj ((Scheme.Modules.pullback g).obj N), ⊤) →ₗ[Γ(W, ⊤)] Q` to `ψ'' ∘ₗ sectionLinear c.hom`. Establish `hχ : ∀ n, χ (pullbackSection f _ (pullbackSection g N n)) = ψ n` using `fun n => by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [χ, LinearMap.comp_apply, sectionLinear_apply, ← hc, hchi, hψ'']`. Set `χ₁ : Γ((Scheme.Modules.pullback g).obj N, ⊤) →ₗ[Γ(T, ⊤)] Q` to `{ toFun := fun x => χ (pullbackSection f _ x) map_add' := fun x y => by simp map_smul' := fun t x => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[pullbackSection_smul, map_smul, hsm] }`. Establish `h₁ : χ₁ = ψ₁` using `u₁ χ₁ hχ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h₂ : χ = ψ₂` using `u₂ χ (fun x => congrArg (fun l => l x) h₁)`. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, sectionLinear_apply, ← h₂, χ, hchi]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma IsBaseChangeSection.comp {W T U : Scheme.{u}} {f : W ⟶ T} {g : T ⟶ U} {N : U.Modules}
     (hg : IsBaseChangeSection g N)
@@ -76,7 +76,7 @@ lemma IsBaseChangeSection.comp {W T U : Scheme.{u}} {f : W ⟶ T} {g : T ⟶ U} 
     simp only [LinearMap.comp_apply, sectionLinear_apply, ← h₂, χ, hchi]
 
 /- English proof (translation)
-Establish `: (fun h : X ⟶ Y => G.map h) = (adj.homEquiv (G.obj X) Y) ∘ (fun h => adj.counit.app X ≫ h)`. Use function extensionality and compare the values at `h`. Simplify using `[Adjunction.homEquiv_unit]`. Rewrite using `[this]`. Conclude with `(adj.homEquiv _ _).bijective.comp ⟨fun a b h => (cancel_epi _).mp h, fun b => ⟨inv (adj.counit.app X) ≫ b, by simp⟩⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bijective_map_of_isIso_counit {C D : Type*} [Category C] [Category D] {F : C ⥤ D} {G : D ⥤ C}
     (adj : F ⊣ G) (X Y : D) [IsIso (adj.counit.app X)] :
@@ -93,9 +93,9 @@ lemma bijective_map_of_isIso_counit {C D : Type*} [Category C] [Category D] {F :
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `: IsIso ((tilde.adjunction (R` using `A)).counit.app P) := inferInstanceAs (IsIso P.fromTildeΓ)`. Establish `hb` using `bijective_map_of_isIso_counit (tilde.adjunction (R := A)) P P'`. Set `fA : (moduleSpecΓFunctor (R` to `A)).obj P ⟶ (moduleSpecΓFunctor (R := A)).obj P' := ModuleCat.ofHom (X := (moduleSpecΓFunctor (R := A)).obj P) (Y := (moduleSpecΓFunctor (R := A)).obj P') { toFun := f map_add' := map_add f map_smul' := fun a x => f.map_smul ((Scheme.ΓSpecIso A).inv a) x }`. Take `⟨θ, hθ⟩` from `hb.2 fA`. Use `⟨θ, fun x => ?_, fun θ' hθ' => hb.1 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun l => l.hom x) hθ`. Use `hθ.symm ▸ ?_` and prove the remaining obligations. Use extensionality with `x`. Conclude with `hθ' x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma existsUnique_hom_app_top {A : CommRingCat.{u}} (P P' : (Spec A).Modules)
     [IsIso P.fromTildeΓ] (f : Γ(P, ⊤) →ₗ[Γ(Spec A, ⊤)] Γ(P', ⊤)) :
@@ -117,7 +117,7 @@ lemma existsUnique_hom_app_top {A : CommRingCat.{u}} (P P' : (Spec A).Modules)
     exact hθ' x
 
 /- English proof (translation)
-Set `: Module R Q` to `Module.compHom Q (Scheme.ΓSpecIso R).inv.hom`. Set `e` to `(tilde.isoTop (ModuleCat.of R Q)).toLinearEquiv`. Use `⟨tilde (ModuleCat.of R Q), ⟨ { toFun := e.symm invFun := e map_add' := map_add e.symm map_smul' := fun t x => ?_ left_inv := fun x => e.apply_symm_apply x right_inv := fun x => e.symm_apply_apply x }⟩⟩` and prove the remaining obligations. Take `⟨r, rfl⟩ : ∃ r : R, (Scheme.ΓSpecIso R).inv r = t` from `⟨(Scheme.ΓSpecIso R).hom t, by simp⟩`. Conclude with `e.symm.map_smul r x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma exists_modules_linearEquiv (R : CommRingCat.{u}) (Q : Type u) [AddCommGroup Q]
     [Module Γ(Spec R, ⊤) Q] :
@@ -150,7 +150,7 @@ noncomputable def pullbackTildeIso {A R : CommRingCat.{u}} (φ : A ⟶ R) :
       (pushforwardΓIso φ))
 
 /- English proof (translation)
-Rewrite using `[isIso_fromTildeΓ_iff]`. Conclude with `⟨_, ⟨((pullbackTildeIso φ).app _).symm ≪≫ (Scheme.Modules.pullback (Spec.map φ)).mapIso (@asIso _ _ _ _ N.fromTildeΓ ‹_›)⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma isIso_fromTildeΓ_pullback {A R : CommRingCat.{u}} (φ : A ⟶ R) (N : (Spec A).Modules)
     [IsIso N.fromTildeΓ] :
@@ -160,17 +160,17 @@ lemma isIso_fromTildeΓ_pullback {A R : CommRingCat.{u}} (φ : A ⟶ R) (N : (Sp
     (Scheme.Modules.pullback (Spec.map φ)).mapIso (@asIso _ _ _ _ N.fromTildeΓ ‹_›)⟩⟩
 
 /- English proof (translation)
-Introduce `Q _ _ ψ hψ`. Use `set g := Spec.map φ with hg`. Use `isIso_fromTildeΓ_pullback φ N` as an intermediate fact. Take `⟨P, ⟨e⟩⟩` from `exists_modules_linearEquiv R Q`. Set `adj` to `Scheme.Modules.pullbackPushforwardAdjunction g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : Γ(N, ⊤) →ₗ[Γ(Spec A, ⊤)] Γ((Scheme.Modules.pushforward g).obj P, ⊤)` to `{ toFun := fun n => e.symm (ψ n) map_add' := fun x y => by`. Rewrite using `[map_add, map_add]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun a x => by`. Rewrite using `[hψ, map_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `rfl }`. Establish `hf : ∀ n, f n = e.symm (ψ n)` using `fun _ => rfl`. Take `⟨θ, hθ, uθ⟩` from `existsUnique_hom_app_top N _ f`. Establish `key : ∀ (h : (Scheme.Modules.pullback g).obj N ⟶ P) (n : Γ(N, ⊤)), (adj.homEquiv _ _ h).app ⊤ n = h.app ⊤ (pullbackSection g N n)` using `fun h n => by`. Rewrite using `[Adjunction.homEquiv_unit]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `θ'` to `(adj.homEquiv _ _).symm θ`. Use `⟨e.toLinearMap ∘ₗ sectionLinear θ', fun n => ?_, fun ψ'' hψ'' => ?_⟩` and prove the remaining obligations. Use `key θ' n` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply, hθ, hf]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, sectionLinear_apply, LinearEquiv.coe_coe]`. Use `erw [← this]`. Simplify using the standard rewrite rules. Take `⟨h, hh, -⟩` from `existsUnique_hom_app_top _ P (e.symm.toLinearMap ∘ₗ ψ'')`. Establish `: adj.homEquiv _ _ h = θ` using `uθ _ (fun n => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[key, hh, hf]`. Simplify using `[hψ''])`. Establish `hθ' : h = θ'` using `by simp [θ', ← this]`. Use extensionality with `x`. Simplify using `[← hθ', hh]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma isBaseChangeSection_specMap {A R : CommRingCat.{u}} (φ : A ⟶ R) (N : (Spec A).Modules)
     [IsIso N.fromTildeΓ] : IsBaseChangeSection (Spec.map φ) N := by
@@ -209,11 +209,9 @@ lemma isBaseChangeSection_specMap {A R : CommRingCat.{u}} (φ : A ⟶ R) (N : (S
     simp [← hθ', hh]
 
 /- English proof (translation)
-Establish `h` using `Adjunction.unit_leftAdjointUniq_hom_app (Scheme.Modules.restrictAdjunction g) (Scheme.Modules.pullbackPushforwardAdjunction g) N`. Establish `hU : (⊤ : U.Opens) ≤ g ''ᵁ (g ⁻¹ᵁ (⊤ : U.Opens))`. Simplify using `[Scheme.Hom.opensRange_of_isIso]`. Establish `h1 : IsIso (((Scheme.Modules.restrictAdjunction g).unit.app N).app ⊤)`. Rewrite using `[Scheme.Modules.restrictAdjunction_unit_app_app]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsIso (homOfLE (g.image_preimage_le (⊤ : U.Opens))).op` using `⟨(homOfLE hU).op, Subsingleton.elim _ _, Subsingleton.elim _ _⟩`. Conclude with `Functor.map_isIso N.presheaf _`. Establish `h2 : IsIso (((Scheme.Modules.pullbackPushforwardAdjunction g).unit.app N).app ⊤)`. Rewrite using `[← h, Scheme.Modules.Hom.comp_app]`. Establish `: IsIso (((Scheme.Modules.pushforward g).map (((Scheme.Modules.restrictAdjunction g).leftAdjointUniq (Scheme.Modules.pullbackPushforwardAdjunction g)).hom.app N)).app ⊤)` using `inferInstanceAs (IsIso (Scheme.Modules.Hom.app _ _))`.
-
-Use `infer_instance`. Conclude with `ConcreteCategory.bijective_of_isIso (((Scheme.Modules.pullbackPushforwardAdjunction g).unit.app N).app ⊤)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma bijective_pullbackSection_of_isIso {T U : Scheme.{u}} (g : T ⟶ U) [IsIso g] (N : U.Modules) :
     Function.Bijective (pullbackSection g N) := by
@@ -237,11 +235,11 @@ lemma bijective_pullbackSection_of_isIso {T U : Scheme.{u}} (g : T ⟶ U) [IsIso
     (((Scheme.Modules.pullbackPushforwardAdjunction g).unit.app N).app ⊤)
 
 /- English proof (translation)
-Introduce `Q _ _ ψ hψ`. Establish `hb` using `bijective_pullbackSection_of_isIso g N`. Establish `: IsIso g.appTop` using `inferInstanceAs (IsIso (g.app ⊤))`. Set `e` to `AddEquiv.ofBijective (pullbackSection g N) hb`. Establish `he : ∀ n, e.symm (pullbackSection g N n) = n` using `fun n => e.symm_apply_apply n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs : ∀ x, pullbackSection g N (e.symm x) = x` using `fun x => e.apply_symm_apply x`. Use `⟨{ toFun := fun x => ψ (e.symm x) map_add' := fun x y => by simp map_smul' := fun t x => ?_ }, fun n => ?_, fun ψ'' hψ'' => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩ : ∃ a : Γ(U, ⊤), g.appTop a = t` from `⟨(asIso g.appTop).inv t, by simp⟩`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← hψ, ← hs x, he, ← pullbackSection_smul, he]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[he]`. Use extensionality with `x`. Take `⟨n, rfl⟩` from `hb.2 x`. Simplify using `[he, hψ'']`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 lemma isBaseChangeSection_of_isIso {T U : Scheme.{u}} (g : T ⟶ U) [IsIso g] (N : U.Modules) :
     IsBaseChangeSection g N := by
@@ -264,7 +262,7 @@ lemma isBaseChangeSection_of_isIso {T U : Scheme.{u}} (g : T ⟶ U) [IsIso g] (N
     simp [he, hψ'']
 
 /- English proof (translation)
-The claim follows from `(SheafOfModules.isQuasicoherent T.ringCatSheaf).prop_of_iso ((Scheme.Modules.restrictFunctorIsoPullback g).app N) inferInstance`.
+A detailed English derivation is pending.
 -/
 lemma isQuasicoherent_pullback_of_isIso {T U : Scheme.{u}} (g : T ⟶ U) [IsIso g] (N : U.Modules)
     [N.IsQuasicoherent] : ((Scheme.Modules.pullback g).obj N).IsQuasicoherent :=
@@ -272,9 +270,9 @@ lemma isQuasicoherent_pullback_of_isIso {T U : Scheme.{u}} (g : T ⟶ U) [IsIso 
     ((Scheme.Modules.restrictFunctorIsoPullback g).app N) inferInstance
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩ : ∃ φ, Spec.map φ = T.isoSpec.inv ≫ g ≫ U.isoSpec.hom` from `⟨Spec.preimage _, Spec.map_preimage _⟩`. Establish `hg : g = T.isoSpec.hom ≫ Spec.map φ ≫ U.isoSpec.inv` using `by simp [hφ]`. Establish `key : IsBaseChangeSection g N`. Rewrite using `[hg]`. Use `isQuasicoherent_pullback_of_isIso U.isoSpec.inv N` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(isQuasicoherent_iff_isIso_fromTildeΓ ((Scheme.Modules.pullback U.isoSpec.inv).obj N)).mp inferInstance` as an intermediate fact. Conclude with `IsBaseChangeSection.comp (IsBaseChangeSection.comp (isBaseChangeSection_of_isIso _ N) (isBaseChangeSection_specMap φ _)) (isBaseChangeSection_of_isIso _ _)`. Conclude with `key Q ψ hψ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_pullbackSection {T U : Scheme.{u}} (g : T ⟶ U) [IsAffine T] [IsAffine U]
     (N : U.Modules) [N.IsQuasicoherent] (Q : Type u) [AddCommGroup Q] [Module Γ(T, ⊤) Q]

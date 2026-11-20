@@ -37,9 +37,7 @@ variable {D : D7} {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (
   {om : UD D (-V.gram) × UD D J₂ →* Module.End ℂ ((Fin V.rank × Fin n × Fin d → AF D.host.F) → ℂ)}
 
 /- English proof (translation)
-Use `haveI := D.host.isCMField_hostE`. Conclude with `Formalism.L2.Pj.unramBridge_holds D.host.E fun P hP => by`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) θ = t` using `RingOfIntegers.ext ht.symm`.
-
-Rewrite using `[this]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unramified_host (D : D7) : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E) := by
   haveI := D.host.isCMField_hostE
@@ -51,9 +49,7 @@ theorem unramified_host (D : D7) : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.ho
     rwa [this]
 
 /- English proof (translation)
-Rewrite using `[one_smul]`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.neg_apply, Matrix.neg_apply, map_neg]`. Conclude with `congrArg Neg.neg (congrFun (congrFun (gram_conjTranspose V) i) j)`. Rewrite using `[Matrix.det_neg]`.
-
-Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (gram_isUnit_det V).ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermND_neg_gram (V : HSp D) : IsHermND D.sp.cm.sig ((1 : D.host.E) • -V.gram) := by
   rw [one_smul]
@@ -64,9 +60,9 @@ theorem isHermND_neg_gram (V : HSp D) : IsHermND D.sp.cm.sig ((1 : D.host.E) •
     exact mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (gram_isUnit_det V).ne_zero
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Use `hV 1 (Matrix.of fun i _ => star (x i)) ⟨one_pos, ?_, ?_⟩` and prove the remaining obligations. Use `linearIndependent_unique_iff.2 fun h => h0 (funext fun i => ?_)` and prove the remaining obligations. Conclude with `star_eq_zero.1 (congrFun h i)`. Use function extensionality and compare the values at `a b`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, Matrix.neg_mulVec, dotProduct_neg, neg_eq_zero]`. Rewrite using `[cT_sig, Matrix.mul_assoc, Matrix.zero_apply, ← hx]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, star_star, dotProduct, Matrix.mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem aniso_neg_gram (hV : IsAniso V) (x : Fin V.rank → D.host.E)
     (hx : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig (-V.gram) x x = 0) : x = 0 := by
@@ -81,13 +77,11 @@ theorem aniso_neg_gram (hV : IsAniso V) (x : Fin V.rank → D.host.E)
     rfl
 
 /- English proof (translation)
-Establish `h1 : ∀ (p : siegelOf finSumFinEquiv (uinc D J₂)), ∀ k ∈ K, H (κ (p * k)) = absA D (aOf finSumFinEquiv (uinc D J₂) p)` using `fun p k hk => by`. Rewrite using `[map_mul]`. Conclude with `hH _ ((hP p).1 p.2) _ (ha p) _ ((hK k).1 hk)`. Establish `h2 : IwasawaOf finSumFinEquiv (uinc D J₂) (absA D) K`. Use `⟨fun g => ?_, fun p hp => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, k, hk, e⟩` from `GlobalTheory.StdUnn.Iwasawa.exists_mul D n (κ g)`. Use `⟨⟨κ.symm p, (hP _).2 (by rwa [κ.apply_symm_apply])⟩, κ.symm k, (hK _).2 (by rwa [κ.apply_symm_apply]), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← e, κ.symm_apply_apply]`. Establish `e1` using `h1 p 1 (one_mem K)`. Establish `e2` using `h1 1 p hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[mul_one]`. Rewrite `e2` using `[OneMemClass.coe_one, one_mul, map_one, map_one]`. Conclude with `e1.symm.trans e2`. Use `⟨h2, fun g => ?_⟩` and prove the remaining obligations. Take `⟨p, k, hk, rfl⟩` from `h2.1 g`.
-
-Rewrite using `[h2.hgtOf_mul p hk, h1 p k hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height {K : Subgroup (UD D J₂)} {H : StdUnn.G D n → ℝ≥0} (hH : StdUnn.IsHeight H)
     (hP : ∀ g : UD D J₂, g ∈ siegelOf finSumFinEquiv (uinc D J₂) ↔ κ g ∈ StdUnn.P D n)
@@ -114,9 +108,9 @@ theorem height {K : Subgroup (UD D J₂)} {H : StdUnn.G D n → ℝ≥0} (hH : S
   rw [h2.hgtOf_mul p hk, h1 p k hk]
 
 /- English proof (translation)
-Set `L : schwartzA θ V.rank n →ₗ[ℂ] ((Fin V.rank × Fin n × Fin d → AF D.host.F) → ℂ)` to `(LinearMap.funLeft ℂ ℂ (coordL ε V.rank n).symm).comp (schwartzA θ V.rank n).subtype`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ {Ψ : schwartzA θ V.rank n | ∃ k ∈ StdUnn.K D n, Ψ = ω k Φ}) := hΦ`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ {Ψ : schwartzA θ V.rank n | ∃ k ∈ StdUnn.K D n, Ψ = ω k Φ}).map L) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Use `⟨ω (κ k) Φ, Submodule.subset_span ⟨κ k, (hK k).1 hk, rfl⟩, funext fun y => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `(coordL ε V.rank n).surjective y`. Rewrite using `[coordL_apply, hom.right k hφ Φ e]`. Conclude with `congrArg (ω (κ k) Φ).1 ((coordL ε V.rank n).symm_apply_apply x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfin (hom : IsTrans ε ι κ ω om) {K : Subgroup (UD D J₂)} (hK : ∀ g : UD D J₂, g ∈ K ↔ κ g ∈ StdUnn.K D n)
     {φ : (Fin V.rank × Fin n × Fin d → AF D.host.F) → ℂ}
@@ -134,9 +128,9 @@ theorem kfin (hom : IsTrans ε ι κ ω om) {K : Subgroup (UD D J₂)} (hK : ∀
   exact congrArg (ω (κ k) Φ).1 ((coordL ε V.rank n).symm_apply_apply x)
 
 /- English proof (translation)
-Use `⟨D.host.xi0, GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D, D.host.φ₀.injective ?_⟩` and prove the remaining obligations. Establish `hd : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Rewrite using `[(GlobalTheory.AdelicU.isCMExt_host D).2.2.2, map_neg]`. Unfold `Host.xi0`. Rewrite using `[map_div₀, map_neg, map_one, map_mul, map_natCast, hd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[div_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem skew_xi (D : D7) : ∃ δ : D.host.E, δ ≠ 0 ∧ D.sp.cm.sig δ = -δ := by
   refine ⟨D.host.xi0, GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D, D.host.φ₀.injective ?_⟩

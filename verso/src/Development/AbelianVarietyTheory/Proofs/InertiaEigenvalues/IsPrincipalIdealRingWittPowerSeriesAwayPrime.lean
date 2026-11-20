@@ -8,7 +8,7 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ K bk`. Establish `h : (l : bk.S) = C ((l : ℕ) : Wq l bk.a)` using `(map_natCast C l).symm`. Rewrite using `[h]`. Conclude with `GlobalTheory.ChartRing.isPrincipalIdealRing_away_C (WittVector.irreducible l (k := Fq l bk.a)) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrincipalIdealRing_away_l : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K),
     IsPrincipalIdealRing (Localization.Away (l : bk.S)) := by

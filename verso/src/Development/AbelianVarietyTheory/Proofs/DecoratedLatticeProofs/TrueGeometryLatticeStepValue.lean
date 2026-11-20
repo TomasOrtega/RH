@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.LevProd
 
 /- English proof (translation)
-Establish `h1 : x ∈ GlobalTheory.FinPl.grpOff S (· = q.v)` using `GlobalTheory.FinPl.SetCut.grpAt_le_grpOff S P (· = q.v) (fun p hp e => hP (e ▸ hp)) hx`. Establish `h2` using `GlobalTheory.LocMod.PinInhab.map_mt_eq_one_of_off q (P := (· = q.v)) rfl h1`. Use `symm`. Rewrite using `[← GlobalTheory.LevIdx.eq_locHom_iff, h2]`. Simplify using `[F.βγ]`.
+Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem locHom_eq_one_of_grpAt {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {Y : Type} [Fintype Y] [DecidableEq Y] (q : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (F : GlobalTheory.LocMod.Frame k S.rank Y)
@@ -31,13 +31,11 @@ theorem locHom_eq_one_of_grpAt {D : D7} {k : Type} [Field k] [ValuativeRel k] [T
   simp [F.βγ]
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ g hg i`. Unfold `GlobalTheory.LevProd.Up at hg`. Use `split_ifs at hg with h`. Take `⟨⟨hsup, hgf⟩, hphi⟩` from `Subgroup.mem_inf.1 hg |>.imp_left Subgroup.mem_inf.1`. Distinguish the cases in `hv : GlobalTheory.LevProd.twAt h.choose_spec.choose (J.G i).q.v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨i₀, hi₀⟩` from `hv`. Conclude with `GlobalTheory.T.true_geometry_lattice_closed W hW u a ha hTr j hj _ _ h.choose_spec.choose_spec.1 t J hJ i₀ i hi₀ g hgf ((Subgroup.mem_pi _).1 (Subgroup.mem_comap.1 hphi) i₀ (Set.mem_univ _))`. Establish `hle : h.choose_spec.choose.A.U j (h.choose_spec.choose.ι j h.choose_spec.choose_spec.2.some) ⊔ GlobalTheory.FinPl.grpAt _ (GlobalTheory.LevProd.twAt h.choose_spec.choose) ≤ (KO (J.G i).k _).comap ((Pi.evalMonoidHom _ i).comp (GlobalTheory.LevProd.phi J j hj))`. Use `sup_le (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.T.levProd_phi_mem_KO_of_not_twAt W hW u a ha hTr j hj _ _ h.choose_spec.choose_spec.1 _ t J hJ i hv x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_comap, MonoidHom.comp_apply, Pi.evalMonoidHom_apply]`. Express the relevant statement in the definitionally equal form `GlobalTheory.LevIdx.locHom (J.G i).q _ _ x ∈ KO (J.G i).k _`. Rewrite using `[locHom_eq_one_of_grpAt _ _ _ hv hx]`. Conclude with `one_mem _`. Conclude with `hle hsup`.
-
-Rewrite using `[Subgroup.mem_bot.1 hg, map_one]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_phi_mem_KO : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ g ∈ GlobalTheory.LevProd.Up a j hj, ∀ i, GlobalTheory.LevProd.phi J j hj g i ∈ KO (J.G i).k _ := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ g hg i

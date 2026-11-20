@@ -16,21 +16,17 @@ noncomputable section
 namespace GlobalTheory.GenericFibreDegree
 
 /- English proof (translation)
-Introduce `B Y _ _ f G j s hpb hP hd hne`. Take `⟨hpre, -, -, hint⟩` from `GlobalTheory.T.generic_fibre_preimmersion_integral B Y f G j s hpb`. Take `⟨hGint, hjη⟩` from `hint hne`. Establish `hu (w : G) : w = genericPoint G`. Establish `h0 : Order.krullDim (IrreducibleCloseds G) ≤ 0` using `(by simpa using hd : topologicalKrullDim G ≤ 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Order.krullDim_nonpos_iff_forall_isMax.1 h0 ⟨closure {w}, isIrreducible_singleton.closure, isClosed_closure⟩` as an intermediate fact. Conclude with `IsGenericPoint.eq (Set.eq_univ_of_univ_subset (@this ⟨Set.univ, IrreducibleSpace.isIrreducible_univ G, isClosed_univ⟩ (Set.subset_univ _))) (genericPoint_spec G)`. Use `haveI : IsAffine G := by`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := G) (x := genericPoint G) (U := ⊤) trivial`. Establish `hUt : U = ⊤`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use extensionality with `w`. Conclude with `⟨fun _ => trivial, fun _ => by rw [hu w]; exact hxU⟩`. Substitute `hUt` using the available equality. Use `haveI : IsAffine (⊤ : G.Opens).toScheme := hU`. Conclude with `IsAffine.of_isIso G.topIso.inv`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsProper s := CommonModel.isProper_of_isProjOver hP`. Use `haveI : IsFinite s := IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`. Establish `hsη : s (genericPoint G) = genericPoint (Sp B.functionField)` using `Subsingleton.elim _ _`. Establish `h1` using `GlobalTheory.ProjFin.finrank_app_eq_residueDegree s hsη (U := ⊤) (isAffineOpen_top _) trivial`. Establish `h2 : f.residueDegree (genericPoint Y) = s.residueDegree (genericPoint G)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg (fun h => Scheme.Hom.residueDegree h (genericPoint G)) hpb.w`. Simplify using `only [CurveDegreesCompare.residueDegree_comp] at e`. Rewrite `e` using `[CoverDeg.residueDegree_eq_one_of_surjectiveOnStalks j, CoverDeg.residueDegree_eq_one_of_surjectiveOnStalks (B.fromSpecStalk (genericPoint B)), mul_one, one_mul, hjη]`. Conclude with `e`. Use `letI := algebraΓOfHom s`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Module.finrank B.functionField Γ(G, ⊤) = s.residueDegree (genericPoint G)`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Use `letI := (s.app ⊤).hom.toAlgebra`. Conclude with `Algebra.finrank_eq_of_equiv_equiv (Scheme.ΓSpecIso (CommRingCat.of B.functionField)).symm.commRingCatIsoToRingEquiv (RingEquiv.refl _) rfl`. Use `haveI hfin : Module.Finite B.functionField Γ(G, ⊤) := by`.
-
-Establish `hf : (s.app ⊤).hom.Finite` using `IsFinite.finite_app s ⊤ (isAffineOpen_top _)`. Establish `hi : ((Scheme.ΓSpecIso (CommRingCat.of B.functionField)).inv).hom.Finite` using `RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of B.functionField)).inv).2`. Conclude with `hf.comp hi`. Use `haveI : Nontrivial Γ(G, ⊤) := inferInstance`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[h2, ← h3]`. Conclude with `Module.finrank_pos.ne'`. Rewrite using `[chi_structureModule_of_isAffine, h3, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_eq_residueDegree : ∀ (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (f : Y ⟶ B)
     (G : Scheme.{0}) (j : G ⟶ Y) (s : G ⟶ Sp B.functionField),

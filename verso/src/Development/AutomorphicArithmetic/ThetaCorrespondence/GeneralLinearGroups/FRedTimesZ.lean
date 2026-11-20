@@ -21,7 +21,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 unseal one GlobalTheory.ProdFlatten.two mp pr Iso Sm in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ProdReorder.ind₂_unit_left k r t e A.V A.ρ hA (fun i => (y i).1) (fun i => (y i).2.rep.V) (fun i => (y i).rep) (stdBlocks _ hy) unseal one GlobalTheory.ProdFlatten.two mp pr Iso Sm in`.
+A detailed English derivation is pending.
 -/
 private theorem two_unit_left {r t : ℕ} (e : t + r = r) (A : BR k r) (hA : Sm A) (y : Fin 0 → IrrGL k)
     (hy : ∑ i, (y i).1 = t) : Iso (two e (pr y hy) A) A :=
@@ -30,20 +30,20 @@ private theorem two_unit_left {r t : ℕ} (e : t + r = r) (A : BR k r) (hA : Sm 
 
 unseal one GlobalTheory.ProdFlatten.two mp pr Iso Sm in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨φ⟩ unseal one GlobalTheory.ProdFlatten.two mp pr Iso Sm in`.
+Supply the required witnesses or components.
 -/
 private theorem iso_one_pr {h : ℕ} {x : IrrGL k} {y : Fin h → IrrGL k} {hy : ∑ i, (y i).1 = x.1}
     (φ : (prodIrr y hy).Equiv x.rep) : Iso (pr y hy) (one x) := ⟨φ⟩
 
 unseal one GlobalTheory.ProdFlatten.two mp pr Iso Sm in
 /- English proof (translation)
-The claim follows from `H`.
+A detailed English derivation is pending.
 -/
 private theorem equiv_of_iso {h c N : ℕ} {x : Fin c → IrrGL k} {y : Fin h → IrrGL k} {hx : ∑ i, (x i).1 = N}
     {hy : ∑ i, (y i).1 = N} (H : Iso (pr x hx) (pr y hy)) : Nonempty ((prodIrr x hx).Equiv (prodIrr y hy)) := H
 
 /- English proof (translation)
-Establish `h0 : ∑ i : Fin 0, ((fun i => i.elim0 : Fin 0 → IrrGL k) i).1 = 0` using `by simp`. Conclude with `iso_trans (pr_cons (x := fun i : Fin 0 => i.elim0) (by simpa using hl) h0 hw rfl) (two_unit_pr rfl _ (sm_one z) _ h0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pr_single {c : ℕ} {w : Fin c → IrrGL k} {z : IrrGL k} (hl : List.ofFn w = [z])
     (hw : ∑ i, (w i).1 = z.1) : Iso (pr w hw) (one z) := by
@@ -52,9 +52,9 @@ private theorem pr_single {c : ℕ} {w : Fin c → IrrGL k} {z : IrrGL k} (hl : 
     (two_unit_pr rfl _ (sm_one z) _ h0)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos h with rfl | hh` into its components or cases. Establish `hN : N = z.1`. Establish `: r = 0` using `by simpa using hy.symm`. Use linear arithmetic over natural numbers and integers. Substitute `hN` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
 
-Conclude with `iso_trans (pr_single (by simpa using hl) hw) (iso_symm (two_unit_left e _ (sm_one z) y hy))`. Establish `h1 : ∑ i, (![z] i).1 = z.1` using `by simp`. Conclude with `iso_trans (pr_append y ![z] w (by simpa using hl) (Or.inl hh.ne') hy h1 hw e) (two_congr e (iso_refl _) (pr_single (by simp) h1))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pr_snoc {h c r N : ℕ} (y : Fin h → IrrGL k) (z : IrrGL k) (w : Fin c → IrrGL k)
     (hl : List.ofFn w = List.ofFn y ++ [z]) (hy : ∑ i, (y i).1 = r) (hw : ∑ i, (w i).1 = N) (e : r + z.1 = N) :
@@ -70,7 +70,7 @@ private theorem pr_snoc {h c r N : ℕ} (y : Fin h → IrrGL k) (z : IrrGL k) (w
       (two_congr e (iso_refl _) (pr_single (by simp) h1))
 
 /- English proof (translation)
-Establish `e : x.1 + z.1 = N` using `by simpa using hd`. Establish `h1 : ∑ i, (![z] i).1 = z.1` using `by simp`. Use `equiv_of_iso (iso_trans (pr_snoc y z _ (by rw [List.ofFn_succ']; simp only [Fin.snoc_castSucc, Fin.snoc_last, List.concat_eq_append]) hy hw e) ?_)` and prove the remaining obligations. Use `iso_trans (two_congr e (iso_one_pr φ) (iso_symm (pr_single (w := ![z]) (by simp) h1))) ?_` and prove the remaining obligations. Conclude with `iso_symm (pr_cons (by simp) h1 hd e)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem equiv_snoc {h N : ℕ} {x : IrrGL k} {y : Fin h → IrrGL k} {hy : ∑ i, (y i).1 = x.1}
     (φ : (prodIrr y hy).Equiv x.rep) (z : IrrGL k) (hd : ∑ a, (![x, z] a).1 = N)
@@ -83,16 +83,16 @@ private theorem equiv_snoc {h N : ℕ} {x : IrrGL k} {y : Fin h → IrrGL k} {hy
   exact iso_symm (pr_cons (by simp) h1 hd e)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IrrGL.of (prodIrr y rfl) (isSmooth_prodIrr y rfl) hirr, rfl, ⟨IrrGL.equivOf _ _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_class {h : ℕ} (y : Fin h → IrrGL k) (hirr : (prodIrr y rfl).IsIrreducible) :
     ∃ (x : IrrGL k) (hy : ∑ i, (y i).1 = x.1), Nonempty ((prodIrr y hy).Equiv x.rep) :=
   ⟨IrrGL.of (prodIrr y rfl) (isSmooth_prodIrr y rfl) hirr, rfl, ⟨IrrGL.equivOf _ _ _⟩⟩
 
 /- English proof (translation)
-Establish `hw : ∑ i, ((Fin.snoc y z : Fin (h + 1) → IrrGL k) i).1 = N`. Rewrite using `[Fin.sum_univ_castSucc, ← hd]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last, Fin.sum_univ_two, hy]`. Both sides reduce to the same expression. Take `⟨ψ⟩` from `equiv_snoc φ z hd hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv ψ (H hw)`.
+A detailed English derivation is pending.
 -/
 private theorem irr_snoc {h N : ℕ} {x : IrrGL k} {y : Fin h → IrrGL k} {hy : ∑ i, (y i).1 = x.1}
     (φ : (prodIrr y hy).Equiv x.rep) (z : IrrGL k) (hd : ∑ a, (![x, z] a).1 = N)
@@ -107,21 +107,21 @@ private theorem irr_snoc {h N : ℕ} {x : IrrGL k} {y : Fin h → IrrGL k} {hy :
   exact GlobalTheory.Parabolic.isIrreducible_of_equiv ψ (H hw)
 
 /- English proof (translation)
-The claim follows from `.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective`.
+A detailed English derivation is pending.
 -/
 private theorem isSubquotient_of_equiv {h : ℕ} {x : IrrGL k} {y : Fin h → IrrGL k} {hy : ∑ i, (y i).1 = x.1}
     (φ : (prodIrr y hy).Equiv x.rep) : IsSubquotient x.rep (prodIrr y hy) :=
   .of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective
 
 /- English proof (translation)
-The claim follows from `jhMult_ne_zero_iff.2 (isSubquotient_of_equiv φ)`.
+A detailed English derivation is pending.
 -/
 private theorem jhMult_ne_zero {h : ℕ} {x : IrrGL k} {y : Fin h → IrrGL k} {hy : ∑ i, (y i).1 = x.1}
     (φ : (prodIrr y hy).Equiv x.rep) : jhMult x.rep (prodIrr y hy) ≠ 0 :=
   jhMult_ne_zero_iff.2 (isSubquotient_of_equiv φ)
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => rw [Fin.snoc_last, Fin.snoc_last]`. Conclude with `H'`. Consider the case `cast i => rw [Fin.snoc_castSucc, Fin.snoc_castSucc]`. Conclude with `H i`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem snoc_rel {α β : Type*} (R : α → β → Prop) {h : ℕ} {D : Fin h → α} {y : Fin h → β} {a : α} {b : β}
     (H : ∀ i, R (D i) (y i)) (H' : R a b) (i : Fin (h + 1)) :
@@ -134,17 +134,17 @@ end UpperTheory.Lit.Full.RedTimesZ
 
 open UpperTheory.Lit.Full.RedTimesZ in
 /- English proof (translation)
-Introduce `hG hB hZ k _ _ _ _ Δ x z N hd hs hf hz`. Take `⟨T, hT, hup⟩` from `hs`. Take `⟨⟨𝔪, h𝔪, hfirst⟩, huniq⟩` from `UpperTheory.Lit.Full.redUnique hG hB hZ k Δ.first Δ.isCusp_first T hup x hT hf`. Take `⟨L, rfl⟩` from `Quotient.exists_rep 𝔪`. Set `D : Fin L.length → Segment k` to `L.get`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hD : ∀ i, (D i).first = Δ.first` using `fun i => hfirst _ (Multiset.mem_coe.2 (List.get_mem L i))`. Establish `hsum : ∑ i, (D i).ms = T`. Rewrite using `[← h𝔪, ← List.sum_ofFn]`. Establish `: List.ofFn (fun i => (D i).ms) = L.map Segment.ms` using `by conv_rhs => rw [← List.ofFn_get L, List.map_ofFn]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Simplify using `[msupp, Multiset.bind, Multiset.join]`. Use `choose y hy using fun i => (UpperTheory.Lit.Full.zfirst hG hB hZ k (D i)).1`. Establish `hirr : (prodIrr y rfl).IsIrreducible` using `UpperTheory.Lit.Full.prodStart hG hB hZ k Δ.first _ _ D y rfl Δ.isCusp_first hD hy`. Take `⟨x', hyx, ⟨φ⟩⟩` from `exists_class y hirr`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : x' = x`. Use `huniq x' ?_ ?_` and prove the remaining obligations. Rewrite using `[← hsum]`. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (hd := hyx) (fun i => (hy i).hasSupport) x'.2.rep.irr (isSubquotient_of_equiv φ)`. Use `UpperTheory.Lit.Full.firstProd hG hB k _ _ y x' hyx (fun i => hD i ▸ (UpperTheory.Lit.Full.zfirst hG hB hZ k (D i)).2 _ (hy i)) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `jhMult_ne_zero φ`. Substitute `hx'` using the available equality. Use `irr_snoc φ z hd fun hw => ?_` and prove the remaining obligations. Use `UpperTheory.Lit.Full.prodStart hG hB hZ k Δ.first _ _ (Fin.snoc D Δ) _ hw Δ.isCusp_first ?_ (snoc_rel (fun (Γ : Segment k) (w : IrrGL k) => IsZSeg Γ w.rep) hy hz)` and prove the remaining obligations. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast i => simpa using hD i`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Full.redTimesZ :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (Δ : Segment k) (x z : IrrGL k) (N : ℕ) (hd : ∑ a, (![x, z] a).1 = N), SuppIn x (up Δ.first) → FirstIn x {Δ.first} → IsZSeg Δ z.rep → (prodIrr ![x, z] hd).IsIrreducible := by

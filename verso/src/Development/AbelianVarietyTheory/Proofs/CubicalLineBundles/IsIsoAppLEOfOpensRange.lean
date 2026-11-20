@@ -10,9 +10,9 @@ open GlobalTheory GlobalTheory.WeierstrassCurve GlobalTheory.AddLaw
 namespace GlobalTheory.CoordFn
 
 /- English proof (translation)
-Substitute `hU` using the available equality. Establish `h1 : IsIso (f.app f.opensRange)` using `Scheme.Hom.isIso_app f _ le_rfl`. Establish `h2 : (⊤ : X.Opens) = f ⁻¹ᵁ f.opensRange` using `le_antisymm h le_top`. Establish `h3 : IsIso (homOfLE h)`. Establish `: homOfLE h = eqToHom h2` using `rfl`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `infer_instance`. Rewrite using `[Scheme.Hom.appLE]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_appLE_of_opensRange {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmersion f]
     (U : Y.Opens) (hU : f.opensRange = U) (h : ⊤ ≤ f ⁻¹ᵁ U) : IsIso (f.appLE U ⊤ h) := by
@@ -26,7 +26,7 @@ theorem isIso_appLE_of_opensRange {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmers
   infer_instance
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Establish `e1 : (Spec.map g).appTop = (Spec.map g).appLE ⊤ ⊤ le_top` using `Scheme.Hom.app_eq_appLE (Spec.map g)`. Establish `e2` using `Scheme.Hom.appLE_comp_appLE (Spec.map g) f U ⊤ ⊤ h le_top`. Rewrite using `[← Scheme.ΓSpecIso_naturality, e1, ← Category.assoc, e2]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_SpecMap_comp {Y : Scheme.{0}} {A B : CommRingCat.{0}} (f : Spec B ⟶ Y) (g : B ⟶ A)
     (U : Y.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (p : Spec A ⟶ Y) (hp : p = Spec.map g ≫ f)
@@ -39,7 +39,7 @@ theorem appLE_SpecMap_comp {Y : Scheme.{0}} {A B : CommRingCat.{0}} (f : Spec B 
   rw [← Scheme.ΓSpecIso_naturality, e1, ← Category.assoc, e2]
 
 /- English proof (translation)
-Establish `e2` using `Scheme.Hom.appLE_comp_appLE f t ⊤ U ⊤ le_top h`. Establish `e1 : ∀ (q : Spec B ⟶ Spec A) (hq : ⊤ ≤ q ⁻¹ᵁ ⊤), q = Spec.map g → q.appLE ⊤ ⊤ hq = (Spec.map g).appTop`. Introduce and unpack `_ _ rfl`. Conclude with `(Scheme.Hom.app_eq_appLE (Spec.map g)).symm`. Rewrite using `[← Category.assoc (t.appLE ⊤ U le_top), e2, e1 _ _ ht, Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_structure {Y : Scheme.{0}} {A B : CommRingCat.{0}} (f : Spec B ⟶ Y) (g : A ⟶ B)
     (U : Y.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (t : Y ⟶ Spec A) (ht : f ≫ t = Spec.map g) :
@@ -53,14 +53,14 @@ theorem appLE_structure {Y : Scheme.{0}} {A B : CommRingCat.{0}} (f : Spec B ⟶
     Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Rewrite using `[← opensRange_awayChart, Scheme.Hom.preimage_opensRange]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem top_le_preimage {R : Type} [CommRing R] (W : WeierstrassCurve R) (i : Fin 3) :
     ⊤ ≤ awayChart W i ⁻¹ᵁ coordOpen W i := by
   rw [← opensRange_awayChart, Scheme.Hom.preimage_opensRange]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨n, a, ha, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective (grading W) (coord_mem W i) x`. Rewrite using `[← evalHom_awayCoord]`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `⟨p, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_eval₂Hom_awayCoord {R : Type} [CommRing R] (W : WeierstrassCurve R)
     (i : Fin 3) :
@@ -73,19 +73,17 @@ theorem surjective_eval₂Hom_awayCoord {R : Type} [CommRing R] (W : Weierstrass
   exact ⟨p, rfl⟩
 
 /- English proof (translation)
-Introduce `R _ W`. Set `φ : ∀ i : Fin 3, Γ(scheme W, coordOpen W i) ⟶ CommRingCat.of (AwayRing W i)` to `fun i => (awayChart W i).appLE (coordOpen W i) ⊤ (top_le_preimage W i) ≫ (Scheme.ΓSpecIso _).hom`. Establish `hφ : ∀ i, Function.Bijective (φ i).hom` using `fun i => by`. Use `isIso_appLE_of_opensRange (awayChart W i) _ (opensRange_awayChart W i) (top_le_preimage W i)` as an intermediate fact. Establish `: IsIso (φ i)` using `by dsimp only [φ]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ConcreteCategory.bijective_of_isIso (φ i)`. Use `choose c hc using fun i j => (hφ i).2 (awayCoord W i j)`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j A _ ρ P hP h`. Establish `hi : IsUnit (P i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[ptHom_preimage_coordOpen]`. Establish `h1 : PrimeSpectrum.basicOpen (P i) = ⊤` using `top_le_iff.mp h`. Assume the negation of the conclusion as `hn`. Take `⟨m, hm, hx⟩` from `exists_max_ideal_of_mem_nonunits hn`. Establish `: (⟨m, hm.isPrime⟩ : PrimeSpectrum A) ∈ PrimeSpectrum.basicOpen (P i)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[h1]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `this hx`. Establish `e` using `appLE_SpecMap_comp (awayChart W i) (CommRingCat.ofHom (awayEval W i ρ P hP.equation hi)) (coordOpen W i) (top_le_preimage W i) _ (ptHom_eq_awayChart W i ρ P hP hi) h`. Establish `e2` using `congrArg (fun k => k.hom (c i j)) e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e3 : (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (((ptHom W ρ P hP).appLE (coordOpen W i) ⊤ h).hom (c i j)) = awayEval W i ρ P hP.equation hi ((φ i).hom (c i j))` using `e2`. Rewrite using `[e3, hc, awayEval_awayCoord_mul]`. Introduce `i`. Establish `e` using `appLE_structure (awayChart W i) (CommRingCat.ofHom (awayConst W i)) (coordOpen W i) (top_le_preimage W i) (toSpec W) (awayChart_toSpec W i)`. Establish `key : (φ i).hom.comp (MvPolynomial.eval₂Hom (((toSpec W).appLE ⊤ (coordOpen W i) le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom) (c i)) = MvPolynomial.eval₂Hom (awayConst W i) (awayCoord W i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun j => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_C]`. Conclude with `congrArg (fun k => k.hom r) e`. Rewrite using `[RingHom.comp_apply, MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_X', hc]`. Introduce `y`.
-
-Take `⟨p, hp⟩` from `surjective_eval₂Hom_awayCoord W i ((φ i).hom y)`. Conclude with `⟨p, (hφ i).1 ((RingHom.congr_fun key p).trans hp)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coordFn : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R), ∃ c : ∀ i j : Fin 3, Γ(scheme W, coordOpen W i), (∀ (i j : Fin 3) (A : Type) [CommRing A] (ρ : R →+* A) (P : Fin 3 → A) (hP : IsUnimodularSol (W.map ρ) P) (h : ⊤ ≤ ptHom W ρ P hP ⁻¹ᵁ coordOpen W i), (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (((ptHom W ρ P hP).appLE (coordOpen W i) ⊤ h).hom (c i j)) * P i = P j) ∧ ∀ i, Function.Surjective (MvPolynomial.eval₂Hom (((toSpec W).appLE ⊤ (coordOpen W i) le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom) (c i)) := by
   intro R _ W

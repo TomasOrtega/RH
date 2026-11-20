@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.CMVal.Euler
 namespace GlobalTheory.CMVal.Euler
 
 /- English proof (translation)
-Establish `hd : Ideal.span {x} ⊔ v.asIdeal ^ (n + 1) ∣ v.asIdeal ^ (n + 1)` using `Ideal.dvd_iff_le.2 le_sup_right`. Take `⟨i, -, hi⟩` from `(dvd_prime_pow v.prime _).1 hd`. Rewrite `hi` using `[associated_iff_eq]`. Establish `hle : Ideal.span {x} ⊔ v.asIdeal ^ (n + 1) ≤ v.asIdeal` using `sup_le ((Ideal.span_singleton_le_iff_mem _).2 hx) (Ideal.pow_le_self (by omega))`. Establish `hxi : x ∈ v.asIdeal ^ i` using `hi ▸ Ideal.mem_sup_left (Ideal.mem_span_singleton_self x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hle`, the goal using `[hi]`. Use `match i, hle, hxi with`. Consider the case `0, hle, _ => exact absurd (top_le_iff.1 (by simpa using hle)) v.isPrime.ne_top`. Consider the case `1, _, _ => exact pow_one _`. Consider the case `i + 2, _, hxi => exact absurd (Ideal.pow_le_pow_right (by omega) hxi) hx2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_sup_pow_eq_of_notMem_sq {R : Type} [CommRing R] [IsDedekindDomain R] (v : HeightOneSpectrum R) {x : R}
     (hx : x ∈ v.asIdeal) (hx2 : x ∉ v.asIdeal ^ 2) (n : ℕ) : Ideal.span {x} ⊔ v.asIdeal ^ (n + 1) = v.asIdeal := by
@@ -28,7 +28,7 @@ theorem span_sup_pow_eq_of_notMem_sq {R : Type} [CommRing R] [IsDedekindDomain R
   | i + 2, _, hxi => exact absurd (Ideal.pow_le_pow_right (by omega) hxi) hx2
 
 /- English proof (translation)
-Establish `h0 : g ≠ 0` using `fun h => h2 (h ▸ zero_le')`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_exp_neg_one_of_le_of_not_le {g : WithZero (Multiplicative ℤ)} (h1 : g ≤ WithZero.exp (-1 : ℤ))
     (h2 : ¬ g ≤ WithZero.exp (-2 : ℤ)) : g = WithZero.exp (-1 : ℤ) := by
@@ -39,33 +39,31 @@ theorem eq_exp_neg_one_of_le_of_not_le {g : WithZero (Multiplicative ℤ)} (h1 :
   omega
 
 /- English proof (translation)
-Introduce `E _ _ _ v hv`. Establish `he` using `fun P hP => ((GlobalTheory.T.splitsInCMField_two_primes_degree_one E v hv).2 P hP).2.1`. Take `⟨x, hx1, hx2⟩` from `Ideal.exists_mem_pow_notMem_pow_succ v.asIdeal v.ne_bot v.isPrime.ne_top 1`. Establish `hval : ∀ P, Over P v → Valued.v (iota x P) = WithZero.exp (-1 : ℤ)` using `fun P hP => eq_exp_neg_one_of_le_of_not_le (by simpa using val_iota_le_of_mem hP 1 hx1) (fun h => hx2 ((he P hP x 2).1 ((val_iota_le_iff P 2 x).1 (by simpa using h))))`. Establish `hlt : WithZero.exp (-1 : ℤ) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Use `⟨x, hval, fun n π y hπ => ?_⟩` and prove the remaining obligations. Establish `hx0 : ∀ P, Over P v → iota x P ≠ 0` using `fun P hP h => by`. Use `hval P hP` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero this.symm`. Establish `hq : ∀ P, Over P v → ((π⁻¹ * y : (Af E)ˣ) : Af E) P = (iota x P)⁻¹ * (y : Af E) P` using `fun P hP => by`. Rewrite using `[Units.val_mul, mul_coord, inv_coord, hπ P hP]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨?_, fun hu => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h`. Use `⟨x * b, fun P hP => ?_⟩` and prove the remaining obligations. Establish `h0` using `hx0 P hP`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (y : Af E) P - iota (x * b) P = iota x P * (((π⁻¹ * y : (Af E)ˣ) : Af E) P - iota b P)`. Rewrite using `[hq P hP, iota_mul, mul_coord]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, map_mul, hval P hP]`. Use `(mul_le_mul' le_rfl (hb P hP)).trans_eq ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨P, -, -, hP, -⟩` from `hv`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `h.val_le hP`. Rewrite `h1` using `[hq P hP, map_mul, map_inv₀, hval P hP, hu P hP, mul_one, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h, hu⟩ push Not at hu`. Take `⟨Q, hQ, hyQ⟩` from `hu`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyQ' : Valued.v ((y : Af E) Q) < 1` using `lt_of_le_of_ne (h.val_le hQ) hyQ`. Take `⟨a, ha⟩` from `h`. Establish `hav : a ∈ v.asIdeal`. Establish `h2 : Valued.v ((y : Af E) Q - iota a Q) < 1` using `((ha Q hQ).trans (WithZero.exp_le_exp.2 (by push_cast; omega))).trans_lt hlt`. Establish `h3` using `Valuation.map_sub_lt _ hyQ' h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[sub_sub_cancel]`. Establish `h4 : Valued.v (iota a Q) ≤ WithZero.exp (-((1 : ℕ) : ℤ))`. Distinguish the cases in `h0 : Valued.v (iota a Q) = 0`. Rewrite using `[h0]`. Conclude with `zero_le'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h3` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using (he Q hQ a 1).1 ((val_iota_le_iff Q 1 a).1 h4)`. Rewrite `hav` using `[← span_sup_pow_eq_of_notMem_sq v (by simpa using hx1) hx2 n]`. Take `⟨s, hs, t, ht, rfl⟩` from `Submodule.mem_sup.1 hav`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hs`. Use `⟨b, fun P hP => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hx0 P hP`. Establish `: ((π⁻¹ * y : (Af E)ˣ) : Af E) P - iota b P = (iota x P)⁻¹ * (((y : Af E) P - iota (b * x + t) P) + iota t P)`. Rewrite using `[hq P hP, iota_add, iota_mul, add_coord, mul_coord]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, map_mul, map_inv₀, hval P hP]`. Use `(mul_le_mul' le_rfl (Valuation.map_add_le _ (ha P hP) (val_iota_le_of_mem hP (n + 1) ht))).trans_eq ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_neg, ← WithZero.exp_add]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locIn_succ_nonunit_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (v : HeightOneSpectrum (OF E)), Splits v → ∃ x : OF E, (∀ P, Over P v → Valued.v (iota x P) = WithZero.exp (-1 : ℤ)) ∧ ∀ (n : ℕ) (π y : (Af E)ˣ), (∀ P, Over P v → (π : Af E) P = iota x P) → (LocIn n v ((π⁻¹ * y : (Af E)ˣ) : Af E) ↔ LocIn (n + 1) v (y : Af E) ∧ ¬ ∀ P, Over P v → Valued.v ((y : Af E) P) = 1) := by
   intro E _ _ _ v hv

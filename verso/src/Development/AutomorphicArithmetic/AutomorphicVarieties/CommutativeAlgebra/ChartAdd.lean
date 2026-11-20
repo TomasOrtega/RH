@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Establish `h` using `coeff_embDomain_rename ε.toEmbedding p (Finsupp.mapDomain ε.symm n)`. Rewrite `h` using `[Finsupp.embDomain_eq_mapDomain, ← Finsupp.mapDomain_comp]`. Establish `h2 : (ε.toEmbedding : τ → τ') ∘ ε.symm = id` using `funext fun x => ε.apply_symm_apply x`. Rewrite `h` using `[h2, Finsupp.mapDomain_id]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chart_add_coeff {K τ τ' : Type} [CommRing K] (ε : τ ≃ τ') (p : MvPowerSeries τ K) (n : τ' →₀ ℕ) :
     coeff n (rename ε p) = coeff (Finsupp.mapDomain ε.symm n) p := by
@@ -17,7 +17,7 @@ private theorem chart_add_coeff {K τ τ' : Type} [CommRing K] (ε : τ ≃ τ')
   exact h
 
 /- English proof (translation)
-Proceed by induction on `n using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [Finsupp.mapDomain_add, map_add, map_add, ha, hb]`. Consider the case `single a b => simp [Finsupp.weight_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem chart_add_weight {τ τ' X : Type} [AddCommGroup X] (g : τ' → τ) (wt : τ → X) (n : τ' →₀ ℕ) :
     Finsupp.weight wt (Finsupp.mapDomain g n) = Finsupp.weight (fun s => wt (g s)) n := by
@@ -27,13 +27,11 @@ private theorem chart_add_weight {τ τ' X : Type} [AddCommGroup X] (g : τ' →
   | single a b => simp [Finsupp.weight_single]
 
 /- English proof (translation)
-Use `show coeff n (rename ε (φ f)) = 0`. Rewrite using `[chart_add_coeff]`. Use `h.graded j f hf _ ?_` and prove the remaining obligations. Rewrite using `[chart_add_weight, ← funext hw]` and apply the resulting hypothesis. Use `const f := by show constantCoeff (rename ε (φ f)) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[constantCoeff_rename, h.const]`. Use `onto i := by`. Take `⟨f, h1, h2⟩` from `h.onto (ε.symm i)`. Use `⟨f, ?_, fun i' hi' => ?_⟩` and prove the remaining obligations. Use `show coeff _ (rename ε (φ f)) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[chart_add_coeff, Finsupp.mapDomain_single]` and apply the resulting hypothesis. Use `show coeff _ (rename ε (φ f)) = 0`. Rewrite using `[chart_add_coeff, Finsupp.mapDomain_single]`. Conclude with `h2 _ fun h3 => hi' (ε.symm.injective h3)`. Use `inj f hx hf := by`.
-
-Use `h.inj f hx fun i => ?_` and prove the remaining obligations. Establish `h1 : coeff _ (rename ε (φ f)) = 0` using `hf (ε i)`. Rewrite `h1` using `[chart_add_coeff, Finsupp.mapDomain_single, ε.symm_apply_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem chart_add_rename {O A X τ τ' : Type} [CommRing O] [IsDomain O] [CommRing A] [Algebra O A]
     [AddCommGroup X] {𝒜 : X → Submodule O A} {x : A →ₐ[O] O} {wt : τ → X}
@@ -78,19 +76,19 @@ private def chart_add_equiv (F : Bool → Type) : (Σ v, F v) ≃ F true ⊕ F f
 private def chart_add_fam (A B : Type) : Bool → Type := fun v => Bool.rec B A v
 
 /- English proof (translation)
-Introduce `O X R _ _ _ _ iR aR W h τ fτ wt φ hφ R' _ _ W' τ' fτ' e hwt hker`. Set `W0 : WPres O X (MvPowerSeries τ' O)` to `WPres.free O fun s : τ' => W'.wt (e (.inr s))`. Establish `h0 : W0.HasOrigin` using `fun f hf => by`. Establish `: f = 0` using `hf`. Rewrite using `[this, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ0, hφ0, hz0⟩` from `chart_free O X (MvPowerSeries τ' O) W0 h0 Function.injective_id`. Set `B : Bool → Type` to `chart_add_fam R (MvPowerSeries τ' O)`. Use `letI iB : ∀ v : Bool, CommRing (B v) := fun v => Bool.rec (motive := fun v : Bool => CommRing (B v)) (inferInstance : CommRing (MvPowerSeries τ' O)) iR v`. Use `letI aB : ∀ v : Bool, Algebra O (B v) := fun v => Bool.rec (motive := fun v : Bool => @Algebra O (B v) _ (iB v).toCommSemiring.toSemiring) (inferInstance : Algebra O (MvPowerSeries τ' O)) aR v`. Set `WB : ∀ v : Bool, WPres O X (B v)` to `fun v => Bool.rec (motive := fun v : Bool => WPres O X (B v)) W0 W v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hB : ∀ v : Bool, (WB v).HasOrigin` using `fun v => Bool.rec (motive := fun v : Bool => (WB v).HasOrigin) h0 h v`. Set `F : Bool → Type` to `chart_add_fam τ τ'`. Use `letI fF : ∀ v : Bool, Fintype (F v) := fun v => Bool.rec (motive := fun v : Bool => Fintype (F v)) fτ' fτ v`. Set `wF : ∀ v : Bool, F v → X` to `fun v => Bool.rec (motive := fun v : Bool => F v → X) W0.wt wt v`. Set `φF : ∀ v : Bool, B v →ₐ[O] MvPowerSeries (F v) (FractionRing O)` to `fun v => Bool.rec (motive := fun v : Bool => B v →ₐ[O] MvPowerSeries (F v) (FractionRing O)) φ0 φ v`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hF : ∀ v : Bool, IsChart (WB v).part ((WB v).origin (hB v)) (wF v) (φF v)` using `fun v => Bool.rec (motive := fun v : Bool => IsChart (WB v).part ((WB v).origin (hB v)) (wF v) (φF v)) hφ0 hφ v`. Set `e' : (Σ v, (WB v).σ) ≃ W'.σ` to `(chart_add_equiv fun v => (WB v).σ).trans e`. Take `⟨h', ψ, hψ, hz⟩` from `chart_sum O X Bool B WB hB F wF φF hF R' W' e' (fun v => Bool.rec (motive := fun v : Bool => ∀ s, W'.wt (e' ⟨v, s⟩) = (WB v).wt s) (fun _ => rfl) hwt v) (by`. Rewrite using `[iSup_bool_eq, hker]`. Establish `h1 : RingHom.ker (WB false).π = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).1 Function.injective_id`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, Ideal.map_bot, sup_bot_eq]`. Use the proof step `rfl)`. Set `ε : (Σ v, F v) ≃ τ ⊕ τ'` to `chart_add_equiv F`. Use `⟨h', ((rename ε).restrictScalars O).comp ψ, chart_add_rename hψ ε _ ?_, fun s => ?_, fun s => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (s | s) <;> rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (rename ε) (hz true s)`. Rewrite `h1` using `[rename_rename]`. Conclude with `h1`. Establish `h1` using `congrArg (rename ε) (hz false s)`. Rewrite `h1` using `[rename_rename]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1.trans ?_` and prove the remaining obligations. Establish `h2 : φF false ((WB false).z s) = MvPowerSeries.X s` using `hz0 s`. Rewrite using `[h2]`. Conclude with `rename_X _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.chart_add :
     ∀ (O X R : Type) [CommRing O] [IsDomain O] [AddCommGroup X] [DecidableEq X] [CommRing R] [Algebra O R] (W : WPres O X R) (h : W.HasOrigin) (τ : Type) [Fintype τ] (wt : τ → X) (φ : R →ₐ[O] MvPowerSeries τ (FractionRing O)), IsChart W.part (W.origin h) wt φ →

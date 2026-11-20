@@ -31,9 +31,9 @@ def coordSub (A₀ : Over (Sp k)) [GrpObj A₀] (S : Submodule k (HdR A₀)) :
     ext <;> simp <;> ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Use `congrArg TrivSqZeroExt.fst (h c)` as an intermediate fact. Simplify using `using this`. Use `LinearMap.ext fun c => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg TrivSqZeroExt.snd (h c)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coords_unique {A₀ : Over (Sp k)} [GrpObj A₀] {u v u' v' : HdR A₀}
     (h : ∀ c : primDR A₀, TrivSqZeroExt.inl (u c) + TrivSqZeroExt.inr (v c)
@@ -47,19 +47,19 @@ theorem coords_unique {A₀ : Over (Sp k)} [GrpObj A₀] {u v u' v' : HdR A₀}
     simpa using this
 
 /- English proof (translation)
-Introduce `k _ A₀ _ hA f`. Take `⟨W, hW⟩` from `Submodule.exists_isCompl (Fil A₀)`. Use `⟨coordSub A₀ W, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `d ⟨x, hx, y, hy, e⟩ ⟨u, hu, v, hv, e'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨h1, h2⟩` from `coords_unique (u := x) (v := f x + y) (u' := u) (v' := v) (fun c => by rw [LinearMap.add_apply]; exact (e c).symm.trans (e' c))`. Substitute `h1` using the available equality. Establish `hx0 : x = 0` using `(Submodule.disjoint_def.1 hW.disjoint) x hx hu`. Substitute `hx0` using the available equality. Rewrite `h2` using `[map_zero, zero_add]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `h2` using the available equality. Establish `hy0 : y = 0` using `(Submodule.disjoint_def.1 hW.disjoint) y hy hv`. Substitute `hy0` using the available equality. Use `crys_ext hA fun c => ?_` and prove the remaining obligations. Rewrite using `[e' c]`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp <;> rfl`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `d _`. Take `⟨u, v, hd⟩` from `exists_coords d`. Establish `htop : Fil A₀ ⊔ W = ⊤` using `hW.sup_eq_top`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, w, hw, hxw⟩` from `Submodule.mem_sup.1 (htop ▸ Submodule.mem_top : u ∈ Fil A₀ ⊔ W)`. Take `⟨y, hy, w', hw', hyw⟩` from `Submodule.mem_sup.1 (htop ▸ Submodule.mem_top : v - f x ∈ Fil A₀ ⊔ W)`. Take `⟨d₁, h₁⟩` from `exists_crys hA x (f x + y)`. Take `⟨d₂, h₂⟩` from `exists_crys hA w w'`. Establish `hsum : d = d₁ + d₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `crys_ext hA fun c => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, hd c, h₁ c, h₂ c, ← hxw]`. Establish `hv : v = f x + (y + w')` using `by rw [hyw]; abel`. Rewrite using `[hv]`. Apply the tactic sequence `ext <;> simp <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hsum]`. Conclude with `Submodule.add_mem_sup ⟨x, hx, y, hy, h₁⟩ ⟨w, hw, w', hw', h₂⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graphFil_exists_isCompl : ∀ (k : Type) [Field k] (A₀ : Over (Sp k)) [GrpObj A₀], IsAbelianScheme A₀ →
     ∀ f : HdR A₀ →ₗ[k] HdR A₀, ∃ M : Submodule (DualNumber k) (Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀),

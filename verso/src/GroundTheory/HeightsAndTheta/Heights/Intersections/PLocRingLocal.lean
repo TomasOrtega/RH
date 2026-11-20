@@ -17,7 +17,7 @@ set_option linter.unusedSectionVars false
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `m hm k`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
@@ -30,25 +30,23 @@ theorem isMultiHomog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a
 end LocRingLocal
 
 /- English proof (translation)
-Introduce `K _ ι _ P W hP hW hPW`. Use `hP` as an intermediate fact. Use `set F := FractionRing (MRing ι ⧸ P)`. Establish `hnzd : ∀ w : MRing ι, w ∉ W → Ideal.Quotient.mk P w ∈ nonZeroDivisors (MRing ι ⧸ P)` using `fun w hw => mem_nonZeroDivisors_of_ne_zero fun h => hw (hPW (Ideal.Quotient.eq_zero_iff_mem.mp h))`. Establish `hne : ∀ w : MRing ι, w ∉ W → algebraMap (MRing ι ⧸ P) F (Ideal.Quotient.mk P w) ≠ 0` using `fun w hw => IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (hnzd w hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (y : locRing P W) (u v : MRing ι) (a : K → ℕ), IsMultiHomog u a → IsMultiHomog v a → v ∉ W → (y : F) * algebraMap (MRing ι ⧸ P) F (Ideal.Quotient.mk P v) = algebraMap (MRing ι ⧸ P) F (Ideal.Quotient.mk P u) → (IsUnit y ↔ u ∉ W)`. Introduce `y u v a hu hv hvW hy`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hunit huW`. Take `⟨y', hyy'⟩` from `hunit.exists_right_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u', v', a', -, -, hv'W, hy'⟩` from `hF K ι P W hP hW hPW y' y'.2`. Establish `h1 : ((y * y' : locRing P W) : F) = 1` using `by rw [hyy']; rfl`. Establish `h2 : algebraMap (MRing ι ⧸ P) F (Ideal.Quotient.mk P (v * v')) = algebraMap (MRing ι ⧸ P) F (Ideal.Quotient.mk P (u * u'))`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, ← hy, ← hy']`. Rewrite `h1` using `[Subring.coe_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(algebraMap (MRing ι ⧸ P) F (Ideal.Quotient.mk P v) * algebraMap (MRing ι ⧸ P) F (Ideal.Quotient.mk P v'))) * h1`. Establish `h3` using `Ideal.Quotient.eq.mp (IsFractionRing.injective (MRing ι ⧸ P) F h2)`. Establish `h4 : v * v' ∈ W`. Use `W.add_mem (hPW h3) (W.mul_mem_right u' huW)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hW.mem_or_mem h4 with h | h` into its components or cases. Conclude with `hvW h`. Conclude with `hv'W h`. Introduce `huW`. Establish `hz : IsLocalization.mk' F (Ideal.Quotient.mk P v) (⟨_, hnzd u huW⟩ : nonZeroDivisors (MRing ι ⧸ P)) ∈ locRing P W` using `Subring.subset_closure ⟨v, u, a, hnzd u huW, huW, hv, hu, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `IsUnit.of_mul_eq_one (a := y) ⟨_, hz⟩ (Subtype.ext ?_)` and prove the remaining obligations. Establish `hspec` using `IsLocalization.mk'_spec F (Ideal.Quotient.mk P v) (⟨_, hnzd u huW⟩ : nonZeroDivisors (MRing ι ⧸ P))`. Simplify using `only [Subring.coe_mul, Subring.coe_one]`. Apply `mul_right_cancel₀ (hne u huW)` to reduce the goal to its premises. Rewrite using `[one_mul, mul_assoc, hspec, hy]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, key⟩` and prove the remaining obligations. Use `IsLocalRing.of_nonunits_add fun x y hx hy => ?_` and prove the remaining obligations. Take `⟨u, v, a, hu, hv, hvW, hxe⟩` from `hF K ι P W hP hW hPW x x.2`. Take `⟨u', v', a', hu', hv', hv'W, hye⟩` from `hF K ι P W hP hW hPW y y.2`. Establish `huW : u ∈ W`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx ((key x u v a hu hv hvW hxe).mpr h)`. Establish `hu'W : u' ∈ W`. Assume the negation of the conclusion as `h`. Conclude with `hy ((key y u' v' a' hu' hv' hv'W hye).mpr h)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hvv' : v * v' ∉ W` using `fun h => (hW.mem_or_mem h).elim hvW hv'W`. Establish `hsum : ((x + y : locRing P W) : F) * algebraMap (MRing ι ⧸ P) F (Ideal.Quotient.mk P (v * v')) = algebraMap (MRing ι ⧸ P) F (Ideal.Quotient.mk P (u * v' + u' * v))`. Simplify using `only [Subring.coe_add, map_mul, map_add]`. Rewrite using `[← hxe, ← hye]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hnum : IsMultiHomog (u * v' + u' * v) (a + a')` using `LocRingLocal.isMultiHomog_add (AvoidRing.isMultiHomog_mul hu hv') (add_comm a' a ▸ AvoidRing.isMultiHomog_mul hu' hv)`. Introduce `hunit`. Conclude with `(key (x + y) _ _ (a + a') hnum (AvoidRing.isMultiHomog_mul hv hv') hvv' hsum).mp hunit (W.add_mem (W.mul_mem_right v' huW) (W.mul_mem_right v hu'W))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LocRingLocal.proof (hF : LocRingFrac.Statement) : LocRingLocal.Statement := by
   intro K _ ι _ P W hP hW hPW

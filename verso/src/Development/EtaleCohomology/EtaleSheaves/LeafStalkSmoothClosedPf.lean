@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Order
 namespace LateralTheory.E.LeafStalkSmoothClosedPf
 
 /- English proof (translation)
-Set `` to `specializationOrder X`. Establish `h` using `coheight_le_krullDim (irreducibleSetEquivPoints.symm x : TopologicalSpace.IrreducibleCloseds X)`. Rewrite `h` using `[coheight_orderIso]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coheight_le_topDim {X : Scheme.{0}} (x : X) :
     (coheight x : WithBot ℕ∞) ≤ topologicalKrullDim X := by
@@ -17,9 +17,9 @@ theorem coheight_le_topDim {X : Scheme.{0}} (x : X) :
   rwa [coheight_orderIso] at h
 
 /- English proof (translation)
-Introduce `hF`. Set `` to `hF.toField`. Establish `h0 : ringKrullDim (X.presheaf.stalk y) = 0` using `ringKrullDim_eq_zero_of_field _`. Rewrite `h0` using `[ringKrullDim_stalk_eq_coheight]`. Establish `hc : coheight y = 0` using `by exact_mod_cast h0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[coheight_eq_zero]`. Establish `h1 : y ≤ genericPoint X` using `genericPoint_specializes y`. Establish `h2 : genericPoint X ≤ y` using `hc h1`. Conclude with `hy (Specializes.antisymm (h2 : y ⤳ genericPoint X) (h1 : genericPoint X ⤳ y)).eq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalk_not_isField {X : Scheme.{0}} [IsIntegral X] (y : X) (hy : y ≠ genericPoint X) :
     ¬ IsField (X.presheaf.stalk y) := by
@@ -34,9 +34,9 @@ theorem stalk_not_isField {X : Scheme.{0}} [IsIntegral X] (y : X) (hy : y ≠ ge
   exact hy (Specializes.antisymm (h2 : y ⤳ genericPoint X) (h1 : genericPoint X ⤳ y)).eq
 
 /- English proof (translation)
-Establish `hc : coheight y ≤ 1`. Use `(coheight_le_topDim y).trans hd.le` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `: Ring.KrullDimLE 1 (X.presheaf.stalk y)` using `krullDimLE_of_coheight_le hc`. Establish `: Ring.DimensionLEOne (X.presheaf.stalk y)` using `⟨fun hp hprime => hprime.isMaximal_of_ne_bot hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDedekindDomain (X.presheaf.stalk y)` using `{}`. Conclude with `((IsDiscreteValuationRing.TFAE _ (stalk_not_isField y hy)).out 2 0).mp this`.
+A detailed English derivation is pending.
 -/
 theorem stalk_dvr {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (y : X)
     (hn : IsIntegrallyClosed (X.presheaf.stalk y)) (hd : topologicalKrullDim X = 1)
@@ -52,11 +52,11 @@ theorem stalk_dvr {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (y : X
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `Ω _ _ C c _ hc hn hd y hy`. Establish `: IsLocallyNoetherian C` using `LocallyOfFiniteType.isLocallyNoetherian c`. Use `hn y` as an intermediate fact. Establish `: IsDiscreteValuationRing (C.presheaf.stalk y)` using `stalk_dvr y (hn y) hd hy`. Establish `hE` using `LocallyOfFiniteType.stalkMap c y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `algebraize [(c.stalkMap y).hom]`. Set `p : Spec (CommRingCat.of Ω)` to `c y`. Set `K'` to `(Spec.structureSheaf Ω).presheaf.stalk p`. Set `e : Ω ≃ₐ[Ω] K'` to `IsLocalization.atUnits _ p.asIdeal.primeCompl (fun x hx ↦ by aesop (add simp IsUnit.mem_submonoid_iff))`. Establish `: Algebra.IsAlgebraic Ω K'` using `.of_injective e.symm.toAlgHom e.symm.injective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `: Field K'` to `(e.toRingEquiv.symm.isField (Field.toIsField Ω)).toField`. Set `: Field ((Sp Ω).presheaf.stalk (c y))` to `this`. Establish `: PerfectField ((Sp Ω).presheaf.stalk (c y))` using `Algebra.IsAlgebraic.perfectField (K := Ω) (L := (Spec.structureSheaf Ω).presheaf.stalk p)`. Conclude with `GlobalTheory.formallySmooth_of_isRegularLocalRing_of_perfectField _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafStalkSmoothClosed_of : LateralTheory.E.LeafSmoothOfNormalPf.LeafStalkSmoothClosed := by
   intro Ω _ _ C c _ hc hn hd y hy

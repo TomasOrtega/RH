@@ -19,9 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory Over.braidedCategory
 namespace GlobalTheory.WeilAntisymm
 
 /- English proof (translation)
-Apply the tactic sequence `have e : CartesianMonoidalCategory.lift (snd A A) (fst A A) = (β_ A A).hom := by ext1 <;> simp`. Establish `: IsMonHom (CartesianMonoidalCategory.lift (snd A A) (fst A A))` using `e ▸ inferInstance`. Establish `hw : LBIso (lbPow P 1) (P.pull (CartesianMonoidalCategory.lift (snd A A) (fst A A)).left)`. Use `(CechPic.cls_eq_iff (LB.isLB_linComb hP _ _) (pull_isLB hP _)).1 ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_lbPow hP, (CechPic.cls_eq_iff (pull_isLB hP _) hP).2 hs]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `H` using `WeilIsogeny.weilIs_pull_hom globalFns_holds (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA) hP hP _ hw (x := CartesianMonoidalCategory.lift 1 a) (y := CartesianMonoidalCategory.lift b 1) (n := k) (c := c) (by`. Rewrite using `[comp_lift, comp_lift, lift_fst, lift_snd, lift_fst, lift_snd])` and apply the resulting hypothesis. Rewrite `H` using `[Nat.cast_one, _root_.mul_one]`. Conclude with `CommPairing.weilIs_symm hP H`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_exchange {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) {P : LB (A ⊗ A).left}
     (hP : P.IsLB) (hs : LBIso (swap P) P) {k : ℤ} {T : Over S} {a b : T ⟶ A} {c : Γ(T.left, ⊤)ˣ}
@@ -40,9 +40,9 @@ theorem weilIs_exchange {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelian
   exact CommPairing.weilIs_symm hP H
 
 /- English proof (translation)
-Establish `h₁ : f.toLinearMap = CartierDual.tensorToHom R H H U` using `LinearMap.ext fun χ => (hf χ).trans (CartierDual.tensorToHom_apply U χ).symm`. Establish `h₂ : (((CartierDual.bidual R H).symm : _ →ₐc[R] H).comp (CartierDual.map f)).toLinearMap = CartierDual.tensorToHom R H H (TensorProduct.comm R H H U)` using `LinearMap.ext fun χ => CartierDual.eq_of_forall_apply fun ψ => by`. Rewrite using `[CartierDual.apply_tensorToHom_comm, ← CartierDual.apply_tensorToHom, ← h₁]`. Conclude with `CartierDual.apply_bidual_symm _ _`. Establish `h₃` using `CartierDual.tensorToHom_mul (TensorProduct.comm R H H U) U`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₃` using `[hU, ← h₁, ← h₂]`. Use `WithConv.ofConv_injective (BialgHom.ext fun χ => ?_)` and prove the remaining obligations. Use `(LinearMap.congr_fun (congrArg WithConv.ofConv h₃) χ).symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `χ.ofConv 1 • (1 : H) = algebraMap R H (χ.ofConv 1)`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_eq_one {R H : Type} [CommRing R] [CommRing H] [HopfAlgebra R H] [Coalgebra.IsCocomm R H] [Module.Finite R H]
     [Module.Projective R H] (U : H ⊗[R] H) (hU : TensorProduct.comm R H H U * U = 1)
@@ -63,9 +63,9 @@ theorem conv_eq_one {R H : Type} [CommRing R] [CommRing H] [HopfAlgebra R H] [Co
   rw [Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Establish `hAA` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Set `τ : H ⊗[R] H →ₐ[R] H ⊗[R] H` to `(Algebra.TensorProduct.comm R H H).toAlgHom`. Establish `h` using `CommPairing.weilIs_pull globalFns_holds hAA hP (spOver τ) hU`. Establish `e₁ : τ.comp Algebra.TensorProduct.includeLeft = Algebra.TensorProduct.includeRight` using `AlgHom.ext fun _ => rfl`. Establish `e₂ : τ.comp Algebra.TensorProduct.includeRight = Algebra.TensorProduct.includeLeft` using `AlgHom.ext fun _ => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[comp_lift, comp_lift, MonObj.comp_one, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp, e₁, e₂]`. Establish `e` using `CommutatorPairing.weilIs_unique globalFns_holds hAA hP h (weilIs_exchange hA hP hs hU)`. Establish `m : Units.map (spOver τ).left.appTop.hom.toMonoidHom (unitOn U) = unitOn (Units.map (τ : H ⊗[R] H →+* H ⊗[R] H).toMonoidHom U)` using `Units.ext (congrArg (fun q => q.hom U.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (τ : H ⊗[R] H →+* H ⊗[R] H)))).symm`. Establish `inj : Function.Injective (unitOn (R` using `H ⊗[R] H)) := (Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of (H ⊗[R] H))).symm.commRingCatIsoToRingEquiv.toMulEquiv).injective`. Conclude with `congrArg Units.val (mul_eq_one_iff_eq_inv.2 (inj ((m.symm.trans e).trans (map_inv _ U).symm)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comm_mul_self {R H : Type} [CommRing R] [CommRing H] [Algebra R H] {A : Over (Sp R)} [GrpObj A]
     (hA : IsAbelianScheme A) {P : LB (A ⊗ A).left} (hP : P.IsLB) (hs : LBIso (swap P) P) {k : ℤ} (y : SpAlg R H ⟶ A)
@@ -89,7 +89,7 @@ theorem comm_mul_self {R H : Type} [CommRing R] [CommRing H] [Algebra R H] {A : 
   exact congrArg Units.val (mul_eq_one_iff_eq_inv.2 (inj ((m.symm.trans e).trans (map_inv _ U).symm)))
 
 /- English proof (translation)
-Introduce `_ p _ K _ A _ hA P hP hs 𝒜 t w hw`. Use `eq_neg_of_add_eq_zero_left (hom_ext_conv fun n => ?_)` and prove the remaining obligations. Take `⟨U, hU, hχ⟩` from `hw n`. Conclude with `conv_eq_one U.val (comm_mul_self hA hP.isLB hs (t.y n) U hU) (w.app n) hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bidual_dualHom_eq_neg : GlobalTheory.Published.CubeTheorem → ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (P : LB (A ⊗ A).left), IsDual A A P → LBIso (swap P) P → ∀ (𝒜 : PDivGroup p K) (t : 𝒜.TorsionTower A) (w : 𝒜 ⟶ 𝒜.dual), IsWeilHom t t P w → 𝒜.bidual.hom ≫ dualHom _ _ w = -w := by
   intro _ p _ K _ A _ hA P hP hs 𝒜 t w hw

@@ -47,7 +47,7 @@ def valO {K : Type} [Field K] [NumberField K] (Q : HeightOneSpectrum (𝓞 K)) :
   (Q.valuation K).valuationSubring.toSubring
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_valO {K : Type} [Field K] [NumberField K] (Q : HeightOneSpectrum (𝓞 K)) (x : K) :
     x ∈ valO Q ↔ Q.valuation K x ≤ 1 :=
@@ -72,7 +72,7 @@ def unitOff {K : Type} [Field K] [NumberField K] [StarRing K] (P : HeightOneSpec
   unitGL K n ⊓ ⨅ Q : {Q : HeightOneSpectrum (𝓞 K) // Q ≠ P ∧ Q ≠ Formalism.L2.Col.conjPrime₂ P}, intGL (Fin n) (valO Q.1)
 
 /- English proof (translation)
-Rewrite using `[unitOff, Subgroup.mem_inf, Subgroup.mem_iInf]`. Conclude with `and_congr Iff.rfl ⟨fun h Q h₁ h₂ => h ⟨Q, h₁, h₂⟩, fun h Q => h Q.1 Q.2.1 Q.2.2⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unitOff {K : Type} [Field K] [NumberField K] [StarRing K] (P : HeightOneSpectrum (𝓞 K)) (n : ℕ)
     (g : GL (Fin n) K) : g ∈ unitOff P n ↔ (g : Matrix (Fin n) (Fin n) K)ᴴ * (g : Matrix (Fin n) (Fin n) K) = 1 ∧
@@ -92,7 +92,7 @@ def latB {K ι : Type} [Field K] [NumberField K] [Fintype ι] [DecidableEq ι]
     exact (valO Q).mul_mem (Q.valuation_le_one r) (hx Q a)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latB {K ι : Type} [Field K] [NumberField K] [Fintype ι] [DecidableEq ι]
     (B : HeightOneSpectrum (𝓞 K) → GL ι K) (x : ι → K) :

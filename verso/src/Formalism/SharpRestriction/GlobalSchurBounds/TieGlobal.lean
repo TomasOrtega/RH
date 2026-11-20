@@ -114,7 +114,7 @@ def ChainTied {eps : ℝ} (Fm : FamP eps) (eD eL K cHH eK CL x : ℝ) : Prop :=
     RestSize eps x (Fintype.card (Fm.D x i0).R.A) TT.card T2.card m Dd.b Dd.k Dd.a
 
 /- English proof (translation)
-Take `⟨i0, m, f, pt, av, bv, Top, iT, Dd, C, Xpp, ell, N, TT, T2, a, w, eT, eP, η, X', θ, -, -, -, -, h1, h2, h3, h4, h5, h7, h8, h9, h10, h11, h12, h13⟩` from `h`. Conclude with `⟨(Fm.D x i0).R.A, inferInstance, inferInstance, inferInstance, fun u0 => (Fm.D x (pt u0)).what₂.Word, fun _ => inferInstance, fun _ => inferInstance, Top, iT, m, f, Dd, C, Xpp, _, ell, N, TT, T2, a, w, eT, eP, η, X', θ, h1, h2, h3, h4, h5, hF i0, h7, h8, h9, h10, h11, h12, h13⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ChainTied.core_of {eps : ℝ} {Fm : FamP eps} {eD eL K cHH eK CL x : ℝ}
     (hF : ∀ i : Fm.Ix x, HostFacts (arithOf (Fm.D x i).host.toHostRaw))

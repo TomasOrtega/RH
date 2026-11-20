@@ -8,39 +8,37 @@ open NumberField IsDedekindDomain HeckeCharacterZeroLocus.SiegelWeilU
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hli : LinearIndependent F ![(1 : E), u]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Establish `h2 : s • (1 : E) + t • σ u = 0`. Use `congrArg σ h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[map_add, map_smul]`. Establish `h3 : t • (σ u - u) = 0`. Establish `: t • (σ u - u) = (s • (1 : E) + t • σ u) - (s • (1 : E) + t • u)` using `by module`. Rewrite using `[this, h, h2, sub_zero]`. Establish `ht : t = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `smul_eq_zero.mp h3 with h4 | h4` into its components or cases. Conclude with `h4`. Conclude with `absurd (sub_eq_zero.mp h4) hu`. Substitute `ht` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E` using `by simp [hfin]`. Set `b : Module.Basis (Fin 2) F E` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Establish `hb0 : b 0 = 1` using `by simp [b]`. Establish `hb1 : b 1 = u` using `by simp [b]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨p, q, hsu⟩ : ∃ p q : F, σ u = p • (1 : E) + q • u := by`. Use `⟨b.repr (σ u) 0, b.repr (σ u) 1, ?_⟩` and prove the remaining obligations. Use `b.sum_repr (σ u)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two, hb0, hb1]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel : (p + q * p) • (1 : E) + (q * q - 1) • u = 0`. Establish `h1 : u = p • (1 : E) + q • σ u`. Use `hσ u` as an intermediate fact. Rewrite `this` using `[hsu]`. Simplify `this.symm` using `[map_add, map_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hsu]`. Establish `: (p + q * p) • (1 : E) + (q * q - 1) • u = (p • (1 : E) + q • (p • (1 : E) + q • u)) - u` using `by module`. Rewrite using `[this, ← h1, sub_self]`. Take `⟨hp, hq⟩` from `LinearIndependent.pair_iff.mp hli _ _ hrel`. Establish `hq' : q = -1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `: (q - 1) * (q + 1) = 0` using `by linear_combination hq`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hq1 : q = 1` using `sub_eq_zero.mp h`. Substitute `hq1` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp0 : p = 0`. Establish `: (2 : F) * p = 0` using `by linear_combination hp`. Simplify using `using this`. Apply `hu` to reduce the goal to its premises. Rewrite using `[hsu, hp0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Take the linear combination `h`. Substitute `hq'` using the available equality. Set `B` to `Algebra.TensorProduct.basis K b`. Establish `hB0 : B 0 = (1 : K) ⊗ₜ[F] (1 : E)` using `by simp [B, hb0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB1 : B 1 = (1 : K) ⊗ₜ[F] u` using `by simp [B, hb1]`. Choose the witnesses or unpack the hypotheses as in `⟨a, c, hac⟩ : ∃ a c : K, x = a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] u := by`. Use `⟨B.repr x 0, B.repr x 1, ?_⟩` and prove the remaining obligations. Use `B.sum_repr x` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two, hB0, hB1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this.symm` using `[TensorProduct.smul_tmul']`. Establish `hs : sigR K σ x = a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] σ u`. Rewrite using `[hac]`. Simplify using `[sigR]`. Establish `hkey : (algebraMap F K p * c) • B 0 = (c + c) • B 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hB0, hB1]`. Establish `h1 : a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] σ u = a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] u` using `by rw [← hs, hx, hac]`. Establish `h2` using `add_left_cancel h1`. Rewrite `h2` using `[hsu, TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, neg_smul, one_smul]`. Establish `e0 : (algebraMap F K p * c) • ((1 : K) ⊗ₜ[F] (1 : E)) = p • (c ⊗ₜ[F] (1 : E))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Use `congr 1`. Simplify using `[Algebra.smul_def]`. Establish `e1 : (c + c) • ((1 : K) ⊗ₜ[F] u) = c ⊗ₜ[F] u + c ⊗ₜ[F] u`. Rewrite using `[TensorProduct.smul_tmul', ← TensorProduct.add_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[e0, e1]`. Conclude with `add_neg_eq_iff_eq_add.mp h2`. Establish `hc : c = 0`. Establish `h1` using `congrArg (fun y => B.repr y 1) hkey`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `at h1`. Establish `h2 : (2 : F) • c = 0` using `by rw [two_smul]; exact h1.symm`. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases. Simplify using `at h`. Conclude with `h`.
-
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hac, hc, Algebra.TensorProduct.algebraMap_apply]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eq_algebraMap_of_sigR_eq {F E K : Type} [Field F] [CharZero F] [Field E] [Algebra F E]
     [CommRing K] [Algebra F K] (σ : E →ₐ[F] E) (hfin : Module.finrank F E = 2)
@@ -131,11 +129,11 @@ theorem exists_eq_algebraMap_of_sigR_eq {F E K : Type} [Field F] [CharZero F] [F
   simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h v x hx`. Take `⟨-, hC, hfin, hconj⟩` from `h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hσ : ∀ y, σ (σ y) = y` using `fun y => τ.injective (by rw [hconj, hconj, star_star])`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, σ u ≠ u := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `y`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Use `hconj τ y` as an intermediate fact. Rewrite `this` using `[hall y]`. Conclude with `this.symm`. Conclude with `exists_eq_algebraMap_of_sigR_eq σ hfin hσ u hu x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixedK : PositivityTheory.SiegelWeilFormula.Gunr.FixedK := by
   intro F E _ _ _ _ _ σ h v x hx

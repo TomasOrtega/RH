@@ -4,6 +4,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalLatticeIsomorphism
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalLatticeIsomorphism.NormOne
 
 /- English proof (translation)
-The claim follows from `PI.KLW.kerLocIso_of_normOne PI.KLW.normOne`.
+A detailed English derivation is pending.
 -/
 theorem kernel_local_iso : PI.KerIso.LocIso := PI.KLW.kerLocIso_of_normOne PI.KLW.normOne

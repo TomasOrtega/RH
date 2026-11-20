@@ -14,11 +14,11 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨K', h, hN, hF, hS, Sig, Fr, -, -, -, -, hx⟩` from `hPot`. Take `⟨a, x, j, hjinj, hjeq, -⟩` from `hX`. Set `incl` to `Subgroup.inclusion (GK_le h)`. Establish `hincl : Continuous incl` using `Continuous.subtype_mk continuous_subtype_val _`. Set `W' : GRep ↥(GK K') ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) (Br.OLL D.nbr i w hw)` to `{ V := X.V, ρ := X.ρ.comp incl, cont := fun v => (X.cont v).comp hincl }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Ms' : ↥Xs → (↥(GK K') →* Matrix (Fin D.R.nV) (Fin D.R.nV) (Br.LL D.nbr i w hw))` to `fun y => (Br.loc D.nbr i w hw (rTwO D.nd i r y)).comp incl`. Establish `hc' : ∀ y v, Continuous fun g => (Ms' y g).mulVec v` using `fun y v => ((GlobalTheory.JumpDual.loc_cont D i w hw _ (GlobalTheory.Pass.FamCont.stepCont D i r hr y).1).comp hincl).matrix_mulVec continuous_const`. Establish `hcr' : ∀ y, IsCrys ((D.loc (D.nd.l i)).PD K') (matRep (Ms' y))` using `fun y => (GlobalTheory.PcRes.main (D.nd.l i) (D.loc (D.nd.l i)) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL h hN hF hS _ (matRep (Br.loc D.nbr i w hw (rTwO D.nd i r y)))).2.1 (hx y).1`. Establish `hsub : IsSubOfSums W'.ρ (fun y => ⇑(Ms' y))`. Use `⟨a, x, j, hjinj, fun g v => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hjeq (incl g) v`. Establish `hW' : IsCrys ((D.loc (D.nd.l i)).PD K') W'.ρ` using `(subsum_crys (PD := (D.loc (D.nd.l i)).PD K') (Ms := Ms') (hc := hc') (hF := hFont (D.nd.l i) K' (D.nbr i w hw).LL) (S := fun _ => Set.univ) (hcr := hcr') (hS := fun _ _ _ _ => Set.mem_univ _) (A := W') (hA := hsub)).1`. Conclude with `hP (D.nd.l i) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL h X hW'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDR_of_summand (D : D7) (hFont : FontaineAtPlacesOverL (D := D)) (hP : PotDRL D.loc) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (hr : GoodR D.nd i r)
@@ -73,7 +73,7 @@ def ann (C : Submodule LL (Fin a → Fin n → LL)) : Submodule LL (Fin a → Fi
   smul_mem' := fun c u' h u hu => by rw [map_smul, h u hu, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[pr_apply, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pr_single (b : Fin a) (k : Fin n) (u' : Fin a → Fin n → LL) :
     pr LL a n (Pi.single b (Pi.single k 1)) u' = u' b k := by
@@ -84,9 +84,9 @@ theorem pr_single (b : Fin a) (k : Fin n) (u' : Fin a → Fin n → LL) :
   · simp
 
 /- English proof (translation)
-Use `⟨fun b k => φ (Pi.single b (Pi.single k 1)), fun u => ?_⟩` and prove the remaining obligations. Establish `hu : u = ∑ b, ∑ k, u b k • (Pi.single b (Pi.single k 1) : Fin a → Fin n → LL)`. Use function extensionality and compare the values at `b' k'`. Simplify using `[Finset.sum_apply, Pi.single_apply, ite_apply, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Use `conv_lhs => rw [hu]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pr_apply]`. Simplify using `[map_sum, dotProduct]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rep (φ : (Fin a → Fin n → LL) →ₗ[LL] LL) :
     ∃ u' : Fin a → Fin n → LL, ∀ u, φ u = pr LL a n u u' := by
@@ -99,7 +99,7 @@ theorem exists_rep (φ : (Fin a → Fin n → LL) →ₗ[LL] LL) :
   simp [map_sum, dotProduct]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b k`. Rewrite using `[← pr_single b k u']`. Conclude with `h _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pr (u' : Fin a → Fin n → LL) (h : ∀ u, pr LL a n u u' = 0) : u' = 0 := by
   funext b k
@@ -113,11 +113,11 @@ section Lin2
 variable {LL : Type} [Field LL] {a n : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hne' : (⟨u, hu⟩ : ↥R) ≠ 0` using `fun h0 => hne (congrArg Subtype.val h0)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual LL ↥R, f ⟨u, hu⟩ ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hne' ((Module.forall_dual_apply_eq_zero_iff LL _).1 hall)`. Take `⟨u', hu'⟩` from `exists_rep (f ∘ₗ R.projectionOnto C hRC)`. Establish `hann : u' ∈ ann C`. Introduce `c hc`. Rewrite using `[← hu', LinearMap.comp_apply, Submodule.linearProjOfIsCompl_apply_right' hRC hc, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hf` to reduce the goal to its premises. Use `hu' u` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, Submodule.linearProjOfIsCompl_apply_left hRC ⟨u, hu⟩]`. Rewrite using `[this]`. Conclude with `h u' hann`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_nondeg (R C : Submodule LL (Fin a → Fin n → LL)) (hRC : IsCompl R C) (u : Fin a → Fin n → LL)
     (hu : u ∈ R) (h : ∀ u' ∈ ann C, pr LL a n u u' = 0) : u = 0 := by
@@ -138,7 +138,7 @@ theorem left_nondeg (R C : Submodule LL (Fin a → Fin n → LL)) (hRC : IsCompl
   exact h u' hann
 
 /- English proof (translation)
-Apply `eq_zero_of_pr` to reduce the goal to its premises. Introduce `u`. Establish `hu : u ∈ R ⊔ C` using `by rw [hRC.sup_eq_top]; exact Submodule.mem_top`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hu`. Rewrite using `[map_add, LinearMap.add_apply, h y hy, hu' z hz, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem right_nondeg (R C : Submodule LL (Fin a → Fin n → LL)) (hRC : IsCompl R C) (u' : Fin a → Fin n → LL)
     (hu' : u' ∈ ann C) (h : ∀ u ∈ R, pr LL a n u u' = 0) : u' = 0 := by
@@ -151,7 +151,7 @@ theorem right_nondeg (R C : Submodule LL (Fin a → Fin n → LL)) (hRC : IsComp
 variable {G : Type} [Group G] (T U : Fin a → (G →* Matrix (Fin n) (Fin n) LL)) (χ : G → LL)
 
 /- English proof (translation)
-Rewrite using `[pr_apply, pr_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hU, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec, dotProduct_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_equiv (hU : ∀ b g, U b g = χ g • (T b g⁻¹).transpose) (g : G) (u u' : Fin a → Fin n → LL) :
     pr LL a n (fun b => (T b g).mulVec (u b)) (fun b => (U b g).mulVec (u' b)) = χ g * pr LL a n u u' := by
@@ -162,7 +162,7 @@ theorem pr_equiv (hU : ∀ b g, U b g = χ g • (T b g⁻¹).transpose) (g : G)
     inv_mul_cancel, map_one, Matrix.one_mulVec, dotProduct_comm]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `e : u = fun b => (T b g).mulVec ((T b g⁻¹).mulVec (u b))`. Use function extensionality and compare the values at `b`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, mul_inv_cancel, map_one, Matrix.one_mulVec]`. Rewrite using `[e, pr_equiv T U χ hU, hu' _ (hC g⁻¹ u hu), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ann_stable (hU : ∀ b g, U b g = χ g • (T b g⁻¹).transpose) (C : Submodule LL (Fin a → Fin n → LL))
     (hC : ∀ g, ∀ u ∈ C, (fun b => (T b g).mulVec (u b)) ∈ C) (g : G) (u' : Fin a → Fin n → LL)
@@ -176,9 +176,9 @@ theorem ann_stable (hU : ∀ b g, U b g = χ g • (T b g⁻¹).transpose) (C : 
 end Lin2
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NondegenerateFinrank.main`. Consider the case `exact _root_.GlobalTheory.NondegenerateFinrank.main`. Consider the case `(apply _root_.GlobalTheory.NondegenerateFinrank.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NondegenerateFinrank.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NondegenerateFinrank.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NondegenerateFinrank.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_perfect {LL : Type} [Field LL] {V V' : Type} [AddCommGroup V] [Module LL V]
     [FiniteDimensional LL V] [AddCommGroup V'] [Module LL V'] [FiniteDimensional LL V']
@@ -196,17 +196,15 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨a, x, j, hjinj, hjeq, C, hC, hcompl⟩` from `hX`. Set `Ms : ↥Xs → (Br.G D.nbr i w hw →* Matrix (Fin D.R.nV) (Fin D.R.nV) (Br.LL D.nbr i w hw))` to `fun y => Br.loc D.nbr i w hw (rDuO D.nd i r y)`. Establish `hc : ∀ y v, Continuous fun g => (Ms y g).mulVec v` using `fun y v => (GlobalTheory.JumpDual.loc_cont D i w hw _ (GlobalTheory.Pass.FamCont.stepCont D i r hr y).2).matrix_mulVec continuous_const`. Set `T : Fin a → (Br.G D.nbr i w hw →* Matrix (Fin D.R.nV) (Fin D.R.nV) (Br.LL D.nbr i w hw))` to `fun b => Br.loc D.nbr i w hw (rTwO D.nd i r (x b))`. Set `χ : Br.G D.nbr i w hw → Br.LL D.nbr i w hw` to `fun g => ((cycLL (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw) g : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hU : ∀ b g, Ms (x b) g = χ g • (T b g⁻¹).transpose` using `fun b g => GlobalTheory.JumpDual.loc_dual D i w hw r (x b) g`. Set `A` to `GRep.sum (Qp := ℚ_[D.nd.l i]) (O := Br.OLL D.nbr i w hw) Ms hc x`. Establish `hstab : ∀ g, ∀ u ∈ ann C, A.ρ g u ∈ ann C` using `fun g u hu => ann_stable T (fun b => Ms (x b)) χ hU C hC g u hu`. Set `X'` to `A.sub (ann C) hstab`. Set `PX : X.V →ₗ[Br.LL D.nbr i w hw] X'.V →ₗ[Br.LL D.nbr i w hw] Br.LL D.nbr i w hw` to `(pr (Br.LL D.nbr i w hw) a D.R.nV).compl₁₂ j (ann C).subtype`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hPX : ∀ v (y : X'.V), PX v y = pr (Br.LL D.nbr i w hw) a D.R.nV (j v) ((ann C).subtype y)` using `fun _ _ => rfl`. Establish `h2 : ∀ v, (∀ y, PX v y = 0) → v = 0`. Introduce `v h`. Apply `hjinj` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `left_nondeg (LinearMap.range j) C hcompl (j v) ⟨v, rfl⟩ fun u' hu' => h ⟨u', hu'⟩`. Establish `h3 : ∀ y, (∀ v, PX v y = 0) → y = 0`. Introduce `y h`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `right_nondeg (LinearMap.range j) C hcompl y.1 y.2 (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `u ⟨v, rfl⟩`. Conclude with `h v)`. Use `⟨X', PX, ⟨fun g v y => ?_, h2, h3, finrank_eq_of_perfect PX h2 h3⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hPX, hPX, hjeq]`. Conclude with `pr_equiv T (fun b => Ms (x b)) χ hU g (j v) ((ann C).subtype y)`.
-
-Use `⟨a, x, fun b => LinearMap.proj b ∘ₗ (ann C).subtype, fun b g v => rfl, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (funext hv)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dual_of_summand (D : D7) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (hr : GoodR D.nd i r)
@@ -257,7 +255,7 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D hFont hP i r hr Xs w hw n hPot X hX`. Conclude with `⟨isDR_of_summand D hFont hP i r hr Xs w hw n hPot X hX, dual_of_summand D i r hr Xs w hw X hX⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem xdual : ∀ (D : D7), FontaineAtPlacesOverL (D := D) → PotDRL D.loc → ∀ (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r →

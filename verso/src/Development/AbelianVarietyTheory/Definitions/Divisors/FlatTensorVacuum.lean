@@ -17,13 +17,13 @@ def symN : Subgroup (GL (n ⊕ Fin c) k) := N k n c ((c + 1) / 2) ⊔ N k n c (c
 def symR : Subgroup (GL (n ⊕ Fin c) k) := (embX c).range ⊔ symN k n c
 
 /- English proof (translation)
-Rewrite using `[symN, show (2 * ρ + 1 + 1) / 2 = ρ + 1 by omega, show (2 * ρ + 1) / 2 + 1 = ρ + 1 by omega, sup_idem]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem symN_odd (ρ : ℕ) : symN k n (2 * ρ + 1) = N k n (2 * ρ + 1) (ρ + 1) := by
   rw [symN, show (2 * ρ + 1 + 1) / 2 = ρ + 1 by omega, show (2 * ρ + 1) / 2 + 1 = ρ + 1 by omega, sup_idem]
 
 /- English proof (translation)
-Rewrite using `[symN, show (2 * ρ + 1) / 2 = ρ by omega, show 2 * ρ / 2 + 1 = ρ + 1 by omega]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem symN_even (ρ : ℕ) : symN k n (2 * ρ) = N k n (2 * ρ) ρ ⊔ N k n (2 * ρ) (ρ + 1) := by
   rw [symN, show (2 * ρ + 1) / 2 = ρ by omega, show 2 * ρ / 2 + 1 = ρ + 1 by omega]
@@ -31,7 +31,7 @@ theorem symN_even (ρ : ℕ) : symN k n (2 * ρ) = N k n (2 * ρ) ρ ⊔ N k n (
 variable {k n c}
 
 /- English proof (translation)
-Establish `h : symN k n c ≤ (symN k n c).comap (MulAut.conj (embX c g)⁻¹).toMonoidHom` using `sup_le (fun v hv => Subgroup.mem_sup_left (by simpa using RootEx.Model.conj_mem hv g)) fun v hv => Subgroup.mem_sup_right (by simpa using RootEx.Model.conj_mem hv g)`. Simplify using `using h hu`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem symN_conj {u : GL (n ⊕ Fin c) k} (hu : u ∈ symN k n c) (g : GL n k) :
     (embX c g)⁻¹ * u * embX c g ∈ symN k n c := by
@@ -64,7 +64,7 @@ def Kept : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) → Prop
 omit [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
 
 /- English proof (translation)
-Apply the tactic sequence `rcases rs with ⟨r | r, s | s⟩ <;> simp only [Kept, Free] at h ⊢ <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Kept.not_free {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))} (h : Kept rs) : ¬ Free (c / 2 + 1) rs := by
   rcases rs with ⟨r | r, s | s⟩ <;> simp only [Kept, Free] at h ⊢ <;> omega
@@ -86,7 +86,7 @@ def keptPt (w : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Kept rs} → k) :
 omit [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
 
 /- English proof (translation)
-Use extensionality with `r s`. Distinguish the cases in `h : Kept (r, s)`. Simplify using `[stepPt, affPt, keptPt, h, h.not_free]`. Apply the tactic sequence `by_cases h' : Free (c / 2 + 1) (r, s) <;> simp [stepPt, affPt, keptPt, h, h']`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stepPt_eq (x₀ : Matrix n n' k) (e : StepVar n c n' → k) : stepPt x₀ e =
     affPt (c / 2 + 1) x₀ (fun rs => e ⟨rs.1, Or.inl rs.2⟩) + keptPt fun rs => e ⟨rs.1, Or.inr rs.2⟩ := by
@@ -106,7 +106,7 @@ def invVol (C : Subgroup (GL (n ⊕ Fin c) k)) : ℚ :=
   (C.relIndex (symN k n c ⊓ KO k _) : ℚ) / (KO k _).relIndex (symN k n c ⊓ C)
 
 /- English proof (translation)
-Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hK`. Establish `: Finite (K ⧸ U.subgroupOf K)` using `Subgroup.quotient_finite_of_isOpen _ (hU.preimage continuous_subtype_val)`. Conclude with `fun h => Subgroup.index_ne_zero_of_finite (Subgroup.relIndex_eq_zero_of_le_right hH h)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_isOpen {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {U K H : Subgroup G} (hU : IsOpen (U : Set G)) (hK : IsCompact (K : Set G)) (hH : H ≤ K) : U.relIndex H ≠ 0 := by
@@ -115,7 +115,7 @@ theorem relIndex_ne_zero_of_isOpen {G : Type*} [Group G] [TopologicalSpace G] [I
   exact fun h => Subgroup.index_ne_zero_of_finite (Subgroup.relIndex_eq_zero_of_le_right hH h)
 
 /- English proof (translation)
-The claim follows from `div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_ne_zero_of_isOpen ho isCompact_KO inf_le_right))) (Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_ne_zero_of_isOpen isOpen_KO hc inf_le_right)))`.
+A detailed English derivation is pending.
 -/
 theorem invVol_pos {C : Subgroup (GL (n ⊕ Fin c) k)} (ho : IsOpen (C : Set (GL (n ⊕ Fin c) k)))
     (hc : IsCompact (C : Set (GL (n ⊕ Fin c) k))) : 0 < invVol C :=
@@ -123,7 +123,7 @@ theorem invVol_pos {C : Subgroup (GL (n ⊕ Fin c) k)} (ho : IsOpen (C : Set (GL
     (Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_ne_zero_of_isOpen isOpen_KO hc inf_le_right)))
 
 /- English proof (translation)
-Simplify using `[invVol, Subgroup.relIndex_eq_one.2 inf_le_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem invVol_KO : invVol (KO k (n ⊕ Fin c)) = 1 := by
   simp [invVol, Subgroup.relIndex_eq_one.2 inf_le_right]
@@ -137,7 +137,7 @@ def topRank (j : ℕ) : ℕ := G.r + 1 + G.m * (G.s - 1) + j * (G.t + 1)
 variable {G} in
 
 /- English proof (translation)
-Take `⟨s, h⟩` from `Nat.exists_eq_add_of_le' hs`. Simplify using `only [topRank, Grid.rank, h, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem topRank_add (hs : 1 ≤ G.s) (j : ℕ) : topRank G j + G.m = G.rank (G.m, j) + j + 1 := by
   obtain ⟨s, h⟩ := Nat.exists_eq_add_of_le' hs
@@ -187,13 +187,13 @@ def fill (x : ColArgs G) (y : RowArgs G) (e : Vars G) : G.Args
   | .ex i j => if h : j = G.m then ((y i).submatrix (Fin.cast (by rw [h])) (Fin.cast (by rw [h])))ᵀ else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem fill_theta (x : ColArgs G) (y : RowArgs G) (e : Vars G) (j : ℕ) :
     fill hs x y e (.theta G.m j) = (downMap hs x e j)ᵀ := dif_pos rfl
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem fill_ex (x : ColArgs G) (y : RowArgs G) (e : Vars G) (i : ℕ) : fill hs x y e (.ex i G.m) = (y i)ᵀ :=
   dif_pos rfl
@@ -224,7 +224,7 @@ def onColumn (h : ∀ j : ℕ, GL (Fin (G.rank (G.m, j))) k) : G.VertexGroup := 
   if hi : X.1 = G.m then (show (G.m, X.2) = X from hi ▸ rfl) ▸ h X.2 else 1
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem onColumn_apply (h : ∀ j : ℕ, GL (Fin (G.rank (G.m, j))) k) (j : ℕ) : onColumn h (G.m, j) = h j := dif_pos rfl
 
@@ -250,9 +250,9 @@ variable (G) in
 def stair (ϖ : kˣ) (e j : ℕ) : GL (Fin (G.rank (G.m, j))) k := diagGL fun a => ϖ ^ (e * (a.val + 1 - topRank G j))
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Establish `h : topRank G j + (G.m - 1 - j) = G.rank (G.m, j)` using `by have := topRank_add hs j; omega`. Use `show (stair G ϖ e j).val.submatrix (frame h) (frame h) = _`. Rewrite using `[stair, diagGL_val, diagGL_val, submatrix_diagonal_equiv]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Break down `x with a | p` into its components or cases. Simplify using `[frame, Nat.sub_eq_zero_of_le (Nat.succ_le_of_lt a.2)]`. Simplify using `[frame, add_assoc]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toFrame_stair (ϖ : kˣ) (e : ℕ) {j : ℕ} (hj : j < G.m) : toFrame hs hj (stair G ϖ e j) =
     diagGL (Sum.elim (fun _ => 1) fun p => ϖ ^ (e * (p.val + 1))) := by
@@ -291,9 +291,9 @@ def moved (keep : Bool) (g : G.VertexGroup) (T : G.Args → ℂ) : G.Args → �
   (if keep then (1 : ℂ) else (((charFactor G g)⁻¹ : ℂˣ) : ℂ)) * G.pathAct .one (oppositePath G.m) g T z
 
 /- English proof (translation)
-Simplify using `only [moved, Grid.pathAct, charFactor, ← mul_assoc]`. Use `congr 1`. Proceed by induction on `oppositePath G.m with`. Consider the case `nil => simp`. Consider the case `cons b γ ih`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [List.map_cons, List.prod_cons, ← ih, Grid.edgeFactor, Assignment.read, gdet_invT]`. Simplify using `only [Bool.false_eq_true, if_false, _root_.mul_inv_rev, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem moved_false (g : G.VertexGroup) (T : G.Args → ℂ) (z : G.Args) : moved G false g T z =
     ((oppositePath G.m).map fun b => apow (gdet (g b.src))⁻¹ ((G.rank b.tgt : ℂ) / 2) *
@@ -343,16 +343,16 @@ def unf (hfin : (unfSupport ψ ν keep ρ T).Finite) : Multiset (UnfTerm G) :=
   hfin.toFinset.val.map (unfTerm ψ ν keep ρ T)
 
 /- English proof (translation)
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, unf, Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_unf (hfin : (unfSupport ψ ν keep ρ T).Finite) (f : UnfTerm G → ℂ) :
     ((unf ψ ν keep ρ T hfin).map f).sum = ∑ᶠ β ∈ unfSupport ψ ν keep ρ T, f (unfTerm ψ ν keep ρ T β) := by
   rw [finsum_mem_eq_finite_toFinset_sum _ hfin, unf, Multiset.map_map]; rfl
 
 /- English proof (translation)
-Consider the cases of `keep`. Use extensionality with `β`. Establish `h : (unfTerm ψ ν false ρ T β).datum = (((charFactor G (ρ.elt β))⁻¹ : ℂˣ) : ℂ) • (unfTerm ψ ν true ρ T β).datum`. Use function extensionality and compare the values at `x y`. Simplify using `[unfTerm, flatTensor, flatIntegrand, moved, mul_assoc, integral_const_mul]`.
+Split into cases according to the possible forms of the given data. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [unfSupport, Set.mem_setOf_eq, h, ne_eq, smul_eq_zero, Units.ne_zero, false_or]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem unfSupport_eq : unfSupport ψ ν keep ρ T = unfSupport ψ ν true ρ T := by
   cases keep
@@ -364,9 +364,9 @@ theorem unfSupport_eq : unfSupport ψ ν keep ρ T = unfSupport ψ ν true ρ T 
   · rfl
 
 /- English proof (translation)
-Use `Finset.prod_pos (R := ℚ) fun i _ => ?_` and prove the remaining obligations. Take `⟨ho, hK⟩` from `hJ (i + 1) (by omega) (by omega)`. Establish `c1 : Continuous (toFrame hs (j` using `i + 1) (by omega)) := Continuous.units_map _ (continuous_id.matrix_reindex _ _)`. Establish `c2 : Continuous (toFrame hs (j` using `i + 1) (by omega)).symm := Continuous.units_map _ (continuous_id.matrix_reindex _ _)`. Use `invVol_pos ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[conjLevel, Subgroup.map_equiv_eq_comap_symm', Subgroup.map_equiv_eq_comap_symm']`. Conclude with `(ho.preimage ((continuous_const.mul continuous_id).mul continuous_const)).preimage c2`. Conclude with `((isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) hK).image ((continuous_const.mul continuous_id).mul continuous_const)).image c1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfTerm_coef_pos (hJ : ∀ j, 0 < j → j < G.m → IsOpen (J (G.m, j) : Set (GL (Fin (G.rank (G.m, j))) k)) ∧
     J (G.m, j) ≤ KO k _) (β : Cosets hs J) : 0 < (unfTerm ψ ν keep ρ T β).coef := by
@@ -393,7 +393,7 @@ def OneCoset (ϖ : kˣ) (e : ℕ) : Prop :=
   ∀ β ∈ unfSupport ψ ν false (Reps.through hs J (stair G ϖ e)) T, ∀ i, β i = DoubleCoset.mk _ _ (stair G ϖ e (i + 1))
 
 /- English proof (translation)
-Rewrite using `[Reps.elt, onColumn_apply]`. Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ i => simp [Reps.through, show i < G.m - 2 by omega]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem through_elt (h : ∀ j : ℕ, GL (Fin (G.rank (G.m, j))) k) {j : ℕ} (hj : j + 2 ≤ G.m) :
     (Reps.through hs J h).elt (fun i => DoubleCoset.mk _ _ (h (i + 1))) (G.m, j) = h j := by
@@ -405,23 +405,19 @@ theorem through_elt (h : ∀ j : ℕ, GL (Fin (G.rank (G.m, j))) k) {j : ℕ} (h
 variable (hs) in
 
 /- English proof (translation)
-Establish `hb : ∀ {n n' : Type} {c : ℕ} r s, basePt c (0 : Matrix n n' k) r s ∈ 𝒪[k]`. Apply the tactic sequence `rintro n n' c (r | r) (s | s) <;> simp only [basePt, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, of_apply, Matrix.zero_apply, zero_mem]`. Apply the tactic sequence `split_ifs <;> simp`. Set `B : Set (Vars G)` to `Set.univ.pi fun _ => Set.univ.pi fun _ => (𝒪[k] : Set k)`. Establish `hp : ∀ e ∈ B, ∀ (j : Fin (G.m - 1)) r s, stepPt ((0 : ColArgs G) j) (e j) r s ∈ 𝒪[k]` using `fun e he j r s => by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `add_mem (hb r s) ?_` and prove the remaining obligations. Rewrite using `[of_apply]`. Use `split_ifs`. Conclude with `he j trivial _ trivial`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `key : flatIntegrand hs ψ S 0 0 = B.indicator 1`. Use function extensionality and compare the values at `e`. Distinguish the cases in `he : e ∈ B`. Rewrite using `[Set.indicator_of_mem he, flatIntegrand, h1, hψ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `neg_mem (sum_mem fun j _ => add_mem (sum_mem fun i _ => hp e he j _ _) ?_) split_ifs` and prove the remaining obligations. Use `sum_mem fun r _ => mul_mem ?_ (hp e he j _ _)` and prove the remaining obligations. Unfold `rowVar`. Use `split_ifs with h`. Use `sum_mem fun l _ => ?_ split_ifs` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hp e he ⟨_, h⟩ _ _`. Conclude with `zero_mem _`. Conclude with `zero_mem _`. Conclude with `zero_mem _`. Apply the tactic sequence `rintro (⟨i, j⟩ | ⟨i, j⟩) - r s <;> simp only [fill] <;> split_ifs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [transpose_apply, submatrix_apply, downMap] split_ifs with h`. Conclude with `hp e he ⟨_, h⟩ _ _`. Conclude with `zero_mem _`. Conclude with `zero_mem _`. Apply the tactic sequence `all_goals exact zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Set.indicator_of_notMem he, flatIntegrand, h0, zero_mul]`. Use `fun H => he fun j _ rs _ => ?_` and prove the remaining obligations. Establish `h2` using `H (.theta G.m j) (by have := j.2; simp [oppositePath]; omega) (frame (b := G.rank (G.m, j)) (by have := topRank_add hs j; have := j.2; omega) rs.1.2) (frame (b := G.rank (G.m, j + 1)) (by have := topRank_add hs (j + 1); have := j.2; omega) rs.1.1)`. Rewrite `h2` using `[fill_theta, transpose_apply, downMap, dif_pos j.2]`. Simplify using `only [reindex_apply, submatrix_apply, Equiv.symm_apply_apply, stepPt, Matrix.add_apply, of_apply] at h2`.
-
-Rewrite `h2` using `[dif_pos rs.2]`. Conclude with `(add_mem_cancel_left (hb _ _)).1 h2`. Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Use `hν.1` as an intermediate fact. Establish `hm : MeasurableSet B` using `MeasurableSet.univ_pi fun _ => MeasurableSet.univ_pi fun _ => Model.isOpen_int.measurableSet`.
-
-Establish `hv : varsVol G ν B = 1` using `by simp [varsVol, B, Measure.pi_pi, hν.2]`. Rewrite using `[flatTensor, key]`. Conclude with `⟨(integrable_indicator_iff hm).2 (integrableOn_const (by simp [hv])), by`. Rewrite using `[integral_indicator hm]`. Simplify using `[Measure.real, hv]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flatTensor_vacuum (hψ : ∀ a ∈ 𝒪[k], ψ a = 1) (hν : IsUnitVol ν) (S : G.Args → ℂ)
     (h1 : ∀ z, (∀ b ∈ oppositePath G.m, ∀ i j, z b i j ∈ 𝒪[k]) → S z = 1)

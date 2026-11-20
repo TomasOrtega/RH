@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Ω inst`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.RegularUnitPoints.aux1 :
     ∀ {Ω : Type} [inst : Field Ω],
@@ -50,7 +50,7 @@ noncomputable def UpperTheory.Reformulated.B.RegularUnitPoints.Cpt :
           (@UpperTheory.Reformulated.B.RegularUnitPoints.genPt X Ω inst ξ) p
 
 /- English proof (translation)
-Introduce `X Ω inst ξ p`. Conclude with `p.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.RegularUnitPoints.aux4 :
     ∀ {X : AlgebraicGeometry.Scheme} {Ω : Type} [inst : Field Ω]
@@ -75,7 +75,7 @@ theorem UpperTheory.Reformulated.B.RegularUnitPoints.aux4 :
   exact p.2
 
 /- English proof (translation)
-Introduce `Ω inst`. Use `show IsLocalRing Ω`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.RegularUnitPoints.aux5 :
     ∀ {Ω : Type} [inst : Field Ω],
@@ -398,19 +398,17 @@ noncomputable def UpperTheory.Reformulated.B.RegularUnitPoints.InFibre :
             p))
 
 /- English proof (translation)
-Introduce `X Ω inst ξ q hq n hn`. Establish `key : ∀ m : ℕ, m ≠ 0 → UpperTheory.Reformulated.B.RegularUnitPoints.unitAt ξ q (m : Ω)`. Introduce `m`. Proceed by induction on `m using Nat.recOnMul with`. Consider the case `zero => intro h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `absurd rfl h`. Consider the case `one`. Introduce `_`. Use `⟨by simp, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[(UpperTheory.Reformulated.B.RegularUnitPoints.regAt ξ q).one_mem]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[(UpperTheory.Reformulated.B.RegularUnitPoints.regAt ξ q).one_mem]`. Consider the case `prime p hp`. Introduce `_`. Use `hq p hp` as an intermediate fact. Unfold `UpperTheory.Reformulated.B.RegularUnitPoints.InFibre at this`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately.
 
-Conclude with `not_not.mp this`. Consider the case `mul a b ha hb`. Introduce `hab`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hab`. Establish `hb0 : b ≠ 0` using `by rintro rfl; simp at hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, a3⟩` from `ha ha0`. Take `⟨b1, b2, b3⟩` from `hb hb0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `mul_ne_zero a1 b1`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `Subring.mul_mem _ a2 b2`. Use `push_cast`. Rewrite using `[mul_inv]`. Conclude with `Subring.mul_mem _ a3 b3`.
-
-Conclude with `key n hn`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.RegularUnitPoints.main :
     ∀ {X : AlgebraicGeometry.Scheme} {Ω : Type} [inst : Field Ω]

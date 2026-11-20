@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `e : ∀ a, Xo.univ.eta (f a) = Xo.univ.eta (g a)` using `fun a => GlobalTheory.LevelActionLaws.eta_congr Xo (h a)`. Unfold `levR IsLevMove`. Simplify using `only [e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem levR_congr {f g k : Dw.La →ₗ[𝓞 E] Dw.La}
     (h : ∀ a, f a - g a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) {S : Type} [CommRing S] [Algebra c.F S]
@@ -34,19 +34,15 @@ end General
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Set `φ : G →* Module.End (𝓞 D.host.E) (LaMod Dw l)` to `{ toFun := fun g => modHalf l (lev g) map_one' := by`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `(Submodule.Quotient.eq _).2 (h1 a)`. Use the proof step `map_mul' := fun g h => by`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `(Submodule.Quotient.eq _).2 (hm g h a) }`. Set `ψ : G →* (LaMod Dw l ≃ₗ[𝓞 D.host.E] LaMod Dw l)` to `(LinearMap.GeneralLinearGroup.generalLinearEquiv (𝓞 D.host.E) (LaMod Dw l)).toMonoidHom.comp φ.toHomUnits`. Establish `key : ∀ (g : G) {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S), levActR (Xo` using `Xo) (c := c) (fun g => (lev g, (LinearMap.id : Dw.La →ₗ[𝓞 D.host.E] Dw.La))) g y y' ↔ levActR (Xo := Xo) (c := c) (GlobalTheory.FormTies.levFull Dw l) (ψ g) y y' := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `g S _ _ y y'`. Use `levR_congr (fun a => (Submodule.Quotient.eq _).1 ?_) y y'` and prove the remaining obligations. Conclude with `(liftLa_spec (ψ g) a).symm`. Establish `L` using `GlobalTheory.FullLevelAction.actLaws_levFull Xo c hpq hA`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g S _ _ y`. Take `⟨y', h⟩` from `L.total (ψ g) S y`. Conclude with `⟨y', (key g y y').2 h⟩`. Introduce `g S _ _ y y' y'' h h'`. Conclude with `L.func (ψ g) S y y' y'' ((key _ _ _).1 h) ((key _ _ _).1 h')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S _ _ y`. Use `(key 1 y y).2 ?_` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `L.one S y`. Introduce `g h S _ _ y y' y'' a b`.
-
-Use `(key _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `L.mul _ _ S y y' y'' ((key _ _ _).1 a) ((key _ _ _).1 b)`. Introduce `g S T _ _ _ _ φ y y' z z' m a b`. Conclude with `L.nat (ψ g) S T φ y y' z z' m ((key _ _ _).1 a) ((key _ _ _).1 b)`.
-
-Introduce `g S _ _ t y y' z z' m a b`. Conclude with `L.bor (ψ g) S t y y' z z' m ((key _ _ _).1 a) ((key _ _ _).1 b)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem actLev_of_lifts (Xo : Moduli Dw l) (c : Coeff l) {G : Type} [Group G]
     (lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La)) (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M)
@@ -92,7 +88,7 @@ theorem actLev_of_lifts (Xo : Moduli Dw l) (c : Coeff l) {G : Type} [Group G]
     exact L.bor (ψ g) S t y y' z z' m ((key _ _ _).1 a) ((key _ _ _).1 b)
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c G _ lev hpq hA h1 hm`. Conclude with `actLev_of_lifts Xo c lev hpq (by rw [hA]; exact Nat.coprime_one_left _) h1 hm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem actLev_of_lifts_of_eq_one : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (G : Type) [Group G] (lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La)), 1 ≤ Dw.p + Dw.q → l.A = 1 → (∀ a, lev 1 a - a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) → (∀ g h a, lev (g * h) a - lev g (lev h a) ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) → ActLev (Xo := Xo) c (fun g => (lev g, (LinearMap.id : Dw.La →ₗ[𝓞 D.host.E] Dw.La))) := by
   intro D H Dw l Xo c G _ lev hpq hA h1 hm

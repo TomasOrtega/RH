@@ -14,7 +14,7 @@ def cI (r : ℕ) : Fin (2 * r + 0 + 1) := ⟨r, by omega⟩
 def dgl (r : ℕ) (u : ℂ) : Mat 0 r := diagonal (fun i => if i = cI r then u else 1)
 
 /- English proof (translation)
-Unfold `dgl`. Rewrite using `[Matrix.diagonal_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma dgl_apply (u : ℂ) (i j : Fin (2 * r + 0 + 1)) :
     dgl r u i j = if i = j then (if i = cI r then u else 1) else 0 := by
@@ -22,9 +22,9 @@ lemma dgl_apply (u : ℂ) (i j : Fin (2 * r + 0 + 1)) :
   rw [Matrix.diagonal_apply]
 
 /- English proof (translation)
-Rewrite using `[dgl_apply, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `hi : i ≠ cI r` using `fun hi => h ⟨hi, hi⟩`. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hij]`.
+Simplify using the standard rewrite rules.
 -/
 lemma dgl_apply_off (u : ℂ) (i j : Fin (2 * r + 0 + 1)) (h : ¬ (i = cI r ∧ j = cI r)) :
     dgl r u i j = (1 : Mat 0 r) i j := by
@@ -36,7 +36,7 @@ lemma dgl_apply_off (u : ℂ) (i j : Fin (2 * r + 0 + 1)) (h : ¬ (i = cI r ∧ 
   · simp [hij]
 
 /- English proof (translation)
-Rewrite using `[Fin.ext_iff, Fin.ext_iff, Fin.val_rev]`. Simplify using `only [cI]`. Use `p.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma rev_eq_c_iff (p : Fin (2 * r + 0 + 1)) : Fin.rev p = cI r ↔ p = cI r := by
   rw [Fin.ext_iff, Fin.ext_iff, Fin.val_rev]
@@ -45,7 +45,7 @@ lemma rev_eq_c_iff (p : Fin (2 * r + 0 + 1)) : Fin.rev p = cI r ↔ p = cI r := 
   omega
 
 /- English proof (translation)
-Establish `hp` using `p.isLt`. Establish `hq` using `q.isLt`. Simplify using `only [Hpk, Fin.ext_iff, Fin.val_rev, cI]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_apply (p q : Fin (2 * r + 0 + 1)) :
     Hpk 0 r p q = if q = Fin.rev p then (if p = cI r then -1 else 1) else 0 := by
@@ -55,17 +55,17 @@ lemma Hpk_apply (p q : Fin (2 * r + 0 + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Use `⟨?_, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show (dgl r u)ᴴ * Hpk 0 r * dgl r u = Hpk 0 r`. Use extensionality with `p q`. Simplify using `only [dgl, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul, Matrix.mul_diagonal, Pi.star_apply]`. Rewrite using `[Hpk_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hq : q = Fin.rev p`. Substitute `hq` using the available equality. Distinguish the cases in `hp : p = cI r`. Substitute `hp` using the available equality. Establish `hc : Fin.rev (cI r) = cI r` using `(rev_eq_c_iff _).2 rfl`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc, if_true]`. Use `show star u * -1 * u = -1`. Rewrite using `[show star u = (starRingEnd ℂ) u from rfl]`. Take the linear combination `-hu`. Establish `hc : Fin.rev p ≠ cI r` using `fun h => hp ((rev_eq_c_iff p).1 h)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hp, hc]`. Simplify using `[hq]`. Establish `hne : eI 0 r a ≠ cI r`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[eI, cI] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [bvec, dgl, Matrix.diagonal_mulVec_single, if_neg hne, one_mul]`. Establish `hne : esI 0 r a ≠ cI r`. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[esI, cI] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [bvec, dgl, Matrix.diagonal_mulVec_single, if_neg hne, one_mul]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dgl_mem {u : ℂ} (hu : (starRingEnd ℂ) u * u = 1) : dgl r u ∈ UWb 0 r := by
   refine ⟨?_, fun a => ⟨?_, ?_⟩⟩
@@ -99,11 +99,11 @@ lemma dgl_mem {u : ℂ} (hu : (starRingEnd ℂ) u * u = 1) : dgl r u ∈ UWb 0 r
     simp only [bvec, dgl, Matrix.diagonal_mulVec_single, if_neg hne, one_mul]
 
 /- English proof (translation)
-Establish `hjl` using `j.isLt`. Establish `hcol : g *ᵥ bvec j = bvec j`. Break down `lt_or_gt_of_ne (show j.val ≠ r from fun h => hj (Fin.ext h)) with h | h` into its components or cases. Use `(hg.2 ⟨j.val, h⟩).1` as an intermediate fact. Establish `e : eI 0 r ⟨j.val, h⟩ = j` using `Fin.ext rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `(hg.2 ⟨2 * r - j.val, by omega⟩).2` as an intermediate fact. Establish `e : esI 0 r ⟨2 * r - j.val, by omega⟩ = j` using `Fin.ext (by simp [esI]; omega)`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `congrFun hcol i` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[bvec, Matrix.mulVec_single_one, Pi.single_apply]`. Simplify `this` using `[Matrix.col]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma col_fix {g : Mat 0 r} (hg : g ∈ UWb 0 r) (j : Fin (2 * r + 0 + 1)) (hj : j ≠ cI r)
     (i : Fin (2 * r + 0 + 1)) : g i j = if i = j then 1 else 0 := by
@@ -121,16 +121,16 @@ lemma col_fix {g : Mat 0 r} (hg : g ∈ UWb 0 r) (j : Fin (2 * r + 0 + 1)) (hj :
   simpa [Matrix.col] using this
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, col_fix hg p hp]`.
+Simplify using the standard rewrite rules.
 -/
 lemma conjT_mul_H {g : Mat 0 r} (hg : g ∈ UWb 0 r) (p : Fin (2 * r + 0 + 1)) (hp : p ≠ cI r)
     (k : Fin (2 * r + 0 + 1)) : (gᴴ * Hpk 0 r) p k = Hpk 0 r p k := by
   simp [Matrix.mul_apply, col_fix hg p hp]
 
 /- English proof (translation)
-Establish `hp : Fin.rev q ≠ cI r` using `fun h => hq ((rev_eq_c_iff q).1 h)`. Establish `hU : gᴴ * Hpk 0 r * g = Hpk 0 r` using `hg.1`. Establish `h1` using `congrFun (congrFun hU (Fin.rev q)) (cI r)`. Rewrite `h1` using `[Matrix.mul_apply]`. Simplify using `only [conjT_mul_H hg _ hp] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Hpk_apply, Fin.rev_rev, hp, Ne.symm hq] at h1`. Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma col_c {g : Mat 0 r} (hg : g ∈ UWb 0 r) (q : Fin (2 * r + 0 + 1)) (hq : q ≠ cI r) :
     g q (cI r) = 0 := by
@@ -143,11 +143,11 @@ lemma col_c {g : Mat 0 r} (hg : g ∈ UWb 0 r) (q : Fin (2 * r + 0 + 1)) (hq : q
   exact h1
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[dgl_apply]`. Distinguish the cases in `hj : j = cI r`. Substitute `hj` using the available equality. Distinguish the cases in `hi : i = cI r`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[col_c hg i hi]`. Simplify using `[hi]`. Rewrite using `[col_fix hg j hj i]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hj]`. Simplify using `[hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma eq_dgl {g : Mat 0 r} (hg : g ∈ UWb 0 r) : g = dgl r (g (cI r) (cI r)) := by
   ext i j
@@ -166,9 +166,9 @@ lemma eq_dgl {g : Mat 0 r} (hg : g ∈ UWb 0 r) : g = dgl r (g (cI r) (cI r)) :=
     · simp [hij]
 
 /- English proof (translation)
-Establish `hU : (dgl r u)ᴴ * Hpk 0 r * dgl r u = Hpk 0 r` using `h.1`. Establish `h1` using `congrFun (congrFun hU (cI r)) (cI r)`. Establish `hc : Fin.rev (cI r) = cI r` using `(rev_eq_c_iff (cI r)).2 rfl`. Simplify using `only [dgl, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul, Matrix.mul_diagonal, Pi.star_apply, if_true] at h1`. Rewrite `h1` using `[Hpk_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hc, if_true] at h1`. Use `show (starRingEnd ℂ) u * u = 1`. Rewrite using `[show (starRingEnd ℂ) u = star u from rfl]`. Take the linear combination `-h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma dgl_norm {u : ℂ} (h : dgl r u ∈ UWb 0 r) : (starRingEnd ℂ) u * u = 1 := by
   have hU : (dgl r u)ᴴ * Hpk 0 r * dgl r u = Hpk 0 r := h.1
@@ -183,9 +183,9 @@ lemma dgl_norm {u : ℂ} (h : dgl r u ∈ UWb 0 r) : (starRingEnd ℂ) u * u = 1
   linear_combination -h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `e` using `eq_dgl hg`. Conclude with `⟨g (cI r) (cI r), dgl_norm (e ▸ hg), e⟩`. Introduce and unpack `⟨u, hu, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `dgl_mem hu`.
+A detailed English derivation is pending.
 -/
 theorem mem_UWb_iff (g : Mat 0 r) :
     g ∈ UWb 0 r ↔ ∃ u : ℂ, (starRingEnd ℂ) u * u = 1 ∧ g = dgl r u := by
@@ -197,7 +197,7 @@ theorem mem_UWb_iff (g : Mat 0 r) :
     exact dgl_mem hu
 
 /- English proof (translation)
-Rewrite using `[Complex.conj_mul']`. Use `norm_cast`. Conclude with `pow_eq_one_iff_of_nonneg (norm_nonneg u) two_ne_zero`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 lemma conj_mul_iff (u : ℂ) : (starRingEnd ℂ) u * u = 1 ↔ ‖u‖ = 1 := by
   rw [Complex.conj_mul']
@@ -205,7 +205,7 @@ lemma conj_mul_iff (u : ℂ) : (starRingEnd ℂ) u * u = 1 ↔ ‖u‖ = 1 := by
   exact pow_eq_one_iff_of_nonneg (norm_nonneg u) two_ne_zero
 
 /- English proof (translation)
-Simplify using `only [dgl, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma dgl_mul (u v : ℂ) : dgl r u * dgl r v = dgl r (u * v) := by
   simp only [dgl, Matrix.diagonal_mul_diagonal]

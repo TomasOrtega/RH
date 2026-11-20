@@ -31,27 +31,23 @@ open GlobalTheory.WeilParts GlobalTheory.FinWeil GlobalTheory.FinWeilO GlobalThe
 section Abstract
 
 /- English proof (translation)
-Set `β : X → X → ℂ` to `fun y x => γ (σ w • (u y - y)) x * γ (w • (u y - y)) (u x)`. Establish `hsub : ∀ x y z, γ (x - y) z = γ x z * (γ y z)⁻¹` using `fun x y z => by`. Rewrite using `[sub_eq_add_neg, h.add_left, h.neg_left]`. Establish `hβ : ∀ y x, β y x = γ (σ w • u y) x * (γ (σ w • y) x)⁻¹ * (γ (w • y) x * (γ (w • y) (u x))⁻¹)` using `fun y x => by`. Simplify using `only [β, smul_sub, hsub]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_smul u w y, hu]`. Establish `e1 : ∀ x y, γ (σ w • x) y = (γ (w • y) x)⁻¹` using `fun x y => by rw [h.adj, h.sg_sg, h.swap]`. Establish `hsym : ∀ x y, β x y = β y x` using `fun x y => by`. Rewrite using `[hβ, hβ, e1, e1, e1, e1]`. Simplify using `only [inv_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hβ' : ∀ y x, β y x = γ (u y - y) (w • x + σ w • u x)` using `fun y x => by`. Simplify using `only [β]`. Rewrite using `[h.add_right, h.adj, h.adj, h.sg_sg]`. Establish `hm : ∀ x, x ∈ A.comap (u - LinearMap.id) ↔ u x - x ∈ A` using `fun x => Iff.rfl`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.gaussSum_nondegenerate_finite_hermitian_module σ w h.sg_sg h.w_add lam hlam β (fun x y z => by`. Rewrite using `[hβ', hβ', hβ', ← h.add_left, map_add]`. Use `congr 1`. Use the proof step `abel)`. Use `hsym`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun r x y => by`. Rewrite using `[hβ', hβ', map_smul, ← smul_sub, h.adj, map_smul, smul_add, smul_comm (σ r) w, smul_comm (σ r) (σ w)])`. Use the proof step `(A.comap (u - LinearMap.id)) (A.comap (u - LinearMap.id) ⊓ A) inf_le_left`. Use the proof step `(fun x hx => by`. Rewrite `hx` using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : w • x + σ w • u x = x + σ w • (u x - x)`. Establish `e : w • x + σ w • x = x` using `by rw [← add_smul, h.w_add, one_smul]`. Rewrite using `[smul_sub, ← sub_eq_zero]`. Rewrite `e` using `[← sub_eq_zero]`. Rewrite using `[← e]`.
+Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hxA⟩ y hy`. Rewrite using `[hsym, hβ', hz]`. Conclude with `h.iso hA hy (A.add_mem hxA (A.smul_mem _ hx))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hy`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `: x + σ w • (u x - x) ∈ A` using `(hA _).2 fun a ha => by`. Take `⟨y, rfl⟩` from `hs a`. Use `hy y ha` as an intermediate fact.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hsym, hβ', hz]`. Conclude with `h.swap_eq_one this`. Conclude with `(A.add_mem_iff_left (A.smul_mem _ hx)).1 this)`. Use `n t (fun k => (hm _).2 (ht k)) (fun y hy => by`. Take `⟨k, hk, hk'⟩` from `ht' y hy`.
-
-Conclude with `⟨k, ⟨Submodule.sub_mem _ hy ((hm _).2 (ht k)), hk⟩, fun k' h' => hk' k' h'.2⟩)`. Use `⟨Eq.trans (Finset.sum_congr rfl fun k _ => ?_) key.1, key.2⟩` and prove the remaining obligations. Establish `e4 : ∀ (r : R) y, γ (r • (u y - y)) (u y) = γ (σ r • (u y - y)) y` using `fun r y => by`. Rewrite using `[smul_sub, smul_sub, hsub, hsub, ← map_smul u r y, hu, h.adj (σ r), h.adj (σ r), h.sg_sg, h.swap (r • y) (u y), h.swap (r • y) y, inv_inv, mul_comm]`. Simplify using `only [β]`.
-
-Rewrite using `[map_smul, ← smul_sub, smul_smul, smul_smul, e4, ← h.add_left, ← add_smul, map_mul, ← mul_add, h.w_add, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_isometry {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M]
     {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M} (h : IsHeis σ w γ W) {lam : ℕ →* ℂ} (hlam : GoodNorm σ lam)
@@ -114,9 +110,9 @@ theorem gauss_isometry {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X]
   rw [map_smul, ← smul_sub, smul_smul, smul_smul, e4, ← h.add_left, ← add_smul, map_mul, ← mul_add, h.w_add, mul_one]
 
 /- English proof (translation)
-Establish `: Finite (B ⧸ A.addSubgroupOf B)` using `AddSubgroup.index_ne_zero_iff_finite.1 h`. Set `e : (B ⧸ A.addSubgroupOf B) ≃ Fin (A.relIndex B)` to `Finite.equivFinOfCardEq rfl`. Use `⟨fun k => ((e.symm k).out : B), fun k => (e.symm k).out.2, fun y hy => ?_⟩` and prove the remaining obligations. Establish `key : ∀ k, y - ((e.symm k).out : B) ∈ A ↔ k = e (QuotientAddGroup.mk ⟨y, hy⟩)` using `fun k => by`. Rewrite using `[← Equiv.symm_apply_eq, eq_comm, ← QuotientAddGroup.out_eq' (e.symm k), QuotientAddGroup.eq_iff_sub_mem, QuotientAddGroup.out_eq']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `⟨_, (key _).2 rfl, fun k hk => (key k).1 hk⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem exists_transversal {X : Type} [AddCommGroup X] (A B : AddSubgroup X) (h : A.relIndex B ≠ 0) :
     ∃ t : Fin (A.relIndex B) → X, (∀ k, t k ∈ B) ∧ ∀ y ∈ B, ∃! k, y - t k ∈ A := by
@@ -130,11 +126,11 @@ theorem exists_transversal {X : Type} [AddCommGroup X] (A B : AddSubgroup X) (h 
   exact ⟨_, (key _).2 rfl, fun k hk => (key k).1 hk⟩
 
 /- English proof (translation)
-Establish `h0 : M.charpolyRev ≠ 0` using `fun h => by`. Use `Matrix.eval_charpolyRev (M := M)` as an intermediate fact. Rewrite `this` using `[h, Polynomial.eval_zero]`. Conclude with `zero_ne_one this`. Use `(Polynomial.finite_setOfPred_isRoot h0).subset fun t ht => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : M.charpolyRev.eval t = (1 - t • M).det`. Rewrite using `[Matrix.charpolyRev, ← Polynomial.coe_evalRingHom, RingHom.map_det]`. Rewrite using `[map_sub, map_one]`. Use `congr 2`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Polynomial.eval_mul, Polynomial.coe_evalRingHom, Polynomial.eval_X, Polynomial.eval_C]`. Use `show M.charpolyRev.eval t = 0`. Rewrite using `[e, ← neg_sub, Matrix.det_neg, show (t • M - 1).det = 0 from ht, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_det_smul_sub_one {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (M : Matrix ι ι K) :
     {t : K | (t • M - 1).det = 0}.Finite := by
@@ -154,11 +150,11 @@ theorem finite_det_smul_sub_one {K ι : Type} [Field K] [Fintype ι] [DecidableE
   rw [e, ← neg_sub, Matrix.det_neg, show (t • M - 1).det = 0 from ht, mul_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Use `mul_right_cancel₀ hP ?_` and prove the remaining obligations. Take the linear combination `this`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e : (M - 1)ᴴ * P * M = P * -(M - 1)`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.sub_mul, Matrix.sub_mul, h, Matrix.one_mul, neg_sub, Matrix.mul_sub, Matrix.mul_one]`. Use `congrArg Matrix.det e` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_neg]`. Use `mul_right_cancel₀ hP ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem det_unitary_sub_one {K ι : Type} [Field K] [StarRing K] [Fintype ι] [DecidableEq ι] {M P : Matrix ι ι K}
     (hP : P.det ≠ 0) (h : Mᴴ * P * M = P) :
@@ -177,11 +173,11 @@ theorem det_unitary_sub_one {K ι : Type} [Field K] [StarRing K] [Fintype ι] [D
     linear_combination this
 
 /- English proof (translation)
-Establish `h1 : (G⁻¹ * aᴴ * G) * a = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc aᴴ, ha, Matrix.nonsing_inv_mul _ hG]`. Establish `h2 : a * G⁻¹ * aᴴ = G⁻¹`. Establish `h3` using `mul_eq_one_comm.1 h1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hG, Matrix.mul_one]`. Use `_ = G⁻¹ := by rw [h3, Matrix.one_mul]`. Rewrite using `[Matrix.conjTranspose_kronecker, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, hb]`. Use `congr 1`. Use `conv_rhs => rw [← h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem kronecker_unitary {K : Type} [Field K] [StarRing K] {m n : ℕ} {a G : Matrix (Fin n) (Fin n) K}
     {b H : Matrix (Fin m) (Fin m) K} (hG : IsUnit G.det) (ha : aᴴ * G * a = G) (hb : bᴴ * H * b = H) :
@@ -207,7 +203,7 @@ def IsRat (V : HSp D) (g : GA D V) (a : Matrix (Fin V.rank) (Fin V.rank) D.host.
   Formalism.L2.Theta.mt V g = a.map (incA D)
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Introduce `x y h`. Use `(tauE D (D.eTau.symm 1)).injective ?_` and prove the remaining obligations. Rewrite using `[← comp_incA hθ, ← comp_incA hθ, h]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem incA_inj : Function.Injective (incA D) := by
   obtain ⟨θ, hθ⟩ := GlobalTheory.Member.exists_isInfFam_family D
@@ -216,22 +212,20 @@ theorem incA_inj : Function.Injective (incA D) := by
   rw [← comp_incA hθ, ← comp_incA hθ, h]
 
 /- English proof (translation)
-Take `⟨a, -, ha⟩` from `hg`. Conclude with `⟨a.1, (congrArg Units.val ha).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isRat {V : HSp D} {g : GA D V} (hg : g ∈ GQ V) : ∃ a, IsRat V g a := by
   obtain ⟨a, -, ha⟩ := hg
   exact ⟨a.1, (congrArg Units.val ha).symm⟩
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem mt_unitary (V : HSp D) (g : GA D V) :
     ((Formalism.L2.Theta.mt V g).map (cA D))ᵀ * V.gram.map (incA D) * Formalism.L2.Theta.mt V g = V.gram.map (incA D) := g.2
 
 /- English proof (translation)
-Establish `e` using `mt_unitary V g`. Rewrite `e` using `[show Formalism.L2.Theta.mt V g = _ from h]`. Use `Matrix.map_injective (incA_inj (D := D)) ?_` and prove the remaining obligations. Use `show (aᴴ * V.gram * a).map (incA D) = V.gram.map (incA D)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
-
-Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRat.unitary {V : HSp D} {g : GA D V} {a} (h : IsRat V g a) : aᴴ * V.gram * a = V.gram := by
   have e := mt_unitary V g
@@ -242,9 +236,7 @@ theorem IsRat.unitary {V : HSp D} {g : GA D V} {a} (h : IsRat V g a) : aᴴ * V.
   exact e
 
 /- English proof (translation)
-Establish `hd` using `(det_unitary_sub_one (GlobalTheory.LatVac.gram_det_isUnit V).ne_zero h).1`. Set `a' : GL (Fin V.rank) D.host.E` to `Matrix.GeneralLinearGroup.mkOfDetNeZero a (left_ne_zero_of_mul_eq_one hd)`. Use `⟨⟨Formalism.UG.bc (incA D) a', ?_⟩, ⟨a', h, rfl⟩, rfl⟩` and prove the remaining obligations. Use `show ((a.map (incA D)).map (cA D))ᵀ * V.gram.map (incA D) * a.map (incA D) = V.gram.map (incA D)`. Use `conv_rhs => rw [← h, Matrix.map_mul, Matrix.map_mul]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_of_unitary (V : HSp D) {a : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (h : aᴴ * V.gram * a = V.gram) :
     ∃ g ∈ GQ V, IsRat V g a := by
@@ -256,32 +248,32 @@ theorem exists_of_unitary (V : HSp D) {a : Matrix (Fin V.rank) (Fin V.rank) D.ho
   rfl
 
 /- English proof (translation)
-Rewrite using `[IsRat, mt_mul, show Formalism.L2.Theta.mt V g = _ from h, show Formalism.L2.Theta.mt V g' = _ from h', Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsRat.mul {V : HSp D} {g g' : GA D V} {a a'} (h : IsRat V g a) (h' : IsRat V g' a') : IsRat V (g * g') (a * a') := by
   rw [IsRat, mt_mul, show Formalism.L2.Theta.mt V g = _ from h, show Formalism.L2.Theta.mt V g' = _ from h', Matrix.map_mul]
 
 /- English proof (translation)
-Rewrite using `[IsRat, mt_one, Matrix.map_one _ (incA D).map_zero (incA D).map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isRat_one (V : HSp D) : IsRat V 1 1 := by
   rw [IsRat, mt_one, Matrix.map_one _ (incA D).map_zero (incA D).map_one]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext (h.trans h'.symm))`.
+A detailed English derivation is pending.
 -/
 theorem IsRat.ext {V : HSp D} {g g' : GA D V} {a} (h : IsRat V g a) (h' : IsRat V g' a) : g = g' :=
   Subtype.ext (Units.ext (h.trans h'.symm))
 
 /- English proof (translation)
-Take `⟨g', h1, h2⟩` from `exists_of_unitary V h.unitary`. Rewrite using `[h.ext h2]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem IsRat.mem {V : HSp D} {g : GA D V} {a} (h : IsRat V g a) : g ∈ GQ V := by
   obtain ⟨g', h1, h2⟩ := exists_of_unitary V h.unitary
   rwa [h.ext h2]
 
 /- English proof (translation)
-Rewrite using `[show Formalism.L2.Theta.mt V g = _ from h]`. Use function extensionality and compare the values at `i j`. Conclude with `comp_incA hθ τ _`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem IsRat.compAt {V : HSp D} {g : GA D V} {a} (h : IsRat V g a) {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) :
     compAt θ τ (Formalism.L2.Theta.mt V g) = a.map (tauE D τ) := by
@@ -290,14 +282,14 @@ theorem IsRat.compAt {V : HSp D} {g : GA D V} {a} (h : IsRat V g a) {θ : InfFam
   exact comp_incA hθ τ _
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mul (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) (g g' : GA D V) :
     compAt θ τ (Formalism.L2.Theta.mt V (g * g')) = compAt θ τ (Formalism.L2.Theta.mt V g) * compAt θ τ (Formalism.L2.Theta.mt V g') :=
   Matrix.map_mul (f := (θ τ).comp (infPart D))
 
 /- English proof (translation)
-Establish `h : (Formalism.L2.Theta.mt V k).map (infPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hk)`. Establish `: compAt θ τ (Formalism.L2.Theta.mt V k) = ((Formalism.L2.Theta.mt V k).map (infPart D)).map (θ τ)` using `rfl`. Rewrite using `[this, h, Matrix.map_one _ (θ τ).map_zero (θ τ).map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem compAt_fin (θ : InfFam D) (τ : D.what₂.Tau) {V : HSp D} {k : GA D V} (hk : k ∈ GfC V) :
     compAt θ τ (Formalism.L2.Theta.mt V k) = 1 := by
@@ -306,9 +298,7 @@ theorem compAt_fin (θ : InfFam D) (τ : D.what₂.Tau) {V : HSp D} {k : GA D V}
   rw [this, h, Matrix.map_one _ (θ τ).map_zero (θ τ).map_one]
 
 /- English proof (translation)
-Establish `e : (aᴴ).map (tauE D τ) = (a.map (tauE D τ))ᴴ`. Use function extensionality and compare the values at `i j`. Conclude with `tauE_star τ _`. Use `congrArg (fun m : Matrix (Fin V.rank) (Fin V.rank) D.host.E => m.map (tauE D τ)) h` as an intermediate fact. Simplify using `only [Matrix.map_mul, e] at this`.
-
-Conclude with `this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_tau_unitary {V : HSp D} {a : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (h : aᴴ * V.gram * a = V.gram)
     (τ : D.what₂.Tau) : (a.map (tauE D τ))ᴴ * gramAt D V τ * a.map (tauE D τ) = gramAt D V τ := by
@@ -320,13 +310,13 @@ theorem map_tau_unitary {V : HSp D} {a : Matrix (Fin V.rank) (Fin V.rank) D.host
   exact this
 
 /- English proof (translation)
-Establish `h0 : D.host.xi0 ≠ 0` using `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Establish `hs` using `GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D`. Establish `hne : ∀ n : ℕ, (n : D.host.E) - D.host.xi0 ≠ 0` using `fun n h => by`. Establish `e` using `congrArg star h`. Rewrite `e` using `[star_sub, star_natCast, hs, star_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `h0` to reduce the goal to its premises. Take the linear combination `(e - h) / 2`. Establish `hne' : ∀ n : ℕ, (n : D.host.E) + D.host.xi0 ≠ 0` using `fun n h => by`. Establish `e` using `congrArg star h`. Rewrite `e` using `[star_add, star_natCast, hs, star_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne n (by rw [← e]; ring)`. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => ((n : D.host.E) + D.host.xi0) / (n - D.host.xi0)) (fun n m h => ?_) fun n => ?_` and prove the remaining obligations. Use `(div_eq_div_iff (hne n) (hne m)).1 h` as an intermediate fact. Establish `e : D.host.xi0 * ((n : D.host.E) - m) = 0` using `by linear_combination (-1 / 2) * this`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 e).resolve_left h0)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show _ * star _ = 1`. Rewrite using `[star_div₀, star_add, star_sub, star_natCast, hs, sub_neg_eq_add, ← sub_eq_add_neg]`. Use `hne n` as an intermediate fact. Use `hne' n` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem infinite_norm_one (D : D7) : {t : D.host.E | t * star t = 1}.Infinite := by
   have h0 : D.host.xi0 ≠ 0 := GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero
@@ -352,19 +342,19 @@ theorem infinite_norm_one (D : D7) : {t : D.host.E | t * star t = 1}.Infinite :=
     field_simp
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨a, ha⟩` from `exists_isRat hg`. Establish `hc : ∀ x : D.host.E, D.host.conj x = star x` using `fun x => (GlobalTheory.SplitIdem.star_eq_conj D x).symm`. Establish `hh : ∀ x y, GlobalTheory.UnRep.hermE D.host.conj V.gramᵀ x y = star y ⬝ᵥ V.gram *ᵥ x` using `fun x y => by`. Simplify using `only [GlobalTheory.UnRep.hermE, hc, dotProduct, Matrix.mulVec, Matrix.transpose_apply, Finset.mul_sum, Pi.star_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hun : ∀ m, GlobalTheory.UnRep.IsUnE D.host.conj V.gramᵀ m ↔ mᴴ * V.gram * m = V.gram` using `fun m => by`. Establish `e : ∀ x y, star (m *ᵥ y) ⬝ᵥ V.gram *ᵥ m *ᵥ x = star y ⬝ᵥ (mᴴ * V.gram * m) *ᵥ x` using `fun x y => by`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.UnRep.IsUnE, hh, e]`. Use `⟨fun h => ?_, fun h x y => by rw [h]⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `using h (Pi.single j 1) (Pi.single i 1)`. Establish `hG : GlobalTheory.UnRep.IsHermForm D.host.conj V.gramᵀ`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => by rw [hc, hc, star_star], fun h => ?_, fun i j => by rw [hc]; exact GlobalTheory.LatVac.gram_star V _ _, by rw [Matrix.det_transpose]; exact (GlobalTheory.LatVac.gram_det_isUnit V).ne_zero⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D`. Rewrite `e` using `[← hc, h, AlgEquiv.one_apply]`. Conclude with `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero (D := D) (by linear_combination e / 2)`. Take `⟨l, hl, rfl⟩` from `GlobalTheory.UnRep.isUnE_eq_prod_refl ℚ _ D.host.conj _ _ hG a ((hun a).2 ha.unitary)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Use `clear hg`. Proceed by induction on `l generalizing g with`. Consider the case `nil => exact ha.ext (isRat_one V) ▸ h1`. Consider the case `cons p l ih`. Take `⟨p1, p2⟩` from `hl p List.mem_cons_self`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g₁, m1, r1⟩` from `exists_of_unitary V ((hun _).1 ((GlobalTheory.UnRep.ReflLaws.refl_laws ℚ _ D.host.conj _ _ hG p.1 p1).2.2.2 p.2 p2))`. Take `⟨g₂, m2, r2⟩` from `exists_of_unitary V ((hun _).1 (GlobalTheory.UnRep.ReflGen.isUnE_prod hG l fun q hq => hl q (List.mem_cons_of_mem _ hq)))`. Rewrite `ha` using `[List.map_cons, List.prod_cons]`. Rewrite using `[ha.ext (r1.mul r2)]`. Use `hm _ m1 _ m2 (hr g₁ p.1 ((p.2 - 1) / GlobalTheory.UnRep.hermE D.host.conj V.gramᵀ p.1 p.1) (hh _ _ ▸ p1) ?_) (ih g₂ (fun q hq => hl q (List.mem_cons_of_mem _ hq)) r2)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_transpose]`. Establish `e : (fun b => D.host.conj (p.1 b)) = star p.1` using `funext fun b => hc _`. Rewrite using `[← e]`. Conclude with `r1`.
+A detailed English derivation is pending.
 -/
 theorem rat_induction (V : HSp D) (P : GA D V → Prop) (h1 : P 1) (hm : ∀ g ∈ GQ V, ∀ g' ∈ GQ V, P g → P g' → P (g * g'))
     (hr : ∀ g (x : Fin V.rank → D.host.E) (c : D.host.E), star x ⬝ᵥ V.gram *ᵥ x ≠ 0 →
@@ -415,14 +405,14 @@ variable {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
   {χS χT : (AE D)ˣ →* Circle} {of oi : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
 /- English proof (translation)
-Simplify using `only [actO, _root_.mul_inv_rev, mt_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_mul (g g' : GA D S) (h h' : GA D T) (u : WO S T) :
     actO S T (g * g') (h * h') u = actO S T g h (actO S T g' h' u) := by
   simp only [actO, _root_.mul_inv_rev, mt_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[actO, inv_one, mt_one, mt_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_one (u : WO S T) : actO S T 1 1 u = u := by
   rw [actO, inv_one, mt_one, mt_one, Matrix.one_mul, Matrix.mul_one]
@@ -435,7 +425,7 @@ Both sides reduce to the same expression.
 theorem subst_apply (p : GA D S × GA D T) (f : WO S T → ℂ) : subst p f = fun w => f (actO S T p.1⁻¹ p.2⁻¹ w) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use `show f (actO S T (p.1 * q.1)⁻¹ (p.2 * q.2)⁻¹ w) = f (actO S T q.1⁻¹ q.2⁻¹ (actO S T p.1⁻¹ p.2⁻¹ w))`. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, act_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_mul (p q : GA D S × GA D T) (f : WO S T → ℂ) : subst (p * q) f = subst p (subst q f) := by
   funext w
@@ -443,7 +433,7 @@ theorem subst_mul (p q : GA D S × GA D T) (f : WO S T → ℂ) : subst (p * q) 
   rw [_root_.mul_inv_rev, _root_.mul_inv_rev, act_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use `show f (actO S T 1⁻¹ 1⁻¹ w) = f w`. Rewrite using `[inv_one, inv_one, act_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_one (f : WO S T → ℂ) : subst (1 : GA D S × GA D T) f = f := by
   funext w
@@ -451,7 +441,7 @@ theorem subst_one (f : WO S T → ℂ) : subst (1 : GA D S × GA D T) f = f := b
   rw [inv_one, inv_one, act_one]
 
 /- English proof (translation)
-Take `⟨s1, s2, -⟩` from `GlobalTheory.UnitarySplit.real_finite_split D S`. Take `⟨t1, t2, -⟩` from `GlobalTheory.UnitarySplit.real_finite_split D T`. Take `⟨a, ha, k, hk, e⟩` from `s1 p.1`. Take `⟨a', ha', k', hk', e'⟩` from `t1 p.2`. Conclude with `⟨(a, a'), (k, k'), ha, ha', hk, hk', Prod.ext e e', Prod.ext (e.trans (s2 a ha k hk)) (e'.trans (t2 a' ha' k' hk'))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_parts (p : GA D S × GA D T) : ∃ a k : GA D S × GA D T, a.1 ∈ GinfC S ∧ a.2 ∈ GinfC T ∧ k.1 ∈ GfC S ∧
     k.2 ∈ GfC T ∧ p = a * k ∧ p = k * a := by
@@ -467,15 +457,15 @@ def IsScalar (ψ : AddChar (AF D.host.F) ℂ) (of oi : GA D S × GA D T →* Mod
   ∀ f, IsThetaFunO ψ S T f → of p (oi p f) = c • subst p f
 
 /- English proof (translation)
-Establish `R` using `GlobalTheory.T.rational_substitution_theta_heisenberg_unitary D ψ hψ S T _ (inv_mem h1) _ (inv_mem h2)`. Establish `R'` using `GlobalTheory.T.rational_substitution_theta_heisenberg_unitary D ψ hψ S T _ h1 _ h2`. Take `⟨a, k, a1, a2, k1, k2, e1, e2⟩` from `exists_parts p`. Establish `hoi : ∀ f, IsThetaFunO ψ S T f → oi p f = oi a f` using `fun f h => by`. Rewrite using `[e1, map_mul, Module.End.mul_apply, hi.triv k.1 k1 k.2 k2 f h]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hof : ∀ f, IsThetaFunO ψ S T f → of p f = of k f` using `fun f h => by`. Rewrite using `[e2, map_mul, Module.End.mul_apply, hf.triv a.1 a1 a.2 a2 f h]`. Establish `hth : ∀ u f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (heisO ψ S T u f)` using `fun u f h => by`. Establish `e : u = realIdem D • u + (1 - realIdem D) • u` using `by rw [← add_smul, add_sub_cancel, one_smul]`. Rewrite using `[e, heisO_add_of_orth ψ S T (symplO_real_fin S T (real_smul_real u) (fin_smul_fin u))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.WeilVacMove.isTheta_heisO_real hψ (real_smul_real u) (GlobalTheory.FinTranslate.isTheta_heisO_fin hψ.1 (fin_smul_fin u) h)`. Take `⟨c, hc, h⟩` from `GlobalTheory.T.schurLemma_thetaFunctions_orientedPair D ψ hψ S T (of p * oi p * subst p⁻¹) (fun f h => hf.pres _ _ (hi.pres _ _ (R f h).1)) (fun w f h => by`. Establish `t1 : IsThetaFunO ψ S T (subst p⁻¹ f)` using `(R f h).1`. Establish `t2 : subst p⁻¹ (heisO ψ S T w f) = heisO ψ S T (actO S T p.1⁻¹ p.2⁻¹ w) (subst p⁻¹ f)` using `(R f h).2.1 w`. Simplify using `only [Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[t2, hoi _ (hth _ _ t1), hi.Heisenberg₂ a.1 a1 a.2 a2 _ _ t1, hof _ (hth _ _ (hi.pres _ _ t1)), hf.Heisenberg₂ k.1 k1 k.2 k2 _ _ (hi.pres _ _ t1), ← act_mul, ← act_mul, ← hof _ (hi.pres _ _ t1), ← hoi _ t1, show k.1 * a.1 = p.1 from congrArg Prod.fst e2.symm, show k.2 * a.2 = p.2 …`. Use the proof step `(fun μ 𝓕 hμ h𝓕 f h => by`. Establish `t1 : IsThetaFunO ψ S T (subst p⁻¹ f)` using `(R f h).1`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[hf.unit μ 𝓕 hμ h𝓕 _ _ (hi.pres _ _ t1), hi.unit μ 𝓕 hμ h𝓕 _ _ t1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(R f h).2.2 μ 𝓕 hμ h𝓕)`. Use `⟨c, hc, fun f hf' => ?_⟩` and prove the remaining obligations. Use `h (subst p f) (R' f hf').1` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite `this` using `[← subst_mul, inv_mul_cancel, subst_one]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_isScalar (hψ : IsStdChar D ψ (-1)) (hf : IsFinWeil ψ S T ΛS ΛT χS χT of) (hi : IsInfWeil ψ θ S T oi)
     {p : GA D S × GA D T} (h1 : p.1 ∈ GQ S) (h2 : p.2 ∈ GQ T) : ∃ c : ℂ, ‖c‖ = 1 ∧ IsScalar ψ of oi p c := by
@@ -513,7 +503,7 @@ theorem exists_isScalar (hψ : IsStdChar D ψ (-1)) (hf : IsFinWeil ψ S T ΛS �
   rwa [← subst_mul, inv_mul_cancel, subst_one] at this
 
 /- English proof (translation)
-Take `⟨f, hf, f0⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_thetaO_ne_zero hψ S T`. Use `smul_left_injective ℂ (m := subst p f) (fun e => f0 ?_) ((h f hf).symm.trans (h' f hf))` and prove the remaining obligations. Rewrite using `[← subst_one (S := S) (T := T) f, ← inv_mul_cancel p, subst_mul, e, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsScalar.unique (hψ : IsStdChar D ψ (-1)) {p : GA D S × GA D T} {c c' : ℂ} (h : IsScalar ψ of oi p c)
     (h' : IsScalar ψ of oi p c') : c = c' := by
@@ -522,7 +512,7 @@ theorem IsScalar.unique (hψ : IsStdChar D ψ (-1)) {p : GA D S × GA D T} {c c'
   rw [← subst_one (S := S) (T := T) f, ← inv_mul_cancel p, subst_mul, e, map_zero]
 
 /- English proof (translation)
-Introduce `f hf` and use `by have t : IsThetaFunO ψ S T (subst q f) := (GlobalTheory.T.rational_substitution_theta_heisenberg_unitary D ψ hψ S T _ h1 _ h2 f hf).1 rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hcomm q p _ (hi.pres _ _ hf), h' f hf, map_smul, map_smul, h _ t, smul_smul, …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsScalar.mul (hψ : IsStdChar D ψ (-1)) (hi : IsInfWeil ψ θ S T oi)
     (hcomm : ∀ p q f, IsThetaFunO ψ S T f → of p (oi q f) = oi q (of p f)) {p q : GA D S × GA D T} {c c' : ℂ}
@@ -533,11 +523,11 @@ theorem IsScalar.mul (hψ : IsStdChar D ψ (-1)) (hi : IsInfWeil ψ θ S T oi)
     map_smul, h _ t, smul_smul, mul_comm c', subst_mul]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hof p`. Take `⟨a, k, a1, a2, k1, k2, e1, -⟩` from `exists_parts q`. Establish `hoi : ∀ f, IsThetaFunO ψ S T f → oi q f = oi a f` using `fun f h => by`. Rewrite using `[e1, map_mul, Module.End.mul_apply, hi.triv k.1 k1 k.2 k2 f h]`. Set `L : thetaSub ψ S T →ₗ[ℂ] thetaSub ψ S T` to `(oi q).restrict fun f hf => hi.pres q f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hL : ∀ m, (L m : WO S T → ℂ) = oi q m` using `fun _ => rfl`. Use `congrArg Subtype.val (h.comm L (fun x v => Subtype.ext (by` as an intermediate fact. Establish `e : actO S T a.1 a.2 x = x` using `congrArg XF.val (rhoF_real a1 a2 x)`. Rewrite using `[hL, coe_opF, coe_opF, hL, map_smul, hoi _ (GlobalTheory.FinTranslate.isTheta_heisO_fin hψ.1 x.fin v.2), hi.Heisenberg₂ a.1 a1 a.2 a2 _ _ v.2, e, ← hoi _ v.2])) p ⟨f, hf⟩)`. Rewrite using `[hz ⟨f, hf⟩, map_smul, ← hL, ← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz (L ⟨f, hf⟩)`.
+A detailed English derivation is pending.
 -/
 theorem oi_comm (hψ : IsStdChar D ψ (-1)) (hi : IsInfWeil ψ θ S T oi) {w : 𝓞 D.host.E} {lam : ℕ →* ℂ}
     {Om : GA D S × GA D T →* Module.End ℂ (thetaSub ψ S T)} (h : IsLatRep hψ.1 ΛS ΛT w lam Om)
@@ -569,7 +559,7 @@ def finL (S T : HSp D) : Matrix (Fin T.rank) (Fin S.rank) D.host.E →ₗ[𝓞 D
   map_smul' r x := XF.ext (finRat_smul S T (r : D.host.E) x)
 
 /- English proof (translation)
-Establish `H` using `isHeis_opF hψ S T hw`. Establish `e : ∀ x y, gamQ ψ S T x y = gamF ψ S T (finL S T x) (finL S T y)` using `fun _ _ => rfl`. Conclude with `⟨H.sg_sg, H.w_add, fun x y z => by rw [e, e, e, map_add, H.add_left], fun x y z => by rw [e, e, e, map_add, H.add_right], fun x => by rw [e, H.alt], fun r x y => by rw [e, e, map_smul, map_smul, H.adj], fun v => by rw [map_zero, H.zero], fun x y v => by rw [H.comp, e, map_smul, m …`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isHeis_gamQ (hψ : IsCharAF D.host.F ψ) (S T : HSp D) {w : 𝓞 D.host.E} (hw : w + sgO D w = 1) :
     IsHeis (sgO D) w (gamQ ψ S T) fun x => opF hψ S T w (finL S T x) := by
@@ -581,7 +571,7 @@ theorem isHeis_gamQ (hψ : IsCharAF D.host.F ψ) (S T : HSp D) {w : 𝓞 D.host.
     fun x y v => by rw [H.comp, e, map_smul, map_add]⟩
 
 /- English proof (translation)
-Rewrite using `[finRat_eq, finRat_eq, actO_smul, actO, inv_inv, show Formalism.L2.Theta.mt S g = _ from ha, show Formalism.L2.Theta.mt T h⁻¹ = _ from hb, ratW, ratW, Matrix.map_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finRat_sandw {g : GA D S} {h : GA D T} {a b} (ha : IsRat S g a) (hb : IsRat T h⁻¹ b)
     (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : finRat S T (b * x * a) = actO S T g⁻¹ h⁻¹ (finRat S T x) := by
@@ -589,7 +579,7 @@ theorem finRat_sandw {g : GA D S} {h : GA D T} {a b} (ha : IsRat S g a) (hb : Is
     show Formalism.L2.Theta.mt T h⁻¹ = _ from hb, ratW, ratW, Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-The claim follows from `|Algebra.norm ℚ ((N : D.host.E) ^ M * (b ⊗ₖ aᵀ).det)| := by obtain ⟨sd, fg, full, hidx⟩ := GlobalTheory.T.rational_lattice_selfDual_fg_full_index D ψ hψ S T ΛS ΛT hS hT rw [hidx g h a b ha hb] rw [← det_sandw] at hΔ ⊢ rw [← det_sandw_sub_one] at hd ⊢ have hbij : Function.Bijectiv …`.
+A detailed English derivation is pending.
 -/
 theorem finite_data (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {lam : ℕ →* ℂ}
     (hlam : GoodNorm (sgO D) lam) {w : 𝓞 D.host.E} (hw : w + sgO D w = 1) {g : GA D S} {h : GA D T} {a b}

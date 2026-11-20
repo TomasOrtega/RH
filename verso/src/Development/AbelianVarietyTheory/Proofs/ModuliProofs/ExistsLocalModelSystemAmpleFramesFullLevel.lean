@@ -26,19 +26,17 @@ open GlobalTheory.Models GlobalTheory.ZM
 namespace GlobalTheory.SystemAmple
 
 /- English proof (translation)
-Introduce `hx h1 h2 h3 htop E _ _ _ H D Xo hpq hN`. Take `⟨⟨n₀, n₁, a₀, a₁, hne⟩, -⟩` from `GlobalTheory.Models.exists_two_auxiliary_inert_odd_primes_coprime_level E H`. Set `n : Bool → ℕ` to `fun i => cond i n₁ n₀`. Apply the tactic sequence `have aux : ∀ i, AuxiliaryInertOddPrime H (n i) := fun i => by cases i <;> assumption`. Use `choose J k T hJ hamp using fun i => htop E H D hpq Xo (n i) (aux i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Set `B : ∀ i (l₀ : Level H), l₀.A = 1 → BaseModel (T i) l₀` to `fun i l₀ h => (GlobalTheory.T.exists_base_model_semiAbelian hx h1 h2 h3 E H D Xo hpq hN (n i) (J i) (T i) l₀ (aux i) (hJ i) h).some`. Set `ch : ℕ → Bool` to `fun p => decide (n₀ = p)`. Establish `ch_ne : ∀ p, n (ch p) ≠ p`. Introduce `p`. Distinguish the cases in `h : n₀ = p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: ch p = true` using `by simp [ch, h]`. Rewrite using `[this]`. Conclude with `fun h' => hne (h.trans h'.symm)`. Establish `: ch p = false` using `by simp [ch, h]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `key : ∀ (p : ℕ) (W : ValuationSubring ℂ) (_ : p.Prime) (_ : (p : ℂ) ∈ W.nonunits) (i : Idx H p), ∃ Y : Model (Xo i.l) i.c (i.c.V W).subtype, ∃ (l₀ : Level H) (h : IsPrimeToPart l₀ i.l p), Raises (B (ch p) l₀ h.1) Y`. Introduce `p W hp hW i`. Take `⟨hex, hsp, -⟩` from `GlobalTheory.Models.primeToPart_spec E H p hp`. Take `⟨l₀, h⟩` from `hex i.l i.good`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hdvd, hcop, -⟩` from `hsp i.l l₀ h`. Take `⟨hded, -, hb⟩` from `(GlobalTheory.CoeffRings.coeff_isDedFrac E H i.l i.c).2.2.2 p W hp hW`. Establish `hnp : (n (ch p)).Coprime p` using `(Nat.coprime_primes (aux _).1 hp).2 (ch_ne p)`. Establish `hz : zeta 1 ∈ i.c.F`. Establish `: zeta 1 = 1` using `by simp [zeta]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `one_mem _`. Take `⟨b, hbi⟩` from `hb (n (ch p) * l₀.M) 1 (Nat.Coprime.mul_left hnp hcop) one_pos hz`. Take `⟨Y, hY⟩` from `GlobalTheory.LocalModelExists.exists_model_raises h1 h2 h3 E H D Xo _ _ (T (ch p)) hN l₀ i.l (B (ch p) l₀ h.1) i.c _ (i.c.V W).subtype b (aux _).1.pos hdvd hded hbi`. Conclude with `⟨Y, l₀, h, hY⟩`.
-
-Use `choose Y hY using key`. Conclude with `⟨⟨n, J, aux, hJ, T, B, ch, ch_ne, Y, hY⟩, fun i => ⟨k i, hamp i⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_system_ampFrames : GlobalTheory.LN.HomExtSt → Out.Laws → Out.Laws2 → Out.Laws3 → TopAmpExists → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l), 1 ≤ D.p + D.q → ToroidalLevelCompatibility (H := H) (D := D) → ∃ S : System Xo, ∀ i, ∃ k : ℕ, Nonempty (GlobalTheory.LN.AmpFrames (S.T i).t.G (S.T i).t.PP.L ((S.n i ^ k) ^ 2)) := by
   intro hx h1 h2 h3 htop E _ _ _ H D Xo hpq hN

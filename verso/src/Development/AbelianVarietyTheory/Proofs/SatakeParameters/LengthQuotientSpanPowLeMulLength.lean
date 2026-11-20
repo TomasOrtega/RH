@@ -4,17 +4,17 @@ open Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, Ideal.span_singleton_one]`. Use `haveI : Subsingleton (O ⧸ (⊤ : Ideal O)) := Ideal.Quotient.subsingleton_iff.mpr rfl`. Rewrite using `[Module.length_eq_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `bot_le`. Consider the case `succ n ih => set S : Submodule O O := Ideal.span {p ^ (n + 1)} with hS set T : Submodule O O := Ideal.span {p ^ n} with hT`. Establish `hST : S ≤ T` using `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow p n.le_succ)`. Set `v : O ⧸ S` to `S.mkQ (p ^ n)`. Establish `hker : (Ideal.span {p} : Submodule O O) ≤ LinearMap.ker (LinearMap.toSpanSingleton O (O ⧸ S) v)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Simplify using `only [v, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, smul_eq_mul]`. Rewrite using `[Submodule.Quotient.mk_eq_zero, hS, Ideal.mem_span_singleton']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨c, by ring⟩`. Set `ψ : (O ⧸ (Ideal.span {p} : Submodule O O)) →ₗ[O] O ⧸ S` to `(Ideal.span {p} : Submodule O O).liftQ (LinearMap.toSpanSingleton O (O ⧸ S) v) hker`. Set `N : Submodule O (O ⧸ S)` to `LinearMap.range ψ`. Establish `hN : N = T.map S.mkQ`. Simplify using `only [N, ψ, Submodule.range_liftQ, hT, Ideal.span, Submodule.map_span, Set.image_singleton]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.span_singleton_eq_range]`. Establish `h1` using `Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N)`. Establish `hle : Module.length O N ≤ Module.length O (O ⧸ Ideal.span {p})` using `Module.length_le_of_surjective ψ.rangeRestrict ψ.surjective_rangeRestrict`. Establish `heq : Module.length O ((O ⧸ S) ⧸ N) = Module.length O (O ⧸ Ideal.span {p ^ n})`. Rewrite using `[hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.quotientQuotientEquivQuotient S T hST).length_eq`. Express the relevant statement in the definitionally equal form `Module.length O (O ⧸ S) ≤ _`. Rewrite using `[h1, heq]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem length_quotient_span_pow_le (O : Type) [CommRing O] (p : O) (n : ℕ) :
     Module.length O (O ⧸ Ideal.span {p ^ n}) ≤ (n : ℕ∞) * Module.length O (O ⧸ Ideal.span {p}) := by
@@ -58,7 +58,7 @@ theorem length_quotient_span_pow_le (O : Type) [CommRing O] (p : O) (n : ℕ) :
           push_cast; ring
 
 /- English proof (translation)
-Introduce `O _ p n` and use `length_quotient_span_pow_le O p n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O : Type) [CommRing O] (p : O) (n : ℕ),
     Module.length O (O ⧸ Ideal.span {p ^ n}) ≤ (n : ℕ∞) * Module.length O (O ⧸ Ideal.span {p}) :=

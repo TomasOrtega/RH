@@ -10,21 +10,19 @@ namespace CompanionTheory.HCMult
 open PI.UpqRep CompanionTheory.D.gk.admitted
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hσ hirr S hfd hS`. Set `b` to `Module.finBasis ℂ S`. Use `choose Y hYfd _ hvY hY using fun i => unitary_group_admissible n ε H σ hσ hirr S hS (b i) (b i).2`. Establish `hsup : FiniteDimensional ℂ (⨆ i, Y i : Submodule ℂ H)` using `Submodule.finiteDimensional_iSup Y`. Use `Submodule.finiteDimensional_of_le (S₂ := ⨆ i, Y i) (sSup_le ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨Θ, hΘ, rfl⟩`. Set `T : H →L[ℂ] H` to `(LinearMap.toContinuousLinearMap Θ).comp S.orthogonalProjectionOnto`. Establish `hT : ∀ k ∈ Kset ε, ∀ u, T (σ k u) = σ k (T u)`. Introduce `k hk u`. Establish `hkU` using `Kset_sub hk`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : k * k.conjTranspose = 1` using `Matrix.mem_unitaryGroup_iff.1 hk.1`. Establish `hks : k.conjTranspose ∈ Kset ε`. Use `⟨Unitary.star_mem hk.1, ?_⟩` and prove the remaining obligations. Establish `h1 : k.conjTranspose * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk.1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk1, Matrix.mul_one]`. Use `_ = k.conjTranspose * (Jm ε * k) * k.conjTranspose := by simp only [Matrix.mul_assoc]`. Use `_ = Jm ε * k.conjTranspose := by`. Rewrite using `[← hk.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hiso : ∀ x y, ⟪σ k x, σ k y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun x y => (LinearIsometry.mk (σ k : H →ₗ[ℂ] H) (hσ.2.1 k hkU)).inner_map_map x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : ((S.orthogonalProjectionOnto (σ k u) : S) : H) = σ k (S.orthogonalProjectionOnto u : S)`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hS k hk _ (S.orthogonalProjectionOnto u).2) ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : σ k (σ k.conjTranspose w) = w`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ hkU _ (Kset_sub hks), hk1, hσ.1.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[← hw', ← map_sub, hiso]`. Conclude with `S.starProjection_inner_eq_zero u _ (hS _ hks w hw)`. Take `⟨g, hg⟩` from `exists_elt hkU`. Use `hΘ ⟨g, by show toM g ∈ Kset ε; rw [hg]; exact hk⟩ (S.orthogonalProjectionOnto u) (S.orthogonalProjectionOnto (σ k u)) (by show _ = σ (toM g) _; rw [hg]; exact hP)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[T, toMK, hg]`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[← b.sum_repr v, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
-
-Use `Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem i ?_)` and prove the remaining obligations. Use `hY i T hT _ (hvY i)` as an intermediate fact. Simplify `this` using `[T]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem harish_chandra_multiplicity : PI.HCMult := by
   intro n ε H _ _ _ σ hσ hirr S hfd hS

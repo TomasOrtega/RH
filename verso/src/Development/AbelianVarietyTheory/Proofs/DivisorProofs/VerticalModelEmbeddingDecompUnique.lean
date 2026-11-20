@@ -22,11 +22,11 @@ open scoped Classical
 namespace GlobalTheory.ChainPts.PartDual
 
 /- English proof (translation)
-Use `choose V f hx hf using hF`. Use `sec_ext_of_cover (fun x : W => W ⊓ V x) (fun _ => inf_le_left) (fun x hW => Opens.mem_iSup.2 ⟨⟨x, hW⟩, hW, hx x⟩) fun x => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `((hf x).basis inf_le_right).ext_elem fun i => ?_` and prove the remaining obligations. Establish `hne : ((W ⊓ V x ⊓ U : X.Opens) : Set X).Nonempty` using `nonempty_preirreducible_inter (W ⊓ V x).isOpen U.isOpen ⟨x, x.2, hx x⟩ hU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : Nonempty (W ⊓ V x ⊓ U : X.Opens) := hne.to_subtype`. Apply `map_injective_of_isIntegral X (homOfLE (inf_le_left : W ⊓ V x ⊓ U ≤ W ⊓ V x))` to reduce the goal to its premises. Establish `h1` using `(hf x).repr_resM inf_le_right (inf_le_left : W ⊓ V x ⊓ U ≤ W ⊓ V x) (resM F inf_le_left t) i`. Establish `h2 : resM F (inf_le_left : W ⊓ V x ⊓ U ≤ W ⊓ V x) (resM F inf_le_left t) = 0`. Rewrite using `[resM_resM, ← resM_resM (inf_le_left : W ⊓ U ≤ W) (inf_le_inf_right U inf_le_left), ht, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2, map_zero]`. Rewrite using `[map_zero]`. Simplify using `only [Finsupp.zero_apply, map_zero] at h1 ⊢`. Conclude with `h1.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sec_eq_zero {X : Scheme.{0}} [IsIntegral X] {F : X.Modules} {r : ℕ} (hF : VB.IsVB F r) {U W : X.Opens}
     (hU : (U : Set X).Nonempty) (t : Γ(F, W)) (ht : resM F (inf_le_left : W ⊓ U ≤ W) t = 0) : t = 0 := by
@@ -48,9 +48,9 @@ theorem sec_eq_zero {X : Scheme.{0}} [IsIntegral X] {F : X.Modules} {r : ℕ} (h
   exact h1.symm
 
 /- English proof (translation)
-Use `Scheme.Modules.hom_ext _ _ fun W => ?_` and prove the remaining obligations. Use extensionality with `t`. Use `sec_eq_zero hG hU _ ?_` and prove the remaining obligations. Rewrite using `[← app_resM]`. Take `⟨a, ha⟩` from `(hs (W ⊓ U) inf_le_right).2 (resM F inf_le_left t)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ha, Fintype.linearCombination_apply]`. Express the relevant statement in the definitionally equal form `QCoh.appLinear φ _ _ = 0`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, QCoh.appLinear_apply, app_resM, h, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_eq_zero {X : Scheme.{0}} [IsIntegral X] {F G : X.Modules} {r n : ℕ} (hG : VB.IsVB G r) {U : X.Opens}
     (hU : (U : Set X).Nonempty) {s : Fin n → Γ(F, U)} (hs : VB.IsFrame s) (φ : F ⟶ G) (h : ∀ j, φ.app U (s j) = 0) :
@@ -71,11 +71,11 @@ section Part
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} {Λ : Type} [CommRing Λ]
 
 /- English proof (translation)
-Establish `hsum : ∀ (t : Finset (Fin n)) (φ : Fin n → (M.V ⟶ M.V)), (∑ k ∈ t, φ k).app U s = ∑ k ∈ t, (φ k).app U s`. Introduce `t φ`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Scheme.Modules.Hom.add_app, ← ih]`. Both sides reduce to the same expression. Rewrite using `[eA, hsum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← QCoh.app_app, smulHom_app_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `QCoh.appLinear (M.ρ (b k) : M.V ⟶ M.V) U _ = _`. Rewrite using `[map_smul, QCoh.appLinear_apply, hs, smul_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem eA_app (M : AM B Λ) {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ) {U : B.X.Opens} (s : Γ(M.V, U))
     (lam : Fin n → Γ(B.X, U)) (hs : ∀ k, (M.ρ (b k) : M.V ⟶ M.V).app U s = lam k • s) :
@@ -99,19 +99,19 @@ def partπ {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ) (M : AM B �
   kernel.lift _ (eA M c b) (by rw [Preadditive.comp_sub, h, Category.comp_id, sub_self])
 
 /- English proof (translation)
-The claim follows from `kernel.lift_ι _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem partπ_ι {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ) (M : AM B Λ) (h : eA M c b ≫ eA M c b = eA M c b) :
     partπ c b M h ≫ partι c b M = eA M c b := kernel.lift_ι _ _ _
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Mono (kernel.ι _))`.
+A detailed English derivation is pending.
 -/
 theorem mono_partι {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ) (M : AM B Λ) : Mono (partι c b M) :=
   inferInstanceAs (Mono (kernel.ι _))
 
 /- English proof (translation)
-Use `haveI := mono_partι c b M`. Rewrite using `[← cancel_mono (partι c b M), Category.assoc, partπ_ι, Category.id_comp]`. Establish `: partι c b M ≫ (𝟙 M.V - eA M c b) = 0` using `kernel.condition _`. Rewrite `this` using `[Preadditive.comp_sub, Category.comp_id, sub_eq_zero]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partι_π {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ) (M : AM B Λ) (h : eA M c b ≫ eA M c b = eA M c b) :
     partι c b M ≫ partπ c b M h = 𝟙 _ := by
@@ -122,7 +122,7 @@ theorem partι_π {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ) (M :
   exact this.symm
 
 /- English proof (translation)
-Use `haveI := mono_partι c b N`. Establish `e : (partF c b).map f ≫ partι c b N = partι c b M ≫ f.hom` using `kernel.lift_ι _ _ _`. Rewrite using `[← cancel_mono (partι c b N), Category.assoc, e, ← Category.assoc, partπ_ι, Category.assoc, partπ_ι, eA_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partπ_comm {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ) {M N : AM B Λ} (f : M ⟶ N)
     (h : eA M c b ≫ eA M c b = eA M c b) (h' : eA N c b ≫ eA N c b = eA N c b) :
@@ -132,11 +132,11 @@ theorem partπ_comm {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ) {M
   rw [← cancel_mono (partι c b N), Category.assoc, e, ← Category.assoc, partπ_ι, Category.assoc, partπ_ι, eA_comm]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `hom_eq_zero hF hU hs _ fun j => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.sub_app]`. Express the relevant statement in the definitionally equal form `(e ≫ e).app U (s j) - e.app U (s j) = 0`. Rewrite using `[← QCoh.app_app, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `h j` as an intermediate fact. Use `split_ifs at this`. Rewrite `this` using `[one_smul]`. Rewrite using `[this, this]`. Rewrite `this` using `[zero_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem idem_of_frame {X : Scheme.{0}} [IsIntegral X] {F : X.Modules} {r n : ℕ} (hF : VB.IsVB F r) {U : X.Opens}
     (hU : (U : Set X).Nonempty) {s : Fin n → Γ(F, U)} (hs : VB.IsFrame s) (e : F ⟶ F) (ε : Fin n → Prop) [DecidablePred ε]
@@ -154,7 +154,7 @@ theorem idem_of_frame {X : Scheme.{0}} [IsIntegral X] {F : X.Modules} {r n : ℕ
     rw [this, map_zero]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hU`. Rewrite using `[← hF.finrank_stalk x, Module.finrank_eq_card_basis (hs.stalkBasis x hx), Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_eq_of_frame {X : Scheme.{0}} {F : X.Modules} {r n : ℕ} (hF : VB.IsVB F r) {U : X.Opens}
     (hU : (U : Set X).Nonempty) {s : Fin n → Γ(F, U)} (hs : VB.IsFrame s) : r = n := by
@@ -169,9 +169,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use `SummandLat.isLat_summand Z h (partι c b M) (partπ c b M hi) (partι_π c b M hi) σ hσ hM x d β s hs (fun a k => ?_) (fun a j hj => ?_)` and prove the remaining obligations. Rewrite using `[QCoh.app_app, partπ_ι, he, if_pos ⟨k, rfl⟩, one_smul]`. Establish `h1 : (partι c b M).app _ ((partπ c b M hi).app _ (s a j)) = 0`. Rewrite using `[QCoh.app_app, partπ_ι, he, if_neg hj, zero_smul]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg ((partπ c b M hi).app _) h1`. Rewrite `h2` using `[QCoh.app_app, partι_π, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isLat_part (Z : LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O}
     {Λ : Type} [CommRing Λ] (h : B.X ⟶ Z.X) {r r' r₀ : ℕ} (hr : r₀ = r) (x : Fin r → Letter Dw) (σ : Fin r' → Fin r)
@@ -190,13 +190,11 @@ theorem isLat_part (Z : LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O] [I
     rwa [QCoh.app_app, partι_π, map_zero] at h2
 
 /- English proof (translation)
-Take `⟨hr, s, h1, h2, h3⟩` from `hP`. Take `⟨a₀, ha₀⟩` from `hne`. Establish `e1 : ∀ a j, (eA P.E' c b).app _ (s a j) = (if j ∈ Set.range σ then (1 : Γ(B.X, h ⁻¹ᵁ (Z.U a).1)) else 0) • s a j` using `fun a j => by`. Rewrite using `[eA_app P.E' c b (s a j) _ (fun k => h3 a j (b k)), hc]`. Establish `e2 : ∀ a j, (eA P.E c b).app _ (P.ψ.hom.app _ (s a j)) = (if j ∈ Set.range σ then (1 : Γ(B.X, h ⁻¹ᵁ (Z.U a).1)) else 0) • P.ψ.hom.app _ (s a j)` using `fun a j => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[QCoh.app_app, ← eA_comm, ← QCoh.app_app, e1]`. Conclude with `(QCoh.appLinear P.ψ.hom _).map_smul _ _`. Establish `i1` using `idem_of_frame P.vb' ha₀ (h1.frame a₀) _ _ (e1 a₀)`. Establish `i2` using `idem_of_frame P.vb ha₀ (h2.frame a₀) _ _ (e2 a₀)`. Establish `l1` using `isLat_part Z h hr x σ hσ d d P.E' P.vb' c b s h1 e1 i1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l2` using `isLat_part Z h hr x σ hσ d (!d) P.E P.vb c b _ h2 e2 i2`. Use `⟨rank_eq_of_frame vb' ha₀ (l1.frame a₀), _, l1, ?_⟩` and prove the remaining obligations. Establish `e : (fun (a : Fin Z.m) (k : Fin r') => ((partF c b).map P.ψ).app (h ⁻¹ᵁ (Z.U a).1) ((partπ c b P.E' i1).app _ (s a (σ k)))) = fun a k => (partπ c b P.E i2).app _ (P.ψ.hom.app _ (s a (σ k)))`. Use function extensionality and compare the values at `a k`. Rewrite using `[QCoh.app_app, QCoh.app_app, partπ_comm c b P.ψ i1 i2]`.
-
-Conclude with `e ▸ l2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatPres_part (Z : LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {B : Vert.Model O} (h : B.X ⟶ Z.X) (hne : ∃ a, ((h ⁻¹ᵁ (Z.U a).1 : B.X.Opens) : Set B.X).Nonempty) {r r' : ℕ}
@@ -228,9 +226,9 @@ theorem isLatPres_part (Z : LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O
   exact e ▸ l2
 
 /- English proof (translation)
-Establish `h1 : Z.s = Z.X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (.of (Z.i.c.V W))).inv ≫ Z.s.appTop)`. Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Establish `h2` using `Z.alg_s a`. Establish `h0 : Z.chart a ≫ Z.X.toSpecΓ = _` using `IsAffineOpen.fromSpec_toSpecΓ (Z.U a).2`. Rewrite `h2` using `[h1, ← Category.assoc, h0, ← Spec.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg (fun φ => φ.hom v) (Spec.map_injective h2)`. Conclude with `h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem const_chart (Z : LocM.Mdl Y i₀) (a : Fin Z.m) (v : Z.i.c.V W) :
     restrictGlobal Z.X (Z.U a).1 (Z.s.appTop ((Scheme.ΓSpecIso (.of (Z.i.c.V W))).inv v)) = Z.alg a (v : Z.i.c.F) := by
@@ -243,7 +241,7 @@ theorem const_chart (Z : LocM.Mdl Y i₀) (a : Fin Z.m) (v : Z.i.c.V W) :
   exact h3
 
 /- English proof (translation)
-Rewrite using `[← const_chart, Vert.Model.const, Vert.Model.const_eq, ← hh, Scheme.Hom.comp_appTop]`. Conclude with `(congrArg (fun φ => φ.hom (Z.s.appTop ((Scheme.ΓSpecIso (.of (Z.i.c.V W))).inv v))) (h.naturality (homOfLE (le_top : (Z.U a).1 ≤ ⊤)).op)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_pull (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)] {B : Vert.Model (Z.i.c.V W)} (h : B.X ⟶ Z.X)
     (hh : h ≫ Z.s = B.str) (a : Fin Z.m) (v : Z.i.c.V W) :
@@ -253,11 +251,11 @@ theorem const_pull (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)] {
     (h.naturality (homOfLE (le_top : (Z.U a).1 ≤ ⊤)).op)).symm
 
 /- English proof (translation)
-Establish `hc : ((c.opens : Z.X.Opens) : Set Z.X).Nonempty`. Take `⟨y⟩ : Nonempty ((nmodel Z).comp c).X` from `inferInstance`. Conclude with `⟨y.1, y.2⟩`. Take `⟨y, hy, hy'⟩` from `Z.dense.inter_open_nonempty _ c.opens.isOpen hc`. Rewrite `hy'` using `[← Z.cover]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `Set.mem_iUnion.1 hy'`. Take `⟨w, hw⟩` from `f.f.surjective (show ((nmodel Z).comp c).X from ⟨y, hy⟩)`. Use `⟨a, w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f.f ≫ (nmodel Z).compι c) w ∈ (Z.U a).1`. Rewrite using `[Scheme.Hom.comp_apply, hw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_nonempty (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)] (c : (nmodel Z).Comp)
     (B : Vert.Model (Z.i.c.V W)) (f : Vert.Model.Hom B ((nmodel Z).comp c)) :
@@ -275,7 +273,7 @@ theorem exists_chart_nonempty (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.
   exact ha
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe, embK_coe, H.bar_eq, conjEmb, RingHom.comp_apply]`. Rewrite using `[← ComplexEmbedding.conjugate_coe_eq, IsCMField.complexEmbedding_complexConj]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem embK_bar' {l : Level H} (c : Coeff l) (τ : E →+* ℂ) (a : 𝓞 E) :
     embK c τ (H.bar a) = embK c (conjEmb τ) a := by
@@ -285,16 +283,16 @@ theorem embK_bar' {l : Level H} (c : Coeff l) (τ : E →+* ℂ) (a : 𝓞 E) :
   simp
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[conjEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjEmb_conjEmb' (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ := by
   ext a
   simp [conjEmb]
 
 /- English proof (translation)
-Establish `h1 : ∑ k, restrictGlobal B.X (h ⁻¹ᵁ (Z.U a).1) (B.const (cf k)) * (h.app (Z.U a).1).hom (Z.alg a (embK Z.i.c τ (if true then H.bar (b k) else b k))) = restrictGlobal B.X (h ⁻¹ᵁ (Z.U a).1) (B.const (∑ k, cf k * ev (b k)))`. Simplify using `only [Vert.Model.const, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos trivial, embK_bar', ← hev, ← const_pull Z h hh]`. Establish `key : ∀ {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (u : R →+* S) (v : S →+* T), v (u (if q' then 1 else 0)) = if q then 1 else 0` using `fun u v => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hh : q'`. Rewrite using `[if_pos hh, if_pos (hq.2 hh), map_one, map_one]`. Rewrite using `[if_neg hh, if_neg (mt hq.1 hh), map_zero, map_zero]`. Conclude with `h1.trans ((congrArg (fun t => restrictGlobal B.X (h ⁻¹ᵁ (Z.U a).1) (B.const t)) hcf).trans (key (algebraMap _ Γ(B.X, ⊤)) (restrictGlobal B.X _)))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_eq (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)] {B : Vert.Model (Z.i.c.V W)} (h : B.X ⟶ Z.X)
     (hh : h ≫ Z.s = B.str) (a : Fin Z.m) {n : ℕ} (b : Fin n → 𝓞 E) (cf : Fin n → Z.i.c.V W) (ev : 𝓞 E →+* Z.i.c.V W)
@@ -317,9 +315,9 @@ theorem scalar_eq (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)] {B
     (key (algebraMap _ Γ(B.X, ⊤)) (restrictGlobal B.X _)))
 
 /- English proof (translation)
-Take `rfl : (fun k => x (σ k)) = x'` from `funext hx`. Establish `hh : (f.f ≫ (nmodel Z).compι c) ≫ Z.s = B.str`. Rewrite using `[Category.assoc]`. Conclude with `f.comp_str`. Use `isLatPres_part Z (f.f ≫ (nmodel Z).compι c) (exists_chart_nonempty Z c B f) x σ hσ true P hP (fun k => B.const (cf k)) b (fun a j => ?_) r₁ vb vb' iso` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ev, h1, h2⟩` from `hc j`. Conclude with `scalar_eq Z _ hh a b cf ev _ h1 Iff.rfl h2`.
+A detailed English derivation is pending.
 -/
 theorem isLatPres_part_dual (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)] (c : (nmodel Z).Comp)
     (B : Vert.Model (Z.i.c.V W)) (f : Vert.Model.Hom B ((nmodel Z).comp c)) {r r' : ℕ}
@@ -342,7 +340,7 @@ theorem isLatPres_part_dual (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.
 end Free
 
 /- English proof (translation)
-The claim follows from `isDiscreteValuationRing_V z.Z.i.c hp hW haveI := charP_residueField_of_mem_nonunits z.Z.i.c hp hW ∀ (c : (nmodel z.Z).Comp) (B : Vert.Model (z.Z.i.c.V W)) (f : Vert.Model.Hom B ((nmodel z.Z).comp c)) (n : ℕ) (b : Fin n → 𝓞 D.host.E) (ev : Emb D p → (𝓞 D.host.E →+* z.Z.i.c.V W)) ( …`.
+A detailed English derivation is pending.
 -/
 theorem isLatPres_part_om : ∀ {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} [Fact p.Prime] {hp : p.Prime} {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW) (jc : KW p →+* ℂ), haveI := isDiscreteValuationRing_V z.Z.i.c hp hW
     haveI := charP_residueField_of_mem_nonunits z.Z.i.c hp hW

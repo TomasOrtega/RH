@@ -8,13 +8,13 @@ namespace Formalism.HadamardInequality.P
 variable {A : Type} [Ring A] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b c d`. Simplify using `only [epow]`. Apply the tactic sequence `by_cases hab : a = b <;> by_cases hda : d = a <;> by_cases hbc : b = c <;> subst_vars <;> simp_all <;> (intro h; subst h; simp_all)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ k ih`. Introduce `a b c d`. Establish `key : ∀ e, E c d * (E a e * epow E k e b) - (E a e * epow E k e b) * E c d = (E c d * E a e - E a e * E c d) * epow E k e b + E a e * (E c d * epow E k e b - epow E k e b * E c d)`. Introduce `e`. Use `noncomm_ring`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ∀ e, E c d * E a e - E a e * E c d = (if d = a then E c e else 0) - (if e = c then E a d else 0)` using `fun e => hE c d a e`. Simplify using `only [epow]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Repeatedly rewrite using `[key, h1, ih]`. Simplify using `only [sub_mul, mul_sub, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hda : d = a <;> by_cases hbc : b = c <;> simp [hda, hbc] <;> abel`.
+A detailed English derivation is pending.
 -/
 theorem comm_epow (E : Fin n → Fin n → A) (hE : GlRel E) (k : ℕ) :
     ∀ a b c d : Fin n, E c d * epow E k a b - epow E k a b * E c d =

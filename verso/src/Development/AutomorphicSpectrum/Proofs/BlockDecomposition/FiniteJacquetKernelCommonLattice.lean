@@ -26,7 +26,7 @@ section Exhaust
 variable {k : Type} [Field k] [ValuativeRel k]
 
 /- English proof (translation)
-Introduce `y hy j`. Establish `h : c * d * y.toAdd j = d * (c * y.toAdd j)` using `by ring`. Rewrite using `[h]`. Conclude with `mul_mem hd (hy j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lc_le_Lc_mul (n : ℕ) (c : k) {d : k} (hd : d ∈ 𝒪[k]) : Lc n c ≤ Lc n (c * d) := by
   intro y hy j
@@ -35,9 +35,9 @@ theorem Lc_le_Lc_mul (n : ℕ) (c : k) {d : k} (hd : d ∈ 𝒪[k]) : Lc n c ≤
   exact mul_mem hd (hy j)
 
 /- English proof (translation)
-Distinguish the cases in `hy : y ∈ 𝒪[k]`. Conclude with `⟨1, one_mem _, one_ne_zero, by rwa [one_mul]⟩`. Establish `hy0 : y ≠ 0` using `fun h => hy (h ▸ zero_mem _)`. Use `⟨y⁻¹, ?_, inv_ne_zero hy0, ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[Valuation.mem_integer_iff]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ (le_of_lt (not_le.1 hy))`. Rewrite using `[inv_mul_cancel₀ hy0]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_mul (y : k) : ∃ c : k, c ∈ 𝒪[k] ∧ c ≠ 0 ∧ c * y ∈ 𝒪[k] := by
   by_cases hy : y ∈ 𝒪[k]
@@ -51,9 +51,9 @@ theorem exists_integral_mul (y : k) : ∃ c : k, c ∈ 𝒪[k] ∧ c ≠ 0 ∧ c
       exact one_mem _
 
 /- English proof (translation)
-Use `choose f hf hf0 hfy using fun j => exists_integral_mul (y.toAdd j)`. Use `⟨∏ j, f j, prod_mem fun j _ => hf j, Finset.prod_ne_zero_iff.2 fun j _ => hf0 j, ?_⟩` and prove the remaining obligations. Introduce `j`. Establish `h : (∏ i, f i) * y.toAdd j = (∏ i ∈ Finset.univ.erase j, f i) * (f j * y.toAdd j)`. Rewrite using `[← Finset.prod_erase_mul Finset.univ f (Finset.mem_univ j)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `mul_mem (prod_mem fun i _ => hf i) (hfy j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_Lc (n : ℕ) (y : Multiplicative (Fin n → k)) :
     ∃ c : k, c ∈ 𝒪[k] ∧ c ≠ 0 ∧ y ∈ Lc n c := by
@@ -69,7 +69,7 @@ theorem exists_mem_Lc (n : ℕ) (y : Multiplicative (Fin n → k)) :
 variable {X : Type} [AddCommGroup X] [Module ℂ X]
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨m, v, rfl⟩`. Conclude with `⟨⟨m.1, Lc_le_Lc_mul n c hd m.2⟩, v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem twKer_Lc_mono {n : ℕ} (ρ : Representation ℂ (Multiplicative (Fin n → k)) X) (c : k) {d : k}
     (hd : d ∈ 𝒪[k]) : twKer ρ (Lc n c) 1 ≤ twKer ρ (Lc n (c * d)) 1 := by
@@ -78,11 +78,11 @@ theorem twKer_Lc_mono {n : ℕ} (ρ : Representation ℂ (Multiplicative (Fin n 
   exact ⟨⟨m.1, Lc_le_Lc_mul n c hd m.2⟩, v, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨m, v, rfl⟩` from `hw`. Take `⟨c, hc, hc0, hm⟩` from `exists_mem_Lc n m.1`. Conclude with `⟨c, hc, hc0, Submodule.subset_span ⟨⟨m.1, hm⟩, v, rfl⟩⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨1, one_mem _, one_ne_zero, zero_mem _⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨c, hc, hc0, hca⟩` from `ha`. Take `⟨d, hd, hd0, hdb⟩` from `hb`. Use `⟨c * d, mul_mem hc hd, mul_ne_zero hc0 hd0, add_mem (twKer_Lc_mono ρ c hd hca) ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm c d]`. Conclude with `twKer_Lc_mono ρ d hc hdb`. Consider the case `smul a b _ hb`. Take `⟨c, hc, hc0, hcb⟩` from `hb`. Conclude with `⟨c, hc, hc0, Submodule.smul_mem _ a hcb⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_twKer_Lc {n : ℕ} (ρ : Representation ℂ (Multiplicative (Fin n → k)) X) {x : X}
     (hx : x ∈ twKer ρ ⊤ 1) : ∃ c : k, c ∈ 𝒪[k] ∧ c ≠ 0 ∧ x ∈ twKer ρ (Lc n c) 1 := by
@@ -103,9 +103,9 @@ theorem exists_mem_twKer_Lc {n : ℕ} (ρ : Representation ℂ (Multiplicative (
     exact ⟨c, hc, hc0, Submodule.smul_mem _ a hcb⟩
 
 /- English proof (translation)
-Proceed by induction on `S, hS using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, one_ne_zero, fun x hx => absurd hx (Set.notMem_empty x)⟩`. Consider the case `@insert a s _ _ ih`. Take `⟨c, hc, hc0, hcs⟩` from `ih fun x hx => h x (Set.mem_insert_of_mem a hx)`. Take `⟨d, hd, hd0, hda⟩` from `exists_mem_twKer_Lc ρ (h a (Set.mem_insert a s))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c * d, mul_mem hc hd, mul_ne_zero hc0 hd0, ?_⟩` and prove the remaining obligations. Introduce and unpack `x (rfl | hx)`. Rewrite using `[mul_comm c d]`. Conclude with `twKer_Lc_mono ρ d hc hda`. Conclude with `twKer_Lc_mono ρ c hd (hcs x hx)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_finite_twKer_Lc {n : ℕ} (ρ : Representation ℂ (Multiplicative (Fin n → k)) X)
     {S : Set X} (hS : S.Finite) (h : ∀ x ∈ S, x ∈ twKer ρ ⊤ 1) :
@@ -124,7 +124,7 @@ theorem exists_integral_finite_twKer_Lc {n : ℕ} (ρ : Representation ℂ (Mult
 end Exhaust
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n X _ _ ρ S hS h`. Take `⟨c, -, hc0, hc⟩` from `exists_integral_finite_twKer_Lc ρ hS h`. Conclude with `⟨c, hc0, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_Lc_finite_twKer :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) {X : Type} [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ (Multiplicative (Fin n → k)) X) (S : Set X), S.Finite → (∀ x ∈ S, x ∈ twKer ρ ⊤ 1) → ∃ c : k, c ≠ 0 ∧ ∀ x ∈ S, x ∈ twKer ρ (Lc n c) 1 := by

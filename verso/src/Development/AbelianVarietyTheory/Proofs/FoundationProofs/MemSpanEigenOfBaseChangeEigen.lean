@@ -5,25 +5,23 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨x', rfl⟩` from `hx`. Establish `hinj0 : Function.Injective (algebraMap ℤ_[l] (PadicAlgCl l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l), RingHom.coe_comp]`. Conclude with `(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`. Use `haveI : FaithfulSMul ℤ_[l] (PadicAlgCl l) := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Module.IsTorsionFree ℤ_[l] (PadicAlgCl l) := inferInstance`. Use `haveI : Module.Flat ℤ_[l] (PadicAlgCl l) := inferInstance`. Take `⟨P, hP, z, rfl⟩` from `Submodule.exists_fg_le_eq_rTensor_subtype x'`. Use `haveI : Module.Finite ℤ_[l] P := Module.Finite.iff_fg.2 hP`. Use `haveI : Module.Free ℤ_[l] P := inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Set `ω` to `Module.Free.chooseBasis ℤ_[l] P`. Set `Φ : P ⊗[ℤ_[l]] B →ₗ[ℤ_[l]] PadicAlgCl l ⊗[ℤ_[l]] M` to `(B.subtype.lTensor (PadicAlgCl l)) ∘ₗ (P.subtype.rTensor B)`. Establish `hΦ : Function.Injective Φ` using `(Module.Flat.lTensor_preserves_injective_linearMap _ B.injective_subtype).comp (Module.Flat.rTensor_preserves_injective_linearMap _ P.injective_subtype)`. Establish `hΦz : ∀ w, LinearMap.baseChange (PadicAlgCl l) B.subtype (P.subtype.rTensor B w) = Φ w` using `fun w => rfl`. Establish `hΦt : ∀ (a : P) (b : B), Φ (a ⊗ₜ b) = (a : PadicAlgCl l) ⊗ₜ (b : M)` using `fun a b => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite `he`, the goal using `[hΦz]`. Set `h : S → Module.End ℤ_[l] B` to `fun s => (g s).restrict (hB s) - χ s • LinearMap.id`. Establish `hcomm : ∀ s w, Φ ((h s).lTensor P w) = LinearMap.baseChange (PadicAlgCl l) (g s) (Φ w) - χ s • Φ w`. Introduce `s w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Normalize the expressions using the abelian group laws.
 
-Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[LinearMap.lTensor_tmul, hΦt, hΦt, LinearMap.baseChange_tmul, ← TensorProduct.tmul_smul, ← TensorProduct.tmul_sub]`. Both sides reduce to the same expression. Consider the case `add u v hu hv => simp only [map_add, hu, hv, smul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Establish `hz : ∀ s, (h s).lTensor P z = 0`. Introduce `s`. Apply `hΦ` to reduce the goal to its premises. Rewrite using `[hcomm, he s, algebraMap_smul, sub_self, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨c, rfl⟩` from `(TensorProduct.equivFinsuppOfBasisLeft (N := B) ω).symm.surjective z`. Establish `hc : ∀ s i, h s (c i) = 0`. Introduce `s i`. Establish `e : (h s).lTensor P ((TensorProduct.equivFinsuppOfBasisLeft (N` using `B) ω).symm c) = (TensorProduct.equivFinsuppOfBasisLeft (N := B) ω).symm (c.mapRange (h s) (map_zero _)) := by`. Rewrite using `[TensorProduct.equivFinsuppOfBasisLeft_symm_apply, TensorProduct.equivFinsuppOfBasisLeft_symm_apply, Finsupp.sum_mapRange_index (fun _ => TensorProduct.tmul_zero _ _), map_finsuppSum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `e2` using `hz s`. Rewrite `e2` using `[e, LinearEquiv.map_eq_zero_iff]`. Simplify using `using DFunLike.congr_fun e2 i`. Rewrite using `[TensorProduct.equivFinsuppOfBasisLeft_symm_apply, map_finsuppSum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `e : Φ (ω i ⊗ₜ c i) = (ω i : PadicAlgCl l) • ((1 : PadicAlgCl l) ⊗ₜ[ℤ_[l]] (c i : M))`. Rewrite using `[hΦt, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `Φ (ω i ⊗ₜ c i) ∈ _`. Rewrite using `[e]`.
-
-Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨c i, (c i).2, fun s => ?_, rfl⟩)` and prove the remaining obligations. Use `congrArg Subtype.val (hc s i)` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_span_eigen_of_baseChange_eigen (l : ℕ) [Fact l.Prime] (M S : Type) [AddCommGroup M]
     [Module ℤ_[l] M] (B : Submodule ℤ_[l] M) [Module.Free ℤ_[l] B]

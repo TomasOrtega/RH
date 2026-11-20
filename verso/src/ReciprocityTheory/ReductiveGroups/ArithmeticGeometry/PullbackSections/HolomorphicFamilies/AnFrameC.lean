@@ -15,7 +15,7 @@ section Form
 variable {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ)
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[add_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_add_left (z z' w : Fin g → ℂ) :
     hermForm Hm (z + z') w = hermForm Hm z w + hermForm Hm z' w := by
@@ -23,7 +23,7 @@ theorem hermForm_add_left (z z' w : Fin g → ℂ) :
   rw [add_dotProduct]
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[star_add, Matrix.mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_add_right (z w w' : Fin g → ℂ) :
     hermForm Hm z (w + w') = hermForm Hm z w + hermForm Hm z w' := by
@@ -31,21 +31,21 @@ theorem hermForm_add_right (z w w' : Fin g → ℂ) :
   rw [star_add, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[zero_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_zero_left (w : Fin g → ℂ) : hermForm Hm 0 w = 0 := by
   unfold hermForm
   rw [zero_dotProduct]
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[star_zero, Matrix.mulVec_zero, dotProduct_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_zero_right (z : Fin g → ℂ) : hermForm Hm z 0 = 0 := by
   unfold hermForm
   rw [star_zero, Matrix.mulVec_zero, dotProduct_zero]
 
 /- English proof (translation)
-Unfold `hermForm dotProduct Matrix.mulVec dotProduct`. Simplify using `only [Pi.star_apply, star_sum, star_mul', star_star, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hH.apply i j, star_star]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -63,13 +63,13 @@ def rho (z l : Fin g → ℂ) : ℝ := Real.pi * (hermForm Hm z l).re + Real.pi 
 def lam2 (x y l m : Fin g → ℂ) : ℝ := rho Hm (x + y) (l + m) - rho Hm x l - rho Hm y m
 
 /- English proof (translation)
-Simplify using `[rho, hermForm_zero_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rho_zero : rho Hm 0 0 = 0 := by
   simp [rho, hermForm_zero_left]
 
 /- English proof (translation)
-Establish `hu : (Finset.univ : Finset (Fin 3)) = insert 0 (insert 1 (insert 2 ∅))` using `by decide`. Rewrite using `[← Finset.powerset_univ, hu]`. Simplify using `only [Finset.sum_powerset_insert (show (0 : Fin 3) ∉ insert 1 (insert 2 (∅ : Finset (Fin 3))) by decide), Finset.sum_powerset_insert (show (1 : Fin 3) ∉ insert 2 (∅ : Finset (Fin 3)) by decide), Finset.sum_powerset_insert (show (2 : Fin 3) ∉ (∅ : Finset (Fin 3)) by decide), Finse …`. Simplify using `[Finset.sum_insert, Finset.card_insert_of_notMem]`. Simplify using `only [rho, hermForm_add_left, hermForm_add_right, hermForm_zero_left, hermForm_zero_right, Complex.add_re, Complex.zero_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -88,9 +88,9 @@ theorem cube_rho (z l : Fin 3 → Fin g → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `e1 : hermForm Hm z (A l) + hermForm Hm z (Ab l) = hermForm Hm z l`. Rewrite using `[← hermForm_add_right, hs]`. Establish `e2 : hermForm Hm l (A l) + hermForm Hm l (Ab l) = hermForm Hm l l`. Rewrite using `[← hermForm_add_right, hs]`. Establish `r1` using `congrArg Complex.re e1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `r2` using `congrArg Complex.re e2`. Simplify using `only [Complex.add_re] at r1 r2`. Simplify using `only [lam2, rho, hermForm_add_left, hermForm_add_right, hA, Complex.add_re]`. Take the linear combination `Real.pi * r1 + Real.pi / 2 * r2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem prim_rho (A Ab : (Fin g → ℂ) → (Fin g → ℂ)) (hA : ∀ z w, hermForm Hm (A z) w = hermForm Hm z (Ab w))
     (hs : ∀ z, A z + Ab z = z) (z l : Fin g → ℂ) :
@@ -106,7 +106,7 @@ theorem prim_rho (A Ab : (Fin g → ℂ) → (Fin g → ℂ)) (hA : ∀ z w, her
   linear_combination Real.pi * r1 + Real.pi / 2 * r2
 
 /- English proof (translation)
-Simplify using `only [lam2, rho, hermForm_add_left, hermForm_add_right, Complex.add_re, hA, hAb]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ad_rho (A Ab : (Fin g → ℂ) → (Fin g → ℂ)) (hA : ∀ z w, hermForm Hm (A z) w = hermForm Hm z (Ab w))
     (hAb : ∀ z w, hermForm Hm (Ab z) w = hermForm Hm z (A w)) (x z l m : Fin g → ℂ) :
@@ -115,7 +115,7 @@ theorem ad_rho (A Ab : (Fin g → ℂ) → (Fin g → ℂ)) (hA : ∀ z w, hermF
   ring
 
 /- English proof (translation)
-Rewrite using `[hermForm_swap Hm hH, ← hA, ← hermForm_swap Hm hH]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_symm (hH : Hm.IsHermitian) (A Ab : (Fin g → ℂ) → (Fin g → ℂ))
     (hA : ∀ z w, hermForm Hm (A z) w = hermForm Hm z (Ab w)) (z w : Fin g → ℂ) :
@@ -129,14 +129,14 @@ section Compat
 variable {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ)
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_smul_left (c : ℂ) (z w : Fin g → ℂ) : hermForm Hm (c • z) w = c * hermForm Hm z w := by
   unfold hermForm
   rw [smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_smul_right (c : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm z (c • w) = star c * hermForm Hm z w := by
@@ -144,7 +144,7 @@ theorem hermForm_smul_right (c : ℂ) (z w : Fin g → ℂ) :
   rw [star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Complex.real_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem real_smul_eq (r : ℝ) (z : Fin g → ℂ) : r • z = (r : ℂ) • z := by
   funext i
@@ -155,7 +155,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 def tyAct (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) (z : Fin g → ℂ) : Fin g → ℂ := fun i => ty i (a : E) * z i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [tyAct, Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tyAct_add (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) (u v : Fin g → ℂ) :
     tyAct ty a (u + v) = tyAct ty a u + tyAct ty a v := by
@@ -163,7 +163,7 @@ theorem tyAct_add (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) (u v : Fin g → �
   simp only [tyAct, Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [tyAct, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tyAct_smul (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) (c : ℂ) (u : Fin g → ℂ) :
     tyAct ty a (c • u) = c • tyAct ty a u := by
@@ -172,7 +172,7 @@ theorem tyAct_smul (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) (c : ℂ) (u : Fi
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[tyAct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tyAct_zero (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) : tyAct ty a 0 = 0 := by
   funext i
@@ -181,17 +181,17 @@ theorem tyAct_zero (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) : tyAct ty a 0 = 
 variable {H : Host E} (D : Datum H) (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ))
 
 /- English proof (translation)
-Establish `hTP : ∀ (b : 𝓞 E) x, tyAct ty b (P x) = P (b • x)` using `fun b x => funext fun i => (hP.1 b x i).symm`. Establish `hspan : ∀ w : Fin g → ℂ, w ∈ Submodule.span ℝ (Set.range P)` using `fun w => by`. Rewrite using `[hP.2.2.2.1]`. Discharge the goal by the elementary cases of `trivial`. Establish `base : ∀ x y, (hermForm Hm (tyAct ty a (P x)) (P y)).im = (hermForm Hm (P x) (tyAct ty (H.bar a) (P y))).im`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Introduce `x y`. Rewrite using `[hTP, hTP, hc1, hc1, D.adj]`. Establish `step1 : ∀ x (w : Fin g → ℂ), (hermForm Hm (tyAct ty a (P x)) w).im = (hermForm Hm (P x) (tyAct ty (H.bar a) w)).im`. Introduce `x w`. Proceed by induction on `hspan w using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem w hw`. Take `⟨y, rfl⟩` from `hw`. Conclude with `base x y`. Consider the case `zero => simp [tyAct_zero, hermForm_zero_right]`. Consider the case `add w w' _ _ h1 h2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermForm_add_right, tyAct_add, hermForm_add_right, Complex.add_im, Complex.add_im, h1, h2]`. Consider the case `smul r w _ h`. Rewrite using `[real_smul_eq, hermForm_smul_right, tyAct_smul, hermForm_smul_right, Complex.mul_im, Complex.mul_im, h]`. Simplify using the standard rewrite rules. Proceed by induction on `hspan u using Submodule.span_induction with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `mem u hu`. Take `⟨x, rfl⟩` from `hu`. Conclude with `step1 x v`. Consider the case `zero => simp [tyAct_zero, hermForm_zero_left]`. Consider the case `add u u' _ _ h1 h2`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[tyAct_add, hermForm_add_left, hermForm_add_left, Complex.add_im, Complex.add_im, h1, h2]`. Consider the case `smul r u _ h`. Rewrite using `[real_smul_eq, tyAct_smul, hermForm_smul_left, hermForm_smul_left, Complex.mul_im, Complex.mul_im, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem im_hermForm_act (hP : IsPeriod D ty P) (hc1 : ∀ x y, (hermForm Hm (P x) (P y)).im = D.EF x y)
     (a : 𝓞 E) (u v : Fin g → ℂ) :
@@ -228,7 +228,7 @@ theorem im_hermForm_act (hP : IsPeriod D ty P) (hc1 : ∀ x y, (hermForm Hm (P x
     simp
 
 /- English proof (translation)
-Apply `Complex.ext` to reduce the goal to its premises. Establish `h` using `im_hermForm_act Hm D ty P hP hc1 a (Complex.I • u) v`. Rewrite `h` using `[tyAct_smul, hermForm_smul_left, hermForm_smul_left, Complex.mul_im, Complex.mul_im]`. Simplify using `using h`. Conclude with `im_hermForm_act Hm D ty P hP hc1 a u v`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hermForm_act (hP : IsPeriod D ty P) (hc1 : ∀ x y, (hermForm Hm (P x) (P y)).im = D.EF x y)
     (a : 𝓞 E) (u v : Fin g → ℂ) :
@@ -247,7 +247,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Wu.c6 a j z`. Establish `hre : ((Real.pi : ℂ) * hermForm Wu.Hm z (W.Pm a) + (Real.pi : ℂ) / 2 * hermForm Wu.Hm (W.Pm a) (W.Pm a)).re = rho Wu.Hm z (W.Pm a)`. Simplify using `only [rho, Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.div_ofNat_re, Complex.div_ofNat_im, zero_mul, sub_zero, zero_div]`. Rewrite using `[h2 h, norm_mul, norm_mul, h1, one_mul, Complex.norm_exp, hre, mul_comm, ← mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_fr_add {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} {W : UnfAt U k x} (Wu : UnitAt W)
     (a : _) (j : Xo.univ.t.PP.L.ι) (z : Fin W.g → ℂ)
@@ -265,7 +265,7 @@ abbrev tyW {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} (W : UnfAt U k x) 
   fun j => relab c σ (W.e j).1
 
 /- English proof (translation)
-The claim follows from `hermForm_act Wu.Hm (W.F.Di (W.ik k)) (tyW W) W.Pm W.per Wu.c1 a z w`.
+A detailed English derivation is pending.
 -/
 theorem unit_hermForm_act {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} {W : UnfAt U k x} (Wu : UnitAt W)
     (a : 𝓞 E) (z w : Fin W.g → ℂ) :
@@ -273,9 +273,9 @@ theorem unit_hermForm_act {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} {W 
   hermForm_act Wu.Hm (W.F.Di (W.ik k)) (tyW W) W.Pm W.per Wu.c1 a z w
 
 /- English proof (translation)
-Use `prim_rho Wu.Hm _ (tyAct (tyW W) (H.bar H.w0)) (unit_hermForm_act Wu H.w0) (fun z => ?_) z l` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [tyAct, Pi.add_apply, ← add_mul]`. Establish `h` using `congrArg (fun t : 𝓞 E => tyW W i (t : E)) (CVA.cmHostUnit_add_conj_eq_one H)`. Move the coercions through the operations in `at h`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [map_add, map_one] at h`. Rewrite using `[h, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_prim_rho {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} {W : UnfAt U k x} (Wu : UnitAt W)
     (z l : Fin W.g → ℂ) :
@@ -289,7 +289,7 @@ theorem unit_prim_rho {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} {W : Un
   rw [h, one_mul]
 
 /- English proof (translation)
-The claim follows from `ad_rho Wu.Hm _ _ (unit_hermForm_act Wu a) (adj_symm Wu.Hm Wu.herm _ _ (unit_hermForm_act Wu a)) y z l m`.
+A detailed English derivation is pending.
 -/
 theorem unit_ad_rho {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} {W : UnfAt U k x} (Wu : UnitAt W)
     (a : 𝓞 E) (y z l m : Fin W.g → ℂ) :

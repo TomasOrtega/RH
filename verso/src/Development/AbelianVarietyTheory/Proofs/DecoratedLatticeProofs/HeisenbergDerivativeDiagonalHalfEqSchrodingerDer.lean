@@ -18,7 +18,7 @@ namespace GlobalTheory.StdUnn.DiagDeriv
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : compAt θ τ (w * rat Q) = (w * rat Q).map ((θ τ).comp (infPart D))` using `rfl`. Rewrite using `[h, Matrix.map_mul]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `(hθ τ).1 (Q i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem compAt_mul_rat (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m n k : ℕ} (w : Mx D m n)
     (Q : Matrix (Fin n) (Fin k) D.host.E) : compAt θ τ (w * rat Q) = compAt θ τ w * Q.map (tauE D τ) := by
@@ -29,9 +29,9 @@ theorem compAt_mul_rat (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) 
   exact (hθ τ).1 (Q i j)
 
 /- English proof (translation)
-Use `⟨(continuous_id.matrix_mul continuous_const).comp hL.1, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Use `show ((L t) * (dblDec A).pX).map (finPart D) = 0`. Rewrite using `[Matrix.map_mul, hL.2.1 t, Matrix.zero_mul]`. Use `show compAt θ τ' (L t * rat (dblDec A).qX) = _`. Rewrite using `[compAt_mul_rat θ hθ, hL.2.2 t τ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.smul_mul]`. Rewrite using `[Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLineAt_extX (θ : InfFam D) (hθ : IsInfFam θ) (A B : HSp D) (τ : D.what₂.Tau)
     (X : Matrix (Fin B.rank) (Fin A.rank) ℂ) (L : ℝ →+ Mx D B.rank A.rank) (hL : IsLineAt θ τ X L) :
@@ -46,14 +46,14 @@ theorem isLineAt_extX (θ : InfFam D) (hθ : IsInfFam θ) (A B : HSp D) (τ : D.
     · rw [Matrix.zero_mul]
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n τ z)`.
+A detailed English derivation is pending.
 -/
 theorem lineAt_isLineAt (θ : InfFam D) (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau)
     (z : Matrix (Fin m) (Fin n) ℂ) : IsLineAt θ τ z (lineAt θ τ z) :=
   Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n τ z)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ (lineAt_isLineAt θ hθ τ _) (isLineAt_extX θ hθ A B τ X _ (lineAt_isLineAt θ hθ τ X))`.
+A detailed English derivation is pending.
 -/
 theorem lineAt_extX (θ : InfFam D) (hθ : IsInfFam θ) (A B : HSp D) (τ : D.what₂.Tau)
     (X : Matrix (Fin B.rank) (Fin A.rank) ℂ) :
@@ -63,13 +63,11 @@ theorem lineAt_extX (θ : InfFam D) (hθ : IsInfFam θ) (A B : HSp D) (τ : D.wh
     (isLineAt_extX θ hθ A B τ X _ (lineAt_isLineAt θ hθ τ X))
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, hμ.2.2]; exact ENNReal.one_lt_top⟩`. Take `⟨K, hK⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ (GlobalTheory.OrientedHeis.theta_dLine hθ hψ hM hf)`. Establish `e2 : GlobalTheory.OrientedHeis.dLine ψ S T M f = heisO ψ S T (M 0) (GlobalTheory.OrientedHeis.dLine ψ S T M f)`. Rewrite using `[M.map_zero, GlobalTheory.OrientedHeis.heisO_zero]`. Rewrite using `[e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : ∀ g : WO S T → ℂ, IsThetaFunO ψ S T g → IntegrableOn (fun a => ψ (symplOH S T (d.extY T a) (d.extX T x)) * g (d.extY T a + d.extX T x + d.ext0 T w)) 𝓕 μ` using `fun g hg => by`. Simplify `HypDec.integrableOn_mixS d hψ.1.1 hμ hg x w` using `only [HypDec.integrandS_eq]`. Simplify using `only [HypDec.mixS, HypDec.integrandS_eq]`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict 𝓕) (x₀ := (0 : ℝ)) (F' := fun t a => ψ (symplOH S T (d.extY T a) (d.extX T x)) * heisO ψ S T (M t) (GlobalTheory.OrientedHeis.dLine ψ S T M f) (d.extY T a + d.extX T x + d.ext0 T w)) (bound := fun _ => K) (s := Se …` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun t => (hI _ (GlobalTheory.OrientedHeis.theta_heisO_real hθ hψ (hM.2 t) hf)).aestronglyMeasurable`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI _ (GlobalTheory.OrientedHeis.theta_heisO_real hθ hψ (hM.2 0) hf)`. Conclude with `(hI _ (GlobalTheory.OrientedHeis.theta_heisO_real hθ hψ (hM.2 0) (GlobalTheory.OrientedHeis.theta_dLine hθ hψ hM hf))).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun a t _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψ.1.2.1, one_mul]`. Unfold `heisO`.
-
-Rewrite using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `hK _`. Conclude with `Filter.Eventually.of_forall fun a t _ => (GlobalTheory.OrientedHeis.hasDerivAt_heisO hθ hψ hM hf _ t).const_mul _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_mixS_extX {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D}
     (hθ : IsInfFam θ) {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {μ : Measure (Mx D T.rank ρ)}
@@ -105,11 +103,11 @@ theorem hasDerivAt_mixS_extX {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D
       (GlobalTheory.OrientedHeis.hasDerivAt_heisO hθ hψ hM hf _ t).const_mul _
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ A B ν 𝓨 hν f hf τ X x`. Set `v : GlobalTheory.Unf.VolM D B.rank A.rank` to `⟨ν, 𝓨, hν⟩`. Set `M : ℝ →+ WO (dblSp A) B` to `((dblDec A).extX B).comp (lineAt θ τ X)`. Establish `hL` using `lineAt_isLineAt θ hθ τ X`. Establish `hM : IsRealDir B (dblSp A) M`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(continuous_id.matrix_mul continuous_const).comp hL.1, fun t => ?_⟩` and prove the remaining obligations. Use `show ((lineAt θ τ X t) * (dblDec A).pX).map (finPart D) = 0`. Rewrite using `[Matrix.map_mul, hL.2.1 t, Matrix.zero_mul]`. Establish `e1 : (fun t : ℝ => sch ψ A B ν 𝓨 f (x + lineAt θ τ X t)) = fun t => (dblDec A).mixS B ψ ν 𝓨 (heisO ψ (dblSp A) B (M t) f) x 0`. Use function extensionality and compare the values at `t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h` using `congrFun ((GlobalTheory.HeisMixSource.heis_mixS D ψ hψ (dblSp A) (zeroSp D) B A.rank (dblDec A) v f hf).1 x (lineAt θ τ X t)) 0`. Conclude with `h.symm`. Rewrite using `[e1, (hasDerivAt_mixS_extX hψ hθ (dblDec A) (μ := ν) (𝓕 := 𝓨) hν hf M hM x 0).deriv]`. Use `show (dblDec A).mixS B ψ ν 𝓨 (Formalism.IndefR.Datum.dRho (heisO ψ (dblSp A) B) θ τ (X * (dblDec A).qX.map (tauE D τ)) f) x 0 = _`. Rewrite using `[GlobalTheory.OrientedHeis.dRho_eq_dLine, lineAt_extX θ hθ A B τ X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sch_dRho_diag : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ →
     ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 →

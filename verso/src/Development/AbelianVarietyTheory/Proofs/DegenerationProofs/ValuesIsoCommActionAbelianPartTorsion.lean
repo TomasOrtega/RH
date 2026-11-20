@@ -16,7 +16,7 @@ section
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Take `⟨z, h₁, g, h₂, h₃⟩` from `h`. Conclude with `⟨z, h₁, by rw [h₃.1, h₂.1]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem equiv_parts {k : ℕ} {p p' : QkPt D F k} (h : QkPt.Equiv D F p p') :
     ∃ z : D.X, p'.y = p.y + k • z ∧ p'.g.b = p.g.b * DegPre.cF D F z := by
@@ -26,7 +26,7 @@ theorem equiv_parts {k : ℕ} {p p' : QkPt D F k} (h : QkPt.Equiv D F p p') :
 variable {O : Type} [CommRing O] [StarRing O] [Module O D.X] (oa : D.OAct O)
 
 /- English proof (translation)
-Use `oa.onB.hom x` as an intermediate fact. Rewrite using `[MonObj.mul_comp, DegPre.cF, DegPre.cF, oa.c_lin, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_cF_act (x : O) (b : TF (R := R) F ⟶ D.P.A) (z : D.X) :
     (b * DegPre.cF D F z) ≫ oa.onB.act x = (b ≫ oa.onB.act x) * DegPre.cF D F (x • z) := by
@@ -34,7 +34,7 @@ theorem mul_cF_act (x : O) (b : TF (R := R) F ⟶ D.P.A) (z : D.X) :
   rw [MonObj.mul_comp, DegPre.cF, DegPre.cF, oa.c_lin, Category.assoc]
 
 /- English proof (translation)
-Take `⟨q, h₁, h₂, h₃⟩` from `h`. Take `⟨z, e₁, e₂⟩` from `equiv_parts h₃`. Conclude with `⟨z, by rw [e₁, h₁], by rw [e₂, h₂.1]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem act_parts {k : ℕ} {x : O} {p p' : QkPt D F k} (h : QkAct oa x p p') :
     ∃ z : D.X, p'.y = x • p.y + k • z ∧ p'.g.b = (p.g.b ≫ oa.onB.act x) * DegPre.cF D F z := by
@@ -44,11 +44,9 @@ theorem act_parts {k : ℕ} {x : O} {p p' : QkPt D F k} (h : QkAct oa x p p') :
 end
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃, -⟩` from `NumD.hom_transport C C (RingHom.id C) N N' (TateInh.homOfIso J)`. Take `⟨g, hg, -⟩` from `h₁ p.1.2`. Establish `hp : ∀ n : ℕ, (TateInh.homOfIso J).Rel (p.1.2 ^ n) (g ^ n)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `J.rel_one`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `h₂ _ _ _ _ ih hg`. Establish `e` using `hp k`. Rewrite `e` using `[N.mem_QT.1 p.2]`.
-
-Conclude with `⟨⟨(Multiplicative.ofAdd (J.e p.1.1.toAdd), g), (h₁ _).unique e (h₃ _)⟩, rfl, hg⟩`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_image {C : Type} [CommRing C] {N N' : NumD C} (J : NumD.Iso N N') {k : ℕ} (p : N.QT k) :
     ∃ q : N'.QT k, q.1.1.toAdd = J.e p.1.1.toAdd ∧ J.Rel p.1.2 q.1.2 := by
@@ -63,31 +61,29 @@ theorem exists_image {C : Type} [CommRing C] {N N' : NumD C} (J : NumD.Iso N N')
   exact ⟨⟨(Multiplicative.ofAdd (J.e p.1.1.toAdd), g), (h₁ _).unique e (h₃ _)⟩, rfl, hg⟩
 
 /- English proof (translation)
-Introduce `hL hB E _ _ _ H D l c O _ β O' _ _ _ b a C _ _ _ _ _ _ A u r o M f N' ν' J hr _ hT k hk hlab hlin x y y' hy hy'`. Use `letI := H.starRing`. Take `⟨-, -, -, -, B⟩` from `hB O' a.D₀ a.even a.bimult C A.N A.ν`. Take `⟨-, -, -, -, B'⟩` from `hB M.W M.P.D.toPre M.P.D.psi_even M.P.D.tau_bimult C N' ν'`. Take `⟨t, t₁, -, t₃, -, t₅, -⟩` from `hT C k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `im : ∀ w : D.La, ∃ p' : QkPt M.P.D.toPre C k, (t p').left = (o.I.ev k w).left ≫ M.φ ∧ p'.y = ν'.eX (J.e (A.q k w).1.1.toAdd) ∧ p'.g.b = ν'.eA (J.φ (A.q k w).1.2.b)` using `fun w => by`. Take `⟨p, hp, -⟩` from `existsUnique_twRel A.be u (r k) (hr.pow hk) (A.q k w)`. Take `⟨q, q₁, q₂⟩` from `exists_image J p`. Take `⟨p', hp'⟩` from `(B' k).2.1 q`. Set `z : TFK (R` to `M.W) C ⟶ M.P.A.A := Over.homMk ((o.I.ev k w).left ≫ M.φ) (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, M.cart.1.w, ← Category.assoc, Over.w]`. Conclude with `Category.id_comp _)`. Establish `hz` using `(t₁ _ _).1 (hlab w p q p' z hp q₁ q₂ hp' rfl)`. Use `⟨p', by rw [← hz]; rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp'.1, q₁, hp.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← hp'.2.1, q₂.1]`. Conclude with `congrArg (fun s => ν'.eA (J.φ s)) hp.2.1`. Take `⟨gm, hγ, hγ'⟩` from `QStr.root_over A.N hk.ne' 1 y hy`. Take `⟨p₀, hp₀⟩` from `(B k).2.1 ⟨(1, gm), hγ'.trans A.N.io_zero.symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `A.I.onto k hk p₀`. Take `⟨z₀, -, e₀⟩` from `equiv_parts hv`. Take `⟨z₁, d₁, e₁⟩` from `act_parts a.oa (A.I.lin k hk x v)`. Take `⟨p₁, a₁, b₁, c₁⟩` from `im v`. Take `⟨p₂, a₂, b₂, c₂⟩` from `im (x • v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p₃, h₃⟩` from `qkAct_exists hL.1.globalFns M.P.D.tau_bimult M.P.oD x p₁`. Establish `e₃ : t p₃ = t p₂`. Rewrite using `[t₅ _ _ _ h₃]`. Use `ext1`. Rewrite using `[a₂, o.I.lin, Over.comp_left, Over.comp_left, a₁, Category.assoc, Category.assoc, M.act]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₂ : QkAct M.P.oD x p₁ p₂` using `(TorusExt.qkAct_iff_of_equiv M.P.D.tau_bimult hL.1.globalFns M.P.oD (qk_equiv_refl M.P.D.tau_bimult p₁) h₃).2 ((t₃ _ _).1 e₃)`. Take `⟨z₂, d₂, e₂⟩` from `act_parts M.P.oD h₂`. Take `⟨w₀, rfl⟩` from `A.ν.eX.surjective z₀`. Take `⟨w₁, rfl⟩` from `A.ν.eX.surjective z₁`. Rewrite `d₁` using `[← (A.hq k v).1, ← (A.hq k (x • v)).1]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₁` using `[← (A.hq k v).2.1, ← (A.hq k (x • v)).2.1]`. Rewrite `e₀` using `[← (A.hq k v).2.1, ← hp₀.2.1]`. Rewrite `d₂` using `[b₁, b₂]`. Rewrite `e₂` using `[c₁, c₂]`. Generalize the expression as in `(A.q k v).1.1.toAdd = s₁ at d₁ d₂`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(A.q k (x • v)).1.1.toAdd = s₂ at d₁ d₂`. Generalize the expression as in `(A.q k v).1.2.b = β₁ at e₀ e₁ e₂`. Generalize the expression as in `(A.q k (x • v)).1.2.b = β₂ at e₁ e₂`. Set `e : A.N.X ≃+ N'.X` to `J.e`. Set `φ : A.N.A ≃* N'.A` to `J.φ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : ∀ χ, N'.c (e χ) = φ (A.N.c χ)` using `J.c_eq`. Set `act : A.N.X → A.N.X` to `fun s => A.ν.eX.symm (x • A.ν.eX s)`. Establish `hl : ∀ s, ν'.eX (e (act s)) = x • ν'.eX (e s)` using `hlin x`. Establish `ha : ∀ s, A.ν.eX (act s) = x • A.ν.eX s` using `fun s => A.ν.eX.apply_symm_apply _`. Express the relevant statement in the definitionally equal form `ν'.eX (e s₂) = x • ν'.eX (e s₁) + k • z₂ at d₂`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `ν'.eA (φ β₂) = ν'.eA (φ β₁) ≫ _ * _ at e₂`. Express the relevant statement in the definitionally equal form `ν'.eA (φ y') = ν'.eA (φ y) ≫ _`. Establish `g₁ : s₂ = act s₁ + k • w₁` using `A.ν.eX.injective (by rw [d₁, map_add, map_nsmul, ha])`. Establish `g₂ : z₂ = ν'.eX (e w₁)`. Rewrite `d₂` using `[g₁, map_add, map_add, map_nsmul, map_nsmul, hl, add_right_inj, ← natCast_zsmul, ← natCast_zsmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_right_injective _ (Int.natCast_ne_zero.2 hk.ne') d₂).symm`. Establish `g₀ : y = β₁ * A.N.c w₀` using `A.ν.eA.injective (by rw [map_mul, A.ν.c_eq, ← e₀, hγ])`. Establish `g₃ : y' * A.N.c w₁ = β₂ * A.N.c (act w₀)` using `A.ν.eA.injective (by`. Rewrite using `[map_mul, map_mul, hy', g₀, map_mul, A.ν.c_eq, A.ν.c_eq, A.ν.c_eq, mul_cF_act, e₁, ha, mul_right_comm])`. Establish `g₄` using `congrArg (fun s => ν'.eA (φ s)) g₃`.
-
-Simplify using `only [map_mul, ← hc, ν'.c_eq, hl, e₂, ← g₂] at g₄`. Rewrite `g₄` using `[mul_right_comm, mul_left_inj]`. Rewrite using `[g₄, g₀, map_mul, map_mul, ← hc, ν'.c_eq, mul_cF_act]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.UT.LL → BrGtSt → AllS fun {E} _ _ _ {H} {_} {_} {_} {_} _ {_} {_} _ _ {_} a {_} _ _ A u r {_} M _ {_} ν' J => M.P.TorsionIso → ∀ k : ℕ, 0 < k → Labels A u r M ν' J k → (∀ (x : 𝓞 E) y, ν'.eX (J.e (A.arc.act x y)) = x • ν'.eX (J.e y)) → ∀ (x : 𝓞 E) (y y' : A.N.A), y ^ k = 1 → (letI := H.starRing; A.ν.eA y' = A.ν.eA y ≫ a.oa.onB.act x → ν'.eA (J.φ y') = ν'.eA (J.φ y) ≫ M.P.oD.onB.act x) := by
   intro hL hB E _ _ _ H D l c O _ β O' _ _ _ b a C _ _ _ _ _ _ A u r o M f N' ν' J hr _ hT k hk hlab hlin x y y' hy hy'

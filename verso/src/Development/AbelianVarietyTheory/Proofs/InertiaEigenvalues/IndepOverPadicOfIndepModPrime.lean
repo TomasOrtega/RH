@@ -4,29 +4,27 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ d ι w γ hw hn c hc`. Assume the negation of the conclusion as `hne`. Take `⟨a1, ha1⟩` from `Function.ne_iff.mp hne`. Take `⟨a₀, -, ha₀⟩` from `Finset.exists_max_image Finset.univ (fun a => ‖c a‖) ⟨a1, Finset.mem_univ _⟩`. Establish `hc0 : c a₀ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Use `ha₀ a1 (Finset.mem_univ _)` as an intermediate fact. Simplify using `only [h, norm_zero] at this`. Conclude with `ha1 (norm_le_zero_iff.mp this)`. Use `set c' : Fin d → ℚ_[l] := fun a => c a / c a₀ with hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc'le : ∀ a, ‖c' a‖ ≤ 1`. Introduce `a`. Simplify using `only [hc', norm_div]`. Conclude with `div_le_one_of_le₀ (ha₀ a (Finset.mem_univ _)) (norm_nonneg _)`. Establish `hc'a₀ : c' a₀ = 1` using `div_self hc0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsum' : ∀ i, ∑ a, algebraMap ℚ_[l] ℂ_[l] (c' a) * w a i = 0`. Introduce `i`. Establish `: ∑ a, algebraMap ℚ_[l] ℂ_[l] (c' a) * w a i = algebraMap ℚ_[l] ℂ_[l] (c a₀)⁻¹ * ∑ a, algebraMap ℚ_[l] ℂ_[l] (c a) * w a i`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hc', div_eq_mul_inv, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hc i, mul_zero]`. Set `e : Fin d → ℤ_[l]` to `fun a => ⟨c' a, hc'le a⟩`. Set `n : Fin d → ℕ` to `fun a => (e a).appr 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hen : ∀ a, ‖e a - (n a : ℤ_[l])‖ ≤ (l : ℝ)⁻¹`. Introduce `a`. Establish `h` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ 1).mpr (by simpa using PadicInt.appr_spec 1 (e a))`. Simplify using `using h`. Establish `hlC : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] ℂ_[l]) l, norm_algebraMap', Padic.norm_p]`. Establish `hsmall : ∀ i, ‖∑ a, (n a : ℂ_[l]) * w a i‖ ≤ ‖(l : ℂ_[l])‖ * γ i`. Introduce `i`. Establish `heq : ∑ a, (n a : ℂ_[l]) * w a i = ∑ a, ((n a : ℂ_[l]) - algebraMap ℚ_[l] ℂ_[l] (c' a)) * w a i`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, hsum' i, sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[heq, hlC]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg` to reduce the goal to its premises. Conclude with `mul_nonneg (by positivity) ((norm_nonneg _).trans (hw a₀ i))`. Introduce `a _`. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul ?_ (hw a i) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Establish `: (n a : ℂ_[l]) - algebraMap ℚ_[l] ℂ_[l] (c' a) = algebraMap ℚ_[l] ℂ_[l] (-(((e a - (n a : ℤ_[l]) : ℤ_[l]) : ℚ_[l])))`. Establish `hea : ((e a : ℤ_[l]) : ℚ_[l]) = c' a` using `rfl`. Rewrite using `[map_neg, PadicInt.coe_sub, PadicInt.coe_natCast, hea, map_sub, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, norm_algebraMap', norm_neg, PadicInt.padic_norm_e_of_padicInt]`. Conclude with `hen a`. Establish `hdiv` using `hn n hsmall a₀`. Establish `hlt : ‖(n a₀ : ℤ_[l])‖ < 1`. Rewrite using `[PadicInt.norm_lt_one_iff_dvd]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hdiv`. Conclude with `⟨k, by rw [hk]; push_cast; ring⟩`. Establish `he1 : ‖e a₀‖ = 1` using `by show ‖c' a₀‖ = 1`. Rewrite using `[hc'a₀, norm_one]`. Establish `hlinv : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
-
-Establish `: ‖e a₀‖ ≤ max ‖e a₀ - (n a₀ : ℤ_[l])‖ ‖(n a₀ : ℤ_[l])‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (e a₀ - (n a₀ : ℤ_[l])) (n a₀ : ℤ_[l])`. Rewrite `this` using `[he1]`. Use `this.trans_lt (max_lt ((hen a₀).trans_lt hlinv) hlt)` as an intermediate fact. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem indep_over_Ql_of_indep_mod_l : ∀ (l : ℕ) [Fact l.Prime] (d : ℕ) (ι : Type) (w : Fin d → ι → ℂ_[l]) (γ : ι → ℝ), (∀ a i, ‖w a i‖ ≤ γ i) → (∀ n : Fin d → ℕ, (∀ i, ‖∑ a, (n a : ℂ_[l]) * w a i‖ ≤ ‖(l : ℂ_[l])‖ * γ i) → ∀ a, l ∣ n a) → ∀ c : Fin d → ℚ_[l], (∀ i, ∑ a, algebraMap ℚ_[l] ℂ_[l] (c a) * w a i = 0) → c = 0 := by
   intro l _ d ι w γ hw hn c hc

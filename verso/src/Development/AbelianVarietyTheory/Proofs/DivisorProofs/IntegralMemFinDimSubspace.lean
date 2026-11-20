@@ -6,7 +6,7 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yyc2.dual_mem_span_eval_of_finiteDimensional E φ`.
+A detailed English derivation is pending.
 -/
 theorem dual_mem_span_eval_of_finiteDimensional {Y : Type} (E : Submodule ℂ (Y → ℂ))
     [FiniteDimensional ℂ E] (φ : Module.Dual ℂ E) :

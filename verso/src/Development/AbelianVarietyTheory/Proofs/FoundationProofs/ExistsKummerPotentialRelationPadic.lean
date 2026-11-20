@@ -21,16 +21,16 @@ namespace GlobalTheory.KZ.H3.KumPot
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-The claim follows from `(ZMod.intCast_eq_intCast_iff _ _ _).2 (Int.ModEq.of_dvd (Int.natCast_dvd_natCast.2 h) ((ZMod.intCast_eq_intCast_iff _ _ _).1 hxy))`.
+A detailed English derivation is pending.
 -/
 theorem cast_of_dvd {d M : ℕ} (h : d ∣ M) {x y : ℤ} (hxy : (x : ZMod M) = y) : (x : ZMod d) = y :=
   (ZMod.intCast_eq_intCast_iff _ _ _).2
     (Int.ModEq.of_dvd (Int.natCast_dvd_natCast.2 h) ((ZMod.intCast_eq_intCast_iff _ _ _).1 hxy))
 
 /- English proof (translation)
-Introduce `γ hγ`. Take `⟨a, b, c, e⟩` from `CongruenceSubgroup.Gamma_mem.1 hγ`. Use `CongruenceSubgroup.Gamma_mem.2 ⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `a)` using `using cast_of_dvd h (x := γ 0 0) (y := 1) (by simpa`. Simplify `b)` using `using cast_of_dvd h (x := γ 0 1) (y := 0) (by simpa`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `c)` using `using cast_of_dvd h (x := γ 1 0) (y := 0) (by simpa`. Simplify `e)` using `using cast_of_dvd h (x := γ 1 1) (y := 1) (by simpa`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gamma_le {d M : ℕ} (h : d ∣ M) : CongruenceSubgroup.Gamma M ≤ CongruenceSubgroup.Gamma d := by
   intro γ hγ
@@ -42,7 +42,7 @@ theorem gamma_le {d M : ℕ} (h : d ∣ M) : CongruenceSubgroup.Gamma M ≤ Cong
   · simpa using cast_of_dvd h (x := γ 1 1) (y := 1) (by simpa using e)
 
 /- English proof (translation)
-Introduce `γ hγ`. Take `⟨a, -, c, e⟩` from `CongruenceSubgroup.Gamma_mem.1 (gamma_le hN hγ)`. Take `⟨-, -, c', -⟩` from `CongruenceSubgroup.Gamma_mem.1 (gamma_le hl hγ)`. Conclude with `⟨(CongruenceSubgroup.Gamma1_mem N γ).2 ⟨a, e, c⟩, CongruenceSubgroup.Gamma0_mem.2 c'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gamma_le_gam {N l M : ℕ} (hN : N ∣ M) (hl : l ∣ M) : CongruenceSubgroup.Gamma M ≤ Gam N l := by
   intro γ hγ
@@ -51,7 +51,7 @@ theorem gamma_le_gam {N l M : ℕ} (hN : N ∣ M) (hl : l ∣ M) : CongruenceSub
   exact ⟨(CongruenceSubgroup.Gamma1_mem N γ).2 ⟨a, e, c⟩, CongruenceSubgroup.Gamma0_mem.2 c'⟩
 
 /- English proof (translation)
-Take `⟨a, b, c, e⟩` from `CongruenceSubgroup.Gamma_mem.1 hδ`. Rewrite using `[GlobalTheory.KZ.SlPLaws.polySlash_congr _ 1 p, GlobalTheory.KZ.SlPLaws.polySlash_one']`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [a, b, c, e]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem polySlash_eq_self_of_mem_Gamma (l n : ℕ) {δ : SL(2, ℤ)} (hδ : δ ∈ CongruenceSubgroup.Gamma (l ^ n))
     (p : MvPolynomial (Fin 2) (ZMod (l ^ n))) : slP (δ : Matrix (Fin 2) (Fin 2) ℤ) p = p := by
@@ -61,7 +61,7 @@ theorem polySlash_eq_self_of_mem_Gamma (l n : ℕ) {δ : SL(2, ℤ)} (hδ : δ �
   fin_cases i <;> fin_cases j <;> simp [a, b, c, e]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem toZModPow_eval (l : ℕ) [Fact l.Prime] (n : ℕ) (u : Fin 2 → ℤ_[l]) (p : MvPolynomial (Fin 2) ℤ_[l]) :
     PadicInt.toZModPow n (MvPolynomial.eval u p) =
@@ -72,7 +72,7 @@ theorem toZModPow_eval (l : ℕ) [Fact l.Prime] (n : ℕ) (u : Fin 2 → ℤ_[l]
   | mul_X p i hp => simp [hp]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n).2.1`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n).1 _ _ _ _ (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kum_sum (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) {ι : Type} (s : Finset ι) (x : ι → X.Khat l)
     (χ : ι → SL(2, ℤ) → ZMod (l ^ n)) (h : ∀ i ∈ s, Kum X l n (x i) (χ i)) :
@@ -92,17 +92,15 @@ namespace GlobalTheory.KZ.H3.KumPot
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Take `⟨⟨c, hcA, hbc⟩, hinv⟩` from `hb`. Establish `hcoef` using `fun γ hγ i => GlobalTheory.T.binaryForm_coeff_of_gamma1CapGamma0_invariant Ω ε X l N w b c hbc γ hγ (hinv γ hγ) i`. Take `⟨Φ, hΦ, hK⟩` from `GlobalTheory.T.kummerCharacters_invariant_compatible_family Ω ε X l hJ N w c hcA hcoef`. Take `⟨z, hz, hzΦ⟩` from `GlobalTheory.T.exists_padic_cocycle_of_compatible_poly_family N l w (by omega) hl2 hlN hw Φ hΦ`. Take `⟨F, hF, hFz⟩` from `GlobalTheory.T.exists_eichlerShimuraPotential_of_homogeneousPolyCocycle ℤ_[l] w N l hN z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨F, hF, fun u n => ⟨fun δ => MvPolynomial.eval (fun i => PadicInt.toZModPow n (u i)) (Φ n δ), ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hsum` using `kum_sum X l n (Finset.univ : Finset (Fin (w + 1))) (fun (i : Fin (w + 1)) => (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • c i) (fun (i : Fin (w + 1)) δ => PadicInt.toZModPow n (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) * MvPolynomial.coeff (Finsupp.single 0 (i : ℕ) + Finsupp.single 1 (w - …`. Rewrite `hsum` using `[← hbc u]`. Use `hsum using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `δ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.sum_apply]`. Establish `MX` using `GlobalTheory.T.binaryMonomialDegree_subst_expansion (ZMod (l ^ n)) w`. Use `conv_lhs => rw [MX.2.1 (Φ n δ) (hΦ.1 n δ)]`. Simplify using `only [map_sum, map_mul, MvPolynomial.eval_C, MX.2.2.2.1, map_pow]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M1, hM1, hM1'⟩` from `hzΦ n`. Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Use `⟨N * l ^ (n + 1) * M1, by positivity, fun δ hδ τ hτ => ?_⟩` and prove the remaining obligations. Establish `hδG : δ ∈ Gam N l` using `gamma_le_gam (l := l) ⟨l ^ (n + 1) * M1, by ring⟩ ⟨N * l ^ n * M1, by ring⟩ hδ`. Establish `hδn : δ ∈ CongruenceSubgroup.Gamma (l ^ n)` using `gamma_le ⟨N * l * M1, by ring⟩ hδ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ1 : δ ∈ CongruenceSubgroup.Gamma M1` using `gamma_le ⟨N * l ^ (n + 1), by ring⟩ hδ`. Establish `e1` using `hFz δ hδG τ hτ`. Establish `e2 : MvPolynomial.map (PadicInt.toZModPow n) (z δ) = Φ n δ` using `hM1' δ hδ1`. Establish `e3 : MvPolynomial.map (PadicInt.toZModPow n) (F (mob (ofSL δ) τ)) = MvPolynomial.map (PadicInt.toZModPow n) (slP (δ : Matrix (Fin 2) (Fin 2) ℤ) (F (mob (ofSL δ) τ)))`. Rewrite using `[GlobalTheory.KZ.SlPLaws.map_slP, polySlash_eq_self_of_mem_Gamma l n hδn]`.
-
-Rewrite using `[map_sub, toZModPow_eval, toZModPow_eval, e3, ← map_sub, ← map_sub, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bset_rel (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] [IsAlgClosed Ω] (hJ : JHol X) (N w : ℕ) (hN : 4 ≤ N)
     (hl2 : l ≠ 2) (hlN : ¬ l ∣ N) (hw : Odd w) (b : X.Fn l) (hb : b ∈ X.BSet N l w) :
@@ -142,11 +140,11 @@ theorem bset_rel (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] [IsAlgClosed Ω] (hJ
 end GlobalTheory.KZ.H3.KumPot
 
 /- English proof (translation)
-Introduce `Ω _ _ ε X l _ _ hJ N w hN hl2 hlN hw b hb`. Establish `RO` using `GlobalTheory.T.kummerPotentialRelation_linear_hecke_stable Ω ε X l`. Establish `PL` using `GlobalTheory.T.eichlerShimuraPotential_submodule_and_base_change ℤ_[l] w (Gam N l)`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb => exact KumPot.bset_rel X l hJ N w hN hl2 hlN hw b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, PL.2.1, RO.2.1⟩`. Consider the case `add b b' _ _ ih ih'`. Take `⟨F, hF, hR⟩` from `ih`. Take `⟨F', hF', hR'⟩` from `ih'`. Conclude with `⟨F + F', PL.1 _ _ hF hF', RO.1 _ _ _ _ hR hR'⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul a b _ ih`. Take `⟨F, hF, hR⟩` from `ih`. Conclude with `⟨a • F, PL.2.2.1 a F hF, RO.2.2.1 a b F hR⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.KZ.H3.exists_pot_rel : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ)
     [Fact l.Prime], [IsAlgClosed Ω] → JHol X → ∀ (N w : ℕ), 4 ≤ N → l ≠ 2 → ¬ l ∣ N → Odd w →

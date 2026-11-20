@@ -22,13 +22,13 @@ section Fields
 open Polynomial IntermediateField
 
 /- English proof (translation)
-Establish `hF : IsIntegral F θ` using `hθ.tower_top`. Establish `hd : minpoly F θ ∣ (minpoly L θ).map (algebraMap L F)` using `minpoly.dvd_map_of_isScalarTower L F θ`. Establish `h1` using `integralClosure.mem_lifts_of_monic_of_dvd_map F (minpoly.monic hθ) (minpoly.monic hF) hd`. Establish `h2 : minpoly F θ ∈ lifts (algebraMap L F)`. Rewrite `h1`, the goal using `[lifts_iff_coeff_lifts]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `n`. Take `⟨y, hy⟩` from `h1 n`. Rewrite using `[← hy]`. Conclude with `hLF _ y.2`. Take `⟨q, hq, hdeg, hm⟩` from `lifts_and_natDegree_eq_and_monic h2 (minpoly.monic hF)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `natDegree_le_of_dvd hd ((minpoly.monic hθ).map _).ne_zero` as an intermediate fact. Rewrite `this` using `[natDegree_map]`. Then use the resulting hypothesis. Rewrite using `[← hdeg]`. Use `natDegree_le_of_dvd (minpoly.dvd L θ ?_) hm.ne_zero` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← aeval_map_algebraMap F, hq, minpoly.aeval]`.
+A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_eq {L F Ω : Type*} [Field L] [Field F] [Field Ω] [Algebra L F] [Algebra F Ω]
     [Algebra L Ω] [IsScalarTower L F Ω] (hLF : ∀ x : F, IsIntegral L x → x ∈ (algebraMap L F).range)
@@ -51,15 +51,13 @@ theorem natDegree_minpoly_eq {L F Ω : Type*} [Field L] [Field F] [Field Ω] [Al
     rw [← aeval_map_algebraMap F, hq, minpoly.aeval]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional L L⟮a⟯ := adjoin.finiteDimensional ha`. Set `N : IntermediateField L Ω` to `M ⊔ L⟮a⟯`. Use `haveI : FiniteDimensional L N := inferInstance`. Establish `prim : ∀ P : IntermediateField L Ω, FiniteDimensional L P → ∃ θ : Ω, IsIntegral L θ ∧ L⟮θ⟯ = P ∧ Module.finrank L P = Module.finrank F F⟮θ⟯`. Introduce `P _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨θ, hθ⟩` from `Field.exists_primitive_element L P`. Establish `hi : IsIntegral L (θ : Ω)` using `(Algebra.IsIntegral.isIntegral (R := L) θ).map P.val`. Establish `e : L⟮(θ : Ω)⟯ = P`. Use `congrArg (IntermediateField.lift (F := P)) hθ` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨θ, hi, e, ?_⟩` and prove the remaining obligations. Rewrite using `[adjoin.finrank hi.tower_top, natDegree_minpoly_eq hLF hi, ← adjoin.finrank hi, e]`. Take `⟨θ, hθ, eθ, rθ⟩` from `prim M inferInstance`. Take `⟨η, hη, eη, rη⟩` from `prim N inferInstance`. Establish `htop : F⟮θ⟯ = ⊤`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff, ← hgen, adjoin_le_iff, ← eθ]`. Establish `: L⟮θ⟯ ≤ (F⟮θ⟯).restrictScalars L`. Rewrite using `[adjoin_simple_le_iff]`. Conclude with `mem_adjoin_simple_self F θ`. Conclude with `this`.
-
-Use `haveI : FiniteDimensional F F⟮θ⟯ := adjoin.finiteDimensional hθ.tower_top`. Establish `hle : Module.finrank F F⟮η⟯ ≤ Module.finrank F F⟮θ⟯` using `IntermediateField.finrank_le_of_le_right (htop ▸ le_top)`. Establish `: M = N` using `IntermediateField.eq_of_le_of_finrank_le le_sup_left (by omega)`. Rewrite using `[this]`. Conclude with `(le_sup_right : L⟮a⟯ ≤ N) (mem_adjoin_simple_self L a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegral {L F Ω : Type*} [Field L] [CharZero L] [Field F] [Field Ω] [Algebra L F] [Algebra F Ω]
     [Algebra L Ω] [IsScalarTower L F Ω] (hLF : ∀ x : F, IsIntegral L x → x ∈ (algebraMap L F).range)
@@ -94,11 +92,9 @@ theorem mem_of_isIntegral {L F Ω : Type*} [Field L] [CharZero L] [Field F] [Fie
   exact (le_sup_right : L⟮a⟯ ≤ N) (mem_adjoin_simple_self L a)
 
 /- English proof (translation)
-Use `letI : Algebra F Ω := φ.toAlgebra`. Set `L` to `algebraicClosure ℚ F`. Set `M : IntermediateField L Ω` to `ψ.fieldRange.toIntermediateField fun x => hal x (mem_algebraicClosure_iff'.1 x.2)`. Use `haveI : FiniteDimensional ℚ M := by`. Set `g : K →ₗ[ℚ] M` to `(ψ.rangeRestrictField : K →+* M).toRatAlgHom.toLinearMap`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Module.Finite.of_surjective g ψ.rangeRestrictField_bijective.2`. Use `haveI : FiniteDimensional L M := Module.Finite.of_restrictScalars_finite ℚ L M`. Use `haveI : Algebra.IsIntegral ℚ L := (algebraicClosure.isAlgebraic ℚ F).isIntegral`. Use `mem_of_isIntegral (L := L) (F := F) (fun x hx => ?_) M ?_ ha.tower_top` and prove the remaining obligations. Conclude with `⟨⟨x, mem_algebraicClosure_iff'.2 (isIntegral_trans x hx)⟩, rfl⟩`.
-
-Use `hgen (adjoin F (M : Set Ω)).toSubfield (fun x => (adjoin F (M : Set Ω)).algebraMap_mem x) (fun y => subset_adjoin F _ ⟨y, rfl⟩)` as an intermediate fact. Conclude with `IntermediateField.toSubfield_injective this`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_range_of_isIntegral {F K Ω : Type*} [Field F] [CharZero F] [Field K] [CharZero K] [Field Ω] [CharZero Ω]
     [FiniteDimensional ℚ K] (φ : F →+* Ω) (ψ : K →+* Ω)
@@ -120,9 +116,9 @@ theorem mem_range_of_isIntegral {F K Ω : Type*} [Field F] [CharZero F] [Field K
     exact IntermediateField.toSubfield_injective this
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp (ha.isIntegral.tower_top (A := MvPolynomial σ K))`. Establish `hb : IsIntegral K b` using `(isIntegral_algebraMap_iff (IsFractionRing.injective _ _)).mp ha.isIntegral`. Distinguish the cases in `h0 : b = 0`. Conclude with `⟨0, by simp [h0]⟩`. Take `⟨r, -, rfl⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.1 (hb.isUnit h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r, IsScalarTower.algebraMap_apply K (MvPolynomial σ K) _ r⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_range_of_isAlgebraic_ratFun {K σ : Type*} [Field K] (a : FractionRing (MvPolynomial σ K))
     (ha : IsAlgebraic K a) : a ∈ (algebraMap K (FractionRing (MvPolynomial σ K))).range := by
@@ -134,15 +130,13 @@ theorem mem_range_of_isAlgebraic_ratFun {K σ : Type*} [Field K] (a : FractionRi
   exact ⟨r, IsScalarTower.algebraMap_apply K (MvPolynomial σ K) _ r⟩
 
 /- English proof (translation)
-Set `L` to `algebraicClosure ℚ F`. Use `haveI : FiniteDimensional ℚ L := finiteDimensional_algebraicClosure_of_essFiniteType ℚ F`. Take `⟨θ, hθ⟩` from `Field.exists_primitive_element ℚ L`. Establish `hi : IsIntegral ℚ θ` using `Algebra.IsIntegral.isIntegral θ`. Set `p` to `minpoly ℚ θ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(p.aroots ℂ).toFinset, fun z hz => ?_, fun K hK Ω _ φ ψ x hx => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[Multiset.mem_toFinset, mem_aroots]`. Conclude with `⟨p, hz.1, hz.2⟩`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom φ.injective`. Use `letI : Algebra K Ω := ψ.toAlgebra`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : (p.map (algebraMap ℚ K)).Splits` using `IntermediateField.splits_of_splits (IsAlgClosed.splits _) fun z hz => hK z (by`. Rewrite using `[Multiset.mem_toFinset]`. Conclude with `Finset.mem_coe.1 hz |> Multiset.mem_toFinset.1)`. Set `g : L →ₐ[ℚ] Ω` to `(φ.comp L.val.toRingHom).toRatAlgHom`. Establish `hr : g θ ∈ ψ.range`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `hs.mem_range_of_isRoot (S := Ω) ((minpoly.monic hi).map _).ne_zero ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Polynomial.map _ _).IsRoot _`. Rewrite using `[Polynomial.map_map, Subsingleton.elim (RingHom.comp _ _) (algebraMap ℚ Ω), IsRoot.def, eval_map_algebraMap, aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hle : (⊤ : IntermediateField ℚ L) ≤ (ψ.toRatAlgHom.fieldRange).comap g`. Rewrite using `[← hθ, adjoin_simple_le_iff]`.
-
-Conclude with `hr`. Conclude with `hle (x := ⟨x, mem_algebraicClosure_iff'.2 hx⟩) trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_roots (F : Type*) [Field F] [CharZero F] [Algebra.EssFiniteType ℚ F] :
     ∃ s : Finset ℂ, (∀ z ∈ s, IsAlgebraic ℚ z) ∧ ∀ K : IntermediateField ℚ ℂ, (∀ z ∈ s, z ∈ K) →
@@ -179,17 +173,15 @@ section Schemes
 open AlgebraicGeometry CategoryTheory Limits
 
 /- English proof (translation)
-Set `P` to `pullback s (Spec.map i)`. Set `φ : X.residueField (pullback.fst s (Spec.map i) x) ⟶ CommRingCat.of S` to `CommRingCat.ofHom (((pullback.fst s (Spec.map i)).residueFieldMap x).hom.codRestrict S h1)`. Set `ψ : K ⟶ CommRingCat.of S` to `CommRingCat.ofHom ((Spec.preimage (P.fromSpecResidueField x ≫ pullback.snd _ _)).hom.codRestrict S h2)`. Set `j : CommRingCat.of S ⟶ P.residueField x` to `CommRingCat.ofHom S.subtype`. Establish `e1 : φ ≫ j = (pullback.fst s (Spec.map i)).residueFieldMap x` using `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : ψ ≫ j = Spec.preimage (P.fromSpecResidueField x ≫ pullback.snd _ _)` using `rfl`. Establish `f1 : Spec.map j ≫ Spec.map φ ≫ X.fromSpecResidueField _ = P.fromSpecResidueField x ≫ pullback.fst _ _`. Rewrite using `[← Spec.map_comp_assoc, e1, Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField]`. Establish `f2 : Spec.map j ≫ Spec.map ψ = P.fromSpecResidueField x ≫ pullback.snd _ _`. Rewrite using `[← Spec.map_comp, e2, Spec.map_preimage]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `w : (Spec.map φ ≫ X.fromSpecResidueField _) ≫ s = Spec.map ψ ≫ Spec.map i`. Take `⟨u, hu⟩` from `Spec.map_surjective ((Spec.map φ ≫ X.fromSpecResidueField _) ≫ s)`. Establish `h : Spec.map j ≫ Spec.map u = Spec.map j ≫ Spec.map (i ≫ ψ)`. Rewrite using `[hu, Spec.map_comp, reassoc_of% f2, Category.assoc, reassoc_of% f1, pullback.condition]`. Rewrite `h` using `[← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Mono j := ConcreteCategory.mono_of_injective j Subtype.val_injective`. Rewrite using `[← hu, (cancel_mono j).1 h, Spec.map_comp]`. Establish `h : Spec.map j ≫ pullback.lift _ _ w = P.fromSpecResidueField x`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, f1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_snd, f2]`. Use `haveI : SurjectiveOnStalks (Spec.map j ≫ pullback.lift _ _ w) := by rw [h]; infer_instance`. Use `haveI : SurjectiveOnStalks (Spec.map j) := .of_comp _ (pullback.lift _ _ w)`. Establish `hs : Function.Surjective j.hom` using `RingHom.surjectiveOnStalks_iff_of_isLocalHom.1 (SurjectiveOnStalks.Spec_iff.1 this)`. Rewrite using `[eq_top_iff]`.
-
-Introduce `a _`. Take `⟨b, rfl⟩` from `hs a`. Conclude with `b.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem residueField_generated {k K : CommRingCat.{0}} {X : Scheme.{0}} (s : X ⟶ Spec k) (i : k ⟶ K)
     (x : ↥(pullback s (Spec.map i))) (S : Subfield ((pullback s (Spec.map i)).residueField x))
@@ -229,18 +221,18 @@ theorem residueField_generated {k K : CommRingCat.{0}} {X : Scheme.{0}} (s : X �
   exact b.2
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Conclude with `(inferInstance : Module.Flat A B)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem flat_of_field {A B : Type} [Field A] [CommRing B] (f : A →+* B) : f.Flat := by
   letI := f.toAlgebra
   exact (inferInstance : Module.Flat A B)
 
 /- English proof (translation)
-Establish `hg` using `(hZ.1 : IsIrreducible Z).isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents Z hZ)`. Establish `hx : ∀ y : X, y ⤳ (hZ.1 : IsIrreducible Z).genericPoint → y = (hZ.1 : IsIrreducible Z).genericPoint`. Introduce `y hy`. Establish `h1 : Z ⊆ closure {y}`. Rewrite using `[← hg.def]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `specializes_iff_closure_subset.mp hy`. Establish `h2 : closure {y} ⊆ Z` using `hZ.2 isIrreducible_singleton.closure h1`. Conclude with `(hy.antisymm (hg.specializes (h2 (subset_closure rfl)))).eq`. Use `⟨isIrreducible_singleton.closure, fun T hT hle => ?_⟩` and prove the remaining obligations. Establish `hT'` using `hT.isGenericPoint_genericPoint_closure`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : hT.genericPoint ⤳ f (hZ.1 : IsIrreducible Z).genericPoint` using `hT'.specializes (subset_closure (hle (subset_closure rfl)))`. Take `⟨y, hy, e⟩` from `Flat.generalizingMap f hs`. Rewrite using `[← hx y hy, e, hT'.def]`. Conclude with `subset_closure`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem_genericPoints {X Y : Scheme.{0}} (f : X ⟶ Y) [Flat f] (Z : Set X)
     (hZ : Z ∈ irreducibleComponents X) : f (hZ.1 : IsIrreducible Z).genericPoint ∈ genericPoints Y := by
@@ -266,29 +258,25 @@ open AlgebraicGeometry CategoryTheory Limits
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.FrameNorm GlobalTheory.Reg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c h1`. Use `⟨(GlobalTheory.Exist.comp_nonempty_finite_genFr_trdeg E H Dw l Xo c h1).1, ?_⟩` and prove the remaining obligations. Use `CompFin.quasiCompact_alt Xo` as an intermediate fact. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth Dw.dim Xo.s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian Xo.X` using `LocallyOfFiniteType.isLocallyNoetherian Xo.s`. Establish `: CompactSpace Xo.X` using `QuasiCompact.compactSpace_of_compactSpace Xo.s`. Establish `: IsNoetherian Xo.X` using `{}`. Establish `hfin : (genericPoints Xo.X).Finite` using `genericPoints.finite TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`. Use `c.fin` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℚ (KA l) := Module.Finite.of_injective (IntermediateField.inclusion c.le).toLinearMap (IntermediateField.inclusion_injective c.le)`. Establish `hchar : ∀ x : Xo.X, CharZero (Xo.X.residueField x)` using `fun x => charZero_of_injective_ringHom (R := KA l) (Spec.preimage (Xo.X.fromSpecResidueField x ≫ Xo.s)).hom.injective`. Establish `key : ∀ x : Xo.X, ∃ s : Finset ℂ, (∀ z ∈ s, IsAlgebraic ℚ z) ∧ ∀ K : IntermediateField ℚ ℂ, (∀ z ∈ s, z ∈ K) → ∀ (Ω : Type) [Field Ω] (φ : Xo.X.residueField x →+* Ω) (ψ : K →+* Ω) (a : Xo.X.residueField x), IsIntegral ℚ a → φ a ∈ ψ.range`. Introduce `x`. Use `letI : Algebra (KA l) (Xo.X.residueField x) := (Spec.preimage (Xo.X.fromSpecResidueField x ≫ Xo.s)).hom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hess : (Spec.preimage (Xo.X.fromSpecResidueField x ≫ Xo.s)).hom.EssFiniteType`. Establish `e : Spec.preimage (Xo.X.fromSpecResidueField x ≫ Xo.s) = Spec.preimage ((Sp (KA l)).fromSpecResidueField (Xo.s x)) ≫ Xo.s.residueFieldMap x`. Rewrite using `[← Spec.map_inj]`. Simplify using the standard rewrite rules. Rewrite using `[e, CommRingCat.hom_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.EssFiniteType.comp ?_ (LocallyOfFiniteType.stalkMap Xo.s x).residueFieldMap` and prove the remaining obligations. Use `(RingHom.FiniteType.of_surjective _ ?_).essFiniteType` and prove the remaining obligations. Establish `: SurjectiveOnStalks (Spec.map (Spec.preimage ((Sp (KA l)).fromSpecResidueField (Xo.s x))))`. Rewrite using `[Spec.map_preimage]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `RingHom.surjectiveOnStalks_iff_of_isLocalHom.1 (SurjectiveOnStalks.Spec_iff.1 this)`. Use `haveI : Algebra.EssFiniteType (KA l) (Xo.X.residueField x) := hess`. Use `haveI : Algebra.EssFiniteType ℚ (Xo.X.residueField x) := .comp ℚ (KA l) _`. Conclude with `exists_finset_roots _`. Use `choose s hs hK using key`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `b` to `Module.finBasis ℚ c.F`. Take `⟨c', hc'⟩` from `exists_coeff_containing E H l (hfin.toFinset.biUnion s ∪ Finset.univ.image fun j => (b j : ℂ)) (by`. Introduce `z hz`. Break down `Finset.mem_union.1 hz with h | h` into its components or cases. Take `⟨x, -, hx⟩` from `Finset.mem_biUnion.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hs x z hx`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `((Algebra.IsIntegral.isIntegral (R := ℚ) (b j)).map c.F.val).isAlgebraic)`. Use `⟨c', fun z hz => ?_, fun c'' hle Z a ha => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg c.F.val (b.sum_repr ⟨z, hz⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[map_sum]`. Establish `e' : z = _` using `e.symm`. Rewrite using `[e']`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_rat_smul]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `IntermediateField.smul_mem _ (hc' _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ j))))`. Use `c''.fin` as an intermediate fact. Take `⟨r, rfl⟩` from `mem_range_of_isAlgebraic_ratFun a (ha.tower_top (kap Z))`. Establish `hr : IsIntegral c''.F r` using `(isIntegral_algebraMap_iff (algebraMap (kap Z) (Om Z)).injective).1 ha.isIntegral`. Use `haveI : CharZero (kap Z) := charZero_of_injective_algebraMap (algebraMap c''.F (kap Z)).injective`.
-
-Establish `hr' : IsIntegral ℚ r` using `isIntegral_trans r hr`. Set `p : Xo.XF c'' ⟶ Xo.X` to `pullback.fst _ _`. Use `haveI : Flat (spMap (IntermediateField.inclusion c''.le).toRingHom) := by`. Use `(HasRingHomProperty.Spec_iff (P := @Flat)).2 ?_` and prove the remaining obligations. Conclude with `flat_of_field _`.
-
-Establish `hp : p (genPt Z) ∈ genericPoints Xo.X` using `apply_mem_genericPoints p Z.1 Z.2`. Take `⟨k, hk⟩` from `mem_range_of_isIntegral (p.residueFieldMap (genPt Z)).hom (algebraMap c''.F (kap Z)) (fun S h₁ h₂ => residueField_generated Xo.s _ (genPt Z) S h₁ h₂) (hK _ c''.F (fun z hz => hle (hc' z (Finset.mem_union_left _ (Finset.mem_biUnion.2 ⟨_, hfin.mem_toFinset.2 hp, hz⟩)))) _ _ _) hr'`. Conclude with `⟨k, by rw [← hk, ← IsScalarTower.algebraMap_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem compNe_and_exists_fnAlgClosed : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → CompNe Xo c ∧ ∃ c' : Coeff l, c.F ≤ c'.F ∧ ∀ c'' : Coeff l, c'.F ≤ c''.F → FnAlgClosed Xo c'' := by
   intro E _ _ _ H Dw l Xo c h1

@@ -17,7 +17,7 @@ def colU (col : Fin 2) : RawChart C d (fun _ => I0) (Fin dd) :=
   rawU Y d (fun g c i => (Y.rawSelf p).u g c (col, i))
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_smul, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.constantCoeff_X, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem linW_const {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} (X : RawChart C d I κ) (g : Fin 2) (j : κ) :
     MvPowerSeries.constantCoeff
@@ -28,7 +28,7 @@ theorem linW_const {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} (X : 
     MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.constantCoeff_X, mul_zero]
 
 /- English proof (translation)
-Use `show MvPowerSeries.subst _ (inCol col (un1 (Y.ex j))) = _`. Rewrite using `[subst_inCol (linW_const (Y.rawSelf p) g)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem expPt_col (g col : Fin 2) (j : Fin dd) :
     (Y.rawSelf p).expPt g (col, j) = (colU Y p col).expPt g j := by
@@ -37,16 +37,16 @@ theorem expPt_col (g col : Fin 2) (j : Fin dd) :
   rfl
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_zero (linW_const (Y.rawSelf p) q.1) (Y.self_chart_exp_constantCoeff p q.2)`.
+A detailed English derivation is pending.
 -/
 theorem expPt_self0 (q : Fin 2 × (Fin 2 × Fin dd)) :
     MvPowerSeries.constantCoeff ((Y.rawSelf p).expPt q.1 q.2) = 0 :=
   constantCoeff_subst_zero (linW_const (Y.rawSelf p) q.1) (Y.self_chart_exp_constantCoeff p q.2)
 
 /- English proof (translation)
-Establish `hS` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Unfold `hCol`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _) hS]`. Use `congr 1`. Use function extensionality and compare the values at `q`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[MvPowerSeries.subst_X hS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_hCol {τ : Type} {a : Fin 2 × (Fin 2 × Fin dd) → MvPowerSeries τ C}
     (ha : ∀ x, MvPowerSeries.constantCoeff (a x) = 0) (col : Fin 2) (f : PS C 2 dd) :
@@ -60,7 +60,7 @@ theorem subst_hCol {τ : Type} {a : Fin 2 × (Fin 2 × Fin dd) → MvPowerSeries
   rw [MvPowerSeries.subst_X hS]
 
 /- English proof (translation)
-Rewrite using `[subst_hCol (expPt_self0 Y p)]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `expPt_col Y p q.1 col q.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem subst_E_hCol (col : Fin 2) (f : PS C 2 dd) :
     MvPowerSeries.subst (fun q : Fin 2 × (Fin 2 × Fin dd) => (Y.rawSelf p).expPt q.1 q.2) (hCol col f) =
@@ -71,7 +71,7 @@ theorem subst_E_hCol (col : Fin 2) (f : PS C 2 dd) :
   exact expPt_col Y p q.1 col q.2
 
 /- English proof (translation)
-Establish `hES` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (expPt_self0 Y p)`. Use `show ((Y.k : ℕ) : C) • MvPowerSeries.subst (fun q : Fin 2 × (Fin 2 × Fin dd) => (Y.rawSelf p).expPt q.1 q.2) (∑ col, hCol col Y.h) = ∑ col, ((Y.k : ℕ) : C) • MvPowerSeries.subst (fun q : Fin 2 × Fin dd => (colU Y p col).expPt q.1 q.2) Y.h`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hES, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom, subst_E_hCol]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hRow_self : (Y.rawSelf p).hRow = ∑ col, (colU Y p col).hRow := by
   have hES := MvPowerSeries.hasSubst_of_constantCoeff_zero (expPt_self0 Y p)
@@ -83,7 +83,7 @@ theorem hRow_self : (Y.rawSelf p).hRow = ∑ col, (colU Y p col).hRow := by
   rw [MvPowerSeries.coe_substAlgHom, subst_E_hCol]
 
 /- English proof (translation)
-Establish `hS` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Rewrite using `[Y.rawSelf_sg p v, ← MvPowerSeries.coe_substAlgHom hS, map_sum]`. Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom, subst_inCol ha]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_sg_self {τ : Type} {a : Fin 2 × Fin dd → MvPowerSeries τ C}
     (ha : ∀ x, MvPowerSeries.constantCoeff (a x) = 0) (v : Fin 2 × Fin dd → C) :
@@ -96,13 +96,13 @@ theorem subst_sg_self {τ : Type} {a : Fin 2 × Fin dd → MvPowerSeries τ C}
   rfl
 
 /- English proof (translation)
-Introduce `g k`. Establish `hES` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (expPt_self0 Y p)`. Establish `hcol` using `fun col : Fin 2 => derAt_rawU Y d (fun g c i => (Y.rawSelf p).u g c (col, i)) (fun g c i => Y.rawSelf_u_integral p g c (col, i)) g k`. Use `choose J hJI hJ using hcol`. Use `⟨∑ col, hCol col (J col), intS_sum _ fun col _ => IntS.subst (fun _ => MvPowerSeries.constantCoeff_X _) (fun _ => intS_X _) (hJI col), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : MvPowerSeries.subst (fun q : Fin 2 × (Fin 2 × Fin dd) => (Y.rawSelf p).expPt q.1 q.2) (∑ col, hCol col (J col)) = ∑ col, MvPowerSeries.subst (fun q : Fin 2 × Fin dd => (colU Y p col).expPt q.1 q.2) (J col)`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hES, map_sum]`. Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom, subst_E_hCol]`. Establish `e2 : MvPowerSeries.subst ((Y.rawSelf p).expPt g) ((Y.rawSelf p).sg ((Y.rawSelf p).u (1 - g) k)) = ∑ col, MvPowerSeries.subst ((colU Y p col).expPt g) ((colU Y p col).sg ((colU Y p col).u (1 - g) k))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subst_sg_self Y p (fun x => expPt_self0 Y p (g, x))]`. Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `expPt_col Y p g col i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : dVar (⟨1 - g, k⟩ : WV fun _ : Fin 2 => I0) (Y.rawSelf p).hRow = ∑ col, dVar (⟨1 - g, k⟩ : WV fun _ : Fin 2 => I0) (colU Y p col).hRow`. Rewrite using `[hRow_self, dVar_eq, map_sum]`. Simplify using `only [dVar_eq]`. Rewrite using `[e3, e1, e2, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun col _ => hJ col`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derAt_self : DerAt V (Y.rawSelf p) := by
   intro g k
@@ -133,11 +133,9 @@ theorem derAt_self : DerAt V (Y.rawSelf p) := by
   exact Finset.sum_congr rfl fun col _ => hJ col
 
 /- English proof (translation)
-Introduce `τ _ γ γ' hγ hγ'`. Establish `hcol` using `fun col : Fin 2 => addM_rawU Y d (fun g c i => (Y.rawSelf p).u g c (col, i)) τ (fun i => γ (col, i)) (fun i => γ' (col, i)) (fun i => hγ (col, i)) (fun i => hγ' (col, i))`. Use `choose G hG hGlg hGsg using hcol`. Establish `hG0 : ∀ x : Fin 2 × Fin dd, MvPowerSeries.constantCoeff (G x.1 x.2) = 0` using `fun x => (hG x.1 x.2).1`. Use `⟨fun x => G x.1 x.2, fun x => hG x.1 x.2, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨col, i⟩ show MvPowerSeries.subst _ (inCol col (un1 (Y.lg i))) = MvPowerSeries.subst γ (inCol col (un1 (Y.lg i))) + MvPowerSeries.subst γ' (inCol col (un1 (Y.lg i)))`. Rewrite using `[subst_inCol hG0, subst_inCol (fun x => (hγ x).1), subst_inCol (fun x => (hγ' x).1)]`. Conclude with `hGlg col i`. Introduce `v hv`. Rewrite using `[subst_sg_self Y p hG0, subst_sg_self Y p (fun x => (hγ x).1), subst_sg_self Y p (fun x => (hγ' x).1), ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`.
-
-Conclude with `intS_sum _ fun col _ => hGsg col _ fun i => hv (col, i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addM_self : AddM V (Y.rawSelf p) := by
   intro τ _ γ γ' hγ hγ'
@@ -161,7 +159,7 @@ end CEqGen
 open CEqGen in
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I0 _ p _ H`. Conclude with `cEq_of (Y.rawSelf p) H (sumAt_of (Y.rawSelf p) (addM_self Y p) (Y.self_chart_log_constantCoeff p) (Y.rawSelf_axis0 p) (Y.rawSelf_exlg p) (Y.rawSelf_u_integral p)) (derAt_self Y p)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cEqSelf_holds : CEqSelfSt := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p _ H

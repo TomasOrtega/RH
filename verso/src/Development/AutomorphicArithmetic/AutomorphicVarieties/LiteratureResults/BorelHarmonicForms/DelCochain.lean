@@ -4,11 +4,11 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a n e he M _ _ _ _ κ L h q ω hω k X`. Set `β : Herm E a →ₗ[ℝ] Herm E a →ₗ[ℝ] M` to `LinearMap.mk₂ ℝ (fun Y Z => L (toL Y.1) (ω.curryLeft Z fun i => adHerm k (X i))) (fun Y Y' Z => LinearMap.congr_fun (map_add L (toL Y.1) (toL Y'.1)) _) (fun c Y Z => LinearMap.congr_fun (map_smul L c (toL Y.1)) _) (fun Y Z Z' => by rw [map_add, AlternatingMap.add_apply, map_add]) …`. Rewrite using `[map_smul, AlternatingMap.smul_apply]`. Conclude with `((L (toL Y.1)).restrictScalars ℝ).map_smul c _)`. Establish `hβ : ∀ Y Z, β Y Z = L (toL Y.1) (ω (Matrix.vecCons Z fun i => adHerm k (X i)))` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `UpperTheory.V.Lit.Bor.frameAd E a n e he M β k`. Simplify using `only [hβ] at key`. Rewrite using `[del_apply, del_apply, map_sum, ← key]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hc : (Matrix.vecCons (adHerm k (e j)) fun i => adHerm k (X i)) = fun i => adHerm k (Matrix.vecCons (e j) X i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> rfl`. Rewrite using `[hc, hω k]`. Conclude with `(LinearMap.congr_fun (h k (e j)) _).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.delCochain :
     UpperTheory.V.Lit.Bor.DelCochain := by

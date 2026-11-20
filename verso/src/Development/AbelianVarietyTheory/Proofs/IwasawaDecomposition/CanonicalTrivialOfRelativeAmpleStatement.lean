@@ -17,7 +17,7 @@ open Formalism.L2.Pj GlobalTheory.RayEv
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KTrivGenericPt.kTriv_of_polAt_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCanonicalTrivialOfRelativeAmple.lean&line=43#L43)
 -/

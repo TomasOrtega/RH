@@ -14,9 +14,9 @@ universe w w' v u v' u' v'' u''
 namespace CrystallineSemistableComparison.B
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3⟩` from `h`. Use `⟨h0, fun x hx => by rw [← one_smul R x, h1 x hx, smul_zero], fun y hy => ?_, fun m y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `h2 y hy`. Conclude with `⟨s • x, by rw [map_smul, hx, one_smul]⟩`. Take `⟨x, hx⟩` from `h3 m y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s • x, by rw [map_smul, hx, one_smul]⟩`.
+Supply the required witnesses or components.
 -/
 lemma gl_res_one {R : Type} [CommRing R] {K : Cx.{w} R} {M : Type w'} [AddCommGroup M] [Module R M]
     (ε : M →ₗ[R] K.X 0) (s : R) (h : K.ResUpTo 1 ε) : K.ResUpTo s ε := by
@@ -28,11 +28,11 @@ lemma gl_res_one {R : Type} [CommRing R] {K : Cx.{w} R} {M : Type w'} [AddCommGr
     exact ⟨s • x, by rw [map_smul, hx, one_smul]⟩
 
 /- English proof (translation)
-Introduce `T`. Establish `hI : Limits.IsInitial (StructuredArrow.mk (𝟙 T) : StructuredArrow T (𝟭 C))` using `StructuredArrow.mkIdInitial (T := 𝟭 C) (Y := T)`. Establish `h` using `CrystallineSemistableComparison.P.initial (StructuredArrow.proj T (𝟭 C) ⋙ 𝟭 C ⋙ F) _ hI`. Establish `e : (aug (StructuredArrow.proj T (𝟭 C) ⋙ 𝟭 C ⋙ F) fun x => ((StructuredArrow.proj T (𝟭 C) ⋙ 𝟭 C ⋙ F).map (hI.to x)).hom) = unAug F (𝟭 C) T`. Unfold `unAug`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hx : (hI.to x).right = x.hom` using `by simpa using StructuredArrow.w (hI.to x)`. Express the relevant statement in the definitionally equal form `(F.map (hI.to x).right).hom = _`. Rewrite using `[hx]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `gl_res_one _ s h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gl_desc_id {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R) (s : R) :
     Desc s F (𝟭 C) := by
@@ -54,15 +54,13 @@ lemma gl_desc_id {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C �
 end CrystallineSemistableComparison.B
 
 /- English proof (translation)
-Introduce `d n`. Take `⟨N₁, h₁⟩` from `CrystallineSemistableComparison.B.P.tors.{w, v, u, v, u} d n`. Take `⟨N₂, h₂⟩` from `CrystallineSemistableComparison.B.P.tors.{w, v', u', v'', u''} d n`. Use `⟨N₂ + (N₁ + 2) + (2 * n + 3), ?_⟩` and prove the remaining obligations. Introduce `R _ C _ E _ E₀ _ F G j _ _ U D A L U' D' A' L' θ h s hL hD hL' hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `θn : A.ι ⟶ A'.ι ⋙ G` to `⟨fun _ => θ, fun _ _ a => h a⟩`. Establish `t1 : RI (s ^ N₁) n F A.ι` using `h₁ F (𝟭 C) U D A L s (gl_desc_id F s) hL`. Establish `t2 : RI (s ^ N₂) n (G ⋙ F) A'.ι` using `h₂ (G ⋙ F) j U' D' A' L' s hD hL'`. Establish `t3 : RI (s ^ N₁ * s ^ 2) n F (A'.ι ⋙ G)`. Introduce `i hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : (Mor.restrict F (A'.ι ⋙ G)).pull i = ((Mor.ofNatTrans (Functor.whiskerRight θn F)).pull i).comp ((Mor.restrict F A.ι).pull i)`. Rewrite using `[← rc_pull_comp]`. Conclude with `(LinearMap.ext fun x => CrystallineSemistableComparison.P.prism ((Mor.restrict F A.ι).comp (Mor.ofNatTrans (Functor.whiskerRight θn F))) (Mor.restrict F (A'.ι ⋙ G)) θn (fun T x => rfl) i x).symm`. Rewrite using `[hp]`. Conclude with `(CrystallineSemistableComparison.P.upTo_alg _ _ _ _).1 (t1 i hi) (P.ni_coh s (Functor.whiskerRight θn F) hN n i hi)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t4 : RI (s ^ N₂ * (s ^ N₁ * s ^ 2)) n F G` using `(P.ri_calc F G A'.ι _ _ n).2.2.1 t2 t3`. Establish `t5 : RI (s ^ (2 * n + 3)) n (G ⋙ F) j` using `P.fib (Mor.restrict (G ⋙ F) j) s hD n`. Establish `t6` using `(P.ri_calc F G j _ _ n).1 t4 t5`. Establish `he : s ^ (N₂ + (N₁ + 2) + (2 * n + 3)) = s ^ N₂ * (s ^ N₁ * s ^ 2) * s ^ (2 * n + 3)` using `by ring`. Rewrite using `[he]`.
-
-Conclude with `t6`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CrystallineSemistableComparison.B.P.glue : ∀ d n : ℕ, ∃ N : ℕ, ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {E : Type u'} [Category.{v'} E] {E₀ : Type u''} [Category.{v''} E₀] (F : C ⥤ ModuleCat.{w} R) (G : E ⥤ C) (j : E₀ ⥤ E) [j.Full] [j.Faithful] (U : UF C) (D : C) (A : Act (𝟭 C) U d D) (L : Line (𝟭 C) U) (U' : UF E) (D' : E) (A' : Act j U' d D') (L' : Line j U') (θ : D ⟶ G.obj D') (h : ∀ a, (A.γ a : D ⟶ D) ≫ θ = θ ≫ G.map (A'.γ a)) (s : R), (∀ T, Acyc1 s (F.map (L.i.app T)).hom (F.map (L.γ.app T)).hom) → Desc s (G ⋙ F) j → (∀ T, Acyc1 s ((G ⋙ F).map (L'.i.app T)).hom ((G ⋙ F).map (L'.γ.app T)).hom) → NI s (Functor.whiskerRight (⟨fun _ => θ, fun _ _ a => h a⟩ : A.ι ⟶ A'.ι ⋙ G) F) → RI (s ^ N) n F (j ⋙ G) := by
   intro d n

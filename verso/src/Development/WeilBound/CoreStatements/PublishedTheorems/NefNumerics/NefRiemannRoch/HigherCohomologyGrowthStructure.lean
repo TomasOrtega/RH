@@ -21,15 +21,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory.NefRR
 
 /- English proof (translation)
-Introduce `k _ _ X _ _ hproj d L hL hkd hind i hi`. Use `haveI : IsLocallyNoetherian X := by`. Take `⟨N, f, hf, -⟩` from `hproj`. Use `haveI := hf`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian (f ≫ PSpace.str k N)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hsupp : suppDim (GlobalTheory.structureModule X) ≤ ((d + 1 : ℕ) : WithBot ℕ∞)` using `(suppDim_structureModule (X := X)).trans_le hkd`. Distinguish the cases in `hsec : ∃ p, 1 ≤ p ∧ HasNonzeroSec (lbPow L p)`. Take `⟨p, hp, s, hs⟩` from `hsec`. Establish `hmono : Mono (cutHom (GlobalTheory.structureModule X) (isLB_lbPow hL.isLB p) s)` using `(mono_cutHom_structureModule_iff _ s).mpr ((sec_ne_zero_iff s).mp hs)`. Conclude with `T.higherCohomology_twist_bound_of_regular_section k X hproj d L hL.isLB hind (GlobalTheory.structureModule X) hsupp p hp s hmono i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hsec`. Establish `h0 : ∀ m, 1 ≤ m → hdim k (twist (GlobalTheory.structureModule X) (lbPow L m)) 0 = 0`. Introduce `m hm`. Assume the negation of the conclusion as `hne`. Conclude with `hsec m hm (lineBundleHasNonzeroSection_of_globalSectionsDim_pos (k := k) (Nat.pos_of_ne_zero hne))`.
-
-Establish `hint` using `T.nef_intersection_nonneg_all_dims k X hproj (d + 1) (GlobalTheory.structureModule X) hsupp (fun _ => L) (fun _ => hL)`. Establish `hi2` using `T.higherCohomology_twist_bound_of_two_cuts k X hproj d L hL.isLB hind (GlobalTheory.structureModule X) hsupp`. Break down `Nat.lt_or_ge i 2 with h | h` into its components or cases. Take `rfl : i = 1` from `by omega`. Conclude with `T.h1_dim_bound_of_no_sections_nonneg_interNum k X hproj d L hL.isLB (GlobalTheory.structureModule X) hsupp h0 hint hi2`.
-
-Conclude with `hi2 i h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hdim_twist_structureModule_le : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [IsIntegral X] [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ (d : ℕ) (L : LB X), IsNef k L → topologicalKrullDim X ≤ (d + 1 : ℕ) → (∀ (E : X.Modules) [IsFiniteQC E], suppDim E ≤ (d : ℕ) → ∀ j, 0 < j → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist E (lbPow L m)) j ≤ C * (d * (m + 1) ^ (d - 1)))) → ∀ i, 0 < i → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist (GlobalTheory.structureModule X) (lbPow L m)) i ≤ C * ((d + 1) * (m + 1) ^ d)) := by
   intro k _ _ X _ _ hproj d L hL hkd hind i hi

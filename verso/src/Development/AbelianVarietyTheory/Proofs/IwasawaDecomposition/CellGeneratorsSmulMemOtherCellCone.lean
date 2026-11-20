@@ -5,15 +5,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hγ.strict`. Establish `hrel : ∑ i, (ℓ (δ i) : ℝ) = ∑ j, c j * (ℓ (γ j) : ℝ)`. Establish `e` using `sum_mul_eq_zero_of_sum_toReal (X := X) (j := LinearMap.id) (fun _ _ h => h) ℓ (β := Sum.elim δ γ) (c := Sum.elim (fun _ => (1 : ℝ)) (fun j => -c j)) (by`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, one_smul, neg_smul, Finset.sum_neg_distrib, hs, add_neg_cancel])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, one_mul, neg_mul, Finset.sum_neg_distrib] at e`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlinγ` using `(linearOn_iff φ γ).1 hγ.linear c hc`. Establish `hlinδ` using `(linearOn_iff φ δ).1 hδ.linear (fun _ => 1) (fun _ => zero_le_one)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [one_smul, one_mul] at hlinδ`. Rewrite `hlinδ` using `[hs, hlinγ]`. Establish `hsum : ∑ i, ((ℓ (δ i) : ℝ) - N * φ.evalZ (δ i)) = 0`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum, ← hlinδ, hrel, Finset.mul_sum]`. Simplify using `only [h1]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_eq_zero fun j _ => by ring`. Establish `hnn : ∀ i ∈ Finset.univ, 0 ≤ (ℓ (δ i) : ℝ) - N * φ.evalZ (δ i)` using `fun i _ => sub_nonneg.2 (h2 _ (hδ.mem i) (hδ.nonneg i))`. Introduce `i`. Establish `h0` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 hsum i (Finset.mem_univ _)`.
-
-Conclude with `h3 _ (hδ.mem i) (hδ.nonneg i) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_sum_of_sum_toReal_eq {O : Type} [CommRing O] (bar : O → O) (φ : InvFun O) {X : Type} [AddCommGroup X]
     [Module O X] [Module.Finite O X] {m m' : ℕ} (δ : Fin m → LinearMap.BilinForm ℤ X) (γ : Fin m' → LinearMap.BilinForm ℤ X)

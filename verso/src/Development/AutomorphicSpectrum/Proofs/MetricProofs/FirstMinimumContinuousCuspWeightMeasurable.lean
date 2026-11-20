@@ -17,21 +17,19 @@ open scoped ENNReal InnerProductSpace
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamilyMeas
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F hj`. Establish `hO : IsOpen (ballDom F.q)` using `BallInverse.isOpen_ballDom F.q`. Set `U` to `↥(ballDom F.q)`. Set `R : U → RiemLat E g Λ` to `fun t => F.R t.1`. Establish `hP : ∀ v, Continuous fun x : U => (R x).P v` using `fun v => continuousOn_iff_continuous_restrict.1 (F.hol.2 v).continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hH : Continuous fun x : U => (R x).Hm` using `GlobalTheory.T.continuous_hermitian_matrix_family E g Λ U R F.form (fun x => F.form_eq _) hP`. Establish `hlam : Continuous fun x : U => (R x).lam1` using `GlobalTheory.T.continuous_first_minimum_family E g Λ U R hP hH`. Establish `hnz : ∀ I, Continuous fun x : U => (R x).nz F.σ I` using `fun I => GlobalTheory.T.continuous_cusp_norm_family E g Λ Ψ U R F.σ I hP hH`. Establish `hbdd : ∀ x : U, BddAbove {y | ∃ I, (R x).IsCusp I ∧ y = -Real.log ((R x).nz F.σ I)}`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr : (R x).HasRank F.σ j'` using `fun τ => (F.sig x.1 x.2 τ).1`. Take `⟨-, -, h3, -, -⟩` from `GlobalTheory.T.first_minimum_and_cusp_weight_bounds E g Λ Ψ (R x) F.σ j' F.cm hr hj`. Use `⟨(R x).cuspW F.σ, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨I, hI, rfl⟩`. Conclude with `(h3 I hI).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hcw : Measurable fun x : U => (R x).cuspW F.σ` using `GlobalTheory.T.measurable_cusp_weight_family E g Λ Ψ U R F.σ F.form (fun x => F.form_eq _) (fun I => (hnz I).measurable) hbdd`. Use `⟨continuousOn_iff_continuous_restrict.2 hlam, ?_, hO, ?_⟩` and prove the remaining obligations. Establish `e : (ballDom F.q).indicator (fun t => (F.R t).cuspW F.σ) = fun t => if h : t ∈ ballDom F.q then (R ⟨t, h⟩).cuspW F.σ else 0`. Use function extensionality and compare the values at `t`. Apply the tactic sequence `by_cases h : t ∈ ballDom F.q <;> simp [h, R]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Measurable.dite (s := ballDom F.q) hcw measurable_const hO.measurableSet`. Introduce and unpack `t ht t' ht' ⟨γ, hγ, φ, hφ⟩`. Establish `hf : ∀ x y, (F.R t').form (γ x) (γ y) = (F.R t).form x y` using `fun x y => by`. Rewrite using `[F.form_eq, F.form_eq]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hγ x y`. Take `⟨h1, h2⟩` from `GlobalTheory.T.isometry_preserves_hermitian_and_action E g Λ (F.R t) (F.R t') γ φ hf hφ`. Establish `himg : φ '' Set.range (F.R t).P = Set.range (F.R t').P`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨γ x, hφ x⟩`. Introduce and unpack `⟨y, rfl⟩`. Use `⟨_, ⟨γ.symm y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, γ.apply_symm_apply]`.
-
-Apply the tactic sequence `obtain ⟨a, b, -⟩ := GlobalTheory.T.cusp_weight_invariant_under_isometry E g Λ Ψ (F.R t) F.σ g Λ (F.R t') φ F.cm himg h1 h2`. Conclude with `⟨b.symm, a.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem first_minimum_cusp_weight_regular : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ), 1 ≤ j' → ContinuousOn (fun t => (F.R t).lam1) (ballDom F.q) ∧ Measurable ((ballDom F.q).indicator fun t => (F.R t).cuspW F.σ) ∧ IsOpen (ballDom F.q) ∧ ∀ t ∈ ballDom F.q, ∀ t' ∈ ballDom F.q, F.Eqv (autGrp F.form) t t' → (F.R t).lam1 = (F.R t').lam1 ∧ (F.R t).cuspW F.σ = (F.R t').cuspW F.σ := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F hj

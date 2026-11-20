@@ -16,7 +16,7 @@ section Abstract
 variable {A : Type} [CommRing A] [IsDomain A]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (congrFun hXY i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ ha this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cancel_smul {m n : ℕ} {a : A} (ha : a ≠ 0) {X Y : Matrix (Fin m) (Fin n) A}
     (hXY : a • X = a • Y) : X = Y := by
@@ -26,7 +26,7 @@ theorem cancel_smul {m n : ℕ} {a : A} (ha : a ≠ 0) {X Y : Matrix (Fin m) (Fi
   exact mul_left_cancel₀ ha this
 
 /- English proof (translation)
-Apply `cancel_smul hF` to reduce the goal to its premises. Use `congrArg (· * F.adjugate) hXY` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cancel_right {m n : ℕ} {F : Matrix (Fin n) (Fin n) A} (hF : F.det ≠ 0)
     {X Y : Matrix (Fin m) (Fin n) A} (hXY : X * F = Y * F) : X = Y := by
@@ -35,7 +35,7 @@ theorem cancel_right {m n : ℕ} {F : Matrix (Fin n) (Fin n) A} (hF : F.det ≠ 
   simpa only [Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one] using this
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ ha this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_mul {n : ℕ} {a : A} (ha : a ≠ 0) {F G : Matrix (Fin n) (Fin n) A}
     (h : G * F = a • (1 : Matrix (Fin n) (Fin n) A)) : F.det ≠ 0 := by
@@ -45,7 +45,7 @@ theorem det_ne_zero_of_mul {n : ℕ} {a : A} (ha : a ≠ 0) {F G : Matrix (Fin n
   exact pow_ne_zero _ ha this.symm
 
 /- English proof (translation)
-Apply `cancel_right (det_ne_zero_of_mul ha h)` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, h]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_comm_smul_one {n : ℕ} {a : A} (ha : a ≠ 0) {F G : Matrix (Fin n) (Fin n) A}
     (h : G * F = a • (1 : Matrix (Fin n) (Fin n) A)) :
@@ -62,9 +62,9 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-Apply `cancel_right (det_ne_zero_of_mul hμ D.G_mul_F)` to reduce the goal to its premises. Establish `h1 : D.Ψ' * D.Ψ = xi ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O))` using `mul_comm_smul_one hξ D.Ψ_mul`. Establish `h2 : D.Ψ' * D.F = xi ε • D.F.map (phiInv p O)` using `by conv_lhs => rw [D.F_eq]`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.smul_mul, Matrix.one_mul]`. Establish `h3 : D.G.map (phiInv p O) * D.F.map (phiInv p O) = nu ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, D.G_mul_F, ← phiInv_mu]`. Use `ext1 i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_smul, h3, smul_smul, xi_mul_nu, D.G_mul_F]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem G_eq [IsDomain (Ainf p O)] {ε : PreTilt O p} (hμ : mu ε ≠ 0) (hξ : xi ε ≠ 0)
     {h : ℕ} {Γ : Type} [CommRing Γ] [Algebra ℤ_[p] Γ] (D : Datum ε h Γ) :

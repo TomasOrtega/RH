@@ -5,23 +5,21 @@ open Filter Topology Set
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B _ b₀ V a hV hE ha`. Establish `hb₀ : b₀ ∈ V` using `mem_of_mem_nhds hV`. Set `F : B × unitInterval → ℂ` to `fun z => Complex.exp (a (z.1, (z.2 : ℝ)))`. Establish `hF : ∀ x : unitInterval, ContinuousAt F (b₀, x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ContinuousWithinAt (fun q => Complex.exp (a q)) (V ×ˢ Set.Icc (0 : ℝ) 1) (b₀, (x : ℝ))` using `hE _ ⟨hb₀, x.2⟩`. Establish `h2 : ContinuousAt (fun z : B × unitInterval => (z.1, (z.2 : ℝ))) (b₀, x)` using `by fun_prop`. Establish `h3 : ∀ᶠ z : B × unitInterval in 𝓝 (b₀, x), (z.1, (z.2 : ℝ)) ∈ V ×ˢ Set.Icc (0 : ℝ) 1`. Establish `h4 : ∀ᶠ z : B × unitInterval in 𝓝 (b₀, x), z.1 ∈ V` using `continuous_fst.continuousAt.eventually_mem hV`. Use `filter_upwards [h4] with z hz using ⟨hz, z.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `h1.tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨h2, h3⟩)`. Set `Q : B → unitInterval → ℂ` to `fun b x => F (b, x) / F (b₀, x)`. Establish `hQ1 : ∀ x, Q b₀ x = 1` using `fun x => div_self (Complex.exp_ne_zero _)`. Establish `hQc : ∀ x : unitInterval, ContinuousAt (fun z : B × unitInterval => Q z.1 z.2) (b₀, x)`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden : ContinuousAt (fun z : B × unitInterval => F (b₀, z.2)) (b₀, x)` using `ContinuousAt.comp (f := fun z : B × unitInterval => (b₀, z.2)) (g := F) (hF x) (by fun_prop)`. Conclude with `ContinuousAt.div (hF x) hden (Complex.exp_ne_zero _)`. Establish `hev : ∀ᶠ b in 𝓝 b₀, ∀ x ∈ (univ : Set unitInterval), Q b x ∈ Metric.ball (1 : ℂ) 1`. Use `isCompact_univ.eventually_forall_of_forall_eventually fun x _ => ?_` and prove the remaining obligations. Establish `hb : Metric.ball (1 : ℂ) 1 ∈ 𝓝 (Q b₀ x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hQ1]`. Conclude with `Metric.ball_mem_nhds _ one_pos`. Conclude with `(hQc x).eventually_mem hb`. Establish `hab : ∀ b' ∈ V, Continuous (fun x : unitInterval => a (b', (x : ℝ)))` using `fun b' h => continuousOn_iff_continuous_restrict.1 (ha b' h)`. Establish `hFc : ∀ b' ∈ V, Continuous fun x : unitInterval => F (b', x)` using `fun b' h => Complex.continuous_exp.comp (hab b' h)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : ∀ᶠ b in 𝓝 b₀, (a (b₀, 1) - a (b₀, 0)) + Complex.log (Q b 1) - Complex.log (Q b 0) = a (b, 1) - a (b, 0)` using `by filter_upwards [hev, hV] with b hb hbV`. Establish `hslit : ∀ x, Q b x ∈ Complex.slitPlane` using `fun x => Complex.ball_one_subset_slitPlane (hb x (mem_univ _))`. Set `g : unitInterval → ℂ` to `fun x => a (b, x) - a (b₀, x) - Complex.log (Q b x)`. Establish `hQcont : Continuous (Q b)` using `(hFc b hbV).div (hFc b₀ hb₀) (fun _ => Complex.exp_ne_zero _)`. Establish `hg : Continuous g` using `((hab b hbV).sub (hab b₀ hb₀)).sub (hQcont.clog hslit)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hexp : ∀ x, Complex.exp (g x) = 1`. Introduce `x`. Establish `hQ0 : Q b x ≠ 0` using `Complex.slitPlane_ne_zero (hslit x)`. Establish `e1 : Complex.exp (a (b, x) - a (b₀, x)) = Q b x` using `Complex.exp_sub _ _`. Simplify using `only [g]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Complex.exp_sub, e1, Complex.exp_log hQ0, div_self hQ0]`. Establish `hconst : g 1 = g 0` using `Complex.isCoveringMap_exp.const_of_comp hg (fun y y' => Subtype.ext ((hexp y).trans (hexp y').symm)) 1 0`. Establish `hg10 : a (b, 1) - a (b₀, 1) - Complex.log (Q b 1) = a (b, 0) - a (b₀, 0) - Complex.log (Q b 0)` using `hconst`. Take the linear combination `-hg10`. Establish `hq : ∀ k : unitInterval, ContinuousAt (fun b => Q b k) b₀` using `fun k => ContinuousAt.comp (f := fun b => (b, k)) (g := fun z : B × unitInterval => Q z.1 z.2) (hQc k) (by fun_prop)`.
-
-Establish `hl : ∀ k, ContinuousAt (fun b => Complex.log (Q b k)) b₀` using `fun k => (hq k).clog (by rw [hQ1]; exact Complex.one_mem_slitPlane)`. Conclude with `((continuousAt_const.add (hl 1)).sub (hl 0)).congr hid`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pathLog_variation_continuousAt :
     ∀ (B : Type) [TopologicalSpace B] (b₀ : B) (V : Set B) (a : B × ℝ → ℂ), V ∈ nhds b₀ →

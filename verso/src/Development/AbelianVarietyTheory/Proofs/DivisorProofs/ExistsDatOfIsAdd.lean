@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R _ A _ p G t c f hf g hg`. Use `choose s hs using fun n ↦ G.res_surjective n`. Set `h : ∀ n, G.A n` to `fun n ↦ Nat.rec 0 (fun n a ↦ s n (a - fv f (G.A (n + 1)) (G.A n) (G.res n : G.A (n + 1) →ₐ[R] G.A n) (t.y (n + 1)))) n`. Use `⟨⟨f, hf, g, hg, h, fun n ↦ ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[show G.res n (h (n + 1)) = _ from hs n _]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_dat_of_isAdd : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R)
     (t : G.TorsionTower A) (c : primDR A) (f : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))), CatCoh.H1.mk _ f = c.1 →

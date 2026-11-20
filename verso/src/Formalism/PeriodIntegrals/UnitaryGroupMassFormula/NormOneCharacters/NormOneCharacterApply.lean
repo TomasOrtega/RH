@@ -29,7 +29,7 @@ def normOne (c : E →+* E) : Subgroup Eˣ where
     rw [← mul_inv, ha, inv_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_normOne (c : E →+* E) (u : Eˣ) : u ∈ normOne c ↔ (u : E) * c u = 1 := Iff.rfl
 
@@ -46,18 +46,18 @@ noncomputable def lam (c : E →+* E) (S : Type) [Fintype S] (emb : S → E →+
   (∏ s, (Units.map (emb s).toMonoidHom).comp (normOne c).subtype)⁻¹
 
 /- English proof (translation)
-Simplify using `[lam, Units.coe_prod, Finset.prod_inv_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_apply (c : E →+* E) (S : Type) [Fintype S] (emb : S → E →+* ℂ) (u : normOne c) :
     ((lam c S emb u : ℂˣ) : ℂ) = ∏ s, (emb s ((u : Eˣ) : E))⁻¹ := by
   simp [lam, Units.coe_prod, Finset.prod_inv_distrib]
 
 /- English proof (translation)
-Rewrite `h1` using `[Submodule.one_eq_span, Submodule.span_singleton_eq_span_singleton]`. Take `⟨a, ha⟩` from `h1`. Rewrite `ha` using `[Units.smul_def, Algebra.smul_def]`. Establish `h3 : algebraMap (𝓞 E) E (a : 𝓞 E) * algebraMap (𝓞 E) E ((a⁻¹ : (𝓞 E)ˣ) : 𝓞 E) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu' : u = algebraMap (𝓞 E) E ((a⁻¹ : (𝓞 E)ˣ) : 𝓞 E)` using `mul_left_cancel₀ (left_ne_zero_of_mul_eq_one ha) (ha.trans h3.symm)`. Establish `hint : IsIntegral ℤ u` using `by rw [hu']; exact RingOfIntegers.isIntegral_coe _`. Establish `hn : ∀ φ : E →+* ℂ, ‖φ u‖ = 1`. Introduce `φ`. Establish `h4 : φ u * (starRingEnd ℂ) (φ u) = 1` using `by rw [← hc, ← map_mul, hu, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h4` using `[Complex.mul_conj']`. Establish `h5 : ‖φ u‖ ^ 2 = 1` using `by exact_mod_cast h4`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h5`. Take `⟨n, hn0, hpow⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one (K := E) (A := ℂ) hint hn`. Conclude with `⟨n, hn0, hpow⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kron_step (c : E →+* E) (hc : ∀ (φ : E →+* ℂ) (x : E), φ (c x) = (starRingEnd ℂ) (φ x))
     (u : E) (hu : u * c u = 1) (h1 : Submodule.span (𝓞 E) {u} = 1) : ∃ m : ℕ, 0 < m ∧ u ^ m = 1 := by
@@ -79,9 +79,9 @@ theorem kron_step (c : E →+* E) (hc : ∀ (φ : E →+* ℂ) (x : E), φ (c x)
   exact ⟨n, hn0, hpow⟩
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite `hu`, the goal using `[MonoidHom.mem_ker]`. Establish `h1 : Submodule.span (𝓞 E) {((u : Eˣ) : E)} = 1`. Rewrite using `[← iota_val, hu, Units.val_one]`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[lam_apply, Finset.prod_inv_distrib, hμ _ (kron_step c hc _ ((mem_normOne c _).1 u.2) h1), inv_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_le (c : E →+* E) (hc : ∀ (φ : E →+* ℂ) (x : E), φ (c x) = (starRingEnd ℂ) (φ x))
     (S : Type) [Fintype S] (emb : S → E →+* ℂ) (hμ : ∀ x : E, (∃ m : ℕ, 0 < m ∧ x ^ m = 1) → ∏ s, emb s x = 1) :
@@ -99,7 +99,7 @@ noncomputable def chi0 (c : E →+* E) (S : Type) [Fintype S] (emb : S → E →
     (QuotientGroup.quotientKerEquivRange (iota c)).symm.toMonoidHom
 
 /- English proof (translation)
-Establish `h : (QuotientGroup.quotientKerEquivRange (iota c)).symm ⟨iota c u, MonoidHom.mem_range.2 ⟨u, rfl⟩⟩ = (u : normOne c ⧸ (iota c).ker)`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [chi0, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, h, QuotientGroup.lift_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem normOne_character_apply (c : E →+* E) (S : Type) [Fintype S] (emb : S → E →+* ℂ)
     (hker : (iota c).ker ≤ (lam c S emb).ker) (u : normOne c) :
@@ -113,13 +113,13 @@ theorem normOne_character_apply (c : E →+* E) (S : Type) [Fintype S] (emb : S 
 end
 
 /- English proof (translation)
-Introduce `E _ _ c hc S _ emb hμ`. Take `⟨ψ, hψ⟩` from `PI.character_extension_exists (Submodule (𝓞 E) E)ˣ (iota c).range (chi0 c S emb (ker_le c hc S emb hμ))`. Use `⟨fun 𝔞 => if h : IsUnit 𝔞 then ((ψ h.unit : ℂˣ) : ℂ) else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `𝔞 𝔟 ⟨𝔞', -, h𝔞⟩ ⟨𝔟', -, h𝔟⟩`. Establish `ha : IsUnit 𝔞` using `IsUnit.of_mul_eq_one _ h𝔞`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hb : IsUnit 𝔟` using `IsUnit.of_mul_eq_one _ h𝔟`. Establish `hab : IsUnit (𝔞 * 𝔟)` using `ha.mul hb`. Establish `e : hab.unit = ha.unit * hb.unit` using `Units.ext rfl`. Simplify using `only [dif_pos hab, dif_pos ha, dif_pos hb, e, map_mul, Units.val_mul]`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `u : Eˣ` to `Units.mkOfMulEqOne z (c z) hz`. Establish `hu : u ∈ normOne c` using `hz`. Establish `hval : ((iota c ⟨u, hu⟩ : (Submodule (𝓞 E) E)ˣ) : Submodule (𝓞 E) E) = Submodule.span (𝓞 E) {z}` using `rfl`. Establish `hunit : IsUnit (Submodule.span (𝓞 E) {z})` using `hval ▸ (iota c ⟨u, hu⟩).isUnit`. Establish `e : hunit.unit = iota c ⟨u, hu⟩` using `Units.ext hval.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [dif_pos hunit, e]`. Rewrite using `[hψ ⟨iota c ⟨u, hu⟩, MonoidHom.mem_range.2 ⟨⟨u, hu⟩, rfl⟩⟩, normOne_character_apply, lam_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem main : PI.ChiExCM := by
   intro E _ _ c hc S _ emb hμ

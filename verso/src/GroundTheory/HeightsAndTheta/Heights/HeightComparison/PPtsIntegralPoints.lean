@@ -15,7 +15,7 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ ↦ 1, fun _ ↦ one_ne_zero, by funext p; simp⟩ symm := by rintro z z' ⟨c, hc, h⟩ refine ⟨fun k ↦ (c k)⁻¹, fun k ↦ inv_ne_zero (hc k), ?_⟩ funext p rw [h] exact (inv_mul_cancel_left₀ (hc p.1) _).symm trans := by rintro z z' z'' ⟨c, hc, h⟩ ⟨d, hd, h'⟩ refine ⟨fun k ↦ d k * c k …`.
+Supply the required witnesses or components.
 -/
 theorem rel_equivalence (P : Ideal (Geo.MRing ι)) :
     Equivalence (fun z z' : Geo.mcPts P ↦
@@ -34,7 +34,7 @@ theorem rel_equivalence (P : Ideal (Geo.MRing ι)) :
     rw [h', h, mul_assoc]
 
 /- English proof (translation)
-Use `choose i hi using hz`. Introduce `h`. Use `congrFun h i` as an intermediate fact. Simplify using `only [Geo.segre, Pi.zero_apply] at this`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun k _ ↦ hi k) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem segre_ne_zero {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : Geo.segre z ≠ 0 := by
   choose i hi using hz
@@ -44,11 +44,11 @@ theorem segre_ne_zero {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i�
   exact Finset.prod_ne_zero_iff.mpr (fun k _ ↦ hi k) this
 
 /- English proof (translation)
-Establish `hex : ∃ γ, Geo.IsSheet P Ψ y (Geo.segre z) γ`. Use `⟨fun _ ↦ z, rfl, Filter.Eventually.of_forall fun y' ↦ ⟨differentiableAt_const _, hz, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim y' y]`. Conclude with `hΨ`. Rewrite using `[Geo.sheetDensity, dif_pos hex]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hseg, hev⟩` from `hex.choose_spec`. Establish `hmem : hex.choose y ∈ Geo.mcPts P` using `hev.self_of_nhds.2.1`. Take `⟨c, hc, hcz⟩` from `Geo.sameOrbit_of_segre (z := z) hmem.1 1 one_ne_zero (by rw [one_smul, hseg])`. Establish `hgz : g z = g (hex.choose y)` using `(congrArg g hcz).trans (hg c _ hc hmem)`. Rewrite using `[hgz]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Geo.maDensity, Geo.mixedDisc]`.
+A detailed English derivation is pending.
 -/
 theorem sheetDensity_eq (P : Ideal (Geo.MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (0 + 1) → ℂ)) (g : ((Σ k, ι k) → ℂ) → ℝ)
@@ -70,29 +70,27 @@ theorem sheetDensity_eq (P : Ideal (Geo.MRing ι))
   simp [Geo.maDensity, Geo.mixedDisc]
 
 /- English proof (translation)
-Establish `hE` using `rel_equivalence P`. Establish `hcons : ∀ (y : Fin 0 → ℂ) (v : Fin (0 + 1) → ℂ), v = Fin.cons 1 y ↔ v 0 = 1`. Introduce `y v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Introduce `h; funext i; rw [show i = 0 from Fin.ext (by have := i.isLt; omega)]; exact h`. Establish `hne : ∀ z ∈ Geo.mcPts P, Ψ (Geo.segre z) 0 ≠ 0` using `fun z hz h ↦ hΨ z hz (funext fun i ↦ by rw [show i = 0 from Fin.ext (by have := i.isLt; omega)]; exact h)`. Set `k₀ : K` to `Classical.arbitrary K`. Set `t : projPts P → ℂ` to `fun q ↦ (Ψ (Geo.segre (Quot.out q : Geo.mcPts P)) 0)⁻¹`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ht : ∀ q, t q ≠ 0` using `fun q ↦ inv_ne_zero (hne _ (Quot.out q).2)`. Set `c : projPts P → K → ℂ` to `fun q k ↦ if k = k₀ then t q else 1`. Establish `hc : ∀ q k, c q k ≠ 0` using `fun q k ↦ by`. Simplify using `only [c]`. Use `split_ifs`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ht q`. Conclude with `one_ne_zero`. Establish `hcprod : ∀ q, ∏ k, c q k = t q` using `fun q ↦ by simp [c]`. Set `zq : projPts P → (Σ k, ι k) → ℂ` to `fun q p ↦ c q p.1 * (Quot.out q).1 p`. Establish `hzq : ∀ q, zq q ∈ Geo.mcPts P` using `fun q ↦ Geo.mcPts_smul hP (c q) (hc q) (Quot.out q).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hseg : ∀ q, Geo.segre (zq q) = t q • Geo.segre (Quot.out q : Geo.mcPts P)` using `fun q ↦ by`. Rewrite using `[← hcprod q]`. Conclude with `Geo.segre_smul (c q) (Quot.out q).1`. Establish `hone : ∀ q, Ψ (Geo.segre (zq q)) 0 = 1` using `fun q ↦ by`. Rewrite using `[hseg, map_smul, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `inv_mul_cancel₀ (hne _ (Quot.out q).2)`. Establish `hrep : ∀ z : Geo.mcPts P, ∃ d : K → ℂ, (∀ k, d k ≠ 0) ∧ (z : (Σ k, ι k) → ℂ) = fun p ↦ d p.1 * (Quot.out (Quot.mk _ z : projPts P)).1 p` using `fun z ↦ hE.eqvGen_iff.mp (Quot.eqvGen_exact (Quot.out_eq (Quot.mk _ z : projPts P)))`. Establish `hsum : ∀ y : Fin 0 → ℂ, ∑ᶠ w ∈ Geo.fibre P Ψ y, Geo.sheetDensity P Ψ Fin.elim0 g y w = ∑ᶠ q : projPts P, g (Quot.out q : Geo.mcPts P)`. Introduce `y`. Set `σ : projPts P → Geo.fibre P Ψ y` to `fun q ↦ ⟨Geo.segre (zq q), zq q, hzq q, rfl, (hcons y _).mpr (hone q)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective σ`. Introduce `q q' h`. Establish `h' : Geo.segre (zq q) = Geo.segre (zq q')` using `congrArg Subtype.val h`. Take `⟨d, hd, hdq⟩` from `Geo.sameOrbit_of_segre (z := zq q) (hzq q').1 1 one_ne_zero (by rw [one_smul, h'])`. Establish `e1 : (Quot.mk _ (Quot.out q) : projPts P) = Quot.mk _ ⟨zq q, hzq q⟩` using `Quot.sound ⟨c q, hc q, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `e2 : (Quot.mk _ ⟨zq q', hzq q'⟩ : projPts P) = Quot.mk _ ⟨zq q, hzq q⟩` using `Quot.sound ⟨d, hd, hdq⟩`. Establish `e3 : (Quot.mk _ (Quot.out q') : projPts P) = Quot.mk _ ⟨zq q', hzq q'⟩` using `Quot.sound ⟨c q', hc q', rfl⟩`. Rewrite `e1`, `e3` using `[Quot.out_eq]`. Conclude with `e1.trans (e2.symm.trans e3.symm)`. Establish `hsurj : Function.Surjective σ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨w, z, hz, rfl, hw⟩`. Take `⟨d, hd, hdz⟩` from `hrep ⟨z, hz⟩`. Use `⟨Quot.mk _ ⟨z, hz⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hsz : Geo.segre z = (∏ k, d k) • Geo.segre (Quot.out (Quot.mk _ ⟨z, hz⟩ : projPts P) : Geo.mcPts P)`. Rewrite using `[← Geo.segre_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg Geo.segre hdz`. Establish `h1` using `(hcons y _).mp hw`. Rewrite `h1` using `[hsz, map_smul, Pi.smul_apply, smul_eq_mul]`. Establish `h2 : ∏ k, d k = t (Quot.mk _ ⟨z, hz⟩)` using `eq_inv_of_mul_eq_one_left h1`. Use `show Geo.segre (zq _) = Geo.segre z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hseg, hsz, h2]`. Rewrite using `[← finsum_set_coe_eq_finsum_mem, ← finsum_comp_equiv (Equiv.ofBijective σ ⟨hinj, hsurj⟩)]`. Use `finsum_congr fun q ↦ ?_` and prove the remaining obligations. Use `show Geo.sheetDensity P Ψ Fin.elim0 g y (Geo.segre (zq q)) = _`. Rewrite using `[sheetDensity_eq P Ψ g hg y (hzq q) ((hcons y _).mpr (hone q))]`.
-
-Conclude with `hg (c q) _ (hc q) (Quot.out q).2`. Rewrite using `[Geo.ptsIntegralAt]`. Simplify using `only [hsum]`. Rewrite using `[integral_const, MeasureTheory.volume_pi, Measure.pi_of_empty]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ptsIntegralAt_eq [Nonempty K] (P : Ideal (Geo.MRing ι)) (hP : Geo.IsMultiHomogIdeal P)
     (g : ((Σ k, ι k) → ℂ) → ℝ)
@@ -172,9 +170,9 @@ theorem ptsIntegralAt_eq [Nonempty K] (P : Ideal (Geo.MRing ι)) (hP : Geo.IsMul
   simp
 
 /- English proof (translation)
-Establish `hE` using `rel_equivalence P`. Take `⟨f, hf⟩` from `Module.exists_dual_forall_apply_ne_zero (K := ℂ) (M := ((k : K) → ι k) → ℂ) (fun q : projPts P ↦ Geo.segre (Quot.out q).1) (fun q ↦ segre_ne_zero (z := (Quot.out q).1) (Quot.out q).2.1)`. Use `⟨LinearMap.pi fun _ ↦ f, fun z hz h ↦ ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hdz⟩` from `hE.eqvGen_iff.mp (Quot.eqvGen_exact (Quot.out_eq (Quot.mk _ ⟨z, hz⟩ : projPts P)))`. Establish `h0 : f (Geo.segre z) = 0` using `congrFun h 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsz : Geo.segre z = (∏ k, d k) • Geo.segre (Quot.out (Quot.mk _ ⟨z, hz⟩ : projPts P) : Geo.mcPts P)`. Rewrite using `[← Geo.segre_smul]`. Conclude with `congrArg Geo.segre hdz`. Rewrite `h0` using `[hsz, map_smul, smul_eq_mul]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun k _ ↦ hd k) (hf _) h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isGoodProj (P : Ideal (Geo.MRing ι)) (hfin : Finite (projPts P)) :
     ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (0 + 1) → ℂ), Geo.IsGoodProj P Ψ := by
@@ -202,7 +200,7 @@ def HomogStatement : Prop :=
       ∑ᶠ q : projPts P, g (Quot.out q : Geo.mcPts P)
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P g hP hfin hg`. Establish `hex : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (0 + 1) → ℂ), Geo.IsGoodProj P Ψ` using `exists_isGoodProj P hfin`. Rewrite using `[Geo.ptsIntegral, dif_pos hex]`. Conclude with `ptsIntegralAt_eq P hP g hg _ hex.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homogProof : HomogStatement := by
   intro K _ _ ι _ P g hP hfin hg
@@ -212,7 +210,7 @@ theorem homogProof : HomogStatement := by
   exact ptsIntegralAt_eq P hP g hg _ hex.choose_spec
 
 /- English proof (translation)
-Use `⟨OrbitCurve.isMultiHomogIdeal_orbitIdeal samplePoint, (Nat.card_pos_iff.mp (OrbitDegree.full Unit _ samplePoint samplePoint_blockNonzero)).2, fun c z hc _ ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [norm_mul]`. Conclude with `mul_div_mul_left _ _ (norm_ne_zero_iff.mpr (hc ()))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : Geo.IsMultiHomogIdeal (ι := blockIdx (fun _ : Unit ↦ 1)) (orbitIdeal samplePoint) ∧
     Finite (projPts (ι := blockIdx (fun _ : Unit ↦ 1)) (orbitIdeal samplePoint)) ∧

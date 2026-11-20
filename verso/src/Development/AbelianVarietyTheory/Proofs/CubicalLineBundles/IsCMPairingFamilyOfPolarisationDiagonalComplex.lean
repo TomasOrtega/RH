@@ -20,7 +20,7 @@ namespace GlobalTheory.CM.FamPairing
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `h` using `D.alt (u + v)`. Simplify using `only [map_add, LinearMap.add_apply, D.alt u, D.alt v] at h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem strictAnti_lt_of_succ_lt (D : Datum H) (u v : D.La) : D.EF u v = -D.EF v u := by
   have h := D.alt (u + v)
@@ -28,7 +28,7 @@ private theorem strictAnti_lt_of_succ_lt (D : Datum H) (u v : D.La) : D.EF u v =
   omega
 
 /- English proof (translation)
-Establish `h1 : D.EF (H.w0 • u) y = D.EF u y - D.EF u (H.w0 • y)`. Rewrite using `[D.adj, HostModel.cmHost_bar_halfIntegerGenerator, sub_smul, one_smul, map_sub]`. Rewrite using `[strictAnti_lt_of_succ_lt D (H.w0 • y) u]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem ef_w0_smul_left_swap (D : Datum H) (u y : D.La) :
     D.EF (H.w0 • y) u = D.EF (H.w0 • u) y - D.EF u y := by
@@ -38,7 +38,7 @@ private theorem ef_w0_smul_left_swap (D : Datum H) (u y : D.La) :
   omega
 
 /- English proof (translation)
-Establish `hrt : H.rt = 2 * H.w0 - 1` using `by linear_combination -H.two_weight_eq_one_add_root`. Rewrite using `[hrt, sub_smul, one_smul, mul_smul, two_smul, map_sub, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem ef_rt_smul_right (D : Datum H) (u v : D.La) :
     D.EF u (H.rt • v) = 2 * D.EF u (H.w0 • v) - D.EF u v := by
@@ -47,11 +47,11 @@ private theorem ef_rt_smul_right (D : Datum H) (u v : D.La) :
   ring
 
 /- English proof (translation)
-Establish `key : ((4 : ℕ) : 𝓞 E) * ((1 - H.w0) * H.w0) = ((1 + H.d : ℕ) : 𝓞 E)`. Use `push_cast`. Take the linear combination `(-(2 * H.w0 - 1 + H.rt)) * H.two_weight_eq_one_add_root - H.rt_sq`. Establish `e1 : D.EF (H.w0 • u) (H.w0 • v) = D.EF u (((1 - H.w0) * H.w0) • v)`. Rewrite using `[D.adj, HostModel.cmHost_bar_halfIntegerGenerator, smul_smul]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : D.EF u ((((4 : ℕ) : 𝓞 E) * ((1 - H.w0) * H.w0)) • v) = 4 * D.EF u (((1 - H.w0) * H.w0) • v)`. Rewrite using `[mul_smul, Nat.cast_smul_eq_nsmul, map_nsmul, nsmul_eq_mul]`. Evaluate the numerical expressions. Establish `e3 : D.EF u (((1 + H.d : ℕ) : 𝓞 E) • v) = (1 + H.d) * D.EF u v`. Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← e2, key, e3]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 private theorem four_mul_ef_w0_smul_w0_smul (D : Datum H) (u v : D.La) :
     4 * D.EF (H.w0 • u) (H.w0 • v) = (1 + H.d) * D.EF u v := by
@@ -71,25 +71,25 @@ private theorem four_mul_ef_w0_smul_w0_smul (D : Datum H) (u v : D.La) :
   rw [e1, ← e2, key, e3]
 
 /- English proof (translation)
-Establish `hd : H.d ≠ 0` using `H.d_prime.ne_zero`. Establish `hdC : (H.d : ℂ) ≠ 0` using `by exact_mod_cast hd`. Establish `hconj : starRingEnd ℂ (2 * ω - 1) = -(2 * ω - 1)` using `GlobalTheory.EigenNorm.conj_eq_neg_of_sq hd hω`. Establish `S1 : ∀ p q : L, hermForm Hm (x p) (x q) + hermForm Hm (x q) (x p) = ((D.EF (H.w0 • (p : D.La)) q : ℂ) + (D.EF (H.w0 • (q : D.La)) p : ℂ)) * c`. Introduce `p q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hq (p + q)`. Establish `hp` using `hq p`. Establish `hq'` using `hq q`. Rewrite `h` using `[hadd, GlobalTheory.EigenNorm.hermForm_add_left, GlobalTheory.EigenNorm.hermForm_add_right, GlobalTheory.EigenNorm.hermForm_add_right]`. Simplify using `only [Submodule.coe_add, smul_add, map_add, LinearMap.add_apply, Int.cast_add] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `h - hp - hq'`. Establish `Sab` using `S1 a b`. Establish `Sarb` using `S1 a (H.rt • b)`. Rewrite `Sarb` using `[hrt, GlobalTheory.EigenNorm.hermForm_smul_right, GlobalTheory.EigenNorm.hermForm_smul_left, hconj]`. Use `set A : ℤ := D.EF (H.w0 • (a : D.La)) b with hA`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set Ee : ℤ := D.EF (a : D.La) b with hE`. Use `set W : ℤ := D.EF (H.w0 • (a : D.La)) (H.w0 • (b : D.La)) with hW`. Establish `g1 : ((D.EF (H.w0 • (b : D.La)) a : ℤ) : ℂ) = (A : ℂ) - Ee`. Rewrite using `[ef_w0_smul_left_swap]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `g2 : ((D.EF (H.w0 • (a : D.La)) ((H.rt • b : L) : D.La) : ℤ) : ℂ) = 2 * (W : ℂ) - A`. Rewrite using `[Submodule.coe_smul, ef_rt_smul_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g3 : ((D.EF (H.w0 • ((H.rt • b : L) : D.La)) a : ℤ) : ℂ) = 2 * (W : ℂ) + A - Ee`. Establish `i1` using `ef_w0_smul_left_swap D (a : D.La) (H.rt • (b : D.La))`. Establish `i2` using `ef_rt_smul_right D (H.w0 • (a : D.La)) b`. Establish `i3` using `ef_rt_smul_right D (a : D.La) b`. Establish `i4` using `ef_w0_smul_left_swap D (a : D.La) (b : D.La)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `i5` using `strictAnti_lt_of_succ_lt D (a : D.La) (H.w0 • (b : D.La))`. Establish `hz : D.EF (H.w0 • (H.rt • (b : D.La))) a = 2 * W + A - Ee`. Combine the linear relations using `[i1, i2, i3, i4, i5, hA, hE, hW]`. Rewrite using `[Submodule.coe_smul, hz]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `g4 : (4 : ℂ) * W = (1 + (H.d : ℂ)) * Ee`. Use `four_mul_ef_w0_smul_w0_smul D (a : D.La) (b : D.La)` as an intermediate fact. Rewrite using `[hW, hE]`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : (2 * (2 * ω - 1)) * (hermForm Hm (x a) (x b) - (((A : ℂ) - Ee) + (Ee : ℂ) * ω) * c) = 0`. Take the linear combination `(2 * ω - 1) * Sab - Sarb + (2 * ω - 1) * c * g1 - c * g2 - c * g3 - c * g4 - (Ee : ℂ) * c * hω`. Establish `hr0 : (2 * (2 * ω - 1) : ℂ) ≠ 0`. Introduce `h0`. Establish `: (2 * ω - 1) = 0` using `by linear_combination h0 / 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `hω` using `[this]`. Conclude with `hdC (by linear_combination hω)`. Use `(mul_eq_zero.mp key).resolve_left hr0` as an intermediate fact. Rewrite `this` using `[hA, hE]`. Take the linear combination `this`.
+A detailed English derivation is pending.
 -/
 theorem polarise (D : Datum H) (L : Submodule (𝓞 E) D.La) {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (ω c : ℂ)
     (hω : (2 * ω - 1) ^ 2 = -(H.d : ℂ)) (x : L → (Fin g → ℂ)) (hadd : ∀ a b, x (a + b) = x a + x b)
@@ -148,19 +148,19 @@ theorem polarise (D : Datum H) (L : Submodule (𝓞 E) D.La) {g : ℕ} (Hm : Mat
   linear_combination this
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `c`. Use `show x (c • a) = τ ⟨c, hc⟩ • x a`. Establish `hw : ∀ a, x (H.w0 • a) = ω • x a`. Introduce `a`. Establish `h2 : x (H.w0 • a) + x (H.w0 • a) = ((2 : ℂ) * ω) • x a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hadd, ← two_smul (𝓞 E), ← mul_smul, H.two_weight_eq_one_add_root, add_smul, one_smul, hadd, hrt, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `i`. Use `congrFun h2 i` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at this ⊢`.
+Normalize the expressions using the abelian group laws. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `this / 2`. Set `X : M →+ (Fin g → ℂ)` to `AddMonoidHom.mk' x hadd`. Proceed by induction on `hc using Algebra.adjoin_induction generalizing a with`. Consider the case `mem y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`.
+Introduce a local definition for the expression. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hy` using the available equality. Establish `: (⟨H.w0, _⟩ : OK H) = wK H` using `rfl`. Rewrite using `[this, hτ, hw]`. Consider the case `algebraMap r`. Establish `e1 : (⟨algebraMap ℤ (𝓞 E) r, Subalgebra.algebraMap_mem _ r⟩ : OK H) = (r : OK H)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[e1, map_intCast, algebraMap_smul]`. Use `map_zsmul X r a` as an intermediate fact. Simplify using `only [X, AddMonoidHom.mk'_apply] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Int.cast_smul_eq_zsmul]`. Consider the case `add y z hy hz ihy ihz`. Establish `e1 : (⟨y + z, Subalgebra.add_mem _ hy hz⟩ : OK H) = ⟨y, hy⟩ + ⟨z, hz⟩` using `rfl`. Rewrite using `[e1, map_add, add_smul, hadd, ihy, ihz, add_smul]`. Consider the case `mul y z hy hz ihy ihz`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `e1 : (⟨y * z, Subalgebra.mul_mem _ hy hz⟩ : OK H) = ⟨y, hy⟩ * ⟨z, hz⟩` using `rfl`. Rewrite using `[e1, map_mul, mul_smul, ihy, ihz, smul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_of_rt {M : Type} [AddCommGroup M] [Module (𝓞 E) M] {g : ℕ} (ω : ℂ) (τ : OK H →+* ℂ) (hτ : τ (wK H) = ω)
     (x : M → (Fin g → ℂ)) (hadd : ∀ a b, x (a + b) = x a + x b) (hrt : ∀ a, x (H.rt • a) = (2 * ω - 1) • x a)
@@ -198,9 +198,9 @@ theorem smul_of_rt {M : Type} [AddCommGroup M] [Module (𝓞 E) M] {g : ℕ} (ω
     rw [e1, map_mul, mul_smul, ihy, ihz, smul_smul]
 
 /- English proof (translation)
-Establish `hw : ((wK H : OK H) : 𝓞 E) = H.w0` using `rfl`. Establish `key : ((wK H + wK H - 1) ^ 2 : OK H) = -((H.d : ℕ) : OK H)`. Apply `Subtype.ext` to reduce the goal to its premises. Move the coercions through the operations in `[hw]`. Take the linear combination `(2 * H.w0 - 1 + H.rt) * H.two_weight_eq_one_add_root + H.rt_sq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congrArg τ key` as an intermediate fact. Rewrite `this` using `[map_pow, map_sub, map_add, map_one, map_neg, map_natCast, hτ]`. Take the linear combination `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem char_sq (ω : ℂ) (τ : OK H →+* ℂ) (hτ : τ (wK H) = ω) : (2 * ω - 1) ^ 2 = -(H.d : ℂ) := by
   have hw : ((wK H : OK H) : 𝓞 E) = H.w0 := rfl
@@ -213,47 +213,43 @@ theorem char_sq (ω : ℂ) (τ : OK H →+* ℂ) (hτ : τ (wK H) = ω) : (2 * �
   linear_combination this
 
 /- English proof (translation)
-Introduce `hTh hLaws E _ _ _ H ω C D ε h T L ψ hK hpos hF`. Take `⟨hmon, hadd, hlin, hrt, hpow⟩` from `hF`. Take `⟨rigC, hrigC⟩` from `C.P.rigid`. Take `⟨rigT, hrigT⟩` from `T.pol.rigid`. Take `⟨uC, HC, χC, EfC, hAHC, -, hdC1, hdC2, -, -, -, -, -⟩` from `hTh C.P rigC hrigC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨uT, HT, χT, EfT, hAHT, -, hdT1, hdT2, -, -, -, -, -⟩` from `hTh T.pol rigT hrigT`. Establish `hlift` using `fun a => GlobalTheory.HomLinear.exists_linear_of_isMonHom C.P.A T.pol.A C.P.isAb T.pol.isAb C.P.L T.pol.L C.P.g T.pol.g uC uT hdT1 hdT2 (ψ a) (hmon a)`. Use `choose F hFex hFΛ hFdiff hFuniq using hlift`. Establish `hvt : IsTangent C.v` using `C.basis.1 0`. Take `⟨wv, hwv, -⟩` from `hdC1 C.v hvt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ₀, hτ₀, hτ₀c⟩` from `GlobalTheory.CM.LieChar.ell_char E H ℂ ω C`. Establish `span : ∀ z : Fin C.P.g → ℂ, ∃ s : ℂ, z = s • wv`. Introduce `z`. Take `⟨vz, ⟨hvz, hdz⟩, -⟩` from `hdC2 z`. Take `⟨cc, hcc, -⟩` from `C.basis.2 vz hvz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd` using `GlobalTheory.UnifDifferential.isDiff_of_isLieComb C.P.A C.P.L C.P.g 1 uC ![wv] ![C.v] cc vz (fun i => by fin_cases i; exact hvt) (fun i => by fin_cases i; exact hwv) hcc`. Use `⟨cc 0, ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_one, Matrix.cons_val_zero] at hd`. Conclude with `(hdC1 vz hvz).unique hdz hd`. Establish `hG : ∀ c : OK H, ∃ G : (Fin C.P.g → ℂ) →ₗ[ℂ] (Fin C.P.g → ℂ), (∀ z, uC.ex (G z) = uC.ex z ≫ C.act.act c) ∧ G wv = τ₀ c • wv`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Take `⟨G, hGex, -, hGdiff, -⟩` from `GlobalTheory.HomLinear.exists_linear_of_isMonHom C.P.A C.P.A C.P.isAb C.P.isAb C.P.L C.P.L C.P.g C.P.g uC uC hdC1 hdC2 (C.act.act c) (C.act.hom c)`. Use `⟨G, hGex, ?_⟩` and prove the remaining obligations. Take `⟨ht, hd1⟩` from `hGdiff wv C.v hvt hwv`. Establish `hd2` using `GlobalTheory.UnifDifferential.isDiff_of_isLieComb C.P.A C.P.L C.P.g 1 uC ![wv] ![C.v] ![τ₀ c] _ (fun i => by fin_cases i; exact hvt) (fun i => by fin_cases i; exact hwv) (hτ₀c c)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Fin.sum_univ_one, Matrix.cons_val_zero] at hd2`. Conclude with `(hdC1 _ ht).unique hd1 hd2`. Use `set x : L → (Fin T.pol.g → ℂ) := fun a => F a wv with hxdef`. Establish `hxd : ∀ a, uT.IsDiff (x a) (C.v ≫ ψ a) ∧ IsTangent (C.v ≫ ψ a)` using `fun a => ⟨(hFdiff a wv C.v hvt hwv).2, (hFdiff a wv C.v hvt hwv).1⟩`. Establish `hxadd : ∀ a b, x (a + b) = x a + x b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b`. Establish `hm : C.v ≫ ψ (a + b) = (C.v ≫ ψ a) * (C.v ≫ ψ b)`. Rewrite using `[hadd]`. Conclude with `MonObj.comp_mul _ _ _`. Establish `hd` using `GlobalTheory.UnifDifferential.isDiff_of_isLieComb T.pol.A T.pol.L T.pol.g 2 uT ![x a, x b] ![C.v ≫ ψ a, C.v ≫ ψ b] ![1, 1] _ (fun i => by fin_cases i; exacts [(hxd a).2, (hxd b).2]) (fun i => by fin_cases i; exacts [(hxd a).1, (hxd b).1]) (GlobalTheory.CM.LieChar.isLieComb_mul (C …`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul] at hd`. Rewrite `hd` using `[← hm]`. Conclude with `(hdT1 _ (hxd (a + b)).2).unique (hxd (a + b)).1 hd`. Establish `hxrt : ∀ a, x (H.rt • a) = (2 * ω - 1) • x a`. Introduce `a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `GlobalTheory.UnifDifferential.isDiff_of_isLieComb T.pol.A T.pol.L T.pol.g 1 uT ![x a] ![C.v ≫ ψ a] ![2 * ω - 1] _ (fun i => by fin_cases i; exact (hxd a).2) (fun i => by fin_cases i; exact (hxd a).1) (hrt a)`. Simplify using `only [Fin.sum_univ_one, Matrix.cons_val_zero] at hd`. Establish `e : C.v ≫ ψ (H.rt • a) = C.v ≫ ψ a ≫ T.t.act.act H.rt` using `by rw [hlin]`. Rewrite `hd` using `[← e]`. Conclude with `(hdT1 _ (hxd (H.rt • a)).2).unique (hxd (H.rt • a)).1 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hω : (2 * ω - 1) ^ 2 = -(H.d : ℂ)` using `char_sq ω τ₀ hτ₀`. Establish `hxc : ∀ (c : OK H) (a : L), x ((c : 𝓞 E) • a) = τ₀ c • x a` using `fun c a => smul_of_rt ω τ₀ hτ₀ x hxadd hxrt c a`. Establish `hFs : ∀ a (s : ℂ), F a (s • wv) = s • x a` using `fun a s => by rw [map_smul]`. Establish `hq : ∀ a : L, hermForm HT (x a) (x a) = (D.EF (H.w0 • (a : D.La)) a : ℂ) * ((ε : ℤ) * hermForm HC wv wv)`. Introduce `a`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨N, hN, hiso⟩` from `hpow a (Set.mem_univ a)`. Establish `hp` using `GlobalTheory.hermForm_pull_eq_of_lbIso_pow C.P.A T.pol.A C.P.L T.pol.L C.P.isLB T.pol.isLB C.P.g T.pol.g uC uT HC χC HT χT hAHC hAHT (ψ a) (F a) (hFex a) N (N * (D.EF (H.w0 • (a : D.La)) a).natAbs) hiso wv wv`. Establish `habs : (((D.EF (H.w0 • (a : D.La)) a).natAbs : ℕ) : ℤ) = (ε : ℤ) * D.EF (H.w0 • (a : D.La)) a`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hne : (a : D.La) ≠ 0` using `fun h0 => ha (Subtype.ext h0)`. Establish `hps` using `hpos (a : D.La) a.2 hne`. Rewrite using `[Int.natCast_natAbs]`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with hε | hε <;> rw [hε] at hps ⊢ <;> norm_num at hps ⊢`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `first | exact hps.le | exact abs_of_pos hps | linarith`. Apply the tactic sequence `first | exact hps.le | exact abs_of_neg hps | linarith`. Establish `hNC : (N : ℂ) ≠ 0` using `by exact_mod_cast (show N ≠ 0 by omega)`. Establish `habsC : (((D.EF (H.w0 • (a : D.La)) a).natAbs : ℕ) : ℂ) = ((ε : ℤ) : ℂ) * D.EF (H.w0 • (a : D.La)) a`. Rewrite using `[← Int.cast_natCast (R := ℂ), habs, Int.cast_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `at hp`. Rewrite `hp` using `[habsC]`. Establish `: (N : ℂ) * (hermForm HT (x a) (x a) - (D.EF (H.w0 • (a : D.La)) a : ℂ) * ((ε : ℤ) * hermForm HC wv wv)) = 0`. Simplify using `only [hxdef]`. Take the linear combination `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_left hNC)`. Establish `hpol` using `fun a b => polarise D L HT ω ((ε : ℤ) * hermForm HC wv wv) hω x hxadd hxrt hq a b`. Use `⟨?_, hadd, hlin, ?_⟩` and prove the remaining obligations. Introduce `a`. Use `⟨hmon a, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `c`. Establish `e1 : ψ a ≫ (Serre.comapAct T.t.act (algebraMap (OK H) (𝓞 E))).act c = ψ ((c : 𝓞 E) • a)`. Rewrite using `[hlin]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hFuniq` to reduce the goal to its premises. Introduce `z`. Take `⟨s, rfl⟩` from `span z`. Take `⟨G, hGex, hGw⟩` from `hG c`. Establish `lhs : F ((c : 𝓞 E) • a) (s • wv) = (s * τ₀ c) • x a` using `by rw [hFs, hxc, smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `rhs : F a (G (s • wv)) = (s * τ₀ c) • x a` using `by rw [map_smul, hGw, smul_smul, map_smul]`. Rewrite using `[lhs, ← Category.assoc, ← hGex, ← hFex a, rhs]`. Introduce `a b`. Take `⟨G, hGex, hGw⟩` from `hG (h a b)`. Establish `hW` using `(GlobalTheory.T.weilEq_iff_hermForm_eq_complex hTh hLaws C.P C.P T.pol C.P uC uC uT uC HT HC χT χC hAHT hAHC (ψ a) (ψ b) (C.act.act (h a b)) (𝟙 C.P.A) (F a) (F b) G LinearMap.id (hFex a) (hFex b) hGex (fun z => by simp)).mpr ?_`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.lambdaBundleIso_of_weilPairing_compatible hLaws ℂ C.P C.P T.pol C.P (ψ a) (ψ b) (C.act.act (h a b)) (𝟙 C.P.A) (hmon a) (hmon b) (C.act.hom _) inferInstance hW`. Introduce `z w`. Take `⟨s, rfl⟩` from `span z`. Take `⟨t', rfl⟩` from `span w`. Establish `e : h a b = (((ε : ℤ) * (D.EF (H.w0 • (a : D.La)) b - D.EF a b) : ℤ) : OK H) + (((ε : ℤ) * D.EF a b : ℤ) : OK H) * wK H`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hK]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hh : τ₀ (h a b) = (((ε : ℤ) * (D.EF (H.w0 • (a : D.La)) b - D.EF a b) : ℤ) : ℂ) + (((ε : ℤ) * D.EF a b : ℤ) : ℂ) * ω`.
-
-Rewrite using `[e, map_add, map_mul, map_intCast, map_intCast, hτ₀]`. Rewrite using `[hFs, hFs, map_smul, hGw, LinearMap.id_apply, smul_smul, GlobalTheory.EigenNorm.hermForm_smul_left, GlobalTheory.EigenNorm.hermForm_smul_right, GlobalTheory.EigenNorm.hermForm_smul_left, GlobalTheory.EigenNorm.hermForm_smul_right, hpol a b, hh]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isFam_of_isHomFamily : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ω : ℂ) (C : Ell H ℂ ω) (D : Datum H) (ε : ℤˣ) (h : D.La → D.La → OK H) (T : PAT H (Sp ℂ)) (L : Submodule (𝓞 E) D.La) (ψ : L → (C.P.A ⟶ T.t.G)), IsKForm D ε h → (∀ x ∈ L, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x) → PureType.IsHomFamily T.t C.P.A C.P.L C.v L (2 * ω - 1) Set.univ ψ → IsFam C T h L ψ := by
   intro hTh hLaws E _ _ _ H ω C D ε h T L ψ hK hpos hF

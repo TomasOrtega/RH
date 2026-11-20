@@ -12,7 +12,7 @@ def IsProj {X : Type} [AddCommGroup X] (u : Representation ℂ (Multiplicative X
   IsAvg u L χ E ∧ ∀ y, (∀ x : L, u (Multiplicative.ofAdd (x : X)) y = χ x • y) → E y = y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isAvg_bot u, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isProj_bot {X : Type} [AddCommGroup X] (u : Representation ℂ (Multiplicative X) V) :
     IsProj u ⊥ (fun _ => 1) 1 := ⟨isAvg_bot u, fun _ _ => rfl⟩

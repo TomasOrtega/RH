@@ -5,11 +5,11 @@ open Matrix Finset Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `Real.exp_bound hu (n := 5) (by norm_num)`. Establish `h1` using `(abs_le.mp h).1`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.factorial] at h1`. Evaluate the numerical expressions using `at h1`. Establish `h4 : |u| ^ 4 = u ^ 4`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[← abs_pow]; exact abs_of_nonneg (by positivity)`. Establish `h5 : |u| ^ 5 ≤ u ^ 4`. Rewrite using `[← h4, pow_succ]`. Conclude with `mul_le_of_le_one_right (by positivity) hu`. Establish `h6 : -1 ≤ u` using `(abs_le.mp hu).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : 0 ≤ u ^ 2 * (1 + u)` using `mul_nonneg (sq_nonneg u) (by linarith)`. Establish `h8 : 0 ≤ u ^ 4` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem one_add_add_sq_div_three_le_exp (u : ℝ) (hu : |u| ≤ 1) :
     1 + u + u ^ 2 / 3 ≤ Real.exp u := by
@@ -28,7 +28,7 @@ theorem one_add_add_sq_div_three_le_exp (u : ℝ) (hu : |u| ≤ 1) :
   nlinarith
 
 /- English proof (translation)
-Establish `hp : 0 < 1 + u` using `by linarith`. Use `le_trans ?_ (Real.one_sub_inv_le_log_of_pos hp)` and prove the remaining obligations. Establish `: (1 + u)⁻¹ ≤ 1 - 3 * u / 4`. Rewrite using `[inv_eq_one_div, div_le_iff₀ hp]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -42,7 +42,7 @@ theorem three_mul_div_four_le_log_one_add (u : ℝ) (h0 : 0 ≤ u) (h1 : u ≤ 1
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_add_add_sq_div_three_le_exp, three_mul_div_four_le_log_one_add⟩`.
+Supply the required witnesses or components.
 -/
 theorem exp_quadratic_lower_and_log_linear_lower :
     (∀ u : ℝ, |u| ≤ 1 → 1 + u + u ^ 2 / 3 ≤ Real.exp u) ∧

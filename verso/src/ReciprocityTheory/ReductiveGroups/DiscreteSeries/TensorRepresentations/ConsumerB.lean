@@ -22,7 +22,7 @@ def cns_Ok (ε : Fin n → Bool) (lam : Fin n → ℝ) (T : S7.KType ε (lowK ε
     HasGelfandChar (smE ε (rreg ε)) lam (genSub (smE ε (rreg ε)) (datumV ε Ψ T.w))
 
 /- English proof (translation)
-Take `⟨T, Ψ, h1, h2, h3, h4, h5, h6⟩` from `cns_data hq hlam hh hth`. Conclude with `⟨T, Ψ, ⟨h, hh, hth⟩, h1, h2, h3, h4, h5, h6⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cns_data' {ε : Fin n → Bool} (hq : 1 ≤ S7.q0 ε) {lam : Fin n → ℝ} (hlam : S7.IsHCParam lam)
     {h : ℝ} (hh : GapAtLeast ε lam h) (hth : thrStar ε < h) :
@@ -31,9 +31,9 @@ theorem cns_data' {ε : Fin n → Bool} (hq : 1 ≤ S7.q0 ε) {lam : Fin n → �
   exact ⟨T, Ψ, ⟨h, hh, hth⟩, h1, h2, h3, h4, h5, h6⟩
 
 /- English proof (translation)
-Establish `hth0 : thrStar ε < h` using `by linarith`. Establish `hdat : ∀ s, ∃ lam' : Fin n → ℝ, ∃ (T' : S7.KType ε (lowK ε lam')) (Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)), cns_Ok ε lam' T' Ψ' ∧ (S7.IsHCParam (shiftF dual μ s) → lam' = shiftF dual μ s)`. Introduce `s`. Distinguish the cases in `hs : S7.IsHCParam (shiftF dual μ s)`. Take `⟨T', Ψ', hok⟩` from `cns_data' hq hs (cns_shift_gap dual hG s) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, T', Ψ', hok, fun _ => rfl⟩`. Take `⟨T', Ψ', hok⟩` from `cns_data' hq hμ hG hth0`. Conclude with `⟨μ, T', Ψ', hok, fun h' => absurd h' hs⟩`. Use `choose lamS Ts Ψs hS hsh using hdat`. Conclude with `⟨lamS, Ts, Ψs, hS, hsh⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cns_family (dual : Bool) {ε : Fin n → Bool} (hq : 1 ≤ S7.q0 ε) {μ : Fin n → ℝ}
     (hμ : S7.IsHCParam μ) {h : ℝ} (hG : GapAtLeast ε μ h) (hth : thrStar ε + 1 < h) :
@@ -55,9 +55,9 @@ theorem cns_family (dual : Bool) {ε : Fin n → Bool} (hq : 1 ≤ S7.q0 ε) {μ
   exact ⟨lamS, Ts, Ψs, hS, hsh⟩
 
 /- English proof (translation)
-Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `hsm : ∀ v : smD ε (rreg ε), IsSmoothVecU ε (rreg ε) (v : _)` using `fun v => (mem_smD_iff ε (rreg ε) _).1 v.2`. Take `⟨s, rfl⟩` from `(pole_match dual hσ hD hsm hgap (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) hW hG).1 z f hf hf0 he`. Use `⟨s, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hns`. Conclude with `hf0 (cc_gk_singular dual hσ hD hsm hgap (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) hW hG s (cns_sing dual hμ hns) f hf he)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem cns_pole (dual : Bool) {ε : Fin n → Bool} {μ : Fin n → ℝ} (hμ : S7.IsHCParam μ)
     {T : S7.KType ε (lowK ε μ)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
@@ -81,13 +81,13 @@ theorem cns_pole (dual : Bool) {ε : Fin n → Bool} {μ : Fin n → ℝ} (hμ :
     (datumV_kStable hP v₀) hW hG s (cns_sing dual hμ hns) f hf he)
 
 /- English proof (translation)
-Take `⟨⟨h0, hh0, hth0⟩, hgap, hP, hv, hpos, hW, hG⟩` from `hok`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Take `⟨B, hdec, -⟩` from `ee_decomp dual hσ hD hgap (datumV_isKIrrHW hP hv) (datumV_casimir hP T.w) (datumV_kStable hP T.w) hW`. Take `⟨fb, hfb, rfl⟩` from `hdec f hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcomp : ∀ i : {b // b ∈ B.filter (fun b => fb b ≠ 0)}, ∃ s, S7.IsHCParam (shiftF dual μ s) ∧ ∃ x z : Hlam ε (Ψs s) (Ts s).w, PI.UpqRep.IsKFin ε (sigLam ε (Ψs s) (Ts s).w) x ∧ PI.UpqRep.IsKFin ε (sigLam ε (Ψs s) (Ts s).w) z ∧ ∀ g ∈ UJset ε, ∑ c, inner ℂ ((η c : smD ε (rreg ε)) : L …`. Introduce `i`. Establish `hi` using `(Finset.mem_filter.1 i.2).2`. Take `⟨s, hs, hz⟩` from `cns_pole dual hμ hgap hP hv hW hG (hfb i).1 hi (hfb i).2`. Take `⟨⟨h', hh', hth'⟩, hgap', hP', hv', hpos', hW', hG'⟩` from `hS s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `he : eeF dual (smE ε (rreg ε)) (fb i) = poleF dual μ s • fb i` using `by rw [(hfb i).2, hz]`. Conclude with `⟨s, hs, cns_term dual hgap hP hv hgap' hP' hv' hh0 hth0 hh' hth' hpos hpos' hW hW' hG hG' s (hsh s hs) (hfb i).1 he hη⟩`. Use `choose sI hsI xI zI hx hz hEq using hcomp`. Use `⟨{b // b ∈ B.filter (fun b => fb b ≠ 0)}, inferInstance, sI, xI, zI, fun i => ⟨hsI i, hx i, hz i⟩, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ b ∈ B, ∑ c, inner ℂ ((η c : smD ε (rreg ε)) : L2 ε) (tensGrp dual (rreg ε) g (fun d => ((fb b d : smD ε (rreg ε)) : L2 ε)) c) ≠ 0 → fb b ≠ 0`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hne hb`. Apply `hne` to reduce the goal to its premises. Simplify using `[hb, tensGrp]`. Rewrite using `[cns_tens_sum, ← Finset.sum_filter_of_ne h0, ← Finset.sum_coe_sort]`. Conclude with `Finset.sum_congr rfl fun i _ => hEq i g hg`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cns_toSum_core (dual : Bool) {ε : Fin n → Bool} {μ : Fin n → ℝ} (hμ : S7.IsHCParam μ)
     {T : S7.KType ε (lowK ε μ)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} (hok : cns_Ok ε μ T Ψ)
@@ -136,11 +136,9 @@ theorem cns_toSum_core (dual : Bool) {ε : Fin n → Bool} {μ : Fin n → ℝ} 
   exact Finset.sum_congr rfl fun i _ => hEq i g hg
 
 /- English proof (translation)
-Take `⟨⟨h, hh, hth⟩, hgap, hP, hv, hpos, hW, hG⟩` from `hok`. Take `⟨⟨h', hh', hth'⟩, hgap', hP', hv', hpos', hW', hG'⟩` from `hok'`. Use `haveI := Hlam_nontrivial hgap hP hv`. Use `haveI := Hlam_nontrivial hgap' hP' hv'`. Take `⟨w, hw⟩` from `exists_ne (0 : Hlam ε Ψ T.w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw'⟩` from `exists_ne (0 : Hlam ε Ψ' T'.w)`. Take `⟨⟨ι, hι, -, -⟩, -⟩` from `cc_gk dual hgap hP hv hgap' hP' hv' hh hth hh' hth' hpos hpos' hW hW' hG hG' s hlam' hw hw'`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Take `⟨f, hf, hfe⟩` from `(coef_of_emb dual hσ hD hgap (datumV_isKIrrHW hP hv) (datumV_casimir hP T.w) (datumV_kStable hP T.w) hgap' (datumV_isKIrrHW hP' hv') (datumV_casimir hP' T'.w) (datumV_kStable hP' T'.w) hι).2 z' hz' x' hx'`.
-
-Conclude with `⟨f, ι x', hf, hι.1 x' hx', hfe⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cns_ofSum_core (dual : Bool) {ε : Fin n → Bool} {μ lam' : Fin n → ℝ}
     {T : S7.KType ε (lowK ε μ)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} (hok : cns_Ok ε μ T Ψ)
@@ -181,21 +179,21 @@ variable {n : ℕ}
 open MeasureTheory
 
 /- English proof (translation)
-Establish `hμ' : S7.IsHCParam μ` using `hμ`. Establish `hG' : GapAtLeast ε μ h` using `hG`. Take `⟨T, Ψ, hok⟩` from `cns_data' hq hμ' hG' (by linarith)`. Take `⟨lamS, Ts, Ψs, hS, hsh⟩` from `cns_family false hq hμ' hG' hth`. Take `⟨U, hU⟩` from `equiv_sigLam_of_isDS hd hok.2.1 hok.2.2.1 hok.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU'` using `cns_symm_intertw U hU`. Use `⟨{ Sm := univ.filter (fun s => S7.IsHCParam (shiftF false μ s)) Hs := fun s => Hlam ε (Ψs s) (Ts s).w σs := fun s => sigLam ε (Ψs s) (Ts s).w ds := ?_, inequiv := ?_, toSum := ?_, ofSum := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `hs'` using `(mem_filter.1 hs).2`. Use `⟨hs', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (μ + Pi.single s 1) = lamS s` using `(hsh s hs').symm`. Rewrite using `[e]`. Conclude with `isDS_sigLam (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1`. Introduce and unpack `s hs s' hs' hne ⟨V, hV⟩`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e` using `sigLam_inj (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1 (hS s').2.1 (hS s').2.2.1 (hS s').2.2.2.1 V hV`. Rewrite `e` using `[hsh s (mem_filter.1 hs).2, hsh s' (mem_filter.1 hs').2]`. Conclude with `cns_shift_inj false μ e`. Introduce `v w x y hv hw`. Take `⟨a, ha, hav⟩` from `cns_kfin_gen hok.2.1 hok.2.2.1 hok.2.2.2.1 (cns_kfin_map U.symm hU' hv)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbw⟩` from `cns_kfin_gen hok.2.1 hok.2.2.1 hok.2.2.2.1 (cns_kfin_map U.symm hU' hw)`. Take `⟨ι, hι, sI, vI, wI, hI, hEq⟩` from `cns_toSum_core false hμ' hok lamS Ts Ψs hS hsh (η := fun c => y c • b) (f := fun d => x d • a) (tset_mem.2 fun c => Submodule.smul_mem _ _ hb) (tset_mem.2 fun d => Submodule.smul_mem _ _ ha)`. Use `⟨ι, hι, sI, vI, wI, fun i => ⟨mem_filter.2 ⟨mem_univ _, (hI i).1⟩, (hI i).2.1, (hI i).2.2⟩, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← hEq g hg]`. Simplify using `only [Submodule.coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← cns_coefV (rreg ε) g (a : L2 ε) (b : L2 ε) x y, ← U.apply_symm_apply v, ← U.apply_symm_apply w, cns_inner_tr hok.2.1 hok.2.2.1 hok.2.2.2.1 U hU hg, ← hav, ← hbw]`. Introduce `s hs v w hv hw`. Establish `hs'` using `(mem_filter.1 hs).2`. Take `⟨x', hx', hxv⟩` from `cns_kfin_gen (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1 hv`. Take `⟨z', hz', hzw⟩` from `cns_kfin_gen (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1 hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, F, hf, hF, hfe⟩` from `cns_ofSum_core false hok (hS s) s (hsh s hs') hx' hz'`. Establish `hfm` using `tset_mem.1 hf`. Establish `hFm` using `tset_mem.1 hF`. Use `⟨Fin n × Fin n, inferInstance, fun p => U ⟨((F p.2 : smD ε (rreg ε)) : L2 ε), cns_gen_mem_Hlam (hFm p.2)⟩, fun p => U ⟨((f p.1 : smD ε (rreg ε)) : L2 ε), cns_gen_mem_Hlam (hfm p.1)⟩, fun p => Pi.single p.2 1, fun p => Pi.single p.1 1, fun p => ⟨cns_kfin_map U hU (cns_kfin hok.2.1 …` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.coe_inner, sigLam_coe (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1 hg, ← hxv, ← hzw, hfe g hg, cns_expandV]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[cns_inner_tr hok.2.1 hok.2.2.1 hok.2.2.2.1 U hU hg]`. Introduce `s`. Conclude with `⟨fun hs => (mem_filter.1 hs).2, fun hs => mem_filter.2 ⟨mem_univ _, hs⟩⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cns_zuck_nc {ε : Fin n → Bool} (hq : 1 ≤ S7.q0 ε) {μ : Fin n → ℝ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
@@ -258,21 +256,21 @@ theorem cns_zuck_nc {ε : Fin n → Bool} (hq : 1 ≤ S7.q0 ε) {μ : Fin n → 
     exact ⟨fun hs => (mem_filter.1 hs).2, fun hs => mem_filter.2 ⟨mem_univ _, hs⟩⟩
 
 /- English proof (translation)
-Establish `hμ' : S7.IsHCParam μ` using `hμ`. Establish `hG' : GapAtLeast ε μ h` using `hG`. Take `⟨T, Ψ, hok⟩` from `cns_data' hq hμ' hG' (by linarith)`. Take `⟨lamS, Ts, Ψs, hS, hsh⟩` from `cns_family true hq hμ' hG' hth`. Take `⟨U, hU⟩` from `equiv_sigLam_of_isDS hd hok.2.1 hok.2.2.1 hok.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU'` using `cns_symm_intertw U hU`. Use `⟨{ Sm := univ.filter (fun s => S7.IsHCParam (shiftF true μ s)) Hs := fun s => Hlam ε (Ψs s) (Ts s).w σs := fun s => sigLam ε (Ψs s) (Ts s).w ds := ?_, inequiv := ?_, toSum := ?_, ofSum := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `hs'` using `(mem_filter.1 hs).2`. Use `⟨hs', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (μ - Pi.single s 1) = lamS s` using `(hsh s hs').symm`. Rewrite using `[e]`. Conclude with `isDS_sigLam (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1`. Introduce and unpack `s hs s' hs' hne ⟨V, hV⟩`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e` using `sigLam_inj (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1 (hS s').2.1 (hS s').2.2.1 (hS s').2.2.2.1 V hV`. Rewrite `e` using `[hsh s (mem_filter.1 hs).2, hsh s' (mem_filter.1 hs').2]`. Conclude with `cns_shift_inj true μ e`. Introduce `v w x y hv hw`. Take `⟨a, ha, hav⟩` from `cns_kfin_gen hok.2.1 hok.2.2.1 hok.2.2.2.1 (cns_kfin_map U.symm hU' hv)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbw⟩` from `cns_kfin_gen hok.2.1 hok.2.2.1 hok.2.2.2.1 (cns_kfin_map U.symm hU' hw)`. Take `⟨ι, hι, sI, vI, wI, hI, hEq⟩` from `cns_toSum_core true hμ' hok lamS Ts Ψs hS hsh (η := fun c => star (x c) • b) (f := fun d => star (y d) • a) (tset_mem.2 fun c => Submodule.smul_mem _ _ hb) (tset_mem.2 fun d => Submodule.smul_mem _ _ ha)`. Use `⟨ι, hι, sI, vI, wI, fun i => ⟨mem_filter.2 ⟨mem_univ _, (hI i).1⟩, (hI i).2.1, (hI i).2.2⟩, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← hEq g hg]`. Simplify using `only [Submodule.coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← cns_coefVd (rreg ε) g (a : L2 ε) (b : L2 ε) x y, ← U.apply_symm_apply v, ← U.apply_symm_apply w, cns_inner_tr hok.2.1 hok.2.2.1 hok.2.2.2.1 U hU hg, ← hav, ← hbw]`. Introduce `s hs v w hv hw`. Establish `hs'` using `(mem_filter.1 hs).2`. Take `⟨x', hx', hxv⟩` from `cns_kfin_gen (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1 hv`. Take `⟨z', hz', hzw⟩` from `cns_kfin_gen (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1 hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, F, hf, hF, hfe⟩` from `cns_ofSum_core true hok (hS s) s (hsh s hs') hx' hz'`. Establish `hfm` using `tset_mem.1 hf`. Establish `hFm` using `tset_mem.1 hF`. Use `⟨Fin n × Fin n, inferInstance, fun p => U ⟨((F p.2 : smD ε (rreg ε)) : L2 ε), cns_gen_mem_Hlam (hFm p.2)⟩, fun p => U ⟨((f p.1 : smD ε (rreg ε)) : L2 ε), cns_gen_mem_Hlam (hfm p.1)⟩, fun p => Pi.single p.1 1, fun p => Pi.single p.2 1, fun p => ⟨cns_kfin_map U hU (cns_kfin hok.2.1 …` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.coe_inner, sigLam_coe (hS s).2.1 (hS s).2.2.1 (hS s).2.2.2.1 hg, ← hxv, ← hzw, hfe g hg, cns_expandVd]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[cns_inner_tr hok.2.1 hok.2.2.1 hok.2.2.2.1 U hU hg]`. Introduce `s`. Conclude with `⟨fun hs => (mem_filter.1 hs).2, fun hs => mem_filter.2 ⟨mem_univ _, hs⟩⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cns_zuckd_nc {ε : Fin n → Bool} (hq : 1 ≤ S7.q0 ε) {μ : Fin n → ℝ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}

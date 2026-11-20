@@ -7,9 +7,9 @@ open Formalism.L2.DIV
 namespace GlobalTheory.CuspMult
 
 /- English proof (translation)
-Introduce `K G _ _ _ σ X hX hS g`. Rewrite using `[coeff_idemOf, map_sum, star_sum]`. Use `Finset.sum_nbij' (fun χ t => χ t⁻¹) (fun χ t => χ t⁻¹) hS hS (fun χ _ => by simp) (fun χ _ => by simp) fun χ hχ => ?_` and prove the remaining obligations. Establish `h1` using `(hX χ hχ).map_inv σ 1`. Establish `h2` using `(hX χ hχ).map_inv σ g⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_div₀, map_natCast, star_mul', star_div₀, star_natCast]`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem idemOf_coeff_real : ∀ {K G : Type} [Field K] [Group G] [Fintype G] (σ : K →+* ℂ)
     (X : Finset (G → K)), (∀ χ ∈ X, IsAbsIrrChar χ) → GoodStable X →

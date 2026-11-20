@@ -16,7 +16,7 @@ section LocRings
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
 
 /- English proof (translation)
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Rewrite using `[show b = 0 from Subtype.ext h]`. Conclude with `p.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_ne_zero_of_not_mem_ideal {A : Subalgebra S Ω} {p : Ideal A} {b : A} (hb : b ∉ p) : (b : Ω) ≠ 0 := by
   intro h
@@ -25,15 +25,13 @@ theorem coe_ne_zero_of_not_mem_ideal {A : Subalgebra S Ω} {p : Ideal A} {b : A}
   exact p.zero_mem
 
 /- English proof (translation)
-Establish `h1 : (1 : A) ∉ p` using `fun h => hp.ne_top ((Ideal.eq_top_iff_one _).mpr h)`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Set `R : Subring Ω` to `{ carrier := {z | ∃ a b : A, b ∉ p ∧ z = a / b} mul_mem' := by`. Introduce and unpack `_ _ ⟨a, b, hb, rfl⟩ ⟨a', b', hb', rfl⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a * a', b * b', fun h => (hp.mem_or_mem h).elim hb hb', by`. Simplify using `only [Subalgebra.coe_mul]`. Rewrite using `[div_mul_div_comm]⟩`. Use the proof step `one_mem' := ⟨1, 1, h1, by simp⟩`. Use the proof step `add_mem' := by`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ _ ⟨a, b, hb, rfl⟩ ⟨a', b', hb', rfl⟩`. Conclude with `⟨a * b' + b * a', b * b', fun h => (hp.mem_or_mem h).elim hb hb', by`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_add]`. Rewrite using `[div_add_div _ _ (coe_ne_zero_of_not_mem_ideal hb) (coe_ne_zero_of_not_mem_ideal hb')]⟩`. Use the proof step `zero_mem' := ⟨0, 1, h1, by simp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨a, b, hb, rfl⟩`. Conclude with `⟨-a, b, hb, by simp [neg_div]⟩ }`. Establish `hle : IndefiniteRowSideFullHecke.Kleiman2.locIn A p ≤ R` using `Subring.closure_le.mpr fun z hz => hz`. Conclude with `hle hz`.
-
-Introduce and unpack `⟨a, b, hb, rfl⟩`. Conclude with `Subring.subset_closure ⟨a, b, hb, rfl⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_locIn_iff (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] (z : Ω) :
     z ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p ↔ ∃ a b : A, b ∉ p ∧ z = a / b := by
@@ -62,7 +60,7 @@ theorem mem_locIn_iff (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] (z : 
     exact Subring.subset_closure ⟨a, b, hb, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(mem_locIn_iff A p a).mpr ⟨⟨a, ha⟩, 1, fun h => hp.ne_top ((Ideal.eq_top_iff_one _).mpr h), by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_locIn (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] {a : Ω} (ha : a ∈ A) :
     a ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p :=
@@ -89,15 +87,15 @@ def locMax (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] : Ideal (locAlg 
     rw [hz, hc, div_mul_div_comm]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.eq_top_iff_one]`. Introduce and unpack `⟨a, b, ha, hb, h1⟩`. Establish `hb0` using `coe_ne_zero_of_not_mem_ideal hb`. Establish `hab : (a : Ω) = b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[eq_div_iff hb0]`. Simplify using `using h1.symm`. Conclude with `hb (by rw [show b = a from Subtype.ext hab.symm]; exact ha)`. Introduce and unpack `z z' ⟨a, b, ha, hb, hzz⟩`. Take `⟨u, v, hv, hz⟩` from `(mem_locIn_iff A p z).mp z.2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u', v', hv', hz'⟩` from `(mem_locIn_iff A p z').mp z'.2`. Establish `hv0` using `coe_ne_zero_of_not_mem_ideal hv`. Establish `hv0'` using `coe_ne_zero_of_not_mem_ideal hv'`. Establish `hb0` using `coe_ne_zero_of_not_mem_ideal hb`. Establish `key : u * u' * b = a * (v * v')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul] at hzz ⊢`. Rewrite `hzz` using `[hz, hz', div_mul_div_comm, div_eq_div_iff (mul_ne_zero hv0 hv0') hb0]`. Rewrite using `[hzz]`. Establish `hmem : u * u' * b ∈ p` using `by rw [key]; exact p.mul_mem_right _ ha`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hp.mem_or_mem hmem with h | h` into its components or cases. Break down `hp.mem_or_mem h with h | h` into its components or cases. Conclude with `Or.inl ⟨u, v, h, hv, hz⟩`. Conclude with `Or.inr ⟨u', v', h, hv', hz'⟩`. Conclude with `absurd h hb`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem locMax_isPrime (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] : (locMax A p).IsPrime := by
   refine ⟨?_, ?_⟩
@@ -129,9 +127,9 @@ theorem locMax_isPrime (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] : (l
 instance (A : Subalgebra S Ω) (p : Ideal A) [p.IsPrime] : (locMax A p).IsPrime := locMax_isPrime A p
 
 /- English proof (translation)
-Take `⟨u, v, hv, huv⟩` from `(mem_locIn_iff A p z).mp z.2`. Establish `hu : u ∉ p` using `fun hu => hz ⟨u, v, hu, hv, huv⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[huv]`. Conclude with `div_ne_zero (coe_ne_zero_of_not_mem_ideal hu) (coe_ne_zero_of_not_mem_ideal hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[huv, inv_div]`. Conclude with `Subring.subset_closure ⟨v, u, hu, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_of_not_mem_locMax {A : Subalgebra S Ω} {p : Ideal A} [hp : p.IsPrime] {z : locAlg A p}
     (hz : z ∉ locMax A p) : (z : Ω) ≠ 0 ∧ (z : Ω)⁻¹ ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p := by
@@ -144,11 +142,11 @@ theorem inv_mem_of_not_mem_locMax {A : Subalgebra S Ω} {p : Ideal A} [hp : p.Is
     exact Subring.subset_closure ⟨v, u, hu, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨a, b, ha, hb, hab⟩`. Take `⟨c, d, hd, hcd⟩` from `(mem_locIn_iff A p _).mp hz`. Establish `hb0` using `coe_ne_zero_of_not_mem_ideal hb`. Establish `hd0` using `coe_ne_zero_of_not_mem_ideal hd`. Establish `key : b * d = a * c`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul]`. Establish `h1 : (z : Ω) * (z : Ω)⁻¹ = 1` using `mul_inv_cancel₀ hz0`. Rewrite `h1` using `[hcd]`. Rewrite `h1` using `[hab, div_mul_div_comm, div_eq_one_iff_eq (mul_ne_zero hb0 hd0)]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`. Establish `hmem : b * d ∈ p` using `by rw [key]; exact p.mul_mem_right _ ha`. Conclude with `(hp.mem_or_mem hmem).elim hb hd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_mem_locMax_of_inv_mem {A : Subalgebra S Ω} {p : Ideal A} [hp : p.IsPrime] {z : locAlg A p}
     (hz0 : (z : Ω) ≠ 0) (hz : (z : Ω)⁻¹ ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p) : z ∉ locMax A p := by
@@ -167,7 +165,7 @@ theorem not_mem_locMax_of_inv_mem {A : Subalgebra S Ω} {p : Ideal A} [hp : p.Is
   exact (hp.mem_or_mem hmem).elim hb hd
 
 /- English proof (translation)
-Establish `ha0 : (a : Ω) ≠ 0` using `coe_ne_zero_of_not_mem_ideal ha`. Use `not_mem_locMax_of_inv_mem ha0 ?_` and prove the remaining obligations. Rewrite using `[show ((a : Ω))⁻¹ = (1 : A) / a by simp]`. Conclude with `Subring.subset_closure ⟨1, a, ha, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_locMax_of_not_mem {A : Subalgebra S Ω} {p : Ideal A} [hp : p.IsPrime] {a : A} (ha : a ∉ p) :
     (⟨a, le_locIn A p a.2⟩ : locAlg A p) ∉ locMax A p := by
@@ -177,15 +175,15 @@ theorem not_mem_locMax_of_not_mem {A : Subalgebra S Ω} {p : Ideal A} [hp : p.Is
   exact Subring.subset_closure ⟨1, a, ha, rfl⟩
 
 /- English proof (translation)
-Establish `: ((locMax A p).comap (Subalgebra.inclusion hT)).IsPrime` using `Ideal.comap_isPrime _ _`. Apply `le_antisymm` to reduce the goal to its premises. Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, t', ht', rfl⟩`. Take `⟨-, hinv⟩` from `inv_mem_of_not_mem_locMax (z := Subalgebra.inclusion hT t') ht'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[div_eq_mul_inv]`. Conclude with `(IndefiniteRowSideFullHecke.Kleiman2.locIn A p).mul_mem (hT t.2) hinv`. Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, hb, rfl⟩`. Rewrite using `[div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subring.mul_mem _ (hA a a.2) ?_` and prove the remaining obligations. Take `⟨t, t', ht', hbt⟩` from `(mem_locIn_iff T _ b).mp (hA b b.2)`. Establish `hb0` using `coe_ne_zero_of_not_mem_ideal hb`. Establish `ht'0` using `coe_ne_zero_of_not_mem_ideal ht'`. Establish `htt : (t : Ω) = b * t'` using `by rw [hbt]; field_simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : t ∉ (locMax A p).comap (Subalgebra.inclusion hT)`. Introduce `h`. Establish `e : Subalgebra.inclusion hT t = (⟨b, le_locIn A p b.2⟩ : locAlg A p) * Subalgebra.inclusion hT t'` using `Subtype.ext (by simp [htt])`. Rewrite `h` using `[Ideal.mem_comap, e]`. Break down `(locMax_isPrime A p).mem_or_mem h with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_mem_locMax_of_not_mem hb h`. Conclude with `ht' h`. Rewrite using `[show ((b : Ω))⁻¹ = t' / t by rw [hbt, inv_div]]`. Conclude with `Subring.subset_closure ⟨t', t, ht, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem locIn_comap_eq (A T : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] (hT : T ≤ locAlg A p)
     (hA : ∀ a ∈ A, a ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn T ((locMax A p).comap (Subalgebra.inclusion hT))) :
@@ -217,11 +215,11 @@ theorem locIn_comap_eq (A T : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] (h
     exact Subring.subset_closure ⟨t', t, ht, rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Take `⟨q, hq, hle⟩` from `Ideal.exists_le_maximal (mulMemIdeal B z) (by`. Rewrite using `[Ne, Ideal.eq_top_iff_one]`. Introduce `h1`. Apply `hz` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `h1)` using `[mulMemIdeal]`. Use `hq.isPrime` as an intermediate fact. Take `⟨a, b, hb, hab⟩` from `(mem_locIn_iff B q z).mp (h q hq.isPrime)`. Apply `hb` to reduce the goal to its premises. Apply `hle` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (b : Ω) * z ∈ B`. Establish `hb0` using `coe_ne_zero_of_not_mem_ideal hb`. Rewrite using `[show (b : Ω) * z = a by rw [hab]; field_simp]`. Conclude with `a.2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_locIn (B : Subalgebra S Ω) (z : Ω)
     (h : ∀ q : Ideal B, q.IsPrime → z ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn B q) : z ∈ B := by
@@ -241,13 +239,13 @@ theorem mem_of_forall_locIn (B : Subalgebra S Ω) (z : Ω)
   exact a.2
 
 /- English proof (translation)
-Use `choose K hK using h`. Set `D : Ideal A` to `M.comap (LinearMap.toSpanSingleton A Ω t)`. Establish `hspan : Ideal.span (Set.range e) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, ← he]`. Conclude with `Ideal.sum_mem _ fun c _ => Ideal.subset_span ⟨c, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow` using `Ideal.span_pow_eq_top _ hspan (∑ c, K c)`. Establish `hle : Ideal.span ((fun a => a ^ (∑ c, K c)) '' Set.range e) ≤ D`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨c, rfl⟩, rfl⟩`. Establish `hc : K c ≤ ∑ c, K c` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (LinearMap.toSpanSingleton A Ω t) (e c ^ ∑ c, K c) ∈ M`. Rewrite using `[LinearMap.toSpanSingleton_apply, ← Nat.sub_add_cancel hc, pow_add, mul_smul]`. Use `M.smul_mem _ ?_` and prove the remaining obligations. Use `hK c` as an intermediate fact. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, SubmonoidClass.coe_pow]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hle` using `[hpow]`. Establish `h1` using `hle (Submodule.mem_top : (1 : A) ∈ ⊤)`. Simplify `h1` using `[D]`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_pow_mul_mem' (A : Subalgebra S Ω) (M : Submodule A Ω) {m : ℕ} (e : Fin m → A)
     (he : ∑ c, e c = 1) (t : Ω) (h : ∀ c, ∃ K : ℕ, (e c : Ω) ^ K * t ∈ M) : t ∈ M := by
@@ -272,9 +270,9 @@ theorem mem_of_pow_mul_mem' (A : Subalgebra S Ω) (M : Submodule A Ω) {m : ℕ}
   simpa [D] using h1
 
 /- English proof (translation)
-Unfold `chartRingOver`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨⟩, a⟩, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨⟨(), a⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem chartRingOver_oneBlock_eq_adjoin {n : ℕ} (h : Fin n → Ω) (c : Unit → Fin n) :
     chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock h) c = Algebra.adjoin S (Set.range fun b => h b / h (c ())) := by
@@ -288,7 +286,7 @@ theorem chartRingOver_oneBlock_eq_adjoin {n : ℕ} (h : Fin n → Ω) (c : Unit 
     exact ⟨⟨(), a⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨⟨(), b⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_chartRingOver_oneBlock {n : ℕ} (h : Fin n → Ω) (l b : Fin n) :
     h b / h l ∈ chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock h) (fun _ => l) :=
@@ -301,7 +299,7 @@ section Forward
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Take `⟨Q', hQ'⟩` from `Q.invertible (Kleiman.singleChart hi)`. Rewrite `hQ'` using `[← hgen]`. Conclude with `exists_sum_eq_one_of_mul_eq_one _ Q' _ hQ'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_of_span_eq (Q : Kleiman.LineBundle S x) {m : ℕ} (h : Fin m → Ω)
     {i : Fin (N + 1)} (hi : x i ≠ 0)
@@ -314,9 +312,9 @@ theorem exists_inv_of_span_eq (Q : Kleiman.LineBundle S x) {m : ℕ} (h : Fin m 
   exact exists_sum_eq_one_of_mul_eq_one _ Q' _ hQ'
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_not] at hcon`. Apply `hq.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : T) = ∑ k, (⟨a k, ha k⟩ : T) * ⟨b k, hb k⟩`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_one, AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_mul]`. Conclude with `hab.symm`. Rewrite using `[h1]`. Conclude with `Ideal.sum_mem _ fun k _ => q.mul_mem_left _ (hcon k)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_not_mem_of_sum_eq_one {T : Subalgebra S Ω} (q : Ideal T) [hq : q.IsPrime] {K : ℕ}
     (a b : Fin K → Ω) (ha : ∀ k, a k ∈ T) (hb : ∀ k, b k ∈ T) (hab : ∑ k, a k * b k = 1) :
@@ -333,31 +331,27 @@ theorem exists_not_mem_of_sum_eq_one {T : Subalgebra S Ω} (q : Ideal T) [hq : q
   exact Ideal.sum_mem _ fun k _ => q.mul_mem_left _ (hcon k)
 
 /- English proof (translation)
-Take `⟨w, hw', hsum⟩` from `exists_inv_of_span_eq Q h hi (hva.generates _)`. Establish `hw : ∀ a b, h a * w b ∈ A` using `fun a b => by rw [hA]; exact hw' a b`. Take `⟨l, hl⟩` from `exists_not_mem_of_sum_eq_one p (fun _ => (1 : Ω)) (fun k => h k * w k) (fun _ => A.one_mem) (fun k => hw k k) (by simpa using hsum)`. Establish `hl0 : h l * w l ≠ 0` using `coe_ne_zero_of_not_mem_ideal hl`. Establish `hhl : h l ≠ 0` using `left_ne_zero_of_mul hl0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwl : w l ≠ 0` using `right_ne_zero_of_mul hl0`. Use `set B := chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock h) (fun _ => l) with hBdef`. Establish `hBeq : B = Kleiman.ampleBase (S` using `S) h l := chartRingOver_oneBlock_eq_adjoin h _`. Establish `hBA : B ≤ locAlg A p`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hBeq]`. Use `(Algebra.adjoin_le ?_) hy` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Establish `e : h c / h l = (h c * w l) / (h l * w l)` using `by field_simp`. Use `show h c / h l ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `Subring.subset_closure ⟨⟨_, hw c l⟩, ⟨_, hw l l⟩, hl, rfl⟩`. Use `⟨l, hhl, _, Ideal.comap_isPrime _ _, locIn_comap_eq A B p hBA ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨K, a, b, J, ha, hb, hab, hbJ⟩` from `hva.affine l hhl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hAmB : ∀ y ∈ Kleiman.ampleRing Q.toSubSystem 1 (h l), y ∈ B` using `fun y hy => by`. Rewrite using `[hBeq]`. Conclude with `hva.closed l hhl hy`. Take `⟨k, hk⟩` from `exists_not_mem_of_sum_eq_one ((locMax A p).comap (Subalgebra.inclusion hBA)) a b (fun k => hAmB _ (ha k)) (fun k => hAmB _ (hb k)) hab`. Take `⟨hb0, hbinv⟩` from `inv_mem_of_not_mem_locMax (z := Subalgebra.inclusion hBA ⟨b k, hAmB _ (hb k)⟩) hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0' : b k ≠ 0` using `hb0`. Establish `hbinv' : (b k)⁻¹ ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p` using `hbinv`. Rewrite `hz` using `[hA]`. Establish `hzU : z ∈ Kleiman.chartRing S x (AmpleAffineGen.unionChart (J k) (Kleiman.singleChart hi))` using `Kleiman.chartRing_mono (AmpleAffineGen.subset_unionChart_right _ _) hz`. Take `⟨D, hD⟩` from `AmpleAffineGen.exists_pow_mul_mem (J k) (Kleiman.singleChart hi) hzU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : AmpleAffineGen.chartRatio (J k) (Kleiman.singleChart hi) ∈ Kleiman.chartRing S x (J k)` using `AmpleAffineGen.chartRatio_mem _ _`. Establish `huv` using `AmpleAffineGen.chartRatio_mul_chartRatio (Kleiman.singleChart hi) (J k)`. Establish `huinv : (AmpleAffineGen.chartRatio (J k) (Kleiman.singleChart hi))⁻¹ = AmpleAffineGen.chartRatio (Kleiman.singleChart hi) (J k)` using `(eq_inv_of_mul_eq_one_right huv).symm`. Establish `hu0 : AmpleAffineGen.chartRatio (J k) (Kleiman.singleChart hi) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `huv` using `[h0, zero_mul]`. Conclude with `zero_ne_one huv`. Take `⟨e₁, he₁⟩` from `GraphClosedAlt.exists_pow_mul_mem_ampleRing Q.toSubSystem (h l) (b k) (J k) (hb k) (hbJ k) hD`. Take `⟨e₂, he₂⟩` from `GraphClosedAlt.exists_pow_mul_mem_ampleRing Q.toSubSystem (h l) (b k) (J k) (hb k) (hbJ k) (pow_mem hu D)`. Use `set u := AmpleAffineGen.chartRatio (J k) (Kleiman.singleChart hi) with hudef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hγB : b k ^ (e₁ + e₂) * u ^ D ∈ B`. Establish `e : b k ^ (e₁ + e₂) * u ^ D = b k ^ e₁ * (b k ^ e₂ * u ^ D)` using `by rw [pow_add]; ring`. Rewrite using `[e]`. Conclude with `B.mul_mem (B.pow_mem (hAmB _ (hb k)) _) (hAmB _ he₂)`. Establish `hβB : b k ^ (e₁ + e₂) * u ^ D * z ∈ B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : b k ^ (e₁ + e₂) * u ^ D * z = b k ^ e₂ * (b k ^ e₁ * (u ^ D * z))` using `by rw [pow_add]; ring`. Rewrite using `[e]`. Conclude with `B.mul_mem (B.pow_mem (hAmB _ (hb k)) _) (hAmB _ he₁)`. Establish `hγ0 : b k ^ (e₁ + e₂) * u ^ D ≠ 0` using `mul_ne_zero (pow_ne_zero _ hb0') (pow_ne_zero _ hu0)`. Establish `hγq : (⟨_, hγB⟩ : B) ∉ (locMax A p).comap (Subalgebra.inclusion hBA)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap]`. Use `not_mem_locMax_of_inv_mem hγ0 ?_` and prove the remaining obligations. Establish `e : (b k ^ (e₁ + e₂) * u ^ D)⁻¹ = ((b k)⁻¹) ^ (e₁ + e₂) * (u⁻¹) ^ D`. Rewrite using `[mul_inv, inv_pow, inv_pow]`. Use `show (b k ^ (e₁ + e₂) * u ^ D)⁻¹ ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p`.
-
-Rewrite using `[e, huinv]`. Use `Subring.mul_mem _ (Subring.pow_mem _ hbinv' _) (Subring.pow_mem _ ?_ _)` and prove the remaining obligations. Conclude with `le_locIn A p (by rw [hA]; exact AmpleAffineGen.chartRatio_mem _ _)`. Use `Ideal.comap_isPrime (Subalgebra.inclusion hBA) (locMax A p)` as an intermediate fact. Rewrite using `[mem_locIn_iff]`.
-
-Use `⟨⟨_, hβB⟩, ⟨_, hγB⟩, hγq, ?_⟩` and prove the remaining obligations. Use `show z = b k ^ (e₁ + e₂) * u ^ D * z / (b k ^ (e₁ + e₂) * u ^ D)`. Rewrite using `[mul_div_cancel_left₀ z hγ0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ampleBase_localization_eq (Q : Kleiman.LineBundle S x) {r : ℕ} {h : Fin (r + 1) → Ω}
     (hva : Kleiman.IsVeryAmpleBy Q.toSubSystem h) {i : Fin (N + 1)} (hi : x i ≠ 0) (A : Subalgebra S Ω)
@@ -435,7 +429,7 @@ theorem exists_ampleBase_localization_eq (Q : Kleiman.LineBundle S x) {r : ℕ} 
   rw [mul_div_cancel_left₀ z hγ0]
 
 /- English proof (translation)
-The claim follows from `exists_ampleBase_localization_eq Q hva hi _ (chartRingOver_oneBlock x (fun _ => i) hi) p`.
+A detailed English derivation is pending.
 -/
 theorem exists_ampleBase_locIn_eq (Q : Kleiman.LineBundle S x) {r : ℕ} {h : Fin (r + 1) → Ω}
     (hva : Kleiman.IsVeryAmpleBy Q.toSubSystem h) {i : Fin (N + 1)} (hi : x i ≠ 0)
@@ -445,23 +439,19 @@ theorem exists_ampleBase_locIn_eq (Q : Kleiman.LineBundle S x) {r : ℕ} {h : Fi
   exists_ampleBase_localization_eq Q hva hi _ (chartRingOver_oneBlock x (fun _ => i) hi) p
 
 /- English proof (translation)
-Establish `hAmB : ∀ y ∈ Kleiman.ampleRing Q.toSubSystem 1 (h l), y ∈ B` using `fun y hy => by`. Rewrite using `[hBeq]`. Conclude with `hva.closed l hl hy`. Take `⟨K, a, b, J, ha, hb, hab, hbJ⟩` from `hva.affine l hl`. Take `⟨k, hk⟩` from `exists_not_mem_of_sum_eq_one q a b (fun k => hAmB _ (ha k)) (fun k => hAmB _ (hb k)) hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hiJ⟩` from `(J k).2.1`. Establish `hi : x i ≠ 0` using `(Kleiman.mem_support x).mp ((J k).2.2 hiJ)`. Use `set A := chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i) with hAdef`. Establish `hA : A = Kleiman.chartRing S x (Kleiman.singleChart hi)` using `chartRingOver_oneBlock x (fun _ => i) hi`. Establish `hb0 : b k ≠ 0` using `coe_ne_zero_of_not_mem_ideal hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAB : A ≤ locAlg B q`. Introduce `z hz`. Rewrite `hz` using `[hA]`. Establish `hzJ : z ∈ Kleiman.chartRing S x (J k)` using `Kleiman.chartRing_mono (Finset.singleton_subset_iff.mpr hiJ) hz`. Take `⟨e, he⟩` from `GraphClosedAlt.exists_pow_mul_mem_ampleRing Q.toSubSystem (h l) (b k) (J k) (hb k) (hbJ k) hzJ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbe : (⟨b k, hAmB _ (hb k)⟩ : B) ^ e ∉ q` using `fun h' => hk (hq.mem_of_pow_mem _ h')`. Use `show z ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn B q`. Rewrite using `[mem_locIn_iff]`. Use `⟨⟨_, hAmB _ he⟩, _, hbe, ?_⟩` and prove the remaining obligations. Use `show z = b k ^ e * z / (b k ^ e)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mul_div_cancel_left₀ z (pow_ne_zero _ hb0)]`. Use `⟨i, hi, _, Ideal.comap_isPrime _ _, locIn_comap_eq B A q hAB ?_⟩` and prove the remaining obligations. Take `⟨w, hw', hsum⟩` from `exists_inv_of_span_eq Q h hi (hva.generates _)`. Establish `hw : ∀ a b, h a * w b ∈ A` using `fun a b => by rw [hA]; exact hw' a b`. Take `⟨m, hm⟩` from `exists_not_mem_of_sum_eq_one (locMax B q) (fun m => h m / h l) (fun m => h l * w m) (fun m => le_locIn B q (by rw [hBeq]; exact Algebra.subset_adjoin ⟨m, rfl⟩)) (fun m => hAB (hw l m)) (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hsum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use the proof step `field_simp)`. Establish `hm' : (⟨h l * w m, hw l m⟩ : A) ∉ (locMax B q).comap (Subalgebra.inclusion hAB)` using `hm`. Establish `hwm : h l * w m ≠ 0` using `coe_ne_zero_of_not_mem_ideal hm'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw0 : w m ≠ 0` using `right_ne_zero_of_mul hwm`. Establish `hBle : B ≤ locAlg A ((locMax B q).comap (Subalgebra.inclusion hAB))`. Introduce `y hy`. Rewrite `hy` using `[hBeq]`. Use `(Algebra.adjoin_le ?_) hy` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨c, rfl⟩`. Use `show h c / h l ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A _`. Rewrite using `[show h c / h l = (h c * w m) / (h l * w m) by field_simp]`. Conclude with `Subring.subset_closure ⟨⟨_, hw c m⟩, ⟨_, hw l m⟩, hm', rfl⟩`. Introduce `z hz`.
-
-Conclude with `hBle hz`.
+Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_chart_localization_eq (Q : Kleiman.LineBundle S x) {r : ℕ} {h : Fin (r + 1) → Ω}
     (hva : Kleiman.IsVeryAmpleBy Q.toSubSystem h) {l : Fin (r + 1)} (hl : h l ≠ 0) (B : Subalgebra S Ω)
@@ -513,7 +503,7 @@ theorem exists_chart_localization_eq (Q : Kleiman.LineBundle S x) {r : ℕ} {h :
   exact hBle hz
 
 /- English proof (translation)
-Establish `hB : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock h) (fun _ => l) = Kleiman.ampleBase (S` using `S) h l := by`. Rewrite using `[chartRingOver_oneBlock_eq_adjoin]`. Both sides reduce to the same expression. Conclude with `exists_chart_localization_eq Q hva hl _ hB q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_chart_locIn_eq (Q : Kleiman.LineBundle S x) {r : ℕ} {h : Fin (r + 1) → Ω}
     (hva : Kleiman.IsVeryAmpleBy Q.toSubSystem h) {l : Fin (r + 1)} (hl : h l ≠ 0)
@@ -526,9 +516,9 @@ theorem exists_chart_locIn_eq (Q : Kleiman.LineBundle S x) {r : ℕ} {h : Fin (r
   exact exists_chart_localization_eq Q hva hl _ hB q
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, p, hp, rfl⟩`. Take `⟨i, rfl⟩ : ∃ i, c = fun _ => i` from `⟨c (), funext fun _ => rfl⟩`. Take `⟨l, hl, q, hq, heq⟩` from `exists_ampleBase_locIn_eq Q hva (hc ()) p hp`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun _ => l, fun _ => hl, q, hq, heq.symm⟩`. Introduce and unpack `⟨c, hc, q, hq, rfl⟩`. Take `⟨l, rfl⟩ : ∃ l, c = fun _ => l` from `⟨c (), funext fun _ => rfl⟩`. Take `⟨i, hi, p, hp, heq⟩` from `exists_chart_locIn_eq Q hva (hc ()) q hq`. Conclude with `⟨fun _ => i, fun _ => hi, p, hp, heq.symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem modelPts_eq_of_isVeryAmpleBy (Q : Kleiman.LineBundle S x) {r : ℕ} {h : Fin (r + 1) → Ω}
     (hva : Kleiman.IsVeryAmpleBy Q.toSubSystem h) :
@@ -545,9 +535,9 @@ theorem modelPts_eq_of_isVeryAmpleBy (Q : Kleiman.LineBundle S x) {r : ℕ} {h :
     exact ⟨fun _ => i, fun _ => hi, p, hp, heq.symm⟩
 
 /- English proof (translation)
-Establish `han : a ^ n ≠ 0` using `zpow_ne_zero n ha`. Establish `h1 : a ^ n * b ^ (-1 : ℤ) * (a ^ (-n) * b) = 1`. Rewrite using `[zpow_neg_one, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Establish `e1 : ∑ l, u l * x' l = (∑ l, u l * (x' l * (a ^ n * b ^ (-1 : ℤ)))) * (a ^ (-n) * b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, h, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mul_eq_of_sum {n : ℤ} {m' : ℕ} {u x' : Fin m' → Ω} {a b : Ω} (ha : a ≠ 0) (hb : b ≠ 0)
     (h : ∑ l, u l * (x' l * (a ^ n * b ^ (-1 : ℤ))) = 1) : ∑ l, u l * x' l = a ^ (-n) * b := by
@@ -563,15 +553,15 @@ theorem sum_mul_eq_of_sum {n : ℤ} {m' : ℕ} {u x' : Fin m' → Ω} {a b : Ω}
   rw [e1, h, one_mul]
 
 /- English proof (translation)
-Use `⟨r + 1, h, fun j => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← secs_eq_secOver Q n s hgen]`. Conclude with `hva.mem_secs j`. Introduce `c hc`. Take `⟨i, j, rfl⟩ : ∃ (i : Fin (N + 1)) (j : Fin m), c = graphChart i j` from `⟨c (Sum.inl ()), c (Sum.inr ()), graphChart_eta c⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi : x i ≠ 0` using `hc (Sum.inl ())`. Establish `hj : s j ≠ 0` using `hc (Sum.inr ())`. Establish `hσ : x i ^ (-n) * s j ∈ Q.sub (Kleiman.singleChart hi)`. Rewrite using `[← span_graphGens_eq Q n s hgen hi]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hσ` using `[← hva.generates (Kleiman.singleChart hi)]`. Take `⟨u, hu⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hσ`. Use `⟨fun l => u l, fun l => chartRing_le_graphRing x s hi j (u l).2, ?_⟩` and prove the remaining obligations. Rewrite using `[prod_graph, graphDeg_inl, graphDeg_inr, neg_neg]`. Simplify using `only [Subalgebra.smul_def, smul_eq_mul] at hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hxn : x i ^ n ≠ 0` using `zpow_ne_zero n hi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Use `_ = 1 := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, zpow_neg, zpow_neg_one]`. Clear the denominators using the available nonvanishing facts. Establish `hM : IndefiniteRowSideFullHecke.Kleiman2.modelPts S (graphVec x s) = IndefiniteRowSideFullHecke.Kleiman2.modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x)` using `(GraphModel.full S N Ω x Q n m s hx hgen).2 show IndefiniteRowSideFullHecke.Kleiman2.modelPts S (graphVec x s) = IndefiniteRowSideFullHecke.Kleiman2.modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock h)`. Rewrite using `[hM]`. Conclude with `modelPts_eq_of_isVeryAmpleBy Q hva`.
+A detailed English derivation is pending.
 -/
 theorem veryAmple_of_isVeryAmpleBy (Q : Kleiman.LineBundle S x) (n : ℤ) {m : ℕ} (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) (hx : ∃ i, x i ≠ 0) {r : ℕ} {h : Fin (r + 1) → Ω}
@@ -614,28 +604,26 @@ section Backward
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-The claim follows from `(Submodule.mem_iInf _).mp ht I`.
+A detailed English derivation is pending.
 -/
 theorem mem_sub_of_mem_secs {F : Kleiman.SubSystem S x Ω} {t : Ω} (ht : t ∈ F.secs) (I : Kleiman.Chart x) :
     t ∈ F.sub I :=
   (Submodule.mem_iInf _).mp ht I
 
 /- English proof (translation)
-Establish `hA : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i) = Kleiman.chartRing S x (Kleiman.singleChart hi)` using `chartRingOver_oneBlock x (fun _ => i) hi`. Take `⟨w, hw, hsum⟩` from `exists_graph_inverse Q n s hgen hi`. Establish `hw' : ∀ a b, x i ^ (-n) * s a * w b ∈ Kleiman.chartRing S x (Kleiman.singleChart hi)` using `fun a b => by rw [← hA]; exact hw a b`. Establish `htw : ∀ c, t * w c ∈ Kleiman.chartRing S x (Kleiman.singleChart hi)`. Introduce `c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ht` using `[← span_graphGens_eq Q n s hgen hi]`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp ht`. Rewrite using `[Finset.sum_mul]`. Use `Subalgebra.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.mul_mem _ (a b).2 (hw' b c)`. Use `mem_of_pow_mul_mem' _ _ (fun c => ⟨_, hw' c c⟩) (Subtype.ext (by simp only [AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_one]; exact hsum)) t fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : s c = 0`. Conclude with `⟨1, by simp [hc]⟩`. Take `⟨u, hu, husum⟩` from `hgo (graphChart i c) (by rintro (⟨⟩ | ⟨⟩); exacts [hi, hc])`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `husum` using `[prod_graph, graphDeg_inl, graphDeg_inr, neg_neg]`. Establish `hσ` using `sum_mul_eq_of_sum hi hc husum`. Take `⟨-, hle⟩` from `graphRing_between hi n s w hw hc c`. Establish `hM : ∀ l, ∃ M : ℕ, (x i ^ (-n) * s c * w c) ^ M * u l ∈ Kleiman.chartRing S x (Kleiman.singleChart hi)` using `fun l => by`. Take `⟨M, hM⟩` from `hle (hu l)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨M, by rw [← hA]; exact hM⟩`. Use `choose M hM using hM`. Use `⟨∑ l, M l + 1, ?_⟩` and prove the remaining obligations. Use `set e := x i ^ (-n) * s c * w c with he`. Establish `hkey : e ^ (∑ l, M l + 1) * t = ∑ l, (e ^ (∑ l, M l) * u l * (t * w c)) * x' l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hσ, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Use `show e ^ (∑ l, M l + 1) * t ∈ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkey]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Establish `hcoef : e ^ (∑ l, M l) * u l * (t * w c) ∈ Kleiman.chartRing S x (Kleiman.singleChart hi)`. Take `⟨K, hK⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ l) : M l ≤ ∑ l, M l)`. Rewrite using `[hK, pow_add, mul_comm (e ^ M l) (e ^ K), mul_assoc (e ^ K)]`.
-
-Conclude with `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (hw' c c) _) (hM l)) (htw c)`. Establish `e2 : (e ^ (∑ l, M l) * u l * (t * w c)) * x' l = (⟨_, hcoef⟩ : Kleiman.chartRing S x (Kleiman.singleChart hi)) • x' l`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_generatesOver (Q : Kleiman.LineBundle S x) (n : ℤ) {m : ℕ} (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) {n' : ℕ} (x' : Fin n' → Ω)
@@ -692,17 +680,15 @@ theorem mem_span_of_generatesOver (Q : Kleiman.LineBundle S x) (n : ℤ) {m : �
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `mem_sub_of_mem_secs (hsecs l) I`. Introduce `t ht`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hiI⟩` from `I.2.1`. Establish `hi : x i ≠ 0` using `(Kleiman.mem_support x).mp (I.2.2 hiI)`. Establish `hsub : (Kleiman.singleChart hi).1 ⊆ I.1` using `Finset.singleton_subset_iff.mpr hiI`. Take `⟨a, ⟨v, hv⟩, hat⟩` from `(Q.mem_iff (Kleiman.singleChart hi) I hsub t).mp ht`. Establish `h1` using `mem_span_of_generatesOver Q n s hgen x' hgo hi hat`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp h1`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun l => (↑v⁻¹ : Kleiman.chartRing S x I) * Kleiman.chartIncl hsub (c l), ?_⟩` and prove the remaining obligations. Establish `hvv : ((↑v⁻¹ : Kleiman.chartRing S x I) : Ω) * (a : Ω) = 1`. Establish `h2` using `congrArg Subtype.val v.inv_mul`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hv]`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_one] at h2`. Conclude with `h2`. Simplify using `only [Subalgebra.smul_def, smul_eq_mul] at hc ⊢`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Subalgebra.coe_mul]`. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression.
-
-Use `_ = t := by rw [hc, ← mul_assoc, hvv, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem generates_of_generatesOver (Q : Kleiman.LineBundle S x) (n : ℤ) {m : ℕ} (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) {n' : ℕ} (x' : Fin n' → Ω)
@@ -738,37 +724,35 @@ theorem generates_of_generatesOver (Q : Kleiman.LineBundle S x) (n : ℤ) {m : �
       _ = t := by rw [hc, ← mul_assoc, hvv, one_mul]
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hBeq : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j) = Kleiman.ampleBase (S` using `S) x' j := by`. Rewrite using `[chartRingOver_oneBlock_eq_adjoin]`. Both sides reduce to the same expression. Rewrite using `[← hBeq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply `mem_of_forall_locIn` to reduce the goal to its premises. Introduce `q hq`. Establish `hmem : IndefiniteRowSideFullHecke.Kleiman2.locIn _ q ∈ IndefiniteRowSideFullHecke.Kleiman2.modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x)`. Rewrite using `[← hpts]`. Conclude with `⟨fun _ => j, fun _ => hj, q, hq, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨c, hc, p, hp, hpeq⟩` from `hmem`. Take `⟨i, rfl⟩ : ∃ i, c = fun _ => i` from `⟨c (), funext fun _ => rfl⟩`. Establish `hi : x i ≠ 0` using `hc ()`. Rewrite using `[hpeq]`. Establish `hA : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i) = Kleiman.chartRing S x (Kleiman.singleChart hi)` using `chartRingOver_oneBlock x (fun _ => i) hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w, hw, hsum⟩` from `exists_graph_inverse Q n s hgen hi`. Take `⟨c', hc'⟩` from `exists_not_mem_of_sum_eq_one p (fun _ => (1 : Ω)) (fun k => x i ^ (-n) * s k * w k) (fun _ => Subalgebra.one_mem _) (fun k => hw k k) (by simpa using hsum)`. Establish `hsc' : s c' ≠ 0` using `fun h0 => coe_ne_zero_of_not_mem_ideal hc' (by simp [h0])`. Take `⟨-, hle⟩` from `graphRing_between hi n s w hw hsc' c'`. Establish `hgr : ∀ g ∈ graphRing S x s i c', g ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn _ p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g hg`. Take `⟨M, hM⟩` from `hle hg`. Establish `hpow : (⟨x i ^ (-n) * s c' * w c', hw c' c'⟩ : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i)) ^ M ∉ p` using `fun h' => hc' (hp.mem_of_pow_mem _ h')`. Establish `h0` using `coe_ne_zero_of_not_mem_ideal hpow`. Rewrite using `[mem_locIn_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, hM⟩, _, hpow, ?_⟩` and prove the remaining obligations. Simplify using `only [SubmonoidClass.coe_pow] at h0 ⊢`. Rewrite using `[mul_div_cancel_left₀ g h0]`. Establish `hxl : ∀ l, x' l / x' j ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn _ p` using `fun l => by`. Rewrite using `[← hpeq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_locIn _ q (div_mem_chartRingOver_oneBlock x' j l)`. Take `⟨u, hu, husum⟩` from `hgo (graphChart i c') (by rintro (⟨⟩ | ⟨⟩); exacts [hi, hsc'])`. Rewrite `husum` using `[prod_graph, graphDeg_inl, graphDeg_inr, neg_neg]`. Establish `hσ'` using `sum_mul_eq_of_sum hi hsc' husum`. Establish `hσ : x i ^ (-n) * s c' / x' j ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn _ p`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hσ', Finset.sum_div]`. Conclude with `Subring.sum_mem _ fun l _ => by`. Rewrite using `[mul_div_assoc]`. Conclude with `Subring.mul_mem _ (hgr _ (hu l)) (hxl l)`. Establish `hQ : ∀ t ∈ Q.sub (Kleiman.singleChart hi), t / x' j ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn _ p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `t ht`. Rewrite `ht` using `[← span_graphGens_eq Q n s hgen hi]`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp ht`. Rewrite using `[Finset.sum_div]`. Use `Subring.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `e2 : a b • (x i ^ (-n) * s b) / x' j = a b * (s b / s c') * (x i ^ (-n) * s c' / x' j)`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Use `Subring.mul_mem _ (Subring.mul_mem _ (le_locIn _ p ?_) (hgr _ (div_mem_graphRing_inr x s i c' b))) hσ` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hA]`. Conclude with `(a b).2`. Establish `hpowQ : ∀ e : ℕ, ∀ t ∈ Q.sub (Kleiman.singleChart hi) ^ e, t / x' j ^ e ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn (chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i)) p`. Introduce `e`. Proceed by induction on `e with`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `zero`. Introduce `t ht`. Rewrite `ht` using `[pow_zero]`. Take `⟨a, rfl⟩` from `Submodule.mem_one.mp ht`. Rewrite using `[pow_zero, div_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_locIn _ p ?_` and prove the remaining obligations. Rewrite using `[hA]`. Conclude with `a.2`. Consider the case `succ e ih`. Introduce `t ht`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ht` using `[pow_succ]`. Use `Submodule.mul_induction_on (C := fun t => t / x' j ^ (e + 1) ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn (chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i)) p) ht ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[pow_succ, ← div_mul_div_comm]`. Conclude with `Subring.mul_mem _ (ih a ha) (hQ b hb)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `a b ha hb`. Rewrite using `[add_div]`. Conclude with `Subring.add_mem _ ha hb`. Take `⟨e, he⟩` from `Set.mem_iInter.mp hz (Kleiman.singleChart hi)`. Rewrite `he` using `[one_mul, Kleiman.SubSystem.pow_sub]`.
-
-Establish `h3` using `hpowQ e _ he`. Rewrite `h3` using `[mul_div_assoc, div_self (pow_ne_zero _ hj), mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem closed_of_modelPts (Q : Kleiman.LineBundle S x) (n : ℤ) {m : ℕ} (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) {r : ℕ} (x' : Fin (r + 1) → Ω)
@@ -862,31 +846,27 @@ theorem closed_of_modelPts (Q : Kleiman.LineBundle S x) (n : ℤ) {m : ℕ} (s :
   rwa [mul_div_assoc, div_self (pow_ne_zero _ hj), mul_one] at h3
 
 /- English proof (translation)
-Establish `hBeq : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j) = Algebra.adjoin S (Set.range fun b => x' b / x' j)` using `chartRingOver_oneBlock_eq_adjoin x' _`. Establish `hBamp : ∀ z ∈ chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j), z ∈ Kleiman.ampleRing Q.toSubSystem 1 (x' j)`. Introduce `z hz`. Use `Set.mem_iInter.mpr fun I => ?_` and prove the remaining obligations. Establish `hxI : x' j ∈ (Q.toSubSystem.pow 1).sub I`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Kleiman.SubSystem.pow_sub, pow_one]`. Conclude with `mem_sub_of_mem_secs (hsecs j) I`. Rewrite `hz` using `[hBeq]`. Use `(Algebra.adjoin_le (S := AmpleAffineGen.ampleSubalg Q.toSubSystem 1 (x' j) I hxI) ?_) hz` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Use `show x' l / x' j * x' j ^ 1 ∈ (Q.toSubSystem.pow 1).sub I`. Rewrite using `[pow_one, div_mul_cancel₀ _ hj, Kleiman.SubSystem.pow_sub, pow_one]`. Conclude with `mem_sub_of_mem_secs (hsecs l) I`. Set `G : Set (chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j))` to `{g | ∃ i, x i ≠ 0 ∧ ∀ a : Fin (N + 1), ∃ e : ℕ, (g : Ω) ^ e * (x a / x i) ∈ chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j)}`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hG : Ideal.span G = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨q, hq, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hqp` using `hq.isPrime`. Establish `hmem : IndefiniteRowSideFullHecke.Kleiman2.locIn _ q ∈ IndefiniteRowSideFullHecke.Kleiman2.modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hpts]`. Conclude with `⟨fun _ => j, fun _ => hj, q, hqp, rfl⟩`. Take `⟨c, hc, p, hp, hpeq⟩` from `hmem`. Take `⟨i, rfl⟩ : ∃ i, c = fun _ => i` from `⟨c (), funext fun _ => rfl⟩`. Establish `hi : x i ≠ 0` using `hc ()`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfr : ∀ a : Fin (N + 1), ∃ β γ : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j), γ ∉ q ∧ x a / x i = β / γ`. Introduce `a`. Use `(mem_locIn_iff _ q _).mp ?_` and prove the remaining obligations. Rewrite using `[hpeq]`. Use `le_locIn _ p ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[chartRingOver_oneBlock x _ hi]`. Conclude with `(Kleiman.ratio hi a).2`. Use `choose β γ hγ hβγ using hfr`. Establish `hγ0 : ∀ a, (γ a : Ω) ≠ 0` using `fun a => coe_ne_zero_of_not_mem_ideal (hγ a)`. Establish `hg : ∏ a, γ a ∉ q` using `fun h' => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, -, ha⟩` from `Ideal.IsPrime.prod_mem_iff.mp h'`. Conclude with `hγ a ha`. Establish `hgG : ∏ a, γ a ∈ G`. Use `⟨i, hi, fun a => ⟨1, ?_⟩⟩` and prove the remaining obligations. Establish `e1 : ((∏ a, γ a : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j)) : Ω) ^ 1 * (x a / x i) = β a * ∏ a' ∈ Finset.univ.erase a, (γ a' : Ω)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_one, hβγ a, SubmonoidClass.coe_finsetProd, ← Finset.mul_prod_erase Finset.univ (fun a => (γ a : Ω)) (Finset.mem_univ a)]`. Clear denominators, using `[hγ0 a]` for the nonvanishing conditions. Rewrite using `[e1]`. Conclude with `Subalgebra.mul_mem _ (β a).2 (Subalgebra.prod_mem _ fun a' _ => (γ a').2)`. Conclude with `hg (hle (Ideal.subset_span hgG))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (1 : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j)) ∈ Ideal.span G`. Rewrite using `[hG]`. Conclude with `Submodule.mem_top`. Take `⟨K, f, g, hfg⟩` from `Submodule.mem_span_set'.mp h1`. Establish `hgood : ∀ k, ∃ i, x i ≠ 0 ∧ ∀ a : Fin (N + 1), ∃ e : ℕ, ((g k : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j)) : Ω) ^ e * (x a / x i) ∈ chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j)` using `fun k => (g k).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose i hi hgi using hgood`. Use `⟨K, fun k => f k, fun k => (g k : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j)), fun k => Kleiman.singleChart (hi k), fun k => hBamp _ (f k).2, fun k => hBamp _ (g k).1.2, ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val hfg`. Simplify using `only [AddSubmonoidClass.coe_finsetSum, smul_eq_mul, Subalgebra.coe_mul, Subalgebra.coe_one] at h2`. Conclude with `h2`.
-
-Introduce `k I choose e he using hgi k`. Use `⟨∑ a ∈ I.1, e a, ?_⟩` and prove the remaining obligations. Establish `hc1 : (Kleiman.singleChart (hi k)).1.card = 1` using `Finset.card_singleton _`. Establish `hx1 : Kleiman.xProd (Kleiman.singleChart (hi k)) = x (i k)` using `Finset.prod_singleton _ _`. Establish `e3 : ((g k : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j)) : Ω) ^ (∑ a ∈ I.1, e a) * (Kleiman.xProd I ^ 1 / x (i k) ^ I.1.card) = ∏ a ∈ I.1, (((g k : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') (fun _ => j)) : Ω) ^ e a * (x …`.
-
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finset.prod_div_distrib, Finset.prod_const, pow_one]`. Both sides reduce to the same expression. Rewrite using `[hc1, hx1, e3]`. Conclude with `Set.mem_iInter.mp (hBamp _ (Subalgebra.prod_mem _ fun a _ => he a)) I`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affine_of_modelPts (Q : Kleiman.LineBundle S x) {r : ℕ} (x' : Fin (r + 1) → Ω)
     (hsecs : ∀ l, x' l ∈ Q.secs)
@@ -979,11 +959,11 @@ theorem affine_of_modelPts (Q : Kleiman.LineBundle S x) {r : ℕ} (x' : Fin (r +
     exact Set.mem_iInter.mp (hBamp _ (Subalgebra.prod_mem _ fun a _ => he a)) I
 
 /- English proof (translation)
-Take `⟨n', x', hsec, hgo, hsame⟩` from `hV`. Take `⟨hnz, hM⟩` from `GraphModel.full S N Ω x Q n m s hx hgen`. Establish `hpts : IndefiniteRowSideFullHecke.Kleiman2.modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') = IndefiniteRowSideFullHecke.Kleiman2.modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x)` using `hsame.symm.trans hM`. Establish `hsecs : ∀ l, x' l ∈ Q.secs` using `fun l => by`. Rewrite using `[secs_eq_secOver Q n s hgen]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsec l`. Consider the cases of `n' with`. Consider the case `zero`. It suffices to derive a contradiction. Take `⟨i, hi⟩` from `hx`.
+Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hnz (Sum.inr ())`. Take `⟨u, -, hu⟩` from `hgo (graphChart i j) (by rintro (⟨⟩ | ⟨⟩); exacts [hi, hj])`. Simplify using `at hu`. Consider the case `succ r`. Conclude with `⟨r, x', { mem_secs := hsecs generates := generates_of_generatesOver Q n s hgen x' hgo hsecs closed := closed_of_modelPts Q n s hgen x' hgo hpts affine := affine_of_modelPts Q x' hsecs hpts }⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVeryAmple_of_veryAmple (Q : Kleiman.LineBundle S x) (n : ℤ) {m : ℕ} (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) (hx : ∃ i, x i ≠ 0)
@@ -1016,7 +996,7 @@ section Zero
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Establish `hno : ∀ I : Kleiman.Chart x, False` using `fun I => by`. Take `⟨i, hi⟩` from `I.2.1`. Conclude with `(Kleiman.mem_support x).mp (I.2.2 hi) (hx i)`. Conclude with `⟨0, fun _ => 0, { mem_secs := fun _ => zero_mem _ generates := fun I => (hno I).elim closed := fun _ h => (h rfl).elim affine := fun _ h => (h rfl).elim }⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVeryAmple_of_forall_eq_zero (Q : Kleiman.LineBundle S x) (hx : ∀ i, x i = 0) :
     Kleiman.IsVeryAmple Q.toSubSystem := by
@@ -1030,9 +1010,9 @@ theorem isVeryAmple_of_forall_eq_zero (Q : Kleiman.LineBundle S x) (hx : ∀ i, 
       affine := fun _ h => (h rfl).elim }⟩
 
 /- English proof (translation)
-Use `⟨0, Fin.elim0, fun j => j.elim0, fun c hc => (hc (Sum.inl ()) (hx (c (Sum.inl ())))).elim, ?_⟩` and prove the remaining obligations. Use `show IndefiniteRowSideFullHecke.Kleiman2.modelPts S (graphVec x s) = IndefiniteRowSideFullHecke.Kleiman2.modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (Fin.elim0 : Fin 0 → Ω))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, -⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `(hc (Sum.inl ()) (hx (c (Sum.inl ())))).elim`. Introduce and unpack `⟨c, -⟩`. Conclude with `(c ()).elim0`.
+A detailed English derivation is pending.
 -/
 theorem veryAmple_of_forall_eq_zero (n : ℤ) {m : ℕ} (s : Fin m → Ω) (hx : ∀ i, x i = 0) :
     IndefiniteRowSideFullHecke.Kleiman2.VeryAmple S (graphVec x s) (graphDeg n) := by
@@ -1049,7 +1029,7 @@ theorem veryAmple_of_forall_eq_zero (n : ℤ) {m : ℕ} (s : Fin m → Ω) (hx :
 end Zero
 
 /- English proof (translation)
-Introduce `S _ N Ω _ _ x Q n m s hgen`. Distinguish the cases in `hx : ∃ i, x i ≠ 0`. Conclude with `⟨fun ⟨_, _, hva⟩ => veryAmple_of_isVeryAmpleBy Q n s hgen hx hva, isVeryAmple_of_veryAmple Q n s hgen hx⟩`. Simplify using `only [not_exists, not_not] at hx`. Conclude with `iff_of_true (isVeryAmple_of_forall_eq_zero Q hx) (veryAmple_of_forall_eq_zero n s hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem VeryAmpleEq.full : VeryAmpleEq.Statement := by
   intro S _ N Ω _ _ x Q n m s hgen

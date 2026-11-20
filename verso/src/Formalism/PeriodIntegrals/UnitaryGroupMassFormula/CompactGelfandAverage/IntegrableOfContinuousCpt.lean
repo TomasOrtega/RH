@@ -9,7 +9,7 @@ namespace PI.UnitaryGroupMassFormula.GelfCpt
 open MeasureTheory Matrix
 
 /- English proof (translation)
-The claim follows from `hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace F)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_continuous_cpt {X : Type} [TopologicalSpace X] [CompactSpace X]
     [MeasurableSpace X] [OpensMeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν]
@@ -22,21 +22,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Compa
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[integral_mul_const]`. Use `_ = ∫ x, ∑ k, f₁ x * R x i k * (∫ y, f₂ y * R y k j ∂μ) ∂μ := by`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finsetSum]`. Introduce `k _`. Conclude with `integrable_of_continuous_cpt μ ((h₁.mul (hR i k)).mul continuous_const)`. Use `_ = ∫ x, ∫ y, f₁ x * f₂ y * R (x * y) i j ∂μ ∂μ := by`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Establish `e : ∀ y, f₁ x * f₂ y * R (x * y) i j = ∑ k, f₁ x * R x i k * (f₂ y * R y k j)`. Introduce `y`. Rewrite using `[hRm, Matrix.mul_apply, Finset.mul_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[integral_finsetSum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[integral_const_mul]`. Introduce `k _`. Conclude with `integrable_of_continuous_cpt μ (continuous_const.mul (h₂.mul (hR k j)))`. Use `_ = ∫ x, ∫ z, f₁ x * f₂ (x⁻¹ * z) * R z i j ∂μ ∂μ := by`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← integral_mul_left_eq_self (fun z => f₁ x * f₂ (x⁻¹ * z) * R z i j) x]`. Simplify using `only [inv_mul_cancel_left]`. Use `_ = ∫ z, ∫ x, f₁ x * f₂ (x⁻¹ * z) * R z i j ∂μ ∂μ := by`.
-
-Rewrite using `[integral_integral_swap]`. Conclude with `integrable_of_continuous_cpt (μ.prod μ) (F := Function.uncurry fun x z => f₁ x * f₂ (x⁻¹ * z) * R z i j) (((h₁.comp continuous_fst).mul (h₂.comp (continuous_fst.inv.mul continuous_snd))).mul ((hR i j).comp continuous_snd))`. Use `_ = ∫ z, (∫ x, f₁ x * f₂ (x⁻¹ * z) ∂μ) * R z i j ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `z`.
-
-Rewrite using `[integral_mul_const]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_entry {N : ℕ} (μ : Measure G) [μ.IsHaarMeasure] (R : G → Matrix (Fin N) (Fin N) ℂ)
     (hR : ∀ i j, Continuous fun g => R g i j) (hRm : ∀ x y, R (x * y) = R x * R y)
@@ -75,7 +71,7 @@ theorem mul_entry {N : ℕ} (μ : Measure G) [μ.IsHaarMeasure] (R : G → Matri
 end
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ N ρ hc f₁ f₂ h₁ h₂`. Use extensionality with `i j`. Simplify using `only [intMat, Matrix.of_apply, Matrix.mul_apply]`. Apply the tactic sequence `exact mul_entry μ (fun g => ((ρ g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)) (fun i j => hc.matrix_elem i j) (fun x y => by simp only [map_mul, Units.val_mul]) f₁ f₂ h₁ h₂ i j`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulStep : MulStep := by
   intro G _ _ _ _ _ _ _ _ μ _ N ρ hc f₁ f₂ h₁ h₂

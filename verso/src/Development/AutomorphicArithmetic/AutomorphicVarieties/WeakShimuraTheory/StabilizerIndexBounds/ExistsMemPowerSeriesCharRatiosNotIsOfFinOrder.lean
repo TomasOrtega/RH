@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 open IsLocalRing Polynomial Matrix UpperTheory.V
 
 /- English proof (translation)
-Establish `: CharP (PowerSeries K) l` using `charP_of_injective_ringHom (f := PowerSeries.C) PowerSeries.C_injective l`. Apply `Units.ext` to reduce the goal to its premises. Use `UpperTheory.V.Pr.T.oneUnitTF l (y : PowerSeries K) m hm ?_ ?_` and prove the remaining obligations. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff]`. Simplify using `[hc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, hy, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma power_series_unit_eq_one_of_torsion (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [CharP K l]
     (y : (PowerSeries K)ˣ) (m : ℕ) (hm : m ≠ 0)
@@ -22,15 +22,15 @@ private lemma power_series_unit_eq_one_of_torsion (l : ℕ) [Fact l.Prime] (K : 
   · rw [← Units.val_pow_eq_pow_val, hy, Units.val_one]
 
 /- English proof (translation)
-Introduce `l _ H K _ _ _ _ n ψ N h`. Use `Fintype.ofFinite K` as an intermediate fact. Establish `hpos : 0 < Fintype.card K - 1` using `Nat.sub_pos_of_lt Fintype.one_lt_card`. Establish `hunit : ∀ y : (PowerSeries K)ˣ, PowerSeries.constantCoeff (y : PowerSeries K) ≠ 0` using `fun y => (y.isUnit.map PowerSeries.constantCoeff).ne_zero`. Establish `key` using `UpperTheory.V.Pr.commonFree N (PowerSeries K)ˣ {p : Fin n × Fin n // p.1 ≠ p.2} (fun p => (ψ p.1.1 / ψ p.1.2).comp N.subtype) (Fintype.card K - 1) hpos ?_ ?_`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `key`. Use `⟨g, g.2, fun i j hij hf => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, he⟩` from `isOfFinOrder_iff_pow_eq_one.1 hf`. Conclude with `hg ⟨(i, j), hij⟩ m hm (by simpa using he)`. Introduce `p g m hm he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `power_series_unit_eq_one_of_torsion l K _ m hm.ne' ?_ ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `FiniteField.pow_card_sub_one_eq_one _ (hunit _)`. Rewrite using `[← pow_mul, mul_comm, pow_mul, he, one_pow]`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, hc, hne⟩` from `h p.1.1 p.1.2 p.2`. Use `⟨⟨g, hg⟩, fun he => hne ?_⟩` and prove the remaining obligations. Establish `h1 : ψ p.1.1 g / ψ p.1.2 g = 1`. Use `power_series_unit_eq_one_of_torsion l K _ _ hpos.ne' ?_ (by simpa using he)` and prove the remaining obligations. Establish `h2 : (ψ p.1.1 g / ψ p.1.2 g) * ψ p.1.2 g = ψ p.1.1 g` using `div_mul_cancel _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrArg (fun y : (PowerSeries K)ˣ => PowerSeries.constantCoeff (y : PowerSeries K)) h2`. Simplify using `only [Units.val_mul, map_mul] at h3`. Rewrite `h3` using `[hc]`. Conclude with `mul_right_cancel₀ (hunit (ψ p.1.2 g)) (h3.trans (one_mul _).symm)`. Conclude with `div_eq_one.1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.exists_mem_powerSeries_char_ratios_not_isOfFinOrder :
     ∀ (l : ℕ) [Fact l.Prime] (H K : Type) [Group H] [Field K] [Finite K] [CharP K l] (n : ℕ)

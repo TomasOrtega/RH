@@ -13,7 +13,7 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `gsEquiv_toGS' Kf.1 (S : Set (HeightOneSpectrum (𝓞 Kf.1)))`. Take `⟨ιs, ev, hc, hι, hev⟩` from `localCmp2' Kf.1 S Av hAv e he`. Take `⟨A, hA, eM, hM⟩` from `repCmp e ρ hρ`. Take `⟨eD, hD, hDζ⟩` from `dualCmp' Kf S hr ζ hζ hS e he μ hμ ρ A eM hM`. Conclude with `⟨⟨e, he, ιs, ev, hc, hev, hι, A, hA, eM, hM, eD, hD, hDζ⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem foundData_nonempty (Kf : FiniteSubfield) [NumberField Kf.1]
     [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)] (S : Finset (HeightOneSpectrum (𝓞 Kf.1))) {l r : ℕ}

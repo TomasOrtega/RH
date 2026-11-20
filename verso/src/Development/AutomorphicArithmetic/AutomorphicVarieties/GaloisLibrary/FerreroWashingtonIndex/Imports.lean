@@ -1,7 +1,7 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.FerreroWashingtonIndex.FerreroWashington
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.FW.ferreroWashington`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.main :
     UpperTheory.V.Published.FerreroWashington :=

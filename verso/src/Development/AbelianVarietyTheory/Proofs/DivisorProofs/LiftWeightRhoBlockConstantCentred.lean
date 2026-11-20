@@ -9,17 +9,17 @@ noncomputable section
 namespace GlobalTheory.ExpTie.Lift
 
 /- English proof (translation)
-Introduce `D L j τ hv`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `ht0` using `D.R.t_odd.pos`. Establish `hkc : Formalism.CohomologicalDescent.ShortWeightBounds.kc (parOf L j) + (wts L j).j τ = D.R.k + (j : ℕ)`. Simplify using `only [Formalism.CohomologicalDescent.ShortWeightBounds.kc, parOf, wts]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `htt : (parOf L j).t = D.R.t` using `rfl`. Establish `he : (wts L j).e τ = wj D ((j : ℕ) + 1) τ` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce `a ha1 ha2`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha1`, the goal using `[hkc]`. Rewrite `ha2` using `[hkc, htt]`. Take `⟨s, rfl⟩` from `Nat.exists_eq_add_of_le ha1`. Establish `h1` using `hv.2.2.1 s (by omega)`. Establish `h0` using `hv.2.2.1 0 ht0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [add_zero, Nat.cast_zero, sub_zero] at h0`. Establish `hU : ((wts L j).U (parOf L j) τ (D.R.k + j + s) : ℝ) = (((wts L j).U (parOf L j) τ (D.R.k + j) - s : ℤ) : ℝ)` using `by push_cast; linarith`. Establish `hU'` using `Int.cast_injective (α := ℝ) hU`. Express the relevant statement in the definitionally equal form `Formalism.CohomologicalDescent.UnitNormBounds.UN _ _ _ = Formalism.CohomologicalDescent.UnitNormBounds.UN _ _ _ - _ at hU'`. Unfold `Formalism.CohomologicalDescent.UnitNormBounds.UN at hU'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Move the coercions through the operations in `at hU'`. Use linear arithmetic over natural numbers and integers. Establish `hrow : Formalism.CohomologicalDescent.ShortWeightBounds.kc (parOf L j) + (wts L j).j τ + (parOf L j).t - 1 = D.R.k + (j : ℕ) + (D.R.t - 1)`. Rewrite using `[hkc, htt]`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h` using `hv.2.2.1 (D.R.t - 1) (by omega)`. Establish `hts : ((D.R.t - 1 : ℕ) : ℝ) = (D.R.t : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]; simp`. Rewrite `h` using `[hts]`. Rewrite using `[Formalism.CohomologicalDescent.ShortWeightBounds.Wts.bot, hrow, htt, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

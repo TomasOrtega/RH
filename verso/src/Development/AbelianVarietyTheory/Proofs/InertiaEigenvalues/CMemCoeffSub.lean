@@ -27,9 +27,9 @@ def coeffSub {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (m : ℕ) :
   algebraMap_mem' := fun p d => T.algebraMap_mem (MvPolynomial.coeff d p)
 
 /- English proof (translation)
-Use `show ∀ d : Fin m →₀ ℕ, (fun x => MvPolynomial.coeff d (MvPolynomial.C (t x) : MvPolynomial (Fin m) O)) ∈ T`. Introduce `d`. Break down `eq_or_ne d 0 with rfl | hd` into its components or cases. Simplify using `using ht`. Establish `h0 : (fun x => MvPolynomial.coeff d (MvPolynomial.C (t x) : MvPolynomial (Fin m) O)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[MvPolynomial.coeff_C, Ne.symm hd]`. Rewrite using `[h0]`. Conclude with `T.zero_mem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_mem_coeffSub {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (m : ℕ)
     (t : X → O) (ht : t ∈ T) : (fun x => MvPolynomial.C (t x)) ∈ coeffSub T m := by
@@ -45,17 +45,17 @@ theorem C_mem_coeffSub {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (m
     exact T.zero_mem
 
 /- English proof (translation)
-Set `e : Fin (Fintype.card J) ≃ J` to `(Fintype.equivFin J).symm`. Set `a : Fin (Fintype.card J) → X → Matrix (Fin n) (Fin n) O` to `fun k => b (e k)`. Set `A : Matrix (Fin n) (Fin n) (MvPolynomial (Fin (Fintype.card J)) (X → O))` to `Matrix.of fun i j => ∑ k, MvPolynomial.X k * MvPolynomial.C (fun x => a k x i j)`. Establish `hcoef : ∀ d, MvPolynomial.coeff d A.det ∈ T`. Introduce `d`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : MvPolynomial.coeff d A.det = fun x => MvPolynomial.coeff d (Matrix.det (∑ k, (MvPolynomial.X k : MvPolynomial (Fin (Fintype.card J)) O) • (a k x).map MvPolynomial.C))`. Use function extensionality and compare the values at `x`. Establish `h2 : MvPolynomial.map (Pi.evalRingHom (fun _ : X => O) x) A.det = Matrix.det (∑ k, (MvPolynomial.X k : MvPolynomial (Fin (Fintype.card J)) O) • (a k x).map MvPolynomial.C)`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[A, Matrix.sum_apply]`. Rewrite using `[← h2, MvPolynomial.coeff_map]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hR _ a (fun k => hb (e k)) d`. Establish `h3 : ∀ x, Matrix.det (∑ j, c j • (b j x).map φ) = MvPolynomial.eval₂ (φ.comp (Pi.evalRingHom (fun _ : X => O) x)) (fun k => c (e k)) A.det`. Introduce `x`. Rewrite using `[← MvPolynomial.coe_eval₂Hom, RingHom.map_det]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [A, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_sum, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X, MvPolynomial.eval₂_C, RingHom.comp_apply, Pi.evalRingHom_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(e.sum_comp (fun j' => c j' * φ (b j' x i j))).symm`. Establish `key : (fun x => Matrix.det (∑ j, c j • (b j x).map φ)) = ∑ d ∈ A.det.support, (fun x => φ (MvPolynomial.coeff d A.det x)) * algebraMap Q (X → Q) (∏ k, c (e k) ^ d k)`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, MvPolynomial.eval₂_eq', Finset.sum_apply]`. Simplify using the standard rewrite rules. Rewrite using `[key]`. Conclude with `S.sum_mem fun d _ => S.mul_mem (hS _ (hcoef d)) (S.algebraMap_mem _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_comb_mem {O X Q : Type} [CommRing O] [CommRing Q] (T : Subalgebra O (X → O)) {n : ℕ}
     (R : Subalgebra O (X → Matrix (Fin n) (Fin n) O))
@@ -111,30 +111,28 @@ theorem det_comb_mem {O X Q : Type} [CommRing O] [CommRing Q] (T : Subalgebra O 
   exact S.sum_mem fun d _ => S.mul_mem (hS _ (hcoef d)) (S.algebraMap_mem _)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_coeffSub_iff_forall_coeff_mem {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (m : ℕ)
     (f : X → MvPolynomial (Fin m) O) :
     f ∈ coeffSub T m ↔ ∀ d, (fun x => MvPolynomial.coeff d (f x)) ∈ T := Iff.rfl
 
 /- English proof (translation)
-Introduce `O X _ T n R hR m g Θ hΘ d`. Set `ψ : (X → Matrix (Fin n) (Fin n) O) →+* (X → Matrix (Fin n) (Fin n) (MvPolynomial (Fin m) O))` to `RingHom.compLeft (MvPolynomial.C : O →+* MvPolynomial (Fin m) O).mapMatrix X`. Establish `hψ : ∀ (a : X → Matrix (Fin n) (Fin n) O) x, ψ a x = (a x).map MvPolynomial.C` using `fun _ _ => rfl`. Set `s : Submonoid (X → Matrix (Fin n) (Fin n) (MvPolynomial (Fin m) O))` to `R.toSubmonoid.map ψ`. Set `R' : Subalgebra (MvPolynomial (Fin m) O) (X → Matrix (Fin n) (Fin n) (MvPolynomial (Fin m) O))` to `Algebra.adjoin (MvPolynomial (Fin m) O) (s : Set _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hrep : ∀ F ∈ R', ∃ (N : ℕ) (c : Fin N → MvPolynomial (Fin m) O) (b : Fin N → X → Matrix (Fin n) (Fin n) O), (∀ j, b j ∈ R) ∧ F = ∑ j, c j • ψ (b j)`. Introduce `F hF`. Establish `hF' : F ∈ Submodule.span (MvPolynomial (Fin m) O) (s : Set _)`. Establish `h` using `Algebra.adjoin_eq_span (R := MvPolynomial (Fin m) O) (s : Set (X → Matrix (Fin n) (Fin n) (MvPolynomial (Fin m) O)))`. Rewrite `h` using `[Submonoid.closure_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `hF`. Take `⟨N, c, b, hsum⟩` from `Submodule.mem_span_set'.mp hF'`. Use `choose b' hb' hbe using fun j => Submonoid.mem_map.mp (b j).2`. Use `⟨N, c, b', fun j => hb' j, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hsum]`. Simplify using `[hbe]`. Establish `hR' : ∀ (m' : ℕ) (a : Fin m' → X → Matrix (Fin n) (Fin n) (MvPolynomial (Fin m) O)), (∀ k, a k ∈ R') → ∀ d' : Fin m' →₀ ℕ, (fun x => MvPolynomial.coeff d' (Matrix.det (∑ k, (MvPolynomial.X k : MvPolynomial (Fin m') (MvPolynomial (Fin m) O)) • (a k x).map MvPolynomial.C))) ∈ coeff …`. Introduce `m' a ha d'`. Use `choose N c b hb hab using fun k => hrep (a k) (ha k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ t ∈ T, (fun x => ((MvPolynomial.C : MvPolynomial (Fin m) O →+* MvPolynomial (Fin m') (MvPolynomial (Fin m) O)).comp MvPolynomial.C) (t x)) ∈ coeffSub (coeffSub T m) m'` using `fun t ht => C_mem_coeffSub (coeffSub T m) m' _ (C_mem_coeffSub T m t ht)`. Establish `h` using `det_comb_mem T R hR ((MvPolynomial.C : MvPolynomial (Fin m) O →+* MvPolynomial (Fin m') (MvPolynomial (Fin m) O)).comp MvPolynomial.C) (coeffSub (coeffSub T m) m') hS (J := Σ k, Fin (N k)) (fun kj => b kj.1 kj.2) (fun kj => hb kj.1 kj.2) (fun kj => MvPolynomial.X kj.1 * MvPolynom …`. Establish `heq : ∀ x, (∑ kj : (Σ k, Fin (N k)), (MvPolynomial.X kj.1 * MvPolynomial.C (c kj.1 kj.2) : MvPolynomial (Fin m') (MvPolynomial (Fin m) O)) • (b kj.1 kj.2 x).map ((MvPolynomial.C : MvPolynomial (Fin m) O →+* MvPolynomial (Fin m') (MvPolynomial (Fin m) O)).comp MvPolynomial.C)) = ∑ …`. Introduce `x`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hab, hψ, Matrix.sum_apply, Fintype.sum_sigma, Finset.mul_sum, mul_assoc, Finset.sum_apply]`. Simplify using `only [heq] at h`. Conclude with `(mem_coeffSub_iff_forall_coeff_mem _ _ _).mp h d'`. Establish `hblk : ∀ p q, (fun x => ∑ k, (MvPolynomial.X k : MvPolynomial (Fin m) O) • (Θ k p q x).map MvPolynomial.C) ∈ R'`. Introduce `p q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (fun x => ∑ k, (MvPolynomial.X k : MvPolynomial (Fin m) O) • (Θ k p q x).map MvPolynomial.C) = ∑ k, (MvPolynomial.X k : MvPolynomial (Fin m) O) • ψ (Θ k p q)`. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, hψ]`. Rewrite using `[h4]`. Conclude with `R'.sum_mem fun k _ => R'.smul_mem (Algebra.subset_adjoin (Submonoid.mem_map.mpr ⟨Θ k p q, hΘ k p q, rfl⟩)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h5` using `(mem_coeffSub_iff_forall_coeff_mem _ _ _).mp (GlobalTheory.BlockDet.main (coeffSub T m) n R' hR' g _ hblk) d`. Establish `h6 : ∀ x, (Matrix.of fun (pa qb : Fin g × Fin n) => (∑ k, (MvPolynomial.X k : MvPolynomial (Fin m) O) • (Θ k pa.1 qb.1 x).map MvPolynomial.C) pa.2 qb.2) = Matrix.of fun (pa qb : Fin g × Fin n) => ∑ k, (MvPolynomial.X k : MvPolynomial (Fin m) O) * MvPolynomial.C (Θ k pa.1 qb.1 x p …`. Introduce `x`. Use extensionality with `pa qb`. Simplify using `[Matrix.sum_apply]`.
-
-Simplify using `only [h6] at h5`. Conclude with `h5`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (n : ℕ) (R : Subalgebra O (X → Matrix (Fin n) (Fin n) O)), (∀ (m : ℕ) (a : Fin m → X → Matrix (Fin n) (Fin n) O), (∀ k, a k ∈ R) → ∀ d : Fin m →₀ ℕ, (fun x => MvPolynomial.coeff d (Matrix.det (∑ k, (MvPolynomial.X k : MvPolynomial (Fin m) O) • (a k x).map MvPolynomial.C))) ∈ T) → ∀ (m g : ℕ) (Θ : Fin m → Fin g → Fin g → X → Matrix (Fin n) (Fin n) O), (∀ k p q, Θ k p q ∈ R) → ∀ d : Fin m →₀ ℕ, (fun x => MvPolynomial.coeff d (Matrix.det (Matrix.of fun (pa qb : Fin g × Fin n) => ∑ k, (MvPolynomial.X k : MvPolynomial (Fin m) O) * MvPolynomial.C (Θ k pa.1 qb.1 x pa.2 qb.2)))) ∈ T := by
   intro O X _ T n R hR m g Θ hΘ d

@@ -12,9 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.ChebSplitDense
 
 /- English proof (translation)
-Introduce `S`. Take `⟨A, hA, hsp⟩` from `GlobalTheory.FrobDense.exists_finite_split H`. Use `(hC.dense (F := H.E) (Ω := N.Om) (hA.union S.finite_toSet)).mono ?_` and prove the remaining obligations. Introduce and unpack `σ ⟨v, hv, hd, B, hB, hσ⟩`. Simplify using `only [Set.mem_union, Finset.mem_coe, not_or] at hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨v, hv.2, hsp v hv.1 hd, B, hB, hσ⟩`.
+Supply the required witnesses or components.
 -/
 theorem chebSplit (hC : GlobalTheory.Published.ChebotarevDegreeOne) {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
     (N : NData R H what₂) : GlobalTheory.RowTie.ChebSplit N := by
@@ -26,7 +26,7 @@ theorem chebSplit (hC : GlobalTheory.Published.ChebotarevDegreeOne) {R : Ranks} 
   exact ⟨v, hv.2, hsp v hv.1 hd, B, hB, hσ⟩
 
 /- English proof (translation)
-Introduce `hC D` and use `chebSplit hC D.nd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chebSplit_nd : GlobalTheory.Published.ChebotarevDegreeOne → ∀ D : D7, GlobalTheory.RowTie.ChebSplit D.nd :=
   fun hC D => chebSplit hC D.nd

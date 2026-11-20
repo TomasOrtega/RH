@@ -29,7 +29,7 @@ def idemSf (S : Finset (HeightOneSpectrum (𝓞 E))) : Af E :=
     · simp only [h, if_false]; exact zero_mem _⟩
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if w ∈ S then (1 : w.adicCompletion E) else 0) * (if w ∈ S then 1 else 0) = if w ∈ S then 1 else 0`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isIdempotentElem_idemSf (S : Finset (HeightOneSpectrum (𝓞 E))) : IsIdempotentElem (idemSf S) := by
   classical
@@ -40,7 +40,7 @@ theorem isIdempotentElem_idemSf (S : Finset (HeightOneSpectrum (𝓞 E))) : IsId
 def idemS (S : Finset (HeightOneSpectrum (𝓞 E))) : Ad E := ((1 : InfiniteAdeleRing E), idemSf S)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (mul_one _) (isIdempotentElem_idemSf S).eq`.
+A detailed English derivation is pending.
 -/
 theorem isIdempotentElem_idemS (S : Finset (HeightOneSpectrum (𝓞 E))) : IsIdempotentElem (idemS S) :=
   Prod.ext (mul_one _) (isIdempotentElem_idemSf S).eq
@@ -94,13 +94,13 @@ def Scof (M : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) R) : Matrix (Fi
   Aof M - Bof M * (Dof M)⁻¹ * Cof M
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[unblk, blk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem unblk_blk (M : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) R) : unblk (blk M) = M := by
   ext i j; simp [unblk, blk]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[unblk, blk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_unblk (P : Matrix (Fin (m + 1) ⊕ Fin (r + 1)) (Fin (m + 1) ⊕ Fin (r + 1)) R) : blk (unblk P) = P := by
   ext i j; simp [unblk, blk]
@@ -113,7 +113,7 @@ def mkGL {R : Type} [CommRing R] {k : ℕ} (M : Matrix (Fin k) (Fin k) R) : GL (
   if h : IsUnit M.det then Matrix.nonsingInvUnit M h else 1
 
 /- English proof (translation)
-Rewrite using `[mkGL, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_mkGL {R : Type} [CommRing R] {k : ℕ} {M : Matrix (Fin k) (Fin k) R} (h : IsUnit M.det) :
     ((mkGL M : GL (Fin k) R) : Matrix (Fin k) (Fin k) R) = M := by

@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 open scoped Classical
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add₀ ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem zpow_sum_eq_prod_zpow {ι : Type*} {a : ℂ} (ha : a ≠ 0) (s : Finset ι) (e : ι → ℤ) :
     a ^ (∑ u ∈ s, e u) = ∏ u ∈ s, a ^ e u := by
@@ -13,15 +13,15 @@ private theorem zpow_sum_eq_prod_zpow {ι : Type*} {a : ℂ} (ha : a ≠ 0) (s :
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add₀ ha, ih]
 
 /- English proof (translation)
-Introduce `hXi E _ _ _ n W j x ζ hζ k`. Take `⟨γ, t, h1, h2, h3, h4⟩` from `hζ.onRat k`. Use `⟨γ, h1, fun v => ?_⟩` and prove the remaining obligations. Establish `hs : xi0 W j γ v = _` using `hXi E n W j γ.1.1 γ.1.2 t h2 v`. Rewrite using `[hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[h4]`. Establish `e : ∀ u : InfinitePlace E, u.embedding (t : E) ^ (-∑ i, (W u).w i) = ∏ φ : E →+* ℂ, (if φ x = -u.embedding x then φ (k : E) else 1) ^ (-∑ i, (W u).w i)`. Introduce `u`. Rewrite using `[h3 u.embedding, Finset.prod_filter, Finset.prod_zpow]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl fun u _ => e u, Finset.prod_comm, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun φ _ => ?_` and prove the remaining obligations. Establish `ha : φ (k : E) ≠ 0` using `(map_ne_zero φ).2 k.ne_zero`. Unfold `mOf`. Rewrite using `[zpow_sub₀ ha, div_eq_mul_inv, zpow_sum_eq_prod_zpow ha, ← Finset.prod_inv_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun u _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : φ x = -u.embedding x`. Establish `h' : u.embedding x = -φ x` using `by rw [h, neg_neg]`. Rewrite using `[if_pos h, if_pos h', _root_.zpow_neg]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ¬ u.embedding x = -φ x` using `fun h'' => h (by rw [h'', neg_neg])`. Rewrite using `[if_neg h, if_neg h']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pXiZeta_of :
     UpperTheory.Gal.CertificateRingHomMap.XiScalar → UpperTheory.Gal.CertificateRingHomMap.XiZeta := by

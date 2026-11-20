@@ -9,9 +9,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Establish `h : ∀ i, eval x (linPoly A i) = A.mulVec x i`. Introduce `i`. Simplify using `[linPoly, Matrix.mulVec, dotProduct, map_sum]`. Rewrite using `[pullback, aeval_eq_bind₁]`. Express the relevant statement in the definitionally equal form `eval₂Hom (RingHom.id ℂ) x (bind₁ (linPoly A) P) = eval₂Hom (RingHom.id ℂ) (A.mulVec x) P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[eval₂Hom_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `h i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eval_pullback {n d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ) (P : MvPolynomial (Fin d) ℂ)
     (x : Fin n → ℂ) : eval x (pullback A P) = eval (A.mulVec x) P := by
@@ -26,7 +26,7 @@ theorem eval_pullback {n d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ) (P : MvPolyno
   exact h i
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `key : ∀ I : Ideal (MvPolynomial (Fin n) ℂ), (∀ q ∈ I, eval x q = 0) ↔ I ≤ RingHom.ker (eval x)` using `fun I => ⟨fun h q hq => (RingHom.mem_ker).2 (h q hq), fun h q hq => (RingHom.mem_ker).1 (h hq)⟩`. Simplify using `only [zeroSet, Set.mem_ofPred_eq, Set.mem_inter_iff]`. Rewrite using `[key, key, sup_le_iff, Ideal.span_singleton_le_iff_mem, RingHom.mem_ker]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zeroSet_sup_span {n : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (f : MvPolynomial (Fin n) ℂ) :
     zeroSet (J ⊔ Ideal.span {f}) = zeroSet J ∩ {x | eval x f = 0} := by
@@ -38,15 +38,13 @@ theorem zeroSet_sup_span {n : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (f : M
   rw [key, key, sup_le_iff, Ideal.span_singleton_le_iff_mem, RingHom.mem_ker]
 
 /- English proof (translation)
-Introduce `n d J A hJ hd hA P hP`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zeroSet_sup_span]`. Use extensionality with `x`. Simplify using `[eval_pullback]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `Q hQ`. Use `hJ` as an intermediate fact. Use `set f := pullback A P with hfdef`. Establish `hf : Ideal.Quotient.mk J f ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hP` to reduce the goal to its premises. Apply `hA.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Simplify `h0` using `[projHom]`. Establish `hnz : Ideal.Quotient.mk J f ∈ nonZeroDivisors (MvPolynomial (Fin n) ℂ ⧸ J)` using `mem_nonZeroDivisors_of_ne_zero hf`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor hnz`. Establish `hmap : (Ideal.span {f}).map (Ideal.Quotient.mk J) = Ideal.span {Ideal.Quotient.mk J f}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Rewrite `h1` using `[← hmap, ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotSup J _), hd]`. Establish `h2 : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ Q) ≤ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ (J ⊔ Ideal.span {f}))` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hQ.1.2) (Ideal.Quotient.factor_surjective hQ.1.2)`.
-
-Conclude with `lt_of_le_of_lt h2 (ENat.WithBot.add_one_le_natCast_iff.mp h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem BadSetSmaller.proof : BadSetSmaller.Statement := by
   intro n d J A hJ hd hA P hP

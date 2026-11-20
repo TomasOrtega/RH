@@ -9,9 +9,9 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.R3
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z _ hH _`. Establish `e1 : Module.finrank D.what₂.LL D.div.RR.V = Fintype.card D.div.RR.ι` using `Module.finrank_eq_card_basis D.div.RR.b`. Establish `e2 : Module.finrank ℂ D.what₂.EE = Fintype.card D.div.RR.ι` using `Module.finrank_eq_card_basis (Module.Basis.mk D.jEE_basis.1 (le_of_eq D.jEE_basis.2.symm))`. Establish `e3 : Module.finrank ℂ D.what₂.EE = D.what₂.Drows`. Simplify using `using Module.finrank_eq_card_basis D.what₂.onb.toBasis`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : Module.finrank D.what₂.LL D.div.RR.V = ((R.toCx3 F).data F.cr true).D`. Rewrite using `[← Z.eRR.finrank_eq, Module.finrank_fin_fun]`. Establish `h3 : 0 < ((R.toCx3 F).data F.cr true).D` using `hH.prim.pos true`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem drows_pos : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → Lam3 Z → 0 < D.what₂.Drows := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z _ hH _

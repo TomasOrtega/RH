@@ -9,39 +9,35 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M n d J T hT bs v ψv S σS ϖ ε hG μv νv lam L hμ hν hlam hL z hz`. Use `set q : ℕ := Ideal.absNorm v.asIdeal with hq`. Establish `hR : IsUnrQuad S σS hG.pS q ε` using `hG.quad`. Establish `hq1 : 1 < q` using `hR.one_lt`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (by omega : q ≠ 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ k, Finite (S ⧸ lev hG.pS k)` using `fun k => Nat.finite_of_card_ne_zero (by`. Rewrite using `[GlobalTheory.T.unramified_quotient_card S σS hG.pS q ε hR k]; exact pow_ne_zero _ (by omega))`. Use `letI : ∀ k, Fintype (S ⧸ lev hG.pS k) := fun k => Fintype.ofFinite _`. Use `letI : ∀ k, Fintype (hermMod σS hG.pS n k) := fun k => Fintype.ofFinite _`. Establish `hε1 : ‖(ε : ℂ)‖ = 1`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hR.eps with ⟨rfl, -⟩ | ⟨rfl, -⟩ <;> simp`. Use `set f := whI (Fv F v) σ J ψv μv ((latV bs v).indicator 1) (nu2 lam L L) (hermOf (Fv F v) σ T hT).1 z with hf`. Establish `hinv : ∀ b h, h ∈ H0 S σ n → f (b + h) = f b` using `fun b h hh => hInv F E σ M n d J T bs v ψv S σS ϖ ε hG hT μv lam L hL z b h hh`. Set `fbar : HermR (Fv F v) σ n ⧸ H0 S σ n → ℂ` to `fun c => f (Quotient.out c)`. Establish `hfbar : ∀ g, f g = fbar (QuotientAddGroup.mk g)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g`. Establish `h1 : (QuotientAddGroup.mk (Quotient.out (QuotientAddGroup.mk g : HermR (Fv F v) σ n ⧸ H0 S σ n)) : HermR (Fv F v) σ n ⧸ H0 S σ n) = QuotientAddGroup.mk g` using `Quotient.out_eq' _`. Rewrite `h1` using `[QuotientAddGroup.eq]`. Use `hinv (Quotient.out (QuotientAddGroup.mk g : HermR (Fv F v) σ n ⧸ H0 S σ n)) _ h1` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Use `set t : ℂ := (ε : ℂ) ^ M * (q : ℂ) ^ (-(2 * z + n)) with ht`. Establish `hval : ∀ k (B : hermMod σS hG.pS n k), fbar (hG.iota k B) = t ^ Nat.log (q ^ 2) (nuAt hG.pS B.1) * hG.psiLev (c` using `-1) (neg_mem (one_mem _)) k (Matrix.trace (red hG.pS k (matS S T hG.T_int) * B.1)) := by`. Introduce `k B`. Rewrite using `[GoodLoc.iota, ← hfbar]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hG.f_lev hNP hJ hNL hPL hT μv hμ lam L hlam hL z k B`. Set `C : ℕ → Finset (HermR (Fv F v) σ n ⧸ H0 S σ n)` to `fun k => Finset.univ.image (hG.iota k)`. Establish `hCmono : Monotone C`. Use `monotone_nat_of_le_succ fun k => ?_` and prove the remaining obligations. Introduce `c hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨B, -, rfl⟩` from `Finset.mem_image.1 hc`. Take `⟨B', hB'⟩` from `hG.iota_succ hCL k B`. Conclude with `Finset.mem_image.2 ⟨B', Finset.mem_univ _, hB'⟩`. Establish `hCcov : ∀ c, ∃ k, c ∈ C k`. Introduce `c`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, B, rfl⟩` from `hG.iota_surj hCL hEx c`. Conclude with `⟨k, Finset.mem_image.2 ⟨B, Finset.mem_univ _, rfl⟩⟩`. Establish `hsumC : ∀ k, ∑ c ∈ C k, fbar c = ∑ B : hermMod σS hG.pS n k, fbar (hG.iota k B)` using `fun k => Finset.sum_image fun B _ B' _ h => hG.iota_inj hCL k h`. Establish `hnormC : ∀ k, ∑ c ∈ C k, ‖fbar c‖ = ∑ B : hermMod σS hG.pS n k, ‖t‖ ^ Nat.log (q ^ 2) (nuAt hG.pS B.1)`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_image fun B _ B' _ h => hG.iota_inj hCL k h]`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Rewrite using `[hval, norm_mul, norm_pow, AddChar.norm_apply, mul_one]`. Establish `htn : ‖t‖ = (q : ℝ) ^ (-(2 * z.re + n))`. Rewrite using `[ht, norm_mul, norm_pow, hε1, one_pow, one_mul, Complex.norm_natCast_cpow_of_pos (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using the standard rewrite rules. Establish `hlt : (q : ℝ) ^ (n ^ 2) * ‖t‖ < 1`. Rewrite using `[htn, ← Real.rpow_natCast, ← Real.rpow_add (by exact_mod_cast (by omega : 0 < q))]`. Apply `Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hq1)` to reduce the goal to its premises. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use polynomial arithmetic with `[sq_nonneg (n : ℝ), (Nat.cast_nonneg n : (0 : ℝ) ≤ n)]`. Establish `hbound : ∀ k, ∑ c ∈ C k, ‖fbar c‖ ≤ 1 / (1 - (q : ℝ) ^ (n ^ 2) * ‖t‖)`. Introduce `k`. Rewrite using `[hnormC]`. Use `hNB S σS hG.pS q ε hR n k ‖t‖ (norm_nonneg _) hlt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[tsum_fintype]`. Then use the resulting hypothesis. Establish `hlc : IsLevelChars σS hG.pS (hG.psiLev (c` using `-1) (neg_mem (one_mem _))) := hLC F E σ M n d J T bs v ψv S σS ϖ ε hG (-1) (neg_mem (one_mem _)) (by simp)`. Establish `hpoly : ∀ k, 1 ≤ k → ∑ c ∈ C k, fbar c = ∏ i : Fin n, (1 - t * ((ε : ℂ) * q) ^ (i : ℕ))`. Introduce `k hk`. Rewrite using `[hsumC, ← hP S σS hG.pS q ε hR _ hlc n (matS S T hG.T_int) hG.T_unimod k hk t, tsum_fintype]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Rewrite using `[hval, mul_comm]`. Take `⟨hsum, htend⟩` from `hTE _ fbar C hCmono hCcov ⟨_, hbound⟩`. Establish `htsum : ∑' c, fbar c = ∏ i : Fin n, (1 - t * ((ε : ℂ) * q) ^ (i : ℕ))`. Use `tendsto_nhds_unique htend ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with k hk`. Conclude with `(hpoly k hk).symm`. Use `haveI := hν.1`. Use `haveI := hCM F E σ M n d J T bs v ψv S σS ϖ ε hG |>.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hcount : Countable (HermR (Fv F v) σ n ⧸ H0 S σ n)`. Establish `: (Set.univ : Set (HermR (Fv F v) σ n ⧸ H0 S σ n)) ⊆ ⋃ k, Set.range (hG.iota k)` using `fun c _ => by`. Take `⟨k, B, rfl⟩` from `hG.iota_surj hCL hEx c`. Conclude with `Set.mem_iUnion.2 ⟨k, B, rfl⟩`. Conclude with `Set.countable_univ_iff.1 ((Set.countable_iUnion fun k => (Set.finite_range _).countable).mono this)`.
-
-Take `⟨hI1, hI2⟩` from `hCI _ νv (H0 S σ n) (hCM F E σ M n d J T bs v ψv S σS ϖ ε hG).2 (hVH F E σ M n d J T bs v ψv S σS ϖ ε hG νv hν) hcount f fbar hfbar`. Use `⟨hI1.2 hsum, ?_⟩` and prove the remaining obligations. Rewrite using `[hI2 hsum, htsum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
-
-Rewrite using `[ht, mul_pow, mul_mul_mul_comm, ← pow_add, ← Complex.cpow_natCast (q : ℂ) (i : ℕ), ← Complex.cpow_add _ _ hq0]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locC_of_steps (hP : UnrPoly) (hCI : CosetInt) (hTE : TsumExhaust) (hNP : NuPow) (hNB : NuBound)
     (hLC : LevChars) (hVH : HermitianLatticeVolumeOne) (hJ : JtLev) (hNL : NuLev) (hPL : PsiLev) (hEx : Exhaust) (hCL : ClassLev)

@@ -15,7 +15,7 @@ set_option autoImplicit false
 namespace GlobalTheory.RatDegZeros
 
 /- English proof (translation)
-Establish `h2 : Flat (spMap (Int.castRingHom ℚ))`. Use `(HasRingHomProperty.Spec_iff (P := @Flat)).mpr ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Module.Flat ℤ ℚ`. Conclude with `IsLocalization.flat ℚ (nonZeroDivisors ℤ)`. Conclude with `MorphismProperty.of_isPullback (ratFibre.isPullback p).flip h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem flat_fst {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) : Flat (ratFibre.fst p) := by
   have h2 : Flat (spMap (Int.castRingHom ℚ)) := by
@@ -25,7 +25,7 @@ theorem flat_fst {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) : Fla
   exact MorphismProperty.of_isPullback (ratFibre.isPullback p).flip h2
 
 /- English proof (translation)
-Introduce `k _ X p`. Establish `h1 : IsPreimmersion (spMap (Int.castRingHom ℚ))` using `IsPreimmersion.of_isLocalization (R := ℤ) (S := ℚ) (nonZeroDivisors ℤ)`. Establish `h3 : IsPreimmersion (ratFibre.fst p)` using `MorphismProperty.of_isPullback (ratFibre.isPullback p).flip h1`. Establish `h4` using `flat_fst p`. Conclude with `⟨fun y => GenSpread.isIso_stalkMap_of_flat _ y, (ratFibre.fst p).isEmbedding.injective⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isIso_stalkMap_and_injective : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k), (∀ y : ratFibre p, IsIso ((ratFibre.fst p).stalkMap y)) ∧ Function.Injective (ratFibre.fst p) := by
   intro k _ X p
@@ -36,9 +36,9 @@ theorem isIso_stalkMap_and_injective : ∀ (k : Type) [CommRing k] (X : Scheme.{
   exact ⟨fun y => GenSpread.isIso_stalkMap_of_flat _ y, (ratFibre.fst p).isEmbedding.injective⟩
 
 /- English proof (translation)
-Introduce `k _ X p x hx`. Set `q : Spec (X.residueField x) ⟶ Sp ℚ` to `Spec.map (CommRingCat.ofHom (algebraMap ℚ (X.residueField x)))`. Set `y0` to `(ratFibre.isPullback p).lift (X.fromSpecResidueField x) q (specZIsTerminal.hom_ext _ _)`. Set `z : Spec (X.residueField x)` to `IsLocalRing.closedPoint (X.residueField x)`. Use `⟨y0 z, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (y0 ≫ ratFibre.fst p) z = X.fromSpecResidueField x z`. Rewrite using `[(ratFibre.isPullback p).lift_fst]`. Rewrite `e` using `[Scheme.Hom.comp_apply]`. Conclude with `e.trans (X.fromSpecResidueField_apply x z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_fst : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (x : X), CharZero (X.residueField x) → x ∈ Set.range (ratFibre.fst p) := by
   intro k _ X p x hx
@@ -52,7 +52,7 @@ theorem mem_range_fst : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ 
   exact e.trans (X.fromSpecResidueField_apply x z)
 
 /- English proof (translation)
-Introduce `k _ X p _ _`. Use `flat_fst p` as an intermediate fact. Take `⟨z, hz, e⟩` from `Flat.generalizingMap (ratFibre.fst p) (genericPoint_specializes (ratFibre.fst p (genericPoint (ratFibre p))))`. Rewrite using `[← e, (hz.antisymm (genericPoint_specializes z)).eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_genericPoint : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] [IsIntegral (ratFibre p)], ratFibre.fst p (genericPoint (ratFibre p)) = genericPoint X := by
   intro k _ X p _ _
@@ -62,9 +62,9 @@ theorem fst_genericPoint : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X �
   rw [← e, (hz.antisymm (genericPoint_specializes z)).eq]
 
 /- English proof (translation)
-Introduce `K _ C _ _ hC L s hs`. Use `hC.isNoetherian` as an intermediate fact. Establish `hZ : IsClosed ((nonzeroLocus s : Set C)ᶜ)` using `(nonzeroLocus s).isOpen.isClosed_compl`. Establish `hfin` using `GlobalTheory.ProperCurve.finite_of_isClosed hC.dim_eq hZ (fun h => h hs)`. Use `⟨hfin.toFinset, fun y hy => hfin.mem_toFinset.2 hy, fun y hy => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.ProperCurve.isClosed_singleton hC.dim_eq ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `(hfin.mem_toFinset.1 hy) hs`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_finset_zeros : ∀ (K : Type) [Field K] (C : Scheme.{0}) [Algebra K Γ(C, ⊤)] [IsIntegral C], IsProjCurve K C → ∀ (L : LB C) (s : L.Sec), genericPoint C ∈ nonzeroLocus s → ∃ S : Finset C, (∀ y : C, y ∉ nonzeroLocus s → y ∈ S) ∧ ∀ y ∈ S, IsClosed ({y} : Set C) := by
   intro K _ C _ _ hC L s hs
@@ -78,22 +78,22 @@ theorem exists_finset_zeros : ∀ (K : Type) [Field K] (C : Scheme.{0}) [Algebra
   exact (hfin.mem_toFinset.1 hy) hs
 
 /- English proof (translation)
-Introduce `X Y f y h`. Conclude with `⟨(IsLocalRing.ResidueField.mapEquiv (asIso (f.stalkMap y)).commRingCatIsoToRingEquiv)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nonempty_residueField_equiv : ∀ (X Y : Scheme.{0}) (f : Y ⟶ X) (y : Y), IsIso (f.stalkMap y) → Nonempty (X.residueField (f y) ≃+* Y.residueField y) := by
   intro X Y f y h
   exact ⟨(IsLocalRing.ResidueField.mapEquiv (asIso (f.stalkMap y)).commRingCatIsoToRingEquiv)⟩
 
 /- English proof (translation)
-Introduce `C _ hC y hy`. Use `hC.isProperCurve.isProper` as an intermediate fact. Establish `: JacobsonSpace C` using `LocallyOfFiniteType.jacobsonSpace (strHom ℚ C)`. Establish `h₁ : LocallyOfFiniteType (C.fromSpecResidueField y)` using `isClosed_singleton_iff_locallyOfFiniteType.mp hy`. Generalize the expression as in `strHom ℚ C = f at *`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[residueDegree_eq_finrank]`. Use `letI := algebraΓOfHom f`. Use `letI := residueFieldAlgebraOver ℚ y`. Establish `: CharZero (C.residueField y)` using `algebraRat.charZero _`. Establish `hft : Algebra.FiniteType ℚ (C.residueField y)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : C.fromSpecResidueField y ≫ f = Spec.map (CommRingCat.ofHom (algebraMap ℚ (C.residueField y)))`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (C.fromSpecResidueField y ≫ f)`. Rewrite using `[← hφ]`. Use `congr 1`. Use `ext1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `Subsingleton.elim _ _`. Establish `h : LocallyOfFiniteType (C.fromSpecResidueField y ≫ f)` using `MorphismProperty.comp_mem @LocallyOfFiniteType _ _ h₁ inferInstance`. Rewrite `h` using `[e]`. Conclude with `RingHom.finiteType_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp h)`. Establish `hf : Module.Finite ℚ (C.residueField y)` using `finite_of_finite_type_of_isJacobsonRing _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: NumberField (C.residueField y)` using `{ to_finiteDimensional := by convert hf; exact Subsingleton.elim _ _ }`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, NumberField.Embeddings.card]`. Use `congr!`. Conclude with `Subsingleton.elim _ _`.
+A detailed English derivation is pending.
 -/
 theorem residueDegree_eq_card : ∀ (C : Scheme.{0}) [Algebra ℚ Γ(C, ⊤)], IsProjCurve ℚ C → ∀ y : C, IsClosed ({y} : Set C) → Finite (C.residueField y →+* ℂ) ∧ (strHom ℚ C).residueDegree y = Nat.card (C.residueField y →+* ℂ) := by
   intro C _ hC y hy
@@ -126,9 +126,9 @@ theorem residueDegree_eq_card : ∀ (C : Scheme.{0}) [Algebra ℚ Γ(C, ⊤)], I
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Introduce `Y _ L s hs y J hJ`. Use `((QCoh.structureModuleStalkEquiv y).isWeaklyRegular_congr _).2 ?_` and prove the remaining obligations. Rewrite using `[RingTheory.Sequence.isWeaklyRegular_singleton_iff]`. Establish `hη : genericPoint Y ∈ L.U J` using `(genericPoint_specializes y).mem_open (L.U J).isOpen hJ`. Establish `hu` using `(Y.mem_basicOpen _ _ hη).1 ((Cartier.mem_nonzeroLocus_iff s _ hη).1 hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Y.presheaf.germ _ y hJ (s.f J) ≠ 0` using `fun h => by`. Establish `: s.f J = 0` using `germ_injective_of_isIntegral Y y hJ (h.trans (map_zero _).symm)`. Rewrite `hu` using `[this, map_zero]`. Conclude with `not_isUnit_zero hu`. Conclude with `(IsRegular.of_ne_zero h0).left.isSMulRegular`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeaklyRegular_germ : ∀ (Y : Scheme.{0}) [IsIntegral Y] (L : LB Y) (s : L.Sec), genericPoint Y ∈ nonzeroLocus s → ∀ (y : Y) (J : L.ι) (hJ : y ∈ L.U J), RingTheory.Sequence.IsWeaklyRegular ((QCoh.structureModule Y).presheaf.stalk y :) [Y.presheaf.germ _ y hJ (s.f J)] := by
   intro Y _ L s hs y J hJ
@@ -143,7 +143,7 @@ theorem isWeaklyRegular_germ : ∀ (Y : Scheme.{0}) [IsIntegral Y] (L : LB Y) (s
   exact (IsRegular.of_ne_zero h0).left.isSMulRegular
 
 /- English proof (translation)
-Introduce `X Y f L hL s y h J hJ`. Establish `hi : f y ∈ L.U (J PUnit.unit)` using `mem_pull.1 hJ`. Establish `e : Y.presheaf.germ _ y hJ ((secPull s f).f J) = (asIso (f.stalkMap y)).commRingCatIsoToRingEquiv (X.presheaf.germ _ _ hi (s.f (J PUnit.unit)))` using `(Y.presheaf.germ_res_apply _ y hJ _).trans (Scheme.Hom.germ_stalkMap_apply f _ y hi _).symm`. Rewrite using `[secOrd_eq hL s hi, germOrd, ← ord_map_ringEquiv (asIso (f.stalkMap y)).commRingCatIsoToRingEquiv, ← e, Ring.ord, (Submodule.Quotient.equiv _ (Ideal.span {Y.presheaf.germ _ y hJ ((secPull s f).f J)}) (QCoh.structureModuleStalkEquiv y) (by`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearEquiv.range, smul_eq_mul, Ideal.mul_top, Ideal.ofList_singleton])).length_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_eq_secOrd : ∀ (X Y : Scheme.{0}) (f : Y ⟶ X) (L : LB X) (hL : L.IsLB) (s : L.Sec) (y : Y), IsIso (f.stalkMap y) → ∀ (J : (L.pull f).ι) (hJ : y ∈ (L.pull f).U J), (Module.length (Y.presheaf.stalk y) (((QCoh.structureModule Y).presheaf.stalk y :) ⧸ (Ideal.ofList [Y.presheaf.germ _ y hJ ((secPull s f).f J)] • ⊤ : Submodule (Y.presheaf.stalk y) ((QCoh.structureModule Y).presheaf.stalk y :)))).toNat = secOrd hL s (f y) := by
   intro X Y f L hL s y h J hJ
@@ -158,21 +158,19 @@ theorem length_eq_secOrd : ∀ (X Y : Scheme.{0}) (f : Y ⟶ X) (L : LB X) (hL :
           Ideal.ofList_singleton])).length_eq]
 
 /- English proof (translation)
-Introduce `k _ X p _ hC L hL s hs`. Use `hC.isIntegral` as an intermediate fact. Take `⟨hiso, hinj⟩` from `isIso_stalkMap_and_injective k X p`. Establish `hL' : (L.pull (ratFibre.fst p)).IsLB` using `Semi.LB.isLB_pull hL _`. Establish `hnz : ∀ y, y ∈ nonzeroLocus (secPull s (ratFibre.fst p)) ↔ ratFibre.fst p y ∈ nonzeroLocus s` using `fun y => by rw [nonzeroLocus_secPull]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : genericPoint (ratFibre p) ∈ nonzeroLocus (secPull s (ratFibre.fst p))` using `(hnz _).2 (by rw [fst_genericPoint k X p]; exact hs)`. Take `⟨S', hS'z, hS'c⟩` from `exists_finset_zeros ℚ (ratFibre p) hC _ _ hs'`. Establish `hcard : ∀ y ∈ S', Finite (X.residueField (ratFibre.fst p y) →+* ℂ) ∧ (ratFibre.snd p).residueDegree y = Nat.card (X.residueField (ratFibre.fst p y) →+* ℂ)`. Introduce `y hy`. Take `⟨e⟩` from `nonempty_residueField_equiv X (ratFibre p) (ratFibre.fst p) y (hiso y)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `E : (X.residueField (ratFibre.fst p y) →+* ℂ) ≃ ((ratFibre p).residueField y →+* ℂ)` to `{ toFun := fun g => g.comp e.symm.toRingHom invFun := fun g => g.comp e.toRingHom left_inv := fun g => by ext a; simp right_inv := fun g => by ext a; simp }`. Take `⟨h₁, h₂⟩` from `residueDegree_eq_card (ratFibre p) hC y (hS'c y hy)`. Use `⟨Finite.of_equiv _ E.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← ratFibre.strHom_eq p, h₂, Nat.card_congr E]`. Use `⟨S'.image (ratFibre.fst p), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx hxs`. Take `⟨y, rfl⟩` from `mem_range_fst k X p x hx`. Conclude with `Finset.mem_image_of_mem _ (hS'z y ((hnz y).not.2 hxs))`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `(hcard y hy).1`. Set `c : ratFibre p → (L.pull (ratFibre.fst p)).ι` to `fun y _ => (exists_mem_chart hL (ratFibre.fst p y)).choose`. Establish `hc : ∀ y, y ∈ (L.pull (ratFibre.fst p)).U (c y)` using `fun y => mem_pull.2 (exists_mem_chart hL (ratFibre.fst p y)).choose_spec`. Establish `hP : IsProjOver (ratFibre.snd p)`. Use `hC.isProjOver` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[ratFibre.strHom_eq p]`. Then use the resulting hypothesis. Establish `key` using `CutDegree.interNum_eq_sum_length (ratFibre.snd p) hP hL' c hc S' hS'c [secPull s (ratFibre.fst p)] (QCoh.structureModule (ratFibre p)) (fun y _ hy => hS'z y (hy _ (List.mem_singleton_self _))) (fun y _ => isWeaklyRegular_germ (ratFibre p) _ _ hs' y (c y) (hc y))`. Establish `e1 : (fun _ : Fin [secPull s (ratFibre.fst p)].length => L.pull (ratFibre.fst p)) = ![L.pull (ratFibre.fst p)]`. Use function extensionality and compare the values at `fun i => by fin_cases i; rfl`. Rewrite `key` using `[e1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ratDeg_eq_degLB hL, hC.degLB_eq_interNum hL', key, Finset.sum_image (fun a _ b _ h => hinj h)]`. Use `push_cast`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[(hcard y hy).2]`. Use `congr 2`.
-
-Conclude with `length_eq_secOrd X (ratFibre p) (ratFibre.fst p) L hL s y (hiso y) (c y) (hc y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ratDeg_eq_sum : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], IsProjCurve ℚ (ratFibre p) → ∀ (L : LB X) (hL : L.IsLB) (s : L.Sec), genericPoint X ∈ nonzeroLocus s → ∃ S : Finset X, (∀ x : X, CharZero (X.residueField x) → x ∉ nonzeroLocus s → x ∈ S) ∧ (∀ x ∈ S, Finite (X.residueField x →+* ℂ)) ∧ ratDeg p L = ∑ x ∈ S, (secOrd hL s x : ℤ) * (Nat.card (X.residueField x →+* ℂ) : ℤ) := by
   intro k _ X p _ hC L hL s hs

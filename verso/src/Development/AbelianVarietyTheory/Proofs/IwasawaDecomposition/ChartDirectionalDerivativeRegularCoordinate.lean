@@ -16,15 +16,13 @@ open scoped Matrix
 namespace GlobalTheory.ProjPos
 
 /- English proof (translation)
-Establish `hD : ∀ a, DifferentiableAt ℂ (w a) x` using `fun a => (hC a).differentiableAt (by simp)`. Establish `h1 : w j x = 1` using `hj.eq_of_nhds`. Establish `hne : (fun i => w i x) ≠ 0` using `fun e => one_ne_zero (h1.symm.trans (congrFun e j))`. Establish `e1 : (fun z => ((Real.log (∑ a, ‖w a z‖ ^ 2) : ℝ) : ℂ)) = fun y => ((Real.log (sqNorm (fun i => w i y)) : ℝ) : ℂ)`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[sqNorm, Complex.normSq_eq_norm_sq]`. Establish `hJ (a) : (wJac n N w x *ᵥ ξ.ofLp) a = fderiv ℂ (w a) x ξ`. Establish `hξ : ξ = ∑ j, ξ.ofLp j • bas n j`. Use extensionality with `i`. Simplify using `[bas, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [hξ]`. Simplify using `only [wJac, Matrix.mulVec, dotProduct, wd_of_differentiableAt (hD a), map_sum, map_smul, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[e1, leviLogNormSq n N w x ξ.ofLp hC hne, Complex.ofReal_re]`. Use `div_pos (sqNorm_pos fun hz => h fun a => ?_) (sqNorm_pos hne)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hz` using `[projPerp_mulVec, sub_eq_zero]`. Establish `h2` using `congrFun hz j`. Rewrite `h2` using `[hJ, hj.fderiv_eq, Pi.smul_apply, h1, smul_eq_mul, mul_one]`. Establish `h3` using `congrFun hz a`. Rewrite `h3` using `[hJ, ← h2]`.
-
-Simplify using `using h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem leviV_log_pos {n N : ℕ} {w : Fin N → V n → ℂ} {x : V n} (hC : ∀ a, ContDiffAt ℂ 2 (w a) x) {j : Fin N}
     (hj : w j =ᶠ[𝓝 x] fun _ => 1) (ξ : V n) (h : ¬ ∀ a, fderiv ℂ (w a) x ξ = 0) :
@@ -59,7 +57,7 @@ variable (c y ξ) in
 def dirDer (f : Γ(Y, W)) : ℂ := fderiv ℂ (ev p σ W f ∘ c.e.symm) (c.e y) ξ
 
 /- English proof (translation)
-Establish `e : ev p σ W (f + g) ∘ c.e.symm = (ev p σ W f ∘ c.e.symm) + (ev p σ W g ∘ c.e.symm)`. Use function extensionality and compare the values at `fun v => ev_add _ _ _`. Simplify using `only [dirDer, e, fderiv_add (c.differentiableAt_ev f hy hW) (c.differentiableAt_ev g hy hW)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dirDer_add (hy : y ∈ c.e.source) (hW : y ∈ ptsIn p σ W) (f g : Γ(Y, W)) :
     dirDer c y ξ (f + g) = dirDer c y ξ f + dirDer c y ξ g := by
@@ -69,7 +67,7 @@ theorem dirDer_add (hy : y ∈ c.e.source) (hW : y ∈ ptsIn p σ W) (f g : Γ(Y
   rfl
 
 /- English proof (translation)
-Establish `e : ev p σ W (f * g) ∘ c.e.symm = (ev p σ W f ∘ c.e.symm) * (ev p σ W g ∘ c.e.symm)`. Use function extensionality and compare the values at `fun v => ev_mul _ _ _`. Simplify using `only [dirDer, e, fderiv_mul (c.differentiableAt_ev f hy hW) (c.differentiableAt_ev g hy hW), Function.comp_apply, c.e.left_inv hy]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dirDer_mul (hy : y ∈ c.e.source) (hW : y ∈ ptsIn p σ W) (f g : Γ(Y, W)) :
     dirDer c y ξ (f * g) = ev p σ W f y * dirDer c y ξ g + ev p σ W g y * dirDer c y ξ f := by
@@ -80,7 +78,7 @@ theorem dirDer_mul (hy : y ∈ c.e.source) (hW : y ∈ ptsIn p σ W) (f g : Γ(Y
   rfl
 
 /- English proof (translation)
-Establish `e : ev p σ W f ∘ c.e.symm =ᶠ[𝓝 (c.e y)] fun _ => a` using `eventually_of_mem ((isOpen_over c.e (isOpen_ptsIn W)).mem_nhds (mem_over c.e hy hW)) fun v hv => h _ hv.2`. Rewrite using `[dirDer, e.fderiv_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dirDer_const (hy : y ∈ c.e.source) (hW : y ∈ ptsIn p σ W) {f : Γ(Y, W)} {a : ℂ}
     (h : ∀ z ∈ ptsIn p σ W, ev p σ W f z = a) : dirDer c y ξ f = 0 := by
@@ -90,7 +88,7 @@ theorem dirDer_const (hy : y ∈ c.e.source) (hW : y ∈ ptsIn p σ W) {f : Γ(Y
   simp
 
 /- English proof (translation)
-Establish `e : ev p σ W' (resG Y h f) ∘ c.e.symm =ᶠ[𝓝 (c.e y)] ev p σ W f ∘ c.e.symm` using `eventually_of_mem ((isOpen_over c.e (isOpen_ptsIn W')).mem_nhds (mem_over c.e hy hW)) fun v hv => ev_res h hv.2 _`. Simplify using `only [dirDer, e.fderiv_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dirDer_res {W' : Y.Opens} (h : W' ≤ W) (hy : y ∈ c.e.source) (hW : y ∈ ptsIn p σ W') (f : Γ(Y, W)) :
     dirDer c y ξ (resG Y h f) = dirDer c y ξ f := by
@@ -100,7 +98,7 @@ theorem dirDer_res {W' : Y.Opens} (h : W' ≤ W) (hy : y ∈ c.e.source) (hW : y
   simp only [dirDer, e.fderiv_eq]
 
 /- English proof (translation)
-Establish `e : ev p σ _ (c.x a) ∘ c.e.symm =ᶠ[𝓝 (c.e y)] (EuclideanSpace.proj (𝕜` using `ℂ) a : V D →L[ℂ] ℂ) := eventually_of_mem (c.e.open_target.mem_nhds (c.e.map_source hy)) fun v hv => (c.apply_eq _ (c.e.map_target hv) a).symm.trans (by rw [c.e.right_inv hv]; rfl)`. Rewrite using `[dirDer, e.fderiv_eq, ContinuousLinearMap.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chartDirectionalDerivativeRegular_coordinate (hy : y ∈ c.e.source) (a : Fin D) : dirDer c y ξ (c.x a) = ξ a := by
   have e : ev p σ _ (c.x a) ∘ c.e.symm =ᶠ[𝓝 (c.e y)] (EuclideanSpace.proj (𝕜 := ℂ) a : V D →L[ℂ] ℂ) :=
@@ -110,11 +108,9 @@ theorem chartDirectionalDerivativeRegular_coordinate (hy : y ∈ c.e.source) (a 
   rfl
 
 /- English proof (translation)
-Use extensionality with `b`. Take `⟨h, hhW, hh⟩` from `hU.exists_basicOpen_le (V := c.U) ⟨_, mem_ptsIn.1 (c.source_subset hy)⟩ (mem_ptsIn.1 hW)`. Establish `hB : y ∈ ptsIn p σ (Y.basicOpen h)` using `mem_ptsIn.2 hh`. Use `hU.isLocalization_basicOpen h` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj h (resG Y hhW (c.x b))`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha' : resG Y hhW (c.x b) * resG Y (Y.basicOpen_le h) (h ^ n) = resG Y (Y.basicOpen_le h) a`. Rewrite using `[map_pow]`. Conclude with `ha`. Establish `e` using `congrArg (dirDer c y ξ) ha'`. Rewrite `e` using `[dirDer_mul hy hB, dirDer_res _ hy hB, dirDer_res _ hy hB, dirDer_res _ hy hB, h0, h0, chartDirectionalDerivativeRegular_coordinate hy, mul_zero, zero_add, ev_res _ hB, ev_eq hW, map_pow, ← ev_eq]`.
-
-Conclude with `(mul_eq_zero.1 e).resolve_left (pow_ne_zero n ((mem_ptsIn_basicOpen hW h).1 hB))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_dirDer (hy : y ∈ c.e.source) (hW : y ∈ ptsIn p σ W) (hU : IsAffineOpen W)
     (h0 : ∀ f : Γ(Y, W), dirDer c y ξ f = 0) : ξ = 0 := by
@@ -135,11 +131,11 @@ variable {N : ℕ} (i : Y ⟶ PSpace k N) (hi : i ≫ PSpace.str k N = p)
 include hi in
 
 /- English proof (translation)
-Use `eq_zero_of_dirDer hy hW ((isAffineOpen_chart k N j).preimage i) fun f => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `i.app_surjective _ (isAffineOpen_chart k N j) f`. Take `⟨P, rfl⟩` from `aeval_ratio_surjective k N j g`. Establish `hm : ∀ z : CxPts p σ, (PtsOver.map i hi _ z).1 = z.1 ≫ i` using `fun _ => rfl`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `C a`. Use `dirDer_const hy hW (a := σ a) fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← ev_of_comp hm, MvPolynomial.aeval_C]`. Conclude with `ev_algX ((mem_ptsIn_preimage hm).1 hz) a`. Consider the case `add P Q hP hQ => rw [map_add, map_add, dirDer_add hy hW, hP, hQ, add_zero]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X P a hP => rw [map_mul, map_mul, dirDer_mul hy hW, hP, MvPolynomial.aeval_X, h0, mul_zero, mul_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_dirDer_ratio [IsClosedImmersion i] (hy : y ∈ c.e.source) {j : Fin (N + 1)}
     (hW : y ∈ ptsIn p σ (i ⁻¹ᵁ chart k N j)) (h0 : ∀ a, dirDer c y ξ (i.app _ (ratio k N j a)) = 0) : ξ = 0 := by
@@ -156,7 +152,7 @@ theorem eq_zero_of_dirDer_ratio [IsClosedImmersion i] (hy : y ∈ c.e.source) {j
   | mul_X P a hP => rw [map_mul, map_mul, dirDer_mul hy hW, hP, MvPolynomial.aeval_X, h0, mul_zero, mul_zero, add_zero]
 
 /- English proof (translation)
-Establish `hm : ∀ z : CxPts p σ, (PtsOver.map i hi _ z).1 = z.1 ≫ i` using `fun _ => rfl`. Use `(Weight.pull_φ _ _ _ _ _).trans ((Weight.fsBasis_φ _ _ _ _ _ _ _).trans (congrArg _ (Finset.sum_congr rfl fun a _ => ?_)))` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← ev_of_comp hm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fubiniStudy_weight_pullback_chart_formula (j : Fin (N + 1)) (z : CxPts p σ) :
     ((ProjAn.fsO1 k σ N).pull i hi).φ (fun _ => j) z =
@@ -169,17 +165,17 @@ theorem fubiniStudy_weight_pullback_chart_formula (j : Fin (N + 1)) (z : CxPts p
   rfl
 
 /- English proof (translation)
-The claim follows from `Weight.IsSmooth.pull (R := .all _ σ N) (Weight.isSmooth_fsBasis _ _ _ _ _) i hi R`.
+A detailed English derivation is pending.
 -/
 theorem fubiniStudy_weight_pullback_isSmooth (R : AnRead p σ D) : ((ProjAn.fsO1 k σ N).pull i hi).IsSmooth R :=
   Weight.IsSmooth.pull (R := .all _ σ N) (Weight.isSmooth_fsBasis _ _ _ _ _) i hi R
 
 /- English proof (translation)
-Use `(fubiniStudy_weight_pullback_isSmooth i hi R).strictPos_of_exists fun y => ?_` and prove the remaining obligations. Take `⟨l, hy⟩` from `R.cover y`. Take `⟨j, hj⟩` from `exists_mem_chart k N (i (y.1 (IsLocalRing.closedPoint ℂ)))`. Establish `hW : y ∈ ptsIn p σ (i ⁻¹ᵁ chart k N j)` using `mem_ptsIn.2 hj`. Use `set c := R.chart l`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (i ⁻¹ᵁ chart k N j))`. Establish `hn` using `ho.mem_nhds (mem_over c.e hy hW)`. Use `⟨c, fun _ => j, hy, mem_ptsIn.2 (Set.mem_iInter.2 fun _ => hj), fun ξ hξ => ?_⟩` and prove the remaining obligations. Simplify using `only [AlgChart.levi, fubiniStudy_weight_pullback_chart_formula]`. Use `leviV_log_pos (w := fun a => ev p σ (i ⁻¹ᵁ chart k N j) (i.app _ (ratio k N j a)) ∘ c.e.symm) (fun a => ((contDiffOn_of_differentiableOn D _ _ ho (c.holo _ _)).contDiffAt hn).of_le (WithTop.coe_le_coe.2 le_top)) (j := j) (eventually_of_mem hn fun v hv => ?_) (WithLp.toLp 2 ξ) fun …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.comp_apply, ratio, ratioOn_self, map_one, ev_eq hv.2, map_one]`. Conclude with `hξ (congrArg WithLp.ofLp (eq_zero_of_dirDer_ratio i hi hy hW h))`.
+A detailed English derivation is pending.
 -/
 theorem fubiniStudy_weight_pullback_closed_immersion_strictPos [IsClosedImmersion i] (R : AnRead p σ D) :
     ((ProjAn.fsO1 k σ N).pull i hi).StrictPos R := by

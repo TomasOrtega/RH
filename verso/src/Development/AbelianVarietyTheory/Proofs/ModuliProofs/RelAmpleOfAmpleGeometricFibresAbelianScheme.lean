@@ -21,7 +21,7 @@ variable {S X T₁ T₂ X₁ X₂ : Scheme.{0}} {f : X ⟶ S} {M : LB X} {π₁ 
   {π₂ : X₂ ⟶ X} {f₂ : X₂ ⟶ T₂} {t₂ : T₂ ⟶ S}
 
 /- English proof (translation)
-Establish `w : π₂ ≫ f = (f₂ ≫ u) ≫ t₁` using `by rw [Category.assoc, hu, h₂.w]`. Use `⟨h₁.lift _ _ w, (h₁.lift_fst _ _ _).symm, IsPullback.of_right ?_ (h₁.lift_snd _ _ _) h₁⟩` and prove the remaining obligations. Rewrite using `[h₁.lift_fst, hu]`. Conclude with `h₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPullback (h₁ : IsPullback π₁ f₁ f t₁) (h₂ : IsPullback π₂ f₂ f t₂) (u : T₂ ⟶ T₁)
     (hu : u ≫ t₁ = t₂) : ∃ φ : X₂ ⟶ X₁, π₂ = φ ≫ π₁ ∧ IsPullback φ f₂ f₁ u := by
@@ -31,7 +31,7 @@ theorem exists_isPullback (h₁ : IsPullback π₁ f₁ f t₁) (h₂ : IsPullba
   exact h₂
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullSame M (fun _ : PUnit => π₂) (fun _ => π₁) (fun _ => 1) φ fun _ => hφ) (Geo.Tor.chartPullPull L₁ φ φ rfl) e.symm`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_comp {φ : X₂ ⟶ X₁} (hφ : π₂ = φ ≫ π₁) {L₁ : LB X₁} (e : LBIso L₁ (M.pull π₁)) :
     LBIso (M.pull π₂) (L₁.pull φ) :=
@@ -39,14 +39,14 @@ theorem lbIso_pull_comp {φ : X₂ ⟶ X₁} (hφ : π₂ = φ ≫ π₁) {L₁ 
     (Geo.Tor.chartPullPull L₁ φ φ rfl) e.symm
 
 /- English proof (translation)
-The claim follows from `(lbIso_pull_comp rfl (GlobalTheory.lbIso_refl (pull_isLB hM π₁))).symm`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_pull (hM : M.IsLB) (φ : X₂ ⟶ X₁) (π₁ : X₁ ⟶ X) :
     LBIso ((M.pull π₁).pull φ) (M.pull (φ ≫ π₁)) :=
   (lbIso_pull_comp rfl (GlobalTheory.lbIso_refl (pull_isLB hM π₁))).symm
 
 /- English proof (translation)
-Take `⟨φ, hφ, H⟩` from `exists_isPullback h₁ h₂ u hu`. Establish `hp : IsProper (Over.mk f₂).hom` using `MorphismProperty.of_isPullback (P := @IsProper) h₂ ‹_›`. Use `AmpleLocal.relAmple_of_locally T₂ (Over.mk f₂) (M.pull π₂) (pull_isLB hM π₂) inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Take `⟨V, hV, hs, -⟩` from `exists_isAffineOpen_mem_and_subset (X := T₁) (U := ⊤) (x := u s) trivial`. Conclude with `⟨u ⁻¹ᵁ V, hs, PolPull.relAmple_restrict (G := Over.mk f₁) (G' := Over.mk f₂) H hL₁ (pull_isLB hM π₂) (lbIso_pull_comp hφ e) hA V hV⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem relAmple_of_factor [IsProper f] (hM : M.IsLB) (h₁ : IsPullback π₁ f₁ f t₁) (h₂ : IsPullback π₂ f₂ f t₂)
     (u : T₂ ⟶ T₁) (hu : u ≫ t₁ = t₂) {L₁ : LB X₁} (hL₁ : L₁.IsLB) (e : LBIso L₁ (M.pull π₁))
@@ -60,11 +60,11 @@ theorem relAmple_of_factor [IsProper f] (hM : M.IsLB) (h₁ : IsPullback π₁ f
     (lbIso_pull_comp hφ e) hA V hV⟩
 
 /- English proof (translation)
-Take `⟨φ, hφ, H⟩` from `exists_isPullback h₁ h₂ _ rfl`. Establish `: Subsingleton (Spec (CommRingCat.of K₀))` using `inferInstanceAs (Subsingleton (PrimeSpectrum K₀))`. Establish `: Nonempty (Spec (CommRingCat.of K))` using `inferInstanceAs (Nonempty (PrimeSpectrum K))`. Establish `: Flat (Out.specOf i)` using `inferInstance`. Establish `: Surjective (Out.specOf i)` using `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : IsProper f₁` using `MorphismProperty.of_isPullback (P := @IsProper) h₁ ‹_›`. Establish `: IsProper (Over.mk f₁).hom` using `hp`. Establish `: IsProper f₂` using `MorphismProperty.of_isPullback (P := @IsProper) h₂ ‹_›`. Establish `: CompactSpace X₁` using `QuasiCompact.compactSpace_of_compactSpace f₁`. Establish `: QuasiSeparatedSpace X₁` using `quasiSeparatedSpace_of_quasiSeparated f₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(relAmple_iff_isAmpleLB_of_isAffine (Over.mk f₁) hL₁).2 (AmpleDescent.isAmpleLB_of_pull i H hL₁ ?_)` and prove the remaining obligations. Conclude with `(isAmpleLB_of_relAmple_of_isAffine (Over.mk f₂) (pull_isLB hM π₂) hA).of_lbIso (LB.isLB_pull hL₁ φ) (lbIso_pull_comp hφ e).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem relAmple_of_fieldExtension [IsProper f] (hM : M.IsLB) {K₀ K : Type} [Field K₀] [Field K] (i : K₀ →+* K)
     {f₁ : X₁ ⟶ Sp K₀} {t₁ : Sp K₀ ⟶ S} {f₂ : X₂ ⟶ Sp K} (h₁ : IsPullback π₁ f₁ f t₁)
@@ -85,7 +85,7 @@ theorem relAmple_of_fieldExtension [IsProper f] (hM : M.IsLB) {K₀ K : Type} [F
     (lbIso_pull_comp hφ e).symm
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R ⧸ p) y`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `hb' : algebraMap (R ⧸ p) p.ResidueField (Ideal.Quotient.mk p b) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Conclude with `⟨a, b, hb', div_mul_cancel₀ _ hb'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem residueField_fraction {R : Type} [CommRing R] (p : Ideal R) [p.IsPrime] (y : p.ResidueField) :
     ∃ a b : R, algebraMap R p.ResidueField b ≠ 0 ∧
@@ -98,15 +98,15 @@ theorem residueField_fraction {R : Type} [CommRing R] (p : Ideal R) [p.IsPrime] 
   exact ⟨a, b, hb', div_mul_cancel₀ _ hb'⟩
 
 /- English proof (translation)
-Introduce `_ S _ P M hM hfib`. Use `P.isAb.proper` as an intermediate fact. Use `P.isAb.smooth` as an intermediate fact. Use `AmpleLocal.relAmple_of_locally S P.A M hM inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Take `⟨V, hV, hs, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := s) trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: IsNoetherianRing Γ(S, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Set `t : Spec (CommRingCat.of Γ(S, V)) ⟶ S` to `hV.fromSpec`. Take `⟨p, hp⟩ : s ∈ Set.range t` from `by rw [hV.range_fromSpec]; exact hs`. Establish `hB` using `IsPullback.of_hasPullback P.A.hom t`. Establish `hL` using `pull_isLB hM (pullback.fst P.A.hom t)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `p.isPrime` as an intermediate fact. Set `g` to `algebraMap Γ(S, V) p.asIdeal.ResidueField`. Set `i` to `algebraMap p.asIdeal.ResidueField (AlgebraicClosure p.asIdeal.ResidueField)`. Take `⟨r, hr, hA⟩` from `GlobalTheory.T.relAmple_near_fibre_flat_projective Γ(S, V) (Over.mk (pullback.snd P.A.hom t)) (M.pull (pullback.fst P.A.hom t)) (inferInstanceAs (Flat (pullback.snd P.A.hom t))) (AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral S P.A P.L P.isAb P.isLB P.ample _ t _ …`. Set `D : (Spec (CommRingCat.of Γ(S, V))).Opens` to `PrimeSpectrum.basicOpen r`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hD : p ∈ D` using `fun h => hr (Ideal.algebraMap_residueField_eq_zero.2 h)`. Establish `hrange : Set.range (t ''ᵁ D).ι ⊆ Set.range (D.ι ≫ t)`. Introduce and unpack `_ ⟨⟨_, x, hx, rfl⟩, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Use `⟨t ''ᵁ D, ⟨p, hD, hp⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `relAmple_of_factor hM ((IsPullback.of_hasPullback (pullback.snd P.A.hom t) D.ι).paste_horiz hB) (isPullback_morphismRestrict P.A.hom (t ''ᵁ D)).flip (IsOpenImmersion.lift (D.ι ≫ t) _ hrange) (IsOpenImmersion.lift_fac _ _ _) (pull_isLB hL _) (lbIso_pull_pull hM _ _) hA`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_of_geometricFibres : Out.Laws → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → (∀ (K : Type) [Field K] [IsAlgClosed K] (y : Sp K ⟶ S), Out.RelAmple (Over.mk (pullback.snd P.A.hom y)) (M.pull (pullback.fst P.A.hom y))) → Out.RelAmple P.A M := by
   intro _ S _ P M hM hfib

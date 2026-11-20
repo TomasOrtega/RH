@@ -9,9 +9,9 @@ open scoped ComplexOrder
 variable {D : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose]`. Establish `h : (∑ k ∈ S, A k)ᵀ = fun j => ∑ k ∈ S, (fun i => A k i j)`. Use extensionality with `j i`. Simplify using `[Matrix.sum_apply, Finset.sum_apply]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(Matrix.detRowAlternating (R := ℂ) (n := Fin D)).toMultilinearMap.map_sum_finset (fun j k => fun i => A k i j) (fun _ => S)` as an intermediate fact. Simplify using `only [AlternatingMap.coe_multilinearMap] at this`. Use `show Matrix.detRowAlternating _ = _`. Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun f _ => (Matrix.det_transpose _).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma det_sum_eq_pi (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (S : Finset (Fin D)) :
     (∑ k ∈ S, A k).det = ∑ f ∈ Fintype.piFinset (fun _ : Fin D => S),
@@ -29,15 +29,13 @@ private lemma det_sum_eq_pi (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (S : Fins
   exact Finset.sum_congr rfl fun f _ => (Matrix.det_transpose _).symm
 
 /- English proof (translation)
-Use `set T := Finset.univ.image f with hT`. Rewrite using `[← Equiv.sum_comp (Function.Involutive.toPerm _ (compl_involutive (α := Finset (Fin D))))]`. Establish `hc : ∀ U : Finset (Fin D), D - (Uᶜ).card = U.card`. Introduce `U`. Rewrite using `[Finset.card_compl, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.sub_sub_self (by simpa using Finset.card_le_univ U)`. Establish `hmem : ∀ U : Finset (Fin D), f ∈ Fintype.piFinset (fun _ : Fin D => Uᶜ) ↔ U ∈ Tᶜ.powerset`. Introduce `U`. Simplify using `only [Fintype.mem_piFinset, Finset.mem_compl, Finset.mem_powerset, Finset.subset_iff, hT, Finset.mem_image, Finset.mem_univ, true_and, not_exists]`. Conclude with `⟨fun h x hx a ha => h a (ha ▸ hx), fun h a ha => h ha a rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.Involutive.coe_toPerm, hc, hmem, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter]`. Establish `hz : (∑ U ∈ Tᶜ.powerset, (-1 : ℂ) ^ U.card) = ((∑ U ∈ Tᶜ.powerset, (-1 : ℤ) ^ U.card : ℤ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[hz, Finset.sum_powerset_neg_one_pow_card]`. Establish `hs : Tᶜ = ∅ ↔ Function.Surjective f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.compl_eq_empty_iff, Finset.eq_univ_iff_forall]`. Simplify using `[hT, Function.Surjective]`. Distinguish the cases in `h : Function.Surjective f`. Simplify using `[hs.2 h, h]`. Rewrite using `[if_neg (fun h' => h (hs.1 h')), if_neg h]`.
-
-Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma sum_sign_indicator (f : Fin D → Fin D) :
     ∑ S : Finset (Fin D), (-1 : ℂ) ^ (D - S.card) *
@@ -69,13 +67,13 @@ private lemma sum_sign_indicator (f : Fin D → Fin D) :
   · rw [if_neg (fun h' => h (hs.1 h')), if_neg h]; simp
 
 /- English proof (translation)
-Unfold `mdisc`. Use `congr 1`. Use `set G : (Fin D → Fin D) → ℂ := fun f => (Matrix.of fun i j => A (f j) i j).det with hG`. Establish `key : ∀ S : Finset (Fin D), (∑ k ∈ S, A k).det = ∑ f, (if f ∈ Fintype.piFinset (fun _ : Fin D => S) then 1 else 0) * G f`. Introduce `S`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_sum_eq_pi]`. Simplify using `only [ite_mul, one_mul, zero_mul, hG]`. Rewrite using `[← Finset.sum_filter, Finset.filter_mem_eq_inter, Finset.univ_inter]`. Repeatedly rewrite using `[key, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ f : Fin D → Fin D, ∑ S : Finset (Fin D), (-1 : ℂ) ^ (D - S.card) * ((if f ∈ Fintype.piFinset (fun _ : Fin D => S) then 1 else 0) * G f) = (if Function.Surjective f then 1 else 0) * G f`. Introduce `f`. Rewrite using `[← sum_sign_indicator f, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun S _ => by ring`. Repeatedly rewrite using `[h2, ite_mul, one_mul, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_bij (fun σ _ => ⇑σ) (fun σ _ => by simpa using σ.surjective) (fun a _ b _ h => Equiv.ext (congrFun h)) (fun f hf => ?_) (fun σ _ => rfl)` and prove the remaining obligations. Establish `hs : Function.Surjective f` using `by simpa using hf`. Conclude with `⟨Equiv.ofBijective f ⟨Finite.injective_iff_surjective.2 hs, hs⟩, Finset.mem_univ _, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mdisc_eq_sum_perm (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     mdisc A = (1 / (D.factorial : ℂ)) *
@@ -107,7 +105,7 @@ theorem mdisc_eq_sum_perm (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
   exact ⟨Equiv.ofBijective f ⟨Finite.injective_iff_surjective.2 hs, hs⟩, Finset.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[mdisc_eq_sum_perm, mdisc_eq_sum_perm]`. Use `congr 1`. Conclude with `Equiv.sum_comp (Equiv.mulLeft σ) (fun τ => (Matrix.of fun i j => A (τ j) i j).det)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mdisc_comp_perm (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (σ : Equiv.Perm (Fin D)) :
     mdisc (A ∘ σ) = mdisc A := by
@@ -127,7 +125,7 @@ private noncomputable def mdiscML :
       colMap).domDomCongr σ
 
 /- English proof (translation)
-Rewrite using `[mdisc_eq_sum_perm, mdiscML, _root_.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.smul_apply, smul_eq_mul, MultilinearMap.domDomCongr_apply, MultilinearMap.compLinearMap_apply]`. Use `congr 1`. Rewrite using `[← Matrix.det_transpose]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -141,7 +139,7 @@ private lemma mdiscML_apply (A : Fin D → Matrix (Fin D) (Fin D) ℂ) : mdiscML
   rfl
 
 /- English proof (translation)
-Simplify using `only [← mdiscML_apply]`. Conclude with `mdiscML.map_update_add A k B C`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mdisc_update_add (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (k : Fin D)
     (B C : Matrix (Fin D) (Fin D) ℂ) :
@@ -151,7 +149,7 @@ theorem mdisc_update_add (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (k : Fin D)
   exact mdiscML.map_update_add A k B C
 
 /- English proof (translation)
-Simplify using `only [← mdiscML_apply]`. Conclude with `mdiscML.map_update_smul A k c B`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mdisc_update_smul (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (k : Fin D) (c : ℂ)
     (B : Matrix (Fin D) (Fin D) ℂ) :
@@ -160,14 +158,14 @@ theorem mdisc_update_smul (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (k : Fin D)
   exact mdiscML.map_update_smul A k c B
 
 /- English proof (translation)
-Conclude with `⟨mdiscML, funext mdiscML_apply⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_multilinearMap_eq_mdisc :
     ∃ M : MultilinearMap ℂ (fun _ : Fin D => Matrix (Fin D) (Fin D) ℂ) ℂ, ⇑M = mdisc := by
   exact ⟨mdiscML, funext mdiscML_apply⟩
 
 /- English proof (translation)
-Rewrite using `[mdisc_eq_sum_perm]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]`. Establish `: (D.factorial : ℂ) ≠ 0` using `by exact_mod_cast D.factorial_ne_zero`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
 -/
 theorem mdisc_const (A : Matrix (Fin D) (Fin D) ℂ) : mdisc (fun _ => A) = A.det := by
   rw [mdisc_eq_sum_perm]
@@ -178,7 +176,7 @@ theorem mdisc_const (A : Matrix (Fin D) (Fin D) ℂ) : mdisc (fun _ => A) = A.de
   rfl
 
 /- English proof (translation)
-Rewrite using `[← mdisc_const, ← mdiscML_apply, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Use `MultilinearMap.map_smul_univ (mdiscML (D := D)) (fun i => c (f i)) (fun i => A (f i))` as an intermediate fact. Rewrite using `[this, smul_eq_mul, mdiscML_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_sum_smul_eq_sum_mdisc {m : ℕ} (c : Fin m → ℂ)
     (A : Fin m → Matrix (Fin D) (Fin D) ℂ) :
@@ -190,11 +188,11 @@ theorem det_sum_smul_eq_sum_mdisc {m : ℕ} (c : Fin m → ℂ)
   rfl
 
 /- English proof (translation)
-Establish `h1 : Fintype.card {k : Fin D // (k : ℕ) < T.card} = Fintype.card {k : Fin D // k ∈ T}`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype, Fin.card_filter_val_lt, Finset.filter_mem_eq_inter, Finset.univ_inter]`. Conclude with `min_eq_right (by simpa using T.card_le_univ)`. Establish `h2 : Fintype.card {k : Fin D // ¬ (k : ℕ) < T.card} = Fintype.card {k : Fin D // k ∉ T}`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_compl, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Equiv.subtypeCongr (Fintype.equivOfCardEq h1) (Fintype.equivOfCardEq h2), fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < T.card`. Establish `e : (Equiv.sumCompl (fun x : Fin D => (x : ℕ) < T.card)).symm k = Sum.inl ⟨k, hk⟩` using `Equiv.sumCompl_symm_apply_of_pos (p := fun x : Fin D => (x : ℕ) < T.card) hk`. Simplify using `only [Equiv.subtypeCongr, Equiv.trans_apply, e, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl]`. Conclude with `iff_of_true (Fintype.equivOfCardEq h1 ⟨k, hk⟩).2 hk`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (Equiv.sumCompl (fun x : Fin D => (x : ℕ) < T.card)).symm k = Sum.inr ⟨k, hk⟩` using `Equiv.sumCompl_symm_apply_of_neg (p := fun x : Fin D => (x : ℕ) < T.card) hk`. Simplify using `only [Equiv.subtypeCongr, Equiv.trans_apply, e, Equiv.sumCongr_apply, Sum.map_inr, Equiv.sumCompl_apply_inr]`. Conclude with `iff_of_false (Fintype.equivOfCardEq h2 ⟨k, hk⟩).2 hk`.
+A detailed English derivation is pending.
 -/
 private lemma exists_perm_mem_iff (T : Finset (Fin D)) :
     ∃ σ : Equiv.Perm (Fin D), ∀ k, σ k ∈ T ↔ (k : ℕ) < T.card := by
@@ -219,7 +217,7 @@ private lemma exists_perm_mem_iff (T : Finset (Fin D)) :
     exact iff_of_false (Fintype.equivOfCardEq h2 ⟨k, hk⟩).2 hk
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `exists_perm_mem_iff T`. Rewrite using `[← mdisc_comp_perm _ σ]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, hσ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma mdisc_piecewise (T : Finset (Fin D)) (A B : Matrix (Fin D) (Fin D) ℂ) :
     mdisc (fun k => if k ∈ T then A else B) = mdisc (fun k : Fin D => if (k : ℕ) < T.card then A else B) := by
@@ -230,13 +228,13 @@ private lemma mdisc_piecewise (T : Finset (Fin D)) (A B : Matrix (Fin D) (Fin D)
   simp only [Function.comp_apply, hσ]
 
 /- English proof (translation)
-Rewrite using `[← mdisc_const, ← mdiscML_apply]`. Establish `h : (fun _ : Fin D => s • A + t • B) = (fun _ : Fin D => s • A) + (fun _ => t • B)` using `rfl`. Rewrite using `[h, MultilinearMap.map_add_univ]`. Establish `h2 : ∀ T : Finset (Fin D), mdiscML (T.piecewise (fun _ => s • A) (fun _ => t • B)) = s ^ T.card * t ^ (D - T.card) * mdisc (fun k : Fin D => if (k : ℕ) < T.card then A else B)`. Introduce `T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : T.piecewise (fun _ : Fin D => s • A) (fun _ => t • B) = fun k => (if k ∈ T then s else t) • (if k ∈ T then A else B)`. Apply the tactic sequence `funext k; by_cases hk : k ∈ T <;> simp [Finset.piecewise, hk]`. Rewrite using `[e, MultilinearMap.map_smul_univ, smul_eq_mul, mdiscML_apply, mdisc_piecewise, Finset.prod_ite, Finset.prod_const, Finset.prod_const]`. Use `congr 2`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[Finset.filter_not, Finset.filter_mem_eq_inter, Finset.univ_inter, Finset.card_sdiff, Finset.card_univ, Fintype.card_fin]`. Simplify using the standard rewrite rules. Simplify using `only [h2]`. Rewrite using `[← Finset.powerset_univ, Finset.sum_powerset_apply_card (fun i => s ^ i * t ^ (D - i) * mdisc (fun k : Fin D => if (k : ℕ) < i then A else B)) (x := Finset.univ)]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_smul_add_smul_eq_sum_mdisc (s t : ℂ) (A B : Matrix (Fin D) (Fin D) ℂ) :
     (s • A + t • B).det =
@@ -267,7 +265,7 @@ theorem det_smul_add_smul_eq_sum_mdisc (s t : ℂ) (A B : Matrix (Fin D) (Fin D)
   simp only [Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [mdisc, star_mul', star_sum, ← Matrix.conjTranspose_sum, Matrix.det_conjTranspose, star_pow, star_neg, star_one, star_div₀, star_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_mdisc (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     star (mdisc A) = mdisc (fun k => (A k)ᴴ) := by
@@ -275,7 +273,7 @@ theorem star_mdisc (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     star_pow, star_neg, star_one, star_div₀, star_natCast]
 
 /- English proof (translation)
-Establish `h` using `star_mdisc A`. Establish `e : (fun k => (A k)ᴴ) = A` using `funext fun k => (hA k).eq`. Rewrite `h` using `[e]`. Conclude with `Complex.conj_eq_iff_im.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mdisc_im_eq_zero_of_isHermitian (A : Fin D → Matrix (Fin D) (Fin D) ℂ)
     (hA : ∀ k, (A k).IsHermitian) : (mdisc A).im = 0 := by
@@ -285,30 +283,30 @@ theorem mdisc_im_eq_zero_of_isHermitian (A : Fin D → Matrix (Fin D) (Fin D) �
   exact Complex.conj_eq_iff_im.1 h
 
 /- English proof (translation)
-Conclude with `mixedDiscriminant_nonneg_of_gram A hA`.
+A detailed English derivation is pending.
 -/
 theorem mdisc_nonneg_of_posSemidef (A : Fin D → Matrix (Fin D) (Fin D) ℂ)
     (hA : ∀ k, (A k).PosSemidef) : (mdisc A).im = 0 ∧ 0 ≤ (mdisc A).re := by
   exact mixedDiscriminant_nonneg_of_gram A hA
 
 /- English proof (translation)
-Conclude with `mixedDiscriminant_pos_of_gram A hA`.
+A detailed English derivation is pending.
 -/
 theorem mdisc_pos_of_posDef (A : Fin D → Matrix (Fin D) (Fin D) ℂ)
     (hA : ∀ k, (A k).PosDef) : (mdisc A).im = 0 ∧ 0 < (mdisc A).re := by
   exact mixedDiscriminant_pos_of_gram A hA
 
 /- English proof (translation)
-Conclude with `mixedDiscriminant_re_mono_of_gram A B hA hAB`.
+A detailed English derivation is pending.
 -/
 theorem mdisc_re_mono (A B : Fin D → Matrix (Fin D) (Fin D) ℂ) (hA : ∀ k, (A k).PosSemidef)
     (hAB : ∀ k, (B k - A k).PosSemidef) : (mdisc A).re ≤ (mdisc B).re := by
   exact mixedDiscriminant_re_mono_of_gram A B hA hAB
 
 /- English proof (translation)
-Unfold `mdisc`. Establish `h : ∀ S : Finset (Fin D), (∑ k ∈ S, B * A k * C).det = B.det * C.det * (∑ k ∈ S, A k).det`. Introduce `S`. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum, Matrix.det_mul, Matrix.det_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Repeatedly rewrite using `[h, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun S _ => by ring`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mdisc_mul_mul (B C : Matrix (Fin D) (Fin D) ℂ) (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     mdisc (fun k => B * A k * C) = B.det * C.det * mdisc A := by
@@ -322,7 +320,7 @@ theorem mdisc_mul_mul (B C : Matrix (Fin D) (Fin D) ℂ) (A : Fin D → Matrix (
   exact Finset.sum_congr rfl fun S _ => by ring
 
 /- English proof (translation)
-Rewrite using `[mdisc_mul_mul, Matrix.det_conjTranspose]`. Use `congr 1`. Rewrite using `[mul_comm]`. Conclude with `Complex.mul_conj _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mdisc_conjTranspose_mul_mul (P : Matrix (Fin D) (Fin D) ℂ)
     (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
@@ -333,7 +331,7 @@ theorem mdisc_conjTranspose_mul_mul (P : Matrix (Fin D) (Fin D) ℂ)
   exact Complex.mul_conj _
 
 /- English proof (translation)
-Rewrite using `[mdisc_mul_mul, Matrix.det_transpose, show (J.map (starRingEnd ℂ)).det = starRingEnd ℂ J.det from (RingHom.map_det _ _).symm]`. Use `congr 1`. Conclude with `Complex.mul_conj _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mdisc_transpose_mul_mul_conj (J : Matrix (Fin D) (Fin D) ℂ)
     (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
@@ -344,11 +342,11 @@ theorem mdisc_transpose_mul_mul_conj (J : Matrix (Fin D) (Fin D) ℂ)
   exact Complex.mul_conj _
 
 /- English proof (translation)
-Establish `hc : J.map (starRingEnd ℂ) *ᵥ star w = star (J *ᵥ w)`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum]`. Establish `hv : ∀ k, (Jᵀ * A k * J.map (starRingEnd ℂ)) *ᵥ star w = 0`. Introduce `k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hc, hJw, star_zero, Matrix.mulVec_zero]`. Establish `hw' : star w ≠ 0` using `by simpa using hw`. Establish `h0 : ∀ S : Finset (Fin D), (∑ k ∈ S, Jᵀ * A k * J.map (starRingEnd ℂ)).det = 0`. Introduce `S`. Conclude with `Matrix.exists_mulVec_eq_zero_iff.1 ⟨star w, hw', by rw [Matrix.sum_mulVec]; exact Finset.sum_eq_zero fun k _ => hv k⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[mdisc, h0]`.
+A detailed English derivation is pending.
 -/
 theorem mdisc_transpose_mul_mul_conj_eq_zero {E : ℕ} (J : Matrix (Fin E) (Fin D) ℂ)
     (A : Fin D → Matrix (Fin E) (Fin E) ℂ) (w : Fin D → ℂ) (hw : w ≠ 0) (hJw : J *ᵥ w = 0) :
@@ -368,9 +366,9 @@ theorem mdisc_transpose_mul_mul_conj_eq_zero {E : ℕ} (J : Matrix (Fin E) (Fin 
   simp [mdisc, h0]
 
 /- English proof (translation)
-Establish `h3 : ((B - A) + (A + B)).PosSemidef` using `h1.add h2`. Establish `h4 : (B - A) + (A + B) = (2 : ℂ) • B` using `by rw [two_smul]; abel`. Rewrite `h3` using `[h4]`. Establish `h5` using `h3.smul (a := ((1 / 2 : ℝ) : ℂ)) (Complex.zero_le_real.2 (by norm_num))`. Establish `h6 : ((1 / 2 : ℝ) : ℂ) • ((2 : ℂ) • B) = B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul]`. Evaluate the numerical expressions. Rewrite `h5` using `[h6]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma posSemidef_of_sub_of_add {A B : Matrix (Fin D) (Fin D) ℂ} (h1 : (B - A).PosSemidef)
     (h2 : (A + B).PosSemidef) : B.PosSemidef := by
@@ -383,23 +381,23 @@ private lemma posSemidef_of_sub_of_add {A B : Matrix (Fin D) (Fin D) ℂ} (h1 : 
   rwa [h6] at h5
 
 /- English proof (translation)
-Establish `hB : ∀ k, (B k).PosSemidef` using `fun k => posSemidef_of_sub_of_add (hle k) (hge k)`. Establish `hA : A = (fun k => A k + B k) + (fun k => (-1 : ℂ) • B k)`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Establish `hexp : mdisc A = ∑ T : Finset (Fin D), (-1 : ℂ) ^ (D - T.card) * mdisc (T.piecewise (fun k => A k + B k) B)` using `by conv_lhs => rw [← mdiscML_apply, hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[MultilinearMap.map_add_univ]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Establish `e : T.piecewise (fun k => A k + B k) (fun k => (-1 : ℂ) • B k) = fun k => (if k ∈ T then (1 : ℂ) else -1) • T.piecewise (fun k => A k + B k) B k`. Apply the tactic sequence `funext k; by_cases hk : k ∈ T <;> simp [Finset.piecewise, hk]`. Rewrite using `[e, MultilinearMap.map_smul_univ, smul_eq_mul, mdiscML_apply, Finset.prod_ite, Finset.prod_const, Finset.prod_const, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[Finset.filter_not, Finset.filter_mem_eq_inter, Finset.univ_inter, Finset.card_sdiff, Finset.card_univ, Fintype.card_fin]`. Simplify using the standard rewrite rules. Establish `hterm : ∀ T : Finset (Fin D), ‖mdisc (T.piecewise (fun k => A k + B k) B)‖ ≤ 2 ^ T.card * (mdisc B).re`. Introduce `T`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : ∀ k, (T.piecewise (fun k => A k + B k) B k).PosSemidef` using `fun k => by`. Apply the tactic sequence `by_cases hk : k ∈ T <;> simp [Finset.piecewise, hk, hge k, hB k]`. Take `⟨him, hre⟩` from `mixedDiscriminant_nonneg_of_gram _ hP`. Establish `hmono` using `mixedDiscriminant_re_mono_of_gram (T.piecewise (fun k => A k + B k) B) (T.piecewise (fun k => (2 : ℂ) • B k) B) hP (fun k => by`. Distinguish the cases in `hk : k ∈ T`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `e : (2 : ℂ) • B k - (A k + B k) = B k - A k` using `by rw [two_smul]; abel`. Simplify `hle k` using `[Finset.piecewise, hk, e]`. Simplify `Matrix.PosSemidef.zero)` using `[Finset.piecewise, hk]`. Establish `h2 : mdisc (T.piecewise (fun k => (2 : ℂ) • B k) B) = (((2 : ℝ) ^ T.card : ℝ) : ℂ) * mdisc B`. Rewrite using `[← mdiscML_apply, ← mdiscML_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : T.piecewise (fun k => (2 : ℂ) • B k) B = fun k => (if k ∈ T then (2 : ℂ) else 1) • B k`. Apply the tactic sequence `funext k; by_cases hk : k ∈ T <;> simp [Finset.piecewise, hk]`. Rewrite using `[e, MultilinearMap.map_smul_univ, smul_eq_mul, Finset.prod_ite, Finset.prod_const, Finset.prod_const, one_pow, mul_one]`. Simplify using the standard rewrite rules. Establish `hz : mdisc (T.piecewise (fun k => A k + B k) B) = ((mdisc (T.piecewise (fun k => A k + B k) B)).re : ℂ)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [him]`. Rewrite using `[hz, Complex.norm_of_nonneg hre]`. Rewrite `hmono` using `[h2, Complex.re_ofReal_mul]`. Conclude with `hmono`. Rewrite using `[hexp]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Conclude with `hterm T`. Use `_ = 3 ^ D * (mdisc B).re := by`. Rewrite using `[← Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Finset.sum_pow_mul_eq_add_pow (2 : ℝ) 1 (Finset.univ : Finset (Fin D))` as an intermediate fact. Simplify using `only [one_pow, mul_one, Finset.card_univ, Fintype.card_fin, Finset.powerset_univ] at this`. Rewrite using `[this]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem norm_mdisc_le_of_abs_le (A B : Fin D → Matrix (Fin D) (Fin D) ℂ)
     (hle : ∀ k, (B k - A k).PosSemidef) (hge : ∀ k, (A k + B k).PosSemidef) :
@@ -468,17 +466,17 @@ theorem norm_mdisc_le_of_abs_le (A B : Fin D → Matrix (Fin D) (Fin D) ℂ)
         norm_num
 
 /- English proof (translation)
-Use `set A : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ := Fin.cons (Matrix.single 0 0 1) B with hA`. Rewrite using `[mdisc_eq_sum_perm, mdisc_eq_sum_perm, ← Equiv.sum_comp (Equiv.Perm.decomposeFin (n := n)).symm, Fintype.sum_prod_type, Finset.sum_eq_single (0 : Fin (n + 1))]`. Establish `hterm : ∀ τ : Equiv.Perm (Fin n), (Matrix.of fun i j => A (Equiv.Perm.decomposeFin.symm (0, τ) j) i j).det = (Matrix.of fun i j => (B (τ j)).submatrix Fin.succ Fin.succ i j).det`. Introduce `τ`. Rewrite using `[Matrix.det_succ_column_zero, Finset.sum_eq_single 0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply, Equiv.Perm.decomposeFin_symm_apply_zero, hA, Fin.cons_zero, Matrix.single_apply, and_self, if_true, Fin.val_zero, pow_zero, one_mul]`. Use `congr 1`. Introduce `b _ hb`. Simplify using `[hA, Equiv.Perm.decomposeFin_symm_apply_zero, Ne.symm hb]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hterm]`. Rewrite using `[Nat.factorial_succ, Nat.cast_mul, Nat.cast_succ]`. Establish `h1 : (n.factorial : ℂ) ≠ 0` using `by exact_mod_cast n.factorial_ne_zero`. Establish `h2 : (n : ℂ) + 1 ≠ 0` using `by exact_mod_cast n.succ_ne_zero`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p _ hp`. Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations. Use `set σ := Equiv.Perm.decomposeFin.symm (p, τ) with hσ`. Establish `hσ0 : σ 0 = p` using `Equiv.Perm.decomposeFin_symm_apply_zero p τ`. Establish `hj : σ.symm 0 ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hp` to reduce the goal to its premises. Use `σ.apply_symm_apply 0` as an intermediate fact. Rewrite `this` using `[h, hσ0]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Matrix.det_eq_zero_of_column_eq_zero (σ.symm 0)` to reduce the goal to its premises. Introduce `i`. Simplify using `[hA, Ne.symm hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mdisc_cons_single_zero {n : ℕ} (B : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     mdisc (Fin.cons (Matrix.single 0 0 1) B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) =
@@ -520,7 +518,7 @@ theorem mdisc_cons_single_zero {n : ℕ} (B : Fin n → Matrix (Fin (n + 1)) (Fi
   · simp
 
 /- English proof (translation)
-Unfold `maDens`. Conclude with `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg (div_nonneg zero_le_two Real.pi_pos.le) _)) (mixedDiscriminant_nonneg_of_gram _ hφ).2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem maDens_nonneg_of_posSemidef (φ : Fin D → (Fin D → ℂ) → ℝ) (z : Fin D → ℂ)
     (hφ : ∀ k, (hessC (φ k) z).PosSemidef) : 0 ≤ maDens φ z := by

@@ -16,13 +16,11 @@ section General
 variable {G H : Type} [Group G] [Group H]
 
 /- English proof (translation)
-Establish `hφ' : IsBiInv K φ ∧ FinDosetSupp K φ` using `hφ`. Take `⟨hb, S, hS⟩` from `hφ'`. Establish `hsymm : ∀ y : H, y ∈ K' → e.symm y ∈ K` using `fun y hy => by`. Rewrite using `[hK, MulEquiv.apply_symm_apply]`. Conclude with `hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show IsBiInv K' (φ ∘ e.symm) ∧ FinDosetSupp K' (φ ∘ e.symm)`. Use `⟨fun a b g => ?_, ⟨S.image e, fun g hg => ?_⟩⟩` and prove the remaining obligations. Use `hb ⟨_, hsymm a a.2⟩ ⟨_, hsymm b b.2⟩ (e.symm g)` as an intermediate fact. Simplify `this` using `only [Function.comp_apply, map_mul]`. Take `⟨s, hs, a, b, hab⟩` from `hS (e.symm g) hg`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `⟨e s, ?_, ⟨e a, (hK _).1 a.2⟩, ⟨e b, (hK _).1 b.2⟩, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact Finset.mem_image_of_mem _ hs`. Consider the case `exact Set.mem_image_of_mem _ hs`. Use `congrArg e hab` as an intermediate fact.
-
-Simplify `this` using `only [MulEquiv.apply_symm_apply, map_mul]`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem comp_symm_mem_hecke (e : G ≃* H) {K : Subgroup G} {K' : Subgroup H} (hK : ∀ g, g ∈ K ↔ e g ∈ K')
     {φ : G → ℂ} (hφ : φ ∈ Hecke ℂ K) : φ ∘ e.symm ∈ Hecke ℂ K' := by
@@ -44,15 +42,15 @@ theorem comp_symm_mem_hecke (e : G ≃* H) {K : Subgroup G} {K' : Subgroup H} (h
       simpa only [MulEquiv.apply_symm_apply, map_mul] using this
 
 /- English proof (translation)
-Establish `hfix : ∀ k, k ∈ K → ρ k x = x` using `fun k hk => by`. Establish `hx' : ∀ h : K, ρ h x = ((1 : K →* ℂˣ) h : ℂ) • x` using `hx`. Simplify using `using hx' ⟨k, hk⟩`. Establish `hT : ∀ g k, k ∈ K → φ (g * k) • ρ (g * k) x = φ g • ρ g x`. Introduce `g k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : IsBiInv K φ` using `hφ.1`. Establish `h1 : φ (g * k) = φ g` using `by simpa using hb 1 ⟨k, hk⟩ g`. Rewrite using `[h1, map_mul, Module.End.mul_apply, hfix k hk]`. Set `Q : G ⧸ K ≃ H ⧸ K'` to `Quotient.congr e.toEquiv (fun a b => by`. Rewrite using `[QuotientGroup.leftRel_apply, QuotientGroup.leftRel_apply, hK]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, map_mul, map_inv])`. Establish `hQ : ∀ g : G, Q (g : G ⧸ K) = ((e g : H) : H ⧸ K')` using `fun g => rfl`. Unfold `heckeVec`. Rewrite using `[← finsum_comp_equiv Q]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (((Q c).out : H) : H ⧸ K') = ((e c.out : H) : H ⧸ K')`. Rewrite using `[QuotientGroup.out_eq', ← hQ, QuotientGroup.out_eq']`. Establish `h2 : (e c.out)⁻¹ * (Q c).out ∈ K'` using `QuotientGroup.eq.1 h1.symm`. Establish `h3 : c.out⁻¹ * e.symm (Q c).out ∈ K`. Rewrite using `[hK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h2` using `only [map_mul, map_inv, MulEquiv.apply_symm_apply]`. Establish `h4` using `hT c.out _ h3`. Rewrite `h4` using `[mul_inv_cancel_left]`. Conclude with `h4.symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_eq_comp_symm {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     (e : G ≃* H) {K : Subgroup G} {K' : Subgroup H} (hK : ∀ g, g ∈ K ↔ e g ∈ K')
@@ -85,31 +83,29 @@ theorem heckeVec_eq_comp_symm {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : R
   exact h4.symm
 
 /- English proof (translation)
-Take `⟨u, hu, k, hk, hy⟩` from `H`. Establish `hne : ∀ t : L, IsUnramInv t c q → t ≠ 0` using `fun t ht h0 => by`. Establish `h` using `ht.2.2.2.1`. Simplify using `[h0] at h`. Establish `hg0 : ∀ t : L, t ≠ 0 → ∀ i, tMat t n m a i i ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `t ht i`. Simplify using `only [tMat, Matrix.diagonal_apply_eq]`. Apply the tactic sequence `split_ifs <;> first | exact zpow_ne_zero _ ht | exact one_ne_zero`. Establish `hvv : Valued.v ϖ = Valued.v ϖ'` using `hU.2.2.2.1.trans hU'.2.2.2.1.symm`. Establish `hgv : ∀ i, Valued.v (tMat ϖ n m a i i) = Valued.v (tMat ϖ' n m a i i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `only [tMat, Matrix.diagonal_apply_eq]`. Apply the tactic sequence `split_ifs <;> simp only [map_zpow₀, hvv]`. Establish `htm : ∀ t : L, tMat t n m a = Matrix.diagonal (fun i => tMat t n m a i i)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ hij]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tMat, Matrix.diagonal_apply_ne _ hij]`. Use `set e : Fin n → L := fun i => tMat ϖ n m a i i / tMat ϖ' n m a i i with he_def`. Establish `he0 : ∀ i, e i ≠ 0` using `fun i => div_ne_zero (hg0 ϖ (hne ϖ hU) i) (hg0 ϖ' (hne ϖ' hU') i)`. Take `⟨t, ht⟩` from `Formalism.UG.P.fSatake_tMat_exists hU hm a`. Take `⟨t', ht'⟩` from `Formalism.UG.P.fSatake_tMat_exists hU' hm a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : ∀ i, c (tMat ϖ n m a i i) * tMat ϖ n m a i.rev i.rev = 1` using `fun i => by`. Use `Formalism.UG.P.fSatake_unit_diag (Formalism.UG.P.fSatake_borel_tMat ht) i` as an intermediate fact. Rewrite `this` using `[ht]`. Then use the resulting hypothesis. Establish `hb' : ∀ i, c (tMat ϖ' n m a i i) * tMat ϖ' n m a i.rev i.rev = 1` using `fun i => by`. Use `Formalism.UG.P.fSatake_unit_diag (Formalism.UG.P.fSatake_borel_tMat ht') i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[ht']`. Then use the resulting hypothesis. Establish `hce : ∀ i, c (e i) * e i.rev = 1` using `fun i => by`. Simplify using `only [he_def, map_div₀]`. Rewrite using `[div_mul_div_comm, hb i, hb' i, div_one]`. Take `⟨D, hD, hD'⟩` from `Formalism.UG.P.fSatake_diag_exists e hce`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev : ∀ i, Valued.v (e i) = 1` using `fun i => by`. Simplify using `only [he_def]`. Rewrite using `[map_div₀, hgv i, div_self]`. Conclude with `(Valuation.ne_zero_iff _).2 (hg0 ϖ' (hne ϖ' hU') i)`. Establish `hDK : D ∈ KU c n` using `Formalism.UG.P.fSatake_diag_mem_K hD hD' hev`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDD : (((D⁻¹ : GU c n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (((D : GU c n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hsplit : tMat ϖ n m a = tMat ϖ' n m a * (((D : GU c n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Rewrite using `[hD, htm ϖ, htm ϖ', Matrix.diagonal_mul_diagonal]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [he_def]`. Rewrite using `[mul_div_cancel₀ _ (hg0 ϖ' (hne ϖ' hU') i)]`. Take `⟨hub, hud⟩` from `hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨D * u * D⁻¹, ?_, D * k, Subgroup.mul_mem _ hDK hk, ?_⟩` and prove the remaining obligations. Establish `hmat : ∀ i j, (((D * u * D⁻¹ : GU c n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = e i * (((u : GU c n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j * (e j)⁻¹`. Introduce `i j`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, hD, hD', Matrix.mul_diagonal, Matrix.diagonal_mul]`. Unfold `IsUnipU IsBorelU`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hmat, hub i j hij, mul_zero, zero_mul]`. Rewrite using `[hmat, hud i, mul_one, mul_inv_cancel₀ (he0 i)]`. Rewrite using `[hy, hsplit]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]`.
-
-Rewrite using `[← Matrix.mul_assoc (((D⁻¹ : GU c n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L), hDD, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cell_unif_lemma {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {c : L →+* L}
     {n q m : ℕ} {ϖ ϖ' : L} (hU : IsUnramInv ϖ c q) (hU' : IsUnramInv ϖ' c q) (hm : 2 * m ≤ n)
@@ -187,9 +183,9 @@ private theorem cell_unif_lemma {L : Type} [Field L] [Valued L (WithZero (Multip
     rw [← Matrix.mul_assoc (((D⁻¹ : GU c n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L), hDD, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `SatU`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Use `congr 1`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2 h2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `absurd (cell_unif_lemma hU hU' hm a _ h1) h2`. Conclude with `absurd (cell_unif_lemma hU' hU hm a _ h2) h1`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem satU_eq_of_isUnramInv {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {c : L →+* L}
     {n q m : ℕ} {ϖ ϖ' : L} (hU : IsUnramInv ϖ c q) (hU' : IsUnramInv ϖ' c q) (hm : 2 * m ≤ n)
@@ -207,15 +203,13 @@ private theorem satU_eq_of_isUnramInv {L : Type} [Field L] [Valued L (WithZero (
 end General
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J L v w h B φ hφ`. Distinguish the cases in `hsp : IsSplit (E := E) v ∧ ∃ e : GLoc σ J v ≃* GL (Fin n) (w.adicCompletion E), IsSplitChart σ J L h e`. Take `⟨hv, e0, he0⟩` from `hsp`. Take `⟨z, hz⟩` from `GlobalTheory.T.satake_determines_sphericalHeckeCharacter_GL E w n B (φ ∘ e0.symm) (comp_symm_mem_hecke e0 he0.2 hφ)`. Use `⟨z, fun V _ _ ρ x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heckeVec_eq_comp_symm e0 he0.2 hφ hx.mem_fixed]`. Conclude with `hz V (ρ.comp e0.symm.toMonoidHom) x (hx.isSatVecGL hv he0)`. Distinguish the cases in `hin : ∃ (c : w.adicCompletion E →+* w.adicCompletion E) (ϖ : w.adicCompletion E) (e : GLoc σ J v ≃* GU c n) (α : Fin (n / 2) → ℂˣ), IsUnramInv ϖ c (qV F v) ∧ IsInertChart σ J L h c e ∧ B = GlobalTheory.LGrp.bcParam n α`. Take `⟨c0, ϖ0, e0, α0, hU0, hC0, hB0⟩` from `hin`. Establish `hmem` using `comp_symm_mem_hecke e0 hC0.2.2 hφ`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨SatU ϖ0 (qV F v) (φ ∘ e0.symm) (fun i => (α0 i : ℂ)), fun V _ _ ρ x hx => ?_⟩` and prove the remaining obligations. Establish `hfx` using `hx.mem_fixed`. Break down `hx with ⟨hv, e, he, -⟩ | ⟨-, c, ϖ, e, α, hU, hC, hS, hB⟩` into its components or cases. Conclude with `(hsp ⟨hv, e, he⟩).elim`. Take `rfl : c = c0` from `IsConjAt.unique hC.1 hC0.1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS0` using `IsSatVecU.of_chart hC hC0 hS`. Rewrite using `[heckeVec_eq_comp_symm e0 hC0.2.2 hφ hfx, hS0.2.2 _ hmem]`. Use `congr 1`. Rewrite using `[satU_eq_of_isUnramInv hU hU0 (Nat.mul_div_le n 2)]`. Conclude with `GlobalTheory.T.unitarySatakeTransform_eq_of_baseChangeSatakeParameter_eq _ ϖ0 c (qV F v) n hU0 α α0 (hB.symm.trans hB0) _ hmem`.
-
-Use `⟨0, fun V _ _ ρ x hx => ?_⟩` and prove the remaining obligations. Break down `hx with ⟨hv, e, he, -⟩ | ⟨-, c, ϖ, e, α, hU, hC, -, hB⟩` into its components or cases. Conclude with `(hsp ⟨hv, e, he⟩).elim`. Conclude with `(hin ⟨c, ϖ, e, α, hU, hC, hB⟩).elim`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem heckeVec_eq_smul_of_isParamVec : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v) (B : Multiset ℂˣ), ∀ φ ∈ Hecke ℂ (stabLoc σ J L v), ∃ z : ℂ, ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GLoc σ J v) V) (x : V), IsParamVec σ J L h ρ x B → heckeVec ρ (stabLoc σ J L v) φ x = z • x := by
   intro F E _ _ _ _ _ σ n J L v w h B φ hφ

@@ -29,7 +29,7 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨hd, φ⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_equiv_of_eq {N h : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin N) k) V} {x y : Fin h → IrrGL k} {hd : ∑ a, (x a).1 = N}
@@ -39,7 +39,7 @@ theorem exists_equiv_of_eq {N h : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V
   exact ⟨hd, φ⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_multiset_sum, ← Multiset.sum_map_singleton (Finset.univ.val.map f), Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_singleton_eq_map {α : Type*} {h : ℕ} (f : Fin h → α) :
     (∑ i, ({f i} : Multiset α)) = Finset.univ.val.map f := by
@@ -47,9 +47,9 @@ theorem sum_singleton_eq_map {α : Type*} {h : ℕ} (f : Fin h → α) :
   rfl
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `Multiset.card_eq_one.1 ((Segment.card_ms Δ).trans h1)`. Establish `h3 : z = Δ.first`. Establish `hm : z ∈ Δ.ms` using `by rw [hz]; exact Multiset.mem_singleton_self z`. Take `⟨a, ha, rfl⟩` from `Segment.mem_carrier.1 (Segment.mem_ms.1 hm)`. Take `rfl : a = 0` from `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[hz, h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ms_eq_singleton {Δ : Segment k} (h1 : Δ.len = 1) : Δ.ms = {Δ.first} := by
   obtain ⟨z, hz⟩ := Multiset.card_eq_one.1 ((Segment.card_ms Δ).trans h1)
@@ -61,17 +61,17 @@ theorem ms_eq_singleton {Δ : Segment k} (h1 : Δ.len = 1) : Δ.ms = {Δ.first} 
   rw [hz, h3]
 
 /- English proof (translation)
-Take `⟨h, δ, Δ, s, hL, -, -, hd, ⟨φ⟩⟩` from `hGU.exists_prod hs hi hu hg`. Set `D : Fin h → Segment k` to `fun i => (Δ i).nu ((s i : ℝ) : ℂ)`. Establish `hL' : ∀ i, IsLSeg (D i) ((δ i).nu ((s i : ℝ) : ℂ)).rep` using `fun i => GlobalTheory.isLSeg_nu (hL i) _`. Establish `hG : GlobalTheory.Published.GeometricLemma` using `GlobalTheory.geometricLemma_of_filtration GlobalTheory.Laid.bzfin_holds GlobalTheory.geometricLemmaFiltration_holds`. Establish `hs2 : HasSupport ρ (∑ i, (D i).ms)` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (fun i => (hL' i).hasSupport) hi (IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG GlobalTheory.Laid.bzfin_holds hs2 hsup`. Establish `hmem : ∀ i (a : ℕ), a < (D i).len → (D i).first.nu (a : ℂ) ∈ chars ξ hξ` using `fun i a ha => by`. Rewrite using `[← he]`. Conclude with `Multiset.mem_sum.2 ⟨i, Finset.mem_univ _, Segment.mem_ms.2 (Segment.mem_carrier.2 ⟨a, ha, rfl⟩)⟩`. Establish `hlen : ∀ i, (D i).len = 1` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `h2 : 1 < (D i).len` using `by have := (D i).len_pos; omega`. Establish `h0` using `hmem i 0 (D i).len_pos`. Establish `h1` using `hmem i 1 h2`. Rewrite `h0` using `[Nat.cast_zero, IrrGL.nu_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Nat.cast_one]`. Conclude with `hun _ h1 _ h0 rfl`. Establish `hex : ∀ i, ∃ j, (D i).first = IrrGL.ofChar (ξ j) (hξ j)` using `fun i => by`. Establish `h0` using `hmem i 0 (D i).len_pos`. Rewrite `h0` using `[Nat.cast_zero, IrrGL.nu_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨j, -, hj⟩` from `Multiset.mem_map.1 h0`. Conclude with `⟨j, hj.symm⟩`. Use `choose τ hτ using hex`. Establish `hfam : (fun i => (δ i).nu ((s i : ℝ) : ℂ)) = fun i => IrrGL.ofChar (ξ (τ i)) (hξ (τ i))`. Use function extensionality and compare the values at `fun i => (GlobalTheory.GenSph.eq_first_of_isLSeg (hL' i) (hlen i)).trans (hτ i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hd', hφ⟩` from `exists_equiv_of_eq ⟨φ⟩ hfam`. Use `⟨h, τ, hd', hφ, ?_⟩` and prove the remaining obligations. Rewrite using `[← he, ← sum_singleton_eq_map]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ms_eq_singleton (hlen i), hτ i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equiv_prodIrr_chars (hGU : GlobalTheory.Published.GenericUnitaryDualGL) [CharZero k] {N : ℕ} {V : Type}
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth ρ)
@@ -115,9 +115,9 @@ theorem equiv_prodIrr_chars (hGU : GlobalTheory.Published.GenericUnitaryDualGL) 
   rw [ms_eq_singleton (hlen i), hτ i]
 
 /- English proof (translation)
-Take `⟨φ⟩` from `φ`. Establish `e : twist (twist ρ (detChar (Fin N) χ)) (detChar (Fin N) χ⁻¹) = ρ`. Rewrite using `[twist_twist]`. Use `twist_one ρ` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[detChar_apply]`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `(twistEquiv φ _).trans (prodIrrTwistEquiv x hd χ⁻¹ hχ.inv)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equiv_prodIrr_untwist {N h : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin N) k) V) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (x : Fin h → IrrGL k)
@@ -139,7 +139,7 @@ noncomputable def valAt (ϖ : kˣ) (y : IrrGL k) : ℂˣ :=
   if h : ∃ (μ : kˣ →* ℂˣ) (hμ : IsSmoothChar μ), y = IrrGL.ofChar μ hμ then h.choose ϖ else 1
 
 /- English proof (translation)
-Establish `h : ∃ (μ' : kˣ →* ℂˣ) (hμ' : IsSmoothChar μ'), IrrGL.ofChar μ hμ = IrrGL.ofChar μ' hμ'` using `⟨μ, hμ, rfl⟩`. Rewrite using `[valAt, dif_pos h]`. Take `⟨hμ', e⟩` from `h.choose_spec`. Conclude with `(congrArg (fun f : kˣ →* ℂˣ => f ϖ) (IrrGL.ofChar_inj.1 e)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem valAt_ofChar (ϖ : kˣ) (μ : kˣ →* ℂˣ) (hμ : IsSmoothChar μ) : valAt ϖ (IrrGL.ofChar μ hμ) = μ ϖ := by
   have h : ∃ (μ' : kˣ →* ℂˣ) (hμ' : IsSmoothChar μ'), IrrGL.ofChar μ hμ = IrrGL.ofChar μ' hμ' := ⟨μ, hμ, rfl⟩
@@ -154,9 +154,9 @@ section Sph
 variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Take `rfl : h = n` from `by rw [← hd]; simp [IrrGL.ofChar]`. Establish `hu : ∀ i, IrrGL.ofChar (ζ i) (hζ i) = GlobalTheory.GenSph.uc (w.adicCompletion E) (ζ i ϖ)` using `fun i => IrrGL.ofChar_inj.2 (eq_unrChar (fun x hx => hunr i x (GlobalTheory.MuInert.valued_eq_one w hx)) (GlobalTheory.MuInert.valuation_eq_uniformizer w hϖ))`. Take `⟨hd', ⟨ψ⟩⟩` from `GlobalTheory.SphUnr.exists_equiv_of_eq φ (funext hu)`. Establish `hsph : IsSpherical σ.ρ`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 (GlobalTheory.GenSph.isSpherical_prodIrr_uc (fun i => ζ i ϖ) hd')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(Submodule.ne_bot_iff _).2 ⟨ψ.symm v, GlobalTheory.LGrp.mem_fixed.2 fun g hg => ?_, fun e => hv0 ?_⟩` and prove the remaining obligations. Conclude with `(ψ.symm.toIntertwiningMap.isIntertwining _ _ g v).symm.trans (congrArg ψ.symm (GlobalTheory.LGrp.mem_fixed.1 hv g hg))`. Conclude with `ψ.symm.toLinearEquiv.injective (e.trans (map_zero _).symm)`. Establish `hS : HasSatake σ.ρ (fun i => ζ i ϖ)` using `⟨σ.irred, hsph, (IsSubquotient.of_injective ψ.toIntertwiningMap ψ.toLinearEquiv.injective).trans (GlobalTheory.GenSph.isSubquotient_prodIrr_uc (fun i => ζ i ϖ) hd')⟩`. Conclude with `GlobalTheory.LFun.SatCompare.hasSatGL_of_hasSatakeGL ((GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ σ.ρ _).2 ⟨_, rfl, hS⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasSatGL_of_equiv_prodIrr {n h : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E)))
     (ζ : Fin h → ((w.adicCompletion E)ˣ →* ℂˣ)) (hζ : ∀ i, IsSmoothChar (ζ i))
@@ -189,11 +189,11 @@ section Glob
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Take `⟨π₀, t, hu, he⟩` from `CG.exists_isUnitary_twist_absPow (CG.mk π) ha`. Take `⟨π₀, rfl⟩ : ∃ p : CuspSub E a, CG.mk p = π₀` from `⟨π₀.out, Quotient.out_eq π₀⟩`. Establish `hiso : CG.mk (π.twist (Model.absPow E (-t))) = CG.mk π₀`. Establish `e1 : CG.mk (π.twist (Model.absPow E (-t))) = (CG.mk π).twist (Model.absPow E (-t))` using `rfl`. Rewrite using `[e1, he, ← CG.twist_mul, mul_comm, CG.absPow_neg_mul, CG.twist_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlc` using `(hσ.twist (Model.absPow E (-t))).congr (Quotient.exact hiso) ⟨Representation.Equiv.refl _⟩`. Establish `hU` using `GlobalTheory.ResW.isUnitarisable_of_isLocComp_cusp E a π₀ ha ((CG.isUnitary_mk π₀).1 hu) w _ hlc`. Use `⟨-t, ?_⟩` and prove the remaining obligations. Establish `hl` using `GlobalTheory.HeightCounting.Blocks.loc_of_isAbsPow (Model.absPow_isAbsPow E (-t)) w`. Express the relevant statement in the definitionally equal form `IsUnitarisable (twRep σ.ρ ((GlobalTheory.HeckeGal.Model.absPow E (-t)).loc w |>.comp Matrix.GeneralLinearGroup.det)) at hU`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hU` using `[hl]`. Conclude with `hU`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnitarisable_twist {a : ℕ} (ha : 1 ≤ a) (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E))
     (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) (hσ : π.IsLocComp w σ) :
@@ -218,17 +218,15 @@ end GlobalTheory.SphUnr
 namespace GlobalTheory.SphUnr
 
 /- English proof (translation)
-Introduce `hI E _ _ _ n hn π w σ hσ ξ hξ hsup hun hunr ϖ hϖ`. Establish `: CharZero (w.adicCompletion E)` using `charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨t, hU⟩` from `exists_isUnitarisable_twist hn π w σ hσ`. Use `set χ : (w.adicCompletion E)ˣ →* ℂˣ := absPow (w.adicCompletion E) ((t : ℝ) : ℂ) with hχdef`. Establish `hχ : IsSmoothChar χ` using `isSmoothChar_absPow _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : IsGeneric σ.ρ` using `Generic.isGeneric_of_isLocComp E n π w σ hσ`. Establish `hc` using `TwistSupp.chars_eq_map_nu ξ (fun j => ξ j * χ) hξ (fun j => (hξ j).mul hχ) ((t : ℝ) : ℂ) fun j => rfl`. Establish `hsup' : HasSupport (twist σ.ρ (detChar (Fin n) χ)) (chars (fun j => ξ j * χ) fun j => (hξ j).mul hχ)`. Rewrite using `[hc]`. Conclude with `hsup.tw χ hχ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hun' : Unlinked (chars (fun j => ξ j * χ) fun j => (hξ j).mul hχ)`. Rewrite using `[hc, TwistSupp.unlinked_map_nu]`. Conclude with `hun`. Take `⟨h, τ, hd, hφ, hmap⟩` from `equiv_prodIrr_chars hI.gen _ (isSmooth_twist σ.smooth hχ.detChar) (isIrreducible_twist σ.irred _) hU ((isGeneric_twist_iff χ).2 hg) _ _ hsup' hun'`. Establish `hφ'` using `equiv_prodIrr_untwist σ.ρ χ hχ _ hd hφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfam : (fun i => (IrrGL.ofChar (ξ (τ i) * χ) ((hξ (τ i)).mul hχ)).tw χ⁻¹ hχ.inv) = fun i => IrrGL.ofChar (ξ (τ i)) (hξ (τ i))` using `funext fun i => by`. Rewrite using `[IrrGL.tw_ofChar]`. Conclude with `IrrGL.ofChar_inj.2 (by rw [mul_assoc, mul_inv_cancel, mul_one])`. Take `⟨hd2, hφ2⟩` from `exists_equiv_of_eq hφ' hfam`. Establish `hS` using `hasSatGL_of_equiv_prodIrr w σ (fun i => ξ (τ i)) (fun i => hξ (τ i)) hd2 hφ2 (fun i => hunr (τ i)) ϖ hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : Finset.univ.val.map (fun i => ξ (τ i) ϖ) = Finset.univ.val.map fun j => ξ j ϖ`. Establish `e` using `congrArg (Multiset.map fun y => valAt ϖ y * (χ ϖ)⁻¹) hmap`. Simplify using `only [chars, Multiset.map_map, Function.comp_def, valAt_ofChar, MonoidHom.mul_apply, mul_inv_cancel_right] at e`. Conclude with `e`. Rewrite using `[CG.hasSat_mk, ← hm]`.
-
-Conclude with `GlobalTheory.HeightCounting.Blocks.hasSatGL_locRep hσ hS`.
+A detailed English derivation is pending.
 -/
 theorem hasSat_of_unlinked_unr : UpperTheory.Gal.ToralGalois.Inq → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), 1 ≤ n →
     ∀ (π : CuspSub E n) (w : HeightOneSpectrum (𝓞 E)), ∀ σ : SmIrr (GL (Fin n) (w.adicCompletion E)),
@@ -276,7 +274,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Gal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.SphUnr.hasSat_of_unlinked_unr) | (exact GlobalTheory.SphUnr.hasSat_of_unlinked_unr) | (intros; apply GlobalTheory.SphUnr.hasSat_of_unlinked_unr <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem GlobalTheory.T.local_components_of_smooth_characters : UpperTheory.Gal.ToralGalois.Inq → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), 1 ≤ n → ∀ (π : CuspSub E n) (w : HeightOneSpectrum (𝓞 E)), ∀ σ : SmIrr (GL (Fin n) (w.adicCompletion E)), π.IsLocComp w σ → ∀ (ξ : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j)), HasSupport σ.ρ (chars ξ hξ) → Unlinked (chars ξ hξ) → (∀ j (x : (w.adicCompletion E)ˣ), Valued.v (x : w.adicCompletion E) = 1 → ξ j x = 1) → ∀ ϖ : (w.adicCompletion E)ˣ, Valued.v (ϖ : w.adicCompletion E) = WithZero.exp (-1 : ℤ) → (CG.mk π).HasSat w (Finset.univ.val.map fun j => ξ j ϖ) := by
   first | (exact @GlobalTheory.SphUnr.hasSat_of_unlinked_unr) | (exact GlobalTheory.SphUnr.hasSat_of_unlinked_unr) | (intros; apply GlobalTheory.SphUnr.hasSat_of_unlinked_unr  <;> assumption)

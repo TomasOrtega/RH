@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum IsLocalRing
 namespace GlobalTheory.AdelicQuadSol
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Establish `hm : (X ^ 2 - C r : (v.adicCompletionIntegers K)[X]).Monic` using `monic_X_pow_sub_C r two_ne_zero`. Establish `hd : eval b (derivative (X ^ 2 - C r : (v.adicCompletionIntegers K)[X])) = 2 * b`. Simplify using `[one_add_one_eq_two]`. Take `⟨s, hs, -⟩` from `HenselianRing.is_henselian (I := maximalIdeal (v.adicCompletionIntegers K)) (X ^ 2 - C r) hm b (by simpa using hb) (by rw [hd]; exact hu.map _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `h0 : s ^ 2 - r = 0` using `by simpa using hs`. Take the linear combination `h0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sq_eq_of_approx {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
     (r b : v.adicCompletionIntegers K) (hb : b ^ 2 - r ∈ maximalIdeal (v.adicCompletionIntegers K))
@@ -24,33 +24,29 @@ theorem exists_sq_eq_of_approx {K : Type} [Field K] [NumberField K] (v : HeightO
   linear_combination h0
 
 /- English proof (translation)
-Introduce `K _ _ v δ a h2 hδ ha`. Use `set O := v.adicCompletionIntegers K`. Set `d : O` to `⟨algebraMap K (v.adicCompletion K) δ, by rw [mem_adicCompletionIntegers, hδ]⟩`. Set `α : O` to `⟨algebraMap K (v.adicCompletion K) a, by rw [mem_adicCompletionIntegers, ha]⟩`. Establish `hdu : IsUnit d` using `adicCompletionIntegers.isUnit_iff_valued_eq_one.2 hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαu : IsUnit α` using `adicCompletionIntegers.isUnit_iff_valued_eq_one.2 ha`. Establish `h2u : IsUnit (2 : O)`. Apply `adicCompletionIntegers.isUnit_iff_valued_eq_one.2` to reduce the goal to its premises. Establish `e2 : ((2 : O) : v.adicCompletion K) = algebraMap K (v.adicCompletion K) 2`. Rewrite using `[map_ofNat]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `h2`. Use `letI := Fintype.ofFinite (ResidueField O)`. Establish `h2k : (2 : ResidueField O) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(h2u.map (residue O)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hchar : ringChar (ResidueField O) ≠ 2`. Introduce `h`. Apply `h2k` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ringChar.Nat.cast_ringChar (R := ResidueField O)` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this` after adjusting the coercions. Establish `hodd` using `FiniteField.odd_card_of_char_ne_two hchar`. Establish `hdk : residue O d ≠ 0` using `(hdu.map (residue O)).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hαk : residue O α ≠ 0` using `(hαu.map (residue O)).ne_zero`. Take `⟨s, t, hst⟩` from `FiniteField.exists_root_sum_quadratic (f := (X ^ 2 : (ResidueField O)[X])) (g := C (-residue O d) * X ^ 2 + C (-residue O α)) (by simp) (by compute_degree!) hodd`. Take `⟨x0, rfl⟩` from `residue_surjective s`. Take `⟨y0, rfl⟩` from `residue_surjective t`. Establish `he : x0 ^ 2 - d * y0 ^ 2 - α ∈ maximalIdeal O`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← residue_eq_zero_iff]`. Simplify using `only [eval_add, eval_mul, eval_C, eval_pow, eval_X] at hst`. Rewrite using `[map_sub, map_sub, map_mul, map_pow, map_pow]`. Take the linear combination `hst`. Distinguish the cases in `hx : residue O x0 = 0`.
+Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hy : residue O y0 ≠ 0`. Introduce `hy`. Apply `hαk` to reduce the goal to its premises. Use `(residue_eq_zero_iff _).2 he` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, map_mul, map_pow, map_pow, hx, hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take the linear combination `-this`. Take `⟨e, he'⟩` from `hdu`. Use `set di : O := ((e⁻¹ : Oˣ) : O)`. Establish `hdi : di * d = 1` using `by rw [← he']; exact e.inv_mul`. Take `⟨y, hy2⟩` from `exists_sq_eq_of_approx v (di * (x0 ^ 2 - α)) y0 (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: y0 ^ 2 - di * (x0 ^ 2 - α) = -di * (x0 ^ 2 - d * y0 ^ 2 - α)`. Take the linear combination `(-(y0 ^ 2)) * hdi`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ he)`. Use the proof step `(h2u.mul (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`. Conclude with `hy))`. Use `⟨(x0 : v.adicCompletion K), (y : v.adicCompletion K), x0.2, y.2, ?_⟩` and prove the remaining obligations. Establish `hO : x0 ^ 2 - d * y ^ 2 = α`. Rewrite using `[hy2]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(-(x0 ^ 2 - α)) * hdi`. Use `congrArg (fun z : O => (z : v.adicCompletion K)) hO` as an intermediate fact. Simplify `this` using `[d, α]`. Take `⟨x, hx2⟩` from `exists_sq_eq_of_approx v (α + d * y0 ^ 2) x0 (by`. Establish `: x0 ^ 2 - (α + d * y0 ^ 2) = x0 ^ 2 - d * y0 ^ 2 - α` using `by ring`.
-
-Rewrite using `[this]`. Conclude with `he)`. Use the proof step `(h2u.mul (by rw [← IsLocalRing.residue_ne_zero_iff_isUnit]; exact hx))`. Use `⟨(x : v.adicCompletion K), (y0 : v.adicCompletion K), x.2, y0.2, ?_⟩` and prove the remaining obligations. Establish `hO : x ^ 2 - d * y0 ^ 2 = α` using `by rw [hx2]; ring`.
-
-Use `congrArg (fun z : O => (z : v.adicCompletion K)) hO` as an intermediate fact. Simplify `this` using `[d, α]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem local_integral : ∀ (K : Type) [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (δ a : K), Valued.v (algebraMap K (v.adicCompletion K) 2) = 1 → Valued.v (algebraMap K (v.adicCompletion K) δ) = 1 → Valued.v (algebraMap K (v.adicCompletion K) a) = 1 → ∃ x y : v.adicCompletion K, x ∈ v.adicCompletionIntegers K ∧ y ∈ v.adicCompletionIntegers K ∧ x ^ 2 - algebraMap K (v.adicCompletion K) δ * y ^ 2 = algebraMap K (v.adicCompletion K) a := by
   intro K _ _ v δ a h2 hδ ha
@@ -120,9 +116,9 @@ theorem local_integral : ∀ (K : Type) [Field K] [NumberField K] (v : HeightOne
     simpa [d, α] using this
 
 /- English proof (translation)
-Use `filter_upwards [(algebraMap K (FiniteAdeleRing (𝓞 K) K) c).2, (algebraMap K (FiniteAdeleRing (𝓞 K) K) c⁻¹).2] with v h1 h2`. Establish `h1' : Valued.v (algebraMap K (v.adicCompletion K) c) ≤ 1` using `(mem_adicCompletionIntegers (𝓞 K) K v).1 h1`. Establish `h2' : Valued.v (algebraMap K (v.adicCompletion K) c⁻¹) ≤ 1` using `(mem_adicCompletionIntegers (𝓞 K) K v).1 h2`. Rewrite `h2'` using `[map_inv₀, map_inv₀]`. Establish `h0 : Valued.v (algebraMap K (v.adicCompletion K) c) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, map_eq_zero, map_eq_zero]`. Conclude with `hc`. Conclude with `le_antisymm h1' ((inv_le_one₀ (zero_lt_iff.2 h0)).1 h2')`.
+A detailed English derivation is pending.
 -/
 theorem eventually_valued_eq_one {K : Type} [Field K] [NumberField K] {c : K} (hc : c ≠ 0) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
@@ -137,13 +133,11 @@ theorem eventually_valued_eq_one {K : Type} [Field K] [NumberField K] {c : K} (h
   exact le_antisymm h1' ((inv_le_one₀ (zero_lt_iff.2 h0)).1 h2')
 
 /- English proof (translation)
-Introduce `K _ _ δ a hδ ha hloc`. Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`. Establish `hev : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, Valued.v (algebraMap K (v.adicCompletion K) 2) = 1 ∧ Valued.v (algebraMap K (v.adicCompletion K) δ) = 1 ∧ Valued.v (algebraMap K (v.adicCompletion K) a) = 1` using `(eventually_valued_eq_one h2).and ((eventually_valued_eq_one hδ).and (eventually_valued_eq_one ha))`. Set `sol : ∀ v : HeightOneSpectrum (𝓞 K), v.adicCompletion K × v.adicCompletion K` to `fun v => if h : Valued.v (algebraMap K (v.adicCompletion K) 2) = 1 ∧ Valued.v (algebraMap K (v.adicCompletion K) δ) = 1 ∧ Valued.v (algebraMap K (v.adicCompletion K) a) = 1 then ((local_integral K v δ a h.1 h.2.1 h.2.2).choose, (local_integral K v δ a h.1 h.2.1 h.2.2).choose_spec …`. Establish `hsol : ∀ v, (sol v).1 ^ 2 - algebraMap K (v.adicCompletion K) δ * (sol v).2 ^ 2 = algebraMap K (v.adicCompletion K) a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v`. Simplify using `only [sol]`. Use `split_ifs with h`. Conclude with `(local_integral K v δ a h.1 h.2.1 h.2.2).choose_spec.choose_spec.2.2`. Conclude with `(hloc v).choose_spec.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hint : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, (sol v).1 ∈ v.adicCompletionIntegers K ∧ (sol v).2 ∈ v.adicCompletionIntegers K` using `by filter_upwards [hev] with v h`. Simplify using `only [sol, dif_pos h]`. Conclude with `⟨(local_integral K v δ a h.1 h.2.1 h.2.2).choose_spec.choose_spec.1, (local_integral K v δ a h.1 h.2.1 h.2.2).choose_spec.choose_spec.2.1⟩`. Use `⟨⟨fun v => (sol v).1, hint.mono fun _ h => h.1⟩, ⟨fun v => (sol v).2, hint.mono fun _ h => h.2⟩, ?_⟩` and prove the remaining obligations. Use `FiniteAdeleRing.ext K fun v => ?_` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `(sol v).1 ^ 2 - algebraMap K (v.adicCompletion K) δ * (sol v).2 ^ 2 = algebraMap K (v.adicCompletion K) a`. Conclude with `hsol v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem exists_finiteAdele_sq_sub_mul_sq : ∀ (K : Type) [Field K] [NumberField K] (δ a : K), δ ≠ 0 → a ≠ 0 → (∀ v : HeightOneSpectrum (𝓞 K), ∃ x y : v.adicCompletion K, x ^ 2 - algebraMap K (v.adicCompletion K) δ * y ^ 2 = algebraMap K (v.adicCompletion K) a) → ∃ x y : FiniteAdeleRing (𝓞 K) K, x ^ 2 - algebraMap K (FiniteAdeleRing (𝓞 K) K) δ * y ^ 2 = algebraMap K (FiniteAdeleRing (𝓞 K) K) a := by
   intro K _ _ δ a hδ ha hloc

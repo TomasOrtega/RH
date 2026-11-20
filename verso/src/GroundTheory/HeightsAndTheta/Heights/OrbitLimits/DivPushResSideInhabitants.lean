@@ -19,7 +19,7 @@ def PushForwardOpen.projLineAffineCoordinate : OnePoint ℂ → Fin 1 → ℂ :=
 def PushForwardOpen.finitePlane : Set (OnePoint ℂ) := Set.range ((↑) : ℂ → OnePoint ℂ)
 
 /- English proof (translation)
-Establish `h : HasFDerivAt (fun v : Fin 1 → ℂ => fun _ : Fin 1 => F (v 0)) (ContinuousLinearMap.pi fun _ : Fin 1 => (ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) d).comp (ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin 1 => ℂ) 0)) w := hasFDerivAt_pi.2 fun _ => hF.hasFDerivAt.comp w (hasFDerivAt_apply 0 w)`. Rewrite using `[h.fderiv, ← LinearMap.det_toMatrix', Matrix.det_unique]`. Simplify `hd` using `[LinearMap.toMatrix'_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem PushForwardOpen.det_fderiv_oneVariable_ne_zero {F : ℂ → ℂ} {d : ℂ} {w : Fin 1 → ℂ}
     (hF : HasDerivAt F d (w 0)) (hd : d ≠ 0) :
@@ -34,17 +34,17 @@ theorem PushForwardOpen.det_fderiv_oneVariable_ne_zero {F : ℂ → ℂ} {d : �
   simpa [LinearMap.toMatrix'_apply] using hd
 
 /- English proof (translation)
-Use `⟨fun _ => projLine_isSmoothPotential, OnePoint.isOpen_range_coe, ?_, ?_, ?_, mIntegrableCont p1 _ (fun _ => projLine_isSmoothPotential) _ continuous_const⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩ j hj fin_cases j`. Establish `e : PushForwardOpen.projLineAffineCoordinate ∘ projectiveLineChartAtZero.symm = fun v : Fin 1 → ℂ => fun _ : Fin 1 => id (v 0)` using `rfl`. Express the relevant statement in the definitionally equal form `AnalyticAt ℂ (PushForwardOpen.projLineAffineCoordinate ∘ projectiveLineChartAtZero.symm) (projectiveLineChartAtZero z) ∧ LinearMap.det (fderiv ℂ (PushForwardOpen.projLineAffineCoordinate ∘ projectiveLineChartAtZero.symm) (projectiveLineChartAtZero z) : (Fin 1 → ℂ) →ₗ[ℂ] (Fin 1 → …`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨projLine_analyticAt_const_apply_zero _, PushForwardOpen.det_fderiv_oneVariable_ne_zero (hasDerivAt_id _) one_ne_zero⟩`. Establish `hz : z ≠ 0` using `fun h => hj (by rw [h])`. Establish `e : PushForwardOpen.projLineAffineCoordinate ∘ projectiveLineChartAtInfinity.symm = fun v : Fin 1 → ℂ => fun _ : Fin 1 => (v 0)⁻¹`. Use function extensionality and compare the values at `v i`. Simplify using `[PushForwardOpen.projLineAffineCoordinate]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hw : (projectiveLineChartAtInfinity (z : OnePoint ℂ)) 0 ≠ 0`. Simplify using `[projLineChart1_apply, hz]`. Express the relevant statement in the definitionally equal form `AnalyticAt ℂ (PushForwardOpen.projLineAffineCoordinate ∘ projectiveLineChartAtInfinity.symm) (projectiveLineChartAtInfinity z) ∧ LinearMap.det (fderiv ℂ (PushForwardOpen.projLineAffineCoordinate ∘ projectiveLineChartAtInfinity.symm) (projectiveLineChartAtInfinity z) : (Fin 1 → ℂ) …`. Rewrite using `[e]`. Conclude with `⟨projLine_analyticAt_const_inv_apply_zero hw, PushForwardOpen.det_fderiv_oneVariable_ne_zero (hasDerivAt_inv hw) (neg_ne_zero.2 (inv_ne_zero (pow_ne_zero 2 hw)))⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `j filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : Fin 1 → ℂ))] with u hu _ hO`. It suffices to derive a contradiction. Use `fin_cases j`. Conclude with `hO ⟨u 0, rfl⟩`. Use `hu (Set.mem_singleton_iff.2 (funext fun i => ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Subsingleton.elim i 0]`. Assume the negation of the conclusion as `h`. Conclude with `hO (projLineChart1_symm_mem_range.2 h)`. Use `Filter.Eventually.of_forall fun y => Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h1, a, rfl⟩ _ ⟨h2, b, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : a = y 0` using `congrFun (Set.mem_singleton_iff.1 h1) 0`. Establish `hb : b = y 0` using `congrFun (Set.mem_singleton_iff.1 h2) 0`. Rewrite using `[ha, hb]`.
+A detailed English derivation is pending.
 -/
 theorem PushForwardOpen.hyps_inhabited :
     (∀ i : Fin 1, IsPotential p1 ((fun _ : Fin 1 => fsPot) i)) ∧
@@ -98,7 +98,7 @@ theorem PushForwardOpen.hyps_inhabited :
     rw [ha, hb]
 
 /- English proof (translation)
-Take `⟨hΦ, hO, hq, hd, hf, hg⟩` from `PushForwardOpen.hyps_inhabited`. Conclude with `(h p1 _ hΦ PushForwardOpen.projLineAffineCoordinate _ hO hq hd hf _ hg).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PushForwardOpen.pushforwardOpen_projLine (h : PushForwardOpen.Statement) :
     mInt p1 (fun _ : Fin 1 => fsPot) (fun _ => (1 : ℝ)) =
@@ -118,7 +118,7 @@ def ProjRegular.projFirstCoordinate : (((k : Unit) → PBlk 2 k) → ℂ) →ₗ
     LinearMap.proj (R := ℂ) (φ := fun _ : ((k : Unit) → PBlk 2 k) => ℂ) (fun _ => 0)
 
 /- English proof (translation)
-Establish `e : f = fun _ => f u` using `funext fun v => congrArg f (Subsingleton.elim v u)`. Rewrite using `[e]`. Conclude with `analyticAt_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ProjRegular.analyticAt_of_zero_dim {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F]
     (f : (Fin 0 → ℂ) → F) (u : Fin 0 → ℂ) : AnalyticAt ℂ f u := by
@@ -127,16 +127,16 @@ theorem ProjRegular.analyticAt_of_zero_dim {F : Type*} [NormedAddCommGroup F] [N
   exact analyticAt_const
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_subtype_val, fun _ _ u _ => ProjRegular.analyticAt_of_zero_dim _ u⟩`.
+Supply the required witnesses or components.
 -/
 theorem ProjRegular.holoMap_pointV :
     HoloMap (ptAtlas ProjRegular.pointV) ProjectiveLineResolution.res.A Subtype.val :=
   ⟨continuous_subtype_val, fun _ _ u _ => ProjRegular.analyticAt_of_zero_dim _ u⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `rfl : x = ((0 : ℂ) : OnePoint ℂ)` from `hx`. Introduce `h`. Establish `h0` using `congrFun h 0`. Express the relevant statement in the definitionally equal form `ProjRegular.projFirstCoordinate (segre (ProjectiveLineResolution.lift ((0 : ℂ) : OnePoint ℂ) ((0 : ℂ) : OnePoint ℂ))) 0 = 0 at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h0` using `[ProjectiveLineResolution.lift_coe]`. Simplify using `[ProjRegular.projFirstCoordinate, segre] at h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ProjRegular.projFirstCoord_segre_lift_ne_zero :
     ∀ x ∈ ProjRegular.pointV, ProjRegular.projFirstCoordinate (segre (ProjectiveLineResolution.res.lift x x)) ≠ 0 := by
@@ -150,14 +150,14 @@ theorem ProjRegular.projFirstCoord_segre_lift_ne_zero :
   simp [ProjRegular.projFirstCoordinate, segre] at h0
 
 /- English proof (translation)
-The claim follows from `ProjRegular.holoMap_pointV`.
+A detailed English derivation is pending.
 -/
 theorem ProjRegular.hyps_inhabited :
     HoloMap (ptAtlas ProjRegular.pointV) ProjectiveLineResolution.res.A Subtype.val :=
   ProjRegular.holoMap_pointV
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ProjRegular.holoMap_pointV, isClosed_singleton, ProjRegular.projFirstCoord_segre_lift_ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem ProjRegularFibre.hyps_inhabited :
     HoloMap (ptAtlas ProjRegular.pointV) ProjectiveLineResolution.res.A Subtype.val ∧ IsClosed ProjRegular.pointV ∧
@@ -165,7 +165,7 @@ theorem ProjRegularFibre.hyps_inhabited :
   ⟨ProjRegular.holoMap_pointV, isClosed_singleton, ProjRegular.projFirstCoord_segre_lift_ne_zero⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j => j.elim0, ProjRegular.holoMap_pointV, isClosed_singleton, ProjRegular.projFirstCoord_segre_lift_ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem ProjRegularDens.hyps_inhabited :
     (∀ j : Fin 0, IsSmoothHerm ((Fin.elim0 : Fin 0 → HermLine (PBlk 2)) j)) ∧
@@ -175,7 +175,7 @@ theorem ProjRegularDens.hyps_inhabited :
   ⟨fun j => j.elim0, ProjRegular.holoMap_pointV, isClosed_singleton, ProjRegular.projFirstCoord_segre_lift_ne_zero⟩
 
 /- English proof (translation)
-The claim follows from `(h Unit (PBlk 2) ⊥ ProjectiveLineResolution.JJ 0 ProjectiveLineResolution.res ProjRegular.projFirstCoordinate ProjRegular.pointV (ptAtlas ProjRegular.pointV) ProjRegular.hyps_inhabited).1`.
+A detailed English derivation is pending.
 -/
 theorem ProjRegular.applies_to_point (h : ProjRegular.Statement) :
     IsOpen (projRegular ProjectiveLineResolution.res ProjRegular.projFirstCoordinate (ptAtlas ProjRegular.pointV)) :=
@@ -183,7 +183,7 @@ theorem ProjRegular.applies_to_point (h : ProjRegular.Statement) :
     (ptAtlas ProjRegular.pointV) ProjRegular.hyps_inhabited).1
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `ProjRegularFibre.hyps_inhabited`. Conclude with `h Unit (PBlk 2) ⊥ ProjectiveLineResolution.JJ 0 ProjectiveLineResolution.res ProjRegular.projFirstCoordinate ProjRegular.pointV (ptAtlas ProjRegular.pointV) h1 h2 h3`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ProjRegularFibre.applies_to_point (h : ProjRegularFibre.Statement) :
     ∀ᵐ y, ((projCoord ProjectiveLineResolution.res ProjRegular.projFirstCoordinate ∘ Subtype.val : ProjRegular.pointV → Fin 0 → ℂ)
@@ -193,7 +193,7 @@ theorem ProjRegularFibre.applies_to_point (h : ProjRegularFibre.Statement) :
     (ptAtlas ProjRegular.pointV) h1 h2 h3
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3⟩` from `ProjRegularDens.hyps_inhabited`. Conclude with `h Unit (PBlk 2) ⊥ ProjectiveLineResolution.JJ 0 ProjectiveLineResolution.res Fin.elim0 ProjRegular.projFirstCoordinate ProjRegular.pointV (ptAtlas ProjRegular.pointV) h0 h1 h2 h3`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ProjRegularDens.applies_to_point (h : ProjRegularDens.Statement) :
     ∀ j, ∀ᵐ u, u ∈ ((ptAtlas ProjRegular.pointV).chart j).target →

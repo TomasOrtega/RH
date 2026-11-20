@@ -7,9 +7,7 @@ open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar Glo
 namespace GlobalTheory.CompanionTheory.Ar.Flat.FrameOpen
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hξ.bij.2 a`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `e : X.presheaf.stalkSpecializes (specializes_rfl : genPt ξ ⤳ genPt ξ) = 𝟙 _` using `TopCat.Presheaf.stalkSpecializes_refl _ _`. Use `show (X.presheaf.stalkSpecializes (specializes_rfl : genPt ξ ⤳ genPt ξ) ≫ Scheme.stalkClosedPointTo ξ).hom g = a`. Rewrite using `[e]`.
-
-Conclude with `hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_regAt_genPt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hξ : IsCptGen ξ) (a : Ω) : a ∈ regAt ξ (⟨genPt ξ, specializes_rfl⟩ : Cpt ξ) := by
@@ -23,9 +21,9 @@ theorem mem_regAt_genPt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (Comm
   exact hg
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨⊤, trivial, fun _ _ _ h => absurd h (Finset.notMem_empty _)⟩`. Consider the case `insert a S _ ih`. Take `⟨W, hW, H⟩` from `ih`. Take `⟨U, hU, HU⟩` from `exists_open_mem_regAt ξ ⟨genPt ξ, specializes_rfl⟩ a (mem_regAt_genPt hξ a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨W ⊓ U, ⟨hW, hU⟩, fun q hq c hc => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hc with rfl | hc` into its components or cases. Conclude with `HU q hq.2`. Conclude with `H q hq.1 c hc`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_open_forall_mem_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hξ : IsCptGen ξ) (S : Finset Ω) :
@@ -42,7 +40,7 @@ theorem exists_open_forall_mem_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ
     · exact H q hq.1 c hc
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[← hM i]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨M i j, hreg i j⟩ : regAt ξ q) (Submodule.subset_span ⟨j, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_regAt_le {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {E : Type} [AddCommGroup E] [Module Ω E] {r : ℕ} (q : Cpt ξ) (b e : Fin r → E) (M : Fin r → Fin r → Ω)
@@ -55,11 +53,11 @@ theorem span_regAt_le {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRi
   exact Submodule.smul_mem _ (⟨M i j, hreg i j⟩ : regAt ξ q) (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Introduce `X Ω _ ξ E _ _ L T r V b hξ hT hVB hb hspan`. Take `⟨U, hU, e, he, hfr⟩` from `hVB _ hT`. Establish `hbe : ∀ i, ∃ c : Fin r → Ω, ∑ j, c j • e j = b i` using `fun i => (Submodule.mem_span_range_iff_exists_fun Ω).1 (he ▸ hspan ▸ Submodule.subset_span ⟨i, rfl⟩)`. Establish `heb : ∀ i, ∃ c : Fin r → Ω, ∑ j, c j • b j = e i` using `fun i => (Submodule.mem_span_range_iff_exists_fun Ω).1 (hspan ▸ he ▸ Submodule.subset_span ⟨i, rfl⟩)`. Use `choose M hM using hbe`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose N hN using heb`. Set `S : Finset Ω` to `Finset.univ.image (fun ij : Fin r × Fin r => M ij.1 ij.2) ∪ Finset.univ.image (fun ij : Fin r × Fin r => N ij.1 ij.2)`. Take `⟨W, hW, H⟩` from `exists_open_forall_mem_regAt hξ S`. Use `⟨U ⊓ W, ⟨hU, hW⟩, fun q hq hqW => ⟨hb, ?_⟩⟩` and prove the remaining obligations. Establish `hMr : ∀ i j, M i j ∈ regAt ξ q` using `fun i j => H q hqW.2 _ (Finset.mem_union_left _ (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNr : ∀ i j, N i j ∈ regAt ξ q` using `fun i j => H q hqW.2 _ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩))`. Rewrite using `[(hfr q hq hqW.1).2]`. Conclude with `le_antisymm (span_regAt_le q e b N hN hNr) (span_regAt_le q b e M hM hMr)`.
+A detailed English derivation is pending.
 -/
 theorem isFrameAt_near_genPt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat ξ E) (T : Set (Cpt ξ)) (r : ℕ) (V : Submodule Ω E) (b : Fin r → E), IsCptGen ξ → (⟨genPt ξ, specializes_rfl⟩ : Cpt ξ) ∈ T → L.IsVBOn T r V → LinearIndependent Ω b → Submodule.span Ω (Set.range b) = V → ∃ W : X.Opens, genPt ξ ∈ W ∧ ∀ q ∈ T, q.1 ∈ W → L.IsFrameAt b q := by
   classical

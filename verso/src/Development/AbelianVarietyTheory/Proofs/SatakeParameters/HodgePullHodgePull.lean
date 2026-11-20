@@ -9,7 +9,7 @@ variable {k : Type} [CommRing k] {X X' X'' : Scheme.{0}} {s : X ⟶ Sp k} {s' : 
   {s'' : X'' ⟶ Sp k} {f : X' ⟶ X} {g : X'' ⟶ X'}
 
 /- English proof (translation)
-Use `SemiHom.mOm_mOm (semiHom_appSec hf U) (semiHom_appSec hg (f ⁻¹ᵁ U)) (semiHom_appSec hgf U) (fun b ↦ ?_) x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f.app U ≫ g.app (f ⁻¹ᵁ U)).hom b = ((g ≫ f).app U).hom b`. Rewrite using `[Scheme.Hom.comp_app]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem formPull_formPull (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f) ≫ s = s'')
     (U : X.Opens) (j : ℕ) (x : OmU s U j) :
@@ -21,9 +21,9 @@ theorem formPull_formPull (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g �
   rfl
 
 /- English proof (translation)
-Apply `((PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv _ _).injective` to reduce the goal to its premises. Establish `e₁` using `(PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv_unit (formsPre s j) M φ`. Establish `e₂` using `(PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv_unit (formsPre s j) M ψ`. Use `e₁.trans (Eq.trans ?_ e₂.symm)` and prove the remaining obligations. Use extensionality with `U x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `h U.unop x`.
+A detailed English derivation is pending.
 -/
 theorem omega_hom_ext {j : ℕ} {M : X.Modules} (φ ψ : Omega s j ⟶ M)
     (h : ∀ (U : X.Opens) (x : OmU s U j), φ.val.app (op U) ((toOmega s j).app (op U) x) =
@@ -38,7 +38,7 @@ theorem omega_hom_ext {j : ℕ} {M : X.Modules} (φ ψ : Omega s j ⟶ M)
   exact h U.unop x
 
 /- English proof (translation)
-Use `omega_hom_ext _ _ fun U x ↦ ?_` and prove the remaining obligations. Rewrite using `[omegaPull_toOmega]`. Express the relevant statement in the definitionally equal form `_ = (omegaPull hg j).val.app (op (f ⁻¹ᵁ U)) ((omegaPull hf j).val.app (op U) ((toOmega s j).app (op U) x))`. Rewrite using `[omegaPull_toOmega, omegaPull_toOmega, formPull_formPull hf hg hgf]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem omegaPull_comp (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f) ≫ s = s'')
     (j : ℕ) :
@@ -50,11 +50,11 @@ theorem omegaPull_comp (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f
   rfl
 
 /- English proof (translation)
-Use `letI := algΓ s`. Use `letI := algΓ s'`. Use `letI := algΓ s''`. Apply `(cohOn.toH' (Omega s'' j) ⊤ q).injective` to reduce the goal to its premises. Establish `e₁` using `cohOn.toH'_pull (σ := RingHom.id k) (appTop_algebraMap hg) (omegaPull hg j) (le_refl (g ⁻¹ᵁ ⊤)) (hodgePull hf j q x)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e₂` using `cohOn.toH'_pull (σ := RingHom.id k) (appTop_algebraMap hf) (omegaPull hf j) (le_refl (f ⁻¹ᵁ ⊤)) x`. Establish `e₃` using `cohOn.toH'_pull (σ := RingHom.id k) (appTop_algebraMap hgf) (omegaPull hgf j) (le_refl ((g ≫ f) ⁻¹ᵁ ⊤)) x`. Use `e₁.trans (Eq.trans ?_ e₃.symm)` and prove the remaining obligations. Use `(congrArg (SheafPull.pull.{0, 0} g.base (toAbSheafPush (omegaPull hg j)) q _) e₂).trans ?_` and prove the remaining obligations. Use `(SheafPull.pull_pull.{0, 0, 0} f.base g.base _ _ q _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[omegaPull_comp hf hg hgf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hodgePull_comp (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f) ≫ s = s'')
     (j q : ℕ) (x : hodgeH s j q) :
@@ -74,7 +74,7 @@ theorem hodgePull_comp (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f
   rfl
 
 /- English proof (translation)
-The claim follows from `hodgePull_comp rfl rfl (Category.assoc g f s) j q x`.
+A detailed English derivation is pending.
 -/
 theorem hodgePull_hodgePull {X X' X'' : Scheme.{0}} (s : X ⟶ Sp k) (f : X' ⟶ X)
     (g : X'' ⟶ X') (j q : ℕ) (x : hodgeH s j q) :
@@ -85,7 +85,7 @@ theorem hodgePull_hodgePull {X X' X'' : Scheme.{0}} (s : X ⟶ Sp k) (f : X' ⟶
 end GlobalTheory.HodgeCoh
 
 /- English proof (translation)
-The claim follows from `fun s f g j q x ↦ hodgePull_hodgePull s f g j q x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ {k : Type} [CommRing k] {X X' X'' : Scheme.{0}} (s : X ⟶ Sp k) (f : X' ⟶ X) (g : X'' ⟶ X') (j q : ℕ) (x : hodgeH s j q), hodgePull (s' := g ≫ f ≫ s) rfl j q (hodgePull (s' := f ≫ s) rfl j q x) = hodgePull (f := g ≫ f) (s' := g ≫ f ≫ s) (Category.assoc g f s) j q x :=
   fun s f g j q x ↦ hodgePull_hodgePull s f g j q x

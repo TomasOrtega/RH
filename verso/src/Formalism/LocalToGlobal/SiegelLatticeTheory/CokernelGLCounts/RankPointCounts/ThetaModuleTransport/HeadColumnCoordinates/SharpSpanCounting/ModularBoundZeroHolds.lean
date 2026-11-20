@@ -11,13 +11,13 @@ section Gen
 variable {R : Type} [CommRing R] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem col_mem_headCols (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (a : Fin r) :
     (fun i => Z i a.castSucc) ∈ headCols Z := Submodule.subset_span ⟨a, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_eq_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (j : Fin (r + 1)) :
     (fun i => Z i j) = Z.mulVec (Pi.single j 1) := by
@@ -25,9 +25,9 @@ theorem col_eq_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (j : Fin (r + 1
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hw' : w = ∑ j, w j • Pi.single j (1 : R)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hsum : Z.mulVec w = ∑ j, w j • Z.mulVec (Pi.single j 1)` using `by conv_lhs => rw [hw']`. Rewrite using `[← Matrix.mulVecLin_apply, map_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, Matrix.mulVecLin_apply]`. Rewrite using `[hsum, Fin.sum_univ_castSucc, hw, zero_smul, add_zero]`. Use `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← col_eq_mulVec]`. Conclude with `col_mem_headCols Z a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_headCols (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (w : Fin (r + 1) → R)
     (hw : w (Fin.last r) = 0) : Z.mulVec w ∈ headCols Z := by
@@ -44,9 +44,9 @@ theorem mulVec_mem_headCols (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (w : Fin 
   exact col_mem_headCols Z a
 
 /- English proof (translation)
-Unfold `bCls`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Establish `h : Z.mulVec w - w (Fin.last r) • (fun i => Z i (Fin.last r)) = Z.mulVec (w - w (Fin.last r) • Pi.single (Fin.last r) 1)`. Rewrite using `[col_eq_mulVec, Matrix.mulVec_sub, Matrix.mulVec_smul]`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `mulVec_mem_headCols` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem mk_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (w : Fin (r + 1) → R) :
     (Submodule.Quotient.mk (Z.mulVec w) : MbMod Z) = w (Fin.last r) • bCls Z := by
@@ -78,7 +78,7 @@ theorem ellRaw_apply (Z : M.Mat (r + 1)) (v : Fin (r + 1) → M.R) :
     ellRaw Z v = ((Z.Z.map M.R.subtype)⁻¹.mulVec (fun j => (v j : E))) (Fin.last r) := rfl
 
 /- English proof (translation)
-Rewrite using `[ellRaw_apply]`. Establish `h : (fun j => ((Z.Z.mulVec w j : M.R) : E)) = (Z.Z.map M.R.subtype).mulVec (fun j => (w j : E))`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[h, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ Z.unit, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ellRaw_mulVec (Z : M.Mat (r + 1)) (w : Fin (r + 1) → M.R) :
     ellRaw Z (Z.Z.mulVec w) = (w (Fin.last r) : E) := by
@@ -90,16 +90,16 @@ theorem ellRaw_mulVec (Z : M.Mat (r + 1)) (w : Fin (r + 1) → M.R) :
   rw [h, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ Z.unit, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[col_eq_mulVec, ellRaw_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ellRaw_col (Z : M.Mat (r + 1)) (j : Fin (r + 1)) :
     ellRaw Z (fun i => Z.Z i j) = (((Pi.single j (1 : M.R) : Fin (r + 1) → M.R) (Fin.last r) : M.R) : E) := by
   rw [col_eq_mulVec, ellRaw_mulVec]
 
 /- English proof (translation)
-Unfold `headCols`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker]`. Rewrite using `[ellRaw_col]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply, (Fin.castSucc_lt_last a).ne']`.
+Simplify using the standard rewrite rules.
 -/
 theorem headCols_le_ker (Z : M.Mat (r + 1)) : headCols Z.Z ≤ LinearMap.ker (ellRaw Z) := by
   unfold headCols
@@ -110,9 +110,9 @@ theorem headCols_le_ker (Z : M.Mat (r + 1)) : headCols Z.Z ≤ LinearMap.ker (el
   simp [Pi.single_apply, (Fin.castSucc_lt_last a).ne']
 
 /- English proof (translation)
-Establish `h : headCols Z.Z ≤ LinearMap.range Z.Z.mulVecLin`. Unfold `headCols`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨Pi.single a.castSucc 1, (col_eq_mulVec Z.Z a.castSucc).symm⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `x hx`. Conclude with `h hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem headCols_le_range (Z : M.Mat (r + 1)) :
     headCols Z.Z ≤ (LinearMap.range Z.Z.mulVecLin).comap LinearMap.id := by
@@ -143,14 +143,14 @@ theorem piC_mk (Z : M.Mat (r + 1)) (v : Fin (r + 1) → M.R) :
     piC Z (Submodule.Quotient.mk v) = (Submodule.Quotient.mk v : M.Cok Z) := rfl
 
 /- English proof (translation)
-Rewrite using `[map_smul, Subring.smul_def, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ell_smul (Z : M.Mat (r + 1)) (s : M.R) (m : MbMod Z.Z) :
     ell Z (s • m) = (s : E) * ell Z m := by
   rw [map_smul, Subring.smul_def, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `bCls`. Rewrite using `[ell_mk, ellRaw_col]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ell_b (Z : M.Mat (r + 1)) : ell Z (bCls Z.Z) = 1 := by
   unfold bCls
@@ -158,7 +158,7 @@ theorem ell_b (Z : M.Mat (r + 1)) : ell Z (bCls Z.Z) = 1 := by
   simp
 
 /- English proof (translation)
-Unfold `bCls`. Rewrite using `[piC_mk, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨Pi.single (Fin.last r) 1, (col_eq_mulVec Z.Z _).symm⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem piC_b (Z : M.Mat (r + 1)) : piC Z (bCls Z.Z) = 0 := by
   unfold bCls
@@ -171,11 +171,11 @@ Both sides reduce to the same expression.
 theorem piC_e (Z : M.Mat (r + 1)) : piC Z (eCl Z.Z) = M.eCls Z := rfl
 
 /- English proof (translation)
-Unfold `eCl`. Unfold `headDet at hD`. Rewrite using `[ell_mk, ellRaw_apply]`. Establish `h1 : (fun j => (((Pi.single (Fin.last r) (1 : M.R) : Fin (r + 1) → M.R) j : M.R) : E)) = Pi.single (Fin.last r) (1 : E)`. Use function extensionality and compare the values at `j`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hj : j = Fin.last r`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Establish `h2 : (Z.Z.map M.R.subtype).adjugate (Fin.last r) (Fin.last r) = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last, hD, mul_zero]`. Rewrite using `[h1, Matrix.inv_def]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Conclude with `mul_eq_zero_of_right _ h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ell_e (Z : M.Mat (r + 1)) (hD : headDet M Z.Z = 0) : ell Z (eCl Z.Z) = 0 := by
   unfold eCl
@@ -195,7 +195,7 @@ theorem ell_e (Z : M.Mat (r + 1)) (hD : headDet M Z.Z = 0) : ell Z (eCl Z.Z) = 0
   exact mul_eq_zero_of_right _ h2
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[piC_mk, ell_mk]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lam_piC (Z : M.Mat (r + 1)) (m : MbMod Z.Z) :
     M.lam Z (piC Z m) = M.Rsub.mkQ (ell Z m) := by
@@ -204,7 +204,7 @@ theorem lam_piC (Z : M.Mat (r + 1)) (m : MbMod Z.Z) :
   rfl
 
 /- English proof (translation)
-Introduce `x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨Submodule.Quotient.mk v, piC_mk Z v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem piC_surj (Z : M.Mat (r + 1)) : Function.Surjective (piC Z) := by
   intro x
@@ -219,11 +219,11 @@ Both sides reduce to the same expression.
 theorem Phi_apply (Z : M.Mat (r + 1)) (m : MbMod Z.Z) : Phi Z m = (piC Z m, ell Z m) := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite `hm` using `[Phi_apply, Prod.mk_eq_zero, piC_mk, ell_mk, Submodule.Quotient.mk_eq_zero]`. Take `⟨⟨w, hw⟩, h2⟩` from `hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[Matrix.mulVecLin_apply]`. Substitute `hw` using the available equality. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Apply `mulVec_mem_headCols` to reduce the goal to its premises. Establish `h3 : ((w (Fin.last r) : M.R) : E) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← ellRaw_mulVec]`. Conclude with `h2`. Conclude with `Subtype.ext h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Phi_inj (Z : M.Mat (r + 1)) : Function.Injective (Phi Z) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -241,11 +241,11 @@ theorem Phi_inj (Z : M.Mat (r + 1)) : Function.Injective (Phi Z) := by
   exact Subtype.ext h3
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Rewrite using `[Phi_apply, lam_piC]`. Introduce `h`. Take `⟨c, x⟩` from `p`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩` from `piC_surj Z c`. Simplify using `only at h`. Rewrite `h` using `[lam_piC, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Simplify using `only [Model.Rsub, LinearMap.mem_range] at h`. Take `⟨s, hs⟩` from `h`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hs' : (s : E) = x - ell Z m` using `hs`. Use `⟨m + s • bCls Z.Z, ?_⟩` and prove the remaining obligations. Rewrite using `[Phi_apply, map_add, map_smul, piC_b, smul_zero, add_zero, map_add, ell_smul, ell_b, mul_one, hs']`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem mem_range_Phi (Z : M.Mat (r + 1)) (p : M.Cok Z × E) :
     p ∈ LinearMap.range (Phi Z) ↔ M.Rsub.mkQ p.2 = M.lam Z p.1 := by
@@ -275,7 +275,7 @@ Both sides reduce to the same expression.
 theorem ePhi_coe (Z : M.Mat (r + 1)) (m : MbMod Z.Z) : (ePhi Z m : M.Cok Z × E) = Phi Z m := rfl
 
 /- English proof (translation)
-Establish `h` using `Z.unit`. Rewrite `h` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_unit (Z : M.Mat (r + 1)) : IsUnit ((Z.Z.det : M.R) : E) := by
   have h := Z.unit
@@ -283,7 +283,7 @@ theorem det_unit (Z : M.Mat (r + 1)) : IsUnit ((Z.Z.det : M.R) : E) := by
   exact h
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.mk_smul, ← mk_mulVec Z.Z (Z.Z.adjugate.mulVec v), Matrix.mulVec_mulVec, Matrix.mul_adjugate]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem det_smul_mk (Z : M.Mat (r + 1)) (v : Fin (r + 1) → M.R) :
     Z.Z.det • (Submodule.Quotient.mk v : MbMod Z.Z) =
@@ -297,9 +297,9 @@ theorem det_smul_mk (Z : M.Mat (r + 1)) (v : Fin (r + 1) → M.R) :
 variable {Z₁ Z₂ : M.Mat (r + 1)}
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `h1` using `det_smul_mk Z₁ v`. Establish `h2 : ell Z₂ (g (Z₁.Z.det • Submodule.Quotient.mk v)) = ell Z₁ (Z₁.Z.det • (Submodule.Quotient.mk v : MbMod Z₁.Z))`. Rewrite using `[h1, map_smul, hb, ell_smul, ell_smul, ell_b, ell_b]`. Rewrite `h2` using `[map_smul, ell_smul, ell_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(det_unit Z₁).mul_left_cancel h2`.
+A detailed English derivation is pending.
 -/
 theorem ell_comp (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (hb : g (bCls Z₁.Z) = bCls Z₂.Z)
     (m : MbMod Z₁.Z) : ell Z₂ (g m) = ell Z₁ m := by
@@ -312,13 +312,13 @@ theorem ell_comp (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (hb : g (bCls Z₁.
   exact (det_unit Z₁).mul_left_cancel h2
 
 /- English proof (translation)
-The claim follows from `ell_comp γ.toLinearMap hb m`.
+A detailed English derivation is pending.
 -/
 theorem ell_equiv (γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z) (hb : γ (bCls Z₁.Z) = bCls Z₂.Z)
     (m : MbMod Z₁.Z) : ell Z₂ (γ m) = ell Z₁ m := ell_comp γ.toLinearMap hb m
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.comp_apply, Submodule.mkQ_apply, Matrix.mulVecLin_apply, mk_mulVec, map_smul, hb, map_smul, piC_b, smul_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_le_ker_ind (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (hb : g (bCls Z₁.Z) = bCls Z₂.Z) :
     LinearMap.range Z₁.Z.mulVecLin ≤ LinearMap.ker (piC Z₂ ∘ₗ g ∘ₗ (headCols Z₁.Z).mkQ) := by
@@ -331,7 +331,7 @@ def ind (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (hb : g (bCls Z₁.Z) = bCls
   (LinearMap.range Z₁.Z.mulVecLin).liftQ _ (range_le_ker_ind g hb)
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[piC_mk]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ind_piC (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (hb : g (bCls Z₁.Z) = bCls Z₂.Z)
     (m : MbMod Z₁.Z) : ind g hb (piC Z₁ m) = piC Z₂ (g m) := by
@@ -340,7 +340,7 @@ theorem ind_piC (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (hb : g (bCls Z₁.Z
   rfl
 
 /- English proof (translation)
-Rewrite using `[← hb]`. Conclude with `γ.symm_apply_apply _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_b (γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z) (hb : γ (bCls Z₁.Z) = bCls Z₂.Z) :
     γ.symm.toLinearMap (bCls Z₂.Z) = bCls Z₁.Z := by
@@ -362,7 +362,7 @@ def psiOf (γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z) (hb : γ (bCls Z₁.Z) = 
         LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply])
 
 /- English proof (translation)
-The claim follows from `ind_piC γ.toLinearMap hb m`.
+A detailed English derivation is pending.
 -/
 theorem psiOf_piC (γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z) (hb : γ (bCls Z₁.Z) = bCls Z₂.Z)
     (m : MbMod Z₁.Z) : psiOf γ hb (piC Z₁ m) = piC Z₂ (γ m) := ind_piC γ.toLinearMap hb m
@@ -371,17 +371,17 @@ def sig (ψ : M.Cok Z₁ ≃ₗ[M.R] M.Cok Z₂) : (M.Cok Z₁ × E) ≃ₗ[M.R]
   ψ.prodCongr (LinearEquiv.refl M.R E)
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.prodCongr_apply _ _ p`.
+A detailed English derivation is pending.
 -/
 theorem sig_apply (ψ : M.Cok Z₁ ≃ₗ[M.R] M.Cok Z₂) (p : M.Cok Z₁ × E) :
     sig ψ p = (ψ p.1, p.2) := LinearEquiv.prodCongr_apply _ _ p
 
 /- English proof (translation)
-Use extensionality with `p`. Rewrite using `[Submodule.mem_map, mem_range_Phi Z₂ p]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`. Rewrite `hq` using `[mem_range_Phi]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LinearEquiv.coe_coe, sig_apply, hl]`. Conclude with `hq`. Introduce `hp`. Use `⟨(ψ.symm p.1, p.2), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_range_Phi] dsimp only`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[← hl (ψ.symm p.1), LinearEquiv.apply_symm_apply]`. Conclude with `hp`. Rewrite using `[LinearEquiv.coe_coe, sig_apply] dsimp only`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_sig (ψ : M.Cok Z₁ ≃ₗ[M.R] M.Cok Z₂) (hl : ∀ v, M.lam Z₂ (ψ v) = M.lam Z₁ v) :
     (LinearMap.range (Phi Z₁)).map (sig ψ : (M.Cok Z₁ × E) →ₗ[M.R] (M.Cok Z₂ × E)) =
@@ -408,7 +408,7 @@ def gamOf (ψ : M.Cok Z₁ ≃ₗ[M.R] M.Cok Z₂) (hl : ∀ v, M.lam Z₂ (ψ v
   ((ePhi Z₁).trans ((sig ψ).ofSubmodules _ _ (map_sig ψ hl))).trans (ePhi Z₂).symm
 
 /- English proof (translation)
-Establish `h1 : ∀ y : LinearMap.range (Phi Z₂), Phi Z₂ ((ePhi Z₂).symm y) = y`. Introduce `y`. Rewrite using `[← ePhi_coe, LinearEquiv.apply_symm_apply]`. Unfold `gamOf`. Rewrite using `[LinearEquiv.trans_apply, h1, LinearEquiv.trans_apply, LinearEquiv.ofSubmodules_apply, ePhi_coe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Phi_gamOf (ψ : M.Cok Z₁ ≃ₗ[M.R] M.Cok Z₂) (hl : ∀ v, M.lam Z₂ (ψ v) = M.lam Z₁ v)
     (m : MbMod Z₁.Z) : Phi Z₂ (gamOf ψ hl m) = sig ψ (Phi Z₁ m) := by
@@ -443,7 +443,7 @@ def isoEquiv (hD₁ : headDet M Z₁.Z = 0) (hD₂ : headDet M Z₂.Z = 0) :
     exact (psiOf_piC _ _ m).trans this
 
 /- English proof (translation)
-Unfold `Mbe0`. Introduce `Z₁ Z₂ hD₁ hD₂`. Conclude with `Nat.card_congr (isoEquiv hD₁ hD₂)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem modularBoundZero_holds (M : Model F E) (r : ℕ) : Mbe0 M r := by
   unfold Mbe0

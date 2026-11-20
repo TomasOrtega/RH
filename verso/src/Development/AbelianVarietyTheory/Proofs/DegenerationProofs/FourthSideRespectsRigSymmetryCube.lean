@@ -23,7 +23,7 @@ section General
 variable {S Z : Scheme.{0}} {G : Over S} [GrpObj G] {s s' : Z ⟶ S}
 
 /- English proof (translation)
-Take `rfl : s = s'` from `(Over.w x).symm.trans ((congrArg (· ≫ G.hom) hx).trans (Over.w x'))`. Rewrite using `[Over.OverMorphism.ext hx, Over.OverMorphism.ext hy]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_left_congr {x y : Over.mk s ⟶ G} {x' y' : Over.mk s' ⟶ G} (hx : x.left = x'.left)
     (hy : y.left = y'.left) : (x * y).left = (x' * y').left := by
@@ -31,7 +31,7 @@ theorem mul_left_congr {x y : Over.mk s ⟶ G} {x' y' : Over.mk s' ⟶ G} (hx : 
   rw [Over.OverMorphism.ext hx, Over.OverMorphism.ext hy]
 
 /- English proof (translation)
-Take `rfl : s = s'` from `(Over.w x).symm.trans ((congrArg (· ≫ G.hom) hx).trans (Over.w x'))`. Rewrite using `[Over.OverMorphism.ext hx, Over.OverMorphism.ext hy, Over.OverMorphism.ext hu]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cubV_congr [IsCommMonObj G] {L : RigLB G} (c : CubicalStr G L) (z : Z) (J) {x y u : Over.mk s ⟶ G}
     {x' y' u' : Over.mk s' ⟶ G} (hx : x.left = x'.left) (hy : y.left = y'.left) (hu : u.left = u'.left) :
@@ -43,9 +43,9 @@ theorem cubV_congr [IsCommMonObj G] {L : RigLB G} (c : CubicalStr G L) (z : Z) (
 end General
 
 /- English proof (translation)
-Establish `e : ∀ x, W x = (W₂ (b x))⁻¹ * (W₀ (n x) * W₁ (a x))` using `fun x => eq_inv_mul_of_mul_eq (sq x)`. Simplify using `only [e, map_mul, map_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `k₀` using `congrArg Additive.ofMul h₀`. Establish `k₁` using `congrArg Additive.ofMul h₁`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₂` using `congrArg Additive.ofMul h₂`. Simplify using `only [ofMul_mul, ofMul_inv] at k₀ k₁ k₂ ⊢`. Take the linear combination `(norm := abel) k₀ + k₁ - k₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cube_alg {A A₀ A₁ A₂ M : Type} [CommGroup A] [CommGroup A₀] [CommGroup A₁] [CommGroup A₂] [CommGroup M]
     (n : A →* A₀) (a : A →* A₁) (b : A →* A₂) {W : A → M} {W₀ : A₀ → M} {W₁ : A₁ → M} {W₂ : A₂ → M}
@@ -67,9 +67,9 @@ theorem cube_alg {A A₀ A₁ A₂ M : Type} [CommGroup A] [CommGroup A₀] [Com
   linear_combination (norm := abel) k₀ + k₁ - k₂
 
 /- English proof (translation)
-Establish `e : ∀ x, W x = (W₂ (b x))⁻¹ * (W₀ (n x) * W₁ (a x))` using `fun x => eq_inv_mul_of_mul_eq (sq x)`. Simplify using `only [e, map_inv]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `k₀` using `congrArg Additive.ofMul h₀`. Establish `k₁` using `congrArg Additive.ofMul h₁`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₂` using `congrArg Additive.ofMul h₂`. Simplify using `only [ofMul_mul, ofMul_inv] at k₀ k₁ k₂ ⊢`. Take the linear combination `(norm := abel) k₀ + k₁ - k₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sym_alg {A A₀ A₁ A₂ M : Type} [CommGroup A] [CommGroup A₀] [CommGroup A₁] [CommGroup A₂] [CommGroup M]
     (n : A →* A₀) (a : A →* A₁) (b : A →* A₂) {W : A → M} {W₀ : A₀ → M} {W₁ : A₁ → M} {W₂ : A₂ → M}
@@ -86,14 +86,14 @@ theorem sym_alg {A A₀ A₁ A₂ M : Type} [CommGroup A] [CommGroup A₀] [Comm
   linear_combination (norm := abel) k₀ + k₁ - k₂
 
 /- English proof (translation)
-The claim follows from `mul_left_cancel (a := W₂) (by rw [← h₂, h₀, h₁, ← _root_.mul_assoc, ← _root_.mul_assoc, sq])`.
+A detailed English derivation is pending.
 -/
 theorem rig_alg {M : Type} [CommGroup M] {W W₀ W₁ W₂ C C' E E' : M} (sq : W₂ * W = W₀ * W₁) (h₀ : C = W₀ * E)
     (h₁ : E = W₁ * E') (h₂ : C = W₂ * C') : C' = W * E' :=
   mul_left_cancel (a := W₂) (by rw [← h₂, h₀, h₁, ← _root_.mul_assoc, ← _root_.mul_assoc, sq])
 
 /- English proof (translation)
-Use `g.q_hom` as an intermediate fact. Use `toBase_mul_pullback D.P.A (thick R I e) T (x ≫ g.q) (y ≫ g.q)` as an intermediate fact. Rewrite `this` using `[← MonObj.mul_comp]`. Establish `a : ∀ x : T ⟶ thickObj R I e G, toBase (Over.w g.pG) x = toBase (A` using `D.P.A) (g := pullback.fst D.P.A.hom (thick R I e)) pullback.condition (x ≫ g.q) := fun x => Over.OverMorphism.ext (Category.assoc _ _ _).symm`. Conclude with `(a _).trans (this.trans (congrArg₂ (· * ·) (a x) (a y)).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pG_mul {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {e : ℕ} (g : GtCoord I D e G)
@@ -111,33 +111,29 @@ theorem pG_mul {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hG R V _ _ _ _ I I' φ hle D D' A G _ _ G' _ _ U P' F hF wL hwL β hβ v hv e g' h hh hp w' hsq T z JG J hJG hJ W hW`. Establish `hpow : I ^ (e + 1) ≤ (I' ^ (e + 1)).comap φ`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hle _`. Take `⟨σ, hσ⟩ : ∃ σ : Spec (CommRingCat.of (V ⧸ I' ^ (e + 1))) ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1))), σ ≫ thick R I e = thick V I' e ≫ spMap φ` from `⟨spMap (Ideal.quotientMap (I' ^ (e + 1)) φ hpow), by rw [← Spec.map_comp, ← Spec.map_comp]; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion (thick R I e)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `Cmp.mono_fstG I e G` as an intermediate fact. Establish `hb : (T.hom ≫ σ) ≫ thick R I e = (T.hom ≫ thick V I' e) ≫ spMap φ`. Rewrite using `[Category.assoc, hσ, Category.assoc]`. Set `a` to `toBaseHom (toBase_mul_pullback G' (thick V I' e)) T`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b` to `toBaseHom (pG_mul g') T`. Establish `ha : ∀ x : T ⟶ thickObj V I' e G', (x.left ≫ h) ≫ (fstG I e G).left = (a x).left ≫ F` using `fun x => (Category.assoc _ _ _).trans ((congrArg (x.left ≫ ·) hh).trans (Category.assoc _ _ _).symm)`. Establish `hq : ∀ x : T ⟶ thickObj V I' e G', (x.left ≫ h) ≫ (U.gt e).pG.left = (b x).left ≫ β` using `fun x => (Category.assoc _ _ _).trans ((congrArg (x.left ≫ ·) hp.symm).trans (Category.assoc _ _ _).symm)`. Establish `hs : ∀ x : T ⟶ thickObj V I' e G', (x.left ≫ h) ≫ (thickObj R I e G).hom = T.hom ≫ σ` using `fun x => by`. Rewrite using `[← cancel_mono (thick R I e), hb, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg ((x.left ≫ h) ≫ ·) (Over.w (fstG I e G)).symm).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ G.hom) (ha x)).trans ?_)` and prove the remaining obligations. Conclude with `Over.w (toBase (T := Over.mk (T.hom ≫ thick V I' e)) hF (a x))`. Set `n₀ : (T ⟶ thickObj V I' e G') → (Over.mk (T.hom ≫ σ) ⟶ thickObj R I e G)` to `fun x => Over.homMk (x.left ≫ h) (hs x)`. Set `n : (T ⟶ thickObj V I' e G') →* (Over.mk (T.hom ≫ σ) ⟶ thickObj R I e G)` to `MonoidHom.mk' n₀ fun x y => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Over.OverMorphism.ext ((cancel_mono (fstG I e G).left).1 ((ha (x * y)).trans ?_))` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `(congrArg (fun q => q.left) (hwL.mul _ (a x) (a y))).trans (Eq.trans ?_ (congrArg (fun q => q.left) (toBase_mul_pullback G (thick R I e) _ (n₀ x) (n₀ y))).symm)` and prove the remaining obligations. Conclude with `mul_left_congr (ha x).symm (ha y).symm`. Take `⟨K, hK⟩` from `exists_good_pt U.P.L.isLB z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J₀, hJ₀⟩` from `exists_good_pt D.P.isLB z`. Take `⟨W₀, hW₀⟩ : ∃ W₀ : (Over.mk (T.hom ≫ σ) ⟶ thickObj R I e G) → (T.left.presheaf.stalk z)ˣ, ∀ x, W₀ x = gw (U.w e) x.left z (J₀ (x.left ≫ (U.gt e).pG.left)) (fun _ => K (x.left ≫ (fstG I e G).left))` from `⟨_, fun _ => rfl⟩`. Take `⟨W₁, hW₁⟩ : ∃ W₁ : (Over.mk (T.hom ≫ thick V I' e) ⟶ G') → (T.left.presheaf.stalk z)ˣ, ∀ x, W₁ x = gw wL x.left z (K (x.left ≫ F)) (JG x.left)` from `⟨_, fun _ => rfl⟩`. Take `⟨W₂, hW₂⟩ : ∃ W₂ : (Over.mk (T.hom ≫ thick V I' e) ⟶ D'.P.A) → (T.left.presheaf.stalk z)ˣ, ∀ x, W₂ x = gw v x.left z (J₀ (x.left ≫ β)) (J x.left)` from `⟨_, fun _ => rfl⟩`. Take `⟨p₁, p₂, p₃⟩` from `U.w_vals e (Over.mk (T.hom ≫ σ)) z K J₀ hK hJ₀ W₀ hW₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q₁, q₂, q₃⟩` from `hwL.vals (Over.mk (T.hom ≫ thick V I' e)) z JG K hJG hK W₁ hW₁`. Take `⟨r₁, r₂, r₃⟩` from `hv.vals (Over.mk (T.hom ≫ thick V I' e)) z J J₀ hJ hJ₀ W₂ hW₂`. Establish `sq : ∀ x, W₂ (b x) * W x = W₀ (n x) * W₁ (a x)` using `fun x => by`. Establish `k` using `hsq _ x.left z _ _ _ _ (hJ₀ ((b x).left ≫ β)) (hJ (b x).left) (hK ((a x).left ≫ F)) (hJG (a x).left)`. Establish `k₀ : W₀ (n x) = gw (U.w e) (x.left ≫ h) z (J₀ ((b x).left ≫ β)) (fun _ => K ((a x).left ≫ F))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha, ← hq]`. Conclude with `hW₀ (n x)`. Rewrite using `[k₀, hW, hW₁, hW₂]`. Conclude with `k`. Use `⟨?_, fun x => ?_, fun x y u => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k` using `sq 1`. Rewrite `k` using `[map_one, map_one, map_one]`. Establish `p : val (L` using `D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig ((T.hom ≫ σ) ≫ thick R I e) z J₀ = W₀ 1 * val (L := U.P.L.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) U.P.L.rig ((T.hom ≫ σ) ≫ thick R I e) z K := p₁`. Rewrite `p` using `[hb]`. Conclude with `rig_alg k p q₁ r₁`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `p : val D.sym ((x.left ≫ h) ≫ (U.gt e).pG.left) z J₀ * W₀ (n x) = W₀ (n x)⁻¹ * val U.P.sym ((x.left ≫ h) ≫ (fstG I e G).left) z K` using `p₂ (n x)`. Rewrite `p` using `[ha, hq]`. Establish `q : val U.P.sym ((x.left ≫ (fstG I' e G').left) ≫ F) z K * W₁ (a x) = W₁ (a x)⁻¹ * val P'.sym (x.left ≫ (fstG I' e G').left) z JG` using `q₂ (a x)`. Establish `r : val D.sym ((x.left ≫ g'.pG.left) ≫ β) z J₀ * W₂ (b x) = W₂ (b x)⁻¹ * val D'.sym (x.left ≫ g'.pG.left) z J` using `r₂ (b x)`. Conclude with `sym_alg n a b sq x p q r`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `C : (T.left.presheaf.stalk z)ˣ` to `cubV D.cub (T := Over.mk ((T.hom ≫ thick V I' e) ≫ spMap φ)) z J₀ (toBase (T := Over.mk (T.hom ≫ thick V I' e)) hβ (b x)) (toBase (T := Over.mk (T.hom ≫ thick V I' e)) hβ (b y)) (toBase (T := Over.mk (T.hom ≫ thick V I' e)) hβ (b u))`. Set `E : (T.left.presheaf.stalk z)ˣ` to `cubV U.P.c (T := Over.mk ((T.hom ≫ thick V I' e) ≫ spMap φ)) z K (toBase (T := Over.mk (T.hom ≫ thick V I' e)) hF (a x)) (toBase (T := Over.mk (T.hom ≫ thick V I' e)) hF (a y)) (toBase (T := Over.mk (T.hom ≫ thick V I' e)) hF (a u))`. Set `C' : (T.left.presheaf.stalk z)ˣ` to `cubV D'.cub (T := Over.mk (T.hom ≫ thick V I' e)) z J (b x) (b y) (b u)`. Set `E' : (T.left.presheaf.stalk z)ˣ` to `cubV P'.c (T := Over.mk (T.hom ≫ thick V I' e)) z JG (a x) (a y) (a u)`. Set `C₀ : (T.left.presheaf.stalk z)ˣ` to `cubV D.cub (T := (Over.map (thick R I e)).obj (Over.mk (T.hom ≫ σ))) z J₀ ((Over.map (thick R I e)).map (n x) ≫ (U.gt e).pG) ((Over.map (thick R I e)).map (n y) ≫ (U.gt e).pG) ((Over.map (thick R I e)).map (n u) ≫ (U.gt e).pG)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `E₀ : (T.left.presheaf.stalk z)ˣ` to `cubV U.P.c (T := (Over.map (thick R I e)).obj (Over.mk (T.hom ≫ σ))) z K ((Over.map (thick R I e)).map (n x) ≫ fstG I e G) ((Over.map (thick R I e)).map (n y) ≫ fstG I e G) ((Over.map (thick R I e)).map (n u) ≫ fstG I e G)`. Establish `hC : C₀ = C` using `cubV_congr (s := (T.hom ≫ σ) ≫ thick R I e) (s' := (T.hom ≫ thick V I' e) ≫ spMap φ) D.cub z J₀ (hq x) (hq y) (hq u)`. Establish `hE : E₀ = E` using `cubV_congr (s := (T.hom ≫ σ) ≫ thick R I e) (s' := (T.hom ≫ thick V I' e) ≫ spMap φ) U.P.c z K (ha x) (ha y) (ha u)`. Establish `p : C₀ * W₀ (n x * n y) * W₀ (n x * n u) * W₀ (n y * n u) * W₀ 1 = W₀ (n x * n y * n u) * W₀ (n x) * W₀ (n y) * W₀ (n u) * E₀` using `p₃ (n x) (n y) (n u)`. Establish `q : E * W₁ (a x * a y) * W₁ (a x * a u) * W₁ (a y * a u) * W₁ 1 = W₁ (a x * a y * a u) * W₁ (a x) * W₁ (a y) * W₁ (a u) * E'` using `q₃ (a x) (a y) (a u)`.
-
-Establish `r : C * W₂ (b x * b y) * W₂ (b x * b u) * W₂ (b y * b u) * W₂ 1 = W₂ (b x * b y * b u) * W₂ (b x) * W₂ (b y) * W₂ (b u) * C'` using `r₃ (b x) (b y) (b u)`. Rewrite `p` using `[hC, hE]`. Establish `k` using `cube_alg n a b sq x y u p q r`. Establish `hC' : C' = cubV D'.cub (T` using `(Over.map (thick V I' e)).obj T) z J ((Over.map (thick V I' e)).map x ≫ g'.pG) ((Over.map (thick V I' e)).map y ≫ g'.pG) ((Over.map (thick V I' e)).map u ≫ g'.pG) := cubV_congr (s := T.hom ≫ thick V I' e) (s' := T.hom ≫ thick V I' e) D'.cub z J rfl rfl rfl`. Establish `hE' : E' = cubV P'.c (T` using `(Over.map (thick V I' e)).obj T) z JG ((Over.map (thick V I' e)).map x ≫ fstG I' e G') ((Over.map (thick V I' e)).map y ≫ fstG I' e G') ((Over.map (thick V I' e)).map u ≫ fstG I' e G') := cubV_congr (s := T.hom ≫ thick V I' e) (s' := T.hom ≫ thick V I' e) P'.c z JG rfl rfl rfl`.
-
-Rewrite `k` using `[hC', hE']`. Conclude with `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourth_side_vals : ∀ (hG : GlobalFnsSt) (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (I : Ideal R) (I' : Ideal V) (φ : R →+* V), I.map φ ≤ I' → ∀ (D : DegPre R) (D' : DegPre V) (A : PolAV (Sp (FractionRing R))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (G' : Over (Spec (CommRingCat.of V))) [GrpObj G'] [IsCommMonObj G'] (U : PreU I D A G) (P' : CP G') (F : G'.left ⟶ G.left) (hF : F ≫ G.hom = G'.hom ≫ spMap φ) (wL : LB.Iso P'.L.L (U.P.L.L.pull F)), IsCPMap P' U.P (spMap φ) F hF wL → ∀ (β : D'.P.A.left ⟶ D.P.A.left) (hβ : β ≫ D.P.A.hom = D'.P.A.hom ≫ spMap φ) (v : LB.Iso D'.P.L (D.P.L.pull β)), IsCPMap (CP.ofDegPre hG D') (CP.ofDegPre hG D) (spMap φ) β hβ v → ∀ (e : ℕ) (g' : GtCoord I' D' e G') (h : (thickObj V I' e G').left ⟶ (thickObj R I e G).left), h ≫ (fstG I e G).left = (fstG I' e G').left ≫ F → g'.pG.left ≫ β = h ≫ (U.gt e).pG.left → ∀ w' : LB.Iso (P'.L.L.pull (fstG I' e G').left) (D'.P.L.pull g'.pG.left), (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj V I' e G').left) (z : Z) (jM : D.P.L.ι) (jM' : D'.P.L.ι) (jL : U.P.L.L.ι) (jL' : P'.L.L.ι), β (g'.pG.left (r z)) ∈ D.P.L.U jM → g'.pG.left (r z) ∈ D'.P.L.U jM' → F ((fstG I' e G').left (r z)) ∈ U.P.L.L.U jL → (fstG I' e G').left (r z) ∈ P'.L.L.U jL' → gw v (r ≫ g'.pG.left) z jM jM' * gw w' r z jM' (fun _ => jL') = gw (U.w e) (r ≫ h) z jM (fun _ => jL) * gw wL (r ≫ (fstG I' e G').left) z jL jL') → ∀ (T : Over (Spec (CommRingCat.of (V ⧸ I' ^ (e + 1))))) (z : T.left) (JG : (T.left ⟶ G'.left) → P'.L.L.ι) (J : (T.left ⟶ D'.P.A.left) → D'.P.L.ι), Good P'.L.L z JG → Good D'.P.L z J → ∀ W : (T ⟶ thickObj V I' e G') → (T.left.presheaf.stalk z)ˣ, (∀ x, W x = gw w' x.left z (J (x.left ≫ g'.pG.left)) (fun _ => JG (x.left ≫ (fstG I' e G').left))) → (val (L := D'.P.L) (φ := fun _ : PUnit => eSec D'.P.A) (ε := fun _ => 1) D'.rig (T.hom ≫ thick V I' e) z J = W 1 * val (L := P'.L.L) (φ := fun _ : PUnit => eSec G') (ε := fun _ => 1) P'.L.rig (T.hom ≫ thick V I' e) z JG) ∧ (∀ x : T ⟶ thickObj V I' e G', val D'.sym (x.left ≫ g'.pG.left) z J * W x = W x⁻¹ * val P'.sym (x.left ≫ (fstG I' e G').left) z JG) ∧ ∀ x y u : T ⟶ thickObj V I' e G', @id (T.left.presheaf.stalk z)ˣ (cubV D'.cub (T := (Over.map (thick V I' e)).obj T) z J ((Over.map (thick V I' e)).map x ≫ g'.pG) ((Over.map (thick V I' e)).map y ≫ g'.pG) ((Over.map (thick V I' e)).map u ≫ g'.pG)) * W (x * y) * W (x * u) * W (y * u) * W 1 = W (x * y * u) * W x * W y * W u * @id (T.left.presheaf.stalk z)ˣ (cubV P'.c (T := (Over.map (thick V I' e)).obj T) z JG ((Over.map (thick V I' e)).map x ≫ fstG I' e G') ((Over.map (thick V I' e)).map y ≫ fstG I' e G') ((Over.map (thick V I' e)).map u ≫ fstG I' e G')) := by
   intro hG R V _ _ _ _ I I' φ hle D D' A G _ _ G' _ _ U P' F hF wL hwL β hβ v hv e g' h hh hp w' hsq T z JG J hJG hJ W hW

@@ -11,9 +11,9 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 namespace GlobalTheory.CompanionTheory.LinRec
 
 /- English proof (translation)
-Establish `hp1 : p = 1`. Establish `h1 : p.coeff 0 = 1`. Establish `h2` using `hp.coeff_natDegree`. Rewrite `h2` using `[hd]`. Then use the resulting hypothesis. Rewrite using `[eq_C_of_natDegree_eq_zero hd, h1, C_1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Substitute `hp1` using the available equality. Simplify using `using hu`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma eq_zero_of_natDegree_eq_zero {p : ℂ[X]} (hp : p.Monic) (hd : p.natDegree = 0)
     {u : ℕ → ℂ} (hu : aeval shift p u = 0) : u = 0 := by
@@ -26,21 +26,21 @@ lemma eq_zero_of_natDegree_eq_zero {p : ℂ[X]} (hp : p.Monic) (hd : p.natDegree
   simpa using hu
 
 /- English proof (translation)
-Establish `hδ : 0 < Real.exp κ - Real.exp κ'` using `sub_pos.2 (Real.exp_lt_exp.2 hκ)`. Proceed by induction on `D with`. Consider the case `zero`. Use `⟨0, le_rfl, fun p hp hd _ u M hu _ _ i => ?_⟩` and prove the remaining obligations. Establish `hu0` using `eq_zero_of_natDegree_eq_zero hp (Nat.le_zero.1 hd) hu`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[hu0]`. Consider the case `succ D ih`. Take `⟨C', hC', hB⟩` from `ih`. Establish `hE' : 0 < Real.exp κ'` using `Real.exp_pos _`. Establish `hc : 0 ≤ C' * (1 + Real.exp κ')` using `by positivity`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ 1 + C' * (1 + Real.exp κ') / (Real.exp κ - Real.exp κ')` using `by positivity`. Use `⟨_, hC0, fun p hp hd hr u M hu hM hM0 i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hd0 : p.natDegree = 0`. Establish `hu0` using `eq_zero_of_natDegree_eq_zero hp hd0 hu`. Establish `: 0 ≤ (1 + C' * (1 + Real.exp κ') / (Real.exp κ - Real.exp κ')) * Real.exp (κ * i) * M` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[hu0]`. Take `⟨z, hz⟩ : ∃ z, p.IsRoot z` from `IsAlgClosed.exists_root p (by`. Introduce `h0`. Conclude with `hd0 (natDegree_eq_zero_iff_degree_le_zero.2 h0.le))`. Establish `hzle` using `hr z hz`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzlt : ‖z‖ < Real.exp κ` using `hzle.trans_lt (Real.exp_lt_exp.2 hκ)`. Take `⟨q, rfl⟩` from `dvd_iff_isRoot.2 hz`. Establish `hq : q.Monic` using `(monic_X_sub_C z).of_mul_monic_left hp`. Establish `hqd : ((X - C z) * q).natDegree = q.natDegree + 1`. Rewrite using `[(monic_X_sub_C z).natDegree_mul hq, natDegree_X_sub_C]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hv : ∀ i : ℕ, ‖u (i + 1) - z * u i‖ ≤ C' * (1 + Real.exp κ') * Real.exp (κ * i) * M`. Introduce `i`. Establish `hb` using `hB q hq (by omega) (fun w hw => hr w (by`. Establish `hw' : eval w q = 0` using `hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[IsRoot, hw']))`. Use the proof step `(fun i => u (i + 1) - z * u i) ((1 + Real.exp κ') * M) (aeval_diff q z u hu)`. Use the proof step `(fun j hj => ?_) (by positivity) i`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg` using `geom_step z κ _ M hzlt hc hM0 u (hM 0 (by omega)) hv i`. Use `hg.trans ?_` and prove the remaining obligations. Establish `hdiv : C' * (1 + Real.exp κ') / (Real.exp κ - ‖z‖) ≤ C' * (1 + Real.exp κ') / (Real.exp κ - Real.exp κ')` using `div_le_div_of_nonneg_left hc hδ (by linarith)`. Establish `hEM : 0 ≤ Real.exp (κ * i) * M` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem uniform_aeval (D : ℕ) (κ' κ : ℝ) (hκ : κ' < κ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ p : ℂ[X], p.Monic → p.natDegree ≤ D →
@@ -102,9 +102,9 @@ theorem uniform_aeval (D : ℕ) (κ' κ : ℝ) (hκ : κ' < κ) :
       _ = _ := by ring
 
 /- English proof (translation)
-Introduce `D κ' κ hκ`. Take `⟨C, hC, h⟩` from `uniform_aeval D κ' κ hκ`. Use `⟨C, hC, fun p hp hd hr u M hu hM hM0 i => h p hp hd hr u M ?_ hM hM0 i⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[aeval_shift]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu i`.
+A detailed English derivation is pending.
 -/
 theorem uniformRecBound :
     ∀ (D : ℕ) (κ' κ : ℝ), κ' < κ → ∃ C : ℝ, 0 ≤ C ∧ ∀ p : ℂ[X], p.Monic → p.natDegree ≤ D →

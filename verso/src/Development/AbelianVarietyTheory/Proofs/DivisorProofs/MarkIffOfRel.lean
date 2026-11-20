@@ -7,7 +7,7 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid.Pair
 
 /- English proof (translation)
-Establish `h1 : algebraMap ℚ S s * (y * b * z) * ((b'⁻¹ : Sˣ) : S) = 1` using `by rw [← h, Units.mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, mul_assoc, Units.inv_mul_cancel_left]`. Use `_ = _ := by rw [h1, mul_one, mul_assoc, Units.inv_mul, mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_form_of_rel {S : Type*} [Ring S] [Algebra ℚ S] (b b' y : Sˣ) (z : S) (s : ℚ)
     (h : (b' : S) = algebraMap ℚ S s * (y * b * z)) :
@@ -19,7 +19,7 @@ theorem inv_form_of_rel {S : Type*} [Ring S] [Algebra ℚ S] (b b' y : Sˣ) (z :
     _ = _ := by rw [h1, mul_one, mul_assoc, Units.inv_mul, mul_one]
 
 /- English proof (translation)
-Establish `hu : IsUnit (G.gram v).det` using `(G.gram_det v).isUnit`. Establish `e : G.gram v * G.psi v ((b⁻¹ : G.Cˣ) : G.C) = (s : ℂ) • ((G.psi v y)ᴴ * (G.gram v * G.psi v ((b'⁻¹ : G.Cˣ) : G.C)) * G.psi v y)`. Rewrite using `[← inv_form_of_rel b b' y _ s h, map_rat_smul, map_mul, map_mul, sh, G.psi_star, Matrix.mul_smul, ← Rat.cast_smul_eq_qsmul ℂ]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu]`. Rewrite using `[e, Matrix.smul_mulVec, dotProduct_smul, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, smul_eq_mul, ← Complex.ofReal_ratCast, Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_of_rel {p : ℕ} [Fact p.Prime] {G : HTGroup p} (b b' y : G.Cˣ) (s : ℚ)
     (h : (b' : G.C) = algebraMap ℚ G.C s * (y * b * sh G y)) (v : InfinitePlace G.F) (x : Fin G.n → ℂ) :
@@ -36,11 +36,11 @@ theorem form_of_rel {p : ℕ} [Fact p.Prime] {G : HTGroup p} (b b' y : G.Cˣ) (s
     Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, smul_eq_mul, ← Complex.ofReal_ratCast, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Introduce and unpack `p _ G P Q μ ⟨y, s, hs, hβ, hγ⟩`. Establish `hs' : (0 : ℝ) < s` using `by exact_mod_cast hs`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, x, hx, hpos⟩`. Use `⟨v, hv, G.psi v y *ᵥ x, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, hγ, ← Units.val_mul, inv_mul_cancel_right, Units.val_mul, map_mul, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_smul]`. Rewrite `hpos` using `[form_of_rel P.β Q.β y s hβ]`. Conclude with `(mul_pos_iff_of_pos_left hs').1 hpos`. Introduce and unpack `⟨v, hv, x, hx, hpos⟩`. Use `⟨v, hv, G.psi v ((y⁻¹ : G.Cˣ) : G.C) *ᵥ x, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : P.γ * y⁻¹ = y⁻¹ * Q.γ` using `by rw [hγ]; group`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, ← Units.val_mul, e, Units.val_mul, map_mul, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_smul]`. Rewrite using `[form_of_rel P.β Q.β y s hβ, Matrix.mulVec_mulVec x (G.psi v y), ← map_mul, Units.mul_inv, map_one, Matrix.one_mulVec]`. Conclude with `mul_pos hs' hpos`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mark_iff_of_rel : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P Q : Pair G) (μ : ℂ),
     P.Rel Q → (P.Mark μ ↔ Q.Mark μ) := by

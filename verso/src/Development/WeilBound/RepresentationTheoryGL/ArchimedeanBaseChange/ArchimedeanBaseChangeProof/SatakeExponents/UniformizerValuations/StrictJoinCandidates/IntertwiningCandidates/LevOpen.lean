@@ -23,12 +23,12 @@ def LOk (d : LocData E n) : Prop :=
   ∀ a ≤ n, ∀ w ∈ d.S₀ ∪ d.Bad, IsOpen (d.L a w : Set (GLw a w × GLw (n - a) w))
 
 /- English proof (translation)
-Introduce `a ha w hw` and use `(L_open_le d hd a ha w hw).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LOk_of_ok (d : LocData E n) (hd : d.Ok) : LOk d := fun a ha w hw => (L_open_le d hd a ha w hw).1
 
 /- English proof (translation)
-Unfold `LocData.lev`. Use `split_ifs with h1 h2`. Conclude with `iwahori_pair_isOpen a (n - a) w`. Conclude with `hd a ha w h2`. Conclude with `maximal_pair_isOpen a (n - a) w`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lev_open (d : LocData E n) (hd : LOk d) (a : ℕ) (ha : a ≤ n) (w : Pl E) :
     IsOpen (d.lev a w : Set (GLw a w × GLw (n - a) w)) := by
@@ -39,7 +39,7 @@ theorem lev_open (d : LocData E n) (hd : LOk d) (a : ℕ) (ha : a ≤ n) (w : Pl
   · exact maximal_pair_isOpen a (n - a) w
 
 /- English proof (translation)
-Unfold `LocData.lev₂`. Use `split_ifs with h2`. Conclude with `hd a ha w h2`. Conclude with `maximal_pair_isOpen a (n - a) w`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lev₂_open (d : LocData E n) (hd : LOk d) (a : ℕ) (ha : a ≤ n) (w : Pl E) :
     IsOpen (d.lev₂ a w : Set (GLw a w × GLw (n - a) w)) := by
@@ -49,7 +49,7 @@ theorem lev₂_open (d : LocData E n) (hd : LOk d) (a : ℕ) (ha : a ≤ n) (w :
   · exact maximal_pair_isOpen a (n - a) w
 
 /- English proof (translation)
-Break down `i with w | w` into its components or cases. Conclude with `lev_open d hd a ha w.1`. Conclude with `lev₂_open d hd a ha w.1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem C_open (d : LocData E n) (hd : LOk d) (a : ℕ) (ha : a ≤ n) {S : Set (Pl E)} (i : Slot S) :
     IsOpen (C d a i) := by
@@ -58,15 +58,13 @@ theorem C_open (d : LocData E n) (hd : LOk d) (a : ℕ) (ha : a ≤ n) {S : Set 
   · exact lev₂_open d hd a ha w.1
 
 /- English proof (translation)
-Establish `hSl'` using `hSl E a (n - a) Sec hS`. Take `⟨hKo1, -⟩` from `GlobalTheory.T.finite_kernel_compact_open E a`. Take `⟨hKo2, -⟩` from `GlobalTheory.T.finite_kernel_compact_open E (n - a)`. Use `set U : Set (Hf E a (n - a)) := (((Kf E a).prod (Kf E (n - a)) : Subgroup (Hf E a (n - a))) : Set (Hf E a (n - a))) with hU`. Establish `hUo : IsOpen U`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU, Subgroup.coe_prod]`. Conclude with `hKo1.prod hKo2`. Establish `hF` using `(Filter.eventually_cofinite.1 (C_cof d a (S := Sec)))`. Use `set V : Set (Hf E a (n - a)) := U ∩ ⋂ i ∈ {i : Slot Sec | ¬ C d a i = (K2 a (n - a) i.pl : Set _)}, (i.cp a (n - a)) ⁻¹' C d a i with hV`. Establish `hVo : IsOpen V` using `hUo.inter (hF.isOpen_biInter fun i _ => (C_open d hd a ha i).preimage (hSl'.2.1 i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1V : (1 : Hf E a (n - a)) ∈ V`. Use `⟨one_mem _, Set.mem_iInter₂.2 fun i _ => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : Hf E a (n - a)) ∈ gSet Sec d a` using `(levSub Sec d a).one_mem`. Rewrite `h1` using `[gSet_eq]`. Conclude with `h1 i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVsub : V ⊆ gSet Sec d a`. Introduce `x hx`. Rewrite using `[gSet_eq]`. Introduce `i`. Distinguish the cases in `hi : C d a i = (K2 a (n - a) i.pl : Set _)`.
-
-Rewrite using `[hi]`. Conclude with `(hSl'.2.2.2.2.2.1 x).1 hx.1 i`. Conclude with `Set.mem_iInter₂.1 hx.2 i hi`. Conclude with `Subgroup.isOpen_of_mem_nhds (levSub Sec d a) (g := 1) (Filter.mem_of_superset (hVo.mem_nhds h1V) hVsub)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gSet_open' (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : LOk d) (a : ℕ)
     (ha : a ≤ n) : IsOpen (gSet Sec d a) := by
@@ -99,7 +97,7 @@ theorem gSet_open' (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : Lo
   exact Subgroup.isOpen_of_mem_nhds (levSub Sec d a) (g := 1) (Filter.mem_of_superset (hVo.mem_nhds h1V) hVsub)
 
 /- English proof (translation)
-Rewrite using `[g₁_coe]`. Conclude with `(gSet_open' hSl hS d hd a ha).preimage (continuous_id.prodMk continuous_const)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g₁_open (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : LOk d) (a : ℕ)
     (ha : a ≤ n) : IsOpen (g₁ Sec d a : Set (GL (Fin a) (Af E))) := by
@@ -107,7 +105,7 @@ theorem g₁_open (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : Loc
   exact (gSet_open' hSl hS d hd a ha).preimage (continuous_id.prodMk continuous_const)
 
 /- English proof (translation)
-Rewrite using `[g₂_coe]`. Conclude with `(gSet_open' hSl hS d hd a ha).preimage (continuous_const.prodMk continuous_id)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g₂_open (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : LOk d) (a : ℕ)
     (ha : a ≤ n) : IsOpen (g₂ Sec d a : Set (GL (Fin (n - a)) (Af E))) := by
@@ -115,7 +113,7 @@ theorem g₂_open (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : Loc
   exact (gSet_open' hSl hS d hd a ha).preimage (continuous_const.prodMk continuous_id)
 
 /- English proof (translation)
-Introduce `a ha w hw` and use `LOk_of_ok F₀.d₀ F₀.ok₀ a ha w hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_LOk {hR : Rd.ReadLimit} {π : Submodule ℂ (UA E n → ℂ)} {S : Finset (Pl E)} (F₀ : Frame0 hR π S)
     (T' : Finset (Pl E)) c e b : LOk (F₀.loc T' c e b) :=
@@ -128,7 +126,7 @@ namespace PositivityTheory.Rg.BcB.F.FX.Bo
 open PositivityTheory.Rg.BcB.F
 
 /- English proof (translation)
-Introduce `hR E _ _ _ n π S F₀ T' c e b a ha`. Establish `hd` using `LevelOpenness.loc_LOk F₀ T' c e b`. Conclude with `⟨LevelOpenness.g₁_open slots F₀.hSec _ hd a ha, LevelOpenness.g₂_open slots F₀.hSec _ hd a ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem LevOpen_holds : LevOpen := by
   intro hR E _ _ _ n π S F₀ T' c e b a ha

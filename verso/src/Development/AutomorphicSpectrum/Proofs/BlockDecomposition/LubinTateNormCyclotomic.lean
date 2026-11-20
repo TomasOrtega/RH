@@ -20,11 +20,11 @@ variable {l : ℕ} [Fact l.Prime]
 attribute [-instance] GroundTheory.PAdicHodge.subfield_valuativeRel GroundTheory.PAdicHodge.subfield_compatible GroundTheory.PAdicHodge.subfield_isValuativeTopology GroundTheory.PAdicHodge.subfield_isNontrivial GroundTheory.PAdicHodge.isNonarchimedeanLocalField_intermediateField GroundTheory.PAdicHodge.isNonarchimedeanLocalField_tower GroundTheory.PAdicHodge.valuativeExtension_padic GroundTheory.PAdicHodge.valuativeExtension_intermediateField GroundTheory.PAdicHodge.subfield_isUltrametricDist
 
 /- English proof (translation)
-Rewrite using `[unramifiedDegree_eq_one_iff]`. Introduce `ζ hζ`. Take `⟨m, hm, hζm⟩` from `mem_unramifiedRoots_iff.1 hζ`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hm`. Establish `hcop : ¬ l ∣ m`. Introduce and unpack `⟨k, rfl⟩`. Apply `hm` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul, GlobalTheory.CompanionTheory.LTLink.natCast_residue_eq_zero (l := l) (F := ↥K.1), zero_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ (GroundTheory.PAdicHodge.mem_unramifiedClosure_of_pow_eq_one (Nat.pos_of_ne_zero hm0) (((Nat.Prime.coprime_iff_not_dvd (Fact.out : l.Prime)).2 hcop).symm) hζm)`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedDegree_eq_one_of_fix (K : FinExt l) [FiniteDimensional ℚ_[l] ↥K.1] (g : Om l ≃ₐ[↥K.1] Om l)
     (h : ∀ u ∈ GroundTheory.PAdicHodge.unramifiedClosure l, g u = u) :
@@ -43,11 +43,11 @@ theorem unramifiedDegree_eq_one_of_fix (K : FinExt l) [FiniteDimensional ℚ_[l]
     (((Nat.Prime.coprime_iff_not_dvd (Fact.out : l.Prime)).2 hcop).symm) hζm)
 
 /- English proof (translation)
-Establish `hint : ∀ a : 𝒪[↥K.1], ∃ y : ℤ_[l], (y : ℚ_[l]) = Algebra.norm ℚ_[l] (a : ↥K.1)`. Introduce `a`. Establish `h1 : IsIntegral ℤ_[l] (a : ↥K.1)` using `(GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one l K _).mpr ((GlobalTheory.CompanionTheory.LTHodge.UnitAct.valuation_le_one_iff (a : ↥K.1)).mp a.2)`. Establish `h2 : IsIntegral ℤ_[l] (Algebra.norm ℚ_[l] (a : ↥K.1))` using `Algebra.isIntegral_norm ℚ_[l] h1`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy⟩`. Take `⟨y, hy⟩` from `hint (u : 𝒪[↥K.1])`. Take `⟨y', hy'⟩` from `hint ((u⁻¹ : 𝒪[↥K.1]ˣ) : 𝒪[↥K.1])`. Establish `hm : ((y * y' : ℤ_[l]) : ℚ_[l]) = 1`. Rewrite using `[PadicInt.coe_mul, hy, hy', ← map_mul, ← MulMemClass.coe_mul, Units.mul_inv]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hm1 : y * y' = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hm`. Conclude with `⟨⟨y, y', hm1, by rw [mul_comm]; exact hm1⟩, hy⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_norm_unit (K : FinExt l) [FiniteDimensional ℚ_[l] ↥K.1] (u : 𝒪[↥K.1]ˣ) :
     ∃ v : ℤ_[l]ˣ, ((v : ℤ_[l]) : ℚ_[l]) = Algebra.norm ℚ_[l] ((u : 𝒪[↥K.1]) : ↥K.1) := by
@@ -70,9 +70,9 @@ theorem exists_norm_unit (K : FinExt l) [FiniteDimensional ℚ_[l] ↥K.1] (u : 
   exact ⟨⟨y, y', hm1, by rw [mul_comm]; exact hm1⟩, hy⟩
 
 /- English proof (translation)
-Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Establish `hl : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Establish `: NeZero (l ^ n)` using `⟨hl.ne'⟩`. Establish `: NeZero ((l ^ n : ℕ) : Om l)` using `⟨Nat.cast_ne_zero.mpr hl.ne'⟩`. Take `⟨ζ, hζ⟩ : ∃ z : Om l, IsPrimitiveRoot z (l ^ n)` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) (l ^ n)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `h n ζ hζ.pow_eq_one`. Establish `h2` using `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h1`. Conclude with `ZMod.val_injective _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toZModPow_eq_of_pow (a b : ℤ_[l])
     (h : ∀ (n : ℕ) (ζ : Om l), ζ ^ l ^ n = 1 →
@@ -88,7 +88,7 @@ theorem toZModPow_eq_of_pow (a b : ℤ_[l])
   exact ZMod.val_injective _ h2
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.LocalField.Padic.maximalAbelianExtension_eq_adjoin_rootsOfUnity l (Om l)]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨l ^ n, pow_pos (Fact.out : l.Prime).pos n, hζ⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_maximalAbelian {n : ℕ} {ζ : Om l} (hζ : ζ ^ l ^ n = 1) :
     ζ ∈ maximalAbelianExtension ℚ_[l] (Om l) := by
@@ -96,25 +96,23 @@ theorem mem_maximalAbelian {n : ℕ} {ζ : Om l} (hζ : ζ ^ l ^ n = 1) :
   exact IntermediateField.subset_adjoin _ _ ⟨l ^ n, pow_pos (Fact.out : l.Prime).pos n, hζ⟩
 
 /- English proof (translation)
-Introduce `l _ K χ hχ _ g hg hfix`. Establish `: FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Establish `hR : Set.range (algebraMap ↥K.1 (Om l)) = (K.1 : Set (Om l))` using `Subtype.range_coe`. Take `⟨π, hπ, hmain⟩` from `GlobalTheory.CompanionTheory.LTHodge.UnitAct.main hχ (F := ↥K.1) hR`. Set `g' : ↥(GK K)` to `⟨g, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `τ : Om l ≃ₐ[↥K.1] Om l` to `GlobalTheory.CompanionTheory.LTHodge.CharEx.gal K g'`. Take `⟨u, huχ, hact⟩` from `hmain τ g' (fun y => rfl)`. Establish `hdeg : unramifiedDegree ↥K.1 (Om l) τ = 1` using `unramifiedDegree_eq_one_of_fix K τ hfix`. Establish `hart` using `GlobalTheory.CompanionTheory.LTLink.lt_local_artin_inertia hπ (isLubinTateSeries_ltPoly π) u τ hdeg hact`. Take `⟨v, hv⟩` from `exists_norm_unit K u`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hχu : ((χ g' : (↥K.1)ˣ) : ↥K.1) = ((u : 𝒪[↥K.1]) : ↥K.1)` using `Subtype.ext huχ.symm`. Express the relevant statement in the definitionally equal form `Algebra.norm ℚ_[l] ((χ g' : (↥K.1)ˣ) : ↥K.1) = _`. Rewrite using `[hχu, ← hv]`. Set `x : (↥K.1)ˣ` to `unitsIncl ↥K.1 u⁻¹`. Set `w : ℚ_[l]ˣ` to `normUnits ℚ_[l] ↥K.1 x`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hw : (w : ℚ_[l]) = (((v⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) * (l : ℚ_[l]) ^ (0 : ℤ)`. Establish `e1 : (w : ℚ_[l]) = Algebra.norm ℚ_[l] ((x : (↥K.1)ˣ) : ↥K.1)` using `coe_normUnits x`. Establish `e2 : ((x : (↥K.1)ˣ) : ↥K.1) * ((u : 𝒪[↥K.1]) : ↥K.1) = 1`. Establish `h` using `congrArg (fun c : 𝒪[↥K.1] => (c : ↥K.1)) (Units.inv_mul u)`. Simplify `h` using `[x, unitsIncl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e3 : (w : ℚ_[l]) * ((v : ℤ_[l]) : ℚ_[l]) = 1`. Rewrite using `[e1, hv, ← map_mul, e2, map_one]`. Establish `e4 : ((v : ℤ_[l]) : ℚ_[l]) * (((v⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = 1`. Rewrite using `[← PadicInt.coe_mul, Units.mul_inv, PadicInt.coe_one]`. Rewrite using `[zpow_zero, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e4, mul_one]`. Use `_ = _ := by rw [← mul_assoc, e3, one_mul]`. Take `⟨σ, hσ⟩` from `QuotientGroup.mk_surjective (localReciprocityLimit ℚ_[l] (Om l) w)`. Establish `key : ∀ (n : ℕ) (ζ : Om l), ζ ^ l ^ n = 1 → g ζ = σ ζ`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n ζ hζ`. Establish `hy` using `mem_maximalAbelian hζ`. Establish `h1` using `hart ζ (maximalAbelianExtension_le_restrictScalars K.1 hy)`. Establish `h2` using `localArtinMap_apply_of_mem K.1 x hy`. Establish `h3 : localArtinMap ℚ_[l] (Om l) (normUnits ℚ_[l] ↥K.1 x) = topologicalAbelianizationEquiv ℚ_[l] (Om l) (σ : TopologicalAbelianization (Om l ≃ₐ[ℚ_[l]] Om l))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[localArtinMap_apply]`. Conclude with `congrArg _ hσ.symm`. Rewrite `h2` using `[h3, topologicalAbelianizationEquiv_mk_apply]`. Conclude with `h1.symm.trans h2`. Establish `hfin : (v : ℤ_[l]) = ((GroundTheory.PAdicHodge.cycloChar ⊥ (Formalism.Per6.toBot g) : ℤ_[l]ˣ) : ℤ_[l])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `toZModPow_eq_of_pow _ _ fun n ζ hζ => ?_` and prove the remaining obligations. Establish `h1` using `GroundTheory.PAdicHodge.cycloChar_spec (K := ⊥) (Formalism.Per6.toBot g) hζ`. Establish `h2` using `GroundTheory.LocalField.Padic.apply_of_pow_eq_one_of_prime_pow l w v⁻¹ 0 hw hσ hζ`. Rewrite `h2` using `[inv_inv]`. Rewrite using `[← h2, ← key n ζ hζ]`.
-
-Conclude with `h1`. Rewrite using `[hfin]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_cyclo : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ), IsLTChar K χ →
     Continuous (fun g => (((χ g : (↥K.1)ˣ) : ↥K.1) : Om l)) →

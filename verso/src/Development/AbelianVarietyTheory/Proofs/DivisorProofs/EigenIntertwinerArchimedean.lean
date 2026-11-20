@@ -18,18 +18,18 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Simplify using `only [ech, ← Complex.exp_add, Complex.ofReal_add]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem ech_add (s t : ℝ) : ech (s + t) = ech s * ech t := by
   simp only [ech, ← Complex.exp_add, Complex.ofReal_add]; ring_nf
 
 /- English proof (translation)
-Simplify using `[ech]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ech_zero : ech 0 = 1 := by simp [ech]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [sch, map_add, LinearMap.add_apply]`. Rewrite using `[show x + (a + a') = x + a + a' by abel, ← mul_assoc, ← ech_add]`. Use `congr 2`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -44,27 +44,25 @@ theorem sch_add {Y : Type} [AddCommGroup Y] [Module ℝ Y] (β : LinearMap.Bilin
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem evI_add (a b : AF F) : evI F (a + b) = evI F a + evI F b := by
   exact map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
 /- English proof (translation)
-Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+A detailed English derivation is pending.
 -/
 theorem evI_zero : evI F 0 = 0 := by
   exact map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)
 
 /- English proof (translation)
-Simplify using `[evI, liftA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evI_liftA (ξ : mixedEmbedding.mixedSpace F) : evI F (liftA F ξ) = ξ := by
   simp [evI, liftA]
 
 /- English proof (translation)
-Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ξ) = 0`. Rewrite using `[h1, zero_mul]`. Use `show u.2 * 0 = 0`.
-
-Rewrite using `[mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_liftA (ξ : mixedEmbedding.mixedSpace F) (u : AF F) (hu : evI F u = 0) : u * liftA F ξ = 0 := by
   have h1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
@@ -75,13 +73,13 @@ theorem at_liftA (ξ : mixedEmbedding.mixedSpace F) (u : AF F) (hu : evI F u = 0
     rw [mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[arch, evI_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem arch_add {κ : Type} (v w : κ → AF F) : arch F (v + w) = arch F v + arch F w := by
   funext i; simp [arch, evI_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[arch, evI_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem arch_zero {κ : Type} : arch F (0 : κ → AF F) = 0 := by
   funext i; simp [arch, evI_zero]
@@ -95,33 +93,33 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.ArchSch in
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ T T' hT hR hR'`. Establish `atι : ∀ z : Matrix (Fin n) (Fin d₁) (AE F E), At (evI F) z → At (evI F) (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)`. Introduce `z hz u hu`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hz u hu]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `F1 : ∀ S : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d₁), GlobalTheory.ThK.EvUniq.InfRel B M M₁ H' S → ∀ z, At (evI F) z → ∀ f f₁ : SInf F (Fin n × Fin d), ∀ g₁ : SInf F (Fin n × Fin d₁), ⇑f₁ = sch (trP F _) (arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (inc …`. Introduce `S hS z hz f f₁ g₁ h1 h2`. Conclude with `hS.1 z hz f f₁ (GlobalTheory.T.darboux_schroedinger_archimedean_acts M.co B.ψ hB.std (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) (atι z hz) f f₁ h1) g₁ (GlobalTheory.T.darboux_schroedinger_archimedean_acts M₁.co B.ψ hB.std z hz (S f) g₁ h2)`. Establish `F2 : ∀ S : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d₁), GlobalTheory.ThK.EvUniq.InfRel B M M₁ H' S → ∀ u ∈ iso0 (F` using `F) n H', At (evI F) u → ∀ f f₁ : SInf F (Fin n × Fin d), ⇑f₁ = sch (trP F _) (arch F (M.co.e u).1) (arch F (M.co.e u).2) ⇑f → S f₁ = S f := fun S hS u hu hat f f₁ h => hS.2 u hu hat f f₁ (GlobalTheory.T.darboux_schroedinger_archimedean_acts M.co B.ψ hB.std u hat f f₁ h)`. Take `⟨h0, hadd, hsmul, hiso, hco⟩` from `GlobalTheory.T.plane_transform_restriction B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hH`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Λ : Submodule ℝ ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F))` to `{ carrier := lagSet M M₁ H' add_mem' := fun ha hb => hadd _ ha _ hb zero_mem' := h0 smul_mem' := fun t l hl => hsmul t l hl }`. Set `ℓ : (SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d₁)) → SInf F (Fin n × Fin d) →L[ℂ] ℂ` to `fun S => ((BoundedContinuousFunction.evalCLM ℂ (0 : Fin n × Fin d₁ → mixedEmbedding.mixedSpace F)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)).comp S`. Establish `hℓ : ∀ S f, ℓ S f = S f 0` using `fun _ _ => rfl`. Establish `inv : ∀ S : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d₁), GlobalTheory.ThK.EvUniq.InfRel B M M₁ H' S → ∀ l ∈ Λ, ∀ f g : SInf F (Fin n × Fin d), ⇑g = sch (trP F _) l.1 l.2 ⇑f → ℓ S g = ℓ S f`. Introduce `S hS l hl f g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hat, z, hz, hz1, rfl⟩` from `hl`. Establish `mu : (arch F (M.co.e u).1, arch F (M.co.e u).2) ∈ lagSet M M₁ H'` using `⟨u, hu, hat, 0, fun _ _ => smul_zero _, by simp [arch_zero], by simp⟩`. Establish `mz : (arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).1, arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).2) ∈ lagSet M M₁ H'` using `⟨0, ⟨0, by simp⟩, fun _ _ => smul_zero _, z, hz, hz1, by simp⟩`. Establish `hsplit : ⇑g = sch (trP F _) (arch F (M.co.e u).1) (arch F (M.co.e u).2) (sch (trP F _) (arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).1) (arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).2) ⇑f)`. Establish `e1 : arch F (M.co.e (u + (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ))).1 = arch F (M.co.e u).1 + arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, Prod.fst_add, arch_add]`. Establish `e2 : arch F (M.co.e (u + (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ))).2 = arch F (M.co.e u).2 + arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).2`. Rewrite using `[map_add, Prod.snd_add, arch_add]`. Rewrite using `[hg]`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, sch_add _ _ _ _ _ (hiso _ mu _ mz)]`. Take `⟨h₁, hh₁⟩` from `GlobalTheory.T.schroedinger_preserves_schwartz_real (trP F _) (arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).1) (arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).2) f`. Take `⟨g₁, hg₁⟩` from `GlobalTheory.T.schroedinger_preserves_schwartz_real (trP F _) (arch F (M₁.co.e z).1) (arch F (M₁.co.e z).2) (S f)`. Rewrite `hsplit` using `[← hh₁]`. Rewrite using `[hℓ, hℓ, F2 S hS u hu hat h₁ g hsplit, F1 S hS z hz f h₁ g₁ hh₁ hg₁, hg₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[sch, hz1, ech_zero]`. Establish `zξ : ∀ ξ : Fin n × Fin d₁ → mixedEmbedding.mixedSpace F, ∃ z : Matrix (Fin n) (Fin d₁) (AE F E), At (evI F) z ∧ arch F (M₁.co.e z).1 = ξ ∧ arch F (M₁.co.e z).2 = 0`. Introduce `ξ`. Use `⟨M₁.co.e.symm (fun i => liftA F (ξ i), 0), fun u hu => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearEquiv.map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: u • ((fun i => liftA F (ξ i), 0) : (Fin n × Fin d₁ → AF F) × (Fin n × Fin d₁ → AF F)) = 0`. Use `Prod.ext (funext fun i => ?_) (by simp)` and prove the remaining obligations. Simplify using `[at_liftA (ξ i) u hu]`. Rewrite using `[this, map_zero]`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[arch, evI_liftA]`. Simplify using `[arch_zero]`. Establish `key : ∀ (f : SInf F (Fin n × Fin d)) (ξ : Fin n × Fin d₁ → mixedEmbedding.mixedSpace F), ∃ h : SInf F (Fin n × Fin d), ∀ S : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d₁), GlobalTheory.ThK.EvUniq.InfRel B M M₁ H' S → S h 0 = S f ξ`. Introduce `f ξ`. Take `⟨z, hz, hz1, hz2⟩` from `zξ ξ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `GlobalTheory.T.schroedinger_preserves_schwartz_real (trP F _) (arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).1) (arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)).2) f`. Use `⟨h, fun S hS => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hg₁⟩` from `GlobalTheory.T.schroedinger_preserves_schwartz_real (trP F _) (arch F (M₁.co.e z).1) (arch F (M₁.co.e z).2) (S f)`. Rewrite using `[F1 S hS z hz f h g₁ hh hg₁, hg₁]`. Simplify using `[sch, hz1, hz2, ech_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : ℓ T ≠ 0`. Introduce `h`. Apply `hT` to reduce the goal to its premises. Use `ContinuousLinearMap.ext fun f => SchwartzMap.ext fun ξ => ?_` and prove the remaining obligations. Take `⟨h', hh'⟩` from `key f ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun L => L h') h` as an intermediate fact. Simplify using `only [hℓ, ContinuousLinearMap.zero_apply] at this`. Rewrite using `[← hh' T hR, this]`. Both sides reduce to the same expression. Establish `hiso' : ∀ l ∈ Λ, ∀ l' ∈ Λ, trP F (Fin n × Fin d) l.1 l'.2 = trP F (Fin n × Fin d) l'.1 l.2` using `fun l hl l' hl' => hiso l hl l' hl'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hco' : ∀ v : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F), (∀ l ∈ Λ, trP F (Fin n × Fin d) v.1 l.2 = trP F (Fin n × Fin d) l.1 v.2) → v ∈ Λ` using `fun v hv => hco v hv`. Establish `hT1` using `inv T hR`. Establish `hT2` using `inv T' hR'`. Take `⟨C, hC⟩` from `GlobalTheory.T.aux_statement_2 (Y := Fin n × Fin d → mixedEmbedding.mixedSpace F) (trP F (Fin n × Fin d)) (GlobalTheory.T.trace_pairing_nondegenerate F (Fin n × Fin d)) Λ hiso' hco' (ℓ T) (ℓ T') hT1 hT2 hne`. Use `⟨C, ContinuousLinearMap.ext fun f => SchwartzMap.ext fun ξ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h', hh'⟩` from `key f ξ`. Use `congrArg (fun L => L h') hC` as an intermediate fact. Simplify using `only [hℓ, ContinuousLinearMap.smul_apply, smul_eq_mul] at this`. Rewrite using `[← hh' T' hR', this, hh' T hR]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArchSch.infRel_proportional : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M : Model σ X W)

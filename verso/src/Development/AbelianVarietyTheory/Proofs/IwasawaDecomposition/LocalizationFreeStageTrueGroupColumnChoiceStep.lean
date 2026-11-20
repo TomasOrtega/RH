@@ -31,14 +31,14 @@ def cenPull {G H : Type} [Group G] [Group H] (e : G ≃* H) :
       rw [← map_mul, ← map_mul, Subalgebra.mem_center_iff.1 z.2 c]
 
 /- English proof (translation)
-The claim follows from `MonoidAlgebra.coeff_domCongr (R := ℂ) e.symm (z : MonoidAlgebra ℂ H) g`.
+A detailed English derivation is pending.
 -/
 theorem coeff_cenPull {G H : Type} [Group G] [Group H] (e : G ≃* H) (z : Subalgebra.center ℂ (MonoidAlgebra ℂ H)) (g : G) :
     (cenPull e z : MonoidAlgebra ℂ G).coeff g = (z : MonoidAlgebra ℂ H).coeff (e g) :=
   MonoidAlgebra.coeff_domCongr (R := ℂ) e.symm (z : MonoidAlgebra ℂ H) g
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `g`. Rewrite using `[coeff_cenPull, h]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem cenPull_eq {G H : Type} [Group G] [Group H] (e : G ≃* H) {z : Subalgebra.center ℂ (MonoidAlgebra ℂ H)}
     {z' : Subalgebra.center ℂ (MonoidAlgebra ℂ G)}
@@ -66,7 +66,7 @@ def reser {R : Ranks} {H : Host R} {what₂ rows' : Rows.Data R} {N : NData R H 
     cenMt := b }
 
 /- English proof (translation)
-Use `haveI : ∀ k, NeZero (H.g k) := fun k => ⟨(H.g_prime k).ne_zero⟩`. Conclude with `(TypesInhab.good_sum (I := Σ k : Fin 2, N.PlG k) (P := fun kv => Fin R.r → ZMod (H.g kv.1)) (fun kv p => T.eSer kv.1 (Formalism.CyclotomicNorms.monicOf p)) (fun a => T.goodTuple (fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩))) T.e0 (fun g => rfl) (fun _ _ => T.eSer_idem …`. Rewrite using `[← Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt p i, h, Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt]))).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodElement_mem_center_groupAlgebra {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N} (T : NTypes A) :
     T.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g N)) := by
@@ -79,19 +79,17 @@ theorem goodElement_mem_center_groupAlgebra {R : Ranks} {H : Host R} {what₂ : 
       rw [← Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt p i, h, Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt]))).1
 
 /- English proof (translation)
-Take `⟨ldat, hsha⟩` from `hsha`. Set `nd` to `trueLayer B C W f.W ldat hsha`. Establish `hE : IsEmpty nd.Loc` using `⟨fun i : Empty => i.elim⟩`. Set `A : NAut nd` to `GaloisStage.nAut nd (fun k v => above f.P (nd.g_split k) v) (fun k v => div_over f.P (above_div _ _ v)) (fun k => above_injective f.P (nd.g_split k)) (fun k v v' => not_isConjPl f.P (nd.g_split k) (above_div _ _ v) (above_div _ _ v'))`. Establish `hl : ∀ k w (p : A.LP w), A.items₂ k w p = (X - 1) ^ A.lpDim p` using `fun _ _ _ => rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi : ∀ w (p : A.LP w) σ, A.inePol p σ = (X - 1) ^ A.lpDim p` using `fun _ _ _ => rfl`. Use `choose tg htg using fun (k : Fin 2) (v : nd.PlG k) => GlobalTheory.TameInertiaGen.exists_tameGenAt B.host.E nd.Om (A.plGw k v) (nd.plOm.1 (A.plGw k v)) (nd.plOm.2 _)`. Use `choose s hs using fun k : Fin 2 => SerInhab.exists_isSer B.R.r (B.host.g k) B.toPre.restRowsFiniteGroupCard (B.host.g_prime k) B.toPre.restRowsFiniteGroupCard_pos ((dvd_pow_self _ (GaloisStage.f_pos B.R).ne').trans (Finset.dvd_prod_of_mem (fun k : Fin 2 => (Nat.card (GL (Fin B.R. …`. Take `⟨T₀⟩ : Nonempty (NTypes A)` from `⟨TypesInhab.types0 hl hi B.g_cond B.BB_disj tg htg s hs⟩`. Take `⟨L⟩` from `locStage_inhabited`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨ω, -⟩` from `TypesInhab.exists_char (A := MonoidAlgebra ℂ (G0g nd)) 0 one_ne_zero (by simp)`. Set `eR : G ≃* G0g nd` to `e₀.trans (grpEquiv N₀.naut A)`. Set `T : NTypes A` to `reser (retype T₀ hl hi (fun k => labDat (B.host.g k)) ω) N₀.ntypes (fun μ => (a μ).comp (cenPull eR)) (fun μ j => (b μ j).comp (cenPull eR))`. Establish `hT : TypesTrue T f.P f.W` using `⟨fun k v => above_div f.P (nd.g_split k) v, fun _ => rfl, fun _ _ _ => rfl, fun k p => h₀.ser k p⟩`. Establish `hco : ∀ g, T.e0.coeff (grpEquiv N₀.naut A g) = N₀.ntypes.e0.coeff g` using `TypesTrue.typeIdempotent_coeff_across_layers h₀ hT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : T.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g nd))` using `goodElement_mem_center_groupAlgebra T`. Establish `hz` using `ha (cenPull eR ⟨T.e0, hc⟩) fun g => (coeff_cenPull eR _ g).trans (hco (e₀ g))`. Establish `htie : T.IdempotentMatchesAction`. Use `⟨fun μ => ?_, fun μ j => ?_⟩` and prove the remaining obligations. Rewrite using `[NTypes.onAmb, dif_pos hc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hz.1 μ`. Rewrite using `[NTypes.onMt, dif_pos hc]`. Conclude with `hz.2 μ j`. Establish `hy : ∀ x, ∃ y : ↥B.LL0, B.embLL (y : B.LL) = T.e0.coeff x` using `fun x => by`. Take `⟨g, rfl⟩` from `(grpEquiv N₀.naut A).surjective x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, (N₀.nStage_trivialCharacter_coeff_eq g).trans (hco g).symm⟩`. Use `choose e hee using hy`. Set `tw` to `GaloisStage.nTw B.LL0 nd`. Establish `hT' : IsEmpty tw.Tw` using `⟨fun i : Empty => i.elim⟩`. Take `⟨Y, hY, ⟨th⟩⟩` from `exists_nexp_nth_of_isEmpty B C W nd tw hT' e`.
-
-Conclude with `⟨{ toLocStage := L nd := nd ntw := tw naut := A nbc := GaloisStage.nBC A nexp := Y ntypes := T nStage_trivialCharacter_compat := htie nStage_trivialCharacter_coeff_eq := fun g => by rw [hY]; exact hee g nth := th nbr := fun i => hE.elim i nbr_ind := fun i => hE.elim i self_good : …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nStage_act {B : Base} {C C₀ : Cols B} {W₀ : RowsRest B C₀} (N₀ : NStage B C₀ W₀) {f : Fr B.toPre}
     (h₀ : GrpTrue N₀ f) (W : RowsRest B C) (hsha : ShaOK B.toPre W.shaLen) (heta : ∀ j w, W.etaJ j w = 0)
@@ -167,9 +165,9 @@ theorem exists_nStage_act {B : Base} {C C₀ : Cols B} {W₀ : RowsRest B C₀} 
     hE, hT, fun _ _ => rfl, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨P, hS⟩` from `P`. Take `⟨P', hS'⟩` from `P'`. Simplify using `only at hP`. Substitute `hP` using the available equality. Rewrite `h'` using `[hg P hS hS', h, Subsingleton.elim (i' : ZMod p →+* kP P) (i : ZMod p →+* kP P)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `a b`. Conclude with `i.injective (congrArg (fun u : GL (Fin r) (kP P) => (u : Matrix (Fin r) (Fin r) (kP P)) a b) h')`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem read_unique {E : Type} [Field E] [NumberField E] {S : Finset (Pl E)} {r p : ℕ} (g : ∀ P : S, GL (Fin r) (kP P.1))
     {S' : Finset (Pl E)} (g' : ∀ P : S', GL (Fin r) (kP P.1))
@@ -185,7 +183,7 @@ theorem read_unique {E : Type} [Field E] [NumberField E] {S : Finset (Pl E)} {r 
   exact i.injective (congrArg (fun u : GL (Fin r) (kP P) => (u : Matrix (Fin r) (Fin r) (kP P)) a b) h')
 
 /- English proof (translation)
-Use `LinearMap.ext_on_range t.forms.span fun i => ?_` and prove the remaining obligations. Rewrite using `[t.forms.op_eq, t.cen z e hz, h.E_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem e_eq_act {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] {O : Type} [CommRing O] {φ : O →+* ℂ}
     {σ : K →+* ℂ} {m : Mat1 K G} {s : Sp1 O φ G} (t : Tie1 σ m s) {e : MonoidAlgebra K G} (h : m.Laws σ e)
@@ -197,13 +195,13 @@ theorem e_eq_act {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [G
 variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
 
 /- English proof (translation)
-Use `letI := P.z.alg`. Set `e₀ : Gc B w.px ≃* G0g P.Z₀.N.nd` to `P.z.R.eG.trans P.z.cG`. Establish `hgood : ∀ g, B.embLL ((idemOf P.z.Xg).coeff g) = P.Z₀.N.ntypes.e0.coeff (e₀ g)` using `P.z.good.2`. Take `⟨N, hE, hN, hA, hM⟩` from `exists_nStage_act P.Z₀.N P.grp (P.q.W (fun _ _ => 0) fun _ _ => le_rfl) P.q.sha (fun _ _ => rfl) e₀ (fun μ => (P.q.p.sA true μ).act) (fun μ j => (P.q.p.sL μ j).act) fun z hz => ⟨fun μ => e_eq_act (P.q.t.tA true μ) (P.q.t.lawsA true μ) z fun g => (hgood g).trans (hz g).symm, fun μ …`. Establish `hpl : ∀ k v, P.Z₀.N.naut.plGw k ((plEquiv P.Z₀.N.naut N.naut k).symm v) = N.naut.plGw k v` using `fun k v => by`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← TypesTrue.plGw_plEquiv P.grp hN, Equiv.apply_symm_apply]`. Use `⟨N, hE, hN, fun V S G => ⟨?_, fun eR hR => ?_⟩⟩` and prove the remaining obligations. Take `⟨plg, hp⟩` from `P.grpAt.pl`. Take `⟨hc, hi⟩` from `GlobalTheory.GoodLatCompare.goodSeriesIdempotent_central_idempotent (w.st (RowPk.Over.Z (q := P.q) ⟨_, _, V, S, N, G⟩)).toD7`. Use `⟨⟨(Equiv.sigmaCongrRight fun k => (plEquiv P.Z₀.N.naut N.naut k).symm).trans plg, fun kv => ?_⟩, hi, hc⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨(hp ⟨kv.1, _⟩).1.trans (hpl kv.1 kv.2), (hp ⟨kv.1, _⟩).2⟩`. Establish `he : e₀.trans (grpEquiv P.Z₀.N.naut N.naut) = eR`. Take `⟨plg, iso, h1, h2⟩` from `hR`. Take `⟨plg₀, iso₀, k1, -, -, k2⟩` from `P.z.pins.keep.grp`. Use `MulEquiv.ext fun g => funext fun kv => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(read_unique g (P.z.R.eG g) (P.z.idG g) (plg kv) (plg₀ ⟨kv.1, (plEquiv P.Z₀.N.naut N.naut kv.1).symm kv.2⟩) ((h1 kv).trans ((k1 ⟨kv.1, _⟩).trans (hpl kv.1 kv.2)).symm) (iso kv) (iso₀ ⟨kv.1, _⟩) (h2 g kv) (k2 g ⟨kv.1, _⟩)).symm`. Substitute `he` using the available equality. Conclude with `⟨fun μ z z' hz x => by rw [hA, cenPull_eq _ hz], fun μ j z z' hz x => by rw [hM, cenPull_eq _ hz]⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bare {K : Ctx} (P : Pre2 K w) :
     ∃ N : NStage B w.C (P.q.W (fun _ _ => 0) fun _ _ => le_rfl), IsEmpty N.nd.Loc ∧ GrpTrue N f ∧
@@ -234,7 +232,7 @@ theorem exists_bare {K : Ctx} (P : Pre2 K w) :
     exact ⟨fun μ z z' hz x => by rw [hA, cenPull_eq _ hz], fun μ j z z' hz x => by rw [hM, cenPull_eq _ hz]⟩
 
 /- English proof (translation)
-The claim follows from `StepW.of_all fun _ _ _ _ _ _ _ _ P => exists_bare P`.
+A detailed English derivation is pending.
 -/
 theorem stepW_bare : StepW (pinAnd HasPk) fun K B f T w => ∀ (P : Pre2 K w), ∃ N : NStage B w.C (P.q.W (fun _ _ => 0) fun _ _ => le_rfl), IsEmpty N.nd.Loc ∧ GrpTrue N f ∧ ∀ V S G, GrpAt (w.st (RowPk.Over.Z ⟨_, _, V, S, N, G⟩)) w.I ∧ ∀ eR, StdIso (w.st (RowPk.Over.Z ⟨_, _, V, S, N, G⟩)) w.px eR → CenIs P.q.p N eR :=
   StepW.of_all fun _ _ _ _ _ _ _ _ P => exists_bare P

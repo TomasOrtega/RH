@@ -7,23 +7,19 @@ open scoped TensorProduct
 namespace PositivityTheory.TfC.OccursIff.Span
 
 /- English proof (translation)
-Set `Z : Submodule ℂ C` to `{ carrier := {c | inner ℂ (Φ c) u = 0} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_add, inner_add_left, ha, hb, add_zero]`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, inner_zero_left]`. Use the proof step `smul_mem' := fun c x hx => by`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Rewrite using `[map_smul, inner_smul_left, hx, mul_zero] }`. Establish `hZ : ∀ c, c ∈ Z ↔ inner ℂ (Φ c) u = 0` using `fun c => Iff.rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ∀ a (r : restrictedTensor ξ), E.symm (a ⊗ₜ Te.symm r) ∈ Z`. Introduce `a r`. Take `⟨r, hr⟩` from `r`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem y hy`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `(hZ _).2 (h a x hx)`. Consider the case `zero`. Establish `e : (⟨0, Submodule.zero_mem _⟩ : restrictedTensor ξ) = 0` using `rfl`. Rewrite using `[e, map_zero, TensorProduct.tmul_zero, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Z.zero_mem`. Consider the case `add y z hy hz ihy ihz`. Establish `e : (⟨y + z, add_mem hy hz⟩ : restrictedTensor ξ) = ⟨y, hy⟩ + ⟨z, hz⟩` using `rfl`. Rewrite using `[e, map_add, TensorProduct.tmul_add, map_add]`. Conclude with `Z.add_mem ihy ihz`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c y hy ihy`. Establish `e : (⟨c • y, Submodule.smul_mem _ c hy⟩ : restrictedTensor ξ) = c • ⟨y, hy⟩` using `rfl`. Rewrite using `[e, map_smul, TensorProduct.tmul_smul, map_smul]`. Conclude with `Z.smul_mem c ihy`. Establish `h3 : ∀ t : W₁ ⊗[ℂ] W₂, E.symm t ∈ Z`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `Z.zero_mem`. Consider the case `tmul a b`.
-
-Use `h2 a (Te b)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Consider the case `add s t hs ht => rw [map_add]`. Conclude with `Z.add_mem hs ht`. Use `h3 (E c)` as an intermediate fact.
-
-Rewrite `this` using `[LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_core {ι : Type} {W : ι → Type} [∀ v, AddCommGroup (W v)] [∀ v, Module ℂ (W v)] (ξ : ∀ v, W v)
     {C W₁ W₂ H : Type} [AddCommGroup C] [Module ℂ C] [AddCommGroup W₁] [Module ℂ W₁] [AddCommGroup W₂]

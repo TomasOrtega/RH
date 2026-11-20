@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.HerbLen
 
 /- English proof (translation)
-Take `⟨n, b, b', A, -, hr⟩` from `h`. Establish `h0 : (0 : WithTop ℝ) ≤ v (A.det : C)` using `(mem_addValuationIntegerRing_iff v _).1 A.det.2`. Rewrite `h0` using `[hr]`. Conclude with `h0` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLen_nonneg {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {M : Type}
     [AddCommGroup M] [Module (Int0 v) M] {X' X : Submodule (Int0 v) M} {r : ℝ}
@@ -26,7 +26,7 @@ theorem relLen_nonneg {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {M
   exact_mod_cast h0
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, v.map_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem addVal_prod {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {ι : Type}
     (s : Finset ι) (f : ι → C) : v (∏ i ∈ s, f i) = ∑ i ∈ s, v (f i) := by
@@ -37,103 +37,91 @@ theorem addVal_prod {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {ι 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Unfold `LengthIdentities`. Take `⟨hd0, hker, hkerrange, hXker, hAX, -, -, hprojX, hHX, hFX, htf, g, helem⟩` from `GlobalTheory.T.adjoinRootProdLinearFactors_lattice_facts C v S a ha N Fil hsat τ`. Take `⟨fF, fX, fK, fH, -, fFt, fKP⟩` from `GlobalTheory.T.finite_eigenFiltration_pieces_addValInt C v S a ha N Fil hsat τ`. Take `⟨-, -, hlc, hevc, -, -, -⟩` from `GlobalTheory.T.adjoinRootProdLinearFactors_structure (Int0 v) S a τ`. Establish `m1 : ∀ x : Fin N → RS a, x ∈ eigSub a τ (Fin N → RS a) ↔ lin a τ • x = 0`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `[eigSub, kerMul]`. Establish `m2 : ∀ x : Fin N → RS a, x ∈ preEig a Fil τ ↔ lin a τ • x ∈ Fil`. Introduce `x`. Simplify using `[preEig, mulR]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `m3 : ∀ x : Fin N → RS a, x ∈ filKer a Fil τ ↔ x ∈ Fil ∧ cofac a τ • x = 0`. Introduce `x`. Simplify using `[filKer, mulR]`. Establish `m4 : ∀ x : Fil, x ∈ eigSub a τ Fil ↔ lin a τ • (x : Fin N → RS a) = 0`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[eigSub, kerMul, Subtype.ext_iff]`. Generalize the expression as in `hd : ev a τ (cofac a τ) = d at hd0 helem hevc`. Establish `hlinP : ∀ x : Fin N → RS a, lin a τ • (cofac a τ • x) = 0`. Introduce `x`. Rewrite using `[smul_smul, hlc, zero_smul]`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hPh : ∀ x : Fin N → RS a, lin a τ • x = 0 → d • x = cofac a τ • x`. Introduce `x h`. Rewrite using `[helem, h, smul_zero, sub_zero]`. Establish `hcA : ∀ x, comp a N τ (lin a τ • x) = 0`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: lin a τ • x ∈ LinearMap.ker (comp a N τ)` using `by rw [hkerrange]; exact ⟨x, rfl⟩`. Conclude with `this`. Establish `hcP : ∀ x, comp a N τ (cofac a τ • x) = d • comp a N τ x`. Introduce `x`. Rewrite using `[show d • comp a N τ x = comp a N τ (d • x) from (map_smul (comp a N τ) d x).symm, helem, map_sub, smul_comm g (lin a τ) x, hcA, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hker' : ∀ x, comp a N τ x = 0 ↔ cofac a τ • x = 0` using `hker`. Establish `hkerA : ∀ x, mulR a N (lin a τ) x = 0 → x ∈ eigSub a τ (Fin N → RS a)` using `fun x h => (m1 x).2 h`. Establish `hIinj : Function.Injective (incl a Fil)` using `fun x y h => Subtype.ext h`. Establish `htfQ : ∀ (c : Int0 v) (y : (Fin N → RS a) ⧸ Fil), c ≠ 0 → c • y = 0 → y = 0`. Introduce `c y hc h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (hsat c x hc h)`. Establish `htfF : ∀ (c : Int0 v) (y : Fil), c ≠ 0 → c • y = 0 → y = 0`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c y hc h`. Conclude with `Subtype.ext (htf c y hc (congrArg Subtype.val h))`. Establish `htfO : ∀ (c : Int0 v) (y : Fin N → Int0 v), c ≠ 0 → c • y = 0 → y = 0`. Introduce `c y hc h`. Conclude with `(smul_eq_zero.mp h).resolve_left hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fgF : (Fil.restrictScalars (Int0 v)).FG` using `Module.Finite.iff_fg.mp fF`. Establish `fgH : (eigSub a τ (Fin N → RS a)).FG` using `Module.Finite.iff_fg.mp fH`. Establish `fgK : (filKer a Fil τ).FG` using `Module.Finite.iff_fg.mp fK`. Establish `fB : Module.Finite (Int0 v) ↥(eigSub a τ (Fin N → RS a) ⊔ Fil.restrictScalars (Int0 v))` using `Module.Finite.iff_fg.mpr (fgH.sup fgF)`. Establish `hBX : eigSub a τ (Fin N → RS a) ⊔ Fil.restrictScalars (Int0 v) ≤ preEig a Fil τ` using `sup_le hHX hFX`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdB : ∀ x ∈ preEig a Fil τ, d • x ∈ eigSub a τ (Fin N → RS a) ⊔ Fil.restrictScalars (Int0 v)`. Introduce `x hx`. Rewrite using `[helem]`. Use `Submodule.sub_mem_sup ?_ ?_` and prove the remaining obligations. Conclude with `(m1 _).2 (hlinP x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fil.smul_mem g ((m2 x).1 hx)`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.exists_latticeRelativeLength_of_smul_le C v _ htf _ _ hBX fX fB d hd0 hdB`. Establish `hmapB_proj : (eigSub a τ (Fin N → RS a) ⊔ Fil.restrictScalars (Int0 v)).map (proj a Fil) = (eigSub a τ (Fin N → RS a)).map (proj a Fil)`. Rewrite using `[Submodule.map_sup]`. Establish `: (Fil.restrictScalars (Int0 v)).map (proj a Fil) = ⊥`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(Submodule.mem_bot _).2 ((Submodule.Quotient.mk_eq_zero _).2 hx)`. Rewrite using `[this, sup_bot_eq]`. Establish `ha1 : RelLen v ((eigSub a τ (Fin N → RS a)).map (proj a Fil)) (eigSub a τ ((Fin N → RS a) ⧸ Fil)) δ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htf htfQ (proj a Fil) _ _ hBX ?_ fX fB δ).1 hδ` as an intermediate fact. Rewrite `this` using `[hmapB_proj, hprojX]`. Then use the resulting hypothesis. Introduce and unpack `x ⟨-, hx⟩`. Conclude with `Submodule.mem_sup_right ((Submodule.Quotient.mk_eq_zero _).1 hx)`. Establish `hHA : (eigSub a τ (Fin N → RS a)).map (mulR a N (lin a τ)) = ⊥`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(Submodule.mem_bot _).2 ((m1 x).1 hx)`. Establish `hmapB_A : (eigSub a τ (Fin N → RS a) ⊔ Fil.restrictScalars (Int0 v)).map (mulR a N (lin a τ)) = (Fil.restrictScalars (Int0 v)).map (mulR a N (lin a τ))`. Rewrite using `[Submodule.map_sup, hHA, bot_sup_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hb0 : RelLen v ((Fil.restrictScalars (Int0 v)).map (mulR a N (lin a τ))) (filKer a Fil τ) δ`. Use `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htf htf (mulR a N (lin a τ)) _ _ hBX ?_ fX fB δ).1 hδ` as an intermediate fact. Rewrite `this` using `[hmapB_A, hAX]`. Then use the resulting hypothesis. Introduce and unpack `x ⟨-, hx⟩`. Conclude with `Submodule.mem_sup_left (hkerA x hx)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hIm1 : (imMul a (lin a τ) Fil).map (incl a Fil) = (Fil.restrictScalars (Int0 v)).map (mulR a N (lin a τ))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨w, rfl⟩, rfl⟩`. Conclude with `⟨w, w.2, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨lin a τ • x, Fil.smul_mem _ hx⟩, ⟨⟨x, hx⟩, rfl⟩, rfl⟩`. Establish `hIm2 : (kerMul a (cofac a τ) Fil).map (incl a Fil) = filKer a Fil τ`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(m3 _).2 ⟨y.2, by simpa [kerMul, Subtype.ext_iff, incl] using hy⟩`. Introduce `hz`. Take `⟨hz1, hz2⟩` from `(m3 z).1 hz`. Conclude with `⟨⟨z, hz1⟩, by simpa [kerMul, Subtype.ext_iff] using hz2, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hfgImLin : (imMul a (lin a τ) Fil).FG` using `Submodule.fg_of_fg_map_injective _ hIinj (by rw [hIm1]; exact fgF.map _)`. Establish `hle2 : imMul a (lin a τ) Fil ≤ kerMul a (cofac a τ) Fil`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `show cofac a τ • lin a τ • y = 0`. Rewrite using `[smul_smul, mul_comm, hlc, zero_smul]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hb : RelLen v (imMul a (lin a τ) Fil) (kerMul a (cofac a τ) Fil) δ`. Use `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htfF htf (incl a Fil) _ _ hle2 ?_ fKP (Module.Finite.iff_fg.mpr hfgImLin) δ).2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨-, hx⟩`. Establish `: x = 0` using `hIinj (by rw [map_zero]; exact hx)`. Rewrite using `[this]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Rewrite using `[hIm1, hIm2]` and apply the resulting hypothesis. Establish `hIm3 : (imMul a (cofac a τ) Fil).map (incl a Fil) = (Fil.restrictScalars (Int0 v)).map (mulR a N (cofac a τ))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, ⟨w, rfl⟩, rfl⟩`. Conclude with `⟨w, w.2, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨cofac a τ • x, Fil.smul_mem _ hx⟩, ⟨⟨x, hx⟩, rfl⟩, rfl⟩`. Establish `hfgImP : (imMul a (cofac a τ) Fil).FG` using `Submodule.fg_of_fg_map_injective _ hIinj (by rw [hIm3]; exact fgF.map _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hle3 : imMul a (cofac a τ) Fil ≤ eigSub a τ Fil`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `(m4 _).2 (hlinP y)`. Establish `hd3 : ∀ y ∈ eigSub a τ Fil, d • y ∈ imMul a (cofac a τ) Fil`. Introduce `y hy`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨y, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show cofac a τ • (y : Fin N → RS a) = d • (y : Fin N → RS a)`. Rewrite using `[hPh _ ((m4 y).1 hy)]`. Take `⟨e₂, he₂⟩` from `GlobalTheory.T.exists_latticeRelativeLength_of_smul_le C v _ htfF _ _ hle3 fFt (Module.Finite.iff_fg.mpr hfgImP) d hd0 hd3`. Establish `fgE : (eigQuot a Fil τ).FG` using `fgF.map _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `fE : Module.Finite (Int0 v) (eigQuot a Fil τ)` using `Module.Finite.iff_fg.mpr fgE`. Establish `hfgFt : (eigSub a τ Fil).FG` using `Module.Finite.iff_fg.mp fFt`. Establish `fCt : Module.Finite (Int0 v) ((eigSub a τ Fil).map ((comp a N τ).comp (incl a Fil)))` using `Module.Finite.iff_fg.mpr (hfgFt.map _)`. Establish `hle4 : (eigSub a τ Fil).map ((comp a N τ).comp (incl a Fil)) ≤ eigQuot a Fil τ`. Introduce and unpack `_ ⟨y, -, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨y, y.2, rfl⟩`. Establish `hd4 : ∀ z ∈ eigQuot a Fil τ, d • z ∈ (eigSub a τ Fil).map ((comp a N τ).comp (incl a Fil))`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨⟨cofac a τ • x, Fil.smul_mem _ hx⟩, (m4 _).2 (hlinP x), hcP x⟩`. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_latticeRelativeLength_of_smul_le C v _ htfO _ _ hle4 fE fCt d hd0 hd4`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hIm5 : (imMul a (cofac a τ) Fil).map ((comp a N τ).comp (incl a Fil)) = (eigQuot a Fil τ).map (LinearMap.lsmul (Int0 v) (Fin N → Int0 v) d)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨comp a N τ y, ⟨y, y.2, rfl⟩, (hcP y).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨⟨cofac a τ • x, Fil.smul_mem _ hx⟩, ⟨⟨x, hx⟩, rfl⟩, hcP x⟩`. Establish `he5 : RelLen v ((eigQuot a Fil τ).map (LinearMap.lsmul (Int0 v) (Fin N → Int0 v) d)) ((eigSub a τ Fil).map ((comp a N τ).comp (incl a Fil))) e₂`. Use `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htfF htfO ((comp a N τ).comp (incl a Fil)) _ _ hle3 ?_ fFt (Module.Finite.iff_fg.mpr hfgImP) e₂).1 he₂` as an intermediate fact. Rewrite `this` using `[hIm5]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce and unpack `y ⟨hy, hy0⟩`. Establish `h1 : cofac a τ • (y : Fin N → RS a) = 0` using `(hker' _).1 hy0`. Establish `h2 : d • (y : Fin N → RS a) = 0` using `by rw [hPh _ ((m4 y).1 hy), h1]`. Establish `: y = 0` using `Subtype.ext (htf d _ hd0 h2)`. Rewrite using `[this]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Establish `hme : RelLen v ((eigQuot a Fil τ).map (LinearMap.lsmul (Int0 v) (Fin N → Int0 v) d)) (eigQuot a Fil τ) (m + e₂)` using `GlobalTheory.T.relLen_trans_add C v _ _ _ _ m e₂ he5 hm`. Establish `hdC0 : (d : C) ≠ 0` using `fun h => hd0 (Subtype.ext h)`. Establish `hvd : v (d : C) ≠ ⊤` using `fun h => hdC0 ((AddValuation.top_iff v).1 h)`. Take `⟨rd, hrd⟩` from `WithTop.ne_top_iff_exists.1 hvd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hsc` using `GlobalTheory.T.latticeRelativeLength_smul_eq_rank_mul_valuation C v _ htfO (eigQuot a Fil τ) fE d rd hrd.symm`. Establish `hsum : m + e₂ = (finrank (Int0 v) (eigQuot a Fil τ) : ℝ) * rd` using `RelLen.unique v hme hsc`. Establish `hfr : finrank (Int0 v) (eigQuot a Fil τ) = eigRank v a Fil τ` using `GlobalTheory.T.finrank_int0_submodule_eq_finrank_span C v N _ fE`. Establish `hdC : ((d : Int0 v) : C) = ∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C))`. Rewrite using `[hevc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hvdeq : vd v a τ = (rd : WithTop ℝ)`. Unfold `vd`. Rewrite using `[← hdC, hrd]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hjr : eigRank v a Fil τ • vd v a τ = (((eigRank v a Fil τ : ℝ) * rd : ℝ) : WithTop ℝ)`. Rewrite using `[hvdeq, ← WithTop.coe_nsmul, nsmul_eq_mul]`. Establish `hKc : (filKer a Fil τ).map (comp a N τ) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.mem_bot _).2 ((hker' x).2 ((m3 x).1 hx).2)`. Establish `hKF : filKer a Fil τ ≤ Fil.restrictScalars (Int0 v)` using `fun x hx => ((m3 x).1 hx).1`. Establish `hD'F : (Fil.restrictScalars (Int0 v) ⊓ eigSub a τ (Fin N → RS a)) ⊔ filKer a Fil τ ≤ Fil.restrictScalars (Int0 v)` using `sup_le inf_le_left hKF`. Establish `hDB : eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ ≤ eigSub a τ (Fin N → RS a) ⊔ Fil.restrictScalars (Int0 v)` using `sup_le_sup_left hKF _`. Establish `hFHt : Fil.restrictScalars (Int0 v) ⊓ eigSub a τ (Fin N → RS a) = (eigSub a τ Fil).map (incl a Fil)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz1, hz2⟩`. Conclude with `⟨⟨z, hz1⟩, (m4 _).2 ((m1 z).1 hz2), rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y.2, (m1 _).2 ((m4 y).1 hy)⟩`. Establish `fD' : Module.Finite (Int0 v) ↥((Fil.restrictScalars (Int0 v) ⊓ eigSub a τ (Fin N → RS a)) ⊔ filKer a Fil τ)` using `Module.Finite.iff_fg.mpr (by rw [hFHt]; exact (hfgFt.map _).sup fgK)`. Establish `fD : Module.Finite (Int0 v) ↥(eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ)` using `Module.Finite.iff_fg.mpr (fgH.sup fgK)`. Establish `hmapcD' : ((Fil.restrictScalars (Int0 v) ⊓ eigSub a τ (Fin N → RS a)) ⊔ filKer a Fil τ).map (comp a N τ) = (eigSub a τ Fil).map ((comp a N τ).comp (incl a Fil))`. Rewrite using `[Submodule.map_sup, hKc, sup_bot_eq, hFHt, Submodule.map_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `s1 : RelLen v ((Fil.restrictScalars (Int0 v) ⊓ eigSub a τ (Fin N → RS a)) ⊔ filKer a Fil τ) (Fil.restrictScalars (Int0 v)) m`. Use `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htf htfO (comp a N τ) _ _ hD'F ?_ fF fD' m).2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hxF, hx0⟩`. Conclude with `Submodule.mem_sup_right ((m3 x).2 ⟨hxF, (hker' x).1 hx0⟩)`. Rewrite using `[hmapcD']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm`. Establish `s2` using `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htf htf (mulR a N (lin a τ)) _ _ hD'F (by`. Introduce and unpack `x ⟨hxF, hx0⟩`. Conclude with `Submodule.mem_sup_left ⟨hxF, hkerA x hx0⟩) fF fD' m).1 s1`. Establish `hDA' : ((Fil.restrictScalars (Int0 v) ⊓ eigSub a τ (Fin N → RS a)) ⊔ filKer a Fil τ).map (mulR a N (lin a τ)) = (eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ).map (mulR a N (lin a τ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h0 : (Fil.restrictScalars (Int0 v) ⊓ eigSub a τ (Fin N → RS a)).map (mulR a N (lin a τ)) = ⊥` using `le_bot_iff.1 (hHA ▸ Submodule.map_mono inf_le_right)`. Rewrite using `[Submodule.map_sup, Submodule.map_sup, h0, hHA]`. Establish `s3 : RelLen v (eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ) (eigSub a τ (Fin N → RS a) ⊔ Fil.restrictScalars (Int0 v)) m`. Use `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htf htf (mulR a N (lin a τ)) _ _ hDB ?_ fB fD m).2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨-, hx0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_sup_left (hkerA x hx0)`. Rewrite using `[← hDA', hmapB_A]`. Conclude with `s2`. Establish `s4` using `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htf htfO (comp a N τ) _ _ hDB (by`. Introduce and unpack `x ⟨hxB, hx0⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Take `⟨h, hh, f', hf', rfl⟩` from `Submodule.mem_sup.1 hxB`. Establish `hP0 : cofac a τ • (h + f') = 0` using `(hker' _).1 hx0`. Establish `hdh : d • h ∈ Fil`. Rewrite using `[hPh h ((m1 h).1 hh)]`. Establish `e1 : cofac a τ • h = -(cofac a τ • f')` using `eq_neg_of_add_eq_zero_left (by rw [← smul_add]; exact hP0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `Fil.neg_mem (Fil.smul_mem _ hf')`. Establish `hhF` using `hsat d h hd0 hdh`. Conclude with `Submodule.mem_sup_right ((m3 _).2 ⟨Fil.add_mem hhF hf', hP0⟩)) fB fD m).1 s3`. Establish `hDc : (eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ).map (comp a N τ) = (eigSub a τ (Fin N → RS a)).map (comp a N τ)`.
-
-Rewrite using `[Submodule.map_sup, hKc, sup_bot_eq]`. Rewrite `s4` using `[hDc]`. Establish `s5` using `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htf htfO (comp a N τ) _ _ hBX (by`. Introduce and unpack `x ⟨hxX, hx0⟩`. Conclude with `Submodule.mem_sup_right (hXker ⟨hxX, hx0⟩)) fX fB δ).1 hδ`.
-
-Establish `s6` using `GlobalTheory.T.relLen_trans_add C v _ _ _ _ δ m s4 s5`. Establish `hrδ : r = δ + m` using `RelLen.unique v hlen s6`. Use `⟨δ, e₂, m, ha1, hb, he₂, hm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum, hfr, hjr]`. Introduce `hall`.
-
-Establish `hy : yExp v a Fil τ = eigRank v a Fil τ • vd v a τ`. Unfold `yExp vd`. Rewrite using `[Finset.sum_congr rfl (fun s _ => by rw [hall s]), ← Finset.smul_sum, addVal_prod v]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl (fun s _ => v.map_sub_swap _ _)`.
-
-Establish `hrj : r = (eigRank v a Fil τ : ℝ) * rd`. Establish `: (r : WithTop ℝ) = (((eigRank v a Fil τ : ℝ) * rd : ℝ) : WithTop ℝ)`. Rewrite using `[hr, hy, hjr]`. Conclude with `this` after adjusting the coercions. Establish `hδ0` using `relLen_nonneg hδ`.
-
-Establish `hm0` using `relLen_nonneg hm`. Establish `he0` using `relLen_nonneg he₂`. Rewrite `hsum` using `[hfr]`. Rewrite using `[hjr]`. Use `⟨hδ0, ?_, hm0, ?_⟩` and prove the remaining obligations.
-
-Conclude with `WithTop.coe_le_coe.2 (by linarith)`. Conclude with `WithTop.coe_le_coe.2 (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem herbrand_lengthIdentities_auxiliary_bound (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S : Type)
     [Fintype S] [DecidableEq S] (a : S → Int0 v) (ha : Function.Injective a) (N : ℕ)
@@ -401,7 +389,7 @@ theorem herbrand_lengthIdentities_auxiliary_bound (C : Type) [Field C] (v : AddV
     · exact WithTop.coe_le_coe.2 (by linarith)
 
 /- English proof (translation)
-Introduce `C _ v S _ _ a ha N Fil hsat τ r hr hlen` and use `herbrand_lengthIdentities_auxiliary_bound C v S a ha N Fil hsat τ r hr hlen`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lengthIdentities_of_relLen : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S : Type) [Fintype S] [DecidableEq S] (a : S → Int0 v), Function.Injective a → ∀ (N : ℕ) (Fil : Submodule (RS a) (Fin N → RS a)), (∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x ∈ Fil → x ∈ Fil) → ∀ τ : S, ∀ r : ℝ, (r : WithTop ℝ) = yExp v a Fil τ → RelLen v ((eigSub a τ (Fin N → RS a)).map (comp a N τ)) ((preEig a Fil τ).map (comp a N τ)) r → LengthIdentities v a Fil τ :=
   fun C _ v S _ _ a ha N Fil hsat τ r hr hlen =>

@@ -26,7 +26,7 @@ def IdemStep : Prop :=
               v ∈ loc (K := E) q L0)
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, linOf_one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem linOf_one_symm_apply {E : Type} [Field E] {V : Type} [AddCommGroup V] [Module E V] {M : ℕ}
     (b : Module.Basis (Fin M) E V) (v : V) : (linOf b (1 : GL (Fin M) E)).symm v = v := by

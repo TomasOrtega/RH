@@ -137,7 +137,7 @@ section Examples
 abbrev LineIdx : Unit → Type := fun _ => Fin 2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, isWeightedHomogeneous_one _ _, isWeightedHomogeneous_one _ _, by funext k; simp⟩ num_not_mem := Ideal.IsPrime.ne_top' ∘ (Ideal.eq_top_of_isUnit_mem _ · isUnit_one) den_not_mem := Ideal.IsPrime.ne_top' ∘ (Ideal.eq_top_of_isUnit_mem _ · isUnit_one) vertical := by intro W hW …`.
+Supply the required witnesses or components.
 -/
 theorem isVerticalDivisor_one {K : Type*} [DecidableEq K] {ι : K → Type*} {O : Type*} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O) (H : Ideal (MRing ι O)) [H.IsPrime] :
@@ -160,9 +160,9 @@ def psumExpansion (N k : ℕ) : Fin N → MvPolynomial (Fin N ⊕ Fin N) ℤ :=
   fun i => ∑ j ∈ Finset.range k, X (Sum.inl i) ^ j * X (Sum.inr i) ^ (k - 1 - j)
 
 /- English proof (translation)
-Unfold `psumExpansion`. Use `IsHomogeneous.sum _ _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j + (k - 1 - j) = k - 1`. Use `Finset.mem_range.mp hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h` using `((isHomogeneous_X ℤ (Sum.inl i : Fin N ⊕ Fin N)).pow j).mul ((isHomogeneous_X ℤ (Sum.inr i : Fin N ⊕ Fin N)).pow (k - 1 - j))`. Simplify `h` using `[hj']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHomogeneous_psumExpansion (N k : ℕ) (i : Fin N) :
     (psumExpansion N k i).IsHomogeneous (k - 1) := by
@@ -176,7 +176,7 @@ theorem isHomogeneous_psumExpansion (N k : ℕ) (i : Fin N) :
   simpa [hj'] using h
 
 /- English proof (translation)
-Use `⟨?_, isHomogeneous_psumExpansion N k⟩` and prove the remaining obligations. Unfold `psumExpansion`. Simplify using `only [psum, map_sum, map_pow, rename_X, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, (Commute.all _ _).geom_sum₂_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPairExpansion_psum (N k : ℕ) :
     IsPairExpansion k (psum (Fin N) ℤ k) (psumExpansion N k) := by
@@ -199,7 +199,7 @@ instance pointIdeal_isPrime (y : (Σ k, ι k) → Ω) : (pointIdeal O y).IsPrime
   RingHom.ker_isPrime _
 
 /- English proof (translation)
-The claim follows from `isFlagFrame_scaledTriv O y r hs flag' := isFlagFrame_scaledTriv O y r hs sameFlag i j hij := by simp [Module.Basis.repr_self, ne_of_lt hij] vertical i := by have h0 : ((0 : Fin r → K → ℤ) i - (0 : Fin r → K → ℤ) i) = 0 := sub_self _ rw [h0] exact isVerticalDivisor_one ϖ _ generic …`.
+A detailed English derivation is pending.
 -/
 theorem isFlagPair_self (ϖ : O) (y : (Σ k, ι k) → Ω) (r : ℕ) {s : Ω} (hs : s ≠ 0) :
     IsFlagPair ϖ y (scaledTrivBundle O (segreVec y) r hs) (scaledTrivBundle O (segreVec y) r hs)
@@ -228,7 +228,7 @@ section ExamplesZ2
 abbrev LineFieldDyadic : Type := FractionRing (MRing LineIdx ℤ_[2])
 
 /- English proof (translation)
-Unfold `psum`. Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_X ℤ i).pow k`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHomogeneous_psum (N k : ℕ) : (psum (Fin N) ℤ k).IsHomogeneous k := by
   unfold psum

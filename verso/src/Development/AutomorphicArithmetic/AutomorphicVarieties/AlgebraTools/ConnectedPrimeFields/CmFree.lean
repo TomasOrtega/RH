@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ _ _ h`. Take `⟨hN, n, hdim, rs, hlen, hmem, hreg⟩` from `h`. Establish `hinj : Function.Injective (algebraMap A B)` using `FaithfulSMul.algebraMap_injective A B`. Establish `hm : (maximalIdeal B).comap (algebraMap A B) = maximalIdeal A` using `eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal B))`. Use `⟨IsNoetherianRing.of_finite A B, n, ?_, rs.map (algebraMap A B), by simpa using hlen, ?_, hreg.of_faithfullyFlat⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hdim]`. Conclude with `ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective hinj`. Introduce `r hr`. Take `⟨a, ha, rfl⟩` from `List.mem_map.mp hr`. Use `hmem a ha` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hm]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.cmFree :
     ∀ {A B : Type} [CommRing A] [IsLocalRing A] [CommRing B] [IsLocalRing B] [Algebra A B] [Module.Finite A B]

@@ -8,11 +8,11 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `K _ n m k d σ b τ hd hτ hli`. Use `set t : Fin k → Fin n → K := fun j => Pi.single (τ j) 1 with ht`. Use `set h : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun x => (d x : ℂ) with hh`. Establish `hpos : h.PosDef` using `Matrix.PosDef.diagonal fun x => Complex.zero_lt_real.mpr (hd x)`. Establish `hG` using `h1 K n h σ (Fin m ⊕ Fin k) (Sum.elim b t) hpos hli`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `h2 (Fin m) (Fin k) _ hG`. Establish `hB1 : (gramAt h σ (Sum.elim b t)).toBlocks₁₁ = gramAt h σ b`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hB2 : (gramAt h σ (Sum.elim b t)).toBlocks₂₂ = gramAt h σ t`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hD : gramAt h σ t = Matrix.diagonal fun j => (d (τ j) : ℂ)` using `h3 K n d σ k τ hτ`. Rewrite `hF` using `[hB1, hB2, hD, Matrix.det_diagonal, ← Complex.ofReal_prod, Complex.ofReal_re]`. Conclude with `hF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LinesGramFischerBound.proof (h1 : LinesGramPosDef.Statement)
     (h2 : LinesFischer.Statement) (h3 : LinesDiagGram.Statement) :

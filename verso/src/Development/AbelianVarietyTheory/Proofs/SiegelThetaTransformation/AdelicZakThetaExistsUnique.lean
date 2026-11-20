@@ -25,19 +25,19 @@ open GlobalTheory.WeilVacMove
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← symplOH_add_left, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sym_sub_left (x x' y : WO S T) : symplOH S T (x - x') y = symplOH S T x y - symplOH S T x' y := by
   rw [eq_sub_iff_add_eq, ← symplOH_add_left, sub_add_cancel]
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← symplOH_add_right, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sym_sub_right (x y y' : WO S T) : symplOH S T x (y - y') = symplOH S T x y - symplOH S T x y' := by
   rw [eq_sub_iff_add_eq, ← symplOH_add_right, sub_add_cancel]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.2.2.1 γ h γ' h'`. Rewrite using `[ha, hψ.1.2.2.1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {γ γ' : WO S T} (h : γ ∈ ratL T S)
     (h' : γ' ∈ ratL T S) : ψ (symplOH S T γ γ') = 1 := by
@@ -45,25 +45,21 @@ theorem psi_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {γ
   rw [ha, hψ.1.2.2.1]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalAddGroup (Formalism.L2.Theta.AE D) := IsTopologicalRing.to_topologicalAddGroup`. Use `haveI : IsTopologicalAddGroup (WO S T) := Pi.topologicalAddGroup`. Use `haveI : ContinuousSub (WO S T) := IsTopologicalAddGroup.to_continuousSub`. Use `choose c hc hcO using hcov`. Set `f : WO S T → ℂ` to `fun w => ψ (-symplOH S T (c w) w) * F (p (w - c w))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ γ ∈ ratL T S, ∀ w, w - γ ∈ O → f w = ψ (-symplOH S T γ w) * F (p (w - γ))`. Introduce `γ hγ w hw`. Establish `h1 : γ - c w ∈ O`. Use `O.sub_mem (hcO w) hw` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hq _ ((ratL T S).sub_mem hγ (hc w)) h1 _ hw`. Rewrite `h2` using `[sub_add_sub_cancel]`. Establish `h3` using `psi_rat hψ ((ratL T S).sub_mem hγ (hc w)) hγ`. Use `show ψ (-symplOH S T (c w) w) * F (p (w - c w)) = _`. Rewrite using `[h2, ← mul_assoc, ← AddChar.map_add_eq_mul, ← one_mul (ψ (-symplOH S T γ w)), ← h3, ← AddChar.map_add_eq_mul, sym_sub_right, sym_sub_left γ (c w) w]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `⟨f, ⟨fun γ w => ?_, ⟨O, hO, fun u hu hu' => ?_⟩, ?_, fun k L hL hL' w => ?_⟩, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hγ : ratW T S γ ∈ ratL T S` using `⟨γ, rfl⟩`. Establish `h3` using `psi_rat hψ hγ ((ratL T S).add_mem hγ (hc w))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[key _ ((ratL T S).add_mem hγ (hc w)) _ (by rw [add_sub_add_left_eq_sub]; exact hcO w), add_sub_add_left_eq_sub, symplOH_add_right]`. Rewrite `h3` using `[symplOH_skew]`. Use `show _ = _ * (ψ (-symplOH S T (c w) w) * F (p (w - c w)))`. Rewrite using `[neg_add, AddChar.map_add_eq_mul, h3, one_mul, symplOH_add_left, neg_add, AddChar.map_add_eq_mul, mul_assoc]`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨h1, h2⟩` from `hl u hu hu'`. Establish `h3 : w + u - c w ∈ O`. Rewrite using `[add_sub_right_comm]`. Conclude with `O.add_mem (hcO w) hu`. Use `show ψ (symplOH S T w u) * f (w + u) = ψ (-symplOH S T (c w) w) * F (p (w - c w))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[key _ (hc w) _ h3, add_sub_right_comm, map_add, h1, add_zero, ← mul_assoc, ← AddChar.map_add_eq_mul, ← one_mul (ψ (-symplOH S T (c w) w)), ← h2 _ (hcO w), ← AddChar.map_add_eq_mul, sym_sub_left, symplOH_add_right]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `continuous_iff_continuousAt.2 fun w₀ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun w => ψ (-symplOH S T (c w₀) w) * F (p (w - c w₀))` using `(hψ.1.1.comp (continuous_symplOH S T continuous_const continuous_id).neg).mul (hF.continuous.comp (hp.comp (continuous_id.sub continuous_const)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h1.continuousAt.congr ?_` and prove the remaining obligations. Establish `h2 : {w : WO S T | w - c w₀ ∈ O} ∈ 𝓝 w₀` using `(hO.preimage (continuous_id.sub continuous_const)).mem_nhds (hcO w₀)`. Conclude with `Filter.mem_of_superset h2 fun w hw => (key _ (hc w₀) w hw).symm`. Take `⟨lam, hlam, hlam'⟩` from `exists_log hψ`. Set `φ : (Fin k → ℝ) →+ ℂ` to `lam.comp ((AddMonoidHom.mk' (fun v => symplOH S T v (c w)) fun a b => symplOH_add_left S T a b _).comp L)`.
-
-Establish `hφ : ContDiff ℝ ∞ φ` using `contDiff_additive φ (hlam.comp (continuous_symplOH S T hL continuous_const))`. Establish `hpL : ContDiff ℝ ∞ (p.comp L)` using `((p.comp L).toRealLinearMap (hp.comp hL)).contDiff`. Establish `e : (fun t => f (w + L t)) = fun t => ψ (-symplOH S T (c w) w) * cexp (φ t) * F (p (w - c w) + p.comp L t)`. Use function extensionality and compare the values at `t`. Rewrite using `[key _ (hc w) _ (by rw [add_sub_right_comm]; exact O.add_mem (hcO w) (hre _ (hL' t))), add_sub_right_comm, map_add, symplOH_add_right, neg_add, AddChar.map_add_eq_mul, ← symplOH_skew S T (c w) (L t), hlam' _ (snd_symplOH S T _ _ (Or.inl (hL' t)))]`.
-
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(contDiff_const.mul hφ.cexp).mul (hF.comp (contDiff_const.add hpL))`. Rewrite using `[key 0 (ratL T S).zero_mem w (by rw [sub_zero]; exact hre w hw), symplOH_zero_left, neg_zero, AddChar.map_zero_eq_one, one_mul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (p : WO S T →+ V) (hp : Continuous p) (F : V → ℂ) (hF : ContDiff ℝ ∞ F)
@@ -134,23 +130,23 @@ theorem exists_extension {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ 
       AddChar.map_zero_eq_one, one_mul, sub_zero]
 
 /- English proof (translation)
-The claim follows from `map_nsmul (AddMonoidHom.mk' (fun v => symplOH S T v y) fun a b => symplOH_add_left S T a b _) n x`.
+A detailed English derivation is pending.
 -/
 theorem sym_nsmul_left (n : ℕ) (x y : WO S T) : symplOH S T (n • x) y = n • symplOH S T x y :=
   map_nsmul (AddMonoidHom.mk' (fun v => symplOH S T v y) fun a b => symplOH_add_left S T a b _) n x
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y h`. Take `⟨v, hv, u, hu, rfl⟩` from `h`. Establish `: ∃ a : 𝓞 E, v k = a`. Proceed by induction on `hv using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem v h`. Take `⟨a, rfl⟩` from `h`. Distinguish the cases in `e : k = a`. Conclude with `⟨1, by simp [e]⟩`. Conclude with `⟨0, by simp [e]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add v v' _ _ h h'`. Take `⟨a, h⟩` from `h`. Take `⟨b, h'⟩` from `h'`. Conclude with `⟨a + b, by simp [h, h']⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c v _ h`. Take `⟨a, h⟩` from `h`. Conclude with `⟨c * a, by simp [h, Algebra.smul_def]⟩`. Take `⟨a, ha⟩` from `this`. Establish `e : vecMulVec v u k = a • u`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[vecMulVec_apply, ha, Algebra.smul_def]`. Rewrite using `[e]`. Conclude with `L.smul_mem a hu`. Consider the case `zero => exact L.zero_mem`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ h h' => exact L.add_mem h h'`. Consider the case `neg y _ h => exact L.neg_mem h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem row_mem {E : Type} [Field E] [NumberField E] {n r : ℕ} {L : Lt E r} {y : Matrix (Fin n) (Fin r) E}
     (hy : y ∈ tens (GlobalTheory.SW.stdL E n) L) (k : Fin n) : y k ∈ L := by
@@ -183,7 +179,7 @@ theorem row_mem {E : Type} [Field E] [NumberField E] {n r : ℕ} {L : Lt E r} {y
   | neg y _ h => exact L.neg_mem h
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SW.stdL, Submodule.span_span_of_tower]`. Use `(Pi.basisFun E (Fin n)).span_eq` as an intermediate fact. Use `this using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -197,13 +193,13 @@ theorem stdL_full (E : Type) [Field E] [NumberField E] (n : ℕ) :
   simp
 
 /- English proof (translation)
-Take `⟨-, h2, h3, h4, -⟩` from `GlobalTheory.T.completedTensorLattice_strongApprox_open_compact D S T C _ C.X.Λ (stdL_full _ _) ⟨C.X.Λ_fg, C.X.Λ_span⟩`. Take `⟨-, -, s3, -⟩` from `GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C`. Establish `rat : ∀ y ∈ tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ, ∀ y' ∈ tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ, C.ψ (symplOH S T (finW S T y) (finW S T y')) ^ 2 = 1`. Introduce `y hy y' hy'`. Establish `: ∀ k, ∃ m : ℤ, EF C.X (y k) (y' k) = m` using `fun k => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `C.sympl (C.bas.symm ⟨_, row_mem hy k⟩) (C.bas.symm ⟨_, row_mem hy' k⟩)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `⟨-_, this.trans (Int.cast_neg _).symm⟩`. Use `choose m hm using this`. Rewrite using `[s3, ← Complex.exp_nat_mul, ← Complex.exp_int_mul_two_pi_mul_I (-∑ k, m k)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hm]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨M, hM, hM'⟩` from `h4 _ (GlobalTheory.FinTranslate.isOpen_annSub (S := S) (T := T) C.std.1 (h3 u' hu').1)`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, u₁, hu₁, rfl⟩` from `(h3 u hu).2 M hM`. Take `⟨M', hN, hN'⟩` from `h4 _ (GlobalTheory.FinTranslate.isOpen_annSub (S := S) (T := T) C.std.1 (h3 _ ((h2 y).2 hy)).1)`. Take `⟨y', hy', u₂, hu₂, e⟩` from `(h3 u' hu').2 M' hN`. Rewrite using `[sym_nsmul_left, AddChar.map_nsmul_eq_pow, symplOH_add_left, AddChar.map_add_eq_mul, (hM' u₁ hu₁).1, mul_one, e, symplOH_add_right, AddChar.map_add_eq_mul, (hN' u₂ hu₂).2, mul_one]`. Conclude with `rat y hy y' hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_hat (C : Ctx S T) {u u' : WO S T} (hu : u ∈ hatA S T (tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ))
     (hu' : u' ∈ hatA S T (tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ)) : C.ψ (symplOH S T (2 • u) u') = 1 := by
@@ -231,21 +227,21 @@ theorem psi_hat (C : Ctx S T) {u u' : WO S T} (hu : u ∈ hatA S T (tens (Global
   exact rat y hy y' hy'
 
 /- English proof (translation)
-Unfold `IsRealPt at *`. Rewrite using `[Matrix.map_add _ (map_add (finPart D)), h, h', add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem real_add {w w' : WO S T} (h : IsRealPt w) (h' : IsRealPt w') : IsRealPt (w + w') := by
   unfold IsRealPt at *
   rw [Matrix.map_add _ (map_add (finPart D)), h, h', add_zero]
 
 /- English proof (translation)
-Unfold `IsRealPt at *`. Rewrite using `[Matrix.map_neg _ (map_neg (finPart D)), h, neg_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem real_neg {w : WO S T} (h : IsRealPt w) : IsRealPt (-w) := by
   unfold IsRealPt at *
   rw [Matrix.map_neg _ (map_neg (finPart D)), h, neg_zero]
 
 /- English proof (translation)
-Unfold `IsFinPt at *`. Rewrite using `[Matrix.map_sub _ (map_sub (infPart D)), h, h', sub_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_sub {w w' : WO S T} (h : IsFinPt w) (h' : IsFinPt w') : IsFinPt (w - w') := by
   unfold IsFinPt at *
@@ -266,7 +262,7 @@ def thick (H : AddSubgroup (WO S T)) (N : ℕ) : AddSubgroup (WO S T) where
     exact real_neg h
 
 /- English proof (translation)
-Establish `hN' : (N : K) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Rewrite `h` using `[← Nat.cast_smul_eq_nsmul K, ← Nat.cast_smul_eq_nsmul K]`. Rewrite using `[← inv_smul_smul₀ hN' u, h, inv_smul_smul₀ hN']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_cancel' (K : Type) {M : Type} [Field K] [CharZero K] [AddCommGroup M] [Module K M] {N : ℕ} (hN : 0 < N)
     {u u' : M} (h : N • u = N • u') : u = u' := by
@@ -275,33 +271,31 @@ theorem nsmul_cancel' (K : Type) {M : Type} [Field K] [CharZero K] [AddCommGroup
   rw [← inv_smul_smul₀ hN' u, h, inv_smul_smul₀ hN']
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => nsmul_cancel' D.host.F hN (congrFun (congrFun h i) j)`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_cancel {N : ℕ} (hN : 0 < N) {u u' : WO S T} (h : N • u = N • u') : u = u' :=
   Matrix.ext fun i j => nsmul_cancel' D.host.F hN (congrFun (congrFun h i) j)
 
 /- English proof (translation)
-Take `⟨N, hN, hfix⟩` from `heisG_fix_of_mem_lattice _ _ C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even φ hφ`. Take `⟨hsm, hth, -⟩` from `thR_laws _ _ C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even x hx φ hφ`. Take `⟨h1, h2, h3, -, h5, -⟩` from `GlobalTheory.T.completedTensorLattice_strongApprox_open_compact D S T C _ C.X.Λ (stdL_full _ _) ⟨C.X.Λ_fg, C.X.Λ_span⟩`. Take `⟨-, s2, -, -, -, -, -, s8⟩` from `GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C`. Take `⟨R, -, r1, r2, r3, r4, r5, r6, -⟩` from `GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set H := hatA S T (tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ) with hH`. Set `p : WO S T →+ WR C.X S.rank` to `AddMonoidHom.mk' C.realPt r2`. Set `q : Matrix (Fin S.rank) (Fin T.rank) D.host.E →+ WO S T` to `AddMonoidHom.mk' (finW S T) fun y y' => (s8 y).2.2.2 y'`. Establish `hfin : ∀ u ∈ H, IsFinPt ((2 * N) • u)` using `fun u hu => (h3 _ (H.nsmul_mem hu _)).1`. Establish `hz : ∀ w : WO S T, IsRealPt w → IsFinPt w → w = 0` using `fun w h h' => by rw [← r4 w h, r6 w h', map_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ w ∈ thick H (2 * N), ∀ w' ∈ thick H (2 * N), C.ψ (symplOH S T w w') = cexp (π * I * (EFR C.X (C.realPt w) (C.realPt w') : ℝ))`. Introduce and unpack `w ⟨u, hu, h⟩ w' ⟨u', hu', h'⟩`. Establish `e : ∀ (w u : WO S T), u ∈ H → C.realPt w = C.realPt (w - (2 * N) • u)` using `fun w u hu => by`. Use `r2 (w - (2 * N) • u) ((2 * N) • u)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, r6 _ (hfin u hu), add_zero]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e2` using `psi_hat C (H.nsmul_mem hu N) (H.nsmul_mem hu' (2 * N))`. Rewrite `e2` using `[← mul_nsmul']`. Rewrite using `[e w u hu, e w' u' hu', ← s2 _ _ h h']`. Use `conv_lhs => rw [← sub_add_cancel w ((2 * N) • u), ← sub_add_cancel w' ((2 * N) • u')]`. Rewrite using `[symplOH_add_left, symplOH_add_right, symplOH_add_right, (symplOH_fin_real S T _ _ (hfin u hu) h').1, (symplOH_fin_real S T _ _ (hfin u' hu') h).2, add_zero, zero_add, AddChar.map_add_eq_mul, e2, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `exists_extension C.std p r1 (thR C.X C.bas C.idx φ x) hsm (thick H (2 * N)) (h5 _ (by omega)) (fun w hw => ⟨0, H.zero_mem, by rwa [nsmul_zero, sub_zero]⟩) (fun w => ?_) ?_ (fun u hu hu' => ?_)` and prove the remaining obligations. Take `⟨y, hy⟩` from `h1 _ (r5 w)`. Take `⟨y', -, u, hu, e⟩` from `(h3 _ hy).2 (2 * N) (by omega)`. Use `⟨ratW T S (y + y')ᵀ, ⟨_, rfl⟩, u, hu, ?_⟩` and prove the remaining obligations. Establish `: w - ratW T S (y + y')ᵀ - (2 * N) • u = R (C.realPt w) + -(ratW T S (y + y')ᵀ - finW S T (y + y'))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[eq_sub_of_add_eq' e.symm, (s8 y).2.2.2]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `real_add (r3 _).1 (real_neg (s8 _).2.2.1)`. Introduce and unpack `_ ⟨γ, rfl⟩ hγ w hw`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨y, rfl⟩ : ∃ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, yᵀ = γ` from `⟨γᵀ, rfl⟩`. Express the relevant statement in the definitionally equal form `ratW T S yᵀ ∈ thick H (2 * N) at hγ`. Express the relevant statement in the definitionally equal form `thR C.X C.bas C.idx φ x (C.realPt (w + ratW T S yᵀ)) = C.ψ (-symplOH S T (ratW T S yᵀ) w) * thR C.X C.bas C.idx φ x (C.realPt w)`. Establish `hfx : heisG C.X C.bas y φ = φ`. Take `⟨u, hu, h⟩` from `hγ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e` using `hz (finW S T y - (2 * N) • u) (by`. Use `real_add h (real_neg (s8 y).2.2.1)` as an intermediate fact. Rewrite using `[neg_sub, add_comm, sub_add_sub_cancel] at this) (fin_sub (s8 y).2.1 (hfin u hu))` and apply the resulting hypothesis. Establish `hN' : ((2 * N : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Take `⟨y₀, rfl⟩ : ∃ y₀ : Matrix (Fin S.rank) (Fin T.rank) D.host.E, ((2 * N : ℕ) : D.host.E) • y₀ = y` from `⟨_, smul_inv_smul₀ hN' y⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e' : finW S T (((2 * N : ℕ) : D.host.E) • y₀) = (2 * N) • finW S T y₀`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `map_nsmul q _ _`. Rewrite `e` using `[sub_eq_zero, e']`. Use `nsmul_cancel (by omega) e` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hfix y₀ (row_mem ((h2 y₀).1 (this ▸ hu))) 2`. Use `hth y (C.realPt w)` as an intermediate fact. Rewrite `this` using `[hfx]`. Rewrite using `[← symplOH_skew, hB _ hw _ hγ, r2, (s8 y).1, this, ← mul_assoc, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_mul]`. Use `⟨r6 u hu', fun w hw => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hB _ hw _ hu, r6 u hu']`. Simplify using `[EFR, hermC]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isZak (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {φ : TF S.rank C.g}
     (hφ : SW.IsSB φ) : ∃ f, C.IsZak x φ f := by
@@ -367,9 +361,9 @@ theorem exists_isZak (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom
     simp [EFR, hermC]
 
 /- English proof (translation)
-Introduce `D S T C x hx φ hφ`. Establish `h` using `exists_isZak C hx hφ`. Establish `h1 : C.IsZak x φ (C.Th x φ)`. Rewrite using `[Ctx.Th, dif_pos h]`. Conclude with `h.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨h1, fun f hf => ((GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C).2.1 f _ hf.1 h1.1).2 fun w hw => (hf.2 w hw).trans (h1.2 w hw).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem isZak_Th : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ x ∈ C.X.dom, ∀ φ : TF S.rank C.g, SW.IsSB φ → C.IsZak x φ (C.Th x φ) ∧ ∀ f, C.IsZak x φ f → f = C.Th x φ := by
   intro D S T C x hx φ hφ

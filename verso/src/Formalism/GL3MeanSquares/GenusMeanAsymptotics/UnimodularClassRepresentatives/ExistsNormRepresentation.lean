@@ -21,20 +21,20 @@ structure IsUnif (S : Subring K) (π : K) : Prop where
 variable {S : Subring K} {π : K}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_ne_zero ha.1 hb.1, S.mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact S.mul_mem ha.2.2 hb.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem unit_mul {a b : K} (ha : IsUnitIn S a) (hb : IsUnitIn S b) : IsUnitIn S (a * b) :=
   ⟨mul_ne_zero ha.1 hb.1, S.mul_mem ha.2.1 hb.2.1, by
     rw [mul_inv]; exact S.mul_mem ha.2.2 hb.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem unit_inv {a : K} (ha : IsUnitIn S a) : IsUnitIn S a⁻¹ :=
   ⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨star_ne_zero.mpr ha.1, hS.star_mem _ ha.2.1, by rw [← star_inv₀]; exact hS.star_mem _ ha.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem unit_star (hS : IsHermSemilocal S) {a : K} (ha : IsUnitIn S a) :
     IsUnitIn S (star a) :=
@@ -42,14 +42,14 @@ theorem unit_star (hS : IsHermSemilocal S) {a : K} (ha : IsUnitIn S a) :
     rw [← star_inv₀]; exact hS.star_mem _ ha.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_ne_zero, S.one_mem, by simp [S.one_mem]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnitIn_one : IsUnitIn S (1 : K) := ⟨one_ne_zero, S.one_mem, by simp [S.one_mem]⟩
 
 /- English proof (translation)
-Establish `hb0 : b ≠ 0` using `right_ne_zero_of_mul hab.1`. Establish `ha0 : a ≠ 0` using `left_ne_zero_of_mul hab.1`. Use `⟨hb0, hb, ?_⟩` and prove the remaining obligations. Establish `: b⁻¹ = a * (a * b)⁻¹` using `by field_simp`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.mul_mem ha hab.2.2`.
+A detailed English derivation is pending.
 -/
 theorem isUnitIn_of_mul {a b : K} (ha : a ∈ S) (hb : b ∈ S) (hab : IsUnitIn S (a * b)) :
     IsUnitIn S b := by
@@ -61,7 +61,7 @@ theorem isUnitIn_of_mul {a b : K} (ha : a ∈ S) (hb : b ∈ S) (hab : IsUnitIn 
   exact S.mul_mem ha hab.2.2
 
 /- English proof (translation)
-Establish `: a = a * π⁻¹ * π` using `by field_simp [hπ.ne]`. Rewrite using `[this]`. Conclude with `S.mul_mem ha hπ.mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dv.mem (hπ : IsUnif S π) {a : K} (ha : Dv S π a) : a ∈ S := by
   have : a = a * π⁻¹ * π := by field_simp [hπ.ne]
@@ -69,13 +69,13 @@ theorem Dv.mem (hπ : IsUnif S π) {a : K} (ha : Dv S π a) : a ∈ S := by
   exact S.mul_mem ha hπ.mem
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact GlobalTheory.AddMulInvMembership.add_mul_inv_mem .. | (apply GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (intros; apply GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (apply @GlobalTheory.AddMulInvMembership.add_mul_inv_mem …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Dv.add {a b : K} (ha : Dv S π a) (hb : Dv S π b) : Dv S π (a + b) := by
   first | exact GlobalTheory.AddMulInvMembership.add_mul_inv_mem .. | (apply GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (intros; apply GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (apply @GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (intros; apply @GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (apply @GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> first | assumption | infer_instance) | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π a b ha hb | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π a b ha | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π a b | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π a | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K
 
 /- English proof (translation)
-Unfold `Dv`. Rewrite using `[neg_mul]`. Conclude with `S.neg_mem ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dv.neg {a : K} (ha : Dv S π a) : Dv S π (-a) := by
   unfold Dv
@@ -83,14 +83,14 @@ theorem Dv.neg {a : K} (ha : Dv S π a) : Dv S π (-a) := by
   exact S.neg_mem ha
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `ha.add hb.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dv.sub {a b : K} (ha : Dv S π a) (hb : Dv S π b) : Dv S π (a - b) := by
   rw [sub_eq_add_neg]
   exact ha.add hb.neg
 
 /- English proof (translation)
-Unfold `Dv`. Rewrite using `[mul_assoc]`. Conclude with `S.mul_mem hs ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dv.mul_left {a : K} (ha : Dv S π a) {s : K} (hs : s ∈ S) : Dv S π (s * a) := by
   unfold Dv
@@ -98,14 +98,14 @@ theorem Dv.mul_left {a : K} (ha : Dv S π a) {s : K} (hs : s ∈ S) : Dv S π (s
   exact S.mul_mem hs ha
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `ha.mul_left hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dv.mul_right {a : K} (ha : Dv S π a) {s : K} (hs : s ∈ S) : Dv S π (a * s) := by
   rw [mul_comm]
   exact ha.mul_left hs
 
 /- English proof (translation)
-Use `hS.star_mem _ ha` as an intermediate fact. Rewrite `this` using `[star_mul', star_inv₀, hπ.fix]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dv.star (hS : IsHermSemilocal S) (hπ : IsUnif S π) {a : K} (ha : Dv S π a) :
     Dv S π (star a) := by
@@ -114,7 +114,7 @@ theorem Dv.star (hS : IsHermSemilocal S) (hπ : IsUnif S π) {a : K} (ha : Dv S 
   exact this
 
 /- English proof (translation)
-Unfold `Dv`. Establish `: π * s * π⁻¹ = s` using `by field_simp [hπ.ne]`. Rewrite using `[this]`. Conclude with `hs`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_self_mul (hπ : IsUnif S π) {s : K} (hs : s ∈ S) : Dv S π (π * s) := by
   unfold Dv
@@ -123,15 +123,15 @@ theorem dv_self_mul (hπ : IsUnif S π) {s : K} (hs : s ∈ S) : Dv S π (π * s
   exact hs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a * π⁻¹, ha, by field_simp [hπ.ne]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Dv.eq (hπ : IsUnif S π) {a : K} (ha : Dv S π a) : ∃ r ∈ S, a = π * r :=
   ⟨a * π⁻¹, ha, by field_simp [hπ.ne]⟩
 
 /- English proof (translation)
-Take `⟨r, hr, rfl⟩` from `ht.eq hπ`. Establish `: s + π * r = s * (1 + π * (r * s⁻¹))`. Use `hs.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unit_mul hs (hπ.rad _ (S.mul_mem hr hs.2.2))`.
+A detailed English derivation is pending.
 -/
 theorem unit_add_dv (hπ : IsUnif S π) {s t : K} (hs : IsUnitIn S s) (ht : Dv S π t) :
     IsUnitIn S (s + t) := by
@@ -143,7 +143,7 @@ theorem unit_add_dv (hπ : IsUnif S π) {s t : K} (hs : IsUnitIn S s) (ht : Dv S
   exact unit_mul hs (hπ.rad _ (S.mul_mem hr hs.2.2))
 
 /- English proof (translation)
-Introduce `h`. Use `(unit_add_dv hπ hs h.neg).1` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem unit_not_dv (hπ : IsUnif S π) {s : K} (hs : IsUnitIn S s) : ¬ Dv S π s := by
   intro h
@@ -151,27 +151,27 @@ theorem unit_not_dv (hπ : IsUnif S π) {s : K} (hs : IsUnitIn S s) : ¬ Dv S π
   simp at this
 
 /- English proof (translation)
-The claim follows from `(hπ.unit_or s hs hf).resolve_left hn`.
+A detailed English derivation is pending.
 -/
 theorem dv_of_not_unit (hπ : IsUnif S π) {s : K} (hs : s ∈ S) (hf : star s = s)
     (hn : ¬ IsUnitIn S s) : Dv S π s :=
   (hπ.unit_or s hs hf).resolve_left hn
 
 /- English proof (translation)
-The claim follows from `(hπ.unit_or s hs hf).resolve_right hn`.
+A detailed English derivation is pending.
 -/
 theorem unit_of_not_dv (hπ : IsUnif S π) {s : K} (hs : s ∈ S) (hf : star s = s)
     (hn : ¬ Dv S π s) : IsUnitIn S s :=
   (hπ.unit_or s hs hf).resolve_right hn
 
 /- English proof (translation)
-Rewrite using `[star_mul', star_star, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_norm (a : K) : star (star a * a) = star a * a := by
   rw [star_mul', star_star, mul_comm]
 
 /- English proof (translation)
-The claim follows from `dv_of_not_unit hπ (S.mul_mem (hS.star_mem _ ha) ha) (star_norm a) fun h => hn (isUnitIn_of_mul (hS.star_mem _ ha) ha h)`.
+A detailed English derivation is pending.
 -/
 theorem dv_norm_of_not_unit (hS : IsHermSemilocal S) (hπ : IsUnif S π) {a : K} (ha : a ∈ S)
     (hn : ¬ IsUnitIn S a) : Dv S π (star a * a) :=
@@ -179,17 +179,17 @@ theorem dv_norm_of_not_unit (hS : IsHermSemilocal S) (hπ : IsUnif S π) {a : K}
     fun h => hn (isUnitIn_of_mul (hS.star_mem _ ha) ha h)
 
 /- English proof (translation)
-Take `⟨θ, hθ, hμ⟩` from `hS.unram`. Establish `key : ∀ t ∈ S, IsUnitIn S (σ * t + star (σ * t)) → ∃ s ∈ S, σ * s + star (σ * s) = τ`. Introduce `t ht hu`. Establish `hf : star (σ * t + star (σ * t)) = σ * t + star (σ * t)`. Rewrite using `[star_add, star_star, add_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t * (τ * (σ * t + star (σ * t))⁻¹), S.mul_mem ht (S.mul_mem hτ hu.2.2), ?_⟩` and prove the remaining obligations. Establish `e : star (σ * (t * (τ * (σ * t + star (σ * t))⁻¹))) = star (σ * t) * (τ * (σ * t + star (σ * t))⁻¹)`. Rewrite using `[← mul_assoc, star_mul', star_mul' τ, star_inv₀, hf, hτf]`. Rewrite using `[e]`. Use `hu.1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Distinguish the cases in `h1 : Dv S π (σ * 1 + star (σ * 1))`. Distinguish the cases in `h2 : Dv S π (σ * θ + star (σ * θ))`. It suffices to derive a contradiction. Apply `hn` to reduce the goal to its premises.
+Clear the denominators using the available nonvanishing facts. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : σ = ((σ * θ + star (σ * θ)) - star θ * (σ * 1 + star (σ * 1))) * (θ - star θ)⁻¹`. Use `hμ.1` as an intermediate fact. Rewrite using `[eq_mul_inv_iff_mul_eq₀ this]`. Simplify using `only [star_mul', mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `(h2.sub (h1.mul_left (hS.star_mem _ hθ))).mul_right hμ.2.2`. Use `key θ hθ (unit_of_not_dv hπ ?_ ?_ h2)` and prove the remaining obligations. Conclude with `S.add_mem (S.mul_mem hσ hθ) (hS.star_mem _ (S.mul_mem hσ hθ))`. Rewrite using `[star_add, star_star, add_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `key 1 S.one_mem (unit_of_not_dv hπ ?_ ?_ h1)` and prove the remaining obligations. Conclude with `S.add_mem (S.mul_mem hσ S.one_mem) (hS.star_mem _ (S.mul_mem hσ S.one_mem))`. Rewrite using `[star_add, star_star, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_trace_mul (hS : IsHermSemilocal S) (hπ : IsUnif S π) {σ : K} (hσ : σ ∈ S)
     (hn : ¬ Dv S π σ) {τ : K} (hτ : τ ∈ S) (hτf : star τ = τ) :
@@ -225,7 +225,7 @@ theorem exists_trace_mul (hS : IsHermSemilocal S) (hπ : IsUnif S π) {σ : K} (
     · rw [star_add, star_star, add_comm]
 
 /- English proof (translation)
-Take `⟨s, hs, hs1⟩` from `exists_trace_mul hS hπ hc hn S.one_mem (star_one K)`. Establish `e : a = a * c * s + star (star a * c) * star s`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `(h1.mul_right hs).add ((h2.star hS hπ).mul_right (hS.star_mem _ hs))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_of_dv_mul (hS : IsHermSemilocal S) (hπ : IsUnif S π) {a c : K} (hc : c ∈ S)
     (hn : ¬ Dv S π c) (h1 : Dv S π (a * c)) (h2 : Dv S π (star a * c)) : Dv S π a := by
@@ -239,7 +239,7 @@ theorem dv_of_dv_mul (hS : IsHermSemilocal S) (hπ : IsUnif S π) {a c : K} (hc 
 variable {V : Type*} [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Establish `hyw : h y w = star (h w y)` using `(hs.eq w y).symm`. Simplify using `only [map_add, LinearMap.add_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hy, hyw, starRingEnd_apply, RingHom.id_apply]`. Simplify using `only [star_mul', star_sub, hu, star_add, star_one] at hρ ⊢`. Take the linear combination `hρ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem norm_formula {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {y w : V} {a u ρ : K}
     (hy : h y y = star a * a * u) (hu : star u = u)
@@ -252,11 +252,11 @@ theorem norm_formula {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {y w : V
   linear_combination hρ
 
 /- English proof (translation)
-Distinguish the cases in `h1 : IsUnitIn S (h y y)`. Conclude with `⟨y, hy, h1⟩`. Distinguish the cases in `h2 : IsUnitIn S (h w w)`. Conclude with `⟨w, hw, h2⟩`. Establish `d1` using `dv_of_not_unit hπ (hint y hy y hy) (hs.eq y y) h1`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `d2` using `dv_of_not_unit hπ (hint w hw w hw) (hs.eq w w) h2`. Take `⟨s, hsS, hs1⟩` from `exists_trace_mul hS hπ (hint w hw y hy) hn S.one_mem (star_one K)`. Use `⟨s • y + w, M.add_mem (hM s hsS y hy) hw, ?_⟩` and prove the remaining obligations. Establish `hyw : h y w = star (h w y)` using `(hs.eq w y).symm`. Establish `e : h (s • y + w) (s • y + w) = 1 + (star s * s * h y y + h w w)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, LinearMap.add_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hyw, starRingEnd_apply, RingHom.id_apply]`. Simplify using `only [star_mul'] at hs1`. Take the linear combination `hs1`. Rewrite using `[e]`. Conclude with `unit_add_dv hπ isUnitIn_one ((d1.mul_left (S.mul_mem (hS.star_mem _ hsS) hsS)).add d2)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_norm (hS : IsHermSemilocal S) (hπ : IsUnif S π) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {M : AddSubgroup V} (hM : ∀ a ∈ S, ∀ m ∈ M, a • m ∈ M)
@@ -281,15 +281,15 @@ theorem exists_unit_norm (hS : IsHermSemilocal S) (hπ : IsUnif S π) {h : V →
     ((d1.mul_left (S.mul_mem (hS.star_mem _ hsS) hsS)).add d2)
 
 /- English proof (translation)
-Establish `hσ : ρ₀ * (h w y - u * a) ∈ S` using `S.mul_mem hρ₀ (S.sub_mem (hint w hw y hy) (S.mul_mem hu.2.1 ha))`. Establish `hσn : ¬ Dv S π (ρ₀ * (h w y - u * a))`. Introduce `hd`. Apply `h2` to reduce the goal to its premises. Establish `e : ρ₀ * h w y = ρ₀ * (h w y - u * a) + u * (ρ₀ * a)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hd.add (h1.mul_left hu.2.1)`. Take `⟨s, hsS, hs1⟩` from `exists_trace_mul hS hπ hσ hσn (S.sub_mem hu.2.1 (hint w hw w hw)) (by rw [star_sub, huf, show star (h w w) = h w w from hs.eq w w])`. Establish `hf` using `norm_formula hs (ρ := ρ₀ * s) hyy huf (by`. Rewrite using `[← hs1]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Use the proof step `ring)`. Establish `hun : IsUnitIn S (1 + ρ₀ * s * a)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ρ₀ * s * a = ρ₀ * a * s` using `by ring`. Rewrite using `[e]`. Conclude with `unit_add_dv hπ isUnitIn_one (h1.mul_right hsS)`. Use `⟨(1 + ρ₀ * s * a)⁻¹ • ((ρ₀ * s) • y + w), hM _ hun.2.2 _ (M.add_mem (hM _ (S.mul_mem hρ₀ hsS) y hy) hw), ?_⟩` and prove the remaining obligations. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, hf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hun.1`. Establish `h0' : star (1 + ρ₀ * s * a) ≠ 0` using `star_ne_zero.mpr h0`. Rewrite using `[star_inv₀]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_norm_representation (hS : IsHermSemilocal S) (hπ : IsUnif S π) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {M : AddSubgroup V} (hM : ∀ a ∈ S, ∀ m ∈ M, a • m ∈ M)
@@ -325,11 +325,11 @@ theorem exists_norm_representation (hS : IsHermSemilocal S) (hπ : IsUnif S π) 
   field_simp
 
 /- English proof (translation)
-Distinguish the cases in `hau : IsUnitIn S a`. Use `⟨a⁻¹ • y, hM _ hau.2.2 y hy, ?_⟩` and prove the remaining obligations. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, hyy]`. Establish `h0` using `hau.1`. Establish `h0' : star a ≠ 0` using `star_ne_zero.mpr h0`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_inv₀]`. Clear the denominators using the available nonvanishing facts. Establish `hN` using `dv_norm_of_not_unit hS hπ ha hau`. Distinguish the cases in `h1 : Dv S π (a * h w y)`. Distinguish the cases in `h2 : Dv S π (star a * h w y)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Establish `hda` using `dv_of_dv_mul hS hπ (hint w hw y hy) hn h1 h2`. Conclude with `exists_norm_representation hS hπ hs hM hint hy hw ha hu huf hyy S.one_mem (by rwa [one_mul]) (by rwa [one_mul])`. Conclude with `exists_norm_representation hS hπ hs hM hint hy hw ha hu huf hyy (hS.star_mem _ ha) hN h2`. Conclude with `exists_norm_representation hS hπ hs hM hint hy hw (hS.star_mem _ ha) hu huf (by rw [hyy, star_star]; ring) ha (by rwa [mul_comm]) h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_norm_of_not_dv (hS : IsHermSemilocal S) (hπ : IsUnif S π)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {M : AddSubgroup V}
@@ -355,17 +355,17 @@ theorem exists_norm_of_not_dv (hS : IsHermSemilocal S) (hπ : IsUnif S π)
       (by rw [hyy, star_star]; ring) ha (by rwa [mul_comm]) h1
 
 /- English proof (translation)
-Establish `hσn : ¬ Dv S π (-(u * a))`. Introduce `hd`. Apply `hna` to reduce the goal to its premises. Establish `e : a = -(u * a) * (-u⁻¹)`. Use `hu.1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `hd.mul_right (S.neg_mem hu.2.2)`. Take `⟨ρ, hρS, hρ⟩` from `exists_trace_mul hS hπ (S.neg_mem (S.mul_mem hu.2.1 ha)) hσn (S.sub_mem hu.2.1 hww.2.1) (by rw [star_sub, huf, show star (h w w) = h w w from hs.eq w w])`. Establish `hf` using `norm_formula hs (ρ := ρ) hyy huf (by`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hρ, hwy, zero_sub, mul_comm])`. Establish `hNu : IsUnitIn S (star (1 + ρ * a) * (1 + ρ * a))`. Establish `e : star (1 + ρ * a) * (1 + ρ * a) = h w w * u⁻¹ + star ρ * ρ * (star a * a)`. Establish `h0` using `hu.1`. Establish `e2 : u * (star (1 + ρ * a) * (1 + ρ * a)) = u * (h w w * u⁻¹ + star ρ * ρ * (star a * a))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : u * (h w w * u⁻¹) = h w w` using `by field_simp`. Rewrite using `[mul_add u (h w w * u⁻¹), e3]`. Simplify using `only [star_mul', star_neg, huf, star_add, star_one] at hρ ⊢`. Take the linear combination `-hρ`. Conclude with `mul_left_cancel₀ h0 e2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `unit_add_dv hπ (unit_mul hww (unit_inv hu)) (hN.mul_left (S.mul_mem (hS.star_mem _ hρS) hρS))`. Establish `h1S : 1 + ρ * a ∈ S` using `S.add_mem S.one_mem (S.mul_mem hρS ha)`. Establish `hun` using `isUnitIn_of_mul (hS.star_mem _ h1S) h1S hNu`. Use `⟨(1 + ρ * a)⁻¹ • (ρ • y + w), hM _ hun.2.2 _ (M.add_mem (hM _ hρS y hy) hw), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, hf]`. Establish `h0` using `hun.1`. Establish `h0' : star (1 + ρ * a) ≠ 0` using `star_ne_zero.mpr h0`. Rewrite using `[star_inv₀]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_norm_of_orth (hS : IsHermSemilocal S) (hπ : IsUnif S π)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {M : AddSubgroup V}

@@ -13,9 +13,9 @@ namespace GlobalTheory.EX.DQ
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk GlobalTheory.EX GlobalTheory.Fc
 
 /- English proof (translation)
-Introduce `eps Fm h`. Take `⟨a, b, c, d, e, f, g⟩` from `h`. Use `⟨a, b, fun x hx i => (c x hx i).2.2.2.2.1, ?_, ⟨Fm.x1 + 1, fun x hx i => ?_⟩, f, g⟩` and prove the remaining obligations. Unfold `DC.TameDistinctF at d`. Unfold `Formalism.MainNotions.TameDistinctF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Simplify `d` using `only [tameDistinct_iff]`. Conclude with `weightAdmissible_smallShares_at_point _ _ (e x (by linarith) i)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem duty_seven_library : ∀ (eps : ℝ) (Fm : FamP eps), DQ.Duty7 Fm → Formalism.MainNotions.PageFix Fm ∧ Formalism.MainNotions.PageWin Fm ∧
     Formalism.MainNotions.DIV.Align.SmallFirstModulusBelowScale Fm ∧ Formalism.MainNotions.TameDistinctF Fm ∧ Formalism.MainNotions.ChosenWall Fm ∧ DQ.TupUsedF Fm ∧ DQ.TwAllF Fm := by

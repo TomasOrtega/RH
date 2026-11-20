@@ -12,15 +12,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO rescale)
 namespace GlobalTheory.PosOneSpherical
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c P hP hPc ψ hψc hcond ν hν A _ _ σ hσ l hl v hK`. Establish `hne : ψ ≠ 1` using `hcond.ne_one`. Establish `hsd : IsSelfDual ψ ν` using `((selfDual_measure k ψ hψc hne).2.1 hcond ν).1 hν`. Use `haveI : ν.IsAddHaarMeasure := hν.1`. Take `⟨m, rfl⟩ : ∃ m, P = m + 1` from `⟨P - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ m : ℕ, m + 1 ≤ c → ∀ l : A →ₗ[ℂ] ℂ, IsNEquiv ψ (m + 1) σ l → (Nat.rec (motive` using `fun _ => (A → ℂ) → A → ℂ) (fun l => l) (fun p rec l => rec (exDown ν (p + 1) σ l)) m : (A → ℂ) → A → ℂ) l v = l v := by`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _ l _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `hm l hl`. Establish `hlt : m + 1 < c` using `by omega`. Take `⟨l', hl'v, hl'⟩` from `(GlobalTheory.RootEx.Exchange.exchange_isPos k n c (m + 1) (by omega) hlt ψ hψc hne ν A σ hσ).2.1 l hl`. Establish `hfun : exDown ν (m + 1) σ l = l'` using `funext fun w => (hl'v w).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (Nat.rec (motive := fun _ => (A → ℂ) → A → ℂ) (fun l => l) (fun p rec l => rec (exDown ν (p + 1) σ l)) m : (A → ℂ) → A → ℂ) (exDown ν (m + 1) σ l) v = l v`. Rewrite using `[hfun, ih (by omega) l' hl']`. Establish `h1` using `(exDown_exUp_and_exUp_exDown k n c (m + 1) (by omega) hlt ψ hψc hne ν hsd A σ hσ l v).2 hl`. Rewrite `h1` using `[hfun]`. Establish `h2` using `(GlobalTheory.RootExchangeFixed.exUp_fixed_vector k n c (m + 1) (by omega) hlt ψ hcond ν hν A σ l' hl' v).2 hK`.
-
-Rewrite using `[← h2, h1]`. Conclude with `key m hPc l hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toOne_spherical : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c P : ℕ) (_ : 1 ≤ P) (_ : P ≤ c) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : HasConductor ψ 1) (ν : Measure k) (_ : IsUnitVol ν) (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (l : A →ₗ[ℂ] ℂ) (_ : IsNEquiv ψ P σ l) (v : A), (∀ g ∈ KO k (n ⊕ Fin c), σ g v = v) → toOne ν σ P l v = l v := by
   intro k _ _ _ _ _ _ n _ _ c P hP hPc ψ hψc hcond ν hν A _ _ σ hσ l hl v hK

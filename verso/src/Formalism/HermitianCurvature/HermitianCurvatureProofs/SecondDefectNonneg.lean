@@ -11,7 +11,7 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-The claim follows from `| [], b => by simp [D.toStd, D.ptSize] | (s', t) :: rest, b => by have ih := toStd_append_blkT r g s c rest (b + s') simp only [List.cons_append, D.toStd, ih, D.ptSize, List.map_cons, List.sum_cons, add_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem toStd_append_blkT (r : ℕ) (g : ℝ) (s : ℕ) (c : ℂ) : ∀ (h : C.LPt) (b : ℕ),
     D.toStd r g b (h ++ [(s, c)]) = D.toStd r g b h ++
@@ -27,13 +27,13 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
 
 /- English proof (translation)
-Unfold `KB.Pl.RR D.RRplace`. Rewrite using `[dif_pos ⟨hP, hQ⟩, dif_neg (by omega), if_pos rfl]`. Use `split_ifs with hw`. Substitute `hw set TT := Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z' with hTT` using the available equality. Distinguish the cases in `h1 : 0 < D.ptG TT P.r P1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : 0 < D.ptG TT P.r Q1`. Conclude with `(Formalism.FourierDecayAlt.P.top_of_empty hVT Wp Wq P p.l0 p.T p.ν' p.m₀ p.Θ p.TP F P1 Q1 p.hP p.hF hP hQ h1 h2).symm`. Unfold `Top.topOf`. Rewrite using `[vecV_of_G _ _ _ _ _ h2, hsInner_zero_right']`. Use `symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun e _ => Finset.sum_eq_zero fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[p.Θ.nil, vecV_of_G _ _ _ _ _ h2, ContinuousLinearMap.comp_zero, hsInner_zero_right', mul_zero]`. Unfold `Top.topOf`. Rewrite using `[vecV_of_G _ _ _ _ _ h1, Formalism.FourierDecayAlt.P.PBD.hsInner_zero_left]`. Use `symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun e _ => Finset.sum_eq_zero fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[p.Θ.nil, vecV_of_G _ _ _ _ _ h1, ContinuousLinearMap.comp_zero, Formalism.FourierDecayAlt.P.PBD.hsInner_zero_left, mul_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rr_top_eq (hVT : Top.VecVTypes) (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter)
     (P1 Q1 : C.LPt) (hP : D.IsLocPt P1 (P.r + 1)) (hQ : D.IsLocPt Q1 (P.r + 1)) :
@@ -86,26 +86,26 @@ def del2 (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v
   √((Top.cW (D.parOf S v) (p v).l0 w e ρ).re) * √((Top.cW (D.parOf S v) (p v).l0 w e ρ).re)
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem second_defect_nonneg (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))) (v : Fin S.f)
     (w : List C.Letter) (e : Wd.Ix (Fin w.length)) (ρ : M.Ty (D.parOf S v)) : 0 ≤ del2 S p v w e ρ :=
   mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
 
 /- English proof (translation)
-Establish `hgpos` using `g_pos_of_built hB`. Distinguish the cases in `hloc : D.IsLocPt (P ++ [(s, t)]) (S.G.r + 1) ∧ D.IsLocPt (Q ++ [(s, t)]) (S.G.r + 1)`. Take `⟨hPl, hQl⟩` from `hloc`. Rewrite using `[gN_setC hB]`. Establish `hPs : D.IsLocPt (stdS S (P ++ [(s, t)])) (S.G.r + 1)` using `(PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).2 hPl`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQs : D.IsLocPt (stdS S (Q ++ [(s, t)])) (S.G.r + 1)` using `(PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).2 hQl`. Rewrite using `[rr_top_eq hVT (p v) (F v ε) w _ _ hPs hQs]`. Establish `eP : stdS S (P ++ [(s, t)]) = stdS S P ++ [(s, (((S.g : ℝ) / (2 * Real.pi)) ^ S6.nuBlock S.G.r ((1 + D.ptSize P : ℕ) : ℤ) (s : ℤ) : ℝ) * Complex.I ^ (s - 1) * t)]` using `toStd_append_blkT _ _ _ _ _ _`. Establish `eQ : stdS S (Q ++ [(s, t)]) = stdS S Q ++ [(s, (((S.g : ℝ) / (2 * Real.pi)) ^ S6.nuBlock S.G.r ((1 + D.ptSize Q : ℕ) : ℤ) (s : ℤ) : ℝ) * Complex.I ^ (s - 1) * t)]` using `toStd_append_blkT _ _ _ _ _ _`. Establish `hPQ : D.ptSize P = D.ptSize Q` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgr : ∀ e ρ, gramH (vecT S p F v ε s t w e ρ) P Q = B.hsInner (((p v).TP.E ρ).comp (D.vecV (p v).T.base (p v).ν' (p v).m₀ ((p v).Θ.Θ w e (F v ε)) (stdS S (P ++ [(s, t)])))) (((p v).TP.E ρ).comp (D.vecV (p v).T.base (p v).ν' (p v).m₀ ((p v).Θ.Θ w e (F v ε)) (stdS S (Q ++ [(s, t)]) …`. Introduce `e ρ`. Unfold `gramH vecT`. Rewrite using `[if_pos hPl, if_pos hQl]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [hgr]`. Rewrite using `[eP, eQ, hPQ]`. Rewrite using `[topOf_big (p v) (F v ε) w (stdS S P) (stdS S Q) s _ _ hs (by rw [stdS_size]; omega) (by rw [stdS_size]; omega)]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `del2 omT`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[gN_setC_zero hB F v ε (S.G.r + 1) w _ _ hloc]`. Use `symm`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Establish `hz : ∀ e ρ, gramH (vecT S p F v ε s t w e ρ) P Q = 0`. Introduce `e ρ`. Unfold `gramH vecT`. Distinguish the cases in `h1 : D.IsLocPt (P ++ [(s, t)]) (S.G.r + 1)`. Rewrite using `[if_neg (fun h2 => hloc ⟨h1, h2⟩), inner_zero_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, inner_zero_right]`. Simplify using `[hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gN_top (hVT : Top.VecVTypes) {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq}
     {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
@@ -159,7 +159,7 @@ theorem gN_top (hVT : Top.VecVTypes) {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq}
     simp [hz]
 
 /- English proof (translation)
-Unfold `B.hsVec`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem hsVec_smul {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] [NormedAddCommGroup Wq']
     [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq'] (c : ℂ) (X : Wq' →L[ℂ] Wp') :
@@ -167,9 +167,9 @@ theorem hsVec_smul {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace 
   unfold B.hsVec; rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => unfold B.hsVec`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Consider the case `insert b t hb ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb, ← ih]`. Unfold `B.hsVec`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem hsVec_sum {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] [NormedAddCommGroup Wq']
     [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq'] {ι : Type} (s : Finset ι) (X : ι → Wq' →L[ℂ] Wp') :
@@ -182,21 +182,19 @@ theorem hsVec_sum {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace �
     unfold B.hsVec; rfl
 
 /- English proof (translation)
-Establish `hgpos` using `g_pos_of_built hB`. Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, hInD, -, -, -⟩` from `hv v`. Use `set τ : ℂ := (((S.g : ℝ) / (2 * Real.pi)) ^ S6.nuBlock S.G.r ((1 + d : ℕ) : ℤ) (s : ℤ) : ℝ) * Complex.I ^ (s - 1) * t with hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hτ0 : τ ≠ 0`. Use `mul_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ Complex.I_ne_zero)) ht` and prove the remaining obligations. Establish `: 0 < ((S.g : ℝ) / (2 * Real.pi)) ^ S6.nuBlock S.G.r ((1 + d : ℕ) : ℤ) (s : ℤ)` using `zpow_pos (by positivity) _`. Conclude with `this.ne'` after adjusting the coercions. Establish `hc0 : ((-1 : ℂ) ^ (s - 1) / τ) ^ K ≠ 0` using `pow_ne_zero _ (div_ne_zero (pow_ne_zero _ (by norm_num)) hτ0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hloc : D.IsLocPt (P ++ [(s, t)]) (S.G.r + 1)`. Establish `eP : stdS S (P ++ [(s, t)]) = stdS S P ++ [(s, τ)]`. Rewrite using `[hτ, ← hP]`. Conclude with `toStd_append_blkT _ _ _ _ _ _`. Establish `hPs : D.IsLocPt (stdS S P ++ [(s, τ)]) ((D.parOf S v).r + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← eP]`. Conclude with `(PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).2 hloc`. Establish `hdeg : ∀ (h : C.LPt) (hh : D.ptSize h = d), D.IsLocPt (h ++ [(s, τ)]) ((D.parOf S v).r + 1) → ((-1 : ℂ) ^ (s - 1) / τ) ^ K • (p v).V ((p v).Θ.Θ w e (F v ε)) (h ++ [(s, τ)]) = ∑ n : Fin K → Fin (d + 1), ((∏ b, F7.lagCo (grid b) (n b) : ℝ) : ℂ) • (p v).V ((p v).Θ.Θ (KB.plusW (List. …`. Introduce `h hh hloc'`. Substitute `hh` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hDT _ _ (D.parOf S v) (p v) (F v ε) s w h τ K grid e Cb (by rw [hl0]; exact hInD) hs hloc' hF hinj (fun n => by rw [hl0]; exact hcut n)`. Establish `h1` using `hdeg (stdS S P) (by rw [stdS_size]; exact hP) hPs`. Establish `hV : (p v).V ((p v).Θ.Θ w e (F v ε)) (stdS S P ++ [(s, τ)]) = (((-1 : ℂ) ^ (s - 1) / τ) ^ K)⁻¹ • ∑ n : Fin K → Fin (d + 1), ((∏ b, F7.lagCo (grid b) (n b) : ℝ) : ℂ) • (p v).V ((p v).Θ.Θ (KB.plusW (List.ofFn fun b => grid b (n b)) w) (KB.firstSt _ e) (F v ε)) (stdS S P ++ [(s, τ)] …`. Rewrite using `[← h1, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Unfold `vecT`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hloc]`. Simplify using `only [if_pos hloc]`. Rewrite using `[eP]`. Express the relevant statement in the definitionally equal form `B.hsVec (((p v).TP.E ρ).comp ((p v).V ((p v).Θ.Θ w e (F v ε)) (stdS S P ++ [(s, τ)]))) = _`. Rewrite using `[hV, ContinuousLinearMap.comp_smul, ContinuousLinearMap.comp_finset_sum, hsVec_smul, hsVec_sum]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_smul, hsVec_smul]`. Both sides reduce to the same expression. Unfold `vecT`.
-
-Simplify using `only [if_neg hloc, smul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecT_deg (hDT : KB.DegTop) {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq}
     {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}

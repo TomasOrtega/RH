@@ -15,13 +15,11 @@ variable {I : Type} [Fintype I] {V : I → Type} [∀ i, AddCommGroup (V i)] [�
   [∀ i, FiniteDimensional ℂ (V i)]
 
 /- English proof (translation)
-Establish `hB : B ∈ Submodule.span ℂ (C i)` using `hC i ▸ Submodule.mem_top`. Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem B hB => exact hS i B hB`. Consider the case `zero`. Introduce `x _`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `(PiTensorProduct.mapMultilinear ℂ V V).map_update_zero (fun i => (1 : Module.End ℂ (V i))) i`. Establish `h1 : PiTensorProduct.map (Function.update (fun i => (1 : Module.End ℂ (V i))) i 0) = 0` using `h0`. Rewrite using `[h1]`. Conclude with `S.zero_mem`. Consider the case `add B D _ _ hB hD`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[PiTensorProduct.map_update_add, LinearMap.add_apply]`. Conclude with `add_mem (hB x hx) (hD x hx)`. Consider the case `smul c B _ hB`. Introduce `x hx`.
-
-Rewrite using `[PiTensorProduct.map_update_smul, LinearMap.smul_apply]`. Conclude with `S.smul_mem _ (hB x hx)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_update_mem (S : Submodule ℂ (⨂[ℂ] i, V i)) (C : ∀ i, Set (Module.End ℂ (V i)))
     (hC : ∀ i, Submodule.span ℂ (C i) = ⊤)
@@ -48,15 +46,15 @@ private theorem map_update_mem (S : Submodule ℂ (⨂[ℂ] i, V i)) (C : ∀ i,
     exact S.smul_mem _ (hB x hx)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `A hA x hx`. Establish `: A = fun i => LinearMap.id` using `funext fun i => hA i (Finset.notMem_empty i)`. Rewrite using `[this, PiTensorProduct.map_id]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Consider the case `insert a s ha ih`. Introduce `A hA x hx`. Establish `hsplit : A = fun i => (Function.update (fun i => (1 : Module.End ℂ (V i))) a (A a)) i ∘ₗ (Function.update A a 1) i`. Use function extensionality and compare the values at `i`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : i = a`. Substitute `e` using the available equality. Simplify using `only [Function.update_self]`. Both sides reduce to the same expression. Simplify using `only [Function.update_of_ne e]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hsplit, PiTensorProduct.map_comp, LinearMap.comp_apply]`. Use `hS a _ _ (ih _ (fun i hi => ?_) x hx)` and prove the remaining obligations. Distinguish the cases in `e : i = a`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne e]`. Conclude with `hA i (by simp [e, hi])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_mem (S : Submodule ℂ (⨂[ℂ] i, V i))
     (hS : ∀ i (B : Module.End ℂ (V i)), ∀ x ∈ S,
@@ -88,9 +86,9 @@ private theorem map_mem (S : Submodule ℂ (⨂[ℂ] i, V i))
       exact hA i (by simp [e, hi])
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `hx ((Module.forall_dual_apply_eq_zero_iff ℂ x).1 fun ℓ => ?_)` and prove the remaining obligations. Take `⟨t, rfl⟩` from `(PiTensorProduct.dualDistribEquiv (R := ℂ) (M := V)).surjective ℓ`. Express the relevant statement in the definitionally equal form `PiTensorProduct.dualDistrib t x = 0`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c f => simp [hc f]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem exists_dual_ne (x : ⨂[ℂ] i, V i) (hx : x ≠ 0) :
     ∃ f : ∀ i, Module.Dual ℂ (V i), PiTensorProduct.dualDistrib (PiTensorProduct.tprod ℂ f) x ≠ 0 := by
@@ -104,7 +102,7 @@ private theorem exists_dual_ne (x : ⨂[ℂ] i, V i) (hx : x ≠ 0) :
   | add a b ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c w`. Simplify using `only [map_smul, PiTensorProduct.map_tprod, PiTensorProduct.dualDistrib_apply, LinearMap.smulRight_apply, LinearMap.smul_apply]`. Rewrite using `[MultilinearMap.map_smul_univ, smul_assoc]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, LinearMap.add_apply, add_smul]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 private theorem map_rank_one (f : ∀ i, Module.Dual ℂ (V i)) (v : ∀ i, V i) (x : ⨂[ℂ] i, V i) :
     PiTensorProduct.map (fun i => (f i).smulRight (v i)) x =
@@ -117,9 +115,9 @@ private theorem map_rank_one (f : ∀ i, Module.Dual ℂ (V i)) (v : ∀ i, V i)
   | add a b ha hb => simp only [map_add, ha, hb, LinearMap.add_apply, add_smul]
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff S).1 hne`. Take `⟨f, hf⟩` from `exists_dual_ne x hx0`. Use `top_le_iff.1 ?_` and prove the remaining obligations. Rewrite using `[← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `hS (fun i => (f i).smulRight (v i)) x hx` as an intermediate fact. Rewrite `this` using `[map_rank_one]`. Conclude with `(S.smul_mem_iff hf).1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_top_of_closed (S : Submodule ℂ (⨂[ℂ] i, V i)) (hne : S ≠ ⊥)
     (hS : ∀ A : ∀ i, Module.End ℂ (V i), ∀ x ∈ S, PiTensorProduct.map A x ∈ S) : S = ⊤ := by
@@ -133,9 +131,9 @@ private theorem eq_top_of_closed (S : Submodule ℂ (⨂[ℂ] i, V i)) (hne : S 
   exact (S.smul_mem_iff hf).1 this
 
 /- English proof (translation)
-Use `{ exists_pair_ne := ⟨⊥, ⊤, fun e => ?_⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Conclude with `bot_ne_top (congrArg Subrepresentation.toSubmodule e : (⊥ : Submodule ℂ (⨂[ℂ] i, V i)) = ⊤)`. Distinguish the cases in `hb : S.toSubmodule = ⊥`. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective hb)`. Use `Or.inr (Subrepresentation.toSubmodule_injective (eq_top_of_closed _ hb fun A x hx => ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_mem _ (map_update_mem _ C hC fun i B hB y hy => ?_) Finset.univ A (fun i hi => (hi (Finset.mem_univ i)).elim) x hx` and prove the remaining obligations. Take `⟨g, hg⟩` from `h i B hB`. Rewrite using `[← hg]`. Conclude with `S.apply_mem_toSubmodule g hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIrreducible_of_factors {G : Type} [Group G] (ρ : Representation ℂ G (⨂[ℂ] i, V i))
     [Nontrivial (⨂[ℂ] i, V i)] (C : ∀ i, Set (Module.End ℂ (V i))) (hC : ∀ i, Submodule.span ℂ (C i) = ⊤)
@@ -158,9 +156,9 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.EmbUnitary.exists_equiv_unitaryGroup E n τ`. Establish `heq : (GlobalTheory.Branching.sqRep ℂ n lam).comp ((GlobalTheory.UnitaryBC.cEmb τ).comp (GlobalTheory.UnitaryBC.embU n τ).subtype) = (GlobalTheory.Branching.smallRep (GlobalTheory.Branching.unitaryIncl n) lam).comp e.toMulEquiv.toMonoidHom`. Use extensionality with `x : 1`. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n lam (GlobalTheory.UnitaryBC.cEmb τ (x : GlobalTheory.UnitaryBC.UA E n)) = GlobalTheory.Branching.sqRep ℂ n lam (GlobalTheory.Branching.unitaryIncl n (e x))`. Rewrite using `[he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv _ e.toMulEquiv (GlobalTheory.Branching.isIrreducible_smallRep_unitary n lam)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem irr_on_emb (τ : E →+* ℂ) (lam : DomWeight n) :
     Representation.IsIrreducible ((GlobalTheory.Branching.sqRep ℂ n lam).comp
@@ -181,7 +179,7 @@ private noncomputable def atEmb (τ : E →+* ℂ) (lam : DomWeight n) :
     ((GlobalTheory.UnitaryBC.cEmb τ).comp ((GlobalTheory.UnitaryBC.infU E n).subtype.comp (Subgroup.subtype _)))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv _ (Subgroup.subgroupOfEquivOfLe (GlobalTheory.DefU.embU_le_infU τ)) (irr_on_emb τ lam)`.
+A detailed English derivation is pending.
 -/
 private theorem irr_atEmb (τ : E →+* ℂ) (lam : DomWeight n) : (atEmb τ lam).IsIrreducible :=
   GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv _ (Subgroup.subgroupOfEquivOfLe (GlobalTheory.DefU.embU_le_infU τ)) (irr_on_emb τ lam)
@@ -197,7 +195,7 @@ private noncomputable def tensRep {I : Type} (emb : I → (E →+* ℂ)) (lam : 
     exact PiTensorProduct.map_mul _ _
 
 /- English proof (translation)
-Establish `h4` using `(Subgroup.mem_inf.1 hy).2`. Rewrite `h4` using `[Subgroup.mem_iInf]`. Establish `h5` using `h4 (emb j)`. Rewrite `h5` using `[Subgroup.mem_iInf]`. Conclude with `h5 fun e' => e (hb.1 e')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comp_other {I : Type} {emb : I → (E →+* ℂ)}
     (hb : Function.Bijective (fun i => InfinitePlace.mk (emb i))) {i j : I} (e : j ≠ i)
@@ -209,7 +207,7 @@ private theorem comp_other {I : Type} {emb : I → (E →+* ℂ)}
   exact h5 fun e' => e (hb.1 e')
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne e, comp_other hb e hy, map_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comps_eq_update {I : Type} {emb : I → (E →+* ℂ)} (lam : I → DomWeight n)
     (hb : Function.Bijective (fun i => InfinitePlace.mk (emb i))) {i : I}
@@ -224,7 +222,7 @@ private theorem comps_eq_update {I : Type} {emb : I → (E →+* ℂ)} (lam : I 
   · rw [Function.update_of_ne e, comp_other hb e hy, map_one]
 
 /- English proof (translation)
-Use `isIrreducible_of_factors _ (fun i => Set.range (atEmb (emb i) (lam i))) (fun i => GlobalTheory.ClassFin.span_range_eq_top_of_isIrreducible _ _ _ (irr_atEmb _ _)) ?_` and prove the remaining obligations. Introduce and unpack `i _ ⟨g, rfl⟩`. Use `⟨g.1, ?_⟩` and prove the remaining obligations. Conclude with `congrArg PiTensorProduct.map (comps_eq_update lam hb (i := i) (y := g.1.1) g.2)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem irr_tensRep {I : Type} [Fintype I] {emb : I → (E →+* ℂ)} (lam : I → DomWeight n)
     (hb : Function.Bijective (fun i => InfinitePlace.mk (emb i))) [Nontrivial (⨂[ℂ] i, nablaSq ℂ n (lam i))] :
@@ -236,17 +234,17 @@ private theorem irr_tensRep {I : Type} [Fintype I] {emb : I → (E →+* ℂ)} (
   exact congrArg PiTensorProduct.map (comps_eq_update lam hb (i := i) (y := g.1.1) g.2)
 
 /- English proof (translation)
-Use `haveI : Nontrivial π.V := Submodule.nontrivial_iff_ne_bot.2 π.isAut.ne_bot`. Take `⟨hgen, hcomm⟩` from `UpperTheory.archimedeanUnitary_le_iSup_embU_and_commute E n`. Take `⟨μ, hμ0, hμ⟩` from `UpperTheory.exists_multilinear_intertwiner_of_commuting_subgroups (GlobalTheory.UnitaryBC.infU E n) I (fun i => (GlobalTheory.UnitaryBC.embU n (emb i)).subgroupOf (GlobalTheory.UnitaryBC.infU E n)) (fun i j hij a ha b hb' => Subtype.ext (hcomm (emb i) (emb j) (fun e => hij (hb.1 …`. Establish `h1` using `GlobalTheory.DefU.iSup_range_weight_eq_top E n π (emb i) (lam i) (hw i)`. Use `top_le_iff.1 (h1.ge.trans (iSup_le fun f => ?_))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_iSup_of_le ⟨f.toLinearMap, fun g v => LinearMap.congr_fun (f.isIntertwining' ⟨g.1.1, g.2⟩) v⟩ le_rfl)`. Use `⟨μ, hμ0, fun x hx => ?_⟩` and prove the remaining obligations. Use `Subgroup.iSup_induction _ (C := fun x => ∀ v, π.rep x (μ v) = μ fun i => GlobalTheory.Branching.sqRep ℂ n (lam i) (GlobalTheory.UnitaryBC.cEmb (emb i) x) (v i)) (hgen hx) ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ y hy v`. Take `⟨i, hi⟩` from `hb.2 (InfinitePlace.mk τ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : InfinitePlace.mk (emb i) = InfinitePlace.mk τ` using `hi`. Establish `hy' : y ∈ GlobalTheory.UnitaryBC.embU n (emb i)`. Unfold `GlobalTheory.UnitaryBC.embU at hy ⊢`. Rewrite using `[hi']` and apply the resulting hypothesis. Establish `hyI : y ∈ GlobalTheory.UnitaryBC.infU E n` using `GlobalTheory.DefU.embU_le_infU _ hy'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hμ i ⟨⟨y, hyI⟩, hy'⟩ v`. Establish `h3 : (fun j => GlobalTheory.Branching.sqRep ℂ n (lam j) (GlobalTheory.UnitaryBC.cEmb (emb j) y) (v j)) = Function.update v i (atEmb (emb i) (lam i) ⟨⟨y, hyI⟩, hy'⟩ (v i))`. Use function extensionality and compare the values at `j`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Function.update_self]`. Both sides reduce to the same expression. Rewrite using `[Function.update_of_ne e, comp_other hb e hy', map_one, Module.End.one_apply]`. Rewrite using `[h3, h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using `only [map_one, Module.End.one_apply]`. Introduce `a b ha hb v`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_equivariant {I : Type} [Fintype I] (emb : I → (E →+* ℂ))
     (hb : Function.Bijective (fun i => InfinitePlace.mk (emb i))) (lam : I → DomWeight n)
@@ -293,19 +291,19 @@ private theorem exists_equivariant {I : Type} [Fintype I] (emb : I → (E →+* 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ n hn I _ emb hb lam U hU hw`. Set `π : GlobalTheory.DefU.AutSub E n` to `⟨U, hU⟩`. Take `⟨μ, hμ0, hμ⟩` from `exists_equivariant emb hb lam π hw`. Establish `hl : PiTensorProduct.lift μ ≠ 0` using `fun h => hμ0 (by`. Use extensionality with `v : 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `LinearMap.congr_fun h (PiTensorProduct.tprod ℂ v)` as an intermediate fact. Rewrite `this` using `[PiTensorProduct.lift.tprod]`. Simplify using `using this)`. Use `haveI : Nontrivial (⨂[ℂ] i, nablaSq ℂ n (lam i)) := by`. Assume the negation of the conclusion as `hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hl (LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero])`. Establish `hirr` using `irr_tensRep (emb := emb) lam hb`. Set `j : (⨂[ℂ] i, nablaSq ℂ n (lam i)) →ₗ[ℂ] (GlobalTheory.UnitaryBC.UA E n → ℂ)` to `π.V.subtype ∘ₗ PiTensorProduct.lift μ`. Establish `hj : ∀ k x, j (tensRep emb lam k x) = GlobalTheory.UnitaryBC.RU E n k.1 (j x)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `k x`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c v`. Simplify using `only [map_smul]`. Use `congr 1`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((PiTensorProduct.lift μ) (PiTensorProduct.map _ (PiTensorProduct.tprod ℂ v))).1 = GlobalTheory.UnitaryBC.RU E n k.1 ((PiTensorProduct.lift μ) (PiTensorProduct.tprod ℂ v)).1`. Rewrite using `[PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod, PiTensorProduct.lift.tprod, ← hμ k.1 k.2 v]`. Both sides reduce to the same expression. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Use `⟨tensRep emb lam, j, inferInstance, hirr, fun _ => rfl, ?_, fun x => (PiTensorProduct.lift μ x).2, hj⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : Subrepresentation (tensRep emb lam)` to `⟨LinearMap.ker j, fun k x hx => by`. Establish `hx' : j x = 0` using `hx`. Express the relevant statement in the definitionally equal form `j _ = 0`. Rewrite using `[hj, hx', map_zero]⟩`. Break down `hirr.eq_bot_or_eq_top S with h | h` into its components or cases.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `LinearMap.ker_eq_bot.1 (congrArg Subrepresentation.toSubmodule h)`. It suffices to derive a contradiction. Use `hl (LinearMap.ext fun x => Subtype.ext ?_)` and prove the remaining obligations. Establish `hx : x ∈ S.toSubmodule` using `by rw [h]; trivial`. Conclude with `hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.TP.RP.formEx :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), 1 ≤ n → ∀ (I : Type) [Fintype I] (emb : I → (E →+* ℂ)),

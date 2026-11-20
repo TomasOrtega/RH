@@ -9,13 +9,11 @@ open Formalism.CohomologicalDescent Formalism.CohomologicalDescent.LogSmallConst
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hC P hH hL ι _ _ W hW l hl`. Use `⟨fun hR => ?_, fun hR => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : (l : ℝ) ≤ P.lJ ∨ P.Excl l ∨ l ∈ W.Sp`. Rewrite using `[seventh_recursion_eq_a_of_small_prime W P l hc]`. Establish `h1 : P.lJ < (l : ℝ)` using `not_le.mp fun h => hc (Or.inl h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ¬ P.Excl l` using `fun h => hc (Or.inr (Or.inl h))`. Establish `h3 : l ∉ W.Sp` using `fun h => hc (Or.inr (Or.inr h))`. Establish `hh : P.h < (l : ℝ)` using `not_le.mp fun h => hR ⟨h1, h, h2, h3⟩`. Establish `hb` using `Formalism.CohomologicalDescent.E.beyond_height_exceptional (Formalism.CohomologicalDescent.E.exIntervalLt_of_exCut hC) hC P hH hL ι W hW l hl h1 hh`. Rewrite using `[hb.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.zero_le _`. Take `⟨h1, _, h2, h3⟩` from `hR`. Establish `hc : ¬ ((l : ℝ) ≤ P.lJ ∨ P.Excl l ∨ l ∈ W.Sp)`. Introduce and unpack `(h | h | h)`. Conclude with `absurd h (not_le.mpr h1)`.
-
-Conclude with `h2 h`. Conclude with `h3 h`. Rewrite using `[seventh_recursion_eq_w_of_large_prime W P l hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exponent_of_record_vs_formulas :
     Formalism.CohomologicalDescent.E.ExCut → ∀ P : Par, P.Hyp → P.Large → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Wts ι), W.Ok P →

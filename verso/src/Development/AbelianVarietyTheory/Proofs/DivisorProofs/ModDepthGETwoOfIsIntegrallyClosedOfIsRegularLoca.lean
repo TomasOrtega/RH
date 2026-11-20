@@ -8,11 +8,11 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨l, hl⟩ : ∃ l : LTSeries (PrimeSpectrum R), l.length = 2` from `Order.le_krullDim_iff.mp (by exact_mod_cast h)`. Set `i0 : Fin l.length` to `⟨0, by omega⟩`. Set `i1 : Fin l.length` to `⟨1, by omega⟩`. Establish `h01 : l i0.succ = l i1.castSucc` using `congrArg l (Fin.ext rfl)`. Establish `s0` using `l.step i0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `l.step i1`. Rewrite `s0` using `[h01]`. Use `⟨(l i1.castSucc).asIdeal, (l i1.castSucc).isPrime, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `: (l i0.castSucc).asIdeal < (l i1.castSucc).asIdeal` using `s0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Conclude with `not_lt_bot this`. Conclude with `lt_of_lt_of_le (show (l i1.castSucc).asIdeal < (l i1.succ).asIdeal from s1) (le_maximalIdeal (l i1.succ).isPrime.ne_top)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPrime_ne_bot_lt_maximalIdeal_of_two_le_ringKrullDim (R : Type) [CommRing R]
     [IsLocalRing R] (h : 2 ≤ ringKrullDim R) :
@@ -40,33 +40,29 @@ namespace GlobalTheory
 open Pointwise
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ _ _ _ _ hdim`. Take `⟨hRd, hRic⟩` from `isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R`. Use `haveI : IsNoetherianRing A := isNoetherian_of_tower R inferInstance`. Establish `hinj` using `FaithfulSMul.algebraMap_injective R A`. Take `⟨q, hq, hq0, hqm⟩` from `exists_isPrime_ne_bot_lt_maximalIdeal_of_two_le_ringKrullDim R hdim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm0 : maximalIdeal R ≠ ⊥` using `(bot_le.trans_lt hqm).ne'`. Take `⟨x, hxm, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm0`. Establish `hx' : algebraMap R A x ≠ 0` using `(map_ne_zero_iff _ hinj).mpr hx0`. Establish `hreg : IsSMulRegular A x`. Introduce `a b hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.smul_def] at hab`. Conclude with `mul_left_cancel₀ hx' hab`. Establish `hmemx : ∀ a : A, a ∈ x • (⊤ : Submodule R A) ↔ a ∈ Ideal.span {algebraMap R A x}`. Introduce `a`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, -, rfl⟩`. Conclude with `⟨b, by rw [Algebra.smul_def, mul_comm]⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, Submodule.mem_top, by rw [Algebra.smul_def, mul_comm]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨y, hym, hyreg⟩ : ∃ y ∈ maximalIdeal R, IsSMulRegular (QuotSMulTop x A) y := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hfin` using `associatedPrimes.finite R (QuotSMulTop x A)`. Establish `hsub : (maximalIdeal R : Set R) ⊆ ⋃ p ∈ associatedPrimes R (QuotSMulTop x A), (p : Set R)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Rewrite using `[biUnion_associatedPrimes_eq_compl_regular]`. Conclude with `hno y hy`. Take `⟨p, hp, hmp⟩` from `(Ideal.subset_union_prime (s := hfin.toFinset) (f := id) ⊥ ⊥ (fun p hp _ _ => (hfin.mem_toFinset.mp hp).isPrime)).mp (by simpa using hsub)`. Rewrite `hp` using `[hfin.mem_toFinset]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpm : p = maximalIdeal R` using `(le_antisymm (le_maximalIdeal (hp.isPrime.ne_top)) hmp)`. Rewrite `hp` using `[hpm]`. Take `⟨-, w, hw⟩` from `isAssociatedPrime_iff.mp hp`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Establish `hmz : ∀ a ∈ maximalIdeal R, algebraMap R A a * z ∈ Ideal.span {algebraMap R A x}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `a ha`. Rewrite `ha` using `[hw, Submodule.mem_colon_singleton, Submodule.mem_bot, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, hmemx]`. Simplify `ha` using `[Algebra.smul_def]`. Establish `hz : z ∉ Ideal.span {algebraMap R A x}`. Introduce `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Apply `(maximalIdeal.isMaximal R).ne_top` to reduce the goal to its premises. Rewrite using `[hw, Ideal.eq_top_iff_one, Submodule.mem_colon_singleton, Submodule.mem_bot, one_smul, Submodule.Quotient.mk_eq_zero, hmemx]`. Conclude with `hz`. Use `set I := Ideal.span {algebraMap R A x}`. Establish `hzq : (Ideal.Quotient.mk I z : A ⧸ I) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ne_eq, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Take `⟨P, hP, hle⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing A _ hzq`. Use `haveI hPp : P.IsPrime := hP.isPrime`. Establish `hmP : maximalIdeal R ≤ P.comap (algebraMap R A)`. Introduce `a ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hle` to reduce the goal to its premises. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmz a ha`. Establish `hPm : P.comap (algebraMap R A) = maximalIdeal R` using `((maximalIdeal.isMaximal R).eq_of_le (Ideal.comap_isPrime _ P).ne_top hmP).symm`. Use `haveI : P.LiesOver (maximalIdeal R) := ⟨hPm.symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨Q, hQP, hQp, hQq⟩` from `Ideal.exists_ideal_lt_liesOver_of_lt (S := A) P hqm`. Establish `h1 : P.height = 1` using `height_eq_one_of_mem_associatedPrimes hx' hP`. Establish `hlt : Q.height < P.height` using `Ideal.height_strict_mono_of_isPrime hQP`. Rewrite `hlt` using `[h1, ENat.lt_one_iff_eq_zero, Ideal.height_eq_zero_iff_eq_bot]`. Apply `hq0` to reduce the goal to its premises.
-
-Rewrite using `[hQq.over, hlt]`. Conclude with `Ideal.comap_bot_of_injective _ hinj`. Use `⟨[x, y], rfl, (fun r hr => by` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hr`. Apply the tactic sequence `rcases hr with rfl | rfl <;> assumption), ?_⟩`.
-
-Rewrite using `[IsLocalRing.isRegular_iff_isWeaklyRegular_of_subset_maximalIdeal (fun r hr => by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hr`. Apply the tactic sequence `rcases hr with rfl | rfl <;> assumption),`. Use the proof step `RingTheory.Sequence.isWeaklyRegular_cons_iff, RingTheory.Sequence.isWeaklyRegular_cons_iff]`. Conclude with `⟨hreg, hyreg, RingTheory.Sequence.IsWeaklyRegular.nil _ _⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem modDepthGE_two_of_isIntegrallyClosed_of_isRegularLocalRing :
     ∀ (R A : Type) [CommRing R] [IsRegularLocalRing R] [CommRing A] [IsDomain A]

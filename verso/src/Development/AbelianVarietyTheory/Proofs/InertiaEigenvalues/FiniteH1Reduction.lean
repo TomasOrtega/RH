@@ -12,13 +12,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.CocycleModPow
 
 /- English proof (translation)
-Introduce `hT l _ K LL _ _ _ O _ _ hO A LA r hI`. Take `⟨⟨hdom, hdvr, hfrac⟩, hrest⟩` from `id hO`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hl : ((l : ℕ) : O) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : algebraMap O LL ((l : ℕ) : O) = 0` using `by rw [h0, map_zero]`. Rewrite `h1` using `[map_natCast, ← map_natCast (algebraMap ℚ_[l] LL)]`. Establish `h2 : ((l : ℕ) : ℚ_[l]) = 0` using `(algebraMap ℚ_[l] LL).injective (by rw [h1, map_zero])`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h2`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (pow_ne_zero r hl) hϖ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span {((l : ℕ) : O) ^ r} = Ideal.span {ϖ ^ m}` using `Ideal.span_singleton_eq_span_singleton.2 hm`. Establish `key : ∀ (I : Submodule O ↥LA.T) (hI' : StableSub LA I), I = (Ideal.span {ϖ ^ m} • ⊤ : Submodule O ↥LA.T) → Finite (QuotientCohomology LA I hI')`. Introduce and unpack `I hI' rfl`. Establish `hZ` using `finite_Z1Q hT l K LL O hO A LA ϖ hϖ m hI'`. Establish `: Finite ↥(quotientCocycles LA _ hI')` using `hZ.to_subtype`.
-
-Conclude with `Finite.of_surjective _ (Submodule.mkQ_surjective _)`. Conclude with `key _ hI (by rw [hspan])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_H1Q_lpow : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (r : ℕ) (hI : StableSub LA (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)), Finite (QuotientCohomology LA _ hI) := by
   intro hT l _ K LL _ _ _ O _ _ hO A LA r hI

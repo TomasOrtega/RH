@@ -23,23 +23,15 @@ noncomputable section
 namespace GlobalTheory.UPoinc.GPeriods
 
 /- English proof (translation)
-Establish `hinjΩ` using `M.stalkHom_injective x`. Use `haveI : IsDomain (M.Z.presheaf.stalk x) := hinjΩ.isDomain`. Use `haveI : CharZero Ω := hA.char`. Use `haveI : CharZero (M.Z.presheaf.stalk x) := (RingHom.charZero_iff hinjΩ).2 inferInstance`. Use `haveI : IsIntegrallyClosed (M.Z.presheaf.stalk x) := (hO.normal x).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.EssFiniteType ℤ (M.Z.presheaf.stalk x) := GlobalTheory.Poinc.CompletedStalk.essFiniteType_int_stalk M x`. Use `haveI : IsNoetherianRing (M.Z.presheaf.stalk x) := Algebra.EssFiniteType.isNoetherianRing ℤ _`. Establish `fg : (maximalIdeal (M.Z.presheaf.stalk x)).FG` using `IsNoetherian.noetherian _`. Use `haveI hloc : IsLocalRing (AdicCompletion (maximalIdeal (M.Z.presheaf.stalk x)) (M.Z.presheaf.stalk x)) := AdicCompletion.isLocalRing_of_fg fg`. Take `⟨hRd, hRi⟩` from `GlobalTheory.AnalyticNormality.completion_isDomain_and_isIntegrallyClosed (M.Z.presheaf.stalk x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI hRn : IsNoetherianRing (AdicCompletion (maximalIdeal (M.Z.presheaf.stalk x)) (M.Z.presheaf.stalk x)) := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _`. Establish `hm` using `AdicCompletion.maximalIdeal_eq_map_of_fg fg`. Use `set R := AdicCompletion (maximalIdeal (M.Z.presheaf.stalk x)) (M.Z.presheaf.stalk x) with hR`. Use `set φ := algebraMap (M.Z.presheaf.stalk x) R with hφ`. Establish `hcpl : IsAdicComplete (maximalIdeal R) R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm]`. Conclude with `AdicCompletion.isAdicComplete_self _ fg`. Establish `hinj : Function.Injective φ` using `AdicCompletion.of_injective _ _`. Use `haveI : CharZero R := (RingHom.charZero_iff hinj).1 inferInstance`. Use `set ξ : Sp R ⟶ M.Z := spMap φ ≫ M.Z.fromSpecStalk x with hξ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : (ξ ⁻¹' abLocus FinalForm.G).Nonempty`. Set `w : Sp R` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)`. Set `p : Sp (M.Z.presheaf.stalk x)` to `spMap φ w`. Establish `hp : p.asIdeal = ⊥` using `by show Ideal.comap φ ⊥ = ⊥`. Rewrite using `[← RingHom.ker_eq_comap_bot]`.
-
-Conclude with `(RingHom.injective_iff_ker_eq_bot φ).1 hinj`. Establish `hgen : genericPoint M.Z ∈ Set.range (M.Z.fromSpecStalk x)`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `genericPoint_specializes x`. Take `⟨q, hq⟩` from `hgen`.
-
-Establish `hpq : p ⤳ q` using `(PrimeSpectrum.le_iff_specializes p q).1 (by show p.asIdeal ≤ q.asIdeal`. Rewrite using `[hp]`. Conclude with `bot_le)`. Establish `hsp : ξ w ⤳ genericPoint M.Z`. Use `hpq.map (M.Z.fromSpecStalk x).continuous` as an intermediate fact.
-
-Rewrite `this` using `[hq]`. Conclude with `this`. Use `⟨w, ?_⟩` and prove the remaining obligations. Use `show ξ w ∈ abLocus FinalForm.G`. Rewrite using `[FinalForm.ab]`.
-
-Conclude with `le_bot_iff.1 ((S.TT_anti M hsp).trans (ThetaSys.TT_genericPoint S M).le)`. Use `haveI : IsCommMonObj ((Over.pullback ξ).obj FinalForm.G) := Functor.isCommMonObj_obj`. Take `⟨D, A, U, hL, hP⟩` from `FinalForm.unif R hRn hRi hcpl ξ hne`. Conclude with `⟨R, inferInstance, hRd, hloc, φ, (Over.pullback ξ).obj FinalForm.G, inferInstance, inferInstance, pullback.fst _ _, D, A, U, ⟨⟨hRn, hRd, hRi, hcpl⟩, inferInstance⟩, isCpl_self _, IsSemiAbelian.pullback ξ FinalForm.G FinalForm.semi, isGrpPullback_pullback _ _, hL, hP⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_completion_unif {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] [hA : ArithBase o' Ω]
     {S : ThetaSys o' Ω} {ρ : S.Real} {M : RatModel o' Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J} (FinalForm : ZHOut ρ M U₀ EE)
@@ -103,19 +95,17 @@ theorem exists_completion_unif {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra 
 end GlobalTheory.UPoinc.GPeriods
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C X₁ Y U₀ EE out r hO hpt x`. Take `⟨f, hf, hab, hβ⟩` from `GlobalTheory.T.integerAction_semiAbelian_along_traits_over_moduli E H Dw l Xo c C X₁ Y U₀ EE out r hO hpt`. Take `⟨R, _, _, _, j, G, _, _, gm, D, A, U, hB, hC, hS, hG, hL, hP⟩` from `GlobalTheory.UPoinc.GPeriods.exists_completion_unif out hO x`. Establish `hm : ∀ a : 𝓞 E, ∃ m : D.toPre.X →+ D.toPre.X, ∃ fR : G ⟶ G, IsMonHom fR ∧ fR.left ≫ gm = gm ≫ (f a).left ∧ EndChar U fR m`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hf a`. Take `⟨fR, hfR, e⟩` from `GlobalTheory.PullAction.exists_lift_end hG (f a)`. Take `⟨m, hm⟩` from `GlobalTheory.Poinc.Eq8.endChar_exists_of_isMonHom R hB G hS D A U fR hfR`. Conclude with `⟨m, fR, hfR, e, hm⟩`. Use `choose m hm using hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `fun (T : UTrait Xo c) (ψ : R →+* T.V) (hψ : IsLocalHom ψ) hc => GlobalTheory.T.exists_traitLattice_equiv_completedLocalRing E H Dw l Xo c C X₁ Y U₀ EE out r hO hpt f hf hab hβ x R j hB hC G gm hS hG D A U hL hP m hm T ψ hψ hc`. Use `haveI : CharZero R := hB.2`. Establish `hco : ∀ y : D.toPre.X, ∃ s, PsiCoord D.toPre y s` using `fun y => ((GlobalTheory.PsiCoordLocal.main R D hB.1.2.2.1 y).1).imp fun _ h => h.1`. Use `choose s hs using hco`. Distinguish the cases in `hex : ∃ (T : UTrait Xo c) (ψ : R →+* T.V), IsLocalHom ψ ∧ jK T.V ≫ (spMap (ψ.comp j) ≫ Y.Z.fromSpecStalk x) ≫ r = T.y ≫ C.i`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T₀, ψ₀, hψ₀, hc₀⟩` from `hex`. Take `⟨ρ₀, -, hρ₀⟩` from `key T₀ ψ₀ hψ₀ hc₀`. Use `⟨R, inferInstance, inferInstance, inferInstance, j, T₀.P.D.toPre.X, inferInstance, inferInstance, fun y => s (ρ₀.symm y) ^ 2, hB, hC, ?_⟩` and prove the remaining obligations. Introduce `T ψ hψ hc`. Take `⟨ρT, hord, heq⟩` from `key T ψ hψ hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hsymm : ∀ (a : 𝓞 E) (v : T₀.P.D.toPre.X), ρ₀.symm (H.bar a • v) = m a (ρ₀.symm v)` using `fun a v => by`. Apply `ρ₀.injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply, hρ₀, AddEquiv.apply_symm_apply]`. Set `e₀ : T₀.P.D.toPre.X ≃+ T.P.D.toPre.X` to `ρ₀.symm.trans ρT`. Establish `hlin : ∀ (a : 𝓞 E) (v : T₀.P.D.toPre.X), e₀ (a • v) = a • e₀ v` using `fun a v => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `H.bar.surjective a`. Use `show ρT (ρ₀.symm (H.bar b • v)) = H.bar b • ρT (ρ₀.symm v)`. Rewrite using `[hsymm, heq]`. Use `⟨{ e₀ with map_smul' := hlin }, fun y => ?_⟩` and prove the remaining obligations. Take `⟨h0, hA⟩` from `hord (ρ₀.symm y) (s (ρ₀.symm y)) (hs _)`.
-
-Use `⟨(T.be (ρT (ρ₀.symm y)) (ρT (ρ₀.symm y))).toNat, Int.toNat_of_nonneg h0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `hA`. Use `⟨R, inferInstance, inferInstance, inferInstance, j, PUnit, inferInstance, inferInstance, fun _ => 0, hB, hC, fun T ψ hψ hc => (hex ⟨T, ψ, hψ, hc⟩).elim⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UPoinc.GPeriods.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (Y : RatModel X₁.o₁ X₁.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X₁.S.J) (out : ZHOut X₁.ρ Y U₀ EE) (r : Y.Z ⟶ C.Z), X₁.S.Over₀ Y U₀ → Y.pt ≫ r = X₁.uΩ ≫ C.i → ∀ x : Y.Z, ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsLocalRing R) (j : Y.Z.presheaf.stalk x →+* R) (Λ : Type) (_ : AddCommGroup Λ) (_ : Module (𝓞 E) Λ) (p : Λ → R), GlobalTheory.Mum.Base R ∧ IsCpl j ∧ ∀ (T : UTrait Xo c) (ψ : R →+* T.V), IsLocalHom ψ → jK T.V ≫ (spMap (ψ.comp j) ≫ Y.Z.fromSpecStalk x) ≫ r = T.y ≫ C.i → ∃ e : Λ ≃ₗ[𝓞 E] T.P.D.toPre.X, ∀ y, ∃ k : ℕ, (k : ℤ) = T.be (e y) (e y) ∧ Associated (ψ (p y)) (T.ϖ ^ k) := by
   intro E _ _ _ H Dw l Xo c C X₁ Y U₀ EE out r hO hpt x

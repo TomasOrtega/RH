@@ -10,15 +10,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.Cus
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, h3⟩` from `hf`. Use `⟨⟨fun x => h1 (x * g), fun h x => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show f (j h * x * g) = y h (f (x * g))`. Rewrite using `[mul_assoc, h2]`. Establish `h4 : IsOpen {a : G | rightReg ℂ G Y a f = f}` using `h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `h4.preimage (f := fun a : G => g⁻¹ * a * g) (by fun_prop)`. Use `show IsOpen {a : G | rightReg ℂ G Y a (rightReg ℂ G Y g f) = rightReg ℂ G Y g f}`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `x`. Use `congrFun h (x * g⁻¹)` as an intermediate fact. Express the relevant statement in the definitionally equal form `f (x * g⁻¹ * a * g) = f (x * g⁻¹ * g) at this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Express the relevant statement in the definitionally equal form `f (x * (g⁻¹ * a * g)) = f x`. Simplify `this` using `[mul_assoc]`. Introduce `h`. Use function extensionality and compare the values at `x`. Use `congrFun h (x * g)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `f (x * g * (g⁻¹ * a * g)) = f (x * g) at this`. Express the relevant statement in the definitionally equal form `f (x * a * g) = f (x * g)`. Simplify `this` using `[mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem indF_stable {G H Y : Type} [Group G] [Group H] [AddCommGroup Y] [Module ℂ Y] [TopologicalSpace G]
     [IsTopologicalGroup G] (j : H →* G) (y : Representation ℂ H Y) (X : Submodule ℂ Y) (g : G) (f : G → Y)
@@ -48,25 +48,21 @@ private theorem indF_stable {G H Y : Type} [Group G] [Group H] [AddCommGroup Y] 
       simpa [mul_assoc] using this
 
 /- English proof (translation)
-Use `⟨fun g f hf => indF_stable j y X g f hf, fun Q hQ hst => ?_⟩` and prove the remaining obligations. Set `Φ : (G → X) →ₗ[ℂ] (G → Y)` to `X.subtype.compLeft G`. Establish `hΦ : ∀ f x, Φ f x = (f x : Y)` using `fun _ _ => rfl`. Establish `hmem : ∀ f, f ∈ IndF j y' ⊤ ↔ Φ f ∈ IndF j y X`. Introduce `f`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : {a : G | rightReg ℂ G X a f = f} = {a : G | rightReg ℂ G Y a (Φ f) = Φ f}`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Conclude with `congrArg Subtype.val (congrFun h x)`. Introduce `h`. Use function extensionality and compare the values at `x`. Conclude with `Subtype.ext (congrFun h x)`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, h2⟩, h3⟩`. Use `⟨⟨fun x => (f x).2, fun h x => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, hΦ, h2, hy]`. Establish `h4 : IsOpen {a : G | rightReg ℂ G X a f = f}` using `h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `h4` using `[hs]`. Conclude with `h4`. Introduce and unpack `⟨⟨-, h2⟩, h3⟩`. Use `⟨⟨fun x => trivial, fun h x => Subtype.ext ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2 h x`. Establish `h4 : IsOpen {a : G | rightReg ℂ G Y a (Φ f) = Φ f}` using `h3`. Rewrite `h4` using `[← hs]`. Conclude with `h4`. Establish `hsurj : ∀ F ∈ IndF j y X, ∃ f, Φ f = F` using `fun F hF => ⟨fun x => ⟨F x, hF.1.1 x⟩, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `H' (Q.comap Φ) (fun f hf => (hmem f).2 (hQ hf)) (fun g f hf => hst g (Φ f) hf) with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `F hF`. Take `⟨f, rfl⟩` from `hsurj F (hQ hF)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: f ∈ Q.comap Φ` using `hF`. Rewrite `this` using `[h, Submodule.mem_bot]`. Rewrite using `[this, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`.
-
-Use `le_antisymm hQ fun F hF => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `hsurj F hF`. Establish `: f ∈ Q.comap Φ`. Rewrite using `[h]`. Conclude with `(hmem f).2 hF`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem simple_of_sub {G H Y : Type} [Group G] [Group H] [AddCommGroup Y] [Module ℂ Y] [TopologicalSpace G]
     [IsTopologicalGroup G] (j : H →* G) (y : Representation ℂ H Y) (X : Submodule ℂ Y) (y' : Representation ℂ H X)
@@ -121,23 +117,21 @@ private theorem simple_of_sub {G H Y : Type} [Group G] [Group H] [AddCommGroup Y
     exact this
 
 /- English proof (translation)
-Introduce `r G _ _ _ P Y _ _ y X hX hop hloc`. Distinguish the cases in `h0 : X = ⊥`. Use `⟨fun g f hf => indF_stable _ y X g f hf, fun Q hQ _ => Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `x`. Use `(hQ hF).1.1 x` as an intermediate fact. Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `y' : Representation ℂ ((∀ i, P i) × PUnit.{1}) X` to `(GlobalTheory.PRep.sub y X hX.1).comp (MonoidHom.fst _ _)`. Establish `hy : ∀ a (v : X), (y' a v : Y) = y a.1 v` using `fun _ _ => rfl`. Establish `hirr : y'.IsIrreducible`. Establish `: Nontrivial X` using `Submodule.nontrivial_iff_ne_bot.2 h0`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `bot_ne_top (α := Submodule ℂ X) (congrArg Subrepresentation.toSubmodule h)`. Break down `hX.2 (S.toSubmodule.map X.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Conclude with `⟨y' (g, 1) v, S.apply_mem_toSubmodule _ hv, rfl⟩) with h | h`. Use `left`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective X.injective_subtype` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `(Submodule.map_bot _).symm`. Use `right`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective X.injective_subtype` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `(Submodule.map_subtype_top _).symm`. Establish `key` using `indProdG r P y' hirr (fun v => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hop v v.2 using 2 with p` and compare the differences between its conclusion and the goal. Conclude with `funext fun p => propext Subtype.ext_iff) (fun i => by`. Take `⟨V, _, _, ρ, f, h1, h2, h3, h4⟩` from `hloc i`. Use `⟨V, inferInstance, inferInstance, ρ, f.codRestrict X h3, h1, fun h => h2 ?_, fun p v => Subtype.ext (h4 p v)⟩` and prove the remaining obligations. Use extensionality with `v`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val (LinearMap.congr_fun h v))`. Use `simple_of_sub (piIncl P) y X (y'.comp (MonoidHom.inl _ _)) (fun _ _ => rfl) fun Q hQ hst => key Q hQ hst fun c f hf => ?_` and prove the remaining obligations. Establish `: (fun x => y' (1, c) (f x)) = f`. Use function extensionality and compare the values at `x`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[hy]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.indAmb :
     ∀ {r : ℕ} {G : Fin r → Type} [∀ i, Group (G i)] [∀ i, TopologicalSpace (G i)] [∀ i, IsTopologicalGroup (G i)] (P : ∀ i, Subgroup (G i)) {Y : Type} [AddCommGroup Y] [Module ℂ Y]

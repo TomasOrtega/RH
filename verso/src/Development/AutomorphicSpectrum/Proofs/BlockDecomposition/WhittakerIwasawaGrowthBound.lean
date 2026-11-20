@@ -7,7 +7,7 @@ open scoped ValuativeRel ENNReal
 namespace GlobalTheory.CompanionTheory.WhittakerIwasawa
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ad3.uni2, Ad3.dg2, Matrix.mul_apply, Fin.sum_univ_two, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem diagonal_mul_unipotent {F : Type} [Field F] (t₁ t₂ : Fˣ) (x : F) :
     Ad3.dg2 t₁ t₂ * Ad3.uni2 x =
@@ -18,7 +18,7 @@ theorem diagonal_mul_unipotent {F : Type} [Field F] (t₁ t₂ : Fˣ) (x : F) :
     simp [Ad3.uni2, Ad3.dg2, Matrix.mul_apply, Fin.sum_univ_two, mul_assoc]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ad3.dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem diagonal_mul_diagonal_alt {F : Type} [Field F] (t₁ t₂ b₁ b₂ : Fˣ) :
     Ad3.dg2 t₁ t₂ * Ad3.dg2 b₁ b₂ =
@@ -30,9 +30,9 @@ theorem diagonal_mul_diagonal_alt {F : Type} [Field F] (t₁ t₂ b₁ b₂ : F�
   field_simp
 
 /- English proof (translation)
-Introduce `F _ _ _ _ ψ W' C hu hd hb t₁ t₂ b₁ b₂ x κ hκ`. Establish `e : Ad3.dg2 t₁ t₂ * (Ad3.uni2 x * Ad3.dg2 b₁ b₂ * κ) = Ad3.uni2 ((t₁ : F) * x * ((t₂⁻¹ : Fˣ) : F)) * (Ad3.dg2 (t₂ * b₂) (t₂ * b₂) * (Ad3.dg2 (t₁ * b₁ * (t₂ * b₂)⁻¹) 1 * κ))`. Rewrite using `[← mul_assoc (Ad3.dg2 (t₂ * b₂) (t₂ * b₂)), ← diagonal_mul_diagonal_alt, ← mul_assoc, ← mul_assoc, ← mul_assoc, diagonal_mul_unipotent]`. Simplify using `only [mul_assoc]`. Rewrite using `[e, hu, hd, norm_mul, Circle.norm_coe, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb _ κ hκ`.
+A detailed English derivation is pending.
 -/
 theorem whittaker_bound_iwasawa :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ψ : AddChar F Circle) (W' : GL (Fin 2) F → ℂ) (C : ℝ), (∀ x g, W' (Ad3.uni2 x * g) = (ψ x : ℂ) * W' g) → (∀ (a : Fˣ) g, W' (Ad3.dg2 a a * g) = W' g) → (∀ (a : Fˣ), ∀ κ ∈ GLnLocal.integralGL F 2, ‖W' (Ad3.dg2 a 1 * κ)‖ ≤ C * (modulus (a : F) : ℝ) ^ (1 / 4 : ℝ)) → ∀ (t₁ t₂ b₁ b₂ : Fˣ) (x : F), ∀ κ ∈ GLnLocal.integralGL F 2, ‖W' (Ad3.dg2 t₁ t₂ * (Ad3.uni2 x * Ad3.dg2 b₁ b₂ * κ))‖ ≤ C * (modulus ((t₁ * b₁ * (t₂ * b₂)⁻¹ : Fˣ) : F) : ℝ) ^ (1 / 4 : ℝ) := by

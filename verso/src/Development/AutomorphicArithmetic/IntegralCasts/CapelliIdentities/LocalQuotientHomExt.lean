@@ -5,19 +5,17 @@ import Mathlib
     fun (q : ℕ) ↦ LaurentPolynomial (Localization.Away (↑q : ℤ))
 
 /- English proof (translation)
-Introduce `q R _ f g h`. Establish `hC : f.comp LaurentPolynomial.C = g.comp LaurentPolynomial.C`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (q : ℤ))` to reduce the goal to its premises. Conclude with `RingHom.ext_int _ _`. Establish `hCa : ∀ a, f (LaurentPolynomial.C a) = g (LaurentPolynomial.C a)` using `fun a => RingHom.congr_fun hC a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ m n : ℤ, (LaurentPolynomial.T m : UpperTheory.Reformulated.B.LocalQuotientHomExt.LqR q) * LaurentPolynomial.T n = LaurentPolynomial.T (m + n)` using `fun m n => (LaurentPolynomial.T_add m n).symm`. Establish `h1 : f (LaurentPolynomial.T 1) * f (LaurentPolynomial.T (-1)) = 1`. Rewrite using `[← map_mul, hmul]`. Simplify using the standard rewrite rules. Establish `h2 : g (LaurentPolynomial.T 1) * g (LaurentPolynomial.T (-1)) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, hmul]`. Simplify using the standard rewrite rules. Establish `hinv : f (LaurentPolynomial.T (-1)) = g (LaurentPolynomial.T (-1))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (f (LaurentPolynomial.T 1) * f (LaurentPolynomial.T (-1))) * g (LaurentPolynomial.T (-1)) := by`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = g (LaurentPolynomial.T (-1)) := by rw [h1, one_mul]`. Establish `hT : ∀ n : ℤ, f (LaurentPolynomial.T n) = g (LaurentPolynomial.T n)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `n`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [← hmul, map_mul, map_mul, ih, h]`. Consider the case `pred i ih => rw [sub_eq_add_neg, ← hmul, map_mul, map_mul, ih, hinv]`.
+Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `p`. Proceed by induction on `p using LaurentPolynomial.induction_on' with`. Consider the case `add p r hp hr => rw [map_add, map_add, hp, hr]`. Consider the case `C_mul_T n a`.
-
-Rewrite using `[map_mul, map_mul, hCa, hT]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LocalQuotientHomExt.hom_ext :
     ∀ (q : ℕ) {R : Type} [inst : CommRing R] {f g : UpperTheory.Reformulated.B.LocalQuotientHomExt.LqR q →+* R},

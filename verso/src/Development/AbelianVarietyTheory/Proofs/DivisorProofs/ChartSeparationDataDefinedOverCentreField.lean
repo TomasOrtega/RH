@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.Assembly
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isMonomialTau_first_coords_of_unit_last_coords V Q τ₀ m N s ε hs h`.
+A detailed English derivation is pending.
 -/
 theorem monoTau_inl {V : Type} [CommRing V] [IsDomain V] (Q : Data V) (τ₀ : Gens Q) {m N : ℕ} (s : Fin m ⊕ Fin N → V)
     (ε : Fin m ⊕ Fin N → LinearMap.BilinForm ℤ Q.X) (hs : ∀ k, IsUnit (s (.inr k)))
@@ -31,7 +31,7 @@ theorem monoTau_inl {V : Type} [CommRing V] [IsDomain V] (Q : Data V) (τ₀ : G
   GlobalTheory.T.isMonomialTau_first_coords_of_unit_last_coords V Q τ₀ m N s ε hs h
 
 /- English proof (translation)
-Use `⟨h.1, fun R' _ _ _ ρ hc hi hf D ε hR => ?_⟩` and prove the remaining obligations. Take `⟨G', i1, i2, A, i3, y', α, α₂, h1, h2, h3, h4, h5⟩` from `h.2 R' ρ hc hi hf D ε hR`. Conclude with `⟨G', i1, i2, A, i3, y', α, α₂, h1, by rw [← Category.assoc, h2]; simp only [Category.assoc], h3, h4, h5⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unifOver_comp {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) {S Z : Scheme.{0}} (j : F.X ⟶ S)
     (π : S ⟶ Z) {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (ξ : Sp V ⟶ S) (Q : Data V)
@@ -41,7 +41,7 @@ theorem unifOver_comp {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n
   exact ⟨G', i1, i2, A, i3, y', α, α₂, h1, by rw [← Category.assoc, h2]; simp only [Category.assoc], h3, h4, h5⟩
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `Spec.map_surjective f`. Simplify using `using (isUnit_natCast hn).map φ.hom`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_natCast_of_cyc (n : ℕ) (hn : n ≠ 0) (V : Type) [CommRing V] (f : Sp V ⟶ Sp (cycAway n)) :
     IsUnit ((n : ℕ) : V) := by
@@ -49,14 +49,14 @@ theorem isUnit_natCast_of_cyc (n : ℕ) (hn : n ≠ 0) (V : Type) [CommRing V] (
   simpa using (isUnit_natCast hn).map φ.hom
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_pos_mul_extend_int_linearForm' F P f`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext_functional (F : Type) [AddCommGroup F] [Module.Free ℤ F] [Module.Finite ℤ F] (P : Submodule ℤ F)
     (f : P →ₗ[ℤ] ℤ) : ∃ c : ℤ, 0 < c ∧ ∃ lam : F →ₗ[ℤ] ℤ, ∀ x : P, lam x = c * f x :=
   GlobalTheory.T.exists_pos_mul_extend_int_linearForm' F P f
 
 /- English proof (translation)
-Take `rfl : i1 = i2` from `Subsingleton.elim _ _`. Conclude with `h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCone_inst {φ : InvFun ℤ} {X : Type} [AddCommGroup X] (i1 i2 : Module ℤ X) [f1 : @Module.Finite ℤ X _ _ i1]
     [f2 : @Module.Finite ℤ X _ _ i2] {m : ℕ} (gm' : Fin m → @LinearMap.BilinForm ℤ _ X _ (AddCommGroup.toIntModule X))
@@ -65,7 +65,7 @@ theorem isCone_inst {φ : InvFun ℤ} {X : Type} [AddCommGroup X] (i1 i2 : Modul
   exact h
 
 /- English proof (translation)
-Establish `h1` using `isCone_pull_of_surjective ℤ id X φ X₁ e.toLinearMap m gm' hF e.surjective hgm'`. Establish `h2` using `hF.face m m' _ h.toEmbedding h1`. Use `h2 using 2 with k` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Simplify using `[pull]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isCone_equiv {φ : InvFun ℤ} {X X₁ : Type} [AddCommGroup X] [Module.Finite ℤ X] [AddCommGroup X₁]
     [Module.Finite ℤ X₁] (hF : IsPolFanOn id φ X) {m m' : ℕ} (gm' : Fin m → LinearMap.BilinForm ℤ X₁)
@@ -78,7 +78,7 @@ theorem isCone_equiv {φ : InvFun ℤ} {X X₁ : Type} [AddCommGroup X] [Module.
   simp [pull]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih => rw [Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq {K ιt : Type} [Field K] {x : K} (hx : x ≠ 0) (s : Finset ιt) (f : ιt → ℤ) :
     ∏ i ∈ s, x ^ f i = x ^ ∑ i ∈ s, f i := by
@@ -87,9 +87,9 @@ theorem prod_zpow_eq {K ιt : Type} [Field K] {x : K} (hx : x ≠ 0) (s : Finset
   | cons a s ha ih => rw [Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ hx]
 
 /- English proof (translation)
-Use `haveI := hk`. Establish `hint : IsIntegral k₀ x`. Use `⟨Polynomial.X ^ p - Polynomial.C ⟨x ^ p, h⟩, Polynomial.monic_X_pow_sub_C _ (by omega), ?_⟩` and prove the remaining obligations. Simplify using `[Polynomial.eval₂_sub]`. Conclude with `sub_eq_zero.2 rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible hint)`. Take `⟨c, hc⟩` from `minpoly.natDegree_eq_one_iff.1 (Polynomial.natDegree_eq_of_degree_eq_some h1)`. Rewrite using `[← hc]`. Conclude with `c.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_pow_mem {K : Type} [Field K] (k₀ : Subfield K) (hk : IsAlgClosed k₀) (x : K) (p : ℕ) (hp : 0 < p)
     (h : x ^ p ∈ k₀) : x ∈ k₀ := by
@@ -104,19 +104,17 @@ theorem mem_of_pow_mem {K : Type} [Field K] (k₀ : Subfield K) (hk : IsAlgClose
   exact c.2
 
 /- English proof (translation)
-Establish `key : ∀ {l : ℕ} (a : Fin l × Fin 8 → X) (c : Fin l → C), ∃ Rr ∈ k₀, ev₁ (∏ i, u (fun v => a (i, v)) (c i)) = Rr * ∏ k, x k ^ lin W a (gm' k)`. Introduce `l a c`. Use `choose rr hrr heq using hu`. Use `⟨∏ i, rr (fun v => a (i, v)) (c i), prod_mem fun i _ => hrr _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[heq]`. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_zpow_eq (hx k)]`. Both sides reduce to the same expression. Take `⟨Rr, hR, hReq⟩` from `key a c`. Take `⟨Rr', hR', hR'eq⟩` from `key a' c'`. Take `⟨r, hr, hrr⟩` from `hr`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : ev₁ (∏ i, u (fun v => a (i, v)) (c i)) ≠ 0` using `(ha.map ev₁).ne_zero`. Establish `hP : ∀ (b : Fin N → ℤ), ∏ k, x k ^ b k ≠ 0` using `fun b => Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hx k)`. Establish `hR0 : Rr ≠ 0` using `by intro h0; rw [h0, zero_mul] at hReq; exact hne hReq`. Establish `hxp : x k ^ p = r * Rr' / Rr`. Establish `e1 : x k ^ p = ∏ k', x k' ^ (lin W a (gm' k') - lin W a' (gm' k'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hlin]`. Rewrite using `[Finset.prod_eq_single k (fun b _ hb => by rw [if_neg hb, zpow_zero]) (by simp)]`. Rewrite using `[if_pos rfl]`. Establish `e2 : ∏ k', x k' ^ (lin W a (gm' k') - lin W a' (gm' k')) = (∏ k', x k' ^ lin W a (gm' k')) / ∏ k', x k' ^ lin W a' (gm' k')`. Rewrite using `[← Finset.prod_div_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun k' _ => zpow_sub₀ (hx k') _ _`. Rewrite using `[e1, e2, eq_div_iff hR0, div_mul_eq_mul_div, div_eq_iff (hP _)]`. Rewrite `hrr` using `[hReq, hR'eq]`. Take the linear combination `hrr`. Establish `hmem : x k ^ p.toNat ∈ k₀`.
-
-Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg hp.le, hxp]`. Conclude with `div_mem (mul_mem hr hR') hR`. Conclude with `mem_of_pow_mem k₀ hk (x k) p.toNat (by omega) hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_ratio {K : Type} [Field K] (k₀ : Subfield K) (hk : IsAlgClosed k₀) {X R C : Type} [AddCommGroup X]
     [CommRing R] (ev₁ : R →+* K) (u : (Fin 8 → X) → C → R) (W : Matrix (Fin 8) (Fin 8) ℤ) {N : ℕ} (x : Fin N → K)
@@ -164,7 +162,7 @@ theorem mem_of_ratio {K : Type} [Field K] (k₀ : Subfield K) (hk : IsAlgClosed 
   exact mem_of_pow_mem k₀ hk (x k) p.toNat (by omega) hmem
 
 /- English proof (translation)
-Use `exists_hasSupports ℤ id q φ hpol fun X _ iM _ _ hX r gm' hgm' => ?_` and prove the remaining obligations. Take `rfl : iM = AddCommGroup.toIntModule X` from `Subsingleton.elim _ _`. Establish `: Module.Free ℤ X` using `inferInstance`. Conclude with `exists_supports_int φ X (hpol X hX) r gm' hgm'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_hasSupports_int (q : ℕ) (φ : InvFun ℤ) (hpol : IsPolFan id q φ) :
     ∃ d, 1 ≤ d ∧ HasSupports (id : ℤ → ℤ) q φ d := by
@@ -174,7 +172,7 @@ theorem exists_hasSupports_int (q : ℕ) (φ : InvFun ℤ) (hpol : IsPolFan id q
   exact exists_supports_int φ X (hpol X hX) r gm' hgm'
 
 /- English proof (translation)
-Take `rfl : i = AddCommGroup.toIntModule X` from `Subsingleton.elim _ _`. Use `⟨hs, fun a y z => ?_⟩` and prove the remaining obligations. Simplify using `[map_zsmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_balForms_of_symm {X : Type} [AddCommGroup X] (i : Module ℤ X)
     (β : @LinearMap.BilinForm ℤ _ X _ (AddCommGroup.toIntModule X)) (hs : ∀ y z, β y z = β z y) :
@@ -188,55 +186,51 @@ end GlobalTheory.Poinc.Sep.Assembly
 open GlobalTheory.Poinc.Sep.Assembly in
 
 /- English proof (translation)
-Introduce `g hg n hn hodd F Z z i hTC φ hpol hnsi d J S π j hd hJ hval hbl hji V _ _ _ Q ξ hU m N s ε τ₀ hrk hcone hdef hsl hsr hτ K _ _ ev k₀ hk₀ hcen hdefo`. Take `⟨hproj, hnorm, hoi, hiz, hdense, W, hE8, hTI⟩` from `hTC`. Use `haveI := hoi`. Set `ga : Fin m → LinearMap.BilinForm ℤ Q.X` to `fun k => (ε (.inl k) : LinearMap.BilinForm ℤ Q.X)`. Set `t : Fin m → V` to `fun k => s (.inl k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `δ : Fin m → LinearMap.BilinForm ℤ Q.X` to `fun k => (n : ℤ) • ga k`. Establish `hn0 : (0 : ℤ) < n` using `by exact_mod_cast (by omega : 0 < n)`. Establish `hsymm : ∀ k a b, δ k a b = δ k b a` using `fun k a b => by`. Simplify using `only [δ, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[(hcone.mem k).1 a b]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpsd : ∀ k a, 0 ≤ δ k a a` using `fun k a => by`. Simplify using `only [δ, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `mul_nonneg hn0.le (hcone.nonneg k a)`. Establish `hposd : ∀ a, a ≠ 0 → ∃ k, 0 < δ k a a` using `fun a ha => by`. Take `⟨k, hk⟩` from `hdef a ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨k, by simp only [δ, LinearMap.smul_apply, smul_eq_mul]; exact mul_pos hn0 hk⟩`. Establish `hmono : Q.IsMonomialTau t δ` using `monoTau_inl Q τ₀ s (fun k => (n : ℤ) • (ε k : LinearMap.BilinForm ℤ Q.X)) hsr hτ`. Establish `hUi : UnifOver F i (ξ ≫ π) Q` using `hji ▸ unifOver_comp F j π ξ Q hU`. Use `set l := n.minFac with hl_def`. Establish `hl : l.Prime` using `Nat.minFac_prime (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hldvd : l ∣ n` using `Nat.minFac_dvd n`. Establish `hlodd : Odd l` using `Odd.of_dvd_nat hodd hldvd`. Establish `hl3 : 3 ≤ l`. Use `hl.two_le` as an intermediate fact. Take `⟨r, hr⟩` from `hlodd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨j₁, hj₁⟩` from `GlobalTheory.T.torsion_theta_values_abelianPart_defined_over Q.g l hl hlodd W hE8`. Take `⟨j₂, hj₂⟩` from `GlobalTheory.T.eighthPower_thetaCoefficient_eq_const_mul_monomial Q.g l hl hlodd W hE8`. Take `⟨jj, X₁, z₁, Φ, y, ρ, e, h, hjj, hTr, hCM⟩` from `GlobalTheory.T.exists_fourierTermSystem_regular_traits_given_chart g hg n hn hodd F Z z i hproj ((GlobalTheory.isNormalScheme_iff Z).1 hnorm) hiz hdense W hE8 hTI V Q m t δ hrk hsl hsymm hpsd hposd hmono (ξ ≫ π) hUi l hl hldvd (max (max j₁ j₂) 1)`. Set `e' : Φ.X y ≃ₗ[ℤ] Q.X` to `e.toIntLinearEquiv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ga' : Fin (Φ.m y) → LinearMap.BilinForm ℤ (Φ.X y)` to `fun k => (LinearMap.BilinForm.congr e'.symm) (ga (h k))`. Take `⟨ev₁, hev₁, hEl⟩` from `GlobalTheory.T.exists_stalk_elements_approx_leadingTerm_quotients g hg n hn hodd F Z z i hproj ((GlobalTheory.isNormalScheme_iff Z).1 hnorm) hiz hdense W hE8 φ d J S π j hJ hval hbl hji hpol V Q m t δ hrk hsl hsymm hpsd hposd hmono ga n (by omega) hcone (fun k => rfl) ξ hU ((l ^ …`. Take `⟨d₀, hd₀, hsup⟩` from `exists_hasSupports_int g φ hpol`. Establish `hjj1 : 1 ≤ jj` using `le_trans (le_max_right _ _) hjj`. Establish `hN₁ : 3 ≤ (l ^ jj) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1 : l ≤ l ^ jj` using `Nat.le_self_pow (by omega) l`. Establish `h2 : l ^ jj ≤ (l ^ jj) ^ 2` using `Nat.le_self_pow (by norm_num) _`. Use linear arithmetic over natural numbers and integers. Establish `hm : Φ.mod y = AddCommGroup.toIntModule _` using `Subsingleton.elim _ _`. Establish `hrkΦ : Module.finrank ℤ (Φ.X y) ≤ g`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `convert Φ.rank_le y <;> first | rfl | exact hm.symm`. Establish `hFΦ : IsPolFanOn id φ (Φ.X y)` using `hpol (Φ.X y) hrkΦ`. Establish `hδ' : ∀ k, Φ.δ y k = (n : ℤ) • ga' k` using `fun k => by`. Use extensionality with `a b`. Rewrite using `[(hCM.2.2.2.1 k).2 a b]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[ga', e', δ, ga]`. Establish `hV` using `GlobalTheory.T.poincareApprox_values_at_point_of_elements ℤ id g φ hpol hnsi d₀ d hd₀ hd hsup 7 W hE8.1 ((l ^ jj) ^ 2) hN₁ _ Φ y ga' n (by omega) (isCone_inst (AddCommGroup.toIntModule _) (Φ.mod y) ga' (isCone_equiv hFΦ ga hcone e' h)) hδ' K ev₁ k₀ hEl`. Take `⟨hinj, -, -, htd, D, e₈, hSharp, hTheta⟩` from `hCM`. Establish `hA1 : ∀ i, ev (s (.inl i)) = 0` using `fun i => by`. Take `⟨k, rfl⟩` from `h.surjective i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hV.1 k` as an intermediate fact. Rewrite `this` using `[(htd k).1, ← RingHom.comp_apply, hev₁]`. Conclude with `this`. Establish `hlu : IsUnit ((l : ℕ) : Φ.V y)`. Establish `hnV : IsUnit ((n : ℕ) : V)` using `isUnit_natCast_of_cyc n (by omega) V (ξ ≫ π ≫ z)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlV : IsUnit ((l : ℕ) : V)` using `isUnit_of_dvd_unit (Nat.cast_dvd_cast hldvd) hnV`. Simplify using `using hlV.map ρ`. Establish `hmu : ∀ mu : Fin 8 → Q.X, mono W (Φ.t y) (Φ.δ y) (fun a => e.symm (mu a)) ≠ 0 ∧ ∃ c, IsUnit (Φ.u y (fun a => e.symm (mu a)) c)` using `fun mu => ⟨Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (Φ.t_mem y k).2, Φ.u_unit y _⟩`. Use `⟨hA1, ?_, ?_⟩` and prove the remaining obligations. Introduce `o' _ ζ' g' n' F' lam β β₂ hn' hd' hgp hsq hlb a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hj₁ jj (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hjj) V (Φ.V y) (Φ.cn y) hlu Q le_rfl ρ hinj D e₈ hSharp Φ.Q (fun mu c => Φ.u y (fun a => e.symm (mu a)) c) (fun mu => mono W (Φ.t y) (Φ.δ y) (fun a => e.symm (mu a))) hmu hTheta K ev₁ k₀ hk₀ (fun mu c c' hc' => hV.2. …` as an intermediate fact. Rewrite `this` using `[hev₁]`. Then use the resulting hypothesis. Introduce `W₀ _ ιtb hFB hW₀ i`. Break down `i with i | k` into its components or cases. Rewrite using `[hA1 i]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `k₀.zero_mem`. Set `u : (Fin 8 → Q.X) → Φ.Q → Φ.V y` to `fun mu c => Φ.u y (fun a => e.symm (mu a)) c`. Set `mo : (Fin 8 → Q.X) → Φ.V y` to `fun mu => mono W (Φ.t y) (Φ.δ y) (fun a => e.symm (mu a))`. Set `εn : Fin m ⊕ Fin N → LinearMap.BilinForm ℤ Q.X` to `fun k => (n : ℤ) • (ε k : LinearMap.BilinForm ℤ Q.X)`. Establish `hqnn : ∀ k mu, 0 ≤ qW W (εn (.inl k)) mu` using `fun k mu => qW_nonneg hE8.1 (hsymm k) (hpsd k) mu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hmo : ∀ mu, mo mu = mono W (fun k => ρ (s (.inl k))) (fun k => εn (.inl k)) mu` using `fun mu => by`. Simplify using `only [mo, mono]`. Use `Fintype.prod_equiv h _ _ fun k' => ?_` and prove the remaining obligations. Rewrite using `[(htd k').1]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [qW]`. Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[(htd k').2]`. Simplify using `[εn, δ, ga]`. Establish `hsb` using `hj₂ jj (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hjj) V (Φ.V y) (Φ.cn y) hlu Q le_rfl ρ hinj D e₈ hSharp Φ.Q u mo hmu hTheta K ev₁ k₀ hk₀ τ₀ m N s εn hsr hqnn hτ hmo W₀ ιtb hFB (fun a => by rw [← RingHom.comp_apply, hev₁]; exact hW₀ a)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨c0, hc0, lam, hlam⟩` from `exists_ext_functional (LinearMap.BilinForm ℤ Q.X) (balForms (id : ℤ → ℤ) Q.X) (ε.coord (.inr k))`. Set `lamΦ : LinearMap.BilinForm ℤ (Φ.X y) →ₗ[ℤ] ℤ` to `lam ∘ₗ (LinearMap.BilinForm.congr e').toLinearMap`. Establish `hback : ∀ β : LinearMap.BilinForm ℤ Q.X, LinearMap.BilinForm.congr e' (LinearMap.BilinForm.congr e'.symm β) = β` using `fun β => by`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hlamε : ∀ j', lamΦ (LinearMap.BilinForm.congr e'.symm (ε j')) = if j' = .inr k then c0 else 0` using `fun j' => by`. Simplify using `only [lamΦ, LinearMap.comp_apply, LinearEquiv.coe_coe, hback]`. Rewrite using `[hlam (ε j'), Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hker : ∀ k', lamΦ (Φ.δ y k') = 0` using `fun k' => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hδ' k', map_zsmul, show ga' k' = LinearMap.BilinForm.congr e'.symm (ε (.inl (h k'))) from rfl, hlamε]`. Simplify using the standard rewrite rules. Take `⟨l1, l1', M, a, a', c, c', hM, hu, hu', hlin, r, hr, hev⟩` from `hV.2.2 lamΦ hker`. Establish `hlin' : ∀ k', lin W (fun p => e (a p)) (εn (.inr k')) - lin W (fun p => e (a' p)) (εn (.inr k')) = if k' = k then (M : ℤ) * (n * c0) else 0` using `fun k' => by`. Establish `hb` using `(ε (.inr k')).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hlin _ (mem_balForms_of_symm (Φ.mod y) (LinearMap.BilinForm.congr e'.symm (εn (.inr k'))) fun y z => by` as an intermediate fact. Simplify using `only [LinearMap.BilinForm.congr_apply, LinearEquiv.symm_symm, εn, LinearMap.smul_apply]`. Rewrite using `[hb.1])`. Establish `htr : ∀ {l2 : ℕ} (b : Fin l2 × Fin 8 → Φ.X y), lin W (fun p => e (b p)) (εn (.inr k')) = lin W b (LinearMap.BilinForm.congr e'.symm (εn (.inr k')))`. Introduce `l2 b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[lin, qW, e']`. Establish `hl2 : lamΦ (LinearMap.BilinForm.congr e'.symm (εn (.inr k'))) = (n : ℤ) * (if (Sum.inr k' : Fin m ⊕ Fin N) = .inr k then c0 else 0)`. Rewrite using `[show εn (.inr k') = (n : ℤ) • (ε (.inr k') : LinearMap.BilinForm ℤ Q.X) from rfl, map_zsmul, map_zsmul, hlamε, smul_eq_mul]`. Rewrite using `[htr, htr, this, hl2]`. Break down `eq_or_ne k' k with rfl | hk` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [if_true]`. Simplify using `only [hk, if_false, Sum.inr.injEq, mul_zero]`. Establish `hxk` using `mem_of_ratio k₀ hk₀ ev₁ u W (fun k => ev (s (.inr k))) (fun k => ((hsr k).map ev).ne_zero) (fun k => εn (.inr k)) (fun mu c => by`. Take `⟨r, hr, he⟩` from `hsb mu c`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Simplify using `only [← RingHom.comp_apply, hev₁]) (fun p => e (a p)) (fun p => e (a' p)) c c'`. Use the proof step `(by`. Establish `hc : (∏ i, u (fun v => e (a (i, v))) (c i)) = Φ.coefT y a c` using `by simp [u, GlobalTheory.Poinc.VSys.coefT]`. Rewrite using `[hc]; exact hu) k ((M : ℤ) * (n * c0)) (by positivity) hlin'`.
-
-Use the proof step `⟨r, hr, by`. Establish `hc : ∀ {l2 : ℕ} (b : Fin l2 × Fin 8 → Φ.X y) (d : Fin l2 → Φ.Q), (∏ i, u (fun v => e (b (i, v))) (d i)) = Φ.coefT y b d`. Introduce `l2 b d`. Simplify using `[u, GlobalTheory.Poinc.VSys.coefT]`. Rewrite using `[hc, hc]`.
-
-Conclude with `hev⟩`. Conclude with `hxk`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.Sep.sepSt : SepSt := by
   intro g hg n hn hodd F Z z i hTC φ hpol hnsi d J S π j hd hJ hval hbl hji V _ _ _ Q ξ hU m N s ε τ₀ hrk hcone hdef

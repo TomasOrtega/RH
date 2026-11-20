@@ -14,19 +14,17 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Small
 
 /- English proof (translation)
-Introduce `h K _ ι _ Ω _ y D A P0 II hD hII hV hB hP hS hF hC`. Establish `hN : NefOnGeneric (mCoordIdeal y) A` using `GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericOfSemipos.proof K ι (mCoordIdeal y) P0 A hP hS`. Establish `hb` using `h K ι Ω y D A P0 II hII hV hB hP hS hC hF hN`. Take `⟨hfin, C, hC'⟩` from `GlobalTheory.T.packing' K ι Ω y D A (chartLatNm y A.a) hV hB hS.1 (fun _ => le_rfl)`. Use `hb.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `arVolP`. Establish `h0 : ∀ (La : ℕ → AddSubgroup Ω) (τ : ℕ), 0 ≤ smallSectionCount (IsSmallH (mCoordIdeal y) y A) La τ`. Introduce `La τ`. Unfold `smallSectionCount`. Conclude with `Real.log_natCast_nonneg _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hden : ∀ k : ℕ, (0 : ℝ) ≤ ((1 * k : ℕ) : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)` using `fun k => by positivity`. Use `Filter.limsup_le_limsup ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun k => div_le_div_of_nonneg_right (GroundTheory.Heights₂.Heights.HilbertSamuel.smallSectionCount_mono_lattice _ _ (GroundTheory.Heights₂.Heights.HilbertSamuel.chartLat_le_chartLatNm y A.a _) (hfin _)) (hden k)`. Conclude with `Filter.isCoboundedUnder_le_of_le Filter.atTop (fun k => div_nonneg (h0 _ _) (hden k))`. Use `Filter.isBoundedUnder_of_eventually_le (a := max C 0 * 2 ^ (D + 1) * ((D + 1).factorial : ℝ)) ?_ filter_upwards [Filter.eventually_ge_atTop 1] with k hk` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkpos : (0 : ℝ) < ((1 * k : ℕ) : ℝ)`. Rewrite using `[one_mul]`. Conclude with `hk` after adjusting the coercions. Establish `hF : (0 : ℝ) < ((D + 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Establish `hpos : (0 : ℝ) < ((1 * k : ℕ) : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hpos]`. Establish `h1` using `hC' (1 * k)`. Establish `h2 : ((1 * k : ℕ) : ℝ) + 1 ≤ 2 * ((1 * k : ℕ) : ℝ)`. Establish `: (1 : ℝ) ≤ ((1 * k : ℕ) : ℝ)`. Rewrite using `[one_mul]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hk` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (((1 * k : ℕ) : ℝ) + 1) ^ (D + 1) ≤ (2 * ((1 * k : ℕ) : ℝ)) ^ (D + 1)` using `pow_le_pow_left₀ (by positivity) h2 _`. Establish `h4 : C * (((1 * k : ℕ) : ℝ) + 1) ^ (D + 1) ≤ max C 0 * (((1 * k : ℕ) : ℝ) + 1) ^ (D + 1)` using `mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`. Establish `hF'` using `hF.ne'`.
-
-Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem selfIntersection_le_volNm_of_moriwakiBig : MoriwakiBigStatement → BirationalPullbackPushforwardFormula := by
   intro h K _ ι _ Ω _ y D A P0 II hD hII hV hB hP hS hF hC

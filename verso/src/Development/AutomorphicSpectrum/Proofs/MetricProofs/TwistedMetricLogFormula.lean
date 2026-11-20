@@ -10,9 +10,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec
 
 /- English proof (translation)
-Establish `hpos : ∀ k, 0 < ∑ i, ‖z ⟨k, i⟩‖ ^ 2` using `fun k => by`. Take `⟨i, hi⟩` from `hz k`. Conclude with `lt_of_lt_of_le (pow_pos (norm_pos_iff.mpr hi) 2) (Finset.single_le_sum (fun i _ => sq_nonneg ‖z ⟨k, i⟩‖) (Finset.mem_univ i))`. Unfold `refNorm`. Rewrite using `[Real.log_prod fun k _ => (Real.rpow_pos_of_pos (hpos k) _).ne']`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => Real.log_rpow (hpos k) _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_refNorm_blocks {κ : Type} [Fintype κ] {ρ : κ → Type} [∀ k, Fintype (ρ k)] (d : κ → ℤ)
     {z : (Σ k, ρ k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -29,9 +27,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
 /- English proof (translation)
-Establish `hd : ∀ p, M.dy p k₀ = if p = (τ, a) then 1 else 0` using `fun p => by`. Establish `hn : ¬ ∀ p', M.blk p' ≠ some k₀` using `fun h => h _ hk`. Unfold `FlagModel.dy`. Rewrite using `[dif_neg hn]`. Distinguish the cases in `hp : p = (τ, a)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (hp ▸ hk), if_pos hp]`. Rewrite using `[if_neg fun e => hp (M.blk_inj _ _ k₀ e hk), if_neg hp]`. Unfold `xiDeg`. Simplify using `only [hd, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `[xiCoef]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem xiDeg_self (M : FlagModel y Ψ N j) {τ : Ψ} {a : Fin N} {k₀ : K} (hk : M.blk (τ, a) = some k₀) :
     xiDeg M τ a k₀ = -2 := by
@@ -47,27 +45,25 @@ theorem xiDeg_self (M : FlagModel y Ψ N j) {τ : Ψ} {a : Fin N} {k₀ : K} (hk
   simp [xiCoef]
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M τ a k₀ hk zz hz`. Establish `hf : ∀ k, ∃ i, fstPt k₀ zz ⟨k, i⟩ ≠ 0` using `fun k => hz (some k)`. Establish `hs : ∀ k, ∃ i, sndPt k₀ zz ⟨k, i⟩ ≠ 0` using `fun k => by`. Distinguish the cases in `e : k = k₀`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨i, hi⟩` from `hz none`. Use `⟨i, ?_⟩` and prove the remaining obligations. Simplify `hi` using `[sndPt, v₁_self]`. Take `⟨i, hi⟩` from `hz (some k)`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hi` using `[sndPt, v₁_ne (p := ⟨k, i⟩) e]`. Use `set A : K → ℝ := fun k => Real.log (∑ i, ‖fstPt k₀ zz ⟨k, i⟩‖ ^ 2) with hA`. Use `set B : K → ℝ := fun k => Real.log (∑ i, ‖sndPt k₀ zz ⟨k, i⟩‖ ^ 2) with hB`. Use `set Ln : ℝ := Real.log (∑ i : ι k₀, ‖zz ⟨none, i⟩‖ ^ 2) with hLn`. Establish `hB₀ : B k₀ = Ln`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hB, hLn, sndPt, Function.comp_apply, v₁_self]`. Establish `hBne : ∀ k, k ≠ k₀ → B k = A k` using `fun k e => by`. Simplify using `only [hA, hB, fstPt, sndPt, Function.comp_apply, v₀]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[v₁_ne (p := ⟨k, i⟩) e]`. Establish `hlhs : Real.log ((potA M τ a k₀).h zz) = 1 / 2 * Ln + ∑ k, (aDeg M τ a k₀ (some k) : ℝ) / 2 * A k` using `by show Real.log (refNorm (aDeg M τ a k₀) zz) = _`. Rewrite using `[log_refNorm_blocks _ hz, Fintype.sum_option]`. Simplify using `only [aDeg, hLn, hA]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hrhs : ∑ p, (xiCoef τ a p : ℝ) * (Real.log ((fsHerm ι (M.dy p)).h (fstPt k₀ zz)) + Real.log ((fsHerm ι (M.dy p)).h (sndPt k₀ zz))) = ∑ k, (xiDeg M τ a k : ℝ) / 2 * (A k + B k)`. Establish `hp : ∀ p, Real.log ((fsHerm ι (M.dy p)).h (fstPt k₀ zz)) + Real.log ((fsHerm ι (M.dy p)).h (sndPt k₀ zz)) = ∑ k, (M.dy p k : ℝ) / 2 * (A k + B k)` using `fun p => by`. Rewrite using `[fsHerm_h, fsHerm_h, log_refNorm_blocks _ hf, log_refNorm_blocks _ hs, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by simp only [hA, hB]; ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hp, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [xiDeg]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.sum_div, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Rewrite using `[hlhs, hrhs]`. Establish `hterm : ∀ k, (aDeg M τ a k₀ (some k) : ℝ) / 2 * A k + 1 / 2 * ((xiDeg M τ a k : ℝ) / 2 * (A k + B k)) = if k = k₀ then -(1 / 2) * Ln else 0` using `fun k => by`. Distinguish the cases in `e : k = k₀`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `e` using the available equality. Rewrite using `[if_pos rfl, hB₀, xiDeg_self M hk]`. Simplify using `only [aDeg, if_true]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[if_neg e, hBne k e]`. Simplify using `only [aDeg, if_neg e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum` using `Finset.sum_congr (rfl : (Finset.univ : Finset K) = _) fun k _ => hterm k`.
-
-Rewrite `hsum` using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_ite_eq' Finset.univ k₀, if_pos (Finset.mem_univ _)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_potA : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (τ : Ψ) (a : Fin N) (k₀ : K), M.blk (τ, a) = some k₀ → ∀ zz : (Σ o : Option K, ι (o.getD k₀)) → ℂ, (∀ o, ∃ i, zz ⟨o, i⟩ ≠ 0) → Real.log ((potA M τ a k₀).h zz) = -(1 / 2) * ∑ p, (xiCoef τ a p : ℝ) * (Real.log ((fsHerm ι (M.dy p)).h (fstPt k₀ zz)) + Real.log ((fsHerm ι (M.dy p)).h (sndPt k₀ zz))) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M τ a k₀ hk zz hz

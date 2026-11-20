@@ -17,11 +17,11 @@ variable {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ}
 
 omit [Fintype ι] in
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial p c`. Rewrite using `[rename_monomial, rename_monomial, monomial_mul, mul_one, jetLin, constr_monomial]`. Establish `h1 : (p.mapDomain Sum.inl + m.mapDomain Sum.inr).comapDomain Sum.inl Sum.inl_injective.injOn = p`. Use extensionality with `x`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Finsupp.comapDomain_apply, Finsupp.add_apply, Finsupp.mapDomain_apply Sum.inl_injective, Finsupp.mapDomain_notin_range _ _ (by simp), add_zero]`. Establish `h2 : (p.mapDomain Sum.inl + m.mapDomain Sum.inr).comapDomain Sum.inr Sum.inr_injective.injOn = m`. Use extensionality with `x`. Rewrite using `[Finsupp.comapDomain_apply, Finsupp.add_apply, Finsupp.mapDomain_apply Sum.inr_injective, Finsupp.mapDomain_notin_range _ _ (by simp), zero_add]`. Rewrite using `[h1, h2, smul_monomial, smul_monomial, smul_eq_mul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq => rw [map_add, add_mul, map_add, hp, hq, smul_add]`.
+Treat this case separately.
 -/
 theorem jetLin_mul_monomial (J : (DVar ι a b →₀ ℕ) → K) (P : Pol K ι b) (m : DVar ι a b →₀ ℕ) :
     jetLin J (rename Sum.inl P * rename Sum.inr (monomial m (1 : K))) = J m • P := by
@@ -43,17 +43,17 @@ def joinExp (α : ι → (Fin b × Fin a →₀ ℕ)) : DVar ι a b →₀ ℕ :
   Finsupp.equivFunOnFinite.symm fun k => α k.1 k.2
 
 /- English proof (translation)
-Establish `e1 : subD K ι a b (ten fun τ => map (Int.castRingHom K) (F τ)) = ∏ τ, aeval (fun v : Fin a × Fin a => ∑ β : Fin b, (X (Sum.inl (τ, β, Fin.castLE h v.2)) : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) * X (Sum.inr (τ, β, v.1))) (F τ)`. Unfold `subD ten blockEmb`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_rename]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(aeval_map_algebraMap K _ (F τ)).trans ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `v`. Establish `hv : (v.2 : ℕ) < b` using `lt_of_lt_of_le v.2.2 h`. Simplify using `only [Function.comp_apply, dif_pos hv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e1]`. Use `(Finset.prod_congr rfl fun τ _ => aeval_subGen h (fun v : Fin b × Fin a => (X (Sum.inr (τ, v)) : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K)) (fun v : Fin b × Fin b => X (Sum.inl (τ, v))) (F τ)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Unfold `ten blockEmb`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[rename_rename, rename_eq_aeval]`. Conclude with `(aeval_map_algebraMap K _ _).symm`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (by simp), map_prod, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `(Finsupp.prod_fintype (α τ) (fun v e => (X (Sum.inr (τ, v)) : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) ^ e) (by simp)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[joinExp]`.
+A detailed English derivation is pending.
 -/
 theorem subD_ten [DecidableEq ι] (h : a ≤ b) (F : ι → MvPolynomial (Fin a × Fin a) ℤ) :
     subD K ι a b (ten fun τ => map (Int.castRingHom K) (F τ)) =
@@ -94,9 +94,9 @@ theorem subD_ten [DecidableEq ι] (h : a ≤ b) (F : ι → MvPolynomial (Fin a 
     simp [joinExp]
 
 /- English proof (translation)
-Establish `e : (ten fun τ => map (Int.castRingHom K) (f τ)) * ∏ τ, frDet K a τ ^ n τ = ten fun τ => map (Int.castRingHom K) (f τ * GlobalTheory.WeylMinorDual.gdet ℤ a ^ n τ)`. Rewrite using `[← GlobalTheory.WeylMinorDual.ten_gdet]`. Simplify using `only [ten, map_mul, map_pow, GlobalTheory.WeylMinorDual.map_gdet, Finset.prod_mul_distrib]`. Express the relevant statement in the definitionally equal form `jetLin J (subD K ι a b (_ * _)) = _`. Rewrite using `[e, subD_ten h, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun α _ => jetLin_mul_monomial _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem jetMap_ten [DecidableEq ι] (h : a ≤ b) (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ)
     (f : ι → MvPolynomial (Fin a × Fin a) ℤ) :
@@ -117,7 +117,7 @@ end Expand
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `map (algebraMap (𝓞 K) K) _ = _`. Rewrite using `[map_map]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem toK_map_int {σ : Type} (f : MvPolynomial σ ℤ) :
     toK K σ (map (Int.castRingHom (𝓞 K)) f) = map (Int.castRingHom K) f := by
@@ -126,7 +126,7 @@ theorem toK_map_int {σ : Type} (f : MvPolynomial σ ℤ) :
   congr 1
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨_, fun τ => ⟨_, GlobalTheory.WeylRowAll.map_mem_weyl (Int.castRingHom (𝓞 K)) _ _ _ (hf τ), toK_map_int _⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ten_mem_delStd (lam : ι → DomWeight a) {f : ι → MvPolynomial (Fin a × Fin a) ℤ}
     (hf : ∀ τ, f τ ∈ delSq ℤ a (lam τ)) : (ten fun τ => map (Int.castRingHom K) (f τ)) ∈ delStd K lam :=
@@ -134,11 +134,11 @@ theorem ten_mem_delStd (lam : ι → DomWeight a) {f : ι → MvPolynomial (Fin 
     toK_map_int _⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h : ∀ τ, (delSq (𝓞 K) a (lam τ)).map (toK K _) = Submodule.span (𝓞 K) (Set.range fun u => map (Int.castRingHom K) (applyWord ℤ u (hw ℤ (le_refl a) (lam τ).natW)))` using `fun τ => by`. Rewrite using `[delSq, weyl, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `u`. Rewrite using `[← toK_map_int, ← lclosedeq_applyWord_map, lclosedeq_hw_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `delStd`. Simplify using `only [h]`. Rewrite using `[GlobalTheory.WeylMinorDual.tensorLat_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `⟨_, fun τ => Submodule.subset_span ⟨u τ, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem delStd_le_span (lam : ι → DomWeight a) :
     delStd K lam ≤ Submodule.span (𝓞 K) {P | ∃ f : ι → MvPolynomial (Fin a × Fin a) ℤ,
@@ -158,7 +158,7 @@ theorem delStd_le_span (lam : ι → DomWeight a) :
   exact ⟨_, fun τ => Submodule.subset_span ⟨u τ, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h1 : F ∈ localization₂ w.asIdeal (delK lam fun τ => dualFr (M τ)) ↔ (F : Pol K ι a) ∈ localization₂ w.asIdeal (delP lam fun τ => dualFr (M τ))` using `Iff.rfl`. Establish `h2` using `(GlobalTheory.TransLoc.nabDelLoc_free_leVV.1 K ι a lam (fun τ => dualFr (M τ)) (fun τ => GlobalTheory.DualLat.isLattice_dualFr _ (GlobalTheory.HAtBasis.isLattice_of_basisAt w (hM τ).1 (hM τ).2)) w (fun τ => inside₂ K a ((1 : ι → GL (Fin a) K) τ)) (fun τ => GlobalTheory.DualWeylDu …`. Rewrite using `[h1, h2, GlobalTheory.TransLoc.mem_map_actP, GlobalTheory.HAtBasis.polyAction_invTranspose_inv]`. Simplify using `only [Pi.one_apply, Units.val_one, Matrix.det_one, one_zpow, Finset.prod_const_one, one_smul, blockAct_one, AlgHom.id_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_localization_weylLattice_iff (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight a)
     {M : ι → Submodule (𝓞 K) (Fin a → K)} (hM : LatWithBasis w M 1) (F : Formalism.L2.DIV.VV K lam) :
@@ -174,7 +174,7 @@ theorem mem_localization_weylLattice_iff (w : HeightOneSpectrum (𝓞 K)) (lam :
     AlgHom.id_apply]
 
 /- English proof (translation)
-Take `⟨r, ⟨d, hd⟩, h⟩` from `w.exists_primeCompl_mul_eq_of_integer x hx`. Establish `h' : algebraMap (𝓞 K) K d * x = algebraMap (𝓞 K) K r` using `(mul_comm _ _).trans h`. Establish `e : d • x • P = r • P`. Rewrite using `[← algebraMap_smul K d (x • P), smul_smul, h', algebraMap_smul]`. Conclude with `⟨d, hd, e ▸ T.smul_mem r hP⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem smul_mem_localizationAt_of_valuation (w : HeightOneSpectrum (𝓞 K)) {Z : Type} [AddCommGroup Z] [Module K Z] [Module (𝓞 K) Z]
     [IsScalarTower (𝓞 K) K Z] {T : Submodule (𝓞 K) Z} {x : K}
@@ -186,17 +186,17 @@ theorem smul_mem_localizationAt_of_valuation (w : HeightOneSpectrum (𝓞 K)) {Z
   exact ⟨d, hd, e ▸ T.smul_mem r hP⟩
 
 /- English proof (translation)
-Establish `hF : ∀ τ, f τ * GlobalTheory.WeylMinorDual.gdet ℤ a ^ n τ ∈ weyl ℤ a a le_rfl fun r => (lam τ).natW r + n τ` using `fun τ => by`. Rewrite using `[GlobalTheory.WeylMinorDual.weyl_add]`. Conclude with `⟨f τ, hf τ, rfl⟩`. Establish `hν : ∀ τ (j : Fin b), (lam' τ).natW j = if h : (j : ℕ) < a then (lam τ).natW ⟨j, h⟩ + n τ else 0`. Introduce `τ j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e0` using `GlobalTheory.WeylMinorDual.natW_cast (lam' τ) j`. Establish `e5` using `detShift_eq hw τ`. Use `split_ifs with h`. Establish `e1 : (lam' τ).w j + s τ = _` using `hw.1 τ ⟨j, h⟩`. Establish `e2` using `GlobalTheory.WeylMinorDual.natW_cast (lam τ) ⟨j, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `hw.2.2 τ`. Use linear arithmetic over natural numbers and integers. Establish `e1` using `hw.2.1 τ j (not_lt.1 h)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[jetMap_ten hab.le, Finset.smul_sum]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun α hα => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `smul_mem_localizationAt_of_valuation w (hJ _ fun τ => ?_) (ten_mem_delStd lam' fun τ => coeff_subGen_mem hab.le (natW_anti _) (hν τ) (hF τ) _)` and prove the remaining obligations. Establish `h1` using `subGen_isHomogeneous hab.le (isHomogeneous_of_mem_weyl (fun _ _ h => Nat.add_le_add_right (natW_anti _ h) _) (hF τ)) (mem_support_iff.1 (Fintype.mem_piFinset.1 hα τ))`. Establish `h2 : (∑ β : Fin b, ∑ γ : Fin a, joinExp α (τ, β, γ)) = ∑ r, ((lam τ).natW r + n τ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type]`. Simplify using `[joinExp]`. Rewrite using `[h2, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_add, GlobalTheory.WeylMinorDual.natW_cast, hw.2.2 τ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem jetMap_ten_mem (w : HeightOneSpectrum (𝓞 K)) {hab : a < b} {lam : ι → DomWeight a} {lam' : ι → DomWeight b}
     {s s' : ι → ℤ} {n : ι → ℕ} (hw : WtCompat hab lam lam' s s' n) {c : K} {J : (DVar ι a b →₀ ℕ) → K}
@@ -234,11 +234,11 @@ theorem jetMap_ten_mem (w : HeightOneSpectrum (𝓞 K)) {hab : a < b} {lam : ι 
   ring
 
 /- English proof (translation)
-Introduce `K _ _ w ι _ a b hab lam lam' s s' n hw M MW _ _ hM hMW c J hJ F hF`. Establish `hmem : jetMap J n (F : Pol K ι a) ∈ Formalism.L2.DIV.VV K lam'` using `jetMap_mem hab.le n _ _ (fun ap => GlobalTheory.SubstMem.substAdj_sharp_mem K ι a b hab lam lam' s s' n hw ap _ F.2) J`. Rewrite `hF` using `[mem_localization_weylLattice_iff w lam hM]`. Rewrite using `[mem_localization_weylLattice_iff w lam' hMW, Submodule.coe_smul, coe_jetOp _ _ _ _ _ hmem]`. Establish `key : delStd K lam ≤ (localization₂ w.asIdeal (delStd K lam')).comap ((c • jetMap J n).restrictScalars (𝓞 K))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(delStd_le_span lam).trans (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `jetMap_ten_mem w hw hJ hf`. Take `⟨t, ht, hF⟩` from `hF`. Take `⟨u, hu, h⟩` from `key hF`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u * t, mul_mem hu ht, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[map_smul]`. Rewrite using `[mul_smul]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetOpWeyl : GlobalTheory.ColPeriod.JetOpWeyl := by
   intro K _ _ w ι _ a b hab lam lam' s s' n hw M MW _ _ hM hMW c J hJ F hF

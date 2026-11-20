@@ -7,25 +7,21 @@ open scoped BigOperators
 namespace GlobalTheory.FinWeil
 
 /- English proof (translation)
-Establish `hsm : ∀ (c : ℂ) e, Fixes W A e → Fixes W A (c • e)` using `fun c e he a ha => by rw [map_smul, he a ha]`. Establish `key : ∀ {ι : Type} (x : ι → X) (s : Finset ι) (e : ι → M), (∀ i, Fixes W A (e i)) → (∀ a ∈ A, W (P a) (∑ i ∈ s, W (x i) (e i)) = ∑ i ∈ s, W (x i) (e i)) → T (∑ i ∈ s, W (x i) (e i)) = ∑ i ∈ s, W (x i) (e i)`. Introduce `ι x s`. Proceed by induction on `s using Finset.strongInduction with`. Consider the case `H s ih`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `e he hfix`. Distinguish the cases in `hall : ∀ i ∈ s, P (x i) ∈ A`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `h1` using `h.comp (x i - P (x i)) (P (x i)) (e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[he i _ (hall i hi), sub_add_cancel]`. Establish `h2 : T (W (x i - P (x i)) (e i)) = W (x i - P (x i)) (e i)` using `by rw [hT, hφ, hTe _ (he i)]`. Rewrite `h2` using `[h1, map_smul]`. Conclude with `smul_right_injective M (h.ne_zero _ _) h2`. Use `push Not at hall`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨j, hj, hjA⟩` from `hall`. Rewrite `hjA` using `[hA]`. Use `push Not at hjA`. Take `⟨a, ha, hz⟩` from `hjA`. Establish `hz' : γ (P a) (x j) ≠ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h0` using `[hP]`. Conclude with `hz (h.swap_eq_one h0)`. Use `set z := γ (P a) (x j) with hzdef`. Establish `hact : ∀ i, W (P a) (W (x i) (e i)) = γ (P a) (x i) • W (x i) (e i)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.comm, he i _ (hPA a ha)]`. Establish `hsum : (1 - z) • ∑ i ∈ s, W (x i) (e i) = ∑ i ∈ s.erase j, W (x i) ((γ (P a) (x i) - z) • e i)`. Rewrite using `[Finset.sum_erase s (by simp [hzdef]), sub_smul, one_smul]`. Establish `h4 : ∑ i ∈ s, W (x i) (e i) = ∑ i ∈ s, γ (P a) (x i) • W (x i) (e i)`. Rewrite using `[← hfix a ha, map_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => hact i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h4, Finset.smul_sum]`. Use `_ = _ := by`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, sub_smul]`. Establish `h3` using `ih (s.erase j) (Finset.erase_ssubset hj) (fun i => (γ (P a) (x i) - z) • e i) (fun i => hsm _ _ (he i)) (fun b hb => by rw [← hsum, map_smul, hfix b hb])`. Rewrite `h3` using `[← hsum, map_smul]`. Conclude with `smul_right_injective M (sub_ne_zero.2 hz'.symm) h3`. Establish `hmem : m ∈ Submodule.span ℂ {m : M | ∃ x e, Fixes W A e ∧ m = W x e}` using `by rw [hspan]; trivial`.
-
-Take `⟨n, c, g, hg⟩` from `Submodule.mem_span_set'.1 hmem`. Use `choose x e he hge using fun i => (g i).2`. Establish `hm' : m = ∑ i, W (x i) (c i • e i)`. Rewrite using `[← hg]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, hge i]`.
-
-Rewrite `hm`, the goal using `[hm']`. Conclude with `key x Finset.univ _ (fun i => hsm _ _ (he i)) hm`.
+A detailed English derivation is pending.
 -/
 theorem intertwiner_fixes_of_local_vacuum {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M]
     {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M} (h : IsHeis σ w γ W) (A : Submodule R X) (hA : SelfDual γ A)

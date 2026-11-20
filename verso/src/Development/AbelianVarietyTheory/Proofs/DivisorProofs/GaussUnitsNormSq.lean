@@ -9,13 +9,13 @@ namespace GaussUnits
 variable {R : Type} [CommRing R] [Fintype R]
 
 /- English proof (translation)
-Take `⟨x₀, hx₀I, hx₀⟩` from `hb`. Establish `hne : ¬ ∀ r, ψ (b * x₀ * r) = 1` using `fun h => hx₀ (hψ _ h)`. Use `push_neg at hne`. Take `⟨r, hr⟩` from `hne`. Establish `hyI : x₀ * r ∈ I` using `I.mul_mem_right r hx₀I`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hby : ψ (b * (x₀ * r)) ≠ 1` using `by rwa [← mul_assoc]`. Establish `hshift` using `Fintype.sum_equiv (Equiv.addRight (x₀ * r)) (fun x => if x + x₀ * r ∈ I then ψ (b * (x + x₀ * r)) else 0) (fun x => if x ∈ I then ψ (b * x) else 0) (fun _ => rfl)`. Establish `hS : ∑ x, (if x ∈ I then ψ (b * x) else 0) = ψ (b * (x₀ * r)) * ∑ x, (if x ∈ I then ψ (b * x) else 0)` using `by conv_lhs => rw [← hshift]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ I`. Establish `h' : x + x₀ * r ∈ I` using `I.add_mem hx hyI`. Rewrite using `[if_pos h', if_pos hx, mul_add, AddChar.map_add_eq_mul, mul_comm]`. Establish `h' : x + x₀ * r ∉ I` using `fun h => hx (by simpa using I.sub_mem h hyI)`. Rewrite using `[if_neg h', if_neg hx, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (1 - ψ (b * (x₀ * r))) * ∑ x, (if x ∈ I then ψ (b * x) else 0) = 0`. Rewrite using `[sub_mul, one_mul, ← hS, sub_self]`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h).symm hby`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sum_ideal_of_exists (I : Ideal R) [DecidablePred (· ∈ I)] (ψ : AddChar R ℂ)
     (hψ : ∀ d : R, (∀ x, ψ (d * x) = 1) → d = 0) (b : R) (hb : ∃ x ∈ I, b * x ≠ 0) :
@@ -46,7 +46,7 @@ theorem sum_ideal_of_exists (I : Ideal R) [DecidablePred (· ∈ I)] (ψ : AddCh
   · exact h
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter, Finset.card_eq_sum_ones, Nat.cast_sum]`. Use `Finset.sum_congr rfl (fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[Finset.mem_filter]`. Rewrite using `[hb x hx.2, AddChar.map_zero_eq_one, Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_ideal_of_forall (I : Ideal R) [DecidablePred (· ∈ I)] (ψ : AddChar R ℂ) (b : R)
     (hb : ∀ x ∈ I, b * x = 0) :
@@ -57,11 +57,11 @@ theorem sum_ideal_of_forall (I : Ideal R) [DecidablePred (· ∈ I)] (ψ : AddCh
   rw [hb x hx.2, AddChar.map_zero_eq_one, Nat.cast_one]
 
 /- English proof (translation)
-Establish `h : ∑ u : Rˣ, f u = ∑ x ∈ univ.filter (fun x => ¬ x ∈ m), f x`. Use `Finset.sum_bij (fun u _ => (u : R)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `u _`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨mem_univ _, (hm u).mp u.isUnit⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `a _ b _ h`. Conclude with `Units.ext h`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_filter]`. Conclude with `⟨((hm x).mpr hx.2).unit, mem_univ _, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u _`. Both sides reduce to the same expression. Rewrite using `[h, eq_sub_iff_add_eq, ← Finset.sum_filter, add_comm, Finset.sum_filter_add_sum_filter_not]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_units_eq (m : Ideal R) [DecidablePred (· ∈ m)] [Fintype Rˣ]
     (hm : ∀ x : R, IsUnit x ↔ x ∉ m) (f : R → ℂ) :
@@ -85,41 +85,37 @@ end GaussUnits
 open GaussUnits in
 
 /- English proof (translation)
-Introduce `R _ _ _ _ m hm ψ hψ χ hχ hχn t₀ ht₀ hχt₀`. Establish `hχ0 : ∀ u, χ u ≠ 0` using `fun u h => by simpa [h] using hχn u`. Establish `hχ1 : χ 1 = 1`. Establish `h` using `hχ 1 1`. Rewrite `h` using `[mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : χ 1 * (χ 1 - 1) = 0` using `by rw [mul_sub, mul_one, ← h, sub_self]`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 (hχ0 1)`. Conclude with `sub_eq_zero.mp h3`. Establish `hconj : conj (∑ u : Rˣ, (χ u)⁻¹ * ψ u) = ∑ z : Rˣ, χ z * ψ (-(z : R))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun z _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, Complex.inv_eq_conj (hχn z), Complex.conj_conj, AddChar.map_neg_eq_conj]`. Establish `hexp : (∑ u : Rˣ, (χ u)⁻¹ * ψ u) * conj (∑ u : Rˣ, (χ u)⁻¹ * ψ u) = ∑ t : Rˣ, (χ t)⁻¹ * ∑ z : Rˣ, ψ (((t : R) - 1) * z)`. Rewrite using `[hconj, Finset.sum_mul_sum, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ z : Rˣ, ∑ y : Rˣ, (χ y)⁻¹ * ψ y * (χ z * ψ (-(z : R))) = ∑ t : Rˣ, (χ t)⁻¹ * ψ (((t : R) - 1) * z)`. Introduce `z`. Use `Fintype.sum_equiv (Equiv.mulRight z⁻¹) _ _ (fun y => ?_)` and prove the remaining obligations. Establish `hzinv : χ z⁻¹ = (χ z)⁻¹`. Establish `h` using `hχ z z⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_inv_cancel, hχ1]`. Conclude with `eq_inv_of_mul_eq_one_right h.symm`. Establish `harg : (((y * z⁻¹ : Rˣ) : R) - 1) * (z : R) = (y : R) + -(z : R)`. Rewrite using `[sub_mul, Units.val_mul, mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one, one_mul, sub_eq_add_neg]`. Simplify using `only [Equiv.coe_mulRight]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[harg, AddChar.map_add_eq_mul, hχ, hzinv, mul_inv, inv_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun z _ => hz z), Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hinner : ∀ t : Rˣ, ∑ z : Rˣ, ψ (((t : R) - 1) * z) = (if t = 1 then (Fintype.card R : ℂ) else 0) - (if (∀ x ∈ m, ((t : R) - 1) * x = 0) then ((univ.filter (· ∈ m)).card : ℂ) else 0)`. Introduce `t`. Rewrite using `[sum_units_eq m hm (fun x => ψ (((t : R) - 1) * x))]`. Use `congr 1`. Establish `htop : ∑ x, ψ (((t : R) - 1) * x) = ∑ x, (if x ∈ (⊤ : Ideal R) then ψ (((t : R) - 1) * x) else 0)` using `by simp`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htop]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[sum_ideal_of_forall ⊤ ψ _ (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Apply `sum_ideal_of_exists ⊤ ψ hψ` to reduce the goal to its premises. Use `⟨1, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_one, sub_ne_zero]`. Conclude with `fun h' => h (Units.val_eq_one.mp h')`. Use `split_ifs with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `sum_ideal_of_forall m ψ _ h`. Use `push_neg at h`. Conclude with `sum_ideal_of_exists m ψ hψ _ h`. Establish `hcond : ∀ t : Rˣ, (∀ x ∈ m, (((t₀ * t : Rˣ) : R) - 1) * x = 0) ↔ (∀ x ∈ m, ((t : R) - 1) * x = 0)`. Introduce `t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `h1` using `h x hx`. Establish `h2` using `ht₀ x hx`. Rewrite `h1` using `[Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (t₀ : R) * (((t : R) - 1) * x) = 0` using `by linear_combination h1 - h2`. Conclude with `t₀.isUnit.mul_right_eq_zero.mp h3`. Introduce `h x hx`. Establish `h1` using `h x hx`. Establish `h2` using `ht₀ x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul]`. Take the linear combination `(t₀ : R) * h1 + h2`. Establish `hS : ∑ t : Rˣ, (if (∀ x ∈ m, ((t : R) - 1) * x = 0) then (χ t)⁻¹ else 0) = 0`. Establish `e` using `Fintype.sum_equiv (Equiv.mulLeft t₀) (fun t => if (∀ x ∈ m, (((t₀ * t : Rˣ) : R) - 1) * x = 0) then (χ (t₀ * t))⁻¹ else 0) (fun t => if (∀ x ∈ m, ((t : R) - 1) * x = 0) then (χ t)⁻¹ else 0) (fun _ => rfl)`. Establish `hS' : ∑ t : Rˣ, (if (∀ x ∈ m, ((t : R) - 1) * x = 0) then (χ t)⁻¹ else 0) = (χ t₀)⁻¹ * ∑ t : Rˣ, (if (∀ x ∈ m, ((t : R) - 1) * x = 0) then (χ t)⁻¹ else 0)` using `by conv_lhs => rw [← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Simplify using `only [hcond t, hχ, mul_inv, mul_ite, mul_zero]`. Establish `hne : (χ t₀)⁻¹ ≠ 1` using `fun h => hχt₀ (inv_eq_one.mp h)`. Establish `h1 : (1 - (χ t₀)⁻¹) * ∑ t : Rˣ, (if (∀ x ∈ m, ((t : R) - 1) * x = 0) then (χ t)⁻¹ else 0) = 0`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_mul, one_mul, ← hS', sub_self]`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h).symm hne`. Conclude with `h`. Establish `hmain : (∑ u : Rˣ, (χ u)⁻¹ * ψ u) * conj (∑ u : Rˣ, (χ u)⁻¹ * ψ u) = (Fintype.card R : ℂ)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp]`. Repeatedly rewrite using `[hinner, mul_sub, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_sub_distrib]`. Establish `h2 : ∑ t : Rˣ, (if (∀ x ∈ m, ((t : R) - 1) * x = 0) then (χ t)⁻¹ * ((univ.filter (· ∈ m)).card : ℂ) else 0) = (∑ t : Rˣ, (if (∀ x ∈ m, ((t : R) - 1) * x = 0) then (χ t)⁻¹ else 0)) * ((univ.filter (· ∈ m)).card : ℂ)`. Rewrite using `[Finset.sum_mul]`.
-
-Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h2, hS, zero_mul, sub_zero]`. Simplify using `[hχ1]`. Establish `hn : ((‖∑ u : Rˣ, (χ u)⁻¹ * ψ u‖ ^ 2 : ℝ) : ℂ) = (Fintype.card R : ℂ)`.
-
-Rewrite using `[← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, hmain]`. Conclude with `hn` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem gauss_units_norm_sq : ∀ {R : Type} [CommRing R] [Fintype R] [DecidableEq R] [Fintype Rˣ]
     (m : Ideal R), (∀ x : R, IsUnit x ↔ x ∉ m) → ∀ (ψ : AddChar R ℂ),

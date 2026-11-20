@@ -32,7 +32,7 @@ theorem dualEvalPairing_tmul (D M : Rep.{u} k G) (f : M →ₗ[k] D) (m : M) :
 variable {H : Type u} [Group H]
 
 /- English proof (translation)
-Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem resFunctor_map_comp_id (ψ : H →* G) {A B C : Rep.{u} k G} (μ : A ⊗ B ⟶ C) :
     (Rep.resFunctor ψ).map μ ≫ 𝟙 _ =

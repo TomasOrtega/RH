@@ -10,19 +10,19 @@ namespace Formalism.FourierDecayAlt.P.ScaleThresholdCharacters
 open Formalism.FourierDecayAlt.PairingProductCorollary
 
 /- English proof (translation)
-Introduce `n TT IL y q x P QQ hTT hIL hn hq hqpos hx hP hPr`. Establish `hb : 0 < |P (y + 1)|` using `abs_pos.mpr hP`. Establish `ha : 0 ≤ |P y|` using `abs_nonneg _`. Establish `hQ0 : 0 ≤ |QQ (y + 1 / 2)|` using `abs_nonneg _`. Establish `hexp : Real.exp (4 * n / IL) ≤ Real.exp 1` using `Real.exp_le_exp.mpr (by rw [div_le_one hIL]; exact hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : |P y| ≤ Real.exp 1 * |P (y + 1)|`. Establish `h1 : |P y| / |P (y + 1)| ≤ Real.exp 1` using `by rw [← abs_div]; exact hPr.trans hexp`. Rewrite `h1` using `[div_le_iff₀ hb]`. Then use the resulting hypothesis. Establish `hxa : 0 ≤ |x (y + 1)|` using `abs_nonneg _`. Establish `hxa2 : |x (y + 1)| ^ 2 ≤ |QQ (y + 1 / 2)|`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pow_le_pow_left₀ hxa hx 2` as an intermediate fact. Rewrite `this` using `[Real.sq_sqrt hQ0]`. Then use the resulting hypothesis. Establish `hs0 : 0 ≤ TT ^ (-(1 / 2 : ℝ))` using `Real.rpow_nonneg hTT.le _`. Establish `hs2 : (TT ^ (-(1 / 2 : ℝ))) ^ 2 = TT⁻¹`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hTT.le]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Conclude with `Real.rpow_neg_one TT`. Establish `hu2 : Real.sqrt (|P y * P (y + 1)| / q y) ^ 2 = |P y| * |P (y + 1)| / q y`. Rewrite using `[Real.sq_sqrt (by positivity), abs_mul]`. Establish `he2 : Real.exp (1 / 2) ^ 2 = Real.exp 1` using `by rw [← Real.exp_nat_mul]; norm_num`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_mul]`. Establish `hLn : 0 ≤ |x (y + 1)| * |P y| / q y` using `by positivity`. Establish `hRn : 0 ≤ Real.exp (1 / 2) * Real.sqrt (|P y * P (y + 1)| / q y) * TT ^ (-(1 / 2 : ℝ))`. Check the signs of the components of the expression. Establish `hQv : |QQ (y + 1 / 2)| = q y / TT` using `by rw [hq]; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : (|x (y + 1)| * |P y| / q y) ^ 2 ≤ (Real.exp (1 / 2) * Real.sqrt (|P y * P (y + 1)| / q y) * TT ^ (-(1 / 2 : ℝ))) ^ 2`. Establish `e1 : (|x (y + 1)| * |P y| / q y) ^ 2 = |x (y + 1)| ^ 2 * |P y| ^ 2 / q y ^ 2` using `by ring`. Establish `e2 : (Real.exp (1 / 2) * Real.sqrt (|P y * P (y + 1)| / q y) * TT ^ (-(1 / 2 : ℝ))) ^ 2 = Real.exp (1 / 2) ^ 2 * Real.sqrt (|P y * P (y + 1)| / q y) ^ 2 * (TT ^ (-(1 / 2 : ℝ))) ^ 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, hu2, hs2, he2]`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem corAProduct_ok : CorAProduct := by
   intro n TT IL y q x P QQ hTT hIL hn hq hqpos hx hP hPr
@@ -65,13 +65,13 @@ theorem corAProduct_ok : CorAProduct := by
   nlinarith
 
 /- English proof (translation)
-Establish `hRZ : ∀ (Rw ZZ BB TT : ℝ), 0 < TT → 0 ≤ Rw → Rw ≤ Real.exp (1 / 2) → 0 ≤ ZZ → ZZ ≤ Real.exp (1 / 2) * BB * TT ^ (-(1 / 2 : ℝ)) → Rw * ZZ ≤ Real.exp (3 / 2) * (BB * TT ^ (-(1 / 2 : ℝ)))`. Introduce `Rw ZZ BB TT hTT hR hR' hZ hZ'`. Establish `hp` using `Real.exp_pos (1 / 2)`. Establish `hBs : 0 ≤ BB * TT ^ (-(1 / 2 : ℝ))`. Establish `h0 : 0 ≤ Real.exp (1 / 2) * (BB * TT ^ (-(1 / 2 : ℝ)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc]`. Conclude with `hZ.trans hZ'`. Conclude with `(mul_nonneg_iff_of_pos_left hp).mp h0`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n ell Rw ZZ BB TT hell hn hTT hR hR' hZ hZ'`. Establish `h` using `hRZ Rw ZZ BB TT hTT hR hR' hZ hZ'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show 2 * n = n * 2 by ring, pow_mul]; ring`. Introduce `Rw ZZ BB TT hTT hR hR' hZ hZ'`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h` using `hRZ Rw ZZ BB TT hTT hR hR' hZ hZ'`. Combine the linear relations using `[h, show Real.exp (3 / 2) * (BB * TT ^ (-(1 / 2 : ℝ))) = Real.exp (3 / 2) * BB * TT ^ (-(1 / 2 : ℝ)) by ring]`.
+A detailed English derivation is pending.
 -/
 theorem corAConstTop_ok : CorAConstTop := by
   have hRZ : ∀ (Rw ZZ BB TT : ℝ), 0 < TT → 0 ≤ Rw → Rw ≤ Real.exp (1 / 2) → 0 ≤ ZZ →
@@ -102,15 +102,15 @@ theorem corAConstTop_ok : CorAConstTop := by
       Real.exp (3 / 2) * BB * TT ^ (-(1 / 2 : ℝ)) by ring]
 
 /- English proof (translation)
-Introduce `ka ell sb TT i s r hka hell hTT hi`. Establish `e : ∀ m : ℕ, (4 * ka / ell) ^ m = (4 / ell) ^ m * ka ^ m` using `fun m => by rw [← mul_pow]; ring`. Establish `key1 : ka ^ ((2 * i : ℤ) - 3) * ka = ka ^ (2 * i - 2)`. Rewrite using `[← zpow_add_one₀ hka.ne', ← zpow_natCast]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Establish `key2 : ka ^ ((2 * i + s : ℤ) - 3) * ka = ka ^ (2 * (i - 1) + s)`. Rewrite using `[← zpow_add_one₀ hka.ne', ← zpow_natCast]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `k3 : (ka ^ (4 * r)) ^ (-(1 / 2 : ℝ)) = (ka ^ (2 * r))⁻¹`. Rewrite using `[Real.rpow_neg (by positivity), ← Real.sqrt_eq_rpow, show 4 * r = 2 * r * 2 by ring, pow_mul, Real.sqrt_sq (by positivity)]`. Establish `key3 : ka ^ (2 * (i + r - 1)) * ka = ka ^ (2 * i - 1) * ka ^ (2 * r)`. Rewrite using `[← pow_succ, ← pow_add]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Establish `hk2 : ka ^ (2 * r) ≠ 0` using `by positivity`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Take the linear combination `(Real.exp (1 / 4) * (1 / 2) * (4 / ell) ^ (2 * i - 2) * sb) * key1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e]`. Take the linear combination `(Real.exp (1 / 4) * (1 / 2) * (4 / ell) ^ (2 * (i - 1) + s) * sb) * key2`. Rewrite using `[Real.mul_rpow (by positivity) hTT.le, k3]`. Establish `hinv` using `mul_inv_cancel₀ hk2`. Take the linear combination `(Real.exp (3 / 2) * (1 / 4) * (4 / ell) ^ (2 * (i - 1)) * sb * TT ^ (-(1 / 2 : ℝ)) * (ka ^ (2 * r))⁻¹) * key3 + (Real.exp (3 / 2) * (1 / 4) * (4 / ell) ^ (2 * (i - 1)) * sb * TT ^ (-(1 / 2 : ℝ)) * ka ^ (2 * i - 1)) * hinv`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem scaleThresholds_ok : ScaleThresholds := by
   intro ka ell sb TT i s r hka hell hTT hi
@@ -138,9 +138,9 @@ theorem scaleThresholds_ok : ScaleThresholds := by
         ka ^ (2 * i - 1)) * hinv
 
 /- English proof (translation)
-Introduce `ka sb TT r hka hTT`. Establish `k3 : (ka ^ (4 * r)) ^ (-(1 / 2 : ℝ)) = (ka ^ (2 * r))⁻¹`. Rewrite using `[Real.rpow_neg (by positivity), ← Real.sqrt_eq_rpow, show 4 * r = 2 * r * 2 by ring, pow_mul, Real.sqrt_sq (by positivity)]`. Establish `hk2 : ka ^ (2 * r) ≠ 0` using `by positivity`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zpow_neg_one]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Real.mul_rpow (by positivity) hTT.le, k3]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem scaleThresholdsOne_ok : ScaleThresholdsOne := by
   intro ka sb TT r hka hTT
@@ -155,21 +155,21 @@ theorem scaleThresholdsOne_ok : ScaleThresholdsOne := by
     field_simp
 
 /- English proof (translation)
-Introduce `ka ell sb TT N IL m i hka hell hN hIL hsb hTT hle`. Establish `h4 : 4 / ell ≤ 28 * N / IL`. Rewrite using `[div_le_div_iff₀ hell hIL]`. Use `(div_le_iff₀ (by positivity : (0:ℝ) < 7 * N)).mp hle` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hE1 : Real.exp (1 / 4) / 2 ≤ 1`. Establish `h4e : Real.exp (1 / 4) ^ 4 = Real.exp 1` using `by rw [← Real.exp_nat_mul]; norm_num`. Establish `hlt` using `Real.exp_one_lt_d9`. Establish `hpos` using `Real.exp_pos (1 / 4)`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hc' : 2 < Real.exp (1 / 4)` using `by linarith [not_le.mp hc]`. Establish `h16 : (2:ℝ) ^ 4 < Real.exp (1 / 4) ^ 4` using `pow_lt_pow_left₀ hc' (by norm_num) (by norm_num)`. Evaluate the numerical expressions using `at h16`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE2 : Real.exp (3 / 2) / 4 ≤ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2e : Real.exp (3 / 2) ^ 2 = Real.exp 1 ^ 3`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_nat_mul]`. Evaluate the numerical expressions. Establish `hlt` using `Real.exp_one_lt_d9`. Establish `hpos` using `Real.exp_pos 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos'` using `Real.exp_pos (3 / 2)`. Assume the negation of the conclusion as `hc`. Establish `hc' : 8 < Real.exp (3 / 2)` using `by linarith [not_le.mp hc]`. Establish `h64 : (8:ℝ) ^ 2 < Real.exp (3 / 2) ^ 2` using `pow_lt_pow_left₀ hc' (by norm_num) (by norm_num)`. Establish `h3 : Real.exp 1 ^ 3 < 3 ^ 3` using `pow_lt_pow_left₀ (by linarith) hpos.le (by norm_num)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h64` using `[h2e]`. Evaluate the numerical expressions using `at h64 h3`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hX : (4 * ka / ell) ^ m ≤ (28 * ka * N / IL) ^ m`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Rewrite using `[show 4 * ka / ell = ka * (4 / ell) by ring, show 28 * ka * N / IL = ka * (28 * N / IL) by ring]`. Conclude with `mul_le_mul_of_nonneg_left h4 hka.le`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : (4 / ell) ^ (2 * (i - 1)) ≤ (28 * N / IL) ^ (2 * (i - 1))` using `pow_le_pow_left₀ (by positivity) h4 _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : 0 ≤ sb * ka ^ (2 * i - 1) * TT ^ (-(1 / 2 : ℝ))` using `mul_nonneg (mul_nonneg hsb (by positivity)) (Real.rpow_nonneg hTT.le _)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem scaleThresholdsBelow_ok : ScaleThresholdsBelow := by
   intro ka ell sb TT N IL m i hka hell hN hIL hsb hTT hle
@@ -221,9 +221,9 @@ theorem scaleThresholdsBelow_ok : ScaleThresholdsBelow := by
       _ = 2 * sb * ka ^ (2 * i - 1) * TT ^ (-(1 / 2 : ℝ)) * (28 * N / IL) ^ (2 * (i - 1)) := by ring
 
 /- English proof (translation)
-Introduce `ka i l c hka hi`. Establish `hk : (ka : ℂ) ≠ 0` using `by exact_mod_cast hka.ne'`. Establish `he : (3 - 2 * (i : ℤ)) + ((2 * i - 2 : ℕ) : ℤ) = 1` using `by omega`. Establish `h1 : (ka : ℂ) ^ (3 - 2 * (i : ℤ)) * (ka : ℂ) ^ (2 * i - 2) = ka`. Rewrite using `[← zpow_natCast, ← zpow_add₀ hk, he, zpow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (ka : ℂ) ^ (3 - 2 * (i : ℤ)) * l * ((ka : ℂ) ^ (2 * i - 2) * c) = (ka : ℂ) * (l * c)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Use `congr 1`. Simplify using `only [map_mul, Complex.conj_ofReal]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -245,27 +245,27 @@ theorem scaleCharacter_ok : ScaleCharacter := by
 end Formalism.FourierDecayAlt.P.ScaleThresholdCharacters
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.corAProduct_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.constant_product_corollary : Formalism.FourierDecayAlt.PairingProductCorollary.CorAProduct := Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.corAProduct_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.corAConstTop_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.constant_top_corollary : Formalism.FourierDecayAlt.PairingProductCorollary.CorAConstTop := Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.corAConstTop_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.scaleThresholds_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.scale_thresholds_estimate : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleThresholds := Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.scaleThresholds_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.scaleThresholdsOne_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.scale_thresholds_at_one : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleThresholdsOne := Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.scaleThresholdsOne_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.scaleThresholdsBelow_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.pairing_product_scale_bounds_below : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleThresholdsBelow := Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.scaleThresholdsBelow_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.scaleCharacter_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.scale_character_identity : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleCharacter := Formalism.FourierDecayAlt.P.ScaleThresholdCharacters.scaleCharacter_ok
 

@@ -26,7 +26,7 @@ def vUnder (P : HeightOneSpectrum (𝓞 t.X.E)) : HeightOneSpectrum (𝓞 D.host
   HeightOneSpectrum.under (𝓞 D.host.F) (seamP t.seam P)
 
 /- English proof (translation)
-Unfold `IsOver vUnder`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isOver_vUnder (P : HeightOneSpectrum (𝓞 t.X.E)) : IsOver (vUnder (t := t) P) (seamP t.seam P) := by
   unfold IsOver vUnder

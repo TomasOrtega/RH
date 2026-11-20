@@ -13,23 +13,21 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `hC k _ X _ p D hX P hA e x hG`. Use `haveI := hX.isDomain`. Use `haveI := hX.finite`. Use `haveI := hX.charZero_base`. Establish `hf : 0 < Module.finrank ℤ k` using `Module.finrank_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `he : 0 < e` using `hG.pos`. Take `⟨hPI, -, -, -, -, -, -⟩` from `GlobalTheory.T.exists_projectiveSpace_morphism_of_generating_sections k X p D hX P hA e x hG`. Take `⟨hPV, -, -⟩` from `GlobalTheory.T.projectiveSpace_order_arithVariety_fubiniStudyDegree k D`. Take `⟨Φ₀, hΦ₀⟩` from `((hC.arExists k (PSpace k D) (PSpace.str k D) D hPV).2 Unit fun _ => ProjSpace.hermitianTwistingSheaf k D).1`. Establish `hH` using `((hC.arIso k (PSpace k D) (PSpace.str k D) D hPV).2 Unit _ Φ₀ hΦ₀).1 ()`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set H := Φ₀ (MvPolynomial.X () ^ (D + 1)) with hHdef`. Use `set g := gdeg P.L D`. Use `⟨|g * H| / ((Module.finrank ℤ k : ℝ) * e), fun n u a hn hu ha => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, hG', hu'⟩` from `GlobalTheory.T.norm_basepointFree_sections_le_one_fubiniStudy k X p D hX P e x hG n u hn hu`. Take `⟨hPI', π, hπ, hgen, hd, hdf, hiso⟩` from `GlobalTheory.T.exists_projectiveSpace_morphism_of_generating_sections k X p D hX P hA (e * n) _ hG'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdeg` using `GlobalTheory.T.finrank_functionField_quotientSubfield_eq_degree hC k X p D hX P hA (e * n) _ hG'`. Establish `hpow` using `(GlobalTheory.T.geometricDegree_projectionFormula_selfInter_pow hC k X p D hX).2 (up P.L u) (e * n) a ha`. Establish `hpull` using `((hC.arProj k (PSpace k D) X (PSpace.str k D) p D hPV hX π hπ hgen hd).1 _ H hH)`. Take `⟨Φ, hΦ⟩` from `((hC.arExists k X p D hX).2 Unit fun _ => (up P.L u).pow (e * n)).1`. Establish `hI` using `hC.arIso k X p D hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `(hI.2 Unit _ Φ hΦ).1 ()`. Establish `hΦ'` using `(hI.2 Unit _ Φ hΦ).2.1 (fun _ => (ProjSpace.hermitianTwistingSheaf k D).pull π hπ) fun _ => hiso u hu'`. Establish `h₂` using `(hI.2 Unit _ Φ hΦ').1 ()`. Establish `e₁` using `HermLB.IsSelfInter.unique hX hpow h₁`. Establish `e₂` using `HermLB.IsSelfInter.unique hX hpull h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d : ℝ := ((π.residueDegree (genericPoint X) : ℕ) : ℝ)`. Use `set f : ℝ := ((Module.finrank ℤ k : ℕ) : ℝ)`. Use `set E : ℝ := ((e * n : ℕ) : ℝ)`. Establish `hE : 0 < E` using `by positivity`. Establish `hfpos : (0 : ℝ) < f` using `Nat.cast_pos.mpr hf`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `key1 : E ^ (D + 1) * a = d * H` using `e₁.trans e₂.symm`. Establish `key2 : d * f = E ^ D * g`. Use `congrArg (fun m : ℕ => (m : ℝ)) hdf` as an intermediate fact. Simplify using `only [Nat.cast_mul] at this`. Rewrite using `[← hdeg]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `ha' : a = g * H / (f * E)`. Clear the denominators using the available nonvanishing facts. Establish `: E ^ (D + 1) * a * f = E ^ D * g * H` using `by rw [key1, ← key2]; ring`. Establish `hED : E ^ D ≠ 0` using `pow_ne_zero _ hE.ne'`.
-
-Apply `mul_left_cancel₀ hED` to reduce the goal to its premises. Take the linear combination `this`. Rewrite using `[ha', abs_div, abs_of_pos (by positivity : (0:ℝ) < f * E)]`. Establish `: f * E = (f * e) * n` using `by simp [E, f]; ring`. Rewrite using `[this, div_div]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfInter_canWeight_le : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k)
     (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField),

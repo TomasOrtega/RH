@@ -9,11 +9,11 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hle : Ideal.span {a} ≤ J` using `by rw [h]; exact Ideal.mul_le_right`. Establish `hJ : J ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `h` using `[Ideal.mul_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hNJ : Ideal.absNorm J ≠ 0` using `fun h0 => hJ (Ideal.absNorm_eq_zero_iff.mp h0)`. Establish `key` using `AddSubgroup.relIndex_mul_index (H := (Ideal.span {a}).toAddSubgroup) (K := J.toAddSubgroup) hle`. Establish `e1 : J.toAddSubgroup.index = Ideal.absNorm J` using `rfl`. Establish `e2 : (Ideal.span {a}).toAddSubgroup.index = Ideal.absNorm I * Ideal.absNorm J`. Rewrite using `[← map_mul, ← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `key` using `[e1, e2]`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hNJ) key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xClasses_index {K : Type} [Field K] [NumberField K] (I J : Ideal (𝓞 K)) (a : 𝓞 K)
     (ha : a ≠ 0) (h : Ideal.span {a} = I * J) :
@@ -33,13 +33,13 @@ theorem xClasses_index {K : Type} [Field K] [NumberField K] (I J : Ideal (𝓞 K
   exact Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hNJ) key
 
 /- English proof (translation)
-Take `⟨o, ho⟩` from `hz a haI`. Establish `hmem : o ∈ J`. Establish `hle : Ideal.span {o} * I ≤ J * I`. Rewrite using `[Ideal.span_singleton_mul_le_iff]`. Introduce `α hα`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, hp⟩` from `hz α hα`. Establish `hop : o * α = a * p`. Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Simplify using `only [map_mul]`. Express the relevant statement in the definitionally equal form `(o : K) * (α : K) = (a : K) * (p : K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ho, hp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hop, mul_comm J I, ← h]`. Conclude with `Ideal.mul_mem_right p _ (Ideal.mem_span_singleton_self a)`. Establish `hdvd : J * I ∣ Ideal.span {o} * I` using `Ideal.dvd_iff_le.mpr hle`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdvd` using `[mul_dvd_mul_iff_right hI]`. Conclude with `Ideal.dvd_span_singleton.mp hdvd`. Conclude with `⟨⟨o, hmem⟩, ho⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem xClasses_mem {K : Type} [Field K] [NumberField K] (I J : Ideal (𝓞 K)) (a : 𝓞 K)
     (hI : I ≠ ⊥) (haI : a ∈ I) (h : Ideal.span {a} = I * J) (z : K)
@@ -64,15 +64,15 @@ theorem xClasses_mem {K : Type} [Field K] [NumberField K] (I J : Ideal (𝓞 K))
   exact ⟨⟨o, hmem⟩, ho⟩
 
 /- English proof (translation)
-Introduce `α hα`. Take `⟨β, hβ, rfl⟩` from `Ideal.mem_span_singleton_mul.mp hα`. Use `set φ := algebraMap (𝓞 K) K with hφ`. Use `set B := Y.submatrix id f with hB`. Establish `hM : B.map φ * (B.map φ).adjugate = (φ B.det) • (1 : Matrix (Fin r) (Fin r) K)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.mul_adjugate, RingHom.map_det]`. Both sides reduce to the same expression. Establish `e1 : ∀ k, (S * Y.map φ) i (f k) = (S * B.map φ) i k`. Introduce `k`. Simplify using `[Matrix.mul_apply, B]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : ∀ k, φ (B.adjugate k j) = (B.map φ).adjugate k j`. Introduce `k`. Conclude with `congrFun (congrFun (RingHom.map_adjugate φ B) k) j`. Establish `hkey : ∑ k, (S * Y.map φ) i (f k) * φ (B.adjugate k j) = φ B.det * S i j`. Repeatedly rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.mul_apply, Matrix.mul_assoc, hM]`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, mul_comm]`. Use `choose g hg using fun k => hx i (f k) β hβ`. Use `⟨∑ k, g k * B.adjugate k j, ?_⟩` and prove the remaining obligations. Establish `hc : ∀ u : 𝓞 K, (u : K) = φ u` using `fun u => rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hc, map_sum, map_mul] at hg ⊢`. Repeatedly rewrite using `[hg]`. Rewrite using `[mul_comm (φ B.det) (φ β), mul_assoc, ← hkey, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem xClasses_denom {K : Type} [Field K] [NumberField K] (A : Ideal (𝓞 K)) {r : ℕ}
     (Y : Matrix (Fin r) (Fin (r + 1)) (𝓞 K)) (f : Fin r → Fin (r + 1))
@@ -105,51 +105,45 @@ theorem xClasses_denom {K : Type} [Field K] [NumberField K] (A : Ideal (𝓞 K))
   ring
 
 /- English proof (translation)
-Introduce `K _ _ _ A r Y b₀ hA hdet`. Use `set f := b₀.succAbove with hf`. Use `set φ := algebraMap (𝓞 K) K with hφ`. Use `set D := (Y.submatrix id f).det with hD`. Use `set I := Ideal.span {D} * A with hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set YK := Y.map φ with hYK`. Establish `hφinj : Function.Injective φ` using `IsFractionRing.injective (𝓞 K) K`. Establish `hc : ∀ u : 𝓞 K, (u : K) = φ u` using `fun u => rfl`. Establish `hI0 : I ≠ ⊥`. Introduce `h0`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Break down `mul_eq_zero.mp (show Ideal.span {D} * A = 0 from h0) with h1 | h1` into its components or cases. Conclude with `hdet (Ideal.span_singleton_eq_bot.mp h1)`. Conclude with `hA h1`. Take `⟨a, haI, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI0`. Take `⟨J, hJ⟩ : I ∣ Ideal.span {a}` from `Ideal.dvd_span_singleton.mpr haI`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haK : φ a ≠ 0` using `fun h0 => ha0 (hφinj (h0.trans (map_zero φ).symm))`. Set `C : Matrix (Fin (r + 1)) (Fin r) K` to `(1 : Matrix (Fin (r + 1)) (Fin (r + 1)) K).submatrix id f`. Establish `hC : ∀ M : Matrix (Fin r) (Fin (r + 1)) K, M * C = M.submatrix id f` using `fun M => by`. Simplify `Matrix.mul_submatrix_one (Equiv.refl (Fin (r + 1))) f M` using `[C]`. Establish `hYf : YK * C = (Y.submatrix id f).map φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hC, hYK, Matrix.submatrix_map]`. Establish `hdetYf : IsUnit (YK * C).det`. Rewrite using `[hYf, show ((Y.submatrix id f).map φ).det = φ D from (RingHom.map_det φ _).symm]`. Conclude with `isUnit_iff_ne_zero.mpr (fun h0 => hdet (hφinj (h0.trans (map_zero φ).symm)))`. Establish `hdetYfH : IsUnit (YK * C)ᴴ.det`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.mpr (star_ne_zero.mpr (isUnit_iff_ne_zero.mp hdetYf))`. Take `⟨Good, hGood⟩ : ∃ G : Matrix (Fin r) (Fin (r + 1)) K → Prop, ∀ x, G x ↔ (∀ p q, ∀ α ∈ A, ∃ o : 𝓞 K, (o : K) = (α : K) * x p q) ∧ xᴴ * YK + YKᴴ * x = 0` from `⟨_, fun _ => Iff.rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨Sx, hSx⟩ : ∃ Sx : Matrix (Fin r) (Fin (r + 1)) K → Matrix (Fin r) (Fin r) K, ∀ x, Good x → x = Sx x * YK ∧ (Sx x)ᴴ = -Sx x := by`. Use `⟨fun x => x * C * (YK * C)⁻¹, fun x hG => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxY` using `((hGood x).mp hG).2`. Use `set Yf := YK * C with hYfdef`. Use `set S := x * C * Yf⁻¹ with hS`. Establish `hSYf : S * Yf = x * C` using `Matrix.nonsing_inv_mul_cancel_right _ _ hdetYf`. Use `set P := x - S * YK with hP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `hxP : x = S * YK + P` using `by rw [hP]; abel`. Establish `hPC : P * C = 0`. Rewrite using `[hP, Matrix.sub_mul, Matrix.mul_assoc, ← hYfdef, hSYf, sub_self]`. Establish `h1 : Cᴴ * xᴴ = Yfᴴ * Sᴴ`. Rewrite using `[← Matrix.conjTranspose_mul, ← Matrix.conjTranspose_mul, hSYf]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : Cᴴ * YKᴴ = Yfᴴ` using `by rw [← Matrix.conjTranspose_mul]`. Establish `h3 : Yfᴴ * Sᴴ * YK + Yfᴴ * x = 0`. Establish `h0 : Cᴴ * (xᴴ * YK + YKᴴ * x) = 0` using `by rw [hxY, Matrix.mul_zero]`. Rewrite `h0` using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, h2]`. Then use the resulting hypothesis. Establish `h4 : Yfᴴ * ((Sᴴ + S) * YK + P) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = 0 := by rw [← hxP]; exact h3`. Establish `h5 : (Sᴴ + S) * YK + P = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0` using `congrArg (fun M => Yfᴴ⁻¹ * M) h4`. Rewrite `h0` using `[Matrix.nonsing_inv_mul_cancel_left _ _ hdetYfH, Matrix.mul_zero]`. Then use the resulting hypothesis. Establish `h6 : Sᴴ + S = 0`. Establish `h0` using `congrArg (fun M => M * C * Yf⁻¹) h5`. Rewrite `h0` using `[Matrix.add_mul, hPC, add_zero, Matrix.mul_assoc ((Sᴴ + S)) YK C, ← hYfdef, Matrix.mul_nonsing_inv_cancel_right _ _ hdetYf, Matrix.zero_mul, Matrix.zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : P = 0` using `by rwa [h6, Matrix.zero_mul, zero_add] at h5`. Rewrite `hxP` using `[h7, add_zero]`. Conclude with `⟨hxP, eq_neg_of_add_eq_zero_left h6⟩`. Establish `hent : ∀ x, Good x → ∀ i j, ∃ o : J.toAddSubgroup, ((o : 𝓞 K) : K) = (a : K) * Sx x i j`. Introduce `x hG i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx` using `((hGood x).mp hG).1`. Establish `h1` using `(hSx x hG).1`. Apply `xClasses_mem I J a hI0 haI hJ` to reduce the goal to its premises. Establish `hx' : ∀ p q, ∀ α ∈ A, ∃ o : 𝓞 K, (o : K) = (α : K) * (Sx x * Y.map φ) p q`. Introduce `p q α hα`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hYK, ← h1]`. Conclude with `hx p q α hα`. Conclude with `xClasses_denom A Y f (Sx x) hx' i j`. Use `set Q := ↥J.toAddSubgroup ⧸ (Ideal.span {a}).toAddSubgroup.addSubgroupOf J.toAddSubgroup`. Establish `hcardQ : Nat.card Q = Ideal.absNorm I` using `xClasses_index I J a ha0 hJ`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: Finite Q` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[hcardQ]`. Conclude with `fun h0 => hI0 (Ideal.absNorm_eq_zero_iff.mp h0))`. Set `_ : Fintype Q` to `Fintype.ofFinite Q`. Choose the witnesses or unpack the hypotheses as in `⟨key, hkey⟩ : ∃ key : Matrix (Fin r) (Fin (r + 1)) K → (Fin r → Fin r → Q), ∀ x, Good x → ∀ i j, ∃ o : J.toAddSubgroup, ((o : 𝓞 K) : K) = (a : K) * Sx x i j ∧ key x i j = (o : Q) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun x i j => if h : ∃ o : J.toAddSubgroup, ((o : 𝓞 K) : K) = (a : K) * Sx x i j then ((Classical.choose h : J.toAddSubgroup) : Q) else 0, fun x hG i j => ?_⟩` and prove the remaining obligations. Establish `h` using `hent x hG i j`. Conclude with `⟨Classical.choose h, Classical.choose_spec h, by simp only [dif_pos h]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : (Fin r → Fin r → Q) → Matrix (Fin r) (Fin (r + 1)) K, ∀ q, (∃ x, Good x ∧ key x = q) → Good (g q) ∧ key (g q) = q := by`. Use `⟨fun q => if h : ∃ x, Good x ∧ key x = q then Classical.choose h else 0, fun q h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [dif_pos h]`. Conclude with `Classical.choose_spec h`. Use `⟨Finset.univ.image g, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_univ, Fintype.card_fun, Fintype.card_fun, Fintype.card_fin, ← pow_mul, sq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Ideal.absNorm I ^ (r ^ 2) := by rw [← Nat.card_eq_fintype_card, hcardQ]`. Introduce `x hx hxY`. Establish `hG : Good x` using `(hGood x).mpr ⟨hx, hxY⟩`. Take `⟨hG', hk⟩` from `hg (key x) ⟨x, hG, rfl⟩`. Use `set x' := g (key x) with hx'`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hdiff : ∀ i j, ∃ t : 𝓞 K, φ t = Sx x i j - Sx x' i j`. Introduce `i j`. Take `⟨o, ho, hko⟩` from `hkey x hG i j`. Take `⟨o', ho', hko'⟩` from `hkey x' hG' i j`. Establish `e : ((o' : J.toAddSubgroup) : Q) = (o : Q)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← hko, ← hko', hk]`. Establish `hm` using `QuotientAddGroup.eq.mp e`. Rewrite `hm` using `[AddSubgroup.mem_addSubgroupOf]`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp hm`. Use `⟨t, ?_⟩` and prove the remaining obligations.
-
-Establish `ht' : φ t * φ a = φ a * (Sx x i j - Sx x' i j)`. Rewrite using `[← map_mul, ht]`. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg, map_add, map_neg]`. Rewrite using `[← hc, ← hc, ho, ho']`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `mul_left_cancel₀ haK (by rw [mul_comm]; exact ht')`. Take `⟨c, hcc⟩ : ∃ c : Matrix (Fin r) (Fin r) (𝓞 K), ∀ i j, φ (c i j) = Sx x i j - Sx x' i j` from `⟨fun i j => Classical.choose (hdiff i j), fun i j => Classical.choose_spec (hdiff i j)⟩`. Establish `hcm : c.map φ = Sx x - Sx x'`. Use extensionality with `i j`. Simplify using `[hcc]`.
-
-Use `⟨x', Finset.mem_image_of_mem _ (Finset.mem_univ _), c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcm, Matrix.conjTranspose_sub, (hSx x hG).2, (hSx x' hG').2]`. Normalize the expressions using the abelian group laws. Rewrite using `[hcm, Matrix.sub_mul, ← (hSx x hG).1, ← (hSx x' hG').1]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem xClasses : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (A : Ideal (𝓞 K)) (r : ℕ) (Y : Matrix (Fin r) (Fin (r + 1)) (𝓞 K)) (b₀ : Fin (r + 1)), A ≠ ⊥ → (Y.submatrix id b₀.succAbove).det ≠ 0 → ∃ reps : Finset (Matrix (Fin r) (Fin (r + 1)) K), reps.card ≤ Ideal.absNorm (Ideal.span {(Y.submatrix id b₀.succAbove).det} * A) ^ (r ^ 2) ∧ ∀ x : Matrix (Fin r) (Fin (r + 1)) K, (∀ a b, ∀ α ∈ A, ∃ o : 𝓞 K, (o : K) = (α : K) * x a b) → xᴴ * Y.map (algebraMap (𝓞 K) K) + (Y.map (algebraMap (𝓞 K) K))ᴴ * x = 0 → ∃ x₀ ∈ reps, ∃ c : Matrix (Fin r) (Fin r) (𝓞 K), (c.map (algebraMap (𝓞 K) K))ᴴ = -c.map (algebraMap (𝓞 K) K) ∧ x = x₀ + c.map (algebraMap (𝓞 K) K) * Y.map (algebraMap (𝓞 K) K) := by
   classical

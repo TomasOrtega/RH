@@ -24,16 +24,16 @@ namespace GlobalTheory.SeeSaw.LiftsAtLevel
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `u hu a b` and use `AllBij.idAt_mono h (hc u hu a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem combAt_mono {P P' : Pl D → Prop} (h : ∀ v, P v → P' v) {S T : HSp D} {c : WO S T →₀ ℂ} (hc : CombAt P c) :
     CombAt P' c :=
   fun u hu a b => AllBij.idAt_mono h (hc u hu a b)
 
 /- English proof (translation)
-Establish `e : ∀ g : WO S T → ℂ, comb ψ S T c g = ∑ i, c (c.support.equivFin.symm i) • heisO ψ S T (c.support.equivFin.symm i) g`. Introduce `g`. Unfold `comb`. Rewrite using `[← Finset.sum_coe_sort c.support]`. Conclude with `Fintype.sum_equiv c.support.equivFin _ _ (fun x => by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `(GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D ψ θ S T hstd hθ sS sT BS BT f hf c.support.card (fun i => c (c.support.equivFin.symm i)) (fun i => (c.support.equivFin.symm i : WO S T)) (fun i => hc _ (c.support.equivFin.symm i).2) φ).1`. Rewrite using `[e, e, key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_pureTensorO {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} (hstd : IsStdChar D ψ (-1))
     (hθ : IsInfFam θ) (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
@@ -53,9 +53,9 @@ theorem comb_pureTensorO {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T :
   rw [e, e, key]
 
 /- English proof (translation)
-Establish `hth : ∀ φ, IsThetaFunO ψ S T (pureTensorO ψ θ S T x.s y.s x.B y.B f₀ φ)` using `fun φ => GlobalTheory.Chain.InnerSteps.theta_pureTensorO hvac.1 hvac.2.inf x.s x.B y.s y.B hvac.2.theta φ`. Establish `hle : latO S T (x.L : Set _) (y.L : Set _) P ≤ latO S T (x.L : Set _) (y.L : Set _) fun _ => True` using `GlobalTheory.PlaceTensor.latO_mono fun _ _ => trivial`. Use `⟨hth φ, fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Establish `hu'` using `hle hu`. Conclude with `GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite ψ θ S T hvac.2.inf x.s y.s x.B y.B f₀ hth (2 • u) (GlobalTheory.VacGood.infPart_latO (AddSubgroup.nsmul_mem _ hu' 2)) (hvac.2.lat.1 u hu') φ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu'` using `hle hu`. Conclude with `GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite ψ θ S T hvac.2.inf x.s y.s x.B y.B f₀ hth u (GlobalTheory.VacGood.infPart_latO hu') (hvac.2.lat.2 e he u hu' hh) φ`.
+A detailed English derivation is pending.
 -/
 theorem vac_pureTensorO {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {x : DefSp S} {y : DefSp T}
     {f₀ : WO S T → ℂ} (hvac : IsVacO ψ θ S T x.s y.s x.L y.L f₀) (P : Pl D → Prop)
@@ -78,9 +78,9 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨hbij, -, c, c', hc, -⟩` from `GlobalTheory.T.ramifiedOperator_bijective_finite_translation_combination D k (p i) n q (χ₀ i) (hχ i) _ rfl ε S (β i) (Q i)`. Establish `hT : ∀ φ, sOp (β i) (Q i) q (resChar (χ₀ i) (hχ i) q) ε φ = AllBij.act (Finsupp.mapDomain (β i).gl c) φ` using `fun φ => (hc φ).trans (AllBij.sum_rep_eq _ _ _)`. Establish `hC` using `AllBij.mapDomain_mem _ (AllBij.gl_mem (β i)) c`. Use `⟨by rw [hT]; exact AllBij.isContAut_act _ hφ.1, fun i' => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne i' i with rfl | hne` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hbij.mapsTo (hφ.2 i')`. Rewrite using `[hT]`. Conclude with `AllBij.ramAt_act _ _ _ (fun x hx g => AllBij.grpAt_comm S (fun e => hne (hinj e)) (hC x hx) (AllBij.gl_mem _ g)) (hφ.2 i')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sOp_ram {ι : Type} {p : ι → SplitPt D k} (hinj : Function.Injective fun i => (p i).v) {S : HSp D} {n : Type}
     [Fintype n] [DecidableEq n] (β : ∀ i, Frame (p i) S n) (Q : ι → Pair k n) (q : Unif k) (χ₀ : ι → AddChar k Circle)
@@ -100,7 +100,7 @@ theorem sOp_ram {ι : Type} {p : ι → SplitPt D k} (hinj : Function.Injective 
       (AllBij.gl_mem _ g)) (hφ.2 i')
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hφ`. Consider the case `cons i l ih => exact sOp_ram hinj β Q q χ₀ hχ (ε i) i ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_ram {ι : Type} {p : ι → SplitPt D k} (hinj : Function.Injective fun i => (p i).v) {S : HSp D} {n : Type}
     [Fintype n] [DecidableEq n] (β : ∀ i, Frame (p i) S n) (Q : ι → Pair k n) (q : Unif k) (χ₀ : ι → AddChar k Circle)
@@ -113,7 +113,7 @@ theorem foldr_ram {ι : Type} {p : ι → SplitPt D k} (hinj : Function.Injectiv
   | cons i l ih => exact sOp_ram hinj β Q q χ₀ hχ (ε i) i ih
 
 /- English proof (translation)
-Unfold `SplitPt.IsIdele`. Rewrite using `[SplitPt.idele_val]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isIdele_idele (p : SplitPt D k) (x : kˣ) : p.IsIdele x (p.idele x) := by
   unfold SplitPt.IsIdele
@@ -123,7 +123,7 @@ theorem isIdele_idele (p : SplitPt D k) (x : kˣ) : p.IsIdele x (p.idele x) := b
 end Local
 
 /- English proof (translation)
-Simplify using `only [chrPow, ← Circle.coe_mul, _root_.zpow_neg, mul_inv_cancel, Circle.coe_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chrPow_mul_neg (μ : (AE D)ˣ →* Circle) (a : (AE D)ˣ) (e : ℤ) : chrPow μ a e * chrPow μ a (-e) = 1 := by
   simp only [chrPow, ← Circle.coe_mul, _root_.zpow_neg, mul_inv_cancel, Circle.coe_one]
@@ -135,13 +135,13 @@ namespace GlobalTheory.SeeSaw.LiftsAtLevel
 open GlobalTheory.FinPl.ValDbl in
 
 /- English proof (translation)
-Establish `hk` using `ht.ker j hj α γ`. Establish `hvac : IsVacO c.ψ c.θ (c.X j) (c.X (j + 1)) (c.x j).s (c.x (j + 1)).s (c.x j).L (c.x (j + 1)).L (c.vac j)` using `hk.vac`. Establish `hstd` using `hc.std`. Establish `hxS` using `hc.x j hj.le`. Establish `hxT` using `hc.x (j + 1) hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f := pureTensorO c.ψ c.θ (c.X j) (c.X (j + 1)) (c.x j).s (c.x (j + 1)).s (c.x j).B (c.x (j + 1)).B (c.vac j) P with hfdef`. Establish `hfV : ∀ Pp, Vac c.ψ _ _ (c.x j).L (c.x (j + 1)).L Pp f` using `fun Pp => vac_pureTensorO hvac Pp P`. Establish `hpt : (t.ker j α γ).pt c.ψ c.θ (c.x j) (c.x (j + 1)) P = comb c.ψ _ _ (w.dQ j α γ) (comb c.ψ _ _ (v.dG j) (comb c.ψ _ _ (v.dT j) f))` using `by show pureTensorO c.ψ c.θ (c.X j) (c.X (j + 1)) (c.x j).s (c.x (j + 1)).s (c.x j).B (c.x (j + 1)).B (comb c.ψ _ _ (t.dd j α γ) (c.vac j)) P = _`. Rewrite using `[comb_pureTensorO hstd hc.inf _ _ _ _ hvac.2.theta (c := t.dd j α γ) hk.fin P]`. Conclude with `hVF.dd j hj α γ f (hfV fun _ => True).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrep` using `hSh.rep j hj f (hfV _)`. Establish `hpl : Places o.p o.I (· ∈ v.tP)` using `⟨hSh.pre.nodup, hSh.pre.all, hSh.pre.inj, hSh.pre.tP, fun i => (hSh.pre.char i).2⟩`. Establish `hAC` using `(GlobalTheory.T.dataAsCombinationsAtSplitPlaces_proof D k ι o.p o.I (· ∈ v.tP) hpl (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank) c.ψ hstd (c.X j) (c.X (j + 1)) (o.β j) (o.β (j + 1)) (c.x j).L (c.x (j + 1)).L hxS.sd hxT.sd (fun i => phiOne (o.Q j i) (o.Q (j + 1) i))).2.2`. Establish `hdG : CombAt (fun x => ¬ x ∈ v.tP) (v.dG j)` using `combAt_mono (fun x hx ht' => Finset.disjoint_left.1 hv.disj hx ht') (hv.atG j).2.1`. Establish `hdQ : CombAt (fun x => ¬ x ∈ v.tP) (w.dQ j α γ)` using `combAt_mono (fun x hx ht' => Finset.disjoint_left.1 hVF.disjT hx ht') ((hVF.atQ j).2.2 α γ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hV1, hO1⟩` from `hAC (v.dG j) hdG f (hfV _)`. Take `⟨hV2, hO2⟩` from `hAC (w.dQ j α γ) hdQ _ hV1`. Establish `hO` using `hO2 _ (hO1 _ hrep)`. Take `⟨g, hg, -⟩` from `overAll_last hstd (fun i => (hSh.pre.char i).2) hSh.pre.inj o.I hSh.pre.nodup _ _ (fun j' => vac_at ((hSh.pre.tP _).2 ⟨j', rfl⟩) hV2) hO i (hSh.pre.all i)`. Conclude with `⟨g, hpt ▸ hg⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pt_over {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ι : Type} {v : VCom c} {o : TDat c k ι} {t : Tup c} {w : VTup t} (hc : c.Is) (ht : t.Is) (hv : v.Is) (hVF : VForm v w)
@@ -185,19 +185,17 @@ end GlobalTheory.SeeSaw.LiftsAtLevel
 open GlobalTheory.SeeSaw.LiftsAtLevel in
 
 /- English proof (translation)
-Introduce `D c k _ _ _ _ ι v o t w hLE hc ht hv hVF hSh hμ j hj α γ P φ hφ`. Take `⟨μ, hW, hU⟩` from `hμ j hj`. Establish `hxS` using `hc.x j hj.le`. Establish `hxT` using `hc.x (j + 1) hj`. Establish `hk` using `ht.ker j hj α γ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ' : IsContAut (c.X j) φ ∧ ∀ i, RamAt (o.β j i) (o.Q j i) φ` using `hφ`. Use `set F := (t.ker j α γ).pt c.ψ c.θ (c.x j) (c.x (j + 1)) P with hF`. Establish `hOv` using `pt_over hc ht hv hVF hSh j hj α γ P`. Establish `hlift : ∀ φ', (t.ker j α γ).lift c.ψ c.θ (c.x j) (c.x (j + 1)) P φ' = liftT (t.kom j) (c.x j).vol.μ (c.x j).vol.𝓕 φ' F` using `fun φ' => rfl`. Establish `hram : ∀ φ', (IsContAut (c.X j) φ' ∧ ∀ i, RamAt (o.β j i) (o.Q j i) φ') → liftT (t.kom j) (c.x j).vol.μ (c.x j).vol.𝓕 φ' F ∈ o.Ram (j + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ' h'`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hlift]`. Conclude with `(GlobalTheory.SeeSaw.LiftSumProof.liftSum D c.ψ c.θ hc.inf _ _ (c.x j) (c.x (j + 1)) hxS hxT _ hk P).2.1 φ' h'.1`. Take `⟨f₀, hf₀⟩` from `hOv i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c₀, -, H⟩` from `GlobalTheory.T.ramifiedThetaLift_commutes_splitPlace_operators D k (o.p i) (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank) o.q (o.χ i) (o.hχ i) c.ψ (c.X j) (c.X (j + 1)) hxS.cpt (c.x j).vol μ μ (t.kom j) hW (hU i) (hU i) (o.β j i) (o.β (j + 1) i) (o.Q j i) (o.Q (j + 1) i)`. Conclude with `(H _ _ f₀ F hf₀ φ' (h'.2 i)).1`. Use `⟨by rw [hlift]; exact hram φ hφ', fun η => ?_⟩` and prove the remaining obligations. Establish `key : ∀ l : List ι, l.foldr (fun i φ' => sOp (o.β (j + 1) i) (o.Q (j + 1) i) o.q (resChar (o.χ i) (o.hχ i) o.q) (η i) φ') (liftT (t.kom j) (c.x j).vol.μ (c.x j).vol.𝓕 φ F) = ((((resCard k : ℝ) ^ ((((c.X (j + 1)).rank : ℝ) - (c.X j).rank) / 2) : ℝ) : ℂ) ^ l.length) • liftT (t.kom …`. Introduce `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons, List.length_cons]`. Rewrite using `[ih, GlobalTheory.FinPl.ValDbl.sOp_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, -, hE⟩` from `hLE k (o.p i) o.q (o.χ i) (o.hχ i)`. Take `⟨f₀, hf₀⟩` from `hOv i`. Establish `hr` using `(foldr_ram hSh.pre.inj (o.β j) (o.Q j) o.q o.χ o.hχ η l hφ').2 i`. Rewrite using `[hE (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank) c.ψ (c.X j) (c.X (j + 1)) hxS.cpt (c.x j).vol μ μ (t.kom j) hW (hU i) (hU i) (o.β j i) (o.β (j + 1) i) (o.Q j i) (o.Q (j + 1) i) _ (isIdele_idele (o.p i) o.q.unit) _ _ f₀ F hf₀ _ hr (η i), mul_assoc, chrPow_mul_neg, mul_one, smul_sm …`. Simplify using `only [Fintype.card_fin]`.
-
-Simplify using `only [TDat.S, TDat.cL, hlift]`. Conclude with `key o.I`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeeSaw.liftS_of_exact : ∀ (D : D7) (c : Comm D) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (v : VCom c) (o : TDat c k ι) (t : Tup c) (w : VTup t), LiftExact D → c.Is → t.Is → v.Is → VForm v w → ShapeOff v o → (∀ j, j < D.R.m → ∃ μ, IsWeilDatumO c.ψ _ _ μ μ (t.kom j) ∧ ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D μ (o.p i).v) → LiftS o t := by
   intro D c k _ _ _ _ ι v o t w hLE hc ht hv hVF hSh hμ j hj α γ P φ hφ

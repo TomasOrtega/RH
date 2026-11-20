@@ -15,16 +15,16 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 namespace UpperTheory.V.Z.Gam
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh68.reps r hr A`.
+A detailed English derivation is pending.
 -/
 private theorem reps {α : Type*} (r : α → α → Prop) (hr : Equivalence r) (A : Finset α) :
     ∃ T : Finset α, T ⊆ A ∧ (∀ t ∈ T, ∀ t' ∈ T, r t t' → t = t') ∧ ∀ a ∈ A, ∃ t ∈ T, r a t :=
   _root_.UpperTheory.Reformulated.B.Qh68.reps r hr A
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.sum_cons, ← ih, Finset.card_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Multiset.filter_cons, Multiset.card_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem swapc {α ι : Type*} (I : Finset ι) (p : ι → α → Prop) (s : Multiset α) :
     ∑ i ∈ I, (s.filter (p i)).card = (s.map fun y => (I.filter fun i => p i y).card).sum := by
@@ -37,9 +37,9 @@ private theorem swapc {α ι : Type*} (I : Finset ι) (p : ι → α → Prop) (
     split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `y hy`. Assume the negation of the conclusion as `hne`. Establish `hlt : (s.map g).sum < (s.map fun y => F * d y).sum`. Use `Multiset.sum_lt_sum (fun z hz => (hg z hz).1.trans (Nat.le_mul_of_pos_right _ (hpos z hz))) ⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[(hg y hy).2 hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_pos hF (hpos y hy)`. Rewrite `hlt` using `[Multiset.sum_map_mul_left]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem allone {α : Type*} (d g : α → ℕ) (F : ℕ) (hF : 0 < F) (s : Multiset α) (hpos : ∀ y ∈ s, 0 < d y)
     (hg : ∀ y ∈ s, g y ≤ F ∧ (d y ≠ 1 → g y = 0)) (h : F * (s.map d).sum ≤ (s.map g).sum) : ∀ y ∈ s, d y = 1 := by
@@ -56,7 +56,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `x hx` and use `h x (ha x hx) (hb x hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem unr_of {a b c : kˣ →* ℂˣ} (ha : IsUnram a) (hb : IsUnram b) (h : ∀ x, a x = 1 → b x = 1 → c x = 1) :
     IsUnram c := fun x hx => h x (ha x hx) (hb x hx)
@@ -68,11 +68,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {k' : Type} [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[swapc T (fun t y => ∃ ξ hξ, y = IrrGL.ofChar ξ hξ ∧ IsUnram (ξ * t.comp N)) s]`. Rewrite using `[Multiset.map_congr rfl (g := fun _ => 1) fun y hy => ?_]`. Simplify using the standard rewrite rules. Take `⟨ζ, hζ, rfl, t, ht, e⟩` from `h3 y hy`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Finset.card_eq_one.2 ⟨t, Finset.eq_singleton_iff_unique_mem.2 ⟨Finset.mem_filter.2 ⟨ht, ζ, hζ, rfl, e⟩, fun t' ht' => ?_⟩⟩` and prove the remaining obligations. Take `⟨ht', ξ, hξ, e1, e2⟩` from `Finset.mem_filter.1 ht'`. Take `rfl` from `IrrGL.ofChar_inj.1 e1`. Use `h2 t' ht' t ht (unr_of e2 e fun x a b => ?_)` and prove the remaining obligations. Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply] at a b ⊢`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_inv_eq_one]`. Conclude with `mul_left_cancel (a.trans b.symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_right (N : k'ˣ →* kˣ) (T : Finset (kˣ →* ℂˣ)) (s : Multiset (IrrGL k'))
     (h2 : ∀ t ∈ T, ∀ t' ∈ T, IsUnram ((t * t'⁻¹).comp N) → t = t')
@@ -92,15 +92,15 @@ private theorem sum_right (N : k'ˣ →* kˣ) (T : Finset (kˣ →* ℂˣ)) (s :
   exact mul_left_cancel (a.trans b.symm)
 
 /- English proof (translation)
-Break down `Finset.eq_empty_or_nonempty ((T ×ˢ J).filter fun p => ∃ ξ hξ, y = IrrGL.ofChar ξ hξ ∧ IsUnram (ξ * (p.1 * e p.2))) with h | ⟨p, hp⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Nat.zero_le _`. Take `⟨hp0, ξ, hξ, rfl, hu⟩` from `Finset.mem_filter.1 hp`. Establish `key : ∀ t ∈ T, ∀ j, IsUnram (ξ * (t * e j)) → IsUnram ((ξ * t).comp N)` using `fun t ht j h => by`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hup _ (hξ.mul ((hT t ht).mul (he j))) h` as an intermediate fact. Use `unr_of this this fun x a _ => ?_` and prove the remaining obligations. Simplify `a` using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, heN, mul_one]`. Establish `hp1` using `(Finset.mem_product.1 hp0).1`. Establish `k1` using `key p.1 hp1 p.2 hu`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF _ (hξ.mul (hT _ hp1)) k1]`. Establish `hall : ∀ q ∈ ((T ×ˢ J).filter fun p => ∃ ξ' hξ', IrrGL.ofChar ξ hξ = IrrGL.ofChar ξ' hξ' ∧ IsUnram (ξ' * (p.1 * e p.2))), q.1 = p.1 ∧ q.2 ∈ J ∧ IsUnram (ξ * p.1 * e q.2)` using `fun q hq => by`. Take `⟨hq, ξ', hξ', e1, e2⟩` from `Finset.mem_filter.1 hq`. Take `rfl` from `IrrGL.ofChar_inj.1 e1`. Take `⟨hq1, hq2⟩` from `Finset.mem_product.1 hq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: q.1 = p.1`. Use `h2 _ hq1 _ hp1 (unr_of (key _ hq1 _ e2) k1 fun x a b => ?_)` and prove the remaining obligations. Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply] at a b ⊢`. Rewrite using `[mul_inv_eq_one]`. Conclude with `mul_left_cancel (a.trans b.symm)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨this, hq2, by rw [mul_assoc, ← this]; exact e2⟩`. Use `Finset.card_le_card_of_injOn Prod.snd (fun q hq => ?_) fun q hq q' hq' h => ?_` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_filter.2 (hall q hq).2)`. Conclude with `Prod.ext ((hall q hq).1.trans (hall q' hq').1.symm) h`.
+A detailed English derivation is pending.
 -/
 private theorem left_le (N : k'ˣ →* kˣ) (T : Finset (kˣ →* ℂˣ)) (J : Finset ℕ) (e : ℕ → (kˣ →* ℂˣ)) (F : ℕ)
     (hT : ∀ t ∈ T, IsSmoothChar t) (he : ∀ j, IsSmoothChar (e j)) (heN : ∀ j x, e j (N x) = 1)
@@ -136,7 +136,7 @@ private theorem left_le (N : k'ˣ →* kˣ) (T : Finset (kˣ →* ℂˣ)) (J : F
   · exact Prod.ext ((hall q hq).1.trans (hall q' hq').1.symm) h
 
 /- English proof (translation)
-Use `⟨fun t x _ => by simp, fun h => unr_of h h fun x a _ => ?_, fun h h' => unr_of h h' fun x a b => ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, mul_inv_eq_one] at a ⊢`. Conclude with `a.symm`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, mul_inv_eq_one] at a b ⊢`. Conclude with `a.trans b`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem unr_equiv (N : k'ˣ →* kˣ) : Equivalence fun t t' : kˣ →* ℂˣ => IsUnram ((t * t'⁻¹).comp N) := by
   refine ⟨fun t x _ => by simp, fun h => unr_of h h fun x a _ => ?_, fun h h' => unr_of h h' fun x a b => ?_⟩
@@ -151,29 +151,27 @@ end UpperTheory.V.Z.Gam
 
 open UpperTheory.V.Z.Gam in
 /- English proof (translation)
-Introduce `hS hN hM K M _ _ _ _ _ _ _ hKM P π hI v hv`. Use `haveI : Algebra.IsQuadraticExtension K M := ⟨hKM⟩`. Take `⟨η, -, hη⟩` from `hN K M (hKM ▸ Nat.prime_two)`. Take `⟨w₀⟩ : Nonempty (PlacesOver M v)` from `(placesOverEquiv M v).nonempty_congr.2 inferInstance`. Take `⟨⟨s, hs⟩, -, h3, -⟩` from `hS K (2 * 2) (by norm_num) P v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hiff, hsum, hpos⟩` from `h3 s hs`. Use `choose s' hs' using fun w : PlacesOver M v => (hS M 2 (by norm_num) π w.1).1`. Establish `hone : ∀ w, ∀ y ∈ s' w, y.1 = 1` using `fun w => ((hS M 2 (by norm_num) π w.1).2.2.1 _ (hs' w)).1.1 (hv w).1`. Establish `hcard : ∀ w, (s' w).card = 2` using `fun w => by`. Use `((hS M 2 (by norm_num) π w.1).2.2.1 _ (hs' w)).2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[Multiset.map_congr rfl (g := fun _ => 1) (hone w)]`. Simplify using `using this`. Establish `hχ : ∀ (w : PlacesOver M v) (y : IrrGL (w.1.adicCompletion M)), ∃ χ : (v.adicCompletion K)ˣ →* ℂˣ, IsSmoothChar χ ∧ (y ∈ s' w → ∃ ζ hζ, y = IrrGL.ofChar ζ hζ ∧ IsUnram (ζ * χ.comp (nm w)))` using `fun w y => by`. Distinguish the cases in `hy : y ∈ s' w`. Take `⟨ζ, hζ, rfl⟩` from `TemperedTests.exists_eq_ofChar y (hone w y hy)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨χ, h1, h2⟩` from `(hv w).2 _ (hs' w) ζ hζ hy`. Conclude with `⟨χ, h1, fun _ => ⟨ζ, hζ, rfl, h2⟩⟩`. Conclude with `⟨1, isSmoothChar_one, fun h => absurd h hy⟩`. Use `choose χ hχs hχ using hχ`. Take `⟨T, hT1, hT2, hT3⟩` from `reps _ (unr_equiv (nm w₀)) (Finset.univ.biUnion fun w : PlacesOver M v => (s' w).toFinset.image (χ w))`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : ∀ t ∈ T, IsSmoothChar t` using `fun t ht => by`. Take `⟨w, -, h⟩` from `Finset.mem_biUnion.1 (hT1 ht)`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `hχs w y`. Establish `hR : ∀ w, ∑ t ∈ T, cnt (s' w) (t.comp (nm w)) = 2` using `fun w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hcard w]`. Use `sum_right (nm w) T (s' w) (fun t ht t' ht' h => hT2 t ht t' ht' ((hη v w).2.1 w₀ _ h)) fun y hy => ?_` and prove the remaining obligations. Take `⟨ζ, hζ, e, hu⟩` from `hχ w y hy`. Take `⟨t, ht, h⟩` from `hT3 (χ w y) (Finset.mem_biUnion.2 ⟨w, Finset.mem_univ _, Finset.mem_image.2 ⟨y, Multiset.mem_toFinset.2 hy, rfl⟩⟩)`. Use `⟨ζ, hζ, e, t, ht, unr_of hu ((hη v w₀).2.1 w _ h) fun x a b => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, mul_inv_eq_one] at a b ⊢`. Rewrite using `[← b]`. Conclude with `a`. Establish `heN : ∀ (w : PlacesOver M v) (j : ℕ) x, (η ^ j).loc v (nm w x) = 1` using `fun w j x => by`. Establish `: η.loc v (nm w x) = 1` using `DFunLike.congr_fun (hη v w).1 x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show η.loc v (nm w x) ^ j = 1`. Rewrite using `[this, one_pow]`. Establish `hF : 0 < ∑ w : PlacesOver M v, fdeg w`. Rewrite using `[← ((hη v w₀).2.2 1 isSmoothChar_one).2.2 (fun x _ => rfl)]`. Conclude with `Finset.card_pos.2 ⟨0, Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), fun x _ => by show (1 : ℂˣ) * η.loc v x ^ 0 = 1 simp⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `htot : ∑ p ∈ T ×ˢ Finset.range (Module.finrank K M), cnt s (p.1 * (η ^ p.2).loc v) = (∑ w : PlacesOver M v, fdeg w) * (2 * 2)`. Establish `h1 : ∀ p ∈ T ×ˢ Finset.range (Module.finrank K M), cnt s (p.1 * (η ^ p.2).loc v) = ∑ w : PlacesOver M v, fdeg w * cnt (s' w) (p.1.comp (nm w))` using `fun p hp => by`. Rewrite using `[hM K M hKM P π hI v s s' hs hs' _ ((hT _ (Finset.mem_product.1 hp).1).mul (ParLaws.isSmoothChar_loc _ v))]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `x`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, heN, mul_one]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_product_right]`. Simplify using `only [Finset.sum_const, Finset.card_range, hKM, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [← Finset.mul_sum, hR, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `cnt at htot`. Rewrite `htot` using `[swapc _ (fun (p : ((v.adicCompletion K)ˣ →* ℂˣ) × ℕ) y => ∃ ξ hξ, y = IrrGL.ofChar ξ hξ ∧ IsUnram (ξ * (p.1 * (η ^ p.2).loc v))) s, ← hsum]`. Use `hiff.2 (allone Sigma.fst _ _ hF s hpos (fun y _ => ⟨?_, fun hy => ?_⟩) htot.ge)` and prove the remaining obligations.
-
-Conclude with `left_le (nm w₀) T _ (fun j => (η ^ j).loc v) _ hT (fun j => ParLaws.isSmoothChar_loc _ v) (heN w₀) hT2 (fun θ h => ((hη v w₀).2.2 θ h).2.1) (fun θ h => ((hη v w₀).2.2 θ h).2.2) y`. Use `Finset.card_eq_zero.2 (Finset.filter_eq_empty_iff.2 fun p _ => ?_)` and prove the remaining obligations. Introduce and unpack `⟨ξ, hξ, rfl, -⟩`. Conclude with `hy rfl`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Gam.indTorOf :
     UpperTheory.V.Z.Gam.IndTorOf := by

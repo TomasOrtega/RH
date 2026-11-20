@@ -16,7 +16,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S₁ S₂ t t₁ t₂ f₁ f₂ g m₁ m₂ h`. Substitute `h` using the available equality. Take `⟨n, hn⟩` from `sabCancel pullCubCancel E H _ _ _ t t₁ t₂ f₁ g m₁ m₂`. Conclude with `⟨⟨n, hn.symm⟩, fun n => sabComp pullCubComp E H _ _ _ t t₁ t₂ f₁ g m₁ n⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sabMap_cancel_and_comp_over : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S₁ S₂ : Scheme.{0}) (t : SAB H S) (t₁ : SAB H S₁) (t₂ : SAB H S₂) (f₁ : S₁ ⟶ S) (f₂ : S₂ ⟶ S) (g : S₂ ⟶ S₁) (m₁ : SABMap t₁ t f₁) (m₂ : SABMap t₂ t f₂), f₂ = g ≫ f₁ → (∃ n : SABMap t₂ t₁ g, n.φ ≫ m₁.φ = m₂.φ) ∧ ∀ n : SABMap t₂ t₁ g, ∃ m : SABMap t₂ t f₂, m.φ = n.φ ≫ m₁.φ := by
   intro E _ _ _ H S S₁ S₂ t t₁ t₂ f₁ f₂ g m₁ m₂ h

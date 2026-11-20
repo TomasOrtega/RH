@@ -5,19 +5,17 @@ open scoped nonZeroDivisors Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GroundTheory.Global GroundTheory.Global.IdeleGroup UpperTheory.Gal.TP.Skew
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ`. Take `⟨_, hE, h2, hconj⟩` from `hσ`. Use `haveI hfin : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h2`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Establish `hgal : IsGalois F E` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hsq : ∀ x, σ (σ x) = x` using `fun x => τ.injective (by rw [hconj, hconj, star_star])`. Establish `hsurj : Function.Surjective σ` using `fun x => ⟨σ x, hsq x⟩`. Set `s : Gal(E/F)` to `AlgEquiv.ofBijective σ ⟨σ.toRingHom.injective, hsurj⟩`. Establish `hs : ∀ x, s x = σ x` using `fun x => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hne : ∃ x, σ x ≠ x`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises. Use `show star τ = τ`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `x`. Use `hconj τ x` as an intermediate fact. Rewrite `this` using `[h x]`. Simplify using `using this.symm`. Take `⟨x, hx⟩` from `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs1 : s ≠ 1` using `fun h => hx (by rw [← hs, h]; rfl)`. Establish `hcard : Fintype.card Gal(E/F) = 2`. Rewrite using `[← h2, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]`. Use `⟨hgal, s, hs, hs1, ?_, ?_, σ x - x, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `[hs, hsq]`. Introduce `g`. Assume the negation of the conclusion as `hg`. Use `push_neg at hg`. Establish `hle : ({1, s, g} : Finset Gal(E/F)).card ≤ Fintype.card Gal(E/F)` using `Finset.card_le_univ _`.
-
-Rewrite `hle` using `[Finset.card_insert_of_notMem (by simp [hs1.symm, hg.1.symm]), Finset.card_pair hg.2.symm, hcard]`. Use linear arithmetic over natural numbers and integers. Conclude with `sub_ne_zero.mpr hx`. Rewrite using `[map_sub, hsq]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Skew.conjAut :
     UpperTheory.Gal.TP.Skew.ConjAut := by

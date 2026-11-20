@@ -21,9 +21,9 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S A L T : HSp D} (o : OrthDe
   {om : Om S T}
 
 /- English proof (translation)
-Use `⟨fun γ hγ a => ?_, hφ.2.mul ((hW.om_cont Ξ hΞ _).comp ((o.continuous_emb.comp (continuous_id.prodMk continuous_const)).prodMk continuous_const))⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.T.weilRepresentation_rational_translate_substitution D ψ _ _ _ _ _ hW Ξ hΞ _ (o.emb_mem_GQ hγ (one_mem _)) 1 (one_mem _) (o.emb (a, 1)) h ((o.resS T).symm (0, u))`. Rewrite `e` using `[← map_mul, Prod.mk_mul_mk, one_mul, one_mul, inv_one, mt_one, Matrix.one_mul]`. Use `beta_reduce`. Rewrite using `[hφ.1 γ hγ, e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Rewrite using `[OrthDec.resS_symm_apply, Matrix.zero_mul, zero_add, Matrix.mul_assoc, OrthDec.pB_emb, mt_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contAut_ker (hW : IsWeilDatumO ψ S T χS χT om) {φ : GA D A → ℂ} {Ξ : WO S T → ℂ} (hφ : IsContAut A φ)
     (hΞ : IsThetaFunO ψ S T Ξ) (h : GA D T) (u : WO L T) :
@@ -39,7 +39,7 @@ theorem contAut_ker (hW : IsWeilDatumO ψ S T χS χT om) {φ : GA D A → ℂ} 
   rw [OrthDec.resS_symm_apply, Matrix.zero_mul, zero_add, Matrix.mul_assoc, OrthDec.pB_emb, mt_one, Matrix.one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `only [liftA, Pi.add_apply, add_mul]`. Conclude with `integral_add (Comm.IsContAut.integrableOn hA vA (contAut_ker o hW hφ hΞ h _)) (Comm.IsContAut.integrableOn hA vA (contAut_ker o hW hφ' hΞ h _))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftA_add_left (hA : CoCpt A) (vA : Vol A) (hW : IsWeilDatumO ψ S T χS χT om) {φ φ' : GA D A → ℂ}
     {Ξ : WO S T → ℂ} (hφ : IsContAut A φ) (hφ' : IsContAut A φ') (hΞ : IsThetaFunO ψ S T Ξ) :
@@ -50,7 +50,7 @@ theorem liftA_add_left (hA : CoCpt A) (vA : Vol A) (hW : IsWeilDatumO ψ S T χS
     (Comm.IsContAut.integrableOn hA vA (contAut_ker o hW hφ' hΞ h _))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `only [liftA, map_add, Pi.add_apply, mul_add]`. Conclude with `integral_add (Comm.IsContAut.integrableOn hA vA (contAut_ker o hW hφ hΞ h _)) (Comm.IsContAut.integrableOn hA vA (contAut_ker o hW hφ hΞ' h _))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftA_add_right (hA : CoCpt A) (vA : Vol A) (hW : IsWeilDatumO ψ S T χS χT om) {φ : GA D A → ℂ}
     {Ξ Ξ' : WO S T → ℂ} (hφ : IsContAut A φ) (hΞ : IsThetaFunO ψ S T Ξ) (hΞ' : IsThetaFunO ψ S T Ξ') :
@@ -61,7 +61,7 @@ theorem liftA_add_right (hA : CoCpt A) (vA : Vol A) (hW : IsWeilDatumO ψ S T χ
     (Comm.IsContAut.integrableOn hA vA (contAut_ker o hW hφ hΞ' h _))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `only [liftA, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftA_smul_left (vA : Vol A) (c : ℂ) (φ : GA D A → ℂ) (Ξ : WO S T → ℂ) :
     liftA o om vA (c • φ) Ξ = c • liftA o om vA φ Ξ := by
@@ -70,7 +70,7 @@ theorem liftA_smul_left (vA : Vol A) (c : ℂ) (φ : GA D A → ℂ) (Ξ : WO S 
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `only [liftA, map_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]`. Conclude with `integral_const_mul _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftA_smul_right (vA : Vol A) (c : ℂ) (φ : GA D A → ℂ) (Ξ : WO S T → ℂ) :
     liftA o om vA φ (c • Ξ) = c • liftA o om vA φ Ξ := by
@@ -79,9 +79,9 @@ theorem liftA_smul_right (vA : Vol A) (c : ℂ) (φ : GA D A → ℂ) (Ξ : WO S
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `only [liftA]`. Use `Eq.trans ?_ (Comm.integral_right vA (contAut_ker o hW hφ hΞ h w).1 a)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, ← map_mul, Prod.mk_mul_mk, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftA_equiv (vA : Vol A) (hW : IsWeilDatumO ψ S T χS χT om) {φ : GA D A → ℂ} {Ξ : WO S T → ℂ}
     (hφ : IsContAut A φ) (hΞ : IsThetaFunO ψ S T Ξ) (a : GA D A) :
@@ -96,11 +96,9 @@ theorem liftA_equiv (vA : Vol A) (hW : IsWeilDatumO ψ S T χS χT om) {φ : GA 
 end Lift
 
 /- English proof (translation)
-Use `choose F hF hFu using fun x : P => hex x.1 x.2`. Establish `hc : ∀ (c : ℂ) (x x' : P), F (c • x + x') = c • F x + F x'` using `fun c x x' => (hFu (c • x + x') _ (hlin c _ _ _ _ (hF x) (hF x'))).symm`. Establish `h0 : F 0 = 0`. Use `hc 1 0 0` as an intermediate fact. Simplify using `only [one_smul, add_zero] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `left_eq_add.1 this`. Set `F' : P →ₗ[ℂ] N` to `{ toFun := F map_add' := fun x y => by simpa using hc 1 x y map_smul' := fun c x => by simpa [h0] using hc c x 0 }`. Take `⟨Q, hQ⟩` from `P.exists_isCompl`. Use `⟨F' ∘ₗ P.linearProjOfIsCompl Q hQ, fun x => ⟨_, hF _⟩, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : P.linearProjOfIsCompl Q hQ x = ⟨x, hx⟩` using `Submodule.linearProjOfIsCompl_apply_left hQ ⟨x, hx⟩`.
-
-Rewrite using `[LinearMap.comp_apply, e]`. Conclude with `hF ⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linear_of_rel {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
     (P : Submodule ℂ M) (R : M → N → Prop) (hex : ∀ x ∈ P, ∃! y, R x y)
@@ -124,15 +122,15 @@ theorem exists_linear_of_rel {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCo
   exact hF ⟨x, hx⟩
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n n' _ _ _ _ ψ S A L T o ζ _ hA vA χS χT om hW α α₀ β hsum`. Take `⟨lS, lT, hlS, -, hlin⟩` from `GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ S T χS χT om hW`. Use `⟨lS, hlS, fun LS LT f₀ hLS hLT hvac => ?_⟩` and prove the remaining obligations. Take `⟨hex, hth, -⟩` from `GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n (n' ⊕ Fin 1) ψ hW.std S T α₀ β LS LT hLS hLT f₀ hvac`. Take `⟨G, hG, hGP⟩` from `exists_linear_of_rel (SB (Matrix n (n' ⊕ Fin 1) k)) (Over ψ α₀ β LS LT f₀) hex (fun c x y x' y' h h' => (hlin n _ α₀ β LS LT f₀ x y h).2.2 c x' y' h')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hGt : ∀ Φ, IsThetaFunO ψ S T (G Φ)` using `fun Φ => (hG Φ).elim fun x hx => (hth _ _ hx).1`. Establish `hGf : ∀ Φ f, Over ψ α₀ β LS LT f₀ Φ f → G Φ = f` using `fun Φ f h => (hex Φ h.2.2.2.1).unique (hGP Φ h.2.2.2.1) h`. Set `θ : CA A →ₗ[ℂ] (Matrix n (n' ⊕ Fin 1) k → ℂ) →ₗ[ℂ] (GA D T → WO L T → ℂ)` to `LinearMap.mk₂ ℂ (fun v Φ => liftA o om vA v (G Φ)) (fun v v' Φ => liftA_add_left o hA vA hW v.2 v'.2 (hGt Φ)) (fun c v Φ => liftA_smul_left o vA c v (G Φ)) (fun v Φ Φ' => by rw [map_add]; exact liftA_add_right o hA vA hW v.2 (hGt Φ) (hGt Φ')) (fun c v Φ => by rw [map_smul]; exact …`. Establish `hθ : ∀ (v : CA A) Φ, θ v Φ = liftA o om vA v (G Φ)` using `fun _ _ => rfl`. Use `⟨θ, fun v Φ f h => by rw [hθ, hGf Φ f h], fun g v Φ hΦ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hlin n _ α₀ β LS LT f₀ Φ _ (hGP Φ hΦ)).1 (blk g) 1`. Establish `hdet : Matrix.GeneralLinearGroup.det (blk g) = Matrix.GeneralLinearGroup.det g`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `hemb : α₀.gl (blk g) = o.emb (α.gl g, 1)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Comm.emb_gl hsum]`. Use `congr 1`. Establish `hfun : (fun x : Matrix n (n' ⊕ Fin 1) k => (lS (Matrix.GeneralLinearGroup.det (blk g)) : ℂ) * (lT (Matrix.GeneralLinearGroup.det (1 : GL n k)) : ℂ) * Φ (((1 : GL n k)⁻¹ : GL n k).val * x * (blk g).val)) = (lS (Matrix.GeneralLinearGroup.det g) : ℂ) • fun x => Φ (x * (blk g).val)`. Use function extensionality and compare the values at `x`. Simplify using `only [hdet, map_one, Units.val_one, mul_one, inv_one, Matrix.one_mul, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hfun, hemb, map_one]`. Establish `h2 : θ (caRep α g v) ((lS (Matrix.GeneralLinearGroup.det g) : ℂ) • fun x => Φ (x * (blk g).val)) = θ v Φ`. Rewrite using `[hθ, hθ, hGf _ _ h1]`. Conclude with `liftA_equiv o vA hW v.2 (hGt Φ) (α.gl g)`. Rewrite using `[← h2, map_smul, inv_smul_smul₀ (Units.ne_zero _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_theta : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (ψ : AddChar (AF D.host.F) ℂ) (S A L T : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E), IsLineVec L ζ → CoCpt A → ∀ (vA : Vol A) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ (α : Frame p A n') (α₀ : Frame p S (n' ⊕ Fin 1)) (β : Frame p T n), IsSumFrame o ζ α α₀ → ∃ lS : kˣ →* ℂˣ, (CharUnramAt D χT p.v → IsUnram lS) ∧ ∀ (LS : Lat S) (LT : Lat T) (f₀ : WO S T → ℂ), IsSelfDualC S LS → IsSelfDualC T LT → Vac ψ S T LS LT (· = p.v) f₀ → ∃ θ : GlobalTheory.FinPl.SrcGl.CA A →ₗ[ℂ] (Matrix n (n' ⊕ Fin 1) k → ℂ) →ₗ[ℂ] (GA D T → WO L T → ℂ), (∀ (v : GlobalTheory.FinPl.SrcGl.CA A) (Φ : Matrix n (n' ⊕ Fin 1) k → ℂ) (f : WO S T → ℂ), Over ψ α₀ β LS LT f₀ Φ f → θ v Φ = liftA o om vA v f) ∧ ∀ (g : GL n' k) (v : GlobalTheory.FinPl.SrcGl.CA A) (Φ : Matrix n (n' ⊕ Fin 1) k → ℂ), Φ ∈ SB (Matrix n (n' ⊕ Fin 1) k) → θ (GlobalTheory.FinPl.SrcGl.caRep α g v) (fun x => Φ (x * (GlobalTheory.FinPl.SrcGl.blk g).val)) = ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ)⁻¹ • θ v Φ := by
   intro D k _ _ _ _ p n n' _ _ _ _ ψ S A L T o ζ _ hA vA χS χT om hW α α₀ β hsum

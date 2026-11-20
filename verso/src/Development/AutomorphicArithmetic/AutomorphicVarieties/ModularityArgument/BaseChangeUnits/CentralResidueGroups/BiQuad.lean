@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 namespace UpperTheory.V.Z.Bc
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩ x`. Conclude with `t.commutes x`. Introduce `h`. Conclude with `⟨{ s.toRingEquiv with commutes' := h }, AlgEquiv.ext fun _ => rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mem_range_resG_iff (k L Ω : Type) [Field k] [Field L] [Field Ω] [Algebra k L] [Algebra k Ω] [Algebra L Ω]
     [IsScalarTower k L Ω] (s : G k Ω) :
@@ -17,7 +17,7 @@ private theorem mem_range_resG_iff (k L Ω : Type) [Field k] [Field L] [Field Ω
     exact ⟨{ s.toRingEquiv with commutes' := h }, AlgEquiv.ext fun _ => rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← AlgEquiv.restrictNormal_commutes, ← AlgEquiv.restrictNormal_commutes]`. Express the relevant statement in the definitionally equal form `algebraMap K M (AlgEquiv.restrictNormalHom K (σ * τ) x) = algebraMap K M (AlgEquiv.restrictNormalHom K (τ * σ) x)`. Rewrite using `[map_mul, map_mul, h.is_comm.comm]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comm_on (k K M : Type) [Field k] [Field K] [Field M] [Algebra k K] [Algebra k M] [Algebra K M]
     [IsScalarTower k K M] [h : IsAbelianGalois k K] (σ τ : M ≃ₐ[k] M) (x : K) :
@@ -27,19 +27,13 @@ private theorem comm_on (k K M : Type) [Field k] [Field K] [Field M] [Algebra k 
   rw [map_mul, map_mul, h.is_comm.comm]
 
 /- English proof (translation)
-Set `a` to `IsScalarTower.toAlgHom k K Ω`. Set `b` to `IsScalarTower.toAlgHom k K' Ω`. Set `M : IntermediateField k Ω` to `a.fieldRange ⊔ b.fieldRange`. Establish `hM : M = IntermediateField.adjoin k ((a.fieldRange : Set Ω) ∪ b.fieldRange)` using `IntermediateField.sup_def _ _`. Establish `ha : ∀ x, a x ∈ M` using `fun x => (le_sup_left : a.fieldRange ≤ M) ⟨x, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ x, b x ∈ M` using `fun x => (le_sup_right : b.fieldRange ≤ M) ⟨x, rfl⟩`. Use `letI iK : Algebra K M := (a.toRingHom.codRestrict M ha).toAlgebra`. Use `letI iK' : Algebra K' M := (b.toRingHom.codRestrict M hb).toAlgebra`. Use `haveI t1 : IsScalarTower k K M := IsScalarTower.of_algebraMap_eq fun x => Subtype.ext (a.commutes x).symm`. Use `haveI t2 : IsScalarTower k K' M := IsScalarTower.of_algebraMap_eq fun x => Subtype.ext (b.commutes x).symm`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI t3 : IsScalarTower K M Ω := IsScalarTower.of_algebraMap_eq fun x => rfl`. Use `haveI t4 : IsScalarTower K' M Ω := IsScalarTower.of_algebraMap_eq fun x => rfl`. Establish `hext : ∀ f g : M →ₐ[k] Ω, (∀ x : K, f (algebraMap K M x) = g (algebraMap K M x)) → (∀ x : K', f (algebraMap K' M x) = g (algebraMap K' M x)) → f = g`. Introduce `f g h1 h2`. Use `IntermediateField.algHom_ext_of_eq_adjoin k hM ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `x (⟨y, rfl⟩ | ⟨y, rfl⟩)`. Conclude with `h1 y`. Conclude with `h2 y`. Use `haveI : FiniteDimensional k a.fieldRange := a.equivFieldRange.toLinearEquiv.finiteDimensional`. Use `haveI : FiniteDimensional k b.fieldRange := b.equivFieldRange.toLinearEquiv.finiteDimensional`.
-
-Use `haveI : IsGalois k a.fieldRange := IsGalois.of_algEquiv a.equivFieldRange`. Use `haveI : IsGalois k b.fieldRange := IsGalois.of_algEquiv b.equivFieldRange`. Use `haveI : FiniteDimensional k M := IntermediateField.finiteDimensional_sup _ _`. Use `haveI : Normal k M := IntermediateField.normal_sup k Ω _ _`. Use `haveI : Algebra.IsSeparable k M := inferInstance`.
-
-Use `haveI : IsGalois k M := ⟨⟩`. Use `⟨M, inferInstance, inferInstance, iK, iK', inferInstance, t1, t2, t3, t4, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Use `{ is_comm := ⟨fun σ τ => ?_⟩ }` and prove the remaining obligations. Use `hext (M.val.comp (σ * τ : M ≃ₐ[k] M)) (M.val.comp (τ * σ : M ≃ₐ[k] M)) (fun x => congrArg Subtype.val (comm_on k K M σ τ x)) (fun x => congrArg Subtype.val (comm_on k K' M σ τ x))` as an intermediate fact. Conclude with `AlgEquiv.ext fun x => Subtype.ext (DFunLike.congr_fun this x)`.
-
-Introduce `s h1 h2 x`. Conclude with `DFunLike.congr_fun (hext ((s : Ω →ₐ[k] Ω).comp M.val) M.val h1 h2) x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_compositum (k K K' Ω : Type) [Field k] [Field K] [Field K'] [Field Ω] [Algebra k K] [Algebra k K']
     [Algebra k Ω] [Algebra K Ω] [Algebra K' Ω] [IsScalarTower k K Ω] [IsScalarTower k K' Ω]
@@ -85,7 +79,7 @@ private theorem exists_compositum (k K K' Ω : Type) [Field k] [Field K] [Field 
     exact DFunLike.congr_fun (hext ((s : Ω →ₐ[k] Ω).comp M.val) M.val h1 h2) x
 
 /- English proof (translation)
-Use `haveI : Algebra.IsQuadraticExtension ℚ K := ⟨h⟩`. Use `haveI : IsCyclic (K ≃ₐ[ℚ] K) := inferInstance`. Conclude with `IsAbelianGalois.of_isCyclic ℚ K`.
+A detailed English derivation is pending.
 -/
 private theorem abelian_of_two (K : Type) [Field K] [NumberField K] (h : Module.finrank ℚ K = 2) : IsAbelianGalois ℚ K := by
   haveI : Algebra.IsQuadraticExtension ℚ K := ⟨h⟩
@@ -95,17 +89,11 @@ private theorem abelian_of_two (K : Type) [Field K] [NumberField K] (h : Module.
 end UpperTheory.V.Z.Bc
 
 /- English proof (translation)
-Introduce `K K' Ω _ _ _ _ _ _ _ _ _ _ _ _ _ h h'`. Use `haveI := abelian_of_two K h`. Use `haveI := abelian_of_two K' h'`. Take `⟨M, fM, iQ, iK, iK', iΩ, t1, t2, t3, t4, hfin, hab, hfix⟩` from `exists_compositum ℚ K K' Ω`. Use `haveI : CharZero M := charZero_of_injective_algebraMap (algebraMap K M).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : iQ = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Use `haveI nM : NumberField M := { to_charZero := inferInstance, to_finiteDimensional := hfin }`. Use `haveI : IsTotallyComplex M := isTotallyComplex_of_algebra K M`. Use `haveI cM : IsCMField M := IsCMField.of_isAbelianGalois M`. Use `haveI a1 : IsAbelianGalois K M := IsAbelianGalois.tower_top ℚ K M`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI a2 : IsAbelianGalois K' M := IsAbelianGalois.tower_top ℚ K' M`. Use `⟨M, fM, nM, cM, iK, iK', iΩ, t3, t4, a1.toIsGalois, a2.toIsGalois, isSolvable_of_comm a1.is_comm.comm, isSolvable_of_comm a2.is_comm.comm, fun s => ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_range_resG_iff, mem_range_resG_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hs x`.
-
-Rewrite using `[IsScalarTower.algebraMap_apply K' M Ω]`. Conclude with `hs _`. Introduce `hs`. Conclude with `hfix (resG ℚ K Ω s) s.commutes hs`. Rewrite using `[mem_range_resG_iff, mem_range_resG_iff]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `hs x`. Rewrite using `[IsScalarTower.algebraMap_apply K M Ω]`. Conclude with `hs _`. Introduce `hs`.
-
-Conclude with `hfix (resG ℚ K' Ω s) hs s.commutes`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Bc.biQuad :
     BiQuad := by

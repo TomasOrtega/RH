@@ -21,9 +21,9 @@ namespace GlobalTheory.InertLocalPoint
 open GlobalTheory.BotClassDict GlobalTheory.NormRatio GlobalTheory.NormRatio.StdLevel
 
 /- English proof (translation)
-Take `⟨α, rfl, -, h0⟩` from `hε`. Take `⟨β, rfl, -, k0⟩` from `hη`. Use `Prod.ext (zero_mul (0 : Ainf D.host.F)) (FiniteAdeleRing.ext _ fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `β u * α u = 0`. Distinguish the cases in `hu : u = v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Establish `: β u = 0` using `k0 u (hu ▸ hne.symm)`. Rewrite using `[this, zero_mul]`. Establish `: α u = 0` using `h0 u hu`. Rewrite using `[this, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_idem {D : D7} {v w : HeightOneSpectrum (𝓞 D.host.F)} {ε η : AF D.host.F}
     (hε : IsPlaceIdem D v ε) (hη : IsPlaceIdem D w η) (hne : w ≠ v) : η * ε = 0 := by
@@ -38,11 +38,11 @@ theorem idem_mul_idem {D : D7} {v w : HeightOneSpectrum (𝓞 D.host.F)} {ε η 
     rw [this, mul_zero]
 
 /- English proof (translation)
-Introduce `q hq hnI i j`. Establish `e : ((finStd V hG g : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j = finQ D …`. Rewrite using `[Matrix.sub_apply, RingHom.map_sub, finStd_apply]`. Use `congr 1`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `(RingHom.map_one _).symm`. Conclude with `(RingHom.map_zero _).symm`. Rewrite using `[e]`. Use `(GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff D q hq _).2 fun w η hη hqw => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : w ≠ v`. Introduce and unpack `rfl`. Conclude with `hnI ((GlobalTheory.InertPlace.inertQ_iff_nonSplitAt D q hq w ε hv.1 hqw).2 hv)`. Rewrite using `[← hg i j, ← mul_assoc, ← map_mul, idem_mul_idem hv.1 hη hne, map_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem suppInert_finStd {D : D7} (V : HSp D) (hG : V.gram = 1) {v : HeightOneSpectrum (𝓞 D.host.F)}
     {ε : AF D.host.F} (hv : GlobalTheory.WeilParts.NonSplitAt D v ε) {g : GA D V} (hg : GlobalTheory.WeilParts.SuppPl ε V g) :
@@ -64,11 +64,11 @@ theorem suppInert_finStd {D : D7} (V : HSp D) (hG : V.gram = 1) {v : HeightOneSp
   rw [← hg i j, ← mul_assoc, ← map_mul, idem_mul_idem hv.1 hη hne, map_zero, zero_mul]
 
 /- English proof (translation)
-Establish `e1 : ∀ (k : GA D V) (i j : Fin V.rank), (((finStd V hG k : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank) : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j ∈ Formali …` using `fun k i j => by`. Rewrite using `[← toAfE_int_iff, toAfE_finStd, mem_intAE_iff_swap]`. Establish `e2 : ((↑(finStd V hG g) : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D))⁻¹ : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) = ↑(finStd V hG g⁻¹)` using `by rw [map_inv, Subgroup.coe_inv]`. Establish `hR : ∀ y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E, (∀ i, y i ∈ intSub D) ↔ ∀ i, ((finHom V g).1 *ᵥ y) i ∈ intSub D` using `fun y => (mem_latHat_stdLat V y).symm.trans ((h y).trans (mem_latHat_stdLat V _))`. Establish `h1 : (finHom V g).1 * (finHom V g⁻¹).1 = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `h2 : (finHom V g⁻¹).1 * (finHom V g).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Take `⟨ha, hb⟩` from `(preserves_iff (intSub D) _ _ h1 h2).1 hR`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e2]`. Conclude with `⟨(e1 g i j).2 (ha i j), (e1 g⁻¹ i j).2 (hb i j)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem intG_finStd {D : D7} (V : HSp D) (hG : V.gram = 1) {g : GA D V}
     (h : ∀ y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E,
@@ -97,7 +97,7 @@ theorem intG_finStd {D : D7} (V : HSp D) (hG : V.gram = 1) {g : GA D V}
   exact ⟨(e1 g i j).2 (ha i j), (e1 g⁻¹ i j).2 (hb i j)⟩
 
 /- English proof (translation)
-Introduce `V hG _ _ hv _ hg h` and use `⟨suppInert_finStd V hG hv hg, intG_finStd V hG h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem suppInert_and_intG : ∀ {D : Formalism.BasicNotions.D7} (V : Formalism.BasicNotions.TH.HSp D) (hG : V.gram = 1) (v : HeightOneSpectrum (𝓞 D.host.F)) (ε : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F), GlobalTheory.WeilParts.NonSplitAt D v ε → ∀ g : Formalism.L2.Theta.GA D V, GlobalTheory.WeilParts.SuppPl ε V g → (∀ y : Fin V.rank → TensorProduct D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E, y ∈ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E ((Formalism.MainNotions.StandardLatticesGL3.stdL D V.rank : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) : Set (Fin V.rank → D.host.E)) ↔ (Formalism.MainNotions.StandardLattice.finMat D.sp.cm.sig V.gram g).mulVec y ∈ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E ((Formalism.MainNotions.StandardLatticesGL3.stdL D V.rank : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) : Set (Fin V.rank → D.host.E))) → Formalism.MainNotions.StandardLatticesGL3.SuppInert D (GlobalTheory.BotClassDict.finStd V hG g : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) ∧ Formalism.MainNotions.StandardLatticesGL3.IntG D (GlobalTheory.BotClassDict.finStd V hG g : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) :=
   fun V hG _ _ hv _ hg h => ⟨suppInert_finStd V hG hv hg, intG_finStd V hG h⟩

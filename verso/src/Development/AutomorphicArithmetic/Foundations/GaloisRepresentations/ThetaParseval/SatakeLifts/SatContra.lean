@@ -5,11 +5,11 @@ open NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.Sm
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hCU K _ _ w n V _ _ ρ hs hi hu B hB`. Take `⟨-, C, hC⟩` from `hCU (w.adicCompletion K) n V ρ hs hi hu`. Take `⟨b, -, hp, hinv⟩` from `hu`. Use `UpperTheory.V.Af.Gk.satConj K n w V (smoothPart ρ.dual) ρ (contra ρ) b.flip C ?_ ?_ hC B hB` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h0`. Establish `h1` using `hp x h0`. Establish `h2 : b x x = 0` using `hx`. Rewrite `h1` using `[h2]`. Simplify using `at h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `g x y`. Conclude with `hinv g y x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Loc.satContra :
     UpperTheory.Gal.TP.Loc.ContraUnit → UpperTheory.Gal.TP.Loc.SatContra := by

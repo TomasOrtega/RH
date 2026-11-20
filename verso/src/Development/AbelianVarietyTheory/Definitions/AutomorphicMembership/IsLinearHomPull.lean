@@ -55,13 +55,11 @@ variable (D O) in
 def torAct : OAct O (splitTorus (Sp R) (Chr D)) := Diag.diagAct (Sp R) O (Chr D)
 
 /- English proof (translation)
-Set `u : Multiplicative D.X →* Γ(T.left, ⊤)` to `{ toFun := fun χ => (coord x).hom (AddMonoidAlgebra.single χ.toAdd 1) map_one' := Diag.coord_single_zero x map_mul' := fun a b => Diag.coord_single_add x _ _ }`. Set `v : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (Y` to `T.left) (K := PEmpty.{1}) PEmpty.elim PEmpty.elim) := fun χ => ⟨fun _ => res le_top (u.toHomUnits (Multiplicative.ofAdd χ))⟩`. Establish `hv : ∀ χ (Z : Scheme.{0}) (r : Z ⟶ T.left) y J, Good D.P.L y J → val (v χ) r y J = gm r y ⊤ (u.toHomUnits (Multiplicative.ofAdd χ))` using `fun χ Z r y J hJ => gm_res r y _ (hJ.mem PEmpty.elim r) _`. Take `⟨g, hb, hg⟩` from `exists_pt (1 : T ⟶ D.P.A) v (fun χ i j => by`. Take `rfl : i = j` from `funext fun k => k.elim`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : (LB.LinComb D.P.L (Y` using `T.left) (K := PEmpty.{1}) PEmpty.elim PEmpty.elim).g i i = 1 := by dsimp only [LB.LinComb] erw [Fintype.prod_empty]`. Both sides reduce to the same expression. Rewrite using `[e, _root_.one_mul])`. Use the proof step `(fun χ U _ h => by`. Rewrite using `[prod_pt, _root_.mul_one, Fintype.prod_empty, inv_mul_cancel, _root_.one_mul, mul_inv_cancel])`.
+Establish an intermediate fact. Simplify by unfolding definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun y J hJ => by rw [hv _ _ _ _ _ hJ, ofAdd_zero, map_one, map_one])`. Use the proof step `(fun χ χ' y J hJ => by`. Establish `C : IsCub (th D (T` using `T) y J) := isCub_cubV D.cub hJ`. Rewrite using `[C.face₃, _root_.mul_one, hv _ _ _ _ _ hJ, hv _ _ _ _ _ hJ, hv _ _ _ _ _ hJ, ofAdd_add, map_mul, map_mul])`. Conclude with `⟨g, hb, fun χ Z r y J hJ => by`.
-
-Rewrite using `[hg _ _ _ _ _ hJ, hv _ _ _ _ _ hJ]`. Conclude with `(gs_unit r y ⊤ trivial _).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torPt {T : Over (Sp R)} (x : T ⟶ splitTorus (Sp R) (Chr D)) : ∃ g : GtPt D T, g.b = 1 ∧
     ∀ (χ : D.X) (Z : Scheme.{0}) (r : Z ⟶ T.left) y J, Good D.P.L y J →
@@ -104,14 +102,14 @@ def actB : OAct O D.P.A := ofRingAct oa.onB.toRingAct
 def q : Y.H ⟶ D.P.A := (Y.Φ Y.H (𝟙 _)).b
 
 /- English proof (translation)
-Establish `h` using `((isPull_iff _ _ _).1 (Y.rep.1 T Y.H x (𝟙 _))).1`. Rewrite `h` using `[Category.comp_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Φ_b {T : Over (Sp R)} (x : T ⟶ Y.H) : (Y.Φ T x).b = x ≫ Y.q := by
   have h := ((isPull_iff _ _ _).1 (Y.rep.1 T Y.H x (𝟙 _))).1
   rwa [Category.comp_id] at h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isMonHom_of_mul _ fun T x x' => by rw [← Φ_b, ← Φ_b, ← Φ_b]; exact ((TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 T x x')).1, fun a => by have h := (Y.smul a _ (𝟙 _)).1 rw [Φ_b, Category.id_comp] at h exact h⟩`.
+Supply the required witnesses or components.
 -/
 theorem q_linear : IsLinearHom Y.act (actB oa) Y.q :=
   ⟨isMonHom_of_mul _ fun T x x' => by
@@ -124,9 +122,9 @@ theorem q_linear : IsLinearHom Y.act (actB oa) Y.q :=
 def i : splitTorus (Sp R) (Chr D) ⟶ Y.H := (Y.Φ _).symm (exists_torPt (𝟙 _)).choose
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `(isPull_iff _ _ _).1 (Y.rep.1 T _ x Y.i)`. Take `⟨e₁, e₂⟩` from `(exists_torPt (D := D) (𝟙 _)).choose_spec`. Establish `e : Y.Φ _ Y.i = (exists_torPt (D` using `D) (𝟙 _)).choose := Equiv.apply_symm_apply _ _`. Rewrite `h₁`, `h₂` using `[e]`. Use `⟨by rw [h₁, e₁, MonObj.comp_one], fun χ y J hJ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h₂ χ y J hJ, e₂ χ _ _ y J hJ]`. Use `conv_rhs => rw [← Category.comp_id x, coord_comp]`. Conclude with `(gs_eq x.left y ⊤ trivial _).trans (gs_eq (𝟙 _) y ⊤ trivial _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Φ_i {T : Over (Sp R)} (x : T ⟶ splitTorus (Sp R) (Chr D)) : (Y.Φ T (x ≫ Y.i)).b = 1 ∧
     ∀ (χ : D.X) y J, Good D.P.L y J →
@@ -141,22 +139,22 @@ theorem Φ_i {T : Over (Sp R)} (x : T ⟶ splitTorus (Sp R) (Chr D)) : (Y.Φ T (
   exact (gs_eq x.left y ⊤ trivial _).trans (gs_eq (𝟙 _) y ⊤ trivial _).symm
 
 /- English proof (translation)
-Establish `h` using `(Y.Φ_i (𝟙 _)).1`. Rewrite `h` using `[Φ_b, Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem i_q : Y.i ≫ Y.q = 1 := by
   have h := (Y.Φ_i (𝟙 _)).1
   rwa [Φ_b, Category.id_comp] at h
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.allSixLaws.1.globalFns`. Use `⟨isMonHom_of_mul _ fun T x x' => (Y.Φ T).injective ?_, fun a => (Y.Φ _).injective ?_⟩` and prove the remaining obligations. Use `isAdd_unique ((TorusModel.isAdd_iff _ _ _).2 ⟨?_, fun χ y J hJ => Units.ext ?_⟩) (Y.rep.2 T _ _)` and prove the remaining obligations. Rewrite using `[(Y.Φ_i _).1, (Y.Φ_i _).1, (Y.Φ_i _).1, _root_.mul_one]`. Establish `C : IsCub (th D (T` using `T) y J) := isCub_cubV D.cub hJ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(Y.Φ_i x').1, C.face₃, _root_.mul_one, Units.val_mul, (Y.Φ_i _).2 χ y J hJ, (Y.Φ_i _).2 χ y J hJ, (Y.Φ_i _).2 χ y J hJ]`. Conclude with `(congrArg (gs _ y ⊤) (Diag.coord_mul x x' χ)).trans (gs_mul (𝟙 _) y ⊤ trivial _ _)`. Take `⟨h₁, h₂⟩` from `(isSmulPt_iff hL oa a _ _).1 (Y.smul a _ (𝟙 _ ≫ Y.i))`. Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁`, `h₂` using `[Category.id_comp]`. Establish `k` using `Y.Φ_i (𝟙 _)`. Rewrite `k` using `[Category.id_comp]`. Use `pt_ext ?_ fun χ y J hJ => Units.ext ?_` and prove the remaining obligations. Conclude with `(Y.Φ_i _).1.trans (h₁.trans (by rw [k.1, MonObj.one_comp])).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C : IsCub (th D (T` using `splitTorus (Sp R) (Chr D)) y J) := isCub_cubV D.cub hJ`. Establish `e` using `(rosGen_add hL oa a hJ 1 1 (cP D _ χ)).2`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face₃, C.face₃, _root_.mul_one, _root_.one_mul]`. Use `((Y.Φ_i _).2 χ y J hJ).trans (Eq.trans ?_ (congrArg Units.val (h₂ χ y J hJ)).symm)` and prove the remaining obligations. Rewrite using `[k.1, mul_eq_left.1 e.symm, _root_.mul_one, k.2 _ y J hJ]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (gs _ y ⊤) ?_` and prove the remaining obligations. Use `Diag.coord_comp_diagMap_single (𝟙 (splitTorus (Sp R) (Chr D))) (DistribSMul.toAddMonoidHom (Chr D) a) χ` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem i_linear : IsLinearHom (torAct D O) Y.act Y.i := by
   have hL := GlobalTheory.allSixLaws.1.globalFns
@@ -187,15 +185,15 @@ theorem i_linear : IsLinearHom (torAct D O) Y.act Y.i := by
       exact this
 
 /- English proof (translation)
-Establish `ex : ∀ {T : Over (Sp R)} y, ∃ J, Good D.P.L (Z` using `T.left) y J := fun y => by choose I hI using fun χ => exists_chart D.P.isLB ((χ : _ ⟶ D.P.A.left) y)`. Conclude with `⟨I, hI⟩`. Use `Diag.isPullback_toUnit_of_lift _ Y.i_q (fun {T} a b h => Diag.hom_ext fun χ => fn_ext fun y _ => ?_) fun {T} x hx => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `ex y`. Conclude with `((Y.Φ_i a).2 χ y J hJ).symm.trans (h ▸ (Y.Φ_i b).2 χ y J hJ)`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : (Y.Φ T x).b = 1` using `(Y.Φ_b x).trans hx`. Establish `hF : ∀ χ, FormEq (DegPre.gtφT D T (Y.Φ T x).b χ) DegPre.gtε (K'` using `PEmpty.{1}) PEmpty.elim PEmpty.elim := fun χ U _ h => by`. Rewrite using `[prod_pt, hb, _root_.mul_one, Fintype.prod_empty, inv_mul_cancel, _root_.one_mul, mul_inv_cancel]`. Use `choose s _ vs using fun χ => exists_gen D.P.isLB (hF χ) _ ((Y.Φ T x).isGen χ)`. Establish `le : (⊤ : T.left.Opens) ≤ LB.wchart D.P.L (K` using `PEmpty.{1}) PEmpty.elim PEmpty.elim := fun _ _ => Set.mem_iInter.2 fun k => k.elim`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : D.X → Γ(T.left, ⊤)ˣ` to `fun χ => res le ((s χ).s PEmpty.elim)`. Establish `hu : ∀ χ y J, Good D.P.L y J → gs (𝟙 _) y ⊤ (u χ).val = (cv (Y.Φ T x) χ y J).val` using `fun χ y J hJ => (gs_unit _ y ⊤ trivial _).trans (congrArg Units.val ((gm_res _ y le trivial _).trans ((val_of (s χ) _ y J PEmpty.elim fun k => k.elim).symm.trans (vs χ _ _ y J hJ))))`. Set `g : Multiplicative (Chr D) →* Γ(T.left, ⊤)` to `{ toFun := fun χ => (u χ.toAdd).val map_one' := fn_ext fun y _ => by`. Take `⟨J, hJ⟩` from `ex y`. Use `(hu 0 y J hJ).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[cv_zero _ hJ, gs_eq _ y ⊤ trivial, map_one, map_one, Units.val_one]`. Use the proof step `map_mul' := fun a b => fn_ext fun y _ => by`. Take `⟨J, hJ⟩` from `ex y`. Establish `C : IsCub (th D (T` using `T) y J) := isCub_cubV D.cub hJ`. Establish `e` using `cv_add (Y.Φ T x) hJ a.toAdd b.toAdd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[hb, C.face₃, _root_.mul_one]`. Use `(hu _ y J hJ).trans (Eq.trans ?_ (gs_mul _ y ⊤ trivial _ _).symm)` and prove the remaining obligations. Conclude with `(congrArg Units.val e).trans (congrArg₂ (· * ·) (hu _ y J hJ) (hu _ y J hJ)).symm }`. Use `⟨Diag.ofChar T g, (Y.Φ T).injective (pt_ext ((Y.Φ_i _).1.trans hb.symm) fun χ y J hJ => Units.ext ?_)⟩` and prove the remaining obligations. Conclude with `((Y.Φ_i _).2 χ y J hJ).trans ((congrArg (gs _ y ⊤) (Diag.coord_ofChar T g χ)).trans (hu χ y J hJ))`.
+A detailed English derivation is pending.
 -/
 theorem isKernel : IsPullback Y.i (toUnit _) Y.q η[D.P.A] := by
   have ex : ∀ {T : Over (Sp R)} y, ∃ J, Good D.P.L (Z := T.left) y J := fun y => by
@@ -246,7 +244,7 @@ abbrev LieAt (a : OAct O G) : Type := Lie (a.pullback (spMap f))
 abbrev LieEig (a : OAct O G) (σ : O →+* S) : Type := Lie.eig (a.pullback (spMap f)) σ
 
 /- English proof (translation)
-The claim follows from `haveI := h.isMonHom ⟨inferInstance, fun x => ((Over.pullback (spMap f)).map_comp _ _).symm.trans ((congrArg _ (h.comm x)).trans ((Over.pullback (spMap f)).map_comp _ _))⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_pull {a : OAct O G} {a' : OAct O G'} {φ : G ⟶ G'} (h : IsLinearHom a a' φ) :
     IsLinearHom (a.pullback (spMap f)) (a'.pullback (spMap f)) ((Over.pullback (spMap f)).map φ) :=
@@ -265,7 +263,7 @@ theorem hom_lieMap {a : OAct O G} {a' : OAct O G'} {φ : G ⟶ G'} (h : IsLinear
     (lieMap f h v).hom = v.hom ≫ (Over.pullback (spMap f)).map φ := rfl
 
 /- English proof (translation)
-The claim follows from `haveI := h.isMonHom Lie.map_act_smul (isLinearHom_pull f h) x v`.
+A detailed English derivation is pending.
 -/
 theorem lieMap_act {a : OAct O G} {a' : OAct O G'} {φ : G ⟶ G'} (h : IsLinearHom a a' φ) (x : O) (v : LieAt f a) :
     lieMap f h (x • v) = x • lieMap f h v :=

@@ -7,15 +7,15 @@ noncomputable section
 namespace GroundTheory.Heights₂.Heights.Inter
 
 /- English proof (translation)
-Introduce `_`. Establish `hmap : ∀ a, ((algebraMap A K a : K) : Ω) = f a` using `fun _ => rfl`. Establish `hnz : ∀ a : A, a ∈ nonZeroDivisors A → f a ≠ 0`. Introduce `a ha h0`. Establish `h10 : (1 : A) = 0` using `mem_nonZeroDivisors_iff_right.mp ha 1 (by rw [one_mul]; exact hf (by rw [h0, map_zero]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `one_ne_zero (by simpa using congrArg f h10 : (1 : Ω) = 0)`. Use `show IsLocalization (nonZeroDivisors A) K`. Rewrite using `[isLocalization_iff]`. Use `⟨fun y => IsUnit.mk0 _ fun h => hnz y y.2 (by rw [← hmap, h]; rfl), fun z => ?_, fun {x y} h => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, w, hw, hyw⟩` from `Subfield.mem_closure_iff.mp (hcl z.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy`, `hw` using `[← RingHom.coe_range, Subring.closure_eq]`. Take `⟨a, rfl⟩` from `hy`. Take `⟨a', rfl⟩` from `hw`. Distinguish the cases in `h0 : f a' = 0`. Use `⟨(0, 1), Subtype.ext ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [OneMemClass.coe_one, map_zero, map_one, mul_one, ZeroMemClass.coe_zero]`. Rewrite using `[← hyw, h0, div_zero]`. Establish `ha' : a' ∈ nonZeroDivisors A` using `mem_nonZeroDivisors_of_injective hf (mem_nonZeroDivisors_of_ne_zero h0)`. Use `⟨(a, ⟨a', ha'⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [MulMemClass.coe_mul, hmap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hyw, div_mul_cancel₀ _ h0]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `hxy : x = y` using `hf (by rw [← hmap x, ← hmap y, h])`. Rewrite using `[hxy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RankFracDegree.isFractionRing_of_closure {F Ω A : Type} [Field F] [Field Ω] [Algebra F Ω] [CommRing A]
     (K : IntermediateField F Ω) (f : A →+* Ω) (hf : Function.Injective f) (hK : ∀ a, f a ∈ K)
@@ -50,13 +50,13 @@ theorem RankFracDegree.isFractionRing_of_closure {F Ω A : Type} [Field F] [Fiel
     rw [hxy]
 
 /- English proof (translation)
-Introduce `F Ω A B _ _ _ _ _ _ L₀ L f g hf hg hfg hfL₀ hgL hL₀ hL _`. Establish `hle : L₀ ≤ L`. Introduce `x hx`. Establish `h1 : x ∈ Subfield.closure (Set.range g)`. Use `Subfield.closure_mono ?_ (hL₀ hx)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨algebraMap A B a, hfg a⟩`. Conclude with `(Subfield.closure_le (t := L.toSubfield)).mpr (by rintro _ ⟨b, rfl⟩; exact hgL b) h1`. Set `L'` to `IntermediateField.extendScalars hle`. Set `_ : Algebra A L₀` to `(f.codRestrict L₀ hfL₀).toAlgebra`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : Algebra B L'` to `(g.codRestrict L' hgL).toAlgebra`. Set `_ : Algebra A L'` to `((algebraMap L₀ L').comp (algebraMap A L₀)).toAlgebra`. Establish `_ : IsScalarTower A L₀ L'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `_ : IsScalarTower A B L'` using `IsScalarTower.of_algebraMap_eq fun a => Subtype.ext (hfg a).symm`. Establish `_ : IsFractionRing A L₀` using `RankFracDegree.isFractionRing_of_closure L₀ f hf hfL₀ hL₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `_ : IsFractionRing B L'` using `RankFracDegree.isFractionRing_of_closure L' g hg hgL hL`. Rewrite using `[IntermediateField.relfinrank_eq_finrank_of_le hle]`. Conclude with `(IsFractionRing.finrank_eq A L₀ B L').symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RankFracDegree.proof : RankFracDegree.Statement := by
   intro F Ω A B _ _ _ _ _ _ L₀ L f g hf hg hfg hfL₀ hgL hL₀ hL _

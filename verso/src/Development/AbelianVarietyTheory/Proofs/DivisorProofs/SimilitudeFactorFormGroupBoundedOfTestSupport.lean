@@ -9,11 +9,11 @@ open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
 namespace GlobalTheory.SimBound
 
 /- English proof (translation)
-Establish `hn : r.num.natAbs = 1`. Assume the negation of the conclusion as `hne`. Take `⟨q, hq, hqd⟩` from `Nat.exists_prime_and_dvd hne`. Conclude with `(h q hq).1 (Int.natCast_dvd.2 hqd)`. Establish `hd : r.den = 1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨q, hq, hqd⟩` from `Nat.exists_prime_and_dvd hne`. Conclude with `(h q hq).2 (Int.natCast_dvd_natCast.2 hqd)`. Establish `hpos : 0 < r.num` using `Rat.num_pos.2 hr`. Establish `hn1 : r.num = 1` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Rat.num_div_den r, hn1, hd]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_forall_prime {r : ℚ} (hr : 0 < r)
     (h : ∀ q : ℕ, q.Prime → ¬ (q : ℤ) ∣ r.num ∧ ¬ (q : ℤ) ∣ (r.den : ℤ)) : r = 1 := by
@@ -30,9 +30,9 @@ theorem eq_one_of_forall_prime {r : ℚ} (hr : 0 < r)
   rw [← Rat.num_div_den r, hn1, hd]; simp
 
 /- English proof (translation)
-Establish `key : ¬ ((q : ℤ) ∣ r.num ∧ (q : ℤ) ∣ (r.den : ℤ))`. Introduce and unpack `⟨h1, h2⟩`. Establish `h1' : q ∣ r.num.natAbs` using `Int.natCast_dvd.1 h1`. Establish `h2' : q ∣ r.den` using `Int.natCast_dvd_natCast.1 h2`. Establish `h3 : q ∣ Nat.gcd r.num.natAbs r.den` using `Nat.dvd_gcd h1' h2'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[r.reduced.gcd_eq_one]`. Conclude with `hq.one_lt.ne' (Nat.dvd_one.1 h3)`. Conclude with `⟨fun h1 => key ⟨h1, h.1 h1⟩, fun h2 => key ⟨h.2 h2, h2⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem not_dvd_of_iff {r : ℚ} {q : ℕ} (hq : q.Prime) (h : (q : ℤ) ∣ r.num ↔ (q : ℤ) ∣ (r.den : ℤ)) :
     ¬ (q : ℤ) ∣ r.num ∧ ¬ (q : ℤ) ∣ (r.den : ℤ) := by
@@ -46,7 +46,7 @@ theorem not_dvd_of_iff {r : ℚ} {q : ℕ} (hq : q.Prime) (h : (q : ℤ) ∣ r.n
   exact ⟨fun h1 => key ⟨h1, h.1 h1⟩, fun h2 => key ⟨h.2 h2, h2⟩⟩
 
 /- English proof (translation)
-Establish `e : padicNorm p (r.num : ℚ) = padicNorm p ((r.den : ℤ) : ℚ)`. Rewrite using `[← Rat.mul_den_eq_num, padicNorm.mul, hr, one_mul, Int.cast_natCast]`. Use `not_dvd_of_iff (Fact.out : p.Prime) ?_` and prove the remaining obligations. Rewrite using `[← padicNorm.int_lt_one_iff, ← padicNorm.int_lt_one_iff, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem not_dvd_of_padicNorm (p : ℕ) [Fact p.Prime] {r : ℚ} (hr : padicNorm p r = 1) :
     ¬ (p : ℤ) ∣ r.num ∧ ¬ (p : ℤ) ∣ (r.den : ℤ) := by
@@ -56,7 +56,7 @@ theorem not_dvd_of_padicNorm (p : ℕ) [Fact p.Prime] {r : ℚ} (hr : padicNorm 
   rw [← padicNorm.int_lt_one_iff, ← padicNorm.int_lt_one_iff, e]
 
 /- English proof (translation)
-Establish `e : v.valuation ℚ (algebraMap ℤ ℚ r.num) = v.valuation ℚ (algebraMap ℤ ℚ (r.den : ℤ))`. Rewrite using `[algebraMap_int_eq, eq_intCast, eq_intCast, ← Rat.mul_den_eq_num, map_mul, hr, one_mul, Int.cast_natCast]`. Use `not_dvd_of_iff hq ?_` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.mem_span_singleton, ← hv, ← valuation_lt_one_iff_mem (K := ℚ), ← valuation_lt_one_iff_mem (K := ℚ), e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem not_dvd_of_valuation {q : ℕ} (hq : q.Prime) (v : HeightOneSpectrum ℤ)
     (hv : v.asIdeal = Ideal.span {(q : ℤ)}) {r : ℚ} (hr : v.valuation ℚ r = 1) :
@@ -76,9 +76,9 @@ def placeOf (p : ℕ) {q : ℕ} (hq : q.Prime) (hqp : q ≠ p) : AwayP p :=
     simpa using h2)⟩
 
 /- English proof (translation)
-Use `eq_one_of_forall_prime hr fun q hq => ?_` and prove the remaining obligations. Distinguish the cases in `hqp : q = p`. Substitute `hqp` using the available equality. Conclude with `not_dvd_of_padicNorm q hp`. Use `not_dvd_of_valuation hq (placeOf p hq hqp).1 rfl ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← valuedAdicCompletion_eq_valuation']`. Conclude with `hw (placeOf p hq hqp)`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_units (p : ℕ) [Fact p.Prime] {r : ℚ} (hr : 0 < r)
     (hw : ∀ w : AwayP p, Valued.v (algebraMap ℚ (w.1.adicCompletion ℚ) r) = 1) (hp : padicNorm p r = 1) :
@@ -91,19 +91,19 @@ theorem eq_one_of_units (p : ℕ) [Fact p.Prime] {r : ℚ} (hr : 0 < r)
     exact hw (placeOf p hq hqp)
 
 /- English proof (translation)
-Use `letI : NontriviallyNormedField (w.1.adicCompletion ℚ) := Valued.toNontriviallyNormedField _ _`. Set `F : G.GAf → ℝ` to `fun g => ‖AfP.eval w (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2 : (AfP p)ˣ) : AfP p)‖`. Establish `hev : Continuous (fun x : AfP p => AfP.eval w x)` using `RestrictedProduct.continuous_eval (R := fun v : AwayP p => v.1.adicCompletion ℚ) (A := fun v : AwayP p => (v.1.adicCompletionIntegers ℚ : Set (v.1.adicCompletion ℚ))) w`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Establish `hF : Continuous F` using `continuous_norm.comp (hev.comp (Units.continuous_val.comp (continuous_snd.comp continuous_subtype_val)))`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hF.continuousOn`. Establish `hmul : ∀ a b : G.GAf, F (a * b) = F a * F b` using `fun a b => by`. Simplify using `only [F, Subgroup.coe_mul, Prod.snd_mul, Units.val_mul, map_mul, norm_mul]`. Establish `hone : F 1 = 1` using `by simp [F]`. Establish `hpow : ∀ (a : G.GAf) (n : ℕ), F (a ^ n) = F a ^ n` using `fun a n => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `n with`. Consider the case `zero => simpa using hone`. Consider the case `succ n ih => rw [pow_succ, hmul, ih, pow_succ]`. Establish `hle : ∀ a ∈ K, F a ≤ 1`. Introduce `a ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C hlt`. Establish `h1` using `hC (a ^ n) (K.pow_mem ha n)`. Rewrite `h1` using `[Real.norm_eq_abs, abs_of_nonneg (norm_nonneg _)]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: F (a ^ n) = F a ^ n` using `hpow a n`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hle k hk`. Establish `h2` using `hle k⁻¹ (K.inv_mem hk)`. Establish `h3 : F k⁻¹ * F k = 1` using `by rw [← hmul, inv_mul_cancel, hone]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ F k⁻¹` using `norm_nonneg _`. Establish `h0' : 0 ≤ F k` using `norm_nonneg _`. Establish `hk1 : F k = 1` using `by nlinarith`. Establish `hle1 : Valued.v (AfP.eval w (((k : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2 : (AfP p)ˣ) : AfP p)) ≤ 1` using `Valued.toNormedField.norm_le_one_iff.1 hk1.le`. Establish `hnlt : ¬ Valued.v (AfP.eval w (((k : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2 : (AfP p)ˣ) : AfP p)) < 1` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Valued.toNormedField.norm_lt_one_iff.2 h` as an intermediate fact. Conclude with `absurd hk1 (ne_of_lt this)`. Conclude with `le_antisymm hle1 (not_lt.1 hnlt)`.
+A detailed English derivation is pending.
 -/
 theorem valued_snd_eq_one {p : ℕ} [Fact p.Prime] (G : HTGroup p) (K : Subgroup G.GAf)
     (hK : IsCompact (K : Set G.GAf)) (w : AwayP p) {k : G.GAf} (hk : k ∈ K) :
@@ -151,18 +151,18 @@ noncomputable def nu1 (p : ℕ) [Fact p.Prime] (g : GL (Fin 1) (Qr p 1)) : ℝ :
   ‖(((g : Matrix (Fin 1) (Fin 1) (Qr p 1)) 0 0 : Qr p 1) : PadicAlgCl p)‖
 
 /- English proof (translation)
-Simplify using `only [nu1, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_one, IntermediateField.coe_mul, norm_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glOneUnramifiedEntryNorm_mul (p : ℕ) [Fact p.Prime] (a b : GL (Fin 1) (Qr p 1)) : nu1 p (a * b) = nu1 p a * nu1 p b := by
   simp only [nu1, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_one, IntermediateField.coe_mul, norm_mul]
 
 /- English proof (translation)
-Simplify using `[nu1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glOneUnramifiedEntryNorm_one (p : ℕ) [Fact p.Prime] : nu1 p 1 = 1 := by simp [nu1]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hk`. Establish `h` using `((u : Matrix (Fin 1) (Fin 1) (GlobalTheory.LKLoc.intR p (Q0 p) 1)) 0 0).2`. Conclude with `ReciprocityTheory.DiscreteGroups.LocalClassField.mem_Obar_iff.1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem glOneUnramifiedEntryNorm_le_one_of_integral (p : ℕ) [Fact p.Prime] {k : GL (Fin 1) (Qr p 1)} (hk : k ∈ GlobalTheory.LKLoc.Kint p (Q0 p) 1 1) :
     nu1 p k ≤ 1 := by
@@ -171,7 +171,7 @@ theorem glOneUnramifiedEntryNorm_le_one_of_integral (p : ℕ) [Fact p.Prime] {k 
   exact ReciprocityTheory.DiscreteGroups.LocalClassField.mem_Obar_iff.1 h
 
 /- English proof (translation)
-Establish `h1` using `glOneUnramifiedEntryNorm_le_one_of_integral p hk`. Establish `h2` using `glOneUnramifiedEntryNorm_le_one_of_integral p ((GlobalTheory.LKLoc.Kint p (Q0 p) 1 1).inv_mem hk)`. Establish `h3 : nu1 p k⁻¹ * nu1 p k = 1` using `by rw [← glOneUnramifiedEntryNorm_mul, inv_mul_cancel, glOneUnramifiedEntryNorm_one]`. Establish `h0 : 0 ≤ nu1 p k⁻¹` using `norm_nonneg _`. Establish `h0' : 0 ≤ nu1 p k` using `norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -185,7 +185,7 @@ theorem glOneUnramifiedEntryNorm_eq_one_of_integral (p : ℕ) [Fact p.Prime] {k 
   nlinarith
 
 /- English proof (translation)
-Establish `e : nu1 p (GeneralLinearGroup.scalar (Fin 1) (Units.map (algebraMap ℚ_[p] (Qr p 1)).toMonoidHom (Units.map (algebraMap ℚ ℚ_[p]).toMonoidHom s))) = ‖(((s : ℚ) : ℚ_[p]) : PadicAlgCl p)‖`. Simplify using `[nu1, GeneralLinearGroup.scalar]`. Rewrite using `[e, PadicAlgCl.norm_extends, Padic.eq_padicNorm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem glOneUnramifiedEntryNorm_rat_scalar_eq_padicNorm (p : ℕ) [Fact p.Prime] (s : ℚˣ) :
     nu1 p (GeneralLinearGroup.scalar (Fin 1) (Units.map (algebraMap ℚ_[p] (Qr p 1)).toMonoidHom
@@ -199,22 +199,22 @@ noncomputable def lam {p : ℕ} [Fact p.Prime] (G : HTGroup p) (w : AwayP p) (g 
   Valued.v (AfP.eval w (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2 : (AfP p)ˣ) : AfP p))
 
 /- English proof (translation)
-Simplify using `only [lam, Subgroup.coe_mul, Prod.snd_mul, Units.val_mul, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_mul {p : ℕ} [Fact p.Prime] (G : HTGroup p) (w : AwayP p) (a b : G.GAf) :
     lam G w (a * b) = lam G w a * lam G w b := by
   simp only [lam, Subgroup.coe_mul, Prod.snd_mul, Units.val_mul, map_mul]
 
 /- English proof (translation)
-Simplify using `[lam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_one {p : ℕ} [Fact p.Prime] (G : HTGroup p) (w : AwayP p) : lam G w 1 = 1 := by
   simp [lam]
 
 /- English proof (translation)
-Establish `hc : IsCompact (L.K.toSubgroup : Set G.GAf)` using `L.compact`. Establish `e1 : lam G w k₁ = 1` using `valued_snd_eq_one G _ hc w hk₁`. Establish `e2 : lam G w k₂ = 1` using `valued_snd_eq_one G _ hc w hk₂`. Establish `e3` using `congrArg (lam G w) e`. Rewrite `e3` using `[lam_mul, lam_mul, lam_mul, lam_mul, e1, e2, one_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4 : lam G w (toAfF G β x t hx y) = lam G w σ`. Rewrite using `[← e3, mul_right_comm, ← lam_mul, inv_mul_cancel, lam_one, one_mul]`. Rewrite using `[← e4]`. Use `show _ = Valued.v (AfP.eval w (algebraMap ℚ (AfP p) (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)))`. Rewrite using `[AlgHom.commutes]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem away {p : ℕ} [Fact p.Prime] (G : HTGroup p) (L : G.Level) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ)
     (t : (AfP p)ˣ) (hx : Triv G (AfP p) β x t) (y : grp G β) (h σ k₁ k₂ : G.GAf) (hk₁ : k₁ ∈ L.K.toSubgroup)
@@ -232,9 +232,9 @@ theorem away {p : ℕ} [Fact p.Prime] (G : HTGroup p) (L : G.Level) (β : G.Cˣ)
   rw [AlgHom.commutes]
 
 /- English proof (translation)
-Establish `e1 : nu1 p k₁.1 = 1` using `glOneUnramifiedEntryNorm_eq_one_of_integral p hk₁.1`. Establish `e2 : nu1 p k₂.1 = 1` using `glOneUnramifiedEntryNorm_eq_one_of_integral p hk₂.1`. Establish `e3` using `congrArg (fun g : Gr G 1 => nu1 p g.1) e`. Simplify using `only [Prod.fst_mul, Prod.fst_inv, glOneUnramifiedEntryNorm_mul, e1, e2, one_mul, mul_one] at e3`. Establish `e4 : nu1 p (toP1 G β y).1 = nu1 p σ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← e3, mul_right_comm, ← glOneUnramifiedEntryNorm_mul, inv_mul_cancel, glOneUnramifiedEntryNorm_one, one_mul]`. Rewrite using `[← e4]`. Conclude with `(glOneUnramifiedEntryNorm_rat_scalar_eq_padicNorm p _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atp {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ) (y : grp G β) (h σ k₁ k₂ : Gr G 1)
     (hk₁ : k₁ ∈ KHT p G.m G.n 1 G.Fw) (hk₂ : k₂ ∈ KHT p G.m G.n 1 G.Fw)
@@ -250,9 +250,9 @@ theorem atp {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ) (y : grp G β)
   exact (glOneUnramifiedEntryNorm_rat_scalar_eq_padicNorm p _).symm
 
 /- English proof (translation)
-Establish `h` using `eq_one_of_units p (r := s * s₀⁻¹) (mul_pos hs (inv_pos.2 hs₀)) (fun w => by`. Establish `h0 : Valued.v (algebraMap ℚ (w.1.adicCompletion ℚ) s₀) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((map_ne_zero _).2 hs₀.ne')`. Rewrite using `[map_mul, map_mul, map_inv₀, map_inv₀, hw w, mul_inv_cancel₀ h0])`. Use the proof step `(by`. Establish `h0 : padicNorm p s₀ ≠ 0` using `fun h => hs₀.ne' (padicNorm.zero_of_padicNorm_eq_zero h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← div_eq_mul_inv, padicNorm.div, hp, div_self h0])`. Conclude with `(mul_inv_eq_one₀ hs₀.ne').1 h`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_valuations {p : ℕ} [Fact p.Prime] {s s₀ : ℚ} (hs : 0 < s) (hs₀ : 0 < s₀)
     (hw : ∀ w : AwayP p, Valued.v (algebraMap ℚ (w.1.adicCompletion ℚ) s) =
@@ -268,15 +268,13 @@ theorem eq_of_valuations {p : ℕ} [Fact p.Prime] {s s₀ : ℚ} (hs : 0 < s) (h
   exact (mul_inv_eq_one₀ hs₀.ne').1 h
 
 /- English proof (translation)
-Introduce `p _ G L f hf K' f' hf' β x t hx`. Take `⟨T, hT⟩` from `hf.2.2.2`. Take `⟨T', hT'⟩` from `hf'.2.2.2`. Set `M : G.GAf → Gr G 1 → ℚ → Prop` to `fun σ σ' s => 0 < s ∧ (∀ w : AwayP p, Valued.v (algebraMap ℚ (w.1.adicCompletion ℚ) s) = lam G w σ) ∧ ((padicNorm p s : ℚ) : ℝ) = nu1 p σ'.1`. Set `g : G.GAf → Gr G 1 → ℝ` to `fun σ σ' => if h : ∃ s, M σ σ' s then ((h.choose : ℚ) : ℝ) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `g_nonneg : ∀ σ σ', 0 ≤ g σ σ'`. Introduce `σ σ'`. Simplify using `only [g]`. Use `split_ifs with h`. Conclude with `h.choose_spec.1.le` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_rfl`. Use `⟨∑ σ ∈ T, ∑ σ' ∈ T', g σ σ', ?_⟩` and prove the remaining obligations. Introduce `y h₁ h₂ h1 h2`. Take `⟨σ, hσ, k₁, hk₁, k₂, hk₂, e⟩` from `hT _ h1`. Take `⟨σ', hσ', k₁', hk₁', k₂', hk₂', e'⟩` from `hT' _ h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : M σ σ' (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)` using `⟨y.2.2, fun w => away G L β x t hx y h₁ σ k₁ k₂ hk₁ hk₂ e w, atp G β y h₂ σ' k₁' k₂' hk₁' hk₂' e'⟩`. Establish `hex : ∃ s, M σ σ' s` using `⟨_, hM⟩`. Establish `heq : (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) = hex.choose` using `eq_of_valuations hM.1 hex.choose_spec.1 (fun w => by rw [hM.2.1 w, hex.choose_spec.2.1 w]) (by exact_mod_cast hM.2.2.trans hex.choose_spec.2.2.symm)`. Establish `hg : ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) : ℝ) = g σ σ'`. Simplify using `only [g, dif_pos hex, heq]`.
-
-Rewrite using `[hg]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ),
     IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f → ∀ (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ),

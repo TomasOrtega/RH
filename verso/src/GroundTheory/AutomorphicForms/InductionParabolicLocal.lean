@@ -13,13 +13,13 @@ open Matrix Iwasawa GLnLocal ValuativeRel Topology Filter Set
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-The claim follows from `coe_uniformizerUnit F ▸ (uniformizerUnit F).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem uniformizer_ne_zero : (GLnLocal.uniformizer F : F) ≠ 0 :=
   coe_uniformizerUnit F ▸ (uniformizerUnit F).ne_zero
 
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d : ℕ, z = ((d + k : ℕ) : ℤ)` from `⟨(z - k).toNat, by omega⟩`. Rewrite using `[hd, zpow_natCast, pow_add, mul_assoc]`. Conclude with `mul_mem (pow_mem (GLnLocal.uniformizer F).2 d) hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mul_mem {x : F} {k : ℕ} (hx : (GLnLocal.uniformizer F : F) ^ k * x ∈ 𝒪[F]) {z : ℤ}
     (hz : (k : ℤ) ≤ z) : (GLnLocal.uniformizer F : F) ^ z * x ∈ 𝒪[F] := by
@@ -28,7 +28,7 @@ theorem zpow_mul_mem {x : F} {k : ℕ} (hx : (GLnLocal.uniformizer F : F) ^ k * 
   exact mul_mem (pow_mem (GLnLocal.uniformizer F).2 d) hx
 
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d : ℤ, z = t + d ∧ (k : ℤ) ≤ d` from `⟨z - t, by omega, by omega⟩`. Rewrite using `[hd.1, zpow_add₀ uniformizer_ne_zero, mul_assoc, map_mul, zpow_natCast, map_pow]`. Conclude with `mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (zpow_mul_mem hx hd.2))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_zpow_mul_le {x : F} {k t : ℕ} (hx : (GLnLocal.uniformizer F : F) ^ k * x ∈ 𝒪[F])
     {z : ℤ} (hz : ((k + t : ℕ) : ℤ) ≤ z) :
@@ -45,21 +45,21 @@ def rankTorus (e : ℕ) : GL (Fin n) F :=
 variable {F n β}
 
 /- English proof (translation)
-The claim follows from `diagGL_mem_levi _`.
+A detailed English derivation is pending.
 -/
 theorem rankTorus_mem_levi (e : ℕ) : rankTorus F n β e ∈ levi F n β :=
   diagGL_mem_levi _
 
 /- English proof (translation)
-The claim follows from `levi_le_blockUpper (rankTorus_mem_levi e)`.
+A detailed English derivation is pending.
 -/
 theorem rankTorus_mem_blockUpper (e : ℕ) : rankTorus F n β e ∈ blockUpper F n β :=
   levi_le_blockUpper (rankTorus_mem_levi e)
 
 /- English proof (translation)
-Rewrite using `[rankTorus, rankTorus, torusPow, torusPow, ← map_pow]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.pow_apply, ← zpow_natCast, ← _root_.zpow_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rankTorus_pow (e m : ℕ) : rankTorus F n β e ^ m = rankTorus F n β (e * m) := by
   rw [rankTorus, rankTorus, torusPow, torusPow, ← map_pow]
@@ -71,7 +71,7 @@ theorem rankTorus_pow (e m : ℕ) : rankTorus F n β e ^ m = rankTorus F n β (e
   ring
 
 /- English proof (translation)
-Rewrite using `[rankTorus, torusPow, diagGL_conj_apply]`. Simplify using `only [Units.val_zpow_eq_zpow_val, coe_uniformizerUnit, Units.val_inv_eq_inv_val]`. Rewrite using `[zpow_sub₀ uniformizer_ne_zero, _root_.zpow_neg, _root_.zpow_neg, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rankTorus_conj_apply (e : ℕ) (g : GL (Fin n) F) (i j : Fin n) :
     (rankTorus F n β e * g * (rankTorus F n β e)⁻¹ : GL (Fin n) F) i j =
@@ -83,7 +83,7 @@ theorem rankTorus_conj_apply (e : ℕ) (g : GL (Fin n) F) (i j : Fin n) :
   ring
 
 /- English proof (translation)
-Rewrite using `[rankTorus, torusPow, diagGL_inv_conj_apply]`. Simplify using `only [Units.val_zpow_eq_zpow_val, coe_uniformizerUnit, Units.val_inv_eq_inv_val]`. Rewrite using `[zpow_sub₀ uniformizer_ne_zero, _root_.zpow_neg, _root_.zpow_neg, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rankTorus_inv_conj_apply (e : ℕ) (g : GL (Fin n) F) (i j : Fin n) :
     ((rankTorus F n β e)⁻¹ * g * rankTorus F n β e : GL (Fin n) F) i j =
@@ -95,9 +95,9 @@ theorem rankTorus_inv_conj_apply (e : ℕ) (g : GL (Fin n) F) (i j : Fin n) :
   ring
 
 /- English proof (translation)
-Establish `: (unipotentRadical F n β : Set (GL (Fin n) F)) = (⋂ i, ⋂ j, ⋂ (_ : β j < β i), (fun g : GL (Fin n) F => g i j) ⁻¹' {0}) ∩ ⋂ i, ⋂ j, ⋂ (_ : β i = β j), (fun g : GL (Fin n) F => g i j) ⁻¹' {(1 : Matrix (Fin n) (Fin n) F) i j}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_unipotentRadical, mem_blockUpper, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Set.mem_singleton_iff]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨fun i j hij => h1 hij, h2⟩, fun ⟨h1, h2⟩ => ⟨fun i j hij => h1 i j hij, h2⟩⟩`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `refine IsClosed.inter ?_ ?_ <;>`. Apply the tactic sequence `exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_singleton.preimage (continuous_entry F n i j)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isClosed_unipotentRadical :
     IsClosed (unipotentRadical F n β : Set (GL (Fin n) F)) := by
@@ -116,13 +116,11 @@ theorem isClosed_unipotentRadical :
     isClosed_singleton.preimage (continuous_entry F n i j)
 
 /- English proof (translation)
-Take `⟨hP, h1⟩` from `mem_unipotentRadical.1 hu`. Rewrite using `[rankTorus_conj_apply]`. Break down `lt_trichotomy (β i) (β j) with h | h | h` into its components or cases. Use `zpow_mul_mem (hb i j) ?_` and prove the remaining obligations. Use `blockRank_lt h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: e * blockRank β i + e ≤ e * blockRank β j` using `by nlinarith`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1 i j h, blockRank_eq h, sub_self, zpow_zero, one_mul]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hij, one_apply_eq]`. Conclude with `one_mem _`. Rewrite using `[one_apply_ne hij]`. Conclude with `zero_mem _`. Rewrite using `[hP h, mul_zero]`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankTorus_conj_apply_mem {e : ℕ} {u : GL (Fin n) F} (hu : u ∈ unipotentRadical F n β)
     (hb : ∀ i j, (GLnLocal.uniformizer F : F) ^ e * u i j ∈ 𝒪[F]) (i j : Fin n) :
@@ -151,7 +149,7 @@ def unipotentCompact (e : ℕ) : Subgroup (unipotentRadical F n β) :=
     (unipotentRadical F n β)
 
 /- English proof (translation)
-Rewrite using `[unipotentCompact, Subgroup.mem_subgroupOf, Subgroup.mem_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_unipotentCompact {e : ℕ} {u : unipotentRadical F n β} :
     u ∈ unipotentCompact F n β e ↔
@@ -163,7 +161,7 @@ def conjHomeomorph (t : GL (Fin n) F) : GL (Fin n) F ≃ₜ GL (Fin n) F :=
   (Homeomorph.mulLeft t).trans (Homeomorph.mulRight t⁻¹)
 
 /- English proof (translation)
-Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, mem_unipotentCompact, Set.mem_preimage]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem coe_unipotentCompact (e : ℕ) :
     (unipotentCompact F n β e : Set (unipotentRadical F n β)) =
@@ -173,7 +171,7 @@ theorem coe_unipotentCompact (e : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[coe_unipotentCompact]`. Conclude with `((isOpen_integralGL F n).preimage (conjHomeomorph _).continuous).preimage continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_unipotentCompact (e : ℕ) :
     IsOpen (unipotentCompact F n β e : Set (unipotentRadical F n β)) := by
@@ -182,7 +180,7 @@ theorem isOpen_unipotentCompact (e : ℕ) :
     continuous_subtype_val
 
 /- English proof (translation)
-Rewrite using `[coe_unipotentCompact]`. Conclude with `isClosed_unipotentRadical.isClosedEmbedding_subtypeVal.isCompact_preimage ((conjHomeomorph _).isCompact_preimage.2 (isCompact_integralGL F n))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_unipotentCompact (e : ℕ) :
     IsCompact (unipotentCompact F n β e : Set (unipotentRadical F n β)) := by
@@ -191,7 +189,7 @@ theorem isCompact_unipotentCompact (e : ℕ) :
     ((conjHomeomorph _).isCompact_preimage.2 (isCompact_integralGL F n))
 
 /- English proof (translation)
-Rewrite using `[mem_unipotentCompact, mem_integralGL_iff]`. Use `⟨rankTorus_conj_apply_mem u.2 hb, fun i j => ?_⟩` and prove the remaining obligations. Establish `: (rankTorus F n β e * u * (rankTorus F n β e)⁻¹)⁻¹ = rankTorus F n β e * (u : GL (Fin n) F)⁻¹ * (rankTorus F n β e)⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `rankTorus_conj_apply_mem ((unipotentRadical F n β).inv_mem u.2) hb' i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipotentCompact_of_bound {e : ℕ} {u : unipotentRadical F n β}
     (hb : ∀ i j, (GLnLocal.uniformizer F : F) ^ e * (u : GL (Fin n) F) i j ∈ 𝒪[F])
@@ -205,9 +203,9 @@ theorem mem_unipotentCompact_of_bound {e : ℕ} {u : unipotentRadical F n β}
   exact rankTorus_conj_apply_mem ((unipotentRadical F n β).inv_mem u.2) hb' i j
 
 /- English proof (translation)
-Set `C : Set (GL (Fin n) F)` to `(fun x : unipotentRadical F n β => (x : GL (Fin n) F)) '' (s : Set _) ∪ (fun x : unipotentRadical F n β => (x : GL (Fin n) F)⁻¹) '' (s : Set _)`. Establish `hC : IsCompact C` using `((s.finite_toSet.image _).union (s.finite_toSet.image _)).isCompact`. Take `⟨e, he⟩` from `exists_pow_mul_mem_of_isCompact F n hC`. Use `⟨unipotentCompact F n β e, isCompact_unipotentCompact e, isOpen_unipotentCompact e, fun x hx => mem_unipotentCompact_of_bound (he _ ?_) (he _ ?_)⟩` and prove the remaining obligations. Conclude with `Or.inl ⟨x, hx, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the first alternative.
 
-Conclude with `Or.inr ⟨x, hx, rfl⟩`.
+Prove the second alternative.
 -/
 theorem exists_compactOpen_unipotentRadical (s : Finset (unipotentRadical F n β)) :
     ∃ K : Subgroup (unipotentRadical F n β), IsCompact (K : Set (unipotentRadical F n β)) ∧
@@ -227,9 +225,9 @@ theorem exists_compactOpen_unipotentRadical (s : Finset (unipotentRadical F n β
 open MeasureTheory Measure in
 
 /- English proof (translation)
-Set `u : unipotentRadical F n β` to `⟨p, hp⟩`. Take `⟨e, he⟩` from `exists_pow_mul_mem_of_isCompact F n (Set.toFinite ({(p : GL (Fin n) F), (p : GL (Fin n) F)⁻¹} : Set _)).isCompact`. Establish `hmem` using `mem_integralGL_iff F n |>.1 <| (mem_unipotentCompact (u := u)).1 (mem_unipotentCompact_of_bound (fun i j => he _ (by simp [u]) i j) (fun i j => he _ (by simp [u]) i j))`. Set `t : blockUpper F n β` to `⟨rankTorus F n β e, rankTorus_mem_blockUpper e⟩`. Establish `h1 : modularCharacter (t * p * t⁻¹) = 1` using `Measures.modularCharacter_eq_one_of_mem_integralGL (t * p * t⁻¹) ((mem_integralGL_iff F n).2 hmem)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, map_mul, mul_comm (modularCharacter t), mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modularCharacter_eq_one_of_mem (p : blockUpper F n β)
     (hp : (p : GL (Fin n) F) ∈ unipotentRadical F n β) : modularCharacter p = 1 := by
@@ -249,13 +247,13 @@ theorem modularCharacter_eq_one_of_mem (p : blockUpper F n β)
   exact h1
 
 /- English proof (translation)
-Take `⟨hlow, h1⟩` from `mem_oppositeUnipotentRadical.1 hz`. Rewrite using `[rankTorus_inv_conj_apply]`. Break down `lt_trichotomy (β i) (β j) with h | h | h` into its components or cases. Rewrite using `[hlow i j h, mul_zero, one_apply_ne (fun e => h.ne (by rw [e])), sub_zero, map_zero]`. Conclude with `⟨zero_mem _, zero_le'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[h1 i j h, blockRank_eq h, sub_self, zpow_zero, one_mul, sub_self, map_zero]`. Use `⟨?_, zero_le'⟩` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Rewrite using `[hij, one_apply_eq]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_apply_ne hij]`. Conclude with `zero_mem _`. Establish `hr` using `blockRank_lt h`. Establish `hexp : ((k + t : ℕ) : ℤ) ≤ ((m * blockRank β i : ℕ) : ℤ) - ((m * blockRank β j : ℕ) : ℤ)`. Establish `: m * blockRank β j + m ≤ m * blockRank β i` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[one_apply_ne (fun e => h.ne' (by rw [e])), sub_zero]`. Conclude with `⟨zpow_mul_mem (hb i j) (by omega), valuation_zpow_mul_le (hb i j) hexp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rankTorus_inv_conj_apply_facts {k t m : ℕ} (hm : k + t ≤ m) {z : GL (Fin n) F}
     (hz : z ∈ oppositeUnipotentRadical F n β)
@@ -285,9 +283,9 @@ theorem rankTorus_inv_conj_apply_facts {k t m : ℕ} (hm : k + t ≤ m) {z : GL 
     exact ⟨zpow_mul_mem (hb i j) (by omega), valuation_zpow_mul_le (hb i j) hexp⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_pow_mul_mem_of_isCompact F n hC`. Use `⟨k + t, fun m hm z hzC hz hz' => ?_⟩` and prove the remaining obligations. Establish `hfz` using `rankTorus_inv_conj_apply_facts hm hz (hk z hzC)`. Establish `hfz'` using `rankTorus_inv_conj_apply_facts hm ((oppositeUnipotentRadical F n β).inv_mem hz) (hk _ hz')`. Rewrite using `[mem_congruenceSubgroup_iff, mem_integralGL_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun i j => (hfz i j).1, fun i j => ?_⟩, fun i j => (hfz i j).2⟩` and prove the remaining obligations. Establish `: ((rankTorus F n β m)⁻¹ * z * rankTorus F n β m)⁻¹ = (rankTorus F n β m)⁻¹ * z⁻¹ * rankTorus F n β m` using `by group`. Rewrite using `[this]`. Conclude with `(hfz' i j).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_mem_congruenceSubgroup {C : Set (GL (Fin n) F)} (hC : IsCompact C) (t : ℕ) :
     ∃ m₀ : ℕ, ∀ m ≥ m₀, ∀ z ∈ C, z ∈ oppositeUnipotentRadical F n β → z⁻¹ ∈ C →

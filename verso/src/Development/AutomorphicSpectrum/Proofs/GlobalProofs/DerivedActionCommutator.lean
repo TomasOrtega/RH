@@ -29,7 +29,7 @@ theorem rightMul_apply (Y : Matrix (Fin n) (Fin n) ℂ) (z : Fin n → Fin n →
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Conclude with `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp (t • X)) i j) (X i j) 0 := by
@@ -40,9 +40,9 @@ theorem hasDerivAt_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
   exact L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h
 
 /- English proof (translation)
-Rewrite using `[hasDerivAt_pi]`. Introduce `a`. Rewrite using `[hasDerivAt_pi]`. Introduce `b`. Simplify using `only [rightMul_apply, Matrix.of_symm_apply, Matrix.mul_apply, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `exact HasDerivAt.fun_sum (fun c _ => (hasDerivAt_entry X c b).const_mul (z a c))`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_curve (z : Fin n → Fin n → ℂ) (X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => (Matrix.of.symm (Matrix.of z * NormedSpace.exp (t • X)) : Fin n → Fin n → ℂ))
@@ -57,7 +57,7 @@ theorem hasDerivAt_curve (z : Fin n → Fin n → ℂ) (X : Matrix (Fin n) (Fin 
 def one : Fin n → Fin n → ℂ := Matrix.of.symm (1 : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-Simplify using `[one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem of_one : Matrix.of (one (n := n)) = 1 := by simp [one]
 
@@ -67,9 +67,9 @@ variable {G : Set (Matrix (Fin n) (Fin n) ℂ)} {π : Matrix (Fin n) (Fin n) ℂ
   {F : (Fin n → Fin n → ℂ) → H}
 
 /- English proof (translation)
-Establish `hd : HasFDerivAt F (fderiv ℝ F z) (Matrix.of.symm (Matrix.of z * NormedSpace.exp ((0 : ℝ) • X)))`. Establish `: (Matrix.of.symm (Matrix.of z * NormedSpace.exp ((0 : ℝ) • X)) : Fin n → Fin n → ℂ) = z`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(hF.differentiable (by simp) z).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hd.comp_hasDerivAt (0 : ℝ) (hasDerivAt_curve z X)`. Use `h.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hm : Matrix.of z * NormedSpace.exp (t • X) ∈ G` using `hG.mul_mem _ hz _ (hX t)`. Use `hFv (Matrix.of.symm (Matrix.of z * NormedSpace.exp (t • X))) (by simpa using hm)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_along (hG : IsLinRed G) (hF : ContDiff ℝ ∞ F)
     (hFv : ∀ z, Matrix.of z ∈ G → π (Matrix.of z) v = F z) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -88,7 +88,7 @@ theorem hasDerivAt_along (hG : IsLinRed G) (hF : ContDiff ℝ ∞ F)
   simpa using this
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_along hG hF hFv hX (z := one) (by rw [of_one]; exact hG.one_mem)`. Simplify `h` using `[of_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDerivAt_exp_along (hG : IsLinRed G) (hF : ContDiff ℝ ∞ F)
     (hFv : ∀ z, Matrix.of z ∈ G → π (Matrix.of z) v = F z) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -98,7 +98,7 @@ theorem hasDerivAt_exp_along (hG : IsLinRed G) (hF : ContDiff ℝ ∞ F)
   simpa [of_one] using h
 
 /- English proof (translation)
-The claim follows from `(hasDerivAt_exp_along hG hF hFv hX).deriv`.
+A detailed English derivation is pending.
 -/
 theorem dRep_eq (hG : IsLinRed G) (hF : ContDiff ℝ ∞ F)
     (hFv : ∀ z, Matrix.of z ∈ G → π (Matrix.of z) v = F z) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -106,9 +106,9 @@ theorem dRep_eq (hG : IsLinRed G) (hF : ContDiff ℝ ∞ F)
   (hasDerivAt_exp_along hG hF hFv hX).deriv
 
 /- English proof (translation)
-Establish `h1` using `hasDerivAt_exp_along hG hF hFv hX`. Establish `h2` using `((π (Matrix.of z)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `h3` using `hasDerivAt_along hG hF hFv hX hz`. Rewrite using `[dRep_eq hG hF hFv hX]`. Use `HasDerivAt.unique ?_ h3` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `hrep.2 _ hz _ (hX t)` as an intermediate fact. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem rep_dRep (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) (hF : ContDiff ℝ ∞ F)
     (hFv : ∀ z, Matrix.of z ∈ G → π (Matrix.of z) v = F z) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -124,11 +124,11 @@ theorem rep_dRep (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepO
   simp [this]
 
 /- English proof (translation)
-Establish `hF1 : ContDiff ℝ 1 (fderiv ℝ F)` using `hF.fderiv_right (by norm_cast)`. Establish `hdF : HasFDerivAt (fderiv ℝ F) (fderiv ℝ (fderiv ℝ F) one) one` using `(hF1.differentiable (by simp) one).hasFDerivAt`. Establish `hG1` using `hdF.clm_apply (rightMul Y).hasFDerivAt`. Establish `hc` using `hasDerivAt_curve (one (n := n)) X`. Establish `h0 : (Matrix.of.symm (Matrix.of (one (n` using `n)) * NormedSpace.exp ((0 : ℝ) • X)) : Fin n → Fin n → ℂ) = one := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[one]`. Establish `h` using `hG1.comp_hasDerivAt_of_eq (0 : ℝ) hc h0.symm`. Establish `h' : HasDerivAt (fun t : ℝ => π (NormedSpace.exp (t • X)) (dRep π Y v)) _ 0` using `h.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => by`. Use `rep_dRep hG hrep hF hFv hY (z := Matrix.of.symm (NormedSpace.exp (t • X))) (by simpa using hX t)` as an intermediate fact. Simplify `this)` using `[of_one, Function.comp_def]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h'.deriv.trans ?_` and prove the remaining obligations. Simplify using `[add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem dRep_dRep (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) (hF : ContDiff ℝ ∞ F)
     (hFv : ∀ z, Matrix.of z ∈ G → π (Matrix.of z) v = F z) {X Y : Matrix (Fin n) (Fin n) ℂ}
@@ -155,9 +155,9 @@ theorem dRep_dRep (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRep
 end Smooth
 
 /- English proof (translation)
-Take `⟨F, hF, hFv⟩` from `hv`. Establish `hZ : X * Y - Y * X ∈ HCSS.lieOf G` using `(GlobalTheory.T.lie_algebra_of_linear_group_closed hG).2.2.1 X Y hX hY`. Establish `hsymm : IsSymmSndFDerivAt ℝ F one` using `(hF.contDiffAt).isSymmSndFDerivAt (by`. Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 le_top)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dRep_dRep hG hrep hF hFv hX hY, dRep_dRep hG hrep hF hFv hY hX, dRep_eq hG hF hFv hZ, hsymm.eq (rightMul X one) (rightMul Y one), add_sub_add_left_eq_sub, ← map_sub]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[rightMul_apply, one, Matrix.sub_apply]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dRep_bracket {G : Set (Matrix (Fin n) (Fin n) ℂ)} {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hv : IsSmoothVec G π v)
@@ -176,7 +176,7 @@ theorem dRep_bracket {G : Set (Matrix (Fin n) (Fin n) ℂ)} {π : Matrix (Fin n)
   simp [rightMul_apply, one, Matrix.sub_apply]
 
 /- English proof (translation)
-Introduce `hG hrep _ hv _ _ hX hY` and use `dRep_bracket hG hrep hv hX hY`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_bracket : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hv : IsSmoothVec G π v) {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G) (hY : Y ∈ HCSS.lieOf G), dRep π (X * Y - Y * X) v = dRep π X (dRep π Y v) - dRep π Y (dRep π X v) :=
   fun hG hrep _ hv _ _ hX hY => dRep_bracket hG hrep hv hX hY

@@ -36,7 +36,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.FrameFn
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Rewrite using `[valF, dif_pos h, valAt', dif_pos h, valAt]`. Rewrite using `[valF, dif_neg h, valAt', dif_neg h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_eq_valAt' (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) : valF x U f = valAt' x U f := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
@@ -44,7 +44,7 @@ theorem valF_eq_valAt' (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) : valF x 
   · rw [valF, dif_neg h, valAt', dif_neg h]
 
 /- English proof (translation)
-Introduce `p hp` and use `Set.mem_iInter.2 fun _ => by have := h hp simpa using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_wchart {K : Type} [Fintype K] (L : LB X) (φ : Y ⟶ X) (x : Sp ℂ ⟶ Y) (i : L.ι)
     (h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U i) : ⊤ ≤ x ⁻¹ᵁ LB.wchart L (fun _ : K => φ) (fun _ => i) :=
@@ -53,9 +53,9 @@ theorem top_le_wchart {K : Type} [Fintype K] (L : LB X) (φ : Y ⟶ X) (x : Sp �
     simpa using this
 
 /- English proof (translation)
-Establish `hle : LB.wchart L (fun _ : K => φ) (fun _ => i) ⊓ LB.wchart L (fun _ : K => φ) (fun _ => i') ≤ φ ⁻¹ᵁ (L.U i ⊓ L.U i')` using `le_inf (inf_le_left.trans (LB.wchart_le L _ _ default)) (inf_le_right.trans (LB.wchart_le L _ _ default))`. Establish `key : ((LB.LinComb L (K` using `K) (fun _ => φ) (fun _ => e)).g (fun _ => i) (fun _ => i') : Γ(Y, LB.wchart L (fun _ : K => φ) (fun _ => i) ⊓ LB.wchart L (fun _ : K => φ) (fun _ => i'))ˣ) = (res hle (pullU φ _ (L.g i i'))) ^ e := Fintype.prod_unique (M := Γ(Y, LB.wchart L (fun _ : K => φ) (fun _ => i) ⊓ LB.wcha …`. Use `(congrArg (fun u : Γ(Y, LB.wchart L (fun _ : K => φ) (fun _ => i) ⊓ LB.wchart L (fun _ : K => φ) (fun _ => i'))ˣ => valAt' x _ u.val) key).trans ?_` and prove the remaining obligations. Use `(valAt'_units_zpow x h _ e).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(valAt'_map x _ _ h).trans (valAt'_comp x φ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem valAt'_g_const {K : Type} [Fintype K] [Unique K] (L : LB X) (φ : Y ⟶ X) (e : ℤ) (x : Sp ℂ ⟶ Y) (i i' : L.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ (LB.wchart L (fun _ : K => φ) (fun _ => i) ⊓ LB.wchart L (fun _ : K => φ) (fun _ => i'))) :
@@ -80,7 +80,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.FrameFn
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {P : RigLB G} {z : Sp ℂ ⟶ S} {g : ℕ}
 
 /- English proof (translation)
-Establish `h : a.pt w (default : PrimeSpectrum ℂ) ∈ (⨆ i, P.L.U i : G.left.Opens)`. Rewrite using `[P.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `(TopologicalSpace.Opens.mem_iSup).1 h`. Conclude with `⟨i, (top_le_preimage_iff_mem _ _).2 hi⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_pt (a : ArchFrame P z g) (w : Fin g → ℂ) : ∃ i, ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U i := by
   have h : a.pt w (default : PrimeSpectrum ℂ) ∈ (⨆ i, P.L.U i : G.left.Opens) := by
@@ -89,21 +89,21 @@ theorem exists_chart_pt (a : ArchFrame P z g) (w : Fin g → ℂ) : ∃ i, ⊤ �
   exact ⟨i, (top_le_preimage_iff_mem _ _).2 hi⟩
 
 /- English proof (translation)
-The claim follows from `top_le_wchart (K := PUnit) P.L a.φ (a.u.ex w).left i h`.
+A detailed English derivation is pending.
 -/
 theorem top_le_frame (a : ArchFrame P z g) (w : Fin g → ℂ) (i : P.L.ι) (h : ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U i) :
     ⊤ ≤ (a.u.ex w).left ⁻¹ᵁ (P.L.pull a.φ).U (fun _ => i) :=
   top_le_wchart (K := PUnit) P.L a.φ (a.u.ex w).left i h
 
 /- English proof (translation)
-The claim follows from `top_le_wchart (K := Fin 1) P.L (𝟙 G.left) (a.pt w) i (by simpa using h)`.
+A detailed English derivation is pending.
 -/
 theorem top_le_sec (a : ArchFrame P z g) (n : ℕ) (w : Fin g → ℂ) (i : P.L.ι) (h : ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U i) :
     ⊤ ≤ a.pt w ⁻¹ᵁ (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (n : ℤ))).U (fun _ => i) :=
   top_le_wchart (K := Fin 1) P.L (𝟙 G.left) (a.pt w) i (by simpa using h)
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ (a.u.ex w).left ⁻¹ᵁ ((P.L.pull a.φ).U (fun _ => i) ⊓ (P.L.pull a.φ).U (fun _ => j))` using `(top_le_preimage_inf _ _ _).2 ⟨top_le_frame a w i hi, top_le_frame a w j hj⟩`. Use `(a.u.fr_compat _ _ w h).trans ?_` and prove the remaining obligations. Use `valAt'_g_const (K := PUnit) P.L a.φ 1 (a.u.ex w).left i j h` as an intermediate fact. Rewrite `this` using `[zpow_one]`. Conclude with `congrArg (· * a.u.fr (fun _ => j) w) this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fr_change (a : ArchFrame P z g) (w : Fin g → ℂ) (i j : P.L.ι) (hi : ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U i)
     (hj : ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U j) :
@@ -116,9 +116,9 @@ theorem fr_change (a : ArchFrame P z g) (w : Fin g → ℂ) (i j : P.L.ι) (hi :
   exact congrArg (· * a.u.fr (fun _ => j) w) this
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ a.pt w ⁻¹ᵁ ((LB.LinComb P.L (K` using `Fin 1) (fun _ => 𝟙 G.left) (fun _ => (n : ℤ))).U (fun _ => i) ⊓ (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (n : ℤ))).U (fun _ => j)) := (top_le_preimage_inf _ _ _).2 ⟨top_le_sec a n w i hi, top_le_sec a n w j hj⟩`. Establish `e` using `congrArg (valAt' (a.pt w) _) (s.compat (fun _ => i) (fun _ => j))`. Rewrite `e` using `[valAt'_mul, valAt'_map _ _ _ h, valAt'_map _ _ _ h]`. Establish `t` using `valAt'_g_const (K := Fin 1) P.L (𝟙 G.left) (n : ℤ) (a.pt w) i j h`. Rewrite `t` using `[Category.comp_id, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[valF_eq_valAt', valF_eq_valAt', e, t]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_change (a : ArchFrame P z g) {n : ℕ} (s : Out.H0 P.L n) (w : Fin g → ℂ) (i j : P.L.ι)
     (hi : ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U i) (hj : ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U j) :
@@ -134,11 +134,11 @@ theorem sec_change (a : ArchFrame P z g) {n : ℕ} (s : Out.H0 P.L n) (w : Fin g
   rw [valF_eq_valAt', valF_eq_valAt', e, t]
 
 /- English proof (translation)
-Use `choose c hc using exists_chart_pt a`. Establish `hne : ∀ w i, ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U i → a.u.fr (fun _ => i) w ≠ 0` using `fun w i h => a.u.fr_ne _ w (top_le_frame a w i h)`. Use `⟨fun w => valF (a.pt w) _ (s.f fun _ => c w) / a.u.fr (fun _ => c w) w ^ n, ?_, ?_⟩` and prove the remaining obligations. Introduce `i w hi`. Establish `h1` using `fr_change a w i (c w) hi (hc w)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `sec_change a s w i (c w) hi (hc w)`. Establish `n1` using `hne w (c w) (hc w)`. Use `show _ = _ / _ * _`. Rewrite using `[h2, h1, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `θ hθ`. Use function extensionality and compare the values at `w`. Use `hθ (c w) w (hc w)` as an intermediate fact. Rewrite using `[this, mul_div_assoc, div_self (pow_ne_zero _ (hne w _ (hc w))), _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unique_fn (a : ArchFrame P z g) (n : ℕ) (s : Out.H0 P.L n) : ∃! θ, a.IsFn s θ := by
   choose c hc using exists_chart_pt a
@@ -160,7 +160,7 @@ theorem unique_fn (a : ArchFrame P z g) (n : ℕ) (s : Out.H0 P.L n) : ∃! θ, 
 end GlobalTheory.CompanionTheory.Ar.Sl.FrameFn
 
 /- English proof (translation)
-Introduce `S G _ _ P z g a n s`. Conclude with `GlobalTheory.CompanionTheory.Ar.Sl.FrameFn.unique_fn a n s`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Sl.frame_fn_existsUnique : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (P : RigLB G) (z : Sp ℂ ⟶ S) (g : ℕ) (a : ArchFrame P z g) (n : ℕ) (s : Out.H0 P.L n), ∃! θ, a.IsFn s θ :=
   by

@@ -9,9 +9,9 @@ open scoped Matrix TensorProduct Classical
 namespace GlobalTheory.EvAdm
 
 /- English proof (translation)
-Introduce `F _ _ κ _ a _ r`. Establish `hd : DenseRange (Pi.map fun (_ : κ) => algebraMap F (FiniteAdeleRing (𝓞 F) F))` using `DenseRange.piMap fun _ => PI.UnipApproxD.IntegersDenseFiniteAdeles.denseRange (R := 𝓞 F) (K := F)`. Establish `hop : IsOpen {y : κ → FiniteAdeleRing (𝓞 F) F | r - y ∈ GlobalTheory.EvAdm.scaledInt F κ a}` using `(GlobalTheory.EvAdm.isOpen_scaledInt a).preimage (continuous_const.sub continuous_id)`. Establish `hr : r ∈ {y : κ → FiniteAdeleRing (𝓞 F) F | r - y ∈ GlobalTheory.EvAdm.scaledInt F κ a}` using `by show r - r ∈ GlobalTheory.EvAdm.scaledInt F κ a`. Rewrite using `[sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Take `⟨ξ, hξ⟩` from `hd.exists_mem_open hop ⟨r, hr⟩`. Conclude with `⟨ξ, hξ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rational_rep_scaledInt : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ r : κ → FiniteAdeleRing (𝓞 F) F, ∃ ξ : κ → F,

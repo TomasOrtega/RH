@@ -30,7 +30,7 @@ private def sumD {A B C : PSh} (a : A ⟶ C) (b : B ⟶ C) : sumP A B ⟶ C wher
     | inr x => exact FunctorToTypes.naturality b h x
 
 /- English proof (translation)
-Establish `h4` using `(GlobalTheory.T.free_sections_ext_res_map R P M).2.2.2 C c T x`. Use `show Sec.map p (Sec.map ((free R).map c) (freeGen R P T x)) = _`. Rewrite using `[h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_comp_gen (R : Type) [CommRing R] {P C : PSh} (c : P ⟶ C) {M : Shv R}
     (p : (free R).obj C ⟶ M) (T : Scheme.{0}) (x : P.obj (op T)) :
@@ -40,15 +40,15 @@ private theorem map_comp_gen (R : Type) [CommRing R] {P C : PSh} (c : P ⟶ C) {
   rw [h4]
 
 /- English proof (translation)
-Use `haveI : Epi ((free R).map (sumD a b)) := by`. Use `(GlobalTheory.T.freeEtaleModuleSheaf_map_mono_epi_iso R (sumD a b)).2.1 fun T y => ?_` and prove the remaining obligations. Take `⟨S, hS, hP⟩` from `h T y`. Use `⟨S, hS, fun W k hk => ?_⟩` and prove the remaining obligations. Break down `hP W k hk with ⟨x, hx⟩ | ⟨x, hx⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨Sum.inl x, hx⟩`. Conclude with `⟨Sum.inr x, hx⟩`. Prove the components needed by the constructor for the conclusion. Introduce `M p q hpq`. Establish `h1 : (free R).map a ≫ p = (free R).map a ≫ q`.
+Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using biprod.inl ≫= hpq`. Establish `h2 : (free R).map b ≫ p = (free R).map b ≫ q`. Simplify using `using biprod.inr ≫= hpq`. Apply `(cancel_epi ((free R).map (sumD a b))).1` to reduce the goal to its premises. Apply `(GlobalTheory.T.free_sections_ext_res_map R (sumP A B) M).2.1` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T x`. Rewrite using `[map_comp_gen, map_comp_gen]`. Consider the cases of `x with`. Consider the case `inl x => show Sec.map p (freeGen R C T (a.app (op T) x)) = Sec.map q (freeGen R C T (a.app (op T) x))`. Rewrite using `[← map_comp_gen, ← map_comp_gen, h1]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `inr x => show Sec.map p (freeGen R C T (b.app (op T) x)) = Sec.map q (freeGen R C T (b.app (op T) x))`. Rewrite using `[← map_comp_gen, ← map_comp_gen, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem epi_desc (R : Type) [CommRing R] {A B C : PSh} (a : A ⟶ C) (b : B ⟶ C)
     (h : ∀ (T : Scheme.{0}) (y : C.obj (op T)), Loc T fun W k =>
@@ -82,9 +82,9 @@ private theorem epi_desc (R : Type) [CommRing R] {A B C : PSh} (a : A ⟶ C) (b 
 end UpperTheory.Cover2Loc
 
 /- English proof (translation)
-Introduce `R _ U V E f g hf hg hl`. Use `⟨hf, hg, fun n => ?_⟩` and prove the remaining obligations. Proceed by induction on `n using Opposite.rec with`. Consider the case `op n`. Proceed by induction on `n using SimplexCategory.rec with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `mk k => exact UpperTheory.Cover2Loc.epi_desc R _ _ fun T y => hl k T y`.
+Treat this case separately.
 -/
 theorem UpperTheory.mayerVietorisCover_of_mono_of_zariskiLocal :
     ∀ (R : Type) [CommRing R] {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E), Mono f → Mono g →

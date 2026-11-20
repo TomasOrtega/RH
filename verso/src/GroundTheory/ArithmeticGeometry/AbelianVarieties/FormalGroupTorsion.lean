@@ -28,7 +28,7 @@ theorem val_homApply (f : Hom F G) (x : MaxIdealPoint F) :
   rfl
 
 /- English proof (translation)
-Apply `ext` to reduce the goal to its premises. Rewrite using `[val_homApply, Hom.toPowerSeries_comp, psEvalAt_powerSeries_subst (PowerSeries.HasSubst.of_constantCoeff_zero' f.constantCoeff_eq_zero) _ fun _ => x.val_mem]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homApply_comp (g : Hom G H) (f : Hom F G) (x : MaxIdealPoint F) :
     homApply (g.comp f) x = homApply g (homApply f x) := by
@@ -38,7 +38,7 @@ theorem homApply_comp (g : Hom G H) (f : Hom F G) (x : MaxIdealPoint F) :
   rfl
 
 /- English proof (translation)
-Apply `ext` to reduce the goal to its premises. Rewrite using `[val_homApply, Hom.toPowerSeries_id]`. Conclude with `psEvalAt_X (fun _ : Unit => x.val) ()`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homApply_id (x : MaxIdealPoint F) : homApply (Hom.id F) x = x := by
   apply ext
@@ -46,7 +46,7 @@ theorem homApply_id (x : MaxIdealPoint F) : homApply (Hom.id F) x = x := by
   exact psEvalAt_X (fun _ : Unit => x.val) ()
 
 /- English proof (translation)
-Apply `ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = psEvalAt (PowerSeries.subst (MvPowerSeries.X () : MvPowerSeries Unit 𝒪) f.toPowerSeries) fun _ => x.val`. Rewrite using `[psEvalAt_powerSeries_subst (PowerSeries.HasSubst.X ()) _ fun _ => x.val_mem, psEvalAt_X]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homApply_eq_evalPoint (f : Hom F F) (x : MaxIdealPoint F) :
     homApply f x = evalPoint (fun _ : Unit => x) (f.apply (pointVar ())) := by
@@ -60,7 +60,7 @@ def evalPointHom {σ : Type*} [Finite σ] (x : σ → MaxIdealPoint F) : F.Point
   AddMonoidHom.mk' (evalPoint x) (evalPoint_add x)
 
 /- English proof (translation)
-Rewrite using `[homApply_eq_evalPoint, Hom.intCast_apply]`. Express the relevant statement in the definitionally equal form `evalPointHom (fun _ : Unit => x) (n • pointVar ()) = _`. Rewrite using `[map_zsmul]`. Express the relevant statement in the definitionally equal form `n • evalPoint (fun _ : Unit => x) (pointVar ()) = _`. Rewrite using `[evalPoint_pointVar]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem homApply_intCast [F.IsComm] (n : ℤ) (x : MaxIdealPoint F) :
     homApply (n : Hom F F) x = n • x := by
@@ -71,9 +71,9 @@ theorem homApply_intCast [F.IsComm] (n : ℤ) (x : MaxIdealPoint F) :
   rw [evalPoint_pointVar]
 
 /- English proof (translation)
-Establish `hc : IsUnit (PowerSeries.coeff 1 (n : Hom F F).toPowerSeries)`. Rewrite using `[← linearCoeff_apply, map_intCast]`. Conclude with `hn`. Use `set e := Iso.ofIsUnit (n : Hom F F) hc`. Establish `he : e.hom = (n : Hom F F)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Function.bijective_iff_has_inverse.2 ⟨homApply e.inv, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `homApply e.inv (n • x) = x`. Rewrite using `[← homApply_intCast, ← he, ← homApply_comp, e.inv_comp_hom, homApply_id]`. Express the relevant statement in the definitionally equal form `n • homApply e.inv y = y`. Rewrite using `[← homApply_intCast, ← he, ← homApply_comp, e.hom_comp_inv, homApply_id]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zsmul_bijective [F.IsComm] {n : ℤ} (hn : IsUnit (n : 𝒪)) :
     Function.Bijective fun x : MaxIdealPoint F => n • x := by
@@ -89,7 +89,7 @@ theorem zsmul_bijective [F.IsComm] {n : ℤ} (hn : IsUnit (n : 𝒪)) :
     rw [← homApply_intCast, ← he, ← homApply_comp, e.hom_comp_inv, homApply_id]
 
 /- English proof (translation)
-Establish `h` using `zsmul_bijective (F := F) (n := (n : ℤ)) (by simpa using hn)`. Simplify `h` using `only [natCast_zsmul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nsmul_bijective [F.IsComm] {n : ℕ} (hn : IsUnit (n : 𝒪)) :
     Function.Bijective fun x : MaxIdealPoint F => n • x := by
@@ -108,9 +108,9 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
   [(W.map (algebraMap 𝒪 K)).IsElliptic] [DecidableEq K]
 
 /- English proof (translation)
-Establish `h` using `MaxIdealPoint.nsmul_bijective (F := formalGroup W) hn`. Establish `: (fun P : E1 K W => n • P) = (e1Equiv K W) ∘ (fun x : MaxIdealPoint (formalGroup W) => n • x) ∘ (e1Equiv K W).symm`. Use function extensionality and compare the values at `P`. Simplify using `[map_nsmul]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(e1Equiv K W).bijective.comp (h.comp (e1Equiv K W).symm.bijective)`.
+A detailed English derivation is pending.
 -/
 theorem E1_nsmul_bijective {n : ℕ} (hn : IsUnit (n : 𝒪)) :
     Function.Bijective fun P : E1 K W => n • P := by
@@ -123,7 +123,7 @@ theorem E1_nsmul_bijective {n : ℕ} (hn : IsUnit (n : 𝒪)) :
   exact (e1Equiv K W).bijective.comp (h.comp (e1Equiv K W).symm.bijective)
 
 /- English proof (translation)
-Establish `h` using `(E1_nsmul_bijective K W hn).1 (a₁ := ⟨P, hP⟩) (a₂ := 0) (by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hnP])`. Simplify using `using congrArg Subtype.val h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_mem_E1_of_nsmul_eq_zero {n : ℕ} (hn : IsUnit (n : 𝒪))
     {P : (W.map (algebraMap 𝒪 K)).toAffine.Point} (hP : P ∈ E1 K W) (hnP : n • P = 0) : P = 0 := by

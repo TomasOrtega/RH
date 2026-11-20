@@ -10,19 +10,17 @@ open MeasureTheory NumberField Topology Set Formalism.BasicNotions Formalism.L2.
   Formalism.L2.SG.Sub Matrix
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Establish `hm : Measurable (fun y : TupI X => g • y)` using `measurable_smul_tupI X g`. Establish `hinv : ∀ b : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS), (fun y : TupI X => g • y) ⁻¹' ((gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) ⁻¹' {(b : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E))} ∩ IndI X) = (gramR (Ainf X …`. Introduce `b`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_preimage, mem_inter_iff, mem_singleton_iff, gramR_smulI, indI_smul_iff]`. Establish `hmeasA : ∀ b : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS), MeasurableSet ((gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) ⁻¹' {(b : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E))} ∩ IndI X)` using `fun b => (isClosed_singleton.preimage (continuous_gramRP (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)).measurableSet.inter (isOpen_IndI X).measurableSet`. Establish `hU' : (fun y : TupI X => g • y) ⁻¹' IndI X = IndI X`. Use extensionality with `y`. Conclude with `indI_smul_iff X g y`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hc hs hU => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (hmeasA b).compl, preimage_compl, hinv b]`. Conclude with `hfib.1 b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setLIntegral_map (isOpen_IndI X).measurableSet hφ hm, hU']`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ b, ∫⁻ v, φ (g • v) ∂(fibInf b) ∂νinf := hfib.2.1 _ (hφ.comp hm)`. Use `_ = ∫⁻ b, ∫⁻ v, φ v ∂((fibInf b).map (fun y => g • y)) ∂νinf := by`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[lintegral_map hφ hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc' : Continuous (fun v => φ (g • v))` using `hc.comp (continuous_smul_tupI X g)`. Establish `hs' : HasCompactSupport (fun v => φ (g • v))` using `hs.comp_homeomorph (smulH X g)`. Establish `hU2 : tsupport (fun v => φ (g • v)) ⊆ IndI X`. Rewrite using `[show (fun v => φ (g • v)) = φ ∘ smulH X g from rfl, tsupport_comp_eq_preimage]`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(indI_smul_iff X g y).1 (hU hy)`. Take `⟨hI, hC⟩` from `hfib.2.2 _ hc' hs' hU2`. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[integrable_map_measure hc.aestronglyMeasurable hm.aemeasurable]`. Conclude with `hI b hb`.
-
-Establish `e : (fun b => ∫ v, φ v ∂((fibInf b).map (fun y => g • y))) = fun b => ∫ v, φ (g • v) ∂(fibInf b)`. Use function extensionality and compare the values at `b`. Rewrite using `[integral_map hm.aemeasurable hc.aestronglyMeasurable]`. Rewrite using `[e]`. Conclude with `hC`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibTrans {D : D7} (X : HidaSetting D) (μinf : Measure (TupI X)) (νinf : Measure (HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)))
     (fibInf : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) → Measure (TupI X))
@@ -67,9 +65,7 @@ theorem fibTrans {D : D7} (X : HidaSetting D) (μinf : Measure (TupI X)) (νinf 
       exact hC
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI := hμ.1`. Use `haveI := hν.1`. Use `haveI : BorelSpace (HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) := inferInstanceAs (LocallyCompactSpace (Fin (D.R.rS + 1 + D.R.rS) → Fin (D.R.rS + 1 + D.R.rS) → Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E))`.
-
-Use `haveI : LocallyCompactSpace (HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) := (isClosed_HermRP (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Conclude with `FU.fib_eq h1 h2 (continuous_gramHI X) (fun _ => rfl) Subtype.val_injective (isOpen_IndI X)`.
+A detailed English derivation is pending.
 -/
 theorem fibEqI {D : D7} (X : HidaSetting D) (ψ : AddChar (AF X.B.I.F) ℂ) (μinf : Measure (TupI X))
     (νinf : Measure (HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS))) (fib1 fib2 : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) → Measure (TupI X))
@@ -89,7 +85,7 @@ theorem fibEqI {D : D7} (X : HidaSetting D) (ψ : AddChar (AF X.B.I.F) ℂ) (μi
   exact FU.fib_eq h1 h2 (continuous_gramHI X) (fun _ => rfl) Subtype.val_injective (isOpen_IndI X)
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP g`. Establish `hfib` using `hP.2.2.2.2.2.2`. Establish `h` using `fibEqI X ψ μinf νinf _ _ hP.2.2.2.2.1 hP.2.2.2.2.2.1 (fibTrans X μinf νinf fibInf hfib g (hS X u' ψ hT μinf νinf fibInf hP g)) hfib`. Conclude with `congrFun h (TI X u' hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem invFib_of (hS : SdInvG) : InvFib := by
   intro D X u' ψ hT μinf νinf fibInf hP g

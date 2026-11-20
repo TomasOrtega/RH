@@ -9,9 +9,9 @@ open scoped nonZeroDivisors IntermediateField
 namespace GlobalTheory.Mem.FieldsEx
 
 /- English proof (translation)
-Rewrite `h` using `[WeierstrassCurve.Affine.equation_iff]`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at h`. Use `IsIntegral.isAlgebraic ⟨Polynomial.X ^ 2 + (Polynomial.C (A.a₁ * x + A.a₃) * Polynomial.X - Polynomial.C (x ^ 3 + A.a₂ * x ^ 2 + A.a₄ * x + A.a₆)), ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, map_add, map_mul, map_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_snd_of_equation {k L : Type} [Field k] [Field L] [Algebra k L] (A : WeierstrassCurve k)
     (x : k) {y : L} (h : (A.baseChange L).toAffine.Equation (algebraMap k L x) y) : IsAlgebraic k y := by
@@ -26,7 +26,7 @@ theorem isAlgebraic_snd_of_equation {k L : Type} [Field k] [Field L] [Algebra k 
     linear_combination h
 
 /- English proof (translation)
-Use `isAlgebraic_snd_of_equation (A.baseChange k⟮x⟯) (IntermediateField.AdjoinSimple.gen k x) ?_` and prove the remaining obligations. Establish `e : (A.baseChange k⟮x⟯).baseChange ℂ = A.baseChange ℂ`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_map, ← IsScalarTower.algebraMap_eq]`. Rewrite using `[e]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_snd_adjoin {k : Type} [Field k] [Algebra k ℂ] (A : WeierstrassCurve k)
     {x y : ℂ} (h : (A.baseChange ℂ).toAffine.Equation x y) : IsAlgebraic k⟮x⟯ y := by
@@ -37,9 +37,9 @@ theorem isAlgebraic_snd_adjoin {k : Type} [Field k] [Algebra k ℂ] (A : Weierst
   exact h
 
 /- English proof (translation)
-Introduce and unpack `F _ A n hfin z ⟨x, y, h, h0, hz⟩`. Establish `hy : IsAlgebraic (↥F)⟮x⟯ y` using `isAlgebraic_snd_adjoin A h.1`. Establish `hx : IsAlgebraic F x` using `GlobalTheory.CurveAlgebraic.isAlgebraic_of_torsion A.toAffine (A.baseChange ℂ).toAffine rfl n _ hfin (fun x y h h0 => ⟨x, y, h, h0, Or.inl rfl⟩) h h0 hy`. Establish `: FiniteDimensional F (↥F)⟮x⟯` using `IntermediateField.adjoin.finiteDimensional hx.isIntegral`. Establish `hy' : IsAlgebraic F y` using `hy.restrictScalars F`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hz with rfl | rfl` into its components or cases. Conclude with `hx.restrictScalars ℚ`. Conclude with `hy'.restrictScalars ℚ`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_torsionCoords_finite :
     ∀ (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F] (A : WeierstrassCurve F) (n : ℕ),

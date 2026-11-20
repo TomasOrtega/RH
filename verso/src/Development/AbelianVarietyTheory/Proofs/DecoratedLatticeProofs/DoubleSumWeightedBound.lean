@@ -16,9 +16,9 @@ variable {D : D7}
 namespace GlobalTheory.Unf.DoubleSum
 
 /- English proof (translation)
-Unfold `realSize`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: compAt θ τ (n • x) i j = (n : ℂ) * compAt θ τ x i j`. Simplify using `only [compAt, Matrix.map_apply, Matrix.smul_apply, nsmul_eq_mul, map_mul, map_natCast]`. Rewrite using `[this, norm_mul, Complex.norm_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem realSize_nsmul (θ : InfFam D) {m k : ℕ} (n : ℕ) (x : Mx D m k) :
     realSize θ (n • x) = n * realSize θ x := by
@@ -31,25 +31,21 @@ theorem realSize_nsmul (θ : InfFam D) {m k : ℕ} (n : ℕ) (x : Mx D m k) :
   rw [this, norm_mul, Complex.norm_natCast]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : F x y = 0`. Rewrite using `[h0]`. Conclude with `bot_le`. Take `⟨hx, hy⟩` from `hF x y h0`. Use `set s := 1 + realSize θ (x : Mx D a b) with hs`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := 1 + realSize θ (y : Mx D c e) with ht`. Establish `s1 : 1 ≤ s` using `by have := realSize_nonneg θ (x : Mx D a b); linarith`. Establish `t1 : 1 ≤ t` using `by have := realSize_nonneg θ (y : Mx D c e); linarith`. Use `set M := max s t with hM`. Establish `M1 : 1 ≤ M` using `le_trans s1 (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `Mpos : 0 < M` using `by linarith`. Establish `hFM : F x y * ENNReal.ofReal (M ^ (N + N')) ≤ B`. Break down `le_total s t with h | h` into its components or cases. Rewrite using `[hM, max_eq_right h]`. Conclude with `h2 x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hM, max_eq_left h]`. Conclude with `h1 x y`. Establish `hMp : 0 < M ^ (N + N')` using `pow_pos Mpos _`. Establish `hF' : F x y ≤ B * ENNReal.ofReal ((M ^ (N + N'))⁻¹)`. Rewrite using `[ENNReal.ofReal_inv_of_pos hMp, ← div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `ENNReal.le_div_iff_mul_le (Or.inl (by simpa using hMp)) (Or.inl ENNReal.ofReal_ne_top) |>.2 hFM`. Use `hF'.trans ?_` and prove the remaining obligations. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hnx : 1 + realSize θ (n • (x : Mx D a b)) ≤ n * M`. Rewrite using `[realSize_nsmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `realSize_nonneg θ (x : Mx D a b)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hny : 1 + realSize θ (n • (y : Mx D c e)) ≤ n * M`. Rewrite using `[realSize_nsmul]`. Use `realSize_nonneg θ (y : Mx D c e)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `px : 0 < 1 + realSize θ (n • (x : Mx D a b))` using `by have := realSize_nonneg θ (n • (x : Mx D a b)); linarith`. Establish `py : 0 < 1 + realSize θ (n • (y : Mx D c e))` using `by have := realSize_nonneg θ (n • (y : Mx D c e)); linarith`. Establish `key : (M ^ (N + N'))⁻¹ ≤ (n : ℝ) ^ (N + N') * (((1 + realSize θ (n • (x : Mx D a b))) ^ N)⁻¹ * ((1 + realSize θ (n • (y : Mx D c e))) ^ N')⁻¹)`. Establish `e1 : ((n * M) ^ N)⁻¹ ≤ ((1 + realSize θ (n • (x : Mx D a b))) ^ N)⁻¹` using `inv_anti₀ (pow_pos px _) (pow_le_pow_left₀ px.le hnx _)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((n * M) ^ N')⁻¹ ≤ ((1 + realSize θ (n • (y : Mx D c e))) ^ N')⁻¹` using `inv_anti₀ (pow_pos py _) (pow_le_pow_left₀ py.le hny _)`. Establish `npos : (0 : ℝ) < n` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow, pow_add, pow_add]`. Clear the denominators using the available nonvanishing facts.
-
-Use `_ ≤ _ := by gcongr`. Unfold `maj`. Rewrite using `[if_pos hx, if_pos hy, mul_assoc, ← ENNReal.ofReal_mul (by positivity), show (n : ℝ≥0∞) ^ (N + N') = ENNReal.ofReal ((n : ℝ) ^ (N + N')) by`. Rewrite using `[ENNReal.ofReal_pow (Nat.cast_nonneg _), ENNReal.ofReal_natCast],`. Use the proof step `mul_left_comm, ← ENNReal.ofReal_mul (by positivity)]`.
-
-Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointwise (θ : InfFam D) {a b c e : ℕ} (K : Set (Mx D a b)) (K' : Set (Mx D c e)) (N N' n : ℕ) (hn : 0 < n)
     (B : ℝ≥0∞) (F : ratMx D a b → ratMx D c e → ℝ≥0∞)
@@ -112,35 +108,33 @@ end GlobalTheory.Unf.DoubleSum
 end
 
 /- English proof (translation)
-Introduce `D θ a b c e K K' N N' n hn B F hF h1 h2`. Establish `hinj : Function.Injective (fun x : ratMx D a b => n • x)`. Introduce `u v huv`. Take `⟨γ, hγ⟩` from `u.2`. Take `⟨δ, hδ⟩` from `v.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : ((n • u : ratMx D a b) : Mx D a b) = n • (u : Mx D a b)` using `AddSubgroup.coe_nsmul _ _ _`. Establish `e2 : ((n • v : ratMx D a b) : Mx D a b) = n • (v : Mx D a b)` using `AddSubgroup.coe_nsmul _ _ _`. Establish `h` using `congrArg Subtype.val huv`. Simplify using `only at h`. Rewrite `h` using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hr : rat (n • γ) = rat (n • δ)`. Establish `r1 : rat (n • γ) = n • rat γ`. Use function extensionality and compare the values at `i j`. Simplify using `[rat, Matrix.smul_apply, nsmul_eq_mul, map_mul, map_natCast]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `r2 : rat (n • δ) = n • rat δ`. Use function extensionality and compare the values at `i j`. Simplify using `[rat, Matrix.smul_apply, nsmul_eq_mul, map_mul, map_natCast]`. Rewrite using `[r1, r2]`. Establish `hγ' : rat γ = (u : Mx D a b)` using `hγ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hδ' : rat δ = (v : Mx D a b)` using `hδ`. Rewrite using `[hγ', hδ']`. Conclude with `h`. Establish `hγδ : γ = δ`. Use `rat_injective hr` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j`. Establish `hij` using `congrFun (congrFun this i) j`. Simplify using `only [Matrix.smul_apply, nsmul_eq_mul] at hij`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hn)) hij`. Establish `hγ' : rat γ = (u : Mx D a b)` using `hγ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hδ' : rat δ = (v : Mx D a b)` using `hδ`. Rewrite using `[← hγ', ← hδ', hγδ]`. Establish `hinj' : Function.Injective (fun y : ratMx D c e => n • y)`. Introduce `u v huv`. Take `⟨γ, hγ⟩` from `u.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδ⟩` from `v.2`. Establish `e1 : ((n • u : ratMx D c e) : Mx D c e) = n • (u : Mx D c e)` using `AddSubgroup.coe_nsmul _ _ _`. Establish `e2 : ((n • v : ratMx D c e) : Mx D c e) = n • (v : Mx D c e)` using `AddSubgroup.coe_nsmul _ _ _`. Establish `h` using `congrArg Subtype.val huv`. Simplify using `only at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[e1, e2]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hr : rat (n • γ) = rat (n • δ)`. Establish `r1 : rat (n • γ) = n • rat γ`. Use function extensionality and compare the values at `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[rat, Matrix.smul_apply, nsmul_eq_mul, map_mul, map_natCast]`. Establish `r2 : rat (n • δ) = n • rat δ`. Use function extensionality and compare the values at `i j`. Simplify using `[rat, Matrix.smul_apply, nsmul_eq_mul, map_mul, map_natCast]`. Rewrite using `[r1, r2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ' : rat γ = (u : Mx D c e)` using `hγ`. Establish `hδ' : rat δ = (v : Mx D c e)` using `hδ`. Rewrite using `[hγ', hδ']`. Conclude with `h`. Establish `hγδ : γ = δ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `rat_injective hr` as an intermediate fact. Use function extensionality and compare the values at `i j`. Establish `hij` using `congrFun (congrFun this i) j`. Simplify using `only [Matrix.smul_apply, nsmul_eq_mul] at hij`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hn)) hij`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγ' : rat γ = (u : Mx D c e)` using `hγ`. Establish `hδ' : rat δ = (v : Mx D c e)` using `hδ`. Rewrite using `[← hγ', ← hδ', hγδ]`. Establish `hx : ∑' x : ratMx D a b, ENNReal.ofReal (maj θ K N (n • (x : Mx D a b))) ≤ ∑' x : ratMx D a b, ENNReal.ofReal (maj θ K N x)`. Use `ENNReal.tsum_comp_le_tsum_of_injective hinj (fun x : ratMx D a b => ENNReal.ofReal (maj θ K N x))` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [AddSubgroup.coe_nsmul]`. Establish `hy : ∑' y : ratMx D c e, ENNReal.ofReal (maj θ K' N' (n • (y : Mx D c e))) ≤ ∑' y : ratMx D c e, ENNReal.ofReal (maj θ K' N' y)`. Use `ENNReal.tsum_comp_le_tsum_of_injective hinj' (fun y : ratMx D c e => ENNReal.ofReal (maj θ K' N' y))` as an intermediate fact. Simplify `this` using `only [AddSubgroup.coe_nsmul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Repeatedly rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_mul_right]`. Use `_ ≤ _ := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Unf.doubleSum_le_maj : ∀ (D : D7) (θ : InfFam D) (a b c e : ℕ) (K : Set (Mx D a b)) (K' : Set (Mx D c e)) (N N' n : ℕ), 0 < n → ∀ (B : ℝ≥0∞) (F : ratMx D a b → ratMx D c e → ℝ≥0∞), (∀ x y, F x y ≠ 0 → InBox K (n • (x : Mx D a b)) ∧ InBox K' (n • (y : Mx D c e))) → (∀ x y, F x y * ENNReal.ofReal ((1 + realSize θ (x : Mx D a b)) ^ (N + N')) ≤ B) → (∀ x y, F x y * ENNReal.ofReal ((1 + realSize θ (y : Mx D c e)) ^ (N + N')) ≤ B) → ∑' x, ∑' y, F x y ≤ (n : ℝ≥0∞) ^ (N + N') * B * ((∑' x : ratMx D a b, ENNReal.ofReal (maj θ K N x)) * ∑' y : ratMx D c e, ENNReal.ofReal (maj θ K' N' y)) := by
   intro D θ a b c e K K' N N' n hn B F hF h1 h2

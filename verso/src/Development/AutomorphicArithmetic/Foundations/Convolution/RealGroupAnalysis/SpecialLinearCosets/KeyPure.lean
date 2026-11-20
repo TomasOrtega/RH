@@ -39,15 +39,13 @@ private noncomputable def trB {F : Type} [Field F] [NumberField F] {v : P F} (x 
   ⟨fun m => a.1 (e m), a.2.1.comp_continuous e.continuous, a.2.2.comp_homeomorph e⟩
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `UpperTheory.ConvolutionTheory.R2.I.ptMem F v`. Establish `h : ∀ a : SB (M2 v), ∃ φ : Fock (F` using `F) D.δ, φ.1.1 = ten v θ u (Pt a.1) := by`. Introduce `a`. Take `⟨φ, hφ, e⟩` from `hu (P a) (P a).2`. Conclude with `⟨⟨φ, hφ⟩, by rw [e, hP]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose t ht using h`. Use `⟨{ toFun := t, map_add' := ?_, map_smul' := ?_ }, ht⟩` and prove the remaining obligations. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show (t (a + b)).1.1 = (t a).1.1 + (t b).1.1`. Rewrite using `[ht, ht, ht, ← hP, ← hP, ← hP, map_add]`. Use function extensionality and compare the values at `X`. Simplify using `[ten, mul_add]`. Introduce `c a`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (t (c • a)).1.1 = c • (t a).1.1`. Rewrite using `[ht, ht, ← hP, ← hP, map_smul]`. Use function extensionality and compare the values at `X`.
-
-Simplify using `[ten, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exT {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] (D : Dat F E) (v : P F) (θ : Kv v) (u : V4 F → ℂ) (hu : GoodU v D.δ θ u) :
@@ -75,9 +73,9 @@ private theorem exT {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     simp [ten, mul_left_comm]
 
 /- English proof (translation)
-Take `⟨hnu, hact⟩` from `UpperTheory.ConvolutionTheory.R2.I.actN F E D v θ hθ hθ0 s`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `X`. Take `⟨e1, e2⟩` from `hact X`. Establish `hab : ab (1 : (A F)ˣ) = 1` using `by simp [ab]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha2 : a' = fun m => ψl v (-(s * m.det)) * a m` using `funext ha'`. Rewrite using `[W.L_apply, hφ, hφ', hnu, hab]`. Simplify using `only [ten]`. Rewrite using `[e1, e2, (UpperTheory.ConvolutionTheory.R2.I.ptN F v a (mat v θ X)).2 s, ha2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem L_nbar {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D) (v : P F) (θ : Kv v)
@@ -97,11 +95,11 @@ private theorem L_nbar {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   simp
 
 /- English proof (translation)
-Take `⟨hnu, hact⟩` from `UpperTheory.ConvolutionTheory.R2.I.actJ F E D v θ J hJ x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `X`. Take `⟨e1, e2⟩` from `hact X`. Establish `hab : ((ab (idl v (Matrix.GeneralLinearGroup.det x)) : ℝ) : ℂ) ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: 0 < ab (idl v (Matrix.GeneralLinearGroup.det x))` using `(IdeleGroup.ideleModule F _).2`. Conclude with `this.ne'` after adjusting the coercions. Rewrite using `[W.L_apply, hφ, hφ', hnu]`. Simplify using `only [ten]`. Rewrite using `[e1, e2, UpperTheory.ConvolutionTheory.R2.I.ptL F v a x (mat v θ X)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem L_J {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D) (v : P F) (θ : Kv v)
@@ -123,11 +121,11 @@ private theorem L_J {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   field_simp
 
 /- English proof (translation)
-Establish `hadd` using `(sgLaws F v).1`. Establish `h0 : sg v 0 = 0`. Use `hadd 0 0` as an intermediate fact. Simplify using `using this`. Establish `e : -(2 * sg v (s / 2)) = sg v (-s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `hadd (s / 2) (s / 2)`. Establish `h2` using `hadd s (-s)`. Rewrite `h2` using `[add_neg_cancel, h0]`. Rewrite `h1` using `[add_halves]`. Rewrite using `[two_mul, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_eq_of_add_eq_zero_right h2.symm`. Rewrite using `[e]`. Conclude with `(UpperTheory.ConvolutionTheory.R2.I.psiLaws F v).2.1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem psi_nbar {F : Type} [Field F] [NumberField F] (v : P F) (s : Kv v) :
     ψ (-(2 * sg v (s / 2))) = ψl v (-s) := by
@@ -146,23 +144,21 @@ private theorem psi_nbar {F : Type} [Field F] [NumberField F] (v : P F) (s : Kv 
   exact (UpperTheory.ConvolutionTheory.R2.I.psiLaws F v).2.1 _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π v θ J hJ h' hcomm u hu a ha φ hφ f hf`. Take `⟨hsm, hloc, -⟩` from `UpperTheory.ConvolutionTheory.R2.I.locSm F π v`. Take `⟨T, hT⟩` from `exT D v θ u hu.1`. Take `⟨B, hB⟩` from `UpperTheory.ConvolutionTheory.R2.I.thetaIntegral_exists_bilinear F E D W M π h'`. Establish `hfun : ∀ (x : GLv v) (f : π.V), (fun g => f.1.1 (g * lc v x)) = (π.locRep v x f).1.1` using `fun x f => funext fun g => (hloc x f g).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyp1 : ∀ (g : SL v) f (a a' : SB (M2 v)), (∀ m, a'.1 m = a.1 (m * g.1)) → (B.compl₂ T) (π.locRep v (Matrix.SpecialLinearGroup.toGL g) f) a' = (B.compl₂ T) f a`. Introduce `g f a a' ha'`. Take `⟨j, hj⟩` from `(jEx F v).1`. Establish `h1 : W.Om (j g) (T a).1 = (T a').1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hu.2 j hj g a.1 a.2 (T a).1 (hT a), hT a']`. Use `congr 2`. Conclude with `(funext ha').symm`. Establish `h2` using `UpperTheory.ConvolutionTheory.R2.I.weilLift_invariance F E D W M π f.1 f.2 (T a).1 (T a).2 h' (j g)`. Rewrite `h2` using `[hj g, hfun, h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.compl₂_apply, LinearMap.compl₂_apply, hB, hB]`. Conclude with `h2`. Establish `hyp2 : ∀ f (s : Kv v) (a a' : SB (M2 v)), (∀ m, a'.1 m = ψl v (-(s * m.det)) * a.1 m) → (B.compl₂ T) f a' = ψl v (-s) * (B.compl₂ T) f a`. Introduce `f s a a' ha'`. Establish `h1` using `L_nbar W v θ hJ.sq hJ.ne u a.1 a'.1 s ha' (T a).1 (T a').1 (hT a) (hT a')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `((UpperTheory.ConvolutionTheory.R2.I.weilLift_equivariance F E D W M f.1.1 (T a).1 h').1 (nbar D v θ s))`. Establish `h3` using `((UpperTheory.ConvolutionTheory.R2.I.weilLift_equivariance F E D W M f.1.1 (T a).1 h').2 (sg v (s / 2)) (sg v (-(s / (2 * θ)))))`. Establish `hnu` using `(UpperTheory.ConvolutionTheory.R2.I.actN F E D v θ hJ.sq hJ.ne s).1`. Establish `hd1 : dM (1 : (A F)ˣ) = 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dM]`. Rewrite `h2` using `[hnu, hd1, h1]`. Simplify using `only [mul_one] at h2`. Rewrite using `[LinearMap.compl₂_apply, LinearMap.compl₂_apply, hB, hB, ← h2, (hcomm s).eq]`. Rewrite using `[← psi_nbar]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `key` using `UpperTheory.ConvolutionTheory.R2.I.absM F v π.V (π.locRep v) hsm (B.compl₂ T) hyp1 hyp2 ⟨f, hf⟩ ⟨a, ha⟩ (fun x => trB x ⟨a, ha⟩) (fun x m => rfl)`. Establish `hfin : (fun x => W1 W M f.1 φ (h' * J x)) = fun x => (B.compl₂ T) (π.locRep v (dd x) ⟨f, hf⟩) (trB x ⟨a, ha⟩)`. Use function extensionality and compare the values at `x`. Establish `h1` using `L_J W v θ J hJ u a x φ (T (trB x ⟨a, ha⟩)).1 hφ (hT _)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `((UpperTheory.ConvolutionTheory.R2.I.weilLift_equivariance F E D W M f.1 φ h').1 (J x))`. Establish `h3 : dM (nu F (J x)) = lc v (dd x)`. Rewrite using `[(UpperTheory.ConvolutionTheory.R2.I.actJ F E D v θ J hJ x).1]`. Conclude with `((lcLaws F v).2.2.1 _).symm`. Rewrite `h2` using `[h3, h1]`.
-
-Rewrite using `[h2, LinearMap.compl₂_apply, hB, ← hfun]`. Rewrite using `[hfin]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.keyPure :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2) (v : P F) (θ : Kv v) (J : GLv v →* GL (Fin 2) (A E)), Splt D v θ J →

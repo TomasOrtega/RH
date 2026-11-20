@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.AbFGSpread
 
 /- English proof (translation)
-Establish `h1 : LBIso ((L.pull jX).pull φ) (L.pull (jj ≫ φ))`. Rewrite using `[e]`. Conclude with `(FibreNef.lbIso_pull_comp hL jX φ).symm`. Establish `h2 : LBIso (L.pull (jj ≫ φ)) ((L.pull φ).pull jj)` using `FibreNef.lbIso_pull_comp hL φ jj`. Establish `h3 : LBIso ((L.pull φ).pull jj) (N.pull jj)` using `RigidBundleGlue.LBIso.pull hw.symm jj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p` using `fun (f : Y ⟶ X) => pull_isLB hL f`. Use `LBIso.trans (pull_isLB (pull_isLB hL jX) φ) (p _) (p φ) h1 ?_` and prove the remaining obligations. Use `LBIso.trans (p _) (pull_isLB (p φ) _) (p φ) h2 ?_` and prove the remaining obligations. Use `LBIso.trans (pull_isLB (p φ) _) (pull_isLB hN _) (p φ) h3 ?_` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB hN _) hN (p φ) hs hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sym_transfer {X Y : Scheme.{0}} {L : LB X} {N : LB Y} (hL : L.IsLB) (hN : N.IsLB) (jX : X ⟶ X)
     (jj : Y ⟶ Y) (φ : Y ⟶ X) (e : jj ≫ φ = φ ≫ jX) (hw : LBIso N (L.pull φ)) (hs : LBIso (N.pull jj) N) :
@@ -38,9 +38,9 @@ theorem sym_transfer {X Y : Scheme.{0}} {L : LB X} {N : LB Y} (hL : L.IsLB) (hN 
   exact LBIso.trans (pull_isLB hN _) hN (p φ) hs hw
 
 /- English proof (translation)
-Establish `p` using `fun {Z : Scheme.{0}} (f : Z ⟶ X) => pull_isLB hL f`. Establish `h1 : LBIso ((L.pull φ).pull jj) (L.pull (jj ≫ φ))` using `(FibreNef.lbIso_pull_comp hL φ jj).symm`. Establish `h2 : LBIso (L.pull (jj ≫ φ)) ((L.pull jX).pull φ)`. Rewrite using `[e]`. Conclude with `FibreNef.lbIso_pull_comp hL jX φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `LBIso.trans (pull_isLB (p φ) _) (p _) (p φ) h1 ?_` and prove the remaining obligations. Conclude with `LBIso.trans (p _) (pull_isLB (p jX) _) (p φ) h2 hs`.
+A detailed English derivation is pending.
 -/
 theorem sym_of_pull {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (jX : X ⟶ X) (jj : Y ⟶ Y) (φ : Y ⟶ X)
     (e : jj ≫ φ = φ ≫ jX) (hs : LBIso ((L.pull jX).pull φ) (L.pull φ)) :
@@ -53,31 +53,31 @@ theorem sym_of_pull {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (jX : X ⟶ X) (
   exact LBIso.trans (p _) (pull_isLB (p jX) _) (p φ) h2 hs
 
 /- English proof (translation)
-Introduce `K _ _ A _ hA L M hL hM hLa hMa hLs hMs`. Take `⟨s₀, H₀⟩` from `GlobalTheory.exists_finset_isProjOver_descends K ⊥ A.left A.hom (GlobalTheory.ProjSpace.isProjOver_of_relAmple hLa)`. Set `K₀ : Subfield K` to `Subfield.closure (s₀ : Set K)`. Take `⟨X₀, p₀, φ, hp₀, sq⟩` from `H₀ K₀ bot_le Subfield.subset_closure`. Establish `: IsProper p₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, i, hi, rfl⟩` from `hp₀`. Use `isProper_str K₀ N` as an intermediate fact. Use `infer_instance`. Establish `: LocallyOfFinitePresentation p₀` using `inferInstance`. Establish `: QuasiCompact (Over.mk p₀).hom` using `inferInstanceAs (QuasiCompact p₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiSeparated (Over.mk p₀).hom` using `inferInstanceAs (QuasiSeparated p₀)`. Establish `: LocallyOfFinitePresentation (Over.mk p₀).hom` using `inferInstanceAs (LocallyOfFinitePresentation p₀)`. Take `⟨s₁, H₁⟩` from `GlobalTheory.grpObj_descends_to_large_subfield K K₀ (Over.mk p₀) A φ sq`. Take `⟨s₂, H₂⟩` from `GlobalTheory.LBDescent.exists_lb_subfield K K₀ X₀ A.left p₀ A.hom φ L hL sq`. Take `⟨s₃, H₃⟩` from `GlobalTheory.LBDescent.exists_lb_subfield K K₀ X₀ A.left p₀ A.hom φ M hM sq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `s : Finset K` to `s₀ ∪ s₁ ∪ s₂ ∪ s₃`. Set `K₁ : Subfield K` to `Subfield.closure (s : Set K)`. Establish `sub : ∀ t : Finset K, t ⊆ s → (t : Set K) ⊆ K₁` using `fun t ht => PolCountableDescent.subset_closure_of_subset ht`. Establish `h : K₀ ≤ K₁` using `Subfield.closure_mono (Finset.coe_subset.2 (fun y hy => by simp [s, hy]))`. Set `inc` to `spMap (Subfield.inclusion h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A₁ : Over (Sp K₁)` to `Over.mk (pullback.snd p₀ inc)`. Set `φ₁ : A₁.left ⟶ X₀` to `pullback.fst p₀ inc`. Establish `sq₁ : IsPullback φ₁ A₁.hom p₀ inc` using `IsPullback.of_hasPullback p₀ inc`. Set `ψ : A.left ⟶ A₁.left` to `sq₁.lift φ (A.hom ≫ spMap K₁.subtype) (by rw [Category.assoc, PolCountableDescent.spMap_subtype_comp h, sq.w])`. Establish `hψ₁ : ψ ≫ φ₁ = φ` using `sq₁.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ₂ : ψ ≫ A₁.hom = A.hom ≫ spMap K₁.subtype` using `sq₁.lift_snd _ _ _`. Take `⟨gr₁, hG⟩` from `H₁ K₁ h (sub s₁ (fun y hy => by simp [s, hy])) A₁ φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨L₁, hL₁, hLL⟩` from `H₂ K₁ h (sub s₂ (fun y hy => by simp [s, hy])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨M₁, hM₁, hMM⟩` from `H₃ K₁ h (sub s₃ (fun y hy => by simp [s, hy])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨hab₁, -⟩` from `GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend K₁ K K₁.subtype A₁ A ψ hG hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsProper A₁.hom` using `hab₁.proper`. Establish `e₁` using `PolDescent.inv_left_comp hG`. Establish `symL` using `sym_transfer hL₁ hL _ _ ψ e₁ hLL hLs`. Establish `symM` using `sym_transfer hM₁ hM _ _ ψ e₁ hMM hMs`. Take `⟨s₄, H₄⟩` from `lbIso_descends_to_subfield_containing_finset K₁ K K₁.subtype A₁ A ψ _ L₁ hG.1 inferInstance inferInstance (pull_isLB hL₁ _) hL₁ symL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s₅, H₅⟩` from `lbIso_descends_to_subfield_containing_finset K₁ K K₁.subtype A₁ A ψ _ M₁ hG.1 inferInstance inferInstance (pull_isLB hM₁ _) hM₁ symM`. Set `t : Finset K` to `s ∪ s₄ ∪ s₅`. Set `k₀ : IntermediateField ℚ K` to `IntermediateField.adjoin ℚ (t : Set K)`. Set `K₂ : Subfield K` to `k₀.toSubfield`. Establish `mem₂ : ∀ y ∈ t, y ∈ K₂` using `fun y hy => IntermediateField.subset_adjoin ℚ (t : Set K) hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁₂ : K₁ ≤ K₂` using `Subfield.closure_le.2 (fun y hy => mem₂ y (by simp [t, Finset.mem_coe.1 hy]))`. Establish `rng : ∀ u : Finset K, u ⊆ t → (u : Set K) ⊆ Set.range K₂.subtype` using `fun u hu y hy => ⟨⟨y, mem₂ y (hu hy)⟩, rfl⟩`. Set `inc₂` to `spMap (Subfield.inclusion h₁₂)`. Set `A₂ : Over (Sp K₂)` to `(Over.pullback inc₂).obj A₁`. Establish `hP : IsGrpPullback A₂ A₁ inc₂ (pullback.fst A₁.hom inc₂)` using `isGrpPullback_pullback A₁ inc₂`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `χ : A₂.left ⟶ A₁.left` to `pullback.fst A₁.hom inc₂`. Set `π : A.left ⟶ A₂.left` to `pullback.lift ψ (A.hom ≫ spMap K₂.subtype) (by rw [hψ₂, Category.assoc, PolCountableDescent.spMap_subtype_comp h₁₂])`. Establish `hπ₁ : π ≫ χ = ψ` using `pullback.lift_fst _ _ _`. Establish `hπ₂ : π ≫ A₂.hom = A.hom ≫ spMap K₂.subtype` using `pullback.lift_snd _ _ _`. Establish `hG₂ : IsGrpPullback A A₂ (spMap K₂.subtype) π` using `IsGrpPullback.cancel hP (by rw [PolCountableDescent.spMap_subtype_comp h₁₂, hπ₁]; exact hG) hπ₂`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hab₂, -⟩` from `GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend K₂ K K₂.subtype A₂ A π hG₂ hA`. Establish `e₂` using `PolDescent.inv_left_comp hP`. Establish `symL₂` using `H₄ K₂ (Subfield.inclusion h₁₂) K₂.subtype rfl (rng s₄ (fun y hy => by simp [t, hy])) A₂ χ hP.1`. Establish `symM₂` using `H₅ K₂ (Subfield.inclusion h₁₂) K₂.subtype rfl (rng s₅ (fun y hy => by simp [t, hy])) A₂ χ hP.1`. Establish `isoL : LBIso L ((L₁.pull χ).pull π)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LBIso.trans hL (pull_isLB hL₁ _) (pull_isLB (pull_isLB hL₁ _) _) hLL ?_` and prove the remaining obligations. Rewrite using `[← hπ₁]`. Conclude with `FibreNef.lbIso_pull_comp hL₁ χ π`. Establish `isoM : LBIso M ((M₁.pull χ).pull π)`. Use `LBIso.trans hM (pull_isLB hM₁ _) (pull_isLB (pull_isLB hM₁ _) _) hMM ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hπ₁]`. Conclude with `FibreNef.lbIso_pull_comp hM₁ χ π`. Use `⟨k₀, A₂, inferInstance, π, L₁.pull χ, M₁.pull χ, ⟨t, rfl⟩, hab₂, hG₂, pull_isLB hL₁ _, pull_isLB hM₁ _, ?_, ?_, sym_of_pull hL₁ _ _ χ e₂ symL₂, sym_of_pull hM₁ _ _ χ e₂ symM₂, isoL, isoM⟩` and prove the remaining obligations. Conclude with `AmpleDescent.relAmple_of_fieldExtension K₂ K K₂.subtype A₂ A π _ L hab₂ hG₂ (pull_isLB hL₁ _) hL isoL hLa`. Conclude with `AmpleDescent.relAmple_of_fieldExtension K₂ K K₂.subtype A₂ A π _ M hab₂ hG₂ (pull_isLB hM₁ _) hM isoM hMa`.
+A detailed English derivation is pending.
 -/
 theorem spread_to_fg_subfield : ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (L M : LB A.left), L.IsLB → M.IsLB → RelAmple A L → RelAmple A M → LBIso (L.pull (GrpObj.inv : A ⟶ A).left) L → LBIso (M.pull (GrpObj.inv : A ⟶ A).left) M → ∃ (k₀ : IntermediateField ℚ K) (A₀ : Over (Sp k₀)) (_ : GrpObj A₀) (π : A.left ⟶ A₀.left) (L₀ M₀ : LB A₀.left), k₀.FG ∧ IsAbelianScheme A₀ ∧ IsGrpPullback A A₀ (spMap (algebraMap k₀ K)) π ∧ L₀.IsLB ∧ M₀.IsLB ∧ RelAmple A₀ L₀ ∧ RelAmple A₀ M₀ ∧ LBIso (L₀.pull (GrpObj.inv : A₀ ⟶ A₀).left) L₀ ∧ LBIso (M₀.pull (GrpObj.inv : A₀ ⟶ A₀).left) M₀ ∧ LBIso L (L₀.pull π) ∧ LBIso M (M₀.pull π) := by
   intro K _ _ A _ hA L M hL hM hLa hMa hLs hMs

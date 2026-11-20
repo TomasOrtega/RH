@@ -13,32 +13,30 @@ open Matrix
 namespace PositivityTheory.AutomorphicGaloisHodgeTate.G8
 
 /- English proof (translation)
-Conclude with `GlobalTheory.RingBasics.σC_coe g x`.
+A detailed English derivation is pending.
 -/
 theorem occMove_σC_alg {l : ℕ} [Fact l.Prime] (g : GQ l) (x : Qbar l) :
     Formalism.Per.σC g (algebraMap (Qbar l) ℂ_[l] x) = algebraMap (Qbar l) ℂ_[l] (g x) := by
   exact GlobalTheory.RingBasics.σC_coe g x
 
 /- English proof (translation)
-Introduce `l _ K a`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `d₁ d₀ ρ₁ ρ₀ A hA hAρ ⟨S, z, hz, h⟩ classical`. Use `⟨S ∪ Finset.univ.image (fun pq : Fin d₀ × Fin d₁ => A pq.1 pq.2), (A.map (algebraMap (Qbar l) ℂ_[l])) *ᵥ z, fun h0 => hz (map_injective (C := ℂ_[l]) A hA (by rw [h0, mulVec_zero])), fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hS : ∀ x ∈ S, (σ : GQ l) x = x` using `fun x hx => hσ x (Finset.mem_union_left _ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hAσ : (A.map (algebraMap (Qbar l) ℂ_[l])).map (Formalism.Per.σC (σ : GQ l)) = A.map (algebraMap (Qbar l) ℂ_[l])`. Use extensionality with `p q`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[occMove_σC_alg, hσ _ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨(p, q), Finset.mem_univ _, rfl⟩))]`. Establish `key : (fun q => Formalism.Per.σC (σ : GQ l) ((A.map (algebraMap (Qbar l) ℂ_[l]) *ᵥ z) q)) = A.map (algebraMap (Qbar l) ℂ_[l]) *ᵥ fun q => Formalism.Per.σC (σ : GQ l) (z q)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[RingHom.map_mulVec, hAσ]`. Both sides reduce to the same expression. Rewrite using `[key, mulVec_mulVec, ← Matrix.map_mul, hAρ, Matrix.map_mul, ← mulVec_mulVec, h σ hS, mulVec_smul]`. Introduce `d ρ₀ ρ c hc ⟨S, z, hz, h⟩ classical`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : (Finset.univ.filter fun q => z q ≠ 0).Nonempty`. Take `⟨q, hq⟩` from `Function.ne_iff.1 hz`. Conclude with `⟨q, Finset.mem_filter.2 ⟨Finset.mem_univ _, hq⟩⟩`. Take `⟨q₀, hq₀, hmax⟩` from `Finset.exists_max_image _ c hT`. Establish `hgt : ∀ q, c q₀ < c q → z q = 0` using `fun q hq => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Conclude with `absurd (hmax q (Finset.mem_filter.2 ⟨Finset.mem_univ _, h0⟩)) (not_le.2 hq)`. Use `⟨S, fun q => if c q = c q₀ then z q else 0, fun h0 => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `h1 : (if c q₀ = c q₀ then z q₀ else 0) = 0` using `congrFun h0 q₀`. Rewrite `h1` using `[if_pos rfl]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Finset.mem_filter.1 hq₀).2 h1`. Take `⟨hB, hρ⟩` from `hc σ`. Establish `hE` using `congrFun (h σ hσ)`. Use function extensionality and compare the values at `p`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.smul_apply] at hE ⊢`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hp : c p = c q₀`. Rewrite using `[if_pos hp, ← hE p]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hρ]`. Distinguish the cases in `hq : c q = c q₀`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hq, if_pos (hp.trans hq.symm)]`. Rewrite using `[if_neg hq, map_zero, mul_zero]`. Break down `lt_or_gt_of_ne hq with hlt | hgt'` into its components or cases. Rewrite using `[hB (lt_of_lt_of_eq hlt hp.symm), map_zero, zero_mul]`. Rewrite using `[hgt q hgt', map_zero, mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg hp, smul_zero]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hρ]`. Distinguish the cases in `hq : c q = c q₀`. Rewrite using `[if_neg (fun e => hp (e.trans hq)), map_zero, zero_mul]`.
-
-Rewrite using `[if_neg hq, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OccMove_holds : OccMove := by
   intro l _ K a

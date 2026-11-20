@@ -12,11 +12,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W`. Establish `hδ : D.δ ≠ 0`. Introduce `h0`. Establish `hθ : D.θ = 0`. Establish `h` using `D.sq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[h0, map_zero]`. Conclude with `pow_eq_zero_iff (two_ne_zero) |>.mp h`. Conclude with `D.b.ne_zero 1 (by rw [D.b1, hθ])`. Use `{ n := _root_.UpperTheory.ConvolutionTheory.R2.D.hatN F E D W m := _root_.UpperTheory.ConvolutionTheory.R2.D.hatM F E D W w := ?_ nE := _root_.UpperTheory.ConvolutionTheory.R2.D.hatNE F E D W aE := _root_.UpperTheory.ConvolutionTheory.R2.D.hatAE F E D W mem := fun φ => (_root_.Up …` and prove the remaining obligations. Introduce `φ v`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (W.Om (wW F) φ).1 = ft4 D.δ φ.1` using `funext (W.Om_w φ)`. Rewrite using `[h]`. Conclude with `_root_.UpperTheory.ConvolutionTheory.R2.D.hatW F D.δ φ v hδ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.hatSt :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), St.Hat W := by

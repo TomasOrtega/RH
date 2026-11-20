@@ -19,16 +19,16 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem overAll_cons_iff (ψ : AddChar (AF D.host.F) ℂ) {p : ι → SplitPt D k} {S T : HSp D} (α : ∀ i, Frame (p i) S n')
     (β : ∀ i, Frame (p i) T n) (LS : Lat S) (LT : Lat T) (Ψ : ι → Matrix n n' k → ℂ) (i : ι) (J : List ι) (f f' : WO S T → ℂ) :
     OverAll ψ α β LS LT Ψ (i :: J) f f' ↔ ∃ g, OverAll ψ α β LS LT Ψ J f g ∧ Over ψ (α i) (β i) LS LT g (Ψ i) f' := Iff.rfl
 
 /- English proof (translation)
-Introduce `J`. Proceed by induction on `J with`. Consider the case `nil => intro _ _ i hi`. Simplify using `at hi`. Consider the case `cons j J ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `f' h i hi`. Take `⟨g, hg, hO⟩` from `(overAll_cons_iff ψ α β LS LT Ψ j J f f').1 h`. Break down `List.mem_cons.1 hi with rfl | hi` into its components or cases. Conclude with `hO.2.2.2.1`. Conclude with `ih g hg i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sb_of_overAll (ψ : AddChar (AF D.host.F) ℂ) {p : ι → SplitPt D k} {S T : HSp D} (α : ∀ i, Frame (p i) S n')
     (β : ∀ i, Frame (p i) T n) (LS : Lat S) (LT : Lat T) (Ψ : ι → Matrix n n' k → ℂ) (f : WO S T → ℂ) :
@@ -44,11 +44,11 @@ theorem sb_of_overAll (ψ : AddChar (AF D.host.F) ℂ) {p : ι → SplitPt D k} 
     · exact ih g hg i hi
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `GlobalTheory.PlaceModel.latO_le_top _ h`. Introduce `h`. Take `⟨ε, hε, hsum⟩` from `p.above`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : p.e * p.e = p.e` using `p.split.1`. Establish `hεe : algebraMap (AF D.host.F) (AE D) ε * p.e = p.e`. Rewrite using `[← hsum, add_mul, he, mul_comm (cA D p.e), p.split.2.1, add_zero]`. Establish `h1` using `(GlobalTheory.PlaceModel.idem_smul_mem hε he hεe h).1`. Establish `ht' : p.e • t = t` using `Matrix.ext fun i j => ht i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[ht']`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_latO_at_iff (p : SplitPt D k) {S T : HSp D} (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (t : WO S T) (ht : IsHalf p.e t) : t ∈ latO S T LS LT (· = p.v) ↔ t ∈ latO S T LS LT fun _ => True := by
@@ -64,7 +64,7 @@ theorem mem_latO_at_iff (p : SplitPt D k) {S T : HSp D} (LS : Set (Fin S.rank �
     rwa [ht'] at h1
 
 /- English proof (translation)
-Take `⟨hs, K, hK, hinv, hsup⟩` from `h`. Use `⟨hs, K, hK, fun u hu hh t => hinv u ((hcmp u hh).2 hu) hh t, fun t ht => (hcmp _ ?_).1 (hsup t ht)⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, ← mul_assoc, mul_comm e, mul_assoc, hs t ht i j]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSBHalf_of_half_iff {S T : HSp D} (e : AE D) (Λ Λ' : AddSubgroup (WO S T)) (Φ : WO S T → ℂ)
     (hcmp : ∀ t, IsHalf e t → (t ∈ Λ' ↔ t ∈ Λ)) (h : IsSBHalf e Λ' Φ) : IsSBHalf e Λ Φ := by
@@ -75,9 +75,9 @@ theorem isSBHalf_of_half_iff {S T : HSp D} (e : AE D) (Λ Λ' : AddSubgroup (WO 
 
 open Classical in
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `h0 : IsHalf (0 : AE D) t → t ∈ Λ` using `fun ht => by`. Establish `: t = 0` using `Matrix.ext fun i j => by simpa [eq_comm] using ht i j`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `datJ halfInd`. Distinguish the cases in `ht : IsHalf (0 : AE D) t`. Rewrite using `[if_pos (by simpa [eSum] using ht), if_pos ⟨h0 ht, ht⟩]; rfl`. Rewrite using `[if_neg (by simpa [eSum] using ht), if_neg fun h => ht h.2]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datJ_nil (p : ι → SplitPt D k) {S T : HSp D} (α : ∀ i, Frame (p i) S n') (β : ∀ i, Frame (p i) T n)
     (Ψ : ι → Matrix n n' k → ℂ) (Λ : AddSubgroup (WO S T)) : datJ p α β Ψ [] = halfInd 0 Λ := by
@@ -91,11 +91,11 @@ theorem datJ_nil (p : ι → SplitPt D k) {S T : HSp D} (α : ∀ i, Frame (p i)
   · rw [if_neg (by simpa [eSum] using ht), if_neg fun h => ht h.2]
 
 /- English proof (translation)
-Introduce `J`. Proceed by induction on `J with`. Consider the case `nil => intro _ _`. Rewrite using `[datJ_nil p α β Ψ (latO S T (LS : Set _) (LT : Set _) fun _ => True)]`. Conclude with `GlobalTheory.isSBHalf_halfInd _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cons i J ih`. Introduce `hJ hSB`. Rewrite `hJ` using `[List.nodup_cons]`. Establish `hort : ∀ j ∈ J, (p i).e * (p j).e = 0` using `fun j hj => horth i j fun h => hJ.1 (h ▸ hj)`. Rewrite using `[GlobalTheory.T.datum_list_cons_eq_idempotent_tensor D k ι p n n' S T α β Ψ i J hJ.1 hort, eSum_cons, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.schwartzBruhat_half_tensor_orthogonal_idempotents D S T _ _ _ _ _ (eSum_mul p _ J fun j hj => by rw [mul_comm]; exact hort j hj) (p i).split.1 (fun u hu => GlobalTheory.PlaceModelSum.idem_smul_latO (p i).split.1 hu) (ih hJ.2 fun j hj => hSB j (List.mem_cons_of_mem …` and prove the remaining obligations. Conclude with `isSBHalf_of_half_iff _ _ _ _ (fun t ht => mem_latO_at_iff (p i) _ _ t ht) (SBHalfAt.isSBHalf_extFun_latO D k (p i) S T n n' (α i) (β i) LS LT hSD hTD (Ψ i) (hSB i List.mem_cons_self))`.
+A detailed English derivation is pending.
 -/
 theorem datJ_SB (p : ι → SplitPt D k) {S T : HSp D} (α : ∀ i, Frame (p i) S n') (β : ∀ i, Frame (p i) T n)
     (Ψ : ι → Matrix n n' k → ℂ) (LS : Lat S) (LT : Lat T) (hSD : IsSelfDualC S LS) (hTD : IsSelfDualC T LT)
@@ -116,15 +116,15 @@ theorem datJ_SB (p : ι → SplitPt D k) {S T : HSp D} (α : ∀ i, Frame (p i) 
       (SBHalfAt.isSBHalf_extFun_latO D k (p i) S T n n' (α i) (β i) LS LT hSD hTD (Ψ i) (hSB i List.mem_cons_self))
 
 /- English proof (translation)
-Introduce `J`. Proceed by induction on `J with`. Consider the case `nil`. Introduce `_ f' Tm hTm h`. Establish `h1 : f' = f` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1, datJ_nil p α β Ψ (latO S T (LS : Set _) (LT : Set _) fun _ => True), ← hTm.vac, one_smul]`. Both sides reduce to the same expression. Consider the case `cons i J ih`. Introduce `hJ f' Tm hTm h`. Take `⟨g, hg, hO⟩` from `(overAll_cons_iff ψ α β LS LT Ψ i J f f').1 h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hJ'` using `List.nodup_cons.1 hJ`. Establish `hort : ∀ j ∈ J, (p i).e * (p j).e = 0` using `fun j hj => horth i j fun h => hJ'.1 (h ▸ hj)`. Establish `hmul : eSum p J * (p i).e = 0` using `eSum_mul p _ J fun j hj => by rw [mul_comm]; exact hort j hj`. Establish `hstab : ∀ u ∈ (latO S T (LS : Set _) (LT : Set _) fun _ => True), (p i).e • u ∈ (latO S T (LS : Set _) (LT : Set _) fun _ => True)` using `fun u hu => GlobalTheory.PlaceModelSum.idem_smul_latO (p i).split.1 hu`. Rewrite `hTm` using `[eSum_cons, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA` using `GlobalTheory.T.isPlaceModel_comp_idempotentSplitTensor D ψ S T (eSum p J) (p i).e _ f Tm hmul (p i).split.1 hstab hTm`. Establish `hg' : g = Tm (tens (p i).e (datJ p α β Ψ J) (halfInd (p i).e (latO S T (LS : Set _) (LT : Set _) fun _ => True)))` using `ih hJ'.2 g _ hA hg`. Establish `hSBJ` using `datJ_SB p α β Ψ LS LT hSD hTD horth J hJ'.2 (sb_of_overAll ψ α β LS LT Ψ f J g hg)`. Establish `hcmp : ∀ t, IsHalf (p i).e t → (t ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = (p i).v) ↔ t ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) fun _ => True)` using `fun t ht => mem_latO_at_iff (p i) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) t ht`. Establish `hB` using `GlobalTheory.T.place_model_restricted_tensor_fixed_half D ψ S T (eSum p J) (p i).e (latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) fun _ => True) (latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = (p i).v)) (datJ p …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hB` using `[← hg']`. Rewrite using `[hO.2.2.2.2.2 _ hB, LinearMap.comp_apply, tensR_apply, GlobalTheory.T.datum_list_cons_eq_idempotent_tensor D k ι p n n' S T α β Ψ i J hJ'.1 hort]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem overAll_eq (ψ : AddChar (AF D.host.F) ℂ) (p : ι → SplitPt D k) {S T : HSp D} (α : ∀ i, Frame (p i) S n')
     (β : ∀ i, Frame (p i) T n) (Ψ : ι → Matrix n n' k → ℂ) (LS : Lat S) (LT : Lat T) (hSD : IsSelfDualC S LS)
@@ -163,15 +163,15 @@ theorem overAll_eq (ψ : AddChar (AF D.host.F) ℂ) (p : ι → SplitPt D k) {S 
     rw [hO.2.2.2.2.2 _ hB, LinearMap.comp_apply, tensR_apply, GlobalTheory.T.datum_list_cons_eq_idempotent_tensor D k ι p n n' S T α β Ψ i J hJ'.1 hort]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ ι p J hPl n n' _ _ _ _ ψ hψ S T α β LS LT hSD hTD hLS hLT Pset e hIdem hEq Ψ f f' hθf hvac hOver`. Take `⟨horth, rfl⟩` from `GlobalTheory.T.split_point_idempotents_orthogonal_sum_places D k ι p J _ hPl Pset e hIdem hEq`. Establish `hΛ : stdHom S T = latO S T (LS : Set _) (LT : Set _) (fun _ => True)`. Establish `h1 : (LS : Set (Fin S.rank → D.host.E)) = intVec D S.rank` using `Set.ext hLS`. Establish `h2 : (LT : Set (Fin T.rank → D.host.E)) = intVec D T.rank` using `Set.ext hLT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Establish `hid` using `eSum_idem p horth J hPl.nodup`. Unfold `IsRatDatum`. Rewrite `hvac`, the goal using `[hΛ]`. Use `⟨datJ p α β Ψ J, datJ_SB p α β Ψ LS LT hSD hTD horth J hPl.nodup (sb_of_overAll ψ α β LS LT Ψ f J f' hOver), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ`. Establish `hh : IsHalf (eSum p J) (γ.map fun a => eSum p J * incA D a)` using `fun i j => by`. Rewrite using `[Matrix.map_apply, ← mul_assoc, hid]`. Unfold `datJ`. Rewrite using `[if_pos hh]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `List.map_congr_left fun i hi => ?_` and prove the remaining obligations. Use `congr 1`. Unfold `rd`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, map_mul, pr_eSum p horth J hPl.nodup i hi, one_mul]`. Conclude with `⟨(GlobalTheory.PlaceModelSum.placeModelExistsSum D ψ hψ S T LS LT hSD hTD Pset _ hIdem f hθf hvac).1, fun Tm hTm => overAll_eq ψ p α β Ψ LS LT hSD hTD horth f J hPl.nodup f' Tm hTm hOver⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem ratDatum_of_overAll : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt D k) (J : List ι), Places p J (fun v => ∃ i, v = (p i).v) →

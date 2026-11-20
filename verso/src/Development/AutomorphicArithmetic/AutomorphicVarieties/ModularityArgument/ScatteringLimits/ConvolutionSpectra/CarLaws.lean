@@ -8,17 +8,15 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M X κ hk hX`. Take `⟨c1, c2, -⟩` from `convLaws κ hk`. Use `⟨fun t h => ?_, fun v => ?_, fun ρ T hρ => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `M.J.surjective h`. Rewrite using `[M.hJ, hX, hX, M.hJ', neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg M.J' (DFunLike.congr_fun (c1 t) u)`. Use `ext_inner_left ℂ fun h => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `M.J.surjective h`. Use `show ⟪M.J u, ContinuousLinearMap.adjoint X (M.J' v)⟫_ℂ = ⟪M.J u, M.J (conv (sharp κ) v)⟫_ℂ`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right, hX, M.J'.inner_map_map, M.J.inner_map_map, ← (convAdj κ hk).2.1, ContinuousLinearMap.adjoint_inner_right]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `h`. Take `⟨u, rfl⟩` from `M.J.surjective h`. Establish `e : (1 - M.P (Ioi T)) (M.J u) = M.J (cut V (Iic T) u)`. Establish `h1` using `(cutLaws (V := V) (Iic T) (Ioi T) measurableSet_Iic measurableSet_Ioi)`. Establish `h2` using `h1.2.2.1 (Iic_disjoint_Ioi le_rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Iic_union_Ioi, h1.2.2.2.1]`. Establish `h3 : u = cut V (Iic T) u + cut V (Ioi T) u` using `DFunLike.congr_fun h2 u`. Simplify using `only [Sc.P, ContinuousLinearMap.sub_apply, ContinuousLinearMap.one_apply, ContinuousLinearMap.comp_apply]`. Use `show M.J u - M.J (cut V (Ioi T) (M.J.symm (M.J u))) = _`. Rewrite using `[M.J.symm_apply_apply, ← map_sub, sub_eq_of_eq_add h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show M.P' (Ioi (T + ρ)) (X ((1 - M.P (Ioi T)) (M.J u))) = 0`. Rewrite using `[e, hX]`. Use `show M.J' (cut W (Ioi (T + ρ)) (M.J'.symm (M.J' _))) = 0`. Rewrite using `[M.J'.symm_apply_apply]`. Use `DFunLike.congr_fun (c2 ρ T hρ) u` as an intermediate fact.
-
-Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.zero_apply] at this`. Rewrite using `[this, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.carLaws :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (X : H →L[ℂ] H) (κ : ℝ → V →L[ℂ] W), Ker κ → M.Carries X κ →

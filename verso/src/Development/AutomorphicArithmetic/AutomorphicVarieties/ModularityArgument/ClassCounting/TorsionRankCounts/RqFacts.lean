@@ -3,19 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Up CategoryTheory
 
 /- English proof (translation)
-Introduce `q`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `G _ m z`. Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `single g a`. Use extensionality with `i`. Simplify using `only [bd, rq, Finsupp.mapRange.addMonoidHom_apply, Finsupp.mapRange_single, Finsupp.linearCombination_single, Finsupp.smul_apply, Finsupp.add_apply, Finsupp.finset_sum_apply, Finsupp.mapRange_apply, smul_eq_mul]`. Use `push_cast`.
+Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Unfold `Finsupp.single`. Apply the tactic sequence `split_ifs <;> simp [Pi.single_apply, apply_ite]`. Introduce `G H _ _ f m z`. Simplify using `only [cm, rq, Finsupp.lmapDomain_apply, Finsupp.mapRange.addMonoidHom_apply]`. Conclude with `Finsupp.mapDomain_mapRange _ _ _ _ (fun _ _ => by simp)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `G m y`. Use `⟨Finsupp.mapRange (fun x : ZMod q => (x.cast : ℤ)) (by simp) y, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[rq]`. Introduce `G m z`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hd : ∀ i, (q : ℤ) ∣ z i`. Introduce `i`. Use `DFunLike.congr_fun h i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[rq, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `⟨Finsupp.mapRange (fun x : ℤ => x / q) (by simp) z, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[Int.mul_ediv_cancel' (hd i)]`. Introduce and unpack `⟨w, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Simplify using `[rq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Up.rqFacts : UpperTheory.V.ZK.Up.RqFacts := by
   intro q

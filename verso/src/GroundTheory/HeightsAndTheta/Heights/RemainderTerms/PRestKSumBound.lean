@@ -13,13 +13,13 @@ open Finset
 noncomputable section
 
 /- English proof (translation)
-Introduce `p X N hp hX hXp`. Take `⟨hsum, htsum, hexp⟩` from `ExponentialTail.intersectionNumber_baseChange p X hp hX hXp`. Use `set g : ℕ → ℝ := fun j => 2 * (p ^ (j + 2))⁻¹ * X ^ (j + 1) / ((j + 2).factorial : ℝ) with hg`. Establish `hIcc : Finset.Icc 2 N = Finset.Ico 2 (N + 1)`. Use extensionality with `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_Icc, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Establish `hre : ∑ k ∈ Finset.Icc 2 N, 2 * (p ^ k)⁻¹ * X ^ (k - 1) / (k.factorial : ℝ) = ∑ j ∈ Finset.range (N + 1 - 2), g j`. Rewrite using `[hIcc, Finset.sum_Ico_eq_sum_range]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Simplify using `only`. Rewrite using `[show 2 + j = j + 2 from Nat.add_comm 2 j, show j + 2 - 1 = j + 1 by omega]`. Establish `hnn : ∀ j, 0 ≤ g j` using `fun j => by rw [hg]; positivity`. Rewrite using `[hre]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem RestKSumBound.proof : RestKSumBound.Statement := by
   intro p X N hp hX hXp

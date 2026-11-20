@@ -29,24 +29,24 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {g : ℕ}
 def B (Hm : Matrix (Fin g) (Fin g) ℂ) (x y : Fin g → ℂ) : ℂ := x ⬝ᵥ Hm.mulVec (star y)
 
 /- English proof (translation)
-Simplify using `[B, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_add_left (Hm : Matrix (Fin g) (Fin g) ℂ) (x x' y : Fin g → ℂ) : B Hm (x + x') y = B Hm x y + B Hm x' y := by
   simp [B, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[B, star_add, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_add_right (Hm : Matrix (Fin g) (Fin g) ℂ) (x y y' : Fin g → ℂ) : B Hm x (y + y') = B Hm x y + B Hm x y' := by
   simp [B, star_add, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[B]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_zero_left (Hm : Matrix (Fin g) (Fin g) ℂ) (y : Fin g → ℂ) : B Hm 0 y = 0 := by simp [B]
 
 /- English proof (translation)
-Simplify using `[B, Matrix.add_mulVec, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_add_mat (Hm Hm' : Matrix (Fin g) (Fin g) ℂ) (x y : Fin g → ℂ) : B (Hm + Hm') x y = B Hm x y + B Hm' x y := by
   simp [B, Matrix.add_mulVec, dotProduct_add]
@@ -55,7 +55,7 @@ def cmap (g : ℕ) (I : ULift.{0} (Finset (Fin 2))) : (Fin (g + g) → ℂ) →�
   (if (0 : Fin 2) ∈ I.down then (halfL g).toLinearMap else 0) + (if (1 : Fin 2) ∈ I.down then (halfR g).toLinearMap else 0)
 
 /- English proof (translation)
-Establish `hI : I = ∅ ∨ I = {0} ∨ I = {1} ∨ I = {0, 1}` using `by revert I; decide`. Apply the tactic sequence `rcases hI with rfl | rfl | rfl | rfl <;>`. Simplify using `[psum, DiagFrame.padd_eq, DiagFrame.pzero_eq, x2, List.finRange_succ, comp_mul, comp_one]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem pt_psum [IsCommMonObj A] (y : 𝟙_ (Over (Sp ℂ)) ⟶ A ⊗ A) (I : Finset (Fin 2)) :
     y ≫ psum A (x2 A) I = (if (0 : Fin 2) ∈ I then y ≫ fst A A else 1) * (if (1 : Fin 2) ∈ I then y ≫ snd A A else 1) := by
@@ -64,12 +64,12 @@ theorem pt_psum [IsCommMonObj A] (y : 𝟙_ (Over (Sp ℂ)) ⟶ A ⊗ A) (I : Fi
     simp [psum, DiagFrame.padd_eq, DiagFrame.pzero_eq, x2, List.finRange_succ, comp_mul, comp_one]
 
 /- English proof (translation)
-The claim follows from `(u.ker 0).2 (Submodule.zero_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem ex_zero {L : LB A.left} (u : HolUnif A L g) : u.ex 0 = 1 := (u.ker 0).2 (Submodule.zero_mem _)
 
 /- English proof (translation)
-Rewrite using `[pt_psum]`. Express the relevant statement in the definitionally equal form `_ = (if (0 : Fin 2) ∈ I.down then lift (u₁.ex (halfL g z)) (u₁.ex (halfR g z)) ≫ fst A A else 1) * (if (1 : Fin 2) ∈ I.down then lift (u₁.ex (halfL g z)) (u₁.ex (halfR g z)) ≫ snd A A else 1)`. Rewrite using `[lift_fst, lift_snd, hex]`. Apply the tactic sequence `by_cases h0 : (0 : Fin 2) ∈ I.down <;> by_cases h1 : (1 : Fin 2) ∈ I.down <;>`. Simplify using `[cmap, h0, h1, u₁.ex_add, ex_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem ex_cmap [IsCommMonObj A] {L L₁ : LB A.left} (u₁ : HolUnif A L₁ g) (u : HolUnif A L g) (hex : u.ex = u₁.ex)
     (I : ULift.{0} (Finset (Fin 2))) (z : Fin (g + g) → ℂ) :
@@ -122,23 +122,23 @@ open Classical in
 def ext (Λ : Submodule ℤ (Fin g → ℂ)) (χ : Λ → ℂ) (w : Fin g → ℂ) : ℂ := if h : w ∈ Λ then χ ⟨w, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[ext, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ext_of_mem (Λ : Submodule ℤ (Fin g → ℂ)) (χ : Λ → ℂ) {w : Fin g → ℂ} (h : w ∈ Λ) : ext Λ χ w = χ ⟨w, h⟩ := by
   simp [ext, h]
 
 /- English proof (translation)
-Rewrite using `[ext_of_mem _ _ (add_mem ha hb), ext_of_mem _ _ ha, ext_of_mem _ _ hb]`. Take `⟨i, hi⟩` from `GlobalTheory.PowUnif.exists_chart hM (u.ex 0).left`. Establish `hexΛ : ∀ w ∈ u.Λ, u.ex w = u.ex 0` using `fun w hw => by rw [(u.ker w).2 hw, ex_zero]`. Establish `ca : ⊤ ≤ (u.ex a).left ⁻¹ᵁ L.U i` using `by rw [hexΛ a ha]; exact hi`. Establish `cab : ⊤ ≤ (u.ex (a + b)).left ⁻¹ᵁ L.U i` using `by rw [hexΛ _ (add_mem ha hb)]; exact hi`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hF.2.2 ⟨a + b, add_mem ha hb⟩ i 0 hi`. Establish `e2` using `hF.2.2 ⟨a, ha⟩ i 0 hi`. Establish `e3` using `hF.2.2 ⟨b, hb⟩ i a ca`. Establish `hB : ∀ x y : Fin g → ℂ, x ⬝ᵥ Hm.mulVec (star y) = B Hm x y` using `fun _ _ => rfl`. Simplify using `only [hB, B_zero_left, zero_add, mul_zero] at e1 e2 e3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hF0` using `u.fr_ne i (a + b) cab`. Establish `hexp : B Hm (a + b) (a + b) = B Hm a a + B Hm a b + B Hm b a + B Hm b b`. Rewrite using `[B_add_left, B_add_right, B_add_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e1` using `[hexp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[e3]`. Establish `E1 : Complex.exp (Real.pi / 2 * (B Hm a a + B Hm a b + B Hm b a + B Hm b b)) = Complex.exp (Real.pi / 2 * (B Hm a b + B Hm b a)) * Complex.exp (Real.pi / 2 * (B Hm a a + B Hm b b))`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `E2 : Complex.exp (Real.pi / 2 * (B Hm a a + B Hm b b)) = Complex.exp (Real.pi / 2 * B Hm a a) * Complex.exp (Real.pi / 2 * B Hm b b)`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `E3 : Complex.exp (Real.pi * B Hm a b + Real.pi / 2 * B Hm b b) = Complex.exp (Real.pi * B Hm a b) * Complex.exp (Real.pi / 2 * B Hm b b)` using `Complex.exp_add _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `e1` using `[E1, E2]`. Rewrite `e2` using `[E3]`. Establish `hK : Complex.exp (Real.pi / 2 * B Hm a a) * Complex.exp (Real.pi / 2 * B Hm b b) * u.fr i (a + b) ≠ 0` using `mul_ne_zero (mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _)) hF0`. Use `mul_right_cancel₀ hK ?_` and prove the remaining obligations. Take the linear combination `e1.symm.trans e2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem semichar {L : LB A.left} {u : HolUnif A L g} {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hM : L.IsLB)
     (hF : IsFactorAH u Hm χ) (a b : Fin g → ℂ) (ha : a ∈ u.Λ) (hb : b ∈ u.Λ) :
@@ -175,9 +175,9 @@ theorem semichar {L : LB A.left} {u : HolUnif A L g} {Hm : Matrix (Fin g) (Fin g
   linear_combination e1.symm.trans e2
 
 /- English proof (translation)
-Establish `h` using `semichar hM hF 0 0 (Submodule.zero_mem _) (Submodule.zero_mem _)`. Simplify using `only [B_zero_left, add_zero, mul_zero, Complex.exp_zero, _root_.mul_one] at h`. Establish `hn : ext u.Λ χ 0 ≠ 0`. Rewrite using `[ext_of_mem _ _ (Submodule.zero_mem _)]`. Introduce `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hF.2.1 ⟨0, Submodule.zero_mem _⟩` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `mul_left_cancel₀ hn (h.symm.trans (_root_.mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_zero {L : LB A.left} {u : HolUnif A L g} {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hM : L.IsLB)
     (hF : IsFactorAH u Hm χ) : ext u.Λ χ 0 = 1 := by
@@ -200,7 +200,7 @@ open GlobalTheory.ProdUnifSq
 variable {A : Over (Sp ℂ)} [GrpObj A] {g : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Fintype.prod_equiv Equiv.ulift.symm (fun I : Finset (Fin 2) => f ⟨I⟩) f (fun _ => rfl)]`. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} from by decide]`. Rewrite using `[Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_ulift (f : ULift.{0} (Finset (Fin 2)) → ℂ) :
     ∏ I, f I = f ⟨∅⟩ * f ⟨{0}⟩ * f ⟨{1}⟩ * f ⟨{0, 1}⟩ := by
@@ -211,19 +211,17 @@ theorem prod_ulift (f : ULift.{0} (Finset (Fin 2)) → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[prod_ulift]`. Establish `c0 : cmap g ⟨∅⟩ l = 0` using `by simp [cmap]`. Establish `c1 : cmap g ⟨{0}⟩ l = halfL g l` using `by simp [cmap]`. Establish `c2 : cmap g ⟨{1}⟩ l = halfR g l` using `by simp [cmap]`. Establish `c3 : cmap g ⟨{0, 1}⟩ l = halfL g l + halfR g l` using `by simp [cmap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : ε ⟨∅⟩ = 1` using `by decide`. Establish `e1 : ε ⟨{0}⟩ = -1` using `by decide`. Establish `e2 : ε ⟨{1}⟩ = -1` using `by decide`. Establish `e3 : ε ⟨{0, 1}⟩ = 1` using `by decide`. Rewrite using `[c0, c1, c2, c3, e0, e1, e2, e3, zpow_one, zpow_one, zpow_neg_one, zpow_neg_one, ext_zero hM hF, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a := halfL g l`. Use `set b := halfR g l`. Establish `S` using `semichar hM hF a b h1 h2`. Establish `na : ext u.Λ χ a ≠ 0`. Rewrite using `[ext_of_mem _ _ h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Use `hF.2.1 ⟨a, h1⟩` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Establish `nb : ext u.Λ χ b ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[ext_of_mem _ _ h2]`. Introduce `h0`. Use `hF.2.1 ⟨b, h2⟩` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hx : Complex.exp (Real.pi / 2 * (B Hm a b - B Hm b a)) * Complex.exp (Real.pi / 2 * (B Hm a b + B Hm b a)) = Complex.exp (Real.pi * B Hm a b)`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hP` using `Complex.exp_ne_zero (Real.pi / 2 * (B Hm a b + B Hm b a))`.
-
-Establish `key : ext u.Λ χ (a + b) = Complex.exp (Real.pi / 2 * (B Hm a b - B Hm b a)) * ext u.Λ χ a * ext u.Λ χ b` using `mul_right_cancel₀ hP (by linear_combination S - ext u.Λ χ a * ext u.Λ χ b * hx)`. Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem charProd {L : LB A.left} {u : HolUnif A L g} {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hM : L.IsLB)
     (hF : IsFactorAH u Hm χ) (l : Fin (g + g) → ℂ) (h1 : halfL g l ∈ u.Λ) (h2 : halfR g l ∈ u.Λ) :
@@ -262,7 +260,7 @@ def Q (Hm : Matrix (Fin g) (Fin g) ℂ) (z l : Fin (g + g) → ℂ) : ℂ :=
     ∑ I, (ε I : ℂ) * (Real.pi * B Hm (cmap g I z) (cmap g I l) + Real.pi / 2 * B Hm (cmap g I l) (cmap g I l))
 
 /- English proof (translation)
-Establish `hs : ∀ I, (ε I : ℂ) * (Real.pi * B (Hm + Hm') (cmap g I z) (cmap g I l) + Real.pi / 2 * B (Hm + Hm') (cmap g I l) (cmap g I l)) = (ε I : ℂ) * (Real.pi * B Hm (cmap g I z) (cmap g I l) + Real.pi / 2 * B Hm (cmap g I l) (cmap g I l)) + (ε I : ℂ) * (Real.pi * B Hm' (cmap g I z) (cma …` using `fun I => by simp only [B_add_mat]; ring`. Unfold `Q`. Rewrite using `[Finset.sum_congr rfl (fun I _ => hs I), Finset.sum_add_distrib]`. Simplify using `only [B_add_mat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Q_add (Hm Hm' : Matrix (Fin g) (Fin g) ℂ) (z l : Fin (g + g) → ℂ) : Q (Hm + Hm') z l = Q Hm z l + Q Hm' z l := by
   have hs : ∀ I, (ε I : ℂ) * (Real.pi * B (Hm + Hm') (cmap g I z) (cmap g I l) +
@@ -276,13 +274,13 @@ theorem Q_add (Hm Hm' : Matrix (Fin g) (Fin g) ℂ) (z l : Fin (g + g) → ℂ) 
   ring
 
 /- English proof (translation)
-Establish `hΛ : ∀ w, w ∈ u.Λ ↔ w ∈ u₁.Λ` using `fun w => by rw [← u.ker, ← u₁.ker, hex]`. Take `⟨hl1, hl2⟩` from `(mem_sqLat _ _).1 hl`. Establish `hmem : ∀ I, cmap g I l ∈ u.Λ` using `fun I => by`. Rewrite using `[hΛ]`. Apply the tactic sequence `by_cases h0 : (0 : Fin 2) ∈ I.down <;> by_cases h1 : (1 : Fin 2) ∈ I.down <;>`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[cmap, h0, h1, hl1, hl2, add_mem]`. Establish `hz' : ⊤ ≤ ((sqUnif A u₁).ex z).left ⁻¹ᵁ LB.wchart L (fun I : ULift.{0} (Finset (Fin 2)) => (psum A (x2 A) I.down).left) j` using `hz`. Establish `hc : ∀ I, ⊤ ≤ (u.ex (cmap g I z)).left ⁻¹ᵁ L.U (j I)` using `fun I => by`. Use `(GlobalTheory.PowUnif.le_wchart_iff _ L _ j).1 hz' I` as an intermediate fact. Rewrite using `[ex_cmap u₁ u hex, Over.comp_left]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `step : ∀ I, u.fr (j I) (cmap g I z) ^ ε I = ext u.Λ χ (cmap g I l) ^ ε I * Complex.exp ((ε I : ℂ) * (Real.pi * B Hm (cmap g I z) (cmap g I l) + Real.pi / 2 * B Hm (cmap g I l) (cmap g I l))) * u.fr (j I) (cmap g I (z + l)) ^ ε I` using `fun I => by`. Rewrite using `[hF.2.2 ⟨_, hmem I⟩ (j I) _ (hc I), map_add, ext_of_mem _ _ (hmem I), mul_zpow, mul_zpow, Complex.exp_int_mul]`. Both sides reduce to the same expression. Rewrite using `[lamUnif_fr, lamUnif_fr, Finset.prod_congr rfl (fun I _ => step I), Finset.prod_mul_distrib, Finset.prod_mul_distrib, ← Complex.exp_sum, charProd hM hF l ((hΛ _).2 hl1) ((hΛ _).2 hl2)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Q`. Rewrite using `[Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_shift [IsCommMonObj A] {L L₁ : LB A.left} (u₁ : HolUnif A L₁ g) (u : HolUnif A L g) (hex : u.ex = u₁.ex)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hM : L.IsLB) (hF : IsFactorAH u Hm χ) (j : (abelian₂ A L).ι)
@@ -316,15 +314,15 @@ end GlobalTheory.TorusRM.LamAdd
 open GlobalTheory.TorusRM.LamAdd GlobalTheory.ProdUnifSq in
 
 /- English proof (translation)
-Introduce `g A _ hA hP M₁ M₂ M₃ u₁ u₂ u₃ H₁ H₂ H₃ χ₁ χ₂ χ₃ h1 h2 h3 he2 he3 f1 f2 f3 hH`. Use `haveI : IsCommMonObj A := hA.comm`. Establish `hl1 : (abelian₂ A M₁).IsLB` using `LB.isLB_linComb h1 _ _`. Establish `hl2 : (abelian₂ A M₂).IsLB` using `LB.isLB_linComb h2 _ _`. Establish `hl3 : (abelian₂ A M₃).IsLB` using `LB.isLB_linComb h3 _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP : IsProjOver (A ⊗ A).hom` using `GlobalTheory.ProjSpace.isProjOver_pullback hP hP`. Use `GlobalTheory.HolUnifSec.hasGen_of_periodic (A ⊗ A) (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA) hPP _ (LB.isLB_div (LB.isLB_div hl3 hl1) hl2) (g + g) (GlobalTheory.SameFactor.divUnif (lamUnif u₁ u₂ he2) (GlobalTheory.SameFactor.divUnif (lamUnif u₁ u₁ rfl) (lamUnif u₁ u₃ …` and prove the remaining obligations. Introduce `l hl p z hz`. Take `⟨hz12, hz2⟩` from `(GlobalTheory.top_le_preimage_inf _ _ _).1 hz`. Take `⟨hz3, hz1⟩` from `(GlobalTheory.top_le_preimage_inf _ _ _).1 hz12`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hexl : (sqUnif A u₁).ex (z + l) = (sqUnif A u₁).ex z`. Rewrite using `[(sqUnif A u₁).ex_add, ((sqUnif A u₁).ker l).2 hl, _root_.mul_one]`. Establish `e1` using `lam_shift u₁ u₁ rfl h1 f1 p.1.2 z l hl hz1`. Establish `e2` using `lam_shift u₁ u₂ he2 h2 f2 p.2 z l hl hz2`. Establish `e3` using `lam_shift u₁ u₃ he3 h3 f3 p.1.1 z l hl hz3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1` using `(lamUnif u₁ u₁ rfl).fr_ne p.1.2 (z + l) (by rw [lamUnif_ex, hexl]; exact hz1)`. Establish `n2` using `(lamUnif u₁ u₂ he2).fr_ne p.2 (z + l) (by rw [lamUnif_ex, hexl]; exact hz2)`. Establish `n3` using `(lamUnif u₁ u₃ he3).fr_ne p.1.1 (z + l) (by rw [lamUnif_ex, hexl]; exact hz3)`. Use `show 1 * ((lamUnif u₁ u₃ he3).fr p.1.1 (z + l) * ((lamUnif u₁ u₁ rfl).fr p.1.2 (z + l))⁻¹ * ((lamUnif u₁ u₂ he2).fr p.2 (z + l))⁻¹) = 1 * ((lamUnif u₁ u₃ he3).fr p.1.1 z * ((lamUnif u₁ u₁ rfl).fr p.1.2 z)⁻¹ * ((lamUnif u₁ u₂ he2).fr p.2 z)⁻¹)`. Rewrite using `[e1, e2, e3, hH, Q_add, Complex.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q1` using `Complex.exp_ne_zero (Q H₁ z l)`. Establish `q2` using `Complex.exp_ne_zero (Q H₂ z l)`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TorusRM.lbIso_lam_of_add : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → IsProjOver A.hom →
     ∀ (M₁ M₂ M₃ : LB A.left) (u₁ : HolUnif A M₁ g) (u₂ : HolUnif A M₂ g) (u₃ : HolUnif A M₃ g)

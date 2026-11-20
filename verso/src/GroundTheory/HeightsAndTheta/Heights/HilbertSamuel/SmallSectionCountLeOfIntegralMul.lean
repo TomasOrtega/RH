@@ -18,9 +18,9 @@ section Lemmas
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `: {z | LiesOver y sg z} = ⋂ (d : K → ℕ) (g : MRing ι) (h : MRing ι) (θ : F) (_ : IsMultiHomog g d) (_ : IsMultiHomog h d) (_ : aeval y g = algebraMap F Ω θ * aeval y h), {z : (Σ k, ι k) → ℂ | eval z (map (Int.castRingHom ℂ) g) = sg θ * eval z (map (Int.castRingHom ℂ) h)}`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `isClosed_iInter fun d => isClosed_iInter fun g => isClosed_iInter fun h => isClosed_iInter fun θ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `isClosed_eq (MvPolynomial.continuous_eval _) (continuous_const.mul (MvPolynomial.continuous_eval _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_liesOver {F : Type} [Field F] [Algebra F Ω] (y : (Σ k, ι k) → Ω) (sg : F →+* ℂ) :
     IsClosed {z | LiesOver y sg z} := by
@@ -36,7 +36,7 @@ theorem isClosed_liesOver {F : Type} [Field F] [Algebra F Ω] (y : (Σ k, ι k) 
   exact isClosed_eq (MvPolynomial.continuous_eval _) (continuous_const.mul (MvPolynomial.continuous_eval _))
 
 /- English proof (translation)
-Establish `: {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by
@@ -46,7 +46,7 @@ theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z
     isOpen_ne_fun (continuous_apply _) continuous_const
 
 /- English proof (translation)
-Introduce `hmem`. Rewrite `hmem` using `[mCoordIdeal, RingHom.mem_ker, ProjLine.mConeMap_eq_of_isMultiHomog y hf]`. Break down `mul_eq_zero.1 hmem with h | h` into its components or cases. Conclude with `h0 (MvPolynomial.C_eq_zero.1 h)`. Conclude with `(Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero k)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_mem_mCoordIdeal {y : (Σ k, ι k) → Ω} {f : MRing ι} {d : K → ℕ} (hf : IsMultiHomog f d)
     (h0 : aeval y f ≠ 0) : f ∉ mCoordIdeal y := by
@@ -57,7 +57,7 @@ theorem not_mem_mCoordIdeal {y : (Σ k, ι k) → Ω} {f : MRing ι} {d : K → 
   · exact (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero k)) h
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf a ha k, hg b hb k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_mul {f g : MRing ι} {df dg : K → ℕ} (hf : IsMultiHomog f df)
     (hg : IsMultiHomog g dg) : IsMultiHomog (f * g) (df + dg) := by
@@ -67,19 +67,17 @@ theorem isMultiHomog_mul {f g : MRing ι} {df dg : K → ℕ} (hf : IsMultiHomog
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf a ha k, hg b hb k]
 
 /- English proof (translation)
-Take `⟨e, g1, h1, hg1, hh1, hne, hrep⟩` from `hb (algebraMap F Ω θ)`. Use `set ev : MRing ι → ((Σ k, ι k) → ℂ) → ℂ := fun f z => eval z (map (Int.castRingHom ℂ) f) with hev`. Establish `hpt : ∀ z' ∈ mcPts (mCoordIdeal y), LiesOver y sg z' → ev h1 z' ≠ 0 → ‖ev g z'‖ ≤ ‖sg θ‖ * ‖ev h z'‖ * A.h z' ^ τ`. Introduce `z' hz' hl hh0`. Establish `hsm` using `hs (dg + e) (e + dh) (g * h1) (g1 * h) z' (isMultiHomog_mul hg hh1) (isMultiHomog_mul hg1 hh) (fun k => by simp only [Pi.add_apply, Nat.cast_add, hdeg k]; ring) (by rw [map_mul, map_mul, hgh, hrep]; ring) hz'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel` using `hl e g1 h1 θ hg1 hh1 hrep`. Simplify using `only [map_mul, norm_mul] at hsm`. Express the relevant statement in the definitionally equal form `‖ev g z'‖ * ‖ev h1 z'‖ ≤ ‖ev g1 z'‖ * ‖ev h z'‖ * A.h z' ^ τ at hsm`. Rewrite `hsm` using `[show ev g1 z' = sg θ * ev h1 z' from hrel, norm_mul]`. Establish `hp : 0 < ‖ev h1 z'‖` using `norm_pos_iff.2 hh0`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hsm, hp]`. Use `set R : Set ((Σ k, ι k) → ℂ) := {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Use `set U : Set ((Σ k, ι k) → ℂ) := R ∩ ⋂ sg' : {sg' : F →+* ℂ // sg' ≠ sg}, {z | LiesOver y sg'.1 z}ᶜ`. Establish `hUo : IsOpen U` using `isOpen_blockNonzero.inter (isOpen_iInter_of_finite fun sg' => (isClosed_liesOver y sg'.1).isOpen_compl)`. Establish `hzU : z ∈ U` using `⟨hz.1, Set.mem_iInter.2 fun sg' hl => sg'.2 ((hex z hz).unique hl hzs)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `set φ : ((Σ k, ι k) → ℂ) → ℝ := fun z => ‖ev g z‖ - ‖sg θ‖ * ‖ev h z‖ * A.h z ^ τ`. Establish `hφ : ContinuousAt φ z`. Establish `hAc : ContinuousAt A.h z` using `(hA.continuousOn).continuousAt (isOpen_blockNonzero.mem_nhds hz.1)`. Conclude with `((MvPolynomial.continuous_eval _).norm.continuousAt).sub ((continuousAt_const.mul (MvPolynomial.continuous_eval _).norm.continuousAt).mul (hAc.pow τ))`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < φ z` using `by simp only [φ]; linarith [not_le.1 hcon]`. Establish `hnb : {z' | 0 < φ z'} ∩ U ∈ 𝓝 z` using `Filter.inter_mem (hφ.eventually (lt_mem_nhds hpos)) (hUo.mem_nhds hzU)`. Establish `hcl` using `hND K ι (mCoordIdeal y) d h1 har (not_mem_mCoordIdeal hh1 hne) hz`. Take `⟨z', ⟨hφ', hU'⟩, hz'P, hz'h⟩` from `mem_closure_iff_nhds.1 hcl _ hnb`. Take `⟨sg'', hl'', -⟩` from `hex z' hz'P`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsg : sg'' = sg`. Assume the negation of the conclusion as `hne'`. Conclude with `(Set.mem_iInter.1 hU'.2 ⟨sg'', hne'⟩) hl''`. Substitute `hsg` using the available equality. Use `hpt z' hz'P hl'' hz'h` as an intermediate fact.
-
-Simplify using `only [Set.mem_ofPred_eq, φ] at hφ'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_of_isSmallH {F : Type} [Field F] [Fintype (F →+* ℂ)] [Algebra F Ω]
     (hND : NonvanishingDense.Statement) {y : (Σ k, ι k) → Ω} {d : ℕ} {A : HermLine ι} {τ : ℕ} {s : Ω}
@@ -134,7 +132,7 @@ theorem norm_le_of_isSmallH {F : Type} [Field F] [Fintype (F →+* ℂ)] [Algebr
   linarith
 
 /- English proof (translation)
-Introduce `dg dh g h z hg hh hdeg hgh hz`. Take `⟨sg, hsg, -⟩` from `hex z hz`. Establish `h1` using `norm_le_of_isSmallH hND θ har hb hA hex hs hg hh (fun k => by rw [← ha]; exact hdeg k) (by rw [hgh]) hz hsg`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem isSmallH_mul {F : Type} [Field F] [Fintype (F →+* ℂ)] [Algebra F Ω]
     (hND : NonvanishingDense.Statement) {y : (Σ k, ι k) → Ω} {d : ℕ} {A A' : HermLine ι} {τ : ℕ}
@@ -155,7 +153,7 @@ theorem isSmallH_mul {F : Type} [Field F] [Fintype (F →+* ℂ)] [Algebra F Ω]
         mul_le_mul_of_nonneg_left (hkey z hz sg hsg) (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `c hc`. Establish `h` using `hs c hc`. Rewrite using `[mul_assoc]`. Establish `hθ' : IsIntegral (chartRingZ y c) (algebraMap F Ω θ)` using `(hθ.algebraMap).tower_top`. Conclude with `(integralClosure (chartRingZ y c) Ω).mul_mem hθ' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mul_mem_chartLatNm {F : Type} [Field F] [Algebra F Ω] (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ)
     {θ : F} (hθ : IsIntegral ℤ θ) {s : Ω} (hs : s ∈ chartLatNm y a τ) :
@@ -167,11 +165,9 @@ theorem mul_mem_chartLatNm {F : Type} [Field F] [Algebra F Ω] (y : (Σ k, ι k)
   exact (integralClosure (chartRingZ y c) Ω).mul_mem hθ' h
 
 /- English proof (translation)
-Unfold `smallSectionCount`. Establish `: Finite {s : chartLatNm y A'.a τ // IsSmallH (mCoordIdeal y) y A' τ (s : Ω)}` using `hfin.to_subtype`. Establish `hθ0' : algebraMap F Ω θ ≠ 0` using `(map_ne_zero _).2 hθ0`. Establish `hc : Nat.card {s : chartLatNm y A.a τ // IsSmallH (mCoordIdeal y) y A τ (s : Ω)} ≤ Nat.card {s : chartLatNm y A'.a τ // IsSmallH (mCoordIdeal y) y A' τ (s : Ω)}`. Use `Nat.card_le_card_of_injective (fun s => (⟨⟨algebraMap F Ω θ * (s.1 : Ω), by rw [ha]; exact mul_mem_chartLatNm y A.a τ hθ s.1.2⟩, hmul _ s.2⟩ : {s : chartLatNm y A'.a τ // IsSmallH (mCoordIdeal y) y A' τ (s : Ω)})) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s t hst`. Establish `h` using `congrArg (fun u : {s : chartLatNm y A'.a τ // IsSmallH (mCoordIdeal y) y A' τ (s : Ω)} => ((u.1 : chartLatNm y A'.a τ) : Ω)) hst`. Conclude with `Subtype.ext (Subtype.ext (mul_left_cancel₀ hθ0' h))`. Break down `Nat.eq_zero_or_pos (Nat.card {s : chartLatNm y A.a τ // IsSmallH (mCoordIdeal y) y A τ (s : Ω)}) with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`.
-
-Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallSectionCount_le_of_integral_mul {F : Type} [Field F] [Algebra F Ω] {y : (Σ k, ι k) → Ω} {A A' : HermLine ι}
     (ha : A'.a = A.a) {τ : ℕ}
@@ -202,29 +198,27 @@ theorem smallSectionCount_le_of_integral_mul {F : Type} [Field F] [Algebra F Ω]
 end Lemmas
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ F _ _ _ y D a A P0 Λ II hD hII har hb ha hP0 hsp hconj hΛpos hΛconj hΛsum hex hmon`. Establish `hn : (0 : ℝ) < Fintype.card (F →+* ℂ)`. Rewrite using `[NumberField.Embeddings.card]`. Conclude with `Module.finrank_pos` after adjusting the coercions. Use `set m : ℝ := (∑ sg, Real.log (Λ sg)) / Fintype.card (F →+* ℂ) with hm_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : m ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hΛsum hn.le`. Use `set u : (F →+* ℂ) → ℝ := fun sg => Real.log (Λ sg) - m with hu_def`. Establish `hu_conj : ∀ sg, u (ComplexEmbedding.conjugate sg) = u sg` using `fun sg => by simp only [u, hΛconj]`. Establish `hu_sum : ∑ sg, u sg = 0`. Simplify using `only [u]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hm_def, mul_div_cancel₀ _ hn.ne', sub_self]`. Take `⟨C, hC⟩` from `hU F u hu_conj hu_sum`. Take `⟨c, hc⟩` from `hTw K ι Ω F y D A P0 II u hD hII har hb hP0 hsp hconj hex hu_conj hu_sum`. Establish `hden : ∀ τ : ℕ, 0 ≤ ((τ : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ))` using `fun τ => by positivity`. Establish `hδ : ∀ δ : ℝ, 0 < δ → limsup (fun τ : ℕ => smallSectionCount (IsSmallH (mCoordIdeal y) y A) (chartLatNm y A.a) τ / ((τ : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ))) atTop ≤ II K ι (mCoordIdeal y) (D + 1) (fun _ => A) + c * δ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `δ hδ`. Take `⟨A', ha', hsp', hconj', hpt, hII'⟩` from `hc δ hδ`. Establish `ha'' : A'.a = fun k => (a k : ℤ)` using `ha'.trans ha`. Establish `hmon' : MonomialsBounded (mCoordIdeal y) A' a`. Introduce `z hz μ hμ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨sg, hsg, -⟩` from `hex z hz`. Establish `hAz : 0 < A.h z` using `A.pos z hz.1`. Rewrite using `[hpt z hz sg hsg]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show u sg + m = Real.log (Λ sg) by simp only [u]; ring, Real.exp_log (hΛpos sg)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ Real.exp (u sg + δ) * A.h z := mul_le_mul_of_nonneg_right (Real.exp_le_exp.2 (by linarith)) hAz.le`. Establish `hG` using `hG7p K ι Ω y D a A' P0 II hD hII har hb ha'' hP0 hsp' hmon' hconj'`. Take `⟨hfin, C', hC'⟩` from `hPk K ι Ω y D A' (chartLatNm y A'.a) har hb hsp'.1 (fun _ => le_rfl)`. Use `le_trans ?_ (hG.trans hII')` and prove the remaining obligations. Use `limsup_le_limsup ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eventually_atTop.2 ⟨⌈C / δ⌉₊, fun τ hτ => div_le_div_of_nonneg_right ?_ (hden τ)⟩` and prove the remaining obligations. Take `⟨ε, hε⟩` from `hC τ`. Establish `hCτ : C ≤ τ * δ` using `(div_le_iff₀ hδ).1 (Nat.ceil_le.1 hτ)`. Establish `hε0 : ((ε : 𝓞 F) : F) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 ε.ne_zero`. Use `smallSectionCount_le_of_integral_mul ha' (hfin τ) (RingOfIntegers.isIntegral_coe _) hε0 fun s hs => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isSmallH_mul hND har hb hsp.1 hex ha' _ ?_ hs` and prove the remaining obligations. Introduce `z hz sg hsg`. Establish `hAz : 0 < A.h z` using `A.pos z hz.1`. Establish `hpos : 0 < ‖sg ((ε : 𝓞 F) : F)‖` using `norm_pos_iff.2 ((map_ne_zero sg).2 hε0)`. Establish `hlog : Real.log ‖sg ((ε : 𝓞 F) : F)‖ ≤ τ * u sg + τ * δ`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear relations using `[(abs_le.1 (hε sg)).2]`. Rewrite `hlog` using `[← mul_add, Real.log_le_iff_le_exp hpos, Real.exp_nat_mul]`. Rewrite using `[hpt z hz sg hsg, mul_pow]`. Conclude with `mul_le_mul_of_nonneg_right hlog (pow_nonneg hAz.le τ)`. Conclude with `isCoboundedUnder_le_of_le atTop (fun k => div_nonneg (Real.log_natCast_nonneg _) (hden k))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `isBoundedUnder_of_eventually_le (a := |C'| * 2 ^ (D + 1) * ((D + 1).factorial : ℝ)) (eventually_atTop.2 ⟨1, fun k hk => ?_⟩)` and prove the remaining obligations. Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hkp : (0 : ℝ) < (k : ℝ) ^ (D + 1)` using `by positivity`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `h2 : C' * ((k : ℝ) + 1) ^ (D + 1) ≤ |C'| * (2 * (k : ℝ)) ^ (D + 1)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts. Use `le_of_forall_pos_lt_add fun η hη => ?_` and prove the remaining obligations.
-
-Establish `hδ0 : 0 < η / (|c| + 1)` using `by positivity`. Establish `hcη : c * (η / (|c| + 1)) < η`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[hδ _ hδ0]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ArithmeticVolumeNefDual.proof (hG7p : ArithmeticVolumeNef.Statement) (hPk : PackingStatement) (hU : UnitApprox.Statement)
     (hND : NonvanishingDense.Statement) (hTw : TwistMetric.Statement) : ArithmeticVolumeNefDual.Statement := by

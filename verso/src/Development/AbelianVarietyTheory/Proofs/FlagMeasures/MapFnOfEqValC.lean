@@ -10,9 +10,9 @@ open scoped InnerProductSpace TensorProduct
 namespace GlobalTheory.ValueSpaceCoordinates
 
 /- English proof (translation)
-Establish `hanti : Antitone lam.natW`. Introduce `i j hij`. Establish `h` using `lam.anti hij`. Simplify using `only [DomWeight.natW]`. Conclude with `Int.toNat_le_toNat (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw` using `Formalism.L2.Col.dualWeyl_eq_weyl ℂ (le_rfl : n ≤ n) lam.natW hanti`. Express the relevant statement in the definitionally equal form `p ∈ Formalism.GradedWeylDivisibility.weyl ℂ n n le_rfl lam.natW at hp`. Express the relevant statement in the definitionally equal form `Formalism.GradedWeylDivisibility.rowAct ℂ g p ∈ Formalism.GradedWeylDivisibility.weyl ℂ n n le_rfl lam.natW`. Rewrite `hp`, the goal using `[← hw]`. Conclude with `Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ n n lam.natW g p hp`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowAct_mem_delSq {n : ℕ} (lam : DomWeight n) (g : Matrix (Fin n) (Fin n) ℂ)
     (p : MvPolynomial (Fin n × Fin n) ℂ) (hp : p ∈ delSq ℂ n lam) :
@@ -29,9 +29,9 @@ theorem rowAct_mem_delSq {n : ℕ} (lam : DomWeight n) (g : Matrix (Fin n) (Fin 
   exact Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ n n lam.natW g p hp
 
 /- English proof (translation)
-Establish `key : (MvPolynomial.eval fun v : Fin n × Fin n => x v.1 v.2).comp (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) g).toRingHom = MvPolynomial.eval fun v : Fin n × Fin n => (g * x) v.1 v.2 := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.mul_apply]`. Simplify using `using RingHom.congr_fun key p`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eval_rowAct {n : ℕ} (g x : Matrix (Fin n) (Fin n) ℂ) (p : MvPolynomial (Fin n × Fin n) ℂ) :
     MvPolynomial.eval (fun v : Fin n × Fin n => x v.1 v.2) (Formalism.GradedWeylDivisibility.rowAct ℂ g p) =
@@ -47,7 +47,7 @@ theorem eval_rowAct {n : ℕ} (g x : Matrix (Fin n) (Fin n) ℂ) (p : MvPolynomi
   simpa using RingHom.congr_fun key p
 
 /- English proof (translation)
-Unfold `Formalism.L2.Forms.ten`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval_rename]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_ten {ι : Type} [Fintype ι] {n : ℕ} (x : ι → Matrix (Fin n) (Fin n) ℂ)
     (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
@@ -60,7 +60,7 @@ theorem eval_ten {ι : Type} [Fintype ι] {n : ℕ} (x : ι → Matrix (Fin n) (
   rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[eval_ten (fun τ => (A * B) τ * y.1 τ) f, eval_ten (fun τ => B τ * y.1 τ) (fun τ => Formalism.GradedWeylDivisibility.rowAct ℂ (A τ) (f τ))]`. Simplify using `only [eval_rowAct, Pi.mul_apply, Matrix.mul_assoc, Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fnOf_mul_ten {ι : Type} [Fintype ι] {n : ℕ} (G : ι → Matrix (Fin n) (Fin n) ℂ) (s : ι → ℤ)
     (A B : ι → Matrix (Fin n) (Fin n) ℂ) (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
@@ -75,7 +75,7 @@ theorem fnOf_mul_ten {ι : Type} [Fintype ι] {n : ℕ} (G : ι → Matrix (Fin 
   ring
 
 /- English proof (translation)
-Unfold `CSpan`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨q, ⟨f, hf, rfl⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, fnOf_mul_ten]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_map_of_mem (Submodule.subset_span ⟨fun τ => Formalism.GradedWeylDivisibility.rowAct ℂ (A τ) (f τ), fun τ => rowAct_mem_delSq (lam τ) (A τ) (f τ) (hf τ), rfl⟩))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_fnOf_mul_le {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (G : ι → Matrix (Fin n) (Fin n) ℂ) (s : ι → ℤ) (A B : ι → Matrix (Fin n) (Fin n) ℂ) :
@@ -88,11 +88,11 @@ theorem map_fnOf_mul_le {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeig
     ⟨fun τ => Formalism.GradedWeylDivisibility.rowAct ℂ (A τ) (f τ), fun τ => rowAct_mem_delSq (lam τ) (A τ) (f τ) (hf τ), rfl⟩))
 
 /- English proof (translation)
-Introduce `ι _ n lam G M hM`. Establish `hinv : (fun τ => (M τ)⁻¹) * M = 1`. Use function extensionality and compare the values at `τ`. Simplify using `only [Pi.mul_apply, Pi.one_apply]`. Conclude with `Matrix.nonsing_inv_mul (M τ) (hM τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `ValC`. Apply `le_antisymm` to reduce the goal to its premises. Establish `h` using `map_fnOf_mul_le lam G (shiftOf lam) M 1`. Rewrite `h` using `[mul_one]`. Then use the resulting hypothesis. Establish `h` using `map_fnOf_mul_le lam G (shiftOf lam) (fun τ => (M τ)⁻¹) M`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[hinv]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem map_fnOf_eq_ValC :
     ∀ (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (G M : ι → Matrix (Fin n) (Fin n) ℂ), (∀ τ, IsUnit (M τ).det) → (CSpan lam).map (fnOf G (shiftOf lam) M) = ValC G lam := by

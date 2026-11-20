@@ -9,9 +9,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 namespace GlobalTheory.PsType
 
 /- English proof (translation)
-Establish `hle : aug π B (fun _ => 1) ≤ (aug π A (fun _ => 1)).comap (π z)`. Unfold `aug`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, w, rfl⟩`. Use `Submodule.subset_span ⟨z * y * z⁻¹, h y hy, π z w, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : π (z * y * z⁻¹) (π z w) = π z (π y w)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e, map_sub, map_smul]`. Conclude with `hle hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_aug_of_conj {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V)
     (A B : Set G) (z : G) (h : ∀ y ∈ B, z * y * z⁻¹ ∈ A) (u : V) (hu : u ∈ aug π B (fun _ => 1)) :
@@ -28,7 +28,7 @@ theorem map_mem_aug_of_conj {G V : Type} [Group G] [AddCommGroup V] [Module ℂ 
   exact hle hu
 
 /- English proof (translation)
-Unfold `aug`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, w, rfl⟩`. Conclude with `⟨y, h hy, w, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem aug_mono_set {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V)
     {A B : Set G} (θ : G → ℂ) (h : A ⊆ B) : aug π A θ ≤ aug π B θ := by
@@ -38,15 +38,15 @@ theorem aug_mono_set {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (π 
   exact ⟨y, h hy, w, rfl⟩
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ π hπ J N θ z hJ hN hmono h0 hconj h1 hz m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `u hu heig`. Use `(GlobalTheory.T.characterEigenspace_isCompl_principalSeriesTwistedSpan G V π hπ (N 0) (fun _ => 1) (hN 0)).1 u hu ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Rewrite using `[heig y (h0 y hy).1, (h0 y hy).2]`. Consider the case `succ m ih`. Introduce `u hu heig`. Take `⟨u', hu'eig, hsub⟩` from `(GlobalTheory.T.characterEigenspace_isCompl_principalSeriesTwistedSpan G V π hπ (N 1) (fun _ => 1) (hN 1)).2 u`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsub' : u - u' ∈ aug π (N (m + 1)) (fun _ => 1)` using `aug_mono_set π _ (hmono (Nat.succ_le_succ (Nat.zero_le m))) hsub`. Establish `hu' : u' ∈ aug π (N (m + 1)) (fun _ => 1)`. Use `Submodule.sub_mem _ hu hsub'` as an intermediate fact. Simplify using `using this`. Establish `hzu : π z u' ∈ aug π (N m) (fun _ => 1)` using `map_mem_aug_of_conj π (N m) (N (m + 1)) z (fun y hy => (hconj m y).1 hy) u' hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hzeig : IsEig π J θ (π z u')` using `GlobalTheory.T.isEig_apply_of_sub_mem_aug G V π hπ J (N 0) (N 1) θ z hJ (hN 0) h0 (hconj 0) hz u u' heig hu'eig hsub`. Establish `hz0 : π z u' = 0` using `ih _ hzu hzeig`. Establish `hu0 : u' = 0`. Establish `e : π z⁻¹ (π z u') = u'`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← e, hz0, map_zero]`. Rewrite `hsub` using `[hu0, sub_zero]`. Conclude with `GlobalTheory.T.eq_zero_of_mem_aug_of_isEig_of_not_intertwine G V π hπ J (N 1) θ hJ (hN 1) h1 u hsub heig`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_eq_zero_of_mem_aug_chain : ∀ (G V : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), IsSmooth π → ∀ (J : Set G) (N : ℕ → Set G) (θ : G → ℂ) (z : G), Datum J θ → (∀ m, Datum (N m) (fun _ => 1)) → Monotone N → (∀ y ∈ N 0, y ∈ J ∧ θ y = 1) → (∀ m y, y ∈ N (m + 1) ↔ z * y * z⁻¹ ∈ N m) → (∀ y ∈ N 1, (y ∈ J ∧ θ y = 1) ∨ ∃ j ∈ J, y * j * y⁻¹ ∈ J ∧ θ j ≠ θ (y * j * y⁻¹)) → (∀ j ∈ J, ∃ y ∈ N 0, z⁻¹ * (y⁻¹ * j) * z ∈ J ∧ θ (z⁻¹ * (y⁻¹ * j) * z) = θ j) → ∀ (m : ℕ) (u : V), u ∈ aug π (N m) (fun _ => 1) → IsEig π J θ u → u = 0 := by
   intro G V _ _ _ _ _ π hπ J N θ z hJ hN hmono h0 hconj h1 hz m

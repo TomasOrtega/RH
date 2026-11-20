@@ -10,9 +10,9 @@ open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
 /- English proof (translation)
-Introduce `Z hZ h0`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Filter.not_frequently]`. Take `⟨ζ, hζ⟩` from `Multiset.exists_mem_of_ne_zero hZ`. Establish `h1` using `UpperTheory.ConvolutionTheory.C.powIndep Unit (fun _ => 1) (fun _ => Z) (fun _ => h0) (h.mono fun j hj => by simpa using hj) ζ`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ((Multiset.filter (· = ζ) Z).card : ℂ) = 0` using `by simpa only [Finset.univ_unique, Finset.sum_singleton, one_mul] using h1`. Establish `h3 : (Multiset.filter (· = ζ) Z).card = 0` using `by exact_mod_cast h2`. Establish `h4 : 0 < (Multiset.filter (· = ζ) Z).card` using `Multiset.card_pos_iff_exists_mem.2 ⟨ζ, Multiset.mem_filter.2 ⟨hζ, rfl⟩⟩`. Conclude with `h4.ne' h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.G.powNe :
     UpperTheory.Gal.InertialTypesAlt.G.PowNe := by

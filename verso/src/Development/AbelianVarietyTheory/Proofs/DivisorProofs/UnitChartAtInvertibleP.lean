@@ -16,13 +16,11 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `p _ X Xw K x hx`. Take `⟨W', hW', hxW, hWle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hx`. Establish `hW'a : IsAffineOpen W'` using `hW'`. Use `⟨Γ(X, W'), inferInstance, hW'a.fromSpec, 1, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hW'a.range_fromSpec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxW`. Introduce `φ _`. It suffices to derive a contradiction. Establish `hu : IsUnit ((p : ℕ) : Γ(X, W'))`. Use `(X.toRingedSpace.isUnit_res_basicOpen (p : Γ(X, ⊤))).map (X.presheaf.map (homOfLE hWle).op).hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_natCast] at this`. Use `erw [map_natCast] at this`. Conclude with `this`. Establish `h2` using `hu.map φ`. Rewrite `h2` using `[map_natCast]`.
-
-Conclude with `GlobalTheory.PadicComplexHost.not_isUnit_p p h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitChartAt_of_mem_basicOpen_p : ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) (Xw : X.Opens)
     (K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]) (x : X),

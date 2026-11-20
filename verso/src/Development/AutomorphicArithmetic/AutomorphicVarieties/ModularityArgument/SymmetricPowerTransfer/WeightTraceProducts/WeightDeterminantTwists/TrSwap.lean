@@ -4,17 +4,17 @@ open Polynomial UpperTheory.V.Z.Sym.Wt
 
 open MvPolynomial in
 /- English proof (translation)
-Establish `hcomp : ∀ P, sbs (fun _ : Unit => g * h) P = sbs (fun _ : Unit => g) (sbs (fun _ : Unit => h) P)`. Introduce `P`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[eval_sbs, eval_sbs, eval_sbs, ← act_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[symPowTrace_eq_sum_coeff, Finset.sum_product]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m hm`. Establish `hmono : (monomial m (1 : ℂ)) ∈ MH d (fun _ : Unit => n)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(memMH Unit d (fun _ => n) _).2 ?_` and prove the remaining obligations. Introduce `m0 hm0 k`. Rewrite using `[Finset.mem_singleton.1 (MvPolynomial.support_monomial_subset hm0)]`. Conclude with `mem_homogeneousExponentsOneBlock.1 hm`. Establish `hQ` using `sbs_mem (fun _ : Unit => h) hmono`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQsum : sbs (fun _ : Unit => h) (monomial m 1) = ∑ m' ∈ deg1 d n, monomial m' (coeff m' (sbs (fun _ : Unit => h) (monomial m 1)))` using `by conv_lhs => rw [(sbs (fun _ : Unit => h) (monomial m 1)).as_sum]`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `m' hm'`. Rewrite using `[mem_homogeneousExponentsOneBlock]`. Conclude with `(memMH Unit d (fun _ => n) _).1 hQ m' hm' ()`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m' _ hm'`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm', monomial_zero]`. Rewrite using `[hcomp]`. Use `conv_lhs => rw [hQsum]`. Rewrite using `[map_sum, MvPolynomial.coeff_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m' _`. Rewrite using `[show monomial m' (coeff m' (sbs (fun _ : Unit => h) (monomial m 1))) = coeff m' (sbs (fun _ : Unit => h) (monomial m 1)) • monomial m' (1 : ℂ) by`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]]`. Rewrite using `[map_smul, MvPolynomial.coeff_smul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem homogeneous_trace_mul {d : ℕ} (n : ℕ) (g h : GL (Fin d) ℂ) :
     tr1 d n (g * h) = ∑ p ∈ deg1 d n ×ˢ deg1 d n, coeff p.1 (sbs (fun _ : Unit => g) (monomial p.2 1)) *
@@ -55,21 +55,19 @@ private theorem homogeneous_trace_mul {d : ℕ} (n : ℕ) (g h : GL (Fin d) ℂ)
   rw [map_smul, MvPolynomial.coeff_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `I _ d n g`. Establish `hinv : ∀ p, UpperTheory.V.Z.Sym.Wt.flip I d (UpperTheory.V.Z.Sym.Wt.flip I d p) = p`. Introduce `p`. Simplify using `[UpperTheory.V.Z.Sym.Wt.flip]`. Establish `hinj : Function.Injective (UpperTheory.V.Z.Sym.Wt.flip I d)` using `Function.LeftInverse.injective hinv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hglue : ∀ μ : I × Bool → Unit × Fin d →₀ ℕ, Finsupp.mapDomain (UpperTheory.V.Z.Sym.Wt.flip I d) (glue μ) = glue (fun k => μ (k.1, !k.2))`. Introduce `μ`. Use extensionality with `⟨⟨i, b⟩, j⟩`. Use `Finsupp.mapDomain_apply hinj (glue μ) ((i, !b), j)` as an intermediate fact. Rewrite using `[show UpperTheory.V.Z.Sym.Wt.flip I d ((i, !b), j) = ((i, b), j) by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[UpperTheory.V.Z.Sym.Wt.flip]] at this`. Rewrite using `[this, glue_apply, glue_apply]`. Rewrite using `[trace_blocks (K := I × Bool) (fun k => n k.1) ((sbs (dbl d g)).toLinearMap.comp (MvPolynomial.rename (UpperTheory.V.Z.Sym.Wt.flip I d)).toLinearMap) (biRep d n g * swp d n) (fun P => rfl)]`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, MvPolynomial.rename_monomial, hglue, coeff_sbs_glue]`. Repeatedly rewrite using `[homogeneous_trace_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_nbij' (fun μ v => (μ (v, false), μ (v, true))) (fun x k => if k.2 then (x k.1).2 else (x k.1).1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `μ hμ`. Rewrite `hμ`, the goal using `[Fintype.mem_piFinset]`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_product.2 ⟨hμ (v, false), hμ (v, true)⟩`. Introduce `x hx`. Rewrite `hx`, the goal using `[Fintype.mem_piFinset]`. Introduce and unpack `⟨v, b⟩`. Consider the cases of `b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Finset.mem_product.1 (hx v)).1`. Conclude with `(Finset.mem_product.1 (hx v)).2`. Introduce `μ _`. Use function extensionality and compare the values at `⟨v, b⟩`. Apply the tactic sequence `cases b <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Both sides reduce to the same expression. Introduce `μ _`. Rewrite using `[Fintype.prod_prod_type]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
-
-Introduce `v _`. Rewrite using `[Fintype.prod_bool]`. Use `show MvPolynomial.coeff (μ (v, true)) ((sbs fun _ : Unit => invT ℂ d (g v)) (MvPolynomial.monomial (μ (v, false)) 1)) * MvPolynomial.coeff (μ (v, false)) ((sbs fun _ : Unit => g v) (MvPolynomial.monomial (μ (v, true)) 1)) = _`. Conclude with `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Wt.trSwap :
     UpperTheory.V.Z.Sym.Wt.TrSwap := by

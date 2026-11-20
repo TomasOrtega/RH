@@ -14,9 +14,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.TraitPlace
 
 /- English proof (translation)
-Establish `hb : Function.Bijective f.rangeRestrict` using `⟨fun a b h => hf (congrArg Subtype.val h), f.rangeRestrict_surjective⟩`. Establish `hI' : I.map f.rangeRestrict ≠ ⊤`. Introduce `h`. Apply `hI` to reduce the goal to its premises. Rewrite using `[← Ideal.comap_map_of_bijective f.rangeRestrict hb (I := I), h, Ideal.comap_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨B, -, hB⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hI'`. Conclude with `⟨B, fun x hx => hB ⟨_, Ideal.mem_map_of_mem _ hx, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_valuationSubring_of_injective {S K : Type} [CommRing S] [Field K] (f : S →+* K)
     (hf : Function.Injective f) (I : Ideal S) (hI : I ≠ ⊤) :
@@ -31,17 +31,15 @@ theorem exists_valuationSubring_of_injective {S K : Type} [CommRing S] [Field K]
   exact ⟨B, fun x hx => hB ⟨_, Ideal.mem_map_of_mem _ hx, rfl⟩⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ n : ℕ, (n : F)⁻¹ ∈ O`. Introduce `n`. Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => simp`. Consider the case `one => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `prime p hp`. Use `h p hp` as an intermediate fact. Rewrite `this` using `[ValuationSubring.mem_nonunits_iff_or]`. Use `push Not at this`. Conclude with `this.2`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul a b ha hb`. Rewrite using `[Nat.cast_mul, mul_inv]`. Conclude with `O.mul_mem _ _ ha hb`. Establish `h2 : ∀ q : ℚ, algebraMap ℚ F q ∈ O`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[eq_ratCast, Rat.cast_def, div_eq_mul_inv]`. Conclude with `O.mul_mem _ _ (intCast_mem O _) (h1 _)`. Set `g : ℚ →+* O` to `(algebraMap ℚ F).codRestrict O h2`. Establish `hx : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Establish `hx' : IsIntegral O x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hP0⟩` from `hx`. Use `⟨P.map g, hP.map g, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hP0`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hx'`.
-
-Rewrite using `[← hy]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_prime {F : Type} [Field F] [CharZero F] [Algebra.IsAlgebraic ℚ F]
     (O : ValuationSubring F) (h : ∀ p : ℕ, p.Prime → (p : F) ∉ O.nonunits) (x : F) : x ∈ O := by
@@ -74,15 +72,13 @@ theorem mem_of_forall_prime {F : Type} [Field F] [CharZero F] [Algebra.IsAlgebra
   exact y.2
 
 /- English proof (translation)
-Distinguish the cases in `h : ∀ p : ℕ, p.Prime → (p : F) ∉ O.nonunits`. Take `⟨B, hB⟩` from `exists_valuationSubring_of_injective (Int.castRingHom ℂ) Int.cast_injective (Ideal.span {(2 : ℤ)}) (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Use the proof step `decide)`. Use `⟨2, B, Nat.prime_two, ?_, fun x _ => mem_of_forall_prime O h x⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hB 2 (Ideal.mem_span_singleton_self _)`. Use `push Not at h`. Take `⟨p, hp, hpO⟩` from `h`. Take `⟨B, hB⟩` from `exists_valuationSubring_of_injective (F.val.toRingHom.comp O.subtype) (fun a b h => Subtype.ext (Subtype.ext h)) (maximalIdeal O) (maximalIdeal.isMaximal O).ne_top`. Establish `hB' : ∀ x : F, x ∈ O.nonunits → (x : ℂ) ∈ B.nonunits` using `fun x hx => hB ⟨x, O.nonunits_subset hx⟩ (ValuationSubring.coe_mem_nonunits_iff.1 hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨p, B, hp, by simpa using hB' _ hpO, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxO`. Establish `h0 : x ≠ 0` using `fun h => hxO (h ▸ O.zero_mem)`. Establish `h1 : x⁻¹ ∈ O.nonunits`. Rewrite using `[ValuationSubring.mem_nonunits_iff_or]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `right`. Rewrite using `[inv_inv]` and apply the resulting hypothesis. Establish `h2` using `hB' _ h1`. Rewrite `h2` using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `h2 with h2 | h2` into its components or cases.
-
-Conclude with `h0 (by simpa using h2)`. Conclude with `h2 (by simpa using hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_place (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F] (O : ValuationSubring F) :
     ∃ (p : ℕ) (W : ValuationSubring ℂ), p.Prime ∧ (p : ℂ) ∈ W.nonunits ∧
@@ -114,9 +110,9 @@ theorem exists_place (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F] (
     · exact h2 (by simpa using hx)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FiniteExtensionEmbedding.exists_finite_extension_embedding`. Consider the case `exact _root_.GlobalTheory.FiniteExtensionEmbedding.exists_finite_extension_embedding`. Consider the case `(apply _root_.GlobalTheory.FiniteExtensionEmbedding.exists_finite_extension_embedding <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FiniteExtensionEmbedding.exists_finite_extension_embedding <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FiniteExtensionEmbedding.exists_finite_extension_embedding <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FiniteExtensionEmbedding.exists_finite_extension_embedding ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_finite_ext (F K : Type) [Field F] [CharZero F] [FiniteDimensional ℚ F] [Field K] [CharZero K] :
     ∃ (L : Type) (_ : Field L) (_ : Algebra K L), FiniteDimensional K L ∧ Nonempty (F →+* L) := by
@@ -129,15 +125,13 @@ theorem exists_finite_ext (F K : Type) [Field F] [CharZero F] [FiniteDimensional
   | (intros; exact _root_.GlobalTheory.FiniteExtensionEmbedding.exists_finite_extension_embedding ..)
 
 /- English proof (translation)
-Introduce `R _ _ _ hR E _ _ _ H`. Take `⟨h1, h2, h3⟩` from `hR`. Take `⟨l, -, hg, hi⟩` from `GlobalTheory.exists_level_goodAt_all_primes_and_idx E H 1 one_pos`. Take `⟨⟨l', c, hg2⟩, hl⟩` from `hi 2 Nat.prime_two`. Establish `hg' : ∀ p : ℕ, p.Prime → l'.GoodAt p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hl` using the available equality. Conclude with `hg`. Use `haveI := c.fin`. Use `haveI : CharZero (FractionRing R) := charZero_of_injective_algebraMap (IsFractionRing.injective R (FractionRing R))`. Take `⟨L, _, _, hL, ⟨jF⟩⟩` from `exists_finite_ext c.F (FractionRing R)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨V, _, _, hV, hVc, _, _, _, -, hfin, hinj, hloc, -⟩` from `GlobalTheory.SS.exists_complete_dvr_finite_extension R (FractionRing R) L`. Establish `hVL` using `IsFractionRing.injective V L`. Set `O : ValuationSubring c.F` to `ValuationSubring.ofSubring ((algebraMap V L).range.comap jF) (fun x => by`. Break down `ValuationRing.isInteger_or_isInteger V (jF x) with h | h` into its components or cases. Conclude with `Or.inl h`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `right`. Express the relevant statement in the definitionally equal form `jF x⁻¹ ∈ (algebraMap V L).range`. Rewrite using `[map_inv₀]`. Conclude with `h)`. Take `⟨p, W, hp, hW, hO⟩` from `exists_place c.F O`.
-
-Set `e : V ≃+* (algebraMap V L).range` to `RingEquiv.ofBijective (algebraMap V L).rangeRestrict ⟨fun a b h => hVL (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`. Set `g : c.V W →+* (algebraMap V L).range` to `(jF.comp (c.V W).subtype).codRestrict _ (fun x => hO x.1 x.2)`. Use `⟨p, hp, W, hW, ⟨l', c, hg' p hp⟩, V, inferInstance, inferInstance, inferInstance, algebraMap R V, e.symm.toRingHom.comp g, ⟨hV, hVc, charZero_of_injective_algebraMap hinj⟩, hinj, RingHom.finite_algebraMap.2 hfin, hloc, ?_⟩` and prove the remaining obligations. Introduce `a b h`. Conclude with `Subtype.ext (jF.injective (congrArg Subtype.val (e.symm.injective h)))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_place_finite_ext : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.LN.CDvr R → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E), ∃ (p : ℕ) (hp : p.Prime) (W₀ : ValuationSubring ℂ) (hW : (p : ℂ) ∈ W₀.nonunits) (i : Idx H p) (V₁ : Type) (_ : CommRing V₁) (_ : IsDomain V₁) (_ : IsLocalRing V₁) (ρ₁ : R →+* V₁) (b₁ : ↥(i.c.V W₀) →+* V₁), GlobalTheory.LN.CDvr V₁ ∧ Function.Injective ρ₁ ∧ ρ₁.Finite ∧ IsLocalHom ρ₁ ∧ Function.Injective b₁ := by
   intro R _ _ _ hR E _ _ _ H

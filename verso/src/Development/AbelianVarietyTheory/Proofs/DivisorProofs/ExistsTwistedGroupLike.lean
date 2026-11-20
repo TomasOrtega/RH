@@ -16,13 +16,13 @@ def counitLeft : H ⊗[K] H →ₐ[K] H :=
     (Algebra.TensorProduct.map (Bialgebra.counitAlgHom K H) (AlgHom.id K H))
 
 /- English proof (translation)
-Simplify using `[counitLeft]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem counitLeft_tmul (a b : H) : counitLeft (a ⊗ₜ[K] b) = counit (R := K) a • b := by
   simp [counitLeft]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `tmul a b => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem counitLeft_eq_lid (y : H ⊗[K] H) :
     counitLeft y = TensorProduct.lid K H (LinearMap.rTensor H (counit (R := K)) y) := by
@@ -32,7 +32,7 @@ theorem counitLeft_eq_lid (y : H ⊗[K] H) :
   | tmul a b => simp
 
 /- English proof (translation)
-Rewrite using `[counitLeft_eq_lid, Coalgebra.rTensor_counit_comul, TensorProduct.lid_tmul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem counitLeft_comul (x : H) : counitLeft (comul (R := K) x) = x := by
   rw [counitLeft_eq_lid, Coalgebra.rTensor_counit_comul, TensorProduct.lid_tmul, one_smul]
@@ -43,7 +43,7 @@ def IsCocycle (c : H ⊗[K] H) : Prop :=
       ((1 : H) ⊗ₜ[K] c * Algebra.TensorProduct.map (AlgHom.id K H) (Bialgebra.comulAlgHom K H) c)
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [TensorProduct.tmul_add, map_add, smul_add, hy, hz]`. Consider the case `tmul b d => simp [TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem counitLeft_assoc_symm_tmul (a : H) (y : H ⊗[K] H) :
     Algebra.TensorProduct.map counitLeft (AlgHom.id K H)
@@ -54,7 +54,7 @@ theorem counitLeft_assoc_symm_tmul (a : H) (y : H ⊗[K] H) :
   | tmul b d => simp [TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Consider the case `tmul a b => simp [counitLeft_comul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem counitLeft_map_comul (y : H ⊗[K] H) :
     Algebra.TensorProduct.map counitLeft (AlgHom.id K H)
@@ -65,7 +65,7 @@ theorem counitLeft_map_comul (y : H ⊗[K] H) :
   | tmul a b => simp [counitLeft_comul]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Consider the case `tmul a b`. Rewrite using `[Algebra.TensorProduct.map_tmul, counitLeft_assoc_symm_tmul, counitLeft_tmul, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -82,9 +82,9 @@ theorem counitLeft_assoc_symm_map_comul (y : H ⊗[K] H) :
     rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg (Algebra.TensorProduct.map counitLeft (AlgHom.id K H)) hc`. Rewrite `h` using `[map_mul, map_mul, map_mul, counitLeft_map_comul, counitLeft_assoc_symm_map_comul, counitLeft_assoc_symm_tmul, Bialgebra.counit_one, one_smul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, mul_comm]`. Establish `h5 : counitLeft c ⊗ₜ[K] (1 : H) = comul (R` using `K) (counitLeft c) := hu.mul_left_cancel h`. Establish `h6` using `congrArg counitLeft h5`. Rewrite `h6` using `[counitLeft_tmul, counitLeft_comul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h6.symm`.
+A detailed English derivation is pending.
 -/
 theorem counitLeft_eq_smul_one (c : H ⊗[K] H) (hu : IsUnit c) (hc : IsCocycle c) :
     counitLeft c = counit (R := K) (counitLeft c) • (1 : H) := by
@@ -105,7 +105,7 @@ Both sides reduce to the same expression.
 theorem comulTw_apply (c : H ⊗[K] H) (x : H) : comulTw c x = c * comul (R := K) x := rfl
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, mul_add, hy, hz]`. Consider the case `tmul a b => simp [comulTw_apply, Algebra.TensorProduct.tmul_mul_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rTensor_comulTw (c y : H ⊗[K] H) :
     (comulTw c).rTensor H y =
@@ -116,7 +116,7 @@ theorem rTensor_comulTw (c y : H ⊗[K] H) :
   | tmul a b => simp [comulTw_apply, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, mul_add, hy, hz]`. Consider the case `tmul a b => simp [comulTw_apply, Algebra.TensorProduct.tmul_mul_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lTensor_comulTw (c y : H ⊗[K] H) :
     (comulTw c).lTensor H y =
@@ -133,7 +133,7 @@ theorem assoc_eq (z : (H ⊗[K] H) ⊗[K] H) :
     TensorProduct.assoc K H H H z = Algebra.TensorProduct.assoc K K K H H H z := rfl
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Consider the case `tmul a b => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_comul_id (y : H ⊗[K] H) :
     Algebra.TensorProduct.map (Bialgebra.comulAlgHom K H) (AlgHom.id K H) y =
@@ -144,7 +144,7 @@ theorem map_comul_id (y : H ⊗[K] H) :
   | tmul a b => simp
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Consider the case `tmul a b => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_id_comul (y : H ⊗[K] H) :
     Algebra.TensorProduct.map (AlgHom.id K H) (Bialgebra.comulAlgHom K H) y =
@@ -155,7 +155,7 @@ theorem map_id_comul (y : H ⊗[K] H) :
   | tmul a b => simp
 
 /- English proof (translation)
-Rewrite using `[rTensor_comulTw, lTensor_comulTw, comulTw_apply, assoc_eq, map_mul (Algebra.TensorProduct.map (Bialgebra.comulAlgHom K H) (AlgHom.id K H)), map_mul (Algebra.TensorProduct.map (AlgHom.id K H) (Bialgebra.comulAlgHom K H)), ← mul_assoc, ← mul_assoc, hc, map_mul (Algebra.TensorProdu …`. Rewrite using `[map_comul_id (comul x), map_id_comul (comul x), ← assoc_eq, Coalgebra.coassoc_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comulTw_coassoc (c : H ⊗[K] H) (hc : IsCocycle c) (x : H) :
     TensorProduct.assoc K H H H ((comulTw c).rTensor H (comulTw c x)) =
@@ -170,7 +170,7 @@ theorem comulTw_coassoc (c : H ⊗[K] H) (hc : IsCocycle c) (x : H) :
 def kappa (c : H ⊗[K] H) : K := counit (R := K) (counitLeft c)
 
 /- English proof (translation)
-Use `hu.map ((Bialgebra.counitAlgHom K H).comp counitLeft)` as an intermediate fact. Conclude with `this.ne_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kappa_ne_zero (c : H ⊗[K] H) (hu : IsUnit c) : kappa c ≠ 0 := by
   have := hu.map ((Bialgebra.counitAlgHom K H).comp counitLeft)
@@ -183,7 +183,7 @@ theorem comm_eq (y : H ⊗[K] H) : TensorProduct.comm K H H y = Algebra.TensorPr
   rfl
 
 /- English proof (translation)
-Rewrite using `[comulTw_apply, comm_eq, map_mul, hs, ← comm_eq, Coalgebra.comm_comul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_comulTw [Coalgebra.IsCocomm K H] (c : H ⊗[K] H)
     (hs : Algebra.TensorProduct.comm K H H c = c) (x : H) :
@@ -191,7 +191,7 @@ theorem comm_comulTw [Coalgebra.IsCocomm K H] (c : H ⊗[K] H)
   rw [comulTw_apply, comm_eq, map_mul, hs, ← comm_eq, Coalgebra.comm_comul]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, smul_add, hy, hz]`. Consider the case `tmul a b => simp [smul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lid_rTensor_smul_counit (c : H ⊗[K] H) (y : H ⊗[K] H) :
     TensorProduct.lid K H (((kappa c)⁻¹ • counit (R := K) (A := H)).rTensor H y) =
@@ -202,7 +202,7 @@ theorem lid_rTensor_smul_counit (c : H ⊗[K] H) (y : H ⊗[K] H) :
   | tmul a b => simp [smul_smul]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, smul_add, hy, hz]`. Consider the case `tmul a b => simp [smul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rid_lTensor_smul_counit (c : H ⊗[K] H) (y : H ⊗[K] H) :
     TensorProduct.rid K H (((kappa c)⁻¹ • counit (R := K) (A := H)).lTensor H y) =
@@ -213,7 +213,7 @@ theorem rid_lTensor_smul_counit (c : H ⊗[K] H) (y : H ⊗[K] H) :
   | tmul a b => simp [smul_smul]
 
 /- English proof (translation)
-Rewrite using `[comulTw_apply, map_mul, counitLeft_comul, counitLeft_eq_smul_one c hu hc, smul_mul_assoc, one_mul, ← kappa, smul_smul, inv_mul_cancel₀ (kappa_ne_zero c hu), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem counitLeft_comulTw (c : H ⊗[K] H) (hu : IsUnit c) (hc : IsCocycle c) (x : H) :
     (kappa c)⁻¹ • counitLeft (comulTw c x) = x := by
@@ -221,7 +221,7 @@ theorem counitLeft_comulTw (c : H ⊗[K] H) (hu : IsUnit c) (hc : IsCocycle c) (
     one_mul, ← kappa, smul_smul, inv_mul_cancel₀ (kappa_ne_zero c hu), one_smul]
 
 /- English proof (translation)
-Apply `(TensorProduct.lid K H).injective` to reduce the goal to its premises. Rewrite using `[lid_rTensor_smul_counit, counitLeft_comulTw c hu hc, TensorProduct.lid_tmul, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rTensor_counit_comulTw (c : H ⊗[K] H) (hu : IsUnit c) (hc : IsCocycle c) (x : H) :
     ((kappa c)⁻¹ • counit (R := K) (A := H)).rTensor H (comulTw c x) = 1 ⊗ₜ[K] x := by
@@ -229,7 +229,7 @@ theorem rTensor_counit_comulTw (c : H ⊗[K] H) (hu : IsUnit c) (hc : IsCocycle 
   rw [lid_rTensor_smul_counit, counitLeft_comulTw c hu hc, TensorProduct.lid_tmul, one_smul]
 
 /- English proof (translation)
-Apply `(TensorProduct.rid K H).injective` to reduce the goal to its premises. Rewrite using `[rid_lTensor_smul_counit, comm_comulTw c hs, counitLeft_comulTw c hu hc, TensorProduct.rid_tmul, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem lTensor_counit_comulTw [Coalgebra.IsCocomm K H] (c : H ⊗[K] H) (hu : IsUnit c)
     (hc : IsCocycle c) (hs : Algebra.TensorProduct.comm K H H c = c) (x : H) :
@@ -260,17 +260,15 @@ end TwistedGroupLike
 open TwistedGroupLike in
 
 /- English proof (translation)
-Introduce `K H _ _ _ _ _ _ c hu hc hs`. Use `letI := twistedCoalgebra c hu hc hs`. Use `haveI : Coalgebra.IsCocomm K (Twisted K H c) := ⟨LinearMap.ext fun x => (LinearMap.comp_apply _ _ _).trans (comm_comulTw c hs x)⟩`. Set `A` to `CartierDual K (Twisted K H c)`. Establish `h1 : (1 : A).ofConv (show Twisted K H c from (1 : H)) = (kappa c)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.convOne_apply]`. Use `show (kappa c)⁻¹ • counit (R := K) (1 : H) = _`. Simplify using the standard rewrite rules. Use `haveI : Nontrivial A := ⟨⟨1, 0, fun h => by`. Use `h1` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Rewrite `this` using `[h]`. Conclude with `(inv_ne_zero (kappa_ne_zero c hu)) this.symm⟩⟩`. Take `⟨M, hM⟩` from `Ideal.exists_maximal A`. Use `letI := Ideal.Quotient.field M`. Set `χ : A →ₐ[K] K` to `(IsAlgClosed.lift : (A ⧸ M) →ₐ[K] K).comp (Ideal.Quotient.mkₐ K M)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `u : Twisted K H c` to `(Module.evalEquiv K (Twisted K H c)).symm (χ.toLinearMap ∘ₗ (CartierDual.toDual K (Twisted K H c)).symm.toLinearMap)`. Establish `hu' : ∀ φ : A, φ.ofConv u = χ φ`. Introduce `φ`. Establish `h` using `(Module.evalEquiv K (Twisted K H c)).apply_symm_apply (χ.toLinearMap ∘ₗ (CartierDual.toDual K (Twisted K H c)).symm.toLinearMap)`. Conclude with `LinearMap.congr_fun h φ.ofConv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg : IsGroupLikeElem K u` using `(CartierDual.isGroupLikeElem_iff_mul u).2 ⟨by rw [hu', map_one], fun φ ψ => by rw [hu', hu', hu', map_mul]⟩`. Establish `h2 : comulTw c u = u ⊗ₜ[K] u` using `hg.comul_eq_tmul_self`. Use `⟨u, ?_, h2⟩` and prove the remaining obligations. Introduce `h0`. Establish `h3 : (counit (R` using `K) (A := Twisted K H c)) u = 0 := by`.
-
-Rewrite using `[show u = (0 : Twisted K H c) from h0]`. Conclude with `map_zero _`. Rewrite `h3` using `[hg.counit_eq_one]`. Conclude with `one_ne_zero h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_twisted_groupLike : ∀ (K H : Type) [Field K] [IsAlgClosed K] [CommRing H]
     [Bialgebra K H] [Coalgebra.IsCocomm K H] [Module.Finite K H] (c : H ⊗[K] H), IsUnit c →

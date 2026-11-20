@@ -5,9 +5,9 @@ open scoped NumberField
 namespace GlobalTheory.TateTorsion
 
 /- English proof (translation)
-Use `Nat.card_congr { toFun := fun b => f (Function.surjInv hg b) invFun := fun c => g (Function.surjInv hf c) left_inv := ?_ right_inv := ?_ }` and prove the remaining obligations. Introduce `b`. Establish `h1` using `Function.surjInv_eq hf (f (Function.surjInv hg b))`. Use `show g (Function.surjInv hf (f (Function.surjInv hg b))) = b`. Rewrite using `[(h _ _).mpr h1, Function.surjInv_eq hg]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Establish `h1` using `Function.surjInv_eq hg (g (Function.surjInv hf c))`. Use `show f (Function.surjInv hg (g (Function.surjInv hf c))) = c`. Rewrite using `[(h _ _).mp h1, Function.surjInv_eq hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_eq_of_surj_fibres {α β γ : Type*} (g : α → β) (f : α → γ)
     (hg : Function.Surjective g) (hf : Function.Surjective f)
@@ -27,9 +27,9 @@ theorem natCard_eq_of_surj_fibres {α β γ : Type*} (g : α → β) (f : α →
     rw [(h _ _).mp h1, Function.surjInv_eq hf]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `⟨b.equivFun.symm (fun i => b.equivFun z i / (l : ℤ)), ?_⟩` and prove the remaining obligations. Apply `b.equivFun.injective` to reduce the goal to its premises. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ, map_zsmul, LinearEquiv.apply_symm_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Int.mul_ediv_cancel' ((ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp (hz i))]`. Introduce and unpack `⟨y, rfl⟩ i`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ, map_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -51,19 +51,19 @@ end GlobalTheory.TateTorsion
 
 open GlobalTheory.TateTorsion in
 /- English proof (translation)
-Introduce `p hp D k _ Q _ act e I l hl hne`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Use `haveI : NeZero l := ⟨hl.ne_zero⟩`. Establish `hl0 : 0 < l` using `hl.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcop : l.Coprime p` using `(Nat.coprime_primes hl hp.out).mpr hne`. Set `b` to `Module.finBasisOfFinrankEq ℤ D.La D.rankLa`. Set `g : D.La → {q : Q // q ^ l = 1}` to `fun x => ⟨I.ev l x, (I.onto l hl0 hcop _).mpr ⟨x, rfl⟩⟩`. Set `f : D.La → (Fin (D.m * D.n * Module.finrank ℚ D.F) → ZMod l)` to `fun x i => ((b.equivFun x i : ℤ) : ZMod l)`. Establish `hg : Function.Surjective g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨q, hq⟩`. Take `⟨x, hx⟩` from `(I.onto l hl0 hcop q).mp hq`. Conclude with `⟨x, Subtype.ext hx⟩`. Establish `hf : Function.Surjective f`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨b.equivFun.symm (fun i => ((c i).val : ℤ)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [f, LinearEquiv.apply_symm_apply, Int.cast_natCast, ZMod.natCast_val, ZMod.intCast_cast, ZMod.cast_id', id]`. Establish `hgf : ∀ x y, g x = g y ↔ f x = f y`. Introduce `x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : g x = g y ↔ I.ev l (x - y) = 1`. Rewrite using `[Subtype.ext_iff]`. Use `show I.ev l x = I.ev l y ↔ _`. Establish `: I.ev l x = I.ev l (x - y) * I.ev l y` using `by rw [← I.add, sub_add_cancel]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using h`. Introduce `h`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : f x = f y ↔ ∀ i, ((b.equivFun (x - y) i : ℤ) : ZMod l) = 0`. Simplify using `only [f, map_sub, Pi.sub_apply, Int.cast_sub, sub_eq_zero, funext_iff]`. Rewrite using `[e1, e2, repr_mod_eq_zero_iff, I.ker l hl0 hcop]`. Rewrite using `[natCard_eq_of_surj_fibres g f hg hf hgf, Nat.card_fun, Nat.card_zmod, Nat.card_fin]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UPel.HT.TateIsoO.card_pow_eq_one : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (k : Type) [Field k] (Q : Type) [Group Q]
     (act : D.O → Q → Q) (e : ℕ → Q → Q → kˣ → Prop) (I : GlobalTheory.UPel.HT.TateIsoO D k Q act e) (l : ℕ),

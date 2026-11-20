@@ -28,7 +28,7 @@ def rowEmb (j : ℕ) : GA D (G.V (.top j)) →* GA D (G.V (.grid D.R.m j)) :=
     GlobalTheory.MixPer.embA (besDecAt G j _ h') (GlobalTheory.OrthSumExists.orthDecHsum D _ _) else 1
 
 /- English proof (translation)
-Unfold `rowGrp rowN rowEmb`. Use `split_ifs`. Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowGrp_eq (j : ℕ) : rowGrp G j = rowN G j ⊔ (rowEmb G j).range := by
   unfold rowGrp rowN rowEmb

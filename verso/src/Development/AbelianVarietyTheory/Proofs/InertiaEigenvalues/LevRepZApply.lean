@@ -22,7 +22,7 @@ def Lev.val {c : O} (x : Lev M c) : M :=
   Subtype.val (p := fun m => m ∈ LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)) x
 
 /- English proof (translation)
-Establish `hx` using `LinearMap.mem_ker.1 (Subtype.property (p := fun m => m ∈ LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)) x)`. Conclude with `hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Lev.smul_val {c : O} (x : Lev M c) : c • x.val = 0 := by
   have hx := LinearMap.mem_ker.1
@@ -30,7 +30,7 @@ theorem Lev.smul_val {c : O} (x : Lev M c) : c • x.val = 0 := by
   exact hx
 
 /- English proof (translation)
-Conclude with `Subtype.ext (p := fun m => m ∈ LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)) h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem Lev.ext {c : O} {x y : Lev M c} (h : x.val = y.val) : x = y := by
   exact Subtype.ext (p := fun m => m ∈ LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)) h

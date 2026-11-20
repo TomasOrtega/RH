@@ -18,14 +18,14 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral jetPair jetPairPoly minorPr
 namespace TwoKernelNormBounds
 
 /- English proof (translation)
-Simplify using `[betaPair]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_betaPair {K : Type} [Field K] (H : Type) [Fintype H] (N0 N1 : ℕ) (u : H → K) :
     MvPowerSeries.constantCoeff (betaPair H N0 N1 u) = 0 := by
   simp [betaPair]
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_mul_le_one_of_half {K : Type} [NormedField K] (S th : K) (r : ℝ) (hr : 0 < r)
     (hS : ‖S‖ ≤ r ^ (-(1 / 2 : ℝ))) (hth : ‖th‖ ≤ r ^ (1 / 2 : ℝ)) : ‖S * th‖ ≤ 1 := by
@@ -35,7 +35,7 @@ theorem norm_mul_le_one_of_half {K : Type} [NormedField K] (S th : K) (r : ℝ) 
     _ = 1 := by rw [← Real.rpow_add hr]; norm_num
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => by simp)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun i => by simp [IsNilpotent.zero])`. Consider the case `exact ⟨fun i => by simp [IsNilpotent.zero], by simp [Filter.cofinite_eq_bot]⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hasSubst_lin {K : Type} [Field K] {n m : Type} [Fintype n] [Fintype m] (A : n → m → K) :
     MvPowerSeries.HasSubst
@@ -46,9 +46,9 @@ theorem hasSubst_lin {K : Type} [Field K] {n m : Type} [Fintype n] [Fintype m] (
     | exact ⟨fun i => by simp [IsNilpotent.zero], by simp [Filter.cofinite_eq_bot]⟩
 
 /- English proof (translation)
-Establish `ha` using `hasSubst_lin A`. Unfold `linSub sqSum`. Rewrite using `[← MvPowerSeries.coe_substAlgHom ha, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X ha]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h` using `(MvPowerSeries.substAlgHom ha).commutes (c i)`. Simplify `h` using `[MvPowerSeries.coe_substAlgHom, MvPowerSeries.algebraMap_apply]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linSub_sqSum {K : Type} [Field K] {n m : Type} [Fintype n] [Fintype m] (A : n → m → K)
     (c : n → K) :
@@ -68,9 +68,9 @@ end TwoKernelNormBounds
 open TwoKernelNormBounds
 
 /- English proof (translation)
-Introduce `K _ _ _ l linv ph d hlp hu hph hSh hd H _ N0 N1 n _ c A u th Q2 h2 hc hA hth hQ0 hQ hlin G hG`. Take `⟨J, hJ, hJe⟩` from `hO K l linv ph d hlp hu hph hSh n c hc G hG`. Establish `hdpos : 0 < ‖(d : K)‖` using `norm_pos_iff.mpr hd`. Take `⟨sg, hsg, hsge⟩` from `hC K n _ (jet l ph 2) th c A (betaPair H N0 N1 u) Q2 h2 (norm_mul_le_one_of_half _ _ _ hdpos hSh.1 hth) hA (constantCoeff_betaPair H N0 N1 u) hQ0 hQ hlin J hJ`. Use `⟨sg, hsg, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `kernelAt`. Rewrite using `[hJe, hsge]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem KernelShape_of (hO : ShapeOrth) (hC : ShapeCong) : KernelShape := by
   intro K _ _ _ l linv ph d hlp hu hph hSh hd H _ N0 N1 n _ c A u th Q2 h2 hc hA hth hQ0 hQ hlin G hG
@@ -85,7 +85,7 @@ theorem KernelShape_of (hO : ShapeOrth) (hC : ShapeCong) : KernelShape := by
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ _ l linv ph d hlp hu hph hSh hd0 hd1 H _ _ N0 N1 n _ c A u th Q2 h2 hc hA hth hu1 hQ0 hQ hlin G hG x hx hdet TT colN p hp hp1 I nu1 nu2 size h1 h2' h3`. Take `⟨sg, hsg, he⟩` from `hS K l linv ph d hlp hu hph hSh (norm_pos_iff.mp hd0) H N0 N1 n c A u th Q2 h2 hc hA hth hQ0 hQ hlin G hG`. Rewrite using `[he]`. Conclude with `Formalism.DworkPowerSeriesWeights.thmB K ‖(d : K)‖ hd0 hd1 H N0 N1 (jet l ph 2) u hSh.1 hu1 sg hsg x hx hdet TT colN p hp hp1 I nu1 nu2 size h1 h2' h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KernelThmB_of (hS : KernelShape) : KernelThmB := by
   intro K _ _ _ l linv ph d hlp hu hph hSh hd0 hd1 H _ _ N0 N1 n _ c A u th Q2 h2 hc hA hth hu1 hQ0 hQ
@@ -97,7 +97,7 @@ theorem KernelThmB_of (hS : KernelShape) : KernelThmB := by
     hp hp1 I nu1 nu2 size h1 h2' h3
 
 /- English proof (translation)
-Introduce `p _ l linv ph hlp hu hph hSh H _ _ N0 N1 n _ c A u th Q2 h2 hc hA hth hu1 hQ0 hQ hlin G hG TT colN ht hht hht1 I nu1 nu2 size h1 h2' h3 nn`. Establish `hp0 : ((p : ℕ) : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero`. Take `⟨sg, hsg, he⟩` from `hS ℂ_[p] l linv ph p hlp hu hph hSh hp0 H N0 N1 n c A u th Q2 h2 hc hA hth hQ0 hQ hlin G hG`. Rewrite using `[he]`. Conclude with `Formalism.DworkPowerSeriesWeights.thmBGauss p H N0 N1 (jet l ph 2) u hSh.1 hu1 sg hsg TT colN ht hht hht1 I nu1 nu2 size h1 h2' h3 nn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KernelThmBGauss_of (hS : KernelShape) : KernelThmBGauss := by
   intro p _ l linv ph hlp hu hph hSh H _ _ N0 N1 n _ c A u th Q2 h2 hc hA hth hu1 hQ0 hQ

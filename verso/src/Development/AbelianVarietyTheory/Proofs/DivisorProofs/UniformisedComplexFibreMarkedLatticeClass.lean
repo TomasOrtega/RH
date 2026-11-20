@@ -17,7 +17,7 @@ variable {g : ℕ} {Q : Type} [CommGroup Q] {L : Type} [AddCommGroup L]
   (e : (Fin g → ℂ) → Q) (P : L →+ (Fin g → ℂ))
 
 /- English proof (translation)
-Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unifCls_exp_zero (hadd : ∀ z w, e (z + w) = e z * e w) : e 0 = 1 := by
   have h := hadd 0 0
@@ -25,7 +25,7 @@ theorem unifCls_exp_zero (hadd : ∀ z w, e (z + w) = e z * e w) : e 0 = 1 := by
   exact mul_eq_left.mp h.symm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [unifCls_exp_zero e hadd]`. Consider the case `succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem unifCls_exp_nsmul (hadd : ∀ z w, e (z + w) = e z * e w) (n : ℕ) (z : Fin g → ℂ) :
     e (n • z) = e z ^ n := by
@@ -34,16 +34,16 @@ theorem unifCls_exp_nsmul (hadd : ∀ z w, e (z + w) = e z * e w) (n : ℕ) (z :
   | succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]
 
 /- English proof (translation)
-Establish `: (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ this, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unifCls_nsmul_inv {n : ℕ} (hn : 0 < n) (z : Fin g → ℂ) : n • ((n : ℂ)⁻¹ • z) = z := by
   have : (n : ℂ) ≠ 0 := by exact_mod_cast hn.ne'
   rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ this, one_smul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨u, hu⟩` from `(hker _).1 h`. Use `⟨u, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, hu, unifCls_nsmul_inv hn]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨w, rfl⟩`. Use `(hker _).2 ⟨w, ?_⟩` and prove the remaining obligations. Establish `: (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Rewrite using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ this, one_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unifCls_unit_iff (hker : ∀ z, e z = 1 ↔ z ∈ P.range) (hinj : Function.Injective P) {n : ℕ}
     (hn : 0 < n) (v : L) : e ((n : ℂ)⁻¹ • P v) = 1 ↔ ∃ w, v = n • w := by
@@ -58,16 +58,16 @@ theorem unifCls_unit_iff (hker : ∀ z, e z = 1 ↔ z ∈ P.range) (hinj : Funct
     rw [map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ this, one_smul]
 
 /- English proof (translation)
-Rewrite using `[map_add, smul_add, hadd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unifCls_mul (hadd : ∀ z w, e (z + w) = e z * e w) (n : ℕ) (v v' : L) :
     e ((n : ℂ)⁻¹ • P (v + v')) = e ((n : ℂ)⁻¹ • P v) * e ((n : ℂ)⁻¹ • P v') := by
   rw [map_add, smul_add, hadd]
 
 /- English proof (translation)
-Establish `h : e ((n : ℂ)⁻¹ • P v) = e ((n : ℂ)⁻¹ • P (v - v')) * e ((n : ℂ)⁻¹ • P v')`. Rewrite using `[← unifCls_mul e P hadd, sub_add_cancel]`. Rewrite using `[h, mul_eq_right, unifCls_unit_iff e P hker hinj hn]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩; exact ⟨w, by rw [← hw, add_sub_cancel]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, hw⟩; exact ⟨w, by rw [hw, add_sub_cancel_left]⟩`.
+Assume the hypotheses and unpack their components.
 -/
 theorem unifCls_eq_iff (hadd : ∀ z w, e (z + w) = e z * e w) (hker : ∀ z, e z = 1 ↔ z ∈ P.range)
     (hinj : Function.Injective P) {n : ℕ} (hn : 0 < n) (v v' : L) :
@@ -80,7 +80,7 @@ theorem unifCls_eq_iff (hadd : ∀ z w, e (z + w) = e z * e w) (hker : ∀ z, e 
   · rintro ⟨w, hw⟩; exact ⟨w, by rw [hw, add_sub_cancel_left]⟩
 
 /- English proof (translation)
-Rewrite using `[← unifCls_exp_nsmul e hadd, unifCls_nsmul_inv hn]`. Conclude with `(hker _).2 ⟨v, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unifCls_pow (hadd : ∀ z w, e (z + w) = e z * e w) (hker : ∀ z, e z = 1 ↔ z ∈ P.range)
     {n : ℕ} (hn : 0 < n) (v : L) : e ((n : ℂ)⁻¹ • P v) ^ n = 1 := by
@@ -88,9 +88,9 @@ theorem unifCls_pow (hadd : ∀ z w, e (z + w) = e z * e w) (hker : ∀ z, e z =
   exact (hker _).2 ⟨v, rfl⟩
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hsurj q`. Rewrite `hq` using `[← unifCls_exp_nsmul e hadd]`. Take `⟨v, hv⟩` from `(hker _).1 hq`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `: (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hv, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ this, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unifCls_of_pow (hadd : ∀ z w, e (z + w) = e z * e w) (hsurj : Function.Surjective e)
     (hker : ∀ z, e z = 1 ↔ z ∈ P.range) {n : ℕ} (hn : 0 < n) (q : Q) (hq : q ^ n = 1) :
@@ -103,7 +103,7 @@ theorem unifCls_of_pow (hadd : ∀ z w, e (z + w) = e z * e w) (hsurj : Function
   rw [hv, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ this, one_smul]
 
 /- English proof (translation)
-Rewrite using `[← unifCls_exp_nsmul e hadd, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Use `congr 2`. Establish `: (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `: (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -117,13 +117,13 @@ theorem unifCls_tower (hadd : ∀ z w, e (z + w) = e z * e w) {n m : ℕ} (hn : 
   field_simp
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ Λ`. Establish `hex : ∀ i, ∃ v, ev (b i) = e ((n : ℂ)⁻¹ • P v)` using `fun i => unifCls_of_pow e P hadd hsurj hker hn _ (htors _)`. Use `choose v hv using hex`. Use `⟨(b.constr ℤ v).toAddMonoidHom, ?_⟩` and prove the remaining obligations. Establish `hev0 : ev 0 = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hev 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`. Set `ψ : Λ →+ Additive Q` to `{ toFun := fun a => Additive.ofMul (ev a), map_zero' := by simp [hev0], map_add' := fun x y => by simp [hev] }`. Set `χ : Λ →+ Additive Q` to `{ toFun := fun a => Additive.ofMul (e ((n : ℂ)⁻¹ • P (b.constr ℤ v a))), map_zero' := by simp [unifCls_exp_zero e hadd], map_add' := fun x y => by show Additive.ofMul (e _) = Additive.ofMul (e _) + Additive.ofMul (e _)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_add, map_add, smul_add, hadd]`. Use `rfl }`. Establish `hψχ : ψ.toIntLinearMap = χ.toIntLinearMap` using `b.ext fun i => by`. Simplify using `[ψ, χ, hv, Module.Basis.constr_basis]`. Introduce `a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun F : Λ →ₗ[ℤ] Additive Q => Additive.toMul (F a)) hψχ` as an intermediate fact. Simplify `this` using `[ψ, χ]`.
+A detailed English derivation is pending.
 -/
 theorem unifCls_lift {Λ : Type} [AddCommGroup Λ] [Module.Free ℤ Λ] (hadd : ∀ z w, e (z + w) = e z * e w)
     (hsurj : Function.Surjective e) (hker : ∀ z, e z = 1 ↔ z ∈ P.range) (ev : Λ → Q)
@@ -156,11 +156,11 @@ theorem unifCls_lift {Λ : Type} [AddCommGroup Λ] [Module.Free ℤ Λ] (hadd : 
 end ExpLemmas
 
 /- English proof (translation)
-Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `h2 : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Rewrite using `[Complex.exp_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨-k, ?_⟩` and prove the remaining obligations. Establish `: (x : ℂ) = ((n * -k : ℤ) : ℂ)`. Clear denominators, using `at hk` for the nonvanishing conditions. Use `push_cast`. Take the linear combination `-hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `this` after adjusting the coercions. Introduce and unpack `⟨c, rfl⟩`. Use `⟨-c, ?_⟩` and prove the remaining obligations. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem unifCls_exp_one_iff {n : ℕ} (hn : 0 < n) (x : ℤ) :
     Complex.exp (-(2 * Real.pi * Complex.I) * (x : ℂ) / n) = 1 ↔ (n : ℤ) ∣ x := by
@@ -181,7 +181,7 @@ theorem unifCls_exp_one_iff {n : ℕ} (hn : 0 < n) (x : ℤ) :
     field_simp
 
 /- English proof (translation)
-Rewrite using `[← unifCls_exp_one_iff hn, ← div_eq_one_iff_eq (Complex.exp_ne_zero _), ← Complex.exp_sub]`. Use `congr! 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unifCls_exp_eq_iff {n : ℕ} (hn : 0 < n) (x y : ℤ) :
     Complex.exp (-(2 * Real.pi * Complex.I) * (x : ℂ) / n) = Complex.exp (-(2 * Real.pi * Complex.I) * (y : ℂ) / n) ↔
@@ -192,9 +192,9 @@ theorem unifCls_exp_eq_iff {n : ℕ} (hn : 0 < n) (x y : ℤ) :
   ring
 
 /- English proof (translation)
-Establish `h` using `(Complex.isPrimitiveRoot_iff (ζ : ℂ) n hn.ne').1 (IsPrimitiveRoot.coe_units_iff.2 hζ)`. Take `⟨i, -, hi, he⟩` from `h`. Use `⟨-(i : ℤ), (Nat.isCoprime_iff_coprime.2 hi).neg_left, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Use `congr 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem unifCls_root {n : ℕ} (hn : 0 < n) (ζ : ℂˣ) (hζ : IsPrimitiveRoot ζ n) :
     ∃ v : ℤ, IsCoprime v n ∧ (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (v : ℂ) / n) := by
@@ -207,15 +207,15 @@ theorem unifCls_root {n : ℕ} (hn : 0 < n) (ζ : ℂˣ) (hζ : IsPrimitiveRoot 
   ring
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ L`. Set `M : Matrix (Module.Free.ChooseBasisIndex ℤ L) (Module.Free.ChooseBasisIndex ℤ L) ℤ` to `Matrix.of fun i j => E (b i) (b j)`. Establish `hsum : ∀ (c : Module.Free.ChooseBasisIndex ℤ L → ℤ) j, E (b.equivFun.symm c) (b j) = (c ᵥ* M) j`. Introduce `c j`. Simplify using `[Module.Basis.equivFun_symm_apply, map_sum, Matrix.vecMul, dotProduct, M]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hdet : M.det ≠ 0`. Introduce `h0`. Take `⟨v, hv, hvM⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Apply `hv` to reduce the goal to its premises. Establish `hx : E (b.equivFun.symm v) = 0` using `b.ext fun j => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hsum, hvM]`. Simplify using the standard rewrite rules. Use `hE _ hx` as an intermediate fact. Establish `h3` using `congrArg b.equivFun this`. Rewrite `h3` using `[LinearEquiv.apply_symm_apply, map_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨M.det.natAbs ^ 2, by positivity, fun f => ?_⟩` and prove the remaining obligations. Set `w : Module.Free.ChooseBasisIndex ℤ L → ℤ` to `fun j => f (b j)`. Use `⟨b.equivFun.symm ((M.det • w) ᵥ* M.adjugate), b.ext fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hsum, Matrix.vecMul_vecMul, Matrix.adjugate_mul, Matrix.vecMul_smul, Matrix.vecMul_one]`. Simplify using `only [LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, nsmul_eq_mul, w]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem unifCls_bilin {L : Type} [AddCommGroup L] [Module.Free ℤ L] [Module.Finite ℤ L]
     (E : LinearMap.BilinForm ℤ L) (hE : ∀ x, E x = 0 → x = 0) :
@@ -250,43 +250,39 @@ end GlobalTheory.UPel.HT
 namespace GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Introduce `p _ D R _ b N σ ρ o h hL D' t P e hN hNp hU`. Take `⟨-, hper, hexp, hker, hact, hweil, heta⟩` from `hU`. Establish `hadd : ∀ z w, e (z + w) = e z * e w` using `hexp.1`. Establish `hsurj : Function.Surjective e` using `hexp.2.1`. Establish `hlin : ∀ (c : D.O) x, P (c • x) = ρ c *ᵥ P x` using `hper.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective P` using `hper.2.1`. Take `⟨I, hI⟩` from `o.geom ℂ (𝟙 _) σ (Category.id_comp _)`. Use `haveI := D.freeLa`. Establish `hlift : ∀ n : ℕ, 0 < n → n.Coprime p → ∃ φ : D.La →+ D'.La, ∀ a, I.ev n a = e ((n : ℂ)⁻¹ • P (φ a))` using `fun n hn hnp => unifCls_lift e P hadd hsurj hker (I.ev n) (I.add n) hn (fun x => (I.onto n hn hnp _).2 ⟨x, rfl⟩)`. Establish `hroot : ∀ n : ℕ, 0 < n → n.Coprime p → ∃ v : ℤ, IsCoprime v n ∧ ((I.ζ n : ℂˣ) : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (v : ℂ) / n)` using `fun n hn hnp => unifCls_root hn _ (I.ζ_prim n hn hnp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : ℕ → D.La →+ D'.La` to `fun n => if hn : 0 < n ∧ n.Coprime p then Classical.choose (hlift n hn.1 hn.2) else 0`. Set `ν : ℕ → ℤ` to `fun n => if hn : 0 < n ∧ n.Coprime p then Classical.choose (hroot n hn.1 hn.2) else 0`. Establish `hf : ∀ (n : ℕ) (hn : 0 < n) (hnp : n.Coprime p) a, I.ev n a = e ((n : ℂ)⁻¹ • P (f n a))`. Introduce `n hn hnp a`. Simplify using `only [f, dif_pos (And.intro hn hnp)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Classical.choose_spec (hlift n hn hnp) a`. Establish `hν : ∀ (n : ℕ) (hn : 0 < n) (hnp : n.Coprime p), IsCoprime (ν n) n ∧ ((I.ζ n : ℂˣ) : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (ν n : ℂ) / n)`. Introduce `n hn hnp`. Simplify using `only [ν, dif_pos (And.intro hn hnp)]`. Conclude with `Classical.choose_spec (hroot n hn hnp)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq : ∀ {n : ℕ}, 0 < n → ∀ v v' : D'.La, e ((n : ℂ)⁻¹ • P v) = e ((n : ℂ)⁻¹ • P v') ↔ ∃ w, v = v' + n • w` using `fun hn v v' => unifCls_eq_iff e P hadd hker hinj hn v v'`. Use `⟨f N, ⟨⟨f, ν, rfl, ?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `n m hn hm hnm`. Establish `hnp : n.Coprime p` using `(Nat.coprime_mul_iff_left.1 hnm).1`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz` using `I.ζ_pow n m hn hm hnm`. Establish `hz'` using `congrArg (fun u : ℂˣ => (u : ℂ)) hz`. Simplify using `only [Units.val_pow_eq_pow_val] at hz'`. Rewrite `hz'` using `[(hν _ (Nat.mul_pos hn hm) hnm).2, (hν n hn hnp).2, ← Complex.exp_nat_mul]`. Establish `: (m : ℂ) * (-(2 * Real.pi * Complex.I) * (ν (n * m) : ℂ) / ((n * m : ℕ) : ℂ)) = -(2 * Real.pi * Complex.I) * (ν (n * m) : ℂ) / n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `: (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `: (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite `hz'` using `[this]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(unifCls_exp_eq_iff hn _ _).1 hz'`. Establish `ht` using `I.tower n m hn hm hnm a`. Establish `e1` using `hf _ (Nat.mul_pos hn hm) hnm a`. Establish `e2` using `hf n hn hnp a`. Rewrite `ht` using `[e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `erw [unifCls_tower e P hadd hn hm] at ht`. Conclude with `(heq hn _ _).1 ht`. Introduce `n hn hnp`. Use `⟨(hν n hn hnp).1, fun c a => ?_, fun a => ?_, fun a' => ?_, fun a a' => ?_⟩` and prove the remaining obligations. Establish `hl` using `I.lin n c a erw [hf n hn hnp (c • a), hf n hn hnp a] at hl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `hact c ((n : ℂ)⁻¹ • P (f n a))`. Rewrite `h3` using `[Matrix.mulVec_smul, ← hlin]`. Conclude with `(heq hn _ _).1 (hl.trans h3.symm)`. Establish `h1` using `I.ker n hn hnp a erw [hf n hn hnp a, unifCls_unit_iff e P hker hinj hn] at h1`. Conclude with `h1`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `(I.onto n hn hnp (e ((n : ℂ)⁻¹ • P a'))).1 (unifCls_pow e P hadd hker hn a')`. Rewrite `hx` using `[hf n hn hnp x]`. Take `⟨w, hw⟩` from `(heq hn _ _).1 hx.symm`. Conclude with `⟨x, w, hw⟩`. Establish `hiso` using `I.isom n hn hnp a a'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hiso` using `[hf n hn hnp a, hf n hn hnp a']`. Establish `hw` using `hweil n (f n a) (f n a') (Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF (f n a) (f n a') : ℂ) / n)) (Complex.exp_ne_zero _)) hn rfl`. Establish `hu` using `GlobalTheory.T.weilPairing_complex_value_unique (Sp ℂ) o.A D.g o.ab h _ hL (𝟙 _) n _ _ _ _ hiso hw`. Establish `hu'` using `congrArg (fun u : ℂˣ => (u : ℂ)) hu`. Simplify using `only [Units.val_zpow_eq_zpow_val, Units.val_mk0] at hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hu'` using `[(hν n hn hnp).2, ← Complex.exp_int_mul]`. Establish `: ((2 * D.EF a a' : ℤ) : ℂ) * (-(2 * Real.pi * Complex.I) * (ν n : ℂ) / n) = -(2 * Real.pi * Complex.I) * ((ν n * (2 * D.EF a a') : ℤ) : ℂ) / n` using `by push_cast; ring`. Rewrite `hu'` using `[this]`. Establish `hd` using `(unifCls_exp_eq_iff hn _ _).1 hu'.symm`. Establish `hpl : D.plat.EF a a' = 2 * D.EF a a'` using `by show ((2 : ℤ) • D.EF) a a' = 2 * D.EF a a'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[hpl]`. Conclude with `hd`. Take `⟨E₁, hE, hcrit⟩` from `GlobalTheory.T.diag_form_two_smul_and_ker_alt o.A D.g o.ab h o.P o.isLB o.rig₁ o.rig₂ o.symm o.ample e D'.La P D'.EF hexp hinj hker hweil`. Take `⟨ee, hee, hkerP⟩` from `o.kerP`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE₁ : ∀ x, E₁ x = 0 → x = 0` using `fun x hx => D'.nondeg x fun y => by`. Rewrite using `[hE]`. Simplify using `[hx]`. Take `⟨k, hk, hkf⟩` from `unifCls_bilin E₁ hE₁`. Use `⟨E₁, hE, ee, hee, fun φ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha⟩` from `hkf φ`. Establish `hdiv : ∀ y, (k : ℤ) ∣ E₁ a y` using `fun y => ⟨φ y, by rw [ha]; simp⟩`. Establish `hpow` using `hkerP (Over.mk (𝟙 (Sp ℂ))) (e ((k : ℂ)⁻¹ • P a)) ((hcrit k a hk).1 hdiv)`. Establish `hpow' : e ((k : ℂ)⁻¹ • P (ee • a)) = 1`. Rewrite using `[map_nsmul, smul_comm, unifCls_exp_nsmul e hadd]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpow`. Take `⟨w, hw⟩` from `(unifCls_unit_iff e P hker hinj hk _).1 hpow'`. Use `⟨w, LinearMap.ext fun y => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun x => E₁ x y) hw`. Simplify using `only [map_nsmul, LinearMap.smul_apply, ha, smul_eq_mul, nsmul_eq_mul] at h1`.
-
-Establish `hk0 : (k : ℤ) ≠ 0` using `by exact_mod_cast hk.ne'`. Apply `mul_left_cancel₀ hk0` to reduce the goal to its premises. Simplify using `only [LinearMap.smul_apply, nsmul_eq_mul]`. Take the linear combination `-h1`. Introduce `a`.
-
-Establish `h3 : I.ev N a = e ((N : ℂ)⁻¹ • P (t a))` using `(hI a).symm.trans (heta a)`. Rewrite `h3` using `[hf N hN hNp a]`. Take `⟨w, hw⟩` from `(heq hN _ _).1 h3`. Conclude with `⟨w, hw⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unifAt_cls : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
     (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (o : Obj b N (spMap σ)) h hL (D' : PLat D.O D.inv) t Q e,

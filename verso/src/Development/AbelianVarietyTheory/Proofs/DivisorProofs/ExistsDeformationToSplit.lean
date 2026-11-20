@@ -27,7 +27,7 @@ def dGram (u v : ℂ) (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) (Q : Matrix l l ℂ) 
 omit [DecidableEq m] [DecidableEq l] in
 
 /- English proof (translation)
-Use `conv_rhs => rw [← fromBlocks_toBlocks g, ← fromBlocks_toBlocks g', h, h']`. Substitute `e` using the available equality. Simplify using `[dTr, fromBlocks_multiply, smul_smul, mul_comm]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dTr_mul {g g' : Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : g.toBlocks₂₁ = 0) (h' : g'.toBlocks₂₁ = 0)
     {u u' c c' : ℂ} (e : u * c' = u') : dTr u c g * dTr u' c' g' = dTr u' (c * c') (g * g') := by
@@ -38,7 +38,7 @@ theorem dTr_mul {g g' : Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : g.toBlocks₂₁ = 
 omit [Fintype m] [Fintype l] in
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dTr, toBlocks₁₁, toBlocks₁₂, toBlocks₂₂, one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dTr_one (u : ℂ) : dTr u 1 (1 : Matrix (m ⊕ l) (m ⊕ l) ℂ) = 1 := by
   ext (i | i) (j | j) <;> simp [dTr, toBlocks₁₁, toBlocks₁₂, toBlocks₂₂, one_apply]
@@ -46,7 +46,7 @@ theorem dTr_one (u : ℂ) : dTr u 1 (1 : Matrix (m ⊕ l) (m ⊕ l) ℂ) = 1 := 
 omit [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] in
 
 /- English proof (translation)
-Use `conv_rhs => rw [← fromBlocks_toBlocks g, h]`. Simplify using `[dTr]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dTr_one_one {g : Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : g.toBlocks₂₁ = 0) : dTr 1 1 g = g := by
   conv_rhs => rw [← fromBlocks_toBlocks g, h]
@@ -55,7 +55,7 @@ theorem dTr_one_one {g : Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : g.toBlocks₂₁ =
 omit [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] in
 
 /- English proof (translation)
-Simplify using `[dGram, fromBlocks_toBlocks]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dGram_one_zero (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) (Q : Matrix l l ℂ) : dGram 1 0 H Q = H := by
   simp [dGram, fromBlocks_toBlocks]
@@ -63,14 +63,14 @@ theorem dGram_one_zero (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) (Q : Matrix l l ℂ)
 omit [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] in
 
 /- English proof (translation)
-Simplify using `[dGram, subGram]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dGram_zero_one (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) (Q : Matrix l l ℂ) :
     dGram 0 1 H Q = fromBlocks (subGram H) 0 0 Q := by
   simp [dGram, subGram]
 
 /- English proof (translation)
-Rewrite using `[chg_fromBlocks]`. Simplify using `[dGram, fromBlocks_add, smul_smul, conjTranspose_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dGram_eq (u v : ℂ) (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) (Q : Matrix l l ℂ) :
     dGram u v H Q = chg (fromBlocks 1 0 0 (u • 1)) H + fromBlocks 0 0 0 ((v * conj v) • Q) := by
@@ -78,9 +78,9 @@ theorem dGram_eq (u v : ℂ) (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) (Q : Matrix l 
   simp [dGram, fromBlocks_add, smul_smul, conjTranspose_smul, mul_comm]
 
 /- English proof (translation)
-Establish `e₁ : g * fromBlocks 1 0 0 (u' • 1) = fromBlocks 1 0 0 (u • 1) * dTr u' c g` using `by conv_lhs => rw [← fromBlocks_toBlocks g, h]`. Simplify using `[dTr, fromBlocks_multiply, smul_smul, ← e, mul_comm]`. Establish `e₂ (A X Y : Matrix (m ⊕ l) (m ⊕ l) ℂ) : chg A (X + Y) = chg A X + chg A Y`. Simplify using `[chg, Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[dGram_eq, dGram_eq, e₂, chg_chg, chg_chg, e₁, dTr, chg_fromBlocks _ _ _ (fromBlocks _ _ _ _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `e'` using the available equality. Simplify using `[chg, smul_smul, conjTranspose_smul, Matrix.mul_assoc, mul_comm, mul_left_comm, mul_assoc]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem dGram_chg {g : Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : g.toBlocks₂₁ = 0) {u v u' v' c : ℂ} (e : u * c = u')
     (e' : v * c = v') (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) (Q : Matrix l l ℂ) :
@@ -97,7 +97,7 @@ theorem dGram_chg {g : Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : g.toBlocks₂₁ = 0
 omit [Fintype l] [DecidableEq l] in
 
 /- English proof (translation)
-Simplify using `only [dGram, quotGram, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, Matrix.smul_mul, Matrix.mul_smul, smul_smul, add_smul, smul_sub, mul_comm u]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem quotGram_dGram (u v : ℂ) (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
     quotGram (dGram u v H (quotGram H)) = (u * conj u + v * conj v) • quotGram H := by
@@ -106,9 +106,9 @@ theorem quotGram_dGram (u v : ℂ) (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
   abel
 
 /- English proof (translation)
-Distinguish the cases in `hu : u = 0`. Take `rfl : v = 1` from `h.resolve_left (by simp [hu])`. Rewrite using `[hu, dGram_zero_one]`. Conclude with `posDef_fromBlocks_diag (posDef_subGram hH) hQ`. Rewrite using `[dGram_eq]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(posDef_chg ((isUnit_iff_isUnit_det _).2 ?_) hH).add_posSemidef (posSemidef_fromBlocks_diag PosSemidef.zero (hQ.posSemidef.smul (mul_star_self_nonneg v)))` and prove the remaining obligations. Simplify using `[hu]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posDef_dGram {H : Matrix (m ⊕ l) (m ⊕ l) ℂ} {Q : Matrix l l ℂ} (hH : H.PosDef) (hQ : Q.PosDef) {u v : ℂ}
     (h : u = 1 ∨ v = 1) : (dGram u v H Q).PosDef := by
@@ -141,16 +141,16 @@ def lam : Bool → Bool → OnePoint ℂ → ℂ
   | _, _ => fun _ => 1
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `h`. Conclude with `mul_inv_cancel₀ fun e => h' (congrArg _ e)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem crd_mul {x : OnePoint ℂ} (h : x ∈ dom false) (h' : x ∈ dom true) : crd0 x * crd1 x = 1 := by
   obtain ⟨z, rfl⟩ := h
   exact mul_inv_cancel₀ fun e => h' (congrArg _ e)
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun k h'' => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `cases i <;> cases j <;> simp [hu, lam]`. Conclude with `crd_mul h h'`. Apply the tactic sequence `cases i <;> cases j <;> simp [hv, lam]`. Rewrite using `[mul_comm, crd_mul h' h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases i <;> cases j <;> cases k <;> simp [lam]`. Conclude with `(mul_comm _ _).trans (crd_mul h h')`. Conclude with `crd_mul h' h`.
+A detailed English derivation is pending.
 -/
 theorem lam_rules {i j : Bool} {x : OnePoint ℂ} (h : x ∈ dom i) (h' : x ∈ dom j) :
     hu i x * lam i j x = hu j x ∧ hv i x * lam i j x = hv j x ∧
@@ -168,20 +168,18 @@ def SphOn (U : Set (OnePoint ℂ)) (f : OnePoint ℂ → ℂ) : Prop :=
   ∀ i, ContDiffOn ℂ ∞ (f ∘ (sphere.e i).symm) ((sphere.e i).target ∩ (sphere.e i).symm ⁻¹' U)
 
 /- English proof (translation)
-Introduce `_` and use `contDiffOn_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sphOn_one (U : Set (OnePoint ℂ)) : SphOn U fun _ => 1 := fun _ => contDiffOn_const
 
 /- English proof (translation)
-Introduce `i` and use `(h i).mono fun _ hv => ⟨hv.1, e hv.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SphOn.mono {U U' : Set (OnePoint ℂ)} {f : OnePoint ℂ → ℂ} (h : SphOn U f) (e : U' ⊆ U) : SphOn U' f :=
   fun i => (h i).mono fun _ hv => ⟨hv.1, e hv.2⟩
 
 /- English proof (translation)
-Establish `p : ContDiff ℂ ∞ fun v : V 1 => v 0` using `(EuclideanSpace.proj (0 : Fin 1) : V 1 →L[ℂ] ℂ).contDiff`. Use `⟨fun i : Fin 2 => ?_, fun i : Fin 2 => ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Conclude with `p.contDiffOn`. Use `(p.contDiffOn.inv fun v hv => ReciprocityTheory.AnForm.M.projLineChart1_symm_mem_range.1 hv.2).congr fun v _ => ?_` and prove the remaining obligations.
-
-Conclude with `ReciprocityTheory.AnForm.M.finiteCoord_projLineChart1_symm _`. Use `fin_cases i`. Conclude with `p.contDiffOn.inv fun v hv => ReciprocityTheory.AnForm.M.projLineChart0_symm_ne_zero.1 hv.2`. Conclude with `p.contDiffOn.congr fun v _ => ReciprocityTheory.AnForm.M.infiniteCoord_projLineChart1_symm _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sphOn_crd : SphOn (dom false) crd0 ∧ SphOn (dom true) crd1 := by
   have p : ContDiff ℂ ∞ fun v : V 1 => v 0 := (EuclideanSpace.proj (0 : Fin 1) : V 1 →L[ℂ] ℂ).contDiff
@@ -195,7 +193,7 @@ theorem sphOn_crd : SphOn (dom false) crd0 ∧ SphOn (dom true) crd1 := by
     · exact p.contDiffOn.congr fun v _ => ReciprocityTheory.AnForm.M.infiniteCoord_projLineChart1_symm _
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Consider the cases of `i exacts [sphOn_crd.1, sphOn_one _]`. Consider the cases of `i exacts [sphOn_one _, sphOn_crd.2]`. Apply the tactic sequence `cases i <;> cases j exacts [sphOn_one _, sphOn_crd.2.mono inter_subset_right, sphOn_crd.1.mono inter_subset_right, sphOn_one _]`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sphOn_all (i j : Bool) : SphOn (dom i) (hu i) ∧ SphOn (dom i) (hv i) ∧ SphOn (dom i ∩ dom j) (lam i j) := by
   refine ⟨?_, ?_, ?_⟩
@@ -209,28 +207,28 @@ theorem sphOn_all (i j : Bool) : SphOn (dom i) (hu i) ∧ SphOn (dom i) (hv i) �
 variable {M : Type} [TopologicalSpace M] {n r s : ℕ} {A : HolAtlas M n}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(appendV n 1).symm.contDiff.fst, (appendV n 1).symm.contDiff.snd⟩`.
+Supply the required witnesses or components.
 -/
 theorem contDiff_proj : ContDiff ℂ ∞ (fun z => ((appendV n 1).symm z).1) ∧
     ContDiff ℂ ∞ (fun z => ((appendV n 1).symm z).2) :=
   ⟨(appendV n 1).symm.contDiff.fst, (appendV n 1).symm.contDiff.snd⟩
 
 /- English proof (translation)
-Introduce `i` and use `(h i.1).comp (contDiff_proj.1.differentiable (by simp)).differentiableOn fun _ hz => ⟨hz.1.1, e _ hz.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holOn_fst {U : Set M} {f : M → ℂ} (h : A.HolOn U f) {W : Set (M × OnePoint ℂ)} (e : ∀ y ∈ W, y.1 ∈ U) :
     (famAtlas A).HolOn W fun y => f y.1 := fun i =>
   (h i.1).comp (contDiff_proj.1.differentiable (by simp)).differentiableOn fun _ hz => ⟨hz.1.1, e _ hz.2⟩
 
 /- English proof (translation)
-Introduce `i` and use `(h i.1).comp (contDiff_proj.1.restrict_scalars ℝ).contDiffOn fun _ hz => ⟨hz.1.1, e _ hz.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothOn_fst {U : Set M} {f : M → ℂ} (h : A.SmoothOn U f) {W : Set (M × OnePoint ℂ)} (e : ∀ y ∈ W, y.1 ∈ U) :
     (famAtlas A).SmoothOn W fun y => f y.1 := fun i =>
   (h i.1).comp (contDiff_proj.1.restrict_scalars ℝ).contDiffOn fun _ hz => ⟨hz.1.1, e _ hz.2⟩
 
 /- English proof (translation)
-Establish `k (i : (famAtlas A).ι) : ContDiffOn ℂ ∞ ((fun y : M × OnePoint ℂ => f y.2) ∘ ((famAtlas A).e i).symm) (((famAtlas A).e i).target ∩ ((famAtlas A).e i).symm ⁻¹' W)` using `(h i.2).comp contDiff_proj.2.contDiffOn fun _ hz => ⟨hz.1.2, e _ hz.2⟩`. Conclude with `⟨fun i => (k i).differentiableOn (by simp), fun i => (k i).restrict_scalars ℝ, fun i => Complex.conjCLE.contDiff.comp_contDiffOn ((k i).restrict_scalars ℝ)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem SphOn.snd {U : Set (OnePoint ℂ)} {f : OnePoint ℂ → ℂ} (h : SphOn U f) {W : Set (M × OnePoint ℂ)}
     (e : ∀ y ∈ W, y.2 ∈ U) : ((famAtlas A).HolOn W fun y => f y.2) ∧ ((famAtlas A).SmoothOn W fun y => f y.2) ∧
@@ -242,14 +240,14 @@ theorem SphOn.snd {U : Set (OnePoint ℂ)} {f : OnePoint ℂ → ℂ} (h : SphOn
     fun i => Complex.conjCLE.contDiff.comp_contDiffOn ((k i).restrict_scalars ℝ)⟩
 
 /- English proof (translation)
-Rewrite using `[dTr_mul (T.tri a b y ⟨ha, hb⟩) (T.tri b c y ⟨hb, hc⟩) e, T.g_mul a b c y ⟨⟨ha, hb⟩, hc⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem g_blocks (T : HermSeq A r s) {a b c : T.κ} {y : M} (ha : y ∈ T.U a) (hb : y ∈ T.U b) (hc : y ∈ T.U c)
     {u u' k k' : ℂ} (e : u * k' = u') : dTr u k (T.g a b y) * dTr u' k' (T.g b c y) = dTr u' (k * k') (T.g a c y) := by
   rw [dTr_mul (T.tri a b y ⟨ha, hb⟩) (T.tri b c y ⟨hb, hc⟩) e, T.g_mul a b c y ⟨⟨ha, hb⟩, hc⟩]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `T.holo a b (.inl i) (.inl j)`. Conclude with `fun c => (differentiableOn_const 0).congr fun v _ => zero_mul _`. Conclude with `fun c => differentiableOn_const 0`. Conclude with `fun c => (T.holo a b (.inr i) (.inr j) c).congr fun v _ => one_mul _`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem holOn_diag (T : HermSeq A r s) (a b : T.κ) (i j : Fin r ⊕ Fin s) :
     A.HolOn (T.U a ∩ T.U b) fun y => dTr 0 1 (T.g a b y) i j := by
@@ -260,7 +258,7 @@ theorem holOn_diag (T : HermSeq A r s) (a b : T.κ) (i j : Fin r ⊕ Fin s) :
   · exact fun c => (T.holo a b (.inr i) (.inr j) c).congr fun v _ => one_mul _
 
 /- English proof (translation)
-Rewrite using `[dTr, chg_fromBlocks, (T.trans a b y h).1, (T.trans a b y h).2.2]`. Simplify using `[chg, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diag_trans (T : HermSeq A r s) {a b : T.κ} {y : M} (h : y ∈ T.U a ∩ T.U b) :
     fromBlocks (T.sub b y) 0 0 (T.quot b y) =
@@ -291,7 +289,7 @@ def graded (T : HermSeq A r s) : HermSeq A r s where
   trans a b y hy := ⟨(T.trans a b y hy).1, diag_trans T hy, by simpa [dTr] using (T.trans a b y hy).2.2⟩
 
 /- English proof (translation)
-Introduce `_` and use `⟨fun _ => 0, fun _ _ _ => differentiableOn_const 0, fun _ _ => by rw [fromBlocks_one, chg_one]; rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isSplit_graded (T : HermSeq A r s) : (graded T).IsSplit := fun _ =>
   ⟨fun _ => 0, fun _ _ _ => differentiableOn_const 0, fun _ _ => by rw [fromBlocks_one, chg_one]; rfl⟩
@@ -359,7 +357,7 @@ def family (T : HermSeq A r s) : HermSeq (famAtlas A) r s where
       ring
 
 /- English proof (translation)
-Introduce `a y hy` and use `by obtain ⟨p₁, p₂⟩ := h a.1 y.1 hy.1 refine ⟨p₁, ?_⟩ change _ • T.quot a.1 y.1 = quotGram (dGram _ _ _ (T.quot a.1 y.1)) rw [p₂, quotGram_dGram]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInduced_family {T : HermSeq A r s} (h : IsInduced T) : IsInduced (family T) := fun a y hy => by
   obtain ⟨p₁, p₂⟩ := h a.1 y.1 hy.1
@@ -368,13 +366,13 @@ theorem isInduced_family {T : HermSeq A r s} (h : IsInduced T) : IsInduced (fami
   rw [p₂, quotGram_dGram]
 
 /- English proof (translation)
-Use `⟨fun a b => T.g a.1 b, fun a b i j c => (T.holo a.1 b i j c).mono fun v hv => ⟨hv.1, hv.2.1.1, hv.2.2⟩, ?_⟩` and prove the remaining obligations. Establish `k (i : Bool) (h : OnePoint.infty ∈ dom i) : i = true`. Consider the cases of `i`. Use `exacts [(OnePoint.infty_notMem_range_coe h).elim, rfl]`. Introduce and unpack `⟨a, i⟩ b y ⟨ha, hi⟩ hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `k i hi`. Take `⟨p₁, p₂, p₃⟩` from `T.trans a b y ⟨ha, hb⟩`. Use `⟨T.tri a b y ⟨ha, hb⟩, ?_, fun b' h => T.g_mul a b b' y ⟨⟨ha, hb⟩, h⟩, p₁, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a', i⟩ ⟨ha', hi⟩`. Take `rfl` from `k i hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `dTr 1 1 (T.g a' a y) * _ = _`. Rewrite using `[dTr_one_one (T.tri a' a y ⟨ha', ha⟩), T.g_mul a' a b y ⟨⟨ha', ha⟩, hb⟩]`. Express the relevant statement in the definitionally equal form `_ = chg _ (dGram 1 0 _ _)`. Rewrite using `[dGram_one_zero]`. Conclude with `p₂`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Express the relevant statement in the definitionally equal form `_ = chg _ ((1 * conj 1 + 0 * conj 0 : ℂ) • T.quot a y)`. Simplify using `using p₃`.
+A detailed English derivation is pending.
 -/
 theorem isPull_infty (T : HermSeq A r s) : T.IsPull (family T) (fib OnePoint.infty) := by
   refine ⟨fun a b => T.g a.1 b, fun a b i j c => (T.holo a.1 b i j c).mono fun v hv => ⟨hv.1, hv.2.1.1, hv.2.2⟩, ?_⟩
@@ -396,13 +394,11 @@ theorem isPull_infty (T : HermSeq A r s) : T.IsPull (family T) (fib OnePoint.inf
     simpa using p₃
 
 /- English proof (translation)
-Use `⟨fun a b => (graded T).g a.1 b, fun a b i j c => ((graded T).holo a.1 b i j c).mono fun v hv => ⟨hv.1, hv.2.1.1, hv.2.2⟩, ?_⟩` and prove the remaining obligations. Establish `k (i : Bool) (h : ((0 : ℂ) : OnePoint ℂ) ∈ dom i) : i = false`. Consider the cases of `i`. Use `exacts [rfl, (h rfl).elim]`. Introduce and unpack `⟨a, i⟩ b y ⟨ha, hi⟩ hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `k i hi`. Take `⟨p₁, p₂, p₃⟩` from `(graded T).trans a b y ⟨ha, hb⟩`. Use `⟨(graded T).tri a b y ⟨ha, hb⟩, ?_, fun b' h => (graded T).g_mul a b b' y ⟨⟨ha, hb⟩, h⟩, p₁, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a', i⟩ ⟨ha', hi⟩`. Take `rfl` from `k i hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(graded T).g_mul a' a b y ⟨⟨ha', ha⟩, hb⟩`. Express the relevant statement in the definitionally equal form `_ = chg _ (dGram 0 1 (T.mid a y) (T.quot a y))`. Rewrite using `[dGram_zero_one, ← (hT a y ha).1]`. Conclude with `p₂`. Express the relevant statement in the definitionally equal form `_ = chg _ ((0 * conj 0 + 1 * conj 1 : ℂ) • T.quot a y)`.
-
-Rewrite using `[zero_mul, zero_add, map_one, mul_one, one_smul]`. Conclude with `p₃`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPull_zero {T : HermSeq A r s} (hT : IsInduced T) :
     (graded T).IsPull (family T) (fib ((0 : ℂ) : OnePoint ℂ)) := by
@@ -430,7 +426,7 @@ end GlobalTheory.BcUnique.Deform
 namespace GlobalTheory.BcUnique
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Deform.family T, Deform.graded T, Deform.isSplit_graded T, Deform.isPull_infty T, Deform.isPull_zero h, Deform.isInduced_family h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_deformation {M : Type} [TopologicalSpace M] {n r s : ℕ} (A : HolAtlas M n) (T : HermSeq A r s)
     (h : IsInduced T) : ∃ (T' : HermSeq (famAtlas A) r s) (T₀ : HermSeq A r s), T₀.IsSplit ∧

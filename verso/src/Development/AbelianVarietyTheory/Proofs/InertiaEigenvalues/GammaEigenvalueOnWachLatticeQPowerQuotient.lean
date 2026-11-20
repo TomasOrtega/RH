@@ -24,11 +24,11 @@ def GoodP {L M : Type} [Field L] [AddCommGroup M] [Module L M] (Sub : ℤ → Su
     f k - lam • d ∈ Sub (k - y)
 
 /- English proof (translation)
-Take `⟨hb, h1, h2, h3⟩` from `hf`. Take `⟨t1, t2, t3, t4⟩` from `GlobalTheory.NL.Twist.tri w u Sub hS y f hb h1 k h2`. Take `⟨m1, hm1⟩` from `t1`. Take `⟨m2, hm2⟩` from `hb`. Use `⟨⟨min m1 m2, fun j hj => ?_⟩, fun j => ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Rewrite using `[hm1 j (lt_of_lt_of_le hj (min_le_left _ _)), hm2 j (lt_of_lt_of_le hj (min_le_right _ _)), smul_zero, sub_zero]`. Conclude with `Submodule.sub_mem _ (t2 j) (Submodule.smul_mem _ _ (h1 j))`. Conclude with `Submodule.sub_mem _ (t3 j hj) (Submodule.smul_mem _ _ (h2 j hj))`. Establish `e : (conv w (fun m => u ^ m • f m) - c' • f) k - ((PowerSeries.constantCoeff w * u ^ k - c') * lam) • d = (conv w (fun m => u ^ m • f m) k - (PowerSeries.constantCoeff w * u ^ k) • f k) + (PowerSeries.constantCoeff w * u ^ k - c') • (f k - lam • d)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Use `module`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ t4 (Submodule.smul_mem _ _ h3)`.
+A detailed English derivation is pending.
 -/
 theorem goodP_conv_sub_smul {L M : Type} [Field L] [TopologicalSpace L] [AddCommGroup M] [Module L M]
     (w : PowerSeries L) (u : L) (Sub : ℤ → Submodule L M) (hS : Monotone Sub) (y : ℕ) (k : ℤ)
@@ -55,7 +55,7 @@ theorem goodP_conv_sub_smul {L M : Type} [Field L] [TopologicalSpace L] [AddComm
     exact Submodule.add_mem _ t4 (Submodule.smul_mem _ _ h3)
 
 /- English proof (translation)
-Establish `e` using `map_zpow (Units.map (algebraMap O LL : O →* LL)) v m`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem algebraMap_units_zpow {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (v : Oˣ) (m : ℤ) :
     algebraMap O LL ((v ^ m : Oˣ) : O) = (algebraMap O LL (v : O)) ^ m := by
@@ -66,7 +66,7 @@ theorem algebraMap_units_zpow {O LL : Type} [CommRing O] [Field LL] [Algebra O L
     _ = (algebraMap O LL (v : O)) ^ m := by rw [Units.val_zpow_eq_zpow_val]; rfl
 
 /- English proof (translation)
-The claim follows from `(Units.map (algebraMap O LL : O →* LL) v).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_units_ne_zero {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (v : Oˣ) :
     algebraMap O LL (v : O) ≠ 0 :=
@@ -76,13 +76,13 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hfull` using `GlobalTheory.NL.FullLevel.full_lat D HW F Cm l K s LL h T hT i ζ hprim`. Establish `hlin` using `(GlobalTheory.NL.LevInj.expansion_basis D HW F Cm l K s LL h T hT i ζ ⟨s, hprim⟩ hfull).1`. Establish `hx : c' • x = (c' • (1 : AA K LL)) • x` using `by rw [smul_assoc, one_smul]`. Rewrite using `[hx, hlin]`. Establish `key : ∀ q : ℕ, PowerSeries.coeff q (((HW l).W K s LL h).lev i ζ (c' • (1 : AA K LL))) = if q = 0 then algebraMap ↥(OL LL) ↥LL.1 c' else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[map_smul, map_one]`. Break down `q with _ | q` into its components or cases. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `m`. Simplify using `only [conv, Pi.smul_apply]`. Rewrite using `[finsum_eq_single _ 0]`. Rewrite using `[key]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `q hq`. Rewrite using `[key, if_neg hq, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_smul_O (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (T : Lt K LL)
@@ -108,9 +108,9 @@ theorem ex_smul_O (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D
     rw [key, if_neg hq, zero_smul]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using ⟨hx₀, h₀⟩`. Consider the case `insert c S hc ih`. Take `⟨hm, hg⟩` from `ih`. Establish `e : Polynomial.aeval γ (∏ c' ∈ insert c S, ((Polynomial.X : Polynomial O) - Polynomial.C (c' : O))) x₀ = γ (Polynomial.aeval γ (∏ c' ∈ S, ((Polynomial.X : Polynomial O) - Polynomial.C (c' : O))) x₀) - (c : O) • Polynomial.aeval γ (∏ c' ∈ S, ((Polynomial.X : Polynomial O) - Polyno …`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_insert hc, map_mul, Module.End.mul_apply]`. Simplify using `only [map_sub, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Rewrite using `[e, Finset.prod_insert hc, mul_left_comm, hE _ hm]`. Conclude with `⟨P.sub_mem (hP _ hm) (P.smul_mem _ hm), goodP_conv_sub_smul w u Sub hS y k d _ _ _ hg⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem goodP_prod {O L M X : Type} [CommRing O] [Field L] [TopologicalSpace L] [Algebra O L]
     [AddCommGroup M] [Module L M] [AddCommGroup X] [Module O X]
@@ -137,7 +137,7 @@ theorem goodP_prod {O L M X : Type} [CommRing O] [Field L] [TopologicalSpace L] 
     exact ⟨P.sub_mem (hP _ hm) (P.smul_mem _ hm), goodP_conv_sub_smul w u Sub hS y k d _ _ _ hg⟩
 
 /- English proof (translation)
-The claim follows from `((C.C K s LL h).tie.levB T i ζ).map_sub x x'`.
+A detailed English derivation is pending.
 -/
 theorem ex_sub {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {H : LocHW l P} {F : LocFon l P AI H}
     {K : FinExt l} {s : ℕ} {LL : FinExt l} (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL)
@@ -149,61 +149,57 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 20000000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm l _ K s LL h W T hT y hy a ha j hj1 hjy`. Take `⟨τ, hτ⟩` from `ha`. Establish `hpts` using `GlobalTheory.NL.Points.points D HW l K s LL h`. Take `⟨i, ζ, hPt⟩` from `hpts.2.2.1 τ`. Establish `hprim : IsPrimitiveRoot ζ (l ^ s)` using `(hpts.2.1 i ζ τ hPt).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hdD, hdA, hdA1⟩` from `GlobalTheory.NL.JumpVec.exists_letter_of_jump D HW l K s LL h T hT i ζ τ hPt a hτ`. Establish `hQ` using `((GlobalTheory.NL.IoXQ.main D HW F l K s LL h).2.2.2.2.2.2 0).2`. Simplify using `only [pow_zero, AlgHom.one_apply] at hQ`. Establish `hJ` using `GlobalTheory.NL.JumpsFinite.jumps_finite D HW l K s LL h T hT`. Set `Fs : Finset (↥(OL LL))ˣ` to `(hJ.toFinset ×ˢ Finset.Icc 1 y).image (fun p : ℤ × ℕ => uU W ^ (-(p.1 + (p.2 : ℤ))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hFs : ∀ a' ∈ Jumps (PD` using `(D.loc l).PD K) T, ∀ j' : ℕ, 1 ≤ j' → j' ≤ y → uU W ^ (-(a' + j')) ∈ Fs := by`. Introduce `a' ha' j' h1 h2`. Simplify using `only [Fs, Finset.mem_image, Finset.mem_product, Set.Finite.mem_toFinset, Finset.mem_Icc, Prod.exists]`. Conclude with `⟨a', j', ⟨ha', h1, h2⟩, rfl⟩`. Establish `hmemInv : ∀ x : W.DD T, x ∈ invN W T (W.Q ^ y) ↔ W.Q ^ y • x ∈ W.N T`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `[invN, smulA]`. Establish `hγst` using `(GlobalTheory.NL.GamQ.gam_Q_pow D HW F Cm l K s LL h T hT y).1`. Establish `hstab : ∀ (S : Finset (↥(OL LL))ˣ) (x : W.DD T), x ∈ invN W T (W.Q ^ y) → Polynomial.aeval (W.γ T) (∏ c ∈ S, ((Polynomial.X : Polynomial ↥(OL LL)) - Polynomial.C (Units.val c))) x ∈ invN W T (W.Q ^ y)`. Introduce `S`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro x hx`. Simplify using `using hx`. Consider the case `insert c S hc ih`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.prod_insert hc, map_mul, Module.End.mul_apply]`. Establish `h1` using `ih x hx`. Use `set v := Polynomial.aeval (W.γ T) (∏ c ∈ S, ((Polynomial.X : Polynomial ↥(OL LL)) - Polynomial.C (Units.val c))) x`. Simplify using `only [map_sub, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Use `Submodule.sub_mem _ ?_ (Submodule.smul_of_tower_mem _ _ h1)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hmemInv _).2 (hγst v ((hmemInv v).1 h1))`. Establish `hFA : ∀ b : ℤ, FilAt ((D.loc l).PD K) T τ (b + 1) ≤ FilAt ((D.loc l).PD K) T τ b`. Introduce `b`. Apply `sup_le_sup_right` to reduce the goal to its premises. Apply `inf_le_inf_left` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hle : (((D.loc l).PD K).Fil (b + 1)).restrictScalars ℚ_[l] ≤ (((D.loc l).PD K).Fil b).restrictScalars ℚ_[l]` using `((D.loc l).PD K).Fil_anti b`. Use `⟨AlgebraTensorModule.map (LinearMap.id : T.V →ₗ[↥LL.1] T.V) (Submodule.inclusion hle) x, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← AlgebraTensorModule.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hFAnti : Antitone (FilAt ((D.loc l).PD K) T τ)` using `antitone_int_of_succ_le hFA`. Take `⟨k, hk⟩ : ∃ k : ℤ, k = (y : ℤ) - a - j` from `⟨_, rfl⟩`. Take `⟨g, hgdef⟩ : ∃ g : ℤ → T.V ⊗[ℚ_[l]] (D.loc l).R.B, g = Pi.single k d` from `⟨_, rfl⟩`. Establish `hlat` using `GlobalTheory.NL.LatFil.lat_eq_fil D HW F Cm l K s LL h T hT i ζ τ hPt`. Establish `hg : g ∈ Lat (Cm l) h T i ζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `(hlat g).2 ⟨⟨k, fun j' hj' => by rw [hgdef]; exact Pi.single_eq_of_ne hj'.ne _⟩, fun j' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj' : j' = k`. Rewrite using `[hj', hgdef, Pi.single_eq_same]`. Conclude with `⟨hdD, hFAnti (show -k ≤ a by omega) hdA⟩`. Simplify using `only [hgdef, Pi.single_eq_of_ne hj', map_zero]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Submodule.zero_mem _, Submodule.zero_mem _⟩`. Take `⟨n, c, hc, f, hf, hfe⟩` from `GlobalTheory.NL.Approx.approx D HW F Cm l K s LL h T hT i ζ hprim g hg y`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : W.EE, algebraMap (AA K LL) W.EE (W.Q ^ y) * e = 1 := by`. Rewrite using `[map_pow]`. Conclude with `(hQ.pow y).exists_right_inv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x₀, hx₀def⟩ : ∃ x₀ : W.DD T, x₀ = e • (n : W.DD T)` from `⟨_, rfl⟩`. Establish `hx₀Q : W.Q ^ y • x₀ = (n : W.DD T)`. Rewrite using `[hx₀def, ← smul_assoc, Algebra.smul_def, he, one_smul]`. Establish `hx₀ : x₀ ∈ invN W T (W.Q ^ y)` using `by rw [hmemInv, hx₀Q]; exact n.2`. Establish `hc₀ : uU W ^ (-(a + j)) ∈ Fs` using `hFs a ⟨τ, hτ⟩ j hj1 hjy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hzdef⟩ : ∃ z, z = Polynomial.aeval (W.γ T) (∏ c ∈ Fs.erase (uU W ^ (-(a + j))), ((Polynomial.X : Polynomial ↥(OL LL)) - Polynomial.C (Units.val c))) x₀` from `⟨_, rfl⟩`. Establish `hz : z ∈ invN W T (W.Q ^ y)` using `hzdef ▸ hstab _ x₀ hx₀`. Use `⟨z, hz, ?_, ?_⟩` and prove the remaining obligations. Use `swap`. Use `GlobalTheory.NL.KillLevels.annihilate D HW F Cm l K s LL h T hT y hy Fs hFs x₀ hx₀` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← Finset.mul_prod_erase Fs _ hc₀, map_mul, Module.End.mul_apply, ← hzdef]`. Simplify `this` using `only [map_sub, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Introduce `hzN`. Establish `hzQ : W.Q ^ y • z ∈ W.N T` using `(hmemInv _).1 hz`. Take `⟨w, hw0, hwE⟩` from `(GlobalTheory.NL.GamQ.gam_Q_pow D HW F Cm l K s LL h T hT y).2 i ζ hprim`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hexsmul` using `ex_smul_O D HW F Cm l K s LL h T hT i ζ hprim`. Take `⟨Sub, hSub⟩ : ∃ Sub : ℤ → Submodule ↥LL.1 (T.V ⊗[ℚ_[l]] (D.loc l).R.B), Sub = fun m => Di (HW l) h T i ⊓ (FilAt ((D.loc l).PD K) T τ (-m)).comap (ιV ((D.loc l).PD K) (LL` from `↥LL.1) (V := T.V)) := ⟨_, rfl⟩`. Establish `hSubMono : Monotone Sub`. Introduce `m m' hmm`. Rewrite using `[hSub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inf_le_inf_left _ (Submodule.comap_mono (hFAnti (neg_le_neg hmm)))`. Establish `hLatSub : ∀ f ∈ Lat (Cm l) h T i ζ, (∃ m : ℤ, ∀ j < m, f j = 0) ∧ ∀ j, f j ∈ Sub j`. Introduce `f hf`. Take `⟨hb, hj⟩` from `(hlat f).1 hf`. Use `⟨hb, fun j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hSub]`. Conclude with `⟨(hj j).1, (hj j).2⟩`. Establish `hn` using `hLatSub _ (Submodule.subset_span ⟨1, n, (GlobalTheory.NL.LatFil.conv_one _).symm⟩)`. Establish `hfS` using `hLatSub f hf`. Establish `hbase_below : ∀ j' < k, ex (Cm l) h T i ζ n j' ∈ Sub (j' - y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j' hj'`. Establish `e` using `hfe j'`. Rewrite `e` using `[hgdef, Pi.single_eq_of_ne hj'.ne, smul_zero, sub_zero]`. Rewrite using `[e]`. Conclude with `hfS.2 _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbase_k : ex (Cm l) h T i ζ n k - c • d ∈ Sub (k - y)`. Establish `e` using `hfe k`. Rewrite `e` using `[hgdef, Pi.single_eq_same]`. Rewrite using `[e]`. Conclude with `hfS.2 _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨E, hEdef⟩ : ∃ E : W.DD T → ℤ → T.V ⊗[ℚ_[l]] (D.loc l).R.B, E = fun x => if hx : W.Q ^ y • x ∈ W.N T then ex (Cm l) h T i ζ ⟨_, hx⟩ else 0` from `⟨_, rfl⟩`. Establish `hEval : ∀ (x : W.DD T) (hx : W.Q ^ y • x ∈ W.N T), E x = ex (Cm l) h T i ζ ⟨_, hx⟩`. Introduce `x hx`. Rewrite using `[hEdef]`. Conclude with `dif_pos hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hE : ∀ x ∈ (invN W T (W.Q ^ y)).restrictScalars ↥(OL LL), ∀ c' : ↥(OL LL), E (W.γ T x - c' • x) = conv w (fun m => (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL))) ^ m • E x m) - algebraMap ↥(OL LL) ↥LL.1 c' • E x`. Introduce `x hx c'`. Establish `hx' : W.Q ^ y • x ∈ W.N T` using `(hmemInv x).1 hx`. Establish `hγ` using `hγst x hx'`. Establish `h3 : W.Q ^ y • (W.γ T x - c' • x) ∈ W.N T` using `(hmemInv _).1 (Submodule.sub_mem _ ((hmemInv _).2 hγ) (Submodule.smul_of_tower_mem _ c' hx))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (⟨_, h3⟩ : ↥(W.N T)) = ⟨_, hγ⟩ - c' • ⟨_, hx'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sub, Submodule.coe_smul_of_tower, smul_sub]`. Rewrite using `[smul_comm]`. Rewrite using `[hEval _ h3, hEval _ hx']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `(congrArg (ex (Cm l) h T i ζ) e1).trans ((ex_sub (Cm l) h T i ζ _ _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· - ·) (funext fun m => hwE _ hx' hγ m) (hexsmul c' ⟨_, hx'⟩)`. Establish `hP : ∀ x ∈ (invN W T (W.Q ^ y)).restrictScalars ↥(OL LL), W.γ T x ∈ (invN W T (W.Q ^ y)).restrictScalars ↥(OL LL)` using `fun x hx => (hmemInv _).2 (hγst x ((hmemInv x).1 hx))`. Establish `hbase : GoodP Sub y k d (E x₀) c`. Rewrite using `[hEval x₀ ((hmemInv _).1 hx₀)]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (⟨_, (hmemInv _).1 hx₀⟩ : ↥(W.N T)) = n` using `Subtype.ext hx₀Q`. Rewrite using `[e]`. Conclude with `⟨hn.1, hn.2, hbase_below, hbase_k⟩`. Take `⟨-, hzG⟩` from `goodP_prod (W.γ T) ((invN W T (W.Q ^ y)).restrictScalars ↥(OL LL)) hP E w (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL))) hE Sub hSubMono y k d x₀ hx₀ c hbase (Fs.erase (uU W ^ (-(a + j))))`. Rewrite `hzG` using `[← hzdef, hEval z hzQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨f2, hf2, hf2e⟩` from `(GlobalTheory.NL.WachModulePoleQuotient.mem_N_iff_expansion D HW F Cm l K s LL h T hT y z hzQ).1 hzN i ζ hprim`. Establish `hkmem : ex (Cm l) h T i ζ ⟨_, hzQ⟩ k ∈ Sub (k - y)`. Rewrite using `[hf2e k]`. Conclude with `(hLatSub f2 hf2).2 _`. Establish `hune` using `algebraMap_units_ne_zero (O := ↥(OL LL)) (LL := ↥LL.1) (W.χΓ W.gam)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu0 : PowerSeries.constantCoeff w * (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL))) ^ k = algebraMap ↥(OL LL) ↥LL.1 ((uU W ^ (-(a + j)) : (↥(OL LL))ˣ) : ↥(OL LL))`. Rewrite using `[hw0, algebraMap_units_zpow, ← zpow_add₀ hune]`. Use `show _ = (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL))) ^ (-(a + (j : ℤ)))`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
-
-Establish `hlam : (c * ∏ c' ∈ Fs.erase (uU W ^ (-(a + j))), (PowerSeries.constantCoeff w * (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL))) ^ k - algebraMap ↥(OL LL) ↥LL.1 (c' : ↥(OL LL)))) ≠ 0`. Use `mul_ne_zero hc (Finset.prod_ne_zero_iff.2 fun c' hc' => ?_)` and prove the remaining obligations. Rewrite using `[hu0, sub_ne_zero]`. Introduce `he`. Conclude with `(Finset.ne_of_mem_erase hc') (Units.ext (Subtype.val_injective he)).symm`.
-
-Establish `hlamd` using `Submodule.sub_mem _ hkmem hzG.2.2.2`. Rewrite `hlamd` using `[sub_sub_cancel]`. Establish `hdS` using `Submodule.smul_mem _ (c * ∏ c' ∈ Fs.erase (uU W ^ (-(a + j))), (PowerSeries.constantCoeff w * (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL))) ^ k - algebraMap ↥(OL LL) ↥LL.1 (c' : ↥(OL LL))))⁻¹ hlamd`. Rewrite `hdS` using `[inv_smul_smul₀ hlam, hSub]`. Conclude with `hdA1 (hFAnti (show a + 1 ≤ -(k - (y : ℤ)) by omega) (Submodule.mem_inf.1 hdS).2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem occ : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ y : ℕ, 1 ≤ y → ∀ a ∈ Jumps (PD := (D.loc l).PD K) T, ∀ j : ℕ, 1 ≤ j → j ≤ y → ∃ x ∈ invN W T (W.Q ^ y), x ∉ W.N T ∧ W.γ T x - (((uU W ^ (-(a + j)) : (↥(OL LL))ˣ) : ↥(OL LL))) • x ∈ W.N T := by
   intro D HW F Cm l _ K s LL h W T hT y hy a ha j hj1 hjy

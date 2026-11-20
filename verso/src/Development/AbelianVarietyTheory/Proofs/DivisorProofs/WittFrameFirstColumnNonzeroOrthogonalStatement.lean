@@ -13,7 +13,7 @@ open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AdaptedSplit.smul_add_mem_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWittFrameFirstColumnNonzeroOrthogonal.lean&line=46#L46)
 -/

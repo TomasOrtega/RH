@@ -24,9 +24,9 @@ variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Use `haveI := w.isMaximal`. Establish `hs' : Ideal.Quotient.mk w.asIdeal s ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv hs'`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_one, mul_comm, hb, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_sub_one_mem (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K} (hs : s ∉ w.asIdeal) :
     ∃ t : 𝓞 K, t * s - 1 ∈ w.asIdeal := by
@@ -39,9 +39,9 @@ theorem exists_mul_sub_one_mem (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K} (hs
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_one, mul_comm, hb, sub_self]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_mul_sub_one_mem w hs`. Establish `e : x = t • (s • x) - (t * s - 1) • x`. Rewrite using `[smul_smul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ t hsx) (Submodule.smul_mem_smul ht hx)`.
+A detailed English derivation is pending.
 -/
 theorem mem_smul_of_smul_mem (w : HeightOneSpectrum (𝓞 K)) {N : Submodule (𝓞 K) V} {s : 𝓞 K} (hs : s ∉ w.asIdeal)
     {x : V} (hx : x ∈ N) (hsx : s • x ∈ w.asIdeal • N) : x ∈ w.asIdeal • N := by
@@ -61,37 +61,33 @@ structure FrameAt (w : HeightOneSpectrum (𝓞 K)) (N : Submodule (𝓞 K) V) {n
   ker : ∀ x ∈ N, β x = 0 → x ∈ w.asIdeal • N
 
 /- English proof (translation)
-Use `atW_finite w hfg` as an intermediate fact. Use `atW_free w hfg` as an intermediate fact. Establish `hr : finrank (Ow w) (atW w N) = n` using `by rw [finrank_atW w hfg, hspan, finrank_top, hn]`. Set `b : Basis (Fin n) (Ow w) (atW w N)` to `Module.finBasisOfFinrankEq _ _ hr`. Establish `hunit : ∀ y : w.asIdeal.primeCompl, IsUnit (Ideal.Quotient.mk w.asIdeal (y : 𝓞 K))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨t, ht⟩` from `exists_mul_sub_one_mem w y.2`. Use `isUnit_iff_exists_inv'.mpr ⟨Ideal.Quotient.mk w.asIdeal t, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk w.asIdeal)]`. Conclude with `Ideal.Quotient.eq.mpr ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ρ : Ow w →+* 𝓞 K ⧸ w.asIdeal` to `IsLocalization.lift (M := w.asIdeal.primeCompl) (g := Ideal.Quotient.mk w.asIdeal) hunit`. Establish `hρ : ∀ a : 𝓞 K, ρ (algebraMap (𝓞 K) (Ow w) a) = Ideal.Quotient.mk w.asIdeal a` using `fun a => IsLocalization.lift_eq hunit a`. Establish `hmem : ∀ x : V, x ∈ localization₂ w.asIdeal N ↔ x ∈ atW w N`. Introduce `x`. Rewrite using `[← atW_restrictScalars, Submodule.restrictScalars_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `β : V → (Fin n → 𝓞 K ⧸ w.asIdeal)` to `fun x => if hx : x ∈ atW w N then fun i => ρ (b.repr ⟨x, hx⟩ i) else 0`. Establish `hβ : ∀ (x : V) (hx : x ∈ atW w N), β x = fun i => ρ (b.repr ⟨x, hx⟩ i)` using `fun x hx => dif_pos hx`. Establish `hsmul : ∀ (a : 𝓞 K), ∀ x ∈ localization₂ w.asIdeal N, β (a • x) = Ideal.Quotient.mk w.asIdeal a • β x`. Introduce `a x hx`. Establish `hx'` using `(hmem x).1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hax : a • x ∈ atW w N` using `(hmem _).1 (Submodule.smul_mem _ a hx)`. Rewrite using `[hβ _ hax, hβ _ hx']`. Use function extensionality and compare the values at `i`. Establish `e : (⟨a • x, hax⟩ : atW w N) = algebraMap (𝓞 K) (Ow w) a • (⟨x, hx'⟩ : atW w N)` using `Subtype.ext (algebraMap_smul (Ow w) a x).symm`. Rewrite using `[e, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, hρ]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨β, ⟨?_, hsmul, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x hx y hy`. Establish `hx'` using `(hmem x).1 hx`. Establish `hy'` using `(hmem y).1 hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ _ ((atW w N).add_mem hx' hy'), hβ _ hx', hβ _ hy']`. Use function extensionality and compare the values at `i`. Establish `e : (⟨x + y, (atW w N).add_mem hx' hy'⟩ : atW w N) = ⟨x, hx'⟩ + ⟨y, hy'⟩` using `rfl`. Rewrite using `[e, map_add, Finsupp.add_apply, map_add]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `dif_neg fun h => hx ((hmem x).2 h)`. Introduce `c choose a ha using fun i => Ideal.Quotient.mk_surjective (c i)`. Set `x' : atW w N` to `∑ i, algebraMap (𝓞 K) (Ow w) (a i) • b i`. Establish `h1 : β (x' : V) = c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hβ _ x'.2]`. Use function extensionality and compare the values at `i`. Establish `: b.repr ⟨(x' : V), x'.2⟩ = b.repr x'` using `rfl`. Rewrite using `[this, b.repr_sum_self, hρ, ha]`. Take `⟨s, hs, hsx⟩` from `mem_atW_iff.1 x'.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `exists_mul_sub_one_mem w hs`. Use `⟨(t * s) • (x' : V), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `N.smul_mem t hsx`. Rewrite using `[hsmul _ _ ((hmem _).2 x'.2), h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: Ideal.Quotient.mk w.asIdeal (t * s) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk w.asIdeal)]`. Conclude with `Ideal.Quotient.eq.mpr ht`. Rewrite using `[this, one_smul]`. Introduce `x hx h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : x ∈ atW w N` using `le_atW w N hx`. Rewrite `h0` using `[hβ _ hx']`. Establish `hterm : ∀ i, ((b.repr ⟨x, hx'⟩ i • b i : atW w N) : V) ∈ localization₂ w.asIdeal (w.asIdeal • N)`. Introduce `i`. Take `⟨a, s, has⟩` from `IsLocalization.exists_mk'_eq w.asIdeal.primeCompl (b.repr ⟨x, hx'⟩ i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : a ∈ w.asIdeal`. Establish `h1 : ρ (b.repr ⟨x, hx'⟩ i) = 0` using `congrFun h0 i`. Establish `h2 : b.repr ⟨x, hx'⟩ i * algebraMap (𝓞 K) (Ow w) (s : 𝓞 K) = algebraMap (𝓞 K) (Ow w) a`. Rewrite using `[← has]`. Conclude with `IsLocalization.mk'_spec _ _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg ρ h2`. Rewrite `h3` using `[map_mul, h1, zero_mul, hρ]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h3.symm`. Take `⟨t, ht, htb⟩` from `mem_atW_iff.1 (b i).2`. Use `⟨(s : 𝓞 K) * t, fun h => (w.isPrime.mem_or_mem h).elim s.2 ht, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Submodule.coe_smul, ← has, mul_smul, smul_comm t, mk'_smul]`. Conclude with `Submodule.smul_mem_smul ha htb`. Establish `hsum : x ∈ localization₂ w.asIdeal (w.asIdeal • N)`. Establish `h1 : x = ((∑ i, b.repr ⟨x, hx'⟩ i • b i : atW w N) : V)` using `by rw [b.sum_repr]`. Rewrite using `[h1, Submodule.coe_sum]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => hterm i`. Take `⟨s, hs, hsx⟩` from `hsum`. Conclude with `mem_smul_of_smul_mem w hs hx hsx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_frameAt (w : HeightOneSpectrum (𝓞 K)) (N : Submodule (𝓞 K) V) (hfg : N.FG)
     (hspan : Submodule.span K (N : Set V) = ⊤) {n : ℕ} (hn : finrank K V = n) :
@@ -191,7 +187,7 @@ variable {w : HeightOneSpectrum (𝓞 K)} {N : Submodule (𝓞 K) V} {A : Type} 
   [Module (𝓞 K ⧸ w.asIdeal) A] {g : V → A}
 
 /- English proof (translation)
-Establish `h1` using `h.add 0 N.zero_mem 0 N.zero_mem`. Rewrite `h1` using `[add_zero]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero (h : LinOn w N g) : g 0 = 0 := by
   have h1 := h.add 0 N.zero_mem 0 N.zero_mem
@@ -199,7 +195,7 @@ theorem zero (h : LinOn w N g) : g 0 = 0 := by
   simpa using h1
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp [h.zero]) (fun a s ha ih => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, h.add _ (N.smul_mem _ (hy a)) _ (N.sum_mem fun i _ => N.smul_mem _ (hy i)), h.smul _ _ (hy a), ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum (h : LinOn w N g) {ι : Type} (s : Finset ι) (c : ι → 𝓞 K) (y : ι → V) (hy : ∀ i, y i ∈ N) :
     g (∑ i ∈ s, c i • y i) = ∑ i ∈ s, Ideal.Quotient.mk w.asIdeal (c i) • g (y i) := by
@@ -209,7 +205,7 @@ theorem sum (h : LinOn w N g) {ι : Type} (s : Finset ι) (c : ι → 𝓞 K) (y
     h.add _ (N.smul_mem _ (hy a)) _ (N.sum_mem fun i _ => N.smul_mem _ (hy i)), h.smul _ _ (hy a), ih]
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on' hx (fun a ha n hn => ?_) (fun x hx y hy h1 h2 => ?_)` and prove the remaining obligations. Rewrite using `[h.smul a n hn, (Ideal.Quotient.eq_zero_iff_mem).2 ha, zero_smul]`. Rewrite using `[h.add x (Submodule.smul_le_right hx) y (Submodule.smul_le_right hy), h1, h2, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem kills (h : LinOn w N g) {x : V} (hx : x ∈ w.asIdeal • N) : g x = 0 := by
   refine Submodule.smul_induction_on' hx (fun a ha n hn => ?_) (fun x hx y hy h1 h2 => ?_)
@@ -219,7 +215,7 @@ theorem kills (h : LinOn w N g) {x : V} (hx : x ∈ w.asIdeal • N) : g x = 0 :
 end LinOn
 
 /- English proof (translation)
-Establish `hle : ∀ x ∈ N, x ∈ localization₂ w.asIdeal N` using `fun x hx => ⟨1, Submonoid.one_mem _, by simpa using hx⟩`. Conclude with `⟨fun x hx y hy => h.add x (hle x hx) y (hle y hy), fun a x hx => h.smul a x (hle x hx)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem FrameAt.linOn {w : HeightOneSpectrum (𝓞 K)} {N : Submodule (𝓞 K) V} {n : ℕ}
     {β : V → (Fin n → 𝓞 K ⧸ w.asIdeal)} (h : FrameAt w N β) : LinOn w N β := by
@@ -227,13 +223,13 @@ theorem FrameAt.linOn {w : HeightOneSpectrum (𝓞 K)} {N : Submodule (𝓞 K) V
   exact ⟨fun x hx y hy => h.add x (hle x hx) y (hle y hy), fun a x hx => h.smul a x (hle x hx)⟩
 
 /- English proof (translation)
-Use `choose c hc using fun i => Ideal.Quotient.mk_surjective (β x i)`. Establish `hsumN : ∑ i, c i • y i ∈ N` using `N.sum_mem fun i _ => N.smul_mem _ (hy i)`. Establish `hzN : x - ∑ i, c i • y i ∈ N` using `N.sub_mem hx hsumN`. Establish `hβ : LinOn w N β` using `h.linOn`. Establish `hβz : β (x - ∑ i, c i • y i) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hβ.add _ hzN _ hsumN`. Rewrite `e1` using `[sub_add_cancel, hβ.sum Finset.univ c y hy]`. Establish `e2 : ∑ i, Ideal.Quotient.mk w.asIdeal (c i) • β (y i) = β x`. Use extensionality with `j`. Simplify using `[hβy, hc, Finset.sum_apply, Pi.single_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[e2]`. Simplify using `using e1`. Establish `hgz : g (x - ∑ i, c i • y i) = 0` using `hg.kills (h.ker _ hzN hβz)`. Establish `e3` using `hg.add _ hzN _ hsumN`. Rewrite `e3` using `[sub_add_cancel, hgz, zero_add, hg.sum Finset.univ c y hy]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Simplify using `only [hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FrameAt.expand {w : HeightOneSpectrum (𝓞 K)} {N : Submodule (𝓞 K) V} {n : ℕ}
     {β : V → (Fin n → 𝓞 K ⧸ w.asIdeal)} (h : FrameAt w N β) {A : Type} [AddCommGroup A]
@@ -272,7 +268,7 @@ def Deco.ofFrames (N : Submodule (𝓞 E) (Sp E n))
   be w x := (h w).1.mulVec (β w.1 x)
 
 /- English proof (translation)
-The claim follows from `hlat uni := huni f_add P x hx y hy := by show φ P ⬝ᵥ β P.1 (x + y) = _ rw [(hβ P.1).add x hx y hy, dotProduct_add] rfl f_smul P a x hx := by show φ P ⬝ᵥ β P.1 (a • x) = _ rw [(hβ P.1).smul a x hx, dotProduct_smul] rfl f_off P x hx := by show φ P ⬝ᵥ β P.1 x = _ rw [(hβ P.1).off x …`.
+A detailed English derivation is pending.
 -/
 theorem Deco.ofFrames_ok {N : Submodule (𝓞 E) (Sp E n)} (hlat : Submodule.IsLattice E N)
     (huni : IsUnimodular (hStd E n) N) {β : ∀ P : HeightOneSpectrum (𝓞 E), Sp E n → (Fin n → 𝓞 E ⧸ P.asIdeal)}
@@ -324,7 +320,7 @@ theorem Deco.ofFrames_ok {N : Submodule (𝓞 E) (Sp E n)} (hlat : Submodule.IsL
     exact h2
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite α`. Simplify using `only [ne_eq]`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_subtype_compl (fun x => x = a), Fintype.card_subtype_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_subtype_ne {α : Type} [Finite α] (a : α) : Nat.card {x : α // x ≠ a} = Nat.card α - 1 := by
   classical
@@ -334,31 +330,27 @@ theorem card_subtype_ne {α : Type} [Finite α] (a : α) : Nat.card {x : α // x
     Fintype.card_subtype_eq]
 
 /- English proof (translation)
-Use `choose β hβ using fun P : HeightOneSpectrum (𝓞 E) => exists_frameAt P N hlat.fg hlat.span_eq_top (n := n) (by simp)`. Use `choose y hyN hyβ using fun (P : HeightOneSpectrum (𝓞 E)) (i : Fin n) => (hβ P).surj (Pi.single i 1)`. Set `Ψ : (∀ P : ST, {φ : Fin n → 𝓞 E ⧸ P.1.asIdeal // φ ≠ 0}) × GLG E n SG → {d : DecoSet E n ST SG // d.1.N = N}` to `fun p => ⟨⟨Deco.ofFrames N β (fun P => (p.1 P).1) p.2, Deco.ofFrames_ok hlat huni hβ (fun P => (p.1 P).2) p.2⟩, rfl⟩`. Establish `hinj : Function.Injective Ψ`. Introduce `p q hpq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : Deco.ofFrames N β (fun P => (p.1 P).1) p.2 = Deco.ofFrames N β (fun P => (q.1 P).1) q.2` using `congrArg (fun d : {d : DecoSet E n ST SG // d.1.N = N} => d.1.1) hpq`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `P`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `dotProduct_eq` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Take `⟨x, -, hx⟩` from `(hβ P.1).surj c`. Establish `h1 : (p.1 P).1 ⬝ᵥ β P.1 x = (q.1 P).1 ⬝ᵥ β P.1 x` using `congrFun (congrFun (congrArg Deco.f h0) P) x`. Rewrite `h1` using `[hx]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Take `⟨x, -, hx⟩` from `(hβ w.1).surj c`. Establish `h1 : (p.2 w).1.mulVec (β w.1 x) = (q.2 w).1.mulVec (β w.1 x)` using `congrFun (congrFun (congrArg Deco.be h0) w) x`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[hx]`. Then use the resulting hypothesis. Establish `hsurj : Function.Surjective Ψ`. Introduce and unpack `⟨d, hd⟩`. Establish `hle : ∀ (P : HeightOneSpectrum (𝓞 E)), ∀ x ∈ N, x ∈ d.1.at P`. Introduce `P x hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_locP P d.1.N (hd ▸ hx)`. Establish `hf : ∀ P : ST, LinOn P.1 N (d.1.f P)` using `fun P => ⟨fun x hx y hy => d.2.f_add P x (hle _ x hx) y (hle _ y hy), fun a x hx => d.2.f_smul P a x (hle _ x hx)⟩`. Establish `hb : ∀ w : SG, LinOn w.1 N (d.1.be w)` using `fun w => ⟨fun x hx y hy => d.2.be_add w x (hle _ x hx) y (hle _ y hy), fun a x hx => d.2.be_smul w a x (hle _ x hx)⟩`. Establish `hfx : ∀ (P : ST), ∀ x ∈ N, d.1.f P x = (fun i => d.1.f P (y P.1 i)) ⬝ᵥ β P.1 x`. Introduce `P x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hβ P.1).expand (hf P) (y P.1) (hyN P.1) (hyβ P.1) hx]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hbx : ∀ (w : SG), ∀ x ∈ N, d.1.be w x = (Matrix.of fun a i => d.1.be w (y w.1 i) a).mulVec (β w.1 x)`. Introduce `w x hx`. Rewrite using `[(hβ w.1).expand (hb w) (y w.1) (hyN w.1) (hyβ w.1) hx]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hφ : ∀ P : ST, (fun i => d.1.f P (y P.1 i)) ≠ 0`. Introduce `P h0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, hne⟩` from `d.2.f_ne P`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hfx P x (hd ▸ hx), h0, zero_dotProduct]`. Establish `hu : ∀ w : SG, IsUnit (Matrix.of fun a i => d.1.be w (y w.1 i) a)`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.mulVec_surjective_iff_isUnit]`. Introduce `c`. Take `⟨x, hx, hxc⟩` from `d.2.be_surj w c`. Conclude with `⟨β w.1 x, by rw [← hbx w x (hd ▸ hx), hxc]⟩`. Use `⟨(fun P => ⟨_, hφ P⟩, fun w => (hu w).unit), ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `Deco.Ok.ext_on (Deco.ofFrames_ok hlat huni hβ hφ _) d.2 hd.symm ?_ ?_` and prove the remaining obligations. Introduce `P x hx`. Conclude with `(hfx P x hx).symm`.
-
-Introduce `w x hx`. Conclude with `(hbx w x hx).symm`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective Ψ ⟨hinj, hsurj⟩), Nat.card_prod, Nat.card_pi, Nat.card_pi]`. Use `congr 1`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[card_subtype_ne, Nat.card_fun, Nat.card_fin]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_deco_fibre (N : Submodule (𝓞 E) (Sp E n)) (hlat : Submodule.IsLattice E N)
     (huni : IsUnimodular (hStd E n) N) :
@@ -439,15 +431,13 @@ end Fibre
 section Abstract
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite Γ`. Use `haveI := Fintype.ofFinite Y`. Use `haveI : Fintype (MulAction.orbitRel.Quotient Γ Y) := Fintype.ofFinite _`. Establish `hB` using `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group Γ Y`. Establish `hfix : ∀ g : Γ, g ≠ 1 → Fintype.card (MulAction.fixedBy Y g) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `g hg`. Rewrite using `[Fintype.card_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Apply `hg` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : g ∈ MulAction.stabilizer Γ y` using `hy`. Rewrite `h1` using `[hfree y]`. Conclude with `h1`. Establish `hsum : ∑ g : Γ, Fintype.card (MulAction.fixedBy Y g) = Fintype.card Y`. Rewrite using `[Finset.sum_eq_single (1 : Γ)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Fintype.card_congr (Equiv.subtypeUnivEquiv fun y => one_smul Γ y)`. Introduce `g _ hg`. Conclude with `hfix g hg`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
-
-Rewrite `hB` using `[hsum]`. Establish `hΓ : (Fintype.card Γ : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, hB]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem card_orbits_free (Γ Y : Type) [Group Γ] [Finite Γ] [Finite Y] [MulAction Γ Y]
     (hfree : ∀ y : Y, MulAction.stabilizer Γ y = ⊥) :
@@ -482,25 +472,23 @@ theorem card_orbits_free (Γ Y : Type) [Group Γ] [Finite Γ] [Finite Y] [MulAct
 variable {A H D D₀ : Type} [Group A] [Group H] [MulAction (A × H) D] [MulAction A D₀]
 
 /- English proof (translation)
-Set `_ : MulAction (A × H) D₀` to `MulAction.compHom D₀ (MonoidHom.fst A H)`. Establish `hsm : ∀ (g : A × H) (x : D₀), g • x = g.1 • x` using `fun _ _ => rfl`. Set `e : MulAction.orbitRel.Quotient (A × H) D₀ ≃ MulAction.orbitRel.Quotient A D₀` to `Quotient.congrRight (r := MulAction.orbitRel (A × H) D₀) (r' := MulAction.orbitRel A D₀) (by`. Introduce `a b`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g.1, hg⟩`. Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨(g, 1), hg⟩)`. Establish `he : ∀ x : D₀, e (Quotient.mk'' x) = Quotient.mk'' x` using `fun _ => rfl`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hfinq : Finite (MulAction.orbitRel.Quotient (A × H) D₀)` using `Finite.of_equiv _ e.symm`. Set `_ : Fintype (MulAction.orbitRel.Quotient (A × H) D₀)` to `Fintype.ofFinite _`. Set `_ : Fintype (MulAction.orbitRel.Quotient A D₀)` to `Fintype.ofFinite _`. Establish `hrep' : ∀ c : MulAction.orbitRel.Quotient (A × H) D₀, (Quotient.mk'' (rep (e c)) : MulAction.orbitRel.Quotient (A × H) D₀) = c`. Introduce `c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, hrep]`. Establish `hst : ∀ x : D₀, Nat.card (MulAction.stabilizer (A × H) x) = Nat.card (MulAction.stabilizer A x) * Nat.card H`. Introduce `x`. Rewrite using `[← Nat.card_prod]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.card_congr { toFun := fun g => (⟨g.1.1, g.2⟩, g.1.2) invFun := fun p => ⟨(p.1.1, p.2), p.1.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hstf : ∀ x : D₀, Finite (MulAction.stabilizer (A × H) x)`. Introduce `x`. Use `hstab x` as an intermediate fact. Use `Nat.finite_of_card_ne_zero ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hst]`. Conclude with `Nat.mul_ne_zero Nat.card_pos.ne' Nat.card_pos.ne'`. Establish `hfc : ∀ x : D₀, Nat.card (fibre pr hpr x) = F` using `fun x => hF x`. Establish `hff : ∀ x : D₀, Finite (fibre pr hpr x)` using `fun x => hfin x`. Establish `hone : ∀ c : MulAction.orbitRel.Quotient (A × H) D₀, (Nat.card (MulAction.orbitRel.Quotient (MulAction.stabilizer (A × H) (rep (e c))) (fibre pr hpr (rep (e c)))) : ℝ) = ((Nat.card (MulAction.stabilizer A (rep (e c))) : ℕ) : ℝ)⁻¹ * ((F : ℝ) / (Nat.card H : ℕ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c`. Use `hstf (rep (e c))` as an intermediate fact. Use `hff (rep (e c))` as an intermediate fact. Rewrite using `[card_orbits_free _ _ ?_, hst, hfc]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Introduce `y`. Rewrite using `[eq_bot_iff]`. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (γ : A × H) • (y : D) = (y : D)` using `congrArg Subtype.val hγ`. Conclude with `Subtype.ext (hfree _ _ h1)`. Establish `hfo : ∀ c : MulAction.orbitRel.Quotient (A × H) D₀, Finite (MulAction.orbitRel.Quotient (MulAction.stabilizer (A × H) (rep (e c))) (fibre pr hpr (rep (e c))))`. Introduce `c`. Use `hff (rep (e c))` as an intermediate fact.
-
-Conclude with `Quotient.finite _`. Rewrite using `[← Nat.card_congr (orbitsFib pr hpr (fun c => rep (e c)) hrep'), Nat.card_sigma, Nat.cast_sum, Finset.sum_congr rfl (fun c _ => hone c), ← Finset.sum_mul, finsum_eq_sum_of_fintype]`. Use `congr 1`. Conclude with `Fintype.sum_equiv e _ _ (fun _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem card_orbits_fibred (pr : D → D₀) (hpr : ∀ (g : A × H) (d : D), pr (g • d) = g.1 • pr d)
     [Finite (MulAction.orbitRel.Quotient A D₀)] [Finite H] (hstab : ∀ x : D₀, Finite (MulAction.stabilizer A x))
@@ -584,7 +572,7 @@ abbrev UniLat : Type :=
 variable {E n}
 
 /- English proof (translation)
-Unfold `IsUnimodular at *`. Rewrite using `[dual_gmap g hg, hN]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gmap_unimodular {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) {N : Submodule (𝓞 E) (Sp E n)}
     (hN : IsUnimodular (hStd E n) N) : IsUnimodular (hStd E n) (gmap g N) := by
@@ -615,11 +603,11 @@ def massC : ℝ := ∑ᶠ c : UniCl E n, ((Nat.card (autU E n (Quotient.out c)) 
 variable {E n}
 
 /- English proof (translation)
-Take `⟨s, hs1, hs2⟩` from `unimod_finite hE n`. Use `Finite.of_surjective (fun N : s => (Quotient.mk'' (⟨N.1, hs1 N.1 N.2⟩ : UniLat E n) : UniCl E n)) ?_` and prove the remaining obligations. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h M`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨N, hN, g, hg, hgN⟩` from `hs2 M.1 M.2.1 M.2.2`. Use `⟨⟨N, hN⟩, ?_⟩` and prove the remaining obligations. Apply `Quotient.sound'` to reduce the goal to its premises. Rewrite using `[MulAction.orbitRel_apply]`. Use `⟨(⟨g, hg⟩ : UF E n)⁻¹, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : M = (⟨g, hg⟩ : UF E n) • (⟨N, hs1 N hN⟩ : UniLat E n)` using `Subtype.ext hgN.symm`. Rewrite using `[h1]`. Conclude with `inv_smul_smul _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_UniCl (hE : PosStar E) : Finite (UniCl E n) := by
   obtain ⟨s, hs1, hs2⟩ := unimod_finite hE n
@@ -638,7 +626,7 @@ theorem finite_UniCl (hE : PosStar E) : Finite (UniCl E n) := by
     exact inv_smul_smul _ _
 
 /- English proof (translation)
-Establish `hA` using `final_autFinite E (Sp E n) (hStd E n) hStd_isSymm (hStd_pos hE) N.1 N.2.1`. Establish `: Finite {g : Sp E n ≃ₗ[E] Sp E n | g ∈ isom (hStd E n) ∧ gmap g N.1 = N.1}` using `hA`. Use `Finite.of_injective (fun a : autU E n N => (⟨a.1.1, a.1.2, congrArg Subtype.val a.2⟩ : {g : Sp E n ≃ₗ[E] Sp E n | g ∈ isom (hStd E n) ∧ gmap g N.1 = N.1})) ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (Subtype.ext (show a.1.1 = b.1.1 from congrArg (fun g : {g : Sp E n ≃ₗ[E] Sp E n | g ∈ isom (hStd E n) ∧ gmap g N.1 = N.1} => g.1) hab))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_autU (hE : PosStar E) (N : UniLat E n) : Finite (autU E n N) := by
   have hA := final_autFinite E (Sp E n) (hStd E n) hStd_isSymm (hStd_pos hE) N.1 N.2.1
@@ -654,9 +642,9 @@ def UniLat.std (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) : Uni
   ⟨stdLat E n, stdLat_lattice, stdLat_unimodular⟩
 
 /- English proof (translation)
-Use `finite_UniCl (n := n) hE` as an intermediate fact. Set `_ : Fintype (UniCl E n)` to `Fintype.ofFinite _`. Unfold `massC`. Rewrite using `[finsum_eq_sum_of_fintype]`. Establish `: Nonempty (UniCl E n)` using `⟨Quotient.mk'' (UniLat.std E n)⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_pos (fun c _ => ?_) Finset.univ_nonempty` and prove the remaining obligations. Use `finite_autU hE (Quotient.out c)` as an intermediate fact. Conclude with `inv_pos.mpr (by exact_mod_cast Nat.card_pos)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem massC_pos (hE : PosStar E) : 0 < massC E n := by
   classical
@@ -689,14 +677,14 @@ def decoCard : ℕ :=
   (∏ P : ST, (Nat.card (𝓞 E ⧸ P.1.asIdeal) ^ n - 1)) * ∏ w : SG, Nat.card (GL (Fin n) (𝓞 E ⧸ w.1.asIdeal))
 
 /- English proof (translation)
-Rewrite using `[decoCard, ← card_deco_fibre (ST := ST) (SG := SG) N.1 N.2.1 N.2.2]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun d => ⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreCard (N : UniLat E n) : Nat.card {d : DecoSet E n ST SG // d.lat = N} = decoCard E n ST SG := by
   rw [decoCard, ← card_deco_fibre (ST := ST) (SG := SG) N.1 N.2.1 N.2.2]
   exact Nat.card_congr (Equiv.subtypeEquivRight fun d => ⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩)
 
 /- English proof (translation)
-Establish `h` using `DecoSet.finite_fibre (ST := ST) (SG := SG) N.1 N.2.1.fg`. Establish `: Finite {d : DecoSet E n ST SG | d.1.N = N.1}` using `h`. Use `Finite.of_injective (fun d : {d : DecoSet E n ST SG // d.lat = N} => (⟨d.1, congrArg Subtype.val d.2⟩ : {d : DecoSet E n ST SG | d.1.N = N.1})) ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (congrArg (fun d : {d : DecoSet E n ST SG | d.1.N = N.1} => d.1) hab)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DecoSet.finite_lat_fibre (N : UniLat E n) : Finite {d : DecoSet E n ST SG // d.lat = N} := by
   have h := DecoSet.finite_fibre (ST := ST) (SG := SG) N.1 N.2.1.fg
@@ -717,7 +705,7 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {SG : Finset
 def LevFam.idx : ℕ := ∏ w : SG, (Λ w).H.index
 
 /- English proof (translation)
-Set `e : ↥Λ.grp ≃ ∀ w : SG, ↥(Λ w).H` to `{ toFun := fun x w => ⟨x.1 w, x.2 w (Set.mem_univ w)⟩ invFun := fun f => ⟨fun w => (f w).1, fun w _ => (f w).2⟩ left_inv := fun x => rfl right_inv := fun f => rfl }`. Rewrite using `[Nat.card_congr e, Nat.card_pi]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem LevFam.card_grp : Nat.card ↥Λ.grp = ∏ w : SG, Nat.card ↥(Λ w).H := by
   let e : ↥Λ.grp ≃ ∀ w : SG, ↥(Λ w).H :=
@@ -728,7 +716,7 @@ theorem LevFam.card_grp : Nat.card ↥Λ.grp = ∏ w : SG, Nat.card ↥(Λ w).H 
   rw [Nat.card_congr e, Nat.card_pi]
 
 /- English proof (translation)
-Rewrite using `[LevFam.idx, LevFam.card_grp, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun w _ => (Λ w).H.index_mul_card`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LevFam.idx_mul_card :
     Λ.idx * Nat.card ↥Λ.grp = ∏ w : SG, Nat.card (GL (Fin n) (𝓞 E ⧸ w.1.asIdeal)) := by
@@ -736,7 +724,7 @@ theorem LevFam.idx_mul_card :
   exact Finset.prod_congr rfl fun w _ => (Λ w).H.index_mul_card
 
 /- English proof (translation)
-Unfold `LevFam.idx`. Conclude with `Finset.prod_pos fun w _ => Nat.pos_of_ne_zero (Subgroup.index_ne_zero_of_finite)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem LevFam.idx_pos : 0 < Λ.idx := by
   unfold LevFam.idx
@@ -750,9 +738,9 @@ variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG)
 
 /- English proof (translation)
-Establish `hc : (Nat.card ↥Λ.grp : ℝ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Unfold `decoCard`. Rewrite using `[← Λ.idx_mul_card]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Establish `h1 : 1 ≤ Nat.card (𝓞 X.E ⧸ P.1.asIdeal) ^ n` using `Nat.one_le_pow _ _ Nat.card_pos`. Move the coercions through the operations in `[Nat.cast_sub h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -772,9 +760,9 @@ theorem decoCard_div :
   ring
 
 /- English proof (translation)
-Establish `hE : PosStar X.E` using `posStar_of_conj hX.conjE`. Use `finite_UniCl (n := n) hE` as an intermediate fact. Establish `hfinG : Finite (GLG X.E n SG)` using `inferInstance`. Establish `hfinH : Finite ↥Λ.grp` using `inferInstance`. Set `_ : MulAction (UF X.E n × ↥Λ.grp) (DecoSet X.E n ST SG)` to `MulAction.compHom _ (FormG.incl Λ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h` using `card_orbits_fibred (A := UF X.E n) (H := ↥Λ.grp) (D := DecoSet X.E n ST SG) (D₀ := UniLat X.E n) DecoSet.lat (fun _ _ => rfl) (finite_autU hE) (fun g d hg => hfree d g hg) (decoCard X.E n ST SG) DecoSet.finite_lat_fibre fibreCard Quotient.out (fun c => Quotient.out_eq' c)`. Rewrite using `[mul_assoc, ← decoCard_div Λ]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_formCl (hX : X.Ok) (hfree : (formGSD C Λ).Free) :
     (Nat.card (formGSD C Λ).Cl : ℝ) =
@@ -809,7 +797,7 @@ section Cols
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 /- English proof (translation)
-Simplify using `[Ranks.N]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rankN_zero (R : Ranks) : R.N 0 = R.k := by
   simp [Ranks.N]
@@ -831,37 +819,37 @@ def dimC (u : Pr.Word) (τ : X.Tau) : ℕ := Nat.card (Formalism.GradedWeylDivis
 def dstarC (u : Pr.Word) : ℝ := massk X R * (IpiC Ch : ℝ) * ∏ τ, (dimC W u τ : ℝ)
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_eq_nat_card_basis (bVV X.K (W.lamTrue u 0))]`. Conclude with `Nat.card_pi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_colV (u : Pr.Word) : finrank X.K (VV X.K (W.lamTrue u 0)) = ∏ τ, dimC W u τ := by
   rw [Module.finrank_eq_nat_card_basis (bVV X.K (W.lamTrue u 0))]
   exact Nat.card_pi
 
 /- English proof (translation)
-Rewrite using `[← finrank_colV]`. Conclude with `(colVal W u 0 (Pr.vT u) Pr.vGs).finrank_pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimC_pos (u : Pr.Word) : 0 < ∏ τ, dimC W u τ := by
   rw [← finrank_colV]
   exact (colVal W u 0 (Pr.vT u) Pr.vGs).finrank_pos
 
 /- English proof (translation)
-The claim follows from `massC_pos (posStar_of_conj hX.conjE)`.
+A detailed English derivation is pending.
 -/
 theorem massk_pos (hX : X.Ok) : 0 < massk X R := massC_pos (posStar_of_conj hX.conjE)
 
 /- English proof (translation)
-The claim follows from `LevFam.idx_pos _`.
+A detailed English derivation is pending.
 -/
 theorem IpiC_pos : 0 < IpiC Ch := LevFam.idx_pos _
 
 /- English proof (translation)
-The claim follows from `mul_pos (mul_pos (massk_pos hX) (by exact_mod_cast IpiC_pos Ch)) (by exact_mod_cast dimC_pos W u)`.
+A detailed English derivation is pending.
 -/
 theorem dstarC_pos (hX : X.Ok) (u : Pr.Word) : 0 < dstarC W Ch u :=
   mul_pos (mul_pos (massk_pos hX) (by exact_mod_cast IpiC_pos Ch)) (by exact_mod_cast dimC_pos W u)
 
 /- English proof (translation)
-Rewrite using `[card_formCl _ _ hX (colFree W Ch hX hPr hbig u)]`. Establish `h : ∀ P : Pr.vT u, ((Nat.card (𝓞 X.E ⧸ P.1.asIdeal) : ℝ) ^ (R.N 0) - 1) = (Pr.T u : ℝ) ^ R.k - 1`. Introduce `P`. Rewrite using `[card_res, hPr.vT_norm u P.1 P.2, (rankN_zero R)]`. Rewrite using `[Finset.prod_congr rfl fun P _ => h P, Finset.prod_const, Finset.card_univ, Fintype.card_coe, hPr.vT_card]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -875,7 +863,7 @@ theorem card_colCl (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1)
   rfl
 
 /- English proof (translation)
-Rewrite using `[finrank_MfV W Ch hX hPr hbig u, Nat.cast_mul, card_colCl W Ch hX hPr hbig u, finrank_colV, dstarC]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_MfV_eq (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
     (finrank X.K (MfV W Ch u) : ℝ) = dstarC W Ch u * ((Pr.T u : ℝ) ^ R.k - 1) ^ X.f := by
@@ -892,9 +880,9 @@ open Finset Formalism.LogVandermondeBounds.StandardLattice
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-Establish `hf : 1 ≤ X.f`. Rewrite using `[Fields.f, hX.card_Tau]`. Conclude with `Module.finrank_pos`. Establish `hk : 1 ≤ R.k` using `le_trans hf hfk`. Establish `h2 : 2 * X.f ≤ 2 ^ R.k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩ : ∃ j, R.k = j + 1` from `⟨R.k - 1, by omega⟩`. Use `Nat.lt_two_pow_self (n := j)` as an intermediate fact. Rewrite using `[hj, pow_succ]`. Use linear arithmetic over natural numbers and integers. Conclude with `Formalism.HermitianLattices.GenusMassVolumes.mass_corollary X.f R.k (Pr.T u) Xu Γ Dstar (dstarC W Ch u) _ lo hi hf hk h2 (by exact_mod_cast (hPr.T_prime u).two_le) hXu hΓ hD (dstarC_pos W Ch hX u) hXD hT1 hT2 (finrank_MfV_eq W Ch hX hPr hbig u) hlo hhi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem level_col (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (hfk : X.f ≤ R.k) (u : Pr.Word)
     (Xu Γ Dstar lo hi : ℝ) (hXu : 0 < Xu) (hΓ : 1 ≤ Γ) (hD : 0 < Dstar)
@@ -921,7 +909,7 @@ theorem level_col (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) 
 def hcSeq (u : Pr.Word) (τ : X.Tau) : ℕ → ℝ := fun i => if h : i < R.k then (((W.hc u τ).u ⟨i, h⟩ : ℚ) : ℝ) else 0
 
 /- English proof (translation)
-Unfold `vandN`. Conclude with `Finset.prod_congr rfl fun i hi => Finset.prod_congr rfl fun j hj => h i j (Finset.mem_range.1 hi) (Finset.mem_Ico.1 hj).2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vandN_congr {x y : ℕ → ℝ} {N : ℕ} (h : ∀ i j, i < N → j < N → x i - x j = y i - y j) : vandN x N = vandN y N := by
   unfold vandN
@@ -929,11 +917,11 @@ theorem vandN_congr {x y : ℕ → ℝ} {N : ℕ} (h : ∀ i j, i < N → j < N 
     h i j (Finset.mem_range.1 hi) (Finset.mem_Ico.1 hj).2
 
 /- English proof (translation)
-Establish `hi' : i < R.N 0` using `by rw [(rankN_zero R)]; exact hi`. Unfold `wSeq hcSeq`. Rewrite using `[dif_pos hi', dif_pos hi]`. Establish `h1 : (((W.lamTrue u 0 τ).w ⟨i, hi'⟩ : ℤ) : ℚ) = (W.hc u τ).u ⟨i, hi⟩ - (((R.k : ℚ) - 1) / 2 - i)`. Establish `h2 : (W.lamTrue u 0 τ).w ⟨i, hi'⟩ = (Examples₂.lamOf (W.hc u τ) 0).w ⟨i, hi'⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Wts.lamTrue, Wts.lamN, shiftW]`. Rewrite using `[h2, Examples₂.lamOf_eq (W.hc u τ) 0 (Nat.zero_le _), Examples₂.wtQ, dif_pos hi]`. Both sides reduce to the same expression. Establish `h3 : (((W.lamTrue u 0 τ).w ⟨i, hi'⟩ : ℤ) : ℝ) = (((W.hc u τ).u ⟨i, hi⟩ : ℚ) : ℝ) - (((R.k : ℝ) - 1) / 2 - i)`. Use `congrArg (fun q : ℚ => (q : ℝ)) h1` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wSeq_lamTrue (u : Pr.Word) (τ : X.Tau) {i : ℕ} (hi : i < R.k) :
     wSeq (W.lamTrue u 0 τ) i = hcSeq W u τ i - ((R.k : ℝ) - 1) / 2 := by
@@ -953,9 +941,9 @@ theorem wSeq_lamTrue (u : Pr.Word) (τ : X.Tau) {i : ℕ} (hi : i < R.k) :
   ring
 
 /- English proof (translation)
-Establish `key : ∀ (x : ℕ → ℝ) (N : ℕ), N = R.k → (∀ i, i < R.k → x i = hcSeq W u τ i - ((R.k : ℝ) - 1) / 2) → dimVN x N = dimVN (hcSeq W u τ) R.k`. Introduce `x N hN hx`. Substitute `hN` using the available equality. Unfold `dimVN`. Rewrite using `[vandN_congr (y := hcSeq W u τ) fun i j hi hj => by rw [hx i hi, hx j hj]; ring]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ _ (rankN_zero R) fun i hi => wSeq_lamTrue W u τ hi`.
+A detailed English derivation is pending.
 -/
 theorem dimVN_lamTrue (u : Pr.Word) (τ : X.Tau) :
     dimVN (wSeq (W.lamTrue u 0 τ)) (R.N 0) = dimVN (hcSeq W u τ) R.k := by
@@ -968,7 +956,7 @@ theorem dimVN_lamTrue (u : Pr.Word) (τ : X.Tau) :
   exact key _ _ (rankN_zero R) fun i hi => wSeq_lamTrue W u τ hi
 
 /- English proof (translation)
-Rewrite using `[← dimVN_lamTrue]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimC_eq (u : Pr.Word) (τ : X.Tau) (hw : WeylDim (W.lamTrue u 0 τ)) :
     (dimC W u τ : ℝ) = dimVN (hcSeq W u τ) R.k := by
@@ -979,7 +967,7 @@ def enumSeq {α : Type} [Zero α] (e : X.Tau ≃ Fin X.f) (F : X.Tau → α) : �
   fun ρ => if h : ρ < X.f then F (e.symm ⟨ρ, h⟩) else 0
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_range (fun ρ => G (enumSeq e F ρ))]`. Simplify using `only [enumSeq, Fin.is_lt, dif_pos, Fin.eta]`. Conclude with `Equiv.prod_comp e.symm (fun τ => G (F τ))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_enumSeq {α : Type} [Zero α] (e : X.Tau ≃ Fin X.f) (F : X.Tau → α) (G : α → ℝ) :
     ∏ ρ ∈ range X.f, G (enumSeq e F ρ) = ∏ τ, G (F τ) := by
@@ -988,7 +976,7 @@ theorem prod_enumSeq {α : Type} [Zero α] (e : X.Tau ≃ Fin X.f) (F : X.Tau �
   exact Equiv.prod_comp e.symm (fun τ => G (F τ))
 
 /- English proof (translation)
-Rewrite using `[prod_enumSeq e (hcSeq W u) fun x => dimVN x R.k, dstarC]`. Conclude with `congrArg _ (prod_congr rfl fun τ _ => dimC_eq W u τ (hw τ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dstarC_eq (u : Pr.Word) (hw : ∀ τ, WeylDim (W.lamTrue u 0 τ)) (e : X.Tau ≃ Fin X.f) :
     dstarC W Ch u = massk X R * (IpiC Ch : ℝ) * ∏ ρ ∈ range X.f, dimVN (enumSeq e (hcSeq W u) ρ) R.k := by
@@ -996,11 +984,9 @@ theorem dstarC_eq (u : Pr.Word) (hw : ∀ τ, WeylDim (W.lamTrue u 0 τ)) (e : X
   exact congrArg _ (prod_congr rfl fun τ _ => dimC_eq W u τ (hw τ))
 
 /- English proof (translation)
-Establish `h1 : 0 < dimC W u τ`. Assume the negation of the conclusion as `h0`. Establish `h2` using `dimC_pos W u`. Rewrite `h2` using `[prod_eq_zero (mem_univ τ) (Nat.eq_zero_of_not_pos h0)]`. Conclude with `lt_irrefl _ h2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) < dimVN (hcSeq W u τ) R.k`. Rewrite using `[← dimC_eq W u τ hw]`. Conclude with `h1` after adjusting the coercions. Unfold `dimVN at h2`. Establish `h3 : (0 : ℝ) < ∏ i ∈ range R.k, ((i.factorial : ℕ) : ℝ)` using `prod_pos fun i _ => by exact_mod_cast i.factorial_pos`.
-
-Conclude with `(div_pos_iff_of_pos_right h3).mp h2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vandN_hcSeq_pos (u : Pr.Word) (τ : X.Tau) (hw : WeylDim (W.lamTrue u 0 τ)) : 0 < vandN (hcSeq W u τ) R.k := by
   have h1 : 0 < dimC W u τ := by
@@ -1017,7 +1003,7 @@ theorem vandN_hcSeq_pos (u : Pr.Word) (τ : X.Tau) (hw : WeylDim (W.lamTrue u 0 
   exact (div_pos_iff_of_pos_right h3).mp h2
 
 /- English proof (translation)
-The claim follows from `|(1 / ((X.f : ℝ) * R.k)) * Real.log (Dstar / dstarC W Ch u) - (1 / ((X.f : ℝ) * R.k)) * Real.log (Dstar / dstarC W Ch u')| ≤ V / R.k := by have hf : 1 ≤ X.f := by rw [Fields.f, hX.card_Tau] exact Module.finrank_pos let e : X.Tau ≃ Fin X.f := Fintype.equivFin X.Tau rw [dstarC_eq W …`.
+A detailed English derivation is pending.
 -/
 theorem variation_col (hX : X.Ok) (hk : 1 ≤ R.k) (u u' : Pr.Word) (hw : ∀ τ, WeylDim (W.lamTrue u 0 τ))
     (hw' : ∀ τ, WeylDim (W.lamTrue u' 0 τ)) (Dstar V : ℝ) (hD : 0 < Dstar)
@@ -1049,7 +1035,7 @@ variable (X R) in
 def massr : ℝ := massC X.E R.r
 
 /- English proof (translation)
-The claim follows from `massC_pos (posStar_of_conj hX.conjE)`.
+A detailed English derivation is pending.
 -/
 theorem massr_pos (hX : X.Ok) : 0 < massr X R := massC_pos (posStar_of_conj hX.conjE)
 
@@ -1058,7 +1044,7 @@ variable (Pr R) in
 def DstarC (dsig : X.Tau → ℝ) : ℝ := massr X R * (IsigC Pr R : ℝ) * ∏ τ, dsig τ
 
 /- English proof (translation)
-Use `Finset.prod_pos fun w _ => ?_` and prove the remaining obligations. Establish `: Finite (GL (Fin R.r) (𝓞 X.E ⧸ w.1.asIdeal))` using `inferInstance`. Conclude with `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsigC_pos : 0 < IsigC Pr R := by
   refine Finset.prod_pos fun w _ => ?_
@@ -1066,7 +1052,7 @@ theorem IsigC_pos : 0 < IsigC Pr R := by
   exact Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-The claim follows from `mul_pos (mul_pos (massr_pos hX) (by exact_mod_cast IsigC_pos)) (prod_pos fun τ _ => hd τ)`.
+A detailed English derivation is pending.
 -/
 theorem DstarC_pos (hX : X.Ok) {dsig : X.Tau → ℝ} (hd : ∀ τ, 0 < dsig τ) : 0 < DstarC Pr R dsig :=
   mul_pos (mul_pos (massr_pos hX) (by exact_mod_cast IsigC_pos)) (prod_pos fun τ _ => hd τ)
@@ -1077,17 +1063,17 @@ def XuC (dsig : X.Tau → ℝ) (u : Pr.Word) : ℝ :=
   (DstarC Pr R dsig / dstarC W Ch u) ^ ((1 : ℝ) / ((X.f : ℝ) * R.k))
 
 /- English proof (translation)
-The claim follows from `Real.rpow_pos_of_pos (div_pos (DstarC_pos hX hd) (dstarC_pos W Ch hX u)) _`.
+A detailed English derivation is pending.
 -/
 theorem XuC_pos (hX : X.Ok) {dsig : X.Tau → ℝ} (hd : ∀ τ, 0 < dsig τ) (u : Pr.Word) : 0 < XuC W Ch dsig u :=
   Real.rpow_pos_of_pos (div_pos (DstarC_pos hX hd) (dstarC_pos W Ch hX u)) _
 
 /- English proof (translation)
-Establish `hf : (X.f : ℝ) ≠ 0`. Establish `: 0 < X.f`. Rewrite using `[Fields.f, hX.card_Tau]`. Conclude with `Module.finrank_pos`. Conclude with `this.ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : (R.k : ℝ) ≠ 0`. Use `R.m_add_three_le_k` as an intermediate fact. Conclude with `(show R.k ≠ 0 by omega)` after adjusting the coercions. Establish `hx` using `(div_pos (DstarC_pos (Pr := Pr) (R := R) hX hd) (dstarC_pos W Ch hX u)).le`. Unfold `XuC`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx]`. Establish `: (1 : ℝ) / ((X.f : ℝ) * R.k) * ((X.f * R.k : ℕ) : ℝ) = 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.rpow_one]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem XuC_pow (hX : X.Ok) {dsig : X.Tau → ℝ} (hd : ∀ τ, 0 < dsig τ) (u : Pr.Word) :
     XuC W Ch dsig u ^ (X.f * R.k) = DstarC Pr R dsig / dstarC W Ch u := by
@@ -1112,7 +1098,7 @@ def InWindow (dsig : X.Tau → ℝ) (Γ : ℝ) (u : Pr.Word) : Prop :=
     (Pr.T u : ℝ) ≤ XuC W Ch dsig u * Γ ^ (-(2 : ℝ) / ((X.f : ℝ) * R.k)) * (1 + 1 / ((X.f : ℝ) * R.k))
 
 /- English proof (translation)
-The claim follows from `level_col W Ch hX hPr hbig hfk u _ Γ _ lo hi (XuC_pos W Ch hX hd u) hΓ (DstarC_pos hX hd) (XuC_pow W Ch hX hd u) hT.1 hT.2 hlo hhi`.
+A detailed English derivation is pending.
 -/
 theorem level_window_col (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (hfk : X.f ≤ R.k) (u : Pr.Word)
     {dsig : X.Tau → ℝ} (hd : ∀ τ, 0 < dsig τ) {Γ : ℝ} (hΓ : 1 ≤ Γ) (hT : InWindow W Ch dsig Γ u) (lo hi : ℝ)
@@ -1134,21 +1120,19 @@ end WeylTest
 section Unram
 
 /- English proof (translation)
-Use `⟨hX.ok.cplxE, hX.ok.conjE, ?_⟩` and prove the remaining obligations. Introduce `P hP`. Assume the negation of the conclusion as `hcon`. Establish `hall : ∀ θ : 𝓞 X.E, θ - X.conjO θ ∈ P`. Introduce `θ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `hcon ⟨θ, X.conjO θ, rfl, h⟩`. Establish `hq : Algebra.IsQuadraticExtension X.F X.E` using `{ finrank_eq_two' := hX.ok.rankE }`. Set `c : Gal(X.E/X.F)` to `AlgEquiv.ofRingEquiv (f := starRingAut) (fun r => hX.ok.star_F r)`. Establish `hP0 : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField X.E)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPp : P.IsPrime` using `hP.isPrime`. Establish `hun` using `hX.unram ⟨P, hPp, hP0⟩`. Establish `hlo : P.LiesOver (P.under (𝓞 X.F))` using `⟨rfl⟩`. Establish `hp0 : P.under (𝓞 X.F) ≠ ⊥` using `Ideal.IsIntegral.comap_ne_bot (𝓞 X.F) hP0`. Establish `hcard : Nat.card (P.inertia Gal(X.E/X.F)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (G := Gal(X.E/X.F)) (P.under (𝓞 X.F)) P, Ideal.ramificationIdxIn_eq_ramificationIdx (P.under (𝓞 X.F)) P Gal(X.E/X.F), ← Ideal.ramificationIdx'_eq_ramificationIdx (P.under (𝓞 X.F)) P hp0]`. Assume the negation of the conclusion as `h`. Conclude with `hun ((Ideal.ramificationIdx'_ne_one_iff Ideal.map_comap_le).mp h)`. Establish `hc : c ∈ P.inertia Gal(X.E/X.F)`. Introduce `x`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : c • x - x = -(x - X.conjO x)`. Rewrite using `[neg_sub]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `P.neg_mem (hall x)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc1 : c = 1`. Establish `hb` using `(Subgroup.card_eq_one (H := P.inertia Gal(X.E/X.F))).mp hcard`. Rewrite `hc` using `[hb]`. Conclude with `hc`. Establish `hτ : Nonempty X.Tau`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[← Fintype.card_pos_iff, hX.ok.card_Tau]`. Conclude with `Module.finrank_pos`. Take `⟨τ⟩` from `hτ`. Apply `hX.ok.emb_ne τ τ` to reduce the goal to its premises. Use extensionality with `x`.
-
-Establish `h2 : star x = x` using `congrArg (fun s : Gal(X.E/X.F) => s x) hc1`. Use `show X.emb τ x = X.emb τ (star x)`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cm_unramified_of_field_conditions {X : Fields} (hX : X.AbelianUnramifiedExtensionConditions) : IsCMUnram X.E := by
   refine ⟨hX.ok.cplxE, hX.ok.conjE, ?_⟩
@@ -1206,9 +1190,9 @@ end Weighted
 section Whole
 
 /- English proof (translation)
-Establish `h1` using `hS.g_big i`. Establish `hf : 1 ≤ X.f`. Rewrite using `[Fields.f, hX.card_Tau]`. Conclude with `Module.finrank_pos`. Establish `hk : 1 ≤ R.k` using `le_trans (by omega) R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ X.f * R.k` using `Nat.mul_pos hf hk`. Rewrite `h1` using `[mul_assoc]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem Sizes.three_le_g {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {a : ℝ} (hS : Sizes Pr W a)
     (hX : X.Ok) (i : Fin 2) : 3 ≤ Pr.g i := by
@@ -1222,14 +1206,14 @@ theorem Sizes.three_le_g {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.
   omega
 
 /- English proof (translation)
-Rewrite using `[hD.f_eq]`. Conclude with `D.R.f_le_k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dat.Ok.f_le_k {D : Dat} (hD : D.Ok) : D.X.f ≤ D.R.k := by
   rw [hD.f_eq]
   exact D.R.f_le_k
 
 /- English proof (translation)
-The claim follows from `finrank_MfV_eq D.W D.Ch hD.fields hD.primes (hD.sizes.g_big 0) u`.
+A detailed English derivation is pending.
 -/
 theorem Dat.Ok.finrank_MfV {D : Dat} (hD : D.Ok) (u : D.Pr.Word) :
     (finrank D.X.K (MfV D.W D.Ch u) : ℝ) = dstarC D.W D.Ch u * ((D.Pr.T u : ℝ) ^ D.R.k - 1) ^ D.X.f :=

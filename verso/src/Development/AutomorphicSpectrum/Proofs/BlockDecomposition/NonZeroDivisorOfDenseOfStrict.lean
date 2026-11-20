@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.ComplReg
 
 /- English proof (translation)
-Establish `key : ∀ t : T, t * g π = 0 → ∀ M : ℕ, t ∈ Ideal.span {g π ^ M}`. Introduce `t ht M`. Take `⟨x, hx⟩` from `hd M t`. Rewrite `hx` using `[Ideal.mem_span_singleton]`. Take `⟨d, hd'⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hxπ : x * π ∈ Ideal.span {π ^ (M + 1)}`. Apply `hk (M + 1) (x * π)` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `⟨-d, by rw [map_mul]; linear_combination ht - g π * hd'⟩`. Rewrite `hxπ` using `[Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `hxπ`. Establish `h0 : (x - π ^ M * c) * π = 0`. Rewrite using `[sub_mul, hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxeq : x = π ^ M * c` using `sub_eq_zero.mp ((mem_nonZeroDivisors_iff.mp hπ).2 _ h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hgx : g x = g π ^ M * g c`. Rewrite using `[hxeq, map_mul, map_pow]`. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `⟨d + g c, by linear_combination hd' + hgx⟩`. Establish `main : ∀ t : T, t * g π = 0 → t = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `t ht`. Use `IsHausdorff.haus hH t (fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `key t ht n`. Rewrite using `[mem_nonZeroDivisors_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun t ht => main t (by rwa [mul_comm] at ht), main⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonZeroDivisor_of_dense_of_strict {B T : Type} [CommRing B] [CommRing T] (π : B)
     (g : B →+* T) (hH : IsHausdorff (Ideal.span {g π}) T)

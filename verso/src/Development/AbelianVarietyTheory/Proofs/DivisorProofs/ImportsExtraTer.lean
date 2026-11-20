@@ -9,11 +9,9 @@ namespace GlobalTheory.LiftAndFactorization
 open Formalism.L2.Pj
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Conclude with `⟨0, by rw [h0, map_zero]⟩`. Apply `IsDiscreteValuationRing.exists_lift_of_le_one` to reduce the goal to its premises. Establish `hne : (IsDiscreteValuationRing.maximalIdeal T.V).valuation T.Fr x ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Establish `hlog : WithZero.log ((IsDiscreteValuationRing.maximalIdeal T.V).valuation T.Fr x) = 0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hx h0` as an intermediate fact. Unfold `vV valV at this`. Conclude with `neg_eq_zero.1 this`. Use `WithZero.exp_log hne` as an intermediate fact. Rewrite `this` using `[hlog, WithZero.exp_zero]`.
-
-Conclude with `this.ge`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift (T : CDVR) (x : T.Fr) (hx : x ≠ 0 → vV T.V x = 0) :
     ∃ b : T.V, algebraMap T.V T.Fr b = x := by
@@ -31,9 +29,7 @@ theorem exists_lift (T : CDVR) (x : T.Fr) (hx : x ≠ 0 → vV T.V x = 0) :
   exact this.ge
 
 /- English proof (translation)
-Establish `key : ∀ a : F, ∃ b : T.V, algebraMap T.V T.Fr b = io a` using `fun a => exists_lift T (io a) (fun ha => h a (fun h0 => ha (by rw [h0, map_zero])))`. Use `choose f hf using key`. Establish `inj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective _ _`. Use `⟨{ toFun := f map_one' := inj (by rw [hf, map_one, map_one]) map_mul' := fun a b => inj (by rw [map_mul, hf, hf, hf, map_mul]) map_zero' := inj (by rw [hf, map_zero, map_zero]) map_add' := fun a b => inj (by rw [map_add, hf, hf, hf, map_add]) }, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
-
-Conclude with `hf a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_factor (T : CDVR) {F : Type} [Field F] (io : F →+* T.Fr)
     (h : ∀ a : F, a ≠ 0 → vV T.V (io a) = 0) :

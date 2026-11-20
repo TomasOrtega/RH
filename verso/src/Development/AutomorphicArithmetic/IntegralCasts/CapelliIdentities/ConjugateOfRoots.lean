@@ -5,17 +5,15 @@ open scoped ContDiff
 namespace UpperTheory.Reformulated.B.ConjugateOfRoots
 
 /- English proof (translation)
-Establish `hv : ∀ i, ∃ v : Fin n → K, v ≠ 0 ∧ (N : Matrix (Fin n) (Fin n) K).mulVec v = d i • v`. Introduce `i`. Establish `h` using `hN i`. Rewrite `h` using `[Polynomial.IsRoot.def, Matrix.eval_charpoly]`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨v, hv0, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hv]`. Use extensionality with `j`. Simplify using `[Matrix.mulVec_diagonal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `choose v hv0 hv using hv`. Establish `hli : LinearIndependent K v`. Use `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' (N : Matrix (Fin n) (Fin n) K)) d hd v fun i => ⟨?_, hv0 i⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply, hv i]`. Establish `hP : IsUnit (Matrix.of v).transpose`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `hli`. Take `⟨g, hg⟩` from `hP`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_mul_inv_iff_mul_eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hg, hD]`. Use extensionality with `i j`. Establish `h` using `congrFun (hv j) i`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`.
-
-Simplify `h` using `[Matrix.mulVec, dotProduct, mul_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem conj_of_roots {K : Type} [Field K] {n : ℕ} (d : Fin n → K) (hd : Function.Injective d) (N D : GL (Fin n) K)
     (hD : (D : Matrix (Fin n) (Fin n) K) = Matrix.diagonal d)

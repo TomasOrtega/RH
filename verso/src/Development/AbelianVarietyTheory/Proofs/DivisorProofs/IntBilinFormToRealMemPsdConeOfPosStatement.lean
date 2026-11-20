@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.Poinc
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Poinc.toReal_mem_psdCone_of_pos_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntBilinFormToRealMemPsdConeOfPos.lean&line=10#L10)
 -/

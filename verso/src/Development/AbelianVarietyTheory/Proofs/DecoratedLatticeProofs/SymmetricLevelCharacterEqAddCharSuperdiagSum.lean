@@ -24,7 +24,7 @@ namespace GlobalTheory.SymChain.SymData.RowLam
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Apply `Valuation.map_sum_lt _ one_ne_zero` to reduce the goal to its premises. Introduce `i _`. Conclude with `Valuation.map_sum_lt _ one_ne_zero (fun j _ => hf i j)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem val_sum_sum_lt {ι κ' : Type} [Fintype ι] [Fintype κ'] (f : ι → κ' → k)
     (hf : ∀ i j, valuation k (f i j) < 1) : valuation k (∑ i, ∑ j, f i j) < 1 := by
@@ -33,7 +33,7 @@ theorem val_sum_sum_lt {ι κ' : Type} [Fintype ι] [Fintype κ'] (f : ι → κ
   exact Valuation.map_sum_lt _ one_ne_zero (fun j _ => hf i j)
 
 /- English proof (translation)
-Establish `h1` using `(hψ 1).2 (by simp)`. Apply `h1` to reduce the goal to its premises. Establish `hle : valuation k t ≤ valuation k (ϖ : k)` using `(hϖ t).1 ht`. Rewrite using `[map_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem psi_inv_mul_eq_one (ψ : AddChar k Circle) (ϖ : kˣ) (hψ : GlobalTheory.SplitWeil.HasConductor ψ 1)
     (hϖ : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) {t : k} (ht : valuation k t < 1) :
@@ -50,15 +50,15 @@ end GlobalTheory.SymChain.SymData.RowLam
 
 open GlobalTheory.SymChain.SymData.RowLam in
 /- English proof (translation)
-Introduce `k _ _ _ _ s κ S x M hM hsup`. Establish `hS` using `S.sym.2 x`. Establish `hsimple : valuation k (GlobalTheory.RootEx.simpleSum (x : GL (Fin κ ⊕ Fin (s + 1)) k)) < 1`. Unfold `GlobalTheory.RootEx.simpleSum`. Apply `val_sum_sum_lt` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i j`. Use `split_ifs with h`. Conclude with `hsup i j h`. Simplify using the standard rewrite rules. Establish `hdiff : valuation k (GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum Fin.val (x : GL (Fin κ ⊕ Fin (s + 1)) k).val.toBlocks₁₁ - ∑ a : Fin κ, ∑ b : Fin κ, if b.val = a.val + 1 then M a b else 0) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum`. Rewrite using `[← Finset.sum_sub_distrib]`. Repeatedly rewrite using `[← Finset.sum_sub_distrib]`. Apply `val_sum_sum_lt` to reduce the goal to its premises. Introduce `a b`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Simplify `hM a b` using `[Matrix.toBlocks₁₁]`. Simplify using the standard rewrite rules. Establish `e1` using `psi_inv_mul_eq_one S.ψ S.ϖ S.cond S.unif hsimple`. Establish `e2` using `psi_inv_mul_eq_one S.ψ S.ϖ S.cond S.unif hdiff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : S.ψ (((S.ϖ⁻¹ : kˣ) : k) * GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum Fin.val (x : GL (Fin κ ⊕ Fin (s + 1)) k).val.toBlocks₁₁) = S.ψ (((S.ϖ⁻¹ : kˣ) : k) * ∑ a : Fin κ, ∑ b : Fin κ, if b.val = a.val + 1 then M a b else 0)`. Rewrite `e2` using `[mul_sub, AddChar.map_sub_eq_div]`. Conclude with `div_eq_one.mp e2`. Rewrite using `[hS, e1, e3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SymChain.SymData.lam_eq_psi_superSum_of_near : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {s κ : ℕ} (S : SymData k s κ) (x : S.P.J) (M : Matrix (Fin κ) (Fin κ) k), (∀ a b, valuation k ((x : GL (Fin κ ⊕ Fin (s + 1)) k).val (Sum.inl a) (Sum.inl b) - M a b) < 1) → (∀ i j : Fin (s + 1), j.val = i.val + 1 → valuation k ((x : GL (Fin κ ⊕ Fin (s + 1)) k).val (Sum.inr i) (Sum.inr j)) < 1) → ((S.P.lam x : ℂˣ) : ℂ) = (S.ψ (((S.ϖ⁻¹ : kˣ) : k) * ∑ a : Fin κ, ∑ b : Fin κ, if b.val = a.val + 1 then M a b else 0) : ℂ) := by
   intro k _ _ _ _ s κ S x M hM hsup

@@ -8,11 +8,9 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ _ N`. Take `⟨hc, hs, hp, hd⟩` from `psdcone L N`. Use `⟨fun h hh => ?_, ?_, hc, hs, ?_, hd⟩` and prove the remaining obligations. Rewrite `hh` using `[poly_qc]`. Take `⟨S, hS, hev⟩` from `locfin L N h (rypos L N hh) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Subtype.val ⁻¹' S, hS.preimage Subtype.val_injective.injOn, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev] with k hk y hy`. Conclude with `hk y.1 hy`. Rewrite using `[poly_qc]`. Conclude with `ryne L N`.
-
-Rewrite using `[poly_qc]`. Conclude with `(rypos L N).trans hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.good :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ), ConeExtensionAcyclic.Good (qc L N) (Psd L N) := by

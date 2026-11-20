@@ -22,7 +22,7 @@ open Formalism.GaloisCohomology UpperTheory.Top GlobalTheory.Mem.LiteralAutomorp
 namespace UpperTheory.V.Z.J
 open UpperTheory.V.HV UpperTheory.V.Lit UpperTheory.V.W UpperTheory.V.J
 /- English proof (translation)
-The claim follows from `have hN := hH.litN have hA := hH.toClassicalTheorems _root_.UpperTheory.Gal.projectedFormsSystemPart.linkedUnlE_alt hN.aut.art (_root_.UpperTheory.V.W.local_class_field_theory_all_of_literal_automorphy hN) (_root_.UpperTheory.V.HV.Core.modU_of_printsH hH) (_root_.UpperTheory.V.Z. …`.
+A detailed English derivation is pending.
 -/
 theorem linkedUnlE_holds_alt (hH : _root_.UpperTheory.V.Af.HypothesesH') (s2 : _root_.UpperTheory.V.Sd.Seed2Alt) (s3 : _root_.UpperTheory.V.Z.Sym.UnitaryThreeAutomorphyDense) : LinkedUnlE :=
   have hN := hH.litN

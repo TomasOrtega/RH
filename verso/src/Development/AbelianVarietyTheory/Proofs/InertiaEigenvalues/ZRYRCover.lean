@@ -9,7 +9,7 @@ def yR (m n p : ℕ) : Fin (m - p) × Fin n → Fin m × Fin n :=
   fun u => (⟨m - 1 - u.1, by have := u.1.2; omega⟩, u.2)
 
 /- English proof (translation)
-Introduce and unpack `⟨a, b⟩ ⟨c, d⟩ h`. Simplify using `only [zR, Prod.mk.injEq, Fin.mk.injEq] at h`. Conclude with `Prod.ext (Fin.ext h.1) h.2`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zR_inj (m n p : ℕ) : Function.Injective (zR m n p) := by
   rintro ⟨a, b⟩ ⟨c, d⟩ h
@@ -17,7 +17,7 @@ theorem zR_inj (m n p : ℕ) : Function.Injective (zR m n p) := by
   exact Prod.ext (Fin.ext h.1) h.2
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨a, ha⟩, b⟩ ⟨⟨c, hc⟩, d⟩ h`. Simplify using `only [yR, Prod.mk.injEq, Fin.mk.injEq] at h`. Conclude with `Prod.ext (Fin.ext (by simp only; omega)) h.2`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem yR_inj (m n p : ℕ) : Function.Injective (yR m n p) := by
   rintro ⟨⟨a, ha⟩, b⟩ ⟨⟨c, hc⟩, d⟩ h
@@ -25,7 +25,7 @@ theorem yR_inj (m n p : ℕ) : Function.Injective (yR m n p) := by
   exact Prod.ext (Fin.ext (by simp only; omega)) h.2
 
 /- English proof (translation)
-Introduce `h`. Simplify using `only [zR, yR, Prod.mk.injEq, Fin.mk.injEq] at h`. Use `u.1.2` as an intermediate fact. Use `v.1.2` as an intermediate fact. Use `min_le_left p m` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -37,11 +37,9 @@ theorem zR_ne_yR (m n p : ℕ) (u : Fin (min p m) × Fin n) (v : Fin (m - p) × 
   omega
 
 /- English proof (translation)
-Break down `s with ⟨i, a⟩` into its components or cases. Distinguish the cases in `h : (i : ℕ) < p`. Use `left`. Conclude with `⟨(⟨i, lt_min h i.2⟩, a), rfl⟩`. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨(⟨m - 1 - i, by have := i.2; omega⟩, a), ?_⟩` and prove the remaining obligations. Simplify using `only [yR, Prod.mk.injEq, and_true]`. Use `ext`. Simplify using `only`. Use `i.2` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem zR_yR_cover (m n p : ℕ) (s : Fin m × Fin n) : (∃ u, zR m n p u = s) ∨ ∃ v, yR m n p v = s := by
   rcases s with ⟨i, a⟩

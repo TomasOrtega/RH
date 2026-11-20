@@ -10,14 +10,14 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ZuckMatHom
 
 /- English proof (translation)
-Simplify using `[mAct, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mAct_coord {ι ι' V : Type} [Fintype ι] [AddCommGroup V] [Module ℂ V] (A : Matrix ι' ι ℂ)
     (x : ι → V) (c : ι') : mAct A x c = ∑ d, A c d • x d := by
   simp [mAct, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [mAct_coord, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mAct_mAct {ι ι' ι'' V : Type} [Fintype ι] [Fintype ι'] [AddCommGroup V] [Module ℂ V]
     (A : Matrix ι'' ι' ℂ) (B : Matrix ι' ι ℂ) (x : ι → V) :
@@ -27,7 +27,7 @@ theorem mAct_mAct {ι ι' ι'' V : Type} [Fintype ι] [Fintype ι'] [AddCommGrou
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `h : ∀ (κ : Type) (y : κ → V) (e : κ), dOp κ T y e = T (y e)` using `fun _ _ _ => rfl`. Simplify using `only [h, mAct_coord, map_sum, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dOp_mAct {ι ι' V V' : Type} [Fintype ι] [AddCommGroup V] [Module ℂ V] [AddCommGroup V']
     [Module ℂ V'] (A : Matrix ι' ι ℂ) (T : V →ₗ[ℂ] V') (x : ι → V) :
@@ -37,7 +37,7 @@ theorem dOp_mAct {ι ι' V V' : Type} [Fintype ι] [AddCommGroup V] [Module ℂ 
   simp only [h, mAct_coord, map_sum, map_smul]
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | X :: W, hW, v => by have ih := dsigW_eq_prod U W (fun Y hY => hW Y (List.mem_cons_of_mem _ hY)) v rw [List.map_cons, List.prod_cons, Module.End.mul_apply, URep.dsig_coe U (hW X List.mem_cons_self), ← ih] rfl`.
+A detailed English derivation is pending.
 -/
 theorem dsigW_eq_prod {k r : ℕ} (U : URep k r) :
     ∀ (W : List (Formalism.FourierDecayAlt.ThreeDimData.Mx k r)), LieWd k r W → ∀ v : U.R.smSub,
@@ -50,13 +50,13 @@ theorem dsigW_eq_prod {k r : ℕ} (U : URep k r) :
     rfl
 
 /- English proof (translation)
-Introduce `k r F F' U A hA`. Use `⟨fun W hW => ⟨∑ c : F'.ι, ∑ d : F.ι, ‖A c d‖, [W], ?_, fun x => ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Introduce `W' hW'`. Rewrite using `[List.mem_singleton.1 hW']`. Conclude with `hW`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Express the relevant statement in the definitionally equal form `∑ c : F'.ι, ‖PI.UpqRep.dsigW (k := k) (r := r) U.R.σ W ((mAct A x c : U.R.smSub) : U.R.H)‖ ≤ (∑ c : F'.ι, ∑ d : F.ι, ‖A c d‖) * ∑ e : F.ι, ‖PI.UpqRep.dsigW (k := k) (r := r) U.R.σ W ((x e : U.R.smSub) : U.R.H)‖`. Simplify using `only [dsigW_eq_prod U W hW]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mAct_coord, map_sum, Submodule.coe_sum, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Submodule.coe_smul, norm_smul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun e => ‖(((W.map U.dsig).prod (x e) : U.R.smSub) : U.R.H)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ d)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mAct A (mAct (F.ρ g) (dOp F.ι (U.sig g) x)) = mAct (F'.ρ g) (dOp F'.ι (U.sig g) (mAct A x))`. Rewrite using `[dOp_mAct, mAct_mAct, mAct_mAct, hA g hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matHom : MatHom := by
   intro k r F F' U A hA

@@ -12,7 +12,7 @@ open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.GL2Factorization.ZUSum.zU_eq_of_hasSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnramifiedRankinSelbergEqLFactor.lean&line=39#L39)
 -/

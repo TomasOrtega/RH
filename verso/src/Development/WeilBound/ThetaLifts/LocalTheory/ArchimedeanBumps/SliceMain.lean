@@ -15,19 +15,19 @@ open PositivityTheory.ThKG.Loc.Cone PositivityTheory.ThKCT PositivityTheory.ThKF
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pureA_mem' {κ : Type} [Fintype κ] (f : SInf F κ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) : pureA F f g ∈ schA F κ :=
   Submodule.subset_span ⟨f, g, hg, rfl⟩
 
 /- English proof (translation)
-Establish `ex : ∀ Φ : schA F κ, ∃ f : SInf F κ, ∀ y, f y = Φ.1 (ptA y a)`. Introduce and unpack `⟨Φ, hΦ⟩`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨f, g, -, rfl⟩ := h`. Conclude with `⟨g a • f, fun y => (mul_comm _ _).trans (pureA_ptA f g y a).symm⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, fun _ => rfl⟩`. Consider the case `add _ _ _ _ p q => obtain ⟨p, hp⟩ := p; obtain ⟨q, hq⟩ := q; exact ⟨p + q, fun y => by rw [SchwartzMap.add_apply, hp, hq]; rfl⟩`. Consider the case `smul c _ _ p => obtain ⟨p, hp⟩ := p; exact ⟨c • p, fun y => by rw [SchwartzMap.smul_apply, hp]; rfl⟩`. Use `choose s hs using ex`. Set `s' : schA F κ →ₗ[ℂ] SInf F κ` to `{ toFun := s map_add' := fun a b => SchwartzMap.ext fun z => by rw [SchwartzMap.add_apply, hs, hs, hs]; rfl map_smul' := fun c a => SchwartzMap.ext fun z => by rw [SchwartzMap.smul_apply, hs, hs]; rfl }`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `LinearMap.exists_extend (L.toLinearMap ∘ₗ s')`. Establish `h : ∀ f : SInf F κ, ∀ g ∈ SB (κ → Af F), l (pureA F f g) = g a * L f` using `fun f g hg => by`. Establish `h1` using `LinearMap.congr_fun hl ⟨_, pureA_mem' f hg⟩`. Establish `h2 : s ⟨_, pureA_mem' f hg⟩ = g a • f` using `SchwartzMap.ext fun z => by`. Rewrite using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(pureA_ptA f g z a).trans (mul_comm _ _)`. Use `h1.trans ?_` and prove the remaining obligations. Use `show L (s _) = _`. Rewrite using `[h2, map_smul, smul_eq_mul]`. Conclude with `⟨l, fun g hg => ⟨g a • L, fun f => h f g hg⟩, h⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_admissible_functional_adelic {κ : Type} [Fintype κ] (L : SInf F κ →L[ℂ] ℂ) (a : κ → Af F) : ∃ l ∈ (adeleClass F).adm κ,
     ∀ f : SInf F κ, ∀ g ∈ SB (κ → Af F), l (pureA F f g) = g a * L f := by
@@ -54,11 +54,11 @@ theorem exists_admissible_functional_adelic {κ : Type} [Fintype κ] (L : SInf F
   exact ⟨l, fun g hg => ⟨g a • L, fun f => h f g hg⟩, h⟩
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, (schwartz_withSeminorms ℂ V₁ ℂ).tendsto_nhds]`. Introduce `i ε hε`. Establish `hq` using `(schwartz_withSeminorms ℂ V₁ ℂ).continuous_seminorm i`. Take `⟨p, hp, hle⟩` from `hb _ hq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `c1 : Continuous fun x : K × C => p (g x.1 - g x₀.1) + schwartzSeminormFamily ℂ V₁ ℂ i (A x.2 (g x₀.1) - A x₀.2 (g x₀.1))` using `(hp.comp ((hg.comp continuous_fst).sub continuous_const)).add (hq.comp (((hA _).comp continuous_snd).sub continuous_const))`. Use `(c1.tendsto x₀).eventually (gt_mem_nhds (a := ε) (by simpa using hε))` as an intermediate fact. Use `filter_upwards [this] with x hx`. Use `lt_of_le_of_lt ?_ hx` and prove the remaining obligations. Establish `e : A x.2 (g x.1) - A x₀.2 (g x₀.1) = A x.2 (g x.1 - g x₀.1) + (A x.2 (g x₀.1) - A x₀.2 (g x₀.1))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(map_add_le_add _ _ _).trans (add_le_add_left (hle _ _) _)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem joint_cont {V V₁ : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup V₁] [NormedSpace ℝ V₁]
     {K C : Type} [TopologicalSpace K] [TopologicalSpace C] (A : C → SchwartzMap V ℂ →L[ℂ] SchwartzMap V₁ ℂ)
@@ -81,11 +81,11 @@ theorem joint_cont {V V₁ : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [N
   exact (map_add_le_add _ _ _).trans (add_le_add_left (hle _ _) _)
 
 /- English proof (translation)
-Use `set a := 2 * Fintype.card ι * z`. Use `set b := Module.finrank ℝ (ι → ℂ) + 1`. Establish `hc : Continuous fun c : ι → ℂ => (∏ w, ‖c w‖ ^ 2) ^ z / (1 + ‖c‖) ^ (a + b)` using `Continuous.div (by fun_prop) (by fun_prop) fun c => by positivity`. Establish `hi : Integrable fun c : ι → ℂ => (∏ w, ‖c w‖ ^ 2) ^ z / (1 + ‖c‖) ^ (a + b)`. Use `(integrable_one_add_norm (μ := volume) (r := b) (by simp [b])).mono' hc.aestronglyMeasurable (Eventually.of_forall fun c => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.norm_of_nonneg (by positivity), Real.rpow_neg (by positivity), Real.rpow_natCast, pow_add, ← div_div, div_eq_mul_inv]`. Use `mul_le_of_le_one_left (by positivity) ((div_le_one (by positivity)).2 ?_)` and prove the remaining obligations. Establish `: ∏ w, ‖c w‖ ^ 2 ≤ ∏ _w : ι, (1 + ‖c‖) ^ 2` using `Finset.prod_le_prod (fun _ _ => by positivity) fun w _ => by`. Use `norm_le_pi_norm c w` as an intermediate fact. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨a + b, hi, integral_pos_of_integrable_nonneg_nonzero (x := 1) hc hi (fun c => by positivity) (by simp; positivity)⟩`.
+A detailed English derivation is pending.
 -/
 theorem dom_int {ι : Type} [Fintype ι] (z : ℕ) : ∃ N : ℕ,
     Integrable (fun c : ι → ℂ => (∏ w, ‖c w‖ ^ 2) ^ z / (1 + ‖c‖) ^ N) ∧ 0 < ∫ c : ι → ℂ, (∏ w, ‖c w‖ ^ 2) ^ z / (1 + ‖c‖) ^ N := by
@@ -110,13 +110,13 @@ theorem dom_int {ι : Type} [Fintype ι] (z : ℕ) : ∃ N : ℕ,
 variable {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {B : Base F E}
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Nat.exists_eq_add_of_le' hz`. Take `⟨N, hi, hp⟩` from `dom_int (ι := InfinitePlace F) z`. Take `⟨κ, hκ, h⟩` from `hL.haar x hx`. Use `letI : MeasurableSpace (idAt E (evI F)) := borel _`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `h fun c => (((∏ w, ‖c w‖ ^ 2) ^ (z + 1) / (1 + ‖c‖) ^ N : ℝ) : ℂ)`. Establish `h2 : ∫ c : InfinitePlace F → ℂ, (((∏ w, ‖c w‖ ^ 2) ^ (z + 1) / (1 + ‖c‖) ^ N : ℝ) : ℂ) * ((∏ w, ‖c w‖ ^ 2 : ℝ) : ℂ)⁻¹ = ((∫ c : InfinitePlace F → ℂ, (∏ w, ‖c w‖ ^ 2) ^ z / (1 + ‖c‖) ^ N : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_all_iff.2 fun w => Measure.ae_eval_ne (fun _ : InfinitePlace F => (volume : Measure ℂ)) w 0] with c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (∏ w, ‖c w‖ ^ 2) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ (norm_ne_zero_iff.2 (hc w))`. Rewrite using `[← Complex.ofReal_inv, ← Complex.ofReal_mul]`. Use `congr 1`. Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, integral_complex_ofReal, ← Complex.ofReal_mul, Complex.ofReal_inj]`. Conclude with `Integrable.of_integral_ne_zero (by rw [h1]; positivity)`.
+A detailed English derivation is pending.
 -/
 theorem xi_int {lift} (hL : IsLift σ B lift) (x : @Measure (idAt E (evI F)) (borel _))
     (hx : @Measure.IsHaarMeasure _ _ _ (borel _) x) (z : ℕ) (hz : 1 ≤ z) : ∃ N : ℕ, @Integrable _ _ _ _ (borel _)
@@ -141,20 +141,18 @@ theorem xi_int {lift} (hL : IsLift σ B lift) (x : @Measure (idAt E (evI F)) (bo
   exact Integrable.of_integral_ne_zero (by rw [h1]; positivity)
 
 /- English proof (translation)
-Establish `: Subgroup.closure (UAt σ X (evI F)) = atGrp σ X (evI F)` using `Subgroup.closure_eq (atGrp σ X (evI F))`. Rewrite using `[kAt, this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_kAt {K : Subgroup (UA σ X.J)} {k} : k ∈ kAt K (evI F) ↔ k ∈ K ∧ k ∈ UAt σ X (evI F) := by
   have : Subgroup.closure (UAt σ X (evI F)) = atGrp σ X (evI F) := Subgroup.closure_eq (atGrp σ X (evI F))
   rw [kAt, this]; rfl
 
 /- English proof (translation)
-Take `⟨K', -, -, h1, h2, -⟩` from `hS F E σ B n X r s hB hX`. Take `rfl : K' = K` from `Subgroup.ext fun g => (h1 g).trans (hK g).symm`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hm : Continuous fun g : UA σ X.J => mat g - 1` using `(Units.continuous_val.comp continuous_subtype_val).sub continuous_const`. Establish `hc : IsClosed {g : UA σ X.J | realAd F 1 • (mat g - 1) = mat g - 1}`. Use `isClosed_eq ?_ hm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Algebra.smul_def]`. Conclude with `continuous_const.mul (hm.matrix_elem i j)`. Establish `: (kAt K' (evI F) : Set (UA σ X.J)) = (K' : Set (UA σ X.J)) ∩ {g : UA σ X.J | realAd F 1 • (mat g - 1) = mat g - 1}` using `Set.ext fun g => mem_kAt.trans (and_congr_right fun _ => at_iff)`. Rewrite using `[this]`.
-
-Conclude with `h2.inter_right hc`.
+A detailed English derivation is pending.
 -/
 theorem kAt_cpt (hS : StabEx) (hB : B.IsGood σ) {r s} (hX : X.IsHerm σ B r s) {K : Subgroup (UA σ X.J)} (hK : IsStab B K) :
     IsCompact (kAt K (evI F) : Set (UA σ X.J)) := by
@@ -180,13 +178,11 @@ variable {M : Model σ X W} {M₁ : Model σ X₁ W₁} {H : Plane E n n₁} {H'
   {u : (AE F E)ˣ → Matrix (Fin n) (Fin d) (AE F E)} {ei ev}
 
 /- English proof (translation)
-Establish `h1 : (1 : UA σ W.J) ∈ UAt σ W (evI F)` using `(atGrp σ W (evI F)).one_mem`. Use `choose T hT hPol using fun k : kAt K (evI F) => hO F E σ B n d X W M χX χW om r s r' s' hP k.1 (mem_kAt.1 k.2).2 1 h1`. Use `haveI : CompactSpace (kAt K (evI F)) := isCompact_iff_compactSpace.1 (kAt_cpt hS hP.base hP.herm hK)`. Take `⟨g₀, hg, ⟨a, ha⟩, -⟩` from `vac_fin hP.good`. Establish `hw : ∀ f (l : SInf F (Fin n × Fin d) →L[ℂ] ℂ), Continuous fun k => l (T k f)` using `fun f l => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l', hl, hl'⟩` from `exists_admissible_functional_adelic ((g₀ a)⁻¹ • l) a`. Establish `hc` using `(IsUWeilPair.isUSplitting hP.weil).cont l' hl _ (pureA_mem' f hg)`. Use `(hc.comp (continuous_subtype_val.prodMk (continuous_const (y := (1 : UA σ W.J))))).congr fun k => ?_` and prove the remaining obligations. Use `(hT k).1 f g₀ hg` as an intermediate fact. Conclude with `(congrArg l' this).trans (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hl' _ _ hg]`. Conclude with `mul_inv_cancel_left₀ ha _)`. Establish `hb : ∀ f (q : Seminorm ℂ (SInf F (Fin n × Fin d))), Continuous q → ∃ C, ∀ k, q (T k f) ≤ C` using `fun f q hq => weak_bounded (fun k => T k f) (fun l => by`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (hw f l).continuousOn`. Conclude with `⟨C, fun k => hC k trivial⟩) q hq`.
-
-Use `⟨T, hT, fun k => hPol k ⟨(mem_kAt.1 k.2).2, ((hK _).1 (mem_kAt.1 k.2).1).1⟩ ⟨h1, fun w => ?_⟩, fun f => strong_of_weak _ (hw f) (hb f), fun q hq => equicont T q hq fun f => hb f q hq⟩` and prove the remaining obligations. Rewrite using `[mat_one', Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Commute.one_left _`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem k_ops (hS : StabEx) (hO : ArchOp) {K : Subgroup (UA σ X.J)} (hK : IsStab B K) {χX χW om r s r' s'}
     (hP : IsPair B M χX χW om r s r' s') : ∃ T : kAt K (evI F) → SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d),
@@ -215,9 +211,9 @@ theorem k_ops (hS : StabEx) (hO : ArchOp) {K : Subgroup (UA σ X.J)} (hK : IsSta
   exact Commute.one_left _
 
 /- English proof (translation)
-Take `⟨f₁, hf⟩` from `(hH F E σ B n d X W M hP.base).2 w hw (T f)`. Rewrite using `[opI_eq hU hf]`. Use `opI_eq hU fun r hr => ?_` and prove the remaining obligations. Establish `h1` using `hT.2 f r hr`. Use `show M.co.rho B.ψ w (om (k, 1) _) = _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `hf r ⟨hr.1, h1 ▸ (IsUWeilPair.isUSplitting hP.weil).pres _ _ hr.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem op_comp (hH : ArchHeis) (hU : ArchUniq) {χX χW om r s r' s'} (hP : IsPair B M χX χW om r s r' s') {k T}
     (hT : IsArchOp om (k, 1) T) {w} (hw : At (evI F) w) (f : SInf F (Fin n × Fin d)) :
@@ -231,11 +227,11 @@ theorem op_comp (hH : ArchHeis) (hU : ArchUniq) {χX χW om r s r' s'} (hP : IsP
   exact hf r ⟨hr.1, h1 ▸ (IsUWeilPair.isUSplitting hP.weil).pres _ _ hr.2⟩
 
 /- English proof (translation)
-Establish `key : ∀ a : AE F E, lift (fun w => piInf (B.emb w) a) = realAd F 1 • a` using `fun a => by`. Rewrite using `[← hL.inv _ (hL.part a).1]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `((hL.part a).2 w).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hc.ev with ⟨-, rfl⟩ | ⟨-, rfl⟩` into its components or cases. Use `⟨fun t w => piInf (B.emb w) (t : AE F E), continuous_pi fun w => (hL.cont w).comp Units.continuous_val, fun _ _ => rfl, fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [key, shiftA, Units.val_one, one_smul, smul_assoc]`. Use `⟨fun t w => piInf (B.emb w) (cA σ (t : AE F E)), continuous_pi fun w => ?_, fun t w => ?_, fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [hL.conj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.continuous_conj.comp ((hL.cont w).comp Units.continuous_val)`. Simplify using `only [hL.conj, Complex.norm_conj]`. Simplify using `only [key, shiftB, Units.val_one, map_one, one_smul, smul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shift_eq (hc : Cfg B M M₁ H H' e u) {lift} (hL : IsLift σ B lift) : ∃ cc : (AE F E)ˣ → InfinitePlace F → ℂ, Continuous cc ∧
     (∀ t w, ‖cc t w‖ = ‖piInf (B.emb w) (t : AE F E)‖) ∧ ∀ t, realAd F 1 • u t = lift (cc t) • u 1 := by
@@ -251,37 +247,27 @@ theorem shift_eq (hc : Cfg B M M₁ H H' e u) {lift} (hL : IsLift σ B lift) : �
     · simp only [key, shiftB, Units.val_one, map_one, one_smul, smul_assoc]
 
 /- English proof (translation)
-Take `⟨A, hA, hAe, hAd⟩` from `line_ex hS hH hU hc hl hL`. Take `⟨T, hT, -, hTc, hTb⟩` from `k_ops hSt hO hK hP`. Take `⟨cc, hcc, hcn, hce⟩` from `shift_eq hc hL`. Take `⟨N, hN⟩` from `xi_int hL m.xi hm.xi z hz`. Use `letI : MeasurableSpace (idAt E (evI F)) := borel _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : BorelSpace (idAt E (evI F)) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Take `⟨-, h2, -⟩` from `PositivityTheory.ThKEst.lcsc_UA σ X.J`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : SecondCountableTopology (AE F E) := e0.secondCountableTopology`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : CompactSpace (kAt K (evI F)) := isCompact_iff_compactSpace.1 (kAt_cpt hSt hP.base hP.herm hK)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hm.ki`. Use `haveI := hm.xi`. Use `haveI : IsFiniteMeasure m.ki := ⟨isCompact_univ.measure_lt_top⟩`. Use `haveI : SigmaFinite m.ki := IsFiniteMeasure.toSigmaFinite _`. Use `haveI : SFinite m.ki := MeasureTheory.instSFiniteOfSigmaFinite`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpos : ∀ t : idAt E (evI F), 0 < (∏ w, ‖piInf (B.emb w) (t.1 : AE F E)‖ ^ 2) ^ z / (1 + ‖fun w => piInf (B.emb w) (t.1 : AE F E)‖) ^ N` using `fun t => div_pos (pow_pos (Finset.prod_pos fun w _ => pow_pos (norm_pos_iff.2 (pi_ne _ _)) 2) _) (by positivity)`. Use `haveI : SigmaFinite m.xi := by`. Establish `h` using `hN.aefinStronglyMeasurable`. Establish `h1 : m.xi.restrict h.sigmaFiniteSet = m.xi`. Use `Measure.restrict_eq_self_of_ae_mem ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `h.ae_eq_zero_compl`. Rewrite `h2` using `[Filter.EventuallyEq, ae_restrict_iff' h.measurableSet.compl]`. Use `filter_upwards [h2] with t ht`. Assume the negation of the conclusion as `hn`. Conclude with `(hpos t).ne' (ht hn)`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1]`. Use `infer_instance`. Establish `hab : ∀ t : idAt E (evI F), (absE F E t.1 : ℝ) = ∏ w, ‖piInf (B.emb w) (t.1 : AE F E)‖ ^ 2` using `fun t => hL.abs _ ((hL.idAt _).1 t.2)`. Establish `hwc : Continuous fun t : idAt E (evI F) => wt ν z t.1`. Simplify using `only [wt, hab]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `(continuous_subtype_val.comp (hν.comp continuous_subtype_val)).mul (Continuous.pow (Complex.continuous_ofReal.comp ?_) _)` and prove the remaining obligations. Conclude with `continuous_finset_prod _ fun w _ => ((hL.cont w).comp (Units.continuous_val.comp continuous_subtype_val)).norm.pow 2`. Establish `hwn : ∀ t : idAt E (evI F), ‖wt ν z t.1‖ = (∏ w, ‖piInf (B.emb w) (t.1 : AE F E)‖ ^ 2) ^ z` using `fun t => by`. Rewrite using `[wt, norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, hab, Real.norm_of_nonneg (by positivity)]`. Set `G : kAt K (evI F) × idAt E (evI F) → SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁)` to `fun x => wt ν z x.2.1 • (A (cc x.2.1)).comp (T x.1)`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hGc : ∀ f, Continuous fun x => G x f` using `fun f => by`. Establish `h1` using `joint_cont (fun t : idAt E (evI F) => A (cc t.1)) (fun g => (hA g).comp (hcc.comp continuous_subtype_val)) (fun q hq => by`. Take `⟨p, hp, h⟩` from `hAd q 0 hq`. Conclude with `⟨p, hp, fun c g => by simpa using h _ g⟩) _ (hTc f)`. Conclude with `(hwc.comp continuous_snd).smul h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hGb : ∀ q : Seminorm ℂ (SInf F (Fin n₁ × Fin d₁)), Continuous q → ∃ p : Seminorm ℂ (SInf F (Fin n × Fin d)), Continuous p ∧ ∀ x f, q (G x f) ≤ p f * ((∏ w, ‖piInf (B.emb w) (x.2.1 : AE F E)‖ ^ 2) ^ z / (1 + ‖fun w => piInf (B.emb w) (x.2.1 : AE F E)‖) ^ N)` using `fun q hq => by`. Take `⟨p, hp, h⟩` from `hAd q N hq`. Take `⟨p', hp', h'⟩` from `hTb p hp`. Use `⟨p', hp', fun x f => ?_⟩` and prove the remaining obligations. Establish `e1 : ‖cc x.2.1‖ = ‖fun w => piInf (B.emb w) (x.2.1 : AE F E)‖`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.norm_def]`. Use `congr 2`. Use function extensionality and compare the values at `w`. Conclude with `NNReal.eq (hcn _ w)`. Establish `h3` using `(h (cc x.2.1) (T x.1 f)).trans (h' x.1 f)`.
-
-Rewrite `h3` using `[e1, ← le_div_iff₀ (by positivity)]`. Express the relevant statement in the definitionally equal form `q (wt ν z x.2.1 • A (cc x.2.1) (T x.1 f)) ≤ _`. Rewrite using `[map_smul_eq_mul, hwn]`. Use `(mul_le_mul_of_nonneg_left h3 (by positivity)).trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hD : Integrable (fun x : kAt K (evI F) × idAt E (evI F) => (∏ w, ‖piInf (B.emb w) (x.2.1 : AE F E)‖ ^ 2) ^ z / (1 + ‖fun w => piInf (B.emb w) (x.2.1 : AE F E)‖) ^ N) (m.ki.prod m.xi)`. Simplify using `using (integrable_const (μ := m.ki) (1 : ℝ)).mul_prod hN`. Take `⟨L, hL'⟩` from `weak_op (m.ki.prod m.xi) G (fun f => hI _ _ _ _ (hGc f) fun k j => by`. Take `⟨p, -, h⟩` from `hGb _ (cont_seminorm k j)`. Conclude with `(hD.const_mul (p f)).mono' ((cont_seminorm k j).comp (hGc f)).aestronglyMeasurable (Eventually.of_forall fun x => by rw [Real.norm_of_nonneg (apply_nonneg _ _)]; exact h x f))`.
-
-Use `fun k j => by`. Take `⟨p, hp, h⟩` from `hGb _ (cont_seminorm k j)`. Conclude with `⟨p, _, hp, hD, h⟩`. Establish `hGe : ∀ f (l : SInf F (Fin n₁ × Fin d₁) →L[ℂ] ℂ) (k : kAt K (evI F)) (t : idAt E (evI F)), l (ei (opI (fun Φ => M.co.rho B.ψ (realAd F 1 • u t.1) (om (k.1, 1) Φ)) f)) * wt ν z t.1 = l (G (k, t) f)` using `fun f l k t => by`. Rewrite using `[hce, op_comp hH hU hP (hT k) (at_smul (hL.supp _) _), ← hAe, mul_comm]`.
-
-Conclude with `(map_smul l _ _).symm`. Use `⟨L, fun f l => ?_⟩` and prove the remaining obligations. Simplify using `only [hGe]`. Use `⟨fun k => ?_, (hL' f l).1.integral_prod_left, (hL' f l).2.trans (integral_prod _ (hL' f l).1)⟩` and prove the remaining obligations. Take `⟨p, -, h⟩` from `hGb ((normSeminorm ℂ ℂ).comp l.toLinearMap) l.continuous.norm`.
-
-Conclude with `(hN.const_mul (p f)).mono' (l.continuous.comp ((hGc f).comp (Continuous.prodMk_right k))).aestronglyMeasurable (Eventually.of_forall fun t => h (k, t) f)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cone_core (hSt : StabEx) (hO : ArchOp) (hS : Slice) (hH : ArchHeis) (hU : ArchUniq) (hI : SchInt)
     (hc : Cfg B M M₁ H H' e u) (hl : IsEvLoc M M₁ e ei ev) {lift} (hL : IsLift σ B lift) {K : Subgroup (UA σ X.J)} {m : LocMeas K}
@@ -382,13 +368,13 @@ theorem cone_core (hSt : StabEx) (hO : ArchOp) (hS : Slice) (hH : ArchHeis) (hU 
     (Eventually.of_forall fun t => h (k, t) f)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e u ei ev hc hl lift hL K m hK hm χX χW om r s r' s' hP`. Use `⟨kAt_cpt hSt hP.base hP.herm hK, fun k hk => ⟨(mem_kAt.1 hk).2, ((hK _).1 (mem_kAt.1 hk).1).1⟩, fun f l => ?_⟩` and prove the remaining obligations. Take `⟨A, hA, hAe, hAd⟩` from `line_ex hS hH hU hc hl hL`. Take `⟨T, hT, -, hTc, hTb⟩` from `k_ops hSt hO hK hP`. Establish `e1 : ∀ (k : kAt K (evI F)) c, ei (opI (fun Φ => M.co.rho B.ψ (lift c • u 1) (om (k.1, 1) Φ)) f) = A c (T k f)` using `fun k c => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[op_comp hH hU hP (hT k) (at_smul (hL.supp _) _), ← hAe]`. Simplify using `only [e1]`. Use `⟨l.continuous.comp (joint_cont A hA (fun q hq => ?_) _ (hTc f)), fun N => ?_, fun ν z hν hz L hLc => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, h⟩` from `hAd q 0 hq`. Conclude with `⟨p, hp, fun c g => by simpa using h _ g⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨p, hp, h⟩` from `hAd ((normSeminorm ℂ ℂ).comp l.toLinearMap) N l.continuous.norm`. Take `⟨p', -, h'⟩` from `hTb p hp`. Conclude with `⟨p' f, fun k c => (h c _).trans (h' k f)⟩`. Take `⟨L', h⟩` from `cone_core hSt hO hS hH hU hI hc hl hL hK hm hP ν z hν hz`. Establish `: L f = L' f` using `SchwartzMap.ext fun y => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hLc f y, ← evAt_apply y (L' f), (h f (evAt y)).2.2]`. Simplify using `only [evAt_apply, wt, mul_assoc]`. Rewrite using `[this, (h f l).2.2]`. Simplify using `only [wt, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem archSlice_of (hSt : StabEx) (hO : ArchOp) (hS : Slice) (hH : ArchHeis) (hU : ArchUniq) (hI : SchInt) : ArchSlice := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e u ei ev hc hl lift hL K m hK hm χX χW om r s r' s' hP

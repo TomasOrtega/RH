@@ -35,15 +35,13 @@ Both sides reduce to the same expression.
 private theorem psiA_apply (g : DA Δ) (v : Pl F) : (psiA Δ g : MA Δ) v = mt (g.1 v) := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, det_Dm x.2]`. Use `IsUnit.map _ (Ne.isUnit fun h => hx ?_)` and prove the remaining obligations. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Use `set σ := (IsTotallyReal.complexEmbedding_isReal φ).embedding`. Establish `hs` using `congrArg σ h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, map_add, map_mul, map_pow, map_zero] at hs`. Establish `hn` using `neg_pos.2 (hneg σ)`. Establish `p1` using `mul_nonneg hn.le (sq_nonneg (σ (x.1 0 0).im))`. Establish `p2` using `mul_nonneg hn.le (sq_nonneg (σ (x.1 0 1).im))`. Establish `p3` using `sq_nonneg (σ (x.1 0 0).re)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p4` using `sq_nonneg (σ (x.1 0 1).re)`. Establish `z : ∀ t : F, σ t ^ 2 = 0 → t = 0` using `fun t ht => by simpa using ht`. Establish `z' : ∀ t : F, -σ Δ * σ t ^ 2 = 0 → t = 0` using `fun t ht => z t ((mul_eq_zero.1 ht).resolve_left hn.ne')`. Establish `e0 : x.1 0 0 = 0` using `QuadraticAlgebra.ext (z _ (by linarith)) (z' _ (by linarith))`. Establish `e1 : x.1 0 1 = 0` using `QuadraticAlgebra.ext (z _ (by linarith)) (z' _ (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `e0`. Conclude with `e1`.
-
-Conclude with `x.2.2.trans (by simp [e1])`. Conclude with `x.2.1.trans (by simp [e0])`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Dm_unit [IsTotallyReal F] (hneg : ∀ σ : F →+* ℝ, σ Δ < 0) (x : Dm Δ) (hx : x ≠ 0) :
     IsUnit (x : Matrix (Fin 2) (Fin 2) (Lsq F Δ)) := by
@@ -71,11 +69,9 @@ theorem Dm_unit [IsTotallyReal F] (hneg : ∀ σ : F →+* ℝ, σ Δ < 0) (x : 
   · exact x.2.1.trans (by simp [e0])
 
 /- English proof (translation)
-Take `⟨m, hm0, hm⟩` from `exists_nat_mul Δ`. Establish `hc : (2 * m * Δ : F) ≠ 0` using `by simp [hΔ, hm0]`. Establish `hi` using `fun (y : (RA Δ).comap (jA Δ)) i => coords_glob (a := y.1.1 0 i) (fun v => (y.2 v).2 0 i) hm`. Set `ψ : (RA Δ).comap (jA Δ) →+ (Fin 2 → 𝓞 F × 𝓞 F)` to `{ toFun := fun y i => (⟨_, (hi y i).1⟩, ⟨_, (hi y i).2⟩) map_zero' := funext fun i => Prod.ext (Subtype.ext (mul_zero _)) (Subtype.ext (mul_zero _)) map_add' := fun x y => funext fun i => Prod.ext (Subtype.ext (mul_add _ _ _)) (Subtype.ext (mul_add _ _ _)) }`. Use `Module.Finite.of_injective ψ.toIntLinearMap fun x y h => Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ i, x.1.1 0 i = y.1.1 0 i` using `fun i => QuadraticAlgebra.ext (mul_left_cancel₀ hc (congrArg (fun p : 𝓞 F × 𝓞 F => (p.1 : F)) (congrFun h i))) (mul_left_cancel₀ hc (congrArg (fun p : 𝓞 F × 𝓞 F => (p.2 : F)) (congrFun h i)))`. Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `e 0`. Conclude with `e 1`.
-
-Conclude with `x.1.2.2.trans (e 1 ▸ y.1.2.2.symm)`. Conclude with `x.1.2.1.trans (e 0 ▸ y.1.2.1.symm)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem finite_lat (hΔ : Δ ≠ 0) : Module.Finite ℤ ((RA Δ).comap (jA Δ)) := by
   obtain ⟨m, hm0, hm⟩ := exists_nat_mul Δ
@@ -97,7 +93,7 @@ private theorem finite_lat (hΔ : Δ ≠ 0) : Module.Finite ℤ ((RA Δ).comap (
   · exact x.1.2.1.trans (e 0 ▸ y.1.2.1.symm)
 
 /- English proof (translation)
-Simplify using `only [map_mul, map_natCast] at h hm h1 h2`. Use `⟨_, isIntegral_of_coords (a := ⟨((n : K') * m)⁻¹ * a.re - f x1, ((n : K') * m)⁻¹ * a.im - f x2⟩) (isIntegral_natCast m) hm h1 h2, ?_⟩` and prove the remaining obligations. Establish `hn` using `left_ne_zero_of_mul h`. Establish `hm'` using `right_ne_zero_of_mul h`. Apply the tactic sequence `ext <;> simp [lmap] <;> field_simp <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem apx_alg {K K' O : Type} [Field K] [Field K'] [CommRing O] [Algebra O K'] (f : K →+* K') (Δ : K) (a : Lsq K' (f Δ))
     (n m : ℕ) (x1 x2 : K) (h : f ((n : K) * m) ≠ 0) (hm : IsIntegral O (f ((m : K) * Δ)))
@@ -111,7 +107,7 @@ private theorem apx_alg {K K' O : Type} [Field K] [Field K'] [CommRing O] [Algeb
   ext <;> simp [lmap] <;> field_simp <;> ring
 
 /- English proof (translation)
-Simplify using `only [map_mul, map_natCast, map_ofNat, mul_assoc _ (f c), mul_inv_cancel_left₀ h] at hm ⊢`. Conclude with `isIntegral_coords ha (isIntegral_natCast m) hm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem apx_den {K K' O : Type} [Field K] [Field K'] [CommRing O] [Algebra O K'] (f : K →+* K') (Δ : K) (a : Lsq K' (f Δ))
     (ha : IsIntegral O a) (m : ℕ) (c : K) (h : f c ≠ 0) (hm : IsIntegral O (f ((m : K) * Δ))) :
@@ -120,9 +116,9 @@ private theorem apx_den {K K' O : Type} [Field K] [Field K'] [CommRing O] [Algeb
   exact isIntegral_coords ha (isIntegral_natCast m) hm
 
 /- English proof (translation)
-Take `⟨m, hm0, hm⟩` from `exists_nat_mul Δ`. Establish `hc : (2 * m * Δ * (n * m) : F) ≠ 0` using `by simp [hΔ, hm0, hn]`. Establish `hmv` using `isIntegral_glob.1 hm`. Establish `hnm : ∀ v : Pl F, cv v ((n : F) * m) ≠ 0` using `fun v => (_root_.map_ne_zero _).2 (by simp [hm0, hn])`. Establish `hi` using `fun v => apx_den (cv v) Δ (a v) (ha v) m _ (hnm v) (hmv v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x1, h1⟩` from `apx _ hc _ fun v => isIntegral_Ov.1 (hi v).1`. Take `⟨x2, h2⟩` from `apx _ hc _ fun v => isIntegral_Ov.1 (hi v).2`. Use `choose r hr using fun v => apx_alg (O := Ov v) (cv v) Δ (a v) n m x1 x2 (hnm v) (hmv v) (isIntegral_Ov.2 (h1 v)) (isIntegral_Ov.2 (h2 v))`. Conclude with `⟨_, r, hr⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem apx_L (hΔ : Δ ≠ 0) (a : ∀ v : Pl F, Lsq (Kv v) (cv v Δ)) (ha : ∀ v, IsIntegral (Ov v) (a v)) (n : ℕ) (hn : n ≠ 0) :
     ∃ (x : Lsq F Δ) (r : ∀ v : Pl F, Lsq (Kv v) (cv v Δ)), ∀ v, IsIntegral (Ov v) (r v) ∧ a v = lmap (cv v) Δ x + n * r v := by
@@ -138,13 +134,11 @@ theorem apx_L (hΔ : Δ ≠ 0) (a : ∀ v : Pl F, Lsq (Kv v) (cv v Δ)) (ha : �
   exact ⟨_, r, hr⟩
 
 /- English proof (translation)
-Use `choose x s h using fun i => apx_L hΔ (fun v => r v 0 i) (fun v => (hr v).2 0 i) n hn`. Use `⟨⟨!![x 0, x 1; -star (x 1), star (x 0)], rfl, rfl⟩, fun v => !![s 0 v, s 1 v; -star (s 1 v), star (s 0 v)], fun v => ⟨⟨rfl, rfl⟩, fun i j => ?_⟩, funext fun v => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `(h 0 v).1`. Conclude with `(h 1 v).1`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `(isIntegral_star (h 1 v).1).neg`. Conclude with `isIntegral_star (h 0 v).1`. Apply the tactic sequence `have e : ∀ y : Lsq F Δ, lmap (cv v) Δ (star y) = star (lmap (cv v) Δ y) := fun y => by ext <;> simp [lmap]`. Rewrite using `[Pi.add_apply, Pi.mul_apply, Pi.natCast_apply, ← nsmul_eq_mul]`. Use extensionality with `i j : 1`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `(h 0 v).2` using `[jA]`. Simplify `(h 1 v).2` using `[jA]`. Use `(hr v).1.2.trans ?_` and prove the remaining obligations. Rewrite using `[(h 1 v).2]`.
-
-Simplify using `[jA, e, add_comm]`. Use `(hr v).1.1.trans ?_` and prove the remaining obligations. Rewrite using `[(h 0 v).2]`. Simplify using `[jA, e]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dense_lat (hΔ : Δ ≠ 0) (r : MA Δ) (hr : r ∈ RA Δ) (n : ℕ) (hn : n ≠ 0) :
     ∃ x : Dm Δ, ∃ r' ∈ RA Δ, r = jA Δ x + n * r' := by
@@ -170,11 +164,11 @@ private theorem dense_lat (hΔ : Δ ≠ 0) (r : MA Δ) (hr : r ∈ RA Δ) (n : �
       simp [jA, e]
 
 /- English proof (translation)
-Establish `hΔ` using `ne_zero_of_neg hneg`. Use `finite_lat hΔ` as an intermediate fact. Establish `: CharZero (Dm Δ)` using `⟨fun a b h => by`. Establish `h1` using `congrArg (fun x : Dm Δ => (x.1 0 0).re) h`. Simplify `h1⟩` using `[Matrix.natCast_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: NoZeroDivisors (Dm Δ)` using `⟨fun {a b} h => or_iff_not_imp_left.2 fun ha => Subtype.ext ((Dm_unit hneg a ha).mul_right_eq_zero.1 (congrArg Subtype.val h))⟩`. Establish `: IsDomain (Dm Δ)` using `NoZeroDivisors.to_isDomain _`. Use `cls_abs_unit (jA Δ) (RA Δ) (psiA Δ) ι _ (fun k h1 h2 => Subgroup.mem_iInf.2 fun v => mem_KD.2 ⟨(h1 v).2, (h2 v).2⟩) (fun x hx => ?_) (fun g => ?_) (dense_lat hΔ)` and prove the remaining obligations. Use `⟨⟨(Dm_unit hneg x hx).unit, mem_DX.2 x.2⟩, funext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[psiA_apply, hι]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨n, hn, h⟩` from `den_DA g`. Use `⟨n, hn, fun v => ⟨mul_mem (natCast_mem _ n) (mt_mem _), fun i j => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, Pi.natCast_apply, ← nsmul_eq_mul, Matrix.smul_apply, nsmul_eq_mul]`. Conclude with `h v i j`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clsD [IsTotallyReal F] (hneg : ∀ σ : F →+* ℝ, σ Δ < 0) (ι : DX Δ →* DA Δ) (hι : IsIotaD ι) :
     ∃ Y : Finset (DA Δ), ∀ g, ∃ γ, ∃ y ∈ Y, ∃ k ∈ (rpg _ _).box (fun v : Pl F => KD (cv v Δ) (Ov v)), g = ι γ * y * k := by

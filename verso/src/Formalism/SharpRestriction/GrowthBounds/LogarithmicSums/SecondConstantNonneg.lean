@@ -33,7 +33,7 @@ structure PrimeSumNumericFacts (D : D7) (L : SizeData₂ D) (K : Consts) (C bo :
     L.sc.a / L.sc.x / 40
 
 /- English proof (translation)
-Unfold `c1 cG`. Use `L.Sc_pos` as an intermediate fact. Use `L.etaSz_pos` as an intermediate fact. Establish `ha` using `sc_one_lt_a L.sc`. Conclude with `mul_nonneg (mul_nonneg hC (by linarith)) (Real.log_nonneg (by linarith))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem first_constant_nonneg (L : SizeData₂ D) (C : ℝ) (hC : 0 ≤ C) : 0 ≤ c1 L C := by
   unfold c1 cG
@@ -43,9 +43,9 @@ theorem first_constant_nonneg (L : SizeData₂ D) (C : ℝ) (hC : 0 ≤ C) : 0 �
   exact mul_nonneg (mul_nonneg hC (by linarith)) (Real.log_nonneg (by linarith))
 
 /- English proof (translation)
-Unfold `c2`. Establish `hk` using `k_ge D`. Establish `hx` using `sc_x_pos L.sc`. Establish `ha` using `sc_one_lt_a L.sc`. Establish `hlx` using `logx_nonneg L.sc`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb'` using `sc_b'_nonneg L.sc`. Establish `h1 : 0 ≤ C * (rG L.sc : ℝ) * L.sc.b' * Real.log L.sc.x` using `mul_nonneg (mul_nonneg (mul_nonneg hC (Nat.cast_nonneg _)) hb') hlx`. Establish `h2 : 0 ≤ C * Real.log L.sc.x * (L.sc.a * ((((D.R.k : ℝ) * L.sc.x ^ Scale.A) ^ 4)⁻¹))` using `mul_nonneg (mul_nonneg hC hlx) (mul_nonneg (by linarith) (by positivity))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem second_constant_nonneg (L : SizeData₂ D) (C : ℝ) (hC : 0 ≤ C) : 0 ≤ c2 L C := by
   unfold c2
@@ -61,9 +61,9 @@ theorem second_constant_nonneg (L : SizeData₂ D) (C : ℝ) (hC : 0 ≤ C) : 0 
   linarith
 
 /- English proof (translation)
-Unfold `c4`. Establish `hk` using `k_ge D`. Establish `ha` using `sc_one_lt_a L.sc`. Establish `hLa` using `La_nonneg K hK L.sc`. Establish `hP0` using `p0_pos D L.sc`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (mul_nonneg hC (logx_nonneg _)) (add_nonneg (div_nonneg (mul_nonneg hLa (by linarith)) (by linarith)) (div_nonneg (by linarith) hP0.le))`.
+A detailed English derivation is pending.
 -/
 theorem fourth_constant_nonneg (K : Consts) (hK : 0 ≤ K.La) (L : SizeData₂ D) (C : ℝ) (hC : 0 ≤ C) : 0 ≤ c4 K L C := by
   unfold c4
@@ -75,7 +75,7 @@ theorem fourth_constant_nonneg (K : Consts) (hK : 0 ≤ K.La) (L : SizeData₂ D
     (add_nonneg (div_nonneg (mul_nonneg hLa (by linarith)) (by linarith)) (div_nonneg (by linarith) hP0.le))
 
 /- English proof (translation)
-Unfold `cfl`. Establish `hla : 0 ≤ Real.log s.a` using `Real.log_nonneg (sc_one_lt_a s).le`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Conclude with `mul_nonneg (mul_nonneg hC (Nat.cast_nonneg _)) (add_nonneg (mul_nonneg (by positivity) hla) (by positivity))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cfl_nonneg (D : D7) (s : Scale) (C : ℝ) (hC : 0 ≤ C) : 0 ≤ cfl D s C := by
   unfold cfl
@@ -84,7 +84,7 @@ theorem cfl_nonneg (D : D7) (s : Scale) (C : ℝ) (hC : 0 ≤ C) : 0 ≤ cfl D s
   exact mul_nonneg (mul_nonneg hC (Nat.cast_nonneg _)) (add_nonneg (mul_nonneg (by positivity) hla) (by positivity))
 
 /- English proof (translation)
-Unfold `Scale.X'`. Conclude with `Real.one_le_exp (Real.rpow_nonneg (sc_x_pos s).le _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_le_X' (s : Scale) : 1 ≤ s.X' := by
   unfold Scale.X'; exact Real.one_le_exp (Real.rpow_nonneg (sc_x_pos s).le _)
@@ -115,17 +115,17 @@ def E1 (X : Inst D L) (K : Consts) (C bo : ℝ) (a b : HH D → ℤ) (A3 A4 PS :
       (4 * ((D.R.m : ℝ) * (D.host.TT.card : ℝ)) * L.sc.a)
 
 /- English proof (translation)
-Establish `hl : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Establish `ha` using `sc_one_lt_a L.sc`. Establish `hm : (0 : ℝ) ≤ (D.R.m : ℝ)` using `Nat.cast_nonneg _`. Establish `hN : (0 : ℝ) ≤ (D.host.TT.card : ℝ)` using `Nat.cast_nonneg _`. Take `⟨hlo0, hlo⟩` from `lo_bounds K hK.1 L C bo hC hbo p hp hc0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hfl0, hfl⟩` from `fl_bounds D L.sc C hC p hp`. Establish `hio` using `io_le X K hK P h hSig p`. Establish `hsd` using `sdiff_le X K hSig A3 A4 PS badf T.hA3 T.hA4 T.hPS T.hbad T.hbad0 p hp hc0`. Establish `hd` using `dfc_le P X K C bo h hG p hp hc0 hpX hlo0`. Establish `m1 : p ∈ prB (L.sc.X'' D.R.n + 1)` using `mem_prB.2 ⟨hp, by linarith⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsd0 : 0 ≤ Real.log p / p * ((D.host.TT \ TTP X K a b p).card : ℝ)` using `mul_nonneg (lp_nonneg p) (Nat.cast_nonneg _)`. Establish `hiob : 0 ≤ (if p ∈ candF D L K then Real.log p / p * (2 * dropI X K a b p + 4 * Sig X K a b p) else 0) * (((D.R.m : ℝ) * (D.host.TT.card : ℝ)) * L.sc.a)` using `by split_ifs with hc`. Use `hSig p (cand_of_mem hc)` as an intermediate fact. Use `dropI_nonneg X K a b p` as an intermediate fact. Use `lp_nonneg p` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Simplify using the standard rewrite rules. Establish `k1` using `mul_le_mul_of_nonneg_left hsd (by positivity : (0 : ℝ) ≤ 3 * (D.R.m : ℝ) * L.sc.a)`. Establish `k2` using `mul_le_mul_of_nonneg_left hlo (mul_nonneg hm hN)`. Establish `k3` using `mul_le_mul_of_nonneg_left hfl hm`.
+Check the signs of the components of the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k4` using `mul_le_mul_of_nonneg_left hd hl`. Establish `k10 : 0 ≤ 3 * (D.R.m : ℝ) * L.sc.a * (Real.log p / p * ((D.host.TT \ TTP X K a b p).card : ℝ))` using `mul_nonneg (by positivity) hsd0`. Establish `k20 : 0 ≤ (D.R.m : ℝ) * (D.host.TT.card : ℝ) * (Real.log p * lo K L C bo p)` using `mul_nonneg (mul_nonneg hm hN) (mul_nonneg hl hlo0)`. Establish `k30 : 0 ≤ (D.R.m : ℝ) * (Real.log p * fl D L.sc C p)` using `mul_nonneg hm (mul_nonneg hl hfl0)`. Establish `e : Real.log p * ((D.R.m : ℝ) * (((D.host.TT \ TTP X K a b p).card : ℝ) * (3 * L.sc.a / p)) + (D.R.m : ℝ) * ((D.host.TT.card : ℝ) * lo K L C bo p) + (D.R.m : ℝ) * fl D L.sc C p + ioP X K a b p) = 3 * (D.R.m : ℝ) * L.sc.a * (Real.log p / p * ((D.host.TT \ TTP X K a b p).card : ℝ)) …` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k4` using `[e]`. Rewrite using `[mul_max_of_nonneg _ _ hl, mul_zero]`. Unfold `E1`. Rewrite using `[if_pos m1]`. Apply the tactic sequence `apply max_le <;> linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem low_le (X : Inst D L) (K : Consts) (hK : K.Nonneg) (P : ParameterChoice' D L) (C bo : ℝ) (hC : 0 ≤ C) (hbo : 0 ≤ bo)
     {a b : HH D → ℤ} (h : InWin L a b) (hG : GainBoundAt X K C bo a b)

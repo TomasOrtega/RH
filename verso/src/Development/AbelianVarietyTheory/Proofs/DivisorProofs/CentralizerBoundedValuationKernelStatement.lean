@@ -5,7 +5,7 @@ open Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.CentValHom.centralizer_valHom_bounded_ker) | (exact GlobalTheory.CentValHom.centralizer_valHom_bounded_ker) | (intros; apply GlobalTheory.CentValHom.centralizer_valHom_bounded_ker <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.centralizer_bounded_valuation_kernel : ∀ (p : ℕ) [Fact p.Prime] (L : IntermediateField ℚ_[p] (PadicAlgCl p)), FiniteDimensional ℚ_[p] L →
     ∀ (n : ℕ) (N : GL (Fin n) L), N.val.charpoly.Separable →

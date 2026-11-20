@@ -4,15 +4,15 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LinkExactAff
 namespace GlobalTheory.SeqCx
 
 /- English proof (translation)
-Establish `hlin : ∀ d : List V →₀ ℤ, Finsupp.mapDomain (fun l => (l, ([] : List W))) d = Finsupp.lmapDomain ℤ ℤ (fun l => (l, ([] : List W))) d` using `fun d => rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[chains2, Finsupp.mem_supported]`. Rewrite `hc` using `[chains, Finsupp.mem_supported]`. Introduce `z hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz'` using `Finsupp.mapDomain_support hz`. Rewrite `hz'` using `[Finset.mem_image]`. Take `⟨l, hl, rfl⟩` from `hz'`. Use `hc (Finset.mem_coe.mpr hl)` as an intermediate fact. Conclude with `⟨this.1, this.2, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `key : (hbd V W).comp (Finsupp.lmapDomain ℤ ℤ (fun l => (l, ([] : List W)))) = (Finsupp.lmapDomain ℤ ℤ (fun l => (l, ([] : List W)))).comp (bd V)`. Apply `Finsupp.lhom_ext'` to reduce the goal to its premises. Introduce `l`. Apply `LinearMap.ext_ring` to reduce the goal to its premises. Simplify using `[hbd, Finsupp.mapDomain_single]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `LinearMap.congr_fun key c` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[hlin, this, hb, map_zero]`. Establish `key : (vbd V W).comp (Finsupp.lmapDomain ℤ ℤ (fun l => (l, ([] : List W)))) = 0`. Apply `Finsupp.lhom_ext'` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l`. Apply `LinearMap.ext_ring` to reduce the goal to its premises. Simplify using `[vbd, bd, Finsupp.mapDomain_single]`. Use `LinearMap.congr_fun key c` as an intermediate fact. Simplify `this` using `[LinearMap.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cycle_pair_empty (V W : Type) (D : Set (List V × List W)) (p : ℕ) (c : List V →₀ ℤ)
     (hc : c ∈ chains {l | (l, ([] : List W)) ∈ D} p) (hb : bd V c = 0) :
@@ -53,7 +53,7 @@ end GlobalTheory.SeqCx
 section
 open GlobalTheory.SeqCx
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.SeqCx.cycle_pair_empty`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.pair_nil_hbd_vbd_eq_zero_of_cycle : ∀ (V W : Type) (D : Set (List V × List W)) (p : ℕ) (c : List V →₀ ℤ), c ∈ chains {l | (l, ([] : List W)) ∈ D} p → bd V c = 0 → Finsupp.mapDomain (fun l => (l, ([] : List W))) c ∈ chains2 D p 0 ∧ hbd V W (Finsupp.mapDomain (fun l => (l, ([] : List W))) c) = 0 ∧ vbd V W (Finsupp.mapDomain (fun l => (l, ([] : List W))) c) = 0 := by
   first

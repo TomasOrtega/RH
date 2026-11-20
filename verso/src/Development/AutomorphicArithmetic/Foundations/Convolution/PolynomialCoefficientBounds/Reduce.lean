@@ -8,25 +8,25 @@ private noncomputable def nrm {ι : Type} (p : MvPolynomial ι ℂ) : ℝ :=
   ∑ α ∈ p.support, ‖p.coeff α‖
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 private theorem nrm_nonneg {ι : Type} (p : MvPolynomial ι ℂ) : 0 ≤ nrm p :=
   Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι p q).1`.
+A detailed English derivation is pending.
 -/
 private theorem nrm_add {ι : Type} (p q : MvPolynomial ι ℂ) : nrm (p + q) ≤ nrm p + nrm q :=
   (UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι p q).1
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι p q).2.1`.
+A detailed English derivation is pending.
 -/
 private theorem nrm_mul {ι : Type} (p q : MvPolynomial ι ℂ) : nrm (p * q) ≤ nrm p * nrm q :=
   (UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι p q).2.1
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts ι 0 0).2.2.2.1 a c`.
+A detailed English derivation is pending.
 -/
 private theorem nrm_monomial {ι : Type} (a : ι →₀ ℕ) (c : ℂ) :
     nrm (monomial a c : MvPolynomial ι ℂ) = ‖c‖ :=
@@ -41,16 +41,16 @@ variable {ι B : Type} [Fintype B] {φ : MvPolynomial ι ℂ →ₐ[ℂ] MvPolyn
   {m : B → MvPolynomial ι ℂ}
 
 /- English proof (translation)
-Take `⟨G, h1, h2, h3⟩` from `h`. Conclude with `⟨G, h1, h2.trans hcd, fun β => (h3 β).trans he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem FXRep.mono {p c d e e'} (h : FXRep φ m p e c) (hcd : c ≤ d) (he : e ≤ e') : FXRep φ m p e' d := by
   obtain ⟨G, h1, h2, h3⟩ := h
   exact ⟨G, h1, h2.trans hcd, fun β => (h3 β).trans he⟩
 
 /- English proof (translation)
-Take `⟨G, h1, h2, h3⟩` from `h`. Take `⟨G', h1', h2', h3'⟩` from `h'`. Use `⟨fun β => G β + G' β, ?_, ?_, fun β => (totalDegree_add _ _).trans (max_le (h3 β) (h3' β))⟩` and prove the remaining obligations. Rewrite using `[h1, h1', ← Finset.sum_add_distrib]`. Simplify using `only [map_add, add_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(Finset.sum_le_sum fun β _ => nrm_add _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem FXRep.add {p q c d e} (h : FXRep φ m p e c) (h' : FXRep φ m q e d) :
     FXRep φ m (p + q) e (c + d) := by
@@ -64,7 +64,7 @@ private theorem FXRep.add {p q c d e} (h : FXRep φ m p e c) (h' : FXRep φ m q 
     linarith
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨fun _ => 0, by simp, by simp [nrm], by simp⟩`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem FXRep.sum {κ : Type} (s : Finset κ) (f : κ → MvPolynomial ι ℂ) (c : κ → ℝ) {e : ℕ}
     (h : ∀ i ∈ s, FXRep φ m (f i) e (c i)) : FXRep φ m (∑ i ∈ s, f i) e (∑ i ∈ s, c i) := by
@@ -77,9 +77,9 @@ private theorem FXRep.sum {κ : Type} (s : Finset κ) (f : κ → MvPolynomial �
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Take `⟨G, h1, h2, h3⟩` from `h`. Use `⟨fun β => g * G β, ?_, ?_, fun β => (totalDegree_mul _ _).trans (add_le_add hg (h3 β))⟩` and prove the remaining obligations. Rewrite using `[h1, Finset.mul_sum]`. Simplify using `only [map_mul, mul_assoc]`. Use `(Finset.sum_le_sum fun β _ => nrm_mul _ _).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.mul_sum]`. Conclude with `mul_le_mul_of_nonneg_left h2 (nrm_nonneg g)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem FXRep.smul {p c e e'} (g : MvPolynomial ι ℂ) (hg : g.totalDegree ≤ e') (h : FXRep φ m p e c) :
     FXRep φ m (φ g * p) (e' + e) (nrm g * c) := by
@@ -92,9 +92,9 @@ private theorem FXRep.smul {p c e e'} (g : MvPolynomial ι ℂ) (hg : g.totalDeg
     exact mul_le_mul_of_nonneg_left h2 (nrm_nonneg g)
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun γ => if γ = β then 1 else 0, ?_, ?_, fun γ => by dsimp only; split_ifs <;> simp⟩`. Apply the tactic sequence `rw [Finset.sum_eq_single β] <;> simp +contextual`. Rewrite using `[Finset.sum_eq_single β]`. Use `nrm_monomial (0 : ι →₀ ℕ) 1` as an intermediate fact. Simplify using `only [monomial_zero', C_1, norm_one] at this`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Introduce `b _ hb`. Simplify using `[hb, nrm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem FXRep.basis (β : B) : FXRep φ m (m β) 0 1 := by
   classical
@@ -109,9 +109,9 @@ private theorem FXRep.basis (β : B) : FXRep φ m (m β) 0 1 := by
     · simp
 
 /- English proof (translation)
-Take `⟨G, h1, h2, hd⟩` from `h`. Establish `h3` using `FXRep.sum Finset.univ _ _ fun β _ => (hx β).smul (G β) (hd β)`. Establish `h4 : x * p = ∑ β, φ (G β) * (x * m β)`. Rewrite using `[h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun β _ => by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4]`. Use `h3.mono ?_ le_rfl` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left h2 hK`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem FXRep.mul_left {p c e} (x : MvPolynomial ι ℂ) (K : ℝ) (hK : 0 ≤ K)
     (hx : ∀ β, FXRep φ m (x * m β) 1 K) (h : FXRep φ m p e c) : FXRep φ m (x * p) (e + 1) (K * c) := by
@@ -128,11 +128,11 @@ private theorem FXRep.mul_left {p c e} (x : MvPolynomial ι ℂ) (K : ℝ) (hK :
 end
 
 /- English proof (translation)
-Establish `h` using `congrArg (Polynomial.eval (-(X j : MvPolynomial (Fin n) ℂ))) (MvPolynomial.prod_C_add_X_eq_sum_esymm ℂ (Fin n))`. Rewrite `h` using `[Polynomial.eval_prod, Finset.prod_eq_zero (Finset.mem_univ j) (by simp), Polynomial.eval_finset_sum, Fintype.card_fin, Finset.sum_range_succ', Finset.sum_range]`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, esymm_zero, one_mul, Nat.sub_zero] at h`. Establish `h2 : (X j : MvPolynomial (Fin n) ℂ) ^ n = (-1) ^ n * (-X j) ^ n`. Rewrite using `[← mul_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h3` using `eq_neg_of_add_eq_zero_right h.symm`. Rewrite using `[h2, h3, mul_neg, ← neg_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[neg_pow (X j : MvPolynomial (Fin n) ℂ)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_neg, map_pow, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem vieta (n : ℕ) (j : Fin n) :
     (X j : MvPolynomial (Fin n) ℂ) ^ n =
@@ -155,7 +155,7 @@ private theorem vieta (n : ℕ) (j : Fin n) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ u), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hv)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_update {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ} (β : ι → Fin n)
     (u : ι) (k : Fin n) :
@@ -167,13 +167,13 @@ private theorem prod_update {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ} 
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hv)]
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ u), ← mul_assoc, ← pow_succ']`. Distinguish the cases in `h : (β u : ℕ) + 1 < n`. Use `prod_update β u ⟨_, h⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(FXRep.basis _).mono (by linarith [Nat.cast_nonneg (α := ℝ) n]) (Nat.zero_le _)`. Establish `hn : (β u : ℕ) + 1 = n` using `by have := (β u).2; omega`. Establish `hv` using `congrArg (rename (fun j => (u.1, j))) (vieta n u.2)`. Simplify using `only [map_pow, rename_X, map_sum, map_mul, Prod.mk.eta, rename_C] at hv`. Rewrite using `[hn, hv, Finset.sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `FXRep.sum (φ := aeval (fun ti : τ × Fin n => rename (fun j => (ti.1, j)) (esymm (Fin n) ℂ (ti.2 + 1)))) (m := fun β : τ × Fin n → Fin n => ∏ u, (X u : MvPolynomial (τ × Fin n) ℂ) ^ (β u : ℕ)) (Finset.univ : Finset (Fin n)) _ _ fun i _ => (FXRep.basis (Function.update β u i.rev)). …`. Use `FXRep.mono (c := ∑ i : Fin n, _) (Eq.mpr (congrArg (FXRep _ _ · _ _) ?_) key) ?_ le_rfl` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [prod_update, Fin.val_rev]`. Rewrite using `[aeval_monomial, Finsupp.prod_single_index (by simp), pow_one, algebraMap_eq]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc, map_mul, map_pow]`. Simplify using `only [nrm_monomial]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem step (τ : Type) [Fintype τ] [DecidableEq τ] (n : ℕ) (u : τ × Fin n)
     (β : τ × Fin n → Fin n) :
@@ -206,13 +206,11 @@ private theorem step (τ : Type) [Fintype τ] [DecidableEq τ] (n : ℕ) (u : τ
       simp
 
 /- English proof (translation)
-Introduce `τ _ _ n`. Establish `hK : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use `⟨(n : ℝ) + 1, by linarith, fun α => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `FXRep (aeval (fun ti : τ × Fin n => rename (fun j => (ti.1, j)) (esymm (Fin n) ℂ (ti.2 + 1)))) (fun β : τ × Fin n → Fin n => ∏ u, (X u : MvPolynomial (τ × Fin n) ℂ) ^ (β u : ℕ)) (monomial α 1) α.degree (((n : ℝ) + 1) ^ α.degree)`. Proceed by induction on `α using Finsupp.induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `zero`. Use `FXRep.basis (φ := aeval (fun ti : τ × Fin n => rename (fun j => (ti.1, j)) (esymm (Fin n) ℂ (ti.2 + 1)))) (m := fun β : τ × Fin n → Fin n => ∏ u, (X u : MvPolynomial (τ × Fin n) ℂ) ^ (β u : ℕ)) (fun u => ⟨0, u.2.pos⟩)` as an intermediate fact. Simplify using `using this`. Consider the case `single_add a b f _ _ ih`. Rewrite using `[monomial_single_add, map_add, Finsupp.degree_single, pow_add]`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `clear * - ih hK`. Proceed by induction on `b with`. Consider the case `zero => simpa using ih`. Consider the case `succ b ihb`. Rewrite using `[pow_succ', pow_succ', mul_assoc, mul_assoc]`.
-
-Conclude with `(ihb.mul_left _ _ (by linarith) (step τ n a)).mono le_rfl (by omega)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.reduce :
     ∀ (τ : Type) [Fintype τ] [DecidableEq τ] (n : ℕ), ∃ K : ℝ, 1 ≤ K ∧ ∀ α : τ × Fin n →₀ ℕ, ∃ G : (τ × Fin n → Fin n) → MvPolynomial (τ × Fin n) ℂ, (monomial α (1 : ℂ) = ∑ β, aeval blockE (G β) * ∏ u, X u ^ (β u : ℕ)) ∧ ∑ β, l1 (G β) ≤ K ^ α.degree ∧ ∀ β, (G β).totalDegree ≤ α.degree := by

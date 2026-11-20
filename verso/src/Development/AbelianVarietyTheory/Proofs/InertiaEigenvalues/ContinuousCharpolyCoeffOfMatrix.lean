@@ -6,7 +6,7 @@ open GlobalTheory.TypeLeaf Formalism.BasicNotions Formalism.MainNotions Formalis
 namespace GlobalTheory.TypeLeaf
 
 /- English proof (translation)
-Establish `key : ∀ M : Matrix (Fin n) (Fin n) K, M.charpoly.coeff i = MvPolynomial.eval (fun p : Fin n × Fin n => M p.1 p.2) ((Matrix.charpoly.univ K (Fin n)).coeff i)` using `fun M => (Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (RingHom.id K) (fun p : Fin n × Fin n => M p.1 p.2) i).symm`. Establish `hfun : (fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i) = fun M => MvPolynomial.eval (fun p : Fin n × Fin n => M p.1 p.2) ((Matrix.charpoly.univ K (Fin n)).coeff i)` using `funext key`. Rewrite using `[hfun]`. Conclude with `(MvPolynomial.continuous_eval _).comp (continuous_pi fun p => continuous_id.matrix_elem p.1 p.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_charpoly_coeff_of_matrix {K : Type} [CommRing K] [TopologicalSpace K]
     [IsTopologicalRing K] (n i : ℕ) :
@@ -25,7 +25,7 @@ theorem continuous_charpoly_coeff_of_matrix {K : Type} [CommRing K] [Topological
     (continuous_pi fun p => continuous_id.matrix_elem p.1 p.2)
 
 /- English proof (translation)
-Introduce `Γ _ K _ _ _ _ n a b S hS ha hb hab g`. Use extensionality with `i`. Establish `hc : ∀ c : Γ → Matrix (Fin n) (Fin n) K, Continuous c → Continuous fun x => (c x).charpoly.coeff i` using `fun c hc => (continuous_charpoly_coeff_of_matrix n i).comp hc`. Establish `heq` using `Continuous.ext_on hS (hc a ha) (hc b hb) (fun x hx => by simp only [hab x hx])`. Conclude with `congrFun heq g`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charpoly_eq_of_dense :
     ∀ (Γ : Type) [TopologicalSpace Γ] (K : Type) [CommRing K] [TopologicalSpace K]

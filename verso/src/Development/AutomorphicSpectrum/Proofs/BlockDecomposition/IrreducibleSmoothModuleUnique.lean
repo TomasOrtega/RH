@@ -17,14 +17,14 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
   {μ : Measure (GA E a)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map ((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infGL' : Continuous (infGL E a) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map
     ((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))))
 
 /- English proof (translation)
-Establish `hcl : IsClosed (C : Set (L2 (latticeGL E a) μ))` using `hC ▸ Submodule.isClosed_topologicalClosure _`. Establish `hle : S.topologicalClosure ≤ C.comap (T : L2 (latticeGL E a) μ →ₗ[ℂ] L2 (latticeGL E a) μ)` using `Submodule.topologicalClosure_minimal _ h (hcl.preimage T.continuous)`. Conclude with `hle (hC ▸ hv)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_closure_le {C S : Submodule ℂ (L2 (latticeGL E a) μ)} (hC : C = S.topologicalClosure)
     (T : L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ) (h : ∀ F ∈ S, T F ∈ C) {v : L2 (latticeGL E a) μ}
@@ -35,17 +35,15 @@ theorem map_closure_le {C S : Submodule ℂ (L2 (latticeGL E a) μ)} (hC : C = S
   exact hle (hC ▸ hv)
 
 /- English proof (translation)
-Use `set C := (classes W μ).topologicalClosure with hCdef`. Establish `hCcl : IsClosed (C : Set (L2 (latticeGL E a) μ))` using `Submodule.isClosed_topologicalClosure _`. Establish `: CompleteSpace C` using `hCcl.completeSpace_coe`. Set `ψ : ℕ → Sm E a` to `fun k => ((lie E a X) ^ k) φ`. Establish `hψ0 : ψ 0 = φ` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψs : ∀ k, ψ (k + 1) = lie E a X (ψ k)` using `fun k => by`. Simplify using `only [ψ, pow_succ', Module.End.mul_apply]`. Establish `hmem : ∀ k, ψ k ∈ W` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => exact hφ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k ih => rw [hψs]`. Conclude with `hs (.lie X) _ ih`. Establish `hM : ∀ k, MemL2Quotient (latticeGL E a) μ (ψ k).1` using `fun k => (hW _ (hmem k)).2`. Establish `hcont : ∀ k, Continuous (ψ k).1` using `fun k => ContAut.continuous_of_isOpen_stab E a _ (hW _ (hmem k)).1.level`. Set `F : ℕ → ℝ → L2 (latticeGL E a) μ` to `fun k t => R (latticeGL E a) μ (infGL E a (c t)) (hM k).toL2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, B, hb⟩` from `GlobalTheory.T.lie_power_l2_factorial_bound E a μ W hs hW φ hφ X`. Establish `hd : ∀ k t, HasDerivAt (F k) (F (k + 1) t) t` using `fun k t => GlobalTheory.T.hasDerivAt_right_translate_toL2 (GA E a) (latticeGL E a) μ (ψ k).1 (ψ (k + 1)).1 (hM k) (hM (k + 1)) (fun t => infGL E a (c t)) (hcont k) (hcont (k + 1)) (continuous_infGL'.comp hc) (by simp [h0]) (fun s t => by simp [hadd]) (fun g => by`. Use `hasDerivAt_curve (ψ k) g c X h0 hX` as an intermediate fact. Rewrite using `[hψs]`. Conclude with `this) t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ k t, ‖F k t‖ ≤ M * B ^ k * (k.factorial : ℝ)` using `fun k t => (norm_R _ _).trans_le (hb k (hM k))`. Establish `hF0 : ∀ k, F k 0 ∈ C` using `fun k => by`. Establish `: F k 0 = (hM k).toL2` using `by simp [F, h0]`. Rewrite using `[this]`. Conclude with `Submodule.le_topologicalClosure _ (toL2_mem_classes (hmem k) (hM k))`.
-
-Establish `hperp : F 0 t ∈ Cᗮᗮ` using `(Submodule.mem_orthogonal _ _).2 fun u hu => GlobalTheory.T.analytic_orthogonal_vanishing _ F M B u hd hn (fun k => (Submodule.mem_orthogonal' _ _).1 hu _ (hF0 k)) t`. Rewrite `hperp` using `[Submodule.orthogonal_orthogonal]`. Establish `e : (hM 0).toL2 = h.toL2` using `rfl`. Conclude with `e ▸ hperp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem R_curve_mem {W : Submodule ℂ (Sm E a)} (hs : IsStable W)
     (hW : ∀ φ ∈ W, IsAutForm φ ∧ MemL2Quotient (latticeGL E a) μ φ.1) {c : ℝ → GL (Fin a) (Cinf E)} {X : GlobalTheory.CuspRep.Lie E a}
@@ -86,13 +84,13 @@ theorem R_curve_mem {W : Submodule ℂ (Sm E a)} (hs : IsStable W)
   exact e ▸ hperp
 
 /- English proof (translation)
-Use `set C := (classes W μ).topologicalClosure with hCdef`. Establish `hcls : ∀ F ∈ classes W μ, ∃ φ ∈ W, ∃ h : MemL2Quotient (latticeGL E a) μ φ.1, F = h.toL2` using `fun F hF => by`. Take `⟨φ, hφ, e⟩` from `mem_classes.1 hF`. Conclude with `⟨φ, hφ, (hW φ hφ).2, l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (e.trans (hW φ hφ).2.lift_toL2_ae_eq.symm)⟩`. Establish `hfin : ∀ k, ∀ v ∈ C, R (latticeGL E a) μ (finGL E a k) v ∈ C` using `fun k v hv => map_closure_le hCdef _ (fun F hF => Submodule.le_topologicalClosure _ (R_mem_classes (fun φ hφ => hs (.fin k) φ hφ) hF)) hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S : Subgroup (GL (Fin a) (Cinf E))` to `{ carrier := {y | (∀ v ∈ C, R (latticeGL E a) μ (infGL E a y) v ∈ C) ∧ ∀ v ∈ C, R (latticeGL E a) μ (infGL E a y⁻¹) v ∈ C} one_mem' := by simp mul_mem' := fun {x y} hx hy => ⟨fun v hv => by`. Rewrite using `[map_mul, map_mul]; exact hx.1 _ (hy.1 v hv), fun v hv => by`. Rewrite using `[_root_.mul_inv_rev, map_mul, map_mul]`. Conclude with `hy.2 _ (hx.2 v hv)⟩`. Use the proof step `inv_mem' := fun {x} hx => ⟨hx.2, by simpa using hx.1⟩ }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : S = ⊤` using `GlobalTheory.T.subgroup_one_parameter_closed_eq_top E a S fun c X hc h0 hadd hX t => by`. Establish `key : ∀ t, ∀ v ∈ C, R (latticeGL E a) μ (infGL E a (c t)) v ∈ C` using `fun t v hv => map_closure_le hCdef _ (fun F hF => by`. Take `⟨φ, hφ, h, rfl⟩` from `hcls F hF`. Conclude with `R_curve_mem hs hW hc h0 hadd hX hφ h t) hv`. Establish `hinv : (c t)⁻¹ = c (-t)` using `inv_eq_of_mul_eq_one_right (by rw [← hadd, add_neg_cancel, h0])`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨key t, by rw [show (c t)⁻¹ = c (-t) from hinv]; exact key (-t)⟩`. Use `⟨Submodule.isClosed_topologicalClosure _, fun g v hv => ?_⟩` and prove the remaining obligations. Establish `hy : GeneralLinearGroup.map (pInf E) g ∈ S` using `hS ▸ Subgroup.mem_top _`. Rewrite using `[← infGL_mul_finGL g, map_mul]`. Conclude with `hy.1 _ (hfin _ v hv)`.
+A detailed English derivation is pending.
 -/
 theorem isSubrep_closure {W : Submodule ℂ (Sm E a)} (hs : IsStable W)
     (hW : ∀ φ ∈ W, IsAutForm φ ∧ MemL2Quotient (latticeGL E a) μ φ.1) :
@@ -125,13 +123,13 @@ theorem isSubrep_closure {W : Submodule ℂ (Sm E a)} (hs : IsStable W)
   exact hy.1 _ (hfin _ v hv)
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ a μ _ _ H hH hi W hs hne hW φ ⟨hφ, -, h, hh⟩`. Establish `hW' : ∀ ψ ∈ W, IsAutForm ψ ∧ MemL2Quotient (latticeGL E a) μ ψ.1` using `fun ψ hψ => ⟨(hW ψ hψ).1.1, (hW ψ hψ).2.2.choose⟩`. Establish `hsub` using `isSubrep_closure (μ := μ) hs hW'`. Establish `hle : (classes W μ).topologicalClosure ≤ H`. Use `Submodule.topologicalClosure_minimal _ (fun F hF => ?_) hi.1.1` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψ, e⟩` from `mem_classes.1 hF`. Take `⟨h', hh'⟩` from `(hW ψ hψ).2.2`. Rewrite using `[show F = h'.toL2 from l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (e.trans h'.lift_toL2_ae_eq.symm)]` and apply the resulting hypothesis. Establish `hcl : (classes W μ).topologicalClosure = H`. Use `(hi.2.2 _ hle hsub).resolve_left fun h0 => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψ, hψ0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Take `⟨h', -⟩` from `(hW ψ hψ).2.2`. Use `toL2_ne_zero h' (ContAut.continuous_of_isOpen_stab E a ψ (hW ψ hψ).1.1.level) (fun e => hψ0 (Subtype.ext e)) ?_` and prove the remaining obligations. Establish `: h'.toL2 ∈ (classes W μ).topologicalClosure` using `Submodule.le_topologicalClosure _ (toL2_mem_classes hψ h')`. Rewrite `this` using `[h0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Conclude with `GlobalTheory.T.irreducible_cuspidal_form_l2_mem E a μ H hH hi W hs (fun ψ hψ => ⟨(hW ψ hψ).1.1, (hW ψ hψ).2.2⟩) hcl φ hφ.1 h hh`.
+A detailed English derivation is pending.
 -/
 theorem irred_module : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (H : Submodule ℂ (L2 (latticeGL E a) μ)), H ≤ L2cusp μ → IsIrredSubrep (R (latticeGL E a) μ) H → ∀ W : Submodule ℂ (Sm E a), IsStable W → W ≠ ⊥ → (∀ φ ∈ W, IsCuspForm φ ∧ (∀ t g, φ.1 (splitCentre E a t * g) = φ.1 g) ∧ ∃ h : MemL2Quotient (latticeGL E a) μ φ.1, h.toL2 ∈ H) → ∀ φ : Sm E a, (IsCuspForm φ ∧ (∀ t g, φ.1 (splitCentre E a t * g) = φ.1 g) ∧ ∃ h : MemL2Quotient (latticeGL E a) μ φ.1, h.toL2 ∈ H) → φ ∈ W := by
   rintro E _ _ _ a μ _ _ H hH hi W hs hne hW φ ⟨hφ, -, h, hh⟩

@@ -7,9 +7,9 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.Split
 namespace GlobalTheory.FunObj.DiagLattice
 
 /- English proof (translation)
-Set `A : Matrix ι ι 𝒪[k]` to `fun i j => ⟨M i j, h1 i j⟩`. Establish `hA : (algebraMap 𝒪[k] k).mapMatrix A = M` using `rfl`. Establish `hd : algebraMap 𝒪[k] k A.det = M.det` using `by rw [RingHom.map_det, hA]`. Establish `hu : IsUnit A.det` using `(Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers (valuation k))).2 (by rw [hd, h2])`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det A).2 hu`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Matrix.GeneralLinearGroup.map (n := ι) (algebraMap 𝒪[k] k) u, ⟨u, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.val.map (algebraMap 𝒪[k] k) = _`. Rewrite using `[hu]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_KO_of_det {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι k)
@@ -25,13 +25,13 @@ theorem exists_KO_of_det {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   rw [hu]; rfl
 
 /- English proof (translation)
-Use `⟨(Model.mkNel p fun rs => Sum.elim (fun _ => (0 : k)) (fun i => v i rs.1.1) rs.1.2).1, Subtype.property _, ?_, ?_⟩` and prove the remaining obligations. Introduce `r i show Model.mkN p (fun rs => Sum.elim (fun _ => (0 : k)) (fun i => v i rs.1.1) rs.1.2) r (Sum.inr i) = _`. Simplify using `only [Model.mkN, of_apply, Sum.elim_inr]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `r with r | r` into its components or cases. Rewrite using `[h3 i (by simp [lev] at h; omega)]; simp`. Simplify using `only [lev, Sum.elim_inr] at h`. Break down `eq_or_lt_of_le (show i ≤ r by rw [Fin.le_def]; omega) with e | e` into its components or cases. Substitute `e` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Rewrite using `[h2 i r e, Matrix.one_apply_ne]`. Simplify using `using e.ne'`. Introduce `r s show Model.mkN p (fun rs => Sum.elim (fun _ => (0 : k)) (fun i => v i rs.1.1) rs.1.2) r (Sum.inl s) = _`. Simplify using `only [Model.mkN, of_apply, Sum.elim_inl]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_unip {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (p : ℕ)
     (v : Fin c → n ⊕ Fin c → k) (h1 : ∀ i, v i (Sum.inr i) = 1) (h2 : ∀ i l, i < l → v i (Sum.inr l) = 0)
@@ -61,57 +61,51 @@ theorem exists_unip {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] 
     · rfl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ c d H hA hB`. Use `choose v v1 v2 v3 v4 using hA`. Take `⟨u, hu, uc, uX⟩` from `exists_unip ((c + 1) / 2) v v1 v2 v3`. Set `lv : n ⊕ Fin c → ℕ` to `Sum.elim (fun _ => 2 * (c / 2)) (fun i => 2 * i.val + 1)`. Take `⟨b, hb, w, hw, hbw⟩` from `iwasawa_blockTriangular k (n ⊕ Fin c) lv (u⁻¹ * H)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbi : (b⁻¹).val.BlockTriangular lv`. Rewrite using `[Matrix.coe_units_inv]`. Use `haveI := b.invertible`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`. Establish `hH : H = u * b * w` using `by rw [mul_assoc, ← hbw]; simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w1, w2⟩` from `(mem_KO_iff w).1 hw`. Establish `hdiag : ∀ i, (b⁻¹).val (Sum.inr i) (Sum.inr i) * b.val (Sum.inr i) (Sum.inr i) = 1`. Introduce `i`. Establish `h` using `congrFun (congrFun b.inv_mul (Sum.inr i)) (Sum.inr i)`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr i)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using h`. Introduce `t _ ht`. Break down `lt_trichotomy (lv t) (lv (Sum.inr i)) with e | e | e` into its components or cases. Rewrite using `[hbi e, zero_mul]`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Break down `t with t | t` into its components or cases. Simplify using `only [lv, Sum.elim_inl, Sum.elim_inr] at e`. Use linear arithmetic over natural numbers and integers. Simplify using `only [lv, Sum.elim_inr] at e; exact ht (congrArg _ (Fin.ext (by omega)))`. Rewrite using `[hb e, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hbl : ∀ i l : Fin c, i < l → b.val (Sum.inr l) (Sum.inr i) = 0` using `fun i l h => hb (by simp only [lv, Sum.elim_inr]; rw [Fin.lt_def] at h; omega)`. Establish `h3 : ∀ i, valuation k (b.val (Sum.inr i) (Sum.inr i)) ≤ valuation k (d i : k)`. Introduce `i`. Establish `key : ∀ t, (H.val *ᵥ fun s => (w⁻¹).val s (Sum.inr i)) t = ∑ s, u.val t (Sum.inl s) * b.val (Sum.inl s) (Sum.inr i) + ∑ l, v l t * b.val (Sum.inr l) (Sum.inr i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `t`. Establish `: (H * w⁻¹).val t (Sum.inr i) = (u * b).val t (Sum.inr i)` using `by rw [hH]; simp`. Rewrite `this` using `[Units.val_mul, Units.val_mul, Matrix.mul_apply, Matrix.mul_apply, Fintype.sum_sum_type (fun j => u.val t j * b.val j (Sum.inr i))]`. Simplify using `only [uc] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hB i (fun s => (w⁻¹).val s (Sum.inr i)) (fun t => w2 _ _) ?_ ?_`. Rewrite `h` using `[key, Finset.sum_eq_single i]`. Simplify `h` using `[uX, v1]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with e | e` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[v2 l i e, zero_mul]`. Rewrite using `[hbl i l e, mul_zero]`. Simplify using the standard rewrite rules. Introduce `l hl`. Rewrite using `[key, Finset.sum_eq_zero, Finset.sum_eq_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `m _`. Break down `lt_or_ge m l with e | e` into its components or cases. Rewrite using `[v2 m l e, zero_mul]`. Rewrite using `[hbl i m (hl.trans_le e), mul_zero]`. Introduce `s _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[uX]`. Introduce `hi r`. Rewrite using `[key, Finset.sum_eq_zero, Finset.sum_eq_zero, add_zero]`. Introduce `m _`. Break down `lt_or_ge i m with e | e` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbl i m e, mul_zero]`. Rewrite using `[v3 m (by rw [Fin.le_def] at e; omega), zero_mul]`. Introduce `s _`. Rewrite using `[hb (show lv (Sum.inr i) < lv (Sum.inl s) by simp only [lv, Sum.elim_inr, Sum.elim_inl]; omega), mul_zero]`. Establish `h4 : ∀ t i, (b⁻¹).val t (Sum.inr i) * (d i : k) ∈ 𝒪[k]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t i`. Establish `e : b⁻¹ = w * H⁻¹ * u` using `by rw [hH]; group`. Establish `: (b⁻¹).val t (Sum.inr i) * (d i : k) = (w.val *ᵥ ((H⁻¹).val *ᵥ ((d i : k) • v i))) t`. Rewrite using `[Matrix.mulVec_mulVec, e, Units.val_mul, Units.val_mul, Matrix.mul_apply, Finset.sum_mul]`. Simplify using `only [Matrix.mulVec, dotProduct, uc, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this]`. Conclude with `sum_mem fun j _ => mul_mem (w1 _ _) (v4 i j)`. Set `A : Matrix (Fin c) (Fin c) k` to `Matrix.of fun l i => (b⁻¹).val (Sum.inr l) (Sum.inr i) * d i`. Set `β : Matrix n (Fin c) k` to `Matrix.of fun r i => (b⁻¹).val (Sum.inl r) (Sum.inr i) * d i`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hAtri : A.BlockTriangular id` using `fun l i h => by`. Simplify using `only [A, of_apply]`. Rewrite using `[hbi (by simp only [lv, Sum.elim_inr]; rw [id, id, Fin.lt_def] at h; omega), zero_mul]`. Take `⟨κ, hκ, hκv⟩` from `exists_KO_of_det (fromBlocks 1 β 0 A) (by`. Introduce and unpack `(r | r) (s | s)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Apply the tactic sequence `simp only [fromBlocks_apply₁₁, Matrix.one_apply]; split_ifs <;> simp`. Conclude with `h4 _ _`. Conclude with `zero_mem _`. Conclude with `h4 _ _) (by`. Rewrite using `[det_fromBlocks_zero₂₁, det_one, one_mul, det_of_upperTriangular hAtri, map_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Finset.prod_eq_one fun i _ => le_antisymm (h4 (Sum.inr i) i) ?_` and prove the remaining obligations. Simplify using `only [A, of_apply, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : (b * κ).val = fromBlocks b.val.toBlocks₁₁ 0 b.val.toBlocks₂₁ (diagonal fun i => (d i : k))`. Establish `col : ∀ t i, (b * κ).val t (Sum.inr i) = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) t (Sum.inr i) * d i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `t i`. Rewrite using `[← b.mul_inv, Units.val_mul, hκv, Matrix.mul_apply, Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Apply the tactic sequence `rintro (j | j) _ <;> simp [A, β, mul_assoc]`. Use extensionality with `(r | r) (s | s)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hκv, Matrix.mul_apply, Matrix.one_apply, toBlocks₁₁]`. Rewrite using `[col]`. Simplify using the standard rewrite rules. Simplify using `[hκv, Matrix.mul_apply, Matrix.one_apply, toBlocks₂₁]`. Rewrite using `[col]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hg : b.val.toBlocks₁₁.det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Matrix.GeneralLinearGroup.det_ne_zero (b * κ)` as an intermediate fact. Rewrite `this` using `[hB, det_fromBlocks_zero₁₂]`. Conclude with `left_ne_zero_of_mul this`. Set `g : GL n k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero _ hg`. Establish `hlow : lowU b.val.toBlocks₂₁ ∈ N k n c (c / 2 + 1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Model.mem_N_iff]`. Introduce and unpack `(r | r) (s | s) h`. Simplify using `[lowU, Matrix.one_apply]`. Simplify using `[lowU]`. Simplify using `only [lev, Sum.elim_inl, Sum.elim_inr] at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [lowU, fromBlocks_apply₂₁, toBlocks₂₁, of_apply]`. Rewrite using `[hb (show lv (Sum.inl s) < lv (Sum.inr r) by simp only [lv, Sum.elim_inr, Sum.elim_inl]; omega)]`. Simplify using the standard rewrite rules. Simplify using `[lowU, Matrix.one_apply]`. Establish `hfac : b * κ = embX c g * lowU b.val.toBlocks₂₁ * diagGL (Sum.elim (fun _ => 1) d)`.
-
-Use `Units.ext ?_` and prove the remaining obligations. Establish `hD : (diagGL (Sum.elim (fun _ : n => (1 : kˣ)) d)).val = fromBlocks 1 0 0 (diagonal fun i => (d i : k))`. Rewrite using `[diagGL_val, ← diagonal_one, fromBlocks_diagonal]`. Use `congr 1`. Apply the tactic sequence `funext x; rcases x with x | x <;> simp`.
-
-Rewrite using `[hB, Units.val_mul, Units.val_mul, hD]`. Use `show _ = fromBlocks b.val.toBlocks₁₁ 0 0 1 * fromBlocks 1 0 b.val.toBlocks₂₁ 1 * _`. Simplify using `[fromBlocks_multiply]`. Use `⟨u * (embX c g * lowU b.val.toBlocks₂₁), ?_, κ⁻¹ * w, mul_mem (inv_mem hκ) hw, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (Subgroup.mem_sup_right (Subgroup.mem_sup_left hu)) (mul_mem (Subgroup.mem_sup_left ⟨g, rfl⟩) (Subgroup.mem_sup_right (Subgroup.mem_sup_right hlow)))`.
-
-Rewrite using `[mul_assoc u, ← hfac, hH]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_symR_diag : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (c : ℕ) (d : Fin c → kˣ) (H : GL (n ⊕ Fin c) k),
   (∀ i : Fin c, ∃ v : n ⊕ Fin c → k, v (Sum.inr i) = 1 ∧ (∀ l : Fin c, i < l → v (Sum.inr l) = 0) ∧ (i.val < (c + 1) / 2 → ∀ r, v (Sum.inl r) = 0) ∧ ∀ t, ((H⁻¹).val *ᵥ ((d i : k) • v)) t ∈ 𝒪[k]) →

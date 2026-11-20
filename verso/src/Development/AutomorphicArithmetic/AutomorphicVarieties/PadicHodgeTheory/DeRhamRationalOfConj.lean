@@ -10,9 +10,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hD F Ω _ _ _ _ _ l _ ι A w h n r r' p hc e HT Q H O _ _ _ Bw hj`. Take `⟨h1, h2, h3⟩` from `H O Bw hj`. Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Take `⟨c1, -, -, c4⟩` from `GlobalTheory.ConjLocal.local_conj l (UpperTheory.V.Loc.PP l) F Ω O _ Bw n _ _ p e`. Establish `hp` using `hD.isPstAt T Bw r (Units.continuous_val.comp hc) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw` using `(GlobalTheory.PstConj.main F Ω l ι n _ _ ⟨T⟩ w A h O Bw hj r r' p e hp).2`. Conclude with `⟨c1 h1, fun τ L τ' hτ => c4 _ _ (h2 τ L τ' hτ), fun s => by rw [hw]; exact h3 s⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.deRhamRational_of_conj :
     GlobalTheory.Published.DeRhamPotSemistable → ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A w) {n : ℕ} (r r' : ↥(Dec (F := F) A) →* GL (Fin n) (Qbar l)) (p : GL (Fin n) (Qbar l)), Continuous r → (∀ g, r' g = p * r g * p⁻¹) → ∀ (HT : (F →+* Qbar l) → Multiset ℤ) (Q : ↥(Weil h) → ℂ[X]), DRat ι h r HT Q → DRat ι h r' HT Q := by

@@ -19,9 +19,9 @@ variable {k r : ℕ}
 def Bd (a : Mat k r) (R : ℝ) : Prop := ∀ i j, ‖a i j‖ ≤ R
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `: ∀ l ∈ (Finset.univ : Finset (Fin (2 * r + k + 1))), ‖a i l * b l j‖ ≤ R * R'` using `fun l _ => by`. Rewrite using `[norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (ha i l) (hb l j) (norm_nonneg _) ((norm_nonneg _).trans (ha i l))`. Simplify using `using Finset.sum_le_card_nsmul _ _ _ this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Bd.mul {a b : Mat k r} {R R' : ℝ} (ha : Bd a R) (hb : Bd b R') :
     Bd (a * b) (((2 * r + k + 1 : ℕ) : ℝ) * (R * R')) := by
@@ -34,7 +34,7 @@ theorem Bd.mul {a b : Mat k r} {R R' : ℝ} (ha : Bd a R) (hb : Bd b R') :
   simpa using Finset.sum_le_card_nsmul _ _ _ this
 
 /- English proof (translation)
-Rewrite using `[mem_closedBall, dist_eq_norm, pi_norm_le_iff_of_nonneg hR]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[pi_norm_le_iff_of_nonneg hR]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bd_iff {x y : Mt k r} {R : ℝ} (hR : 0 ≤ R) :
     x ∈ closedBall y R ↔ Bd (Matrix.of x - Matrix.of y) R := by
@@ -44,14 +44,14 @@ theorem bd_iff {x y : Mt k r} {R : ℝ} (hR : 0 ≤ R) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[bd_iff hR]`. Conclude with `Iff.of_eq (congrArg (Bd · R) (sub_zero _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closedBall_zero_iff_matrixEntriesBoundedBy {x : Mt k r} {R : ℝ} (hR : 0 ≤ R) : x ∈ closedBall (0 : Mt k r) R ↔ Bd (Matrix.of x) R := by
   rw [bd_iff hR]
   exact Iff.of_eq (congrArg (Bd · R) (sub_zero _))
 
 /- English proof (translation)
-Introduce `i j`. Unfold `Hpk`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bd_Hpk : Bd (Hpk k r) 1 := by
   intro i j
@@ -59,7 +59,7 @@ theorem bd_Hpk : Bd (Hpk k r) 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.BesselPeriodCompare.uinv_eq hg]`. Establish `h1 : Bd gᴴ R` using `fun i j => by simpa [Matrix.conjTranspose_apply] using h j i`. Use `(bd_Hpk.mul h1).mul bd_Hpk` as an intermediate fact. Conclude with `fun i j => (this i j).trans (le_of_eq (by ring))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.inv {g : Mat k r} (hg : g ∈ GG k r) {R : ℝ} (h : Bd g R) :
     Bd g⁻¹ (((2 * r + k + 1 : ℕ) : ℝ) ^ 2 * R) := by
@@ -69,15 +69,13 @@ theorem Bd.inv {g : Mat k r} (hg : g ∈ GG k r) {R : ℝ} (h : Bd g R) :
   exact fun i j => (this i j).trans (le_of_eq (by ring))
 
 /- English proof (translation)
-Use `set X := g - 1 with hX`. Establish `e : g = X + 1` using `by simp [hX]`. Use `⟨∑ l ∈ Finset.range n, ∑ i, ∑ j, ‖(X ^ l) i j‖, by positivity, fun m i j => ?_⟩` and prove the remaining obligations. Use `set B := ∑ l ∈ Finset.range n, ∑ i, ∑ j, ‖(X ^ l) i j‖ with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, (Commute.one_right X).add_pow, Matrix.sum_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `: ∀ l ∈ Finset.range (m + 1), ‖(X ^ l * 1 ^ (m - l) * (m.choose l : Mat k r)) i j‖ ≤ B * ((m : ℝ) + 1) ^ n` using `fun l _ => by`. Distinguish the cases in `hl : l < n`. Establish `h1 : ‖(X ^ l) i j‖ ≤ B` using `((Finset.single_le_sum (f := fun j => ‖(X ^ l) i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖(X ^ l) i j‖) (fun _ _ => by positivity) (Finset.mem_univ i))).trans (Finset.single_le_sum (f := fun l => ∑ i, ∑ j, ‖(X ^ l) i j‖) …`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (m.choose l : ℝ) ≤ ((m : ℝ) + 1) ^ n`. Establish `h3 : (m.choose l : ℝ) ≤ (m : ℝ) ^ l` using `by exact_mod_cast Nat.choose_le_pow m l`. Establish `h4 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Conclude with `h3.trans ((pow_le_pow_left₀ h4 (by linarith) l).trans (pow_le_pow_right₀ (by linarith) hl.le))`. Rewrite using `[one_pow, mul_one, ← nsmul_eq_mul', Matrix.smul_apply, nsmul_eq_mul, norm_mul, Complex.norm_natCast, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Conclude with `mul_le_mul h1 h2 (Nat.cast_nonneg _) hB0`. Rewrite using `[pow_eq_zero_of_le (not_lt.1 hl) hg]`. Simplify using `only [zero_mul, Matrix.zero_apply, norm_zero]`. Check the signs of the components of the expression. Use `(Finset.sum_le_card_nsmul _ _ _ this).trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Simplify using `only [Finset.card_range, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bd_pow {g : Mat k r} {n : ℕ} (hg : (g - 1) ^ n = 0) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ m : ℕ, Bd (g ^ m) (B * ((m : ℝ) + 1) ^ (n + 1)) := by
@@ -114,9 +112,7 @@ theorem bd_pow {g : Mat k r} {n : ℕ} (hg : (g - 1) ^ n = 0) :
   ring
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.BesselPeriodCompare.isHaarOn_iff hS.isClosedSubgroup μ).1 hμ`. Establish `hle : μ K ≤ μ (K ∩ {x | Matrix.of x ∈ S})`. Use `measure_mono_ae ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ x ∂μ, Matrix.of x ∈ S` using `by rw [ae_iff]; exact hμ.2.2.1`. Use `filter_upwards [hae] with x hx hK using ⟨hK, hx⟩`.
-
-Conclude with `lt_of_le_of_lt hle (h.2.2.1 _ (hK.inter_right hS.2.1) fun x hx => hx.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_compact {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ)
     {K : Set (Mt k r)} (hK : IsCompact K) : μ K < ⊤ := by
@@ -128,19 +124,19 @@ theorem finite_compact {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measur
   exact lt_of_le_of_lt hle (h.2.2.1 _ (hK.inter_right hS.2.1) fun x hx => hx.2)
 
 /- English proof (translation)
-The claim follows from `continuous_const.matrix_mul (continuous_id (X := Mat k r))`.
+A detailed English derivation is pending.
 -/
 theorem cont_lmul (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) :=
   continuous_const.matrix_mul (continuous_id (X := Mat k r))
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ s ∈ closedBall (0 : Mt k r) R ∩ closedBall x δ, Matrix.of s ∈ S`. Take `⟨s, ⟨hs1, hs2⟩, hs⟩` from `hex`. Establish `hi` using `hS.2.2.2.2 _ hs`. Use `conv_rhs => rw [← hμ.2.2.2 _ hi]`. Rewrite using `[Measure.map_apply (cont_lmul _).measurable measurableSet_closedBall]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono fun t ht => ?_` and prove the remaining obligations. Establish `h1 : t ∈ closedBall s (2 * δ)`. Use `dist_triangle_right t s x` as an intermediate fact. Establish `h2` using `mem_closedBall.1 ht.2`. Establish `h3` using `mem_closedBall.1 hs2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_closedBall]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `(((mem_closedBall_zero_iff_matrixEntriesBoundedBy hR).1 hs1).inv (hS.1 hs)).mul ((bd_iff (by linarith)).1 h1)`. Rewrite `h2` using `[Matrix.mul_sub, Matrix.nonsing_inv_mul _ (isUnit_det_of_mem_GG (hS.1 hs))]`. Establish `h3 : Bd ((Matrix.of s : Mat k r)⁻¹ * Matrix.of t - 1) 1` using `fun i j => (h2 i j).trans (le_trans (le_of_eq (by ring)) h)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_preimage, bd_iff zero_le_one]`. Conclude with `h3`. Use `le_trans (le_of_eq ?_) zero_le` and prove the remaining obligations. Use `measure_mono_null (fun s hs => ?_) hμ.2.2.1` and prove the remaining obligations. Conclude with `fun h' => hex ⟨s, hs, h'⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem small_ball {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ)
     {R δ : ℝ} (hR : 0 ≤ R) (hδ : 0 ≤ δ) (h : ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 * R * (2 * δ) ≤ 1) (x : Mt k r) :
@@ -167,29 +163,29 @@ theorem small_ball {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (M
     exact fun h' => hex ⟨s, hs, h'⟩
 
 /- English proof (translation)
-Use `hμ.1` as an intermediate fact. Use `set M := μ (closedBall (Matrix.of.symm (1 : Mat k r) : Mt k r) 1) with hM`. Establish `hMf : M ≠ ⊤` using `(finite_compact hS hμ (isCompact_closedBall _ _)).ne`. Use `set n : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hn`. Establish `hn1 : 1 ≤ n` using `by rw [hn]; exact_mod_cast Nat.le_add_left 1 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `set d := Module.finrank ℝ (Mt k r)`. Set `lam : Measure (Mt k r)` to `Measure.addHaar`. Use `⟨M.toReal * (4 * n ^ 3) ^ d, 2 * d, by positivity, fun R hR => ?_⟩` and prove the remaining obligations. Use `set δ := (2 * n ^ 3 * R)⁻¹ with hδ`. Establish `hp : 1 ≤ 2 * n ^ 3 * R`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `one_le_pow₀ (n := 3) hn1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hδ1 : δ ≤ 1` using `inv_le_one_of_one_le₀ hp`. Set `W : Set (Mt k r × Mt k r)` to `{p | p.1 ∈ closedBall 0 R ∧ dist p.1 p.2 ≤ δ}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hW : MeasurableSet W` using `((isClosed_closedBall.preimage continuous_fst).inter (isClosed_le continuous_dist continuous_const)).measurableSet`. Establish `e1 : (μ.prod lam) W = lam (closedBall 0 δ) * μ (closedBall 0 R)`. Rewrite using `[Measure.prod_apply hW, ← lintegral_indicator_const measurableSet_closedBall]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ closedBall (0 : Mt k r) R`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Rewrite using `[Set.indicator_of_mem hs, ← Measure.addHaar_closedBall_center lam s]`. Use `congr 1`. Use extensionality with `x`. Conclude with `⟨fun h => mem_closedBall'.2 h.2, fun h => ⟨hs, mem_closedBall'.1 h⟩⟩`. Rewrite using `[Set.indicator_of_notMem hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: Prod.mk s ⁻¹' W = ∅`. Use extensionality with `x`. Simplify using `only [W, Set.mem_preimage, Set.mem_ofPred_eq, hs, false_and, Set.mem_empty_iff_false]`. Rewrite using `[this, measure_empty]`. Establish `e2 : (μ.prod lam) W ≤ M * lam (closedBall 0 (2 * R))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.prod_apply_symm hW, ← lintegral_indicator_const measurableSet_closedBall]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ closedBall (0 : Mt k r) (2 * R)`. Rewrite using `[Set.indicator_of_mem hx]`. Use `small_ball hS hμ (by linarith) hδ0.le (le_of_eq ?_) x` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← hn, hδ]`. Clear the denominators using the available nonvanishing facts. Establish `: (fun s => (s, x)) ⁻¹' W = ∅`. Use extensionality with `s`. Simplify using `only [W, Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, mem_closedBall]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Apply `hx` to reduce the goal to its premises. Use `dist_triangle_left x 0 s` as an intermediate fact. Rewrite using `[mem_closedBall]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[this]`. Rewrite `e2` using `[e1, Measure.addHaar_closedBall lam _ hδ0.le, Measure.addHaar_closedBall lam _ (by linarith)]`. Establish `hb0 : 0 < (lam (ball 0 1)).toReal` using `ENNReal.toReal_pos (measure_ball_pos lam _ one_pos).ne' measure_ball_lt_top.ne`. Establish `e3` using `ENNReal.toReal_mono (ENNReal.mul_ne_top hMf (ENNReal.mul_ne_top ENNReal.ofReal_ne_top measure_ball_lt_top.ne)) e2`. Simplify using `only [ENNReal.toReal_mul] at e3`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite `e3` using `[ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_ofReal (by positivity)]`. Establish `e4 : δ ^ d * (μ (closedBall 0 R)).toReal ≤ M.toReal * (2 * R) ^ d`. Use `le_of_mul_le_mul_right ?_ hb0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `e5 : M.toReal * (2 * R) ^ d = δ ^ d * (M.toReal * (4 * n ^ 3) ^ d * R ^ (2 * d))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: 2 * R = δ * (4 * n ^ 3) * R ^ 2` using `by rw [hδ]; field_simp; ring`. Rewrite using `[this, mul_pow, mul_pow, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e4` using `[e5]`. Conclude with `le_of_mul_le_mul_left e4 (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem growth {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ) :
     ∃ (C : ℝ) (D : ℕ), 0 ≤ C ∧ ∀ R : ℝ, 1 ≤ R → (μ (closedBall 0 R)).toReal ≤ C * R ^ D := by
@@ -258,7 +254,7 @@ theorem growth {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k 
   exact le_of_mul_le_mul_left e4 (by positivity)
 
 /- English proof (translation)
-Rewrite using `[Measure.map_map (continuous_rmulM _).measurable (continuous_rmulM _).measurable]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `Matrix.mul_assoc (Matrix.of x) a b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rmul_rmul (a b : Mat k r) (μ : Measure (Mt k r)) :
     (μ.map (rmulM a)).map (rmulM b) = μ.map (rmulM (a * b)) := by
@@ -268,7 +264,7 @@ theorem rmul_rmul (a b : Mat k r) (μ : Measure (Mt k r)) :
   exact Matrix.mul_assoc (Matrix.of x) a b
 
 /- English proof (translation)
-Establish `: (rmulM (1 : Mat k r) : Mt k r → Mt k r) = id`. Use function extensionality and compare the values at `x`. Conclude with `Matrix.mul_one (Matrix.of x)`. Rewrite using `[this, Measure.map_id]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rmul_one (μ : Measure (Mt k r)) : μ.map (rmulM (1 : Mat k r)) = μ := by
   have : (rmulM (1 : Mat k r) : Mt k r → Mt k r) = id := by
@@ -277,13 +273,11 @@ theorem rmul_one (μ : Measure (Mt k r)) : μ.map (rmulM (1 : Mat k r)) = μ := 
   rw [this, Measure.map_id]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hμ`. Establish `hu` using `isUnit_det_of_mem_GG (hS.1 hg)`. Establish `hm` using `(continuous_rmulM (k := k) (r := r) g).measurable`. Use `⟨?_, ?_, ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `SigmaFinite.of_map _ (continuous_rmulM g⁻¹).measurable.aemeasurable ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[rmul_rmul, Matrix.mul_nonsing_inv _ hu, rmul_one]` and apply the resulting hypothesis. Conclude with `fun h0 => h2 ((Measure.map_eq_zero_iff hm.aemeasurable).1 h0)`. Establish `hc : IsClosed {x : Mt k r | Matrix.of x ∈ S}` using `hS.2.1`. Rewrite using `[← ae_iff]`. Use `(ae_map_iff hm.aemeasurable hc.measurableSet).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hae : ∀ᵐ x ∂μ, Matrix.of x ∈ S` using `by rw [ae_iff]; exact h3`. Use `filter_upwards [hae] with x hx using hS.2.2.2.1 _ hx _ hg`. Use `conv_rhs => rw [← h4 s hs]`. Rewrite using `[Measure.map_map (cont_lmul _).measurable hm, Measure.map_map hm (cont_lmul _).measurable]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `x`. Conclude with `(Matrix.mul_assoc s (Matrix.of x) g).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem haar_rmul {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ)
     {g : Mat k r} (hg : g ∈ S) : IsHaarOn S (μ.map (rmulM g)) := by
@@ -306,25 +300,23 @@ theorem haar_rmul {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt
     exact (Matrix.mul_assoc s (Matrix.of x) g).symm
 
 /- English proof (translation)
-Take `⟨C, D, hC, hgr⟩` from `growth hS hμ`. Take `⟨B, hB, hpow⟩` from `bd_pow hh`. Take `⟨ρ, hρ⟩ : ∃ ρ : ℕ, μ (closedBall 0 ρ) ≠ 0` from `by by_contra! h0`. Apply `hμ.2.1` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero, ← iUnion_closedBall_nat (0 : Mt k r)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `measure_iUnion_null h0`. Establish `hv : 0 < (μ (closedBall 0 ρ)).toReal` using `ENNReal.toReal_pos hρ (finite_compact hS hμ (isCompact_closedBall _ _)).ne`. Establish `em : ∀ m : ℕ, μ.map (rmulM (g ^ m)) = c ^ m • μ`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [pow_zero, pow_zero, one_smul, rmul_one]`. Consider the case `succ m ih => rw [pow_succ, ← rmul_rmul, ih, Measure.map_smul, e, smul_smul, pow_succ]`. Establish `hgm : ∀ m : ℕ, g ^ m * h ^ m = 1` using `fun m => by`. Establish `hcm : Commute g h`. Unfold `Commute SemiconjBy`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgh, mul_eq_one_comm.1 hgh]`. Rewrite using `[← hcm.mul_pow, hgh, one_pow]`. Use `set K : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) * (ρ * B) + 1 with hK`. Establish `hK0 : 0 ≤ ((2 * r + k + 1 : ℕ) : ℝ) * (ρ * B)` using `by positivity`. Establish `key : ∀ m : ℕ, c.toReal ^ m * (μ (closedBall 0 ρ)).toReal ≤ C * K ^ D * ((m : ℝ) + 1) ^ ((n + 1) * D)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m`. Establish `hm1 : (1 : ℝ) ≤ ((m : ℝ) + 1) ^ (n + 1)` using `one_le_pow₀ (by linarith [Nat.cast_nonneg (α := ℝ) m])`. Establish `h1 : (c ^ m • μ) (closedBall 0 ρ) ≤ μ (closedBall 0 (K * ((m : ℝ) + 1) ^ (n + 1)))`. Rewrite using `[← em, Measure.map_apply (continuous_rmulM _).measurable measurableSet_closedBall]`. Use `measure_mono fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `((mem_closedBall_zero_iff_matrixEntriesBoundedBy (Nat.cast_nonneg ρ)).1 hx).mul (hpow m)`. Rewrite `h2` using `[of_rmulM, Matrix.mul_assoc, hgm, Matrix.mul_one]`. Use `(mem_closedBall_zero_iff_matrixEntriesBoundedBy (by positivity)).2 fun i j => (h2 i j).trans ?_` and prove the remaining obligations. Rewrite using `[hK]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(ENNReal.toReal_mono (finite_compact hS hμ (isCompact_closedBall _ _)).ne h1).trans (hgr _ (by rw [hK]; nlinarith))`. Rewrite `h2` using `[Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_pow, mul_pow, ← pow_mul, ← mul_assoc]`. Conclude with `h2`. Use `by_contra! h1`. Establish `h2 : 1 < c.toReal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ENNReal.toReal_one]`. Conclude with `(ENNReal.toReal_lt_toReal ENNReal.one_ne_top hc).2 h1`. Establish `h3` using `((tendsto_pow_const_div_const_pow_of_one_lt ((n + 1) * D) h2).comp (Filter.tendsto_add_atTop_nat 1)).const_mul (C * K ^ D * c.toReal)`. Rewrite `h3` using `[mul_zero]`. Take `⟨m, hm⟩` from `(h3.eventually (gt_mem_nhds hv)).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `h4` using `key m`. Establish `h5 : 0 < c.toReal ^ m` using `by positivity`. Simplify using `only [Function.comp_apply, Nat.cast_add, Nat.cast_one] at hm`. Establish `h6 : C * K ^ D * c.toReal * (((m : ℝ) + 1) ^ ((n + 1) * D) / c.toReal ^ (m + 1)) = C * K ^ D * ((m : ℝ) + 1) ^ ((n + 1) * D) / c.toReal ^ m`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[h6, div_lt_iff₀ h5]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem modulus_le_one {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ)
     {g h : Mat k r} (hgh : g * h = 1) {n : ℕ} (hh : (h - 1) ^ n = 0) {c : ℝ≥0∞} (hc : c ≠ ⊤)
@@ -386,11 +378,11 @@ theorem modulus_le_one {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measur
   linarith
 
 /- English proof (translation)
-Establish `one : ∀ g ∈ S, ∃ c : ℝ≥0∞, c ≤ 1 ∧ μ.map (rmulM g) = c • μ` using `fun g hg => by`. Take `⟨c, -, c1, e⟩` from `GlobalTheory.BesselPeriodCompare.haar_unique hS.isClosedSubgroup (haar_rmul hS hμ hg) hμ`. Conclude with `⟨c, modulus_le_one hS hμ (Matrix.mul_nonsing_inv _ (isUnit_det_of_mem_GG (hS.1 hg))) (Formalism.FourierDecayAlt.P.UnipotentUpperFacts.N_unip (hN (hS.2.2.2.2 _ hg))) c1 e, e⟩`. Establish `right : ∀ g ∈ S, μ.map (rmulM g) = μ` using `fun g hg => by`. Take `⟨c, c1, e⟩` from `one g hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c', c1', e'⟩` from `one _ (hS.2.2.2.2 _ hg)`. Establish `h` using `rmul_rmul g g⁻¹ μ`. Rewrite `h` using `[Matrix.mul_nonsing_inv _ (isUnit_det_of_mem_GG (hS.1 hg)), rmul_one, e, Measure.map_smul, e']`. Rewrite using `[e]`. Use extensionality with `t -`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h1` using `congrArg (fun m : Measure (Mt k r) => m t) h`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h1 ⊢`. Use `le_antisymm ((mul_le_mul_left c1 _).trans (one_mul _).le) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `(haar_unimod_of_biinv hS (μ := μ) { ne_zero := hμ.2.1, conc := hμ.2.2.1, left := hμ.2.2.2, right := right, finite_compact := fun K hK => finite_compact hS hμ hK }).2` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isUnimod_of_subset_Nset {S : Set (Mat k r)} (hS : IsClosedSub k r S) (hN : S ⊆ Nset k r)
     {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ) : IsUnimod S μ := by
@@ -416,11 +408,11 @@ theorem isUnimod_of_subset_Nset {S : Set (Mat k r)} (hS : IsClosedSub k r S) (hN
       finite_compact := fun K hK => finite_compact hS hμ hK }).2
 
 /- English proof (translation)
-Take `⟨n1, n2, n3, n4, n5⟩` from `isClosedSub_Nset (k := k) (r := r)`. Establish `hu` using `isUnit_det_of_mem_GG hγ`. Use `⟨fun x hx => n1 hx.1, ?_, ⟨n3, ?_⟩, fun a ha b hb => ⟨n4 _ ha.1 _ hb.1, ?_⟩, fun a ha => ⟨n5 _ ha.1, ?_⟩⟩` and prove the remaining obligations. Establish `hc : Continuous fun x : Mat k r => γ * x * γ⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `n2.inter (n2.preimage hc)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Rewrite using `[Matrix.mul_one, Matrix.mul_nonsing_inv _ hu]` and apply the resulting hypothesis. Use `n4 _ ha.2 _ hb.2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hu]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `n5 _ ha.2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedSub_Rset {γ : Mat k r} (hγ : γ ∈ GG k r) : IsClosedSub k r (Rset k r γ) := by
   obtain ⟨n1, n2, n3, n4, n5⟩ := isClosedSub_Nset (k := k) (r := r)
@@ -438,7 +430,7 @@ theorem isClosedSub_Rset {γ : Mat k r} (hγ : γ ∈ GG k r) : IsClosedSub k r 
     rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `_ _ _ hγ` and use `⟨isClosedSub_Rset hγ, fun _ hμ => isUnimod_of_subset_Nset (isClosedSub_Rset hγ) (fun _ h => h.1) hμ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rset_unimodular : ∀ (k r : ℕ) (γ : Mat k r), γ ∈ GG k r → IsClosedSub k r (Rset k r γ) ∧
     ∀ μ, IsHaarOn (Rset k r γ) μ → IsUnimod (Rset k r γ) μ :=

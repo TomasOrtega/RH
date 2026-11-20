@@ -21,9 +21,9 @@ def tensQ (G : Matrix κ κ ℂ) (u : κ × κ → ℂ) : ℝ :=
   (star u ⬝ᵥ (Matrix.kronecker G G *ᵥ u)).re
 
 /- English proof (translation)
-Unfold `tensQ`. Rewrite using `[Matrix.mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, smul_smul, smul_eq_mul]`. Establish `: star c * c = ((‖c‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.re_ofReal_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensQ_smul (G : Matrix κ κ ℂ) (c : ℂ) (u : κ × κ → ℂ) :
     tensQ G (c • u) = ‖c‖ ^ 2 * tensQ G u := by
@@ -35,13 +35,13 @@ theorem tensQ_smul (G : Matrix κ κ ℂ) (c : ℂ) (u : κ × κ → ℂ) :
   rw [this, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-The claim follows from `(Complex.pos_iff.1 ((hG.kronecker hG).dotProduct_mulVec_pos hu)).1`.
+A detailed English derivation is pending.
 -/
 theorem tensQ_pos {G : Matrix κ κ ℂ} (hG : G.PosDef) {u : κ × κ → ℂ} (hu : u ≠ 0) : 0 < tensQ G u :=
   (Complex.pos_iff.1 ((hG.kronecker hG).dotProduct_mulVec_pos hu)).1
 
 /- English proof (translation)
-Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Simplify using `[tensQ]`. Conclude with `(tensQ_pos hG hu).le`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensQ_nonneg {G : Matrix κ κ ℂ} (hG : G.PosDef) (u : κ × κ → ℂ) : 0 ≤ tensQ G u := by
   by_cases hu : u = 0
@@ -50,9 +50,9 @@ theorem tensQ_nonneg {G : Matrix κ κ ℂ} (hG : G.PosDef) (u : κ × κ → �
   · exact (tensQ_pos hG hu).le
 
 /- English proof (translation)
-Simplify using `only [hermG, dotProduct, mulVec, Matrix.kronecker, kroneckerMap_apply, Pi.star_apply, star_mul', Fintype.sum_prod_type, Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun m' _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kron_pair (G : Matrix κ κ ℂ) (a b c d : κ → ℂ) :
     star (fun p : κ × κ => a p.1 * b p.2) ⬝ᵥ (Matrix.kronecker G G *ᵥ fun p => c p.1 * d p.2) =
@@ -72,7 +72,7 @@ theorem kron_pair (G : Matrix κ κ ℂ) (a b c d : κ → ℂ) :
         ring
 
 /- English proof (translation)
-Unfold `hermG`. Rewrite using `[Matrix.star_dotProduct, Matrix.star_mulVec, hG.eq, Matrix.dotProduct_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermG_swap {G : Matrix κ κ ℂ} (hG : G.IsHermitian) (a b : κ → ℂ) :
     hermG G b a = star (hermG G a b) := by
@@ -80,9 +80,9 @@ theorem hermG_swap {G : Matrix κ κ ℂ} (hG : G.IsHermitian) (a b : κ → ℂ
   rw [Matrix.star_dotProduct, Matrix.star_mulVec, hG.eq, Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Establish `hs : (fun p : κ × κ => a p.1 * b p.2 - a p.2 * b p.1) = (fun p => a p.1 * b p.2) - (fun p => b p.1 * a p.2)`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : (hermG G a a).im = 0` using `Complex.conj_eq_iff_im.1 (hermG_swap hG a a).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hB : (hermG G b b).im = 0` using `Complex.conj_eq_iff_im.1 (hermG_swap hG b b).symm`. Rewrite using `[tensQ, hs, star_sub, Matrix.mulVec_sub, sub_dotProduct, dotProduct_sub, dotProduct_sub, kron_pair, kron_pair, kron_pair, kron_pair, hermG_swap hG a b]`. Simplify using `only [Complex.sub_re, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im, hA, hB, Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tensQ_pluck {G : Matrix κ κ ℂ} (hG : G.IsHermitian) (a b : κ → ℂ) :
     tensQ G (fun p => a p.1 * b p.2 - a p.2 * b p.1) =
@@ -107,7 +107,7 @@ section Form
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {s : Set E} {n : WithTop ℕ∞}
 
 /- English proof (translation)
-Establish `h : ContDiffOn ℝ n (fun x => star (u x) ⬝ᵥ (M x *ᵥ v x)) s`. Simplify using `only [dotProduct, mulVec, Pi.star_apply]`. Use `ContDiffOn.sum fun p _ => ContDiffOn.mul ?_ (ContDiffOn.sum fun q _ => (hM p q).mul (hv q))` and prove the remaining obligations. Conclude with `Complex.conjCLE.contDiff.comp_contDiffOn (hu p)`. Conclude with `Complex.reCLM.contDiff.comp_contDiffOn h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffOn_formRe {ι' : Type*} [Fintype ι'] {M : E → Matrix ι' ι' ℂ} {u v : E → ι' → ℂ}
     (hM : ∀ p q, ContDiffOn ℝ n (fun x => M x p q) s) (hu : ∀ p, ContDiffOn ℝ n (fun x => u x p) s)
@@ -129,7 +129,7 @@ def evC (f : MRing ι) (w : (Σ k, ι k) → ℂ) : ℂ :=
   eval w (map (Int.castRingHom ℂ) f)
 
 /- English proof (translation)
-Unfold `evC`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simpa using contDiff_const`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `mul_X p v hp => simpa using hp.mul (contDiff_apply ℝ ℂ v)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contDiff_evC (f : MRing ι) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (evC f) := by
@@ -140,11 +140,11 @@ theorem contDiff_evC (f : MRing ι) :
   | mul_X p v hp => simpa using hp.mul (contDiff_apply ℝ ℂ v)
 
 /- English proof (translation)
-Unfold `evC`. Rewrite using `[eval_map, eval_map, eval₂_eq', eval₂_eq']`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hp : a p.1 = 0`. Establish `h0 : d p = 0`. Establish `hs` using `hf d hd p.1`. Rewrite `hs` using `[hp]`. Conclude with `(Finset.sum_eq_zero_iff.1 hs) p.2 (Finset.mem_univ _)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, pow_zero, pow_zero]`. Rewrite using `[h p hp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evC_congr {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) {w w' : (Σ k, ι k) → ℂ}
     (h : ∀ p : Σ k, ι k, a p.1 ≠ 0 → w p = w' p) : evC f w = evC f w' := by
@@ -162,9 +162,9 @@ theorem evC_congr {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) {w w' :
   · rw [h p hp]
 
 /- English proof (translation)
-Unfold `evC`. Rewrite using `[eval_map, eval_map, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hc : (∏ i : (Σ k, ι k), c i.1 ^ d i) = ∏ k, c k ^ a k`. Rewrite using `[Fintype.prod_sigma]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ y, c k ^ d ⟨k, y⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf d hd k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evC_smul {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (c : K → ℂ) (w : (Σ k, ι k) → ℂ) :
     evC f (fun p => c p.1 * w p) = (∏ k, c k ^ a k) * evC f w := by
@@ -181,7 +181,7 @@ theorem evC_smul {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (c : K �
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Unfold `evC`. Rewrite using `[map_rename, eval_rename]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evC_rename_eval {K' : Type*} {ι' : K' → Type*} (e : (Σ k, ι k) → (Σ k, ι' k)) (f : MRing ι)
     (z : (Σ k, ι' k) → ℂ) : eval z (map (Int.castRingHom ℂ) (rename e f)) = evC f (fun p => z (e p)) := by
@@ -222,7 +222,7 @@ def xiH (G : YPt ι ν κ → Matrix κ κ ℂ) (N : ℕ) (F : ι → ν → κ 
   Real.sqrt (ratio G N F r b w) / hv G w
 
 /- English proof (translation)
-Rewrite using `[show (Finset.univ : Finset T.YBlk) = {.base, .det, .line} from rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prodY {M : Type*} [CommMonoid M] (f : T.YBlk → M) : ∏ k, f k = f .base * (f .det * f .line) := by
   rw [show (Finset.univ : Finset T.YBlk) = {.base, .det, .line} from rfl]
@@ -234,21 +234,21 @@ variable {w : YPt ι ν κ} (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0)
 include hw
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hw .base`. Conclude with `Finset.sum_pos' (fun j _ => sq_nonneg _) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.2 hi) 2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ynorm_pos : 0 < ynorm w := by
   obtain ⟨i, hi⟩ := hw .base
   exact Finset.sum_pos' (fun j _ => sq_nonneg _) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.2 hi) 2⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hw .det`. Conclude with `Finset.sum_pos' (fun j _ => sq_nonneg _) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.2 hi) 2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dnorm_pos : 0 < dnorm w := by
   obtain ⟨i, hi⟩ := hw .det
   exact Finset.sum_pos' (fun j _ => sq_nonneg _) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.2 hi) 2⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hw .base`. Conclude with `Finset.sum_pos' (fun j _ => pow_nonneg (sq_nonneg _) _) ⟨i, Finset.mem_univ _, pow_pos (pow_pos (norm_pos_iff.2 hi) 2) N⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ypow_pos (N : ℕ) : 0 < ypow N w := by
   obtain ⟨i, hi⟩ := hw .base
@@ -256,7 +256,7 @@ theorem ypow_pos (N : ℕ) : 0 < ypow N w := by
     ⟨i, Finset.mem_univ _, pow_pos (pow_pos (norm_pos_iff.2 hi) 2) N⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hw .line`. Introduce `h0`. Conclude with `hi (congrFun h0 i)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lineV_ne : lineV w ≠ 0 := by
   obtain ⟨i, hi⟩ := hw .line
@@ -264,7 +264,7 @@ theorem lineV_ne : lineV w ≠ 0 := by
   exact hi (congrFun h0 i)
 
 /- English proof (translation)
-The claim follows from `(Complex.pos_iff.1 ((hG w).dotProduct_mulVec_pos (lineV_ne hw))).1`.
+A detailed English derivation is pending.
 -/
 theorem hv_pos {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : ∀ w, (G w).PosDef) : 0 < hv G w :=
   (Complex.pos_iff.1 ((hG w).dotProduct_mulVec_pos (lineV_ne hw))).1
@@ -272,7 +272,7 @@ theorem hv_pos {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : ∀ w, (G w).PosDef
 end Pos
 
 /- English proof (translation)
-Establish `hy : 0 ≤ ynorm w` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hd : 0 ≤ dnorm w` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Conclude with `mul_nonneg (pow_nonneg hy _) (Finset.sum_nonneg fun j _ => div_nonneg (sq_nonneg _) (mul_nonneg (pow_nonneg hy _) (pow_nonneg hd _)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem remR_nonneg (N : ℕ) {q : ℕ} (r : Fin q → MRing (T.yyIdx ι ν κ)) (b : Fin q → T.YBlk → ℕ) (w : YPt ι ν κ) :
     0 ≤ remR N r b w := by
@@ -282,18 +282,18 @@ theorem remR_nonneg (N : ℕ) {q : ℕ} (r : Fin q → MRing (T.yyIdx ι ν κ))
     div_nonneg (sq_nonneg _) (mul_nonneg (pow_nonneg hy _) (pow_nonneg hd _)))
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => tensQ_nonneg (hG w) _`.
+A detailed English derivation is pending.
 -/
 theorem numF_nonneg {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : ∀ w, (G w).PosDef) (F : ι → ν → κ → κ → MRing (T.yyIdx ι ν κ))
     (w : YPt ι ν κ) : 0 ≤ numF G F w :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => tensQ_nonneg (hG w) _
 
 /- English proof (translation)
-Distinguish the cases in `hr : ∀ j, evC (r j) w = 0`. Take `⟨i, l, k, m, hF⟩` from `hcov w hw hr`. Establish `hu : (fun p : κ × κ => evC (F i l p.1 p.2) w) ≠ 0` using `fun h0 => hF (congrFun h0 (k, m))`. Establish `hpos : 0 < numF G F w`. Use `lt_of_lt_of_le ?_ (Finset.single_le_sum (f := fun i => ∑ l, tensQ (G w) (fun p => evC (F i l p.1 p.2) w)) (fun _ _ => Finset.sum_nonneg fun _ _ => tensQ_nonneg (hG w) _) (Finset.mem_univ i))` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_of_lt_of_le (tensQ_pos (hG w) hu) (Finset.single_le_sum (f := fun l => tensQ (G w) (fun p => evC (F i l p.1 p.2) w)) (fun l _ => tensQ_nonneg (hG w) _) (Finset.mem_univ l))`. Combine the linear relations using `[remR_nonneg N r b w]`. Take `⟨j, hj⟩` from `not_forall.1 hr`. Establish `hy` using `ynorm_pos hw`. Establish `hd` using `dnorm_pos hw`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : 0 < ‖evC (r j) w‖ ^ 2 / (ynorm w ^ b j .base * dnorm w ^ b j .det)` using `div_pos (pow_pos (norm_pos_iff.2 hj) 2) (mul_pos (pow_pos hy _) (pow_pos hd _))`. Establish `hsum : 0 < ∑ j, ‖evC (r j) w‖ ^ 2 / (ynorm w ^ b j .base * dnorm w ^ b j .det)` using `lt_of_lt_of_le hterm (Finset.single_le_sum (f := fun j => ‖evC (r j) w‖ ^ 2 / (ynorm w ^ b j .base * dnorm w ^ b j .det)) (fun j _ => div_nonneg (sq_nonneg _) (mul_nonneg (pow_nonneg hy.le _) (pow_nonneg hd.le _))) (Finset.mem_univ j))`. Establish `hrem : 0 < remR N r b w` using `mul_pos (pow_pos hy _) hsum`. Combine the linear relations using `[numF_nonneg hG F w]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem num_add_rem_pos {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : ∀ w, (G w).PosDef) (N : ℕ)
     (F : ι → ν → κ → κ → MRing (T.yyIdx ι ν κ)) {q : ℕ} (r : Fin q → MRing (T.yyIdx ι ν κ)) (b : Fin q → T.YBlk → ℕ)
@@ -329,27 +329,27 @@ section Scale
 variable {ι ν κ : Type} [Fintype ι] [Fintype ν] [Fintype κ] (c : T.YBlk → ℂ) (w : YPt ι ν κ)
 
 /- English proof (translation)
-Simplify using `only [ynorm, Finset.mul_sum, norm_mul, mul_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ynorm_smul : ynorm (fun p => c p.1 * w p) = ‖c .base‖ ^ 2 * ynorm w := by
   simp only [ynorm, Finset.mul_sum, norm_mul, mul_pow]
 
 /- English proof (translation)
-Simplify using `only [dnorm, Finset.mul_sum, norm_mul, mul_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dnorm_smul : dnorm (fun p => c p.1 * w p) = ‖c .det‖ ^ 2 * dnorm w := by
   simp only [dnorm, Finset.mul_sum, norm_mul, mul_pow]
 
 /- English proof (translation)
-Simplify using `only [ypow, Finset.mul_sum, norm_mul, mul_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ypow_smul (N : ℕ) : ypow N (fun p => c p.1 * w p) = (‖c .base‖ ^ 2) ^ N * ypow N w := by
   simp only [ypow, Finset.mul_sum, norm_mul, mul_pow]
 
 /- English proof (translation)
-Unfold `hermG`. Rewrite using `[Matrix.mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, smul_smul, smul_eq_mul]`. Establish `: star a * a = ((‖a‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.re_ofReal_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermG_smul (G : Matrix κ κ ℂ) (a : ℂ) (v : κ → ℂ) :
     (hermG G (a • v) (a • v)).re = ‖a‖ ^ 2 * (hermG G v v).re := by
@@ -361,7 +361,7 @@ theorem hermG_smul (G : Matrix κ κ ℂ) (a : ℂ) (v : κ → ℂ) :
   rw [this, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Unfold `hv`. Rewrite using `[hG]`. Conclude with `hermG_smul (G w) (c .line) (lineV w)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hv_smul {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : G (fun p => c p.1 * w p) = G w) :
     hv G (fun p => c p.1 * w p) = ‖c .line‖ ^ 2 * hv G w := by
@@ -370,16 +370,16 @@ theorem hv_smul {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : G (fun p => c p.1 
   exact hermG_smul (G w) (c .line) (lineV w)
 
 /- English proof (translation)
-Rewrite using `[prodY]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_single_base (n : ℕ) : ∏ k, c k ^ (Pi.single T.YBlk.base n : T.YBlk → ℕ) k = c .base ^ n := by
   rw [prodY]
   simp
 
 /- English proof (translation)
-Unfold `numF`. Rewrite using `[hG, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun p : κ × κ => evC (F i l p.1 p.2) (fun p => c p.1 * w p)) = c .base ^ (N + 3) • fun p : κ × κ => evC (F i l p.1 p.2) w`. Use function extensionality and compare the values at `p`. Rewrite using `[evC_smul (hF i l p.1 p.2), prod_single_base]`. Both sides reduce to the same expression. Rewrite using `[e, tensQ_smul, norm_pow, ← pow_mul, ← pow_mul, mul_comm 2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem numF_smul {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : G (fun p => c p.1 * w p) = G w) (N : ℕ)
     {F : ι → ν → κ → κ → MRing (T.yyIdx ι ν κ)}
@@ -398,7 +398,7 @@ theorem numF_smul {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : G (fun p => c p.
   rw [e, tensQ_smul, norm_pow, ← pow_mul, ← pow_mul, mul_comm 2]
 
 /- English proof (translation)
-Rewrite using `[evC_smul hf, prodY, ha, pow_zero, mul_one, norm_mul, norm_mul, norm_pow, norm_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem normSq_evC_smul {f : MRing (T.yyIdx ι ν κ)} {a : T.YBlk → ℕ} (hf : IsMultiHomog f a) (ha : a .line = 0) :
     ‖evC f (fun p => c p.1 * w p)‖ ^ 2 =
@@ -407,7 +407,7 @@ theorem normSq_evC_smul {f : MRing (T.yyIdx ι ν κ)} {a : T.YBlk → ℕ} (hf 
   ring
 
 /- English proof (translation)
-Unfold `remR`. Rewrite using `[ynorm_smul, dnorm_smul, mul_pow, mul_assoc]`. Use `congrArg _ (congrArg _ (Finset.sum_congr rfl fun j _ => ?_))` and prove the remaining obligations. Establish `hA : (‖c .base‖ ^ 2) ^ b j .base * (‖c .det‖ ^ 2) ^ b j .det ≠ 0` using `mul_ne_zero (pow_ne_zero _ (pow_ne_zero _ (norm_ne_zero_iff.2 (hc _)))) (pow_ne_zero _ (pow_ne_zero _ (norm_ne_zero_iff.2 (hc _))))`. Rewrite using `[normSq_evC_smul c w (hr j) (hrl j), mul_pow, mul_pow, show (‖c .base‖ ^ 2) ^ b j .base * ynorm w ^ b j .base * ((‖c .det‖ ^ 2) ^ b j .det * dnorm w ^ b j .det) = ((‖c .base‖ ^ 2) ^ b j .base * (‖c .det‖ ^ 2) ^ b j .det) * (ynorm w ^ b j .base * dnorm w ^ b j .det) by ring, mul_d …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem remR_smul (hc : ∀ k, c k ≠ 0) (N : ℕ) {q : ℕ} {r : Fin q → MRing (T.yyIdx ι ν κ)} {b : Fin q → T.YBlk → ℕ}
     (hr : ∀ j, IsMultiHomog (r j) (b j)) (hrl : ∀ j, b j .line = 0) :
@@ -424,7 +424,7 @@ theorem remR_smul (hc : ∀ k, c k ≠ 0) (N : ℕ) {q : ℕ} {r : Fin q → MRi
     mul_div_mul_left _ _ hA]
 
 /- English proof (translation)
-Unfold `ratio`. Rewrite using `[numF_smul c w hG N hF, remR_smul c w hc N hr hrl, ypow_smul, dnorm_smul, ← mul_add]`. Establish `hAN : (‖c .base‖ ^ 2) ^ N ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ (norm_ne_zero_iff.2 (hc _)))`. Rewrite using `[show (‖c .base‖ ^ 2) ^ (N + 3) * (numF G F w + remR N r b w) = (‖c .base‖ ^ 2) ^ N * ((‖c .base‖ ^ 3) ^ 2 * (numF G F w + remR N r b w)) by ring, show 2 * ((‖c .base‖ ^ 2) ^ N * ypow N w * (‖c .det‖ ^ 2 * dnorm w)) = (‖c .base‖ ^ 2) ^ N * (‖c .det‖ ^ 2 * (2 * (ypow N w * dnorm w …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem ratio_smul (hc : ∀ k, c k ≠ 0) {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : G (fun p => c p.1 * w p) = G w) (N : ℕ)
     {F : ι → ν → κ → κ → MRing (T.yyIdx ι ν κ)}
@@ -442,7 +442,7 @@ theorem ratio_smul (hc : ∀ k, c k ≠ 0) {G : YPt ι ν κ → Matrix κ κ �
     mul_div_mul_left _ _ hAN, mul_div_mul_comm, div_pow]
 
 /- English proof (translation)
-Unfold `xiH`. Establish `hK : 0 ≤ ‖c .base‖ ^ 3 / ‖c .det‖` using `by positivity`. Rewrite using `[ratio_smul c w hc hG N hF hr hrl, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hK, hv_smul c w hG, mul_div_mul_comm, prodY]`. Simplify using `only [T.twoXiDegY, _root_.zpow_neg, zpow_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem xiH_smul (hc : ∀ k, c k ≠ 0) {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : G (fun p => c p.1 * w p) = G w) (N : ℕ)
     {F : ι → ν → κ → κ → MRing (T.yyIdx ι ν κ)}
@@ -466,26 +466,26 @@ variable {ι ν κ : Type} [Fintype ι] [Fintype ν] [Fintype κ]
 abbrev goodY (ι ν κ : Type) : Set (YPt ι ν κ) := {w | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0}
 
 /- English proof (translation)
-The claim follows from `(contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ p)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_normSq_coord (p : Σ k, T.yyIdx ι ν κ k) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w : YPt ι ν κ => ‖w p‖ ^ 2) :=
   (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ p)
 
 /- English proof (translation)
-The claim follows from `ContDiff.sum fun i _ => contDiff_normSq_coord ⟨.base, i⟩`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_ynorm : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (ynorm : YPt ι ν κ → ℝ) :=
   ContDiff.sum fun i _ => contDiff_normSq_coord ⟨.base, i⟩
 
 /- English proof (translation)
-The claim follows from `ContDiff.sum fun l _ => contDiff_normSq_coord ⟨.det, l⟩`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_dnorm : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (dnorm : YPt ι ν κ → ℝ) :=
   ContDiff.sum fun l _ => contDiff_normSq_coord ⟨.det, l⟩
 
 /- English proof (translation)
-The claim follows from `ContDiff.sum fun i _ => (contDiff_normSq_coord ⟨.base, i⟩).pow N`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_ypow (N : ℕ) : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (ypow N : YPt ι ν κ → ℝ) :=
   ContDiff.sum fun i _ => (contDiff_normSq_coord ⟨.base, i⟩).pow N
@@ -494,14 +494,14 @@ variable {G : YPt ι ν κ → Matrix κ κ ℂ} (hG : IsEEMetric G)
 include hG
 
 /- English proof (translation)
-The claim follows from `contDiffOn_formRe (fun m n => hG.2.2.2 m n) (fun _ => (contDiff_apply ℝ ℂ _).contDiffOn) (fun _ => (contDiff_apply ℝ ℂ _).contDiffOn)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (hv G) (goodY ι ν κ) :=
   contDiffOn_formRe (fun m n => hG.2.2.2 m n) (fun _ => (contDiff_apply ℝ ℂ _).contDiffOn)
     (fun _ => (contDiff_apply ℝ ℂ _).contDiffOn)
 
 /- English proof (translation)
-Unfold `numF tensQ`. Use `ContDiffOn.sum fun i _ => ContDiffOn.sum fun l _ => ?_` and prove the remaining obligations. Use `contDiffOn_formRe (M := fun w => Matrix.kronecker (G w) (G w)) (fun p q => ?_) (fun p => (contDiff_evC _).contDiffOn) (fun p => (contDiff_evC _).contDiffOn)` and prove the remaining obligations. Simplify using `only [Matrix.kronecker, kroneckerMap_apply]`. Conclude with `(hG.2.2.2 p.1 q.1).mul (hG.2.2.2 p.2 q.2)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_numF (F : ι → ν → κ → κ → MRing (T.yyIdx ι ν κ)) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (numF G F) (goodY ι ν κ) := by
@@ -514,7 +514,7 @@ theorem contDiffOn_numF (F : ι → ν → κ → κ → MRing (T.yyIdx ι ν κ
 
 omit hG in
 /- English proof (translation)
-Unfold `remR`. Use `(contDiff_ynorm.pow _).contDiffOn.mul (ContDiffOn.sum fun j _ => ?_)` and prove the remaining obligations. Use `ContDiffOn.div ((contDiff_norm_sq ℝ).comp (contDiff_evC (r j))).contDiffOn ((contDiff_ynorm.pow _).mul (contDiff_dnorm.pow _)).contDiffOn fun w hw => ?_` and prove the remaining obligations. Conclude with `mul_ne_zero (pow_ne_zero _ (ynorm_pos hw).ne') (pow_ne_zero _ (dnorm_pos hw).ne')`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffOn_remR (N : ℕ) {q : ℕ} (r : Fin q → MRing (T.yyIdx ι ν κ)) (b : Fin q → T.YBlk → ℕ) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (remR N r b) (goodY ι ν κ) := by
@@ -532,7 +532,7 @@ variable {ι ν κ : Type} [Fintype ι] [Fintype ν] [Fintype κ] {G : YPt ι ν
   {F : ι → ν → κ → κ → MRing (T.yyIdx ι ν κ)} {q : ℕ} {r : Fin q → MRing (T.yyIdx ι ν κ)} {b : Fin q → T.YBlk → ℕ}
 
 /- English proof (translation)
-The claim follows from `div_pos (num_add_rem_pos hG.1 N F r b hcov hw) (mul_pos two_pos (mul_pos (ypow_pos hw N) (dnorm_pos hw)))`.
+A detailed English derivation is pending.
 -/
 theorem ratio_pos (hG : IsEEMetric G)
     (hcov : ∀ w : YPt ι ν κ, (∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) → (∀ j, evC (r j) w = 0) → ∃ i l k m, evC (F i l k m) w ≠ 0)
@@ -550,9 +550,9 @@ def xiLine (hG : IsEEMetric G) (hF : ∀ i l k m, IsMultiHomog (F i l k m) (Pi.s
   smul c z hc := xiH_smul c z hc (hG.2.2.1 c z hc) N hF hr hrl
 
 /- English proof (translation)
-Unfold `IsSmoothHerm`. Use `show ContDiffOn ℝ _ (xiH G N F r b) (goodY ι ν κ)`. Unfold `xiH`. Establish `hrat : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (ratio G N F r b) (goodY ι ν κ)`. Unfold `ratio`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `((contDiffOn_numF hG F).add (contDiffOn_remR N r b)).div (contDiffOn_const.mul ((contDiff_ypow N).mul contDiff_dnorm).contDiffOn) fun w hw => ?_` and prove the remaining obligations. Conclude with `(mul_pos two_pos (mul_pos (ypow_pos hw N) (dnorm_pos hw))).ne'`. Conclude with `(hrat.sqrt fun w hw => (ratio_pos hG hcov hw).ne').div (contDiffOn_hv hG) fun w hw => (hv_pos hw hG.1).ne'`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_xiLine (hG : IsEEMetric G)
     (hF : ∀ i l k m, IsMultiHomog (F i l k m) (Pi.single T.YBlk.base (N + 3)))
@@ -577,7 +577,7 @@ variable {D : ℕ} (S : ProjectiveLineBundle D) {N : ℕ} {F : S.ι → S.ν →
   {r : Fin q → MRing S.YIdx} {b : Fin q → T.YBlk → ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[lineV, T.yyEmb]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lineV_yyEmb0 (z : (Σ k, S.WIdx k) → ℂ) :
     lineV (fun p => z (T.yyEmb 0 p)) = fun k : S.κ => z ⟨.line0, k⟩ := by
@@ -585,7 +585,7 @@ theorem lineV_yyEmb0 (z : (Σ k, S.WIdx k) → ℂ) :
   simp [lineV, T.yyEmb]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[lineV, T.yyEmb]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lineV_yyEmb1 (z : (Σ k, S.WIdx k) → ℂ) :
     lineV (fun p => z (T.yyEmb 1 p)) = fun k : S.κ => z ⟨.line1, k⟩ := by
@@ -593,9 +593,9 @@ theorem lineV_yyEmb1 (z : (Σ k, S.WIdx k) → ℂ) :
   simp [lineV, T.yyEmb]
 
 /- English proof (translation)
-Introduce `k`. Break down `k with _ | _ | _` into its components or cases. Conclude with `hz .base`. Conclude with `hz .det`. Use `fin_cases j`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hz .line0`. Conclude with `⟨i, by simpa [T.yyEmb] using hi⟩`. Take `⟨i, hi⟩` from `hz .line1`. Conclude with `⟨i, by simpa [T.yyEmb] using hi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_yyEmb {z : (Σ k, S.WIdx k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (j : Fin 2) :
     ∀ k, ∃ i, (fun p => z (T.yyEmb j p)) ⟨k, i⟩ ≠ 0 := by
@@ -610,33 +610,29 @@ theorem good_yyEmb {z : (Σ k, S.WIdx k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i�
       exact ⟨i, by simpa [T.yyEmb] using hi⟩
 
 /- English proof (translation)
-Use `set w0 : (Σ k, S.YIdx k) → ℂ := fun p => z (T.yyEmb 0 p) with hw0def`. Use `set w1 : (Σ k, S.YIdx k) → ℂ := fun p => z (T.yyEmb 1 p) with hw1def`. Use `set gz := eval z (map (Int.castRingHom ℂ) S.g)`. Use `set hz' := eval z (map (Int.castRingHom ℂ) S.h)`. Use `set v0 : S.κ → ℂ := fun k => z ⟨.line0, k⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `set v1 : S.κ → ℂ := fun k => z ⟨.line1, k⟩`. Establish `hw0` using `good_yyEmb S hz.1 0`. Establish `hw1` using `good_yyEmb S hz.1 1`. Establish `hG01 : S.G w1 = S.G w0` using `S.metric.2.1 w1 w0 (fun i => rfl) (fun l => rfl)`. Establish `hFe : ∀ i l k m, evC (F i l k m) w1 = evC (F i l k m) w0` using `fun i l k m => evC_congr (hF.1 i l k m) fun p hp => by`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `p with ⟨_ | _ | _, i⟩` into its components or cases. Both sides reduce to the same expression. Simplify using `at hp`. Simplify using `at hp`. Establish `hre : ∀ j, evC (r j) w1 = evC (r j) w0` using `fun j => evC_congr (hr j) fun p hp => by`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Break down `p with ⟨_ | _ | _, i⟩` into its components or cases. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `absurd (hrl j) hp`. Establish `hratio : ratio S.G N F r b w1 = ratio S.G N F r b w0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ratio, numF, remR, hG01, hFe, hre]`. Both sides reduce to the same expression. Establish `hr0 : ∀ j, evC (r j) w0 = 0` using `fun j => by`. Establish `h0` using `hz.2 _ (hrW j)`. Rewrite `h0` using `[evC_rename_eval]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hrem0 : remR N r b w0 = 0`. Simplify using `[remR, hr0]`. Establish `hrelz : ∀ i l k m, gz * evC (F i l k m) w0 = (hz' * z ⟨.det, l⟩ * z ⟨.base, i⟩ ^ N) * (v0 k * v1 m - v0 m * v1 k)` using `fun i l k m => by`. Establish `h0` using `hz.2 _ (hF.2 i l k m)`. Simplify using `only [map_sub, map_mul, map_pow, map_X, eval_X, ProjectiveLineBundle.pluckerWW, evC_rename_eval] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[← hw0def]`. Take the linear combination `h0`. Establish `hherm : (S.G w0).IsHermitian` using `(S.metric.1 w0).isHermitian`. Establish `hv0 : lineV w0 = v0` using `lineV_yyEmb0 S z`. Establish `hv1 : lineV w1 = v1` using `lineV_yyEmb1 S z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set H0 := (hermG (S.G w0) v0 v0).re`. Use `set H1 := (hermG (S.G w0) v1 v1).re`. Use `set C := hermG (S.G w0) v0 v1`. Establish `hterm : ∀ i l, ‖gz‖ ^ 2 * tensQ (S.G w0) (fun p => evC (F i l p.1 p.2) w0) = (2 * ‖hz'‖ ^ 2 * (H0 * H1 - ‖C‖ ^ 2)) * ((‖z ⟨.base, i⟩‖ ^ 2) ^ N * ‖z ⟨.det, l⟩‖ ^ 2)` using `fun i l => by`. Rewrite using `[← tensQ_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : gz • (fun p : S.κ × S.κ => evC (F i l p.1 p.2) w0) = (hz' * z ⟨.det, l⟩ * z ⟨.base, i⟩ ^ N) • fun p : S.κ × S.κ => v0 p.1 * v1 p.2 - v0 p.2 * v1 p.1`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `hrelz i l p.1 p.2`. Rewrite using `[e, tensQ_smul, tensQ_pluck hherm, norm_mul, norm_mul, norm_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hnum : ‖gz‖ ^ 2 * numF S.G F w0 = 2 * ‖hz'‖ ^ 2 * (H0 * H1 - ‖C‖ ^ 2) * (ypow N w0 * dnorm w0)`. Rewrite using `[numF, ypow, dnorm, Finset.sum_mul_sum]`. Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => hterm i l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hH0 : 0 < H0`. Use `hv_pos (w := w0) hw0 S.metric.1` as an intermediate fact. Rewrite `this` using `[hv, hv0]`. Then use the resulting hypothesis. Establish `hH1 : 0 < H1`. Use `hv_pos (w := w1) hw1 S.metric.1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hv, hv1, hG01]`. Then use the resulting hypothesis. Establish `hY : 0 < ypow N w0` using `ypow_pos (w := w0) hw0 N`. Establish `hD : 0 < dnorm w0` using `dnorm_pos (w := w0) hw0`. Establish `hrat0 : 0 ≤ ratio S.G N F r b w0` using `div_nonneg (add_nonneg (numF_nonneg S.metric.1 F w0) (remR_nonneg N r b w0)) (by positivity)`. Establish `hxi1 : xiH S.G N F r b w1 = Real.sqrt (ratio S.G N F r b w0) / H1`.
-
-Rewrite using `[xiH, hratio, hv, hv1, hG01]`. Establish `hxi0 : xiH S.G N F r b w0 = Real.sqrt (ratio S.G N F r b w0) / H0`. Rewrite using `[xiH, hv, hv0]`. Rewrite using `[hxi0, hxi1, sinSqG]`. Express the relevant statement in the definitionally equal form `_ = ‖hz'‖ ^ 2 * (1 - ‖C‖ ^ 2 / (H0 * H1))`.
-
-Establish `hs : Real.sqrt (ratio S.G N F r b w0) / H0 * (Real.sqrt (ratio S.G N F r b w0) / H1) = ratio S.G N F r b w0 / (H0 * H1)`. Rewrite using `[div_mul_div_comm, Real.mul_self_sqrt hrat0]`. Rewrite using `[mul_assoc, hs, ratio, hrem0, add_zero]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem xiH_identity (hF : S.IsPluckerRel N F) (hr : ∀ j, IsMultiHomog (r j) (b j)) (hrl : ∀ j, b j .line = 0)
     (hrW : ∀ j, rename (T.yyEmb 0) (r j) ∈ S.WW) {z : (Σ k, S.WIdx k) → ℂ} (hz : z ∈ mcPts S.WW) :
@@ -730,7 +726,7 @@ end Identity
 end XiMetricSmoothness
 
 /- English proof (translation)
-Introduce `D S`. Take `⟨N, F, hF⟩` from `hRel D S`. Take `⟨q, r, b, hr, hrl, hrW, hcov⟩` from `hCov D S N F hF`. Conclude with `⟨XiMetricSmoothness.xiLine S.metric hF.1 hr hrl hcov, rfl, XiMetricSmoothness.isSmoothHerm_xiLine S.metric hF.1 hr hrl hcov, fun z hz => XiMetricSmoothness.xiH_identity S hF hr hrl hrW hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem XiMetric.proof (hRel : PluckerRel.Statement) (hCov : PluckerCover.Statement) : XiMetric.Statement := by
   intro D S

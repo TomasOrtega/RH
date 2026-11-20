@@ -9,17 +9,17 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ Λ _ _ N h ψ e hψ ht w`. Establish `key : ∀ (i : Fin N) (r : RL p O Λ), e (Pi.single i (ψ r)) = fun j => phiInv p O (e (Pi.single i r) j)`. Introduce `i r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => funext j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `tmul a l`. Rewrite using `[hψ]`. Establish `h1 : ∀ b : Ainf p O, (Pi.single i (b ⊗ₜ[ℤ_[p]] l) : Fin N → RL p O Λ) = b • Pi.single i ((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l)`. Introduce `b`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `k`. Break down `eq_or_ne k i with rfl | hk` into its components or cases. Simplify using `[TensorProduct.smul_tmul']`. Simplify using `[hk]`. Take `⟨t, ht'⟩` from `ht i l`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1 (phiInv p O a), h1 a, map_smul, map_smul, ht']`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, PsiPhi.phiInv_ofPadic]`. Consider the case `add x y hx hy`. Rewrite using `[map_add ψ, Pi.single_add, map_add e, hx, hy, Pi.single_add, map_add e]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, map_add]`. Establish `hw : (fun i => ψ (w i)) = ∑ i, Pi.single i (ψ (w i))` using `(Finset.univ_sum_single _).symm`. Rewrite using `[hw, map_sum]`. Use `conv_rhs => rw [← Finset.univ_sum_single w, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Finset.sum_apply, key, map_sum]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_psi_eq_phiInv : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ] (N h : ℕ) (ψ : RL p O Λ →+* RL p O Λ) (e : (Fin N → RL p O Λ) ≃ₗ[Ainf p O] (Fin h → Ainf p O)), IsPsi ψ → (∀ (i : Fin N) (l : Λ), ∃ t : Fin h → ℤ_[p], e (Pi.single i ((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l)) = fun j => ofPadic p O (t j)) → ∀ w, e (fun i => ψ (w i)) = fun j => phiInv p O (e w j) := by
   intro p _ O _ _ _ Λ _ _ N h ψ e hψ ht w

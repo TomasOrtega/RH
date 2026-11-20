@@ -36,17 +36,15 @@ variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {
 variable {B : Type} [CommRing B] [Algebra R B]
 
 /- English proof (translation)
-Establish `hz : z.left ≫ G.hom = spMap (algebraMap R B)` using `Over.w z`. Set `w : sp (R₀` to `R) (DualNumber B) ⟶ G := (Chart.spMap (SqZero.inlS R B) ≫ z) * (Chart.spMap (SqZero.dualMap (Algebra.ofId R B)) ≫ u)`. Establish `hw : IsTr G (algebraMap R B) z.left v w.left`. Set `ρ : tEpsG (z.left ≫ G.hom) ⟶ sp (R₀` to `R) (DualNumber B) := Over.homMk (𝟙 _) (by`. Rewrite using `[hz]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `(Category.id_comp _).trans ?_` and prove the remaining obligations. Conclude with `(Spec.map_comp (CommRingCat.ofHom (algebraMap R B)) (CommRingCat.ofHom (algebraMap B (DualNumber B)))))`. Use `⟨ρ ≫ Chart.spMap (SqZero.inlS R B) ≫ z, ρ ≫ Chart.spMap (SqZero.dualMap (Algebra.ofId R B)) ≫ u, Category.id_comp _, (Category.id_comp _).trans ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`. Use `congrArg (fun q : DualNumber R →+* DualNumber B => spMap q ≫ u.left) (RingHom.ext fun a => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [dualMap, Algebra.smul_def, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[← MonObj.comp_mul]`. Conclude with `Category.id_comp _`. Establish `h0 : Chart.spMap (SqZero.fstS R B) ≫ w = z`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, Chart.spMap_comp, Chart.spMap_comp, SqZero.fstS_comp_dualMap, ← Chart.spMap_comp (SqZero.fstS R R), Category.assoc, show Chart.spMap (SqZero.fstS R R) ≫ u = 1 from (Chart.isTan_iff _).2 ht, MonObj.comp_one, _root_.mul_one, sho …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ w.left = z.left` using `congrArg (fun q => q.left) h0`. Establish `hwO : ⊤ ≤ w.left ⁻¹ᵁ O` using `InvWt.top_le_preimage_of_fst (S := B) w.left z.left O h0' h`. Establish `h1 : Chart.spMap (SqZero.dualTo (AlgHom.id R B) e he) ≫ w = (Chart.spMap (SqZero.epsTo R e he) ≫ u : sp (R₀` using `R) B ⟶ G) * z := by`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, Chart.spMap_comp, Chart.spMap_comp, show (SqZero.dualTo (AlgHom.id R B) e he).comp (SqZero.inlS R B) = AlgHom.id R B from AlgHom.ext fun _ => by simp [SqZero.dualTo_apply], Chart.spMap_id, Category.id_comp, _root_.mul_comm, sh …`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a₁, a₂⟩` from `valR_spMap (SqZero.dualTo (AlgHom.id R B) e he).toRingHom w.left O hwO`. Use `⟨a₁, fun f => (a₂ f).trans ?_⟩` and prove the remaining obligations. Establish `b₁` using `(valR_spMap (TrivSqZeroExt.fstHom B B B).toRingHom w.left O hwO).2 f`. Rewrite `b₁` using `[h0']`. Rewrite using `[← hd.2 B (algebraMap R B) z.left w.left O f hz h hw, b₁, _root_.mul_comm]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem valR_translate {v : TanM (𝟙 (Sp R)) G} {u : epsR R ⟶ G} (hu : u.left = (tv v).left) (ht : IsTangent u)
     {dd : Fld G.left} (hd : IsInv G v dd) (e : B) (he : e * e = 0) (z : sp (R₀ := R) B ⟶ G) (O : G.left.Opens)
@@ -93,9 +91,9 @@ theorem valR_translate {v : TanM (𝟙 (Sp R)) G} {u : epsR R ⟶ G} (hu : u.lef
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h`. Consider the case `insert a s ha ih`. Take `⟨h₁, H₁⟩` from `ih`. Take `⟨h₂, H₂⟩` from `valR_translate (hu a) (ht a) (hd a) (e a) (he a a) _ O h₁`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.prod_insert ha, _root_.mul_assoc]`. Use `⟨h₂, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[H₂, H₁, H₁, Finset.sum_insert ha, mul_add, Finset.mul_sum]`. Simplify using `only [← _root_.mul_assoc, he, zero_mul, Finset.sum_const_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem valR_prod {v : Fin n → TanM (𝟙 (Sp R)) G} {u : Fin n → (epsR R ⟶ G)} (hu : ∀ i, (u i).left = (tv (v i)).left)
     (ht : ∀ i, IsTangent (u i)) {dd : Fin n → Fld G.left} (hd : ∀ i, IsInv G (v i) (dd i)) (e : Fin n → B)
@@ -131,21 +129,19 @@ Both sides reduce to the same expression.
 theorem tv_pushL (φ : G ⟶ G') [IsMonHom φ] (v : TanM (𝟙 (Sp R)) G) : tv (pushL φ v) = tv v ≫ φ := rfl
 
 /- English proof (translation)
-Introduce `m`. Set `π : DualNumber R →+* R` to `(TrivSqZeroExt.fstHom R R R).toRingHom`. Establish `hπ : Function.Surjective π` using `fun r => ⟨inl r, rfl⟩`. Establish `hn : IsNilpotent (RingHom.ker π)`. Use `⟨2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Establish `hx : x.fst = 0` using `hx`. Establish `hy : y.fst = 0` using `hy`. Rewrite using `[Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [hx, hy]`. Use `haveI : IsClosedImmersion (spMap π) := IsClosedImmersion.spec_of_surjective _ hπ`. Establish `hη : (η[G] : _ ⟶ G).left ≫ φ.left = spMap π ≫ (tv m).left`. Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Conclude with `(RayBasis.isTangent_pt m).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨W, hW, l, hl, hl'⟩` from `exists_local_lift_of_smooth φ.left (spMap π) (isNilpotent_ker_specMap (CommRingCat.ofHom π) hn) (η[G] : _ ⟶ G).left (tv m).left hη (spMap π (closedPoint R))`. Establish `hW' : W = ⊤`. Use `top_le_iff.1 (InvWt.top_le_preimage_of_fst (𝟙 _) (spMap π) W (Category.comp_id _) ?_)` and prove the remaining obligations. Conclude with `((closedPoint_mem_iff (spMap π ⁻¹ᵁ W)).1 hW).ge`. Substitute `hW'` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `l' : Sp (DualNumber R) ⟶ G.left` to `(Sp (DualNumber R)).topIso.inv ≫ l`. Establish `h₁ : l' ≫ φ.left = (tv m).left`. Simplify using `only [l', Category.assoc, hl]`. Rewrite using `[← Scheme.topIso_hom, Iso.inv_hom_id_assoc]`. Establish `h₂ : spMap π ≫ l' = (η[G] : _ ⟶ G).left` using `by haveI : IsIso (spMap π ⁻¹ᵁ ⊤).ι := inferInstanceAs (IsIso (Sp R).topIso.hom)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi (spMap π ⁻¹ᵁ ⊤).ι, ← hl', ← morphismRestrict_ι_assoc]`. Simplify using `only [l']`. Rewrite using `[← Scheme.topIso_hom, Iso.hom_inv_id_assoc]`. Set `V : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ G` to `Over.homMk l' (by`. Rewrite using `[← Over.w φ, ← Category.assoc, h₁]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.w (tv m))`. Establish `hV : smT (𝟙 (Sp R)) 0 V = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[smT_left, Hom.one_def, Over.comp_left, Over.toUnit_left, ← h₂]`. Use `show spMap (epsMul 0) ≫ l' = (spMap (algebraMap R (DualNumber R)) ≫ 𝟙 _) ≫ spMap π ≫ l'`.
-
-Rewrite using `[Category.comp_id, ← Category.assoc _ (spMap π), ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congrArg (fun q : DualNumber R →+* DualNumber R => spMap q ≫ l') (RingHom.ext fun a => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, π, TrivSqZeroExt.algebraMap_eq_inl]`. Conclude with `⟨PullbackSections.mkT V hV, PullbackSections.tanM_ext (Over.OverMorphism.ext h₁)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pushL_surjective [IsLocalRing R] (φ : G ⟶ G') [IsMonHom φ] [Smooth φ.left] :
     Function.Surjective (pushL φ) := by
@@ -193,7 +189,7 @@ theorem pushL_surjective [IsLocalRing R] (φ : G ⟶ G') [IsMonHom φ] [Smooth �
   exact ⟨PullbackSections.mkT V hV, PullbackSections.tanM_ext (Over.OverMorphism.ext h₁)⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact MonObj.comp_one k`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.prod_insert hi, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_prod {T T' : Over (Sp R)} (k : T ⟶ T') {κ : Type} (s : Finset κ) (x : κ → (T' ⟶ G)) :
     k ≫ ∏ i ∈ s, x i = ∏ i ∈ s, k ≫ x i := by
@@ -203,7 +199,7 @@ theorem comp_prod {T T' : Over (Sp R)} (k : T ⟶ T') {κ : Type} (s : Finset κ
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.prod_insert hi, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Use `DualNumber.algHom_ext ?_` and prove the remaining obligations. Rewrite using `[SqZero.epsTo_eps]`. Express the relevant statement in the definitionally equal form `_ = SqZero.epsTo R (inr 1 : DualNumber S) (TrivSqZeroExt.inr_mul_inr _ _ _) (TrivSqZeroExt.map _ (inr 1))`. Rewrite using `[TrivSqZeroExt.map_inr]`. Apply the tactic sequence `ext <;> simp [SqZero.epsTo, SqZero.dualTo_apply, TrivSqZeroExt.algebraMap_eq_inl']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsTo_inr (S : Type) [CommRing S] [Algebra R S] (c : R) :
     SqZero.epsTo R (inr (algebraMap R S c) : DualNumber S) (TrivSqZeroExt.inr_mul_inr _ _ _) =
@@ -218,19 +214,19 @@ theorem epsTo_inr (S : Type) [CommRing S] [Algebra R S] (c : R) :
 open GlobalTheory.InvFieldRing in
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `Adjust.eq_zero_of_valR_points _ _ fun S _ x hx => ?_` and prove the remaining obligations. Take `⟨ψ', hψ'⟩` from `Spec.map_surjective (R := CommRingCat.of R) (S := CommRingCat.of S) (x ≫ G.hom)`. Use `letI : Algebra R S := ψ'.hom.toAlgebra`. Establish `hψ : x ≫ G.hom = spMap (algebraMap R S)` using `hψ'.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Set `z : sp (R₀` to `R) S ⟶ G := Over.homMk x hψ`. Set `z' : sp (R₀` to `R) (DualNumber S) ⟶ G := Chart.spMap (SqZero.inlS R S) ≫ z`. Take `⟨a₁, a₂⟩` from `valR_spMap (SqZero.inlS R S).toRingHom x W hx`. Establish `hxU : ⊤ ≤ (x ≫ φ.left) ⁻¹ᵁ U` using `hx.trans (x.preimage_mono hW)`. Take `⟨b₁, b₂⟩` from `valR_spMap (SqZero.inlS R S).toRingHom (x ≫ φ.left) U hxU`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c₁, c₂⟩` from `valR_translate (u := RayBasis.pt v) rfl (RayBasis.isTangent_pt v) hd (inr 1 : DualNumber S) (TrivSqZeroExt.inr_mul_inr _ _ _) z' W a₁`. Take `⟨-, d₂⟩` from `valR_prod (u := fun a => RayBasis.pt (w a)) (fun _ => rfl) (fun a => RayBasis.isTangent_pt (w a)) hd' (fun a => (inr (algebraMap R S (c a)) : DualNumber S)) (fun _ _ => TrivSqZeroExt.inr_mul_inr _ _ _) (z' ≫ φ) U b₁ Finset.univ`. Set `k : sp (R₀` to `R) (DualNumber S) ⟶ overAt (𝟙 (Sp R)) (DualNumber R) := Chart.spMap (SqZero.epsTo R (inr 1 : DualNumber S) (TrivSqZeroExt.inr_mul_inr _ _ _)) ≫ Over.homMk (𝟙 _) ((Category.id_comp _).trans (Category.comp_id _))`. Establish `hk : k.left = spMap (SqZero.epsTo R (inr 1 : DualNumber S) (TrivSqZeroExt.inr_mul_inr _ _ _)).toRingHom` using `Category.comp_id _`. Establish `e₁ : (Chart.spMap (SqZero.epsTo R (inr 1 : DualNumber S) (TrivSqZeroExt.inr_mul_inr _ _ _)) ≫ RayBasis.pt v : sp (R₀` using `R) (DualNumber S) ⟶ G) = k ≫ tv v := Over.OverMorphism.ext (by rw [Over.comp_left, Over.comp_left, hk]; rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : ∀ a, (Chart.spMap (SqZero.epsTo R (inr (algebraMap R S (c a)) : DualNumber S) (TrivSqZeroExt.inr_mul_inr _ _ _)) ≫ RayBasis.pt (w a) : sp (R₀` using `R) (DualNumber S) ⟶ G') = k ≫ tv (c a • w a) := fun a => Over.OverMorphism.ext (by`. Rewrite using `[Over.comp_left, Over.comp_left, hk, PullbackSections.tv_smul, smT_left, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congrArg (fun q : DualNumber R →+* DualNumber S => spMap q ≫ (tv (w a)).left) (RingHom.ext fun y => ?_)` and prove the remaining obligations. Conclude with `(AlgHom.congr_fun (epsTo_inr S (c a)) y))`. Establish `e₃ : (k ≫ tv v * z') ≫ φ = (∏ a, k ≫ tv (c a • w a)) * (z' ≫ φ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.mul_comp, Category.assoc, ← tv_pushL, hc, RayBasis.tv_sum, comp_prod]`. Rewrite `c₁`, `c₂` using `[e₁]`. Simplify using `only [e₂] at d₂`. Establish `f₁` using `c₂ (pbT φ.left s W)`. Establish `f₂` using `d₂ s`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `f₂` using `[← e₃, Over.comp_left, ← valR_appLE _ _ _ _ hW c₁, ← GlobalTheory.KS.pbT_of_le, f₁, Over.comp_left _ _ _ z' φ, ← valR_appLE z'.left _ _ _ hW a₁, ← GlobalTheory.KS.pbT_of_le, add_right_inj]`. Establish `a₃ : ∀ f, valR (A` using `DualNumber S) z'.left W f = inl (valR x W f) := a₂`. Establish `b₃ : ∀ f, valR (A` using `DualNumber S) (z'.left ≫ φ.left) U f = inl (valR (x ≫ φ.left) U f) := b₂`. Simplify using `only [a₃, b₃] at f₂`. Establish `f₃` using `congrArg TrivSqZeroExt.snd f₂`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [TrivSqZeroExt.snd_sum, TrivSqZeroExt.inr_mul_inl, TrivSqZeroExt.snd_inr, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, _root_.one_mul] at f₃`. Rewrite using `[HolHom.valR_eq _ _ hx, map_sub, ← HolHom.valR_eq _ _ hx, ← HolHom.valR_eq _ _ hx, f₃, GlobalTheory.KS.pbT_of_le _ hW, valR_appLE _ _ _ _ hW hx, HolHom.valR_eq _ _ hxU, map_sum, sub_eq_zero]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← HolHom.valR_eq _ _ hxU, ← HolHom.valR_eq _ _ hxU, valR_constFn _ G'.hom (algebraMap R S) (by rw [Category.assoc, Over.w φ, hψ]) U hxU]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInv_pbT (φ : G ⟶ G') [IsMonHom φ] {v : TanM (𝟙 (Sp R)) G} {d : Fld G.left} (hd : IsInv G v d) {g : ℕ}
     {w : Fin g → TanM (𝟙 (Sp R)) G'} {d' : Fin g → Fld G'.left} (hd' : ∀ a, IsInv G' (w a) (d' a)) (c : Fin g → R)
@@ -290,18 +286,16 @@ theorem isInv_pbT (φ : G ⟶ G') [IsMonHom φ] {v : TanM (𝟙 (Sp R)) G} {d : 
 end Hom
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KS.pbT_of_le (𝟙 Z) (O₀ := U) (O := U) le_rfl]`. Conclude with `(congrArg (fun φ => φ.hom s) (Scheme.Hom.appLE_eq_app (𝟙 Z) (U := U))).trans rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pbT_id {Z : Scheme.{0}} {U : Z.Opens} (s : Γ(Z, U)) : pbT (𝟙 Z) s U = s := by
   rw [GlobalTheory.KS.pbT_of_le (𝟙 Z) (O₀ := U) (O := U) le_rfl]
   exact (congrArg (fun φ => φ.hom s) (Scheme.Hom.appLE_eq_app (𝟙 Z) (U := U))).trans rfl
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hdd`. Use `haveI : IsMonHom Y.q := Y.q_linear.isMonHom`. Use `haveI : Smooth Y.q.left := Y.smooth_q`. Take `⟨g, ⟨w⟩⟩` from `RayBasis.exists_basis (G := Dd.toPre.P.A) Dd.toPre.P.isAb.smooth`. Use `choose dd' hdd' using fun a => RayBasis.exists_isInv (w a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `choose u hu using fun a => pushL_surjective Y.q (w a)`. Use `⟨g, w, dd', fun b a => w.repr (pushL Y.q (v b)) a, fun a b => v.repr (u a) b, hdd', fun m => ⟨w.repr m, (w.sum_repr m).symm⟩, fun a a' => ?_, fun b i i' W hW => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun m => w.repr (pushL Y.q m) a') (v.sum_repr (u a))`. Simplify using `only [map_sum, map_smul, hu, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, Module.Basis.repr_self, Finsupp.single_apply] at h`. Conclude with `h`.
-
-Simplify using `only [dlg, pbT_id]`. Rewrite using `[isInv_pbT Y.q (hdd b) hdd' _ (w.sum_repr _).symm _ _ W hW, ← GlobalTheory.KS.pbT_mul, Finset.sum_mul]`. Simplify using `only [_root_.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dlg_eq_pbT : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (O : Type) [CommRing O] [StarRing O] [Module O Dd.toPre.X] (oa : Dd.toPre.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∃ (g : ℕ) (w : Fin g → TanM (𝟙 (Sp R)) Dd.toPre.P.A) (dd' : Fin g → Fld Dd.toPre.P.A.left) (M : Fin n → Fin g → R) (N : Fin g → Fin n → R), (∀ a, IsInv Dd.toPre.P.A (w a) (dd' a)) ∧ (∀ u : TanM (𝟙 (Sp R)) Dd.toPre.P.A, ∃ cf : Fin g → R, u = ∑ a, cf a • w a) ∧ (∀ a a', ∑ b, N a b * M b a' = if a = a' then 1 else 0) ∧ ∀ (b : Fin n) (i i' : Dd.toPre.P.L.ι) (W : Y.H.left.Opens), W ≤ Y.q.left ⁻¹ᵁ (Dd.toPre.P.L.U i ⊓ Dd.toPre.P.L.U i') → dlg Y.H Y.q.left Dd.toPre.P.L (dd b) i i' W = pbT Y.q.left (∑ a, constFn Dd.toPre.P.A.hom _ (M b a) * dlg Dd.toPre.P.A (𝟙 _) Dd.toPre.P.L (dd' a) i i' (Dd.toPre.P.L.U i ⊓ Dd.toPre.P.L.U i')) W := by
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hdd

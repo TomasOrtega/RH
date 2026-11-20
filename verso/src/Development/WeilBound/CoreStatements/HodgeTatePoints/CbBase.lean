@@ -17,43 +17,43 @@ def ZZ (b : Fin m → Pt R n d) : Prop := ∀ j i, constantCoeff (b j i) = 0
 def ep (b : Fin m → Pt R n d) (x : Pt R m d) : Pt R n d := fun i => ev b (x i)
 
 /- English proof (translation)
-Introduce `i` and use `by simp [pt]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Z_pt (j : Fin n) : Z (pt R d j) := fun i => by simp [pt]
 /- English proof (translation)
-Introduce `i` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Z_zero : Z (0 : Pt R n d) := fun i => by simp
 /- English proof (translation)
-Introduce `j` and use `j.elim0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ZZ_nil : ZZ (![] : Fin 0 → Pt R n d) := fun j => j.elim0
 /- English proof (translation)
-The claim follows from `LogPf.CZ.cons hx hb`.
+A detailed English derivation is pending.
 -/
 theorem ZZ_cons {x : Pt R n d} {b : Fin m → Pt R n d} (hx : Z x) (hb : ZZ b) : ZZ (Matrix.vecCons x b) :=
   LogPf.CZ.cons hx hb
 /- English proof (translation)
-Introduce `i` and use `LogPf.constantCoeff_ev hb (hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Z_ep {b : Fin m → Pt R n d} {x : Pt R m d} (hb : ZZ b) (hx : Z x) : Z (ep b x) :=
   fun i => LogPf.constantCoeff_ev hb (hx i)
 /- English proof (translation)
-Introduce `i` and use `LogPf.constantCoeff_ev (ZZ_cons hx (ZZ_cons hy ZZ_nil)) (G.const i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Z_add (G : FGLaw R d) {x y : Pt R n d} (hx : Z x) (hy : Z y) : Z (G.add x y) :=
   fun i => LogPf.constantCoeff_ev (ZZ_cons hx (ZZ_cons hy ZZ_nil)) (G.const i)
 /- English proof (translation)
-Introduce `i` and use `LogPf.constantCoeff_ev (ZZ_cons hx ZZ_nil) (hφ i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Z_comp1 {φ : Pt R 1 d} {x : Pt R n d} (hφ : Z φ) (hx : Z x) : Z (comp1 φ x) :=
   fun i => LogPf.constantCoeff_ev (ZZ_cons hx ZZ_nil) (hφ i)
 /- English proof (translation)
-The claim follows from `A.const a`.
+A detailed English derivation is pending.
 -/
 theorem Z_act {O : Type} [CommRing O] {G : FGLaw R d} (A : OAct O G) (a : O) : Z (A.act a) := A.const a
 /- English proof (translation)
-Introduce `i` and use `by simp [ptPow, hp.out.ne_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Z_ptPow (p : ℕ) [hp : Fact p.Prime] (j : Fin n) : Z (ptPow R d p j) := fun i => by
   simp [ptPow, hp.out.ne_zero]
@@ -63,43 +63,43 @@ macro "zz" : tactic => `(tactic| repeat' with_reducible first
   | apply Z_add | apply Z_comp1 | apply ZZ_cons | apply Z_ep)
 
 /- English proof (translation)
-The claim follows from `LogPf.ev_mul hb f g`.
+A detailed English derivation is pending.
 -/
 theorem evm {b : Fin m → Pt R n d} (hb : ZZ b) (f g : PS R m d) : ev b (f * g) = ev b f * ev b g :=
   LogPf.ev_mul hb f g
 /- English proof (translation)
-The claim follows from `LogPf.ev_add hb f g`.
+A detailed English derivation is pending.
 -/
 theorem eva {b : Fin m → Pt R n d} (hb : ZZ b) (f g : PS R m d) : ev b (f + g) = ev b f + ev b g :=
   LogPf.ev_add hb f g
 /- English proof (translation)
-The claim follows from `LogPf.ev_zero' hb`.
+A detailed English derivation is pending.
 -/
 theorem evz {b : Fin m → Pt R n d} (hb : ZZ b) : ev b (0 : PS R m d) = 0 := LogPf.ev_zero' hb
 /- English proof (translation)
-The claim follows from `LogPf.ev_sum hb s f`.
+A detailed English derivation is pending.
 -/
 theorem evsum {b : Fin m → Pt R n d} (hb : ZZ b) {ι : Type} (s : Finset ι) (f : ι → PS R m d) :
     ev b (∑ x ∈ s, f x) = ∑ x ∈ s, ev b (f x) := LogPf.ev_sum hb s f
 /- English proof (translation)
-Simplify using `only [← LogPf.evHom_apply hb, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evprod {b : Fin m → Pt R n d} (hb : ZZ b) {ι : Type} (s : Finset ι) (f : ι → PS R m d) :
     ev b (∏ x ∈ s, f x) = ∏ x ∈ s, ev b (f x) := by
   simp only [← LogPf.evHom_apply hb, map_prod]
 /- English proof (translation)
-Simplify using `only [← LogPf.evHom_apply hb, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evpow {b : Fin m → Pt R n d} (hb : ZZ b) (f : PS R m d) (k : ℕ) : ev b (f ^ k) = ev b f ^ k := by
   simp only [← LogPf.evHom_apply hb, map_pow]
 /- English proof (translation)
-The claim follows from `LogPf.cc_ev hb f`.
+A detailed English derivation is pending.
 -/
 theorem ccev {b : Fin m → Pt R n d} (hb : ZZ b) (f : PS R m d) : constantCoeff (ev b f) = constantCoeff f :=
   LogPf.cc_ev hb f
 
 /- English proof (translation)
-Rewrite using `[LogPf.ev_ev hb (show ZZ ![x] by zz)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ev1 {b : Fin m → Pt R n d} {x : Pt R m d} (hb : ZZ b) (hx : Z x) (f : PS R 1 d) :
     ev b (ev ![x] f) = ev ![ep b x] f := by
@@ -107,7 +107,7 @@ theorem ev1 {b : Fin m → Pt R n d} {x : Pt R m d} (hb : ZZ b) (hx : Z x) (f : 
   congr 1; funext j; fin_cases j; rfl
 
 /- English proof (translation)
-Rewrite using `[LogPf.ev_ev hb (show ZZ ![x, y] by zz)]`. Apply the tactic sequence `congr 1; funext j; fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ev2 {b : Fin m → Pt R n d} {x y : Pt R m d} (hb : ZZ b) (hx : Z x) (hy : Z y) (f : PS R 2 d) :
     ev b (ev ![x, y] f) = ev ![ep b x, ep b y] f := by
@@ -115,7 +115,7 @@ theorem ev2 {b : Fin m → Pt R n d} {x y : Pt R m d} (hb : ZZ b) (hx : Z x) (hy
   congr 1; funext j; fin_cases j <;> rfl
 
 /- English proof (translation)
-Rewrite using `[LogPf.ev_ev hb (show ZZ ![x, y, z] by zz)]`. Apply the tactic sequence `congr 1; funext j; fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ev3 {b : Fin m → Pt R n d} {x y z : Pt R m d} (hb : ZZ b) (hx : Z x) (hy : Z y) (hz : Z z)
     (f : PS R 3 d) : ev b (ev ![x, y, z] f) = ev ![ep b x, ep b y, ep b z] f := by
@@ -123,22 +123,22 @@ theorem ev3 {b : Fin m → Pt R n d} {x y z : Pt R m d} (hb : ZZ b) (hx : Z x) (
   congr 1; funext j; fin_cases j <;> rfl
 
 /- English proof (translation)
-The claim follows from `funext fun i => LogPf.ev_X hb j i`.
+A detailed English derivation is pending.
 -/
 theorem ep_pt {b : Fin m → Pt R n d} (hb : ZZ b) (j : Fin m) : ep b (pt R d j) = b j :=
   funext fun i => LogPf.ev_X hb j i
 /- English proof (translation)
-The claim follows from `funext fun _ => evz hb`.
+A detailed English derivation is pending.
 -/
 theorem ep_zero {b : Fin m → Pt R n d} (hb : ZZ b) : ep b (0 : Pt R m d) = 0 :=
   funext fun _ => evz hb
 /- English proof (translation)
-The claim follows from `funext fun _ => ev2 hb hx hy _`.
+A detailed English derivation is pending.
 -/
 theorem ep_add (G : FGLaw R d) {b : Fin m → Pt R n d} {x y : Pt R m d} (hb : ZZ b) (hx : Z x) (hy : Z y) :
     ep b (G.add x y) = G.add (ep b x) (ep b y) := funext fun _ => ev2 hb hx hy _
 /- English proof (translation)
-The claim follows from `funext fun _ => ev1 hb hx _`.
+A detailed English derivation is pending.
 -/
 theorem ep_comp1 (φ : Pt R 1 d) {b : Fin m → Pt R n d} {x : Pt R m d} (hb : ZZ b) (hx : Z x) :
     ep b (comp1 φ x) = comp1 φ (ep b x) := funext fun _ => ev1 hb hx _
@@ -147,7 +147,7 @@ Both sides reduce to the same expression.
 -/
 theorem ep_one (φ : Pt R 1 d) (x : Pt R n d) : ep ![x] φ = comp1 φ x := rfl
 /- English proof (translation)
-The claim follows from `funext fun i => by rw [ep, ptPow, evpow hb, LogPf.ev_X hb]`.
+A detailed English derivation is pending.
 -/
 theorem ep_ptPow (p : ℕ) {b : Fin m → Pt R n d} (hb : ZZ b) (j : Fin m) :
     ep b (ptPow R d p j) = fun i => b j i ^ p :=
@@ -158,7 +158,7 @@ macro "evs" loc:(Lean.Parser.Tactic.location)? : tactic => `(tactic|
     ep_comp1, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one] $[$loc]?)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `: (![(0 : Pt R n d)] : Fin 1 → Pt R n d) = fun _ _ => 0` using `by funext j; fin_cases j; rfl`. Rewrite using `[comp1, this, LogPf.ev_zeroFam, hφ i, map_zero]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem germComp1_zero_of_noConstantCoeff {φ : Pt R 1 d} (hφ : Z φ) : comp1 φ (0 : Pt R n d) = 0 := by
   funext i
@@ -166,25 +166,25 @@ theorem germComp1_zero_of_noConstantCoeff {φ : Pt R 1 d} (hφ : Z φ) : comp1 �
   rw [comp1, this, LogPf.ev_zeroFam, hφ i, map_zero]; rfl
 
 /- English proof (translation)
-The claim follows from `funext fun _ => ev_pt_self _ (fun j => by fin_cases j; rfl) _`.
+A detailed English derivation is pending.
 -/
 theorem germCompOne_identityPoint_left (φ : Pt R 1 d) : comp1 φ (pt R (n := 1) d 0) = φ :=
   funext fun _ => ev_pt_self _ (fun j => by fin_cases j; rfl) _
 
 /- English proof (translation)
-The claim follows from `ep_comp1 φ (b := ![x]) (by zz) hψ`.
+A detailed English derivation is pending.
 -/
 theorem germComp1_germComp1_eq_substitute (φ : Pt R 1 d) {ψ : Pt R 1 d} {x : Pt R n d} (hψ : Z ψ) (hx : Z x) :
     comp1 (comp1 φ ψ) x = comp1 φ (comp1 ψ x) := ep_comp1 φ (b := ![x]) (by zz) hψ
 
 /- English proof (translation)
-The claim follows from `ev_pt_self _ (fun j => by fin_cases j <;> rfl) _`.
+A detailed English derivation is pending.
 -/
 theorem eval_points_two (f : PS R 2 d) : ev (n := 2) ![pt R d 0, pt R d 1] f = f :=
   ev_pt_self _ (fun j => by fin_cases j <;> rfl) _
 
 /- English proof (translation)
-The claim follows from `ev_pt_self _ (fun j => by fin_cases j <;> rfl) _`.
+A detailed English derivation is pending.
 -/
 theorem eval_points_three (f : PS R 3 d) : ev (n := 3) ![pt R d 0, pt R d 1, pt R d 2] f = f :=
   ev_pt_self _ (fun j => by fin_cases j <;> rfl) _
@@ -194,7 +194,7 @@ section Law
 variable (G : FGLaw R d) {x y z : Pt R n d}
 
 /- English proof (translation)
-Establish `h : G.add 0 (pt R (n` using `1) d 0) = pt R d 0 := funext G.unit`. Use `congrArg (ep ![x]) h` as an intermediate fact. Use `evs at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem p_zero_add (hx : Z x) : G.add 0 x = x := by
   have h : G.add 0 (pt R (n := 1) d 0) = pt R d 0 := funext G.unit
@@ -203,7 +203,7 @@ theorem p_zero_add (hx : Z x) : G.add 0 x = x := by
   exact this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `congrArg (ev ![x, y]) (G.comm i)` as an intermediate fact. Use `evs at this`. Conclude with `this.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem p_add_comm (hx : Z x) (hy : Z y) : G.add x y = G.add y x := by
   funext i
@@ -212,7 +212,7 @@ theorem p_add_comm (hx : Z x) (hy : Z y) : G.add x y = G.add y x := by
   exact this.symm
 
 /- English proof (translation)
-Establish `h : G.add (G.add (pt R (n` using `3) d 0) (pt R d 1)) (pt R d 2) = G.add (pt R d 0) (G.add (pt R d 1) (pt R d 2)) := funext G.assoc`. Use `congrArg (ep ![x, y, z]) h` as an intermediate fact. Use `evs at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem p_add_assoc (hx : Z x) (hy : Z y) (hz : Z z) : G.add (G.add x y) z = G.add x (G.add y z) := by
   have h : G.add (G.add (pt R (n := 3) d 0) (pt R d 1)) (pt R d 2) =
@@ -222,7 +222,7 @@ theorem p_add_assoc (hx : Z x) (hy : Z y) (hz : Z z) : G.add (G.add x y) z = G.a
   exact this
 
 /- English proof (translation)
-Rewrite using `[p_add_comm G hx Z_zero, p_zero_add G hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem p_add_zero (hx : Z x) : G.add x 0 = x := by
   rw [p_add_comm G hx Z_zero, p_zero_add G hx]
@@ -230,7 +230,7 @@ theorem p_add_zero (hx : Z x) : G.add x 0 = x := by
 variable {G} {O : Type} [CommRing O] (A : OAct O G)
 
 /- English proof (translation)
-Use `congrArg (ep ![x, y]) (A.hom a)` as an intermediate fact. Use `evs at this`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem act_add (a : O) (hx : Z x) (hy : Z y) :
     comp1 (A.act a) (G.add x y) = G.add (comp1 (A.act a) x) (comp1 (A.act a) y) := by
@@ -239,7 +239,7 @@ theorem act_add (a : O) (hx : Z x) (hy : Z y) :
   exact this
 
 /- English proof (translation)
-Rewrite using `[A.add_act]`. Conclude with `ep_add G (b := ![x]) (by zz) (by zz) (by zz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_act (a b : O) (hx : Z x) :
     comp1 (A.act (a + b)) x = G.add (comp1 (A.act a) x) (comp1 (A.act b) x) := by
@@ -247,20 +247,20 @@ theorem add_act (a b : O) (hx : Z x) :
   exact ep_add G (b := ![x]) (by zz) (by zz) (by zz)
 
 /- English proof (translation)
-Rewrite using `[A.mul_act, germComp1_germComp1_eq_substitute _ (by zz) hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_act (a b : O) (hx : Z x) : comp1 (A.act (a * b)) x = comp1 (A.act a) (comp1 (A.act b) x) := by
   rw [A.mul_act, germComp1_germComp1_eq_substitute _ (by zz) hx]
 
 /- English proof (translation)
-Rewrite using `[← mul_act A a b hx, ← mul_act A b a hx, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_comm (a b : O) (hx : Z x) :
     comp1 (A.act a) (comp1 (A.act b) x) = comp1 (A.act b) (comp1 (A.act a) x) := by
   rw [← mul_act A a b hx, ← mul_act A b a hx, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_succ, add_act A _ _ hx, A.one_act, germ_comp1_zero_point_left _ hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem succ_act (k : ℕ) (hx : Z x) :
     comp1 (A.act ((k + 1 : ℕ) : O)) x = G.add (comp1 (A.act (k : O)) x) x := by
@@ -269,20 +269,20 @@ theorem succ_act (k : ℕ) (hx : Z x) :
 end Law
 
 /- English proof (translation)
-The claim follows from `LogPf.pderiv_pt v j i`.
+A detailed English derivation is pending.
 -/
 theorem dpt (v : Fin n × Fin d) (j : Fin n) (i : Fin d) :
     pderiv R v (pt R (n := n) d j i) = if (j, i) = v then 1 else 0 := LogPf.pderiv_pt v j i
 
 /- English proof (translation)
-Rewrite using `[LogPf.pderiv_ev (show ZZ ![x] by zz), Fintype.sum_prod_type, Fin.sum_univ_one]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d1 {x : Pt R n d} (hx : Z x) (f : PS R 1 d) (v : Fin n × Fin d) :
     pderiv R v (ev ![x] f) = ∑ c, ev ![x] (pderiv R ((0 : Fin 1), c) f) * pderiv R v (x c) := by
   rw [LogPf.pderiv_ev (show ZZ ![x] by zz), Fintype.sum_prod_type, Fin.sum_univ_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[LogPf.pderiv_ev (show ZZ ![x, y] by zz), Fintype.sum_prod_type, Fin.sum_univ_two]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d2 {x y : Pt R n d} (hx : Z x) (hy : Z y) (f : PS R 2 d) (v : Fin n × Fin d) :
     pderiv R v (ev ![x, y] f) = ∑ c, ev ![x, y] (pderiv R ((0 : Fin 2), c) f) * pderiv R v (x c) +
@@ -290,7 +290,7 @@ theorem d2 {x y : Pt R n d} (hx : Z x) (hy : Z y) (f : PS R 2 d) (v : Fin n × F
   rw [LogPf.pderiv_ev (show ZZ ![x, y] by zz), Fintype.sum_prod_type, Fin.sum_univ_two]; rfl
 
 /- English proof (translation)
-Rewrite using `[LogPf.pderiv_ev (show ZZ ![x, y, z] by zz), Fintype.sum_prod_type, Fin.sum_univ_three]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d3 {x y z : Pt R n d} (hx : Z x) (hy : Z y) (hz : Z z) (f : PS R 3 d) (v : Fin n × Fin d) :
     pderiv R v (ev ![x, y, z] f) = ∑ c, ev ![x, y, z] (pderiv R ((0 : Fin 3), c) f) * pderiv R v (x c) +
@@ -299,14 +299,14 @@ theorem d3 {x y z : Pt R n d} (hx : Z x) (hy : Z y) (hz : Z z) (f : PS R 3 d) (v
   rw [LogPf.pderiv_ev (show ZZ ![x, y, z] by zz), Fintype.sum_prod_type, Fin.sum_univ_three]; rfl
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dmul (v : Fin n × Fin d) (f g : PS R n d) :
     pderiv R v (f * g) = pderiv R v f * g + f * pderiv R v g := by
   rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul]; ring
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_pderiv (f : PS R n d) (v : Fin n × Fin d) :
     constantCoeff (pderiv R v f) = coeff (Finsupp.single v 1) f := by
@@ -314,7 +314,7 @@ theorem cc_pderiv (f : PS R n d) (v : Fin n × Fin d) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← cc_pderiv, d1 hφ, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ccev (by zz), cc_pderiv, cc_pderiv, lin]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_lin_ev {φ : Pt R 1 d} (hφ : Z φ) (f : PS R 1 d) (j : Fin d) :
     coeff (Finsupp.single ((0 : Fin 1), j) 1) (ev ![φ] f) =
@@ -324,18 +324,18 @@ theorem coeff_lin_ev {φ : Pt R 1 d} (hφ : Z φ) (f : PS R 1 d) (j : Fin d) :
   rw [map_mul, ccev (by zz), cc_pderiv, cc_pderiv, lin]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `coeff_lin_ev hψ (φ i) j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem lin_comp1 (φ : Pt R 1 d) {ψ : Pt R 1 d} (hψ : Z ψ) : lin (comp1 φ ψ) 1 = lin φ 1 * lin ψ 1 := by
   ext i j
   exact coeff_lin_ev hψ (φ i) j
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h0 : ∀ c, constantCoeff (pderiv R ((0 : Fin 2), c) (G.F i)) = if i = c then 1 else 0` using `fun c => by`. Use `congrArg constantCoeff (LogPf.ez_dx G i c)` as an intermediate fact. Rewrite `this` using `[ccev (by zz)]`. Apply the tactic sequence `rw [this]; split_ifs <;> simp`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : ∀ c, constantCoeff (pderiv R ((1 : Fin 2), c) (G.F i)) = if i = c then 1 else 0` using `fun c => by`. Use `LogPf.cc_jac G i c` as an intermediate fact. Rewrite `this` using `[LogPf.Jac, ccev (by zz)]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `coeff _ (ev ![φ, ψ] (G.F i)) = _`. Rewrite using `[← cc_pderiv, d2 hφ hψ, map_add, map_sum, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, ccev (show ZZ ![φ, ψ] by zz), h0, h1]`. Simplify using `[cc_pderiv, lin]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lin_add (G : FGLaw R d) {φ ψ : Pt R 1 d} (hφ : Z φ) (hψ : Z ψ) :
     lin (G.add φ ψ) 1 = lin φ 1 + lin ψ 1 := by
@@ -357,7 +357,7 @@ section Act
 variable {G : FGLaw R d} {O : Type} [CommRing O] (A : OAct O G)
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ => lin φ 1) (A.add_act 0 0)`. Simplify using `only [add_zero, lin_add G (Z_act A 0) (Z_act A 0)] at h`. Simplify using `using h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lin_act_zero : lin (A.act 0) 1 = 0 := by
   have h := congrArg (fun φ => lin φ 1) (A.add_act 0 0)
@@ -365,7 +365,7 @@ theorem lin_act_zero : lin (A.act 0) 1 = 0 := by
   simpa using h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using lin_act_zero A`. Consider the case `succ k ih => rw [Nat.cast_succ, A.add_act, lin_add G (by zz) (by zz), ih, A.one_act, lin_pt_eq_one, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lin_act_nat (k : ℕ) : lin (A.act (k : O)) 1 = k • (1 : Matrix (Fin d) (Fin d) R) := by
   induction k with
@@ -373,17 +373,15 @@ theorem lin_act_nat (k : ℕ) : lin (A.act (k : O)) 1 = k • (1 : Matrix (Fin d
   | succ k ih => rw [Nat.cast_succ, A.add_act, lin_add G (by zz) (by zz), ih, A.one_act, lin_pt_eq_one, succ_nsmul]
 
 /- English proof (translation)
-Establish `h2 : ∀ i, (2 : ℕ) ≤ (A.act 0 i).order` using `fun i => nat_le_order fun e he => by`. Establish `: e.degree = 0 ∨ e.degree = 1` using `by omega`. Break down `this with h | h` into its components or cases. Rewrite `h` using `[Finsupp.degree_eq_zero_iff]`. Rewrite using `[h, coeff_zero_eq_constantCoeff_apply, A.const]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨⟨s, c⟩, rfl⟩ : ∃ s, e = Finsupp.single s 1 := by`. Use `(Finsupp.sum_eq_one_iff e).1 (by exact h)` as an intermediate fact. Conclude with `this`. Take `rfl : s = 0` from `Subsingleton.elim _ _`. Conclude with `congrFun (congrFun (lin_act_zero A) i) c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `h : A.act 0 i = ev ![A.act 0] (A.act 0 i)`. Use `A.mul_act 0 0` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Conclude with `congrFun this i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `le_order_subst (LogPf.CZ.hasSubst (show ZZ ![A.act 0] by zz)) (A.act 0 i)`. Express the relevant statement in the definitionally equal form `_ ≤ (ev ![A.act 0] (A.act 0 i)).order at h3`. Rewrite `h3` using `[← h]`. Establish `h4 : ((2 : ℕ) : ℕ∞) ≤ ⨅ s : Fin 1 × Fin d, ((![A.act 0] : Fin 1 → Pt R 1 d) s.1 s.2).order` using `le_iInf fun ⟨s, c⟩ => by fin_cases s; exact h2 c`. Establish `h5` using `(mul_le_mul_left h4 _).trans h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h6` using `h2 i`. Rewrite using `[Pi.zero_apply, ← order_eq_top_iff]`. Assume the negation of the conclusion as `hne`. Take `⟨N, hN⟩` from `ENat.ne_top_iff_exists.1 hne`. Rewrite `h5`, `h6` using `[← hN]`.
-
-Normalize the coercions in `at h5 h6`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem act_zero : A.act 0 = 0 := by
   have h2 : ∀ i, (2 : ℕ) ≤ (A.act 0 i).order := fun i => nat_le_order fun e he => by
@@ -416,7 +414,7 @@ theorem act_zero : A.act 0 = 0 := by
   omega
 
 /- English proof (translation)
-Rewrite using `[act_zero]; exact ep_zero (b := ![x]) (by zz)`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_act {x : Pt R n d} (hx : Z x) : comp1 (A.act 0) x = 0 := by
   rw [act_zero]; exact ep_zero (b := ![x]) (by zz)

@@ -19,7 +19,7 @@ namespace PositivityTheory.Rg.BcB.F.Rig
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨hd, hc⟩` from `h`. Take `⟨hd', hc'⟩` from `h'`. Take `rfl : N = N'` from `hd.symm.trans hd'`. Conclude with `GlobalTheory.LocGL.IrrGL.of_eq_of.2 (GlobalTheory.LocGL.IsCosocle.unique hc' hc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem of_eq_of_isSpeh {w : HeightOneSpectrum (𝓞 E)} {N N' : ℕ} (σ : SmIrr (GL (Fin N) (w.adicCompletion E)))
     (σ' : SmIrr (GL (Fin N') (w.adicCompletion E))) (x : GlobalTheory.LocGL.IrrGL (w.adicCompletion E)) (d : ℕ)
@@ -31,7 +31,7 @@ theorem of_eq_of_isSpeh {w : HeightOneSpectrum (𝓞 E)} {N N' : ℕ} (σ : SmIr
   exact GlobalTheory.LocGL.IrrGL.of_eq_of.2 (GlobalTheory.LocGL.IsCosocle.unique hc' hc)
 
 /- English proof (translation)
-Take `⟨rfl, he⟩` from `Sigma.mk.inj_iff.mp e`. Conclude with `h P (Quotient.exact (eq_of_heq he))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ascEmb_of_sigma {N a a' d : ℕ} {V : Submodule ℂ (Sm E N)} (P : CuspSub E a) (P' : CuspSub E a')
     (h : ∀ P'' : CuspSub E a', P'.Iso P'' → AscEmb V P'' d)
@@ -40,17 +40,15 @@ theorem ascEmb_of_sigma {N a a' d : ℕ} {V : Submodule ℂ (Sm E N)} (P : CuspS
   exact h P (Quotient.exact (eq_of_heq he))
 
 /- English proof (translation)
-Introduce `hJS hSS hStr E _ _ _ n D D' hr hr' hsat`. Use `choose a d P ha hd hPu hPn hPs using hStr E n D hr`. Use `choose a' d' P' ha' hd' hPu' hPn' hPs' using hStr E n D' hr'`. Establish `he : ∀ i, AscEmb (D.V i) (P i) (d i)` using `fun i => hPs i (P i) (Setoid.refl (α := CuspSub E (a i)) (P i))`. Establish `he' : ∀ j, AscEmb (D'.V j) (P' j) (d' j)` using `fun j => hPs' j (P' j) (Setoid.refl (α := CuspSub E (a' j)) (P' j))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E`. Establish `h1` using `Filter.eventually_all.2 fun i => hSS E (D.N i) (a i) (d i) (D.V i) (P i) (D.σ i) (D.pos i) (D.discrete i) (hPu i) (hPn i) (he i) (D.loc i) (fun k => GlobalTheory.HeckeGal.Model.absPow E (spehExp (d i) k)) (fun k => hν _)`. Establish `h2` using `Filter.eventually_all.2 fun j => hSS E (D'.N j) (a' j) (d' j) (D'.V j) (P' j) (D'.σ j) (D'.pos j) (D'.discrete j) (hPu' j) (hPn' j) (he' j) (D'.loc j) (fun k => GlobalTheory.HeckeGal.Model.absPow E (spehExp (d' j) k)) (fun k => hν _)`. Take `⟨s, hs⟩` from `GlobalTheory.Published.JacquetShalikaRigidity.unitary hJS (ι := Σ i, Fin (d i)) (κ := Σ j, Fin (d' j)) (fun x => CG.mk (P x.1)) (fun y => CG.mk (P' y.1)) (fun x => ha x.1) (fun y => ha' y.1) (fun x => (CG.isUnitary_mk _).2 (hPu x.1)) (fun y => (CG.isUnitary_mk _).2 (hPu' y.1)) _ …`. Take `⟨B, ⟨b, hb, hbB⟩, ⟨b', hb', hbB'⟩⟩` from `hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose c hc hsph hcs using hw`. Use `choose c' hc' hsph' hcs' using hw'`. Use `⟨fun x => c x.1 x.2, fun y => c' y.1 y.2, fun x => hc x.1 x.2, fun y => hc' y.1 y.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma, Fintype.sum_sigma]`. Establish `e1 : ∀ i, ∑ k, c i k = b i` using `fun i => (hcs i).unique (hb i).2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e2 : ∀ j, ∑ k, c' j k = b' j` using `fun j => (hcs' j).unique (hb' j).2`. Simplify using `only [e1, e2]`. Conclude with `hbB.trans hbB'.symm)`. Establish `hstr` using `GlobalTheory.Rigid.strings_eq_of_equiv (fun i => (⟨a i, CG.mk (P i)⟩ : Σ b, CG E b)) d (fun j => (⟨a' j, CG.mk (P' j)⟩ : Σ b, CG E b)) d' s fun x => ⟨(hs x).1, (hs x).2⟩`. Take `⟨s0, hs0⟩` from `GlobalTheory.T.multiset_of_strings_determines_points_degrees _ d _ d' hd hd' hstr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨s0, fun i w => ?_⟩` and prove the remaining obligations. Establish `hA : AscEmb (D'.V (s0 i)) (P i) (d i)`. Rewrite using `[(hs0 i).2]`. Conclude with `ascEmb_of_sigma (P i) (P' (s0 i)) (hPs' (s0 i)) (hs0 i).1.symm`. Take `⟨σ0, hσ0, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp CuspFormAutomorphicBounds.automorphicFormsFiniteGL E (a i) (P i) w`.
-
-Establish `k1` using `ascSeed_holds2.2 E (D.N i) (a i) (d i) (D.V i) (P i) (D.pos i) (D.discrete i) (hPu i) (hPn i) (he i) w σ0 (D.σ i w) hσ0 (D.loc i w)`. Establish `k2` using `ascSeed_holds2.2 E (D'.N (s0 i)) (a i) (d i) (D'.V (s0 i)) (P i) (D'.pos _) (D'.discrete _) (hPu i) (hPn i) hA w σ0 (D'.σ (s0 i) w) hσ0 (D'.loc _ w)`. Conclude with `of_eq_of_isSpeh _ _ _ _ k1 k2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rLoc : RLoc := by
   intro hJS hSS hStr E _ _ _ n D D' hr hr' hsat

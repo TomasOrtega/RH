@@ -15,7 +15,7 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.FourierDeca
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.B.gN`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (y i j)), Complex.sq_norm]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem entry_le_gN (y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j : Fin (2 * r + k + 1)) :
     ‖y i j‖ ≤ Formalism.FourierDecayAlt.B.gN y := by
@@ -33,14 +33,14 @@ def AT (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (T : ℝ) :
   {y | Matrix.of y ∈ RStab k r γ ∧ Formalism.FourierDecayAlt.B.gN (Matrix.of y) ≤ T}
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (k := k) (r := r) (uh_isUnit hγ)).closed`.
+A detailed English derivation is pending.
 -/
 theorem rstab_closed {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hγ : γ ∈ UH (Hpk k r)) :
     IsClosed {y : Mt k r | Matrix.of y ∈ RStab k r γ} :=
   (Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (k := k) (r := r) (uh_isUnit hγ)).closed
 
 /- English proof (translation)
-Establish `hc : IsClosed (AT (k` using `k) (r := r) γ T) := (rstab_closed hγ).inter (isClosed_le Formalism.FourierDecayAlt.P.s3dx1S_gNc continuous_const)`. Use `Metric.isCompact_of_isClosed_isBounded hc ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : Mt k r)) (r := max T 0)).subset fun y hy => ?_` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun i => (pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun j => le_trans (entry_le_gN (Matrix.of y) i j) (le_trans hy.2 (le_max_left _ _))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem at_compact {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hγ : γ ∈ UH (Hpk k r)) (T : ℝ) :
     IsCompact (AT (k := k) (r := r) γ T) := by
@@ -53,7 +53,7 @@ theorem at_compact {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     fun j => le_trans (entry_le_gN (Matrix.of y) i j) (le_trans hy.2 (le_max_left _ _))
 
 /- English proof (translation)
-The claim follows from `(at_compact hγ T).isClosed.measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem at_mset {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hγ : γ ∈ UH (Hpk k r)) (T : ℝ) :
     MeasurableSet (AT (k := k) (r := r) γ T) := (at_compact hγ T).isClosed.measurableSet
@@ -63,11 +63,11 @@ def ET (z z' : Fin (2 * r + k + 1) → ℂ) (γ : Matrix (Fin (2 * r + k + 1)) (
   {m | ∃ y ∈ AT (k := k) (r := r) γ T, Hpk k r * (Matrix.of y)ᴴ * Hpk k r * Matrix.of m ∈ SgS k r z z' γ}
 
 /- English proof (translation)
-Establish `: CompactSpace K` using `isCompact_iff_compactSpace.mp hK`. Establish `hc : Continuous (fun p : K × Y => Φ ((p.1 : X), p.2))` using `hΦ.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`. Establish `hC : IsClosed {p : K × Y | Φ ((p.1 : X), p.2) ∈ S}` using `hS.preimage hc`. Establish `himg : {m : Y | ∃ y ∈ K, Φ (y, m) ∈ S} = Prod.snd '' {p : K × Y | Φ ((p.1 : X), p.2) ∈ S}`. Use extensionality with `m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hm⟩`. Conclude with `⟨(⟨y, hy⟩, m), hm, rfl⟩`. Introduce and unpack `⟨⟨⟨y, hy⟩, m'⟩, hm, rfl⟩`. Conclude with `⟨y, hy, hm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[himg]`. Conclude with `isClosedMap_snd_of_compactSpace _ hC`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closed_exists_of_compact {X Y Z : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     [TopologicalSpace Z] {K : Set X} (hK : IsCompact K) (Φ : X × Y → Z) (hΦ : Continuous Φ) {S : Set Z}
@@ -84,7 +84,7 @@ theorem closed_exists_of_compact {X Y Z : Type*} [TopologicalSpace X] [Topologic
   exact isClosedMap_snd_of_compactSpace _ hC
 
 /- English proof (translation)
-Establish `hcont : Continuous (fun p : Mt k r × Mt k r => Hpk k r * (Matrix.of p.1)ᴴ * Hpk k r * Matrix.of p.2)` using `((continuous_const.matrix_mul (PI.WUN.continuous_of.comp continuous_fst).matrix_conjTranspose).matrix_mul continuous_const).matrix_mul (PI.WUN.continuous_of.comp continuous_snd)`. Conclude with `closed_exists_of_compact (at_compact hγ T) _ hcont (sgS_closed z z' hz γ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem et_closed (z z' : Fin (2 * r + k + 1) → ℂ) (hz : StdZ k r z)
     {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hγ : γ ∈ UH (Hpk k r)) (T : ℝ) :
@@ -96,7 +96,7 @@ theorem et_closed (z z' : Fin (2 * r + k + 1) → ℂ) (hz : StdZ k r z)
   exact closed_exists_of_compact (at_compact hγ T) _ hcont (sgS_closed z z' hz γ)
 
 /- English proof (translation)
-Establish `h1 : Hpk k r * ρᴴ * Hpk k r * ρ = 1`. Establish `: ρᴴ * Hpk k r * ρ = Hpk k r` using `hρ`. Rewrite using `[Matrix.mul_assoc (Hpk k r * ρᴴ), Matrix.mul_assoc, ← Matrix.mul_assoc ρᴴ, this, WeylGroupFacts.hpk_sq]`. Conclude with `(Matrix.inv_eq_left_inv h1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uh_inv_eq {ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hρ : ρ ∈ UH (Hpk k r)) :
     Hpk k r * ρᴴ * Hpk k r = ρ⁻¹ := by

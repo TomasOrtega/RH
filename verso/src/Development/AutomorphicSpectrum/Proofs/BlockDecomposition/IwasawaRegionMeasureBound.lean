@@ -11,18 +11,18 @@ namespace GlobalTheory.CompanionTheory.IwasawaShell
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `h : 1 < residueCard F` using `one_lt_residueCard`. Conclude with `(by omega : 0 < residueCard F)` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem q_pos : (0 : ℝ) < residueCard F := by
   have h : 1 < residueCard F := one_lt_residueCard
   exact_mod_cast (by omega : 0 < residueCard F)
 
 /- English proof (translation)
-Establish `hq : (residueCard F : ℝ) ≠ 0` using `q_pos.ne'`. Establish `hu : (modulus ((unifUnit F : Fˣ) : F) : ℝ) = (residueCard F : ℝ)⁻¹`. Rewrite using `[modulus, if_neg (unifUnit F).ne_zero, ord_unifUnit]`. Simplify using the standard rewrite rules. Establish `hui : (modulus (((unifUnit F)⁻¹ : Fˣ) : F) : ℝ) = (residueCard F : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Units.val_inv_eq_inv_val, modulus_inv]`. Use `push_cast`. Rewrite using `[hu, inv_inv]`. Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => simp [modulus_one]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih`. Rewrite using `[_root_.zpow_add_one, Units.val_mul, modulus_mul, NNReal.coe_mul, ih, hu, neg_add, zpow_add₀ hq, _root_.zpow_neg_one]`. Consider the case `pred i ih`. Rewrite using `[_root_.zpow_sub_one, Units.val_mul, modulus_mul, NNReal.coe_mul, ih, hui, neg_sub, sub_eq_add_neg, add_comm (1 : ℤ), zpow_add₀ hq, zpow_one]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_unif_zpow (k : ℤ) :
     (modulus (((unifUnit F) ^ k : Fˣ) : F) : ℝ) = (residueCard F : ℝ) ^ (-k) := by
@@ -42,7 +42,7 @@ theorem modulus_unif_zpow (k : ℤ) :
     rw [_root_.zpow_sub_one, Units.val_mul, modulus_mul, NNReal.coe_mul, ih, hui, neg_sub, sub_eq_add_neg, add_comm (1 : ℤ), zpow_add₀ hq, zpow_one]
 
 /- English proof (translation)
-Establish `hq : (residueCard F : ℝ) ≠ 0` using `q_pos.ne'`. Rewrite using `[← modulus_le_one_iff, ← NNReal.coe_le_coe, modulus_mul, NNReal.coe_mul, NNReal.coe_one, modulus_unif_zpow]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem mem_integer_of_modulus_le (k : ℤ) {x : F}
     (hx : (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ k) :
@@ -56,7 +56,7 @@ theorem mem_integer_of_modulus_le (k : ℤ) {x : F}
     _ = 1 := by rw [← zpow_add₀ hq]; simp
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ad3.uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem uni2_mul_uni2_eq_uni2_add (x y : F) : Ad3.uni2 x * Ad3.uni2 y = Ad3.uni2 (x + y) := by
   apply Units.ext
@@ -65,9 +65,9 @@ theorem uni2_mul_uni2_eq_uni2_add (x y : F) : Ad3.uni2 x * Ad3.uni2 y = Ad3.uni2
     simp [Ad3.uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
 /- English proof (translation)
-Rewrite using `[GLnLocal.mem_integralGL_iff]`. Establish `h0 : (0 : F) ∈ 𝒪[F]` using `zero_mem _`. Establish `h1 : (1 : F) ∈ 𝒪[F]` using `one_mem _`. Establish `hn : -y ∈ 𝒪[F]` using `neg_mem hy`. Establish `hv : ((Ad3.uni2 y : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![1, y; 0, 1]` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : (((Ad3.uni2 y)⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![1, -y; 0, 1]` using `rfl`. Rewrite using `[hv, hi]`. Apply the tactic sequence `constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;> simpa using by assumption`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unipotent_integral_mem_compact {y : F} (hy : y ∈ 𝒪[F]) : Ad3.uni2 y ∈ GLnLocal.integralGL F 2 := by
   rw [GLnLocal.mem_integralGL_iff]
@@ -80,7 +80,7 @@ theorem unipotent_integral_mem_compact {y : F} (hy : y ∈ 𝒪[F]) : Ad3.uni2 y
   constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;> simpa using by assumption
 
 /- English proof (translation)
-Establish `hα : (α : F) ≠ 0` using `α.ne_zero`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ad3.uni2, Ad3.dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -100,7 +100,7 @@ def Q (j : ℤ) : Set (GL (Fin 2) F) :=
     ∃ κ ∈ GLnLocal.integralGL F 2, g = Ad3.uni2 y * κ}
 
 /- English proof (translation)
-Introduce and unpack `g ⟨y, hy, κ, hκ, rfl⟩`. Establish `hy' : y ∈ 𝒪[F]`. Rewrite using `[← modulus_le_one_iff, ← NNReal.coe_le_coe]`. Simplify using `using hy`. Conclude with `mul_mem (unipotent_integral_mem_compact hy') hκ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Q_zero_subset : Q F 0 ⊆ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) := by
   rintro g ⟨y, hy, κ, hκ, rfl⟩
@@ -110,15 +110,15 @@ theorem Q_zero_subset : Q F 0 ⊆ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))
   exact mul_mem (unipotent_integral_mem_compact hy') hκ
 
 /- English proof (translation)
-Establish `hq : (residueCard F : ℝ) ≠ 0` using `q_pos.ne'`. Introduce and unpack `g ⟨y, hy, κ, hκ, rfl⟩`. Use `set k : ℤ := ((j + 1 : ℕ) : ℤ) with hk`. Establish `hX` using `mem_integer_of_modulus_le k hy`. Use `set X : F := (((unifUnit F) ^ k : Fˣ) : F) * y with hXdef`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, ⟨hb, hb2⟩, -⟩` from `h.2.2 X hX`. Establish `hϖ : modulus (ϖ : F) = (residueCard F : NNReal)⁻¹`. Rewrite using `[modulus, if_neg ϖ.ne_zero, h.1]`. Simplify using the standard rewrite rules. Establish `h1` using `modulus_le_one_iff.mpr hb2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[modulus_mul, Units.val_inv_eq_inv_val, modulus_inv, hϖ, inv_inv]`. Establish `h2 : (residueCard F : ℝ) * (modulus (X - b) : ℝ) ≤ 1` using `by exact_mod_cast h1`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage]`. Use `⟨b, hb, y - (((unifUnit F) ^ (-k) : Fˣ) : F) * b, ?_, κ, hκ, ?_⟩` and prove the remaining obligations. Establish `e : y - (((unifUnit F) ^ (-k) : Fˣ) : F) * b = (((unifUnit F) ^ (-k) : Fˣ) : F) * (X - b)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_sub, hXdef, ← mul_assoc, ← Units.val_mul, ← _root_.zpow_add]`. Simplify using the standard rewrite rules. Rewrite using `[e, modulus_mul, NNReal.coe_mul, modulus_unif_zpow, neg_neg, hk]`. Use `push_cast`. Rewrite using `[zpow_add₀ hq, zpow_one, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hp : (0 : ℝ) ≤ (residueCard F : ℝ) ^ (j : ℤ)` using `zpow_nonneg q_pos.le _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, uni2_mul_uni2_eq_uni2_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Q_succ_subset {ϖ : Fˣ} {B : Finset F} (h : Ad3.R.Reps ϖ B) (j : ℕ) :
     Q F ((j + 1 : ℕ) : ℤ) ⊆ ⋃ b ∈ B,
@@ -152,9 +152,9 @@ theorem Q_succ_subset {ϖ : Fˣ} {B : Finset F} (h : Ad3.R.Reps ϖ B) (j : ℕ) 
     ring
 
 /- English proof (translation)
-Take `⟨ϖ, B, hB⟩` from `GlobalTheory.CompanionTheory.RankinStepC.reps_exists (F := F)`. Proceed by induction on `j with`. Consider the case `zero`. Simplify using `using measure_mono (μ := μ) Q_zero_subset`. Consider the case `succ j ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [measure_preimage_mul, Finset.sum_const, nsmul_eq_mul, GlobalTheory.CompanionTheory.RankinStepC.reps_card hB]`. Use `_ ≤ (residueCard F : ℝ≥0∞) * ((residueCard F : ℝ≥0∞) ^ j * μ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))) := by gcongr`. Use `_ = (residueCard F : ℝ≥0∞) ^ (j + 1) * μ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) := by`. Rewrite using `[pow_succ', mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_Q_le (μ : Measure (GL (Fin 2) F)) [μ.IsMulLeftInvariant] (j : ℕ) :
     μ (Q F j) ≤ (residueCard F : ℝ≥0∞) ^ j * μ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) := by
@@ -180,9 +180,9 @@ theorem measure_Q_le (μ : Measure (GL (Fin 2) F)) [μ.IsMulLeftInvariant] (j : 
           rw [pow_succ', mul_assoc]
 
 /- English proof (translation)
-Establish `hq : (residueCard F : ℝ) ≠ 0` using `q_pos.ne'`. Introduce and unpack `g ⟨x, hx, κ, hκ, rfl⟩`. Use `⟨(((unifUnit F ^ m : Fˣ) : F))⁻¹ * ((unifUnit F ^ n : Fˣ) : F) * x, ?_, κ, hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[modulus_mul, modulus_mul, modulus_inv, NNReal.coe_mul, NNReal.coe_mul, NNReal.coe_inv, modulus_unif_zpow, modulus_unif_zpow, ← _root_.zpow_neg, neg_neg, ← zpow_add₀ hq]`. Establish `e : L - n = (m + -n) + (L - m)` using `by ring`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, zpow_add₀ hq (m + -n)]`. Conclude with `mul_le_mul_of_nonneg_left hx (zpow_nonneg q_pos.le _)`. Rewrite using `[unipotent_mul_torus_commute]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shell_subset (m n L : ℤ) :
     {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m) ∧
@@ -200,13 +200,13 @@ theorem shell_subset (m n L : ℤ) :
     simp [mul_assoc]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ μ _ m n L`. Prove the components needed by the constructor for the conclusion. Establish `e : {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m) ∧ ∃ κ ∈ GLnLocal.integralGL F 2, g = Ad3.uni2 x * Ad3.dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ} = ⋃ x : {x : F // (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m)}, (Homeomorph.mulLeft (Ad3.uni2 x.1 …`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_image, Homeomorph.coe_mulLeft, Subtype.exists, SetLike.mem_coe, exists_prop]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, κ, hκ, rfl⟩`. Conclude with `⟨x, hx, κ, hκ, rfl⟩`. Introduce and unpack `⟨x, hx, κ, hκ, rfl⟩`. Conclude with `⟨x, hx, κ, hκ, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[e]`. Conclude with `isOpen_iUnion fun x => (Homeomorph.mulLeft _).isOpenMap _ (GLnLocal.isOpen_integralGL F 2)`. Introduce `hnL`. Take `⟨j, hj⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.2 hnL)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj, zpow_natCast, ENNReal.ofReal_pow (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem shell_open_volume : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (μ : Measure (GL (Fin 2) F)) [μ.IsMulLeftInvariant] (m n L : ℤ), IsOpen {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m) ∧ ∃ κ ∈ GLnLocal.integralGL F 2, g = Ad3.uni2 x * Ad3.dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ} ∧ (n ≤ L → μ {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m) ∧ ∃ κ ∈ GLnLocal.integralGL F 2, g = Ad3.uni2 x * Ad3.dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ} ≤ ENNReal.ofReal ((residueCard F : ℝ) ^ (L - n)) * μ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))) := by
   intro F _ _ _ _ μ _ m n L

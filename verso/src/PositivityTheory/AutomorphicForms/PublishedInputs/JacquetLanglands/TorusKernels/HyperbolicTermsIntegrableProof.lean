@@ -10,7 +10,7 @@ namespace UpperTheory.Esk.HyperbolicIntegrabilityLemmas
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Establish `e : TR.pInf F (algebraMap F (Ad F) x) v = (v.embedding x).re`. Rewrite using `[← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v) (algebraMap F (InfiniteAdeleRing F) x v) = _`. Simplify using the standard rewrite rules. Rewrite using `[e, ← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pInf_alg (v : InfinitePlace F) (x : F) :
     TR.pInf F (algebraMap F (Ad F) x) v = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x := by
@@ -22,7 +22,7 @@ theorem pInf_alg (v : InfinitePlace F) (x : F) :
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Rewrite using `[zc, finGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fin_zc (u : (Af F)ˣ) : finGL F 2 (zc F u) = Matrix.GeneralLinearGroup.scalar (Fin 2) (finId F u) := by
   rw [zc, finGL, GlobalTheory.CuspRep.cornerGL_scalar]
@@ -31,13 +31,13 @@ theorem fin_zc (u : (Af F)ˣ) : finGL F 2 (zc F u) = Matrix.GeneralLinearGroup.s
 def rr (γ : GL (Fin 2) F) : GL (Fin 2) (TR.Rinf F) := Matrix.GeneralLinearGroup.map ((TR.pInf F).comp (algebraMap F (Ad F))) γ
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun i j => pInf_alg v (γ i j))`.
+A detailed English derivation is pending.
 -/
 theorem gv_rr (c : Pl F → ℕ) (χ : Hc c →* ℂˣ) (γ : GL (Fin 2) F) (v : InfinitePlace F) : gv v (rr γ) = (mkDat c χ).r v γ :=
   Units.ext (Matrix.ext fun i j => pInf_alg v (γ i j))
 
 /- English proof (translation)
-Rewrite using `[← TR.infGL_mul_finGL (ratGL F 2 γ)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rat_eq (γ : GL (Fin 2) F) : ratGL F 2 γ = TR.infGL F 2 (rr γ) * finGL F 2 (jF F γ) := by
   rw [← TR.infGL_mul_finGL (ratGL F 2 γ)]
@@ -45,16 +45,16 @@ theorem rat_eq (γ : GL (Fin 2) F) : ratGL F 2 γ = TR.infGL F 2 (rr γ) * finGL
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.scalar_commute (s : Ad F) (fun _ => Commute.all _ _) a.val).eq`.
+A detailed English derivation is pending.
 -/
 theorem sc_comm (s : Ideles F) (a : GA F 2) :
     Matrix.GeneralLinearGroup.scalar (Fin 2) s * a = a * Matrix.GeneralLinearGroup.scalar (Fin 2) s :=
   Units.ext (Matrix.scalar_commute (s : Ad F) (fun _ => Commute.all _ _) a.val).eq
 
 /- English proof (translation)
-Establish `e1 : (mkDat c χ).act γ (fun v => gv v g • iP) = fun v => gv v (rr γ * g) • iP` using `funext fun v => by`. Express the relevant statement in the definitionally equal form `(mkDat c χ).r v γ • gv v g • iP = _`. Rewrite using `[map_mul, mul_smul, gv_rr c χ]`. Establish `e4 : TR.infGL F 2 (rr γ * g) * finGL F 2 (jF F γ * x) = ratGL F 2 γ * (TR.infGL F 2 g * finGL F 2 x)`. Rewrite using `[rat_eq, map_mul, map_mul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (TR.infGL F 2 g), TR.infGL_comm, mul_assoc]`. Establish `e5 : ∀ v, j1 (k v) (gv v (rr γ * g)) iP = j1 (k v) ((mkDat c χ).r v γ) (gv v g • iP) * j1 (k v) (gv v g) iP` using `fun v => by rw [map_mul, hb.1, gv_rr c χ]`. Rewrite using `[e1, ← hf, ← hf, e4, hφ.left, Finset.prod_congr rfl fun v _ => e5 v, Finset.prod_mul_distrib]`. Express the relevant statement in the definitionally equal form `_ = (∏ v, j1 (k v) ((mkDat c χ).r v γ) (gv v g • iP)) * _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -76,9 +76,9 @@ theorem aut (hb : B1b) (k : InfinitePlace F → ℕ) (c : Pl F → ℕ) (χ : Hc
   ring
 
 /- English proof (translation)
-Take `⟨⟨κ, hκ, z0, hz⟩, hv⟩` from `hχ h`. Establish `e5 : φ.1 (TR.infGL F 2 g * finGL F 2 x * finGL F 2 κ) = φ.1 (TR.infGL F 2 g * finGL F 2 x)` using `congrArg (fun ψ : TR.Sm F 2 => ψ.1 (TR.infGL F 2 g * finGL F 2 x)) (hfix κ hκ)`. Establish `e6 : TR.infGL F 2 g * finGL F 2 (x * (h : GF F)) = Matrix.GeneralLinearGroup.scalar (Fin 2) (finId F z0) * (TR.infGL F 2 g * finGL F 2 x * finGL F 2 κ)`. Rewrite using `[hz, map_mul, map_mul, fin_zc, sc_comm]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hf, ← hf, hv κ hκ z0 hz, e6, hcent, e5, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lev (k : InfinitePlace F → ℕ) (c : Pl F → ℕ) (ω : HChar F) (χ : Hc c →* ℂˣ) (hχ : IsChi c ω χ) (φ : TR.Sm F 2)
     (hcent : ∀ (z : Ideles F) (g : GA F 2), φ.1 (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) = ((ω.1 z : ℂˣ) : ℂ) * φ.1 g)
@@ -95,9 +95,9 @@ theorem lev (k : InfinitePlace F → ℕ) (c : Pl F → ℕ) (ω : HChar F) (χ 
   rw [← hf, ← hf, hv κ hκ z0 hz, e6, hcent, e5, mul_assoc]
 
 /- English proof (translation)
-Establish `e : ∀ v, ‖j1 (k v) (gv v g) iP‖ * |(gv v g • iP).1.im| ^ ((k v : ℝ) / 2) = 1` using `fun v => by`. Rewrite using `[hb.2.2.2.2.1]`. Simplify using `[iP]`. Rewrite using `[← hf g x, norm_mul, nrm, norm_prod, mul_assoc, ← Finset.prod_mul_distrib]`. Simplify using `only [e, Finset.prod_const_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hC _`.
+A detailed English derivation is pending.
 -/
 theorem bdd (hb : B1b) (k : InfinitePlace F → ℕ) (φ : TR.Sm F 2) (C : ℝ) (hC : ∀ g, ‖φ.1 g‖ ≤ C)
     (f : X (InfinitePlace F) × GF F → ℂ) (hf : Rel k f φ.1) (g : GL (Fin 2) (TR.Rinf F)) (x : GF F) :
@@ -113,13 +113,11 @@ end UpperTheory.Esk.HyperbolicIntegrabilityLemmas
 
 open UpperTheory.Esk in
 /- English proof (translation)
-Introduce `hb hc h0 h1a h1b h1c F _ _ _ k c ω χ hω hχ φ hφ hcusp`. Take `⟨f, hf⟩` from `h1a F k c ω φ hω hφ`. Use `⟨f, ⟨h1b F k c ω φ hω hφ f hf, fun γ z x => ?_, fun z x h => ?_, ?_⟩, hf⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `HeckeRelationLemmas.exists_g hc z`. Conclude with `HyperbolicIntegrabilityLemmas.aut hb k c χ φ hφ.aut f hf γ g x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `HeckeRelationLemmas.exists_g hc z`. Distinguish the cases in `h0φ : φ = 0`. Establish `e : ∀ g x, f (fun v => gv v g • iP, x) = 0` using `fun g x => by rw [← hf g x, h0φ]; simp`. Express the relevant statement in the definitionally equal form `f (_, x * (h : GF F)) = ((χ h : ℂˣ) : ℂ) * f (_, x)`. Rewrite using `[e, e, mul_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hfix, -⟩` from `h0 F k c ω φ hφ h0φ`. Conclude with `HyperbolicIntegrabilityLemmas.lev k c ω χ hχ φ hφ.cent hfix f hf g x h`. Take `⟨C, hC⟩` from `h1c F k c ω φ hω hφ hcusp`. Use `⟨C, fun z x => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `HeckeRelationLemmas.exists_g hc z`.
-
-Conclude with `HyperbolicIntegrabilityLemmas.bdd hb k φ C hC f hf g x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.hyperbolic_terms_integrable_proof : UpperTheory.Esk.B1b → UpperTheory.Esk.B1c → UpperTheory.Esk.H0 → UpperTheory.Esk.H1a → UpperTheory.Esk.H1b → UpperTheory.Esk.H1c → UpperTheory.Esk.H1 := by
   intro hb hc h0 h1a h1b h1c F _ _ _ k c ω χ hω hχ φ hφ hcusp

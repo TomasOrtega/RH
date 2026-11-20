@@ -19,9 +19,9 @@ variable {k r : ℕ}
 def secGauge (k r : ℕ) (c : Fin r → ℂ) : ℂ := ∏ a : Fin r, ((‖c a‖ ^ (Mdim k r a - 1) : ℝ) : ℂ)
 
 /- English proof (translation)
-Unfold `secGauge`. Apply `contDiffOn_prod` to reduce the goal to its premises. Introduce `a _ x hx`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Establish `h1 : ContDiffAt ℝ ∞ (fun c : Fin r → ℂ => ‖c a‖) x` using `(contDiffAt_norm ℝ (hx a)).comp x (contDiff_apply ℝ ℂ a).contDiffAt`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(Complex.ofRealCLM.contDiff.contDiffAt).comp x (h1.pow _)`.
+A detailed English derivation is pending.
 -/
 theorem secGauge_smooth : ContDiffOn ℝ ∞ (secGauge k r) (OmX r) := by
   unfold secGauge
@@ -33,7 +33,7 @@ theorem secGauge_smooth : ContDiffOn ℝ ∞ (secGauge k r) (OmX r) := by
   exact (Complex.ofRealCLM.contDiff.contDiffAt).comp x (h1.pow _)
 
 /- English proof (translation)
-Unfold `secGauge`. Use `Finset.prod_ne_zero_iff.mpr (fun a _ => ?_)` and prove the remaining obligations. Conclude with `Complex.ofReal_ne_zero.mpr (pow_ne_zero _ (norm_ne_zero_iff.mpr (hc a)))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem secGauge_ne {c : Fin r → ℂ} (hc : c ∈ OmX r) : secGauge k r c ≠ 0 := by
   unfold secGauge
@@ -41,12 +41,12 @@ theorem secGauge_ne {c : Fin r → ℂ} (hc : c ∈ OmX r) : secGauge k r c ≠ 
   exact Complex.ofReal_ne_zero.mpr (pow_ne_zero _ (norm_ne_zero_iff.mpr (hc a)))
 
 /- English proof (translation)
-The claim follows from `secGauge_smooth.inv (fun c hc => secGauge_ne hc)`.
+A detailed English derivation is pending.
 -/
 theorem secGauge_inv_smooth : ContDiffOn ℝ ∞ (fun c => (secGauge k r c)⁻¹) (OmX r) := secGauge_smooth.inv (fun c hc => secGauge_ne hc)
 
 /- English proof (translation)
-Unfold `resG secGauge`. Use `congr 1`. Rewrite using `[Complex.ofReal_prod]`. Use `Finset.prod_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[if_pos (show (a : ℕ) < (Fin.last r : ℕ) from a.isLt)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem resG_last_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (J : Mx k r → E) (c : Fin r → ℂ)
     (g : Mx k r) : resG k r (Fin.last r) J c g = secGauge k r c • J (wCell k r (Fin.last r) c * g) := by
@@ -60,19 +60,17 @@ end Gauge
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ _ Ψ _`. Establish `hz : inWb P.k P.r z` using `hD.1.2.1`. Establish `hz' : inWb P.k P.r z'` using `hD.1.2.2.1`. Take `⟨h0, hs, he⟩` from `Ψ.2`. Set `Φf : Fn P.k P.r (Wq →L[ℂ] Wp)` to `fun c g => (secGauge P.k P.r c)⁻¹ • (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hmem : Φf ∈ RadSp P.k P.r z z' π π'`. Use `⟨fun x hx => ?_, fun x₀ hx₀ => ?_, fun x hx h hh h' hh' => ?_⟩` and prove the remaining obligations. Use `show (secGauge P.k P.r x.1)⁻¹ • (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = 0`. Rewrite using `[h0 x hx, smul_zero]`. Take `⟨U, F, hU, hxU, hF, hΨ⟩` from `hs x₀ hx₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hV : IsOpen {x : (Fin P.r → ℂ) × Mx P.k P.r | x.1 ∈ OmX P.r}` using `(Formalism.FourierDecayAlt.P.Qx3.isOpen_OmX P.r).preimage continuous_fst`. Use `⟨U ∩ {x | x.1 ∈ OmX P.r}, fun x => (secGauge P.k P.r x.1)⁻¹ • F x, hU.inter hV, ⟨hxU, hx₀.1⟩, ?_, fun x hx hxG => ?_⟩` and prove the remaining obligations. Establish `hg : ContDiffOn ℝ ∞ (fun x : (Fin P.r → ℂ) × Mx P.k P.r => (secGauge P.k P.r x.1)⁻¹) (U ∩ {x | x.1 ∈ OmX P.r})` using `secGauge_inv_smooth.comp contDiff_fst.contDiffOn fun x hx => hx.2`. Conclude with `hg.smul (hF.mono Set.inter_subset_left)`. Use `show (secGauge P.k P.r x.1)⁻¹ • (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΨ x hx.1 hxG]`. Use `show (secGauge P.k P.r x.1)⁻¹ • (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 (h * x.2 * h') = (π h).comp (((secGauge P.k P.r x.1)⁻¹ • (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2).comp (π' h'))`. Rewrite using `[he x hx h hh h' hh', ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Take `⟨D₀, hD₀, K, hK, hKv⟩` from `Formalism.FourierDecayAlt.P.CutMP.JA.SA.self_adjoint_descent_holds Wp Wq P.k P.r z z' π π' hz hz' Φf hmem`. Establish `hsub : ∀ g ∈ Q.Glev P.k P.r 0 ∩ Q.OmPlus P.k P.r z z', g ∈ D₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Take `⟨n, hn, n', hn', c, hc, g₁, hg₁, hGG, hgeq⟩` from `Formalism.FourierDecayAlt.P.CutMP.JA.SA.self_adjoint_cover_holds P.k P.r z z' hz hz' g hg`. Establish `hw` using `(hKv c hc g₁ hg₁ hGG).1`. Establish `hwG : Q.wCell P.k P.r (Fin.last P.r) c * g₁ ∈ Q.Glev P.k P.r 0` using `Formalism.FourierDecayAlt.P.Qx3.glev_mul (Formalism.FourierDecayAlt.P.Qx3.wlist_glev hc _) (Formalism.FourierDecayAlt.P.Qx3.glev_mono (Fin.zero_le _) hg₁)`. Rewrite using `[hgeq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hD₀.2 _ ⟨hwG, hw⟩ n ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one _, n, hn, (Matrix.one_mul n).symm⟩ n' ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one _, n', hn', (Matrix.one_mul n').symm⟩`. Establish `hKO : K ∈ Q.FFl P.k P.r z z' π π' 0 (Q.OmPlus P.k P.r z z')`. Take `⟨hs', hL, hRt, hW⟩` from `hK`. Conclude with `⟨fun g₀ hg₀ => hs' g₀ ⟨hg₀.1, hsub g₀ hg₀⟩, fun g hg n hn => hL g ⟨hg.1, hsub g hg⟩ n hn, fun g hg n hn => hRt g ⟨hg.1, hsub g hg⟩ n hn, fun g hg h hh h' hh' => hW g ⟨hg.1, hsub g hg⟩ h hh h' hh'⟩`. Use `⟨K, ?_, fun x hx => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[rdb_ffl_om_eq]`. Conclude with `hKO`. Rewrite using `[resG_last_eq, (hKv x.1 hx.1 x.2 hx.2.1 hx.2.2).2] show _ = secGauge P.k P.r x.1 • ((secGauge P.k P.r x.1)⁻¹ • (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2)`. Rewrite using `[smul_smul, mul_inv_cancel₀ (secGauge_ne hx.1), one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spectral_section_identity : RDSSection := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ _ Ψ _

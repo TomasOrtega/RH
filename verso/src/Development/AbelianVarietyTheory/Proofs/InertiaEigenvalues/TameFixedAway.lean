@@ -14,7 +14,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open GlobalTheory.TameLabels
 
 /- English proof (translation)
-Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charpoly_redF (D : D7) (i : D.nd.Loc) (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i))
     (s : G D.host.E D.nd.Om) :
@@ -26,23 +26,21 @@ theorem charpoly_redF (D : D7) (i : D.nd.Loc) (ρ : G D.host.E D.nd.Om →* GL (
   rfl
 
 /- English proof (translation)
-Introduce `D hW hG hF i π ρ hc ha hfull hρ k hl v`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Use `haveI : Fact (D.nd.l i).Prime := D.nd.lPrime i`. Establish `hw` using `not_mem_of_ne (D := D) (v := v) (D.nd.lPrime i).out hl`. Establish `hine` using `GlobalTheory.T.inertia_charpoly_eq D hG hF i π ρ hc ha hρ _ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ι, hι, hred⟩` from `GlobalTheory.T.exists_reduction_teichmullerEmbedding_at_localisation D i k hl`. Establish `hf` using `hfull k v`. Unfold `labSig at hf ⊢`. Rewrite `hf`, the goal using `[isoLoc_single]`. Use `⟨ι, hι, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1` using `(hine _ (D.ntypes.tg_mem k v)).trans (D.ntypes.inertiaCharpoly_type k v _ hf)`. Express the relevant statement in the definitionally equal form `_ = ((rts (k := k) (v := v) (D.naut.locG π _)).map fun x => X - C (D.ntypes.teichC k x)).prod at h1`. Express the relevant statement in the definitionally equal form `_ = ((rts (k := k) (v := v) (D.naut.locG π _)).map fun x => X - C (ι (Formalism.CyclotomicNorms.primeToPart (D.nd.l i) x))).prod`. Use `set m := rts (k := k) (v := v) (D.naut.locG π _) with hm`. Establish `hne : ∀ x ∈ m, x ≠ 0`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x hx rfl`. Establish `h2 : (X : ℂ[X]) ∣ (m.map fun x => X - C (D.ntypes.teichC k x)).prod`. Use `Multiset.dvd_prod (Multiset.mem_map.2 ⟨0, hx, ?_⟩)` and prove the remaining obligations. Rewrite using `[teich_zero _ (D.ntypes.teichC_inj k), map_zero, sub_zero]`. Rewrite `h2` using `[← h1, ← Matrix.charpoly_map, X_dvd_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `Matrix.det_eq_sign_charpoly_coeff (((ρ (D.ntypes.tg k v) : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).map (iotaO D.nd D.naut i))`. Rewrite `h3` using `[h2, mul_zero]`. Conclude with `(Matrix.GeneralLinearGroup.map (iotaO D.nd D.naut i) (ρ (D.ntypes.tg k v))).det_ne_zero h3`. Rewrite using `[charpoly_redF, hred _ m h1]`. Use `congrArg _ (Multiset.map_congr rfl fun x hx => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_primeToPart ι (isOfFinOrder_of_ne_zero (hne x hx))]`. Take `⟨φ, hφ⟩` from `exists_isFrob (D.nd.plOm.2 (D.naut.plGw k v))`. Rewrite `hφ` using `[normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) (D.naut.plGw_over k v)]`. Use `⟨φ, ?_⟩` and prove the remaining obligations. Use `set t := D.ntypes.tg k v with ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu` using `wild_of_frob (D.ntypes.tg_mem k v) hφ`. Establish `huI : (t ^ D.host.g k)⁻¹ * (φ * t * φ⁻¹) ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 (D.naut.plGw k v)) := Subgroup.mul_mem _ (Subgroup.inv_mem _ (Subgroup.pow_mem _ (D.ntypes.tg_mem k v) _)) (conj_mem_Ine hφ.1 (D.ntypes.tg_mem k v))`. Use `set u := (t ^ D.host.g k)⁻¹ * (φ * t * φ⁻¹) with hudef`. Establish `h1` using `(hine u huI).trans (hW k v _ hf u huI hu)`. Rewrite `h1` using `[D.naut.locG_dim]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((redF D i ρ u : GL (Fin D.R.r) _) : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.CyclotomicNorms.Fbar (D.nd.l i))).charpoly = (X - 1) ^ D.R.r`. Rewrite using `[charpoly_redF, hred _ (Multiset.replicate D.R.r 1) (by rw [h1]; simp)]`. Simplify using the standard rewrite rules. Establish `hg : (D.nd.plOm.1 (D.naut.plGw k v)).valuation ((D.host.g k : ℕ) : D.nd.Om) < 1`. Establish `h4` using `D.nd.plOm.2 (D.naut.plGw k v)`.
-
-Establish `h5 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal` using `D.naut.plGw_over k v`. Simplify using `using (h4 _).2 h5`. Establish `h3` using `GlobalTheory.T.wild_eq_one_of_charpoly_unipotent_mod_l _ _ _ (D.host.g k) (D.nd.l i) D.R.r hl hg _ (redF D i ρ) (GlobalTheory.T.residualRep_ker_isOpen D i ρ hρ.1) u hu h2`. Rewrite `h3` using `[hudef, map_mul, map_inv, inv_mul_eq_one, map_pow]`. Conclude with `h3.symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tameFixed_of_cuspidal : ∀ D : D7, WildOne D → GalAway D → FrobDense D → ∀ (i : D.nd.Loc) (π : D.naut.CG D.R.r) (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i)), D.naut.csd π → D.naut.ralg π → FullLab D [⟨D.R.r, π, 1⟩] → IsRepOfSig D.nd D.naut i [⟨D.R.r, π, 1⟩] ρ → ∀ k : Fin 2, D.nd.l i ≠ D.host.g k → TameFixed D i [⟨D.R.r, π, 1⟩] ρ k := by
   intro D hW hG hF i π ρ hc ha hfull hρ k hl v

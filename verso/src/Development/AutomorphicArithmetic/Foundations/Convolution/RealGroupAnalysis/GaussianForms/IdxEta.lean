@@ -13,7 +13,7 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
 /- English proof (translation)
-Unfold `ab`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ab_mul_idx {F : Type} [Field F] [NumberField F] (a b : (A F)ˣ) : ab (a * b) = ab a * ab b := by
   unfold ab
@@ -21,7 +21,7 @@ private theorem ab_mul_idx {F : Type} [Field F] [NumberField F] (a b : (A F)ˣ) 
   rfl
 
 /- English proof (translation)
-Unfold `ab`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ab_one {F : Type} [Field F] [NumberField F] : ab (1 : (A F)ˣ) = 1 := by
   unfold ab
@@ -29,7 +29,7 @@ private theorem ab_one {F : Type} [Field F] [NumberField F] : ab (1 : (A F)ˣ) =
   rfl
 
 /- English proof (translation)
-Unfold `ab`. Rewrite using `[IdeleGroup.ideleModule_diagonal]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ab_diag {F : Type} [Field F] [NumberField F] (k : Fˣ) : ab (IdeleGroup.diagonal F k) = 1 := by
   unfold ab
@@ -37,18 +37,18 @@ private theorem ab_diag {F : Type} [Field F] [NumberField F] (k : Fˣ) : ab (Ide
   rfl
 
 /- English proof (translation)
-The claim follows from `(idxEx F δ hδ b).unique h h'`.
+A detailed English derivation is pending.
 -/
 private theorem idx_unique {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {δ : F} (hδ : δ ≠ 0)
     {b : (A F)ˣ} {c c' : ℂ} (h : IsIdx δ (b : A F) c) (h' : IsIdx δ (b : A F) c') : c = c' :=
   (idxEx F δ hδ b).unique h h'
 
 /- English proof (translation)
-Take `⟨c', hc', -⟩` from `idxEx F δ hδ (a * b)`. Take `⟨g, hg, hne, -⟩` from `testEx F`. Establish `h1` using `hc' ⟨_, hg⟩`. Establish `h2` using `h ⟨_, hg⟩`. Establish `h3` using `sgnLam F δ hneg a b ha g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at h1 h2`. Rewrite `h3` using `[h1, h2]`. Establish `: c' = -c`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[h3]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hc'` using `[this]`. Then use the resulting hypothesis.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem idx_sgn {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {δ : F} (hδ : δ ≠ 0)
     (hneg : ∀ φ : F →+* ℝ, φ δ < 0) {a : (A F)ˣ} (ha : IsSgn a) (b : (A F)ˣ) {c : ℂ}
@@ -67,9 +67,9 @@ private theorem idx_sgn {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {
   rwa [this] at hc'
 
 /- English proof (translation)
-Establish `h` using `idxNorm F E D (rt t) 1 z (idxRat F D.δ hδ t ht)`. Establish `hd : b = IdeleGroup.diagonal F (Units.mk0 t ht) * ideleNorm F E z` using `by ext1`. Rewrite using `[hb, Units.val_mul]`. Both sides reduce to the same expression. Establish `hab : ab b = ab (ideleNorm F E z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hd, ab_mul_idx, ab_diag, one_mul]`. Rewrite using `[hb, hab]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem idx_ker {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] (D : Dat F E) (hδ : D.δ ≠ 0) {b : (A F)ˣ} {t : F} {z : (A E)ˣ} (ht : t ≠ 0)
@@ -86,23 +86,21 @@ private theorem idx_ker {F E : Type} [Field F] [NumberField F] [Field E] [Number
   simpa using h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ D η hsq hker b`. Establish `hδ : D.δ ≠ 0`. Introduce `h0`. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `D.neg (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, map_zero]`. Conclude with `lt_irrefl _ this`. Establish `step1 : ∀ b : (A F)ˣ, η b = 1 → IsIdx D.δ (b : A F) (((ab b)⁻¹ ^ 2 : ℝ) : ℂ)`. Introduce `b hb`. Take `⟨t, z, ht, hz⟩` from `hker b hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `idx_ker D hδ ht hz`. Take `⟨a, hsgn, haa, hab⟩` from `sgnEx F`. Establish `step2 : ∀ (b : (A F)ˣ) (c : ℂ), IsIdx D.δ (b : A F) c → IsIdx D.δ ((a * b : (A F)ˣ) : A F) (-c)` using `fun b c h => idx_sgn hδ D.neg hsgn b h`. Establish `hηa : η a ≠ 1`. Introduce `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1` using `step1 a h1`. Establish `i2` using `step2 1 _ (step1 1 (map_one η))`. Rewrite `i2` using `[mul_one]`. Use `idx_unique hδ i1 i2` as an intermediate fact. Rewrite `this` using `[hab, ab_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at this`. Establish `neg_of_ne : ∀ x : ℂˣ, x ^ 2 = 1 → x ≠ 1 → x = -1`. Introduce `x hx hne`. Establish `hx' : (x : ℂ) * x = 1`. Rewrite using `[← Units.val_mul, ← sq, hx, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Break down `mul_self_eq_one_iff.1 hx' with h | h` into its components or cases. Conclude with `absurd (Units.ext h) hne`. Conclude with `Units.ext (by simpa using h)`. Distinguish the cases in `hb : η b = 1`. Rewrite using `[hb]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using step1 b hb`. Establish `hb'` using `neg_of_ne _ (hsq b) hb`. Establish `ha'` using `neg_of_ne _ (hsq a) hηa`. Establish `h1 : η (a * b) = 1`. Rewrite using `[map_mul, hb', ha']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `i` using `step2 _ _ (step1 (a * b) h1)`. Establish `e : a * (a * b) = b`. Rewrite using `[← mul_assoc, haa, one_mul]`. Rewrite `i` using `[e, ab_mul_idx, hab, one_mul]`.
-
-Rewrite using `[hb']`. Simplify using `using i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.idxEta :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] (D : Dat F E) (η : (A F)ˣ →* ℂˣ), (∀ a, η a ^ 2 = 1) →

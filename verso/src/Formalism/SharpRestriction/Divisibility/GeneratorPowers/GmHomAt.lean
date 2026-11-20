@@ -21,14 +21,14 @@ abbrev σL (C : ChartAt Xo c y) (m : ℕ) : Fin 2 × Fin C.d → MvPolynomial (F
     Fin 2 → Fin C.d → MvPolynomial (Fin 1 × Fin C.d) S) p.1 p.2
 
 /- English proof (translation)
-Break down `p with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `fin_cases i <;> simp [σL, psIn, MvPolynomial.constantCoeff_rename, Formalism.MainNotions.ModuliIntegralCharts.H1.ExpGB.cc_psTrunc', C.B.A.const]`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_σL (C : ChartAt Xo c y) (m : ℕ) (p : Fin 2 × Fin C.d) : MvPolynomial.constantCoeff (σL C m p) = 0 := by
   rcases p with ⟨i, j⟩
   fin_cases i <;> simp [σL, psIn, MvPolynomial.constantCoeff_rename, Formalism.MainNotions.ModuliIntegralCharts.H1.ExpGB.cc_psTrunc', C.B.A.const]
 
 /- English proof (translation)
-Rewrite using `[jφ_eq, sA_ptm C ![φ] (fun i j => by rw [Fin.fin_one_eq_zero i]; exact hφ j) m k]`. Use `congrArg (fun P => ptm C P m) (funext fun i => funext fun j => ?_)` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero i]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptm_one_φa (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0) (m : ℕ) (k : 𝓞 E) :
@@ -39,15 +39,15 @@ theorem ptm_one_φa (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 
   rfl
 
 /- English proof (translation)
-Establish `hP0 : ∀ j, MvPowerSeries.constantCoeff (φa c φ k j) = 0` using `const_φa c φ hφ k`. Establish `hP : ∀ i j, MvPowerSeries.constantCoeff ((![φa c φ k] : Fin 1 → _) i j) = 0`. Introduce `i j`. Rewrite using `[Fin.fin_one_eq_zero i]`. Conclude with `hP0 j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptm_subst C _ hP m _ (cc_σL C m)]`. Use `set Q : Fin 1 × Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S := fun p => (![φa c φ k] : Fin 1 → _) p.1 p.2 with hQdef`. Establish `hQ : ∀ p, MvPowerSeries.constantCoeff (Q p) = 0` using `fun p => hP p.1 p.2`. Establish `hQe : Q = fun p => φa c φ k p.2`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p1, p2⟩` from `p`. Rewrite using `[hQdef, Fin.fin_one_eq_zero p1]`. Both sides reduce to the same expression. Use `ptm_congr C (fun i j => const_substPS Q hQ _ ?_) ?_ m ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPolynomial.coeff_coe]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `cc_σL C m (i, j)`. Rewrite using `[Fin.forall_fin_two]`. Conclude with `⟨fun j => hP0 j, fun j => const_φa c φ hφ _ j⟩`. Rewrite using `[Fin.forall_fin_two]`. Use `⟨fun j => ?_, fun j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [σL, Matrix.cons_val_zero]`. Rewrite using `[MvPolynomial.coe_X, MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hQ), hQe]`. Simplify using `only [σL, Matrix.cons_val_one, Matrix.cons_val_zero]`. Rewrite using `[power_series_in_fin_one, psJet_subst_trunc m Q hQ, hQe, act_φa c hφ hact]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptm_σL (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0)
@@ -81,7 +81,7 @@ theorem ptm_σL (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × F
       rw [power_series_in_fin_one, psJet_subst_trunc m Q hQ, hQe, act_φa c hφ hact]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(simp only [gm, pullU]; rfl)`. Consider the case `(ext; simp [gm, pullU]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gm_top {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (v : Γ(Y, ⊤)ˣ) :
     gm r z ⊤ v = gm (𝟙 Z) z ⊤ (Units.map r.appTop.hom.toMonoidHom v) := by
@@ -91,7 +91,7 @@ theorem gm_top {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (v : Γ(Y, ⊤)ˣ) :
   | (ext; simp [gm, pullU]; rfl)
 
 /- English proof (translation)
-Rewrite using `[gm_top, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdLB.unitΓ_homAt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_homAt {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] (f : A →ₐ[S] B)
     (z : (overAt y.x B).left) (w : Aˣ) :
@@ -99,7 +99,7 @@ theorem gm_homAt {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S
   rw [gm_top, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdLB.unitΓ_homAt]
 
 /- English proof (translation)
-Use `show val (scaleGen (fun _ : Fin 1 => (homAt y.x (jφ φ m)).left ≫ (C.x m).left) (fun _ => (1 : ℤ)) (unitΓ (u m)) (LB.pullGen Xo.univ.t.PP.L _ _ (τ m) (homAt y.x (jφ φ m)).left)) r z J = _`. Rewrite using `[ExpGD.val_scale' _ _ _ _ _ z J hJ, val_pull hJ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eG (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (τ : ∀ m, LB.Gen (LB.LinComb Xo.univ.t.PP.L (Y := (jO y C.d m 1).left) (K := Fin 1) (fun _ => (C.x m).left)
@@ -112,9 +112,9 @@ theorem val_eG (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fi
   rw [ExpGD.val_scale' _ _ _ _ _ z J hJ, val_pull hJ]
 
 /- English proof (translation)
-Establish `hm1 : (𝟙 _ ≫ (homAt y.x (jetSubstP m (actP (Dw` using `Dw) (S := S) c k))).left) ≫ (homAt y.x (jφ φ m)).left = (ptm C ![φa c φ k] m).left := by`. Rewrite using `[Category.id_comp, ← Over.comp_left, ptm_one_φa C φ hφ m k]`. Establish `hm2 : (ptm C ![φa c φ k] m).left ≫ (homAt y.x (jetSubstP m (σL C m))).left = (ptm C ![φa c φ k, φa c φ (H.w0 * k)] m).left`. Rewrite using `[← Over.comp_left, ptm_σL C φ hφ hact m k]`. Unfold `eAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[val_pull hJ, val_eG C φ τ u m _ z J hJ, val_corr hJ (hτc m), hm1, Category.id_comp, gm_homAt]`. Unfold `eL`. Rewrite using `[val_mul hJ, val_pull hJ, show val (pe y C.d C.x C.e m ![fun j => MvPolynomial.X ((0 : Fin 1), j), fun j => psIn C.d m ![0] (C.B.A.act H.w0 j)]) (ptm C ![φa c φ k] m).left z J = val (C.e m) ((ptm C ![φa c φ k] m).left ≫ (homAt y.x (jetSubstP m (σL C m))).left) z J from val_pull h …`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_eAt (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0)

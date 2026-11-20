@@ -13,9 +13,9 @@ open GlobalTheory
 open Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw hpq φ hφ l Xo c C X₁ hproj`. Take `⟨ι, K, hK, Jk, hJ, t, hι, ht, hloc⟩` from `GlobalTheory.T.exists_finite_theta_tuples_least_orders_unitary E H Dw hpq φ hφ l Xo c C X₁`. Take `⟨Y, πY, U₀, EE, out, hhom, hprop, hAdm, hEE, hdiv⟩` from `GlobalTheory.Poinc.exists_admissible_projective_theta_model X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.big X₁.M hproj K Jk t ht`. Take `⟨D, hDU, hDord⟩` from `GlobalTheory.T.exists_effectiveCartier_gluing_localTuples E H Dw hpq φ hφ l Xo c C X₁ ι K Jk t ht Y U₀ EE out hAdm hdiv (hloc Y U₀ EE out hAdm hEE)`. Establish `hsupp` using `GlobalTheory.T.unitaryTraitDivisor_support_not_mem_moduli_range E H Dw hpq φ hφ l Xo c C X₁ Y U₀ EE out πY hAdm hhom ι D hDU hDord`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨ι, Y, πY, D, hι, hhom, hprop, hAdm.1.normal, hsupp, GlobalTheory.T.divisor_orders_all_traits_over_moduli E H Dw hpq φ hφ l Xo c C X₁ Y U₀ EE out πY hAdm hEE hhom ι D hsupp hDord⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.UPoinc.exists_zhModel_effCartier_orders : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ φ : InvFun (𝓞 E), IsPolFan H.bar (min Dw.p Dw.q) φ → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C), IsProjOver X₁.M.s → ∃ (ι : ℕ) (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z) (D : GlobalTheory.EffCartierData Y.Z), 1 ≤ ι ∧ X₁.M.IsHom Y (AlgHom.id X₁.o₁ X₁.Ω₁) πY ∧ IsProper πY ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y.Z ∧ (∀ y ∈ D.idealSheaf.support, X₁.π (πY y) ∉ Set.range C.i) ∧ UValThru Xo c C.i (πY ≫ X₁.π) Set.univ φ D.idealSheaf ι := by
   intro E _ _ _ H Dw hpq φ hφ l Xo c C X₁ hproj

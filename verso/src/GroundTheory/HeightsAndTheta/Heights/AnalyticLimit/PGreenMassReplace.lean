@@ -20,29 +20,29 @@ noncomputable section
 namespace GreenMassReplace
 
 /- English proof (translation)
-The claim follows from `Real.log_le_log (inv_pos.2 (ht.trans_le htt)) (inv_anti₀ ht htt)`.
+A detailed English derivation is pending.
 -/
 theorem ell_anti {t t₀ : ℝ} (ht : 0 < t) (htt : t ≤ t₀) : ell t₀ ≤ ell t :=
   Real.log_le_log (inv_pos.2 (ht.trans_le htt)) (inv_anti₀ ht htt)
 
 /- English proof (translation)
-Introduce `x k y hy w` and use `h x k y ⟨hy.1, trivial, hy.2.2⟩ w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem formNonneg_mono {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     {V : Set X} {P : LocPot X} (h : FormNonneg A Set.univ P) : FormNonneg A V P :=
   fun x k y hy w => h x k y ⟨hy.1, trivial, hy.2.2⟩ w
 
 /- English proof (translation)
-Introduce `x k y hy w` and use `KaehlerForm.isPsh Om x k y ⟨hy.1, hy.2.2⟩ w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem formNonneg_kaehler {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     (Om : KaehlerForm A) (V : Set X) : FormNonneg A V Om.pot :=
   fun x k y hy w => KaehlerForm.isPsh Om x k y ⟨hy.1, hy.2.2⟩ w
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.AnForm.M.mIntCongrNull A Φ Vᶜ hAn hint f (V.indicator f) (fun x hx => by`. Rewrite using `[Set.indicator_of_mem (Set.not_notMem.mp hx)])]`. Use `SystemIndependence.mInt_nonneg_on A V Φ hpot hnn _ (fun x => ?_) (fun x hx => Set.indicator_of_notMem hx _)` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ V`. Rewrite using `[Set.indicator_of_mem hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf x`. Rewrite using `[Set.indicator_of_notMem hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mInt_nonneg_of_compl {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (V : Set X) (hAn : A.IsAnalyticSubset Vᶜ) (hint : interior Vᶜ = ∅) (Φ : Fin e → LocPot X)
@@ -58,7 +58,7 @@ theorem mInt_nonneg_of_compl {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinH
   · rw [Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Establish `h` using `levi_add_smul c (contDiffAt_const (c := (0 : ℝ))) hf w`. Simplify using `only [zero_add] at h`. Rewrite using `[h, levi_const, zero_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_smul' {ι : Type} [Fintype ι] {f : (ι → ℂ) → ℝ} {y : ι → ℂ} (c : ℝ)
     (hf : ContDiffAt ℝ 2 f y) (w : ι → ℂ) : levi (fun z => c * f z) y w = c * levi f y w := by
@@ -67,13 +67,13 @@ theorem levi_smul' {ι : Type} [Fintype ι] {f : (ι → ℂ) → ℝ} {y : ι �
   rw [h, levi_const, zero_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, mixedForms]`. Break down `lt_trichotomy i ⟨a, ha⟩ with h | h | h` into its components or cases. Establish `hi : (i : ℕ) < a` using `h`. Establish `hD : (i : ℕ) < D` using `by omega`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Fin.cycleRange (⟨a, ha⟩ : Fin (D + 1)) i = Fin.succ ⟨i, hD⟩` using `Fin.ext (by simp [Fin.coe_cycleRange_of_lt h])`. Rewrite using `[hc, Fin.cons_succ, if_pos hi]`. Simplify using `only [restForms, if_pos hi]`. Both sides reduce to the same expression. Rewrite using `[h, Fin.cycleRange_self, Fin.cons_zero, if_neg (lt_irrefl a)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : a < (i : ℕ)` using `h`. Establish `hne : i ≠ 0` using `fun h0 => by rw [h0] at hi; exact Nat.not_lt_zero _ hi`. Rewrite using `[Fin.cycleRange_of_gt h, if_neg (by omega)]`. Take `⟨j, rfl⟩` from `Fin.exists_succ_eq.2 hne`. Rewrite using `[Fin.cons_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [restForms]`. Rewrite using `[if_neg]`. Simplify using `only [Fin.val_succ] at hi`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mixedForms_eq_cons {W : Type} [TopologicalSpace W] {D : ℕ} (Om : LocPot W)
     (T : Fin (D + 1) → LocPot W) (a : ℕ) (ha : a < D + 1) :
@@ -102,9 +102,9 @@ theorem mixedForms_eq_cons {W : Type} [TopologicalSpace W] {D : ℕ} (Om : LocPo
 variable {D : ℕ} {W : Type} [TopologicalSpace W]
 
 /- English proof (translation)
-Unfold `UIData.divInt`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: CompactSpace (S.comp k)` using `isCompact_iff_compactSpace.mp (ReciprocityTheory.AnForm.M.SimpleNormalCrossingSliceCharts.isClosed_divisorComponent S.A S.L S.s S.mult S.comp S.s_snc k).isCompact`. Establish `hpot : ∀ i, IsPotential (S.B k) (restrictForms (S.comp k) Φ i)` using `fun i => ReciprocityTheory.AnForm.M.isPotentialPullback S.A (S.B k) Subtype.val (S.B_holo k) (Φ i) (hΦ i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `ReciprocityTheory.AnForm.M.mIntLinear (S.B k) (restrictForms (S.comp k) Φ) hpot c (f ∘ Subtype.val) (g ∘ Subtype.val) (ReciprocityTheory.AnForm.M.mIntegrableCont _ _ hpot _ (hf.comp continuous_subtype_val)) (ReciprocityTheory.AnForm.M.mIntegrableCont _ _ hpot _ (hg.comp continuou …`. Establish `e : ((fun x => c * f x + g x) ∘ Subtype.val : S.comp k → ℝ) = fun x => c * (f ∘ Subtype.val) x + (g ∘ Subtype.val) x` using `rfl`. Rewrite using `[e, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem divInt_linear [CompactSpace W] [T2Space W] (S : UIData D W) (Φ : Fin D → LocPot W)
     (hΦ : ∀ i, IsPotential S.A (Φ i)) (c : ℝ) {f g : W → ℝ} (hf : Continuous f)
@@ -130,55 +130,49 @@ end GreenMassReplace
 
 open GreenMassReplace in
 /- English proof (translation)
-Introduce `D W _ _ _ S`. Take `⟨Cκ, hCκ0, hκ⟩` from `kappaEp_formNonneg S.Om S.L_pot S.s_sec`. Use `⟨Cκ, hCκ0, fun a ha t₀ ht₀ hℓ₀ => ?_⟩` and prove the remaining obligations. Establish `hform₀` using `S.form ⟨a, ha⟩ t₀ ht₀ hℓ₀`. Use `set ut : W → ℝ := fun x => S.u ⟨a, ha⟩ t₀ x + S.C * errE S.C t₀ with hutdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hut : S.A.Smooth ut` using `fun j => (hform₀.2 j).add contDiffOn_const`. Establish `hutpot : IsPotential S.A (LocPot.ofFun ut)` using `ReciprocityTheory.AnForm.M.isPotential_ofFun _ _ hut`. Take `⟨K, hK0, hK⟩` from `levi_abs_le_global S.A isCompact_univ (LocPot.ofFun ut) S.Om.pot hutpot S.Om.isPot S.Om.pos`. Use `⟨K, hK0, fun ε t hε _ ht htt => ?_⟩` and prove the remaining obligations. Establish `hℓ : S.ell₀ ≤ ell t` using `hℓ₀.trans (ell_anti ht htt)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTpot : ∀ j, IsPotential S.A (S.T t j)` using `fun j => ReciprocityTheory.AnForm.M.isPotentialAdd S.A _ _ (S.form j t ht hℓ).1.th_pot (ReciprocityTheory.AnForm.M.isPotential_ofFun _ _ (S.form j t ht hℓ).2)`. Establish `hTnn : ∀ j, FormNonneg S.A S.Yo (S.T t j)` using `fun j => (S.form j t ht hℓ).1.nonneg`. Use `set Φ' := S.rest a t with hΦ'`. Establish `hΦpot : ∀ i, IsPotential S.A (Φ' i)`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hΦ', UIData.rest, restForms]`. Use `split_ifs`. Conclude with `hTpot _`. Conclude with `S.Om.isPot`. Establish `hΦnn : ∀ i, FormNonneg S.A S.Yo (Φ' i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Simplify using `only [hΦ', UIData.rest, restForms]`. Use `split_ifs`. Conclude with `hTnn _`. Conclude with `formNonneg_kaehler S.Om S.Yo`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcons : ∀ P, IsPotential S.A P → ∀ i, IsPotential S.A ((Fin.cons P Φ' : Fin (D + 1) → LocPot W) i)`. Introduce `P hP i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hP`. Simplify using `using hΦpot j`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconsnn : ∀ P, FormNonneg S.A S.Yo P → ∀ i, FormNonneg S.A S.Yo ((Fin.cons P Φ' : Fin (D + 1) → LocPot W) i)`. Introduce `P hP i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hP`. Simplify using `using hΦnn j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκpot` using `isPotential_kappaEp S.L_pot S.s_sec hε`. Establish `hOmK : ∀ c : ℝ, IsPotential S.A (S.Om.pot.rsmul c)` using `fun c => ReciprocityTheory.AnForm.M.isPotentialRsmul S.A c _ S.Om.isPot`. Use `set u := S.u ⟨a, ha⟩ t with hudef`. Establish `hu : S.A.Smooth u` using `(S.form ⟨a, ha⟩ t ht hℓ).2`. Establish `hut_c : Continuous ut` using `ReciprocityTheory.AnForm.M.PLAux.smooth_continuous hut`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hu_c : Continuous u` using `ReciprocityTheory.AnForm.M.PLAux.smooth_continuous hu`. Use `set g := S.gap a ha t₀ t with hgdef`. Establish `hg_eq : g = fun x => ut x - u x` using `rfl`. Establish `hg_c : Continuous g` using `by rw [hg_eq]; exact hut_c.sub hu_c`. Establish `hgnn : ∀ x, 0 ≤ g x` using `fun x => by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `S.mono ⟨a, ha⟩ t t₀ ht htt hℓ₀ x` as an intermediate fact. Rewrite using `[hg_eq]`. Simplify using `only [hutdef, hudef]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hu_eq : (fun x => -1 * g x + ut x) = u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[hg_eq]`. Expand and normalize the polynomial expressions, which then agree. Use `set F := logNormSqAdd S.L S.s ε with hFdef`. Establish `hF : S.A.Smooth F` using `smooth_logNormSqAdd S.L_pot S.s_sec hε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hF_c : Continuous F` using `ReciprocityTheory.AnForm.M.PLAux.smooth_continuous hF`. Establish `hint : ∀ P, IsPotential S.A P → ∀ f : W → ℝ, Continuous f → MIntegrable S.A (Fin.cons P Φ') f` using `fun P hP f hf => ReciprocityTheory.AnForm.M.mIntegrableCont S.A _ (hcons P hP) f hf`. Establish `sA : mInt S.A (Fin.cons (kappaEp S.L S.s ε) Φ') u = mInt S.A (Fin.cons (kappaEp S.L S.s ε) Φ') ut - mInt S.A (Fin.cons (kappaEp S.L S.s ε) Φ') g`. Establish `h` using `ReciprocityTheory.AnForm.M.mIntLinear S.A _ (hcons _ hκpot) (-1) g ut (hint _ hκpot g hg_c) (hint _ hκpot ut hut_c)`. Rewrite `h` using `[hu_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `sB : 0 ≤ mInt S.A (Fin.cons (kappaEp S.L S.s ε) Φ') g + Cκ * mInt S.A (Fin.cons S.Om.pot Φ') g`. Establish `hPpot : IsPotential S.A (kappaEp S.L S.s ε + S.Om.pot.rsmul Cκ)` using `ReciprocityTheory.AnForm.M.isPotentialAdd S.A _ _ hκpot (hOmK Cκ)`. Establish `h0` using `mInt_nonneg_of_compl S.A S.Yo S.bd_analytic S.bd_interior _ (hcons _ hPpot) (hconsnn _ (formNonneg_mono (hκ ε hε))) g hgnn`. Rewrite `h0` using `[ReciprocityTheory.AnForm.M.mIntAdd S.A _ _ Φ' hκpot (hOmK Cκ) hΦpot g (hint _ hκpot g hg_c) (hint _ (hOmK Cκ) g hg_c), ReciprocityTheory.AnForm.M.mIntRsmul S.A Cκ S.Om.pot Φ' S.Om.isPot hΦpot g]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `sC : S.divInt Φ' u = S.divInt Φ' ut - S.divInt Φ' g`. Establish `h` using `divInt_linear S Φ' hΦpot (-1) hg_c hut_c`. Rewrite `h` using `[hu_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set H : W → ℝ := fun x => -2 * logNormSec S.L S.s x + F x with hHdef`. Establish `hlns : ∀ P, IsPotential S.A P → MIntegrable S.A (Fin.cons P Φ') (logNormSec S.L S.s)` using `fun P hP => ReciprocityTheory.AnForm.M.logNormIntegrable S.A S.L S.s S.mult S.comp S.L_pot S.s_sec S.s_snc _ (hcons P hP)`. Establish `sD : mInt S.A (Fin.cons (kappaEp S.L S.s ε) Φ') ut - 2 * S.divInt Φ' ut = mInt S.A (Fin.cons (LocPot.ofFun ut) Φ') H`. Establish `hL2` using `ReciprocityTheory.AnForm.M.isPotentialRsmul S.A 2 S.L S.L_pot`. Establish `hFpot : IsPotential S.A (LocPot.ofFun F)` using `ReciprocityTheory.AnForm.M.isPotential_ofFun _ _ hF`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd` using `ReciprocityTheory.AnForm.M.mIntAdd S.A (S.L.rsmul 2) (LocPot.ofFun F) Φ' hL2 hFpot hΦpot ut (hint _ hL2 ut hut_c) (hint _ hFpot ut hut_c)`. Establish `hrs` using `ReciprocityTheory.AnForm.M.mIntRsmul S.A 2 S.L Φ' S.L_pot hΦpot ut`. Establish `hbp` using `ReciprocityTheory.AnForm.M.byPartsSymm S.A ut F hut hF Φ' hΦpot`. Establish `hpl` using `ReciprocityTheory.AnForm.M.poincareLelong S.A S.L S.s S.mult S.comp S.B S.L_pot S.s_sec S.s_snc S.B_holo ut hut Φ' hΦpot`. Establish `hlin` using `ReciprocityTheory.AnForm.M.mIntLinear S.A _ (hcons _ hutpot) (-2) (logNormSec S.L S.s) F (hlns _ hutpot) (hint _ hutpot F hF_c)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : kappaEp S.L S.s ε = S.L.rsmul 2 + LocPot.ofFun F` using `rfl`. Establish `hdiv : S.divInt Φ' ut = ∑ k, (S.mult k : ℝ) * mInt (S.B k) (fun i => (Φ' i).pullback Subtype.val continuous_subtype_val) (ut ∘ Subtype.val)` using `rfl`. Rewrite using `[hk, hadd, hrs, hbp, hdiv]`. Rewrite `hlin` using `[show (fun x => -2 * logNormSec S.L S.s x + F x) = H from rfl]`. Rewrite using `[hlin]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hZ` using `zeroSet_analytic (A := S.A) S.s_sec`. Establish `hZi` using `interior_zeroSet S.s_sec S.s_snc`. Establish `hGH : ∀ x ∉ zeroSet S.s, S.green ε x = H x` using `fun x hx => greenEp_eq_off S.L S.s hε hx`. Establish `hHint : ∀ P, IsPotential S.A P → MIntegrable S.A (Fin.cons P Φ') H`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `P hP j K' hK' hKc`. Establish `h1` using `hlns P hP j K' hK' hKc`. Establish `h2` using `hint P hP F hF_c j K' hK' hKc`. Conclude with `IntegrableOn.congr_fun ((h1.const_mul (-2)).add h2) (fun y _ => by simp only [hHdef, Pi.add_apply]; ring) hKc.measurableSet`. Establish `hPnn : FormNonneg S.A Set.univ ((LocPot.ofFun ut).rsmul (-1) + S.Om.pot.rsmul K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x k y hy w`. Establish `hyt : y ∈ (S.A.chart k).target` using `hy.1`. Establish `hyΩ : (S.A.chart k).symm y ∈ S.Om.pot.U x` using `hy.2.2.2`. Establish `hu2 : ContDiffAt ℝ 2 ((LocPot.ofFun ut).φ x ∘ (S.A.chart k).symm) y` using `ReciprocityTheory.AnForm.M.pot_contDiffAt_two hutpot x k hyt trivial`. Establish `hΨ2 : ContDiffAt ℝ 2 (S.Om.pot.φ x ∘ (S.A.chart k).symm) y` using `ReciprocityTheory.AnForm.M.pot_contDiffAt_two S.Om.isPot x k hyt hyΩ`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hsum : ((LocPot.ofFun ut).rsmul (-1) + S.Om.pot.rsmul K).φ x ∘ (S.A.chart k).symm = fun z => (fun z' => -1 * ((LocPot.ofFun ut).φ x ∘ (S.A.chart k).symm) z') z + K * (S.Om.pot.φ x ∘ (S.A.chart k).symm) z` using `rfl`. Rewrite using `[hsum, levi_add_smul K (contDiffAt_const.mul hu2) hΨ2 w, levi_smul' (-1) hu2 w]`. Establish `hb` using `abs_le.mp (hK x k y ⟨hyt, trivial, hyΩ⟩ w)`. Combine the linear relations using `[hb.2]`. Establish `sE : 0 ≤ -mInt S.A (Fin.cons (LocPot.ofFun ut) Φ') H + K * mInt S.A (Fin.cons S.Om.pot Φ') H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm1` using `ReciprocityTheory.AnForm.M.isPotentialRsmul S.A (-1) _ hutpot`. Establish `hPpot : IsPotential S.A ((LocPot.ofFun ut).rsmul (-1) + S.Om.pot.rsmul K)` using `ReciprocityTheory.AnForm.M.isPotentialAdd S.A _ _ hm1 (hOmK K)`. Establish `h0` using `mInt_nonneg_of_compl S.A S.Yo S.bd_analytic S.bd_interior _ (hcons _ hPpot) (hconsnn _ (formNonneg_mono hPnn)) (S.green ε) (fun x => GreenMassReplace.greenEp_nonneg S.L S.s hε x)`. Rewrite `h0` using `[ReciprocityTheory.AnForm.M.mIntCongrNull S.A _ (zeroSet S.s) hZ hZi (S.green ε) H hGH, ReciprocityTheory.AnForm.M.mIntAdd S.A _ _ Φ' hm1 (hOmK K) hΦpot H (hHint _ hm1) (hHint _ (hOmK K)), ReciprocityTheory.AnForm.M.mIntRsmul S.A (-1) _ Φ' hutpot hΦpot H, ReciprocityTheory.AnForm …`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hperm : ∀ f : W → ℝ, mInt S.A (mixedForms S.Om.pot (S.T t) a) f = mInt S.A (Fin.cons S.Om.pot Φ') f` using `fun f => by`. Rewrite using `[mixedForms_eq_cons S.Om.pot (S.T t) a ha, ReciprocityTheory.AnForm.M.mIntSymm]`. Both sides reduce to the same expression. Establish `hJ : S.J a ε t = mInt S.A (Fin.cons S.Om.pot Φ') H`. Rewrite using `[← ReciprocityTheory.AnForm.M.mIntCongrNull S.A _ (zeroSet S.s) hZ hZi (S.green ε) H hGH]`.
-
-Conclude with `hperm _`. Establish `hW : S.errW a ha t₀ t = mInt S.A (Fin.cons S.Om.pot Φ') g` using `hperm _`. Establish `hP : S.plTerm a ha ε t = mInt S.A (Fin.cons (kappaEp S.L S.s ε) Φ') u - 2 * S.divInt Φ' u` using `rfl`. Establish `hD : S.errDiv a ha t₀ t = S.divInt Φ' g` using `rfl`. Rewrite using `[hP, hJ, hW, hD, sA, sC]`.
-
-Use polynomial arithmetic with `[sA, sB, sC, sD, sE]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem GreenMassReplace.proof : GreenMassReplace.Statement := by
   intro D W _ _ _ S

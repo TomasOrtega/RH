@@ -24,14 +24,14 @@ def conjN (p : ℕ) (g : GL n k) (u' : N k n c p) : N k n c p :=
     ((Radical.unipotent_radical_basic k n c p).2.2.2.1 g⁻¹ u' u'.2).1⟩
 
 /- English proof (translation)
-Simplify using `only [prodRFJ_coe, map_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_prodRFJ_embX (ρ : ℕ) (g' : GL n k) (q : (GL n k × N k n c (ρ + 1)) × (n → k)) :
     embX c g' * (prodRFJ ρ q : GL (n ⊕ Fin c) k) = prodRFJ ρ ((g' * q.1.1, q.1.2), q.2) := by
   simp only [prodRFJ_coe, map_mul, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [prodRFJ_coe, conjN, Subgroup.coe_mul, map_inv, inv_inv]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_prodRFJ_N (ρ : ℕ) (u' : N k n c (ρ + 1)) (q : (GL n k × N k n c (ρ + 1)) × (n → k)) :
     (u' : GL (n ⊕ Fin c) k) * (prodRFJ ρ q : GL (n ⊕ Fin c) k) =
@@ -40,9 +40,9 @@ theorem mul_prodRFJ_N (ρ : ℕ) (u' : N k n c (ρ + 1)) (q : (GL n k × N k n c
   group
 
 /- English proof (translation)
-Take `⟨⟨g, u⟩, β⟩` from `q`. Use `set γ := ((g)⁻¹ : GL n k).val *ᵥ β'`. Establish `hc : colE c (ρ + 1) β' = embX c g * colE c (ρ + 1) γ * (embX c g)⁻¹`. Rewrite using `[QuotStep.conj_colE]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [γ, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite using `[prodRFJ_coe, prodRFJ_coe, cjE_coe, hc, ← FourierJacobiGroup.colE_add]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_prodRFJ_colE (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (β' : n → k)
     (q : (GL n k × N k n c (ρ + 1)) × (n → k)) :
@@ -65,7 +65,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 /- English proof (translation)
-Establish `he` using `QuotStep.continuous_embX (k := k) (n := n) (c := c)`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `((he.comp continuous_inv).mul continuous_const).mul (he.comp continuous_inv).inv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_conjN (p : ℕ) (u' : N k n c p) : Continuous fun g : GL n k => conjN p g u' := by
   have he := QuotStep.continuous_embX (k := k) (n := n) (c := c)
@@ -73,7 +73,7 @@ theorem continuous_conjN (p : ℕ) (u' : N k n c p) : Continuous fun g : GL n k 
   exact ((he.comp continuous_inv).mul continuous_const).mul (he.comp continuous_inv).inv
 
 /- English proof (translation)
-Establish `hc` using `QuotStep.continuous_colE (k := k) (n := n) (c := c) (ρ + 1)`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `((hc.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)).mul (hc.comp continuous_fst).inv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_cjE (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) :
     Continuous fun x : (n → k) × N k n c (ρ + 1) => cjE ρ h1 h2 x.1 x.2 := by
@@ -83,7 +83,7 @@ theorem continuous_cjE (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) :
     (hc.comp continuous_fst).inv
 
 /- English proof (translation)
-Establish `he` using `QuotStep.continuous_embX (k := k) (n := n) (c := c)`. Establish `hc` using `QuotStep.continuous_colE (k := k) (n := n) (c := c) (ρ + 1)`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `((he.comp (continuous_fst.comp continuous_fst)).mul (continuous_subtype_val.comp (continuous_snd.comp continuous_fst))).mul (hc.comp continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_prodRFJ (ρ : ℕ) : Continuous (prodRFJ (k := k) (n := n) (c := c) ρ) := by
   have he := QuotStep.continuous_embX (k := k) (n := n) (c := c)
@@ -93,7 +93,7 @@ theorem continuous_prodRFJ (ρ : ℕ) : Continuous (prodRFJ (k := k) (n := n) (c
     (continuous_subtype_val.comp (continuous_snd.comp continuous_fst))).mul (hc.comp continuous_snd)
 
 /- English proof (translation)
-The claim follows from `(Units.continuous_val.comp continuous_inv).matrix_mulVec continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_invMulVec (β' : n → k) : Continuous fun g : GL n k => ((g⁻¹ : GL n k)).val *ᵥ β' :=
   (Units.continuous_val.comp continuous_inv).matrix_mulVec continuous_const
@@ -101,7 +101,7 @@ theorem continuous_invMulVec (β' : n → k) : Continuous fun g : GL n k => ((g�
 end Meas
 
 /- English proof (translation)
-Rewrite using `[Measure.map_map (measurable_const_mul h) hf]`. Establish `: (fun x => h * x) ∘ f = f ∘ T` using `funext he`. Rewrite using `[this, ← Measure.map_map hf hT.measurable, hT.map_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_left_of_conj {Q G : Type} [MeasurableSpace Q] [Group G] [MeasurableSpace G] [MeasurableMul G]
     (μ : Measure Q) (f : Q → G) (hf : Measurable f) (h : G) (T : Q → Q) (hT : MeasurePreserving T μ μ)
@@ -111,7 +111,7 @@ theorem map_mul_left_of_conj {Q G : Type} [MeasurableSpace Q] [Group G] [Measura
   rw [this, ← Measure.map_map hf hT.measurable, hT.map_eq]
 
 /- English proof (translation)
-Establish `: (fun x => a * b * x) = (fun x => a * x) ∘ (fun x => b * x)` using `funext fun x => mul_assoc a b x`. Rewrite using `[this, ← Measure.map_map (measurable_const_mul a) (measurable_const_mul b), hb, ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_left_mul {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (κ : Measure G)
     (a b : G) (ha : κ.map (a * ·) = κ) (hb : κ.map (b * ·) = κ) : κ.map ((a * b) * ·) = κ := by
@@ -129,7 +129,7 @@ def fibFJ (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (β' : n → k) (g : GL n k) 
   (cjE ρ h1 h2 (((g⁻¹ : GL n k)).val *ᵥ β') x.1, ((g⁻¹ : GL n k)).val *ᵥ β' + x.2)
 
 /- English proof (translation)
-Establish `hγ : Continuous fun p : GL n k × (N k n c (ρ + 1) × (n → k)) => ((p.1⁻¹ : GL n k)).val *ᵥ β'` using `(continuous_invMulVec β').comp continuous_fst`. Establish `hc : Continuous fun p : GL n k × (N k n c (ρ + 1) × (n → k)) => (cjE ρ h1 h2 (((p.1⁻¹ : GL n k)).val *ᵥ β') p.2.1, ((p.1⁻¹ : GL n k)).val *ᵥ β' + p.2.2)` using `((continuous_cjE ρ h1 h2).comp (hγ.prodMk (continuous_fst.comp continuous_snd))).prodMk (hγ.add (continuous_snd.comp continuous_snd))`. Conclude with `hc.measurable`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_fibFJ (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (β' : n → k) :
     Measurable (Function.uncurry (fibFJ ρ h1 h2 β')) := by
@@ -142,7 +142,7 @@ theorem measurable_fibFJ (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (β' : n → k
   exact hc.measurable
 
 /- English proof (translation)
-Establish `e : fibFJ ρ h1 h2 β' g = Prod.map (cjE ρ h1 h2 (((g⁻¹ : GL n k)).val *ᵥ β')) (fun β => ((g⁻¹ : GL n k)).val *ᵥ β' + β)` using `rfl`. Establish `hcm : Measurable (cjE ρ h1 h2 (((g⁻¹ : GL n k)).val *ᵥ β'))` using `((continuous_cjE ρ h1 h2).comp (continuous_const.prodMk continuous_id)).measurable`. Rewrite using `[e, ← Measure.map_prod_map _ _ hcm (measurable_const_add _), GlobalTheory.T.conjByColumnUnipotent_preserves_unipotentHaar k n c ρ h1 h2 ν inferInstance, map_add_left_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_fibFJ (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (ν : Measure k) [ν.IsAddHaarMeasure]
     [SFinite (volN ν n c (ρ + 1))] (β' : n → k) (g : GL n k) :
@@ -156,7 +156,7 @@ theorem map_fibFJ (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (ν : Measure k) [ν.
     map_add_left_eq_self]
 
 /- English proof (translation)
-Establish `hA` using `measurePreserving_prodAssoc m (volN ν n c (ρ + 1)) (Measure.pi fun _ : n => ν)`. Establish `hs` using `(MeasurePreserving.id m).skew_product (measurable_fibFJ ρ h1 h2 β') (Filter.Eventually.of_forall (map_fibFJ ρ h1 h2 ν β'))`. Conclude with `(MeasurePreserving.symm _ hA).comp (hs.comp hA)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_colE (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (ν : Measure k) [ν.IsAddHaarMeasure]
     [SFinite (volN ν n c (ρ + 1))] (m : Measure (GL n k)) [SFinite m] (β' : n → k) :
@@ -170,7 +170,7 @@ theorem mp_colE (ρ : ℕ) (h1 : 1 ≤ ρ) (h2 : ρ < c) (ν : Measure k) [ν.Is
   exact (MeasurePreserving.symm _ hA).comp (hs.comp hA)
 
 /- English proof (translation)
-Establish `hm2 : Measurable (Function.uncurry fun (g : GL n k) (u : N k n c (ρ + 1)) => conjN (ρ + 1) g u' * u)` using `(((continuous_conjN (ρ + 1) u').comp continuous_fst).mul continuous_snd).measurable`. Establish `hs` using `(MeasurePreserving.id m).skew_product hm2 (Filter.Eventually.of_forall fun g => map_mul_left_eq_self V _)`. Conclude with `hs.prod (MeasurePreserving.id _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_N (ρ : ℕ) (ν : Measure k) [ν.IsAddHaarMeasure] (V : Measure (N k n c (ρ + 1)))
     [V.IsMulLeftInvariant] [SFinite V] (m : Measure (GL n k)) [SFinite m] (u' : N k n c (ρ + 1)) :
@@ -183,7 +183,7 @@ theorem mp_N (ρ : ℕ) (ν : Measure k) [ν.IsAddHaarMeasure] (V : Measure (N k
   exact hs.prod (MeasurePreserving.id _)
 
 /- English proof (translation)
-The claim follows from `((measurePreserving_mul_left m g').prod (MeasurePreserving.id V)).prod (MeasurePreserving.id _)`.
+A detailed English derivation is pending.
 -/
 theorem mp_embX (ρ : ℕ) (ν : Measure k) [ν.IsAddHaarMeasure] (V : Measure (N k n c (ρ + 1))) [SFinite V]
     (m : Measure (GL n k)) [m.IsMulLeftInvariant] [SFinite m] (g' : GL n k) :
@@ -194,15 +194,11 @@ theorem mp_embX (ρ : ℕ) (ν : Measure k) [ν.IsAddHaarMeasure] (V : Measure (
 end Kinds
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c ρ h1 h2 ν hν m hm`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI : BorelSpace (GL n k) := GlobalTheory.SplitFlip.borel_GL`. Use `haveI : BorelSpace (GL (n ⊕ Fin c) k) := GlobalTheory.SplitFlip.borel_GL`. Use `haveI : SecondCountableTopology (GL n k) := GlobalTheory.SplitFlip.secondCountable_GL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : SecondCountableTopology (GL (n ⊕ Fin c) k) := GlobalTheory.SplitFlip.secondCountable_GL`. Use `haveI : LocallyCompactSpace (GL n k) := GlobalTheory.SplitFlip.locallyCompact_GL`. Use `haveI hVH : (volN ν n c (ρ + 1)).IsHaarMeasure := (GlobalTheory.RootEx.VolN.volN_haar_and_modulus k n c (ρ + 1) (by omega) (by omega) ν).2.2.1`. Use `haveI : SFinite (volN ν n c (ρ + 1)) := by rw [GlobalTheory.RootEx.VolN.volN_eq]; infer_instance`. Establish `hf : Measurable (prodRFJ (k` using `k) (n := n) (c := c) ρ) := (continuous_prodRFJ ρ).measurable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun h => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, β', he⟩` from `((FourierJacobiGroup.mem_RFJ_iff k n c ρ h1 h2).1 h.1).1 h.2`. Take `⟨g', u', hu', rfl⟩` from `Radical.exists_of_mem_R hr`. Establish `hg : embX c g' ∈ RFJ k n c ρ` using `Subgroup.mem_sup_right (Subgroup.mem_sup_left ⟨g', rfl⟩)`. Establish `hu : u' ∈ RFJ k n c ρ` using `Subgroup.mem_sup_right (Subgroup.mem_sup_right hu')`.
-
-Establish `hb : colE c (ρ + 1) β' ∈ RFJ k n c ρ` using `Subgroup.mem_sup_left (Subgroup.mem_sup_right ((GlobalTheory.RootEx.Radical.unipotent_radical_basic k n c ρ).2.2.2.2.2.2.2 (ρ + 1) β' (Nat.lt_succ_self ρ)).1)`. Establish `hh : h = (⟨embX c g', hg⟩ : RFJ k n c ρ) * ⟨u', hu⟩ * ⟨colE c (ρ + 1) β', hb⟩` using `Subtype.ext he`. Rewrite using `[hh]`. Use `map_mul_left_mul _ _ _ (map_mul_left_mul _ _ _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `map_mul_left_of_conj _ _ hf _ _ (mp_embX ρ ν _ m g') fun q => Subtype.ext (mul_prodRFJ_embX ρ g' q)`.
-
-Conclude with `map_mul_left_of_conj _ _ hf _ _ (mp_N ρ ν _ m ⟨u', hu'⟩) fun q => Subtype.ext (mul_prodRFJ_N ρ ⟨u', hu'⟩ q)`. Conclude with `map_mul_left_of_conj _ _ hf _ _ (mp_colE ρ h1 h2 ν m β') fun q => Subtype.ext (mul_prodRFJ_colE ρ h1 h2 β' q)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMulLeftInvariant_map_prodRFJ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ), 1 ≤ ρ → ρ < c → ∀ (ν : Measure k), ν.IsAddHaarMeasure → ∀ m : Measure (GL n k), m.IsHaarMeasure → (((m.prod (volN ν n c (ρ + 1))).prod (Measure.pi fun _ : n => ν)).map (prodRFJ ρ)).IsMulLeftInvariant := by
   intro k _ _ _ _ _ _ n _ _ c ρ h1 h2 ν hν m hm

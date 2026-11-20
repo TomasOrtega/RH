@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l B _ b S s S' S'' s' s'' o o' o'' f f' m m'`. Take `⟨n, hn⟩` from `sabComp pullCubComp E H S S' S'' o.t o'.t o''.t f f' m.toSABMap m'.toSABMap`. Establish `hn' : n.cm.F = m'.cm.F ≫ m.cm.F` using `hn`. Use `⟨{ toSABMap := n, eta := fun x => ?_, etaA := fun x => ?_ }, hn⟩` and prove the remaining obligations. Rewrite using `[hn', ← Category.assoc, m'.eta, Category.assoc, m.eta, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn', ← Category.assoc, m'.etaA, Category.assoc, m.etaA, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem objMap_exists_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (S' S'' : Scheme.{0}) (s' : S' ⟶ Sp B) (s'' : S'' ⟶ Sp B) (o : Obj D l b s) (o' : Obj D l b s') (o'' : Obj D l b s'') (f : S' ⟶ S) (f' : S'' ⟶ S') (m : ObjMap o' o f) (m' : ObjMap o'' o' f'), ∃ n : ObjMap o'' o (f' ≫ f), n.toSABMap.φ = m'.toSABMap.φ ≫ m.toSABMap.φ := by
   intro E _ _ _ H D l B _ b S s S' S'' s' s'' o o' o'' f f' m m'

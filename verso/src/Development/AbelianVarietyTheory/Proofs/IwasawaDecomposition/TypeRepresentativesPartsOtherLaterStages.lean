@@ -12,23 +12,21 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.Tr
 
 /- English proof (translation)
-Consider the cases of `P`. Consider the cases of `Q`. Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem rowPsi_eq_of_psi {D : Formalism.BasicNotions.D7} {V : Formalism.BasicNotions.TH.HSp D} {n : ℕ} (P Q : principalLevelFrame.RowPsi V n) (h : P.ψ = Q.ψ) : P = Q := by
   cases P; cases Q; cases h; rfl
 
 /- English proof (translation)
-Introduce `B C a b G _ _ Pl0 T Ks _ _ iK A R F y y' hs`. Use `letI := alg b iK`. Establish `hY0 : (rowPsi a y'.PY).ψ = y.PY.ψ` using `(by with_unfolding_all exact ((eq_of_heq hs.PY) :))`. Establish `hY : rowPsi a y'.PY = y.PY` using `rowPsi_eq_of_psi _ _ hY0`. Establish `hW0 : (fun i => (rowPsi a (y'.PW i)).ψ) = (fun i => (y.PW i).ψ)` using `(by with_unfolding_all exact ((eq_of_heq hs.PW) :))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : ∀ i, rowPsi a (y'.PW i) = y.PW i` using `fun i => rowPsi_eq_of_psi _ _ (congrFun hW0 i)`. Establish `hocc : HEq (y'.occ (face b F)) (y.occ F)`. Unfold `Hd.occ principalLevelFrame.OccRows principalLevelFrame.isotE`. Rewrite using `[isotL_eq a b]`. Use `delta isotLB`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY]`. Conclude with `(by with_unfolding_all exact ((HEq.refl (y.occ F)) :))`. Establish `e : y'.occ (face b F) = y.occ F` using `(by with_unfolding_all exact ((eq_of_heq hocc) :))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Φ rep h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨h.fin, fun π => by rw [e]; exact h.mem π, fun π π' hi => h.inj π π' hi, fun ρ hρ => h.all ρ (by rw [e] at hρ; exact hρ)⟩`. Introduce `bb π`. Unfold `Hd.prtE principalLevelFrame.isotE`. Rewrite using `[isotL_eq a b]`. Use `delta isotLB`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[hY]`. Conclude with `(by with_unfolding_all exact ((HEq.refl (y.prtE F bb π)) :))`. Introduce `i π`. Unfold `Hd.prtW`. Rewrite using `[isotL_eq a b]`.
-
-Use `delta isotLB`. Rewrite using `[hW i]`. Conclude with `(by with_unfolding_all exact ((HEq.refl (y.prtW F i π)) :))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reps_parts_tr : ∀ (B : Base) (C : Cols B) (a b : Late B C) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (Ks : Type) [Field Ks] [NumberField Ks] [iK : Algebra Ks a.D.what₂.LL] (A : FamIn a.D.what₂.LL G Pl0 T a.D.R.m) (R : RealDat a.D A Ks) (F : Face a.D A) (y : Hd R) (y' : HdB b R), Same b y y' → (∀ (Φ : Type) (rep : Φ → _), Reps y F rep → @Reps b.D G _ _ Pl0 T (famM b A) Ks _ _ (alg b iK) (real b R) y' (face b F) Φ ((by exact rep))) ∧ (∀ bb π, HEq (@Hd.prtE b.D G _ _ Pl0 T (famM b A) Ks _ _ (alg b iK) (real b R) y' (face b F) bb ((by exact π))) (y.prtE F bb π)) ∧ ∀ i π, HEq (@Hd.prtW b.D G _ _ Pl0 T (famM b A) Ks _ _ (alg b iK) (real b R) y' (face b F) ((by exact i)) ((by exact π))) (y.prtW F i π) := by
   intro B C a b G _ _ Pl0 T Ks _ _ iK A R F y y' hs

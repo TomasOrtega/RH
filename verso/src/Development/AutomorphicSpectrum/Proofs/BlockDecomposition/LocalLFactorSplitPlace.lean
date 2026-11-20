@@ -25,7 +25,7 @@ section Local
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Introduce `u hu` and use `by have h1 : a u = 1 := MonoidHom.mem_ker.mp (ha hu) have h2 : b u = 1 := MonoidHom.mem_ker.mp (hb hu) exact MonoidHom.mem_ker.mpr (by simp [h1, h2])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unr_mul {a b : Fˣ →* ℂˣ} (ha : IsUnramifiedChar a) (hb : IsUnramifiedChar b) :
     IsUnramifiedChar (a * b) := fun u hu => by
@@ -34,7 +34,7 @@ theorem unr_mul {a b : Fˣ →* ℂˣ} (ha : IsUnramifiedChar a) (hb : IsUnramif
   exact MonoidHom.mem_ker.mpr (by simp [h1, h2])
 
 /- English proof (translation)
-Introduce `u hu` and use `by have h1 : a u = 1 := MonoidHom.mem_ker.mp (ha hu) exact MonoidHom.mem_ker.mpr (by simp [h1])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unr_inv {a : Fˣ →* ℂˣ} (ha : IsUnramifiedChar a) : IsUnramifiedChar a⁻¹ := fun u hu => by
   have h1 : a u = 1 := MonoidHom.mem_ker.mp (ha hu)
@@ -43,19 +43,17 @@ theorem unr_inv {a : Fˣ →* ℂˣ} (ha : IsUnramifiedChar a) : IsUnramifiedCha
 end Local
 
 /- English proof (translation)
-Establish `hs` using `SemiLocal.sum_ramificationIdx_mul_inertiaDeg K v`. Rewrite `hs` using `[h2]`. Use `set G : SemiLocal.PlacesOver K v → ℕ := fun x => x.1.asIdeal.ramificationIdx (𝓞 ℚ) * x.1.asIdeal.inertiaDeg (𝓞 ℚ) with hG`. Establish `hpos : ∀ x, 1 ≤ G x` using `fun x => by`. Establish `h` using `finrank_adicCompletion v x.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 < Module.finrank (v.adicCompletion ℚ) (x.1.adicCompletion K)` using `Module.finrank_pos`. Rewrite `h3` using `[h]`. Conclude with `h3`. Use `set a : SemiLocal.PlacesOver K v := ⟨w₁, h₁⟩ with ha`. Use `set b : SemiLocal.PlacesOver K v := ⟨w₂, h₂⟩ with hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : a ≠ b` using `fun h => hne (congrArg Subtype.val h)`. Establish `hsum : ∑ x ∈ Finset.univ \ {a, b}, G x + (G a + G b) = 2`. Rewrite using `[← Finset.sum_pair hab, Finset.sum_sdiff (Finset.subset_univ _)]`. Conclude with `hs`. Establish `ha1` using `hpos a`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hb1` using `hpos b`. Establish `hmem : ∀ x : SemiLocal.PlacesOver K v, x = a ∨ x = b` using `fun x => by`. Assume the negation of the conclusion as `hx`. Establish `hx' : x ∈ Finset.univ \ ({a, b} : Finset (SemiLocal.PlacesOver K v))`. Simplify using `using hx`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h4` using `Finset.single_le_sum (f := G) (fun _ _ => Nat.zero_le _) hx'`. Establish `h5` using `hpos x`. Use linear arithmetic over natural numbers and integers. Use `⟨fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Break down `hmem ⟨w, hw⟩ with h | h` into its components or cases.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl (congrArg Subtype.val h)`. Conclude with `Or.inr (congrArg Subtype.val h)`. Establish `h6 : G a = 1` using `by omega`. Establish `h7 : G b = 1` using `by omega`. Break down `hmem ⟨w, hw⟩ with h | h` into its components or cases.
-
-Establish `: G ⟨w, hw⟩ = 1` using `h ▸ h6`. Conclude with `this`. Establish `: G ⟨w, hw⟩ = 1` using `h ▸ h7`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem places_of_two (h2 : Module.finrank ℚ K = 2) (v : Pl) (w₁ w₂ : PlK K)
     [h₁ : w₁.asIdeal.LiesOver v.asIdeal] [h₂ : w₂.asIdeal.LiesOver v.asIdeal] (hne : w₁ ≠ w₂) :
@@ -106,7 +104,7 @@ variable (v : Pl) (w : PlK K) [hw : w.asIdeal.LiesOver v.asIdeal]
 abbrev iota : (Qv v)ˣ →* (Kv K w)ˣ := Units.map (algebraMap (Qv v) (Kv K w)).toMonoidHom
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show Algebra.norm (Qv v) (algebraMap (Qv v) (Kv K w) (a : Qv v)) = a`. Rewrite using `[Algebra.norm_algebraMap, hd, pow_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_iota (hd : Module.finrank (Qv v) (Kv K w) = 1) (a : (Qv v)ˣ) :
     nrm v w (iota v w a) = a := by
@@ -115,7 +113,7 @@ theorem nrm_iota (hd : Module.finrank (Qv v) (Kv K w) = 1) (a : (Qv v)ˣ) :
   rw [Algebra.norm_algebraMap, hd, pow_one]
 
 /- English proof (translation)
-Establish `hx : algebraMap (Qv v) (Kv K w) (unifUnit (Qv v) : Qv v) ≠ 0` using `by simp`. Establish `h1` using `valued_algebraMap_adicCompletion v w (unifUnit (Qv v) : Qv v)`. Rewrite `h1` using `[he, pow_one, valued_eq_exp_neg_ord hx, valued_eq_exp_neg_ord (Units.ne_zero _), ord_unifUnit]`. Conclude with `neg_injective (WithZero.exp_injective h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_iota (he : w.asIdeal.ramificationIdx (𝓞 ℚ) = 1) :
     ord ((iota v w (unifUnit (Qv v)) : (Kv K w)ˣ) : Kv K w) = 1 := by
@@ -126,7 +124,7 @@ theorem ord_iota (he : w.asIdeal.ramificationIdx (𝓞 ℚ) = 1) :
   exact neg_injective (WithZero.exp_injective h1)
 
 /- English proof (translation)
-Rewrite using `[residueCard_adicCompletion, residueCard_adicCompletion, Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal v.asIdeal v.isPrime v.ne_bot, Ideal.inertiaDeg'_eq_inertiaDeg, hf, pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residueCard_eq (hf : w.asIdeal.inertiaDeg (𝓞 ℚ) = 1) :
     residueCard (Kv K w) = residueCard (Qv v) := by
@@ -135,7 +133,7 @@ theorem residueCard_eq (hf : w.asIdeal.inertiaDeg (𝓞 ℚ) = 1) :
     Ideal.inertiaDeg'_eq_inertiaDeg, hf, pow_one]
 
 /- English proof (translation)
-Rewrite using `[localLFactor_of_isUnramified hμ, quasiChar_apply_eq_of_isUnramified hμ (ord_iota v w he), residueCard_eq v w hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem localLFactor_place (he : w.asIdeal.ramificationIdx (𝓞 ℚ) = 1)
     (hf : w.asIdeal.inertiaDeg (𝓞 ℚ) = 1) {μ : (Kv K w)ˣ →* ℂˣ} (hμ : IsUnramifiedChar μ) (s : ℂ) :
@@ -145,9 +143,9 @@ theorem localLFactor_place (he : w.asIdeal.ramificationIdx (𝓞 ℚ) = 1)
     residueCard_eq v w hf]
 
 /- English proof (translation)
-Establish `hν : IsUnramifiedChar (DK.ν w)`. Rewrite using `[hBC.nu v w]`. Conclude with `GlobalTheory.CompanionTheory.BaseChangeData.isUnramifiedChar_comp_nrm v w (D.unr v hv)`. Establish `hval : DK.ν w (iota v w (unifUnit (Qv v))) = D.ν v (unifUnit (Qv v))`. Rewrite using `[hBC.nu v w, MonoidHom.comp_apply, nrm_iota v w hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `lf3`. Rewrite using `[localLFactor_place v w he hf (unr_mul hν hC), localLFactor_place v w he hf hC, localLFactor_place v w he hf (unr_mul (unr_inv hν) hC), Fin.prod_univ_three]`. Simplify using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hval]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem local_L_factor_split_place (D : Dat) (DK : DatK K) (hBC : IsBC D DK) (hv : v ∉ D.bad)
     (hd : Module.finrank (Qv v) (Kv K w) = 1) (he : w.asIdeal.ramificationIdx (𝓞 ℚ) = 1)
@@ -166,7 +164,7 @@ theorem local_L_factor_split_place (D : Dat) (DK : DatK K) (hBC : IsBC D DK) (hv
   simp [MonoidHom.mul_apply, MonoidHom.inv_apply, hval]
 
 /- English proof (translation)
-Use `⟨(GodementSection.continuous_localChar c w).comp (Continuous.units_map _ (_root_.continuous_algebraMap (Qv v) (Kv K w))), fun x => ?_⟩` and prove the remaining obligations. Use `show ‖((localChar c w _ : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[GodementSection.coe_localChar]`. Conclude with `Circle.norm_coe _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit1_cAt (c : HeckeCharacter K) : IsUnit1 (cAt c v w) := by
   refine ⟨(GodementSection.continuous_localChar c w).comp
@@ -178,7 +176,7 @@ theorem isUnit1_cAt (c : HeckeCharacter K) : IsUnit1 (cAt c v w) := by
 end Place
 
 /- English proof (translation)
-Establish `h1` using `GodementSection.localChar_mul_inv (1 : HeckeCharacter K) c w`. Establish `h2` using `GodementSection.localChar_mul_inv c c w`. Rewrite `h2` using `[mul_inv_cancel, mul_inv_cancel]`. Rewrite `h1` using `[one_mul, h2, one_mul]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localChar_inv (c : HeckeCharacter K) (w : PlK K) :
     localChar c⁻¹ w = (localChar c w)⁻¹ := by
@@ -189,9 +187,7 @@ theorem localChar_inv (c : HeckeCharacter K) (w : PlK K) :
   exact h1
 
 /- English proof (translation)
-Establish `hab : (⟨w₁, h₁⟩ : {w : PlK K // w.asIdeal.LiesOver v.asIdeal}) ≠ ⟨w₂, h₂⟩` using `fun h => hne (congrArg Subtype.val h)`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset f (s := {⟨w₁, h₁⟩, ⟨w₂, h₂⟩}), Finset.prod_pair hab]`. Introduce `x _`. Break down `hall x.1 x.2 with h | h` into its components or cases. Conclude with `Finset.mem_coe.2 (Finset.mem_insert.2 (Or.inl (Subtype.ext h)))`.
-
-Conclude with `Finset.mem_coe.2 (Finset.mem_insert_of_mem (Finset.mem_singleton.2 (Subtype.ext h)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem finprod_places (v : Pl) (w₁ w₂ : PlK K) (h₁ : w₁.asIdeal.LiesOver v.asIdeal)
     (h₂ : w₂.asIdeal.LiesOver v.asIdeal) (hne : w₁ ≠ w₂)
@@ -209,13 +205,13 @@ theorem finprod_places (v : Pl) (w₁ w₂ : PlK K) (h₁ : w₁.asIdeal.LiesOve
   · exact Finset.mem_coe.2 (Finset.mem_insert_of_mem (Finset.mem_singleton.2 (Subtype.ext h)))
 
 /- English proof (translation)
-Introduce `K _ _ h2 D DK hBC c v hv hc w₁ w₂ h₁ h₂ hne`. Take `⟨hall, hef⟩` from `places_of_two h2 v w₁ w₂ hne`. Establish `he : ∀ (w : PlK K) [w.asIdeal.LiesOver v.asIdeal], w.asIdeal.ramificationIdx (𝓞 ℚ) = 1` using `fun w _ => (hc w).2`. Establish `hf : ∀ (w : PlK K) [hw : w.asIdeal.LiesOver v.asIdeal], w.asIdeal.inertiaDeg (𝓞 ℚ) = 1` using `fun w hw => Nat.eq_one_of_mul_eq_one_left (hef w hw)`. Establish `hd : ∀ (w : PlK K) [w.asIdeal.LiesOver v.asIdeal], Module.finrank (Qv v) (Kv K w) = 1` using `fun w _ => by rw [finrank_adicCompletion v w, he w, hf w, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu : ∀ (w : PlK K) [w.asIdeal.LiesOver v.asIdeal], IsUnramifiedChar (cAt c v w)` using `fun w _ => GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w) _ (hc w).1`. Use `⟨isUnit1_cAt v w₁ c, isUnit1_cAt v w₂ c, hcu w₁, hcu w₂, fun s => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Unfold `lfV`. Rewrite using `[finprod_places v w₁ w₂ h₁ h₂ hne hall]`. Simplify using `only [Fin.prod_univ_two, Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[local_L_factor_split_place v w₁ D DK hBC hv (hd w₁) (he w₁) (hf w₁) (hc w₁).1, local_L_factor_split_place v w₂ D DK hBC hv (hd w₂) (he w₂) (hf w₂) (hc w₂).1]`. Both sides reduce to the same expression. Unfold `lfV`. Rewrite using `[finprod_places v w₁ w₂ h₁ h₂ hne hall]`. Simplify using `only [Fin.prod_univ_two, Finset.prod_mul_distrib, localChar_inv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[local_L_factor_split_place v w₁ D DK hBC hv (hd w₁) (he w₁) (hf w₁) (unr_inv (hc w₁).1), local_L_factor_split_place v w₂ D DK hBC hv (hd w₂) (he w₂) (hf w₂) (unr_inv (hc w₂).1)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem split_lfV : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (D : Dat) (DK : DatK K), IsBC D DK → ∀ (c : HeckeCharacter K) (v : Pl), v ∉ D.bad → (∀ (w : PlK K) [w.asIdeal.LiesOver v.asIdeal], IsUnramifiedChar (localChar c w) ∧ w.asIdeal.ramificationIdx (𝓞 ℚ) = 1) → ∀ (w₁ w₂ : PlK K) [w₁.asIdeal.LiesOver v.asIdeal] [w₂.asIdeal.LiesOver v.asIdeal], w₁ ≠ w₂ → IsUnit1 (cAt c v w₁) ∧ IsUnit1 (cAt c v w₂) ∧ IsUnramifiedChar (cAt c v w₁) ∧ IsUnramifiedChar (cAt c v w₂) ∧ ∀ s : ℂ, lfV DK c v s = ∏ i : Fin 3, ∏ j : Fin 2, (1 - ((![D.ν v (unifUnit (Qv v)), 1, (D.ν v (unifUnit (Qv v)))⁻¹] : Fin 3 → ℂˣ) i : ℂ) * (((![cAt c v w₁ (unifUnit (Qv v)), cAt c v w₂ (unifUnit (Qv v))] : Fin 2 → ℂˣ) j : ℂˣ) : ℂ) * (residueCard (Qv v) : ℂ) ^ (-s))⁻¹ ∧ lfV DK c⁻¹ v s = ∏ i : Fin 3, ∏ j : Fin 2, (1 - ((![D.ν v (unifUnit (Qv v)), 1, (D.ν v (unifUnit (Qv v)))⁻¹] : Fin 3 → ℂˣ) i : ℂ) * ((((![cAt c v w₁ (unifUnit (Qv v)), cAt c v w₂ (unifUnit (Qv v))] : Fin 2 → ℂˣ) j)⁻¹ : ℂˣ) : ℂ) * (residueCard (Qv v) : ℂ) ^ (-s))⁻¹ := by
   intro K _ _ h2 D DK hBC c v hv hc w₁ w₂ h₁ h₂ hne

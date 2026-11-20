@@ -8,7 +8,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Unfold `wt`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 private theorem wt_nonneg' {F : Type} [Field F] [NumberField F]
     (K : Set (Fin 4 → FiniteAdeleRing (𝓞 F) F)) (N : ℕ) (v : V4 F) : 0 ≤ wt K N v := by
@@ -18,19 +18,17 @@ private theorem wt_nonneg' {F : Type} [Field F] [NumberField F]
   · exact le_rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W φ hφ y hy c hc`. Take `⟨K, hK, hBK⟩` from `hatMaj F E D W φ hφ y hy`. Take `⟨N, hN⟩` from `wtSum F`. Take `⟨C, hC⟩` from `hN K hK c hc`. Take `⟨B, hB⟩` from `hBK N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨|B| * C, fun b a k hk hca => ?_⟩` and prove the remaining obligations. Take `⟨hs, hle⟩` from `hC a hca`. Establish `hab : 0 < ab a` using `(IdeleGroup.ideleModule F a).2`. Set `ι : (Fin 2 → F) → (Fin 4 → F)` to `fun ξ => ![0, 0, ξ 0, ξ 1]`. Establish `hι : Function.Injective ι`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `ξ ξ' h`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `congrFun h 2`. Conclude with `congrFun h 3`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hpt : ∀ ξ : Fin 2 → F, (![0, ((a⁻¹ : (A F)ˣ) : A F) * 0, a * rt (ξ 0), a * rt (ξ 1)] : V4 F) = sc a (ι ξ)`. Introduce `ξ`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [sc, ι]`. Establish `hterm : ∀ ξ : Fin 2 → F, ‖hat (W.Om (nU b * mD a * k) (W.L (infGL E 2 y) φ)).1 ![0, 0, rt (ξ 0), rt (ξ 1)]‖ ≤ |B| * ab a * wt K N (sc a (ι ξ))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `ξ`. Establish `h` using `hB b a k hk 0 (rt (ξ 0)) (rt (ξ 1))`. Rewrite `h` using `[hpt]`. Use `h.trans ?_` and prove the remaining obligations. Establish `hw` using `wt_nonneg' K N (sc a (ι ξ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: B ≤ |B|` using `le_abs_self B`. Use `gcongr`. Establish `hsι : Summable fun ξ : Fin 2 → F => wt K N (sc a (ι ξ))` using `hs.comp_injective hι`. Establish `hsn : Summable fun ξ : Fin 2 → F => ‖hat (W.Om (nU b * mD a * k) (W.L (infGL E 2 y) φ)).1 ![0, 0, rt (ξ 0), rt (ξ 1)]‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hterm (hsι.mul_left _)`. Establish `hsum : ∑' ξ : Fin 2 → F, wt K N (sc a (ι ξ)) ≤ C` using `(Summable.tsum_le_tsum_of_inj ι hι (fun _ _ => wt_nonneg' K N _) (fun _ => le_rfl) hsι hs).trans hle`.
-
-Unfold `ThRow`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.rowMaj :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), RowMaj W := by

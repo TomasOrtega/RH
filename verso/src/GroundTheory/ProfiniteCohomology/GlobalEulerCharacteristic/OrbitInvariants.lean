@@ -19,9 +19,9 @@ variable {k G H V W : Type*} [CommRing k] [Group G] [Group H] [AddCommGroup V] [
   [AddCommGroup W] [Module k W] (ρ : Representation k G V)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_invariants, mem_invariants]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨_, y, rfl⟩`. Conclude with `h y`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h y`. Conclude with `h ⟨f y, y, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem invariants_comp_eq_range (f : H →* G) :
     (Representation.invariants (ρ.comp f)) = (Representation.invariants (ρ.comp f.range.subtype)) := by
@@ -34,11 +34,11 @@ theorem invariants_comp_eq_range (f : H →* G) :
     exact h ⟨f y, y, rfl⟩
 
 /- English proof (translation)
-Establish `hmap : ρ.invariants.map (e : V →ₗ[k] W) = σ.invariants`. Use extensionality with `w`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩ g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `σ g (e v) = e v`. Rewrite using `[← he, hv g]`. Introduce `hw`. Use `⟨e.symm w, fun g => e.injective ?_, e.apply_symm_apply w⟩` and prove the remaining obligations. Rewrite using `[he, e.apply_symm_apply, hw g]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmap, LinearEquiv.finrank_map_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_invariants_eq_of_linearEquiv {σ : Representation k G W} (e : V ≃ₗ[k] W)
     (he : ∀ g v, e (ρ g v) = σ g (e v)) :
@@ -56,15 +56,13 @@ theorem finrank_invariants_eq_of_linearEquiv {σ : Representation k G W} (e : V 
   rw [← hmap, LinearEquiv.finrank_map_eq]
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ (Representation.invariants (ρ.comp K.subtype)), ρ g x ∈ (Representation.invariants (ρ.comp (K.map (MulAut.conj g).toMonoidHom).subtype))`. Introduce and unpack `x hx ⟨_, h, hh, rfl⟩`. Establish `hx' : ρ h x = x` using `hx ⟨h, hh⟩`. Express the relevant statement in the definitionally equal form `ρ (g * h * g⁻¹) (ρ g x) = ρ g x`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ← Module.End.mul_apply (ρ g⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, hx']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ y ∈ (Representation.invariants (ρ.comp (K.map (MulAut.conj g).toMonoidHom).subtype)), ρ g⁻¹ y ∈ (Representation.invariants (ρ.comp K.subtype))`. Introduce and unpack `y hy ⟨h, hh⟩`. Establish `hy' : ρ (g * h * g⁻¹) y = y` using `hy ⟨g * h * g⁻¹, h, hh, rfl⟩`. Express the relevant statement in the definitionally equal form `ρ h (ρ g⁻¹ y) = ρ g⁻¹ y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[show g⁻¹ * (g * h * g⁻¹) = h * g⁻¹ by group, map_mul, Module.End.mul_apply]`. Use `_ = ρ g⁻¹ y := by rw [map_mul, Module.End.mul_apply, hy']`. Set `e : (Representation.invariants (ρ.comp K.subtype)) ≃ₗ[k] (Representation.invariants (ρ.comp (K.map (MulAut.conj g).toMonoidHom).subtype))` to `LinearEquiv.ofLinearMap ((ρ g).restrict h1) ((ρ g⁻¹).restrict h2) (by`. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `ρ g (ρ g⁻¹ y) = y`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply])`. Use the proof step `(by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ρ g⁻¹ (ρ g x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply])`.
-
-Conclude with `e.finrank_eq.symm`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_invariants_map_conj (K : Subgroup G) (g : G) :
     Module.finrank k (Representation.invariants (ρ.comp (K.map (MulAut.conj g).toMonoidHom).subtype)) =
@@ -98,7 +96,7 @@ theorem finrank_invariants_map_conj (K : Subgroup G) (g : G) :
   exact e.finrank_eq.symm
 
 /- English proof (translation)
-Rewrite using `[stabilizer_smul_eq_stabilizer_map_conj]`. Conclude with `finrank_invariants_map_conj ρ _ g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_invariants_stabilizer_smul {X : Type*} [MulAction G X] (g : G) (x : X) :
     Module.finrank k (Representation.invariants (ρ.comp (MulAction.stabilizer G (g • x)).subtype)) =
@@ -114,7 +112,7 @@ variable {k G V : Type*} [Field k] [Group G] [Fintype G] [AddCommGroup V] [Modul
   (ρ : Representation k G V)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `ρ.averageMap_invariant v`. Introduce `v hv`. Conclude with `⟨v, ρ.averageMap_id v hv⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_averageMap [Invertible (Fintype.card G : k)] :
     LinearMap.range ρ.averageMap = ρ.invariants := by
@@ -125,14 +123,14 @@ theorem range_averageMap [Invertible (Fintype.card G : k)] :
     exact ⟨v, ρ.averageMap_id v hv⟩
 
 /- English proof (translation)
-Simplify using `[averageMap, GroupAlgebra.average, map_sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem averageMap_apply [Invertible (Fintype.card G : k)] (v : V) :
     ρ.averageMap v = ⅟(Fintype.card G : k) • ∑ g : G, ρ g v := by
   simp [averageMap, GroupAlgebra.average, map_sum, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `f v`. Rewrite using `[averageMap_apply, Module.Dual.transpose_apply, LinearMap.comp_apply, averageMap_apply, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum]`. Use `congr 1`. Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ fun g => by simp [Module.Dual.transpose_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem averageMap_dual [Invertible (Fintype.card G : k)] :
     ρ.dual.averageMap = Module.Dual.transpose (R := k) ρ.averageMap := by
@@ -143,7 +141,7 @@ theorem averageMap_dual [Invertible (Fintype.card G : k)] :
   exact Fintype.sum_equiv (Equiv.inv G) _ _ fun g => by simp [Module.Dual.transpose_apply]
 
 /- English proof (translation)
-Set `_` to `invertibleOfNonzero hG`. Rewrite using `[← range_averageMap, ← range_averageMap, averageMap_dual]`. Conclude with `LinearMap.finrank_range_dualMap_eq_finrank_range _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_dual_invariants [FiniteDimensional k V] (hG : (Fintype.card G : k) ≠ 0) :
     Module.finrank k ρ.dual.invariants = Module.finrank k ρ.invariants := by
@@ -165,7 +163,7 @@ def equivariantFunctions : Submodule k (X → N) where
   smul_mem' c F hF g x := by simp [hF g x]
 
 /- English proof (translation)
-The claim follows from `Quotient.mk_out (s := orbitRel Γ X) x`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_out (x : X) : ∃ m : Γ, m • x = (Quotient.mk (orbitRel Γ X) x).out :=
   Quotient.mk_out (s := orbitRel Γ X) x
@@ -174,21 +172,21 @@ def orbitMover (x : X) : Γ :=
   (Classical.choose (exists_smul_eq_out (Γ := Γ) x))⁻¹
 
 /- English proof (translation)
-Rewrite using `[orbitMover, inv_smul_eq_iff]`. Conclude with `(Classical.choose_spec (exists_smul_eq_out (Γ := Γ) x)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitMover_smul (x : X) : orbitMover (Γ := Γ) x • (Quotient.mk (orbitRel Γ X) x).out = x := by
   rw [orbitMover, inv_smul_eq_iff]
   exact (Classical.choose_spec (exists_smul_eq_out (Γ := Γ) x)).symm
 
 /- English proof (translation)
-The claim follows from `Quotient.sound (mem_orbit x g)`.
+A detailed English derivation is pending.
 -/
 theorem orbitRel_mk_smul (g : Γ) (x : X) :
     Quotient.mk (orbitRel Γ X) (g • x) = Quotient.mk (orbitRel Γ X) x :=
   Quotient.sound (mem_orbit x g)
 
 /- English proof (translation)
-Introduce `h` and use `by change σ h (F ω.out) = F ω.out rw [← hF, mem_stabilizer_iff.1 h.2]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem apply_out_mem_invariants {F : X → N} (hF : F ∈ equivariantFunctions (X := X) σ)
     (ω : orbitRel.Quotient Γ X) :
@@ -204,19 +202,17 @@ def equivariantFunctionsToPi :
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0 : F.1 (Quotient.mk (orbitRel Γ X) x).out = 0` using `congrArg Subtype.val (congrFun hF (Quotient.mk (orbitRel Γ X) x))`. Express the relevant statement in the definitionally equal form `F.1 x = 0`. Rewrite using `[← orbitMover_smul (Γ := Γ) x, F.2, h0, map_zero]`. Introduce `n`. Set `m : orbitRel.Quotient Γ X → N` to `fun ω => (n ω).1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hm : ∀ ω (h : Γ), h • ω.out = ω.out → σ h (m ω) = m ω` using `fun ω h hh => (n ω).2 ⟨h, mem_stabilizer_iff.2 hh⟩`. Set `F : X → N` to `fun x => σ (orbitMover x) (m (Quotient.mk (orbitRel Γ X) x))`. Establish `hF : F ∈ equivariantFunctions (X` using `X) σ := by`. Introduce `g x`. Use `set ω := Quotient.mk (orbitRel Γ X) x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `orbitMover_smul (Γ := Γ) (g • x)`. Rewrite `h1` using `[orbitRel_mk_smul]`. Establish `h2` using `orbitMover_smul (Γ := Γ) x`. Express the relevant statement in the definitionally equal form `σ (orbitMover (g • x)) (m (Quotient.mk (orbitRel Γ X) (g • x))) = σ g (σ (orbitMover x) (m ω))`. Rewrite using `[orbitRel_mk_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hstab : ((g * orbitMover x)⁻¹ * orbitMover (g • x)) • ω.out = ω.out`. Rewrite using `[mul_smul, h1, mul_inv_rev, mul_smul, inv_smul_smul, inv_smul_eq_iff, h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply (σ (g * orbitMover x)), ← map_mul, mul_inv_cancel_left]`. Use `_ = σ (g * orbitMover x) (m ω) := by rw [hm ω _ hstab]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `_ = σ g (σ (orbitMover x) (m ω)) := by rw [map_mul, Module.End.mul_apply]`. Use `⟨⟨F, hF⟩, funext fun ω => Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (orbitMover ω.out) (m (Quotient.mk (orbitRel Γ X) ω.out)) = m ω`. Establish `h3` using `orbitMover_smul (Γ := Γ) ω.out`. Establish `e : Quotient.mk (orbitRel Γ X) ω.out = ω` using `Quotient.out_eq ω`.
-
-Rewrite `h3`, the goal using `[e]`. Conclude with `hm ω _ h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equivariantFunctionsToPi_bijective :
     Function.Bijective (equivariantFunctionsToPi (X := X) σ) := by
@@ -268,16 +264,16 @@ def funTensorEquiv : (X → k) ⊗[k] N ≃ₗ[k] (X → N) :=
   (TensorProduct.comm k (X → k) N).trans (TensorProduct.piScalarRight k k N X)
 
 /- English proof (translation)
-Simplify using `[funTensorEquiv, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem funTensorEquiv_tmul (f : X → k) (n : N) (x : X) :
     funTensorEquiv (f ⊗ₜ[k] n) x = f x • n := by
   simp [funTensorEquiv, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f n`. Rewrite using `[Representation.tprod_apply, TensorProduct.map_tmul, funTensorEquiv_tmul, funTensorEquiv_tmul, GroundTheory.Global.funPermRep_apply, map_smul]`. Consider the case `add s t hs ht`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, map_add, Pi.add_apply, hs, ht, map_add, Pi.add_apply, map_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem funTensorEquiv_tprod (g : Γ) (t : (X → k) ⊗[k] N) (x : X) :
     funTensorEquiv (((GroundTheory.Global.funPermRep k Γ X).tprod σ) g t) x =
@@ -291,11 +287,11 @@ theorem funTensorEquiv_tprod (g : Γ) (t : (X → k) ⊗[k] N) (x : X) :
     rw [map_add, map_add, Pi.add_apply, hs, ht, map_add, Pi.add_apply, map_add]
 
 /- English proof (translation)
-Use extensionality with `F`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩ g x`. Establish `h` using `congrFun (congrArg funTensorEquiv (ht g)) (g • x)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `funTensorEquiv t (g • x) = σ g (funTensorEquiv t x)`. Rewrite `h` using `[funTensorEquiv_tprod, inv_smul_smul]`. Conclude with `h.symm`. Introduce `hF`. Use `⟨funTensorEquiv.symm F, fun g => funTensorEquiv.injective ?_, funTensorEquiv.apply_symm_apply F⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[funTensorEquiv_tprod, LinearEquiv.apply_symm_apply, ← hF, smul_inv_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_invariants_funTensorEquiv :
     ((GroundTheory.Global.funPermRep k Γ X).tprod σ).invariants.map
@@ -315,7 +311,7 @@ theorem map_invariants_funTensorEquiv :
     rw [funTensorEquiv_tprod, LinearEquiv.apply_symm_apply, ← hF, smul_inv_smul]
 
 /- English proof (translation)
-Rewrite using `[← LinearEquiv.finrank_map_eq (funTensorEquiv (k := k) (X := X) (N := N)), map_invariants_funTensorEquiv, (equivariantFunctionsEquivPi σ).finrank_eq, Module.finrank_pi_fintype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_invariants_funPermRep_tprod [FiniteDimensional k N]
     [Fintype (orbitRel.Quotient Γ X)] :
@@ -331,13 +327,13 @@ section DualLine
 variable {k G : Type u} [Field k] [Group G] (T M : Rep.{u} k G)
 
 /- English proof (translation)
-Simplify using `using (b.sum_repr t).symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_coord_smul_basis (b : Module.Basis (Fin 1) k T) (t : T) : t = b.coord 0 t • b 0 := by
   simpa using (b.sum_repr t).symm
 
 /- English proof (translation)
-Use `set c := b.coord 0 (A (b 0))`. Establish `hA : A (b 0) = c • b 0` using `eq_coord_smul_basis T b (A (b 0))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem apply_eq_coord_smul (b : Module.Basis (Fin 1) k T) (A : T →ₗ[k] T) (t : T) :
     A t = b.coord 0 (A (b 0)) • t := by
@@ -367,9 +363,9 @@ theorem dualLineMap_apply (f : M →ₗ[k] T) (n : T →ₗ[k] M) :
   rfl
 
 /- English proof (translation)
-Use `set b : Module.Basis (Fin 1) k T := lineBasis T hT`. Use `set c := b.coord 0 (T.ρ g (b 0))`. Establish `hc : ∀ t, T.ρ g t = c • t` using `fun t => apply_eq_coord_smul T b (T.ρ g) t`. Use extensionality with `n`. Express the relevant statement in the definitionally equal form `b.coord 0 (T.ρ g (f (M.ρ g⁻¹ (n (b 0))))) = b.coord 0 (f (M.ρ g⁻¹ (n (T.ρ g⁻¹⁻¹ (b 0)))))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[inv_inv, hc, hc (b 0)]`. Simplify using `only [map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem dualLineMap_comm (g : G) (f : M →ₗ[k] T) :
     dualLineMap T M hT ((dualRep T M).ρ g f) = (homRep T M).ρ.dual g (dualLineMap T M hT f) := by
@@ -383,9 +379,9 @@ theorem dualLineMap_comm (g : G) (f : M →ₗ[k] T) :
   simp only [map_smul]
 
 /- English proof (translation)
-Use `set b : Module.Basis (Fin 1) k T := lineBasis T hT`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Use extensionality with `m`. Establish `h0` using `LinearMap.congr_fun hf ((b.coord 0).smulRight m)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[dualLineMap_apply, LinearMap.smulRight_apply]`. Establish `h : b.repr (f m) 0 = 0` using `by simpa [b] using h0`. Rewrite using `[LinearMap.zero_apply, eq_coord_smul_basis T b (f m), Module.Basis.coord_apply, h, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLineMap_injective : Function.Injective (dualLineMap T M hT) := by
   set b : Module.Basis (Fin 1) k T := lineBasis T hT
@@ -404,7 +400,7 @@ def dualLineEquiv [Module.Finite k M] : (M →ₗ[k] T) ≃ₗ[k] Module.Dual k 
       one_mul])
 
 /- English proof (translation)
-The claim follows from `dualLineMap_comm T M hT g f`.
+A detailed English derivation is pending.
 -/
 theorem dualLineEquiv_comm [Module.Finite k M] (g : G) (f : M →ₗ[k] T) :
     dualLineEquiv T M hT ((dualRep T M).ρ g f) = (homRep T M).ρ.dual g (dualLineEquiv T M hT f) :=
@@ -413,9 +409,9 @@ theorem dualLineEquiv_comm [Module.Finite k M] (g : G) (f : M →ₗ[k] T) :
 include hT in
 
 /- English proof (translation)
-Establish `: Module.Finite k T` using `Module.finite_of_finrank_eq_succ hT`. Establish `: Module.Finite k (T →ₗ[k] M)` using `inferInstance`. Rewrite using `[finrank_invariants_eq_of_linearEquiv ((dualRep T M).ρ.comp ψ) (dualLineEquiv T M hT) (σ := ((homRep T M).ρ.dual).comp ψ) fun h f => dualLineEquiv_comm T M hT (ψ h) f]`. Establish `e : ((homRep T M).ρ.dual).comp ψ = ((quotientRep P (homRep T M) hN).dual).comp ((QuotientGroup.mk' P).comp ψ)` using `rfl`. Rewrite using `[e, invariants_comp_eq_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finrank_dual_invariants ((quotientRep P (homRep T M) hN).comp ((QuotientGroup.mk' P).comp ψ).range.subtype) hD`.
+A detailed English derivation is pending.
 -/
 theorem finrank_invariants_dualRep_comp [Module.Finite k M] (P : Subgroup G) [P.Normal]
     (hN : ∀ (g : P) (n : homRep T M), (homRep T M).ρ g n = n)

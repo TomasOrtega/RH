@@ -9,7 +9,7 @@ namespace GlobalTheory.PFunBoundary
 open Filter Topology
 
 /- English proof (translation)
-Establish `h' : ContinuousAt ((f ∘ ψ.symm) ∘ ψ) x` using `h.comp (ψ.continuousAt hx)`. Use `h'.congr ?_` and prove the remaining obligations. Use `filter_upwards [ψ.eventually_left_inverse hx] with y hy`. Simplify using `[Function.comp, hy]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousAt_of_chart {e : ℕ} {X : Type} [TopologicalSpace X] {β : Type*}
     [TopologicalSpace β] (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) {x : X} (hx : x ∈ ψ.source)
@@ -20,11 +20,11 @@ theorem continuousAt_of_chart {e : ℕ} {X : Type} [TopologicalSpace X] {β : Ty
   simp [Function.comp, hy]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover x0`. Establish `hU : L.U x0 ∈ 𝓝 x0` using `(L.isOpen_U x0).mem_nhds (L.mem_U x0)`. Establish `hmem : A.chart j x0 ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U x0` using `⟨(A.chart j).map_source hj, by simp [(A.chart j).left_inv hj, L.mem_U x0]⟩`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U x0)` using `(A.chart j).isOpen_inter_preimage_symm (L.isOpen_U x0)`. Establish `hs : ContinuousAt (s x0) x0` using `continuousAt_of_chart (A.chart j) hj _ ((hsec.1 x0 j) _ hmem).continuousAt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : ContinuousAt (L.φ x0) x0` using `continuousAt_of_chart (A.chart j) hj _ ((hpot.1 x0 j).continuousOn.continuousAt (hopen.mem_nhds hmem))`. Establish `hF : ContinuousAt (fun z => ‖s x0 z‖ * Real.exp (-L.φ x0 z)) x0` using `hs.norm.mul (Real.continuous_exp.continuousAt.comp hφ.neg)`. Establish `hlt : ∀ᶠ z in 𝓝 x0, ‖s x0 z‖ * Real.exp (-L.φ x0 z) < δ` using `hF.eventually (gt_mem_nhds (by simpa [h0] using hδ))`. Use `filter_upwards [hlt, hU] with z hz hzU`. Establish `hglue` using `hsec.2 z x0 z ⟨L.mem_U z, hzU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [normSec]`. Rewrite using `[hglue]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_normSec_lt {d : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas d X)
     (L : LocPot X) (s : X → X → ℂ) (hpot : IsPotential A L) (hsec : IsSection A L s) {x0 : X}
@@ -51,17 +51,17 @@ theorem eventually_normSec_lt {d : ℕ} {X : Type} [TopologicalSpace X] (A : Fin
   exact hz
 
 /- English proof (translation)
-Introduce `d X _ A m α Λ σ c hB a x0 hx0 hbd`. Take `⟨-, -, hΛ, hc0, -⟩` from `hB`. Take `⟨i, hi⟩` from `hbd`. Take `⟨hpot, hsec, -, -⟩` from `hΛ i`. Establish `hTpos : 0 < Real.exp (2 * a / c)` using `Real.exp_pos _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev` using `eventually_normSec_lt A (Λ i) (σ i) hpot hsec hi (Real.exp_pos (-Real.exp (2 * a / c)))`. Rewrite `hx0` using `[mem_closure_iff_frequently]`. Take `⟨z, ⟨hzb, hza⟩, hz⟩` from `(hx0.and_eventually hev).exists`. Establish `hne : ∀ k, σ k z z ≠ 0` using `fun k hk => hzb ⟨k, hk⟩`. Establish `hpos : ∀ k, 0 < normSec (Λ k) (σ k) z` using `fun k => mul_pos (norm_pos_iff.2 (hne k)) (Real.exp_pos _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : ∀ k, logNormSec (Λ k) (σ k) z = Real.log (normSec (Λ k) (σ k) z)` using `fun k => rfl`. Establish `he1 : (1 : ℝ) ≤ Real.exp 1` using `Real.one_le_exp (by norm_num)`. Establish `hnn : ∀ k, 0 ≤ Real.log (rFun (Λ k) (σ k) z)`. Introduce `k`. Apply `Real.log_nonneg` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Real.log_nonpos (hpos k).le ((hΛ k).2.2.2 z)` as an intermediate fact. Simplify using `only [rFun, hlog k]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi' : Real.log (normSec (Λ i) (σ i) z) < -Real.exp (2 * a / c)` using `(Real.log_lt_iff_lt_exp (hpos i)).2 hz`. Establish `hri : Real.exp (2 * a / c) < rFun (Λ i) (σ i) z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [rFun, hlog i]`. Combine the linear relations using `[Real.exp_pos 1]`. Establish `hli : 2 * a / c < Real.log (rFun (Λ i) (σ i) z)` using `(Real.lt_log_iff_exp_lt (hTpos.trans hri)).2 hri`. Establish `hsum : Real.log (rFun (Λ i) (σ i) z) ≤ ∑ k, Real.log (rFun (Λ k) (σ k) z)` using `Finset.single_le_sum (fun k _ => hnn k) (Finset.mem_univ i)`. Establish `h2a : 2 * a < (∑ k, Real.log (rFun (Λ k) (σ k) z)) * c` using `(div_lt_iff₀ hc0).1 (hli.trans_le hsum)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [pFun] at hza`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem closure_superlevel_subset_compl : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X)
     (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),

@@ -15,13 +15,11 @@ set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha t J hJ i P hP`. Establish `hv : (J.G i).q.v = (J.pl i).under (𝓞 (I.rec7 l Z).host.F)`. Take `⟨ε, hε, hs⟩` from `(J.G i).q.above`. Conclude with `(GlobalTheory.IdemUnder.under_eq_of_isIdemAt _ _ _ _ ε (J.G i).idem hε hs).symm`. Establish `hQ : J.pl i ∈ I.SQ` using `I.Q_subset_SQ _ ((hW.tq.Q t (J.pl i)).1 (J.mem i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hok : I.Ok` using `hW.tr.ok`. Establish `key : ∀ PP : HeightOneSpectrum (𝓞 B.host.E), PP ∈ I.SQ → PP.under (𝓞 B.host.F) ≠ P.under (𝓞 B.host.F)`. Introduce `PP hPP e`. Apply `(GlobalTheory.Mem.LevTwist.good_of_mem hok hPP).2.2.2` to reduce the goal to its premises. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hP with hP | hP` into its components or cases. Establish `hPr` using `(GlobalTheory.BasePrimes.primes_ok B X).1`. Rewrite using `[(GlobalTheory.Mem.ReadTwist.plc_under_eq_iff (F := B.host.F) P (hPr.T_prime u)).2 (T_mem_vT hPr u ⟨P, hP⟩)]`. Conclude with `hok.T_mem u`. Conclude with `GlobalTheory.Mem.LevTwist.plc_mem hok hP`.
-
-Rewrite using `[hv]`. Conclude with `key (J.pl i) hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qj_place_ne_lev : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → ∀ t (J : QJ a t), J.Reads → ∀ (i : Fin J.r) (P : HeightOneSpectrum (𝓞 B.fields.E)), P ∈ (B.primes X).vT u ∨ P ∈ (B.primes X).vGs → (J.G i).q.v ≠ P.under (𝓞 B.host.F) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha t J hJ i P hP

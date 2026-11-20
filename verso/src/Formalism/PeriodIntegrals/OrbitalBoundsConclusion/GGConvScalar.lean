@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarConvolutionTrace.
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarConvolutionTrace.IntertwinerRankLeOne
 
 /- English proof (translation)
-The claim follows from `PI.GGConvScalarW.convScalarOfLit_of PI.GGConvScalarW.representation_conjugate_gamma PI.GGConvScalarW.representation_commutes_gamma PI.GGConvScalarW.averaging_operator_idempotent PI.GGConvScalarW.generic_iff_criterion PI.GGConvScalarW.intertwiner_rank_le_one PI.GGConvScalarW.schur …`.
+A detailed English derivation is pending.
 -/
 theorem convolution_scalar : Formalism.L2.SG.GGMirabolic.ConvScalarOfLit :=
   PI.GGConvScalarW.convScalarOfLit_of PI.GGConvScalarW.representation_conjugate_gamma PI.GGConvScalarW.representation_commutes_gamma

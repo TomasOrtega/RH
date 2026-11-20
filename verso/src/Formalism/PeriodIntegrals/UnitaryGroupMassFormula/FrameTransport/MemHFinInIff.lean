@@ -17,7 +17,7 @@ def Lm (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E) (J' : Matrix (Fin M) (Fin M) E
   J'⁻¹ * Formalism.UG.cT (σ : E →+* E) B * J
 
 /- English proof (translation)
-Establish `h : Lm σ J J' B * B = J'⁻¹ * J'`. Rewrite using `[hJ']`. Simplify using `only [Lm, Matrix.mul_assoc]`. Rewrite using `[h]`. Conclude with `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lm_mul {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {J' : Matrix (Fin M) (Fin M) E}
     {B : Matrix (Fin (M + 1)) (Fin M) E} (hJ' : J' = Formalism.UG.cT (σ : E →+* E) B * J * B)
@@ -29,11 +29,9 @@ theorem Lm_mul {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {J' : Matrix (Fin M) (
   exact Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hd)
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, hE, Formalism.UG.hform, Finset.sum_mul, mul_assoc, RingHom.coe_coe]`. Use `first`. Consider the case `rfl`. Consider the case `(rw [Finset.sum_comm]; done)`. Consider the case `(rw [Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`. Consider the case `(exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`. Consider the case `(simp only [Matrix.mulVec, Matrix.vecMul, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`.
-
-Consider the case `(simp only [Matrix.mulVec, Matrix.vecMul, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rowJ_mul {n m : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : Fin 1 → Fin n → E)
     (C : Matrix (Fin n) (Fin m) E) (k : Fin m) :
@@ -67,7 +65,7 @@ variable {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {J' : Matrix (Fin M) (Fin M)
   {B : Matrix (Fin (M + 1)) (Fin M) E} {x : Fin 1 → Fin (M + 1) → E} {b : E}
 
 /- English proof (translation)
-Establish `hc : (fun i => Xc x i 0) = x 0` using `rfl`. Use extensionality with `i j`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Rewrite using `[qm, Matrix.smul_mul, Matrix.smul_apply, rowJ_mul, hc, hx, Matrix.one_apply_eq, smul_eq_mul, inv_mul_cancel₀ hb]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem qm_mul_Xc (hb : b ≠ 0) (hx : hE σ J (x 0) (x 0) = b) : qm σ J x b * Xc x = 1 := by
   have hc : (fun i => Xc x i 0) = x 0 := rfl
@@ -78,7 +76,7 @@ theorem qm_mul_Xc (hb : b ≠ 0) (hx : hE σ J (x 0) (x 0) = b) : qm σ J x b * 
     inv_mul_cancel₀ hb]
 
 /- English proof (translation)
-Use extensionality with `i k`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Rewrite using `[qm, Matrix.smul_mul, Matrix.smul_apply, rowJ_mul, hxB, smul_zero, Matrix.zero_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem qm_mul_B (hxB : ∀ j, hE σ J (x 0) (fun i => B i j) = 0) : qm σ J x b * B = 0 := by
   ext i k
@@ -86,14 +84,14 @@ theorem qm_mul_B (hxB : ∀ j, hE σ J (x 0) (fun i => B i j) = 0) : qm σ J x b
   rw [qm, Matrix.smul_mul, Matrix.smul_apply, rowJ_mul, hxB, smul_zero, Matrix.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[Rm, Matrix.sub_mul, Matrix.mul_assoc (Lm σ J J' B * Xc x), qm_mul_Xc σ hb hx, Matrix.mul_one, sub_self]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem Rm_mul_Xc (hb : b ≠ 0) (hx : hE σ J (x 0) (x 0) = b) : Rm σ J J' B x b * Xc x = 0 := by
   rw [Rm, Matrix.sub_mul, Matrix.mul_assoc (Lm σ J J' B * Xc x), qm_mul_Xc σ hb hx, Matrix.mul_one,
     sub_self]
 
 /- English proof (translation)
-Rewrite using `[Rm, Matrix.sub_mul, Matrix.mul_assoc (Lm σ J J' B * Xc x), qm_mul_B σ hxB, Matrix.mul_zero, sub_zero, hLB]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem Rm_mul_B (hLB : Lm σ J J' B * B = 1) (hxB : ∀ j, hE σ J (x 0) (fun i => B i j) = 0) :
     Rm σ J J' B x b * B = 1 := by
@@ -101,7 +99,7 @@ theorem Rm_mul_B (hLB : Lm σ J J' B * B = 1) (hxB : ∀ j, hE σ J (x 0) (fun i
     sub_zero, hLB]
 
 /- English proof (translation)
-Establish `h1 : Matrix.fromRows (qm σ J x b) (Rm σ J J' B x b) * Matrix.fromCols (Xc x) B = 1`. Rewrite using `[Matrix.fromRows_mul_fromCols, qm_mul_Xc σ hb hx, qm_mul_B σ hxB, Rm_mul_Xc σ hb hx, Rm_mul_B σ hLB hxB, Matrix.fromBlocks_one]`. Establish `e : Fin 1 ⊕ Fin M ≃ Fin (M + 1)` using `Fintype.equivOfCardEq (by simp only [Fintype.card_sum, Fintype.card_fin]; omega)`. Establish `h2` using `(Matrix.mul_eq_one_comm_of_equiv e).mp h1`. Rewrite `h2` using `[Matrix.fromCols_mul_fromRows]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Xc_q_add_B_R (hb : b ≠ 0) (hx : hE σ J (x 0) (x 0) = b)
     (hxB : ∀ j, hE σ J (x 0) (fun i => B i j) = 0) (hLB : Lm σ J J' B * B = 1) :
@@ -122,13 +120,13 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M 
 variable (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem map_one_incl {n : Type} [Fintype n] [DecidableEq n] :
     (1 : Matrix n n E).map (inclR (F := F) (E := E) R) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Establish `hLB' : (Lm σ J J' B).map (inclR (F` using `F) (E := E) R) * B.map (inclR (F := F) (E := E) R) = 1 := by`. Rewrite using `[← Matrix.map_mul, hLB, map_one_incl]`. Rewrite using `[Matrix.mul_assoc, h, ← Matrix.mul_assoc, hLB', Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem formulaA {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {J' : Matrix (Fin M) (Fin M) E}
     {B : Matrix (Fin (M + 1)) (Fin M) E} (hLB : Lm σ J J' B * B = 1)
@@ -140,9 +138,9 @@ theorem formulaA {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {J' : Matrix (Fin M)
   rw [Matrix.mul_assoc, h, ← Matrix.mul_assoc, hLB', Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : (Xc x).map (inclR (F` using `F) (E := E) R) * (qm σ J x b).map (inclR (F := F) (E := E) R) + B.map (inclR (F := F) (E := E) R) * (Rm σ J J' B x b).map (inclR (F := F) (E := E) R) = 1 := by`. Establish `e1 : (Xc x * qm σ J x b).map (inclR (F` using `F) (E := E) R) = (Xc x).map (inclR (F := F) (E := E) R) * (qm σ J x b).map (inclR (F := F) (E := E) R) := Matrix.map_mul`. Establish `e2 : (B * Rm σ J J' B x b).map (inclR (F` using `F) (E := E) R) = B.map (inclR (F := F) (E := E) R) * (Rm σ J J' B x b).map (inclR (F := F) (E := E) R) := Matrix.map_mul`. Rewrite using `[← e1, ← e2, ← Matrix.map_add _ (map_add _), hdec, map_one_incl]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← h1, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hX, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formulaB {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {J' : Matrix (Fin M) (Fin M) E}
     {B : Matrix (Fin (M + 1)) (Fin M) E} {x : Fin 1 → Fin (M + 1) → E} {b : E}
@@ -164,9 +162,9 @@ theorem formulaB {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {J' : Matrix (Fin M)
       rw [← h1, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hX, h]
 
 /- English proof (translation)
-Establish `hg` using `g.2`. Simplify using `only [Hstab, MulAction.mem_stabilizer_iff] at hg`. Use `delta actTup ratTup at hg`. Use extensionality with `i j`. Take `rfl : j = 0` from `Subsingleton.elim _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (congrFun hg 0) i`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Xc, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply]`. Rewrite using `[← h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stab_mul_Xc {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {x : Fin 1 → Fin (M + 1) → E}
     (g : Hstab R σ J x) :
@@ -185,7 +183,7 @@ theorem stab_mul_Xc {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {x : Fin 1 → Fi
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, inclR, sigR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map_incl {m n : ℕ} (a : Matrix (Fin m) (Fin n) E) :
     (Formalism.UG.cT (σ : E →+* E) a).map (inclR (F := F) (E := E) R) =
@@ -194,15 +192,15 @@ theorem cT_map_incl {m n : ℕ} (a : Matrix (Fin m) (Fin n) E) :
   simp [Formalism.UG.cT, inclR, sigR]
 
 /- English proof (translation)
-Simplify using `only [HFinIn]`. Rewrite using `[Subgroup.mem_subgroupOf]`. Simplify using `only [HFin, Subgroup.mem_map, Formalism.UG.bc, Formalism.UG.UJ, toHR, HA.mat]`. Establish `inj : Function.Injective (fun M : Matrix (Fin n) (Fin n) E => M.map (inclR (F` using `F) (E := E) R)) := fun M N h => Matrix.ext fun i j => hinj (by simpa using congrArg (fun P => P i j) h)`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, -, hy⟩`. Rewrite using `[← hy]`. Conclude with `⟨⟨(y : Matrix (Fin n) (Fin n) E), rfl⟩, ⟨((y⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E), rfl⟩⟩`. Introduce and unpack `⟨⟨a, ha⟩, ⟨a', ha'⟩⟩`. Establish `h1 : a * a' = 1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply `inj` to reduce the goal to its premises. Use `show (a * a').map (inclR (F := F) (E := E) R) = (1 : Matrix (Fin n) (Fin n) E).map (inclR (F := F) (E := E) R)`. Rewrite using `[Matrix.map_mul, ← ha, ← ha', Units.mul_inv, map_one_incl]`. Establish `h2 : a' * a = 1`. Apply `inj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show (a' * a).map (inclR (F := F) (E := E) R) = (1 : Matrix (Fin n) (Fin n) E).map (inclR (F := F) (E := E) R)`. Rewrite using `[Matrix.map_mul, ← ha, ← ha', Units.inv_mul, map_one_incl]`. Use `⟨⟨a, a', h1, h2⟩, ?_, Units.ext ha.symm⟩` and prove the remaining obligations. Use `show Formalism.UG.cT (σ : E →+* E) a * J * a = J`. Apply `inj` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_mul, cT_map_incl, ← ha]`. Establish `hg` using `g.2`. Simplify using `only [HA, HR, Formalism.UG.UJ, JR, Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_setOf_eq] at hg`. Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 theorem mem_HFinIn_iff (hinj : Function.Injective (inclR (F := F) (E := E) R))
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : HA R σ J) :

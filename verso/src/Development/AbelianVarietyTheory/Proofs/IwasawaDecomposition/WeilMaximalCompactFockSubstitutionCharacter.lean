@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FockCompactAction
 
 /- English proof (translation)
-Substitute `h` using the available equality. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.trace_diagonal, Fin.sum_univ_add]`. Simplify using `[hε, sub_eq_add_neg]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_Jm {n p q : ℕ} (h : p + q = n) (ε : Fin n → Bool) (hε : ∀ a, ε a = decide ((a : ℕ) < p)) :
     (Formalism.REAL.Jm ε).trace = (p : ℂ) - q := by
@@ -28,11 +28,11 @@ theorem trace_Jm {n p q : ℕ} (h : p + q = n) (ε : Fin n → Bool) (hε : ∀ 
   simp [hε, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `hB : B * (Bᴴ * G) = 1` using `mul_eq_one_comm.1 h`. Establish `hi : B⁻¹ = Bᴴ * G` using `Matrix.inv_eq_right_inv hB`. Establish `hu : IsUnit B` using `IsUnit.of_mul_eq_one _ hB`. Establish `hG : G = (B⁻¹)ᴴ * B⁻¹`. Establish `h1 : (B⁻¹)ᴴ * Bᴴ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.conjTranspose_mul, hi, hB, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, hG]`. Use `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Matrix.isUnit_nonsing_inv_iff).2 hu`.
+A detailed English derivation is pending.
 -/
 theorem isCartanInv_one {n : ℕ} {G B : Matrix (Fin n) (Fin n) ℂ} (h : Bᴴ * G * B = 1) : IsCartanInv G 1 := by
   have hB : B * (Bᴴ * G) = 1 := mul_eq_one_comm.1 h
@@ -49,9 +49,9 @@ theorem isCartanInv_one {n : ℕ} {G B : Matrix (Fin n) (Fin n) ℂ} (h : Bᴴ *
   exact (Matrix.isUnit_nonsing_inv_iff).2 hu
 
 /- English proof (translation)
-Establish `hB : B * (Bᴴ * G) = 1` using `mul_eq_one_comm.1 h`. Establish `hi : B⁻¹ = Bᴴ * G` using `Matrix.inv_eq_right_inv hB`. Establish `h0 : B * B⁻¹ = 1` using `by rw [hi, hB]`. Establish `h1 : (B⁻¹)ᴴ * Bᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h0, Matrix.conjTranspose_one]`. Establish `hG : (B⁻¹)ᴴ * B⁻¹ = G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_unitary {n : ℕ} {G B g : Matrix (Fin n) (Fin n) ℂ} (h : Bᴴ * G * B = 1) (hg : gᴴ * G * g = G) :
     B⁻¹ * g * B ∈ Matrix.unitaryGroup (Fin n) ℂ := by
@@ -67,7 +67,7 @@ theorem conj_unitary {n : ℕ} {G B g : Matrix (Fin n) (Fin n) ℂ} (h : Bᴴ * 
     _ = 1 := by rw [hG, hg, h]
 
 /- English proof (translation)
-Establish `e : F' * A * F * x + F' * C * F = F' * (A * (F * x * F') + C) * F`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, h, Matrix.mul_one]`. Establish `hd : F'.det * F.det = 1` using `by rw [← Matrix.det_mul, h, Matrix.det_one]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul]`. Take the linear combination `(-(A * (F * x * F') + C).det) * hd`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem det_conj {n : ℕ} {F F' : Matrix (Fin n) (Fin n) ℂ} (h : F' * F = 1) (A C x : Matrix (Fin n) (Fin n) ℂ) :
     (A * (F * x * F') + C).det = (F' * A * F * x + F' * C * F).det := by
@@ -78,11 +78,11 @@ theorem det_conj {n : ℕ} {F F' : Matrix (Fin n) (Fin n) ℂ} (h : F' * F = 1) 
   linear_combination (-(A * (F * x * F') + C).det) * hd
 
 /- English proof (translation)
-Establish `hd : ∀ τ z (f : WO S T → ℂ), dRho (heisO ψ S T) θ τ z (c • f) = c • dRho (heisO ψ S T) θ τ z f`. Introduce `τ z f`. Use function extensionality and compare the values at `x`. Simplify using `only [Formalism.IndefR.Datum.dRho, heisO, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← deriv_const_mul_field]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Expand and normalize the polynomial expressions, which then agree. Use `(GlobalTheory.OrientedHeis.pureTensorL_intertwine (fun _ => True) trivial (fun _ _ _ _ => trivial) (fun _ _ _ => trivial) _ _ (c • (1 : Module.End ℂ (WO S T → ℂ))) (fun k f _ => ⟨trivial, ?_⟩) f trivial P).2.symm` and prove the remaining obligations. Simplify using `only [aPlusAll, Formalism.IndefR.Datum.aPlus, crea, LinearMap.smul_apply, Module.End.one_apply, hd]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_comm Complex.I c, ← smul_sub, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pureTensorO_smul {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -102,21 +102,21 @@ theorem pureTensorO_smul {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam 
   rw [smul_comm Complex.I c, ← smul_sub, smul_comm]
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om Sp M BS hom hθ hS hT hBS p q hpq hε a b ha hb x₁ x₂ x₃ h₁ h₂ h₃ f hf hv g hg h hh hk`. Establish `hu : ∀ τ, (BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt S g) * BS τ ∈ Matrix.unitaryGroup (Fin S.rank) ℂ` using `fun τ => conj_unitary (hBS τ) (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ S g τ)`. Use `⟨hu, fun P => ?_⟩` and prove the remaining obligations. Establish `f1 : ∀ τ, M.fr τ * (M.fr τ)⁻¹ = 1` using `fun τ => Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))`. Establish `f2 : ∀ τ, (M.fr τ)⁻¹ * M.fr τ = 1` using `fun τ => mul_eq_one_comm.1 (f1 τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1 : ∀ τ, BS τ * (BS τ)⁻¹ = 1` using `fun τ => by`. Establish `hB : BS τ * ((BS τ)ᴴ * gramAt D S τ) = 1` using `mul_eq_one_comm.1 (hBS τ)`. Rewrite using `[Matrix.inv_eq_right_inv hB, hB]`. Establish `hc : ∀ τ, cart M τ * compAt θ τ (Formalism.L2.Theta.mt T h) = compAt θ τ (Formalism.L2.Theta.mt T h) * cart M τ` using `fun τ => by`. Establish `e` using `congrArg (fun X => (M.fr τ)⁻¹ * X * M.fr τ) (hk τ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc, f2, Matrix.mul_one] at e`. Rewrite `e` using `[← Matrix.mul_assoc (M.fr τ)⁻¹ (M.fr τ), f2, Matrix.one_mul]`. Unfold `cart`. Simplify using `only [Matrix.mul_assoc]`. Conclude with `e.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htr : ∀ τ, (cart M τ).trace = (p τ : ℂ) - q τ` using `fun τ => by`. Unfold `cart`. Rewrite using `[Matrix.trace_mul_cycle, f1, Matrix.one_mul, trace_Jm (hpq τ) _ (hε τ)]`. Establish `hvac` using `GlobalTheory.T.vacuum_character_positive_definite_source D ψ θ S T χS χT om hom hθ hS hT (cart M) (fun τ => isCartanInv_one (hBS τ)) (GlobalTheory.Chain.VacVec.cart_isCartanInv M) a b ha hb x₁ x₂ x₃ h₁ h₂ (fun τ => by`. Rewrite using `[htr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun x : ℚ => (x : ℂ)) (h₃ τ)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this) f hf hv g hg h hh hc`. Rewrite using `[(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T χS χT om hom hθ (fun _ => 1) (fun _ => 1) BS (fun τ => BS τ * ((BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt S g) * BS τ)) (cart M) (cart M) (onb M) (fun τ => onb M τ * (M.fr τ * compAt θ τ (Formalism.L2.Theta.mt T h) * (M.fr τ) …`. Unfold `fact`.
+Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[LinearMap.smul_apply, map_smul]`. Use `congr 1`. Unfold `fchar`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `eP : (M.fr τ)⁻¹ * ((1 / 2 : ℂ) • (1 + Formalism.REAL.Jm (M.ε τ))) * M.fr τ = (1 / 2 : ℂ) • (1 + cart M τ)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, f2]`. Both sides reduce to the same expression. Establish `eM : (M.fr τ)⁻¹ * ((1 / 2 : ℂ) • (1 - Formalism.REAL.Jm (M.ε τ))) * M.fr τ = (1 / 2 : ℂ) • (1 - cart M τ)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, f2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eU : ((BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt S g) * BS τ).det = (compAt θ τ (Formalism.L2.Theta.mt S g)).det`. Rewrite using `[Matrix.det_mul_comm, ← Matrix.mul_assoc, b1, Matrix.one_mul]`. Unfold `detP detM`. Rewrite using `[det_conj (f2 τ), det_conj (f2 τ), eP, eM, eU]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_pureTensorO_eq_fact : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (Sp : D.what₂.Tau → SPar) (M : DSModel T Sp) (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → S.SigOK → T.SigOK → (∀ τ, (BS τ)ᴴ * gramAt D S τ * BS τ = 1) → ∀ (p q : D.what₂.Tau → ℕ), (∀ τ, p τ + q τ = T.rank) → (∀ τ a, M.ε τ a = decide ((a : ℕ) < p τ)) → ∀ (a b : D.what₂.Tau → ℚ), (∀ τ, HasInfExp D χS τ (a τ)) → (∀ τ, HasInfExp D χT τ (b τ)) → ∀ (x₁ x₂ x₃ : D.what₂.Tau → ℤ), (∀ τ, (x₁ τ : ℚ) = a τ + (S.rank : ℚ) / 2) → (∀ τ, (x₂ τ : ℚ) = a τ - (S.rank : ℚ) / 2) → (∀ τ, (x₃ τ : ℚ) = -(((p τ : ℚ) - q τ) / 2 + b τ)) → ∀ f, IsThetaFunO ψ S T f → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO 1 (cart M τ)) f) → ∀ g ∈ GinfC S, ∀ h ∈ GinfC T, (∀ τ, M.fr τ * compAt θ τ (Formalism.L2.Theta.mt T h) * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ)) → (∀ τ, (BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt S g) * BS τ ∈ Matrix.unitaryGroup (Fin S.rank) ℂ) ∧ ∀ P : PolF D T.rank S.rank, om (g, h) (pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (onb M) f P) = pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (onb M) f (fact M.ε x₁ x₂ x₃ (fun τ => M.fr τ * compAt θ τ (Formalism.L2.Theta.mt T h) * (M.fr τ)⁻¹) (fun τ => (BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt S g) * BS τ) P) := by
   intro D ψ θ S T χS χT om Sp M BS hom hθ hS hT hBS p q hpq hε a b ha hb x₁ x₂ x₃ h₁ h₂ h₃ f hf hv g hg h hh hk

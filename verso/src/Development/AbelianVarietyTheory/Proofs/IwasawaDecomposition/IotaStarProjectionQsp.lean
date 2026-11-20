@@ -19,11 +19,9 @@ noncomputable section
 namespace GlobalTheory.Mem.R3
 
 /- English proof (translation)
-Use `set a := (D.what₂.Usp μ).starProjection F with ha`. Establish `haU : a ∈ D.what₂.Usp μ` using `Submodule.starProjection_apply_mem _ _`. Establish `hb : F - a ∈ D.what₂.Qsp μ` using `⟨Submodule.sub_mem _ hF haU.1, Submodule.sub_starProjection_mem_orthogonal F⟩`. Establish `haQ : (D.what₂.Qsp μ).starProjection a = 0`. Rewrite using `[Submodule.starProjection_apply_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_orthogonal _ _).2 fun q hq => Submodule.inner_left_of_mem_orthogonal haU hq.2`. Establish `e : (D.what₂.Qsp μ).starProjection F = F - a`. Establish `h` using `map_add (D.what₂.Qsp μ).starProjection a (F - a)`. Rewrite `h` using `[add_sub_cancel, haQ, zero_add, Submodule.starProjection_eq_self_iff.2 hb]`. Conclude with `h`.
-
-Rewrite using `[e, map_sub, LinearMap.mem_ker.1 haU.2, sub_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_starProjection_Qsp (D : D7) (μ : D.what₂.Tup) (F : D.what₂.Amb μ) (hF : F ∈ D.what₂.V0 μ) :
     D.what₂.iota μ ((D.what₂.Qsp μ).starProjection F) = D.what₂.iota μ F := by
@@ -40,29 +38,25 @@ theorem iota_starProjection_Qsp (D : D7) (μ : D.what₂.Tup) (F : D.what₂.Amb
   rw [e, map_sub, LinearMap.mem_ker.1 haU.2, sub_zero]
 
 /- English proof (translation)
-Introduce `hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z C hP hH hB u μ c hfac hnz`. Use `Y.ze u μ c hfac hnz ?_` and prove the remaining obligations. Distinguish the cases in `hU : Used0 D μ`. Use `swap`. It suffices to derive a contradiction.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, x, hx, hne⟩` from `hnz`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hfac φ x hx, Y.junk μ hU, LinearMap.zero_apply, (D.Bu_linR u φ).map_zero, mul_zero]`. Take `⟨t, rfl⟩ : ∃ t, Y.tup t = μ` from `⟨Y.tupT μ, Y.tupTie μ hU⟩`. Establish `hRS` using `(GlobalTheory.T.rowSide_definition_both_levels hC D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH).1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFo` using `Y.formsA t`. Establish `hR : LinearMap.range (rE D A3.A F.P1 F.ψ1 t).mulVecLin = LinearMap.range (rV0 D A3.A F.P1 F.ψ1 t).mulVecLin` using `GlobalTheory.range_lvlOp_idemOf_eq_range_lvlPr_mul_V0E _ _ _ _ _`. Establish `hmem : ∀ f, Y.jA t ((rV0 D A3.A F.P1 F.ψ1 t).mulVec f) ∈ D.what₂.V0 (Y.tup t)`. Introduce `f`. Establish `h1 : (rV0 D A3.A F.P1 F.ψ1 t).mulVec f ∈ LinearMap.range (rE D A3.A F.P1 F.ψ1 t).mulVecLin`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR]`. Conclude with `⟨f, rfl⟩`. Take `⟨g, hg⟩` from `h1`. Use `⟨Y.jA t g, ?_⟩` and prove the remaining obligations. Conclude with `(hFo.op_eq g).trans (congrArg (Y.jA t) hg)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hQ : ∃ x f, D.what₂.Bu u (D.jN u (C.eNu u x)) (D.what₂.iota (Y.tup t) (Y.jA t ((rV0 D A3.A F.P1 F.ψ1 t).mulVec f))) ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨φ0, F0, hF0, hne⟩` from `hnz`. Apply `hne` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hfac φ0 F0 hF0, iota_starProjection_Qsp D _ F0 hF0]`. Establish `h1 : ∀ x, ∀ F ∈ D.what₂.V0 (Y.tup t), D.what₂.Bu u (D.jN u (C.eNu u x)) (D.what₂.iota (Y.tup t) F) = 0`. Introduce `x F hF`. Take `⟨y, rfl⟩` from `hF`. Set `L : D.what₂.Amb (Y.tup t) →ₗ[ℂ] ℂ` to `((D.Bu_linR u (D.jN u (C.eNu u x))).mk' _) ∘ₗ D.what₂.iota (Y.tup t) ∘ₗ D.what₂.eOp (Y.tup t)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hL : L = 0`. Use `LinearMap.ext_on_range hFo.span fun i => ?_` and prove the remaining obligations. Establish `h2 : (rE D A3.A F.P1 F.ψ1 t).mulVec (Pi.single i 1) ∈ LinearMap.range (rV0 D A3.A F.P1 F.ψ1 t).mulVecLin`. Rewrite using `[← hR]`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf⟩` from `h2`. Establish `e1 : D.what₂.eOp (Y.tup t) (Y.jA t (Pi.single i 1)) = Y.jA t ((rV0 D A3.A F.P1 F.ψ1 t).mulVec f)` using `(hFo.op_eq _).trans (congrArg (Y.jA t) hf.symm)`. Use `show D.what₂.Bu u (D.jN u (C.eNu u x)) (D.what₂.iota (Y.tup t) (D.what₂.eOp (Y.tup t) (Y.jA t (Pi.single i 1)))) = 0`. Rewrite using `[e1]`. Conclude with `hcon x f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `LinearMap.congr_fun hL y`. Set `M : D.what₂.Mu u →ₗ[ℂ] ℂ` to `(D.Bu_linL u (D.what₂.iota (Y.tup t) F0)).mk' _`. Establish `hM : M = 0`. Use `LinearMap.ext_on_range (D.jN_basis u).2 fun i => ?_` and prove the remaining obligations. Establish `h3` using `h1 ((C.eNu u).symm ((D.div.Nu u).b i)) F0 hF0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[LinearEquiv.apply_symm_apply]`. Conclude with `h3`. Rewrite using `[show D.what₂.Bu u φ0 (D.what₂.iota (Y.tup t) F0) = 0 from LinearMap.congr_fun hM φ0, mul_zero]`. Take `⟨x, f, hx⟩` from `hQ`. Establish `hpt` using `C.pt u t x f`.
-
-Establish `hf` using `hfac (D.jN u (C.eNu u x)) _ (hmem f)`. Rewrite `hf` using `[iota_starProjection_Qsp D _ _ (hmem f)]`. Take `⟨w, hw⟩ : ∃ w : D.div.RR.V, D.what₂.iota (Y.tup t) (Y.jA t ((rV0 D A3.A F.P1 F.ψ1 t).mulVec f)) = D.jEE w` from `⟨_, by rw [← Formalism.MainNotions.AbsolutelyIrreducibleSpan.sharp_iota]; exact hRS.iota t f⟩`. Rewrite `hx`, `hf` using `[hw, hB]`. Use `⟨(F.Dc (R.toCx3 F).zs).Pt (C.wU u) t x f / D.div.Bk u (C.eNu u x) w, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_div₀, hpt, hf]`. Conclude with `mul_div_cancel_right₀ c hx`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeTied_of_read : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y) (C : ReadC R F X0 Y), Pins R F cG → Holds R F → D.BuRational → ZetaCompatible D := by
   intro hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z C hP hH hB u μ c hfac hnz

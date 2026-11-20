@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `V _ _ G _ _ _ ρ K hK w hw`. Establish `hloc : IsLocallyConstant (fun g : G => ρ g w)`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `k`. Use `⟨(fun g : G => k⁻¹ * g) ⁻¹' {g : G | ρ g w = w}, hw.preimage (continuous_const.mul continuous_id), by simp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg`. Establish `hg' : ρ (k⁻¹ * g) w = w` using `hg`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : CompactSpace (K : Set G) := isCompact_iff_compactSpace.mp hK`. Establish `hfin` using `(hloc.comp_continuous (continuous_subtype_val (p := fun g : G => g ∈ (K : Set G)))).range_finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hfin.subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨k, hk, rfl⟩`. Conclude with `⟨⟨k, hk⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf32.orbit_finite :
     ∀ {V : Type} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {G : Type}

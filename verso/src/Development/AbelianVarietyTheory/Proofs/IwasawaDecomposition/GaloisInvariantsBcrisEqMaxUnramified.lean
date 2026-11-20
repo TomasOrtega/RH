@@ -17,13 +17,13 @@ variable {k Ω B D : Type} [Field k] [Field Ω] [Algebra k Ω] [CommRing B] [Com
   {U : IntermediateField k Ω} {ι : B →+* D} {O : Ω →+* D} {u : U →+* B} {φ : B →+* B} {σ : U →ₐ[k] U}
 
 /- English proof (translation)
-Use `set v : k →+* B := u.comp (algebraMap k U) with hv`. Establish `e1 : ι.comp v = O.comp (algebraMap k Ω)`. Use extensionality with `c`. Simplify using `[hv, hu]`. Establish `e2 : φ.comp v = v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Simplify using `[hv, hφ]`. Establish `key : ∀ (x : B) (z : Ω), ι x = O z → ι (q.eval₂ v x) = O (aeval z q)`. Introduce `x z h`. Rewrite using `[aeval_def, hom_eval₂, hom_eval₂, e1, h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : q.eval₂ v b = 0` using `hι (by rw [key b y hy, hq, map_zero, map_zero])`. Establish `h1 : q.eval₂ v (φ b) = 0`. Use `congrArg φ h0` as an intermediate fact. Rewrite `this` using `[hom_eval₂, e2, map_zero]`. Then use the resulting hypothesis. Apply `O.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key _ _ hy', h1, map_zero, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem aeval_step [Nontrivial D] (hι : Function.Injective ι) (hu : ∀ c : U, ι (u c) = O c)
     (hφ : ∀ c : U, φ (u c) = u (σ c)) {b : B} {y y' : Ω} (hy : ι b = O y) (hy' : ι (φ b) = O y')
@@ -46,19 +46,17 @@ theorem aeval_step [Nontrivial D] (hι : Function.Injective ι) (hu : ∀ c : U,
   rw [← key _ _ hy', h1, map_zero, map_zero]
 
 /- English proof (translation)
-Establish `hint : ∀ y : Ω, IsIntegral k y` using `fun y => (Algebra.IsAlgebraic.isAlgebraic y).isIntegral`. Establish `hit : ∀ (i : ℕ) (x : B), x ∈ S → φ^[i] x ∈ S`. Introduce `i x hx`. Proceed by induction on `i with`. Consider the case `zero => exact hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih => rw [Function.iterate_succ_apply']`. Conclude with `hS _ ih`. Establish `hinj0 : ∀ x ∈ S, φ x = 0 → x = 0`. Introduce `x hx h`. Take `⟨y, hy⟩` from `hO x hx`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `aeval_step hι hu hφ hy (y' := 0) (by rw [h, map_zero, map_zero]) _ (minpoly.aeval k y)` as an intermediate fact. Rewrite `this` using `[← coeff_zero_eq_aeval_zero', map_eq_zero, minpoly.coeff_zero_eq_zero (hint y)]`. Conclude with `hι (by rw [hy, this, map_zero, map_zero])`. Establish `hinj : ∀ (i : ℕ) (x : B), x ∈ S → φ^[i] x = φ^[i] b → x = b`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i with`. Consider the case `zero => exact fun x _ h => h`. Consider the case `succ i ih`. Introduce `x hx h`. Rewrite `h` using `[Function.iterate_succ_apply', Function.iterate_succ_apply']`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ih x hx (sub_eq_zero.1 (hinj0 _ (S.sub_mem (hit i x hx) (hit i b hb)) ?_))` and prove the remaining obligations. Rewrite using `[map_sub, h, sub_self]`. Use `choose y hy using fun i : ℕ => hO _ (hit i b hb)`. Establish `hroot : ∀ i, aeval (y i) (minpoly k (y 0)) = 0`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i with`. Consider the case `zero => exact minpoly.aeval k _`. Consider the case `succ i ih`. Conclude with `aeval_step hι hu hφ (hy i) (by rw [← hy (i + 1), Function.iterate_succ_apply']) _ ih`. Take `⟨i, j, hij, h⟩` from `(Polynomial.rootSet_finite (minpoly k (y 0)) Ω).exists_lt_map_eq_of_forall_mem (f := y) (fun i => (Polynomial.mem_rootSet_of_ne (minpoly.ne_zero (hint _))).2 (hroot i))`.
-
-Use `⟨j - i, Nat.sub_pos_of_lt hij, hinj i _ (hit _ _ hb) ?_⟩` and prove the remaining obligations. Rewrite using `[← Function.iterate_add_apply, Nat.add_sub_cancel' hij.le]`. Conclude with `hι (by rw [hy, hy, h])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem periodic [Nontrivial D] [Algebra.IsAlgebraic k Ω] (hι : Function.Injective ι)
     (hu : ∀ c : U, ι (u c) = O c) (hφ : ∀ c : U, φ (u c) = u (σ c)) (S : AddSubgroup B)
@@ -99,21 +97,21 @@ theorem periodic [Nontrivial D] [Algebra.IsAlgebraic k Ω] (hι : Function.Injec
   exact hι (by rw [hy, hy, h])
 
 /- English proof (translation)
-Use `choose y hy using hO`. Establish `tr : ∀ n : ℕ, ∑ i ∈ Finset.range N, u ((σ^[i] ζ) ^ n) * φ^[i] b ∈ u.range`. Introduce `n`. Take `⟨c, hc⟩` from `fund (∑ i ∈ Finset.range N, u ((σ^[i] ζ) ^ n) * φ^[i] b) (∑ i ∈ Finset.range N, (((σ^[i] ζ) ^ n : U) : Ω) * y i) (by`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∀ i, φ (u ((σ^[i] ζ) ^ n) * φ^[i] b) = u ((σ^[i + 1] ζ) ^ n) * φ^[i + 1] b`. Introduce `i`. Rewrite using `[map_mul, hφ, map_pow σ, Function.iterate_succ_apply', Function.iterate_succ_apply']`. Simplify using `only [e]`. Establish `h1` using `Finset.sum_range_succ (fun i => u ((σ^[i] ζ) ^ n) * φ^[i] b) N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Finset.sum_range_succ' (fun i => u ((σ^[i] ζ) ^ n) * φ^[i] b) N`. Rewrite `h2` using `[h1, hζ, hb]`. Conclude with `(add_right_cancel h2).symm) (by`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[map_mul, map_mul, hu, hy])`. Conclude with `⟨_, hc⟩`. Establish `pol : ∀ p : U[X], ∑ i ∈ Finset.range N, u (p.eval (σ^[i] ζ)) * φ^[i] b ∈ u.range`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on' with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq`. Simplify using `only [eval_add, map_add, add_mul, Finset.sum_add_distrib]`. Conclude with `add_mem hp hq`. Consider the case `monomial n a`. Simplify using `only [eval_monomial, map_mul, mul_assoc, ← Finset.mul_sum]`.
+Treat this case separately. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_mem ⟨a, rfl⟩ (tr n)`. Take `⟨c, hc⟩` from `pol (∏ j ∈ (Finset.range N).erase 0, (X - C (σ^[j] ζ)))`. Rewrite `hc` using `[Finset.sum_eq_single 0]`. Establish `hne : (∏ j ∈ (Finset.range N).erase 0, (X - C (σ^[j] ζ))).eval (σ^[0] ζ) ≠ 0`. Rewrite using `[eval_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_ne_zero_iff.2 fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_erase, Finset.mem_range]`. Simplify `(hζ' j (Nat.pos_of_ne_zero hj.1) hj.2).symm` using `[sub_eq_zero]`. Use `⟨((∏ j ∈ (Finset.range N).erase 0, (X - C (σ^[j] ζ))).eval (σ^[0] ζ))⁻¹ * c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hne, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `i hi hi0`. Rewrite using `[eval_prod, Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hi0, hi⟩) (by simp), map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 hN) h`.
+A detailed English derivation is pending.
 -/
 theorem mem_range (hu : ∀ c : U, ι (u c) = O c) (hφ : ∀ c : U, φ (u c) = u (σ c))
     (fund : ∀ (b : B) (y : Ω), φ b = b → ι b = O y → ∃ c : k, u (algebraMap k U c) = b)
@@ -166,17 +164,17 @@ end Abstract
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `h1 : 1 < l ^ N` using `Nat.one_lt_pow hN.ne' hl`. Establish `hm : 0 < l ^ N - 1` using `by omega`. Establish `hd : ¬ l ∣ l ^ N - 1`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : l ∣ l ^ N` using `dvd_pow_self l hN.ne'`. Use `(Nat.dvd_sub h2 h)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self h1.le, Nat.dvd_one]`. Use linear arithmetic over natural numbers and integers. Use `haveI : NeZero ((l ^ N - 1 : ℕ) : Om l) := ⟨by exact_mod_cast hm.ne'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) (l ^ N - 1)`. Establish `hzm : z ∈ MaximalUnramifiedExtension l` using `IntermediateField.subset_adjoin _ _ ⟨_, hm, hd, hz.pow_eq_one⟩`. Use `set ζ : ↥(MaximalUnramifiedExtension l) := ⟨z, hzm⟩ with hζ`. Establish `hp : IsPrimitiveRoot ζ (l ^ N - 1)` using `IsPrimitiveRoot.of_map_of_injective (f := (MaximalUnramifiedExtension l).val) hz Subtype.val_injective`. Establish `hit : ∀ i, σ^[i] ζ = ζ ^ l ^ i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_pow, hσ ζ _ hm hd hp.pow_eq_one, ← pow_mul, pow_succ']`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : ζ ≠ 0` using `hp.ne_zero hm.ne'`. Establish `hpw : ∀ i, ζ ^ l ^ i = ζ ^ (l ^ i - 1) * ζ`. Introduce `i`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (Nat.one_le_pow _ _ (by omega))]`. Use `⟨ζ, by rw [hit, hpw, hp.pow_eq_one, one_mul], fun i hi hiN h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hit, hpw, mul_eq_right₀ hz0]`. Establish `h3 : 1 < l ^ i` using `Nat.one_lt_pow hi.ne' hl`. Establish `h4 : l ^ i < l ^ N` using `Nat.pow_lt_pow_right hl hiN`. Conclude with `hp.pow_ne_one_of_pos_of_lt (by omega) (by omega) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_period (σ : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l))
     (hσ : ∀ (c : ↥(MaximalUnramifiedExtension l)) (m : ℕ), 0 < m → ¬ l ∣ m → c ^ m = 1 → σ c = c ^ l) {N : ℕ} (hN : 0 < N) :
@@ -216,21 +214,21 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Introduce `l _ C K b hb`. Take `⟨hφ, -, -, hι, hσ, -⟩` from `GlobalTheory.T.localPeriodRingsData_unramified_laws l C`. Establish `hcomm` using `(GlobalTheory.T.periodRings_galoisAction_laws_frobenius_comm l).2.2.2.2.1`. Establish `hfil` using `(GlobalTheory.T.bdR_filtration_laws l).2.2.2.2.2.2 0`. Break down `subsingleton_or_nontrivial (Per.BdR l) with hs | hs` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨0, zero_mem _, hι (Subsingleton.elim _ _)⟩`. Set `O : Om l →+* Per.BdR l` to `(algebraMap (Per.BdRp l) (Per.BdR l)).comp C.o`. Establish `hu : ∀ c : ↥(MaximalUnramifiedExtension l), C.ι (C.u c) = O c` using `C.ι_u`. Set `S : AddSubgroup (Per.Bcris l)` to `{ carrier := {x | ∀ g ∈ GK K, Per.σB g x = x} zero_mem' := fun g _ => map_zero _ add_mem' := fun {x y} hx hy g hg => by rw [map_add, hx g hg, hy g hg] neg_mem' := fun {x} hx g hg => by rw [map_neg, hx g hg] }`. Establish `hS : ∀ x ∈ S, Per.φB l x ∈ S` using `fun x hx g hg => by rw [← hcomm, hx g hg]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hO' : ∀ x ∈ S, ∃ y ∈ K.1, C.ι x = O y`. Introduce `x hx`. Take `⟨y, hy, e⟩` from `GlobalTheory.T.bdR_galois_invariants_eq_finExt l C K (C.ι x) (fun g hg => by rw [← hσ, hx g hg])`. Conclude with `⟨y, hy, e.symm⟩`. Establish `hO : ∀ x ∈ S, ∃ y, C.ι x = O y` using `fun x hx => (hO' x hx).imp fun _ h => h.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `fund : ∀ (x : Per.Bcris l) (y : Om l), Per.φB l x = x → C.ι x = O y → ∃ c : ℚ_[l], C.u (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) c) = x`. Introduce `x y h1 h2`. Use `GlobalTheory.T.bcris_frobenius_fixed_fil_zero_eq_qp l C x h1 ?_` and prove the remaining obligations. Rewrite using `[h2]`. Use `(hfil (C.o y)).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hone : (1 : Per.BdRp l) ∈ Per.FilP l 0` using `(hfil 1).1 (by rw [map_one]; exact (GlobalTheory.T.bdR_filtration_laws l).2.1)`. Simplify using `using Ideal.mul_mem_left _ (C.o y) hone`. Establish `hbS : b ∈ S` using `hb`. Take `⟨N, hN, hper⟩` from `periodic hι hu hφ S hS hO hbS`. Take `⟨ζ, h1, h2⟩` from `exists_period C.σ C.σ_root hN`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hit : ∀ i, (Per.φB l)^[i] b ∈ S`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => rw [Function.iterate_zero_apply]`. Conclude with `hbS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ i ih => rw [Function.iterate_succ_apply']`. Conclude with `hS _ ih`. Take `⟨c, hc⟩` from `mem_range hu hφ fund hN hper (fun i => hO _ (hit i)) h1 h2`. Take `⟨y, hy, e⟩` from `hO' b hbS`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `: (c : Om l) = y` using `O.injective (by rw [← hu, hc, e])`. Rewrite using `[this]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem invariants_Bcris : ∀ (l : ℕ) [Fact l.Prime], ∀ (C : Core l) (K : FinExt l) (b : Per.Bcris l),
     (∀ g ∈ GK K, Per.σB g b = b) → ∃ c : ↥(MaximalUnramifiedExtension l), (c : Om l) ∈ K.1 ∧ C.u c = b := by

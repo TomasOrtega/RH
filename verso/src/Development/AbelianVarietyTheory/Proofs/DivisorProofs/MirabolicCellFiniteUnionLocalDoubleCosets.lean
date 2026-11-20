@@ -14,9 +14,9 @@ namespace GlobalTheory.JSW.MirPatch.Decomp
 open GlobalTheory.JSW GlobalTheory.SmGL Topology
 
 /- English proof (translation)
-Take `⟨N, ⟨e⟩⟩` from `Finite.exists_equiv_fin (Set.range C)`. Establish `hf : ∀ j, C (e.symm j).2.choose = (e.symm j).1` using `fun j => (e.symm j).2.choose_spec`. Use `⟨N, fun j => (e.symm j).2.choose, fun i j x hi hj => ?_, fun x => ⟨fun ⟨i, hi⟩ => ?_, fun ⟨j, hj⟩ => ⟨_, hj⟩⟩⟩` and prove the remaining obligations. Establish `h` using `hC _ _ x hi hj`. Rewrite `h` using `[hf, hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e.symm.injective (Subtype.ext h)`. Use `⟨e ⟨C i, i, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hf, Equiv.symm_apply_apply]`. Conclude with `hi`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_distinct {ι X : Type} [Finite ι] (C : ι → Set X)
     (hC : ∀ i j x, x ∈ C i → x ∈ C j → C i = C j) :
@@ -34,11 +34,9 @@ theorem exists_distinct {ι X : Type} [Finite ι] (C : ι → Set X)
     exact hi
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `compact_covered_by_mul_left_translates hK (V := (V : Set G)) (by rw [hV.interior_eq]; exact ⟨1, V.one_mem⟩)`. Set `ι` to `{g : G // g ∈ t ∧ ∃ a ∈ A, g * a ∈ V}`. Use `haveI : Finite ι := Finite.of_injective (fun x : ι => (⟨x.1, x.2.1⟩ : t)) (fun x y h => Subtype.ext (congrArg (fun z : t => (z : G)) h))`. Use `⟨ι, inferInstance, fun x => x.2.2.choose, fun x => x.2.2.choose_spec.1, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hga⟩` from `Set.mem_iUnion₂.1 (ht (hA ha))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hga' : g * a ∈ V` using `hga`. Use `⟨⟨g, hg, a, ha, hga'⟩, ?_⟩` and prove the remaining obligations. Establish `hb` using `(⟨g, hg, a, ha, hga'⟩ : ι).2.2.choose_spec.2`. Establish `e : ((⟨g, hg, a, ha, hga'⟩ : ι).2.2.choose)⁻¹ * a = (g * (⟨g, hg, a, ha, hga'⟩ : ι).2.2.choose)⁻¹ * (g * a)` using `by group`. Rewrite using `[e]`.
-
-Conclude with `mul_mem (inv_mem hb) hga'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_reps {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {K A : Set G} (hK : IsCompact K) (hA : A ⊆ K) (V : Subgroup G) (hV : IsOpen (V : Set G)) :
@@ -59,9 +57,9 @@ theorem exists_finite_reps {G : Type} [Group G] [TopologicalSpace G] [IsTopologi
   exact mul_mem (inv_mem hb) hga'
 
 /- English proof (translation)
-Take `⟨u, hu, k, hk, rfl⟩` from `h`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u', hu', k', hk', rfl⟩`. Conclude with `⟨u' * u⁻¹, mul_mem hu' (inv_mem hu), k⁻¹ * k', mul_mem (inv_mem hk) hk', by group⟩`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u', hu', k', hk', rfl⟩`. Conclude with `⟨u' * u, mul_mem hu' hu, k * k', mul_mem hk hk', by group⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cell_eq_of_mem {F : Type} [NormedField F] {n : ℕ} {z g : GL (Fin n) F} {U : Subgroup (GL (Fin n) F)}
     (h : g ∈ Cut.cell z (U : Set (GL (Fin n) F))) :
@@ -84,16 +82,16 @@ theorem map_comp_eq {a : ℕ} (w : HeightOneSpectrum (𝓞 E)) (g : GA E a) :
       GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) g) := rfl
 
 /- English proof (translation)
-The claim follows from `FiniteAdeleRing.ext _ h`.
+A detailed English derivation is pending.
 -/
 theorem af_eq {x y : Af E} (h : ∀ w, pLoc E w x = pLoc E w y) : x = y := FiniteAdeleRing.ext _ h
 
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons w l ih`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, ih (List.nodup_cons.1 hl).2]`. Distinguish the cases in `h : v = w`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[pLoc_locGL, if_neg (List.nodup_cons.1 hl).1, if_pos (by simp), mul_one]`. Rewrite using `[pLoc_locGL_of_ne h, one_mul]`. Simplify using `only [List.mem_cons, h, false_or]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pLoc_list_prod {n : ℕ} (u : ∀ w : HeightOneSpectrum (𝓞 E), GL (Fin n) (w.adicCompletion E))
     (l : List (HeightOneSpectrum (𝓞 E))) (hl : l.Nodup) (v : HeightOneSpectrum (𝓞 E)) :
@@ -110,7 +108,7 @@ theorem pLoc_list_prod {n : ℕ} (u : ∀ w : HeightOneSpectrum (𝓞 E), GL (Fi
       simp only [List.mem_cons, h, false_or]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SmGL.mem_unipB _).2 ⟨fun i j h => by show pLoc E w (pFin E _) = 0 rw [hu.1 i j h, map_zero, map_zero], fun i => by show pLoc E w (pFin E _) = 1 rw [hu.2 i, map_one, map_one]⟩`.
+A detailed English derivation is pending.
 -/
 theorem loc_mem_unipB {a : ℕ} {u : GA E a} (hu : u ∈ NA E a) (w : HeightOneSpectrum (𝓞 E)) :
     GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) u ∈ unipB (w.adicCompletion E) (Fin a) :=
@@ -123,9 +121,9 @@ theorem loc_mem_unipB {a : ℕ} {u : GA E a} (hu : u ∈ NA E a) (w : HeightOneS
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `e1 : ∀ i j, pInf E ((finGL E a v : Matrix (Fin a) (Fin a) (Ad E)) i j) = ((1 : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)) i j` using `fun i j => congrArg (fun g : GL (Fin a) (Cinf E) => (g : Matrix (Fin a) (Fin a) (Cinf E)) i j) (pInf_finGL (E := E) v)`. Establish `e2 : ∀ i j, pFin E ((finGL E a v : Matrix (Fin a) (Fin a) (Ad E)) i j) = (v : Matrix (Fin a) (Fin a) (Af E)) i j` using `fun i j => congrArg (fun g : GL (Fin a) (Af E) => (g : Matrix (Fin a) (Fin a) (Af E)) i j) (pFin_finGL (E := E) v)`. Use `⟨fun i j h => ad_ext ?_ ?_, fun i => ad_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[e1, Units.val_one, Matrix.one_apply_ne (ne_of_gt h), map_zero]`. Rewrite using `[e2, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `af_eq fun w => by rw [map_zero]; exact ((GlobalTheory.SmGL.mem_unipB _).1 (hv w)).1 i j h`. Rewrite using `[e1, Units.val_one, Matrix.one_apply_eq, map_one]`. Rewrite using `[e2, map_one]`. Conclude with `af_eq fun w => by rw [map_one]; exact ((GlobalTheory.SmGL.mem_unipB _).1 (hv w)).2 i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finGL_mem_NA {a : ℕ} {v : GL (Fin a) (Af E)}
     (hv : ∀ w, GeneralLinearGroup.map (pLoc E w) v ∈ unipB (w.adicCompletion E) (Fin a)) : finGL E a v ∈ NA E a := by
@@ -143,15 +141,15 @@ theorem finGL_mem_NA {a : ℕ} {v : GL (Fin a) (Af E)}
     exact af_eq fun w => by rw [map_one]; exact ((GlobalTheory.SmGL.mem_unipB _).1 (hv w)).2 i
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, k, hk, y, rfl⟩`. Establish `hf : GeneralLinearGroup.map (pFin E) (u * q * finGL E a k * infGL E a y) = GeneralLinearGroup.map (pFin E) u * (GeneralLinearGroup.map (pFin E) q * k)`. Rewrite using `[map_mul, map_mul, map_mul, pFin_finGL, pFin_infGL, mul_one, mul_assoc]`. Use `⟨k, hk, fun w hw => ?_, fun w _ => ⟨_, loc_mem_unipB hu w, ?_⟩⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hp w hw`. Rewrite `h1` using `[map_comp_eq, hf, map_mul]`. Rewrite using `[eq_inv_of_mul_eq_one_right h1]`. Conclude with `inv_mem (loc_mem_unipB hu w)`. Rewrite using `[map_comp_eq, hf, map_mul, map_comp_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, hk, hout, hin⟩ set v := GeneralLinearGroup.map (pFin E) p * (GeneralLinearGroup.map (pFin E) q * k)⁻¹ with hv`. Establish `hvN : ∀ w, GeneralLinearGroup.map (pLoc E w) v ∈ unipB (w.adicCompletion E) (Fin a)`. Introduce `w`. Rewrite using `[hv, map_mul, map_inv]`. Distinguish the cases in `hw : w ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, he⟩` from `hin w hw`. Rewrite using `[← map_comp_eq, he, mul_inv_cancel_right]`. Conclude with `hu`. Rewrite using `[← map_comp_eq, hp w hw, one_mul]`. Conclude with `inv_mem (hout w hw)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨finGL E a v, finGL_mem_NA hvN, k, hk, (GeneralLinearGroup.map (pInf E) q)⁻¹ * GeneralLinearGroup.map (pInf E) p, ga_ext ?_ ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, pInf_finGL, pInf_infGL, one_mul, mul_one, mul_inv_cancel_left]`. Simplify using `only [map_mul, pFin_finGL, pFin_infGL, mul_one, hv] group`.
+A detailed English derivation is pending.
 -/
 theorem mem_cell_iff {a : ℕ} (S : Finset (HeightOneSpectrum (𝓞 E))) (K : Subgroup (GL (Fin a) (Af E))) (q : GA E a)
     {p : GA E a} (hp : p ∈ supS E a S) :
@@ -195,23 +193,21 @@ namespace GlobalTheory.JSW.MirPatch
 open GlobalTheory.JSW GlobalTheory.SmGL Decomp
 
 /- English proof (translation)
-Introduce `E _ _ _ m S K hKo hKc q`. Use `choose U hUo hUc hUK using fun w => LocEx.exists_compact_open (a := m + 1) w K hKo`. Use `set qf := GeneralLinearGroup.map (pFin E) q with hqf`. Set `A : Set (GL (Fin (m + 1)) (Af E))` to `{k | k ∈ K ∧ ∀ w ∉ S, GeneralLinearGroup.map (pLoc E w) (qf * k) ∈ unipB (w.adicCompletion E) (Fin (m + 1))}`. Set `V : Subgroup (GL (Fin (m + 1)) (Af E))` to `{ carrier := {v | ∀ w ∈ S, GeneralLinearGroup.map (pLoc E w) v ∈ U w} mul_mem' := fun ha hb w hw => by rw [map_mul]; exact mul_mem (ha w hw) (hb w hw) one_mem' := fun w _ => by rw [map_one]; exact one_mem _ inv_mem' := fun ha w hw => by rw [map_inv]; exact inv_mem (ha w hw) }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVo : IsOpen (V : Set (GL (Fin (m + 1)) (Af E)))`. Establish `e : (V : Set (GL (Fin (m + 1)) (Af E))) = ⋂ w ∈ S, GeneralLinearGroup.map (pLoc E w) ⁻¹' (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E)))`. Use extensionality with `v`. Simplify using `[V]`. Rewrite using `[e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `isOpen_biInter_finset fun w _ => (hUo w).preimage (LocEx.continuous_map_pLoc w)`. Take `⟨ι, _, k, hkA, hcov⟩` from `exists_finite_reps (A := A) hKc (fun x hx => hx.1) V hVo`. Set `C : ι → Set (∀ w : HeightOneSpectrum (𝓞 E), GL (Fin (m + 1)) (w.adicCompletion E))` to `fun i => {x | ∀ w ∈ S, x w ∈ Cut.cell (GeneralLinearGroup.map (pLoc E w) (qf * k i)) (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E)))}`. Establish `hC : ∀ i j x, x ∈ C i → x ∈ C j → C i = C j`. Introduce `i j x hi hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `y`. Conclude with `forall₂_congr fun w hw => by rw [cell_eq_of_mem (hi w hw), cell_eq_of_mem (hj w hw)]`. Take `⟨N, f, huniq, hiff⟩` from `exists_distinct C hC`. Use `⟨U, N, fun j w => GeneralLinearGroup.map (pLoc E w) (qf * k (f j)), fun w _ => ⟨hUc w, hUo w, hUK w⟩, fun p _ i j hi hj => huniq i j (fun w => GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) p) hi hj, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_cell_iff S K q hp.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `Iff.trans ?_ (hiff (fun w => GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) p))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k', hk', hout, hin⟩`. Take `⟨i, hi⟩` from `hcov k' ⟨hk', hout⟩`. Use `⟨i, fun w hw => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨u, hu, he⟩` from `hin w hw`. Use `⟨u, hu, GeneralLinearGroup.map (pLoc E w) ((k i)⁻¹ * k'), hi w hw, ?_⟩` and prove the remaining obligations. Use `show GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) p = _`. Rewrite using `[he, mul_assoc u, ← map_mul, mul_assoc, mul_inv_cancel_left]`. Introduce and unpack `⟨i, hi⟩ choose! uu huu cc hcc heq using hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `g : GL (Fin (m + 1)) (Af E)` to `(S.toList.map fun w => locGL E (m + 1) w (cc w)).prod`. Establish `hgK : g ∈ K`. Use `Subgroup.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hUK w _ (hcc w (Finset.mem_toList.1 hw))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : ∀ v, GeneralLinearGroup.map (pLoc E v) g = if v ∈ S then cc v else 1` using `fun v => by`. Rewrite using `[pLoc_list_prod cc _ S.nodup_toList v]`. Simplify using `only [Finset.mem_toList]`. Use `⟨k i * g, mul_mem (hkA i).1 hgK, fun w hw => ?_, fun w hw => ⟨uu w, huu w hw, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, map_mul, hg w, if_neg hw, mul_one]`.
-
-Conclude with `(hkA i).2 w hw`. Use `(heq w hw).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc qf, map_mul (GeneralLinearGroup.map (pLoc E w)) (qf * k i) g, hg w, if_pos hw, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_decomp : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (K : Subgroup (GL (Fin (m + 1)) (Af E))), IsOpen (K : Set (GL (Fin (m + 1)) (Af E))) → IsCompact (K : Set (GL (Fin (m + 1)) (Af E))) → ∀ q : GA E (m + 1), ∃ (U : ∀ w : HeightOneSpectrum (𝓞 E), Subgroup (GL (Fin (m + 1)) (w.adicCompletion E))) (N : ℕ) (z : Fin N → ∀ w : HeightOneSpectrum (𝓞 E), GL (Fin (m + 1)) (w.adicCompletion E)), (∀ w ∈ S, IsCompact (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E))) ∧ IsOpen (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E))) ∧ ∀ u ∈ U w, locGL E (m + 1) w u ∈ K) ∧ (∀ p ∈ GlobalTheory.JSW.mirS E S m, ∀ i j : Fin N, (∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) p ∈ GlobalTheory.JSW.Cut.cell (z i w) (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E)))) → (∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) p ∈ GlobalTheory.JSW.Cut.cell (z j w) (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E)))) → i = j) ∧ ∀ p ∈ GlobalTheory.JSW.mirS E S m, (p ∈ GlobalTheory.JSW.MirPatch.cell K q ↔ ∃ i : Fin N, ∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) p ∈ GlobalTheory.JSW.Cut.cell (z i w) (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E)))) := by
   intro E _ _ _ m S K hKo hKc q

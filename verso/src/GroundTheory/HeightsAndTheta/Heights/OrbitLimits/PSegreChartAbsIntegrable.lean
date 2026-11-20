@@ -18,15 +18,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing HermLine IsSmoothHerm)
 open ComplexSets Matrix
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e m σ i L g _ hL hg J hJ A hA`. Take `⟨M, hM⟩` from `PtsPosDens.exists_bound hg`. Take `⟨C, hC⟩` from `h₂ K ι P e m σ i L hL`. Establish `hJmin` using `mem_segreChartComponents.1 hJ`. Establish `hℓ : linForm (Pi.single (σ.symm i) (1 : ℂ)) - 1 ∈ J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[linForm_single]`. Use `hJmin.1.2 ?_` and prove the remaining obligations. Rewrite using `[segreChartIdeal, MvPolynomial.mem_vanishingIdeal_iff]`. Introduce and unpack `_ ⟨z, -, hzi, rfl⟩`. Simplify using `[hzi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hInt` using `h₁ m e (HermNorm.std m) J (Pi.single (σ.symm i) 1) A hJmin.1.1 hℓ (VarIntAdd.ringKrullDim_of_isFiniteProjection hA) hA`. Use `set c : ℝ := max M 0 * max C 0 with hc`. Establish `hmeas : Measurable (chartAbsDens J A (chartWeight σ i g) (chartPot σ i L))` using `SheetSumMeasurable.measurable_sheetSum hA (fun a b => |a * b|) ((continuous_mul.comp continuous_id).abs.measurable) (measurable_chartWeight σ i hg) _`. Use `(hInt.const_mul c).mono' hmeas.aestronglyMeasurable (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (chartAbsDens_nonneg _ _ _ _ _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sheetSum_le_mul (IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y) c _ _ fun x hx s hs => ?_` and prove the remaining obligations. Take `⟨hxJ, rfl⟩` from `hx`. Establish `hx1 : x (σ.symm i) = 1` using `chart_coord_eq_one hJ hxJ`. Establish `hG : |chartWeight σ i g x| ≤ max M 0`. Rewrite using `[chartWeight_of_coord g hx1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hM _ (chartLift_blockNonzero σ i hx1)).trans (le_max_left _ _)`. Establish `hD` using `hC J hJ A x s hxJ hs`. Rewrite using `[abs_mul, one_mul, hc, mul_assoc]`. Conclude with `mul_le_mul hG (hD.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (abs_nonneg _))) (abs_nonneg _) (le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SegreChartAbsIntegrable.proof (h₁ : SliceMassFinite.Statement)
     (h₂ : SegreChartSheetCompare.Statement) : SegreChartAbsIntegrable.Statement := by

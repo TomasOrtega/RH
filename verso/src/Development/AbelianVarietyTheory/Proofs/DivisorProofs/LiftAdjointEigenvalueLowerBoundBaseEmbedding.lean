@@ -22,9 +22,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(h.lev.Pg PP).1 hP`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h1` using `R.C.P.pb_over k`. Rewrite `h1` using `[← hk]`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) (D.host.g k : ℕ) ∈ PP.asIdeal` using `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem g_mem_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) {PP : Pl D.host.E} (hP : PP ∈ R.Pg) :
     ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
@@ -38,19 +38,17 @@ theorem g_mem_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) {PP : Pl D.h
 open Classical in
 
 /- English proof (translation)
-Use `⟨_, _, isGalConj_refl _ _, isGalConj_refl _ _, ⟨(h.thP.ωP i t).hecS, ?_⟩, h.lev.eta, ?_⟩` and prove the remaining obligations. Introduce `P e he k x hx`. Establish `a` using `(h.lev.mu0 i).2 P e he k x hx`. Establish `b` using `(h.lev.xi t).2 P e he k x hx`. Use `show (((R.mu0 ((i : ℕ) + 1) x * R.xi t x : Circle)) : ℂ) = (((R.C.mu0 i).locK P k * (R.xiH t).locK P k : ℂˣ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Circle.coe_mul, a, b, Units.val_mul]`. Introduce `PP hPP a k u hk hu`. Establish `ha : a ∉ PP.asIdeal` using `fun ha => u.ne_zero (hu.trans (Ideal.Quotient.eq_zero_iff_mem.2 ha))`. Use `show _ = (R.C.mu0 i).locK PP k * (R.xiH t).locK PP k`. Distinguish the cases in `hg : PP ∈ R.Pg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `g_mem_ofCore R h hg`. Establish `hun : (R.xiH t).UnrAt PP`. Assume the negation of the conclusion as `hn`. Break down `(h.lev.Q_ram t PP).1 hn with hq | ⟨PP', hq, hc⟩` into its components or cases. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hq`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP' hq`. Take `⟨c', hc1, hc2⟩` from `hc _ (q_mem hq2)`. Establish `: c' = (q : 𝓞 D.host.E)`. Apply `NumberField.RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_natCast]`. Establish `h3 : (c' : D.host.E) = (q : D.host.E)` using `by simpa using hc2`. Conclude with `h3`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (this ▸ hc1)`. Simplify using `only [if_pos hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[locK_eq_one hun a k hk ha, mul_one]`. Conclude with `h.lev.chi i PP hg a k u hk hu`. Establish `hq : PP ∈ R.Q t` using `hPP.resolve_left hg`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hq`. Establish `hun : (R.C.mu0 i).UnrAt PP` using `(R.C.isMu0 i).unr PP fun l hl => not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`.
-
-Simplify using `only [if_neg hg]`. Rewrite using `[locK_eq_one hun a k hk ha, one_mul]`. Conclude with `h.lev.xiR t PP hq a k u hk hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConjChars_base_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T0) :
     IsConjChars R i t (RingEquiv.refl ℂ) (R.toLevCh.mu t ((i : ℕ) + 1)) R.eta
@@ -93,13 +91,11 @@ theorem isConjChars_base_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (
 open Classical in
 
 /- English proof (translation)
-Establish `h1` using `h.thP.vP i t`. Unfold `Datum.IsThPVecOf at h1`. Unfold `IsLevelVec`. Establish `hQ : ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP), Datum.omegaQ (R.Q t) (Wc D i).rank (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (-1) y = Datum.omegaQ (R.Q t) (Wc D i).rank (R.xiR t) (-1) y`. Introduce `y`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Datum.omegaQ`. Use `split_ifs with hy`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `hn : PP.1 ∉ R.Pg` using `fun hg => by`. Take `⟨l, hl⟩` from `g_mem_ofCore R h hg`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP.1 PP.2`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Simplify using `only [if_neg hn]`. Both sides reduce to the same expression. Simplify using `only [omegaG_triv, hQ]`.
-
-Conclude with `h1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLevelVec_base_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T0) :
     IsLevelVec R.ψ R.θ (Vc D i) (Wc D i) (cart (R.MW i (sg0 D A))) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) (R.datWp i R.triv) (R.Q t)
@@ -126,9 +122,9 @@ theorem isLevelVec_base_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i
 open Classical in
 
 /- English proof (translation)
-Use `ext1 x`. Use `levFn_congr (R.βV i) D.R.r (r_le_V i) D.R.t 1 R.Pg (R.Q t) R.triv (fun _ PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (fun _ PP => (R.chi ((i : ℕ) + 1) PP)⁻¹) (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (R.xiR t) ?_ ?_ _` and prove the remaining obligations. Introduce `c PP hP`. Simplify using `only [if_pos hP]`. Introduce `PP hP`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : PP ∉ R.Pg` using `fun hg => by`. Take `⟨l, hl⟩` from `g_mem_ofCore R h hg`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hP`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Simplify using `only [if_neg hn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chr_base_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T0) :
     chrOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q t) R.triv
@@ -147,7 +143,7 @@ theorem chr_base_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin 
     simp only [if_neg hn]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.BaseScalar.exists_factor (R.HW i (sg0 D A)).e (R.thF i t) (R.Wall i (sg0 D A)) (h.models.HW i (sg0 D A)).1 (h.models.HW i (sg0 D A)).2.1 (h.thP.thF_mem i t)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T0) :
     ∃ th : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H, ∀ x, (R.HW i (sg0 D A)).e (th x) = R.thF i t x :=
@@ -155,9 +151,9 @@ theorem exists_lift_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : F
     (h.models.HW i (sg0 D A)).2.1 (h.thP.thF_mem i t)
 
 /- English proof (translation)
-Use `(h.thP.thF i t).elim fun thP hP => ?_` and prove the remaining obligations. Unfold `IsLift`. Introduce `x v g`. Establish `a` using `GlobalTheory.BaseScalar.integrableOn_of_isThetaLift hP.1 x (PiTensorProduct.tprod ℂ v) g`. Establish `c` using `(congrFun (hP.2 x v) g).trans a.2`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨a.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hth x]`. Conclude with `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLift_of_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T0)
     (th : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H) (hth : ∀ x, (R.HW i (sg0 D A)).e (th x) = R.thF i t x) :
@@ -172,7 +168,7 @@ theorem isLift_of_ofCore {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin
   exact c
 
 /- English proof (translation)
-Establish `hσ : IsEmbOverK D (sg0 D A) (RingEquiv.refl ℂ)`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]`. Conclude with `isEmbOverK_base`. Establish `key` using `hA h i b hb t ht _ _ hσ R.triv (isLocal_triv R) _ _ _ (isConjChars_base_ofCore R h i t) (R.ωP i t) (h.thP.ωP i t) (onb (R.MW i (sg0 D A))) (fun ρ => GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm.isONBasis_onb _ ρ _ (h.models.order i ρ)) _ _ (isLevelVec_base_ofCore R h …`. Conclude with `key.2 th hth ev hev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem scalar_of_lift_ofCore {F : Face D A} (hA : GlobalTheory.LowRow.AdelC R F) (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (b : ℝ)
     (hb : Sizes D i b) (t : T0) (ht : PrimeToHost R t)
@@ -191,7 +187,7 @@ theorem scalar_of_lift_ofCore {F : Face D A} (hA : GlobalTheory.LowRow.AdelC R F
   exact key.2 th hth ev hev
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.LiftLower.typePart_base h.lev i (sg0 D A) c`. Establish `h1` using `scalar_of_lift_ofCore R hA h i b hb A.μ0 hp th (isLift_of_ofCore R h i A.μ0 th hth) c`. Establish `h2` using `GlobalTheory.BaseScalar.adjLev_triv R th`. Establish `h3 : lowB D i b ≤ mainTerm D i (sg0 D A) - 8 * (D.R.f : ℝ) * (D.R.nV : ℝ) ^ 2 * Lp D b` using `sub_le_sub_right (GlobalTheory.LowTopBound.hookPlus_le_mainTerm R i) _`. Conclude with `GlobalTheory.LowTopBound.scalar_of_ne_bot th _ _ h2 _ _ e _ _ h3 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem scalar_on_part_ofCore {F : Face D A} (hA : GlobalTheory.LowRow.AdelC R F) (h : GlobalTheory.Hk3.Core R F)
     (hp : PrimeToHost R A.μ0) (i : Fin D.R.m) (b : ℝ) (hb : Sizes D i b)
@@ -207,11 +203,11 @@ theorem scalar_on_part_ofCore {F : Face D A} (hA : GlobalTheory.LowRow.AdelC R F
   exact GlobalTheory.LowTopBound.scalar_of_ne_bot th _ _ h2 _ _ e _ _ h3 h1
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F s b hA h _ hp hb i l x hx hl hxl`. Take `⟨th, hth⟩` from `exists_lift_ofCore R h i A.μ0`. Establish `hinj : Function.Injective (R.HW i (sg0 D A)).e` using `(h.models.HW i (sg0 D A)).1`. Establish `hS : ∀ y, R.thG i A.μ0 y = GlobalTheory.LiftLower.projH R i (sg0 D A) (th y)` using `fun y => by`. Establish `a1` using `h.thP.thG i A.μ0 y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `GlobalTheory.LiftLower.e_projH h.models.gW i (sg0 D A) (th y)`. Establish `a3` using `congrArg (Formalism.IndefR.Mult.postOn (R.MW i (sg0 D A)) (R.eWf i (sg0 D A))) (hth y)`. Conclude with `hinj (a1.trans (a3.symm.trans a2.symm))`. Establish `hid` using `GlobalTheory.LiftScalarCompare.eC_idem (R := R) h.grp.record`. Establish `hu` using `GlobalTheory.gW_norm_eq R h.models.HW h.models.gW h.models.νW i (sg0 D A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop` using `GlobalTheory.T.principalLevel_eigenparts_and_conjugate_characters.1 R F (GlobalTheory.Core5.of_core h) i (sg0 D A) (GlobalTheory.LiftLower.schurMult_of_models R h.models.HW i (sg0 D A))`. Establish `htop' : (⨆ c : GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.Sys D, GlobalTheory.LiftLower.partH R i (sg0 D A) c) = ⊤` using `top_le_iff.1 (htop.ge.trans (iSup_mono fun c => iSup_le fun _ => le_rfl))`. Establish `hm` using `GlobalTheory.mul_norm_sq_le_norm_adjoint_sq_of_spanning_parts th _ (Real.exp (lowB D i b)) htop' (scalar_on_part_ofCore R hA h hp i b (hb i) th hth)`. Establish `key` using `GlobalTheory.LowTopBound.le_eigenvalue th (R.thG i A.μ0) (GlobalTheory.LiftLower.projH R i (sg0 D A)) _ l hS (GlobalTheory.LowTopBound.idem_apply (R.gW i (sg0 D A)) hid) (fun x hx y => GlobalTheory.LiftScalarCompare.adjoint_idem (R.gW i (sg0 D A)) hu hid hx y) hm x hx hl hxl`. Conclude with `(Real.le_log_iff_exp_le hl).2 key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lowTop_ofCore : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), ∀ (s : ℕ) (b : ℝ),

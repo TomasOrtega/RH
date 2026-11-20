@@ -8,16 +8,16 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset
 
 /- English proof (translation)
-Unfold `rootOfUnity`. Conclude with `Complex.isPrimitiveRoot_exp k (by omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem SchRootOfUnityVandermondeNe.rootOfUnity_isPrimitiveRoot {k : ℕ} (hk : 1 ≤ k) : IsPrimitiveRoot (rootOfUnity k) k := by
   unfold rootOfUnity
   exact Complex.isPrimitiveRoot_exp k (by omega)
 
 /- English proof (translation)
-Introduce `k hk`. Establish `hz` using `SchRootOfUnityVandermondeNe.rootOfUnity_isPrimitiveRoot hk`. Unfold `vandermondeOf`. Use `Finset.prod_ne_zero_iff.mpr fun i _ => Finset.prod_ne_zero_iff.mpr fun j hj => ?_` and prove the remaining obligations. Rewrite using `[sub_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `hij : (i : ℕ) = j` using `hz.pow_inj i.isLt j.isLt h`. Establish `hlt : i < j` using `Finset.mem_Ioi.mp hj`. Conclude with `absurd (Fin.ext hij) (ne_of_lt hlt)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SchRootOfUnityVandermondeNe.proof : SchRootOfUnityVandermondeNe.Statement := by
   intro k hk

@@ -15,7 +15,7 @@ open GlobalTheory.HorComp
 namespace GlobalTheory.HorComp
 
 /- English proof (translation)
-Introduce `D A N j S κ s`. Use `haveI := GlobalTheory.ThetaDescent.isProper_of_isProjOver s.T.Z.proj`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_generic_fibre_model : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ), LocallyOfFiniteType (genStr s.T.Z) := by
   intro D A N j S κ s

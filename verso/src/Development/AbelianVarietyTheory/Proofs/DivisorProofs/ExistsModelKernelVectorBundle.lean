@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.KernelModif
 
 /- English proof (translation)
-The claim follows from `ShortComplex.exact_of_g_is_cokernel _ (CokernelCofork.mapIsColimit _ hS.gIsCokernel Φ)`.
+A detailed English derivation is pending.
 -/
 theorem exact_map_of_epi {C D : Type*} [Category C] [Category D] [Abelian C] [Abelian D] (Φ : C ⥤ D)
     [Φ.PreservesZeroMorphisms] (S : ShortComplex C) [PreservesColimit (parallelPair S.f 0) Φ] (hS : S.Exact)
@@ -28,13 +28,11 @@ theorem exact_map_of_epi {C D : Type*} [Category C] [Category D] [Abelian C] [Ab
   ShortComplex.exact_of_g_is_cokernel _ (CokernelCofork.mapIsColimit _ hS.gIsCokernel Φ)
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B r F Q u hB hF hQ hu hgen`. Use `haveI := hF.isFiniteQC`. Take `⟨L, hL⟩` from `B.exists_isAmpleLB`. Take `⟨k, G, φ, hG, hφ⟩` from `GlobalTheory.FrobFilt.ExtPres.exists_epi_of_isAmpleLB hL (kernel u)`. Set `S : ShortComplex B.X.Modules` to `ShortComplex.mk (φ ≫ kernel.ι u) u (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : S.Exact`. Rewrite using `[ShortComplex.exact_iff_epi_kernel_lift]`. Establish `e : kernel.lift S.g S.f S.zero = φ`. Rewrite using `[← cancel_mono (kernel.ι S.g), kernel.lift_ι]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hφ`. Use `haveI : Epi S.g := hu`. Establish `hv : Epi (B.genRes.map S.f)` using `(exact_map_of_epi B.genRes S hS).epi_f (hgen.eq_of_tgt _ _)`. Take `⟨B', g, hn, hd, H⟩` from `GlobalTheory.ImageDescent.main.2 O p B hB 1 (fun _ => r) (fun _ => k) (fun _ => F) (fun _ => G) (fun _ => S.f) (fun _ => ⟨hF, hG, hv⟩)`. Use `⟨B', g, hn, hd, (H 0).of_iso ?_⟩` and prove the remaining obligations.
-
-Set `S'` to `S.map (Scheme.Modules.pullback g.f)`. Use `haveI : Epi (kernel.lift S'.g S'.f S'.zero) := (ShortComplex.exact_iff_epi_kernel_lift S').1 (exact_map_of_epi _ S hS)`. Use `haveI := strongEpi_of_epi (kernel.lift S'.g S'.f S'.zero)`. Conclude with `(image.isoStrongEpiMono (kernel.lift S'.g S'.f S'.zero) (kernel.ι S'.g) (kernel.lift_ι _ _ _)).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O) (r : ℕ) (F Q : B.X.Modules) (u : F ⟶ Q), GlobalTheory.IsNormalScheme B.X → GlobalTheory.VB.IsVB F r → Q.IsQuasicoherent → Epi u → IsZero (B.genRes.obj Q) → ∃ (B' : GlobalTheory.Vert.Model O) (g : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B'.X ∧ g.relDim = 0 ∧ GlobalTheory.VB.IsVB (kernel ((Scheme.Modules.pullback g.f).map u)) r := by
   intro O _ _ _ p _ _ _ B r F Q u hB hF hQ hu hgen

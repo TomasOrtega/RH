@@ -9,15 +9,15 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.LeviScalarAt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ hA v t h₁ m hL hm`. Rewrite using `[mem_idelesAt]`. Introduce `u hu`. Establish `hx : H'.x ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hA.xy` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[form] at this`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Establish `hunit : IsUnit (inclR (F` using `F) (AF F) (H'.x i)) := (Ne.isUnit hi).map _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : (mat m - 1) *ᵥ incV F H'.x = ((t : AE F E) - 1) • incV F H'.x`. Rewrite using `[Matrix.sub_mulVec, hL.1, Matrix.one_mulVec, sub_smul, one_smul]`. Establish `h0 : (u • (mat m - 1)) *ᵥ incV F H'.x = 0`. Use `hm u hu` as an intermediate fact. Rewrite using `[this, Matrix.zero_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[Matrix.smul_mulVec, hv]`. Establish `hi0` using `congrFun h0 i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hi0`. Establish `: (u • ((t : AE F E) - 1)) * incV F H'.x i = 0`. Rewrite using `[smul_mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi0`. Conclude with `(hunit.mul_left_eq_zero).1 this`.
+A detailed English derivation is pending.
 -/
 theorem scalar_mem_idelesAt_of_isLevi : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} (H' : Plane E d d₁) (i₀ i₁ : ℕ),

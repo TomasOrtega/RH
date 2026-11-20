@@ -8,11 +8,11 @@ namespace ReciprocityTheory.ChartRestriction.L1.KE
 open Formalism.L2.Th1.CM
 
 /- English proof (translation)
-Take `⟨p, hp, hpe⟩` from `h`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Rewrite `hpe` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, map_one, one_mul]`. Establish `h1 : δ ^ p.natDegree = - ∑ i ∈ Finset.range p.natDegree, algebraMap R K (p.coeff i) * δ ^ i` using `eq_neg_of_add_eq_zero_right hpe`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < ‖δ‖` using `lt_trans zero_lt_one hlt`. Establish `h2 : ‖∑ i ∈ Finset.range p.natDegree, algebraMap R K (p.coeff i) * δ ^ i‖ ≤ ‖δ‖ ^ p.natDegree / ‖δ‖`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, le_div_iff₀ hpos]`. Establish `hi' : i + 1 ≤ p.natDegree` using `Finset.mem_range.mp hi`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖δ‖ ^ p.natDegree / ‖δ‖ < ‖δ‖ ^ p.natDegree` using `div_lt_self (by positivity) hlt`. Establish `h4 : ‖δ ^ p.natDegree‖ = ‖δ‖ ^ p.natDegree` using `norm_pow _ _`. Rewrite `h4` using `[h1, norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_le_one_of_integral {K R : Type*} [NormedField K] [IsUltrametricDist K] [CommRing R]
     [Algebra R K] (hR : ∀ r : R, ‖algebraMap R K r‖ ≤ 1) (δ : K) (h : IsIntegral R δ) : ‖δ‖ ≤ 1 := by
@@ -38,23 +38,23 @@ theorem norm_le_one_of_integral {K R : Type*} [NormedField K] [IsUltrametricDist
   linarith
 
 /- English proof (translation)
-Simplify using `using IsUltrametricDist.norm_intCast_le_one K n`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_int_le_one {K : Type*} [NormedField K] [IsUltrametricDist K] (n : ℤ) :
     ‖algebraMap ℤ K n‖ ≤ 1 := by
   simpa using IsUltrametricDist.norm_intCast_le_one K n
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_integral norm_int_le_one δ h`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_integral_int {K : Type*} [NormedField K] [IsUltrametricDist K] (δ : K)
     (h : IsIntegral ℤ δ) : ‖δ‖ ≤ 1 :=
   norm_le_one_of_integral norm_int_le_one δ h
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `: x ^ (i + 1) - y ^ (i + 1) = x * (x ^ i - y ^ i) + (x - y) * y ^ i` using `by ring`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_pow_sub_pow_le {K : Type*} [NormedField K] [IsUltrametricDist K] {x y : K}
     (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) (i : ℕ) : ‖x ^ i - y ^ i‖ ≤ ‖x - y‖ := by
@@ -73,9 +73,7 @@ theorem norm_pow_sub_pow_le {K : Type*} [NormedField K] [IsUltrametricDist K] {x
         _ = _ := mul_one _
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range, Polynomial.eval_eq_sum_range, ← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hP i`.
-
-Conclude with `norm_pow_sub_pow_le hx hy i`. Use `_ = _ := one_mul _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_eval_sub_eval_le {K : Type*} [NormedField K] [IsUltrametricDist K] (P : Polynomial K)
     (hP : ∀ i, ‖P.coeff i‖ ≤ 1) {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) :
@@ -90,7 +88,7 @@ theorem norm_eval_sub_eval_le {K : Type*} [NormedField K] [IsUltrametricDist K] 
     _ = _ := one_mul _
 
 /- English proof (translation)
-Establish `hch : CharP R l` using `(CharP.charP_iff_prime_eq_zero hl).mpr h0`. Set `_` to `Fintype.ofFinite R`. Set `_ : Field R` to `Fintype.fieldOfDomain R`. Take `⟨n, -, hq⟩` from `FiniteField.card R l`. Conclude with `⟨n, n.pos, fun x => hq ▸ FiniteField.pow_card x⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finite_domain_frob (R : Type*) [CommRing R] [IsDomain R] [Finite R] (l : ℕ) (hl : l.Prime)
     (h0 : (l : R) = 0) : ∃ f : ℕ, 0 < f ∧ ∀ x : R, x ^ (l ^ f) = x := by
@@ -102,19 +100,19 @@ theorem finite_domain_frob (R : Type*) [CommRing R] [IsDomain R] [Finite R] (l :
   exact ⟨n, n.pos, fun x => hq ▸ FiniteField.pow_card x⟩
 
 /- English proof (translation)
-Set `A : Subalgebra ℤ K` to `Algebra.adjoin ℤ {δ}`. Establish `hA : ∀ x : A, ‖(x : K)‖ ≤ 1` using `fun x => norm_le_one_of_integral norm_int_le_one _ (adjoin_le_integralClosure hδ x.2)`. Set `I : Ideal A` to `{ carrier := {x | ‖(x : K)‖ < 1} add_mem' := fun {a b} ha hb => lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ha hb) zero_mem' := by simp smul_mem' := fun c x hx => by`. Express the relevant statement in the definitionally equal form `‖((c * x : A) : K)‖ < 1`. Rewrite using `[MulMemClass.coe_mul, norm_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hA c) (norm_nonneg _) hx }`. Establish `hImem : ∀ x : A, x ∈ I ↔ ‖(x : K)‖ < 1` using `fun x => Iff.rfl`. Establish `hIprime : I.IsPrime`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (1 : A) ∈ I` using `h ▸ Submodule.mem_top`. Rewrite `h1` using `[hImem]`. Simplify using `at h1`. Introduce `x y hxy`. Assume the negation of the conclusion as `hcon`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcon` using `[not_or, hImem, hImem, not_lt, not_lt]`. Rewrite `hxy` using `[hImem, MulMemClass.coe_mul, norm_mul]`. Use `one_le_mul_of_one_le_of_one_le hcon.1 hcon.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: Module.Finite ℤ A` using `Algebra.finite_adjoin_simple_of_isIntegral hδ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : ((l : ℕ) : A ⧸ I) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I) l, Ideal.Quotient.eq_zero_iff_mem, hImem]`. Establish `h2 : (((l : ℕ) : A) : K) = (l : K)` using `map_natCast A.val l`. Rewrite using `[h2]`. Conclude with `hl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `htors : Module.IsTorsion ℤ (A ⧸ I)` using `fun {x} => ⟨⟨(l : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hlp.ne_zero)⟩, by`. Express the relevant statement in the definitionally equal form `(l : ℤ) • x = 0`. Rewrite using `[zsmul_eq_mul, Int.cast_natCast, hl0, zero_mul]⟩`. Establish `: Finite (A ⧸ I)` using `Module.finite_of_fg_torsion _ htors`. Take `⟨f, hf, h⟩` from `finite_domain_frob (A ⧸ I) l hlp hl0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Set `d : A` to `⟨δ, Algebra.self_mem_adjoin_singleton ℤ δ⟩`. Establish `h3` using `h (Ideal.Quotient.mk I d)`. Rewrite `h3` using `[← map_pow, ← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem, hImem]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_fix_of_integral {K : Type*} [NormedField K] [IsUltrametricDist K] (l : ℕ)
     (hlp : l.Prime) (hl : ‖(l : K)‖ < 1) (δ : K) (hδ : IsIntegral ℤ δ) :
@@ -165,9 +163,9 @@ theorem frob_fix_of_integral {K : Type*} [NormedField K] [IsUltrametricDist K] (
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨n, hn, -, h⟩` from `hx`. Conclude with `IsIntegral.of_pow hn (h ▸ isIntegral_one)`. Consider the case `zero => exact isIntegral_zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `one => exact isIntegral_one`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `neg x _ hx => exact hx.neg`. Consider the case `mul x y _ _ hx hy => exact hx.mul hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rmu_isIntegral_int {x : ℂ_[l]} (hx : x ∈ Rmu l) : IsIntegral ℤ x := by
   induction hx using Subring.closure_induction with
@@ -181,7 +179,7 @@ theorem rmu_isIntegral_int {x : ℂ_[l]} (hx : x ∈ Rmu l) : IsIntegral ℤ x :
   | mul x y _ _ hx hy => exact hx.mul hy
 
 /- English proof (translation)
-Establish `: Algebra.IsIntegral ℤ (Rmu l)` using `⟨fun x => by`. Use `rmu_isIntegral_int l x.2` as an intermediate fact. Conclude with `(isIntegral_algebraMap_iff (A := Rmu l) (B := ℂ_[l]) Subtype.val_injective).mp this⟩`. Establish `h : IsIntegral ℤ δ` using `isIntegral_trans δ hδ`. Conclude with `(Subsingleton.elim (algebraMap ℤ ℂ_[l]) (Int.castRingHom ℂ_[l])) ▸ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_int_of_rmu (δ : ℂ_[l]) (hδ : IsIntegral (Rmu l) δ) :
     (Int.castRingHom ℂ_[l]).IsIntegralElem δ := by
@@ -192,7 +190,7 @@ theorem isIntegral_int_of_rmu (δ : ℂ_[l]) (hδ : IsIntegral (Rmu l) δ) :
   exact (Subsingleton.elim (algebraMap ℤ ℂ_[l]) (Int.castRingHom ℂ_[l])) ▸ h
 
 /- English proof (translation)
-Break down `hx with rfl | hx` into its components or cases. Conclude with `(Rmu l).zero_mem`. Conclude with `Subring.subset_closure hx`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem tch_mem_rmu {x : ℂ_[l]} (hx : x ∈ Tch l) : x ∈ Rmu l := by
   rcases hx with rfl | hx

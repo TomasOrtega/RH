@@ -15,7 +15,7 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise in
 open IsLocalRing in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (_root_.GlobalTheory.Published.AbVarRed.galPts _ σ x).left ≫ _ = (_root_.GlobalTheory.Published.AbVarRed.galPts A (σ.restrictScalars K) _).left`. Rewrite using `[_root_.GlobalTheory.Published.AbVarRed.galPts_left, _root_.GlobalTheory.Published.AbVarRed.galPts_left, Category.assoc]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma baseChangePtEquiv_galPts (K L Ω : Type) [Field K] [Field L] [Field Ω]
     [Algebra K L] [Algebra L Ω] [Algebra K Ω] [IsScalarTower K L Ω]
@@ -34,13 +34,13 @@ open IsLocalRing in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ A _ _ _ l _ σ`. Use `set e := _root_.GlobalTheory.Published.AbVarRed.baseChangePtEquiv (K := K) (L := L) (Ω := Ω) A`. Establish `he` using `baseChangePtEquiv_galPts K L Ω A σ`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun s => _root_.GlobalTheory.HTLat.Tate.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.Published.AbVarRed.lev_galTate, Module.End.one_apply]`. Establish `ht` using `congrArg (fun ρ : Module.End ℤ_[l] _ => (ρ (_root_.GlobalTheory.HTLat.Tate.map l e.symm.toMonoidHom s)).lev n) h`. Simplify using `only [_root_.GlobalTheory.Published.AbVarRed.lev_galTate, Module.End.one_apply, _root_.GlobalTheory.HTLat.Tate.lev_map] at ht`. Use `congrArg e ht` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[he]`. Simplify `this` using `[e]`. Introduce `h`. Use `LinearMap.ext fun t => _root_.GlobalTheory.HTLat.Tate.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.Published.AbVarRed.lev_galTate, Module.End.one_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `congrArg (fun ρ : Module.End ℤ_[l] _ => (ρ (_root_.GlobalTheory.HTLat.Tate.map l e.toMonoidHom t)).lev n) h`. Simplify using `only [_root_.GlobalTheory.Published.AbVarRed.lev_galTate, Module.End.one_apply, _root_.GlobalTheory.HTLat.Tate.lev_map] at hs`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Conclude with `hs`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TateBaseChange.galTate_baseChange_eq_one_iff : ∀ (K L Ω : Type) [Field K] [Field L] [Field Ω] [Algebra K L] [Algebra L Ω] [Algebra K Ω] [IsScalarTower K L Ω] (A : Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K)) [GrpObj A] [IsCommMonObj A] [IsCommMonObj ((Over.pullback (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap K L))).obj A)] (l : ℕ) [Fact l.Prime] (σ : Ω ≃ₐ[L] Ω), _root_.GlobalTheory.Published.AbVarRed.galTate ((Over.pullback (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap K L))).obj A) l σ = 1 ↔ _root_.GlobalTheory.Published.AbVarRed.galTate A l (σ.restrictScalars K) = 1 := by
   intro K L Ω _ _ _ _ _ _ _ A _ _ _ l _ σ

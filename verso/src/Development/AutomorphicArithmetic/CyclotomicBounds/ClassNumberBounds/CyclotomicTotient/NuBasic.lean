@@ -6,7 +6,7 @@ namespace KStar.Tree
 variable {Γ : Type} [Group Γ] (l : ℕ) [Fact l.Prime] (ε : Γ →* ℤ_[l]ˣ) (n : ℕ)
 
 /- English proof (translation)
-Rewrite using `[PadicInt.isUnit_iff]`. Conclude with `le_antisymm (PadicInt.norm_le_one c) (not_lt.1 fun h => hc ((PadicInt.norm_lt_one_iff_dvd c).1 h))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_of_not_dvd {c : ℤ_[l]} (hc : ¬ (l : ℤ_[l]) ∣ c) : IsUnit c := by
   rw [PadicInt.isUnit_iff]
@@ -14,13 +14,13 @@ private theorem isUnit_of_not_dvd {c : ℤ_[l]} (hc : ¬ (l : ℤ_[l]) ∣ c) : 
     (not_lt.1 fun h => hc ((PadicInt.norm_lt_one_iff_dvd c).1 h))
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `hx : ((ε g : ℤ_[l]ˣ) : ℤ_[l]) ^ n - 1 ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h1`. Apply `hg` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `ext`. Simplify using `using h1`. Establish `hl0 : (l : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Take `⟨u, v, hxv⟩ : ∃ (u : ℤ_[l]ˣ) (v : ℕ), ((ε g : ℤ_[l]ˣ) : ℤ_[l]) ^ n - 1 = u * (l : ℤ_[l]) ^ v` from `⟨_, _, PadicInt.unitCoeff_spec hx⟩`. Establish `hne : {k | ∃ g, ¬ (l : ℤ_[l]) ^ (k + 1) ∣ ((ε g : ℤ_[l]ˣ) : ℤ_[l]) ^ n - 1}.Nonempty`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨v, g, ?_⟩` and prove the remaining obligations. Introduce `hd`. Rewrite `hd` using `[hxv, pow_succ, mul_comm (u : ℤ_[l])]`. Establish `hlu : (l : ℤ_[l]) ∣ u` using `(mul_dvd_mul_iff_left (pow_ne_zero v hl0)).1 hd`. Establish `hlunit : IsUnit (l : ℤ_[l])` using `isUnit_of_dvd_unit hlu u.isUnit`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(PadicInt.norm_lt_one_iff_dvd (l : ℤ_[l])).2 dvd_rfl`. Rewrite `hlunit` using `[PadicInt.isUnit_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Nat.sInf_mem hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem nuOf_mem (h : ∃ g, ε g ^ n ≠ 1) :
     ∃ g, ¬ (l : ℤ_[l]) ^ (nuOf l ε n + 1) ∣ ((ε g : ℤ_[l]ˣ) : ℤ_[l]) ^ n - 1 := by
@@ -46,9 +46,9 @@ private theorem nuOf_mem (h : ∃ g, ε g ^ n ≠ 1) :
   exact Nat.sInf_mem hne
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (nuOf l ε n) with h0 | hpos` into its components or cases. Rewrite using `[h0, pow_zero]`. Conclude with `one_dvd _`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero hpos.ne'`. Establish `hlt : k < nuOf l ε n` using `by omega`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnm : k ∉ {k | ∃ g, ¬ (l : ℤ_[l]) ^ (k + 1) ∣ ((ε g : ℤ_[l]ˣ) : ℤ_[l]) ^ n - 1}` using `Nat.notMem_of_lt_sInf hlt`. Rewrite using `[hk]`. Assume the negation of the conclusion as `hd`. Conclude with `hnm ⟨g, hd⟩`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem pow_nuOf_dvd (g : Γ) : (l : ℤ_[l]) ^ nuOf l ε n ∣ ((ε g : ℤ_[l]ˣ) : ℤ_[l]) ^ n - 1 := by
   rcases Nat.eq_zero_or_pos (nuOf l ε n) with h0 | hpos
@@ -63,9 +63,9 @@ theorem pow_nuOf_dvd (g : Γ) : (l : ℤ_[l]) ^ nuOf l ε n ∣ ((ε g : ℤ_[l]
     exact hnm ⟨g, hd⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `nuOf_mem l ε n h`. Take `⟨c, hc⟩` from `pow_nuOf_dvd l ε n g`. Use `⟨g, (isUnit_of_not_dvd l (c := c) ?_).unit, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨d, rfl⟩`. Conclude with `hg ⟨d, by rw [hc]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsUnit.unit_spec]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_pow_nuOf_mul_unit (h : ∃ g, ε g ^ n ≠ 1) :
     ∃ (g : Γ) (u : ℤ_[l]ˣ), ((ε g : ℤ_[l]ˣ) : ℤ_[l]) ^ n - 1 = (l : ℤ_[l]) ^ nuOf l ε n * u := by
@@ -78,9 +78,9 @@ theorem exists_eq_pow_nuOf_mul_unit (h : ∃ g, ε g ^ n ≠ 1) :
     exact hc
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hk g`. Conclude with `(pow_dvd_pow _ hk).trans (pow_nuOf_dvd l ε n g)`. Introduce `hk`. Assume the negation of the conclusion as `hlt`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hlt`. Take `⟨g, hg⟩` from `nuOf_mem l ε n h`. Conclude with `hg ((pow_dvd_pow _ hlt).trans (hk g))`.
+A detailed English derivation is pending.
 -/
 theorem le_nuOf_iff (h : ∃ g, ε g ^ n ≠ 1) (k : ℕ) :
     k ≤ nuOf l ε n ↔ ∀ g, (l : ℤ_[l]) ^ k ∣ ((ε g : ℤ_[l]ˣ) : ℤ_[l]) ^ n - 1 := by
@@ -94,9 +94,9 @@ theorem le_nuOf_iff (h : ∃ g, ε g ^ n ≠ 1) (k : ℕ) :
     exact hg ((pow_dvd_pow _ hlt).trans (hk g))
 
 /- English proof (translation)
-Establish `key` using `(le_nuOf_iff l ε n h 1).2 ?_`. Use linear arithmetic over natural numbers and integers. Introduce `g`. Rewrite using `[pow_one, ← Ideal.mem_span_singleton, ← PadicInt.maximalIdeal_eq_span_p]`. Apply `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top θ)` to reduce the goal to its premises.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[RingHom.mem_ker, map_sub, map_pow, map_one, h1 g, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nuOf_pos_of_res (h : ∃ g, ε g ^ n ≠ 1) {K : Type} [CommRing K] [Nontrivial K] (θ : ℤ_[l] →+* K)
     (h1 : ∀ g, θ ((ε g : ℤ_[l]ˣ) : ℤ_[l]) ^ n = 1) : 0 < nuOf l ε n := by

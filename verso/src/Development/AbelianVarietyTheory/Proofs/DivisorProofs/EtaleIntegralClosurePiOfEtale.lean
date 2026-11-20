@@ -25,7 +25,7 @@ noncomputable def integralClosurePiEquiv (R : Type) [CommRing R] (ι : Type) [Fi
         rfl)
 
 /- English proof (translation)
-Introduce `R _ ι _ E _ _ h`. Use `haveI : Algebra.Etale R (∀ i, integralClosure R (E i)) := inferInstance`. Conclude with `Algebra.Etale.of_equiv (integralClosurePiEquiv R ι E).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem etale_integralClosure_pi : ∀ (R : Type) [CommRing R] (ι : Type) [Fintype ι] (E : ι → Type) [∀ i, CommRing (E i)]
     [∀ i, Algebra R (E i)], (∀ i, Algebra.Etale R (integralClosure R (E i))) →

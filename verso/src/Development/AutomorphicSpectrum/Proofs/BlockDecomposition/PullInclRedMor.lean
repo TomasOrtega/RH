@@ -7,9 +7,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.RedThick
 
 /- English proof (translation)
-Introduce `O A R Λ _ _ _ _ _ I γ J δ κ l n d X q s s' 𝒱 h c lam hc r j x`. Take `⟨⟨a, ha⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun u => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((incl h).sq (a := IdF.top _) (a' := IdF.top _) (fun _ _ _ => trivial) (incl_std h r ((l : A) ^ n))).τ _ ((redMor q s' d 𝒱 c lam hc r).τ _ (a (u ⋙ (ObjectProperty.ιOfLE h ⋙ redG q s' d 𝒱)))) = (redMor q s d 𝒱 c lam hc r).τ _ (a (u ⋙ redG q s d 𝒱))`. Establish `key : ∀ z : (u.obj (Fin.last j)).obj.B ⧸ lnT (u.obj (Fin.last j)).obj l n, ((incl h).sq (a` using `IdF.top _) (a' := IdF.top _) (fun _ _ _ => trivial) (incl_std h r ((l : A) ^ n))).τ (u.obj (Fin.last j)) ((redMor q s' d 𝒱 c lam hc r).τ ((ObjectProperty.ιOfLE h).obj (u.obj (Fin.last j))) z) = (redMor q s d 𝒱 c lam hc r).τ (u.obj (Fin.last j)) z := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Introduce `z`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Both sides reduce to the same expression. Conclude with `key (a (u ⋙ redG q s d 𝒱))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pull_incl_redMor : ∀ {O A R Λ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing R] [CommRing Λ] {I : Ideal A} {γ : DividedPowers I}
     {J : Ideal R} {δ : DividedPowers J} {κ : O →+* R ⧸ J} {l n : ℕ} (d : RedIn δ κ γ l n) {X : Scheme.{0}}

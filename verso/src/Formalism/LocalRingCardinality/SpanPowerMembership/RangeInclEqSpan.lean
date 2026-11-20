@@ -48,9 +48,9 @@ def SigN : Type := {p : Fin (R.m + 1) × Bool // 1 ≤ p.1.1 ∧ Nonempty (I.ix 
 instance : Finite (SigN C I) := inferInstanceAs (Finite {p : Fin (R.m + 1) × Bool // _})
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrFun (congrArg (TensorProduct.piRight A K K (fun _ : ι => A)) h) a`. Rewrite `h1` using `[TensorProduct.piRight_apply, TensorProduct.piRightHom_tmul, map_zero]`. Establish `h2` using `congrArg (TensorProduct.rid A K) (show (1 : K) ⊗ₜ[A] (Pi.single a 1 : ι → A) a = 0 from h1)`. Rewrite `h2` using `[Pi.single_eq_same, TensorProduct.rid_tmul, map_zero, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h2`.
+A detailed English derivation is pending.
 -/
 theorem tmul_single_ne (A K : Type) [CommRing A] [Field K] [Algebra A K] (ι : Type) [Fintype ι] [DecidableEq ι]
     (a : ι) : (1 : K) ⊗ₜ[A] (Pi.single a 1 : ι → A) ≠ 0 := by
@@ -62,7 +62,7 @@ theorem tmul_single_ne (A K : Type) [CommRing A] [Field K] [Algebra A K] (ι : T
   exact one_ne_zero h2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Conclude with `hx (Subsingleton.elim _ _)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_of_ne {ι V : Type} [Zero V] {x : ι → V} (hx : x ≠ 0) : Nonempty ι := by
   by_contra h
@@ -70,7 +70,7 @@ theorem nonempty_of_ne {ι V : Type} [Zero V] {x : ι → V} (hx : x ≠ 0) : No
   exact hx (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Establish `h2 : (1 - c) • x = 0` using `by rw [sub_smul, one_smul, ← h, sub_self]`. Conclude with `sub_eq_zero.mp ((smul_eq_zero.mp h2).resolve_right hx)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_smul {K V : Type} [Field K] [AddCommGroup V] [Module K V] {x : V} (hx : x ≠ 0) {c : K}
     (h : x = c • x) : (1 : K) = c := by
@@ -202,7 +202,7 @@ def incl (A K : Type) [CommRing A] [CommRing K] [Algebra A K] (ι : Type) : (ι 
   (Algebra.linearMap A K).compLeft ι
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ y`. Conclude with `⟨g y, rfl⟩`. Introduce `h choose g hg using h`. Conclude with `⟨g, funext hg⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_range_incl {A K : Type} [CommRing A] [CommRing K] [Algebra A K] {ι : Type} (f : ι → K) :
     f ∈ LinearMap.range (incl A K ι) ↔ ∀ y, f y ∈ (algebraMap A K).range := by
@@ -214,7 +214,7 @@ theorem mem_range_incl {A K : Type} [CommRing A] [CommRing K] [Algebra A K] {ι 
     exact ⟨g, funext hg⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Pi.single a 1, funext fun y => by show algebraMap A K ((Pi.single a 1 : ι → A) y) = _ by_cases h : y = a · subst h; simp · simp [Pi.single_eq_of_ne h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem single_mem_incl {A K : Type} [CommRing A] [CommRing K] [Algebra A K] {ι : Type} [DecidableEq ι] (a : ι) :
     (Pi.single a 1 : ι → K) ∈ LinearMap.range (incl A K ι) :=
@@ -225,13 +225,11 @@ theorem single_mem_incl {A K : Type} [CommRing A] [CommRing K] [Algebra A K] {ι
     · simp [Pi.single_eq_of_ne h]⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, rfl⟩`. Establish `e : incl A K ι g = ∑ a, g a • (Pi.single a 1 : ι → K)`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single y]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap A K (g y) = g y • (Pi.single y 1 : ι → K) y`. Rewrite using `[Pi.single_eq_same, Algebra.smul_def, mul_one]`. Introduce `b _ hb show g b • (Pi.single b 1 : ι → K) y = 0`. Rewrite using `[Pi.single_eq_of_ne (Ne.symm hb), smul_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ y) h`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
-
-Conclude with `single_mem_incl a`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem range_incl_eq_span (A K : Type) [CommRing A] [CommRing K] [Algebra A K] (ι : Type) [Fintype ι] [DecidableEq ι] :
     LinearMap.range (incl A K ι) = Submodule.span A (Set.range fun a : ι => (Pi.single a 1 : ι → K)) := by
@@ -253,7 +251,7 @@ theorem range_incl_eq_span (A K : Type) [CommRing A] [CommRing K] [Algebra A K] 
     exact single_mem_incl a
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← (Pi.basisFun K ι).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[Pi.basisFun_apply]`. Conclude with `single_mem_incl a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_incl_top (A K : Type) [CommRing A] [Field K] [Algebra A K] (ι : Type) [Fintype ι] [DecidableEq ι] :
     Submodule.span K (LinearMap.range (incl A K ι) : Set (ι → K)) = ⊤ := by

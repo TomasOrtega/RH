@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.EqLag
 open Polynomial Matrix IsLocalRing TensorProduct UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Establish `hr : U.x i * U.ep i = U.x i` using `by conv_rhs => rw [← U.x_mem i] conv_lhs => rw [← U.x_mem i]`. Rewrite using `[mul_assoc _ (U.ep i) (U.ep i), (U.coi.idem i).eq]`. Establish `hl : U.ep (o i) * U.x i = U.x i` using `by conv_rhs => rw [← U.x_mem i] conv_lhs => rw [← U.x_mem i]`. Simplify using `only [← mul_assoc, (U.coi.idem (o i)).eq]`. Use `⟨hr, hl, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg T.st hl`. Rewrite `h` using `[T.st_mul, U.st_ep]`. Then use the resulting hypothesis. Establish `h` using `congrArg T.st hr`. Rewrite `h` using `[T.st_mul, U.st_ep]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem units_x_mul_ep_and_st_idempotent_identities {B E : Type} [CommRing B] [Ring E] [Algebra B E] (T : TrInv B E) {ι : Type} [Fintype ι] [DecidableEq ι] (o : ι → ι) (U : T.Units ι o) (i : ι) :
     U.x i * U.ep i = U.x i ∧ U.ep (o i) * U.x i = U.x i ∧ T.st (U.x i) * U.ep (o i) = T.st (U.x i) ∧ U.ep i * T.st (U.x i) = T.st (U.x i) := by
@@ -25,19 +25,19 @@ private theorem units_x_mul_ep_and_st_idempotent_identities {B E : Type} [CommRi
     rwa [T.st_mul, U.st_ep] at h
 
 /- English proof (translation)
-Introduce `B E _ _ _ T ι _ _ o U`. Establish `key : ∀ i j y, U.ep (o i) * (U.x i * y * T.st (U.x j)) * U.ep (o j) = U.x i * y * T.st (U.x j)`. Introduce `i j y`. Take `⟨-, hl, hs, -⟩` from `units_x_mul_ep_and_st_idempotent_identities T o U i`. Take `⟨-, -, hs', -⟩` from `units_x_mul_ep_and_st_idempotent_identities T o U j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [← mul_assoc]`. Rewrite using `[hl, mul_assoc _ (T.st (U.x j)), hs']`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, key⟩` and prove the remaining obligations. Introduce `i j h`. Take `⟨hr, -, -, -⟩` from `units_x_mul_ep_and_st_idempotent_identities T o U i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hs⟩` from `units_x_mul_ep_and_st_idempotent_identities T o U j`. Rewrite using `[← hr, ← hs, mul_assoc, ← mul_assoc (U.ep i), U.coi.ortho h, zero_mul, mul_zero]`. Repeatedly rewrite using `[U.st_mul_x_eq]`. Conclude with `U.coi.complete`. Introduce `i j y h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[T.tr_comm, ← mul_assoc, U.coi.ortho (Ne.symm h), zero_mul, map_zero]`. Introduce `y`. Establish `h : ∀ i, T.tr (U.x i * y * T.st (U.x i)) = T.tr (U.ep i * y)`. Introduce `i`. Rewrite using `[T.tr_comm, ← mul_assoc, U.st_mul_x_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[h]`. Rewrite using `[← map_sum, ← Finset.sum_mul, U.coi.complete, one_mul]`. Introduce `i j y h`. Establish `h7` using `key i j y`. Rewrite `h7` using `[← h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `y`. Establish `h : ∀ i j, T.st (U.x i) * (U.x i * y * T.st (U.x j)) * U.x j = U.ep i * y * U.ep j`. Introduce `i j`. Rewrite using `[← U.st_mul_x_eq i, ← U.st_mul_x_eq j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Repeatedly rewrite using `[h, ← Finset.mul_sum, ← Finset.sum_mul, U.coi.complete, mul_one, one_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.units_basic :
     ∀ {B E : Type} [CommRing B] [Ring E] [Algebra B E] (T : TrInv B E) {ι : Type} [Fintype ι] [DecidableEq ι] (o : ι → ι) (U : T.Units ι o), (∀ i j, i ≠ j → U.x i * T.st (U.x j) = 0) ∧ ∑ i, T.st (U.x i) * U.x i = 1 ∧ (∀ i j y, i ≠ j → T.tr (U.ep i * y * U.ep j) = 0) ∧ (∀ y, T.tr y = ∑ i, T.tr (U.x i * y * T.st (U.x i))) ∧ (∀ i j y, o i = o j → U.x i * y * T.st (U.x j) = T.tr (U.x i * y * T.st (U.x j)) • U.ep (o i)) ∧ (∀ y, y = ∑ i, ∑ j, T.st (U.x i) * (U.x i * y * T.st (U.x j)) * U.x j) ∧ ∀ i j y, U.ep (o i) * (U.x i * y * T.st (U.x j)) * U.ep (o j) = U.x i * y * T.st (U.x j) := by

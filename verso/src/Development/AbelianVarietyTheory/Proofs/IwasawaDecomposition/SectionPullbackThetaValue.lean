@@ -15,13 +15,13 @@ namespace GlobalTheory.RayEv
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.TorusModel
 
 /- English proof (translation)
-Establish `e1 : Y.q ≫ padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c α) = padd D.P.A (DegPre.cT D Y.H α) Y.q`. Simplify using `only [padd, comp_lift_assoc, Category.comp_id]`. Rewrite using `[← Hom.mul_def, ← Hom.mul_def, mul_comm, comp_toUnit_assoc]`. Establish `e2 : Y.q.left ≫ (toUnit D.P.A ≫ D.c α).left = (DegPre.cT D Y.H α).left`. Rewrite using `[← Over.comp_left, comp_toUnit_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : Y.q.left ≫ (toUnit D.P.A ≫ η[D.P.A]).left = (DegPre.zeroT D Y.H).left`. Rewrite using `[← Over.comp_left, comp_toUnit_assoc]`. Establish `e0 : Y.q.left ≫ (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c α)).left = (padd D.P.A (DegPre.cT D Y.H α) Y.q).left`. Rewrite using `[← Over.comp_left, e1]`. Introduce `U _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fintype.prod_sum_type, Fin.prod_univ_four, Fin.prod_univ_four, Fin.prod_univ_one]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Simplify using `only [DegPre.famφB, DegPre.famε, DegPre.gtφT, DegPre.gtε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, Category.comp_id, e0, e2, e3]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem formEq_term {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {O : Type} [CommRing O] [StarRing O]
     [Module O D.X] {oa : D.OAct O} (Y : Ray oa) (k : ℕ) (α : D.X) :
@@ -47,9 +47,9 @@ theorem formEq_term {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {O : Typ
   module
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_sec D.P.isLB (formEq_term Y k α) (pullMulSec σ Y.q.left ((Y.Φ Y.H (𝟙 _)).s α) ((Y.Φ Y.H (𝟙 _)).isGen α))`. Use `⟨τ, fun T x y J hJ => ?_⟩` and prove the remaining obligations. Use `(hτ _ _ y J hJ).trans ((sval_pullMulSec σ Y.q.left ((Y.Φ Y.H (𝟙 _)).s α) ((Y.Φ Y.H (𝟙 _)).isGen α) x.left y hJ).trans ?_)` and prove the remaining obligations. Take `⟨-, h₂⟩` from `(isPull_iff _ _ _).1 (Y.rep.1 T Y.H x (𝟙 _))`. Establish `e` using `h₂ α y J hJ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[Category.comp_id]`. Rewrite using `[Over.comp_left]`. Conclude with `congrArg _ (congrArg Units.val e.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_fourierTerm (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O D.X] (oa : D.OAct O) (Y : Ray oa) (k : ℕ) (α : D.X) (σ : D.SecB k α) : ∃ τ : LB.Sec (LB.LinComb D.P.L (K := Fin 1) (fun _ => Y.q.left) fun _ => (k : ℤ)), ∀ (T : Over (Sp R)) (x : T ⟶ Y.H) y J, Good D.P.L y J → sval τ x.left y J = sval σ (x ≫ Y.q).left y J * (val ((Y.Φ T x).s α) (𝟙 _) y J).val := by
   obtain ⟨τ, hτ⟩ := exists_sec D.P.isLB (formEq_term Y k α)

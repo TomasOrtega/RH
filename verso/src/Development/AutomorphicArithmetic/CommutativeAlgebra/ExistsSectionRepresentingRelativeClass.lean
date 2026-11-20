@@ -12,30 +12,32 @@ private def cut (C : DC) (x : C.Tot) : C.Tot
   | _ + 1, _ => 0
 
 /- English proof (translation)
-Simplify using `[Units.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem unit_map {A B : Type*} [AddCommGroup A] [AddCommGroup B] (f : A →+ B) (u : ℤˣ) (a : A) :
     f (u • a) = u • f a := by
   simp [Units.smul_def]
 
 /- English proof (translation)
-Establish `key : ∀ (q : ℕ) (s : ℤ) (a : C.A q s), m.negOnePow • m.negOnePow • a = a`. Introduce `q s a`. Rewrite using `[smul_smul, Int.units_mul_self, one_smul]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p s hps`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `p with`. Consider the case `zero => exact hd 0 s hps`. Consider the case `succ p => rfl`. Use function extensionality and compare the values at `p t`. Consider the cases of `p with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Use `congrFun (congrFun hD 0) t` as an intermediate fact. Simplify `this` using `[DC.D, cut]`. Consider the case `succ p`. Consider the cases of `p with`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp [DC.D, cut, h0 0 t ⟨0, rfl⟩]`. Consider the case `succ p => simp [DC.D, cut]`. Introduce `p s hps`. Consider the cases of `p with`. Consider the case `zero => simp [cut]`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ p => simp [cut, hd (p + 1) s hps]`. Use `⟨fun p t => if Odd p then m.negOnePow • rd p t (x (p + 1) t) else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `p t hpt dsimp only split_ifs`. Rewrite using `[hd (p + 1) t (by push_cast; omega)]`. Simplify using the standard rewrite rules.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `p t`. Consider the cases of `p with`. Consider the case `zero => simp [DC.D, cut]`. Consider the case `succ p`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hx` using `congrFun (congrFun hD (p + 2)) t`. Simplify using `only [DC.D] at hx`. Simplify using `only [DC.D, cut, sub_add_cancel, Pi.sub_apply, sub_zero]`. Break down `Nat.even_or_odd p with hp | hp` into its components or cases. Establish `hp1 : Odd (p + 1)` using `hp.add_one`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hp0 : ¬ Odd p` using `Nat.not_odd_iff_even.mpr hp`. Simplify using `only [hp1, hp0, if_true, if_false, map_zero, smul_zero, add_zero]`. Rewrite using `[unit_map, h3]`. Establish `hx' : C.d (p + 2) (t - 1) t (x (p + 2) (t - 1)) = m.negOnePow • C.δ (p + 1) t (x (p + 1) t)`. Rewrite `hx` using `[Int.negOnePow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eq_neg_of_add_eq_zero_left hx, Units.neg_smul, neg_neg]`. Rewrite using `[hx', unit_map, h2 _ _ hp1, key]`. Establish `hp1 : ¬ Odd (p + 1)` using `by rw [Nat.odd_add_one]; exact not_not.mpr hp`. Simplify using `only [hp1, hp, if_true, if_false, map_zero, zero_add]`. Rewrite using `[unit_map, h1 _ _ hp, key]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
+
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem split (C : DC) (rd : ∀ p s, C.A (p + 1) s →+ C.A p s)
     (h0 : ∀ p s, Even p → ∀ a, C.δ p s a = 0)
@@ -94,11 +96,11 @@ private theorem split (C : DC) (rd : ∀ p s, C.A (p + 1) s →+ C.A p s)
           rw [unit_map, h1 _ _ hp, key]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : Even n`. Establish `h' : ¬ Even (n + 1)` using `by simpa [Nat.even_add_one] using h`. Simplify using `[h, h', h.neg_one_pow]`. Establish `h' : Even (n + 1)` using `by simpa [Nat.even_add_one] using h`. Establish `ho : Odd n` using `Nat.not_even_iff_odd.1 h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h, h', ho.neg_one_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem alt {G : Type*} [AddCommGroup G] (b : G) (n : ℕ) :
     ∑ i : Fin n, (-1 : ℤ) ^ (i : ℕ) • b = if Even n then 0 else b := by
@@ -124,7 +126,7 @@ private def rdF (Z : Sub (sch.obj X)) (hZ : ∀ (p q : ℕ) (W : Scheme.{0}) (t 
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(0 : ℤ).negOnePow • ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • a.1 W t = _`. Rewrite using `[Int.negOnePow_zero, one_smul, alt]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem delta_apply (Z : Sub (sch.obj X)) (p : ℕ) (M : Shv R) (a : Fam Z p M) (W : Scheme.{0}) (t : W ⟶ X) :
     (Fam.δ Z p M (0 : ℤ).negOnePow a).1 W t = if Even (p + 2) then 0 else a.1 W t := by
@@ -132,15 +134,15 @@ private theorem delta_apply (Z : Sub (sch.obj X)) (p : ℕ) (M : Shv R) (a : Fam
   rw [Int.negOnePow_zero, one_smul, alt]
 
 /- English proof (translation)
-Use `split (famDC Z K 0) (fun p s => rdF Z hZ p (K.X (s + 0))) ?_ ?_ ?_ ?_ m x hd hD` and prove the remaining obligations. Introduce `p s hp (a : Fam Z p (K.X (s + 0)))`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `W (t : W ⟶ X)`. Establish `e` using `delta_apply Z p (K.X (s + 0)) a W t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `: Even (p + 2)` using `by rw [Nat.even_add]; simp [hp]`. Rewrite `e` using `[if_pos this]`. Conclude with `e`. Introduce `p s hp (a : Fam Z (p + 1) (K.X (s + 0)))`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `W (t : W ⟶ X)`. Establish `e` using `delta_apply Z p (K.X (s + 0)) (rdF Z hZ p (K.X (s + 0)) a) W t`. Establish `: ¬ Even (p + 2)` using `by rw [Nat.even_add]; simp [Nat.not_even_iff_odd.mpr hp]`. Rewrite `e` using `[if_neg this]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p s hp (a : Fam Z p (K.X (s + 0)))`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `W (t : W ⟶ X)`. Establish `e` using `delta_apply Z p (K.X (s + 0)) a W t`. Establish `: ¬ Even (p + 2)` using `by rw [Nat.even_add]; simp [Nat.not_even_iff_odd.mpr hp]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e` using `[if_neg this]`. Conclude with `e`. Introduce `p s t a`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem fam_split (Z : Sub (sch.obj X)) (hZ : ∀ (p q : ℕ) (W : Scheme.{0}) (t : W ⟶ X), Z.mem p W t → Z.mem q W t)
     (K : Cx R) (m : ℤ) (x : (famDC Z K 0).Tot) (hd : (famDC Z K 0).Deg m x) (hD : (famDC Z K 0).D m x = 0) :
@@ -174,25 +176,23 @@ private theorem fam_split (Z : Sub (sch.obj X)) (hZ : ∀ (p q : ℕ) (W : Schem
 end Concrete
 
 /- English proof (translation)
-Introduce `q X U m j c`. Establish `TM` using `UpperTheory.relativeCohomology_isTotalModel_of_image q (opn U) j 0 m m (by simp)`. Establish `hZ : ∀ (p q : ℕ) (W : Scheme.{0}) (t : W ⟶ X), (Sub.img (opn U).hom).mem p W t → (Sub.img (opn U).hom).mem q W t` using `fun _ _ _ _ h => h`. Take `⟨x, hxd, hxD, hxr⟩` from `TM.surj c`. Take `⟨hcd, hcD, hrd, y, hyd, hyD⟩` from `fam_split (Sub.img (opn U).hom) hZ _ m x hxd hxD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, hc0⟩` from `TM.ex _ hcd hcD`. Establish `hsub` using `TM.sub _ _ _ _ hxr hc0`. Establish `hz : c - c0 = 0` using `(TM.zero _ _ hrd hsub).2 ⟨y, hyd, hyD⟩`. Establish `hcc : c = c0` using `sub_eq_zero.mp hz`. Rewrite `hc0` using `[← hcc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨γ, hγ, hcomp, hinr⟩` from `hc0`. Establish `cover` using `(UpperTheory.doubleMappingCylinder_cochain_extension (ZMod q) (opn U)).1`. Establish `hhi : ∀ (p : ℕ) (s : ℤ) (h : -((p + 1 : ℕ) : ℤ) + m = s) (W : Scheme) (z : Sx (dbl (opn U)) (p + 1) W), ev γ.1 (p + 1) s h W z = 0`. Introduce `p s h W z`. Break down `cover (p + 1) W z with ⟨z', rfl⟩ | ⟨z', rfl⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : ∀ h' : -((p + 1 : ℕ) : ℤ) + m = s + 0, ev γ.1 (p + 1) (s + 0) h' W (Sx.map (dbl.inl (opn U)) z') = 0`. Introduce `h'`. Rewrite using `[← hcomp (p + 1) s h' W z']`. Both sides reduce to the same expression. Rewrite `e` using `[add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e h`. Conclude with `hinr (p + 1) s h W z'`. Establish `big : ∀ (h : -((0 : ℕ) : ℤ) + m = m + 0), (∀ (W : Scheme) (t : W ⟶ X), ev γ.1 0 (m + 0) h W (Sx.map (dbl.inl (opn U)) (show Sx (opn U).right 0 W from t)) = Sec.res t (ev γ.1 0 (m + 0) h X (Sx.map (dbl.inl (opn U)) (show Sx (opn U).right 0 X from 𝟙 X)))) ∧ Sec.res U.ι (ev γ.1 0 (m …`. Introduce `h`. Establish `nat : ∀ (W : Scheme) (t : W ⟶ X), ev γ.1 0 (m + 0) h W (Sx.map (dbl.inl (opn U)) (show Sx (opn U).right 0 W from t)) = Sec.res t (ev γ.1 0 (m + 0) h X (Sx.map (dbl.inl (opn U)) (show Sx (opn U).right 0 X from 𝟙 X)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `W t`. Establish `e1` using `hcomp 0 m h W t`. Establish `e2` using `hcomp 0 m h X (show Sx (opn U).right 0 X from 𝟙 X)`. Establish `e` using `(cut _ x 0 m).2.1 W X t (show Sx (opn U).right 0 X from 𝟙 X)`. Establish `r : Sx.res t (show Sx (opn U).right 0 X from 𝟙 X) = (show Sx (opn U).right 0 W from t)` using `Category.comp_id t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e1.symm.trans ((congrArg (fun z => (cut _ x 0 m).1 W z) r.symm).trans (e.symm.trans (congrArg (Sec.res t) e2)))`. Use `⟨nat, ?_⟩` and prove the remaining obligations. Rewrite using `[← nat]`. Establish `mem : (Sub.img (opn U).hom).mem 0 U U.ι`. Use `⟨(show Sx (sch.obj (U : Scheme.{0})) 0 U from 𝟙 (U : Scheme.{0})), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Sx.map, opn, sch, disc]`. Simplify using the standard rewrite rules. Conclude with `(hcomp 0 m h U U.ι).symm.trans ((cut _ x 0 m).2.2 U U.ι mem)`. Rewrite `big` using `[add_zero]`. Establish `dz : ∀ (h : -((0 : ℕ) : ℤ) + m = m + 1 - 1 + 0), Sec.map ((res (ZMod q) (tw q j)).d (m + 1 - 1 + 0) (m + 1 + 0)) (ev γ.1 0 (m + 1 - 1 + 0) h X (Sx.map (dbl.inl (opn U)) (show Sx (opn U).right 0 X from 𝟙 X))) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Establish `e2` using `hcomp 0 (m + 1 - 1) h X (show Sx (opn U).right 0 X from 𝟙 X)`. Establish `e` using `congrArg (fun a => a.1 X (show Sx (opn U).right 0 X from 𝟙 X)) (congrFun (congrFun hcD 0) (m + 1))`. Use `(congrArg (Sec.map ((res (ZMod q) (tw q j)).d (m + 1 - 1 + 0) (m + 1 + 0))) e2).symm.trans ?_` and prove the remaining obligations. Conclude with `e`.
-
-Rewrite `dz` using `[add_zero, add_zero, add_sub_cancel_right]`. Conclude with `⟨ev γ.1 0 m (by simp) X (Sx.map (dbl.inl (opn U)) (show Sx (opn U).right 0 X from 𝟙 X)), dz _, (big _).2, γ, hγ, fun W t => (big _).1 W t, fun W t => hinr 0 m _ W t, hhi⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_section_representing_relativeClass :
     ∀ (q : ℕ) (X : Scheme.{0}) (U : X.Opens) (m j : ℤ) (c : Hs q (opn U) m j), ∃ β : Sec ((res _ (tw q j)).X m) X, IsRep U β c.1 := by

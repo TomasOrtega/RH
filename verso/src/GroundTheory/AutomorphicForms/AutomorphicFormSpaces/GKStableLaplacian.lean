@@ -17,27 +17,25 @@ set_option linter.unusedSectionVars false
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Distinguish the cases in `hv0 : v = 0`. Use `⟨Polynomial.X, Polynomial.monic_X, by simp, ?_⟩` and prove the remaining obligations. Simplify using `[hv0]`. Establish `hmemk : ∀ k : ℕ, (T ^ k) v ∈ V`. Introduce `k`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => simpa using hv`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply]`. Conclude with `hV _ ih`. Use `set m := Module.finrank ℂ V`.
+Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : Fin (m + 1) → M` to `fun i => (T ^ (i : ℕ)) v`. Establish `hspan : Submodule.span ℂ (range u) ≤ V`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hmemk i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnot : ¬ LinearIndependent ℂ u` using `fun hli => by`. Establish `h1` using `finrank_span_eq_card hli`. Establish `h2` using `Submodule.finrank_mono hspan`. Rewrite `h2` using `[h1, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc, i, hi⟩` from `Fintype.not_linearIndependent_iff.1 hnot`. Take `⟨Q, hQdef⟩ : ∃ Q : Polynomial ℂ, Q = ∑ j : Fin (m + 1), Polynomial.C (c j) * Polynomial.X ^ (j : ℕ)` from `⟨_, rfl⟩`. Establish `hQv : Polynomial.aeval T Q v = 0`. Establish `e1 : Polynomial.aeval T Q v = ∑ j : Fin (m + 1), c j • (T ^ (j : ℕ)) v`. Rewrite using `[hQdef, map_sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Polynomial.aeval_C, map_pow, Polynomial.aeval_X, Module.End.mul_apply, Module.algebraMap_end_apply]`. Rewrite using `[e1]`. Conclude with `hc`. Establish `hQ0 : Q ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Apply `hi` to reduce the goal to its premises. Use `congrArg (fun P => P.coeff (i : ℕ)) h0` as an intermediate fact. Simplify using `only [hQdef, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, Polynomial.coeff_zero] at this`. Rewrite `this` using `[Finset.sum_eq_single i]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using this`. Introduce `j _ hj`. Establish `: (i : ℕ) ≠ (j : ℕ)` using `fun e => hj (Fin.ext e).symm`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `⟨Q * Polynomial.C Q.leadingCoeff⁻¹, Polynomial.monic_mul_leadingCoeff_inv hQ0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_mul_C (inv_ne_zero (Polynomial.leadingCoeff_ne_zero.2 hQ0))]`. Assume the negation of the conclusion as `hdeg`. Use `push Not at hdeg`. Establish `hQc` using `Polynomial.eq_C_of_natDegree_le_zero hdeg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : Q.coeff 0 ≠ 0`. Introduce `hc0`. Apply `hQ0` to reduce the goal to its premises. Rewrite using `[hQc, hc0, map_zero]`. Rewrite `hQv` using `[hQc, Polynomial.aeval_C, Module.algebraMap_end_apply]`.
-
-Conclude with `hv0 ((smul_eq_zero.1 hQv).resolve_left hc0)`. Rewrite using `[map_mul, Polynomial.aeval_C, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul, hQv, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monic_aeval_apply_eq_zero {M : Type*} [AddCommGroup M] [Module ℂ M]
     (T : Module.End ℂ M) (V : Submodule ℂ M) [FiniteDimensional ℂ V] (hV : ∀ w ∈ V, T w ∈ V)
@@ -98,7 +96,7 @@ theorem exists_monic_aeval_apply_eq_zero {M : Type*} [AddCommGroup M] [Module �
       hQv, smul_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qk13.dc_aeval_intertwine <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_aeval_apply_of_intertwine {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N]
     [Module ℂ N] (f : M →ₗ[ℂ] N) {A : Module.End ℂ M} {B : Module.End ℂ N}
@@ -111,7 +109,7 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 open Reduction
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (archSlice_uAction u φ g)`.
+A detailed English derivation is pending.
 -/
 theorem sliceL_uAction (g : AdelicGLn.AdelicGL K n) (u : UEnv K n) (φ : archSmooth K n) :
     sliceL g (uAction u φ) = (isExpLieAlgebra K n).rightUAction (F := ℂ) u (sliceL g φ) :=
@@ -124,7 +122,7 @@ def laplacianU {ι : Type*} [Fintype ι] (b : Module.Basis ι ℝ (isExpLieAlgeb
   ∑ i, UniversalEnvelopingAlgebra.ι ℝ (b i) * UniversalEnvelopingAlgebra.ι ℝ (b i)
 
 /- English proof (translation)
-Simplify using `only [laplacianU, IsExpLieAlgebra.laplacian, map_sum, map_mul, IsExpLieAlgebra.rightUAction_ι]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rightUAction_laplacianU {ι : Type*} [Fintype ι]
     (b : Module.Basis ι ℝ (isExpLieAlgebra K n).lieSubalgebra) :
@@ -134,7 +132,7 @@ theorem rightUAction_laplacianU {ι : Type*} [Fintype ι]
     IsExpLieAlgebra.rightUAction_ι]
 
 /- English proof (translation)
-Simplify using `only [laplacianU, casimir, ← Finset.sum_add_distrib, ← add_smul, add_sub_cancel, one_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem laplacianU_eq_casimir_add {ι : Type*} [Fintype ι]
     (b : Module.Basis ι ℝ (isExpLieAlgebra K n).lieSubalgebra) (ε : ι → ℝ) :
@@ -148,14 +146,14 @@ def archKSpan : Submodule ℂ (archSmooth K n) :=
   Submodule.span ℂ (range fun k : archCompact K n => rtInf (k : archGroup K n) φ)
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[GroundTheory.Automorphic.rightTranslate]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rtInf_one (ψ : archSmooth K n) : rtInf (1 : archGroup K n) ψ = ψ := by
   ext g
   simp [GroundTheory.Automorphic.rightTranslate]
 
 /- English proof (translation)
-Establish `h` using `Submodule.subset_span (R := ℂ) (s := range fun k : archCompact K n => rtInf (k : archGroup K n) φ) ⟨1, rfl⟩`. Simplify using `only [OneMemClass.coe_one, rtInf_one] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem self_mem_archKSpan : φ ∈ archKSpan φ := by
   have h := Submodule.subset_span (R := ℂ)
@@ -164,7 +162,7 @@ theorem self_mem_archKSpan : φ ∈ archKSpan φ := by
   exact h
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[GroundTheory.Automorphic.rightTranslate, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rtInf_rtInf (a b : archGroup K n) (ψ : archSmooth K n) :
     rtInf a (rtInf b ψ) = rtInf (a * b) ψ := by
@@ -172,11 +170,9 @@ theorem rtInf_rtInf (a b : archGroup K n) (ψ : archSmooth K n) :
   simp [GroundTheory.Automorphic.rightTranslate, mul_assoc]
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun ψ _ => rtInf (k : archGroup K n) ψ ∈ archKSpan φ) ?_ ?_ ?_ ?_ hψ` and prove the remaining obligations. Introduce and unpack `_ ⟨k', rfl⟩ dsimp only`. Rewrite using `[rtInf_rtInf]`. Conclude with `Submodule.subset_span ⟨k * k', rfl⟩`. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `c x _ hx`.
-
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rtInf_mem_archKSpan (k : archCompact K n) {ψ : archSmooth K n} (hψ : ψ ∈ archKSpan φ) :
     rtInf (k : archGroup K n) ψ ∈ archKSpan φ := by
@@ -191,13 +187,11 @@ theorem rtInf_mem_archKSpan (k : archCompact K n) {ψ : archSmooth K n} (hψ : �
   · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Use `set Wf := Submodule.span ℂ (range fun k : (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k : AdelicGLn.AdelicGL K n) (φ : AdelicGLn.AdelicGL K n → ℂ))`. Establish `: FiniteDimensional ℂ Wf` using `hK`. Establish `hW : ∀ w : archKSpan φ, ((w : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ) ∈ Wf`. Introduce and unpack `⟨w, hw⟩`. Use `Submodule.span_induction (p := fun w _ => ((w : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ) ∈ Wf) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨infEmb K n k, k.2⟩, rfl⟩`. Conclude with `Wf.zero_mem`. Introduce `x y _ _ hx hy`. Conclude with `Wf.add_mem hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c x _ hx`. Conclude with `Wf.smul_mem c hx`. Use `FiniteDimensional.of_injective (((archSmooth K n).subtype ∘ₗ (archKSpan φ).subtype).codRestrict Wf hW) ?_` and prove the remaining obligations. Introduce `x y hxy`. Use `congrArg Subtype.val hxy` as an intermediate fact.
-
-Conclude with `Subtype.ext (Subtype.ext this)`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_archKSpan (hK : IsKFinite (φ : AdelicGLn.AdelicGL K n → ℂ)) :
     FiniteDimensional ℂ (archKSpan φ) := by
@@ -222,9 +216,7 @@ theorem finiteDimensional_archKSpan (hK : IsKFinite (φ : AdelicGLn.AdelicGL K n
   exact Subtype.ext (Subtype.ext this)
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun ψ _ => IsZFinite ψ) ?_ ?_ ?_ ?_ hψ` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hZ.map_rtInf _`. Conclude with `isZFinite_zero`. Introduce `x y _ _ hx hy`.
-
-Conclude with `hx.add hy`. Introduce `c x _ hx`. Conclude with `hx.smul c`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isZFinite_of_mem_archKSpan (hZ : IsZFinite φ) {ψ : archSmooth K n}
     (hψ : ψ ∈ archKSpan φ) : IsZFinite ψ := by
@@ -236,11 +228,11 @@ theorem isZFinite_of_mem_archKSpan (hZ : IsZFinite φ) {ψ : archSmooth K n}
   · intro c x _ hx; exact hx.smul c
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ (archKSpan φ)` using `finiteDimensional_archKSpan φ hK`. Use `set Wf := (archKSpan φ).map (archSmooth K n).subtype`. Establish `hc : ∀ t : ℝ, ((rtInf ((isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie X)) ψ : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ) ∈ Wf` using `fun t => ⟨_, rtInf_mem_archKSpan φ ⟨_, hX t⟩ hψ, rfl⟩`. Establish `hd : ∀ x : AdelicGLn.AdelicGL K n, HasDerivAt (fun t : ℝ => ((rtInf ((isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie X)) ψ : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ) x) (((uAction (UniversalEnvelopingAlgebra.ι ℝ X) ψ : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ …`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `(isExpLieAlgebra K n).hasDerivAt_rightDeriv ((mem_archSmooth.1 ψ.2) x) ((isExpLieAlgebra K n).ofLie X) 1`. Simplify using `only [one_mul, archSlice_apply] at h`. Rewrite using `[uAction_ι_apply]`. Conclude with `h`. Establish `: FiniteDimensional ℂ Wf` using `inferInstance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨w, hw, e⟩` from `mem_of_hasDerivAt Wf hc hd`. Rewrite `hw` using `[show w = uAction (UniversalEnvelopingAlgebra.ι ℝ X) ψ from Subtype.ext e]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem uAction_ι_mem_archKSpan (hK : IsKFinite (φ : AdelicGLn.AdelicGL K n → ℂ))
     (X : (isExpLieAlgebra K n).lieSubalgebra)
@@ -271,27 +263,27 @@ def zkArchSpan : Submodule ℂ (archSmooth K n) :=
   Submodule.span ℂ {v | ∃ z ∈ (isExpLieAlgebra K n).centerU, ∃ ψ ∈ archKSpan φ, v = uAction z ψ}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨z, hz, ψ, hψ, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem uAction_mem_zkArchSpan {z : UEnv K n} (hz : z ∈ (isExpLieAlgebra K n).centerU)
     {ψ : archSmooth K n} (hψ : ψ ∈ archKSpan φ) : uAction z ψ ∈ zkArchSpan φ :=
   Submodule.subset_span ⟨z, hz, ψ, hψ, rfl⟩
 
 /- English proof (translation)
-Use `uAction_mem_zkArchSpan φ (z := 1) (Subalgebra.one_mem _) (self_mem_archKSpan φ)` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem self_mem_zkArchSpan : φ ∈ zkArchSpan φ := by
   have := uAction_mem_zkArchSpan φ (z := 1) (Subalgebra.one_mem _) (self_mem_archKSpan φ)
   rwa [map_one, Module.End.one_apply] at this
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ (archKSpan φ)` using `finiteDimensional_archKSpan φ hK`. Take `⟨s, hs⟩` from `(Submodule.fg_iff_finiteDimensional (archKSpan φ)).2 this`. Use `set S : s → Submodule ℂ (archSmooth K n) := fun x => Submodule.span ℂ ((fun z => uAction z (x : archSmooth K n)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n)))`. Establish `: ∀ x, FiniteDimensional ℂ (S x)` using `fun x => isZFinite_of_mem_archKSpan φ hZ (hs ▸ Submodule.subset_span x.2)`. It suffices to establish `hle : zkArchSpan φ ≤ ⨆ x, S x from Submodule.finiteDimensional_of_le hle`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, ψ, hψ, rfl⟩`. Rewrite `hψ` using `[← hs]`. Express the relevant statement in the definitionally equal form `uAction z ψ ∈ ⨆ x, S x`. Use `Submodule.span_induction (p := fun ψ _ => uAction z ψ ∈ ⨆ x, S x) ?_ ?_ ?_ ?_ hψ` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `Submodule.mem_iSup_of_mem ⟨x, hx⟩ (Submodule.subset_span ⟨z, hz, rfl⟩)`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `c x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_zkArchSpan (hK : IsKFinite (φ : AdelicGLn.AdelicGL K n → ℂ))
     (hZ : IsZFinite φ) : FiniteDimensional ℂ (zkArchSpan φ) := by
@@ -315,23 +307,19 @@ theorem finiteDimensional_zkArchSpan (hK : IsKFinite (φ : AdelicGLn.AdelicGL K 
   · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Use `set φ' : archSmooth K n := ⟨φ, hφ.isSmooth.1⟩`. Establish `hKf : IsKFinite ((φ' : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ)` using `hφ.isKFinite`. Establish `hZ : IsZFinite φ'` using `hφ.isZFinite`. Use `finiteDimensional_zkArchSpan φ' hKf hZ` as an intermediate fact. Apply the tactic sequence `have hε2 : ∀ i, ε i * ε i = 1 := fun i => by rcases hε i with e | e <;> rw [e] <;> norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hΩ : casimir b ε ∈ (isExpLieAlgebra K n).centerU` using `casimir_mem_center hε2 horth hsymm hinv`. Establish `hsum : ∀ ψ ∈ archKSpan φ', (∑ i, (1 - ε i) • uAction (UniversalEnvelopingAlgebra.ι ℝ (b i)) (uAction (UniversalEnvelopingAlgebra.ι ℝ (b i)) ψ)) ∈ archKSpan φ'`. Introduce `ψ hψ`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Break down `hε i with e | e` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, sub_self, zero_smul]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_of_tower_mem _ _ (uAction_ι_mem_archKSpan φ' hKf _ (hK i e) (uAction_ι_mem_archKSpan φ' hKf _ (hK i e) hψ))`. Establish `hgen : ∀ z ∈ (isExpLieAlgebra K n).centerU, ∀ ψ ∈ archKSpan φ', uAction (laplacianU K n b) (uAction z ψ) ∈ zkArchSpan φ'`. Introduce `z hz ψ hψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : laplacianU K n b * z = z * laplacianU K n b` using `Subalgebra.mem_center_iff.1 hz (laplacianU K n b)`. Establish `e : uAction (laplacianU K n b) (uAction z ψ) = uAction (z * casimir b ε) ψ + uAction z (∑ i, (1 - ε i) • uAction (UniversalEnvelopingAlgebra.ι ℝ (b i)) (uAction (UniversalEnvelopingAlgebra.ι ℝ (b i)) ψ))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hc, map_mul, Module.End.mul_apply, laplacianU_eq_casimir_add b ε, map_add, LinearMap.add_apply, map_add, map_mul, Module.End.mul_apply, map_sum, LinearMap.sum_apply]`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, map_mul, LinearMap.smul_apply, Module.End.mul_apply]`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (uAction_mem_zkArchSpan φ' (Subalgebra.mul_mem _ hz hΩ) hψ) (uAction_mem_zkArchSpan φ' hz (hsum ψ hψ))`. Establish `hV : ∀ w ∈ zkArchSpan φ', uAction (laplacianU K n b) w ∈ zkArchSpan φ'`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.span_induction (p := fun w _ => uAction (laplacianU K n b) w ∈ zkArchSpan φ') ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, ψ, hψ, rfl⟩`. Conclude with `hgen z hz ψ hψ`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `c x _ hx`. Rewrite using `[map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c hx`. Take `⟨P, hPm, hPd, hP⟩` from `exists_monic_aeval_apply_eq_zero (uAction (laplacianU K n b)) (zkArchSpan φ') hV (self_mem_zkArchSpan φ')`. Use `⟨P, hPm, hPd, fun g => ?_⟩` and prove the remaining obligations. Use `map_aeval_apply_of_intertwine (sliceL g) (A := uAction (laplacianU K n b)) (B := (isExpLieAlgebra K n).laplacian (F := ℂ) b) (fun m => by rw [sliceL_uAction, rightUAction_laplacianU]) P φ'` as an intermediate fact. Rewrite `this` using `[hP, map_zero]`.
-
-Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_aeval_laplacian_sliceL_eq_zero_of_isSmoothKZ {φ : AdelicGLn.AdelicGL K n → ℂ}
     (hφ : IsSmoothKZ φ) {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra K n).lieSubalgebra)
@@ -398,7 +386,7 @@ theorem exists_aeval_laplacian_sliceL_eq_zero_of_isSmoothKZ {φ : AdelicGLn.Adel
   exact this.symm
 
 /- English proof (translation)
-The claim follows from `exists_aeval_laplacian_sliceL_eq_zero_of_isSmoothKZ hφ b ε B hε horth hsymm hinv hK`.
+A detailed English derivation is pending.
 -/
 theorem IsSmoothKZ.exists_aeval_laplacian_sliceL_eq_zero {φ : AdelicGLn.AdelicGL K n → ℂ}
     (hφ : IsSmoothKZ φ) {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra K n).lieSubalgebra)

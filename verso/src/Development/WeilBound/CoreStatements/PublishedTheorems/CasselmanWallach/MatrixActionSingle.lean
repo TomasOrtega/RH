@@ -9,13 +9,13 @@ namespace PositivityTheory.CW
 namespace SecondMomentAlgebra
 
 /- English proof (translation)
-Establish `hA : 0 < (2 * (n:ℝ)) ^ m` using `by positivity`. Establish `hs0 : 0 < s` using `by linarith`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Establish `e1 : 2 * (k + 1) - 1 = 2 * k + 1` using `by omega`. Establish `e2 : 2 * (k + 1) - 2 = 2 * k` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e1, e2, div_pow, ← pow_mul]`. Use `set A := (2 * (n:ℝ)) ^ (k + 1) with hAdef`. Establish `hP : 0 < s ^ (2 * k)` using `by positivity`. Establish `f1 : s ^ (2 * (k + 1)) = s ^ (2 * k) * s ^ 2` using `by ring`. Establish `f2 : s ^ (2 * k + 1) = s ^ (2 * k) * s` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[f1, f2, div_le_iff₀ hA]`. Establish `h' : s ^ (2 * k) * s ^ 2 ≤ s ^ (2 * k) * (A * C1 * s + A * C2 * T)`. Combine the equalities or inequalities in the displayed calculation. Establish `h'' : s ^ 2 ≤ A * C1 * s + A * C2 * T` using `le_of_mul_le_mul_left h' hP`. Establish `h2 : 2 * (A * C1 * s) ≤ s ^ 2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right hs2 hs0.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[div_mul_eq_mul_div, one_mul, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma alg (n m : ℕ) (C1 C2 s T : ℝ) (hn : (1:ℝ) ≤ n) (hm : 1 ≤ m) (hC2 : 0 < C2) (hs : 1 ≤ s)
     (hs2 : 2 * C1 * (2 * (n:ℝ)) ^ m ≤ s)
@@ -45,14 +45,14 @@ lemma alg (n m : ℕ) (C1 C2 s T : ℝ) (hn : (1:ℝ) ≤ n) (hm : 1 ≤ m) (hC2
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Rewrite using `[inner_smul_right, inner_self_eq_norm_sq_to_K]`. Simplify using `[Complex.mul_re, pow_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma reEig (v : V) (μ : ℝ) : (inner ℂ v ((μ:ℂ) • v)).re = μ * ‖v‖ ^ 2 := by
   rw [inner_smul_right, inner_self_eq_norm_sq_to_K]
   simp [Complex.mul_re, pow_two]
 
 /- English proof (translation)
-Establish `h` using `sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (Fin n × Fin n))) (f := fun p => f p.1 p.2)`. Simplify `h` using `[Fintype.sum_prod_type', Fintype.sum_prod_type, Finset.card_univ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma cs {n : ℕ} (f : Fin n → Fin n → ℝ) :
     (∑ c, ∑ d, f c d) ^ 2 ≤ ((n:ℝ) * n) * ∑ c, ∑ d, f c d ^ 2 := by
@@ -60,7 +60,7 @@ lemma cs {n : ℕ} (f : Fin n → Fin n → ℝ) :
   simpa [Fintype.sum_prod_type', Fintype.sum_prod_type, Finset.card_univ] using h
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_prod_type' (fun c d => ‖Z ε E c d w‖ ^ 2), nc, Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Simplify using `[hZc _ _ (not_not.mp h)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma zsum {n : ℕ} (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V)
     (hZc : ∀ a b, ε a = ε b → Z ε E a b = 0) (w : V) :
@@ -72,7 +72,7 @@ lemma zsum {n : ℕ} (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End �
   · simp [hZc _ _ (not_not.mp h)]
 
 /- English proof (translation)
-Establish `h0 : ‖v‖ ≠ 0` using `norm_ne_zero_iff.mpr hv`. Simplify using `only [map_smul, norm_smul, norm_inv, Complex.norm_real, norm_norm, mul_pow, ← Finset.mul_sum]`. Rewrite using `[← mul_assoc, ← mul_pow, mul_inv_cancel₀ h0, one_pow, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma scale {n : ℕ} (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (v : V) (hv : v ≠ 0) :
     ∑ p ∈ nc ε, ‖Z ε E p.1 p.2 v‖ ^ 2 =
@@ -85,53 +85,45 @@ end SecondMomentAlgebra
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `h0 h1 h1s h3c h5 h6 h8a n ε V _ _ E hM`. Take `⟨-, -, hZc, hcas⟩` from `h0 n ε V E hM`. Take `⟨κ, hκ⟩` from `h3c n ε V E hM`. Use `set m : ℕ := 2 ^ n with hm`. Establish `hm1 : 1 ≤ m` using `Nat.one_le_two_pow`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnm : n ≤ m` using `Nat.lt_two_pow_self.le`. Establish `h5'` using `h5 n ε V E hM m hm1 hnm`. Use `choose u hu w hw hdec using fun e : Fin n => h5' e e`. Establish `hadj : ∀ e c d, ∃ w' ∈ U E (2 * m - 2), ∀ x y : V, inner ℂ x (w e c d y) = inner ℂ (w' x) y` using `fun e c d => h1s n ε V E hM _ _ (hw e c d)`. Use `choose w' hw' hadj using hadj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bu : ∀ e, ∃ C : ℝ, 0 ≤ C ∧ ∀ (μ : ℝ) (v : V), 0 ≤ μ → Eig ε E μ v → ‖u e v‖ ≤ C * √(1 + μ) ^ (2 * m - 1) * ‖v‖` using `fun e => h6 n ε V E hM _ _ (hu e)`. Use `choose Cu hCu0 hCu using bu`. Establish `bw : ∀ e c d, ∃ C : ℝ, 0 ≤ C ∧ ∀ (μ : ℝ) (v : V), 0 ≤ μ → Eig ε E μ v → ‖w' e c d v‖ ≤ C * √(1 + μ) ^ (2 * m - 2) * ‖v‖` using `fun e c d => h6 n ε V E hM _ _ (hw' e c d)`. Use `choose Cw hCw0 hCw using bw`. Use `set C1 : ℝ := ∑ e, Cu e with hC1def`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C2 : ℝ := ∑ e, ∑ c, ∑ d, Cw e c d + 1 with hC2def`. Establish `hC1e : ∀ e, Cu e ≤ C1` using `fun e => Finset.single_le_sum (f := Cu) (fun i _ => hCu0 i) (Finset.mem_univ e)`. Establish `hC2e : ∀ e c d, Cw e c d ≤ C2`. Introduce `e c d`. Establish `a1 : Cw e c d ≤ ∑ d', Cw e c d'` using `Finset.single_le_sum (f := fun d' => Cw e c d') (fun i _ => hCw0 e c i) (Finset.mem_univ d)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a2 : ∑ d', Cw e c d' ≤ ∑ c', ∑ d', Cw e c' d'` using `Finset.single_le_sum (f := fun c' => ∑ d', Cw e c' d') (fun i _ => Finset.sum_nonneg (fun j _ => hCw0 e i j)) (Finset.mem_univ c)`. Establish `a3 : ∑ c', ∑ d', Cw e c' d' ≤ ∑ e', ∑ c', ∑ d', Cw e' c' d'` using `Finset.single_le_sum (f := fun e' => ∑ c', ∑ d', Cw e' c' d') (fun i _ => Finset.sum_nonneg (fun j _ => Finset.sum_nonneg (fun k _ => hCw0 i j k))) (Finset.mem_univ e)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC2 : 0 < C2`. Establish `: 0 ≤ ∑ e, ∑ c, ∑ d, Cw e c d` using `Finset.sum_nonneg (fun i _ => Finset.sum_nonneg (fun j _ => Finset.sum_nonneg (fun k _ => hCw0 i j k)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set N : ℝ := (2 * (n:ℝ)) ^ m with hNdef`. Use `⟨1 / ((2 * N * C2) ^ 2 * ((n:ℝ) * n + 1) + 1), max (max 1 (|κ| + 1)) ((2 * C1 * N) ^ 2), by positivity, ?_⟩` and prove the remaining obligations. Introduce `μ v hμ hv`. Establish `hμ1 : 1 ≤ μ` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hμ`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hμκ : |κ| + 1 ≤ μ` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hμ`. Establish `hμC : (2 * C1 * N) ^ 2 ≤ μ` using `le_trans (le_max_right _ _) hμ`. Distinguish the cases in `hv0 : v = 0`. Substitute `hv0` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion.
 
-Establish `hnv : 0 < ‖v‖` using `norm_pos_iff.mpr hv0`. Use `set v1 : V := ((‖v‖ : ℂ)⁻¹) • v with hv1def`. Establish `hv1n : ‖v1‖ = 1`. Rewrite using `[hv1def, norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hnv.ne']`. Establish `hv1E : Eig ε E μ v1`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hv' : casimirK ε E v = (μ : ℂ) • v` using `hv`. Use `show casimirK ε E (((‖v‖ : ℂ)⁻¹) • v) = (μ : ℂ) • (((‖v‖ : ℂ)⁻¹) • v)`. Rewrite using `[map_smul, hv', smul_comm]`. Rewrite using `[SecondMomentAlgebra.scale ε E v hv0]`. It suffices to establish `hS : 1 / ((2 * N * C2) ^ 2 * ((n:ℝ) * n + 1) + 1) * (1 + μ) ^ 2 ≤ ∑ p ∈ nc ε, ‖Z ε E p.1 p.2 v1‖ ^ 2 by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left hS (sq_nonneg ‖v‖)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX : ∑ a, ∑ b, ‖E a b v1‖ ^ 2 = 2 * μ - κ`. Rewrite using `[(hcas κ hκ v1).1, show casimirK ε E v1 = (μ : ℂ) • v1 from hv1E, SecondMomentAlgebra.reEig, hv1n]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < 2 * μ - κ` using `by linarith [le_abs_self κ]`. Establish `hne : (Finset.univ : Finset (Fin n)).Nonempty`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Finset.not_nonempty_iff_eq_empty]`. Rewrite `hX` using `[hne]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at hX`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨e0, -⟩` from `hne`. Establish `hn1 : (1:ℝ) ≤ n` using `by exact_mod_cast Nat.succ_le_of_lt (Fin.pos e0)`. Establish `hnr : (n:ℝ) ≠ 0` using `ne_of_gt (by linarith)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : 0 < N` using `by positivity`. Take `⟨e, -, he⟩` from `exists_le_of_sum_le (s := Finset.univ) ⟨e0, Finset.mem_univ _⟩ (f := fun _ => (2 * μ - κ) / n) (g := fun e => ∑ a, ‖E a e v1‖ ^ 2) (by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `: (n:ℝ) * ((2 * μ - κ) / n) = 2 * μ - κ` using `by field_simp`. Rewrite using `[this, ← hX, Finset.sum_comm])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h8` using `h8a n ε V E hM v1 hv1n e n`. Rewrite `h8` using `[hdec e]`. Simplify using `only [LinearMap.add_apply, LinearMap.sum_apply, Module.End.mul_apply, inner_add_right, inner_sum, Complex.add_re, Complex.re_sum] at h8`. Establish `hs : √(1 + μ) ^ 2 = 1 + μ` using `Real.sq_sqrt (by linarith)`. Establish `b1 : (inner ℂ v1 (u e v1)).re ≤ Cu e * √(1 + μ) ^ (2 * m - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r` using `re_inner_le_norm (𝕜 := ℂ) v1 (u e v1)`. Establish `r2 : ‖u e v1‖ ≤ Cu e * √(1 + μ) ^ (2 * m - 1)`. Simplify `hCu e μ v1 (by linarith) hv1E` using `[hv1n]`. Rewrite `r` using `[hv1n, one_mul]`. Conclude with `le_trans r r2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `b2 : ∀ c d, (inner ℂ v1 (w e c d (Z ε E c d v1))).re ≤ C2 * √(1 + μ) ^ (2 * m - 2) * ‖Z ε E c d v1‖`. Introduce `c d`. Rewrite using `[hadj e c d]`. Establish `r` using `re_inner_le_norm (𝕜 := ℂ) (w' e c d v1) (Z ε E c d v1)`. Establish `r2 : ‖w' e c d v1‖ ≤ C2 * √(1 + μ) ^ (2 * m - 2)`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `hCw e c d μ v1 (by linarith) hv1E` as an intermediate fact. Rewrite `this` using `[hv1n, mul_one]`. Conclude with `le_trans this (mul_le_mul_of_nonneg_right (hC2e e c d) (by positivity))`. Conclude with `le_trans r (mul_le_mul_of_nonneg_right r2 (norm_nonneg _))`. Establish `hsum : ∑ c, ∑ d, ‖Z ε E c d v1‖ ≤ √((n:ℝ) * n * ∑ c, ∑ d, ‖Z ε E c d v1‖ ^ 2)` using `le_trans (le_abs_self _) (Real.abs_le_sqrt (SecondMomentAlgebra.cs (fun c d => ‖Z ε E c d v1‖)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set T := √((n:ℝ) * n * ∑ c, ∑ d, ‖Z ε E c d v1‖ ^ 2) with hTdef`. Establish `hXe : √(1 + μ) ^ 2 / (2 * n) ≤ ∑ a, ‖E a e v1‖ ^ 2`. Rewrite using `[hs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[le_abs_self κ]`. Use `_ ≤ _ := he`. Establish `hmain : (√(1 + μ) ^ 2 / (2 * n)) ^ m ≤ C1 * √(1 + μ) ^ (2 * m - 1) + C2 * √(1 + μ) ^ (2 * m - 2) * T`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[← Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `add_le_add (mul_le_mul_of_nonneg_right (hC1e e) (by positivity)) (mul_le_mul_of_nonneg_left hsum (by positivity))`. Establish `hs1 : 1 ≤ √(1 + μ)`. Use `Real.sqrt_le_sqrt (show (1:ℝ) ≤ 1 + μ by linarith)` as an intermediate fact. Rewrite `this` using `[Real.sqrt_one]`. Then use the resulting hypothesis. Establish `hs2 : 2 * C1 * N ≤ √(1 + μ)`.
-
-Use `le_trans (le_abs_self _) ?_` and prove the remaining obligations. Rewrite using `[← Real.sqrt_sq_eq_abs]`. Conclude with `Real.sqrt_le_sqrt (by linarith)`. Establish `key` using `SecondMomentAlgebra.alg n m C1 C2 (√(1 + μ)) T hn1 hm1 hC2 hs1 hs2 hmain`. Rewrite `key` using `[hs]`.
-
-Establish `hS'0 : 0 ≤ ∑ c, ∑ d, ‖Z ε E c d v1‖ ^ 2` using `by positivity`. Establish `hq : (1 / (2 * N * C2) * (1 + μ)) ^ 2 ≤ (n:ℝ) * n * ∑ c, ∑ d, ‖Z ε E c d v1‖ ^ 2`. Use `pow_le_pow_left₀ (by positivity) key 2` as an intermediate fact. Rewrite `this` using `[hTdef, Real.sq_sqrt (by positivity)]`. Then use the resulting hypothesis. Establish `hq' : (1 + μ) ^ 2 ≤ (2 * N * C2) ^ 2 * ((n:ℝ) * n * ∑ c, ∑ d, ‖Z ε E c d v1‖ ^ 2)`.
-
-Establish `e3 : (1 + μ) ^ 2 = (2 * N * C2) ^ 2 * (1 / (2 * N * C2) * (1 + μ)) ^ 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e3]`. Conclude with `mul_le_mul_of_nonneg_left hq (sq_nonneg _)`. Rewrite using `[← SecondMomentAlgebra.zsum ε E hZc v1]`.
-
-Rewrite using `[div_mul_eq_mul_div, one_mul, div_le_iff₀ (by positivity)]`. Use polynomial arithmetic with `[mul_nonneg hS'0 (sq_nonneg (2 * N * C2))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem second_moment_of_columns : A0 → A1 → FiltrationAdjointStable → CasimirIsRealScalar → A5 → A6 → ColumnOperatorMoments → A8 := by
   intro h0 h1 h1s h3c h5 h6 h8a n ε V _ _ E hM

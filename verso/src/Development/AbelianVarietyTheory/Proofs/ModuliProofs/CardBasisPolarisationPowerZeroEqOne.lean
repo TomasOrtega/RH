@@ -20,15 +20,15 @@ section
 variable {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
 
 /- English proof (translation)
-Introduce `_ _` and use `Set.mem_iInter.2 fun k => k.elim0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_wchart (ψ : Fin 0 → (Y ⟶ X)) (j : Fin 0 → L.ι) : (⊤ : Y.Opens) ≤ LB.wchart L ψ j :=
   fun _ _ => Set.mem_iInter.2 fun k => k.elim0
 
 /- English proof (translation)
-Establish `hF : FormEq φ ε (Fin.elim0 : Fin 0 → (Y ⟶ X)) (Fin.elim0 : Fin 0 → ℤ)`. Introduce `U _ h`. Simplify using `[hε]`. Take `⟨s', hs'⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_sec hL hF s`. Use `⟨(Y.presheaf.map (homOfLE (top_le_wchart (L := L) Fin.elim0 Fin.elim0)).op).hom (s'.f Fin.elim0), fun y J hJ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hs' Y (𝟙 Y) y J hJ, sval_of s' (𝟙 Y) y J Fin.elim0 (fun k => k.elim0)]`. Conclude with `(gs_res (𝟙 Y) y (top_le_wchart (L := L) Fin.elim0 Fin.elim0) trivial _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fn (hL : L.IsLB) (hε : ∀ k, ε k = 0) (s : LB.Sec (LB.LinComb L φ ε)) :
     ∃ f : Γ(Y, ⊤), ∀ y J, Good L y J → sval s (𝟙 Y) y J = gs (𝟙 Y) y ⊤ f := by
@@ -42,9 +42,9 @@ theorem exists_fn (hL : L.IsLB) (hε : ∀ k, ε k = 0) (s : LB.Sec (LB.LinComb 
   exact (gs_res (𝟙 Y) y (top_le_wchart (L := L) Fin.elim0 Fin.elim0) trivial _).symm
 
 /- English proof (translation)
-Establish `hle : ∀ j : K → L.ι, LB.wchart L φ j ≤ ⊤` using `fun _ => le_top`. Establish `h1 : ∀ y j j', trF (L` using `L) φ ε (𝟙 Y) y j j' = 1 := fun y j j' => by simp [trF, hε]`. Use `⟨⟨fun j => (Y.presheaf.map (homOfLE (hle j)).op).hom f, fun (j j' : K → L.ι) => fn_ext fun y hy => ?_⟩, fun y J hJ => (gs_res (𝟙 Y) y (hle _) (hJ.mem φ (𝟙 Y)) f)⟩` and prove the remaining obligations. Establish `hg : gm (𝟙 Y) y ((L.LinComb φ ε).U j ⊓ (L.LinComb φ ε).U j') ((L.LinComb φ ε).g j j') = 1` using `(gm_linComb L φ ε (𝟙 Y) y j j' hy.1 hy.2).trans (h1 y j j')`. Rewrite using `[gs_mul (𝟙 Y) y _ hy, gs_unit (𝟙 Y) y _ hy, hg, Units.val_one, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((gs_res (𝟙 Y) y inf_le_left hy _).trans (gs_res (𝟙 Y) y (hle j) hy.1 f)).trans ((gs_res (𝟙 Y) y inf_le_right hy _).trans (gs_res (𝟙 Y) y (hle j') hy.2 f)).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_sec_of_fn (hε : ∀ k, ε k = 0) (f : Γ(Y, ⊤)) :
     ∃ s : LB.Sec (LB.LinComb L φ ε), ∀ y J, Good L y J → sval s (𝟙 Y) y J = gs (𝟙 Y) y ⊤ f := by
@@ -61,11 +61,11 @@ theorem exists_sec_of_fn (hε : ∀ k, ε k = 0) (f : Γ(Y, ⊤)) :
 end
 
 /- English proof (translation)
-Set `F : (Fin n → Γ) →ₗ[Γ] Γ` to `{ toFun := fun c => ∑ i, c i * β i map_add' := fun x y => by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun r x => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [_root_.mul_assoc] }`. Establish `hF : ∀ c, F c = ∑ i, c i * β i` using `fun _ => rfl`. Establish `hb : Function.Bijective F`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun c c' hcc => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨d, -, hd⟩` from `h (F c)`. Conclude with `(hd c (hF c)).trans (hd c' (hcc.trans (hF c'))).symm`. Take `⟨c, hc, -⟩` from `h a`. Conclude with `⟨c, (hF c).trans hc.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e` using `(LinearEquiv.ofBijective F hb).finrank_eq`. Simplify using `using e`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_existsUnique {Γ : Type} [CommRing Γ] [Nontrivial Γ] {n : ℕ} (β : Fin n → Γ)
     (h : ∀ a : Γ, ∃! c : Fin n → Γ, a = ∑ i, c i * β i) : n = 1 := by
@@ -86,17 +86,15 @@ theorem eq_one_of_existsUnique {Γ : Type} [CommRing Γ] [Nontrivial Γ] {n : �
   simpa using e
 
 /- English proof (translation)
-Establish `hpull : ∀ (x : Γ(T.left, ⊤)) (y : (T ⊗ G).left), gs (fst T G).left y ⊤ x = gs (𝟙 _) y ⊤ ((fst T G).left.appTop.hom x)` using `fun x y => by`. Establish `e` using `gs_pull (𝟙 _) (fst T G).left y ⊤ trivial x`. Rewrite `e` using `[Category.id_comp]`. Conclude with `e.symm`. Establish `hρ : ∀ y : (T ⊗ G).left, ∃ ρ : Γ((T ⊗ G).left, ⊤) →+* (T ⊗ G).left.presheaf.stalk y, ∀ a, gs (𝟙 _) y ⊤ a = ρ a` using `fun y => ⟨((T ⊗ G).left.presheaf.germ ((𝟙 (T ⊗ G).left) ⁻¹ᵁ ⊤) y trivial).hom.comp (Scheme.Hom.app (𝟙 (T ⊗ G).left) ⊤).hom, fun a => gs_eq _ y ⊤ trivial a⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose β' hβ' using fun i => exists_fn (L := L) (fun _ : Fin 1 => (snd T G).left) (fun _ => ((0 : ℕ) : ℤ)) hL (fun _ => rfl) (b i)`. Use `choose β hβ using fun i => hb.2 (β' i)`. Establish `hR : ∀ (c : Fin n → Γ(T.left, ⊤)) (z : (T ⊗ G).left) (J : ((T ⊗ G).left ⟶ G.left) → L.ι), Good L z J → ∑ i, gs (fst T G).left z ⊤ (c i) * sval (L` using `L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => ((0 : ℕ) : ℤ)) (b i) (𝟙 T ▷ G).left z J = gs (𝟙 _) z ⊤ ((fst T G).left.appTop.hom (∑ i, c i * β i)) := by`. Introduce `c z J hJ`. Take `⟨ρ, hρz⟩` from `hρ z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[MonoidalCategory.id_whiskerRight, Over.id_left]`. Simplify using `only [hβ' _ z J hJ, hpull, hρz, map_sum, map_mul, hβ]`. Establish `hiff : ∀ (a : Γ(T.left, ⊤)) (c : Fin n → Γ(T.left, ⊤)) (s : LB.Sec (Out.LPow G L ((0 : ℕ) : ℤ) T)), (∀ y J, Good L y J → sval (L` using `L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => ((0 : ℕ) : ℤ)) s (𝟙 _) y J = gs (𝟙 _) y ⊤ ((fst T G).left.appTop.hom a)) → (GlobalTheory.LN.Lin G L 0 (𝟙 T) b c s ↔ a = ∑ i, c i * β i) := by`. Introduce `a c s hs`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hl`. Apply `hb.1` to reduce the goal to its premises. Apply `fn_ext` to reduce the goal to its premises. Introduce `z _`. Take `⟨J, hJ, -⟩` from `exists_good L hL z (Fin.elim0 : Fin 0 → ((T ⊗ G).left ⟶ G.left)) Fin.elim0 (fun a => a.elim0) (fun k => k.elim0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs z J hJ, hl z J hJ, hR c z J hJ]`. Introduce and unpack `rfl z J hJ`. Rewrite using `[hs z J hJ, hR c z J hJ]`. Use `eq_one_of_existsUnique β (fun a => ?_)` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_sec_of_fn (L := L) (fun _ : Fin 1 => (snd T G).left) (fun _ => ((0 : ℕ) : ℤ)) (fun _ => rfl) ((fst T G).left.appTop.hom a)`.
-
-Take `⟨c, hc, hcu⟩` from `H s`. Conclude with `⟨c, (hiff a c s hs).1 hc, fun c' hc' => hcu c' ((hiff a c' s hs).2 hc')⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_one_of_bijective {Z : Scheme.{0}} (G : Over Z) (L : LB G.left) (hL : L.IsLB) (T : Over Z)
     [Nontrivial Γ(T.left, ⊤)] (hb : Function.Bijective (fst T G).left.appTop.hom) {n : ℕ}
@@ -145,13 +143,11 @@ theorem eq_one_of_bijective {Z : Scheme.{0}} (G : Over Z) (L : LB G.left) (hL : 
 end GlobalTheory.RankZero
 
 /- English proof (translation)
-Introduce `hG R _ _ P n b hB`. Establish `: Nontrivial Γ((Over.mk (𝟙 (Sp R))).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Use `GlobalTheory.RankZero.eq_one_of_bijective P.A P.L P.isLB (Over.mk (𝟙 (Sp R))) ?_ b hB` and prove the remaining obligations. Establish `: IsIso (snd (Over.mk (𝟙 (Sp R))) P.A)`. Express the relevant statement in the definitionally equal form `IsIso (snd (𝟙_ (Over (Sp R))) P.A)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← CartesianMonoidalCategory.leftUnitor_hom]`. Use `infer_instance`. Establish `: IsIso (snd (Over.mk (𝟙 (Sp R))) P.A).left` using `(inferInstance : IsIso ((Over.forget _).map (snd (Over.mk (𝟙 (Sp R))) P.A)))`. Establish `e1 : (fst (Over.mk (𝟙 (Sp R))) P.A).left = (snd (Over.mk (𝟙 (Sp R))) P.A).left ≫ P.A.hom`. Establish `h1 : (fst (Over.mk (𝟙 (Sp R))) P.A).left ≫ 𝟙 (Sp R) = _` using `Over.w (fst (Over.mk (𝟙 (Sp R))) P.A)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Over.w (snd (Over.mk (𝟙 (Sp R))) P.A)`. Conclude with `(Category.comp_id _).symm.trans (h1.trans h2.symm)`. Establish `hc : ((snd (Over.mk (𝟙 (Sp R))) P.A).left ≫ P.A.hom).appTop = P.A.hom.appTop ≫ (snd (Over.mk (𝟙 (Sp R))) P.A).left.appTop`. Simplify using the standard rewrite rules. Establish `: IsIso (snd (Over.mk (𝟙 (Sp R))) P.A).left.appTop`.
-
-Conclude with `(inferInstance : IsIso ((snd (Over.mk (𝟙 (Sp R))) P.A).left.app ⊤))`. Rewrite using `[e1, hc, CommRingCat.hom_comp, RingHom.coe_comp]`. Conclude with `Function.Bijective.comp (asIso (snd (Over.mk (𝟙 (Sp R))) P.A).left.appTop).commRingCatIsoToRingEquiv.bijective (@hG _ P.A P.grp P.isAb)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.basisAlong_zero_card : Out.GlobalFnsSt → ∀ (R : Type) [CommRing R] [Nontrivial R] (P : Out.PolAV (Sp R)) (n : ℕ) (b : Fin n → LB.Sec (Out.LPow P.A P.L ((0 : ℕ) : ℤ) (Over.mk (𝟙 (Sp R))))), GlobalTheory.LN.BasisAlong P.A P.L 0 (𝟙 _) b → n = 1 := by
   intro hG R _ _ P n b hB

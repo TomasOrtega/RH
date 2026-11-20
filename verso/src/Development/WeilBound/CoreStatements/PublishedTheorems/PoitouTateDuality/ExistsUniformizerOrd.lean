@@ -14,7 +14,7 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Apply the tactic sequence `apply hasse_kummer_unram' <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasse_kummer_unram {K Ω : Type} [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (N : ℕ+)
@@ -28,7 +28,7 @@ theorem hasse_kummer_unram {K Ω : Type} [Field K] [ValuativeRel K] [Topological
   apply hasse_kummer_unram' <;> assumption
 
 /- English proof (translation)
-Apply the tactic sequence `apply exists_uniformizer_ord' <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_uniformizer_ord (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ ϖ : 𝓞 F, ϖ ∈ v.asIdeal ∧ ϖ ∉ v.asIdeal ^ 2 ∧
@@ -36,7 +36,7 @@ theorem exists_uniformizer_ord (F : Type) [Field F] [NumberField F] (v : HeightO
   apply exists_uniformizer_ord' <;> assumption
 
 /- English proof (translation)
-Apply the tactic sequence `apply exists_kummer' <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_kummer (F : Type) [Field F] [NumberField F] {l r : ℕ} [Fact l.Prime]
     (A : ValuationSubring (AlgebraicClosure ℚ)) [Algebra F (AlgebraicClosure ℚ)]
@@ -52,7 +52,7 @@ theorem exists_kummer (F : Type) [Field F] [NumberField F] {l r : ℕ} [Fact l.P
   apply exists_kummer' <;> assumption
 
 /- English proof (translation)
-Apply the tactic sequence `apply exists_chi' <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_chi (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (v : HeightOneSpectrum (𝓞 Kf.1)) (A : ValuationSubring (AlgebraicClosure ℚ)) (hA : IsPlaceOver A v)

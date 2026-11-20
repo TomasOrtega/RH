@@ -172,7 +172,7 @@ def ClassSumReal (D : D7) : Prop :=
       ∫ h in 𝓕, Φ h ∂μ = ∑ i, ((Nat.card (GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.classGroupAt V K (y i)) : ℂ))⁻¹ * ∫ x : GinfC V, Φ (z i * x) ∂ν
 
 /- English proof (translation)
-Establish `h : ∀ a, p.e * p.sec a = p.sec a` using `fun a => by rw [← p.sec_pr, p.pr_sec]`. Establish `h2` using `p.sec_pr (p.sec a * p.sec b)`. Rewrite `h2` using `[map_mul, p.pr_sec, p.pr_sec, ← mul_assoc, h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem SplitPt.sec_mul (p : SplitPt D k) (a b : k) : p.sec (a * b) = p.sec a * p.sec b := by
   have h : ∀ a, p.e * p.sec a = p.sec a := fun a => by rw [← p.sec_pr, p.pr_sec]
@@ -180,7 +180,7 @@ theorem SplitPt.sec_mul (p : SplitPt D k) (a b : k) : p.sec (a * b) = p.sec a * 
   rwa [map_mul, p.pr_sec, p.pr_sec, ← mul_assoc, h] at h2
 
 /- English proof (translation)
-Rewrite using `[← map_one p.pr, p.sec_pr, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SplitPt.sec_one (p : SplitPt D k) : p.sec 1 = p.e := by
   rw [← map_one p.pr, p.sec_pr, mul_one]
@@ -194,7 +194,7 @@ def SplitPt.idele (p : SplitPt D k) : kˣ →* (AE D)ˣ :=
         ring }
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `1 + p.sec (a - 1) = _`. Rewrite using `[map_sub, p.sec_one]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem SplitPt.idele_val (p : SplitPt D k) (a : kˣ) : (p.idele a : AE D) = 1 - p.e + p.sec a := by
   change 1 + p.sec (a - 1) = _
@@ -202,7 +202,7 @@ theorem SplitPt.idele_val (p : SplitPt D k) (a : kˣ) : (p.idele a : AE D) = 1 -
   ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `p.pr (1 + p.sec (a - 1)) = _`. Rewrite using `[map_add, map_one, p.pr_sec, add_sub_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem SplitPt.pr_idele (p : SplitPt D k) (a : kˣ) : p.pr (p.idele a) = a := by
   change p.pr (1 + p.sec (a - 1)) = _
@@ -213,9 +213,9 @@ def IsGlueConst (p : ι → SplitPt D k) (q : Unif k) (I : List ι) (N : ℕ) {r
     ∏ j, ((μ j ((p i).idele (Units.mk0 _ q.ne_zero)) ^ m j : Circle) : ℂ)).prod
 
 /- English proof (translation)
-Take `⟨a, m, rfl⟩` from `h`. Use `⟨a, ?_⟩` and prove the remaining obligations. Proceed by induction on `I with`. Consider the case `nil => simp`. Consider the case `cons i I ih`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[List.map_cons, List.prod_cons, norm_mul, ih, List.length_cons, pow_succ', norm_mul, norm_mul, norm_prod]`. Simplify using `only [Circle.norm_coe, Finset.prod_const_one, mul_one, norm_zpow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsGlueConst.norm {q : Unif k} {I : List ι} {N r : ℕ} {μ : Fin r → ((AE D)ˣ →* Circle)} {c : ℂ}
     (h : IsGlueConst p q I N μ c) :
@@ -230,9 +230,9 @@ theorem IsGlueConst.norm {q : Unif k} {I : List ι} {N r : ℕ} {μ : Fin r → 
       abs_of_nonneg (Real.sqrt_nonneg _)]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h.norm`. Establish `h1 : 1 < resCard k` using `Finite.one_lt_card`. Establish `h2 : (resCard k : ℂ) ^ N - 1 ≠ 0`. Rewrite using `[sub_ne_zero]`. Conclude with `(Nat.one_lt_pow hN.ne' h1).ne'` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : 0 < √(resCard k : ℝ)` using `Real.sqrt_pos.2 (by exact_mod_cast one_pos.trans h1)`. Rewrite using `[← norm_pos_iff, ha]`. Conclude with `pow_pos (mul_pos (norm_pos_iff.2 h2) (zpow_pos h3 a)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsGlueConst.ne_zero {q : Unif k} {I : List ι} {N r : ℕ} {μ : Fin r → ((AE D)ˣ →* Circle)} {c : ℂ}
     (h : IsGlueConst p q I N μ c) (hN : 0 < N) : c ≠ 0 := by
@@ -250,7 +250,7 @@ variable (k) in
 def sgnRes (s : ℤˣ) : 𝓀[k]ˣ := Units.map (Int.castRingHom 𝓀[k]).toMonoidHom s
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Conclude with `Or.inl (map_one _)`. Conclude with `Or.inr (Units.ext (by simp [sgnRes]))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem sgnRes_eq (s : ℤˣ) : sgnRes k s = 1 ∨ sgnRes k s = -1 := by
   rcases Int.units_eq_one_or s with rfl | rfl
@@ -302,9 +302,9 @@ def ValueLastExact (D : D7) : Prop :=
             t.Q φ Φ₁ Φ₂ F = c * t.Q (a.sAll q (fun i => resChar (χ i) (hχ i) q) (fun _ => 1) I φ) Φ₁' Φ₂ F
 
 /- English proof (translation)
-Take `⟨s, h⟩` from `h`. Introduce `k _ _ _ _ ι p q ψ χ hχ hp`. Use `⟨fun _ => sgnRes k s, fun _ => sgnRes_eq s, ?_⟩` and prove the remaining obligations. Introduce `n n' n'' _ _ _ _ _ _ σ B J B' s₁ s₂ l vL Λ P a b a' hS I hI hI'`. Take `⟨c, c', -, -, -, -, h'⟩` from `h k ι p q ψ χ hχ hp n n' n'' σ B J B' s₁ s₂ l vL Λ P a b a' hS I hI hI'`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, c', h'⟩`.
+Supply the required witnesses or components.
 -/
 theorem ValueDoubleExact.valueDouble (h : ValueDoubleExact D) : ValueDouble D := by
   obtain ⟨s, h⟩ := h
@@ -315,7 +315,7 @@ theorem ValueDoubleExact.valueDouble (h : ValueDoubleExact D) : ValueDouble D :=
   exact ⟨c, c', h'⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ι p q χ hχ n n' _ _ _ _ ψ T B t o ho a b L₁ L₂ L₃ h1 h2 h3 h4 h5 I hI hI'`. Take `⟨c, -, -, h'⟩` from `h k ι p q χ hχ n n' ψ T B t o ho a b L₁ L₂ L₃ h1 h2 h3 h4 h5 I hI hI'`. Conclude with `⟨c, h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ValueLastExact.valueLast (h : ValueLastExact D) : ValueLast D := by
   intro k _ _ _ _ ι p q χ hχ n n' _ _ _ _ ψ T B t o ho a b L₁ L₂ L₃ h1 h2 h3 h4 h5 I hI hI'
@@ -349,12 +349,12 @@ example {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {J : JacLev D (σ + 1)} {B :
     flatFB s Φ w = ∫ u, flatFun ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (xLast B.d (vecB B.o B.ζ)) 0 Φ w u ∂s.vU.ν := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, ![], by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (q : Unif k) (i : ι) : IsGlueConst p q [i] 1 ![] ((resCard k : ℂ) - 1) := ⟨0, ![], by simp⟩
 
 /- English proof (translation)
-Introduce `h` and use `h.ne_zero one_pos rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (q : Unif k) (I : List ι) : ¬ IsGlueConst p q I 1 ![] 0 := fun h => h.ne_zero one_pos rfl
 

@@ -38,9 +38,9 @@ namespace TorsorStructure
 variable {X Y u u' κ}
 
 /- English proof (translation)
-Use `⟨?_, h.1⟩` and prove the remaining obligations. Unfold `Formalism.L2.SG.Full.Full.tO Formalism.L2.SG.TermOp.tOf`. Simplify using `only`. Unfold `Formalism.L2.SG.TermOp.Gt`. Rewrite using `[if_neg (show s.G ≠ 0 from h.2)]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem torsor_G_gener (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
     (h : Formalism.L2.SG.DataInst.Elig s.toTerm) : (Y.tO u u').G s ≠ 0 ∧ (Y.tO u u').gener s := by
@@ -52,9 +52,9 @@ theorem torsor_G_gener (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u
   exact one_ne_zero
 
 /- English proof (translation)
-Establish `hG` using `s.2.1`. Unfold `Formalism.L2.SG.Full.Full.tO Formalism.L2.SG.TermOp.tOf at hG`. Simplify using `only at hG`. Unfold `Formalism.L2.SG.TermOp.Gt at hG`. Use `⟨s.2.2.1, fun h0 => hG ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `if_pos (show s.1.G = 0 from h0)`.
+A detailed English derivation is pending.
 -/
 theorem torsor_elig {R : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR} {ρ : ℕ} (s : LiftT X Y u u' κ R ρ) :
     Formalism.L2.SG.DataInst.Elig s.1.toTerm := by
@@ -66,7 +66,7 @@ theorem torsor_elig {R : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') 
   exact if_pos (show s.1.G = 0 from h0)
 
 /- English proof (translation)
-Take `⟨-, -, hR, -⟩` from `s.2`. Establish `h1 : ((Y.tO u u').rowOf s.1).1.val = R.1.val` using `congrArg (fun r => r.1.val) hR`. Establish `h2 : ((Y.tO u u').rowOf s.1).2.1.val = R.2.1.val` using `congrArg (fun r => r.2.1.val) hR`. Rewrite using `[← h1, ← h2]`. Conclude with `⟨rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem torsor_lam {R : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR} {ρ : ℕ} (s : LiftT X Y u u' κ R ρ) :
     s.1.lam = R.1.1 ∧ s.1.lam' = R.2.1.1 := by
@@ -85,43 +85,37 @@ end TorsorStructure
 open TorsorStructure
 
 /- English proof (translation)
-Introduce `ρ`. Establish `hw' : ∀ Λ, 0 ≤ Formalism.MainNotions.S.wRow D (X.Fu u') Λ` using `fun Λ => by`. Unfold `Formalism.MainNotions.S.wRow`. Check the signs of the components of the expression. Establish `hw : ∀ Λ, 0 ≤ Formalism.MainNotions.S.wRow D (X.Fu u) Λ` using `fun Λ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.S.wRow`. Check the signs of the components of the expression. Establish `hlift : ∀ (R : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR) (s0 : LiftT X Y u u' κ R ρ) (t : ClassT X Y u u' κ ρ), ∃ s : LiftT X Y u u' κ R ρ, s.1.toTerm = t.1`. Introduce `R s0 t`. Establish `he0` using `torsor_elig s0`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsc : Formalism.L2.SG.Corank.TermScal D s0.1.toTerm t.1` using `(hRL _ _ he0 t.2.1).mp (s0.2.2.2.2.trans t.2.2.symm)`. Take `⟨s', hs't, hs'r⟩` from `hC s0.1 t.1 he0 t.2.1 hsc`. Establish `hel : Formalism.L2.SG.DataInst.Elig s'.toTerm` using `by rw [hs't]; exact t.2.1`. Take `⟨hG, hgen⟩` from `torsor_G_gener s' hel`. Establish `hk : κ s'.toTerm = ρ` using `by rw [hs't]; exact t.2.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨⟨s', hG, hgen, hs'r.trans s0.2.2.2.1, hk⟩, hs't⟩`. Set `hE : ∀ R, LiftT X Y u u' κ R ρ → (LiftT X Y u u' κ R ρ ≃ ClassT X Y u u' κ ρ)` to `fun R s0 => Equiv.ofBijective torsor_toCls ⟨fun s s' h => Subtype.ext (hI s.1 s'.1 (torsor_elig s) (congrArg Subtype.val h) (s.2.2.2.1.trans s'.2.2.2.1.symm)), fun t => by`. Take `⟨s, hs⟩` from `hlift R s0 t`. Conclude with `⟨s, Subtype.ext hs⟩⟩`. Establish `hF : ∀ R, liftVal X Y u u' vR i0 i0' νq κ R ρ = if Nonempty (LiftT X Y u u' κ R ρ) then ((Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u') R.2.1.1) : ℝ) : ℂ) • clsVec X Y u u' vR i0 i0' νq κ ρ else 0`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `R`. Use `split_ifs with h`. Take `⟨s0⟩` from `h`. Unfold `liftVal clsVec`. Rewrite using `[← tsum_const_smul'', ← (hE R s0).tsum_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun s => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`. Establish `hl` using `(torsor_lam s).2`. Establish `key : (((Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u) s.1.lam * Formalism.MainNotions.S.wRow D (X.Fu u') s.1.lam')) : ℝ) : ℂ) * Formalism.L2.SG.PairVal.cTerm vR s.1.toTerm = ((Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u') R.2.1.1) : ℝ) : ℂ) * ((((Real.sqrt (Formalism. …`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_mul (hw _), hl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key`. Use `haveI : IsEmpty (LiftT X Y u u' κ R ρ) := not_nonempty_iff.mp h`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Unfold `liftVal`. Conclude with `tsum_empty`. Distinguish the cases in `hcl : Nonempty (ClassT X Y u u' κ ρ)`. Take `⟨t0⟩` from `hcl`. Set `g : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR → ℝ` to `fun R => if Nonempty (LiftT X Y u u' κ R ρ) then Formalism.MainNotions.S.wRow D (X.Fu u') R.2.1.1 else 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : ∀ R, ‖liftVal X Y u u' vR i0 i0' νq κ R ρ‖ ^ 2 = g R * ‖clsVec X Y u u' vR i0 i0' νq κ ρ‖ ^ 2`. Introduce `R`. Simplify using `only [g]`. Rewrite using `[hF R]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_smul, mul_pow, Complex.norm_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (hw' _)]`. Simplify using the standard rewrite rules. Set `S : Set (Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR)` to `{R | Nonempty (LiftT X Y u u' κ R ρ)}`. Establish `hlift0 : ∀ s : {s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // s.toTerm = t0.1}, LiftT X Y u u' κ ((Y.tO u u').rowOf s.1) ρ` using `fun s => by`. Establish `hel : Formalism.L2.SG.DataInst.Elig s.1.toTerm` using `by rw [s.2]; exact t0.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hG, hgen⟩` from `torsor_G_gener s.1 hel`. Establish `hk : κ s.1.toTerm = ρ` using `by rw [s.2]; exact t0.2.2`. Conclude with `⟨s.1, hG, hgen, rfl, hk⟩`. Set `e2 : {s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // s.toTerm = t0.1} ≃ S` to `Equiv.ofBijective (fun s => ⟨(Y.tO u u').rowOf s.1, ⟨hlift0 s⟩⟩) ⟨fun s s' h => by`. Establish `hr : (Y.tO u u').rowOf s.1 = (Y.tO u u').rowOf s'.1` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hel : Formalism.L2.SG.DataInst.Elig s.1.toTerm` using `by rw [s.2]; exact t0.2.1`. Conclude with `Subtype.ext (hI s.1 s'.1 hel (s.2.trans s'.2.symm) hr),`. Use `fun R => by`. Take `⟨s1⟩` from `R.2`. Take `⟨s, hs⟩` from `hlift R.1 s1 t0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `⟨⟨s.1, hs⟩, Subtype.ext s.2.2.2.1⟩⟩`. Establish `hmass` using `hM t0.1 t0.2.1`. Establish `hsumg : ∑' R, g R = 1`. Establish `h1 : ∑' R, g R = ∑' x : S, Formalism.MainNotions.S.wRow D (X.Fu u') x.1.2.1.1`. Rewrite using `[tsum_subtype S (fun R => Formalism.MainNotions.S.wRow D (X.Fu u') R.2.1.1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `tsum_congr fun R => ?_` and prove the remaining obligations. Simplify using `only [g, S, Set.indicator_apply, Set.mem_setOf_eq]`. Rewrite using `[h1, ← e2.tsum_eq]`. Conclude with `hmass`. Establish `hg0 : ∀ R, 0 ≤ g R` using `fun R => by`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [g]`. Use `split_ifs`. Conclude with `hw' _`. Conclude with `le_rfl`. Establish `hsum : Summable g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hns`. Rewrite `hsumg` using `[tsum_eq_zero_of_not_summable hns]`. Evaluate the numerical expressions using `at hsumg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hnorm]`.
-
-Conclude with `hsum.mul_right _`. Repeatedly rewrite using `[hnorm]`. Rewrite using `[tsum_mul_right, hsumg, one_mul]`. Use `haveI : IsEmpty (ClassT X Y u u' κ ρ) := not_nonempty_iff.mp hcl`. Establish `hC0 : clsVec X Y u u' vR i0 i0' νq κ ρ = 0`.
-
-Unfold `clsVec`. Conclude with `tsum_empty`. Establish `hF0 : ∀ R, liftVal X Y u u' vR i0 i0' νq κ R ρ = 0`. Introduce `R`. Rewrite using `[hF R, if_neg]`.
-
-Introduce and unpack `⟨s⟩`. Conclude with `hcl ⟨torsor_toCls s⟩`. Simplify using `[hF0, hC0]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem torsorC_of (hRL : Formalism.L2.SG.DataInst.RowLabel κ) (hI : LiftIotaFreeC X Y u u')
     (hM : LiftMassC X Y u u') (hC : LiftRowCohC X Y u u') : TorsorC X Y u u' vR i0 i0' νq κ := by

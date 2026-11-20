@@ -8,9 +8,9 @@ namespace GlobalTheory.OffIdem
 open NumberField in
 
 /- English proof (translation)
-Proceed by induction on `P using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp, ε, by simp⟩`. Consider the case `insert a P _ ih`. Take `⟨x, hx0, hx, s, hs⟩` from `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`. Take `⟨y, hy, hy0, t, ht⟩` from `h a (Finset.mem_insert_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x * y, mul_ne_zero hx0 hy0, fun i hi => ?_, s * t, ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `Ideal.mul_mem_left _ _ hy`. Conclude with `Ideal.mul_mem_right _ _ (hx i hi)`. Rewrite using `[map_mul, mul_mul_mul_comm, ← hs, ← ht, hε]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common {O R ι : Type} [CommRing O] [IsDomain O] [CommRing R] (f : O →+* R) (I : ι → Ideal O) (ε : R)
     (hε : ε * ε = ε) (P : Finset ι) (h : ∀ i ∈ P, ∃ x ∈ I i, x ≠ 0 ∧ ∃ s, ε = s * f x) :
@@ -40,7 +40,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.OffIdem
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, hc⟩` from `h`. Establish `h1 : ∀ i ∈ P, es i * es i = es i` using `fun i hi => (hes i hi).1.1`. Establish `hcross : ∀ i ∈ P, ∀ j ∈ P, es i * cA D (es j) = 0` using `GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es P h1 hc`. Use `⟨es PP, hes PP hPP, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_eq_single PP (fun j hj hji => GlobalTheory.PlaceDatum.idemAt_mul (hes PP hPP) (hes j hj) (hcross PP hPP j hj) (hcross j hj PP hPP) hji) (fun h => absurd hPP h), h1 PP hPP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem idemSum_mul_idemAt {D : D7} {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (h : IsIdemSum e P)
     {PP : Formalism.L2.DIV.Pl D.host.E} (hPP : PP ∈ P) : ∃ a : AE D, Formalism.L2.NTheta.IsIdemAt a PP ∧ a * e = a := by
@@ -54,7 +54,7 @@ theorem idemSum_mul_idemAt {D : D7} {e : AE D} {P : Finset (Formalism.L2.DIV.Pl 
     (fun h => absurd hPP h), h1 PP hPP]
 
 /- English proof (translation)
-The claim follows from `exists_common (Formalism.L2.DIV.oToS F E) (fun PP : Formalism.L2.DIV.Pl E => PP.asIdeal) _ hε P fun PP hPP => by refine GlobalTheory.IdemRes.exists_eq_mul_of_resS_ne_one PP _ hε fun hne => ?_ have := PP.isPrime obtain ⟨a, ha1, h0⟩ := h PP hPP have h3 := congrArg (Formalism.L2.DIV …`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_mul_of_mul_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (P : Finset (Formalism.L2.DIV.Pl E)) (ε : Formalism.L2.Herm.intAf F E) (hε : ε * ε = ε)
@@ -69,30 +69,30 @@ theorem exists_eq_mul_of_mul_eq_zero {F E : Type} [Field F] [NumberField F] [Fie
     exact one_ne_zero h3
 
 /- English proof (translation)
-Take the linear combination `h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_sub_mul_self {R : Type} [CommRing R] {e : R} (h : e * e = e) : (1 - e) * (1 - e) = 1 - e := by
   linear_combination h
 
 /- English proof (translation)
-Take the linear combination `-h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_one_sub {R : Type} [CommRing R] {a e : R} (h : a * e = a) : a * (1 - e) = 0 := by
   linear_combination -h
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, ← map_mul, mul_inv_cancel₀ hy, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_ringHom_mul_ringHom_inv_cancel {K R : Type} [Field K] [CommRing R] (f : K →+* R) (s : R) {y : K} (hy : y ≠ 0) :
     s * f y * f y⁻¹ = s := by
   rw [mul_assoc, ← map_mul, mul_inv_cancel₀ hy, map_one, mul_one]
 
 /- English proof (translation)
-Establish `h1 : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `h2 : (1 - e) * (1 - e) = 1 - e` using `one_sub_mul_self (R := AE D) h1`. Establish `hint : toEAf D (1 - e) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `GlobalTheory.IdemRes.toEAf_mem_of_finPart (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, h2]))`. Take `⟨y, hy0, hy, s, hs⟩` from `exists_eq_mul_of_mul_eq_zero P ⟨toEAf D (1 - e), hint⟩ (Subtype.ext (by change toEAf D (1 - e) * toEAf D (1 - e) = toEAf D (1 - e); rw [← RingHom.map_mul, h2])) fun PP hPP => by`. Take `⟨a, ha, hae⟩` from `idemSum_mul_idemAt he hPP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hai, ha1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D a PP ha`. Use `⟨_, ha1, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toEAf D a * toEAf D (1 - e) = 0`. Rewrite using `[← RingHom.map_mul, mul_one_sub (R := AE D) hae, RingHom.map_zero]`. Establish `hs' : toEAf D (1 - e) = (s : Formalism.IndefR.Datum.EAf D) * eToEAf D (y : D.host.E)` using `congrArg Subtype.val hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy0' : (y : D.host.E) ≠ 0` using `fun h => hy0 (RingOfIntegers.coe_eq_zero_iff.1 h)`. Establish `h4 : toEAf D (incA D ((y : D.host.E)⁻¹)) = eToEAf D ((y : D.host.E)⁻¹)` using `rfl`. Use `⟨y, hy0', hy, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, h4, hs', mul_ringHom_mul_ringHom_inv_cancel (eToEAf D) _ hy0']`. Conclude with `s.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den {D : D7} {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) :
     ∃ y : 𝓞 D.host.E, (y : D.host.E) ≠ 0 ∧ (∀ PP ∈ P, y ∈ PP.asIdeal) ∧
@@ -117,7 +117,7 @@ theorem exists_den {D : D7} {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E
   exact s.2
 
 /- English proof (translation)
-Introduce `D V W LV LW e P he x hx`. Take `⟨y, hy0, hy, hw⟩` from `exists_den he`. Establish `h5` using `GlobalTheory.LatticeStable.smul_mem_latO D V W LV LW _ _ hw _ (hx y hy)`. Rewrite `h5` using `[smul_smul, mul_assoc, ← RingHom.map_mul, inv_mul_cancel₀ hy0, RingHom.map_one, mul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem one_sub_smul_mem_latO : ∀ (D : D7) (V W : HSp D) (LV : Set (Fin V.rank → D.host.E)) (LW : Set (Fin W.rank → D.host.E)) (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e P → ∀ x : WO V W, (∀ s : 𝓞 D.host.E, (∀ PP ∈ P, s ∈ PP.asIdeal) → incA D (s : D.host.E) • x ∈ (latO V W LV LW fun _ => True)) → (1 - e) • x ∈ (latO V W LV LW fun _ => True) := by
   intro D V W LV LW e P he x hx

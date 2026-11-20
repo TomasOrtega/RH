@@ -71,7 +71,7 @@ def CMCurveExists : Prop :=
       (ρ : 𝓞 K →+* 𝓞 M) (v : epsR (𝓞 M) ⟶ P.A), IsCMCurve d τ (logPeriod d) M P act ρ v
 
 /- English proof (translation)
-The claim follows from `Embeddings.card M ℂ`.
+A detailed English derivation is pending.
 -/
 example (M : Type) [Field M] [NumberField M] : Fintype.card (M →+* ℂ) = Module.finrank ℚ M :=
   Embeddings.card M ℂ

@@ -8,13 +8,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.FMX GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.PB.FMX.GenFl
 
 /- English proof (translation)
-Establish `hξ` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Establish `hi : IsLocalHom i` using `⟨fun a ha => isUnit_iff_ne_zero.mpr (fun h0 => by simp [h0] at ha)⟩`. Establish `hloc : IsLocalHom (Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom i).hom`. Rewrite using `[CommRingCat.hom_comp]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `(SpecToEquivOfLocalRing X (CommRingCat.of G)).right_inv ⟨_, Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom i, hloc⟩`. Rewrite `key` using `[SpecToEquivOfLocalRing_eq_iff]`. Take `⟨h1, h2⟩` from `key`. Express the relevant statement in the definitionally equal form `(Spec.map (Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom i) ≫ X.fromSpecStalk (ξ (IsLocalRing.closedPoint Ω))) (IsLocalRing.closedPoint G) = ξ (IsLocalRing.closedPoint Ω) at h1`. Express the relevant statement in the definitionally equal form `Scheme.stalkClosedPointTo (Spec.map (Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom i) ≫ X.fromSpecStalk (ξ (IsLocalRing.closedPoint Ω))) = (X.presheaf.stalkCongr (Inseparable.of_eq h1)).hom ≫ Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom i at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hg : Spec.map (Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom i) ≫ X.fromSpecStalk (ξ (IsLocalRing.closedPoint Ω)) = Spec.map (CommRingCat.ofHom i) ≫ ξ`. Rewrite using `[Spec.map_comp, Category.assoc, hξ]`. Use `revert h1 h2`. Generalize the expression as in `Spec.map (Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom i) ≫ X.fromSpecStalk (ξ (IsLocalRing.closedPoint Ω)) = k at hg`. Substitute `hg` using the available equality.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h1 h2`. Conclude with `⟨h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 private theorem stalkClosedPointTo_specMap_comp_eq {X : Scheme.{0}} {Ω G : Type} [Field Ω] [Field G]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (i : Ω →+* G) :
@@ -46,9 +46,9 @@ private theorem stalkClosedPointTo_specMap_comp_eq {X : Scheme.{0}} {Ω G : Type
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨e, he⟩` from `stalkClosedPointTo_specMap_comp_eq ξ i`. Rewrite using `[he]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, TopCat.Presheaf.stalkCongr_hom, CommRingCat.hom_ofHom]`. Use `congr 2`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hh` using `TopCat.Presheaf.stalkSpecializes_comp X.presheaf (Inseparable.of_eq e.symm).specializes hy`. Conclude with `congrArg (fun k => CommRingCat.Hom.hom k s) hh`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem stalkClosedPointTo_stalkSpecializes_comp {X : Scheme.{0}} {Ω G : Type} [Field Ω] [Field G]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (i : Ω →+* G) (g : Spec (CommRingCat.of G) ⟶ X)
@@ -65,23 +65,21 @@ private theorem stalkClosedPointTo_stalkSpecializes_comp {X : Scheme.{0}} {Ω G 
   exact congrArg (fun k => CommRingCat.Hom.hom k s) hh
 
 /- English proof (translation)
-Introduce `X X' Ω G _ _ ξ ξ' f i κ x hT hG' hD p' c₁ h`. Use `set q : Cpt ξ := ⟨f p'.1, h⟩ with hq`. Establish `K : ∀ s : X.presheaf.stalk (f p'.1), genMap ξ' p' ((f.stalkMap p'.1).hom s) = i (genMap ξ q s)`. Introduce `s`. Establish `e1` using `stalkClosedPointTo_stalkSpecializes_comp ξ i (ξ' ≫ f) hD (f p'.1) (f.base.hom.map_specializes p'.2) h s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[Scheme.stalkClosedPointTo_comp]`. Conclude with `(congrArg (Scheme.stalkClosedPointTo ξ').hom (Scheme.Hom.stalkSpecializes_stalkMap_apply f _ _ p'.2 s).symm).trans e1`. Establish `F1 : ∀ a, a ∈ regAt ξ q → i a ∈ regAt ξ' p'`. Introduce `a ha`. Take `⟨s, rfl⟩` from `RingHom.mem_range.mp ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `RingHom.mem_range.mpr ⟨_, K s⟩`. Establish `F2 : ∀ a, a ∈ regAt ξ q → (i a)⁻¹ ∈ regAt ξ' p' → a⁻¹ ∈ regAt ξ q`. Introduce `a ha hinv`. Take `⟨s, rfl⟩` from `RingHom.mem_range.mp ha`. Take `⟨t, ht⟩` from `RingHom.mem_range.mp hinv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : genMap ξ q s = 0`. Rewrite using `[h0, _root_.inv_zero]`. Conclude with `zero_mem _`. Establish `hu : IsUnit ((f.stalkMap p'.1).hom s)`. Establish `hm : (f.stalkMap p'.1).hom s * t = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hG'.inj p'` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, K, ht, mul_inv_cancel₀ ((map_ne_zero i).mpr h0)]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨t, hm⟩`. Take `⟨v, hv⟩` from `(isUnit_map_iff (f.stalkMap p'.1).hom s).mp hu`. Use `RingHom.mem_range.mpr ⟨↑v⁻¹, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv, map_units_inv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨(map_ne_zero i).mpr h1, fun c' => ?_⟩` and prove the remaining obligations. Use `show i (x c') / i (x c₁) ∈ regAt ξ' p'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_div₀]`. Conclude with `F1 _ (h2 c')`. Introduce and unpack `⟨h1, h2⟩`. Establish `h1' : x c₁ ≠ 0` using `fun h0 => h1 (by simp [h0])`. Take `⟨c, hc⟩` from `hT.cover q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Take `⟨hc0, hc⟩` from `hc`. Use `⟨h1', fun c' => ?_⟩` and prove the remaining obligations. Establish `hinv : (i (x c₁ / x c))⁻¹ ∈ regAt ξ' p'`. Rewrite using `[map_div₀, inv_div]`. Conclude with `h2 c`.
-
-Establish `hw` using `F2 _ (hc c₁) hinv`. Establish `e : x c' / x c₁ = (x c' / x c) * (x c₁ / x c)⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_mem (hc c') hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.inChart_iff_inChart_map_of_dominates : ∀ (X X' : Scheme.{0}) (Ω G : Type) [Field Ω] [Field G] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of G) ⟶ X') (f : X' ⟶ X) (i : Ω →+* G) (κ : Type) (x : κ → Ω), CoordTie ℤ ξ x → IsCptGen ξ' → GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → ∀ (p' : Cpt ξ') (c₁ : κ) (h : genPt ξ ⤳ f p'.1), InChart ξ x c₁ ⟨f p'.1, h⟩ ↔ InChart ξ' (fun k => i (x k)) c₁ p' := by
   intro X X' Ω G _ _ ξ ξ' f i κ x hT hG' hD p' c₁ h

@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.LocalH1Finiteness
 
 /- English proof (translation)
-Establish `hB : Finite (B1 rho)` using `Finite.of_surjective _ (d0 rho).surjective_rangeRestrict`. Establish `hB' : Finite ((B1 rho).comap (Z1 rho).subtype)` using `Finite.of_injective (fun x : (B1 rho).comap (Z1 rho).subtype => (⟨x.1.1, x.2⟩ : B1 rho)) (fun a b hab => Subtype.ext (Subtype.ext (congrArg (fun x : B1 rho => x.1) hab)))`. Conclude with `@Finite.of_addSubgroup_quotient _ _ ((B1 rho).comap (Z1 rho).subtype).toAddSubgroup hB' h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_cocycles_of_finite_h1 {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
@@ -83,63 +83,51 @@ def repQuot (n : ℕ) [Module (ZMod n) (cball V R hR ⧸ oball V R hR)] :
 end General
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hlR : (0 : ℝ) ≤ l` using `hl0.le`. Establish `hlQ : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hnorm : ‖(l : ℚ_[l])‖ = (l : ℝ)⁻¹` using `Padic.norm_p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρc : Continuous fun p : G × V => ρ p.1 p.2` using `hρ`. Use `set T := _root_.GlobalTheory.LocalH1Finiteness.cball V l hlR with hT`. Use `set U := _root_.GlobalTheory.LocalH1Finiteness.oball V l hlR with hU`. Establish `hkill : ∀ x : T ⧸ U, (l ^ 2) • x = 0`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H y`. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Use `show ‖((l ^ 2) • (y : V))‖ < 1`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ_[l], norm_smul, Nat.cast_pow, norm_pow, hnorm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Equip the data with the indicated structure.
 
-Establish `hy : ‖(y : V)‖ ≤ l` using `mem_closedBall_zero_iff.1 y.2`. Combine the equalities or inequalities in the displayed calculation. Use `letI : Module (ZMod (l ^ 2)) (T ⧸ U) := AddCommGroup.zmodModule hkill`. Use `letI : TopologicalSpace (T ⧸ U) := ⊥`. Use `haveI : DiscreteTopology (T ⧸ U) := ⟨rfl⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `haveI : ProperSpace V := FiniteDimensional.proper ℚ_[l] V`. Use `haveI : Finite (T ⧸ U) := by`. Take `⟨t, htT, htf, hcov⟩` from `(isCompact_closedBall (0 : V) l).finite_cover_balls (e := 1) one_pos`. Set `f : V → T ⧸ U` to `fun x => if hx : x ∈ T then QuotientAddGroup.mk ⟨x, hx⟩ else 0`. Use `Set.finite_univ_iff.1 ((htf.image f).subset fun q _ => ?_)` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`. Take `⟨x, hxt, hxy⟩` from `Set.mem_iUnion₂.1 (hcov y.2)`. Use `⟨x, hxt, ?_⟩` and prove the remaining obligations. Establish `hxT : x ∈ T` using `htT hxt`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [f, dif_pos hxT]`. Rewrite using `[QuotientAddGroup.eq]`. Use `show ‖(-(x : V) + y)‖ < 1`. Rewrite using `[neg_add_eq_sub]`. Conclude with `mem_ball_iff_norm.1 hxy`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hπ : Continuous (QuotientAddGroup.mk : T → T ⧸ U)`. Rewrite using `[continuous_discrete_rng]`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H z`.
+Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hpre : (QuotientAddGroup.mk : T → T ⧸ U) ⁻¹' {QuotientAddGroup.mk z} = {w : T | ‖(w : V) - z‖ < 1}`. Use extensionality with `w`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq, QuotientAddGroup.eq_iff_sub_mem]`. Conclude with `Iff.rfl`. Rewrite using `[hpre]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `isOpen_lt (continuous_norm.comp (continuous_subtype_val.sub continuous_const)) continuous_const`. Set `rho : Representation (ZMod (l ^ 2)) H (T ⧸ U)` to `(_root_.GlobalTheory.LocalH1Finiteness.repQuot ρ hn (l : ℝ) hlR (l ^ 2)).comp φ`. Establish `hcont : _root_.ReciprocityTheory.Gal.ContAction rho`. Unfold `_root_.ReciprocityTheory.Gal.ContAction`. Rewrite using `[continuous_prod_of_discrete_right]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`. Conclude with `hπ.comp (Continuous.subtype_mk (f := fun h => ρ (φ h) y) (hρc.comp (hφ.prodMk continuous_const)) _)`. Establish `hZ : Finite ↥(_root_.ReciprocityTheory.Gal.Z1 rho)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH1 : Finite (_root_.ReciprocityTheory.Gal.H1 rho)` using `hfin 2 (T ⧸ U) rho two_pos hcont`. Use `set N := Submodule.comap (_root_.ReciprocityTheory.Gal.Z1 rho).subtype (_root_.ReciprocityTheory.Gal.B1 rho)`. Use `haveI hQ : Finite (↥(_root_.ReciprocityTheory.Gal.Z1 rho) ⧸ N.toAddSubgroup) := hH1`. Use `haveI : Finite ↥(LinearMap.range (_root_.ReciprocityTheory.Gal.d0 rho)) := Finite.of_surjective _ (LinearMap.surjective_rangeRestrict (_root_.ReciprocityTheory.Gal.d0 rho))`. Use `haveI hN : Finite ↥N.toAddSubgroup := Finite.of_injective (fun x : N.toAddSubgroup => (⟨x.1.1, x.2⟩ : LinearMap.range (_root_.ReciprocityTheory.Gal.d0 rho))) (fun a b hab => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Subtype.mk.injEq] at hab`. Conclude with `Subtype.ext (Subtype.ext (Subtype.mk.inj hab)))`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup N.toAddSubgroup]`. Conclude with `mul_ne_zero Nat.card_pos.ne' Nat.card_pos.ne'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Set `A : Set (G → V)` to `{c | c ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.continuousCocycles ρ ∧ ∀ g, ‖c g‖ ≤ l}`. Set `Ψ : (G → V) → H → T ⧸ U` to `fun c h => if hc : ‖c (φ h)‖ ≤ l then QuotientAddGroup.mk ⟨c (φ h), mem_closedBall_zero_iff.2 hc⟩ else 0`. Establish `hΨmem : ∀ c ∈ A, Ψ c ∈ (_root_.ReciprocityTheory.Gal.Z1 rho : Set (H → T ⧸ U))`. Introduce and unpack `c ⟨hc, hcl⟩`. Establish `hc' : Continuous c ∧ ∀ g h, c (g * h) = c g + ρ g (c h)` using `hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Establish `hΨc : Ψ c = fun h => QuotientAddGroup.mk (⟨c (φ h), mem_closedBall_zero_iff.2 (hcl (φ h))⟩ : T)`. Use function extensionality and compare the values at `h`. Simplify using `only [Ψ, dif_pos (hcl (φ h))]`. Rewrite using `[hΨc]`. Use `⟨hπ.comp (Continuous.subtype_mk (hc'.1.comp hφ) _), fun h h' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hval : (⟨c (φ (h * h')), mem_closedBall_zero_iff.2 (hcl _)⟩ : T) = ⟨c (φ h), mem_closedBall_zero_iff.2 (hcl _)⟩ + _root_.GlobalTheory.LocalH1Finiteness.actBall ρ hn l hlR (φ h) ⟨c (φ h'), mem_closedBall_zero_iff.2 (hcl _)⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show c (φ (h * h')) = c (φ h) + ρ (φ h) (c (φ h'))`. Rewrite using `[map_mul]`. Conclude with `hc'.2 _ _`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(congrArg QuotientAddGroup.mk hval).trans (QuotientAddGroup.mk_add _ _ _)`. Establish `hΨeq : ∀ c ∈ A, ∀ c' ∈ A, Ψ c = Ψ c' → ∀ g, ‖c g - c' g‖ < 1`. Introduce and unpack `c ⟨-, hcl⟩ c' ⟨-, hcl'⟩ hcc g`. Take `⟨h, rfl⟩` from `hφs g`. Use `congrFun hcc h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [Ψ, dif_pos (hcl (φ h)), dif_pos (hcl' (φ h)), QuotientAddGroup.eq_iff_sub_mem] at this`. Conclude with `this`. Establish `himg : (Ψ '' A).Finite` using `(Set.toFinite (_root_.ReciprocityTheory.Gal.Z1 rho : Set (H → T ⧸ U))).subset (by`. Introduce and unpack `_ ⟨c, hcA, rfl⟩`. Conclude with `hΨmem c hcA)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `B : Set (G → V)` to `Function.invFunOn Ψ A '' (Ψ '' A)`. Establish `hBfin : B.Finite` using `himg.image _`. Establish `hBA : ∀ c ∈ A, Function.invFunOn Ψ A (Ψ c) ∈ A ∧ Ψ (Function.invFunOn Ψ A (Ψ c)) = Ψ c` using `fun c hc => ⟨Function.invFunOn_mem ⟨c, hc, rfl⟩, Function.invFunOn_eq ⟨c, hc, rfl⟩⟩`. Use `set S := Submodule.span ℚ_[l] B`. Use `haveI : FiniteDimensional ℚ_[l] S := FiniteDimensional.span_of_finite ℚ_[l] hBfin`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hind : ∀ c ∈ A, ∀ n : ℕ, ∃ s ∈ S, ∃ a ∈ A, c = s + ((l : ℚ_[l]) ^ n) • a`. Introduce `c hc n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, S.zero_mem, c, hc, by simp⟩`. Consider the case `succ n ih`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, a, ha, rfl⟩` from `ih`. Take `⟨hbA, hbΨ⟩` from `hBA a ha`. Use `set b := Function.invFunOn Ψ A (Ψ a)`. Establish `hlt` using `hΨeq a ha b hbA hbΨ.symm`. Use `⟨s + ((l : ℚ_[l]) ^ n) • b, S.add_mem hs (S.smul_mem _ (Submodule.subset_span (Set.mem_image_of_mem _ (Set.mem_image_of_mem _ ha)))), (l : ℚ_[l])⁻¹ • (a - b), ⟨?_, fun g => ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.sub_mem _ ha.1 hbA.1)`. Rewrite using `[Pi.smul_apply, Pi.sub_apply, norm_smul, norm_inv, hnorm, inv_inv]`. Conclude with `(mul_lt_mul_of_pos_left (hlt g) hl0).le.trans (by rw [mul_one])`. Rewrite using `[smul_smul, pow_succ, mul_assoc, mul_inv_cancel₀ hlQ, mul_one, smul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hAS : ∀ c ∈ A, c ∈ S`. Introduce `c hc`. Use `choose s hs a ha hca using hind c hc`. Use `(Submodule.closed_of_finiteDimensional S).mem_of_tendsto (f := s) (b := Filter.atTop) ?_ (Filter.Eventually.of_forall hs)` and prove the remaining obligations. Use `tendsto_pi_nhds.2 fun g => ?_` and prove the remaining obligations.
-
-Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun n => ?_) (((tendsto_pow_atTop_nhds_zero_of_lt_one (inv_nonneg.2 hlR) (inv_lt_one_of_one_lt₀ hl1)).mul_const (l : ℝ)).trans (by rw [zero_mul]))` and prove the remaining obligations. Establish `h1 : s n g - c g = -(((l : ℚ_[l]) ^ n) • a n g)`. Use `congrFun (hca n) g` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.smul_apply] at this`.
-
-Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Rewrite using `[h1, norm_neg, norm_smul, norm_pow, hnorm]`. Conclude with `mul_le_mul_of_nonneg_left ((ha n).2 g) (pow_nonneg (inv_nonneg.2 hlR) _)`. Establish `hle : (_root_.Formalism.WeaklyAdmissibleFiltrations.continuousCocycles ρ).restrictScalars ℚ_[l] ≤ S`.
-
-Introduce `c hc`. Establish `hc' : Continuous c ∧ ∀ g h, c (g * h) = c g + ρ g (c h)` using `hc`. Take `⟨C, hC⟩` from `(isCompact_univ.image (hc'.1.comp hφ)).isBounded.exists_norm_le`. Take `⟨n, hnC⟩` from `pow_unbounded_of_one_lt C hl1`. Establish `hmem : ((l : ℚ_[l]) ^ n) • c ∈ A`.
-
-Use `⟨Submodule.smul_of_tower_mem _ _ hc, fun g => ?_⟩` and prove the remaining obligations. Take `⟨h, rfl⟩` from `hφs g`. Rewrite using `[Pi.smul_apply, norm_smul, norm_pow, hnorm]`. Establish `hCg : ‖c (φ h)‖ ≤ C` using `hC _ ⟨h, Set.mem_univ _, rfl⟩`. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ n` using `pow_pos hl0 n`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `S.smul_mem ((l : ℚ_[l]) ^ n)⁻¹ (hAS _ hmem)` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hlQ), one_smul]`. Then use the resulting hypothesis. Use `haveI : FiniteDimensional ℚ_[l] ((_root_.Formalism.WeaklyAdmissibleFiltrations.continuousCocycles ρ).restrictScalars ℚ_[l]) := Submodule.finiteDimensional_of_le hle`. Use `haveI : Module.Finite ℚ_[l] (_root_.Formalism.WeaklyAdmissibleFiltrations.continuousCocycles ρ) := (inferInstance : FiniteDimensional ℚ_[l] ((_root_.Formalism.WeaklyAdmissibleFiltrations.continuousCocycles ρ).restrictScalars ℚ_[l]))`.
-
-Conclude with `Module.Finite.of_restrictScalars_finite ℚ_[l] L (_root_.Formalism.WeaklyAdmissibleFiltrations.continuousCocycles ρ)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LocalH1Finiteness.finite_cocycles_of_compact_cover {l : ℕ} [Fact l.Prime] {G H V : Type} [Group G]
     [TopologicalSpace G] [Group H] [TopologicalSpace H] [CompactSpace H] [NormedAddCommGroup V]
@@ -338,7 +326,7 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
   (Bw : _root_.Formalism.BasicNotions.LocBridge l E Ω Gw O) in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.mem_integralClosure_padicInt_iff (Bw.LL : IntermediateField ℚ_[l] (PadicAlgCl l)) _).1 (Bw.eO x).2`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LocalH1Finiteness.norm_toLL_le (x : O) : ‖Bw.toLL x‖ ≤ 1 :=
   (_root_.GlobalTheory.mem_integralClosure_padicInt_iff (Bw.LL : IntermediateField ℚ_[l] (PadicAlgCl l)) _).1
@@ -356,15 +344,11 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   (Bw : _root_.Formalism.BasicNotions.LocBridge l E Ω Gw O) in
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥Bw.LL.1 := Bw.LL.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥Bw.Kw.1 := Bw.Kw.2`. Establish `htoLL : Continuous Bw.toLL` using `by show Continuous (fun x => ((Bw.eO x : _) : ↥Bw.LL.1))`. Conclude with `continuous_subtype_val.comp Bw.eO_cont`. Set `φ : _root_.Formalism.GaloisCohomology.GK l Bw.Kw.1 →* ↥(_root_.Formalism.BasicNotions.Loc.GK Bw.Kw)` to `(Bw.Kw.1.fixingSubgroupEquiv.symm : _ ≃* _).toMonoidHom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `_root_.GlobalTheory.LocalH1Finiteness.finite_cocycles_of_compact_cover (l := l) (Bw.rep r) ?_ ?_ φ ?_ ?_ ?_` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.Gal.ContAction`. Establish `hent : ∀ a b, Continuous fun g : ↥(_root_.Formalism.BasicNotions.Loc.GK Bw.Kw) => Bw.toLL ((r (Bw.e.symm g) : Matrix (Fin m) (Fin m) O) a b)` using `fun a b => htoLL.comp ((hr.comp Bw.e_symm_cont).matrix_elem a b)`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.LocalH1Finiteness.rep_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_finset_sum _ fun b _ => ((hent a b).comp continuous_fst).mul ((continuous_apply b).comp continuous_snd)`. Introduce `g v`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg v)).2 fun a => ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.LocalH1Finiteness.rep_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg v) fun b _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (_root_.GlobalTheory.LocalH1Finiteness.norm_toLL_le Bw _)).trans (norm_le_pi_norm v b)`. Conclude with `(_root_.GlobalTheory.fixingSubgroupEquiv_bicontinuous _ _ Bw.Kw.1).2`. Conclude with `Bw.Kw.1.fixingSubgroupEquiv.symm.surjective`. Introduce `r' M _ _ _ _ _ rho hr' hc`.
-
-Conclude with `(hK l Bw.Kw.1 Bw.Kw.2 r' M rho hr' hc).2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LocalH1Finiteness.finite_continuous_cocycles_localGaloisRep (hK : _root_.Formalism.GaloisCohomology.LocalFinitenessK) {m : ℕ}
     (r : ↥Gw →* GL (Fin m) O)

@@ -18,13 +18,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.FixApprox
 
 /- English proof (translation)
-Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [map_zero]`. Conclude with `(Valuation.pos_iff _).2 (by simpa using hb)`. Establish `hta : τ a ≠ 0` using `by simpa using ha`. Rewrite `h`, the goal using `[← not_le]`. Introduce `h'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Establish `h1 : B.valuation (τ b / τ a) ≤ 1`. Rewrite using `[map_div₀, div_le_one₀ ((Valuation.pos_iff _).2 hta)]`. Conclude with `h'`. Rewrite `h1` using `[ValuationSubring.valuation_le_one_iff, ← map_div₀, hB]`.
-
-Rewrite `h1` using `[← ValuationSubring.valuation_le_one_iff, map_div₀, div_le_one₀ ((Valuation.pos_iff _).2 ha)]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_lt_map {K : Type} [Field K] (B : ValuationSubring K) (τ : K ≃+* K)
     (hB : ∀ z, τ z ∈ B ↔ z ∈ B) (a b : K) (h : B.valuation a < B.valuation b) :
@@ -46,17 +44,13 @@ theorem val_lt_map {K : Type} [Field K] (B : ValuationSubring K) (τ : K ≃+* K
     exact h1
 
 /- English proof (translation)
-Introduce `K _ _ B τ hB y _ happ`. Assume the negation of the conclusion as `hne`. Use `set m := τ y with hm`. Use `set s := τ.symm y with hs`. Establish `hym : y - m ≠ 0` using `sub_ne_zero.2 (Ne.symm hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hys : y - s ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Establish `h'` using `congrArg τ (sub_eq_zero.1 h)`. Rewrite `h'` using `[hs, RingEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `h'`. Apply the tactic sequence `obtain ⟨u, hu, hlt⟩ := happ (if B.valuation (y - m) ≤ B.valuation (y - s) then y - m else y - s) (by split_ifs <;> assumption)`. Establish `h1 : B.valuation (y - u) < B.valuation (y - m)` using `by split_ifs at hlt with hc`. Conclude with `hlt`. Conclude with `lt_of_lt_of_le hlt (le_of_lt (not_le.1 hc))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : B.valuation (y - u) < B.valuation (y - s)` using `by split_ifs at hlt with hc`. Conclude with `lt_of_lt_of_le hlt hc`. Conclude with `hlt`. Establish `h3` using `val_lt_map B τ hB _ _ h2`. Establish `e1 : τ (y - u) = m - u` using `by rw [map_sub, hu]`.
-
-Establish `e2 : τ (y - s) = m - y` using `by rw [map_sub, hs, RingEquiv.apply_symm_apply]`. Rewrite `h3` using `[e1, e2]`. Establish `h4 : B.valuation (m - y) = B.valuation (y - m)` using `Valuation.map_sub_swap _ _ _`. Establish `h5 : m - y = (m - u) - (y - u)` using `by ring`. Establish `h6 : B.valuation (m - y) < B.valuation (m - y)`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_irrefl _ h6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fix_of_approx : ∀ (K : Type) [Field K] [CharZero K] (B : ValuationSubring K) (τ : K ≃+* K), (∀ z, τ z ∈ B ↔ z ∈ B) → ∀ y : K, IsAlgebraic ℚ y → (∀ δ : K, δ ≠ 0 → ∃ u : K, τ u = u ∧ B.valuation (y - u) < B.valuation δ) → τ y = y := by
   intro K _ _ B τ hB y _ happ

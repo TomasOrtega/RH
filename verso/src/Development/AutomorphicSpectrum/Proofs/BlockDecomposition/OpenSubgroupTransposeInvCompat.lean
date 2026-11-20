@@ -25,7 +25,7 @@ def tiHom : AdelicGLn.FiniteAdelicGL ℚ 3 →* AdelicGLn.FiniteAdelicGL ℚ 3 w
     rw [Matrix.transpose_mul]
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `(continuous_id.matrix_transpose).comp Units.continuous_coe_inv`. Conclude with `(continuous_id.matrix_transpose).comp Units.continuous_val`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_tiHom : Continuous tiHom := by
   rw [Units.continuous_iff]
@@ -34,7 +34,7 @@ theorem continuous_tiHom : Continuous tiHom := by
   · exact (continuous_id.matrix_transpose).comp Units.continuous_val
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(b.inv * a.inv).transpose = a.inv.transpose * b.inv.transpose`. Rewrite using `[Matrix.transpose_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ti_mul_adelic (a b : G3) : ti (a * b) = ti a * ti b := by
   apply Units.ext
@@ -42,7 +42,7 @@ theorem ti_mul_adelic (a b : G3) : ti (a * b) = ti a * ti b := by
   rw [Matrix.transpose_mul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((1 : GL (Fin 3) R)⁻¹ : GL (Fin 3) R).val.transpose = 1`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem ti_one' {R : Type*} [CommRing R] : ti (1 : GL (Fin 3) R) = 1 := by
   apply Units.ext
@@ -50,9 +50,9 @@ theorem ti_one' {R : Type*} [CommRing R] : ti (1 : GL (Fin 3) R) = 1 := by
   simp
 
 /- English proof (translation)
-Establish `h : AdelicGLn.prodEquiv ℚ 3 x⁻¹ = (AdelicGLn.prodEquiv ℚ 3 x)⁻¹` using `map_inv _ _`. Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h1 : ((AdelicGLn.prodEquiv ℚ 3 x)⁻¹).1 b a = ((x⁻¹ : G3) b a).1` using `by rw [← h]; rfl`. Conclude with `h1.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h1 : ((AdelicGLn.prodEquiv ℚ 3 x)⁻¹).2 b a = ((x⁻¹ : G3) b a).2` using `by rw [← h]; rfl`. Conclude with `h1.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prodEquiv_ti (x : G3) :
     AdelicGLn.prodEquiv ℚ 3 (ti x) =
@@ -67,7 +67,7 @@ theorem prodEquiv_ti (x : G3) :
     exact h1.symm
 
 /- English proof (translation)
-Apply `(AdelicGLn.prodEquiv ℚ 3).injective` to reduce the goal to its premises. Rewrite using `[prodEquiv_ti, prodEquiv_finEmb, prodEquiv_finEmb, ti_one']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ti_finEmb (u : AdelicGLn.FiniteAdelicGL ℚ 3) :
     ti (finEmb ℚ 3 u) = finEmb ℚ 3 (ti u) := by
@@ -75,7 +75,7 @@ theorem ti_finEmb (u : AdelicGLn.FiniteAdelicGL ℚ 3) :
   rw [prodEquiv_ti, prodEquiv_finEmb, prodEquiv_finEmb, ti_one']
 
 /- English proof (translation)
-Introduce `U₀`. Use `⟨U₀.comap tiHom continuous_tiHom, fun u hu => ⟨ti u, hu, fun g => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ti_mul_adelic, ti_finEmb]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ti_level : ∀ U₀ : OpenSubgroup (AdelicGLn.FiniteAdelicGL ℚ 3), ∃ U₁ : OpenSubgroup (AdelicGLn.FiniteAdelicGL ℚ 3),
     ∀ u ∈ U₁, ∃ u' ∈ U₀, ∀ g : G3, ti (g * finEmb ℚ 3 u) = ti g * finEmb ℚ 3 u' := by

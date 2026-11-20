@@ -6,35 +6,33 @@ open Matrix PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D1
 namespace GlobalTheory.CompanionTheory.ChainSum
 
 /- English proof (translation)
-Unfold `sdot`. Conclude with `Finset.measurable_fun_sum _ fun i _ => (measurable_pi_apply i).const_mul _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sdot_measurable {m : ℕ} (e : Fin m → SignType) : Measurable (sdot e) := by
   unfold sdot
   exact Finset.measurable_fun_sum _ fun i _ => (measurable_pi_apply i).const_mul _
 
 /- English proof (translation)
-Simplify using `[sdot, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sdot_add' {m : ℕ} (e : Fin m → SignType) (a b : Fin m → ℝ) :
     sdot e (a + b) = sdot e a + sdot e b := by
   simp [sdot, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Introduce `m`. Use `⟨fun y => ?_, fun y a b => ?_, fun y y' e s t a h => ?_⟩` and prove the remaining obligations. Unfold `gam gamOn`. Use `Finset.measurable_fun_sum _ fun c _ => ?_` and prove the remaining obligations. Use `Measurable.const_mul (Finset.measurable_fun_prod _ fun e _ => ?_) _` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Measurable.ite (measurableSet_lt measurable_const (sdot_measurable e)) measurable_const measurable_const`. Unfold `gam gamOn`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hiff : (y e + sdot e b < sdot e (a + b)) ↔ y e < sdot e a`. Rewrite using `[sdot_add']`. Conclude with `add_lt_add_iff_right _`. Conclude with `if_congr hiff rfl rfl`. Unfold `gam gamOn`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Establish `hchain : IsChain SLe (↑c : Set (Fin m → SignType))`. Simplify using `only [Finset.mem_filter] at hc`. Conclude with `hc.2.2.1`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hec : e ∈ c`. Establish `key : ∀ u : ℝ, (∏ e' ∈ c, if Function.update y e u e' < sdot e' a then (1 : ℝ) else 0) = ∏ e' ∈ c, if Function.update y' e u e' < sdot e' a then (1 : ℝ) else 0`. Introduce `u`. Use `Finset.prod_congr rfl fun e' he' => ?_` and prove the remaining obligations. Distinguish the cases in `hne : e' = e`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `hne` using the available equality. Simplify using `only [Function.update_self]`. Establish `hcmp : SLe e e' ∨ SLe e' e` using `hchain (Finset.mem_coe.2 hec) (Finset.mem_coe.2 he') (Ne.symm hne)`. Simplify using `only [Function.update_of_ne hne, h e' hcmp]`. Rewrite using `[key s, key t]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ (z : (Fin m → SignType) → ℝ) (u v : ℝ), (∏ e' ∈ c, if Function.update z e u e' < sdot e' a then (1 : ℝ) else 0) = ∏ e' ∈ c, if Function.update z e v e' < sdot e' a then (1 : ℝ) else 0`. Introduce `z u v`. Use `Finset.prod_congr rfl fun e' he' => ?_` and prove the remaining obligations. Establish `hne : e' ≠ e` using `fun hh => hec (hh ▸ he')`. Simplify using `only [Function.update_of_ne hne]`.
-
-Rewrite using `[key y s t, key y' s t, sub_self, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainSum_rest : ∀ m : ℕ, (∀ y : (Fin m → SignType) → ℝ, Measurable (gam y)) ∧
     (∀ (y : (Fin m → SignType) → ℝ) a b, gam (fun e => y e + sdot e b) (a + b) = gam y a) ∧

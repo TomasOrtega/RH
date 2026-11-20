@@ -13,7 +13,7 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range β) span_eq_top := by rw [Submodule.span_span_of_tower]; exact hβ`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_span {ι' : Type} [Finite ι'] (β : ι' → V)
     (hβ : Submodule.span K (Set.range β) = ⊤) :
@@ -40,17 +40,15 @@ def ldualF (h : V →ₗ⋆[K] V →ₗ[K] K) (𝔭 : Ideal (𝓞 F)) (x : V) : 
     exact Submodule.smul_mem _ r hz
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ Submodule.span (𝓞 K) (Set.range β), ∀ x ∈ Submodule.span (𝓞 K) (Set.range β), h y x ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)`. Introduce `y hy x hx`. Establish `hx' : Submodule.span (𝓞 K) (Set.range β) ≤ rdualF h 𝔭 y`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hy' : Submodule.span (𝓞 K) (Set.range β) ≤ ldualF h 𝔭 (β j)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hβ i j`. Conclude with `hy' hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx' hx`. Introduce `x hx`. Use `show ∀ y ∈ _, h y x ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)`. Introduce `y hy`. Take `⟨t, ht, htx⟩` from `(LocF.mem_locF_iff hp _ x).1 hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsy⟩` from `(LocF.mem_locF_iff hp _ y).1 hy`. Use `key _ hsy _ htx` as an intermediate fact. Rewrite `this` using `[localizedQuotients.form_smul hF]`. Take `⟨u, hu, hux⟩` from `(LocF.mem_locF_iff hp _ _).1 this`. Use `(LocF.mem_locF_iff hp _ _).2 ⟨u * (s * t), fun hm => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `hp.mem_or_mem hm with h1 | h1` into its components or cases. Conclude with `hu h1`. Conclude with `(hp.mem_or_mem h1).elim hs ht`. Rewrite `hux`, the goal using `[Algebra.smul_def]`. Rewrite `hux`, the goal using `[map_mul, map_mul]`.
-
-Simplify `hux` using `[mul_assoc, mul_comm, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 theorem le_dualF_of_gram (hF : IsFixF K F) (h : V →ₗ⋆[K] V →ₗ[K] K) {𝔭 : Ideal (𝓞 F)}
     (hp : 𝔭.IsPrime) {ι' : Type} (β : ι' → V)

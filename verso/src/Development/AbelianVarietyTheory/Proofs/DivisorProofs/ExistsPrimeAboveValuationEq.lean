@@ -18,19 +18,19 @@ noncomputable section
 namespace GlobalTheory.CNumAtPrime
 
 /- English proof (translation)
-Introduce `E _ _ _ 𝔣 l hl`. Establish `hlu : ¬ IsUnit (l : 𝓞 E)`. Introduce `h`. Establish `h2` using `h.map (Algebra.norm ℤ (S := 𝓞 E))`. Rewrite `h2` using `[show (l : 𝓞 E) = algebraMap ℤ (𝓞 E) (l : ℤ) by simp, Algebra.norm_algebraMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : Module.finrank ℤ (𝓞 E) ≠ 0` using `Module.finrank_pos.ne'`. Rewrite `h2` using `[isUnit_pow_iff hn, Int.isUnit_iff]`. Use `hl.one_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨M, hM, hlM⟩` from `Ideal.exists_le_maximal _ ((Ideal.span_singleton_ne_top hlu))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hlP : (l : 𝓞 E) ∈ M` using `hlM (Ideal.mem_span_singleton_self _)`. Establish `hM0 : M ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `Nat.cast_ne_zero.2 hl.ne_zero ((Submodule.mem_bot _).1 hlP)`. Set `P : HeightOneSpectrum (𝓞 E)` to `⟨M, hM.isPrime, hM0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P, hlP, ?_⟩` and prove the remaining obligations. Establish `hiff : (∃ v : HeightOneSpectrum (OF E), v.asIdeal ∣ 𝔣 ∧ (l : OF E) ∈ v.asIdeal) ↔ (∃ v : HeightOneSpectrum (OF E), (l : OF E) ∈ v.asIdeal ∧ v.asIdeal ∣ 𝔣)` using `⟨fun ⟨v, a, b⟩ => ⟨v, b, a⟩, fun ⟨v, a, b⟩ => ⟨v, b, a⟩⟩`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.cNum_vp c_vp`. Distinguish the cases in `h : ∃ v : HeightOneSpectrum (OF E), v.asIdeal ∣ 𝔣 ∧ (l : OF E) ∈ v.asIdeal`. Rewrite using `[if_pos h, if_pos (hiff.1 h)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.condExp 𝔣 l = a0 𝔣 l`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.condExp a0`. Use `congr 1`. Rewrite using `[hc]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg h, if_neg (mt hiff.2 h)]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.diffExp_vp GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.delta_vp`. Rewrite using `[GlobalTheory.DifferentElement.mult_ratio E l hl P.asIdeal P.isPrime hlP, show padicValInt l (discr E) = padicValNat l (discr E).natAbs from rfl, Nat.factorization_def _ hl]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cNum_eq_c_vp : ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (𝔣 : Ideal (OF E)) (l : ℕ), l.Prime →
     ∃ P : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ P.asIdeal ∧ ((GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.cNum_vp 𝔣 l P : ℚ) : ℝ) = c_vp 𝔣 l := by

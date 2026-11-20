@@ -45,7 +45,7 @@ def IsAdmS (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] {M a :
       IsSmoothCc F E Φinf
 
 /- English proof (translation)
-Take `⟨d, b, Φinf, Φf, Φv, h1, h2, h3, h4, -⟩` from `h`. Conclude with `⟨d, b, Φinf, Φf, Φv, h1, h2, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsAdmS.adm {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {M a : ℕ}
     {Φ : (Fin a → Fin M → AF F ⊗[F] E) → ℂ} (h : IsAdmS F E Φ) : IsAdm F E Φ := by

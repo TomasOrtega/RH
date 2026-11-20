@@ -11,9 +11,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hd`. Unfold `Model.R`. Rewrite using `[hs]`. Use `Subring.mem_comap.2 (Subring.mem_map.2 ⟨(⟨(g.e x).1, h1⟩, ⟨(g.e x).2, h2⟩), ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[RingHom.mem_eqLocus]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[hc, mul_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem mem_R_of_split_coords_integral_congr (hs : M.split = some g) (x : E) (h1 : (g.e x).1 ∈ 𝒪[F])
     (h2 : (g.e x).2 ∈ 𝒪[F]) (hd : ∃ c : 𝒪[F], (g.e x).1 - (g.e x).2 = (g.q : F) * c) : x ∈ M.R := by
@@ -29,19 +29,15 @@ private theorem mem_R_of_split_coords_integral_congr (hs : M.split = some g) (x 
   · rfl
 
 /- English proof (translation)
-Establish `hq : (g.q : F) ≠ 0` using `fun h => g.q_irr.ne_zero (Subtype.ext (by simpa using h))`. Establish `hmem : HermSp.ZZplusOf M Zh T T' b a ∈ M.R`. Use `congrFun (congrFun hZ b) a` as an intermediate fact. Simplify using `only [Matrix.map_apply, Subring.coe_subtype] at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Z b a).2`. Take `⟨u1, u2, d, hd⟩` from `comp_of_mem_R hs hmem`. Rewrite `u1`, `u2`, `hd` using `[zz_comp hs]`. Simplify using `only at u1 u2 hd`. Establish `hT : T = T' + (g.q : F) ^ 2 * c` using `by linear_combination hc`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hab : a = Fin.last r ∧ b = Fin.last r`. Simplify using `only [if_pos hab.symm] at u1 u2 hd`. Use `mem_R_of_split_coords_integral_congr hs _ ?_ ?_ ⟨d, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals rw [zz_comp hs]`. Apply the tactic sequence `all_goals simp only [Matrix.map_apply, g.e_cj, Prod.fst_swap, Prod.snd_swap, if_pos hab]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (g.e (Zh a b)).2 / (g.q : F) - -T / g.q = -(-((g.e (Zh a b)).2 / g.q) - T' / g.q) + g.q * c by rw [hT]; field_simp; ring]`. Conclude with `add_mem (neg_mem u2) (mul_mem g.q.2 c.2)`. Rewrite using `[show -((g.e (Zh b a)).1 / (g.q : F)) - T' / g.q = -((g.e (Zh b a)).1 / g.q - -T / g.q) + g.q * c by rw [hT]; field_simp; ring]`. Conclude with `add_mem (neg_mem u1) (mul_mem g.q.2 c.2)`. Rewrite using `[← hd]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hba : ¬(b = Fin.last r ∧ a = Fin.last r)` using `fun h => hab (And.symm h)`. Simplify using `only [if_neg hba] at u1 u2 hd`. Use `mem_R_of_split_coords_integral_congr hs _ ?_ ?_ ⟨d, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals rw [zz_comp hs]`.
-
-Apply the tactic sequence `all_goals simp only [Matrix.map_apply, g.e_cj, Prod.fst_swap, Prod.snd_swap, if_neg hab]`. Rewrite using `[show (g.e (Zh a b)).2 / (g.q : F) - 0 = -(-((g.e (Zh a b)).2 / g.q) - 0) by ring]`. Conclude with `neg_mem u2`. Rewrite using `[show -((g.e (Zh b a)).1 / (g.q : F)) - 0 = -((g.e (Zh b a)).1 / g.q - 0) by ring]`. Conclude with `neg_mem u1`.
-
-Rewrite using `[← hd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zsig_mem (hs : M.split = some g) (T T' : F) (c : 𝒪[F]) (hc : T - T' = (g.q : F) ^ 2 * c)
     (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) M.R)
@@ -83,17 +79,15 @@ theorem zsig_mem (hs : M.split = some g) (T T' : F) (c : 𝒪[F]) (hc : T - T' =
       ring
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g hs r T T' hT _ hcex Zh Z hZ hu h0`. Take `⟨c, hc⟩` from `hcex`. Establish `hcj : IsUnit (Zh.map M.L.cj).det`. Rewrite using `[det_map_cj]`. Conclude with `hu.map M.L.cj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcj0 : ((Zh.map M.L.cj).submatrix Fin.castSucc Fin.castSucc).det = 0`. Rewrite using `[show (Zh.map M.L.cj).submatrix Fin.castSucc Fin.castSucc = (Zh.submatrix Fin.castSucc Fin.castSucc).map M.L.cj from rfl, det_map_cj, h0, map_zero]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hT' : T' ∈ 𝒪[F]`. Rewrite using `[show T' = T - (g.q : F) ^ 2 * c by linear_combination -hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_mem hT (mul_mem (pow_mem g.q.2 2) c.2)`. Use `⟨⟨g.e.symm (T, T'), mem_R_of_split_coords_integral_congr hs _ ?_ ?_ ⟨g.q * c, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hT`. Simplify using `using hT'`. Simplify using `only [AlgEquiv.apply_symm_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `g.e.apply_symm_apply _`. Rewrite using `[hZ]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `zzplus_det_unit hs Zh T T' hu h0`. Use `⟨⟨Matrix.of fun a b => ⟨HermSp.ZZplusOf M (Zh.map M.L.cj) T T' a b, zsig_mem hs T T' c hc Zh Z hZ a b⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hmap : ((Matrix.of fun a b => (⟨HermSp.ZZplusOf M (Zh.map M.L.cj) T T' a b, zsig_mem hs T T' c hc Zh Z hZ a b⟩ : M.R)).map M.R.subtype) = HermSp.ZZplusOf M (Zh.map M.L.cj) T T'`. Use extensionality with `a b`. Both sides reduce to the same expression.
-
-Rewrite using `[hmap]`. Conclude with `zzplus_det_unit hs _ T T' hcj hcj0`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stepZsig0 : StepZsig0 := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' hT _ hcex Zh Z hZ hu h0
@@ -131,15 +125,13 @@ theorem stepZsig0 : StepZsig0 := by
       rfl
 
 /- English proof (translation)
-Introduce `hmode V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD Z₁ Z₂ e₁ e₂`. Take `⟨g, hs⟩` from `Option.isSome_iff_exists.1 hmode`. Establish `hD2 : H.Dl f₂ f₂' r = 0` using `dl_zero_two hyp hD`. Establish `hh1 : ((H.Zhat t₁.f t₁.f').submatrix Fin.castSucc Fin.castSucc).det = 0`. Rewrite using `[← dl_eq_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hD`. Establish `hh2 : ((H.Zhat f₂ f₂').submatrix Fin.castSucc Fin.castSucc).det = 0`. Rewrite using `[← dl_eq_det]`. Conclude with `hD2`. Establish `hU1 : IsUnit (H.Zhat t₁.f t₁.f').det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `dl_succ_unit hyp` as an intermediate fact. Rewrite `this` using `[dl_full]`. Then use the resulting hypothesis. Establish `hU2 : IsUnit (H.Zhat f₂ f₂').det`. Use `h0 F E M g hs r _ t₁.T t₁.T' hh2 ?_` and prove the remaining obligations. Rewrite using `[← e₂]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Z₂.unit`. Establish `hR : ∀ a b, HermSp.ZZplusOf M (H.Zhat f₂ f₂') t₁.T t₁.T' a b ∈ M.R`. Introduce `a b`. Rewrite using `[← e₂]`. Conclude with `(Z₂.Z a b).2`.
-
-Establish `hsp` using `hyp.1.1.2.2.2.2.2 g hs`. Establish `hT0 : t₁.T ∈ 𝒪[F]` using `hyp.1.1.2.1.2.2.2.1`. Rewrite using `[h1 F E M g hs r n V H hn t₁ f₂ f₂' φ φ' hyp hD (by rw [dl_full]; exact hU2) hR]`. Conclude with `h2 F E M g hs r t₁.T t₁.T' hT0 hsp.1 hsp.2.1 _ _ Z₁.Z Z₂.Z e₁ e₂ hU1 hU2 hh1 hh2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaMbe0_of_detG_coordG_splitIsoCount (h0 : DetG) (h1 : CoordG) (h2 : SplitIsometryCountIntegral) (M : Model F E) (r n : ℕ) :
     ThetaMbe0 M r n true := by

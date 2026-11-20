@@ -26,7 +26,7 @@ def phi (d : ℕ) (p : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
 variable {I N}
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.GE.Lift.phi`. Rewrite using `[map_add, Polynomial.coeff_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_add (d : ℕ) (p q : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
     phi I N d (p + q) = phi I N d p + phi I N d q := by
@@ -34,7 +34,7 @@ theorem phi_add (d : ℕ) (p q : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
   rw [map_add, Polynomial.coeff_add]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.GE.Lift.phi`. Rewrite using `[map_sub, Polynomial.coeff_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_sub (d : ℕ) (p q : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
     phi I N d (p - q) = phi I N d p - phi I N d q := by
@@ -42,14 +42,14 @@ theorem phi_sub (d : ℕ) (p q : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
   rw [map_sub, Polynomial.coeff_sub]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.GE.Lift.phi`. Rewrite using `[map_zero, Polynomial.coeff_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_zero (d : ℕ) : phi I N d 0 = 0 := by
   unfold GlobalTheory.CompanionTheory.GE.Lift.phi
   rw [map_zero, Polynomial.coeff_zero]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.GE.Lift.phi`. Rewrite using `[map_mul, GlobalTheory.CompanionTheory.GE.Lift.Psi, MvPolynomial.eval₂Hom_X', Polynomial.coeff_C_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_X_mul (d : ℕ) (i : Fin (N + 1)) (p : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
     phi I N d (X i * p) = X i * phi I N d p := by
@@ -57,7 +57,7 @@ theorem phi_X_mul (d : ℕ) (i : Fin (N + 1)) (p : MvPolynomial (Fin (N + 1)) (r
   rw [map_mul, GlobalTheory.CompanionTheory.GE.Lift.Psi, MvPolynomial.eval₂Hom_X', Polynomial.coeff_C_mul]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', mul_assoc, GlobalTheory.CompanionTheory.GE.Lift.phi_X_mul, ih, ← mul_assoc, ← pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem phi_X_pow_mul (d : ℕ) (i : Fin (N + 1)) (m : ℕ)
     (p : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
@@ -67,7 +67,7 @@ theorem phi_X_pow_mul (d : ℕ) (i : Fin (N + 1)) (m : ℕ)
   | succ m ih => rw [pow_succ', mul_assoc, GlobalTheory.CompanionTheory.GE.Lift.phi_X_mul, ih, ← mul_assoc, ← pow_succ']
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.GE.Lift.phi`. Rewrite using `[map_mul, Polynomial.coeff_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.GE.Lift.Psi, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C, GlobalTheory.CompanionTheory.GE.Lift.iota, RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.coeff_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phi_C_mul (d : ℕ) (b : reesAlgebra I) (p : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
     phi I N d (C b * p) = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal d,
@@ -80,7 +80,7 @@ theorem phi_C_mul (d : ℕ) (b : reesAlgebra I) (p : MvPolynomial (Fin (N + 1)) 
   rfl
 
 /- English proof (translation)
-Establish `hprod : (s.prod fun i k => (Polynomial.C (X i) : Polynomial (MvPolynomial (Fin (N + 1)) R)) ^ k) = Polynomial.C (s.prod fun i k => X i ^ k)`. Simplify using `only [Finsupp.prod, map_prod, map_pow]`. Rewrite using `[GlobalTheory.CompanionTheory.GE.Lift.phi, GlobalTheory.CompanionTheory.GE.Lift.Psi, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_monomial, hprod, Polynomial.coeff_mul_C, GlobalTheory.CompanionTheory.GE.Lift.iota, RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.coeff_m …`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phi_monomial (d : ℕ) (s : Fin (N + 1) →₀ ℕ) (b : reesAlgebra I) :
     phi I N d (monomial s b) = monomial s ((b : Polynomial R).coeff d) := by
@@ -93,9 +93,9 @@ theorem phi_monomial (d : ℕ) (s : Fin (N + 1) →₀ ℕ) (b : reesAlgebra I) 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial u b`. Rewrite using `[GlobalTheory.CompanionTheory.GE.Lift.phi_monomial, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Rewrite using `[GlobalTheory.CompanionTheory.GE.Lift.phi_add, MvPolynomial.coeff_add, hp, hq, MvPolynomial.coeff_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_phi (d : ℕ) (p : MvPolynomial (Fin (N + 1)) (reesAlgebra I))
     (s : Fin (N + 1) →₀ ℕ) :
@@ -109,7 +109,7 @@ theorem coeff_phi (d : ℕ) (p : MvPolynomial (Fin (N + 1)) (reesAlgebra I))
     simp
 
 /- English proof (translation)
-Rewrite using `[mem_map_C_iff]`. Introduce `s`. Rewrite using `[coeff_phi]`. Conclude with `(mem_reesAlgebra_iff I _).1 (coeff s p).2 d`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_mem_map (d : ℕ) (p : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
     phi I N d p ∈ (I ^ d).map (C : R →+* MvPolynomial (Fin (N + 1)) R) := by
@@ -119,7 +119,7 @@ theorem phi_mem_map (d : ℕ) (p : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
   exact (mem_reesAlgebra_iff I _).1 (coeff s p).2 d
 
 /- English proof (translation)
-Introduce `s hs`. Apply `hp` to reduce the goal to its premises. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Rewrite using `[coeff_phi, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -133,7 +133,7 @@ theorem phi_isHomogeneous (d n : ℕ) {p : MvPolynomial (Fin (N + 1)) (reesAlgeb
   simp
 
 /- English proof (translation)
-Use extensionality with `s`. Simplify using `only [GlobalTheory.CompanionTheory.GE.Lift.coeff_phi, MvPolynomial.coeff_homogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phi_homogeneousComponent (d e : ℕ) (p : MvPolynomial (Fin (N + 1)) (reesAlgebra I)) :
     phi I N d (homogeneousComponent e p) = homogeneousComponent e (phi I N d p) := by
@@ -142,13 +142,11 @@ theorem phi_homogeneousComponent (d e : ℕ) (p : MvPolynomial (Fin (N + 1)) (re
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hmem : ∀ s, Polynomial.monomial d (coeff s t) ∈ reesAlgebra I`. Introduce `s`. Rewrite using `[mem_reesAlgebra_iff]`. Introduce `i`. Rewrite using `[Polynomial.coeff_monomial]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `MvPolynomial.mem_map_C_iff.1 ht s`. Conclude with `zero_mem _`. Use `⟨∑ s ∈ t.support, monomial s (⟨Polynomial.monomial d (coeff s t), hmem s⟩ : reesAlgebra I), fun s => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.notMem_support_iff.1 h]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lift (d : ℕ) (t : MvPolynomial (Fin (N + 1)) R)
     (ht : t ∈ (I ^ d).map (C : R →+* MvPolynomial (Fin (N + 1)) R)) :
@@ -173,9 +171,9 @@ theorem exists_lift (d : ℕ) (t : MvPolynomial (Fin (N + 1)) R)
     simp
 
 /- English proof (translation)
-Use extensionality with `s`. Rewrite using `[GlobalTheory.CompanionTheory.GE.Lift.coeff_phi, h, Polynomial.coeff_monomial]`. Distinguish the cases in `hd : d' = d`. Substitute `hd` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (Ne.symm hd), if_neg hd, MvPolynomial.coeff_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_lift {d : ℕ} {t : MvPolynomial (Fin (N + 1)) R}
     {τ : MvPolynomial (Fin (N + 1)) (reesAlgebra I)}
@@ -189,9 +187,9 @@ theorem phi_lift {d : ℕ} {t : MvPolynomial (Fin (N + 1)) R}
   · rw [if_neg (Ne.symm hd), if_neg hd, MvPolynomial.coeff_zero]
 
 /- English proof (translation)
-Introduce `s hs`. Apply `ht` to reduce the goal to its premises. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lift_isHomogeneous {d n : ℕ} {t : MvPolynomial (Fin (N + 1)) R}
     {τ : MvPolynomial (Fin (N + 1)) (reesAlgebra I)}
@@ -206,17 +204,15 @@ theorem lift_isHomogeneous {d n : ℕ} {t : MvPolynomial (Fin (N + 1)) R}
   simp
 
 /- English proof (translation)
-Establish `hstep : ∀ e, I.map (C : R →+* MvPolynomial (Fin (N + 1)) R) * L e ≤ L (e + 1)`. Introduce `e`. Rewrite using `[Ideal.mul_le]`. Introduce `a ha f hf`. Apply `hsat (e + 1)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Take `⟨m, hm⟩` from `hcompat e f hf j`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 hm`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hav : a * v ∈ L (e + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hbase (e + 1) ?_` and prove the remaining obligations. Rewrite using `[pow_succ', Ideal.map_mul]`. Conclude with `Ideal.mul_mem_mul ha hv`. Establish `hsplit : X j ^ m * (a * f) = a * u + a * v`. Rewrite using `[← mul_add, huv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hu) hav`. Proceed by induction on `k generalizing e with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Consider the case `succ k ih`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ, mul_assoc]`. Use `_ ≤ (I.map (C : R →+* MvPolynomial (Fin (N + 1)) R)) ^ k * L (e + 1) := Ideal.mul_mono_right (hstep e)`. Use `_ ≤ L (e + 1 + k) := ih (e + 1)`.
-
-Use `_ = L (e + (k + 1)) := by rw [add_assoc, add_comm 1 k]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_le (I : Ideal R) (L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R))
     (hbase : ∀ e, (I ^ (e + 1)).map (C : R →+* MvPolynomial (Fin (N + 1)) R) ≤ L e)
@@ -290,7 +286,7 @@ def reesIdeal (L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R))
       exact Ideal.mul_mem_left _ _ (ha d)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_reesIdeal {L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R)}
     {hL : ∀ k e, (I.map (C : R →+* MvPolynomial (Fin (N + 1)) R)) ^ k * L e ≤ L (e + k)}
@@ -299,9 +295,9 @@ theorem mem_reesIdeal {L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R)}
   Iff.rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.GE.HomogIdeal at hhom ⊢`. Introduce `e p hp`. Rewrite `hp`, the goal using `[GlobalTheory.CompanionTheory.GE.Lift.mem_reesIdeal]`. Introduce `d`. Rewrite using `[GlobalTheory.CompanionTheory.GE.Lift.phi_homogeneousComponent]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hhom d e _ (hp d)`.
+A detailed English derivation is pending.
 -/
 theorem reesIdeal_homog {L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R)}
     (hhom : ∀ e, HomogIdeal (L e))
@@ -315,9 +311,9 @@ theorem reesIdeal_homog {L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R)}
   exact hhom d e _ (hp d)
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.GE.HomogIdeal`. Introduce `d f hf`. Rewrite `hf`, the goal using `[MvPolynomial.mem_map_C_iff]`. Introduce `m`. Rewrite using `[MvPolynomial.coeff_homogeneousComponent]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `hf m`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem homogIdeal_map (J : Ideal R) :
     HomogIdeal (J.map (C : R →+* MvPolynomial (Fin (N + 1)) R)) := by
@@ -331,25 +327,23 @@ theorem homogIdeal_map (J : Ideal R) :
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `R _ _ I N L hhom hbase hsat hcompat`. Establish `hL : ∀ k e, (I.map (C : R →+* MvPolynomial (Fin (N + 1)) R)) ^ k * L e ≤ L (e + k)` using `GlobalTheory.CompanionTheory.GE.Lift.pow_mul_le I L hbase hsat hcompat`. Take `⟨n₀, hn₀⟩` from `GlobalTheory.T.compatible_sections_glue_homogeneous (reesAlgebra I) N (GlobalTheory.CompanionTheory.GE.Lift.reesIdeal L hL) (GlobalTheory.CompanionTheory.GE.Lift.reesIdeal_homog hhom hL)`. Use `⟨n₀, fun e n hn f hf hfh => ?_⟩` and prove the remaining obligations. Use `choose m hm using hcompat e f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set k := Finset.univ.sup m with hk`. Establish `hv : ∀ i, ∃ v ∈ (I ^ (e + 1)).map (C : R →+* MvPolynomial (Fin (N + 1)) R), v.IsHomogeneous (n + k) ∧ X i ^ k * f - v ∈ L (e + 1)`. Introduce `i`. Take `⟨c, hc⟩ : ∃ c, k = m i + c` from `Nat.exists_eq_add_of_le (Finset.le_sup (f := m) (Finset.mem_univ i))`. Establish `hmem : X i ^ k * f ∈ L (e + 1) ⊔ (I ^ (e + 1)).map (C : R →+* MvPolynomial (Fin (N + 1)) R)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h` using `Ideal.mul_mem_left _ (X i ^ c) (hm i)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hc, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, hu, w, hw, huw⟩` from `Submodule.mem_sup.1 hmem`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXf : (X i ^ k * f).IsHomogeneous (n + k)`. Rewrite using `[add_comm n k]`. Conclude with `(MvPolynomial.isHomogeneous_X_pow i k).mul hfh`. Use `⟨homogeneousComponent (n + k) w, GlobalTheory.CompanionTheory.GE.Lift.homogIdeal_map (I ^ (e + 1)) (n + k) w hw, MvPolynomial.homogeneousComponent_isHomogeneous _ _, ?_⟩` and prove the remaining obligations. Establish `hfix : homogeneousComponent (n + k) (X i ^ k * f) = X i ^ k * f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MvPolynomial.homogeneousComponent_of_mem ((MvPolynomial.mem_homogeneousSubmodule _ _).2 hXf), if_pos rfl]`. Rewrite using `[← hfix, ← map_sub, ← huw, add_sub_cancel_right]`. Conclude with `hhom (e + 1) (n + k) u hu`. Use `choose v hvI hvh hvL using hv`. Use `choose τ hτ using fun i => GlobalTheory.CompanionTheory.GE.Lift.exists_lift (e + 1) (v i) (hvI i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg, hgm⟩` from `hn₀ n hn k τ (fun i => GlobalTheory.CompanionTheory.GE.Lift.lift_isHomogeneous (hτ i) (hvh i)) (by`. Introduce `i j`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul, GlobalTheory.CompanionTheory.GE.Lift.mem_reesIdeal]`. Introduce `d`.
+Substitute using the available equality. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.CompanionTheory.GE.Lift.phi_sub, GlobalTheory.CompanionTheory.GE.Lift.phi_X_pow_mul, GlobalTheory.CompanionTheory.GE.Lift.phi_X_pow_mul, GlobalTheory.CompanionTheory.GE.Lift.phi_lift (hτ i), GlobalTheory.CompanionTheory.GE.Lift.phi_lift (hτ j)]`. Use `split_ifs with hd`. Substitute `hd` using the available equality. Establish `h` using `sub_mem (Ideal.mul_mem_left _ (X i ^ k) (hvL j)) (Ideal.mul_mem_left _ (X j ^ k) (hvL i))`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use the proof step `simp)`. Use `⟨f - GlobalTheory.CompanionTheory.GE.Lift.phi I N (e + 1) g, ?_, hfh.sub (GlobalTheory.CompanionTheory.GE.Lift.phi_isHomogeneous (e + 1) n hg), ?_⟩` and prove the remaining obligations. Apply `hsat (e + 1)` to reduce the goal to its premises. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp⟩` from `hgm i`. Use `⟨p + k, ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CompanionTheory.GE.Lift.mem_reesIdeal.1 hp (e + 1)`. Rewrite `h1` using `[GlobalTheory.CompanionTheory.GE.Lift.phi_X_pow_mul, GlobalTheory.CompanionTheory.GE.Lift.phi_sub, GlobalTheory.CompanionTheory.GE.Lift.phi_X_pow_mul, GlobalTheory.CompanionTheory.GE.Lift.phi_lift (hτ i), if_pos rfl]`. Establish `h` using `sub_mem (Ideal.mul_mem_left _ (X i ^ p) (hvL i)) h1`.
-
-Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sub_sub_cancel]`. Conclude with `GlobalTheory.CompanionTheory.GE.Lift.phi_mem_map (e + 1) g`.
+A detailed English derivation is pending.
 -/
 theorem uniform_lift : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) (N : ℕ)
     (L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R)),

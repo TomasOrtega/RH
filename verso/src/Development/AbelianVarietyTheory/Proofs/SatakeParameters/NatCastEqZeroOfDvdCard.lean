@@ -10,9 +10,9 @@ namespace GlobalTheory.NormDivisibility
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Use `Fintype.ofFinite R` as an intermediate fact. Set `_ : Field R` to `Fintype.fieldOfDomain R`. Take `⟨n, hp, hc⟩` from `FiniteField.card R (ringChar R)`. Rewrite `h` using `[Nat.card_eq_fintype_card, hc]`. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hl hp).mp (hl.dvd_of_dvd_pow h)]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ringChar.Nat.cast_ringChar`.
+A detailed English derivation is pending.
 -/
 theorem natCast_eq_zero_of_dvd_card {R : Type*} [CommRing R] [IsDomain R] [Finite R] {l : ℕ}
     (hl : l.Prime) (h : l ∣ Nat.card R) : (l : R) = 0 := by
@@ -26,9 +26,9 @@ theorem natCast_eq_zero_of_dvd_card {R : Type*} [CommRing R] [IsDomain R] [Finit
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Introduce `h`. Establish `: Finite (RingOfIntegers E ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot`. Unfold `Formalism.ConjugateSelfDual.normV at h`. Establish `h0` using `natCast_eq_zero_of_dvd_card (R := RingOfIntegers E ⧸ w.asIdeal) hl h`. Apply `hw` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_dvd_norm_of_not_mem {E : Type} [Field E] [NumberField E] {l : ℕ} (hl : Nat.Prime l)
     (w : HeightOneSpectrum (RingOfIntegers E))

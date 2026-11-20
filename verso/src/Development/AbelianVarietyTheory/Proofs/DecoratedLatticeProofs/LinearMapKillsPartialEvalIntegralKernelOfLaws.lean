@@ -33,7 +33,7 @@ def ofTrip (ev it : Finset (m × m')) (β : Matrix m m' k)
     else if h' : (r, q) ∈ ev then β r q + x.2.1 ⟨(r, q), h'⟩ else x.1 ⟨(r, q), h, h'⟩
 
 /- English proof (translation)
-Use extensionality with `r q`. Simplify using `only [ofTrip, toTrip, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ofTrip_toTrip (ev it : Finset (m × m')) (β t : Matrix m m' k) : ofTrip ev it β (toTrip ev it β t) = t := by
   ext r q
@@ -41,9 +41,9 @@ theorem ofTrip_toTrip (ev it : Finset (m × m')) (β t : Matrix m m' k) : ofTrip
   split_ifs <;> ring
 
 /- English proof (translation)
-Take `⟨x₀, x₁, x₂⟩` from `x`. Apply the tactic sequence `refine Prod.ext ?_ (Prod.ext ?_ ?_) <;> funext i`. Establish `h` using `i.2`. Simplify using `only [toTrip, ofTrip, Matrix.of_apply, dif_neg h.1, dif_neg h.2]`. Establish `h : i.1 ∉ it` using `Finset.disjoint_left.mp hd i.2`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [toTrip, ofTrip, Matrix.of_apply, dif_neg h, dif_pos i.2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [toTrip, ofTrip, Matrix.of_apply, dif_pos i.2]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem toTrip_ofTrip (ev it : Finset (m × m')) (hd : Disjoint ev it) (β : Matrix m m' k)
     (x : (Rest ev it → k) × ({e // e ∈ ev} → k) × ({e // e ∈ it} → k)) : toTrip ev it β (ofTrip ev it β x) = x := by
@@ -94,9 +94,9 @@ section Laws
 variable {k : Type} [Field k] {m m' : Type} [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m']
 
 /- English proof (translation)
-Rewrite using `[Matrix.sum_apply]`. Establish `: ∀ e : m × m', Matrix.single e.1 e.2 (a e) r q = if (r, q) = e then a e else 0`. Introduce and unpack `⟨x, y⟩`. Simplify using `only [Matrix.single_apply, Prod.mk.injEq]`. Apply the tactic sequence `split_ifs <;> aesop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Repeatedly rewrite using `[this, Finset.sum_ite_eq]`.
+Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem sum_single_apply (it : Finset (m × m')) (a : m × m' → k) (r : m) (q : m') :
     (∑ e ∈ it, Matrix.single e.1 e.2 (a e)) r q = if (r, q) ∈ it then a (r, q) else 0 := by
@@ -108,9 +108,9 @@ theorem sum_single_apply (it : Finset (m × m')) (a : m × m' → k) (r : m) (q 
   simp_rw [this, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext ?_ (Prod.ext ?_ ?_) <;> funext i`. Establish `h` using `i.2`. Simplify using `[toTrip, sum_single_apply, h.1]`. Establish `h : i.1 ∉ it` using `Finset.disjoint_left.mp hd i.2`. Simplify using `[toTrip, sum_single_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[toTrip, sum_single_apply, i.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toTrip_add (ev it : Finset (m × m')) (hd : Disjoint ev it) (β t : Matrix m m' k) (a : {e // e ∈ it} → k) :
     toTrip ev it β (t + ∑ e ∈ it, Matrix.single e.1 e.2 (if h : e ∈ it then a ⟨e, h⟩ else 0)) =
@@ -123,7 +123,7 @@ theorem toTrip_add (ev it : Finset (m × m')) (hd : Disjoint ev it) (β t : Matr
   · simp [toTrip, sum_single_apply, i.2]
 
 /- English proof (translation)
-Use extensionality with `r q`. Simplify using `only [ofTrip, fill, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ofTrip_zero (ev it : Finset (m × m')) (β : Matrix m m' k) (x₀ : Rest ev it → k) (a : {e // e ∈ it} → k) :
     ofTrip ev it β (x₀, 0, a) = fill ev it β (ofTrip ev it β (x₀, 0, 0)) a := by
@@ -134,17 +134,17 @@ theorem ofTrip_zero (ev it : Finset (m × m')) (β : Matrix m m' k) (x₀ : Rest
 end Laws
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν hψc hψ1 hν m m' _ _ _ _ M _ _ l β ev it hd h1 h2 Θ hΘ`. Set `e` to `trip (k := k) ev it hd β`. Set `l'` to `l ∘ₗ pullSB e`. Establish `hback : pullSB e (pullSB e.symm Θ) = Θ`. Use extensionality with `t`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[pullSB_apply]`. Establish `key` using `GlobalTheory.CoinvSB.kernel k ψ ν hψc hψ1 hν (Rest ev it) {x // x ∈ ev} {x // x ∈ it} M l' ?_ ?_ (pullSB e.symm Θ) ?_`. Simplify `key` using `[l', hback]`. Introduce `b Φ Φ' hΦ`. Use `h1 (fun e => if h : e ∈ ev then b ⟨e, h⟩ else 0) (pullSB e Φ) (pullSB e Φ') fun t => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pullSB_apply, pullSB_apply, hΦ]`. Use `congr 3`. Simplify using `only [e, trip_apply, toTrip, dotProduct]`. Rewrite using `[← Finset.sum_coe_sort ev]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[i.2]`. Introduce `a Φ Φ' hΦ`. Use `h2 (fun e => if h : e ∈ it then a ⟨e, h⟩ else 0) (pullSB e Φ) (pullSB e Φ') fun t => ?_` and prove the remaining obligations. Rewrite using `[pullSB_apply, pullSB_apply, hΦ]`. Simplify using `only [e, trip_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[toTrip_add ev it hd β t a]`. Introduce `x₀`. Establish `hr` using `hΘ (ofTrip ev it β (x₀, 0, 0))`. Simplify using `only [red] at hr`. Rewrite using `[← hr]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [pullSB_apply]`. Rewrite using `[← ofTrip_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kerRed_of_laws : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ψ ≠ 1 → ν.IsAddHaarMeasure → ∀ (m m' : Type) [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m'] (M : Type) [AddCommGroup M] [Module ℂ M] (l : SB (Matrix m m' k) →ₗ[ℂ] M) (β : Matrix m m' k) (ev it : Finset (m × m')), Disjoint ev it → (∀ (b : m × m' → k) (Θ Θ' : SB (Matrix m m' k)), (∀ t, Θ'.1 t = (ψ (∑ e ∈ ev, b e * (t e.1 e.2 - β e.1 e.2)) : ℂ) * Θ.1 t) → l Θ' = l Θ) → (∀ (a : m × m' → k) (Θ Θ' : SB (Matrix m m' k)), (∀ t, Θ'.1 t = Θ.1 (t + ∑ e ∈ it, Matrix.single e.1 e.2 (a e))) → l Θ' = l Θ) → GlobalTheory.FlatFactor.KerRed ν ev it β l := by
   intro k _ _ _ _ _ _ ψ ν hψc hψ1 hν m m' _ _ _ _ M _ _ l β ev it hd h1 h2 Θ hΘ

@@ -19,7 +19,7 @@ Simplify using the standard rewrite rules.
 theorem sum_one (n : ℕ) : ∑ _a : Fin n, (1 : ℕ) = n := by simp
 
 /- English proof (translation)
-Use `Equiv.ext fun x => ?_` and prove the remaining obligations. Take `⟨a, i⟩` from `x`. Use `Fin.ext ?_` and prove the remaining obligations. Rewrite using `[stdBlocks_val]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stdBlocks_one (n : ℕ) :
     (stdBlocks (fun _ : Fin n => 1) (sum_one n) : (Σ _ : Fin n, Fin 1) ≃ Fin n) =
@@ -31,20 +31,20 @@ theorem stdBlocks_one (n : ℕ) :
   simp
 
 /- English proof (translation)
-The claim follows from `(isSmooth_ofChar_iff _).2 (h.detChar (n := Fin 1))`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_detRep1 {χ : kˣ →* ℂˣ} (h : IsSmoothChar χ) : IsSmooth (detRep (Fin 1) χ) :=
   (isSmooth_ofChar_iff _).2 (h.detChar (n := Fin 1))
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _)`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_detRep1 (χ : kˣ →* ℂˣ) : HasFiniteLength (detRep (R := k) (Fin 1) χ) :=
   hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n χ`. Rewrite `h` using `[← stdBlocks_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prin_sub_multi {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) :
     IsSubquotient (prinSeries χ)
@@ -62,11 +62,11 @@ open UpperTheory.TNZ.Grp.P_spOrd GlobalTheory.LocGL.SupportRing
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Introduce `hL V _ _ π hs hi c hc σ h`. Take `⟨Z, Ψ, -, hΨ, -⟩` from `hL.loc.zel k`. Take `⟨hp1, e1⟩` from `multiProd_cls (Ψ := Ψ) hΨ (d := fun _ : Fin n => 1) (X := fun _ => ℂ) (sum_one n) (fun i => detRep (Fin 1) (c (σ i))) (fun i => isSmooth_detRep1 (hc (σ i))) (fun i => hasFiniteLength_detRep1 (c (σ i)))`. Take `⟨hp2, e2⟩` from `multiProd_cls (Ψ := Ψ) hΨ (d := fun _ : Fin n => 1) (X := fun _ => ℂ) (sum_one n) (fun i => detRep (Fin 1) (c i)) (fun i => isSmooth_detRep1 (hc i)) (fun i => hasFiniteLength_detRep1 (c i))`. Establish `hcl : clsGL _ hp1 = clsGL _ hp2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Ψ.injective` to reduce the goal to its premises. Rewrite using `[e1, e2]`. Conclude with `Equiv.prod_comp σ (fun i => Ψ (clsGL (detRep (Fin 1) (c i)) (hasFiniteLength_detRep1 (c i))))`. Establish `h1` using `h.trans (prin_sub_multi (fun i => c (σ i)))`. Establish `h2` using `clsGL_of_pos hp1 hs hi h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hcl]`. Conclude with `(isSubquotient_of_clsGL_ne hp2 hs hi h2.ne').trans (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries _ c)`.
+A detailed English derivation is pending.
 -/
 theorem step_spOrd : SpecialOrderProp (k := k) (n := n) := by
   intro hL V _ _ π hs hi c hc σ h

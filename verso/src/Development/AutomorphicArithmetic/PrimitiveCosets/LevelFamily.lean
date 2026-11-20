@@ -10,7 +10,7 @@ private noncomputable def UpperTheory.Comparison₂.level_family_wt (Λ : Level)
   if ψ = PChar.one then 1 else Λ.wt ψ
 
 /- English proof (translation)
-Unfold `UpperTheory.Comparison₂.level_family_wt Level.wt`. Use `split_ifs`. Conclude with `one_pos`. Conclude with `one_pos`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Comparison₂.level_family_wt_pos (Λ : Level) (ψ : PChar) : 0 < UpperTheory.Comparison₂.level_family_wt Λ ψ := by
   unfold UpperTheory.Comparison₂.level_family_wt Level.wt
@@ -20,9 +20,7 @@ private theorem UpperTheory.Comparison₂.level_family_wt_pos (Λ : Level) (ψ :
   · positivity
 
 /- English proof (translation)
-Distinguish the cases in `h : ψ.χ = 1`. Use `left`. Establish `hp` using `ψ.prim`. Rewrite `hp` using `[DirichletCharacter.IsPrimitive, h, DirichletCharacter.conductor_one]`. Conclude with `hp.symm`.
-
-Conclude with `Or.inr h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Comparison₂.level_family_adm (ψ : PChar) : ψ.N = 1 ∨ ψ.χ ≠ 1 := by
   by_cases h : ψ.χ = 1
@@ -33,9 +31,9 @@ private theorem UpperTheory.Comparison₂.level_family_adm (ψ : PChar) : ψ.N =
   · exact Or.inr h
 
 /- English proof (translation)
-Rewrite using `[← Finset.add_sum_erase _ _ Λ.one_mem, Level.Gm, Level.Nt]`. Use `congr 1`. Establish `h1 : UpperTheory.Comparison₂.level_family_wt Λ PChar.one = 1`. Simplify using `[UpperTheory.Comparison₂.level_family_wt]`. Rewrite using `[h1, one_mul, ← gChi_eq, (Gz_eq y).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [An.gChi, PChar.one]`. Conclude with `(congrArg Complex.re (if_pos rfl)).trans (Complex.ofReal_re _)`. Use `Finset.sum_congr (by congr) fun ψ hψ => ?_` and prove the remaining obligations. Establish `hne : ψ ≠ PChar.one` using `Finset.ne_of_mem_erase hψ`. Simplify using `only [UpperTheory.Comparison₂.level_family_wt, if_neg hne, gChi_eq]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Comparison₂.level_family_sum (Λ : Level) (y : ℝ) :
     ∑ ψ ∈ Λ.KEPT, UpperTheory.Comparison₂.level_family_wt Λ ψ * (Deduction.Gchi ψ.χ y).re = Λ.Gm y := by
@@ -52,9 +50,9 @@ private theorem UpperTheory.Comparison₂.level_family_sum (Λ : Level) (y : ℝ
     simp only [UpperTheory.Comparison₂.level_family_wt, if_neg hne, gChi_eq]
 
 /- English proof (translation)
-Introduce `Λ`. Use `⟨@Deduction.CharFamily.mk Λ.KEPT _ (fun i => i.1.N) (fun i => i.1.ne) (fun i => i.1.χ) (fun i => UpperTheory.Comparison₂.level_family_wt Λ i.1) (fun i => UpperTheory.Comparison₂.level_family_wt_pos Λ i.1) (fun i => UpperTheory.Comparison₂.level_family_adm i.1), fun y => ?_, fun θ …` and prove the remaining obligations. Rewrite using `[← UpperTheory.Comparison₂.level_family_sum Λ y, Deduction.Gm]`. Conclude with `Finset.sum_coe_sort Λ.KEPT (fun ψ => UpperTheory.Comparison₂.level_family_wt Λ ψ * (Deduction.Gchi ψ.χ y).re)`. Simplify using `only [Deduction.ZeroFree, Level.ZeroFreeAbove, PChar.ZeroFreeAbove]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h ψ hψ s hs`. Conclude with `h ⟨ψ, hψ⟩ s hs`. Introduce `h i s hs`. Conclude with `h i.1 i.2 s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Comparison₂.level_family :
     ∀ Λ : Level, ∃ F : Deduction.CharFamily, (∀ y, Deduction.Gm F y = Λ.Gm y) ∧ ∀ θ, Deduction.ZeroFree F θ ↔ Λ.ZeroFreeAbove θ := by

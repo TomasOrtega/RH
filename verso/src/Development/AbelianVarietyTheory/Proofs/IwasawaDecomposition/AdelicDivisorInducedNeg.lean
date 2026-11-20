@@ -28,7 +28,7 @@ noncomputable section
 namespace GlobalTheory.CombInd.DualComb
 
 /- English proof (translation)
-Rewrite using `[mul_pow, inv_pow, inv_pow, mul_comm (a ^ m)⁻¹ c, mul_assoc, inv_mul_cancel_left, mul_inv_rev]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_pow_mul_inv_eq {G : Type} [CommGroup G] (a b c : G) (m : ℕ) :
     b⁻¹ ^ m * c⁻¹ = (a⁻¹ ^ m * c * (a * b) ^ m)⁻¹ := by
@@ -43,19 +43,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 variable (Dw) in
 
 /- English proof (translation)
-Rewrite using `[eq_neg_iff_add_eq_zero, ← LineTest.expo_add, neg_add_cancel, LineTest.expo_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expo_neg (w : Sym E →₀ ℤ) : expo Dw (-w) = -expo Dw w := by
   rw [eq_neg_iff_add_eq_zero, ← LineTest.expo_add, neg_add_cancel, LineTest.expo_zero]
 
 /- English proof (translation)
-Simplify using `only [parOf, Finsupp.support_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem parOf_neg (w : Sym E →₀ ℤ) : parOf (-w) = parOf w := by
   simp only [parOf, Finsupp.support_neg]
 
 /- English proof (translation)
-Simplify using `only [divOf, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem divOf_neg (n : Letter Dw → ℤ) : divOf Y (-n) = -divOf Y n := by
   simp only [divOf, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]
@@ -63,9 +63,9 @@ theorem divOf_neg (n : Letter Dw → ℤ) : divOf Y (-n) = -divOf Y n := by
 variable {σ : F →+* ℂ} (G : EigMet Z (embOf e σ))
 
 /- English proof (translation)
-Establish `h' : p ∈ Var.eqnSet σ (divOf Y (-n)) g⁻¹` using `by show (divOf Y (-n)).IsEqn _ _`. Rewrite using `[divOf_neg]`. Conclude with `CartierDiv.IsEqn.neg hg`. Establish `h` using `FlagCpt.met_add_h G (-n) n h' hg`. Rewrite `h` using `[neg_add_cancel, inv_mul_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Simplify using `[FlagCpt.met, FlagCpt.genSq, prodPow, Var.tv, Var.hasVal_one.val_eq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem met_neg_h (n : Letter Dw → ℤ) {p : Y.Y.pts σ} {g : Y.Y.Fnˣ} (hg : p ∈ Var.eqnSet σ (divOf Y n) g) :
     (Y.met G (-n)).h g⁻¹ p * (Y.met G n).h g p = 1 := by
@@ -79,7 +79,7 @@ theorem met_neg_h (n : Letter Dw → ℤ) {p : Y.Y.pts σ} {g : Y.Y.Fnˣ} (hg : 
   simp [FlagCpt.met, FlagCpt.genSq, prodPow, Var.tv, Var.hasVal_one.val_eq]
 
 /- English proof (translation)
-Establish `h0 : (divOf Y (expo Dw w) + divOf Y (expo Dw (-w))).IsEqn b (eqn (divOf Y (expo Dw w)) b * eqn (divOf Y (expo Dw (-w))) b)` using `(Base.isEqn_eqn _ b).add (Base.isEqn_eqn _ b)`. Rewrite `h0` using `[← LineTest.divOf_add, ← LineTest.expo_add, add_neg_cancel, LineTest.expo_zero]`. Establish `h00 : (0 : Y.Y.Dv).IsEqn b (eqn (divOf Y (expo Dw w)) b * eqn (divOf Y (expo Dw (-w))) b)`. Simplify `h0` using `[divOf]`. Simplify using `using (CartierDiv.isEqn_zero b).iff_unitAt.1 h00`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitAt_eqn_mul (w : Sym E →₀ ℤ) (b : Y.Y.X) :
     UnitAt b ((eqn (divOf Y (expo Dw w)) b * eqn (divOf Y (expo Dw (-w))) b : Y.Y.Fnˣ) : Y.Y.Fn) := by
@@ -94,19 +94,17 @@ theorem unitAt_eqn_mul (w : Sym E →₀ ℤ) (b : Y.Y.X) :
 open Classical in
 
 /- English proof (translation)
-Establish `hp` using `LineTest.residueCharacteristic_prime v`. Establish `key : ∀ K : Sym E → ℝ, ((-w).sum fun a n => (n : ℝ) * K a) = -(w.sum fun a n => (n : ℝ) * K a)` using `fun K => by`. Rewrite using `[Finsupp.sum_neg_index (fun _ => by simp)]`. Simplify using `[Finsupp.sum, Finset.sum_neg_distrib]`. Unfold `lgOf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hp, dif_pos hp]`. Simplify using `only`. Rewrite using `[key]`. Use `set b := below y.1 with hb`. Use `set t := (Y.gr_spec b).choose_spec.choose_spec.choose with ht`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set P := ∏ x : Letter Dw, t x.1 x.2 ^ expo Dw w x with hP`. Establish `hP' : ∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (-w) x = P⁻¹`. Rewrite using `[expo_neg, hP]`. Simplify using `only [Pi.neg_apply, zpow_neg, Finset.prod_inv_distrib]`. Use `set e1 := eqn (divOf Y (expo Dw w)) b with he1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set e2 := eqn (divOf Y (expo Dw (-w))) b with he2`. Establish `hu1 : UnitAt b ((P * e1⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn)`. Use `(Base.isEqn_eqn (divOf Y (expo Dw w)) b).iff_unitAt.1 (LineTest.isEqn_divOf Y (expo Dw w) b)` as an intermediate fact. Rewrite `this` using `[← Units.val_div_eq_div_val, div_eq_mul_inv]`. Then use the resulting hypothesis. Establish `hu2 : UnitAt b ((P⁻¹ * e2⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Base.isEqn_eqn (divOf Y (expo Dw (-w))) b).iff_unitAt.1 (LineTest.isEqn_divOf Y (expo Dw (-w)) b)` as an intermediate fact. Rewrite `this` using `[← Units.val_div_eq_div_val, div_eq_mul_inv, hP']`. Then use the resulting hypothesis. Establish `hu : UnitAt b ((e1 * e2 : Y.Y.Fnˣ) : Y.Y.Fn)` using `unitAt_eqn_mul Y w b`. Establish `hprod : ((P * e1⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) * ((P⁻¹ * e2⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) = (((e1 * e2)⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn)`. Rewrite using `[← Units.val_mul, mul_mul_mul_comm, mul_inv_cancel, one_mul, mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv1` using `(Base.valAt_zpow y.1 hu1).1`. Establish `hv2` using `(Base.valAt_zpow y.1 hu2).1`. Establish `hvals : valAt y.1 ((P * e1⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) * valAt y.1 ((P⁻¹ * e2⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) = (valAt y.1 ((e1 * e2 : Y.Y.Fnˣ) : Y.Y.Fn))⁻¹`. Rewrite using `[← OfModel.valAt_mul y.1 hu1.regAt hu2.regAt, hprod, Units.val_inv_eq_inv_val, GlobalTheory.LineNorm.Neg.valAt_inv hu]`. Establish `hlog : Real.log (ε.w (valAt y.1 ((P * e1⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn))) + Real.log (ε.w (valAt y.1 ((P⁻¹ * e2⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn))) = -Real.log (ε.w (valAt y.1 ((e1 * e2 : Y.Y.Fnˣ) : Y.Y.Fn)))`.
-
-Rewrite using `[← Real.log_mul (ε.w.pos hv1).ne' (ε.w.pos hv2).ne', ← map_mul, hvals, map_inv₀, Real.log_inv]`. Rewrite using `[hP']`. Take the linear combination `hlog`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lgOf_neg (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt Y.Y) :
     lgOf Y (-w) v ε y = -lgOf Y w v ε y - Real.log (ε.w (valAt y.1
@@ -151,13 +149,11 @@ theorem lgOf_neg (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : E
   linear_combination hlog
 
 /- English proof (translation)
-Simplify using `only [Pi.zero_apply, mul_zero, sub_zero] at h1 ⊢`. Use `set b := below y.1 with hb`. Use `set e1 := eqn (divOf Y (expo Dw w)) b with he1`. Use `set e2 := eqn (divOf Y (expo Dw (-w))) b with he2`. Establish `hX : UnitAt b ((e1⁻¹ ^ (m : ℕ) * r i : Y.Y.Fnˣ) : Y.Y.Fn)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `((Base.isEqn_eqn (divOf Y (expo Dw w)) b).nsmul (m : ℕ)).iff_unitAt.1 (hr.isEqn _ _ h₂)` as an intermediate fact. Rewrite `this` using `[← Units.val_div_eq_div_val, div_eq_inv_mul, ← inv_pow]`. Then use the resulting hypothesis. Establish `hU : UnitAt b ((e1 * e2 : Y.Y.Fnˣ) : Y.Y.Fn)` using `unitAt_eqn_mul Y w b`. Establish `hXU : UnitAt b ((e1⁻¹ ^ (m : ℕ) * r i * (e1 * e2) ^ (m : ℕ) : Y.Y.Fnˣ) : Y.Y.Fn)`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hX.mul (InducedPow.unitAt_pow hU _)`. Establish `hprod : (e2⁻¹ ^ (m : ℕ) * (r i)⁻¹ : Y.Y.Fnˣ) = (e1⁻¹ ^ (m : ℕ) * r i * (e1 * e2) ^ (m : ℕ))⁻¹` using `inv_pow_mul_inv_eq e1 e2 (r i) (m : ℕ)`. Establish `hv1` using `(Base.valAt_zpow y.1 hX).1`. Establish `hv2` using `(Base.valAt_zpow y.1 hU).1`. Establish `hval : valAt y.1 ((e2⁻¹ ^ (m : ℕ) * (r i)⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) = (valAt y.1 ((e1⁻¹ ^ (m : ℕ) * r i : Y.Y.Fnˣ) : Y.Y.Fn) * valAt y.1 ((e1 * e2 : Y.Y.Fnˣ) : Y.Y.Fn) ^ (m : ℕ))⁻¹`.
-
-Rewrite using `[hprod, Units.val_inv_eq_inv_val, GlobalTheory.LineNorm.Neg.valAt_inv hXU, Units.val_mul, Units.val_pow_eq_pow_val, OfModel.valAt_mul _ hX.regAt (InducedPow.unitAt_pow hU _).regAt, InducedPow.valAt_pow _ hU.regAt]`. Rewrite using `[hval, map_inv₀, map_mul, map_pow, Real.log_inv, Real.log_mul (ε.w.pos hv1).ne' (pow_ne_zero _ (ε.w.pos hv2).ne'), Real.log_pow, lgOf_neg]`. Take the linear combination `-h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lg_neg_step (w : Sym E →₀ ℤ) (m : ℕ+) {Lp : LB Y.Y.X} {r : Lp.ι → Y.Y.Fnˣ}
     (hr : Presents ((m : ℕ) • divOf Y (expo Dw w)) Lp r) {i : Lp.ι} {v : HeightOneSpectrum (𝓞 F)} (ε : Ext v)
@@ -193,17 +189,17 @@ theorem lg_neg_step (w : Sym E →₀ ℤ) (m : ℕ+) {Lp : LB Y.Y.X} {r : Lp.ι
   linear_combination -h1
 
 /- English proof (translation)
-Substitute `hG hn` using the available equality. Simplify using `only [Pi.zero_apply, mul_zero, neg_zero, Real.exp_zero, one_mul] at hinf ⊢`. Use `set g := eqn (divOf Y n) (under y) with hgdef`. Establish `hg : (divOf Y n).IsEqn (under y) g` using `Base.isEqn_eqn _ _`. Establish `hgm` using `hg.nsmul (m : ℕ)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen` using `CartierDiv.isEqn_iff_generatesAt_inv.1 hgm`. Establish `h1` using `hinf _ hgen.regularAt`. Rewrite `h1` using `[← Units.val_inv_eq_inv_val, Var.pn_frame (show y ∈ Var.eqnSet σ _ (g ^ (m : ℕ)) from hgm), Var.mPow_h (show y ∈ Var.eqnSet σ _ g from hg), ← Units.val_mul]`. Establish `hu : UnitAt (under y) (((g ^ (m : ℕ))⁻¹ * r i : Y.Y.Fnˣ) : Y.Y.Fn)`. Use `hgm.iff_unitAt.1 (hr.isEqn i _ hi)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← Units.val_div_eq_div_val, div_eq_inv_mul]`. Then use the resulting hypothesis. Establish `hgn : (divOf Y (-n)).IsEqn (under y) g⁻¹` using `by rw [divOf_neg]; exact hg.neg`. Establish `hg'` using `hgn.nsmul (m : ℕ)`. Rewrite using `[Var.pn_eq (show y ∈ Var.eqnSet σ _ (g⁻¹ ^ (m : ℕ)) from hg'), Var.mPow_h (show y ∈ Var.eqnSet σ _ g⁻¹ from hgn), Var.fval_cx]`. Establish `hN` using `met_neg_h Y G n (show y ∈ Var.eqnSet σ _ g from hg)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinvh : (Y.met G (-n)).h g⁻¹ y = ((Y.met G n).h g y)⁻¹` using `eq_inv_of_mul_eq_one_left hN`. Rewrite using `[hinvh, inv_pow ((Y.met G n).h g y) (m : ℕ), h1]`. Establish `hf' : RegAt (under y) (f * ((g⁻¹ ^ (m : ℕ) : Y.Y.Fnˣ) : Y.Y.Fn))` using `hg'.regularAt_iff.1 hf`. Establish `hU : ((r i)⁻¹ : Y.Y.Fnˣ) = g⁻¹ ^ (m : ℕ) * ((g ^ (m : ℕ))⁻¹ * r i)⁻¹`. Rewrite using `[inv_pow, mul_inv_rev, inv_inv, mul_comm (r i)⁻¹, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : f * (((r i)⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) = f * ((g⁻¹ ^ (m : ℕ) : Y.Y.Fnˣ) : Y.Y.Fn) * (((g ^ (m : ℕ))⁻¹ * r i : Y.Y.Fnˣ) : Y.Y.Fn)⁻¹`. Rewrite using `[hU, Units.val_mul, Units.val_inv_eq_inv_val, mul_assoc]`. Establish `hinvr : ratVal ((((g ^ (m : ℕ))⁻¹ * r i : Y.Y.Fnˣ) : Y.Y.Fn))⁻¹ y = (ratVal (((g ^ (m : ℕ))⁻¹ * r i : Y.Y.Fnˣ) : Y.Y.Fn) y)⁻¹`. Use `ratVal_mul hu.regAt hu.inv.regAt (y := y)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ (Units.ne_zero _), Base.ratVal_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_inv_of_mul_eq_one_right this.symm`. Rewrite using `[hsplit, ratVal_mul hf' hu.inv.regAt, hinvr, norm_mul, norm_inv, mul_pow, inv_pow, mul_inv, neg_neg, Real.exp_neg, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pn_neg_step {σ : F →+* ℂ} (G G' : EigMet Z (embOf e σ)) (hG : G = G') (n n' : Letter Dw → ℤ) (hn : n' = -n)
     (m : ℕ+) {Lp : LB Y.Y.X} {r : Lp.ι → Y.Y.Fnˣ} (hr : Presents ((m : ℕ) • divOf Y n) Lp r) {i : Lp.ι}
@@ -253,11 +249,9 @@ theorem pn_neg_step {σ : F →+* ℂ} (G G' : EigMet Z (embOf e σ)) (hG : G = 
 end Free
 
 /- English proof (translation)
-Introduce `D A N j S κ s x Φ k M m R w L _ hL`. Take `⟨hfin, r, hr, hinf, hv⟩` from `hL`. Unfold `Adl.Induced`. Use `⟨hfin, fun i => (r i)⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Presents ((m : ℕ) • divOf (Φ.C k) (expo S.Dw (-w))) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[expo_neg, divOf_neg, smul_neg]`. Conclude with `GlobalTheory.LineNorm.Neg.presents_neg L.isLB M.j hr`. Introduce `σ y y' i f hy hi hf`. Conclude with `pn_neg_step (Φ.C k) (x.eigMetAt (embOf κ.e σ) (parOf w)) (x.eigMetAt (embOf κ.e σ) (parOf (-w))) (by rw [parOf_neg]) (expo S.Dw w) (expo S.Dw (-w)) (expo_neg S.Dw w) m hr y hi ((L.φ _).φ (i PUnit.unit) y') (fun f hf => hinf σ y y' i f hy hi hf) f hf`. Introduce `v ε y yt i h hi`.
-
-Conclude with `lg_neg_step (Φ.C k) w m hr ε y (OfModel.le_chart M L.B ε y yt h (i := i) hi trivial) (hv v ε y yt i h hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem induced_neg : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag) (k : s.Comp) (M : GlobalTheory.TrueGeo.Model (Φ.C k).Y) (m : ℕ+) (R : ℝ) (w : Sym D.host.E →₀ ℤ) (L : GlobalTheory.HermLB M.p), (∀ a ∈ w.support, a.2.1 = some R) → (adlOf (Φ.C k) (metsOf x Φ k) w).Induced M L m 0 → (adlOf (Φ.C k) (metsOf x Φ k) (-w)).Induced M L.dual m 0 := by
   intro D A N j S κ s x Φ k M m R w L _ hL

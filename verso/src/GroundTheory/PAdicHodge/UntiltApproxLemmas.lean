@@ -15,9 +15,9 @@ variable {F E : Type*} [NontriviallyNormedField F] [CompleteSpace F] [IsUltramet
   [NormedField E] [NormedAlgebra F E]
 
 /- English proof (translation)
-Establish `hx' : IsIntegral F x'` using `h.isIntegral hx`. Establish `e1` using `NormedAlgebra.norm_eq_spectralNorm F (⟨x, hx⟩ : algebraicClosure F E)`. Establish `e2` using `NormedAlgebra.norm_eq_spectralNorm F (⟨x', hx'⟩ : algebraicClosure F E)`. Express the relevant statement in the definitionally equal form `‖x‖ = _ at e1`. Express the relevant statement in the definitionally equal form `‖x'‖ = _ at e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1, e2, spectralNorm, spectralNorm, IntermediateField.minpoly_eq, IntermediateField.minpoly_eq]`. Express the relevant statement in the definitionally equal form `spectralValue (minpoly F x) = spectralValue (minpoly F x')`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eq_of_isConjRoot {x x' : E} (hx : IsIntegral F x) (h : IsConjRoot F x x') :
     ‖x‖ = ‖x'‖ := by
@@ -32,15 +32,13 @@ theorem norm_eq_of_isConjRoot {x x' : E} (hx : IsIntegral F x) (h : IsConjRoot F
   rw [h]
 
 /- English proof (translation)
-Establish `hαi : IsIntegral F α` using `hα.isIntegral`. Set `L` to `algebraicClosure F E`. Set `x : L` to `⟨α, hαi⟩`. Establish `: IsKrasner F L` using `IsKrasner.of_completeSpace F L`. Establish `hxsep : (minpoly F x).Separable`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IntermediateField.minpoly_eq]`. Conclude with `hα`. Establish `sp : ((minpoly F x).map (algebraMap F L)).Splits`. Rewrite using `[IntermediateField.minpoly_eq]`. Use `IntermediateField.splits_of_splits (IsAlgClosed.splits _) fun z hz => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[mem_rootSet]`. Conclude with `⟨minpoly F α, minpoly.monic hαi, by rw [← aeval_def]; exact hz.2⟩`. Establish `key` using `IsKrasner.krasner hxsep sp (isIntegral_algebraMap (x := b)) fun x' hx' hne => by`. Establish `hc : IsConjRoot F α (x' : E)`. Unfold `IsConjRoot at hx' ⊢`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hx'` using `[IntermediateField.minpoly_eq, IntermediateField.minpoly_eq]`. Then use the resulting hypothesis. Establish `hne' : α ≠ (x' : E)` using `fun e => hne (Subtype.ext e)`. Conclude with `h x' hc hne'`. Rewrite `key` using `[IntermediateField.adjoin_simple_eq_bot_iff.2 (IntermediateField.algebraMap_mem _ _)]`. Take `⟨c, hc⟩` from `IntermediateField.mem_bot.1 key`.
-
-Conclude with `⟨c, congrArg Subtype.val hc⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_norm_sub_lt [IsAlgClosed E] {α : E} (b : F) (hα : IsSeparable F α)
     (h : ∀ α' : E, IsConjRoot F α α' → α ≠ α' → ‖α - algebraMap F E b‖ < ‖α - α'‖) :
@@ -73,17 +71,15 @@ section Roots
 variable {E : Type*} [NormedField E] [IsUltrametricDist E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Use `set d := f.natDegree`. Establish `hr0 : 0 < ‖r‖` using `one_pos.trans hlt`. Establish `hsum : ‖∑ i ∈ Finset.range d, f.coeff i * r ^ i‖ < ‖r‖ ^ d`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos d with hd | hd` into its components or cases. Rewrite using `[hd]`. Simplify using the standard rewrite rules. Establish `hle : ∀ i ∈ Finset.range d, ‖f.coeff i * r ^ i‖ ≤ ‖r‖ ^ (d - 1)`. Introduce `i hi`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.mem_range.1 hi` as an intermediate fact. Use the proof step `omega)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `norm_multiset_sum_le_of_forall_le (s := (Finset.range d).val.map fun i => f.coeff i * r ^ i) (pow_nonneg hr0.le _) (by` as an intermediate fact. Introduce `a ha`. Take `⟨i, hi, rfl⟩` from `Multiset.mem_map.1 ha`. Conclude with `hle i hi)`. Simplify `this` using `[Finset.sum_eq_multiset_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `_ < ‖r‖ ^ d := pow_lt_pow_right₀ hlt (by omega)`. Establish `heval : f.eval r = ∑ i ∈ Finset.range d, f.coeff i * r ^ i + r ^ d`. Rewrite using `[eval_eq_sum_range, Finset.sum_range_succ, hf.coeff_natDegree, one_mul]`. Rewrite `hr` using `[heval]`. Establish `: ‖r ^ d‖ = ‖∑ i ∈ Finset.range d, f.coeff i * r ^ i‖`.
-
-Rewrite using `[eq_neg_of_add_eq_zero_right hr, norm_neg]`. Rewrite `this` using `[norm_pow]`. Conclude with `(lt_irrefl _) (this ▸ hsum)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_eval_eq_zero {f : E[X]} (hf : f.Monic) (hc : ∀ n, ‖f.coeff n‖ ≤ 1)
     {r : E} (hr : f.eval r = 0) : ‖r‖ ≤ 1 := by
@@ -118,9 +114,9 @@ theorem norm_le_one_of_eval_eq_zero {f : E[X]} (hf : f.Monic) (hc : ∀ n, ‖f.
   exact (lt_irrefl _) (this ▸ hsum)
 
 /- English proof (translation)
-Distinguish the cases in `hk : k ≤ Multiset.card s`. Rewrite using `[Multiset.prod_X_sub_C_coeff s hk, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Simplify using `using norm_esymm_le zero_le_one hs (Multiset.card s - k)`. Rewrite using `[coeff_eq_zero_of_natDegree_lt]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[natDegree_multiset_prod_X_sub_C_eq_card]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem norm_coeff_prod_X_sub_C_le_one {s : Multiset E} (hs : ∀ r ∈ s, ‖r‖ ≤ 1) (k : ℕ) :
     ‖((s.map fun r => X - C r).prod).coeff k‖ ≤ 1 := by
@@ -143,13 +139,11 @@ local notation "C♭" => Tilt C NormedField.valuation (normInteger C) normIntege
 local notation "𝒪C♭" => PreTilt (normInteger C) p
 
 /- English proof (translation)
-Use `set f := Q.map (algebraMap 𝒪C♭ C♭)`. Establish `hfm : f.Monic` using `hQ.map _`. Establish `hfc : ∀ n, ‖f.coeff n‖ ≤ 1` using `fun n => by`. Rewrite using `[coeff_map, norm_algebraMap_preTilt]`. Conclude with `preTilt_norm_le_one _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hroot : ∀ r ∈ f.roots, ‖r‖ ≤ 1` using `fun r hr => norm_le_one_of_eval_eq_zero hfm hfc (isRoot_of_mem_roots hr)`. Set `g : C♭ → 𝒪C♭` to `fun r => if h : ‖r‖ ≤ 1 then (norm_le_one_iff_exists_algebraMap.1 h).choose else 0`. Establish `hg : ∀ r ∈ f.roots, algebraMap 𝒪C♭ C♭ (g r) = r` using `fun r hr => by`. Simplify using `only [g, dif_pos (hroot r hr)]`. Conclude with `(norm_le_one_iff_exists_algebraMap.1 (hroot r hr)).choose_spec`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hf : f = (f.roots.map fun r => X - Polynomial.C r).prod` using `(IsAlgClosed.splits f).eq_prod_roots_of_monic hfm`. Use `⟨f.roots.map g, map_injective _ (IsFractionRing.injective 𝒪C♭ C♭) ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f = _`. Rewrite using `[Polynomial.map_multiset_prod, Multiset.map_map, Multiset.map_map]`. Use `conv_lhs => rw [hf]`.
-
-Use `congr 1`. Use `Multiset.map_congr rfl fun r hr => ?_` and prove the remaining obligations. Simplify using `[hg r hr]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_multiset_eq_prod [IsAlgClosed C♭] {Q : 𝒪C♭[X]} (hQ : Q.Monic) :
     ∃ s : Multiset 𝒪C♭, Q = (s.map fun b => X - Polynomial.C b).prod := by
@@ -176,11 +170,11 @@ theorem exists_multiset_eq_prod [IsAlgClosed C♭] {Q : 𝒪C♭[X]} (hQ : Q.Mon
   simp [hg r hr]
 
 /- English proof (translation)
-Use `set mk := Ideal.Quotient.mk (Ideal.span {(p : normInteger C)})`. Use `set R : (normInteger C)[X] := (s.map fun b => X - Polynomial.C (PreTilt.untilt b)).prod`. Establish `h1 : ((s.map fun b => X - Polynomial.C b).prod).map (PreTilt.coeff 0) = R.map mk`. Simplify using `only [R, Polynomial.map_multiset_prod, Multiset.map_map, Function.comp_def, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, mk, PreTilt.mk_untilt_eq_coeff_zero]`. Establish `h2 : mk (R.eval z) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← eval₂_at_apply, ← eval_map, ← h1, ← hQ, eval_map, eval₂_at_apply, hz, map_zero]`. Establish `h3` using `(mk_eq_zero_iff_norm_le (p := p)).1 h2`. Establish `h4 : ((R.eval z : normInteger C) : C) = (s.map fun b => (z : C) - ((PreTilt.untilt b : normInteger C) : C)).prod`. Simplify using `only [R, eval_multiset_prod, Multiset.map_map, Function.comp_def, eval_sub, eval_X, eval_C]`. Rewrite using `[← (normInteger C).subtype_apply, map_multiset_prod, Multiset.map_map]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← h4]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem norm_prod_sub_untilt_le (s : Multiset 𝒪C♭) {Q : (normInteger C)[X]}
     (hQ : Q.map (Ideal.Quotient.mk (Ideal.span {(p : normInteger C)})) =
@@ -208,7 +202,7 @@ def monicOfCoeffs (e : ℕ) (a : ℕ → 𝒪C♭) : 𝒪C♭[X] :=
   X ^ e + ∑ m ∈ Finset.range e, Polynomial.C (a m) * X ^ m
 
 /- English proof (translation)
-Use `Polynomial.monic_X_pow_add ?_` and prove the remaining obligations. Use `(Polynomial.degree_sum_le _ _).trans_lt ?_` and prove the remaining obligations. Use `(Finset.sup_lt_iff (WithBot.bot_lt_coe e)).2 fun m hm => ?_` and prove the remaining obligations. Use `(Polynomial.degree_C_mul_X_pow_le _ _).trans_lt ?_` and prove the remaining obligations. Conclude with `WithBot.coe_lt_coe.2 (Finset.mem_range.1 hm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem monic_monicOfCoeffs (e : ℕ) (a : ℕ → 𝒪C♭) : (monicOfCoeffs e a).Monic := by
   refine Polynomial.monic_X_pow_add ?_
@@ -218,9 +212,9 @@ theorem monic_monicOfCoeffs (e : ℕ) (a : ℕ → 𝒪C♭) : (monicOfCoeffs e 
   exact WithBot.coe_lt_coe.2 (Finset.mem_range.1 hm)
 
 /- English proof (translation)
-Simplify using `only [monicOfCoeffs, coeff_add, coeff_X_pow, finsetSum_coeff, coeff_C_mul_X_pow]`. Use `split_ifs with h1 h2`. Substitute `h1` using the available equality. Rewrite using `[Finset.sum_eq_zero fun i hi => if_neg (by have := Finset.mem_range.1 hi; omega), add_zero]`. Rewrite using `[Finset.sum_eq_single m (fun i _ hi => if_neg (Ne.symm hi)) (fun h => absurd (Finset.mem_range.2 h2) h), if_pos rfl, zero_add]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add, Finset.sum_eq_zero fun i hi => if_neg (by`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use the proof step `omega)]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coeff_monicOfCoeffs (e : ℕ) (a : ℕ → 𝒪C♭) (m : ℕ) :
     (monicOfCoeffs e a).coeff m = if m = e then 1 else if m < e then a m else 0 := by
@@ -234,9 +228,9 @@ theorem coeff_monicOfCoeffs (e : ℕ) (a : ℕ → 𝒪C♭) (m : ℕ) :
       have := Finset.mem_range.1 hi; omega)]
 
 /- English proof (translation)
-Establish `hm` using `monic_monicOfCoeffs e a`. Use `le_antisymm (natDegree_le_iff_coeff_eq_zero.2 fun m hm' => ?_) ?_` and prove the remaining obligations. Rewrite using `[coeff_monicOfCoeffs, if_neg (by`. Establish `: e < m` using `by exact_mod_cast hm'`. Use the proof step `omega), if_neg (by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: e < m` using `by exact_mod_cast hm'`. Use the proof step `omega)]`. Use `le_natDegree_of_ne_zero ?_` and prove the remaining obligations. Rewrite using `[coeff_monicOfCoeffs, if_pos rfl]`. Conclude with `one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natDegree_monicOfCoeffs (e : ℕ) (a : ℕ → 𝒪C♭) : (monicOfCoeffs e a).natDegree = e := by
   have hm := monic_monicOfCoeffs e a
@@ -251,15 +245,15 @@ theorem natDegree_monicOfCoeffs (e : ℕ) (a : ℕ → 𝒪C♭) : (monicOfCoeff
     exact one_ne_zero
 
 /- English proof (translation)
-Use `set e := Q.natDegree`. Take `⟨s, hs⟩` from `exists_multiset_eq_prod (monic_monicOfCoeffs (C := C) (p := p) e a)`. Establish `hcard : Multiset.card s = e`. Use `natDegree_monicOfCoeffs (C := C) (p := p) e a` as an intermediate fact. Rewrite `this` using `[hs, natDegree_multiset_prod_X_sub_C_eq_card]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hQ' : Q.map (Ideal.Quotient.mk (Ideal.span {(p : normInteger C)})) = ((s.map fun b => X - Polynomial.C b).prod).map (PreTilt.coeff 0)`. Rewrite using `[← hs]`. Use extensionality with `m`. Rewrite using `[coeff_map, coeff_map, coeff_monicOfCoeffs]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h1 h2`. Substitute `h1` using the available equality. Rewrite using `[hQ.coeff_natDegree, map_one, map_one]`. Conclude with `ha m h2`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega), map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hprod` using `norm_prod_sub_untilt_le s hQ' hz`. Rewrite `hprod` using `[norm_multiset_prod_eq, Multiset.map_map]`. Establish `hs0 : s ≠ 0`. Introduce `h`. Rewrite `hcard` using `[h, Multiset.card_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨b, hb, hbl⟩` from `exists_pow_card_le_of_prod_le hs0 (fun _ _ => norm_nonneg _) hprod`. Use `⟨b, ?_, by rwa [hcard] at hbl⟩` and prove the remaining obligations. Rewrite using `[hs, eval_multiset_prod]`. Conclude with `Multiset.prod_eq_zero (Multiset.mem_map.2 ⟨_, Multiset.mem_map.2 ⟨b, hb, rfl⟩, by simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_root_norm_sub_untilt_pow_le [IsAlgClosed C♭] {Q : (normInteger C)[X]}
     (hQ : Q.Monic) (hdeg : 0 < Q.natDegree) (a : ℕ → 𝒪C♭)
@@ -298,13 +292,13 @@ end Tilt
 section Scale
 
 /- English proof (translation)
-Use `set q' := max q 0`. Establish `hq' : q' < 1` using `max_lt hq one_pos`. Establish `hq0 : 0 ≤ q'` using `le_max_right _ _`. Break down `Nat.eq_zero_or_pos d with hd | hd` into its components or cases. Conclude with `⟨1 / 2, by norm_num, by norm_num, by rw [hd, pow_zero]; exact hq.le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hdpos : (0 : ℝ) < d` using `by exact_mod_cast hd`. Use `set a : ℝ := -((1 - q') / (2 * d))`. Establish `ha1 : (1 - q') / (2 * d) ≤ 1 / 2`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: (1 : ℝ) ≤ d` using `by exact_mod_cast hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `ha0 : 0 < (1 - q') / (2 * d)`. Apply the tactic sequence `apply div_pos <;> linarith`. Use `⟨1 + a, by simp only [a]; linarith, by simp only [a]; linarith, ?_⟩` and prove the remaining obligations. Establish `hb` using `one_add_mul_le_pow (a := a) (by simp only [a]; linarith) d`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (d : ℝ) * a = -((1 - q') / 2)`. Simplify using `only [a]`. Clear the denominators using the available nonvanishing facts. Rewrite `hb` using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_lt_one_le_pow {q : ℝ} (hq : q < 1) (d : ℕ) :
     ∃ μ : ℝ, 0 < μ ∧ μ < 1 ∧ q ≤ μ ^ d := by
@@ -333,13 +327,11 @@ theorem exists_lt_one_le_pow {q : ℝ} (hq : q < 1) (d : ℕ) :
 variable {F E : Type*} [Field F] [Field E] [Algebra F E] [IsAlgClosed E]
 
 /- English proof (translation)
-Use `set f := Q.map (algebraMap F E)`. Establish `hf : f = (f.roots.map fun γ => X - Polynomial.C γ).prod` using `(IsAlgClosed.splits f).eq_prod_roots_of_monic (hQ.map _)`. Establish `hcard : Multiset.card f.roots = Q.natDegree`. Rewrite using `[← (IsAlgClosed.splits f).natDegree_eq_card_roots, natDegree_map]`. Establish `hc' : algebraMap F E c ≠ 0` using `(map_ne_zero_iff _ (algebraMap F E).injective).2 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.map_mul, Polynomial.map_C, map_comp, Polynomial.map_add, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_C, Polynomial.map_X]`. Express the relevant statement in the definitionally equal form `_ * f.comp _ = _`. Use `conv_lhs => rw [hf]`. Rewrite using `[multiset_prod_comp, Multiset.map_map, ← hcard]`. Establish `key : ∀ γ : E, (X - Polynomial.C γ).comp (Polynomial.C (algebraMap F E β) + Polynomial.C (algebraMap F E c) * X) = Polynomial.C (algebraMap F E c) * (X - Polynomial.C ((γ - algebraMap F E β) / algebraMap F E c))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `γ`. Simplify using `only [sub_comp, X_comp, C_comp, mul_sub, ← Polynomial.C_mul]`. Rewrite using `[mul_div_cancel₀ _ hc', Polynomial.C_sub]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp_def, key]`.
-
-Rewrite using `[Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, ← mul_assoc, map_pow, map_inv₀, ← Polynomial.C_pow, ← Polynomial.C_mul, ← mul_pow, inv_mul_cancel₀ hc', one_pow, Polynomial.C_1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_scale_eq_prod {Q : F[X]} (hQ : Q.Monic) (β c : F) (hc : c ≠ 0) :
     (Polynomial.C (c⁻¹ ^ Q.natDegree) * Q.comp (Polynomial.C β + Polynomial.C c * X)).map

@@ -45,7 +45,7 @@ def vertNum (p : ℕ) [Fact p.Prime] (V : Cover Y) (n : ℕ) (N : Fin n → Herm
   else 0
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem vertNum_cast (p : ℕ) [Fact p.Prime] (V : Cover Y) {n n' : ℕ} (h : n = n') (N : Fin n' → HermLB V.p) (z : V.X) :
     vertNum p V n (fun j => N (Fin.cast h j)) z = vertNum p V n' N z := by
@@ -70,7 +70,7 @@ def wOf (a : ℕ → Bool) (p : ℕ) (R : ℝ) {n : ℕ} (x : Ln Dw) (ν : Fin n
   Sum.elim (fun b => lnSym (Function.update a p b) (some R) x) fun i => lnSym (Function.update a p (ν i).1) (some R) (ν i).2
 
 /- English proof (translation)
-Apply the tactic sequence `rcases x with ⟨_ | _, st⟩ <;> simp only [lnSym] at h <;>`. Apply the tactic sequence `rw [Finset.mem_singleton.1 (Finsupp.support_single_subset h)] <;> exact ⟨rfl, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_support_lnSym {a : ℕ → Bool} {R : Option ℝ} {x : Ln Dw} {b : Sym E}
     (h : b ∈ (lnSym a R x).support) : b.1 = a ∧ b.2.1 = R := by
@@ -78,7 +78,7 @@ theorem mem_support_lnSym {a : ℕ → Bool} {R : Option ℝ} {x : Ln Dw} {b : S
     rw [Finset.mem_singleton.1 (Finsupp.support_single_subset h)] <;> exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Establish `h : (lnSym a R x).support.Nonempty`. Apply the tactic sequence `rcases x with ⟨_ | _, st⟩ <;> simp [lnSym, Finsupp.support_single_ne_zero]`. Rewrite using `[parOf, dif_pos h]`. Conclude with `(mem_support_lnSym h.choose_spec).2`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parOf_lnSym (a : ℕ → Bool) (R : Option ℝ) (x : Ln Dw) : parOf (lnSym a R x) = R := by
   have h : (lnSym a R x).support.Nonempty := by
@@ -87,7 +87,7 @@ theorem parOf_lnSym (a : ℕ → Bool) (R : Option ℝ) (x : Ln Dw) : parOf (lnS
   exact (mem_support_lnSym h.choose_spec).2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Apply the tactic sequence `rcases x with ⟨_ | _, st⟩ <;> simp only [expo, lnSym] <;> rw [Finsupp.sum_single_index (by simp), Finsupp.sum_single_index (by simp)]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_lnSym (a a' : ℕ → Bool) (R : Option ℝ) (x : Ln Dw) : expo Dw (lnSym a R x) = expo Dw (lnSym a' R x) := by
   funext y
@@ -97,7 +97,7 @@ variable {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-Establish `key (n n' : Letter Dw → ℤ) (h : n = n') (r r' : Option ℝ) (h' : r = r') (lg) : (⟨divOf Y n, 1, fun σ => hm r σ n, 0, lg⟩ : Adl C Y.Y) = ⟨divOf Y n', 1, fun σ => hm r' σ n', 0, lg⟩`. Rewrite using `[h, h']`. Conclude with `key _ _ (expo_lnSym _ _ _ _) _ _ ((parOf_lnSym _ _ _).trans (parOf_lnSym _ _ _).symm) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adlOf_lnSym_eq {C : CxSt F} (hm : Mets Y C) (a a' : ℕ → Bool) (R : Option ℝ) (x : Ln Dw) :
     adlOf Y hm (lnSym a' R x) = { adlOf Y hm (lnSym a R x) with lg := (adlOf Y hm (lnSym a' R x)).lg } := by
@@ -118,7 +118,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `|lnStep Z.t x u p true st - lnStep Z.t x u p false st| ≤ Real.log p / ((p : ℝ) - 1) + vDiff E p * Real.log p := by rcases st with ⟨τ, k⟩ | k · exact LgDiff.abs_lnStep_sub_le HTBound.htBound Z p x u τ k · have hv : 0 ≤ vDiff E p * Real.log p := mul_nonneg (by unfold vDiff; positiv …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lnStep_sub_le' (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (p : ℕ) [hp : Fact p.Prime]
     (x : Sp ℂ_[p] ⟶ Z.X) (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber ℂ_[p]) ⟶ Z.t.G.left))
@@ -143,7 +143,7 @@ variable {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} {Z : Reciprocity
   (Y : FlagCpt Z e)
 
 /- English proof (translation)
-The claim follows from `|lgOf Y (lnSym (Function.update a p false) R x) v ε y - lgOf Y (lnSym (Function.update a p true) R x) v ε y| ≤ (if resP v = p then 1 / ((p : ℝ) - 1) + vDiff E p else 0) * (-Real.log (ε.w (resP v : AlgebraicClosure F))) := by have hw : 0 ≤ -Real.log (ε.w (resP v : AlgebraicClosure …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lgOf_lnSym_update_sub_le (a : ℕ → Bool) (p : ℕ) (R : Option ℝ) (x : Ln Dw) (v : HeightOneSpectrum (𝓞 F))
     (ε : TrueGeo.Ext v) (y : AlgPt Y.Y) :

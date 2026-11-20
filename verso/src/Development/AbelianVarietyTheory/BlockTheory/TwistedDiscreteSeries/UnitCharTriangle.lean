@@ -252,19 +252,19 @@ Evaluate the decidable proposition.
 example : rightBlock 1 (!![3, 5] : Matrix (Fin 1) (Fin 2) ℤ) = !![5] := by decide
 
 /- English proof (translation)
-Simplify using `only [rkV]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 example (i j : ℕ) : rkV D (i + 1) (j + 1) + rkV D i j = rkV D i (j + 1) + rkV D (i + 1) j := by
   simp only [rkV]; ring
 
 /- English proof (translation)
-Unfold `alpha beta`. Conclude with `mul_div_mul_right_eq_div _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 example (i j : Fin D.R.m) (t : T) : alpha R i j t / beta G i j t = R.toLevCh.mu t (j.1 + 1) / G.chi (D.R.m - i) := by
   unfold alpha beta; exact mul_div_mul_right_eq_div _ _ _
 
 /- English proof (translation)
-The claim follows from `mul_right_cancel₀ hv (h.symm.trans h')`.
+A detailed English derivation is pending.
 -/
 example {u v c c' : ℂ} (hv : v ≠ 0) (h : u = c * v) (h' : u = c' * v) : c = c' := mul_right_cancel₀ hv (h.symm.trans h')
 

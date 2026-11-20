@@ -10,23 +10,23 @@ noncomputable section
 namespace GlobalTheory.ShareNumbers
 
 /- English proof (translation)
-Establish `hm0 : 0 < m` using `by linarith`. Establish `hc : 16 ≤ (2 * f * m) ^ 4`. Establish `: 2 ≤ 2 * f * m` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hfm : f * m ≤ (2 * f * m) ^ 4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ 2 * f * m` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hn0 : 0 ≤ nW` using `by linarith`. Establish `hP640 : 640 ≤ PP` using `by nlinarith`. Establish `hPm : m * nW ≤ PP` using `by nlinarith`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPfk : f * k ≤ PP` using `by nlinarith`. Establish `hPfr : f * r ^ 2 ≤ PP` using `by nlinarith`. Establish `hP0 : 0 ≤ PP` using `by linarith`. Establish `h4 : PP ^ 3 ≤ PP ^ 4 / m`. Rewrite using `[le_div_iff₀ hm0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: m ≤ PP` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hDkf : 1 ≤ Dp ^ 3 * k * f`. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hD) hk) hf`. Establish `hT : PP ^ 3 * (Dp ^ 3 * k * f) ≤ TO`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hP3 : 0 ≤ PP ^ 3` using `by positivity`. Prove the components needed by the constructor for the conclusion. Establish `e1 : 54 * (f * r ^ 2) * (f * r ^ 2) ≤ PP ^ 3`. Establish `a : 54 * (f * r ^ 2) ≤ PP * PP` using `by nlinarith`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b : 0 ≤ f * r ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : 54 * f * r ^ 4 ≤ 54 * (f * r ^ 2) * (f * r ^ 2)`. Establish `: 0 ≤ r ^ 4` using `by positivity`. Establish `hff : f ≤ f * f` using `by nlinarith`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : 28 * (f * k) * (f * k) ≤ PP ^ 3`. Establish `a : 28 * (f * k) ≤ PP * PP` using `by nlinarith`. Establish `b : 0 ≤ f * k` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e2 : 4 * (f * k) ^ 3 * (Dp * (Dp + 6)) ≤ 28 * (f * k) * (f * k) * (Dp ^ 3 * k * f)`. Establish `hfk : 0 ≤ (f * k) ^ 3` using `by positivity`. Establish `hD2 : Dp * (Dp + 6) ≤ 7 * Dp ^ 3`. Establish `h1 : Dp ≤ Dp ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Dp ^ 2 ≤ Dp ^ 3` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem real_bounds (PP TO Dp k f m r nW : ℝ) (hm : 1 ≤ m) (hf : 1 ≤ f) (hk : 1 ≤ k) (hD : 1 ≤ Dp) (hr : 1 ≤ r)
     (hPP : (2 * f * m) ^ 4 * nW ≤ PP) (hn40 : 40 ≤ nW) (hnk : k ≤ nW) (hnr : f * r ^ 2 ≤ nW)
@@ -97,27 +97,27 @@ theorem real_bounds (PP TO Dp k f m r nW : ℝ) (hm : 1 ≤ m) (hf : 1 ≤ f) (h
 open Formalism.BasicNotions in
 
 /- English proof (translation)
-Establish `hf2 : 2 ≤ D.R.f`. Establish `h1 : 0 < D.R.ord` using `D.R.ord_pos`. Establish `h2 : D.R.f = 2 * D.R.ord` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hr6 : 6 ≤ D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hk1 : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hm1 : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hDp : T.Dp = D.R.f * (D.R.r * (D.R.r - 1) / 2)` using `by rw [T.Dp_eq, Nat.choose_two_right]`. Establish `hD1 : 1 ≤ T.Dp`. Rewrite using `[T.Dp_eq]`. Conclude with `Nat.mul_pos (by omega) (Nat.choose_pos (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnk : D.R.k ≤ T.nWn`. Establish `h` using `T.nW_lo.2.1`. Establish `h' : D.R.k - 1 ≤ (D.R.k - 1) * D.R.f` using `Nat.le_mul_of_pos_right _ (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `hnr : D.R.f * D.R.r ^ 2 ≤ T.nWn`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `T.nW_lo.1`. Establish `h' : D.R.f * D.R.r * D.R.r ≤ D.R.f * D.R.r * (D.R.r + 1)` using `Nat.mul_le_mul_left _ (by omega)`. Combine the equalities or inequalities in the displayed calculation. Establish `hm0 : (0 : ℝ) < D.R.m` using `by exact_mod_cast hm1`. Establish `hTO : T.PP ^ 4 * (T.Dp : ℝ) ^ 3 * D.R.k * D.R.f / D.R.m ≤ (T.TO : ℝ)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ T.TO_ge` and prove the remaining obligations. Establish `hx1 : 1 ≤ L.sc.x ^ T.Cp` using `Real.one_le_rpow L.sc.one_lt_alt.le T.Cp_nonneg`. Establish `hn : 0 ≤ T.PP ^ 4 * (T.Dp : ℝ) ^ 3 * D.R.k * D.R.f`. Establish `: 0 ≤ T.PP ^ 4` using `by positivity`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hd : 0 < (D.R.m : ℝ) * L.de2` using `mul_pos hm0 L.thickDensity_pos`. Establish `hdm : (D.R.m : ℝ) * L.de2 ≤ D.R.m` using `mul_le_of_le_one_right hm0.le L.thickDensity_le_one`. Combine the equalities or inequalities in the displayed calculation. Take `⟨A, B⟩` from `real_bounds T.PP T.TO T.Dp D.R.k D.R.f D.R.m D.R.r T.nWn (by exact_mod_cast hm1) (by exact_mod_cast (show 1 ≤ D.R.f by omega)) (by exact_mod_cast hk1) (by exact_mod_cast hD1) (by exact_mod_cast (show 1 ≤ D.R.r by omega)) T.PP_nW (by exact_mod_cast T.nW_40) (by exact_mod_cast hnk) …`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `hA : 54 * (D.R.f * D.R.r ^ 4) ≤ T.TO`. Establish `: ((54 * (D.R.f * D.R.r ^ 4) : ℕ) : ℝ) ≤ T.TO` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Establish `h1 : p0 * (D.R.r - p0) ≤ D.R.r * D.R.r` using `Nat.mul_le_mul hp (Nat.sub_le _ _)`. Establish `h2 : 50 * D.R.r ^ 2 * (D.R.f * (p0 * (D.R.r - p0))) ≤ 50 * (D.R.f * D.R.r ^ 4)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : D.R.r ≤ D.R.r ^ 4` using `Nat.le_self_pow (by norm_num) _`. Establish `h4 : 1 ≤ D.R.r ^ 4` using `Nat.one_le_pow _ _ (by omega)`. Establish `h5 : D.R.r ^ 4 ≤ D.R.f * D.R.r ^ 4` using `Nat.le_mul_of_pos_left _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hDp]`. Establish `hT0 : (0 : ℝ) < T.TO`. Establish `: 1 ≤ T.TO` using `le_trans (by omega) T.TO_40`. Conclude with `this` after adjusting the coercions. Establish `hq : (0 : ℝ) < 4 * ((D.R.f : ℝ) * D.R.k) ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `: (0 : ℝ) < D.R.f` using `by exact_mod_cast (show 0 < D.R.f by omega)`. Establish `: (0 : ℝ) < D.R.k` using `by exact_mod_cast hk1`. Check the signs of the components of the expression. Rewrite using `[div_le_div_iff₀ hT0 hq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem params_bounds {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) (p0 : ℕ) (hp : p0 ≤ D.R.r) :
     2 * D.R.r + 50 * D.R.r ^ 2 * (D.R.f * (p0 * (D.R.r - p0))) + 2 ≤ T.TO ∧
@@ -190,7 +190,7 @@ end GlobalTheory.ShareNumbers
 open GlobalTheory.ShareNumbers in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ⟨0, fun x hx _ ι p0 hp => params_bounds (Fm.parT x hx ι) p0 hp⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.ShareNumbers.numbers_along_family : Closed FamHyp fun Fm _ => ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x → ∀ (ι : Fm.Ix x) (p0 : ℕ), p0 ≤ (Fm.D x ι).R.r → 2 * (Fm.D x ι).R.r + 50 * (Fm.D x ι).R.r ^ 2 * ((Fm.D x ι).R.f * (p0 * ((Fm.D x ι).R.r - p0))) + 2 ≤ (Fm.parT x hx ι).TO ∧ ((((Fm.D x ι).R.f * ((Fm.D x ι).R.r * ((Fm.D x ι).R.r - 1) / 2) : ℕ) : ℝ) * ((((Fm.D x ι).R.f * ((Fm.D x ι).R.r * ((Fm.D x ι).R.r - 1) / 2) : ℕ) : ℝ) + 6) / (Fm.parT x hx ι).TO ≤ 1 / (4 * (((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.k) ^ 3)) :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ =>

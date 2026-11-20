@@ -44,13 +44,13 @@ def locRing {k : Type} [Field k] [NumberField k] (σ : k →+* ℂ) (la : Height
   (la.valuation k).integer.map σ
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem valRing_locRing {k : Type} [Field k] [NumberField k] (σ : k →+* ℂ) (la : HeightOneSpectrum (𝓞 k)) :
     ValRing σ la (locRing σ la) := fun x hx => ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Introduce `x _` and use `⟨x, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem valRing_range {k : Type} [Field k] [NumberField k] (σ : k →+* ℂ) (la : HeightOneSpectrum (𝓞 k)) :
     ValRing σ la σ.range := fun x _ => ⟨x, rfl⟩
@@ -62,7 +62,7 @@ def DenomAt {E : Type} [Field E] {n : ℕ} (l c : ℕ) (γ : GL (Fin n) E) : Pro
     IsIntegral ℤ (((m * l ^ c : ℕ) : E) * γ⁻¹.val a b)
 
 /- English proof (translation)
-Introduce `_ _ _ _ a b` and use `by have h1 : Formalism.L2.Theta.mt V 1 = 1 := by unfold Formalism.L2.Theta.mt; rw [map_one]; rfl rw [h1, sub_self] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem oneAt_one (V : HSp D) (l : ℕ) : OneAt V l 1 := fun _ _ _ _ a b => by
   have h1 : Formalism.L2.Theta.mt V 1 = 1 := by unfold Formalism.L2.Theta.mt; rw [map_one]; rfl

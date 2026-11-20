@@ -11,31 +11,29 @@ noncomputable section
 namespace GlobalTheory.MixedLagr
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d d₁ X W W₁ M M₁ H' hE hd hxy hιy hι f hf hfe K hK hK0`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Set `Φ : (Fin n → E) × K →ₗ[F] Matrix (Fin n) (Fin d) E` to `{ toFun := fun p => Matrix.vecMulVec p.1 H'.x + (p.2 : Matrix (Fin n) (Fin d₁) E) * H'.ιᵀ map_add' := fun p q => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, Submodule.coe_add, Matrix.add_vecMulVec, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. By extensionality, compare the relevant components.
 
-Use the proof step `map_smul' := fun c p => by`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, Matrix.mul_apply, Finset.smul_sum, smul_mul_assoc, smul_add] }`. Establish `hΦ : ∀ p, Φ p = Matrix.vecMulVec p.1 H'.x + (p.2 : Matrix (Fin n) (Fin d₁) E) * H'.ιᵀ` using `fun _ => rfl`. Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[incM]`. Simplify using `[incM, Matrix.one_apply, h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ p, f (Φ p) ∈ lagr M M₁ H'`. Introduce `p`. Rewrite using `[mem_lagr, hfe, LinearEquiv.symm_apply_apply]`. Use `⟨Matrix.vecMulVec (incV F p.1) (incV F H'.x), ⟨incV F p.1, rfl⟩, incM F (p.2 : Matrix (Fin n) (Fin d₁) E), hK0 _ p.2.2, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, Matrix.one_mul, hΦ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply, Matrix.mul_apply, map_sum, map_mul]`. Establish `hform : ∀ (a : E) (u v : Fin d → E), form σ W.J (a • u + v) H'.y = a * form σ W.J u H'.y + form σ W.J v H'.y`. Introduce `a u v`. Simplify using `[form, add_dotProduct, smul_dotProduct]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp`. Rewrite `hp` using `[hΦ]`. Establish `hrow : ∀ i, (p.1 i) • H'.x + H'.ι *ᵥ ((p.2 : Matrix (Fin n) (Fin d₁) E) i) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `i`. Use function extensionality and compare the values at `j`. Use `congrFun (congrFun hp i) j` as an intermediate fact. Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.zero_apply] at this`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Pi.zero_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← this]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `hy : p.1 = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: form σ W.J ((p.1 i) • H'.x + H'.ι *ᵥ ((p.2 : Matrix (Fin n) (Fin d₁) E) i)) H'.y = form σ W.J 0 H'.y`. Rewrite using `[hrow i]`. Rewrite `this` using `[hform, hxy, hιy]`. Simplify `this` using `[form]`. Establish `hz : (p.2 : Matrix (Fin n) (Fin d₁) E) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hι` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.zero_mul, ← hp, hy, Matrix.zero_vecMulVec, zero_add]`. Conclude with `Prod.ext hy (Subtype.ext hz)`. Set `g` to `(f ∘ₗ Φ).codRestrict (lagr M M₁ H') hmem`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hg : Function.Injective g`. Introduce `p q h`. Apply `hinj` to reduce the goal to its premises. Apply `hf` to reduce the goal to its premises. Simplify `congrArg Subtype.val h` using `[g]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle` using `LinearMap.finrank_le_finrank_of_injective hg`. Establish `hdom : Module.finrank F ((Fin n → E) × K) = n * d`. Rewrite using `[Module.finrank_prod, Module.finrank_pi_fintype, hK]`. Simplify using `[hE, hd]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use linear arithmetic over natural numbers and integers.
+Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_finrank_lagr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁),

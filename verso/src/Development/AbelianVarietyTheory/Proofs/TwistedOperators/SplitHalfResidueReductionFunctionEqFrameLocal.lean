@@ -11,9 +11,9 @@ namespace GlobalTheory.StepVec.HalfCmp
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `y`. Establish `hs : Function.Surjective (finPart D)`. Establish `h1 : Function.Surjective (sndA D.host.F)` using `fun b => ⟨(0, b), rfl⟩`. Conclude with `TensorProduct.map_surjective (g := (sndA D.host.F).toLinearMap) h1 (g' := (AlgHom.id D.host.F D.host.E).toLinearMap) Function.surjective_id`. Take `⟨z, hz⟩` from `hs ((Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E) (finPart D z) = y`. Rewrite using `[hz]`. Conclude with `AlgEquiv.apply_symm_apply _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toEAf_surjective : Function.Surjective (toEAf D) := by
   intro y
@@ -39,25 +39,23 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.StepVec.HalfCmp in
 
 /- English proof (translation)
-Introduce `D v φ e PP r he hP hr S T βS βT ω`. Take `⟨hchart, hcomp, -⟩` from `GlobalTheory.SplitProjChart.chart_rdA D v φ e he`. Use function extensionality and compare the values at `t`. Use `set N := frMapO S T βS βT t with hNdef`. Establish `h1 : mapCo φ S T (frCo φ βS) (frCo φ βT) t = N.map (rdE φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNdef]`. Unfold `mapCo frCo frMapO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← map_inv, gl_map_val, gl_map_val, Matrix.map_map]`. Use `congr 2`. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.comp, hcomp]`. Unfold `onHalf locFn`. Distinguish the cases in `hh : IsHalf e t`. Use `swap`. Rewrite using `[if_neg hh, if_neg (fun h => hh h.1)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos hh, h1]`. Establish `hfix : ∀ i j, toEAf D e * N i j = N i j`. Introduce `i j`. Establish `: toEAf D e • N = N`. Rewrite using `[hNdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `frMapO`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul]`. Use `congr 2`. Use extensionality with `k l`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, ← map_mul, hh k l]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `congrFun (congrFun this i) j`. Establish `hiff : (∀ i j, (N.map (rdE φ)) i j ∈ v.adicCompletionIntegers D.host.F) ↔ IsIntM N`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Take `⟨a, ha⟩` from `toEAf_surjective (N i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : GlobalTheory.SplitHecke.IsInt (GlobalTheory.SplitHecke.Ov D v) (rdA φ a)`. Rewrite using `[GlobalTheory.SplitHecke.isInt_Ov, ← hcomp, ha]`. Conclude with `h i j`. Establish `h3` using `(hchart.2.2.2 a).2 h2`. Establish `h4` using `GlobalTheory.PlaceCoord.toEAf_mem h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite `h4` using `[map_mul, ha, hfix]`. Then use the resulting hypothesis. Introduce `h i j`. Conclude with `(hr.2.2.2 (N i j) (h i j)).1`. Unfold `viaRed`. Distinguish the cases in `hI : IsIntM N`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos (hiff.2 hI), if_pos ⟨hh, hI⟩]`. Use `congr 1`. Use extensionality with `i j`. Take `⟨hm, hm'⟩` from `hr.2.2.2 (N i j) (hI i j)`. Simplify using `only [Matrix.of_apply, Matrix.map_apply]`.
-
-Unfold `redM`. Rewrite using `[dif_pos (hI i j), ← hm']`. Rewrite using `[dif_neg (fun h => hI (hiff.1 h)), if_neg (fun h => hI h.2)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StepVec.onHalf_viaRed_eq_locFn : ∀ (D : D7) (v : FinPl D) (φ : SplitProj D v) (e : AE D) (PP : Formalism.L2.DIV.Pl D.host.E)
     (r : v.adicCompletionIntegers D.host.F →+* Formalism.L2.DIV.kP PP), IsIdemOf φ e → IsProjAt φ PP → IsRedMap φ PP r →

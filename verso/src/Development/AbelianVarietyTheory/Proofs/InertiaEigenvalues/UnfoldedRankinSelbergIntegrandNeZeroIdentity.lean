@@ -12,21 +12,21 @@ noncomputable section
 namespace GlobalTheory.RSCell
 
 /- English proof (translation)
-Introduce `E _ _ _ m T ϖ F Φ J l₀ hl hW hΦ x`. Establish `h0 : Finsupp.mapRange (fun y : Fin (m+1) → ℤ => y (Fin.last m)) rfl l₀.1 = 0`. Use extensionality with `w`. Simplify using `[hl w]`. Establish `hadl : GlobalTheory.CellDec.adl ϖ (Finsupp.mapRange (fun y : Fin (m+1) → ℤ => y (Fin.last m)) rfl l₀.1) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Apply `Units.ext` to reduce the goal to its premises. Apply `FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[GlobalTheory.CellDec.adl]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hrow : (GlobalTheory.CellDec.tl (m+1) ϖ l₀.1).val (Fin.last m) = Pi.single (Fin.last m) 1`. Rewrite using `[GlobalTheory.CellDec.tl_eq_diagT, GlobalTheory.SmGL.val_diagT]`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.diagonal_apply, Pi.single_apply, hadl, eq_comm]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `set g := GlobalTheory.CellDec.tl (m+1) ϖ l₀.1 with hg`. Establish `hpi : (fun i => pInf E ((Pi.single (Fin.last m) (1 : Ad E) : Fin (m+1) → Ad E) i)) = Pi.single (Fin.last m) 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = Fin.last m`. Substitute `h` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hpf : (fun i => pFin E ((Pi.single (Fin.last m) (1 : Ad E) : Fin (m+1) → Ad E) i)) = Pi.single (Fin.last m) 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = Fin.last m`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hlat : (0 : Fin (m+1) → Af E) ∈ GlobalTheory.ThetaPoisson.latt (m+1) J` using `fun i => zero_mem _`. Establish `hpsi : GlobalTheory.RSTheta.rsPsi (Fin.last m) (GlobalTheory.JSW.whit F) (GlobalTheory.JSW.whit F) Φ J (Pi.single (Fin.last m) 1) g (g.val (Fin.last m)) = GlobalTheory.JSW.whit F g * (starRingEnd ℂ) (GlobalTheory.JSW.whit F g) * Φ (Pi.single (Fin.last m) 1)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrow, GlobalTheory.RSTheta.rsPsi, GlobalTheory.ThetaPoisson.thetaFn, hpi, hpf, sub_self, Set.indicator_of_mem hlat, GlobalTheory.RSTheta.rsInf, GlobalTheory.RSTheta.rowGL_single, map_one, inv_one, mul_one]`. Simplify using the standard rewrite rules. Rewrite using `[bInt, hpsi]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[enorm_ne_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (mul_ne_zero hW (by simpa using hW)) hΦ`. Rewrite using `[ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `Real.rpow_pos_of_pos (ideleModule E _).2 x`.
+A detailed English derivation is pending.
 -/
 theorem bInt_tl_last_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (F : GA E (m + 1) → ℂ) (Φ : (Fin (m + 1) → Cinf E) → ℂ)

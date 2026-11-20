@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.DualOpen
 
 /- English proof (translation)
-Introduce `P C₁ C₂ C₀ _ _ _ _ p₁ p₂ q₁ q₂ hw hinj hsurj hq₂`. Establish `hwc : CommRingCat.ofHom p₁ ≫ CommRingCat.ofHom q₁ = CommRingCat.ofHom p₂ ≫ CommRingCat.ofHom q₂`. Use extensionality with `x`. Conclude with `congrArg (fun f : P →+* C₀ => f x) hw`. Establish `H : IsPullback (CommRingCat.ofHom p₁) (CommRingCat.ofHom p₂) (CommRingCat.ofHom q₁) (CommRingCat.ofHom q₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPullback.of_map (forget CommRingCat) hwc ?_` and prove the remaining obligations. Rewrite using `[Types.isPullback_iff]`. Use `⟨by rw [← Functor.map_comp, ← Functor.map_comp, hwc], ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x y ⟨h1, h2⟩`. Establish `h1' : p₁ x = p₁ y` using `h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : p₂ x = p₂ y` using `h2`. Conclude with `sub_eq_zero.mp (hinj _ (by rw [map_sub, h1', sub_self]) (by rw [map_sub, h2', sub_self]))`. Introduce `a b hab`. Conclude with `hsurj a b hab`. Use `⟨inferInstance, inferInstance, inferInstance, IsClosedImmersion.spec_of_surjective _ hq₂, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [spMap, ← Spec.map_comp, hwc]`. Apply the tactic sequence `refine IsPullback.of_iso H (Scheme.ΓSpecIso _).symm (Scheme.ΓSpecIso _).symm (Scheme.ΓSpecIso _).symm (Scheme.ΓSpecIso _).symm ?_ ?_ ?_ ?_ <;>`. Simplify using `[spMap, Scheme.ΓSpecIso_inv_naturality]`.
+A detailed English derivation is pending.
 -/
 theorem milnor_of_ring_square : ∀ (P C₁ C₂ C₀ : Type) [CommRing P] [CommRing C₁] [CommRing C₂] [CommRing C₀] (p₁ : P →+* C₁) (p₂ : P →+* C₂) (q₁ : C₁ →+* C₀) (q₂ : C₂ →+* C₀), q₁.comp p₁ = q₂.comp p₂ → (∀ x, p₁ x = 0 → p₂ x = 0 → x = 0) → (∀ a b, q₁ a = q₂ b → ∃ x, p₁ x = a ∧ p₂ x = b) → Function.Surjective q₂ → Milnor (spMap p₁) (spMap p₂) (spMap q₁) (spMap q₂) := by
   intro P C₁ C₂ C₀ _ _ _ _ p₁ p₂ q₁ q₂ hw hinj hsurj hq₂

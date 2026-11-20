@@ -7,9 +7,9 @@ namespace GlobalTheory.HoweR.TensQuad
 variable {T : Type} [Fintype T] [DecidableEq T] {V : T → Type} [∀ w, AddCommGroup (V w)] [∀ w, Module ℂ (V w)]
 
 /- English proof (translation)
-Rewrite using `[atPl, PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Break down `eq_or_ne i w with rfl | h` into its components or cases. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atPl_tprod (w : T) (L : Module.End ℂ (V w)) (f : ∀ i, V i) :
     atPl w L (PiTensorProduct.tprod ℂ f) = PiTensorProduct.tprod ℂ (Function.update f w (L (f w))) := by
@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 theorem atPlLin_apply (w : T) (L : Module.End ℂ (V w)) : atPlLin w L = atPl w L := rfl
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `f`. Simplify using `[atPl_tprod, Module.End.mul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem atPl_mul (w : T) (L₁ L₂ : Module.End ℂ (V w)) : atPl w (L₁ * L₂) = atPl w L₁ * atPl w L₂ := by
   apply PiTensorProduct.ext
@@ -38,7 +38,7 @@ theorem atPl_mul (w : T) (L₁ L₂ : Module.End ℂ (V w)) : atPl w (L₁ * L�
   simp [atPl_tprod, Module.End.mul_apply]
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `f`. Simplify using `[atPl_tprod]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem atPl_one (w : T) : atPl w (1 : Module.End ℂ (V w)) = 1 := by
   apply PiTensorProduct.ext
@@ -47,7 +47,7 @@ theorem atPl_one (w : T) : atPl w (1 : Module.End ℂ (V w)) = 1 := by
   simp [atPl_tprod]
 
 /- English proof (translation)
-Simplify using `only [qop, ← atPlLin_apply, map_sub, map_sum, map_smul, apply_ite (atPlLin w), map_zero]`. Simplify using `only [atPlLin_apply, atPl_mul, atPl_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem qop_atPl {ι : Type} [Fintype ι] [DecidableEq ι] (w : T) (F : ι → ι → Module.End ℂ (V w)) (α β : ℂ) (i j : ι) :
     qop (fun a b => atPl w (F a b)) α β i j = atPl w (qop F α β i j) := by
@@ -55,9 +55,9 @@ theorem qop_atPl {ι : Type} [Fintype ι] [DecidableEq ι] (w : T) (F : ι → �
   simp only [atPlLin_apply, atPl_mul, atPl_one]
 
 /- English proof (translation)
-Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Rewrite using `[map_smul, atPl_tprod]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨w, by simpa using hL (f w)⟩, rfl⟩)`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_atPl (C : ∀ w, Submodule ℂ (V w)) (w : T) (L : Module.End ℂ (V w)) (hL : ∀ x, L x ∈ C w)
     (v : ⨂[ℂ] i, V i) : atPl w L v ∈ tensAny C := by
@@ -73,9 +73,9 @@ end GlobalTheory.HoweR.TensQuad
 
 open GlobalTheory.HoweR.TensQuad in
 /- English proof (translation)
-Introduce `T _ _ V _ _ C w p q a α β α' β' h i j v _`. Establish `hu : units (actAt w a) = fun i j => atPl w (units a i j)` using `rfl`. Establish `hn : negT (units (actAt w a)) = fun i j => atPl w (negT (units a) i j)`. Use function extensionality and compare the values at `i j`. Simplify using `only [negT, units, actAt_apply, ← atPlLin_apply, map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, qop_atPl]`. Conclude with `mem_of_atPl C w _ (fun x => (h i j x Submodule.mem_top).1) v`. Rewrite using `[hn, qop_atPl]`. Conclude with `mem_of_atPl C w _ (fun x => (h i j x Submodule.mem_top).2) v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HoweR.quadMod_actAt : ∀ (T : Type) [Fintype T] [DecidableEq T] (V : T → Type) [∀ w, AddCommGroup (V w)] [∀ w, Module ℂ (V w)], ∀ (C : ∀ w, Submodule ℂ (V w)) (w : T) (p q : ℕ) (a : Mat p q →ₗ[ℂ] Module.End ℂ (V w)) (α β α' β' : ℂ), QuadMod a α β α' β' (C w) ⊤ → QuadMod (actAt w a) α β α' β' (tensAny C) ⊤ := by
   intro T _ _ V _ _ C w p q a α β α' β' h i j v _

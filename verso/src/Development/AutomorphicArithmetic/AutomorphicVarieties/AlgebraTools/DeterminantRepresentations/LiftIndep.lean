@@ -3,17 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 open Polynomial UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `A G _ _ d hd B _ _ σ τ p q x z hxz`. Set `S : Finset G` to `x.coeff.support ∪ z.coeff.support`. Set `w : MonoidAlgebra (MvPolynomial G A) G` to `∑ g ∈ S, MonoidAlgebra.single g (MvPolynomial.X g)`. Set `φ : MvPolynomial G A →ₐ[A] MvPolynomial σ A` to `MvPolynomial.aeval fun g => x.coeff g`. Set `ψ : MvPolynomial G A →ₐ[A] MvPolynomial τ A` to `MvPolynomial.aeval fun g => z.coeff g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hx : MonoidAlgebra.mapRingHom G (φ : MvPolynomial G A →+* MvPolynomial σ A) w = x`. Use extensionality with `g`. Distinguish the cases in `hg : g ∈ S`. Simplify using `[w, φ, map_sum, MonoidAlgebra.coeff_single, Finsupp.single_apply, hg]`. Establish `h0 : x.coeff g = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hg (Finset.mem_union_left _ (Finsupp.mem_support_iff.mpr h))`. Simplify using `[w, φ, map_sum, MonoidAlgebra.coeff_single, Finsupp.single_apply, hg, h0]`. Establish `hz : MonoidAlgebra.mapRingHom G (ψ : MvPolynomial G A →+* MvPolynomial τ A) w = z`. Use extensionality with `g`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg : g ∈ S`. Simplify using `[w, ψ, map_sum, MonoidAlgebra.coeff_single, Finsupp.single_apply, hg]`. Establish `h0 : z.coeff g = 0`. Assume the negation of the conclusion as `h`. Conclude with `hg (Finset.mem_union_right _ (Finsupp.mem_support_iff.mpr h))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[w, ψ, map_sum, MonoidAlgebra.coeff_single, Finsupp.single_apply, hg, h0]`. Establish `key : p.comp φ = q.comp ψ`. Use `MvPolynomial.algHom_ext fun g => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun y : MonoidAlgebra B G => y.coeff g) hxz`. Simplify `h` using `[φ, ψ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition.
 
-Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `q (ψ (d G w)) = q (d τ z)`. Rewrite using `[← hd, hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.liftIndep :
     ∀ {A G : Type} [CommRing A] [Group G] (d : ∀ σ : Type, MonoidAlgebra (MvPolynomial σ A) G →* MvPolynomial σ A),

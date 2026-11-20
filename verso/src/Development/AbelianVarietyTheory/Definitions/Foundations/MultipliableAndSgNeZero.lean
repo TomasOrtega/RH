@@ -8,9 +8,9 @@ open scoped UpperHalfPlane
 namespace GlobalTheory.Sieg.Model
 
 /- English proof (translation)
-Use `⟨by norm_num, by norm_num, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨n, hn⟩, -⟩`. Simplify using `at hn`. Establish `h : (3 * n : ℤ) = 5`. Establish `: (3 * (n : ℚ)) = 5` using `by rw [hn]; norm_num`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem admissible_example_alt : admitted 5 ![1 / 3, 0] := by
   refine ⟨by norm_num, by norm_num, ?_⟩
@@ -22,11 +22,11 @@ theorem admissible_example_alt : admitted 5 ![1 / 3, 0] := by
   omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h2 : ¬ 2 ∣ c` using `fun hh => by`. Use `Nat.dvd_gcd hh (show 2 ∣ 6 by norm_num); rw [h] at this; omega` as an intermediate fact. Establish `h3 : ¬ 3 ∣ c` using `fun hh => by`. Use `Nat.dvd_gcd hh (show 3 ∣ 6 by norm_num); rw [h] at this; omega` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12 : c ^ 2 % 12 = 1`. Rewrite using `[Nat.pow_mod]`. Establish `: c % 12 = 1 ∨ c % 12 = 5 ∨ c % 12 = 7 ∨ c % 12 = 11` using `by omega`. Apply the tactic sequence `rcases this with h | h | h | h <;> rw [h]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 
-Apply `Int.mul_ediv_cancel'` to reduce the goal to its premises. Establish `: (c : ℤ) - (c : ℤ) ^ 2 = -((c : ℤ) * (c - 1))` using `by ring`. Rewrite using `[this]`. Conclude with `(dvd_neg).2 (Int.even_mul_pred_self (c : ℤ)).two_dvd`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exponent_exact {c : ℕ} (h : Nat.Coprime c 6) :
     12 * ((c ^ 2 - 1) / 12) + 1 = c ^ 2 ∧ 2 * (((c : ℤ) - (c : ℤ) ^ 2) / 2) = (c : ℤ) - (c : ℤ) ^ 2 := by
@@ -46,36 +46,36 @@ theorem exponent_exact {c : ℕ} (h : Nat.Coprime c 6) :
     exact (dvd_neg).2 (Int.even_mul_pred_self (c : ℤ)).two_dvd
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem ee_ne_zero (z : ℂ) : ee z ≠ 0 := Complex.exp_ne_zero _
 
 /- English proof (translation)
-Simplify using `only [ee, mul_add, Complex.exp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ee_add (z w : ℂ) : ee (z + w) = ee z * ee w := by
   simp only [ee, mul_add, Complex.exp_add]
 
 /- English proof (translation)
-Simplify using `only [ee, ← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_nat_mul (n : ℕ) (z : ℂ) : ee (n * z) = ee z ^ n := by
   simp only [ee, ← Complex.exp_nat_mul]; congr 1; ring
 
 /- English proof (translation)
-Simplify using `only [ee, ← Complex.exp_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_neg (z : ℂ) : ee (-z) = (ee z)⁻¹ := by
   simp only [ee, ← Complex.exp_neg]; congr 1; ring
 
 /- English proof (translation)
-Simplify using `[ee, Complex.norm_exp, Complex.mul_re, Complex.mul_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_ee (z : ℂ) : ‖ee z‖ = Real.exp (-(2 * Real.pi * z.im)) := by
   simp [ee, Complex.norm_exp, Complex.mul_re, Complex.mul_im]
 
 /- English proof (translation)
-Rewrite using `[norm_ee, Real.exp_lt_one_iff]`. Use `τ.im_pos` as an intermediate fact. Establish `h : 0 < 2 * Real.pi * (τ : ℂ).im`. Use `Real.pi_pos` as an intermediate fact. Simplify using `only [UpperHalfPlane.coe_im]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -88,13 +88,11 @@ theorem norm_ee_lt_one (τ : ℍ) : ‖ee τ‖ < 1 := by
   linarith
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h`. Establish `hp : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `h1 : (a : ℂ) * τ + b = n`. Apply `mul_left_cancel₀ hp` to reduce the goal to its premises. Rewrite using `[hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `him` using `congrArg Complex.im h1`. Simplify using `at him`. Establish `ha : a = 0`. Break down `him with h | h` into its components or cases.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Conclude with `absurd h τ.im_pos.ne'`. Use `⟨ha, n, ?_⟩` and prove the remaining obligations. Substitute `ha` using the available equality. Simplify using `at h1`.
-
-Conclude with `h1.symm` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ee_eq_one {a b : ℚ} (τ : ℍ) (h : ee ((a : ℂ) * τ + b) = 1) : a = 0 ∧ ∃ n : ℤ, (n : ℚ) = b := by
   obtain ⟨n, hn⟩ := Complex.exp_eq_one_iff.1 h
@@ -113,13 +111,13 @@ theorem ee_eq_one {a b : ℚ} (τ : ℍ) (h : ee ((a : ℂ) * τ + b) = 1) : a =
   exact_mod_cast h1.symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ee ((((m : ℚ) + y 0 : ℚ) : ℂ) * τ + (y 1 : ℚ)) = 1`. Rewrite `h` using `[sub_eq_zero, ← ee_nat_mul, ← ee_add]`. Rewrite using `[h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[pt]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h0, n, hn⟩` from `ee_eq_one τ h'`. Conclude with `hy ⟨⟨-m, by push_cast; linarith⟩, ⟨n, hn⟩⟩`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h' : ee ((((m : ℚ) - y 0 : ℚ) : ℂ) * τ + (-y 1 : ℚ)) = 1`. Rewrite `h` using `[sub_eq_zero, ← ee_nat_mul, ← ee_neg, ← ee_add]`. Rewrite using `[h]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[pt]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h0, n, hn⟩` from `ee_eq_one τ h'`. Conclude with `hy ⟨⟨m, by push_cast; linarith⟩, ⟨-n, by push_cast; linarith⟩⟩`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ne_one_of_not_int {y : Fin 2 → ℚ}
     (hy : ¬ (y 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ y 1 ∈ Set.range ((↑) : ℤ → ℚ))) (τ : ℍ) (m : ℕ) :
@@ -139,9 +137,7 @@ theorem ne_one_of_not_int {y : Fin 2 → ℚ}
     exact hy ⟨⟨m, by push_cast; linarith⟩, ⟨-n, by push_cast; linarith⟩⟩
 
 /- English proof (translation)
-Establish `hs : Summable fun m : ℕ => ‖-(q ^ (m + 1) * a)‖`. Simplify using `only [norm_neg, norm_mul, norm_pow, pow_succ]`. Conclude with `((summable_geometric_of_lt_one (norm_nonneg _) hq).mul_right _).mul_right _`. Use `⟨∏' m : ℕ, (1 + -(q ^ (m + 1) * a)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `tprod_one_add_ne_zero_of_summable (fun m => by simpa [sub_eq_add_neg] using h m) hs`.
-
-Simplify `(multipliable_one_add_of_summable hs).hasProd` using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasProd_geom {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) (h : ∀ m : ℕ, 1 - q ^ (m + 1) * a ≠ 0) :
     ∃ P : ℂ, P ≠ 0 ∧ HasProd (fun m : ℕ => 1 - q ^ (m + 1) * a) P := by
@@ -153,37 +149,35 @@ theorem hasProd_geom {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) (h : ∀ m : ℕ, 1 
   · simpa [sub_eq_add_neg] using (multipliable_one_add_of_summable hs).hasProd
 
 /- English proof (translation)
-Use `Filter.Tendsto.inv₀ h hP` as an intermediate fact. Simplify `this` using `[HasProd, Finset.prod_inv_distrib]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasProd_inv {f : ℕ → ℂ} {P : ℂ} (h : HasProd f P) (hP : P ≠ 0) : HasProd (fun m => (f m)⁻¹) P⁻¹ := by
   have := Filter.Tendsto.inv₀ h hP
   simpa [HasProd, Finset.prod_inv_distrib] using this
 
 /- English proof (translation)
-Use `Filter.Tendsto.pow h k` as an intermediate fact. Simplify `this` using `[HasProd, Finset.prod_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasProd_pow {f : ℕ → ℂ} {P : ℂ} (h : HasProd f P) (k : ℕ) : HasProd (fun m => (f m) ^ k) (P ^ k) := by
   have := Filter.Tendsto.pow h k
   simpa [HasProd, Finset.prod_pow] using this
 
 /- English proof (translation)
-Rewrite using `[← ee_nat_mul]`. Use `congr 1`. Simplify using `[pt]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_pt_pow (c : ℕ) (x : Fin 2 → ℚ) (τ : ℍ) : ee (pt x τ) ^ c = ee (pt (c • x) τ) := by
   rw [← ee_nat_mul]; congr 1; simp [pt]; ring
 
 /- English proof (translation)
-Establish `hc : ¬ ((c • x) 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ (c • x) 1 ∈ Set.range ((↑) : ℤ → ℚ))`. Simplify using `using h.2.2`. Establish `hx : ¬ (x 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ x 1 ∈ Set.range ((↑) : ℤ → ℚ))`. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Conclude with `h.2.2 ⟨⟨c * a, by rw [← ha]; push_cast; ring⟩, ⟨c * b, by rw [← hb]; push_cast; ring⟩⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hq` using `norm_ee_lt_one τ`. Take `⟨A, hA, pA⟩` from `hasProd_geom hq _ fun m => (ne_one_of_not_int hx τ (m + 1)).1`. Take `⟨B, hB, pB⟩` from `hasProd_geom hq _ fun m => (ne_one_of_not_int hx τ (m + 1)).2`. Take `⟨C, hC, pC⟩` from `hasProd_geom hq _ fun m => (ne_one_of_not_int hc τ (m + 1)).1`. Take `⟨D, hD, pD⟩` from `hasProd_geom hq _ fun m => (ne_one_of_not_int hc τ (m + 1)).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP : HasProd (fun m : ℕ => cthFac c (ee τ) (ee (pt x τ)) (m + 1)) (A ^ (c ^ 2) * B ^ (c ^ 2) * (C * D)⁻¹)`. Use `((hasProd_pow pA (c ^ 2)).mul (hasProd_pow pB (c ^ 2))).mul (hasProd_inv (pC.mul pD) (mul_ne_zero hC hD))` as an intermediate fact. Simplify `this` using `only [cthFac, ee_pt_pow, div_eq_mul_inv]`. Establish `h1 : 1 - ee (pt x τ) ^ c ≠ 0`. Use `(ne_one_of_not_int hc τ 0).1` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[pow_zero, one_mul, ← ee_pt_pow]`. Then use the resulting hypothesis. Establish `h2 : 1 - ee (pt x τ) ≠ 0`. Use `(ne_one_of_not_int hx τ 0).1` as an intermediate fact. Rewrite `this` using `[pow_zero, one_mul]`. Then use the resulting hypothesis. Use `⟨hP.multipliable, h1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `sg cth`. Rewrite using `[hP.tprod_eq]`. Establish `e1` using `ee_ne_zero (τ : ℂ)`. Establish `e2 : -ee (pt x τ) ≠ 0` using `neg_ne_zero.2 (ee_ne_zero _)`. Use `mul_ne_zero (div_ne_zero (mul_ne_zero (mul_ne_zero (pow_ne_zero _ e1) (zpow_ne_zero _ e2)) (pow_ne_zero _ h2)) h1) ?_` and prove the remaining obligations.
-
-Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hA) (pow_ne_zero _ hB)) (inv_ne_zero (mul_ne_zero hC hD))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem multipliable_and_sg_ne_zero {c : ℕ} {x : Fin 2 → ℚ} (h : admitted c x) (τ : ℍ) :
     Multipliable (fun m : ℕ => cthFac c (ee τ) (ee (pt x τ)) (m + 1)) ∧ 1 - ee (pt x τ) ^ c ≠ 0 ∧ sg c x τ ≠ 0 := by
@@ -215,9 +209,9 @@ theorem multipliable_and_sg_ne_zero {c : ℕ} {x : Fin 2 → ℚ} (h : admitted 
   exact mul_ne_zero (mul_ne_zero (pow_ne_zero _ hA) (pow_ne_zero _ hB)) (inv_ne_zero (mul_ne_zero hC hD))
 
 /- English proof (translation)
-Establish `e1 : ee 1 = 1` using `by simp [ee]`. Unfold `sg`. Use `congr 1`. Rewrite using `[h, ee_add, e1, mul_one]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[pt, h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sg_translate (c : ℕ) (x : Fin 2 → ℚ) (τ τ' : ℍ) (h : (τ' : ℂ) = τ + 1) :
     sg c x τ' = sg c ![x 0, x 0 + x 1] τ := by
@@ -228,14 +222,14 @@ theorem sg_translate (c : ℕ) (x : Fin 2 → ℚ) (τ τ' : ℍ) (h : (τ' : �
   · congr 1; simp [pt, h]; ring
 
 /- English proof (translation)
-Simplify using `[f0, Polynomial.bernoulli_eval_zero, bernoulli_eq_bernoulli'_of_ne_one]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem f_zero_two_eq (b : ℚ) : f0 2 ![0, b] = -1 / 12 := by
   simp [f0, Polynomial.bernoulli_eval_zero, bernoulli_eq_bernoulli'_of_ne_one]
   norm_num
 
 /- English proof (translation)
-Establish `: Int.fract (4 / 3 : ℚ) = 1 / 3`. Rewrite using `[Int.fract_eq_iff]; exact ⟨by norm_num, by norm_num, 1, by norm_num⟩`. Simplify using `[f0, this]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem f_zero_one_third (b : ℚ) : f0 1 ![4 / 3, b] = 1 / 6 := by
   have : Int.fract (4 / 3 : ℚ) = 1 / 3 := by
@@ -244,9 +238,9 @@ theorem f_zero_one_third (b : ℚ) : f0 1 ![4 / 3, b] = 1 / 6 := by
   norm_num
 
 /- English proof (translation)
-Establish `hs : Summable fun n : ℕ => Real.exp (-(a * n))`. Use `summable_geometric_of_lt_one (Real.exp_pos (-a)).le (Real.exp_lt_one_iff.2 (by linarith))` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `apply Summable.of_nat_of_neg <;> simpa using hs`.
+Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem summable_exp_abs {a : ℝ} (ha : 0 < a) : Summable fun n : ℤ => Real.exp (-(a * |(n : ℝ)|)) := by
   have hs : Summable fun n : ℕ => Real.exp (-(a * n)) := by
@@ -256,13 +250,11 @@ theorem summable_exp_abs {a : ℝ} (ha : 0 < a) : Summable fun n : ℤ => Real.e
   apply Summable.of_nat_of_neg <;> simpa using hs
 
 /- English proof (translation)
-Use `Summable.of_nonneg_of_le (fun _ => by positivity) (fun n => ?_) ((summable_exp_abs ha).mul_left ((k.factorial : ℝ) / a ^ k * Real.exp (a * |s|)))` and prove the remaining obligations. Establish `h1` using `Real.pow_div_factorial_le_exp (a * |s + n|) (by positivity) k`. Establish `hk : (0 : ℝ) < k.factorial` using `by exact_mod_cast k.factorial_pos`. Establish `h2 : |s + n| ^ k ≤ (k.factorial : ℝ) / a ^ k * Real.exp (a * |s + n|)`. Rewrite `h1` using `[div_le_iff₀ hk, mul_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : |(n : ℝ)| ≤ |s + n| + |s|`. Use `abs_sub (s + n) s` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (k.factorial : ℝ) / a ^ k * Real.exp (a * |s| + -(a * |(n : ℝ)|)) := by gcongr; nlinarith`.
-
-Use `_ = _ := by rw [Real.exp_add, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem summable_pow_exp_abs {a : ℝ} (ha : 0 < a) (k : ℕ) (s : ℝ) :
     Summable fun n : ℤ => |s + n| ^ k * Real.exp (-(2 * a * |s + n|)) := by
@@ -286,25 +278,23 @@ theorem summable_pow_exp_abs {a : ℝ} (ha : 0 < a) (k : ℕ) (s : ℝ) :
     _ = _ := by rw [Real.exp_add, mul_assoc]
 
 /- English proof (translation)
-Establish `hy : 0 < τ.im` using `τ.im_pos`. Establish `hπ` using `Real.pi_pos`. Establish `hN : (0 : ℝ) < (x 0).den` using `by exact_mod_cast (x 0).den_pos`. Establish `s1` using `summable_pow_exp_abs (a := Real.pi * τ.im / 2) (by positivity) (j - 1) (x 0 : ℝ)`. Establish `s2` using `summable_exp_abs (a := Real.pi * τ.im / (x 0).den) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Summable.of_norm_bounded (s1.mul_of_nonneg s2 (fun _ => by positivity) (fun _ => by positivity)) ?_` and prove the remaining obligations. Introduce and unpack `⟨n, d⟩`. Unfold `fTerm`. Use `split_ifs with h`. Establish `hν : x 0 + n ≠ 0` using `fun h0 => by simp [h0] at h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : d ≠ 0` using `fun h0 => by simp [h0] at h`. Establish `hd1 : (1 : ℝ) ≤ |(d : ℝ)|` using `by exact_mod_cast Int.one_le_abs hd`. Establish `hint : ((x 0).den : ℚ) * (x 0 + n) = (((x 0).num + (x 0).den * n : ℤ) : ℚ)` using `by push_cast; rw [mul_add, Rat.den_mul_eq_num]`. Establish `hk0 : ((x 0).num + (x 0).den * n : ℤ) ≠ 0` using `fun h0 => by`. Rewrite `hint` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hν (by simpa using hint)`. Establish `hν1 : (1 : ℝ) ≤ (x 0).den * |(x 0 : ℝ) + n|`. Establish `h1 : (1 : ℝ) ≤ |((((x 0).num + (x 0).den * n : ℤ) : ℚ) : ℝ)|` using `by exact_mod_cast Int.one_le_abs hk0`. Rewrite `h1` using `[← hint]`. Move the coercions through the operations in `at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[abs_mul, abs_of_pos hN]`. Then use the resulting hypothesis. Establish `hpos : (0 : ℝ) < ((x 0 : ℝ) + n) * d` using `by exact_mod_cast h`. Establish `habs : ((x 0 : ℝ) + n) * d = |(x 0 : ℝ) + n| * |(d : ℝ)|` using `by rw [← abs_mul, abs_of_pos hpos]`. Establish `hs : ‖(Int.sign d : ℂ)‖ = 1`. Rewrite using `[Complex.norm_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Int.abs_sign_of_ne_zero hd` after adjusting the coercions. Establish `hn : ‖((x 0 + n : ℚ) : ℂ)‖ = |(x 0 : ℝ) + n|`. Rewrite using `[Complex.norm_ratCast]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [norm_mul, norm_pow, hs, hn, norm_ee, one_mul]`. Establish `i1 : (((x 0 + n : ℚ) : ℂ) * d * (τ : ℂ)).im = ((x 0 : ℝ) + n) * d * τ.im`. Simplify using `[Complex.mul_im]`. Establish `i2 : ((x 1 : ℂ) * d).im = 0` using `by simp [Complex.mul_im]`. Rewrite using `[i1, i2, habs, mul_zero, neg_zero, Real.exp_zero, mul_one, mul_assoc (|(x 0 : ℝ) + n| ^ (j - 1)), ← Real.exp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gcongr`. Use `set u := |(x 0 : ℝ) + n|`. Use `set v := |(d : ℝ)|`. Establish `hu : 0 ≤ u` using `abs_nonneg _`. Establish `a1 : u ≤ u * v` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a2 : v / (x 0).den ≤ u * v`. Rewrite using `[div_le_iff₀ hN]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hp : 0 < Real.pi * τ.im` using `by positivity`. Establish `e : Real.pi * τ.im / (x 0).den * v = Real.pi * τ.im * (v / (x 0).den)` using `by ring`.
-
-Rewrite using `[e]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left a1 hp.le, mul_le_mul_of_nonneg_left a2 hp.le]`. Simplify using `only [norm_zero]`. Check the signs of the components of the expression.
+Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem summable_fTerm (j : ℕ) (x : Fin 2 → ℚ) (τ : ℍ) : Summable (fTerm j x τ) := by
   have hy : 0 < τ.im := τ.im_pos

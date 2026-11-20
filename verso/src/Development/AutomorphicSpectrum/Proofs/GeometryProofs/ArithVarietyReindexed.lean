@@ -17,15 +17,15 @@ section Top
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω] [CharZero Ω]
 
 /- English proof (translation)
-Establish `hy : ∀ f : MRing J, aeval (GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RowSecGlue.ratioPt y c) f ∈ blockFnField y`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, aeval_X]`. Conclude with `mul_mem hp (IntermediateField.subset_adjoin _ _ ⟨i, ⟨i.1, c i.1⟩, rfl, rfl⟩)`. Use `eq_top_iff.2 fun s _ => ?_` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, g, h, hg, hh, hne, e⟩` from `hb s`. Establish `eg` using `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RowSecGlue.aeval_eq_ratioPt y c hc hg`. Establish `eh` using `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RowSecGlue.aeval_eq_ratioPt y c hc hh`. Establish `hU : (∏ k, y ⟨k, c k⟩ ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Rewrite `hne` using `[eh]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hH` using `left_ne_zero_of_mul hne`. Rewrite `e` using `[eg, eh, ← _root_.mul_assoc]`. Establish `e2` using `mul_right_cancel₀ hU e`. Establish `: s = aeval (GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RowSecGlue.ratioPt y c) g / aeval (GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RowSecGlue.ratioPt y c) h`. Rewrite using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `div_mem (hy g) (hy h)`.
+A detailed English derivation is pending.
 -/
 theorem blockFnField_eq_top (y : (Σ k, J k) → Ω) (c : ∀ k, J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (hb : Birational y) : blockFnField y = ⊤ := by
@@ -59,15 +59,15 @@ end Top
 section Gen
 
 /- English proof (translation)
-Proceed by induction on `hc using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Conclude with `⟨X p, 1, by simp, by simp⟩`. Consider the case `algebraMap r`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨C r.num, C (r.den : ℤ), by simp, ?_⟩` and prove the remaining obligations. Simplify using `[Rat.cast_def]`. Consider the case `add x y _ _ hx hy`. Take `⟨f₁, g₁, h₁, rfl⟩` from `hx`. Take `⟨f₂, g₂, h₂, rfl⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨f₁ * g₂ + f₂ * g₁, g₁ * g₂, by simpa using ⟨h₁, h₂⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul]`. Clear the denominators using the available nonvanishing facts. Consider the case `inv x _ hx`. Take `⟨f, g, h, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h0 : aeval z f = 0`. Conclude with `⟨0, 1, by simp, by simp [h0]⟩`. Conclude with `⟨g, f, h0, by simp⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨f₁, g₁, h₁, rfl⟩` from `hx`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f₂, g₂, h₂, rfl⟩` from `hy`. Use `⟨f₁ * f₂, g₁ * g₂, by simpa using ⟨h₁, h₂⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_quot_of_mem_adjoin {L I : Type} [Field L] [CharZero L] (z : I → L) {c : L}
     (hc : c ∈ IntermediateField.adjoin ℚ (Set.range z)) :
@@ -111,7 +111,7 @@ def emb (K Ω : Type) [Field Ω] : MvPolynomial K Ω →+* Fn K Ω :=
   algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω))
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.injective (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω))`.
+A detailed English derivation is pending.
 -/
 theorem emb_injective : Function.Injective (emb K Ω) :=
   IsFractionRing.injective (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω))
@@ -121,7 +121,7 @@ def cst (K Ω : Type) [Field Ω] : Ω →+* Fn K Ω := (emb K Ω).comp C
 def tv (Ω : Type) [Field Ω] (k : K) : Fn K Ω := emb K Ω (X k)
 
 /- English proof (translation)
-Rewrite using `[tv, Ne, map_eq_zero_iff _ emb_injective]`. Conclude with `X_ne_zero k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tv_ne_zero (k : K) : tv Ω k ≠ 0 := by
   rw [tv, Ne, map_eq_zero_iff _ emb_injective]
@@ -132,13 +132,13 @@ instance [CharZero Ω] : CharZero (Fn K Ω) := charZero_of_injective_ringHom (cs
 def xPt (y : (Σ k, J k) → Ω) : (Σ k, J k) → Fn K Ω := fun p => cst K Ω (y p) * tv Ω p.1
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero ((map_ne_zero _).2 h) (tv_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem xPt_ne_zero {y : (Σ k, J k) → Ω} {p : Σ k, J k} (h : y p ≠ 0) : xPt y p ≠ 0 :=
   mul_ne_zero ((map_ne_zero _).2 h) (tv_ne_zero _)
 
 /- English proof (translation)
-Rewrite using `[xPt, xPt, h, mul_div_mul_right _ _ (tv_ne_zero _), map_div₀]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xPt_div_xPt (y : (Σ k, J k) → Ω) {p q : Σ k, J k} (h : p.1 = q.1) :
     xPt y p / xPt y q = cst K Ω (y p / y q) := by
@@ -147,7 +147,7 @@ theorem xPt_div_xPt (y : (Σ k, J k) → Ω) {p q : Σ k, J k} (h : p.1 = q.1) :
 variable [∀ k, Fintype (J k)] [Fintype K]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp => simp [map_mul, hp, mConeMap, xPt, cst, tv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem aeval_xPt (y : (Σ k, J k) → Ω) (f : MRing J) :
     aeval (xPt y) f = emb K Ω (mConeMap y f) := by
@@ -157,7 +157,7 @@ theorem aeval_xPt (y : (Σ k, J k) → Ω) (f : MRing J) :
   | mul_X p n hp => simp [map_mul, hp, mConeMap, xPt, cst, tv]
 
 /- English proof (translation)
-Rewrite using `[aeval_xPt, map_eq_zero_iff _ emb_injective]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aeval_xPt_eq_zero_iff (y : (Σ k, J k) → Ω) (f : MRing J) :
     aeval (xPt y) f = 0 ↔ f ∈ mCoordIdeal y := by
@@ -178,7 +178,7 @@ def imgPt (y : (Σ k, J k) → Ω) (v : (Σ k, J₀ k) → Σ k, J k) : (Σ k, J
   fun p => ⟨xPt y (v p), IntermediateField.subset_adjoin _ _ ⟨p, rfl⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, IntermediateField.coe_add, hp, hq]`. Consider the case `mul_X p n hp => simp only [map_mul, MulMemClass.coe_mul, hp, aeval_X, imgPt]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coe_aeval_imgPt (y : (Σ k, J k) → Ω) (v : (Σ k, J₀ k) → Σ k, J k) (f : MRing J₀) :
     ((aeval (imgPt y v) f : imgField y v) : Fn K Ω) = aeval (fun p => xPt y (v p)) f := by
@@ -223,9 +223,9 @@ variable {K₀ : Type} {J₀ : K₀ → Type} {K : Type} {J : K → Type} {Ω₀
   [CharZero Ω₀] [CharZero Ω]
 
 /- English proof (translation)
-Rewrite using `[blockFnField, blockFnField, IntermediateField.adjoin_map]`. Use `congr 1`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, q, h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨p, q, h, rfl⟩, (xPt_div_xPt y h).symm⟩`. Introduce and unpack `⟨_, ⟨p, q, h, rfl⟩, rfl⟩`. Conclude with `⟨p, q, h, (xPt_div_xPt y h).symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem blockFnField_xPt (y : (Σ k, J k) → Ω) :
     blockFnField (xPt y) = (blockFnField y).map (cst K Ω).toRatAlgHom := by
@@ -239,11 +239,11 @@ theorem blockFnField_xPt (y : (Σ k, J k) → Ω) :
     exact ⟨p, q, h, (xPt_div_xPt y h).symm⟩
 
 /- English proof (translation)
-Establish `key : ∀ p q : Σ k, J₀ k, p.1 = q.1 → (xPt y ∘ v) p / (xPt y ∘ v) q = cst K Ω (i (y₀ p / y₀ q))`. Introduce `p q h`. Rewrite using `[Function.comp, Function.comp, xPt_div_xPt y (by rw [hv, hv, h]), hy, hy, map_div₀ i]`. Rewrite using `[blockFnField, blockFnField, IntermediateField.adjoin_map, IntermediateField.adjoin_map]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, q, h, rfl⟩`. Conclude with `⟨_, ⟨_, ⟨p, q, h, rfl⟩, rfl⟩, (key p q h).symm⟩`. Introduce and unpack `⟨_, ⟨_, ⟨p, q, h, rfl⟩, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨p, q, h, (key p q h).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem blockFnField_xPt_comp (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → Ω) (bk : K₀ → K)
     (v : (Σ k, J₀ k) → Σ k, J k) (hv : ∀ p, (v p).1 = bk p.1) (i : Ω₀ →+* Ω)
@@ -264,9 +264,9 @@ theorem blockFnField_xPt_comp (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k)
     exact ⟨p, q, h, (key p q h).symm⟩
 
 /- English proof (translation)
-Use `letI := i.toAlgebra`. Rewrite using `[← AlgHom.fieldRange_eq_map]`. Set `e` to `AlgEquiv.ofInjectiveField i.toRatAlgHom`. Use `symm`. Use `Algebra.finrank_eq_of_equiv_equiv e.toRingEquiv (RingEquiv.refl Ω) ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem finrank_map_top (i : Ω₀ →+* Ω) :
     Module.finrank ((⊤ : IntermediateField ℚ Ω₀).map i.toRatAlgHom) Ω =
@@ -280,7 +280,7 @@ theorem finrank_map_top (i : Ω₀ →+* Ω) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[blockFnField_xPt_comp y₀ y bk v hv i hy, blockFnField_xPt, h₀, h, IntermediateField.relfinrank_map_map, IntermediateField.relfinrank_top_right, finrank_map_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relfinrank_block (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → Ω) (bk : K₀ → K)
     (v : (Σ k, J₀ k) → Σ k, J k) (hv : ∀ p, (v p).1 = bk p.1) (i : Ω₀ →+* Ω)
@@ -293,17 +293,15 @@ theorem relfinrank_block (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → 
 end Degree
 
 /- English proof (translation)
-Introduce `K₀ K _ _ J₀ J _ _ Ω₀ Ω _ _ _ y₀ y bk bx i D d hbk hy hA₀ hA hb₀ hb hd _`. Use `haveI : CharZero Ω₀ := i.charZero`. Establish `hrel : ∀ {L : Type} {I : L → Type} [∀ k, Fintype (I k)] {F : Type} [Field F] (w : (Σ k, I k) → F) (_ : (mCoordIdeal w).IsPrime ∧ IsRelevant (mCoordIdeal w)), ∀ k, ∃ a, w ⟨k, a⟩ ≠ 0`. Introduce `L I _ F _ w h k`. Take `⟨a, ha⟩` from `h.2 k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, fun h0 => ha ?_⟩` and prove the remaining obligations. Use `show mConeMap w (X ⟨k, a⟩) = 0`. Simplify using `[mConeMap, h0]`. Use `choose c₀ hc₀ using hrel y₀ ⟨hA₀.2.1.1, hA₀.2.1.2.2⟩`. Use `choose c hc using hrel y ⟨hA.2.1.1, hA.2.1.2.2⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hv` using `GlobalTheory.CompanionTheory.Ar.Chg.isBlockMap_blkV bx hbk`. Set `v` to `GlobalTheory.CompanionTheory.Ar.Chg.blkV bk bx`. Establish `hyv : ∀ p, y (v p) = i (y₀ p)` using `fun p => hy p.1 p.2`. Set `G` to `genFib y v`. Use `haveI : CharZero G.Φ' := inferInstanceAs (CharZero (Fn K Ω))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `ch : ∀ k : FibreBlock bk, J k.1` to `fun k => c k.1`. Establish `hch : ∀ k : FibreBlock bk, G.x' ⟨k.1, ch k⟩ ≠ 0` using `fun k => xPt_ne_zero (hc k.1)`. Establish `hx : ∀ k, G.x ⟨k, c₀ k⟩ ≠ 0`. Introduce `k h0`. Establish `h1 : xPt y (v ⟨k, c₀ k⟩) = 0` using `congrArg Subtype.val h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `xPt_ne_zero ?_ h1` and prove the remaining obligations. Rewrite using `[hyv]`. Conclude with `(map_ne_zero i).2 (hc₀ k)`. Use `⟨G, ch, hch, ?_⟩` and prove the remaining obligations. Establish `main` using `GroundTheory.Heights₂.Heights.Targets.GenFibreChartDeg.proof GroundTheory.Heights₂.Heights.Inter.ChartScalingIndep.proof GroundTheory.Heights₂.Heights.Inter.AdjoinIndepRelfinrank.proof K₀ J₀ K J bk v (mCoordIdeal y) G c₀ ch hv hA.2.1.2.1 hx hch`.
-
-Use `main.trans ?_` and prove the remaining obligations. Rewrite using `[← hd]`. Conclude with `relfinrank_block y₀ y bk v (fun _ => rfl) i hyv (blockFnField_eq_top y₀ c₀ hc₀ hb₀) (blockFnField_eq_top y c hc hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_genFibre_chart_degree : ∀ (K₀ K : Type) [Fintype K₀] [Fintype K] (J₀ : K₀ → Type) (J : K → Type) [∀ k, Fintype (J₀ k)] [∀ k, Fintype (J k)] (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω] (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → Ω) (bk : K₀ → K) (bx : ∀ k, J₀ k ≃ J (bk k)) (i : Ω₀ →+* Ω) (D d : ℕ), Function.Injective bk → (∀ k a, y ⟨bk k, bx k a⟩ = i (y₀ ⟨k, a⟩)) → IsArithVar (mCoordIdeal y₀) (D + 1) → IsArithVar (mCoordIdeal y) (D + 1) → Birational y₀ → Birational y → (letI := i.toAlgebra; Module.finrank Ω₀ Ω = d) → 0 < d → ∃ (Gf : GenFibre (GlobalTheory.CompanionTheory.Ar.Chg.blkV bk bx) (mCoordIdeal y)) (ch : ∀ k : FibreBlock bk, J k.1), (∀ k : FibreBlock bk, Gf.x' ⟨k.1, ch k⟩ ≠ 0) ∧ Module.finrank Gf.Φ (IntermediateField.adjoin Gf.Φ (Set.range fun q : Σ k : FibreBlock bk, J k.1 => Gf.x' ⟨q.1.1, q.2⟩ / Gf.x' ⟨q.1.1, ch q.1⟩)) = d := by
   intro K₀ K _ _ J₀ J _ _ Ω₀ Ω _ _ _ y₀ y bk bx i D d hbk hy hA₀ hA hb₀ hb hd _

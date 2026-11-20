@@ -9,43 +9,39 @@ open scoped TensorProduct
 open PI.LocMassTypW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J ψ v hStd _ hEta`. Establish `hCM` using `hStd.1`. Establish `h2` using `finrank_tens (E := E) v hCM.2.2.1`. Use `finDim_tens (E := E) v` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨e, he, h0, h1⟩ : ∃ x : Fv F v ⊗[F] E, x * x = x ∧ x ≠ 0 ∧ x ≠ 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `etaV at hEta`. Use `split_ifs at hEta with h`. Conclude with `h`. Apply the tactic sequence `all_goals norm_num at hEta`. Use `set π₁ := p1 h2 he h0 h1 with hπ₁`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set π₂ := p2 h2 he h0 h1 with hπ₂`. Establish `hm1 : ∀ x, x * e = π₁ x • e` using `mul_e h2 he h0 h1`. Establish `hm2 : ∀ x, x * (1 - e) = π₂ x • (1 - e)` using `mul_ce h2 he h0 h1`. Establish `hdec : ∀ x, x = π₁ x • e + π₂ x • (1 - e)` using `decomp h2 he h0 h1`. Establish `hσσ` using `sigma_invol σ hCM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f := sigR (Fv F v) σ e with hf`. Establish `hff : f * f = f` using `by rw [hf, ← map_mul, he]`. Establish `hfe : f = 1 - e`. Establish `c1` using `idem_cases (show π₁ f * π₁ f = π₁ f by rw [← map_mul, hff])`. Establish `c2` using `idem_cases (show π₂ f * π₂ f = π₂ f by rw [← map_mul, hff])`.
+Apply the first step, then apply the next step to every resulting obligation. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfd` using `hdec f`. Apply the tactic sequence `rcases c1 with a | a <;> rcases c2 with b | b <;> rw [a, b] at hfd`. It suffices to derive a contradiction. Apply `h0` to reduce the goal to its premises. Rewrite using `[← sigR_sigR σ v hσσ e, ← hf, hfd]`.
+Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `using hfd`. It suffices to derive a contradiction. Take `⟨y, hy⟩` from `sigma_ne_id σ hCM`. Establish `hfe : f = e` using `by simpa using hfd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hid : ∀ x, sigR (Fv F v) σ x = x`. Introduce `x`. Use `conv_lhs => rw [hdec x]`. Rewrite using `[map_add, sigR_smul, sigR_smul, map_sub, map_one, ← hf, hfe]`. Conclude with `(hdec x).symm`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `hy` to reduce the goal to its premises. Apply `inclR_injective (E := E) v` to reduce the goal to its premises. Rewrite using `[← sigR_inclR, hid]`. It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← sigR_sigR σ v hσσ e, ← hf, hfd]`. Simplify using the standard rewrite rules. Establish `hσe : sigR (Fv F v) σ e = 1 - e` using `hfe`. Establish `hσ1 : sigR (Fv F v) σ (1 - e) = e`. Rewrite using `[map_sub, map_one, hσe, sub_sub_cancel]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Establish `hp2σ : ∀ x, π₂ (sigR (Fv F v) σ x) = π₁ x`. Introduce `x`. Apply `uniq2 h1 (K := Fv F v)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hp1σ : ∀ x, π₁ (sigR (Fv F v) σ x) = π₂ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Apply `uniq1 h0 (K := Fv F v)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hsc : ∀ c : Fv F v, π₁ (sc (E` using `E) v c) = c ∧ π₂ (sc (E := E) v c) = c := by`. Introduce `c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨uniq1 h0 (K := Fv F v) ?_, uniq2 h1 (K := Fv F v) ?_⟩` and prove the remaining obligations. Rewrite using `[← hm1, PI.LocMassTypU.sc_mul_eq_smul]`. Rewrite using `[← hm2, PI.LocMassTypU.sc_mul_eq_smul]`. Establish `he1 : π₁ e = 1` using `uniq1 h0 (K := Fv F v) (by rw [← hm1, he, one_smul])`. Establish `he2 : π₂ e = 0` using `uniq2 h1 (K := Fv F v) (by rw [← hm2, idem_mul_compl he, zero_smul])`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hce1 : π₁ (1 - e) = 0` using `by rw [map_sub, map_one, he1, sub_self]`. Establish `hce2 : π₂ (1 - e) = 1` using `by rw [map_sub, map_one, he2, sub_zero]`. Set `φ : (Fv F v ⊗[F] E) →+* Fv F v × Fv F v` to `RingHom.prod π₁ π₂`. Establish `hbij : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x y hxy`. Establish `h1' : π₁ x = π₁ y` using `congrArg Prod.fst hxy`. Establish `h2' : π₂ x = π₂ y` using `congrArg Prod.snd hxy`. Rewrite using `[hdec x, hdec y, h1', h2']`. Introduce and unpack `⟨a, b⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨sc (E := E) v a * e + sc (E := E) v b * (1 - e), ?_⟩` and prove the remaining obligations. Use `show (π₁ _, π₂ _) = (a, b)`. Rewrite using `[map_add, map_add, map_mul, map_mul, map_mul, map_mul, (hsc a).1, (hsc b).1, (hsc a).2, (hsc b).2, he1, he2, hce1, hce2]`. Simplify using the standard rewrite rules. Set `spl : E ⊗[F] Fv F v ≃+* Fv F v × Fv F v` to `(cm (E := E) v).toRingEquiv.trans (RingEquiv.ofBijective φ hbij)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspl_apply : ∀ y, spl y = (π₁ (cm (E` using `E) v y), π₂ (cm (E := E) v y)) := fun _ => rfl`. Establish `hspl : ∀ a : v.adicCompletion F, spl ((1 : E) ⊗ₜ[F] a) = (a, a)`. Introduce `a`. Rewrite using `[hspl_apply]`. Establish `e1 : cm (E` using `E) v ((1 : E) ⊗ₜ[F] a) = sc (E := E) v a := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[cm, sc]`. Rewrite using `[e1, (hsc a).1, (hsc a).2]`. Establish `hOE : ∀ x, x ∈ OEv (E` using `E) v ↔ π₁ x ∈ v.adicCompletionIntegers F ∧ π₂ x ∈ v.adicCompletionIntegers F := by`. Introduce `x`. Rewrite using `[oev_iff_tensInt, split_integral_local F E v spl hspl, hspl_apply]`.
-
-Simplify using the standard rewrite rules. Use `⟨e, π₁, π₂, he, hσe, fun x => ?_, fun x => ?_, he1, he2, hsc, hp2σ, hp1σ, hOE⟩` and prove the remaining obligations. Rewrite using `[PI.LocMassTypU.sc_mul_eq_smul]`. Conclude with `hm1 x`. Rewrite using `[PI.LocMassTypU.sc_mul_eq_smul]`.
-
-Conclude with `hm2 x`.
+A detailed English derivation is pending.
 -/
 theorem split_reduction : SplitR := by
   intro F E _ _ _ _ _ σ n J ψ v hStd _ hEta

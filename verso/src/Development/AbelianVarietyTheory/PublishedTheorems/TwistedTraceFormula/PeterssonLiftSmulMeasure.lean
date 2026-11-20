@@ -25,9 +25,9 @@ theorem range_iff (h : A.rank < B.rank) :
   omega
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Establish `hr` using `hη.2.2.1`. Conclude with `⟨η ^ k, ⟨by`. Establish `: ((η ^ k : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => η x ^ k` using `by funext x; simp`. Rewrite using `[this]; exact hη.1.1.pow k, fun x => by rw [MonoidHom.pow_apply, hη.1.2 x, one_pow]⟩,`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `hr.1, fun e he a => by rw [MonoidHom.pow_apply, hr.2 e he a, pow_one]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_splitting (D : D7) (k : ℕ) : ∃ χ, IsHeckeChar D χ ∧ ResEta D χ k := by
   obtain ⟨η, hη⟩ := GlobalTheory.WeilParts.exists_isEtaTilde_unramified D
@@ -38,13 +38,13 @@ theorem exists_splitting (D : D7) (k : ℕ) : ∃ χ, IsHeckeChar D χ ∧ ResEt
     hr.1, fun e he a => by rw [MonoidHom.pow_apply, hr.2 e he a, pow_one]⟩
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `GlobalTheory.StdAdelicChar.exists_isStdChar D`. Set `A : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral n`. Set `B : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral k`. Establish `hA : IsAniso A` using `GlobalTheory.ThetaMean.Model.isAniso_posSpace n`. Establish `hB : Formalism.MainNotions.SchurIrreducible.wittIdx B = 0` using `(wittIdx_eq_wittIndex B).trans (wittIndex_eq_zero_iff_isAniso.2 (GlobalTheory.ThetaMean.Model.isAniso_posSpace k))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : A.SigOK` using `Examples₂.posSpace_sigOK _ _`. Take `⟨χA, h1, h2⟩` from `exists_splitting D A.rank`. Take `⟨χB, h3, h4⟩` from `exists_splitting D B.rank`. Take `⟨ω, hω⟩` from `H D ψ A B χA χB hψ h1 h3 h2 h4`. Take `⟨ωd, hωd, hc, -⟩` from `hD ψ A B χA χB ω hω`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `exists_isMaj A`. Take `⟨ν, 𝓕, hν⟩` from `exists_isCovolOne D B.rank A.rank`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨C, hC⟩` from `exists_isCartanFrame A hs`. Use `haveI hr := AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D A Measure.haar inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcc : (fun _ => (1 : ℂ)) ∈ cuspCont A` using `⟨continuous_const, fun _ _ _ => rfl, fun r C hC => absurd hC (hA r C)⟩`. Use `⟨A, B, ψ, χA, χB, ω, ωd, a, ν, 𝓕, θ, C, Measure.haar, inferInstance, hr, Measure.haar, _, rfl, rfl, hB, hω, hωd, hc, ha, hν, hθ, hs, hC, inferInstance, isIrredSubrep_const, ?_, lowerLiftsZero_of_wittIdx_eq_zero hB _ _ _ _ _, ?_, _, Submodule.mem_span_singleton_self _, MemL2Quotie …` and prove the remaining obligations. Conclude with `(Submodule.span_singleton_le_iff_mem _ _).2 (toL2_mem_cuspidal _ hcc)`. Conclude with `⟨⟨isAutFunSm_const θ A 1, .of_invariant fun _ _ _ => rfl⟩, hcc⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hypotheses_inhabited (H : GlobalTheory.Published.WeilRepresentationUnitaryPair) (D : D7) (hD : DoublingIso D) (n k : ℕ) :
     ∃ (A B : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χA χB : (AE D)ˣ →* Circle)
@@ -81,13 +81,13 @@ theorem hypotheses_inhabited (H : GlobalTheory.Published.WeilRepresentationUnita
   · exact ⟨⟨isAutFunSm_const θ A 1, .of_invariant fun _ _ _ => rfl⟩, hcc⟩
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_pos (Measure.measure_univ_ne_zero.2 (NeZero.ne _)) (measure_ne_top _ _)`.
+A detailed English derivation is pending.
 -/
 theorem vol_pos (mH : Measure (GA D B)) [mH.IsHaarMeasure] : 0 < (autMeasure B mH).real Set.univ :=
   ENNReal.toReal_pos (Measure.measure_univ_ne_zero.2 (NeZero.ne _)) (measure_ne_top _ _)
 
 /- English proof (translation)
-Establish `e : AutomorphicL2Unitary.quotMeasure (GQ A) (c • μ) = c • AutomorphicL2Unitary.quotMeasure (GQ A) μ` using `quotMeasure_smul (c : ℝ≥0∞)`. Rewrite using `[petersson, pet, e, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem petersson_smul_measure (μ : Measure (GA D A)) (c : ℝ≥0) (φ φ' : GA D A → ℂ) :
     petersson A (c • μ) φ φ' = c * petersson A μ φ φ' := by
@@ -96,7 +96,7 @@ theorem petersson_smul_measure (μ : Measure (GA D A)) (c : ℝ≥0) (φ φ' : G
   rfl
 
 /- English proof (translation)
-Establish `e : autMeasure B (c • mH) = c • autMeasure B mH` using `quotMeasure_smul (c : ℝ≥0∞)`. Establish `h : ((c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc`. Rewrite using `[petersson_smul_measure, e, measureReal_nnreal_smul_apply]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem value_smul (mH : Measure (GA D B)) {c : ℝ≥0} (hc : c ≠ 0) (φ φ' : GA D B → ℂ) :
     (((autMeasure B (c • mH)).real Set.univ : ℝ) : ℂ)⁻¹ * petersson B (c • mH) φ φ' =
@@ -110,7 +110,7 @@ theorem value_smul (mH : Measure (GA D B)) {c : ℝ≥0} (hc : c ≠ 0) (φ φ' 
 variable {ω : GA D A × GA D B →* Module.End ℂ (WO A B → ℂ)} {m : Measure (GA D A)}
 
 /- English proof (translation)
-Establish `e : ∀ Φ f, thetaLift ω (c • m) Φ f = (c : ℂ) • thetaLift ω m Φ f` using `fun Φ f =>`. Use function extensionality and compare the values at `fun h => petersson_smul_measure m c _ _`. Rewrite using `[e, e, petersson_smul_left, ← petersson_conj_symm, petersson_smul_left, map_mul, petersson_conj_symm, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem petersson_lift_smul_measure (mH : Measure (GA D B)) (c : ℝ≥0) (Φ₁ Φ₂ : WO A B → ℂ) (f₁ f₂ : GA D A → ℂ) :
     petersson B mH (thetaLift ω (c • m) Φ₁ f₁) (thetaLift ω (c • m) Φ₂ f₂) =
@@ -122,7 +122,7 @@ theorem petersson_lift_smul_measure (mH : Measure (GA D B)) (c : ℝ≥0) (Φ₁
   ring
 
 /- English proof (translation)
-Rewrite using `[thetaLift_smul, thetaLift_smul, petersson_smul_left, ← petersson_conj_symm, petersson_smul_left, map_mul, petersson_conj_symm, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem petersson_lift_smul (mH : Measure (GA D B)) (c₁ c₂ : ℂ) (Φ₁ Φ₂ : WO A B → ℂ) (f₁ f₂ : GA D A → ℂ) :
     petersson B mH (thetaLift ω m Φ₁ (c₁ • f₁)) (thetaLift ω m Φ₂ (c₂ • f₂)) =
@@ -132,7 +132,7 @@ theorem petersson_lift_smul (mH : Measure (GA D B)) (c₁ c₂ : ℂ) (Φ₁ Φ�
   ring
 
 /- English proof (translation)
-Rewrite using `[dblInt_of_factor (A := fun g => thetaKO ω g h Φ₁) (B := fun g => thetaKO ω g h Φ₂) fun g₁ g₂ => ((hc Φ₁ Φ₂ h₁ h₂).2 g₁ g₂ h).2, thetaLift, thetaLift, petersson_conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dblInt_theta [SigmaFinite m] {ψ : AddChar (AF D.host.F) ℂ} {χB : (AE D)ˣ →* Circle}
     {ωd : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)} (hc : ThetaClause ψ A B χB ω ωd)
@@ -143,13 +143,13 @@ theorem dblInt_theta [SigmaFinite m] {ψ : AddChar (AF D.host.F) ℂ} {χB : (AE
     fun g₁ g₂ => ((hc Φ₁ Φ₂ h₁ h₂).2 g₁ g₂ h).2, thetaLift, thetaLift, petersson_conj_symm]
 
 /- English proof (translation)
-Establish `h0 : delta A B Φ₁ 0 = 0` using `funext fun x => by simp [IndefiniteRowSideFullHecke.SphericalZero.delta]`. Establish `h1 : flat A a (swSec A B ωd ν 𝓕 (delta A B Φ₁ 0)) (sZero A B) = fun _ _ => 0`. Use function extensionality and compare the values at `s g`. Use `(flatH_apply _ _ _ _).trans ?_` and prove the remaining obligations. Simplify using `[h0, swSec, IndefiniteRowSideFullHecke.SphericalZero.evZero]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2 : thetaLift ω m 0 f₂ = 0` using `funext fun h => by simp [thetaLift, petersson, pet, AutomorphicL2Unitary.descend, thetaKO]`. Establish `h3 : eis A (fun _ => (0 : ℂ)) = fun _ => 0` using `funext fun g => by simp [eis, cosetSum, term]`. Establish `h4 : dblIntegrand A χB⁻¹ (fun _ => (0 : ℂ)) f₁ f₂ = fun _ => 0` using `funext fun g => by simp [dblIntegrand]`. Establish `h5 : dblIntegrandQ A χB⁻¹ (fun _ => (0 : ℂ)) f₁ f₂ = fun _ => 0` using `funext fun g => by simp [dblIntegrandQ, h4]`. Rewrite using `[h1, h2, show petersson B mH (thetaLift ω m Φ₁ f₁) 0 = 0 by simp [petersson, pet, AutomorphicL2Unitary.descend], mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun s _ => ⟨fun _ _ _ => rfl, fun g => ?_⟩, fun s _ => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[EisConv, CosetConv, term, summable_zero]`. Rewrite using `[h3, DblConv, h4, h5]`. Conclude with `⟨fun _ _ _ => rfl, integrable_zero _ _ _⟩`. Establish `: zeta A χB⁻¹ m (fun _ _ => (0 : ℂ)) f₁ f₂ = fun _ => 0` using `funext fun s => by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[zeta, h3, dblInt, h5, integral_zero]`. Rewrite using `[this]`. Conclude with `(GlobalTheory.Cont.holValueAt_const 0 _).valueAt`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conclusion_zero (χB : (AE D)ˣ →* Circle) (ωd : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ))
     (a : GL (Fin A.rank) (AE D)) (ν : Measure (WO A B)) (𝓕 : Set (WO A B)) (mH : Measure (GA D B)) (Φ₁ : WO A B → ℂ)

@@ -4,7 +4,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASSnRepDone
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-The claim follows from `modelPlaceBuilt2_of_polyS hJ JA.SSn.Rep.Core.TC.PR.polynomial_radial_holds`.
+A detailed English derivation is pending.
 -/
 theorem modelPlaceBuilt2_of_jf (hJ : JfSmoothDS) : Formalism.FourierDecayAlt.JCT.ModelPlaceBuilt2 :=
   modelPlaceBuilt2_of_polyS hJ JA.SSn.Rep.Core.TC.PR.polynomial_radial_holds

@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma ad_mul {S : Type} [CommRing S] (τ : S →+* S) {a b c : ℕ}
     (A : Matrix (Fin a) (Fin b) S) (B : Matrix (Fin b) (Fin c) S) :
@@ -9,7 +9,7 @@ private lemma ad_mul {S : Type} [CommRing S] (τ : S →+* S) {a b c : ℕ}
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma ad_add {S : Type} [CommRing S] (τ : S →+* S) {a b : ℕ}
     (A B : Matrix (Fin a) (Fin b) S) :
@@ -18,7 +18,7 @@ private lemma ad_add {S : Type} [CommRing S] (τ : S →+* S) {a b : ℕ}
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[hτ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma ad_ad {S : Type} [CommRing S] (τ : S →+* S) (hτ : ∀ x, τ (τ x) = x) {a b : ℕ}
     (A : Matrix (Fin a) (Fin b) S) :
@@ -27,14 +27,14 @@ private lemma ad_ad {S : Type} [CommRing S] (τ : S →+* S) (hτ : ∀ x, τ (�
   simp [hτ]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_one τ (map_zero τ) (map_one τ), Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma ad_one {S : Type} [CommRing S] (τ : S →+* S) {a : ℕ} :
     (((1 : Matrix (Fin a) (Fin a) S)).map τ).transpose = 1 := by
   rw [Matrix.map_one τ (map_zero τ) (map_one τ), Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_map (map_zero τ), Matrix.diagonal_transpose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `h i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private lemma ad_diag_mul {S : Type} [CommRing S] (τ : S →+* S) {r : ℕ} (u v : Fin r → S)
     (h : ∀ i, τ (u i) * v i = 1) :
@@ -46,47 +46,45 @@ private lemma ad_diag_mul {S : Type} [CommRing S] (τ : S →+* S) {r : ℕ} (u 
   exact h i
 
 /- English proof (translation)
-Introduce `S _ τ hτ n r J g P m X Y C Xd Yd d e hJ hdet hXd hYd hXX hYY hXY hg hC hde hP hm`. Establish `adXd : (Xd.map τ).transpose = J * X` using `by rw [hXd, ad_mul, hJ, ad_ad τ hτ]`. Establish `adYd : (Yd.map τ).transpose = J * Y` using `by rw [hYd, ad_mul, hJ, ad_ad τ hτ]`. Establish `hYX : Yd * X = 1`. Establish `h` using `congrArg (fun A => (A.map τ).transpose) hXY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ad_mul, adXd, ad_one] at h`. Rewrite using `[hYd, Matrix.mul_assoc, h]`. Establish `hed : ((Matrix.diagonal e).map τ).transpose * Matrix.diagonal d = 1` using `ad_diag_mul τ e d hde`. Establish `hdeD : ((Matrix.diagonal d).map τ).transpose * Matrix.diagonal e = 1` using `ad_diag_mul τ d e (fun i => by`. Establish `h` using `congrArg τ (hde i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_mul, hτ, map_one, mul_comm]`. Conclude with `h)`. Establish `XX : ∀ {k : ℕ} (A : Matrix (Fin r) (Fin k) S), Xd * (X * A) = 0` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, hXX, Matrix.zero_mul]`. Establish `YY : ∀ {k : ℕ} (A : Matrix (Fin r) (Fin k) S), Yd * (Y * A) = 0` using `fun A => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, hYY, Matrix.zero_mul]`. Establish `XY : ∀ {k : ℕ} (A : Matrix (Fin r) (Fin k) S), Xd * (Y * A) = A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, hXY, Matrix.one_mul]`. Establish `YX : ∀ {k : ℕ} (A : Matrix (Fin r) (Fin k) S), Yd * (X * A) = A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, hYX, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `PX : P * X = 0`. Rewrite using `[hP]`. Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hYX, hXX, Matrix.mul_one, Matrix.mul_zero, sub_self, sub_zero]`. Establish `PY : P * Y = 0`. Rewrite using `[hP]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hYY, hXY, Matrix.mul_one, Matrix.mul_zero, sub_zero, sub_self]`. Establish `XdP : Xd * P = 0`. Rewrite using `[hP]`. Simplify using `only [Matrix.mul_sub, Matrix.mul_one, XX, XY, sub_zero, sub_self]`. Establish `YdP : Yd * P = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Simplify using `only [Matrix.mul_sub, Matrix.mul_one, YX, YY, sub_zero, sub_self]`. Establish `PP : P * P = P`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, YdP, XdP, Matrix.mul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `PX' : ∀ {k : ℕ} (A : Matrix (Fin r) (Fin k) S), P * (X * A) = 0` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, PX, Matrix.zero_mul]`. Establish `PY' : ∀ {k : ℕ} (A : Matrix (Fin r) (Fin k) S), P * (Y * A) = 0` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, PY, Matrix.zero_mul]`. Establish `XdP' : ∀ {k : ℕ} (A : Matrix (Fin n) (Fin k) S), Xd * (P * A) = 0` using `fun A => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, XdP, Matrix.zero_mul]`. Establish `YdP' : ∀ {k : ℕ} (A : Matrix (Fin n) (Fin k) S), Yd * (P * A) = 0` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, YdP, Matrix.zero_mul]`. Establish `PP' : ∀ {k : ℕ} (A : Matrix (Fin n) (Fin k) S), P * (P * A) = P * A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, PP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hed' : ∀ {k : ℕ} (A : Matrix (Fin r) (Fin k) S), ((Matrix.diagonal e).map τ).transpose * (Matrix.diagonal d * A) = A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, hed, Matrix.one_mul]`. Establish `hde' : ∀ {k : ℕ} (A : Matrix (Fin r) (Fin k) S), ((Matrix.diagonal d).map τ).transpose * (Matrix.diagonal e * A) = A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, hdeD, Matrix.one_mul]`. Establish `hmX : m * X = X * Matrix.diagonal d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, hYX, hXX, PX, Matrix.mul_one, Matrix.mul_zero, add_zero]`. Establish `hmY : m * Y = Y * Matrix.diagonal e`. Rewrite using `[hm]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, hYY, hXY, PY, Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hPJ : (P.map τ).transpose * J = J * P`. Establish `hPe : P + X * Yd + Y * Xd = 1` using `by rw [hP]; abel`. Establish `h` using `congrArg (fun A => (A.map τ).transpose) hPe`. Simplify using `only [ad_add, ad_mul, adXd, adYd, ad_one] at h`. Establish `h2 : (P.map τ).transpose = 1 - (J * Y) * (X.map τ).transpose - (J * X) * (Y.map τ).transpose`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Normalize the expressions using the abelian group laws. Rewrite using `[h2, hP]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, ← hXd, ← hYd]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hPJ' : ∀ {k : ℕ} (A : Matrix (Fin n) (Fin k) S), (P.map τ).transpose * (J * A) = J * (P * A)` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, hPJ, Matrix.mul_assoc]`. Establish `hg' : ∀ {k : ℕ} (A : Matrix (Fin n) (Fin k) S), (g.map τ).transpose * (J * (g * A)) = J * A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hg]`. Establish `hgX : (g.map τ).transpose * (J * X) = J * (X * (C.map τ).transpose)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun A => (A.map τ).transpose) hC`. Simplify using `only [ad_mul, adXd] at h`. Rewrite using `[h, Matrix.mul_assoc]`. Establish `hgX' : ∀ {k : ℕ} (A : Matrix (Fin r) (Fin k) S), (g.map τ).transpose * (J * (X * A)) = J * (X * ((C.map τ).transpose * A))` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc J X A, ← Matrix.mul_assoc, hgX]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `hC' : ∀ {k : ℕ} (A : Matrix (Fin n) (Fin k) S), Xd * (g * A) = C * (Xd * A)` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, hC, Matrix.mul_assoc]`. Establish `hmid : (g.map τ).transpose * (J * (P * (g * P))) = J * P - J * (X * ((C.map τ).transpose * (Yd * (g * P))))`. Establish `hexp : ∀ {k : ℕ} (A : Matrix (Fin n) (Fin k) S), P * A = A - X * (Yd * A) - Y * (Xd * A)` using `fun A => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`. Rewrite using `[hexp (g * P)]`. Simplify using `only [Matrix.mul_sub, hg', hgX', hC', XdP, Matrix.mul_zero, sub_zero]`. Establish `hadm : (m.map τ).transpose = (J * Y) * (((Matrix.diagonal d).map τ).transpose * (X.map τ).transpose) + (J * X) * (((Matrix.diagonal e).map τ).transpose * (Y.map τ).transpose) + (P.map τ).transpose * ((g.map τ).transpose * (P.map τ).transpose)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Simplify using `only [ad_add, ad_mul, adXd, adYd, Matrix.mul_assoc]`. Establish `hiso : (m.map τ).transpose * J * m = J`. Establish `hmJ : (m.map τ).transpose * J = J * (Y * (((Matrix.diagonal d).map τ).transpose * Xd)) + J * (X * (((Matrix.diagonal e).map τ).transpose * Yd)) + (P.map τ).transpose * ((g.map τ).transpose * (J * P))`. Rewrite using `[hadm, hXd, hYd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, hPJ]`. Rewrite using `[hmJ]`. Use `conv_lhs => rw [hm]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, XX, XY, YX, YY, XdP', YdP', PX', PY', PP', XdP, YdP, hed', hde', Matrix.mul_zero, add_zero, zero_add, hmid, Matrix.mul_sub, hPJ', PP]`. Use `conv_rhs => rw [show J = J * (1 : Matrix (Fin n) (Fin n) S) from (Matrix.mul_one J).symm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[show (1 : Matrix (Fin n) (Fin n) S) = P + X * Yd + Y * Xd by rw [hP]; abel]`. Simplify using `only [Matrix.mul_add]`. Normalize the expressions using the abelian group laws. Use `⟨?_, hiso, hmX, hmY⟩` and prove the remaining obligations. Establish `h` using `congrArg Matrix.det hiso`.
-
-Rewrite `h` using `[Matrix.det_mul]`. Rewrite `hdet` using `[← h]`. Conclude with `isUnit_of_mul_isUnit_right hdet`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_block_diagonal :
     ∀ {S : Type} [CommRing S] (τ : S →+* S), (∀ x, τ (τ x) = x) → ∀ {n r : ℕ}

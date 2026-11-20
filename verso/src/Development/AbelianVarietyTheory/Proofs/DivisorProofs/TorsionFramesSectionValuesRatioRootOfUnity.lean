@@ -26,20 +26,20 @@ def cstK (z : (TFK (R := V) (FractionRing V)).left) :
     (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom
 
 /- English proof (translation)
-The claim follows from `gs_eq (𝟙 _) z ⊤ trivial _`.
+A detailed English derivation is pending.
 -/
 theorem cst_eq_cstK (z : (TFK (R := V) (FractionRing V)).left) (a : FractionRing V) :
     GlobalTheory.UT.cst (R := V) (FractionRing V) z a = cstK z a :=
   gs_eq (𝟙 _) z ⊤ trivial _
 
 /- English proof (translation)
-The claim follows from `Subsingleton.elim (α := PrimeSpectrum (FractionRing V)) z z'`.
+A detailed English derivation is pending.
 -/
 theorem pt_eq (z z' : (TFK (R := V) (FractionRing V)).left) : z = z' :=
   Subsingleton.elim (α := PrimeSpectrum (FractionRing V)) z z'
 
 /- English proof (translation)
-Introduce `a`. Take `⟨U, hU, s, rfl⟩` from `(TFK (R := V) (FractionRing V)).left.presheaf.germ_exist a`. Take `rfl : U = ⊤` from `eq_top_iff.2 fun y _ => pt_eq z y ▸ hU`. Take `⟨x, hx⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv).2 s`. Conclude with `⟨x, congrArg ((TFK (R := V) (FractionRing V)).left.presheaf.germ ⊤ z trivial).hom hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cstK_surj (z : (TFK (R := V) (FractionRing V)).left) : Function.Surjective (cstK (V := V) z) := by
   intro a
@@ -49,11 +49,11 @@ theorem cstK_surj (z : (TFK (R := V) (FractionRing V)).left) : Function.Surjecti
   exact ⟨x, congrArg ((TFK (R := V) (FractionRing V)).left.presheaf.germ ⊤ z trivial).hom hx⟩
 
 /- English proof (translation)
-Set `z : (TFK (R` to `V) (FractionRing V)).left := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing V))`. Use `choose J' hJ' using fun χ : (TFK (R := V) (FractionRing V)).left ⟶ A.A.left => Geo.Tor.exists_chart A.isLB (χ z)`. Use `replace hJ' : Good A.L z J' := hJ'`. Take `⟨l, hl⟩` from `cstK_surj z (Geo.Tor.val e' (𝟙 _) z J' * (Geo.Tor.val e (𝟙 _) z J')⁻¹).val`. Use `⟨l, fun h => ?_, fun z' J hJ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hl` using `[h, map_zero]`. Conclude with `Units.ne_zero _ hl.symm`. Take `rfl` from `pt_eq z z'`. Establish `t₁ : Geo.Tor.val e (𝟙 _) z J = _ * Geo.Tor.val e (𝟙 _) z J'` using `gen_trans he (𝟙 _) z (hJ.mem _ (𝟙 _)) (hJ'.mem _ (𝟙 _))`. Establish `t₂ : Geo.Tor.val e' (𝟙 _) z J = _ * Geo.Tor.val e' (𝟙 _) z J'` using `gen_trans he' (𝟙 _) z (hJ.mem _ (𝟙 _)) (hJ'.mem _ (𝟙 _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hl, t₁, t₂, ← Units.val_mul]`. Use `congr 1`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem frame_ratio {A : PolAV (Sp (FractionRing V))} {x : TFK (R := V) (FractionRing V) ⟶ A.A} {e e' : FrAt x}
     (he : e.IsGen) (he' : e'.IsGen) : ∃ l : FractionRing V, l ≠ 0 ∧ ∀ z J, Good A.L z J →
@@ -81,19 +81,19 @@ end GlobalTheory.Poinc.TorsRatio
 namespace GlobalTheory.Poinc.TorsRatio
 
 /- English proof (translation)
-Introduce `V _ _ A ρA _ N _ x e e' H H' th c hv`. Take `⟨-, he, α, hα, nα, cα⟩` from `H`. Take `⟨-, he', α', hα', nα', cα'⟩` from `H'`. Take `⟨l, hl0, hl⟩` from `frame_ratio he he'`. Establish `hp : Function.Surjective A.A.hom.appTop.hom` using `(GlobalTheory.globalFns_holds _ _ A.isAb).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hαα : ∀ (Z : Scheme.{0}) (r : Z ⟶ A.A.left) (z : Z) J, Good A.L z J → Geo.Tor.val α r z J = Geo.Tor.val α' r z J` using `gen_unique A.isLB A.A.hom (eSec A.A) (Over.w η[A.A]) hp hα hα' (fun w I hI => by`. Establish `a` using `val_corr hI nα (𝟙 _)`. Establish `b` using `val_corr hI nα' (𝟙 _)`. Rewrite `a`, `b` using `[val_pull hI, Category.id_comp]`. Conclude with `a.trans b.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `z : (TFK (R` to `V) (FractionRing V)).left := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing V))`. Use `choose J hJ using fun χ : (TFK (R := V) (FractionRing V)).left ⟶ A.A.left => Geo.Tor.exists_chart A.isLB (χ z)`. Use `replace hJ : Good A.L z J := hJ`. Establish `q : Geo.Tor.val e (𝟙 _) z J ^ ((N : ℤ) ^ 2) = Geo.Tor.val e' (𝟙 _) z J ^ ((N : ℤ) ^ 2)`. Establish `a` using `val_corr hJ cα (𝟙 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `val_corr hJ cα' (𝟙 _)`. Establish `p₁ : Geo.Tor.val (powFrame A.A A.L x e ((N : ℤ) ^ 2)) (𝟙 _) z J = Geo.Tor.val e (𝟙 _) z J ^ ((N : ℤ) ^ 2)` using `map_zpow _ _ _`. Establish `p₂ : Geo.Tor.val (powFrame A.A A.L x e' ((N : ℤ) ^ 2)) (𝟙 _) z J = Geo.Tor.val e' (𝟙 _) z J ^ ((N : ℤ) ^ 2)` using `map_zpow _ _ _`. Rewrite `a`, `b` using `[val_mul hJ, val_pull hJ]`. Rewrite using `[← p₁, ← p₂, a, b, hαα _ _ z J hJ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlN : l ^ (N ^ 2) = 1`. Establish `q'` using `congrArg Units.val q`. Rewrite `q'` using `[show ((N : ℤ) ^ 2) = ((N ^ 2 : ℕ) : ℤ) by push_cast; ring, zpow_natCast, zpow_natCast, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hl z J hJ, mul_pow, ← map_pow]`. Establish `hu : IsUnit ((Geo.Tor.val e (𝟙 _) z J).val ^ (N ^ 2))` using `(Units.isUnit _).pow _`. Establish `h1 : cstK z (l ^ (N ^ 2)) = cstK z 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one]`. Conclude with `hu.mul_left_inj.1 (by rw [_root_.one_mul]; exact q'.symm)`. Conclude with `(cstK z).injective h1`. Use `⟨l⁻¹, by rw [inv_pow, hlN, inv_one], fun z' J' hJ' => ?_⟩` and prove the remaining obligations. Rewrite using `[hv z' J' hJ']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `r₁ : Geo.Tor.val (powFrame A.A A.L x e ((1 : ℕ) : ℤ)) (𝟙 _) z' J' = Geo.Tor.val e (𝟙 _) z' J' ^ ((1 : ℕ) : ℤ)` using `map_zpow _ _ _`. Establish `r₂ : Geo.Tor.val (powFrame A.A A.L x e' ((1 : ℕ) : ℤ)) (𝟙 _) z' J' = Geo.Tor.val e' (𝟙 _) z' J' ^ ((1 : ℕ) : ℤ)` using `map_zpow _ _ _`. Rewrite using `[r₁, r₂, Nat.cast_one, zpow_one, zpow_one, hl z' J' hJ']`. Simplify using `only [id, cst_eq_cstK]`. Rewrite using `[← _root_.mul_assoc, ← map_mul, mul_comm l⁻¹ c, inv_mul_cancel_right₀ hl0]`.
+A detailed English derivation is pending.
 -/
 theorem valAt_torsFrame_ratio : ∀ (V : Type) [CommRing V] [IsDomain V] (A : PolAV (Sp (FractionRing V)))
     (ρA : LB.Gen (A.L.pull (eSec A.A))), ρA.IsGen → ∀ (N : ℕ), 1 ≤ N →

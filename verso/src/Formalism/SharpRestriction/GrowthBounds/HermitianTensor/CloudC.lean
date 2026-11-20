@@ -11,9 +11,9 @@ section
 variable {p n' : ℕ} {R : RS p n'} {m : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `show x ∈ toV X (Hten R.O X (fun s : Fin n' => extO R.O R.ι R.σ s.val e.src))`. Rewrite using `[hs]`. Rewrite `h1` using `[one_zpow, one_smul]`. Then use the resulting hypothesis. Use `(cc_mem_scale (zpow_ne_zero _ R.w_ne)).2 ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_neg, inv_inv]`. Use `show _ ∈ toV X (Hten R.O X (fun s : Fin n' => LeAt p R.ι R.σ R.w s.val e))`. Rewrite using `[hle]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_elem (X : Fin n' → Fin (m + 1) → ℤ) (e : Edge R.W R.Qq (m + 1))
     (G : Fin n' → Matrix (Fin (m + 1)) (Fin (m + 1)) R.Kf)
@@ -35,31 +35,27 @@ theorem cc_elem (X : Fin n' → Fin (m + 1) → ℤ) (e : Edge R.W R.Qq (m + 1))
 end
 
 /- English proof (translation)
-Introduce `p n' R mm hmm TT a ccl aw bw lam0 A B hBase hDom hzero hAB h8 e he`. Take `⟨mH, mU, abelian₂, hint, hel⟩` from `h p n' R mm hmm TT a ccl aw bw lam0 A B hBase hDom hzero hAB h8 _ _ _ _ _ rfl rfl rfl rfl rfl`. Take `⟨G, hG, hs, hle, ht⟩` from `cc_edge R e he`. Take `⟨nb, z0, s, s', ka, hnb, hka, h24, hmem⟩` from `hel G hG`. Establish `hw : algebraMap R.O R.Kf R.w ≠ 0` using `R.w_ne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hIH : IntB R mH` using `fun M hM => (hint M hM).1`. Establish `hIU : IntB R mU` using `fun M hM => (hint M hM).2.1`. Establish `hIL : IntB R abelian₂` using `fun M hM => (hint M hM).2.2`. Take `⟨hlo1, hlo2⟩` from `cc_lo TT ccl aw bw lam0 A B hBase hzero hAB`. Take `⟨hlo1', hlo2'⟩` from `cc_dualW TT _ _ hlo1 hlo2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hze1 : ∀ s ∈ TT, flatW (mm + 1) (fun _ : TT => 2 * ccl) (fun _ : TT => 2 * ccl) s 0 = ((2 * ccl : ℕ) : ℤ) ∧ flatW (mm + 1) (fun _ : TT => 2 * ccl) (fun _ : TT => 2 * ccl) s (Fin.last (mm + 1)) = -((2 * ccl : ℕ) : ℤ)` using `fun s hs => ⟨cc_flat_zero _ _ _ s hs, cc_flat_last _ _ _ s hs⟩`. Take `⟨aze, -⟩` from `cc_Ar_of TT _ _ hze1 (fun s hs => cc_flat_off _ _ _ s hs)`. Take `⟨alo, -⟩` from `cc_Ar_of TT _ _ hlo1 hlo2`. Take `⟨alo', elo'⟩` from `cc_Ar_of TT _ _ hlo1' hlo2'`. Establish `aHp : Ar 1 (flatW (mm + 1) (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl)) = Ar 1 (flatW (mm + 1) A B) + Ar 1 (flatW (mm + 1) (fun _ : TT => 2 * ccl) (fun _ : TT => 2 * ccl))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← cc_Ar_add, ← cc_flat_add]`. Establish `alam : Ar 1 lam0 = Ar 1 (flatW (mm + 1) A B) + Ar 1 (lam0 - flatW (mm + 1) A B)`. Rewrite using `[← cc_Ar_add, add_sub_cancel]`. Establish `aL : Ar 1 (flatW (mm + 1) (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl)) = Ar 1 lam0 + Ar 1 (dualW (lam0 - flatW (mm + 1) A B))`. Rewrite using `[aHp, alam, aze, alo, alo']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdlo : IsDominant (lam0 - flatW (mm + 1) A B)` using `cc_lo_dom TT ccl aw bw lam0 A B hBase hDom hzero hAB`. Establish `hdlo' : IsDominant (dualW (lam0 - flatW (mm + 1) A B))` using `fun s => cc_dualWt_anti _ (hdlo s)`. Take `⟨z1, sb1, sa1, -⟩` from `hmem 1 one_ne_zero`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨zw, sbw, saw, isow⟩` from `hmem _ hw`. Take `⟨-, -, sap, -⟩` from `hmem _ (mul_ne_zero hw hw)`. Take `⟨hz1, hz2⟩` from `cc_elem _ e G hs hle z0 z1 zw`. Use `⟨nb, mH.flip z0, fun b => mU.flip (s b), fun a' => abelian₂.flip (s' a'), ka, hnb, hka, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a' b F`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h24 a' b F`. Introduce `F`. Prove the components needed by the constructor for the conclusion. Introduce `hF`. Establish `h1` using `(cc_mem_scale (zpow_ne_zero _ hw)).1 hF`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[zpow_neg, inv_inv]`. Establish `h2 : mH ((algebraMap R.O R.Kf R.w ^ Ar 1 (flatW (mm + 1) A B)) • F) ((algebraMap R.O R.Kf R.w ^ Ar 1 (flatW (mm + 1) (fun _ : TT => 2 * ccl) (fun _ : TT => 2 * ccl))) • z0) = (algebraMap R.O R.Kf R.w ^ Ar 1 (flatW (mm + 1) (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl))) • mH. …`. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, smul_smul, ← zpow_add₀ hw, aHp, LinearMap.flip_apply, add_comm (Ar 1 (flatW (mm + 1) A B))]`. Establish `h3` using `isow ((algebraMap R.O R.Kf R.w ^ Ar 1 (flatW (mm + 1) A B)) • F) (by`. Rewrite using `[h2, ← hle]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1)`. Use `(cc_mem_scale (zpow_ne_zero _ hw)).2 ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, inv_inv]`. Use `show _ ∈ toV _ (Hten R.O _ (fun s : Fin n' => LeAt p R.ι R.σ R.w s.val e))`. Rewrite using `[hle]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h3`. Introduce `hF`. Conclude with `cc_Re hIH aHp e he F hF z0 hz2`. Introduce `t c₂ hc`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `F hF`. Conclude with `cc_CCL hIncl hIH aHp (flattened_weight_dominant _ _ _) e he z0 hz1 hz2 t c₂ F hF`. Introduce `b F hF`. Take `⟨hb1, hb2⟩` from `cc_elem _ e G hs hle (s b) (sb1 b) (sbw b)`. Conclude with `cc_CCL hIncl hIU alam hdlo e he (s b) hb1 hb2 t c₂ F hF`.
-
-Introduce `a' g hg`. Take `⟨-, ha2⟩` from `cc_elem _ e G hs hle (s' a') (sa1 a') (saw a')`. Establish `ha3 : ((algebraMap R.O R.Kf R.w * algebraMap R.O R.Kf R.w) ^ Ar 1 (dualW (lam0 - flatW (mm + 1) A B))) • s' a' ∈ HL (O` using `R.O) R.ι R.σ (dualW (lam0 - flatW (mm + 1) A B)) e.tgt := by show _ ∈ toV _ (Hten R.O _ (fun s : Fin n' => extO R.O R.ι R.σ s.val e.tgt))`. Rewrite using `[ht]`. Conclude with `sap a'`.
-
-Establish `h5` using `cc_CCL' hIL aL hdlo' (by rw [elo', alo']) (TT.card * ccl) (by rw [alo']; push_cast; ring) e he (s' a') ha3 ha2 t c₂ (by rw [← mul_assoc]; exact hc) g hg`. Rewrite `h5` using `[← mul_assoc]`. Conclude with `h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restCloudMaps_of (h : RestCloudLat) (hIncl : DualHeightInclusion) : RestCloudMaps := by
   classical

@@ -6,11 +6,11 @@ open NumberField IsDedekindDomain Formalism.L2.DIV Formalism.UG
 namespace GlobalTheory.RatIdInt
 
 /- English proof (translation)
-Take `⟨ι, h1, h2, -⟩` from `GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv ℚ L`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hv` using `(h2 _).1 hx`. Rewrite `hv` using `[h1]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr : x ∈ (algebraMap (𝓞 L) L).range`. Apply `HeightOneSpectrum.mem_integers_of_valuation_le_one` to reduce the goal to its premises. Introduce `P`. Use `hv P` as an intermediate fact. Rewrite `this` using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨y, rfl⟩` from `hr`. Conclude with `RingOfIntegers.isIntegral_coe y`. Introduce `hx`. Apply `Subring.subset_closure` to reduce the goal to its premises. Conclude with `Or.inl ⟨⟨x, ⟨⟨x, hx⟩, rfl⟩⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem mem_RInt_iff_isIntegral (L : Type) [Field L] [NumberField L] (x : L) :
     (x ⊗ₜ[ℚ] (1 : FiniteAdeleRing (𝓞 ℚ) ℚ)) ∈ RInt ℚ L ↔ IsIntegral ℤ x := by
@@ -31,7 +31,7 @@ theorem mem_RInt_iff_isIntegral (L : Type) [Field L] [NumberField L] (x : L) :
     exact Or.inl ⟨⟨x, ⟨⟨x, hx⟩, rfl⟩⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `L _ _ a`. Rewrite using `[intU, Submonoid.mem_units_iff, ← map_inv]`. Conclude with `and_congr (mem_RInt_iff_isIntegral L (a : L)) (mem_RInt_iff_isIntegral L ((a⁻¹ : Lˣ) : L))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratId_mem_intU_iff : ∀ (L : Type) [Field L] [NumberField L] (a : Lˣ),
     ratId ℚ L a ∈ intU ℚ L ↔ IsIntegral ℤ (a : L) ∧ IsIntegral ℤ ((a⁻¹ : Lˣ) : L) := by

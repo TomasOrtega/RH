@@ -22,7 +22,7 @@ def monVal (B : Germ.FB S d O) (h : Germ.PS S 2 d) (w0 : O) (k : ℤ) (f : Germ.
     (Germ.DmonOf (B.FK S) u α (f * Germ.FB.expS S ((k : S) • B.hL S h w0)))
 
 /- English proof (translation)
-Use `nontriviality S`. Simplify using `[monVal, Germ.FB.nabVal, Germ.DpolyOf, MvPolynomial.support_monomial]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem monVal_natCast (B : Germ.FB S d O) (h : Germ.PS S 2 d) (w0 : O) (m : ℕ) (f : Germ.PS S 1 d)
     {κ : Type} [Fintype κ] (u : κ → Fin d → S) (α : κ →₀ ℕ) :

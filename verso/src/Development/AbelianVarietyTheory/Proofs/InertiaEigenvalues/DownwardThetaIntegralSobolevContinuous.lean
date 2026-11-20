@@ -33,13 +33,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hp : (Vc D i).IsPosDef` using `hm.vpos i`. Establish `hpd : ∀ τ, (gramAt D (Vc D i) τ).PosDef` using `fun τ => GlobalTheory.RepsObj.gramAt_posDef hp (D.sp.V_sig ((i : ℕ) + 1)) τ`. Establish `hc` using `GlobalTheory.definite_unitary_cocompact (Vc D i) hpd`. Establish `hK` using `hc.choose_spec.1`. Establish `hKc` using `hc.choose_spec.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `(hm.HV i t).2.1.le (LinearMap.mem_range_self _ y)`. Establish `hFc : Continuous (R.extV i t y)` using `GlobalTheory.ThetaIntegrand.ext_continuous (R.cV i) (hm.cV i) (R.βV i) (R.datVt i t) hx`. Establish `hFi : ∀ γ ∈ GQ (Vc D i), ∀ h, R.extV i t y (γ * h) = R.extV i t y h` using `GlobalTheory.ThetaIntegrand.ext_invariant (R.cV i) hx`. Establish `hlc : Continuous fun h => l (R.extV i t y h)` using `l.continuous_of_finiteDimensional.comp hFc`. Establish `hH : (R.νV i t).IsHaarMeasure` using `(hm.νV i t).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : IsFundamentalDomain (GQ (Vc D i)) (R.fdV i t) (R.νV i t)` using `(hm.νV i t).2`. Establish `: IsFiniteMeasure ((R.νV i t).restrict (R.fdV i t))` using `isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol (Vc D i) (R.νV i t) (R.fdV i t) hH hfd).ne`. Establish `hb` using `hK.exists_bound_of_continuousOn hlc.continuousOn`. Establish `hbd : ∀ h, ‖l (R.extV i t y h)‖ ≤ hb.choose`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, hγ, c, hc, e⟩` from `hKc h`. Rewrite using `[e, hFi γ hγ c]`. Conclude with `hb.choose_spec c hc`. Conclude with `Integrable.of_bound hlc.aestronglyMeasurable hb.choose (.of_forall hbd)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_extV (R : RealDat D A Ks) (hm : R.IsModels) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H)
     (l : (R.cV i).W →ₗ[ℂ] ℂ) : IntegrableOn (fun h => l (R.extV i t y h)) (R.fdV i t) (R.νV i t) := by
@@ -71,33 +71,31 @@ theorem integrableOn_extV (R : RealDat D A Ks) (hm : R.IsModels) (i : Fin D.R.m)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t y μ 𝓕 hμ f hf l g ε hε`. Establish `hm` using `hG.core.models`. Establish `hθ : IsInfFam R.θ` using `hm.inf`. Establish `hω` using `hG.core.thP.ωP i t`. Establish `hψ` using `hω.std`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt` using `hG.core.thP.pt_theta i t`. Establish `hvP : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Use `hpt 1` as an intermediate fact. Rewrite `this` using `[RealDat.ptP, GlobalTheory.FiniteFock.pureTensorO_one]`. Then use the resulting hypothesis. Take `⟨U₀, hU₀, hl₀⟩` from `isTheta_iff_level.1 hvP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨U₁, hU₁, hl₁⟩` from `isTheta_iff_level.1 hf`. Establish `hUo : IsOpen ((U₁ ⊓ U₀ : AddSubgroup (WO (Vc D i) (Wc D i))) : Set (WO (Vc D i) (Wc D i)))`. Rewrite using `[AddSubgroup.coe_inf]`. Conclude with `hU₁.inter hU₀`. Establish `hptl : ∀ P, R.ptP i t P ∈ thetaLevel R.ψ (Vc D i) (Wc D i) U₀` using `fun P => ⟨hpt P, fun u hu h0 => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `((GlobalTheory.FinTranslate.finite_translate D R.ψ R.θ _ _ hψ hθ _ hvP).2 u h0).2`. Unfold `RealDat.ptP`. Rewrite using `[← e, hl₀.2 u hu h0]⟩`. Establish `hfl : f ∈ thetaLevel R.ψ (Vc D i) (Wc D i) (U₁ ⊓ U₀)` using `thetaLevel_anti inf_le_left hl₁`. Establish `hpl : ∀ P, R.ptP i t P ∈ thetaLevel R.ψ (Vc D i) (Wc D i) (U₁ ⊓ U₀)` using `fun P => thetaLevel_anti inf_le_right (hptl P)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hml : ∀ P, f - R.ptP i t P ∈ thetaLevel R.ψ (Vc D i) (Wc D i) (U₁ ⊓ U₀)` using `fun P => sub_mem hfl (hpl P)`. Take `⟨Ae, d, H⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth D (Vc D i).rank (Wc D i).rank`. Take `⟨C, hC0, hC⟩` from `(H (Vc D i) (Wc D i) rfl rfl).real R.ψ hθ hUo`. Establish `hp : (Vc D i).IsPosDef` using `hm.vpos i`. Establish `hpd : ∀ τ, (gramAt D (Vc D i) τ).PosDef` using `fun τ => GlobalTheory.RepsObj.gramAt_posDef hp (D.sp.V_sig ((i : ℕ) + 1)) τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, hKc⟩` from `GlobalTheory.definite_unitary_cocompact (Vc D i) hpd`. Take `⟨HK, hHK⟩` from `hK.exists_bound_of_continuousOn (continuous_height (Vc D i)).continuousOn`. Establish `hHK0 : 0 ≤ HK`. Take `⟨γ, -, c, hc, -⟩` from `hKc 1`. Conclude with `(norm_nonneg _).trans (hHK c hc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg0` using `height_pos (Wc D i) g`. Take `⟨B, hB⟩ : ∃ B : ℝ, B = C * (HK * height (Wc D i) g) ^ Ae` from `⟨_, rfl⟩`. Establish `hB0 : 0 ≤ B` using `hB ▸ by positivity`. Establish `hbound : ∀ φ ∈ thetaLevel R.ψ (Vc D i) (Wc D i) (U₁ ⊓ U₀), ∀ h, ‖thetaKO (R.ωP i t) h g φ‖ ≤ B * (sobO R.ψ R.θ μ 𝓕 d φ).toReal`. Introduce `φ hφ h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγ, c, hc, rfl⟩` from `hKc h`. Rewrite using `[GlobalTheory.ChainOnto.ThetaSwap.thetaKO_left_fst hω hφ.1 γ hγ c g]`. Establish `h1` using `(hC _ _ (R.ωP i t) hω μ 𝓕 hμ φ hφ).2 c g`. Establish `hc1 : height (Vc D i) c ≤ HK` using `(Real.le_norm_self _).trans (hHK c hc)`. Establish `hc0` using `height_pos (Vc D i) c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 0 ≤ (sobO R.ψ R.θ μ 𝓕 d φ).toReal` using `ENNReal.toReal_nonneg`. Establish `h2 : C * (sobO R.ψ R.θ μ 𝓕 d φ).toReal * (height (Vc D i) c * height (Wc D i) g) ^ Ae ≤ C * (sobO R.ψ R.θ μ 𝓕 d φ).toReal * (HK * height (Wc D i) g) ^ Ae` using `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (mul_pos hc0 hg0).le (mul_le_mul_of_nonneg_right hc1 hg0.le) Ae) (mul_nonneg hC0 hs)`. Establish `h3 : C * (sobO R.ψ R.θ μ 𝓕 d φ).toReal * (HK * height (Wc D i) g) ^ Ae = B * (sobO R.ψ R.θ μ 𝓕 d φ).toReal` using `by rw [hB]; ring`. Conclude with `h1.trans (h2.trans_eq h3)`. Establish `hl1 : IntegrableOn (fun h => l (R.extV i t y h)) (R.fdV i t) (R.νV i t)` using `integrableOn_extV R hm i t y l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint : ∀ φ ∈ thetaLevel R.ψ (Vc D i) (Wc D i) (U₁ ⊓ U₀), IntegrableOn (fun h => thetaKO (R.ωP i t) h g φ * l (R.extV i t y h)) (R.fdV i t) (R.νV i t)` using `fun φ hφ => Integrable.bdd_mul hl1 ((hω.om_cont φ hφ.1 0).comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable (.of_forall (hbound φ hφ))`. Take `⟨M, hMdef⟩ : ∃ M : ℝ, M = ∫ h in R.fdV i t, ‖l (R.extV i t y h)‖ ∂(R.νV i t)` from `⟨_, rfl⟩`. Establish `hM0 : 0 ≤ M` using `hMdef ▸ integral_nonneg fun _ => norm_nonneg _`. Establish `hpos : 0 < B * M + 1` using `by positivity`. Use `⟨d, ENNReal.ofReal (ε / (B * M + 1)), ENNReal.ofReal_pos.2 (by positivity), fun P hP => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `ENNReal.toReal_lt_of_lt_ofReal hP`. Establish `hs0 : 0 ≤ (sobO R.ψ R.θ μ 𝓕 d (f - R.ptP i t P)).toReal` using `ENNReal.toReal_nonneg`. Establish `e : downInt R i t y f l g - downInt R i t y (R.ptP i t P) l g = ∫ h in R.fdV i t, thetaKO (R.ωP i t) h g (f - R.ptP i t P) * l (R.extV i t y h) ∂(R.νV i t)`. Establish `i1` using `hint f hfl`. Establish `i2` using `hint (R.ptP i t P) (hpl P)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1` using `integral_sub i1 i2`. Use `e1.symm.trans (integral_congr_ae (.of_forall fun h => ?_))` and prove the remaining obligations. Establish `e2 : R.ωP i t (h, g) (f - R.ptP i t P) = R.ωP i t (h, g) f - R.ωP i t (h, g) (R.ptP i t P)` using `LinearMap.map_sub _ _ _`. Use `show thetaKO (R.ωP i t) h g f * l (R.extV i t y h) - thetaKO (R.ωP i t) h g (R.ptP i t P) * l (R.extV i t y h) = thetaKO (R.ωP i t) h g (f - R.ptP i t P) * l (R.extV i t y h)`. Use `(sub_mul _ _ _).symm.trans (congrArg (· * l (R.extV i t y h)) ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(congrFun e2 0).symm`. Rewrite using `[e]`. Establish `hle` using `norm_integral_le_of_norm_le (μ := (R.νV i t).restrict (R.fdV i t)) (f := fun h => thetaKO (R.ωP i t) h g (f - R.ptP i t P) * l (R.extV i t y h)) (hl1.norm.const_mul (B * (sobO R.ψ R.θ μ 𝓕 d (f - R.ptP i t P)).toReal)) (.of_forall fun h => by`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (hbound _ (hml P) h) (norm_nonneg _)))`. Rewrite `hle` using `[integral_const_mul, ← hMdef]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem downInt_sobolev_cont : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → ∀ f, IsThetaFunO R.ψ (Vc D i) (Wc D i) f → ∀ (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)) (ε : ℝ), 0 < ε → ∃ (d : ℕ) (δ : ENNReal), 0 < δ ∧ ∀ P, GlobalTheory.Size.sobO R.ψ R.θ μ 𝓕 d (f - R.ptP i t P) < δ → ‖downInt R i t y f l g - downInt R i t y (R.ptP i t P) l g‖ < ε := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t y μ 𝓕 hμ f hf l g ε hε

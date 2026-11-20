@@ -10,9 +10,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `k1 : ZL * K ^ (a + b) * (B' * M ^ (V + (U + J))) ≤ M * K ^ (c2 + e + f) * (B' * M ^ (V + (U + J)))`. Combine the equalities or inequalities in the displayed calculation. Establish `k2 : ZL * K ^ (a + b) ≤ M * K ^ (c2 + e + f)` using `Nat.le_of_mul_le_mul_right k1 (by positivity)`. Establish `hB0 : 0 < B` using `Nat.pos_of_mul_pos_right (h8 ▸ hM : 0 < B * ci)`. Use `Nat.le_of_mul_le_mul_right (c := B) ?_ hB0` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem natL (ZL B' M V U J A S' PV PU PJ K a b c1 c2 e f Sel B ci : ℕ) (hB : 0 < B') (hM : 0 < M)
     (h1 : ZL * B' * M ^ (V + (U + J)) * A ≤ M * S' * (PV * (PU * PJ))) (h2 : S' ≤ B' * K ^ c2)
@@ -36,9 +36,9 @@ private theorem natL (ZL B' M V U J A S' PV PU PJ K a b c1 c2 e f Sel B ci : ℕ
     _ = K ^ (c1 + c2 + e + f) * B := by ring
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨m, hm⟩` from `(mem_Bl ρ).1 hz`. Establish `: z = fun g => ρ g m - m` using `funext hm`. Substitute `this` using the available equality. Use `(mem_Zl ρ).2 ⟨(h m).comp (fun y => y - m), fun g g' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem block_le₂ {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module R M]
     (ρ : Representation R Γ M) (h : LC ρ) : (Bl ρ).toAddSubgroup ≤ (Zl ρ).toAddSubgroup := by
@@ -51,14 +51,14 @@ private theorem block_le₂ {R Γ M : Type} [CommRing R] [Group Γ] [Topological
   abel
 
 /- English proof (translation)
-Introduce `m` and use `(h m).comp_continuous hφ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lc_comp {R Γ D M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [Group D] [TopologicalSpace D]
     [AddCommGroup M] [Module R M] (ρ : Representation R Γ M) (h : LC ρ) (φ : D →* Γ) (hφ : Continuous φ) :
     LC (ρ.comp φ : Representation R D M) := fun m => (h m).comp_continuous hφ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hz.1.comp_continuous hφ, fun g g' => by simp [hz.2]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem zl_comp {R Γ D M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [Group D] [TopologicalSpace D]
     [AddCommGroup M] [Module R M] (ρ : Representation R Γ M) (φ : D →* Γ) (hφ : Continuous φ) {z : Γ → M}
@@ -66,35 +66,29 @@ private theorem zl_comp {R Γ D M : Type} [CommRing R] [Group Γ] [TopologicalSp
   ⟨hz.1.comp_continuous hφ, fun g g' => by simp [hz.2]⟩
 
 /- English proof (translation)
-Introduce `l _ L G G0 h O _ _ _ _ _ n y m q d a rep rep' e f c₁ c₂ hl hC hrep hrep' hZb hf hc1 hc2`. Take `⟨h2, hOm⟩` from `omFacts l O`. Take `⟨hfD, -, hlD, -⟩` from `hOm m`. Use `haveI := hfD`. Use `haveI : Finite (Mm O n m) := inferInstanceAs (Finite (Fin n → Fin n → Om O m))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, b, hk, hb⟩` from `pairP l L G G0 h O n y m a.c_ε`. Establish `hb` using `hb rep rep' hrep hrep'`. Establish `hLC : LC rep` using `(adExP l L G G0 h O n y m).2.2 rep (Or.inl hrep)`. Establish `hι : ∀ w, Continuous (a.ι w)`. Introduce and unpack `(v | u | j)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuous_subtype_val.comp (G.φ_cont v)`. Conclude with `continuous_subtype_val.comp (G.φu_cont u)`. Conclude with `continuous_subtype_val.comp (a.φq_cont j)`. Establish `hLCw : ∀ w, LC (rep.comp (a.ι w) : Representation O (a.D w) _)` using `fun w => lc_comp rep hLC _ (hι w)`. Establish `hpu : ∀ u g, h.p₀ (G.φu u g) = G0.φu u g` using `fun u g => Subtype.ext (h.φu u g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hρ : ∀ u, ∀ g ∈ L.Ju u, y.ρm h m (G.φu u g) = 1` using `fun u g hg => by`. Establish `h1 : y.ρ (G0.φu u g) = 1` using `y.ine u _ ⟨g, hg, rfl⟩`. Establish `h3 : mat y.ρ (G0.φu u g) = 1` using `congrArg Units.val h1`. Rewrite using `[Pt.ρm, hpu, h3, red]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : ∀ u, ∀ g ∈ L.Ju u, rep (G.φu u g : G.Γ) = 1` using `fun u g hg => by`. Use `LinearMap.ext fun Z => ?_` and prove the remaining obligations. Use `hrep.1 (G.φu u g) Z` as an intermediate fact. Establish `e1` using `hρ u g⁻¹ (inv_mem hg)`. Rewrite `e1` using `[map_inv]`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `this` using `[hρ u g hg, one_smul, one_mul]`. Conclude with `this.trans ((congrArg (Z * ·) e1).trans (mul_one Z))`. Set `𝓛 : ∀ w, AddSubgroup (a.D w → Mm O n m)` to `fun w => match w with`. Consider the case `.inl v => (Bl (rep.comp (a.ι (.inl v)) : Representation O (L.Gv v) _)).toAddSubgroup ⊔ Zbor y m v`. Consider the case `.inr (.inl u) => (Zl (rep.comp (a.ι (.inr (.inl u))) : Representation O (L.Gu u) _)).toAddSubgroup ⊓ AddSubgroup.pi (L.Ju u : Set (L.Gu u)) (fun _ => ⊥)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Consider the case `.inr (.inr j) => (Zl (rep.comp (a.ι (.inr (.inr j))) : Representation O (a.Dq j) _)).toAddSubgroup`. Establish `hloc` using `fun v => locSup l L G G0 h O n y m rep v hrep hLC (hZb v).1`. Establish `h𝓛 : ∀ w, (Bl (rep.comp (a.ι w) : Representation O (a.D w) _)).toAddSubgroup ≤ 𝓛 w ∧ 𝓛 w ≤ (Zl (rep.comp (a.ι w) : Representation O (a.D w) _)).toAddSubgroup`. Introduce and unpack `(v | u | j)`. Conclude with `⟨le_sup_left, (hloc v).1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨le_inf (block_le₂ _ (hLCw _)) fun z hz g hg => ?_, inf_le_left⟩` and prove the remaining obligations. Take `⟨Y, hy⟩` from `(mem_Bl _).1 hz`. Establish `e1 : rep (G.φu u g : G.Γ) Y - Y = 0` using `by rw [hu u g hg]; simp`. Conclude with `AddSubgroup.mem_bot.2 ((hy g).trans e1)`. Conclude with `⟨block_le₂ _ (hLCw _), le_rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hF, hF', hgw⟩` from `hC.gw k hk O _ _ rep rep' b hLC hb 𝓛 h𝓛`. Take `⟨hS1, hS2⟩` from `selTr l L G G0 h O n y m rep hrep hLC hF`. Establish `hS3` using `(cCount O G.Γ (Mm O n m) rep G.c G.c_sq (h2 hl)).2.1`. Use `⟨hS1, ?_⟩` and prove the remaining obligations. Establish `hFs : (Zl rep : Set (G.Γ → Mm O n m)).Finite` using `Set.toFinite _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hFs' : (Zl rep' : Set (G.Γ → Mm O n m)).Finite` using `Set.toFinite _`. Rewrite `hgw` using `[Fintype.prod_sum_type, Fintype.prod_sum_type, Fintype.card_sum, Fintype.card_sum]`. Use `haveI : Finite (Bl rep') := Finite.of_surjective _ (LinearMap.surjective_rangeRestrict _)`. Use `natL _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Nat.card_pos Nat.card_pos hgw ?_ ?_ ?_ ?_ ?_ (hS2.trans ?_) hS3 hc1` and prove the remaining obligations. Use `le_trans (Set.ncard_le_ncard ?_ (hFs'.subset fun y hy => hy.1)) (hc2 hF')` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun y hy => ⟨hy.1, fun j => hy.2 _ rfl⟩`. Rewrite using `[pow_mul, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_const, ← Finset.prod_mul_distrib, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod' fun v _ => ?_` and prove the remaining obligations. Conclude with `le_trans (hloc v).2.2 (Nat.mul_le_mul_left _ (hZb v).2)`. Rewrite using `[← Finset.card_univ, ← Finset.prod_const]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Finset.prod_le_prod' fun u _ => ?_` and prove the remaining obligations. Use `(hC.unr u m O _ (rep.comp (a.ι (.inr (.inl u)))) (hLCw _) (fun Y => Matrix.ext fun i j => hlD (Y i j)) (hu u)).2` as an intermediate fact. Rewrite `this` using `[← Nat.card_coe_set_eq]`. Conclude with `this`. Rewrite using `[← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`.
-
-Use `Finset.prod_le_prod' fun j _ => ?_` and prove the remaining obligations. Use `(hC.locQ j k hk O _ _ (rep.comp (a.ι (.inr (.inr j)))) (rep'.comp (a.ι (.inr (.inr j)))) b (hLCw _) ⟨hb.left, hb.right, fun g y z => hb.equiv _ y z⟩).2` as an intermediate fact. Rewrite `this` using `[add_zero, pow_one]`. Conclude with `this.le.trans (Nat.mul_le_mul_left _ (hf j))`. Rewrite using `[pow_mul] conv_lhs => rw [← Fintype.card_fin d, ← Finset.card_univ, ← Finset.prod_const]`.
-
-Conclude with `Finset.prod_le_prod' fun i _ => pow_choose_two_le_card_fixed_ad0_of_odd_involution l L G G0 h O n y m rep _ hl hrep (a.cw_sq i) (a.cw_η i)`. Use `Set.ncard_le_ncard ?_ (hFs.subset fun y hy => hy.1)` and prove the remaining obligations. Introduce and unpack `z ⟨h1, h2, h3⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce and unpack `(v | u | j)`.
-
-Conclude with `h2 v`. Conclude with `⟨zl_comp rep _ (hι _) h1, fun g hg => h3 u g hg⟩`. Conclude with `zl_comp rep _ (hι _) h1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.oneLevelO :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (m : ℕ) (q d : ℕ) (a : ArData G q d) (rep rep' : Representation O G.Γ (Mm O n m)) (e : L.Vl → ℕ) (f : Option (Fin q) → ℕ) (c₁ c₂ : ℕ), l ≠ 2 → Cnts a → IsAd0 h y m rep → IsAd1 h y m rep' → (∀ v, Finite (Zbor y m v) ∧ Nat.card (Zbor y m v) ≤ Nat.card (ResidueField O) ^ e v) → (∀ j, Nat.card (Representation.invariants (rep'.comp (a.ι (.inr (.inr j))) : Representation O (a.D (.inr (.inr j))) _)) ≤ Nat.card (ResidueField O) ^ f j) → Nat.card rep.invariants ≤ Nat.card (ResidueField O) ^ c₁ → (Finite (Zl rep') → {z | z ∈ Zl rep' ∧ ∀ j : Fin q, z ∘ a.ι (.inr (.inr (some j))) ∈ Bl (rep'.comp (a.ι (.inr (.inr (some j)))) : Representation O (a.D (.inr (.inr (some j)))) _)}.ncard ≤ Nat.card (Bl rep') * Nat.card (ResidueField O) ^ c₂) → (trFun h y m '' Sel h y m).Finite ∧ (trFun h y m '' Sel h y m).ncard * Nat.card (ResidueField O) ^ (m * (n + n.choose 2) * Fintype.card L.Vl + m * n.choose 2 * d) ≤ Nat.card (ResidueField O) ^ (c₁ + c₂ + ∑ v, e v + ∑ j, f j) := by

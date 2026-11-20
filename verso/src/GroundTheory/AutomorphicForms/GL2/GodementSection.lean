@@ -16,26 +16,26 @@ variable {K : Type*} [Field K] [NumberField K]
 def modPow (x : IdeleGroup K) (s : ℂ) : ℂ := ((ideleModule K x : ℝ) : ℂ) ^ s
 
 /- English proof (translation)
-Simplify using `only [modPow, map_mul, Positive.val_mul, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg (ideleModule K x).2.le (ideleModule K y).2.le s`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modPow_mul (x y : IdeleGroup K) (s : ℂ) : modPow (x * y) s = modPow x s * modPow y s := by
   simp only [modPow, map_mul, Positive.val_mul, Complex.ofReal_mul]
   exact Complex.mul_cpow_ofReal_nonneg (ideleModule K x).2.le (ideleModule K y).2.le s
 
 /- English proof (translation)
-The claim follows from `Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 (ideleModule K x).2.ne')`.
+A detailed English derivation is pending.
 -/
 theorem modPow_add (x : IdeleGroup K) (s t : ℂ) : modPow x (s + t) = modPow x s * modPow x t :=
   Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 (ideleModule K x).2.ne')
 
 /- English proof (translation)
-Simplify using `[modPow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modPow_one (s : ℂ) : modPow (1 : IdeleGroup K) s = 1 := by
   simp [modPow]
 
 /- English proof (translation)
-Simplify using `[modPow, (ideleModule K x).2.ne']`.
+Simplify using the standard rewrite rules.
 -/
 theorem modPow_ne_zero (x : IdeleGroup K) (s : ℂ) : modPow x s ≠ 0 := by
   simp [modPow, (ideleModule K x).2.ne']
@@ -62,7 +62,7 @@ theorem borelElt_val (a d : IdeleGroup K) (x : 𝔸[K]) :
     (borelElt a d x : Matrix (Fin 2) (Fin 2) 𝔸[K]) = !![(a : 𝔸[K]), x; 0, (d : 𝔸[K])] := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, borelElt_val, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_borelElt (a d : IdeleGroup K) (x : 𝔸[K]) :
     Matrix.GeneralLinearGroup.det (borelElt a d x) = a * d := by
@@ -70,7 +70,7 @@ theorem det_borelElt (a d : IdeleGroup K) (x : 𝔸[K]) :
   simp [Matrix.GeneralLinearGroup.val_det_apply, borelElt_val, Matrix.det_fin_two]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [borelElt_val, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecMul_borelElt (a d : IdeleGroup K) (x : 𝔸[K]) (t : 𝔸[K]) :
     ![0, t] ᵥ* (borelElt a d x : Matrix (Fin 2) (Fin 2) 𝔸[K]) = ![0, t * d] := by
@@ -143,13 +143,13 @@ def IsKFiniteVec (Φ : (Fin 2 → 𝔸[K]) → ℂ) : Prop :=
     F = rightTranslate k Φ})
 
 /- English proof (translation)
-Use `set G : IdeleGroup K → ℂ := fun x ↦ F x * (μ.toIdele x : ℂ) * modPow x s with hG`. Establish `hpt : ∀ x : IdeleGroup K, F ((x : 𝔸[K]) * d) * (μ.toIdele x : ℂ) * modPow x s = (((μ.toIdele d)⁻¹ : Circle) : ℂ) * modPow d (-s) * G (x * d)`. Introduce `x`. Establish `h1 : modPow d (-s) * modPow d s = 1`. Rewrite using `[← modPow_add, neg_add_cancel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[modPow]`. Establish `h2 : (((μ.toIdele d)⁻¹ : Circle) : ℂ) * (μ.toIdele d : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, inv_mul_cancel, Circle.coe_one]`. Simplify using `only [hG, Units.val_mul, map_mul, Circle.coe_mul, modPow_mul]`. Take the linear combination `(-(F ((x : 𝔸[K]) * d) * (μ.toIdele x : ℂ) * modPow x s)) * ((((μ.toIdele d)⁻¹ : Circle) : ℂ) * (μ.toIdele d : ℂ) * h1 + h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: globalZeta (fun t ↦ F (t * (d : 𝔸[K]))) μ s = ∫ x, (((μ.toIdele d)⁻¹ : Circle) : ℂ) * modPow d (-s) * G (x * d) ∂ideleMeasure K`. Simplify using `only [globalZeta]`. Conclude with `integral_congr_ae (Eventually.of_forall fun x ↦ hpt x)`. Rewrite using `[this, integral_const_mul]`. Repeatedly rewrite using `[mul_comm _ d]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[integral_mul_left_eq_self G d]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem globalZeta_mul_right (F : 𝔸[K] → ℂ) (μ : HeckeCharacter K) (s : ℂ) (d : IdeleGroup K) :
     globalZeta (fun t ↦ F (t * (d : 𝔸[K]))) μ s =
@@ -178,7 +178,7 @@ def slice (Φ : (Fin 2 → 𝔸[K]) → ℂ) (g : GL (Fin 2) 𝔸[K]) : 𝔸[K] 
   fun t ↦ Φ (![0, t] ᵥ* (g : Matrix (Fin 2) (Fin 2) 𝔸[K]))
 
 /- English proof (translation)
-The claim follows from `slice_mem_schwartzBruhat (rightTranslate_mem_schwartzBruhat2 g hΦ)`.
+A detailed English derivation is pending.
 -/
 theorem slice_mem {Φ : (Fin 2 → 𝔸[K]) → ℂ} (hΦ : Φ ∈ schwartzBruhat2 K) (g : GL (Fin 2) 𝔸[K]) :
     slice Φ g ∈ schwartzBruhat K :=
@@ -194,7 +194,7 @@ Simplify using the standard rewrite rules.
 theorem two_mul_re (s : ℂ) : (2 * s).re = 2 * s.re := by simp
 
 /- English proof (translation)
-The claim follows from `integrable_globalZetaIntegrand (slice_mem hΦ g) _ (by rw [two_mul_re]; exact hs)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_godementIntegrand (χ₁ χ₂ : HeckeCharacter K) {s : ℂ} (hs : 1 < 2 * s.re)
     {Φ : (Fin 2 → 𝔸[K]) → ℂ} (hΦ : Φ ∈ schwartzBruhat2 K) (g : GL (Fin 2) 𝔸[K]) :
@@ -204,7 +204,7 @@ theorem integrable_godementIntegrand (χ₁ χ₂ : HeckeCharacter K) {s : ℂ} 
   integrable_globalZetaIntegrand (slice_mem hΦ g) _ (by rw [two_mul_re]; exact hs)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [slice, Units.val_mul, ← Matrix.vecMul_vecMul, vecMul_borelElt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem slice_borelElt_mul (Φ : (Fin 2 → 𝔸[K]) → ℂ) (a d : IdeleGroup K) (x : 𝔸[K])
     (g : GL (Fin 2) 𝔸[K]) :
@@ -213,11 +213,11 @@ theorem slice_borelElt_mul (Φ : (Fin 2 → 𝔸[K]) → ℂ) (a d : IdeleGroup 
   simp only [slice, Units.val_mul, ← Matrix.vecMul_vecMul, vecMul_borelElt]
 
 /- English proof (translation)
-Simplify using `only [godementSection, slice_borelElt_mul, globalZeta_mul_right, det_borelElt, map_mul, modPow_mul]`. Establish `hμ : (((χ₁ * χ₂⁻¹).toIdele d)⁻¹ : Circle) = (χ₁.toIdele d)⁻¹ * χ₂.toIdele d`. Express the relevant statement in the definitionally equal form `((χ₁ (IdeleClassGroup.mk K d) * (χ₂ (IdeleClassGroup.mk K d))⁻¹)⁻¹ : Circle) = _`. Rewrite using `[mul_inv, inv_inv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : modPow d s * modPow d (-(2 * s)) = modPow d (-s)`. Rewrite using `[← modPow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (χ₁.toIdele d : ℂ) * (((χ₁.toIdele d)⁻¹ : Circle) : ℂ) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← Circle.coe_mul, mul_inv_cancel, Circle.coe_one]`. Rewrite using `[hμ, Circle.coe_mul, ← h1]`. Simplify using `only [Circle.coe_mul]`. Take the linear combination `(χ₁.toIdele a : ℂ) * (χ₂.toIdele d : ℂ) * modPow a s * modPow d s * modPow d (-(2 * s)) * (χ₁.toIdele (detI g) : ℂ) * modPow (detI g) s * globalZeta (slice Φ g) (χ₁ * χ₂⁻¹) (2 * s) * h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem godementSection_borelElt_mul (χ₁ χ₂ : HeckeCharacter K) (s : ℂ)
     (Φ : (Fin 2 → 𝔸[K]) → ℂ) (a d : IdeleGroup K) (x : 𝔸[K]) (g : GL (Fin 2) 𝔸[K]) :
@@ -240,7 +240,7 @@ theorem godementSection_borelElt_mul (χ₁ χ₂ : HeckeCharacter K) (s : ℂ)
     globalZeta (slice Φ g) (χ₁ * χ₂⁻¹) (2 * s) * h2
 
 /- English proof (translation)
-The claim follows from `fun a d x g ↦ godementSection_borelElt_mul χ₁ χ₂ s Φ a d x g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem godementSection_mem_principalSeries (χ₁ χ₂ : HeckeCharacter K) (s : ℂ)
     (Φ : (Fin 2 → 𝔸[K]) → ℂ) :
@@ -248,9 +248,9 @@ theorem godementSection_mem_principalSeries (χ₁ χ₂ : HeckeCharacter K) (s 
   fun a d x g ↦ godementSection_borelElt_mul χ₁ χ₂ s Φ a d x g
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hZ : globalZeta (slice (Φ + Ψ) g) (χ₁ * χ₂⁻¹) (2 * s) = globalZeta (slice Φ g) (χ₁ * χ₂⁻¹) (2 * s) + globalZeta (slice Ψ g) (χ₁ * χ₂⁻¹) (2 * s)`. Simplify using `only [globalZeta]`. Rewrite using `[← integral_add (integrable_godementIntegrand χ₁ χ₂ hs hΦ g) (integrable_godementIntegrand χ₁ χ₂ hs hΨ g)]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [slice, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [godementSection, Pi.add_apply, hZ]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem godementSection_add (χ₁ χ₂ : HeckeCharacter K) {s : ℂ} (hs : 1 < 2 * s.re)
     {Φ Ψ : (Fin 2 → 𝔸[K]) → ℂ} (hΦ : Φ ∈ schwartzBruhat2 K) (hΨ : Ψ ∈ schwartzBruhat2 K) :
@@ -269,9 +269,9 @@ theorem godementSection_add (χ₁ χ₂ : HeckeCharacter K) {s : ℂ} (hs : 1 <
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hZ : globalZeta (slice (c • Φ) g) (χ₁ * χ₂⁻¹) (2 * s) = c * globalZeta (slice Φ g) (χ₁ * χ₂⁻¹) (2 * s)`. Simplify using `only [globalZeta]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [slice, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [godementSection, Pi.smul_apply, smul_eq_mul, hZ]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem godementSection_smul (χ₁ χ₂ : HeckeCharacter K) (s : ℂ) (c : ℂ)
     (Φ : (Fin 2 → 𝔸[K]) → ℂ) :

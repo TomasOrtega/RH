@@ -5,31 +5,29 @@ namespace GlobalTheory.FlagEq
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `α m g e Hm hpos h h' hH bv s hs hh hh'`. Establish `key : ∀ τ, ∀ i : Fin (m τ), h (Pi.single (e.symm ⟨τ, i⟩) 1) = h' (Pi.single (e.symm ⟨τ, i⟩) 1)`. Introduce `τ`. Set `ev : Fin (m τ) → (Fin g → ℂ)` to `fun j => Pi.single (e.symm ⟨τ, j⟩) 1`. Set `E : Fin (m τ) → Submodule ℂ (Fin g → ℂ)` to `fun i => Submodule.span ℂ (ev '' {j | j < i})`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ha : ∀ i, Submodule.span ℂ (bv τ '' {j | j < i}) ≤ (E i).map h'.toLinearMap`. Introduce `i`. Proceed by induction on `i using WellFoundedLT.induction with`. Consider the case `_ i ih`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hj : j < i` using `hj`. Establish `h1 : h' (ev j) ∈ (E i).map h'.toLinearMap` using `Submodule.mem_map_of_mem (Submodule.subset_span ⟨j, hj, rfl⟩)`. Establish `h2 : h' (ev j) - s • bv τ j ∈ (E i).map h'.toLinearMap`. Use `ih j hj (hh' τ j)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.map_mono (Submodule.span_mono (Set.image_mono (fun k (hk : k < j) => (lt_trans hk hj : k < i)))) this`. Establish `h3 : s • bv τ j ∈ (E i).map h'.toLinearMap`. Use `Submodule.sub_mem _ h1 h2` as an intermediate fact. Simplify using `using this`. Use `Submodule.smul_mem _ s⁻¹ h3` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hs, one_smul]`. Conclude with `this`. Introduce `i`. Proceed by induction on `i using WellFoundedLT.induction with`. Consider the case `_ i ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hon : Set.EqOn h.toLinearMap h'.toLinearMap (E i)`. Apply `LinearMap.eqOn_span'` to reduce the goal to its premises. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `ih j hj`. Use `set u := h (ev i) - h' (ev i) with hu`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hu' : u = (h (ev i) - s • bv τ i) - (h' (ev i) - s • bv τ i)`. Rewrite using `[hu]`. Normalize the expressions using the abelian group laws. Establish `huB : u ∈ Submodule.span ℂ (bv τ '' {j | j < i})`. Rewrite using `[hu']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sub_mem _ (hh τ i) (hh' τ i)`. Take `⟨v, hvE, hv⟩` from `ha i huB`. Establish `hv' : h' v = u` using `hv`. Establish `hhv : h v = u`. Rewrite using `[← hv']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hon hvE`. Establish `hx : h (ev i) = h' (ev i) + u` using `by rw [hu]; abel`. Establish `hE` using `hH (ev i) v`. Rewrite `hE` using `[hhv, hv', hx]`. Establish `h0 : hermForm Hm u u = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `hermForm at hE ⊢`. Rewrite `hE` using `[add_dotProduct]`. Simplify using `using hE`. Assume the negation of the conclusion as `hne`. Establish `hne' : u ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0'`. Apply `hne` to reduce the goal to its premises. Rewrite `h0'` using `[hu]`. Conclude with `sub_eq_zero.mp h0'`. Use `hpos u hne'` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Simplify using `at this`. Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises. Apply `(Pi.basisFun ℂ (Fin g)).ext` to reduce the goal to its premises. Introduce `n`.
-
-Rewrite using `[Pi.basisFun_apply]`. Use `key (e n).1 (e n).2` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_of_flag_of_hermForm : ∀ {α : Type} {m : α → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ : α, Fin (m τ)) (Hm : Matrix (Fin g) (Fin g) ℂ), (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z z).re) → ∀ (h h' : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), (∀ x y, ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (h x) (h y) = ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (h' x) (h' y)) → ∀ (bv : ∀ τ, Fin (m τ) → (Fin g → ℂ)) (s : ℂ), s ≠ 0 → (∀ τ i, h (Pi.single (e.symm ⟨τ, i⟩) 1) - s • bv τ i ∈ Submodule.span ℂ (bv τ '' {j | j < i})) → (∀ τ i, h' (Pi.single (e.symm ⟨τ, i⟩) 1) - s • bv τ i ∈ Submodule.span ℂ (bv τ '' {j | j < i})) → h = h' := by
   intro α m g e Hm hpos h h' hH bv s hs hh hh'

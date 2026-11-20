@@ -17,15 +17,13 @@ namespace GlobalTheory.CompanionTheory.RealCountG.Isotypic
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hsp : ∀ x ∈ Submodule.span ℂ {v}, Formalism.REAL.KHighest (fun _ => true) K μ x`. Introduce `x hx`. Establish `hvm : v ∈ hwOf K μ` using `hv`. Establish `: x ∈ hwOf K μ` using `(Submodule.span_singleton_le_iff_mem v (hwOf K μ)).2 hvm hx`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : (Submodule.span ℂ {v}) →ₗ[ℂ] H` to `((innerₛₗ ℂ v).comp (Submodule.subtype _)).smulRight ((⟪v, v⟫_ℂ)⁻¹ • d)`. Establish `hf : ∀ x, Formalism.REAL.KHighest (fun _ => true) G μ (f x)`. Introduce `x`. Establish `hdm : d ∈ hwOf G μ` using `hd`. Establish `: f x ∈ hwOf G μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, LinearMap.smulRight_apply]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hdm)`. Conclude with `this`. Take `⟨T, hT, hi⟩` from `GlobalTheory.T.highest_weight_tensor_decomposition L H K G μ hK hG hKs hGs (Submodule.span ℂ {v}) hsp f hf`. Use `⟨T, ?_, hi⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hvv : ⟪v, v⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hv0`. Use `hT ⟨v, Submodule.mem_span_singleton_self v⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this]`. Simplify using `only [f, LinearMap.smulRight_apply, LinearMap.comp_apply, Submodule.subtype_apply, innerₛₗ_apply_apply]`.
-
-Rewrite using `[smul_smul, mul_inv_cancel₀ hvv, one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_map_out (H L : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     [NormedAddCommGroup L] [InnerProductSpace ℂ L] [FiniteDimensional ℂ L]
@@ -60,9 +58,9 @@ theorem exists_map_out (H L : Type) [NormedAddCommGroup H] [InnerProductSpace �
   rw [smul_smul, mul_inv_cancel₀ hvv, one_smul]
 
 /- English proof (translation)
-Establish `hf : ∀ x, Formalism.REAL.KHighest (fun _ => true) K μ (φ.smulRight v x)`. Introduce `x`. Establish `hvm : v ∈ hwOf K μ` using `hv`. Establish `: φ.smulRight v x ∈ hwOf K μ`. Simplify using `only [LinearMap.smulRight_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.smul_mem _ _ hvm`. Conclude with `this`. Take `⟨P, hP, hi⟩` from `GlobalTheory.T.highest_weight_tensor_decomposition H L G K μ hG hK hGs hKs D hD (φ.smulRight v) hf`. Conclude with `⟨P, fun d => by rw [hP d, LinearMap.smulRight_apply], hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_map_in (H L : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     [NormedAddCommGroup L] [InnerProductSpace ℂ L]
@@ -84,7 +82,7 @@ theorem exists_map_in (H L : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ
   exact ⟨P, fun d => by rw [hP d, LinearMap.smulRight_apply], hi⟩
 
 /- English proof (translation)
-Establish `h0` using `GlobalTheory.T.intertwiner_eq_zero_of_vanish_on_highest L L K K hK hKs (R - r • LinearMap.id) (fun a b w => by simp [hR, map_smul]) (fun μ w hw => by`. Take `⟨c, rfl⟩` from `huniq w (fun a b hab => hw.2 a b hab rfl)`. Simplify using `[hr, smul_comm c r])`. Conclude with `sub_eq_zero.1 h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_smul_id_of_apply (L : Type) [NormedAddCommGroup L] [InnerProductSpace ℂ L] [FiniteDimensional ℂ L]
     (K : Fin n → Fin n → Module.End ℂ L) (hK : Formalism.REAL.GlRel K)
@@ -99,13 +97,11 @@ theorem eq_smul_id_of_apply (L : Type) [NormedAddCommGroup L] [InnerProductSpace
   exact sub_eq_zero.1 h0
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `huniq (P w) (fun a b hab => by rw [← hP, hw.2 a b hab rfl, map_zero])`. Assume the negation of the conclusion as `hne0`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne0 (by simpa using hc)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `h1 : K a a (P w) = (μ a : ℂ) • P w` using `by rw [← hP, hw.1 a, map_smul]`. Rewrite `h1` using `[hc, map_smul, hv.1 a, smul_comm]`. Establish `h2 : ((μ' a : ℂ) - (μ a : ℂ)) • (c • v) = 0` using `by rw [sub_smul, h1, sub_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (μ' a : ℂ) - (μ a : ℂ) = 0`. Break down `smul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (smul_ne_zero hc0 hv0)`. Establish `h4 : (μ' a : ℂ) = (μ a : ℂ)` using `sub_eq_zero.1 h3`.
-
-Conclude with `(Complex.ofReal_injective h4).symm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_highest_eq_zero {H L : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup L] [Module ℂ L]
     (G : Fin n → Fin n → Module.End ℂ H) (K : Fin n → Fin n → Module.End ℂ L) (μ μ' : Fin n → ℝ)
@@ -131,7 +127,7 @@ theorem map_highest_eq_zero {H L : Type} [AddCommGroup H] [Module ℂ H] [AddCom
   exact (Complex.ofReal_injective h4).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by rw [← hS, hx.1 a, map_smul], fun a b hab he => by rw [← hS, hx.2 a b hab he, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_mem_hwOf {H : Type} [AddCommGroup H] [Module ℂ H]
     (G : Fin n → Fin n → Module.End ℂ H) (μ : Fin n → ℝ) (S : H →ₗ[ℂ] H)
@@ -140,29 +136,27 @@ theorem map_mem_hwOf {H : Type} [AddCommGroup H] [Module ℂ H]
     fun a b hab he => by rw [← hS, hx.2 a b hab he, map_zero]⟩
 
 /- English proof (translation)
-Introduce `hG hGs hder hν`. Take `⟨L, _, _, _, σ, K, v, hK, hKs, hσ, hv0, hv, huniq, htr⟩` from `GlobalTheory.T.exists_highest_weight_hermitian_derivation ν hν`. Establish `hD : ∀ x ∈ hwOf G (wtR ν), Formalism.REAL.KHighest (fun _ => true) G (wtR ν) x` using `fun x hx => hx`. Set `b` to `Module.finBasis ℂ (hwOf G (wtR ν))`. Establish `ex1 : ∀ j, ∃ T : L →ₗ[ℂ] H, T v = (b j : H) ∧ ∀ a c w, T (K a c w) = G a c (T w)` using `fun j => exists_map_out H L G K (wtR ν) hG hK hGs hKs v hv0 hv (b j : H) (b j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose T hTv hTi using ex1`. Establish `ex2 : ∀ j, ∃ P : H →ₗ[ℂ] L, (∀ d : hwOf G (wtR ν), P d = b.coord j d • v) ∧ ∀ a c w, P (G a c w) = K a c (P w)` using `fun j => exists_map_in H L G K (wtR ν) hG hK hGs hKs v hv _ hD (b.coord j)`. Use `choose P hPd hPi using ex2`. Establish `hPk : ∀ j k w, P j (ρ k w) = σ k (P j w)` using `fun j => GlobalTheory.T.derivative_unitary_action H L ρ G hder σ K hσ hKs (P j) (hPi j)`. Establish `hp : ∀ w, (∑ j, T j ∘ₗ P j) w = ∑ j, T j (P j w)` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[LinearMap.sum_apply]`. Use `⟨∑ j, T j ∘ₗ P j, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a c w`. Rewrite using `[hp, hp, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hPi, hTi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `d hd`. Rewrite using `[hp]`. Establish `h1 : ∀ j, T j (P j d) = b.coord j ⟨d, hd⟩ • (b j : H)` using `fun j => by`. Use `hPd j ⟨d, hd⟩` as an intermediate fact. Simplify using `only at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this, map_smul, hTv]`. Simplify using `only [h1]`. Establish `h2 : ∑ j, b.coord j ⟨d, hd⟩ • b j = ⟨d, hd⟩` using `b.sum_repr _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = d := by rw [h2]`. Introduce `μ w hne hw`. Rewrite using `[hp]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_highest_eq_zero G K μ (wtR ν) v hv0 hv huniq (P j) (hPi j) hne w hw, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S hS k z hk hz`. Establish `hSD : ∀ x ∈ hwOf G (wtR ν), S x ∈ hwOf G (wtR ν)` using `map_mem_hwOf G (wtR ν) S hS`. Establish `hj : ∀ j, LinearMap.trace ℂ H ((ρ k : H →ₗ[ℂ] H) ∘ₗ S ∘ₗ (T j ∘ₗ P j)) = b.coord j ⟨S (b j), hSD _ (b j).2⟩ * weylChar ν z`. Introduce `j`. Establish `hR : P j ∘ₗ S ∘ₗ T j = b.coord j ⟨S (b j), hSD _ (b j).2⟩ • LinearMap.id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `eq_smul_id_of_apply L K hK hKs v huniq _ (fun a c w => ?_) _ ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hTi, hS, hPi]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hTv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hPd j ⟨S (b j), hSD _ (b j).2⟩`. Establish `e1 : (ρ k : H →ₗ[ℂ] H) ∘ₗ S ∘ₗ (T j ∘ₗ P j) = ((ρ k : H →ₗ[ℂ] H) ∘ₗ S ∘ₗ T j) ∘ₗ P j` using `rfl`. Establish `e2 : P j ∘ₗ ((ρ k : H →ₗ[ℂ] H) ∘ₗ S ∘ₗ T j) = σ k ∘ₗ (P j ∘ₗ S ∘ₗ T j)`. Use extensionality with `w`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hPk j k _`. Rewrite using `[e1, LinearMap.trace_comp_comm', e2, hR, LinearMap.comp_smul, LinearMap.comp_id, map_smul, htr k z hk hz, smul_eq_mul]`. Establish `hsum : (ρ k : H →ₗ[ℂ] H) ∘ₗ S ∘ₗ (∑ j, T j ∘ₗ P j) = ∑ j, (ρ k : H →ₗ[ℂ] H) ∘ₗ S ∘ₗ (T j ∘ₗ P j)`. Use extensionality with `w`. Simplify using `[LinearMap.sum_apply, map_sum]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, map_sum, Finset.sum_congr rfl fun j _ => hj j, ← Finset.sum_mul]`. Use `congr 1`. Unfold `trOn`. Rewrite using `[dif_pos hSD, LinearMap.trace_eq_matrix_trace ℂ b, Matrix.trace]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isotypic_projection {n : ℕ} (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [FiniteDimensional ℂ H] (ρ : Matrix.unitaryGroup (Fin n) ℂ →* (H →L[ℂ] H))

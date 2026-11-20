@@ -16,11 +16,11 @@ open GlobalTheory.Mum GlobalTheory.ThetaMove
 namespace GlobalTheory.ThetaSymTransport
 
 /- English proof (translation)
-Introduce `S S' A A' _ _ _ L L' T T' f k θ θ' ν ν' Ψ hT hneg H Hν Z q z J J' hJ hJ'`. Establish `c₁ : (translT A' θ'.pt⁻¹).left ≫ (translT A' θ'.pt).left = 𝟙 _`. Rewrite using `[← Over.comp_left, GlobalTheory.PullMove.translT_mul, mul_inv_cancel, GlobalTheory.PullMove.translT_one, Over.id_left]`. Establish `c₂ : (negT A' T').left ≫ (translT A' θ'.pt).left = (translT A' θ'.pt⁻¹).left ≫ (negT A' T').left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, GlobalTheory.PullMove.negT_translT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁` using `H Z (q ≫ (translT A' θ'.pt⁻¹).left) z J J' hJ hJ'`. Establish `e₂` using `H Z (q ≫ (negT A' T').left) z J J' hJ hJ'`. Establish `e₃` using `Hν Z q z J J' hJ hJ'`. Establish `e₄` using `Hν Z (q ≫ (translT A' θ'.pt⁻¹).left) z J J' hJ hJ'`. Simplify using `only [Category.assoc, c₁, c₂, Category.comp_id, ← hT, ← hneg] at e₁ e₂ e₄`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.ConjPull.val_thetaSym _ _ _ _ hJ, GlobalTheory.ConjPull.val_thetaSym _ _ _ _ hJ']`. Simplify using `only [Category.assoc]`. Rewrite using `[e₁, e₂, e₃, e₄]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/

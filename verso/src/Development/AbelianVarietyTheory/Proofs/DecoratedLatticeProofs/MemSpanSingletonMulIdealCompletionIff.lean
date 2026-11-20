@@ -22,9 +22,9 @@ namespace GlobalTheory.SeeSaw
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Establish `hle : idV 𝔞 v ≤ (idV (FractionalIdeal.spanSingleton _ c * 𝔞) v).comap (AddMonoidHom.mulLeft (incA D c))`. Rewrite using `[idV, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨α, h₁, h₂, a, ha, rfl⟩`. Use `AddSubgroup.subset_closure ⟨α, h₁, h₂, c * a, FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ c) ha, ?_⟩` and prove the remaining obligations. Use `show incA D c * _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[incA, inclR, Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `hle hy`.
+A detailed English derivation is pending.
 -/
 theorem idV_incA_mul {D : D7} (c : D.host.E) (𝔞 : FI D) (v : Pl D) {y : AE D} (hy : y ∈ idV 𝔞 v) :
     incA D c * y ∈ idV (FractionalIdeal.spanSingleton _ c * 𝔞) v := by
@@ -38,11 +38,9 @@ theorem idV_incA_mul {D : D7} (c : D.host.E) (𝔞 : FI D) (v : Pl D) {y : AE D}
   exact hle hy
 
 /- English proof (translation)
-Rewrite using `[idV, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨α, h₁, h₂, a, ha, rfl⟩`. Simplify using `only [Submodule.coe_toAddSubgroup, SetLike.mem_coe, idAt, Submodule.mem_inf, Submodule.mem_iInf, RingHom.mem_ker]`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id _ _)) ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] a) = 0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul]`. Express the relevant statement in the definitionally equal form `(0 : Ainf D.host.F) ⊗ₜ[D.host.F] (AlgHom.id D.host.F D.host.E a) = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Establish `e : FinPl.compAt D w.1 ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] a) = (evalV D.host.F w.1 α) ⊗ₜ[D.host.F] a` using `rfl`. Rewrite using `[e, h₂ w.1 w.2]`.
-
-Conclude with `TensorProduct.zero_tmul _ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idV_le_idAt {D : D7} (𝔞 : FI D) (v : Pl D) : idV 𝔞 v ≤ (idAt D (· = v)).toAddSubgroup := by
   rw [idV, AddSubgroup.closure_le]
@@ -59,9 +57,9 @@ theorem idV_le_idAt {D : D7} (𝔞 : FI D) (v : Pl D) : idV 𝔞 v ≤ (idAt D (
     exact TensorProduct.zero_tmul _ _
 
 /- English proof (translation)
-Introduce `D v 𝔞 x hx s`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Use `⟨?_, idV_le_idAt _ v hs⟩` and prove the remaining obligations. Establish `h` using `idV_incA_mul x⁻¹ _ v hs`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[← mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton, inv_mul_cancel₀ hx, FractionalIdeal.spanSingleton_one, one_mul]`. Then use the resulting hypothesis. Introduce and unpack `⟨h, -⟩`. Establish `h'` using `idV_incA_mul x 𝔞 v h`. Rewrite `h'` using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hx, map_one, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem idV_spanSingleton_mul_iff : ∀ (D : D7) (v : Pl D) (𝔞 : FI D) (x : D.host.E), x ≠ 0 → ∀ s,
     s ∈ idV (FractionalIdeal.spanSingleton _ x * 𝔞) v ↔ incA D x⁻¹ * s ∈ idV 𝔞 v ∧ s ∈ idAt D (· = v) := by

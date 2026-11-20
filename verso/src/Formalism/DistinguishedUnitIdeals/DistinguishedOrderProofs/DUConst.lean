@@ -13,9 +13,9 @@ section Helpers
 variable {O : Type} [CommRing O] [IsDomain O]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map, Polynomial.coeff_coe, coeff_X_pow]`. Break down `lt_trichotomy n E.natDegree with h | h | h` into its components or cases. Rewrite using `[if_neg h.ne]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (hE.mem h)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, h, hE.monic.coeff_natDegree, map_one]`. Rewrite using `[if_neg h.ne', Polynomial.coeff_eq_zero_of_natDegree_lt h, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_distinguished_eq_X_pow (ϖ : O) (E : Polynomial O)
     (hE : E.IsDistinguishedAt (Ideal.span {ϖ})) :
@@ -30,7 +30,7 @@ theorem map_distinguished_eq_X_pow (ϖ : O) (E : Polynomial O)
   · rw [if_neg h.ne', Polynomial.coeff_eq_zero_of_natDegree_lt h, map_zero]
 
 /- English proof (translation)
-Take `⟨u, E, hu, hE, hd, rfl⟩` from `hp`. Use `⟨PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) u, hu.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_distinguished_eq_X_pow ϖ E hE, hd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_unitDist (ϖ : O) (d : ℕ) (p : PowerSeries O) (hp : UnitDist ϖ d p) :
     ∃ U : PowerSeries (O ⧸ Ideal.span {ϖ}), IsUnit U ∧
@@ -40,9 +40,9 @@ theorem map_unitDist (ϖ : O) (d : ℕ) (p : PowerSeries O) (hp : UnitDist ϖ d 
   rw [map_mul, map_distinguished_eq_X_pow ϖ E hE, hd]
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => exact ⟨1, isUnit_one, by simp⟩`. Consider the case `insert t I ht ih`. Take `⟨U, hU, hUe⟩` from `ih (fun s hs => hp s (Finset.mem_insert_of_mem hs))`. Take `⟨V, hV, hVe⟩` from `map_unitDist ϖ (dg t) (p t) (hp t (Finset.mem_insert_self t I))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨V ^ b t * U, (hV.pow _).mul hU, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ht, Finset.sum_insert ht, map_mul, hUe, map_pow, hVe, pow_add, mul_pow, ← pow_mul, mul_comm (dg t) (b t)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_prod_unitDist (ϖ : O) (p : ℕ → PowerSeries O) (dg b : ℕ → ℕ) (I : Finset ℕ)
     (hp : ∀ s ∈ I, UnitDist ϖ (dg s) (p s)) :
@@ -63,23 +63,21 @@ theorem map_prod_unitDist (ϖ : O) (p : ℕ → PowerSeries O) (dg b : ℕ → �
 end Helpers
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ ℓ p I b g B y N c a hp hD h`. Establish `hmax : (Ideal.span {ϖ}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hϖ`. Establish `: IsDomain (O ⧸ Ideal.span {ϖ})` using `Ideal.Quotient.isDomain _`. Distinguish the cases in `hc : c = 0`. Rewrite using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_zero _`. Take `⟨v, w, hc'⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Assume the negation of the conclusion as `hy`. Establish `hvy : v < y`. Assume the negation of the conclusion as `hvy`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hy` to reduce the goal to its premises. Rewrite using `[hc']`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow ϖ (not_lt.mp hvy)) _`. Use `set P := ∏ s ∈ I, p s ^ b s with hP`. Use `set z := C (w : O) * P - C (ϖ ^ (y - v)) * a with hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz' : C (ϖ ^ (N + v)) * z ∈ Ideal.span {p g ^ B}`. Establish `heq : C (ϖ ^ N) * (C c * P - C (ϖ ^ y) * a) = C (ϖ ^ (N + v)) * z`. Rewrite using `[hz, hc']`. Establish `hy' : y = v + (y - v)` using `by omega`. Use `conv_lhs => rw [hy']`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_mul, map_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← heq]`. Conclude with `h`. Establish `hzmem` using `mem_span_pow_of_uniformizer_mul O ϖ hϖ (ℓ ^ g) (p g) (hp g (Finset.mem_insert_self g I)) B (N + v) z hz'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq⟩` from `Ideal.mem_span_singleton.mp hzmem`. Take `⟨U, hU, hUe⟩` from `map_prod_unitDist ϖ p (fun s => ℓ ^ s) b I (fun s hs => hp s (Finset.mem_insert_of_mem hs))`. Take `⟨V, -, hVe⟩` from `map_unitDist ϖ (ℓ ^ g) (p g) (hp g (Finset.mem_insert_self g I))`. Establish `hmap` using `congrArg (PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ}))) hq`. Establish `hzero : Ideal.Quotient.mk (Ideal.span {ϖ}) (ϖ ^ (y - v)) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton.mpr (dvd_pow_self ϖ (by omega))`. Rewrite `hmap` using `[hz, map_sub, map_mul, map_mul, PowerSeries.map_C, PowerSeries.map_C, hzero, map_zero, zero_mul, sub_zero, hUe, map_mul, map_pow, hVe, mul_pow, ← pow_mul]`. Establish `hW : IsUnit (C (Ideal.Quotient.mk (Ideal.span {ϖ}) (w : O)) * U)` using `((w.isUnit.map (Ideal.Quotient.mk (Ideal.span {ϖ}))).map C).mul hU`. Use `set D := ∑ s ∈ I, b s * ℓ ^ s`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc1` using `congrArg (coeff D) hmap`. Establish `hlhs : coeff D (C (Ideal.Quotient.mk (Ideal.span {ϖ}) (w : O)) * (U * X ^ D)) = constantCoeff (C (Ideal.Quotient.mk (Ideal.span {ϖ}) (w : O)) * U)`. Rewrite using `[← mul_assoc, coeff_mul_X_pow', if_pos le_rfl, Nat.sub_self, coeff_zero_eq_constantCoeff]`. Establish `hrhs : coeff D (V ^ B * X ^ (ℓ ^ g * B) * PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) q) = 0`. Establish `: V ^ B * X ^ (ℓ ^ g * B) * PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) q = X ^ (ℓ ^ g * B) * (V ^ B * PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) q)`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, coeff_X_pow_mul', if_neg (by rw [mul_comm]; omega)]`. Rewrite `hc1` using `[hlhs, hrhs]`. Conclude with `(isUnit_constantCoeff _ hW).ne_zero hc1`.
+A detailed English derivation is pending.
 -/
 theorem unit_constant_holds : DUConst := by
   intro O _ _ _ ϖ hϖ ℓ p I b g B y N c a hp hD h

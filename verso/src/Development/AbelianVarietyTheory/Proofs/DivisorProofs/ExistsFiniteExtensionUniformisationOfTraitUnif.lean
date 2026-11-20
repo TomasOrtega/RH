@@ -29,7 +29,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.Ident
 
 /- English proof (translation)
-Use `letI := ρ.toAlgebra`. Establish `hi : Algebra.IsIntegral R R'` using `⟨fun x => h.2.2.to_isIntegral x⟩`. Establish `hm : (maximalIdeal R').comap ρ = maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := R) (maximalIdeal R'))`. Conclude with `((IsLocalRing.local_hom_TFAE ρ).out 0 4).2 hm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finExt_isLocalHom {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsDomain R'] [IsLocalRing R']
     {ρ : R →+* R'} (h : FinExt ρ) : IsLocalHom ρ := by
@@ -40,7 +40,7 @@ theorem finExt_isLocalHom {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R
   exact ((IsLocalRing.local_hom_TFAE ρ).out 0 4).2 hm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h'.1, h'.2.1.comp h.2.1, h'.2.2.comp h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem finExt_comp {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁] [CommRing R₂]
     [IsDomain R₂] [IsLocalRing R₂] {ρ : R →+* R₁} {ρ' : R₁ →+* R₂} (h : FinExt ρ) (h' : FinExt ρ') :
@@ -48,11 +48,11 @@ theorem finExt_comp {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [IsDomain 
   ⟨h'.1, h'.2.1.comp h.2.1, h'.2.2.comp h.2.2⟩
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ _ _ ρ hR hf D₂ A G _ _ hG U₂ D₃ h23`. Use `hR.2` as an intermediate fact. Use `haveI := finExt_isLocalHom hf`. Take `⟨hL, -, -, h4, h5⟩` from `GlobalTheory.firstFiveLaws`. Take `⟨D', hD, A', U', hP⟩` from `GlobalTheory.UT.EndBaseChange.exists_pull hL.polBaseChange h4.unifBaseChange h5.psiOnExists hR.1 hf.1 ρ hf.2.1 (map_maximalIdeal_le ρ) hG U₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3' : Nonempty (IsPullDeg (RingHom.id R') D₃.toPre D'.toPre)` using `GlobalTheory.Mum.isPullDeg_unique_and_comp.1 R R' ρ hf.2.1 D₂.toPre D₃.toPre D'.toPre h23 ⟨hD⟩`. Establish `hG' : IsSemiAbelian ((Over.pullback (specOf ρ)).obj G)` using `IsSemiAbelian.pullback _ G hG`. Take `⟨U₃, hU₃, -⟩` from `(GlobalTheory.T.uniformisation_transfer_isPullDeg_id R' (maximalIdeal R') hf.1 D₃ D' h3' A' _ hG').1 U'`. Establish `hb : (Iso.refl ((Over.pullback (specOf ρ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf ρ) = pullback.fst G.hom (specOf ρ)` using `Category.id_comp _`. Use `⟨(Over.pullback (specOf ρ)).obj G, inferInstance, inferInstance, (Iso.refl ((Over.pullback (specOf ρ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf ρ), A', U₃, hG', ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isGrpPullback_pullback G (spMap ρ)).congr rfl hb.symm`. Rewrite using `[hU₃]`. Conclude with `⟨hP.lg.choose, hP.lg.choose_spec.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unif_along_finExt : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R'] [IsDomain R']
     [IsLocalRing R'] (ρ : R →+* R'), Base R → FinExt ρ → ∀ (D₂ : DegData R (maximalIdeal R))
@@ -80,17 +80,15 @@ theorem unif_along_finExt : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocal
     exact ⟨hP.lg.choose, hP.lg.choose_spec.1⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D G _ _ P hG W _ _ _ hW φ hφ hloc G' _ _ β D' A' U' hβ hL hD`. Establish `hT : UnifTrait D G P.L.L` using `⟨W, _, _, _, φ, G', _, _, β, D', A', U', hW, hφ, hloc, hβ, hL, hD⟩`. Take `⟨R₁, _, _, _, ρ₁, G₁, _, _, β₁, X, _, _, _, hf₁, hβ₁, hQ⟩` from `GlobalTheory.Mum.exists_finExt_tq_closedFibre R hR G hG`. Use `haveI hloc₁ : IsLocalHom ρ₁ := finExt_isLocalHom hf₁`. Take `⟨D₁, hD₁⟩` from `GlobalTheory.MumPull.exists_pull R R₁ ρ₁ hf₁.2.1 hloc₁ D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR₁ : Base R₁` using `⟨hf₁.1, by haveI := hR.2; exact charZero_of_injective_ringHom hf₁.2.1⟩`. Establish `hG₁ : IsSemiAbelian G₁`. Take `⟨bc, mbc, -⟩` from `grpPullback_iso hβ₁ (isGrpPullback_pullback G (spMap ρ₁))`. Conclude with `GlobalTheory.isSemiAbelian_of_grpIso bc (IsSemiAbelian.pullback _ G hG)`. Take `⟨P₁, w₁, hP₁L, hP₁⟩` from `GlobalTheory.UU.exists_cp_pull _ _ (spMap ρ₁) G G₁ β₁ hβ₁.1.w (fun T x y => Over.OverMorphism.ext (hβ₁.2 T x y _ _ rfl rfl).symm) P`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT₁ : UnifTrait D₁ G₁ P₁.L.L`. Rewrite using `[hP₁L]`. Conclude with `GlobalTheory.T.traitUniformisation_pullback_finiteExtension R R₁ ρ₁ hR hf₁ D D₁ hD₁ G G₁ β₁ hG hβ₁ P.L.L P.L.isLB hT`. Establish `hE : EvenOn P₁` using `GlobalTheory.T.evenCubicalTrivialisation_of_trait_uniformisation R₁ hR₁ D₁ G₁ P₁ hG₁ hT₁ X hQ`. Take `⟨A, gen, hgen, hA⟩` from `GlobalTheory.T.exists_polarisedAbelian_generic_fibre_trait_uniformised R₁ hR₁ D₁ G₁ P₁ hG₁ hT₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D₂, U₂, hU₂, -⟩` from `GlobalTheory.T.exists_uniformisation_completeLocal_evenOnTorus R₁ hR₁ G₁ P₁ hG₁ hE A gen hgen hA`. Take `⟨V, _, _, ψ, D', hψ, h1, h2⟩` from `GlobalTheory.T.exists_common_pullDeg_trait_and_base_uniformisation R₁ hR₁ D₁ G₁ P₁.L.L P₁.L.isLB hG₁ hT₁ D₂ A U₂ (by rw [hU₂])`. Take `⟨R', _, _, _, ρ₂, D₃, hf₂, h13, h23⟩` from `GlobalTheory.MumRig.exists_common_pull_finite R₁ hR₁ D₁ D₂ V ψ hψ D' h1 h2`. Take `⟨G₃, _, _, β₃, A₃, U₃, -, hβ₃, hL₃⟩` from `unif_along_finExt R₁ R' ρ₂ hR₁ hf₂ D₂ A G₁ hG₁ U₂ D₃ h23`. Use `⟨R', _, _, _, ρ₂.comp ρ₁, D₃, G₃, _, _, β₃ ≫ β₁, A₃, U₃, finExt_comp hf₁ hf₂, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a⟩` from `hD₁`. Take `⟨b⟩` from `h13`. Conclude with `GlobalTheory.PullDegComp.nonempty_isPullDeg_comp hf₁.2.1 hf₂.2.1 a b`. Use `(hβ₃.comp hβ₁).congr ?_ rfl show Spec.map _ ≫ Spec.map _ = Spec.map _` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`.
-
-Both sides reduce to the same expression. Rewrite `hL₃` using `[hU₂]`. Establish `hPP : LBIso P₁.L.L (P.L.L.pull β₁)` using `⟨w₁, hP₁.gen⟩`. Conclude with `LBIso.trans U₃.LG.isLB (pull_isLB P₁.L.isLB _) (pull_isLB P.L.isLB _) hL₃ (GlobalTheory.Ex.GenericFibre.lbIso_pull hPP β₃ rfl)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_finExt_unif : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (P : GlobalTheory.UU.CP G), IsSemiAbelian G → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (φ : R →+* W), Function.Injective φ → IsLocalHom φ → ∀ (G' : Over (Sp W)) [GrpObj G'] [IsCommMonObj G'] (β : G'.left ⟶ G.left) (D' : DegData W (maximalIdeal W)) (A' : PolAV (Sp (FractionRing W))) (U' : Unif (maximalIdeal W) D' A' G'), IsGrpPullback G' G (spMap φ) β → LBIso U'.LG.L (P.L.L.pull β) → Nonempty (IsPullDeg φ D.toPre D'.toPre) → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (D₁ : DegData R' (maximalIdeal R')) (G₁ : Over (Sp R')) (_ : GrpObj G₁) (_ : IsCommMonObj G₁) (β₁ : G₁.left ⟶ G.left) (A₁ : PolAV (Sp (FractionRing R'))) (U₁ : Unif (maximalIdeal R') D₁ A₁ G₁), FinExt ρ ∧ Nonempty (IsPullDeg ρ D.toPre D₁.toPre) ∧ IsGrpPullback G₁ G (spMap ρ) β₁ ∧ LBIso U₁.LG.L (P.L.L.pull β₁) := by
   intro R _ _ _ hR D G _ _ P hG W _ _ _ hW φ hφ hloc G' _ _ β D' A' U' hβ hL hD

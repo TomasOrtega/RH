@@ -118,7 +118,7 @@ structure MonomialCaseHypotheses : Prop where
       ∀ D ∈ T.boundary, ∀ x ∈ D.support, orderAt D x = 1
 
 /- English proof (translation)
-The claim follows from `hR.card_lt_dim flat_comap_center := by intro T hT Y k' hk q g hg hT' J 𝒞 h𝒞 hop exact FunctorialResolution.EmbeddedResolution.comap_componentUnionIdeal_of_flat T hT Y k' q g hT' J 𝒞 h𝒞 hop center_smooth := hR.center_smooth center_snc := hR.center_snc center_support := by intro T …`.
+A detailed English derivation is pending.
 -/
 theorem monomialGeometryHypotheses_of_monomialCaseHypotheses (hR : MonomialCaseHypotheses.{u}) :
     MonomialGeometryHypotheses.{u} where
@@ -226,7 +226,7 @@ structure OrderReductionHypotheses : Prop where
   monomial : MonomialCaseHypotheses.{u}
 
 /- English proof (translation)
-The claim follows from `FunctorialResolution.EmbeddedResolution.isoInvariantOrderCertificateDescend exceptional_components_not_subset := by intro T hT Z hZsm hZsnc X' π hπ J c hord J' htr C' hC' have := hT.charZero have := hT.smooth have := hT.isNoetherian have := FunctorialResolution.EmbeddedResolution …`.
+A detailed English derivation is pending.
 -/
 theorem geometricHypotheses_of_orderReductionHypotheses (hR : OrderReductionHypotheses.{u}) : PrincipalizationGeometryHypotheses.{u} where
   maxContactTransport := FunctorialResolution.EmbeddedResolution.isoInvariantOrderCertificateDescend

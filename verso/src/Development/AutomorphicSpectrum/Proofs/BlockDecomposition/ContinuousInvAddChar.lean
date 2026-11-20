@@ -31,9 +31,9 @@ section Proofs
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hi` using `τ.irr`. Assume the negation of the conclusion as `hs`. Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation τ.ρ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nontrivial_of_irr {G : Type} [Group G] [TopologicalSpace G] (τ : IrrRep G) : Nontrivial τ.V := by
   have hi := τ.irr
@@ -46,7 +46,7 @@ theorem nontrivial_of_irr {G : Type} [Group G] [TopologicalSpace G] (τ : IrrRep
   exact ⟨fun _ => zero_mem _, fun _ => zero_mem _⟩
 
 /- English proof (translation)
-Establish `: (⇑(ψ⁻¹ : AddChar k Circle)) = fun a => ψ (-a)` using `funext fun a => AddChar.inv_apply ψ a`. Rewrite using `[this]`. Conclude with `hc.comp continuous_neg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_inv_addChar (ψ : AddChar k Circle) (hc : Continuous ψ) : Continuous (ψ⁻¹ : AddChar k Circle) := by
   have : (⇑(ψ⁻¹ : AddChar k Circle)) = fun a => ψ (-a) := funext fun a => AddChar.inv_apply ψ a

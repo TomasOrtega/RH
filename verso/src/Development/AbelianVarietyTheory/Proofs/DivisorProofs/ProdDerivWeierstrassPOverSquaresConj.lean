@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.SqConj
 
 /- English proof (translation)
-Use `L.weierstrassP_add_coe w ⟨z - w, h⟩` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma wp_eq_of_sub_mem (L : PeriodPair) {z w : ℂ} (h : z - w ∈ L.lattice) :
     L.weierstrassP z = L.weierstrassP w := by
@@ -24,7 +24,7 @@ lemma wp_eq_of_sub_mem (L : PeriodPair) {z w : ℂ} (h : z - w ∈ L.lattice) :
   simpa using this
 
 /- English proof (translation)
-Use `L.derivWeierstrassP_add_coe w ⟨z - w, h⟩` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma dwp_eq_of_sub_mem (L : PeriodPair) {z w : ℂ} (h : z - w ∈ L.lattice) :
     L.derivWeierstrassP z = L.derivWeierstrassP w := by
@@ -32,23 +32,21 @@ lemma dwp_eq_of_sub_mem (L : PeriodPair) {z w : ℂ} (h : z - w ∈ L.lattice) :
   simpa using this
 
 /- English proof (translation)
-Introduce `p F L t hp hp4 hp3 hD σ hσ`. Take `⟨c, hpc, hc⟩` from `GlobalTheory.T.exists_conj_kernel_mul' p F L t hp hp4 hp3 hD σ hσ`. Take `⟨e, ε, hε, he⟩` from `GlobalTheory.T.nonzeroSquaresModPrime_mul_perm_up_to_sign p c hp hp4 hpc`. Establish `hker` using `(GlobalTheory.T.sqrtNegPrime_kernel_cyclic p F L t hp hp4 hp3 hD).1`. Take `⟨hne, -⟩` from `GlobalTheory.T.prodDerivWeierstrassPOverSquares_ne_zero p F L t hp hp4 hp3 hD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hodd⟩` from `GlobalTheory.T.two_mul_card_sq_add_one_eq_and_odd_of_mod_four_eq_three p hp hp4`. Establish `hmem : ∀ k : Sq p, ((k.1 : ℕ) : ℂ) * ((c : ℂ) * t) - (ε : ℂ) * sqPt p t (e k) ∈ L.lattice`. Introduce `k`. Use `(hker _).2 (he k)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [sqPt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hconj : ∀ k : Sq p, ((k.1 : ℕ) : ℂ) * ((c : ℂ) * t) ∉ L.lattice ∧ L.weierstrassP (((k.1 : ℕ) : ℂ) * ((c : ℂ) * t)) = σ (L.weierstrassP (sqPt p t k)) ∧ L.derivWeierstrassP (((k.1 : ℕ) : ℂ) * ((c : ℂ) * t)) = σ (L.derivWeierstrassP (sqPt p t k))`. Introduce `k`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hc k.1 with h | h` into its components or cases. Conclude with `absurd h.1 (hne k).1`. Conclude with `⟨h.2.1, h.2.2.1, h.2.2.2⟩`. Establish `hσprod : σ (sqProd p L t) = ∏ k : Sq p, L.derivWeierstrassP (((k.1 : ℕ) : ℂ) * ((c : ℂ) * t))`. Simplify using `only [sqProd, map_prod]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Finset.prod_congr rfl fun k _ => (hconj k).2.2.symm`. Break down `hε with rfl | rfl` into its components or cases. Use `left`. Establish `hm : ∀ k : Sq p, ((k.1 : ℕ) : ℂ) * ((c : ℂ) * t) - sqPt p t (e k) ∈ L.lattice`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hmem k`. Use `⟨?_, e, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hσprod]`. Simplify using `only [dwp_eq_of_sub_mem L (hm _)]`. Conclude with `Equiv.prod_comp e (fun k => L.derivWeierstrassP (sqPt p t k))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `right`. Use `⟨(hne k).1, (hne (e k)).1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← wp_eq_of_sub_mem L (hm k)]`. Conclude with `(hconj k).2.1`. Rewrite using `[← dwp_eq_of_sub_mem L (hm k)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hconj k).2.2`. Use `right`. Establish `hm : ∀ k : Sq p, ((k.1 : ℕ) : ℂ) * ((c : ℂ) * t) - (-sqPt p t (e k)) ∈ L.lattice`. Introduce `k`. Simplify using `using hmem k`.
-
-Rewrite using `[hσprod]`. Simplify using `only [dwp_eq_of_sub_mem L (hm _), PeriodPair.derivWeierstrassP_neg]`. Rewrite using `[Finset.prod_neg, Equiv.prod_comp e (fun k => L.derivWeierstrassP (sqPt p t k)), Finset.card_univ, hodd.neg_one_pow, sqProd]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sqProd_conj : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : ℂ), p.Prime → p % 4 = 3 → 3 < p → Datum p F L t → ∀ σ : ℂ ≃+* ℂ, (∀ x ∈ F, σ x = x) → (σ (sqProd p L t) = sqProd p L t ∧ ∃ e : Sq p ≃ Sq p, ∀ k, GlobalTheory.ConjPoint.IsConj L L σ (sqPt p t k) (sqPt p t (e k))) ∨ σ (sqProd p L t) = -sqProd p L t := by
   intro p F L t hp hp4 hp3 hD σ hσ

@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.TwV.Xc.SBad
 
 /- English proof (translation)
-Take `⟨s, r, hsr⟩` from `h.cast (R := R)`. Conclude with `hI ((Ideal.eq_top_iff_one _).2 (hsr ▸ I.add_mem (I.mul_mem_left _ ha) (I.mul_mem_left _ hb)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_both_mem {R : Type*} [CommRing R] {I : Ideal R} (hI : I ≠ ⊤) {a b : ℕ} (h : Nat.Coprime a b)
     (ha : (a : R) ∈ I) (hb : (b : R) ∈ I) : False := by
@@ -18,7 +18,7 @@ theorem not_both_mem {R : Type*} [CommRing R] {I : Ideal R} (hI : I ≠ ⊤) {a 
   exact hI ((Ideal.eq_top_iff_one _).2 (hsr ▸ I.add_mem (I.mul_mem_left _ ha) (I.mul_mem_left _ hb)))
 
 /- English proof (translation)
-Unfold `Formalism.L2.Col.divs at h`. Use `split_ifs at h with hf`. Simplify using `using h`. Simplify using `at h`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : HeightOneSpectrum A}
     (h : P ∈ Formalism.L2.Col.divs a) : a ∈ P.asIdeal := by
@@ -28,7 +28,7 @@ theorem mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P 
   · simp at h
 
 /- English proof (translation)
-Use `GlobalTheory.NormUnitInert.Arith.coprime_absNorm p P.ne_bot ?_` and prove the remaining obligations. Use `P.isMaximal.out.2 _ (lt_of_le_of_ne le_sup_left fun he => h ?_)` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_absNorm_of_notMem {E : Type} [Field E] [NumberField E] (p : ℕ) [Fact p.Prime]
     (P : HeightOneSpectrum (𝓞 E)) (h : ((p : ℕ) : 𝓞 E) ∉ P.asIdeal) : Nat.Coprime (Ideal.absNorm P.asIdeal) p := by
@@ -41,13 +41,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {ex : Extra D L hT Gi Gl Kc Dx cX}
 
 /- English proof (translation)
-Introduce `hpP`. Simplify using `only [Formalism.L2.Col.Sall, Formalism.L2.Col.rowSG, Formalism.L2.Col.uSG, Formalism.L2.Col.Primes.vGs, Finset.mem_union] at hP`. Establish `hG : ∀ i, P ∈ t.Pr.vG i → False` using `fun i hPi => by`. Establish `hc` using `mem_of_mem_divs hPi`. Establish `hgm : ((D.host.g i : ℕ) : 𝓞 t.X.E) ∈ P.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← t.g_rec i, ← t.pr_ok.piG_norm]`. Conclude with `Ideal.mul_mem_left _ _ hc`. Establish `hgi : (D.host.g i).Prime` using `t.g_rec i ▸ t.pr_ok.g_prime i`. Conclude with `not_both_mem P.isPrime.ne_top ((Nat.coprime_primes hgi hp).2 (hgp i).symm) hgm hpP`. Break down `hP with hP | (hP | hP) | hP` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi` using `mem_of_mem_divs hP`. Establish `hTm : (((D.mem u).A.T : ℕ) : 𝓞 t.X.E) ∈ P.asIdeal`. Rewrite using `[← t.T_rec u, ← t.pr_ok.piT_norm]`. Conclude with `Ideal.mul_mem_right _ _ hpi`. Conclude with `not_both_mem P.isPrime.ne_top hTp hTm hpP`.
-
-Conclude with `hG 0 hP`. Conclude with `hG 1 hP`. Conclude with `hQ ((t.Q_rec μ p).2 ⟨hp, P, hP, hpP⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notMem_Sall (t : KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup) (p : ℕ) (hp : p.Prime)
     (hTp : Nat.Coprime (D.mem u).A.T p) (hgp : ∀ i, p ≠ D.host.g i) (hQ : p ∉ Dx.Qp μ)
@@ -75,17 +73,15 @@ theorem notMem_Sall (t : KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X hF std t J S _ _`. Establish `hp : (D.what₂.places.resChar w).Prime` using `hF.out`. Take `⟨-, -, hTp, hgp⟩` from `GlobalTheory.TwU.XdInert.gidx_facts D _ _ hg`. Establish `hSS` using `(t.rd_chain u μ).1`. Establish `hlev` using `(t.rd_chain u μ).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `fun P hP => notMem_Sall t u μ _ hp hTp hgp J.away P hP`. Establish `keyE : ∀ Q ∈ GlobalTheory.TwU.ssRec t u μ, (((D.what₂.places.resChar w : ℕ)) : 𝓞 D.host.E) ∉ Q.asIdeal`. Introduce `Q hQ hm`. Take `⟨P, hP, rfl⟩` from `Finset.mem_map.1 hQ`. Use `key P (hSS ▸ hP) ((GlobalTheory.TwU.mem_seamP t.seam P _).1 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_natCast]`. Conclude with `hm`. Establish `keyF : ∀ v ∈ Formalism.L2.Col.plUnder D.host.F (GlobalTheory.TwU.ssRec t u μ), (((D.what₂.places.resChar w : ℕ)) : 𝓞 D.host.F) ∉ v.asIdeal`. Introduce and unpack `v ⟨Q, hQ, hv⟩ hm`. Rewrite `hm` using `[hv, Ideal.mem_comap, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `keyE Q hQ hm`. Use `⟨?_, keyE, keyF, ?_⟩` and prove the remaining obligations. Rewrite using `[hlev]`. Establish `hq : ∀ P : Formalism.L2.Col.rowSG t.Pr t.sel (t.tup μ), Nat.Coprime (Formalism.L2.Col.qOf P.1) (D.what₂.places.resChar w)` using `fun P => coprime_absNorm_of_notMem _ P.1 (key P.1 (Finset.mem_union_right _ P.2))`. Establish `hprod : Nat.Coprime (∏ P : Formalism.L2.Col.rowSG t.Pr t.sel (t.tup μ), Formalism.L2.Col.qOf P.1) (D.what₂.places.resChar w)` using `Nat.Coprime.prod_left fun P _ => hq P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT' : Nat.Coprime (t.Pr.T (t.word u)) (D.what₂.places.resChar w)` using `by rw [t.T_rec u]; exact hTp`. Simplify using `only [Formalism.L2.Ker.levC, Formalism.L2.Col.cAof, Formalism.L2.Col.cBof]`. Conclude with `Nat.Coprime.mul (Nat.Coprime.pow_left _ hprod) (Nat.Coprime.mul hT' (Nat.Coprime.pow_left _ hprod))`. Introduce and unpack `v ⟨P, hP, hv⟩ hm`. Rewrite `hm` using `[hv, Ideal.mem_comap, map_natCast]`.
-
-Use `key P (Finset.mem_union_right _ hP) ((GlobalTheory.TwU.mem_seamP t.seam P _).1 ?_)` and prove the remaining obligations. Rewrite using `[map_natCast]`. Conclude with `hm`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bad_prime_to_p : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => Nat.Coprime (t.rd u μ).lev (D.what₂.places.resChar w) ∧ (∀ Q ∈ GlobalTheory.TwU.ssRec t u μ, (((D.what₂.places.resChar w) : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) ∧ (∀ v ∈ Formalism.L2.Col.plUnder D.host.F (GlobalTheory.TwU.ssRec t u μ), (((D.what₂.places.resChar w) : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal) ∧ ∀ v, GlobalTheory.TwU.UnderSB t μ v → (((D.what₂.places.resChar w) : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X hF std t J S _ _

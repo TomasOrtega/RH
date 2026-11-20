@@ -14,9 +14,9 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Rewrite using `[phi_apply_eq, ← (Fin.snocEquiv (fun _ => Fin n × Fin n)).sum_comp, Fintype.sum_prod_type_right]`. Use `Finset.sum_eq_zero (fun init _ => ?_)` and prove the remaining obligations. Break down `isEmpty_or_nonempty (Fin n × Fin n) with hem | ⟨⟨p₀⟩⟩` into its components or cases. Simplify using `[Finset.univ_eq_empty]`. Establish `h0` using `hSch _ (hF (Fin.snoc init p₀))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h0` using `[sch_phi_one_apply]`. Simplify using `only [sch_slice_apply, Fin.update_snoc_last] at h0`. Establish `hs : ∀ x : Fin n × Fin n, (Fin.snocEquiv (fun _ => Fin n × Fin n)) (x, init) = Fin.snoc init x` using `fun x => rfl`. Simplify using `only [hs, sch_word_snoc, Module.End.mul_apply, ← map_sum]`. Rewrite using `[show (∑ x : Fin n × Fin n, (E x.1 x.2) (F (Fin.snoc init x))) = 0 from h0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_Wm_last_of_sch (hSch : ∀ x ∈ Wm ε E V, phi E 1 x = 0) {k : ℕ} {F : Big n (k + 1) M}
     (hF : ∀ κ, slice (Fin.last k) κ F ∈ Wm ε E V) : phi E (k + 1) F = 0 := by
@@ -34,11 +34,11 @@ theorem phi_Wm_last_of_sch (hSch : ∀ x ∈ Wm ε E V, phi E 1 x = 0) {k : ℕ}
     rw [show (∑ x : Fin n × Fin n, (E x.1 x.2) (F (Fin.snoc init x))) = 0 from h0, map_zero]
 
 /- English proof (translation)
-Establish `hsub` using `phi_permute_sub_mem hE hV.2.1 (Equiv.swap i (Fin.last k)) hF0`. Establish `hzero : phi E (k + 1) (permute (Equiv.swap i (Fin.last k)) F) = 0`. Apply `phi_Wm_last_of_sch hSch` to reduce the goal to its premises. Introduce `κ`. Establish `hs : slice (Fin.last k) κ (permute (Equiv.swap i (Fin.last k)) F) = slice i (κ ∘ Equiv.swap i (Fin.last k)) F`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `big_ext` to reduce the goal to its premises. Introduce `ι`. Rewrite using `[sch_slice_apply, sch_slice_apply, sch_permute_apply, Function.update_comp_equiv, Equiv.symm_swap, Equiv.swap_apply_right]`. Rewrite using `[hs]`. Conclude with `hF _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsub` using `[hzero, sub_zero]`. Conclude with `hsub`.
+A detailed English derivation is pending.
 -/
 theorem phi_Wm_position_of_sch (hE : IsGlRep E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hSch : ∀ x ∈ Wm ε E V, phi E 1 x = 0) {k : ℕ} (i : Fin (k + 1)) {F : Big n (k + 1) M}
@@ -60,13 +60,13 @@ theorem phi_Wm_position_of_sch (hE : IsGlRep E) (hV : IsKIrrHW ε E (lowK ε lam
   exact hsub
 
 /- English proof (translation)
-Establish `h1 : ∀ c d, (if c < d ∧ P c d then ν c - ν d else 0) = (if c < d ∧ P c d then ν c else 0) - (if c < d ∧ P c d then ν d else 0)`. Introduce `c d`. Apply the tactic sequence `split_ifs <;> ring`. Simplify using `only [h1, Finset.sum_sub_distrib]`. Establish `h2 : ∑ c, ∑ d, (if c < d ∧ P c d then ν d else 0) = ∑ c, ∑ d, (if d < c ∧ P c d then ν c else 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun c _ => Finset.sum_congr rfl (fun d _ => ?_))` and prove the remaining obligations. Distinguish the cases in `hdc : d < c`. Distinguish the cases in `hp : P c d`. Rewrite using `[if_pos ⟨hdc, (hP c d).mp hp⟩, if_pos ⟨hdc, hp⟩]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hp ((hP c d).mpr h.2)), if_neg (fun h => hp h.2)]`. Rewrite using `[if_neg (fun h => hdc h.1), if_neg (fun h => hdc h.1)]`. Rewrite using `[h2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_sub, Finset.mul_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl (fun d _ => ?_) <;> split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sum_pairs_sub_eq_sum_mul_count_diff (P : Fin n → Fin n → Prop) [DecidableRel P]
     (hP : ∀ c d, P c d ↔ P d c) (ν : Fin n → ℝ) :
@@ -93,7 +93,7 @@ private theorem sum_pairs_sub_eq_sum_mul_count_diff (P : Fin n → Fin n → Pro
   congr 1 <;> refine Finset.sum_congr rfl (fun d _ => ?_) <;> split_ifs <;> ring
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[sum_pairs_sub_eq_sum_mul_count_diff (fun c d => ε d = ε c) (fun c d => eq_comm) μ]`. Simplify using `only [casValK, nsq, dot, Pi.add_apply, rhoC, numRho_cardR]`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -108,17 +108,17 @@ private theorem sum_pairs_eq_casValK (μ : Fin n → ℝ) :
   ring
 
 /- English proof (translation)
-Establish `hterm : ∀ a b, (if ε b = ε a then A a b (A b a w) else 0) = (((if a = b then μ a ^ 2 else 0) + (if a < b ∧ ε b = ε a then μ a - μ b else 0) : ℝ) : ℂ) • w`. Introduce `a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Distinguish the cases in `hab : ε b = ε a`. Establish `hc` using `congrArg (fun T : Module.End ℂ X => T w) (hA a b b a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, if_true] at hc`. Rewrite `hc` using `[hw.2 a b h hab.symm, map_zero, sub_zero, hw.1 a, hw.1 b]`. Rewrite using `[if_pos hab, hc, if_neg (ne_of_lt h), if_pos ⟨h, hab⟩]`. Simplify using `[sub_smul]`. Rewrite using `[if_neg hab, if_neg (ne_of_lt h), if_neg (fun h' => hab h'.2)]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_pos rfl, hw.1 a, map_smul, hw.1 a, smul_smul]`. Simplify using `[sq]`. Distinguish the cases in `hab : ε b = ε a`. Rewrite using `[if_pos hab, hw.2 b a h hab, map_zero, if_neg (ne_of_gt h), if_neg (fun h' => (lt_asymm h) h'.1)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hab, if_neg (ne_of_gt h), if_neg (fun h' => hab h'.2)]`. Simplify using the standard rewrite rules. Establish `hsum : casimirK ε A w = ∑ a, ∑ b, (if ε b = ε a then A a b (A b a w) else 0)`. Simplify using `only [casimirK, LinearMap.sum_apply, Finset.sum_filter]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hsum]`. Simplify using `only [hterm, ← Finset.sum_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← sum_pairs_eq_casValK μ]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 private theorem casimirK_apply_isKHWVec_of_isGlRep {X : Type*} [AddCommGroup X] [Module ℂ X]
     {A : Fin n → Fin n → Module.End ℂ X} (hA : IsGlRep A) {μ : Fin n → ℝ} {w : X}
@@ -155,11 +155,11 @@ private theorem casimirK_apply_isKHWVec_of_isGlRep {X : Type*} [AddCommGroup X] 
   rfl
 
 /- English proof (translation)
-Take `⟨P, hPm, hP0, hPk, hPperp⟩` from `lift_layer hE hU hV.1 hV.2.1 hw hperp hμ hw0`. Establish `hposition : ∀ i κ, slice i κ P ∈ Wp ε E V`. Introduce `i`. Conclude with `position_perp hE hU hV hmono hh hbig i hPm (fun F hF hsl => hPperp F hF (phi_Wm_position_of_sch hE hV hSch i hF hsl))`. Establish `hB` using `bochner_ineq hE hU hV hmono hh hbig hPm hposition`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre : RCLike.re (inner ℂ ((casValK ε μ : ℂ) • P) P) = casValK ε μ * ‖P‖ ^ 2`. Rewrite using `[inner_smul_left, inner_self_eq_norm_sq_to_K]`. Simplify using `[← Complex.ofReal_pow]`. Rewrite `hB` using `[casimirK_apply_isKHWVec_of_isGlRep (bAct_isGlRep hE (k + 1)) hPk, hre]`. Establish `hpos : 0 < ‖P‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hP0) 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨khw_big_weight hE hV hPm hP0 hPk, ?_⟩` and prove the remaining obligations. Establish `h2` using `le_of_mul_le_mul_right hB hpos`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem khw_layer_succ_bound_of_sch (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hSch : ∀ x ∈ Wm ε E V, phi E 1 x = 0)
@@ -186,9 +186,9 @@ theorem khw_layer_succ_bound_of_sch (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   linarith
 
 /- English proof (translation)
-Take `⟨m, hwm⟩` from `exists_layer_of_mem_genSub hE hV.2.1 hw`. Take `⟨w₀, hw₀, hkw₀, ws, hwe, hws⟩` from `layer_khw_decomp hE hU hV.1 hV.2.1 hwm hμ`. Use `⟨w₀, hw₀, hkw₀, m, ws, hwe, fun j => ⟨(hws j).1, fun hne => ?_⟩⟩` and prove the remaining obligations. Take `⟨hmem, hperp, hkhw⟩` from `hws j`. Take `⟨hnc, hle⟩` from `khw_layer_succ_bound_of_sch hE hU hV hSch hmono hh hbig (j : ℕ) hmem hperp hne hkhw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hnc, ?_, hle⟩` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `isNCSum_succ_exists hnc`. Use `(gap_gt hab hbig).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem highest_weight_decomposition_of_gap (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hSch : ∀ x ∈ Wm ε E V, phi E 1 x = 0)
@@ -211,9 +211,9 @@ theorem highest_weight_decomposition_of_gap (hE : IsGlRep E) (hU : IsInfUnitary 
   linarith
 
 /- English proof (translation)
-Take `⟨hmono, h, hh, hbig⟩` from `hgap`. Take `⟨w₀, hw₀, -, m, ws, hwe, hws⟩` from `highest_weight_decomposition_of_gap hE hU hV hSch hmono hh hbig hw hμ`. Establish `hz : ∀ j, ws j = 0`. Introduce `j`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨-, hpos, hle⟩` from `(hws j).2 hne`. Establish `: 0 < 2 * (((j : ℕ) : ℝ) + 1) * (h - n + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hwe, Finset.sum_eq_zero (fun j _ => hz j), add_zero]`. Conclude with `hw₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem khw_lowK_mem_of_sch (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hSch : ∀ x ∈ Wm ε E V, phi E 1 x = 0)
@@ -231,15 +231,15 @@ theorem khw_lowK_mem_of_sch (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   exact hw₀
 
 /- English proof (translation)
-Take `⟨x₀, hx₀, hphi⟩` from `hne`. Establish `hKU : IsKUnitary ε E` using `isKUnitary_of_isInfUnitary hU`. Establish `: FiniteDimensional ℂ (ncV ε V 1)` using `finiteDimensional_ncV hV.1 1`. Establish `hfdW : FiniteDimensional ℂ (Wm ε E V)` using `Submodule.finiteDimensional_of_le Wm_le_ncV`. Establish `hTst : IsKStableSub ε E ((Wm ε E V).map (phi E 1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab v hv`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hv`. Conclude with `Submodule.mem_map.mpr ⟨bAct E 1 a b x, Wm_kStable hE hU hV a b hab x hx, phi_bAct hE 1 hab x⟩`. Establish `hTne : (Wm ε E V).map (phi E 1) ≠ ⊥`. Introduce `hbot`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm` using `Submodule.mem_map_of_mem (f := phi E 1) hx₀`. Rewrite `hm` using `[hbot]`. Conclude with `hphi ((Submodule.mem_bot ℂ).mp hm)`. Take `⟨w, hwT, hw0, μ, hkμ⟩` from `exists_khw hE hKU inferInstance hTst hTne`. Take `⟨x₁, hx₁, rfl⟩` from `Submodule.mem_map.mp hwT`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, -, hkx, hfx⟩` from `lift_khw (bAct_isKUnitary hU 1) (phi E 1) (fun a b hab y => phi_bAct hE 1 hab y) hfdW (Wm_kStable hE hU hV) hx₁ hkμ`. Establish `hx0 : x ≠ 0`. Introduce `h0`. Apply `hw0` to reduce the goal to its premises. Rewrite using `[← hfx, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b, hab, hε, hμe⟩` from `Wm_khw hE hU hV hmono hh hbig hx hx0 hkx`. Use `⟨a, b, hab, hε, phi E 1 x₁, ?_, hw0, hμe ▸ hkμ⟩` and prove the remaining obligations. Rewrite using `[← hfx]`. Conclude with `phi_mem_layer (Wm_le_ncV hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_khw_of_not_sch (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
@@ -276,7 +276,7 @@ theorem exists_khw_of_not_sch (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   exact phi_mem_layer (Wm_le_ncV hx)
 
 /- English proof (translation)
-Introduce `x hx`. Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab, hε, w, hw, hw0, hkhw⟩` from `exists_khw_of_not_sch hE hU hV hmono hh hbig ⟨x, hx, hne⟩`. Conclude with `hw0 (hNo a b hab hε w hw hkhw)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sch_of_no (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
@@ -291,11 +291,11 @@ theorem sch_of_no (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   exact hw0 (hNo a b hab hε w hw hkhw)
 
 /- English proof (translation)
-Establish `hsw : ∑ c, ∑ d, (if d < c ∧ ε d ≠ ε c then ν c - ν d else 0) = -(∑ c, ∑ d, (if c < d ∧ ε d ≠ ε c then ν c - ν d else 0))`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h1 : c < d`. Distinguish the cases in `h2 : ε d = ε c`. Rewrite using `[if_neg (fun h => h.2 h2.symm), if_neg (fun h => h.2 h2), neg_zero]`. Rewrite using `[if_pos ⟨h1, fun h => h2 h.symm⟩, if_pos ⟨h1, h2⟩]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg (fun h => h1 h.1), if_neg (fun h => h1 h.1), neg_zero]`. Rewrite using `[hsw, sum_pairs_sub_eq_sum_mul_count_diff (fun c d => ε d ≠ ε c) (fun c d => ⟨fun h e => h e.symm, fun h e => h e.symm⟩) ν]`. Simplify using `only [dot, rhoN, numRho_cardR, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -321,15 +321,15 @@ private theorem sum_opposite_sign_pairs_eq_neg_two_dot_rhoN (ν : Fin n → ℝ)
   ring
 
 /- English proof (translation)
-Establish `h1` using `Finset.card_filter_add_card_filter_not (s := Finset.univ.filter (fun d : Fin n => c < d)) (fun d => ε d = ε c)`. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := Finset.univ.filter (fun d : Fin n => d < c)) (fun d => ε d = ε c)`. Simplify using `only [Finset.filter_filter] at h1 h2`. Establish `h3 : (Finset.univ.filter (fun d : Fin n => c < d)).card = n - 1 - c`. Rewrite using `[← Fin.card_Ioi]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `d`. Simplify using the standard rewrite rules. Establish `h4 : (Finset.univ.filter (fun d : Fin n => d < c)).card = c`. Rewrite using `[← Fin.card_Iio]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `d`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h3]`. Rewrite `h2` using `[h4]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : (c : ℕ) < n` using `c.2`. Establish `e1 : ((n - 1 - (c : ℕ) : ℕ) : ℝ) = (n : ℝ) - 1 - c`. Rewrite using `[Nat.cast_sub (by omega : (c : ℕ) ≤ n - 1), Nat.cast_sub (by omega : 1 ≤ n)]`. Simplify using the standard rewrite rules. Establish `h1'` using `congrArg (Nat.cast : ℕ → ℝ) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2'` using `congrArg (Nat.cast : ℕ → ℝ) h2`. Rewrite `h1'` using `[e1]`. Move the coercions through the operations in `at h1' h2'`. Simplify using `only [rho, rhoC, rhoN, ne_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem rho_eq_rhoC_add_rhoN' (ε : Fin n → Bool) (c : Fin n) : rho n c = rhoC ε c + rhoN ε c := by
   have h1 := Finset.card_filter_add_card_filter_not
@@ -361,29 +361,29 @@ private theorem rho_eq_rhoC_add_rhoN' (ε : Fin n → Bool) (c : Fin n) : rho n 
   linarith
 
 /- English proof (translation)
-Introduce `a b hab hε w hw hkhw`. Assume the negation of the conclusion as `hw0`. Establish `hcas : casimir E w = (casVal lam : ℂ) • w` using `casimir_genSub hE hc w (layer_le_genSub 1 hw)`. Use `set ν := lowK ε lam - root a b with hνdef`. Establish `hsm : ∀ r : ℝ, RCLike.re (inner ℂ ((r : ℂ) • w) w) = r * ‖w‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Rewrite using `[inner_smul_left, inner_self_eq_norm_sq_to_K]`. Simplify using `[← Complex.ofReal_pow]`. Establish `hneg : ∀ c d, ε c ≠ ε d → RCLike.re (inner ℂ (E c d (E d c w)) w) = -‖E d c w‖ ^ 2`. Introduce `c d hcd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU c d, adjSign, if_neg hcd, neg_one_mul, map_neg, inner_self_eq_norm_sq]`. Establish `hcomm : ∀ c d, E c d (E d c w) = E d c (E c d w) + ((ν c - ν d : ℝ) : ℂ) • w`. Introduce `c d`. Establish `h` using `congrArg (fun T : Module.End ℂ M => T w) (hE c d d c)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, if_true] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hkhw.1 c, hkhw.1 d]`. Rewrite using `[Complex.ofReal_sub, sub_smul, ← h]`. Normalize the expressions using the abelian group laws. Establish `hbd : ∀ c d, RCLike.re (inner ℂ (E c d (E d c w)) w) ≤ ((if c = d then ν c ^ 2 else 0) + (if c < d ∧ ε d = ε c then ν c - ν d else 0) + (if d < c ∧ ε d ≠ ε c then ν c - ν d else 0)) * ‖w‖ ^ 2`. Introduce `c d`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy c d with hcd | rfl | hcd` into its components or cases. Distinguish the cases in `hs : ε d = ε c`. Rewrite using `[hcomm c d, hkhw.2 c d hcd hs.symm, map_zero, zero_add, hsm, if_neg (ne_of_lt hcd), if_pos ⟨hcd, hs⟩, if_neg (fun h => lt_asymm hcd h.1)]`. Simplify using the standard rewrite rules. Rewrite using `[hneg c d (fun h => hs h.symm), if_neg (ne_of_lt hcd), if_neg (fun h => hs h.2), if_neg (fun h => lt_asymm hcd h.1)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `sq_nonneg ‖E d c w‖` as an intermediate fact. Simplify using `only [add_zero, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hkhw.1 c, map_smul, hkhw.1 c, smul_smul, if_pos rfl, if_neg (fun h => lt_irrefl c h.1), if_neg (fun h => lt_irrefl c h.1), ← Complex.ofReal_mul, hsm]`. Simplify using `[sq]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hs : ε d = ε c`. Rewrite using `[hkhw.2 d c hcd hs, map_zero, inner_zero_left, map_zero, if_neg (ne_of_gt hcd), if_neg (fun h => lt_asymm hcd h.1), if_neg (fun h => h.2 hs)]`. Simplify using the standard rewrite rules. Rewrite using `[hcomm c d, inner_add_left, map_add, hneg d c hs, hsm, if_neg (ne_of_gt hcd), if_neg (fun h => lt_asymm hcd h.1), if_pos ⟨hcd, hs⟩]`. Use `sq_nonneg ‖E c d w‖` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [zero_add]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsumre : RCLike.re (inner ℂ (casimir E w) w) = ∑ c, ∑ d, RCLike.re (inner ℂ (E c d (E d c w)) w)`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, sum_inner, map_sum]`. Establish `hT : ∑ c, ∑ d, ((if c = d then ν c ^ 2 else 0) + (if c < d ∧ ε d = ε c then ν c - ν d else 0) + (if d < c ∧ ε d ≠ ε c then ν c - ν d else 0)) = casValK ε ν - 2 * dot ν (rhoN ε)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sum_pairs_eq_casValK ν, sub_eq_add_neg, ← sum_opposite_sign_pairs_eq_neg_two_dot_rhoN ν]`. Simplify using `only [Finset.sum_add_distrib]`. Establish `hle : casVal lam * ‖w‖ ^ 2 ≤ (casValK ε ν - 2 * dot ν (rhoN ε)) * ‖w‖ ^ 2`. Rewrite using `[← hsm, ← hcas, hsumre, ← hT, Finset.sum_mul]`. Use `Finset.sum_le_sum (fun c _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum (fun d _ => hbd c d)`. Establish `hpos : 0 < ‖w‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hw0) 2`. Establish `hle'` using `le_of_mul_le_mul_right hle hpos`. Establish `hgapab` using `sch_gap hgap hab hε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hnum : casValK ε ν - 2 * dot ν (rhoN ε) - casVal lam = nsq (root a b) - 2 * dot lam (root a b) + 4 * dot (rhoC ε) (rhoN ε)`. Simplify using `only [casValK, casVal, nsq, dot, hνdef, lowK, Pi.add_apply, Pi.sub_apply, rho_eq_rhoC_add_rhoN' ε]`. Simplify using `only [Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hnum` using `[nsq_root (ne_of_lt hab)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem no_of_casimir (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v) (hgap : StdGap ε lam) :
@@ -459,7 +459,7 @@ theorem no_of_casimir (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   linarith
 
 /- English proof (translation)
-Take `⟨hmono, h, hh, hbig⟩` from `id hgap`. Conclude with `khw_lowK_mem_of_sch hE hU hV (sch_of_no hE hU hV hmono hh hbig hNo) hgap hw hμ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem khw_lowK_mem_of_no (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V)

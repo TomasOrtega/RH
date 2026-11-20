@@ -17,7 +17,7 @@ namespace GlobalTheory.IsoPhaseRat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_inclR (e : E) :
     Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) e) = algebraMap F (AF F) (Algebra.trace F E e) := by
@@ -26,9 +26,9 @@ theorem trace_inclR (e : E) :
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d d₁ W H' w γ hγ`. Establish `hγi : γ⁻¹ ∈ ratU σ W.J` using `inv_mem hγ`. Take `⟨g, hg⟩` from `Subgroup.mem_subgroupOf.1 hγi`. Establish `hm : mat γ⁻¹ = incM F (g : Matrix (Fin d) (Fin d) E)`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `show ((γ⁻¹ : UA σ W.J) : GL (Fin d) (AE F E)) i j = _`. Rewrite using `[← hg]`. Both sides reduce to the same expression. Use `⟨-Algebra.trace F E (form σ W.J (H'.ι *ᵥ w) ((g : Matrix (Fin d) (Fin d) E) *ᵥ H'.y)), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IsoPhase.phase, hm, GlobalTheory.UnipMass.incM_mulVec_incV, GlobalTheory.UnipMass.hA_incV, trace_inclR, map_neg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phase_rat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (d d₁ : ℕ) (W : Spc F E d)

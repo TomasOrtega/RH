@@ -26,7 +26,7 @@ def dcomp (T0 : B.DTerm k r Wp Wq) (Θ : B.DiffOp k r Wp Wq) : B.DiffOp k r Wp W
         rw [T0.adj_id, T.adj_id] }
 
 /- English proof (translation)
-Unfold `B.opApply dcomp`. Rewrite using `[map_list_sum, List.map_map, List.map_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem opApply_dcomp (T0 : B.DTerm k r Wp Wq) (Θ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp))
     (g : B.Mat k r) : B.opApply (dcomp T0 Θ) F g = T0.coef g (B.opApply Θ F g) := by
@@ -108,9 +108,9 @@ def RDSComp0 : Prop :=
     (T0 : B.DTerm k r Wp Wq) (Θ : B.DiffOp k r Wp Wq), Good0 D T0 → OpProp1 D Θ → OpProp1 D (dcomp T0 Θ)
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hY _ hY0 _`. Take `⟨σ, hσ⟩` from `hR Wp Wq P z z' π π' X μ L st l0 hD hl1 hl2 hr Y hY`. Take `⟨T0, hT0, hT0e⟩` from `hX Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hY0`. Substitute `hz hz' hπ hπ'` using the available equality. Take `⟨Θ, hΘ, hΘe⟩` from `hG Wp Wq P.k P.r D Y σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨dcomp T0 Θ, hC Wp Wq P.k P.r D T0 Θ hT0 hΘ, ?_⟩` and prove the remaining obligations. Introduce `J hJ Φ hΦ x hx`. Establish `e1 : (((GiR L * st.xi Y * RhR L st Y).1 Φ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = (((GiR L * st.xi Y).1 ((RhR L st Y).1 Φ) : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2` using `rfl`. Rewrite using `[e1, hT0e _ x hx, hσ J hJ Φ hΦ x hx, ← hΘe J hJ x hx]`. Simplify using `only [resG, opApply_dcomp, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rDSOpR_of_parts (hG : RDSOpRGrp) (hX : RDSOpX) (hR : RDSRhR) (hC : RDSComp0) : RDSOpR := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hY _ hY0 _
@@ -127,11 +127,11 @@ theorem rDSOpR_of_parts (hG : RDSOpRGrp) (hX : RDSOpX) (hR : RDSRhR) (hC : RDSCo
   simp only [resG, opApply_dcomp, map_smul]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hY _ _ hY1`. Establish `hY' : star (Y + 1) = Y + 1` using `by rw [star_add, hY, star_one]`. Take `⟨σ, hσ⟩` from `hR Wp Wq P z z' π π' X μ L st l0 hD hl1 hl2 hr (Y + 1) hY'`. Take `⟨T0, hT0, hT0e⟩` from `hX Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr (Y + 1) hY1`. Substitute `hz hz' hπ hπ'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `⟨Θ, hΘ, hΘe⟩` from `hG Wp Wq P.k P.r D (Y + 1) σ`. Use `⟨dcomp T0 Θ, hC Wp Wq P.k P.r D T0 Θ hT0 hΘ, ?_⟩` and prove the remaining obligations. Introduce `J hJ Φ hΦ x hx`. Establish `e1 : (((GiR L * st.xi (Y + 1) * RhvR L st (Y + 1)).1 Φ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = (((GiR L * st.xi (Y + 1)).1 ((RhvR L st (Y + 1)).1 Φ) : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2` using `rfl`. Rewrite using `[e1, hT0e _ x hx, hσ J hJ Φ hΦ x hx, ← hΘe J hJ x hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [resG, opApply_dcomp, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rDSOpRv_of_parts (hG : RDSOpRvGrp) (hX : RDSOpX) (hR : RDSRhvR) (hC : RDSComp0) : RDSOpRv := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hY _ _ hY1

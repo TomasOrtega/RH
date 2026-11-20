@@ -4,21 +4,21 @@ open MeasureTheory FreeSingleHomotopyEquivDiscreteChains.UpperTheory.Dv.ConeB
 open scoped FourierTransform SchwartzMap
 
 /- English proof (translation)
-Introduce `J _ β hβ hc`. Set `e : PiLp 2 (fun _ : J => ℂ) ≃L[ℝ] (J → ℂ)` to `PiLp.continuousLinearEquiv 2 ℝ _`. Set `σ : (J → ℂ) ≃L[ℝ] (J → ℂ)` to `ContinuousLinearEquiv.piCongrRight fun _ => Complex.conjCLE`. Set `b : 𝓢(J → ℂ, ℂ)` to `hc.toSchwartzMap hβ`. Set `g : 𝓢(PiLp 2 (fun _ : J => ℂ), ℂ)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (e.trans σ) b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `G : 𝓢(PiLp 2 (fun _ : J => ℂ), ℂ)` to `𝓕 g`. Set `μ : Measure (J → ℂ)` to `Measure.map e volume`. Use `haveI : μ.IsAddHaarMeasure := e.isAddHaarMeasure_map _`. Set `c : NNReal` to `Measure.addHaarScalarFactor μ volume`. Establish `hμ : μ = c • volume` using `Measure.isAddLeftInvariant_eq_smul _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `H : 𝓢(J → ℂ, ℂ)` to `((c : ℝ) : ℂ) • SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e.symm G`. Use `⟨H, H.continuous, fun N => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [add_comm (1 : ℝ), add_pow, one_pow, mul_one, Finset.sum_mul]`. Use `integrable_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Use `(H.integrable_pow_mul volume k).mul_const (N.choose k : ℝ)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.congr (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : FT H (-x) = ∫ s, G (e.symm s) * ec (s * -x) ∂μ`. Rewrite using `[hμ, integral_smul_nnreal_measure, FT, NNReal.smul_def, ← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[H, mul_assoc]`. Establish `h2 : ∫ s, G (e.symm s) * ec (s * -x) ∂μ = ∫ v, G v * ec (e v * -x)`. Use `integral_map_equiv (μ := volume) e.toHomeomorph.toMeasurableEquiv (fun s => G (e.symm s) * ec (s * -x))` as an intermediate fact. Simplify using `using this`. Establish `h3 : (𝓕⁻ G : 𝓢(PiLp 2 (fun _ : J => ℂ), ℂ)) = g` using `FourierTransform.fourierInv_fourier_eq g`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : g (e.symm (σ x)) = β x`. Establish `: σ (σ x) = x`. Use extensionality with `j`. Simplify using `[σ]`. Simplify using `[g, b, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, ← h4, ← h3, SchwartzMap.fourierInv_coe, Real.fourierInv_eq']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Rewrite using `[mul_comm, ec]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[PiLp.inner_apply, e, σ, Complex.inner]`. Simplify using `only [mul_comm (((v.ofLp _).re : ℝ) : ℂ), mul_comm (((v.ofLp _).im : ℝ) : ℂ)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.schwartz_fourier_preimage :
     ∀ {J : Type} [Fintype J] (β : (J → ℂ) → ℂ), ContDiff ℝ (⊤ : ℕ∞) β → HasCompactSupport β →

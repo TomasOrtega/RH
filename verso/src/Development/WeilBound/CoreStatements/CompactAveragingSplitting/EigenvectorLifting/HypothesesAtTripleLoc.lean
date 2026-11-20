@@ -17,15 +17,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : Pl F} {w : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-The claim follows from `MulEquiv.isField (Field.toIsField _) (complEquiv hw ((under_eq_iff hw w).2 rfl)).toMulEquiv`.
+A detailed English derivation is pending.
 -/
 theorem isField_Ev (hw : IsInertAt F E v w) : IsField (Ev E v) :=
   MulEquiv.isField (Field.toIsField _) (complEquiv hw ((under_eq_iff hw w).2 rfl)).toMulEquiv
 
 /- English proof (translation)
-Take `⟨δ, b, hδ, h0, h1, -⟩` from `GlobalTheory.QuadNormBase.exists_basis F E σ hσ.2.2.1 (conj_conj hσ) (not_forall.1 (conj_ne hσ))`. Use `⟨inclR (F := F) (Fv F v) (b 1), (b.ne_zero 1).isUnit.map _, ?_, Algebra.TensorProduct.basis (Fv F v) b, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `inclR (F := F) (Fv F v) (σ (b 1)) = _`. Rewrite using `[h1, map_neg]`. Rewrite using `[Algebra.TensorProduct.basis_apply, h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isQuad_Ev (hσ : IsCMExt F E σ) (v : Pl F) : ∃ ξ, IsQuad (cV σ v) ξ := by
   obtain ⟨δ, b, hδ, h0, h1, -⟩ := GlobalTheory.QuadNormBase.exists_basis F E σ hσ.2.2.1 (conj_conj hσ) (not_forall.1 (conj_ne hσ))
@@ -37,7 +37,7 @@ theorem isQuad_Ev (hσ : IsCMExt F E σ) (v : Pl F) : ∃ ξ, IsQuad (cV σ v) �
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comp_cA (z : AE F E) : compFin F E v (cA σ z) = cV σ v (compFin F E v z) := by
   induction z using TensorProduct.induction_on with
@@ -47,13 +47,13 @@ theorem comp_cA (z : AE F E) : compFin F E v (cA σ z) = cV σ v (compFin F E v 
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `congrArg (· ⊗ₜ[F] x) (map_one (evFin F v))`.
+A detailed English derivation is pending.
 -/
 theorem comp_incl (x : E) : compFin F E v (inclR (F := F) (AF F) x) = inclR (F := F) (Fv F v) x :=
   congrArg (· ⊗ₜ[F] x) (map_one (evFin F v))
 
 /- English proof (translation)
-Rewrite using `[hc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem toCompl_cV {h : w.under (𝓞 F) = v} {c : w.adicCompletion E →+* w.adicCompletion E} (hc : IsConjAt σ h c) (y : Ev E v) :
     toCompl h (cV σ v y) = c (toCompl h y) := by
@@ -61,9 +61,9 @@ theorem toCompl_cV {h : w.under (𝓞 F) = v} {c : w.adicCompletion E →+* w.ad
   congr 1
 
 /- English proof (translation)
-Use `⟨?_, fun h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[show (ψv : _ → ℂ) = psiLoc ψ v from funext e]`. Conclude with `h.1.comp (continuous_const.prodMk (continuous_singleFin v))`. Take `⟨x, hx⟩` from `v.valuedAdicCompletion_surjective F (WithZero.exp (1 : ℤ))`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((hu x).1 fun y _ => by rw [← e, h1]; rfl)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hx]`. Conclude with `absurd this (by decide)`.
+A detailed English derivation is pending.
 -/
 theorem psi_good {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (hu : PsiUnr ψ v) {ψv : AddChar (Fv F v) ℂ} (e : ∀ x, ψv x = psiLoc ψ v x) :
     Continuous ψv ∧ ψv ≠ 1 := by
@@ -76,13 +76,13 @@ theorem psi_good {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (hu : PsiUnr ψ v) {ψ
     exact absurd this (by decide)
 
 /- English proof (translation)
-Use `set x := Units.map (toCompl h).toMonoidHom y with hx`. Establish `hf` using `finTens_locIdele (F := F) w x`. Use `⟨fun u hu => tens_ext ?_ ((finAdEquiv F E).injective (FiniteAdeleRing.ext _ fun P => ?_)), Units.ext ((toCompl_bijective hw h).1 ?_)⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_sub, infTens_locIdele, map_one, sub_self, mul_zero, map_zero]`. Rewrite using `[Algebra.smul_def, map_mul, map_sub, map_one, map_mul, map_sub, hf, map_one, map_zero, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(complMap rfl (u.2 (P.under (𝓞 F))) * algebraMap E _ 1) * (Neutral.B1.finiteSingle E w x.1 P - 1) = 0`. Distinguish the cases in `e : P = w`. Substitute `e` using the available equality. Substitute `h` using the available equality. Rewrite using `[show u.2 (P.under (𝓞 F)) = 0 from hu, map_zero, zero_mul, zero_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finSingle_ne e, sub_self, mul_zero]`. Establish `e1` using `finAdEquiv_apply h (finTens F E (locIdele F w x))`. Rewrite `e1` using `[hf]`. Establish `e2 : ∀ z : AE F E, Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E) (finTens F E z) = compFin F E v z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite `e1` using `[e2]`. Conclude with `e1.symm.trans (finSingle_self w _)`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locIdele_spec (hw : IsInertAt F E v w) (h : w.under (𝓞 F) = v) (y : (Ev E v)ˣ) :
     At (evFin F v) ((locIdele F w (Units.map (toCompl h).toMonoidHom y) : AE F E) - 1) ∧
@@ -110,14 +110,14 @@ theorem locIdele_spec (hw : IsInertAt F E v w) (h : w.under (𝓞 F) = v) (y : (
     exact e1.symm.trans (finSingle_self w _)
 
 /- English proof (translation)
-Rewrite using `[← H _ (locIdele_spec hw h y).1, (locIdele_spec hw h y).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locChar_eq (hw : IsInertAt F E v w) (h : w.under (𝓞 F) = v) {χ : Chr F E} {χv : (Ev E v)ˣ →* Circle}
     (H : IsLocChar χ v χv) (y : (Ev E v)ˣ) : χv y = χ (locIdele F w (Units.map (toCompl h).toMonoidHom y)) := by
   rw [← H _ (locIdele_spec hw h y).1, (locIdele_spec hw h y).2]
 
 /- English proof (translation)
-Establish `h` using `(under_eq_iff hw w).2 rfl`. Rewrite using `[show (χv : _ → Circle) = _ from funext (locChar_eq hw h H)]`. Conclude with `hχ.comp ((continuous_locIdele w).comp (Continuous.units_map _ (continuous_complEquiv hw h).1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_loc (hw : IsInertAt F E v w) {χ : Chr F E} (hχ : Continuous χ) {χv : (Ev E v)ˣ →* Circle}
     (H : IsLocChar χ v χv) : Continuous χv := by
@@ -127,11 +127,11 @@ theorem continuous_loc (hw : IsInertAt F E v w) {χ : Chr F E} (hχ : Continuous
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[← H]`. Use `congr 1`. Conclude with `Units.ext (congrArg (· ⊗ₜ[F] (1 : E)) (finSingle_self v _).symm)`. Introduce `u hu`. Express the relevant statement in the definitionally equal form `u • (algebraMap (AF F) (AE F E) (localIdele F v a : (AF F)ˣ) - 1) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_one (algebraMap (AF F) (AE F E)), ← map_sub, Algebra.smul_def, ← map_mul]`. Use `(congrArg _ (Prod.ext ?_ (af_ext fun t => ?_))).trans (map_zero _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * (1 - 1) = 0`. Rewrite using `[sub_self, mul_zero]`. Express the relevant statement in the definitionally equal form `u.2 t * (Neutral.B1.finiteSingle F v a.1 t - 1) = 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : t = v`. Substitute `e` using the available equality. Rewrite using `[show u.2 t = 0 from hu, zero_mul]`. Rewrite using `[finSingle_ne e, sub_self, mul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_algebraMap {χ : Chr F E} {χv : (Ev E v)ˣ →* Circle} (H : IsLocChar χ v χv) (a : (Fv F v)ˣ) :
     χv (Units.map (algebraMap (Fv F v) (Ev E v) : Fv F v →* Ev E v) a) =
@@ -152,7 +152,7 @@ theorem loc_algebraMap {χ : Chr F E} {χv : (Ev E v)ˣ →* Circle} (H : IsLocC
       · rw [finSingle_ne e, sub_self, mul_zero]
 
 /- English proof (translation)
-Introduce `a` and use `by classical have : Algebra.IsQuadraticExtension F E := { finrank_eq_two' := h2 } have key : ∀ a : (AF F)ˣ, GlobalTheory.IdeleNormChar.normSign E a = 1 ↔ a ∈ (Units.map (algebraMap F (AF F)).toMonoidHom).range ⊔ (Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F)).range := fun …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem resEtaPow_loc (h2 : Module.finrank F E = 2) {χ : Chr F E} {m : ℕ}
     (hχ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ m) {χv : (Ev E v)ˣ →* Circle} (H : IsLocChar χ v χv) :
@@ -174,7 +174,7 @@ theorem resEtaPow_loc (h2 : Module.finrank F E = 2) {χ : Chr F E} {m : ℕ}
   rfl
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun y => by have h := (under_eq_iff hw w).2 rfl have h0 : Valued.v (toCompl h y) ≠ 0 := (Valuation.ne_zero_iff _).2 (y.isUnit.map (toCompl h)).ne_zero obtain ⟨x, hx⟩ := v.valuedAdicCompletion_surjective F (Valued.v (toCompl h y)) have hx0 : x ≠ 0 := (Valuation.ne_ze …`.
+A detailed English derivation is pending.
 -/
 theorem loc_eq_one (hw : IsInertAt F E v w) {χ : Chr F E} (hu : UnrAt χ w)
     (h1 : ∀ a, χ (Units.map (algebraMap (AF F) (AE F E) : AF F →* AE F E) a) = 1) {χv : (Ev E v)ˣ →* Circle}
@@ -198,17 +198,17 @@ theorem loc_eq_one (hw : IsInertAt F E v w) {χ : Chr F E} (hu : UnrAt χ w)
   rwa [map_div, e1, div_one] at e4
 
 /- English proof (translation)
-Establish `h` using `(under_eq_iff hw w).2 rfl`. Take `⟨c, hc, -⟩` from `existsUnique_isConjAt σ hw h`. Establish `hd : X.Jᵀ.det ≠ 0` using `by rw [Matrix.det_transpose]; exact (Vac.herm_det hX).ne_zero`. Establish `hs : IsSelfDualAt σ X.Jᵀ X.L v` using `(SelfDual.forall_isSelfDualAt_iff hd hX.lat).2 (fun y => by`. Rewrite using `[hX.dual]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Establish `: hE σ X.Jᵀ x y = form σ X.J y x`. Simplify using `only [hE, Formalism.UG.hform, form, dotProduct, Matrix.mulVec, Finset.mul_sum, Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by simp only [RingHom.coe_coe]; ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `⟨fun hi => ⟨⟨_, hi⟩, rfl⟩, by rintro ⟨o, ho⟩; rw [← ho]; exact o.isIntegral_coe⟩) v`. Take `⟨a, -, ha⟩` from `exists_frame_antiJ hσ ⟨fun i j => hX.herm j i, hd⟩ hX.lat.fg hX.lat.span_eq_top hw hc hs`. Set `e` to `complEquiv hw h`. Establish `inj : ∀ M N : Matrix (Fin n) (Fin n) (Ev E v), M.map (toCompl h) = N.map (toCompl h) → M = N` using `fun M N H => Matrix.ext fun i j => (toCompl_bijective hw h).1 (congrFun (congrFun H i) j)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `back : ∀ M : Matrix (Fin n) (Fin n) (w.adicCompletion E), (M.map e.symm).map (toCompl h) = M` using `fun M => Matrix.ext fun i j => e.apply_symm_apply _`. Establish `one : (1 : Matrix (Fin n) (Fin n) (Ev E v)).map (toCompl h) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Use `⟨a.1.map e.symm, (a⁻¹).1.map e.symm, inj _ _ ?_, inj _ _ ?_, inj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, back, back, one, Units.mul_inv]`. Rewrite using `[Matrix.map_mul, back, back, one, Units.inv_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ((a.1.map e.symm).map (cV σ v)).map (toCompl h) = a.1.map c` using `Matrix.ext fun i j => (toCompl_cV hc _).trans (congrArg c (e.apply_symm_apply _))`. Establish `e2 : (locM X.J v).map (toCompl h) = X.J.map (algebraMap E _)` using `JR_map h`. Establish `e3 : (anti (Ev E v) n).map (toCompl h) = (Formalism.UG.antiJ (w.adicCompletion E) n)ᵀ`. Use extensionality with `i j`. Simplify using `[anti, Formalism.UG.antiJ, add_comm i.val, apply_ite (toCompl h)]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, e1, e2, Matrix.transpose_map, back, e3, ← ha, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hasAnti_loc {B : Base F E} (hσ : IsCMExt F E σ) (hw : IsInertAt F E v w) {X : Spc F E n} {r s : ℕ}
     (hX : X.IsHerm σ B r s) : HasAnti (cV σ v) (locM X.J v) := by
@@ -245,29 +245,29 @@ theorem hasAnti_loc {B : Base F E} (hσ : IsCMExt F E σ) (hw : IsInertAt F E v 
     rfl
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_det (inclR (F := F) (Fv F v)) J) ▸ h.map _`.
+A detailed English derivation is pending.
 -/
 theorem det_loc {J : Matrix (Fin n) (Fin n) E} (h : IsUnit J.det) : IsUnit (locM (F := F) J v).det :=
   (RingHom.map_det (inclR (F := F) (Fv F v)) J) ▸ h.map _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => congrArg (inclR (F := F) (Fv F v)) (hX.herm i j), det_loc (Vac.herm_det hX)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHerm_loc {B : Base F E} {X : Spc F E n} {r s : ℕ} (hX : X.IsHerm σ B r s) : IsHerm (cV σ v) (locM X.J v) :=
   ⟨fun i j => congrArg (inclR (F := F) (Fv F v)) (hX.herm i j), det_loc (Vac.herm_det hX)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => (congrArg (inclR (F := F) (Fv F v)) (hX.skew i j)).trans (map_neg _ _), det_loc (Vac.skew_det hX)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSkew_loc {B : Base F E} {X : Spc F E n} {r s : ℕ} (hX : X.IsSkew σ B r s) : IsSkewM (cV σ v) (locM X.J v) :=
   ⟨fun i j => (congrArg (inclR (F := F) (Fv F v)) (hX.skew i j)).trans (map_neg _ _), det_loc (Vac.skew_det hX)⟩
 
 /- English proof (translation)
-Take `⟨ξ, hξ⟩` from `isQuad_Ev hσ v`. Use `isLagr_of_free (isField_Ev hw) hξ.invol hL.rank (isSkew_loc hW) ?_ fun t ht => ?_` and prove the remaining obligations. Use `congrArg (fun M => M.map (compFin F E v)) hL.iso` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_zero _ (map_zero _)] at this`. Establish `e1 : (incM F W.J).map (compFin F E v) = locM W.J v` using `Matrix.ext fun i j => comp_incl (F := F) (v := v) (W.J i j)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (Cy.map (cA σ)).map (compFin F E v) = (Cy.map (compFin F E v)).map (cV σ v)` using `Matrix.ext fun i j => comp_cA (σ := σ) (v := v) (Cy i j)`. Rewrite `this` using `[e1, e2, Matrix.transpose_map]`. Then use the resulting hypothesis. Set `t' : Fin m → AE F E` to `fun i => ThKH.Iwas.sgE E v (t i)`. Establish `e : compFin F E v ∘ t' = t` using `funext fun i => ThKH.Iwas.comp_sgE _`. Establish `ht' : At (evFin F v) t'` using `fun u hu => funext fun i => ThKH.Iwas.at_sgE _ u hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hL.free t' ht' (funext fun i => ThKH.Iwas.eq_zero_of_at (fun u hu => congrFun (ThKH.Iwas.at_mulVec_left hL.supp t' u hu) i) (by` as an intermediate fact. Rewrite using `[RingHom.map_mulVec, e, ht]`. Use the proof step `rfl))`. Rewrite using `[← e, this]`. Conclude with `funext fun i => map_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLagr_loc [Invertible (2 : Fv F v)] {B : Base F E} (hσ : IsCMExt F E σ) (hw : IsInertAt F E v w) {W : Spc F E d} {r s : ℕ}
     (hW : W.IsSkew σ B r s) {m : ℕ} {Cy : Matrix (Fin d) (Fin m) (AE F E)} (hL : IsLagAt σ W v Cy) :

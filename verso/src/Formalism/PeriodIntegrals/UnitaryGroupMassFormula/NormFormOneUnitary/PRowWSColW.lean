@@ -14,7 +14,7 @@ Both sides reduce to the same expression.
 @[simp] theorem sg_val (k r : ℕ) (i : Fin (2 * r + k + 1)) : (sg k r i).val = 2 * r + k - i.val := rfl
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [sg_val]`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sg_sg (k r : ℕ) (i : Fin (2 * r + k + 1)) : sg k r (sg k r i) = i := by
   apply Fin.ext
@@ -25,14 +25,14 @@ theorem sg_sg (k r : ℕ) (i : Fin (2 * r + k + 1)) : sg k r (sg k r i) = i := b
 def dW (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
 /- English proof (translation)
-Unfold `dW`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_dW (k r : ℕ) (i : Fin (2 * r + k + 1)) : star (dW k r i) = dW k r i := by
   unfold dW
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `p.isLt` as an intermediate fact. Use `l.isLt` as an intermediate fact. Simplify using `only [Hpk, dW, Fin.ext_iff, sg_val]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_eq (k r : ℕ) (p l : Fin (2 * r + k + 1)) :
     Hpk k r p l = if r ≤ p.val ∧ p.val ≤ r + k then (if l = p then dW k r p else 0)
@@ -43,7 +43,7 @@ theorem Hpk_eq (k r : ℕ) (p l : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Use `p.isLt` as an intermediate fact. Use `l.isLt` as an intermediate fact. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_symm (k r : ℕ) (p l : Fin (2 * r + k + 1)) : Hpk k r p l = Hpk k r l p := by
   have := p.isLt
@@ -52,7 +52,7 @@ theorem Hpk_symm (k r : ℕ) (p l : Fin (2 * r + k + 1)) : Hpk k r p l = Hpk k r
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Distinguish the cases in `h : r ≤ p.val ∧ p.val ≤ r + k`. Simplify using `[Hpk_eq, h, ite_mul]`. Simplify using `[Hpk_eq, h, ite_mul]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem H_row (k r : ℕ) (p : Fin (2 * r + k + 1)) (f : Fin (2 * r + k + 1) → ℂ) :
     ∑ l, Hpk k r p l * f l =
@@ -62,7 +62,7 @@ theorem H_row (k r : ℕ) (p : Fin (2 * r + k + 1)) (f : Fin (2 * r + k + 1) →
   · simp [Hpk_eq, h, ite_mul]
 
 /- English proof (translation)
-Conclude with `H_row k r p v`.
+A detailed English derivation is pending.
 -/
 theorem Hpk_mulVec (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) p = if r ≤ p.val ∧ p.val ≤ r + k then dW k r p * v p else v (sg k r p) := by
@@ -86,7 +86,7 @@ def Pm (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) :
   else 0
 
 /- English proof (translation)
-Simplify using `only [Pm]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem P_colX (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hq : q.val < r) : Pm k r j V p q = 0 := by
@@ -94,7 +94,7 @@ theorem P_colX (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fi
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [Pm]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem P_rowS (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp : r + k < p.val) : Pm k r j V p q = 0 := by
@@ -102,7 +102,7 @@ theorem P_rowS (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fi
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [Pm]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem P_rowWS_colW (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp : r ≤ p.val) (hq : q.val ≤ r + k) : Pm k r j V p q = 0 := by
@@ -110,7 +110,7 @@ theorem P_rowWS_colW (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [Pm]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem P_WS (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp1 : r ≤ p.val) (hp2 : p.val ≤ r + k) (hq : r + k < q.val) :
@@ -119,7 +119,7 @@ theorem P_WS (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [Pm]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem P_XW (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp : p.val < r) (hq1 : r ≤ q.val) (hq2 : q.val ≤ r + k) :
@@ -128,7 +128,7 @@ theorem P_XW (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [Pm]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem P_XS (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp : p.val < r) (hq : r + k < q.val) :
@@ -137,7 +137,7 @@ theorem P_XS (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `H_row k r p (fun l => Pm k r j V l q)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HP_apply (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1)) :
     (Hpk k r * Pm k r j V) p q = if r ≤ p.val ∧ p.val ≤ r + k then dW k r p * Pm k r j V p q
@@ -146,7 +146,7 @@ theorem HP_apply (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : 
   exact H_row k r p (fun l => Pm k r j V l q)
 
 /- English proof (translation)
-Establish `h : ∑ l, Hpk k r q l * star (Pm k r j V l p) = if r ≤ q.val ∧ q.val ≤ r + k then dW k r q * star (Pm k r j V q p) else star (Pm k r j V (sg k r q) p)` using `H_row k r q (fun l => star (Pm k r j V l p))`. Rewrite using `[Matrix.mul_apply, ← h]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, Hpk_symm k r l q, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem PH_apply (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1)) :
     ((Pm k r j V)ᴴ * Hpk k r) p q = if r ≤ q.val ∧ q.val ≤ r + k then dW k r q * star (Pm k r j V q p)
@@ -159,11 +159,11 @@ theorem PH_apply (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : 
   rw [Matrix.conjTranspose_apply, Hpk_symm k r l q, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[HP_apply, Matrix.conjTranspose_apply]`. Establish `hi` using `i.isLt`. Distinguish the cases in `h : r ≤ i.val ∧ i.val ≤ r + k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg h]`. Distinguish the cases in `h2 : i.val < r`. Rewrite using `[P_rowS k r j V (sg k r i) q (by simp only [sg_val]; omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[P_rowS k r j V i p (by omega), star_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PHP_apply (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1)) :
     ((Pm k r j V)ᴴ * (Hpk k r * Pm k r j V)) p q = ∑ i, (if r ≤ i.val ∧ i.val ≤ r + k then

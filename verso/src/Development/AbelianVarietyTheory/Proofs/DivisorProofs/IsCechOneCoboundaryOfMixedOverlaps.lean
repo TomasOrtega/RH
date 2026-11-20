@@ -9,19 +9,17 @@ noncomputable section
 namespace GlobalTheory.KS
 
 /- English proof (translation)
-Introduce `X J K V U hU z z' b h1 h2 hz'`. Take `⟨y', hy'⟩` from `hz'`. Establish `cov : ∀ O : X.Opens, O ≤ ⨆ k, O ⊓ U k` using `fun O x hx => by`. Establish `: x ∈ ⨆ k, U k` using `by rw [hU]; trivial`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, hx, hk⟩`. Establish `glue : ∀ i, ∃ t : Γ(X, V i), ∀ k, rsT t (V i ⊓ U k) = rsT (y' k) (V i ⊓ U k) - b i k`. Introduce `i`. Use `exists_rsT_eq (fun k => V i ⊓ U k) (fun k => inf_le_left) (cov _) _ fun k l => ?_` and prove the remaining obligations. Establish `e : (V i ⊓ U k) ⊓ (V i ⊓ U l) ≤ V i ⊓ U k ⊓ U l` using `fun x hx => ⟨⟨hx.1.1, hx.1.2⟩, hx.2.2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : V i ⊓ U k ⊓ U l ≤ V i ⊓ U k` using `inf_le_left`. Establish `e₂ : V i ⊓ U k ⊓ U l ≤ V i ⊓ U l` using `fun x hx => ⟨hx.1.1, hx.2⟩`. Establish `e₃ : V i ⊓ U k ⊓ U l ≤ U k ⊓ U l` using `fun x hx => ⟨hx.1.2, hx.2⟩`. Rewrite using `[← rsT_rsT e₁ e, ← rsT_rsT e₂ e]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `k₀` using `congrArg (fun s => rsT s (V i ⊓ U k ⊓ U l)) (hy' k l)`. Simplify using `only [rsT_sub] at k₀`. Rewrite `k₀` using `[h2, rsT_rsT inf_le_right e₃, rsT_rsT inf_le_left e₃]`. Simplify using `only [rsT_sub]`. Rewrite using `[rsT_rsT inf_le_right e₁, rsT_rsT inf_le_right e₂]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `k₀`. Use `choose y hy using glue`. Use `⟨y, fun i i' => ?_⟩` and prove the remaining obligations. Use `eq_of_rsT_eq (fun k => V i ⊓ V i' ⊓ U k) (fun k => inf_le_left) (cov _) _ _ fun k => ?_` and prove the remaining obligations. Establish `e₁ : V i ⊓ V i' ⊓ U k ≤ V i ⊓ U k` using `fun x hx => ⟨hx.1.1, hx.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : V i ⊓ V i' ⊓ U k ≤ V i' ⊓ U k` using `fun x hx => ⟨hx.1.2, hx.2⟩`. Use `show rsT (z i i') (V i ⊓ V i' ⊓ U k) = rsT (rsT (y i') (V i ⊓ V i') - rsT (y i) (V i ⊓ V i')) (V i ⊓ V i' ⊓ U k)`. Rewrite using `[h1, rsT_sub, rsT_rsT inf_le_right inf_le_left, rsT_rsT inf_le_left inf_le_left, ← rsT_rsT inf_le_left e₂ (y i'), ← rsT_rsT inf_le_left e₁ (y i), hy, hy]`. Simplify using `only [rsT_sub]`. Rewrite using `[rsT_rsT inf_le_right e₁, rsT_rsT inf_le_right e₂]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isCob_of_mixed : ∀ (X : Scheme.{0}) (J K : Type) (V : J → X.Opens) (U : K → X.Opens), ⨆ k, U k = ⊤ → ∀ (z : C1 V) (z' : C1 U) (b : ∀ i k, Γ(X, V i ⊓ U k)), (∀ i i' k, rsT (z i i') (V i ⊓ V i' ⊓ U k) = rsT (b i k) (V i ⊓ V i' ⊓ U k) - rsT (b i' k) (V i ⊓ V i' ⊓ U k)) → (∀ i k k', rsT (z' k k') (V i ⊓ U k ⊓ U k') = rsT (b i k') (V i ⊓ U k ⊓ U k') - rsT (b i k) (V i ⊓ U k ⊓ U k')) → IsCob U z' → IsCob V z := by
   intro X J K V U hU z z' b h1 h2 hz'

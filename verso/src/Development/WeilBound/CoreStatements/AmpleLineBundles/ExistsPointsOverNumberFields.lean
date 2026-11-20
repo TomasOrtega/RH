@@ -12,19 +12,17 @@ open GlobalTheory.CompanionTheory.Ar.LocVal (homog_mul homog_coordProd aeval_sca
 open GlobalTheory.CompanionTheory.Ar.Ht.JoinFacts
 
 /- English proof (translation)
-Set `I : Ideal (MvPolynomial σ B)` to `RingHom.ker (eval₂Hom j u)`. Establish `: I.IsPrime` using `RingHom.ker_isPrime _`. Establish `hinj : Function.Injective (algebraMap B (MvPolynomial σ B ⧸ I))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `b hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Ideal.Quotient.mk I (C b) = 0` using `hb`. Establish `h2 : eval₂Hom j u (C b) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mp h1`. Rewrite `h2` using `[eval₂Hom_C]`. Conclude with `hj (h2.trans (map_zero j).symm)`. Establish `hfp : Algebra.FinitePresentation B (MvPolynomial σ B ⧸ I)` using `Algebra.FinitePresentation.of_finiteType.1 inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `PrimeSpectrum.isConstructible_range_comap (RingHom.finitePresentation_algebraMap.mpr hfp)`. Take `⟨q, hq, H⟩` from `GlobalTheory.exists_basicOpen_subset_of_isConstructible_of_bot_mem hc ⟨⟨⊥, Ideal.isPrime_bot⟩, PrimeSpectrum.ext (Ideal.comap_bot_of_injective _ hinj)⟩`. Use `⟨q, hq, fun L _ _ φ hφ => ?_⟩` and prove the remaining obligations. Set `φ' : B →+* AlgebraicClosure L` to `(algebraMap L (AlgebraicClosure L)).comp φ`. Establish `hφ' : φ' q ≠ 0` using `(map_ne_zero (algebraMap L (AlgebraicClosure L))).mpr hφ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ⟩` from `GlobalTheory.exists_ringHom_extend_of_ker_mem_range_comap (A := MvPolynomial σ B ⧸ I) φ' (H _ hφ')`. Set `v : σ → AlgebraicClosure L` to `fun s => ψ (Ideal.Quotient.mk I (X s))`. Set `L' : IntermediateField L (AlgebraicClosure L)` to `IntermediateField.adjoin L (Set.range v)`. Establish `: FiniteDimensional L L'` using `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Establish `: NumberField L'` using `NumberField.of_module_finite L L'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `v' : σ → L'` to `fun s => ⟨v s, IntermediateField.subset_adjoin L _ ⟨s, rfl⟩⟩`. Use `⟨L', inferInstance, inferInstance, algebraMap L L', v', fun g hg => ?_⟩` and prove the remaining obligations. Establish `e1 : (algebraMap L' (AlgebraicClosure L)).comp (eval₂Hom ((algebraMap L L').comp φ) v') = ψ.comp (Ideal.Quotient.mk I)`. Use `MvPolynomial.ringHom_ext (fun b => ?_) (fun s => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, eval₂Hom_C]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(DFunLike.congr_fun hψ b).symm`. Rewrite using `[RingHom.comp_apply, eval₂Hom_X']`. Both sides reduce to the same expression. Establish `e2` using `DFunLike.congr_fun e1 g`. Rewrite `e2` using `[RingHom.comp_apply, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.mpr hg, map_zero]`.
-
-Conclude with `(map_eq_zero _).mp e2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_spec {B Ω σ : Type} [CommRing B] [IsDomain B] [IsNoetherianRing B] [Field Ω] [Finite σ]
     (j : B →+* Ω) (hj : Function.Injective j) (u : σ → Ω) :
@@ -68,11 +66,11 @@ theorem exists_spec {B Ω σ : Type} [CommRing B] [IsDomain B] [IsNoetherianRing
   exact (map_eq_zero _).mp e2
 
 /- English proof (translation)
-Take `⟨S, hS, hspan⟩` from `GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal y`. Establish `hle : mCoordIdeal y ≤ RingHom.ker (aeval z : MRing ι →ₐ[ℤ] L).toRingHom`. Rewrite using `[hspan, Ideal.span_le]`. Introduce `g hg`. Take `⟨d, hd⟩` from `hS g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hgP : g ∈ mCoordIdeal y` using `hspan ▸ Ideal.subset_span hg`. Establish `h0 : aeval y g = 0` using `aeval_eq_zero_of_mem hgP`. Rewrite `h0` using `[hy, aeval_scale hd]`. Establish `ht' : ∏ k, t k ^ d k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (ht k)`. Establish `h1 : aeval (fun p => j (Y p)) g = 0` using `(mul_eq_zero.mp h0).resolve_left ht'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : j (aeval Y g) = aeval (fun p => j (Y p)) g` using `comp_aeval_apply (R := ℤ) Y j.toIntAlgHom g`. Establish `h3 : χ (aeval Y g) = aeval (fun p => χ (Y p)) g` using `comp_aeval_apply (R := ℤ) Y χ.toIntAlgHom g`. Use `show aeval z g = 0`. Rewrite using `[hz, aeval_scale hd, ← h3, hker _ (h2.trans h1), mul_zero]`. Conclude with `fun f hf => hle hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem aeval_eq_zero_of_spec {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω L T : Type} [Field Ω]
     [Field L] [CommRing T] (j : T →+* Ω) (χ : T →+* L) (hker : ∀ g, j g = 0 → χ g = 0) (Y : (Σ k, ι k) → T)
@@ -96,23 +94,19 @@ theorem aeval_eq_zero_of_spec {K : Type} [Fintype K] {ι : K → Type} [∀ k, F
   exact fun f hf => hle hf
 
 /- English proof (translation)
-Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `k`. Consider the cases of `k with`. Consider the case `inl k`. Use `⟨c k, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hv (X (some ⟨k, c k⟩) - 1) (by`. Rewrite using `[map_sub, map_one, eval₂Hom_X', hu]`. Conclude with `sub_eq_zero.mpr (div_self (hc k)))`. Rewrite `h1` using `[map_sub, map_one, eval₂Hom_X', sub_eq_zero]`. Use `show v (some ⟨k, c k⟩) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[h1]`. Conclude with `one_ne_zero`. Consider the case `inr k => exact hw0 k`. Use `aeval_eq_zero_of_spec (eval₂Hom j u) (eval₂Hom χ v) hv (joinVec (fun p => X (some p)) (fun p => C (U p))) _ _ (Sum.elim (fun k => y ⟨k, c k⟩) t) ?_ (Sum.elim (fun _ => 1) s) ?_ ?_` and prove the remaining obligations. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `k with`. Consider the case `inl k => exact hc k`. Consider the case `inr k => exact ht k`. Use function extensionality and compare the values at `⟨k, r⟩`. Consider the cases of `k with`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `inl k => show y ⟨k, r⟩ = y ⟨k, c k⟩ * eval₂Hom j u (X (some ⟨k, r⟩))`. Rewrite using `[eval₂Hom_X', hu]`. Conclude with `(mul_div_cancel₀ _ (hc k)).symm`. Consider the case `inr k => show b ⟨k, r⟩ = t k * eval₂Hom j u (C (U ⟨k, r⟩))`. Rewrite using `[eval₂Hom_C]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb ⟨k, r⟩`. Use function extensionality and compare the values at `⟨k, r⟩`. Consider the cases of `k with`. Consider the case `inl k => show v (some ⟨k, r⟩) = 1 * eval₂Hom χ v (X (some ⟨k, r⟩))`. Rewrite using `[eval₂Hom_X', one_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `inr k => show w ⟨k, r⟩ = s k * eval₂Hom χ v (C (U ⟨k, r⟩))`. Rewrite using `[eval₂Hom_C]`. Conclude with `hw ⟨k, r⟩`. Establish `key : ∀ {T : Type} [Field T] (τ : B →+* T) (x : Option (Σ k, ι₁ k) → T), eval₂Hom τ x (eval₂Hom (Int.castRingHom _) (fun p => X (some p)) f) = aeval (fun p => x (some p)) f`. Introduce `T _ τ x`.
-
-Establish `e : (eval₂Hom τ x).comp (eval₂Hom (Int.castRingHom _) (fun p : Σ k, ι₁ k => X (some p))) = (aeval (fun p => x (some p)) : MRing ι₁ →ₐ[ℤ] T).toRingHom` using `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun p => by simp`. Conclude with `DFunLike.congr_fun e f`. Establish `h1` using `hv (eval₂Hom (Int.castRingHom _) (fun p => X (some p)) f * X none - 1) (by`. Rewrite using `[map_sub, map_one, map_mul, key, eval₂Hom_X']`. Conclude with `sub_eq_zero.mpr hf)`.
-
-Rewrite `h1` using `[map_sub, map_one, map_mul, key, sub_eq_zero]`. Conclude with `left_ne_zero_of_mul_eq_one h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] {ι₁ : K₁ → Type} {ι₂ : K₂ → Type} [∀ k, Fintype (ι₁ k)]
     [∀ k, Fintype (ι₂ k)] {Ω L B : Type} [Field Ω] [Field L] [CommRing B] (j : B →+* Ω) (χ : B →+* L)
@@ -191,9 +185,9 @@ def affEl (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (p : Σ k, ι k) : affRing
   ⟨aff y c p, Subring.subset_closure ⟨p, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `h0`. Apply `hf` to reduce the goal to its premises. Use `GlobalTheory.CompanionTheory.Ar.LocVal.mem_mCoordIdeal_of_aeval_eq_zero y ha ?_` and prove the remaining obligations. Establish `e : (fun p : Σ k, ι k => y ⟨p.1, c p.1⟩ * aff y c p) = y` using `funext fun p => mul_div_cancel₀ _ (hc p.1)`. Establish `h1` using `aeval_scale ha (fun k => y ⟨k, c k⟩) (aff y c)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e, h0, mul_zero]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_aff_ne_zero {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {f : MRing ι} {a : K → ℕ}
     (ha : IsMultiHomog f a) (hf : f ∉ mCoordIdeal y) : aeval (aff y c) f ≠ 0 := by
@@ -206,9 +200,9 @@ theorem aeval_aff_ne_zero {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ 
   exact h1
 
 /- English proof (translation)
-Establish `hval : ∀ p, IsVal y w (aff y c p) (w p / w ⟨p.1, c p.1⟩)` using `fun p => isVal_ratio hw p.1 (c p.1) p.2 (hwc p.1)`. Establish `hB : affRing y c ≤ locRing y w` using `Subring.closure_le.mpr (by`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨_, hval p⟩)`. Establish `hφ : ∀ (b : affRing y c) (v : L), IsVal y w (b : Ω) v → ((locHom hw).comp (Subring.inclusion hB)) b = v` using `fun b v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_apply]`. Conclude with `locVal_eq (a := Subring.inclusion hB b) hw hv`. Conclude with `⟨_, fun p => hφ _ _ (hval p), hφ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eval {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} {L : Type} [Field L] {w : (Σ k, ι k) → L}
     (hw : w ∈ ptsOver L (mCoordIdeal y)) (hwc : ∀ k, w ⟨k, c k⟩ ≠ 0) :
@@ -226,13 +220,13 @@ theorem exists_eval {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} {L : Type} [Fiel
   exact ⟨_, fun p => hφ _ _ (hval p), hφ⟩
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hn, he⟩` from `hy (q : Ω)`. Establish `hq' : (q : Ω) ≠ 0` using `fun h0 => hq (Subtype.ext h0)`. Establish `key : ∀ {T : Type} [Field T] (x : (Σ k, ι k) → T), aeval x (g * h * ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ (1 : K → ℕ) k) = aeval x g * aeval x h * ∏ k, x ⟨k, c k⟩`. Introduce `T _ x`. Rewrite using `[map_mul, map_mul, map_prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.one_apply, pow_one, aeval_X]`. Use `⟨g * h * ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ (1 : K → ℕ) k, ⟨_, homog_mul (homog_mul hg hh) (homog_coordProd c 1)⟩, fun hmem => ?_, fun L _ w hw hwF => ?_⟩` and prove the remaining obligations. Establish `h0` using `aeval_eq_zero_of_mem hmem`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h0` using `[key, he]`. Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero hq' hn) hn) (Finset.prod_ne_zero_iff.mpr fun k _ => hc k) h0`. Rewrite `hwF` using `[key]`. Establish `hwg : aeval w g ≠ 0` using `left_ne_zero_of_mul (left_ne_zero_of_mul hwF)`. Establish `hwh : aeval w h ≠ 0` using `right_ne_zero_of_mul (left_ne_zero_of_mul hwF)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwc : ∀ k, w ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul hwF) k (Finset.mem_univ k)`. Take `⟨φ, h1, h2⟩` from `exists_eval (c := c) hw hwc`. Use `⟨hwc, φ, ?_, h1⟩` and prove the remaining obligations. Rewrite using `[h2 q (aeval w g / aeval w h) ⟨d, g, h, hg, hh, hwh, he, (div_mul_cancel₀ _ hwh).symm⟩]`. Conclude with `div_ne_zero hwg hwh`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (hy : Birational y)
     (q : affRing y c) (hq : q ≠ 0) :
@@ -266,13 +260,13 @@ theorem exists_form {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y �
 end Chart
 
 /- English proof (translation)
-Establish `hfu` using `aeval_aff_ne_zero hc₁ ha hf`. Take `⟨u, hu0, hu⟩ : ∃ u : Option (Σ k, ι₁ k) → Ω₁, u none = (aeval (aff y c₁) f)⁻¹ ∧ (fun p => u (some p)) = aff y c₁` from `⟨fun o => o.elim (aeval (aff y c₁) f)⁻¹ (aff y c₁), rfl, rfl⟩`. Take `⟨j, hj⟩ : ∃ j : affRing b c₂ →+* Ω₁, ∀ x, j x = i (x : Ω₂)` from `⟨i.comp (affRing b c₂).subtype, fun _ => rfl⟩`. Establish `hinj : Function.Injective j` using `fun x x' h => by`. Rewrite `h` using `[hj, hj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext (i.injective h)`. Take `⟨q, hq, H⟩` from `exists_spec j hinj u`. Take `⟨F, hF, hFP, hF'⟩` from `exists_form hc₂ hb q hq`. Use `⟨F, hF, hFP, fun L _ _ w hw hwF => ?_⟩` and prove the remaining obligations. Take `⟨hwc, φ, hφq, hφ⟩` from `hF' L w hw hwF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L', _, _, e, v, hv⟩` from `H L φ hφq`. Use `⟨L', inferInstance, inferInstance, e, fun p => v (some p), ?_⟩` and prove the remaining obligations. Use `lift j (e.comp φ) y c₁ hc₁ (fun p => i (b p)) (fun p => e (w p)) (affEl b c₂) (fun k => i (b ⟨k, c₂ k⟩)) (fun k => (map_ne_zero i).mpr (hc₂ k)) (fun k => e (w ⟨k, c₂ k⟩)) (fun p => ?_) (fun p => ?_) (fun k => ⟨c₂ k, (map_ne_zero e).mpr (hwc k)⟩) f u (fun p => congrFun hu p) ?_ v …` and prove the remaining obligations. Rewrite using `[hj, ← map_mul]`. Conclude with `congrArg i (mul_div_cancel₀ _ (hc₂ p.1)).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, hφ, ← map_mul]`. Conclude with `congrArg e (mul_div_cancel₀ _ (hwc p.1)).symm`. Rewrite using `[hu, hu0]`. Conclude with `mul_inv_cancel₀ hfu`.
+A detailed English derivation is pending.
 -/
 theorem main {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] {ι₁ : K₁ → Type} {ι₂ : K₂ → Type} [∀ k, Fintype (ι₁ k)]
     [∀ k, Fintype (ι₂ k)] {Ω₁ Ω₂ : Type} [Field Ω₁] [Field Ω₂] (i : Ω₂ →+* Ω₁) (y : (Σ k, ι₁ k) → Ω₁)
@@ -309,9 +303,9 @@ theorem main {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] {ι₁ : K₁ → 
 end CoverDenseAlt.CoverDense
 
 /- English proof (translation)
-Introduce `Ψ _ _ N M R i Q hQ f hf hfP`. Take `⟨a, ha⟩` from `hf`. Take `⟨cM, hcM⟩` from `GroundTheory.Heights₂.Heights.HilbertSamuel.CoordArithOfFnField.nonzero_of_relevant M.y M.arith.2.1.2.2`. Take `⟨cR, hcR⟩` from `GroundTheory.Heights₂.Heights.HilbertSamuel.CoordArithOfFnField.nonzero_of_relevant R.y R.arith.2.1.2.2`. Take `⟨F, hF, hFP, H⟩` from `CoverDenseAlt.CoverDense.main i M.y R.y cM hcM cR hcR R.birational ha hfP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, _, _, w, hw, hwF, hwQ⟩` from `hQ F hF hFP`. Take `⟨L', _, _, e, v, h1, h2⟩` from `H L w hw hwF`. Conclude with `⟨L, inferInstance, inferInstance, L', inferInstance, inferInstance, e, w, joinVec v fun p => e (w p), h1, hw, hwQ, rfl, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CoverDenseAlt.exists_points_over_number_fields : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M R : RootModel Ψ N) (i : R.Ω →+* M.Ω) (Q : (L : Type) → [Field L] → ((Σ k, R.ι k) → L) → Prop), (∀ f : MRing R.ι, (∃ a, IsMultiHomog f a) → f ∉ R.P → ∃ (L : Type) (_ : Field L) (_ : NumberField L), ∃ w ∈ ptsOver L R.P, aeval w f ≠ 0 ∧ Q L w) → ∀ f : MRing M.ι, (∃ a, IsMultiHomog f a) → f ∉ M.P → ∃ (L : Type) (_ : Field L) (_ : NumberField L) (L' : Type) (_ : Field L') (_ : NumberField L') (e : L →+* L') (w : (Σ k, R.ι k) → L), ∃ z ∈ ptsOver L' (mCoordIdeal (joinOf M R i)), w ∈ ptsOver L R.P ∧ Q L w ∧ (fun p => z (joinInr M.ι R.ι p)) = (fun p => e (w p)) ∧ aeval (fun p => z (joinInl M.ι R.ι p)) f ≠ 0 := by
   intro Ψ _ _ N M R i Q hQ f hf hfP

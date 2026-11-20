@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Rewrite using `[gs_eq f y U h, gs_eq (𝟙 X) (f y) U h]`. Use `congrArg (fun q => q.hom a) (f.germ_stalkMap U y h)` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gs_eq_map_gs {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)) :
     gs f y U a = (f.stalkMap y).hom (gs (𝟙 X) (f y) U a) := by
@@ -32,9 +32,9 @@ def SecCarriedOver {X : Scheme.{0}} (L : LB X) (W : X.Opens) (s : ∀ k, Γ(X, W
     gs f z (W ⊓ L.U j) (s j) = (gw w (𝟙 X) z j k : X.presheaf.stalk z) * gs (𝟙 X) z (W ⊓ L.U k) (s k)
 
 /- English proof (translation)
-Introduce `z k k' hz hk hk'`. Establish `hm : z ∈ W ⊓ L.U k ⊓ (W ⊓ L.U k')` using `⟨⟨hz, hk⟩, hz, hk'⟩`. Establish `e` using `congrArg (fun u => (gm (𝟙 X) z _ u : X.presheaf.stalk z)) (hT k k')`. Simplify using `only [map_mul, Units.val_mul] at e`. Rewrite `e` using `[gm_res _ z _ hm, gm_res _ z _ hm, gm_res _ z _ hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (𝟙 X) z ∈ W ⊓ L.U k` using `⟨hz, hk⟩`. Establish `h2 : (𝟙 X) z ∈ W ⊓ L.U k'` using `⟨hz, hk'⟩`. Use `show gs (𝟙 X) z _ (T k).val = _ * gs (𝟙 X) z _ (T k').val`. Rewrite using `[gs_unit _ z _ h1, gs_unit _ z _ h2]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example {X : Scheme.{0}} (L : LB X) (W : X.Opens) (T : ∀ k, Γ(X, W ⊓ L.U k)ˣ) (hT : IsFrameOver L W T) :
     IsSecOver L W (fun k => (T k).val) := by

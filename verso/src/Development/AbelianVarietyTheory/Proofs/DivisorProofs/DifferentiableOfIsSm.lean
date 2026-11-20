@@ -10,19 +10,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Introduce `k γ hγ g` and use `(h k γ hγ g).add (h' k γ hγ g)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSm_add {f f' : GAd σ J → ℂ} (h : IsSm σ J f) (h' : IsSm σ J f') : IsSm σ J (f + f') :=
   fun k γ hγ g => (h k γ hγ g).add (h' k γ hγ g)
 
 /- English proof (translation)
-Introduce `k γ hγ g` and use `(h k γ hγ g).const_smul a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSm_smul (a : ℂ) {f : GAd σ J → ℂ} (h : IsSm σ J f) : IsSm σ J (a • f) :=
   fun k γ hγ g => (h k γ hγ g).const_smul a
 
 /- English proof (translation)
-Establish `h1` using `h 1 (fun _ => γ) (fun _ => hγ) g`. Establish `h2 : ContDiff ℝ ∞ fun t : ℝ => (fun _ : Fin 1 => t)` using `contDiff_pi.2 fun _ => contDiff_id`. Establish `h3` using `(h1.comp h2).differentiable (by simp)`. Simplify `h3` using `[Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem differentiable_of_isSm {f : GAd σ J → ℂ} (h : IsSm σ J f) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ)
     (g : GAd σ J) : Differentiable ℝ fun t : ℝ => f (g * γ t) := by
@@ -32,7 +32,7 @@ theorem differentiable_of_isSm {f : GAd σ J → ℂ} (h : IsSm σ J f) {γ : �
   simpa [Function.comp_def] using h3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Conclude with `deriv_fun_add (differentiable_of_isSm h hγ g 0) (differentiable_of_isSm h' hγ g 0)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lineDer_add {f f' : GAd σ J → ℂ} (h : IsSm σ J f) (h' : IsSm σ J f') {γ : ℝ → GAd σ J}
     (hγ : IsRealLine σ J γ) : lineDer γ (f + f') = lineDer γ f + lineDer γ f' := by
@@ -41,20 +41,20 @@ theorem lineDer_add {f f' : GAd σ J → ℂ} (h : IsSm σ J f) (h' : IsSm σ J 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [lineDer, Pi.smul_apply, smul_eq_mul, deriv_const_mul_field']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lineDer_smul (a : ℂ) (f : GAd σ J → ℂ) (γ : ℝ → GAd σ J) : lineDer γ (a • f) = a • lineDer γ f := by
   funext g
   simp only [lineDer, Pi.smul_apply, smul_eq_mul, deriv_const_mul_field']
 
 /- English proof (translation)
-Introduce `k γs h g`. Establish `h1` using `hf (k + 1) (Fin.snoc (α := fun _ => ℝ → GAd σ J) γs γ) (fun i => by`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hγ`. Simplify using `using h j) g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ContDiff ℝ ∞ fun p : (Fin k → ℝ) × ℝ => (Fin.snoc (α` using `fun _ => ℝ) p.1 p.2 : Fin (k + 1) → ℝ) := by`. Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using contDiff_snd`. Simplify using `only [Fin.snoc_castSucc] fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `h3 : ContDiff ℝ ∞ (Function.uncurry fun (t : Fin k → ℝ) (s : ℝ) => f (g * (List.ofFn fun i => γs i (t i)).prod * γ s))`. Use `h1.comp h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[Function.uncurry, List.ofFn_succ', mul_assoc, -List.ofFn_succ]`. Establish `h4` using `ContDiff.fderiv (n := ∞) h3 (contDiff_const (c := (0 : ℝ))) (by simp)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h4.clm_apply (contDiff_const (c := (1 : ℝ)))`.
+A detailed English derivation is pending.
 -/
 theorem isSm_lineDer {f : GAd σ J → ℂ} (hf : IsSm σ J f) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) :
     IsSm σ J (lineDer γ f) := by
@@ -79,7 +79,7 @@ theorem isSm_lineDer {f : GAd σ J → ℂ} (hf : IsSm σ J f) {γ : ℝ → GAd
   exact h4.clm_apply (contDiff_const (c := (1 : ℝ)))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons γ l ih`. Conclude with `isSm_lineDer (ih fun δ hδ => hl δ (by simp [hδ])) (hl γ (by simp))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isSm_foldr {l : List (ℝ → GAd σ J)} (hl : ∀ γ ∈ l, IsRealLine σ J γ) {f : GAd σ J → ℂ}
     (hf : IsSm σ J f) : IsSm σ J (l.foldr lineDer f) := by
@@ -89,9 +89,9 @@ theorem isSm_foldr {l : List (ℝ → GAd σ J)} (hl : ∀ γ ∈ l, IsRealLine 
     exact isSm_lineDer (ih fun δ hδ => hl δ (by simp [hδ])) (hl γ (by simp))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons γ l ih`. Establish `hl' : ∀ δ ∈ l, IsRealLine σ J δ` using `fun δ hδ => hl δ (by simp [hδ])`. Simplify using `only [List.foldr_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih hl', lineDer_add (isSm_foldr hl' hf) (isSm_foldr hl' hf') (hl γ (by simp))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_add {l : List (ℝ → GAd σ J)} (hl : ∀ γ ∈ l, IsRealLine σ J γ) {f f' : GAd σ J → ℂ}
     (hf : IsSm σ J f) (hf' : IsSm σ J f') : l.foldr lineDer (f + f') = l.foldr lineDer f + l.foldr lineDer f' := by
@@ -104,7 +104,7 @@ theorem foldr_add {l : List (ℝ → GAd σ J)} (hl : ∀ γ ∈ l, IsRealLine �
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons γ l ih => simp only [List.foldr_cons, ih, lineDer_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_smul (l : List (ℝ → GAd σ J)) (a : ℂ) (f : GAd σ J → ℂ) :
     l.foldr lineDer (a • f) = a • l.foldr lineDer f := by
@@ -113,7 +113,7 @@ theorem foldr_smul (l : List (ℝ → GAd σ J)) (a : ℂ) (f : GAd σ J → ℂ
   | cons γ l ih => simp only [List.foldr_cons, ih, lineDer_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [dop, Finsupp.sum, Pi.add_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[foldr_add (hz l hl) hf hf', Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dop_add {z : List (ℝ → GAd σ J) →₀ ℂ} (hz : ∀ l ∈ z.support, ∀ γ ∈ l, IsRealLine σ J γ)
     {f f' : GAd σ J → ℂ} (hf : IsSm σ J f) (hf' : IsSm σ J f') : dop z (f + f') = dop z f + dop z f' := by
@@ -124,7 +124,7 @@ theorem dop_add {z : List (ℝ → GAd σ J) →₀ ℂ} (hz : ∀ l ∈ z.suppo
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [dop, Finsupp.sum, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, foldr_smul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dop_smul (z : List (ℝ → GAd σ J) →₀ ℂ) (a : ℂ) (f : GAd σ J → ℂ) : dop z (a • f) = a • dop z f := by
   funext g
@@ -133,21 +133,19 @@ theorem dop_smul (z : List (ℝ → GAd σ J) →₀ ℂ) (a : ℂ) (f : GAd σ 
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ n J _ H K φ ψ a h h'`. Use `⟨⟨fun γ hγ g => ?_, ?_, h.cont.add h'.cont, isSm_add h.smooth h'.smooth, ?_, h.kfin.add h'.kfin, ?_⟩, ⟨fun γ hγ g => ?_, ?_, h.cont.const_smul a, isSm_smul a h.smooth, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, h.left γ hγ g, h'.left γ hγ g]`. Take `⟨U, hU, hk⟩` from `h.level`. Take `⟨U', hU', hk'⟩` from `h'.level`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U ⊓ U', hU.inter hU', fun k h1 h2 g => by simp only [Pi.add_apply, hk k h1.1 h2 g, hk' k h1.2 h2 g]⟩`. Take `⟨N, hN⟩` from `h.growth`. Take `⟨N', hN'⟩` from `h'.growth`. Use `⟨max N N', fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN l hl`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C', hC'⟩` from `hN' l hl`. Use `⟨|C| + |C'|, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ height σ J g` using `by exact_mod_cast one_le_height σ J g`. Establish `h0 : (0 : ℝ) ≤ height σ J g` using `zero_le_one.trans h1`. Rewrite using `[foldr_add hl h.smooth h'.smooth, Pi.add_apply, add_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_add_le _ _).trans (add_le_add ((hC g).trans ?_) ((hC' g).trans ?_))` and prove the remaining obligations. Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_right₀ h1 (le_max_left _ _)) (pow_nonneg h0 _) (abs_nonneg _)`. Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_right₀ h1 (le_max_right _ _)) (pow_nonneg h0 _) (abs_nonneg _)`. Use `haveI := h.zfin haveI := h'.zfin`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {f | ∃ z, IsCentral σ J z ∧ f = dop z φ} ⊔ Submodule.span ℂ {f | ∃ z, IsCentral σ J z ∧ f = dop z ψ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[dop_add hz.1 h.smooth h'.smooth]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨z, hz, rfl⟩) (Submodule.subset_span ⟨z, hz, rfl⟩)`. Simplify using `only [Pi.smul_apply, h.left γ hγ g]`. Take `⟨U, hU, hk⟩` from `h.level`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, hU, fun k h1 h2 g => by simp only [Pi.smul_apply, hk k h1 h2 g]⟩`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN l hl`. Use `⟨‖a‖ * C, fun g => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[foldr_smul, Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC g) (norm_nonneg a)`. Take `⟨W, hW, e⟩` from `GlobalTheory.Doubling.isKFinite_iff.1 h.kfin`. Conclude with `GlobalTheory.Doubling.isKFinite_iff.2 ⟨W, hW, fun k hk => W.smul_mem a (e k hk)⟩`. Use `haveI := h.zfin`.
-
-Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {f | ∃ z, IsCentral σ J z ∧ f = dop z φ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[dop_smul]`. Conclude with `Submodule.smul_mem _ a (Submodule.subset_span ⟨z, hz, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAutOn_add_smul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

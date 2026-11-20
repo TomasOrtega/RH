@@ -30,7 +30,7 @@ def sqIso {P Y B' B : Scheme.{0}} {a : P ⟶ Y} {b : P ⟶ B'} {π : Y ⟶ B} {g
     ((Scheme.Modules.pullbackComp b g).app E).symm
 
 /- English proof (translation)
-Rewrite using `[← (Scheme.Modules.pullbackCongr ha).hom.naturality_assoc, ← (Scheme.Modules.pullbackComp f a).hom.naturality_assoc, pc_coh f a b π g c h t ha hb w E]`. Simplify using `only [sqIso, Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Iso.app_inv, CategoryTheory.Functor.map_comp, Category.assoc, Functor.comp_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sq_key {T P Y B' B : Scheme.{0}} {a : P ⟶ Y} {b : P ⟶ B'} {π : Y ⟶ B} {g : B' ⟶ B} (c : a ≫ π = b ≫ g)
     (f : T ⟶ P) (h : T ⟶ Y) (t : T ⟶ B') (ha : f ≫ a = h) (hb : f ≫ b = t) (w : h ≫ π = t ≫ g) (E : B.Modules)
@@ -48,17 +48,15 @@ theorem sq_key {T P Y B' B : Scheme.{0}} {a : P ⟶ Y} {b : P ⟶ B'} {π : Y �
     Category.assoc, Functor.comp_map]
 
 /- English proof (translation)
-Introduce `T t fl''`. Take `⟨h, ⟨w, he⟩, hu⟩` from `H T (t ≫ g) (fun x => (fl'' x).ofIso ((Scheme.Modules.pullbackComp t g).app (E x)))`. Use `⟨sq.lift h t w, ⟨sq.lift_snd _ _ _, fun x i => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨e, hee⟩` from `he x i`. Use `⟨(Scheme.Modules.pullbackComp (sq.lift h t w) a).app ((fl x).F i) ≪≫ (Scheme.Modules.pullbackCongr (sq.lift_fst h t w)).app ((fl x).F i) ≪≫ e, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k` using `sq_key sq.w (sq.lift h t w) h t (sq.lift_fst h t w) (sq.lift_snd h t w) w (E x) ((fl x).F i) ((fl x).ι i)`. Establish `hee' : e.hom ≫ (fl'' x).ι i ≫ (Scheme.Modules.pullbackComp t g).hom.app (E x) = _` using `hee`. Rewrite `k` using `[← hee']`. Rewrite using `[← cancel_mono ((Scheme.Modules.pullbackComp t g).hom.app (E x))]`. Simplify using `only [Iso.trans_hom, Iso.app_hom, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `k.symm`. Introduce and unpack `y ⟨w'', he''⟩`. Establish `w₁ : (y ≫ a) ≫ π = t ≫ g` using `by rw [Category.assoc, sq.w, ← Category.assoc, w'']`. Apply `sq.hom_ext` to reduce the goal to its premises. Rewrite using `[sq.lift_fst]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu _ ⟨w₁, fun x i => ?_⟩` and prove the remaining obligations. Take `⟨e, hee⟩` from `he'' x i`. Use `⟨((Scheme.Modules.pullbackComp y a).app ((fl x).F i)).symm ≪≫ e, ?_⟩` and prove the remaining obligations. Establish `k` using `sq_key sq.w y _ t rfl w'' w₁ (E x) ((fl x).F i) ((fl x).ι i)`. Establish `e1 : (Scheme.Modules.pullbackCongr (rfl : y ≫ a = y ≫ a)).hom.app ((fl x).F i) = 𝟙 _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Scheme.Modules.pullbackCongr]`. Establish `hee₀ : e.hom ≫ (fl'' x).ι i = (Scheme.Modules.pullback y).map ((Scheme.Modules.pullback a).map ((fl x).ι i) ≫ (sqIso sq.w (E x)).hom) ≫ (Scheme.Modules.pullbackComp y b).hom.app ((Scheme.Modules.pullback g).obj (E x)) ≫ (Scheme.Modules.pullbackCongr w'').hom.app ((Scheme.Modules. …` using `hee`. Rewrite `k` using `[e1, Category.id_comp]`. Establish `k' : e.hom ≫ (fl'' x).ι i ≫ (Scheme.Modules.pullbackComp t g).hom.app (E x) = _` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (Scheme.Modules.pullbackComp t g).hom.app (E x)) hee₀).trans (((Category.assoc _ _ _).trans (congrArg _ (Category.assoc _ _ _))).trans k))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((Scheme.Modules.pullbackComp y a).inv.app ((fl x).F i) ≫ ·) k').trans (Iso.inv_hom_id_app_assoc _ _ _))`.
-
-Rewrite using `[sq.lift_snd, w'']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFlagBundle_of_isPullback {P Y B' B : Scheme.{0}} {a : P ⟶ Y} {b : P ⟶ B'} {π : Y ⟶ B} {g : B' ⟶ B}
     (sq : IsPullback a b π g) {ι : Type} (E : ι → B.Modules) (n : ι → ℕ)
@@ -100,13 +98,13 @@ theorem isFlagBundle_of_isPullback {P Y B' B : Scheme.{0}} {a : P ⟶ Y} {b : P 
     · rw [sq.lift_snd, w'']
 
 /- English proof (translation)
-Set `j` to `Limits.pullback.fst π (redι (clo z))`. Establish `: IsReduced (Limits.pullback π (redι (clo z)))` using `GlobalTheory.isReduced_of_smooth_of_isReduced (Limits.pullback.snd π (redι (clo z)))`. Establish `hj : Set.range j = closure {y}`. Rewrite using `[h, ← show Set.range (redι (clo z)) = closure {z} from range_redι (clo z)]`. Conclude with `Scheme.Pullback.range_fst π _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : j.ker = (redι (clo y)).ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, ← InterModel.radical_ker j, ← Scheme.IdealSheafData.vanishingIdeal_support]`. Use `congr 1`. Use `ext1`. Rewrite using `[Scheme.Hom.support_ker, hj, closure_closure]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `f` to `IsClosedImmersion.lift j (redι (clo y)) hk.le`. Establish `hf : f ≫ j = redι (clo y)` using `IsClosedImmersion.lift_fac _ _ _`. Establish `: IsIso f` using `IsClosedImmersion.isIso_of_ker_eq _ _ f hf hk.symm`. Use `⟨f ≫ Limits.pullback.snd π (redι (clo z)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsPullback.of_iso_pullback ⟨?_⟩ (asIso f) hf rfl` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Limits.pullback.condition, ← Category.assoc, hf]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isPullback_clo {X Y : Scheme.{0}} (π : Y ⟶ X) [Smooth π] {y : Y} {z : X}
     (h : closure {y} = π ⁻¹' closure {z}) :
@@ -131,7 +129,7 @@ theorem exists_isPullback_clo {X Y : Scheme.{0}} (π : Y ⟶ X) [Smooth π] {y :
   rw [Category.assoc, ← Limits.pullback.condition, ← Category.assoc, hf]
 
 /- English proof (translation)
-Establish `key {Z : Scheme.{0}} (u : P ⟶ Z) (v : Z ⟶ B) (t : P ⟶ B) (ht : u ≫ v = t) (hu : u ≫ v ≫ p = a ≫ π ≫ p) (ht' : t ≫ p = a ≫ π ≫ p) : (N.pull t ht').Isometric ((N.pull v rfl).pull u hu)`. Substitute `ht` using the available equality. Establish `R` using `N.refines_pull_comp v rfl u hu ht'`. Conclude with `HermLB.isometric_of_chart _ R.le (fun x => R.g _ (𝟙 _) x) fun σ c y hy => ((R.φ σ c y hy).trans (add_zero _)).symm`. Conclude with `(key a π _ rfl rfl (Category.assoc _ _ _)).symm.trans (key b g _ c.symm w (Category.assoc _ _ _))`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isometric_pull_sq {k : Type} [CommRing k] {P Y B' B : Scheme.{0}} {a : P ⟶ Y} {b : P ⟶ B'} {π : Y ⟶ B} {g : B' ⟶ B}
     (c : a ≫ π = b ≫ g) {p : B ⟶ Sp k} (N : HermLB p) (w : b ≫ g ≫ p = a ≫ π ≫ p) :
@@ -145,11 +143,11 @@ theorem isometric_pull_sq {k : Type} [CommRing k] {P Y B' B : Scheme.{0}} {a : P
   exact (key a π _ rfl rfl (Category.assoc _ _ _)).symm.trans (key b g _ c.symm w (Category.assoc _ _ _))
 
 /- English proof (translation)
-Introduce `k _ X p E r h H F N z y _ hy`. Take `⟨ρ, sq⟩` from `exists_isPullback_clo F.π hy`. Establish `w : ρ ≫ redι (clo z) ≫ p = redι (clo y) ≫ F.π ≫ p` using `by rw [← Category.assoc, ← sq.w, Category.assoc]`. Use `⟨ρ, sq.w.symm, w, (F.fl.pull (redι (clo y))).ofIso (sqIso sq.w E), isFlagBundle_of_isPullback sq (fun _ : Unit => E) (fun _ => r) (fun _ => F.fl) F.univ, isometric_pull_sq sq.w N w, fun i => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have I : ((h.pull F.π rfl).pull (redι (clo y)) rfl).IsIsometry ((h.pull (redι (clo z)) rfl).pull ρ w) (sqIso sq.w E) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨-, hc⟩` from `VMetric.isIsometry_pull_id_comp k X p E r h`. Establish `e₁ : (redι (clo y) ≫ F.π) ≫ p = redι (clo y) ≫ F.π ≫ p` using `Category.assoc _ _ _`. Establish `e₂ : (ρ ≫ redι (clo z)) ≫ p = redι (clo y) ≫ F.π ≫ p` using `by rw [Category.assoc, w]`. Apply the tactic sequence `have hc' {f f' : _ ⟶ X} (e : f = f') (hf : f ≫ p = redι (clo y) ≫ F.π ≫ p) (hf' : f' ≫ p = redι (clo y) ≫ F.π ≫ p) : (h.pull f hf).IsIsometry (h.pull f' hf') ((Scheme.Modules.pullbackCongr e).app E) := by`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Introduce `σ V s s' y hy`. Both sides reduce to the same expression. Conclude with `IsometryPullback.isIsometry_trans (hc _ _ _ _ F.π (redι (clo y)) rfl rfl e₁) (IsometryPullback.isIsometry_trans (hc' sq.w e₁ e₂) (IsometryPullback.isIsometry_symm (hc _ _ _ _ (redι (clo z)) ρ rfl w e₂)))`. Rewrite using `[VMetric.grLB_ofIso I ((H.pull F.π rfl).pull _ rfl)]`. Conclude with `(VMetric.isometric_grLB_pull k F.Y _ _ _ _ r (h.pull F.π rfl) (H.pull F.π rfl) F.fl (redι (clo y)) rfl i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isFlagBundle_clo : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (F : FlagSp E r) (N : HermLB p) (z : X) (y : F.Y), Smooth F.π → closure {y} = F.π ⁻¹' closure {z} → ∃ (ρ : (Scheme.IdealSheafData.vanishingIdeal (clo y)).subscheme ⟶ (Scheme.IdealSheafData.vanishingIdeal (clo z)).subscheme) (_ : ρ ≫ redι (clo z) = redι (clo y) ≫ F.π) (w : ρ ≫ redι (clo z) ≫ p = redι (clo y) ≫ F.π ≫ p) (fl : Vert.Flag ((Scheme.Modules.pullback ρ).obj ((Scheme.Modules.pullback (redι (clo z))).obj E)) r), IsFlagBundle ρ (fun _ : Unit => (Scheme.Modules.pullback (redι (clo z))).obj E) (fun _ => r) (fun _ => fl) ∧ ((F.fam H N none).restr (redι (clo y))).Isometric ((N.restr (redι (clo z))).pull ρ w) ∧ ∀ i, ((F.fam H N (some i)).restr (redι (clo y))).Isometric (VMetric.grLB fl i ((H.pull (redι (clo z)) rfl).pull ρ w)) := by
   intro k _ X p E r h H F N z y _ hy

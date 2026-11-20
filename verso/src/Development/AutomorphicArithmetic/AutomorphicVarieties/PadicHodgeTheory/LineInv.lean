@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.De
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y => simp [equivFinsuppOfBasisLeft_apply_tmul_apply]`. Consider the case `add y z hy hz => simp only [map_add, Finsupp.add_apply, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem coord_lTensor {K V B B' ι : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup B]
     [Module K B] [AddCommGroup B'] [Module K B'] [DecidableEq ι] (b : Basis ι K V) (f : B →ₗ[K] B')
@@ -15,13 +15,13 @@ private theorem coord_lTensor {K V B B' ι : Type} [Field K] [AddCommGroup V] [M
   | add y z hy hz => simp only [map_add, Finsupp.add_apply, hy, hz]
 
 /- English proof (translation)
-Set `b` to `Basis.ofVectorSpace K V`. Take `⟨z, hz⟩` from `h2`. Establish `hc : ∀ i, ∃ c : K, c • e = equivFinsuppOfBasisLeft b x i` using `fun i => fund _ (by rw [← coord_lTensor, h1]) (by`. Rewrite using `[← coord_lTensor, ← hz, coord_lTensor]`. Conclude with `Submodule.coe_mem _)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `choose c hc using hc`. Set `c'` to `Finsupp.onFinset (equivFinsuppOfBasisLeft b x).support c (fun i hi => by`. Rewrite using `[Finsupp.mem_support_iff, ← hc]`. Conclude with `smul_ne_zero hi he)`. Use `⟨b.repr.symm c', ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Apply `(equivFinsuppOfBasisLeft b).injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[equivFinsuppOfBasisLeft_apply_tmul_apply, LinearEquiv.apply_symm_apply, ← hc]`. Both sides reduce to the same expression. Introduce `v hv`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.eq_symm_apply]`. Use extensionality with `i`. Establish `h` using `hc i`. Rewrite `h` using `[hv, equivFinsuppOfBasisLeft_apply_tmul_apply]`. Conclude with `(smul_left_injective K he h).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem line_abs {K V B B' : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup B]
     [Module K B] [AddCommGroup B'] [Module K B'] (φ : B →ₗ[K] B) (j : B →ₗ[K] B') (F : Submodule K B')
@@ -51,11 +51,11 @@ private theorem line_abs {K V B B' : Type} [Field K] [AddCommGroup V] [Module K 
     exact (smul_left_injective K he h).symm
 
 /- English proof (translation)
-Introduce `l _ A _ _ V _ _ _ _ x h1 h2`. Use `line_abs (PP l).φB.toLinearMap (PP l).ιB.toLinearMap ((((PP l).PD (botExt l)).Fil 0).restrictScalars ℚ_[l]) 1 ?_ ?_ x h1 ?_` and prove the remaining obligations. Introduce `h`. Apply `((PP l).PD (botExt l)).not_mem_filtration_two` to reduce the goal to its premises. Rewrite using `[← mul_one ((PP l).PD (botExt l)).t, h, mul_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Introduce `y hy hF`. Take `⟨c, hc⟩` from `((PP l).PD (botExt l)).fund y (by rw [(PP l).PD_φ]; exact hy) (by rw [(PP l).PD_ι]; exact hF)`. Conclude with `⟨c, by rw [← hc, Algebra.algebraMap_eq_smul_one]⟩`. Take `⟨z, hz⟩` from `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.lineInv :
     ∀ {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] [Algebra ℚ_[l] A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] (x : V ⊗[ℚ_[l]] Bcr l), LinearMap.lTensor V (PP l).φB.toLinearMap x = x → LinearMap.lTensor V (PP l).ιB.toLinearMap x ∈ FilT A V 0 → ∃! v : V, x = v ⊗ₜ[ℚ_[l]] (1 : Bcr l) := by

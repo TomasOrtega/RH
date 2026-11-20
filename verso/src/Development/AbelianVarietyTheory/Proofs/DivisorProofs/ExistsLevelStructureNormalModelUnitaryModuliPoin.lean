@@ -15,39 +15,29 @@ noncomputable section
 namespace GlobalTheory.UCovSep.GenModel
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw _ l Xo c C x₀ n hn ho`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Use `haveI := Xo.smooth`. Use `haveI : Smooth Xo.s := SmoothOfRelativeDimension.smooth Dw.dim _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨A, _, φ, j, P, _, hφ, hjs, hjo, hjx⟩` from `GlobalTheory.UPoinc.GSetup.exists_chart (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) x₀`. Set `ev : A →+* P.ResidueField` to `algebraMap A P.ResidueField`. Set `y : Sp P.ResidueField ⟶ Xo.XF c` to `spMap ev ≫ j`. Establish `hy : ∀ w, y w = x₀` using `fun w => by`. Establish `hp : spMap ev w = ⟨P, inferInstance⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Use `show Ideal.comap ev w.asIdeal = P`. Rewrite using `[Subsingleton.elim w (⊥ : PrimeSpectrum P.ResidueField)]`. Conclude with `Ideal.ker_algebraMap_residueField _`. Use `show j (spMap ev w) = x₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp, hjx]`. Use `haveI : CharZero P.ResidueField := (ev.comp φ).charZero_iff (ev.comp φ).injective |>.1 inferInstance`. Take `⟨A₀, -, hU₀⟩` from `GlobalTheory.UPoinc.GSetup.exists_fibre Xo c y`. Use `⟨A₀.g, fun e => ?_⟩` and prove the remaining obligations. Establish `hpos : 1 ≤ n ^ e` using `Nat.one_le_iff_ne_zero.2 (by have := hn.pos; positivity)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Ω, _, f, A₁, ψ, ze, hf, hA₁, hze, ⟨lev⟩⟩` from `GlobalTheory.UPoinc.GSetup.exists_level_finite P.ResidueField A₀ _ hpos`. Use `haveI : CharZero Ω := f.charZero_iff f.injective |>.1 inferInstance`. Establish `hU₁ : UOver Xo c A₁ (RingHom.id Ω) (spMap f ≫ y)`. Use `(uOver_baseChange_iff hA₁.2.1 (LBIso.symm hA₁.2.2) (RingHom.id Ω)).2 ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_comp]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Simplify `hU₀.comp f` using `only [RingHom.comp_id]`. Use `letI : Algebra C.o c.F := C.b.toAlgebra`. Use `haveI := C.isFractionRing`. Use `haveI := C.ded`. Establish `hnF : C.b (n : C.o) ≠ 0` using `by rw [map_natCast]; exact Nat.cast_ne_zero.2 hn.ne_zero`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hno : (n : C.o) ≠ 0` using `fun h => hnF (by rw [h, map_zero])`. Establish `hle : Submonoid.powers (n : C.o) ≤ nonZeroDivisors C.o` using `powers_le_nonZeroDivisors_of_noZeroDivisors hno`. Set `o'` to `Localization.Away (n : C.o)`. Use `haveI : IsDomain o' := IsLocalization.isDomain_localization hle`. Use `haveI : IsDedekindDomain o' := IsLocalization.isDedekindDomain C.o hle o'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `b' : o' →+* c.F` to `IsLocalization.Away.lift (n : C.o) (IsUnit.mk0 _ hnF)`. Establish `hb' : b'.comp (algebraMap C.o o') = C.b` using `IsLocalization.Away.lift_comp _ _`. Use `letI : Algebra o' c.F := b'.toAlgebra`. Use `haveI : IsScalarTower C.o o' c.F := IsScalarTower.of_algebraMap_eq' hb'.symm`. Use `haveI : IsFractionRing o' c.F := IsFractionRing.isFractionRing_of_isLocalization _ o' c.F hle`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `β : c.F →+* Ω` to `f.comp (ev.comp φ)`. Take `⟨o₁, _, _, κ, ze₁, hded, hκ, hinj, hcomp, hze₁⟩` from `GlobalTheory.UPoinc.GSetup.exists_base_root o' c.F Ω β ze _ hpos hze`. Establish `hft : Algebra.FiniteType ℤ o₁`. Establish `h₁ : (algebraMap ℤ C.o).FiniteType` using `RingHom.finiteType_algebraMap.2 C.ft`. Establish `h₂ : (algebraMap C.o o').FiniteType` using `RingHom.finiteType_algebraMap.2 inferInstance`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h₃` using `hκ.finiteType.comp (h₂.comp h₁)`. Rewrite `h₃` using `[RingHom.ext_int (κ.comp _) (algebraMap ℤ o₁)]`. Conclude with `RingHom.finiteType_algebraMap.1 h₃`. Use `haveI : ArithBase o₁ Ω := ⟨hded, hft, inferInstance, hinj⟩`. Establish `hun : IsUnit (n : o₁)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using (IsLocalization.Away.algebraMap_isUnit (S := o') (n : C.o)).map κ`. Rewrite `lev` using `[← hze₁]`. Use `haveI : IsProper C.z := ThetaDescent.isProper_of_isProjOver C.proj`. Use `haveI := C.iF_open`. Use `haveI : SurjectiveOnStalks (spMap ev) := (SurjectiveOnStalks.Spec_iff (φ := CommRingCat.ofHom ev)).2 (Ideal.surjectiveOnStalks_residueField P)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `a : Sp o' ⟶ Sp C.o` to `spMap (algebraMap C.o o')`. Use `haveI : IsOpenImmersion a := IsOpenImmersion.of_isLocalization (n : C.o)`. Establish `hba : spMap b' ≫ a = spMap C.b` using `by rw [← hb']; exact (Spec.map_comp _ _).symm`. Set `inc : pullback C.z a ⟶ C.Z` to `pullback.fst _ _`. Set `gf : pullback C.z (spMap C.b) ⟶ pullback C.z a` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap b') (by rw [Category.assoc, hba, pullback.condition])`.
-
-Establish `hgf : gf ≫ inc = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Use `haveI : IsPreimmersion (spMap C.b) := IsPreimmersion.of_isLocalization (nonZeroDivisors C.o)`. Use `haveI : IsPreimmersion (gf ≫ inc) := hgf ▸ inferInstance`. Use `haveI : IsPreimmersion gf := IsPreimmersion.of_comp gf inc`. Establish `hpz : (spMap f ≫ spMap ev ≫ j ≫ C.iF ≫ gf) ≫ pullback.snd _ _ = spMap ((algebraMap o₁ Ω).comp κ)`.
-
-Simplify using `only [Category.assoc, gf, pullback.lift_snd]`. Rewrite using `[← Category.assoc C.iF, C.iF_over, ← Category.assoc j, hjs, hcomp]`. Simplify using `only [← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hst : ((spMap f ≫ spMap ev ≫ j ≫ C.iF ≫ gf).stalkMap (genericPoint (Sp Ω))).hom.Finite`.
-
-Rewrite using `[Scheme.Hom.stalkMap_comp]`. Conclude with `RingHom.Finite.comp (GlobalTheory.UPoinc.GSetup.finite_stalkMap_field f hf _) (RingHom.Finite.of_surjective _ (Scheme.Hom.stalkMap_surjective _ _))`. Take `⟨M, π, hMn, hπ, hMp⟩` from `GlobalTheory.Poinc.exists_ratModel_normalization o' o₁ Ω κ hκ _ (pullback.snd C.z a) inferInstance inferInstance inferInstance _ hpz hst`. Establish `hMs : M.s ≫ spMap κ = π ≫ pullback.snd C.z a`. Use `ext_of_isDominant_of_isSeparated (spMap (algebraMap ℤ o')) (specZIsTerminal.hom_ext _ _) M.pt ?_` and prove the remaining obligations.
-
-Rewrite using `[← Category.assoc, M.pt_s, ← Category.assoc, hMp, hpz, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hproj : IsProjOver M.s` using `GlobalTheory.FiniteOverProj.isProjOver_of_isFinite_over o' o₁ κ M.Z (pullback C.z a) (pullback.snd C.z a) π M.s (GlobalTheory.ProjSpace.isProjOver_pullback_snd (algebraMap C.o o') C.proj) hπ inferInstance hMs`. Use `⟨o₁, Ω, inferInstance, inferInstance, inferInstance, inferInstance, ze₁, spMap f ≫ y, A₁, lev, M, inc.opensRange, π ≫ inc.isoOpensRange.hom, hA₁.1, hun, fun w => hy _, hU₁, ?_, GlobalTheory.IsNormalScheme.of_pred hMn, hproj, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Scheme.Hom.isoOpensRange_hom_ι, ← Category.assoc, hMp]`.
-
-Simplify using `only [y, Category.assoc, hgf]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨gf x, by rw [← Scheme.Hom.comp_apply, hgf]⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_genModel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (x₀ : Xo.XF c) (n : ℕ), n.Prime → Odd n → ∃ g₀ : ℕ, ∀ e : ℕ, ∃ (o₁ Ω : Type) (_ : CommRing o₁) (_ : Field Ω) (_ : Algebra o₁ Ω) (_ : ArithBase o₁ Ω) (ze : o₁ˣ) (uη : Sp Ω ⟶ Xo.XF c) (A₁ : PolAV (Sp Ω)) (_ : Out.Level A₁ (n ^ e) (unitOn (Units.map (algebraMap o₁ Ω).toMonoidHom ze))) (M : RatModel o₁ Ω) (U : C.Z.Opens) (g : M.Z ⟶ U.toScheme), A₁.g = g₀ ∧ IsUnit (n : o₁) ∧ (∀ w, uη w = x₀) ∧ UOver Xo c A₁ (RingHom.id Ω) uη ∧ M.pt ≫ g ≫ U.ι = uη ≫ C.i ∧ GlobalTheory.IsNormalScheme M.Z ∧ IsProjOver M.s ∧ IsFinite g ∧ Set.range (pullback.fst C.z (spMap C.b)) ⊆ (U : Set C.Z) := by
   intro E _ _ _ H Dw _ l Xo c C x₀ n hn ho

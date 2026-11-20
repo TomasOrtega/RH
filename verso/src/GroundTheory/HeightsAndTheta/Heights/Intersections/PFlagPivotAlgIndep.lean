@@ -16,7 +16,7 @@ abbrev genFrac (p : Fin n × Fin n) : FractionRing (MvPolynomial (Fin n × Fin n
   algebraMap (MvPolynomial (Fin n × Fin n) F) _ (X p)
 
 /- English proof (translation)
-Simplify using `only [genFrac, ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `X_ne_zero p`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genFrac_ne_zero (p : Fin n × Fin n) : genFrac F n p ≠ 0 := by
   simp only [genFrac, ne_eq, IsFractionRing.to_map_eq_zero_iff]
@@ -28,9 +28,9 @@ def spec (p : Fin n × Fin n) : FractionRing (MvPolynomial (Fin n × Fin n) F) :
   else genFrac F n p / genFrac F n (⟨p.1 - 1, by omega⟩, ⟨p.1 - 1, by omega⟩)
 
 /- English proof (translation)
-Proceed by induction on `m generalizing c with`. Consider the case `zero => simp [spec]`. Consider the case `succ m ih`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih (by omega) ⟨m, by omega⟩ le_rfl]`. Establish `e : (⟨m + 1 - 1, by omega⟩ : Fin n) = ⟨m, by omega⟩` using `Fin.ext (by simp)`. Simplify using `only [spec, show ¬ ((c : ℕ) < m + 1) by omega, if_false, show m + 1 ≠ 0 by omega, dif_neg, not_false_eq_true, e]`. Conclude with `mul_div_cancel₀ _ (genFrac_ne_zero F n _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_spec (m : ℕ) (hm : m < n) (c : Fin n) (hc : m ≤ (c : ℕ)) :
     (∏ i : Fin m, spec F n (⟨i, by omega⟩, ⟨i, by omega⟩)) * spec F n (⟨m, hm⟩, c) = genFrac F n (⟨m, hm⟩, c) := by
@@ -45,11 +45,11 @@ theorem prod_spec (m : ℕ) (hm : m < n) (c : Fin n) (hc : m ≤ (c : ℕ)) :
     exact mul_div_cancel₀ _ (genFrac_ne_zero F n _)
 
 /- English proof (translation)
-Establish `ha : (a : ℕ) < n` using `by have := a.2; omega`. Unfold `pivotMinor`. Rewrite using `[AlgHom.map_det, Matrix.det_of_isUpperTriangular]`. Rewrite using `[Fin.prod_univ_castSucc]`. Use `Eq.trans ?_ (prod_spec F n a ha b hab)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[AlgHom.mapMatrix_apply, Matrix.map_apply, genMat, pivotCols, aeval_X]`. Both sides reduce to the same expression. Simplify using `[AlgHom.mapMatrix_apply, Matrix.map_apply, genMat, pivotCols, aeval_X]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Introduce `i j hji`. Establish `hji' : (j : ℕ) < i` using `hji`. Establish `hj : (j : ℕ) < a` using `by have := i.2; omega`. Simplify using `[AlgHom.mapMatrix_apply, Matrix.map_apply, genMat, pivotCols, aeval_X, spec, hj, hji']`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem spec_pivotMinor (a : Fin (n - 1)) (b : Fin n) (hab : (a : ℕ) ≤ b) :
     aeval (spec F n) (pivotMinor (genMat F n) a b) = genFrac F n (Fin.castLE (Nat.sub_le n 1) a, b) := by
@@ -70,11 +70,11 @@ theorem spec_pivotMinor (a : Fin (n - 1)) (b : Fin n) (hab : (a : ℕ) ≤ b) :
     simp [AlgHom.mapMatrix_apply, Matrix.map_apply, genMat, pivotCols, aeval_X, spec, hj, hji']
 
 /- English proof (translation)
-Introduce `F _ n`. Use `AlgebraicIndependent.of_comp (aeval (spec F n)) ?_` and prove the remaining obligations. Establish `hfun : ⇑(aeval (spec F n)) ∘ (fun q : Σ a : Fin (n - 1), {b : Fin n // (a : ℕ) ≤ b} => pivotMinor (genMat F n) q.1 q.2.1) = ⇑(IsScalarTower.toAlgHom F (MvPolynomial (Fin n × Fin n) F) (FractionRing (MvPolynomial (Fin n × Fin n) F))) ∘ ((X : Fin n × Fin n → MvPolynomial (Fin n × F …`. Use function extensionality and compare the values at `q`. Conclude with `spec_pivotMinor F n q.1 q.2.1 q.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Use `AlgebraicIndependent.map' ?_ (IsFractionRing.injective _ _)` and prove the remaining obligations. Use `(algebraicIndependent_X (Fin n × Fin n) F).comp _ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b, hb⟩ ⟨a', b', hb'⟩ h`. Simplify using `only [Prod.mk.injEq] at h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `h`. Establish `h1' : a = a'` using `Fin.ext (by simpa using congrArg Fin.val h1)`. Substitute `h1' h2` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem proof : FlagPivotAlgIndep.Statement := by
   intro F _ n

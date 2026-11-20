@@ -20,7 +20,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp at h ⊢`. Introduce `T hT`. Take `⟨hlen, Q, ⟨q, hq, hQ⟩, hc, hca⟩` from `h T hT`. Conclude with `⟨hlen.trans hn, Q, ⟨q, hq.trans hκ, hQ⟩, hc, hca⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma polyOp_mono' {n n' κ κ' : ℕ} {Θ : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq} (h : _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp n κ Θ)
     (hn : n ≤ n') (hκ : κ ≤ κ') : _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp n' κ' Θ := by
@@ -33,7 +33,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma polyOp_nil (n κ : ℕ) : _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp n κ ([] : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq) := by
   unfold _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp
@@ -43,7 +43,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.Formalism.FourierDecayAlt.B.opApply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma opApply_nil (F : _root_.Formalism.FourierDecayAlt.B.Mat k r → Wq →L[ℂ] Wp) (g : _root_.Formalism.FourierDecayAlt.B.Mat k r) :
     _root_.Formalism.FourierDecayAlt.B.opApply ([] : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq) F g = 0 := by
@@ -53,7 +53,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp at h ⊢`. Conclude with `fun T' hT' => h T' (by simp [hT'])`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma polyOp_of_polyOp_cons {n κ : ℕ} {T : _root_.Formalism.FourierDecayAlt.B.DTerm k r Wp Wq} {Θ : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq}
     (h : _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp n κ (T :: Θ)) : _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp n κ Θ := by
@@ -64,7 +64,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Apply the tactic sequence `rcases i with x | x <;>`. Simplify using `only [_root_.PI.UnitaryGroupMassFormula.UsCompose.lin]`. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun c _ => ?_)` and prove the remaining obligations. Conclude with `(totalDegree_mul _ _).trans (by simp [totalDegree_C, totalDegree_X])`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma totalDegree_lin_le_one {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) (i : _root_.PI.UnitaryGroupMassFormula.UsCompose.Vr N) :
     (_root_.PI.UnitaryGroupMassFormula.UsCompose.lin X i).totalDegree ≤ 1 := by
@@ -77,11 +77,11 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Establish `hne : (pderiv i q).support.Nonempty` using `Finset.nonempty_iff_ne_empty.mpr (by simpa [MvPolynomial.support_eq_empty] using h)`. Take `⟨m, hm, hdeg⟩` from `Finset.exists_mem_eq_sup _ hne (fun s : σ →₀ ℕ => s.sum fun _ e => e)`. Rewrite using `[totalDegree, hdeg]`. Establish `hm'` using `(mem_support_iff.mp hm)`. Rewrite `hm'` using `[coeff_pderiv]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : m + Finsupp.single i 1 ∈ q.support`. Rewrite using `[mem_support_iff]`. Introduce `h0`. Conclude with `hm' (by simp [h0])`. Use `le_totalDegree hs` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private lemma totalDegree_pderiv_add_one_le_of_ne_zero {σ : Type*} (q : MvPolynomial σ ℂ) (i : σ)
     (h : pderiv i q ≠ 0) : (pderiv i q).totalDegree + 1 ≤ q.totalDegree := by
@@ -102,7 +102,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.PI.UnitaryGroupMassFormula.UsCompose.dP`. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun i _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : pderiv i q = 0`. Simplify using `[h]`. Conclude with `(totalDegree_mul _ _).trans ((Nat.add_le_add_left (totalDegree_lin_le_one X i) _).trans (totalDegree_pderiv_add_one_le_of_ne_zero q i h))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma totalDegree_dP_le {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ)
     (q : MvPolynomial (_root_.PI.UnitaryGroupMassFormula.UsCompose.Vr N) ℂ) : (_root_.PI.UnitaryGroupMassFormula.UsCompose.dP X q).totalDegree ≤ q.totalDegree := by
@@ -117,9 +117,9 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Take `⟨q, hq, hQq⟩` from `hQ`. Use `⟨fun g => MvPolynomial.eval (_root_.PI.UnitaryGroupMassFormula.UsCompose.vars g) (_root_.PI.UnitaryGroupMassFormula.UsCompose.dP X q), ⟨_root_.PI.UnitaryGroupMassFormula.UsCompose.dP X q, (totalDegree_dP_le X q).trans hq, fun g => rfl⟩, fun g => ?_⟩` and prove the remaining obligations. Establish `e : (fun t => Q (_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.crv (false, X) g t)) = fun t => MvPolynomial.eval (_root_.PI.UnitaryGroupMassFormula.UsCompose.vars (_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.crv (false, X) g t)) q`. Use function extensionality and compare the values at `t`. Rewrite using `[hQq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `_root_.PI.UnitaryGroupMassFormula.UsCompose.hasDerivAt_poly X g q`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_isPolyDeg_hasDerivAt_comp_crv {X : _root_.Formalism.FourierDecayAlt.B.Mat k r} {κ : ℕ} {Q : _root_.Formalism.FourierDecayAlt.B.Mat k r → ℂ}
     (hQ : _root_.Formalism.FourierDecayAlt.U.IsPolyDeg κ Q) : ∃ Q' : _root_.Formalism.FourierDecayAlt.B.Mat k r → ℂ, _root_.Formalism.FourierDecayAlt.U.IsPolyDeg κ Q' ∧
@@ -139,7 +139,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-The claim follows from `| [], _ => by simpa [_root_.Formalism.FourierDecayAlt.B.Rw] using hF | X :: w, hw => by have h := ckOn_rightWordDeriv_of_forall_inLie hF w (fun Y hY => hw Y (by simp [hY])) have := _root_.Formalism.FourierDecayAlt.P.B5.ckOn_RdV (m := ⊤) (hw X (by simp)) (by simpa using h) simpa [ …`.
+A detailed English derivation is pending.
 -/
 private lemma ckOn_rightWordDeriv_of_forall_inLie {F : _root_.Formalism.FourierDecayAlt.B.Mat k r → Wq →L[ℂ] Wp}
     (hF : _root_.Formalism.FourierDecayAlt.B.CkOn ⊤ (_root_.Formalism.FourierDecayAlt.B.GV k r) F) : ∀ w : List (_root_.Formalism.FourierDecayAlt.B.Mat k r), (∀ X ∈ w, _root_.Formalism.FourierDecayAlt.B.inLie k r X) →
@@ -154,7 +154,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.Formalism.FourierDecayAlt.B.opApply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma opApply_cons' (T : _root_.Formalism.FourierDecayAlt.B.DTerm k r Wp Wq) (Θ : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq)
     (F : _root_.Formalism.FourierDecayAlt.B.Mat k r → Wq →L[ℂ] Wp) (g : _root_.Formalism.FourierDecayAlt.B.Mat k r) :
@@ -165,7 +165,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-The claim follows from `| [], n, _ => ⟨[], polyOp_nil _ _, fun F _ g _ => by simpa [opApply_nil] using hasDerivAt_const (0 : ℝ) (0 : Wq →L[ℂ] Wp)⟩ | T :: Θ, n, h => by have hT := h unfold _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp at hT obtain ⟨hlen, Q, hQ, hc, -⟩ := hT T (by simp) obtain ⟨Θr, hJr, …`.
+A detailed English derivation is pending.
 -/
 private lemma polyOp_deriv_lemma_10 {X : _root_.Formalism.FourierDecayAlt.B.Mat k r} (hX : _root_.Formalism.FourierDecayAlt.B.inLie k r X) {κ : ℕ} :
     ∀ (Θ : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq) (n : ℕ), _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp n κ Θ → ∃ Θ' : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq,
@@ -218,7 +218,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-The claim follows from `| [], _, Θ, n, h => ⟨Θ, h, fun F _ g _ => rfl⟩ | X :: u, hu, Θ, n, h => by have hX : _root_.Formalism.FourierDecayAlt.B.inLie k r X := hu X (by simp) obtain ⟨Θ1, hJ1, hE1⟩ := polyOp_word_lemma_6 u (fun Y hY => hu Y (by simp [hY])) Θ n h obtain ⟨Θ2, hJ2, hD2⟩ := polyOp_deriv_lemma …`.
+A detailed English derivation is pending.
 -/
 private lemma polyOp_word_lemma_6 {κ : ℕ} : ∀ (u : List (_root_.Formalism.FourierDecayAlt.B.Mat k r)), (∀ X ∈ u, _root_.Formalism.FourierDecayAlt.B.inLie k r X) →
     ∀ (Θ : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq) (n : ℕ), _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp n κ Θ → ∃ Θ' : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq,
@@ -244,7 +244,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-The claim follows from `| [], n, κ, _ => ⟨[], polyOp_nil _ _, fun F g => by simp [opApply_nil]⟩ | T :: Θ, n, κ, h => by have hT := h unfold _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp at hT obtain ⟨hlen, Q, hQ, hc, -⟩ := hT T (by simp) obtain ⟨Θr, hJr, hEr⟩ := exists_polyOp_opApply_eq_smul hP Θ n κ …`.
+A detailed English derivation is pending.
 -/
 private lemma exists_polyOp_opApply_eq_smul {κa : ℕ} {Pf : _root_.Formalism.FourierDecayAlt.B.Mat k r → ℂ} (hP : _root_.Formalism.FourierDecayAlt.U.IsPolyDeg κa Pf) :
     ∀ (Θ : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq) (n κ : ℕ), _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp n κ Θ → ∃ Θ' : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq,
@@ -273,7 +273,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.Formalism.FourierDecayAlt.B.opApply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma opApply_append' (Θ₁ Θ₂ : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq)
     (F : _root_.Formalism.FourierDecayAlt.B.Mat k r → Wq →L[ℂ] Wp) (g : _root_.Formalism.FourierDecayAlt.B.Mat k r) :
@@ -284,7 +284,7 @@ open MvPolynomial in
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k r : ℕ} in
 /- English proof (translation)
-The claim follows from `| [], o₁, _ => ⟨[], polyOp_nil _ _, fun F _ g _ => by simp [opApply_nil]⟩ | T :: Θa, o₁, h => by have hT := h unfold _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp at hT obtain ⟨hlen, Pf, hP, hc, -⟩ := hT T (by simp) obtain ⟨Θr, hJr, hEr⟩ := polyOp_comp_lemma_2 hb Θa o₁ (polyOp_ …`.
+A detailed English derivation is pending.
 -/
 private lemma polyOp_comp_lemma_2 {o₂ κ₁ κ₂ : ℕ} {Θb : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq} (hb : _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp o₂ κ₂ Θb) :
     ∀ (Θa : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq) (o₁ : ℕ), _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp o₁ κ₁ Θa → ∃ Θ : _root_.Formalism.FourierDecayAlt.B.DiffOp k r Wp Wq,
@@ -311,19 +311,17 @@ private lemma polyOp_comp_lemma_2 {o₂ κ₁ κ₂ : ℕ} {Θb : _root_.Formali
 open MeasureTheory in
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨[_root_.GlobalTheory.HatNF.PolyComp.scalTerm (fun _ => 1) [] (by simp)], ?_, ?_⟩` and prove the remaining obligations. Introduce `Tm hTm`. Simplify using `only [List.mem_singleton] at hTm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Substitute `hTm` using the available equality. Use `⟨by simp [_root_.GlobalTheory.HatNF.PolyComp.scalTerm], fun _ => 1, ?_, fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `⟨MvPolynomial.C 1, by simp, fun g => by simp⟩`. Introduce `F _ Φ hΦ`. Establish `hF : _root_.Formalism.FourierDecayAlt.B.opApply [_root_.GlobalTheory.HatNF.PolyComp.scalTerm (Wp` using `Wp) (Wq := Wq) (fun _ => 1) [] (by simp)] F = F := by`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using `[_root_.Formalism.FourierDecayAlt.B.opApply, _root_.Formalism.FourierDecayAlt.B.Rw, _root_.GlobalTheory.HatNF.PolyComp.scalTerm]`. Rewrite using `[hF]`. Conclude with `hΦ`. Introduce and unpack `o o' κ κ' a ho hκ ⟨Θ, hΘ, hR⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨Θ, polyOp_mono' hΘ ho hκ, hR⟩`. Introduce and unpack `o₁ κ₁ o₂ κ₂ a b ⟨Θa, hJa, hRa⟩ ⟨Θb, hJb, hRb⟩`. Take `⟨Θ, hJ, hE⟩` from `polyOp_comp_lemma_2 hJb Θa o₁ hJa`. Use `⟨Θ, hJ, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.FourierDecayAlt.TL.RadIs at hRa hRb ⊢`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF Φ hΦ`. Establish `hsmooth : _root_.Formalism.FourierDecayAlt.B.CkOn ⊤ (_root_.Formalism.FourierDecayAlt.B.GV P.k P.r) F`. Unfold `_root_.Formalism.FourierDecayAlt.KB.CptCoef at hF`. Conclude with `hF.1`. Establish `hsm : _root_.Formalism.FourierDecayAlt.B.SmoothCoef (_root_.Formalism.FourierDecayAlt.C6.domL Bs ∅) Θb` using `(_root_.GlobalTheory.HatNF.polyOp_ok P.k P.r Wp Wq o₂ κ₂ Θb hJb).1 _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2` using `hRa _ (_root_.Formalism.FourierDecayAlt.P.TLB.cpt_op hF hsm) _ (hRb F hF Φ hΦ)`. Unfold `_root_.Formalism.FourierDecayAlt.Top.IsRadOf at h2 ⊢`. Introduce `x hx`. Rewrite using `[show (a * b).1 Φ = a.1 (b.1 Φ) from rfl, h2 x hx]`. Unfold `_root_.Formalism.FourierDecayAlt.Q.resG`.
-
-Rewrite using `[_root_.Formalism.FourierDecayAlt.P.JCx2.sq_jf_congr Bs (fun g hg => (hE F hsmooth g hg).symm) (_root_.Formalism.FourierDecayAlt.P.TLB.wCell_gv Bs hx)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HatNF.polyLift_closed : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]

@@ -15,7 +15,7 @@ def gen (H : HermSpace K V) (J : Finset ι) (e ρ : ι → V) (c : ι → ι →
     ∑ a ∈ J, (c a b • H.B.flip (e b)).smulRight (e a))
 
 /- English proof (translation)
-Simplify using `[gen, LinearMap.sum_apply, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gen_apply (H : HermSpace K V) (J : Finset ι) (e ρ : ι → V) (c : ι → ι → K) (v : V) :
     gen H J e ρ c v = v + ∑ b ∈ J, (H.B v (e b) • ρ b - H.B v (ρ b) • e b +
@@ -28,7 +28,7 @@ section Ideal
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h0 : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K)) ≠ 0`. Simplify using `using h𝔡`. Unfold `ipow at *`. Rewrite using `[zpow_add₀ h0, FractionalIdeal.coe_mul]`. Conclude with `Submodule.mul_mem_mul hx hy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipow_mul_mem {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m n : ℤ} {x y : K} (hx : x ∈ ipow 𝔡 m)
     (hy : y ∈ ipow 𝔡 n) : x * y ∈ ipow 𝔡 (m + n) := by
@@ -39,7 +39,7 @@ theorem ipow_mul_mem {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m n : ℤ} 
   exact Submodule.mul_mem_mul hx hy
 
 /- English proof (translation)
-Establish `h0 : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K)) ≠ 0`. Simplify using `using h𝔡`. Unfold `ipow`. Rewrite using `[← FractionalIdeal.coe_mul, ← zpow_add₀ h0, add_neg_cancel, zpow_zero, FractionalIdeal.coe_one]`. Conclude with `Submodule.one_le.mp le_rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem_ipow_mul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) (m : ℤ) :
     (1 : K) ∈ ipow 𝔡 m * ipow 𝔡 (-m) := by
@@ -50,15 +50,15 @@ theorem one_mem_ipow_mul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) (m : ℤ
   exact Submodule.one_le.mp le_rfl
 
 /- English proof (translation)
-Simplify using `[ipow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ipow_zero (𝔡 : Ideal (𝓞 K)) : ipow 𝔡 0 = 1 := by
   simp [ipow]
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ ipow 𝔡 m * ipow 𝔡 (-m), y * x ∈ ipow 𝔡 (m + n)`. Introduce `y hy`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `a ha t ht`. Rewrite using `[mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ipow_mul_mem h𝔡 ha (h t ht)`. Introduce `a b ha hb`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ ha hb`. Simplify using `using key 1 (one_mem_ipow_mul h𝔡 m)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_ipow_of_mul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m n : ℤ} {x : K}
     (h : ∀ t ∈ ipow 𝔡 (-m), t * x ∈ ipow 𝔡 n) : x ∈ ipow 𝔡 (m + n) := by
@@ -80,11 +80,9 @@ variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [M
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hv ?_ ?_` and prove the remaining obligations. Introduce `a ha n hn`. Establish `h1 : t * a ∈ ipow 𝔡 0`. Simplify `ipow_mul_mem h𝔡 ht ha` using `[add_comm]`. Rewrite `h1` using `[ipow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨o, ho⟩` from `Submodule.mem_one.mp h1`. Rewrite using `[smul_smul, ← ho, algebraMap_smul]`. Conclude with `M.smul_mem o hn`. Introduce `x y hx hy`. Rewrite using `[smul_add]`.
-
-Conclude with `M.add_mem hx hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_mem_ipow_smul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m : ℤ} {M : Submodule (𝓞 K) V} {v : V}
     (hv : v ∈ ipow 𝔡 m • M) {t : K} (ht : t ∈ ipow 𝔡 (-m)) : t • v ∈ M := by
@@ -101,9 +99,9 @@ theorem smul_mem_of_mem_ipow_smul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥)
     exact M.add_mem hx hy
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ ipow 𝔡 m * ipow 𝔡 (-m), y • v ∈ ipow 𝔡 m • M`. Introduce `y hy`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `a ha t ht`. Rewrite using `[mul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul ha (h t ht)`. Introduce `a b ha hb`. Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ ha hb`. Simplify using `using key 1 (one_mem_ipow_mul h𝔡 m)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_ipow_smul_of_smul_mem {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m : ℤ} {M : Submodule (𝓞 K) V} {v : V}
     (h : ∀ t ∈ ipow 𝔡 (-m), t • v ∈ M) : v ∈ ipow 𝔡 m • M := by
@@ -124,7 +122,7 @@ section Star
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `h : IsIntegral ℤ (star (y : K))`. Conclude with `(RingOfIntegers.isIntegral_coe y).map ((starRingEnd K).toIntAlgHom)`. Conclude with `⟨⟨star (y : K), h⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem star_integral (y : 𝓞 K) : ∃ y' : 𝓞 K, (y' : K) = star (y : K) := by
   have h : IsIntegral ℤ (star (y : K)) := by
@@ -132,13 +130,13 @@ theorem star_integral (y : 𝓞 K) : ∃ y' : 𝓞 K, (y' : K) = star (y : K) :=
   exact ⟨⟨star (y : K), h⟩, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `x _`. Take `⟨y, hy⟩` from `star_integral x`. Conclude with `⟨y, by simp, hy⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `succ k ih`. Introduce `x hx`. Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a', ha', ea⟩` from `ih a ha`. Take `⟨b', hb', eb⟩` from `h𝔡s b hb`. Use `⟨a' * b', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Submodule.mul_mem_mul ha' hb'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[ea, eb, star_mul']`. Introduce and unpack `a b ⟨a', ha', ea⟩ ⟨b', hb', eb⟩`. Conclude with `⟨a' + b', Submodule.add_mem _ ha' hb', by simp [ea, eb]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem star_pow_mem {𝔡 : Ideal (𝓞 K)} (h𝔡s : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (k : ℕ) :
     ∀ x ∈ 𝔡 ^ k, ∃ y ∈ 𝔡 ^ k, (y : K) = star (x : K) := by
@@ -161,7 +159,7 @@ theorem star_pow_mem {𝔡 : Ideal (𝓞 K)} (h𝔡s : ∀ x ∈ 𝔡, ∃ y ∈
       exact ⟨a' + b', Submodule.add_mem _ ha' hb', by simp [ea, eb]⟩
 
 /- English proof (translation)
-Rewrite `*` using `[FractionalIdeal.mem_one_iff]`. Take `⟨y, rfl⟩` from `hx`. Take `⟨y', hy'⟩` from `star_integral y`. Conclude with `⟨y', hy'⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem star_mem_one {x : K} (hx : x ∈ (1 : FractionalIdeal (𝓞 K)⁰ K)) :
     star x ∈ (1 : FractionalIdeal (𝓞 K)⁰ K) := by
@@ -171,13 +169,13 @@ theorem star_mem_one {x : K} (hx : x ∈ (1 : FractionalIdeal (𝓞 K)⁰ K)) :
   exact ⟨y', hy'⟩
 
 /- English proof (translation)
-Establish `hA : ∀ k : ℕ, ∀ x : K, x ∈ ((𝔡 : FractionalIdeal (𝓞 K)⁰ K) ^ k) → star x ∈ ((𝔡 : FractionalIdeal (𝓞 K)⁰ K) ^ k)`. Introduce `k x hx`. Rewrite `*` using `[← FractionalIdeal.coeIdeal_pow, FractionalIdeal.mem_coeIdeal]`. Take `⟨y, hy, rfl⟩` from `hx`. Take `⟨y', hy', e⟩` from `star_pow_mem h𝔡s k y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y', hy', e⟩`. Unfold `ipow at *`. Rewrite `*` using `[FractionalIdeal.mem_coe]`. Break down `n with k | k` into its components or cases. Simplify using `only [Int.ofNat_eq_coe, zpow_natCast] at *`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `hA k x hx`. Establish `h0 : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K)) ^ (k + 1) ≠ 0`. Apply `pow_ne_zero` to reduce the goal to its premises. Simplify using `using h𝔡`. Rewrite `*` using `[zpow_negSucc, FractionalIdeal.mem_inv_iff h0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Use `star_mem_one (hx (star y) (hA _ y hy))` as an intermediate fact. Simplify `this` using `[star_mul', mul_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem star_mem_ipow {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥)
     (h𝔡s : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (n : ℤ) {x : K} (hx : x ∈ ipow 𝔡 n) :

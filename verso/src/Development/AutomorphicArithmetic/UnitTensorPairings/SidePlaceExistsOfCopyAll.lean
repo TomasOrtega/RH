@@ -7,9 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Use `letI : Algebra K L := ι.toAlgebra`. Establish `he : (w.under (𝓞 K)).asIdeal.ramificationIdx' w.asIdeal ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal (w.under (𝓞 K)).ne_bot`. Use `⟨w.under (𝓞 K), fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `HeightOneSpectrum.valuation_liesOver L (w.under (𝓞 K)) w x`. Express the relevant statement in the definitionally equal form `_ ↔ w.valuation L (algebraMap K L x) ≤ 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← h, pow_le_one_iff he]`. Establish `h` using `HeightOneSpectrum.valuation_liesOver L (w.under (𝓞 K)) w x`. Express the relevant statement in the definitionally equal form `_ ↔ w.valuation L (algebraMap K L x) < 1`. Rewrite using `[← h, pow_lt_one_iff he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem under_le_one {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (ι : K →+* L)
     (w : HeightOneSpectrum (𝓞 L)) : ∃ v : HeightOneSpectrum (𝓞 K),
@@ -27,7 +27,7 @@ private theorem under_le_one {K L : Type} [Field K] [NumberField K] [Field L] [N
     rw [← h, pow_lt_one_iff he]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `h0 : (D.plEq w).valuation D.what₂.LL x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Rewrite using `[D.val_eq w x hx, ← WithTop.coe_zero, WithTop.coe_le_coe, vAdd, neg_nonneg, WithZero.log_le_iff_le_exp h0, WithZero.exp_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_nonneg_iff (D : D7) (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     0 ≤ D.what₂.places.val w x ↔ (D.plEq w).valuation D.what₂.LL x ≤ 1 := by
@@ -38,9 +38,9 @@ private theorem val_nonneg_iff (D : D7) (w : D.what₂.places.Pl) (x : D.what₂
       WithZero.log_le_iff_le_exp h0, WithZero.exp_zero]
 
 /- English proof (translation)
-Establish `hx : (D.what₂.places.resChar w : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 (D.what₂.places.resChar_prime w).ne_zero`. Establish `h0 : (D.plEq w).valuation D.what₂.LL (D.what₂.places.resChar w : D.what₂.LL) ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Establish `h` using `D.what₂.places.val_resChar w`. Rewrite `h` using `[D.val_eq w _ hx, WithTop.coe_inj, vAdd]`. Establish `hp` using `D.what₂.places.ramIdx_pos w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.exp_zero, ← WithZero.log_lt_iff_lt_exp h0]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem val_resChar_lt (D : D7) (w : D.what₂.places.Pl) :
     (D.plEq w).valuation D.what₂.LL (D.what₂.places.resChar w : D.what₂.LL) < 1 := by
@@ -55,9 +55,9 @@ private theorem val_resChar_lt (D : D7) (w : D.what₂.places.Pl) :
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime (p : 𝓞 L) (q : 𝓞 L)` using `Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 hne)`. Establish `a1 : (p : 𝓞 L) ∈ w.asIdeal` using `(w.valuation_lt_one_iff_mem (K := L) _).1 (by simpa using h1)`. Establish `a2 : (q : 𝓞 L) ∈ w.asIdeal` using `(w.valuation_lt_one_iff_mem (K := L) _).1 (by simpa using h2)`. Take `⟨a, b, hab⟩` from `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ a1) (w.asIdeal.mul_mem_left _ a2)))`.
+A detailed English derivation is pending.
 -/
 private theorem prime_eq_of_lt {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) {p q : ℕ}
     (hp : p.Prime) (hq : q.Prime) (h1 : w.valuation L (p : L) < 1) (h2 : w.valuation L (q : L) < 1) : p = q := by
@@ -69,9 +69,9 @@ private theorem prime_eq_of_lt {L : Type} [Field L] [NumberField L] (w : HeightO
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ a1) (w.asIdeal.mul_mem_left _ a2)))
 
 /- English proof (translation)
-Take `⟨v, h1, h2⟩` from `under_le_one ι (D'.plEq w')`. Take `⟨w, rfl⟩` from `D.plEq.surjective v`. Use `⟨w, ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `a` using `(h2 _).1 (val_resChar_lt D w)`. Rewrite `a` using `[map_natCast]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `prime_eq_of_lt _ (D.what₂.places.resChar_prime w) (D'.what₂.places.resChar_prime w') a (val_resChar_lt D' w')`. Rewrite using `[val_nonneg_iff, val_nonneg_iff, h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_under {D D' : D7} (ι : D.what₂.LL →+* D'.what₂.LL) (w' : D'.what₂.places.Pl) :
     ∃ w : D.what₂.places.Pl, D.what₂.places.resChar w = D'.what₂.places.resChar w' ∧
@@ -85,11 +85,11 @@ private theorem exists_under {D D' : D7} (ι : D.what₂.LL →+* D'.what₂.LL)
   · rw [val_nonneg_iff, val_nonneg_iff, h1]
 
 /- English proof (translation)
-Introduce `D D' ι e h H w'`. Take `⟨w, hr, hv⟩` from `exists_under ι w'`. Take `⟨i, hl, hs⟩` from `H w`. Establish `hL` using `h.cp.LL0`. Establish `hE` using `h.cp.emb0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, rfl⟩` from `h.cp.exists_rest`. Use `⟨i, hl.trans hr, fun x => ?_⟩` and prove the remaining obligations. Establish `a` using `hs (e x)`. Rewrite `a` using `[hv, hL x]`. Establish `b : D.ntw.emb0 i (e x) = (overD D r).ntw.emb0 i x` using `eq_of_heq (hE i i HEq.rfl x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `a` using `[if_pos rfl, b]`. Rewrite using `[if_pos rfl]`. Conclude with `a`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.sidePlace_exists_of_copyAll :
     ∀ {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0}, CopyAll D D' ι e → (∀ w : D.what₂.places.Pl, ∃ i, D.ntw.l i = D.what₂.places.resChar w ∧ GlobalTheory.HeightCounting.SidePl D w i true) → ∀ w : D'.what₂.places.Pl, ∃ i, D'.ntw.l i = D'.what₂.places.resChar w ∧ GlobalTheory.HeightCounting.SidePl D' w i true := by

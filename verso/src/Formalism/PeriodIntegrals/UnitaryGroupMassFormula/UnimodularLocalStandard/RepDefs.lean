@@ -33,11 +33,11 @@ def KeyExact : Prop :=
         stdH (cmL a b d ha hd lam hlam) m (fvec a b d lam x y i₀) (fvec a b d lam x y i₀)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨w, by simpa using hw⟩`. Consider the case `succ n ih`. Take `⟨w₁, hw₁⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < 2 ^ n` using `pow_pos (by norm_num) n`. Take `⟨w₂, hw₂⟩` from `hN a b c d ha hd lam hlam m Λ l x y T i₀ h (2 ^ n) (by omega) w₁ hw₁`. Use `⟨w₂, ?_⟩` and prove the remaining obligations. Establish `he : 2 ^ (n + 1) = 2 * 2 ^ n` using `by rw [pow_succ, mul_comm]`. Rewrite using `[he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw₂`.
+A detailed English derivation is pending.
 -/
 theorem approx_pow_two (hN : KeyNewton) (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (lam : ℂ) (hlam : lam ≠ 0) (m : Type) [Fintype m] [DecidableEq m] (Λ : AddSubgroup (m → ℂ)) (l : ℕ) (x y : ℤ) (T : Finset m) (i₀ : m) (h : KeyHyps a b c d ha hd lam hlam m Λ l x y T i₀) (w : m → ℂ) (hw : ApproxAt a b c d ha hd lam hlam m Λ l x y T i₀ 1 w) :
     ∀ n : ℕ, ∃ w', ApproxAt a b c d ha hd lam hlam m Λ l x y T i₀ (2 ^ n) w' := by
@@ -54,7 +54,7 @@ theorem approx_pow_two (hN : KeyNewton) (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 
     exact hw₂
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hpos : 0 < 2 ^ k` using `pow_pos (by norm_num) k`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -67,9 +67,9 @@ private theorem le_two_pow_self (n : ℕ) : n ≤ 2 ^ n := by
     omega
 
 /- English proof (translation)
-Introduce `a b c d ha hd lam hlam hadm m _ _ Λ hsd hgen hi₁ hi₂ l hl x y hxy T i₀ hi₀ hT`. Establish `h : KeyHyps a b c d ha hd lam hlam m Λ l x y T i₀` using `⟨hadm, hsd, hgen, hi₁, hi₂, hl, hxy, hi₀, hT⟩`. Take `⟨w, hw⟩` from `hS a b c d ha hd lam hlam m Λ l x y T i₀ h`. Take `⟨K₀, hK⟩` from `hE a b c d ha hd lam hlam m Λ l x y T i₀ h`. Take `⟨w', hw'⟩` from `approx_pow_two hN a b c d ha hd lam hlam m Λ l x y T i₀ h w hw K₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hK (2 ^ K₀) (le_two_pow_self K₀) w' hw'`.
+A detailed English derivation is pending.
 -/
 theorem keyRep_of (hS : KeyStart) (hN : KeyNewton) (hE : KeyExact) : KeyRep := by
   intro a b c d ha hd lam hlam hadm m _ _ Λ hsd hgen hi₁ hi₂ l hl x y hxy T i₀ hi₀ hT

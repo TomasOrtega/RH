@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GeoInteg
 
 /- English proof (translation)
-Rewrite using `[HomogeneousLocalization.Away.val_mk, Localization.mk_eq_mk']`. Rewrite using `[IsLocalization.mk'_eq_iff_eq_mul]`. Establish `h : algebraMap _ (Localization.Away g) g * IsLocalization.Away.invSelf g = 1` using `IsLocalization.Away.mul_invSelf g`. Simplify using `only [map_pow]`. Rewrite using `[mul_assoc, ← mul_pow, mul_comm _ (algebraMap _ _ g), h, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem away_val_mk {K : Type} [Field K] {N : ℕ} {g : MvPolynomial (Fin (N + 1)) K} {D : ℕ}
     (hg : g ∈ grK K N D) (n : ℕ) (x : MvPolynomial (Fin (N + 1)) K) (hx : x ∈ grK K N (n • D)) :
@@ -27,11 +27,11 @@ theorem away_val_mk {K : Type} [Field K] {N : ℕ} {g : MvPolynomial (Fin (N + 1
   rw [mul_assoc, ← mul_pow, mul_comm _ (algebraMap _ _ g), h, one_pow, mul_one]
 
 /- English proof (translation)
-Establish `val_sum : ∀ (t : Finset ℕ) (u : ℕ → HomogeneousLocalization.Away (grK K N) g), (∑ l ∈ t, u l).val = ∑ l ∈ t, (u l).val` using `fun t u => map_sum (algebraMap (HomogeneousLocalization.Away (grK K N) g) (Localization.Away g)) u t`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [HomogeneousLocalization.val_add, HomogeneousLocalization.val_pow, HomogeneousLocalization.val_mul, val_sum, away_val_mk]`. Rewrite using `[hFe]`. Simplify using `only [map_add, map_sum, map_mul, map_pow, add_mul, Finset.sum_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[mul_pow, ← pow_mul, mul_comm s r]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hl' : l ≤ s` using `(Finset.mem_range.1 hl).le`. Establish `: s * r = (s - l) * r + r * l`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, rfl⟩` from `Nat.exists_eq_add_of_le hl'`. Simplify using `only [Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, pow_add, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem away_relation {K : Type} [Field K] {N : ℕ} {g : MvPolynomial (Fin (N + 1)) K} {D : ℕ}
     (hg : g ∈ grK K N D) (r s : ℕ) (f : MvPolynomial (Fin (N + 1)) K) (hf : f ∈ grK K N (r • D))
@@ -62,11 +62,11 @@ theorem away_relation {K : Type} [Field K] {N : ℕ} {g : MvPolynomial (Fin (N +
     ring
 
 /- English proof (translation)
-Establish `hf' : f.IsHomogeneous (r • D)` using `(MvPolynomial.mem_homogeneousSubmodule _ _).1 hf`. Use `add_mem ?_ (sum_mem fun l hl => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_homogeneousSubmodule]`. Use `hf'.pow s using 1` and compare the differences between its conclusion and the goal. Simplify using `only [smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hl' : l ≤ s` using `(Finset.mem_range.1 hl).le`. Rewrite using `[MvPolynomial.mem_homogeneousSubmodule]`. Use `((MvPolynomial.mem_homogeneousSubmodule _ _).1 (hc l)).mul (hf'.pow l) using 1` and compare the differences between its conclusion and the goal. Take `⟨u, rfl⟩` from `Nat.exists_eq_add_of_le hl'`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Nat.add_sub_cancel_left, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rel_mem {K : Type} [Field K] {N : ℕ} {D : ℕ} (r s : ℕ) (f : MvPolynomial (Fin (N + 1)) K)
     (hf : f ∈ grK K N (r • D)) (c : ℕ → MvPolynomial (Fin (N + 1)) K)
@@ -86,25 +86,23 @@ theorem rel_mem {K : Type} [Field K] {N : ℕ} {D : ℕ} (r s : ℕ) (f : MvPoly
     ring
 
 /- English proof (translation)
-Introduce `K _ X N d e i y hy V hV he q hq hfin S hS ht`. Use `letI := (strV q V).toAlgebra`. Introduce `a`. Establish `hg` using `yS_mem y hy S`. Take `⟨r, f, hf, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective (grK K N) hg a`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hS0 : S.card = 0`. Establish `hf0 : f.IsHomogeneous 0`. Use `(MvPolynomial.mem_homogeneousSubmodule _ _).1 hf` as an intermediate fact. Simplify `this` using `[hS0]`. Establish `hfC : f = MvPolynomial.C (MvPolynomial.coeff 0 f)` using `MvPolynomial.totalDegree_eq_zero_iff_eq_C.1 (Nat.le_zero.1 hf0.totalDegree_le)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : (MvPolynomial.C (MvPolynomial.coeff 0 f) : MvPolynomial (Fin (d + 1)) K).IsHomogeneous (r * S.card)`. Rewrite using `[hS0, Nat.mul_zero]`. Conclude with `MvPolynomial.isHomogeneous_C _ _`. Establish `hmem` using `GlobalTheory.CompanionTheory.GeoTorus.aeval_mem_torusS i y hy hV he q hq S hS ht _ hc`. Establish `hfe : MvPolynomial.aeval y (MvPolynomial.C (MvPolynomial.coeff 0 f) : MvPolynomial (Fin (d + 1)) K) = f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.aeval_C]`. Conclude with `hfC.symm`. Establish `heq : HomogeneousLocalization.Away.mk (grK K N) hg r (MvPolynomial.aeval y (MvPolynomial.C (MvPolynomial.coeff 0 f) : MvPolynomial (Fin (d + 1)) K)) (aeval_mem y hy S _ hc) = HomogeneousLocalization.Away.mk (grK K N) hg r f hf`. Simplify using `only [hfe]`. Rewrite `hmem` using `[heq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isIntegral_algebraMap (R := torusS K (fun k => (ht k).unit) S) (x := ⟨_, hmem⟩)`. Establish `hD : 0 < S.card * e` using `Nat.mul_pos (Nat.pos_of_ne_zero hS0) he`. Establish `hfh : f.IsHomogeneous (e * (r * S.card))`. Use `(MvPolynomial.mem_homogeneousSubmodule _ _).1 hf` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨s, c, -, hc, hrel⟩` from `GlobalTheory.CompanionTheory.Geo.exists_hom_relation (homIdeal i) (GlobalTheory.CompanionTheory.Geo.homIdeal_homog i) e he y hy hfin (r * S.card) f hfh`. Establish `hc' : ∀ l, (c l).IsHomogeneous (((s - l) * r) * S.card)` using `fun l => by`. Rewrite using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc l`. Establish `hcm` using `fun l => aeval_mem y hy S (c l) (hc' l)`. Establish `hF` using `rel_mem r s f hf (fun l => MvPolynomial.aeval y (c l)) hcm`. Establish `hid` using `away_relation hg r s f hf (fun l => MvPolynomial.aeval y (c l)) hcm _ hF rfl`. Establish `hzero` using `GlobalTheory.CompanionTheory.GeoVanish.homIdeal_vanish i hD hg hF hrel V hS`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hzero` using `[← hid]`. Rewrite `hzero` using `[map_add, map_sum]`. Simplify using `only [map_mul, map_pow] at hzero`. Establish `hco` using `fun l => GlobalTheory.CompanionTheory.GeoTorus.aeval_mem_torusS i y hy hV he q hq S hS ht (c l) (hc' l)`. Use `⟨Polynomial.X ^ s + ∑ l ∈ Finset.range s, Polynomial.C (⟨_, hco l⟩ : torusS K (fun k => (ht k).unit) S) * Polynomial.X ^ l, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Polynomial.monic_X_pow_add ?_` and prove the remaining obligations. Rewrite using `[← Polynomial.mem_degreeLT]`. Use `Submodule.sum_mem _ fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.mem_degreeLT]`. Use `(Polynomial.degree_C_mul_X_pow_le l _).trans_lt ?_` and prove the remaining obligations.
-
-Conclude with `Finset.mem_range.1 hl` after adjusting the coercions. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C]`. Conclude with `hzero`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIntegral_torusS : ∀ {K : Type} [Field K] {X : Scheme.{0}} {N d e : ℕ} (i : X ⟶ PSpace K N) (y : Fin (d + 1) → MvPolynomial (Fin (N + 1)) K) (hy : ∀ k, (y k).IsHomogeneous e) {V : X.Opens} (hV : V ≤ ⨅ k, i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k)), 0 < e → ∀ (q : X ⟶ Spec (CommRingCat.of K)), i ≫ PSpace.str K N = q → Module.Finite (Algebra.adjoin K (Set.range fun k => Ideal.Quotient.mk (homIdeal i) (y k))) (MvPolynomial (Fin (N + 1)) K ⧸ homIdeal i) → ∀ (S : Finset (Fin (d + 1))) (hS : V ≤ i ⁻¹ᵁ Proj.basicOpen (grK K N) (yS y S)) (ht : ∀ k, IsUnit (tV i y hy V hV k)), letI := (strV q V).toAlgebra; ∀ a, IsIntegral (torusS K (fun k => (ht k).unit) S) (evV i (yS y S) V hS a) := by
   intro K _ X N d e i y hy V hV he q hq hfin S hS ht

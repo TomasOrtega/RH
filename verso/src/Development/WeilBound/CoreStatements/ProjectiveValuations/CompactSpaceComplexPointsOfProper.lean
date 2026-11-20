@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.CxPts
 
 /- English proof (translation)
-Introduce `_ p _` and use `DifferentiableLines.Cpt.compactSpace_of_isProper p (RingHom.id ℂ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DifferentiableLines.compactSpace_complex_points_of_proper : ∀ (Y : Scheme.{0}) (p : Y ⟶ Sp ℂ), IsProper p → CompactSpace (CxPts p (RingHom.id ℂ)) := fun _ p _ =>
   DifferentiableLines.Cpt.compactSpace_of_isProper p (RingHom.id ℂ)

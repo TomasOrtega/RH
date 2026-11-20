@@ -16,7 +16,7 @@ open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `hb : Function.Bijective φ.mulVecLin` using `h`. Use `(LinearEquiv.ofBijective φ.mulVecLin hb).finrank_eq` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dim_of_bij {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin d) F)
     (h : Function.Bijective φ.mulVec) : d = d' := by
@@ -25,9 +25,9 @@ theorem dim_of_bij {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin 
   simpa using this
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Matrix.isUnit_iff_isUnit_det φ).mp (Matrix.mulVec_injective_iff_isUnit.mp h.1)`. Consider the case `exact (Matrix.isUnit_iff_isUnit_det φ).mp (Matrix.mulVec_surjective_iff_isUnit.mp h.2)`. Consider the case `(have hb : Function.Bijective (Matrix.toLin' φ) := h`. Use `LinearEquiv.isUnit_det' (LinearEquiv.ofBijective (Matrix.toLin' φ) hb)` as an intermediate fact.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[LinearEquiv.coe_ofBijective, LinearMap.det_toLin'] at this)` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_bij {F : Type} [Field F] {d : ℕ} (φ : Matrix (Fin d) (Fin d) F)
     (h : Function.Bijective φ.mulVec) : IsUnit φ.det := by
@@ -39,7 +39,7 @@ theorem isUnit_det_of_bij {F : Type} [Field F] {d : ℕ} (φ : Matrix (Fin d) (F
      rwa [LinearEquiv.coe_ofBijective, LinearMap.det_toLin'] at this)
 
 /- English proof (translation)
-Establish `hb : Function.Bijective φ.mulVecLin` using `h`. Conclude with `(Submodule.equivMapOfInjective φ.mulVecLin hb.1 A).finrank_eq.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_map_bij {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin d) F)
     (h : Function.Bijective φ.mulVec) (A : Submodule F (Fin d → F)) :
@@ -48,7 +48,7 @@ theorem finrank_map_bij {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') 
   exact (Submodule.equivMapOfInjective φ.mulVecLin hb.1 A).finrank_eq.symm
 
 /- English proof (translation)
-Establish `hint : DirectSum.IsInternal A` using `by first`. Consider the case `exact DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hi ht`. Consider the case `exact DirectSum.isInternal_submodule_of_independent_of_iSup_eq_top hi ht`. Rewrite using `[Module.finrank_eq_card_basis (hint.collectedBasis fun p => Module.finBasis F (A p)), Fintype.card_sigma]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_finrank {F V Ix : Type} [Field F] [AddCommGroup V] [Module F V] [FiniteDimensional F V]
     [Fintype Ix] (A : Ix → Submodule F V) (hi : iSupIndep A) (ht : (⨆ p, A p) = ⊤) :
@@ -63,7 +63,7 @@ theorem sum_finrank {F V Ix : Type} [Field F] [AddCommGroup V] [Module F V] [Fin
   simp
 
 /- English proof (translation)
-Establish `hb : Function.Bijective φ.mulVecLin` using `h`. Rewrite using `[← finrank_map_bij φ h (A.comap φ.mulVecLin), Submodule.map_comap_eq_of_surjective hb.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_comap_bij {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin d) F)
     (h : Function.Bijective φ.mulVec) (A : Submodule F (Fin d' → F)) :
@@ -72,9 +72,9 @@ theorem finrank_comap_bij {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d'
   rw [← finrank_map_bij φ h (A.comap φ.mulVecLin), Submodule.map_comap_eq_of_surjective hb.2]
 
 /- English proof (translation)
-Establish `hb : Function.Bijective φ.mulVecLin` using `h`. Introduce `i`. Establish `hle : (⨆ (j) (_ : j ≠ i), (A j).map φ.mulVecLin) ≤ (⨆ (j) (_ : j ≠ i), A j).map φ.mulVecLin` using `iSup₂_le fun j hj => Submodule.map_mono (le_iSup₂_of_le j hj le_rfl)`. Use `Disjoint.mono_right hle ?_` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ⟨a, ha, rfl⟩ ⟨b, hbB, hab⟩`. Establish `hba : b = a` using `hb.1 hab`. Rewrite `hbB` using `[hba]`. Rewrite using `[Submodule.disjoint_def.mp (hi i) a ha hbB, map_zero]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_indep {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin d) F)
     (h : Function.Bijective φ.mulVec) {Ix : Type} (A : Ix → Submodule F (Fin d → F)) (hi : iSupIndep A) :
@@ -91,7 +91,7 @@ theorem map_indep {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin d
   rw [Submodule.disjoint_def.mp (hi i) a ha hbB, map_zero]
 
 /- English proof (translation)
-Establish `hb : Function.Bijective φ.mulVecLin` using `h`. Rewrite using `[← Submodule.map_iSup, ht, Submodule.map_top]`. Conclude with `LinearMap.range_eq_top.mpr hb.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_iSup_top {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin d) F)
     (h : Function.Bijective φ.mulVec) {Ix : Type} (A : Ix → Submodule F (Fin d → F)) (ht : (⨆ p, A p) = ⊤) :
@@ -101,9 +101,9 @@ theorem map_iSup_top {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fi
   exact LinearMap.range_eq_top.mpr hb.2
 
 /- English proof (translation)
-Establish `hb : Function.Bijective φ.mulVecLin` using `h`. Introduce `i`. Establish `hle : (⨆ (j) (_ : j ≠ i), (A j).comap φ.mulVecLin) ≤ (⨆ (j) (_ : j ≠ i), A j).comap φ.mulVecLin` using `iSup₂_le fun j hj => Submodule.comap_mono (le_iSup₂_of_le j hj le_rfl)`. Use `Disjoint.mono_right hle ?_` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx1 hx2`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `Submodule.disjoint_def.mp (hi i) _ hx1 hx2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_indep {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin d) F)
     (h : Function.Bijective φ.mulVec) {Ix : Type} (A : Ix → Submodule F (Fin d' → F)) (hi : iSupIndep A) :
@@ -120,9 +120,9 @@ theorem comap_indep {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin
   exact Submodule.disjoint_def.mp (hi i) _ hx1 hx2
 
 /- English proof (translation)
-Establish `hb : Function.Bijective φ.mulVecLin` using `h`. Establish `e1 : (⨆ p, (A p).comap φ.mulVecLin).map φ.mulVecLin = ⊤`. Rewrite using `[Submodule.map_iSup]`. Simplify using `only [Submodule.map_comap_eq_of_surjective hb.2]`. Conclude with `ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (Submodule.comap φ.mulVecLin) e1`. Rewrite `e2` using `[Submodule.comap_map_eq_of_injective hb.1, Submodule.comap_top]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem comap_iSup_top {F : Type} [Field F] {d d' : ℕ} (φ : Matrix (Fin d') (Fin d) F)
     (h : Function.Bijective φ.mulVec) {Ix : Type} (A : Ix → Submodule F (Fin d' → F)) (ht : (⨆ p, A p) = ⊤) :
@@ -142,17 +142,17 @@ variable {Bs : DefBase K} {Df : DefSide Bs} (S : IndefRows Df)
 include S
 
 /- English proof (translation)
-The claim follows from `dim_of_bij (S.ι t) (S.l1c.1 t)`.
+A detailed English derivation is pending.
 -/
 theorem dQ_eq (t : Bs.Tup) : Df.dQ t = S.D := dim_of_bij (S.ι t) (S.l1c.1 t)
 
 /- English proof (translation)
-The claim follows from `dim_of_bij (S.θ j t) (S.l1c.2.1 j t)`.
+A detailed English derivation is pending.
 -/
 theorem dZ_eq (j : Bs.J) (t : Bs.Tup) : Df.dZ j t = S.dW j := dim_of_bij (S.θ j t) (S.l1c.2.1 j t)
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (S.ι Bs.μ0).mulVecLin` using `S.l1c.1 Bs.μ0`. Use `show (S.Ep p).comap (S.ι Bs.μ0).mulVecLin = _`. Rewrite using `[← S.l1a.1 p, Submodule.comap_map_eq_of_injective hb.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Qpart_base (p : Bs.Ix) : S.Qpart Bs.μ0 p = Df.Qp Bs.μ0 p := by
   have hb : Function.Bijective (S.ι Bs.μ0).mulVecLin := S.l1c.1 Bs.μ0
@@ -160,7 +160,7 @@ theorem Qpart_base (p : Bs.Ix) : S.Qpart Bs.μ0 p = Df.Qp Bs.μ0 p := by
   rw [← S.l1a.1 p, Submodule.comap_map_eq_of_injective hb.1]
 
 /- English proof (translation)
-Use `show finrank K ((S.Ep p).comap (S.ι t).mulVecLin) = finrank K ((S.Wp j p).comap (S.θ j t).mulVecLin)`. Rewrite using `[finrank_comap_bij _ (S.l1c.1 t), finrank_comap_bij _ (S.l1c.2.1 j t), S.l1d j p]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part_dim (j : Bs.J) (t : Bs.Tup) (p : Bs.Ix) :
     finrank K (S.Qpart t p) = finrank K (S.Zpart j t p) := by
@@ -168,11 +168,11 @@ theorem part_dim (j : Bs.J) (t : Bs.Tup) (p : Bs.Ix) :
   rw [finrank_comap_bij _ (S.l1c.1 t), finrank_comap_bij _ (S.l1c.2.1 j t), S.l1d j p]
 
 /- English proof (translation)
-Establish `hb0` using `S.l1c.1 Bs.μ0`. Establish `hθ0` using `S.l1c.2.1 j Bs.μ0`. Establish `he : S.Ep = fun p => (Df.Qp Bs.μ0 p).map (S.ι Bs.μ0).mulVecLin`. Use function extensionality and compare the values at `fun p => (S.l1a.1 p).symm`. Establish `hw : S.Wp j = fun p => (Df.Zp j Bs.μ0 p).map (S.θ j Bs.μ0).mulVecLin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun p => (S.l1a.2 j p).symm`. Establish `a` using `sum_finrank (S.Wp j) (by rw [hw]; exact map_indep _ hθ0 _ (wf.Zp_indep j)) (by rw [hw]; exact map_iSup_top _ hθ0 _ (S.4 j))`. Establish `b` using `sum_finrank S.Ep (by rw [he]; exact map_indep _ hb0 _ wf.Qp_indep) (by rw [he]; exact map_iSup_top _ hb0 _ wf.Qp_top)`. Use `first`. Consider the case `simp only [Module.finrank_fin_fun] at a b`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `simp at a b`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dW_eq (wf : Df.WF) (j : Bs.J) : S.dW j = S.D := by
   have hb0 := S.l1c.1 Bs.μ0
@@ -193,20 +193,20 @@ theorem dW_eq (wf : Df.WF) (j : Bs.J) : S.dW j = S.D := by
     _ = S.D := b
 
 /- English proof (translation)
-Rewrite using `[S.dZ_eq j t, S.dW_eq wf j]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rankZ (wf : Df.WF) (j : Bs.J) (t : Bs.Tup) : Df.dZ j t = S.D := by
   rw [S.dZ_eq j t, S.dW_eq wf j]
 
 /- English proof (translation)
-Rewrite using `[← S.dQ_eq Bs.μ0]`. Conclude with `S.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem D_pos : 0 < S.D := by
   rw [← S.dQ_eq Bs.μ0]
   exact S.2
 
 /- English proof (translation)
-Establish `hb0` using `S.l1c.1 Bs.μ0`. Establish `he : S.Ep = fun p => (Df.Qp Bs.μ0 p).map (S.ι Bs.μ0).mulVecLin`. Use function extensionality and compare the values at `fun p => (S.l1a.1 p).symm`. Rewrite using `[he]`. Conclude with `⟨map_indep _ hb0 _ wf.Qp_indep, map_iSup_top _ hb0 _ wf.Qp_top⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Ep_decomp (wf : Df.WF) : iSupIndep S.Ep ∧ (⨆ p, S.Ep p) = ⊤ := by
   have hb0 := S.l1c.1 Bs.μ0
@@ -216,7 +216,7 @@ theorem Ep_decomp (wf : Df.WF) : iSupIndep S.Ep ∧ (⨆ p, S.Ep p) = ⊤ := by
   exact ⟨map_indep _ hb0 _ wf.Qp_indep, map_iSup_top _ hb0 _ wf.Qp_top⟩
 
 /- English proof (translation)
-Establish `hθ0` using `S.l1c.2.1 j Bs.μ0`. Establish `hw : S.Wp j = fun p => (Df.Zp j Bs.μ0 p).map (S.θ j Bs.μ0).mulVecLin`. Use function extensionality and compare the values at `fun p => (S.l1a.2 j p).symm`. Rewrite using `[hw]`. Conclude with `⟨map_indep _ hθ0 _ (wf.Zp_indep j), map_iSup_top _ hθ0 _ (S.4 j)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Wp_decomp (wf : Df.WF) (j : Bs.J) : iSupIndep (S.Wp j) ∧ (⨆ p, S.Wp j p) = ⊤ := by
   have hθ0 := S.l1c.2.1 j Bs.μ0
@@ -226,14 +226,14 @@ theorem Wp_decomp (wf : Df.WF) (j : Bs.J) : iSupIndep (S.Wp j) ∧ (⨆ p, S.Wp 
   exact ⟨map_indep _ hθ0 _ (wf.Zp_indep j), map_iSup_top _ hθ0 _ (S.4 j)⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `S.Ep_decomp wf`. Conclude with `⟨comap_indep (S.ι t) (S.l1c.1 t) S.Ep h1, comap_iSup_top (S.ι t) (S.l1c.1 t) S.Ep h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Qpart_decomp (wf : Df.WF) (t : Bs.Tup) : iSupIndep (S.Qpart t) ∧ (⨆ p, S.Qpart t p) = ⊤ := by
   obtain ⟨h1, h2⟩ := S.Ep_decomp wf
   exact ⟨comap_indep (S.ι t) (S.l1c.1 t) S.Ep h1, comap_iSup_top (S.ι t) (S.l1c.1 t) S.Ep h2⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `S.Wp_decomp wf j`. Conclude with `⟨comap_indep (S.θ j t) (S.l1c.2.1 j t) (S.Wp j) h1, comap_iSup_top (S.θ j t) (S.l1c.2.1 j t) (S.Wp j) h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Zpart_decomp (wf : Df.WF) (j : Bs.J) (t : Bs.Tup) :
     iSupIndep (S.Zpart j t) ∧ (⨆ p, S.Zpart j t p) = ⊤ := by
@@ -244,7 +244,7 @@ theorem Zpart_decomp (wf : Df.WF) (j : Bs.J) (t : Bs.Tup) :
 end IndefRows
 
 /- English proof (translation)
-Take `rfl : dQ = D` from `dim_of_bij ι hι`. Establish `hd : dZ = dW` using `funext fun j => dim_of_bij (θ j) (hθ j)`. Substitute `hd` using the available equality. Conclude with `hS K v _ XQ XE hXQ hXE ι (isUnit_det_of_bij ι hι) J _ XT XW hXT hXW θ (fun j => isUnit_det_of_bij (θ j) (hθ j)) Ix Qp Tq h1 h2 h3 h4 h5 s lam h6 h7`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem specDet_rect (hS : SpecDet) (v : InfinitePlace K) {D dQ : ℕ}
     (XQ : InfinitePlace K → Matrix (Fin dQ) (Fin dQ) ℂ) (XE : InfinitePlace K → Matrix (Fin D) (Fin D) ℂ)
@@ -269,7 +269,7 @@ theorem specDet_rect (hS : SpecDet) (v : InfinitePlace K) {D dQ : ℕ}
     (fun j => isUnit_det_of_bij (θ j) (hθ j)) Ix Qp Tq h1 h2 h3 h4 h5 s lam h6 h7
 
 /- English proof (translation)
-The claim follows from `specDet_rect hS v (Df.XQ t) S.XE (fun u => (wf.XQ_quot t u).1) S.frames.1 (S.ι t) (S.l1c.1 t) Bs.J (fun j => Df.dZ j t) S.dW (fun j => Df.XT j t) S.XW (fun j => (wf.XT_herm j t).1) S.frames.2.1 (fun j => S.θ j t) (fun j => S.l1c.2.1 j t) Bs.Ix (S.Qpart t) (fun j => S.Zpart j t) ( …`.
+A detailed English derivation is pending.
 -/
 theorem IndefRows.detId (hS : SpecDet) {Bs : DefBase K} {Df : DefSide Bs} (wf : Df.WF)
     (S : IndefRows Df) (t : Bs.Tup) (v : InfinitePlace K) (h : t = Bs.μ0 ∨ v = Bs.v0) :
@@ -283,9 +283,9 @@ theorem IndefRows.detId (hS : SpecDet) {Bs : DefBase K} {Df : DefSide Bs} (wf : 
     (S.κ v) (fun j p => S.lam j t p v) (S.l1c.2.2.2.2.1 t v h) (fun j => S.l1c.2.2.2.2.2 j t v h)
 
 /- English proof (translation)
-Use `⟨hL.fg.map _, ?_⟩` and prove the remaining obligations. Establish `h1 : ((matLat φ L : Submodule (𝓞 K) (Fin d' → K)) : Set (Fin d' → K)) = φ.mulVecLin '' (L : Set (Fin d → K))`. Use extensionality with `x`. Simplify using `[matLat]`. Rewrite using `[h1, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem matLat_lattice {d d' : ℕ} (φ : Matrix (Fin d') (Fin d) K) (h : Function.Surjective φ.mulVec)
     (L : Submodule (𝓞 K) (Fin d → K)) (hL : Submodule.IsLattice K L) :
@@ -298,12 +298,12 @@ theorem matLat_lattice {d d' : ℕ} (φ : Matrix (Fin d') (Fin d) K) (h : Functi
   exact h
 
 /- English proof (translation)
-The claim follows from `(S.Tw.finite_toSet).subset fun w hw => (S.5.2 w).mpr hw`.
+A detailed English derivation is pending.
 -/
 theorem twisted_finite {Bs : DefBase K} {Df : DefSide Bs} (S : IndefRows Df) : {w | S.μ w ≠ Bs.μ0}.Finite := (S.Tw.finite_toSet).subset fun w hw => (S.5.2 w).mpr hw
 
 /- English proof (translation)
-Use `hG K S.D (matLat (S.ι Bs.μ0) (Df.abelian₂ Bs.μ0)) (fun w => matLat (S.ι (S.μ w)) (Df.abelian₂ (S.μ w))) (matLat_lattice _ (S.l1c.1 _).2 _ (wf.Lam_lat _)) (fun w => matLat_lattice _ (S.l1c.1 _).2 _ (wf.Lam_lat _)) ((twisted_finite S).subset fun w hw => ?_)` and prove the remaining obligations. Introduce `h`. Apply `hw` to reduce the goal to its premises. Use `show Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (matLat (S.ι (S.μ w)) (Df.abelian₂ (S.μ w))) = _`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IndefRows.RR_spec (hG : LatticeGlue) {Bs : DefBase K} {Df : DefSide Bs} (wf : Df.WF)
     (S : IndefRows Df) :
@@ -318,7 +318,7 @@ theorem IndefRows.RR_spec (hG : LatticeGlue) {Bs : DefBase K} {Df : DefSide Bs} 
   rw [h]
 
 /- English proof (translation)
-Use `first`. Consider the case `simp only [vw, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`. Consider the case `simp [vw]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem vw_one (w : HeightOneSpectrum (𝓞 K)) : vw w (1 : K) = 0 := by
   first
@@ -326,13 +326,13 @@ theorem vw_one (w : HeightOneSpectrum (𝓞 K)) : vw w (1 : K) = 0 := by
   | simp [vw]
 
 /- English proof (translation)
-Establish `hdet0` using `fun v => S.detId hS wf Bs.μ0 v (Or.inl rfl)`. Establish `hdet1` using `fun t => S.detId hS wf t Bs.v0 (Or.inr rfl)`. Establish `hRR` using `S.RR_spec hG wf`. Establish `hQ` using `S.dQ_eq`. Establish `hZ` using `S.dZ_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr` using `S.frames`. Establish `hc` using `S.l1c`. Establish `h0` using `S.h0`. Establish `htw` using `twisted_finite S`. Establish `hprov` using `S.proviso`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨μ, Tw, D, XE, Ep, ι, dW, XW, Wp, M, θ, κ, lam, err0⟩, _p1, _p2, _p3, _g0, _g1, _g2, _g3, _g4⟩` from `S`. Take `⟨nV, HV, Mt, dQ, Pq, XQ, Qp, dZ, HT, XT, Tl, Zp⟩` from `Df`. Simplify using `only [DefSide.Proviso] at hdet0 hdet1 hRR hQ hZ hfr hc h0 htw hprov eb heb`. Take `rfl : dQ = fun _ => D` from `funext hQ`. Take `rfl : dZ = fun j _ => dW j` from `funext fun j => funext fun t => hZ j t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hB K Bs.K0 wf.cm Bs.v0 wf.conj D XE hfr.1 Bs.Tup Bs.μ0 μ h0.1 htw XQ (fun t v => (wf.XQ_quot t v).1) (fun t => matLat (Pq t) (Mt t)) wf.Lam_lat ι (fun t => isUnit_det_of_bij _ (hc.1 t)) Bs.J dW XW hfr.2.1 M hfr.2.2 HT XT hprov wf.XT_herm Tl wf.Tl_lat θ (fun j t => isUnit_det_of_b …`.
+A detailed English derivation is pending.
 -/
 theorem IndefRows.stepB [IsTotallyComplex K] (hB : StepBW) (hS : SpecDet) (hR0 : GramDeterminantQuotientMetric) (hRb : LemmaRb)
     (hG : LatticeGlue) {Bs : DefBase K} {Df : DefSide Bs} (wf : Df.WF) (S : IndefRows Df)
@@ -370,19 +370,19 @@ theorem IndefRows.stepB [IsTotallyComplex K] (hB : StepBW) (hS : SpecDet) (hR0 :
     _ hRR.1 hRR.2
 
 /- English proof (translation)
-Establish `hdet0` using `fun v => S.toIndefRows.detId hS wf Bs.μ0 v (Or.inl rfl)`. Establish `hdet1` using `fun t => S.toIndefRows.detId hS wf t Bs.v0 (Or.inr rfl)`. Establish `hRR` using `S.toIndefRows.RR_spec hG wf`. Establish `hQ` using `S.toIndefRows.dQ_eq`. Establish `hZ` using `S.toIndefRows.dZ_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `S.toIndefRows.dW_eq wf`. Establish `hD` using `S.toIndefRows.D_pos`. Establish `hfr` using `S.frames`. Establish `hc` using `S.l1c`. Establish `hl3` using `S.l3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hon` using `S.on`. Establish `h0` using `S.h0`. Establish `htw` using `twisted_finite S.toIndefRows`. Establish `hprov` using `S.proviso`. Establish `hout : ∀ y, y ∉ Sy → lw y * ((vw y (Df.Gm eb (S.μ y) y) : ℝ) + ∑ j, S.Aw j y) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite using `[hG0 y hy, Finset.sum_eq_zero fun j _ => (hU y (fun h => hy (hSy h)) j).1]`. Simplify using the standard rewrite rules. Establish `hmid : ∀ y ∈ Sy, y ∉ S.Tw → ∀ j, S.Aw j y = 0` using `fun y _ hy j => (hU y hy j).1`. Establish `hF : ∀ y ∈ Sy, y ∉ S.Tw → ∀ j, (ramw y : ℝ) * N.F0 y j = 0` using `fun y _ hy j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hU y hy j).2, mul_zero]`. Establish `hiii : ∀ y ∈ S.Tw, ∑ j, ((S.Iw j (S.μ y) y : ℝ) + (S.Iw j (S.μ y) (conjPl y) : ℝ)) ≤ (∑ j, (2 * ((ramw y : ℝ) * N.F0 y j) + (ramw y : ℝ) * S.err0 y j) + 2 / ellw y ^ 2) * (S.D : ℝ)`. Introduce `y hy`. Rewrite using `[(hRam K y).2.2.2.2]`. Conclude with `hon.1 y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨⟨μ, Tw, D, XE, Ep, ι, dW, XW, Wp, M, θ, κ, lam, err0⟩, _p1, _p2, _p3, _g0, _g1, _g2, _g3, _g4⟩, _g6, _g7⟩` from `S`. Take `⟨nV, HV, Mt, dQ, Pq, XQ, Qp, dZ, HT, XT, Tl, Zp⟩` from `Df`. Simplify using `only [DefSide.Proviso] at hdet0 hdet1 hRR hQ hZ hW hD hfr hc hl3 hon h0 htw hprov hout hmid hF hiii eb heb hi hiv hE2 hG0 hSy hLG hE3`. Take `rfl : dW = fun _ => D` from `funext hW`. Take `rfl : dQ = fun _ => D` from `funext hQ`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : dZ = fun _ _ => D` from `funext fun j => funext fun t => hZ j t`. Establish `H` using `(hM K Bs.K0 wf.cm Bs.v0 wf.conj D XE hD hfr.1 Bs.Tup Bs.μ0 μ h0.1 htw XQ (fun t v => (wf.XQ_quot t v).1) (fun t => matLat (Pq t) (Mt t)) wf.Lam_lat ι (fun t => isUnit_det_of_bij _ (hc.1 t)) Bs.J XW hfr.2.1 M hfr.2.2 HT XT hprov wf.XT_herm Tl wf.Tl_lat θ (fun j t => isUnit_det_of_ …`. Establish `h3 : ∑ j, lcv (XW j) (M j) / (D : ℝ) ≤ ∑ j, N.l3 j` using `Finset.sum_le_sum fun j _ => hl3 j`. Combine the linear relations using `[H, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem IndefSide.boundsMu [IsTotallyComplex K] (hM : Formalism.DivisorInequality.BoundsMu) (hS : SpecDet) (hR0 : GramDeterminantQuotientMetric)
     (hG : LatticeGlue) (hRam : RamBasic) {Bs : DefBase K} {Df : DefSide Bs} {N : IndefNum Bs} (wf : Df.WF)
@@ -450,7 +450,7 @@ theorem IndefSide.boundsMu [IsTotallyComplex K] (hM : Formalism.DivisorInequalit
   linarith [H, h3]
 
 /- English proof (translation)
-The claim follows from `Finset.le_inf' _ _ fun p _ => Finset.sum_le_sum fun j _ => S.l6 j p v`.
+A detailed English derivation is pending.
 -/
 theorem IndefCols.log_eigenvalue_sum_le_min {Bs : DefBase K} {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} {N : IndefNum Bs}
     [Nonempty Bs.Ix] (S : IndefCols Df Dc Sp N) (v : InfinitePlace K) :
@@ -458,19 +458,17 @@ theorem IndefCols.log_eigenvalue_sum_le_min {Bs : DefBase K} {Df : DefSide Bs} {
   Finset.le_inf' _ _ fun p _ => Finset.sum_le_sum fun j _ => S.l6 j p v
 
 /- English proof (translation)
-Establish `hQ` using `S.toIndefRows.dQ_eq`. Establish `hfr` using `S.frames`. Establish `hc` using `S.l1c`. Establish `hb` using `S.l1b`. Establish `hmin` using `S.log_eigenvalue_sum_le_min`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : ∀ v p, IsScalarOn (Df.XQ Bs.μ0) S.XE v (S.ι Bs.μ0) (Df.Qp Bs.μ0 p) (S.κ v * ∏ j, S.lam j Bs.μ0 p v)` using `fun v p => by`. Rewrite using `[← S.toIndefRows.Qpart_base p]`. Conclude with `hc.2.2.2.2.1 Bs.μ0 v (Or.inl rfl) p`. Take `⟨⟨⟨μ, Tw, D, XE, Ep, ι, dW, XW, Wp, M, θ, κ, lam, err0⟩, _p1, _p2, _p3, _g0, _g1, _g2, _g3, _g4⟩, _g5, ⟨B, ζ, sE⟩, _g6, _g7⟩` from `S`. Take `⟨HH, nHH, iHH, Pu, Rw⟩` from `Sp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Mem, a, Xc, Pt⟩` from `Dc`. Take `⟨nV, HV, Mt, dQ, Pq, XQ, Qp, dZ, HT, XT, Tl, Zp⟩` from `Df`. Simplify using `only at hQ hfr hc hb hmin hsc hXc hne X0 hX0 hpU u`. Take `rfl : dQ = fun _ => D` from `funext hQ`. Establish `H` using `(hH K (nV Bs.μ0) D 0 (fun _ => a u) (fun _ => Xc u) (fun _ => hXc) (fun j => j.elim0) (HV Bs.μ0) X0 hX0 (Pq Bs.μ0) (wf.Pq_surj _) (XQ Bs.μ0) (wf.XQ_quot _) XE hfr.1 (ι Bs.μ0) (isUnit_det_of_bij _ (hc.1 _)) Bs.Ix Bs.J (Qp Bs.μ0) wf.Qp_top κ (fun j p v => lam j Bs.μ0 p v) (fun j p …`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hb.1 u Bs.μ0 φ F`. Rewrite `h1` using `[hb.2.1 u, one_mul]`. Rewrite using `[← h1]`. Use `show _ = Pt u Bs.μ0 ((1 : Matrix (Fin (a u)) (Fin (a u)) K).mulVec φ) F`. Rewrite using `[Matrix.one_mulVec])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hne pU (fun j => j.elim0) hpU (fun j => j.elim0)).2`. Establish `hn : (0 : ℝ) < (Formalism.HN.nPl K : ℝ)`. Establish `: 0 < Fintype.card (InfinitePlace K)` using `Fintype.card_pos`. Conclude with `this` after adjusting the coercions. Establish `h2 : ∑ j, N.l6 j ≤ (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, minOver (fun p => ∑ j, Real.log (lam j Bs.μ0 p v))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∑ _v : InfinitePlace K, ∑ j, N.l6 j ≤ ∑ v, minOver (fun p => ∑ j, Real.log (lam j Bs.μ0 p v))` using `Finset.sum_le_sum fun v _ => hmin v`. Rewrite `h3` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[one_div, le_inv_mul_iff₀ hn]`. Conclude with `h3`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero] at H`.
-
-Combine the linear relations using `[H, h2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem IndefCols.height (hH : HeightBoundConstant) {Bs : DefBase K} {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc}
     {N : IndefNum Bs} [Nonempty Bs.Ix] (wf : Df.WF) (S : IndefCols Df Dc Sp N) (u : Dc.Mem) (hXc : ∀ v, IsUnit (Dc.Xc u v).det)
@@ -523,9 +521,9 @@ theorem IndefCols.height (hH : HeightBoundConstant) {Bs : DefBase K} {Df : DefSi
   linarith [H, h2]
 
 /- English proof (translation)
-Use `first`. Consider the case `(ext x`. Simplify using `only [matLat, Submodule.mem_map, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨B.mulVec y, ⟨y, hy, rfl⟩, Matrix.mulVec_mulVec y A B⟩`. Introduce and unpack `⟨z, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, (Matrix.mulVec_mulVec y A B).symm⟩)`. Consider the case `(ext x`. Simplify using `[matLat, Submodule.mem_map, Matrix.mulVec_mulVec])`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matLat_mul {d d' d'' : ℕ} (A : Matrix (Fin d'') (Fin d') K) (B : Matrix (Fin d') (Fin d) K)
     (L : Submodule (𝓞 K) (Fin d → K)) : matLat (A * B) L = matLat A (matLat B L) := by
@@ -541,16 +539,14 @@ theorem matLat_mul {d d' d'' : ℕ} (A : Matrix (Fin d'') (Fin d') K) (B : Matri
      simp [matLat, Submodule.mem_map, Matrix.mulVec_mulVec])
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[matLat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matLat_one {d : ℕ} (L : Submodule (𝓞 K) (Fin d → K)) : matLat (1 : Matrix (Fin d) (Fin d) K) L = L := by
   ext x
   simp [matLat]
 
 /- English proof (translation)
-Introduce `φ hφ x hx`. Use `hD K (Dc.a u) S.D S.RR (S.col.B u) (fun w => Df.nV (S.μ w)) (fun w => Df.Mt (S.μ w)) (fun w => S.ι (S.μ w) * Df.Pq (S.μ w)) (fun _ => 1) (fun w => Dc.Pt u (S.μ w)) (fun w => S.col.ζ u (S.μ w)) (fun w => S.l1b.2.2.1 u _) (fun w => S.l1b.2.2.2 u w) (fun w φ F => ?_) Nu Nu' σ τ hL2 …` and prove the remaining obligations. Rewrite using `[Matrix.one_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `S.l1b.1 u _ φ F`. Rewrite using `[matLat_one, matLat_mul]`.
-
-Conclude with `(S.toIndefRows.RR_spec hG wf).2 w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IndefCols.intoDual (hD : DivIntoDualShift) (hG : LatticeGlue) {Bs : DefBase K} {Df : DefSide Bs}
     {Dc : DefCols Df} {Sp : SPer Dc} {N : IndefNum Bs} (wf : Df.WF) (S : IndefCols Df Dc Sp N) (u : Dc.Mem)
@@ -571,7 +567,7 @@ theorem IndefCols.intoDual (hD : DivIntoDualShift) (hG : LatticeGlue) {Bs : DefB
     exact (S.toIndefRows.RR_spec hG wf).2 w
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[h0.2 w, h0'.2 w, h.1]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem LevelLink.Tw_eq {Bs : DefBase K} {Df Df' : DefSide Bs} {S : IndefData Df} {S' : IndefData Df'}
     (h : LevelLink S S') (h0 : S.H0) (h0' : S'.H0) : S.Tw = S'.Tw := by
@@ -586,13 +582,13 @@ variable {Bs : DefBase K} {Df0 Df1 : DefSide Bs} {Dc : DefCols Df1} {Sp : SPer D
 include P
 
 /- English proof (translation)
-Introduce `j p v` and use `by rw [P.extra.level.2.2]; exact P.cols.l6 j p v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem base_level_log_eigenvalue_bound : P.base.toIndefData.L6 N := fun j p v => by
   rw [P.extra.level.2.2]; exact P.cols.l6 j p v
 
 /- English proof (translation)
-Rewrite using `[← P.extra.level.2.1]`. Conclude with `(P.extra.passage hde hde3 _ P.extra.fun0).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fun1 (hde : 0 ≤ N.de) (hde3 : N.de ≤ 1 / 3) :
     P.cols.muMaxRR ≤ N.hh - meanLog P.cols.κ + 14 * N.la := by
@@ -605,9 +601,9 @@ namespace ColData
 variable {Bs : DefBase K} {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} {S : IndefData Df} (C : ColData Dc Sp S)
 
 /- English proof (translation)
-Establish `h1 : ∑ i, ‖(Y⁻¹.mulVec y) i‖ ^ 2 = 0`. Establish `h' : Real.sqrt (∑ i, ‖(Y⁻¹.mulVec y) i‖ ^ 2) = 0` using `h`. Rewrite `h'` using `[Real.sqrt_eq_zero (Finset.sum_nonneg fun i _ => by positivity)]`. Then use the resulting hypothesis. Establish `h2 : Y⁻¹.mulVec y = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => by positivity)).mp h1 i (Finset.mem_univ i)` as an intermediate fact. Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 -/
 theorem fnorm_eq_zero {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (hY : IsUnit Y.det) (y : Fin n → ℂ) (h : fnorm Y y = 0) : y = 0 := by
   have h1 : ∑ i, ‖(Y⁻¹.mulVec y) i‖ ^ 2 = 0 := by
@@ -622,15 +618,15 @@ theorem fnorm_eq_zero {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (hY : IsUnit Y.
     _ = 0 := by rw [h2, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Take `⟨hs, hm, hr, -⟩` from `h`. Establish `hinj : Function.Injective C.sE`. Introduce `y1 y2 h12`. Establish `h0 : C.sE (y1 - y2) = 0` using `by rw [map_sub, h12, sub_self]`. Use `hs (y1 - y2)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, norm_zero]`. Conclude with `sub_eq_zero.mp (fnorm_eq_zero _ hX _ this.symm)`. Establish `hfin : FiniteDimensional ℂ Sp.Rw` using `Module.finite_of_finrank_pos (by rw [hr]; exact hD)`. Set `g : (Fin S.D → ℂ) →ₗ[ℂ] Sp.HH` to `{ toFun := fun y => C.sE (star y) map_add' := fun a b => by simp only [star_add, map_add] map_smul' := fun c a => by first`. Consider the case `simp only [star_smul, map_smulₛₗ, starRingEnd_apply, star_star, RingHom.id_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [RingHom.id_apply]`. Rewrite using `[star_smul, map_smulₛₗ, starRingEnd_apply, star_star]) }`. Establish `hinjg : Function.Injective g` using `fun a b hab => star_injective (hinj hab)`. Establish `hle : LinearMap.range g ≤ Sp.Rw`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hm _`. Establish `hrank : finrank ℂ (LinearMap.range g) = finrank ℂ Sp.Rw`. Rewrite using `[LinearMap.finrank_range_of_inj hinjg, hr]`. Simplify using the standard rewrite rules. Establish `heq : LinearMap.range g = Sp.Rw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `(Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne hle hne)).ne hrank`. Rewrite `hz` using `[← heq]`. Take `⟨y, hy⟩` from `LinearMap.mem_range.mp hz`. Conclude with `⟨star y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem period_images_surjective (h : C.L1e) (hX : IsUnit (S.XE Bs.v0).det) (hD : 0 < S.D) (z : Sp.HH) (hz : z ∈ Sp.Rw) : ∃ y, C.sE y = z := by
   obtain ⟨hs, hm, hr, -⟩ := h
@@ -666,9 +662,9 @@ theorem period_images_surjective (h : C.L1e) (hX : IsUnit (S.XE Bs.v0).det) (hD 
 end ColData
 
 /- English proof (translation)
-Establish `h0 : P.base.muCC ≤ _` using `P.base.boundsMu hM hS hR0 hG hRam wf0 P.extra.untw eb heb Sy hSy hG0 LG E3 E2 gy ηy hi hLG hiv hE2 hE3`. Establish `hp` using `(P.extra.passage hde hde3 _ P.extra.fun0).2`. Establish `hh` using `P.cols.height hH wf1 u hXc hne X0 hX0 pU hpU`. Establish `hκ : meanLog P.cols.κ = meanLog P.base.κ` using `by rw [P.extra.level.2.1]`. Rewrite `hh` using `[hκ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : P.base.muCC - meanLog P.base.κ ≤ X` using `by rw [hX]; linarith [h0]`. Establish `h2 : 3 * N.de * (P.base.muCC + (N.hh - meanLog P.base.κ) + 28 * N.la) ≤ 3 * N.de * (X + N.hh + 28 * N.la)` using `mul_le_mul_of_nonneg_left (by linarith [h1]) (by linarith [hde])`. Combine the linear relations using `[hp, hh, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem IndefCore.divCore [IsTotallyComplex K] (hM : Formalism.DivisorInequality.BoundsMu) (hS : SpecDet) (hR0 : GramDeterminantQuotientMetric)
     (hG : LatticeGlue) (hRam : RamBasic) (hH : HeightBoundConstant) {Bs : DefBase K} {Df0 Df1 : DefSide Bs}

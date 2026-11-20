@@ -23,29 +23,25 @@ namespace GlobalTheory.USep.EvG
 open GlobalTheory.Poinc.Sep.Coef (om tele root_mem prod_mem)
 
 /- English proof (translation)
-Introduce `V₁ _ _ _ _ _ D τ₀ W₀ _ ib B₀ _ M₀ c₀ τ₁ β w hFB K _ _ ev k₀ hk₀ hk z J J₀ hJ hJ₀ N₁ hN a b hb hbdef χ hχ`. Take `⟨-, hM₀, hpb, hw, hc, -, -⟩` from `hFB`. Establish `h2 : spMap ev ≫ spMap ib = spMap (ev.comp ib)`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hP : Coef.Idx.PowPts ib (fun _ : PUnit => β)`. Introduce `T' g hg`. Take `⟨e, he⟩` from `GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback hpb T'.hom g hg`. Conclude with `⟨e.trans (MulEquiv.piUnique fun _ : PUnit => (Over.mk g ⟶ B₀)).symm, fun x u => by cases u; exact he x⟩`. Establish `hone : Coef.Idx.RatP (fun _ : PUnit => β) k₀ (1 : Over.mk (spMap ev) ⟶ D.P.A).left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `_`. Take `⟨e, he⟩` from `GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback hpb (spMap ev) _ h2`. Establish `e1` using `he 1`. Rewrite `e1` using `[map_one]`. Rewrite using `[← e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `defOver_comp k₀ (defOver_spMap k₀ (ev.comp ib) hk) _`. Establish `H : Coef.Idx.Desc ib (fun _ : PUnit => β) ev k₀ w` using `⟨hk₀, hP, hk, hM₀, hw, fun _ _ _ h i => h i, hone⟩`. Establish `pc : Coef.Idx.RatP (fun _ : PUnit => β) k₀ (toUnit (Over.mk (spMap ev)) ≫ D.c a).left`. Introduce `_`. Use `show DefOver k₀ ((spMap ev ≫ GlobalTheory.UChart.cpt D a) ≫ β)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hc a, ← Category.assoc, h2]`. Conclude with `defOver_comp k₀ (defOver_spMap k₀ (ev.comp ib) hk) _`. Establish `pb : Coef.Idx.RatP (fun _ : PUnit => β) k₀ (toUnit (Over.mk (spMap ev)) ≫ b).left`. Introduce `_`. Use `show DefOver k₀ ((spMap ev ≫ b.left) ≫ β)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[Category.assoc]`. Conclude with `hbdef`. Establish `pbi : ∀ i : ℕ, Coef.Idx.RatP (fun _ : PUnit => β) k₀ ((toUnit (Over.mk (spMap ev)) ≫ b) ^ i).left`. Introduce `i`. Proceed by induction on `i with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `zero => rw [pow_zero]`. Conclude with `hone`. Consider the case `succ i ih => rw [pow_succ]`. Conclude with `Coef.Idx.ratP_mul hP hk ih pb`. Use `set x := toUnit (Over.mk (spMap ev)) ≫ D.c a with hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y := toUnit (Over.mk (spMap ev)) ≫ b with hy`. Establish `hyN : y ^ N₁ = 1` using `by rw [hy, ← MonObj.comp_pow, hb, MonObj.comp_one]`. Establish `hcub` using `hχ.2 (Over.mk (spMap ev)) z J hJ`. Simplify using `only [MonObj.comp_pow] at hcub`. Use `choose c hc' ec using fun i : ℕ => Coef.Idx.cub_mem H x (y ^ i) y pc (pbi i) pb z J J₀ hJ hJ₀`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set h : (Over.mk (spMap ev) ⟶ D.P.A) → ((Sp K).presheaf.stalk z)ˣ := fun p => om (Z := Sp K) w z J J₀ p.left with hh`. Use `set G := h (x * y) * (h x)⁻¹ * (h y)⁻¹ * h 1 with hG`. Take `⟨c₁, hc₁, e₁⟩` from `prod_mem (Finset.range N₁) (fun i => ⟨c i, hc' i, ec i⟩)`. Establish `key : (∏ i ∈ Finset.range N₁, ((h (x * y ^ i * y) * (h (x * y ^ i))⁻¹ * (h (x * y))⁻¹ * (h (y ^ i * y))⁻¹ * h x * h (y ^ i) * h y * (h 1)⁻¹) * @id ((Sp K).presheaf.stalk z)ˣ (cubV D.cub (T` using `Over.mk (spMap ev)) z J x (y ^ i) y))) = (G⁻¹ * val χ (spMap ev) z J) ^ N₁ := by`. Rewrite using `[Finset.prod_mul_distrib, tele h x y N₁ hyN]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e3 : (∏ i ∈ Finset.range N₁, @id ((Sp K).presheaf.stalk z)ˣ (cubV D.cub (T` using `Over.mk (spMap ev)) z J x (y ^ i) y)) = val χ (spMap ev) z J ^ N₁ := hcub`. Establish `e4 : ∀ A B C E : ((Sp K).presheaf.stalk z)ˣ, A⁻¹ * B * C * E⁻¹ = (A * B⁻¹ * C⁻¹ * E)⁻¹` using `fun A B C E => by`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[e3, e4, ← mul_pow]`. Rewrite `e₁` using `[key]`. Take `⟨c₂, hc₂, e₂⟩` from `root_mem hk₀ (z := z) (s := (G⁻¹ * val χ (spMap ev) z J).val) (n := N₁) (by omega) ⟨c₁, hc₁, by rw [← Units.val_pow_eq_pow_val]; exact e₁⟩`. Use `⟨c₂, hc₂, ?_⟩` and prove the remaining obligations. Establish `hGe : G = gwx w z J J₀ (spMap ev ≫ (D.c a * b).left) * (gwx w z J J₀ (spMap ev ≫ (D.c a).left))⁻¹ * (gwx w z J J₀ (spMap ev ≫ b.left))⁻¹ * gwx w z J J₀ (spMap ev ≫ (η[D.P.A]).left)`.
-
-Rewrite using `[hG, hh, hx, hy, ← MonObj.comp_mul]`. Both sides reduce to the same expression. Rewrite using `[← hGe, ← e₂, ← Units.val_mul, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_mem : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) →
     ∀ (D : DegPre V₁) (τ₀ : GlobalTheory.UChart.Gens D) (W₀ : Type) [CommRing W₀] (ib : W₀ →+* V₁) (B₀ : Over (Sp W₀)) [GrpObj B₀]

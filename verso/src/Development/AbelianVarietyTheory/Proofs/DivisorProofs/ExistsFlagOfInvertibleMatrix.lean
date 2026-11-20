@@ -21,11 +21,11 @@ section
 variable {X : Scheme.{0}} {N : X.Modules} {r : ℕ}
 
 /- English proof (translation)
-Use `isFrame_iff.2 fun W h => ?_` and prove the remaining obligations. Establish `key : IsUnit ((hg.basis h).det fun i => resM N h (∑ b, A i b • g b))`. Establish `e : (hg.basis h).toMatrix (fun i => resM N h (∑ b, A i b • g b)) = ((resG X h).mapMatrix A).transpose`. Use extensionality with `b i`. Simplify using `only [Module.Basis.toMatrix_apply, map_sum, resM_smul, ← hg.basis_apply h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_sum, Module.Basis.repr_sum_self]`. Both sides reduce to the same expression. Rewrite using `[Module.Basis.det_apply, e, Matrix.det_transpose, ← RingHom.map_det]`. Conclude with `hA.map _`. Use `(Module.Basis.is_basis_iff_det (hg.basis h)).2 key` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨this.1, this.2.ge⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_sum_smul_of_isUnit_det {U : X.Opens} {g : Fin r → Γ(N, U)} (hg : VB.IsFrame g)
     (A : Matrix (Fin r) (Fin r) Γ(X, U)) (hA : IsUnit A.det) : VB.IsFrame fun i => ∑ b, A i b • g b := by
@@ -43,15 +43,13 @@ theorem isFrame_sum_smul_of_isUnit_det {U : X.Opens} {g : Fin r → Γ(N, U)} (h
   exact ⟨this.1, this.2.ge⟩
 
 /- English proof (translation)
-Use `⟨(FlagSurj.freeFlag X r).ofIso ((isFrame_freeFrame X (Fin r)).iso hs), fun k t l hl => ?_⟩` and prove the remaining obligations. Establish `hk : (k : ℕ) ≤ r` using `Nat.lt_succ_iff.mp k.2`. Establish `h1 (i : Fin k) : (((FlagSurj.freeFlag X r).ofIso ((isFrame_freeFrame X (Fin r)).iso hs)).ι k).app ⊤ (freeFrame X (Fin k) i) = (hs.basis le_rfl) (Fin.castLE hk i)`. Rewrite using `[IsFrame.basis_apply, resM_self, ← (isFrame_freeFrame X (Fin r)).iso_hom_app hs]`. Use `(QCoh.app_app _ _ _ _).symm.trans (congrArg _ ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(QCoh.app_app _ _ _ _).trans ?_` and prove the remaining obligations. Use `erw [SheafOfModules.ιFree_freeMap]`. Both sides reduce to the same expression. Use `revert t h1`. Generalize the expression as in `hφ : ((FlagSurj.freeFlag X r).ofIso ((isFrame_freeFrame X (Fin r)).iso hs)).ι k = φ`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clear hφ`. Use `revert φ`. Express the relevant statement in the definitionally equal form `∀ (φ : freeModule X (Fin k) ⟶ N) (t : Γ(freeModule X (Fin k), ⊤)), (∀ i : Fin k, φ.app ⊤ (freeFrame X (Fin k) i) = (hs.basis le_rfl) (Fin.castLE hk i)) → (hs.basis le_rfl).repr (φ.app ⊤ t) l = 0`. Introduce `φ t h1`. Take `⟨a, rfl⟩` from `(isFrame_freeFrame X (Fin k) ⊤ le_rfl).2 t`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Fintype.linearCombination_apply, map_sum, map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, resM_self, h1, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_of_ne, smul_zero]`. Introduce and unpack `rfl`. Use `i.2` as an intermediate fact.
-
-Simplify using `at hl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_flag_of_isFrame_top {s : Fin r → Γ(N, ⊤)} (hs : VB.IsFrame s) :
     ∃ fl : Vert.Flag N r, ∀ (k : Fin (r + 1)) (t : Γ(fl.F k, ⊤)) (l : Fin r), (k : ℕ) ≤ l →
@@ -85,15 +83,15 @@ theorem exists_flag_of_isFrame_top {s : Fin r → Γ(N, ⊤)} (hs : VB.IsFrame s
 end
 
 /- English proof (translation)
-Introduce `B M r hM V f hf K _ x hx A hA`. Use `hM.isQuasicoherent` as an intermediate fact. Set `c : K →+* Γ(Sp K, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Establish `hs` using `isFrame_sum_smul_of_isUnit_det ((hf.pullback x).res hx) (c.mapMatrix A) (by rw [← RingHom.map_det]; exact hA.map _)`. Take `⟨fl, hfl⟩` from `exists_flag_of_isFrame_top hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fl, hA, fun k W hWV t hy => ?_⟩` and prove the remaining obligations. Take `rfl : W = ⊤` from `top_le_iff.1 hy`. Establish `hc (a : K) : TangentOrigin.evalPt (𝟙 (Sp K)) ⊤ hy (c a) = a`. Establish `e : Scheme.Hom.appLE (𝟙 (Sp K)) ⊤ ⊤ hy = 𝟙 _`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Category.id_comp _).trans ((Sp K).presheaf.map_id _)`. Unfold `TangentOrigin.evalPt`. Rewrite using `[e, Category.id_comp]`. Conclude with `Iso.inv_hom_id_apply (Scheme.ΓSpecIso (CommRingCat.of K)) a`. Use `⟨fun l => TangentOrigin.evalPt (𝟙 (Sp K)) ⊤ hy ((hs.basis le_rfl).repr ((fl.ι k).app ⊤ t) l), fun l hl => (congrArg _ (hfl k t l hl)).trans (map_zero _), funext fun b => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions.
 
-Generalize the expression as in `(fl.ι k).app ⊤ t = u`. Unfold `coordAt`. Use `conv_lhs => rw [← (hs.basis le_rfl).sum_repr u]`. Establish `h1 (l : Fin r) : ((hf.pullback x).basis hWV).repr (hs.basis le_rfl l) b = c (A l b)`. Rewrite using `[IsFrame.basis_apply, resM_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [← (hf.pullback x).basis_apply hWV]`. Rewrite using `[Module.Basis.repr_sum_self]`. Both sides reduce to the same expression. Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, h1, map_mul, hc, Matrix.vecMul, dotProduct]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_flag_flagMat : ∀ (B : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (K : Type) [Field K] (x : Sp K ⟶ B), ⊤ ≤ x ⁻¹ᵁ V → ∀ A : Matrix (Fin r) (Fin r) K, IsUnit A.det → ∃ fl' : Vert.Flag ((Scheme.Modules.pullback x).obj M) r, FlagMat hM x fl' hf (𝟙 (Sp K)) A := by
   intro B M r hM V f hf K _ x hx A hA

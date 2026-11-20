@@ -21,20 +21,20 @@ noncomputable def degPart (f : AddMonoidAlgebra k G) (a : ℤ) : AddMonoidAlgebr
 variable {φ}
 
 /- English proof (translation)
-Introduce `m hm` and use `hab.trans (h m hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LowerBound.mono {f : AddMonoidAlgebra k G} {a b : ℤ} (h : LowerBound φ f a) (hab : b ≤ a) :
     LowerBound φ f b :=
   fun m hm => hab.trans (h m hm)
 
 /- English proof (translation)
-Introduce `m hm`. Simplify using `at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem lowerBound_zero (a : ℤ) : LowerBound φ (0 : AddMonoidAlgebra k G) a := by
   intro m hm; simp at hm
 
 /- English proof (translation)
-Introduce `m hm`. Break down `Finset.mem_union.1 (Finsupp.support_add (by simpa using hm)) with h | h` into its components or cases. Conclude with `hf m h`. Conclude with `hg m h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem LowerBound.add {f g : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ f a)
     (hg : LowerBound φ g a) : LowerBound φ (f + g) a := by
@@ -45,7 +45,7 @@ theorem LowerBound.add {f g : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound �
   · exact hg m h
 
 /- English proof (translation)
-Introduce `m hm`. Conclude with `hf m (by simpa using hm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LowerBound.neg {f : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ f a) :
     LowerBound φ (-f) a := by
@@ -53,7 +53,7 @@ theorem LowerBound.neg {f : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ 
   exact hf m (by simpa using hm)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using lowerBound_zero a`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `(hf i (Finset.mem_insert_self _ _)).add (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LowerBound.sum {ι : Type*} (s : Finset ι) {f : ι → AddMonoidAlgebra k G} {a : ℤ}
     (hf : ∀ i ∈ s, LowerBound φ (f i) a) : LowerBound φ (∑ i ∈ s, f i) a := by
@@ -65,7 +65,7 @@ theorem LowerBound.sum {ι : Type*} (s : Finset ι) {f : ι → AddMonoidAlgebra
     exact (hf i (Finset.mem_insert_self _ _)).add (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Introduce `m hm`. Take `⟨x, hx, y, hy, rfl⟩` from `Finset.mem_add.1 (support_coeff_mul_subset f g hm)`. Rewrite using `[map_add]`. Conclude with `add_le_add (hf x hx) (hg y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LowerBound.mul {f g : AddMonoidAlgebra k G} {a b : ℤ} (hf : LowerBound φ f a)
     (hg : LowerBound φ g b) : LowerBound φ (f * g) (a + b) := by
@@ -76,7 +76,7 @@ theorem LowerBound.mul {f g : AddMonoidAlgebra k G} {a b : ℤ} (hf : LowerBound
   exact add_le_add (hf x hx) (hg y hy)
 
 /- English proof (translation)
-Introduce `m hm`. Use `support_coeff_one_subset hm` as an intermediate fact. Simplify using `only [Finset.mem_zero] at this`. Rewrite using `[this, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowerBound_one : LowerBound φ (1 : AddMonoidAlgebra k G) 0 := by
   intro m hm
@@ -85,9 +85,9 @@ theorem lowerBound_one : LowerBound φ (1 : AddMonoidAlgebra k G) 0 := by
   rw [this, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using lowerBound_one`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Use `ih.mul hf` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem LowerBound.pow {f : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ f a) (n : ℕ) :
     LowerBound φ (f ^ n) (n * a) := by
@@ -100,7 +100,7 @@ theorem LowerBound.pow {f : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ 
     push_cast; ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `absurd (hf m (Finsupp.mem_support_iff.2 h)) (not_le.2 hm)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem LowerBound.coeff_eq_zero {f : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ f a)
     {m : G} (hm : φ m < a) : f.coeff m = 0 := by
@@ -124,16 +124,16 @@ noncomputable def natCombination : (ι →₀ ℕ) →+ G where
     exact Finsupp.mapRange_add (fun _ _ => Nat.cast_add _ _) c d
 
 /- English proof (translation)
-The claim follows from `b.repr_linearCombination _`.
+A detailed English derivation is pending.
 -/
 theorem repr_natCombination (c : ι →₀ ℕ) :
     b.repr (natCombination b c) = c.mapRange (Nat.cast : ℕ → ℤ) Nat.cast_zero :=
   b.repr_linearCombination _
 
 /- English proof (translation)
-Introduce `c d h`. Use `congrArg b.repr h` as an intermediate fact. Rewrite `this` using `[repr_natCombination, repr_natCombination]`. Use extensionality with `i`. Use `congrArg (fun f => f i) this` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCombination_injective : Function.Injective (natCombination b) := by
   intro c d h

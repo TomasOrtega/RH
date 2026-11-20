@@ -15,7 +15,7 @@ namespace GlobalTheory.CMVal.Euler.HatLoc
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-The claim follows from `FiniteMultiplicity.of_prime_left v.prime hc`.
+A detailed English derivation is pending.
 -/
 theorem finMult {R : Type} [CommRing R] [IsDedekindDomain R] {c : Ideal R} (hc : c ≠ ⊥) (v : HeightOneSpectrum R) :
     FiniteMultiplicity v.asIdeal c :=
@@ -23,17 +23,17 @@ theorem finMult {R : Type} [CommRing R] [IsDedekindDomain R] {c : Ideal R} (hc :
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `multiplicity_eq_zero.2 h`.
+A detailed English derivation is pending.
 -/
 theorem expIn_eq_zero {c : Ideal (OF E)} {v : HeightOneSpectrum (OF E)} (h : ¬ v.asIdeal ∣ c) : expIn c v = 0 :=
   multiplicity_eq_zero.2 h
 
 /- English proof (translation)
-Use `choose b hb using hz`. Establish `hfin` using `Ideal.finite_factors (R := OF E) hc`. Take `⟨a, ha⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := hfin.toFinset) (fun v => v.asIdeal) (expIn c) (fun v _ => v.prime) (fun v _ w _ h h' => h (HeightOneSpectrum.ext h')) (fun v => b v)`. Use `⟨a, fun P => ?_⟩` and prove the remaining obligations. Establish `h1 : a - b (P.under (OF E)) ∈ (P.under (OF E)).asIdeal ^ expIn c (P.under (OF E))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : (P.under (OF E)).asIdeal ∣ c`. Conclude with `ha _ (hfin.mem_toFinset.2 h)`. Simplify using `[expIn_eq_zero h]`. Establish `h2` using `val_iota_le_of_mem (over_under P) _ h1`. Establish `h3 : z P - iota a P = (z P - iota (b (P.under (OF E))) P) - iota (a - b (P.under (OF E))) P`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[iota_sub, sub_coord]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `Valuation.map_sub_le _ (hb _ P (over_under P)) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_global {c : Ideal (OF E)} (hc : c ≠ ⊥) {z : Af E} (hz : ∀ v, LocIn (expIn c v) v z) :
     ∃ a : OF E, ∀ P : HeightOneSpectrum (𝓞 E),
@@ -55,9 +55,9 @@ theorem exists_global {c : Ideal (OF E)} (hc : c ≠ ⊥) {z : Af E} (hz : ∀ v
   exact Valuation.map_sub_le _ (hb _ P (over_under P)) h2
 
 /- English proof (translation)
-Use `set k := multiplicity P.asIdeal (Ideal.map (algebraMap (OF E) (𝓞 E)) c) with hk`. Establish `h1 : Ideal.map (algebraMap (OF E) (𝓞 E)) c ≤ P.asIdeal ^ k` using `Ideal.le_of_dvd (pow_multiplicity_dvd _ _)`. Break down `Nat.eq_zero_or_pos k with h0 | hpos` into its components or cases. Rewrite using `[h0]`. Conclude with `Nat.zero_le _`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (P.under (OF E)).asIdeal ∣ c` using `Ideal.dvd_iff_le.2 (Ideal.map_le_iff_le_comap.1 (h1.trans (Ideal.pow_le_self hpos.ne')))`. Use `(finMult hc _).le_multiplicity_of_pow_dvd (Ideal.dvd_iff_le.2 fun a ha => ?_)` and prove the remaining obligations. Conclude with `(((GlobalTheory.CMVal.Euler.SplitPlace.split_place E _ (hs _ h2)).2 P (over_under P)).2.1 a k).1 (h1 (Ideal.mem_map_of_mem _ ha))`.
+A detailed English derivation is pending.
 -/
 theorem multiplicity_map_le [IsCMField E] {c : Ideal (OF E)} (hc : c ≠ ⊥)
     (hs : ∀ v : HeightOneSpectrum (OF E), v.asIdeal ∣ c → Splits v) (P : HeightOneSpectrum (𝓞 E)) :
@@ -72,17 +72,17 @@ theorem multiplicity_map_le [IsCMField E] {c : Ideal (OF E)} (hc : c ≠ ⊥)
   exact (((GlobalTheory.CMVal.Euler.SplitPlace.split_place E _ (hs _ h2)).2 P (over_under P)).2.1 a k).1 (h1 (Ideal.mem_map_of_mem _ ha))
 
 /- English proof (translation)
-Introduce `E _ _ _ c hc hs z hz`. Take `⟨a, ha⟩` from `exists_global hc hz`. Establish `hN : 0 < Ideal.absNorm c` using `Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`. Take `⟨x, y, hy, hxy⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat E _ hN).2 z (fun P => (hz _).val_le (over_under P))`. Establish `hny : Ideal.absNorm c • y = iota ((Ideal.absNorm c : ℕ) : OF E) * y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[nsmul_eq_mul, iota, map_natCast, map_natCast]`. Rewrite `hxy` using `[hny]`. Establish `hc' : Ideal.map (algebraMap (OF E) (𝓞 E)) c ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot hc`. Establish `hx : x - algebraMap (OF E) (𝓞 E) a ∈ Ideal.map (algebraMap (OF E) (𝓞 E)) c`. Rewrite using `[← Ideal.iInf_maxPowDividing_eq hc', Ideal.mem_iInf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `P`. Rewrite using `[HeightOneSpectrum.maxPowDividing_eq_pow_multiplicity hc']`. Use `Ideal.pow_le_pow_right (multiplicity_map_le hc hs P) ?_` and prove the remaining obligations. Rewrite using `[← P.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.valuation_of_algebraMap (K := E), ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← FiniteAdeleRing.algebraMap_apply]`. Establish `h1 : algebraMap E (Af E) (algebraMap (𝓞 E) E (x - algebraMap (OF E) (𝓞 E) a)) = (z - iota a) - iota ((Ideal.absNorm c : ℕ) : OF E) * y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_sub, hxy]`. Express the relevant statement in the definitionally equal form `algebraMap E (Af E) (x : E) - iota a = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, sub_coord, sub_coord, mul_coord]`. Use `Valuation.map_sub_le _ (ha P) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' (val_iota_le_of_mem (over_under P) _ (Ideal.le_of_dvd (pow_multiplicity_dvd _ _) (Ideal.absNorm_mem c))) (hy P)).trans_eq (mul_one _)`. Rewrite using `[hxy]`. Use `add_mem (algebraMap_mem_hatO (mem_orderC.2 ⟨a, _, hx, ?_⟩)) (PicFin.mul_mem_hatO (Ideal.absNorm_mem c) hy)` and prove the remaining obligations. Rewrite using `[map_sub]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(x : E) = algebraMap (OF E) E a + ((x : E) - algebraMap (OF E) E a)`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_hatO_of_locIn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ →
     (∀ v : HeightOneSpectrum (OF E), v.asIdeal ∣ c → Splits v) → ∀ z : Af E, (∀ v, LocIn (expIn c v) v z) →

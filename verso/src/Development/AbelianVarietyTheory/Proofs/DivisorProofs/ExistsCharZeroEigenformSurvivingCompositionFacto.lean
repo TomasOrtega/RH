@@ -18,11 +18,11 @@ open MvPolynomial
 namespace GlobalTheory.ExpFrame.Eigenform
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hpm`. Apply `hne` to reduce the goal to its premises. Establish `key : ∀ z : LocalizedModule m.primeCompl M, z = 0`. Introduce `z`. Proceed by induction on `z using LocalizedModule.induction_on with`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `h f s`. Rewrite using `[← LocalizedModule.zero_mk s, LocalizedModule.mk_eq]`. Use `⟨⟨p, hpm⟩, ?_⟩` and prove the remaining obligations. Use `show (p : R) • ((s : R) • f) = (p : R) • ((s : R) • (0 : M))`. Rewrite using `[smul_zero, smul_zero, hp]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun a b => by rw [key a, key b]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_ann {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (m : Ideal R) [m.IsPrime]
     (hne : ¬ Subsingleton (LocalizedModule m.primeCompl M)) (p : R) (hp : ∀ x : M, p • x = 0) : p ∈ m := by
@@ -39,7 +39,7 @@ theorem mem_of_ann {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (m : 
   exact ⟨fun a b => by rw [key a, key b]⟩
 
 /- English proof (translation)
-Establish `key : ∀ z : LocalizedModule S M, z = 0`. Introduce `z`. Proceed by induction on `z using LocalizedModule.induction_on with`. Consider the case `h f s => rw [h f, LocalizedModule.zero_mk]`. Conclude with `⟨fun a b => by rw [key a, key b]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem loc_subsingleton {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (S : Submonoid R)
     (h : ∀ x : M, x = 0) : Subsingleton (LocalizedModule S M) := by
@@ -50,9 +50,9 @@ theorem loc_subsingleton {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
   exact ⟨fun a b => by rw [key a, key b]⟩
 
 /- English proof (translation)
-Establish `hbot` using `GlobalTheory.T.dualWeyl_eq_bot_of_not_antitone' F.O N (res N (mu τ0)) hτ0`. Introduce `z`. Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Establish `hx : x τ0 = 0` using `Subtype.ext ((Submodule.eq_bot_iff _).1 hbot ((x τ0 : Formalism.GradedWeylDivisibility.dualWeyl F.O N N (res N (mu τ0))) : MvPolynomial _ F.O) (x τ0).2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[(PiTensorProduct.tprod F.O).map_coord_zero τ0 hx, smul_zero]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem nabla_zero_of_not_antitone {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (F : Frame l ι N)
     (mu : ι → ℕ → ℕ) (τ0 : ι) (hτ0 : ¬ Antitone (res N (mu τ0))) : ∀ z : NablaT F.O N mu, z = 0 := by
@@ -66,7 +66,7 @@ theorem nabla_zero_of_not_antitone {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype
   | add x y hx hy => rw [hx, hy, add_zero]
 
 /- English proof (translation)
-Establish `hle : (Ideal.span {ϖ} • ⊤ : Submodule F.O (NablaT F.O N mu)).map (repOf F.O (A` using `alg F.O N mu) jKm (NablaT F.O N mu) κ) ≤ (Ideal.span {ϖ} • ⊤ : Submodule F.O (NablaT F.O N mu)) := by`. Rewrite using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Conclude with `hle ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_ker_stable {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (F : Frame l ι N)
     (mu : ι → ℕ → ℕ) (jKm : F.K →* alg F.O N mu) (ϖ : F.O) (κ : F.K) (x : NablaT F.O N mu)
@@ -88,11 +88,11 @@ variable {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq ι] {N :
   [Module F.T (Forms F.O (A := alg F.O N lam) F.Γ jK Gm)] [Module F.T (Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu))]
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on generalizing x z g with`. Consider the case `C c`. Rewrite using `[hHm.1, hH.1]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[map_smul, hxz, hψs]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq`. Rewrite using `[add_smul, add_smul]`. Simplify using `only [Submodule.coe_add, Pi.add_apply, map_add]`. Rewrite using `[hp x z hxz g, hq x z hxz g]`. Consider the case `mul_X p i hp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[mul_comm, mul_smul, mul_smul, hHm.2, hH.2, map_smul, hψs, map_sum, map_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun s _ => hp x z hxz (g * s)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hecke_compat (hH : F.IsHecke lam jK Gm) (hHm : F.IsHecke mu jKm (NablaT F.O N mu))
     (π : NablaT F.O N mu →ₗ[F.O] (NablaT F.O N mu ⧸ (Ideal.span {ϖ} • ⊤ : Submodule F.O (NablaT F.O N mu))))
@@ -117,15 +117,13 @@ theorem hecke_compat (hH : F.IsHecke lam jK Gm) (hHm : F.IsHecke mu jKm (NablaT 
     exact Finset.sum_congr rfl fun s _ => hp x z hxz (g * s)
 
 /- English proof (translation)
-Take `⟨ψ, hψi, hψc, hψg, -⟩` from `hE`. Establish `hψs : ∀ (c : F.O) (w : Gm), ψ (c • w) = c • ψ w`. Introduce `c w`. Rewrite using `[← algebraMap_smul (alg F.O N lam) c w, hψc]`. Take `⟨Fm, hFm, hFπ⟩` from `GlobalTheory.T.lift_forms_to_lattice_of_finite_invertible_stabilisers F.O F.G F.Γ F.K (NablaT F.O N mu) (NablaT F.O N mu ⧸ (Ideal.span {ϖ} • ⊤ : Submodule F.O (NablaT F.O N mu))) (repOf F.O (A := alg F.O N mu) jKm (NablaT F.O N mu)) (Submodule.mkQ _) (Submodule.mkQ_surjective _) …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `κ x hx`. Rewrite `hx`, the goal using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `quot_ker_stable F mu jKm ϖ κ x hx)`. Use the proof step `(fun g => ⟨(hOk.tame g).1, GlobalTheory.T.isUnit_natCast_frameCoeffRing_not_dvd l ι N F hOk _ (hOk.tame g).2⟩)`. Use the proof step `(fun g => ψ ((y : F.G → Gm) g))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce `γ g κ yy hyy`. Establish `hy` using `y.2 γ g κ`. Use `show ψ ((y : F.G → Gm) ((γ : F.G) * g * κ)) = _`. Rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show ψ (jK κ⁻¹ • (y : F.G → Gm) g) = Submodule.mkQ _ (jKm κ⁻¹ • yy)`. Rewrite using `[hJ κ⁻¹, hJm κ⁻¹, smul_assoc, hψs, hψg _ _ _ hyy, smul_assoc, Submodule.mkQ_apply, Submodule.Quotient.mk_smul]`. Use the proof step `rfl)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
-
-Apply `hψi` to reduce the goal to its premises. Use `hecke_compat F lam mu jK jKm ϖ Gm hH hHm (Submodule.mkQ _) ψ hψs p ⟨Fm, hFm⟩ y (fun g => hFπ g) g` as an intermediate fact. Rewrite `this` using `[hp]`. Simplify using `only [Submodule.coe_zero, Pi.zero_apply, map_zero] at this ⊢`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ann_lift (hOk : F.Ok) (hJ : F.IsJ lam jK) (hJm : F.IsJ mu jKm)
     (hH : F.IsHecke lam jK Gm) (hHm : F.IsHecke mu jKm (NablaT F.O N mu)) (hE : Embeds F.O N lam mu ϖ Gm) (p : F.T)
@@ -168,11 +166,9 @@ variable {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq ι] {N :
   (jKm : F.K →* alg F.O N mu)
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Conclude with `Or.inl hc`. Use `right`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1 : c • (x : F.G → NablaT F.O N mu) g = 0`. Use `congrArg (fun y : Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu) => (y : F.G → NablaT F.O N mu) g) hcx` as an intermediate fact. Simplify using `using this`. Establish `h2 : F.emb c • b ((x : F.G → NablaT F.O N mu) g) = 0` using `by rw [← map_smulₛₗ, h1, map_zero]`. Break down `smul_eq_zero.1 h2 with h | h` into its components or cases.
-
-Conclude with `absurd (hOk.ring.1 (h.trans (map_zero _).symm)) hc`. Conclude with `hbi (h.trans (map_zero b).symm)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem tf_forms (hOk : F.Ok) (b : NablaT F.O N mu →ₛₗ[F.emb] NablaT (PadicAlgCl l) N mu) (hbi : Function.Injective b)
     (c : F.O) (x : Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu)) (hcx : c • x = 0) : c = 0 ∨ x = 0 := by
@@ -201,17 +197,17 @@ def heckeQ (i : F.I) : (F.G → NablaT (PadicAlgCl l) N mu) →ₗ[PadicAlgCl l]
   map_smul' c h := by funext g; simp [Finset.smul_sum, smul_comm c]
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, rfl⟩` from `hw`. Prove the components needed by the constructor for the conclusion. Introduce `γ hγ g`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx` using `x.2 ⟨γ, hγ⟩ g 1`. Use `show b ((x : F.G → NablaT F.O N mu) (γ * g)) = b ((x : F.G → NablaT F.O N mu) g)`. Simplify using `only [OneMemClass.coe_one, mul_one, inv_one, map_one] at hx`. Rewrite using `[hx]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `κ g`. Establish `hx` using `x.2 1 g κ`. Simplify using `only [OneMemClass.coe_one, one_mul] at hx`. Use `show F.emb (F.chi κ) • grp (PadicAlgCl l) N mu _ (b ((x : F.G → NablaT F.O N mu) (g * κ))) = b ((x : F.G → NablaT F.O N mu) g)`. Rewrite using `[← hbg, ← map_smulₛₗ, hx]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Use `show (F.chi κ : F.O) • grp F.O N mu (F.kap κ) (jKm κ⁻¹ • (x : F.G → NablaT F.O N mu) g) = _`. Establish `h2 : (F.chi κ : F.O) • grp F.O N mu (F.kap κ) (jKm κ⁻¹ • (x : F.G → NablaT F.O N mu) g) = jKm κ • jKm κ⁻¹ • (x : F.G → NablaT F.O N mu) g`. Rewrite using `[hJm κ, smul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[h2, smul_smul, ← map_mul, mul_inv_cancel, map_one, one_smul]`. Consider the case `zero => exact ⟨fun _ _ _ => rfl, fun _ _ => by simp⟩`. Consider the case `add w w' _ _ hw hw'`. Use `⟨fun γ hγ g => by simp [hw.1 γ hγ g, hw'.1 γ hγ g], fun κ g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add, smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw.2 κ g, hw'.2 κ g]`. Consider the case `smul c w _ hw`. Use `⟨fun γ hγ g => by simp [hw.1 γ hγ g], fun κ g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, map_smul]`. Rewrite using `[smul_comm, hw.2 κ g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_of_mem_span (hJm : F.IsJ mu jKm) (b : NablaT F.O N mu →ₛₗ[F.emb] NablaT (PadicAlgCl l) N mu)
     (hbg : ∀ g x, b (grp F.O N mu g x) = grp (PadicAlgCl l) N mu (fun τ => Matrix.GeneralLinearGroup.map F.emb (g τ)) (b x))
@@ -254,7 +250,7 @@ variable [Module F.T (Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu))]
   [IsScalarTower F.O F.T (Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu))]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `show b ((((MvPolynomial.X i : F.T) • x : Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu)) : F.G → NablaT F.O N mu) g) = F.emb (F.cst i) • ∑ s ∈ F.tr i, b ((x : F.G → NablaT F.O N mu) (g * s))`. Rewrite using `[hHm.2 i x g, map_smulₛₗ, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jmap_equiv (hHm : F.IsHecke mu jKm (NablaT F.O N mu)) (b : NablaT F.O N mu →ₛₗ[F.emb] NablaT (PadicAlgCl l) N mu)
     (i : F.I) (x : Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu)) :
@@ -265,9 +261,9 @@ theorem jmap_equiv (hHm : F.IsHecke mu jKm (NablaT F.O N mu)) (b : NablaT F.O N 
   rw [hHm.2 i x g, map_smulₛₗ, map_sum]
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.T.module_finite_frameLatticeForms l ι N F mu jKm hOk`. Establish `h2` using `tf_forms F mu jKm hOk b hbi`. Establish `h3` using `GlobalTheory.T.linearIndependent_frameForms_baseChange l ι N F mu jKm b hbi hOk hbli`. Establish `h4` using `jmap_equiv F mu jKm hHm b`. Establish `h5` using `@GlobalTheory.T.exists_integral_hecke_eigensystem_deligne_serre l _ F.O _ _ _ F.emb hOk.ring.1 hOk.ring.2 F.I (Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu)) _ _ _ _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨θ, hθ1, hθ2, v, hvspan, hv0, hvT⟩` from `h5 h2 (F.G → NablaT (PadicAlgCl l) N mu) (jmap F mu jKm b) (heckeQ F mu) h3 h4 m inferInstance hannM`. Conclude with `⟨θ, ⟨v, hv0, form_of_mem_span F mu jKm hJm b hbg v hvspan, fun i g => congrFun (hvT i) g⟩, hθ1, hθ2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eig_of_ann (hOk : F.Ok) (hJm : F.IsJ mu jKm) (hHm : F.IsHecke mu jKm (NablaT F.O N mu))
     (b : NablaT F.O N mu →ₛₗ[F.emb] NablaT (PadicAlgCl l) N mu) (hbi : Function.Injective b)
@@ -287,13 +283,13 @@ theorem eig_of_ann (hOk : F.Ok) (hJm : F.IsJ mu jKm) (hHm : F.IsHecke mu jKm (Na
 end Eig
 
 /- English proof (translation)
-Introduce `l _ ι _ _ N F lam mu jK ϖ hOk hJ hϖ Gm _ _ _ _ _ hH hE m _ hne`. Establish `hann` using `mem_of_ann m hne`. Distinguish the cases in `hdom : ∀ τ, Antitone (res N (mu τ))`. Use `swap`. Use `exfalso push_neg at hdom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨τ0, hτ0⟩` from `hdom`. Establish `h0` using `nabla_zero_of_not_antitone F mu τ0 hτ0`. Take `⟨ψ, hψi, -, -, -⟩` from `hE`. Establish `hG : ∀ a : Gm, a = 0`. Introduce `a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hψi` to reduce the goal to its premises. Take `⟨ya, hya⟩` from `Submodule.Quotient.mk_surjective _ (ψ a)`. Rewrite using `[map_zero, ← hya, h0 ya, Submodule.Quotient.mk_zero]`. Conclude with `hne (loc_subsingleton _ fun f => Subtype.ext (funext fun g => hG _))`. Take `⟨jKm, hJm⟩` from `GlobalTheory.ExpFrame.levelMap_exists l ι N F mu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨instT, instTS, hHm⟩` from `GlobalTheory.ExpFrame.HeckeMod.hecke_module l ι N F mu jKm hOk hJm (NablaT F.O N mu)`. Take `⟨b, hbi, -, -, hbg, hbli, -⟩` from `GlobalTheory.LatBC.baseChange_lattices l ι N F mu hOk.ring.1 hdom`. Conclude with `eig_of_ann F mu jKm hOk hJm hHm b hbi hbg hbli m (fun p hp => hann p (ann_lift F lam mu jK jKm ϖ Gm hOk hJ hJm hH hHm hE p hp))`.
+A detailed English derivation is pending.
 -/
 theorem eigenform_of_surviving : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame l ι N) (lam : ι → ℕ → ℕ) (mu : ι → ℕ → ℕ) (jK : F.K →* alg F.O N lam) (ϖ : F.O), F.Ok → F.IsJ lam jK → Irreducible ϖ → ∀ (Gm : Type) [AddCommGroup Gm] [Module F.O Gm] [Module (alg F.O N lam) Gm] [IsScalarTower F.O (alg F.O N lam) Gm] [Module F.T (Forms F.O (A := alg F.O N lam) F.Γ jK Gm)], F.IsHecke lam jK Gm → Embeds F.O N lam mu ϖ Gm → ∀ (m : Ideal F.T) [m.IsMaximal], ¬ Subsingleton (LocalizedModule m.primeCompl (Forms F.O (A := alg F.O N lam) F.Γ jK Gm)) → ∃ θ, F.IsEig mu θ ∧ F.Over θ m := by
   intro l _ ι _ _ N F lam mu jK ϖ hOk hJ hϖ Gm _ _ _ _ _ hH hE m _ hne

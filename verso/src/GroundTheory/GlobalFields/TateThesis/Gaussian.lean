@@ -8,7 +8,7 @@ open scoped FourierTransform
 noncomputable section
 
 /- English proof (translation)
-Establish `h1` using `mellin_comp_rpow (fun u : ℝ ↦ ((Real.exp (-(b * u)) : ℝ) : ℂ)) a 2`. Simplify using `only [Real.rpow_two] at h1`. Rewrite using `[h1, mellin_comp_mul_left (fun u : ℝ ↦ ((Real.exp (-u) : ℝ) : ℂ)) _ hb, ← GammaIntegral_eq_mellin, ← Complex.Gamma_eq_integral (by simpa using div_pos ha two_pos)]`. Simplify using `only [abs_two, ofReal_ofNat, smul_eq_mul]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
 Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -29,14 +29,14 @@ def realGaussian (x : ℝ) : ℂ := Complex.exp (-π * (x : ℂ) ^ 2)
 def realGaussianOdd (x : ℝ) : ℂ := (x : ℂ) * Complex.exp (-π * (x : ℂ) ^ 2)
 
 /- English proof (translation)
-Simplify using `[realGaussian, ofReal_exp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem realGaussian_eq_ofReal (x : ℝ) :
     realGaussian x = ((Real.exp (-(π * x ^ 2)) : ℝ) : ℂ) := by
   simp [realGaussian, ofReal_exp]
 
 /- English proof (translation)
-Establish `h` using `fourier_gaussian_pi (b := 1) (by simp)`. Simplify using `only [mul_one, one_cpow, div_one, one_mul] at h`. Unfold `realGaussian`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fourier_realGaussian : 𝓕 realGaussian = realGaussian := by
   have h := fourier_gaussian_pi (b := 1) (by simp)
@@ -45,19 +45,19 @@ theorem fourier_realGaussian : 𝓕 realGaussian = realGaussian := by
   rw [h]
 
 /- English proof (translation)
-Conclude with `integrable_cexp_neg_mul_sq (b := (π : ℂ)) (by simpa using Real.pi_pos)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_realGaussian : Integrable realGaussian := by
   exact integrable_cexp_neg_mul_sq (b := (π : ℂ)) (by simpa using Real.pi_pos)
 
 /- English proof (translation)
-Conclude with `integrable_mul_cexp_neg_mul_sq (b := (π : ℂ)) (by simpa using Real.pi_pos)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_realGaussianOdd : Integrable realGaussianOdd := by
   exact integrable_mul_cexp_neg_mul_sq (b := (π : ℂ)) (by simpa using Real.pi_pos)
 
 /- English proof (translation)
-Establish `h : HasDerivAt (fun y : ℝ ↦ -π * (y : ℂ) ^ 2) (-π * (2 * (x : ℂ))) x`. Use `((hasDerivAt_id x).ofReal_comp).pow 2` as an intermediate fact. Simplify using `using this.const_mul (-(π : ℂ))`. Unfold `realGaussian`. Use `h.cexp using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -71,15 +71,15 @@ theorem hasDerivAt_realGaussian (x : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `hxf : Integrable (fun x : ℝ ↦ x • realGaussian x)`. Use `integrable_realGaussianOdd.congr (Filter.Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Simplify using `[realGaussianOdd, realGaussian, Complex.real_smul]`. Use function extensionality and compare the values at `y`. Establish `hd` using `hasDerivAt_fourier integrable_realGaussian hxf y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `hd` using `[fourier_realGaussian]`. Establish `h2` using `(hasDerivAt_realGaussian y).unique hd`. Establish `h3 : 𝓕 (fun x : ℝ ↦ (-2 * π * I * x) • realGaussian x) y = (-2 * π * I) * 𝓕 realGaussianOdd y`. Rewrite using `[fourier_real_eq, fourier_real_eq, ← integral_const_mul]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [realGaussianOdd, realGaussian, Circle.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Establish `hpi : (π : ℂ) ≠ 0` using `ofReal_ne_zero.mpr Real.pi_ne_zero`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: 𝓕 realGaussianOdd y = (-2 * π * y * realGaussian y) / (-2 * π * I)`. Rewrite using `[h2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, realGaussianOdd, realGaussian]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Put the polynomial expressions in normal form. Simplify using `[I_sq]`.
+Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 -/
 theorem fourier_realGaussianOdd : 𝓕 realGaussianOdd = fun y ↦ -I * realGaussianOdd y := by
   have hxf : Integrable (fun x : ℝ ↦ x • realGaussian x) := by
@@ -105,7 +105,7 @@ theorem fourier_realGaussianOdd : 𝓕 realGaussianOdd = fun y ↦ -I * realGaus
   simp [I_sq]
 
 /- English proof (translation)
-Establish `h` using `integral_fun_norm_addHaar (volume : Measure ℝ) f`. Simplify using `only [Real.norm_eq_abs] at h`. Rewrite using `[h]`. Simplify using `[Complex.real_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_comp_abs_complex (f : ℝ → ℂ) :
     ∫ x : ℝ, f |x| = 2 * ∫ y in Ioi (0 : ℝ), f y := by
@@ -115,7 +115,7 @@ theorem integral_comp_abs_complex (f : ℝ → ℂ) :
   simp [Complex.real_smul]
 
 /- English proof (translation)
-Rewrite using `[mellin_exp_neg_mul_sq Real.pi_pos hs, Gammaℝ_def]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 theorem mellin_exp_neg_pi_mul_sq {s : ℂ} (hs : 0 < s.re) :
     mellin (fun t : ℝ ↦ ((Real.exp (-(π * t ^ 2)) : ℝ) : ℂ)) s = Gammaℝ s / 2 := by
@@ -123,7 +123,7 @@ theorem mellin_exp_neg_pi_mul_sq {s : ℂ} (hs : 0 < s.re) :
   ring_nf
 
 /- English proof (translation)
-Establish `hy' : (y : ℂ) ≠ 0` using `ofReal_ne_zero.mpr hy.ne'`. Rewrite using `[cpow_sub _ _ hy', cpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_cpow_div_self {y : ℝ} (hy : 0 < y) (s : ℂ) :
     (y : ℂ) ^ s / (y : ℂ) = (y : ℂ) ^ (s - 1) := by
@@ -131,9 +131,9 @@ theorem ofReal_cpow_div_self {y : ℝ} (hy : 0 < y) (s : ℂ) :
   rw [cpow_sub _ _ hy', cpow_one]
 
 /- English proof (translation)
-Establish `h : (fun x : ℝ ↦ realGaussian x * ((|x| : ℝ) : ℂ) ^ s / ((|x| : ℝ) : ℂ)) = fun x ↦ (fun y : ℝ ↦ ((Real.exp (-(π * y ^ 2)) : ℝ) : ℂ) * (y : ℂ) ^ s / (y : ℂ)) |x|`. Use function extensionality and compare the values at `x`. Simplify using `only [realGaussian_eq_ofReal, sq_abs]`. Rewrite using `[h, integral_comp_abs_complex (fun y : ℝ ↦ ((Real.exp (-(π * y ^ 2)) : ℝ) : ℂ) * (y : ℂ) ^ s / (y : ℂ))]`. Establish `: ∫ y in Ioi (0 : ℝ), ((Real.exp (-(π * y ^ 2)) : ℝ) : ℂ) * (y : ℂ) ^ s / (y : ℂ) = mellin (fun t : ℝ ↦ ((Real.exp (-(π * t ^ 2)) : ℝ) : ℂ)) s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mellin]`. Use `setIntegral_congr_fun measurableSet_Ioi fun y hy ↦ ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc, ofReal_cpow_div_self hy, smul_eq_mul, mul_comm]`. Rewrite using `[this, mellin_exp_neg_pi_mul_sq hs]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_realGaussian_mul_abs_cpow {s : ℂ} (hs : 0 < s.re) :
     ∫ x : ℝ, realGaussian x * ((|x| : ℝ) : ℂ) ^ s / ((|x| : ℝ) : ℂ) = Gammaℝ s := by
@@ -152,15 +152,15 @@ theorem integral_realGaussian_mul_abs_cpow {s : ℂ} (hs : 0 < s.re) :
   ring
 
 /- English proof (translation)
-Establish `hs1 : 0 < (s + 1).re` using `by simp; linarith`. Establish `h : (fun x : ℝ ↦ realGaussianOdd x * (Real.sign x : ℂ) * ((|x| : ℝ) : ℂ) ^ s / ((|x| : ℝ) : ℂ)) = fun x ↦ (fun y : ℝ ↦ (y : ℂ) * ((Real.exp (-(π * y ^ 2)) : ℝ) : ℂ) * (y : ℂ) ^ s / (y : ℂ)) |x|`. Use function extensionality and compare the values at `x`. Establish `hx : (x : ℂ) * (Real.sign x : ℂ) = ((|x| : ℝ) : ℂ)`. Rewrite using `[← ofReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Break down `lt_trichotomy x 0 with h | h | h` into its components or cases. Rewrite using `[Real.sign_of_neg h, abs_of_neg h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`.
+Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[Real.sign_of_pos h, abs_of_pos h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[realGaussianOdd, ← realGaussian, realGaussian_eq_ofReal]`. Simplify using `only [sq_abs]`. Rewrite using `[← hx]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, integral_comp_abs_complex (fun y : ℝ ↦ (y : ℂ) * ((Real.exp (-(π * y ^ 2)) : ℝ) : ℂ) * (y : ℂ) ^ s / (y : ℂ))]`. Establish `: ∫ y in Ioi (0 : ℝ), (y : ℂ) * ((Real.exp (-(π * y ^ 2)) : ℝ) : ℂ) * (y : ℂ) ^ s / (y : ℂ) = mellin (fun t : ℝ ↦ ((Real.exp (-(π * t ^ 2)) : ℝ) : ℂ)) (s + 1)`. Rewrite using `[mellin]`. Use `setIntegral_congr_fun measurableSet_Ioi fun y hy ↦ ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy' : (y : ℂ) ≠ 0` using `ofReal_ne_zero.mpr (ne_of_gt hy)`. Rewrite using `[add_sub_cancel_right, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, mellin_exp_neg_pi_mul_sq hs1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_realGaussianOdd_mul_sign_mul_abs_cpow {s : ℂ} (hs : -1 < s.re) :
     ∫ x : ℝ, realGaussianOdd x * (Real.sign x : ℂ) * ((|x| : ℝ) : ℂ) ^ s / ((|x| : ℝ) : ℂ) =

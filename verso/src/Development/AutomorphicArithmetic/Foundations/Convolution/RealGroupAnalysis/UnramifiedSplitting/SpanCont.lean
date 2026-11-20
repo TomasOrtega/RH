@@ -10,9 +10,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Ψ h`. Take `⟨f, hf, φ, hφ, e⟩` from `h`. Use `⟨ContAut.continuous_of_isOpen_stab E 2 Ψ (UpperTheory.ConvolutionTheory.R2.Ff.level F E D W M π f hf φ hφ Ψ e), fun γ h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `(UpperTheory.ConvolutionTheory.R2.equiv F E D W M π f hf φ).1 γ h`. Consider the case `zero => exact ⟨continuous_const, fun _ _ => rfl⟩`. Consider the case `add x y _ _ ix iy => exact ⟨ix.1.add iy.1, fun γ h => congrArg₂ (· + ·) (ix.2 γ h) (iy.2 γ h)⟩`. Consider the case `smul c x _ ix => exact ⟨ix.1.const_smul c, fun γ h => congrArg (c • ·) (ix.2 γ h)⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.H.spanCont :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∀ Φ ∈ span W M π, Continuous Φ.1 ∧ ∀ γ h, Φ.1 (ratGL E 2 γ * h) = Φ.1 h := by

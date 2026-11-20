@@ -8,11 +8,11 @@ noncomputable section
 namespace PI.OkpW
 
 /- English proof (translation)
-Take `⟨f, hf, hfe⟩` from `h`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Rewrite `hfe` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hf.coeff_natDegree, map_one, one_mul]`. Establish `h1 : δ ^ f.natDegree = - ∑ i ∈ Finset.range f.natDegree, algebraMap R F (f.coeff i) * δ ^ i` using `eq_neg_of_add_eq_zero_right hfe`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < ‖δ‖` using `lt_trans zero_lt_one hlt`. Establish `h2 : ‖∑ i ∈ Finset.range f.natDegree, algebraMap R F (f.coeff i) * δ ^ i‖ ≤ ‖δ‖ ^ f.natDegree / ‖δ‖`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, le_div_iff₀ hpos]`. Establish `hi' : i + 1 ≤ f.natDegree` using `Finset.mem_range.mp hi`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖δ‖ ^ f.natDegree / ‖δ‖ < ‖δ‖ ^ f.natDegree` using `div_lt_self (by positivity) hlt`. Establish `h4 : ‖δ ^ f.natDegree‖ = ‖δ‖ ^ f.natDegree` using `norm_pow _ _`. Rewrite `h4` using `[h1, norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_le_one_of_integral {F R : Type*} [NormedField F] [IsUltrametricDist F] [CommRing R]
     [Algebra R F] (hR : ∀ r : R, ‖algebraMap R F r‖ ≤ 1) (δ : F) (h : IsIntegral R δ) : ‖δ‖ ≤ 1 := by
@@ -39,7 +39,7 @@ theorem norm_le_one_of_integral {F R : Type*} [NormedField F] [IsUltrametricDist
   linarith
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_integral (fun n => by rw [eq_intCast (algebraMap ℤ F) n]; exact IsUltrametricDist.norm_intCast_le_one F n) δ h`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_integral_int {F : Type*} [NormedField F] [IsUltrametricDist F] [Algebra ℤ F]
     (δ : F) (h : IsIntegral ℤ δ) : ‖δ‖ ≤ 1 :=
@@ -49,7 +49,7 @@ theorem norm_le_one_of_integral_int {F : Type*} [NormedField F] [IsUltrametricDi
 variable {p : ℕ} [hp : Fact p.Prime]
 
 /- English proof (translation)
-Establish `: (p : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p])` using `(map_natCast _ p).symm`. Rewrite using `[this, norm_algebraMap', Padic.norm_p]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_p_cp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   have : (p : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p]) := (map_natCast _ p).symm
@@ -58,9 +58,9 @@ theorem norm_p_cp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hI : IsIntegral ℤ (τ (a : K))`. Take `⟨f, hm, he⟩` from `RingOfIntegers.isIntegral_coe a`. Use `⟨f, hm, ?_⟩` and prove the remaining obligations. Use `congrArg τ he` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Subsingleton.elim (τ.comp (algebraMap ℤ K)) (algebraMap ℤ ℂ_[p])]`. Then use the resulting hypothesis. Conclude with `norm_le_one_of_integral_int _ hI`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_tau_le (τ : K →+* ℂ_[p]) (a : 𝓞 K) : ‖τ (a : K)‖ ≤ 1 :=
 by
@@ -73,7 +73,7 @@ by
   exact norm_le_one_of_integral_int _ hI
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `h`. Establish `: τ (((p : 𝓞 K) ^ k * b : 𝓞 K) : K) = (p : ℂ_[p]) ^ k * τ (b : K)` using `by simp`. Rewrite using `[this, norm_mul, norm_pow, norm_p_cp]`. Conclude with `mul_le_of_le_one_right (by positivity) (norm_tau_le τ b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_tau_dvd (τ : K →+* ℂ_[p]) {a : 𝓞 K} {k : ℕ} (h : (p : 𝓞 K) ^ k ∣ a) :
     ‖τ (a : K)‖ ≤ (p : ℝ)⁻¹ ^ k := by
@@ -83,20 +83,20 @@ theorem norm_tau_dvd (τ : K →+* ℂ_[p]) {a : 𝓞 K} {k : ℕ} (h : (p : �
   exact mul_le_of_le_one_right (by positivity) (norm_tau_le τ b)
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.out.ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_p_ne_bot : Ideal.span {(p : 𝓞 K)} ≠ ⊥ := by
   rw [Ne, Ideal.span_singleton_eq_bot]; exact_mod_cast hp.out.ne_zero
 
 /- English proof (translation)
-The claim follows from `hP.isMaximal span_p_ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem isMaximal_span_p (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime) :
     (Ideal.span {(p : 𝓞 K)}).IsMaximal :=
   hP.isMaximal span_p_ne_bot
 
 /- English proof (translation)
-Establish `h` using `Ideal.absNorm_span_singleton (p : 𝓞 K)`. Rewrite `h` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[h]`. Establish `: (p : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank, hK]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -110,15 +110,15 @@ theorem natCard_quot (hK : Module.finrank ℚ K = 2) :
   simp
 
 /- English proof (translation)
-The claim follows from `Nat.finite_of_card_ne_zero (by rw [natCard_quot hK]; exact (pow_pos hp.out.pos 2).ne')`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot (hK : Module.finrank ℚ K = 2) : Finite (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) :=
   Nat.finite_of_card_ne_zero (by rw [natCard_quot hK]; exact (pow_pos hp.out.pos 2).ne')
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Establish `hM : (Ideal.span {(p : 𝓞 K)}).IsMaximal` using `isMaximal_span_p hP`. Use `letI := Ideal.Quotient.field (Ideal.span {(p : 𝓞 K)})`. Use `haveI := finite_quot (K := K) (p := p) hK`. Use `letI := Fintype.ofFinite (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hc : Fintype.card (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) = p ^ 2`. Rewrite using `[Fintype.card_eq_nat_card, natCard_quot hK]`. Rewrite using `[map_pow, ← hc, FiniteField.pow_card_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_q_sub (hK : Module.finrank ℚ K = 2) (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime)
     (a : 𝓞 K) (n : ℕ) : (p : 𝓞 K) ∣ a ^ ((p ^ 2) ^ n) - a := by
@@ -132,9 +132,9 @@ theorem pow_q_sub (hK : Module.finrank ℚ K = 2) (hP : (Ideal.span {(p : 𝓞 K
   rw [map_pow, ← hc, FiniteField.pow_card_pow]
 
 /- English proof (translation)
-Establish `hM : (Ideal.span {(p : 𝓞 K)}).IsMaximal` using `isMaximal_span_p hP`. Use `letI := Ideal.Quotient.field (Ideal.span {(p : 𝓞 K)})`. Establish `h0 : Ideal.Quotient.mk (Ideal.span {(p : 𝓞 K)}) a ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]` and apply the resulting hypothesis. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (Ideal.Quotient.mk (Ideal.span {(p : 𝓞 K)}) a)⁻¹`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq, map_mul, hb, map_one, mul_inv_cancel₀ h0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_inv_mod (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime) {a : 𝓞 K} (ha : ¬ (p : 𝓞 K) ∣ a) :
     ∃ b : 𝓞 K, (p : 𝓞 K) ∣ a * b - 1 := by

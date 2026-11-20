@@ -11,14 +11,14 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem monomial_eq_smul_basis {K σ : Type} [CommRing K] (m : σ →₀ ℕ) (c : K) :
     monomial m c = c • (basisMonomials σ K m) := by
   rw [MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq_smul_basis, map_smul]`. Unfold `divPow`. Rewrite using `[Module.Basis.constr_basis]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem divided_power_monomial {K : Type} [CommRing K] {ι : Type} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a b : Fin n) (k : ℕ) (m : ι × Fin n →₀ ℕ) (c : K) :
@@ -28,7 +28,7 @@ theorem divided_power_monomial {K : Type} [CommRing K] {ι : Type} [Fintype ι] 
   rw [Module.Basis.constr_basis]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq_smul_basis, map_smul]`. Unfold `binomPol`. Rewrite using `[Module.Basis.constr_basis, MvPolynomial.smul_monomial, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem binomial_operator_monomial {K : Type} [CommRing K] {ι : Type} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a : Fin n) (k : ℕ) (m : ι × Fin n →₀ ℕ) (c : K) :
@@ -42,9 +42,9 @@ def dividedPowerTermCoefficient {ι : Type} {n : ℕ} (LL : Letters ι) (a b : F
 
 open Classical in
 /- English proof (translation)
-Unfold `divPowMono`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, Int.cast_prod]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Unfold `dividedPowerTermCoefficient`. Apply the tactic sequence `split_ifs <;> push_cast <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem divided_power_monomial_expansion {K : Type} [CommRing K] {ι : Type} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a b : Fin n) (k : ℕ) (m : ι × Fin n →₀ ℕ) (c : K) :
@@ -63,15 +63,13 @@ theorem divided_power_monomial_expansion {K : Type} [CommRing K] {ι : Type} [Fi
   split_ifs <;> push_cast <;> rfl
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Introduce `n ι _ LL S`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `u hu x hx`. Use `integral_poly_linear_map_closed u (fun m => ?_) x hx` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hu with ⟨a, b, k, -, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Rewrite using `[divided_power_monomial, divided_power_monomial_expansion]`. Use `Submodule.sum_mem _ fun f _ => ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `integer_monomial_mem_integral _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[binomial_operator_monomial, one_mul]`. Conclude with `integer_monomial_mem_integral _ _`. Introduce `u hu F hF`. Use `fock_lattice_linear_map_closed hV u (fun m c hmc => ?_) F hF` and prove the remaining obligations. Break down `hu with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[divided_power_monomial, divided_power_monomial_expansion]`. Use `fock_lattice_sum_mem hV _ _ fun f _ => ?_` and prove the remaining obligations. Use `fock_lattice_monomial_rescale hV m _ c _ hmc ?_` and prove the remaining obligations. Apply the tactic sequence `exact divided_power_padic_valuation_bound p (fun l => if LL.vec l then (l, b) else (l, a)) (fun l => if LL.vec l then (l, a) else (l, b)) (fun l => by split_ifs <;> rfl) (fun l => by split_ifs <;> rfl) (fun l => by split_ifs <;> simp [hab, Ne.symm hab]) m f (dividedPowerTermCoeff …`. Rewrite using `[binomial_operator_monomial]`.
-
-Conclude with `fock_lattice_monomial_rescale hV m m c _ hmc (Or.inr (Nat.le_add_left _ _))`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_formula_stability_holds {p : ℕ} (hp : p.Prime) (hV : ValuationProperties p O) : PolynomialIntegralFormPreservesLattices p O := by
   classical

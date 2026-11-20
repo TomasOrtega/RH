@@ -8,13 +8,13 @@ namespace GlobalTheory.IndependentInfimum
 open Module
 
 /- English proof (translation)
-Introduce `w hw`. Establish `htop : w ∈ ⨆ y, U y` using `by rw [hU]; exact Submodule.mem_top`. Establish `hsplit : (⨆ y, U y) = U x ⊔ ⨆ (y) (_ : y ≠ x), U y`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hy : y = x`. Substitute `hy` using the available equality. Conclude with `le_sup_left`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le y hy le_rfl)`. Conclude with `sup_le (le_iSup U x) (iSup₂_le fun y _ => le_iSup U y)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `htop` using `[hsplit]`. Take `⟨u, hu, w', hw', hsum⟩` from `Submodule.mem_sup.1 htop`. Establish `hw'W : w' ∈ ⨆ (y) (_ : y ≠ x), W y` using `(iSup₂_mono fun y _ => hUW y) hw'`. Establish `hdiff : w - u ∈ W x` using `W x |>.sub_mem hw (hUW x hu)`. Establish `heq : w - u = w'` using `by rw [← hsum]; abel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdis` using `(hW x).le_bot (Submodule.mem_inf.2 ⟨hdiff, heq ▸ hw'W⟩)`. Rewrite `hdis` using `[Submodule.mem_bot, sub_eq_zero]`. Rewrite using `[hdis]`. Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem le_of_indep {K V X : Type*} [Field K] [AddCommGroup V] [Module K V]
     (U W : X → Submodule K V) (hW : iSupIndep W) (hUW : ∀ x, U x ≤ W x)
@@ -42,7 +42,7 @@ theorem le_of_indep {K V X : Type*} [Field K] [AddCommGroup V] [Module K V]
   exact hu
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_iInf _ |>.2 fun i => Module.End.eigenspace_le_maxGenEigenspace (Module.End.mem_eigenspace_iff.2 (hv i))`.
+A detailed English derivation is pending.
 -/
 theorem mem_iInf_of_apply {K V I : Type*} [Field K] [AddCommGroup V] [Module K V]
     (A : I → Module.End K V) (x : I → K) (v : V) (hv : ∀ i, A i v = x i • v) :
@@ -50,27 +50,25 @@ theorem mem_iInf_of_apply {K V I : Type*} [Field K] [AddCommGroup V] [Module K V
   Module.End.eigenspace_le_maxGenEigenspace (Module.End.mem_eigenspace_iff.2 (hv i))
 
 /- English proof (translation)
-Establish `hee : ∀ v, e (e v) = e v` using `fun v => by`. Use `congrArg (fun f : Module.End ℂ E => f v) he` as an intermediate fact. Simplify using `using this`. Establish `hfix : ∀ c, ∀ w ∈ Ec c, e w = w`. Introduce `c w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: w ∈ LinearMap.range e` using `hE ▸ Submodule.mem_iSup_of_mem c hw`. Take `⟨u, rfl⟩` from `this`. Conclude with `hee u`. Establish `hA : ∀ c, ∀ w ∈ Ec c, ∀ i, (h i * e) w = lab c i • w`. Introduce `c w hw i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mul_apply, hfix c w hw, hl c w hw]`. Establish `hcomm : ∀ i j, Commute (h i * e) (h j * e)`. Introduce `i j`. Establish `key : ∀ w ∈ ⨆ c, Ec c, (h i * e) ((h j * e) w) = (h j * e) ((h i * e) w)`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hw using Submodule.iSup_induction' with`. Consider the case `mem c w hw`. Rewrite using `[hA c w hw j, hA c w hw i, map_smul, map_smul, hA c w hw j, hA c w hw i, smul_comm]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Establish `hv : e v ∈ ⨆ c, Ec c` using `by rw [hE]; exact ⟨v, rfl⟩`. Use `key _ hv` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply, hee]`. Use `⟨hcomm, fun Q hQ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hind : iSupIndep fun x : I → ℂ => ⨅ i, (h i * e).maxGenEigenspace (x i)` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo (fun i => h i * e) fun i j φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hcomm j i) φ`. Set `U : (I → ℂ) → Submodule ℂ E` to `fun x => (⨆ (c : C) (_ : lab c = x), Ec c) ⊔ ⨆ (_ : x = 0), LinearMap.ker e`. Establish `hUW : ∀ x, U x ≤ ⨅ i, (h i * e).maxGenEigenspace (x i)`. Introduce `x`. Use `sup_le (iSup₂_le fun c hc w hw => ?_) (iSup_le fun hx w hw => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_iInf_of_apply (fun i => h i * e) x w fun i => hc ▸ hA c w hw i`. Use `mem_iInf_of_apply (fun i => h i * e) x w fun i => ?_` and prove the remaining obligations. Rewrite `hw` using `[LinearMap.mem_ker]`. Simplify using `[hx, Module.End.mul_apply, hw]`. Establish `hU : ⨆ x, U x = ⊤`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `h1 : LinearMap.range e ≤ ⨆ x, U x`. Rewrite using `[← hE]`. Conclude with `iSup_le fun c => le_iSup_of_le (lab c) (le_sup_of_le_left (le_iSup₂_of_le (f := fun c' (_ : lab c' = lab c) => Ec c') c rfl le_rfl))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : LinearMap.ker e ≤ ⨆ x, U x` using `le_iSup_of_le 0 (le_sup_of_le_right (le_iSup_of_le (f := fun _ : (0 : I → ℂ) = 0 => LinearMap.ker e) rfl le_rfl))`. Establish `h3 : v - e v ∈ LinearMap.ker e` using `by simp [LinearMap.mem_ker, hee]`. Use `Submodule.add_mem _ (h1 ⟨v, rfl⟩) (h2 h3)` as an intermediate fact. Simplify using `using this`. Unfold `Formalism.L2.Col.eigSum Formalism.L2.Col.eigAt`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun x hx => (le_of_indep U _ hind hUW hU x).trans ?_` and prove the remaining obligations. Use `sup_le (iSup₂_le fun c hc => ?_) (iSup_le fun h0 => absurd (h0 ▸ hx) hQ)` and prove the remaining obligations. Conclude with `le_iSup₂_of_le (f := fun c (_ : Q (lab c)) => Ec c) c (hc ▸ hx) le_rfl`. Use `iSup₂_le fun c hc => ?_` and prove the remaining obligations.
-
-Use `le_iSup₂_of_le (f := fun (x : I → ℂ) (_ : Q x) => ⨅ i, (h i * e).maxGenEigenspace (x i)) (lab c) hc ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `mem_iInf_of_apply (fun i => h i * e) (lab c) w (hA c w hw)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main {E I C : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E]
     (h : I → Module.End ℂ E) (e : Module.End ℂ E) (Ec : C → Submodule ℂ E) (lab : C → I → ℂ)

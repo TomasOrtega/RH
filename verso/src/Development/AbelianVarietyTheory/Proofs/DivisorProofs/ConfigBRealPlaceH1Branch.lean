@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.IndLine
 
 /- English proof (translation)
-Use `⟨fun u _ => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `: mat (1 : UA σ X.J) - 1 = 0` using `by simp [mat]`. Rewrite using `[this, smul_zero]`. Establish `: (mat (1 : UA σ X.J)).map (piInf (τ w)) = 1` using `by simp [mat]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Commute.one_left _`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_KInf_of_real {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {m : ℕ} (X : Spc F E m) (τ : ∀ w : InfinitePlace F, EmbOver E w) : (1 : UA σ X.J) ∈ KInf σ X τ := by
@@ -34,13 +34,13 @@ theorem one_mem_KInf_of_real {F E : Type} [Field F] [NumberField F] [Field E] [N
     rw [this]; exact Commute.one_left _
 
 /- English proof (translation)
-Take `⟨k, hk, t, hL, c, hc, hx⟩` from `hx`. Establish `hx0 : x ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hM.real.quot.onto]; exact Submodule.mem_top`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hx0`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hM.triple.base hM.triple.geo.hM hM.triple.weil k hk`. Establish `h1` using `hx f hf (A f) (hA f) rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy0 : φ (R.p f) ∈ (G₁.M.Pol B.ψ B.emb).map R₁.p` using `by rw [hM₁.real.quot.onto]; exact Submodule.mem_top`. Take `⟨g, hg, hgx⟩` from `Submodule.mem_map.1 hy0`. Establish `hacts : Acts (evI F) (om₁ (1, 1)) g g`. Introduce `r _`. Rewrite using `[show ((1 : UA σ G₁.V.J), (1 : UA σ G₁.W.J)) = 1 from rfl, map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2` using `hφ.cpt k hk t 1 hL (one_mem_KInf_of_real G₁.W B.emb) f hf (A f) (hA f) g hg g hacts hgx.symm`. Rewrite `h2` using `[h1, map_smul, hgx]`. Establish `h3 : (c - (X.β t : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ)) • φ (R.p f) = 0`. Rewrite using `[sub_smul, h2, sub_self]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hc)`.
+A detailed English derivation is pending.
 -/
 theorem frobInf_offEig_of_beta {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b} {H' : Plane E (a + (b + 2)) (a + b)}
@@ -68,33 +68,29 @@ theorem frobInf_offEig_of_beta {F E : Type} [Field F] [NumberField F] [Field E] 
   exact (smul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hc)
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hdec` using `GlobalTheory.T.config_b_theta_lift_compatible hK F E σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hdis` using `GlobalTheory.T.config_b_theta_lift_vanishing hK F E σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Take `⟨ι, hinj, himg, hstab, heq⟩` from `GlobalTheory.T.config_b_theta_lift_recursion hK F E σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hlevi` using `GlobalTheory.T.infinite_compact_levi_lift F E σ B a b G G₁ H H' hC hM.triple.base hM.triple.geo hM₁.triple.geo`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set V := lowPartInf B G.M R.p with hV`. Use `set tw := twPart B G.M om R.p G₁.W H' X.β ((a : ℝ) / 2) V with htw`. Use `set off := offPart B G.M om R.p G₁.W H' X.β ((a : ℝ) / 2) V with hoffd`. Take `⟨C₀, hC₀⟩` from `Submodule.exists_isCompl (tw ⊔ off)`. Establish `hcompl : IsCompl tw (off ⊔ C₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Take `⟨o, ho, c, hc, rfl⟩` from `Submodule.mem_sup.1 hx'`. Establish `hc' : c ∈ tw ⊔ off`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : c = (o + c) - o` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left hx) (Submodule.mem_sup_right ho)`. Establish `hc0 : c = 0` using `(Submodule.disjoint_def.1 hC₀.disjoint) c hc' hc`. Substitute `hc0` using the available equality.
+Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx`, the goal using `[add_zero]`. Conclude with `(Submodule.disjoint_def.1 hdis) o hx ho`. Rewrite using `[codisjoint_iff, ← sup_assoc]`. Conclude with `hC₀.sup_eq_top`. Use `set pr := Submodule.linearProjOfIsCompl tw (off ⊔ C₀) hcompl with hpr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpr_tw : ∀ y ∈ tw, ((pr y : tw) : R.Pi) = y` using `fun y hy => by`. Conclude with `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hcompl ⟨y, hy⟩)`. Establish `hpr_off : ∀ o ∈ off, pr o = 0` using `fun o ho => (Submodule.linearProjOfIsCompl_apply_eq_zero_iff hcompl).2 (Submodule.mem_sup_left ho)`. Establish `hπ : ∀ y ∈ tw, ∀ o ∈ off, ι ((pr (y + o) : tw) : R.Pi) = ι y` using `fun y hy o ho => by`. Rewrite using `[map_add, hpr_off o ho, add_zero, hpr_tw y hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : LinearMap.ker (ι ∘ₗ tw.subtype) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `y hy`. Conclude with `Subtype.ext (hinj y y.2 hy)`. Take `⟨s, hs⟩` from `LinearMap.exists_leftInverse_of_injective (ι ∘ₗ tw.subtype) hker`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsι : ∀ y ∈ tw, ((s (ι y) : tw) : R.Pi) = y` using `fun y hy => by`. Establish `e` using `LinearMap.congr_fun hs ⟨y, hy⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.id_apply] at e`. Rewrite using `[e]`. Use `⟨ι ∘ₗ tw.subtype ∘ₗ pr, ?_, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨y, hy, o, ho, rfl⟩` from `Submodule.mem_sup.1 (hdec hx)`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[hπ y hy o ho, ← himg]`. Conclude with `Submodule.mem_map_of_mem hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hoff : ∀ z ∈ off, φ z = 0` using `fun z hz => LinearMap.mem_ker.1 ((Submodule.span_le.2 fun y hy => LinearMap.mem_ker.2 (frobInf_offEig_of_beta hM hM₁ hφ hy.2)) hz)`. Use `⟨φ ∘ₗ tw.subtype ∘ₗ s, ?_, ?_⟩` and prove the remaining obligations. Introduce `k₁ hk₁ f hf f₁ hf₁ hfV g hg g₁ hg₁ hT`. Rewrite `hfV` using `[← himg]`. Take `⟨y, hy, hyf⟩` from `Submodule.mem_map.1 hfV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk, hL⟩` from `hlevi k₁ hk₁`. Establish `hy0 : y ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hM.real.quot.onto]; exact Submodule.mem_top`. Take `⟨f', hf', rfl⟩` from `Submodule.mem_map.1 hy0`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hM.triple.base hM.triple.geo.hM hM.triple.weil k hk`. Establish `h1 : ι (R.p (A f')) = R₁.p f₁` using `heq k hk k₁ hk₁ hL f' hf' (A f') (hA f') hy f hf f₁ hf₁ hyf`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : R.p (A f') ∈ tw` using `hstab k hk k₁ hk₁ hL f' hf' (A f') (hA f') hy`. Establish `hT' : φ (R.p f') = R₁.p g`. Establish `e` using `hT`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at e`. Rewrite `e` using `[← hyf, hsι _ hy]`.
-
-Conclude with `e`. Establish `h3` using `hφ.cpt k hk 1 k₁ hL hk₁ f' hf' (A f') (hA f') g hg g₁ hg₁ hT'`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[← h1, hsι _ h2, h3]`. Simplify using the standard rewrite rules.
-
-Introduce `x hx`. Take `⟨y, hy, o, ho, rfl⟩` from `Submodule.mem_sup.1 (hdec hx)`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[hπ y hy o ho, hsι y hy, map_add, hoff o ho, add_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem config_b_real_place_branch : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)

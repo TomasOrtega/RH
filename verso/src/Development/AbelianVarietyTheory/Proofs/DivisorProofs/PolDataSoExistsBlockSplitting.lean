@@ -19,27 +19,27 @@ namespace GlobalTheory.ThetaAtGood
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hσc Φ hΦ B₀`. Take `⟨b, hb, χ, hbl, hun, hu, P, honto, hker, heq⟩` from `GlobalTheory.T.triple_split_characters_exist F E σ hσ B a a' G X om om' hK hT c hc hσc`. Take `⟨m, L, φ, hφ, hkill, hequiv, hsum⟩` from `GlobalTheory.T.triple_polynomial_local_functionals F E σ hσ B a a' G X om om' hK hT c hc hσc Φ hΦ`. Set `K` to `Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁)`. Generalize the expression as in `hπ : pairInd (Fv F B.v₁) b hb χ = π at heq ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Replace the chosen expression with an arbitrary variable.
 
-Set `P'` to `P.domRestrict K`. Establish `hsurj : Function.Surjective P'`. Introduce `ξ`. Take `⟨φ₀, h₀, rfl⟩` from `honto ξ`. Conclude with `⟨⟨φ₀, Submodule.subset_span h₀⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hle : ∀ j, LinearMap.ker P' ≤ LinearMap.ker ((L j).comp K.subtype)`. Introduce `j z hz`. Rewrite `hz`, the goal using `[LinearMap.mem_ker]`. Establish `hz'` using `hker z.1 z.2 hz`. Establish `: Submodule.span ℂ {z | ∃ g ∈ UAt σ G.V' (evFin F B.v₁), ∃ φ₀ ∈ G.M'.SoLoc B.ψ B.τ₁, ∃ φ₁ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁), Acts (evFin F B.v₁) (om' (g, 1)) φ₀ φ₁ ∧ z = φ₁ - φ₀} ≤ LinearMap.ker (L j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, φ₀, h₀, φ₁, h₁, hA, rfl⟩`. Simplify using `[hkill j g hg φ₀ h₀ φ₁ h₁ hA]`. Conclude with `this hz'`. Set `e` to `P'.quotKerEquivOfSurjective hsurj`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T1 : Fin m → IndSp (pairPlace b hb) (ofChar (pairChar (Fv F B.v₁) b χ)) →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `fun j => ((LinearMap.ker P').liftQ ((L j).comp K.subtype) (hle j)).comp e.symm.toLinearMap`. Establish `hT1 : ∀ j, ∀ φ₀ (h₀ : φ₀ ∈ K), T1 j (P φ₀) = L j φ₀`. Introduce `j φ₀ h₀`. Establish `: P φ₀ = e (Submodule.Quotient.mk ⟨φ₀, h₀⟩)`. Rewrite using `[LinearMap.quotKerEquivOfSurjective_apply_mk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [T1, LinearMap.comp_apply, LinearEquiv.coe_coe, this, LinearEquiv.symm_apply_apply, Submodule.liftQ_apply, Submodule.coe_subtype]`. Use `⟨b, hb, χ, hbl, hun, hu, m, fun j => (T1 j).comp (π B₀), fun j => π B₀⁻¹ (P (φ j)), ?_, ?_⟩` and prove the remaining obligations. Introduce `j g x hx w y`. Simplify using `only [LinearMap.comp_apply, hπ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx' : IsCompAt σ (c • G.W.J.map σ) B.τ₁ 1 (B₀ * g * B₀⁻¹) x`. Unfold `IsCompAt at hx ⊢`. Rewrite using `[hx]`. Simplify using the standard rewrite rules. Take `⟨φ₀, h₀, hφ₀⟩` from `honto (π B₀ w)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hh` using `heq (B₀ * g * B₀⁻¹) x hx' φ₀ h₀`. Take `⟨φ₁, hh⟩` from `hh`. Take `⟨h₁, hh⟩` from `hh`. Take `⟨hA, hP⟩` from `hh`. Establish `hgg : B₀ * g * B₀⁻¹ * B₀ = B₀ * g` using `by group`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : π B₀ (π g w) = π (B₀ * g * B₀⁻¹) (π B₀ w)`. Combine the equalities or inequalities in the displayed calculation. Establish `hS : φ₁ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁)` using `h₁.1`. Establish `k1` using `hT1 j φ₁ (Submodule.subset_span h₁)`. Establish `k2` using `hT1 j φ₀ (Submodule.subset_span h₀)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k3` using `hequiv j x φ₀ h₀ φ₁ hS hA`. Rewrite using `[e1, ← hφ₀, ← hP, k1, k2, k3]`. Use `hsum.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Establish `h3 : π B₀ (π B₀⁻¹ (P (φ j))) = P (φ j)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show L j (φ j) = T1 j (π B₀ (π B₀⁻¹ (P (φ j))))`. Rewrite using `[h3, hT1 j _ (Submodule.subset_span (hφ j))]`.
+A detailed English derivation is pending.
 -/
 theorem thetaIntegral_eq_sum_intertw : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

@@ -26,13 +26,13 @@ def mulUnitCE {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
   continuous_invFun := continuous_const.mul continuous_id
 
 /- English proof (translation)
-Set `μ : Measure R` to `Measure.addHaar`. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (0 : R)`. Establish `h0 : μ K ≠ 0` using `(Measure.measure_pos_of_mem_nhds μ hKn).ne'`. Establish `hT : μ K ≠ ⊤` using `hK.measure_lt_top.ne`. Use `distribHaarChar_eq_of_measure_smul_eq_mul (μ := μ) h0 hT ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `addEquivAddHaarChar_smul_preimage μ (X := a • K) (mulUnitCE a)`. Establish `hpre : (mulUnitCE a : R → R) ⁻¹' (a • K) = K`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: y = x` using `(Units.mul_right_inj a).1 hxy`. Conclude with `this ▸ hy`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`. Rewrite `e` using `[hpre]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem distribHaarChar_eq_addEquivAddHaarChar {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [LocallyCompactSpace R] [MeasurableSpace R] [BorelSpace R] (a : Rˣ) :
@@ -65,13 +65,11 @@ def evalUnitCE (R : Type) [AddCommGroup R] [TopologicalSpace R] : (Unit → R) �
   continuous_invFun := continuous_pi fun _ => continuous_id
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ hF t`. Use `haveI := hF`. Use `letI : MeasurableSpace (AF F) := borel _`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `set a : (AF F)ˣ := Units.map (Algebra.norm (AF F) : AE F E →* AF F) t with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `M : Matrix Unit Unit (AF F)` to `fun _ _ => (a : AF F)`. Establish `hdet : M.det = (a : AF F)` using `Matrix.det_unique M`. Establish `hM : IsUnit M.det` using `hdet ▸ a.isUnit`. Establish `hχ` using `GlobalTheory.ModuLR.chi_AF F M hM`. Establish `htr` using `GlobalTheory.ModuLR.addEquivAddHaarChar_transport (evalUnitCE (AF F)) (GlobalTheory.ModuLR.mulVecCE M hM)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hext : ((evalUnitCE (AF F)).symm.trans (GlobalTheory.ModuLR.mulVecCE M hM)).trans (evalUnitCE (AF F)) = mulUnitCE a`. Use extensionality with `x`. Use `show (M *ᵥ fun _ => x) () = (a : AF F) * x`. Simplify using `[Matrix.mulVec, dotProduct, M]`. Rewrite `htr` using `[hext]`.
-
-Use `show ((distribHaarChar (AdeleRing (𝓞 F) F) a : ℝ≥0) : ℝ) = _`. Rewrite using `[show distribHaarChar (AdeleRing (𝓞 F) F) a = distribHaarChar (AF F) a from rfl, distribHaarChar_eq_addEquivAddHaarChar, htr, hχ, hdet]`. Conclude with `GlobalTheory.absE_eq_prod_norm_fstA_sndA F E t`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modu_norm_eq_absE : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], NumberField.IsTotallyReal F →
     ∀ t : (AE F E)ˣ, (((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) t) : ℝ≥0) : ℝ) = (absE F E t : ℝ) := by

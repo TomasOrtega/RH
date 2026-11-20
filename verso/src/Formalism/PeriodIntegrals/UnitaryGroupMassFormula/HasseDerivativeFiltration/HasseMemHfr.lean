@@ -10,13 +10,13 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ} {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
 /- English proof (translation)
-Establish `hinv : algebraMap (Rp X la N) (Lw X la w) (sec X la w 0 ^ K) * w0inv X la w ^ K = 1`. Rewrite using `[map_pow, ← mul_pow, section_mul_inverse_eq_one, one_pow]`. Establish `hsy : algebraMap (Rp X la N) (Lw X la w) (sec X la w 0 ^ K) * y = algebraMap (Rp X la N) (Lw X la w) G`. Rewrite using `[hy, frac_apply]`. Take the linear combination `(algebraMap (Rp X la N) (Lw X la w) G) * hinv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `H` using `hasse_of_mul_eq X la w β hsy`. Establish `H' : ∑ q ∈ antidiagonal β, algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N q.1 (sec X la w 0 ^ K)) * @id (Lw X la w) (hasse X la w q.2 y) = algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N β G)` using `H`. Establish `hmem : ((0 : Idx D j N →₀ ℕ), β) ∈ antidiagonal β` using `by simp [mem_antidiagonal]`. Rewrite `H'` using `[← Finset.add_sum_erase _ _ hmem]`. Establish `h0 : hasseRp X la N 0 (sec X la w 0 ^ K) = sec X la w 0 ^ K` using `hasseRp_zero X la _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `H'` using `[h0]`. Establish `hsum : ∑ q ∈ (antidiagonal β).erase (0, β), frac X la w K (hasseRp X la N q.1 (sec X la w 0 ^ K)) * @id (Lw X la w) (hasse X la w q.2 y) = w0inv X la w ^ K * ∑ q ∈ (antidiagonal β).erase (0, β), algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N q.1 (sec X la w 0 ^ K)) * @id (Lw …`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[frac_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, frac_apply]`. Take the linear combination `(w0inv X la w ^ K) * H' - @id (Lw X la w) (hasse X la w β y) * hinv`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hasse_frac_eq (β : Idx D j N →₀ ℕ) (K : ℕ) (G : Rp X la N) (y : Lw X la w)
     (hy : y = frac X la w K G) :
@@ -49,15 +49,13 @@ theorem hasse_frac_eq (β : Idx D j N →₀ ℕ) (K : ℕ) (G : Rp X la N) (y :
   linear_combination (w0inv X la w ^ K) * H' - @id (Lw X la w) (hasse X la w β y) * hinv
 
 /- English proof (translation)
-Proceed by induction on `β using WellFoundedLT.induction with`. Consider the case `ind β ih`. Introduce `y hy`. Take `⟨k, g, hg, rfl⟩` from `(mem_Hfr X la w).mp hy`. Establish `hG : sec X la w 0 ^ 1 * g ∈ Vw X la N (addL u wL (k + 1))` using `sec_pow_mul_mem X la w 0 u k 1 hg`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : sec X la w 0 ^ (k + 1) ∈ Vw X la N (addL (wt0 D j) wL (k + 1))`. Rewrite using `[pow_succ, Nat.add_comm k 1]`. Conclude with `sec_pow_mul_mem X la w 0 (wt0 D j) 1 k (by rw [add_zero_weight_one_eq]; exact sec_mem_Vw X la w 0)`. Establish `E` using `hasse_frac_eq X la w β (k + 1) (sec X la w 0 ^ 1 * g) (frac X la w k g) (frac_pow_mul X la w k 1 g).symm`. Use `(congrArg (fun z : Lw X la w => z ∈ Hfr X la w u) E).mpr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sub_mem _ (frac_mem_Hfr X la w (hasseRp_mem_Vw X la hG β)) (Submodule.sum_mem _ fun q hq => ?_)` and prove the remaining obligations. Take `⟨hne, hq⟩` from `Finset.mem_erase.mp hq`. Rewrite `hq` using `[mem_antidiagonal]`. Establish `h1 : q.1 ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hne (Prod.ext h0 (by rw [← hq, h0, zero_add]))`. Establish `hlt : q.2 < β`. Use `lt_of_le_of_ne (le_add_self.trans_eq hq) fun e => h1 ?_` and prove the remaining obligations. Rewrite `hq` using `[e]`. Simplify using `using hq`.
-
-Establish `hm` using `mul_mem_Hfr X la w (frac_mem_Hfr X la w (hasseRp_mem_Vw X la hs q.1)) (ih q.2 hlt _ hy)`. Conclude with `(congrArg (Hfr X la w) (zero_weight_add u)).le hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasse_mem_Hfr (u : WeightFamilies.Wt D j) (β : Idx D j N →₀ ℕ) :
     ∀ y : Lw X la w, y ∈ Hfr X la w u → hasse X la w β y ∈ Hfr X la w u := by
@@ -87,7 +85,7 @@ theorem hasse_mem_Hfr (u : WeightFamilies.Wt D j) (β : Idx D j N →₀ ℕ) :
   exact (congrArg (Hfr X la w) (zero_weight_add u)).le hm
 
 /- English proof (translation)
-Introduce `D B P j X la N wL w u β x hx`. Conclude with `hasse_mem_Hfr X la w u β x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : PI.HassePresH := by
   intro D B P j X la N wL w u β x hx

@@ -16,17 +16,17 @@ section General
 variable {R : Type} [CommRing R] [IsDedekindDomain R] {m : Ideal R}
 
 /- English proof (translation)
-The claim follows from `Ideal.isCoprime_iff_exists.mpr ⟨a, Ideal.mem_span_singleton_self a, -(a - 1), m.neg_mem ha, by ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCoprime_span {a : R} (ha : a - 1 ∈ m) : IsCoprime (Ideal.span {a}) m :=
   Ideal.isCoprime_iff_exists.mpr ⟨a, Ideal.mem_span_singleton_self a, -(a - 1), m.neg_mem ha, by ring⟩
 
 /- English proof (translation)
-Distinguish the cases in `ht : m = ⊤`. Take `⟨a, haI, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI0`. Conclude with `⟨a, haI, ha0, by simp [ht]⟩`. Take `⟨a, ha, b, hb, hab⟩` from `Ideal.isCoprime_iff_exists.mp h`. Establish `h1 : a - 1 ∈ m`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: a - 1 = -b` using `by rw [← hab]; ring`. Rewrite using `[this]`. Conclude with `m.neg_mem hb`. Use `⟨a, ha, ?_, h1⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ht` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Simplify using `using m.neg_mem h1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_mem_sub_one {I : Ideal R} (hI0 : I ≠ ⊥) (h : IsCoprime I m) : ∃ a ∈ I, a ≠ 0 ∧ a - 1 ∈ m := by
   by_cases ht : m = ⊤
@@ -44,11 +44,11 @@ theorem exists_mem_sub_one {I : Ideal R} (hI0 : I ≠ ⊥) (h : IsCoprime I m) :
   simpa using m.neg_mem h1
 
 /- English proof (translation)
-Take `⟨a, haJ, ha0, ha⟩` from `exists_mem_sub_one hJ0 hJ`. Establish `h1 : y * a ∈ Ideal.span {x} * I`. Rewrite using `[h]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self y) haJ`. Take `⟨b, -, hb⟩` from `Ideal.mem_span_singleton_mul.mp h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : Ideal.span {a} * I = Ideal.span {b} * J`. Establish `hy' : (Ideal.span {y} : Ideal R) ≠ 0` using `by simpa using hy`. Apply `mul_left_cancel₀ hy'` to reduce the goal to its premises. Rewrite using `[← mul_assoc, Ideal.span_singleton_mul_span_singleton, ← hb, mul_left_comm, ← h, ← mul_assoc, Ideal.span_singleton_mul_span_singleton, mul_comm b x]`. Use `⟨a, b, ha0, ?_, ha, ?_, h2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `[ha0, hI0] at h2`. Use `(isCoprime_span ha).mul_left hI` as an intermediate fact. Rewrite `this` using `[h2]`. Conclude with `this.of_mul_left_left`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_good {I J : Ideal R} (hI0 : I ≠ ⊥) (hJ0 : J ≠ ⊥) (hI : IsCoprime I m) (hJ : IsCoprime J m)
     {x y : R} (hy : y ≠ 0) (h : Ideal.span {x} * I = Ideal.span {y} * J) :
@@ -75,25 +75,23 @@ end General
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] {𝔮 : Ideal (𝓞 K)}
 
 /- English proof (translation)
-Simplify using `using ha`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem emb_ne_zero (φ : K →+* ℝ) {a : 𝓞 K} (ha : a ≠ 0) : φ (a : K) ≠ 0 := by
   simpa using ha
 
 /- English proof (translation)
-Take `⟨a, haJ, ha0, ha⟩` from `exists_mem_sub_one hJ0 hJ`. Establish `ha2 : a * a - 1 ∈ 𝔮`. Establish `: a * a - 1 = (a + 1) * (a - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `𝔮.mul_mem_left _ ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩ : J ∣ Ideal.span {a * a}` from `Ideal.dvd_span_singleton.mpr (J.mul_mem_left _ haJ)`. Establish `hM' : IsCoprime M 𝔮`. Use `isCoprime_span ha2` as an intermediate fact. Rewrite `this` using `[hM]`. Conclude with `this.of_mul_left_right`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hM0 : M ≠ ⊥`. Introduce and unpack `rfl`. Simplify using `[ha0] at hM`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hp`. Establish `e1 : heckeIdeal L χ (J * M) = 1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hR.2.2 _ (mul_ne_zero hJ0 hM0) (hJ.mul_left hM')).2 ⟨a * a, 1, ⟨mul_ne_zero ha0 ha0, one_ne_zero, isCoprime_span ha2, isCoprime_span (by simp), ha2, fun φ => ?_⟩, by simp [hM]⟩ χ` and prove the remaining obligations. Use `mul_self_pos.2 (emb_ne_zero φ ha0)` as an intermediate fact. Simplify using `using this`. Establish `e2 : heckeIdeal L χ (I * M) = 1`. Use `(hR.2.2 _ (mul_ne_zero hI0 hM0) (hI.mul_left hM')).2 ⟨a * a * α, β, ⟨mul_ne_zero (mul_ne_zero ha0 ha0) h1, h2, ?_, h4, ?_, fun φ => ?_⟩, ?_⟩ χ` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.span_singleton_mul_span_singleton]`. Conclude with `(isCoprime_span ha2).mul_left h3`. Establish `: a * a * α - β = α * (a * a - 1) + (α - β)` using `by ring`. Rewrite using `[this]`. Conclude with `𝔮.add_mem (𝔮.mul_mem_left _ ha2) h5`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_pos (mul_self_pos.2 (emb_ne_zero φ ha0)) (h6 φ)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Rewrite using `[mul_right_comm, h, mul_right_comm, ← hM, Ideal.span_singleton_mul_span_singleton]`. Rewrite `e1` using `[GlobalTheory.NT.Model.heckeIdeal_mul L χ hJ0 hM0]`. Rewrite `e2` using `[GlobalTheory.NT.Model.heckeIdeal_mul L χ hI0 hM0]`.
-
-Conclude with `mul_right_cancel₀ (right_ne_zero_of_mul_eq_one e1) (e2.trans e1.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeIdeal_eq_of_ray (hR : IsRay L 𝔮) {I J : Ideal (𝓞 K)} (hI0 : I ≠ ⊥) (hJ0 : J ≠ ⊥)
     (hI : IsCoprime I 𝔮) (hJ : IsCoprime J 𝔮) {α β : 𝓞 K} (hp : RayPair 𝔮 α β)
@@ -133,15 +131,15 @@ theorem heckeIdeal_eq_of_ray (hR : IsRay L 𝔮) {I J : Ideal (𝓞 K)} (hI0 : I
   exact mul_right_cancel₀ (right_ne_zero_of_mul_eq_one e1) (e2.trans e1.symm)
 
 /- English proof (translation)
-Set `S : Submonoid (L ≃ₐ[K] L)` to `{ carrier := {σ | ∃ I : Ideal (𝓞 K), I ≠ ⊥ ∧ IsCoprime I 𝔮 ∧ ∀ χ : (L ≃ₐ[K] L) →* ℂˣ, heckeIdeal L χ I = (χ σ : ℂˣ)} one_mem' := ⟨1, one_ne_zero, isCoprime_one_left, fun χ => by rw [GlobalTheory.NT.Model.heckeIdeal_top]; simp⟩ mul_mem' := by`. Introduce and unpack `x y ⟨I, hI0, hI, hx⟩ ⟨J, hJ0, hJ, hy⟩`. Use `⟨I * J, mul_ne_zero hI0 hJ0, hI.mul_left hJ, fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.NT.Model.heckeIdeal_mul L χ hI0 hJ0, hx, hy]`. Simplify using `}`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hσ : σ ∈ Subgroup.closure {σ : L ≃ₐ[K] L | ∃ 𝔭 : HeightOneSpectrum (𝓞 K), ¬ 𝔭.asIdeal ∣ 𝔮 ∧ GlobalTheory.NT.IsFrob L 𝔭 σ}`. Rewrite using `[hR.2.1]`. Discharge the goal by the elementary cases of `trivial`. Express the relevant statement in the definitionally equal form `σ ∈ S`. Proceed by induction on `hσ using Subgroup.closure_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨v, hv, hx⟩` from `hx`. Use `⟨v.asIdeal, v.ne_bot, ?_, fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv (Ideal.dvd_iff_le.2 (le_sup_right.trans (v.isMaximal.eq_of_le hne le_sup_left).ge))`. Rewrite using `[GlobalTheory.NT.Model.heckeIdeal_prime, heckeVal_of_unramIn L χ (hR.1 v hv) hx]`. Consider the case `one => exact S.one_mem`. Consider the case `mul x y _ _ hx hy => exact S.mul_mem hx hy`. Consider the case `inv x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: x⁻¹ = x ^ (orderOf x - 1)`. Rewrite using `[inv_eq_iff_mul_eq_one, ← pow_succ', Nat.sub_add_cancel (orderOf_pos x), pow_orderOf_eq_one]`. Rewrite using `[this]`. Conclude with `S.pow_mem hx _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ideal [IsGalois K L] (hR : IsRay L 𝔮) (σ : L ≃ₐ[K] L) :
     ∃ I : Ideal (𝓞 K), I ≠ ⊥ ∧ IsCoprime I 𝔮 ∧ ∀ χ : (L ≃ₐ[K] L) →* ℂˣ, heckeIdeal L χ I = (χ σ : ℂˣ) := by
@@ -174,27 +172,25 @@ theorem exists_ideal [IsGalois K L] (hR : IsRay L 𝔮) (σ : L ≃ₐ[K] L) :
     exact S.pow_mem hx _
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ 𝔮 h𝔮 hR`. Use `choose s hs0 hs hsx using exists_ideal hR`. Set `cl : (L ≃ₐ[K] L) → ClassGroup (𝓞 K)` to `fun x => ClassGroup.mk0 ⟨s x, mem_nonZeroDivisors_of_ne_zero (hs0 x)⟩`. Establish `key : ∀ x, ∃ a b : 𝓞 K, a ≠ 0 ∧ b ≠ 0 ∧ a - 1 ∈ 𝔮 ∧ IsCoprime (Ideal.span {b}) 𝔮 ∧ Ideal.span {a} * s x = Ideal.span {b} * s (Function.invFun cl (cl x))`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : cl x = cl (Function.invFun cl (cl x))` using `(Function.invFun_eq ⟨x, rfl⟩).symm`. Take `⟨a, b, -, hb, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.mp h`. Conclude with `exists_good (hs0 x) (hs0 _) (hs x) (hs _) hb hxy`. Use `choose a b ha0 hb0 ha hb hab using key`. Set `F : (L ≃ₐ[K] L) → (ClassGroup (𝓞 K) × (𝓞 K ⧸ 𝔮)) × ((K →+* ℝ) → Prop)` to `fun x => ((cl x, Ideal.Quotient.mk 𝔮 (b x)), fun φ => 0 < φ (a x : K) * φ (b x : K))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hF : Function.Injective F`. Introduce `x y hxy`. Take `⟨h12, h3⟩` from `Prod.mk.inj hxy`. Take `⟨h1, h2⟩` from `Prod.mk.inj h12`. Rewrite `h2` using `[Ideal.Quotient.eq]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : RayPair 𝔮 (b x * a y) (a x * b y)`. Use `⟨mul_ne_zero (hb0 x) (ha0 y), mul_ne_zero (ha0 x) (hb0 y), ?_, ?_, ?_, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.span_singleton_mul_span_singleton]`. Conclude with `(hb x).mul_left (isCoprime_span (ha y))`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(isCoprime_span (ha x)).mul_left (hb y)`. Establish `: b x * a y - a x * b y = b x * (a y - 1) - b y * (a x - 1) + (b x - b y)` using `by ring`. Rewrite using `[this]`. Conclude with `𝔮.add_mem (𝔮.sub_mem (𝔮.mul_mem_left _ (ha y)) (𝔮.mul_mem_left _ (ha x))) h2`. Establish `h4 : 0 < φ (a x : K) * φ (b x : K) ↔ 0 < φ (a y : K) * φ (b y : K)` using `(congrFun h3 φ).to_iff`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Establish `h5` using `mul_ne_zero (emb_ne_zero φ (ha0 x)) (emb_ne_zero φ (hb0 x))`. Establish `h6` using `mul_ne_zero (emb_ne_zero φ (ha0 y)) (emb_ne_zero φ (hb0 y))`. Establish `h7 : 0 < (φ (a x : K) * φ (b x : K)) * (φ (a y : K) * φ (b y : K))`. Distinguish the cases in `h : 0 < φ (a x : K) * φ (b x : K)`. Conclude with `mul_pos h (h4.1 h)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_pos_of_neg_of_neg (lt_of_le_of_ne (not_lt.1 h) h5) (lt_of_le_of_ne (not_lt.1 fun h' => h (h4.2 h')) h6)`. Use `h7 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `he : s x * Ideal.span {a x * b y} = s y * Ideal.span {b x * a y}`. Establish `e1` using `hab x`. Establish `e2` using `hab y`. Rewrite `e2` using `[← h1]`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_mul_span_singleton, ← mul_assoc, mul_comm (s x), e1, mul_comm (s y), mul_assoc _ _ (s y), e2]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hχ : ∀ χ : (L ≃ₐ[K] L) →* ℂˣ, χ x = χ y` using `fun χ => by`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hsx, ← hsx]`. Conclude with `heckeIdeal_eq_of_ray hR (hs0 x) (hs0 y) (hs x) (hs y) hp he χ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hne`. Use `letI : CommGroup (L ≃ₐ[K] L) := IsMulCommutative.instCommGroup`. Take `⟨χ, h⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (L ≃ₐ[K] L) ℂ (a := x * y⁻¹) (by rwa [ne_eq, mul_inv_eq_one])`. Apply `h` to reduce the goal to its premises. Rewrite using `[map_mul, map_inv, hχ χ, mul_inv_cancel]`.
-
-Use `haveI : Finite (𝓞 K ⧸ 𝔮) := Ideal.finiteQuotientOfFreeOfNeBot 𝔮 h𝔮`. Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Use `(Nat.card_le_card_of_injective F hF).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Nat.card_prod, Nat.card_prod, Ideal.absNorm_apply, Submodule.cardQuot_apply, classNumber, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card (α := _ → Prop)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem finrank_le : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [IsAbelianGalois K L] (𝔮 : Ideal (𝓞 K)), 𝔮 ≠ ⊥ → IsRay L 𝔮 →

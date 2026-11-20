@@ -18,9 +18,9 @@ open MvPolynomial
 namespace GlobalTheory.CompanionTheory.Ar.ChartCover
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [mcPts, Set.mem_ofPred_eq] at hz`. Establish `hle : pC P ≤ RingHom.ker (MvPolynomial.eval z)`. Unfold `pC`. Rewrite using `[Ideal.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `RingHom.mem_ker.mpr (hz.2 f hf)`. Conclude with `RingHom.mem_ker.mp (hle hg)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private lemma eval_eq_zero_of_mem_mcPts' {K : Type} {J : K → Type}
     (P : Ideal (MRing J)) (z : (Σ k, J k) → ℂ) (hz : z ∈ mcPts P) :
@@ -35,9 +35,9 @@ private lemma eval_eq_zero_of_mem_mcPts' {K : Type} {J : K → Type}
   exact RingHom.mem_ker.mp (hle hg)
 
 /- English proof (translation)
-Establish `hv` using `eval_eq_zero_of_mem_mcPts' P z hz`. Simplify using `only [mcPts, Set.mem_ofPred_eq] at hz ⊢`. Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, mul_ne_zero (hc k) hi⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hmem : MvPolynomial.map (Int.castRingHom ℂ) f ∈ pC P`. Unfold `pC`. Conclude with `Ideal.subset_span ⟨f, hf, rfl⟩`. Conclude with `ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul hP c z hv _ hmem`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma torusSmul_mem_mcPts' {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
     (P : Ideal (MRing J)) (hP : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal (pC P))
@@ -54,31 +54,27 @@ private lemma torusSmul_mem_mcPts' {K : Type} [Fintype K] {J : K → Type} [∀ 
     exact ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul hP c z hv _ hmem
 
 /- English proof (translation)
-Introduce `K _ J _ P hP C O hO hcov`. Use `set S : Set ((Σ k, J k) → ℂ) := {w | (∀ k, ∑ i, ‖w ⟨k, i⟩‖ ^ 2 = 1) ∧ ∀ f ∈ P, MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) f) = 0} with hS`. Establish `hSsub : S ⊆ mcPts P`. Introduce `w hw`. Simplify using `only [hS, Set.mem_ofPred_eq] at hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mcPts, Set.mem_ofPred_eq]`. Use `⟨fun k => ?_, hw.2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1` using `hw.1 k`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h] at h1`. Establish `hScl : IsClosed S`. Rewrite using `[hS]`. Simplify using `only [Set.ofPred_and, Set.ofPred_forall]`. Use `IsClosed.inter (isClosed_iInter fun k => ?_) (isClosed_iInter fun f => isClosed_iInter fun _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isClosed_eq (continuous_finsetSum _ fun i _ => (continuous_norm.comp (continuous_apply _)).pow 2) continuous_const`. Conclude with `isClosed_eq (MvPolynomial.continuous_eval _) continuous_const`. Establish `hSb : Bornology.IsBounded S`. Use `(Metric.isBounded_closedBall (x := (0 : (Σ k, J k) → ℂ)) (r := 1)).subset ?_` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [hS, Set.mem_ofPred_eq] at hw`. Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce and unpack `⟨k, i⟩`. Establish `h2 : ‖w ⟨k, i⟩‖ ^ 2 ≤ 1`. Rewrite using `[← hw.1 k]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.single_le_sum (f := fun j => ‖w ⟨k, j⟩‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`. Use polynomial arithmetic with `[norm_nonneg (w ⟨k, i⟩)]`. Establish `hScpt : IsCompact S` using `Metric.isCompact_of_isClosed_isBounded hScl hSb`. Take `⟨t, ht⟩` from `hScpt.elim_finite_subcover O hO (fun w hw => Set.mem_iUnion.2 (hcov w (hSsub hw)))`. Use `⟨t.card, fun a => (t.equivFin.symm a : C), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Establish `hz0` using `hz`. Simplify using `only [mcPts, Set.mem_ofPred_eq] at hz0`. Establish `hpos : ∀ k, 0 < ∑ i, ‖z ⟨k, i⟩‖ ^ 2`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨i, hi⟩` from `hz0.1 k`. Conclude with `lt_of_lt_of_le (pow_pos (norm_pos_iff.2 hi) 2) (Finset.single_le_sum (f := fun j => ‖z ⟨k, j⟩‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i))`. Use `set c : K → ℂ := fun k => (((Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2))⁻¹ : ℝ) : ℂ) with hcdef`. Establish `hc : ∀ k, c k ≠ 0`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcdef]`. Simplify using `only [ne_eq, Complex.ofReal_eq_zero, inv_eq_zero]`. Conclude with `(Real.sqrt_pos.2 (hpos k)).ne'`. Establish `hck : ∀ k, ‖c k‖ ^ 2 = (∑ i, ‖z ⟨k, i⟩‖ ^ 2)⁻¹`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcdef]`. Simplify using `only`. Rewrite using `[Complex.norm_real, norm_inv, Real.norm_of_nonneg (Real.sqrt_nonneg _), inv_pow, Real.sq_sqrt (hpos k).le]`. Establish `hmem` using `torusSmul_mem_mcPts' P hP c hc z hz`. Establish `hw : torusSmul c z ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm` using `hmem`. Simplify using `only [mcPts, Set.mem_ofPred_eq] at hm`. Simplify using `only [hS, Set.mem_ofPred_eq]`. Use `⟨fun k => ?_, hm.2⟩` and prove the remaining obligations. Establish `e1 : ∀ i, ‖torusSmul c z ⟨k, i⟩‖ ^ 2 = ‖c k‖ ^ 2 * ‖z ⟨k, i⟩‖ ^ 2` using `fun i => by show ‖c k * z ⟨k, i⟩‖ ^ 2 = _`.
-
-Rewrite using `[norm_mul, mul_pow]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => e1 i), ← Finset.mul_sum, hck k, inv_mul_cancel₀ (hpos k).ne']`. Establish `hcov'` using `ht hw`. Simplify using `only [Set.mem_iUnion] at hcov'`. Take `⟨i, hi, hiO⟩` from `hcov'`.
-
-Use `⟨t.equivFin ⟨i, hi⟩, c, hc, ?_, hmem⟩` and prove the remaining obligations. Use `show torusSmul c z ∈ O ((t.equivFin.symm (t.equivFin ⟨i, hi⟩) : C))`. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `hiO`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mcPts_finite_cover_up_to_torus :
     ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J))

@@ -21,7 +21,7 @@ theorem cr_quot_mk (E : GLOps n K V) (Z : Submodule K V) (hZ : IsStableUnderOper
     cr_quot E Z hZ a b (Z.mkQ x) = Z.mkQ (E a b x) := rfl
 
 /- English proof (translation)
-Introduce `a b c d`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective Z y`. Establish `h` using `congrArg (fun f : Module.End K V => Z.mkQ (f x)) (hR a b c d)`. Apply the tactic sequence `split_ifs at h ⊢ <;> simpa [cr_quot] using h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cr_quot_rel (E : GLOps n K V) (hR : SatisfiesGLRelations E) (Z : Submodule K V) (hZ : IsStableUnderOperators E Z) :
     SatisfiesGLRelations (cr_quot E Z hZ) := by
@@ -32,9 +32,9 @@ theorem cr_quot_rel (E : GLOps n K V) (hR : SatisfiesGLRelations E) (Z : Submodu
   split_ifs at h ⊢ <;> simpa [cr_quot] using h
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[weightSp, Submodule.mem_iInf]`. Introduce `a`. Establish `h` using `LinearMap.mem_ker.mp (hx a)`. Rewrite using `[LinearMap.mem_ker]`. Establish `e : (cr_quot E Z hZ a a - (ν a : K) • (1 : Module.End K (V ⧸ Z))) (Z.mkQ x) = Z.mkQ ((E a a - (ν a : K) • (1 : Module.End K V)) x)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[cr_quot]`. Rewrite using `[e, h, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cr_quot_wt (E : GLOps n K V) (Z : Submodule K V) (hZ : IsStableUnderOperators E Z) (ν : Fin n → ℤ) (x : V)
     (hx : x ∈ weightSp E ν) : Z.mkQ x ∈ weightSp (cr_quot E Z hZ) ν := by
@@ -48,9 +48,9 @@ theorem cr_quot_wt (E : GLOps n K V) (Z : Submodule K V) (hZ : IsStableUnderOper
   rw [e, h, map_zero]
 
 /- English proof (translation)
-Introduce `y _`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective Z y`. Establish `hx : x ∈ ⨆ ν, weightSp E ν` using `by rw [hT]; exact Submodule.mem_top`. Establish `h1 : Z.mkQ x ∈ Submodule.map Z.mkQ (⨆ ν, weightSp E ν)` using `Submodule.mem_map_of_mem hx`. Rewrite `h1` using `[Submodule.map_iSup]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : (⨆ ν, Submodule.map Z.mkQ (weightSp E ν)) ≤ ⨆ ν, weightSp (cr_quot E Z hZ) ν`. Use `iSup_mono fun ν => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `cr_quot_wt E Z hZ ν w hw`. Conclude with `hle h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cr_quot_top (E : GLOps n K V) (Z : Submodule K V) (hZ : IsStableUnderOperators E Z)
     (hT : (⨆ ν, weightSp E ν) = ⊤) : (⊤ : Submodule K (V ⧸ Z)) ≤ ⨆ ν, weightSp (cr_quot E Z hZ) ν := by
@@ -66,17 +66,17 @@ theorem cr_quot_top (E : GLOps n K V) (Z : Submodule K V) (hZ : IsStableUnderOpe
   exact hle h1
 
 /- English proof (translation)
-Establish `key : ∀ a b, E a b * E b a * E c d - E c d * (E a b * E b a) = E a b * ((if a = c then E b d else 0) - if d = b then E c a else 0) + ((if b = c then E a d else 0) - if d = a then E c b else 0) * E b a`. Introduce `a b`. Rewrite using `[← hR b a c d, ← hR a b c d]`. Use `noncomm_ring`. Establish `S1 : ∑ a, ∑ b, E a b * (if a = c then E b d else 0) = ∑ b, E c b * E b d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `a _ ha`. Simplify using `[ha]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `S2 : ∑ a, ∑ b, E a b * (if d = b then E c a else 0) = ∑ a, E a d * E c a`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `S3 : ∑ a, ∑ b, (if b = c then E a d else 0) * E b a = ∑ a, E a d * E c a`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `S4 : ∑ a, ∑ b, (if d = a then E c b else 0) * E b a = ∑ b, E c b * E b d`. Rewrite using `[Finset.sum_eq_single d]`. Simplify using the standard rewrite rules. Introduce `a _ ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm ha]`. Simplify using the standard rewrite rules. Establish `hexp : cr_C E * E c d - E c d * cr_C E = ∑ a, ∑ b, (E a b * E b a * E c d - E c d * (E a b * E b a))`. Simplify using `only [cr_C, Finset.sum_mul, Finset.mul_sum, Finset.sum_sub_distrib]`. Rewrite using `[← sub_eq_zero, hexp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [key, mul_sub, sub_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[S1, S2, S3, S4]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private lemma casimir_commute_E (E : GLOps n K V) (hR : SatisfiesGLRelations E) (c d : Fin n) :
     cr_C E * E c d = E c d * cr_C E := by
@@ -113,19 +113,19 @@ private lemma casimir_commute_E (E : GLOps n K V) (hR : SatisfiesGLRelations E) 
   abel
 
 /- English proof (translation)
-Establish `hw : ∀ a, E a a v = (ν a : K) • v`. Introduce `a`. Establish `h0` using `hv.2.1`. Rewrite `h0` using `[weightSp, Submodule.mem_iInf]`. Establish `h` using `LinearMap.mem_ker.mp (h0 a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h` using `[sub_eq_zero]`. Establish `hterm : ∀ a b, E a b (E b a v) = (if a = b then (ν a : K) ^ 2 else if a < b then (ν a : K) - ν b else 0) • v`. Introduce `a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Establish `hc` using `congrArg (fun f : Module.End K V => f v) (hR a b b a)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[if_neg h.ne, if_pos h, sub_smul]`. Simplify `hc` using `[hv.2.2 a b h, hw]`. Simplify using `[hw, sq, mul_smul]`. Rewrite using `[if_neg (ne_of_gt h), if_neg (not_lt.mpr h.le), hv.2.2 b a h, map_zero, zero_smul]`. Establish `hs : (∑ a, ∑ b, (if a = b then (ν a : K) ^ 2 else if a < b then (ν a : K) - ν b else 0)) = (cr_c ν : K)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `split : ∀ a b, (if a = b then (ν a : K) ^ 2 else if a < b then (ν a : K) - ν b else 0) = (if a = b then (ν a : K) ^ 2 else 0) + (if a < b then (ν a : K) - ν b else 0)`. Introduce `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `only [cr_c, cr_h]`. Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_congr rfl fun b _ => split a b, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Rewrite using `[← hs, Finset.sum_smul]`. Unfold `cr_C`. Rewrite using `[LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hterm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma casimir_apply_eq_smul_of_isHWV (E : GLOps n K V) (hR : SatisfiesGLRelations E) (ν : Fin n → ℤ) (v : V) (hv : IsHWV E ν v) :
     cr_C E v = (cr_c ν : K) • v := by
@@ -169,9 +169,9 @@ private lemma casimir_apply_eq_smul_of_isHWV (E : GLOps n K V) (hR : SatisfiesGL
   rfl
 
 /- English proof (translation)
-Establish `h : Umon E ≤ Submonoid.centralizer {cr_C E}`. Unfold `Umon`. Rewrite using `[Submonoid.closure_le]`. Introduce and unpack `_ ⟨⟨c, d⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submonoid.mem_centralizer_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `g rfl`. Conclude with `casimir_commute_E E hR c d`. Conclude with `Submonoid.mem_centralizer_iff.mp (h hu) _ rfl`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private lemma casimir_commute_of_mem_Umon (E : GLOps n K V) (hR : SatisfiesGLRelations E) (u : Module.End K V) (hu : u ∈ Umon E) :
     cr_C E * u = u * cr_C E := by
@@ -185,9 +185,9 @@ private lemma casimir_commute_of_mem_Umon (E : GLOps n K V) (hR : SatisfiesGLRel
   exact Submonoid.mem_centralizer_iff.mp (h hu) _ rfl
 
 /- English proof (translation)
-Use `Polynomial.induction_on p ?_ ?_ ?_` and prove the remaining obligations. Introduce `a`. Simplify using the standard rewrite rules. Introduce `p q hp hq`. Simplify using `only [map_add, LinearMap.add_apply, hp, hq, Polynomial.eval_add, add_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `k a h`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Polynomial.eval_mul, Polynomial.eval_X]`. Express the relevant statement in the definitionally equal form `(aeval f (Polynomial.C a * X ^ k)) (f t) = _`. Rewrite using `[ht, map_smul, h, smul_smul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private lemma aeval_apply_eq_eval_smul_of_eigenvector (f : Module.End K V) (c : K) (t : V) (ht : f t = c • t) (p : K[X]) :
     aeval f p t = p.eval c • t := by
@@ -202,11 +202,11 @@ private lemma aeval_apply_eq_eval_smul_of_eigenvector (f : Module.End K V) (c : 
     rw [ht, map_smul, h, smul_smul, mul_comm]
 
 /- English proof (translation)
-Establish `hle : isotypicPartIn E W ν ≤ LinearMap.ker (cr_C E - (cr_c ν : K) • (1 : Module.End K V))`. Unfold `isotypicPartIn`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, v, _, hH, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : cr_C E (u v) = u (cr_C E v)`. Express the relevant statement in the definitionally equal form `(cr_C E * u) v = (u * cr_C E) v`. Rewrite using `[casimir_commute_of_mem_Umon E hR u hu]`. Simplify using `[h1, casimir_apply_eq_smul_of_isHWV E hR ν v hH]`. Establish `h` using `LinearMap.mem_ker.mp (hle hx)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `h` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma casimir_apply_eq_smul_of_mem_isotypicPartIn (E : GLOps n K V) (hR : SatisfiesGLRelations E) (W : Submodule K V) (ν : Fin n → ℤ) (x : V)
     (hx : x ∈ isotypicPartIn E W ν) : cr_C E x = (cr_c ν : K) • x := by
@@ -223,9 +223,9 @@ private lemma casimir_apply_eq_smul_of_mem_isotypicPartIn (E : GLOps n K V) (hR 
   simpa [sub_eq_zero] using h
 
 /- English proof (translation)
-Establish `hle : (⨆ ν ∈ {ν : Fin n → ℤ | cr_c ν = c0}, isotypicPartIn E (Wx ν) ν) ≤ LinearMap.ker (cr_C E - (c0 : K) • (1 : Module.End K V))`. Use `iSup₂_le fun ν hν => ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`. Establish `h` using `casimir_apply_eq_smul_of_mem_isotypicPartIn E hR (Wx ν) ν x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hν` using `[Set.mem_setOf_eq]`. Rewrite `h` using `[hν]`. Simplify using `[h]`. Establish `h` using `LinearMap.mem_ker.mp (hle hz)`. Simplify `h` using `[sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma casimir_apply_eq_smul_of_mem_iSup_isotypic (E : GLOps n K V) (hR : SatisfiesGLRelations E) (Wx : (Fin n → ℤ) → Submodule K V) (c0 : ℤ) (z : V)
     (hz : z ∈ ⨆ ν ∈ {ν : Fin n → ℤ | cr_c ν = c0}, isotypicPartIn E (Wx ν) ν) : cr_C E z = (c0 : K) • z := by
@@ -242,19 +242,17 @@ private lemma casimir_apply_eq_smul_of_mem_iSup_isotypic (E : GLOps n K V) (hR :
   simpa [sub_eq_zero] using h
 
 /- English proof (translation)
-Establish `hK2 : ∀ t ∈ (⨆ ν ∈ {ν : Fin n → ℤ | cr_c ν = c0}, isotypicPartIn E (Wx ν) ν), ∀ p : K[X], aeval (cr_C E) p t = p.eval (c0 : K) • t` using `fun t ht p => aeval_apply_eq_eval_smul_of_eigenvector _ _ t (casimir_apply_eq_smul_of_mem_iSup_isotypic E hR Wx c0 t ht) p`. Use `Submodule.iSup_induction (x := z) (fun ν => isotypicPartIn E (Wx ν) ν) hz ?_ ?_ ?_` and prove the remaining obligations. Introduce `ν x hx`. Establish `hxC` using `casimir_apply_eq_smul_of_mem_isotypicPartIn E hR (Wx ν) ν x hx`. Distinguish the cases in `hc : cr_c ν = c0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Establish `hm : x ∈ ⨆ ν ∈ {ν : Fin n → ℤ | cr_c ν = c0}, isotypicPartIn E (Wx ν) ν` using `Submodule.mem_iSup_of_mem ν (Submodule.mem_iSup_of_mem hc hx)`. Simplify using `using hm`. Establish `hne : (c0 : K) - (cr_c ν : K) ≠ 0`. Rewrite using `[sub_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hc (Int.cast_injective h).symm`. Use `⟨Polynomial.C ((c0 : K) - cr_c ν)⁻¹ * (X - Polynomial.C (cr_c ν : K)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Conclude with `inv_mul_cancel₀ hne`. Rewrite using `[aeval_apply_eq_eval_smul_of_eigenvector _ _ x hxC]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `⟨1, by simp, by simp⟩`. Introduce `x y hx hy`. Take `⟨r1, e1, m1⟩` from `hx`. Take `⟨r2, e2, m2⟩` from `hy`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r1 * r2, by simp [e1, e2], ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, map_mul]`. Express the relevant statement in the definitionally equal form `aeval (cr_C E) r2 (aeval (cr_C E) r1 x) ∈ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK2 _ m1]`. Conclude with `Submodule.smul_mem _ _ m1`. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `aeval (cr_C E) r1 (aeval (cr_C E) r2 y) ∈ _`. Rewrite using `[hK2 _ m2]`.
-
-Conclude with `Submodule.smul_mem _ _ m2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem casimir_polynomial_isolates_level [CharZero K] (E : GLOps n K V) (hR : SatisfiesGLRelations E) (Wx : (Fin n → ℤ) → Submodule K V) (z : V)
     (hz : z ∈ ⨆ ν, isotypicPartIn E (Wx ν) ν) (c0 : ℤ) : ∃ r : K[X], r.eval (c0 : K) = 1 ∧
@@ -296,22 +294,20 @@ theorem casimir_polynomial_isolates_level [CharZero K] (E : GLOps n K V) (hR : S
       exact Submodule.smul_mem _ _ m2
 
 /- English proof (translation)
-Conclude with `casimir_apply_eq_smul_of_mem_iSup_isotypic E hR Wx c0 z hz`.
+A detailed English derivation is pending.
 -/
 theorem casimir_acts_scalar_on_level (E : GLOps n K V) (hR : SatisfiesGLRelations E) (Wx : (Fin n → ℤ) → Submodule K V) (c0 : ℤ) (z : V)
     (hz : z ∈ ⨆ ν ∈ {ν : Fin n → ℤ | cr_c ν = c0}, isotypicPartIn E (Wx ν) ν) : cr_C E z = (c0 : K) • z := by
   exact casimir_apply_eq_smul_of_mem_iSup_isotypic E hR Wx c0 z hz
 
 /- English proof (translation)
-Unfold `weightHeight'`. Proceed by induction on `h using AddSubmonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, b, hab, rfl⟩` from `hx`. Use `right`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (∑ i : Fin n, ((i : ℕ) : ℤ) * rootW a b i) = ((a : ℕ) : ℤ) - ((b : ℕ) : ℤ)`. Simplify using `[rootW, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`. Rewrite using `[e]`. Establish `hab' : (a : ℕ) < (b : ℕ)` using `hab`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Consider the case `zero => left`. Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy`. Apply the tactic sequence `rcases hx with rfl | hx <;> rcases hy with rfl | hy`. Use `left`.
+Both sides reduce to the same expression. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Use `right`. Simplify using `using hy`. Use `right`. Simplify using `using hx`.
-
-Use `right`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib, neg_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cr_Pos_zero_or {β : Fin n → ℤ} (h : β ∈ cr_Pos n) : β = 0 ∨ 0 < weightHeight' β := by
   unfold weightHeight'
@@ -338,13 +334,13 @@ theorem cr_Pos_zero_or {β : Fin n → ℤ} (h : β ∈ cr_Pos n) : β = 0 ∨ 0
       linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hle : (⨆ ν ∈ {ν : Fin n → ℤ | cr_c ν = cr_c mu}, isotypicPartIn E (Wx ν) ν) ≤ cr_WS E {τ | ∃ ν, Dominant ν ∧ cr_c ν = cr_c mu ∧ ν - τ ∈ cr_Pos n}`. Use `iSup₂_le fun ν hν x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Establish `hd` using `cr_isoIn_dom E hR (Wx ν) hx hx0`. Establish `hsub : weightsBelow ν ⊆ {τ | ∃ ν, Dominant ν ∧ cr_c ν = cr_c mu ∧ ν - τ ∈ cr_Pos n}` using `fun τ hτ => ⟨ν, hd, hν, hτ⟩`. Conclude with `cr_WS_mono E hsub (isotypic_component_le_lower_weights E hR (Wx ν) ν hx)`. Take `⟨ν, hd, hc, hp⟩` from `cr_WS_mem E (hle hz) hzw hne`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ν - mu = (ν - ν') + (ν' - mu)` using `by abel`. Establish `h1 : ν - mu ∈ cr_Pos n` using `by rw [e]; exact add_mem hp hν'`. Establish `h2 : 0 < weightHeight' (ν - mu)`. Rewrite using `[e, cr_ht_add]`. Use `cr_Pos_ht hp` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `cr_c_lt hd hmu h1 h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem casimir_isotypic_no_higher_weight [CharZero K] [FiniteDimensional K V] (E : GLOps n K V) (hR : SatisfiesGLRelations E)
     (Wx : (Fin n → ℤ) → Submodule K V) (mu : Fin n → ℤ) (hmu : Dominant mu) (ν' : Fin n → ℤ)

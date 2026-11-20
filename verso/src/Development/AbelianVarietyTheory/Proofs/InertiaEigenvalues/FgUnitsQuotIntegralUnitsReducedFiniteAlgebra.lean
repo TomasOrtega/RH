@@ -8,11 +8,9 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.UnitLemma.NormUnits
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Use `choose S hS using fun i => Group.fg_iff.mp (hG i)`. Use `Group.fg_iff.mpr ⟨⋃ i, Pi.mulSingle i '' S i, ?_, Set.finite_iUnion fun i => (hS i).2.image _⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.univ_prod_mulSingle x]`. Use `Subgroup.prod_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hx : x i ∈ Subgroup.closure (S i)` using `by rw [(hS i).1]; trivial`. Establish `h1 : Pi.mulSingle i (x i) ∈ (Subgroup.closure (S i)).map (MonoidHom.mulSingle G i)` using `⟨x i, hx, rfl⟩`. Rewrite `h1` using `[MonoidHom.map_closure]`.
-
-Conclude with `Subgroup.closure_mono (fun y hy => Set.mem_iUnion.2 ⟨i, hy⟩) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem group_fg_pi {ι : Type} [Finite ι] (G : ι → Type) [∀ i, CommGroup (G i)]
     (hG : ∀ i, Group.FG (G i)) : Group.FG (∀ i, G i) := by
@@ -32,11 +30,11 @@ theorem group_fg_pi {ι : Type} [Finite ι] (G : ι → Type) [∀ i, CommGroup 
   exact Subgroup.closure_mono (fun y hy => Set.mem_iUnion.2 ⟨i, hy⟩) h1
 
 /- English proof (translation)
-Use `Fintype.ofFinite (MaximalSpectrum A)` as an intermediate fact. Use `choose p hpm hp using hx`. Use `⟨∏ I, p I, monic_prod_of_monic _ _ fun I _ => hpm I, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def]`. Apply `(IsArtinianRing.equivPi A).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `J`. Rewrite using `[map_zero, Pi.zero_apply, IsArtinianRing.equivPi_apply, map_prod, map_prod]`. Use `Finset.prod_eq_zero (Finset.mem_univ J) ?_` and prove the remaining obligations. Establish `h2` using `aeval_algHom_apply (Ideal.Quotient.mkₐ O J.asIdeal) x (p J)`. Rewrite `h2` using `[Ideal.Quotient.mkₐ_eq_mk]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, aeval_def]`. Conclude with `hp J`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_forall_quot {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
     [IsArtinianRing A] [IsReduced A] (x : A)
@@ -57,21 +55,19 @@ theorem isIntegral_of_forall_quot {O A : Type} [CommRing O] [CommRing A] [Algebr
   exact hp J
 
 /- English proof (translation)
-Introduce `K hL A _ _ _ _ _ _`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite K.E A`. Use `Fintype.ofFinite (MaximalSpectrum A)` as an intermediate fact. Establish `hfg : ∀ I : MaximalSpectrum A, Group.FG ((A ⧸ I.asIdeal)ˣ ⧸ intUnits K.O (A ⧸ I.asIdeal))`. Introduce `I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Use `haveI := I.isMaximal`. Use `letI : Field (A ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`. Use `haveI : FiniteDimensional K.E (A ⧸ I.asIdeal) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ K.E I.asIdeal).toLinearMap Ideal.Quotient.mk_surjective`. Conclude with `hL (A ⧸ I.asIdeal)`. Establish `hP` using `group_fg_pi (fun I : MaximalSpectrum A => (A ⧸ I.asIdeal)ˣ ⧸ intUnits K.O (A ⧸ I.asIdeal)) hfg`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `ψ : Aˣ →* ∀ I : MaximalSpectrum A, (A ⧸ I.asIdeal)ˣ ⧸ intUnits K.O (A ⧸ I.asIdeal)` to `MonoidHom.pi fun I => (QuotientGroup.mk' _).comp (Units.map (Ideal.Quotient.mk I.asIdeal).toMonoidHom)`. Establish `hsurj : Function.Surjective ψ`. Introduce `c`. Use `choose u hu using fun I => QuotientGroup.mk'_surjective _ (c I)`. Set `e` to `IsArtinianRing.equivPi A`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨Units.map (e.symm : (∀ I : MaximalSpectrum A, A ⧸ I.asIdeal) →* A) (MulEquiv.piUnits.symm u), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `I`. Rewrite using `[← hu I]`. Express the relevant statement in the definitionally equal form `QuotientGroup.mk' _ _ = _`. Use `congr 1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Establish `h3 : ∀ z : ∀ I : MaximalSpectrum A, A ⧸ I.asIdeal, Ideal.Quotient.mk I.asIdeal (e.symm z) = z I` using `fun z => by`. Rewrite using `[← IsArtinianRing.equivPi_apply A (e.symm z) I]`. Conclude with `congrFun (e.apply_symm_apply z) I`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3]`. Both sides reduce to the same expression. Establish `hker : ψ.ker ≤ intUnits K.O A`. Introduce `t ht`. Establish `hI : ∀ I : MaximalSpectrum A, Units.map (Ideal.Quotient.mk I.asIdeal).toMonoidHom t ∈ intUnits K.O (A ⧸ I.asIdeal)` using `fun I => (QuotientGroup.eq_one_iff _).mp (congrFun (MonoidHom.mem_ker.mp ht) I)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨NormUnits.isIntegral_of_forall_quot _ fun I => (hI I).1, NormUnits.isIntegral_of_forall_quot _ fun I => ?_⟩` and prove the remaining obligations. Use `(hI I).2` as an intermediate fact. Rewrite `this` using `[Units.coe_map_inv]`. Then use the resulting hypothesis. Use `haveI : Group.FG (Aˣ ⧸ ψ.ker) := Group.fg_of_surjective (f := (QuotientGroup.quotientKerEquivOfSurjective ψ hsurj).symm.toMonoidHom) (QuotientGroup.quotientKerEquivOfSurjective ψ hsurj).symm.surjective`. Use `Group.fg_of_surjective (f := QuotientGroup.map ψ.ker (intUnits K.O A) (MonoidHom.id _) fun t ht => hker ht) ?_` and prove the remaining obligations.
-
-Introduce `q`. Take `⟨y, rfl⟩` from `QuotientGroup.mk'_surjective _ q`. Conclude with `⟨QuotientGroup.mk y, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem units_quot_intUnits_fg : ∀ (K : UQ), (∀ (L : Type) [Field L] [Algebra K.O L] [Algebra K.E L]
     [IsScalarTower K.O K.E L] [FiniteDimensional K.E L], Group.FG (Lˣ ⧸ intUnits K.O L)) →

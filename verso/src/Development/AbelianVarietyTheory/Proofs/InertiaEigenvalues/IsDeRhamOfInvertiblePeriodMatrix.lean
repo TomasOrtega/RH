@@ -9,19 +9,15 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Introduce `l _ P n _ _ K V _ _ b ρ Q hQ`. Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := (P.PD K).finK`. Use `haveI : Nontrivial P.R.BdR := by`. Use `⟨⟨(P.PD K).ι (P.PD K).t, 0, fun h => (P.PD K).not_mem_filtration_two ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Take `⟨e, -, -, he⟩` from `GlobalTheory.T.tensorProduct_basis_coordinates ℚ_[l] P.R.BdR V n b`. Establish `hact : ∀ (g : ↥(GK K)) (x : P.R.BdR), (P.PD K).actdR g x = P.actQdR (g : GQ l) x` using `fun g x => P.PD_actdR K g x`. Establish `key` using `GlobalTheory.T.finrank_invariants_eq_of_invertible_periodMatrix ℚ_[l] ↥K.1 P.R.BdR ↥(GK K) (fun g => ((P.PD K).actdR g).toRingEquiv.toRingHom) n (fun g => (LinearMap.toMatrix b b (ρ g)).map (algebraMap ℚ_[l] P.R.BdR)) (fun x => ⟨fun h => (P.PD K).invdR x h, by`. Introduce and unpack `⟨c, rfl⟩ g`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((P.PD K).actdR g).commutes c⟩) Q`. Use the proof step `(fun g => by`. Establish `h` using `hQ g`. Establish `: (⇑((P.PD K).actdR g).toRingEquiv.toRingHom : P.R.BdR → P.R.BdR) = P.actQdR (g : GQ l)`. Use function extensionality and compare the values at `(hact g)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[this]`. Conclude with `h)`. Use the proof step `((DdR (P.PD K) ρ).map (e : V ⊗[ℚ_[l]] P.R.BdR →ₗ[ℚ_[l]] (n → P.R.BdR)))`. Use the proof step `(fun x => by`. Take `⟨y, rfl⟩` from `e.surjective x`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : e y ∈ (DdR (P.PD K) ρ).map (e : V ⊗[ℚ_[l]] P.R.BdR →ₗ[ℚ_[l]] (n → P.R.BdR)) ↔ y ∈ DdR (P.PD K) ρ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzy⟩`. Establish `: z = y` using `e.injective hzy`. Conclude with `this ▸ hz`.
-
-Conclude with `fun h => ⟨y, h, rfl⟩`. Rewrite using `[h1]`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Establish `h2` using `he (ρ g) ((((P.PD K).actdR g).toAlgHom.toLinearMap).restrictScalars ℚ_[l]) y`.
-
-Establish `h3 : actVdR (P.PD K) ρ g y = TensorProduct.map (ρ g) ((((P.PD K).actdR g).toAlgHom.toLinearMap).restrictScalars ℚ_[l]) y` using `rfl`. Rewrite using `[h3, ← e.injective.eq_iff, h2]`. Use the proof step `rfl)`. Rewrite `key` using `[LinearEquiv.finrank_map_eq, ← finrank_eq_card_basis b]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDR_of_periodMatrix : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] (b : Basis n ℚ_[l] V) (ρ : Representation ℚ_[l] ↥(GK K) V) (Q : GL n P.R.BdR), (∀ g : ↥(GK K), (LinearMap.toMatrix b b (ρ g)).map (algebraMap ℚ_[l] P.R.BdR) * (Q : Matrix n n P.R.BdR).map (P.actQdR (g : GQ l)) = Q) → IsDR (P.PD K) ρ := by
   intro l _ P n _ _ K V _ _ b ρ Q hQ

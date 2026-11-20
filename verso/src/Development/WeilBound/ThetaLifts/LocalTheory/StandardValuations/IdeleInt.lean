@@ -19,7 +19,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {t : E →ₐ[F] Fv F v} {sec : Fv F v × Fv F v → AE F E}
 
 /- English proof (translation)
-Establish `hev : Continuous (evFin F v)` using `(RestrictedProduct.continuous_eval v).comp continuous_snd`. Conclude with `(continuous_splitProj t).comp (GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (evFin F v).toLinearMap (fun a b => map_mul (evFin F v) a b) hev)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_piW (t : E →ₐ[F] Fv F v) : Continuous (piW t) := by
   have hev : Continuous (evFin F v) := (RestrictedProduct.continuous_eval v).comp continuous_snd
@@ -27,15 +27,15 @@ theorem cont_piW (t : E →ₐ[F] Fv F v) : Continuous (piW t) := by
     (fun a b => map_mul (evFin F v) a b) hev)
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [show a * b - 1 = (a - 1) * b + (b - 1) by ring, smul_add, ← smul_mul_assoc, ha u hu, hb u hu, zero_mul, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul {a b : AE F E} (ha : At (evFin F v) (a - 1)) (hb : At (evFin F v) (b - 1)) : At (evFin F v) (a * b - 1) := fun u hu => by
   rw [show a * b - 1 = (a - 1) * b + (b - 1) by ring, smul_add, ← smul_mul_assoc, ha u hu, hb u hu, zero_mul, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem u hu => exact hu`. Consider the case `one => intro u _`. Simplify using the standard rewrite rules. Consider the case `mul a b _ _ ha hb => exact at_mul ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `inv a _ ha`. Introduce `u hu`. Rewrite using `[show ((a⁻¹ : (AE F E)ˣ) : AE F E) - 1 = -(((a : AE F E) - 1) * (a⁻¹ : (AE F E)ˣ)) by simp [sub_mul], smul_neg, ← smul_mul_assoc, ha u hu, zero_mul, neg_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem at_idAt {l : (AE F E)ˣ} (h : l ∈ idAt E (evFin F v)) : At (evFin F v) ((l : AE F E) - 1) := by
   induction h using Subgroup.closure_induction with
@@ -48,7 +48,7 @@ theorem at_idAt {l : (AE F E)ˣ} (h : l ∈ idAt E (evFin F v)) : At (evFin F v)
       ← smul_mul_assoc, ha u hu, zero_mul, neg_zero]
 
 /- English proof (translation)
-Use `ha.kd_sub hb` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Conclude with `sub_eq_zero.1 (h.ext _ this (by rw [map_sub, h1, sub_self]) (by rw [map_sub, h2, sub_self]))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext1 (h : IsSec σ t sec) {a b : AE F E} (ha : At (evFin F v) (a - 1)) (hb : At (evFin F v) (b - 1)) (h1 : piW t a = piW t b)
     (h2 : piW (t.comp σ) a = piW (t.comp σ) b) : a = b := by
@@ -64,14 +64,14 @@ def uI (h : IsSec σ t sec) (x y : (Fv F v)ˣ) : idAt E (evFin F v) :=
     Subgroup.subset_closure (at1 _)⟩
 
 /- English proof (translation)
-Use `show piW t (1 + _) = _`. Simplify using `[h.fst]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uI_fst (h : IsSec σ t sec) (x y : (Fv F v)ˣ) : piW t ((uI h x y).1 : AE F E) = x := by
   show piW t (1 + _) = _
   simp [h.fst]
 
 /- English proof (translation)
-Use `show piW _ (1 + _) = _`. Simplify using `[h.snd]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uI_snd (h : IsSec σ t sec) (x y : (Fv F v)ˣ) : piW (t.comp σ) ((uI h x y).1 : AE F E) = y := by
   show piW _ (1 + _) = _
@@ -86,19 +86,19 @@ Both sides reduce to the same expression.
 theorem cmp_val (l : idAt E (evFin F v)) : (cmp t l : Fv F v) = piW t (l.1 : AE F E) := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext (ext1 h (at_idAt a.2) (at_idAt b.2) (congrArg Units.val h1) (congrArg Units.val h2)))`.
+A detailed English derivation is pending.
 -/
 theorem ext2 (h : IsSec σ t sec) {a b : idAt E (evFin F v)} (h1 : cmp t a = cmp t b) (h2 : cmp (t.comp σ) a = cmp (t.comp σ) b) :
     a = b := Subtype.ext (Units.ext (ext1 h (at_idAt a.2) (at_idAt b.2) (congrArg Units.val h1) (congrArg Units.val h2)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.ext (uI_fst h x y), Units.ext (uI_snd h x y)⟩`.
+Supply the required witnesses or components.
 -/
 theorem cmp_uI (h : IsSec σ t sec) (x y : (Fv F v)ˣ) : cmp t (uI h x y) = x ∧ cmp (t.comp σ) (uI h x y) = y :=
   ⟨Units.ext (uI_fst h x y), Units.ext (uI_snd h x y)⟩
 
 /- English proof (translation)
-Take `⟨⟨sec, h⟩, -⟩` from `section_statement F E σ hσ v t`. Take `⟨⟨sec', h'⟩, -⟩` from `section_statement F E σ hσ v (t.comp σ)`. Establish `e : l = uI h (cmp t l) 1 * uI h 1 (cmp (t.comp σ) l)` using `ext2 h (by simp [cmp_uI]) (by simp [cmp_uI])`. Use `conv_lhs => rw [e]`. Rewrite using `[Subgroup.coe_mul, map_mul, Circle.coe_mul, (h.idele _ _ (at_idAt (uI h _ 1).2) (uI_fst h _ _) (uI_snd h _ _)).1 χ, (h'.idele _ _ (at_idAt (uI h 1 _).2) (uI_snd h _ _) (by rw [comp_comp hσ]; exact uI_fst h _ _)).1 χ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chr_id (hσ : IsCMExt F E σ) (χ : Chr F E) (l : idAt E (evFin F v)) :
     (χ l.1 : ℂ) = chrW χ t (cmp t l) * chrW χ (t.comp σ) (cmp (t.comp σ) l) := by
@@ -110,11 +110,11 @@ theorem chr_id (hσ : IsCMExt F E σ) (χ : Chr F E) (l : idAt E (evFin F v)) :
     (h'.idele _ _ (at_idAt (uI h 1 _).2) (uI_snd h _ _) (by rw [comp_comp hσ]; exact uI_fst h _ _)).1 χ]
 
 /- English proof (translation)
-Take `⟨⟨sec, h⟩, -⟩` from `section_statement F E σ hσ v t`. Establish `e1 : l.1 = GlobalTheory.Doubling.ideleAt F E v (GlobalTheory.Doubling.unitFin F E v l.1)` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `(l.1 : AE F E) = 1 - GlobalTheory.EmbChart.tensAt E v 1 + GlobalTheory.EmbChart.tensAt E v (compFin F E v l.1)`. Establish `o` using `off_of_at (at_idAt l.2)`. Rewrite using `[← PositivityTheory.Member.ZakTransform.ep_smul, ← map_one (compFin F E v), ← PositivityTheory.Member.ZakTransform.ep_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `o` using `[sub_smul, sub_smul, one_smul, one_smul]`. Rewrite using `[← o, sub_add_cancel])`. Establish `e2 : evFin F v (Algebra.norm (AF F) (l.1 : AE F E)) = cmp t l * cmp (t.comp σ) l`. Use `congrArg (piW t) (GlobalTheory.Doubling.algebraMap_norm_eq hσ (l.1 : AE F E))` as an intermediate fact. Rewrite `this` using `[Algebra.algebraMap_eq_smul_one, (h.smul _ _).1, map_one, mul_one, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `congrArg _ (h.conj _).1`. Rewrite using `[e1, GlobalTheory.Doubling.absE_ideleAt, GlobalTheory.Doubling.absEv_unitFin, e2, coe_nnnorm, norm_mul, norm_nabs, norm_nabs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_id (hσ : IsCMExt F E σ) (l : idAt E (evFin F v)) :
     (absE F E l.1 : ℝ) = GlobalTheory.SplitWeil.nabs _ (cmp t l) * GlobalTheory.SplitWeil.nabs _ (cmp (t.comp σ) l) := by
@@ -134,23 +134,19 @@ theorem abs_id (hσ : IsCMExt F E σ) (l : idAt E (evFin F v)) :
     norm_nabs, norm_nabs]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : ContinuousSMul (AF F) (AE F E) := IsModuleTopology.toContinuousSMul _ _`. Use extensionality with `l`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hl`. Establish `key : ∀ s : E →ₐ[F] Fv F v, valuation _ (cmp s l : Fv F v) = 1` using `fun s => by`. Establish `hc : Continuous fun a : idAt E (evFin F v) => ‖(cmp s a : Fv F v)‖` using `((cont_piW s).comp (Units.continuous_val.comp continuous_subtype_val)).norm`. Take `⟨C, hC⟩` from `(IsCompact.image hl hc).bddAbove`. Establish `hb : ∀ n : ℤ, ‖(cmp s l : Fv F v)‖ ^ n ≤ C` using `fun n => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hC ⟨l ^ n, subset_closure ⟨n, rfl⟩, rfl⟩` as an intermediate fact. Simplify `this` using `only [map_zpow, Units.val_zpow_eq_zpow_val, norm_zpow]`. Establish `h0 : 0 < ‖(cmp s l : Fv F v)‖` using `norm_pos_iff.2 (cmp s l).ne_zero`. Rewrite using `[val_iff_norm]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `lt_or_gt_of_ne hne with h1 | h1` into its components or cases. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C ((one_lt_inv₀ h0).2 h1)`. Conclude with `absurd (hb (-n)) (by rw [_root_.zpow_neg, zpow_natCast, ← inv_pow]; exact not_le.2 hn)`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C h1`. Conclude with `absurd (hb n) (by rw [zpow_natCast]; exact not_le.2 hn)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨key _, key _⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `cs : Continuous sec`. Establish `: sec = fun p => sgl v p.1 • sec (1, 0) + sgl v p.2 • sec (0, 1)` using `funext fun p => sub_eq_zero.1 (h.ext _ ((h.at' p).kd_sub ((at_sgl_smul _ _).kd_add (at_sgl_smul _ _))) (by simp [(h.smul _ _).1, h.fst, ev_sgl]) (by simp [(h.smul _ _).2, h.snd, ev_sgl]))`. Establish `c1 : Continuous (sgl (F` using `F) v) := continuous_const.prodMk (continuous_singleFin v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `((c1.comp continuous_fst).smul continuous_const).add ((c1.comp continuous_snd).smul continuous_const)`. Establish `cu : Continuous fun p : (Fv F v)ˣ × (Fv F v)ˣ => uI h p.1 p.2`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `continuous_const.add (cs.comp (((Units.continuous_val.comp continuous_fst).sub continuous_const).prodMk ((Units.continuous_val.comp continuous_snd).sub continuous_const)))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_const.add (cs.comp (((Units.continuous_coe_inv.comp continuous_fst).sub continuous_const).prodMk ((Units.continuous_coe_inv.comp continuous_snd).sub continuous_const)))`. Establish `ck : IsCompact {x : (Fv F v)ˣ | valuation _ (x : Fv F v) = 1}`. Rewrite using `[Units.isEmbedding_val₀.isCompact_iff]`. Establish `: Units.val '' {x : (Fv F v)ˣ | valuation _ (x : Fv F v) = 1} = {x | valuation _ x ≤ valuation (Fv F v) 1} ∩ Metric.sphere 0 1`. Use extensionality with `x`.
-
-Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Set.mem_inter_iff, mem_sphere_zero_iff_norm, ← val_iff_norm, map_one]`. Conclude with `⟨by rintro ⟨u, hu, rfl⟩; exact ⟨hu.le, hu⟩, fun hx => let ⟨u, hu⟩ := exists_unit hx.2; ⟨u, hu ▸ hx.2, hu⟩⟩`. Rewrite using `[this]`. Conclude with `(IsNonarchimedeanLocalField.isCompact_closedBall _ _).inter_right Metric.isClosed_sphere`. Use `((ck.prod ck).image cu).closure_of_subset ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `⟨(cmp t (l ^ n), cmp (t.comp σ) (l ^ n)), ⟨by simp [h1], by simp [h2]⟩, ext2 h (cmp_uI h _ _).1 (cmp_uI h _ _).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem units_eq (h : IsSec σ t sec) : {l | IsCompact (closure (Subgroup.zpowers l : Set (idAt E (evFin F v))))} =
     {l | valuation _ (cmp t l : Fv F v) = 1 ∧ valuation _ (cmp (t.comp σ) l : Fv F v) = 1} := by
@@ -204,17 +200,15 @@ theorem units_eq (h : IsSec σ t sec) : {l | IsCompact (closure (Subgroup.zpower
     exact ⟨(cmp t (l ^ n), cmp (t.comp σ) (l ^ n)), ⟨by simp [h1], by simp [h2]⟩, ext2 h (cmp_uI h _ _).1 (cmp_uI h _ _).2⟩
 
 /- English proof (translation)
-Take `⟨⟨sec, h⟩, -⟩` from `section_statement F E σ hσ v t`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Use `letI : MeasurableSpace (idAt E (evFin F v)) := borel _`. Use `haveI : BorelSpace (idAt E (evFin F v)) := ⟨rfl⟩`. Rewrite `h1` using `[units_eq h]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U := {l : idAt E (evFin F v) | valuation _ (cmp t l : Fv F v) = 1 ∧ valuation _ (cmp (t.comp σ) l : Fv F v) = 1} with hU`. Establish `hc : ∀ s : E →ₐ[F] Fv F v, Continuous fun a : idAt E (evFin F v) => ‖(cmp s a : Fv F v)‖` using `fun s => ((cont_piW s).comp (Units.continuous_val.comp continuous_subtype_val)).norm`. Establish `mU : MeasurableSet U`. Simplify using `only [hU, val_iff_norm]`. Conclude with `((isClosed_eq (hc _) continuous_const).inter (isClosed_eq (hc _) continuous_const)).measurableSet`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← integral_mul_left_eq_self _ (uI h 1 (ϖ ^ (c + 1))⁻¹)]`. Establish `hn : GlobalTheory.SplitWeil.nabs _ (ϖ ^ (c + 1))⁻¹ = (GlobalTheory.SplitWeil.resCard (Fv F v) : ℝ) ^ (c + 1)`. Rewrite using `[← norm_nabs, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, norm_inv, norm_pow, norm_nabs, GlobalTheory.GLDoubling.nabs_unif hϖ, inv_pow, inv_inv]`. Rewrite using `[integral_congr_ae (g := U.indicator fun _ => gI m ψ (chrW χ t) (((ϖ : Fv F v) ^ (c + 1))⁻¹) * (chrW χ t ϖ : ℂ) ^ (c + 1) * ((GlobalTheory.SplitWeil.resCard (Fv F v) : ℂ) ^ (c + 1)) ^ z * C) (Filter.Eventually.of_forall fun l => ?_), integral_indicator mU]`. Simplify using `[Measure.real, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `beta_reduce`. Rewrite using `[chr_id (t := t) hσ, abs_id (t := t) hσ, ← cmp_val, ← cmp_val, map_mul, map_mul, (cmp_uI h _ _).1, (cmp_uI h _ _).2, one_mul, hχ]`. Distinguish the cases in `hl : l ∈ U`. Rewrite using `[Set.indicator_of_mem hl, dl_unit _ hl.1, mul_comm (ϖ ^ (c + 1))⁻¹, Units.val_mul, gI_unit hm _ hl.2, GlobalTheory.SplitWeil.nabs_mul, nabs_of_valuation_eq_one hl.1, nabs_of_valuation_eq_one hl.2, hn]`. Simplify using `only [map_mul, map_inv, map_pow, _root_.mul_inv_rev, inv_inv, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, one_mul, Complex.ofReal_pow, Complex.ofReal_natCast]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[Set.indicator_of_notMem hl]`. Distinguish the cases in `h2 : valuation _ (cmp t l : Fv F v) = 1`. Rewrite using `[gI_zero hm hψ hϖ hν hν' fun h3 => hl ⟨h2, ?_⟩]`. Simplify using the standard rewrite rules.
-
-Rewrite `h3` using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, mul_right_comm, inv_mul_cancel₀ (pow_ne_zero _ ϖ.ne_zero), one_mul]`. Then use the resulting hypothesis. Simplify using `[dl_of_ne h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idele_int (hσ : IsCMExt F E σ) [SecondCountableTopology (Fv F v)] [MeasurableSpace (Fv F v)] [BorelSpace (Fv F v)]
     {m : Measure (Fv F v)} (hm : IsVol m) {ψ : AddChar (Fv F v) ℂ} (hψ : IsPsi ψ) {ϖ : (Fv F v)ˣ} (hϖ : IsUnif ϖ) (χ : Chr F E)

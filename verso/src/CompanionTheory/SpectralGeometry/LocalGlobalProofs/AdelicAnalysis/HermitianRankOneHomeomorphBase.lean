@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨-, -, -, h⟩` from `hcm`. Set `τ : E →+* ℂ` to `(inferInstance : Nonempty (E →+* ℂ)).some`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h τ, h τ, star_star]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨-, -, -, h⟩ := hcm
@@ -23,11 +23,11 @@ theorem sig_sig (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   rw [h τ, h τ, star_star]
 
 /- English proof (translation)
-Take `⟨-, htc, -, h⟩` from `hcm`. Set `τ : E →+* ℂ` to `(inferInstance : Nonempty (E →+* ℂ)).some`. Establish `hc : (InfinitePlace.mk τ).IsComplex` using `htc.isComplex _`. Rewrite `hc` using `[InfinitePlace.isComplex_mk_iff]`. Assume the negation of the conclusion as `hall`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hall`. Apply `hc` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `h τ x` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hall x]`. Simplify using `using this.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_sig_ne (hcm : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   obtain ⟨-, htc, -, h⟩ := hcm
@@ -44,11 +44,11 @@ theorem exists_sig_ne (hcm : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   simpa using this.symm
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `e : E ≃ₐ[F] E` to `AlgEquiv.ofAlgHom σ σ (AlgHom.ext (sig_sig hcm)) (AlgHom.ext (sig_sig hcm))`. Establish `h : (e.toLinearEquiv).conj (Algebra.lmul F E y) = Algebra.lmul F E (σ y)`. Use extensionality with `z`. Establish `h1 : e.toLinearEquiv.symm z = σ z` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ w, e.toLinearEquiv w = σ w` using `fun _ => rfl`. Establish `h3 : ∀ w, e w = σ w` using `fun _ => rfl`. Establish `h4 : ∀ w, e.symm w = σ w` using `fun _ => rfl`. Simplify using `[LinearEquiv.conj_apply, h1, h2, h3, h4, sig_sig hcm]`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show LinearMap.trace F E (Algebra.lmul F E (σ y)) = LinearMap.trace F E (Algebra.lmul F E y)`. Rewrite using `[← h, LinearMap.trace_conj']`.
+A detailed English derivation is pending.
 -/
 theorem trace_sig (hcm : IsCMExt F E σ) (y : E) :
     Algebra.trace F E (σ y) = Algebra.trace F E y := by
@@ -66,21 +66,21 @@ theorem trace_sig (hcm : IsCMExt F E σ) (y : E) :
   rw [← h, LinearMap.trace_conj']
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hfr : Module.finrank F E = 2` using `hcm.2.2.1`. Take `⟨x, hx⟩` from `exists_sig_ne hcm`. Use `set θ : E := x - σ x with hθ`. Establish `hθ0 : θ ≠ 0` using `sub_ne_zero.2 (Ne.symm hx)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσθ : σ θ = -θ` using `by simp [hθ, sig_sig hcm]`. Establish `htr : Algebra.trace F E θ = 0`. Establish `h` using `trace_sig hcm θ`. Rewrite `h` using `[hσθ, map_neg]`. Establish `h2 : (2 : F) * Algebra.trace F E θ = 0` using `by linear_combination -h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h2`. Establish `hli : LinearIndependent F ![(1 : E), θ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `hσs : ∀ (c : F) (w : E), σ (c • w) = c • σ w` using `fun c w => by simp [Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg σ hst`. Rewrite `h2` using `[map_add, hσs, hσs, map_one, hσθ, map_zero]`. Establish `h3 : (2 * t) • θ = 0`. Establish `: (2 * t) • θ = (s • (1 : E) + t • θ) - (s • (1 : E) + t • -θ)`. Simplify using `only [smul_neg, mul_smul, two_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this, hst, h2, sub_zero]`. Establish `ht : t = 0` using `by simpa [hθ0] using h3`. Use `⟨?_, ht⟩` and prove the remaining obligations. Simplify `hst` using `[ht]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `bb : Module.Basis (Fin 2) F E` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hfr])`. Establish `hbb : ∀ i, bb i = ![(1 : E), θ] i` using `fun i => by`. Simplify using `[bb]`. Establish `hmaps : (LinearMap.id + σ.toLinearMap : E →ₗ[F] E) = (Algebra.linearMap F E) ∘ₗ Algebra.trace F E`. Use `bb.ext fun i => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fin_cases i`. Establish `h1 : Algebra.trace F E (1 : E) = 2`. Use `Algebra.trace_algebraMap (R := F) (S := E) (1 : F)` as an intermediate fact. Simplify `this` using `[hfr]`. Simplify using `[hbb, h1]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_ofNat]`. Evaluate the numerical expressions. Simplify using `[hbb, htr, hσθ]`. Simplify using `using LinearMap.congr_fun hmaps y`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem add_sig_eq_trace (hcm : IsCMExt F E σ) (y : E) :
     y + σ y = algebraMap F E (Algebra.trace F E y) := by
@@ -134,9 +134,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `h1 : r ⊗ₜ[F] e = r • ((1 : R) ⊗ₜ[F] e)` using `by simp [TensorProduct.smul_tmul']`. Establish `h2 : Algebra.lmul R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = (Algebra.lmul F E e).baseChange R`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_smul, smul_eq_mul, Algebra.trace_apply, Algebra.trace_apply]`. Use `show r * LinearMap.trace R _ (Algebra.lmul R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e)) = _`. Rewrite using `[h2, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_tmul (r : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (r ⊗ₜ[F] e) = r * algebraMap F R (Algebra.trace F E e) := by
@@ -150,9 +150,9 @@ theorem trace_tmul (r : R) (e : E) :
   rw [h2, LinearMap.trace_baseChange]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Establish `h1 : sigR R σ (r ⊗ₜ[F] e) = r ⊗ₜ[F] σ e` using `by simp [sigR]`. Rewrite using `[h1, ← TensorProduct.tmul_add, add_sig_eq_trace hcm, trace_tmul, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a c ha hc`. Rewrite using `[map_add, map_add, TensorProduct.add_tmul, ← ha, ← hc]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem add_sigR_eq_trace (hcm : IsCMExt F E σ) (z : R ⊗[F] E) :
     z + sigR R σ z = (Algebra.trace R (R ⊗[F] E) z) ⊗ₜ[F] (1 : E) := by
@@ -178,9 +178,9 @@ def tH (σ : E →ₐ[F] E) (S : HermR R σ 1) : R :=
   algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) ((S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0)
 
 /- English proof (translation)
-Establish `h1 : Algebra.trace F E (1 : E) = 2`. Use `Algebra.trace_algebraMap (R := F) (S := E) (1 : F)` as an intermediate fact. Simplify `this` using `[hcm.2.2.1]`. Establish `h2 : algebraMap F R (1 / 2) * algebraMap F R 2 = 1`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Use `show algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (r ⊗ₜ[F] (1 : E)) = r`. Rewrite using `[trace_tmul, h1]`. Take the linear combination `r * h2`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tH_hermScal (hcm : IsCMExt F E σ) (r : R) : tH R σ (hermScal R σ r) = r := by
   have h1 : Algebra.trace F E (1 : E) = 2 := by
@@ -194,11 +194,9 @@ theorem tH_hermScal (hcm : IsCMExt F E σ) (r : R) : tH R σ (hermScal R σ r) =
   linear_combination r * h2
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Use `set z : R ⊗[F] E := (S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0 with hz`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfix : sigR R σ z = z` using `S.2 0 0`. Establish `hs` using `add_sigR_eq_trace R hcm z`. Rewrite `hs` using `[hfix]`. Use `show (algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) z) ⊗ₜ[F] (1 : E) = z`. Rewrite using `[← Algebra.smul_def, ← TensorProduct.smul_tmul', ← hs, ← two_smul F z, smul_smul]`.
-
-Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem hermScal_tH (hcm : IsCMExt F E σ) (S : HermR R σ 1) : hermScal R σ (tH R σ S) = S := by
   apply Subtype.ext
@@ -232,23 +230,21 @@ def hermHomeo (hcm : IsCMExt F E σ) : HermR R σ 1 ≃ₜ R :=
 variable [MeasurableSpace R] [BorelSpace R]
 
 /- English proof (translation)
-Use `haveI : BorelSpace (HermR R σ 1) := ⟨rfl⟩`. Use `haveI hT : IsEmpty {p : Fin 1 × Fin 1 // p.1 < p.2} := ⟨fun p => by`. Establish `h` using `p.2`. Rewrite `h` using `[Subsingleton.elim p.1.1 p.1.2]`. Conclude with `lt_irrefl _ h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `ψ : R → (Fin 1 → R) × ({p : Fin 1 × Fin 1 // p.1 < p.2} → R ⊗[F] E)` to `fun r => (fun _ => r, fun p => hT.elim p)`. Establish `hψ : MeasurableEmbedding ψ`. Use `MeasurableEmbedding.of_measurable_inverse (g := fun q => q.1 0) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `Measurable.prodMk (measurable_pi_lambda _ fun _ => measurable_id) ?_` and prove the remaining obligations. Conclude with `measurable_pi_lambda _ fun p => hT.elim p`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Set.range ψ = Set.univ`. Use extensionality with `q`. Simplify using `only [Set.mem_range, Set.mem_univ, iff_true]`. Use `⟨q.1 0, Prod.ext ?_ (Subsingleton.elim _ _)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl : i = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `MeasurableSet.univ`. Conclude with `(measurable_pi_apply 0).comp measurable_fst`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r`. Both sides reduce to the same expression. Use extensionality with `s hs`. Establish `hfun : (fun S : HermR R σ 1 => ((fun i : Fin 1 => algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) ((S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) i i)), (fun p : {p : Fin 1 × Fin 1 // p.1 < p.2} => (S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) p.1.1 p.1.2))) = ψ ∘ hermHomeo R hcm`. Use function extensionality and compare the values at `S`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Prod.ext ?_ (Subsingleton.elim _ _)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression. Establish `hemb : MeasurableEmbedding (ψ ∘ hermHomeo R hcm)` using `hψ.comp (hermHomeo R hcm).measurableEmbedding`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hpi : Measure.pi (fun _ : {p : Fin 1 × Fin 1 // p.1 < p.2} => coordK R b lam) = Measure.dirac (fun p => hT.elim p)` using `Measure.pi_of_empty _ _`. Establish `himg : (ψ ∘ hermHomeo R hcm) '' (hermHomeo R hcm ⁻¹' s) = ((fun a : Fin 1 → R => a 0) ⁻¹' s) ×ˢ Set.univ`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨hS, Set.mem_univ _⟩`. Introduce and unpack `⟨hq, -⟩`. Use `⟨(hermHomeo R hcm).symm (q.1 0), ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hq`. Use `Prod.ext ?_ (Subsingleton.elim _ _)` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[ψ]`. Rewrite using `[Measure.map_apply (hermHomeo R hcm).measurable hs, coordHerm, hfun, hemb.comap_apply, hpi, himg, Measure.prod_prod, measure_univ, mul_one]`. Conclude with `(measurePreserving_funUnique lam (Fin 1)).measure_preimage hs.nullMeasurableSet`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_coordHerm (hcm : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E) (lam : Measure R)
     [SigmaFinite lam] : (coordHerm R σ b lam 1).map (hermHomeo R hcm) = lam := by

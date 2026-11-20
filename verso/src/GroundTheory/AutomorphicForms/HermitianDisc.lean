@@ -12,7 +12,7 @@ variable {F E : Type*} [Field F] [Field E] [Algebra F E] [Algebra.IsQuadraticExt
 variable {V V' : Type*} [AddCommGroup V] [Module E V] [AddCommGroup V'] [Module E V']
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gram_apply, sesq_eq_sum B b]`. Simplify using `only [Matrix.mul_apply, transpose_apply, map_apply, Basis.toMatrix_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_basis_change {ι : Type*} [Fintype ι] (B : V →ₛₗ[conjHom F E] V →ₗ[E] E)
     (b c : Basis ι E V) :
@@ -28,7 +28,7 @@ namespace HermitianForm
 variable [Algebra.IsSeparable F E]
 
 /- English proof (translation)
-Apply `conj_eq_self_iff.1` to reduce the goal to its premises. Rewrite using `[← conjHom_apply, RingHom.map_det, RingHom.mapMatrix_apply, ← det_transpose, isHermitianFor_gram h b]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_gram_mem_range (h : HermitianForm F E V) {ι : Type*} [Fintype ι] [DecidableEq ι]
     (b : Basis ι E V) : (gram h.toSesq b).det ∈ Set.range (algebraMap F E) := by
@@ -45,14 +45,14 @@ def detUnit (h : HermitianForm F E V) {ι : Type*} [Fintype ι] [DecidableEq ι]
     exact (isUnit_det_gram h b).ne_zero this.symm)
 
 /- English proof (translation)
-The claim follows from `(h.det_gram_mem_range b).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_detUnit (h : HermitianForm F E V) {ι : Type*} [Fintype ι] [DecidableEq ι]
     (b : Basis ι E V) : algebraMap F E (h.detUnit b) = (gram h.toSesq b).det :=
   (h.det_gram_mem_range b).choose_spec
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_detUnit, algebraMap_detUnit, hb]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem detUnit_eq_of_det_eq (h : HermitianForm F E V) (h' : HermitianForm F E V')
     {ι ι' : Type*} [Fintype ι] [DecidableEq ι] [Fintype ι'] [DecidableEq ι']
@@ -63,7 +63,7 @@ theorem detUnit_eq_of_det_eq (h : HermitianForm F E V) (h' : HermitianForm F E V
   rw [algebraMap_detUnit, algebraMap_detUnit, hb]
 
 /- English proof (translation)
-Establish `hM : IsUnit (b.toMatrix c).det`. Conclude with `IsUnit.of_mul_eq_one (c.toMatrix b).det (by rw [← det_mul, Basis.toMatrix_mul_toMatrix_flip, det_one])`. Use `⟨hM.unit, Units.ext ((algebraMap F E).injective ?_)⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, algebraMap_detUnit, algebraMap_detUnit, coe_normUnits, IsUnit.unit_spec, ← mul_conj, gram_basis_change h.toSesq b c, det_mul, det_mul, det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det, conjHom_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem detUnit_basis_change (h : HermitianForm F E V) {ι : Type*} [Fintype ι] [DecidableEq ι]
     (b c : Basis ι E V) :
@@ -81,11 +81,11 @@ def disc [FiniteDimensional E V] (h : HermitianForm F E V) : Fˣ ⧸ (normUnits 
   QuotientGroup.mk (h.detUnit (Module.finBasis E V))
 
 /- English proof (translation)
-Establish `hcard : Fintype.card ι = Fintype.card (Fin (finrank E V))`. Rewrite using `[Fintype.card_fin, Module.finrank_eq_card_basis b]`. Use `set e : ι ≃ Fin (finrank E V) := Fintype.equivOfCardEq hcard`. Establish `h1 : h.detUnit (b.reindex e) = h.detUnit b`. Apply `detUnit_eq_of_det_eq` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: gram h.toSesq (b.reindex e) = (gram h.toSesq b).submatrix e.symm e.symm`. Use extensionality with `i j`. Simplify using `[gram_apply, Basis.reindex_apply]`. Rewrite using `[this, det_submatrix_equiv_self]`. Take `⟨u, hu⟩` from `h.detUnit_basis_change (Module.finBasis E V) (b.reindex e)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[disc, ← h1, hu]`. Conclude with `QuotientGroup.eq.2 (MonoidHom.mem_range.2 ⟨u, by rw [inv_mul_cancel_left]⟩)`.
+A detailed English derivation is pending.
 -/
 theorem disc_eq [FiniteDimensional E V] (h : HermitianForm F E V) {ι : Type*} [Fintype ι]
     [DecidableEq ι] (b : Basis ι E V) : h.disc = QuotientGroup.mk (h.detUnit b) := by
@@ -102,9 +102,9 @@ theorem disc_eq [FiniteDimensional E V] (h : HermitianForm F E V) {ι : Type*} [
   exact QuotientGroup.eq.2 (MonoidHom.mem_range.2 ⟨u, by rw [inv_mul_cancel_left]⟩)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `H`. Use `set b := Module.finBasis E V`. Rewrite using `[h.disc_eq b, h'.disc_eq (b.map e)]`. Use `congr 1`. Apply `detUnit_eq_of_det_eq` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `only [gram_apply, Basis.map_apply, he]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Isometric.disc_eq [FiniteDimensional E V] [FiniteDimensional E V']
     {h : HermitianForm F E V} {h' : HermitianForm F E V'} (H : Isometric h h') :
@@ -119,11 +119,11 @@ theorem Isometric.disc_eq [FiniteDimensional E V] [FiniteDimensional E V']
   simp only [gram_apply, Basis.map_apply, he]
 
 /- English proof (translation)
-Use `set b := Module.finBasis E V`. Use `set b' := Module.finBasis E V'`. Rewrite using `[(h.prod h').disc_eq (b.prod b'), h.disc_eq b, h'.disc_eq b', ← QuotientGroup.mk_mul]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[Units.val_mul, map_mul, algebraMap_detUnit, algebraMap_detUnit, algebraMap_detUnit]`. Establish `: gram (h.prod h').toSesq (b.prod b') = fromBlocks (gram h.toSesq b) 0 0 (gram h'.toSesq b')`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [gram_apply, Basis.prod_apply, Sum.elim_inl, Sum.elim_inr, Function.comp_apply, LinearMap.inl_apply, LinearMap.inr_apply, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply] <;>`. Apply the tactic sequence `rw [prod_apply] <;>`. Simplify using `only [LinearMap.map_zero, LinearMap.zero_apply, add_zero, zero_add]`. Rewrite using `[this, det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disc_prod [FiniteDimensional E V] [FiniteDimensional E V'] (h : HermitianForm F E V)
     (h' : HermitianForm F E V') : (h.prod h').disc = h.disc * h'.disc := by
@@ -146,7 +146,7 @@ theorem disc_prod [FiniteDimensional E V] [FiniteDimensional E V'] (h : Hermitia
   rw [this, det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Rewrite using `[disc_eq _ (Basis.singleton (Fin 1) E)]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_detUnit, det_unique, gram_apply, Basis.singleton_apply, ofUnit_apply, map_one, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem disc_ofUnit (a : Fˣ) : (ofUnit (E := E) a).disc = QuotientGroup.mk a := by
   rw [disc_eq _ (Basis.singleton (Fin 1) E)]
@@ -157,9 +157,9 @@ theorem disc_ofUnit (a : Fˣ) : (ofUnit (E := E) a).disc = QuotientGroup.mk a :=
     one_mul, mul_one]
 
 /- English proof (translation)
-Establish `: IsEmpty (Fin (finrank E V))` using `by rw [hV]; infer_instance`. Rewrite using `[disc]`. Use `QuotientGroup.mk_one (normUnits F E).range` and compare the differences between its conclusion and the goal. Apply `Units.ext` to reduce the goal to its premises. Apply `(algebraMap F E).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[algebraMap_detUnit, det_isEmpty, Units.val_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem disc_of_finrank_eq_zero [FiniteDimensional E V] (h : HermitianForm F E V)
     (hV : finrank E V = 0) : h.disc = 1 := by

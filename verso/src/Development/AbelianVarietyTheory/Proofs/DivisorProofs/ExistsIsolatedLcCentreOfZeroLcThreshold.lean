@@ -18,19 +18,17 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `hPr X _ _ _ p n hp hn hn1`. Use `letI := algebraΓOfHom p`. Introduce `Δ r N₀ x c hΔ hklt hr hN₀ hnef hbig hx hc hcZ hsum A lam μ m' D₀ hA hm' hD₀ hμ hlam hnum hcut`. Take `⟨m, G, hm, hG⟩` from `GlobalTheory.T.exists_logCanonicalMultiple_of_globally_klt X p n hp hn Δ hΔ hklt`. Establish `hG'` using `GlobalTheory.isLogCanonicalMultiple_add_qWeil X p n Δ m m' G D₀ hm hm' hG`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, hxU, hlc, hkl⟩` from `GlobalTheory.T.exists_open_klt_off_isolated_lcCentre hPr X p n hp hn (Δ + qWeil D₀ m') (m * m') (m' • G + m • D₀) x (Nat.mul_pos hm hm') hG' hx hcut`. Establish `hlam1 : lam ≤ 1`. Establish `: (lam : ℝ) ≤ 1` using `(hlam.trans_le hsum).le`. Conclude with `this` after adjusting the coercions. Take `⟨M, E, hM, hE, hxE, hEnum⟩` from `GlobalTheory.T.exists_effective_QDivisor_offPoint_ampleClass X p hp N₀ A x r lam μ hN₀ hnef hA hr hlam1 hμ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hD, hqW, hDnum⟩` from `GlobalTheory.T.cartierDivToWeilQDivisor_add_of_effective X p hp D₀ E m' M hm' hM hD₀ hE`. Establish `hoff : ∀ y, y ∉ E.supp → Off (qWeil E M) y` using `fun y hy => (GlobalTheory.T.weilQDivisorAvoidsPoint_cartier_iff_notMem_supp X E M y hE hM).2 hy`. Establish `heq : Δ + qWeil (M • D₀ + m' • E) (m' * M) = (Δ + qWeil D₀ m') + (1 : ℚ) • qWeil E M`. Rewrite using `[hqW, one_smul, add_assoc]`. Set `V : X.Opens` to `⟨(E.supp : Set X)ᶜ, E.supp.isClosed.isOpen_compl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m' * M, M • D₀ + m' • E, U ⊓ V, Nat.mul_pos hm' hM, hD, ?_, ⟨hxU, hxE⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `C hC`. Establish `h1` using `hDnum C hC`. Establish `h2` using `hnum C hC`. Establish `h3` using `hEnum C hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h1 ⊢`. Rewrite using `[h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree. Introduce `y hy`. Rewrite using `[heq]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((GlobalTheory.PairStep.off_add_smul X p n _ _ 1 y (hoff y hy.2)).2.1).2 (hlc y hy.1)`. Introduce `y hy hyx`. Rewrite using `[heq]`. Conclude with `((GlobalTheory.PairStep.off_add_smul X p n _ _ 1 y (hoff y hy.2)).1).2 (hkl y hy.1 hyx)`. Rewrite using `[heq]`.
-
-Conclude with `fun h => hcut.2.1 (((GlobalTheory.PairStep.off_add_smul X p n _ _ 1 x (hoff x hxE)).1).1 h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PairStep.exists_isolated_of_lcCut_zero : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → 1 ≤ n →

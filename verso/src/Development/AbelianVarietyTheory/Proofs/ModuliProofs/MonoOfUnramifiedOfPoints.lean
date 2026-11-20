@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.ModuliEmbed
 
 /- English proof (translation)
-Establish `hs : Surjective (pullback.diagonal f)`. Conclude with `((tfae_universallyInjective f).out 1 3).1 fun (k : Type) [Field k] y y' e => h k y y' e`. Establish `: IsIso (pullback.diagonal f)` using `(isIso_iff_isOpenImmersion_and_surjective _).2 ⟨inferInstance, hs⟩`. Conclude with `(pullback.isIso_diagonal_iff f).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_of_unramified_of_points {X Y : Scheme.{0}} (f : X ⟶ Y) [FormallyUnramified f] [LocallyOfFiniteType f]
     (h : ∀ (k : Type) [Field k] (y y' : Sp k ⟶ X), y ≫ f = y' ≫ f → y = y') : Mono f := by
@@ -32,9 +32,9 @@ theorem mono_of_unramified_of_points {X Y : Scheme.{0}} (f : X ⟶ Y) [FormallyU
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Establish `hn : ∃ n : SABMap o'.t t (y' ≫ f), n.φ = m.toSABMap.φ ≫ ν.φ`. Rewrite using `[← e]`. Conclude with `ObjMaps.exists_sab_comp ν m.toSABMap`. Take `⟨n, hn⟩` from `hn`. Take `⟨m', hm'⟩` from `ObjMaps.exists_sab_cancel ν n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k : m'.cm.F ≫ ν.cm.F = m.cm.F ≫ ν.cm.F` using `hm'.symm.trans hn`. Conclude with `⟨⟨m', fun a => ObjComp.sec_cancel ν.cart.1 m'.cart.1.w (Over.w (o.eta a)) (Over.w (o'.eta a)) (h₁ a) (by rw [k, ← e]; exact ObjComp.sec_comp (h₁ a) (m.eta a)), fun a => ObjComp.sec_cancel ν.cart.1 m'.cart.1.w (Over.w (o.etaA a)) (Over.w (o'.etaA a)) (h₂ a) (by rw [k, ← e]; exact …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem objMap_of_comp_eq {B B' : Type} [CommRing B] [CommRing B'] {b : Base l B} {b' : Base l B'}
     {S T Z : Scheme.{0}} {s : S ⟶ Sp B} {s' : T ⟶ Sp B'} {o : Obj D l b s} {o' : Obj D l b' s'} {t : SAB H Z}
@@ -56,15 +56,15 @@ end GlobalTheory.ModuliEmbed
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ _ E _ _ _ H D l Xo c o m0 Z sZ t f ν u uA hf h₁ h₂ hfin`. Establish `key : ∀ (T : Scheme.{0}) (y y' : T ⟶ Xo.XF c), y ≫ f = y' ≫ f → y ≫ pullback.snd _ _ = y' ≫ pullback.snd _ _ ∧ ∃ o' : Obj D l (baseKA l) ((y ≫ pullback.fst _ _) ≫ Xo.s), Nonempty (ObjMap o' Xo.univ (y ≫ pullback.fst _ _)) ∧ Nonempty (ObjMap o' Xo.univ (y' ≫ pullback.fst _ _))`. Introduce `T y y' e`. Use `⟨by rw [← hf, ← Category.assoc, e, Category.assoc], ?_⟩` and prove the remaining obligations. Take `⟨o', ⟨m⟩⟩` from `obj_pull E H D l (KA l) (KA l) (baseKA l) (baseKA l) (RingHom.id _) _ T _ ((y ≫ pullback.fst _ _) ≫ Xo.s) y rfl rfl ((Category.assoc _ _ _).symm.trans ((Category.comp_id _).symm.trans (congrArg (((y ≫ pullback.fst _ _) ≫ Xo.s) ≫ ·) (Spec.map_id _).symm))) o`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨m'⟩` from `ModuliEmbed.objMap_of_comp_eq ν h₁ h₂ e m`. Conclude with `⟨o', ⟨(ObjComp.objMap_comp m0 m).choose⟩, ⟨(ObjComp.objMap_comp m0 m').choose⟩⟩`. Establish `hu : FormallyUnramified f`. Use `TangentCrit.formallyUnramified_of_tangent f fun k _ _ w hw => ?_` and prove the remaining obligations. Take `⟨e, o', m, m'⟩` from `key _ w (constPt w) (hw.trans (by simp only [constPt, Category.assoc]))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `pullback.hom_ext ?_ e` and prove the remaining obligations. Establish `e' : constPt w ≫ pullback.fst _ _ = constPt (w ≫ pullback.fst _ _)`. Simplify using `only [constPt, Category.assoc]`. Rewrite `m'` using `[e']`. Conclude with `(Xo.unram k _ o' m m').trans e'.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : Mono f`. Use `ModuliEmbed.mono_of_unramified_of_points f fun k _ y y' e => ?_` and prove the remaining obligations. Take `⟨e₂, o', m, m'⟩` from `key _ y y' e`. Use `pullback.hom_ext ?_ e₂` and prove the remaining obligations. Use `(Xo.rep _ _ inferInstance o').unique ⟨rfl, m⟩ ⟨?_, m'⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc, ← e₂, Category.assoc]`. Conclude with `(IsClosedImmersion.iff_isFinite_and_mono f).2 ⟨hfin, hm⟩`.
+A detailed English derivation is pending.
 -/
 theorem moduli_isClosedImmersion : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (o : Obj D l (baseKA l) (pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s)) (_ : ObjMap o Xo.univ (pullback.fst _ _)) (Z : Scheme.{0}) (sZ : Z ⟶ Sp c.F) (t : SAB H Z) (f : Xo.XF c ⟶ Z) (ν : SABMap o.t t f) (η' ηA : D.La → (𝟙_ (Over Z) ⟶ t.G)), f ≫ sZ = pullback.snd _ _ → (∀ x, (o.eta x).left ≫ ν.φ = f ≫ (η' x).left) → (∀ x, (o.etaA x).left ≫ ν.φ = f ≫ (ηA x).left) → IsFinite f → IsClosedImmersion f := by
   intro _ _ _ E _ _ _ H D l Xo c o m0 Z sZ t f ν u uA hf h₁ h₂ hfin

@@ -22,14 +22,14 @@ def omAt (S T : HSp D) (τ : D.what₂.Tau) (x y : Matrix (Fin T.rank) (Fin S.ra
   2 * (tauE D τ D.host.xi0 * hAt S T τ x y).re
 
 /- English proof (translation)
-Simplify using `only [omAt, hAt, Matrix.mul_add, Matrix.trace_add, mul_add, Complex.add_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omAt_add_left (S T : HSp D) (τ : D.what₂.Tau) (x x' y : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     omAt S T τ (x + x') y = omAt S T τ x y + omAt S T τ x' y := by
   simp only [omAt, hAt, Matrix.mul_add, Matrix.trace_add, mul_add, Complex.add_re]
 
 /- English proof (translation)
-Simplify using `only [omAt, hAt, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, Matrix.trace_add, mul_add, Complex.add_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omAt_add_right (S T : HSp D) (τ : D.what₂.Tau) (x y y' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     omAt S T τ x (y + y') = omAt S T τ x y + omAt S T τ x y' := by
@@ -37,7 +37,7 @@ theorem omAt_add_right (S T : HSp D) (τ : D.what₂.Tau) (x y y' : Matrix (Fin 
     Complex.add_re]
 
 /- English proof (translation)
-Simplify using `only [omAt, hAt, Matrix.mul_smul, Matrix.trace_smul, mul_smul_comm, Complex.smul_re, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem omAt_smul_left (S T : HSp D) (τ : D.what₂.Tau) (c : ℝ) (x y : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     omAt S T τ (c • x) y = c * omAt S T τ x y := by
@@ -45,7 +45,7 @@ theorem omAt_smul_left (S T : HSp D) (τ : D.what₂.Tau) (c : ℝ) (x y : Matri
   ring
 
 /- English proof (translation)
-Simplify using `only [omAt, hAt, Matrix.conjTranspose_smul, star_trivial, Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, mul_smul_comm, Complex.smul_re, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem omAt_smul_right (S T : HSp D) (τ : D.what₂.Tau) (c : ℝ) (x y : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     omAt S T τ x (c • y) = c * omAt S T τ x y := by
@@ -66,14 +66,14 @@ Both sides reduce to the same expression.
 theorem omO_apply (S T : HSp D) (x y : RW T S) : omO S T x y = ∑ τ, omAt S T τ (x τ) (y τ) := rfl
 
 /- English proof (translation)
-Simplify using `only [cplxO, Matrix.mul_add, Matrix.add_mul, smul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cplxO_add {m n : ℕ} (s : Matrix (Fin n) (Fin n) ℂ) (t : Matrix (Fin m) (Fin m) ℂ)
     (x y : Matrix (Fin m) (Fin n) ℂ) : cplxO s t (x + y) = cplxO s t x + cplxO s t y := by
   simp only [cplxO, Matrix.mul_add, Matrix.add_mul, smul_add]
 
 /- English proof (translation)
-Simplify using `only [cplxO, Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `smul_comm _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cplxO_smul {m n : ℕ} (s : Matrix (Fin n) (Fin n) ℂ) (t : Matrix (Fin m) (Fin m) ℂ) (c : ℝ)
     (x : Matrix (Fin m) (Fin n) ℂ) : cplxO s t (c • x) = c • cplxO s t x := by
@@ -104,7 +104,7 @@ def finRat (S T : HSp D) : Matrix (Fin T.rank) (Fin S.rank) D.host.E →+ WO S T
   map_add' x y := by funext i j; exact TensorProduct.tmul_add _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] (γ i j) = 0`. Conclude with `TensorProduct.zero_tmul _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem finRat_inf (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     (finRat S T γ).map (infPart D) = 0 := by
@@ -119,7 +119,7 @@ theorem finRat_fin (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E
     (finRat S T γ).map (finPart D) = (ratW T S γ).map (finPart D) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Establish `: infPart D (u i j) = 0` using `congrFun (congrFun hu i) j`. Use `show θ τ (infPart D (u i j)) = 0`. Rewrite using `[this, RingHom.map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piW_of_inf (θ : InfFam D) {S T : HSp D} {u : WO S T} (hu : u.map (infPart D) = 0) :
     piW θ T S u = 0 := by
@@ -129,7 +129,7 @@ theorem piW_of_inf (θ : InfFam D) {S T : HSp D} {u : WO S T} (hu : u.map (infPa
   rw [this, RingHom.map_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Conclude with `comp_incA hθ τ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem piW_ratW {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D)
     (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : piW θ T S (ratW T S γ) = infRat S T γ := by
@@ -137,9 +137,9 @@ theorem piW_ratW {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D)
   exact comp_incA hθ τ _
 
 /- English proof (translation)
-Establish `e : (ratW T S γ - finRat S T γ : WA T S) = iotaW σ T S (infRat S T γ)`. Use `h.real_ext ?_ (h.real_iota T S _) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Establish `e1 : finPart D (finRat S T γ i j) = finPart D (ratW T S γ i j)` using `rfl`. Use `show finPart D (ratW T S γ i j - finRat S T γ i j) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_sub, e1, sub_self]`. Rewrite using `[AddMonoidHom.map_sub, piW_of_inf θ (finRat_inf S T γ), piW_ratW h.inf, h.pi_iota, sub_zero]`. Conclude with `sub_eq_iff_eq_add.1 e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratW_eq {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : Chart θ σ) (S T : HSp D)
     (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -154,9 +154,7 @@ theorem ratW_eq {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : Ch
   exact sub_eq_iff_eq_add.1 e
 
 /- English proof (translation)
-Establish `: latO S T LS LT P ≤ ((infPart D).toAddMonoidHom.mapMatrix (m` using `Fin T.rank) (n := Fin S.rank)).ker := by`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, -, -, a, -, s, -, t, -, rfl⟩`. Use function extensionality and compare the values at `i j`. Use `show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] _ = 0`.
-
-Conclude with `TensorProduct.zero_tmul _ _`. Conclude with `this hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem latO_inf (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) {u : WO S T} (hu : u ∈ latO S T LS LT P) :

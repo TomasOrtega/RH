@@ -10,27 +10,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N GlobalTheory.CuspRep UpperTheory.V.Af in
 /- English proof (translation)
-Introduce `hP K _ _ _ hK n hn`. Take `⟨c, A, hcard⟩` from `cardP hP K n hn`. Use `⟨c, A, fun m wt hm hwt H hH M hM p w hp hw hpM hpd => ?_⟩` and prove the remaining obligations. Establish `hwM : (M : 𝓞 K) ∉ w.asIdeal` using `natCast_notMem_of_not_dvd hp hw hpM`. Set `Wd` to `{v : HeightOneSpectrum (𝓞 K) // (M : 𝓞 K) ∉ v.asIdeal}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `sys : CuspSub K n → Wd → Multiset ℂ` to `fun π v => if h : ∃ B, (CG.mk π).HasSat v.1 B then algSat n (normV v.1) h.choose else 0`. Establish `hsys : ∀ π (v : Wd) B, (CG.mk π).HasSat v.1 B → sys π v = algSat n (normV v.1) B`. Introduce `π v B hB`. Establish `h : ∃ B, (CG.mk π).HasSat v.1 B` using `⟨B, hB⟩`. Simplify using `only [sys, dif_pos h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h.choose_spec.unique hB]`. Establish `hsat : ∀ π ∈ SigP K m M, ∀ v : Wd, ∃ B, (CG.mk π).HasSat v.1 B` using `fun π hπ v => satK hP K n M π hπ.2.2 v.1 v.2`. Take `⟨D, hD, cl, hcl, hβ⟩` from `exists_eigData (SigP K m M) (fun π π' => π.Iso π') sys (fun π hπ π' _ h => funext fun v => by`. Take `⟨B, hB⟩` from `hsat π hπ v`. Rewrite using `[hsys π v B hB, hsys π' v B (CuspSub.Iso.hasSatGL h hB)])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(c * (M * (H + 1)) ^ A) (hcard m hm H hH M hM)`. Use the proof step `(fun σ π hπ => by`. Take `⟨π', hπ', h⟩` from `conjPrime₂ hP K hK n hn m hm M hM σ π hπ`. Use `⟨π', hπ', fun v => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hsat π hπ v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨B', hB', e⟩` from `h v.1 B hB`. Rewrite using `[hsys π v B hB, hsys π' v B' hB', e])`. Use the proof step `⟨w, hwM⟩ (n := n) (q := normV w) (m := m) (wt := wt)`. Use the proof step `(fun π hπ => by`. Take `⟨B, hB⟩` from `hsat π hπ ⟨w, hwM⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsys π _ B hB, algSat, Multiset.card_map, ← hB.card]`. Use the proof step `simp)`. Use the proof step `(fun π hπ b hb => by`. Take `⟨B, hB⟩` from `hsat π hπ ⟨w, hwM⟩`. Rewrite `hb` using `[hsys π _ B hB]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `pureP hP K n hn m wt hm hwt M π hπ w B hB b hb)`. Use the proof step `(fun π hπ => by`. Take `⟨B, hB⟩` from `hsat π hπ ⟨w, hwM⟩`. Rewrite using `[hsys π _ B hB]`. Conclude with `intP hP K n hn m hm M hM π hπ p w hp hw hpM hpd B hB)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D, hD, fun l hl hl2 hlp Ω _ _ _ ι => ?_⟩` and prove the remaining obligations. Establish `hform : ∀ r : {r : G K Ω →* GL (Fin n) (Qbar l) // AdmP ι M m r}, ∃ π : ↥(SigP K m M), IsSSRep r.1 ∧ ∀ v : Wd, (l : 𝓞 K) ∉ v.1.asIdeal → FrobEig ι r.1 v.1 (sys π v)`. Introduce `r`. Take `⟨π, h1, h2, h3⟩` from `r.2.aut`. Take `⟨hπ, hF⟩` from `levelP hP K hK n hn m hm M hM l hl2 Ω ι r.1 π r.2.level h1 h2 h3`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨π, hπ⟩, h3.1, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hsat π hπ v`. Rewrite using `[hsys π v B hB]`. Conclude with `hF v.1 hv B hB`. Use `choose f hss hf using hform`.
-
-Use `⟨fun r => cl (f r), fun r r' h => ?_, fun r => ?_⟩` and prove the remaining obligations. Use `isoOfFrob hP K Ω l ι n r.1 r'.1 r.2.level.cont r'.2.level.cont (hss r) (hss r') ?_ filter_upwards [eventually_natCast_notMem (F := K) (M := M) (by omega), eventually_natCast_notMem (F := K) hl.out.ne_zero] with v hvM hvl` and prove the remaining obligations. Use `⟨sys (f r) ⟨v, hvM⟩, hf r ⟨v, hvM⟩ hvl, ?_⟩` and prove the remaining obligations. Rewrite using `[hcl _ _ h]`. Conclude with `hf r' ⟨v, hvM⟩ hvl`.
-
-Rewrite using `[hβ]`. Use `hf r ⟨w, hwM⟩ (natCast_notMem_of_not_dvd hp hw fun h => hlp ?_)` and prove the remaining obligations. Conclude with `((Nat.prime_dvd_prime_iff_eq hp hl.out).1 h).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.countP :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Br.CountP := by

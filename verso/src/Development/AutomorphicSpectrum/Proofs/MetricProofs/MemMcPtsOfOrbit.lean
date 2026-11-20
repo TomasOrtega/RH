@@ -17,18 +17,18 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 abbrev PtsOf (P : Ideal (MRing ι)) : Type := ↥(Pts (pC P))
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `Top.proj_smul c hc w`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem proj_eq_of_orbit {z w : (Σ k, ι k) → ℂ} (h : SameOrbit z w) : proj z = proj w := by
   obtain ⟨c, hc, rfl⟩ := h
   exact Top.proj_smul c hc w
 
 /- English proof (translation)
-Use `orbit_of_cross hz hw fun k i i' => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `hz k`. Establish `hN : ((∑ l, ‖z ⟨k, l⟩‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Top.normSq_pos (hz k)).ne'`. Establish `hM : ((∑ l, ‖w ⟨k, l⟩‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Top.normSq_pos (hw k)).ne'`. Establish `hj' : starRingEnd ℂ (z ⟨k, j⟩) ≠ 0` using `by simpa using hj`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun h ⟨k, (i, j)⟩`. Establish `h2` using `congrFun h ⟨k, (i', j)⟩`. Simplify using `only [proj] at h1 h2`. Rewrite `h1`, `h2` using `[div_eq_div_iff hN hM]`. Establish `: (z ⟨k, i⟩ * w ⟨k, i'⟩ - z ⟨k, i'⟩ * w ⟨k, i⟩) * (starRingEnd ℂ (z ⟨k, j⟩) * ((∑ l, ‖w ⟨k, l⟩‖ ^ 2 : ℝ) : ℂ)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(w ⟨k, i'⟩) * h1 - (w ⟨k, i⟩) * h2`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_right (mul_ne_zero hj' hM))`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem orbit_of_proj {z w : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0)
     (h : proj z = proj w) : SameOrbit z w := by
@@ -51,13 +51,13 @@ theorem orbit_of_proj {z w : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i
 variable {P : Ideal (MRing ι)} {e : ℕ}
 
 /- English proof (translation)
-The claim follows from `(mem_mcPts_iff_conePts_pC P _).2 (rep_mem x)`.
+A detailed English derivation is pending.
 -/
 theorem rep_mem_mcPts (x : PtsOf P) : rep x ∈ mcPts P :=
   (mem_mcPts_iff_conePts_pC P _).2 (rep_mem x)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← proj_rep x, ← proj_rep y]`. Conclude with `proj_eq_of_orbit h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pts_eq_of_orbit {x y : PtsOf P} (h : SameOrbit (rep x) (rep y)) : x = y := by
   apply Subtype.ext
@@ -68,15 +68,15 @@ def cls (z : (Σ k, ι k) → ℂ) (hz : z ∈ mcPts P) : PtsOf P :=
   ⟨proj z, z, (mem_mcPts_iff_conePts_pC P z).1 hz, rfl⟩
 
 /- English proof (translation)
-The claim follows from `orbit_of_proj (rep_mem_mcPts _).1 hz.1 (proj_rep (cls z hz))`.
+A detailed English derivation is pending.
 -/
 theorem rep_cls_orbit (z : (Σ k, ι k) → ℂ) (hz : z ∈ mcPts P) : SameOrbit (rep (cls z hz)) z :=
   orbit_of_proj (rep_mem_mcPts _).1 hz.1 (proj_rep (cls z hz))
 
 /- English proof (translation)
-Establish `hz'` using `(mem_mcPts_iff_conePts_pC P z).1 hz`. Use `(mem_mcPts_iff_conePts_pC P z').2 ⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, fun h0 => hi (by`. Take `⟨c, hc, rfl⟩` from `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `: c k * z ⟨k, i⟩ = 0` using `h0`. Conclude with `(mul_eq_zero.1 this).resolve_left (hc k))⟩`. Take `⟨c, hc, rfl⟩` from `h`. Conclude with `ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul (isMultiHomogIdeal_pC hP) c z hz'.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_mcPts_of_orbit (hP : IsMultiHomogIdeal P) {z z' : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P)
     (h : SameOrbit z' z) : z' ∈ mcPts P := by
@@ -91,7 +91,7 @@ theorem mem_mcPts_of_orbit (hP : IsMultiHomogIdeal P) {z z' : (Σ k, ι k) → �
     exact ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul (isMultiHomogIdeal_pC hP) c z hz'.2
 
 /- English proof (translation)
-Use `⟨fun k => (rep x ⟨k, p k⟩)⁻¹, fun k => inv_ne_zero (hx k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Simplify using `[affCoord, div_eq_inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem orbit_aff (p : (k : K) → ι k) {x : PtsOf P} (hx : x ∈ src (pC P) p) :
     SameOrbit (affCoord p (rep x)) (rep x) := by
@@ -100,14 +100,14 @@ theorem orbit_aff (p : (k : K) → ι k) {x : PtsOf P} (hx : x ∈ src (pC P) p)
   simp [affCoord, div_eq_inv_mul]
 
 /- English proof (translation)
-Use `choose p hp using (rep_mem_mcPts x).1`. Conclude with `⟨p, hp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_alt_variant (x : PtsOf P) : ∃ p : (k : K) → ι k, x ∈ src (pC P) p := by
   choose p hp using (rep_mem_mcPts x).1
   exact ⟨p, hp⟩
 
 /- English proof (translation)
-The claim follows from `continuousOn_iff_continuous_restrict.2 (Top.isEmbedding_affCoord p).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_aff (p : (k : K) → ι k) :
     ContinuousOn (fun x : PtsOf P => affCoord p (rep x)) (src (pC P) p) :=
@@ -116,18 +116,16 @@ theorem continuousOn_aff (p : (k : K) → ι k) :
 def srcOf (C : OrbitChart P e) : Set (PtsOf P) := {x | rep x ∈ C.O}
 
 /- English proof (translation)
-The claim follows from `C.O_orbit z hz z' (mem_mcPts_of_orbit hP hzP h) h`.
+A detailed English derivation is pending.
 -/
 theorem mem_O_of_orbit (C : OrbitChart P e) (hP : IsMultiHomogIdeal P) {z z' : (Σ k, ι k) → ℂ} (hz : z ∈ C.O)
     (h : SameOrbit z' z) (hzP : z ∈ mcPts P) : z' ∈ C.O :=
   C.O_orbit z hz z' (mem_mcPts_of_orbit hP hzP h) h
 
 /- English proof (translation)
-Take `⟨O', hO', hO⟩` from `C.O_open`. Use `isOpen_iff_mem_nhds.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨p, hp⟩` from `exists_alt_variant x`. Establish `hS : src (pC P) p ∈ 𝓝 x` using `(Top.isOpen_alt_bis p).mem_nhds hp`. Establish `hc : ContinuousAt (fun y : PtsOf P => affCoord p (rep y)) x` using `(continuousOn_aff p).continuousAt hS`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hax : affCoord p (rep x) ∈ C.O` using `mem_O_of_orbit C hP hx (orbit_aff p hp) (rep_mem_mcPts x)`. Establish `hax' : affCoord p (rep x) ∈ O'` using `by rw [hO] at hax; exact hax.1`. Use `filter_upwards [hS, hc (hO'.mem_nhds hax')] with y hy hy'`. Establish `h1 : affCoord p (rep y) ∈ mcPts P` using `mem_mcPts_of_orbit hP (rep_mem_mcPts y) (orbit_aff p hy)`. Establish `h2 : affCoord p (rep y) ∈ C.O` using `by rw [hO]; exact ⟨hy', h1⟩`.
-
-Conclude with `mem_O_of_orbit C hP h2 (Proj.orbit_symm (orbit_aff p hy)) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_srcOf (hP : IsMultiHomogIdeal P) (C : OrbitChart P e) : IsOpen (srcOf C) := by
   obtain ⟨O', hO', hO⟩ := C.O_open
@@ -144,13 +142,11 @@ theorem isOpen_srcOf (hP : IsMultiHomogIdeal P) (C : OrbitChart P e) : IsOpen (s
   exact mem_O_of_orbit C hP h2 (Proj.orbit_symm (orbit_aff p hy)) h1
 
 /- English proof (translation)
-Introduce `x hx`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Take `⟨p, hp⟩` from `exists_alt_variant x`. Establish `hS : src (pC P) p ∈ 𝓝 x` using `(Top.isOpen_alt_bis p).mem_nhds hp`. Establish `hO : srcOf C ∈ 𝓝 x` using `(isOpen_srcOf hP C).mem_nhds hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt (fun y : PtsOf P => affCoord p (rep y)) x` using `(continuousOn_aff p).continuousAt hS`. Establish `hmem : ∀ y ∈ src (pC P) p, y ∈ srcOf C → affCoord p (rep y) ∈ C.O` using `fun y hy hy' => mem_O_of_orbit C hP hy' (orbit_aff p hy) (rep_mem_mcPts y)`. Establish `ht : Tendsto (fun y : PtsOf P => affCoord p (rep y)) (𝓝 x) (𝓝[C.O] (affCoord p (rep x)))`. Use `tendsto_nhdsWithin_iff.2 ⟨hc, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hS, hO] with y hy hy' using hmem y hy hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(C.ρ_cont _ (hmem x hp hx)).tendsto.comp ht`. Establish `e1 : C.ρ (affCoord p (rep x)) = C.ρ (rep x)` using `C.ρ_orbit _ hx _ (hmem x hp hx) (orbit_aff p hp)`. Rewrite `h1` using `[e1]`. Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hS, hO] with y hy hy'`.
-
-Conclude with `C.ρ_orbit _ hy' _ (hmem y hy hy') (orbit_aff p hy)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_rho (hP : IsMultiHomogIdeal P) (C : OrbitChart P e) :
     ContinuousOn (fun x : PtsOf P => C.ρ (rep x)) (srcOf C) := by
@@ -176,12 +172,12 @@ theorem continuousOn_rho (hP : IsMultiHomogIdeal P) (C : OrbitChart P e) :
 def clsT (x₀ : PtsOf P) (z : (Σ k, ι k) → ℂ) : PtsOf P := if h : z ∈ mcPts P then cls z h else x₀
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem clsT_of_mem (x₀ : PtsOf P) {z : (Σ k, ι k) → ℂ} (h : z ∈ mcPts P) : clsT x₀ z = cls z h := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[Topology.IsInducing.subtypeVal.continuousOn_iff]`. Establish `hφ : ContinuousOn C.φ C.D` using `continuousOn_pi.2 fun q => (C.holo q).continuousOn`. Establish `h1 : ContinuousOn (fun w => proj (C.φ w)) C.D` using `Top.continuousOn_proj.comp hφ fun w hw => (C.mem w hw).1`. Use `h1.congr fun w hw => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, clsT_of_mem x₀ (C.mem w hw), cls]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem continuousOn_cls (C : OrbitChart P e) (x₀ : PtsOf P) :
     ContinuousOn (fun w => clsT x₀ (C.φ w)) C.D := by

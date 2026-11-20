@@ -16,7 +16,7 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
 /- English proof (translation)
-Unfold `polar`. Conclude with `tendsto_finsetSum _ fun w _ => (h w).const_mul _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tendsto_polar {σ : Type} [Fintype σ] {n : ℕ} {α : Type} {l : Filter α} {f : α → (Fin n → σ) → ℝ}
     {a : (Fin n → σ) → ℝ} (c : Fin n → σ → ℝ) (h : ∀ w, Tendsto (fun t => f t w) l (𝓝 (a w))) :
@@ -25,9 +25,9 @@ theorem tendsto_polar {σ : Type} [Fintype σ] {n : ℕ} {α : Type} {l : Filter
   exact tendsto_finsetSum _ fun w _ => (h w).const_mul _
 
 /- English proof (translation)
-Establish `hev : (fun t => Re.num II t (w ∘ π)) =ᶠ[𝓝[>] 0] fun t => Re.num II t w` using `by filter_upwards [Ioc_mem_nhdsGT hpos] with t ht`. Establish `h` using `(hII.1 K ι).1 P (D + 1) (fun j => Re.line (w j) t) π Re.arith fun j => Re.line_smooth _ t ht.1 ht.2`. Unfold `Realis.num`. Conclude with `congrArg (· / (Re.deg : ℝ)) h`. Unfold `Realis.limNum limUnder`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.map_congr hev]`.
+A detailed English derivation is pending.
 -/
 theorem Realis.limNum_perm {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {D : ℕ} {σ : Type}
     {S : AnSys D σ} {P : Ideal (MRing ι)} (Re : Realis S P) {II : IntersectionSystem}
@@ -43,20 +43,20 @@ theorem Realis.limNum_perm {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fint
   rw [Filter.map_congr hev]
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.AnForm.M.mIntSymm S.A (fun j => S.th (w j)) π fun _ => 1`.
+A detailed English derivation is pending.
 -/
 theorem AnSys.degNum_perm {e : ℕ} {σ : Type} (S : AnSys e σ) (π : Equiv.Perm (Fin e)) (w : Fin e → σ) :
     S.degNum (w ∘ π) = S.degNum w :=
   ReciprocityTheory.AnForm.M.mIntSymm S.A (fun j => S.th (w j)) π fun _ => 1
 
 /- English proof (translation)
-Introduce `hI hF II hII K _ ι _ d σ _ SY P Re a₀ ε Q c hc u`. Establish `hpos : 0 < SY.t₀` using `(SY.reg a₀).1`. Establish `hposW : 0 < Q.an.SW.t₀` using `(Q.an.SW.reg none).1`. Take `⟨C₃, s₀, -, hAg⟩` from `GlobalTheory.T.agreement_positive hI (d + 1) σ SY 0 hpos`. Establish `hlim` using `(hAg II hII K ι P Re).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t ∧ t ≤ Q.an.SW.t₀` using `by filter_upwards [Ioc_mem_nhdsGT hposW] with t ht using ⟨ht.1, ht.2⟩`. Use `GlobalTheory.T.polar_identity_from_symmetric_forms σ (d + 1) (Re.limNum II) SY.degNum kappa ε a₀ (Re.limNum_perm hII hpos) SY.degNum_perm (fun n hn => ?_) c hc u` and prove the remaining obligations. Establish `hsq` using `GlobalTheory.T.square_system_polar_vanishing hI II hII K ι d σ SY P Re a₀ ε Q n hn`. Use `⟨?_, fun k hk hk2 => ?_⟩` and prove the remaining obligations. Establish `h1` using `tendsto_polar (fun _ (x : σ) => (n x : ℝ)) hlim`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun t => polar (d + 2) (Re.num II t) fun _ (x : σ) => (n x : ℝ)) (𝓝[>] 0) (𝓝 0)` using `tendsto_const_nhds.congr' (hev.mono fun t ht => (hsq t ht.1 ht.2).1.symm)`. Conclude with `tendsto_nhds_unique h1 h2`. Establish `h1` using `tendsto_polar (mix (2 * k) (fun a => (ε a : ℝ)) fun a => (n a : ℝ)) hlim`. Establish `h2 : Tendsto (fun t => -∑ i ∈ Finset.range k, polar (d + 2) (fun w => mInt Q.an.SW.A (fun r => Q.an.SW.potT (w r) t) (Q.an.gT t)) (Q.an.wcoef (fun a => (n a : ℝ)) k i)) (𝓝[>] 0) (𝓝 (-∑ i ∈ Finset.range k, polar (d + 2) (fun w => mInt Q.an.SW.A (fun r => Q.an.SW.potH (w r)) Q.an.g …` using `(tendsto_finsetSum _ fun i _ => tendsto_polar _ fun w => (GlobalTheory.T.analytic_square_regularized_convergence hI d σ SY a₀ ε Q.an w).2).neg`. Establish `h3` using `tendsto_nhds_unique (h1.congr' (hev.mono fun t ht => (hsq t ht.1 ht.2).2 k hk hk2)) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `GlobalTheory.T.square_polar_integral_identity hI hF d σ SY a₀ ε Q.an (fun a => (n a : ℝ)) (by simp [hn]) k hk hk2`. Rewrite using `[h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thmA_limit : Inputs → GroundTheory.Heights₂.Heights.Inter.FibreLocal.Statement → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (d : ℕ) (σ : Type) [Fintype σ] (SY : AnSys (d + 1) σ) (P : Ideal (MRing ι)) (Re : Realis SY P) (a₀ : σ) (ε : σ → ℤ) (Q : SqSys Re a₀ ε) (c : σ → ℝ), c a₀ = 0 → ∀ u : ℝ, eval (fun x => c x - u / 2 * ε x) (Re.PB II) + eval (fun x => c x + u / 2 * ε x) (Re.PB II) = (tsgPoly (d + 1) kappa (linePoly c ε SY.degPoly)).eval u := by
   intro hI hF II hII K _ ι _ d σ _ SY P Re a₀ ε Q c hc u

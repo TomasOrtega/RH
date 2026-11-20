@@ -20,28 +20,28 @@ namespace PLC
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Conclude with `st_smooth_continuous A hf`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_smooth (A : FinHolAtlas e X) {f : X → ℝ} (hf : A.Smooth f) :
     Continuous f := by
   exact st_smooth_continuous A hf
 
 /- English proof (translation)
-The claim follows from `st_smooth_mul A hf hg`.
+A detailed English derivation is pending.
 -/
 theorem smooth_mul (A : FinHolAtlas e X) {f g : X → ℝ} (hf : A.Smooth f) (hg : A.Smooth g) :
     A.Smooth (fun x => f x * g x) := st_smooth_mul A hf hg
 
 /- English proof (translation)
-The claim follows from `st_smooth_sum A S hf`.
+A detailed English derivation is pending.
 -/
 theorem smooth_sum (A : FinHolAtlas e X) {ι : Type*} (S : Finset ι) {f : ι → X → ℝ}
     (hf : ∀ i, A.Smooth (f i)) : A.Smooth (fun x => ∑ i ∈ S, f i x) := st_smooth_sum A S hf
 
 /- English proof (translation)
-Take `⟨B, hB, hall, -⟩` from `atlasOfCompat A (Fin.cons ψ A.chart : Fin (A.n + 1) → OpenPartialHomeomorph X (Fin e → ℂ)) (fun i => by`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hψ`. Simplify using `using pa_compat_chart A j)`. Use the proof step `(fun x => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `A.cover x`. Conclude with `⟨j.succ, by simpa using hj⟩)`. Take `⟨j, hj⟩` from `hall 0`. Conclude with `⟨B, hB, j, by simpa using hj⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_atlas_with (A : FinHolAtlas e X) (ψ : OpenPartialHomeomorph X (Fin e → ℂ))
     (hψ : IsCompatChart A ψ) : ∃ B : FinHolAtlas e X, A.Compatible B ∧ ∃ j, B.chart j = ψ := by
@@ -58,29 +58,25 @@ theorem exists_atlas_with (A : FinHolAtlas e X) (ψ : OpenPartialHomeomorph X (F
   exact ⟨B, hB, j, by simpa using hj⟩
 
 /- English proof (translation)
-Establish `hKc : IsCompact K` using `hK.isCompact`. Establish `hK'c : IsCompact (ψ '' K)` using `hKc.image_of_continuousOn (ψ.continuousOn.mono hKψ)`. Establish `hK'U : ψ '' K ⊆ ψ.target`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `ψ.map_source (hKψ hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hb : ∀ x ∈ ψ.target, ∃ f : (Fin e → ℂ) → ℝ, tsupport f ⊆ ψ.target ∧ HasCompactSupport f ∧ ContDiff ℝ ∞ f ∧ Set.range f ⊆ Set.Icc 0 1 ∧ f x = 1` using `fun x hx => exists_contDiff_tsupport_subset (n := ⊤) (ψ.open_target.mem_nhds hx)`. Use `choose! F hFs hFc hFd hFr hF1 using hb`. Take `⟨t, ht⟩` from `hK'c.elim_finite_subcover (fun i : ψ '' K => {y | 1 / 2 < F i y}) (fun i => isOpen_lt continuous_const (hFd i (hK'U i.2)).continuous) (fun y hy => Set.mem_iUnion.mpr ⟨⟨y, hy⟩, by show (1 : ℝ) / 2 < F y y`. Rewrite using `[hF1 y (hK'U hy)]`. Use the proof step `norm_num⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgd : ContDiff ℝ ∞ (fun y => ∑ i ∈ t, F i y)` using `contDiffOn_univ.mp (ContDiffOn.sum (fun i _ => (hFd i (hK'U i.2)).contDiffOn))`. Establish `hgK : ∀ y ∈ ψ '' K, 1 / 2 ≤ ∑ i ∈ t, F i y`. Introduce `y hy`. Take `⟨i, hi, hyi⟩` from `Set.mem_iUnion₂.mp (ht hy)`. Conclude with `le_trans (le_of_lt hyi) (Finset.single_le_sum (f := fun j : ψ '' K => F j y) (fun j _ => (hFr j (hK'U j.2) (Set.mem_range_self y)).1) hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTc : IsCompact (⋃ i ∈ t, tsupport (F i))` using `t.isCompact_biUnion (fun i _ => hFc i (hK'U i.2))`. Establish `hTU : (⋃ i ∈ t, tsupport (F i)) ⊆ ψ.target` using `Set.iUnion₂_subset (fun i _ => hFs i (hK'U i.2))`. Establish `hrd : ContDiff ℝ ∞ (fun y => Real.smoothTransition (2 * ∑ i ∈ t, F i y))` using `Real.smoothTransition.contDiff.comp (contDiff_const.mul hgd)`. Establish `hrT : ∀ y, Real.smoothTransition (2 * ∑ i ∈ t, F i y) ≠ 0 → y ∈ ⋃ i ∈ t, tsupport (F i)`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hyT`. Apply `hy` to reduce the goal to its premises. Apply `Real.smoothTransition.zero_of_nonpos` to reduce the goal to its premises. Establish `h0 : ∑ i ∈ t, F i y = 0` using `Finset.sum_eq_zero (fun i hi => by`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hyT (Set.mem_iUnion₂.mpr ⟨i, hi, subset_tsupport _ hne⟩))`. Rewrite using `[h0]`. Evaluate the numerical expressions. Establish `hLc : IsCompact (ψ.symm '' ⋃ i ∈ t, tsupport (F i))` using `hTc.image_of_continuousOn (ψ.continuousOn_symm.mono hTU)`. Establish `hLs : ψ.symm '' (⋃ i ∈ t, tsupport (F i)) ⊆ ψ.source`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `ψ.map_target (hTU hy)`. Establish `hsupp : Function.support (fun x => if x ∈ ψ.source then Real.smoothTransition (2 * ∑ i ∈ t, F i (ψ x)) else 0) ⊆ ψ.symm '' ⋃ i ∈ t, tsupport (F i)`. Introduce `x hx`. Distinguish the cases in `hxs : x ∈ ψ.source`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr : Real.smoothTransition (2 * ∑ i ∈ t, F i (ψ x)) ≠ 0` using `by simpa [hxs] using hx`. Conclude with `⟨ψ x, hrT _ hr, ψ.left_inv hxs⟩`. Conclude with `absurd (show (if x ∈ ψ.source then Real.smoothTransition (2 * ∑ i ∈ t, F i (ψ x)) else 0) = 0 by simp [hxs]) hx`. Use `⟨fun x => if x ∈ ψ.source then Real.smoothTransition (2 * ∑ i ∈ t, F i (ψ x)) else 0, ?_, (closure_minimal hsupp hLc.isClosed).trans hLs, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `contDiffOn_of_locally_contDiffOn (fun y hy => ?_)` and prove the remaining obligations. Establish `hyt : y ∈ (A.chart j).target` using `hy.1`. Distinguish the cases in `hp : (A.chart j).symm y ∈ ψ.source`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' ψ.source)` using `(A.chart j).isOpen_inter_preimage_symm ψ.open_source`. Use `⟨(A.chart j).target ∩ (A.chart j).symm ⁻¹' ψ.source, hopen, ⟨hyt, hp⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `han : ContDiffOn ℝ ∞ (ψ ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' ψ.source)` using `((hψ j).1.contDiffOn hopen.uniqueDiffOn).restrict_scalars ℝ`. Use `((hrd.comp_contDiffOn han).mono Set.inter_subset_right).congr (fun w hw => ?_)` and prove the remaining obligations. Establish `hws : (A.chart j).symm w ∈ ψ.source` using `hw.2.2`. Simplify using `only [Function.comp_apply, if_pos hws]`. Use `⟨(A.chart j).target ∩ (A.chart j).symm ⁻¹' (ψ.symm '' ⋃ i ∈ t, tsupport (F i))ᶜ, (A.chart j).isOpen_inter_preimage_symm hLc.isClosed.isOpen_compl, ⟨hyt, fun hL => hp (hLs hL)⟩, ?_⟩` and prove the remaining obligations.
-
-Use `(contDiffOn_const (c := (0 : ℝ))).congr (fun w hw => ?_)` and prove the remaining obligations. Establish `hwL : (A.chart j).symm w ∉ ψ.symm '' ⋃ i ∈ t, tsupport (F i)` using `hw.2.2`. Use `show (fun x => if x ∈ ψ.source then Real.smoothTransition (2 * ∑ i ∈ t, F i (ψ x)) else 0) ((A.chart j).symm w) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hwL (hsupp hne)`.
-
-Introduce `z hz`. Simplify using `only [if_pos (hKψ hz)]`. Conclude with `Real.smoothTransition.one_of_one_le (by linarith [hgK (ψ z) ⟨z, hz, rfl⟩])`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cutoff [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (hψ : IsCompatChart A ψ) (K : Set X)
@@ -168,7 +164,7 @@ theorem exists_cutoff [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     exact Real.smoothTransition.one_of_one_le (by linarith [hgK (ψ z) ⟨z, hz, rfl⟩])
 
 /- English proof (translation)
-Establish `hU : (Finset.univ : Finset (Finset (Fin 1))) = {∅, {0}}` using `by decide`. Unfold `ReciprocityTheory.AnForm.maDens ReciprocityTheory.AnForm.mdisc`. Rewrite using `[hU, Finset.sum_pair (by decide)]`. Simplify using `[Matrix.det_fin_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem maDens_one (φ : Fin 1 → (Fin 1 → ℂ) → ℝ) (z : Fin 1 → ℂ) :
     ReciprocityTheory.AnForm.maDens φ z = 2 / Real.pi * (ReciprocityTheory.AnForm.hessC (φ 0) z 0 0).re := by
@@ -178,9 +174,9 @@ theorem maDens_one (φ : Fin 1 → (Fin 1 → ℂ) → ℝ) (z : Fin 1 → ℂ) 
   simp [Matrix.det_fin_one]
 
 /- English proof (translation)
-Establish `hH : ∀ k, ReciprocityTheory.AnForm.hessC (φ k) z = ReciprocityTheory.AnForm.hessC (ψ k) z`. Introduce `k`. Establish `hF : fderiv ℝ (fderiv ℝ (φ k)) z = fderiv ℝ (fderiv ℝ (ψ k)) z` using `(h k).fderiv.fderiv_eq`. Unfold `ReciprocityTheory.AnForm.hessC`. Rewrite using `[hF]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ReciprocityTheory.AnForm.maDens`. Simplify using `only [hH]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem maDens_congr {D : ℕ} (φ ψ : Fin D → (Fin D → ℂ) → ℝ) (z : Fin D → ℂ)
     (h : ∀ k, φ k =ᶠ[𝓝 z] ψ k) : ReciprocityTheory.AnForm.maDens φ z = ReciprocityTheory.AnForm.maDens ψ z := by
@@ -193,9 +189,9 @@ theorem maDens_congr {D : ℕ} (φ ψ : Fin D → (Fin D → ℂ) → ℝ) (z : 
   simp only [hH]
 
 /- English proof (translation)
-Rewrite using `[maDens_one]`. Simplify using `only [Matrix.cons_val_zero]`. Establish `hH : ReciprocityTheory.AnForm.hessC f z = ReciprocityTheory.AnForm.hessC (0 : (Fin 1 → ℂ) → ℝ) z`. Establish `hF : fderiv ℝ (fderiv ℝ f) z = fderiv ℝ (fderiv ℝ (0 : (Fin 1 → ℂ) → ℝ)) z` using `h.fderiv.fderiv_eq`. Unfold `ReciprocityTheory.AnForm.hessC`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hF]`. Rewrite using `[hH]`. Simplify using `[ReciprocityTheory.AnForm.hessC]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem maDens_one_eq_zero (f : (Fin 1 → ℂ) → ℝ) (z : Fin 1 → ℂ) (h : f =ᶠ[𝓝 z] 0) :
     ReciprocityTheory.AnForm.maDens ![f] z = 0 := by
@@ -210,7 +206,7 @@ theorem maDens_one_eq_zero (f : (Fin 1 → ℂ) → ℝ) (z : Fin 1 → ℂ) (h 
   simp [ReciprocityTheory.AnForm.hessC]
 
 /- English proof (translation)
-Apply `maDens_one_eq_zero` to reduce the goal to its premises. Establish `ho : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (tsupport v)ᶜ)` using `ψ.isOpen_inter_preimage_symm (isClosed_tsupport v).isOpen_compl`. Use `filter_upwards [ho.mem_nhds ⟨hy, hv⟩] with w hw`. Use `show v (ψ.symm w) = 0`. Conclude with `image_eq_zero_of_notMem_tsupport hw.2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maDens_comp_symm_eq_zero (ψ : OpenPartialHomeomorph X (Fin 1 → ℂ)) (v : X → ℝ)
     {y : Fin 1 → ℂ} (hy : y ∈ ψ.target) (hv : ψ.symm y ∉ tsupport v) :
@@ -223,7 +219,7 @@ theorem maDens_comp_symm_eq_zero (ψ : OpenPartialHomeomorph X (Fin 1 → ℂ)) 
   exact image_eq_zero_of_notMem_tsupport hw.2
 
 /- English proof (translation)
-Unfold `locDens`. Use `congr 1`. Use function extensionality and compare the values at `i y'`. Use `fin_cases i`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locDens_ofFun (A : FinHolAtlas 1 X) (v : X → ℝ) (j : Fin A.n) (y : Fin 1 → ℂ) :
     locDens A ![LocPot.ofFun v] j y = ReciprocityTheory.AnForm.maDens ![v ∘ (A.chart j).symm] y := by
@@ -234,7 +230,7 @@ theorem locDens_ofFun (A : FinHolAtlas 1 X) (v : X → ℝ) (j : Fin A.n) (y : F
   rfl
 
 /- English proof (translation)
-Simplify using `only [locDens, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem locDens_congr_phi (A : FinHolAtlas e X) (Φ Ψ : Fin e → LocPot X)
     (h : ∀ i a b, (Φ i).φ a b = (Ψ i).φ a b) (j : Fin A.n) (y : Fin e → ℂ) :
@@ -242,9 +238,9 @@ theorem locDens_congr_phi (A : FinHolAtlas e X) (Φ Ψ : Fin e → LocPot X)
   simp only [locDens, h]
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs with hP`. Unfold `integralWith`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Use `MeasureTheory.integral_congr_ae ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h j] with y hy`. Rewrite using `[mul_assoc, hy, ← mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mInt_congr (A : FinHolAtlas e X) (Φ Ψ : Fin e → LocPot X) (g g' : X → ℝ)
     (h : ∀ j, ∀ᵐ y ∂(volume.restrict (A.chart j).target),
@@ -260,7 +256,7 @@ theorem mInt_congr (A : FinHolAtlas e X) (Φ Ψ : Fin e → LocPot X) (g g' : X 
   · rfl
 
 /- English proof (translation)
-The claim follows from `mInt_congr A Φ Ψ g g (fun j => Filter.Eventually.of_forall (fun y => by rw [locDens_congr_phi A Φ Ψ h j y]))`.
+A detailed English derivation is pending.
 -/
 theorem mInt_congr_phi (A : FinHolAtlas e X) (Φ Ψ : Fin e → LocPot X)
     (h : ∀ i a b, (Φ i).φ a b = (Ψ i).φ a b) (g : X → ℝ) : mInt A Φ g = mInt A Ψ g :=
@@ -268,7 +264,7 @@ theorem mInt_congr_phi (A : FinHolAtlas e X) (Φ Ψ : Fin e → LocPot X)
     rw [locDens_congr_phi A Φ Ψ h j y]))
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs with hP`. Simplify using `[integralWith]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mInt_zero (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) : mInt A Φ (fun _ => 0) = 0 := by
   unfold mInt
@@ -277,9 +273,9 @@ theorem mInt_zero (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) : mInt A Φ (f
   · rfl
 
 /- English proof (translation)
-Use `mInt_congr A _ _ g g' (fun j => ?_)` and prove the remaining obligations. Use `filter_upwards [MeasureTheory.ae_restrict_mem (A.chart j).open_target.measurableSet] with y hy`. Distinguish the cases in `hs : (A.chart j).symm y ∈ tsupport v`. Rewrite using `[h _ hs]`. Rewrite using `[locDens_ofFun, maDens_comp_symm_eq_zero _ v hy hs]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mInt_ofFun_congr (A : FinHolAtlas 1 X) (v : X → ℝ) (g g' : X → ℝ)
     (h : ∀ z ∈ tsupport v, g z = g' z) :
@@ -292,7 +288,7 @@ theorem mInt_ofFun_congr (A : FinHolAtlas 1 X) (v : X → ℝ) (g g' : X → ℝ
     simp
 
 /- English proof (translation)
-Introduce `j K hK hc`. Use `(MeasureTheory.Integrable.sub (hf j K hK hc) (hg j K hK hc)).congr (Filter.Eventually.of_forall (fun y => ?_))` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, sub_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mIntegrable_sub (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) {f g : X → ℝ}
     (hf : MIntegrable A Φ f) (hg : MIntegrable A Φ g) : MIntegrable A Φ (fun x => f x - g x) := by

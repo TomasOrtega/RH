@@ -22,11 +22,11 @@ noncomputable section
 namespace GlobalTheory.FlagCell
 
 /- English proof (translation)
-Establish `hsplit : (A * B).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le) = A.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le) * B.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective _ (Fin.strictMono_castLE l.is_le).injective _ _ ?_ (fun _ => rfl)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Establish `hkl : l.1 ≤ k.1`. Assume the negation of the conclusion as `hc`. Conclude with `hk ⟨⟨k.1, lt_of_not_ge hc⟩, Fin.ext rfl⟩`. Establish `hlt : Fin.castLE l.is_le j < k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.lt_def]`. Conclude with `lt_of_lt_of_le j.2 hkl`. Establish `h0 : B k (Fin.castLE l.is_le j) = 0` using `hB hlt`. Rewrite using `[h0, mul_zero]`. Rewrite using `[hsplit, Matrix.det_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_leading_mul_upper {R : Type} [CommRing R] {m : ℕ} (A B : Matrix (Fin m) (Fin m) R)
     (hB : B.BlockTriangular id) (l : Fin (m + 1)) :
@@ -51,23 +51,21 @@ theorem det_leading_mul_upper {R : Type} [CommRing R] {m : ℕ} (A B : Matrix (F
   rw [hsplit, Matrix.det_mul]
 
 /- English proof (translation)
-Set `Xm : Matrix (Fin m) (Fin m) (MvPolynomial (Fin m × Fin m) ℂ)` to `Matrix.of fun i j => MvPolynomial.X (i, j)`. Set `toM : (Fin m × Fin m → ℂ) → Matrix (Fin m) (Fin m) ℂ` to `fun a => Matrix.of fun i j => a (i, j)`. Establish `hX : ∀ a, Xm.map (MvPolynomial.eval a) = toM a`. Introduce `a`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[Xm, toM]`. Establish `hhX : ∀ a, (h.map MvPolynomial.C * Xm).map (MvPolynomial.eval a) = h * toM a`. Introduce `a`. Rewrite using `[Matrix.map_mul, hX, Matrix.map_map]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hsurj : ∀ B : Matrix (Fin m) (Fin m) ℂ, ∃ a, toM a = B` using `fun B => ⟨fun p => B p.1 p.2, by ext i j; rfl⟩`. Establish `key : ∀ (P : Matrix (Fin m) (Fin m) (MvPolynomial (Fin m × Fin m) ℂ)) (F : Matrix (Fin m) (Fin m) ℂ → Matrix (Fin m) (Fin m) ℂ), (∀ a, P.map (MvPolynomial.eval a) = F (toM a)) → ∀ l : Fin (m + 1), (∃ B, ((F B).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det ≠ 0) → ∀ᵐ a : …`. Introduce `P F hP l ⟨B, hB⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hev : ∀ a, MvPolynomial.eval a (P.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det = ((F (toM a)).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det`. Introduce `a`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, hP]`. Take `⟨a0, ha0⟩` from `hsurj B`. Establish `hne : (P.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hB` to reduce the goal to its premises. Rewrite using `[← ha0, ← hev, h0, map_zero]`. Use `filter_upwards [ReciprocityTheory.MultiplicativeHeights.ae_eval_ne_zero_linear (volume : Measure (Fin m × Fin m → ℂ)) (LinearEquiv.refl ℂ _) _ hne] with a ha`. Rewrite using `[← hev]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ha`. Establish `hone : ∀ l : Fin (m + 1), ((1 : Matrix (Fin m) (Fin m) ℂ).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det ≠ 0`. Introduce `l`. Rewrite using `[Matrix.submatrix_one _ (Fin.castLE_injective _), Matrix.det_one]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ l : Fin (m + 1), ∀ᵐ a : Fin m × Fin m → ℂ, ((toM a).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det ≠ 0`. Introduce `l`. Conclude with `key Xm id hX l ⟨1, hone l⟩`. Establish `h2 : ∀ l : Fin (m + 1), ∀ᵐ a : Fin m × Fin m → ℂ, ((h * toM a).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det ≠ 0`. Introduce `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `key _ (fun B => h * B) hhX l ⟨h⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_nonsing_inv _ hh]`. Conclude with `hone l`. Establish `hall : ∀ᵐ a : Fin m × Fin m → ℂ, ∀ l : Fin (m + 1), ((toM a).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det ≠ 0 ∧ ((h * toM a).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det ≠ 0`. Rewrite using `[ae_all_iff]`.
-
-Introduce `l`. Use `filter_upwards [h1 l, h2 l] with a ha hb using ⟨ha, hb⟩`. Take `⟨a, ha⟩` from `hall.exists`. Conclude with `⟨toM a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_minors_ne_zero {m : ℕ} (h : Matrix (Fin m) (Fin m) ℂ) (hh : IsUnit h.det) :
     ∃ A : Matrix (Fin m) (Fin m) ℂ, ∀ l : Fin (m + 1),
@@ -128,21 +126,19 @@ theorem exists_minors_ne_zero {m : ℕ} (h : Matrix (Fin m) (Fin m) ℂ) (hh : I
   exact ⟨toM a, ha⟩
 
 /- English proof (translation)
-Introduce `m g hg`. Rewrite using `[ae_all_iff]`. Introduce `l`. Establish `hex : ∃ x : Low m → ℂ, ((g * uni x).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det ≠ 0`. Establish `hgi : IsUnit g⁻¹.det`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_nonsing_inv]`. Conclude with `(Ring.inverse_eq_inv g.det).symm ▸ hg.ringInverse`. Take `⟨A, hA⟩` from `exists_minors_ne_zero g⁻¹ hgi`. Take `⟨n, b, hb, -, heq⟩` from `exists_lu ℂ m (g⁻¹ * A) fun k => isUnit_iff_ne_zero.mpr (hA k).2`. Establish `hA' : g * uniR n * b = A`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, ← heq, Matrix.mul_nonsing_inv_cancel_left _ _ hg]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h` using `(hA l).1`. Rewrite `h` using `[← hA', det_leading_mul_upper _ _ hb]`. Rewrite using `[← uniR_eq_uni]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `left_ne_zero_of_mul h`. Take `⟨x0, hx0⟩` from `hex`. Set `P : Matrix (Fin m) (Fin m) (MvPolynomial (Low m) ℂ)` to `g.map MvPolynomial.C * uniR (fun s => MvPolynomial.X s)`. Establish `hev : ∀ x : Low m → ℂ, MvPolynomial.eval x (P.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det = ((g * uni x).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.submatrix_map]`. Use `congr 2`. Rewrite using `[Matrix.map_mul, map_uniR, Matrix.map_map, ← uniR_eq_uni]`. Use `congr 1`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using the standard rewrite rules. Establish `hne : (P.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det ≠ 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[← hev, h0, map_zero]`. Use `filter_upwards [ReciprocityTheory.MultiplicativeHeights.ae_eval_ne_zero_linear (volume : Measure (Low m → ℂ)) (LinearEquiv.refl ℂ _) _ hne] with x hx`. Rewrite using `[← hev]`.
-
-Simplify using `using hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ae_leading_minors_mul_uni_ne_zero : ∀ (m : ℕ) (g : Matrix (Fin m) (Fin m) ℂ), IsUnit g.det →
     ∀ᵐ x : Low m → ℂ, ∀ l : Fin (m + 1),

@@ -18,15 +18,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace PolarJacobianDeterminant
 
 /- English proof (translation)
-Use `set f : Fin n → Fin n → ℝ := fun i j => shc (pev z i - pev z j) with hf`. Establish `hsym : ∀ i j, f i j = f j i`. Introduce `i j`. Simplify using `only [hf]`. Rewrite using `[← neg_sub, PolarJacobianDeterminant.shc_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpt : ∀ i j, f i j = (if i < j then f i j else 1) * (if j < i then f i j else 1)`. Introduce `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `[h, not_lt_of_gt h]`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hf, shc]`. Simplify using `[h, not_lt_of_gt h]`. Establish `hswap : ∏ i, ∏ j, (if j < i then f i j else 1) = ∏ i, ∏ j, (if i < j then f i j else 1)`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsym]`. Establish `hJ : Jac z = ∏ i, ∏ j, (if i < j then f i j else 1)`. Simplify using `only [Jac, Finset.prod_filter, hf]`. Establish `hall : ∏ i, ∏ j, f i j = Jac z ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.prod_mul_distrib]`. Use `_ = Jac z ^ 2 := by rw [hswap, ← hJ, sq]`. Establish `: ∏ i, ∏ j, shc (pev z i - pev z j) ^ 2 = (∏ i, ∏ j, f i j) ^ 2`. Simplify using `only [hf, Finset.prod_pow]`. Rewrite using `[this, hall, ← pow_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_shc_sq_eq_Jac_pow {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     ∏ i, ∏ j, shc (pev z i - pev z j) ^ 2 = Jac z ^ 4 := by
@@ -57,7 +57,7 @@ theorem prod_shc_sq_eq_Jac_pow {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   rw [this, hall, ← pow_mul]
 
 /- English proof (translation)
-Establish `: shcAdC y = ⇑(LinearMap.toContinuousLinearMap (PolarJacobianDeterminant.shcAdCL y))`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `ContinuousLinearMap.fderiv _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_shcAdC {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     fderiv ℝ (shcAdC y) 0 = LinearMap.toContinuousLinearMap (PolarJacobianDeterminant.shcAdCL y) := by
@@ -69,9 +69,7 @@ theorem fderiv_shcAdC {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
 end PolarJacobianDeterminant
 
 /- English proof (translation)
-Establish `h4` using `(detPb y).symm.trans ((detPa y).trans (PolarJacobianDeterminant.prod_shc_sq_eq_Jac_pow y))`. Establish `hpos : 0 < LinearMap.det ((fderiv ℝ (shcAdC y) 0 : (PCoord ε → ℂ) →L[ℝ] (PCoord ε → ℂ)) : (PCoord ε → ℂ) →ₗ[ℝ] (PCoord ε → ℂ))`. Rewrite using `[PolarJacobianDeterminant.fderiv_shcAdC, LinearMap.coe_toContinuousLinearMap]`. Conclude with `PolarJacobianDeterminant.det_shcAdCL_pos y`. Establish `hJ : 0 ≤ Jac y` using `Finset.prod_nonneg fun a _ => Finset.prod_nonneg fun b _ => (PolarJacobianDeterminant.shc_pos _).le`.
-
-Conclude with `(pow_left_inj₀ hpos.le hJ (by norm_num)).mp h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem detP {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     LinearMap.det ((fderiv ℝ (shcAdC y) 0 : (PCoord ε → ℂ) →L[ℝ] (PCoord ε → ℂ)) :

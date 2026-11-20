@@ -4,7 +4,7 @@ import Mathlib
 open NumberField IsDedekindDomain TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.norm_eq_mul_norm_idem_corner` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNormEqMulNormIdempotentCorner.lean&line=38#L38)
 -/

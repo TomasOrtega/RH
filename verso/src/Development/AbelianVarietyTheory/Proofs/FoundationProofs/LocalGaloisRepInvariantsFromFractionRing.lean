@@ -23,19 +23,19 @@ theorem rep_apply {m : ℕ} (r : ↥Gw →* GL (Fin m) O) (g : ↥(GK Bw.Kw)) (x
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective.comp Bw.eO.injective`.
+A detailed English derivation is pending.
 -/
 theorem toLL_injective : Function.Injective Bw.toLL :=
   Subtype.val_injective.comp Bw.eO.injective
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp Bw.eO_cont`.
+A detailed English derivation is pending.
 -/
 theorem toLL_continuous : Continuous Bw.toLL :=
   continuous_subtype_val.comp Bw.eO_cont
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing ↥Bw.LL.1 := (GlobalTheory.LocalIntegers.good_integers l Bw.LL).1.2.2.2.1`. Simplify using `only [rep_apply]`. Conclude with `((hr.comp Bw.e_symm_cont).matrix_map (toLL_continuous Bw)).matrix_mulVec continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rep_continuous {m : ℕ} (r : ↥Gw →* GL (Fin m) O)
     (hr : Continuous fun g => ((r g : GL (Fin m) O) : Matrix (Fin m) (Fin m) O))
@@ -45,17 +45,15 @@ theorem rep_continuous {m : ℕ} (r : ↥Gw →* GL (Fin m) O)
   exact ((hr.comp Bw.e_symm_cont).matrix_map (toLL_continuous Bw)).matrix_mulVec continuous_const
 
 /- English proof (translation)
-Take `⟨_, -, hfr⟩` from `(GlobalTheory.LocalIntegers.good_integers l Bw.LL).1.1`. Set `φ : FractionRing O →+* ↥Bw.LL.1` to `IsFractionRing.lift (g := Bw.toLL) (toLL_injective Bw)`. Establish `hφ : ∀ a, φ (algebraMap O _ a) = Bw.toLL a` using `fun a => IsFractionRing.lift_algebraMap _ a`. Establish `hsurj : Function.Surjective φ`. Introduce `y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, d, -, rfl⟩` from `IsFractionRing.div_surjective (A := ↥(OL Bw.LL)) y`. Use `⟨algebraMap O _ (Bw.eO.symm n) / algebraMap O _ (Bw.eO.symm d), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hφ, hφ]`. Simplify using `[LocBridge.toLL]`. Rewrite using `[eq_bot_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Use `choose x₀ hx₀ using fun a => hsurj (x a)`. Establish `h0 : x₀ = 0`. Use `h x₀ fun g => ?_` and prove the remaining obligations. Establish `h1 : Bw.rep r (Bw.e g) x = x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Submodule.mem_iInf _).1 hx (Bw.e g)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite `h1` using `[rep_apply, MulEquiv.symm_apply_apply]`. Use function extensionality and compare the values at `a`. Apply `φ.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx₀, ← congrFun h1 a]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, hφ, hx₀]`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `a`. Rewrite using `[← hx₀, h0]`.
-
-Conclude with `map_zero φ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localGaloisRep_invariants_from_fractionRing [IsDomain O] {m : ℕ} (r : ↥Gw →* GL (Fin m) O)
     (h : ∀ x : Fin m → FractionRing O, (∀ g : ↥Gw,
@@ -110,11 +108,11 @@ noncomputable def grepOf {m : ℕ} (r : ↥Gw →* GL (Fin m) O)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hG` using `(GlobalTheory.LocalIntegers.good_integers l Bw.LL).1`. Set `A` to `grepOf Bw r hr`. Establish `hA : IsDR (P.PD Bw.Kw) A.ρ`. Express the relevant statement in the definitionally equal form `Module.finrank ↥Bw.LL.1 ↥(DdR (P.PD Bw.Kw) (Bw.rep r)) = Module.finrank ℚ_[l] ↥Bw.Kw.1 * Module.finrank ↥Bw.LL.1 (Fin m → ↥Bw.LL.1)`. Rewrite using `[Module.finrank_fin_fun]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdR`. Establish `key` using `hBK _ _ hG A hA`. Establish `h0 : Module.finrank ↥Bw.LL.1 ↥(H0V A.ρ) = 0`. Establish `: H0V A.ρ = ⊥` using `localGaloisRep_invariants_from_fractionRing Bw r h`. Rewrite using `[this, finrank_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[h0, Nat.cast_zero, zero_add]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem finrank_h1f_no_invariants [IsDomain O] (P : LocPrime l) {m : ℕ} (r : ↥Gw →* GL (Fin m) O)
     (hr : Continuous fun g => ((r g : GL (Fin m) O) : Matrix (Fin m) (Fin m) O))

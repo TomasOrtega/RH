@@ -9,7 +9,7 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Nat.cast_dvd_cast h⟩` and prove the remaining obligations. Establish `h1` using `map_dvd Rat.ringOfIntegersEquiv h`. Rewrite `h1` using `[map_natCast, map_natCast]`. Conclude with `Int.natCast_dvd_natCast.1 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cast_dvd {a b : ℕ} : (a : 𝓞 ℚ) ∣ (b : 𝓞 ℚ) ↔ a ∣ b := by
   refine ⟨fun h => ?_, fun h => Nat.cast_dvd_cast h⟩
@@ -18,18 +18,18 @@ private theorem cast_dvd {a b : ℕ} : (a : 𝓞 ℚ) ∣ (b : 𝓞 ℚ) ↔ a �
   exact Int.natCast_dvd_natCast.1 h1
 
 /- English proof (translation)
-Rewrite using `[← cast_dvd, ← Ideal.mem_span_singleton, ← (UpperTheory.V.Af.Nf.places v).2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_iff_dvd (N : ℕ) (v : HeightOneSpectrum (𝓞 ℚ)) :
     (N : 𝓞 ℚ) ∈ v.asIdeal ↔ normV v ∣ N := by
   rw [← cast_dvd, ← Ideal.mem_span_singleton, ← (UpperTheory.V.Af.Nf.places v).2.1]
 
 /- English proof (translation)
-Use `⟨fun v => (UpperTheory.V.Af.Nf.places v).1, fun p hp => ?_, fun v v' h => ?_, fun N v => mem_iff_dvd N v⟩` and prove the remaining obligations. Establish `hnt : Ideal.span {(p : 𝓞 ℚ)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top, isUnit_iff_dvd_one, ← Nat.cast_one, cast_dvd, Nat.dvd_one]`. Conclude with `hp.ne_one`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hnt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpM : (p : 𝓞 ℚ) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Establish `hM0 : M ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hp.ne_zero (Nat.cast_eq_zero.1 (Ideal.mem_bot.1 hpM))`. Set `w : HeightOneSpectrum (𝓞 ℚ)` to `⟨M, hM.isPrime, hM0⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨w, (Nat.prime_dvd_prime_iff_eq (UpperTheory.V.Af.Nf.places w).1 hp).1 ((mem_iff_dvd p w).1 hpM)⟩`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[(UpperTheory.V.Af.Nf.places v).2.1, (UpperTheory.V.Af.Nf.places v').2.1, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.heightOneSpectrum_rat_correspond_primes :
     (∀ v : H.P ℚ, (normV v).Prime) ∧ (∀ p : ℕ, p.Prime → ∃ v : H.P ℚ, normV v = p) ∧ (∀ v v' : H.P ℚ, normV v = normV v' → v = v') ∧

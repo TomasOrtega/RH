@@ -30,9 +30,7 @@ def splitL : (Fin n → K) ≃ₗ[K] ((Fin a → K) × (Fin b → K)) where
     · simp
 
 /- English proof (translation)
-Distinguish the cases in `h : (k : ℕ) < a`. Use `show (if h' : (k : ℕ) < a then u ⟨k, by omega⟩ else c * u ⟨a + (k - a), by omega⟩) = _`. Simplify using `[h]`. Use `show (if h' : (k : ℕ) < a then u ⟨k, by omega⟩ else c * u ⟨a + (k - a), by omega⟩) = _`. Simplify using `only [h, dite_false, if_false]`.
-
-Use `congr 2`. Conclude with `Fin.ext (by simp; omega)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem splitL_diag (c : K) (u : Fin n → K) (k : Fin n) :
     (splitL a b n hn).symm ((splitL a b n hn u).1, c • (splitL a b n hn u).2) k =
@@ -48,17 +46,17 @@ theorem splitL_diag (c : K) (u : Fin n → K) (k : Fin n) :
 end Conv
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h51 hπ`. Establish `G` using `h5 hπ S hS`. Introduce `w hw`. Take `⟨hT, ha, hb, -⟩` from `G w hw`. Use `⟨fun hc x => ?_, fun hk _ hT' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hprod, e, he⟩` from `ha hc x`. Use `⟨fun γ hγ => by simpa [rO, chi1] using hprod γ hγ, ?_⟩` and prove the remaining obligations. Set `sp : (Fin D.R.nV → KK D.nd i) ≃ₗ[KK D.nd i] ((Fin D.R.r → KK D.nd i) × (Fin D.R.t → KK D.nd i))` to `splitL D.R.r D.R.t D.R.nV rfl`. Set `ψ : (Fin D.R.nV → KK D.nd i) ≃ₗ[KK D.nd i] (Fin D.R.nV → KK D.nd i)` to `e.trans sp.symm`. Set `Pm : GL (Fin D.R.nV) (KK D.nd i)` to `⟨LinearMap.toMatrix' (ψ.symm : (Fin D.R.nV → KK D.nd i) →ₗ[KK D.nd i] _), LinearMap.toMatrix' (ψ : (Fin D.R.nV → KK D.nd i) →ₗ[KK D.nd i] _), by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨Pm, fun γ hγ => ?_⟩` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `u`. Establish `hM : ((mapRep (algebraMap (D.nd.O i) (KK D.nd i)) (r x) γ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)) = mapM (toK D.nd i) (rO D.nd i r x) γ` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ((Pm⁻¹ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)) = LinearMap.toMatrix' (ψ : (Fin D.R.nV → KK D.nd i) →ₗ[KK D.nd i] _)` using `rfl`. Establish `h2 : ((Pm : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)) = LinearMap.toMatrix' (ψ.symm : (Fin D.R.nV → KK D.nd i) →ₗ[KK D.nd i] _)` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.toLin'_mul, Matrix.toLin'_mul, LinearMap.comp_apply, LinearMap.comp_apply, hM, h1, h2, Matrix.toLin'_toMatrix', Matrix.toLin'_toMatrix', Matrix.toLin'_apply, Matrix.toLin'_apply]`. Establish `key'` using `he γ hγ (e.symm (sp u))`. Rewrite `key'` using `[LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `sp.symm (e ((mapM (toK D.nd i) (rO D.nd i r x) γ).mulVec (e.symm (sp u)))) = _`. Rewrite using `[key']`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.mulVec_diagonal]`. Conclude with `splitL_diag D.R.r D.R.t D.R.nV rfl _ u k`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hU⟩` from `hb hk`. Use `⟨P, hU, fun x γ hγ => ?_⟩` and prove the remaining obligations. Simplify `hP x γ hγ` using `[rO, chi1, evT]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem admG5_of_adm51_admG5 {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (hπ : π ∈ D.nd.Z i)

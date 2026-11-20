@@ -13,11 +13,11 @@ namespace GlobalTheory.HTLine.GrMinor
 open GlobalTheory.LineNorm
 
 /- English proof (translation)
-Set `G : Matrix (Fin J) (Fin m) L` to `Matrix.of fun j l => ∑ t, h j t * a l t`. Establish `hli : LinearIndependent L G.transpose`. Establish `hker : LinearMap.ker (Matrix.mulVecLin (Matrix.of h)) = ⊥` using `LinearMap.ker_eq_bot'.mpr fun c hc => hh c fun j => congrFun hc j`. Conclude with `ha.map' _ hker`. Take `⟨κ, u, b, -, hu0, hu1, hb, hbd, hc⟩` from `GlobalTheory.LineNorm.Covol.exists_pivot (⊤ : ValuationSubring L) G hli`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ ∘ Fin.castLE hk, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LineNorm.Covol.sum_prod_mul_minor (fun i => h ((κ ∘ Fin.castLE hk) i)) a hk, ← Matrix.det_transpose]`. Express the relevant statement in the definitionally equal form `(G.submatrix (κ ∘ Fin.castLE hk) (Fin.castLE hk)).det ≠ 0`. Rewrite using `[hc, GlobalTheory.LineNorm.Covol.det_eq u b hb hk]`. Establish `hMt : (u.submatrix (κ ∘ Fin.castLE hk) (Fin.castLE hk)).BlockTriangular OrderDual.toDual` using `fun i j hij => hu0 _ _ hij`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_of_isLowerTriangular _ hMt]`. Use `mul_ne_zero ?_ (Finset.prod_ne_zero_iff.mpr fun l _ => hbd _)` and prove the remaining obligations. Simplify using `[hu1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne {L : Type} [Field L] {g J : ℕ} (h : Fin J → Fin g → L)
     (hh : ∀ c : Fin g → L, (∀ j, ∑ i, h j i * c i = 0) → c = 0) {m : ℕ} (a : Fin m → Fin g → L)
@@ -40,13 +40,11 @@ theorem exists_ne {L : Type} [Field L] {g J : ℕ} (h : Fin J → Fin g → L)
   simp [hu1]
 
 /- English proof (translation)
-Establish `key : ∀ v ∈ Submodule.span R (Set.range h), ∑ i, ψ (v i) * c i = 0`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`. Conclude with `hc j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [add_mul, Finset.sum_add_distrib, hx, hy]`. Consider the case `smul r x _ hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `exact Finset.sum_congr rfl fun i _ => by simp <;> ring`. Use `_ = 0 := by rw [hx, mul_zero]`. Use function extensionality and compare the values at `i`. Establish `h1` using `key _ (hN i)`. Rewrite `h1` using `[Finset.sum_eq_single i (fun b _ hb => by simp [Pi.single_eq_of_ne hb]) (by simp)]`.
-
-Simplify `h1` using `[hp]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sep_of_span {R S : Type} [CommRing R] [Field S] (ψ : R →+* S) (p : ℕ) (hp : (p : S) ≠ 0) {g J : ℕ}
     (h : Fin J → Fin g → R) (N : ℕ) (hN : ∀ i, Pi.single i ((p : R) ^ N) ∈ Submodule.span R (Set.range h))
@@ -68,7 +66,7 @@ theorem sep_of_span {R S : Type} [CommRing R] [Field S] (ψ : R →+* S) (p : �
   simpa [hp] using h1
 
 /- English proof (translation)
-Use `le_antisymm ((pi_norm_le_iff_of_nonneg ?_).2 fun i => le_ciSup (f := fun i => ‖f i‖) (Finite.bddAbove_range _) i) (ciSup_le fun i => norm_le_pi_norm f i)` and prove the remaining obligations. Conclude with `(norm_nonneg (f (Classical.arbitrary κ))).trans (le_ciSup (f := fun i => ‖f i‖) (Finite.bddAbove_range _) _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_eq_iSup {κ : Type} [Fintype κ] [Nonempty κ] {S : Type} [NormedField S] (f : κ → S) :
     ‖f‖ = ⨆ i, ‖f i‖ := by
@@ -77,7 +75,7 @@ theorem norm_eq_iSup {κ : Type} [Fintype κ] [Nonempty κ] {S : Type} [NormedFi
   exact (norm_nonneg (f (Classical.arbitrary κ))).trans (le_ciSup (f := fun i => ‖f i‖) (Finite.bddAbove_range _) _)
 
 /- English proof (translation)
-Unfold `minor`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_minor {R S : Type} [CommRing R] [CommRing S] (ψ : R →+* S) {m g k : ℕ} (a : Fin m → Fin g → R)
     (hk : k ≤ m) (s : Fin k → Fin g) : ψ (minor a hk s) = minor (fun l i => ψ (a l i)) hk s := by
@@ -95,9 +93,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X}
 
 /- English proof (translation)
-Establish `h0 : IsCombAtG t x u a (tv (∑ i, a i • tanOf (hu i))).left` using `(isComb_iff (fun i => tanOf (hu i)) a _).2 rfl`. Use `⟨fun h => ?_, fun h => h ▸ h0⟩` and prove the remaining obligations. Take `⟨v, hv, e⟩` from `h`. Take `⟨v', hv', e'⟩` from `h0`. Establish `: v = v'` using `funext fun i => Over.OverMorphism.ext ((hv i).trans (hv' i).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← e, ← e', this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_eq {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} {u : Fin m → (Sp (DualNumber S) ⟶ t.G.left)}
     (hu : ∀ i, IsTanAtG t x (u i)) (a : Fin m → S) (w : Sp (DualNumber S) ⟶ t.G.left) :
@@ -110,9 +108,9 @@ theorem comb_eq {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} {u : Fin m �
   rw [← e, ← e', this]
 
 /- English proof (translation)
-Establish `hW : ∀ j, tanOf (hw j) = ∑ r, a j r • tanOf (he r)` using `fun j => tan_ext ((comb_eq he _ _).1 (ha j))`. Rewrite using `[comb_eq hw, comb_eq he]`. Establish `: ∑ l, cf l • tanOf (hw l) = ∑ r, (∑ l, cf l * a l r) • tanOf (he r)`. Simplify using `only [hW, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem comb_comb {S : Type} [CommRing S] {x : Sp S ⟶ X} {g m : ℕ} {e : Fin g → (Sp (DualNumber S) ⟶ t.G.left)}
     (he : ∀ i, IsTanAtG t x (e i)) {w : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hw : ∀ j, IsTanAtG t x (w j))
@@ -127,11 +125,9 @@ theorem comb_comb {S : Type} [CommRing S] {x : Sp S ⟶ X} {g m : ℕ} {e : Fin 
   rw [this]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `h0 : ∀ r, ∑ l, c l * a l r = ∑ l, (0 : Fin m → k) l * a l r` using `fun r => by`. Use `congrFun hc r` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : IsCombAtG t x w c (tv (∑ l, c l • tanOf (hw.1 l))).left` using `(comb_eq hw.1 _ _).2 rfl`. Establish `h2 : IsCombAtG t x w 0 (tv (∑ l, c l • tanOf (hw.1 l))).left`. Rewrite `h1`, the goal using `[comb_comb he hw.1 a ha]`. Rewrite `h1` using `[show (fun r => ∑ l, c l * a l r) = (fun r => ∑ l, (0 : Fin m → k) l * a l r) from funext h0]`. Conclude with `h1`.
-
-Conclude with `congrFun (hw.2 _ _ _ h1 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linIndep_of_ind {k : Type} [Field k] {x : Sp k ⟶ X} {g m : ℕ} {e : Fin g → (Sp (DualNumber k) ⟶ t.G.left)}
     (he : ∀ i, IsTanAtG t x (e i)) {w : Fin m → (Sp (DualNumber k) ⟶ t.G.left)} (hw : Pull.Ind t x w)
@@ -149,9 +145,9 @@ theorem linIndep_of_ind {k : Type} [Field k] {x : Sp k ⟶ X} {g m : ℕ} {e : F
   exact congrFun (hw.2 _ _ _ h1 h2)
 
 /- English proof (translation)
-Establish `h1 : spMap (RingHom.id R) = 𝟙 _` using `Spec.map_id _`. Establish `h2 : dualMap (RingHom.id R) = RingHom.id _`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`. Establish `h3 : spMap (dualMap (RingHom.id R)) = 𝟙 _` using `by rw [h2]; exact Spec.map_id _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h` using `he.2 R (RingHom.id R)`. Simplify using `only [h1, h3, Category.id_comp] at h`. Use `choose a ha using fun j => (h (w j) (hw j)).exists`. Conclude with `⟨a, ha⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coords {R : Type} [CommRing R] {x : Sp R ⟶ X} {g : ℕ} {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)}
     (he : IsTanBasis t x e) {m : ℕ} {w : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} (hw : ∀ j, IsTanAtG t x (w j)) :
@@ -173,29 +169,29 @@ namespace GlobalTheory.HTLine.GrMinor
 open GlobalTheory.LineNorm GlobalTheory.LieMet
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t R _ x p b g M e h hp he hP m w hw hind i`. Take `⟨a, ha⟩` from `coords he hw`. Take `⟨N, hN⟩` from `hP.1`. Set `F : ∀ k, k ≤ m → (Fin k → Fin (M + 1)) → R` to `fun k hk σ => ∑ s : Fin k → Fin g, (∏ l, h (σ l) (s l)) * minor a hk s`. Establish `hrad : ∀ k (hk : k ≤ m), (p : R) ∈ (Ideal.span (Set.range fun j => F k hk ((Fintype.equivFin _).symm j))).radical`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k hk`. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`. Introduce and unpack `(P : Ideal R) ⟨hle, hPr⟩`. Assume the negation of the conclusion as `hpP`. Use `haveI := hPr`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hp0 : ((p : ℕ) : P.ResidueField) ≠ 0`. Rewrite using `[← map_natCast (algebraMap R P.ResidueField)]`. Conclude with `fun h0 => hpP (Ideal.algebraMap_residueField_eq_zero.1 h0)`. Establish `hI` using `hind P.ResidueField (algebraMap R P.ResidueField) hp0`. Establish `he' : ∀ r, IsTanAtG t (spMap (algebraMap R P.ResidueField) ≫ x) (spMap (dualMap (algebraMap R P.ResidueField)) ≫ e r)` using `fun r => isTan_map _ rfl (he.1 r)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha'` using `fun j => GlobalTheory.LatDRFree.comb_map t (algebraMap R P.ResidueField) (ha j)`. Establish `hli` using `linIndep_of_ind he' hI _ ha'`. Take `⟨σ, hσ⟩` from `exists_ne (fun j r => algebraMap R P.ResidueField (h j r)) (sep_of_span _ p hp0 h N hN) _ hli hk`. Apply `hσ` to reduce the goal to its premises. Establish `hmem : F k hk σ ∈ P` using `hle (Ideal.subset_span ⟨Fintype.equivFin _ σ, by simp⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [F, map_sum, map_mul, map_prod, map_minor]`. Use `_ = 0 := Ideal.algebraMap_residueField_eq_zero.2 hmem`. Use `⟨_, _, fun j => F (i + 1) (Nat.succ_le_of_lt i.2) ((Fintype.equivFin _).symm j), fun j => F i i.2.le ((Fintype.equivFin _).symm j), hrad _ _, hrad _ _, fun C φ => ?_⟩` and prove the remaining obligations. Use `set ψ : R →+* ↥C.S := (intO ↥C.S).subtype.comp φ with hψ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hx : spMap ψ ≫ x = spMap (intO ↥C.S).subtype ≫ spMap φ ≫ x`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hp0 : ((p : ℕ) : ↥C.S) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `he' : ∀ r, IsTanAtG t (spMap (intO ↥C.S).subtype ≫ spMap φ ≫ x) (spMap (dualMap ψ) ≫ e r)` using `fun r => isTan_map ψ hx (he.1 r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : ∀ l, IsTanAtG t (spMap (intO ↥C.S).subtype ≫ spMap φ ≫ x) (spMap (dualMap ψ) ≫ w l)` using `fun l => isTan_map ψ hx (hw l)`. Establish `ha' : ∀ l, IsCombAtG t (spMap (intO ↥C.S).subtype ≫ spMap φ ≫ x) (fun r => spMap (dualMap ψ) ≫ e r) (fun r => ψ (a l r)) (spMap (dualMap ψ) ≫ w l)` using `fun l => hx ▸ GlobalTheory.LatDRFree.comb_map t ψ (ha l)`. Establish `hI` using `hind ↥C.S ψ hp0`. Rewrite `hI` using `[hx]`. Establish `hli` using `linIndep_of_ind he' hI _ ha'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsep` using `sep_of_span ψ p hp0 h N hN`. Set `Nf : Fin m → ℝ` to `fun l => grNorm t (spMap (intO ↥C.S).subtype ≫ spMap φ ≫ x) (lat t p (spMap (intO ↥C.S).subtype ≫ spMap φ ≫ x) b) (fun j => spMap (dualMap ψ) ≫ w j) l`. Establish `hset : ∀ l, Nf l = sInf {r | ∃ cf : Fin m → ↥C.S, cf l ≠ 0 ∧ (∀ l', l < l' → cf l' = 0) ∧ (∀ j, ‖∑ i, ψ (h j i) * ∑ l', cf l' * ψ (a l' i)‖ ≤ 1) ∧ r = ‖cf l‖⁻¹}`. Introduce `l`. Simplify using `only [Nf, grNorm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use extensionality with `r`. Use `exists_congr fun cf => and_congr_right fun _ => and_congr_right fun _ => and_congr_left fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hc⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `(hP.2 C φ _ v ((comb_comb he' hw' _ ha' cf v).1 hc)).1 hv`. Introduce `hn`. Establish `hc` using `(comb_eq hw' cf _).2 rfl`. Conclude with `⟨_, (hP.2 C φ _ _ ((comb_comb he' hw' _ ha' cf _).1 hc)).2 hn, hc⟩`. Take `⟨-, hprod⟩` from `GlobalTheory.LineNorm.Covol.prod_grNorm_eq_iSup_minor ↥C.S g (Fin (M + 1)) (fun j r => ψ (h j r)) hsep m (fun l r => ψ (a l r)) hli Nf hset`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnorm : ∀ k (hk : k ≤ m), ‖fun j => ((φ (F k hk ((Fintype.equivFin _).symm j)) : ↥(intO ↥C.S)) : ↥C.S)‖ = ∏ l : Fin k, Nf (Fin.castLE hk l)`. Introduce `k hk`. Use `haveI : Nonempty (Fin (Fintype.card (Fin k → Fin (M + 1)))) := ⟨Fintype.equivFin _ (fun _ => 0)⟩`. Rewrite using `[norm_eq_iSup, hprod k hk]`. Use `((Fintype.equivFin _).symm.iSup_comp (g := fun σ => ‖ψ (F k hk σ)‖)).trans ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 1`. Use function extensionality and compare the values at `σ`. Simplify using `only [F, map_sum, map_mul, map_prod, map_minor]`. Rewrite using `[hnorm, hnorm, Fin.prod_univ_castSucc, mul_comm]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem grNorm_eq_ratio : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (x : Sp R ⟶ X) (p : ℕ) (b : Bool) (g M : ℕ) (e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)) (h : Fin (M + 1) → Fin g → R), p.Prime → GlobalTheory.LineNorm.IsTanBasis t x e → Pres t x p b e h → ∀ (m : ℕ) (w : Fin m → (Sp (DualNumber R) ⟶ t.G.left)), (∀ j, IsTanAtG t x (w j)) → (∀ (k : Type) [Field k] (ψ : R →+* k), (p : k) ≠ 0 → Pull.Ind t (spMap ψ ≫ x) (fun j => spMap (dualMap ψ) ≫ w j)) → ∀ i : Fin m, ∃ (a a' : ℕ) (A : Fin a → R) (B : Fin a' → R), (p : R) ∈ (Ideal.span (Set.range A)).radical ∧ (p : R) ∈ (Ideal.span (Set.range B)).radical ∧ ∀ (C : SCF p) (φ : R →+* ↥(intO ↥C.S)), GlobalTheory.ShFam.Pad.grNorm t (spMap (intO ↥C.S).subtype ≫ spMap φ ≫ x) (lat t p (spMap (intO ↥C.S).subtype ≫ spMap φ ≫ x) b) (fun j => spMap (dualMap ((intO ↥C.S).subtype.comp φ)) ≫ w j) i * ‖fun j => ((φ (B j) : ↥(intO ↥C.S)) : ↥C.S)‖ = ‖fun j => ((φ (A j) : ↥(intO ↥C.S)) : ↥C.S)‖ := by
   intro E _ _ _ H X t R _ x p b g M e h hp he hP m w hw hind i

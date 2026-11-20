@@ -7,9 +7,9 @@ namespace LevelStatements.Lv
 open PowerSeries IsLocalRing
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ψ.commutes c`. Consider the case `(have e : (C c : PowerSeries O) = c • (1 : PowerSeries O) := by`. Rewrite using `[PowerSeries.smul_eq_C_mul, mul_one]`. Rewrite using `[e, map_smul, map_one])`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `simpa using ψ.commutes c`.
+A detailed English derivation is pending.
 -/
 theorem powerSeries_algHom_C' {O : Type} [CommRing O] (ψ : PowerSeries O →ₐ[O] PowerSeries O) (c : O) :
     ψ (C c) = C c := by
@@ -21,9 +21,9 @@ theorem powerSeries_algHom_C' {O : Type} [CommRing O] (ψ : PowerSeries O →ₐ
   | simpa using ψ.commutes c
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : (X : PowerSeries O) ∣ a - C (constantCoeff a) := by`. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using the standard rewrite rules. Establish `e : φ (a - C (constantCoeff a)) = φ a - C (constantCoeff a)`. Rewrite using `[map_sub, powerSeries_algHom_C']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, hb, map_mul]`. Conclude with `dvd_mul_of_dvd_left h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psCoprime_dvdSub {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (a : PowerSeries O) :
@@ -37,9 +37,9 @@ theorem psCoprime_dvdSub {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O �
   exact dvd_mul_of_dvd_left h _
 
 /- English proof (translation)
-Establish `h1` using `psCoprime_dvdSub l φ h a`. Establish `h2 : (X : PowerSeries O) ∣ φ a - C (constantCoeff a)` using `dvd_trans (dvd_mul_right (X : PowerSeries O) _) h1`. Rewrite `h2` using `[PowerSeries.X_dvd_iff]`. Use `first`. Consider the case `simpa [sub_eq_zero] using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [map_sub, PowerSeries.constantCoeff_C, sub_eq_zero] at h2; exact h2)`.
+A detailed English derivation is pending.
 -/
 private theorem constantCoeff_algHom_eq_of_X_mul_dvd {O : Type} [CommRing O] (l : ℕ)
     (φ : PowerSeries O →ₐ[O] PowerSeries O)
@@ -54,7 +54,7 @@ private theorem constantCoeff_algHom_eq_of_X_mul_dvd {O : Type} [CommRing O] (l 
   | (rw [map_sub, PowerSeries.constantCoeff_C, sub_eq_zero] at h2; exact h2)
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', constantCoeff_algHom_eq_of_X_mul_dvd l φ h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem psCoprime_cc {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (s : ℕ) :
@@ -65,7 +65,7 @@ theorem psCoprime_cc {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →�
     rw [Function.iterate_succ_apply', constantCoeff_algHom_eq_of_X_mul_dvd l φ h, ih]
 
 /- English proof (translation)
-Rewrite using `[Function.iterate_succ_apply']`. Establish `h1` using `psCoprime_dvdSub l φ h ((⇑φ)^[t] (X + C (l : O)))`. Rewrite `h1` using `[psCoprime_cc l φ h t]`. Conclude with `dvd_trans (dvd_mul_left _ _) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psCoprime_qdvd {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (t : ℕ) :
@@ -76,7 +76,7 @@ theorem psCoprime_qdvd {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →
   exact dvd_trans (dvd_mul_left _ _) h1
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Simplify using `only [Function.iterate_succ_apply', ih, map_add, map_mul, powerSeries_algHom_C']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem algHom_iterate_C_add_mul {O : Type} [CommRing O] (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (c : O) (s : ℕ) (b d : PowerSeries O) :
@@ -87,9 +87,9 @@ private theorem algHom_iterate_C_add_mul {O : Type} [CommRing O] (φ : PowerSeri
     simp only [Function.iterate_succ_apply', ih, map_add, map_mul, powerSeries_algHom_C']
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, s' = s + (t + 1)` from `⟨s' - s - 1, by omega⟩`. Take `⟨q, hq⟩` from `psCoprime_qdvd l φ h t`. Establish `hq' : (⇑φ)^[t + 1] (X + C (l : O)) = C (l : O) + (X + C (l : O)) * q`. Take the linear combination `hq`. Establish `e : (⇑φ)^[s + (t + 1)] (X + C (l : O)) = C (l : O) + (⇑φ)^[s] (X + C (l : O)) * (⇑φ)^[s] q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Function.iterate_add_apply, hq', algHom_iterate_C_add_mul]`. Rewrite using `[Ideal.mem_span_pair]`. Conclude with `⟨-((⇑φ)^[s] q), 1, by linear_combination e⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem psCoprime_lt {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (s s' : ℕ) (hs : s < s') :
@@ -105,11 +105,11 @@ theorem psCoprime_lt {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →�
   exact ⟨-((⇑φ)^[s] q), 1, by linear_combination e⟩
 
 /- English proof (translation)
-Unfold `PsCoprimeStatement`. Introduce `O _ l φ h`. Use `⟨fun s => ?_, fun s s' hss => ?_⟩` and prove the remaining obligations. Establish `hc` using `psCoprime_cc l φ h s`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : (X : PowerSeries O) ∣ (⇑φ)^[s] (X + C (l : O)) - C (l : O) := by`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[PowerSeries.X_dvd_iff, map_sub, hc]`. Use `first`. Consider the case `simp`. Consider the case `rw [PowerSeries.constantCoeff_C, sub_self]`. Rewrite using `[Ideal.mem_span_pair]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨1, -r, by linear_combination hr⟩`. Break down `Nat.lt_or_gt_of_ne hss with hlt | hlt` into its components or cases. Conclude with `psCoprime_lt l φ h s s' hlt`. Rewrite using `[Set.pair_comm]`. Conclude with `psCoprime_lt l φ h s' s hlt`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psCoprime : PsCoprimeStatement := by
   unfold PsCoprimeStatement

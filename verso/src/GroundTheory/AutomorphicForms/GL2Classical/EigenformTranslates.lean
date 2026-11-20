@@ -23,11 +23,11 @@ set_option linter.unusedSectionVars false
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
 /- English proof (translation)
-Establish `hy` using `z.im_pos`. Rewrite using `[archLift, map_mul, Units.val_mul, det_borelGL, mul_smul, borelGL_smul_I, denom_mul_of_det_pos _ (det_borelGL_pos z), borelGL_smul_I, denom_borelGL, mul_one, Real.sqrt_mul hβ.le, slash_apply, σ_of_det_pos hβ, abs_of_pos hβ]`. Establish `hs : (Real.sqrt z.im : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 hy).ne'`. Establish `hd : ((β.det.val : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hβ.ne'`. Establish `e1 : (Real.sqrt z.im : ℂ) ^ (-k) * (Real.sqrt z.im : ℂ) ^ k = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← zpow_add₀ hs, neg_add_cancel, zpow_zero]`. Establish `e2 : (((β.det.val : ℝ) : ℂ) ^ (k - 1))⁻¹ * ((β.det.val : ℝ) : ℂ) ^ (k - 1) = 1` using `inv_mul_cancel₀ (zpow_ne_zero _ hd)`. Use `push_cast`. Rewrite using `[mul_zpow]`. Use `set A := (Real.sqrt β.det.val : ℂ) ^ k * f (β • z) * denom β (z : ℂ) ^ (-k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `A * e1 - A * e2`.
+A detailed English derivation is pending.
 -/
 theorem descend_archLift_mul_borelGL (f : ℍ → ℂ) {β : GL (Fin 2) ℝ} (hβ : 0 < β.det.val) (z : ℍ) :
     (Real.sqrt z.im : ℂ) ^ (-k) * archLift k f (β * borelGL z) =
@@ -48,11 +48,11 @@ theorem descend_archLift_mul_borelGL (f : ℍ → ℂ) {β : GL (Fin 2) ℝ} (h�
   linear_combination A * e1 - A * e2
 
 /- English proof (translation)
-Take `⟨γ, u, hu, rfl⟩` from `exists_eq_finiteDiagonal_mul N g`. Distinguish the cases in `hd : 0 < (γ.det.val : ℚ)`. Conclude with `⟨γ, u, hu, hd, rfl⟩`. Use `⟨γ * epsilon, finiteDiagonal ℚ 2 epsilon * u, mul_mem (finiteDiagonal_epsilon_mem N) hu, ?_, ?_⟩` and prove the remaining obligations. Establish `hne : (γ.det.val : ℚ) ≠ 0` using `γ.det.ne_zero`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hneg : (γ.det.val : ℚ) < 0` using `lt_of_le_of_ne (not_lt.1 hd) hne`. Establish `he : (epsilon.det.val : ℚ) = -1`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Simplify using `[epsilon, Matrix.det_fin_two_of]`. Rewrite using `[map_mul, Units.val_mul, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hee : epsilon * epsilon = 1` using `by conv_lhs => rw [← epsilon_inv]`. Conclude with `inv_mul_cancel _`. Rewrite using `[map_mul, mul_assoc, ← mul_assoc (finiteDiagonal ℚ 2 epsilon), ← map_mul, hee, map_one, one_mul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_finiteDiagonal_mul_pos (g : FiniteAdelicGL ℚ 2) :
     ∃ ξ : GL (Fin 2) ℚ, ∃ u ∈ Gamma0Level N, 0 < (ξ.det.val : ℚ) ∧ g = finiteDiagonal ℚ 2 ξ * u := by
@@ -73,9 +73,9 @@ theorem exists_eq_finiteDiagonal_mul_pos (g : FiniteAdelicGL ℚ 2) :
       rw [map_mul, mul_assoc, ← mul_assoc (finiteDiagonal ℚ 2 epsilon), ← map_mul, hee, map_one, one_mul]
 
 /- English proof (translation)
-Establish `hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f` using `fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ`. Take `⟨ξ, u, hu, hξ, rfl⟩` from `exists_eq_finiteDiagonal_mul_pos (N := N) g`. Establish `hβ : 0 < ((toReal ξ)⁻¹).det.val`. Use `det_toReal_inv_mul_pos ξ hξ (h := 1) (by simp)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨ξ⁻¹, (Real.sqrt ((toReal ξ)⁻¹).det.val : ℂ) ^ k * ((((toReal ξ)⁻¹.det.val : ℝ) : ℂ) ^ (k - 1))⁻¹, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `only [descend, finRightRep_apply, liftEquiv_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[map_mul, ← mul_assoc, (isWeightLevel_adelicLift hf).right_level _ _ hu, realEmb_mul_finEmb_finiteDiagonal, adelicLift_apply hf ξ (det_toReal_inv_mul_pos ξ hξ (det_borelGL_pos z)) (one_mem _), map_inv]`. Conclude with `descend_archLift_mul_borelGL f hβ z`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend_finRightRep_liftEquiv (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (g : FiniteAdelicGL ℚ 2) :
@@ -113,7 +113,7 @@ def holoBddSpace : Submodule ℂ (ℍ → ℂ) where
     exact (hF.2 σ).const_smul_left c⟩
 
 /- English proof (translation)
-Use `⟨f.holo'.slash k _, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← SlashAction.slash_mul, ← toReal_mapGL, ← map_mul]`. Conclude with `isBoundedAtImInfty_slash_toReal f _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slash_toReal_mem_holoBddSpace (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (δ : GL (Fin 2) ℚ) : (f : ℍ → ℂ) ∣[k] toReal δ ∈ holoBddSpace k := by
@@ -122,13 +122,11 @@ theorem slash_toReal_mem_holoBddSpace (f : ModularForm (Gamma0 N : Subgroup (GL 
   exact isBoundedAtImInfty_slash_toReal f _
 
 /- English proof (translation)
-Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Take `⟨δ, c, hc⟩` from `descend_finRightRep_liftEquiv f.toSlashInvariantForm g`. Rewrite using `[hc]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ c (slash_toReal_mem_holoBddSpace f δ)`. Consider the case `zero`. Establish `: descend k (0 : AdelicGL ℚ 2 → ℂ) = 0` using `by funext z; simp [descend]`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy`. Establish `: descend k (x + y) = descend k x + descend k y` using `by funext z; simp [descend, mul_add]`. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`.
-
-Establish `: descend k (c • x) = c • descend k x` using `by funext z; simp [descend]; ring`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend_mem_holoBddSpace (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     {ψ : AdelicGL ℚ 2 → ℂ} (hψ : ψ ∈ translateSpan (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ)) :
@@ -153,9 +151,9 @@ theorem descend_mem_holoBddSpace (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 
     exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Introduce `γ x`. Simplify using `only [finRightRep_apply, mul_assoc]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hφ γ _`. Consider the case `zero => intro γ x`. Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isLeftInvariant_of_mem_translateSpan {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsLeftInvariant φ)
     {ψ : AdelicGL ℚ 2 → ℂ} (hψ : ψ ∈ translateSpan φ) : IsLeftInvariant ψ := by
@@ -170,11 +168,11 @@ theorem isLeftInvariant_of_mem_translateSpan {φ : AdelicGL ℚ 2 → ℂ} (hφ 
   | smul c x _ hx => exact hx.smul c
 
 /- English proof (translation)
-Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Introduce `g w hw`. Simplify using `only [finRightRep_apply]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, realEmb_mul_finEmb_comm, ← mul_assoc, hφ]`. Consider the case `zero => intro g w hw`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro g w hw`. Simplify using `[hx g w hw, hy g w hw, mul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `smul c x _ hx => intro g w hw`. Simplify using `[hx g w hw]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem right_kGL_of_mem_translateSpan {φ : AdelicGL ℚ 2 → ℂ}
     (hφ : ∀ g (w : ℂ) (hw : w ≠ 0), φ (g * realEmb (kGL w hw)) = (w / (‖w‖ : ℂ)) ^ (-k) * φ g)
@@ -191,7 +189,7 @@ theorem right_kGL_of_mem_translateSpan {φ : AdelicGL ℚ 2 → ℂ}
   | smul c x _ hx => intro g w hw; simp [hx g w hw]; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isLeftInvariant_of_mem_translateSpan (liftEquiv N k f).2.isLeftInvariant hψ, fun g u hu => congrFun (hK u hu) g, right_kGL_of_mem_translateSpan (liftEquiv N k f).2.right_kGL hψ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isWeightLevel_of_mem_translateSpan (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     {ψ : AdelicGL ℚ 2 → ℂ} (hψ : ψ ∈ translateSpan (liftEquiv N k f : AdelicGL ℚ 2 → ℂ))
@@ -201,15 +199,13 @@ theorem isWeightLevel_of_mem_translateSpan (f : SlashInvariantForm (Gamma0 N : S
     right_kGL_of_mem_translateSpan (liftEquiv N k f).2.right_kGL hψ⟩
 
 /- English proof (translation)
-Establish `hW` using `isWeightLevel_of_mem_translateSpan f.toSlashInvariantForm hψ hK`. Use `set Fs := (liftEquiv N k).symm ⟨ψ, hW⟩`. Establish `hFs : (Fs : ℍ → ℂ) = descend k ψ` using `funext fun z => liftEquiv_symm_apply _ z`. Establish `hmem : descend k ψ ∈ holoBddSpace k` using `descend_mem_holoBddSpace (CuspForm.toModularFormₗ f) hψ`. Set `Fm : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k` to `{ toSlashInvariantForm := Fs holo' := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `MDiff (Fs : ℍ → ℂ)`. Rewrite using `[hFs]`. Conclude with `hmem.1`. Use the proof step `bdd_at_cusps' := fun {c} hc => by`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z, isCusp_SL2Z_iff']`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨σ, rfl⟩` from `hc`. Rewrite using `[OnePoint.isBoundedAt_iff rfl]`. Express the relevant statement in the definitionally equal form `IsBoundedAtImInfty ((Fs : ℍ → ℂ) ∣[k] Matrix.SpecialLinearGroup.mapGL ℝ σ)`. Rewrite using `[hFs]`. Conclude with `hmem.2 σ }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlift : liftEquiv N k Fm.toSlashInvariantForm = ⟨ψ, hW⟩` using `(liftEquiv N k).apply_symm_apply _`. Take `⟨F, hF⟩` from `exists_cuspForm_of_liftEquiv_mem_cuspForms Fm (by`. Rewrite using `[hlift]`. Conclude with `translateSpan_le_cuspForms f hψ)`. Use `⟨F, ?_⟩` and prove the remaining obligations.
-
-Establish `: F.toSlashInvariantForm = Fm.toSlashInvariantForm` using `SlashInvariantForm.ext fun z => congrFun hF z`. Rewrite using `[this, hlift]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cuspForm_of_mem_translateSpan (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     {ψ : AdelicGL ℚ 2 → ℂ} (hψ : ψ ∈ translateSpan (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ))
@@ -242,9 +238,9 @@ theorem exists_cuspForm_of_mem_translateSpan (f : CuspForm (Gamma0 N : Subgroup 
   rw [this, hlift]
 
 /- English proof (translation)
-Apply `Global.RationalIdeles.realEquiv.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, Global.RationalIdeles.realEquiv_apply]`. Use `Reduction.infiniteProj_posIdele (K := ℚ) r hr default` as an intermediate fact. Rewrite using `[← Global.IdeleGroup.coe_infiniteProj, this]`. Simplify using `[Global.posRealToUnits, Global.posRealElem, Global.RationalIdeles.isReal_infinitePlace]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `RingEquiv.apply_symm_apply (InfinitePlace.Completion.ringEquivRealOfIsReal _) r`.
+A detailed English derivation is pending.
 -/
 theorem posIdele_fst_rat (r : ℝ) (hr : 0 < r) :
     ((Reduction.posIdele (K := ℚ) r hr : Global.IdeleGroup ℚ) : 𝔸[ℚ]).1 =
@@ -257,11 +253,11 @@ theorem posIdele_fst_rat (r : ℝ) (hr : 0 < r) :
   exact RingEquiv.apply_symm_apply (InfinitePlace.Completion.ringEquivRealOfIsReal _) r
 
 /- English proof (translation)
-Use `set t := Reduction.rpowHom ((2 * Module.finrank ℚ ℚ : ℝ))⁻¹ s`. Use `⟨t.1, t.2, ?_⟩` and prove the remaining obligations. Establish `hc : Reduction.centralSection ℚ 2 s = Reduction.diagUnits 2 (fun _ => Reduction.posIdele (K` using `ℚ) t.1 t.2) := rfl`. Rewrite using `[hc]`. Apply `(AdelicGLn.prodEquiv ℚ 2).injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prodEquiv_realEmb]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Rewrite using `[AdelicGLn.prodEquiv_apply_fst]`. Simplify using `only [Reduction.coe_diagUnits]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = Global.RationalIdeles.realEquiv.symm ((kGL (t.1 : ℂ) _ : Matrix (Fin 2) (Fin 2) ℝ) a b)`. Rewrite using `[coe_kGL]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [posIdele_fst_rat]`. Conclude with `Reduction.prodEquiv_diagUnits_posIdele_snd (fun _ => t.1) (fun _ => t.2)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_centralSection_eq_realEmb (s : {r : ℝ // 0 < r}) :
     ∃ (r : ℝ) (hr : 0 < r), Reduction.centralSection ℚ 2 s = realEmb (kGL (r : ℂ) (by exact_mod_cast hr.ne')) := by
@@ -282,7 +278,7 @@ theorem exists_centralSection_eq_realEmb (s : {r : ℝ // 0 < r}) :
   · exact Reduction.prodEquiv_diagUnits_posIdele_snd (fun _ => t.1) (fun _ => t.2)
 
 /- English proof (translation)
-Take `⟨r, hr, hs⟩` from `exists_centralSection_eq_realEmb s`. Rewrite using `[Reduction.centralSection_mul_comm, hs, hψ _ _ hr]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_centralSection_mul {ψ : AdelicGL ℚ 2 → ℂ}
     (hψ : ∀ x (r : ℝ) (hr : 0 < r), ψ (x * realEmb (kGL (r : ℂ) (by exact_mod_cast hr.ne'))) = ψ x)
@@ -297,9 +293,9 @@ def translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) : 
   Submodule.span ℂ (Set.range fun g : FiniteAdelicGL ℚ 2 => finRepCusp ℚ 2 g (liftCusp f))
 
 /- English proof (translation)
-Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨g, rfl⟩`. Consider the case `zero => exact zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul c x _ hx => exact Submodule.smul_mem _ c hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coe_mem_translateSpan (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) {ψ : cuspForms ℚ 2}
     (hψ : ψ ∈ translateSpanCusp f) :
@@ -313,7 +309,7 @@ theorem coe_mem_translateSpan (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ
   | smul c x _ hx => exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Rewrite using `[right_kGL_of_mem_translateSpan (liftEquiv N k f.toSlashInvariantForm).2.right_kGL (coe_mem_translateSpan f hψ)]`. Establish `hs' : (r : ℂ) / (‖(r : ℂ)‖ : ℂ) = 1`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hr.le, div_self (by exact_mod_cast hr.ne')]`. Rewrite using `[hs', _root_.one_zpow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem posScalar_of_mem_translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     {ψ : cuspForms ℚ 2} (hψ : ψ ∈ translateSpanCusp f) (x : AdelicGL ℚ 2) (r : ℝ) (hr : 0 < r) :
@@ -325,7 +321,7 @@ theorem posScalar_of_mem_translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup (G
   rw [hs', _root_.one_zpow, one_mul]
 
 /- English proof (translation)
-The claim follows from `apply_centralSection_mul (posScalar_of_mem_translateSpanCusp f hψ) s x`.
+A detailed English derivation is pending.
 -/
 theorem centralSection_of_mem_translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     {ψ : cuspForms ℚ 2} (hψ : ψ ∈ translateSpanCusp f) (s : {r : ℝ // 0 < r}) (x : AdelicGL ℚ 2) :
@@ -333,11 +329,9 @@ theorem centralSection_of_mem_translateSpanCusp (f : CuspForm (Gamma0 N : Subgro
   apply_centralSection_mul (posScalar_of_mem_translateSpanCusp f hψ) s x
 
 /- English proof (translation)
-Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨g * h, by show finRepCusp ℚ 2 (g * h) (liftCusp f) = _`. Rewrite using `[map_mul, Module.End.mul_apply]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finRepCusp_mem_translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (g : FiniteAdelicGL ℚ 2) {ψ : cuspForms ℚ 2} (hψ : ψ ∈ translateSpanCusp f) :

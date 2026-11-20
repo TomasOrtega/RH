@@ -11,13 +11,11 @@ namespace GlobalTheory.TameTauConj
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
 
 /- English proof (translation)
-Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : σ • g • A = g • A` using `hσ.1 show (g⁻¹ * σ * g) • A = A`. Rewrite using `[mul_smul, mul_smul, h, inv_smul_smul]`. Establish `hx' : (g • A).valuation (g x) ≤ 1`. Rewrite using `[ValuationSubring.valuation_le_one_iff, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (g⁻¹ : G E Ω) (g x) = x` using `by show (g⁻¹ * g) x = x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(A.valuation_le_one_iff x).1 hx`. Establish `h` using `(smul_valuation_lt_one_iff g A _).1 (hσ.2 _ hx')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (g⁻¹ : G E Ω) (σ (g x) - g x) = (g⁻¹ * σ * g) x - x`. Rewrite using `[map_sub]`. Use `congr 1`. Use `show (g⁻¹ : G E Ω) (g x) = x`. Use `show (g⁻¹ * g) x = x`.
-
-Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_Ine_of_mem_Ine_smul [IsAlgClosure E Ω] {A : ValuationSubring Ω} {g σ : G E Ω}
     (hσ : σ ∈ Ine (F := E) (g • A)) : g⁻¹ * σ * g ∈ Ine (F := E) A := by
@@ -48,11 +46,11 @@ end GlobalTheory.TameTauConj
 open GlobalTheory.TameTauConj in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A₀ P hA₀ e σ u hT`. Take `⟨A, hA, hσ, ϖ, π, h1, h2, h3, h4⟩` from `hT`. Take `⟨ρ, hρ⟩` from `exists_smul_eq_of_isPlaceOver hA₀ hA`. Substitute `hρ` using the available equality. Use `⟨ρ, conj_mem_Ine_of_mem_Ine_smul hσ, ϖ, (ρ⁻¹ : G E Ω) π, h1, h2, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_pow, h3, AlgEquiv.commutes]`. Establish `e1 : (ρ⁻¹ * σ * ρ) ((ρ⁻¹ : G E Ω) π) = (ρ⁻¹ : G E Ω) (σ π)` using `by show (ρ⁻¹ * σ * ρ * ρ⁻¹) π = (ρ⁻¹ * σ) π`. Rewrite using `[show ρ⁻¹ * σ * ρ * ρ⁻¹ = ρ⁻¹ * σ by group]`. Establish `e2 : (ρ⁻¹ * σ * ρ) ((ρ⁻¹ : G E Ω) π) / (ρ⁻¹ : G E Ω) π - (algebraMap E Ω (u : E)) ^ e = (ρ⁻¹ : G E Ω) (σ π / π - (algebraMap E Ω (u : E)) ^ e)`. Rewrite using `[e1, map_sub, map_div₀, map_zpow₀, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `(smul_valuation_lt_one_iff ρ A₀ _).1 h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TameTauConj.tameRep_conj : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A₀ : ValuationSubring Ω) (P : HeightOneSpectrum (𝓞 E)), IsPlaceOver A₀ P → ∀ (e : ℤ) (σ : G E Ω) (u : 𝓞 E), NX.TameRep P e σ u → ∃ ρ : G E Ω, ρ⁻¹ * σ * ρ ∈ Ine (F := E) A₀ ∧ ∃ (ϖ : 𝓞 E) (π : Ω), ϖ ∈ P.asIdeal ∧ ϖ ∉ P.asIdeal ^ 2 ∧ π ^ (normV P - 1) = algebraMap E Ω (ϖ : E) ∧ A₀.valuation ((ρ⁻¹ * σ * ρ) π / π - (algebraMap E Ω (u : E)) ^ e) < 1 := by
   intro E Ω _ _ _ _ _ A₀ P hA₀ e σ u hT

@@ -13,30 +13,30 @@ namespace GlobalTheory.RealFreq
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `evI`. Conclude with `map_mul _ a.1 b.1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem evI_mul (a b : AF F) : evI F (a * b) = evI F a * evI F b := by
   unfold evI; exact map_mul _ a.1 b.1
 
 /- English proof (translation)
-Unfold `evI`. Conclude with `map_add _ a.1 b.1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem evI_add (a b : AF F) : evI F (a + b) = evI F a + evI F b := by
   unfold evI; exact map_add _ a.1 b.1
 
 /- English proof (translation)
-Unfold `evI realAd`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem evI_realAd (t : ℝ) : evI F (realAd F t) = algebraMap ℝ _ t := by
   unfold evI realAd
   exact RingEquiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1 : u.1 = 0`. Unfold `evI at hu`. Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).1 hu`. Establish `h2 : u * realAd F t = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`. Rewrite using `[h1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`. Rewrite using `[mul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, ← mul_assoc, h2, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem realAd_mul_at (t : ℝ) (b : AF F) : At (evI F) (realAd F t * b) := by
   intro u hu
@@ -52,7 +52,7 @@ theorem realAd_mul_at (t : ℝ) (b : AF F) : At (evI F) (realAd F t * b) := by
   rw [smul_eq_mul, ← mul_assoc, h2, zero_mul]
 
 /- English proof (translation)
-Unfold `cA inclR`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   unfold cA inclR
@@ -65,7 +65,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open Matrix
 
 /- English proof (translation)
-Simplify using `only [hTens, Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hTens_add_right (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (Fin n) (AE F E)) (JB : Matrix (Fin d) (Fin d) (AE F E))
     (x y y' : Matrix (Fin n) (Fin d) (AE F E)) :
@@ -73,7 +73,7 @@ theorem hTens_add_right (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (F
   simp only [hTens, Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hTens, Matrix.smul_apply, map_smul, mul_smul_comm, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hTens_smul_right (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (Fin n) (AE F E)) (JB : Matrix (Fin d) (Fin d) (AE F E))
     (x y : Matrix (Fin n) (Fin d) (AE F E)) (r : AF F) :
@@ -87,11 +87,11 @@ def hTensR (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (Fin n) (AE F E
   map_smul' := fun r y => hTens_smul_right σ JA JB x y r
 
 /- English proof (translation)
-Simplify using `only [hTens, vecMulVec_apply, incV, incM, Matrix.map_apply, ← map_mul, cA_inclR, form, dotProduct, mulVec, Finset.sum_mul, Finset.mul_sum, map_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_lhs => arg 2`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hTens_rat (σ : E →ₐ[F] E) {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (ξ q : Fin n → E) (y x : Fin d → E) :
@@ -113,9 +113,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open Matrix
 
 /- English proof (translation)
-Establish `hv : vecMulVec (∑ j, realAd F (t j) • incV F (q j)) (incV F x) = ∑ j, realAd F (t j) • vecMulVec (incV F (q j)) (incV F x)`. Use extensionality with `i l`. Simplify using `[vecMulVec_apply, Matrix.sum_apply, Finset.sum_mul, smul_mul_assoc]`. Unfold `symp`. Rewrite using `[hv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Algebra.trace (AF F) (AE F E) (-1 * hTensR σ (incM F JX) (incM F JW) _ (∑ j, _)) = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Simplify using `only [hTensR, LinearMap.coe_mk, AddHom.coe_mk, hTens_rat, hyx, mul_neg_one, map_neg, smul_neg, Finset.sum_neg_distrib, neg_mul, one_mul, neg_neg, map_sum, map_smul, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem symp_freq (σ : E →ₐ[F] E) {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (ξ : Fin n → E) (y x : Fin d → E) (hyx : form σ JW y x = -1) {N : ℕ} (q : Fin N → Fin n → E) (t : Fin N → ℝ) :
@@ -146,11 +146,11 @@ def evIHom : AF F →+ mixedEmbedding.mixedSpace F where
   map_add' := evI_add
 
 /- English proof (translation)
-Establish `hat : At (evI F) (∑ j, realAd F (t j) * c j)`. Introduce `u hu`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => realAd_mul_at _ _ u hu`. Rewrite using `[hψ.2.2 _ hat]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 3`. Establish `h1 : evI F (∑ j, realAd F (t j) * c j) = ∑ j, t j • evI F (c j)`. Express the relevant statement in the definitionally equal form `evIHom (∑ j, realAd F (t j) * c j) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `evI F _ = _`. Rewrite using `[evI_mul, evI_realAd, Algebra.smul_def]`. Rewrite using `[h1, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_freq (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {N : ℕ} (c : Fin N → AF F) (t : Fin N → ℝ) :
     ψ (∑ j, realAd F (t j) * c j) = Complex.exp (-(2 * Real.pi * Complex.I) *
@@ -190,7 +190,7 @@ theorem realTr_apply (e : E) : realTr F e = Algebra.trace ℝ (mixedEmbedding.mi
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Establish `h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_baseChange_tmul' [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (a : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e) := by
@@ -200,11 +200,11 @@ theorem trace_baseChange_tmul' [FiniteDimensional F E] (R : Type) [CommRing R] [
     LinearMap.trace_baseChange, smul_eq_mul]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [h]; norm_num)`. Rewrite using `[realTr_apply]`. Establish `h1 : inclR (F` using `F) (AF F) (1 : E) = (1 : AF F) ⊗ₜ[F] (1 : E) := rfl`. Establish `h2 : Algebra.trace F E (1 : E) = 1 + 1`. Rewrite using `[← map_one (algebraMap F E), Algebra.trace_algebraMap, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `h3 : evI F (1 : AF F) = 1` using `by unfold evI; exact map_one _`. Rewrite using `[h1, trace_baseChange_tmul', h2, map_add, map_one, one_mul, evI_add, h3, map_add, ← map_one (algebraMap ℝ (mixedEmbedding.mixedSpace F)), Algebra.trace_algebraMap, mixedEmbedding.finrank]`. Establish `: 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Simplify using `only [nsmul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem realTr_one_ne (h : Module.finrank F E = 2) : realTr F (1 : E) ≠ 0 := by
   haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [h]; norm_num)
@@ -226,11 +226,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open Matrix
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Establish `hD : (A.submatrix id e.symm)ᵀ * M * (A.map star).submatrix id e.symm = (Aᵀ * M * A.map star).submatrix e.symm e.symm`. Rewrite using `[Matrix.transpose_submatrix]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.submatrix_id_id]`. Use `_ = _ := by`. Rewrite using `[Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id]`. Rewrite `hD` using `[hA]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Matrix.det hD` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero, zero_mul, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_neg, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ (by norm_num) this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_sig {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (r s : ℕ) (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -250,7 +250,7 @@ theorem det_ne_zero_of_sig {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (r s : ℕ
   exact pow_ne_zero _ (by norm_num) this.symm
 
 /- English proof (translation)
-Unfold `form`. Simplify using `only [dotProduct, mulVec, map_sum, map_mul, hσ, hskew, Finset.mul_sum, neg_mul, mul_neg, Finset.sum_neg_distrib, neg_neg]`. Conclude with `Finset.sum_comm.trans (Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by ring)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {d : ℕ} (J : Matrix (Fin d) (Fin d) E)
     (hskew : ∀ i j, σ (J j i) = -J i j) (x y : Fin d → E) : form σ J y x = -σ (form σ J x y) := by
@@ -260,9 +260,9 @@ theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {d : ℕ} (J
   exact Finset.sum_comm.trans (Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by ring)
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[Matrix.dotProduct_mulVec]`. Establish `: (fun i => σ ((Pi.single k c : Fin n → E) i)) = Pi.single k (σ c)`. Use extensionality with `i`. Distinguish the cases in `h : i = k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[this, dotProduct_single]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_single (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ξ : Fin n → E) (k : Fin n) (c : E) :
     form σ J ξ (Pi.single k c) = (ξ ᵥ* J) k * σ c := by
@@ -280,27 +280,27 @@ namespace GlobalTheory.RealFreq
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ X W W₁ M H' i₀ i₁ hH hB _ hsig`. Take `⟨r, s, r', s', hX, hW⟩` from `hsig`. Establish `hcm` using `hB.cm`. Establish `hne : Nonempty (NumberField.InfinitePlace F)` using `inferInstance`. Take `⟨w⟩` from `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hσ : ∀ z : E, σ (σ z) = z`. Introduce `z`. Apply `(B.emb w).1.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2, hcm.2.2.2, star_star]`. Establish `hyx : form σ W.J H'.y H'.x = -1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[form_swap σ hσ W.J hW.skew, hH.xy, map_one]`. Establish `hdet : X.J.det ≠ 0`. Introduce `h0`. Apply `det_ne_zero_of_sig _ r s (hX.sig w)` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `b` to `Module.finBasis ℚ (Fin n → E)`. Use `⟨Module.finrank ℚ (Fin n → E), fun t => ∑ j, realAd F (t j) • incV F (b j), fun ξ j => -(realTr F (form σ X.J ξ (b j))), ?_, ?_⟩` and prove the remaining obligations. Introduce `ξ ξ' hξ`. Assume the negation of the conclusion as `hne`. Establish `hz : ∀ j, realTr F (form σ X.J (ξ - ξ') (b j)) = 0`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `j`. Use `congrFun hξ j` as an intermediate fact. Simplify using `only [neg_inj] at this`. Rewrite using `[form, sub_dotProduct, map_sub]`. Unfold `form at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[this, sub_self]`. Set `L : (Fin n → E) →+ ℝ` to `(realTr F).comp { toFun := form σ X.J (ξ - ξ') map_zero' := by`. Unfold `form`. Rewrite using `[show (fun i => σ ((0 : Fin n → E) i)) = 0 from funext fun i => map_zero σ, Matrix.mulVec_zero, dotProduct_zero]`. Use the proof step `map_add' := fun u v => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `form`. Rewrite using `[show (fun i => σ ((u + v) i)) = (fun i => σ (u i)) + (fun i => σ (v i)) from funext fun i => map_add σ _ _, Matrix.mulVec_add, dotProduct_add] }`. Establish `hL : L.toRatLinearMap = 0` using `b.ext fun j => hz j`. Establish `hw : (ξ - ξ') ᵥ* X.J ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Use `Matrix.vecMul_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit hdet)) (h0.trans (Matrix.zero_vecMul _).symm)` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Take `⟨k, hk⟩` from `Function.ne_iff.1 hw`. Establish `h1 : form σ X.J (ξ - ξ') (Pi.single k (σ ((((ξ - ξ') ᵥ* X.J) k)⁻¹))) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[form_single, hσ]`. Conclude with `mul_inv_cancel₀ hk`. Establish `h2` using `LinearMap.congr_fun hL (Pi.single k (σ ((((ξ - ξ') ᵥ* X.J) k)⁻¹)))`. Express the relevant statement in the definitionally equal form `realTr F (form σ X.J (ξ - ξ') _) = 0 at h2`. Rewrite `h2` using `[h1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `realTr_one_ne hcm.2.2.1 h2`. Introduce `ξ t`. Rewrite using `[← M.co.form, symp_freq σ X.J W.J ξ H'.y H'.x hyx b t, psi_freq B.ψ hB.std]`. Use `congr 1`. Simplify using `only [realTr_apply]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem injective_real_frequencies : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

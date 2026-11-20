@@ -12,7 +12,7 @@ def RamPart (D : D7) : Prop :=
     (1 < (span {(p : ℤ)}).ramificationIdxIn (𝓞 D.host.E) ↔ p ∣ D.host.condN)
 
 /- English proof (translation)
-Rewrite using `[D.host.der.finrank_E]`. Use `show 4 * D.R.toFrame.ord = 2 * (2 * D.R.toFrame.ord)`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem deg_part (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   rw [D.host.der.finrank_E]
@@ -20,15 +20,13 @@ private theorem deg_part (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := b
   ring
 
 /- English proof (translation)
-Use `haveI := D.host.der.cm`. Use `haveI := D.host.galois`. Use `haveI := h𝔭.isMaximal h0`. Use `haveI : IsGalois D.host.F D.host.E := by first`. Consider the case `infer_instance`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact IsGalois.tower_top_of_isGalois ℚ D.host.F D.host.E`. Establish `h3 : Module.finrank D.host.F D.host.E = 2` using `by first`. Consider the case `exact IsQuadraticExtension.finrank_eq_two _ _`. Consider the case `(have h4 := Module.finrank_mul_finrank ℚ D.host.F D.host.E; have h5 : 0 < Module.finrank ℚ D.host.F := Module.finrank_pos; rw [D.host.der.finrank_E] at h4; rw [D.host.der.finrank_F] at h4 h5; exact Nat.eq_of_mul_eq_mul_left h5 (by linarith))`. Establish `h2 : Nat.card (D.host.E ≃ₐ[D.host.F] D.host.E) = 2` using `by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `rw [IsGalois.card_aut_eq_finrank, h3]`. Consider the case `rw [Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, h3]`. Establish `h1` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn 𝔭 (𝓞 D.host.E) (D.host.E ≃ₐ[D.host.F] D.host.E)`. Rewrite `h1` using `[h2]`. Break down `D.host.der.eta.1 𝔭 h𝔭 h0 with h | ⟨h, hf⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h]`. Establish `h6 : 𝔭.ramificationIdxIn (𝓞 D.host.E) * 𝔭.inertiaDegIn (𝓞 D.host.E) = 1`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Nat.eq_one_of_mul_eq_one_right h6`. Rewrite `h1` using `[h, hf]`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem unram_part (D : D7) (𝔭 : Ideal (𝓞 D.host.F)) (h𝔭 : 𝔭.IsPrime) (h0 : 𝔭 ≠ ⊥) :
     𝔭.ramificationIdxIn (𝓞 D.host.E) = 1 := by
@@ -60,15 +58,13 @@ private theorem unram_part (D : D7) (𝔭 : Ideal (𝓞 D.host.F)) (h𝔭 : 𝔭
     omega
 
 /- English proof (translation)
-Establish `h0 : 𝔭 ≠ ⊥`. Introduce and unpack `rfl`. Establish `h2 : span {(p : ℤ)} = ⊥`. Rewrite using `[hlo.over]`. Conclude with `Ideal.comap_bot_of_injective _ (algebraMap ℤ (𝓞 D.host.F)).injective_int`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Ideal.span_singleton_eq_bot]`. Conclude with `hpp.ne_zero (by exact_mod_cast h2)`. Break down `D.host.der.eta.1 𝔭 h𝔭 h0 with h | ⟨h, -⟩` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hP⟩` from `Set.ncard_eq_one.mp h`. Establish `hPm : P ∈ primesOver 𝔭 (𝓞 D.host.E)`. Rewrite using `[hP]`. Conclude with `Set.mem_singleton P`. Use `haveI : P.IsPrime := hPm.1`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : P.LiesOver 𝔭 := hPm.2`. Use `haveI : Fact p.Prime := ⟨hpp⟩`. Use `haveI : P.LiesOver (span {(p : ℤ)}) := by first`. Consider the case `exact Ideal.LiesOver.trans P 𝔭 (span {(p : ℤ)})`. Consider the case `infer_instance`.
-
-Establish `h1` using `D.host.der.eta.2.2 p hp P`. Establish `hc : P.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = 𝔭` using `(Ideal.LiesOver.over (P := P) (p := 𝔭)).symm`. Rewrite `h1` using `[hc]`. Simplify using `[Formalism.HC.HostRaw.etaF, h] at h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem split_part (D : D7) (p : ℕ) (hpp : p.Prime) (hp : p ∣ D.host.condN)
     (𝔭 : Ideal (𝓞 D.host.F)) (h𝔭 : 𝔭.IsPrime) (hlo : 𝔭.LiesOver (span {(p : ℤ)})) :
@@ -102,7 +98,7 @@ private theorem split_part (D : D7) (p : ℕ) (hpp : p.Prime) (hp : p ∣ D.host
     simp [Formalism.HC.HostRaw.etaF, h] at h1
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.GlobalTheoryTheory.rdF Formalism.BasicNotions.Host.rdE`. Rewrite using `[D.host.der.discr_sq, D.host.der.finrank_E, D.host.der.finrank_F]`. Use `push_cast`. Rewrite using `[abs_pow, ← Real.rpow_two, ← Real.rpow_mul (abs_nonneg _)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -115,7 +111,7 @@ private theorem rd_part (D : D7) : rdF D = D.host.rdE := by
   ring
 
 /- English proof (translation)
-Unfold `Conclusion1`. Conclude with `⟨D.host.der.cm, deg_part D, hRam, D.host.der.norm_mu, fun 𝔭 h𝔭 h0 => unram_part D 𝔭 h𝔭 h0, fun p hpp hp 𝔭 h𝔭 hlo => split_part D p hpp hp 𝔭 h𝔭 hlo, rd_part D⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem lemma_one_one_of_ramified (D : D7) (hRam : RamPart D) : Conclusion1 D := by
   unfold Conclusion1
@@ -124,7 +120,7 @@ theorem lemma_one_one_of_ramified (D : D7) (hRam : RamPart D) : Conclusion1 D :=
     fun p hpp hp 𝔭 h𝔭 hlo => split_part D p hpp hp 𝔭 h𝔭 hlo, rd_part D⟩
 
 /- English proof (translation)
-The claim follows from `lemma_one_one_of_ramified D (fun p hp => SlopeTestRemainingChoices.ram_iff D p hp)`.
+A detailed English derivation is pending.
 -/
 theorem ramification_two_and_conjugation_at_q_and_d (D : D7) : Conclusion1 D :=
   lemma_one_one_of_ramified D (fun p hp => SlopeTestRemainingChoices.ram_iff D p hp)

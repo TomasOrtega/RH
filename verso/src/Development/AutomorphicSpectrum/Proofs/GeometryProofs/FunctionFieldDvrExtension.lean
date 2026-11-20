@@ -9,17 +9,13 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.FnExt
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K J y hy O' _ _ _ _ Ω' _ _ _ _ _ _ ζ hζ`. Use `set L := fnField O' (fun v => algebraMap Ω Ω' (y v)) with hL`. Establish `himg : ∀ a : Ω, algebraMap Ω Ω' a ∈ L`. Establish `hmap : (⊤ : Subfield Ω).map (algebraMap Ω Ω') ≤ L`. Rewrite using `[← hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `fnField`. Rewrite using `[Subfield.map_le_iff_le_comap, Subfield.closure_le]`. Introduce and unpack `x (⟨a, rfl⟩ | ⟨q, rfl⟩)`. Use `show algebraMap Ω Ω' (algebraMap O Ω a) ∈ L`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply O O' Ω']`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subfield.subset_closure (Or.inl ⟨_, rfl⟩)`. Use `show algebraMap Ω Ω' (y ⟨q.1, q.2.1⟩ / y ⟨q.1, q.2.2⟩) ∈ L`. Rewrite using `[map_div₀]`. Conclude with `Subfield.subset_closure (Or.inr ⟨q, rfl⟩)`. Introduce `a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmap ⟨a, Subfield.mem_top a, rfl⟩`. Establish `hζL : algebraMap O' Ω' ζ ∈ L` using `Subfield.subset_closure (Or.inl ⟨ζ, rfl⟩)`. Set `S : Subalgebra Ω Ω'` to `{ L.toSubring with algebraMap_mem' := himg }`. Establish `hle : Algebra.adjoin Ω {algebraMap O' Ω' ζ} ≤ S`. Rewrite using `[Algebra.adjoin_le_iff]`.
-
-Rewrite using `[Set.singleton_subset_iff]`. Conclude with `hζL`. Rewrite `hle` using `[hζ]`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
-
-Conclude with `hle (Algebra.mem_top (x := x))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fnField_top_of_adjoin_root : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω]
     [Algebra O Ω] (K : Type) (J : K → Type) (y : (Σ k, J k) → Ω), fnField O y = ⊤ →

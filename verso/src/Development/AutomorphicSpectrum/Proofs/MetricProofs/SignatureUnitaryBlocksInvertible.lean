@@ -16,11 +16,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.SgBlocks
 variable {j j' : ℕ}
 
 /- English proof (translation)
-Establish `hu : u = fromBlocks u.toBlocks₁₁ u.toBlocks₁₂ u.toBlocks₂₁ u.toBlocks₂₂` using `(fromBlocks_toBlocks u).symm`. Generalize the expression as in `u.toBlocks₁₁ = a at hu ⊢`. Generalize the expression as in `u.toBlocks₁₂ = b at hu ⊢`. Generalize the expression as in `u.toBlocks₂₁ = c at hu ⊢`. Generalize the expression as in `u.toBlocks₂₂ = d at hu ⊢`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Substitute `hu` using the available equality. Unfold `IsSgU sgI at h`. Rewrite `h` using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Take `⟨h1, h2, h3, h4⟩` from `Matrix.fromBlocks_inj.1 h`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul] at h1 h2 h3 h4`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[sub_eq_add_neg]`. Simplify `h4` using `[sub_eq_add_neg]`. Simplify `h2` using `[sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blocks_eqs (u : Matrix (Sg j j') (Sg j j') ℂ) (h : IsSgU u) :
     u.toBlocks₁₁ᴴ * u.toBlocks₁₁ - u.toBlocks₂₁ᴴ * u.toBlocks₂₁ = 1 ∧
@@ -44,9 +44,7 @@ theorem blocks_eqs (u : Matrix (Sg j j') (Sg j j') ℂ) (h : IsSgU u) :
   · simpa [sub_eq_add_neg] using h2
 
 /- English proof (translation)
-Establish `pd : (xᴴ * x).PosDef`. Rewrite using `[e]`. Conclude with `Matrix.PosDef.one.add_posSemidef (Matrix.posSemidef_conjTranspose_mul_self y)`. Establish `hu : IsUnit (xᴴ * x).det` using `(Matrix.isUnit_iff_isUnit_det _).1 pd.isUnit`. Rewrite `hu` using `[Matrix.det_mul]`.
-
-Conclude with `isUnit_of_mul_isUnit_right hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_unit_of_eq {m k : ℕ} {x : Matrix (Fin m) (Fin m) ℂ} {y : Matrix (Fin k) (Fin m) ℂ}
     (e : xᴴ * x = 1 + yᴴ * y) : IsUnit x.det := by
@@ -58,22 +56,22 @@ theorem det_unit_of_eq {m k : ℕ} {x : Matrix (Fin m) (Fin m) ℂ} {y : Matrix 
   exact isUnit_of_mul_isUnit_right hu
 
 /- English proof (translation)
-Simplify using `[moebW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem moebW_zero (u : Matrix (Sg j j') (Sg j j') ℂ) :
     moebW u 0 = u.toBlocks₂₁ * u.toBlocks₁₁⁻¹ := by
   simp [moebW]
 
 /- English proof (translation)
-Establish `hab : aᴴ * b = cᴴ * d` using `sub_eq_zero.1 h3`. Establish `haH : IsUnit aᴴ.det`. Rewrite using `[det_conjTranspose]`. Conclude with `ha.star`. Establish `hdH : IsUnit dᴴ.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_conjTranspose]`. Conclude with `hd.star`. Establish `hWH : (c * a⁻¹)ᴴ * d = b`. Rewrite using `[conjTranspose_mul, conjTranspose_nonsing_inv, Matrix.mul_assoc, ← hab, Matrix.nonsing_inv_mul_cancel_left _ _ haH]`. Establish `hWH' : dᴴ * (c * a⁻¹) = bᴴ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg conjTranspose hWH` as an intermediate fact. Simplify `this` using `[conjTranspose_mul]`. Establish `hdd : dᴴ * d = 1 + bᴴ * b`. Rewrite using `[← sub_eq_zero]`. Establish `: bᴴ * b - dᴴ * d + 1 = 0` using `by rw [h2]; abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← neg_eq_zero, ← this]`. Normalize the expressions using the abelian group laws. Establish `key : dᴴ * ((1 - (c * a⁻¹) * (c * a⁻¹)ᴴ) * (d * dᴴ)) = dᴴ * 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = dᴴ * 1 := by`. Rewrite using `[hWH, hWH', hdd]`. Simplify using the standard rewrite rules. Use `congrArg (fun x => (dᴴ)⁻¹ * x) key` as an intermediate fact. Simplify `this` using `only [Matrix.nonsing_inv_mul_cancel_left _ _ hdH]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem one_sub_mul_eq {a : Matrix (Fin j) (Fin j) ℂ} {b : Matrix (Fin j) (Fin j') ℂ}
     {c : Matrix (Fin j') (Fin j) ℂ} {d : Matrix (Fin j') (Fin j') ℂ}
@@ -111,15 +109,15 @@ end GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.SgBlocks
 open GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.SgBlocks in
 
 /- English proof (translation)
-Introduce `j j' u hu`. Take `⟨h1, h2, h3⟩` from `blocks_eqs u hu`. Establish `ha : IsUnit u.toBlocks₁₁.det`. Use `det_unit_of_eq (y := u.toBlocks₂₁) ?_` and prove the remaining obligations. Rewrite using `[← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hd : IsUnit u.toBlocks₂₂.det`. Use `det_unit_of_eq (y := u.toBlocks₁₂) ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Establish `: u.toBlocks₁₂ᴴ * u.toBlocks₁₂ - u.toBlocks₂₂ᴴ * u.toBlocks₂₂ + 1 = 0` using `by rw [h2]; abel`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← neg_eq_zero, ← this]`. Normalize the expressions using the abelian group laws. Establish `hm : (1 - moebW u 0 * (moebW u 0)ᴴ) * (u.toBlocks₂₂ * u.toBlocks₂₂ᴴ) = 1`. Rewrite using `[moebW_zero]`. Conclude with `one_sub_mul_eq ha hd h2 h3`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ha, hd, hm, ?_⟩` and prove the remaining obligations. Establish `hpd : (u.toBlocks₂₂ * u.toBlocks₂₂ᴴ).PosDef`. Establish `h` using `Matrix.PosDef.one.mul_mul_conjTranspose_same (B := u.toBlocks₂₂) (Matrix.vecMul_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 hd))`. Simplify using `using h`. Establish `he : 1 - moebW u 0 * (moebW u 0)ᴴ = (u.toBlocks₂₂ * u.toBlocks₂₂ᴴ)⁻¹` using `(Matrix.inv_eq_left_inv hm).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `hpd.inv`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks : ∀ (j j' : ℕ) (u : Matrix (Sg j j') (Sg j j') ℂ), IsSgU u → IsUnit u.toBlocks₁₁.det ∧ IsUnit u.toBlocks₂₂.det ∧ (1 - moebW u 0 * (moebW u 0)ᴴ) * (u.toBlocks₂₂ * u.toBlocks₂₂ᴴ) = 1 ∧ (1 - moebW u 0 * (moebW u 0)ᴴ).PosDef := by
   intro j j' u hu

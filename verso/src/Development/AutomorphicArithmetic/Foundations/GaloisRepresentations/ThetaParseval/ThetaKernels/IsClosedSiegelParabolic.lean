@@ -14,9 +14,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `e : (par2 σ d.Y : Set d.G) = (fun p : d.G => (inFrame d.b p).toBlocks₂₁) ⁻¹' {0}`. Use extensionality with `p`. Conclude with `mem_stabiliser_iff_frame_lower_block d.ok.frame p`. Rewrite using `[e]`. Establish `hfr` using `GlobalTheory.EisBL.DoubledParabolic.continuous_inFrame (σ := σ) (Y := d.Y) d.b`.
-
-Conclude with `isClosed_singleton.preimage (continuous_pi fun i => continuous_pi fun j => hfr.matrix_elem (Sum.inr i) (Sum.inl j))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_siegel_parabolic (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : IsClosed (par2 σ d.Y : Set d.G) := by
   have e : (par2 σ d.Y : Set d.G) = (fun p : d.G => (inFrame d.b p).toBlocks₂₁) ⁻¹' {0} := by
@@ -27,9 +25,9 @@ theorem isClosed_siegel_parabolic (d : _root_.PositivityTheory.SiegelWeilFormula
   exact isClosed_singleton.preimage
     (continuous_pi fun i => continuous_pi fun j => hfr.matrix_elem (Sum.inr i) (Sum.inl j))
 /- English proof (translation)
-Use `GlobalTheory.Doubling.continuous_of_prod (P := par2 σ d.Y) (K := d.K) (_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.isClosed_siegel_parabolic d) (_root_.PositivityTheory.SiegelWeilFormula.kunf.isCompact_K_k d) (fun g => ?_) ?_` and prove the remaining obligations. Take `⟨p, t, hp, k, hk, e⟩` from `d.ok.hgt.iwa g`. Conclude with `⟨⟨p, mem_parabolic_GL2_iff.2 ⟨t, hp⟩⟩, k, hk, e⟩`. Establish `hc : Continuous fun x : par2 σ d.Y × d.K => ((GlobalTheory.Doubling.absE F E (kunf.SecA.uDet x.1) : ℝ≥0) : ℝ)` using `NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp (kunf.SecA.continuous_uDet.comp continuous_fst))`. Use `hc.congr fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 x.1.2`. Rewrite using `[d.ok.hgt.val _ t ht _ x.2.2, kunf.SecA.uDet_eq ht]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem continuous_a'_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : Continuous d.a := by
   refine GlobalTheory.Doubling.continuous_of_prod (P := par2 σ d.Y) (K := d.K) (_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.isClosed_siegel_parabolic d) (_root_.PositivityTheory.SiegelWeilFormula.kunf.isCompact_K_k d)

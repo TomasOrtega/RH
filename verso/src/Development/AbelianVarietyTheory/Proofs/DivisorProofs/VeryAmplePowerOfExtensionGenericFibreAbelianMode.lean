@@ -31,9 +31,9 @@ noncomputable section
 namespace GlobalTheory.ModelAmple
 
 /- English proof (translation)
-Take `⟨V, hV, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := eSec G (IsLocalRing.closedPoint W)) trivial`. Establish `he : eSec G ≫ G.hom = 𝟙 _`. Simplify `Over.w η[G]` using `[eSec]`. Use `GlobalTheory.ProjNormal.exists_relAmple_of_affine W G hG V hV fun s => ⟨eSec G s, ?_, ?_⟩` and prove the remaining obligations. Establish `hsp : (s : PrimeSpectrum W) ⤳ IsLocalRing.closedPoint W` using `(PrimeSpectrum.le_iff_specializes _ _).mp (IsLocalRing.le_maximalIdeal s.2.ne_top)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hsp.map (eSec G).continuous).mem_open V.isOpen hx`. Rewrite using `[← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_relAmple (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (G : Over (Sp W))
     [GrpObj G] (hG : IsAbelianScheme G) : ∃ L : LB G.left, L.IsLB ∧ Out.RelAmple G L := by
@@ -53,25 +53,25 @@ end GlobalTheory.ModelAmple
 namespace GlobalTheory.ModelAmple
 
 /- English proof (translation)
-Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Use `grpObj_geometricallyIntegral_of_smooth _ G` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Establish `hK` using `IsPullback.of_hasPullback G.hom (spMap (algebraMap W K'))`. Establish `hk` using `IsPullback.of_hasPullback G.hom (spMap (IsLocalRing.residue W))`. Use `GlobalTheory.DvrModel.isIntegral_of_geometricallyIntegral hK` as an intermediate fact. Use `GlobalTheory.DvrModel.isIntegral_of_geometricallyIntegral hk` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, ⟨t, -, a, x, hx, hxa⟩, -⟩` from `GlobalTheory.DvrModel.existsUnique_zpow_mul_sec hK hk hϖ hN σ hσ`. Set `F` to `AlgebraicClosure K'`. Take `⟨O, hO, hloc⟩` from `IsLocalRing.exists_factor_valuationRing ((algebraMap K' F).comp (algebraMap W K'))`. Set `g : W →+* O` to `((algebraMap K' F).comp (algebraMap W K')).codRestrict O.toSubring hO`. Establish `: IsLocalHom g` using `hloc`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : Function.Injective g` using `fun a b e => IsFractionRing.injective W K' ((algebraMap K' F).injective (congrArg Subtype.val e))`. Establish `hflat : g.Flat`. Use `letI := g.toAlgebra`. Establish `: Module.IsTorsionFree W O` using `Module.isTorsionFree_iff_algebraMap_injective.2 hg`. Conclude with `(inferInstance : Module.Flat W O)`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective (spMap g)`. Use `letI := g.toAlgebra`. Establish `: Module.Flat W O` using `hflat`. Establish `: IsLocalHom (algebraMap W O)` using `‹_›`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := W) (B := O)` as an intermediate fact.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := W) (B := O)⟩`. Set `B : Over (Sp O)` to `(Over.pullback (spMap g)).obj G`. Set `π : B.left ⟶ G.left` to `pullback.fst G.hom (spMap g)`. Establish `h : IsGrpPullback B G (spMap g) π` using `isGrpPullback_pullback G _`. Establish `hB` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hB.comm` as an intermediate fact. Establish `: Surjective π` using `MorphismProperty.of_isPullback (P := @Surjective) h.1.flip inferInstance`. Establish `hr : Out.Rigidified G N` using `DVR.exists_gen_of_isLB_local (V := W) _ (pull_isLB hN _)`. Take `⟨R, hR, ⟨c⟩⟩` from `GlobalTheory.Moduli.cubicalStr_of_triv_theta GlobalTheory.allSixLaws.1 _ G hG N hN hr (GlobalTheory.GenericAmpleDvr.triv_theta hG hN)`. Substitute `hR` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨hLB, hr', ⟨c', -⟩, -⟩` from `Out.CubePf.cubePull _ _ G B (cubeMapOf h) R c`. Establish `cube : GlobalTheory.AbLaw.Triv (Theta B (R.L.pull π))` using `⟨c'.t, c'.isGen⟩`. Take `⟨⟨t', ht', -⟩, H⟩` from `GlobalTheory.SecPullIso.section_pull _ _ π _ _ _ hN (pull_isLB hN π) (Out.CubePf.idIsoL_isGen (pull_isLB hN π)) t`. Take `⟨z, hz₁, hz₂⟩` from `Scheme.Pullback.exists_preimage_pullback (f := G.hom) (g := spMap g) x (IsLocalRing.closedPoint O) (hx.trans (IsLocalRing.comap_closedPoint g).symm)`. Establish `hmem : z ∈ Out.nonzeroLocus t'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H t' ht']`. Conclude with `(congrArg (· ∈ Out.nonzeroLocus t) hz₁).mpr (TopologicalSpace.Opens.mem_iSup.2 ⟨a, hxa⟩)`. Establish `hu` using `GlobalTheory.SquareGenerated.exists_secs_sq_generate O F B hB _ (pull_isLB hN π) cube t' ⟨z, hmem, hz₂⟩`. Rewrite `hu` using `[← GlobalTheory.AmpleCrit.pull_pw_eq]`. Take `⟨m, u, hu⟩` from `hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `: QuasiSeparatedSpace G.left` using `quasiSeparatedSpace_of_quasiSeparated G.hom`. Conclude with `GlobalTheory.AmpleCrit.exists_cover_of_pull g hflat G.hom π B.hom h.1 (GlobalTheory.AbLaw.isLB_pw hN _) u hu`.
+A detailed English derivation is pending.
 -/
 theorem exists_generating_sq (W K' : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K']
     [Algebra W K'] [IsFractionRing W K'] (G : Over (Sp W)) [GrpObj G] (hG : IsAbelianScheme G) (N : LB G.left)
@@ -135,23 +135,21 @@ end GlobalTheory.ModelAmple
 namespace GlobalTheory.ModelAmple
 
 /- English proof (translation)
-Introduce `K W K' _ _ _ _ _ _ _ _ A _ hA G _ hG e H m s M w hH hva hM hw`. Use `hG.proper` as an intermediate fact. Use `hA.proper` as an intermediate fact. Establish `: IsIso e.hom.left`. Express the relevant statement in the definitionally equal form `IsIso ((Over.forget _).map e.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Establish `: IsProper (Over.mk (pullback.snd G.hom (spMap (algebraMap W K')))).hom` using `MorphismProperty.of_isPullback (P := @IsProper) (IsPullback.of_hasPullback G.hom (spMap (algebraMap W K'))) ‹IsProper G.hom›`. Establish `hHa : Out.RelAmple A H` using `GlobalTheory.MulFiniteAny.relAmple_of_veryAmpleBy' hH s hva`. Establish `sq : IsPullback (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) (pullback.snd G.hom (spMap (algebraMap W K'))) A.hom (spMap (algebraMap K K'))`. Establish `h1 : IsPullback e.hom.left (pullback.snd G.hom (spMap (algebraMap W K'))) (pullback.snd A.hom (spMap (algebraMap K K'))) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by simpa using Over.w e.hom⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1.paste_horiz (IsPullback.of_hasPullback A.hom (spMap (algebraMap K K')))`. Establish `hHK` using `GlobalTheory.AmpleBaseChange.relAmple_of_isPullback hH hHa sq`. Establish `hMK : Out.RelAmple (Over.mk (pullback.snd G.hom (spMap (algebraMap W K')))) (M.pull (pullback.fst G.hom (spMap (algebraMap W K'))))`. Rewrite `hHK` using `[GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine _ (pull_isLB hH _)]`. Rewrite using `[GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine _ (pull_isLB hM _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(GlobalTheory.isAmpleLB_congr (pull_isLB hM _) (pull_isLB hH _) ⟨w, hw⟩).2 hHK`. Take `⟨L, hL, hLa⟩` from `exists_relAmple W G hG`. Establish `he : eSec G ≫ G.hom = 𝟙 _`. Simplify `Over.w η[G]` using `[eSec]`. Establish `hne : Nonempty (Over.mk (pullback.snd G.hom (spMap (algebraMap W K')))).left` using `⟨pullback.lift (spMap (algebraMap W K') ≫ eSec G) (𝟙 _) (by rw [Category.assoc, he]; simp) (IsLocalRing.closedPoint K')⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, σ, ha, hσ⟩` from `GlobalTheory.AmpleDivSec.exists_sec_pow_div_ne_zero K' (Over.mk (pullback.snd G.hom (spMap (algebraMap W K')))) (L.pull (pullback.fst G.hom (spMap (algebraMap W K')))) (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))) inferInstance hne (pull_isLB hL _) (pull_isLB hM _) hMK`. Establish `hp : (lbPow M a).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hN : (LB.div (lbPow M a) L).IsLB` using `LB.isLB_div hp hL`. Take `⟨σ', hσ'⟩` from `GlobalTheory.AmpleSpecialisation.exists_sec_ne_zero_of_lbIso (pull_isLB hN _) (LB.isLB_div (LB.isLB_linComb (pull_isLB hM _) _ _) (pull_isLB hL _)) (GlobalTheory.AmpleSpecialisation.lbIso_pull_div_lbPow hL hM (pullback.fst G.hom (spMap (algebraMap W K'))) a) ⟨σ, hσ⟩`. Take `⟨r, u, hu⟩` from `exists_generating_sq W K' G hG _ hN σ' hσ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hiso : LBIso (lbPow (LB.div (lbPow M a) L) 2) (GlobalTheory.AbLaw.pw (LB.div (lbPow M a) L) 2)`. Use `(GlobalTheory.CechPic.cls_eq_iff (GlobalTheory.isLB_lbPow hN 2) (GlobalTheory.AbLaw.isLB_pw hN 2)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_lbPow hN, GlobalTheory.AmpleStabFinite.cls_pw hN]`. Use `first`. Consider the case `rfl`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (natCast_zsmul _ 2).symm`. Consider the case `exact natCast_zsmul _ 2`. Consider the case `simp only [two_smul, two_nsmul]`. Consider the case `(simp; done)`. Use `choose v hv using fun i => GlobalTheory.exists_sec_nonzeroLocus_eq_of_lbIso (GlobalTheory.isLB_lbPow hN 2) (GlobalTheory.AbLaw.isLB_pw hN _) hiso (u i)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov : ⨆ i, Out.nonzeroLocus (v i) = ⊤`. Repeatedly rewrite using `[hv]`. Conclude with `hu`. Establish `hLamp` using `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine G hL).1 hLa`. Establish `hMa` using `(GlobalTheory.isAmpleLB_pow_iff hM ha).1 (hLamp.of_pow_div_generated hp (by norm_num) v hcov)`.
-
-Establish `hMrel` using `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine G hM).2 hMa`. Take `⟨n, hn, m', t, -, ht⟩` from `GlobalTheory.AbLaw.veryAmpleBy_of_relAmple hM hMrel (𝟙 G.left) (Category.id_comp _) hM (GlobalTheory.lbIso_pull_id hM).symm`. Conclude with `⟨n, hn, m', t, ht⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem veryAmpleBy_pw_of_generic : ∀ (K W K' : Type) [Field K] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] [Algebra K K'], ∀ (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (G : Over (Sp W)) [GrpObj G], IsAbelianScheme G → ∀ e : (Over.pullback (spMap (algebraMap W K'))).obj G ≅ (Over.pullback (spMap (algebraMap K K'))).obj A, ∀ (H : LB A.left) (m : ℕ) (s : Fin (m + 1) → H.Sec) (M : LB G.left) (w : LB.Iso (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))) (H.pull (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))))), H.IsLB → GlobalTheory.AbLaw.VeryAmpleBy A.hom H s → M.IsLB → w.IsGen → ∃ n : ℕ, 1 ≤ n ∧ ∃ (m' : ℕ) (t : Fin (m' + 1) → (GlobalTheory.AbLaw.pw M n).Sec), GlobalTheory.AbLaw.VeryAmpleBy G.hom (GlobalTheory.AbLaw.pw M n) t := by
   intro K W K' _ _ _ _ _ _ _ _ A _ hA G _ hG e H m s M w hH hva hM hw

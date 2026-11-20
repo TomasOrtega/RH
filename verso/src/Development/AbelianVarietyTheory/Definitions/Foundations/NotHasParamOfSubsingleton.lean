@@ -12,7 +12,7 @@ open GlobalTheory.LGrp (bcParam)
 def constMap (G : Type) : ℂ →ₗ[ℂ] (G → ℂ) := LinearMap.pi fun _ => LinearMap.id
 
 /- English proof (translation)
-Introduce `_ _ h` and use `congrFun h 1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem constMap_injective (G : Type) [Group G] : Function.Injective (constMap G) := fun _ _ h => congrFun h 1
 
@@ -23,7 +23,7 @@ variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (
 def rhoGL (i : Fin n) : ℂˣ := npowU w (((n : ℂ) - 1) / 2 - (i : ℕ))
 
 /- English proof (translation)
-Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `hq : ((qV E w : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast qV_ne_zero w`. Express the relevant statement in the definitionally equal form `(((qV E w : ℕ) : ℂ) ^ (((n : ℂ) - 1) / 2 - (i : ℕ))) ^ _ * _ = 1`. Rewrite using `[← Complex.cpow_mul_int, ← Complex.cpow_add _ _ hq]`. Use `Complex.cpow_zero _ using 2` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -36,9 +36,9 @@ theorem chiDelta_rhoGL (b : GL (Fin n) (w.adicCompletion E)) : chiDelta E w (fun
   ring
 
 /- English proof (translation)
-Establish `e : seg w 1 n = Finset.univ.val.map (rhoGL w n)`. Rewrite using `[seg, Finset.range_val, ← Multiset.coe_range, ← List.map_coe_finRange_eq_range, Multiset.map_coe, List.map_map]`. Simplify using `only [one_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Submodule.ne_bot_iff _).2 ⟨1, GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl, one_ne_zero⟩, fun x _ h0 => ?_⟩` and prove the remaining obligations. Use `IsSatVecGL.of_map (constMap _) (fun _ _ => rfl) (constMap_injective _) (isSatVecGL_of_isSpherical (fun b g k _ _ => ?_) fun h => h0 (congrFun h 1))` and prove the remaining obligations. Rewrite using `[chiDelta_rhoGL, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hasSatGL_trivial : HasSatGL w (Representation.trivial ℂ (GL (Fin n) (w.adicCompletion E)) ℂ) (seg w 1 n) := by
   have e : seg w 1 n = Finset.univ.val.map (rhoGL w n) := by
@@ -52,7 +52,7 @@ theorem hasSatGL_trivial : HasSatGL w (Representation.trivial ℂ (GL (Fin n) (w
   rw [chiDelta_rhoGL, one_mul]; rfl
 
 /- English proof (translation)
-Introduce `h` and use `by have e := (hasSatGL_trivial w 2).unique h have h1 : (1 : ℂˣ) * npowU w ((((2 : ℕ) : ℂ) - 1) / 2 - (0 : ℕ)) ∈ seg w 1 2 := Multiset.mem_map.2 ⟨0, by simp, rfl⟩ rw [e] at h1 have h2 : npow w ((((2 : ℕ) : ℂ) - 1) / 2 - (0 : ℕ)) = 1 := by have : npowU w ((((2 : ℕ) : ℂ) - 1) / 2 - …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_hasSatGL_trivial_one :
     ¬ HasSatGL w (Representation.trivial ℂ (GL (Fin 2) (w.adicCompletion E)) ℂ) {1, 1} := fun h => by
@@ -69,9 +69,9 @@ theorem not_hasSatGL_trivial_one :
   norm_num
 
 /- English proof (translation)
-Use `⟨hasSatGL_psFunGL _, Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * t) = a * φ.1 g`. Establish `hc : g * t = t * g` using `Units.ext (by ext i j; simp [Matrix.mul_apply, mul_comm, Subsingleton.elim i 0, Subsingleton.elim j 0])`. Establish `ho : ordV E w (t.1 0 0) = 1`. Establish `h0 : Valued.v (t.1 0 0) ≠ 0` using `by rw [ht]; exact WithZero.coe_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : WithZero.unzero h0 = Multiplicative.ofAdd (-1 : ℤ)` using `WithZero.coe_injective ((WithZero.coe_unzero h0).trans ht)`. Rewrite using `[ordV, dif_neg h0, h1]`. Both sides reduce to the same expression. Rewrite using `[hc, φ.2 t g fun i j h => absurd h (by simp [Subsingleton.elim i j])]`. Simplify using `[chiDelta, ho]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psFunGL_one_apply (a : ℂˣ) (t : GL (Fin 1) (w.adicCompletion E)) (ht : IsUnifV E w (t.1 0 0))
     (φ : psSpaceGL w (fun _ : Fin 1 => a)) :
@@ -97,11 +97,11 @@ def rhoU {q : ℕ} (hq : q ≠ 0) (n : ℕ) (i : Fin (n / 2)) : ℂˣ :=
   Units.mk0 (q : ℂ) (by exact_mod_cast hq) ^ ((n : ℤ) - 1 - 2 * (i.val : ℤ))
 
 /- English proof (translation)
-Use `⟨(Submodule.ne_bot_iff _).2 ⟨1, GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl, one_ne_zero⟩, fun x _ h0 => ?_⟩` and prove the remaining obligations. Use `IsSatVecU.of_map hU (constMap _) (fun _ _ => rfl) (constMap_injective _) (isSatVecU_of_isSphericalU hU (fun b g k _ _ => ?_) fun h => h0 (congrFun h 1))` and prove the remaining obligations. Establish `: chiDeltaU q (fun i => (rhoU hq n i : ℂ)) b = 1`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `split_ifs`. Simplify using `only [rhoU, Units.val_zpow_eq_zpow_val, Units.val_mk0]`. Rewrite using `[← zpow_mul, ← zpow_add₀ hq']`. Use `zpow_zero _ using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hasSatU_trivial (hU : IsUnramInv ϖ σ q) (hq : q ≠ 0) (n : ℕ) :
     HasSatU ϖ q (Representation.trivial ℂ (GU σ n) ℂ) (rhoU hq n) := by
@@ -128,14 +128,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} {h : w.under (𝓞 F) = v}
 
 /- English proof (translation)
-The claim follows from `HasParam.paramOf_eq_of_isSplit hv (Or.inl ⟨hv, e, he, hasSatGL_trivial w n⟩)`.
+A detailed English derivation is pending.
 -/
 theorem paramOf_trivial_split (hv : IsSplit (E := E) v) {e : GLoc σ J v ≃* GL (Fin n) (w.adicCompletion E)}
     (he : IsSplitChart σ J L h e) : paramOf σ J L h (Representation.trivial ℂ _ ℂ) = seg w 1 n :=
   HasParam.paramOf_eq_of_isSplit hv (Or.inl ⟨hv, e, he, hasSatGL_trivial w n⟩)
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨hw, c, ϖ, e, _, hU, he, hasSatU_trivial hU _ n, rfl⟩`.
+Prove the second alternative.
 -/
 theorem hasParam_trivial_inert (hw : IsInertAt F E v w) {c : w.adicCompletion E →+* w.adicCompletion E}
     {ϖ : w.adicCompletion E} (hU : IsUnramInv ϖ c (qV F v)) {e : GLoc σ J v ≃* GU c n}
@@ -146,7 +146,7 @@ theorem hasParam_trivial_inert (hw : IsInertAt F E v w) {c : w.adicCompletion E 
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `x` and use `by classical obtain ⟨y, hy⟩ := (finAdEquiv F E).surjective ⟨Pi.single w x, by filter_upwards [(Set.finite_singleton w).compl_mem_cofinite] with u hu rw [Pi.single_eq_of_ne (by simpa using hu)] exact zero_mem _⟩ exact ⟨_, (finAdEquiv_apply h y).symm.trans (by rw [hy]; exact Pi.sin …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toCompl_surjective (h : w.under (𝓞 F) = v) : Function.Surjective (toCompl h) := fun x => by
   classical
@@ -157,7 +157,7 @@ theorem toCompl_surjective (h : w.under (𝓞 F) = v) : Function.Surjective (toC
   exact ⟨_, (finAdEquiv_apply h y).symm.trans (by rw [hy]; exact Pi.single_eq_same w x)⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by obtain ⟨y, rfl⟩ := toCompl_surjective h x rw [hc, hc']`.
+A detailed English derivation is pending.
 -/
 theorem isConjAt_unique {c c' : w.adicCompletion E →+* w.adicCompletion E} (hc : IsConjAt σ h c)
     (hc' : IsConjAt σ h c') : c = c' := RingHom.ext fun x => by
@@ -165,9 +165,9 @@ theorem isConjAt_unique {c c' : w.adicCompletion E →+* w.adicCompletion E} (hc
   rw [hc, hc']
 
 /- English proof (translation)
-Introduce and unpack `(⟨hv, -⟩ | ⟨-, c, ϖ, e, α, hU, he, -⟩)`. Conclude with `not_isSplit_of_isInertAt hw hv`. Establish `hc : c = RingHom.id _` using `isConjAt_unique he.1 fun y => by`. Establish `: Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ (AlgHom.id F E) y = y` using `by simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨x, -, hx⟩` from `hU.2.2.2.2.1`. Simplify using `[hc] at hx`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_hasParam_id (hw : IsInertAt F E v w) {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GLoc (AlgHom.id F E) J v) V) (B : Multiset ℂˣ) :
@@ -181,7 +181,7 @@ theorem not_hasParam_id (hw : IsInertAt F E v w) {V : Type} [AddCommGroup V] [Mo
     simp [hc] at hx
 
 /- English proof (translation)
-Introduce `hρ` and use `by obtain ⟨x, hx⟩ := hρ.exists_vec exact hx.ne_zero (Subsingleton.elim _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_hasParam_of_subsingleton {V : Type} [AddCommGroup V] [Module ℂ V] [Subsingleton V]
     (ρ : Representation ℂ (GLoc σ J v) V) (B : Multiset ℂˣ) : ¬ HasParam σ J L h ρ B := fun hρ => by
@@ -189,7 +189,7 @@ theorem not_hasParam_of_subsingleton {V : Type} [AddCommGroup V] [Module ℂ V] 
   exact hx.ne_zero (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Introduce `ha` and use `by have h1 := (ha (fun _ => 1)).1 fun _ => one_mem _ have h2 : latAt w (⊥ : Submodule (𝓞 E) (Fin (n + 1) → E)) = ⊥ := by rw [latAt, Submodule.span_eq_bot] rintro _ ⟨x, hx, rfl⟩ rw [(Submodule.mem_bot _).1 hx] funext i; simp rw [h2, Submodule.mem_bot] at h1 have h3 := congrArg (fu …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isFrameAt_bot (a : GL (Fin (n + 1)) (w.adicCompletion E)) : ¬ IsFrameAt w ⊥ a := fun ha => by
   have h1 := (ha (fun _ => 1)).1 fun _ => one_mem _
@@ -205,7 +205,7 @@ theorem not_isFrameAt_bot (a : GL (Fin (n + 1)) (w.adicCompletion E)) : ¬ IsFra
   exact one_ne_zero (congrFun h3 0)
 
 /- English proof (translation)
-Rewrite using `[locL_segFam]`. Simplify using `[locL]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem locL_trivial (s : ℂ) : locL (segFam (fun _ : HeightOneSpectrum (𝓞 E) => 1) n) w s =
     ∏ i ∈ Finset.range n, (1 - npow w (-(s - ((n : ℂ) - 1) / 2 + i)))⁻¹ := by
@@ -214,7 +214,7 @@ theorem locL_trivial (s : ℂ) : locL (segFam (fun _ : HeightOneSpectrum (𝓞 E
 end Global
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `({((rhoU (q := 3) _ 3 0 : ℂˣ) : ℂ), (((rhoU (q := 3) _ 3 0)⁻¹ : ℂˣ) : ℂ), ((1 : ℂˣ) : ℂ)} : Multiset ℂ) = _`. Simplify using `[rhoU]`. Evaluate the numerical expressions.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : ((bcParam 3 (rhoU (q := 3) (by norm_num) 3)).map fun b : ℂˣ => (b : ℂ)) = {9, 9⁻¹, 1} := by
   change ({((rhoU (q := 3) _ 3 0 : ℂˣ) : ℂ), (((rhoU (q := 3) _ 3 0)⁻¹ : ℂˣ) : ℂ), ((1 : ℂˣ) : ℂ)} : Multiset ℂ) = _

@@ -7,11 +7,9 @@ open scoped ComplexOrder Classical
 namespace GlobalTheory.CompanionTheory.Ar.ComplexPlace
 
 /- English proof (translation)
-Use `letI κF : Field (A ⧸ RingHom.ker v) := Ideal.Quotient.field _`. Use `letI KF : Field (B ⧸ M) := Ideal.Quotient.field _`. Set `φ : A ⧸ RingHom.ker v →+* B ⧸ M` to `Ideal.quotientMap M (algebraMap A B) (fun a ha => hM a (RingHom.mem_ker.mp ha))`. Use `letI : Algebra (A ⧸ RingHom.ker v) (B ⧸ M) := φ.toAlgebra`. Use `haveI : IsScalarTower A (A ⧸ RingHom.ker v) (B ⧸ M) := IsScalarTower.of_algebraMap_eq (fun a => rfl)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.FiniteType A (B ⧸ M) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ A M) (Ideal.Quotient.mkₐ_surjective A M)`. Use `haveI : Algebra.FiniteType (A ⧸ RingHom.ker v) (B ⧸ M) := Algebra.FiniteType.of_restrictScalars_finiteType A (A ⧸ RingHom.ker v) (B ⧸ M)`. Use `haveI : Module.Finite (A ⧸ RingHom.ker v) (B ⧸ M) := finite_of_finite_type_of_isJacobsonRing _ _`. Use `letI : Algebra (A ⧸ RingHom.ker v) ℂ := (RingHom.kerLift v).toAlgebra`. Set `g : (B ⧸ M) →ₐ[A ⧸ RingHom.ker v] ℂ` to `IsAlgClosed.lift`.
-
-Use `⟨g.toRingHom.comp (Ideal.Quotient.mk M), fun a => ?_⟩` and prove the remaining obligations. Conclude with `g.commutes (Ideal.Quotient.mk (RingHom.ker v) a)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_of_finiteType {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
     [Algebra.FiniteType A B] (v : A →+* ℂ) (hv : (RingHom.ker v).IsMaximal) (M : Ideal B)
@@ -36,17 +34,15 @@ theorem exists_ringHom_of_finiteType {A B : Type} [CommRing A] [CommRing B] [Alg
   exact g.commutes (Ideal.Quotient.mk (RingHom.ker v) a)
 
 /- English proof (translation)
-Establish `hunit : ∀ s : O, IsUnit s ↔ v s ≠ 0`. Introduce `s`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(h.map v).ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hs : (s : L) ≠ 0`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `: s = 0` using `Subtype.ext h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Use `IsUnit.of_mul_eq_one (⟨(s : L)⁻¹, hv s h⟩ : O) ?_` and prove the remaining obligations. Conclude with `Subtype.ext (mul_inv_cancel₀ hs)`. Establish `hloc : IsLocalRing O`. Use `IsLocalRing.of_nonunits_add ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b ha hb`. Establish `ha' : v a = 0`. Assume the negation of the conclusion as `h`. Conclude with `ha ((hunit a).2 h)`. Establish `hb' : v b = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Conclude with `hb ((hunit b).2 h)`. Introduce `hab`. Conclude with `(hunit _).1 hab (by simp [ha', hb'])`. Use `⟨hloc, ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `s`. Rewrite using `[RingHom.mem_ker, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hunit]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLocalRing_and_ker {L : Type} [Field L] (O : Subring L) (v : O →+* ℂ)
     (hv : ∀ s : O, v s ≠ 0 → (s : L)⁻¹ ∈ O) :
@@ -81,23 +77,19 @@ theorem isLocalRing_and_ker {L : Type} [Field L] (O : Subring L) (v : O →+* �
   simp
 
 /- English proof (translation)
-Take `⟨hloc, hker⟩` from `isLocalRing_and_ker O v hv`. Take `⟨V, hV, hlocal⟩` from `IsLocalRing.exists_factor_valuationRing O.subtype`. Use `⟨V, fun s hs => hV ⟨s, hs⟩, fun T hT => ?_⟩` and prove the remaining obligations. Set `S : Finset L` to `T ∪ (T.filter (fun t => t⁻¹ ∈ V)).image (fun t => t⁻¹)`. Establish `hSV : ∀ x ∈ S, x ∈ V`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx`. Break down `Finset.mem_union.mp hx with h | h` into its components or cases. Conclude with `hT x h`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.mp h`. Conclude with `(Finset.mem_filter.mp ht).2`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : Subalgebra O L` to `Algebra.adjoin O (S : Set L)`. Set `VA : Subalgebra O L` to `{ V.toSubring with algebraMap_mem' := fun s => hV s }`. Establish `hBV : B ≤ VA` using `Algebra.adjoin_le (fun x hx => hSV x hx)`. Use `haveI : Algebra.FiniteType O B := (Subalgebra.fg_iff_finiteType B).1 (Subalgebra.fg_adjoin_finset S)`. Set `f : B →+* V` to `{ toFun := fun x => ⟨x.1, hBV x.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `n : Ideal B` to `(IsLocalRing.maximalIdeal V).comap f`. Establish `hn : n ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : B) ∈ n` using `h ▸ Submodule.mem_top`. Establish `h2 : f 1 ∈ IsLocalRing.maximalIdeal V` using `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal V).ne_top h2`. Take `⟨M, hMm, hnM⟩` from `Ideal.exists_le_maximal n hn`. Establish `hM : ∀ a : O, v a = 0 → algebraMap O B a ∈ M`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hnM` to reduce the goal to its premises. Establish `ha' : a ∈ IsLocalRing.maximalIdeal O` using `hker ▸ RingHom.mem_ker.mpr ha`. Use `show f (algebraMap O B a) ∈ IsLocalRing.maximalIdeal V`. Rewrite `ha'`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `ha'` to reduce the goal to its premises. Conclude with `hlocal.map_nonunit a hu`. Establish `hvm : (RingHom.ker v).IsMaximal`. Rewrite using `[hker]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal O`.
-
-Take `⟨ψ, hψ⟩` from `exists_ringHom_of_finiteType v hvm M hMm hM`. Establish `hO : O ≤ B.toSubring` using `fun s hs => B.algebraMap_mem (⟨s, hs⟩ : O)`. Use `⟨B.toSubring, hO, ψ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Conclude with `Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_union_left _ ht))`.
-
-Introduce `s`. Conclude with `hψ s`. Introduce `t ht _ hi`. Conclude with `Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_image.2 ⟨t, Finset.mem_filter.2 ⟨ht, hi⟩, rfl⟩)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_place (L : Type) [Field L] (O : Subring L) (v : O →+* ℂ)
     (hv : ∀ s : O, v s ≠ 0 → (s : L)⁻¹ ∈ O) :

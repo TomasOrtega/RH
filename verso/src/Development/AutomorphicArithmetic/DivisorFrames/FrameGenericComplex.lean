@@ -7,9 +7,9 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroid
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `h₁ : IsUnit Tᵀ` using `(isUnit_iff_isUnit_det _).2 (by rwa [det_transpose])`. Establish `h₂ : IsUnit Tᴴᵀ` using `(isUnit_iff_isUnit_det _).2 (by rw [det_transpose, det_conjTranspose]; exact hT.star)`. Establish `key : Tᵀ * H * Tᴴᵀ = Tᵀ * cond dual N⁻¹ Nᵀ * Tᴴᵀ`. Rewrite using `[h]`. Consider the cases of `dual`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [lieMat, cond_false, transpose_mul, Matrix.mul_assoc]`. Establish `e : (T⁻¹ᵀ)⁻¹ = Tᵀ` using `by rw [← transpose_nonsing_inv, nonsing_inv_nonsing_inv _ hT]`. Simplify using `only [lieMat, cond_true, Matrix.mul_inv_rev, ← conjTranspose_nonsing_inv, e, Matrix.mul_assoc]`. Both sides reduce to the same expression. Conclude with `h₁.mul_right_inj.1 (h₂.mul_left_inj.1 key)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem chg_cancel {r : ℕ} (dual : Bool) {T H N : Matrix (Fin r) (Fin r) ℂ} (hT : IsUnit T.det)
     (h : Tᵀ * H * Tᴴᵀ = cond dual ((lieMat dual T)ᴴ * N * lieMat dual T)⁻¹ ((lieMat dual T)ᴴ * N * lieMat dual T)ᵀ) :
@@ -26,17 +26,15 @@ private theorem chg_cancel {r : ℕ} (dual : Bool) {T H N : Matrix (Fin r) (Fin 
   exact h₁.mul_right_inj.1 (h₂.mul_left_inj.1 key)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y ρ hρ g₀ τ X j M hM dual A q G h hL hloc ch σ p z hz hzU φ f hf yc hyc g hg`. Take `⟨ch₀, h₀, hm⟩` from `hloc (z.1 (IsLocalRing.closedPoint ℂ))`. Establish `hz₀ : z ∈ CxPts.ptsIn q _ ch₀.U` using `CxPts.mem_ptsIn.2 h₀`. Establish `hb : z.1 (IsLocalRing.closedPoint ℂ) = j (Var.base p)` using `by rw [hz]; rfl`. Establish `hj₀ : j (Var.base p) ∈ ch₀.U` using `hb ▸ h₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : j (Var.base p) ∈ ch.U` using `hb ▸ CxPts.mem_ptsIn.1 hzU`. Take `⟨f₀, hco, hf₀⟩` from `hf.change hL.1 hj hj₀`. Establish `hp : spMap (Var.evStalk p) ≫ stalkPt Y (Var.base p) = p.1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk p.1`. Establish `hφ : embOf e σ = (Var.evStalk p).comp φ` using `RingHom.ext fun a => by`. Establish `h3 : φ a = algebraMap F _ (e.symm a)` using `IsFractionRing.injective _ Y.X.functionField ((RingHom.congr_fun hf.1 a).symm.trans ((Y.stalkIncl (Var.base p)).commutes _).symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, h3]`. Conclude with `((Var.evStalk_germ (U := ⊤) trivial _).trans (CxPts.ev_algX CxPts.mem_ptsIn_top _)).symm`. Establish `hx : yc.1 ≫ genι Z = spMap (Var.evStalk p) ≫ stalkPt Y (Var.base p) ≫ ρ ≫ genι Z`. Rewrite using `[← Category.assoc, hp, hyc]`. Conclude with `Category.assoc _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g₁, hg₁⟩` from `f₀.exists_isMap (Var.evStalk p) hφ hx`. Establish `e₀` using `hm σ p z hz hz₀ φ f₀ hf₀ yc hyc g₁ hg₁`. Establish `hu` using `isUnit_det_trAt ch ch₀ (stalk_le j hj) (stalk_le j hj₀)`. Establish `hT : (trAt (stalkPt Y (Var.base p) ≫ j) ch ch₀).map (Var.evStalk p) = ch.tr q _ ch₀ z`. Rewrite using `[← trAt_spMap _ ch ch₀ (stalk_le j hj) (stalk_le j hj₀), ← Category.assoc, hp, ← hz, trAt_cx z ch ch₀ hzU hz₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : g.co g₁ τ = lieMat dual (ch.tr q _ ch₀ z)`. Rewrite using `[hg.co τ hg₁ hx, hco, ← lieMat_map _ _ hu, hT]`. Establish `hTu : IsUnit (ch.tr q _ ch₀ z).det`. Rewrite using `[← hT, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hu.map _`.
-
-Establish `ht` using `(h.met (σ.comp (algebraMap (𝓞 F) F))).trans ch ch₀ z hzU`. Rewrite `e₀` using `[ht, (G _).change yc g g₁ τ, hc]`. Conclude with `chg_cancel dual hTu e₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.frame_generic_complex :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Y : Var F) (ρ : Y.X ⟶ gen Z) (_ : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str) (g₀ : GenFrame e ρ) (τ : E →+* ℂ) (X : Scheme.{0}) (j : Y.X ⟶ X) (M : X.Modules) (hM : IsVB M (Dw.mult τ)) (dual : Bool) (A : Chart M (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn) (q : X ⟶ Sp (𝓞 F)) (G : ∀ σ : c.F →+* ℂ, EigMet Z σ) (h : VMetric q M (Dw.mult τ)), IsLie g₀ τ j dual A → (∀ z : X, ∃ ch : Chart M (Dw.mult τ), z ∈ ch.U ∧ MetOn g₀ τ j dual A G h ch) → IsMet g₀ τ j dual A G h := by

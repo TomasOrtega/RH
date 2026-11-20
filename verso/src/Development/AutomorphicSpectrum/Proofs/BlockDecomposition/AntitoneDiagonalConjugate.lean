@@ -4,19 +4,19 @@ open Matrix Topology Filter
 namespace GlobalTheory.CompanionTheory.FrameSort
 
 /- English proof (translation)
-Introduce `n U₀ d hU`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ : Equiv.Perm (Fin n), Antitone (d ∘ σ) := by`. Use `⟨Tuple.sort (fun i => - d i), ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Use `Tuple.monotone_sort (fun i => - d i) hab` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hH : (U₀.submatrix id σ)ᴴ = U₀ᴴ.submatrix σ id`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hconj : ∀ Z : Matrix (Fin n) (Fin n) ℂ, (U₀.submatrix id σ)ᴴ * Z * U₀.submatrix id σ = (U₀ᴴ * Z * U₀).submatrix σ σ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `Z`. Rewrite using `[hH]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Use `⟨U₀.submatrix id σ, ?_, d ∘ σ, hσ, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Establish `h1` using `hconj 1`. Rewrite `h1` using `[Matrix.mul_one]`. Rewrite using `[h1, Matrix.mul_one]`. Establish `h2 : U₀ᴴ * U₀ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Matrix.mem_unitaryGroup_iff'.mp hU` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Rewrite using `[hH]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.submatrix_apply, id, Function.comp]`. Conclude with `Equiv.sum_comp σ (fun i => U₀ a i * (d i : ℂ) * U₀ᴴ i b)`. Introduce `Z hZ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hconj Z]`. Introduce `i j hij`. Simplify using `using hZ (fun e => hij (σ.injective e))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_antitone_reorder : ∀ {n : ℕ} (U₀ : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℝ), U₀ ∈ Matrix.unitaryGroup (Fin n) ℂ → ∃ U ∈ Matrix.unitaryGroup (Fin n) ℂ, ∃ h : Fin n → ℝ, Antitone h ∧ U * Matrix.diagonal (fun i => (h i : ℂ)) * Uᴴ = U₀ * Matrix.diagonal (fun i => (d i : ℂ)) * U₀ᴴ ∧ ∀ Z : Matrix (Fin n) (Fin n) ℂ, (U₀ᴴ * Z * U₀).IsDiag → (Uᴴ * Z * U).IsDiag := by
   intro n U₀ d hU

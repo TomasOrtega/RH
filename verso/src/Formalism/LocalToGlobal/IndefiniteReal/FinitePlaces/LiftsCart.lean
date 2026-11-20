@@ -13,11 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Establish `hJ : Formalism.UG.Jpq n 0 = 1`. Unfold `Formalism.UG.Jpq`. Rewrite using `[show (-1 : Matrix (Fin 0) (Fin 0) ℂ) = 1 by ext i; exact i.elim0, Matrix.fromBlocks_one]`. Establish `hc : Formalism.UG.cT (starRingEnd ℂ) (P : Matrix (Fin n ⊕ Fin 0) (Fin n ⊕ Fin 0) ℂ) = star (P : Matrix (Fin n ⊕ Fin 0) (Fin n ⊕ Fin 0) ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.star_apply]`. Rewrite `hP` using `[hJ, hc]`. Establish `hU : IsUnit (P : Matrix (Fin n ⊕ Fin 0) (Fin n ⊕ Fin 0) ℂ)` using `P.isUnit`. Establish `h1 : (G.reindex e e).PosDef` using `(Matrix.IsUnit.posDef_star_left_conjugate_iff hU).1 (hP ▸ Matrix.PosDef.one)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : G = (G.reindex e e).submatrix e e`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hG]`. Conclude with `h1.submatrix e.injective`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_of_sig {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (h : Formalism.UG.HasSignature G n 0) : G.PosDef := by
   obtain ⟨e, P, hP⟩ := h

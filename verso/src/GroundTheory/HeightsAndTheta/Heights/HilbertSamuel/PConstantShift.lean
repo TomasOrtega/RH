@@ -17,11 +17,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Use `congr 1`. Establish `hH : ∀ k, cxHessian (fun y' => φ' k (hγ.choose y')) y = cxHessian (fun y' => φ k (hγ.choose y')) y`. Introduce `k`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `h k`. Establish `h1 : (fun y' => φ' k (hγ.choose y')) =ᶠ[𝓝 y] fun y' => φ k (hγ.choose y') + c` using `by filter_upwards [hγ.choose_spec.2] with y' hy'`. Conclude with `hc _ hy'.2.1`. Establish `h2 : fderiv ℝ (fun y' => φ' k (hγ.choose y')) =ᶠ[𝓝 y] fderiv ℝ (fun y' => φ k (hγ.choose y'))` using `by filter_upwards [h1.eventuallyEq_nhds] with x hx`. Rewrite using `[hx.fderiv_eq, fderiv_add_const]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `cxHessian`. Rewrite using `[h2.fderiv_eq]`. Simplify using `only [maDensity, hH]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sheetDensity_add_const (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin e → ((Σ k, ι k) → ℂ) → ℝ}
     (h : ∀ j, ∃ c : ℝ, ∀ z ∈ mcPts P, φ' j z = φ j z + c)
@@ -50,7 +50,7 @@ theorem sheetDensity_add_const (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin e 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `ptsIntegral`. Use `split_ifs`. Simplify using `only [ptsIntegralAt, sheetDensity_add_const P h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_add_const (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin e → ((Σ k, ι k) → ℂ) → ℝ}
     (h : ∀ j, ∃ c : ℝ, ∀ z ∈ mcPts P, φ' j z = φ j z + c) (g : ((Σ k, ι k) → ℂ) → ℝ) :
@@ -63,11 +63,11 @@ theorem ptsIntegral_add_const (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin e �
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hs : ∀ Ψ y w, sheetDensity P Ψ φ (fun _ => r) y w = r * sheetDensity P Ψ φ (fun _ => 1) y w`. Introduce `Ψ y w`. Unfold `sheetDensity`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `ptsIntegral`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Simplify using `only [ptsIntegralAt, hs]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_finsum_mem]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_const (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) (r : ℝ) :
     ptsIntegral P φ (fun _ => r) = r * ptsIntegral P φ (fun _ => 1) := by
@@ -85,35 +85,31 @@ theorem ptsIntegral_const (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((Σ 
   · simp
 
 /- English proof (translation)
-Introduce `K _ ι _ I P D A η hI hP hA`. Establish `hS : IsSmoothHerm (HermLine.constShift A η)` using `isSmoothHerm_constShift hA η`. Use `set g := geomDeg P A D with hg`. Set `L : ℕ → Fin (D + 1) → HermLine ι` to `fun n i => if (i : ℕ) < n then HermLine.constShift A η else A`. Establish `hLs : ∀ n i, IsSmoothHerm (L n i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n i`. Simplify using `only [L]`. Use `split_ifs`. Use `exacts [hS, hA]`. Establish `hLpot : ∀ n i, ∃ c : ℝ, ∀ z ∈ mcPts P, Real.log ((L n i).h z) = Real.log (A.h z) + c`.
+Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n i`. Simplify using `only [L]`. Use `split_ifs`. Use `⟨-η, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[constShift_h, Real.log_mul (A.pos z hz.1).ne' (Real.exp_pos _).ne', Real.log_exp]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨0, fun z _ => by rw [add_zero]⟩`. Establish `step : ∀ n, n < D + 1 → I P (D + 1) (L (n + 1)) = I P (D + 1) (L n) - η * g`. Introduce `n hn`. Use `set j : Fin (D + 1) := ⟨n, hn⟩ with hj`. Use `set σ : Equiv.Perm (Fin (D + 1)) := Equiv.swap j (Fin.last D) with hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set M : Fin D → HermLine ι := Fin.init (L n ∘ σ) with hMdef`. Establish `hσl : σ (Fin.last D) = j` using `Equiv.swap_apply_right _ _`. Establish `hne : ∀ i : Fin D, σ (Fin.castSucc i) ≠ j`. Introduce `i h'`. Rewrite `h'` using `[← hσl]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Fin.castSucc_lt_last i).ne (σ.injective h')`. Establish `hM : Fin.init (L (n + 1) ∘ σ) = M`. Use function extensionality and compare the values at `i`. Establish `hv : ((σ (Fin.castSucc i) : Fin (D + 1)) : ℕ) ≠ n` using `fun h' => hne i (Fin.ext h')`. Establish `hiff : ((σ (Fin.castSucc i) : Fin (D + 1)) : ℕ) < n + 1 ↔ ((σ (Fin.castSucc i) : Fin (D + 1)) : ℕ) < n` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hMdef, Fin.init, Function.comp, L, hiff]`. Establish `e0 : L n ∘ σ = Fin.snoc M A`. Establish `h0` using `Fin.snoc_init_self (q := L n ∘ σ)`. Establish `hl : (L n ∘ σ) (Fin.last D) = A`. Simplify using `only [Function.comp, hσl, hj, L, lt_irrefl, if_false]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[hl]`. Conclude with `h0.symm`. Establish `e1 : L (n + 1) ∘ σ = Fin.snoc M (HermLine.constShift A η)`. Establish `h0` using `Fin.snoc_init_self (q := L (n + 1) ∘ σ)`. Establish `hl : (L (n + 1) ∘ σ) (Fin.last D) = HermLine.constShift A η`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Function.comp, hσl, hj, L, lt_add_one, if_true]`. Rewrite `h0` using `[hl, hM]`. Conclude with `h0.symm`. Establish `hMs : ∀ i, IsSmoothHerm (M i)` using `fun i => hLs n _`. Establish `hmc : I P (D + 1) (Fin.snoc M (HermLine.constShift A η)) = I P (D + 1) (Fin.snoc M A) - ptsIntegral P (pot M) (fun _ => η)` using `metricChange K ι I hI P D M A (fun _ => η) (fun _ _ _ => rfl) hP hMs hA contDiffOn_const`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hint : ptsIntegral P (pot M) (fun _ => η) = η * g`. Rewrite using `[ptsIntegral_const, hg, geomDeg]`. Use `congr 1`. Conclude with `ptsIntegral_add_const P (fun i => hLpot n _) _`. Rewrite using `[← hI.1 P (D + 1) (L (n + 1)) σ hP (hLs (n + 1)), ← hI.1 P (D + 1) (L n) σ hP (hLs n), e0, e1, hmc, hint]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hall : ∀ n, n ≤ D + 1 → I P (D + 1) (L n) = I P (D + 1) (L 0) - n * η * g`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `hn`. Rewrite using `[step n (by omega), ih (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hL0 : L 0 = fun _ => A`. Use function extensionality and compare the values at `i`. Simplify using `[L]`. Establish `hLD : L (D + 1) = fun _ => HermLine.constShift A η`. Use function extensionality and compare the values at `i`.
-
-Simplify using `[L, i.isLt]`. Use `hall (D + 1) le_rfl` as an intermediate fact. Rewrite `this` using `[hL0, hLD]`. Rewrite using `[this]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem proof : ConstantShift.Statement := by
   intro K _ ι _ I P D A η hI hP hA

@@ -13,7 +13,7 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 namespace PositivityTheory.Xgn.LatticeHeightUnit
 
 /- English proof (translation)
-Conclude with `congrArg (fun f => (CommRingCat.Hom.hom f) s) (TopCat.Presheaf.germ_stalkSpecializes_assoc X.presheaf hpU p.2 (Scheme.stalkClosedPointTo ξ))`.
+A detailed English derivation is pending.
 -/
 theorem genMap_germ {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} (p : Cpt ξ)
     {U : X.Opens} (hpU : p.1 ∈ U) (heU : genPt ξ ∈ U) (s : Γ(X, U)) :
@@ -23,13 +23,13 @@ theorem genMap_germ {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRing
     (TopCat.Presheaf.germ_stalkSpecializes_assoc X.presheaf hpU p.2 (Scheme.stalkClosedPointTo ξ))
 
 /- English proof (translation)
-Take `⟨W, hW, hpW, -⟩` from `exists_isAffineOpen_mem_and_subset (show (p.1 : X) ∈ (⊤ : X.Opens) from trivial)`. Establish `heW : genPt ξ ∈ W` using `p.2.mem_open W.isOpen hpW`. Take `⟨w, rfl⟩` from `hξ.bij.2 a`. Set `_ : Algebra Γ(X, W) (X.presheaf.stalk ((⟨genPt ξ, heW⟩ : W) : X))` to `TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨genPt ξ, heW⟩`. Establish `_ : IsLocalization.AtPrime (X.presheaf.stalk ((⟨genPt ξ, heW⟩ : W) : X)) (hW.primeIdealOf ⟨genPt ξ, heW⟩).asIdeal` using `hW.isLocalization_stalk ⟨genPt ξ, heW⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨⟨f, g⟩, hfg⟩` from `IsLocalization.mk'_surjective (S := X.presheaf.stalk ((⟨genPt ξ, heW⟩ : W) : X)) (hW.primeIdealOf ⟨genPt ξ, heW⟩).asIdeal.primeCompl w`. Simplify using `only at hfg`. Establish `h2` using `IsLocalization.mk'_eq_iff_eq_mul.1 hfg`. Establish `h3 : (X.presheaf.germ W (genPt ξ) heW).hom f = (show ↑(X.presheaf.stalk (genPt ξ)) from w) * (X.presheaf.germ W (genPt ξ) heW).hom g` using `h2`. Establish `hu` using `IsLocalization.map_units (M := (hW.primeIdealOf ⟨genPt ξ, heW⟩).asIdeal.primeCompl) (X.presheaf.stalk ((⟨genPt ξ, heW⟩ : W) : X)) g`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : IsUnit ((X.presheaf.germ W (genPt ξ) heW).hom g)` using `hu`. Establish `hne : (Scheme.stalkClosedPointTo ξ).hom ((X.presheaf.germ W (genPt ξ) heW).hom g) ≠ 0` using `(hu'.map (Scheme.stalkClosedPointTo ξ).hom).ne_zero`. Use `⟨(X.presheaf.germ W p.1 hpW).hom f, (X.presheaf.germ W p.1 hpW).hom g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[genMap_germ p hpW heW]`. Conclude with `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (Scheme.stalkClosedPointTo ξ).hom ((X.presheaf.germ W (genPt ξ) heW).hom f) = (Scheme.stalkClosedPointTo ξ).hom w * (Scheme.stalkClosedPointTo ξ).hom ((X.presheaf.germ W (genPt ξ) heW).hom g)` using `(congrArg (Scheme.stalkClosedPointTo ξ).hom h3).trans (map_mul _ _ _)`. Rewrite using `[genMap_germ p hpW heW, genMap_germ p hpW heW, h4, mul_div_assoc, div_self hne, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_div_genMap {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hξ : IsCptGen ξ) (p : Cpt ξ) (a : Ω) :
@@ -62,15 +62,13 @@ theorem exists_eq_div_genMap {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec 
     rw [genMap_germ p hpW heW, genMap_germ p hpW heW, h4, mul_div_assoc, div_self hne, _root_.mul_one]
 
 /- English proof (translation)
-Introduce `p a ha`. Take `⟨_, hic⟩` from `hX p.1`. Establish `e : X.presheaf.stalk p.1 ≃+* regAt ξ p` using `RingEquiv.ofBijective (genMap ξ p).rangeRestrict ⟨fun u v h => hξ.inj p (congrArg Subtype.val h), (genMap ξ p).rangeRestrict_surjective⟩`. Establish `: IsIntegrallyClosed (regAt ξ p)` using `IsIntegrallyClosed.of_equiv e`. Establish `hfr : IsFractionRing (regAt ξ p) Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy0 (Subtype.ext h)`. Introduce `z`. Take `⟨u, v, hv, huv⟩` from `exists_eq_div_genMap hξ p z`. Establish `hv' : (⟨genMap ξ p v, v, rfl⟩ : regAt ξ p) ≠ 0` using `fun h => hv (congrArg Subtype.val h)`. Use `⟨⟨⟨genMap ξ p u, u, rfl⟩, ⟨⟨genMap ξ p v, v, rfl⟩, mem_nonZeroDivisors_of_ne_zero hv'⟩⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show z * genMap ξ p v = genMap ξ p u`. Rewrite using `[huv, div_mul_cancel₀ _ hv]`. Introduce `x y h`. Conclude with `⟨1, by rw [Subtype.ext h]⟩`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 ha`.
-
-Rewrite using `[← hy]`. Conclude with `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normalCpt_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hξ : IsCptGen ξ) (hX : IsNormalScheme X) : Flat.NormalCpt ξ := by
@@ -100,13 +98,13 @@ theorem normalCpt_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec
   exact y.2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `Y g h hgh`. Establish `key : ∀ (x : Y) (φ : Y.residueField x ⟶ CommRingCat.of Ω), spMap a ≫ (Scheme.SpecToEquivOfField Ω Y).symm ⟨x, φ⟩ = (Scheme.SpecToEquivOfField K Y).symm ⟨x, φ ≫ CommRingCat.ofHom a⟩`. Introduce `x φ`. Simplify using `only [Scheme.SpecToEquivOfField, Equiv.coe_fn_symm_mk, spMap, Spec.map_comp, Category.assoc]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨⟨x, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField Ω Y).symm.surjective g`. Take `⟨⟨x', ψ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField Ω Y).symm.surjective h`. Rewrite `hgh` using `[key, key]`. Establish `h2` using `(Scheme.SpecToEquivOfField K Y).symm.injective hgh`. Rewrite `h2` using `[Scheme.SpecToEquivOfField_eq_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e, he⟩` from `h2`. Establish `: Mono (CommRingCat.ofHom a)` using `ConcreteCategory.mono_of_injective _ a.injective`. Apply `congrArg` to reduce the goal to its premises. Rewrite using `[Scheme.SpecToEquivOfField_eq_iff]`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at he ⊢`. Apply `(cancel_mono (CommRingCat.ofHom a)).1` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Conclude with `he`.
+Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epiSp {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (spMap a) := by
   constructor
@@ -132,9 +130,9 @@ theorem epiSp {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (spMap a
   exact he
 
 /- English proof (translation)
-Establish `hmk : g = Over.homMk (U` using `Over.mk (spMap a ≫ ξ)) (V := Over.mk ξ) (spMap a) rfl ≫ g₀ := by`. Use `ext`. Simplify using `[e]`. Establish `: Epi (Over.homMk (U` using `Over.mk (spMap a ≫ ξ)) (V := Over.mk ξ) (spMap a) rfl) := @Over.epi_of_epi_left _ _ _ _ _ _ (epiSp a)`. Apply `(cancel_epi (Over.homMk (U := Over.mk (spMap a ≫ ξ)) (V := Over.mk ξ) (spMap a) rfl)).1` to reduce the goal to its premises.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[MonObj.comp_pow, ← hmk, hg, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_descend {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω K : Type} [Field Ω] [Field K]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {N : ℕ} (a : Ω →+* K)
@@ -152,7 +150,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
   {Li : Type} [AddCommGroup Li] [Module Ω Li]
 
 /- English proof (translation)
-Introduce `p _`. Take `⟨U, hpU, b, hb, hf⟩` from `h p (Set.mem_univ _)`. Conclude with `⟨U, hpU, b, hb, fun q _ hq => hf q (Set.mem_univ _) hq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isVBOn_of_isVB {L : Lat ξ Li} {r : ℕ} {V : Submodule Ω Li} (h : L.IsVB r V) (T : Set (Cpt ξ)) :
     L.IsVBOn T r V := by
@@ -161,7 +159,7 @@ theorem isVBOn_of_isVB {L : Lat ξ Li} {r : ℕ} {V : Submodule Ω Li} (h : L.Is
   exact ⟨U, hpU, b, hb, fun q _ hq => hf q (Set.mem_univ _) hq⟩
 
 /- English proof (translation)
-Apply `hN q` to reduce the goal to its premises. Establish `h1 : IsIntegral ℤ a` using `NumberField.RingOfIntegers.isIntegral a`. Establish `h2 : IsIntegral ℤ (σ a)` using `h1.map σ.toIntAlgHom`. Conclude with `h2.tower_top`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integers_regular {F : Type} [Field F] [NumberField F] (hN : Flat.NormalCpt ξ) (σ : 𝓞 F →+* Ω) (q : Cpt ξ)
     (a : 𝓞 F) : σ a ∈ regAt ξ q := by
@@ -171,13 +169,11 @@ theorem integers_regular {F : Type} [Field F] [NumberField F] (hN : Flat.NormalC
   exact h2.tower_top
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => exact absurd rfl hn`. Consider the case `one => exact ⟨by simp, by simp, by simp⟩`. Consider the case `prime p hp => exact h p hp dvd_rfl`. Consider the case `mul a b iha ihb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hn`. Establish `hb0 : b ≠ 0` using `by rintro rfl; simp at hn`. Take `⟨a1, a2, a3⟩` from `iha ha0 (fun p hp hpa => h p hp (dvd_mul_of_dvd_left hpa b))`. Take `⟨b1, b2, b3⟩` from `ihb hb0 (fun p hp hpb => h p hp (dvd_mul_of_dvd_right hpb a))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Conclude with `mul_ne_zero a1 b1`. Use `push_cast`. Conclude with `Subring.mul_mem _ a2 b2`. Use `push_cast`.
-
-Rewrite using `[mul_inv]`. Conclude with `Subring.mul_mem _ a3 b3`.
+Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_nat {q : Cpt ξ} [CharZero Ω] (n : ℕ) (hn : n ≠ 0)
     (h : ∀ p : ℕ, p.Prime → p ∣ n → unitAt ξ q (p : Ω)) : unitAt ξ q (n : Ω) := by
@@ -200,7 +196,7 @@ theorem unitAt_nat {q : Cpt ξ} [CharZero Ω] (n : ℕ) (hn : n ≠ 0)
       exact Subring.mul_mem _ a3 b3
 
 /- English proof (translation)
-Conclude with `unitAt_nat _ (Int.natAbs_ne_zero.mpr (NumberField.discr_ne_zero F)) fun p hp hpd => h p hp (Int.ofNat_dvd_left.mpr hpd)`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_natAbs_discr {F : Type} [Field F] [NumberField F] {q : Cpt ξ} [CharZero Ω]
     (h : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr F → unitAt ξ q (p : Ω)) :
@@ -209,7 +205,7 @@ theorem unitAt_natAbs_discr {F : Type} [Field F] [NumberField F] {q : Cpt ξ} [C
     fun p hp hpd => h p hp (Int.ofNat_dvd_left.mpr hpd)
 
 /- English proof (translation)
-Rewrite using `[← NumberField.absNorm_differentIdeal F (𝓞 F)]`. Conclude with `Ideal.absNorm_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natAbs_discr_mem_different (F : Type) [Field F] [NumberField F] :
     (((discr F).natAbs : ℕ) : 𝓞 F) ∈ differentIdeal ℤ (𝓞 F) := by
@@ -217,11 +213,11 @@ theorem natAbs_discr_mem_different (F : Type) [Field F] [NumberField F] :
   exact Ideal.absNorm_mem _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `w ⟨x, -, hx⟩`. Conclude with `hx.1`. Introduce `w hw`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw' : ∀ e ∈ M.lat q, w e ∈ regAt ξ q` using `hw`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨1, one_pow n, hw, ⊤, 1, by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `k _ _ i xk g c h hxk hgn hW`. Rewrite using `[HtLatCheck.secVal_one, h1 k i xk g c hxk hgn hW]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e v hext h`. Use `⟨(n : Ω)⁻¹ * w e, Subring.mul_mem _ hu.2.2 (hw' e (Submodule.subset_span ⟨v, hext⟩)), ?_⟩` and prove the remaining obligations. Rewrite using `[HtLatCheck.secVal_one, TrivSqZeroExt.snd_one, map_zero, zero_add, ← _root_.mul_assoc, mul_inv_cancel₀ hu.1, _root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htOm_eq_omLat {G : Over X} [GrpObj G] (M : LieModel G ξ Li) (L : LB G.left) (n : ℕ) (q : Cpt ξ)
     (hu : unitAt ξ q (n : Ω))
@@ -247,31 +243,27 @@ end PositivityTheory.Xgn.LatticeHeightUnit
 
 open PositivityTheory.Xgn.LatticeHeightUnit in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J _ y 𝔐 p _ hpS hgt hpd t q hq`. Take `⟨gt⟩` from `hgt`. Establish `hp : p.Prime` using `Fact.out`. Establish `hgen : IsCptGen 𝔐.ξ` using `𝔐.tie.gen`. Take `⟨_, hsm, -, -, -, -⟩` from `𝔐.t.semi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hvb : 𝔐.M.lat.IsVBOn {q} (Module.finrank Ω 𝔐.Li) ⊤` using `isVBOn_of_isVB (lieLat_isVB_of_smooth 𝔐.X Ω 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M hgen hsm).1 {q}`. Establish `hunit : ∀ r : ℕ, r.Prime → unitAt 𝔐.ξ q (r : Ω)` using `fun r hr => not_not.1 (hq r hr)`. Establish `hchar : CharZero Ω`. Break down `CharP.char_is_prime_or_zero Ω (ringChar Ω) with h | h` into its components or cases. Conclude with `absurd ringChar.Nat.cast_ringChar (hunit _ h).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `ringChar.of_eq h` as an intermediate fact. Conclude with `CharP.charP_to_charZero Ω`. Establish `hun : unitAt 𝔐.ξ q ((p ^ 𝔐.R p : ℕ) : Ω)`. Take `⟨a1, a2, a3⟩` from `hunit p hp`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `pow_ne_zero _ a1`. Use `push_cast`. Conclude with `Subring.pow_mem _ a2 _`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← inv_pow]`. Conclude with `Subring.pow_mem _ a3 _`. Establish `h1 : ∀ (k : Type) [Field k] [IsAlgClosed k] (i : Ω →+* k) (xk g : Over.mk (spMap i ≫ 𝔐.ξ) ⟶ 𝔐.t.G) (c : kˣ), xk.left = spMap i ≫ (1 : Over.mk 𝔐.ξ ⟶ 𝔐.t.G).left → g ^ (p ^ 𝔐.R p) = 1 → Out.WeilIs 𝔐.t.G 𝔐.t.PP.L ((p ^ 𝔐.R p : ℕ) : ℤ) xk g (unitOn c) → (c : k) = 1`. Introduce `k _ _ i xk g c hxk hgn hW`. Take `⟨x, hx⟩` from `𝔐.tors p hpS k i g hgn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hxn : x ^ (p ^ 𝔐.R p) = 1` using `pow_descend i hx hgn`. Take `⟨τ, hτ⟩` from `(gt.t₂.onto x).1 hxn`. Choose the witnesses or unpack the hypotheses as in `⟨x', hx'⟩ : ∃ x' : Fin (D.p + D.q) → 𝓞 E, qmk (p ^ 𝔐.R p) x' = τ := by`. Use `⟨fun j => (Ideal.Quotient.mk_surjective (Multiplicative.toAdd τ j)).choose, ?_⟩` and prove the remaining obligations. Rewrite using `[← ofAdd_toAdd τ]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `qmk`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(Ideal.Quotient.mk_surjective (Multiplicative.toAdd τ j)).choose_spec`. Establish `h0 : gt.t₂.pt (qmk (p ^ 𝔐.R p) (0 : Fin (D.p + D.q) → 𝓞 E)) = 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: qmk (p ^ 𝔐.R p) (0 : Fin (D.p + D.q) → 𝓞 E) = 1`. Unfold `qmk`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite using `[this, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : xk.left = spMap i ≫ (gt.t₂.pt (qmk (p ^ 𝔐.R p) 0)).left`. Rewrite using `[h0]`. Conclude with `hxk`. Establish `hg1 : g.left = spMap i ≫ (gt.t₂.pt (qmk (p ^ 𝔐.R p) x')).left`. Rewrite using `[hx', hτ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `hW' : Out.WeilIs 𝔐.t.G 𝔐.t.PP.L ((p : ℤ) ^ 𝔐.R p) xk g (unitOn c)`. Rewrite using `[← Nat.cast_pow]`. Conclude with `hW`. Establish `hw` using `(gt.weil 0 x' k i xk g c hx0 hg1).1 hW'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw` using `[map_zero, AddMonoidHom.zero_apply, ZMod.val_zero, pow_zero, map_one]`. Conclude with `hw`. Establish `hom : 𝔐.M.htOm 𝔐.t.PP.L (p ^ 𝔐.R p) q = 𝔐.M.omLat q` using `htOm_eq_omLat 𝔐.M 𝔐.t.PP.L (p ^ 𝔐.R p) q hun h1`. Break down `t with τ | τ` into its components or cases. Establish `key` using `LieModel.htDual_htW_eq_eigLat_of_htOm_eq_omLat 𝔐.X Ω 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M 𝔐.t.PP.L (p ^ 𝔐.R p) (Module.finrank Ω 𝔐.Li) (𝓞 E) 𝔐.ρ (𝔐.emb (Sum.inl τ)) q hvb hom show 𝔐.M.htW 𝔐.t.PP.L (p ^ 𝔐.R p) 𝔐.ρ (𝔐.emb (Sum.inl τ)) (differentIdeal ℤ (𝓞 E)) q = 𝔐.M.eigLat 𝔐.ρ (𝔐.emb (Sum.inl τ)) q`.
-
-Apply `key.2` to reduce the goal to its premises. Introduce `a`. Conclude with `integers_regular (normalCpt_of_isCptGen hgen 𝔐.normal) (𝔐.emb (Sum.inl τ)) q a`. Use `⟨((discr E).natAbs : 𝓞 E), natAbs_discr_mem_different E, ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast]`.
-
-Conclude with `unitAt_natAbs_discr (fun r hr _ => hunit r hr)`. Establish `key` using `LieModel.htDual_htW_eq_eigLat_of_htOm_eq_omLat 𝔐.X Ω 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M 𝔐.t.PP.L (p ^ 𝔐.R p) (Module.finrank Ω 𝔐.Li) (𝓞 E) 𝔐.ρ (𝔐.emb (Sum.inr τ)) q hvb hom`. Conclude with `key.1`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.lattice_height_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime], p ∈ S → Nonempty (GenTors 𝔐 p) → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ (t : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ), (∀ r : ℕ, r.Prime → ¬ InFibre 𝔐.ξ r q) → 𝔐.HT p t q = 𝔐.dR t q := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J _ y 𝔐 p _ hpS hgt hpd t q hq

@@ -13,9 +13,9 @@ open GlobalTheory.CompanionTheory.LTPer.Tilt
 namespace GlobalTheory.CompanionTheory.LTPer.Tilt
 
 /- English proof (translation)
-Introduce `l _ K π hmax hfin c`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, sub_eq_zero]`. Use `letI := Ideal.Quotient.field (Ideal.span {π})`. Use `letI := Fintype.ofFinite (↥(OL K) ⧸ Ideal.span {π})`. Rewrite using `[qOf, Nat.card_eq_fintype_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FiniteField.pow_card _`.
+A detailed English derivation is pending.
 -/
 theorem dvd_pow_qOf_sub_self : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)), (Ideal.span {π}).IsMaximal →
     Finite (↥(OL K) ⧸ Ideal.span {π}) → ∀ c : ↥(OL K), π ∣ c ^ qOf π - c := by

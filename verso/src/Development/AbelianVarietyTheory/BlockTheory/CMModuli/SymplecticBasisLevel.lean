@@ -128,9 +128,9 @@ def ComplexUnif {D : Datum H} {l : Level H} (Xo : Moduli D l) : Prop :=
     ∀ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn D ty → UnifAt Xo σ ty
 
 /- English proof (translation)
-Set `S` to `Σ τ : E →+* ℂ, Fin (sigMult D τ)`. Set `e : Fin (Fintype.card S) ≃ S` to `(Fintype.equivFin S).symm`. Use `⟨Fintype.card S, fun i => (e i).1, fun τ => ?_⟩` and prove the remaining obligations. Establish `e₁ : {i : Fin (Fintype.card S) // (e i).1 = τ} ≃ {s : S // s.1 = τ}` using `e.subtypeEquiv (fun _ => Iff.rfl)`. Establish `e₂ : {s : S // s.1 = τ} ≃ Fin (sigMult D τ)` using `Equiv.sigmaSubtype τ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_congr (e₁.trans e₂)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_typeFn (D : Datum H) : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn D ty := by
   classical
@@ -149,7 +149,7 @@ Both sides reduce to the same expression.
 theorem incl_over (l : Level H) : (KA l).val.toRingHom (baseKA l).ρ = H.rt0 := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.refl _ _, LinearEquiv.refl _ _, ⟨fun _ _ => rfl, fun _ => by simp, fun _ => ⟨0, by simp⟩⟩, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem SamePoint.refl (D' : Datum H) (l : Level H) {g : ℕ} (P : D'.La →+ (Fin g → ℂ)) : SamePoint D' l P P :=
   ⟨LinearEquiv.refl _ _, LinearEquiv.refl _ _,

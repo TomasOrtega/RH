@@ -11,11 +11,9 @@ open GlobalTheory.Nef
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Establish `hm : (k⟮(⟨x, IntermediateField.mem_adjoin_simple_self k x⟩ : k⟮x⟯)⟯).map (k⟮x⟯.val) = k⟮x⟯`. Rewrite using `[IntermediateField.adjoin_map]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hy : (y : F) ∈ (k⟮(⟨x, IntermediateField.mem_adjoin_simple_self k x⟩ : k⟮x⟯)⟯).map (k⟮x⟯.val)`. Rewrite using `[hm]`. Conclude with `y.2`. Take `⟨z, hz, hzy⟩` from `hy`. Establish `: z = y` using `Subtype.ext hzy`.
-
-Conclude with `this ▸ hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adjoin_gen_eq_top {k F : Type} [Field k] [Field F] [Algebra k F] (x : F) :
     k⟮(⟨x, IntermediateField.mem_adjoin_simple_self k x⟩ : k⟮x⟯)⟯ = ⊤ := by
@@ -30,9 +28,9 @@ theorem adjoin_gen_eq_top {k F : Type} [Field k] [Field F] [Algebra k F] (x : F)
   exact this ▸ hz
 
 /- English proof (translation)
-Unfold `ord at h`. Distinguish the cases in `h0 : v.1 t = 0`. Rewrite `h` using `[h0]`. Simplify using `at h`. Establish `hl : WithZero.log (v.1 t) < WithZero.log (1 : WithZero (Multiplicative ℤ))` using `by simp; omega`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(WithZero.log_lt_log h0 one_ne_zero).1 hl`.
+A detailed English derivation is pending.
 -/
 theorem val_lt_one_of_ord_eq_one {k F : Type} [Field k] [Field F] [Algebra k F] (v : Place k F) (t : F)
     (h : ord v t = 1) : v.1 t < 1 := by
@@ -48,21 +46,17 @@ end GlobalTheory.Nef
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `k F _ _ _ _ _ hF x hx`. Use `haveI : FiniteDimensional k⟮x⟯ F := (GlobalTheory.T.functionFieldOneVariable_transcendental_finite_and_ext k F hF).1 x hx`. Use `set t : k⟮x⟯ := ⟨x, IntermediateField.mem_adjoin_simple_self k x⟩ with ht`. Establish `htx : algebraMap k⟮x⟯ F t = x` using `rfl`. Establish `htr : Transcendental k t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ha`. Conclude with `hx ((IntermediateField.isAlgebraic_iff).1 ha)`. Establish `htop : k⟮t⟯ = ⊤` using `adjoin_gen_eq_top x`. Establish `hL : IsFF k k⟮x⟯`. Use `⟨t, htr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[htop]`. Conclude with `Module.finite_of_finrank_eq_succ (IntermediateField.finrank_top)`. Take `⟨v0, hv0, huniq⟩` from `GlobalTheory.T.existsUnique_place_ord_eq_one_of_transcendental_generator k k⟮x⟯ t htr htop`. Take `⟨ρ, hρ⟩` from `(GlobalTheory.T.functionFieldPlace_restriction_exists_pow k k⟮x⟯ F).1`. Establish `ht0 : t ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← htx, h, map_zero]`. Conclude with `isAlgebraic_zero`. Take `⟨hfin, hsum⟩` from `GlobalTheory.T.functionFieldPlace_sum_order_eq_finrank k k⟮x⟯ F hL ρ hρ v0 t ht0 hv0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hset : {v : Place k F | v.1 x < 1} = {p | ρ p = v0}`. Use extensionality with `p`. Take `⟨e, he, hpow, -⟩` from `(GlobalTheory.T.functionFieldPlace_restriction_exists_pow k k⟮x⟯ F).2 ρ hρ p`. Simplify using `only [Set.mem_setOf_eq]`. Express the relevant statement in the definitionally equal form `p.1 (algebraMap k⟮x⟯ F t) < 1 ↔ ρ p = v0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hpow t]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `huniq` to reduce the goal to its premises. Assume the negation of the conclusion as `hn`.
-
-Conclude with `absurd h (not_lt.2 (one_le_pow₀ (not_lt.1 hn)))`. Introduce `h`. Rewrite using `[h]`. Conclude with `pow_lt_one₀ zero_le' (val_lt_one_of_ord_eq_one v0 t hv0) he.ne'`. Rewrite using `[hset]`.
-
-Conclude with `⟨hfin, by simpa [htx] using hsum⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem zeros_finite_sum_eq_degree : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F →
     ∀ x : F, Transcendental k x → {v : Place k F | v.1 x < 1}.Finite ∧

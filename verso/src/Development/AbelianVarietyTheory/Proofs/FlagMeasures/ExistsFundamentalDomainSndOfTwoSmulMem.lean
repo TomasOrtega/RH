@@ -7,21 +7,19 @@ open scoped TensorProduct ENNReal nonZeroDivisors Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hspan h2`. Set `L₂ : Submodule ℤ (ι → ℝ)` to `Λ.map (LinearMap.snd ℤ (ι → ℝ) (ι → ℝ))`. Establish `hmem : ∀ b, b ∈ L₂ ↔ ∃ a, (a, b) ∈ Λ`. Introduce `b`. Simplify using `only [L₂, Submodule.mem_map, LinearMap.snd_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, b'⟩, h, rfl⟩`. Conclude with `⟨a, h⟩`. Introduce and unpack `⟨a, h⟩`. Conclude with `⟨(a, b), h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hin : ∀ x : L₂, ((0 : ι → ℝ), (2 : ℝ) • (x : ι → ℝ)) ∈ Λ`. Introduce `x`. Take `⟨a, ha⟩` from `(hmem x).1 x.2`. Conclude with `h2 a x ha`. Use `haveI : DiscreteTopology L₂ := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `DiscreteTopology.of_continuous_injective (f := fun x : L₂ => (⟨((0 : ι → ℝ), (2 : ℝ) • (x : ι → ℝ)), hin x⟩ : Λ)) ?_ ?_` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (by fun_prop) _`. Introduce `x y hxy`. Establish `h` using `congrArg (fun z : Λ => (z : (ι → ℝ) × (ι → ℝ)).2) hxy`. Simplify using `only at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (smul_right_injective _ (two_ne_zero) h)`. Use `haveI : IsZLattice ℝ L₂ := by`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy : ((0 : ι → ℝ), y) ∈ Submodule.span ℝ (Λ : Set ((ι → ℝ) × (ι → ℝ)))`. Rewrite using `[hspan]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.mem_map_of_mem (f := LinearMap.snd ℝ (ι → ℝ) (ι → ℝ)) hy` as an intermediate fact. Rewrite `this` using `[Submodule.map_span]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨a, b⟩, h, rfl⟩`. Conclude with `(hmem b).2 ⟨a, h⟩`. Use `⟨latticeDomain L₂, measurableSet_latticeDomain L₂, fun y => ?_⟩` and prove the remaining obligations. Take `⟨⟨l, hl⟩, h1, h3⟩` from `existsUnique_add_mem_latticeDomain L₂ y`.
-
-Use `⟨l, ⟨(hmem l).1 hl, h1⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `m ⟨hm, hm'⟩`. Conclude with `congrArg Subtype.val (h3 ⟨m, (hmem m).2 hm⟩ hm')`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_fundamentalDomain_snd_of_two_smul_mem {ι : Type} [Fintype ι]
     (Λ : Submodule ℤ ((ι → ℝ) × (ι → ℝ))) [DiscreteTopology Λ] :

@@ -8,15 +8,13 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A C la F0 hF`. Unfold `n1`. Rewrite using `[ENNReal.sum_lt_top]`. Introduce `a _`. Use `set i := C.idx a`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set T := (A.chart i).target`. Establish `hT : IsOpen T` using `(A.chart i).open_target`. Establish `hsub : closedBall (C.c a) (C.r a) ⊆ T` using `C.sub a`. Establish `hF' : ContDiffOn ℝ ∞ (F0 i ∘ (A.chart i).symm) T` using `hF.1 i`. Establish `hD : ContinuousOn (fun v => fderiv ℝ (F0 i ∘ (A.chart i).symm) v) T` using `hF'.continuousOn_fderiv_of_isOpen hT (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hph : ContinuousOn (fun v => A.ph la i ((A.chart i).symm v)) T` using `(A.smooth_ph la i).continuousOn`. Establish `hcont : ContinuousOn (fun v => (∑ j, ‖wdb n j (F0 i ∘ (A.chart i).symm) v‖ ^ 2) * Real.exp (-A.ph la i ((A.chart i).symm v))) (closedBall (C.c a) (C.r a))`. Use `ContinuousOn.mono ?_ hsub` and prove the remaining obligations. Use `ContinuousOn.mul ?_ ?_` and prove the remaining obligations. Use `continuousOn_finset_sum _ (fun j _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `ContinuousOn.pow (ContinuousOn.norm ?_) 2` and prove the remaining obligations. Unfold `wdb`. Use `ContinuousOn.div_const (ContinuousOn.add ?_ (ContinuousOn.mul continuousOn_const ?_)) _` and prove the remaining obligations. Conclude with `hD.clm_apply continuousOn_const`. Conclude with `hD.clm_apply continuousOn_const`.
-
-Conclude with `(hph.neg).rexp`. Establish `hint : IntegrableOn (fun v => (∑ j, ‖wdb n j (F0 i ∘ (A.chart i).symm) v‖ ^ 2) * Real.exp (-A.ph la i ((A.chart i).symm v))) (closedBall (C.c a) (C.r a))` using `hcont.integrableOn_compact (isCompact_closedBall _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem n1_lt_infty_of_isSSec : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (C : Cover A) (la : La) (F0 : ι → Y → ℂ), A.IsSSec (A.kap + la) F0 → n1 C la F0 < ⊤ := by
   intro n Y _ _ _ _ _ ι La _ A C la F0 hF

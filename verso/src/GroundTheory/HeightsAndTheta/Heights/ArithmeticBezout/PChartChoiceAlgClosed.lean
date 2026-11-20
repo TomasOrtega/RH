@@ -13,11 +13,11 @@ namespace ChartChoiceAlgClosed
 variable {F : Type} [Field F] {n e : ℕ}
 
 /- English proof (translation)
-Establish `hmem : ∀ G : MvPolynomial (Fin k × Fin n) F, G ∈ incIdeal P k ↔ ∀ v ∈ incidence P k, aeval v G = 0` using `fun G => by`. Simplify using `[incIdeal, Submodule.mem_iInf, RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h⟩`. Use `⟨h0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `G`. Rewrite using `[hmem, Ideal.mem_span_singleton]`. Conclude with `h G`. Introduce and unpack `⟨h0, h⟩`. Use `⟨h0, fun G => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmem, h, Ideal.mem_span_singleton]`.
+A detailed English derivation is pending.
 -/
 theorem isChowForm_iff_span {P : Ideal (MvPolynomial (Fin n) F)} {k : ℕ}
     {g : MvPolynomial (Fin k × Fin n) F} :
@@ -47,9 +47,9 @@ def joinFirst (F : Type) [Field F] (e n : ℕ) :
   eval₂Hom (rename (shiftVar e n)).toRingHom (fun m => X (0, m))
 
 /- English proof (translation)
-Establish `h : (joinFirst F e n).comp (splitFirst F e n).toRingHom = RingHom.id _`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[joinFirst, splitFirst, MvPolynomial.algebraMap_eq]`. Introduce and unpack `⟨i, m⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `induction i using Fin.cases <;> simp [joinFirst, splitFirst, shiftVar]`. Conclude with `RingHom.congr_fun h p`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem joinFirst_splitFirst (p : MvPolynomial (Fin (e + 1) × Fin n) F) :
     joinFirst F e n (splitFirst F e n p) = p := by
@@ -62,16 +62,16 @@ theorem joinFirst_splitFirst (p : MvPolynomial (Fin (e + 1) × Fin n) F) :
   exact RingHom.congr_fun h p
 
 /- English proof (translation)
-Simplify using `[joinFirst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem joinFirst_C (a : MvPolynomial (Fin e × Fin n) F) :
     joinFirst F e n (C a) = rename (shiftVar e n) a := by
   simp [joinFirst]
 
 /- English proof (translation)
-Unfold `specFirst`. Rewrite using `[bind₁_rename]`. Establish `: (specFirstVar (0 : Fin n → F) ∘ shiftVar e n) = X`. Use function extensionality and compare the values at `jm`. Simplify using `[specFirstVar, shiftVar]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, bind₁_X_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem specFirst_rename_shiftVar (q : MvPolynomial (Fin e × Fin n) F) :
     specFirst (rename (shiftVar e n) q) 0 = q := by
@@ -84,13 +84,13 @@ theorem specFirst_rename_shiftVar (q : MvPolynomial (Fin e × Fin n) F) :
   rfl
 
 /- English proof (translation)
-Unfold `specFirst`. Use `conv_lhs => rw [f.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun s hs => ?_` and prove the remaining obligations. Rewrite using `[bind₁_monomial]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi, h0⟩ : ∃ i ∈ s.support, i.1 = 0 := by`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `hw` using `congrFun (hf (mem_support_iff.mp hs)) 0`. Rewrite `hw` using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∑ c ∈ s.support, (s c • groupWeight (e + 1) n c) 0 = 0`. Use `Finset.sum_eq_zero fun c hc => ?_` and prove the remaining obligations. Simplify using `[groupWeight, Ne.symm (hno c hc)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_eq_zero hi, mul_zero]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨a, m⟩` from `i`. Simplify using `only at h0`. Substitute `h0` using the available equality. Simplify using `[specFirstVar, zero_pow (Finsupp.mem_support_iff.mp hi)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem specFirst_zero_of_isMultiHomog {δ : ℕ} (hδ : 1 ≤ δ) {f : MvPolynomial (Fin (e + 1) × Fin n) F}
     (hf : IsMultiHomog δ f) : specFirst f 0 = 0 := by
@@ -116,9 +116,9 @@ theorem specFirst_zero_of_isMultiHomog {δ : ℕ} (hδ : 1 ≤ δ) {f : MvPolyno
   simp [specFirstVar, zero_pow (Finsupp.mem_support_iff.mp hi)]
 
 /- English proof (translation)
-Rewrite using `[eval_map]`. Establish `h : (eval₂Hom (Ideal.Quotient.mk J) (fun m => Ideal.Quotient.mk J (C (t m)))).comp (splitFirst F e n).toRingHom = (Ideal.Quotient.mk J).comp (bind₁ (specFirstVar t)).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[splitFirst, MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨i, m⟩`. Apply the tactic sequence `induction i using Fin.cases <;> simp [splitFirst, specFirstVar]`. Conclude with `RingHom.congr_fun h f`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eval_map_splitFirst (J : Ideal (MvPolynomial (Fin e × Fin n) F)) (t : Fin n → F)
     (f : MvPolynomial (Fin (e + 1) × Fin n) F) :
@@ -139,29 +139,25 @@ end ChartChoiceAlgClosed
 open ChartChoiceAlgClosed in
 
 /- English proof (translation)
-Introduce `F _ _ n e I f q hI hf hq`. Take `⟨hf0, hspan⟩` from `isChowForm_iff_span.mp hf`. Establish `hfp : Prime f`. Use `h₁ F n (e + 1) I hI.isPrime hI.isRelevant` as an intermediate fact. Rewrite `this` using `[hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Ideal.span_singleton_prime hf0).mp this`. Take `⟨δ, hδ, hhom⟩` from `h₂ F n (e + 1) I f hI hf`. Establish `hndvd : ¬ rename (shiftVar e n) q ∣ f`. Introduce and unpack `⟨g, hg⟩`. Break down `hfp.2.2 (rename (shiftVar e n) q) g (hg ▸ dvd_refl f) with ⟨h, hh⟩ | ⟨h, hh⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `congrArg (fun p => specFirst p 0) hh` as an intermediate fact. Rewrite `this` using `[specFirst_rename_shiftVar]`. Unfold `specFirst at this`. Rewrite `this` using `[map_mul]`. Establish `h0 : specFirst f 0 = 0` using `specFirst_zero_of_isMultiHomog hδ hhom`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `specFirst at h0`. Rewrite `this` using `[h0, zero_mul]`. Conclude with `hq.ne_zero this`. Establish `hunit : IsUnit (rename (shiftVar e n) q)`. Use `isUnit_iff_exists_inv.mpr ⟨h, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `mul_left_cancel₀ hf0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `hunit.map (bind₁ (specFirstVar (0 : Fin n → F)))` as an intermediate fact. Establish `h' : bind₁ (specFirstVar (0 : Fin n → F)) (rename (shiftVar e n) q) = q` using `specFirst_rename_shiftVar q`. Rewrite `this` using `[h']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hq.not_isUnit this`. Use `set J : Ideal (MvPolynomial (Fin e × Fin n) F) := Ideal.span {q} with hJ`. Establish `: J.IsPrime` using `(Ideal.span_singleton_prime hq.ne_zero).mpr hq`. Use `set P := map (Ideal.Quotient.mk J) (splitFirst F e n f) with hP`. Establish `hP0 : P ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Establish `hmem : splitFirst F e n f ∈ RingHom.ker (map (σ` using `Fin n) (Ideal.Quotient.mk J)) := by`. Rewrite using `[RingHom.mem_ker]`. Conclude with `h0`. Rewrite `hmem` using `[MvPolynomial.ker_map, Ideal.mk_ker, hJ, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hndvd` to reduce the goal to its premises. Use `map_dvd (joinFirst F e n) hmem` as an intermediate fact. Rewrite `this` using `[joinFirst_splitFirst, joinFirst_C]`. Then use the resulting hypothesis. Set `g : ℕ ↪ F` to `Infinite.natEmbedding F`. Establish `hinj : Function.Injective fun k : ℕ => Ideal.Quotient.mk J (C (g k))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab`. Apply `g.injective` to reduce the goal to its premises. Apply `(algebraMap F (MvPolynomial (Fin e × Fin n) F ⧸ J)).injective` to reduce the goal to its premises. Conclude with `hab`. Assume the negation of the conclusion as `hall`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hall`. Apply `hP0` to reduce the goal to its premises. Use `eq_zero_of_eval_zero_at_prod_finset P (fun _ => (Finset.range (P.totalDegree + 1)).image (fun k : ℕ => Ideal.Quotient.mk J (C (g k)))) (fun i => ?_) (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_image_of_injective _ hinj, Finset.card_range]`. Conclude with `Nat.lt_succ_of_le (degreeOf_le_totalDegree P i)`.
-
-Use `choose k _ hk using fun i => Finset.mem_image.mp (hx i)`. Establish `hx' : x = fun m => Ideal.Quotient.mk J (C ((fun m => g (k m)) m))`. Use function extensionality and compare the values at `m`. Rewrite using `[← hk m]`. Rewrite using `[hx', hP, eval_map_splitFirst]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton.mpr (hall _))`.
+A detailed English derivation is pending.
 -/
 theorem ChartChoiceAlgClosed.proof (h₁ : IncIdealPrime.Statement) (h₂ : ChowFormMultiHomog.Statement) :
     ChartChoiceAlgClosed.Statement := by

@@ -9,21 +9,19 @@ namespace Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Set `β : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → E` to `fun j => algebraMap (𝓞 E) E (NumberField.RingOfIntegers.basis E j)`. Establish `hspanQ : Submodule.span ℚ (Set.range β) = ⊤`. Establish `h` using `(NumberField.integralBasis E).span_eq`. Establish `hr : Set.range (NumberField.integralBasis E) = Set.range β`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[β, NumberField.integralBasis_apply]`. Rewrite `h` using `[hr]`. Conclude with `h`. Establish `hspan : Submodule.span F (Set.range β) = ⊤`. Rewrite using `[eq_top_iff]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Establish `hx : x ∈ Submodule.span ℚ (Set.range β)` using `by rw [hspanQ]; exact Submodule.mem_top`. Conclude with `Submodule.span_le_restrictScalars ℚ F _ hx`. Take `⟨B, hBsub, hBspan, hBli⟩` from `exists_linearIndependent F (Set.range β)`. Establish `hBfin : B.Finite` using `(Set.finite_range β).subset hBsub`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := hBfin.fintype`. Set `e` to `Fintype.equivFin B`. Set `b0 : Module.Basis B F E` to `Module.Basis.mk hBli (by rw [Subtype.range_coe, hBspan, hspan])`. Set `b : Module.Basis (Fin (Fintype.card B)) F E` to `b0.reindex e`. Take `⟨D, hD⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 F)) ((Finset.univ : Finset (Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin (Fintype.card B))).image fun p => b.repr (β p.1) p.2)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨Fintype.card B, b, (D : 𝓞 F), nonZeroDivisors.ne_zero D.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `hbi : b i = ((e.symm i : B) : E)` using `by simp [b, b0]`. Take `⟨j, hj⟩` from `hBsub (e.symm i).2`. Rewrite using `[hbi, ← hj]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `RingHom.mem_range.mpr ⟨_, rfl⟩`. Introduce `x hx i`. Take `⟨y, rfl⟩` from `RingHom.mem_range.mp hx`. Establish `key : ∀ j, ((D : 𝓞 F) : F) * b.repr (β j) i ∈ (algebraMap (𝓞 F) F).range`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `hD (b.repr (β j) i) (Finset.mem_image.mpr ⟨(j, i), Finset.mem_univ _, rfl⟩)`. Use `RingHom.mem_range.mpr ⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, Algebra.smul_def]`. Establish `hxe : algebraMap (𝓞 E) E y = ∑ j, ((NumberField.RingOfIntegers.basis E).repr y j) • β j` using `by conv_lhs => rw [← (NumberField.RingOfIntegers.basis E).sum_repr y]`. Rewrite using `[map_sum]`.
-
-Simplify using `[β, map_zsmul]`. Rewrite using `[hxe]`. Simplify using `only [map_sum, map_zsmul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, Finset.mul_sum, mul_smul_comm]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.zsmul_mem _ (key j) _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_basis (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     ∃ (n : ℕ) (b : Module.Basis (Fin n) F E) (D : 𝓞 F), D ≠ 0 ∧ (∀ i, b i ∈ intOE E) ∧

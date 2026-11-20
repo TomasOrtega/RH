@@ -13,13 +13,11 @@ namespace GlobalTheory.RestrictOrd
 open IsLocalRing
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `ha`. Establish `hb' : ((b : V) : L) = φ (a : K)`. Rewrite using `[hb]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `ha0 : (a : K) ≠ 0`. Introduce `h0`. Establish `: ((b : V) : L) = 0` using `by rw [hb', h0, map_zero]`. Conclude with `b.ne_zero (Subtype.ext this)`. Establish `hmem : (a : K)⁻¹ ∈ V.comap φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ (a : K)⁻¹ ∈ V`. Rewrite using `[map_inv₀, ← hb']`. Establish `: ((b⁻¹ : Vˣ) : V) * (b : V) = 1` using `b.inv_mul`. Establish `h2 : (((b⁻¹ : Vˣ) : V) : L) = ((b : V) : L)⁻¹`. Conclude with `eq_inv_of_mul_eq_one_left (congrArg Subtype.val this)`.
-
-Rewrite using `[← h2]`. Conclude with `((b⁻¹ : Vˣ) : V).2`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨(a : K)⁻¹, hmem⟩, Subtype.ext (mul_inv_cancel₀ ha0)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_restrict {K L : Type} [Field K] [Field L] (φ : K →+* L)
     (V : ValuationSubring L) :
@@ -43,11 +41,9 @@ theorem isLocalHom_restrict {K L : Type} [Field K] [Field L] (φ : K →+* L)
   exact isUnit_iff_exists_inv.2 ⟨⟨(a : K)⁻¹, hmem⟩, Subtype.ext (mul_inv_cancel₀ ha0)⟩
 
 /- English proof (translation)
-Introduce `h g hg`. Use `set ψ := φ.restrict (V.comap φ) V fun _ hx => hx with hψdef`. Use `letI := ψ.toAlgebra`. Take `⟨hu, he⟩` from `h`. Use `haveI : IsLocalHom ψ := isLocalHom_restrict φ V`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsLocalHom (algebraMap (V.comap φ) V) := inferInstanceAs (IsLocalHom ψ)`. Establish `hmap : (maximalIdeal (V.comap φ)).map (algebraMap (V.comap φ) V) = maximalIdeal V` using `Algebra.FormallyUnramified.map_maximalIdeal`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible (V.comap φ)`. Establish `ht' : Irreducible (ψ t)`. Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer, ← hmap, (IsDiscreteValuationRing.irreducible_iff_uniformizer t).1 ht, Ideal.map_span, Set.image_singleton]`.
-
-Both sides reduce to the same expression. Conclude with `GlobalTheory.EtaleDiv.log_ordFrac_map (V.comap φ) V φ ψ (fun _ => rfl) ht ht' hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem log_ordFrac_comap (K L : Type) [Field K] [Field L] (φ : K →+* L)
     (V : ValuationSubring L) [IsDiscreteValuationRing V] [IsDiscreteValuationRing (V.comap φ)] :

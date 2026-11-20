@@ -18,17 +18,15 @@ namespace GlobalTheory.Poinc.FibLat.ClosedLift
 open GlobalTheory.SplitTorus (torusMap bcMap)
 
 /- English proof (translation)
-Take `⟨u₁, hu₁, pa⟩` from `GlobalTheory.SymBaseChange.exists_endo h u`. Establish `hw : u₁.left ≫ φ₁ = φ₁ ≫ u.left`. Use `congrArg CommaMorphism.left (pa (𝟙 G₁))` as an intermediate fact. Simplify `this` using `[pushPt]`. Use `haveI := hu₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hK.factor (pullTorus hψ (j ≫ u₁)) inferInstance`. Rewrite `hs` using `[← pullTorus_torusMap_comp]`. Take `⟨_, _⟩ : QuasiCompact (spMap (algebraMap V (FractionRing V))) ∧ IsSchemeTheoreticallyDominant (spMap (algebraMap V (FractionRing V)))` from `GlobalTheory.ExtUnique.spec_fractionRing V (FractionRing V)`. Use `haveI : IsSeparated G₁.hom := MorphismProperty.of_isPullback h.1 ‹_›`. Establish `key : j ≫ u₁ = torusMap _ s ≫ j` using `GlobalTheory.ExtUnique.over_hom_ext_of_isPullback (GlobalTheory.SplitTorus.isPullback_bcMap (spMap (algebraMap V (FractionRing V))) X) (by rw [← pullTorus_left hψ, ← pullTorus_left hψ, hs])`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `k0 : torusMap _ s ≫ pullTorus hψ₀ j = torusMap _ r ≫ pullTorus hψ₀ j`. Apply `hom_ext_of_pullback (hψ₀.comp h)` to reduce the goal to its premises. Establish `e1` using `pullTorus_left hψ₀ (j ≫ u₁)`. Establish `e2` using `pullTorus_left hψ₀ j`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pullTorus_torusMap_comp, ← key, Category.assoc]`. Use `_ = bcMap (spMap b) X ≫ j.left ≫ φ₁ ≫ u.left := by`. Rewrite using `[e1]`. Simplify using `[Category.assoc, hw]`. Use `_ = ((pullTorus hψ₀ j).left ≫ ψ₀) ≫ φ₁ ≫ u.left := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2]`. Simplify using `only [Category.assoc]`. Use `_ = (torusMap _ r ≫ pullTorus hψ₀ j).left ≫ ψ₀ ≫ φ₁ := by`. Rewrite using `[← hr]`. Simplify using `only [Category.assoc]`.
-
-Establish `hsr : s = r` using `h0.cancel k0`. Substitute `hsr` using the available equality. Rewrite using `[← key, Over.comp_left, Category.assoc, hw]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem endo_of_closed {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsSeparated G.hom] {V : Type} [CommRing V]
     [IsDomain V] {ξ : Sp V ⟶ S} {G₁ : Over (Sp V)} [GrpObj G₁] {φ₁ : G₁.left ⟶ G.left}
@@ -73,41 +71,35 @@ theorem endo_of_closed {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsSeparated G.h
   rw [← key, Over.comp_left, Category.assoc, hw]
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M G _ _ hG I T f gγ ζ L hL hζ hLu hf hgγ X _ _ _ m c V _ _ _ ξ a G₁ _ φ₁ h j hj hext GK _ ψ hψ hK κ _ b hb G₀ _ ψ₀ hψ₀ h0 hC`. Use `haveI := hG.separated`. Use `haveI := hj`. Use `haveI : NeZero L := ⟨hL.ne'⟩`. Use `⟨fun e => ?_, fun t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hf e`. Conclude with `endo_of_closed h j hψ hK hψ₀ h0 (f e) (m e) (hC.1 e)`. Take `⟨z₀, hz₀, hv₀⟩` from `hC.2 t`. Establish `hζV : (Units.map a.toMonoidHom ζ) ^ L = 1` using `by rw [← map_pow, hζ, map_one]`. Establish `hpow : ∀ k : ℕ, ((Units.map a.toMonoidHom ζ) ^ k) ^ L = 1` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[← pow_mul, mul_comm, pow_mul, hζV, one_pow]`. Set `F : Multiplicative X →* Γ(Sp V, ⊤)ˣ` to `{ toFun := fun χ => unitOn (Units.map a.toMonoidHom ζ ^ (c t (Multiplicative.toAdd χ)).val) map_one' := by simp [unitOn] map_mul' := fun x y => by`. Rewrite using `[toAdd_mul, map_add, ZMod.val_add, ← pow_eq_pow_mod _ hζV, pow_add]`. Simplify using `[unitOn] }`. Set `Z1 : Over (Sp V)` to `Over.mk (𝟙 (Sp V))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨z, hz⟩ : ∃ z : Z1 ⟶ splitTorus (Sp V) X, GlobalTheory.splitTorusPointsEquiv (Sp V) X Z1 z = F` from `⟨_, MulEquiv.apply_symm_apply _ _⟩`. Establish `hzχ : ∀ χ, GlobalTheory.UU.chV z χ = unitOn (Units.map a.toMonoidHom ζ ^ (c t χ).val)` using `fun χ => by show GlobalTheory.splitTorusPointsEquiv (Sp V) X Z1 z (Multiplicative.ofAdd χ) = _`. Rewrite using `[hz]`. Both sides reduce to the same expression. Establish `hzL : z ^ L = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `(GlobalTheory.splitTorusPointsEquiv (Sp V) X Z1).injective` to reduce the goal to its premises. Rewrite using `[map_pow, hz, map_one]`. Use `MonoidHom.ext fun χ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply]`. Use `show unitOn _ ^ L = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[unitOn, ← map_pow, hpow, map_one]`. Set `x : Over.mk (Z1.hom ≫ ξ) ⟶ G` to `pushPt h.1.w (z ≫ j)`. Establish `hxL : x ^ L = 1`. Establish `e1 : pushPt h.1.w ((z ≫ j) ^ L) = x ^ L` using `map_pow (pushHom h Z1) (z ≫ j) L`. Rewrite using `[← e1, ← pow_comp, hzL, one_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `map_one (pushHom h Z1)`. Take `⟨v, hv⟩` from `ExtNear.exists_valAt ξ (hext t)`. Establish `hvb : spMap b ≫ v = (z₀ ≫ pullTorus hψ₀ j).left ≫ ψ₀ ≫ φ₁` using `ValAt.unique (hv.comp (spMap b)) hv₀`. Take `⟨W, hW, s', ⟨hW1, hW2⟩, hs', hsv⟩` from `hv`. Set `H : Over.mk W.ι ⟶ G` to `Over.homMk hW hW1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (W : Set M.Z).Nonempty` using `⟨ξ (closedPoint V), by rw [← hs']; exact (s' (closedPoint V)).2⟩`. Use `haveI : Nonempty W.toScheme := ⟨⟨_, hne.some_mem⟩⟩`. Use `haveI : IsIntegral W.toScheme := isIntegral_of_isOpenImmersion W.ι`. Establish `hr : Set.range M.pt ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `M.top_le_preimage_pt hne (x := w) trivial`. Set `x₀` to `IsOpenImmersion.lift W.ι M.pt hr`. Establish `hx₀ : x₀ ≫ W.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Use `haveI : IsDominant (x₀ ≫ W.ι) := hx₀ ▸ M.isDominant_pt`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsDominant x₀ := IsDominant.of_comp_of_isOpenImmersion x₀ W.ι`. Establish `hHL : H ^ L = 1`. Set `u : Over.mk M.pt ⟶ Over.mk W.ι` to `Over.homMk x₀ hx₀`. Establish `hu : u ≫ H = gγ t` using `Over.OverMorphism.ext (hW2 x₀ hx₀)`. Establish `e : u ≫ H ^ L = u ≫ 1` using `by rw [comp_pow, hu, hgγ t, comp_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `haveI : IsReduced (Over.mk W.ι).left := inferInstanceAs (IsReduced W.toScheme)`. Use `ext_of_isDominant_of_isSeparated (s := G.hom) ?_ x₀ ?_` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`. Conclude with `congrArg CommaMorphism.left e`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Set `σ : Over.mk (Z1.hom ≫ ξ) ⟶ Over.mk W.ι` to `Over.homMk s' (by show s' ≫ W.ι = 𝟙 _ ≫ ξ`. Rewrite using `[hs', Category.id_comp])`. Set `y : Over.mk (Z1.hom ≫ ξ) ⟶ G` to `σ ≫ H`. Establish `hyL : y ^ L = 1` using `by show (σ ≫ H) ^ L = 1`. Rewrite using `[← comp_pow, hHL, comp_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw' : (spMap b ≫ z.left) ≫ (splitTorus (Sp V) X).hom = 𝟙 _ ≫ spMap b`. Rewrite using `[Category.assoc, Over.w z]`. Simplify using `[Z1]`. Set `z' : Over.mk (𝟙 (Sp κ)) ⟶ splitTorus (Sp κ) X` to `Over.homMk ((GlobalTheory.SplitTorus.isPullback_bcMap (spMap b) X).lift (spMap b ≫ z.left) (𝟙 _) hw') ((GlobalTheory.SplitTorus.isPullback_bcMap (spMap b) X).lift_snd _ _ _)`. Establish `hz'l : z'.left ≫ bcMap (spMap b) X = spMap b ≫ z.left` using `(GlobalTheory.SplitTorus.isPullback_bcMap (spMap b) X).lift_fst _ _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz'χ : ∀ χ, GlobalTheory.UU.chV z' χ = unitOn (Units.map (b.comp a).toMonoidHom ζ ^ (c t χ).val)` using `fun χ => by`. Use `ext`. Establish `e` using `congrArg Units.val (hzχ χ)`. Rewrite `e`, the goal using `[GlobalTheory.UU.chV_val, GlobalTheory.SplitTorus.charUnit_val]`. Rewrite using `[← GlobalTheory.SplitTorus.bcMap_appTop_chi (spMap b), ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, hz'l, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `erw [e]`. Simplify using `only [unitOn, Units.coe_map]`. Use `congrArg (fun k => k.hom ((Units.map a.toMonoidHom ζ ^ (c t χ).val : Vˣ) : V)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom b))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Use `this.symm.trans ?_` and prove the remaining obligations.
-
-Simplify using the standard rewrite rules. Establish `hzz : z₀ = z'`. Apply `(GlobalTheory.splitTorusPointsEquiv (Sp κ) X _).injective` to reduce the goal to its premises. Use `MonoidHom.ext fun χ => ?_` and prove the remaining obligations. Conclude with `(hz₀ (Multiplicative.toAdd χ)).trans (hz'χ (Multiplicative.toAdd χ)).symm`.
-
-Establish `hcl : spMap b ≫ x.left = spMap b ≫ y.left` using `by show spMap b ≫ (z ≫ j).left ≫ φ₁ = spMap b ≫ s' ≫ hW`. Rewrite using `[hsv, hvb, hzz]`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[reassoc_of% (pullTorus_left hψ₀ j), reassoc_of% hz'l]`. Establish `hLV : IsUnit (L : V)` using `by simpa using hLu.map a`.
-
-Establish `hxy : x = y` using `GlobalTheory.LocalRigid.eq_of_pow_eq_of_closedPoint M.Z G hG.smooth V (Z1.hom ≫ ξ) L hLV x y (by rw [hxL, hyL]) κ b hb hcl`. Use `⟨z, hzχ, ?_⟩` and prove the remaining obligations. Establish `e' : (z ≫ j).left ≫ φ₁ = v` using `(congrArg CommaMorphism.left hxy).trans hsv`. Rewrite using `[e']`. Conclude with `⟨W, hW, s', ⟨hW1, hW2⟩, hs', hsv⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compat_of_closed : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (G : Over M.Z) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (I T : Type) (f : I → (G ⟶ G)) (gγ : T → (Over.mk M.pt ⟶ G)) (ζ : oˣ) (L : ℕ), 0 < L → ζ ^ L = 1 → IsUnit (L : o) → (∀ e, IsMonHom (f e)) → (∀ t, gγ t ^ L = 1) → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (m : I → X →+ X) (c : T → X →+ ZMod L) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ξ : Sp V ⟶ M.Z) (a : o →+* V) (G₁ : Over (Sp V)) [GrpObj G₁] (φ₁ : G₁.left ⟶ G.left), IsGrpPullback G₁ G ξ φ₁ → ∀ (j : splitTorus (Sp V) X ⟶ G₁), IsMonHom j → (∀ t, ExtNear (gγ t) (ξ (closedPoint V))) → ∀ (GK : Over (Sp (FractionRing V))) [GrpObj GK] (ψ : GK.left ⟶ G₁.left) (hψ : IsGrpPullback GK G₁ (spMap (algebraMap V (FractionRing V))) ψ), IsTorPart (pullTorus hψ j) → ∀ (κ : Type) [Field κ] (b : V →+* κ), IsLocalHom b → ∀ (G₀ : Over (Sp κ)) [GrpObj G₀] (ψ₀ : G₀.left ⟶ G₁.left) (hψ₀ : IsGrpPullback G₀ G₁ (spMap b) ψ₀), IsTorPart (pullTorus hψ₀ j) → Compat f gγ ζ L m c (spMap b ≫ ξ) (b.comp a) (ψ₀ ≫ φ₁) (pullTorus hψ₀ j) → Compat f gγ ζ L m c ξ a φ₁ j := by
   intro o Ω _ _ _ M G _ _ hG I T f gγ ζ L hL hζ hLu hf hgγ X _ _ _ m c V _ _ _ ξ a G₁ _ φ₁ h j hj hext GK _ ψ hψ hK

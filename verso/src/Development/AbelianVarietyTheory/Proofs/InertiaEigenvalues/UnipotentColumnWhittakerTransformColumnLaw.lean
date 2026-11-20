@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.CuspRep Glob
 namespace GlobalTheory.CuspGeneric
 
 /- English proof (translation)
-Introduce `E _ _ a ψ hψ m f hf y g`. Establish `hper` using `per_coef (a := a) hψ (eLast a (m + 1)) hf.cont (fun c g' => hf.left _ (isMir_blkU c) g') g`. Establish `hT` using `GlobalTheory.T.quotientAverage_translate_invariant (UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (isCoLat_ratV E _) _ hper y`. Establish `hpt : (fun x : UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E => ψ (-dot (eLast a (m + 1)) x) * f (blkU x * (blkU y * g))) = fun x => ψ (dot (eLast a (m + 1)) y) * (ψ (-dot (eLast a (m + 1)) (x + y)) * f (blkU (x + y) * g))`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hd : dot (eLast a (m + 1)) (x + y) = dot (eLast a (m + 1)) x + dot (eLast a (m + 1)) y`. Simplify using `only [dot, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Establish `hu : (blkU (x + y) : GA E a) = blkU x * blkU y` using `posU_add _ x y`. Establish `h1 : ψ (dot (eLast a (m + 1)) y) * ψ (-dot (eLast a (m + 1)) y) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, hu, neg_add, AddChar.map_add_eq_mul, mul_assoc (blkU x)]`. Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `avg _ (fun x => ψ (-dot (eLast a (m + 1)) x) * f (blkU x * (blkU y * g))) = _ * avg _ (fun x => ψ (-dot (eLast a (m + 1)) x) * f (blkU x * g))`. Rewrite using `[hpt, avg_const_mul]`. Conclude with `congrArg _ hT`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colT_blkU_mul : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ψ : AddChar (Ad E) ℂ), StdPsi ψ →
     ∀ (m : ℕ) (f : GA E a → ℂ), Good ψ (m + 1) f → ∀ (y : UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) (g : GA E a),

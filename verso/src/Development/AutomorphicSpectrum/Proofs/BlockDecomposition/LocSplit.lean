@@ -6,23 +6,23 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.LocSplitProof
 
 /- English proof (translation)
-Introduce `U hU P hP`. Take `⟨S, hS, hSP⟩` from `hP`. Rewrite `hS` using `[Scheme.etaleTopology, Scheme.mem_grothendieckTopology_iff]`. Take `⟨𝒰, h𝒰⟩` from `hS`. Establish `hsurj : Surjective (Limits.Sigma.desc 𝒰.f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨i, y, hy⟩` from `𝒰.exists_eq x`. Use `⟨(Limits.Sigma.ι 𝒰.X i) y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Limits.Sigma.ι_desc, hy]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `het : Etale (Limits.Sigma.desc 𝒰.f)`. Use `𝒰.sigma.map_prop ⟨⟩` as an intermediate fact. Simplify `this` using `[Scheme.Cover.sigma_f]`. Take `⟨s, hs⟩` from `hU _ (Limits.Sigma.desc 𝒰.f) het hsurj`. Establish `hlc : IsLocallyConstant (fun u : U => ((sigmaMk 𝒰.X).symm (s u)).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t`. Establish `hfst : IsOpen (Sigma.fst ⁻¹' t : Set (Σ i, 𝒰.X i))`. Rewrite using `[isOpen_sigma_iff]`. Introduce `i`. Distinguish the cases in `hi : i ∈ t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `isOpen_univ` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[hi]`. Use `isOpen_empty` and compare the differences between its conclusion and the goal. Use `ext`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[hi]`. Conclude with `hfst.preimage ((sigmaMk 𝒰.X).symm.continuous.comp s.continuous)`. Use `⟨𝒰.I₀, ⟨fun u => ((sigmaMk 𝒰.X).symm (s u)).1, hlc⟩, ?_⟩` and prove the remaining obligations. Introduce `V g a hg`. Establish `hrange : Set.range (g ≫ s) ⊆ Set.range (Limits.Sigma.ι 𝒰.X a)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Establish `h1 : ((sigmaMk 𝒰.X).symm (s (g v))).1 = a` using `hg v`. Break down `hq : (sigmaMk 𝒰.X).symm (s (g v)) with ⟨i, y⟩` into its components or cases. Rewrite `h1` using `[hq]`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2 : sigmaMk 𝒰.X ⟨i, y⟩ = s (g v)` using `by rw [← hq]; simp`. Rewrite `h2` using `[sigmaMk_mk]`. Rewrite using `[h2, Scheme.Hom.comp_apply]`. Take `⟨l, hl⟩ : ∃ l, l ≫ Limits.Sigma.ι 𝒰.X a = g ≫ s` from `⟨_, IsOpenImmersion.lift_fac (Limits.Sigma.ι 𝒰.X a) (g ≫ s) hrange⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgl : g = l ≫ 𝒰.f a`. Establish `h3 : l ≫ 𝒰.f a = l ≫ Limits.Sigma.ι 𝒰.X a ≫ Limits.Sigma.desc 𝒰.f` using `by simp`. Rewrite using `[h3, ← Category.assoc, hl, Category.assoc, hs, Category.comp_id]`. Rewrite using `[hgl]`. Conclude with `hSP V _ (S.downward_closed (h𝒰 _ _ (Presieve.ofArrows.mk a)) l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSplit : CrystallineSemistableComparison.E.LocSplit := by
   intro U hU P hP

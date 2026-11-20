@@ -6,9 +6,7 @@ open scoped Classical
 namespace GlobalTheory.HomCount
 
 /- English proof (translation)
-Use `Nat.card_congr { toFun := fun f => ⟨Y.liftQ f.1 f.2.ge, Submodule.ker_liftQ_eq_bot _ _ _ f.2.le⟩ invFun := fun g => ⟨g.1 ∘ₗ Y.mkQ, by` and prove the remaining obligations. Rewrite using `[LinearMap.ker_comp, g.2]`. Conclude with `Y.ker_mkQ⟩`. Use `left_inv := fun f => Subtype.ext (Y.liftQ_mkQ _ _)`. Use `right_inv := fun g => Subtype.ext ?_ }`.
-
-Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Conclude with `Y.liftQ_mkQ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem card_ker_eq (R : Type) [Ring R] (X M : Type) [AddCommGroup X] [Module R X]
     [AddCommGroup M] [Module R M] (Y : Submodule R X) :
@@ -25,14 +23,14 @@ theorem card_ker_eq (R : Type) [Ring R] (X M : Type) [AddCommGroup X] [Module R 
   exact Y.liftQ_mkQ _ _
 
 /- English proof (translation)
-The claim follows from `Finite.of_injective (fun f : X →ₗ[R] M => (f : X → M)) DFunLike.coe_injective`.
+A detailed English derivation is pending.
 -/
 theorem finite_hom (R : Type) [Ring R] (X M : Type) [AddCommGroup X] [Module R X] [Finite X]
     [AddCommGroup M] [Module R M] [Finite M] : Finite (X →ₗ[R] M) :=
   Finite.of_injective (fun f : X →ₗ[R] M => (f : X → M)) DFunLike.coe_injective
 
 /- English proof (translation)
-Use `haveI := finite_hom R X M`. Rewrite using `[← Nat.card_sigma]`. Conclude with `Nat.card_congr (Equiv.sigmaFiberEquiv (fun f : X →ₗ[R] M => LinearMap.ker f)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_hom_eq_sum (R : Type) [Ring R] (X M : Type) [AddCommGroup X] [Module R X] [Finite X]
     [AddCommGroup M] [Module R M] [Finite M] [Fintype (Submodule R X)] :
@@ -43,13 +41,13 @@ theorem card_hom_eq_sum (R : Type) [Ring R] (X M : Type) [AddCommGroup X] [Modul
   exact Nat.card_congr (Equiv.sigmaFiberEquiv (fun f : X →ₗ[R] M => LinearMap.ker f)).symm
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `X _ _ _ hX`. Use `haveI : Finite (Submodule R X) := Finite.of_injective (fun Y : Submodule R X => (Y : Set X)) SetLike.coe_injective`. Use `letI : Fintype (Submodule R X) := Fintype.ofFinite _`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1` using `h X`. Rewrite `h1` using `[card_hom_eq_sum, card_hom_eq_sum, ← Finset.add_sum_erase _ _ (Finset.mem_univ (⊥ : Submodule R X)), ← Finset.add_sum_erase _ _ (Finset.mem_univ (⊥ : Submodule R X))]`. Establish `h2 : ∑ Y ∈ Finset.univ.erase (⊥ : Submodule R X), Nat.card {f : X →ₗ[R] M // LinearMap.ker f = Y} = ∑ Y ∈ Finset.univ.erase (⊥ : Submodule R X), Nat.card {f : X →ₗ[R] N // LinearMap.ker f = Y}`. Use `Finset.sum_congr rfl fun Y hY => ?_` and prove the remaining obligations. Establish `hY' : Y ≠ ⊥` using `Finset.ne_of_mem_erase hY`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[card_ker_eq R X M, card_ker_eq R X N]`. Use `haveI : Finite (X ⧸ Y) := Finite.of_surjective _ Y.mkQ_surjective`. Use `ih (Nat.card (X ⧸ Y)) ?_ (X ⧸ Y) rfl` and prove the remaining obligations. Rewrite using `[← hX]`. Use `lt_of_le_of_ne (Nat.card_le_card_of_surjective _ Y.mkQ_surjective) fun he => hY' ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : Function.Bijective Y.mkQ` using `(Function.Surjective.bijective_of_nat_card_le Y.mkQ_surjective he.ge)`. Rewrite using `[← Y.ker_mkQ]`. Conclude with `LinearMap.ker_eq_bot.2 hb.1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_inj_eq (R : Type) [Ring R] (M N : Type) [AddCommGroup M] [Module R M] [Finite M]
     [AddCommGroup N] [Module R N] [Finite N]
@@ -86,11 +84,11 @@ theorem card_inj_eq (R : Type) [Ring R] (M N : Type) [AddCommGroup M] [Module R 
     omega
 
 /- English proof (translation)
-Introduce `R _ M N _ _ _ _ _ _ h`. Use `haveI := finite_hom R M M`. Use `haveI := finite_hom R N N`. Establish `h1` using `card_inj_eq R M N h _ M rfl`. Establish `h2` using `card_inj_eq R M N h _ N rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Nonempty {f : M →ₗ[R] M // LinearMap.ker f = ⊥} := ⟨⟨LinearMap.id, LinearMap.ker_id⟩⟩`. Use `haveI : Nonempty {f : N →ₗ[R] N // LinearMap.ker f = ⊥} := ⟨⟨LinearMap.id, LinearMap.ker_id⟩⟩`. Establish `p1 : 0 < Nat.card {f : M →ₗ[R] N // LinearMap.ker f = ⊥}` using `h1 ▸ Nat.card_pos`. Establish `p2 : 0 < Nat.card {f : N →ₗ[R] M // LinearMap.ker f = ⊥}` using `h2 ▸ Nat.card_pos`. Take `⟨⟨f, hf⟩⟩` from `(Nat.card_pos_iff.1 p1).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨⟨g, hg⟩⟩` from `(Nat.card_pos_iff.1 p2).1`. Rewrite `hf`, `hg` using `[LinearMap.ker_eq_bot]`. Establish `hb : Function.Bijective f` using `hf.bijective_of_nat_card_le (Nat.card_le_card_of_injective _ hg)`. Conclude with `⟨LinearEquiv.ofBijective f hb⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_of_card_hom :
     ∀ (R : Type) [Ring R] (M N : Type) [AddCommGroup M] [Module R M] [Finite M] [AddCommGroup N] [Module R N] [Finite N], (∀ (X : Type) [AddCommGroup X] [Module R X] [Finite X], Nat.card (X →ₗ[R] M) = Nat.card (X →ₗ[R] N)) → Nonempty (M ≃ₗ[R] N) := by

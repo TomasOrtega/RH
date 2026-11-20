@@ -11,7 +11,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ArchSch
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `GlobalTheory.ArchUniq.Coord.eq_zero_of_trace _ fun b => ?_` and prove the remaining obligations. Use `hx (Pi.single i b)` as an intermediate fact. Rewrite `this` using `[mixedTracePairing_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mixedTracePairing_nondegenerate_left {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (x : κ → mixedEmbedding.mixedSpace F) (hx : ∀ y, trP F κ x y = 0) : x = 0 := by
@@ -22,7 +22,7 @@ theorem mixedTracePairing_nondegenerate_left {F : Type} [Field F] [NumberField F
   rwa [mixedTracePairing_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `GlobalTheory.ArchUniq.Coord.eq_zero_of_trace _ fun b => ?_` and prove the remaining obligations. Use `hy (Pi.single i b)` as an intermediate fact. Rewrite `this` using `[mixedTracePairing_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, mul_comm]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mixedTracePairing_nondegenerate_right {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (y : κ → mixedEmbedding.mixedSpace F) (hy : ∀ x, trP F κ x y = 0) : y = 0 := by
@@ -33,7 +33,7 @@ theorem mixedTracePairing_nondegenerate_right {F : Type} [Field F] [NumberField 
   rwa [mixedTracePairing_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, mul_comm] at this
 
 /- English proof (translation)
-Introduce `F _ _ κ _`. Use `⟨fun x hx => mixedTracePairing_nondegenerate_left (F := F) (κ := κ) x hx, fun y hy => mixedTracePairing_nondegenerate_right (F := F) (κ := κ) y hy⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem mixedTracePairing_nondegenerate : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], (trP F κ).Nondegenerate := by
   intro F _ _ κ _

@@ -10,9 +10,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc.LogEx
 
 /- English proof (translation)
-Take `⟨d, rfl⟩ : ∃ d, l = d + 1` from `⟨l - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel]`. Proceed by induction on `v with`. Consider the case `zero => simp`. Consider the case `succ v ih`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ]`. Use polynomial arithmetic with `[Nat.zero_le (v * d * d)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem mul_pred_lt_pow (l v : ℕ) (hl : 1 ≤ l) : v * (l - 1) + 1 ≤ l ^ v := by
   obtain ⟨d, rfl⟩ : ∃ d, l = d + 1 := ⟨l - 1, by omega⟩
@@ -24,21 +24,19 @@ theorem mul_pred_lt_pow (l v : ℕ) (hl : 1 ≤ l) : v * (l - 1) + 1 ≤ l ^ v :
     nlinarith [Nat.zero_le (v * d * d)]
 
 /- English proof (translation)
-Take `⟨v, a, ha, hk⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Nat.succ_ne_zero k) l hl.ne_one`. Take `⟨b, hb⟩` from `(hu a ha).exists_right_inv`. Establish `hl2` using `hl.two_le`. Establish `ha0 : 1 ≤ a` using `Nat.pos_of_ne_zero (by rintro rfl; exact ha (dvd_zero _))`. Establish `hv : v ≤ k / (l - 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.le_div_iff_mul_le (by omega)]`. Establish `h1` using `mul_pred_lt_pow l v hl.one_le`. Establish `h2 : l ^ v ≤ l ^ v * a` using `Nat.le_mul_of_pos_right _ ha0`. Use linear arithmetic over natural numbers and integers. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hqr` using `Nat.div_add_mod k (l - 1)`. Use `set q := k / (l - 1) with hq`. Use `set r := k % (l - 1) with hr`. Establish `hwr : w ∈ (Ideal.span {(l : R)}).radical` using `⟨l, Ideal.mem_span_singleton.2 hwl⟩`. Establish `hmr : m ∈ (Ideal.span {(l : R)}).radical` using `⟨l - 1, Ideal.mem_span_singleton.2 ⟨w, hw.symm⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨b * (l : R) ^ d * m ^ r * w ^ q, ?_, ?_, fun hk0 => ?_⟩` and prove the remaining obligations. Establish `e : m ^ k = ((l : R) * w) ^ q * m ^ r`. Rewrite using `[hw, ← pow_mul, ← pow_add, hqr]`. Establish `e2 : ((k + 1 : ℕ) : R) = (l : R) ^ v * a`. Rewrite using `[show k + 1 = l ^ v * a from hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e, e2, mul_pow]`. Establish `e3 : (l : R) ^ q = (l : R) ^ v * (l : R) ^ d` using `by rw [hd, pow_add]`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `((l : R) ^ v * (l : R) ^ d * m ^ r * w ^ q) * hb`. Use `Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Use `(pow_dvd_pow_of_dvd hwl _).trans ?_` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Conclude with `pow_dvd_pow _ (Nat.mul_div_le q l)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos q with h | h` into its components or cases. Establish `: 0 < r`. Rewrite `hqr` using `[h]`. Use linear arithmetic over natural numbers and integers. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hmr _ this))`.
-
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hwr _ h)`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_term {R : Type} [CommRing R] (l : ℕ) (hl : l.Prime)
     (hu : ∀ a : ℕ, ¬ l ∣ a → IsUnit (a : R)) (m w : R) (hw : (l : R) * w = m ^ (l - 1))
@@ -81,11 +79,11 @@ theorem exists_term {R : Type} [CommRing R] (l : ℕ) (hl : l.Prime)
     · exact Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hwr _ h)
 
 /- English proof (translation)
-Establish `key : ∀ r n, N r ≤ n → p ^ r ∣ ∑ k ∈ Finset.range n, c k - ∑ k ∈ Finset.range (N r), c k`. Introduce `r n h`. Rewrite using `[← Finset.sum_Ico_eq_sub _ h]`. Conclude with `Finset.dvd_sum fun k hk => hc r k (Finset.mem_Ico.1 hk).1`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := Ideal.span {p}) (M := A) inferInstance (f := fun r => ∑ k ∈ Finset.range (N r), c k) (fun {a b} hab => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.comm, SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `key a _ (hN hab))`. Use `⟨L, fun r n h => ?_⟩` and prove the remaining obligations. Establish `h1` using `hL r`. Rewrite `h1` using `[SModEq.comm, SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `dvd_sub h1 (key r n h)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_sum {A : Type} [CommRing A] (p : A) [IsAdicComplete (Ideal.span {p}) A]
     (c : ℕ → A) (N : ℕ → ℕ) (hN : Monotone N) (hc : ∀ r k, N r ≤ k → p ^ r ∣ c k) :
@@ -108,17 +106,17 @@ theorem exists_sum {A : Type} [CommRing A] (p : A) [IsAdicComplete (Ideal.span {
   rwa [sub_sub_sub_cancel_right] at this
 
 /- English proof (translation)
-Use `choose c h1 h2 h3 using exists_term l hl hu m w hw hwl`. Establish `hl2` using `hl.two_le`. Take `⟨u, hs⟩` from `exists_sum (l : A) (fun k => f ((-1) ^ k * c k)) (fun r => r * l * (l - 1)) (fun a b hab => Nat.mul_le_mul_right _ (Nat.mul_le_mul_right _ hab)) (fun r k hk => by`. Establish `hr : r ≤ k / (l - 1) / l`. Rewrite using `[Nat.le_div_iff_mul_le (by omega), Nat.le_div_iff_mul_le (by omega)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hk`. Use `map_dvd f (((pow_dvd_pow (l : R) hr).trans (h2 k)).mul_left ((-1) ^ k))` as an intermediate fact. Rewrite using `[map_pow, map_natCast] at this)` and apply the resulting hypothesis. Use `⟨c, u, h1, ?_, fun r => ⟨_, fun n hn => by rw [map_sum]; exact hs r n hn⟩⟩` and prove the remaining obligations. Establish `hc0 : c 0 = 1` using `by simpa using h1 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrad : u - 1 ∈ (Ideal.span {(l : A)}).radical`. Establish `h` using `hs 1 (1 * l * (l - 1) + 1) (Nat.le_succ _)`. Rewrite `h` using `[Finset.sum_range_succ', pow_one, hc0, pow_zero, mul_one, map_one]`. Establish `h'` using `Ideal.le_radical (Ideal.mem_span_singleton.2 h)`. Establish `h'' : ∑ k ∈ Finset.range (1 * l * (l - 1)), f ((-1) ^ (k + 1) * c (k + 1)) ∈ (Ideal.span {(l : A)}).radical`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `h3 (k + 1) (Nat.succ_ne_zero k)`. Use `⟨n, Ideal.mem_span_singleton.2 ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `map_dvd f (Ideal.mem_span_singleton.1 hn)` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast]`. Then use the resulting hypothesis. Use `add_mem h' h''` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : u - 1 ∈ Ideal.jacobson (⊥ : Ideal A)`. Establish `h` using `Ideal.radical_le_jacobson hrad`. Establish `h'` using `Ideal.jacobson_mono (IsAdicComplete.le_jacobson_bot (Ideal.span {(l : A)})) h`. Rewrite `h'` using `[Ideal.jacobson_idem]`. Then use the resulting hypothesis. Conclude with `Ideal.isUnit_of_sub_one_mem_jacobson_bot u hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_unit {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) (l : ℕ) (hl : l.Prime)
     (hA : IsAdicComplete (Ideal.span {(l : A)}) A)
@@ -161,7 +159,7 @@ theorem exists_unit {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) (l : 
   exact Ideal.isUnit_of_sub_one_mem_jacobson_bot u hj
 
 /- English proof (translation)
-Establish `h : IsUnit (a : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 ha`. Use `h.map ((algebraMap (Per.Ainf l) (Per.Acris0 l)).comp (Per.zA l))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isUnit_nat_acris0 (l : ℕ) [Fact l.Prime] (a : ℕ) (ha : ¬ l ∣ a) :
     IsUnit (a : Per.Acris0 l) := by
@@ -172,7 +170,7 @@ theorem isUnit_nat_acris0 (l : ℕ) [Fact l.Prime] (a : ℕ) (ha : ¬ l ∣ a) :
   rwa [map_natCast] at this
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.tower l x`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_acris (l : ℕ) [Fact l.Prime] (x : Per.Ainf l) :
     algebraMap (Per.Ainf l) (Per.Acris l) x =
@@ -180,9 +178,9 @@ theorem algebraMap_acris (l : ℕ) [Fact l.Prime] (x : Per.Ainf l) :
   GlobalTheory.RingIface.tower l x
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hd : k + 1 ∣ n.factorial` using `Nat.dvd_factorial (Nat.succ_pos k) (Finset.mem_range.1 hk)`. Establish `e : ((n.factorial : ℕ) : P) = ((n.factorial / (k + 1) : ℕ) : P) * ((k + 1 : ℕ) : P)`. Rewrite using `[← Nat.cast_mul, Nat.div_mul_cancel hd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ m, ← h k]`. Take the linear combination `(m * (-1) ^ k * c k) * e`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem factorial_mul_sum {P : Type} [CommRing P] (m : P) (c : ℕ → P)
     (h : ∀ k, ((k + 1 : ℕ) : P) * c k = m ^ k) (n : ℕ) :
@@ -205,11 +203,11 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris
 
 /- English proof (translation)
-Introduce `l _ e he`. Take `⟨w, hw, hwl⟩` from `GlobalTheory.T.exists_teichmullerTiltMinusOne_pow_div_envelope l e he`. Take `⟨c, u, h1, hu, h2⟩` from `exists_unit (algebraMap (Per.Acris0 l) (Per.Acris l)) l Fact.out (acris_basic l).1 (isUnit_nat_acris0 l) (algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e)) w (Subtype.ext (by simpa using hw)) hwl`. Use `⟨_, u, fun r => ?_, hu, rfl⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `h2 r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨N, fun n hn => ⟨algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e) * ∑ k ∈ Finset.range n, (-1) ^ k * c k, ?_, ?_⟩⟩` and prove the remaining obligations. Use `congrArg (Per.Acris0 l).val (factorial_mul_sum (algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e)) c h1 n)` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_sum]`. Use `this.trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_natCast, map_neg, map_one, AlgHom.commutes]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `hN n hn`. Use `⟨algebraMap (Per.Ainf l) (Per.Acris l) (mu e) * z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← algebraMap_acris, ← mul_sub, hz]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_isLogA : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, e.untilt = 1 →
     ∃ (t u : Per.Acris l), IsLogA e t ∧ IsUnit u ∧

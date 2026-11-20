@@ -13,7 +13,7 @@ open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CartanFinite.exists_isCartanSystem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsCartanSystem.lean&line=167#L167)
 -/

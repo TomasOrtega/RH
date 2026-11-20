@@ -19,9 +19,9 @@ namespace GlobalTheory.RowLawPair
 variable {C : Type} [Field C] {dd : ℕ} {τ : Type}
 
 /- English proof (translation)
-Rewrite using `[subst_singlePointUncurry ha]`. Unfold `sb`. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `fin_cases j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem subst_oneVarGerm_eq_substPointsPowerSeries {a : Fin dd → MvPowerSeries τ C} (ha : Zc a) (f : PS C 1 dd) :
     subst a (un1 f) = sb ![a] f := by
@@ -34,19 +34,19 @@ theorem subst_oneVarGerm_eq_substPointsPowerSeries {a : Fin dd → MvPowerSeries
   rfl
 
 /- English proof (translation)
-Rewrite using `[← subst_oneVarGerm_eq_substPointsPowerSeries (fun _ => constantCoeff_X _), subst_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem oneVarGerm_eq_substPoints_X (f : PS C 1 dd) : un1 f = sb ![(X : Fin dd → MvPowerSeries (Fin dd) C)] f := by
   rw [← subst_oneVarGerm_eq_substPointsPowerSeries (fun _ => constantCoeff_X _), subst_self]
   rfl
 
 /- English proof (translation)
-Introduce `_` and use `constantCoeff_X _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zc_gp {n : ℕ} (j : Fin n) : Zc (gp C (Fin dd) j) := fun _ => constantCoeff_X _
 
 /- English proof (translation)
-The claim follows from `intS_X V _`.
+A detailed English derivation is pending.
 -/
 theorem intS_gp (V : VF C) {n : ℕ} (j : Fin n) (i : Fin dd) : IntS V (gp C (Fin dd) j i) := intS_X V _
 
@@ -54,7 +54,7 @@ variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBCha
   {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] (p : PairData Y d I)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show subst (fun x => subst a (un1 (Y.lg x)) + subst b (un1 (Y.lg x))) (un1 (Y.ex i)) = _`. Simplify using `only [subst_oneVarGerm_eq_substPointsPowerSeries ha, subst_oneVarGerm_eq_substPointsPowerSeries hb, lg_law Y ha hb]`. Rewrite using `[subst_oneVarGerm_eq_substPointsPowerSeries (fun x => cc_sb (zc1 (zc_law Y ha hb)) (zc_lg Y x)), ex_lg Y (zc_law Y ha hb)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formalAdd_eq_law {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) :
     addP (Y.raw p) a b = law Y a b := by
@@ -64,7 +64,7 @@ theorem formalAdd_eq_law {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb :
   rw [subst_oneVarGerm_eq_substPointsPowerSeries (fun x => cc_sb (zc1 (zc_law Y ha hb)) (zc_lg Y x)), ex_lg Y (zc_law Y ha hb)]
 
 /- English proof (translation)
-Use `show subst _ Y.h = subst _ Y.h`. Use `congr 1`. Use function extensionality and compare the values at `⟨s, x⟩`. Apply the tactic sequence `fin_cases s <;> rfl`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hAt_eq_sb (a b : Fin dd → MvPowerSeries τ C) : hAt (Y.raw p) a b = sb ![a, b] Y.h := by
   show subst _ Y.h = subst _ Y.h
@@ -73,14 +73,14 @@ theorem hAt_eq_sb (a b : Fin dd → MvPowerSeries τ C) : hAt (Y.raw p) a b = sb
   fin_cases s <;> rfl
 
 /- English proof (translation)
-The claim follows from `cc_sb (zc2 ha hb) (cc_h Y)`.
+A detailed English derivation is pending.
 -/
 theorem cc_sb_h {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) :
     constantCoeff (sb ![a, b] Y.h) = 0 :=
   cc_sb (zc2 ha hb) (cc_h Y)
 
 /- English proof (translation)
-Establish `e : (fun q : Fin 2 × Fin dd => ![gp C (Fin dd) (0 : Fin 2), gp C (Fin dd) 1] q.1 q.2) = X`. Use function extensionality and compare the values at `⟨s, x⟩`. Apply the tactic sequence `fin_cases s <;> rfl`. Unfold `sb`. Rewrite using `[e, subst_self]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -93,7 +93,7 @@ theorem sb_gp_self (f : PS C 2 dd) : sb ![gp C (Fin dd) (0 : Fin 2), gp C (Fin d
   rfl
 
 /- English proof (translation)
-The claim follows from `inferInstance closed := Y.algClosed odd := Y.l_odd lin := fun i μ hμ => by classical show coeff (μ.mapDomain fun x : Fin dd => ((0 : Fin 1), x)) (Y.lg i) = _ rw [Y.lg_lin i _ (by rwa [Finsupp.degree_mapDomain]), coeff_X, coeff_X] have hinj : Function.Injective fun x : Fin dd => ( …`.
+A detailed English derivation is pending.
 -/
 theorem rLaw_raw : RLaw (Y.raw p) V where
   charZero := inferInstance
@@ -148,7 +148,7 @@ theorem rLaw_raw : RLaw (Y.raw p) V where
     exact ⟨w, hw, fun c c' => ⟨fun e => (h c c').trans (if_pos e), fun e => (h c c').trans (if_neg e)⟩⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ Y _ _ _ _ p` and use `rLaw_raw Y p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rLaw_pairData : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ)
     (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (p : PairData Y d I),

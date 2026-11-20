@@ -9,7 +9,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.L2.SG.TermOp.Vanish
 
 /- English proof (translation)
-The claim follows from `ratMem_of memIsomOf_holds memFlagOf_holds memLatOf_holds memConjOf_holds memPtOf_holds`.
+A detailed English derivation is pending.
 -/
 theorem ratMem_holds : RatMem :=
   ratMem_of memIsomOf_holds memFlagOf_holds memLatOf_holds memConjOf_holds memPtOf_holds

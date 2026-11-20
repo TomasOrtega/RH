@@ -69,14 +69,14 @@ def toGen {G : Over (Spec (CommRingCat.of R))} (x : TF (R := R) F ⟶ G) :
   Over.homMk (pullback.lift x.left (jFK (R := R) F) (Over.w x)) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma toGen_fst {G : Over (Spec (CommRingCat.of R))} (x : TF (R := R) F ⟶ G) :
     (toGen x).left ≫ pullback.fst G.hom (jK R) = x.left :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Introduce `x y h` and use `by ext rw [← toGen_fst x, ← toGen_fst y, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma toGen_injective {G : Over (Spec (CommRingCat.of R))} :
     Function.Injective (toGen (R := R) (F := F) (G := G)) := fun x y h => by
@@ -93,7 +93,7 @@ variable (F : Type) [Field F] [Algebra (FractionRing R) F]
 def ptA (x : TF (R := R) F ⟶ t.G) : TFK (R := R) F ⟶ u.A.A := toGen x ≫ u.U.gen.hom
 
 /- English proof (translation)
-Introduce `_ _ h` and use `toGen_injective ((cancel_mono u.U.gen.hom).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma ptA_injective : Function.Injective (u.ptA F) := fun _ _ h =>
   toGen_injective ((cancel_mono u.U.gen.hom).1 h)
@@ -126,7 +126,7 @@ def TorsClause : Prop :=
     u.TorsIso F k
 
 /- English proof (translation)
-Take `⟨x, hx, -⟩` from `h.total p`. Establish `h1 : x ^ 1 = 1` using `(h.onto x).2 ⟨p, hx⟩`. Rewrite `h1` using `[pow_one]`. Conclude with `h1 ▸ hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (h : u.TorsIso F 1) (p : QkPt Δ.D.toPre F 1) : u.ToAk F 1 p 1 := by
   obtain ⟨x, hx, -⟩ := h.total p

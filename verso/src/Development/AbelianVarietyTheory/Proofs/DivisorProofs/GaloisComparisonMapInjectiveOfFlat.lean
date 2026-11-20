@@ -4,23 +4,21 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GalMapGalElt
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `A R C O _ _ _ _ _ _ _ _ G _ _ _ act T hT a ha n x y hxy htf σ`. Use `set b := algebraMap R C (algebraMap A R a) with hb`. Establish `key : ∀ c : C, ∑ i, T (y i * c) • x i = b * c`. Introduce `c`. Establish `h1 : ∀ i, T (y i * c) • x i = ∑ g, x i * act g (y i) * act g c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[Algebra.smul_def, hT, mul_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`. Repeatedly rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_mul, hxy]`. Simplify using the standard rewrite rules. Set `L` to `LinearMap.lTensor O (LinearMap.mulLeft R b)`. Establish `hL : Function.Injective L`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Module.Flat.lTensor_preserves_injective_linearMap` to reduce the goal to its premises. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Conclude with `htf a ha c (by rw [Algebra.smul_def]; simpa using hc)`. Set `Φ : (G → O) → O ⊗[R] C` to `fun f => ∑ i, (∑ g, σ (act g (y i)) * f g) ⊗ₜ x i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΦ : ∀ m, Φ (GlobalTheory.GoodEtale.galMap act σ m) = L m`. Introduce `m`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp [Φ]`. Consider the case `tmul o c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Φ, GlobalTheory.GoodEtale.galMap_tmul, L, LinearMap.lTensor_tmul, LinearMap.mulLeft_apply]`. Establish `h2 : ∀ i, (∑ g, σ (act g (y i)) * (o * σ (act g c))) = T (y i * c) • o`. Introduce `i`. Rewrite using `[Algebra.smul_def, ← σ.commutes, hT, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h2, ← key, TensorProduct.tmul_sum, TensorProduct.smul_tmul]`. Consider the case `add m m' hm hm'`. Rewrite using `[map_add, map_add, ← hm, ← hm']`.
+Rewrite the conclusion repeatedly using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Φ, Pi.add_apply, mul_add, Finset.sum_add_distrib, TensorProduct.add_tmul]`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `m hm`. Apply `hL` to reduce the goal to its premises. Rewrite using `[← hΦ, hm, map_zero]`.
-
-Simplify using `[Φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GoodEtale.galMap_injective_of_flat : ∀ (A R C O : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing C] [Algebra R C]
     [CommRing O] [Algebra R O] [Module.Flat R O]

@@ -52,7 +52,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def eSum (p : ι → SplitPt D k) (J : List ι) : AE D := (J.map fun i => (p i).e).sum
 
 /- English proof (translation)
-Simplify using `[eSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eSum_cons (p : ι → SplitPt D k) (i : ι) (J : List ι) : eSum p (i :: J) = (p i).e + eSum p J := by
   simp [eSum]
@@ -64,20 +64,20 @@ def datJ (p : ι → SplitPt D k) {n n' : Type} [Fintype n] [DecidableEq n] [Fin
   if IsHalf (eSum p J) t then (J.map fun i => Ψ i (rd (α i) (β i) t)).prod else 0
 
 /- English proof (translation)
-Rewrite using `[← p.sec_one, p.pr_sec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_e (p : SplitPt D k) : p.pr p.e = 1 := by
   rw [← p.sec_one, p.pr_sec]
 
 /- English proof (translation)
-Use `congrArg p.pr h` as an intermediate fact. Rewrite `this` using `[map_mul, pr_e, one_mul, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pr_of_mul_eq_zero (p : SplitPt D k) {a : AE D} (h : p.e * a = 0) : p.pr a = 0 := by
   have := congrArg p.pr h
   rwa [map_mul, pr_e, one_mul, map_zero] at this
 
 /- English proof (translation)
-Proceed by induction on `J with`. Consider the case `nil => simp [eSum]`. Consider the case `cons j J ih`. Rewrite using `[eSum_cons, mul_add, h j (List.mem_cons_self), ih fun j' hj' => h j' (List.mem_cons_of_mem _ hj'), add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eSum (p : ι → SplitPt D k) (a : AE D) (J : List ι) (h : ∀ j ∈ J, a * (p j).e = 0) : a * eSum p J = 0 := by
   induction J with
@@ -86,15 +86,15 @@ theorem mul_eSum (p : ι → SplitPt D k) (a : AE D) (J : List ι) (h : ∀ j �
     rw [eSum_cons, mul_add, h j (List.mem_cons_self), ih fun j' hj' => h j' (List.mem_cons_of_mem _ hj'), add_zero]
 
 /- English proof (translation)
-Rewrite using `[mul_comm]; exact mul_eSum p a J fun j hj => by rw [mul_comm]; exact h j hj`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eSum_mul (p : ι → SplitPt D k) (a : AE D) (J : List ι) (h : ∀ j ∈ J, (p j).e * a = 0) : eSum p J * a = 0 := by
   rw [mul_comm]; exact mul_eSum p a J fun j hj => by rw [mul_comm]; exact h j hj
 
 /- English proof (translation)
-Proceed by induction on `J with`. Consider the case `nil => simp [eSum]`. Consider the case `cons i J ih`. Rewrite `hJ` using `[List.nodup_cons]`. Establish `h1 : (p i).e * eSum p J = 0` using `mul_eSum p _ J fun j hj => horth i j fun h => hJ.1 (h ▸ hj)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : eSum p J * (p i).e = 0` using `by rw [mul_comm, h1]`. Rewrite using `[eSum_cons, add_mul, mul_add, mul_add, (p i).split.1, h1, h2, ih hJ.2, add_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eSum_idem (p : ι → SplitPt D k) (horth : ∀ i j, i ≠ j → (p i).e * (p j).e = 0) (J : List ι) (hJ : J.Nodup) :
     eSum p J * eSum p J = eSum p J := by
@@ -107,9 +107,9 @@ theorem eSum_idem (p : ι → SplitPt D k) (horth : ∀ i j, i ≠ j → (p i).e
     rw [eSum_cons, add_mul, mul_add, mul_add, (p i).split.1, h1, h2, ih hJ.2, add_zero, zero_add]
 
 /- English proof (translation)
-Proceed by induction on `J with`. Consider the case `nil => simp at hi`. Consider the case `cons j J ih`. Rewrite `hJ` using `[List.nodup_cons]`. Rewrite using `[eSum_cons, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[pr_e, pr_of_mul_eq_zero (p i) (mul_eSum p _ J fun j hj => horth i j fun h => hJ.1 (h ▸ hj)), add_zero]`. Rewrite using `[pr_of_mul_eq_zero (p i) (horth i j hij), zero_add, ih hJ.2 ((List.mem_cons.1 hi).resolve_left hij)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_eSum (p : ι → SplitPt D k) (horth : ∀ i j, i ≠ j → (p i).e * (p j).e = 0) (J : List ι) (hJ : J.Nodup)
     (i : ι) (hi : i ∈ J) : (p i).pr (eSum p J) = 1 := by

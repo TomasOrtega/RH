@@ -12,7 +12,7 @@ universe u
 namespace Formalism.DworkPowerSeriesWeights
 
 /- English proof (translation)
-Introduce `K _ _ ι Th hTh P hP`. Unfold `jetPair`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, norm_mul]`. Conclude with `mul_le_one₀ (hP κ) (norm_nonneg _) (hTh κ)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_operators_on_jets : IntOp.{u} := by
   intro K _ _ ι Th hTh P hP
@@ -22,9 +22,9 @@ theorem integral_operators_on_jets : IntOp.{u} := by
   exact mul_le_one₀ (hP κ) (norm_nonneg _) (hTh κ)
 
 /- English proof (translation)
-Unfold `linForm`. Use `Subring.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Introduce `κ`. Rewrite using `[MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X, norm_mul]`. Use `mul_le_one₀ (hL x) (norm_nonneg _) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma linForm_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {ι : Type} [Fintype ι]
     (L : ι → K) (hL : ∀ x, ‖L x‖ ≤ 1) : linForm L ∈ opInt K ι := by
@@ -37,9 +37,9 @@ lemma linForm_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {ι :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `polar`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun x _ => ?_` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun y _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_one₀ (hc x y) (norm_nonneg _) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hL x) (norm_nonneg _) (hL' y)`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hL y) (norm_nonneg _) (hL' x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_polar_le {K : Type u} [NormedField K] [IsUltrametricDist K] {ι : Type} [Fintype ι]
     (c : ι → ι → K) (hc : ∀ x y, ‖c x y‖ ≤ 1) (L L' : ι → K) (hL : ∀ x, ‖L x‖ ≤ 1)
@@ -56,17 +56,15 @@ lemma norm_polar_le {K : Type u} [NormedField K] [IsUltrametricDist K] {ι : Typ
     exact mul_le_one₀ (hL y) (norm_nonneg _) (hL' x)
 
 /- English proof (translation)
-Introduce `K _ _ _ pi hpi0 hpi1 ι _ c S sg n L hc hS hsg hL M hM`. Establish `hB1 : (1 : ℝ) ≤ pi ^ (-(1 / 2 : ℝ))` using `Real.one_le_rpow_of_pos_of_le_one_of_nonpos hpi0 hpi1.le (by norm_num)`. Establish `hB0 : (0 : ℝ) ≤ pi ^ (-(1 / 2 : ℝ))` using `zero_le_one.trans hB1`. Rewrite using `[matching_existence K ι c S sg n L]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg hpi0.le _) fun σ hσ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσ2 : σ * σ = 1` using `(Finset.mem_filter.mp hσ).2`. Distinguish the cases in `h : ∀ i, i < σ i → polar c (L i) (L (σ i)) ≠ 0`. Establish `hcard` using `hM σ hσ2 h`. Rewrite using `[norm_mul, norm_prod]`. Establish `h1 : (∏ i ∈ Finset.univ.filter (fun i => i < σ i), ‖-S * polar c (L i) (L (σ i))‖) ≤ (pi ^ (-(1 / 2 : ℝ))) ^ (Finset.univ.filter (fun i => i < σ i)).card`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_const]`. Use `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (pi ^ (-(1 / 2 : ℝ))) ^ (Finset.univ.filter (fun i => i < σ i)).card ≤ (pi ^ (-(1 / 2 : ℝ))) ^ M` using `pow_le_pow_right₀ hB1 hcard`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : (pi ^ (-(1 / 2 : ℝ))) ^ M = pi ^ (-(1 / 2 : ℝ) * M)`. Rewrite using `[Real.rpow_mul_natCast hpi0.le]`. Establish `h4 : ‖jetPair (∏ i ∈ Finset.univ.filter (fun i => σ i = i), linForm (L i)) sg‖ ≤ 1`. Use `integral_operators_on_jets K ι sg hsg _ ?_` and prove the remaining obligations. Establish `: (∏ i ∈ Finset.univ.filter (fun i => σ i = i), linForm (L i)) ∈ opInt K ι` using `Subring.prod_mem _ fun i _ => linForm_mem_opInt (L i) (hL i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this`. Combine the equalities or inequalities in the displayed calculation. Use `push Not at h`. Take `⟨i, hi, h0⟩` from `h`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_filter.mpr ⟨Finset.mem_univ i, hi⟩) (by rw [h0, mul_zero]), zero_mul, norm_zero]`.
-
-Conclude with `Real.rpow_nonneg hpi0.le _`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matching_bound : MatchBound.{u} := by
   intro K _ _ _ pi hpi0 hpi1 ι _ c S sg n L hc hS hsg hL M hM
@@ -107,9 +105,9 @@ theorem matching_bound : MatchBound.{u} := by
     exact Real.rpow_nonneg hpi0.le _
 
 /- English proof (translation)
-Introduce `H _ _ TT c wt wt' f k b b' hf hk hb hb' hc0 hc1 hc2 hwt hwt'`. Take `⟨h1, h2⟩` from `base_size_bounds H TT c wt wt' f k b b' hf hk hb hb' hc1 hc2 hwt hwt'`. Establish `h3 : 0 ≤ ∑ t, c t` using `Finset.sum_nonneg fun t _ => hc0 t`. Establish `h4 : |(1 / 2) * ∑ t, c t| ≤ (TT.card : ℝ) * b + f * k * b'`. Rewrite using `[abs_of_nonneg (by positivity)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `(abs_add_le _ _).trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exponent_size_bounds : SizesE := by
   intro H _ _ TT c wt wt' f k b b' hf hk hb hb' hc0 hc1 hc2 hwt hwt'

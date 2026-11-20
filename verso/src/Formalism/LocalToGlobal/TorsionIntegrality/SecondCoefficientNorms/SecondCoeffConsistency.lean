@@ -9,57 +9,57 @@ import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.Binomia
 namespace Formalism.L2.Th1.C
 
 /- English proof (translation)
-The claim follows from `formalExpLaws'`.
+A detailed English derivation is pending.
 -/
 theorem mvExpLaws : MvExpLaws := formalExpLaws'
 /- English proof (translation)
-The claim follows from `formalExpSubst'`.
+A detailed English derivation is pending.
 -/
 theorem mvExpSubst : MvExpSubst := formalExpSubst'
 /- English proof (translation)
-The claim follows from `lGSubgroup_of mvExpLaws`.
+A detailed English derivation is pending.
 -/
 theorem lGSubgroup : LGSubgroup := lGSubgroup_of mvExpLaws
 /- English proof (translation)
-The claim follows from `expIntegralBinomial'`.
+A detailed English derivation is pending.
 -/
 theorem lGBinom : LGBinom := expIntegralBinomial'
 /- English proof (translation)
-The claim follows from `lGHalf_of mvExpLaws`.
+A detailed English derivation is pending.
 -/
 theorem lGHalf : LGHalf := lGHalf_of mvExpLaws
 /- English proof (translation)
-The claim follows from `intBinomialScalar'`.
+A detailed English derivation is pending.
 -/
 theorem intBinomScalar : IntBinomScalar := intBinomialScalar'
 /- English proof (translation)
-The claim follows from `lGSubst_of mvExpSubst`.
+A detailed English derivation is pending.
 -/
 theorem lGSubst : LGSubst := lGSubst_of mvExpSubst
 /- English proof (translation)
-The claim follows from `expIntegralMvSubst'`.
+A detailed English derivation is pending.
 -/
 theorem lGSubstMv : LGSubstMv := expIntegralMvSubst'
 /- English proof (translation)
-The claim follows from `coeffsInSubst'`.
+A detailed English derivation is pending.
 -/
 theorem intSubst : IntSubst := coeffsInSubst'
 
 /- English proof (translation)
-The claim follows from `isogenyIffBar_of mvExpLaws`.
+A detailed English derivation is pending.
 -/
 theorem isogenyIffBar : IsogenyIffBar := isogenyIffBar_of mvExpLaws
 
 /- English proof (translation)
-The claim follows from `veluXOfSigma'`.
+A detailed English derivation is pending.
 -/
 theorem veluXFromZ : VeluXFromZ := veluXOfSigma'
 /- English proof (translation)
-The claim follows from `isogenyU_of mvExpLaws mvExpSubst`.
+A detailed English derivation is pending.
 -/
 theorem isogenyU : IsogenyU := isogenyU_of mvExpLaws mvExpSubst
 /- English proof (translation)
-The claim follows from `phNormUnit_of mvExpLaws mvExpSubst lGHalf isogenyU`.
+A detailed English derivation is pending.
 -/
 theorem phNormUnit : PhNormUnit := phNormUnit_of mvExpLaws mvExpSubst lGHalf isogenyU
 

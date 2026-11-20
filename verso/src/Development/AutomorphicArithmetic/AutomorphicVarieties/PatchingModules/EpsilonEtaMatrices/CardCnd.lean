@@ -12,9 +12,9 @@ private def Cnd (lo same : Prop) (d : DD X g) : Prop :=
   (lo → d = 0) ∧ d.ep' = 0 ∧ d.eta = 0 ∧ (same → d.ep = 0) ∧ (¬ same → d.a = 0)
 
 /- English proof (translation)
-Distinguish the cases in `hlo : lo`. Rewrite using `[if_pos hlo, pow_zero, Nat.card_eq_one_iff_exists]`. Use `⟨⟨0, fun _ => rfl, rfl, rfl, fun _ => rfl, fun _ => rfl⟩, fun d => Subtype.ext (d.2.1 hlo)⟩` and prove the remaining obligations. Distinguish the cases in `hs : same`. Rewrite using `[if_neg hlo, if_pos hs, pow_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.card_congr { toFun := fun d => d.1.a invFun := fun y => ⟨⟨y, 0, 0, 0⟩, fun h => absurd h hlo, rfl, rfl, fun _ => rfl, fun h => absurd hs h⟩ left_inv := fun d => Subtype.ext (DD.ext rfl (d.2.2.2.2.1 hs).symm d.2.2.1.symm d.2.2.2.1.symm) right_inv := fun y => rfl }`. Rewrite using `[if_neg hlo, if_neg hs]`. Establish `e : {d : DD X g // Cnd lo same d} ≃ (Fin g → X)` using `{ toFun := fun d => d.1.ep invFun := fun f => ⟨⟨0, f, 0, 0⟩, fun h => absurd h hlo, rfl, rfl, fun h => absurd h hs, fun _ => rfl⟩ left_inv := fun d => Subtype.ext (DD.ext (d.2.2.2.2.2 hs).symm rfl d.2.2.1.symm d.2.2.2.1.symm) right_inv := fun f => rfl }`. Rewrite using `[Nat.card_congr e, Nat.card_fun, Nat.card_fin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_cnd (lo same : Prop) [Decidable lo] [Decidable same] :
     Nat.card {d : DD X g // Cnd lo same d} = Nat.card X ^ (if lo then 0 else if same then 1 else g) := by
@@ -37,13 +37,13 @@ private theorem card_cnd (lo same : Prop) [Decidable lo] [Decidable same] :
       rw [Nat.card_congr e, Nat.card_fun, Nat.card_fin]
 
 /- English proof (translation)
-Establish `h : ∀ p : Fin n × Fin n, (if p.2 < p.1 then 0 else if ty p.1 = ty p.2 then 1 else g) = (if p.1 = p.2 then 1 else 0) + ((if p.1 < p.2 ∧ ty p.1 = ty p.2 then 1 else 0) + g * (if p.1 < p.2 ∧ ty p.1 ≠ ty p.2 then 1 else 0))`. Introduce `p`. Break down `lt_trichotomy p.1 p.2 with hp | hp | hp` into its components or cases. Establish `h1 : ¬ p.2 < p.1` using `not_lt.2 hp.le`. Establish `h2 : p.1 ≠ p.2` using `hp.ne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases ht : ty p.1 = ty p.2 <;> simp [hp, h1, h2, ht]`. Simplify using `[hp]`. Establish `h1 : ¬ p.1 < p.2` using `not_lt.2 hp.le`. Establish `h2 : p.1 ≠ p.2` using `hp.ne'`. Simplify using `[hp, h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl fun p _ => h p, Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum]`. Simplify using `only [Finset.sum_boole, Nat.cast_id]`. Use `congr 1`. Establish `hd : (Finset.univ.filter fun p : Fin n × Fin n => p.1 = p.2) = Finset.diag Finset.univ`. Use extensionality with `p`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Finset.mem_diag]`. Rewrite using `[hd, Finset.diag_card, Finset.card_univ, Fintype.card_fin]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_exp (ty : Fin n → Bool) :
     (∑ p : Fin n × Fin n, if p.2 < p.1 then 0 else if ty p.1 = ty p.2 then 1 else g) =
@@ -70,7 +70,7 @@ private theorem sum_exp (ty : Fin n → Bool) :
   rw [hd, Finset.diag_card, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `e : {Z : Matrix (Fin n) (Fin n) (DD X g) // ∀ i j, Cnd (j < i) (ty i = ty j) (Z i j)} ≃ ((p : Fin n × Fin n) → {d : DD X g // Cnd (p.2 < p.1) (ty p.1 = ty p.2) d})` using `{ toFun := fun Z p => ⟨Z.1 p.1 p.2, Z.2 _ _⟩ invFun := fun f => ⟨fun i j => (f (i, j)).1, fun i j => (f (i, j)).2⟩ left_inv := fun Z => Subtype.ext rfl right_inv := fun f => funext fun p => Subtype.ext rfl }`. Rewrite using `[Nat.card_congr e, Nat.card_pi, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Conclude with `card_cnd _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem card_pat (ty : Fin n → Bool) :
     Nat.card {Z : Matrix (Fin n) (Fin n) (DD X g) // ∀ i j, Cnd (j < i) (ty i = ty j) (Z i j)} =
@@ -88,17 +88,15 @@ private theorem card_pat (ty : Fin n → Bool) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `l _ F n x k m v`. Take `⟨_, hK, -⟩` from `finAm l F n x m k.g`. Take `⟨-, hnu, -⟩` from `tyCard l F n x v k.g`. Take `⟨hw, hw'⟩` from `(rho1 l F n x k (x.Am m)).2.2.2.1 v`. Establish `hM` using `(tri l F n x k (x.Am m) v).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c1 : ∀ Y : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g), k.wi1 (x.Am m) v * (k.w1 (x.Am m) v * Y * k.wi1 (x.Am m) v) * k.w1 (x.Am m) v = Y`. Introduce `Y`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hw, Matrix.mul_one, ← Matrix.mul_assoc, hw, Matrix.one_mul]`. Establish `c2 : ∀ Y : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g), k.w1 (x.Am m) v * (k.wi1 (x.Am m) v * Y * k.w1 (x.Am m) v) * k.wi1 (x.Am m) v = Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Y`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hw', Matrix.mul_one, ← Matrix.mul_assoc, hw', Matrix.one_mul]`. Establish `e : k.b1 (x.Am m) v ≃ {Y : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g) // ∀ i j, Cnd (j < i) (x.ty v i = x.ty v j) (Y i j)}` using `{ toFun := fun Z => ⟨k.wi1 (x.Am m) v * Z.1.1 * k.w1 (x.Am m) v, fun i j =>`. Establish `hT` using `(hM Z.1.1).1 Z.1.2 i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `⟨Z.2 i j, hT.1, hT.2.1, hT.2.2.1, hT.2.2.2⟩⟩`. Use `invFun := fun Y => ⟨⟨k.w1 (x.Am m) v * Y.1 * k.wi1 (x.Am m) v, (hM _).2 (by`. Rewrite using `[c1]`. Introduce `i j`. Establish `hc` using `Y.2 i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨hc.2.1, hc.2.2.1, hc.2.2.2.1, hc.2.2.2.2⟩)⟩, by`. Introduce `i j hij`. Use `show (k.wi1 (x.Am m) v * (k.w1 (x.Am m) v * Y.1 * k.wi1 (x.Am m) v) * k.w1 (x.Am m) v) i j = 0`. Rewrite using `[c1]`. Conclude with `(Y.2 i j).1 hij⟩`.
-
-Use `left_inv := fun Z => Subtype.ext (Subtype.ext (c2 _))`. Use `right_inv := fun Y => Subtype.ext (c1 _) }`. Rewrite using `[Nat.card_congr e, card_pat, sum_exp, hnu, hK, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.bCard :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (k : Kap x) (m : ℕ) (v : F.Vl), Nat.card (k.b1 (x.Am m) v) = Nat.card x.K ^ (m * (n + nu n x.a k.g)) := by

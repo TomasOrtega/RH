@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.LeibPhi
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ m j u hh`. Take `⟨h1, hv⟩` from `GlobalTheory.CompanionTheory.GpUnip.gpProj_unip k m (j + 1) ⟨u, hh⟩ u.2`. Use `⟨h1, hv, ?_⟩` and prove the remaining obligations. Take `⟨w', hw'⟩` from `id (id hv : (((gpProj k m (j + 1) ⟨u, hh⟩).2 : Mir k (j + 1)) : GL (Fin (j + 1 + 1)) k) ∈ MirU k (j + 1))`. Take `⟨w, hw⟩` from `(u.2 : ((u : Mir k (m + j + 1)) : GL (Fin (m + j + 1 + 1)) k) ∈ MirU k (m + j + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mirChar_eq k ψ j ⟨_, hv⟩ w' hw'.symm, mirChar_eq k ψ (m + j) u w hw.symm]`. Establish `hent : ((((gpProj k m (j + 1) ⟨u, hh⟩).2 : Mir k (j + 1)) : GL (Fin (j + 1 + 1)) k) : Matrix _ _ k) (Fin.castSucc (Fin.last j)) (Fin.last (j + 1)) = (((u : Mir k (m + (j + 1))) : GL (Fin (m + (j + 1) + 1)) k) : Matrix _ _ k) (eGP m (j + 1) ⟨true, Fin.castSucc (Fin.last j)⟩) (eGP …` using `by show (leviProj k (eGP m (j + 1)) (hgpIncl k m (j + 1) ⟨u, hh⟩) true).val _ _ = _`. Rewrite using `[leviProj_apply]`. Both sides reduce to the same expression. Establish `e : eGP m (j + 1) ⟨true, Fin.castSucc (Fin.last j)⟩ = Fin.castSucc (Fin.last (m + j))` using `Fin.ext (by rw [blockIndex_true_val]; simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `hent` using `[blockIndex_true_last, e, ← hw']`. Establish `a1` using `unip_apply_castSucc_last k (j + 1) w' (Fin.last j)`. Establish `a2` using `unip_apply_castSucc_last k (m + j + 1) w (Fin.last (m + j))`. Establish `: w'.toAdd (Fin.last j) = w.toAdd (Fin.last (m + j))`. Rewrite using `[← a1, ← a2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hent.trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun g : GL (Fin (m + j + 1 + 1)) k => (g : Matrix (Fin (m + j + 1 + 1)) (Fin (m + j + 1 + 1)) k) (Fin.castSucc (Fin.last (m + j))) (Fin.last (m + j + 1))) hw.symm`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gpProj_mirUin_char : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (m j : ℕ) (u : MirUin k (m + (j + 1)))
     (hh : (u : Mir k (m + (j + 1))) ∈ MirabolicParabolic k m (j + 1)),

@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CuspidalMo
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `h` and use `cuspTraceClass_of_decay GlobalTheory.T.cuspidal_moderateGrowth_rapidDecay h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspTraceClass_of_factorisation : DixmierMalliavinFactorisation → CuspTraceClass :=
   fun h => cuspTraceClass_of_decay GlobalTheory.T.cuspidal_moderateGrowth_rapidDecay h

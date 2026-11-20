@@ -14,11 +14,11 @@ attribute [local instance] borelH
 namespace GlobalTheory.CompanionTheory.PiVec
 
 /- English proof (translation)
-Introduce `E _ _ _ n ω hω`. Take `⟨hcpt, -, -, c, hc⟩` from `GlobalTheory.CompanionTheory.Size.sizeBasic GlobalTheory.CompanionTheory.Dblock.SzFinProof.szFin GlobalTheory.CompanionTheory.ConjAtPlaces.conjPlaces E n`. Take `⟨r₁, h₁⟩` from `hcpt ω hω`. Take `⟨r₂, h₂⟩` from `hcpt _ (GroundTheory.Automorphic.Reduction.isCompact_maxCompact (K := E) (n := n))`. Establish `htor` using `GlobalTheory.CompanionTheory.TorNorm.torNorm GlobalTheory.CompanionTheory.LogAbs.logAbsBasic E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨|r₁| + |r₂| + 2 * |c|, by positivity, fun b hb x k hk => ?_⟩` and prove the remaining obligations. Establish `e₁` using `hc (b * An.tor E x) k`. Establish `e₂` using `hc b (An.tor E x)`. Establish `e₃` using `((htor.2 n x).2)`. Establish `a₁` using `(h₁ b hb).trans (le_abs_self r₁)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `(h₂ k hk).trans (le_abs_self r₂)`. Establish `a₃` using `le_abs_self c`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sizeTor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (ω : Set (GA E n)), IsCompact ω → ∃ A : ℝ, 0 ≤ A ∧
     ∀ b ∈ ω, ∀ x : Fin n → ℝ, ∀ k ∈ maxCompact (K := E) (n := n),

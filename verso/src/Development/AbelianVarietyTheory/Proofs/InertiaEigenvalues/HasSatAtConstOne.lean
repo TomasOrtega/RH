@@ -11,9 +11,9 @@ namespace GlobalTheory.UnitaryBC
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hw : ConjPl c w w` using `fun k => by`. Establish `h1 : Valued.v (algebraMap E (w.adicCompletion E) k) = w.valuation E k` using `w.valuedAdicCompletion_eq_valuation' k`. Establish `h2 : Valued.v (algebraMap E (w.adicCompletion E) (c k)) = w.valuation E (c k)` using `w.valuedAdicCompletion_eq_valuation' _`. Rewrite using `[← h1, ← h2, ← hs, hv]`. Establish `key : ∀ (u : HeightOneSpectrum (𝓞 E)) (_ : w = u) (φ : u.adicCompletion E →+* w.adicCompletion E), Continuous φ → (∀ k : E, φ (algebraMap E _ k) = algebraMap E _ (c k)) → φ (pLoc E u x) = s (pLoc E w x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl φ h1 h2`. Conclude with `congrFun ((HeightOneSpectrum.denseRange_algebraMap E w).equalizer h1 (continuous_of_valued_eq (w.valuedAdicCompletion_surjective E) s hv) (funext fun k => (h2 k).trans (hs k).symm)) _`. Rewrite using `[pLoc_conjFin]`. Conclude with `key _ (eq_conjSrc hw) _ (conjLoc_spec c w).1 (conjLoc_spec c w).2.1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pLoc_conjFin_eq (c : E ≃+* E) (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+* w.adicCompletion E)
     (hs : ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (c x)) (hv : ∀ x, Valued.v (s x) = Valued.v x) (x : Af E) :
@@ -36,9 +36,9 @@ theorem pLoc_conjFin_eq (c : E ≃+* E) (w : HeightOneSpectrum (𝓞 E)) (s : w.
 variable [IsCMField E]
 
 /- English proof (translation)
-Establish `hg : cT (conjAd E) g.1.val * 1 * g.1.val = 1` using `g.2`. Rewrite `hg` using `[Matrix.mul_one]`. Establish `h` using `congrArg ((pLoc E w).comp (pFin E)).mapMatrix hg`. Rewrite `h` using `[map_mul, map_one]`. Rewrite using `[← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `(pLoc_conjFin_eq (IsCMField.complexConj E).toRingEquiv w s hs hv (pFin E (g.1.val j i))).symm`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cT_cLoc {n : ℕ} (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+* w.adicCompletion E)
     (hs : ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x))

@@ -8,23 +8,21 @@ open PositivityTheory.UnitarySelfGeneration.JN
 namespace LevelTowerAlt.Comparison₂
 
 /- English proof (translation)
-Take `⟨m, w, y, Z, ξ, h₁, h₂, e₁, e₂, -, hg, ht, hN, hd₁, hd₂⟩` from `GlobalTheory.CompanionTheory.Ar.HtJoin.exists_normal_join Ω₁ Ω₂ Ω i₁ i₂ K₁ K₂ ι₁ ι₂ y₁ y₂ X₁ X₂ ξ₁ ξ₂ (finite_of i₁ hf₁) hg₁ hg₂ ht₁ ht₂`. Set `J : K₁ ⊕ K₂ ⊕ Unit → Type` to `Sum.elim ι₁ (Sum.elim ι₂ fun _ => Fin m)`. Establish `fin : ∀ k, Finite (J k)`. Introduce and unpack `(k | k | k)`. Express the relevant statement in the definitionally equal form `Finite (ι₁ k)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Express the relevant statement in the definitionally equal form `Finite (ι₂ k)`. Use `infer_instance`. Express the relevant statement in the definitionally equal form `Finite (Fin m)`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `inst : ∀ k, Fintype (J k)` to `fun k => Fintype.ofFinite _`. Set `v₁ : (Σ k, ι₁ k) → Σ k, J k` to `fun p => ⟨.inl p.1, p.2⟩`. Set `v₂ : (Σ k, ι₂ k) → Σ k, J k` to `fun p => ⟨.inr (.inl p.1), p.2⟩`. Establish `hv₁ : IsBlockMap (ι'` using `J) Sum.inl v₁ := by`. Use `⟨Sum.inl_injective, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨k, a⟩ ⟨k', a'⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression. Introduce and unpack `⟨_, a⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, a⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hv₂ : IsBlockMap (ι'` using `J) (fun k => .inr (.inl k)) v₂ := by`. Use `⟨fun _ _ h => Sum.inl_injective (Sum.inr_injective h), ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, a⟩ ⟨k', a'⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨_, a⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, a⟩, rfl⟩`. Establish `y1 : y ∘ v₁ = fun p => i₁ (y₁ p)` using `funext fun p => e₁ p.1 p.2`. Establish `y2 : y ∘ v₂ = fun p => i₂ (y₂ p)` using `funext fun p => e₂ p.1 p.2`. Establish `hb : Birational (ι` using `J) y := birational_of_tie (ι := J) ht`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `exists_chart (ι := J) ht`. Take `⟨c₁, hc₁⟩` from `exists_chart ht₁`. Establish `F : (blockFnField (ι` using `J) y).toSubfield = (RingHom.id Ω).fieldRange := blockFnField_eq (ι := J) (RingHom.id Ω) y hb c hc`. Establish `F₁ : (blockFnField (y ∘ v₁)).toSubfield = i₁.fieldRange`. Rewrite using `[y1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `blockFnField_eq i₁ y₁ hb₁ c₁ hc₁`. Establish `fd : FiniteDimensional (blockFnField (y ∘ v₁)) Ω`. Establish `: FiniteDimensional (blockFnField (y ∘ v₁)).toSubfield Ω` using `by rw [F₁]; exact hf₁`. Conclude with `this`. Establish `I1 : mCoordIdeal (y ∘ v₁) = mCoordIdeal y₁` using `by rw [y1, mCoordIdeal_map]`.
-
-Establish `I2 : mCoordIdeal (y ∘ v₂) = mCoordIdeal y₂` using `by rw [y2, mCoordIdeal_map]`. Use `⟨K₁ ⊕ K₂ ⊕ Unit, inferInstance, J, inst, Sum.inl, v₁, fun k => .inr (.inl k), v₂, y, Z, ξ, h₁, h₂, hv₁, hv₂, congrFun y1, congrFun y2, I1, I2, ?_, hb, hg, ht, hN, hd₁, hd₂, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.isArithVar_of_block_algebraic K₁ ι₁ _ J Sum.inl v₁ Ω y d hv₁ (fun k => ⟨c k, Finset.prod_ne_zero_iff.1 hc k (Finset.mem_univ k)⟩) (I1 ▸ ha₁) (fun t _ => Algebra.IsAlgebraic.isAlgebraic t)`. Rewrite using `[relfinrank_eq i₁ _ _ F₁ F]`. Conclude with `Module.finrank_pos.ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem join_normal {K₁ : Type} [Fintype K₁] {ι₁ : K₁ → Type} [∀ k, Fintype (ι₁ k)] {K₂ : Type} [Fintype K₂]
     {ι₂ : K₂ → Type} [∀ k, Fintype (ι₂ k)] {Ω₁ Ω₂ Ω : Type} [Field Ω₁] [Field Ω₂] [Field Ω] [CharZero Ω] (i₁ : Ω₁ →+* Ω)

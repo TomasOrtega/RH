@@ -9,15 +9,15 @@ open scoped ComplexConjugate Classical InnerProductSpace
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-Establish `hrow : (Pi.single i 1 : Fin n → E) ᵥ* k = k i`. Use function extensionality and compare the values at `l`. Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply]`. Establish `h1` using `hk (Pi.single i 1)`. Rewrite `h1` using `[hrow]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∑ l, ‖(Pi.single i 1 : Fin n → E) l‖ ^ 2 = 1`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h2 : ∑ l, ‖k i l‖ ^ 2 = 1`. Use `congrArg (· ^ 2) h1` as an intermediate fact. Simplify using `only [euclidNorm] at this`. Rewrite `this` using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), hs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h3 : ‖k i i‖ ^ 2 + ‖k i j‖ ^ 2 ≤ ∑ l, ‖k i l‖ ^ 2`. Rewrite using `[← Finset.sum_pair (f := fun l => ‖k i l‖ ^ 2) hij]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => sq_nonneg _`. Rewrite `h3` using `[h2, hii, norm_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ‖k i j‖ ^ 2 ≤ 0` using `by linarith`. Establish `h5 : ‖k i j‖ = 0`. Use `sq_nonneg ‖k i j‖` as an intermediate fact. Conclude with `pow_eq_zero_iff (two_ne_zero) |>.1 (le_antisymm h4 this)`. Conclude with `norm_eq_zero.1 h5`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem off_diag_zero {E : Type} [NormedField E] {n : ℕ} (k : Matrix (Fin n) (Fin n) E)
     (hk : ∀ y : Fin n → E, euclidNorm (y ᵥ* k) = euclidNorm y) {i j : Fin n} (hii : k i i = 1) (hij : i ≠ j) :
@@ -50,25 +50,23 @@ private theorem off_diag_zero {E : Type} [NormedField E] {n : ℕ} (k : Matrix (
   exact norm_eq_zero.1 h5
 
 /- English proof (translation)
-Introduce `K _ _ X hX`. Establish `hK : ((nn X : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K (2 + 2)))` using `hX`. Take `⟨hinf, hfin⟩` from `hK`. Establish `hent : ∀ a b, ((nn X : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) a b = unipMatrix X a b` using `fun _ _ => rfl`. Establish `hz : ∀ (p : UPos (2 + 2) 2) (w : InfinitePlace K), (X p).1 w = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p w`. Establish `hne : p.1.1 ≠ p.1.2`. Introduce `h`. Use `p.2` as an intermediate fact. Rewrite `this` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hii : ((infAt w ((nn X : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) : GL (Fin (2 + 2)) w.Completion) : Matrix (Fin (2 + 2)) (Fin (2 + 2)) w.Completion) p.1.1 p.1.1 = 1`. Establish `hp` using `p.2.1`. Express the relevant statement in the definitionally equal form `(((nn X : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) p.1.1 p.1.1).1 w = 1`. Rewrite using `[hent, unipMatrix, Matrix.add_apply, blockEntry_apply, dif_neg (by omega)]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h0` using `off_diag_zero _ (hinf w) hii hne`. Express the relevant statement in the definitionally equal form `(((nn X : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) p.1.1 p.1.2).1 w = 0 at h0`. Rewrite `h0` using `[hent, unipMatrix, Matrix.add_apply, blockEntry_apply, dif_pos p.2, Matrix.one_apply_ne hne, zero_add]`. Conclude with `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set g : AdelicGLn.AdelicGL K (2 + 2) := ((nn X : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) with hg`. Establish `h1 : (AdelicGLn.prodEquiv K (2 + 2) g).1 = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g a b).1 = (1 : Matrix (Fin (2 + 2)) (Fin (2 + 2)) (InfiniteAdeleRing K)) a b`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hent, unipMatrix, Matrix.add_apply, blockEntry_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[dif_neg (by omega), Matrix.one_apply_eq, Matrix.one_apply_eq, add_zero]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne hab] split_ifs with h`. Establish `hw : (X ⟨(a, b), h⟩).1 = 0` using `funext fun w => hz _ w`. Simplify using `[hw]`. Simplify using the standard rewrite rules. Establish `hint : (AdelicGLn.prodEquiv K (2 + 2) g).2 ∈ AdelicGLn.integralFiniteGL K (2 + 2)` using `(AdelicGLn.mem_integralFiniteGL_iff_forall K (2 + 2)).2 hfin`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgf : finEmb K (2 + 2) (AdelicGLn.prodEquiv K (2 + 2) g).2 = g`. Use `infEmb_mul_finEmb g` as an intermediate fact. Rewrite `this` using `[h1, map_one, map_one, one_mul]`. Then use the resulting hypothesis. Use `⟨⟨_, hint⟩, ?_⟩` and prove the remaining obligations. Establish `hmem : finEmb K (2 + 2) (AdelicGLn.prodEquiv K (2 + 2) g).2 ∈ normOneGL K (2 + 2)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hgf]`. Conclude with `(nn X).2`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `g = ((MultiplicityOne.finProj K (2 + 2) (AdelicGLn.prodEquiv K (2 + 2) g).2 : normOneGL K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2))`. Rewrite using `[MultiplicityOne.finProj_of_mem hmem]`.
-
-Conclude with `hgf.symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unipotent_mem_maximalCompact_finite_integral :
     ∀ {K : Type} [Field K] [NumberField K] (X : UPos (2 + 2) 2 → NumberField.AdeleRing (𝓞 K) K), nn X ∈ KG K (2 + 2) → ∃ h : AdelicGLn.integralFiniteGL K (2 + 2), nn X = fin1 (h : FA K (2 + 2)) := by

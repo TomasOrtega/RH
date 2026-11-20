@@ -5,17 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.Ka
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published.Kato
 
 /- English proof (translation)
-Introduce `l _ F Ω _ _ _ _ n r r' ⟨P, hP⟩ h c hc hbk`. Set `f : (Fin n → Qbar l) →ₗ[ℚ_[l]] (Fin n → Qbar l)` to `(Matrix.mulVecLin ((P⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))).restrictScalars ℚ_[l]`. Establish `hfa : ∀ x, f x = ((P⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)).mulVec x` using `fun _ => rfl`. Establish `hcol : ∀ (ρ : G F Ω →* GL (Fin n) (Qbar l)) g x, Loc.colRep ρ g x = (ρ g : Matrix (Fin n) (Fin n) (Qbar l)).mulVec x` using `fun _ _ _ => rfl`. Establish `hf : ∀ g x, f (Loc.colRep r' g x) = Loc.colRep r g (f x)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g x`. Rewrite using `[hfa, hfa, hcol, hcol, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, hP]`. Use `congr 2`. Use `group`. Establish `hinj : Function.Injective f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Use `congrArg ((P : Matrix (Fin n) (Fin n) (Qbar l)).mulVec) hxy` as an intermediate fact. Rewrite `this` using `[hfa, hfa, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `hsurj : Function.Surjective f`. Introduce `y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(P : Matrix (Fin n) (Fin n) (Qbar l)).mulVec y, ?_⟩` and prove the remaining obligations. Rewrite using `[hfa, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hcont : Continuous (fun g => f (c g))`. Simplify using `only [hfa]`. Conclude with `continuous_const.matrix_mulVec hc.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : (fun g => f (c g)) ∈ Z1 (Loc.colRep r)`. Use `⟨hcont, fun g g' => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg f (hc.2 g g')`. Simplify `h1` using `only [map_add, hf]`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 (h _ hz (UpperTheory.V.X.Kato.bkMap l F Ω _ _ _ _ _ _ f hf c hcont hbk))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m', rfl⟩` from `hsurj m`. Use `(mem_coboundaries1 _ _).2 ⟨m', fun g => hinj ?_⟩` and prove the remaining obligations. Use `hm g` as an intermediate fact. Simplify using `only [map_sub, hf]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.Kato.conj :
     ∀ (l : ℕ) [Fact l.Prime] (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (n : ℕ) (r r' : G F Ω →* GL (Fin n) (Qbar l)), RepIso r r' → BlochKatoSelmerVanishes l (Loc.colRep r) → BlochKatoSelmerVanishes l (Loc.colRep r') := by

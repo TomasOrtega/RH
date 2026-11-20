@@ -39,27 +39,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 
 /- English proof (translation)
-Introduce `T io y C3 C _ _ V ι _hι k Y _hY a n P hP f hf`. Establish `: CharZero T.Fr` using `charZero_of_inj_zero fun x hx => by`. Establish `h1` using `congrArg ι hx`. Rewrite `h1` using `[map_natCast, map_zero, Nat.cast_eq_zero]`. Then use the resulting hypothesis. Take `⟨m, cc, Z, hc, hZ, hPe⟩` from `hS (E →+* ℂ) Dw.mult n ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) C V.RR P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Set `Q : Fin m → MvPolynomial (LtN Dw n) T.Fr` to `fun i => MvPolynomial.map (Int.castRingHom T.Fr) (Z i)`. Establish `hmap : ∀ i, MvPolynomial.map ι (Q i) = MvPolynomial.map (Int.castRingHom C) (Z i)`. Introduce `i`. Simplify using `only [Q]`. Rewrite using `[MvPolynomial.map_map, RingHom.ext_int (ι.comp (Int.castRingHom T.Fr)) (Int.castRingHom C)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `Ls` to `chartLetterSystem C3 V ι a`. Set `tc : (Fin n × Fin (chD C3.ch) →₀ ℕ) → C` to `fun μ => MvPolynomial.coeff μ (MvPowerSeries.trunc' C (DescP.cst P.totalDegree) f)`. Establish `hP2 : ∀ g : PS C n (chD C3.ch), Y.nab Ls n g P = ∑ i, cc i * Y.nab Ls n g (MvPolynomial.map ι (Q i))`. Introduce `g`. Establish `hg : ∀ i, Y.nab Ls n g (MvPolynomial.map ι (Q i)) = Y.nab Ls n g (MvPolynomial.map (Int.castRingHom C) (Z i))` using `fun i => congrArg (Y.nab Ls n g) (hmap i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hg, nab_eq_nabL]`. Use `show MvPowerSeries.constantCoeff (DpolyN (Y.B.FK C) (Ls.cp n) (Ls.uv n) P (g * gofY Y n)) = ∑ i, cc i * MvPowerSeries.constantCoeff (DpolyN (Y.B.FK C) (Ls.cp n) (Ls.uv n) (MvPolynomial.map (Int.castRingHom C) (Z i)) (g * gofY Y n))`. Rewrite using `[hPe]`. Conclude with `DescP.const_dpolyN_lin (Y.B.FK C) (Ls.cp n) (Ls.uv n) Finset.univ cc _ (g * gofY Y n)`. Establish `hmono : ∀ μ : Fin n × Fin (chD C3.ch) →₀ ℕ, (MvPowerSeries.monomial μ (1 : C) : PS C n (chD C3.ch)) = MvPowerSeries.map ι (MvPowerSeries.monomial μ (1 : T.Fr))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `μ`. Rewrite using `[MvPowerSeries.map_monomial, ι.map_one]`. Set `S` to `(MvPowerSeries.trunc' C (DescP.cst P.totalDegree) f).support`. Set `g' : (Fin n × Fin (chD C3.ch) →₀ ℕ) × Fin m → C` to `fun x => (tc x.1 * cc x.2) * Y.nab Ls n (MvPowerSeries.map ι (MvPowerSeries.monomial x.1 (1 : T.Fr))) (MvPolynomial.map ι (Q x.2))`. Establish `hmain : Y.nab Ls n f P = ∑ x ∈ S ×ˢ (Finset.univ : Finset (Fin m)), g' x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_product, nab_eq_nabL, DescP.nabL_trunc]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[← nab_eq_nabL, hP2, hmono μ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [g', tc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨N, e, _he, hsum⟩` from `DescP.exists_fin_sum (S ×ˢ (Finset.univ : Finset (Fin m))) g'`. Use `⟨N, fun j => tc (e j).1 * cc (e j).2, fun j => Q (e j).2, fun j => MvPowerSeries.monomial (e j).1 (1 : T.Fr), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Establish `htc : V.Ge 0 (tc (e j).1)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tc]`. Rewrite using `[MvPowerSeries.coeff_trunc']`. Use `split_ifs`. Conclude with `hf _`. Conclude with `VF.Ge.zero 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `VF.Ge.mul_int htc (hc (e j).2)`. Introduce `j`. Use `⟨hZ (e j).2 T.Fr, fun μ => ?_⟩` and prove the remaining obligations. Simplify using `only [Q]`. Rewrite using `[MvPolynomial.coeff_map, eq_intCast]`.
-
-Conclude with `⟨((MvPolynomial.coeff μ (Z (e j).2) : ℤ) : T.V), map_intCast _ _⟩`. Introduce `j μ`. Rewrite using `[MvPowerSeries.coeff_monomial]`. Use `split_ifs`. Conclude with `Subring.one_mem _`.
-
-Conclude with `Subring.zero_mem _`. Rewrite using `[hmain, hsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descSpanSt_of (hS : HaSpanSt) : DescSpanSt Xo c := by
   intro T io y C3 C _ _ V ι _hι k Y _hY a n P hP f hf

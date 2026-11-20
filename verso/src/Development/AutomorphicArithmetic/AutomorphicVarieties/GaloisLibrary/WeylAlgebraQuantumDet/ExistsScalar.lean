@@ -6,11 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Introduce `n ν hν H hH`. Take `⟨f, hf0, hdeg, hf⟩` from `topPol n ν hν H hH`. Take `⟨Ξ, e, he⟩` from `polPre n (n * H)`. Set `F : MvPolynomial.restrictTotalDegree (Fin n × Fin n) ℂ (n * H)` to `⟨f, (MvPolynomial.mem_restrictTotalDegree _ _ _).2 hdeg⟩`. Establish `hF : F ≠ 0` using `fun h => hf0 (congrArg Subtype.val h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hv : e F ≠ 0` using `fun h => hF (e.injective (h.trans e.map_zero.symm))`. Establish `htop : Ξ.IsTop ν (e F)`. Introduce `b hb`. Rewrite using `[he b F ((∏ k, b k k ^ ν k) • F) (hf b hb).symm, map_smul]`. Take `⟨Ξ', h0, hle, hw⟩` from `scalar n Ξ ν (e F) hv htop`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Ξ', h0, hle.trans ?_, hw⟩` and prove the remaining obligations. Establish `h1` using `e.finrank_eq`. Establish `h2` using `degRank n (n * H)`. Rewrite `h2` using `[h1]`. Simplify using `using h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.Weyl.existsScalar :
     ∀ (n : ℕ) (ν : Fin n → ℕ), Antitone ν → ∀ H : ℕ, (∀ k, ν k ≤ H) →

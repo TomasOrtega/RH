@@ -9,9 +9,9 @@ open scoped TensorProduct ENNReal NNReal
 namespace GlobalTheory.GramFibreRescale
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hφ hc hU => ⟨fun b hb => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, h1 b, smul_zero]`. Simplify using `only [Measure.restrict_smul, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← mul_assoc, ← ENNReal.coe_mul, mul_div_cancel₀ _ hd, h2 φ hφ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((h3 φ hφ hc hU).1 b hb).smul_measure_nnreal`. Simplify using `only [integral_smul_nnreal_measure]`. Conclude with `(h3 φ hφ hc hU).2.const_smul (c / d)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFibreFamily_smul {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V]
     [TopologicalSpace X] [MeasurableSpace X] {μ : Measure V} {f : V → Y} {ι : X → Y} {U : Set V}

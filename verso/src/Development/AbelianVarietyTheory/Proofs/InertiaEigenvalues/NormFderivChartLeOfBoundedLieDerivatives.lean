@@ -8,9 +8,9 @@ open NumberField MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.JSW
 namespace GlobalTheory.JSW
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ (a : ℝ) * (‖toL A‖ * ‖B‖)` using `by positivity`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun i => (pi_norm_le_iff_of_nonneg h0).2 fun j => ?_` and prove the remaining obligations. Use `show ‖(A * Matrix.of B) i j‖ ≤ _`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk : ∀ k, ‖A i k * Matrix.of B k j‖ ≤ ‖toL A‖ * ‖B‖` using `fun k => by`. Use `(norm_mul_le _ _).trans (mul_le_mul ?_ ?_ (norm_nonneg _) (norm_nonneg _))` and prove the remaining obligations. Conclude with `(norm_le_pi_norm (toL A i) k).trans (norm_le_pi_norm (toL A) i)`. Conclude with `(norm_le_pi_norm (B k) j).trans (norm_le_pi_norm B k)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_toL_mul_le {E : Type} [Field E] [NumberField E] {a : ℕ} (A : Matrix (Fin a) (Fin a) (Cinf E)) (B : Lie E a) :
     ‖toL (A * Matrix.of B)‖ ≤ a * (‖toL A‖ * ‖B‖) := by
@@ -27,17 +27,17 @@ theorem norm_toL_mul_le {E : Type} [Field E] [NumberField E] {a : ℕ} (A : Matr
     _ = _ := by simp
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hC`. Use `choose C hC using hC`. Use `set D : ℝ := ∑ i, max (C i) 0 * ‖lieCoord E a i‖ with hDdef`. Establish `hD : 0 ≤ D` using `Finset.sum_nonneg fun i _ => mul_nonneg (le_max_right _ _) (norm_nonneg _)`. Establish `hlie : ∀ (X : Lie E a) (h : GA E a), ‖lieD X φ.1 h‖ ≤ D * ‖X‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `X h`. Establish `e : lieD X φ.1 h = ∑ i, ((lieBasis E a).coord i X) • lieD (lieBasis E a i) φ.1 h` using `by conv_lhs => rw [← sum_lieCoord X]`. Simplify using `only [lieD, map_sum, map_smul]`. Rewrite using `[e, hDdef, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_smul]`. Establish `h1 : ‖(lieBasis E a).coord i X‖ ≤ ‖lieCoord E a i‖ * ‖X‖`. Establish `: ‖lieCoord E a i X‖ = ‖(lieBasis E a).coord i X‖` using `by simp [lieCoord]`. Rewrite using `[← this]`. Conclude with `(lieCoord E a i).le_opNorm X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ‖lieD (lieBasis E a i) φ.1 h‖ ≤ max (C i) 0`. Use `hC i h` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CuspRep.lie_apply]`. Conclude with `this.trans (le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨a * D, fun g y => ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun W => ?_` and prove the remaining obligations. Use `set X : Lie E a := toL ((y⁻¹).val * Matrix.of W) with hX`. Establish `e` using `chart_lieD φ.2 X g (val_mem_invSet y)`. Establish `eW : rmul X (toL y.val) = W`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Express the relevant statement in the definitionally equal form `y.val * ((y⁻¹).val * Matrix.of W) = Matrix.of W`. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`. Rewrite `e` using `[eW, chart_val]`. Rewrite using `[← e]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_fderiv_chart_le : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a),
     (∀ i, ∃ C : ℝ, ∀ g, ‖(lie E a (lieBasis E a i) φ).1 g‖ ≤ C) →

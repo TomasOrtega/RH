@@ -7,29 +7,27 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p hp k _ _ _`. Establish `hp' : p.Prime` using `hp.out`. Establish `hroot : ∀ u : kˣ, ∃ v : kˣ, v ^ p = u`. Introduce `u`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (u : k) hp'.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hp'.ne_zero]`. Conclude with `u.ne_zero hz.symm`. Conclude with `⟨Units.mk0 z hz0, Units.ext (by simpa using hz)⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose f hf using hroot`. Use `haveI : NeZero (p : k) := ⟨by exact_mod_cast hp'.ne_zero⟩`. Take `⟨z₁, hz₁⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot k p`. Establish `hz₁0 : z₁ ≠ 0` using `hz₁.ne_zero hp'.ne_zero`. Establish `hu₁ : IsPrimitiveRoot (Units.mk0 z₁ hz₁0) p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← IsPrimitiveRoot.coe_units_iff]`. Simplify using `using hz₁`. Establish `step : ∀ (n : ℕ) (x : kˣ), IsPrimitiveRoot (x ^ p) (p ^ (n + 1)) → IsPrimitiveRoot x (p ^ (n + 2))`. Introduce `n x hx`. Rewrite `hx`, the goal using `[IsPrimitiveRoot.iff_orderOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : orderOf x ∣ p ^ (n + 2)`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Rewrite using `[pow_succ', pow_mul, ← hx, pow_orderOf_eq_one]`. Take `⟨i, hi, hio⟩` from `(Nat.dvd_prime_pow hp').1 hdvd`. Break down `Nat.lt_or_ge i (n + 2) with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-It suffices to derive a contradiction. Establish `h1 : (x ^ p) ^ (p ^ n) = 1`. Rewrite using `[← pow_mul, ← pow_succ', ← orderOf_dvd_iff_pow_eq_one, hio]`. Conclude with `Nat.pow_dvd_pow p (by omega)`. Establish `h2` using `orderOf_dvd_of_pow_eq_one h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h2` using `[hx]`. Use `Nat.le_of_dvd (pow_pos hp'.pos n) h2` as an intermediate fact. Establish `h3 : p ^ n < p ^ (n + 1)` using `Nat.pow_lt_pow_right hp'.one_lt (by omega)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hio, le_antisymm hi h]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : ℕ → kˣ` to `fun n => Nat.rec (Units.mk0 z₁ hz₁0) (fun _ u => f u) n`. Establish `g0 : g 0 = Units.mk0 z₁ hz₁0` using `rfl`. Establish `gs : ∀ n, g (n + 1) = f (g n)` using `fun n => rfl`. Establish `gprim : ∀ n, IsPrimitiveRoot (g n) (p ^ (n + 1))`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Proceed by induction on `n with`. Consider the case `zero => simpa [g0] using hu₁`. Consider the case `succ n ih`. Apply `step` to reduce the goal to its premises. Rewrite using `[gs, hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `ih`. Use `⟨fun r => match r with | 0 => 1 | r + 1 => g r, ?_, ?_⟩` and prove the remaining obligations. Introduce `r`. Consider the cases of `r with`. Consider the case `zero => simpa using IsPrimitiveRoot.one`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ r => exact gprim r`. Introduce `r`. Consider the cases of `r with`. Consider the case `zero => show g 0 ^ p = 1`. Simplify using `using (gprim 0).pow_eq_one`.
-
-Consider the case `succ r => show g (r + 1) ^ p = g r`. Rewrite using `[gs, hf]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compatible_primitive_prime_pow_roots :
     ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharZero k],

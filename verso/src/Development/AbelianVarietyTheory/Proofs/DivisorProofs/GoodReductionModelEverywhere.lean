@@ -13,11 +13,11 @@ open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM Global
 namespace GlobalTheory.FlatDegreeCompare
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l c k _ _ j o e hg hA 𝔭`. Take `⟨Xo⟩` from `Moduli.moduli_scheme_exists E H D l e`. Take `⟨f, ⟨hf, ⟨m⟩⟩, -⟩` from `Xo.rep _ _ inferInstance o`. Take `⟨Y⟩` from `(GlobalTheory.Reg.modelAt_and_nonempty_global_model E H D l Xo c e hg hA).2`. Set `y : Sp k ⟶ Xo.XF c` to `pullback.lift f (spMap j) hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hy : y ≫ pullback.fst _ _ = f` using `pullback.lift_fst _ _ _`. Set `oV : 𝓞 c.F →+* AdelicDegreeTameRamification.valRing k 𝔭` to `(j.comp (algebraMap (𝓞 c.F) c.F)).codRestrict (AdelicDegreeTameRamification.valRing k 𝔭) fun a => 𝔭.valuation_le_one (K := k) (RingOfIntegers.mapRingHom j a)`. Take `⟨⟨yt, ⟨-, hyt⟩, -⟩, h⟩` from `ValuativeExtension.valuation_extension E H D l Xo c _ _ Y (AdelicDegreeTameRamification.valRing k 𝔭) k oV j y rfl (pullback.lift_snd _ _ _)`. Take `⟨G, ⟨n⟩⟩` from `h yt`. Take `⟨m₁, -⟩` from `ObjMaps.exists_sab_cancel (g := y) Y.m0.toSABMap (hy ▸ m.toSABMap)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, -⟩` from `ObjMaps.exists_sab_comp Y.m m₁`. Take `⟨m₃, -⟩` from `ObjMaps.exists_sab_cancel (g := spMap (algebraMap (AdelicDegreeTameRamification.valRing k 𝔭) k)) n (hyt ▸ m₂)`. Conclude with `⟨G.G, inferInstance, m₃.φ, G.semi, m₃.cart⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasModel_of_goodAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (c : Coeff l) (k : Type) [Field k] [NumberField k] (j : c.F →+* k) (o : Obj D l (baseKA l) (spMap j ≫ spMap (IntermediateField.inclusion c.le).toRingHom)), 1 ≤ D.p + D.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → l.A = 1 → ∀ 𝔭 : HeightOneSpectrum (𝓞 k), HasModel o.t 𝔭 := by
   intro E _ _ _ H D l c k _ _ j o e hg hA 𝔭

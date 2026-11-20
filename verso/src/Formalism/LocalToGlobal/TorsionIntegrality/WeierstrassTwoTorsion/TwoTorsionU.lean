@@ -7,36 +7,36 @@ universe u v
 namespace Formalism.L2.Th1.A
 
 /- English proof (translation)
-The claim follows from `two_torsion_integral`.
+A detailed English derivation is pending.
 -/
 theorem twoTorsionZ : TwoTorsionZ.{u} := two_torsion_integral
 /- English proof (translation)
-The claim follows from `addition_integral`.
+A detailed English derivation is pending.
 -/
 theorem plusZ : PlusZ.{u} := addition_integral
 /- English proof (translation)
-The claim follows from `wpInU_of wpShape`.
+A detailed English derivation is pending.
 -/
 theorem wpInU : WpInU.{u} := wpInU_of wpShape
 /- English proof (translation)
-The claim follows from `tInZ_of wpShape`.
+A detailed English derivation is pending.
 -/
 theorem tInZ : TInZ.{u} := tInZ_of wpShape
 
 /- English proof (translation)
-The claim follows from `bridgeWp_of wpCleared`.
+A detailed English derivation is pending.
 -/
 theorem bridgeWp : BridgeWp := bridgeWp_of wpCleared
 /- English proof (translation)
-The claim follows from `bridgeLaw_of coeffMem fglLog halfSpec halfLog`.
+A detailed English derivation is pending.
 -/
 theorem bridgeLaw : BridgeLaw := bridgeLaw_of coeffMem fglLog halfSpec halfLog
 /- English proof (translation)
-The claim follows from `bridgeCurve_of coeffMem wpInU cubeTwoR`.
+A detailed English derivation is pending.
 -/
 theorem bridgeCurve : BridgeCurve := bridgeCurve_of coeffMem wpInU cubeTwoR
 /- English proof (translation)
-The claim follows from `bridgeTwo_of coeffMem tInZ twoTorsionZ`.
+A detailed English derivation is pending.
 -/
 theorem bridgeTwo : BridgeTwo := bridgeTwo_of coeffMem tInZ twoTorsionZ
 

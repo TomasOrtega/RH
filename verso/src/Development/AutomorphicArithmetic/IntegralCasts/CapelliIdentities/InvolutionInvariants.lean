@@ -37,9 +37,9 @@ noncomputable def UpperTheory.Reformulated.B.InvolutionInvariants.inUJ :
         (@UpperTheory.Reformulated.B.InvolutionInvariants.Jm n ε)
 
 /- English proof (translation)
-Introduce `n ε g h hg hh`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.InvolutionInvariants.inUJ ε _ at hg hh ⊢`. Unfold `UpperTheory.Reformulated.B.InvolutionInvariants.inUJ at hg hh ⊢`. Rewrite using `[Units.val_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hg, hh]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux3 :
     ∀ {n : Nat} (ε : Fin n → Bool)
@@ -176,7 +176,7 @@ theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux3 :
     _ = _ := by rw [hg, hh]
 
 /- English proof (translation)
-Introduce `n ε`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux4 :
     ∀ {n : Nat} (ε : Fin n → Bool),
@@ -282,9 +282,9 @@ theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux4 :
   simp
 
 /- English proof (translation)
-Introduce `n ε g hg`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.InvolutionInvariants.inUJ ε _ at hg ⊢`. Unfold `UpperTheory.Reformulated.B.InvolutionInvariants.inUJ at hg ⊢`. Establish `h1 : g.val * (g⁻¹).val = 1` using `Units.mul_inv g`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux5 :
     ∀ {n : Nat} (ε : Fin n → Bool)
@@ -518,7 +518,7 @@ noncomputable def UpperTheory.Reformulated.B.InvolutionInvariants.UJ :
 attribute [local instance] UpperTheory.Reformulated.B.InvolutionInvariants.instMeasurableSpaceUJ
 
 /- English proof (translation)
-Introduce `n ε`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux8 :
     ∀ {n : Nat} (ε : Fin n → Bool),
@@ -584,7 +584,7 @@ theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux8 :
   infer_instance
 
 /- English proof (translation)
-Introduce `n ε`. Conclude with `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux9 :
     ∀ (n : Nat) (ε : Fin n → Bool),
@@ -643,7 +643,7 @@ theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux9 :
   exact ⟨rfl⟩
 
 /- English proof (translation)
-Introduce `n ε`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Establish `hc : IsClosed {g : (Matrix (Fin n) (Fin n) ℂ)ˣ | (g.val).conjTranspose * UpperTheory.Reformulated.B.InvolutionInvariants.Jm ε * g.val = UpperTheory.Reformulated.B.InvolutionInvariants.Jm ε}` using `isClosed_eq ((Units.continuous_val.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`. Conclude with `hc.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.laurent_T_neg_one_mul_T_one :
     ∀ (n : Nat) (ε : Fin n → Bool),
@@ -814,11 +814,11 @@ noncomputable def UpperTheory.Reformulated.B.InvolutionInvariants.InvInvariant :
 
 open MeasureTheory MeasureTheory.Measure in
 /- English proof (translation)
-Use `haveI : (haar : Measure G).IsMulRightInvariant := ⟨h⟩`. Use `haveI : (haar : Measure G).Regular := regular_haarMeasure`. Take `⟨c, hc⟩ : ∃ c : ENNReal, (haar : Measure G).inv = c • haar` from `⟨haarScalarFactor (haar : Measure G).inv haar, isMulLeftInvariant_eq_smul_of_regular (haar : Measure G).inv haar⟩`. Establish `K : TopologicalSpace.PositiveCompacts G` using `Classical.arbitrary _`. Establish `h0 : (haar : Measure G) K ≠ 0` using `(measure_pos_of_nonempty_interior _ K.interior_nonempty).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : (haar : Measure G) K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Establish `h1 : ∀ s : Set G, (haar : Measure G) s⁻¹ = c * haar s` using `fun s => by`. Rewrite using `[← inv_apply, hc, Measure.smul_apply, smul_eq_mul]`. Establish `h2 : c ^ 2 * (haar : Measure G) K = 1 ^ 2 * (haar : Measure G) K`. Rewrite using `[pow_two, mul_assoc, ← h1, ← h1, inv_inv, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : c = 1` using `(ENNReal.pow_right_strictMono two_ne_zero).injective ((ENNReal.mul_left_inj h0 ht).1 h2)`. Rewrite `hc` using `[h3, one_smul]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.InvolutionInvariants.haar_map_inv {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G]
@@ -842,7 +842,7 @@ private theorem UpperTheory.Reformulated.B.InvolutionInvariants.haar_map_inv {G 
   exact hc
 
 /- English proof (translation)
-Introduce `h n ε`. Use `haveI := UpperTheory.Reformulated.B.InvolutionInvariants.aux8 ε`. Use `haveI := UpperTheory.Reformulated.B.InvolutionInvariants.aux9 n ε`. Use `haveI := UpperTheory.Reformulated.B.InvolutionInvariants.laurent_T_neg_one_mul_T_one n ε`. Conclude with `UpperTheory.Reformulated.B.InvolutionInvariants.haar_map_inv (G := ↥(UpperTheory.Reformulated.B.InvolutionInvariants.UJ ε)) (h n ε)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.invInvariant_of :
     UpperTheory.Reformulated.B.InvolutionInvariants.Unimodular → UpperTheory.Reformulated.B.InvolutionInvariants.InvInvariant := by

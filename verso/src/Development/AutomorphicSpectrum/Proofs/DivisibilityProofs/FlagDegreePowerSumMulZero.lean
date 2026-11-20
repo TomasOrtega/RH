@@ -6,7 +6,7 @@ open MvPolynomial Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `Ψ _ _ N τ k G hk` and use `Formalism.DegreeFormula.degreePowerSumMulEqZero Ψ N τ k G hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem degFl_pk_mul_eq_zero : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (τ : Ψ) (k : ℕ) (G : RP Ψ N), 1 ≤ k → degFl (pk τ k * G) = 0 :=
   fun Ψ _ _ N τ k G hk => Formalism.DegreeFormula.degreePowerSumMulEqZero Ψ N τ k G hk

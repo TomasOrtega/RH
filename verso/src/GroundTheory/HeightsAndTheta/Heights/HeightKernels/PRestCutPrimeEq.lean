@@ -7,21 +7,19 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `f j k r a cs e hf hj hk hN hlie I hI c Q₀ Q hQ hterm φ`. Use `choose εf δf hεf hlief using hlie`. Use `⟨fun p n τ => (φ p n τ).1, fun p n τ m => εf (m - 1) (φ p n τ), fun p n τ m => hεf _ _, ?_⟩` and prove the remaining obligations. Introduce `vol p`. Establish `hN2 : 2 ≤ j + k` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDm : j + k - 1 ≤ flagDim f j k`. Establish `h1 : (j + k - 1) * 2 ≤ (j + k) * (j + k - 1)`. Rewrite using `[mul_comm]`. Conclude with `Nat.mul_le_mul_right _ hN2`. Establish `h2 : j + k - 1 ≤ (j + k) * (j + k - 1) / 2` using `(Nat.le_div_iff_mul_le (by norm_num)).2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `flagDim`. Conclude with `h2.trans (Nat.le_mul_of_pos_left _ hf)`. Establish `key : ∀ τ : Fin f, ∀ m ∈ Finset.Icc 2 (r + a), ∀ n : ℕ, ((p : ℝ) ^ ((n + 1) * m))⁻¹ * m * I (lieClass f j k (m - 1) (φ p (n + 1) τ) * Q τ m) = c * (((p : ℝ) ^ ((n + 1) * m))⁻¹ * ((εf (m - 1) (φ p (n + 1) τ) * RestTerms.restTerm f (r + a) Q₀ m τ (RestTerms.smallPowerSum f r a cs ( …`. Introduce `τ m hm n`. Rewrite `hm` using `[Finset.mem_Icc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set σ := φ p (n + 1) τ`. Establish `hkill : I (rootPsum f j k (m - 1) σ.1 * Q τ m) = 0`. Use `hI.kills (m - 1) σ.1 (Q τ m) (by omega) (by omega) ?_` and prove the remaining obligations. Use `hQ.1 τ m (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[show flagDim f j k + 1 - m = flagDim f j k - (m - 1) by omega]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ht` using `hterm m hm.1 hm.2 τ σ.1`. Establish `hI' : I (lieClass f j k (m - 1) σ * Q τ m) = (εf (m - 1) σ : ℝ) * (c * (RestTerms.flagIntegral f (r + a) (RestTerms.smallPowerSum f r a cs (m - 1) σ.1 * Q₀ m τ) : ℝ))`. Rewrite using `[hlief, add_mul, mul_assoc, mul_assoc, C_mul', C_mul', map_add, LinearMap.map_smul, LinearMap.map_smul, hkill, ht, smul_eq_mul, smul_eq_mul, mul_zero, add_zero]`. Rewrite using `[hI', RestTerms.restTerm]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `restAt RestTerms.restPrimeModel`. Rewrite using `[← hN]`. Establish `: ∀ τ : Fin f, ∑ m ∈ Finset.Icc 2 (r + a), ∑' n : ℕ, ((p : ℝ) ^ ((n + 1) * m))⁻¹ * m * I (lieClass f j k (m - 1) (φ p (n + 1) τ) * Q τ m) = c * ∑ m ∈ Finset.Icc 2 (r + a), ∑' n : ℕ, ((p : ℝ) ^ ((n + 1) * m))⁻¹ * ((εf (m - 1) (φ p (n + 1) τ) * RestTerms.restTerm f (r + a) Q₀ m τ ( …`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_congr fun n => key τ m hm n`. Repeatedly rewrite using `[this, ← Finset.mul_sum]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem RestCutPrimeEq.proof : RestCutPrimeEq.Statement := by
   intro f j k r a cs e hf hj hk hN hlie I hI c Q₀ Q hQ hterm φ

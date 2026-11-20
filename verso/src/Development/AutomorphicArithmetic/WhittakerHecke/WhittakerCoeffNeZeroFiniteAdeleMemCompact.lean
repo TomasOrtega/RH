@@ -11,19 +11,17 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ D f hf hL C hC`. Take `⟨N, hN, hfN⟩` from `UpperTheory.exists_level_unipotent_invariance_automorphicForm E D f hf C hC`. Take `⟨K, hK, hKN⟩` from `UpperTheory.exists_isCompact_annihilator_scaled_integralAdeles N hN`. Use `⟨K, hK, fun y k hk hW => hKN _ fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩ : ∃ x : A ℚ, x = ((0, (N : FiniteAdeleRing (𝓞 ℚ) ℚ) * b) : A ℚ)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : Wo D f.1 (em E (aE y) * k) = Wo D f.1 (em E (aE y) * gl (nU (D.mkE 0 x)) * k)`. Establish `pt : ∀ G, f.1 (G * (em E (aE y) * k)) = f.1 (G * (em E (aE y) * gl (nU (D.mkE 0 x)) * k))`. Introduce `G`. Establish `h` using `hfN k hk b hb (G * em E (aE y))`. Rewrite `h` using `[← hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mul_assoc] at h ⊢`. Conclude with `h.symm`. Simplify using `only [Wo]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pt]`. Rewrite `h1` using `[UpperTheory.embedGL2_diag_mul_unipotent_theta_eq, mul_assoc, UpperTheory.whittaker_unipotent_mul_eq_additiveChar_mul E D f.1 hL]`. Establish `h2 : ψ (-((y : A ℚ) * x)) = 1`. Establish `h3 : ψ (-((y : A ℚ) * x)) * Wo D f.1 (em E (aE y) * k) = 1 * Wo D f.1 (em E (aE y) * k)`. Rewrite using `[one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.symm`. Conclude with `mul_right_cancel₀ hW h3`. Establish `h4 : ψ ((y : A ℚ) * x) = 1`. Establish `h5` using `Pp.ψ_add ((y : A ℚ) * x) (-((y : A ℚ) * x))`. Establish `h6 : ψ (0 : A ℚ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Pp.ψ_rt (0 : ℚ)` as an intermediate fact. Simplify using `using this`. Rewrite `h5` using `[add_neg_cancel, h6, h2, mul_one]`. Conclude with `h5.symm`. Establish `h7 : (y : A ℚ) * x = ((0, (y : A ℚ).2 * ((N : FiniteAdeleRing (𝓞 ℚ) ℚ) * b)) : A ℚ)`.
-
-Rewrite using `[hx]`. Conclude with `Prod.ext (mul_zero _) rfl`. Rewrite using `[← h7]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.whittakerCoeff_ne_zero_finiteAdele_mem_compact :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (f : Sm E 2), IsAutForm f → Pp.Lf f.1 →

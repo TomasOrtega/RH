@@ -29,13 +29,13 @@ theorem mixedTrace_apply (x : mixedSpace K) :
     mixedTrace K x = ∑ w, x.1 w + ∑ w, 2 * (x.2 w).re := rfl
 
 /- English proof (translation)
-Establish `h1 : ((Algebra.trace ℚ K x : ℚ) : ℝ) = ∑ φ : K →+* ℂ, (φ x).re`. Establish `h` using `congrArg Complex.re (trace_eq_sum_embeddings ℂ (K := ℚ) (L := K) (x := x))`. Rewrite `h` using `[Complex.re_sum]`. Rewrite using `[Fintype.sum_equiv (RingHom.equivRatAlgHom K ℂ) (fun φ => (φ x).re) (fun σ => (σ x).re) (fun _ => rfl)]`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ∀ φ : K →+* ℂ, (φ x).re = ((mk φ).embedding x).re`. Introduce `φ`. Apply the tactic sequence `rcases embedding_mk_eq φ with h | h <;> rw [h]`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `h3 : ∀ w : InfinitePlace K, ∑ φ ∈ Finset.univ.filter (fun φ : K →+* ℂ => mk φ = w), (φ x).re = mult w * (w.embedding x).re`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w`. Rewrite using `[Finset.sum_congr rfl (fun φ hφ => by rw [h2, (Finset.mem_filter.mp hφ).2]), Finset.sum_const, card_filter_mk_eq, nsmul_eq_mul]`. Rewrite using `[h1, ← Finset.sum_fiberwise Finset.univ (fun φ : K →+* ℂ => mk φ) (fun φ => (φ x).re)]`. Repeatedly rewrite using `[h3]`. Rewrite using `[sum_eq_sum_add_sum, mixedTrace_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mult_isReal, Nat.cast_one, one_mul, mixedEmbedding_apply_isReal, ← embedding_of_isReal_apply w.2, Complex.ofReal_re]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mult_isComplex, mixedEmbedding_apply_isComplex]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -84,25 +84,25 @@ theorem mixedTraceForm_apply' (x y : mixedSpace K) :
     mixedTraceForm K x y = ∑ w, x.1 w * y.1 w + ∑ w, 2 * (x.2 w * y.2 w).re := rfl
 
 /- English proof (translation)
-Rewrite using `[mixedTraceForm_apply, mixedTraceForm_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mixedTraceForm_comm (x y : mixedSpace K) :
     mixedTraceForm K x y = mixedTraceForm K y x := by
   rw [mixedTraceForm_apply, mixedTraceForm_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[mixedTraceForm_apply, ← map_mul, mixedTrace_mixedEmbedding]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mixedTraceForm_mixedEmbedding (a b : K) :
     mixedTraceForm K (mixedEmbedding K a) (mixedEmbedding K b) = (Algebra.trace ℚ K (a * b) : ℝ) := by
   rw [mixedTraceForm_apply, ← map_mul, mixedTrace_mixedEmbedding]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h` using `hx (x.1, fun w => conj (x.2 w))`. Rewrite `h` using `[mixedTraceForm_apply']`. Simplify using `only [Complex.mul_conj, Complex.ofReal_re] at h`. Establish `h1 : 0 ≤ ∑ w, x.1 w * x.1 w` using `Finset.sum_nonneg fun w _ => mul_self_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ ∑ w, 2 * Complex.normSq (x.2 w)` using `Finset.sum_nonneg fun w _ => mul_nonneg zero_le_two (Complex.normSq_nonneg _)`. Establish `e1 : ∑ w, x.1 w * x.1 w = 0` using `by linarith`. Establish `e2 : ∑ w, 2 * Complex.normSq (x.2 w) = 0` using `by linarith`. Rewrite `e1` using `[Finset.sum_eq_zero_iff_of_nonneg (fun w _ => mul_self_nonneg _)]`. Rewrite `e2` using `[Finset.sum_eq_zero_iff_of_nonneg (fun w _ => mul_nonneg zero_le_two (Complex.normSq_nonneg _))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Prod.ext (funext fun w => ?_) (funext fun w => ?_)` and prove the remaining obligations. Simplify using `using e1 w (Finset.mem_univ _)`. Simplify using `using e2 w (Finset.mem_univ _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mixedTraceForm_separatingLeft : (mixedTraceForm K).SeparatingLeft := by
   intro x hx
@@ -122,7 +122,7 @@ theorem mixedTraceForm_separatingLeft : (mixedTraceForm K).SeparatingLeft := by
   · simpa using e2 w (Finset.mem_univ _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mixedTraceForm_separatingLeft K, fun y hy => mixedTraceForm_separatingLeft K y fun x => by rw [mixedTraceForm_comm]; exact hy x⟩`.
+Supply the required witnesses or components.
 -/
 theorem mixedTraceForm_nondegenerate : (mixedTraceForm K).Nondegenerate :=
   ⟨mixedTraceForm_separatingLeft K, fun y hy =>

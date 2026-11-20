@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.UnifGenPoint
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ (⊤ : X.Opens)` using `fun _ _ => trivial`. Unfold `constFn`. Use `(GlobalTheory.ZH.CrdMove.valR_appLE x p ⊤ ⊤ _ h _).trans ?_` and prove the remaining obligations. Rewrite using `[hx]`. Establish `h' : ⊤ ≤ (spMap χ) ⁻¹ᵁ (⊤ : (Sp B).Opens)` using `fun _ _ => trivial`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.ZH.CrdCalc.valR_eq _ _ h']`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom χ)`. Use `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom a)) n` as an intermediate fact. Use `Eq.trans ?_ (this.trans (congrArg χ ((Scheme.ΓSpecIso (CommRingCat.of B)).inv_hom_id_apply a)))` and prove the remaining obligations. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -46,39 +46,31 @@ end GlobalTheory.UnifGenPoint
 open GlobalTheory.UnifGenPoint in
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt gam _ _ _ n v' D Ω _ _ _ φ x' δ dd' _ hx _ _ _ hinj g _ δL _`. Establish `hφ : Function.Injective φ`. Use `(injective_iff_map_eq_zero φ).2 fun r hr => ?_` and prove the remaining obligations. Establish `h1 : valR x' ⊤ (constFn t.G.hom ⊤ r) = 0` using `(valR_constFn t.G.hom x' φ hx r).trans hr`. Establish `h2` using `hinj ⊤ (constFn t.G.hom ⊤ r) (fun _ _ => trivial) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `valR_constFn t.G.hom (eSec t.G) (RingHom.id R) (by`. Rewrite using `[eSec, Over.w]`. Simplify using `[spMap]) r`. Rewrite `h3` using `[h2, GlobalTheory.ZH.CrdCalc.valR_eq (eSec t.G) ⊤ (fun _ _ => trivial), map_zero]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set L := FractionRing Ω`. Establish `hinjL : Function.Injective ((algebraMap Ω L).comp φ)` using `(IsFractionRing.injective Ω L).comp hφ`. Set `ψ : FractionRing R →+* L` to `IsFractionRing.lift (K := FractionRing R) hinjL`. Establish `hψ : ∀ r, ψ (algebraMap R (FractionRing R) r) = algebraMap Ω L (φ r)` using `fun r => by`. Simplify using `[ψ, IsFractionRing.lift_algebraMap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : Sp L ⟶ t.G.left` to `spMap (algebraMap Ω L) ≫ x'`. Establish `hu : u ≫ t.G.hom = spMap ψ ≫ jK R`. Simplify using `only [u, Category.assoc, hx, spMap, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun r => (hψ r).symm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ξ₀ : Sp L ⟶ pullback t.G.hom (jK R)` to `pullback.lift u (spMap ψ) hu`. Set `ξ : Sp L ⟶ P.A.A.left` to `ξ₀ ≫ P.U.gen.hom.left`. Establish `n₁ : P.U.gen.hom.left ≫ P.U.gen.inv.left = 𝟙 _`. Rewrite using `[← Over.comp_left, P.U.gen.hom_inv_id, Over.id_left]`. Establish `hξ1 : ξ ≫ P.A.A.hom = spMap ψ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ξ, Category.assoc, Over.w]`. Conclude with `pullback.lift_snd _ _ _`. Establish `hξ2 : ξ ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R) = u`. Simplify using `only [ξ, Category.assoc]`. Rewrite using `[← Category.assoc P.U.gen.hom.left, n₁, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pullback.lift_fst _ _ _`. Use `⟨ψ, ξ, hψ, hξ1, hξ2, ?_⟩` and prove the remaining obligations. Use `haveI : Smooth t.G.hom := t.semi.smooth`. Use `haveI : GeometricallyConnected t.G.hom := t.semi.geomConnected`. Use `haveI : IrreducibleSpace t.G.left := GlobalTheory.irreducibleSpace_of_smooth_of_geometricallyConnected_domain R t.G inferInstance inferInstance ⟨x' (IsLocalRing.closedPoint Ω)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `set q := u (IsLocalRing.closedPoint L) with hq`. Establish `hqg : q = genericPoint t.G.left`. Establish `h1 : q ⤳ genericPoint t.G.left`. Use `specializes_iff_forall_open.2 fun s hs hgs => ?_` and prove the remaining obligations. Take `⟨V, hVa, hpV, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x' (IsLocalRing.closedPoint Ω)) trivial`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hV : ⊤ ≤ x' ⁻¹ᵁ V` using `(GlobalTheory.ZH.CrdCalc.top_le_iff x' V).2 hpV`. Establish `hgV : genericPoint t.G.left ∈ V` using `((genericPoint_spec t.G.left).mem_open_set_iff V.isOpen).2 ⟨_, trivial, hpV⟩`. Set `W : t.G.left.Opens` to `V ⊓ ⟨s, hs⟩`. Take `⟨b, hbW, hgb⟩` from `hVa.exists_basicOpen_le (V := W) ⟨genericPoint t.G.left, hgV, hgs⟩ hgV`. Establish `hb : b ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hgb` using `[Scheme.basicOpen_zero]`. Conclude with `hgb`. Establish `hv : valR x' V b ≠ 0` using `fun h => hb (hinj V b hV h)`. Take `⟨hV', hval⟩` from `GlobalTheory.ZH.CrdCalc.valR_spMap (algebraMap Ω L) x' V hV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hu : IsUnit (valR u V b)`. Rewrite using `[hval]`. Conclude with `(Ne.isUnit ((map_ne_zero_iff _ (IsFractionRing.injective Ω L)).2 hv))`. Use `((GlobalTheory.ZH.CrdCalc.isUnit_valR_iff u V hV' b).1 hu) (Set.mem_univ (IsLocalRing.closedPoint L))` as an intermediate fact. Conclude with `(hbW this).2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(h1.antisymm (genericPoint_specializes q)).eq`. Use `haveI : Smooth P.A.A.hom := P.A.isAb.smooth`. Use `haveI : GeometricallyConnected P.A.A.hom := P.A.isAb.geomConnected`. Use `haveI : IrreducibleSpace P.A.A.left := GlobalTheory.irreducibleSpace_of_smooth_of_geometricallyConnected_domain (FractionRing R) P.A.A inferInstance inferInstance ⟨ξ (IsLocalRing.closedPoint L)⟩`. Use `haveI : IsIntegral P.A.A.left := GlobalTheory.isIntegral_of_smooth_field_of_connectedSpace P.A.A.hom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `set y := ξ (IsLocalRing.closedPoint L) with hy`. Set `mm : P.A.A.left ⟶ t.G.left` to `P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R)`. Use `haveI : IsIso P.U.gen.inv.left := ⟨⟨P.U.gen.hom.left, by`. Rewrite using `[← Over.comp_left, P.U.gen.inv_hom_id, Over.id_left], n₁⟩⟩`. Use `haveI : IsPreimmersion (jK R) := IsPreimmersion.of_isLocalization (nonZeroDivisors R)`.
-
-Use `haveI : IsPreimmersion (pullback.fst t.G.hom (jK R)) := MorphismProperty.of_isPullback (IsPullback.of_hasPullback t.G.hom (jK R)).flip inferInstance`. Use `haveI : IsPreimmersion mm := inferInstance`. Establish `hmy : mm y = q`. Rewrite using `[hq, ← hξ2]`. Both sides reduce to the same expression.
-
-Establish `hyg : y = genericPoint P.A.A.left`. Apply `(Scheme.Hom.isEmbedding mm).injective` to reduce the goal to its premises. Establish `h1 : mm (genericPoint P.A.A.left) ⤳ mm y` using `(genericPoint_specializes y).map (Scheme.Hom.continuous mm)`. Rewrite `h1`, the goal using `[hmy, hqg]`. Conclude with `((genericPoint_specializes _).antisymm h1).eq`.
-
-Introduce `O f hO hf`. Assume the negation of the conclusion as `hne`. Establish `hne' : P.A.A.left.basicOpen f ≠ ⊥` using `fun h => hne ((basicOpen_eq_bot_iff f).1 h)`. Establish `hgen : genericPoint P.A.A.left ∈ P.A.A.left.basicOpen f`. Use `((genericPoint_spec P.A.A.left).mem_open_set_iff (P.A.A.left.basicOpen f).isOpen).2 ?_` and prove the remaining obligations.
-
-Take `⟨z, hz⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne'`. Conclude with `⟨z, trivial, hz⟩`. Establish `hu : IsUnit (valR ξ O f)` using `(GlobalTheory.ZH.CrdCalc.isUnit_valR_iff ξ O hO f).2 ((GlobalTheory.ZH.CrdCalc.top_le_iff ξ _).2 (by rw [← hy, hyg]; exact hgen))`. Conclude with `hu.ne_zero hf`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnifGenPoint.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre tt gam → (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (n : ℕ) (v' : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) (D : Derivation ℤ R R), ∀ (Ω : Type) [CommRing Ω] [IsDomain Ω] [IsLocalRing Ω] (φ : R →+* Ω) (x' : Sp Ω ⟶ t.G.left) (δ : Fin n → Derivation ℤ Ω Ω) (dd' : Fin n → Fld t.G.left), IsAdicComplete ((maximalIdeal R).map φ) Ω → x' ≫ t.G.hom = spMap φ → (∀ a, IsInv t.G (v' a) (dd' a)) → (∀ a r, δ a (φ r) = 0) → (∀ a O f, ⊤ ≤ x' ⁻¹ᵁ O → valR x' O (dd' a O f) = δ a (valR x' O f)) → (∀ O (f : Γ(t.G.left, O)), ⊤ ≤ x' ⁻¹ᵁ O → valR x' O f = 0 → f = 0) → ∀ (g : GlobalTheory.RayEv.Transport.Frame t.PP.L (x' ≫ 𝟙 t.G.left)), g.IsGen → ∀ (δL : Fin n → Derivation ℤ (FractionRing Ω) (FractionRing Ω)), (∀ a ω, δL a ((algebraMap Ω (FractionRing Ω)) ω) = (algebraMap Ω (FractionRing Ω)) (δ a ω)) → ∃ (ψ : FractionRing R →+* FractionRing Ω) (ξ : Sp (FractionRing Ω) ⟶ P.A.A.left), (∀ r, ψ (algebraMap R (FractionRing R) r) = algebraMap Ω (FractionRing Ω) (φ r)) ∧ ξ ≫ P.A.A.hom = spMap ψ ∧ ξ ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R) = spMap (algebraMap Ω (FractionRing Ω)) ≫ x' ∧ ∀ O (f : Γ(P.A.A.left, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 → f = 0 := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam _ _ _ n v' D Ω _ _ _ φ x' δ dd' _ hx _ _ _ hinj g _ δL _

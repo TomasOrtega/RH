@@ -30,9 +30,9 @@ def FinExt (V W : Type) [CommRing V] [IsLocalRing V] [CommRing W] [IsLocalRing W
     IsAdicComplete ((IsLocalRing.maximalIdeal V).map (algebraMap V W)) W
 
 /- English proof (translation)
-Establish `hmap : (IsLocalRing.maximalIdeal V).map (algebraMap V V) = IsLocalRing.maximalIdeal V`. Rewrite using `[show algebraMap V V = RingHom.id V from rfl, Ideal.map_id]`. Use `⟨inferInstance, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show algebraMap V V = RingHom.id V from rfl] infer_instance`. Rewrite using `[hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem finExt_self (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V]
     (h : IsAdicComplete (IsLocalRing.maximalIdeal V) V) : FinExt V V := by
@@ -45,23 +45,23 @@ theorem finExt_self (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V]
     exact h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UU.finExt_self V h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem CDVR.finExt_self {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (h : CDVR V) : FinExt V V :=
   GlobalTheory.UU.finExt_self V h.2.1
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, inferInstance⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cdvr_padicInt (p : ℕ) [Fact p.Prime] : CDVR ℤ_[p] := by
   refine ⟨inferInstance, inferInstance, inferInstance⟩
 /- English proof (translation)
-The claim follows from `(cdvr_padicInt p).finExt_self`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : FinExt ℤ_[p] ℤ_[p] := (cdvr_padicInt p).finExt_self
 
 /- English proof (translation)
-Introduce `h` and use `by have := h.2.2.2.1.map_nonunit (p : ℤ_[p]) (IsUnit.mk0 _ (by simpa using (Fact.out : p.Prime).ne_zero)) exact PadicInt.irreducible_p.not_isUnit this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : ¬ FinExt ℤ_[p] ℚ_[p] := fun h => by
   have := h.2.2.2.1.map_nonunit (p : ℤ_[p]) (IsUnit.mk0 _ (by simpa using (Fact.out : p.Prime).ne_zero))
@@ -111,7 +111,7 @@ def addφ (D : DegPre R) (a b : D.X) : Fin 10 → ((D.P.A ⊗ D.P.A).left ⟶ D.
 def addε : Fin 10 → ℤ := ![1, 1, -1, 1, 1, -1, -1, 1, -1, 1]
 
 /- English proof (translation)
-Introduce `α z J _`. Rewrite using `[MonoidalCategory.id_whiskerRight, Over.id_left]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem PullB.refl (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (s : Raw D F k) :
     PullB D F (𝟙 _) k s s := by
@@ -120,7 +120,7 @@ theorem PullB.refl (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R)
   rfl
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_succ, addε]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 example (x y a b : ℤ) :
     ∑ k, addε k * (![x, x + (a + b), a + b, y, y + (a - b), a - b, x + y + a, a, x - y + b, b] k) ^ 2 = 0 := by

@@ -9,13 +9,13 @@ open NumberField Formalism.FrobeniusOrbits Formalism.BasicNotions Formalism.Main
 namespace Formalism.MainNotions.AuxBlock8.Pf.St
 
 /- English proof (translation)
-Establish `heps : 0 < eps`. Take `⟨i0⟩` from `Fm.Ix_zero`. Rewrite using `[← Fm.L_eps 0 i0]`. Conclude with `(Fm.L 0 i0).sc.eps_pos`. Use `⟨max (CStar eps K C31) 0, le_max_right _ _, fun C hC X Y hAdm => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x2, -, hx2⟩` from `hAdm (eps / 48) (by linarith)`. Take `⟨x3, hx3⟩` from `Filter.eventually_atTop.1 ((numStar_ev eps K hK C31 hC31).and (B.facts_ev eps K hK C31 hC31))`. Use `⟨max (max x2 x3) (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `h1` using `le_max_left (max x2 x3) (Fm.x1 + 1)`. Establish `h2` using `le_max_right (max x2 x3) (Fm.x1 + 1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `le_max_left x2 x3`. Establish `h4` using `le_max_right x2 x3`. Establish `hxx1 : Fm.x1 < x` using `by linarith`. Establish `hP` using `Fm.params x hxx1 i`. Establish `hS` using `Fm.sizes x hxx1 i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A1, -, -, -, A5, -⟩` from `hx2 x (by linarith) i`. Establish `hx3'` using `hx3 x (by linarith)`. Establish `hF` using `hx3'.2 (Fm.D x i) (Fm.L x i) (Fm.L_x x i hxx1) (Fm.L_eps x i) hS hP A5`. Establish `hN` using `hx3'.1 (Fm.D x i) (Fm.L x i) (Fm.L_x x i hxx1) (Fm.L_eps x i) hS hP _ ⟨hF.hkQ, hF.hDII, hF.hbo⟩ C (le_trans (le_max_left _ _) hC)`. Conclude with `starAll_of (X x i) hK hP A1 hC31 hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem star_fam {eps : ℝ} (Fm : FamP eps) (K : Consts) (hK : K.Nonneg) (C31 Ce Cm : ℝ) (hC31 : 0 < C31) :
     ∃ C0 : ℝ, 0 ≤ C0 ∧ ∀ C ≥ C0, ∀ (X : ∀ x (i : Fm.Ix x), Inst (Fm.D x i) (Fm.L x i))

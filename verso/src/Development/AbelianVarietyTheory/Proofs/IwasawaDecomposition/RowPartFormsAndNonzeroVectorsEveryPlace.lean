@@ -14,13 +14,13 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.RowsLift
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hI hP hH hM hg p hp i`. Establish `hA` using `GlobalTheory.T.exists_baseLevelRow_of_nonzero_goodRowsPart D G Pl0 I0 T A3 Ks R F cG hI hP hH hM hg p hp`. Establish `hB : (R.toCx3 F).Wp i p ⊓ LinearMap.range ((R.toCx3 F).w0C false i) ≠ ⊥`. Introduce `h0`. Apply `hA` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Submodule.finrank_eq_zero, ← hH.prim.dimParts i p, h0, finrank_bot]`. Use `⟨?_, fun v hv => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hB` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Establish `: Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) w ∈ R.Wp3 i p := hw.1`. Rewrite `this` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).2 this`. Take `⟨x, hx, hx0⟩` from `GlobalTheory.T.exists_nonzero_rational_lift_mem_base_part D G Pl0 I0 T A3 Ks R F cG hI hP hH hM hg p hp i hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, GlobalTheory.T.base_level_frames_hermitian_ne_zero_off_place D G Pl0 I0 T A3 Ks R F cG hI hP hH hM hg i v hv x hx0⟩`.
+A detailed English derivation is pending.
 -/
 theorem rows_lift : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), Inputs D → Pins R F cG → Holds R F → GlobalTheory.CuspMult.MultEq R.toRealDat → (∀ χ ∈ A3.A.X, chiIdem χ * lvlIdem F.P0 F.ψ0 ≠ 0) → ∀ p, R.EEp3 p ≠ ⊥ → ∀ i, R.Wp3 i p ≠ ⊥ ∧ ∀ v, v ≠ A3.A.v0 → R.PartAt F i p v := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hI hP hH hM hg p hp i

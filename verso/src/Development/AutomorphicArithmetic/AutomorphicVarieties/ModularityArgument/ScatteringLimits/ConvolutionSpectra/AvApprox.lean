@@ -6,25 +6,23 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Establish `two : ∀ ψ a b, Bump ψ a b → HasCompactSupport ψ ∧ Integrable (fun t => (ψ t : ℂ)) ∧ ∫ t, ψ t ^ 2 ≤ 2 / (b - a)`. Introduce `ψ a b h`. Establish `hs : HasCompactSupport ψ` using `HasCompactSupport.intro isCompact_Icc h.supp`. Establish `hi : Integrable ψ` using `h.cont.integrable_of_hasCompactSupport hs`. Use `⟨hs, hi.ofReal, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∫ t, ψ t ^ 2 ≤ ∫ t, 2 / (b - a) * ψ t` using `integral_mono_of_nonneg (Eventually.of_forall fun t => sq_nonneg _) (hi.const_mul _) (Eventually.of_forall fun t => by show ψ t ^ 2 ≤ _; rw [sq]; exact mul_le_mul_of_nonneg_right (h.le t) (h.nonneg t))`. Rewrite `this` using `[integral_const_mul, h.total, mul_one]`. Then use the resulting hypothesis. Use `⟨fun a b hab => ?_, two, ?_⟩` and prove the remaining obligations. Establish `hd : 0 < b - a` using `sub_pos.2 hab`. Set `f : ℝ → ℝ` to `fun t => 6 / (b - a) ^ 3 * max 0 ((t - a) * (b - t))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hsupp : ∀ t, t ∉ Icc a b → f t = 0` using `fun t ht => by`. Establish `: (t - a) * (b - t) ≤ 0`. Apply the tactic sequence `rcases not_and_or.1 ht with h | h <;> push Not at h <;> nlinarith`. Simplify using `[f, max_eq_left this]`. Use `⟨f, by fun_prop, fun t => by positivity, fun t => ?_, hsupp, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: max 0 ((t - a) * (b - t)) ≤ (b - a) ^ 2 / 4` using `max_le (by positivity) (by nlinarith [sq_nonneg (a + b - 2 * t)])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hsupp, integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hab.le]`. Establish `: ∫ t in a..b, f t = ∫ t in a..b, 6 / (b - a) ^ 3 * (-t ^ 2 + (a + b) * t - a * b)`. Use `intervalIntegral.integral_congr fun t ht => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ht` using `[uIcc_of_le hab.le]`. Simplify using `only [f]`. Rewrite using `[max_eq_right (mul_nonneg (sub_nonneg.2 ht.1) (sub_nonneg.2 ht.2))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, intervalIntegral.integral_const_mul, intervalIntegral.integral_sub, intervalIntegral.integral_add, intervalIntegral.integral_neg, intervalIntegral.integral_const_mul, integral_pow, integral_id, intervalIntegral.integral_const]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `all_goals exact Continuous.intervalIntegrable (by fun_prop) _ _`. Introduce `H _ _ _ F h ε hε`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, H1⟩` from `Metric.continuousAt_iff.1 ((F.cont h).continuousAt (x := 0)) ε hε`. Use `⟨δ / 2, by positivity, fun ψ a b hψ ha hb => ?_⟩` and prove the remaining obligations. Take `⟨hs, hi, -⟩` from `two ψ a b hψ`. Take `⟨i, e⟩` from `((avSpec F).2.2.2 _ hi).1 h`. Establish `hr : Integrable ψ` using `hψ.cont.integrable_of_hasCompactSupport hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : h = ∫ t, (ψ t : ℂ) • h` using `by rw [integral_smul_const, integral_complex_ofReal, hψ.total]; simp`. Rewrite using `[e]`. Use `conv_lhs => rw [show (∫ t, (ψ t : ℂ) • F.U t h) - h = (∫ t, (ψ t : ℂ) • F.U t h) - ∫ t, (ψ t : ℂ) • h from congrArg _ e2]`. Rewrite using `[← integral_sub i (hi.smul_const h)]`. Use `(norm_integral_le_of_norm_le (hr.mul_const ε) (Eventually.of_forall fun t => ?_)).trans_eq (by rw [integral_mul_const, hψ.total, one_mul])` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← smul_sub, norm_smul, Complex.norm_real, Real.norm_of_nonneg (hψ.nonneg t)]`. Distinguish the cases in `ht : t ∈ Icc a b`. Apply the tactic sequence `have := H1 (x := t) (by rw [Real.dist_eq, sub_zero, abs_lt]; constructor <;> linarith [ht.1, ht.2])`. Rewrite `this` using `[F.zero, dist_eq_norm]`. Conclude with `mul_le_mul_of_nonneg_left this.le (hψ.nonneg t)`.
-
-Simplify using `[hψ.supp t ht]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.avApprox :
     (∀ a b : ℝ, a < b → ∃ ψ, Bump ψ a b) ∧ (∀ ψ a b, Bump ψ a b → HasCompactSupport ψ ∧ Integrable (fun t => (ψ t : ℂ)) ∧ ∫ t, ψ t ^ 2 ≤ 2 / (b - a)) ∧

@@ -34,13 +34,13 @@ namespace GlobalTheory.ChainTw.OnePlace
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.Cusp GlobalTheory.AdelicU GlobalTheory.Core.Rk.IP GlobalTheory.ParHecke GlobalTheory.Core.Rk.SphCoef
 
 /- English proof (translation)
-Set `e' : G ≃ᵐ H` to `e.toHomeomorph.toMeasurableEquiv`. Establish `he : (e' : G → H) = e` using `rfl`. Establish `hJ : ((P.comap e.symm.toMulEquiv.toMonoidHom : Subgroup H) : Set H) = e.symm ⁻¹' (P : Set G)` using `rfl`. Use `⟨P.comap e.symm.toMulEquiv.toMonoidHom, m.map e', ?_, ?_, ?_, ?_, fun y => Iff.rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP.preimage e.symm.continuous`. Rewrite using `[he]`. Conclude with `e.isHaarMeasure_map m`. Rewrite using `[MeasurableEquiv.map_apply, hJ, he, ← h1]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite using `[integrable_map_equiv]`. Use `hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[he]`. Rewrite using `[integral_map_equiv]`. Simplify using `[he]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transport {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H] [BorelSpace H] (e : G ≃ₜ* H)
@@ -64,7 +64,7 @@ theorem transport {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGrou
     simp [he]
 
 /- English proof (translation)
-Set `K : TopologicalSpace.PositiveCompacts G` to `⟨⟨P, hc⟩, by`. Simplify using `only [hP.interior_eq]`. Conclude with `⟨1, one_mem _⟩⟩`. Conclude with `⟨Measure.haarMeasure K, inferInstance, Measure.haarMeasure_self⟩`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_haar {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     [LocallyCompactSpace G] (P : Subgroup G) (hP : IsOpen (P : Set G)) (hc : IsCompact (P : Set G)) :
@@ -78,17 +78,17 @@ theorem exists_haar {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGrou
 variable {D : D7}
 
 /- English proof (translation)
-Establish `: m.IsMulRightInvariant` using `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D A m hm`. Set `p : Submodule ℂ (GA D A → ℂ)` to `{ carrier := {F | MemL2Quotient (GQ A) m F} zero_mem' := mem_l2_zero add_mem' := fun ha hb => mem_l2_add ha hb smul_mem' := fun c _ hF => mem_l2_smul c hF }`. Set `ρ : Representation ℂ (GL (I ⊕ I') k) (GA D A → ℂ)` to `(GlobalTheory.PRep.rightReg ℂ (GA D A) ℂ).comp ι`. Establish `hst : ∀ g, p ≤ p.comap (ρ g)` using `fun g F hF => MemL2Quotient.mul_right hF (ι g)`. Set `π : Representation ℂ (GL (I ⊕ I') k) p` to `ρ.subrepresentation p hst`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hπ : ∀ g (F : p), ((π g F : p) : GA D A → ℂ) = ρ g F` using `fun _ _ => rfl`. Set `ℓ : p →ₗ[ℂ] ℂ` to `{ toFun := fun F => petersson A m (rTr A x F) u₂ map_add' := fun F G => petersson_add_left (MemL2Quotient.mul_right F.2 x) (MemL2Quotient.mul_right G.2 x) h2 map_smul' := fun c F => petersson_smul_left c _ _ }`. Use `⟨p, inferInstance, inferInstance, π, ⟨u₁, h1⟩, ℓ, ⟨fun j hj d hd => Subtype.ext (hg.1 j hj d hd), hg.2.1, fun s R d hR => Subtype.ext ?_⟩, fun j hj d hd F => ?_, fun y => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Conclude with `hg.2.2 s R d hR`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : rTr A x (π j F) = rTr A (ι j) (rTr A x F)` using `funext fun g => by show (F : GA D A → ℂ) (g * x * ι j) = (F : GA D A → ℂ) (g * ι j * x)`. Rewrite using `[mul_assoc, mul_assoc, hx]`. Establish `e2` using `petersson_rTr (μ := m) (MemL2Quotient.mul_right F.2 x) h2 (ι j)`. Establish `hn : (ξ d : ℂ) * conj (ξ d : ℂ) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hξ d]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e3 : ∀ φ : GA D A → ℂ, petersson A m φ u₂ = (ξ d : ℂ) * petersson A m φ (rTr A (ι j) u₂)` using `fun φ => by`. Simplify using `only [petersson, pet, GlobalTheory.AutomorphicL2Unitary.descend, rTr, ht j hj d hd, map_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q`. Take the linear combination `(-(φ q.out * conj (u₂ q.out))) * hn`. Use `show petersson A m (rTr A x (π j F)) u₂ = (ξ d : ℂ) * petersson A m (rTr A x F) u₂`. Rewrite using `[e1, e3]`. Conclude with `congrArg _ e2`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show petersson A m (rTr A x (ρ y u₁)) u₂ = petersson A m (rTr A (x * ι y) u₁) u₂`. Use `congr 1`. Use function extensionality and compare the values at `g`. Use `show u₁ (g * x * ι y) = u₁ (g * (x * ι y))`. Rewrite using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem rcoef_eq_coef {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {I I' : Type} [Fintype I] [DecidableEq I] [Fintype I'] [DecidableEq I'] {A : HSp D} (m : Measure (GA D A))
@@ -138,11 +138,11 @@ theorem rcoef_eq_coef {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     rw [mul_assoc]
 
 /- English proof (translation)
-Establish `hT` using `(GlobalTheory.MultMem.mem_mult_iff ..).1 ((mem_multT ..).1 u.2)`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Establish `e : PiLocalization₂.val u (PiTensorProduct.tprod ℂ f) = PiTensorProduct.lift.symm u.1 f`. Rewrite using `[PiTensorProduct.lift_symm]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `hT.lev f κ hκ g` as an intermediate fact. Rewrite `this` using `[← e]`. Simplify using `only [PiLocalization₂.val, map_smul, Pi.smul_apply, smul_eq_mul] at this ⊢`. Rewrite using `[this]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add a b ha hb`. Simplify using `only [PiLocalization₂.val, map_add, Pi.add_apply] at ha hb ⊢`. Rewrite using `[ha, hb]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_type {c : Com D} {s : PiLocalization₂ D} (u : s.CC c) (v : SmT s.M) {κ : GA D s.V} (hκ : κ ∈ Lev.levG s.V s.β s.L)
     (g : GA D s.V) : PiLocalization₂.val u v (g * κ) = Lev.levChi s.V s.β s.L κ * PiLocalization₂.val u v g := by
@@ -160,11 +160,11 @@ theorem val_type {c : Com D} {s : PiLocalization₂ D} (u : s.CC c) (v : SmT s.M
     rw [ha, hb]; ring
 
 /- English proof (translation)
-Take `⟨-, -, h⟩` from `hgtL_props D A L a hL ha`. Establish `hne : ∀ u, u ≠ v → proj D.sp.cm.sig A.gram u (x * emb D.sp.cm.sig A.gram v y) = proj D.sp.cm.sig A.gram u x` using `fun u hu => by rw [map_mul, proj_emb_ne _ _ hu, mul_one]`. Establish `hxy : x * emb D.sp.cm.sig A.gram v y ∈ openOff A L Sf` using `fun u hu => by`. Rewrite using `[hne u (fun e => hu (e ▸ hv))]`. Conclude with `hx u hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (hgtL A L a (x * emb D.sp.cm.sig A.gram v y) : ℝ) = (hgtL A L a x : ℝ) * GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV A L v y`. Rewrite using `[(h Sf).2 _ hxy, (h Sf).2 _ hx, ← Finset.mul_prod_erase Sf _ hv, ← Finset.mul_prod_erase Sf _ hv, hxv, h1, Finset.prod_congr rfl fun u hu => congrArg (GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV A L u) (hne u (Finset.ne_of_mem_erase hu))]`. Simplify using `only [map_mul, projArch_emb, proj_emb_self, hxv, mul_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GlobalTheory.Doubling.npow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV A L v y` using `NNReal.coe_nonneg _`. Rewrite using `[e, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hgt_split {A : HSp D} {L : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.Lat A} {a : GL (Fin A.rank) (AE D)} (hL : IsSelfDualC A L)
     (ha : GlobalTheory.Doubling.IsMaj A a) (Sf : Finset (HeightOneSpectrum (𝓞 D.host.F))) {v : HeightOneSpectrum (𝓞 D.host.F)}
@@ -188,9 +188,9 @@ theorem hgt_split {A : HSp D} {L : GlobalTheory.IndefiniteRowSideFullHecke.Spher
   rw [e, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) h0]
 
 /- English proof (translation)
-Establish `e : GlobalTheory.GLDoubling.torusElt k n ϖ 0 = 1`. Simplify using `only [GlobalTheory.GLDoubling.torusElt, Pi.zero_apply, zpow_zero]`. Conclude with `map_one _`. Establish `h` using `hH.2 0`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_one g, (hH.1 g hg 1).1, h]`. Simplify using `[GlobalTheory.ZonalCellDecomposition.sumAbs]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hgt_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] {ϖ : kˣ} {H : GL n k → ℝ} (hH : IsHgt ϖ H) {g : GL n k}
@@ -206,33 +206,31 @@ theorem hgt_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `hU hC D hgap c w hw k hk s s' hs hs' p hp m X hX a ha u₁ u₂ φ hQ v₁ hv₁ v₂ hv₂ z hz PP hPP`. Take `⟨⟨v, pr, hpr⟩, hch⟩` from `GlobalTheory.T.exists_charts_at_twist_places_chain D c w hw k hk.le s hs PP hPP`. Take `⟨-, ⟨x₀, ϖ, hxϖ⟩, ⟨ι, hι⟩, hchi⟩` from `hch v pr hpr`. Take `⟨μT, hμu, hμT⟩` from `hchi (c.chT (k + 1))`. Take `⟨hv, hres, htame, hlift, hdict⟩` from `GlobalTheory.T.splitPlaceChart_parahoric_level_stabiliser_height D c w hw k hk.le s hs PP hPP v pr hpr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hv` using the available equality. Establish `hL : LiftsChar pr PP μT (w.ξ PP)` using `hlift k hk μT (Or.inr hμT)`. Take `⟨⟨e, he, -, hH⟩, hlev, hlc⟩` from `hdict ι hι`. Establish `hH` using `hH x₀ ϖ hxϖ`. Take `⟨-, hcard, hα⟩` from `GlobalTheory.T.lower_block_parameter_twist_L_factor D c w hw k hk PP hPP _ pr hpr x₀ ϖ hxϖ`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hαe⟩ : ∃ α : Fin (k * D.R.t) → ℂˣ, Finset.univ.val.map α = (qPar c PP x₀ k).map (· * (Circle.toUnits (c.chT (k + 1) x₀))⁻¹)` from `by set M := (qPar c PP x₀ k).map (· * (Circle.toUnits (c.chT (k + 1) x₀))⁻¹) with hM`. Establish `hl : M.toList.length = k * D.R.t` using `by rw [Multiset.length_toList, hM, Multiset.card_map, hcard]`. Use `⟨fun i => M.toList.get (i.cast hl.symm), ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map, ← List.ofFn_congr hl, List.ofFn_get, Multiset.coe_toList]`. Take `⟨hbd, hval⟩` from `hα α hαe`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e₀, he₁, he₂, he₃, hϖ⟩` from `id hxϖ`. Establish `hμϖ : μT ϖ = Circle.toUnits (c.chT (k + 1) x₀)` using `hμT x₀ ϖ ⟨e₀, he₁, he₂, he₃⟩`. Use `letI : MeasurableSpace (Fv D.host.F (PP.under (𝓞 D.host.F))) := borel _`. Use `haveI : BorelSpace (Fv D.host.F (PP.under (𝓞 D.host.F))) := ⟨rfl⟩`. Use `letI : MeasurableSpace (GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F (PP.under (𝓞 D.host.F)))) := borel _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F (PP.under (𝓞 D.host.F)))) := ⟨rfl⟩`. Take `⟨ν, hν⟩` from `GlobalTheory.SplitWeil.exists_isUnitVol (Fv D.host.F (PP.under (𝓞 D.host.F)))`. Take `⟨hPo, hPc⟩` from `GlobalTheory.ParahoricOpenCompact.isOpen_isCompact_parahoric (Fv D.host.F (PP.under (𝓞 D.host.F))) (Fin D.R.r) (Blocks k D.R.t)`. Take `⟨m₀, hm₀, hm₁⟩` from `exists_haar _ hPo hPc`. Take `⟨cf, hcf⟩ : ∃ cf : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F (PP.under (𝓞 D.host.F))) → ℂ, ∀ g, cf g = GlobalTheory.SplitWeil.ip ν (GlobalTheory.SplitWeil.om μT g (1 : GL (Fin D.R.r ⊕ Blocks (k + 1) D.R.t) _) (datum μT)) (datum μT)` from `⟨_, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcoef` using `GlobalTheory.T.weilCoefficient_splits_localFactor_twistPlace D hgap c w hw k hk s s' hs hs' p hp m X hX PP hPP _ pr hpr ι hι μT hμT ν hν cf hcf φ`. Take `⟨hc1, ζ₀, hζ, hζ1, hint⟩` from `GlobalTheory.T.unramifiedDoublingIntegral_twisted_place_eigenvector hU _ ν hν ϖ hϖ D.R.r D.R.t k μT 1 hμu (htame μT hL).1 (htame μT hL).2 (fun _ _ => rfl) (fun _ => by simp) (qPar c PP x₀ k) α (((D.R.t : ℝ) - 1) / 2) (by rw [one_mul, hμϖ]; exact hαe) (by rw [hres]; exact hbd) _ h …`. Take `⟨hI, hIv⟩` from `hint (z : ℂ) (by rw [Complex.ofReal_re]; linarith)`. Take `⟨J, μ, hJo, hμH, hμ1, hμI, hJ, hμv⟩` from `transport e m₀ _ hPo hm₁ _ hI`. Take `⟨hr, -, hst⟩` from `id hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hr', -, hst'⟩` from `id hs'`. Establish `hH1 : ∀ y ∈ parahoric _ (Fin D.R.r) (Blocks k D.R.t), GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV s.V s.Λ _ (e y) = 1` using `fun y hy => hgt_one hH (GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection.mem_parahoric.1 hy).1`. Use `⟨J, μ, _, hJo, hμH, hμ1, hμI, fun y hy => ?_, fun g => ?_, fun hzt => ?_, fun x hx hxv y => ?_⟩` and prove the remaining obligations. Establish `hy'` using `(hJ y).1 hy`. Simplify using `only [hζ1 _ hy', hH1 _ hy']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hJ, ← hlev, he, ContinuousMulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[hμv, hIv, hres, ← hval, hzt]`. Use `push_cast`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨y, rfl⟩` from `e.surjective y`. Simplify using `only [ContinuousMulEquiv.symm_apply_apply]`. Establish `hθ` using `hw.com.inf`. Use `haveI : s.ν.IsHaarMeasure := hst.haar`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hL2 : ∀ (u : s.CC c), ∀ v ∈ s.KF, MemL2Quotient (GQ s.V) s.ν fun g => conj (PiLocalization₂.val u v g)` using `fun u v hv => memL2_of_cusp_form hC hθ (mem_cuspForms.1 (GlobalTheory.ChainOnto.RealData.conj_multiplicityValue_mem_cuspFormsArchimedeanKFinite c.θ hθ s.M hst.sigOK u.1 u.2 v hv)).1`. Take `⟨V, _, _, π, u, ℓ, hg, hco, hℓ, hℓ1⟩` from `rcoef_eq_coef s.ν hst.haar (hL2 u₁ v₁ hv₁) (hL2 u₂ v₂ hv₂) ι x (fun y => by rw [he]; exact (commute_emb _ _ _ hxv).eq) μT hμu ϖ (qPar c PP x₀ k) (hQ v₁ PP hPP _ pr hpr x₀ ϖ hxϖ μT hL ι hι) (fun j hj d hd g => by`. Rewrite using `[val_type u₂ v₂ ((hlev j).2 hj), hlc μT hL j hj d hd, map_mul, Units.val_inv_eq_inv_val, map_inv₀, Complex.inv_def, Complex.conj_conj, Complex.normSq_conj, Complex.normSq_eq_norm_sq, hμu d]`. Use the proof step `simp)`. Establish `h3` using `hζ V π u ℓ hg hco y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[hℓ, hℓ1]`. Establish `h2` using `hcoef x (by simp only [gAt, hxv, map_one]) y`. Establish `hS : PP.under (𝓞 D.host.F) ∈ c.S` using `by classical`. Use `Finset.mem_image.2 ⟨PP, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hw.union]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.mem_union_right _ hPP`. Establish `h5` using `hgt_split (A := s.V) (L := s.Λ) hst.selfDual ha.1 c.S hS (by simpa using hH1 1 (one_mem _)) hx hxv (e y) ((z : ℂ) - (D.R.t : ℂ) / 2)`. Establish `hs0 : GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero s.V s'.V = (D.R.t : ℂ) / 2`. Establish `a1 : s.V.rank = D.R.r + k * D.R.t` using `hst.rank`. Establish `a2 : s'.V.rank = D.R.r + (k + 1) * D.R.t` using `hst'.rank`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero, a1, a2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hw' : ∀ g, wcoef p.ω m X (p.pt φ) (p.pt φ) g = coefW p.ω m X (p.pt φ) g` using `fun _ => rfl`. Establish `hc1' : conj (cf 1) ≠ 0` using `by simpa using hc1`.
-
-Simplify using `only [flatInt, integrand, hs0, hw']`. Rewrite using `[h5, ← he]`. Apply `mul_left_cancel₀ hc1'` to reduce the goal to its premises. Take the linear combination `(GlobalTheory.Doubling.npow (hgtL s.V s.Λ a x) ((z : ℂ) - (D.R.t : ℂ) / 2) * ((GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV s.V s.Λ _ (e y) : ℝ) : ℂ) ^ ((z : ℂ) - (D.R.t : ℂ) / 2)) * (rcoef s.ν (fun g => conj (PiLocalization₂.val u₁ v₁ g)) (fun g => conj (PiLo …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem local_factor : GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, ForStepQ D fun c w k s s' p => ∀ m X, IsCovolOne (ratL s'.V s.V) m X → ∀ a, IsMajOf c s a → ∀ (u₁ u₂ : s.CC c) φ, IsQ w k u₁ → ∀ v₁ ∈ s.KF, ∀ v₂ ∈ s.KF, ∀ z : ℝ, (D.R.t : ℝ) / 2 - 1 < z → ∀ PP ∈ w.Q, ∃ (J : Subgroup (GlobalTheory.FinZeta.Gv s.V (PP.under (𝓞 D.host.F)))) (μ : Measure (GlobalTheory.FinZeta.Gv s.V (PP.under (𝓞 D.host.F)))) (ζ : GlobalTheory.FinZeta.Gv s.V (PP.under (𝓞 D.host.F)) → ℂ), IsOpen (J : Set (GlobalTheory.FinZeta.Gv s.V (PP.under (𝓞 D.host.F)))) ∧ μ.IsHaarMeasure ∧ μ J = 1 ∧ Integrable ζ μ ∧ (∀ y ∈ J, ζ y = 1) ∧ (∀ g, gAt s.V (.inl (PP.under (𝓞 D.host.F))) g ∈ Lev.levG s.V s.β s.L ↔ GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram (PP.under (𝓞 D.host.F)) g ∈ J) ∧ (z = (D.R.t : ℝ) / 2 → ∫ y, ζ y ∂μ = blockL c k PP * (zinv PP D.R.t ((k + 1) * D.R.t) : ℂ)) ∧ ∀ x ∈ intOff c s, GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram (PP.under (𝓞 D.host.F)) x = 1 → ∀ y, flatInt p m X a φ (PiLocalization₂.val u₁ v₁) (PiLocalization₂.val u₂ v₂) z (x * GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram (PP.under (𝓞 D.host.F)) y) = ζ y * flatInt p m X a φ (PiLocalization₂.val u₁ v₁) (PiLocalization₂.val u₂ v₂) z x := by
   intro hU hC D hgap c w hw k hk s s' hs hs' p hp m X hX a ha u₁ u₂ φ hQ v₁ hv₁ v₂ hv₂ z hz PP hPP

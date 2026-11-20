@@ -9,15 +9,15 @@ open GlobalTheory.ZM GlobalTheory.KeyFam
 namespace GlobalTheory.KeyFam
 
 /- English proof (translation)
-Introduce `h A _ L u T`. Establish `hc : Continuous T` using `T.toContinuousLinearEquiv.continuous`. Establish `hd : Differentiable ℂ T` using `T.toContinuousLinearEquiv.differentiable`. Set `Λ' : Submodule ℤ (Fin h → ℂ)` to `u.Λ.comap ((T.restrictScalars ℤ).toLinearMap)`. Establish `hmem : ∀ z, z ∈ Λ' ↔ T z ∈ u.Λ` using `fun z => Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdisc : DiscreteTopology Λ'` using `by haveI := u.discrete`. Set `f : Λ' → u.Λ` to `fun z => ⟨T z, (hmem z).1 z.2⟩`. Establish `hf : Continuous f` using `(hc.comp continuous_subtype_val).subtype_mk _`. Establish `hi : Function.Injective f` using `fun a b hab => Subtype.ext (T.injective (congrArg Subtype.val hab))`. Conclude with `DiscreteTopology.of_continuous_injective hf hi`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfull : Submodule.span ℝ (Λ' : Set (Fin h → ℂ)) = ⊤`. Establish `h1 : (Λ' : Set (Fin h → ℂ)) = (T.symm.restrictScalars ℝ).toLinearMap '' (u.Λ : Set (Fin h → ℂ))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨T z, hz, by simp⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Use `(hmem _).2 ?_` and prove the remaining obligations. Simplify using `using hw`. Rewrite using `[h1, ← Submodule.map_span, u.full, Submodule.map_top, LinearMap.range_eq_top]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(T.symm.restrictScalars ℝ).surjective`. Use `⟨{ ex := fun z => u.ex (T z) ex_add := fun z w => by rw [map_add, u.ex_add] ex_onto := u.ex_onto.comp T.surjective Λ := Λ' ker := fun z => u.ker (T z) discrete := hdisc full := hfull hol := fun U f => ⟨(u.hol U f).1.preimage hc, (u.hol U f).2.comp hd.differentiableOn (fun _ hz => …` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem holUnif_transport_linearEquiv : ∀ (h : ℕ) (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (u : HolUnif A L h) (T : (Fin h → ℂ) ≃ₗ[ℂ] (Fin h → ℂ)), ∃ u' : HolUnif A L h, (∀ z, u'.ex z = u.ex (T z)) ∧ ∀ z, z ∈ u'.Λ ↔ T z ∈ u.Λ := by
   intro h A _ L u T

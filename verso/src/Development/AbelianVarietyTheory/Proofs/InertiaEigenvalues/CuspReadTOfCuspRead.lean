@@ -90,7 +90,7 @@ def trueCGT (hD : GlobalTheory.Published.DepthZeroTypeInertia) (hL : GlobalTheor
   cgTrueT_of_cgTrue hD (trueCG hL hF D hE T η η' h1 h2 h3 h4)
 
 /- English proof (translation)
-The claim follows from `(trueCG hL hF D hE T η η' h1 h2 h3 h4).surj a ha`.
+A detailed English derivation is pending.
 -/
 theorem trueCGT_e_surj (hD hL hF D hE T η η' h1 h2 h3 h4) (a : ℕ) (ha : 0 < a) :
     Function.Surjective ((trueCGT hD hL hF D hE T η η' h1 h2 h3 h4).e a) :=
@@ -129,14 +129,14 @@ def CuspReadT {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H wh
     (∀ w σ, P.IsLocComp w σ → A.locG π w = rc w a σ) ∧ ∀ τ m, P.HasInfChar τ m → A.infG π τ = m
 
 /- English proof (translation)
-Introduce `a P ha hP _` and use `h a P ha hP`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspReadT_of_cuspRead {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
     {rc : RecMap A} (h : CuspRead rc) : CuspReadT rc :=
   fun a P ha hP _ => h a P ha hP
 
 /- English proof (translation)
-Use `haveI := host_isCMField D.host`. Establish `h1 : (CG.mk P).IsLoc w (Quotient.mk _ σ)` using `hσ`. Simplify using `only [compG]`. Rewrite using `[CG.IsLoc.unique D.host.E a _ w _ _ h1.loc h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compG_eq {D : D7} {a : ℕ} (P : CuspSub D.host.E a) (hu : haveI := host_isCMField D.host; (CG.mk P).IsUnitary)
     {w : PlE D.host} {σ : SmIrr (GL (Fin a) (w.adicCompletion D.host.E))} (hσ : P.IsLocComp w σ) :
@@ -148,11 +148,11 @@ theorem compG_eq {D : D7} {a : ℕ} (P : CuspSub D.host.E a) (hu : haveI := host
   rfl
 
 /- English proof (translation)
-Introduce `rc D T C a P ha hP hg`. Use `haveI := host_isCMField D.host`. Establish `hu : (CG.mk P).IsUnitary` using `CsdUnitary.isUnitary_of_isCsd _ a (CG.mk P) hP`. Establish `hgood : AllGood (H` using `D.host) ⟨CG.mk P, hu⟩ := fun w => by`. Take `⟨σ, hσ, hg⟩` from `hg w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[compG_eq P hu hσ]`. Conclude with `hg`. Take `⟨π, hπ⟩` from `C.surj a ha ⟨CG.mk P, hu⟩ hgood`. Use `⟨π, (C.csd a _).2 (by rw [hπ]; exact hP), fun w σ hσ => ?_, fun τ m hm => ?_⟩` and prove the remaining obligations. Apply `(T.e w).injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[C.loc a π w (by rw [hπ]; exact hgood w)]`. Simplify using `only [recMapT, Equiv.apply_symm_apply, locGR, hπ]`. Rewrite using `[compG_eq P hu hσ]`. Rewrite using `[C.inf, hπ]`. Conclude with `CG.HasInfChar.infChar_eq (π := CG.mk P) hm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspReadT_recMapT : ∀ (rc : RecFam) (D : D7) (T : WDTie D.nd D.naut),
     CGTrueT rc D T → CuspReadT (recMapT T rc) := by
@@ -180,7 +180,7 @@ namespace GlobalTheory.RecT
 open GlobalTheory.RowTie
 
 /- English proof (translation)
-Introduce `hT D T C a ha`. Conclude with `⟨Equiv.ofBijective (fun π => ⟨C.e a π, C.good a π⟩) ⟨fun x y h => (C.e a).injective (congrArg Subtype.val h), fun ρ => let ⟨π, hπ⟩ := C.surj a ha ρ.1 ρ.2; ⟨π, Subtype.ext hπ⟩⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nonempty_equivGoodAll : ∀ (hT : UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : WDTie D.nd D.naut),
     GlobalTheory.HeightCounting.CGTrueT hT D T → ∀ a : ℕ, 0 < a →

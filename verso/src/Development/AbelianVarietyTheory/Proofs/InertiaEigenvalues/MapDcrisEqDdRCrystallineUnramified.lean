@@ -25,7 +25,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v b => simp [mulVdR, ιV, mulVB, ← IsScalarTower.algebraMap_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ιV_mulVB (c : K₀) (d : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c d) =
@@ -37,7 +37,7 @@ theorem ιV_mulVB (c : K₀) (d : V ⊗[Qp] B) :
   | tmul v b => simp [mulVdR, ιV, mulVB, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v b => simp [actVB, mulVB]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_mulVB (g : G) (c : K₀) (d : V ⊗[Qp] B) :
     actVB PD ρ g (mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c d) =
@@ -48,7 +48,7 @@ theorem act_mulVB (g : G) (c : K₀) (d : V ⊗[Qp] B) :
   | tmul v b => simp [actVB, mulVB]
 
 /- English proof (translation)
-Rewrite `hd`, the goal using `[CrisDR.mem_Dcris_iff]`. Introduce `g`. Rewrite using `[act_mulVB, hd g]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVB_mem (c : K₀) {d : V ⊗[Qp] B} (hd : d ∈ Dcris PD ρ) :
     mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c d ∈ Dcris PD ρ := by
@@ -57,7 +57,7 @@ theorem mulVB_mem (c : K₀) {d : V ⊗[Qp] B} (hd : d ∈ Dcris PD ρ) :
   rw [act_mulVB, hd g]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v b => simp [mulVdR]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mulVdR_one (y : V ⊗[Qp] BdR) :
     mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) 1 y = y := by
@@ -67,9 +67,9 @@ theorem mulVdR_one (y : V ⊗[Qp] BdR) :
   | tmul v b => simp [mulVdR]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `d hd`. Use `CrisDR.eq_zero_of_sum PD (LL := LL) (m := 1) (fun _ => (1 : K)) ?_ (fun _ => d) ?_ 0` and prove the remaining obligations. Introduce `b hb i`. Establish `hi : i = 0` using `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hi` using the available equality. Apply `PD.ι_inj` to reduce the goal to its premises. Simplify using `using hb`. Simplify using `[hd]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem ιV_injective : Function.Injective (ιV PD (LL := LL) (V := V)) := by
   rw [injective_iff_map_eq_zero]
@@ -83,9 +83,9 @@ theorem ιV_injective : Function.Injective (ιV PD (LL := LL) (V := V)) := by
   · simp [hd]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨d, hd, rfl⟩`. Use `CrisDR.mul_ι_mem PD ρ (1 : K) hd` as an intermediate fact. Rewrite `this` using `[mulVdR_one]`. Then use the resulting hypothesis. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, c, d, hd, rfl⟩` from `h y hy`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c₀, hc₀⟩` from `hb (c i)`. Rewrite using `[← hc₀, ← ιV_mulVB]`. Conclude with `Submodule.mem_map_of_mem (mulVB_mem PD ρ c₀ (hd i))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_Dcris_eq (hb : Function.Surjective (algebraMap K₀ K))
     (h : ∀ y ∈ DdR PD ρ, ∃ (m : ℕ) (c : Fin m → K) (d : Fin m → V ⊗[Qp] B), (∀ i, d i ∈ Dcris PD ρ) ∧
@@ -103,13 +103,13 @@ theorem map_Dcris_eq (hb : Function.Surjective (algebraMap K₀ K))
     exact Submodule.mem_map_of_mem (mulVB_mem PD ρ c₀ (hd i))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `y ⟨⟨hy, hτ⟩, hF⟩`. Rewrite `hy` using `[← h]`. Take `⟨d, hd, rfl⟩` from `hy`. Use `Submodule.mem_map_of_mem ⟨⟨hd, hF⟩, hd, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hτ ⊢`. Introduce `c`. Apply `ιV_injective PD (LL := LL)` to reduce the goal to its premises. Rewrite using `[ιV_mulVB, hτ, map_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `_ ⟨d, ⟨⟨hd, hF⟩, -, hτ⟩, rfl⟩`. Use `⟨⟨h ▸ Submodule.mem_map_of_mem hd, ?_⟩, hF⟩` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hτ ⊢`. Introduce `c`. Take `⟨c₀, rfl⟩` from `hb c`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ιV_mulVB, hτ, map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem FildR_eq (hb : Function.Surjective (algebraMap K₀ K))
     (h : (Dcris PD ρ).map (ιV PD (LL := LL) (V := V)) = DdR PD ρ) (τ : K →ₐ[Qp] LL) (a : ℤ) :
@@ -138,9 +138,9 @@ theorem FildR_eq (hb : Function.Surjective (algebraMap K₀ K))
 end Abstract
 
 /- English proof (translation)
-Introduce `l _ P AI T K LL hb V _ _ _ _ _ ρ hc`. Take `⟨hdr, hspan⟩` from `CrisDR.isDR_of_isCrys l P AI T K LL V ρ hc`. Establish `h` using `map_Dcris_eq (P.PD K) ρ hb.2 hspan`. Use `⟨h, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨h1, -, h2⟩` from `(GlobalTheory.T.deRhamComponents_crystallineLetters_finrank l P AI T K LL V ρ).1 τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2 hdr, FildR_eq (P.PD K) ρ hb.2 h τ⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_Dcris_eq_DdR : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l), Function.Bijective (algebraMap ↥(K0 K) ↥K.1) → ∀ (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), IsCrys (P.PD K) ρ → (Dcris (P.PD K) ρ).map (ιV (P.PD K) (LL := ↥LL.1) (V := V)) = DdR (P.PD K) ρ ∧ ∀ τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, FiniteDimensional ↥LL.1 ↥(DdRE (P.PD K) ρ τ) ∧ finrank ↥LL.1 ↥(DdRE (P.PD K) ρ τ) = finrank ↥LL.1 V ∧ ∀ a : ℤ, FildR (P.PD K) ρ τ a = (FilCris (P.PD K) ρ a ⊓ DcrisL (P.PD K) ρ (τ.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1))).map (ιV (P.PD K) (LL := ↥LL.1) (V := V)) := by
   intro l _ P AI T K LL hb V _ _ _ _ _ ρ hc

@@ -17,23 +17,23 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.LogCris DividedPowers
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem dpow_mem_pdP {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (n : ℕ) {x : B} (hx : x ∈ J) :
     δ.dpow n x ∈ pdP δ n :=
   Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.span_le.2 fun _ ⟨l, hl, hr, hz⟩ => Ideal.subset_span ⟨l, hl, h.trans hr, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_anti {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {r r' : ℕ} (h : r ≤ r') :
     pdP δ r' ≤ pdP δ r :=
   Ideal.span_le.2 fun _ ⟨l, hl, hr, hz⟩ => Ideal.subset_span ⟨l, hl, h.trans hr, hz⟩
 
 /- English proof (translation)
-Unfold `plogK`. Use `Finset.sum_subset (Finset.range_mono h) fun k _ hk => ?_` and prove the remaining obligations. Establish `hk' : s ≤ k + 1` using `by simp at hk; omega`. Establish `hm : δ.dpow (k + 1) x ∈ pdP δ s` using `dividedPowerFiltration_anti δ hk' (dpow_mem_pdP δ _ hx)`. Rewrite `hm` using `[hs, Ideal.mem_bot]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hm, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem plogK_congr {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {s s' : ℕ} (h : s ≤ s')
     (hs : pdP δ s = ⊥) {x : B} (hx : x ∈ J) : plogK δ s x = plogK δ s' x := by
@@ -45,7 +45,7 @@ theorem plogK_congr {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J)
   rw [hm, mul_zero]
 
 /- English proof (translation)
-The claim follows from `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (δ.dpow_mem (Nat.succ_ne_zero k) hx)`.
+A detailed English derivation is pending.
 -/
 theorem plogK_mem {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (s : ℕ) {x : B} (hx : x ∈ J) :
     plogK δ s x ∈ J :=
@@ -55,19 +55,19 @@ section K
 variable {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cone_lift_ratio_mem_ideal Λ σ`.
+A detailed English derivation is pending.
 -/
 theorem r_sub_one_mem {C : Type 1} [Category.{0} C] {g : C ⥤ Thick (smFun X q)} {D : E.LineData X} (Λ : CLiftK g D)
     (σ : ComposableArrows C 2) : ((Λ.r σ : (g.obj (σ.obj (Fin.last 2))).B) - 1) ∈ (g.obj (σ.obj (Fin.last 2))).J := GlobalTheory.T.cone_lift_ratio_mem_ideal Λ σ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cone_cocycle_closed Λ s hs`.
+A detailed English derivation is pending.
 -/
 theorem zK_cocycle {C : Type 1} [Category.{0} C] {g : C ⥤ Thick (smFun X q)} {D : E.LineData X} (Λ : CLiftK g D)
     (s : ℕ) (hs : ∀ c, (g.obj c).pdPow s = ⊥) : CH.d _ 2 (zK Λ s) = 0 := GlobalTheory.T.cone_cocycle_closed Λ s hs
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cone_cocycle_class_independent Λ Λ' s hs hz hz'`.
+A detailed English derivation is pending.
 -/
 theorem zK_cls_eq {C : Type 1} [Category.{0} C] {g : C ⥤ Thick (smFun X q)} {D : E.LineData X} (Λ Λ' : CLiftK g D)
     (s : ℕ) (hs : ∀ c, (g.obj c).pdPow s = ⊥) (hz : CH.d _ 2 (zK Λ s) = 0) (hz' : CH.d _ 2 (zK Λ' s) = 0) :
@@ -76,7 +76,7 @@ theorem zK_cls_eq {C : Type 1} [Category.{0} C] {g : C ⥤ Thick (smFun X q)} {D
 omit [CharZero K] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem zK_precomp {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {g : C ⥤ Thick (smFun X q)} {D : E.LineData X}
     (Λ : CLiftK g D) (h : C' ⥤ C) (s : ℕ) :
@@ -87,13 +87,13 @@ theorem zK_precomp {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {g : C ⥤
 end K
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_cone_lift q D s`.
+A detailed English derivation is pending.
 -/
 theorem lift_exists {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (D : E.LineData X)
     (s : ℕ) : Nonempty (CLiftK (KS q s (𝒱D D)).ι D) := GlobalTheory.T.exists_cone_lift q D s
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.supremum_twisting_opens_eq_top D N i h`.
+A detailed English derivation is pending.
 -/
 theorem sSup_𝒱D {R : Type} [CommRing R] {X : Scheme.{0}} (D : E.LineData X) (N : ℕ)
     (i : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace R N) (h : IsTautologicalLineAt D N i) : sSup (𝒱D D) = ⊤ := GlobalTheory.T.supremum_twisting_opens_eq_top D N i h

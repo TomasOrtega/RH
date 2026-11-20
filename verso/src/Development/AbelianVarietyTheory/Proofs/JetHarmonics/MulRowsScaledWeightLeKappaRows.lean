@@ -9,11 +9,11 @@ open GlobalTheory.RunDepth GlobalTheory.CharDepth
 namespace GlobalTheory.RunDepth
 
 /- English proof (translation)
-Establish `hpos : (0 : ℤ) < ((T + d + 2 : ℕ) : ℤ)` using `by positivity`. Rewrite using `[Int.fdiv_eq_ediv_of_nonneg _ hpos.le]`. Establish `h1` using `Int.ediv_mul_le x hpos.ne'`. Generalize the expression as in `x / ((T + d + 2 : ℕ) : ℤ) = q at h1`. Break down `le_or_gt q 0 with hq | hq` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Int.toNat_eq_zero.2 hq]`. Simplify using `using hc`. Rewrite using `[Int.toNat_of_nonneg hq.le]`. Move the coercions through the operations in `at h1`. Establish `hd : (0 : ℤ) ≤ d` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg hq.le hd]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem mul_toNat_fdiv_le (T d : ℕ) (c x : ℤ) (hc : 0 ≤ c) (hx : x ≤ c + 2) :
     (T : ℤ) * ((Int.fdiv x ((T + d + 2 : ℕ) : ℤ)).toNat : ℤ) ≤ c := by
@@ -29,7 +29,7 @@ theorem mul_toNat_fdiv_le (T d : ℕ) (c x : ℤ) (hc : 0 ≤ c) (hx : x ≤ c +
     nlinarith [mul_nonneg hq.le hd]
 
 /- English proof (translation)
-Unfold `WeightAlgebra.gapZ`. Use `split_ifs with h`. Establish `: a ⟨i.1 + 1, h⟩ ≤ a i` using `ha (by simp [Fin.le_def])`. Use linear arithmetic over natural numbers and integers. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem gapZ_nonneg_of_antitone {p : ℕ} {a : Fin p → ℕ} (ha : Antitone a) (i : Fin p) :
     0 ≤ WeightAlgebra.gapZ a i := by
@@ -40,15 +40,15 @@ theorem gapZ_nonneg_of_antitone {p : ℕ} {a : Fin p → ℕ} (ha : Antitone a) 
   · positivity
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∀ i : Fin p, i.1 + n + 1 = p → T * ofGaps g i ≤ a i`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : ¬ i.1 + 1 < p` using `by omega`. Establish `h1` using `h i`. Rewrite using `[ofGaps_last g i hn]`. Unfold `WeightAlgebra.gapZ at h1`. Rewrite `h1` using `[dif_neg hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1` after adjusting the coercions. Consider the case `succ n ih`. Introduce `i hi`. Establish `hn : i.1 + 1 < p` using `by omega`. Establish `h1` using `h i`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ih ⟨i.1 + 1, hn⟩ (by simp only; omega)`. Rewrite using `[ofGaps_succ g i hn, Nat.mul_add]`. Unfold `WeightAlgebra.gapZ at h1`. Rewrite `h1` using `[dif_pos hn]`. Establish `h3 : ((T * g i : ℕ) : ℤ) ≤ (a i : ℤ) - a ⟨i.1 + 1, hn⟩` using `by push_cast; exact h1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `key (p - 1 - i.1) i (by have := i.2; omega)`.
+A detailed English derivation is pending.
 -/
 theorem mul_ofGaps_le {p : ℕ} (T : ℕ) (g a : Fin p → ℕ)
     (h : ∀ i, (T : ℤ) * (g i : ℤ) ≤ WeightAlgebra.gapZ a i) (i : Fin p) : T * ofGaps g i ≤ a i := by
@@ -76,11 +76,9 @@ theorem mul_ofGaps_le {p : ℕ} (T : ℕ) (g a : Fin p → ℕ)
   exact key (p - 1 - i.1) i (by have := i.2; omega)
 
 /- English proof (translation)
-Use `mul_ofGaps_le T (lGapP D ka T nW τ) (ka.aP τ) (fun i => ?_) i` and prove the remaining obligations. Establish `h0` using `gapZ_nonneg_of_antitone (ka.aPlus_antitone τ) i`. Unfold `lGapP WeightAlgebra.Tp`. Use `split_ifs with h`. Conclude with `mul_toNat_fdiv_le _ _ _ _ h0 le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `mul_toNat_fdiv_le _ _ _ _ h0 ?_` and prove the remaining obligations. Unfold `WeightAlgebra.gapZ`. Rewrite using `[dif_neg h]`. Establish `: (0 : ℤ) ≤ ((WeightFamilies.dimY D j : ℤ) + 2) * nW` using `by positivity`. Establish `: (0 : ℤ) ≤ (D.R.r : ℤ)` using `by positivity`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mul_lWt_aP_le (D : D7) {j : ℕ} (ka : WeightFamilies.Wt D j) (T nW : ℕ) (hW : Even nW) (τ : D.what₂.Tau)
     (i : Fin (D.R.sigW j).1) : T * (lWt D ka T nW hW).aP τ i ≤ ka.aP τ i := by
@@ -97,9 +95,9 @@ theorem mul_lWt_aP_le (D : D7) {j : ℕ} (ka : WeightFamilies.Wt D j) (T nW : �
     linarith
 
 /- English proof (translation)
-Use `mul_ofGaps_le T (lGapM D ka T τ) (ka.aM τ) (fun i => ?_) i` and prove the remaining obligations. Establish `h0` using `gapZ_nonneg_of_antitone (ka.aM_anti τ) i`. Unfold `lGapM WeightAlgebra.Tp`. Use `split_ifs with h`. Conclude with `mul_toNat_fdiv_le _ _ _ _ h0 le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `mul_toNat_fdiv_le _ _ _ _ h0 ?_` and prove the remaining obligations. Unfold `WeightAlgebra.gapZ`. Rewrite using `[dif_neg h]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mul_lWt_aM_le (D : D7) {j : ℕ} (ka : WeightFamilies.Wt D j) (T nW : ℕ) (hW : Even nW) (τ : D.what₂.Tau)
     (i : Fin (D.R.sigW j).2) : T * (lWt D ka T nW hW).aM τ i ≤ ka.aM τ i := by
@@ -114,7 +112,7 @@ theorem mul_lWt_aM_le (D : D7) {j : ℕ} (ka : WeightFamilies.Wt D j) (T nW : �
     linarith
 
 /- English proof (translation)
-Unfold `WeightAlgebra.DF WeightAlgebra.degP`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.mul_add, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Nat.add_le_add (Finset.sum_le_sum fun i _ => mul_lWt_aP_le D ka T nW hW τ i) (Finset.sum_le_sum fun i _ => mul_lWt_aM_le D ka T nW hW τ i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_DF_lWt_le (D : D7) {j : ℕ} (ka : WeightFamilies.Wt D j) (T nW : ℕ) (hW : Even nW) :
     T * WeightAlgebra.DF (lWt D ka T nW hW) ≤ WeightAlgebra.DF ka := by
@@ -126,7 +124,7 @@ theorem mul_DF_lWt_le (D : D7) {j : ℕ} (ka : WeightFamilies.Wt D j) (T nW : �
     (Finset.sum_le_sum fun i _ => mul_lWt_aM_le D ka T nW hW τ i)
 
 /- English proof (translation)
-Introduce `D L Pm Tp hK j τ`. Conclude with `⟨fun i => mul_lWt_aP_le D _ _ _ _ τ i, fun i => mul_lWt_aM_le D _ _ _ _ τ i, mul_DF_lWt_le D _ _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mul_rows_lR_le_kaR : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (j : ℕ) (τ : D.what₂.Tau), (∀ i, Tp.TO * (lR Tp hK j).aP τ i ≤ (kaR Tp hK j).aP τ i) ∧ (∀ i, Tp.TO * (lR Tp hK j).aM τ i ≤ (kaR Tp hK j).aM τ i) ∧ Tp.TO * WeightAlgebra.DF (lR Tp hK j) ≤ WeightAlgebra.DF (kaR Tp hK j) := by
   intro D L Pm Tp hK j τ

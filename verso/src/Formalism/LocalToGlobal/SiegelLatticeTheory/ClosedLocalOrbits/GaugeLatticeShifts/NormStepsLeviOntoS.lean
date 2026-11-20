@@ -66,11 +66,11 @@ def MatLift : Prop :=
       ∀ v, C.map (resT TR v) = ((s v : GL (Fin D.R.k) (TR.Fq v)) : Matrix (Fin D.R.k) (Fin D.R.k) (TR.Fq v))
 
 /- English proof (translation)
-Introduce `s`. Take `⟨η, b, d, hfr⟩` from `hF`. Take `⟨C, C', hint, hCC, hC'C, hres⟩` from `hL η hfr.1 hfr.2.1 hfr.2.2.1 hfr.2.2.2.1 hfr.2.2.2.2.1 s`. Take `⟨κ, hκK, hfix, hlev⟩` from `hE η b d hfr C C' hint hCC hC'C`. Use `⟨κ, hκK, hfix, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `v`. Establish `hM : leviM TR κ v = ((s v : GL (Fin D.R.k) (TR.Fq v)) : Matrix (Fin D.R.k) (Fin D.R.k) (TR.Fq v))`. Rewrite using `[hlev, hres]`. Establish `hu : IsUnit (leviM TR κ v).det`. Rewrite using `[hM]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.isUnits_det_units (s v)`. Simplify using `only [levi, dif_pos hu]`. Conclude with `Units.ext hM`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kappaOnto_of (hF : DualFrame X u) (hE : LeviElt TR u) (hL : MatLift TR) : KappaOnto TR u := by
   intro s
@@ -89,7 +89,7 @@ theorem kappaOnto_of (hF : DualFrame X u) (hE : LeviElt TR u) (hL : MatLift TR) 
   exact Units.ext hM
 
 /- English proof (translation)
-Establish `e : X.B.I.fmat (X.xu u)⁻¹ * X.B.I.fmat (X.xu u) = 1`. Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem LeviOntoS_xu_inv_fix (y : Fin X.B.I.n → X.B.I.E)
     (hy : X.B.I.fmat (X.xu u) *ᵥ incl X.B.I y = incl X.B.I y) :
@@ -101,13 +101,13 @@ theorem LeviOntoS_xu_inv_fix (y : Fin X.B.I.n → X.B.I.E)
     _ = incl X.B.I y := by rw [Matrix.mulVec_mulVec, e, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hmul : ∀ a b : X.B.I.Gf, X.B.I.fmat (a * b) = X.B.I.fmat a * X.B.I.fmat b`. Introduce `a b`. Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`. Establish `hinv : X.B.I.fmat (X.xu u) * X.B.I.fmat (X.xu u)⁻¹ = 1`. Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `he : ∀ a, X.B.I.fmat (X.xu u) *ᵥ incl X.B.I (X.eR a) = incl X.B.I (X.eR a)` using `fun a => (X.xu_fix u a).1`. Establish `hf : ∀ a, X.B.I.fmat (X.xu u) *ᵥ incl X.B.I (X.fR a) = incl X.B.I (X.fR a)` using `fun a => (X.xu_fix u a).2`. Use `show ∀ y ∈ fixSet X u, X.B.I.fmat (X.xu u * κ * (X.xu u)⁻¹) *ᵥ incl X.B.I y = incl X.B.I y`. Introduce `y hy`. Rewrite using `[hmul, hmul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hy with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hz` into its components or cases. Rewrite using `[LeviOntoS_xu_inv_fix u _ (he a), hfix (incl X.B.I (X.eR a)) (Or.inl (Or.inl ⟨a, rfl⟩)), he a]`. Rewrite using `[LeviOntoS_xu_inv_fix u _ (hf a), hfix (incl X.B.I (X.fR a)) (Or.inl (Or.inr ⟨a, rfl⟩)), hf a]`. Rewrite `hz` using `[Set.mem_singleton_iff]`. Substitute `hz` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hfix (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.zR u)) (Or.inr rfl), Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem LeviOntoS_conj_mem (κ : X.B.I.Gf) (hfix : ∀ y ∈ fixV X u, X.B.I.fmat κ *ᵥ y = y) :
     X.xu u * κ * (X.xu u)⁻¹ ∈ Hfin X u := by
@@ -132,7 +132,7 @@ theorem LeviOntoS_conj_mem (κ : X.B.I.Gf) (hfix : ∀ y ∈ fixV X u, X.B.I.fma
       Matrix.one_mulVec]
 
 /- English proof (translation)
-Conclude with `Subgroup.inv_mem (Formalism.UG.stabGL X.B.I.Lf) hκ`.
+A detailed English derivation is pending.
 -/
 theorem LeviOntoS_K_inv {κ : X.B.I.Gf} (hκ : κ ∈ X.B.I.Kset) : κ⁻¹ ∈ X.B.I.Kset := by
   exact Subgroup.inv_mem (Formalism.UG.stabGL X.B.I.Lf) hκ
@@ -140,11 +140,11 @@ theorem LeviOntoS_K_inv {κ : X.B.I.Gf} (hκ : κ ∈ X.B.I.Kset) : κ⁻¹ ∈ 
 variable {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (cs : ColSys X u what₂)
 
 /- English proof (translation)
-Introduce `q s`. Take `⟨κ, hκK, hfix, hlev⟩` from `hK s`. Establish `e1 : colDS (cs.h (cs.base q.1)) (cs.h (cs.base q.1) * ⟨X.xu u * κ * (X.xu u)⁻¹, LeviOntoS_conj_mem u κ hfix⟩) = κ`. Simplify using `only [colDS, Subgroup.coe_mul, Subgroup.coe_mk]`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : colDS (cs.h (cs.base q.1) * ⟨X.xu u * κ * (X.xu u)⁻¹, LeviOntoS_conj_mem u κ hfix⟩) (cs.h (cs.base q.1)) = κ⁻¹`. Simplify using `only [colDS, Subgroup.coe_mul, Subgroup.coe_mk]`. Use `group`. Use `⟨cs.h (cs.base q.1) * ⟨X.xu u * κ * (X.xu u)⁻¹, LeviOntoS_conj_mem u κ hfix⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hκK`. Rewrite using `[e2]`. Conclude with `LeviOntoS_K_inv hκK`. Rewrite using `[e1]`. Conclude with `hlev`.
+A detailed English derivation is pending.
 -/
 theorem leviOntoS_of (hK : KappaOnto TR u) : LeviOntoS TR cs := by
   intro q s
@@ -166,7 +166,7 @@ theorem leviOntoS_of (hK : KappaOnto TR u) : LeviOntoS TR cs := by
     exact hlev
 
 /- English proof (translation)
-The claim follows from `leviOntoS_of (TR := TR) (u := u) (cs := cs) (kappaOnto_of (TR := TR) (u := u) (hFS hS) hE hL)`.
+A detailed English derivation is pending.
 -/
 theorem leviOntoS_of_steps (hS : SIdem X) (hFS : FrameOfS X u) (hE : LeviElt TR u) (hL : MatLift TR) : LeviOntoS TR cs :=
   leviOntoS_of (TR := TR) (u := u) (cs := cs) (kappaOnto_of (TR := TR) (u := u) (hFS hS) hE hL)

@@ -19,17 +19,17 @@ open Matrix
 namespace GlobalTheory.MulVecProduct
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset ι, Φ (fun τ => if τ ∈ S then g τ else 1) *ᵥ v = (∏ τ ∈ S, ∏ i : Fin n, (↑(g τ) : Matrix (Fin n) (Fin n) ℂ) i i ^ lam τ i) • v`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Establish `h0 : (fun τ : ι => if τ ∈ (∅ : Finset ι) then g τ else 1) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Rewrite using `[h0, h1, Finset.prod_empty, one_smul, Matrix.one_mulVec]`. Consider the case `insert a S ha ih`. Establish `hsplit : (fun τ => if τ ∈ insert a S then g τ else 1) = Pi.mulSingle a (g a) * (fun τ => if τ ∈ S then g τ else 1)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Distinguish the cases in `hτ : τ = a`. Substitute `hτ` using the available equality. Simplify using `[ha]`. Simplify using `[hτ]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `ha'` using `(hv a).2 (g a) (hg a)`. Simplify using `only at ha'`. Rewrite using `[hsplit, hmul, ← Matrix.mulVec_mulVec, ih, Matrix.mulVec_smul, ha', smul_smul, Finset.prod_insert ha]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hall : (fun τ => if τ ∈ (Finset.univ : Finset ι) then g τ else 1) = g`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Use `key Finset.univ` as an intermediate fact. Rewrite `this` using `[hall]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_eq_prod_smul {n : ℕ} {κ : Type} [Fintype κ] [DecidableEq κ] {ι : Type} [Fintype ι]
     [DecidableEq ι] {Φ : (ι → GL (Fin n) ℂ) → Matrix κ κ ℂ}

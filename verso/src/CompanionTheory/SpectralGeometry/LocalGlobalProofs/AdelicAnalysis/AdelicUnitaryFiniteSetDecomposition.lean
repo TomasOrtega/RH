@@ -10,9 +10,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.PureH
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Proceed by induction on `a using Fin.cases with`. Consider the case `zero`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [consTup, h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i => simp [consTup, h0]`. Consider the case `succ a`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [consTup, h0]`. Consider the case `succ i => simp [consTup]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_consTup {K L : Type} [Zero K] [One K] [Zero L] [One L] (f : K → L) (h0 : f 0 = 0)
     (h1 : f 1 = 1) {M n : ℕ} (X : Fin n → Fin M → K) :
@@ -29,7 +29,7 @@ theorem map_consTup {K L : Type} [Zero K] [One K] [Zero L] [One L] (f : K → L)
     | succ i => simp [consTup]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Proceed by induction on `a using Fin.cases with`. Consider the case `zero => simp [consTup]`. Consider the case `succ a => exact a.elim0`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem consTup_empty {K : Type} [Zero K] [One K] {M : ℕ} (X : Fin 0 → Fin M → K) :
     (consTup X : Fin (0 + 1) → Fin (M + 1) → K) = fun _ : Fin 1 => Fin.cons 1 (fun _ => 0) := by
@@ -43,30 +43,30 @@ section Glob
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `map_consTup (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) (map_zero _) (map_one _) X`.
+A detailed English derivation is pending.
 -/
 theorem projInf_consTup {M n : ℕ} (X : Fin n → Fin M → AF F ⊗[F] E) :
     projInf (consTup X) = consTup (projInf X) :=
   map_consTup (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) (map_zero _) (map_one _) X
 
 /- English proof (translation)
-The claim follows from `map_consTup (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)) (map_zero _) (map_one _) X`.
+A detailed English derivation is pending.
 -/
 theorem projFin_consTup {M n : ℕ} (X : Fin n → Fin M → AF F ⊗[F] E) :
     projFin (consTup X) = consTup (projFin X) :=
   map_consTup (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)) (map_zero _) (map_one _) X
 
 /- English proof (translation)
-The claim follows from `map_consTup (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)) (map_zero _) (map_one _) X`.
+A detailed English derivation is pending.
 -/
 theorem projV_consTup (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ} (X : Fin n → Fin M → Af F ⊗[F] E) :
     projV v (consTup X) = consTup (projV v X) :=
   map_consTup (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)) (map_zero _) (map_one _) X
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a i k`. Simplify `h a.succ i.succ k` using `[consTup]`. Introduce `h a i k`. Proceed by induction on `a using Fin.cases with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simpa [consTup] using h0 (fun a => a.elim0) 0 i k`. Consider the case `succ a`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [consTup, zero_mem]`. Consider the case `succ i => simpa [consTup] using h a i k`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem consTup_mem_latV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ}
     (h0 : ∀ X₀ : Fin 0 → Fin M → Fv F v ⊗[F] E, consTup X₀ ∈ latV b v)
@@ -94,7 +94,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   [DecidableEq (HeightOneSpectrum (𝓞 F))]
 
 /- English proof (translation)
-Rewrite using `[← Finset.union_sdiff_self_eq_union, Finset.prod_union Finset.disjoint_sdiff]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v hv => if_pos ((hS v).2 hv)`. Conclude with `Finset.prod_congr rfl fun v hv => if_neg fun h => (Finset.mem_sdiff.1 hv).2 ((hS v).1 h)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem prod_union_split {ι : Type} [DecidableEq ι] (S Sh : Finset ι) (A B : ι → ℝ≥0∞) (P : ι → Prop)
     [DecidablePred P] (hS : ∀ v, P v ↔ v ∈ S) :
@@ -111,21 +111,19 @@ variable {d M : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E)
 include b in
 
 /- English proof (translation)
-Establish `hP : projInf (actW (AF F) σ Jp h (consTup X)) = actW (Ainf F) σ Jp ginf (consTup (projInf X))`. Rewrite using `[hinf, projInf_consTup]`. Establish `hV : ∀ v, projV v (projFin (actW (AF F) σ Jp h (consTup X))) = actW (Fv F v) σ Jp (g v) (consTup (projV v (projFin X)))` using `fun v => by`. Rewrite using `[hfin, projFin_consTup, projV_consTup]`. Establish `key : ∀ v, v ∉ S → v ∉ Sh → (actW (Fv F v) σ Jp (g v) (consTup (projV v (projFin X))) ∈ latV b v ↔ projV v (projFin X) ∈ latV b v)` using `fun v h1 h2 => (hSh v h2 _ _).trans (consTup_mem_latV b v (hS v h1) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod` using `prod_union_split S Sh (fun v => φ v (actW (Fv F v) σ Jp (g v) (consTup (projV v (projFin X))))) (fun v => ((latV b v).indicator 1 (actW (Fv F v) σ Jp (g v) (consTup (projV v (projFin X)))) : ℝ≥0∞)) (fun v => v ∈ S) (fun _ => Iff.rfl)`. Unfold `pureL`. Distinguish the cases in `hX : X ∈ intOff b (S ∪ Sh)`. Rewrite using `[Set.indicator_of_mem hX, hprod]`. Distinguish the cases in `hA : ∀ v ∈ Sh \ S, actW (Fv F v) σ Jp (g v) (consTup (projV v (projFin X))) ∈ latV b v`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hY : actW (AF F) σ Jp h (consTup X) ∈ intOff b S`. Introduce `v hv`. Rewrite using `[hV]`. Distinguish the cases in `hvh : v ∈ Sh`. Conclude with `hA v (Finset.mem_sdiff.2 ⟨hvh, hv⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key v hv hvh).2 (hX v (by simp [hv, hvh]))`. Rewrite using `[Set.indicator_of_mem hY, hP, Finset.prod_eq_one (f := fun v => ((latV b v).indicator 1 (actW (Fv F v) σ Jp (g v) (consTup (projV v (projFin X)))) : ℝ≥0∞)) (fun v hv => by simp [Set.indicator_of_mem (hA v hv)])]`. Simplify using `only [mul_one, hV]`. Use `push Not at hA`. Take `⟨v, hv, hvl⟩` from `hA`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hY : actW (AF F) σ Jp h (consTup X) ∉ intOff b S`. Introduce `hm`. Use `hm v (Finset.mem_sdiff.1 hv).2` as an intermediate fact. Rewrite `this` using `[hV]`. Conclude with `hvl this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_notMem hY, Finset.prod_eq_zero hv (by simp [Set.indicator_of_notMem hvl])]`. Simplify using the standard rewrite rules. Establish `hY : actW (AF F) σ Jp h (consTup X) ∉ intOff b S`. Introduce `hm`. Apply `hX` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v hv`. Establish `hv' : v ∉ S ∧ v ∉ Sh` using `by simpa using hv`. Use `hm v hv'.1` as an intermediate fact. Rewrite `this` using `[hV]`. Conclude with `(key v hv'.1 hv'.2).1 this`.
-
-Rewrite using `[Set.indicator_of_notMem hX, Set.indicator_of_notMem hY]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureL_act
     (hinf : ∀ (n : ℕ) (X : Fin n → Fin (M + 1) → AF F ⊗[F] E),
@@ -193,11 +191,11 @@ theorem pureL_act
 include b in
 
 /- English proof (translation)
-Set `X₀ : Fin 0 → Fin M → AF F ⊗[F] E` to `fun a => a.elim0`. Establish `h1` using `pureL_act (n := 0) b σ Jp h ginf g S Sh hinf hfin hSh hS Ψinf Ψ X₀`. Establish `hmem : X₀ ∈ intOff b (S ∪ Sh)` using `fun v _ a => a.elim0`. Unfold `pureL at h1`. Rewrite `h1` using `[Set.indicator_of_mem hmem]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[consTup_empty]`. Simplify using `only [consTup_empty] at h1`. Rewrite `h1` using `[prod_union_split S Sh _ _ (fun v => v ∈ S) (fun _ => Iff.rfl)]`. Rewrite using `[mul_assoc]`. Unfold `pureL`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem pureL_act_vec
     (hinf : ∀ (n : ℕ) (X : Fin n → Fin (M + 1) → AF F ⊗[F] E),
@@ -229,15 +227,15 @@ theorem pureL_act_vec
 end Core
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hCM M J hJ t ht d b`. Establish `hba` using `GlobalTheory.CompanionTheory.SW.BlockAlg.block_alg F E σ hCM M J t`. Establish `hJ' : IsHermND σ (blockOne (algebraMap F E t) J)` using `⟨hba.2.1 hJ.1, by`. Rewrite using `[hba.1]`. Conclude with `mul_ne_zero ((map_ne_zero _).2 ht) hJ.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨pinf, p, hcomp, hlat, -⟩` from `GlobalTheory.CompanionTheory.SW.HProj.components F E σ hCM (M + 1) _ hJ'`. Establish `hcons` using `(GlobalTheory.CompanionTheory.SW.LatRat.latV_rational F E σ hCM d b 0 M).2.2`. Set `S₁ : Finset (HeightOneSpectrum (𝓞 F))` to `(Filter.eventually_cofinite.1 hcons).toFinset`. Use `⟨S₁, fun h => ?_⟩` and prove the remaining obligations. Establish `hlat'` using `hlat d b h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Sh : Finset (HeightOneSpectrum (𝓞 F))` to `(Filter.eventually_cofinite.1 hlat').toFinset`. Establish `hSh : ∀ v, v ∉ Sh → ∀ (n : ℕ) (X : Fin n → Fin (M + 1) → Fv F v ⊗[F] E), actW (Fv F v) σ _ (p v h) X ∈ latV b v ↔ X ∈ latV b v` using `fun v hv => by`. Simplify `hv` using `[Sh]`. Use `⟨pinf h, fun v => p v h, Sh, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hS' : ∀ v, v ∉ S → ∀ X₀ : Fin 0 → Fin M → Fv F v ⊗[F] E, consTup X₀ ∈ latV b v`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv X₀`. Establish `hv₁ : v ∉ S₁` using `fun hm => hv (hS hm)`. Establish `: ∀ X : Fin 0 → Fin M → Fv F v ⊗[F] E, consTup X ∈ latV b v ↔ X ∈ latV b v`. Simplify `hv₁` using `[S₁]`. Conclude with `(this X₀).2 fun a => a.elim0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf` using `fun (n : ℕ) (X : Fin n → Fin (M + 1) → AF F ⊗[F] E) => (hcomp n h X).1`. Establish `hfin` using `fun (n : ℕ) (X : Fin n → Fin (M + 1) → AF F ⊗[F] E) (v : HeightOneSpectrum (𝓞 F)) => (hcomp n h X).2 v`. Conclude with `⟨fun n φinf φ X => pureL_act b σ _ h (pinf h) (fun v => p v h) S Sh hinf hfin hSh hS' φinf φ X, fun Ψinf Ψ => pureL_act_vec b σ _ h (pinf h) (fun v => p v h) S Sh hinf hfin hSh hS' Ψinf Ψ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pure_h : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [DecidableEq (HeightOneSpectrum (𝓞 F))] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∃ S₁ : Finset (HeightOneSpectrum (𝓞 F)), ∀ h : HA (AF F) σ (blockOne (algebraMap F E t) J), ∃ (ginf : HA (Ainf F) σ (blockOne (algebraMap F E t) J)) (g : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) σ (blockOne (algebraMap F E t) J)) (Sh : Finset (HeightOneSpectrum (𝓞 F))), ∀ S, S₁ ⊆ S → (∀ (n : ℕ) (φinf : (Fin (n + 1) → Fin (M + 1) → Ainf F ⊗[F] E) → ℝ≥0∞) (φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin (n + 1) → Fin (M + 1) → Fv F v ⊗[F] E) → ℝ≥0∞) (X : Fin n → Fin M → AF F ⊗[F] E), pureL b S φinf φ (actW (AF F) σ _ h (consTup X)) = pureL b (S ∪ Sh) (fun Y => φinf (actW (Ainf F) σ _ ginf (consTup Y))) (fun v Y => if v ∈ S then φ v (actW (Fv F v) σ _ (g v) (consTup Y)) else (latV b v).indicator 1 (actW (Fv F v) σ _ (g v) (consTup Y))) X) ∧ ∀ (Ψinf : (Fin 1 → Fin (M + 1) → Ainf F ⊗[F] E) → ℝ≥0∞) (Ψ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin 1 → Fin (M + 1) → Fv F v ⊗[F] E) → ℝ≥0∞), pureL b S Ψinf Ψ (actW (AF F) σ _ h (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0))) = (Ψinf (actW (Ainf F) σ _ ginf (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0))) * ∏ v ∈ S, Ψ v (actW (Fv F v) σ _ (g v) (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0)))) * ∏ v ∈ Sh \ S, (latV b v).indicator 1 (actW (Fv F v) σ _ (g v) (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0))) := by
   intro F E _ _ _ _ _ _ σ hCM M J hJ t ht d b

@@ -6,27 +6,27 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Simplify using `[Sec.res, op_comp, Functor.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sec_res_comp' {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res (f ≫ g) x = Sec.res f (Sec.res g x) := by
   simp [Sec.res, op_comp, Functor.map_comp]
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sec_res_id' {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (x : Sec F U) :
     Sec.res (𝟙 U) x = x := by
   simp [Sec.res]
 
 /- English proof (translation)
-Introduce `R _ F U ι V j hU`. Set `e : ∐ V ≅ U` to `(coproductIsCoproduct V).coconePointUniqueUpToIso hU`. Establish `he : ∀ i, Sigma.ι V i ≫ e.hom = j i` using `fun i => (coproductIsCoproduct V).comp_coconePointUniqueUpToIso_hom hU ⟨i⟩`. Establish `hb` using `GlobalTheory.T.sec_sigma_res_bijective R F V`. Establish `hiso : Function.Bijective (fun x : Sec F U => Sec.res e.hom x)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Function.bijective_iff_has_inverse.2 ⟨fun y => Sec.res e.inv y, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← sec_res_comp', e.inv_hom_id, sec_res_id']`. Simplify using `only`. Rewrite using `[← sec_res_comp', e.hom_inv_id, sec_res_id']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun (x : Sec F U) (i : ι) => Sec.res (j i) x) = (fun (a : Sec F (∐ V)) (i : ι) => Sec.res (Sigma.ι V i) a) ∘ (fun x : Sec F U => Sec.res e.hom x)`. Use function extensionality and compare the values at `x i`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← sec_res_comp', he i]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb.comp hiso`.
+A detailed English derivation is pending.
 -/
 theorem sec_coprod : ∀ (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}) (ι : Type) (V : ι → Scheme.{0}) (j : ∀ i, V i ⟶ U), IsColimit (Cofan.mk U j) → Function.Bijective (fun (x : Sec F U) (i : ι) => Sec.res (j i) x) := by
   intro R _ F U ι V j hU

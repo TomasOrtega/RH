@@ -13,9 +13,9 @@ section Coordinates
 variable {R : Type*} [CommRing R] {n e : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : Ideal.Quotient.mk (secIdeal Q y) (chartForm y - 1) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_right (Ideal.subset_span (Set.mem_singleton _)))`. Rewrite `h1` using `[map_sub, map_one, sub_eq_zero]`. Establish `h2 : (1 : SecAlg Q y) = ∑ j, Ideal.Quotient.mk _ (C (y (.inr j))) * secCoord Q y j`. Rewrite using `[← h1, chartForm, linForm, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, secCoord]`. Rewrite using `[h2]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_secCoord_eq_top (Q : Ideal (MvPolynomial (Fin n) R)) (y : Par e n → R) :
     Ideal.span (Set.range (secCoord Q y)) = ⊤ := by
@@ -30,9 +30,9 @@ theorem span_secCoord_eq_top (Q : Ideal (MvPolynomial (Fin n) R)) (y : Par e n �
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Use `choose N hN using h`. Establish `htop` using `Ideal.span_pow_eq_top _ (span_secCoord_eq_top Q y) (∑ j, N j)`. Establish `hle : Ideal.span ((fun z => z ^ (∑ j, N j)) '' Set.range (secCoord Q y)) ≤ LinearMap.ker (LinearMap.mulRight (SecAlg Q y) b)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.mulRight_apply]`. Rewrite using `[← Nat.sub_add_cancel (Finset.single_le_sum (fun k _ => Nat.zero_le (N k)) (Finset.mem_univ j)), pow_add, mul_assoc, hN j, mul_zero]`. Establish `h1 : (1 : SecAlg Q y) ∈ LinearMap.ker (LinearMap.mulRight (SecAlg Q y) b)` using `hle (by rw [htop]; exact Submodule.mem_top)`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_secCoord_pow_mul (Q : Ideal (MvPolynomial (Fin n) R)) (y : Par e n → R)
     (b : SecAlg Q y) (h : ∀ j, ∃ N : ℕ, secCoord Q y j ^ N * b = 0) : b = 0 := by
@@ -70,7 +70,7 @@ def chartInvC (e : ℕ) (Q : Ideal (MvPolynomial (Fin n) D)) (j : Fin n) :
   C (IsLocalization.Away.invSelf (chartCoordinate Q j))
 
 /- English proof (translation)
-Rewrite using `[chartCoord, chartInvC, ← C_mul]`. Establish `: algebraMap (MvPolynomial (Fin n) D ⧸ Q) (ChartDj Q j) (Ideal.Quotient.mk Q (X j)) * IsLocalization.Away.invSelf (chartCoordinate Q j) = 1` using `IsLocalization.Away.mul_invSelf (chartCoordinate Q j)`. Rewrite using `[this, C_1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartCoord_mul_inv (e : ℕ) (Q : Ideal (MvPolynomial (Fin n) D)) (j : Fin n) :
     chartCoord e Q j j * chartInvC e Q j = 1 := by
@@ -88,7 +88,7 @@ def chartSub (e : ℕ) (Q : Ideal (MvPolynomial (Fin n) D)) (j : Fin n) :
       if k = j then (∑ k', X (.inr k') * chartCoord e Q j k' - 1) * chartInvC e Q j else 0)
 
 /- English proof (translation)
-Simplify using `only [chartSub, Sum.elim_inl, sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[mul_assoc, mul_comm (chartInvC e Q j) _, chartCoord_mul_inv, mul_one, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartSub_rel_inl (e : ℕ) (Q : Ideal (MvPolynomial (Fin n) D)) (j : Fin n) (i : Fin e) :
     ∑ k, chartSub e Q j (.inl (i, k)) * chartCoord e Q j k = 0 := by
@@ -97,7 +97,7 @@ theorem chartSub_rel_inl (e : ℕ) (Q : Ideal (MvPolynomial (Fin n) D)) (j : Fin
   rw [mul_assoc, mul_comm (chartInvC e Q j) _, chartCoord_mul_inv, mul_one, sub_self]
 
 /- English proof (translation)
-Simplify using `only [chartSub, Sum.elim_inr, sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[mul_assoc, mul_comm (chartInvC e Q j) _, chartCoord_mul_inv, mul_one, sub_sub_cancel]`. Rewrite using `[one_mul, mul_comm, chartCoord_mul_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartSub_rel_inr (e : ℕ) (Q : Ideal (MvPolynomial (Fin n) D)) (j : Fin n) :
     ∑ k, chartSub e Q j (.inr k) * chartCoord e Q j k = 1 := by
@@ -120,7 +120,7 @@ variable (D) in
 def chartPar : Par e n → R := fun p => algebraMap (MvPolynomial (Par e n) D) R (X p)
 
 /- English proof (translation)
-The claim follows from `le_sup_left.trans le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem chartModel_le (Q : Ideal (MvPolynomial (Fin n) D)) :
     chartModel e R Q ≤ secIdeal (chartModel e R Q) (chartPar D e R) :=
@@ -136,7 +136,7 @@ def chartHomR [IsLocalization S R] : R →+* ChartE' e Q j S :=
   IsLocalization.map (M := S) (ChartE' e Q j S) (chartHomA e Q j) (Submonoid.le_comap_map S)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.map_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem chartHomR_algebraMap [IsLocalization S R] (a : MvPolynomial (Par e n) D) :
     chartHomR e R Q j S (algebraMap _ R a) = algebraMap _ (ChartE' e Q j S) (chartHomA e Q j a) :=
@@ -146,7 +146,7 @@ def chartPhi0 [IsLocalization S R] : MvPolynomial (Fin n) R →+* ChartE' e Q j 
   eval₂Hom (chartHomR e R Q j S) fun k => algebraMap _ _ (chartCoord e Q j k)
 
 /- English proof (translation)
-Establish `: (chartPhi0 e R Q j S).comp (MvPolynomial.map ((algebraMap (MvPolynomial (Par e n) D) R).comp C)) = (algebraMap (MvPolynomial (Par e n) (ChartDj Q j)) (ChartE' e Q j S)).comp (C.comp ((algebraMap _ (ChartDj Q j)).comp (Ideal.Quotient.mk Q)))`. Use `MvPolynomial.ringHom_ext (fun d => ?_) (fun k => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, map_C, chartPhi0, eval₂Hom_C, chartHomR_algebraMap, chartHomA]`. Simplify using `only [RingHom.comp_apply, map_X, chartPhi0, eval₂Hom_X', chartCoord]`. Conclude with `RingHom.congr_fun this q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartPhi0_map [IsLocalization S R] (q : MvPolynomial (Fin n) D) :
     chartPhi0 e R Q j S (MvPolynomial.map ((algebraMap (MvPolynomial (Par e n) D) R).comp C) q) =
@@ -161,13 +161,13 @@ theorem chartPhi0_map [IsLocalization S R] (q : MvPolynomial (Fin n) D) :
   exact RingHom.congr_fun this q
 
 /- English proof (translation)
-Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[chartModel, Ideal.map_le_iff_le_comap]`. Introduce `q hq`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, chartPhi0_map, Ideal.Quotient.eq_zero_iff_mem.mpr hq, map_zero, map_zero, map_zero]`. Rewrite using `[Ideal.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Establish `h` using `congrArg (algebraMap _ (ChartE' e Q j S)) (chartSub_rel_inl e Q j i)`. Rewrite `h` using `[map_zero]`. Rewrite using `[← h]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [secForm, linForm, chartPar, map_sum, map_mul, chartPhi0, eval₂Hom_C, eval₂Hom_X', chartHomR_algebraMap, chartHomA]`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Establish `h` using `congrArg (algebraMap _ (ChartE' e Q j S)) (chartSub_rel_inr e Q j)`. Rewrite `h` using `[map_one]`. Rewrite using `[← h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [chartForm, linForm, chartPar, map_sum, map_mul, chartPhi0, eval₂Hom_C, eval₂Hom_X', chartHomR_algebraMap, chartHomA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem secIdeal_le_ker_chartPhi0 [IsLocalization S R] :
     secIdeal (chartModel e R Q) (chartPar D e R) ≤ RingHom.ker (chartPhi0 e R Q j S) := by
@@ -202,13 +202,13 @@ def chartKappa : MvPolynomial (Fin n) D →+* SecAlg (chartModel e R Q) (chartPa
   (Ideal.Quotient.mk _).comp (MvPolynomial.map ((algebraMap (MvPolynomial (Par e n) D) R).comp C))
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq_zero_iff_mem.mpr (chartModel_le e R Q (Ideal.mem_map_of_mem _ hq))`.
+A detailed English derivation is pending.
 -/
 theorem chartKappa_eq_zero {q : MvPolynomial (Fin n) D} (hq : q ∈ Q) : chartKappa e R Q q = 0 :=
   Ideal.Quotient.eq_zero_iff_mem.mpr (chartModel_le e R Q (Ideal.mem_map_of_mem _ hq))
 
 /- English proof (translation)
-Simplify using `only [chartKappa, RingHom.comp_apply, map_X, secCoord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartKappa_X (k : Fin n) : chartKappa e R Q (X k) = secCoord (chartModel e R Q) (chartPar D e R) k := by
   simp only [chartKappa, RingHom.comp_apply, map_X, secCoord]
@@ -217,14 +217,14 @@ def chartChi : (MvPolynomial (Fin n) D ⧸ Q) →+* ChartBj e R Q j :=
   (algebraMap _ _).comp (Ideal.Quotient.lift Q (chartKappa e R Q) fun _ hq => chartKappa_eq_zero e R Q hq)
 
 /- English proof (translation)
-Simplify using `only [chartChi, RingHom.comp_apply, Ideal.Quotient.lift_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartChi_mk (q : MvPolynomial (Fin n) D) :
     chartChi e R Q j (Ideal.Quotient.mk Q q) = algebraMap _ (ChartBj e R Q j) (chartKappa e R Q q) := by
   simp only [chartChi, RingHom.comp_apply, Ideal.Quotient.lift_mk]
 
 /- English proof (translation)
-Rewrite using `[chartCoordinate, chartChi_mk, chartKappa_X]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartChi_isUnit : IsUnit (chartChi e R Q j (chartCoordinate Q j)) := by
   rw [chartCoordinate, chartChi_mk, chartKappa_X]
@@ -234,7 +234,7 @@ def chartPsiD : ChartDj Q j →+* ChartBj e R Q j :=
   IsLocalization.Away.lift (chartCoordinate Q j) (chartChi_isUnit e R Q j)
 
 /- English proof (translation)
-Rewrite using `[chartPsiD, IsLocalization.Away.lift_eq, chartChi_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chartPsiD_mk (q : MvPolynomial (Fin n) D) :
     chartPsiD e R Q j (algebraMap _ _ (Ideal.Quotient.mk Q q)) =
@@ -246,7 +246,7 @@ def chartPsi0 : MvPolynomial (Par e n) (ChartDj Q j) →+* ChartBj e R Q j :=
     algebraMap _ _ (algebraMap R (SecAlg (chartModel e R Q) (chartPar D e R)) (chartPar D e R p))
 
 /- English proof (translation)
-Rewrite using `[chartPsi0, chartCoord, eval₂Hom_C, chartPsiD_mk, chartKappa_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chartPsi0_coord (k : Fin n) :
     chartPsi0 e R Q j (chartCoord e Q j k) =
@@ -254,9 +254,9 @@ theorem chartPsi0_coord (k : Fin n) :
   rw [chartPsi0, chartCoord, eval₂Hom_C, chartPsiD_mk, chartKappa_X]
 
 /- English proof (translation)
-Establish `h0 : Ideal.Quotient.mk (secIdeal (chartModel e R Q) (chartPar D e R)) (secForm (chartPar D e R) i) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩)))`. Establish `h1` using `congrArg (algebraMap _ (ChartBj e R Q j)) h0`. Rewrite `h1` using `[map_zero]`. Rewrite using `[← h1, map_sum, secForm, linForm, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, map_mul, chartPsi0_coord, chartPsi0, eval₂Hom_X']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chartPsi0_rel_inl (i : Fin e) :
     chartPsi0 e R Q j (∑ k, X (.inl (i, k)) * chartCoord e Q j k) = 0 := by
@@ -272,9 +272,9 @@ theorem chartPsi0_rel_inl (i : Fin e) :
   rfl
 
 /- English proof (translation)
-Establish `h0 : Ideal.Quotient.mk (secIdeal (chartModel e R Q) (chartPar D e R)) (chartForm (chartPar D e R) - 1) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_right (Ideal.subset_span (Set.mem_singleton _)))`. Establish `h1` using `congrArg (algebraMap _ (ChartBj e R Q j)) h0`. Rewrite `h1` using `[map_zero]`. Rewrite using `[← h1]`. Simplify using `only [map_sub, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum, chartForm, linForm, map_sum, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, chartPsi0_coord, chartPsi0, eval₂Hom_X']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chartPsi0_rel_inr :
     chartPsi0 e R Q j (∑ k, X (.inr k) * chartCoord e Q j k - 1) = 0 := by
@@ -292,13 +292,13 @@ theorem chartPsi0_rel_inr :
   rfl
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun d => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, chartHomA, eval₂Hom_C]`. Rewrite using `[chartPsi0, eval₂Hom_C, chartPsiD_mk]`. Simplify using `only [chartKappa, RingHom.comp_apply, map_C]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [RingHom.comp_apply, chartHomA, eval₂Hom_X']`. Break down `p with ⟨i, k⟩ | k` into its components or cases. Simplify using `only [chartSub, Sum.elim_inl, map_sub] split_ifs`. Rewrite using `[map_mul, chartPsi0_rel_inl, zero_mul, sub_zero, chartPsi0, eval₂Hom_X']`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_zero, sub_zero, chartPsi0, eval₂Hom_X']`. Both sides reduce to the same expression. Simplify using `only [chartSub, Sum.elim_inr, map_sub] split_ifs`. Rewrite using `[map_mul, chartPsi0_rel_inr, zero_mul, sub_zero, chartPsi0, eval₂Hom_X']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_zero, sub_zero, chartPsi0, eval₂Hom_X']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chartPsi0_comp :
     (chartPsi0 e R Q j).comp (chartHomA e Q j) =
@@ -335,7 +335,7 @@ def chartPsi [IsLocalization S R] : ChartE' e Q j S →+* ChartBj e R Q j :=
     exact ((IsLocalization.map_units R (⟨s, hs⟩ : S)).map _).map _)
 
 /- English proof (translation)
-Use `IsLocalization.ringHom_ext S (RingHom.ext fun a => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, chartHomR_algebraMap, chartPsi, IsLocalization.lift_eq]`. Conclude with `RingHom.congr_fun (chartPsi0_comp e R Q j) a`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartPsi_comp_homR [IsLocalization S R] :
     (chartPsi e R Q j S).comp (chartHomR e R Q j S) =
@@ -345,9 +345,9 @@ theorem chartPsi_comp_homR [IsLocalization S R] :
   exact RingHom.congr_fun (chartPsi0_comp e R Q j) a
 
 /- English proof (translation)
-Use `Ideal.Quotient.ringHom_ext (MvPolynomial.ringHom_ext (fun r => ?_) (fun k => ?_))` and prove the remaining obligations. Establish `h` using `RingHom.congr_fun (chartPsi_comp_homR e R Q j S) r`. Simplify using `only [RingHom.comp_apply, chartPhi, Ideal.Quotient.lift_mk, chartPhi0, eval₂Hom_C] at h ⊢`. Conclude with `h`. Simplify using `only [RingHom.comp_apply, chartPhi, Ideal.Quotient.lift_mk, chartPhi0, eval₂Hom_X', chartPsi, IsLocalization.lift_eq, chartPsi0_coord]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem chartPsi_comp_phi [IsLocalization S R] :
     (chartPsi e R Q j S).comp (chartPhi e R Q j S) = algebraMap _ (ChartBj e R Q j) := by
@@ -360,17 +360,17 @@ theorem chartPsi_comp_phi [IsLocalization S R] :
     rfl
 
 /- English proof (translation)
-Distinguish the cases in `hxj : (X j : MvPolynomial (Fin n) D) ∈ Q`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h0 : secCoord (chartModel e R Q) (chartPar D e R) j = 0`. Rewrite using `[← chartKappa_X, chartKappa_eq_zero e R Q hxj]`. Rewrite using `[h0, pow_one, zero_mul]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : chartCoordinate Q j ≠ 0` using `fun h => hxj (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Establish `: IsDomain (ChartDj Q j)` using `IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors hx0)`. Establish `hΦ : chartPhi e R Q j S b = 0`. Establish `h` using `congrArg (chartPhi e R Q j S) hb`. Rewrite `h` using `[map_mul, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc' : chartPhi e R Q j S (algebraMap R _ (algebraMap (MvPolynomial (Par e n) D) R (C c))) = algebraMap (MvPolynomial (Par e n) (ChartDj Q j)) (ChartE' e Q j S) (C (algebraMap _ (ChartDj Q j) (Ideal.Quotient.mk Q (C c))))` using `by show chartPhi0 e R Q j S (C (algebraMap (MvPolynomial (Par e n) D) R (C c))) = _`. Rewrite using `[chartPhi0, eval₂Hom_C, chartHomR_algebraMap]`. Simplify using `only [chartHomA, eval₂Hom_C, RingHom.comp_apply]`. Rewrite `h` using `[hc']`. Establish `hcE : (C (algebraMap _ (ChartDj Q j) (Ideal.Quotient.mk Q (C c))) : MvPolynomial (Par e n) (ChartDj Q j)) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1` using `C_injective (Par e n) (ChartDj Q j) (h0.trans (map_zero C).symm)`. Establish `h2` using `IsLocalization.injective (ChartDj Q j) (powers_le_nonZeroDivisors_of_noZeroDivisors hx0) (h1.trans (map_zero _).symm)`. Conclude with `hc (hQ c (Ideal.Quotient.eq_zero_iff_mem.mp h2))`. Distinguish the cases in `h0 : (0 : MvPolynomial (Par e n) (ChartDj Q j)) ∈ S.map (chartHomA e Q j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `IsLocalization.uniqueOfZeroMem (S := ChartE' e Q j S) h0` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Establish `hT` using `le_nonZeroDivisors_of_noZeroDivisors h0`. Establish `: IsDomain (ChartE' e Q j S)` using `IsLocalization.isDomain_localization hT`. Use `(mul_eq_zero.mp h).resolve_left fun h3 => hcE ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsLocalization.injective (ChartE' e Q j S) hT (h3.trans (map_zero _).symm)`. Establish `hB : algebraMap _ (ChartBj e R Q j) b = 0`. Rewrite using `[← RingHom.congr_fun (chartPsi_comp_phi e R Q j S) b, RingHom.comp_apply, hΦ, map_zero]`. Take `⟨⟨_, N, rfl⟩, hN⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (secCoord (chartModel e R Q) (chartPar D e R) j)) (ChartBj e R Q j) b).mp hB`. Conclude with `⟨N, hN⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chart_pow_mul_eq_zero [IsDomain D] [Q.IsPrime] [IsLocalization S R]
     (hQ : ∀ c : D, C c ∈ Q → c = 0) (c : D) (hc : c ≠ 0)
@@ -418,7 +418,7 @@ theorem chart_pow_mul_eq_zero [IsDomain D] [Q.IsPrime] [IsLocalization S R]
 end Chart
 
 /- English proof (translation)
-Substitute `hQR hy` using the available equality. Conclude with `eq_zero_of_secCoord_pow_mul _ _ b fun j => chart_pow_mul_eq_zero e R Q j S hQ c hc b hb`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem secAlg_const_mul_eq_zero {D : Type*} [CommRing D] [IsDomain D] {n : ℕ} (e : ℕ) (R : Type*)
     [CommRing R] [Algebra (MvPolynomial (Par e n) D) R] (Q : Ideal (MvPolynomial (Fin n) D)) [Q.IsPrime]
@@ -430,9 +430,9 @@ theorem secAlg_const_mul_eq_zero {D : Type*} [CommRing D] [IsDomain D] {n : ℕ}
   exact eq_zero_of_secCoord_pow_mul _ _ b fun j => chart_pow_mul_eq_zero e R Q j S hQ c hc b hb
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Take `⟨a, ha⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hr hϖ`. Take `⟨b, hb⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hx hϖ`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hxu (associated_one_iff_isUnit.mp (by simpa using hb))`. Use `⟨a, ha.dvd.trans ((pow_dvd_pow ϖ (Nat.le_mul_of_pos_left a (Nat.pos_of_ne_zero hb0))).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[pow_mul]`. Conclude with `(hb.pow_pow (n := a)).symm.dvd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_pow_of_ne_zero_of_not_isUnit {R : Type*} [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] {r x : R} (hr : r ≠ 0) (hx : x ≠ 0) (hxu : ¬IsUnit x) :
@@ -448,15 +448,15 @@ theorem dvd_pow_of_ne_zero_of_not_isUnit {R : Type*} [CommRing R] [IsDomain R]
   exact (hb.pow_pow (n := a)).symm.dvd
 
 /- English proof (translation)
-Introduce `K _ _ n e I v hI r b hr hrb`. Use `h1 K e n v` as an intermediate fact. Use `hI.isPrime` as an intermediate fact. Establish `hP : (integralModel I).IsPrime`. Unfold `integralModel`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `infer_instance`. Establish `hQ : ∀ a : 𝓞 K, C a ∈ integralModel I → a = 0`. Introduce `a ha`. Assume the negation of the conclusion as `h`. Rewrite `ha` using `[integralModel, Ideal.mem_comap, map_C]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : algebraMap (𝓞 K) K a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr h`. Conclude with `hI.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ ha ((isUnit_iff_ne_zero.mpr hne).map C))`. Take `⟨c, hcv, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `hS0 : (parPrime e n v).primeCompl ≤ nonZeroDivisors (MvPolynomial (Par e n) (𝓞 K))` using `le_nonZeroDivisors_of_noZeroDivisors fun h => h (Ideal.zero_mem _)`. Establish `hc'0 : algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v) (C c) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h2` using `IsLocalization.injective (ParDVR e n v) hS0 (h0.trans (map_zero _).symm)`. Conclude with `hc0 (C_injective (Par e n) (𝓞 K) (h2.trans (map_zero C).symm))`. Establish `hc'u : ¬IsUnit (algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v) (C c))` using `fun hu => ((IsLocalization.AtPrime.isUnit_to_map_iff (ParDVR e n v) (parPrime e n v) (C c)).mp hu) (Ideal.mem_map_of_mem C hcv)`. Take `⟨k, q, hq⟩` from `dvd_pow_of_ne_zero_of_not_isUnit hr hc'0 hc'u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmodel : modelR e I v = chartModel e (ParDVR e n v) (integralModel I)`. Rewrite using `[modelR, chartModel, IsScalarTower.algebraMap_eq (𝓞 K) (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v), MvPolynomial.algebraMap_eq]`. Establish `hrb' : algebraMap (ParDVR e n v) (SecB e I v) r * b = 0` using `(Algebra.smul_def r b).symm.trans hrb`. Use `secAlg_const_mul_eq_zero e (ParDVR e n v) (integralModel I) (parPrime e n v).primeCompl hQ (modelR e I v) hmodel (parY e n v) rfl (c ^ k) (pow_ne_zero _ hc0) b ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, hq, map_mul, mul_comm (algebraMap _ _ r), mul_assoc, hrb', mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecBTorsionFree.proof (h1 : ParDVRIsDVR.Statement) : SecBTorsionFree.Statement := by
   intro K _ _ n e I v hI r b hr hrb

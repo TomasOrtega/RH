@@ -15,9 +15,9 @@ namespace GlobalTheory.Hk3
 open Formalism.L2.Col in
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IndependentInfimum.main`. Consider the case `exact _root_.GlobalTheory.IndependentInfimum.main`. Consider the case `(apply _root_.GlobalTheory.IndependentInfimum.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IndependentInfimum.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IndependentInfimum.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IndependentInfimum.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eigSum_mul_proj_eq {E I C : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E]
     (h : I → Module.End ℂ E) (e : Module.End ℂ E) (Ec : C → Submodule ℂ E) (lab : C → I → ℂ)

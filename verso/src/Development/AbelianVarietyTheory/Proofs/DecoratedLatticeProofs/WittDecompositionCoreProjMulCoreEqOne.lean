@@ -25,7 +25,7 @@ def dualC (𝔟 : FI D) : Submodule (𝓞 D.host.E) D.host.E where
     rw [map_mul, ho, Algebra.smul_def]; ring
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_dualC {𝔟 : FI D} {c : D.host.E} :
     c ∈ dualC 𝔟 ↔ ∀ b ∈ 𝔟, star b * c ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := Iff.rfl
@@ -38,7 +38,7 @@ def splitL (d : HypDec S S₀ ρ) (L₀ : Lat S₀) (𝔟 : ℕ → FI D) : Lat 
     L₀.comap (crd d.q0) ⊓ ⨅ i : Fin ρ, (dualC (𝔟 i)).comap ((LinearMap.proj i).comp (crd d.qY))
 
 /- English proof (translation)
-Simplify using `only [splitL, Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.comp_apply, LinearMap.proj_apply]`. Conclude with `⟨fun ⟨⟨a, b⟩, c⟩ => ⟨a, b, c⟩, fun ⟨a, b, c⟩ => ⟨⟨a, b⟩, c⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_splitL (d : HypDec S S₀ ρ) (L₀ : Lat S₀) (𝔟 : ℕ → FI D) (y : Fin S.rank → D.host.E) :
     y ∈ splitL d L₀ 𝔟 ↔ (∀ i : Fin ρ, (d.qX *ᵥ y) i ∈ 𝔟 i) ∧ d.q0 *ᵥ y ∈ L₀ ∧ ∀ i : Fin ρ, (d.qY *ᵥ y) i ∈ dualC (𝔟 i) := by
@@ -48,44 +48,44 @@ theorem mem_splitL (d : HypDec S S₀ ρ) (L₀ : Lat S₀) (𝔟 : ℕ → FI D
 variable (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_one]; exact d.pX_jX)`.
+A detailed English derivation is pending.
 -/
 theorem qX_e : d.qX * d.e = 1 := rat_injective (by rw [rat_mul, rat_one]; exact d.pX_jX)
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_zero]; exact d.pX_j0)`.
+A detailed English derivation is pending.
 -/
 theorem qX_i₀ : d.qX * d.i₀ = 0 := rat_injective (by rw [rat_mul, rat_zero]; exact d.pX_j0)
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_zero]; exact d.pX_jY)`.
+A detailed English derivation is pending.
 -/
 theorem qX_e' : d.qX * d.e' = 0 := rat_injective (by rw [rat_mul, rat_zero]; exact d.pX_jY)
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_zero]; exact d.pY_jX)`.
+A detailed English derivation is pending.
 -/
 theorem qY_e : d.qY * d.e = 0 := rat_injective (by rw [rat_mul, rat_zero]; exact d.pY_jX)
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_zero]; exact d.pY_j0)`.
+A detailed English derivation is pending.
 -/
 theorem qY_i₀ : d.qY * d.i₀ = 0 := rat_injective (by rw [rat_mul, rat_zero]; exact d.pY_j0)
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_one]; exact d.pY_jY)`.
+A detailed English derivation is pending.
 -/
 theorem qY_e' : d.qY * d.e' = 1 := rat_injective (by rw [rat_mul, rat_one]; exact d.pY_jY)
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_zero]; exact d.p0_jX)`.
+A detailed English derivation is pending.
 -/
 theorem wittDecomposition_coreProj_mul_e_eq_zero : d.q0 * d.e = 0 := rat_injective (by rw [rat_mul, rat_zero]; exact d.p0_jX)
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_one]; exact d.p0_j0)`.
+A detailed English derivation is pending.
 -/
 theorem wittDecomposition_coreProj_mul_core_eq_one : d.q0 * d.i₀ = 1 := rat_injective (by rw [rat_mul, rat_one]; exact d.p0_j0)
 /- English proof (translation)
-The claim follows from `rat_injective (by rw [rat_mul, rat_zero]; exact d.p0_jY)`.
+A detailed English derivation is pending.
 -/
 theorem wittZeroProjection_mul_dualBasis_eq_zero : d.q0 * d.e' = 0 := rat_injective (by rw [rat_mul, rat_zero]; exact d.p0_jY)
 
 /- English proof (translation)
-Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_add, rat_add, rat_mul, rat_mul, rat_mul, rat_mul, rat_conjTranspose, rat_conjTranspose, rat_conjTranspose]`. Conclude with `d.gA_eq`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_eq : S.gram = d.qYᴴ * d.qX + d.q0ᴴ * (S₀.gram * d.q0) + d.qXᴴ * d.qY := by
   apply rat_injective
@@ -93,7 +93,7 @@ theorem gram_eq : S.gram = d.qYᴴ * d.qX + d.q0ᴴ * (S₀.gram * d.q0) + d.qX�
   exact d.gA_eq
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, rat, Matrix.map_apply, one_mul, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] M k l) * (t ⊗ₜ[D.host.F] x l) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_mulVec_gen {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (t : AF D.host.F) (x : Fin n → D.host.E) :
     rat M *ᵥ (fun l => t ⊗ₜ[D.host.F] (1 * x l)) = fun k => t ⊗ₜ[D.host.F] (1 * (M *ᵥ x) k) := by
@@ -104,11 +104,9 @@ theorem rat_mulVec_gen {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (t : AF
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβi, hβ, c, hc, x, hx, rfl⟩` from `hz`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[rat_mulVec_gen]`. Conclude with `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, _, hM x hx, rfl⟩`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`.
-
-Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rat_mulVec_mem_latV {S' : HSp D} (M : Matrix (Fin S'.rank) (Fin S.rank) D.host.E) {L : Lat S} {L' : Lat S'}
     (hM : ∀ x ∈ L, M *ᵥ x ∈ L') (P : Pl D → Prop) {y : Fin S.rank → AE D} (hy : y ∈ latV S L P) :
@@ -127,9 +125,7 @@ theorem rat_mulVec_mem_latV {S' : HSp D} (M : Matrix (Fin S'.rank) (Fin S.rank) 
 variable {d} {L₀ : Lat S₀} {𝔟 : ℕ → FI D}
 
 /- English proof (translation)
-Use `(mem_splitL d L₀ 𝔟 _).2 ⟨fun i => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, qX_e, Matrix.one_mulVec]`. Conclude with `hw i`. Rewrite using `[Matrix.mulVec_mulVec, wittDecomposition_coreProj_mul_e_eq_zero, Matrix.zero_mulVec]`. Conclude with `zero_mem _`.
-
-Rewrite using `[Matrix.mulVec_mulVec, qY_e, Matrix.zero_mulVec]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_mem {w : Fin ρ → D.host.E} (hw : ∀ i : Fin ρ, w i ∈ 𝔟 i) : d.e *ᵥ w ∈ splitL d L₀ 𝔟 := by
   refine (mem_splitL d L₀ 𝔟 _).2 ⟨fun i => ?_, ?_, fun i => ?_⟩
@@ -138,9 +134,7 @@ theorem e_mem {w : Fin ρ → D.host.E} (hw : ∀ i : Fin ρ, w i ∈ 𝔟 i) : 
   · rw [Matrix.mulVec_mulVec, qY_e, Matrix.zero_mulVec]; exact zero_mem _
 
 /- English proof (translation)
-Use `(mem_splitL d L₀ 𝔟 _).2 ⟨fun i => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, qX_i₀, Matrix.zero_mulVec] show (0 : D.host.E) ∈ (𝔟 i : Submodule (𝓞 D.host.E) D.host.E)`. Conclude with `zero_mem _`. Rewrite using `[Matrix.mulVec_mulVec, wittDecomposition_coreProj_mul_core_eq_one, Matrix.one_mulVec]`. Conclude with `hx`.
-
-Rewrite using `[Matrix.mulVec_mulVec, qY_i₀, Matrix.zero_mulVec]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem i₀_mem {x : Fin S₀.rank → D.host.E} (hx : x ∈ L₀) : d.i₀ *ᵥ x ∈ splitL d L₀ 𝔟 := by
   refine (mem_splitL d L₀ 𝔟 _).2 ⟨fun i => ?_, ?_, fun i => ?_⟩
@@ -150,9 +144,7 @@ theorem i₀_mem {x : Fin S₀.rank → D.host.E} (hx : x ∈ L₀) : d.i₀ *�
   · rw [Matrix.mulVec_mulVec, qY_i₀, Matrix.zero_mulVec]; exact zero_mem _
 
 /- English proof (translation)
-Use `(mem_splitL d L₀ 𝔟 _).2 ⟨fun i => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, qX_e', Matrix.zero_mulVec] show (0 : D.host.E) ∈ (𝔟 i : Submodule (𝓞 D.host.E) D.host.E)`. Conclude with `zero_mem _`. Rewrite using `[Matrix.mulVec_mulVec, wittZeroProjection_mul_dualBasis_eq_zero, Matrix.zero_mulVec]`. Conclude with `zero_mem _`.
-
-Rewrite using `[Matrix.mulVec_mulVec, qY_e', Matrix.one_mulVec]`. Conclude with `hw i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e'_mem {w : Fin ρ → D.host.E} (hw : ∀ i : Fin ρ, w i ∈ dualC (𝔟 i)) : d.e' *ᵥ w ∈ splitL d L₀ 𝔟 := by
   refine (mem_splitL d L₀ 𝔟 _).2 ⟨fun i => ?_, ?_, fun i => ?_⟩
@@ -162,9 +154,7 @@ theorem e'_mem {w : Fin ρ → D.host.E} (hw : ∀ i : Fin ρ, w i ∈ dualC (�
   · rw [Matrix.mulVec_mulVec, qY_e', Matrix.one_mulVec]; exact hw i
 
 /- English proof (translation)
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `ha`. Rewrite using `[Pi.single_eq_of_ne h]`.
-
-Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem_of_mem {I : ℕ → Submodule (𝓞 D.host.E) D.host.E} (i : Fin ρ) {a : D.host.E} (ha : a ∈ I i) (j : Fin ρ) :
     (Pi.single i a : Fin ρ → D.host.E) j ∈ I j := by
@@ -176,7 +166,7 @@ def colProj {m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.host.E) (f : Matrix (Fin S.
     Matrix (Fin S.rank) (Fin m) D.host.E := Matrix.of fun k l => f k i * q i l
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [colProj, Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colProj_mulVec {m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.host.E) (f : Matrix (Fin S.rank) (Fin ρ) D.host.E) (i : Fin ρ)
     (x : Fin m → D.host.E) : colProj q f i *ᵥ x = f *ᵥ Pi.single i ((q *ᵥ x) i) := by
@@ -185,7 +175,7 @@ theorem colProj_mulVec {m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.host.E) (f : Mat
     Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [colMul, colProj, rat, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.of_apply, map_mul, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem colMul_rat {m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.host.E) (f : Matrix (Fin S.rank) (Fin ρ) D.host.E) (i : Fin ρ)
     (y : Fin m → AE D) : colMul (rat f) i ((rat q *ᵥ y) i) = rat (colProj q f i) *ᵥ y := by
@@ -196,7 +186,7 @@ theorem colMul_rat {m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.host.E) (f : Matrix 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [colMul, Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colMul_eq_mulVec {m n : ℕ} (x : Mx D m n) (i : Fin n) (a : AE D) : colMul x i a = x *ᵥ Pi.single i a := by
   funext k
@@ -204,7 +194,7 @@ theorem colMul_eq_mulVec {m n : ℕ} (x : Mx D m n) (i : Fin n) (a : AE D) : col
     Finset.mem_univ, if_true, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [colMul, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_eq_sum_colMul {m n : ℕ} (x : Mx D m n) (w : Fin n → AE D) : x *ᵥ w = ∑ i, colMul x i (w i) := by
   funext k
@@ -213,15 +203,13 @@ theorem mulVec_eq_sum_colMul {m n : ℕ} (x : Mx D m n) (w : Fin n → AE D) : x
 variable (d L₀ 𝔟)
 
 /- English proof (translation)
-Establish `hX : ∀ i : Fin ρ, ∀ x ∈ splitL d L₀ 𝔟, colProj d.qX d.e i *ᵥ x ∈ splitL d L₀ 𝔟` using `fun i x hx => by`. Rewrite using `[colProj_mulVec]`. Conclude with `e_mem (single_mem_of_mem (I := fun j => (𝔟 j : Submodule (𝓞 D.host.E) D.host.E)) i (((mem_splitL d L₀ 𝔟 x).1 hx).1 i))`. Establish `hY : ∀ i : Fin ρ, ∀ x ∈ splitL d L₀ 𝔟, colProj d.qY d.e' i *ᵥ x ∈ splitL d L₀ 𝔟` using `fun i x hx => by`. Rewrite using `[colProj_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e'_mem (single_mem_of_mem (I := fun j => dualC (𝔟 j)) i (((mem_splitL d L₀ 𝔟 x).1 hx).2.2 i))`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `colMul (rat d.e) i ((rat d.qX *ᵥ y) i) ∈ _`. Rewrite using `[colMul_rat]`. Conclude with `rat_mulVec_mem_latV _ (hX i) _ hy`. Express the relevant statement in the definitionally equal form `colMul (rat d.e') i ((rat d.qY *ᵥ y) i) ∈ _`. Rewrite using `[colMul_rat]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `rat_mulVec_mem_latV _ (hY i) _ hy`. Conclude with `rat_mulVec_mem_latV d.q0 (fun x hx => ((mem_splitL d L₀ 𝔟 x).1 hx).2.1) _ hy`. Introduce and unpack `⟨h1, h3, h2⟩`. Establish `e : y = d.jX *ᵥ (d.pX *ᵥ y) + d.j0 *ᵥ (d.p0 *ᵥ y) + d.jY *ᵥ (d.pY *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, ← Matrix.add_mulVec, d.sum_eq_one, Matrix.one_mulVec]`.
-
-Rewrite using `[e, mulVec_eq_sum_colMul d.jX, mulVec_eq_sum_colMul d.jY]`. Use `add_mem (add_mem (sum_mem fun i _ => h1 i) ?_) (sum_mem fun i _ => h3 i)` and prove the remaining obligations. Conclude with `rat_mulVec_mem_latV d.i₀ (fun x hx => i₀_mem hx) _ h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem monoAt_splitL (v : Pl D) : MonoAt d (splitL d L₀ 𝔟) L₀ v := by
   have hX : ∀ i : Fin ρ, ∀ x ∈ splitL d L₀ 𝔟, colProj d.qX d.e i *ᵥ x ∈ splitL d L₀ 𝔟 := fun i x hx => by
@@ -251,25 +239,23 @@ theorem monoAt_splitL (v : Pl D) : MonoAt d (splitL d L₀ 𝔟) L₀ v := by
     exact rat_mulVec_mem_latV d.i₀ (fun x hx => i₀_mem hx) _ h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `key : ∀ y ∈ latV S (splitL d L₀ 𝔟) (· = v), (d.pX *ᵥ y) i ∈ idV (𝔟 i) v`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨β, hβi, hβ, c, hc, x, hx, rfl⟩` from `hz`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality. Express the relevant statement in the definitionally equal form `(rat d.qX *ᵥ _) i ∈ _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[rat_mulVec_gen]`. Use `AddSubgroup.subset_closure ⟨β, hβi, hβ, _, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `((mem_splitL d L₀ 𝔟 x).1 hx).1 i`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hz`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `key _ ha`. Rewrite `h` using `[colMul_eq_mulVec, Matrix.mulVec_mulVec, d.pX_jX, Matrix.one_mulVec, Pi.single_eq_same]`. Then use the resulting hypothesis. Introduce `ha`. Rewrite `ha` using `[idV]`. Proceed by induction on `ha using AddSubgroup.closure_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem z hz`. Take `⟨β, hβi, hβ, b, hb, rfl⟩` from `hz`. Establish `e : colMul d.jX i (pairA D.host.F 0 β ⊗ₜ[D.host.F] b) = rat d.e *ᵥ fun l => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * (Pi.single i b : Fin ρ → D.host.E) l)`. Rewrite using `[colMul_eq_mulVec]`. Express the relevant statement in the definitionally equal form `rat d.e *ᵥ _ = _`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `congr 1`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[Pi.single_eq_of_ne h]`. Rewrite using `[e, rat_mulVec_gen]`. Conclude with `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, _, e_mem (single_mem_of_mem (I := fun j => (𝔟 j : Submodule (𝓞 D.host.E) D.host.E)) i hb), rfl⟩`. Consider the case `zero`. Establish `: colMul d.jX i 0 = 0` using `by funext k; simp [colMul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz'`. Establish `: colMul d.jX i (z + z') = colMul d.jX i z + colMul d.jX i z'` using `by funext k; simp [colMul, add_mul]`. Rewrite using `[this]`.
-
-Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz`. Establish `: colMul d.jX i (-z) = -colMul d.jX i z` using `by funext k; simp [colMul]`. Rewrite using `[this]`. Conclude with `neg_mem hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_splitL (v : Pl D) (i : Fin ρ) (a : AE D) :
     colMul d.jX i a ∈ latV S (splitL d L₀ 𝔟) (· = v) ↔ a ∈ idV (𝔟 i) v := by

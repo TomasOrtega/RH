@@ -146,9 +146,9 @@ def CxCount : Prop :=
 def Form.one (G : HTGroup p) : Form G := ⟨1, sh_one_eq G, ⟨1, 1, by simp [Triv, inC]⟩, ⟨1, by simp [Triv, inC]⟩⟩
 
 /- English proof (translation)
-Establish `e1 : (starT G.star R (inC G R ((y⁻¹ : G.Cˣ) : G.C))).unop = inC G R (sh G ((y⁻¹ : G.Cˣ) : G.C))` using `starT_tmul G.star R 1 _`. Establish `e : sh G y * sh G ((y⁻¹ : G.Cˣ) : G.C) = 1`. Simplify using `only [sh]`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Use `show inC G R ((y⁻¹ : G.Cˣ) : G.C) * inC G R (y * sh G y) * (starT G.star R (inC G R ((y⁻¹ : G.Cˣ) : G.C))).unop = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← map_mul, ← map_mul, ← mul_assoc, Units.inv_mul, one_mul, e, map_one, Units.val_one, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem triv_norm (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] (y : G.Cˣ) :
     Triv G R (y * sh G y) (Units.map (inC G R).toMonoidHom y⁻¹) 1 := by
@@ -179,13 +179,13 @@ def Form.norm (G : HTGroup p) (y : G.Cˣ) : Form G where
 def Form.ofPair {G : HTGroup p} (P : Pair G) : Form G := ⟨P.β, P.sym, P.trivAf, P.trivR⟩
 
 /- English proof (translation)
-Simplify using `[herm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_one (G : HTGroup p) (v : InfinitePlace G.F) : herm G v 1 = G.gram v := by
   simp [herm]
 
 /- English proof (translation)
-Take `⟨v, hv, x, -, hx⟩` from `h`. Conclude with `⟨v, hv, ⟨⟨x, hx⟩⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_posV_of_mark {G : HTGroup p} (P : Pair G) (μ : ℂ) (h : P.Mark μ) :
     ∃ v, sigPosH (G.gram_herm v) = 1 ∧ Nonempty (PosV G v P.β) := by
@@ -193,13 +193,13 @@ theorem nonempty_posV_of_mark {G : HTGroup p} (P : Pair G) (μ : ℂ) (h : P.Mar
   exact ⟨v, hv, ⟨⟨x, hx⟩⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp [toV]⟩`.
+Supply the required witnesses or components.
 -/
 theorem fixL_one (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ) (z : Fin G.n → ℂ) : FixL G v β 1 z :=
   ⟨1, by simp [toV]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 1, 1, Kf.one_mem, K'.one_mem, one_ne_zero, by simp, by simp [toV]⟩`.
+Supply the required witnesses or components.
 -/
 theorem same_refl (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) (Kf : Subgroup G.GAf) (K' : Subgroup (Gr G 1)) (a : Dat G v β) :
@@ -214,7 +214,7 @@ def Stab.one (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ) (x : (AfP p �
 open GlobalTheory.LKTrip.Example GlobalTheory.LKMid.Example in
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `exPair_mark`. Take `⟨v, hv, ⟨z⟩⟩` from `nonempty_posV_of_mark _ μ hμ`. Conclude with `⟨v, hv, fun x t hx Kf K' => ⟨Quot.mk _ (1, z)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem points_nonempty_unitaryRankOne : ∃ v, sigPosH ((ex 1 one_ne_zero).gram_herm v) = 1 ∧
     ∀ x t hx Kf K', Nonempty (Pts (ex 1 one_ne_zero) v exPair.β x t hx Kf K') := by
@@ -225,15 +225,15 @@ theorem points_nonempty_unitaryRankOne : ∃ v, sigPosH ((ex 1 one_ne_zero).gram
 open GlobalTheory.LKTrip.Example GlobalTheory.LKMid.Example in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exPair.sim, by show (0:ℚ) < 5; norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : ((exPair.γ, exPair.c) : _ × ℚˣ) ∈ grp (ex 1 one_ne_zero) exPair.β :=
   ⟨exPair.sim, by show (0:ℚ) < 5; norm_num⟩
 
 /- English proof (translation)
-Take `⟨q, hq, hqp⟩` from `Nat.exists_infinite_primes (p+1)`. Establish `hq' : Prime (q : ℤ)` using `Nat.prime_iff_prime_int.1 hqp`. Use `⟨⟨⟨Ideal.span {(q:ℤ)}, (Ideal.span_singleton_prime hq'.ne_zero).2 hq', by simpa using hqp.ne_zero⟩, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (q:ℤ) ∣ (p:ℤ)` using `Ideal.mem_span_singleton.1 (by`. Establish `: (p:ℤ) ∈ Ideal.span {(p:ℤ)}` using `Ideal.mem_span_singleton_self _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← h]`. Conclude with `this)`. Establish `h2 : q ∣ p` using `Int.natCast_dvd_natCast.1 h1`. Use `Nat.le_of_dvd (Fact.out : p.Prime).pos h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finitePlacesAway_nonempty (p : ℕ) [Fact p.Prime] : Nonempty (AwayP p) := by
   obtain ⟨q, hq, hqp⟩ := Nat.exists_infinite_primes (p+1)
@@ -247,11 +247,11 @@ theorem finitePlacesAway_nonempty (p : ℕ) [Fact p.Prime] : Nonempty (AwayP p) 
   omega
 
 /- English proof (translation)
-Take `⟨w⟩` from `finitePlacesAway_nonempty p`. Establish `key : ∀ a b : w.1.adicCompletion ℚ ⊗[ℚ] G.C, a * b = b * a`. Introduce `a b`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `tmul r x`. Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul s y => simp [Algebra.TensorProduct.tmul_mul_tmul, mul_comm r s, hc x y]`. Conclude with `⟨w, fun a b _ _ => key a b⟩`.
+Treat this case separately. Supply the required witnesses or components.
 -/
 theorem regAf_of_comm (G : HTGroup p) (hc : ∀ a b : G.C, a * b = b * a) (g : G.GAf) : RegAf G g := by
   obtain ⟨w⟩ := finitePlacesAway_nonempty p
@@ -268,9 +268,7 @@ theorem regAf_of_comm (G : HTGroup p) (hc : ∀ a b : G.C, a * b = b * a) (g : G
   exact ⟨w, fun a b _ _ => key a b⟩
 
 /- English proof (translation)
-Use `Prod.ext ?_ (funext fun i => ?_)` and prove the remaining obligations. Use `show GlobalTheory.LKLoc.sig p (Q0 p) 1 1 g.1 = g.1`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `DFunLike.congr_fun (frobQ_degree_one p) ((g.1 : Matrix (Fin 1) (Fin 1) (Qr p 1)) i j)`. Use `show sigRes p (G.Fw i) G.n 1 (g.2 i) = g.2 i`.
-
-Rewrite using `[sigRes_degree_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigG_one (G : HTGroup p) (g : Gr G 1) : sigG G 1 g = g := by
   refine Prod.ext ?_ (funext fun i => ?_)
@@ -283,13 +281,11 @@ theorem sigG_one (G : HTGroup p) (g : Gr G 1) : sigG G 1 g = g := by
 open GlobalTheory.LKTrip.Example GlobalTheory.LKMid.Example in
 
 /- English proof (translation)
-Take `⟨μ, v, hv, -⟩` from `exPair_mark`. Take `⟨L⟩` from `GlobalTheory.LKTrip.LevelExists.level_exists 5 (ex 1 one_ne_zero)`. Use `⟨isSimple_unitaryRankOne, ⟨v, hv⟩, L, _, _, _, ?_, ?_, isTest_indicator _ _ (by simp), fun g _ => regAf_of_comm _ ?_ g, isTest_indicator _ _ ?_⟩` and prove the remaining obligations. Conclude with `Set.indicator_of_mem (Subgroup.one_mem _) _`. Conclude with `Set.indicator_of_mem (Subgroup.one_mem _) _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b`. Establish `key : ∀ a b : Matrix (Fin 1) (Fin 1) QI, a * b = b * a`. Introduce `a b`. Use extensionality with `i j`. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases j`. Simplify using `[Matrix.mul_apply, mul_comm]`. Conclude with `key a b`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Rewrite using `[sigG_one]`.
-
-Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 theorem hyps_ex : IsSimple (ex 1 one_ne_zero) ∧ (∃ v, sigPosH ((ex 1 one_ne_zero).gram_herm v) = 1) ∧
     ∃ (L : (ex 1 one_ne_zero).Level) (f : (ex 1 one_ne_zero).GAf → ℂ) (K' : Subgroup (Gr (ex 1 one_ne_zero) 1))
@@ -310,7 +306,7 @@ theorem hyps_ex : IsSimple (ex 1 one_ne_zero) ∧ (∃ v, sigPosH ((ex 1 one_ne_
     rw [sigG_one]; exact hk
 
 /- English proof (translation)
-Simplify using `[cxTotal, cxSum, cxSumAt, fullSum, Pair.term, Pair.termAt, pointSum]`.
+Simplify using the standard rewrite rules.
 -/
 example (G : HTGroup p) (v wt Kf K' f') :
     cxTotal G v wt Kf (fun _ => 0) K' f' = fullSum G wt Kf (fun _ => 0) 1 K' f' := by

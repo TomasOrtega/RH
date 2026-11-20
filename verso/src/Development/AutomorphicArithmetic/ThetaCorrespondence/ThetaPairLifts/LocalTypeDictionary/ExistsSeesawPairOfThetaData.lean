@@ -13,11 +13,9 @@ noncomputable section
 namespace GlobalTheory.PairIt
 open GlobalTheory.Chain GlobalTheory.Chain.RealIt
 /- English proof (translation)
-Introduce `hPr D S S' aS aT hP V W M M' θ ψ hθ`. Establish `hD` using `hPr.discreteSeriesCover`. Establish `hH` using `hPr.harishChandraModules`. Take `⟨X, hX, h1, h2⟩` from `GlobalTheory.Chain.ItPairObj.exists_record hD hH`. Establish `hB` using `GlobalTheory.T.thetaModels_eq_coverDiscreteSeries hD hH D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ τ, (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, LocIt M M' τ (aS τ) (aT τ) A` using `fun τ => exists_locIt_pair hX h1 h2 hB M M' τ (hP τ)`. Use `choose hr A hA using key`. Take `⟨It, I, hI⟩` from `GlobalTheory.T.exists_globalFockIntertwiner_tensor_realPlaces D V W _ _ M M' aS aT A GlobalTheory.Contr.contraction.2 (GlobalTheory.T.gluing_law_holds D _ _) hA`. Use `⟨It, fun ω ⟨χS, χT, hω, he⟩ f hf => ?_⟩` and prove the remaining obligations. Establish `hc` using `fun τ => GlobalTheory.T.thetaVacuumCharacters_atRealPlaces D V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (he τ).1 (he τ).2 hf`.
-
-Conclude with `isItW_of_globIt hθ hI hr (GlobalTheory.T.fockVectorsOverVacuumIsometry_of_skeletonDatum D V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2 (fun τ => (hc τ).2.1) fun τ => (hc τ).2.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_seesaw_pair : _root_.GlobalTheory.FunPr.ThetaLocalInputs → PairEx := by
   intro hPr D S S' aS aT hP V W M M' θ ψ hθ
@@ -45,7 +43,7 @@ open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.PairIt.exists_seesaw_pair | exact _root_.GlobalTheory.PairIt.exists_seesaw_pair | (intros; apply _root_.GlobalTheory.PairIt.exists_seesaw_pair <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_seesaw_pair_of_theta_data : _root_.GlobalTheory.FunPr.ThetaLocalInputs → PairEx := by
   first | exact @_root_.GlobalTheory.PairIt.exists_seesaw_pair | exact _root_.GlobalTheory.PairIt.exists_seesaw_pair | (intros; apply _root_.GlobalTheory.PairIt.exists_seesaw_pair <;> assumption)

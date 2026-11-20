@@ -38,13 +38,13 @@ section Point
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz}
 /- English proof (translation)
-Take `⟨hC, hOk, hLU, -⟩` from `_root_.GlobalTheory.T.links2_of_single_index_twisted _ _ _ _ _ _ _ _ _ _ p hR hm.1`. Take `⟨hc, hinj, z, act, y, ht⟩` from `hrec.1.tied`. Establish `hX` using `hOk.irr`. Establish `h1` using `hC.grp.levels`. Establish `hU : (F2 p).P0 ≤ (mirIncl (R2 p)).range` using `fun g hg => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, -, e⟩` from `(mem_base_iff h1 g).1 hg`. Conclude with `⟨u, e⟩`. Establish `hProj : LeafProj O` using `(level_of_tied ⟨z, act, y, ht⟩ hX h1).2.2`. Establish `hd : ∀ j, FormsDetermined (R2 p) j` using `fun j => formsDetermined_of (GlobalTheory.IndefiniteRowSideFullHecke.ResidueInjectivityAt.ResInj.of_char GlobalTheory.LowTypeRestriction.resInj _ _ hC) hC.models.HW hLU`. Establish `hComm : ∀ j (g : Mir (R2 p)), O.e j ∘ₗ O.ρ j g = O.ρ j g ∘ₗ O.e j` using `fun j g => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v₁, -⟩` from `exists_place3 D.what₂.LL`. Conclude with `tie_e_comm_rho (ht v₁ j).1 (ht v₁ j).2 hOk.irr g`. Establish `key : ∀ v ∈ p.R.twPl, ∀ j, (O.ThJ v j).FG ∧ O.ThJ v j ≤ (Formalism.EigenvalueLevelCeiling.eig (O.ρ j) O.U O.ψ).restrictScalars (𝓞 D.what₂.LL) ∧ Formalism.HermitianLatticesTheory.localization₂ v.asIdeal (O.Th0 v j) ≤ Formalism.HermitianLatticesTheory.localization₂ v.asIdeal (O.ThJ …` using `fun v hv j => by`. Establish `hv' : v ∈ (R2 p).twPl` using `hv`. Establish `hdel : ∀ x, ((((R2 p).C.delAt (Formalism.EigenvalueLevelCeiling.plc v)).1 x : ℂˣ) : ℂ) ∈ D.what₂.embLL.range` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `Formalism.L2.Pj.FO_le _ (hm.2.1.delAt_mem (Formalism.EigenvalueLevelCeiling.plc v) x)`. Conclude with `⟨a, ha⟩`. Establish `hty` using `GlobalTheory.T.baseTupleThetaSpan_hasType _ _ _ _ _ _ (R2 p) (F2 p) ⟨hC.lev, hC.grp, hC.fam, hC.models, hC.chain, hC.thP⟩ j hLU (hd j) v hv' hC.tup.mu_on hdel (fun u => chi_eq_one h1 hC.grp.chiW j u.2)`. Conclude with `tie_thetaJ (ht v j).1 (ht v j).2 (mirIncl_injective _) hU (hd j) (hMax v hv j) hty (hrec.1.ok.run v hv' j) (hCmp v hv j)`. Conclude with `GlobalTheory.T.eigenlattice_local_containment_at_pairs _ _ _ _ _ _ O hSp hD hProj hComm fun w hw => ⟨fun j => key w hw j, fun j => key _ (conjPl_mem_twPl hC hw) j⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rank_at_twisted_places_of_rec_span (hR : p.PointConditions') (hm : More p) {Pm : ParameterChoice' D L} {Tp : ParamsT D L Pm} {r : TwoRuns p.T p.P.Gp}
     {c : OnConst} {O : Obj p c} (hrec : RecAt p Tp r O)
@@ -85,11 +85,11 @@ theorem rank_at_twisted_places_of_rec_span (hR : p.PointConditions') (hm : More 
 end Point
 end GlobalTheory.BigOn
 /- English proof (translation)
-Introduce `hM hG hC`. Use `((hM.and hG).and hC).imp fun Fm CH _ H => ?_` and prove the remaining obligations. Take `⟨⟨⟨x1, H1⟩, ⟨c0, H2⟩⟩, ⟨x3, H3⟩⟩` from `H`. Use `⟨c0, fun c hc hb => ?_⟩` and prove the remaining obligations. Take `⟨x2, H2'⟩` from `H2 c hc hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨max x1 (max x2 x3), fun x hx hle i p hR hm r O hrec => ?_⟩` and prove the remaining obligations. Establish `hle1 : x1 ≤ x` using `(le_max_left _ _).trans hle`. Establish `hle2 : x2 ≤ x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hle`. Establish `hle3 : x3 ≤ x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hle`. Establish `hg` using `H2' x hx hle2 i p hR hm r O hrec`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `_root_.GlobalTheory.BigOn.rank_at_twisted_places_of_rec_span hR hm hrec (H1 x hx hle1 i p hR hm) hg.2.1 hg.2.2.2.1 (H3 x hx hle3 i p hR hm r hrec.1.ok hrec.2)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BigOn.rankLocSt_of_max_geo_runs : _root_.GlobalTheory.BigOn.MaximalityStatement → _root_.GlobalTheory.BigOn.GeometricStatement' → (_root_.GlobalTheory.BigOn.ForallTwoRuns fun Fm x _ i p r h => ∀ v ∈ p.R.twPl, ∀ j, letI : Algebra (r.used v).full.J.Q.c.F (Fm.D x i).what₂.LL := p.alg; GlobalTheory.TraceClassRank.CompareOffOwn (T := (r.used v).full) (R := R2 p) (h.laws v).p (fw2 p) j (r.lev j) (F2 p).P0 (F2 p).ψ0⁻¹ 1 v (ownAt (Fm.D x i) v)) → (_root_.GlobalTheory.BigOn.ForallRecordObjects fun _ _ _ _ _ _ O => GlobalTheory.TraceClassRank.RankAtPlaces O) := by
   intro hM hG hC

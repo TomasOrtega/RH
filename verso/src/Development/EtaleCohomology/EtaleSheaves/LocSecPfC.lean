@@ -27,7 +27,7 @@ def eqvAdd (G : Shv R) : ((free R).obj (yoneda.obj X) ⟶ G) ≃+ Sec G X :=
       rfl }
 
 /- English proof (translation)
-Introduce `R _ X`. Use `⟨eqvAdd R X, fun φ f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `eqv R X _ (f ≫ φ) = Sec.map φ (eqv R X _ f)`. Rewrite using `[eqv_apply, eqv_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homSec : LateralTheory.E.LocSecPfB.HomSec := by
   intro R _ X
@@ -37,7 +37,7 @@ theorem homSec : LateralTheory.E.LocSecPfB.HomSec := by
   rfl
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LocSecPfB.LocSec_of homSec h2`.
+A detailed English derivation is pending.
 -/
 theorem LocSec_of (h2 : LateralTheory.E.LocSecPfB.ClassSec) : LateralTheory.E.LeafLocPf.LocSec :=
   LateralTheory.E.LocSecPfB.LocSec_of homSec h2

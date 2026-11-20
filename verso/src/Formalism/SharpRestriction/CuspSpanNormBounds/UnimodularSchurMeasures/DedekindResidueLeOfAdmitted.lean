@@ -10,7 +10,7 @@ open MeasureTheory NumberField Matrix Finset
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Establish `h1` using `NumberField.IsTotallyComplex.finrank E`. Establish `h2` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces E`. Establish `h3` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank E`. Unfold `Formalism.HermitianLatticesTheory.fDeg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -24,7 +24,7 @@ theorem qt_finrank (E : Type) [Field E] [NumberField E] [StarRing E] (h : Formal
   omega
 
 /- English proof (translation)
-Rewrite using `[qt_finrank E h]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem qt_bound_eq (E : Type) [Field E] [NumberField E] [StarRing E] (h : Formalism.HermitianLatticesTheory.IsCMUnram E) (C : ℝ) :
     (C * Real.log (((|discr E| : ℤ) : ℝ) ^ ((1 : ℝ) / Module.finrank ℚ E))) ^ Module.finrank ℚ E =
@@ -34,9 +34,9 @@ theorem qt_bound_eq (E : Type) [Field E] [NumberField E] [StarRing E] (h : Forma
   rfl
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `hQ`. Use `⟨C, hC, fun D E _ _ _ hE => ⟨dedekindZeta_residue E, tendsto_sub_one_mul_dedekindZeta_nhdsGT E, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[abs_of_pos (dedekindZeta_residue_pos E), ← qt_bound_eq E hE C]`. Use `h E ?_` and prove the remaining obligations. Rewrite using `[qt_finrank E hE]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 < Formalism.HermitianLatticesTheory.fDeg E` using `Fintype.card_pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem residue_admitted_of_known (hQ : Formalism.HermitianLatticeCounting.S7.DedekindZetaResidueBound) :
     ∃ C : ℝ, 1 ≤ C ∧ ∀ D : Formalism.BasicNotions.D7, adm7 D C := by
@@ -49,7 +49,7 @@ theorem residue_admitted_of_known (hQ : Formalism.HermitianLatticeCounting.S7.De
   omega
 
 /- English proof (translation)
-Take `⟨r, hr, hb⟩` from `h E hE`. Establish `h1` using `tendsto_nhds_unique hr (tendsto_sub_one_mul_dedekindZeta_nhdsGT E)`. Establish `h2 : r = dedekindZeta_residue E` using `by exact_mod_cast h1`. Rewrite using `[← h2]`. Conclude with `le_trans (le_abs_self r) hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dedekind_residue_le_of_admitted (D : Formalism.BasicNotions.D7) (C : ℝ) (h : adm7 D C) (E : Type) [Field E] [NumberField E] [StarRing E]
     (hE : Formalism.HermitianLatticesTheory.IsCMUnram E) :
@@ -69,15 +69,15 @@ def qt_basis : Module.Basis (Module.Free.ChooseBasisIndex ℤ L) ℝ (EuclideanS
   (Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L
 
 /- English proof (translation)
-The claim follows from `(Module.Free.chooseBasis ℤ L).ofZLatticeBasis_span ℝ L`.
+A detailed English derivation is pending.
 -/
 theorem qt_basis_span : Submodule.span ℤ (Set.range (qt_basis L)) = L :=
   (Module.Free.chooseBasis ℤ L).ofZLatticeBasis_span ℝ L
 
 /- English proof (translation)
-Use `⟨∑ i, ‖qt_basis L i‖, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hmem : ((ZSpan.floor (qt_basis L) x : Submodule.span ℤ (Set.range (qt_basis L))) : EuclideanSpace ℝ (Fin N)) ∈ (L : Set _)`. Conclude with `(qt_basis_span L).le (ZSpan.floor (qt_basis L) x).2`. Use `le_trans (Metric.infDist_le_dist_of_mem hmem) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dist_eq_norm]`. Conclude with `ZSpan.norm_fract_le (qt_basis L) x`.
+A detailed English derivation is pending.
 -/
 theorem qt_bdd : BddAbove (Set.range fun x : EuclideanSpace ℝ (Fin N) => Metric.infDist x (L : Set _)) := by
   refine ⟨∑ i, ‖qt_basis L i‖, ?_⟩
@@ -90,15 +90,15 @@ theorem qt_bdd : BddAbove (Set.range fun x : EuclideanSpace ℝ (Fin N) => Metri
   exact ZSpan.norm_fract_le (qt_basis L) x
 
 /- English proof (translation)
-Establish `hne : Nonempty (Module.Free.ChooseBasisIndex ℤ L)`. Assume the negation of the conclusion as `hE`. Rewrite `hE` using `[not_nonempty_iff]`. Establish `h0` using `Module.finrank_eq_card_basis (qt_basis L)`. Simplify using `at h0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨i⟩` from `hne`. Use `set ℓ : EuclideanSpace ℝ (Fin N) →L[ℝ] ℝ := LinearMap.toContinuousLinearMap ((qt_basis L).coord i) with hℓ`. Use `set y := (InnerProductSpace.toDual ℝ (EuclideanSpace ℝ (Fin N))).symm ℓ with hy`. Establish `hin : ∀ v, inner ℝ y v = (qt_basis L).coord i v` using `fun v => by`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hy, InnerProductSpace.toDual_symm_apply]`. Both sides reduce to the same expression. Use `⟨y, fun x hx => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← qt_basis_span L]`. Use `((qt_basis L).mem_span_iff_repr_mem ℤ x).1 hx i` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `this`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[real_inner_comm, hin]`. Simplify using `using hz.symm`. Use `hin (qt_basis L i)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[h0, inner_zero_left]`. Simplify using `at this`.
+A detailed English derivation is pending.
 -/
 theorem qt_dual_ne (hN : 0 < N) : ∃ y ∈ dualLat L, y ≠ 0 := by
   have hne : Nonempty (Module.Free.ChooseBasisIndex ℤ L) := by
@@ -124,15 +124,13 @@ theorem qt_dual_ne (hN : 0 < N) : ∃ y ∈ dualLat L, y ≠ 0 := by
     simp at this
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Establish `: x = 0` using `Subsingleton.elim _ _`. Simplify using `[this]`. Establish `hcl : IsClosed (L : Set (EuclideanSpace ℝ (Fin N)))`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: DiscreteTopology L.toAddSubgroup` using `(inferInstance : DiscreteTopology L)`. Conclude with `AddSubgroup.isClosed_of_discrete (H := L.toAddSubgroup)`. Take `⟨y, hy, hxy⟩` from `hcl.exists_infDist_eq_dist ⟨0, zero_mem L⟩ x`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← dist_eq_norm, ← hxy]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Metric.infDist x (L : Set _) ≤ covRad (L : Set (EuclideanSpace ℝ (Fin N)))` using `le_ciSup (qt_bdd L) x`. Establish `h0 : 0 ≤ covRad (L : Set (EuclideanSpace ℝ (Fin N)))` using `le_trans Metric.infDist_nonneg h1`. Establish `h2 : κ ≤ firstMin (dualLat L)`. Take `⟨y0, hy0, hy0'⟩` from `qt_dual_ne L hN`. Use `le_csInf ⟨‖y0‖, y0, hy0, hy0', rfl⟩ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `r ⟨z, hz, hz', rfl⟩`. Conclude with `hd z hz hz'`. Establish `h3 : covRad (L : Set (EuclideanSpace ℝ (Fin N))) * κ ≤ (N : ℝ) / 2` using `le_trans (mul_le_mul_of_nonneg_left h2 h0) h5`. Use `le_trans h1 ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity)]`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem qt_cover (h5 : covRad (L : Set (EuclideanSpace ℝ (Fin N))) * firstMin (dualLat L) ≤ (N : ℝ) / 2)
     (κ : ℝ) (hκ : 0 < κ) (hd : ∀ y ∈ dualLat L, y ≠ 0 → κ ≤ ‖y‖) (x : EuclideanSpace ℝ (Fin N)) :
@@ -164,19 +162,19 @@ theorem qt_cover (h5 : covRad (L : Set (EuclideanSpace ℝ (Fin N))) * firstMin 
 end Cover
 
 /- English proof (translation)
-Introduce `V _ _ _ M hM hspan κ hκ hd x`. Use `set N := Module.finrank ℝ V with hN`. Set `e : V ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin N)` to `(stdOrthonormalBasis ℝ V).repr`. Set `eZ : V →ₗ[ℤ] EuclideanSpace ℝ (Fin N)` to `(e.toLinearEquiv.toLinearMap).restrictScalars ℤ`. Establish `heZ : ∀ v, eZ v = e v` using `fun v => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `L : Submodule ℤ (EuclideanSpace ℝ (Fin N))` to `M.map eZ`. Establish `hback : ∀ y : L, e.symm (y : EuclideanSpace ℝ (Fin N)) ∈ M`. Introduce and unpack `⟨y, v, hv, rfl⟩`. Simplify `hv` using `[heZ]`. Establish `hdisc : DiscreteTopology L`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hM` as an intermediate fact. Use `DiscreteTopology.of_continuous_injective (f := fun y : L => (⟨e.symm y, hback y⟩ : M)) ?_ ?_` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (e.symm.continuous.comp continuous_subtype_val) _`. Introduce `a b hab`. Use `congrArg Subtype.val hab` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subtype.ext (e.symm.injective this)`. Establish `hlat : IsZLattice ℝ L`. Use `⟨?_⟩` and prove the remaining obligations. Establish `h1 : ((L : Submodule ℤ _) : Set (EuclideanSpace ℝ (Fin N))) = e.toLinearEquiv.toLinearMap '' (M : Set V)` using `rfl`. Rewrite using `[h1, Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h5` using `h N L hlat`. Establish `hd' : ∀ y ∈ dualLat L, y ≠ 0 → κ ≤ ‖y‖`. Introduce `y hy hy0`. Establish `h1 : e.symm y ∈ Formalism.HadamardInequality.zdual M`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `hy (e v) ⟨v, hv, rfl⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, ← e.inner_map_map, e.apply_symm_apply]`. Establish `h2 : e.symm y ≠ 0` using `fun h0 => hy0 (by simpa using congrArg e h0)`. Use `hd _ h1 h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[e.symm.norm_map]`. Then use the resulting hypothesis. Take `⟨y, ⟨v, hv, rfl⟩, hy⟩` from `qt_cover L h5 κ hκ hd' (e x)`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[heZ, ← map_sub, e.norm_map]`. Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cover_radius_of_admitted (D : Formalism.BasicNotions.D7) (h : adm5 D) : Formalism.HermitianLatticeCounting.S7.CoveringRadius2 := by
   intro V _ _ _ M hM hspan κ hκ hd x
@@ -216,13 +214,13 @@ theorem cover_radius_of_admitted (D : Formalism.BasicNotions.D7) (h : adm5 D) : 
   exact hy
 
 /- English proof (translation)
-Introduce `N L hdisc hlat`. Establish `hnn : 0 ≤ firstMin (dualLat L)`. Use `Real.sInf_nonneg ?_` and prove the remaining obligations. Introduce and unpack `r ⟨y, -, -, rfl⟩`. Conclude with `norm_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hnn.eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, mul_zero]`. Check the signs of the components of the expression. Establish `hd : ∀ y ∈ Formalism.HadamardInequality.zdual L, y ≠ 0 → firstMin (dualLat L) ≤ ‖y‖`. Introduce `y hy hy0`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `csInf_le ⟨0, ?_⟩ ⟨y, hy, hy0, rfl⟩` and prove the remaining obligations. Introduce and unpack `r ⟨z, -, -, rfl⟩`. Conclude with `norm_nonneg _`. Establish `hc : covRad (L : Set (EuclideanSpace ℝ (Fin N))) ≤ (N : ℝ) / (2 * firstMin (dualLat L))`. Use `ciSup_le fun x => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hxy⟩` from `h (EuclideanSpace ℝ (Fin N)) L hdisc hlat.span_top _ hpos hd x`. Use `le_trans (Metric.infDist_le_dist_of_mem hy) ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Simplify using `using hxy`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem admitted_of_cover_radius (D : Formalism.BasicNotions.D7) (h : Formalism.HermitianLatticeCounting.S7.CoveringRadius2) : adm5 D := by
   intro N L hdisc hlat
@@ -248,7 +246,7 @@ theorem admitted_of_cover_radius (D : Formalism.BasicNotions.D7) (h : Formalism.
     _ = (N : ℝ) / 2 := by field_simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cover_radius_of_admitted D, admitted_of_cover_radius D⟩`.
+Supply the required witnesses or components.
 -/
 theorem admitted_iff_cover_radius (D : Formalism.BasicNotions.D7) : adm5 D ↔ Formalism.HermitianLatticeCounting.S7.CoveringRadius2 :=
   ⟨cover_radius_of_admitted D, admitted_of_cover_radius D⟩

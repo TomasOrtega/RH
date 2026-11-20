@@ -7,7 +7,7 @@ open scoped ComplexOrder ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `|f1| + |f2| ≤ K₁ * (f + ρ * (1 - f)) → f1 ^ 2 ≤ K₁ * f * (f + ρ * (1 - f)) → |f1| * a ≤ K₁ * (A + √A + 1) * (1 - f) * N ∧ (|f1| * a) ^ 2 ≤ K₁ * (A + √A + 1) * N ^ 2 * f * (f + ρ * (1 - f)) ∧ |f1 * l + f2 * a ^ 2| ≤ K₁ * (A + √A + 1) * N ^ 2 * (f + ρ * (1 - f)) ∧ |f1 * l + f2 * a …`.
+A detailed English derivation is pending.
 -/
 theorem weight_bound_algebra :
     ∀ (K₁ A N f f1 f2 ρ a l : ℝ), 0 ≤ K₁ → 0 ≤ A → 0 ≤ N → 0 ≤ f → f < 1 → 0 ≤ ρ → 0 ≤ a →

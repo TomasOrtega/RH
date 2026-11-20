@@ -6,9 +6,9 @@ open CompanionTheory.Rg.Fl
 namespace GlobalTheory.CompanionTheory.HeckePair
 
 /- English proof (translation)
-Introduce `G _ _ _ K hKo hKc g`. Establish `: DiscreteTopology (G ⧸ K)` using `QuotientGroup.discreteTopology hKo`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.mp hKc`. Establish `hcont : Continuous fun k : K => (((k : G) * g : G) : G ⧸ K)` using `(QuotientGroup.continuous_mk (N := K)).comp (continuous_subtype_val.mul continuous_const)`. Establish `hfin : (Set.range fun k : K => (((k : G) * g : G) : G ⧸ K)).Finite` using `(isCompact_range hcont).finite_of_discrete`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hfin.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem stPair : StPair := by
   intro G _ _ _ K hKo hKc g

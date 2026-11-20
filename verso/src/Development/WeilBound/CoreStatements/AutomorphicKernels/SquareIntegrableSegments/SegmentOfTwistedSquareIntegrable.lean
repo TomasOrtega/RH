@@ -11,7 +11,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace PositivityTheory.PfEss.H13
 
 /- English proof (translation)
-Substitute `hxy` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isLSeg_of_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {Δ : Segment k} {x y : IrrGL k} (hxy : x = y) (h : IsLSeg Δ x.rep) : IsLSeg Δ y.rep := by
@@ -19,7 +19,7 @@ theorem isLSeg_of_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
   exact h
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ δ hδ ⟨χ, hχ, hs⟩`. Take `⟨Δ', hΔ'⟩` from `hU k (δ.tw χ hχ) hδ hs`. Use `⟨Δ'.tw χ⁻¹ hχ.inv, ?_⟩` and prove the remaining obligations. Conclude with `isLSeg_of_eq (IrrGL.tw_tw_inv δ χ hχ) ((hΔ'.tw χ⁻¹ hχ.inv).of_equiv ((δ.tw χ hχ).twEquiv χ⁻¹ hχ.inv))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem segment_of_twisted_square_integrable (hU : PositivityTheory.Zltwo.EssSqIntUsed) :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (δ : IrrGL k), 1 ≤ δ.1 →
@@ -31,7 +31,7 @@ theorem segment_of_twisted_square_integrable (hU : PositivityTheory.Zltwo.EssSqI
     ((hΔ'.tw χ⁻¹ hχ.inv).of_equiv ((δ.tw χ hχ).twEquiv χ⁻¹ hχ.inv))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hJ δ ⟨Δ, hΔ⟩`. Take `⟨χ, hχ, hc⟩` from `h2 k δ`. Conclude with `⟨χ, hχ, Zls.FreeSingleHomotopyEquivDiscreteChains.centredSegSqInt k hA hF hJ (Δ.tw χ hχ) (δ.tw χ hχ) ((hΔ.tw χ hχ).of_equiv (δ.twEquiv χ hχ)) hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem square_integrable_of_segment_twist
     (h2 : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (y : IrrGL k),

@@ -15,13 +15,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Jp.ResChar
 
 /- English proof (translation)
-Establish `h1 : singleV F v (r + s) = singleV F v r + singleV F v s` using `by classical`. Unfold `singleV`. Use `first`. Consider the case `exact Subtype.ext (Pi.single_add v r s)`. Consider the case `(apply Subtype.ext`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Pi.single_add v r s)`. Consider the case `(apply Subtype.ext`. Use function extensionality and compare the values at `w`. Use `show Pi.single v (r + s) w = Pi.single v r w + Pi.single v s w`. Rewrite using `[Pi.single_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Establish `h2 : pairA F 0 (singleV F v (r + s)) = pairA F 0 (singleV F v r) + pairA F 0 (singleV F v s)`. Rewrite using `[h1]`. Use `show ((0 : Ainf F), singleV F v r + singleV F v s) = ((0 : Ainf F) + 0, singleV F v r + singleV F v s)`. Rewrite using `[add_zero]`.
-
-Simplify using `only [psiV]`. Rewrite using `[h2, AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_component_additive_character_add {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (v : HeightOneSpectrum (𝓞 F)) (r s : Fv F v) :
@@ -46,7 +44,7 @@ theorem local_component_additive_character_add {F : Type} [Field F] [NumberField
   rw [h2, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Break down `ValuationRing.dvd_total p x with h | ⟨c, hc⟩` into its components or cases. Conclude with `h`. Break down `hp.isUnit_or_isUnit hc with h | h` into its components or cases. Conclude with `absurd h hx`. Conclude with `⟨↑h.unit⁻¹, by rw [hc, mul_assoc, IsUnit.mul_val_inv, mul_one]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_of_nonunit {R : Type*} [CommRing R] [IsDomain R] [ValuationRing R] {p x : R}
     (hp : Irreducible p) (hx : ¬ IsUnit x) : p ∣ x := by
@@ -57,23 +55,21 @@ theorem dvd_of_nonunit {R : Type*} [CommRing R] [IsDomain R] [ValuationRing R] {
     · exact ⟨↑h.unit⁻¹, by rw [hc, mul_assoc, IsUnit.mul_val_inv, mul_one]⟩
 
 /- English proof (translation)
-Introduce `D ψ v hψ ϖ hϖ w hw`. Use `set f : Ov D v → ℂ := fun c => psiV D.host.F ψ v (((w⁻¹ : (Lv D v)ˣ) : Lv D v) * algebraMap (Ov D v) (Lv D v) c) with hf`. Establish `hadd : ∀ a b, f (a + b) = f a * f b`. Introduce `a b`. Simplify using `only [hf, map_add, mul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `local_component_additive_character_add ψ v _ _`. Establish `hker : ∀ d, f (ϖ * d) = 1`. Introduce `d`. Establish `e : ((w⁻¹ : (Lv D v)ˣ) : Lv D v) * algebraMap (Ov D v) (Lv D v) (ϖ * d) = algebraMap (Ov D v) (Lv D v) d`. Rewrite using `[map_mul, ← hw, ← mul_assoc, Units.inv_mul, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hf, e]`. Conclude with `hψ.1 _ d.2`. Establish `hwd : ∀ a b, IsLocalRing.residue (Ov D v) a = IsLocalRing.residue (Ov D v) b → f a = f b`. Introduce `a b h`. Establish `h0 : IsLocalRing.residue (Ov D v) (a - b) = 0` using `by rw [map_sub, h, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `(IsLocalRing.residue_eq_zero_iff _).mp h0`. Take `⟨d, hd⟩` from `dvd_of_nonunit hϖ (mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp hm))`. Establish `e : a = b + ϖ * d` using `by rw [← hd]; ring`. Rewrite using `[e, hadd, hker, mul_one]`. Establish `hf0 : f 0 = 1` using `by simpa using hker 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g : kv D v → Ov D v` to `fun z => Classical.choose (IsLocalRing.residue_surjective z)`. Establish `hg : ∀ z, IsLocalRing.residue (Ov D v) (g z) = z` using `fun z => Classical.choose_spec (IsLocalRing.residue_surjective z)`. Set `ψ₀ : AddChar (kv D v) ℂ` to `{ toFun := fun z => f (g z) map_zero_eq_one' := by show f (g 0) = 1`. Rewrite using `[hwd (g 0) 0 (by rw [hg, map_zero]), hf0]`. Use the proof step `map_add_eq_mul' := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z z'`. Use `show f (g (z + z')) = f (g z) * f (g z')`. Rewrite using `[← hadd]`. Conclude with `hwd _ _ (by rw [hg, map_add, hg, hg]) }`. Establish `hψ₀ : ∀ c, ψ₀ (IsLocalRing.residue (Ov D v) c) = f c` using `fun c => by show f (g _) = f c`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hwd _ _ (hg _)`. Use `⟨ψ₀, ?_, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hψ.2 ϖ hϖ`. Introduce `h1`. Apply `hb` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ψ₀ (IsLocalRing.residue (Ov D v) b) = 1` using `by rw [h1]; exact AddChar.one_apply _`. Rewrite `e1` using `[hψ₀]`. Establish `e : ((w⁻¹ : (Lv D v)ˣ) : Lv D v) * algebraMap (Ov D v) (Lv D v) b = (b : Fv D.host.F v) / (ϖ : Fv D.host.F v)`. Rewrite using `[Units.val_inv_eq_inv_val, hw, div_eq_inv_mul]`. Both sides reduce to the same expression.
-
-Rewrite using `[← e]`. Conclude with `e1`. Introduce `c`. Conclude with `(hψ₀ c).symm`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (v : Pl D), GoodPsi D ψ v → ∀ ϖ : Ov D v, Irreducible ϖ → ∀ w : (Lv D v)ˣ, (w : Lv D v) = algebraMap (Ov D v) (Lv D v) ϖ → ∃ ψ₀ : AddChar (kv D v) ℂ, ψ₀ ≠ 1 ∧ ∀ c : Ov D v, psiV D.host.F ψ v (((w⁻¹ : (Lv D v)ˣ) : Lv D v) * algebraMap (Ov D v) (Lv D v) c) = ψ₀ (IsLocalRing.residue (Ov D v) c) := by
   intro D ψ v hψ ϖ hϖ w hw

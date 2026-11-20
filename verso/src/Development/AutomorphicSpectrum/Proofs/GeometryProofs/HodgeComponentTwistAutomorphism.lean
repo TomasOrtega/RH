@@ -15,7 +15,7 @@ def sabRebase {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S
   h ▸ m
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sabRebase_φ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f f' : S' ⟶ S} (m : SABMap t' t f) (h : f = f') :
@@ -23,15 +23,15 @@ theorem sabRebase_φ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   subst h; rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O O' _ _ β β' Y Y' g Φ n S Ω _ K _ J _ y A A' e x x' _ _ _ h4 h5 h6 h7 _ _ _ _`. Establish `hπ : A'.ξ ≫ (e.hom ≫ A.f) = x ≫ Y.j` using `by rw [← Category.assoc, h4, h5]`. Take `⟨t, t', tΩ, a, a', m, m', u, u', E1, E2, E3⟩` from `GlobalTheory.T.twist_models_common_point E H D l Xo c O O' β β' Y Y' g Φ n A'.X (e.hom ≫ A.f) A'.f Ω A'.ξ x x' hπ h6 h7`. Take `⟨k, hk⟩` from `sabCancel pullCubCancel E H _ _ _ Y.t A.t t A.f e.hom A.m a`. Take `⟨k', hk'⟩` from `sabCancel pullCubCancel E H _ _ _ Y'.t A'.t t' A'.f (𝟙 _) A'.m (sabRebase a' (Category.id_comp A'.f).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n₁, hn₁⟩` from `sabComp pullCubComp E H _ _ _ A.t t tΩ e.hom A'.ξ k m`. Take `⟨n₂, hn₂⟩` from `sabComp pullCubComp E H _ _ _ A'.t t' (twistSAB tΩ g) (𝟙 _) A'.ξ k' m'`. Set `mA : SABMap tΩ A.t A.ξ` to `sabRebase n₁ h4`. Set `mA' : SABMap (twistSAB tΩ g) A'.t A'.ξ` to `sabRebase n₂ (Category.comp_id _)`. Establish `hmA : mA.φ = m.φ ≫ k.φ` using `(sabRebase_φ n₁ h4).trans hn₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmA' : mA'.φ = m'.φ ≫ k'.φ` using `(sabRebase_φ n₂ _).trans hn₂`. Rewrite `hk'` using `[sabRebase_φ]`. Take `⟨M₁, P1, P2, -, P4⟩` from `GlobalTheory.T.lie_model_iso_transport E H A.X A'.X e Ω A.ξ A'.ξ A.t t k A.Li A.M h4`. Take `⟨M₂, Q⟩` from `GlobalTheory.T.exists_compatible_lie_model A'.X Ω A'.ξ t.G A'.t.G tΩ.G m.φ mA'.φ m.cart mA'.cart A.Li M₁`. Take `⟨φ, hφ, -⟩` from `GlobalTheory.T.lie_model_existsUnique_equiv A'.X A'.t.G Ω A'.ξ A.Li A'.Li M₂ A'.M`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨t, tΩ, k, m, mA, mA', u, u', M₁, φ, hmA, ?_, ?_, E3, P1, ?_, P2, P4⟩` and prove the remaining obligations. Rewrite using `[hmA, Category.assoc, ← hk, E1]`. Rewrite using `[hmA', Category.assoc, ← hk', E2]`. Introduce `v`. Take `⟨w, hw1, hw2⟩` from `Q v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, hw1, by rw [hφ v]; exact hw2⟩`.
+Supply the required witnesses or components.
 -/
 theorem tied_generic_fibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F)

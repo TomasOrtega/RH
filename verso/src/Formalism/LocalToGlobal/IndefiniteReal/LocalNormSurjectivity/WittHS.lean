@@ -15,11 +15,11 @@ def newtonSq (u : L) : ℕ → L
   | k + 1 => newtonSq u k - (newtonSq u k * newtonSq u k - u) / (2 * newtonSq u k)
 
 /- English proof (translation)
-Break down `eq_or_ne γ 0 with h0 | h0` into its components or cases. Conclude with `⟨1, by rw [h0, pow_one]; exact zero_lt_iff.mpr δ.ne_zero⟩`. Take `⟨g, rfl⟩` from `WithZero.ne_zero_iff_exists.mp h0`. Take `⟨d, hd⟩` from `WithZero.ne_zero_iff_exists.mp δ.ne_zero`. Rewrite using `[← hd]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : g < 1` using `by exact_mod_cast hγ`. Establish `ha : Multiplicative.toAdd g < 0`. Use `Multiplicative.toAdd_lt.mpr hg` as an intermediate fact. Simplify using `using this`. Establish `hn : 1 - Multiplicative.toAdd d ≤ ((Int.toNat (1 - Multiplicative.toAdd d) : ℕ) : ℤ)` using `Int.self_le_toNat _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hn0 : (0 : ℤ) ≤ ((Int.toNat (1 - Multiplicative.toAdd d) : ℕ) : ℤ)` using `Nat.cast_nonneg _`. Use `⟨Int.toNat (1 - Multiplicative.toAdd d), ?_⟩` and prove the remaining obligations. Rewrite using `[← WithZero.coe_pow, WithZero.coe_lt_coe, ← Multiplicative.toAdd_lt, toAdd_pow, nsmul_eq_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pow_small {γ : WithZero (Multiplicative ℤ)} (hγ : γ < 1) (δ : (WithZero (Multiplicative ℤ))ˣ) :
     ∃ N : ℕ, γ ^ N < δ := by
@@ -42,15 +42,13 @@ theorem pow_small {γ : WithZero (Multiplicative ℤ)} (hγ : γ < 1) (δ : (Wit
 variable (u : L)
 
 /- English proof (translation)
-Use `set x := newtonSq u k with hx`. Establish `hx1 : vv x = 1`. Establish `hxe : x = (x - 1) + 1` using `by ring`. Establish `hlt : vv (x - 1) < vv (1 : L)` using `by rwa [Valuation.map_one]`. Rewrite using `[hxe, Valuation.map_add_eq_of_lt_right (v := vv) hlt, Valuation.map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0`. Introduce `h`. Rewrite `hx1` using `[h, Valuation.map_zero]`. Conclude with `zero_ne_one hx1`. Establish `h20 : (2 : L) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `h2` using `[h, Valuation.map_zero]`. Conclude with `zero_ne_one h2`. Establish `hnext : newtonSq u (k + 1) = x - (x * x - u) / (2 * x)` using `rfl`. Establish `h40 : (4 : L) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (4 : L) = 2 * 2 by norm_num]`. Conclude with `mul_ne_zero h20 h20`. Use `⟨hx1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hnext]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hnext, show x - (x * x - u) / (2 * x) - x = -((x * x - u) / (2 * x)) by ring, Valuation.map_neg, Valuation.map_div, Valuation.map_mul, h2, hx1, one_mul, div_one]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem newton_step (k : ℕ) (hs : vv (newtonSq u k - 1) < 1) (h2 : vv (2 : L) = 1) :
     vv (newtonSq u k) = 1 ∧
@@ -82,17 +80,15 @@ theorem newton_step (k : ℕ) (hs : vv (newtonSq u k - 1) < 1) (h2 : vv (2 : L) 
       Valuation.map_div, Valuation.map_mul, h2, hx1, one_mul, div_one]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨by simp [newtonSq], ?_⟩` and prove the remaining obligations. Use `show vv (1 * 1 - u) ≤ vv (u - 1) ^ (0 + 1)`. Rewrite using `[one_mul, pow_one, Valuation.map_sub_swap]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ k ih`. Take `⟨ih1, ih2⟩` from `ih`. Take `⟨hx1, hsq, hdiff⟩` from `newton_step u k ih1 h2`. Establish `h4 : vv (4 * newtonSq u k ^ 2) = 1`. Rewrite using `[Valuation.map_mul, Valuation.map_pow, hx1, one_pow, mul_one, show (4 : L) = 2 * 2 by norm_num, Valuation.map_mul, h2, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : vv (u - 1) ^ (k + 1) < 1` using `by first`. Consider the case `exact pow_lt_one₀ zero_le' hu (Nat.succ_ne_zero k)`. Consider the case `exact pow_lt_one' hu (Nat.succ_ne_zero k)`. Prove the components needed by the constructor for the conclusion. Establish `he : newtonSq u (k + 1) - 1 = (newtonSq u (k + 1) - newtonSq u k) + (newtonSq u k - 1)`.
+Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ ih1)` and prove the remaining obligations. Rewrite using `[hdiff]`. Conclude with `lt_of_le_of_lt ih2 hlt`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hsq, Valuation.map_div, Valuation.map_pow, h4, div_one]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact pow_le_pow_left' ih2 2`. Consider the case `exact pow_le_pow_left₀ zero_le' ih2 2`. Use `_ = vv (u - 1) ^ ((k + 1) * 2) := by rw [← pow_mul]`.
-
-Use `_ ≤ vv (u - 1) ^ (k + 1 + 1) := by first`. Consider the case `exact pow_le_pow_right_of_le_one' hu.le (by omega)`. Consider the case `exact pow_le_pow_right_of_le_one₀ zero_le' hu.le (by omega)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem newton_bound (h2 : vv (2 : L) = 1) (hu : vv (u - 1) < 1) (k : ℕ) :
     vv (newtonSq u k - 1) < 1 ∧ vv (newtonSq u k * newtonSq u k - u) ≤ vv (u - 1) ^ (k + 1) := by
@@ -140,7 +136,7 @@ local notation "vv" => (Valued.v : Valuation L (WithZero (Multiplicative ℤ)))
 variable (u : L)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact pow_le_pow_right_of_le_one' hγ hab`. Consider the case `exact pow_le_pow_right_of_le_one₀ zero_le' hγ hab`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_anti {γ : WithZero (Multiplicative ℤ)} (hγ : γ ≤ 1) {a b : ℕ} (hab : a ≤ b) : γ ^ b ≤ γ ^ a := by
   first
@@ -148,9 +144,9 @@ theorem pow_anti {γ : WithZero (Multiplicative ℤ)} (hγ : γ ≤ 1) {a b : �
   | exact pow_le_pow_right_of_le_one₀ zero_le' hγ hab
 
 /- English proof (translation)
-Proceed by induction on `m, hnm using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ m hnm ih`. Establish `he : newtonSq u (m + 1) - newtonSq u n = (newtonSq u (m + 1) - newtonSq u m) + (newtonSq u m - newtonSq u n)` using `by ring`. Rewrite using `[he]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (Valuation.map_add _ _ _) (max_le ?_ ih)` and prove the remaining obligations. Take `⟨h1, -⟩` from `newton_bound u h2 hu m`. Take `⟨-, -, hdiff⟩` from `newton_step u m h1 h2`. Rewrite using `[hdiff]`. Conclude with `le_trans (newton_bound u h2 hu m).2 (pow_anti hu.le (by omega))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem newton_cauchy_bound (h2 : vv (2 : L) = 1) (hu : vv (u - 1) < 1) (n m : ℕ) (hnm : n ≤ m) :
     vv (newtonSq u m - newtonSq u n) ≤ vv (u - 1) ^ (n + 1) := by
@@ -167,11 +163,11 @@ theorem newton_cauchy_bound (h2 : vv (2 : L) = 1) (hu : vv (u - 1) < 1) (n m : �
     exact le_trans (newton_bound u h2 hu m).2 (pow_anti hu.le (by omega))
 
 /- English proof (translation)
-Rewrite using `[(Valued.hasBasis_uniformity L (WithZero (Multiplicative ℤ))).cauchySeq_iff]`. Introduce `γ _`. Take `⟨N, hN⟩` from `pow_small hu (Units.mk0 _ (MonoidWithZeroHom.ValueGroup₀.embedding_unit_ne_zero γ))`. Rewrite `hN` using `[Units.val_mk0]`. Use `⟨N, fun m hm n hn => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Valued.v.restrict (newtonSq u n - newtonSq u m) < (γ : _)`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding]`. Break down `le_total m n with hmn | hnm` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Valuation.map_sub_swap]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem newton_cauchy (h2 : vv (2 : L) = 1) (hu : vv (u - 1) < 1) : CauchySeq (newtonSq u) := by
   rw [(Valued.hasBasis_uniformity L (WithZero (Multiplicative ℤ))).cauchySeq_iff]
@@ -193,23 +189,21 @@ theorem newton_cauchy (h2 : vv (2 : L) = 1) (hu : vv (u - 1) < 1) : CauchySeq (n
 end HS2
 
 /- English proof (translation)
-Introduce `L _ _ _ h2 u hu`. Take `⟨s, hs⟩` from `cauchySeq_tendsto_of_complete (newton_cauchy u h2 hu)`. Establish `hsq : Filter.Tendsto (fun k => newtonSq u k * newtonSq u k) Filter.atTop (nhds (s * s))` using `hs.mul hs`. Use `⟨s, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hne' : s * s - u ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hv0 : Valued.v (s * s - u) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hne'`. Establish `hr0 : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).restrict (s * s - u) ≠ 0`. Introduce `h`. Apply `hv0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Valuation.embedding_restrict, h, map_zero]`. Establish `h1` using `hsq.eventually_mem (Valued.mem_nhds.mpr ⟨Units.mk0 _ hr0, subset_rfl⟩)`. Take `⟨N, hN⟩` from `pow_small hu (Units.mk0 _ hv0)`. Rewrite `hN` using `[Units.val_mk0]`. Take `⟨m, hm1, hm2⟩` from `(h1.and (Filter.eventually_ge_atTop N)).exists`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hm1' : Valued.v (newtonSq u m * newtonSq u m - s * s) < Valued.v (s * s - u)`. Establish `h5` using `hm1`. Simplify using `only [Set.mem_setOf_eq, Units.val_mk0] at h5`. Conclude with `(Valuation.restrict_lt_iff _).mp h5`. Establish `hb` using `(newton_bound u h2 hu m).2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Valued.v (newtonSq u m * newtonSq u m - u) < Valued.v (s * s - u)` using `lt_of_le_of_lt (hb.trans (pow_anti hu.le (by omega))) hN`. Establish `he : s * s - u = -((newtonSq u m * newtonSq u m) - s * s) + (newtonSq u m * newtonSq u m - u)`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : Valued.v (-((newtonSq u m * newtonSq u m) - s * s) + (newtonSq u m * newtonSq u m - u)) < Valued.v (s * s - u)`. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ h3)` and prove the remaining obligations.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_neg]`. Conclude with `hm1'`. Rewrite `h4` using `[← he]`. Conclude with `lt_irrefl _ h4`. Establish `h1` using `hs.eventually_mem (Valued.mem_nhds.mpr ⟨1, subset_rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `h1.exists`. Establish `hm' : Valued.v (newtonSq u m - s) < 1`. Establish `h5` using `hm`. Simplify using `only [Set.mem_setOf_eq, Units.val_one] at h5`. Conclude with `(Valuation.restrict_lt_one_iff _).mp h5`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb` using `(newton_bound u h2 hu m).1`. Establish `he : s - 1 = -(newtonSq u m - s) + (newtonSq u m - 1)` using `by ring`. Rewrite using `[he]`. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ hb)` and prove the remaining obligations. Rewrite using `[Valuation.map_neg]`.
-
-Conclude with `hm'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem henselSqrt : HenselSqrt := by
   intro L _ _ _ h2 u hu

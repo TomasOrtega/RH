@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.KummerTheory.LHCut
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `only [bcMap, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Spec.map_comp]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem bcMap_comp' {X : Scheme.{0}} {R A B C : CommRingCat.{0}} (p : X ⟶ Spec R) (f : R ⟶ A) (g : R ⟶ B) (g' : R ⟶ C)
     (h : A ⟶ B) (h' : B ⟶ C) (e : f ≫ h = g) (e' : g ≫ h' = g') :
@@ -16,34 +16,32 @@ theorem bcMap_comp' {X : Scheme.{0}} {R A B C : CommRingCat.{0}} (p : X ⟶ Spec
       pullback.lift_snd_assoc, Category.comp_id, Spec.map_comp]
 
 /- English proof (translation)
-Substitute `hh` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem bcMap_eq {X : Scheme.{0}} {R A B : CommRingCat.{0}} (p : X ⟶ Spec R) (f : R ⟶ A) (g : R ⟶ B)
     (h h' : A ⟶ B) (e : f ≫ h = g) (hh : h = h') : bcMap p f g h e = bcMap p f g h' (hh ▸ e) := by
   subst hh; rfl
 
 /- English proof (translation)
-Introduce `h2 h6 hb1 q _ X R p _ _ hq i r c M N n hiso B s b x`. Take `⟨J, _, _, D, cc, hcc, u, hSH, hu⟩` from `hS B b`. Establish `hun : ∀ {j k : J} (f : j ⟶ k), u.app j ≫ D.map f = u.app k`. Introduce `j k f`. Use `u.naturality f` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Set `j0 : J` to `(IsFiltered.nonempty (C := J)).some`. Set `w : B ⟶ cc.pt` to `u.app j0 ≫ cc.ι.app j0`. Establish `hw : ∀ j, u.app j ≫ cc.ι.app j = w`. Introduce `j`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show _ = u.app j0 ≫ cc.ι.app j0`. Rewrite using `[← cc.w (IsFiltered.leftToMax j j0), ← cc.w (IsFiltered.rightToMax j j0), ← Category.assoc, ← Category.assoc, hun, hun]`. Set `v : R ⟶ cc.pt` to `s ≫ w`. Take `⟨y, hy⟩` from `(hiso cc.pt v hSH).2 (pull _ (sch.map (bcMap p s v w rfl)) _ _ x)`. Establish `hqc : IsUnit ((q : ℕ) : cc.pt)` using `by simpa using hq.map v.hom`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `fun n' i' => (hb1 q D cc hcc n' i').1`. Use `choose jj z hz using fun (a : Fin (M + 1)) (t : Fin (r a)) => hB _ _ (y a t) hqc`. Take `⟨k0, hk0⟩` from `IsFiltered.sup_objs_exists (Finset.univ.image (fun pr : (Σ a : Fin (M + 1), Fin (r a)) => jj pr.1 pr.2))`. Establish `fk : ∀ a t, jj a t ⟶ k0` using `fun a t => (hk0 (Finset.mem_image.2 ⟨⟨a, t⟩, Finset.mem_univ _, rfl⟩)).some`. Set `y0 : ∀ a : Fin (M + 1), Fin (r a) → Ht q (sch.obj (Spec (D.obj k0))) (n - ((a : ℕ) : ℤ)) 0` to `fun a t => pull _ (sch.map (Spec.map (D.map (fk a t)))) _ _ (z a t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy0 : ∀ a t, pull _ (sch.map (Spec.map (cc.ι.app k0))) _ _ (y0 a t) = y a t`. Introduce `a t`. Rewrite using `[← hz a t]`. Simplify using `only [y0]`. Rewrite using `[← pull_comp, ← Functor.map_comp, ← Spec.map_comp, cc.w]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `g : Over.mk (Spec.map v) ⟶ Over.mk (Spec.map (s ≫ u.app k0))` to `Over.homMk (Spec.map (cc.ι.app k0)) (by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, Category.assoc, hw])`. Establish `hrst : rst p g = bcMap p (s ≫ u.app k0) v (cc.ι.app k0) (by rw [Category.assoc, hw])` using `rfl`. Establish `h0` using `hL h6 q p i r c M n g y0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[hrst]`. Establish `hyy : (fun a t => pull _ (sch.map g.left) _ _ (y0 a t)) = y`. Use function extensionality and compare the values at `a t`. Conclude with `hy0 a t`. Rewrite `h0` using `[hyy]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `e` to `lh q p (Spec.map (s ≫ u.app k0)) i r c M n y0 - N • pull _ (sch.map (bcMap p s (s ≫ u.app k0) (u.app k0) rfl)) _ _ x`. Establish `he : pull _ (sch.map (bcMap p (s ≫ u.app k0) v (cc.ι.app k0) (by rw [Category.assoc, hw]))) _ _ e = 0`. Simplify using `only [e, map_sub, map_nsmul]`. Use `erw [h0, hy, ← pull_comp, ← Functor.map_comp, bcMap_comp', bcMap_eq _ _ _ _ _ _ (hw k0)]`. Conclude with `sub_self _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hC2` using `(hC h2 hb1 q p hq D cc hcc (fun j => s ≫ u.app j) (fun {j k} f => by simp only [Category.assoc, hun]) v (fun j => by simp only [v, Category.assoc, hw]) n i).2 k0 e he`. Take `⟨k1, f1, hk1⟩` from `hC2`. Take `⟨het, 𝔮, h𝔮⟩` from `hu k1`. Use `⟨D.obj k1, u.app k1, het, ⟨(by exact 𝔮 : Spec (D.obj k1)), ?_⟩, fun a t => pull _ (sch.map (Spec.map (D.map f1))) _ _ (y0 a t), ?_⟩` and prove the remaining obligations. Conclude with `(PrimeSpectrum.ext h𝔮 : PrimeSpectrum.comap (u.app k1).hom 𝔮 = b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `g' : Over.mk (Spec.map (s ≫ u.app k1)) ⟶ Over.mk (Spec.map (s ≫ u.app k0))` to `Over.homMk (Spec.map (D.map f1)) (by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, Category.assoc, hun])`. Establish `h1` using `hL h6 q p i r c M n g' y0`. Establish `hrst' : rst p g' = bcMap p (s ≫ u.app k0) (s ≫ u.app k1) (D.map f1) (by rw [Category.assoc, hun])` using `rfl`. Rewrite `h1` using `[hrst']`.
-
-Use `beta_reduce at hk1`. Simplify using `only [e, map_sub, map_nsmul, sub_eq_zero] at hk1`. Use `erw [h1] at hk1`. Use `hk1.trans ?_` and prove the remaining obligations. Use `erw [← pull_comp, ← Functor.map_comp, bcMap_comp', bcMap_eq _ _ _ _ _ _ (hun f1)]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem CokAff_of (hS : StrictHenselization) (hC : Cont) (hL : LhNat) : CokAff := by
   classical

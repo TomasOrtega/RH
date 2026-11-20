@@ -11,7 +11,7 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Unfold `antisymmetrize`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[blockPermute]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem antisymmetrize_C_mul (f N : ℕ) (k : ℚ) (H : RootRing f N) :
     antisymmetrize f N (C k * H) = C k * antisymmetrize f N H := by
@@ -21,9 +21,9 @@ theorem antisymmetrize_C_mul (f N : ℕ) (k : ℚ) (H : RootRing f N) :
   simp [blockPermute]
 
 /- English proof (translation)
-Unfold `blockVandermonde vandermondeOf`. Use `Finset.prod_ne_zero_iff.mpr fun τ _ => Finset.prod_ne_zero_iff.mpr fun i _ => Finset.prod_ne_zero_iff.mpr fun j hj => sub_ne_zero.mpr ?_` and prove the remaining obligations. Introduce `h`. Establish `h'` using `X_injective h`. Simplify using `only [Prod.mk.injEq, true_and] at h'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(ne_of_lt (Finset.mem_Ioi.mp hj)) h'`.
+A detailed English derivation is pending.
 -/
 theorem blockVandermonde_ne_zero (f N : ℕ) : blockVandermonde f N ≠ 0 := by
   unfold blockVandermonde vandermondeOf
@@ -35,15 +35,15 @@ theorem blockVandermonde_ne_zero (f N : ℕ) : blockVandermonde f N ≠ 0 := by
   exact (ne_of_lt (Finset.mem_Ioi.mp hj)) h'
 
 /- English proof (translation)
-Introduce `r a c`. Take `⟨s, hs, hconc⟩` from `h4 r a c`. Establish `hsgn : ∀ n : ℕ, c.sign ^ n = 1 ∨ c.sign ^ n = -1`. Introduce `n`. Apply the tactic sequence `cases c <;> simp [SmallBlock.sign, neg_one_pow_eq_or]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨s * ((r.factorial : ℚ) * a.factorial) * c.sign ^ (r * (r - 1) / 2 + r * a), ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases hs with rfl | rfl <;> rcases hsgn (r * (r - 1) / 2 + r * a) with h | h <;>`. Apply the tactic sequence `rw [h] <;> first | (left; ring1) | (right; ring1)`. Introduce `lam hlam`. Establish `hV : algebraMap (RootRing 1 (r + a)) (FractionRing (RootRing 1 (r + a))) (blockVandermonde 1 (r + a)) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr (blockVandermonde_ne_zero 1 (r + a))`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `dividedDifference`. Rewrite using `[h3, antisymmetrize_C_mul, h2, KAlt.antisym_rename_mul_rename, map_smul]`. Use `split_ifs with hcont`. Rewrite using `[hconc lam hcont, div_eq_iff hV, ← map_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hA` using `h1 (Fin (r + a)) (Fin 1 × Fin (r + a)) c.sign (fun i => ((0 : Fin 1), i)) (∑ i, (lam i - a)) (schur (Fin (r + a)) (fun i : Fin r => lam i - a)) (h7 (Fin (r + a)) r (fun i : Fin r => lam i - a))`. Establish `hsum : ∑ i, lam i = ∑ i, (lam i - a) + r * a`. Rewrite using `[show r * a = ∑ _i : Fin r, a by simp, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => (Nat.sub_add_cancel (hcont i)).symm`. Rewrite using `[hA, h6, map_mul, hsum, smul_eq_C_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5 r a lam hlam hcont, map_zero, smul_zero, mul_zero, map_zero, zero_div]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LemmaB.proof (h1 : SchAevalSignedRename.Statement) (h2 : SchAntisymmetrizePlace.Statement)
     (h3 : SchSmallBlockProduct.Statement) (h4 : SchConcatAlternant.Statement)

@@ -8,11 +8,11 @@ namespace GlobalTheory.SepGen
 variable {E : Type} [Field E] {A : Type} [CommRing A] [Algebra E A] [Module.Finite E A]
 
 /- English proof (translation)
-Establish `h0 : aeval (LinearMap.mulLeft E y) f = 0`. Use `Polynomial.aeval_algHom_apply (Algebra.lmul E A) y f` as an intermediate fact. Rewrite `this` using `[hf, map_zero]`. Conclude with `this`. Distinguish the cases in `hz : f = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `dvd_zero _`. Establish `hP` using `hs.ne_zero`. Rewrite using `[UniqueFactorizationMonoid.dvd_iff_normalizedFactors_le_normalizedFactors hP hz, Multiset.le_iff_subset ((UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors hP).1 hs.squarefree)]`. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp` using `[Polynomial.mem_normalizedFactors_iff hP]`. Rewrite using `[Polynomial.mem_normalizedFactors_iff hz]`. Conclude with `⟨hp.1, hp.2.1, GlobalTheory.CuspGL.irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero _ _ _ hp.1 hp.2.2 h0⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem charpoly_dvd (y : A) (hs : (LinearMap.mulLeft E y).charpoly.Separable) (f : E[X])
     (hf : aeval y f = 0) : (LinearMap.mulLeft E y).charpoly ∣ f := by
@@ -34,7 +34,7 @@ theorem charpoly_dvd (y : A) (hs : (LinearMap.mulLeft E y).charpoly.Separable) (
     GlobalTheory.CuspGL.irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero _ _ _ hp.1 hp.2.2 h0⟩
 
 /- English proof (translation)
-Establish `h` using `Polynomial.aeval_algHom_apply (Algebra.lmul E A) y (LinearMap.mulLeft E y).charpoly`. Establish `h2 : aeval (Algebra.lmul E A y) (LinearMap.mulLeft E y).charpoly = 0` using `LinearMap.aeval_self_charpoly _`. Rewrite `h` using `[h2]`. Simplify using `using (LinearMap.congr_fun h 1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem aeval_charpoly (y : A) : aeval y (LinearMap.mulLeft E y).charpoly = 0 := by
   have h := Polynomial.aeval_algHom_apply (Algebra.lmul E A) y (LinearMap.mulLeft E y).charpoly
@@ -44,9 +44,9 @@ theorem aeval_charpoly (y : A) : aeval y (LinearMap.mulLeft E y).charpoly = 0 :=
   simpa using (LinearMap.congr_fun h 1).symm
 
 /- English proof (translation)
-Establish `hi : IsIntegral E y` using `Algebra.IsIntegral.isIntegral y`. Establish `h1` using `natDegree_le_of_dvd (charpoly_dvd y hs _ (minpoly.aeval E y)) (minpoly.ne_zero hi)`. Rewrite `h1` using `[LinearMap.charpoly_natDegree]`. Establish `h2 : Module.finrank E (Algebra.adjoin E ({y} : Set A)) = (minpoly E y).natDegree` using `(Algebra.adjoin.powerBasis hi).finrank`. Establish `h3 : Subalgebra.toSubmodule (Algebra.adjoin E ({y} : Set A)) = ⊤` using `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) (h1.trans h2.ge))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.toSubmodule_eq_top]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_eq_top (y : A) (hs : (LinearMap.mulLeft E y).charpoly.Separable) :
     Algebra.adjoin E ({y} : Set A) = ⊤ := by
@@ -61,9 +61,9 @@ theorem adjoin_eq_top (y : A) (hs : (LinearMap.mulLeft E y).charpoly.Separable) 
   exact h3
 
 /- English proof (translation)
-Establish `h3` using `adjoin_eq_top y hs`. Use `⟨fun z ⟨k, hk⟩ => ?_⟩` and prove the remaining obligations. Establish `hz : z ∈ Algebra.adjoin E ({y} : Set A)` using `by rw [h3]; trivial`. Rewrite `hz` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, rfl⟩` from `hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `charpoly_dvd y hs (p ^ k) (by rw [map_pow]; exact hk)`. Take `⟨r, hr⟩` from `hs.squarefree.isRadical k p h4`. Express the relevant statement in the definitionally equal form `aeval y p = 0`. Rewrite using `[hr, map_mul, aeval_charpoly, zero_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isReduced (y : A) (hs : (LinearMap.mulLeft E y).charpoly.Separable) : IsReduced A := by
   have h3 := adjoin_eq_top y hs
@@ -77,7 +77,7 @@ theorem isReduced (y : A) (hs : (LinearMap.mulLeft E y).charpoly.Separable) : Is
   rw [hr, map_mul, aeval_charpoly, zero_mul]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ y hs` and use `⟨adjoin_eq_top y hs, isReduced y hs⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem adjoin_eq_top_and_isReduced : ∀ (E A : Type) [Field E] [CommRing A] [Algebra E A]
     [Module.Finite E A] (y : A), (LinearMap.mulLeft E y).charpoly.Separable →

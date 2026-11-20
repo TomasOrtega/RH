@@ -12,23 +12,23 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.BridgeRatPts
 namespace Formalism.L2.SG.Closed
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.adelic_isomorphism_exists (I := I)`.
+A detailed English derivation is pending.
 -/
 theorem AdBridgeIso_holds (I : Formalism.MainNotions.S.AutInst) : Formalism.L2.SG.AdBridge.AdBridgeIso I :=
   Formalism.L2.SG.Pf.adelic_isomorphism_exists (I := I)
 
 /- English proof (translation)
-The claim follows from `adelic_rational_points I`.
+A detailed English derivation is pending.
 -/
 theorem AdBridgeGF_holds (I : Formalism.MainNotions.S.AutInst) : Formalism.L2.SG.AdBridge.AdBridgeGF I := adelic_rational_points I
 
 /- English proof (translation)
-The claim follows from `adelic_maximal_compact I`.
+A detailed English derivation is pending.
 -/
 theorem AdBridgeK_holds (I : Formalism.MainNotions.S.AutInst) : Formalism.L2.SG.AdBridge.AdBridgeK I := adelic_maximal_compact I
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.adelic_isomorphism_of_parts (I := I) (adelic_rational_points I) (adelic_maximal_compact I)`.
+A detailed English derivation is pending.
 -/
 theorem adelic_isomorphism_statement (I : Formalism.MainNotions.S.AutInst) : Formalism.L2.SG.AdBridge.AdelicIsomorphism I :=
   Formalism.L2.SG.Pf.adelic_isomorphism_of_parts (I := I) (adelic_rational_points I) (adelic_maximal_compact I)

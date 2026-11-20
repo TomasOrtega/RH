@@ -31,11 +31,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl
 
 /- English proof (translation)
-Introduce `E _ _ _ H L _ _ D σ A _ φ M g u hp h1 h2`. Use `haveI : Smooth D.t.G.hom := D.t.semi.smooth`. Take `⟨Mσ, -⟩` from `GlobalTheory.CompanionTheory.Ar.LieSigma.lieModel_fibre (Sp (𝓞 L)) D.t.G L (𝟙 _) D.B.carrier D.MB σ`. Establish `hp' : IsGrpPullback A D.t.G (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _) φ`. Rewrite using `[Category.comp_id]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨e, -⟩` from `GlobalTheory.T.tangent_space_equiv_hol_unif _ D.t.G _ _ Mσ A φ M g u hp' h1 h2`. Establish `hf : Module.finrank ℂ (Fibre σ D.B.carrier) = g`. Rewrite using `[e.finrank_eq, Module.finrank_fin_fun]`. Establish `hr : Module.finrank ℂ (FibreSpace D.B.metric σ) = Module.finrank (𝓞 L) D.B.carrier` using `GroundTheory.Heights₂.Heights.FibreMahlerForms.finrank_fibreSpace D.B.metric σ`. Establish `hq : Module.finrank ℂ (FibreSpace D.B.metric σ) = Module.finrank ℂ (Fibre σ D.B.carrier)` using `(FibreSpace.equiv D.B.metric σ).symm.finrank_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Module.finrank (𝓞 L) D.B.carrier = g`. Rewrite using `[← hr, hq, hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_eq_unif_dim : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ) (A : Over (Sp ℂ)) [GrpObj A] (φ : A.left ⟶ D.t.G.left) (M : LB A.left) (g : ℕ) (u : HolUnif A M g), IsGrpPullback A D.t.G (emb σ) φ → (∀ v, IsTangent v → ∃! w, u.IsDiff w v) → (∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) → D.g = g := by
   intro E _ _ _ H L _ _ D σ A _ φ M g u hp h1 h2

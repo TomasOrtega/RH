@@ -5,23 +5,23 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.UnitaryAssembly
 
 /- English proof (translation)
-Introduce `n D m J J' C R hJJ hJh hCC hCJC hRR hJR hCR hsum k₀ hk₀ kR hkR hkRJ`. Rewrite `hk₀`, `hkR` using `[Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose]`. Establish `hRC : Rᴴ * C = 0`. Establish `h` using `congrArg conjTranspose hCR`. Simplify `h` using `[conjTranspose_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hJ'h : J'ᴴ = J'`. Establish `h1 : J' = Rᴴ * (J * R)`. Rewrite using `[hJR, ← Matrix.mul_assoc, hRR, Matrix.one_mul]`. Rewrite using `[h1]`. Simplify using `[conjTranspose_mul, hJh, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hRJ : Rᴴ * J = J' * Rᴴ`. Establish `h` using `congrArg conjTranspose hJR`. Simplify `h` using `only [conjTranspose_mul, hJh, hJ'h]`. Establish `c2 : Cᴴ * (J * C) = 0` using `by rw [← Matrix.mul_assoc]; exact hCJC`. Establish `a1 : ∀ {p : Type} (X : Matrix (Fin D) p ℂ), Cᴴ * (C * X) = X` using `fun X => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hCC, Matrix.one_mul]`. Establish `a2 : ∀ {p : Type} (X : Matrix (Fin D) p ℂ), Cᴴ * (J * (C * X)) = 0` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc J C X, ← Matrix.mul_assoc, c2, Matrix.zero_mul]`. Establish `a3 : ∀ {p : Type} (X : Matrix (Fin m) p ℂ), Cᴴ * (R * X) = 0` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hCR, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a4 : ∀ {p : Type} (X : Matrix (Fin m) p ℂ), Rᴴ * (R * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hRR, Matrix.one_mul]`. Establish `a5 : ∀ {p : Type} (X : Matrix (Fin D) p ℂ), Rᴴ * (C * X) = 0` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hRC, Matrix.zero_mul]`. Establish `a6 : ∀ {p : Type} (X : Matrix (Fin n) p ℂ), J * (J * X) = X` using `fun X => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Establish `a7 : ∀ {p : Type} (X : Matrix (Fin m) p ℂ), J * (R * X) = R * (J' * X)` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hJR, Matrix.mul_assoc]`. Establish `a8 : ∀ {p : Type} (X : Matrix (Fin n) p ℂ), Rᴴ * (J * X) = J' * (Rᴴ * X)` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hRJ, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a9 : ∀ {p : Type} (X : Matrix (Fin D) p ℂ), k₀ * (k₀ᴴ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hk₀, Matrix.one_mul]`. Establish `a10 : ∀ {p : Type} (X : Matrix (Fin m) p ℂ), kR * (kRᴴ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hkR, Matrix.one_mul]`. Establish `a11 : ∀ {p : Type} (X : Matrix (Fin m) p ℂ), kR * (J' * X) = J' * (kR * X)` using `fun X => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hkRJ, Matrix.mul_assoc]`. Establish `hs : C * Cᴴ + J * (C * (Cᴴ * J)) + R * Rᴴ = 1`. Simplify `hsum` using `only [Matrix.mul_assoc]`. Use `⟨C * k₀ * Cᴴ + J * C * k₀ * Cᴴ * J + R * kR * Rᴴ, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, conjTranspose_add, conjTranspose_mul, conjTranspose_conjTranspose, hJh, Matrix.mul_assoc, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, hCC, c2, hCR, hRR, hRC, hJJ, hJR, hRJ, hk₀, hkR, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.m …`. Rewrite using `[← hs]`. Use `all_goals`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, conjTranspose_add, conjTranspose_mul, conjTranspose_conjTranspose, hJh, Matrix.mul_assoc, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, hCC, c2, hCR, hRR, hRC, hJJ, hJR, hRJ, hk₀, hkR, hkRJ, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_ad …`. Apply the tactic sequence `try abel`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unitary_assemble : ∀ {n D m : ℕ} (J : Matrix (Fin n) (Fin n) ℂ) (J' : Matrix (Fin m) (Fin m) ℂ) (C : Matrix (Fin n) (Fin D) ℂ) (R : Matrix (Fin n) (Fin m) ℂ), J * J = 1 → Jᴴ = J → Cᴴ * C = 1 → Cᴴ * J * C = 0 → Rᴴ * R = 1 → J * R = R * J' → Cᴴ * R = 0 → C * Cᴴ + J * C * Cᴴ * J + R * Rᴴ = 1 → ∀ k₀ ∈ Matrix.unitaryGroup (Fin D) ℂ, ∀ kR ∈ Matrix.unitaryGroup (Fin m) ℂ, kR * J' = J' * kR → ∃ k ∈ Matrix.unitaryGroup (Fin n) ℂ, k * J = J * k ∧ k * C = C * k₀ ∧ kᴴ * C = C * k₀ᴴ ∧ kᴴ * R = R * kRᴴ ∧ kᴴ * (J * C) = (J * C) * k₀ᴴ := by
   intro n D m J J' C R hJJ hJh hCC hCJC hRR hJR hCR hsum k₀ hk₀ kR hkR hkRJ

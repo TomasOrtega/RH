@@ -20,15 +20,13 @@ namespace GlobalTheory
 namespace EndTorus
 
 /- English proof (translation)
-Take `⟨a₀, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `hle : I ^ (e + 1) ≤ I` using `Ideal.pow_le_self (Nat.succ_ne_zero e)`. Establish `h0 : a₀ * a₀ - a₀ ∈ I` using `hle (Ideal.Quotient.eq.1 hx)`. Establish `hm : (Polynomial.X ^ 2 - Polynomial.X : Polynomial R).Monic` using `by monicity!`. Take `⟨a, ha, hI⟩` from `HenselianRing.is_henselian (I := I) _ hm a₀ (by simpa [sq] using h0) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `IsUnit.of_mul_eq_one (Ideal.Quotient.mk I (2 * a₀ - 1)) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Use `I.mul_mem_left 4 h0 using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Use the proof step `ring)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnil : ∀ y ∈ I, IsNilpotent (Ideal.Quotient.mk (I ^ (e + 1)) y)` using `fun y hy => ⟨e + 1, by rw [← map_pow]; exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow hy _)⟩`. Establish `ha' : a * (a - 1) = 0`. Use `ha.eq_zero` as an intermediate fact. Simplify using `at this`. Take the linear combination `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.1 ha' with h | h` into its components or cases. Use `left`. Use `hx.eq_zero_of_isNilpotent (hnil _ ?_)` and prove the remaining obligations. Simplify `hI` using `[h]`. Use `right`.
-
-Establish `h1 : a = 1` using `sub_eq_zero.1 h`. Use `hx.one_sub.eq_zero_of_isNilpotent (by simpa [h1] using hnil _ hI)` as an intermediate fact. Conclude with `(sub_eq_zero.1 this).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idempotent_trivial {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) [IsAdicComplete I R]
     (e : ℕ) (x : R ⧸ I ^ (e + 1)) (hx : IsIdempotentElem x) : x = 0 ∨ x = 1 := by
@@ -58,11 +56,9 @@ theorem idempotent_trivial {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) [I
     exact (sub_eq_zero.1 this).symm
 
 /- English proof (translation)
-Establish `hI : I ≠ ⊤`. Introduce and unpack `rfl`. Establish `: Subsingleton R` using `IsHausdorff.subsingleton hC.toIsHausdorff`. Conclude with `false_of_nontrivial_of_subsingleton R`. Establish `hJ : I ^ (e + 1) ≠ ⊤` using `fun h => hI (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero e)))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nontrivial (R ⧸ I ^ (e + 1))` using `Ideal.Quotient.nontrivial_iff.2 hJ`. Establish `: PreconnectedSpace (PrimeSpectrum (R ⧸ I ^ (e + 1)))`. Use `preconnectedSpace_iff_clopen.2 fun U hU => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `PrimeSpectrum.isClopen_iff.1 hU`. Apply the tactic sequence `rcases idempotent_trivial I e x hx with rfl | rfl <;> simp`.
-
-Conclude with `({ toNonempty := inferInstance } : ConnectedSpace (PrimeSpectrum (R ⧸ I ^ (e + 1))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem connectedSpace_thickening {R : Type} [CommRing R] [IsDomain R] (I : Ideal R)
     [hC : IsAdicComplete I R] (e : ℕ) : ConnectedSpace (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) := by
@@ -80,7 +76,7 @@ theorem connectedSpace_thickening {R : Type} [CommRing R] [IsDomain R] (I : Idea
   exact ({ toNonempty := inferInstance } : ConnectedSpace (PrimeSpectrum (R ⧸ I ^ (e + 1))))
 
 /- English proof (translation)
-Use `forall_congr' fun χ => ?_` and prove the remaining obligations. Establish `: (res (fun x _ => show t.left.base x ∈ (⊤ : TopologicalSpace.Opens _) from trivial) (pullU t.left ⊤ (charUnit S X χ)) : Γ((splitTorus S X).left, ⊤)ˣ).val = t.left.appTop.hom (charUnit S X χ).val`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[← this, Units.ext_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusEndOf_iff_appTop {S : Scheme.{0}} {X : Type} [AddCommGroup X] (h : X → X)
     (t : splitTorus S X ⟶ splitTorus S X) : TorusEndOf X h t ↔
@@ -93,7 +89,7 @@ theorem torusEndOf_iff_appTop {S : Scheme.{0}} {X : Type} [AddCommGroup X] (h : 
   rw [← this, Units.ext_iff]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← cancel_mono i, Category.assoc, IsMonHom.one_hom, IsMonHom.one_hom]`. Rewrite using `[← cancel_mono i, Category.assoc, IsMonHom.mul_hom, Category.assoc, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMonHom_of_mono {S : Scheme.{0}} {A B C : Over S} [MonObj A] [MonObj B] [MonObj C]
     (t : A ⟶ B) (i : B ⟶ C) [Mono i] [IsMonHom i] [IsMonHom (t ≫ i)] : IsMonHom t := by
@@ -107,19 +103,19 @@ end EndTorus
 open EndTorus in
 
 /- English proof (translation)
-Introduce `_ R _ _ I hR D e G _ _ g a ha`. Take `⟨hN, -, -, hC⟩` from `hR`. Use `connectedSpace_thickening I e` as an intermediate fact. Use `g.q_hom` as an intermediate fact. Use `g.i_hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `g.q_flat` as an intermediate fact. Use `g.q_surj` as an intermediate fact. Use `g.q_affine` as an intermediate fact. Establish `hk` using `g.isKernel`. Establish `: IsProper D.P.A.hom` using `D.P.isAb.proper`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : IsAbelianScheme (thickObj R I e D.P.A)` using `{ comm := inferInstance smooth := by have := D.P.isAb.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by show IsProper (pullback.snd _ _); infer_instance geomConnected := by`. Use `D.P.isAb.geomConnected` as an intermediate fact. Use `show GeometricallyConnected (pullback.snd _ _)`. Use `infer_instance }`. Establish `h1 : g.i ≫ a ≫ g.q = toUnit _ ≫ η[thickObj R I e D.P.A]` using `(splitTorus_hom_abelian_eq_one _ D.X _ hB (g.i ≫ a ≫ g.q) inferInstance).trans (Hom.one_def)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Mono g.i`. Establish `: Mono (η[thickObj R I e D.P.A])` using `⟨fun _ _ _ => toUnit_unique _ _⟩`. Conclude with `(MorphismProperty.monomorphisms _).of_isPullback hk.flip (.infer_property _)`. Prove the components needed by the constructor for the conclusion. Set `t` to `hk.lift (g.i ≫ a) (toUnit _) (by rw [Category.assoc, h1])`.
+Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : t ≫ g.i = g.i ≫ a` using `hk.lift_fst _ _ _`. Establish `: IsMonHom (t ≫ g.i)` using `ht ▸ inferInstance`. Establish `: IsMonHom t` using `isMonHom_of_mono t g.i`. Take `⟨h, hh⟩` from `SplitTorusHom.exists_addMonoidHom t`. Use `⟨h, ⟨t, (torusEndOf_iff_appTop _ _).2 hh, ht.symm⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Introduce and unpack `h' ⟨t', h₁, h₂⟩`. Take `rfl : t' = t` from `by rw [← cancel_mono g.i, ht, h₂]`. Use extensionality with `χ`. Conclude with `SplitTorusHom.charUnit_injective (S := Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) (((torusEndOf_iff_appTop _ _).1 h₁ χ).symm.trans (hh χ))`. Take `⟨b, hb, hq⟩` from `FlatQuotient.exists_desc g.q g.i (a ≫ g.q) hk h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `FlatQuotient.epi_of_flat_surjective g.q` as an intermediate fact. Use `⟨b, ⟨hb, hq.symm⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `b' ⟨-, h⟩`. Rewrite using `[← cancel_epi g.q, ← h, hq]`.
+A detailed English derivation is pending.
 -/
 theorem gtCoord_end_torus_abelian : LL → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegPre R) (e : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) (a : thickObj R I e G ⟶ thickObj R I e G), IsMonHom a → (∃! h : D.X →+ D.X, ∃ t, TorusEndOf D.X h t ∧ g.i ≫ a = t ≫ g.i) ∧ ∃! b : thickObj R I e D.P.A ⟶ thickObj R I e D.P.A, IsMonHom b ∧ a ≫ g.q = g.q ≫ b := by
   intro _ R _ _ I hR D e G _ _ g a ha

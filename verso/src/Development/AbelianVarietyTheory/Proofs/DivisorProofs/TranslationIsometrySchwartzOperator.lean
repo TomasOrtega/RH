@@ -5,23 +5,21 @@ open scoped SchwartzMap
 namespace GlobalTheory.TransDecay
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `hχ.isCompact.isBounded.subset_closedBall (0 : V)`. Use `set R := max r 0`. Establish `hR0 : 0 ≤ R` using `le_max_right _ _`. Establish `hxR : ∀ x ∈ tsupport (χ : V → ℂ), ‖x‖ ≤ R` using `fun x hx => by`. Use `hr hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `this.trans (le_max_left _ _)`. Use `set S := ((Finset.Iic (M, m)).sup fun p : ℕ × ℕ => SchwartzMap.seminorm ℂ p.1 p.2) h`. Establish `hS0 : 0 ≤ S` using `apply_nonneg _ _`. Use `set A := ∑ i ∈ Finset.range (m + 1), (m.choose i : ℝ) * SchwartzMap.seminorm ℂ 0 i χ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg fun i _ => by positivity`. Use `⟨R ^ l * A * ((1 + R) ^ M * (2 ^ M * S)), fun v k' hk' => ?_⟩` and prove the remaining obligations. Establish `hvpos : 0 < (1 + ‖v‖) ^ M` using `by positivity`. Use `SchwartzMap.seminorm_le_bound ℂ l m k' (by positivity) fun x => ?_` and prove the remaining obligations. Establish `hfun : (k' : V → ℂ) = fun y => χ y * h (y + v)` using `funext hk'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Establish `hsh : ContDiff ℝ (⊤ : ℕ∞) (fun y => h (y + v))` using `(h.smooth ⊤).comp (contDiff_id.add contDiff_const)`. Establish `hL` using `norm_iteratedFDeriv_mul_le (χ.smooth ⊤) hsh x (n := m) (by exact_mod_cast le_top)`. Establish `hterm : ∀ i ∈ Finset.range (m + 1), ‖x‖ ^ l * ((m.choose i : ℝ) * ‖iteratedFDeriv ℝ i χ x‖ * ‖iteratedFDeriv ℝ (m - i) (fun y => h (y + v)) x‖) ≤ R ^ l * ((m.choose i : ℝ) * SchwartzMap.seminorm ℂ 0 i χ) * ((1 + R) ^ M * (2 ^ M * S)) * ((1 + ‖v‖) ^ M)⁻¹`. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hx : x ∈ tsupport (χ : V → ℂ)`. Establish `hx1` using `hxR x hx`. Rewrite using `[iteratedFDeriv_comp_add_right]`. Establish `hj : (1 + ‖x + v‖) ^ M * ‖iteratedFDeriv ℝ (m - i) h (x + v)‖ ≤ 2 ^ M * S` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (M, m)) le_rfl (Nat.sub_le _ _) h (x + v)`. Establish `hv : 1 + ‖v‖ ≤ (1 + R) * (1 + ‖x + v‖)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `: ‖v‖ ≤ ‖x + v‖ + ‖x‖`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[norm_nonneg (x + v)]`. Establish `hD : ‖iteratedFDeriv ℝ (m - i) h (x + v)‖ ≤ (1 + R) ^ M * (2 ^ M * S) * ((1 + ‖v‖) ^ M)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hvpos]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (1 + R) ^ M * (2 ^ M * S) := by gcongr`. Establish `hχi : ‖iteratedFDeriv ℝ i χ x‖ ≤ SchwartzMap.seminorm ℂ 0 i χ` using `SchwartzMap.norm_iteratedFDeriv_le_seminorm ℂ χ i x`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h0 : iteratedFDeriv ℝ i χ x = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hx (support_iteratedFDeriv_subset i (Function.mem_support.2 hne))`. Rewrite using `[h0, norm_zero, mul_zero, zero_mul, mul_zero]`.
-
-Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul, ← Finset.sum_mul, ← Finset.mul_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seminorm_mul_shift_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (χ h : 𝓢(V, ℂ)) (hχ : HasCompactSupport (χ : V → ℂ)) (l m M : ℕ) :
@@ -92,19 +90,15 @@ theorem seminorm_mul_shift_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ
         rw [← Finset.sum_mul, ← Finset.sum_mul, ← Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ T hinv χ ψ h hχ M`. Establish `hp : Continuous ((SchwartzMap.seminorm ℂ 0 0 : Seminorm ℂ 𝓢(V, ℂ)).comp (T : 𝓢(V, ℂ) →ₗ[ℂ] 𝓢(V, ℂ)))` using `((schwartz_withSeminorms ℂ V ℂ).continuous_seminorm (0, 0)).comp T.continuous`. Take `⟨s, C0, -, hC0⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) _ hp`. Establish `hA : ∀ i : ℕ × ℕ, ∃ C : ℝ, ∀ (v : V) (k' : 𝓢(V, ℂ)), (∀ x, k' x = χ x * h (x + v)) → SchwartzMap.seminorm ℂ i.1 i.2 k' ≤ C * ((1 + ‖v‖) ^ M)⁻¹` using `fun i => seminorm_mul_shift_le χ h hχ i.1 i.2 M`. Use `choose Cf hCf using hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Cs := ∑ i ∈ s, |Cf i|`. Establish `hCs : 0 ≤ Cs` using `Finset.sum_nonneg fun i _ => abs_nonneg _`. Use `set I := ∫ x, ‖T ψ x‖ ∂μ`. Establish `hint : Integrable (fun x => ‖T ψ x‖) μ` using `(SchwartzMap.integrable (T ψ)).norm`. Use `⟨(C0 : ℝ) * Cs * I, fun v k ψv hk hψv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set k' := SchwartzMap.compSubConstCLM ℂ (-v) k`. Establish `hk' : ∀ x, k' x = k (x + v)`. Introduce `x`. Simplify using `[k', SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add]`. Establish `hk'' : ∀ x, k' x = χ x * h (x + v)` using `by intro x; rw [hk', hk]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hψ : ∀ x, ψ x = ψv (x + v)` using `by intro x; rw [hψv]; simp`. Rewrite using `[← hinv v k k' ψv ψ hk' hψ]`. Establish `hsup : (s.sup (schwartzSeminormFamily ℂ V ℂ)) k' ≤ Cs * ((1 + ‖v‖) ^ M)⁻¹`. Use `Seminorm.finset_sup_apply_le (by positivity) fun i hi => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.single_le_sum (f := fun i => |Cf i|) (fun i _ => abs_nonneg _) hi`. Establish `hTk : ∀ x, ‖T k' x‖ ≤ (C0 : ℝ) * (Cs * ((1 + ‖v‖) ^ M)⁻¹)`. Introduce `x`. Establish `h2` using `hC0 k'`. Rewrite `h2` using `[Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le (hint.const_mul _) (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, RCLike.norm_conj]`. Use `gcongr`.
-
-Conclude with `hTk x`. Use `_ = (C0 : ℝ) * Cs * I * ((1 + ‖v‖) ^ M)⁻¹ := by rw [integral_const_mul]; ring`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
     (μ : MeasureTheory.Measure V) [μ.IsAddHaarMeasure] (T : SchwartzMap V ℂ →L[ℂ] SchwartzMap V ℂ),

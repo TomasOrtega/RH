@@ -15,7 +15,7 @@ attribute [local instance] borelH
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨R0, hR0'⟩` from `(hus.isCompact.isBounded).subset_closedBall 0`. Use `⟨R0, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h` using `hR0' (subset_tsupport u hs)`. Rewrite `h` using `[mem_closedBall_zero_iff, Real.norm_eq_abs]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem bound_of_hasCompactSupport {u : ℝ → ℂ} (hus : HasCompactSupport u) :
     ∃ R0 : ℝ, ∀ s, u s ≠ 0 → |s| ≤ R0 := by
@@ -25,7 +25,7 @@ theorem bound_of_hasCompactSupport {u : ℝ → ℂ} (hus : HasCompactSupport u)
   rwa [mem_closedBall_zero_iff, Real.norm_eq_abs] at h
 
 /- English proof (translation)
-Take `⟨R0, hR0⟩` from `bound_of_hasCompactSupport hus`. Conclude with `lt_of_le_of_lt (measure_mono fun x hx => hR0 _ hx) (hvol R0)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cp_supp (D : Dom E n 0) (hvol : ∀ R : ℝ, D.ν {x | |ldet x| ≤ R} < ⊤) {u : ℝ → ℂ}
     (hus : HasCompactSupport u) : D.ν {x | u (ldet x) ≠ 0} < ⊤ := by

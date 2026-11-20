@@ -34,7 +34,7 @@ def s : Til O O' R := PowerSeries.X
 def coeff (k : ℕ) (a : Til O O' R) : O' ⊗[O] R := PowerSeries.coeff k (show PowerSeries (O' ⊗[O] R) from a)
 
 /- English proof (translation)
-Establish `h : algebraMap O' (Til O O' R) (algebraMap O O' a) = C O O' R (algebraMap O' (O' ⊗[O] R) (algebraMap O O' a))` using `PowerSeries.algebraMap_apply`. Rewrite using `[h, ← IsScalarTower.algebraMap_apply]`. Conclude with `congrArg (C O O' R) ((Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R).commutes a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ι_algebraMap (a : O) : ι O O' R (algebraMap O R a) = algebraMap O' (Til O O' R) (algebraMap O O' a) := by
   have h : algebraMap O' (Til O O' R) (algebraMap O O' a) = C O O' R (algebraMap O' (O' ⊗[O] R) (algebraMap O O' a)) :=
@@ -48,7 +48,7 @@ def map (f : R →ₐ[O] R') : Til O O' R →ₐ[O'] Til O O' R' :=
   PowerSeries.mapAlgHom (Algebra.TensorProduct.map (AlgHom.id O' O') f)
 
 /- English proof (translation)
-Use `show PowerSeries.map _ (PowerSeries.C _) = PowerSeries.C _`. Rewrite using `[PowerSeries.map_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_ι (f : R →ₐ[O] R') (a : R) : map O' f (ι O O' R a) = ι O O' R' (f a) := by
   show PowerSeries.map _ (PowerSeries.C _) = PowerSeries.C _
@@ -56,7 +56,7 @@ theorem map_ι (f : R →ₐ[O] R') (a : R) : map O' f (ι O O' R a) = ι O O' R
   rfl
 
 /- English proof (translation)
-The claim follows from `PowerSeries.map_X _`.
+A detailed English derivation is pending.
 -/
 theorem map_s (f : R →ₐ[O] R') : map O' f (s O O' R) = s O O' R' := PowerSeries.map_X _
 

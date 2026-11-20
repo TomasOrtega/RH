@@ -15,7 +15,7 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h1 : (Matrix.diagonal (fun c => if ε c = true then (1 : ℂ) else -1) * X * Matrix.diagonal (fun c => if ε c = true then (1 : ℂ) else -1)) a b = (-X) a b` using `congrFun (congrFun (ReciprocityTheory.ChartRestriction.DS.S7.inP_JXJ hX) a) b`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.neg_apply] at h1`. Rewrite `h1` using `[h]`. Apply the tactic sequence `split_ifs at h1 <;> linear_combination h1 / 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inP_entry_zero {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X) {a b : Fin n}
     (h : ε a = ε b) : X a b = 0 := by
@@ -27,11 +27,11 @@ theorem inP_entry_zero {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (h
   split_ifs at h1 <;> linear_combination h1 / 2
 
 /- English proof (translation)
-Use `⟨fun ab => X ab.1.1 ab.1.2, ?_⟩` and prove the remaining obligations. Establish `hH` using `ReciprocityTheory.ChartRestriction.DS.S7.isHermitian_of_mem_noncompactPart' hX`. Use extensionality with `a b`. Use `show (if h : b < a ∧ ε a ≠ ε b then X a b else if h' : a < b ∧ ε b ≠ ε a then star (X b a) else 0) = X a b`. Use `split_ifs with h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h3` using `congrFun (congrFun hH a) b`. Simplify `h3` using `[Matrix.conjTranspose_apply]`. Use `symm`. Apply `inP_entry_zero hX` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Assume the negation of the conclusion as `hne`. Break down `lt_trichotomy a b with hlt | heq | hgt` into its components or cases. Conclude with `h2 ⟨hlt, fun e => hne e.symm⟩`. Conclude with `hne (by rw [heq])`. Conclude with `h1 ⟨hgt, hne⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_pmat {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X) :
     ∃ z : PCoord ε → ℂ, pmat z = X := by
@@ -52,9 +52,9 @@ theorem exists_pmat {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX :
     · exact h1 ⟨hgt, hne⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `exists_pmat hX`. Establish `h0` using `ReciprocityTheory.ChartRestriction.DS.fi_nonneg z i`. Rewrite `h0` using `[hz]`. Establish `hpos : 0 < (lead i (NormedSpace.exp X)).re`. Establish `hsub` using `(ReciprocityTheory.ChartRestriction.DS.S7.exp_noncompactPart_posDef hX).submatrix (Fin.castLE_injective hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show 0 < (if h : i ≤ n then ((NormedSpace.exp X).submatrix (Fin.castLE h) (Fin.castLE h)).det else 0).re`. Rewrite using `[dif_pos hi]`. Conclude with `(Complex.pos_iff.1 hsub.det_pos).1`. Conclude with `(Real.log_nonneg_iff hpos).1 h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_lead_exp {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X) (i : ℕ) (hi : i ≤ n) :
     1 ≤ (lead i (NormedSpace.exp X)).re := by
@@ -69,9 +69,7 @@ theorem one_le_lead_exp {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (
   exact (Real.log_nonneg_iff hpos).1 h0
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Use `show (0 : ℤ) ≤ ((n : ℤ) - 1 - ((i : ℕ) : ℤ)) - (if h : (i : ℕ) + 1 < n then ((n : ℤ) - 1 - (((⟨(i : ℕ) + 1, h⟩ : Fin n) : ℕ) : ℤ)) else 0)`. Use `split_ifs with h`. Simplify using `only [Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dz_sub_muNext_nonneg (i : Fin n) : 0 ≤ Dz n i - muNext (Dz n) i := by
   have hi := i.isLt
@@ -83,17 +81,17 @@ theorem dz_sub_muNext_nonneg (i : Fin n) : 0 ≤ Dz n i - muNext (Dz n) i := by
   · omega
 
 /- English proof (translation)
-Introduce `n ε X hX k`. Use `show (ReciprocityTheory.ChartRestriction.DS.S7.PhiM (Dz n) (ReciprocityTheory.ChartRestriction.DS.S7.toMK k⁻¹ * NormedSpace.exp X * ReciprocityTheory.ChartRestriction.DS.S7.toMK k)).re ≤ 1`. Establish `hc` using `ReciprocityTheory.ChartRestriction.DS.S7.inP_conj k⁻¹ hX`. Rewrite `hc` using `[inv_inv]`. Take `⟨hY, hexp⟩` from `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hexp]`. Generalize the expression as in `ReciprocityTheory.ChartRestriction.DS.S7.toMK k⁻¹ * X * ReciprocityTheory.ChartRestriction.DS.S7.toMK k = Y at hY ⊢`. Establish `hreal : ∀ j : ℕ, j ≤ n → ReciprocityTheory.ChartRestriction.DS.S7.lead j (NormedSpace.exp Y) = ((ReciprocityTheory.ChartRestriction.DS.S7.lead j (NormedSpace.exp Y)).re : ℂ)`. Introduce `j hj`. Establish `hPD` using `(ReciprocityTheory.ChartRestriction.DS.S7.exp_noncompactPart_posDef hY).submatrix (Fin.castLE_injective hj)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `Complex.pos_iff.1 hPD.det_pos`. Use `show (if h : j ≤ n then ((NormedSpace.exp Y).submatrix (Fin.castLE h) (Fin.castLE h)).det else 0) = (((if h : j ≤ n then ((NormedSpace.exp Y).submatrix (Fin.castLE h) (Fin.castLE h)).det else 0).re : ℝ) : ℂ)`. Rewrite using `[dif_pos hj]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[← hp.2]`. Establish `hge1 : ∀ i : Fin n, 1 ≤ (ReciprocityTheory.ChartRestriction.DS.S7.lead (↑i + 1) (NormedSpace.exp Y)).re` using `fun i => one_le_lead_exp hY (↑i + 1) i.isLt`. Establish `hprod : ReciprocityTheory.ChartRestriction.DS.S7.PhiM (Dz n) (NormedSpace.exp Y) = ((∏ i : Fin n, ((ReciprocityTheory.ChartRestriction.DS.S7.lead (↑i + 1) (NormedSpace.exp Y)).re) ^ (-(Dz n i - ReciprocityTheory.ChartRestriction.DS.S7.muNext (Dz n) i)) : ℝ) : ℂ)` using `by show (∏ i : Fin n, ReciprocityTheory.ChartRestriction.DS.S7.lead (↑i + 1) (NormedSpace.exp Y) ^ (-(Dz n i - ReciprocityTheory.ChartRestriction.DS.S7.muNext (Dz n) i))) = _`. Rewrite using `[Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_zpow, ← hreal (↑i + 1) i.isLt]`. Rewrite using `[hprod, Complex.ofReal_re]`. Apply `Finset.prod_le_one` to reduce the goal to its premises. Introduce `i _`. Conclude with `zpow_nonneg (le_trans zero_le_one (hge1 i)) _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i _`. Apply `zpow_le_one_of_nonpos₀ (hge1 i)` to reduce the goal to its premises. Establish `h4` using `dz_sub_muNext_nonneg i`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem phiLe : PhiLe := by
   intro n ε X hX k

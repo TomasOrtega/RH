@@ -10,9 +10,9 @@ section PathL
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) W (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`. Establish `e : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • W)) = fun u : ℝ => NormedSpace.exp (u • W)`. Use function extensionality and compare the values at `t`. Rewrite using `[Complex.coe_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dga_exp (W : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • W)) W 0 := by
@@ -25,11 +25,11 @@ lemma dga_exp (W : Matrix (Fin n) (Fin n) ℂ) :
   exact h
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t : ℝ => NormedSpace.exp (-((t : ℂ) • Y))) (-Y) 0`. Establish `h` using `dga_exp (-Y)`. Simplify `h` using `[smul_neg]`. Establish `h2` using `dga_exp Y`. Establish `e0 : NormedSpace.exp (((0 : ℝ) : ℂ) • Y) = 1` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : NormedSpace.exp (-(((0 : ℝ) : ℂ) • Y)) = 1` using `by simp`. Establish `h3` using `(h1.mul_const z).mul h2`. Simplify using `only [e0, e1, mul_one, one_mul] at h3`. Establish `e2 : -Y * z + z * Y = z * Y - Y * z` using `by noncomm_ring`. Rewrite `h3` using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 lemma dga_path (Y z : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp (-((t : ℂ) • Y)) * z * NormedSpace.exp ((t : ℂ) • Y))

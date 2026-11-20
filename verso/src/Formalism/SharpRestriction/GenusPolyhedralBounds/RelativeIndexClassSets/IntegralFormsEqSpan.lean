@@ -7,11 +7,11 @@ open Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions NumberField IsDe
 namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 /- English proof (translation)
-Apply `Submodule.map_injective_of_injective (f := p.subtype.restrictScalars R) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[Submodule.map_comap_eq, Submodule.map_span]`. Establish `h : (p.subtype.restrictScalars R) '' ((↑) ⁻¹' s : Set ↥p) = s`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨⟨x, hs hx⟩, hx, rfl⟩`. Rewrite using `[h, inf_eq_right, Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `⟨⟨x, hs hx⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comap_span_of_subset {R S M : Type*} [CommRing R] [CommRing S] [AddCommGroup M] [Module S M] [Module R M] [SMul R S]
     [IsScalarTower R S M] (p : Submodule S M) (s : Set M) (hs : s ⊆ p) :
@@ -28,9 +28,9 @@ theorem comap_span_of_subset {R S M : Type*} [CommRing R] [CommRing S] [AddCommG
   exact ⟨⟨x, hs hx⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h : Submodule.span R ((↑) '' s : Set M) = (Submodule.span R s).map (p.subtype.restrictScalars R)`. Rewrite using `[Submodule.map_span]`. Both sides reduce to the same expression. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `: y = x` using `Subtype.ext hyx`. Conclude with `this ▸ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_span_subtype_iff {R S M : Type*} [CommRing R] [CommRing S] [AddCommGroup M] [Module S M] [Module R M] [SMul R S]
     [IsScalarTower R S M] (p : Submodule S M) (s : Set ↥p) (x : ↥p) :
@@ -45,17 +45,15 @@ theorem mem_span_subtype_iff {R S M : Type*} [CommRing R] [CommRing S] [AddCommG
     exact this ▸ hy
 
 /- English proof (translation)
-Establish `hg : ∀ x : K' ⊗[K] ↥W, ((f.liftBaseChange K' x : ↥p) : K' ⊗[K] V) = W.subtype.baseChange K' x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[LinearMap.liftBaseChange_tmul, LinearMap.baseChange_tmul, Submodule.coe_smul, hf, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, Submodule.coe_add, hx, hy]`. Establish `hbij : Function.Bijective (f.liftBaseChange K')`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x y hxy`. Establish `h1 : W.subtype.baseChange K' x = W.subtype.baseChange K' y` using `by rw [← hg, ← hg, hxy]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap (M := K') W.subtype Subtype.val_injective h1`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff]`. Introduce and unpack `⟨y, hy⟩ -`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hy'` using `hy`. Rewrite `hy'` using `[hp]`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem y h`. Take `⟨w, hw, rfl⟩` from `h`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(1 : K') ⊗ₜ[K] (⟨w, hw⟩ : ↥W), Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.liftBaseChange_tmul, one_smul, hf]`. Consider the case `zero => exact (LinearMap.range (f.liftBaseChange K')).zero_mem`. Consider the case `add a b ha hb iha ihb`. Conclude with `(LinearMap.range (f.liftBaseChange K')).add_mem (iha (hp ▸ ha)) (ihb (hp ▸ hb))`.
-
-Consider the case `smul r a ha ih => exact (LinearMap.range (f.liftBaseChange K')).smul_mem r (ih (hp ▸ ha))`. Conclude with `IsBaseChange.of_equiv (LinearEquiv.ofBijective (f.liftBaseChange K') hbij) (fun x => by simp)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isBaseChange_span {K K' V : Type*} [Field K] [Field K'] [Algebra K K'] [AddCommGroup V] [Module K V]
     (W : Submodule K V) (p : Submodule K' (K' ⊗[K] V))
@@ -107,11 +105,11 @@ Both sides reduce to the same expression.
 theorem jW_toW (F : B.Mlat j ka) : jW X la N ka (toW X la ka F) = embV X la N ka F := rfl
 
 /- English proof (translation)
-Unfold `T0.inW PJ.loc`. Rewrite using `[comap_span_of_subset (R := X.Ol la) (T0.WL X ka la) (X.bc la '' (M : Set X.Forms))]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨F, hF, h⟩`. Conclude with `⟨F, hF, h.symm⟩`. Introduce and unpack `⟨F, hF, h⟩`. Conclude with `⟨F, hF, h.symm⟩`. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨F, hM hF, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem inW_loc_eq_span (M : Submodule (𝓞 B.KO) X.Forms) (hM : M ≤ X.Msup ka) :
     T0.inW X ka la (X.loc la M) =
@@ -127,11 +125,11 @@ theorem inW_loc_eq_span (M : Submodule (𝓞 B.KO) X.Forms) (hM : M ≤ X.Msup k
     exact Submodule.subset_span ⟨F, hM hF, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[inW_loc_eq_span X la ka M hM]`. Establish `h1 : jW X la N ka '' (Submodule.span (X.Ol la) {x : ↥(T0.WL X ka la) | ∃ F ∈ M, (x : X.Vl la) = X.bc la F} : Set ↥(T0.WL X ka la)) = ((Submodule.span (X.Ol la) {x : ↥(T0.WL X ka la) | ∃ F ∈ M, (x : X.Vl la) = X.bc la F}).map ((jW X la N ka).restrictScalars (X.Ol la)) : Set ↥(Vw X …` using `rfl`. Rewrite using `[h1, Submodule.map_span, Submodule.span_span_of_tower]`. Use `congr 1`. Use extensionality with `f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨F, hF, hx⟩, rfl⟩`. Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Use `show bcV X la N (x : X.Vl la) = _`. Rewrite using `[hx, emb_eq_bcV]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨F, hF, hf⟩`. Use `⟨⟨X.bc la F, Submodule.subset_span ⟨F, hM hF, rfl⟩⟩, ⟨F, hF, rfl⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hf, emb_eq_bcV]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem span_jW_inW (M : Submodule (𝓞 B.KO) X.Forms) (hM : M ≤ X.Msup ka) :
     Submodule.span (Op X la N) (jW X la N ka '' (T0.inW X ka la (X.loc la M) : Set ↥(T0.WL X ka la))) =
@@ -155,9 +153,9 @@ theorem span_jW_inW (M : Submodule (𝓞 B.KO) X.Forms) (hM : M ≤ X.Msup ka) :
     rfl
 
 /- English proof (translation)
-Unfold `M1 T0.MW`. Rewrite using `[span_jW_inW X la N ka _ le_rfl]`. Use `congr 1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨F, hF, rfl⟩, hf⟩`. Conclude with `⟨⟨F, hF⟩, Subtype.ext hf.symm⟩`. Introduce and unpack `⟨F, rfl⟩`. Conclude with `⟨_, ⟨F, F.2, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem integralForms_eq_span : M1 X la N ka = Submodule.span (Op X la N) (Set.range fun F : B.Mlat j ka => embV X la N ka F) := by
   unfold M1 T0.MW
@@ -171,7 +169,7 @@ theorem integralForms_eq_span : M1 X la N ka = Submodule.span (Op X la N) (Set.r
     exact ⟨_, ⟨F, F.2, rfl⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `span_jW_inW X la N ka _ h`.
+A detailed English derivation is pending.
 -/
 theorem Th1_eq (S : Scal B) (wL wF : WeightFamilies.Wt D j) (T : ℕ) (h : X.Theta S ka wL wF T ≤ X.Msup ka) :
     Th1 X la N ka S wL wF T = Submodule.span (Op X la N)
@@ -179,9 +177,9 @@ theorem Th1_eq (S : Scal B) (wL wF : WeightFamilies.Wt D j) (T : ℕ) (h : X.The
   span_jW_inW X la N ka _ h
 
 /- English proof (translation)
-Establish `hp : Vw X la N ka = Submodule.span (Kp X la N) ((fun v => bcV X la N v) '' (T0.WL X ka la : Set (X.Vl la)))`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Vw_eq_span_image X la N ka hM]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨X.bc la (X.inc ka F), Submodule.subset_span ⟨X.inc ka F, ⟨F, hF, rfl⟩, rfl⟩, rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `bcV_mem_Vw X la N ka hx`. Conclude with `isBaseChange_span (K := X.Kl la) (K' := Kp X la N) (V := X.Vl la) (T0.WL X ka la) (Vw X la N ka) hp (jW X la N ka) (fun w => rfl)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem jW_isBaseChange (hM : Submodule.span B.KO (B.Mlat j ka : Set (B.Cusp j ka)) = ⊤) :
     IsBaseChange (Kp X la N) (jW X la N ka) := by

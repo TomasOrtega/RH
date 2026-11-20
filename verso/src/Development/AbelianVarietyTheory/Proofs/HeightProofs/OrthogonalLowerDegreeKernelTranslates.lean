@@ -20,15 +20,13 @@ open GlobalTheory.KFourier MeasureTheory
 namespace GlobalTheory.KFourier
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Establish `h0 : κ = 0` using `by simpa [lowV] using hκ`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Consider the case `succ i`. Establish `hq : (fun x : KG ε => star (κ (x⁻¹ * k))) ∈ lowV ε (i + 1)`. Establish `h1 : κ ∈ polyV ε i` using `hκ`. Establish `h2` using `mul_right_mem k h1`. Establish `h3` using `inv_mem h2`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `star_mem h3`. Establish `h4` using `h _ hq`. Establish `h5 : ∫ x, star (star (κ (x⁻¹ * k)) * p x) ∂(muK ε) = 0`. Use `congrArg star h4` as an intermediate fact. Rewrite `this` using `[star_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `integral_conj`. Rewrite using `[← h5]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [star_mul', star_star]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem orth_translate_lowV {n : ℕ} (ε : Fin n → Bool) (i : ℕ) (p κ : KG ε → ℂ) (hκ : κ ∈ lowV ε i)
     (h : ∀ q ∈ lowV ε i, ∫ k, q k * p k ∂(muK ε) = 0) (k : KG ε) :

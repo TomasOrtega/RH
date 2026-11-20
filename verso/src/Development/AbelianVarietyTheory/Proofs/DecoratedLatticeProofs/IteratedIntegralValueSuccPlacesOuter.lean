@@ -22,9 +22,9 @@ namespace GlobalTheory.QValOuter
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ}
 
 /- English proof (translation)
-Establish `h0 : Q₀.gl₂ a ∈ grpAt S.B'.V (· = Q₀.q.v)`. Rewrite using `[← (GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D Q₀.k Q₀.q S.B'.V _ Q₀.F.G₂ Q₀.gl₂ Q₀.loc₂).2.1]`. Conclude with `⟨a, rfl⟩`. Establish `h1 : Q'.gl₂ b ∈ grpAt S.B'.V (· = Q'.q.v)`. Rewrite using `[← (GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D Q'.k Q'.q S.B'.V _ Q'.F.G₂ Q'.gl₂ Q'.loc₂).2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨b, rfl⟩`. Conclude with `GlobalTheory.SeeSawLastValue.grpAt_comm (fun p hp hp' => hne (hp.symm.trans hp')) h0 h1`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gl₂_comm (Q₀ Q' : QStep S) (hne : Q₀.q.v ≠ Q'.q.v) (a : GL (Q₀.n₂ ⊕ Fin (Q₀.c + 1)) Q₀.k)
     (b : GL (Q'.n₂ ⊕ Fin (Q'.c + 1)) Q'.k) : Q₀.gl₂ a * Q'.gl₂ b = Q'.gl₂ b * Q₀.gl₂ a := by
@@ -35,9 +35,9 @@ theorem gl₂_comm (Q₀ Q' : QStep S) (hne : Q₀.q.v ≠ Q'.q.v) (a : GL (Q₀
   exact GlobalTheory.SeeSawLastValue.grpAt_comm (fun p hp hp' => hne (hp.symm.trans hp')) h0 h1
 
 /- English proof (translation)
-Introduce `j`. Use function extensionality and compare the values at `x`. Establish `hj` using `hf j`. Simplify using `only [rTrans, Pi.smul_apply, smul_eq_mul, trc_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hg)`. Use `congrFun hj (x * Q₀.gl₂ a)` as an intermediate fact. Simplify using `only [rTrans, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[mul_assoc x, ← gl₂_comm Q₀ Q' hne, ← mul_assoc, this]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem typed_trc (Q₀ Q' : QStep S) (hne : Q₀.q.v ≠ Q'.q.v) (e : GL (Q₀.n₂ ⊕ Fin (Q₀.c + 1)) Q₀.k →₀ ℂ)
     {f : GA D S.B'.V → ℂ} (hf : Q'.Typed f) : Q'.Typed (trc (e.mapDomain Q₀.gl₂) f) := by
@@ -54,11 +54,11 @@ theorem typed_trc (Q₀ Q' : QStep S) (hne : Q₀.q.v ≠ Q'.q.v) (e : GL (Q₀.
   ring
 
 /- English proof (translation)
-Take `⟨ε₀, hε₀, he₀⟩` from `Q₀.q.above`. Take `⟨ε', hε', he'⟩` from `Q'.q.above`. Establish `horth : algebraMap (AF D.host.F) (AE D) ε' * algebraMap (AF D.host.F) (AE D) ε₀ = 0`. Rewrite using `[← map_mul, GlobalTheory.VacuumFrameCompare.place_orth hε' hε₀ (Ne.symm hne), map_zero]`. Introduce `u hu i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `mem_support_aconv_pair c d hu`. Establish `h1` using `hc a ha i j`. Establish `h2` using `hd b hb i j`. Rewrite `h1`, the goal using `[he']`. Rewrite `h2` using `[he₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (1 - algebraMap (AF D.host.F) (AE D) ε') * b i j = b i j`. Rewrite using `[← h2, sub_mul, one_mul, ← mul_assoc, horth, zero_mul, sub_zero]`. Rewrite using `[Matrix.add_apply, mul_add, h1, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem away_pair (Q₀ Q' : QStep S) (hne : Q₀.q.v ≠ Q'.q.v) {A T : HSp D} (c d : WO A T →₀ ℂ) (hc : Q'.Away c)
     (hd : ∀ u ∈ d.support, IsHalf (Q₀.q.e + cA D Q₀.q.e) u) : Q'.Away (aconv [c, d]) := by
@@ -77,7 +77,7 @@ theorem away_pair (Q₀ Q' : QStep S) (hne : Q₀.q.v ≠ Q'.q.v) {A T : HSp D} 
   rw [Matrix.add_apply, mul_add, h1, h3]
 
 /- English proof (translation)
-Take `⟨hc, t1, t2, hv, hφ, hf, ht, hg, hh₁, hh₂⟩` from `hH`. Establish `hne : ∀ i : Fin r, (Q 0).q.v ≠ (Q i.succ).q.v` using `fun i h => Fin.succ_ne_zero i (hinj h).symm`. Establish `hP : ∀ v, places (fun i : Fin r => Q i.succ) v → places Q v` using `fun v ⟨i, hi⟩ => ⟨i.succ, hi⟩`. Use `⟨fun i => ⟨away_pair (Q 0) (Q i.succ) (hne i) _ _ (hc i.succ).1 ((Q 0).ent₁ γ).1, away_pair (Q 0) (Q i.succ) (hne i) _ _ (hc i.succ).2 ((Q 0).ent₂ γ β).1⟩, t1, t2, fun i => hv i.succ, hφ, contAut_trc _ hf, fun i => typed_trc (Q 0) (Q i.succ) (hne i) _ (ht i.succ), grpOff_anti D _ …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hyps_succ {r : ℕ} (Q : Fin (r + 1) → QStep S) (hinj : Function.Injective fun i => (Q i).q.v)
     {c₁ : WO S.B.A S.J.W₀ →₀ ℂ} {c₂ : WO S.J.W₀ S.B'.A →₀ ℂ} {f₁ : WO S.B.V S.J.W → ℂ} {f₂ : WO S.J.W S.B'.V → ℂ}
@@ -94,7 +94,7 @@ theorem hyps_succ {r : ℕ} (Q : Fin (r + 1) → QStep S) (hinj : Function.Injec
     grpOff_anti D _ _ _ hP hg, grpOff_anti D _ _ _ hP hh₁, grpOff_anti D _ _ _ hP hh₂⟩
 
 /- English proof (translation)
-Establish `e1 : conv (E :: l) = (MonoidAlgebra.ofCoeff (conv l) * MonoidAlgebra.ofCoeff E : MonoidAlgebra ℂ (GA D V)).coeff`. Rewrite using `[← comm_conv E l h, ← conv_cons]`. Rewrite using `[e1, trc_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trc_conv_cons {V : HSp D} (E : GA D V →₀ ℂ) (l : List (GA D V →₀ ℂ))
     (h : ∀ x ∈ E.support, ∀ e ∈ l, ∀ y ∈ e.support, x * y = y * x) (f : GA D V → ℂ) :
@@ -105,7 +105,7 @@ theorem trc_conv_cons {V : HSp D} (E : GA D V →₀ ℂ) (l : List (GA D V →�
   rw [e1, trc_mul]
 
 /- English proof (translation)
-Rewrite using `[← (Fin.consEquiv α).sum_comp, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_pi_succ {r : ℕ} {α : Fin (r + 1) → Type} [∀ i, Fintype (α i)] (F : (∀ i, α i) → ℂ) :
     ∑ γ, F γ = ∑ a : α 0, ∑ γ' : ∀ i : Fin r, α i.succ, F (Fin.cons a γ') := by
@@ -113,13 +113,13 @@ theorem sum_pi_succ {r : ℕ} {α : Fin (r + 1) → Type} [∀ i, Fintype (α i)
   rfl
 
 /- English proof (translation)
-Establish `hX : ∀ (γ0 : (Q 0).A₁) (β0 : (Q 0).A₂) (γ' : ∀ i : Fin r, (Q i.succ).A₁) (β' : ∀ i : Fin r, (Q i.succ).A₂), S.val (aconv (c₁ :: List.ofFn fun i => (Q i).d₁ ((Fin.cons γ0 γ' : ∀ i, (Q i).A₁) i))) (aconv (c₂ :: List.ofFn fun i => (Q i).d₂ ((Fin.cons γ0 γ' : ∀ i, (Q i).A₁) i) ((Fin. …`. Introduce `γ0 β0 γ' β'`. Simplify using `only [List.ofFn_succ, Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[aconv_pair_cons, aconv_pair_cons, trc_conv_cons]`. Introduce `x hx e he y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `he` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `he`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hx)`. Take `⟨b, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hy)`. Conclude with `hcomm i a b`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [value]`. Simplify using `only [sum_pi_succ (α := fun i => ↥(Q i).A₁), sum_pi_succ (α := fun i => ↥(Q i).A₂)]`. Simplify using `only [hX]`. Simplify using `only [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun γ0 _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun β0 _ => Finset.sum_congr rfl fun γ' _ => Finset.sum_congr rfl fun β' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem value_succ {r : ℕ} (Q : Fin (r + 1) → QStep S)
     (hcomm : ∀ i : Fin r, ∀ a b, (Q 0).gl₂ a * (Q i.succ).gl₂ b = (Q i.succ).gl₂ b * (Q 0).gl₂ a)
@@ -159,9 +159,9 @@ theorem value_succ {r : ℕ} (Q : Fin (r + 1) → QStep S)
   ring
 
 /- English proof (translation)
-Introduce `D r IH ψ hψ σ S Q hinj μ₁ ρ₁ μ₂ ρ₂ hN c₁ c₂ f₁ f₂ φ f g h₁ h₂ hH`. Establish `hinj' : Function.Injective fun i : Fin r => (Q i.succ).q.v` using `hinj.comp (Fin.succ_injective _)`. Establish `hcomm : ∀ i : Fin r, ∀ a b, (Q 0).gl₂ a * (Q i.succ).gl₂ b = (Q i.succ).gl₂ b * (Q 0).gl₂ a` using `fun i => gl₂_comm (Q 0) (Q i.succ) fun h => Fin.succ_ne_zero i (hinj h).symm`. Establish `key` using `GlobalTheory.SeeSaw.VanMany.iteratedQuotientIntegral_finite_linearCombination ρ₁ μ₁ ρ₂ μ₂ (I := (Q 0).A₁ × (Q 0).A₂) (fun p => (Q 0).volJ * ((Q 0).w₁ p.1 * (Q 0).w₂ p.2)) (fun p x y => integrand (fun i => Q i.succ) (aconv [c₁, (Q 0).d₁ p.1]) (aconv [c₂, (Q 0).d₂ p.1 p.2]) f₁ f₂ φ …`. Rewrite using `[value_succ Q hcomm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x y`. Simplify using `only [innerVal, Finset.mul_sum, Fintype.sum_prod_type, mul_assoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem outer : ∀ (D : D7) (r : ℕ), ValQr D r → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (S : Dbl2 ψ σ) (Q : Fin (r + 1) → QStep S), Function.Injective (fun i => (Q i).q.v) → ∀ μ₁ ρ₁ μ₂ ρ₂, Norm (fun i => Q i.succ) μ₁ ρ₁ μ₂ ρ₂ → ∀ c₁ c₂ f₁ f₂ φ f g h₁ h₂, Hyps Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ → Iter2 ρ₁ μ₁ ρ₂ μ₂ (fun x y => innerVal Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x.1 y.1) (value Q c₁ c₂ f₁ f₂ φ f g h₁ h₂) := by
   intro D r IH ψ hψ σ S Q hinj μ₁ ρ₁ μ₂ ρ₂ hN c₁ c₂ f₁ f₂ φ f g h₁ h₂ hH

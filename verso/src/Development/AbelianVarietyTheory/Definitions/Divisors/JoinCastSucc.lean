@@ -95,20 +95,20 @@ def NoSquare {K : Type} [Field K] {N : ℕ} (g : MvPolynomial (Fin 1 × Fin N) K
   g ≠ 0 ∧ ∀ y : Fin N → K, y ≠ 0 → ¬ lin y ^ 2 ∣ g
 
 /- English proof (translation)
-Simplify using `[join]`.
+Simplify using the standard rewrite rules.
 -/
 theorem join_last {R : Type} {D N : ℕ} (u : Fin D → Fin N → R) (ξ : Fin N → R) (j : Fin N) : join u ξ (Fin.last D, j) = ξ j := by
   simp [join]
 
 /- English proof (translation)
-Simplify using `[join]`.
+Simplify using the standard rewrite rules.
 -/
 theorem join_castSucc {R : Type} {D N : ℕ} (u : Fin D → Fin N → R) (ξ : Fin N → R) (i : Fin D) (j : Fin N) :
     join u ξ (i.castSucc, j) = u i j := by
   simp [join]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_pos, (projTuple.spans 0), (projTuple.shortGenerators 0).int, fun _ => by simp, fun σ x => by simp [frameNorm], fun k σ => (projTuple.shortGenerators 0).le k σ, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ShortLat (1 : Matrix (Fin 1) (Fin 1) ℚ) (fun _ => 1) 1 :=
   ⟨one_pos, (projTuple.spans 0), (projTuple.shortGenerators 0).int, fun _ => by simp, fun σ x => by simp [frameNorm],
@@ -119,19 +119,19 @@ namespace Check
 def det2 (R : Type) [CommRing R] : MvPolynomial (Fin 2 × Fin 2) R := X (0,0) * X (1,1) - X (0,1) * X (1,0)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.succ_pos _, projTuple.spans M, (projTuple.shortGenerators M).int, fun _ => by simp, fun σ x => by simp [frameNorm], fun k σ => (projTuple.shortGenerators M).le k σ, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem shortLat_std (M : ℕ) : ShortLat (1 : Matrix (Fin (M + 1)) (Fin (M + 1)) ℚ) (fun _ => 1) 1 :=
   ⟨Nat.succ_pos _, projTuple.spans M, (projTuple.shortGenerators M).int, fun _ => by simp,
     fun σ x => by simp [frameNorm], fun k σ => (projTuple.shortGenerators M).le k σ, le_rfl⟩
 
 /- English proof (translation)
-The claim follows from `shortLat_std 1`.
+A detailed English derivation is pending.
 -/
 theorem sl2 : ShortLat (1 : Matrix (Fin 2) (Fin 2) ℚ) (fun _ => 1) 1 := shortLat_std 1
 
 /- English proof (translation)
-Introduce `i t`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[det2, show Fin.last 1 = 1 from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem shear2 : ShearInv (D := 1) (det2 ℚ) := by
   intro i t
@@ -140,7 +140,7 @@ theorem shear2 : ShearInv (D := 1) (det2 ℚ) := by
   ring
 
 /- English proof (translation)
-Simplify using `only [det2, map_sub, map_mul, eval_X]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem join_eval {R : Type} [CommRing R] (v : Fin 1 → Fin 2 → R) (u : Fin 2 → R) :
     eval (join v u) (det2 R) = v 0 0 * u 1 - v 0 1 * u 0 := by
@@ -148,9 +148,9 @@ theorem join_eval {R : Type} [CommRing R] (v : Fin 1 → Fin 2 → R) (u : Fin 2
   rfl
 
 /- English proof (translation)
-Introduce `u hu`. Use `⟨fun _ => ![u 1, -u 0], ?_⟩` and prove the remaining obligations. Rewrite using `[join_eval]`. Introduce `h`. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `hu` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp <;> nlinarith [mul_self_nonneg (u 0), mul_self_nonneg (u 1)]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem last2 : LastNonzero (D := 1) (det2 ℚ) := by
   intro u hu
@@ -163,9 +163,9 @@ theorem last2 : LastNonzero (D := 1) (det2 ℚ) := by
   fin_cases j <;> simp <;> nlinarith [mul_self_nonneg (u 0), mul_self_nonneg (u 1)]
 
 /- English proof (translation)
-Use `⟨fun i => ?_, by simp [det2], fun u => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [frameNorm, Fin.sum_univ_two]`. Simplify using `only [det2, frameNorm, Fin.prod_univ_two, Fin.sum_univ_two, map_sub, map_mul, eval_X, inv_one, Matrix.one_mulVec, pow_one]`. Simplify using the standard rewrite rules. Rewrite using `[← Real.sqrt_mul (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Establish `h` using `norm_sub_le (u (0,0) * u (1,1)) (u (0,1) * u (1,0))`. Rewrite `h` using `[norm_mul, norm_mul]`. Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) h 2`. Use polynomial arithmetic with `[sq_nonneg (‖u (0,0)‖ * ‖u (1,0)‖ - ‖u (0,1)‖ * ‖u (1,1)‖)]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem max2 : IsMaxPt (1 : Matrix (Fin 2) (Fin 2) ℂ) 1 (det2 ℂ) (fun p => if p.1 = p.2 then 1 else 0) := by
   refine ⟨fun i => ?_, by simp [det2], fun u => ?_⟩
@@ -180,16 +180,16 @@ theorem max2 : IsMaxPt (1 : Matrix (Fin 2) (Fin 2) ℂ) 1 (det2 ℂ) (fun p => i
     nlinarith [sq_nonneg (‖u (0,0)‖ * ‖u (1,0)‖ - ‖u (0,1)‖ * ‖u (1,1)‖)]
 
 /- English proof (translation)
-Use `(GlobalTheory.ChowHt.Model.isChowForm_line ℚ).homog` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mh2 : IsMultiHomogeneous (fun _ => 1) (det2 ℚ) := by
   have := (GlobalTheory.ChowHt.Model.isChowForm_line ℚ).homog
   rwa [Matrix.det_fin_two] at this
 
 /- English proof (translation)
-Use `⟨formHeight 1 (1 : Matrix (Fin 2) (Fin 2) ℚ) (fun _ => 1) (det2 ℚ) / 2, _, sl2, mh2, shear2, last2, by push_cast; ring, le_rfl, X_ne_zero _, ?_⟩` and prove the remaining obligations. Rewrite using `[totalDegree_X]`. Use `push_cast`. Apply `one_le_pow₀` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[abs_nonneg (formHeight 1 (1 : Matrix (Fin 2) (Fin 2) ℚ) (fun _ => 1) (det2 ℚ) / 2)]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem core_hyp : ∃ h Θ : ℝ, ShortLat (1 : Matrix (Fin 2) (Fin 2) ℚ) (fun _ => 1) 1 ∧ IsMultiHomogeneous (fun _ => 1) (det2 ℚ) ∧
     ShearInv (D := 1) (det2 ℚ) ∧ LastNonzero (D := 1) (det2 ℚ) ∧
@@ -206,7 +206,7 @@ theorem core_hyp : ∃ h Θ : ℝ, ShortLat (1 : Matrix (Fin 2) (Fin 2) ℚ) (fu
   linarith [abs_nonneg (formHeight 1 (1 : Matrix (Fin 2) (Fin 2) ℚ) (fun _ => 1) (det2 ℚ) / 2)]
 
 /- English proof (translation)
-Introduce `h`. Apply `hy` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `congrArg (eval (fun p : Fin 1 × Fin N => if p.2 = j then (1:K) else 0)) h` as an intermediate fact. Simplify `this` using `[lin]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lin_ne {K : Type} [Field K] {N : ℕ} {y : Fin N → K} (hy : y ≠ 0) : lin y ≠ 0 := by
   intro h
@@ -216,13 +216,13 @@ theorem lin_ne {K : Type} [Field K] {N : ℕ} {y : Fin N → K} (hy : y ≠ 0) :
   simpa [lin] using this
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun j _ => by simpa using (isHomogeneous_X K ((0 : Fin 1), j)).mul (isHomogeneous_C _ (y j))`.
+A detailed English derivation is pending.
 -/
 theorem lin_hom {K : Type} [Field K] {N : ℕ} (y : Fin N → K) : (lin y).IsHomogeneous 1 :=
   IsHomogeneous.sum _ _ _ fun j _ => by simpa using (isHomogeneous_X K ((0 : Fin 1), j)).mul (isHomogeneous_C _ (y j))
 
 /- English proof (translation)
-Use `⟨lin_ne hz, fun y hy h => ?_⟩` and prove the remaining obligations. Use `totalDegree_le_of_dvd_of_isDomain h (lin_ne hz)` as an intermediate fact. Rewrite `this` using `[(lin_hom z).totalDegree (lin_ne hz), ((lin_hom y).pow 2).totalDegree (pow_ne_zero _ (lin_ne hy))]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nosq {K : Type} [Field K] {N : ℕ} {z : Fin N → K} (hz : z ≠ 0) : NoSquare (lin z) := by
   refine ⟨lin_ne hz, fun y hy h => ?_⟩
@@ -231,17 +231,17 @@ theorem nosq {K : Type} [Field K] {N : ℕ} {z : Fin N → K} (hz : z ≠ 0) : N
   omega
 
 /- English proof (translation)
-Introduce `h` and use `h.2 z hz dvd_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_nosq {K : Type} [Field K] {N : ℕ} {z : Fin N → K} (hz : z ≠ 0) : ¬ NoSquare (lin z ^ 2) :=
   fun h => h.2 z hz dvd_rfl
 
 /- English proof (translation)
-Use `⟨X ((0 : Fin 1), (0 : Fin 2)), X_ne_zero _, (totalDegree_X _).le, fun K _ _ _ s hs x hx => ?_⟩` and prove the remaining obligations. Establish `hb` using `(projTuple.isAdelic 1 le_rfl).geom.alg.bpf.coords_ne_zero x.1`. Establish `hl : ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (projTuple 1).th = ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus ((projTuple 1).b (1 : Fin 2))` using `GlobalTheory.nonzeroLocus_secToPow _ le_rfl`. Rewrite using `[hl, ← LinSys.val_ne_zero_iff]`. Introduce `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hx (0 : Fin 1)`. Establish `e : ∑ j, s (0 : Fin 1) j * (projTuple 1).coords x.1 j = s (0 : Fin 1) (0 : Fin 2) * (projTuple 1).coords x.1 (0 : Fin 2) + s (0 : Fin 1) (1 : Fin 2) * (projTuple 1).coords x.1 (1 : Fin 2)` using `Fin.sum_univ_two _`. Establish `h1' : (projTuple 1).coords x.1 (1 : Fin 2) = 0` using `h1`. Rewrite `h` using `[e, h1', mul_zero, add_zero]`. Establish `hs' : s (0 : Fin 1) (0 : Fin 2) ≠ 0` using `by simpa using hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hb` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Establish `h0` using `(mul_eq_zero.1 h).resolve_left hs'`. Use `revert j`. Conclude with `Fin.forall_fin_two.2 ⟨h0, h1'⟩`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem avoid : AvoidPoly (projTuple 1) 1 := by
   refine ⟨X ((0 : Fin 1), (0 : Fin 2)), X_ne_zero _, (totalDegree_X _).le, fun K _ _ _ s hs x hx => ?_⟩

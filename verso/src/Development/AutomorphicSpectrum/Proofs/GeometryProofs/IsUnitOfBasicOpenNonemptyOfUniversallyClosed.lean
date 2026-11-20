@@ -5,9 +5,9 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Take `⟨p, hp, hpa⟩` from `ha`. Take `⟨q, hpq, hq⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hp.ne_zero 0`. Rewrite `hpq`, `hq` using `[map_zero, sub_zero]`. Establish `hq0 : q.coeff 0 ≠ 0` using `fun h => hq (Polynomial.X_dvd_iff.2 h)`. Use `⟨p.rootMultiplicity 0, φ (q.coeff 0), q.divX.eval₂ φ a, (Ne.isUnit hq0).map φ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : p.eval₂ φ a = a ^ p.rootMultiplicity 0 * q.eval₂ φ a` using `by conv_lhs => rw [hpq]`. Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X]`. Establish `hq' : q.eval₂ φ a = φ (q.coeff 0) + a * q.divX.eval₂ φ a` using `by conv_lhs => rw [← Polynomial.X_mul_divX_add q]`. Rewrite using `[Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_X, Polynomial.eval₂_C, add_comm]`. Rewrite using `[← hq', ← hsplit, hpa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_mul_unit_add_eq_zero_of_integral {K A : Type*} [Field K] [CommRing A]
     (φ : K →+* A) (a : A) (ha : φ.IsIntegralElem a) :
@@ -27,17 +27,15 @@ theorem exists_pow_mul_unit_add_eq_zero_of_integral {K A : Type*} [Field K] [Com
   rw [← hq', ← hsplit, hpa]
 
 /- English proof (translation)
-Establish `hcover : ∀ x : X, x ∈ X.basicOpen a ∨ x ∈ X.basicOpen (u + a * b)`. Introduce `x`. Rewrite using `[Scheme.mem_basicOpen_top, Scheme.mem_basicOpen_top]`. Distinguish the cases in `hxa : IsUnit (X.presheaf.germ ⊤ x trivial a)`. Conclude with `Or.inl hxa`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `right`. Establish `hU : IsUnit (X.presheaf.germ ⊤ x trivial u)` using `hu.map _`. Establish `hsum : X.presheaf.germ ⊤ x trivial u = X.presheaf.germ ⊤ x trivial (u + a * b) + -(X.presheaf.germ ⊤ x trivial a * X.presheaf.germ ⊤ x trivial b)`. Rewrite using `[map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hU` using `[hsum]`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add hU with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd (isUnit_of_mul_isUnit_left (IsUnit.neg_iff _ |>.1 h1)) hxa`. Establish `hdisj : ∀ x : X, x ∈ X.basicOpen a → x ∈ X.basicOpen (u + a * b) → False`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hxa hxg`. Rewrite `hxa`, `hxg` using `[Scheme.mem_basicOpen_top]`. Establish `hx : x ∈ X.basicOpen (a ^ m * (u + a * b))`. Rewrite using `[Scheme.mem_basicOpen_top, map_mul, map_pow]`. Conclude with `(hxa.pow m).mul hxg`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hx` using `[h, Scheme.basicOpen_zero]`. Conclude with `hx`. Establish `hall : ∀ x : X, x ∈ X.basicOpen a`. Introduce `x`. Assume the negation of the conclusion as `hx`.
-
-Establish `hxg` using `(hcover x).resolve_left hx`. Take `⟨y, -, hy1, hy2⟩` from `isPreconnected_univ ((X.basicOpen a : X.Opens) : Set X) ((X.basicOpen (u + a * b) : X.Opens) : Set X) (X.basicOpen a).isOpen (X.basicOpen (u + a * b)).isOpen (fun z _ => hcover z) (by simpa using hne) ⟨x, Set.mem_univ _, hxg⟩`. Conclude with `hdisj y hy1 hy2`. Conclude with `X.toRingedSpace.isUnit_of_isUnit_germ ⊤ a (fun x _ => (X.mem_basicOpen_top a x).1 (hall x))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isUnit_of_pow_mul_unit_add_eq_zero (X : Scheme.{0}) [ConnectedSpace X]
     (a u b : Γ(X, ⊤)) (m : ℕ) (hu : IsUnit u) (h : a ^ m * (u + a * b) = 0)
@@ -78,9 +76,9 @@ theorem isUnit_of_pow_mul_unit_add_eq_zero (X : Scheme.{0}) [ConnectedSpace X]
     (fun x _ => (X.mem_basicOpen_top a x).1 (hall x))
 
 /- English proof (translation)
-Introduce `k _ X f _ _ a hne`. Set `F` to `(Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ f.appTop`. Establish `hF : F.hom.IsIntegral`. Apply `RingHom.isIntegral_respectsIso.2 (e := (Scheme.ΓSpecIso _).symm.commRingCatIsoToRingEquiv)` to reduce the goal to its premises. Conclude with `isIntegral_appTop_of_universallyClosed f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, u, b, hu, h⟩` from `exists_pow_mul_unit_add_eq_zero_of_integral F.hom a (hF a)`. Conclude with `isUnit_of_pow_mul_unit_add_eq_zero X a u b m hu h hne`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_basicOpen_nonempty_of_universallyClosed :
     ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of k))

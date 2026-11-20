@@ -10,12 +10,12 @@ open scoped Classical
 namespace GlobalTheory.ZeroGapNearOne
 
 /- English proof (translation)
-The claim follows from `Real.log_pos (by linarith)`.
+A detailed English derivation is pending.
 -/
 lemma log_pos {x : ℝ} (hx : 1 ≤ x) : 0 < Real.log (3 * x) := Real.log_pos (by linarith)
 
 /- English proof (translation)
-Establish `hL` using `log_pos hx`. Establish `h2 : 1 ≤ x ^ 2` using `one_le_pow₀ hx`. Apply `div_le_div₀ (by linarith) hcd hL` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma weaken {x c d : ℝ} (hx : 1 ≤ x) (hc : 0 < c) (hcd : c ≤ d) :
     c / (x ^ 2 * Real.log (3 * x)) ≤ d / Real.log (3 * x) := by
@@ -25,7 +25,7 @@ lemma weaken {x c d : ℝ} (hx : 1 ≤ x) (hc : 0 < c) (hcd : c ≤ d) :
   nlinarith
 
 /- English proof (translation)
-Establish `h0` using `abs_nonneg t`. Establish `h1 : 0 < Real.log (x * (|t| + 2))` using `Real.log_pos (by nlinarith)`. Establish `h2 : Real.log (x * (|t| + 2)) ≤ Real.log (3 * x)` using `Real.log_le_log (by positivity) (by nlinarith)`. Establish `h3 : d / Real.log (3 * x) ≤ d / Real.log (x * (|t| + 2))` using `div_le_div_of_nonneg_left (by linarith) h1 h2`. Use `weaken hx hc hcd` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -42,9 +42,9 @@ lemma of_region {x c d t r : ℝ} (hx : 1 ≤ x) (hc : 0 < c) (hcd : c ≤ d) (h
   linarith
 
 /- English proof (translation)
-Establish `hs : 0 < √x` using `Real.sqrt_pos.2 (by linarith)`. Establish `hsq : √x * √x = x` using `Real.mul_self_sqrt (by linarith)`. Establish `h1 : Real.log (3 * x) ≤ Real.log ((2 * √x) ^ 2)` using `Real.log_le_log (by linarith) (by nlinarith)`. Rewrite `h1` using `[Real.log_pow]`. Establish `h2` using `Real.log_le_sub_one_of_pos (show 0 < 2 * √x by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma log_le_sqrt {x : ℝ} (hx : 1 ≤ x) : Real.log (3 * x) ≤ 4 * √x := by
   have hs : 0 < √x := Real.sqrt_pos.2 (by linarith)
@@ -57,13 +57,13 @@ lemma log_le_sqrt {x : ℝ} (hx : 1 ≤ x) : Real.log (3 * x) ≤ 4 * √x := by
   linarith
 
 /- English proof (translation)
-Establish `hL` using `log_pos hx`. Establish `hs : 0 < √x` using `Real.sqrt_pos.2 (by linarith)`. Establish `hsq : √x * √x = x` using `Real.mul_self_sqrt (by linarith)`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hp : x ^ ((3 : ℝ) / 2) = x * √x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.sqrt_eq_rpow, show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add hx0, Real.rpow_one]`. Rewrite `h` using `[hp, div_le_iff₀ (by positivity)]`. Rewrite `hca` using `[le_div_iff₀ (by positivity)]`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `hl` using `log_le_sqrt hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : C * Real.log (3 * x) ^ 2 * δ * (x * √x) ≤ (C * Real.log (3 * x) * δ * (x * √x)) * (4 * √x)`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (C * Real.log (3 * x) * δ * (x * √x)) * (4 * √x) = δ * (x ^ 2 * Real.log (3 * x)) * (4 * C)`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : c * (4 * C) ≤ δ * (x ^ 2 * Real.log (3 * x)) * (4 * C)` using `by linarith`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `le_of_mul_le_mul_right h5 (by positivity)`.
+A detailed English derivation is pending.
 -/
 lemma real_case {x a C c δ : ℝ} (hx : 1 ≤ x) (hC : 0 < C) (hδ : 0 ≤ δ) (hc : 0 < c)
     (hca : c ≤ a / (4 * C))
@@ -92,23 +92,21 @@ lemma real_case {x a C c δ : ℝ} (hx : 1 ≤ x) (hC : 0 < C) (hδ : 0 ≤ δ) 
   exact le_of_mul_le_mul_right h5 (by positivity)
 
 /- English proof (translation)
-Take `⟨a, ha, Ha⟩` from `GlobalTheory.LOneLower.exists_le_norm_LFunction_one`. Take `⟨C, hC, HC⟩` from `GlobalTheory.DirichletDeriv.exists_norm_deriv_LFunction_le`. Take `⟨d, hd, Hd⟩` from `GlobalTheory.ZeroFreeComplex.zero_free_region`. Take `⟨e, he, He⟩` from `GlobalTheory.ZeroFreePrincipal.zero_free`. Use `⟨min (min 1 (a / (4 * C))) (min d e), by positivity, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q _ χ ρ hne hz him`. Establish `hc : 0 < min (min 1 (a / (4 * C))) (min d e)` using `by positivity`. Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast NeZero.one_le`. Distinguish the cases in `h1 : χ = 1`. Substitute `h1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hρ : ρ ≠ 1` using `hne.resolve_left (by simp)`. Conclude with `of_region hq hc ((min_le_right _ _).trans (min_le_right _ _)) him (He q ρ hρ hz)`. Distinguish the cases in `h2 : χ ^ 2 ≠ 1 ∨ ρ.im ≠ 0`. Conclude with `of_region hq hc ((min_le_right _ _).trans (min_le_left _ _)) him (Hd q χ ρ h1 hz h2)`. Use `push_neg at h2`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨hsq, hreal⟩` from `h2`. Establish `hlt : ρ.re < 1`. Assume the negation of the conclusion as `h`. Conclude with `LFunction_ne_zero_of_one_le_re χ hne (not_lt.1 h) hz`. Distinguish the cases in `h3 : 1 / Real.log (3 * q) ≤ 1 - ρ.re`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(weaken hq hc ((min_le_left _ _).trans (min_le_left _ _))).trans h3`. Use `push_neg at h3`. Use `real_case hq hC (by linarith) hc ((min_le_left _ _).trans (min_le_right _ _)) ?_` and prove the remaining obligations. Use `(Ha q χ h1 hsq).trans ?_` and prove the remaining obligations. Establish `hconv : Convex ℝ {z : ℂ | z.im = 0 ∧ ρ.re ≤ z.re ∧ z.re ≤ 1}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx y hy s t hs ht hst`. Take `⟨hx1, hx2, hx3⟩` from `hx`. Take `⟨hy1, hy2, hy3⟩` from `hy`. Use `⟨by simp [hx1, hy1], ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [add_re, smul_re, smul_eq_mul]`.
+Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: ρ.re = s * ρ.re + t * ρ.re` using `by rw [← add_mul, hst, one_mul]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hx2 hs, mul_le_mul_of_nonneg_left hy2 ht]`. Simplify using `only [add_re, smul_re, smul_eq_mul]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hx3 hs, mul_le_mul_of_nonneg_left hy3 ht]`. Establish `key` using `Convex.norm_image_sub_le_of_norm_deriv_le (𝕜 := ℂ) (f := LFunction χ) (C := C * Real.log (3 * q) ^ 2) (x := ρ) (y := 1) (fun z _ => differentiable_LFunction h1 z) (fun z hz' => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h4, h5, h6⟩` from `hz'`. Establish `: z = (z.re : ℂ)` using `Complex.ext (by simp) (by simp [h4])`. Rewrite using `[this]`. Conclude with `HC q χ h1 z.re (by linarith) h6)`. Use `hconv ⟨hreal, le_rfl, hlt.le⟩ ⟨by simp, by simpa using hlt.le, by simp⟩`.
-
-Rewrite `key` using `[hz, sub_zero]`. Establish `hn : ‖(1 : ℂ) - ρ‖ = 1 - ρ.re`. Establish `: (1 : ℂ) - ρ = ((1 - ρ.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [hreal])`. Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]`. Rewrite `key` using `[hn]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_gap : ∃ c : ℝ, 0 < c ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (ρ : ℂ),
     (χ ≠ 1 ∨ ρ ≠ 1) → LFunction χ ρ = 0 → |ρ.im| ≤ 1 →

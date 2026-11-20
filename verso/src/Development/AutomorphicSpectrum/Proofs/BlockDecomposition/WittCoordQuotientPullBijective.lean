@@ -35,16 +35,16 @@ def frameV {m : ℕ} {𝒱 : Set X.Opens} {d : ℕ} (E : Frame (sP (stF q ρ m �
   bij := E.bij
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨m, by rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ m})), ← map_pow, Ideal.Quotient.eq_zero_iff_mem] exact Ideal.mem_span_singleton_self _⟩`.
+Supply the required witnesses or components.
 -/
 theorem nil_m (k : Type) [Field k] [CharP k l] [PerfectRing k l] (m : ℕ) : IsNilpotent ((l : ℕ) : Wc.Wm l k m) := ⟨m, by
   rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ m})), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.mem_span_singleton_self _⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective (show T.obj.B ⧸ lI n T.obj from x)`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective (show T.obj.B ⧸ lI n T.obj from y)`. Conclude with `congrArg Subtype.val hxy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz⟩`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨Ideal.Quotient.mk (lI n T.obj) a, Subtype.ext rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem o_bij {n : ℕ} (hn : n ≠ 0) (𝒱 : Set X.Opens) (T : (stF q ρ (n + 1) 𝒱).FullSubcategory) :
     Function.Bijective (((mqS q ρ hn 𝒱).o (IdF.span _ ((l : WittVector l k) ^ n)) fun _ => le_rfl).τ T) := by
@@ -58,7 +58,7 @@ theorem o_bij {n : ℕ} (hn : n ≠ 0) (𝒱 : Set X.Opens) (T : (stF q ρ (n + 
     exact ⟨Ideal.Quotient.mk (lI n T.obj) a, Subtype.ext rfl⟩
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨e.inv.φ, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `RingHom.congr_fun (congrArg (fun f => f.φ) e.hom_inv_id) x`. Conclude with `RingHom.congr_fun (congrArg (fun f => f.φ) e.inv_hom_id) x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iso_bij {m : ℕ} {T T' : Thick (Wc.L l (B.schFn q) ρ m)} (e : T ≅ T') : Function.Bijective e.hom.φ := by
   refine Function.bijective_iff_has_inverse.2 ⟨e.inv.φ, fun x => ?_, fun x => ?_⟩
@@ -68,17 +68,15 @@ theorem iso_bij {m : ℕ} {T T' : Thick (Wc.L l (B.schFn q) ρ m)} (e : T ≅ T'
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Take `⟨c', hF', -⟩` from `GlobalTheory.CompanionTheory.FlatChartP.exists_flat_chart (Wc.pd l k (n + 1)) l hl0 (nil_m k (n + 1)) q ((Wc.res l k (n + 1)).comp ρ) cW`. Take `⟨c, e, hec, hfl⟩` from `GlobalTheory.T.witt_chart_descend_level q ρ hn c'`. Establish `hF : FlatT c.D` using `hfl (GlobalTheory.T.flat_thickening_quotient l k O (B.schFn q) ρ n hn c'.D hF')`. Take `⟨PA, hPA⟩` from `poly_all (Wc.pd l k n) l hl0 q ((Wc.res l k n).comp ρ) FlatT (Or.inr rfl) {W}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨PB, hPB⟩` from `poly_all (Wc.pd l k (n + 1)) l hl0 q ((Wc.res l k (n + 1)).comp ρ) FlatT (Or.inr rfl) {W}`. Establish `hgA` using `GlobalTheory.CompanionTheory.ChartMaps.good c`. Establish `hgB` using `GlobalTheory.CompanionTheory.ChartMaps.good c'`. Establish `hQA : ∀ T, stF q ρ n {W} T → InU W T`. Introduce and unpack `T ⟨-, V, rfl, hV⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hV`. Establish `hQB : ∀ T, stF q ρ (n + 1) {W} T → InU W T`. Introduce and unpack `T ⟨-, V, rfl, hV⟩`. Conclude with `hV`. Establish `hDA : stF q ρ n {W} c.D` using `⟨hF, W, rfl, c.inV⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hDB : stF q ρ (n + 1) {W} c'.D` using `⟨hF', W, rfl, c'.inV⟩`. Set `E : Frame (sV q ρ n {W}) d` to `frameV (c.frame hgA _ hQA hDA)`. Set `E' : Frame (sV q ρ (n + 1) {W}) d` to `frameV (c'.frame hgB _ hQB hDB)`. Set `M` to `mqS q ρ hn {W}`. Set `e' : E.D ⟶ M.G.obj E'.D` to `ObjectProperty.homMk e.hom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : M.Fr E E' e'`. Introduce `i T s₁ s₂`. Express the relevant statement in the definitionally equal form `M.ρ T (qφ s₂.hom (e.hom.φ (c.t i)) - qφ s₁.hom (e.hom.φ (c.t i))) = Ideal.Quotient.mk _ (s₂.hom.φ (c'.t i) - s₁.hom.φ (c'.t i))`. Rewrite using `[hec]`. Both sides reduce to the same expression.
-
-Set `b : ℤ → IdF (sV q ρ (n + 1) {W}).A` to `fun _ => IdF.span _ ((l : WittVector l k) ^ n)`. Conclude with `GlobalTheory.CompanionTheory.LocCmp.localComparison M (polyV PA) (polyV PB) E E' e' he b (fun _ _ => le_rfl) 0 (hPA 0).2.1 (fun r _ => ((hPB r).2.2 (Ideal.Quotient.mk _ ((l : WittVector l k) ^ n))).2.2) (fun r' _ _ => (o_bij hn {W} E'.D).comp (iso_bij e)) j`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem local_bij (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) {n : ℕ} (hn : n ≠ 0) {W : X.Opens} {d : ℕ}
     (cW : Coord q W d) (j : ℕ) :

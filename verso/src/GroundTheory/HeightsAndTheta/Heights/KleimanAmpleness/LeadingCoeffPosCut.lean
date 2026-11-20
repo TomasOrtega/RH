@@ -16,15 +16,13 @@ variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ
 include hR in
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `pp L hW hnef _`. Establish `h1 : (fun i => (L i).toSubSystem) = ![(L 0).toSubSystem]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `hnef pp bot_le hW`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ n ih`. Introduce `pp L hW hnef hL`. Establish `hlast : Fin.last (n + 1) ≠ 0` using `fun h => by simpa using congrArg Fin.val h`. Take `⟨s, hs, hsI⟩` from `exists_sec_not_mem (L (Fin.last (n + 1))) (hL _ hlast) hW`. Establish `hsplit : (fun i => (L i).toSubSystem) = Fin.snoc (α` using `fun _ => SubSystem k x Ω) (fun i : Fin (n + 1) => (L (Fin.castSucc i)).toSubSystem) (L (Fin.last (n + 1))).toSubSystem := (Fin.snoc_init_self _).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsplit, (hR k Ω N x).2.2.2.1 (n + 1) pp (fun i => L (Fin.castSucc i)) (L (Fin.last (n + 1))) s hW hs hsI]`. Use `finsum_nonneg fun qq => ?_` and prove the remaining obligations. Use `split_ifs with h`. Use `mul_nonneg (Nat.cast_nonneg _) (ih qq (fun i => L (Fin.castSucc i)) h.2 hnef fun i hi => ?_)` and prove the remaining obligations. Conclude with `hL _ fun h0 => hi (Fin.castSucc_injective _ (by rw [h0]; rfl))`.
-
-Conclude with `le_rfl`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem interNum_nonneg_nef_veryAmple : ∀ (n : ℕ) (pp : Ideal (Poly k N)) (L : Fin (n + 1) → LineBundle k x),
     IsSubvar x pp (n + 1) → Nef (L 0).toSubSystem → (∀ i, i ≠ 0 → IsVeryAmple (L i).toSubSystem) →
@@ -55,23 +53,23 @@ theorem interNum_nonneg_nef_veryAmple : ∀ (n : ℕ) (pp : Ideal (Poly k N)) (L
 end Numbers
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x d M Nb q m b hZ hM hNb hva hb`. Set `L : Fin (d + 1) → LineBundle k x` to `fun _ => Nb`. Establish `hV : ((M.tpow q).tensor (twistBundle k x m)).toSubSystem = Nb.toSubSystem`. Rewrite using `[hNb, LineBundle.tensor_toSubSystem, LineBundle.tpow_toSubSystem]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hm0 : 0 ≤ m`. Establish `: (0 : ℤ) ≤ ((d + 1 : ℕ) : ℤ) * b` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨mn, hmn⟩` from `Int.eq_ofNat_of_zero_le hm0`. Establish `h1 : interNum (primeOf (S` using `k) x) (fun _ : Fin (d + 1) => Nb.toSubSystem) = q * bundleNum (primeOf (S := k) x) (Function.update L 0 M) + m * bundleNum (primeOf (S := k) x) (Function.update L 0 (twistBundle k x 1)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : interNum (primeOf (S` using `k) x) (fun _ : Fin (d + 1) => Nb.toSubSystem) = bundleNum (primeOf (S := k) x) (Function.update L 0 ((M.tpow q).tensor (twistBundle k x m))) := by`. Unfold `bundleNum`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using `only [Function.update_self, hV]`. Simplify using `only [Function.update_of_ne hj, L]`. Rewrite using `[e1, bundleNum_tensor hR hZ, bundleNum_tpow hR hZ, hmn, bundleNum_twist hR hZ]`. Establish `h2 : interNum (primeOf (S` using `k) x) (Fin.cons (α := fun _ => SubSystem k x Ω) (twistSys k x (b : ℤ)) (fun _ : Fin d => Nb.toSubSystem)) = b * bundleNum (primeOf (S := k) x) (Function.update L 0 (twistBundle k x 1)) := by`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← bundleNum_twist hR hZ]`. Unfold `bundleNum`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.cons_zero, Function.update_self, twistBundle_toSubSystem]`. Simplify using `only [Fin.cons_succ, Function.update_of_ne (Fin.succ_ne_zero i), L]`. Establish `hX : 0 ≤ bundleNum (primeOf (S` using `k) x) (Function.update L 0 M) := by`. Use `interNum_nonneg_nef_veryAmple hR d _ _ hZ (by simpa only [Function.update_self] using hM) fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Function.update_of_ne hi, L]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hva`. Establish `hY : 0 < bundleNum (primeOf (S` using `k) x) (Function.update L 0 (twistBundle k x 1)) := by`. Use `hPos k Ω N x (d + 1) _ _ hZ fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(isVeryAmple_twistSys_one (S := k) (x := x))` using `only [Function.update_self, twistBundle_toSubSystem]`. Simplify using `only [Function.update_of_ne hi, L]`. Conclude with `hva`. Rewrite using `[h1, h2]`. Establish `hc` using `mul_pos (sub_pos.mpr hb) hY`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hq` using `mul_nonneg (Int.natCast_nonneg q) hX`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem LeadingCoeffPos.proof_of_cut (hR : GenericPointSectionInput.Statement.{u, w})
     (hPos : VeryAmpleProductPos.Statement.{u, w}) : LeadingCoeffPos.Statement.{u, w} := by

@@ -11,7 +11,7 @@ section SlopeTestRemainingChoices
 open UpperTheory.V.Af.Fin GroundTheory.Automorphic.AutomorphicForm
 
 /- English proof (translation)
-Introduce `h` and use `by have := congrArg Fin.val h simp at this omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cn_ne {r s : ℕ} (i : Fin r) (j : Fin s) : Fin.castAdd s i ≠ Fin.natAdd r j := fun h => by
   have := congrArg Fin.val h
@@ -19,11 +19,11 @@ private theorem cn_ne {r s : ℕ} (i : Fin r) (j : Fin s) : Fin.castAdd s i ≠ 
   omega
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[coe_emb, Matrix.add_apply]`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Use `matrixExtendByZero_apply (e1 r s) (m.val - 1) i j` as an intermediate fact. Simplify using `only [orderedCechToCatCochainsOne_apply_valueAtSubset] at this`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[matrixExtendByZero_apply_of_outside_col _ _ _ fun k => (cn_ne k j).symm]`. Simplify using `[Matrix.one_apply_ne (cn_ne i j)]`. Rewrite using `[extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => (cn_ne k i).symm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply_ne (cn_ne j i).symm]`. Rewrite using `[extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => (cn_ne k i).symm]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem block_embedding_first_val {R : Type} [CommRing R] {r s : ℕ} (m : GL (Fin r) R) :
     (emb (e1 r s) m).val = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks m.val 0 0 1) := by
@@ -42,11 +42,11 @@ private theorem block_embedding_first_val {R : Type} [CommRing R] {r s : ℕ} (m
     simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[coe_emb, Matrix.add_apply]`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Rewrite using `[extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => (cn_ne i k)]`. Simplify using `[Matrix.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => (cn_ne i k)]`. Simplify using `[Matrix.one_apply_ne (cn_ne i j)]`. Rewrite using `[matrixExtendByZero_apply_of_outside_col _ _ _ fun k => (cn_ne j k)]`. Simplify using `[Matrix.one_apply_ne (cn_ne j i).symm]`. Use `matrixExtendByZero_apply (e2 r s) (m.val - 1) i j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [alternatingToOrderedCechDegreeTwo_apply_valueAtSubset] at this`. Rewrite using `[this]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem block_embedding_second_val {R : Type} [CommRing R] {r s : ℕ} (m : GL (Fin s) R) :
     (emb (e2 r s) m).val = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 1 0 0 m.val) := by
@@ -65,9 +65,9 @@ private theorem block_embedding_second_val {R : Type} [CommRing R] {r s : ℕ} (
     simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use `⟨fun p => Y ⟨p.1.1, p.2.1⟩ ⟨p.1.2 - r, by have := p.2.2; have := p.1.2.2; omega⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[unipMatrix, Matrix.add_apply, blockEntry_apply]`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Simplify using `[Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne (cn_ne i j)]`. Simplify using `[Matrix.one_apply_ne (cn_ne j i).symm]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem unip_val {R : Type} [CommRing R] {r s : ℕ} (Y : Matrix (Fin r) (Fin s) R) :
     ∃ X : UPos (r + s) r → R,
@@ -82,11 +82,11 @@ private theorem unip_val {R : Type} [CommRing R] {r s : ℕ} (Y : Matrix (Fin r)
   · simp [Matrix.one_apply]
 
 /- English proof (translation)
-Set `B : Matrix (Fin r) (Fin s) R` to `b.val.submatrix (Fin.castAdd s) (Fin.natAdd r)`. Establish `hb' : b.val = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks m₁.val B 0 m₂.val)`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Simplify using `[h₁]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[B]`. Simplify using `[h₀]`. Simplify using `[h₂]`. Take `⟨X, hX⟩` from `unip_val (B * (m₂⁻¹).val)`. Use `⟨X, Units.ext ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[blk, Units.val_mul, Units.val_mul, coe_unipGL, hX, block_embedding_first_val, block_embedding_second_val, hb']`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem block_form {R : Type} [CommRing R] {r s : ℕ} (b : GL (Fin (r + s)) R) (m₁ : GL (Fin r) R)
     (m₂ : GL (Fin s) R) (h₁ : ∀ i j, b.val (Fin.castAdd s i) (Fin.castAdd s j) = m₁.val i j)
@@ -110,15 +110,15 @@ private theorem block_form {R : Type} [CommRing R] {r s : ℕ} (b : GL (Fin (r +
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `L _ O r s π hπ S c`. Use `block_form _ _ _ (fun i j => ?_) (fun i j => ?_) fun i j => ?_` and prove the remaining obligations. Establish `hm : ∀ k, k ∈ sub1 S ↔ Fin.castAdd s k ∈ S` using `fun k => by simp [sub1]`. Establish `hN : satakeN O S c (Fin.castAdd s i) (Fin.castAdd s j) = satakeN O (sub1 S) (c ∘ pair1 S) i j`. Unfold `satakeN`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : i ∈ sub1 S ∧ j ∉ sub1 S ∧ i < j`. Rewrite using `[dif_pos h, dif_pos ⟨(hm i).1 h.1, fun h' => h.2.1 ((hm j).2 h'), h.2.2⟩]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h, dif_neg fun h' => h ⟨(hm i).2 h'.1, fun h'' => h'.2.1 ((hm j).1 h''), h'.2.2⟩]`. Rewrite using `[satakeGL_apply, satakeGL_apply, hN]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply, hm]`. Establish `hm : ∀ k, k ∈ sub2 S ↔ Fin.natAdd r k ∈ S` using `fun k => by simp [sub2]`. Establish `hN : satakeN O S c (Fin.natAdd r i) (Fin.natAdd r j) = satakeN O (sub2 S) (c ∘ pair2 S) i j`. Unfold `satakeN`. Distinguish the cases in `h : i ∈ sub2 S ∧ j ∉ sub2 S ∧ i < j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos h, dif_pos ⟨(hm i).1 h.1, fun h' => h.2.1 ((hm j).2 h'), Nat.add_lt_add_left h.2.2 r⟩]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h, dif_neg fun h' => h ⟨(hm i).2 h'.1, fun h'' => h'.2.1 ((hm j).1 h''), Nat.lt_of_add_lt_add_left h'.2.2⟩]`. Rewrite using `[satakeGL_apply, satakeGL_apply, hN]`. Simplify using `[Matrix.one_apply, hm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `satakeGL_lower` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Fin.castAdd s j).val < (Fin.natAdd r i).val`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem UpperTheory.V.Cj.S.matBlock :
     UpperTheory.V.Cj.S.MatBlock := by

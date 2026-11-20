@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_wcomp, coeff_mul, coeff_mul]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : Finsupp.weight wt p.2 = w`. Rewrite using `[coeff_wcomp, if_pos]`. Rewrite using `[← h, ← hp', map_add, h2, add_sub_cancel_right]`. Rewrite using `[he _ h2, mul_zero, mul_zero]`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Distinguish the cases in `h2 : Finsupp.weight wt p.2 = w`. Rewrite using `[coeff_wcomp, if_neg, zero_mul]`. Introduce `h1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[← hp', map_add, h1, h2, sub_add_cancel]`. Rewrite using `[he _ h2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wcomp_mul_homog (O : Type) [CommRing O] {σ X : Type} [AddCommGroup X] (wt : σ → X)
     {w : X} {e : MvPowerSeries σ O} (he : e ∈ wtPart O wt w) (G : MvPowerSeries σ O) (j : X) :
@@ -35,29 +35,25 @@ private theorem wcomp_mul_homog (O : Type) [CommRing O] {σ X : Type} [AddCommGr
     · rw [he _ h2, mul_zero]
 
 /- English proof (translation)
-Introduce `O R _ _ _ X _ W κ _ g c hg`. Consider the cases of `nonempty_fintype κ`. Establish `hback : ∀ x : W.A, x ∈ Ideal.span (Set.range g) → (x : R) ∈ Ideal.span (Set.range fun i => (g i : R))`. Introduce `x hx`. Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Ideal.mem_span_range_iff_exists_fun.2 ⟨fun i => (a i : R), ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`. Simplify using the standard rewrite rules. Establish `hg' : ∀ i, ∃ e ∈ wtPart O W.wt (c i), W.π e = (g i : R)` using `fun i => hg i`. Use `choose e he heg using hg'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ f, W.π f ∈ Ideal.span (Set.range fun i => (g i : R)) → ∀ j, ∃ y ∈ Ideal.span (Set.range g), (y : R) = W.π (wcomp O W.wt j f)`. Introduce `f hf j`. Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hf`. Use `choose G hG using fun i => W.surj (a i)`. Establish `h1 : f - ∑ i, G i * e i ∈ RingHom.ker W.π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.mem_ker, map_sub, ← ha, map_sum]`. Simplify using `[hG, heg]`. Establish `h2` using `W.homog _ h1 j`. Rewrite `h2` using `[RingHom.mem_ker, map_sub, map_sub, sub_eq_zero, map_sum, map_sum]`. Establish `hm : ∀ i, W.π (wcomp O W.wt (j - c i) (G i)) ∈ W.A` using `fun i => W.part_le_A (j := j - c i) ⟨_, wcomp_mem O W.wt _ _, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, ⟨_, hm i⟩ * g i, Ideal.mem_span_range_iff_exists_fun.2 ⟨fun i => ⟨_, hm i⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, AddSubmonoidClass.coe_finset_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[wcomp_mul_homog O W.wt (he i), map_mul, heg]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun f hf j => ?_, fun x => ⟨fun hx => ?_, hback x⟩⟩` and prove the remaining obligations. Take `⟨y, hy, hy'⟩` from `key f hf j`. Rewrite using `[Ideal.mem_comap, ← hy']`. Conclude with `hback y hy`. Establish `hx' : (x : R) ∈ ⨆ j, W.part j` using `x.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hl : ∃ f, W.π f = (x : R) ∧ ∃ s : Finset X, ∀ n, Finsupp.weight W.wt n ∉ s → coeff n f = 0`. Use `Submodule.iSup_induction W.part (motive := fun z : R => ∃ f, W.π f = z ∧ ∃ s : Finset X, ∀ n, Finsupp.weight W.wt n ∉ s → coeff n f = 0) hx' ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `i _ ⟨f, hf, rfl⟩`. Conclude with `⟨f, rfl, {i}, fun n hn => hf n (by simpa using hn)⟩`. Conclude with `⟨0, map_zero _, ∅, fun n _ => map_zero _⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `a b ⟨f, hf, s, hs⟩ ⟨f', hf', s', hs'⟩`. Use `⟨f + f', by rw [map_add, hf, hf'], s ∪ s', fun n hn => ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[Finset.mem_union, not_or]`. Rewrite using `[map_add, hs n hn.1, hs' n hn.2, add_zero]`. Take `⟨f, hf, s, hs⟩` from `hl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : f = ∑ j ∈ s, wcomp O W.wt j f`. Use extensionality with `n`. Rewrite using `[map_sum]`. Simplify using `only [coeff_wcomp]`. Rewrite using `[Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `hs n h`. Use `choose y hy hy' using key f (hf ▸ hx)`. Establish `: x = ∑ j ∈ s, y j`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum, ← hf]`. Use `conv_lhs => rw [hsum]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (hy' j).symm`.
-
-Rewrite using `[this]`. Conclude with `Ideal.sum_mem _ fun j _ => hy j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.homog_span :
     ∀ (O R : Type) [CommRing O] [CommRing R] [Algebra O R] (X : Type) [AddCommGroup X] (W : WPres O X R) (κ : Type) [Finite κ] (g : κ → W.A) (c : κ → X), (∀ i, g i ∈ W.gr (c i)) →

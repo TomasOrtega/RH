@@ -17,7 +17,7 @@ open scoped Formalism.Per6
 section Abstract
 
 /- English proof (translation)
-Apply `hk` to reduce the goal to its premises. Rewrite using `[← hG, map_mul, map_pow, ha, map_mul, map_pow, map_natCast, map_natCast, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem onto_eigen {A C : Type} [CommRing A] [CommRing C] {k : A →+* C}
     (hk : Function.Injective k) {G : C →+* C} {g : A →+* A} (hG : ∀ x, G (k x) = k (g x))
@@ -28,9 +28,9 @@ theorem onto_eigen {A C : Type} [CommRing A] [CommRing C] {k : A →+* C}
   ring
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `((hf.1.pow m).mul (hf.2.1.pow n)).exists_right_inv`. Establish `e : f p ^ m * f t ^ n * (x * f a) = f a` using `by rw [← mul_assoc, hx, one_mul]`. Use `⟨x * f a, ?_, e⟩` and prove the remaining obligations. Establish `h1` using `congrArg F e`. Rewrite `h1` using `[map_mul, map_mul, map_pow, map_pow, hF, hF, hF, hp, ht, ha, map_mul f, map_mul f, map_pow f]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `((hf.1.pow m).mul ((hf.1.mul hf.2.1).pow n)).mul_left_cancel (h1.trans ?_)` and prove the remaining obligations. Use `conv_lhs => rw [← e]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem onto_fixed {A B : Type} [CommRing A] [CommRing B] {f : A →+* B} {F : B →+* B}
     {g : A →+* A} (hF : ∀ x, F (f x) = f (g x)) {p t a : A} (hf : IsFrac f p t) (hp : g p = p)
@@ -47,7 +47,7 @@ theorem onto_fixed {A B : Type} [CommRing A] [CommRing B] {f : A →+* B} {F : B
   ring
 
 /- English proof (translation)
-Establish `h1` using `congrArg I ha`. Rewrite `h1` using `[map_mul, map_pow, hI, hI, h]`. Conclude with `mul_left_cancel₀ (pow_ne_zero m hp) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onto_cancel {A C E : Type} [CommRing A] [CommRing C] [Field E] {k : A →+* C}
     {I : C →+* E} {c : A →+* E} (hI : ∀ x, I (k x) = c x) {p a : A} (hp : c p ≠ 0) {m : ℕ}
@@ -57,14 +57,14 @@ theorem onto_cancel {A C E : Type} [CommRing A] [CommRing C] [Field E] {k : A �
   exact mul_left_cancel₀ (pow_ne_zero m hp) h1
 
 /- English proof (translation)
-Introduce `x y e` and use `hc (by rw [← hI, ← hI, e])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem onto_injective {A C E : Type} [CommRing A] [CommRing C] [Field E] {k : A →+* C}
     {I : C →+* E} {c : A →+* E} (hI : ∀ x, I (k x) = c x) (hc : Function.Injective c) :
     Function.Injective k := fun x y e => hc (by rw [← hI, ← hI, e])
 
 /- English proof (translation)
-The claim follows from `away_exists (RingHom.id _) _ (fun _ => rfl) y`.
+A detailed English derivation is pending.
 -/
 theorem away_exists_self {A : Type} [CommRing A] {a : A} (y : Localization.Away a) :
     ∃ (k : ℕ) (x : A), algebraMap A (Localization.Away a) x =
@@ -72,7 +72,7 @@ theorem away_exists_self {A : Type} [CommRing A] {a : A} (y : Localization.Away 
   away_exists (RingHom.id _) _ (fun _ => rfl) y
 
 /- English proof (translation)
-Take `⟨c', hc'⟩` from `hc.exists_right_inv`. Take `⟨b', hb'⟩` from `h c'`. Use `IsUnit.of_mul_eq_one b' (hi ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ← e, hb', ← map_mul, hc', map_one, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem reg_isUnit {B C E : Type} [CommRing B] [CommRing C] [Field E] {i : B →+* E} {j : C →+* E}
     (hi : Function.Injective i) (h : ∀ c, ∃ b, i b = j c) {b : B} {c : C} (e : j c = i b)
@@ -83,7 +83,7 @@ theorem reg_isUnit {B C E : Type} [CommRing B] [CommRing C] [Field E] {i : B →
   rw [map_mul, ← e, hb', ← map_mul, hc', map_one, map_one]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hb (hi (by rw [← e, map_zero, map_zero]))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem reg_ne_zero {B C E : Type} [CommRing B] [CommRing C] [Field E] {i : B →+* E} {j : C →+* E}
     (hi : Function.Injective i) {b : B} {c : C} (e : j c = i b) (hb : b ≠ 0) : c ≠ 0 := by
@@ -91,7 +91,7 @@ theorem reg_ne_zero {B C E : Type} [CommRing B] [CommRing C] [Field E] {i : B �
   exact hb (hi (by rw [← e, map_zero, map_zero]))
 
 /- English proof (translation)
-Apply `hj` to reduce the goal to its premises. Rewrite using `[h1, e, ← h2, hb, map_mul, map_mul, hq, e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem reg_eigen {B C E : Type} [CommRing B] [CommRing C] [Field E] {i : B →+* E} {j : C →+* E}
     (hj : Function.Injective j) {b b₁ q : B} {c c₁ r : C} (e : j c = i b) {τ : E → E}
@@ -101,7 +101,7 @@ theorem reg_eigen {B C E : Type} [CommRing B] [CommRing C] [Field E] {i : B →+
   rw [h1, e, ← h2, hb, map_mul, map_mul, hq, e]
 
 /- English proof (translation)
-The claim follows from `exists_map_eq_of_pow_mul i hu (k := n) (by rw [hy, h, map_mul, map_pow, ht])`.
+A detailed English derivation is pending.
 -/
 theorem reg_range {B C E : Type} [CommRing B] [CommRing C] [Field E] {i : B →+* E} {j : C →+* E}
     {u b : B} (hu : IsUnit u) {t y c : C} {n : ℕ} (h : y = t ^ n * c) (ht : j t = i u)
@@ -117,7 +117,7 @@ open GroundTheory.PAdicHodge
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨m, a, ha⟩` from `away_exists_self y`. Establish `h1` using `onto_eigen (onto_injective invPlusD_algebraMap (cD_injective l)) ACris.phiPlus_algebraMap ha hy`. Take `⟨x, hx, e⟩` from `onto_fixed φB_cB (cB_isFrac l) (map_natCast _ l) frob_phi_tA m h1`. Conclude with `⟨x, hx, onto_cancel invPlusD_algebraMap (cD_l_ne_zero l) ha (inv_map_frac (ιCD_fac l) e)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem onto_plus {y : ACris.BCrisPlus ℂ_[l] l} {n : ℕ}
     (hy : ACris.phiPlus ℂ_[l] l y = (l : ACris.BCrisPlus ℂ_[l] l) ^ n * y) :
@@ -129,16 +129,16 @@ theorem onto_plus {y : ACris.BCrisPlus ℂ_[l] l} {n : ℕ}
   exact ⟨x, hx, onto_cancel invPlusD_algebraMap (cD_l_ne_zero l) ha (inv_map_frac (ιCD_fac l) e)⟩
 
 /- English proof (translation)
-The claim follows from `congrArg (algebraMap (Per6.BdRp l) (Per6.BdR l)) (ACris.iota_periodT (untilt_epsilon (p := l)))`.
+A detailed English derivation is pending.
 -/
 theorem cD_tA_eq : cD l (Per6.tA l) =
     algebraMap (Per6.BdRp l) (Per6.BdR l) (fontaineT (epsilon l) untilt_epsilon) :=
   congrArg (algebraMap (Per6.BdRp l) (Per6.BdR l)) (ACris.iota_periodT (untilt_epsilon (p := l)))
 
 /- English proof (translation)
-Take `⟨n, w, hs⟩` from `ACris.exists_mul_pow_fontaineT_eq (untilt_epsilon (p := l)) untilt_frobeniusEquiv_symm_epsilon_ne_one z`. Take `⟨y, hy, hyw⟩` from `ACris.exists_phiPlus_eq_pow_iotaPlus_sub_mem (untilt_epsilon (p := l)) untilt_frobeniusEquiv_symm_epsilon_ne_one (m := n) (n := n) le_rfl w`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hyw`. Take `⟨x, hx, e⟩` from `onto_plus hy`. Rewrite `e` using `[cD_tA_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨x, hx, c, ACris.sub_eq_map_of_pow_mul (algebraMap (Per6.BdRp l) (Per6.BdR l)) (cD_tA_eq (l := l) ▸ cD_tA_ne_zero l) e hs hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem fund_onto (z : Per6.BdR l) : ∃ x : Per6.Bcris l, Per6.φB l x = x ∧
     ∃ c : Per6.BdRp l, ιCD l x - z = algebraMap (Per6.BdRp l) (Per6.BdR l) c := by
@@ -159,7 +159,7 @@ variable {ε : PreTilt (normInteger ℂ_[l]) l} (hε : PreTilt.untilt ε = 1)
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-The claim follows from `(ACris.exists_algebraMap_eq_periodTCris_pow_mul hε c).elim fun _ h₀ => h₀.elim fun y h => (exists_ιCD_eq_iotaPlus y).elim fun _ hb => reg_range hu h ((ACris.iotaB_periodTCris hε hζ).trans e) (hb.trans (ACris.iotaB_algebraMap hε hζ y).symm)`.
+A detailed English derivation is pending.
 -/
 theorem reg_exists_ιCD {u : Per6.Bcris l} (hu : IsUnit u)
     (e : algebraMap (Per6.BdRp l) (Per6.BdR l) (ACris.iota ℂ_[l] l (ACris.periodT hε)) = ιCD l u)
@@ -170,7 +170,7 @@ theorem reg_exists_ιCD {u : Per6.Bcris l} (hu : IsUnit u)
         (hb.trans (ACris.iotaB_algebraMap hε hζ y).symm)
 
 /- English proof (translation)
-Use `(ιCD_qB q).trans ?_` and prove the remaining obligations. Rewrite using `[frob_oD_apply, AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem reg_ιCD_qB (q : ℚ_[l]) : ιCD l (qB l q) = algebraMap ℚ_[l] (Per6.BdR l) q := by
   refine (ιCD_qB q).trans ?_
@@ -178,7 +178,7 @@ theorem reg_ιCD_qB (q : ℚ_[l]) : ιCD l (qB l q) = algebraMap ℚ_[l] (Per6.B
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-The claim follows from `reg_eigen (ACris.iotaB_injective hε hζ) e (τ := Per6.σD (σ.restrictScalars ℚ_[l])) ((ACris.iotaB_galB hε hζ σ c).trans ((gal_smul_bDeRham_def σ _).trans (congrArg (fun f : Per6.BdR l ≃+* Per6.BdR l => f (ACris.iotaB hε hζ c)) (inv_galBdRField_eq σ)))) (ιCD_σB _ b) ((ACris.iotaB_a …`.
+A detailed English derivation is pending.
 -/
 theorem reg_galB_eigen {K : IntermediateField ℚ_[l] (Om l)} (σ : Gal(PadicAlgCl l/K))
     {b : Per6.Bcris l} {c : ACris.BCris hε} (e : ACris.iotaB hε hζ c = ιCD l b) {q : ℚ_[l]}
@@ -193,7 +193,7 @@ theorem reg_galB_eigen {K : IntermediateField ℚ_[l] (Om l)} (σ : Gal(PadicAlg
 include hζ in
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Use `K.2` as an intermediate fact. Take `⟨c, e⟩` from `inv_exists_iotaB hε hζ h`. Use `reg_isUnit ιCD_injective (reg_exists_ιCD hε hζ hu eu) e (ACris.isUnit_of_galB_eigen hε hζ (K := K.1) (reg_ne_zero ιCD_injective e hb0) fun σ => ?_)` and prove the remaining obligations. Conclude with `(hb _ (inv_restrictScalars_mem K σ)).imp fun _ hq => reg_galB_eigen hε hζ σ e hq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem reg_core (K : FinExt l) {u : Per6.Bcris l} (hu : IsUnit u)
     (eu : algebraMap (Per6.BdRp l) (Per6.BdR l) (ACris.iota ℂ_[l] l (ACris.periodT hε)) = ιCD l u)
@@ -211,7 +211,7 @@ end Eps
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨n, y, h⟩` from `inv_exists_plus b`. Conclude with `reg_core untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one K isUnit_tB ((cD_apply (Per6.tA l)).symm.trans (ιCD_cB (Per6.tA l)).symm) hb0 hb h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bcris_regular (K : FinExt l) {b : Per6.Bcris l} (hb0 : b ≠ 0)
     (hb : ∀ g ∈ GK K, ∃ q : ℚ_[l], Per6.σB g b = qB l q * b) : IsUnit b := by
@@ -222,7 +222,7 @@ theorem bcris_regular (K : FinExt l) {b : Per6.Bcris l} (hb0 : b ≠ 0)
 end Concrete
 
 /- English proof (translation)
-Introduce `l _ P AI T K b hb0 hb`. Establish `h : IsUnit (T.eB b)` using `bcris_regular K ((map_ne_zero_iff _ T.eB.injective).2 hb0) fun g hg => by`. Take `⟨q, hq⟩` from `hb g hg`. Conclude with `⟨q, by rw [← T.actB, hq, Algebra.smul_def, map_mul, tie_q]⟩`. Simplify using `using h.map T.eB.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tied_regular : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied6 l P AI → ∀ (K : FinExt l) (b : P.R.B), b ≠ 0 →
@@ -235,7 +235,7 @@ theorem tied_regular : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAi
   simpa using h.map T.eB.symm
 
 /- English proof (translation)
-Introduce `l _ P AI T K w`. Take `⟨x, hx, c, hc⟩` from `fund_onto (T.eD w)`. Take `⟨x, rfl⟩` from `T.eB.surjective x`. Use `⟨x, T.eB.injective ((T.frob x).trans hx), (tie_fil_zero T K _).2 ⟨c, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_sub, tie_ι, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tied_fund_onto : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied6 l P AI → ∀ (K : FinExt l) (w : P.R.BdR),

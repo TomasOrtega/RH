@@ -5,13 +5,13 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Introduce `l _ r A B _ _ _ _ f hf`. Set `e` to `LinearEquiv.ofBijective (LinearMap.pi f) hf`. Set `g` to `(LinearEquiv.baseChange ℤ_[l] ℚ_[l] A (∀ s, B s) e).trans (TensorProduct.piRight ℤ_[l] ℚ_[l] ℚ_[l] B)`. Establish `key : (fun x s => (LinearMap.baseChange ℚ_[l] (f s)) x) = g`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => funext s`. Simplify using the standard rewrite rules. Consider the case `tmul a b`. Use function extensionality and compare the values at `s`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[g, e]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Rewrite using `[map_add, ← hx, ← hy]`. Use function extensionality and compare the values at `s`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[key]`. Conclude with `g.bijective`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.piBC_holds :
     UpperTheory.Gal.KunnethLefschetz.PiBC := by

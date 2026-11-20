@@ -134,7 +134,7 @@ def WeakSep : Prop := Ev fun {D} _ {L} _ {G} W M => ∀ M₀ : DSModel (Yc D 0) 
   ∀ t ∈ Rows L W.θ M₀, t ≠ 0 → ∀ w : SmT M₀, w ≠ 0 → ∃ ρ ξ, ∃ Ψ ∈ Cols G W.θ, ∃ Φ, fPsiPhi W M ρ ξ Ψ Φ (t w) ≠ 0
 
 /- English proof (translation)
-Take `⟨⟨Pm, -, -⟩, -⟩` from `h`. Conclude with `⟨UpperTheory.Ram.Fun.coprime_QSq_of_splitK D.host D.host.pde_prime (Pm.level_split _ D.host.pde_level.1), UpperTheory.Ram.Fun.coprime_QSq_of_splitK D.host D.host.pde'_prime (Pm.level_split _ D.host.pde_level.2)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem offQ_of_sizeRows {large₂ : SizeData₂ D} (h : SizeRows large₂) : OffQ D := by
   obtain ⟨⟨Pm, -, -⟩, -⟩ := h
@@ -142,18 +142,18 @@ theorem offQ_of_sizeRows {large₂ : SizeData₂ D} (h : SizeRows large₂) : Of
     UpperTheory.Ram.Fun.coprime_QSq_of_splitK D.host D.host.pde'_prime (Pm.level_split _ D.host.pde_level.2)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(W.vac_is i h).2.theta, fun u hu => (W.vac_is i h).2.lat.1 u hu.1, fun e he u hu => (W.vac_is i h).2.lat.2 e he u hu.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem dep_vac (i : ℕ) (h : i < D.R.m) : Dep W (.chi i 0) (W.vac i) :=
   ⟨(W.vac_is i h).2.theta, fun u hu => (W.vac_is i h).2.lat.1 u hu.1, fun e he u hu => (W.vac_is i h).2.lat.2 e he u hu.1⟩
 
 /- English proof (translation)
-Introduce `D q _ T L μ0 hL sc _ G W M hM` and use `h D q T L μ0 hL sc G W M hM`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem All.gap {Q : GP} (h : All Q) : Gap Q := fun D q _ T L μ0 hL sc _ G W M hM => h D q T L μ0 hL sc G W M hM
 
 /- English proof (translation)
-Introduce `ε _ _` and use `by obtain ⟨x, hx⟩ := hs ε exact ⟨x, fun D large₂ e a b T L μ0 hL G W M hM => h D (offQ_of_sizeRows b) (hx D large₂ e a b) T L μ0 hL _ rfl G W M hM⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Gap.ev {Q : GP} (hs : SizeGap) (h : Gap Q) : Ev Q := fun ε _ _ => by
   obtain ⟨x, hx⟩ := hs ε

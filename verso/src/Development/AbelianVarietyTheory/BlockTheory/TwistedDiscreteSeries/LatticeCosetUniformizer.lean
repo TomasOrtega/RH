@@ -23,7 +23,7 @@ def latticeOf (g : GL (Fin n) F) : Submodule O (Fin n → F) :=
     ((Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) F)).restrictScalars O)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨v, rfl⟩, rfl⟩`. Conclude with `⟨v, rfl⟩`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨_, ⟨v, rfl⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_latticeOf (g : GL (Fin n) F) (x : Fin n → F) :
     x ∈ latticeOf O g ↔
@@ -35,9 +35,9 @@ theorem mem_latticeOf (g : GL (Fin n) F) (x : Fin n → F) :
     exact ⟨_, ⟨v, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨k₀, rfl⟩` from `hk`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_latticeOf]`. Take `⟨v, rfl⟩` from `hx`. Use `⟨(k₀ : Matrix (Fin n) (Fin n) O) *ᵥ v, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem latticeOf_mul_le (g k : GL (Fin n) F) (hk : k ∈ integralGL O F n) :
     latticeOf O (g * k) ≤ latticeOf O g := by
@@ -52,7 +52,7 @@ theorem latticeOf_mul_le (g k : GL (Fin n) F) (hk : k ∈ integralGL O F n) :
   simp [Matrix.mulVec, dotProduct, map_sum]
 
 /- English proof (translation)
-Use `le_antisymm (latticeOf_mul_le O g k hk) ?_` and prove the remaining obligations. Establish `h` using `latticeOf_mul_le O (g * k) k⁻¹ (inv_mem hk)`. Rewrite `h` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem latticeOf_mul (g k : GL (Fin n) F) (hk : k ∈ integralGL O F n) :
     latticeOf O (g * k) = latticeOf O g := by
@@ -158,16 +158,16 @@ def MinusculeCosets : Prop :=
     (ϖ : O) (hϖ : Irreducible ϖ) (n j : ℕ), j ≤ n → CosetsAt F hϖ n j
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[diagUnit]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 example {F : Type} [Field F] (n : ℕ) (u : Fˣ) : diagUnit n u 0 = 1 := by
   ext i j
   simp [diagUnit]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `w _`. Use `choose v hv using fun i => residue_surjective (w i)`. Use `⟨v, (mem_latticeOf O 1 _).2 ⟨v, ?_⟩, funext hv⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 example (O F : Type) [CommRing O] [IsLocalRing O] [Field F] [Algebra O F] (n : ℕ) :
     reduction O (latticeOf O (1 : GL (Fin n) F)) = ⊤ := by
@@ -179,7 +179,7 @@ example (O F : Type) [CommRing O] [IsLocalRing O] [Field F] [Algebra O F] (n : �
   rfl
 
 /- English proof (translation)
-The claim follows from `haveI : Finite (ResidueField ℤ_[p]) := Finite.of_equiv _ (PadicInt.residueField (p := p)).symm.toEquiv h ℤ_[p] ℚ_[p] _ _ n j hj`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] (h : MinusculeCosets) (n j : ℕ) (hj : j ≤ n) :
     CosetsAt ℚ_[p] (PadicInt.irreducible_p (p := p)) n j :=

@@ -14,15 +14,13 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ h`. Establish `hc : Continuous fun g : G1 F => f.1 (gl g * dM (nu F h))` using `(decay F π f hf).1.comp (Matrix.SpecialLinearGroup.continuous_toGL.mul continuous_const)`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using vol F M⟩`. Take `⟨m1, -, m2, -, -⟩` from `thMeas F E D W (W.L h φ)`. Take `⟨a1, a2, -⟩` from `weilLift_one_cuspidal F E D W M π f hf (W.L h φ) (dM (nu F h))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, a1, a2, ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `thBoundH F E D W π f hf φ hφ h {dM (nu F h)} isCompact_singleton {1} isCompact_singleton (by rintro _ rfl; simp [Ff.One, nu])`. Use `Integrable.of_bound (hc.measurable.mul m1).aestronglyMeasurable B (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `using hB g _ rfl 1 rfl`. Take `⟨B, hB⟩` from `rowBoundH F E D W π f hf φ hφ h (dM (nu F h))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Integrable.of_bound (hc.measurable.mul (m2 0 0)).aestronglyMeasurable B (ae_of_all _ hB)`. Take `⟨y, hy, φ₁, h₁, m, hm⟩` from `redH F E D W h φ hφ`. Take `⟨b1, b2, -⟩` from `weilLift_one_cuspidal F E D W M π f hf (W.L (infGL E 2 y) φ₁) ((gl m)⁻¹ * dM (nu F h))`. Establish `b3` using `(weilLift_one_cuspidal F E D W M π f hf φ₁ ((gl m)⁻¹ * dM (nu F h))).2.2 h₁ y hy`. Use `((inv F M _ b1 b2 b3).1 m).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : w1 W f.1 φ h = fun g => Wf f.1 (gl (g * m) * ((gl m)⁻¹ * dM (nu F h))) * hat (W.Om (g * m) (W.L (infGL E 2 y) φ₁)).1 ![0, 1, 1, 0]`. Use function extensionality and compare the values at `g`. Establish `h2` using `hm g 1`. Simplify using `only [map_one, mul_one] at h2`. Rewrite using `[w1, h2, show gl (g * m) = gl g * gl m from map_mul _ _ _, mul_assoc, mul_inv_cancel_left]`.
-
-Rewrite using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.conv :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Conv W M π := by

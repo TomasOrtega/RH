@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.Mem.GoodExpand
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `eg`. Distinguish the cases in `hx : x ∈ X.B.I.Kset`. Establish `hex : x ∈ X.B.I.Kset ∧ ∃ γ : G0g D.nd, GoodAt X x γ` using `⟨hx, red x, hr.1 x hx⟩`. Rewrite using `[dif_pos hex, if_pos hx, Formalism.L2.SG.Pf.rowDictEgWellDef_holds X x _ _ (Classical.choose_spec hex.2) (hr.1 x hx)]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (fun h => hx h.1), if_neg hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eg_eq_step {D : D7} (X : HidaSetting D) {red : X.B.I.Gf → G0g D.nd} (hr : IsRedHom X red) :
     eg X = fun x => if x ∈ X.B.I.Kset then D.ntypes.e0.coeff (red x) / ((X.B.μf (X.B.I.Kg X.B.g)).toReal : ℂ) else 0 := by
@@ -26,11 +26,11 @@ theorem eg_eq_step {D : D7} (X : HidaSetting D) {red : X.B.I.Gf → G0g D.nd} (h
   · rw [dif_neg (fun h => hx h.1), if_neg hx]
 
 /- English proof (translation)
-Introduce `D X G _ red s hr hs φ hφ`. Establish `hT` using `G.Rg_spec`. Rewrite `hT` using `[eg_eq_step X hr]`. Use `GlobalTheory.Mem.SRe.ConvStep.top_expand X hr s hs (fun γ => D.ntypes.e0.coeff γ) G.Rg hT φ ?_` and prove the remaining obligations. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsk` using `(hs (red k)).1`. Establish `hk' : (s (red k))⁻¹ * k ∈ X.B.I.Kg X.B.g` using `(GlobalTheory.Mem.SRe.ConvStep.fibre_iff X hr hsk k).1 ⟨hk, ((hs (red k)).2).symm⟩`. Establish `hmul` using `(GlobalTheory.RightRegFund.rightReg_unitary_continuous X.B).2.1`. Establish `e : ((1, k) : X.B.I.GA) = (1, s (red k)) * (1, (s (red k))⁻¹ * k)`. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[e, hmul]`. Use `show X.B.R (1, s (red k)) (X.B.R (1, (s (red k))⁻¹ * k) φ) = _`. Rewrite using `[hφ _ hk']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rg_expand : ∀ (D : D7) (X : HidaSetting D) (G : GoodOp X) [Fintype (G0g D.nd)] (red : X.B.I.Gf → G0g D.nd) (s : G0g D.nd → X.B.I.Gf), IsRedHom X red → (∀ γ, s γ ∈ X.B.I.Kset ∧ red (s γ) = γ) → ∀ φ : L2X X, (∀ k ∈ X.B.I.Kg X.B.g, X.B.R (1, k) φ = φ) → G.Rg φ = ∑ γ, D.ntypes.e0.coeff γ • X.B.R (1, s γ) φ := by
   intro D X G _ red s hr hs φ hφ

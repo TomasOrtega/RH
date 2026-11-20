@@ -17,7 +17,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocalUnitary
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [compAt, conjAL, Formalism.UG.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compAt_conjAL (L : Type) [Field L] [NumberField L] [IsCMField L]
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (a : AL L) :
@@ -29,7 +29,7 @@ theorem compAt_conjAL (L : Type) [Field L] [NumberField L] [IsCMField L]
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_mul {A : Type} [CommRing A] (σ : A →+* A) {m : Type} [Fintype m]
     (M N : Matrix m m A) : Formalism.UG.cT σ (M * N) = Formalism.UG.cT σ N * Formalism.UG.cT σ M := by
@@ -37,7 +37,7 @@ theorem cT_mul {A : Type} [CommRing A] (σ : A →+* A) {m : Type} [Fintype m]
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cT_one {A : Type} [CommRing A] (σ : A →+* A) {m : Type} [Fintype m] [DecidableEq m] :
     Formalism.UG.cT σ (1 : Matrix m m A) = 1 := by
@@ -45,9 +45,9 @@ theorem cT_one {A : Type} [CommRing A] (σ : A →+* A) {m : Type} [Fintype m] [
   simp
 
 /- English proof (translation)
-Establish `h2 : Formalism.UG.cT σ Pi * Formalism.UG.cT σ Pm = 1`. Rewrite using `[← cT_mul, h1, cT_one]`. Rewrite using `[cT_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = Formalism.UG.cT σ Pm * Pm := by`. Rewrite using `[h1, h2, Matrix.one_mul, Matrix.one_mul, hX, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cT_conj_form {A : Type} [CommRing A] (σ : A →+* A) {m : Type} [Fintype m] [DecidableEq m]
     (Pm Pi X : Matrix m m A) (h1 : Pm * Pi = 1) (hX : Formalism.UG.cT σ X * X = 1) :
@@ -61,19 +61,19 @@ theorem cT_conj_form {A : Type} [CommRing A] (σ : A →+* A) {m : Type} [Fintyp
         rw [h1, h2, Matrix.one_mul, Matrix.one_mul, hX, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_UJ_iff {A : Type} [CommRing A] {m : Type} [Fintype m] [DecidableEq m] (σ : A →+* A)
     (J : Matrix m m A) (g : GL m A) : g ∈ Formalism.UG.UJ σ J ↔ Formalism.UG.cT σ (g : Matrix m m A) * J * g = J := Iff.rfl
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv x`. Set `φ : AL L →+* HeightOneSpectrum.adicCompletion L w` to `(Dv.e : _ →+* HeightOneSpectrum.adicCompletion L w).comp (compAt L v)`. Establish `hφ : ∀ a : AL L, φ (conjAL L a) = Dv.σw (φ a)`. Introduce `a`. Simplify using `only [φ, RingHom.comp_apply, RingHom.coe_coe, compAt_conjAL, Dv.comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hx : ((x.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * ReciprocityTheory.Aut.conjT (conjAL L) (x.1 : Matrix (Fin n) (Fin n) (AL L)) = 1` using `x.2`. Establish `hconj : φ.mapMatrix (ReciprocityTheory.Aut.conjT (conjAL L) ((x.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))) = Formalism.UG.cT Dv.σw (φ.mapMatrix ((x.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)))`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, ReciprocityTheory.Aut.conjT, Formalism.UG.cT, Matrix.transpose_apply, hφ]`. Establish `hX : φ.mapMatrix ((x.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * Formalism.UG.cT Dv.σw (φ.mapMatrix ((x.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hconj, ← map_mul, hx, map_one]`. Establish `hX'` using `mul_eq_one_comm.mp hX`. Establish `hloc : ((Dv.loc x : GL (Fin n) (HeightOneSpectrum.adicCompletion L w)) : Matrix (Fin n) (Fin n) (HeightOneSpectrum.adicCompletion L w)) = ((Dv.P⁻¹ : GL (Fin n) (HeightOneSpectrum.adicCompletion L w)) : Matrix (Fin n) (Fin n) (HeightOneSpectrum.adicCompletion L w)) * φ.mapMatrix ( …`. Rewrite using `[Formalism.AUTREP.InertDatum.loc, Units.val_mul, Units.val_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mem_UJ_iff, hloc, ← Dv.Panti]`. Conclude with `cT_conj_form Dv.σw _ _ _ (by simp) hX'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_mem_GU : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L))

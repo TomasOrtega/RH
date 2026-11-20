@@ -11,9 +11,9 @@ namespace GlobalTheory.FinrankGrowthBounds
 open Filter Topology
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hab`. Use `push Not at hab`. Establish `hb' : (0 : ℝ) < b` using `by exact_mod_cast hb`. Establish `h1 : (1 : ℝ) < a / b` using `by rw [one_lt_div hb']; exact_mod_cast hab`. Take `⟨k, hk⟩` from `((tendsto_pow_atTop_atTop_of_one_lt h1).eventually_gt_atTop (C : ℝ)).exists`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[div_pow, lt_div_iff₀ (pow_pos hb' k)]`. Use `h k` as an intermediate fact. Establish `h2 : ((a : ℝ)) ^ k ≤ C * b ^ k` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem le_of_pow_le_mul_pow {a b C : ℕ} (hb : 1 ≤ b) (h : ∀ k : ℕ, a ^ k ≤ C * b ^ k) : a ≤ b := by
   by_contra hab
@@ -27,11 +27,11 @@ theorem le_of_pow_le_mul_pow {a b C : ℕ} (hb : 1 ≤ b) (h : ∀ k : ℕ, a ^ 
   linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hab`. Use `push Not at hab`. Establish `ht : Tendsto (fun n : ℕ => (b : ℝ) * (1 + 8 / (n : ℝ)) ^ g) atTop (𝓝 ((b : ℝ) * (1 + 0) ^ g))` using `((tendsto_const_nhds.add (tendsto_const_div_atTop_nhds_zero_nat 8)).pow g).const_mul _`. Establish `hlt : (b : ℝ) * (1 + 0) ^ g < a` using `by simpa using hab`. Take `⟨M, hM⟩` from `eventually_atTop.1 (ht.eventually_lt_const hlt)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hle⟩` from `h (M + 1)`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast (by omega : 0 < n)`. Establish `h1` using `hM n (by omega)`. Establish `h2 : (1 + 8 / (n : ℝ)) = (n + 8) / n` using `by field_simp`. Rewrite `h1` using `[h2, div_pow, ← mul_div_assoc, div_lt_iff₀ (pow_pos hn0 g)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (a : ℝ) * n ^ g ≤ b * (n + 8) ^ g` using `by exact_mod_cast hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem le_of_frequently {a b g : ℕ} (h : ∀ M : ℕ, ∃ n, M ≤ n ∧ a * n ^ g ≤ b * (n + 8) ^ g) :
     a ≤ b := by
@@ -50,33 +50,31 @@ theorem le_of_frequently {a b g : ℕ} (h : ∀ M : ℕ, ∃ n, M ≤ n ∧ a * 
   linarith
 
 /- English proof (translation)
-Establish `hpos : ∀ n, G n → 1 ≤ n` using `fun n hn => Nat.pos_of_ne_zero fun e => hG0 (e ▸ hn)`. Establish `hit : ∀ n, G n → ∀ i, 1 ≤ i → ∀ k, h ((n ^ 2) ^ k * i) = h (n ^ 2) ^ k * h i`. Introduce `n hn i hi k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Use `hpos n hn` as an intermediate fact. Rewrite using `[pow_succ' (n ^ 2), Nat.mul_assoc, hrel n _ hn (Nat.mul_pos (by positivity) hi), ih]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsq : ∀ n, G n → h (n ^ 2) = (n ^ 2) ^ g`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `n hn`. Establish `hn1` using `hpos n hn`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_of_pow_le_mul_pow (C := C) (Nat.pos_of_ne_zero (by positivity)) fun k => ?_` and prove the remaining obligations. Establish `e` using `hit n hn 1 le_rfl k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[h1, Nat.mul_one, Nat.mul_one]`. Rewrite using `[← e, ← pow_mul (n ^ 2) g k, mul_comm g k, pow_mul]`. Use `le_trans (hmono (Nat.le_mul_of_pos_left _ hN)) (hgr _ (Nat.pos_of_ne_zero (by positivity))).2` and prove the remaining obligations. Establish `hd : 1 ≤ h (n ^ 2)` using `h1 ▸ hmono (Nat.pos_of_ne_zero (by positivity))`. Use `le_of_pow_le_mul_pow (C := c * h N) hd fun k => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hit n hn N hN k`. Use `(hgr ((n ^ 2) ^ k) (Nat.pos_of_ne_zero (by positivity))).1` as an intermediate fact. Rewrite `this` using `[mul_comm N, e]`. Rewrite using `[← pow_mul (n ^ 2) g k, mul_comm g k, pow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hbig : ∀ M, ∃ n, M ≤ n ∧ G n` using `fun M => (hG M).elim (fun x => ⟨M, le_rfl, x⟩) fun x => ⟨M + 1, by omega, x⟩`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_of_frequently (g := g) fun M => ?_` and prove the remaining obligations. Take `⟨n, hMn, hn⟩` from `hbig M`. Establish `hn1` using `hpos n hn`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨n, hMn, ?_⟩` and prove the remaining obligations. Use `set m := Nat.sqrt (n ^ 2 * j) with hm`. Establish `l1 : m * m ≤ n ^ 2 * j` using `Nat.sqrt_le _`. Establish `l2 : n ^ 2 * j < (m + 1) * (m + 1)` using `Nat.lt_succ_sqrt _`. Take `⟨m', a1, a2, hm'⟩ : ∃ m', m + 1 ≤ m' ∧ m' ≤ m + 2 ∧ G m'` from `(hG (m + 1)).elim (fun x => ⟨_, le_rfl, by omega, x⟩) fun x => ⟨_, by omega, le_rfl, x⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnj : 1 ≤ n * j` using `Nat.mul_pos hn1 hj`. Establish `l3 : m ≤ n * j`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: n ^ 2 * j ≤ (n * j) * (n * j)` using `by nlinarith [Nat.mul_le_mul_left (n ^ 2 * j) hj]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `l4 : m' ^ 2 ≤ n * (j * (n + 8))` using `by nlinarith`. Establish `l5 : h (n ^ 2 * j) ≤ h (m' ^ 2)` using `hmono (by nlinarith)`. Rewrite `l5` using `[hrel n j hn hj, hsq n hn, hsq m' hm']`. Establish `l6` using `l5.trans (Nat.pow_le_pow_left l4 g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `l6` using `[pow_two, mul_pow, mul_pow, mul_pow, Nat.mul_assoc]`. Rewrite using `[mul_comm]`. Conclude with `Nat.le_of_mul_le_mul_left l6 (by positivity)`. Use `le_of_frequently (g := g) fun M => ?_` and prove the remaining obligations. Take `⟨n, hMn, hn⟩` from `hbig (M + 2)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1` using `hpos n hn`. Use `set m := Nat.sqrt (n ^ 2 * j) with hm`. Establish `l1 : m * m ≤ n ^ 2 * j` using `Nat.sqrt_le _`. Establish `l2 : n ^ 2 * j < (m + 1) * (m + 1)` using `Nat.lt_succ_sqrt _`. Establish `l3 : n ≤ m`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use polynomial arithmetic with `[Nat.mul_le_mul_left (n ^ 2) hj]`. Take `⟨m', a1, a2, hm'⟩ : ∃ m', m' ≤ m ∧ m ≤ m' + 1 ∧ G m'` from `(hG (m - 1)).elim (fun x => ⟨_, by omega, by omega, x⟩) fun x => ⟨_, by omega, by omega, x⟩`. Establish `hm1` using `hpos m' hm'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨m', by omega, ?_⟩` and prove the remaining obligations. Establish `l4 : n ^ 2 * j ≤ m' * (m' + 8)` using `by nlinarith`. Establish `l5 : h (m' ^ 2) ≤ h (n ^ 2 * j)` using `hmono (by nlinarith)`. Rewrite `l5` using `[hrel n j hn hj, hsq n hn, hsq m' hm']`. Establish `l6` using `Nat.pow_le_pow_left l4 g`.
-
-Rewrite `l6` using `[mul_pow, mul_pow]`. Rewrite `l5` using `[pow_two m', mul_pow]`. Establish `l7 : (n ^ 2) ^ g * (j ^ g * m' ^ g) ≤ (n ^ 2) ^ g * (h j * (m' + 8) ^ g)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.le_of_mul_le_mul_left l7 (by positivity)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eq_pow_of_growth (h : ℕ → ℕ) (g : ℕ) (G : ℕ → Prop) (hG : ∀ m, G m ∨ G (m + 1))
     (hG0 : ¬ G 0) (h1 : h 1 = 1)
@@ -164,11 +162,11 @@ theorem eq_pow_of_growth (h : ℕ → ℕ) (g : ℕ) (G : ℕ → Prop) (hG : �
     exact Nat.le_of_mul_le_mul_left l7 (by positivity)
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_ne (0 : M)`. Establish `: LinearIndependent R (fun i : I => (Pi.single i m : I → M))`. Rewrite using `[linearIndependent_iff']`. Introduce `s c hc i hi`. Use `congrFun hc i` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Finset.sum_apply, Finset.sum_eq_single i]`. Simplify `this` using `[hm]`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb.symm]`. Conclude with `fun x => (x hi).elim`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `this.finite`.
+A detailed English derivation is pending.
 -/
 theorem finite_index {R : Type*} [Field R] {M I : Type*} [AddCommGroup M] [Module R M]
     [Nontrivial M] [Module.Finite R (I → M)] : Finite I := by
@@ -186,9 +184,7 @@ theorem finite_index {R : Type*} [Field R] {M I : Type*} [AddCommGroup M] [Modul
   exact this.finite
 
 /- English proof (translation)
-Use `letI := hR.toField`. Use `haveI : Nontrivial M := Module.nontrivial_of_finrank_eq_succ hM`. Use `haveI : Module.Finite R M := Module.finite_of_finrank_eq_succ hM`. Use `haveI : Module.Finite R (I → M) := Module.Finite.equiv e`. Use `haveI : Finite I := finite_index (R := R) (M := M)`.
-
-Use `letI := Fintype.ofFinite I`. Rewrite using `[e.finrank_eq, e'.finrank_eq, Module.finrank_pi_fintype, Module.finrank_pi_fintype]`. Simplify using `[hM]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_eq_mul {R : Type*} [CommRing R] (hR : IsField R) {I A M B M' : Type*}
     [AddCommGroup A] [Module R A] [AddCommGroup M] [Module R M] [AddCommGroup B] [Module R B]
@@ -205,13 +201,13 @@ theorem finrank_eq_mul {R : Type*} [CommRing R] (hR : IsField R) {I A M B M' : T
   simp [hM]
 
 /- English proof (translation)
-Introduce `hz`. Establish `hi₀ : Nonempty (M.U i₀)`. Assume the negation of the conclusion as `hn`. Establish `e : M.U i₀ = ⊥`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨fun hx => (hn ⟨⟨x, hx⟩⟩).elim, fun hx => hx.elim⟩`. Use `haveI : Subsingleton Γ(X, M.U i₀) := by rw [e]; infer_instance`. Conclude with `h₀ (Subsingleton.elim _ _)`. Use `haveI : Nonempty (M.U i₀ ⊓ M.U i : X.Opens) := by`. Take `⟨a⟩` from `hi₀`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b⟩` from `hi`. Take `⟨x, hx⟩` from `nonempty_preirreducible_inter (M.U i₀).isOpen (M.U i).isOpen ⟨a.1, a.2⟩ ⟨b.1, b.2⟩`. Conclude with `⟨⟨x, hx⟩⟩`. Establish `hc` using `s.compat i₀ i`. Rewrite `hc` using `[hz, map_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `h₀` to reduce the goal to its premises. Apply `map_injective_of_isIntegral X (homOfLE (inf_le_left : M.U i₀ ⊓ M.U i ≤ M.U i₀))` to reduce the goal to its premises. Simplify using `using hc`.
+A detailed English derivation is pending.
 -/
 theorem sec_ne_zero {X : Scheme.{0}} [IsIntegral X] {M : LB X} (s : LB.Sec M) {i₀ : M.ι}
     (h₀ : s.f i₀ ≠ 0) (i : M.ι) [hi : Nonempty (M.U i)] : s.f i ≠ 0 := by
@@ -237,7 +233,7 @@ theorem sec_ne_zero {X : Scheme.{0}} [IsIntegral X] {M : LB X} (s : LB.Sec M) {i
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) (T : Over S)
 
 /- English proof (translation)
-Simplify using `only [LPow, LB.LinComb, zpow_add, Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem lpow_g_add (a b : ℤ) (i j : Fin 1 → L.ι) :
     (LPow A L (a + b) T).g i j =
@@ -266,13 +262,11 @@ noncomputable def mulSec (a b : ℤ) (s : SecM A L b T) :
   map_smul' c f := Subtype.ext (funext fun i => _root_.mul_assoc (liftHom A _ c) _ _)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, h₀⟩ : ∃ i, s.1 i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hs (Subtype.ext (funext hc))`. Use `Subtype.ext (funext fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : Nonempty ((LPow A L b T).U i)`. Establish `h1 : (SecM.toSec A s).f i ≠ 0` using `sec_ne_zero (SecM.toSec A s) (i₀ := i₀) h₀ i`. Establish `h2` using `congrFun (congrArg Subtype.val hf) i`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `haveI : IsDomain Γ((T ⊗ A).left, (LPow A L b T).U i) := inferInstance`. Conclude with `(mul_eq_zero (M₀ := Γ((T ⊗ A).left, (LPow A L b T).U i)).1 h2).resolve_right h1`. Establish `e : (LPow A L a T).U i = ⊥`. Use extensionality with `x`. Conclude with `⟨fun hx => (hi ⟨⟨x, hx⟩⟩).elim, fun hx => hx.elim⟩`.
-
-Use `haveI : Subsingleton Γ((T ⊗ A).left, (LPow A L a T).U i) := by rw [e]; infer_instance`. Conclude with `Subsingleton.elim _ _`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mulSec_injective [IsIntegral (T ⊗ A).left] (a b : ℤ) (s : SecM A L b T) (hs : s ≠ 0) :
     Function.Injective (mulSec A L T a b s) := by
@@ -295,7 +289,7 @@ theorem mulSec_injective [IsIntegral (T ⊗ A).left] (a b : ℤ) (s : SecM A L b
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-The claim follows from `MulEquiv.isField (Field.toIsField K) (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv`.
+A detailed English derivation is pending.
 -/
 theorem isField_base (K : Type) [Field K] :
     IsField Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) :=
@@ -303,15 +297,13 @@ theorem isField_base (K : Type) [Field K] :
     (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv
 
 /- English proof (translation)
-Introduce `hint hone hrel hgrow _ K _ _ P`. Take `⟨hfin, N, c, C, hN, -, hgr⟩` from `hgrow K P`. Establish `hF` using `isField_base K`. Use `haveI : Nontrivial Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) := hF.nontrivial`. Use `haveI : GeometricallyIntegral P.A.hom := hint _ _ _ P.isAb.smooth P.isAb.geomConnected`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsIntegral (baseOver (Spec (CommRingCat.of K)) ⊗ P.A).left := GeometricallyIntegral.geometrically_isIntegral (f := P.A.hom) _ _ _ (IsPullback.of_hasPullback (𝟙 (Spec (CommRingCat.of K))) P.A.hom).flip`. Establish `h1` using `hone K P`. Use `haveI : Nontrivial (SecM P.A P.L 1 (baseOver (Spec (CommRingCat.of K)))) := Module.nontrivial_of_finrank_eq_succ h1`. Take `⟨s, hs⟩` from `exists_ne (0 : SecM P.A P.L 1 (baseOver (Spec (CommRingCat.of K))))`. Introduce `n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `eq_pow_of_growth (fun j : ℕ => Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L (j : ℤ) (baseOver (Spec (CommRingCat.of K))))) P.g (fun m => (m : K) ≠ 0) ?_ (by simp) h1 ?_ ?_ N c C hN hgr n hn` and prove the remaining obligations. Introduce `m`. Distinguish the cases in `hm : (m : K) = 0`. Use `right`. Simplify using `[hm]`.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inl hm`. Use `monotone_nat_of_le_succ fun j => ?_ haveI : Module.Finite Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L ((j : ℤ) + 1) (baseOver (Spec (CommRingCat.of K)))) := hfin (j + 1)` and prove the remaining obligations. Conclude with `LinearMap.finrank_le_finrank_of_injective (mulSec_injective P.A P.L _ (j : ℤ) 1 s hs)`. Introduce `m j hm hj`. Take `⟨e⟩` from `hrel K P m 1 hm le_rfl`.
-
-Take `⟨e'⟩` from `hrel K P m j hm hj`. Rewrite `e` using `[Nat.mul_one]`. Use `haveI := hfin (m ^ 2)`. Use `haveI := hfin j`. Conclude with `finrank_eq_mul hF h1 e e'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_sections_lineBundlePow_eq_pow : (∀ (X S : Scheme.{0}) (f : X ⟶ S), Smooth f → GeometricallyConnected f → GeometricallyIntegral f) → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))), Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L 1 (baseOver (Spec (CommRingCat.of K)))) = 1) → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (n j : ℕ), (n : K) ≠ 0 → 1 ≤ j → Nonempty (SecM P.A P.L ((n ^ 2 * j : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K))) ≃ₗ[Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤)] ({x : baseOver (Spec (CommRingCat.of K)) ⟶ P.A // x ^ n = 1} → SecM P.A P.L (j : ℤ) (baseOver (Spec (CommRingCat.of K)))))) → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))), (∀ j : ℕ, Module.Finite Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L (j : ℤ) (baseOver (Spec (CommRingCat.of K))))) ∧ ∃ N c C : ℕ, 1 ≤ N ∧ 1 ≤ c ∧ ∀ t : ℕ, 1 ≤ t → t ^ P.g ≤ c * Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L ((N * t : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K)))) ∧ Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L ((N * t : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K)))) ≤ C * t ^ P.g) → (∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (n : ℕ), 1 ≤ n → IsFinite (mulA P.A n).left ∧ Flat (mulA P.A n).left ∧ Surjective (mulA P.A n).left ∧ (IsUnit (n : Γ(S, ⊤)) → Etale (mulA P.A n).left)) → GlobalSectionsRankAlgClosed := by
   intro hint hone hrel hgrow _ K _ _ P

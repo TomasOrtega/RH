@@ -12,17 +12,17 @@ noncomputable section
 namespace GlobalTheory.HCXi.VLev
 
 /- English proof (translation)
-Establish `hw' : ∀ b, star (w b) ⬝ᵥ e = 0` using `fun b => by`. Rewrite using `[star_dotProduct, hw, star_zero]`. Set `u : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ` to `Matrix.of fun i j => (Fin.cons (α := fun _ => ℂ) (Fin.cons (α := fun _ => ℂ) a c j) (fun i' => if i'.succ = j then 1 else 0) i)`. Set `D : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ` to `Matrix.of fun i j => star (Fin.cons (α := fun _ => Fin n → ℂ) e w i) ⬝ᵥ (Fin.cons (α := fun _ => Fin n → ℂ) e w j)`. Establish `hu : u.det = a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_succ_column_zero, Fin.sum_univ_succ, Finset.sum_eq_zero]`. Establish `: u.submatrix (Fin.succAbove 0) Fin.succ = 1`. Use extensionality with `i j`. Simplify using `[u, Matrix.one_apply]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[u]`. Introduce `i _`. Simplify using `[u]`. Establish `hD : D.det = (Matrix.of fun i j => star (w i) ⬝ᵥ w j).det`. Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ, Finset.sum_eq_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: D.submatrix Fin.succ (Fin.succAbove 0) = Matrix.of fun i j => star (w i) ⬝ᵥ w j`. Use extensionality with `i j`. Simplify using `[D]`. Rewrite using `[this]`. Simplify using `[D, he]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i _`. Simplify using `[D, hw]`. Establish `hG : (Matrix.of fun i j => star (v i) ⬝ᵥ v j) = uᴴ * D * u`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [u, D, h0, hs, Matrix.mul_apply, Fin.sum_univ_succ, he, hw, hw', Matrix.conjTranspose_apply, mul_add, add_mul, Finset.sum_add_distrib, apply_ite (starRingEnd ℂ)] <;> ring`. Rewrite using `[hG, det_mul, det_mul, det_conjTranspose, hu, hD, Complex.normSq_eq_conj_mul_self]`. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_gram_cons {n m : ℕ} (e : Fin n → ℂ) (he : star e ⬝ᵥ e = 1) (w : Fin m → Fin n → ℂ)
     (hw : ∀ b, star e ⬝ᵥ w b = 0) (a : ℂ) (c : Fin m → ℂ) (v : Fin (m + 1) → Fin n → ℂ)
@@ -60,7 +60,7 @@ theorem det_gram_cons {n m : ℕ} (e : Fin n → ℂ) (he : star e ⬝ᵥ e = 1)
   simp only [Complex.star_def]; ring
 
 /- English proof (translation)
-Unfold `gram`. Use `congr 2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem gram_eq (k r : ℕ) (g : Mat k r) (j : Fin (r + 1)) :
     gram k r g j = (Matrix.of fun i i' : Fin (j.val + 1) =>
@@ -70,7 +70,7 @@ theorem gram_eq (k r : ℕ) (g : Mat k r) (j : Fin (r + 1)) :
   congr 2
 
 /- English proof (translation)
-Unfold `gram`. Use `((Matrix.posSemidef_conjTranspose_mul_self (g * frame k r)).submatrix (Fin.castLE (Nat.succ_le_of_lt j.isLt))).det_nonneg` as an intermediate fact. Conclude with `(Complex.nonneg_iff.1 this).1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_nonneg (k r : ℕ) (g : Mat k r) (j : Fin (r + 1)) : 0 ≤ gram k r g j := by
   unfold gram
@@ -79,7 +79,7 @@ theorem gram_nonneg (k r : ℕ) (g : Mat k r) (j : Fin (r + 1)) : 0 ≤ gram k r
   exact (Complex.nonneg_iff.1 this).1
 
 /- English proof (translation)
-Unfold `gram`. Establish `: (κ * g * frame k r)ᴴ * (κ * g * frame k r) = (g * frame k r)ᴴ * (g * frame k r)`. Rewrite using `[Matrix.mul_assoc κ, conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc κᴴ, hκ, Matrix.one_mul]`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_K (k r : ℕ) (κ g : Mat k r) (hκ : κᴴ * κ = 1) (j : Fin (r + 1)) :
     gram k r (κ * g) j = gram k r g j := by
@@ -89,7 +89,7 @@ theorem gram_K (k r : ℕ) (κ g : Mat k r) (hκ : κᴴ * κ = 1) (j : Fin (r +
   rw [this]
 
 /- English proof (translation)
-Unfold `fvec e0`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`. Use `ext`. Simplify using `[eI, a0, hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fvec_zero (k r' : ℕ) (j : Fin (1 + r' + 1)) (hj : j.val = 0) :
     fvec k (1 + r') (isoVec k (1 + r')) j = e0 k r' := by
@@ -99,23 +99,23 @@ theorem fvec_zero (k r' : ℕ) (j : Fin (1 + r' + 1)) (hj : j.val = 0) :
   ext; simp [eI, a0, hj]
 
 /- English proof (translation)
-Apply the tactic sequence `ext p; simp only [liftVec, Pi.add_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftVec_add' (k i r' : ℕ) (v w : Fin (2 * r' + k + 1) → ℂ) :
     liftVec k i r' (v + w) = liftVec k i r' v + liftVec k i r' w := by
   ext p; simp only [liftVec, Pi.add_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `ext p; simp only [liftVec, Pi.smul_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftVec_smul' (k i r' : ℕ) (c : ℂ) (v : Fin (2 * r' + k + 1) → ℂ) :
     liftVec k i r' (c • v) = c • liftVec k i r' v := by
   ext p; simp only [liftVec, Pi.smul_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `fvec`. Distinguish the cases in `hb : b.val < r'`. Rewrite using `[dif_pos (by omega), dif_pos hb]`. Conclude with `(PI.QnLevBasicsW.bvec_lift _ _ (by simp only [eI]; omega)).symm`. Rewrite using `[dif_neg (by omega), dif_neg hb]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `isoVec`. Rewrite using `[liftVec_smul', liftVec_add', PI.QnLevBasicsW.bvec_lift _ (wI k (1 + r') 0) (by simp only [wI]; omega), PI.QnLevBasicsW.bvec_lift _ (wI k (1 + r') (Fin.last k)) (by simp only [wI]; omega)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fvec_succ (k r' : ℕ) (j : Fin (1 + r' + 1)) (b : Fin (r' + 1)) (hj : j.val = b.val + 1) :
     fvec k (1 + r') (isoVec k (1 + r')) j = liftVec k 1 r' (fvec k r' (isoVec k r') b) := by
@@ -129,20 +129,20 @@ theorem fvec_succ (k r' : ℕ) (j : Fin (1 + r' + 1)) (b : Fin (r' + 1)) (hj : j
       PI.QnLevBasicsW.bvec_lift _ (wI k (1 + r') (Fin.last k)) (by simp only [wI]; omega)]
 
 /- English proof (translation)
-Simplify using `[e0, bvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_e0_dotProduct (k r' : ℕ) (v : Fin (2 * (1 + r') + k + 1) → ℂ) :
     star (e0 k r') ⬝ᵥ v = v (eI k (1 + r') (a0 r')) := by
   simp [e0, bvec]
 
 /- English proof (translation)
-Rewrite using `[star_e0_dotProduct]`. Simplify using `[e0, bvec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem star_e0_dotProduct_self (k r' : ℕ) : star (e0 k r') ⬝ᵥ e0 k r' = 1 := by
   rw [star_e0_dotProduct]; simp [e0, bvec]
 
 /- English proof (translation)
-Rewrite using `[star_e0_dotProduct]; exact PI.QnLevBasicsW.liftVec_apply_out _ _ (by simp [eI, a0])`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_e0_dotProduct_lift (k r' : ℕ) (w : Fin (2 * r' + k + 1) → ℂ) : star (e0 k r') ⬝ᵥ liftVec k 1 r' w = 0 := by
   rw [star_e0_dotProduct]; exact PI.QnLevBasicsW.liftVec_apply_out _ _ (by simp [eI, a0])
@@ -153,7 +153,7 @@ variable {k r' : ℕ} (M : Mat k (1 + r')) (h : Mat k r') (a : ℂ) (hM0 : M *�
 include hM0
 
 /- English proof (translation)
-Take `⟨j, hj'⟩` from `j`. Simplify using `only at hj`. Substitute `hj` using the available equality. Rewrite using `[gram_eq]`. Rewrite using `[det_gram_cons (m := 0) (e0 k r') (star_e0_dotProduct_self k r') Fin.elim0 (fun b => b.elim0) a Fin.elim0 _ (by rw [fvec_zero _ _ _ rfl, hM0]) (fun b => b.elim0)]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -168,9 +168,9 @@ theorem gram_zero (j : Fin (1 + r' + 1)) (hj : j.val = 0) : gram k (1 + r') M j 
 
 include hM
 /- English proof (translation)
-Take `⟨j, hj'⟩` from `j`. Simplify using `only at hj`. Substitute `hj` using the available equality. Use `choose c hc using hM`. Rewrite using `[gram_eq, gram_eq]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[det_gram_cons (m := b.val + 1) (e0 k r') (star_e0_dotProduct_self k r') (fun i => liftVec k 1 r' (h *ᵥ fvec k r' (isoVec k r') (Fin.castLE (Nat.succ_le_of_lt b.isLt) i))) (fun _ => star_e0_dotProduct_lift _ _ _) a (fun i => c (fvec k r' (isoVec k r') (Fin.castLE (Nat.succ_le_of_ …`. Simplify using `only [PI.QnLevBasicsW.dot_lift, Complex.re_ofReal_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_succ (j : Fin (1 + r' + 1)) (b : Fin (r' + 1)) (hj : j.val = b.val + 1) :
     gram k (1 + r') M j = Complex.normSq a * gram k r' h b := by
@@ -188,11 +188,11 @@ theorem gram_succ (j : Fin (1 + r' + 1)) (b : Fin (r' + 1)) (hj : j.val = b.val 
   simp only [PI.QnLevBasicsW.dot_lift, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Establish `hN : 0 < Complex.normSq a` using `Complex.normSq_pos.2 ha`. Unfold `vHalf`. Rewrite using `[Fin.prod_univ_add, Fin.prod_univ_one, gram_zero M a hM0 _ rfl, gram_succ M h a hM0 hM (Fin.last _) (Fin.last _) (by simp; omega), Finset.prod_congr rfl (fun (b : Fin r') _ => by`. Rewrite using `[gram_succ M h a hM0 hM _ b.castSucc (by simp; omega), mul_inv]),`. Use the proof step `Finset.prod_mul_distrib, Real.mul_rpow hN.le (gram_nonneg _ _ _ _)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Complex.normSq a ^ (-(((2 * (1 + r') + k : ℕ) : ℝ) / 2)) = (Complex.normSq a)⁻¹ * (Complex.normSq a)⁻¹ ^ r' * Complex.normSq a ^ (-((k : ℝ) / 2))`. Rewrite using `[← pow_succ', inv_pow, ← Real.rpow_natCast, ← Real.rpow_neg hN.le, ← Real.rpow_add hN]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem vHalf_block (ha : a ≠ 0) : vHalf k (1 + r') M =
     Complex.normSq a ^ (-(((2 * (1 + r') + k : ℕ) : ℝ) / 2)) * vHalf k r' h := by
@@ -212,22 +212,22 @@ theorem vHalf_block (ha : a ≠ 0) : vHalf k (1 + r') M =
 end
 
 /- English proof (translation)
-Simplify using `only [sqLen, dotProduct, Complex.re_sum, Pi.star_apply, Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqLen_eq {n : ℕ} (v : Fin n → ℂ) : sqLen v = (star v ⬝ᵥ v).re := by
   simp only [sqLen, dotProduct, Complex.re_sum, Pi.star_apply, Complex.star_def,
     ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]
 
 /- English proof (translation)
-The claim follows from `PI.QnLevBasicsW.col_fix y _ (fun b hb => by simp [eI, a0] at hb)`.
+A detailed English derivation is pending.
 -/
 theorem levi_embedding_mulVec_e0 (k r' : ℕ) (y : Mat k r') : ιLev k 1 r' y *ᵥ e0 k r' = e0 k r' :=
   PI.QnLevBasicsW.col_fix y _ (fun b hb => by simp [eI, a0] at hb)
 
 /- English proof (translation)
-Take `⟨-, u, hu, hpu⟩` from `hp`. Use `⟨u 0 0, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Establish `h1` using `congrFun (congrFun hpu i) 0`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_succ (n := 1 + r'), Finset.sum_eq_zero (s := Finset.univ) (f := fun b : Fin (1 + r') => frame k (1 + r') i b.succ * u b.succ 0) (fun b _ => by rw [hu (show id (0 : Fin (1 + r' + 1)) < id b.succ from Fin.succ_pos b), mul_zero])]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [frame, Matrix.of_apply, fvec_zero k r' 0 rfl, add_zero] at h1`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h1, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem parabolic_mulVec_e0_smul {k r' : ℕ} {p : Mat k (1 + r')} (hp : p ∈ Pset k (1 + r')) :
     ∃ a : ℂ, p *ᵥ e0 k r' = a • e0 k r' := by
@@ -243,11 +243,11 @@ theorem parabolic_mulVec_e0_smul {k r' : ℕ} {p : Mat k (1 + r')} (hp : p ∈ P
   rw [h1, mul_comm]
 
 /- English proof (translation)
-Introduce `k r' hk x hx`. Take `⟨κ, hκ, p, hp, rfl⟩` from `GlobalTheory.T.exists_mem_Kset_mul_mem_Pset_eq k (1 + r') hk x hx`. Take `⟨a, ha⟩` from `parabolic_mulVec_e0_smul hp`. Take `⟨ha0, g₁, hg₁, hw⟩` from `GlobalTheory.T.parabolic_line_stabilizer_levi k r' a p hp.1 ha`. Use `⟨g₁, hg₁, fun y _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : vHalf k (1 + r') (κ * p * ιLev k 1 r' y) = vHalf k (1 + r') (p * ιLev k 1 r' y)`. Simplify using `only [vHalf, Matrix.mul_assoc κ, gram_K _ _ _ _ hκ.2]`. Establish `h2 : sqLen ((κ * p) *ᵥ e0 k r') = Complex.normSq a`. Rewrite using `[sqLen_eq, ← Matrix.mulVec_mulVec, ha, star_mulVec, ← dotProduct_mulVec, Matrix.mulVec_mulVec, hκ.2, Matrix.one_mulVec, star_smul, smul_dotProduct, dotProduct_smul, star_e0_dotProduct_self]`. Simplify using `[Complex.normSq_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Use `vHalf_block _ _ a ?_ (fun w => ?_) ha0` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, levi_embedding_mulVec_e0, ha]`. Rewrite using `[← Matrix.mulVec_mulVec, PI.QnLevBasicsW.mulVec_lift, ← Matrix.mulVec_mulVec]`. Conclude with `hw _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vHalf_level : ∀ k r' : ℕ, 1 ≤ k → ∀ x ∈ GV k (1 + r'), ∃ g₁ ∈ GV k r', ∀ y ∈ GV k r', vHalf k (1 + r') (x * ιLev k 1 r' y) = sqLen (x *ᵥ e0 k r') ^ (-(((2 * (1 + r') + k : ℕ) : ℝ) / 2)) * vHalf k r' (g₁ * y) := by
   intro k r' hk x hx

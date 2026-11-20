@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.Ex.OneGen
 
 /- English proof (translation)
-Use `uniqueOfSubsingleton k` as an intermediate fact. Take `rfl : k = default` from `Subsingleton.elim _ _`. Use `⟨c.repr s default, ?_, fun r hr => ?_⟩` and prove the remaining obligations. Establish `e` using `c.sum_repr s`. Rewrite `e` using `[Fintype.sum_unique]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e.symm`. Rewrite using `[hr]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_smul_of_basis {R M κ : Type} [CommRing R] [AddCommGroup M] [Module R M] [Subsingleton κ]
     (c : Module.Basis κ R M) (k : κ) (s : M) : ∃! r : R, s = r • c k := by
@@ -27,11 +27,11 @@ theorem existsUnique_smul_of_basis {R M κ : Type} [CommRing R] [AddCommGroup M]
   · rw [hr]; simp
 
 /- English proof (translation)
-Take `⟨V, hV, b, hb⟩` from `ThetaReal.exists_univBasis hS P 1 le_rfl (y (closedPoint K))`. Establish `hr : Set.range y ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Rewrite using `[Subsingleton.elim q (closedPoint K)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨_, hV⟩, rfl⟩`. Set `u : Over.mk y ⟶ overRes (T` to `baseOver S) V := Over.homMk (IsOpenImmersion.lift V.ι y hr) ((congrArg (_ ≫ ·) (Category.comp_id V.ι)).trans (IsOpenImmersion.lift_fac V.ι y hr))`. Establish `h1 : 1 ^ P.g = 1` using `one_pow _`. Set `k₀ : Fin (1 ^ P.g)` to `Fin.cast h1.symm 0`. Establish `: Subsingleton (Fin (1 ^ P.g))` using `⟨fun a a' => Fin.ext (by have := a.2; have := a'.2; omega)⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨VVRank.pullM P.A P.L _ u (b k₀), fun T _ h s => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hb T (h ≫ u)`. Rewrite using `[VVRank.pullM_comp _ P.isLB, ← hc]`. Conclude with `existsUnique_smul_of_basis c k₀ s`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_univBasis_field (hS : SecBaseChangeAnySt) {S : Scheme.{0}} (P : PolAV S) {K : Type} [Field K]
     (y : Sp K ⟶ S) : ∃ b : SecM P.A P.L ((1 : ℕ) : ℤ) (Over.mk y), ∀ (T : Over S) [IsAffine T.left] (h : T ⟶ Over.mk y)
@@ -53,13 +53,13 @@ theorem exists_univBasis_field (hS : SecBaseChangeAnySt) {S : Scheme.{0}} (P : P
   exact existsUnique_smul_of_basis c k₀ s
 
 /- English proof (translation)
-Introduce `hL S S' G _ L hL₀ P f φ hp hw K _ y x hx`. Take `⟨w, hw⟩` from `hw`. Take `⟨b, hb⟩` from `exists_univBasis_field hL.secBaseChangeAny P y`. Establish `hτ : (𝟙 (Sp K) : (Over.mk y).left ⟶ (Over.mk x).left) ≫ (Over.mk x).hom = (Over.mk y).hom ≫ f` using `(Category.id_comp _).trans hx.symm`. Establish `: IsIso (C` using `Scheme.{0}) (X := (Over.mk y).left) (Y := (Over.mk x).left) (𝟙 (Sp K)) := IsIso.id _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `UnivBasisMove.exists_rel_up hp (T := Over.mk y) (T₀ := Over.mk x) (𝟙 (Sp K)) hτ hw hL₀ P.isLB b`. Use `⟨SecM.toSec G e, fun K' _ i x' h s => ?_⟩` and prove the remaining obligations. Take `rfl : (spMap i ≫ y) ≫ f = x'` from `by rw [Category.assoc, hx, h]`. Set `T : Over S'` to `Over.mk (spMap i ≫ y)`. Establish `: IsAffine T.left` using `inferInstanceAs (IsAffine (Spec _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨E, hE⟩` from `UnivBasisMove.exists_linearEquiv hp hw hL₀ P.isLB ((1 : ℕ) : ℤ) T`. Set `u : T ⟶ Over.mk y` to `Over.homMk (spMap i) rfl`. Set `u₀ : Over.mk (T.hom ≫ f) ⟶ Over.mk x` to `Over.homMk (spMap i) h`. Establish `key : E (VVRank.pullM G L _ u₀ e) = VVRank.pullM P.A P.L _ u b` using `(hE _).unique_down hL₀ P.isLB (he.pull _ _ u u₀ ((Category.id_comp _).trans (Category.comp_id _).symm))`. Take `⟨c, hc, hu⟩` from `hb T u (E s)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨c, E.injective (hc.trans ?_), fun r hr => hu r ?_⟩` and prove the remaining obligations. Rewrite using `[← key]`. Conclude with `(E.map_smul c _).symm`. Rewrite using `[← key]`. Conclude with `(congrArg E hr).trans (E.map_smul r _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_univBasis_of_fibre : Laws2 → ∀ (S S' : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left), L.IsLB →
     ∀ (P : PolAV S') (f : S' ⟶ S) (φ : P.A.left ⟶ G.left), IsGrpPullback P.A G f φ → LBIso P.L (L.pull φ) →

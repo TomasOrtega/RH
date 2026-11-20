@@ -17,7 +17,7 @@ def Pser (wq : PowerSeries ℂ_[p]) : MvPowerSeries (Fin 2) ℂ_[p] :=
     MvPowerSeries.X 1 ^ 2 * PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p]) wq
 
 /- English proof (translation)
-Establish `hu' : PowerSeries.HasSubst u` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Rewrite using `[PowerSeries.constantCoeff_subst hu', finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd`. Simplify using `[map_pow, hu, zero_pow hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem cc_psubst {u : MvPowerSeries (Fin 2) ℂ_[p]} (hu : MvPowerSeries.constantCoeff u = 0)
     (g : PowerSeries ℂ_[p]) :
@@ -29,11 +29,11 @@ theorem cc_psubst {u : MvPowerSeries (Fin 2) ℂ_[p]} (hu : MvPowerSeries.consta
     simp [map_pow, hu, zero_pow hd]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.constantCoeff_subst hφ, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, d s ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `hd (Finsupp.ext h)`. Establish `h0 : MvPowerSeries.constantCoeff (d.prod fun s e => φ s ^ e) = 0`. Rewrite using `[Finsupp.prod, map_prod]`. Apply `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hφ0, zero_pow hs]`. Rewrite using `[h0, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cc_msubst {φ : Fin 2 → MvPowerSeries (Fin 2) ℂ_[p]} (hφ : MvPowerSeries.HasSubst φ)
     (hφ0 : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) (H : MvPowerSeries (Fin 2) ℂ_[p]) :
@@ -52,7 +52,7 @@ theorem cc_msubst {φ : Fin 2 → MvPowerSeries (Fin 2) ℂ_[p]} (hφ : MvPowerS
     rw [h0, smul_zero]
 
 /- English proof (translation)
-Establish `hA : PowerSeries.HasSubst (PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) ℂ_[p]) l + PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p]) l)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by`. Rewrite using `[map_add, cc_psubst (MvPowerSeries.constantCoeff_X 0), cc_psubst (MvPowerSeries.constantCoeff_X 1), hl0, add_zero])`. Unfold `PI.FglChordFactor.add PI.FglChordFactor.pt PI.FglChordFactor.lg`. Rewrite using `[subst_psubst hA hs, ← MvPowerSeries.coe_substAlgHom hs, map_add, MvPowerSeries.coe_substAlgHom, subst_pair_first_series hs, subst_pair_second_series hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_pair_formal_add {l ex : PowerSeries ℂ_[p]} (hl0 : PowerSeries.constantCoeff l = 0)
     {u v : MvPowerSeries (Fin 2) ℂ_[p]} (hs : MvPowerSeries.HasSubst ![u, v]) :
@@ -67,7 +67,7 @@ theorem subst_pair_formal_add {l ex : PowerSeries ℂ_[p]} (hl0 : PowerSeries.co
     subst_pair_first_series hs, subst_pair_second_series hs]
 
 /- English proof (translation)
-Establish `hA : PowerSeries.HasSubst (PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) ℂ_[p]) l - PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p]) l)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by`. Rewrite using `[map_sub, cc_psubst (MvPowerSeries.constantCoeff_X 0), cc_psubst (MvPowerSeries.constantCoeff_X 1), hl0, sub_zero])`. Unfold `PI.FglChordFactor.sub PI.FglChordFactor.pt PI.FglChordFactor.lg`. Rewrite using `[subst_psubst hA hs, ← MvPowerSeries.coe_substAlgHom hs, map_sub, MvPowerSeries.coe_substAlgHom, subst_pair_first_series hs, subst_pair_second_series hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_bivariateSeries_difference_pair {l ex : PowerSeries ℂ_[p]} (hl0 : PowerSeries.constantCoeff l = 0)
     {u v : MvPowerSeries (Fin 2) ℂ_[p]} (hs : MvPowerSeries.HasSubst ![u, v]) :
@@ -82,7 +82,7 @@ theorem subst_bivariateSeries_difference_pair {l ex : PowerSeries ℂ_[p]} (hl0 
     subst_pair_first_series hs, subst_pair_second_series hs]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.subst_comp_subst_apply (hasSubst_iW W wq) hu, flog_iW h, ← PowerSeries.coe_substAlgHom hu, map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem negsub {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq)
     {u : MvPowerSeries (Fin 2) ℂ_[p]} (hu : PowerSeries.HasSubst u) :
@@ -91,7 +91,7 @@ theorem negsub {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : Is
     ← PowerSeries.coe_substAlgHom hu, map_neg]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coe_substAlgHom hu, ← map_mul, iW_mul_D, map_neg, PowerSeries.coe_substAlgHom, PowerSeries.subst_X hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulD_at (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) {u : MvPowerSeries (Fin 2) ℂ_[p]}
     (hu : PowerSeries.HasSubst u) :
@@ -100,14 +100,14 @@ theorem mulD_at (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) {u : M
     PowerSeries.subst_X hu]
 
 /- English proof (translation)
-Rewrite using `[cc_psubst (MvPowerSeries.constantCoeff_X i) _, iW_const]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_inverse_variable (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) (i : Fin 2) :
     MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin 2) ℂ_[p]) (iW W wq)) = 0 := by
   rw [cc_psubst (MvPowerSeries.constantCoeff_X i) _, iW_const]
 
 /- English proof (translation)
-Establish `h0 : PowerSeries.HasSubst (0 : MvPowerSeries (Fin 2) ℂ_[p])` using `PowerSeries.HasSubst.of_constantCoeff_zero (map_zero _)`. Take `⟨q, hq⟩` from `PowerSeries.X_dvd_iff.mpr hg`. Rewrite using `[hq, ← PowerSeries.coe_substAlgHom h0, map_mul, PowerSeries.coe_substAlgHom, PowerSeries.subst_X h0, zero_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem subst_zero_eq_zero_of_constantCoeff_zero {g : PowerSeries ℂ_[p]} (hg : PowerSeries.constantCoeff g = 0) :
     PowerSeries.subst (0 : MvPowerSeries (Fin 2) ℂ_[p]) g = 0 := by
@@ -118,7 +118,7 @@ private theorem subst_zero_eq_zero_of_constantCoeff_zero {g : PowerSeries ℂ_[p
     zero_mul]
 
 /- English proof (translation)
-Rewrite using `[subst_pair_formal_add (flog_const W wq) (hasSubst2 (MvPowerSeries.constantCoeff_X 0) (constantCoeff_inverse_variable W wq 0))]`. Simplify using `only [PI.FglChordFactor.add, PI.FglChordFactor.sub, PI.FglChordFactor.pt, PI.FglChordFactor.lg]`. Rewrite using `[negsub hW (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0)), add_neg_cancel, subst_zero_eq_zero_of_constantCoeff_zero hex0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem F_at_ia {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]} (hW : IsWq W wq)
     (hex0 : PowerSeries.constantCoeff ex = 0) :
@@ -130,7 +130,7 @@ theorem F_at_ia {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]} (hW
   rw [negsub hW (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0)), add_neg_cancel, subst_zero_eq_zero_of_constantCoeff_zero hex0]
 
 /- English proof (translation)
-Rewrite using `[subst_bivariateSeries_difference_pair (flog_const W wq) (hasSubst2 (MvPowerSeries.constantCoeff_X 0) (MvPowerSeries.constantCoeff_X 0))]`. Simplify using `only [PI.FglChordFactor.add, PI.FglChordFactor.sub, PI.FglChordFactor.pt, PI.FglChordFactor.lg]`. Rewrite using `[sub_self, subst_zero_eq_zero_of_constantCoeff_zero hex0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem F'_at_aa {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 0) :
     MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) ℂ_[p]), MvPowerSeries.X 0]
@@ -140,7 +140,7 @@ theorem F'_at_aa {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]} (h
   rw [sub_self, subst_zero_eq_zero_of_constantCoeff_zero hex0]
 
 /- English proof (translation)
-Rewrite using `[subst_pair_formal_add (flog_const W wq) (hasSubst2 (MvPowerSeries.constantCoeff_X 0) (constantCoeff_inverse_variable W wq 1))]`. Simplify using `only [PI.FglChordFactor.add, PI.FglChordFactor.sub, PI.FglChordFactor.pt, PI.FglChordFactor.lg]`. Rewrite using `[negsub hW (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0)), sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem F'_eq {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]} (hW : IsWq W wq) :
     sub (flog W wq) ex (MvPowerSeries.X 0) (MvPowerSeries.X 1) =
@@ -152,7 +152,7 @@ theorem F'_eq {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]} (hW :
   rw [negsub hW (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0)), sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `hs` using `hasSubst2 (MvPowerSeries.constantCoeff_X 0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0) (MvPowerSeries.constantCoeff_X 0)`. Unfold `Pser`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, map_sub, map_mul, map_mul, map_pow, map_pow, MvPowerSeries.coe_substAlgHom, subst_pair_first_variable hs, subst_pair_second_variable hs, subst_pair_first_series hs, subst_pair_second_series hs, sub_self]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem P_at_diagonal (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) ℂ_[p]), MvPowerSeries.X 0] (Pser wq) = 0 := by
@@ -162,9 +162,9 @@ theorem P_at_diagonal (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.coe_substAlgHom, subst_pair_first_variable hs, subst_pair_second_variable hs, subst_pair_first_series hs, subst_pair_second_series hs, sub_self]
 
 /- English proof (translation)
-Establish `hX0 : PowerSeries.HasSubst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) ℂ_[p])` using `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0)`. Establish `hs` using `hasSubst2 (MvPowerSeries.constantCoeff_X 0) (constantCoeff_inverse_variable W wq 0)`. Establish `hm` using `mulD_at W wq hX0`. Establish `key : ∀ a i d w : MvPowerSeries (Fin 2) ℂ_[p], i * d = -a → a ^ 2 * w - i ^ 2 * (w * d ^ 2) = 0`. Introduce `a i d w h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `(-(i * d - a) * w) * h`. Unfold `Pser`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, map_sub, map_mul, map_mul, map_pow, map_pow, MvPowerSeries.coe_substAlgHom, subst_pair_first_variable hs, subst_pair_second_variable hs, subst_pair_first_series hs, subst_pair_second_series hs, ← PowerSeries.subst_comp_subst_apply (hasSubst_iW …`. Conclude with `key _ _ _ _ hm`.
+Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem P_at_inverse {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (hW : IsWq W wq) :
     MvPowerSeries.subst ![MvPowerSeries.X 0,
@@ -183,7 +183,7 @@ theorem P_at_inverse {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (
   exact key _ _ _ _ hm
 
 /- English proof (translation)
-Establish `hX1 : PowerSeries.HasSubst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p])` using `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0)`. Establish `hl : PowerSeries.HasSubst (flog W wq)` using `PowerSeries.HasSubst.of_constantCoeff_zero (flog_const W wq)`. Rewrite using `[subst_pair_formal_add (flog_const W wq) (hasSubst2 (map_zero _) (MvPowerSeries.constantCoeff_X 1))]`. Simplify using `only [PI.FglChordFactor.add, PI.FglChordFactor.sub, PI.FglChordFactor.pt, PI.FglChordFactor.lg]`. Rewrite using `[subst_zero_eq_zero_of_constantCoeff_zero (flog_const W wq), zero_add, ← PowerSeries.subst_comp_subst_apply hl hX1, hexl, PowerSeries.subst_X hX1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem formal_add_first_zero {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]}
     (hexl : PowerSeries.subst (flog W wq) ex = PowerSeries.X) :
@@ -197,9 +197,9 @@ theorem formal_add_first_zero {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSerie
     PowerSeries.subst_X hX1]
 
 /- English proof (translation)
-Establish `hX1 : PowerSeries.HasSubst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p])` using `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0)`. Establish `hl : PowerSeries.HasSubst (flog W wq)` using `PowerSeries.HasSubst.of_constantCoeff_zero (flog_const W wq)`. Establish `hi : PowerSeries.HasSubst (PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) ℂ_[p]) (iW W wq))` using `PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_inverse_variable W wq 1)`. Rewrite using `[subst_bivariateSeries_difference_pair (flog_const W wq) (hasSubst2 (map_zero _) (MvPowerSeries.constantCoeff_X 1))]`. Simplify using `only [PI.FglChordFactor.add, PI.FglChordFactor.sub, PI.FglChordFactor.pt, PI.FglChordFactor.lg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[subst_zero_eq_zero_of_constantCoeff_zero (flog_const W wq), zero_sub, ← negsub hW hX1, ← PowerSeries.subst_comp_subst_apply hl hi, hexl, PowerSeries.subst_X hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formal_sub_first_zero {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]} (hW : IsWq W wq)
     (hexl : PowerSeries.subst (flog W wq) ex = PowerSeries.X) :

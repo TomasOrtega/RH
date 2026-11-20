@@ -7,7 +7,7 @@ open Complex Matrix
 namespace ReciprocityTheory.PTheta
 
 /- English proof (translation)
-Simplify using `only [eC, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eC_add (x y : ℂ) : eC (x + y) = eC x * eC y := by
   simp only [eC, ← Complex.exp_add]
@@ -15,13 +15,13 @@ theorem eC_add (x y : ℂ) : eC (x + y) = eC x * eC y := by
   ring
 
 /- English proof (translation)
-Simplify using `[eC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eC_zero : eC 0 = 1 := by
   simp [eC]
 
 /- English proof (translation)
-Unfold `eC`. Rewrite using `[show (2 * (Real.pi : ℂ) * Complex.I * (k : ℂ)) = (k : ℂ) * (2 * Real.pi * Complex.I) by ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I k`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eC_int (k : ℤ) : eC (k : ℂ) = 1 := by
   unfold eC
@@ -29,7 +29,7 @@ theorem eC_int (k : ℤ) : eC (k : ℂ) = 1 := by
   exact Complex.exp_int_mul_two_pi_mul_I k
 
 /- English proof (translation)
-Unfold `eC`. Rewrite using `[show (2 * (Real.pi : ℂ) * Complex.I * (-(k : ℂ) / 2)) = (k : ℂ) * (-(Real.pi * Complex.I)) by ring, Complex.exp_int_mul, Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem eC_neg_half_int (k : ℤ) : eC (-(k : ℂ) / 2) = (-1) ^ k := by
   unfold eC
@@ -40,14 +40,14 @@ theorem eC_neg_half_int (k : ℤ) : eC (-(k : ℂ) / 2) = (-1) ^ k := by
 variable {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[dotProduct_mulVec, dotProduct_comm, ← mulVec_transpose, hτ.eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_mulVec_symm {τ : Matrix ι ι ℂ} (hτ : τ.IsSymm) (s w : ι → ℂ) :
     w ⬝ᵥ (τ *ᵥ s) = s ⬝ᵥ (τ *ᵥ w) := by
   rw [dotProduct_mulVec, dotProduct_comm, ← mulVec_transpose, hτ.eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [shiftVec, ofRealVec, Pi.add_apply, Complex.ofReal_add]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem shiftVec_add_char (a u : ι → ℝ) (l : ι → ℤ) :
     shiftVec (a + u) l = shiftVec a l + ofRealVec u := by
@@ -56,23 +56,23 @@ theorem shiftVec_add_char (a u : ι → ℝ) (l : ι → ℤ) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ofRealVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ofRealVec_add (a u : ι → ℝ) : ofRealVec (a + u) = ofRealVec a + ofRealVec u := by
   funext i
   simp [ofRealVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ofRealVec, ofIntVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ofRealVec_intCast (n : ι → ℤ) : ofRealVec (fun i => (n i : ℝ)) = ofIntVec n := by
   funext i
   simp [ofRealVec, ofIntVec]
 
 /- English proof (translation)
-Introduce `ι _ a b u v z τ hτ`. Unfold `theta`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [thetaTerm, shiftVec_add_char, ← eC_add, ofRealVec_add]`. Use `congr 1`. Simplify using `only [mulVec_add, dotProduct_add, add_dotProduct, dot_mulVec_symm hτ (shiftVec a l) (ofRealVec u)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaRealTransl_holds : ThetaRealTranslStatement := by
   intro ι _ a b u v z τ hτ
@@ -87,7 +87,7 @@ theorem thetaRealTransl_holds : ThetaRealTranslStatement := by
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [shiftVec, Pi.add_apply, Int.cast_add, Complex.ofReal_add, Complex.ofReal_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem shiftVec_add_int (a : ι → ℝ) (l n : ι → ℤ) :
     shiftVec (a + fun i => (n i : ℝ)) l = shiftVec a (l + n) := by
@@ -96,7 +96,7 @@ theorem shiftVec_add_int (a : ι → ℝ) (l n : ι → ℤ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [dotProduct, shiftVec, ofIntVec, ofRealVec, add_mul, Finset.sum_add_distrib]`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem shiftVec_dot_int (a : ι → ℝ) (l n : ι → ℤ) :
     shiftVec a l ⬝ᵥ ofIntVec n = ((l ⬝ᵥ n : ℤ) : ℂ) + ofRealVec a ⬝ᵥ ofIntVec n := by
@@ -105,11 +105,11 @@ theorem shiftVec_dot_int (a : ι → ℝ) (l n : ι → ℤ) :
   rfl
 
 /- English proof (translation)
-Introduce `ι _ a b n n' z τ`. Unfold `theta`. Rewrite using `[← tsum_mul_left]`. Use `conv_rhs => rw [← (Equiv.addRight n).tsum_eq]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `l`. Simplify using `only [Equiv.coe_addRight, thetaTerm, shiftVec_add_int, ofRealVec_add, ofRealVec_intCast]`. Establish `hk : ∀ x : ℂ, eC (x + (((l + n) ⬝ᵥ n' : ℤ) : ℂ)) = eC x` using `fun x => by`. Rewrite using `[eC_add, eC_int, mul_one]`. Simplify using `only [dotProduct_add, shiftVec_dot_int]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [← eC_add, ← hk]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thetaIntChar_holds : ThetaIntCharStatement := by
   intro ι _ a b n n' z τ
@@ -127,9 +127,9 @@ theorem thetaIntChar_holds : ThetaIntCharStatement := by
   ring
 
 /- English proof (translation)
-Introduce `ι _ a b a' b' z τ hτ`. Rewrite using `[thetaRealTransl_holds ι a' b' a b z τ hτ, ← mul_assoc, ← eC_add]`. Use `(one_mul (theta (a' + a) (b' + b) z τ)).symm using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← eC_zero]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaCharShift_holds : ThetaCharShiftStatement := by
   intro ι _ a b a' b' z τ hτ
@@ -141,13 +141,13 @@ theorem thetaCharShift_holds : ThetaCharShiftStatement := by
   ring
 
 /- English proof (translation)
-Introduce `ι _ a b z τ n n' hτ`. Establish `h1` using `thetaRealTransl_holds ι a b (fun i => (n i : ℝ)) (fun i => (n' i : ℝ)) z τ hτ`. Simplify using `only [ofRealVec_intCast] at h1`. Rewrite using `[h1, thetaIntChar_holds, ← mul_assoc]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `autFactor`. Rewrite using `[← eC_add, ← eC_add]`. Establish `hk : ofIntVec n ⬝ᵥ ofIntVec n' = ((n ⬝ᵥ n' : ℤ) : ℂ)`. Simplify using `[dotProduct, ofIntVec]`. Establish `hk2 : ∀ x : ℂ, eC (x - ((n ⬝ᵥ n' : ℤ) : ℂ)) = eC x` using `fun x => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_add_neg, ← Int.cast_neg, eC_add, eC_int, mul_one]`. Simplify using `only [dotProduct_add, hk]`. Rewrite using `[dotProduct_comm (ofIntVec n) (ofRealVec b)]`. Use `conv_rhs => rw [← hk2]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem thetaQuasiPeriod_holds : ThetaQuasiPeriodStatement := by
   intro ι _ a b z τ n n' hτ

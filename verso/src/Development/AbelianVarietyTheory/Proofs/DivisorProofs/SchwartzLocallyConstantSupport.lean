@@ -14,9 +14,9 @@ namespace GlobalTheory.SBBounds
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero' k).tendsto_right_iff]`. Introduce `γ hγ`. Establish `: MulArchimedean (ValueGroupWithZero k)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨n, hn⟩` from `exists_pow_lt₀ h (Units.mk0 γ hγ)`. Use `filter_upwards [eventually_ge_atTop n] with m hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_pow_zero {x : k} (h : valuation k x < 1) : Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0) := by
   rw [(IsValuativeTopology.hasBasis_nhds_zero' k).tendsto_right_iff]
@@ -29,21 +29,19 @@ theorem tendsto_pow_zero {x : k} (h : valuation k x < 1) : Tendsto (fun n : ℕ 
   exact lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n t _ ht φ hφ`. Take `⟨hlc, hcs⟩` from `hφ`. Establish `hU : IsOpen (intM k (Fin n) (Fin n))` using `isOpen_intMatrix`. Establish `hUc : IsCompact (intM k (Fin n) (Fin n))` using `isCompact_intMatrix`. Establish `h0 : (0 : Matrix (Fin n) (Fin n) k) ∈ intM k (Fin n) (Fin n)` using `fun i j => (𝒪[k]).zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htO : t ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 ht.le`. Establish `hT` using `tendsto_pow_zero ht`. Establish `hmono : Monotone fun N : ℕ => {X : Matrix (Fin n) (Fin n) k | t ^ N • X ∈ intM k (Fin n) (Fin n)}`. Introduce `N N' hNN' X hX i j`. Establish `e : t ^ N' • X = t ^ (N' - N) • (t ^ N • X)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, ← pow_add, Nat.sub_add_cancel hNN']`. Rewrite using `[e]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Conclude with `(𝒪[k]).mul_mem ((𝒪[k]).pow_mem htO _) (hX i j)`. Take `⟨N, hN⟩` from `hcs.isCompact.elim_directed_cover (fun N : ℕ => {X : Matrix (Fin n) (Fin n) k | t ^ N • X ∈ intM k (Fin n) (Fin n)}) (fun N => hU.preimage (f := fun X : Matrix (Fin n) (Fin n) k => t ^ N • X) (continuous_const_smul _)) (fun X _ => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : Tendsto (fun N : ℕ => t ^ N • X) atTop (𝓝 ((0 : k) • X))` using `hT.smul_const X`. Rewrite `h1` using `[zero_smul]`. Take `⟨N, hN⟩` from `(h1.eventually (hU.mem_nhds h0)).exists`. Conclude with `Set.mem_iUnion.2 ⟨N, hN⟩)`. Use the proof step `hmono.directed_le`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : IsOpen {p : k × Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k | φ (p.2.1 + p.1 • p.2.2) = φ p.2.1}`. Establish `c1 : Continuous fun p : k × Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k => p.2.1 + p.1 • p.2.2` using `by fun_prop`. Establish `c2 : Continuous fun p : k × Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k => p.2.1` using `by fun_prop`. Use `((hlc.comp_continuous c1).comp₂ (hlc.comp_continuous c2) fun a b => a - b).isOpen_fiber 0` as an intermediate fact. Simplify `this` using `[Function.comp_def, sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hKU : IsCompact (tsupport φ ×ˢ intM k (Fin n) (Fin n))` using `hcs.isCompact.prod hUc`. Establish `hev : ∀ᶠ c in 𝓝 (0 : k), ∀ q ∈ tsupport φ ×ˢ intM k (Fin n) (Fin n), φ (q.1 + c • q.2) = φ q.1`. Use `hKU.eventually_forall_of_forall_eventually fun q _ => ?_` and prove the remaining obligations. Establish `hm : ((0 : k), q) ∈ {p : k × Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k | φ (p.2.1 + p.1 • p.2.2) = φ p.2.1}` using `by simp`. Conclude with `hZ.mem_nhds hm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Take `⟨M, hM⟩` from `(hT.eventually hev).exists`. Use `⟨N, M, fun X hX => hN (subset_tsupport _ hX), fun X E hE => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hX : X ∈ tsupport φ`. Conclude with `hM (X, E) ⟨hX, hE⟩`. Distinguish the cases in `hX' : X + t ^ M • E ∈ tsupport φ`.
-
-Establish `hE' : -E ∈ intM k (Fin n) (Fin n)` using `fun i j => (𝒪[k]).neg_mem (hE i j)`. Use `hM (X + t ^ M • E, -E) ⟨hX', hE'⟩` as an intermediate fact. Simplify using `only [smul_neg, add_neg_cancel_right] at this`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hX, image_eq_zero_of_notMem_tsupport hX']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_bounds : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (t : k),
     t ≠ 0 → valuation k t < 1 → ∀ φ : Matrix (Fin n) (Fin n) k → ℂ, φ ∈ SB (Matrix (Fin n) (Fin n) k) →

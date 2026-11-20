@@ -21,7 +21,7 @@ def IsStrongResolution (k : Type u) [Field k] (X : Scheme.{u})
   IsStrictNormalCrossingsDivisor (reducedInverseImage s.lastStructMap (smoothLocusComplement f))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isStrongResolutionRule_iff (R : ResolutionRule.{u}) :
     IsStrongResolutionRule R ↔

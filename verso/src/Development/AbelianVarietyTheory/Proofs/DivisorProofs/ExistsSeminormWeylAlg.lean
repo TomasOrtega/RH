@@ -29,23 +29,23 @@ def IsBddIntertwiner {l : Type} [Fintype l] (M : ℝ) (A' : Sch l →ₗ[ℂ] Sc
     ∃ N : (l ⊕ l → ℝ) → (l ⊕ l → ℝ), (∀ w, ‖N w‖ ≤ M * ‖w‖) ∧ ∀ u f, dRho u (A' f) = A' (dRho (N u) f)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => le_rfl, id, fun _ => by simp, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {l : Type} [Fintype l] : IsBddIntertwiner (l := l) 1 LinearMap.id :=
   ⟨fun _ => le_rfl, id, fun _ => by simp, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Use `weylAlg_induction (P := fun B => ∃ q : Seminorm ℂ (Sch l), Continuous q ∧ ∀ A', IsBddIntertwiner M A' → ∀ f, ‖schwartzToL2 l (B (A' f))‖ ≤ q f) ?_ ?_ ?_ ?_ ?_ hB` and prove the remaining obligations. Use `⟨(normSeminorm ℂ (L2 l)).comp (schwartzToL2 l).toLinearMap, continuous_norm.comp (schwartzToL2 l).continuous, fun A' hA f => ?_⟩` and prove the remaining obligations. Use `norm_toLp_le_of_lintegral_le A' 1 ENNReal.one_ne_top (fun f => by rw [one_mul]; exact hA.1 f) f` as an intermediate fact. Simplify `this` using `[schwartzToL2_apply]`. Introduce and unpack `A w ⟨q, hq, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Set `c : ℝ≥0` to `Real.toNNReal (M * ‖w‖)`. Use `⟨∑ a : l ⊕ l, c • q.comp (dRho (Pi.single a 1)).toLinearMap, Seminorm.continuous_finsetSum fun a _ => ?_, fun A' hA f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun f => (c : ℝ) * q (dRho (Pi.single a 1) f)`. Conclude with `continuous_const.mul (hq.comp (dRho (Pi.single a 1)).continuous)`. Take `⟨N, hN, hI⟩` from `hA.2`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (∑ a : l ⊕ l, c • q.comp (dRho (Pi.single a 1)).toLinearMap) f = ∑ a : l ⊕ l, (c : ℝ) * q (dRho (Pi.single a 1) f)`. Simplify using `[NNReal.smul_def, smul_eq_mul]`. Rewrite using `[e, ContinuousLinearMap.mul_apply, hI]`. Use `(h A' hA _).trans ?_` and prove the remaining obligations. Rewrite using `[dRho_eq_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply]`. Use `(Finset.le_sum_of_subadditive q (map_zero q).le (map_add_le_add q) _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul_eq_mul, Complex.norm_real]`. Conclude with `mul_le_mul_of_nonneg_right (((norm_le_pi_norm (N w) a).trans (hN w)).trans (Real.le_coe_toNNReal _)) (apply_nonneg q _)`. Conclude with `⟨0, continuous_zero, fun A' _ f => by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `A B ⟨q, hq, h⟩ ⟨q', hq', h'⟩`. Use `⟨q + q', hq.add hq', fun A' hA f => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.add_apply, map_add]`. Conclude with `(norm_add_le _ _).trans (add_le_add (h A' hA f) (h' A' hA f))`. Introduce and unpack `c A ⟨q, hq, h⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨‖c‖₊ • q, ?_, fun A' hA f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun f => ‖c‖ * q f`. Conclude with `continuous_const.mul hq`. Rewrite using `[ContinuousLinearMap.smul_apply, map_smul, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (h A' hA f) (norm_nonneg c)`.
+A detailed English derivation is pending.
 -/
 theorem exists_seminorm_weylAlg {l : Type} [Fintype l] (M : ℝ) {B : Sch l →L[ℂ] Sch l} (hB : B ∈ weylAlg l) :
     ∃ q : Seminorm ℂ (Sch l), Continuous q ∧ ∀ A', IsBddIntertwiner M A' → ∀ f, ‖schwartzToL2 l (B (A' f))‖ ≤ q f := by
@@ -86,13 +86,11 @@ theorem exists_seminorm_weylAlg {l : Type} [Fintype l] (M : ℝ) {B : Sch l →L
       exact mul_le_mul_of_nonneg_left (h A' hA f) (norm_nonneg c)
 
 /- English proof (translation)
-Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ) p hp`. Use `choose B hB hle using exists_seminorm_le (l := l)`. Use `choose q hq hq' using fun k n r => exists_seminorm_weylAlg M (hB k n r)`. Use `⟨C • ∑ i ∈ s, ∑ r, q i.1 i.2 r, ?_, fun A' hA f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun f => (C : ℝ) * (∑ i ∈ s, ∑ r, q i.1 i.2 r) f`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `continuous_const.mul (Seminorm.continuous_finsetSum fun i _ => Seminorm.continuous_finsetSum fun r _ => hq _ _ _)`. Use `(hC (A' f)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(C : ℝ) * _ ≤ (C : ℝ) * (∑ i ∈ s, ∑ r, q i.1 i.2 r) f`. Use `mul_le_mul_of_nonneg_left ?_ C.2` and prove the remaining obligations. Use `Seminorm.finset_sup_apply_le (apply_nonneg _ _) fun i hi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (∑ r, q i.1 i.2 r) ≤ ∑ i ∈ s, ∑ r, q i.1 i.2 r` using `Finset.single_le_sum (f := fun i : ℕ × ℕ => ∑ r, q i.1 i.2 r) (fun _ _ => bot_le) hi`. Use `le_trans ?_ (h1 f)` and prove the remaining obligations. Rewrite using `[SchwartzMap.schwartzSeminormFamily_apply]`. Use `(hle i.1 i.2 (A' f)).trans ?_` and prove the remaining obligations. Establish `e : (∑ r, q i.1 i.2 r) f = ∑ r, q i.1 i.2 r f` using `by simp`.
-
-Rewrite using `[e]`. Conclude with `Finset.sum_le_sum fun r _ => hq' _ _ r A' hA f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_seminorm_unif {l : Type} [Fintype l] (M : ℝ) (p : Seminorm ℂ (Sch l)) (hp : Continuous p) :
     ∃ q : Seminorm ℂ (Sch l), Continuous q ∧ ∀ A', IsBddIntertwiner M A' → ∀ f, p (A' f) ≤ q f := by
@@ -116,19 +114,19 @@ theorem exists_seminorm_unif {l : Type} [Fintype l] (M : ℝ) (p : Seminorm ℂ 
     exact Finset.sum_le_sum fun r _ => hq' _ _ r A' hA f
 
 /- English proof (translation)
-Set `β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ` to `-Algebra.trace ℝ (mixedEmbedding.mixedSpace F)`. Establish `hβ : ∀ a, ψ (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a, 0) : AdeleRing (𝓞 F) F) = Complex.exp (2 * Real.pi * Complex.I * β a)`. Introduce `a`. Set `z : AF F` to `((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a, 0)`. Establish `hAt : At (evI F) z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `c hc`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c.1 * _ = 0`. Rewrite using `[GlobalTheory.ArchHeis.fst_eq_zero_of_ev hc, zero_mul]`. Express the relevant statement in the definitionally equal form `c.2 * 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_zero]`. Establish `he : evI F z = a` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _`. Express the relevant statement in the definitionally equal form `ψ z = _`. Rewrite using `[hψ.2.2 z hAt, he]`. Simplify using `only [β, LinearMap.neg_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hnd : ∀ a, a ≠ 0 → ∃ b, β (a * b) ≠ 0`. Introduce `a ha`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `ha (GlobalTheory.ArchUniq.Coord.eq_zero_of_trace a fun b => neg_eq_zero.1 (h b))`. Take `⟨n, Q, P, h⟩` from `GlobalTheory.WeilAdm.RealModel.exists_model F ψ β hβ hnd κ`. Use `⟨n, Q, P, fun w φ => ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[GlobalTheory.WeilAdm.RealModel.schrInf_eq ψ β hβ]`. Simplify using `only [schrF, trP, β, LinearMap.neg_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_model_schrF (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (κ : Type)
     [Fintype κ] :
@@ -172,31 +170,31 @@ theorem exists_model_schrF (F : Type) [Field F] [NumberField F] (ψ : AddChar (A
   ring
 
 /- English proof (translation)
-Take `⟨n, Q, P, hQP⟩` from `exists_model_schrF F ψ hψ κ`. Take `⟨c, hc⟩` from `GlobalTheory.lintegral_sq_comp_linearEquiv_mixed F κ n Q`. Set `CQ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) Q`. Set `CQi` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) Q.symm`. Establish `hCQ : ∀ f, ⇑(CQ f) = ⇑f ∘ ⇑Q` using `fun f => SchwartzMap.compCLMOfContinuousLinearEquiv_apply ℂ Q f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hCQi : ∀ g, ⇑(CQi g) = ⇑g ∘ ⇑Q.symm` using `fun g => SchwartzMap.compCLMOfContinuousLinearEquiv_apply ℂ Q.symm g`. Establish `hQQ : ∀ f, CQi (CQ f) = f` using `fun f => by`. Use extensionality with `z`. Rewrite using `[hCQi, hCQ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hQQ' : ∀ g, CQ (CQi g) = g` using `fun g => by`. Use extensionality with `z`. Rewrite using `[hCQ, hCQi]`. Simplify using the standard rewrite rules. Set `Pc` to `P.toContinuousLinearEquiv`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `a : ℝ` to `‖Pc.symm.toContinuousLinearMap‖`. Set `b : ℝ` to `‖Pc.toContinuousLinearMap‖`. Establish `hW` using `schwartz_withSeminorms ℂ (κ → mixedEmbedding.mixedSpace F) ℂ`. Establish `hs : Continuous (s.sup (schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ) : Seminorm ℂ (SInf F κ))` using `Seminorm.continuous_finsetSup fun i _ => hW.continuous_seminorm i`. Take `⟨q, hq, hqA⟩` from `exists_seminorm_unif (l := Fin n) (a * (|M| * b)) ((s.sup (schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)).comp CQi.toLinearMap) (hs.comp CQi.continuous)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s', C, -, hC⟩` from `Seminorm.bound_of_continuous hW (q.comp CQ.toLinearMap) (hq.comp CQ.continuous)`. Use `⟨s', C, fun A L N hLN hN hA hI f => ?_⟩` and prove the remaining obligations. Set `A' : Sch (Fin n) →ₗ[ℂ] Sch (Fin n)` to `CQ.toLinearMap ∘ₗ A ∘ₗ CQi.toLinearMap`. Establish `hA'apply : ∀ g, A' g = CQ (A (CQi g))` using `fun g => rfl`. Set `L' : (Fin n ⊕ Fin n → ℝ) →ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)` to `P.symm.toLinearMap ∘ₗ L ∘ₗ P.toLinearMap`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbound : ∀ g, ∫⁻ x, ‖A' g x‖ₑ ^ 2 ≤ ∫⁻ x, ‖g x‖ₑ ^ 2`. Introduce `g`. Establish `e1 : ∫⁻ x, ‖A' g x‖ₑ ^ 2 = c * ∫⁻ z, ‖A (CQi g) z‖ₑ ^ 2`. Rewrite using `[← hc]`. Simplify using `only [hA'apply, hCQ, Function.comp_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∫⁻ x, ‖g x‖ₑ ^ 2 = c * ∫⁻ z, ‖CQi g z‖ₑ ^ 2`. Rewrite using `[← hc]`. Simplify using `only [hCQi, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply]`. Rewrite using `[e1, e2]`. Conclude with `mul_le_mul' le_rfl (hA _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ w (g g' : Sch (Fin n)), ⇑g' = rhoFun w ⇑g → ⇑(A' g') = rhoFun (L' w) ⇑(A' g)`. Introduce `w g g' hg`. Establish `h1 : ⇑(CQi g') = schrF (trP F κ) (P w) ⇑(CQi g)`. Use `congrArg (fun u => u ∘ ⇑Q.symm) (hQP w ⇑(CQi g))` as an intermediate fact. Simplify using `only [Function.comp_assoc, ContinuousLinearEquiv.self_comp_symm, Function.comp_id] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hCQi, hg, ← hCQ, hQQ']`. Establish `h2` using `hI (P w) (CQi g) (CQi g') h1`. Establish `hL' : P (L' w) = L (P w)` using `P.apply_symm_apply _`. Establish `h3 : ⇑(A (CQi g')) = schrF (trP F κ) (P (L' w)) ⇑(A (CQi g))`. Rewrite using `[h2, hL']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hd` using `DRhoTransfer.dRho_intertwine (Fin n) L' A' 1 ENNReal.one_ne_top (fun g => by rw [one_mul]; exact hbound g) hint`. Establish `hB : IsBddIntertwiner (a * (|M| * b)) A'`. Use `⟨hbound, fun w => P.symm (N (P w)), fun w => ?_, fun u g => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖P.symm (N (P w))‖ ≤ a * ‖N (P w)‖` using `Pc.symm.toContinuousLinearMap.le_opNorm _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖P w‖ ≤ b * ‖w‖` using `Pc.toContinuousLinearMap.le_opNorm _`. Establish `h3 : ‖N (P w)‖ ≤ |M| * (b * ‖w‖)` using `(hN _).trans (mul_le_mul (le_abs_self M) h2 (norm_nonneg _) (abs_nonneg M))`. Combine the equalities or inequalities in the displayed calculation. Establish `e : L' (P.symm (N (P u))) = u`. Express the relevant statement in the definitionally equal form `P.symm (L (P (P.symm (N (P u))))) = u`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[P.apply_symm_apply, hLN, P.symm_apply_apply]`. Rewrite using `[hd, e]`. Establish `h1` using `hqA A' hB (CQ f)`. Establish `e : CQi (A' (CQ f)) = A f` using `by rw [hA'apply, hQQ, hQQ]`. Express the relevant statement in the definitionally equal form `(s.sup (schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)) (CQi (A' (CQ f))) ≤ _ at h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e]`. Conclude with `h1.trans (hC f)`.
+A detailed English derivation is pending.
 -/
 theorem unif_bound (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (κ : Type) [Fintype κ]
     (M : ℝ) (s : Finset (ℕ × ℕ)) : ∃ (s' : Finset (ℕ × ℕ)) (C : ℝ),
@@ -276,13 +274,13 @@ theorem unif_bound (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ
   exact h1.trans (hC f)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT K hK s`. Establish `hψ : IsStd B.ψ` using `hT.base.std`. Establish `hW : G.M.IsWeil B.ψ X.β (X.β / X.α) om` using `hT.weil`. Establish `hcK : IsCompact (K : Set (UA σ G.V.J))` using `GlobalTheory.StabCpt.isCompact_of_isStab hKP F E σ B a G.V (a - G.p) G.p K hT.base hT.geo.hV hK`. Take `⟨M, hM⟩` from `GlobalTheory.ArchKX.archActX_bound G.M _ (isCompact_KAt hcK (evI F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s', C, hC⟩` from `unif_bound F B.ψ hψ (Fin a × Fin (a + a')) M s`. Use `⟨s', C, fun k hk f => ?_⟩` and prove the remaining obligations. Establish `hkU : k ∈ UAt σ G.V (evI F)` using `hk.2`. Establish `hex` using `GlobalTheory.ThK.ArchActs.acts_inf hKP F E σ B a a' G X om om' hT k hkU`. Establish `hlin : IsLinearMap ℂ ⇑(om (k, 1))` using `(om (k, 1)).isLinear`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a'))` to `{ toFun := locOpInf (om (k, 1)) map_add' := fun f g => by simpa using locOpInf_lin hlin hex 1 1 f g map_smul' := fun c f => by simpa using locOpInf_lin hlin hex c 0 f f }`. Set `L` to `IsLinearMap.mk' _ (GlobalTheory.ArchKX.isLinearMap_archActX G.M k)`. Set `N` to `IsLinearMap.mk' _ (GlobalTheory.ArchKX.isLinearMap_archActX G.M k⁻¹)`. Establish `hLN : ∀ v, L (N v) = v` using `GlobalTheory.ArchKX.archActX_inv G.M k`. Establish `hN : ∀ v, ‖N v‖ ≤ M * ‖v‖` using `hM k⁻¹ (inv_mem hk)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ f, ∫⁻ z, ‖A f z‖ₑ ^ 2 ≤ ∫⁻ z, ‖f z‖ₑ ^ 2` using `fun f => (GlobalTheory.ArchKX.lintegral_acts_eq_volume G.M B.ψ X.β (X.β / X.α) om hW k f (A f) (acts_locOpInf (hex f))).le`. Establish `hI : ∀ v (f f' : SInf F (Fin a × Fin (a + a'))), ⇑f' = schrF (trP F (Fin a × Fin (a + a'))) v ⇑f → ⇑(A f') = schrF (trP F (Fin a × Fin (a + a'))) (L v) ⇑(A f)` using `fun v f f' h => GlobalTheory.ArchKX.locOpInf_schrF G.M B.ψ X.β (X.β / X.α) om hψ hW k hkU hex v f f' h`. Conclude with `hC A L N hLN hN h2 hI f`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locOpInf_unif_bound : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

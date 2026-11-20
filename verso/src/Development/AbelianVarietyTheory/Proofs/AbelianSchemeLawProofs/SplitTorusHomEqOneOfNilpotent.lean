@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 theorem spm_left (φ : C →ₐ[A] D) : (spm φ).left = Spec.map (CommRingCat.ofHom φ.toRingHom) := rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, spm_left, spm_left, spm_left]`. Conclude with `(Spec.map_comp (CommRingCat.ofHom φ.toRingHom) (CommRingCat.ofHom ψ.toRingHom))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spm_comp (φ : C →ₐ[A] D) (ψ : D →ₐ[A] E) : spm (ψ.comp φ) = spm ψ ≫ spm φ := by
   apply Over.OverMorphism.ext
@@ -42,7 +42,7 @@ theorem spm_comp (φ : C →ₐ[A] D) (ψ : D →ₐ[A] E) : spm (ψ.comp φ) = 
   exact (Spec.map_comp (CommRingCat.ofHom φ.toRingHom) (CommRingCat.ofHom ψ.toRingHom))
 
 /- English proof (translation)
-Establish `h1` using `Spec.map_injective (congrArg CommaMorphism.left h)`. Use extensionality with `a`. Conclude with `congrArg (fun g : CommRingCat.of C ⟶ CommRingCat.of D => g.hom a) h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem spm_injective {φ ψ : C →ₐ[A] D} (h : spm φ = spm ψ) : φ = ψ := by
   have h1 := Spec.map_injective (congrArg CommaMorphism.left h)
@@ -50,9 +50,9 @@ theorem spm_injective {φ ψ : C →ₐ[A] D} (h : spm φ = spm ψ) : φ = ψ :=
   exact congrArg (fun g : CommRingCat.of C ⟶ CommRingCat.of D => g.hom a) h1
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `Spec.map_surjective (R := CommRingCat.of C) (S := CommRingCat.of D) g.left`. Establish `hw : CommRingCat.ofHom (algebraMap A C) ≫ φ = CommRingCat.ofHom (algebraMap A D)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ]`. Conclude with `Over.w g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨φ.hom, fun a => congrArg (fun g : CommRingCat.of A ⟶ CommRingCat.of D => g.hom a) hw⟩, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hφ`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem spm_surjective (g : sp A D ⟶ sp A C) : ∃ φ : C →ₐ[A] D, spm φ = g := by
   obtain ⟨φ, hφ⟩ := Spec.map_surjective (R := CommRingCat.of C) (S := CommRingCat.of D) g.left
@@ -66,9 +66,9 @@ theorem spm_surjective (g : sp A D ⟶ sp A C) : ∃ φ : C →ₐ[A] D, spm φ 
   exact hφ
 
 /- English proof (translation)
-Establish `h` using `range_comap_of_surjective D π.toRingHom hs`. Establish `h2 : PrimeSpectrum.zeroLocus (RingHom.ker π.toRingHom : Set C) = Set.univ`. Rewrite using `[PrimeSpectrum.zeroLocus_eq_univ_iff]`. Introduce `x hx`. Conclude with `hn x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2, Set.range_eq_univ]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem spm_left_surjective (π : C →ₐ[A] D) (hs : Function.Surjective π)
     (hn : ∀ x, π x = 0 → IsNilpotent x) : Function.Surjective (spm π).left := by
@@ -139,7 +139,7 @@ variable {B : Over (Spec (CommRingCat.of A))} [GrpObj B] {R : Type} [CommRing R]
 
 omit [GrpObj B] in
 /- English proof (translation)
-Apply `spm_injective` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_mono j.left, ← Over.comp_left, h, Over.comp_left]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_injective {C : Type} [CommRing C] [Algebra A C] {φ ψ : R →ₐ[A] C}
     (h : spm φ ≫ j = spm ψ ≫ j) : φ = ψ := by
@@ -150,7 +150,7 @@ theorem pt_injective {C : Type} [CommRing C] [Algebra A C] {φ ψ : R →ₐ[A] 
 omit [IsOpenImmersion j.left] in
 include hε in
 /- English proof (translation)
-Rewrite using `[spm_comp, Category.assoc, hε, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_one (C : Type) [CommRing C] [Algebra A C] :
     spm ((Algebra.ofId A C).comp ε) ≫ j = 1 := by
@@ -159,11 +159,11 @@ theorem pt_one (C : Type) [CommRing C] [Algebra A C] :
 include hε in
 
 /- English proof (translation)
-Establish `hr : Set.range g.left ⊆ Set.range j.left`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y, rfl⟩` from `spm_left_surjective π hs hn x`. Rewrite `hg` using `[← pt_one j ε hε D]`. Use `⟨(spm ((Algebra.ofId A D).comp ε)).left y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Over.comp_left, ← Over.comp_left, hg]`. Take `⟨φ, hφ⟩` from `spm_surjective (C := R) (D := C) (Over.homMk (IsOpenImmersion.lift j.left g.left hr) (by`. Rewrite using `[← Over.w j, IsOpenImmersion.lift_fac_assoc, Over.w g]))`. Use `⟨φ, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_pt {C D : Type} [CommRing C] [Algebra A C] [CommRing D] [Algebra A D]
     (π : C →ₐ[A] D) (hs : Function.Surjective π) (hn : ∀ x, π x = 0 → IsNilpotent x)
@@ -185,25 +185,25 @@ theorem exists_pt {C D : Type} [CommRing C] [Algebra A C] [CommRing D] [Algebra 
 include hε in
 
 /- English proof (translation)
-Use `set e : R →ₐ[A] C := (Algebra.ofId A C).comp ε with he`. Establish `he1 : spm e ≫ j = 1` using `pt_one j ε hε C`. Set `G₁ : R →ₐ[A] triples A K` to `(φ₁.prod (e.prod e)).codRestrict _ (fun a => ⟨h₁ a, by simp⟩)`. Set `G₂ : R →ₐ[A] triples A K` to `(e.prod (φ₂.prod e)).codRestrict _ (fun a => ⟨by simp, h₂ a⟩)`. Establish `key : ∀ {D : Type} [CommRing D] [Algebra A D] (p : triples A K →ₐ[A] D), spm p ≫ ((spm G₁ ≫ j) * (spm G₂ ≫ j)) = (spm (p.comp G₁) ≫ j) * (spm (p.comp G₂) ≫ j)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `D _ _ p`. Rewrite using `[MonObj.comp_mul, spm_comp, spm_comp, Category.assoc, Category.assoc]`. Establish `k3 : spm (tr₃ K) ≫ ((spm G₁ ≫ j) * (spm G₂ ≫ j)) = 1`. Rewrite using `[key]`. Express the relevant statement in the definitionally equal form `(spm e ≫ j) * (spm e ≫ j) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he1, _root_.mul_one]`. Take `⟨Ψ, hΨ⟩` from `exists_pt j ε hε (tr₃ K) (fun c => ⟨⟨(c, c, c), by simp, by simp⟩, rfl⟩) (by`. Introduce and unpack `⟨⟨x, y, z⟩, hx, hy⟩ h0`. Take `rfl : z = 0` from `h0`. Take `⟨n, hn⟩` from `hK x (by simpa using hx)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hK y (by simpa using hy)`. Use `⟨n + m + 1, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[pow_add, hn, hm]) _ k3`. Rewrite `key`, `k3` using `[← hΨ]`. Establish `e3 : (tr₃ K).comp Ψ = e` using `pt_injective j (by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spm_comp, Category.assoc, k3, he1])`. Establish `e1 : (tr₁ K).comp Ψ = φ₁` using `pt_injective j (by`. Rewrite using `[spm_comp, Category.assoc, key]`. Express the relevant statement in the definitionally equal form `(spm φ₁ ≫ j) * (spm e ≫ j) = _`. Rewrite using `[he1, _root_.mul_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (tr₂ K).comp Ψ = φ₂` using `pt_injective j (by`. Rewrite using `[spm_comp, Category.assoc, key]`. Express the relevant statement in the definitionally equal form `(spm e ≫ j) * (spm φ₂ ≫ j) = _`. Rewrite using `[he1, _root_.one_mul])`. Establish `s1 : (trSum K).comp G₁ = (Ideal.Quotient.mkₐ A (K ^ 2)).comp φ₁`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (φ₁ a + e a - e a) = Ideal.Quotient.mk _ (φ₁ a)`. Rewrite using `[add_sub_cancel_right]`. Establish `s2 : (trSum K).comp G₂ = (Ideal.Quotient.mkₐ A (K ^ 2)).comp φ₂`. Use extensionality with `a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (e a + φ₂ a - e a) = Ideal.Quotient.mk _ (φ₂ a)`. Rewrite using `[add_sub_cancel_left]`. Establish `e4 : (Ideal.Quotient.mkₐ A (K ^ 2)).comp φ = (trSum K).comp Ψ` using `pt_injective j (by`. Rewrite using `[spm_comp Ψ, Category.assoc, key, s1, s2, spm_comp, spm_comp, spm_comp, Category.assoc, Category.assoc, Category.assoc, ← MonObj.comp_mul, h])`. Rewrite using `[← Ideal.Quotient.eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(AlgHom.congr_fun e4 a).trans ?_` and prove the remaining obligations. Rewrite using `[← e1, ← e2]`. Use `AlgHom.congr_fun e3 a` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ = Ideal.Quotient.mk _ (_ - e a)`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mul_pt {C : Type} [CommRing C] [Algebra A C] (K : Ideal C) (hK : ∀ x ∈ K, IsNilpotent x)
     (φ₁ φ₂ φ : R →ₐ[A] C) (h₁ : ∀ a, φ₁ a - algebraMap A C (ε a) ∈ K)
@@ -266,7 +266,7 @@ theorem mul_pt {C : Type} [CommRing C] [Algebra A C] (K : Ideal C) (hK : ∀ x �
 end
 
 /- English proof (translation)
-Rewrite using `[Over.comp_left]`. Use `(Category.assoc _ _ _).trans (congrArg (u.left ≫ ·) ?_)` and prove the remaining obligations. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pullback_map_fst {S S' : Scheme.{0}} {p : S' ⟶ S} {Z : Over S'} {V W : Over S}
     (u : Z ⟶ (Over.pullback p).obj V) (f : V ⟶ W) :
@@ -277,9 +277,9 @@ theorem pullback_map_fst {S S' : Scheme.{0}} {p : S' ⟶ S} {Z : Over S'} {V W :
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Set `u : Over.mk s ⟶ (Over.pullback p).obj V` to `Over.homMk (pullback.lift t.left s ((Over.w t).trans hs.symm)) (pullback.lift_snd _ _ _)`. Establish `hu : u.left ≫ pullback.fst V.hom p = t.left` using `pullback.lift_fst _ _ _`. Establish `h1` using `pullback_map_fst u f`. Establish `h2` using `pullback_map_fst u g`. Rewrite `h1` using `[h, h2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, ← hu]`. Conclude with `(Category.assoc _ _ _).trans (h1.symm.trans (Category.assoc _ _ _).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_eq_of_pullback_map_eq {S S' : Scheme.{0}} {p : S' ⟶ S} {Z V W : Over S}
     {f g : V ⟶ W} (h : (Over.pullback p).map f = (Over.pullback p).map g) (t : Z ⟶ V)
@@ -309,9 +309,9 @@ def torusPt {C : Type} [CommRing C] [Algebra A C] (χ : Multiplicative X →* C)
         (WithConv.toConv (AddMonoidAlgebra.lift (ULift.{0} ℤ) C X χ)))
 
 /- English proof (translation)
-Use `letI : Algebra (ULift.{0} ℤ) C := ULift.algebra' ℤ C`. Establish `h : WithConv.toConv (AddMonoidAlgebra.lift (ULift.{0} ℤ) C X (χ * χ')) = WithConv.toConv (AddMonoidAlgebra.lift (ULift.{0} ℤ) C X χ) * WithConv.toConv (AddMonoidAlgebra.lift (ULift.{0} ℤ) C X χ')`. Apply `WithConv.ofConv_injective` to reduce the goal to its premises. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Unfold `torusPt`. Rewrite using `[h, map_mul, Functor.map_mul]`. Conclude with `MonObj.comp_mul _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusPt_mul {C : Type} [CommRing C] [Algebra A C] (χ χ' : Multiplicative X →* C) :
     torusPt A X (χ * χ') = torusPt A X χ * torusPt A X χ' := by
@@ -327,7 +327,7 @@ theorem torusPt_mul {C : Type} [CommRing C] [Algebra A C] (χ χ' : Multiplicati
   exact MonObj.comp_mul _ _ _
 
 /- English proof (translation)
-Use `letI : Algebra (ULift.{0} ℤ) C := ULift.algebra' ℤ C`. Use `⟨(AddMonoidAlgebra.lift (ULift.{0} ℤ) C X χ).toRingHom, fun x => by simp, ?_⟩` and prove the remaining obligations. Use `(pullback_map_fst _ _).trans ?_` and prove the remaining obligations. Use `erw [pullback.lift_fst_assoc]`. Conclude with `Category.id_comp _`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem torusPt_fst {C : Type} [CommRing C] [Algebra A C] (χ : Multiplicative X →* C) :
     ∃ φ : AddMonoidAlgebra (ULift.{0} ℤ) X →+* C,
@@ -341,7 +341,7 @@ theorem torusPt_fst {C : Type} [CommRing C] [Algebra A C] (χ : Multiplicative X
   exact Category.id_comp _
 
 /- English proof (translation)
-Establish `h` using `RingHom.ext_int (f.comp (ULift.ringEquiv : ULift.{0} ℤ ≃+* ℤ).symm.toRingHom) (g.comp (ULift.ringEquiv : ULift.{0} ℤ ≃+* ℤ).symm.toRingHom)`. Use extensionality with `⟨n⟩`. Conclude with `RingHom.congr_fun h n`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ringHom_uliftInt_ext {C : Type} [Semiring C] (f g : ULift.{0} ℤ →+* C) : f = g := by
   have h := RingHom.ext_int (f.comp (ULift.ringEquiv : ULift.{0} ℤ ≃+* ℤ).symm.toRingHom)
@@ -350,7 +350,7 @@ theorem ringHom_uliftInt_ext {C : Type} [Semiring C] (f g : ULift.{0} ℤ →+* 
   exact RingHom.congr_fun h n
 
 /- English proof (translation)
-The claim follows from `AddMonoidAlgebra.ringHom_ext (fun r => RingHom.congr_fun (ringHom_uliftInt_ext (f.comp AddMonoidAlgebra.singleZeroRingHom) (g.comp AddMonoidAlgebra.singleZeroRingHom)) r) h`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_int_torus {C : Type} [Semiring C]
     {f g : AddMonoidAlgebra (ULift.{0} ℤ) X →+* C}
@@ -360,11 +360,11 @@ theorem ringHom_ext_int_torus {C : Type} [Semiring C]
       (g.comp AddMonoidAlgebra.singleZeroRingHom)) r) h
 
 /- English proof (translation)
-Take `⟨φ, h1, h2⟩` from `torusPt_fst A X χ`. Take `⟨φ', h1', h2'⟩` from `torusPt_fst A X ((ψ : C →* D).comp χ)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ h2'.symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Category.assoc _ _ _).trans ((congrArg ((spm ψ).left ≫ ·) h2).trans ?_)` and prove the remaining obligations. Use `(Spec.map_comp (CommRingCat.ofHom φ) (CommRingCat.ofHom ψ.toRingHom)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply `ringHom_ext_int_torus` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Simplify using `[h1, h1']`. Conclude with `(Over.w _).trans (Over.w _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spm_torusPt {C D : Type} [CommRing C] [Algebra A C] [CommRing D] [Algebra A D]
     (ψ : C →ₐ[A] D) (χ : Multiplicative X →* C) :
@@ -385,13 +385,13 @@ theorem spm_torusPt {C D : Type} [CommRing C] [Algebra A C] [CommRing D] [Algebr
 
 open scoped AlgebraMonoidAlgebra in
 /- English proof (translation)
-Use `letI : Algebra ZU.{0} A := ULift.algebra' ℤ A`. Use `haveI : IsScalarTower ZU.{0} (AddMonoidAlgebra ZU.{0} X) (AddMonoidAlgebra A X) := ⟨fun r a b => by`. Take `⟨n⟩` from `r`. Use `show (n • a) • b = n • (a • b)`. Simplify using `only [Algebra.smul_def, map_mul, _root_.mul_assoc, eq_intCast, map_intCast]⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_of_isPushout ZU.{0} (AddMonoidAlgebra ZU.{0} X) A (AddMonoidAlgebra A X))`. Establish `hz : Spec.map (CommRingCat.ofHom (algebraMap ZU.{0} A)) = toZ (Spec (.of A))` using `specULiftZIsTerminal.hom_ext _ _`. Rewrite `hp` using `[hz]`. Take `⟨φ, h1, h2⟩` from `torusPt_fst A X (AddMonoidAlgebra.of A X)`. Establish `: (torusPt A X (AddMonoidAlgebra.of A X)).left = hp.isoPullback.hom`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Use `h2.trans (Eq.trans ?_ hp.isoPullback_hom_fst.symm)` and prove the remaining obligations. Use `congr 2`. Apply `ringHom_ext_int_torus` to reduce the goal to its premises. Introduce `y`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Simplify using the standard rewrite rules. Conclude with `(Over.w _).trans hp.isoPullback_hom_snd.symm`. Rewrite using `[this]`. Conclude with `hp.isoPullback.isIso_hom`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_torusPt_of :
     IsIso (torusPt A X (AddMonoidAlgebra.of A X)).left := by
@@ -423,7 +423,7 @@ abbrev dm (g : X →+ X × X) : AddMonoidAlgebra A X →ₐ[A] AddMonoidAlgebra 
   AddMonoidAlgebra.mapDomainAlgHom A A g
 
 /- English proof (translation)
-Rewrite using `[spm_torusPt, spm_torusPt, spm_torusPt, ← torusPt_mul]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[AddMonoidAlgebra.single_mul_single]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem torus_diag :
     (spm (dm A X (AddMonoidHom.inl X X)) ≫ torusPt A X (AddMonoidAlgebra.of A X)) *
@@ -436,9 +436,9 @@ theorem torus_diag :
   simp [AddMonoidAlgebra.single_mul_single]
 
 /- English proof (translation)
-Set `r : AddMonoidAlgebra A (X × X) →ₗ[A] AddMonoidAlgebra A X` to `(AddMonoidAlgebra.basis (X × X) A).constr A (fun p => if p.1 = p.2 then (if p.1 = 0 then -AddMonoidAlgebra.single 0 1 else AddMonoidAlgebra.single p.1 1) else 0)`. Establish `hr : ∀ p : X × X, r (AddMonoidAlgebra.single p 1) = if p.1 = p.2 then (if p.1 = 0 then -AddMonoidAlgebra.single 0 1 else AddMonoidAlgebra.single p.1 1) else 0` using `fun p => (AddMonoidAlgebra.basis (X × X) A).constr_basis A _ p`. Use `⟨r, fun d => ?_⟩` and prove the remaining obligations. Establish `: r ∘ₗ ((dm A X ((AddMonoidHom.id X).prod (AddMonoidHom.id X))).toLinearMap - ((dm A X (AddMonoidHom.inl X X)).toLinearMap + (dm A X (AddMonoidHom.inr X X)).toLinearMap)) = LinearMap.id`. Apply `(AddMonoidAlgebra.basis X A).ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Distinguish the cases in `hx : x = 0`. Simplify using `[hr, hx]`. Simplify using `[hr, hx, Ne.symm hx]`. Conclude with `LinearMap.congr_fun this d`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_retraction : ∃ r : AddMonoidAlgebra A (X × X) →ₗ[A] AddMonoidAlgebra A X,
     ∀ d, r (dm A X ((AddMonoidHom.id X).prod (AddMonoidHom.id X)) d -
@@ -466,13 +466,13 @@ theorem exists_retraction : ∃ r : AddMonoidAlgebra A (X × X) →ₗ[A] AddMon
 end
 
 /- English proof (translation)
-Set `e : sp A A ⟶ B` to `1`. Take `⟨R, i, hi, hx, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (X := B.left) (x := e.left (IsLocalRing.closedPoint A)) (U := ⊤) trivial`. Take `⟨ρ, hρ⟩` from `Spec.map_surjective (i ≫ B.hom)`. Use `letI : Algebra A R := ρ.hom.toAlgebra`. Set `j : sp A R ⟶ B` to `Over.homMk i hρ.symm`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hr : Set.range e.left ⊆ Set.range i`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `Scheme.preimage_eq_top_of_closedPoint_mem (R := .of A) e.left (U := i.opensRange) hx` as an intermediate fact. Establish `hx' : x ∈ e.left ⁻¹ᵁ i.opensRange` using `by rw [this]; trivial`. Conclude with `hx'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε⟩` from `spm_surjective (A := A) (C := R) (D := A) (Over.homMk (IsOpenImmersion.lift i e.left hr) (by`. Express the relevant statement in the definitionally equal form `_ ≫ Spec.map ρ = _`. Rewrite using `[hρ, IsOpenImmersion.lift_fac_assoc, Over.w e]))`. Use `⟨R, inferInstance, inferInstance, j, hi, ε, ?_⟩` and prove the remaining obligations. Rewrite using `[hε]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart [IsLocalRing A] (B : Over (Spec (CommRingCat.of A))) [GrpObj B] :
     ∃ (R : Type) (_ : CommRing R) (_ : Algebra A R) (j : sp A R ⟶ B) (_ : IsOpenImmersion j.left)
@@ -498,7 +498,7 @@ theorem exists_chart [IsLocalRing A] (B : Over (Spec (CommRingCat.of A))) [GrpOb
   exact IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hJ`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `Ideal.pow_mem_pow hx n` as an intermediate fact. Rewrite `this` using `[← Ideal.map_pow, ← pow_mul, mul_comm, pow_mul, hn]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isNilpotent_of_mem_map {C : Type} [CommRing C] [Algebra A C] {J : Ideal A}
     (hJ : IsNilpotent J) (k : ℕ) (x : C) (hx : x ∈ (J ^ (k + 1)).map (algebraMap A C)) :
@@ -510,9 +510,9 @@ theorem isNilpotent_of_mem_map {C : Type} [CommRing C] [Algebra A C] {J : Ideal 
   simpa using this
 
 /- English proof (translation)
-Establish `h1 : x ∈ I • (⊤ : Submodule A C)` using `by rw [Ideal.smul_top_eq_map]; exact hx`. Establish `h2 : r x ∈ I • (⊤ : Submodule A D)`. Use `Submodule.mem_map_of_mem (f := r) h1` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Ideal.smul_top_eq_map]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_map {C D : Type} [CommRing C] [Algebra A C] [CommRing D] [Algebra A D]
     (I : Ideal A) (r : C →ₗ[A] D) {x : C} (hx : x ∈ I.map (algebraMap A C)) :
@@ -530,23 +530,21 @@ end TorusNil
 open TorusNil in
 
 /- English proof (translation)
-Take `⟨R, _, _, j, _, ε, hε⟩` from `exists_chart B`. Use `set t := torusPt A X (AddMonoidAlgebra.of A X) with ht`. Set `K₀ : Ideal (AddMonoidAlgebra A X)` to `(J ^ (0 + 1)).map (algebraMap A _)`. Establish `h0 : spm (Ideal.Quotient.mkₐ A K₀) ≫ t ≫ f = 1`. Rewrite using `[← Category.assoc, comp_eq_of_pullback_map_eq h _ (Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift J (algebraMap A (AddMonoidAlgebra A X ⧸ K₀)) (fun a ha => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ (by simpa using ha)))))`. Use the proof step `(by rw [← Spec.map_comp]; rfl)]`. Conclude with `MonObj.comp_one _`. Take `⟨φ, hφ⟩` from `exists_pt j ε hε (Ideal.Quotient.mkₐ A K₀) Ideal.Quotient.mk_surjective (fun x hx => isNilpotent_of_mem_map hJ 0 x (Ideal.Quotient.eq_zero_iff_mem.1 hx)) _ h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `main : ∀ k : ℕ, ∀ a, φ a - algebraMap A _ (ε a) ∈ (J ^ (k + 1)).map (algebraMap A (AddMonoidAlgebra A X))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[← hφ, ← pt_one j ε hε, ← Category.assoc, ← spm_comp]`. Use `AlgHom.congr_fun (pt_injective j h0) a` as an intermediate fact. Conclude with `Ideal.Quotient.eq.1 this`. Consider the case `succ k ih`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : ∀ (g : X →+ X × X) a, (dm A X g).comp φ a - algebraMap A _ (ε a) = dm A X g (φ a - algebraMap A _ (ε a))`. Introduce `g a`. Rewrite using `[map_sub, AlgHom.commutes, AlgHom.comp_apply]`. Establish `hm` using `mul_pt j ε hε ((J ^ (k + 1)).map (algebraMap A (AddMonoidAlgebra A (X × X)))) (isNilpotent_of_mem_map hJ k) ((dm A X (AddMonoidHom.inl X X)).comp φ) ((dm A X (AddMonoidHom.inr X X)).comp φ) ((dm A X ((AddMonoidHom.id X).prod (AddMonoidHom.id X))).comp φ) (fun a => by rw [hd]; exa …`. Simplify using `only [spm_comp, Category.assoc, hφ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [← Category.assoc]`. Rewrite using `[← MonObj.mul_comp, ht, torus_diag]) a`. Take `⟨r, hr⟩` from `exists_retraction A X`. Rewrite using `[← hr (φ a - algebraMap A _ (ε a)), ← hd, ← hd, ← hd]`. Apply `map_mem_map` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite `hm` using `[← Ideal.map_pow, ← pow_mul]`. Use `Ideal.map_mono (Ideal.pow_le_pow_right (n := (k + 1) * 2) (by omega)) ?_` and prove the remaining obligations. Use `hm using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨n, hn⟩` from `hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hφε : φ = (Algebra.ofId A _).comp ε` using `by ext1 a`. Use `main n a` as an intermediate fact. Rewrite `this` using `[pow_succ, hn]`. Simplify `this` using `[sub_eq_zero]`. Rewrite `hφ` using `[hφε, pt_one j ε hε]`.
-
-Use `haveI := isIso_torusPt_of A X`. Establish `h1 : t ≫ f = t ≫ toUnit _ ≫ η[B]` using `hφ.symm.trans (MonObj.comp_one t).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_epi t.left, ← Over.comp_left, h1, ← Over.comp_left]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitTorus_hom_eq_one_of_nilpotent (A : Type) [CommRing A] [IsLocalRing A] (J : Ideal A)
     (hJ : IsNilpotent J) (X : Type) [AddCommGroup X] (B : Over (Spec (CommRingCat.of A)))

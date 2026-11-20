@@ -21,9 +21,9 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Use `choose nn dd hnd using fun m => p.exists_primeCompl_mul_eq_of_integer (a m) (ha m)`. Establish `hs : (∏ m, (dd m : 𝓞 K)) ∈ p.asIdeal.primeCompl` using `prod_mem fun m _ => (dd m).2`. Use `⟨∏ m, (dd m : 𝓞 K), hs, fun m => ?_⟩` and prove the remaining obligations. Use `⟨nn m * ∏ j ∈ Finset.univ.erase m, (dd j : 𝓞 K), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ m), Algebra.smul_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Rewrite using `[← hnd m]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_common_denominator_of_valuation_le_one {K : Type} [Field K] [NumberField K] (p : HeightOneSpectrum (𝓞 K))
     {n : ℕ} (a : Fin n → K) (ha : ∀ m, p.valuation K (a m) ≤ 1) :
@@ -38,15 +38,13 @@ theorem exists_common_denominator_of_valuation_le_one {K : Type} [Field K] [Numb
   ring
 
 /- English proof (translation)
-Establish `hdet : M.det ≠ 0`. Take `⟨_, _, _, _, _, _, _, _, _, _, -, -, -, h, -⟩` from `hM`. Conclude with `h`. Establish `hu : IsUnit M.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `key` using `isModelAt_integral_iff_mem_lieLat K A x φ hf p M hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => (key (M i)).mp fun m => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h1 : Matrix.vecMul (M i) M⁻¹ m = (1 : Matrix (Fin x.P.g) (Fin x.P.g) K) i m`. Rewrite using `[← Matrix.mul_nonsing_inv (A := M) hu]`. Both sides reduce to the same expression. Rewrite using `[h1, Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hone : (1 : 𝓞 K) ∉ p.asIdeal` using `fun h => p.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)`. Establish `hv` using `(key c).mpr ⟨1, hone, by simpa using hc⟩`. Take `⟨s, hs, hb⟩` from `exists_common_denominator_of_valuation_le_one p (Matrix.vecMul c M⁻¹) hv`. Use `choose b hb using hb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `hc' : c = ∑ m, Matrix.vecMul c M⁻¹ m • M m`. Rewrite using `[← Matrix.vecMul_eq_sum, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul (A := M) hu, Matrix.vecMul_one]`. Rewrite using `[hc', Finset.smul_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← smul_assoc, hb m, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsModelAt.rows_span_lieLat {K : Type} [Field K] [NumberField K] {A : Out.PolAV (Sp (𝓞 K))} {x : KeyIn K}
     {φ : x.P.A.left ⟶ A.A.left} (hf : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ) {p : HeightOneSpectrum (𝓞 K)}
@@ -78,11 +76,11 @@ theorem IsModelAt.rows_span_lieLat {K : Type} [Field K] [NumberField K] {A : Out
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)
 
 /- English proof (translation)
-Introduce `hT hU _hL hH K _ _ A x φ hfib`. Establish `hf : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ` using `(isFibreOf_iff_isPolFibre (𝓞 K) K (algebraMap (𝓞 K) K) A x φ).mp hfib`. Set `F : GenFib A` to `GenFib.mk x.P φ hf x.v x.basis`. Take `⟨hFG, hspan⟩` from `GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K A F`. Take `⟨IL, hIL0, hIL⟩` from `GlobalTheory.T.exists_detIdeal_localGen_full_lattice K x.P.g F.lieLat hFG hspan`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, oa, nth, hloc, -, hsupp, -⟩` from `GlobalTheory.ThetaDegree.exists_isThetaDeg hT hU K A F x.g_pos x.rig x.rig_gen x.th x.6`. Take `⟨IT, hIT0, hIT⟩` from `GlobalTheory.T.exists_fractionalIdeal_localGen_of_valuation K oa hsupp`. Use `choose t n ht hn hArch using fun σ => GlobalTheory.T.exists_pos_keyArchAt' hU K x σ`. Use `⟨⟨IT, t⟩, ⟨IL, n⟩, And.intro hIT0 ht, And.intro hIL0 hn, fun p => ?_, fun σ => hArch σ _ _ rfl rfl, fun p => ?_⟩` and prove the remaining obligations. Take `⟨a, M, hM, hva⟩` from `hloc p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrows` using `GlobalTheory.T.lieLattice_of_isLocalModel_at_prime hH K A F x.g_pos x.rig x.rig_gen x.th x.6 p a M hM`. Conclude with `GlobalTheory.T.keyLocAt_of_isLocalModel' K x ⟨IT, t⟩ ⟨IL, n⟩ p a M hM (hIT p a hva) (hIL p M hrows.1 hrows.2)`. Take `⟨M, hM⟩` from `GlobalTheory.T.exists_dvrModel_lieBasis_at_prime hT K A x φ hfib p`. Establish `hrows` using `hM.rows_span_lieLat hf`. Conclude with `⟨M, hM, hIL p M hrows.1 hrows.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_keyLines : Out.SecTwistSt → ThetaUnifAV → Out.Laws → HomExtDvr → ∀ (K : Type) [Field K] [NumberField K] (A : Out.PolAV (Sp (𝓞 K))) (x : KeyIn K) (φ : x.P.A.left ⟶ A.A.left), IsFibreOf A x (gmap K) φ → ∃ T abelian₂ : MLine K, T.Good ∧ abelian₂.Good ∧ (∀ p, KeyLocAt x T abelian₂ p) ∧ (∀ σ, KeyArchAt x T abelian₂ σ) ∧ ∀ p, ∃ M, IsModelAt A x φ p M ∧ IsLocGen p M.det abelian₂.I := by
   intro hT hU _hL hH K _ _ A x φ hfib

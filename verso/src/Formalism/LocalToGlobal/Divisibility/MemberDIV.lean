@@ -178,7 +178,7 @@ def colK (hKer : ColTieT T R.extendedDatum X e (colM F hX v0 TU Xg xiVal trIv hE
   ok1 := colFam3_ok W Ch sel hX v0 TU Xg ∅ xiVal trIv hH
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hXk, rfl, hPr, hCh, hsl, hSg, hmu, hcst, hLi, hm2, hGc, hAm, rfl, hwd⟩`.
+Supply the required witnesses or components.
 -/
 theorem kerTieM (hXk : T.ker.X = fieldsLL D X e) (hPr : HEq Pr T.ker.Pr) (hCh : HEq Ch T.ker.Ch) (hsl : HEq sel T.ker.sel)
     (hSg : HEq Sg T.ker.S)
@@ -266,7 +266,7 @@ variable {X : Fields} {e : X.Tau → (X.E →+* D.what₂.LL)} {Pr : Primes (fie
   {hsg : F.Am.σ₀ = D.what₂.embLL} {hH : ColHyp3 W Ch sel v0 TU Xg ∅}
 
 /- English proof (translation)
-The claim follows from `HEq.rfl psTie := ⟨HEq.rfl, HEq.rfl⟩ pointCharacterEq := ⟨HEq.rfl, HEq.rfl⟩ wOk := hW chOk := hCh hcTie := hr.hcTie wtTie := hr.wtTie xgTie := hr.xgTie qNF := hr.qNF columnEvaluationOk := hr.columnEvaluationOk`.
+A detailed English derivation is pending.
 -/
 theorem colPinsM (hW : W.Ok) (hCh : Ch.Ok) (hr : PinRows (colK T R hKer hwU hsg hH)) : ColPins (colK T R hKer hwU hsg hH) where
   grpTie := HEq.rfl

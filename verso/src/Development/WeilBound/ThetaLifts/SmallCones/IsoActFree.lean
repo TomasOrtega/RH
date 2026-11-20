@@ -15,7 +15,7 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h1` using `ha.tsum_subtype_add_tsum_subtype_compl {0}`. Rewrite `h1` using `[tsum_singleton]`. Rewrite using `[← h1, add_sub_cancel_left]`. Conclude with `(unitsEquivNeZero (G₀ := K)).tsum_eq fun x => a x.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_sum {K : Type} [Field K] {a : K → ℂ} (ha : Summable a) : ∑' ξ : Kˣ, a ξ = ∑' x, a x - a 0 := by
   have h1 := ha.tsum_subtype_add_tsum_subtype_compl {0}
@@ -24,11 +24,11 @@ theorem units_sum {K : Type} [Field K] {a : K → ℂ} (ha : Summable a) : ∑' 
   exact (unitsEquivNeZero (G₀ := K)).tsum_eq fun x => a x.1
 
 /- English proof (translation)
-Establish `hb : Function.Bijective fun y : MulAction.orbitRel.Quotient Γ I × Γ => y.2 • y.1.out`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, ξ⟩ ⟨q', η⟩ h dsimp only at h`. Establish `: q = q'`. Rewrite using `[← q.out_eq, ← q'.out_eq]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Conclude with `Quotient.sound ⟨ξ⁻¹ * η, by dsimp only; rw [mul_smul, ← h, inv_smul_smul]⟩`. Substitute `this` using the available equality. Rewrite using `[hfree _ _ _ h]`. Introduce `x`. Take `⟨ξ, hξ⟩ : (Quotient.mk (MulAction.orbitRel Γ I) x).out ∈ MulAction.orbit Γ x` from `Quotient.mk_out (s := MulAction.orbitRel Γ I) x`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(Quotient.mk _ x, ξ⁻¹), by dsimp only at hξ ⊢; rw [← hξ, inv_smul_smul]⟩`. Rewrite using `[← (Equiv.ofBijective _ hb).tsum_eq]`. Conclude with `((Equiv.ofBijective _ hb).summable_iff.2 hf).tsum_prod`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_sum {Γ I : Type} [Group Γ] [MulAction Γ I] (hfree : ∀ (ξ η : Γ) (x : I), ξ • x = η • x → ξ = η) {f : I → ℂ}
     (hf : Summable f) : ∑' x, f x = ∑' q : MulAction.orbitRel.Quotient Γ I, ∑' ξ : Γ, f (ξ • q.out) := by
@@ -52,7 +52,7 @@ section
 variable {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_smul (J : Matrix (Fin n) (Fin n) E) (c : E) (x : Fin n → E) : form σ J (c • x) (c • x) = c * σ c * form σ J x x := by
   simp only [form, dotProduct, Matrix.mulVec, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
@@ -69,7 +69,7 @@ Both sides reduce to the same expression.
 theorem isoAct_val (ξ : Eˣ) (x : IsoV σ X) : (ξ • x).1 = (ξ : E) • x.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (smul_left_injective E x.2.1 (congrArg Subtype.val h))`.
+A detailed English derivation is pending.
 -/
 theorem isoAct_free (ξ η : Eˣ) (x : IsoV σ X) (h : ξ • x = η • x) : ξ = η :=
   Units.ext (smul_left_injective E x.2.1 (congrArg Subtype.val h))
@@ -83,14 +83,14 @@ def conjE (hσ : IsCMExt F E σ) : Eˣ ≃ Eˣ where
 abbrev idl (ξ : Eˣ) : (AE F E)ˣ := Units.map (inclR (F := F) (AF F)).toMonoidHom ξ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_smul (c : E) (x : Fin n → E) : incV F (c • x) = inclR (F := F) (AF F) c • incV F x := by
   funext i
   simp [incV]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_smul (c : E) (x : Matrix (Fin n) (Fin d) E) : incM F (c • x) = inclR (F := F) (AF F) c • incM F x := by
   ext i j
@@ -101,11 +101,11 @@ variable {B : Base F E} {M : Model σ X W} {om : Rep σ X W} {M₀ : Model σ X�
   {ι : (AE F E)ˣ → (AE F E)ˣ} {w : (AE F E)ˣ → ℂ} {χX χW : Chr F E} {r s r' s' r₀ s₀ r₀' s₀' : ℕ}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, ⟨lev, -, hlev, -⟩, -⟩` from `hU F E σ B n n₁ X X₁ H j₀ j₁ r s hp.base (Or.inl hp.herm) hH`. Establish `hl` using `hlev (idl ξ⁻¹) 1`. Establish `hr` using `(hD F E σ B n n₁ X X₁ H j₀ j₁ r s hp.base (Or.inl hp.herm) hH).2.1 ξ⁻¹ 1 (one_mem _) _ hl`. Use `set p := lev (idl ξ⁻¹, 1)`. Establish `h1 : mat (p * γ x) *ᵥ incV F (ξ • x).1 = incV F H.x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat_mul', ← Matrix.mulVec_mulVec, isoAct_val, incV_smul, Matrix.mulVec_smul, (hγ x).2, Matrix.mulVec_smul, hl.1, smul_smul]`. Simplify using `[← map_mul]`. Establish `h2` using `h.rat hD hTB hp hp₀ hH hs hΦ y (δ := γ (ξ • x) * (p * γ x)⁻¹) (mul_mem (hγ _).1 (inv_mem (mul_mem hr (hγ x).1))) (by rw [mat_mul', ← Matrix.mulVec_mulVec, mat_inv_mulVec _ h1, (hγ _).2]) (p * γ x * g)`. Rewrite `h2` using `[show γ (ξ • x) * (p * γ x)⁻¹ * (p * γ x * g) = γ (ξ • x) * g by group]`. Establish `h3` using `h.theta (l := idl η) (by rwa [hη]) (levi_one (W₁ := W₁) H') (pair_pres hp (γ x * g, y) hΦ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hη, hν, GlobalTheory.Doubling.absE_inclR]`. Rewrite using `[h2]`. Simplify `h3` using `[thv, om_mul, mul_assoc, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta, ← Prod.one_eq_mk]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem LawsT.mult (h : LawsT B M om om₀ H H' e u w ι) (hD : StabDec) (hU : UnipEx) (hTB : ThetaBasic)
     (hp : IsPair B M χX χW om r s r' s') (hp₀ : IsPair B M₀ χX χW om₀ r₀ s₀ r₀' s₀') {j₀ j₁} (hH : H.IsAdapted σ B X X₁ j₀ j₁)

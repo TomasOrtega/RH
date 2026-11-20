@@ -7,15 +7,13 @@ open UpperTheory.Gal.Int.Geo (Integ)
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hS p _ D G L h hI`. Take `⟨f, u, c, k, hsys, -, hk, -⟩` from `hS p D G L h hI`. Establish `hkp : k.Coprime p` using `hsys.2.1`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h1 : p = 1` using `by simpa using hkp`. Conclude with `(Fact.out : p.Prime).one_lt.ne' h1`. Establish `hone : IsIntAf (1 : AfP p)` using `fun v => by rw [map_one]; exact one_mem _`. Establish `hact : ∀ v, L.actG (GlobalTheory.W2.scalarAf G (GlobalTheory.W2.natUnit p k hk0)) v = k • v` using `GlobalTheory.W2.actG_natScalar L k hk0`. Use `⟨k, GlobalTheory.W2.scalarAf G (GlobalTheory.W2.natUnit p k hk0), Nat.pos_of_ne_zero hk0, hkp, ⟨fun g => GlobalTheory.W2.scalarAf_comm _ g, hact, 1, 1, hone, hone, one_mul 1, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show ((GlobalTheory.W2.natUnit p k hk0 : (AfP p)ˣ) : AfP p) * (GlobalTheory.W2.natUnit p k hk0 : (AfP p)ˣ) = ((k ^ 2 : ℕ) : AfP p) * 1`. Establish `e : ((GlobalTheory.W2.natUnit p k hk0 : (AfP p)ˣ) : AfP p) = (k : AfP p)` using `by show algebraMap ℚ (AfP p) (k : ℚ) = _`. Rewrite using `[map_natCast]`. Rewrite using `[e, mul_one]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `v hv`. Rewrite using `[hact]`. Conclude with `nsmul_mem hv k`. Introduce `v hv`.
-
-Rewrite using `[map_mul, Module.End.mul_apply, hact]`. Conclude with `hk v hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FixZ.scalEx_of :
     UpperTheory.Gal.G3.SysOf → UpperTheory.Gal.FixZ.ScalEx := by

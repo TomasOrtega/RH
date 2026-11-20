@@ -12,13 +12,13 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ K bk d d' S S' ρ ρ' T T' hT hT' f hf Y hY`. Establish `hφ` using `GlobalTheory.T.stratPeriodMatrix_equivariant_hom_comm_frobenius l K bk d d' S S' ρ ρ' T T' hT hT' f hf Y hY`. Establish `hgal` using `GlobalTheory.T.stratifiedPhiModule_equivariant_matrix_commute l K bk d d' S S' ρ ρ' T T' hT hT' f hf Y hY`. Establish `hfr : IsFrame bk bk.prism (bk.toP bk.E) (bk.toP X)` using `GlobalTheory.T.isOrientedPrismUniformizerFrame_breuilKisinHom l K bk bk.prism (Hom.id _)`. Take `⟨En⟩` from `GlobalTheory.T.nonempty_breuilKisinPrismCoproduct l K bk bk.prism _ _ hfr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `GlobalTheory.T.stratifiedHom_comparison_compatible_envelope l K bk En d d' S S' Y hφ hgal`. Use `⟨hφ, ?_⟩` and prove the remaining obligations. Introduce `B f₁ g₁`. Take `⟨k, ⟨hk1, hk2⟩, -⟩` from `En.univ B f₁ g₁`. Substitute `hk1 hk2` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `e : ∀ {m n : Type} (M : Matrix m n bk.S) (h : Hom bk.prism En.Q), (M.map (BK.hf h)).map k.f = M.map (BK.hf (k.comp h))` using `fun M h => rfl`. Establish `h2 : (S'.ε En.inl En.inr * Y.map (BK.hf En.inr)).map k.f = (Y.map (BK.hf En.inl) * S.ε En.inl En.inr).map k.f` using `congrArg (fun M => M.map k.f) h1`. Establish `m1` using `Matrix.map_mul (f := k.f) (L := S'.ε En.inl En.inr) (M := Y.map (BK.hf En.inr))`. Establish `m2` using `Matrix.map_mul (f := k.f) (L := Y.map (BK.hf En.inl)) (M := S.ε En.inl En.inr)`. Establish `n1` using `S'.ε_nat k En.inl En.inr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2` using `S.ε_nat k En.inl En.inr`. Conclude with `(congrArg₂ (· * ·) n1.symm (e Y En.inr).symm).trans (m1.symm.trans (h2.trans (m2.trans (congrArg₂ (· * ·) (e Y En.inl) n2))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isStratHom_of_equivariant : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d)
     (S' : Strat bk d') (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l])

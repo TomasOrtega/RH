@@ -21,9 +21,9 @@ def OntoAt (l : ℕ) [Fact l.Prime] : Prop :=
     (∀ w : Per.BdR l, ∃ b : Per.Bcris l, Per.φB l b = b ∧ ι b - w ∈ Per.FilD l 0)
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `h1 u`. Take `⟨b, hb, hF⟩` from `h2 (w - ι x0)`. Use `⟨x0 + b, _, hF, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hb, ← hx0]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[map_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem pair_onto {B D : Type} [AddCommGroup B] [AddCommGroup D] (φ : B →+ B) (ι : B →+ D) (F : Set D)
     (h1 : ∀ u, ∃ x, x - φ x = u) (h2 : ∀ w, ∃ b, φ b = b ∧ ι b - w ∈ F) (u : B) (w : D) :
@@ -37,7 +37,7 @@ theorem pair_onto {B D : Type} [AddCommGroup B] [AddCommGroup D] (φ : B →+ B)
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨j, h1, h2, h3⟩` from `GlobalTheory.CrisIncl.exists_restrict l ι h`. Conclude with `⟨j, ⟨h2, h3⟩, h1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_restrict_aCris_bdRPlus {ι : Per.Bcris l →+* Per.BdR l} (h : Per.IsCrisDR l ι) :
     ∃ j : Per.Acris l →+* Per.BdRp l, IsCrisP j ∧ ∀ x : Per.Acris l,
@@ -46,7 +46,7 @@ theorem exists_restrict_aCris_bdRPlus {ι : Per.Bcris l →+* Per.BdR l} (h : Pe
   exact ⟨j, ⟨h2, h3⟩, h1⟩
 
 /- English proof (translation)
-Take `⟨j, hj, hι⟩` from `exists_restrict_aCris_bdRPlus h`. Establish `e : j = C.j` using `(crisP_unique_equivariant l C.j C.j_cris).1 j hj`. Use `GlobalTheory.RingIface.bcris_ext l fun x => ?_` and prove the remaining obligations. Rewrite using `[hι, C.ι_j, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_core_of_isCrisDR {ι : Per.Bcris l →+* Per.BdR l} (h : Per.IsCrisDR l ι) (C : Core l) :
     ι = C.ι := by
@@ -56,7 +56,7 @@ theorem eq_core_of_isCrisDR {ι : Per.Bcris l →+* Per.BdR l} (h : Per.IsCrisDR
   rw [hι, C.ι_j, e]
 
 /- English proof (translation)
-Introduce `ι hι`. Rewrite using `[eq_core_of_isCrisDR hι C]`. Use `⟨fun u => ?_, h2⟩` and prove the remaining obligations. Take `⟨x, y, hy, hx, hxy⟩` from `pair_onto (Per.φB l).toAddMonoidHom C.ι.toAddMonoidHom (Per.FilD l 0 : Set (Per.BdR l)) h1 h2 u 0`. Conclude with `⟨x, (sub_eq_zero.1 hxy : C.ι x = y) ▸ hy, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ontoAt_of_core (C : Core l) (h1 : C.OneSubPhiOnto) (h2 : C.FundOnto) : OntoAt l := by
   intro ι hι
@@ -67,13 +67,13 @@ theorem ontoAt_of_core (C : Core l) (h1 : C.OneSubPhiOnto) (h2 : C.FundOnto) : O
   exact ⟨x, (sub_eq_zero.1 hxy : C.ι x = y) ▸ hy, hx⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h _ T.incl`. Establish `H` using `pair_onto (P.φB : P.R.B →+* P.R.B).toAddMonoidHom (P.ιB : P.R.B →+* P.R.BdR).toAddMonoidHom ((P.PD K).Fil 0 : Set P.R.BdR) (fun u => ?_) (fun w => ?_) u w`. Take `⟨x, y, hy, hx, hxy⟩` from `H`. Conclude with `⟨x, y, hy, by rw [P.PD_φ]; exact hx, by rw [P.PD_ι]; exact hxy⟩`. Take `⟨x, -, hx⟩` from `h1 (T.eB u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `T.eB.surjective x`. Use `⟨x, T.eB.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, map_sub, ← T.frob]`. Both sides reduce to the same expression. Take `⟨b, hb, hF⟩` from `h2 (T.eD w)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `T.eB.surjective b`. Use `⟨b, T.eB.injective ((T.frob b).trans hb), (T.fil K 0 _).2 ?_⟩` and prove the remaining obligations. Establish `e : T.eB.symm.toRingHom (T.eB b) = b` using `T.eB.symm_apply_apply b`. Rewrite `hF` using `[RingHom.comp_apply, e]`. Rewrite using `[map_sub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF`.
+A detailed English derivation is pending.
 -/
 theorem pair_onto_of_tied {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (h : OntoAt l)
     (K : FinExt l) (u : P.R.B) (w : P.R.BdR) :
@@ -97,7 +97,7 @@ theorem pair_onto_of_tied {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P A
     exact hF
 
 /- English proof (translation)
-Introduce `l _ K u w` and use `pair_onto_of_tied (D.locT l) (h l) K u w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem surjective_half_of_onto (h : ∀ (l : ℕ) [Fact l.Prime], OntoAt l) (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.LocalSituation.adm1 D :=
   fun l _ K u w => pair_onto_of_tied (D.locT l) (h l) K u w

@@ -6,13 +6,13 @@ open scoped ComplexOrder
 
 @[to_additive]
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise Finset.univ InfinitePlace.mk f]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hne : w.embedding ≠ ComplexEmbedding.conjugate w.embedding`. Introduce `e`. Use `IsTotallyComplex.isComplex w` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[InfinitePlace.isComplex_iff]`. Conclude with `this (ComplexEmbedding.isReal_iff.mpr e.symm)`. Rewrite using `[← Finset.prod_pair hne]`. Use `congr 1`. Use extensionality with `φ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[← InfinitePlace.mk_embedding w, eq_comm, InfinitePlace.mk_eq_iff]`. Break down `h with h | h` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl h.symm`. Conclude with `Or.inr h.symm`. Introduce and unpack `(rfl | rfl)`. Conclude with `InfinitePlace.mk_embedding w`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.KT.prod_emb (L : Type) [Field L] [NumberField L] [IsTotallyComplex L]
     {M : Type} [CommMonoid M] (f : (L →+* ℂ) → M) :
@@ -40,9 +40,9 @@ private theorem UpperTheory.V.KT.prod_emb (L : Type) [Field L] [NumberField L] [
     · rw [InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-Establish `hE : (Matrix.of fun k i : BI L => ((equivReindex L).symm k) (RingOfIntegers.basis L i : L)) = ((basisMatrix L).submatrix (equivReindex L).symm (equivReindex L).symm)ᵀ`. Use extensionality with `k i`. Simplify using `[canonicalEmbedding.latticeBasis_apply, integralBasis_apply]`. Rewrite using `[hE, det_transpose, det_submatrix_equiv_self]`. Establish `h` using `congrArg norm (discr_eq_basisMatrix_det_sq L)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[norm_pow, Complex.norm_intCast]`. Rewrite using `[Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, ← h, absD, ← Int.cast_abs, ← Int.natCast_natAbs]`. Rewrite using `[Int.cast_natCast, Complex.ofReal_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.KT.det_emb (L : Type) [Field L] [NumberField L] :
     star (Matrix.of fun k i : BI L => ((equivReindex L).symm k) (RingOfIntegers.basis L i : L)).det *
@@ -61,21 +61,21 @@ private theorem UpperTheory.V.KT.det_emb (L : Type) [Field L] [NumberField L] :
   rw [Int.cast_natCast, Complex.ofReal_natCast]
 
 /- English proof (translation)
-Introduce `L _ _ _ N h`. Set `A : (L →+* ℂ) → Matrix (Fin N) (Fin N) ℂ` to `fun φ => if φ = (InfinitePlace.mk φ).embedding then mat h (InfinitePlace.mk φ) else (mat h (InfinitePlace.mk φ))ᵀ`. Establish `hne : ∀ w : InfinitePlace L, ComplexEmbedding.conjugate w.embedding ≠ w.embedding`. Introduce `w e`. Use `IsTotallyComplex.isComplex w` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[InfinitePlace.isComplex_iff]`. Conclude with `this (ComplexEmbedding.isReal_iff.mpr e)`. Establish `hA1 : ∀ w : InfinitePlace L, A w.embedding = mat h w`. Introduce `w`. Simplify using `[A, InfinitePlace.mk_embedding]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA2 : ∀ w : InfinitePlace L, A (ComplexEmbedding.conjugate w.embedding) = (mat h w)ᵀ`. Introduce `w`. Simplify using `only [A, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding, if_neg (hne w)]`. Establish `key` using `UpperTheory.V.KT.blockdet (BI L) N (Matrix.of fun k i : BI L => ((equivReindex L).symm k) (RingOfIntegers.basis L i : L)) (fun k => A ((equivReindex L).symm k))`. Rewrite `key` using `[UpperTheory.V.KT.det_emb, Equiv.prod_comp (equivReindex L).symm (fun φ => (A φ).det), UpperTheory.V.KT.prod_emb L]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : (Matrix.of fun s t : Fin N × BI L => ∑ k, star ((Matrix.of fun k i : BI L => ((equivReindex L).symm k) (RingOfIntegers.basis L i : L)) k s.2) * A ((equivReindex L).symm k) s.1 t.1 * (Matrix.of fun k i : BI L => ((equivReindex L).symm k) (RingOfIntegers.basis L i : L)) k t.2) …`. Use extensionality with `s t`. Simplify using `only [of_apply]`. Rewrite using `[Equiv.sum_comp (equivReindex L).symm (fun φ => star (φ (RingOfIntegers.basis L s.2 : L)) * A φ s.1 t.1 * φ (RingOfIntegers.basis L t.2 : L)), UpperTheory.V.KT.sum_emb L]`. Simplify using `only [hA1, hA2, RingHom.mapMatrix_apply, map_apply, Matrix.smul_apply, gram, of_apply, smul_eq_mul, Finset.mul_sum, map_sum, Complex.ofRealHom_eq_coe]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.add_conj]`. Establish `hh : mat h w t.1 s.1 = star (mat h w s.1 t.1)` using `((mat_herm h w).apply t.1 s.1).symm`. Simplify using `[embO, hh, ComplexEmbedding.conjugate_coe_eq]`. Rewrite `key` using `[hM, ← RingHom.map_det, det_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Fintype.card (Fin N × BI L) = dd L N`. Rewrite using `[Fintype.card_prod, Fintype.card_fin, ← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank, mul_comm]`. Establish `hd : ∀ w, (mat h w).det = ((mat h w).det.re : ℂ)`. Introduce `w`. Establish `: star (mat h w).det = (mat h w).det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← det_conjTranspose, (mat_herm h w).eq]`. Conclude with `(Complex.conj_eq_iff_re.mp this).symm`. Simplify using `only [hA1, hA2, det_transpose, hc] at key`. Rewrite `key` using `[Finset.prod_congr rfl fun w _ => by rw [hd w]]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Complex.ofRealHom_eq_coe, key, Finset.prod_mul_distrib]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.gramdet :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ) (h : HS L N),

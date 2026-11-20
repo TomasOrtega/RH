@@ -24,36 +24,36 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B.ψ)}
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[C.good.cm.2.2.2 τ, C.good.cm.2.2.2 τ, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgsg_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom
   apply τ.injective
   rw [C.good.cm.2.2.2 τ, C.good.cm.2.2.2 τ, star_star]
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `C.chart.fin _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem iota_fin_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (v : IxF F nS nT → ℂ) : (iotaVF ι v).map (finPartF F E) = 0 := by
   funext i j
   exact C.chart.fin _
 /- English proof (translation)
-Unfold `symplOHF`. Rewrite using `[_root_.PositivityTheory.ThKW.symplOF_actOF_k C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOHF_act_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (g : GAF σ JS) (h : GAF σ JT) (x y : WOF F E nS nT) :
     symplOHF σ JS JT ξ₀ (actOF σ JS JT g h x) (actOF σ JS JT g h y) = symplOHF σ JS JT ξ₀ x y := by
   unfold symplOHF
   rw [_root_.PositivityTheory.ThKW.symplOF_actOF_k C]
 /- English proof (translation)
-Rewrite using `[add_comm, ← _root_.PositivityTheory.ThKW.piWF_ratWF_k C y]`. Conclude with `finIdem_add_iota C.chart _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratWF_eq_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (y : Matrix (Fin nT) (Fin nS) E) :
     ratWF (F := F) y = iotaVF ι (infRatF (tauB B) y) + (finRatF F y : WOF F E nS nT) := by
   rw [add_comm, ← _root_.PositivityTheory.ThKW.piWF_ratWF_k C y]
   exact finIdem_add_iota C.chart _
 /- English proof (translation)
-Establish `h1` using `_root_.PositivityTheory.ThKW.psi_rat_k C x y`. Establish `h2` using `_root_.PositivityTheory.ThKW.beta_iota_left_k C (infRatF (tauB B) x) (ratWF (F := F) y)`. Establish `h3` using `_root_.PositivityTheory.ThKW.beta_iota_right_k C (finRatF F x : WOF F E nS nT) (infRatF (tauB B) y)`. Rewrite `h3` using `[piWF_of_fin (finRatF F x).fin, LinearMap.map_zero, LinearMap.zero_apply, Complex.ofReal_zero, mul_zero, Complex.exp_zero]`. Establish `d1 : symplOHF σ JS JT ξ₀ (ratWF x) (ratWF y) = symplOHF σ JS JT ξ₀ (iotaVF ι (infRatF (tauB B) x)) (ratWF y) + symplOHF σ JS JT ξ₀ (finRatF F x : WOF F E nS nT) (ratWF y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.HeisLineF.symplOHF_add_left, ← _root_.PositivityTheory.ThKW.Trc.ratWF_eq_k C]`. Establish `d2 : symplOHF σ JS JT ξ₀ (finRatF F x : WOF F E nS nT) (ratWF y) = symplOHF σ JS JT ξ₀ (finRatF F x : WOF F E nS nT) (iotaVF ι (infRatF (tauB B) y)) + symplOHF σ JS JT ξ₀ (finRatF F x : WOF F E nS nT) (finRatF F y)`. Rewrite using `[← GlobalTheory.HeisLineF.symplOHF_add_right, ← _root_.PositivityTheory.ThKW.Trc.ratWF_eq_k C]`. Rewrite `h1` using `[d1, d2, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, h2, h3, one_mul, mul_comm, _root_.PositivityTheory.ThKW.piWF_ratWF_k C]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_fin_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (x y : Matrix (Fin nT) (Fin nS) E) :
     B.ψ (symplOHF σ JS JT ξ₀ (finRatF F x : WOF F E nS nT) (finRatF F y)) *
@@ -75,14 +75,14 @@ theorem beta_fin_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ �
   rw [d1, d2, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, h2, h3, one_mul, mul_comm, _root_.PositivityTheory.ThKW.piWF_ratWF_k C] at h1
   exact h1
 /- English proof (translation)
-Unfold `chiLatF`. Rewrite using `[smul_add, finIdem_smul_of_real (_root_.PositivityTheory.ThKW.Trc.iota_fin_k C v), add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiLat_add_iota_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (x : WOF F E nS nT) (v : IxF F nS nT → ℂ) :
     chiLatF σ JS JT ξ₀ B.ψ Λ w (x + iotaVF ι v) = chiLatF σ JS JT ξ₀ B.ψ Λ w x := by
   unfold chiLatF
   rw [smul_add, finIdem_smul_of_real (_root_.PositivityTheory.ThKW.Trc.iota_fin_k C v), add_zero]
 /- English proof (translation)
-Introduce `x y h` and use `infRatF_injective B (by rw [← _root_.PositivityTheory.ThKW.piWF_ratWF_k C, ← _root_.PositivityTheory.ThKW.piWF_ratWF_k C, h])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ratWF_injective_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) :
     Function.Injective (ratWF (F := F) : Matrix (Fin nT) (Fin nS) E → WOF F E nS nT) := fun x y h =>
@@ -96,7 +96,7 @@ Both sides reduce to the same expression.
 theorem coe_ratEquivF_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (y : Matrix (Fin nT) (Fin nS) E) :
     (_root_.PositivityTheory.ThKW.Trc.ratEquivF_k C y : WOF F E nS nT) = ratWF y := rfl
 /- English proof (translation)
-Unfold `serF GlobalTheory.HeisenbergGaussianSeries.series`. Rewrite using `[← (_root_.PositivityTheory.ThKW.Trc.ratEquivF_k C).tsum_eq]`. Simplify using `only [_root_.PositivityTheory.ThKW.Trc.coe_ratEquivF_k, piWA_apply, iotaA_apply, _root_.PositivityTheory.ThKW.piWF_ratWF_k C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem serF_eq_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (a : IxF F nS nT → ℂ) (x : WOF F E nS nT) :
     serF σ JS JT ξ₀ B θ ι s Λ w a x = ∑' y : Matrix (Fin nT) (Fin nS) E,
@@ -110,7 +110,7 @@ theorem serF_eq_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι
 section Act
 variable {g : GAF σ JS} {h : GAF σ JT} {a : Matrix (Fin nS) (Fin nS) E} {b : Matrix (Fin nT) (Fin nT) E}
 /- English proof (translation)
-Establish `e` using `finIdem_add_iota C.chart (actOF σ JS JT g⁻¹ h⁻¹ (iotaVF ι v))`. Rewrite `e` using `[← actOF_smul, finIdem_smul_of_real (_root_.PositivityTheory.ThKW.Trc.iota_fin_k C v), actOF_zero', zero_add, _root_.PositivityTheory.ThKW.piWF_actOF_k C, piWF_iotaVF C.chart]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_iota_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (v : IxF F nS nT → ℂ) :
     actOF σ JS JT g⁻¹ h⁻¹ (iotaVF ι v) = iotaVF ι (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v) := by
@@ -119,13 +119,13 @@ theorem act_iota_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ �
     piWF_iotaVF C.chart] at e
   exact e
 /- English proof (translation)
-Establish `key : ∀ t : ℝ, Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ (t • u)) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v) : ℝ)) = Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) (t • u) v : ℝ))`. Introduce `t`. Establish `h1` using `_root_.PositivityTheory.ThKW.beta_iota_left_k C (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ (t • u)) (actOF σ JS JT g⁻¹ h⁻¹ (iotaVF ι v))`. Establish `h2` using `_root_.PositivityTheory.ThKW.beta_iota_left_k C (t • u) (iotaVF ι v)`. Rewrite `h1` using `[_root_.PositivityTheory.ThKW.piWF_actOF_k C, piWF_iotaVF C.chart, ← _root_.PositivityTheory.ThKW.Trc.act_iota_k C, _root_.PositivityTheory.ThKW.Trc.symplOHF_act_k C]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[piWF_iotaVF C.chart]`. Conclude with `h1.symm.trans h2`. Assume the negation of the conclusion as `hne`. Establish `hd : omV (HMF JS JT ξ₀ (tauB B)) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ u) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v) - omV (HMF JS JT ξ₀ (tauB B)) u v ≠ 0` using `sub_ne_zero.2 hne`. Establish `k` using `key (omV (HMF JS JT ξ₀ (tauB B)) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ u) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v) - omV (HMF JS JT ξ₀ (tauB B)) u v)⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k` using `[mulVec_smul, map_smul, LinearMap.smul_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `k2` using `Complex.exp_sub (-(Real.pi * Complex.I) * (((omV (HMF JS JT ξ₀ (tauB B)) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ u) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v) - omV (HMF JS JT ξ₀ (tauB B)) u v)⁻¹ * omV (HMF JS JT ξ₀ (tauB B)) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ u) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v) : ℝ) : ℂ)) ( …`. Rewrite `k2` using `[k, div_self (Complex.exp_ne_zero _)]`. Establish `e : -(Real.pi * Complex.I) * (((omV (HMF JS JT ξ₀ (tauB B)) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ u) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v) - omV (HMF JS JT ξ₀ (tauB B)) u v)⁻¹ * omV (HMF JS JT ξ₀ (tauB B)) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ u) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v) : ℝ) : ℂ) - -(Real.pi * C …`. Rewrite using `[← mul_sub, ← Complex.ofReal_sub, ← mul_sub, inv_mul_cancel₀ hd, Complex.ofReal_one, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k2` using `[e, Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at k2`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem omV_act_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (u v : IxF F nS nT → ℂ) :
     omV (HMF JS JT ξ₀ (tauB B)) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ u) (mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v) =
@@ -162,7 +162,7 @@ theorem omV_act_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι
   rw [e, Complex.exp_neg, Complex.exp_pi_mul_I] at k2
   norm_num at k2
 /- English proof (translation)
-Rewrite using `[mulVec_add, ← _root_.PositivityTheory.ThKW.piWF_ratWF_k C y, ← _root_.PositivityTheory.ThKW.piWF_ratWF_k C (b * y * a), ← act_ratW ha hb, _root_.PositivityTheory.ThKW.piWF_actOF_k C]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem actR_add_infRat_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b)
     (y : Matrix (Fin nT) (Fin nS) E) (v : IxF F nS nT → ℂ) :
@@ -171,11 +171,11 @@ theorem actR_add_infRat_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ�
   rw [mulVec_add, ← _root_.PositivityTheory.ThKW.piWF_ratWF_k C y, ← _root_.PositivityTheory.ThKW.piWF_ratWF_k C (b * y * a), ← act_ratW ha hb, _root_.PositivityTheory.ThKW.piWF_actOF_k C]
 end Act
 /- English proof (translation)
-Establish `hσ` using `_root_.PositivityTheory.ThKW.Trc.sgsg_k C`. Establish `h1 : symplOHF σ JS JT ξ₀ Y Y = 0`. Unfold `symplOHF`. Rewrite using `[GlobalTheory.HeisLineF.symplOF_self σ JS JT hσ C.hS C.hT ξ₀ C.hξ, mul_zero]`. Establish `h2 : symplOHF σ JS JT ξ₀ U Y = symplOHF σ JS JT ξ₀ (W • U) Y + symplOHF σ JS JT ξ₀ (cAF σ W • U) Y`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.HeisLineF.symplOHF_add_left, ← add_smul, hW, one_smul]`. Establish `h3 : symplOHF σ JS JT ξ₀ (W • Y) U = -symplOHF σ JS JT ξ₀ (cAF σ W • U) Y`. Rewrite using `[symplOHF_smul σ JS JT hσ, symplOHF_skew σ JS JT hσ C.hS C.hT ξ₀ C.hξ]`. Rewrite `hi` using `[smul_add, GlobalTheory.HeisLineF.symplOHF_add_left, GlobalTheory.HeisLineF.symplOHF_add_right, GlobalTheory.HeisLineF.symplOHF_add_right]`. Rewrite using `[GlobalTheory.HeisLineF.symplOHF_add_left, ← symplOHF_add_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hi + h1 + h2 - h3`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem phase_identity_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) {W : AEF F E} (hW : W + cAF σ W = 1) (U Y : WOF F E nS nT)
     (hi : symplOHF σ JS JT ξ₀ (W • (U + Y)) (U + Y) = symplOHF σ JS JT ξ₀ (W • Y) Y) :
@@ -194,11 +194,11 @@ theorem phase_identity_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ�
 section Left
 variable {g : GAF σ JS} {h : GAF σ JT} {a : Matrix (Fin nS) (Fin nS) E} {b : Matrix (Fin nT) (Fin nT) E}
 /- English proof (translation)
-Establish `hm : ∀ z, finIdem F E • ratWF (F` using `F) z ∈ latOF F E nS nT Λ ↔ z ∈ Λ := fun z => _root_.PositivityTheory.ThKW.finRatF_mem_iff_k C hG hR hA z`. Unfold `chiLatF gaussQF`. Distinguish the cases in `hy : b * y * a - y ∈ Λ`. Rewrite using `[if_pos ((hm _).2 hy), if_pos hy] show B.ψ (symplOHF σ JS JT ξ₀ (intAF F w • (finRatF F (b * y * a - y) : WOF F E nS nT)) (finRatF F (b * y * a - y))) = _`. Establish `e : (finRatF F (b * y * a - y) : WOF F E nS nT) + finRatF F y = finRatF F (b * y * a)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← XFF.coe_add, ← map_add, sub_add_cancel]`. Establish `h1` using `_root_.PositivityTheory.ThKW.Trc.phase_identity_k C (W := intAF F w) (by rw [cAF_intAF, ← map_add, hw, map_one]) (finRatF F (b * y * a - y) : WOF F E nS nT) (finRatF F y) (by rw [e, ← act_finRat ha hb, ← actOF_smul, _root_.PositivityTheory.ThKW.Trc.symplOHF_act_k C])`. Establish `h2 : gamQF σ JS JT ξ₀ B.ψ (sgOF σ w • (b * y * a - y)) y = B.ψ (symplOF σ JS JT ξ₀ (cAF σ (intAF F w) • (finRatF F (b * y * a - y) : WOF F E nS nT)) (finRatF F y))`. Rewrite using `[gamQF, gamFF, map_smul, cAF_intAF]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2, ← h1, e, AddChar.map_add_eq_mul, mul_assoc, _root_.PositivityTheory.ThKW.Trc.beta_fin_k C, mul_one]`. Rewrite using `[if_neg (fun h => hy ((hm _).1 h)), if_neg hy, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiLat_mul_exp_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hA : SelfDual (gamFF σ JS JT ξ₀ B.ψ) (latF F E nS nT Λ)) (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b)
@@ -225,13 +225,13 @@ theorem chiLat_mul_exp_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ�
     rw [h2, ← h1, e, AddChar.map_add_eq_mul, mul_assoc, _root_.PositivityTheory.ThKW.Trc.beta_fin_k C, mul_one]
   · rw [if_neg (fun h => hy ((hm _).1 h)), if_neg hy, zero_mul]
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.ThKW.Trc.act_iota_k C, _root_.PositivityTheory.ThKW.Trc.serF_eq_k C, ← (Equiv.ofBijective _ hbij).tsum_eq]`. Use `tsum_congr fun y => ?_` and prove the remaining obligations. Establish `h0` using `_root_.PositivityTheory.ThKW.Trc.omV_act_k (g := g) (h := h) C (infRatF (tauB B) y) v`. Establish `h1` using `_root_.PositivityTheory.ThKW.Trc.actR_add_infRat_k C ha hb y 0`. Rewrite `h1` using `[mulVec_zero, add_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[h1]`. Rewrite using `[Equiv.ofBijective_apply, _root_.PositivityTheory.ThKW.Trc.chiLat_add_iota_k C, _root_.PositivityTheory.ThKW.Trc.chiLat_mul_exp_k C hG hR hA ha hb hw, _root_.PositivityTheory.ThKW.beta_iota_right_k C, _root_.PositivityTheory.ThKW.beta_iota_left_k C, gaussV, _root_.PositivityTheor …`. Generalize the expression as in `mMF σ JS JT θ (g⁻¹, h⁻¹) *ᵥ v = u at h0 ⊢`. Generalize the expression as in `infRatF (tauB B) (b * y * a) = z at h0 ⊢`. Generalize the expression as in `infRatF (tauB B) y = x at h0 ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `e1 : z - x + (-v + u) = z + u - (x + v)` using `by abel`. Establish `e2 : Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) (z - x) u : ℝ)) * Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) (-v) (z - x + u) : ℝ)) * Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) z x : ℝ)) = Complex.exp (-(Real …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, ← mul_add, ← mul_add, ← Complex.ofReal_add, ← Complex.ofReal_add]`. Use `congr 3`. Simplify using `only [map_add, map_sub, map_neg, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.neg_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[halt x u, halt v z, halt v x, halt v u]`. Rewrite using `[e1, ← e2]`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem left_side_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hA : SelfDual (gamFF σ JS JT ξ₀ B.ψ) (latF F E nS nT Λ)) (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b)
@@ -264,11 +264,11 @@ theorem left_side_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ 
   ring
 end Left
 /- English proof (translation)
-Establish `hu : piWF θ (u : WOF F E nS nT) = 0` using `piWF_of_fin u.fin`. Rewrite using `[Pi.smul_apply, smul_eq_mul, heisOF, _root_.PositivityTheory.ThKW.beta_iota_left_k C, hu, LinearMap.map_zero, Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul, _root_.PositivityTheory.ThKW.Trc.serF_eq_k C, ← tsum_mul_left]`. Use `tsum_congr fun y => ?_` and prove the remaining obligations. Establish `e1 : ratWF (F` using `F) y + (iotaVF ι v + (u : WOF F E nS nT)) = (ratWF y + (u : WOF F E nS nT)) + iotaVF ι v := by`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Normalize the expressions using the abelian group laws.
 
-Establish `e2 : omV (HMF JS JT ξ₀ (tauB B)) v v = 0` using `by linarith [halt v v]`. Establish `e3 : Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) (infRatF (tauB B) y) v : ℝ)) * Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) (-v) (infRatF (tauB B) y + v) : ℝ)) = Complex.exp (2 * Real.pi * Complex.I * ((-omV (HMF JS JT ξ₀ (tauB B)) (i …`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_add, map_neg, LinearMap.neg_apply, e2, halt v (infRatF (tauB B) y)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[coefQF, GlobalTheory.HeisLineF.symplOHF_add_right, AddChar.map_add_eq_mul, _root_.PositivityTheory.ThKW.beta_iota_right_k C, _root_.PositivityTheory.ThKW.beta_iota_left_k C, piWF_add, piWF_add, hu, piWF_iotaVF C.chart, _root_.PositivityTheory.ThKW.piWF_ratWF_k C, add_zero, neg_a …`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem right_side_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι)
     (halt : ∀ x y, omV (HMF JS JT ξ₀ (tauB B)) x y = -omV (HMF JS JT ξ₀ (tauB B)) y x)
@@ -296,15 +296,11 @@ theorem right_side_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ
     _root_.PositivityTheory.ThKW.Trc.chiLat_add_iota_k C, ← e3]
   ring
 /- English proof (translation)
-Establish `hψ : IsCharAF F B.ψ` using `(_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B C.good).1`. Establish `h` using `GlobalTheory.HeisenbergGaussianSeries.summable_coeff (G := WOF F E nS nT) (piWA θ) (omV (HMF JS JT ξ₀ (tauB B))) (jV s) (ratLF F E nS nT) ((latOF F E nS nT Λ).comap (DistribSMul.toAddMonoidHom (WOF F E nS nT) (finIdem F E))) (chiLatF σ JS JT ξ₀ B.ψ Λ w) hpos (by`. Introduce and unpack `_ ⟨y, rfl⟩ hy`. Establish `: y = 0` using `infRatF_injective B (((_root_.PositivityTheory.ThKW.piWF_ratWF_k C y).symm.trans hy).trans (map_zero _).symm)`. Rewrite using `[this, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun R => by`. Use `((_root_.PositivityTheory.ThKW.finite_lat_k C.good hG R).image (fun y => ratWF (F := F) y)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨y, rfl⟩, h1, h2⟩`. Conclude with `⟨y, ⟨(_root_.PositivityTheory.ThKW.finRatF_mem_iff_k C hG hR hA y).1 h1, by rw [← _root_.PositivityTheory.ThKW.piWF_ratWF_k C]; exact h2⟩, rfl⟩)`. Use the proof step `(fun x hx => if_neg hx)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun x => by`. Unfold `chiLatF`. Use `split_ifs`. Conclude with `(hψ.2.1 _).le`. Use the proof step `simp)`.
-
-Use the proof step `(fun y => B.ψ (symplOHF σ JS JT ξ₀ y u)) (fun y => hψ.2.1 _) u 0 0 0`. Rewrite `h` using `[← (_root_.PositivityTheory.ThKW.Trc.ratEquivF_k C).summable_iff]`. Use `h.congr fun y => ?_` and prove the remaining obligations. Establish `e : ‖phaseF σ JS JT ξ₀ B.ψ w u‖ = 1` using `hψ.2.1 _`. Simplify using `only [Function.comp_apply, _root_.PositivityTheory.ThKW.Trc.coe_ratEquivF_k, piWA_apply, _root_.PositivityTheory.ThKW.piWF_ratWF_k C, add_zero, zero_mul, Real.exp_zero, mul_one]`.
-
-Rewrite using `[coefQF, norm_mul (phaseF σ JS JT ξ₀ B.ψ w u), e, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_coefQF_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hA : SelfDual (gamFF σ JS JT ξ₀ B.ψ) (latF F E nS nT Λ))
@@ -337,47 +333,43 @@ theorem summable_coefQF_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ�
     mul_one]
   rw [coefQF, norm_mul (phaseF σ JS JT ξ₀ B.ψ w u), e, one_mul]
 /- English proof (translation)
-Establish `hσ` using `_root_.PositivityTheory.ThKW.Trc.sgsg_k C`. Take `⟨hH, -⟩` from `_root_.PositivityTheory.ThKW.hermitian_form_selfadjoint_global F E σ B C.good nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ`. Take `⟨halt, -, -, hpos⟩` from `omV_laws (H := HMF JS JT ξ₀ (tauB B)) hH hs.sq hs.pos`. Establish `hw` using `hO.hw`. Establish `H` using `isHeis_opFF hσ C.hS C.hT C.hξ hc hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `hO.sd`. Establish `hB` using `hO.sd' (g, h)`. Establish `hmem : ∀ y, finRatF F y ∈ latF F E nS nT Λ ↔ y ∈ Λ` using `_root_.PositivityTheory.ThKW.finRatF_mem_iff_k C hG hR hA`. Take `⟨m, u, huB, huT⟩` from `exists_transversal_of_idx_ne_zero _ _ (hO.fin (g, h))`. Set `Cg : AddSubgroup (Matrix (Fin nT) (Fin nS) E)` to `Λ.toAddSubgroup ⊓ Λ.toAddSubgroup.comap (sandF b a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hC : ∀ x, x ∈ Cg ↔ x ∈ Λ ∧ b * x * a ∈ Λ` using `fun x => Iff.rfl`. Establish `hQ : ∀ y, b * y * a - y ∈ Λ → gaussQF σ JS JT ξ₀ B.ψ Λ w a b y = gamQF σ JS JT ξ₀ B.ψ (sgOF σ w • (b * y * a - y)) y` using `fun y hy => if_pos hy`. Establish `hQ0 : ∀ y, b * y * a - y ∉ Λ → gaussQF σ JS JT ξ₀ B.ψ Λ w a b y = 0` using `fun y hy => if_neg hy`. Establish `h0 : κ * ∑ i, coefQF σ JS JT ξ₀ B s Λ w (u i) 0 = κ`. Take `⟨i, hi, hi'⟩` from `huT 0 (zero_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_eq_single i, coefQF_zero w (by simpa using hi), mul_one]`. Introduce `j _ hj`. Assume the negation of the conclusion as `hn`. Conclude with `hj (hi' j (by simpa using mem_of_coefQF_ne_zero hn))`. Conclude with `fun hn => (hn (Finset.mem_univ _)).elim`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.unfold_poincareSeries_lattice_fourier (IxF F nS nT → ℂ) volume _ (infRatF (tauB B)) (infRatF_injective B) Cg (fun R => (_root_.PositivityTheory.ThKW.finite_lat_k C.good hG R).subset fun c hc => ⟨((hC c).1 hc.1).1, hc.2⟩) ?_ n t (gaussQF σ JS JT ξ₀ B.ψ Λ w a b) ?_ ? …`. Take `⟨r, hr, e⟩` from `key`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[h0, Finset.sum_congr rfl fun k _ => hQ _ (ht k)]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eq_top_iff, ← _root_.PositivityTheory.ThKW.span_infRatF_k C.good, Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨N, hN, h1⟩` from `hG.den y`. Take `⟨M, hM, h2⟩` from `hG.den (b * y * a)`. Establish `h3 : (M * N) • y ∈ Cg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hC _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_of_tower_mem Λ M h1`. Establish `e : b * ((M * N) • y) * a = (N * M) • (b * y * a)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_smul]`. Conclude with `Submodule.smul_of_tower_mem Λ N h2`. Establish `h4 : infRatF (tauB B) y = ((M * N : ℕ) : ℝ)⁻¹ • infRatF (tauB B) ((M * N) • y)`. Rewrite using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, inv_smul_smul₀ (Nat.cast_ne_zero.2 (Nat.mul_pos hM hN).ne')]`. Rewrite using `[h4]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h3, rfl⟩)`. Introduce `y hy`. Establish `h1 : b * y * a - y ∈ Λ` using `by_contra fun hn => hy (hQ0 y hn)`. Take `⟨k, hk, -⟩` from `hu y h1`. Use `⟨k, (hC _).2 ⟨hk, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : b * (y - t k) * a = (b * y * a - y) - (b * t k * a - t k) + (y - t k)`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (sub_mem h1 (ht k)) hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Introduce `k k' hk`. Conclude with `((hu (t k) (ht k)).unique (by rw [sub_self]; exact zero_mem _) ((hC _).1 hk).1)`. Introduce `y c hc`. Take `⟨hc1, hc2⟩` from `(hC c).1 hc`. Establish `e : b * (y + c) * a - (y + c) = (b * y * a - y) + (b * c * a - c)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws. Establish `hc' : b * c * a - c ∈ Λ` using `sub_mem hc2 hc1`. Distinguish the cases in `hy : b * y * a - y ∈ Λ`. Rewrite using `[hQ _ hy, hQ _ (e ▸ add_mem hy hc'), gamQF, gamQF, map_smul, map_smul, map_sub, map_sub, ← rhoFF_finRatF ha hb, ← rhoFF_finRatF ha hb, map_add (finRatF F)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `gam_periodic H hA _ (fun x y => ?_) _ ?_ ((hmem c).2 hc1) ?_` and prove the remaining obligations. Unfold `gamFF`. Rewrite using `[coe_rhoFF, coe_rhoFF, _root_.PositivityTheory.ThKW.symplOF_actOF_k C]`. Rewrite using `[rhoFF_finRatF ha hb, ← map_sub]`. Conclude with `(hmem _).2 hy`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[rhoFF_finRatF ha hb]`. Conclude with `(hmem _).2 hc2`. Rewrite using `[hQ0 _ hy, hQ0]`. Introduce `hn`. Rewrite `hn` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hy ((add_mem_cancel_right hc').1 hn)`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun y => ?_) ((summable_sum fun i (_ : i ∈ Finset.univ) => _root_.PositivityTheory.ThKW.Trc.summable_coefQF_k C hG hR hA hpos w (u i)).mul_left ‖κ‖)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (norm_sum_le _ _) (norm_nonneg _)`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy hn`. Establish `h1 : infRatF (tauB B) y ≠ 0` using `fun h => hy (infRatF_injective B (h.trans (map_zero _).symm))`. Establish `h2` using `hpos _ h1`. Rewrite `h2` using `[neg_eq_zero.1 hn]`. Conclude with `lt_irrefl _ h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy c hc`. Take `⟨hc1, hc2⟩` from `(hC c).1 hc`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (right_ne_zero_of_mul hy)`. Establish `h1 : finRatF F c ∈ (latF F E nS nT Λ).map (rhoFF σ JS JT (g, h))`. Use `⟨finRatF F (b * c * a), (hmem _).2 hc2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← rhoFF_finRatF ha hb, ← Module.End.mul_apply, ← map_mul, show ((g, h) : GAF σ JS × GAF σ JT) * (g⁻¹, h⁻¹) = 1 from mul_inv_cancel (g, h), map_one, Module.End.one_apply]`. Establish `h2` using `H.iso hA (mem_of_coefQF_ne_zero hi) ((hmem c).2 hc1)`. Rewrite `h2` using `[H.add_left, H.iso hB (huB i) h1, mul_one]`. Take `⟨z, hz⟩` from `(_root_.PositivityTheory.ThKW.gamQF_eq_one_iff_k C y c).1 h2`. Conclude with `⟨-z, by rw [LinearMap.neg_apply, hz, Int.cast_neg]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Take `⟨hf, hfix, hvac⟩` from `_root_.PositivityTheory.ThKW.ser_vacuum_k C hG hR hO hs (-v)`. Establish `e` using `hκ ⟨_, hf⟩ hfix hvac (iotaVF ι v)`. Rewrite `e` using `[(sumOp_eq_sum_transversal H _ _ hB _ hfix _ u huB huT).1, Submodule.coe_sum, Finset.sum_apply]`. Simplify using `only [coe_opFF, _root_.PositivityTheory.ThKW.Trc.right_side_k C halt, _root_.PositivityTheory.ThKW.Trc.left_side_k C hG hR hA ha hb hw halt hbij] at e`.
-
-Rewrite using `[e, ← Summable.tsum_finsetSum, ← tsum_mul_left]`. Use `tsum_congr fun y => ?_ beta_reduce` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, mul_assoc κ]`. Introduce `i _`. Use `Summable.of_norm ((_root_.PositivityTheory.ThKW.Trc.summable_coefQF_k C hG hR hA hpos w (u i)).congr fun y => ?_)` and prove the remaining obligations.
-
-Establish `e1 : (2 * Real.pi * Complex.I * ((-omV (HMF JS JT ξ₀ (tauB B)) (infRatF (tauB B) y)) v : ℝ) : ℂ) = ((2 * Real.pi * (-omV (HMF JS JT ξ₀ (tauB B)) (infRatF (tauB B) y)) v : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[norm_mul, e1, Complex.norm_exp_ofReal_mul_I, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem gauss_mul_integral_A_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om) (hs : CartF σ JS JT ξ₀ B θ s) {g : GAF σ JS} {h : GAF σ JT} {a b}

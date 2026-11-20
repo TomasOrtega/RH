@@ -19,7 +19,7 @@ def SpecialCurvesDim.Statement : Prop :=
           relDim (baseComap (IsLocalRing.ResidueField O) k₀ e W) = relDim W
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨SpecialCurves.hyps.1, SpecialCurves.hyps.2.1, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem SpecialCurvesDim.hyps :
     IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () ∧
@@ -29,7 +29,7 @@ theorem SpecialCurvesDim.hyps :
   ⟨SpecialCurves.hyps.1, SpecialCurves.hyps.2.1, le_rfl⟩
 
 /- English proof (translation)
-The claim follows from `h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1 (Equiv.refl _) SpecialCurvesDim.hyps.1 _ SpecialCurvesDim.hyps.2.1 SpecialCurvesDim.hyps.2.2`.
+A detailed English derivation is pending.
 -/
 example (h : SpecialCurvesDim.Statement) :=
   h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1

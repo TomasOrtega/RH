@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Mi
 
 /- English proof (translation)
-Introduce `D X h u ψ A B Y hψ hH`. Take `⟨Fs, hFs⟩` from `Formalism.L2.SG.PoincareInHH.Cut.sratFund_holds X u`. Take `⟨c, hc⟩` from `GlobalTheory.T.unfoldedPeriod_eq_integral_besselPeriods D X h u ψ A B Y.hK hψ Fs hFs`. Use `⟨c, fun T f φ hf hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.inner_poincareSeries_eq_setIntegral_unfolding D X u Y.hK (Y.Dt u) Fs (Y.reps u) hH hFs T (hc T).1 f φ hf hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc T).2 f hf`.
+A detailed English derivation is pending.
 -/
 theorem perLaw_holds : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (Y : Formalism.L2.SG.Full.Full X), IsStdChar D ψ (-1) → InHH X u Y.hK → B.PerLaw Y := by
   intro D X h u ψ A B Y hψ hH

@@ -15,20 +15,20 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.DiagDifferent
 
 /- English proof (translation)
-The claim follows from `Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) a`.
+A detailed English derivation is pending.
 -/
 theorem trace_conj {E : Type} [Field E] [NumberField E] [IsCMField E] (a : E) :
     Algebra.trace ℚ E (cc a) = Algebra.trace ℚ E a :=
   Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) a
 
 /- English proof (translation)
-Establish `hs : (H.rt : E) ^ 2 = -(H.d : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `hsq : (cc (H.rt : E)) ^ 2 = (H.rt : E) ^ 2`. Unfold `cc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← map_pow, hs, map_neg, map_natCast]`. Use `(sq_eq_sq_iff_eq_or_eq_neg.1 hsq).resolve_left fun h1 => ?_` and prove the remaining obligations. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h2` using `IsCMField.complexEmbedding_complexConj E τ (H.rt : E)`. Unfold `cc at h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h2` using `[h1]`. Establish `h3 : (τ (H.rt : E)) ^ 2 = -(H.d : ℂ)`. Rewrite using `[← map_pow, hs, map_neg, map_natCast]`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h2.symm`. Rewrite `h3` using `[hr]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h3`. Establish `h5 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg r]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem conj_rt {E : Type} [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : cc (H.rt : E) = -(H.rt : E) := by
@@ -52,9 +52,9 @@ theorem conj_rt {E : Type} [Field E] [NumberField E] [IsCMField E]
   nlinarith [sq_nonneg r]
 
 /- English proof (translation)
-Establish `h1 : 2 * (H.w0 : E) = 1 + (H.rt : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.two_weight_eq_one_add_root` as an intermediate fact. Simplify `this` using `[map_ofNat]`. Establish `h2 : 2 * cc (H.w0 : E) = 1 + cc (H.rt : E)`. Use `congrArg (IsCMField.complexConj E) h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Conclude with `this`. Rewrite `h2` using `[conj_rt]`. Establish `: (2 : E) * ((H.w0 : E) + cc (H.w0 : E)) = 2 * 1` using `by linear_combination h1 + h2`. Conclude with `mul_left_cancel₀ two_ne_zero this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cmField_host_element_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : (H.w0 : E) + cc (H.w0 : E) = 1 := by
@@ -70,13 +70,13 @@ theorem cmField_host_element_add_conj_eq_one {E : Type} [Field E] [NumberField E
   exact mul_left_cancel₀ two_ne_zero this
 
 /- English proof (translation)
-Introduce `E _ _ _ H I x hI hx`. Establish `hmul : ∀ a b : E, cc (a * b) = cc a * cc b` using `fun a b => map_mul _ a b`. Establish `hadd : ∀ a b : E, cc (a + b) = cc a + cc b` using `fun a b => map_add _ a b`. Establish `hcc : ∀ a : E, cc (cc a) = a` using `fun a => IsCMField.complexConj_apply_apply E a`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h s hs`. Establish `hm : s + cc s ∈ I` using `Submodule.add_mem (I : Submodule (𝓞 E) E) hs (hI s hs)`. Take `⟨n, hn⟩` from `h (s + cc s) hm (by rw [hadd, hcc, add_comm])`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `e : x * cc s = cc (x * s)` using `by rw [hmul, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hn` using `[mul_add, map_add, e, trace_conj]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h s hs hcs`. Establish `hm : (H.w0 : E) * s ∈ I` using `Submodule.smul_mem (I : Submodule (𝓞 E) E) H.w0 hs`. Take `⟨n, hn⟩` from `h _ hm`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `e : x * s = x * ((H.w0 : E) * s) + cc (x * ((H.w0 : E) * s))`. Rewrite using `[hmul, hmul, hx, hcs]`. Take the linear combination `(-(x * s)) * cmField_host_element_add_conj_eq_one H`. Rewrite using `[e, map_add, trace_conj, hn]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

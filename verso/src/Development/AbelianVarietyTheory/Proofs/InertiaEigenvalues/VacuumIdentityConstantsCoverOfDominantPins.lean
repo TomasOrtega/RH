@@ -17,11 +17,11 @@ open GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hL hLev hGrp hFam hMod hThP hTie i hVs hV ph hph hB C hU hpin`. Take `⟨cc, hcc⟩` from `GlobalTheory.T.exists_vacuumIdentityConstants_uniformisedCover D G Pl0 T0 A T R F κ v₀ hL hLev hGrp hFam hMod hThP hTie i hVs hV C hU`. Establish `hp2` using `GlobalTheory.T.uniformisedCover_invPhase_constants_normalised_dominant D G Pl0 T0 A T R F κ v₀ hL hLev hGrp hFam hMod hThP hTie i hVs hV ph hph hB C hU cc hcc`. Establish `heq` using `GlobalTheory.T.coverConstants_unique_on_dictionaryComponents D G Pl0 T0 A T R F κ v₀ hL hLev hGrp hFam hMod hThP hTie i hVs hV C hU _ hpin hp2`. Establish `hph0 : ph ≠ 0` using `by rintro rfl; simp at hph`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun k => ?_, fun h γ hat hx' g bas idx e hs hi ϑ hϑ w hw0 => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, hph, (hpin _ (dom_wtA (κ i))).1 k, one_mul]`. Establish `h1` using `hcc.2 h γ hat hx' g bas idx e hs hi ϑ hϑ w hw0`. Establish `key : ph * C.cc₂ (castDict hV C.dict₂ h).1 = cc (castDict hV C.dict₂ h).1`. Rewrite using `[show castDict hV C.dict₂ h = C.dict₂ (cast (congrArg (GA D) hV.symm) h) from rfl, heq, ← mul_assoc, mul_inv_cancel₀ hph0, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[key]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covCc_of_pinned : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), LawsJ T → R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsThP → TieIn T R κ v₀ → ∀ (i : Fin D.R.m), VStd D i → ∀ hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i, ∀ ph : ℂ, ‖ph‖ = 1 → BaseCc T R i hV ph → ∀ C : Cover T ((i : ℕ) + 1) T.σ₀, C.IsUnif → (∀ a, Dom a (κ i).n → C.IsPinned a (κ i).n) → CovCc T R i hV ph C := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hL hLev hGrp hFam hMod hThP hTie i hVs hV ph hph hB C hU hpin

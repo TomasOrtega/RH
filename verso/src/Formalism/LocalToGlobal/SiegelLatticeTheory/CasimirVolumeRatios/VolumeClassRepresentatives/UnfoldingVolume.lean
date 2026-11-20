@@ -19,36 +19,36 @@ section Basic
 variable (I : AutInst)
 
 /- English proof (translation)
-The claim follows from `(PI.WAU.Ksub I).one_mem`.
+A detailed English derivation is pending.
 -/
 theorem kone : (1 : I.Gf) ∈ I.Kset := (PI.WAU.Ksub I).one_mem
 
 /- English proof (translation)
-The claim follows from `(PI.WAU.Ksub I).mul_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem kmul {x y : I.Gf} (hx : x ∈ I.Kset) (hy : y ∈ I.Kset) : x * y ∈ I.Kset :=
   (PI.WAU.Ksub I).mul_mem hx hy
 
 /- English proof (translation)
-The claim follows from `(PI.WAU.Ksub I).inv_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem kinv {x : I.Gf} (hx : x ∈ I.Kset) : x⁻¹ ∈ I.Kset := (PI.WAU.Ksub I).inv_mem hx
 
 /- English proof (translation)
-The claim follows from `(PI.WAU.kset_open I).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem kmeas : MeasurableSet I.Kset := (PI.WAU.kset_open I).measurableSet
 
 def Ky (y : I.Gf) : Set I.Gf := {x | y⁻¹ * x ∈ I.Kset}
 
 /- English proof (translation)
-The claim follows from `(measurable_const_mul y⁻¹) (kmeas I)`.
+A detailed English derivation is pending.
 -/
 theorem Ky_meas (y : I.Gf) : MeasurableSet (Ky I y) :=
   (measurable_const_mul y⁻¹) (kmeas I)
 
 /- English proof (translation)
-The claim follows from `measure_preimage_mul μf y⁻¹ I.Kset`.
+A detailed English derivation is pending.
 -/
 theorem Ky_measure (μf : Measure I.Gf) [μf.IsMulLeftInvariant] (y : I.Gf) : μf (Ky I y) = μf I.Kset :=
   measure_preimage_mul μf y⁻¹ I.Kset
@@ -61,9 +61,9 @@ theorem muA_eq (μf : Measure I.Gf) [SigmaFinite μf] : I.muA μf = (muInf I).pr
 def FD (ys : Finset I.Gf) (D : I.Gf → Set I.Ginf) : Set I.GA := ⋃ y ∈ ys, D y ×ˢ Ky I y
 
 /- English proof (translation)
-Take `⟨g, hg, hm⟩` from `h`. Establish `hf : Formalism.UG.bc (Formalism.UG.inclE (F` using `I.F) (Af I.F)) g ∈ Formalism.UG.UPts I.cm.sig I.J (Af I.F) := Formalism.UG.Final.RatPtsLe I.F I.E (Fin I.n) I.cm.sig I.J (Af I.F) (Subgroup.mem_map_of_mem _ hg)`. Use `⟨(fun v => Formalism.L2.S.S7.DensRat.ratReal I g hg v, ⟨_, hf⟩), ⟨g, hg, fun v => rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hm.symm`.
+A detailed English derivation is pending.
 -/
 theorem gff_lift (x : I.Gf) (h : x ∈ Formalism.L2.SG.LitS.GFf I) : ∃ γ ∈ I.GFset, γ.2 = x := by
   obtain ⟨g, hg, hm⟩ := h
@@ -81,23 +81,19 @@ section FDom
 variable (I : AutInst)
 
 /- English proof (translation)
-Establish `hL : (I.muA μf).IsMulLeftInvariant` using `rr_muA_left I μf`. Use `IsFundamentalDomain.mk'' ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(Finset.measurableSet_biUnion ys fun y hy => (hD y hy).1.prod (Ky_meas I y)).nullMeasurableSet`. Use `Filter.Eventually.of_forall fun p => ?_` and prove the remaining obligations. Take `⟨γ, hγ, y, hy, k, hk, hx⟩` from `hys.1 p.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, ⟨hδ, hδK⟩, hδD⟩` from `(hD y hy).2.1 ((γ⁻¹).1 * p.1)`. Use `⟨⟨δ * γ⁻¹, rrg_mul_mem I hδ (rrg_inv_mem I hγ)⟩, ?_⟩` and prove the remaining obligations. Use `show (δ * γ⁻¹) * p ∈ FD I ys D`. Use `Set.mem_biUnion hy ⟨?_, ?_⟩` and prove the remaining obligations. Use `show δ.1 * (γ⁻¹).1 * p.1 ∈ D y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Conclude with `hδD`. Use `show y⁻¹ * (δ.2 * (γ⁻¹).2 * p.2) ∈ I.Kset`. Establish `e : y⁻¹ * (δ.2 * (γ⁻¹).2 * p.2) = (y⁻¹ * δ.2 * y) * k`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show y⁻¹ * (δ.2 * γ.2⁻¹ * (γ.2 * y * k)) = _`. Use `group`. Rewrite using `[e]`. Conclude with `kmul I hδK hk`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : (g : I.GA) ≠ 1` using `fun h1 => hg (Subtype.ext h1)`. Use `show I.muA μf ((fun p => (g : I.GA) * p) '' FD I ys D ∩ FD I ys D) = 0`. Establish `hsub : (fun p => (g : I.GA) * p) '' FD I ys D ∩ FD I ys D ⊆ ⋃ y ∈ ys.filter (fun y => (g : I.GA) ∈ GamY I y), ((fun z => (g : I.GA).1 * z) '' D y ∩ D y) ×ˢ (Set.univ : Set I.Gf)`. Introduce and unpack `p ⟨⟨q, hq, rfl⟩, hp⟩`. Take `⟨y', hy', hq'⟩` from `Set.mem_iUnion₂.1 hq`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨y, hy, hp'⟩` from `Set.mem_iUnion₂.1 hp`. Establish `hk' : y'⁻¹ * q.2 ∈ I.Kset` using `hq'.2`. Establish `hk : y⁻¹ * ((g : I.GA).2 * q.2) ∈ I.Kset` using `hp'.2`. Establish `hyy : y' = y`. Use `hys.2 y' hy' y hy ⟨g, g.2, (y'⁻¹ * q.2) * (y⁻¹ * ((g : I.GA).2 * q.2))⁻¹, kmul I hk' (kinv I hk), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `group`. Substitute `hyy` using the available equality. Establish `hgam : (g : I.GA) ∈ GamY I y'`. Use `⟨g.2, ?_⟩` and prove the remaining obligations. Establish `e : y'⁻¹ * (g : I.GA).2 * y' = (y'⁻¹ * ((g : I.GA).2 * q.2)) * (y'⁻¹ * q.2)⁻¹` using `by group`.
-
-Rewrite using `[e]`. Conclude with `kmul I hk (kinv I hk')`. Conclude with `Set.mem_biUnion (Finset.mem_filter.2 ⟨hy', hgam⟩) ⟨⟨⟨q.1, hq'.1, rfl⟩, hp'.1⟩, Set.mem_univ _⟩`. Use `le_antisymm ((measure_mono hsub).trans ((measure_biUnion_finset_le _ _).trans ?_)) bot_le` and prove the remaining obligations. Use `(Finset.sum_eq_zero fun y hy => ?_).le` and prove the remaining obligations.
-
-Rewrite using `[muA_eq, Measure.prod_prod]`. Take `⟨hy1, hgam⟩` from `Finset.mem_filter.1 hy`. Rewrite using `[(hD y hy1).2.2 g hgam hg', zero_mul]`. Introduce `g`. Conclude with `(measurePreserving_mul_left (I.muA μf) (g : I.GA)).quasiMeasurePreserving`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fd_isFund (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (ys : Finset I.Gf)
     (hys : ClassReps I ys) (D : I.Gf → Set I.Ginf) (hD : ∀ y ∈ ys, IsFundInf I y (muInf I) (D y)) :
@@ -152,13 +148,11 @@ theorem fd_isFund (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (ys
     exact (measurePreserving_mul_left (I.muA μf) (g : I.GA)).quasiMeasurePreserving
 
 /- English proof (translation)
-Establish `hL : (I.muA μf).IsMulLeftInvariant` using `rr_muA_left I μf`. Use `haveI : SMulInvariantMeasure (rr_GF I) I.GA (I.muA μf) := ⟨fun c s _ => measure_preimage_mul (I.muA μf) (c : I.GA) s⟩`. Establish `h1` using `Formalism.L2.SG.PoincareInHH.Cut.isFundamentalDomain_of_isFundDom I (I.muA μf) fund hfund`. Establish `h2` using `fd_isFund I μf ys hys D hD`. Rewrite using `[h1.measure_eq h2, FD, measure_biUnion_finset]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[muA_eq, Measure.prod_prod, Ky_measure, mul_comm]`. Introduce `y hy y' hy' hne`. Use `Set.disjoint_left.2 fun p hp hp' => hne ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk : y⁻¹ * p.2 ∈ I.Kset` using `hp.2`. Establish `hk' : y'⁻¹ * p.2 ∈ I.Kset` using `hp'.2`. Use `hys.2 y hy y' hy' ⟨1, rrg_one_mem I, (y⁻¹ * p.2) * (y'⁻¹ * p.2)⁻¹, kmul I hk (kinv I hk'), ?_⟩` and prove the remaining obligations. Use `show y' = 1 * y * ((y⁻¹ * p.2) * (y'⁻¹ * p.2)⁻¹)`. Use `group`.
-
-Introduce `y hy`. Conclude with `(hD y hy).1.prod (Ky_meas I y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unfold_eq (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (fund : Set I.GA)
     (hfund : I.IsFundDom (I.muA μf) fund) (ys : Finset I.Gf) (hys : ClassReps I ys) (D : I.Gf → Set I.Ginf)
@@ -206,13 +200,11 @@ def clsSetoid : Setoid I.Gf where
       group
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hB I (PI.WAU.Ksub I) (PI.WAU.kset_open I)`. Use `⟨S.image fun s => (Quotient.mk (clsSetoid I) s).out, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨γ0, hγ0, s, hs, u, hu, hx⟩` from `hS x`. Take `⟨γ, hγ, hγe⟩` from `gff_lift I γ0 hγ0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, k, hk, hks⟩` from `(Quotient.mk_out (s := clsSetoid I) s)`. Use `set o := (Quotient.mk (clsSetoid I) s).out with ho`. Use `⟨γ * δ, rrg_mul_mem I hγ hδ, o, Finset.mem_image_of_mem _ hs, k * (u : I.Gf), kmul I hk hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, hks, ← hγe]`. Use `show γ.2 * (δ.2 * _ * k) * u = γ.2 * δ.2 * _ * (k * u)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `group`. Introduce `y hy y' hy' hrel`. Take `⟨a, _, rfl⟩` from `Finset.mem_image.1 hy`. Take `⟨b, _, rfl⟩` from `Finset.mem_image.1 hy'`. Establish `h` using `Quotient.sound (s := clsSetoid I) hrel`.
-
-Rewrite `h` using `[Quotient.out_eq, Quotient.out_eq]`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classReps_exists (hB : Formalism.L2.SG.LitS.BorelClassFinite) : ∃ ys : Finset I.Gf, ClassReps I ys := by
   obtain ⟨S, hS⟩ := hB I (PI.WAU.Ksub I) (PI.WAU.kset_open I)
@@ -236,7 +228,7 @@ theorem classReps_exists (hB : Formalism.L2.SG.LitS.BorelClassFinite) : ∃ ys :
 end Reps
 
 /- English proof (translation)
-Introduce `I μf _ _ fund hfund`. Take `⟨ys, hys⟩` from `classReps_exists I hB`. Conclude with `⟨ys, hys, ⟨fun y => (hE I y).choose, fun y _ => (hE I y).choose_spec⟩, fun D hD => unfold_eq I μf fund hfund ys hys D hD⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UnfoldVol_holds (hB : Formalism.L2.SG.LitS.BorelClassFinite) (hE : FundInfExists) : UnfoldVol := by
   intro I μf _ _ fund hfund

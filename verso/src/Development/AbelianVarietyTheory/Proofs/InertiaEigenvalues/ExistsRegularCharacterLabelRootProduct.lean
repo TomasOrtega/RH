@@ -13,9 +13,9 @@ open Polynomial GlobalTheory.GLq
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Establish `hN` using `L.gen_order n hn`. Establish `hq1 : 0 < g ^ n - 1`. Use `Nat.one_lt_pow hn.ne' (Fact.out : g.Prime).one_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hpos : 0 < orderOf (L.gen n)` using `hN ▸ hq1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2 : L.gen n ^ (a % orderOf (L.gen n)) = L.gen n ^ (b % orderOf (L.gen n))`. Rewrite using `[pow_mod_orderOf, pow_mod_orderOf, h]`. Establish `h3` using `pow_injOn_Iio_orderOf (Set.mem_Iio.2 (Nat.mod_lt a hpos)) (Set.mem_Iio.2 (Nat.mod_lt b hpos)) h2`. Rewrite `h3` using `[hN]`. Rewrite using `[← Nat.mod_add_div a (g ^ n - 1), ← Nat.mod_add_div b (g ^ n - 1), pow_add, pow_add, pow_mul, pow_mul, ht, one_pow, one_pow, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_congr (L : LabelDatum g) {n : ℕ} (hn : 0 < n) {t : ℂ} (ht : t ^ (g ^ n - 1) = 1) {a b : ℕ}
     (h : L.gen n ^ a = L.gen n ^ b) : t ^ a = t ^ b := by
@@ -32,7 +32,7 @@ theorem pow_congr (L : LabelDatum g) {n : ℕ} (hn : 0 < n) {t : ℂ} (ht : t ^ 
     one_pow, one_pow, h3]
 
 /- English proof (translation)
-Establish `he : ∃ m : ℕ, z = L.gen n ^ m` using `⟨k, hz⟩`. Unfold `thetaOf`. Rewrite using `[dif_pos he]`. Conclude with `pow_congr L hn hx ((Exists.choose_spec he).symm.trans hz)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaOf_eq (L : LabelDatum g) {n : ℕ} (hn : 0 < n) {x : Formalism.CyclotomicNorms.Fbar g}
     (hx : L.teich x ^ (g ^ n - 1) = 1) {z : Formalism.CyclotomicNorms.Fbar g} {k : ℕ} (hz : z = L.gen n ^ k) :
@@ -43,33 +43,29 @@ theorem thetaOf_eq (L : LabelDatum g) {n : ℕ} (hn : 0 < n) {x : Formalism.Cycl
   exact pow_congr L hn hx ((Exists.choose_spec he).symm.trans hz)
 
 /- English proof (translation)
-Introduce `g _ L n hn P hP K _ _ hK ι`. Use `haveI := Fintype.ofFinite K`. Establish `hg1 : 1 < g` using `(Fact.out : g.Prime).one_lt`. Establish `hq : 1 < g ^ n` using `Nat.one_lt_pow hn.ne' hg1`. Establish `hq1 : 0 < g ^ n - 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero (g ^ n - 1) := ⟨hq1.ne'⟩`. Establish `hdegP : P.natDegree = n` using `hP.2.2.2`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_aeval_eq_zero (Formalism.CyclotomicNorms.Fbar g) P (degree_pos_of_irreducible hP.2.1).ne'`. Establish `hxmem : x ∈ Formalism.CyclotomicNorms.rootsBar P`. Simplify `hx` using `[Formalism.CyclotomicNorms.rootsBar, hP.2.1.ne_zero, aeval_def, eval_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[← coeff_zero_eq_aeval_zero']`. Conclude with `hP.2.2.1 ((map_eq_zero_iff _ (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective).1 hx)`. Establish `hxq : x ^ (g ^ n - 1) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : x ^ g ^ n = x` using `(GlobalTheory.GreenExists.pow_eq_self_iff hP.2.1 hx n).2 (hdegP ▸ dvd_refl _)`. Establish `h2 : x ^ (g ^ n - 1) * x = 1 * x`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hq.le, h1, one_mul]`. Conclude with `mul_right_cancel₀ hx0 h2`. Establish `ht1 : L.teich x ^ (g ^ n - 1) = 1` using `by rw [← map_pow, hxq, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgo : orderOf (L.gen n) = g ^ n - 1` using `L.gen_order n hn`. Establish `hprim : IsPrimitiveRoot (L.gen n) (g ^ n - 1)` using `hgo ▸ IsPrimitiveRoot.orderOf _`. Establish `hcardK : Fintype.card K = g ^ n` using `by rw [← Nat.card_eq_fintype_card, hK]`. Establish `hpow : ∀ u : Kˣ, ∃ k : ℕ, ι u = L.gen n ^ k` using `fun u => by`. Establish `h1 : (ι u) ^ (g ^ n - 1) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite using `[← map_pow, ← hcardK, FiniteField.pow_card_sub_one_eq_one (u : K) u.ne_zero, map_one]`. Take `⟨i, -, hi⟩` from `hprim.eq_pow_of_pow_eq_one h1`. Conclude with `⟨i, hi.symm⟩`. Set `f : Kˣ →* ℂ` to `{ toFun := fun u => thetaOf L n x (ι u) map_one' := by`. Rewrite using `[thetaOf_eq L hn ht1 (k := 0) (by rw [Units.val_one, map_one, pow_zero]), pow_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `map_mul' := fun u v => by`. Take `⟨a, ha⟩` from `hpow u`. Take `⟨b, hb⟩` from `hpow v`. Rewrite using `[thetaOf_eq L hn ht1 ha, thetaOf_eq L hn ht1 hb, thetaOf_eq L hn ht1 (k := a + b) (by rw [Units.val_mul, map_mul, ha, hb, pow_add]), pow_add] }`. Establish `hf : ∀ u : Kˣ, ((f.toHomUnits u : ℂˣ) : ℂ) = thetaOf L n x (ι u)` using `fun u => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfpow : ∀ (u : Kˣ) (m : ℕ), ι u = L.gen n → ((f.toHomUnits (u ^ m) : ℂˣ) : ℂ) = L.teich x ^ m` using `fun u m hu => by`. Rewrite using `[hf]`. Conclude with `thetaOf_eq L hn ht1 (by rw [Units.val_pow_eq_pow_val, map_pow, hu])`. Establish `hroots` using `GlobalTheory.GreenExists.rootsBar_eq hP.2.1 hx`. Rewrite `hroots` using `[hdegP]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hnd : (Formalism.CyclotomicNorms.rootsBar P).Nodup`. Unfold `Formalism.CyclotomicNorms.rootsBar`. Conclude with `nodup_roots ((PerfectField.separable_of_irreducible hP.2.1).map)`. Rewrite `hnd` using `[hroots]`. Use `⟨f.toHomUnits, ?_, ⟨x, hxmem, hf⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i j hi hj h`. Take `⟨w, hw⟩` from `IsCyclic.exists_generator (α := Kˣ)`. Establish `hwo : orderOf w = g ^ n - 1`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hw, Nat.card_eq_fintype_card, Fintype.card_units, hcardK]`. Establish `hιw : orderOf (ι (w : K)) = g ^ n - 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `orderOf_injective ι.toMonoidHom ι.injective (w : K)`. Rewrite `h` using `[orderOf_units, hwo]`. Conclude with `h`. Establish `hwp : IsPrimitiveRoot (ι (w : K)) (g ^ n - 1)` using `hιw ▸ IsPrimitiveRoot.orderOf _`. Take `⟨k, -, hk⟩` from `hwp.eq_pow_of_pow_eq_one (hgo ▸ pow_orderOf_eq_one (L.gen n))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu0 : ι ((w ^ k : Kˣ) : K) = L.gen n` using `by rw [Units.val_pow_eq_pow_val, map_pow, hk]`. Establish `h1` using `congrArg (fun φ : Kˣ →* ℂˣ => ((φ (w ^ k) : ℂˣ) : ℂ)) h`. Simplify using `only [MonoidHom.pow_apply, Units.val_pow_eq_pow_val] at h1`. Establish `hθ0 : ((f.toHomUnits (w ^ k) : ℂˣ) : ℂ) = L.teich x`. Rewrite using `[hf]`.
-
-Conclude with `(thetaOf_eq L hn ht1 (k := 1) (by rw [hu0, pow_one])).trans (pow_one _)`. Rewrite `h1` using `[hθ0, ← map_pow, ← map_pow]`. Establish `h2` using `L.teich_inj _ _ (pow_ne_zero _ hx0) (pow_ne_zero _ hx0) h1`. Conclude with `Multiset.inj_on_of_nodup_map hnd i (Finset.mem_range.2 hi) j (Finset.mem_range.2 hj) h2`. Introduce `u hu`.
-
-Rewrite using `[GlobalTheory.SerSys.TameGen.liftPoly, hroots, Multiset.map_map, Finset.prod_eq_multiset_prod]`. Use `congr 1`. Use `Multiset.map_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, hfpow u _ hu, map_pow L.teich]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_regularChar :
     ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (n : ℕ) (hn : 0 < n) (P : (ZMod g)[X])

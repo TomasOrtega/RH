@@ -7,11 +7,11 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZRes
 
 /- English proof (translation)
-Establish `hT : IsOpen {g : G | ind Q σ g f.1 = f.1}` using `f.2`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `g hg`. Establish `hg0 : f.1.1 g = 0` using `by simpa using hg`. Establish `hc : Continuous fun h : G => g⁻¹ * h` using `continuous_const.mul continuous_id`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : {h : G | g⁻¹ * h ∈ {κ : G | ind Q σ κ f.1 = f.1}} ∈ 𝓝 g` using `(hT.preimage hc).mem_nhds (by show ind Q σ (g⁻¹ * g) f.1 = f.1 simp)`. Use `filter_upwards [hm] with h hh`. Establish `e : (ind Q σ (g⁻¹ * h) f.1).1 g = f.1.1 g` using `congrArg (fun F : indSpace Q σ => F.1 g) hh`. Establish `e' : f.1.1 (g * (g⁻¹ * h)) = f.1.1 g` using `e`. Rewrite `e'` using `[mul_inv_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hg0` using `[e', hg0]`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_support_smooth_ind {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {W₁ : Type}
     [AddCommGroup W₁] [Module ℂ W₁] {Q : Subgroup G} (σ : Representation ℂ Q W₁) (f : smoothPart (ind Q σ)) :

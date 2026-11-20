@@ -23,9 +23,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (PD : PeriodData G Qp K₀ K B F) {LL : Type} [Field LL] [Algebra Qp LL]
 
 /- English proof (translation)
-Establish `htw : IsTwistRep (cycLL PD LL) (charRep (cycLL PD LL ^ n)) (charRep (cycLL PD LL ^ (n + 1)))`. Use `⟨LinearEquiv.refl LL LL, fun g x => ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_add_one]`. Express the relevant statement in the definitionally equal form `(((cycLL PD LL ^ n) g * cycLL PD LL g : LLˣ) : LL) * x = ((cycLL PD LL g : LLˣ) : LL) * ((((cycLL PD LL ^ n) g : LLˣ) : LL) * x)`. Rewrite using `[Units.val_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨Φ, hD, hF⟩` from `GlobalTheory.DRFil.exists_twist_equiv PD _ _ htw u hu hu'`. Conclude with `⟨by rw [← hD, LinearEquiv.finrank_map_eq], fun τ a => by rw [← hF, LinearEquiv.finrank_map_eq]⟩`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem step (u : F) (hu : PD.ι PD.t * u = 1) (hu' : u ∈ PD.Fil (-1)) (n : ℤ) :
     finrank LL ↥(DdR PD (charRep (cycLL PD LL ^ (n + 1)))) =
@@ -43,13 +43,13 @@ theorem step (u : F) (hu : PD.ι PD.t * u = 1) (hu' : u ∈ PD.Fil (-1)) (n : �
   exact ⟨by rw [← hD, LinearEquiv.finrank_map_eq], fun τ a => by rw [← hF, LinearEquiv.finrank_map_eq]⟩
 
 /- English proof (translation)
-Proceed by induction on `k using Int.induction_on with`. Consider the case `zero`. Establish `h1 : charRep (1 : G →* LLˣ) = Representation.trivial LL G LL`. Use extensionality with `g`. Simplify using `[charRep]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[zpow_zero, h1, neg_zero]`. Conclude with `⟨GlobalTheory.CrysExt.isDR_trivial PD, GlobalTheory.CrysExt.finrank_fildR_trivial PD⟩`. Consider the case `succ n ih`. Take `⟨h1, h2⟩` from `step PD (LL := LL) u hu hu' n`. Use `⟨h1.trans ih.1, fun τ a => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `h2 τ (a + 1)`. Rewrite `h3` using `[add_sub_cancel_right]`. Rewrite using `[h3, ih.2]`. Conclude with `if_congr (by omega) rfl rfl`. Consider the case `pred n ih`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `step PD (LL := LL) u hu hu' (-(n : ℤ) - 1)`. Rewrite `h1`, `h2` using `[sub_add_cancel]`. Use `⟨h1.symm.trans ih.1, fun τ a => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, ih.2]`. Conclude with `if_congr (by omega) rfl rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDR_and_finrank [CharZero Qp] [FiniteDimensional Qp LL] (u : F) (hu : PD.ι PD.t * u = 1)
     (hu' : u ∈ PD.Fil (-1)) (k : ℤ) :
@@ -79,9 +79,9 @@ theorem isDR_and_finrank [CharZero Qp] [FiniteDimensional Qp LL] (u : F) (hu : P
 end Generic
 
 /- English proof (translation)
-Introduce `l _ P AI T K LL k`. Use `LL.2` as an intermediate fact. Take `⟨u, hu', hu⟩` from `((GlobalTheory.MemLoc.TiedUnif.tied_uniformiser l P AI T).2.2 K (-1) 1).1 (by rw [neg_add_cancel]; exact (P.PD K).one_mem)`. Establish `ht : (P.PD K).ι (P.PD K).t * u = 1`. Rewrite using `[P.PD_ι, P.period_datum_t_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.symm`. Take `⟨h1, h2⟩` from `isDR_and_finrank (P.PD K) (LL := ↥LL.1) u ht hu' k`. Use `⟨GlobalTheory.BlockCrys.isCrys_cyc_zpow _ k, h1, fun τ a => ?_⟩` and prove the remaining obligations. Rewrite using `[multV, h2, h2]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cyc_zpow_crys_dR_jump : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (k : ℤ), IsCrys (P.PD K) (charRep (cycLL (P.PD K) ↥LL.1 ^ k)) ∧ IsDR (P.PD K) (charRep (cycLL (P.PD K) ↥LL.1 ^ k)) ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ), multV (P.PD K) (charRep (cycLL (P.PD K) ↥LL.1 ^ k)) τ a = if a = -k then 1 else 0 := by
   intro l _ P AI T K LL k

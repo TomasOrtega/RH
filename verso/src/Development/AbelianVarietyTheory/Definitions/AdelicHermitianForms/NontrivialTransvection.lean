@@ -7,7 +7,7 @@ open GlobalTheory.UTrans
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[tv, Matrix.add_mulVec, Matrix.one_mulVec]`. Use extensionality with `a`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.of_apply, hf, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun e _ => by ring`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tv_mulVec (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (x v : Fin n → R) (t : R) :
     (tv σ G x t).mulVec v = v + (t * hf σ G v x) • x := by
@@ -19,7 +19,7 @@ theorem tv_mulVec (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (x v : Fin n �
   exact Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun e _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hf_add_smul_left (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (v x y : Fin n → R) (c : R) :
     hf σ G (v + c • x) y = hf σ G v y + c * hf σ G x y := by
@@ -28,7 +28,7 @@ theorem hf_add_smul_left (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (v x y 
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hf_add_smul_right (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (v x y : Fin n → R) (c : R) :
     hf σ G y (v + c • x) = hf σ G y v + σ c * hf σ G y x := by
@@ -38,7 +38,7 @@ theorem hf_add_smul_right (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (v x y
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hf, map_sum, map_mul, hσ, hG]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hf_conj (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : ∀ a, σ (σ a) = a)
     (hG : ∀ a b, σ (G a b) = G b a) (x y : Fin n → R) : σ (hf σ G x y) = hf σ G y x := by
@@ -47,7 +47,7 @@ theorem hf_conj (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : ∀ a, σ
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Introduce `v w`. Rewrite using `[tv_mulVec, tv_mulVec, hf_add_smul_left, hf_add_smul_right, hf_add_smul_right, map_mul, hf_conj σ G hσ hG w x]`. Take the linear combination `(hf σ G v x * hf σ G x w) * h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isU_tv (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : ∀ a, σ (σ a) = a)
     (hG : ∀ a b, σ (G a b) = G b a) (x : Fin n → R) (t : R)
@@ -58,9 +58,9 @@ theorem isU_tv (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : ∀ a, σ 
   linear_combination (hf σ G v x * hf σ G x w) * h
 
 /- English proof (translation)
-Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem m hm`. Take `⟨x, t, hx, ht, rfl⟩` from `hm`. Conclude with `isU_tv σ G hσ hG x t (by rw [hx, mul_zero, add_zero]; exact ht)`. Consider the case `one => intro v w`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.one_mulVec]`. Consider the case `mul p q _ _ hp hq`. Introduce `v w`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hp, hq]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isU_of_mem_tvGen (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : ∀ a, σ (σ a) = a)
     (hG : ∀ a b, σ (G a b) = G b a) {m} (hm : m ∈ TvGen σ G) : IsU σ G m := by
@@ -74,11 +74,11 @@ theorem isU_of_mem_tvGen (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : 
     rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hp, hq]
 
 /- English proof (translation)
-Establish `e : tv σ G x t = (1 : Matrix (Fin n) (Fin n) R) + Matrix.replicateCol (Fin 1) x * Matrix.replicateRow (Fin 1) (fun b : Fin n => t * ∑ e : Fin n, G b e * σ (x e))`. Unfold `tv`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.replicateCol_apply, Matrix.replicateRow_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(Matrix.det_one_add_replicateCol_mul_replicateRow (ι := Fin 1) x _).trans ?_` and prove the remaining obligations. Simplify using `only [dotProduct, hf, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem det_tv (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (x : Fin n → R) (t : R) :
     (tv σ G x t).det = 1 + t * hf σ G x x := by
@@ -96,9 +96,9 @@ theorem det_tv (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (x : Fin n → R)
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem m hm`. Take `⟨x, t, hx, _, rfl⟩` from `hm`. Rewrite using `[det_tv, hx, mul_zero, add_zero]`. Consider the case `one => exact Matrix.det_one`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul p q _ _ hp hq => rw [Matrix.det_mul, hp, hq, mul_one]`.
+Treat this case separately.
 -/
 theorem det_of_mem_tvGen (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) {m} (hm : m ∈ TvGen σ G) : m.det = 1 := by
   induction hm using Submonoid.closure_induction with
@@ -109,7 +109,7 @@ theorem det_of_mem_tvGen (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) {m} (hm
   | mul p q _ _ hp hq => rw [Matrix.det_mul, hp, hq, mul_one]
 
 /- English proof (translation)
-Apply `Submonoid.subset_closure` to reduce the goal to its premises. Use `⟨![1, 0], Complex.I, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hf, Fin.sum_univ_two]`. Simplify using `[Complex.conj_I]`. Apply the tactic sequence `ext a b fin_cases a <;> fin_cases b <;> simp [tv, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nontrivial_transvection :
     !![1, Complex.I; 0, 1] ∈ TvGen (starRingEnd ℂ) !![0, 1; 1, 0] := by
@@ -121,11 +121,11 @@ theorem nontrivial_transvection :
     fin_cases a <;> fin_cases b <;> simp [tv, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `hI : ∀ v : Fin 2 → ℂ, (!![Complex.I, 0; 0, Complex.I]).mulVec v = Complex.I • v`. Introduce `v`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Use `⟨fun v w => ?_, fun hm => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hf, hI, Pi.smul_apply, smul_eq_mul, map_mul, Complex.conj_I]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Take the linear combination `(-(v a * !![(0 : ℂ), 1; 1, 0] a b * (starRingEnd ℂ) (w b))) * Complex.I_sq`. Establish `hd` using `det_of_mem_tvGen _ _ hm`. Rewrite `hd` using `[Matrix.det_fin_two_of]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `[Complex.ext_iff] at hd`.
+Evaluate the numerical expressions.
 -/
 theorem not_mem_tvGen :
     IsU (starRingEnd ℂ) !![0, 1; 1, 0] !![Complex.I, 0; 0, Complex.I] ∧
@@ -143,7 +143,7 @@ theorem not_mem_tvGen :
     norm_num [Complex.ext_iff] at hd
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `h ![0, 1] ![0, 1]`. Evaluate the numerical expressions using `[hf, Matrix.mulVec, dotProduct, Fin.sum_univ_two] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the numerical expressions.
 -/
 theorem not_isU : ¬ IsU (starRingEnd ℂ) !![0, 1; 1, 0] !![1, 1; 0, 1] := by
   intro h

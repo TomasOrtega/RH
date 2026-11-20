@@ -10,19 +10,17 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Introduce `hW hS E _ _ _ n π hc`. Establish `nice : ∀ φ ∈ π.V, Nice φ.1`. Introduce `φ hφ`. Establish `hl` using `(π.cusp φ hφ).1.level`. Rewrite `hφ` using `[← Fb.map_carrier]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ψ, hψ, rfl⟩` from `hφ`. Use `⟨ψ.2.1.continuous, exists_norm_le_of_mem_centralCuspForms (Fb.carrier_le_central π hc hψ), ψ.2.1.isLeftInvariant, ψ.2.2, ?_⟩` and prove the remaining obligations. Set `V : Subgroup (GL (Fin n) (Af E))` to `{ carrier := {k | TR.finRep E n k (Fb.ofCusp E n ψ) = Fb.ofCusp E n ψ} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Conclude with `⟨⟨V, hl⟩, fun g v hv => congrFun (congrArg Subtype.val hv) g⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨nice, ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Establish `N` using `nice φ hφ`. Establish `hg : ∃ g, whittaker φ.1 g ≠ 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h0 (Subtype.ext (MultiplicityOne.eq_zero_of_whittaker_eq_zero N.cont N.left N.cusp ?_ fun g => not_not.1 fun h' => h ⟨g, h'⟩))` and prove the remaining obligations. Rewrite using `[Fb.finEmb_eq]`. Conclude with `N.level`. Take `⟨g, hg⟩` from `hg`. Rewrite `hg` using `[← TR.infGL_mul_finGL g]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `GeneralLinearGroup.map (pInf E) g = y at hg`. Generalize the expression as in `GeneralLinearGroup.map (pFin E) g = k at hg`. Establish `hφ'` using `π.stable (.fin k) φ hφ`. Use `⟨_, hφ', hS E n _ (hW E n _ (nice _ hφ')).1 y ?_⟩` and prove the remaining obligations. Establish `e : (TR.act (.fin k) φ).1 = fun x => φ.1 (x * finGL E n k)` using `rfl`.
-
-Rewrite using `[e]`. Simplify `hg` using `only [whittaker, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.seed :
     UpperTheory.V.Af.Smo.WhBasic → UpperTheory.V.Af.Smo.SeedConv → UpperTheory.V.Af.Smo.Seed := by

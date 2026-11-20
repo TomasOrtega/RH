@@ -14,20 +14,20 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_add_right (x y y' : V) : H.h x (y + y') = H.h x y + H.h x y' := by
   rw [H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← neg_one_smul E x', H.h_add_left, H.h_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem h_sub_left (x x' y : V) : H.h (x - x') y = H.h x y - H.h x' y := by
   rw [sub_eq_add_neg, ← neg_one_smul E x', H.h_add_left, H.h_smul_left]
   ring
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (y - y') x, h_sub_left, map_sub, ← H.h_herm, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_sub_right (x y y' : V) : H.h x (y - y') = H.h x y - H.h x y' := by
   rw [H.h_herm (y - y') x, h_sub_left, map_sub, ← H.h_herm, ← H.h_herm]
@@ -44,7 +44,7 @@ section Proj
 variable {E : Type} [CommRing E] {V : Type} [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.projectionOnto_apply_eq_zero_iff hAB, map_sub, Submodule.projectionOnto_apply_left, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_proj_mem {A B : Submodule E V} (hAB : IsCompl A B) (x : V) :
     x - (A.projectionOnto B hAB x : V) ∈ B := by
@@ -52,7 +52,7 @@ theorem sub_proj_mem {A B : Submodule E V} (hAB : IsCompl A B) (x : V) :
     Submodule.projectionOnto_apply_left, sub_self]
 
 /- English proof (translation)
-Conclude with `(Submodule.projectionOnto_apply_eq_zero_iff hAB).1 (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_proj_eq_zero {A B : Submodule E V} (hAB : IsCompl A B) {x : V}
     (h : (A.projectionOnto B hAB x : V) = 0) : x ∈ B := by
@@ -62,43 +62,41 @@ end Proj
 
 set_option linter.deprecated false in
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H abelian₂ hL A B hAB orth u hu`. Establish `e : Submodule.linearProjOfIsCompl A B hAB = A.projectionOnto B hAB` using `rfl`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ y hy hyA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hxB` using `sub_proj_mem hAB x`. Establish `h1 : H.h x y = H.h (A.projectionOnto B hAB x : V) y`. Establish `e2` using `H.h_add_left (A.projectionOnto B hAB x : V) (x - (A.projectionOnto B hAB x : V)) y`. Rewrite `e2` using `[add_sub_cancel, (orth y hyA _ hxB).2, add_zero]`. Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `(hL.2.2 x).1 hx y hy`. Introduce `hyp`. Set `pB : V →ₗ[E] V` to `B.subtype ∘ₗ B.projectionOnto A hAB.symm`. Establish `pB_apply : ∀ v, pB v = (B.projectionOnto A hAB.symm v : V)` using `fun v => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `P : Submodule M.L.O V` to `abelian₂.map (pB.restrictScalars M.L.O)`. Set `π : abelian₂ →ₗ[M.L.O] P` to `(pB.restrictScalars M.L.O).submoduleMap abelian₂`. Establish `hπ : Function.Surjective π` using `LinearMap.submoduleMap_surjective _ _`. Establish `hπv : ∀ l : abelian₂, (π l : V) = pB l` using `fun l => rfl`. Establish `hPfg : P.FG` using `hL.1.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Module.Projective M.L.O P` using `hO F E M hM V P hPfg`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Establish `hsp : ∀ p : P, pB (s p : V) = p`. Introduce `p`. Use `congrArg Subtype.val (LinearMap.congr_fun hs p)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hπv]`. Conclude with `this`. Set `Q : Submodule M.L.O V` to `LinearMap.range (abelian₂.subtype ∘ₗ s)`. Set `W : Submodule E V` to `Submodule.span E (Q : Set V)`. Establish `hsW : ∀ p : P, (s p : V) ∈ W` using `fun p => Submodule.subset_span ⟨p, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `d : abelian₂ → V` to `fun l => (l : V) - s (π l)`. Establish `hdA : ∀ l : abelian₂, d l ∈ A`. Introduce `l`. Apply `mem_of_proj_eq_zero hAB.symm` to reduce the goal to its premises. Rewrite using `[← pB_apply, map_sub, hsp, hπv, sub_self]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdL : ∀ l : abelian₂, d l ∈ abelian₂` using `fun l => abelian₂.sub_mem l.2 (s (π l)).2`. Establish `hcompl : IsCompl A W`. Use `isCompl_iff.2 ⟨?_, codisjoint_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `w hwA hwW`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr0, hrw⟩` from `hS M hM V Q w hwW`. Take `⟨p, hp⟩` from `hrw`. Establish `hp' : (s p : V) = algebraMap F E r • w` using `hp`. Establish `hpA : algebraMap F E r • w ∈ A` using `A.smul_mem _ hwA`. Establish `h0 : (p : V) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hsp p, hp', pB_apply]`. Rewrite using `[Submodule.projectionOnto_apply_eq_zero_iff hAB.symm |>.2 hpA]`. Both sides reduce to the same expression. Establish `hp0 : p = 0` using `Subtype.ext h0`. Establish `hrw0 : algebraMap F E r • w = 0` using `by rw [← hp', hp0, map_zero]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (algebraMap F E (r : F)⁻¹) • (algebraMap F E r • w) = w`. Rewrite using `[smul_smul, ← map_mul, inv_mul_cancel₀ hr0, map_one, one_smul]`. Rewrite using `[← this, hrw0, smul_zero]`. Rewrite using `[eq_top_iff, ← hL.2.1, Submodule.span_le]`. Introduce `l hl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: l = d ⟨l, hl⟩ + (s (π ⟨l, hl⟩) : V)` using `by simp [d]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (hdA _) (hsW _)`. Set `pA'` to `A.projectionOnto W hcompl`. Establish `hpA'd : ∀ l : abelian₂, (pA' l : V) = d l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `l`. Establish `: (l : V) = d l + (s (π l) : V)` using `by simp [d]`. Rewrite using `[this, map_add, Submodule.projectionOnto_apply_of_mem_right hcompl (hsW _), add_zero, Submodule.projectionOnto_apply_of_mem_left hcompl (hdA l)]`. Set `f : V →ₗ[E] E` to `hlin H u ∘ₗ A.subtype ∘ₗ pA'`. Establish `hfA : ∀ y ∈ A, f y = H.h y u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Use `show H.h (pA' y : V) u = H.h y u`. Rewrite using `[Submodule.projectionOnto_apply_of_mem_left hcompl hy]`. Establish `hfL : ∀ l : abelian₂, f l = H.h (d l) u`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show H.h (pA' l : V) u = H.h (d l) u`. Rewrite using `[hpA'd]`. Take `⟨x, hx⟩` from `hR M V H f`. Establish `hxL : x ∈ abelian₂`. Use `(hL.2.2 x).2 (fun y hy => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[H.h_herm y x, hx y, hfL ⟨y, hy⟩, H.h_herm u (d ⟨y, hy⟩)]`. Conclude with `PI.LocHerm.SlopeTestRemainingChoices.cj_mem_O M.L _ (PI.LocHerm.SlopeTestRemainingChoices.cj_mem_O M.L _ (hyp _ (hdL _) (hdA _)))`. Use `⟨x, hxL, ?_⟩` and prove the remaining obligations. Use `set z : V := (A.projectionOnto B hAB x : V) - u with hz`. Establish `hzA : z ∈ A` using `A.sub_mem (A.projectionOnto B hAB x).2 hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ a ∈ A, H.h a z = 0`. Introduce `a ha`. Establish `hxB` using `sub_proj_mem hAB x`. Establish `e1 : H.h a x = H.h a (A.projectionOnto B hAB x : V)`. Establish `e2` using `h_add_right H a (A.projectionOnto B hAB x : V) (x - (A.projectionOnto B hAB x : V))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[add_sub_cancel, (orth a ha _ hxB).1, add_zero]`. Conclude with `e2`. Rewrite using `[hz, h_sub_right, ← e1, hx a, hfA a ha, sub_self]`. Establish `hz0 : z = 0`. Use `H.nondeg z (fun v => ?_)` and prove the remaining obligations.
-
-Establish `hvB` using `sub_proj_mem hAB v`. Establish `e3` using `h_add_right H z (A.projectionOnto B hAB v : V) (v - (A.projectionOnto B hAB v : V))`. Rewrite `e3` using `[add_sub_cancel, (orth z hzA _ hvB).1, add_zero]`. Rewrite using `[e3, H.h_herm _ z, key _ (A.projectionOnto B hAB v).2, map_zero]`. Conclude with `sub_eq_zero.1 hz0`.
+A detailed English derivation is pending.
 -/
 theorem pair_of (hR : Riesz) (hS : Scale) (hO : PI.LocHerm.LocOProj) : Pair := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H abelian₂ hL A B hAB orth u hu

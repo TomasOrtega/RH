@@ -13,7 +13,7 @@ open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[embGL, blkHom, Matrix.reindexAlgEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_cc_A (g : GL (Fin n) ℂ) (i j : Fin n) :
     ((embGL ℂ n (n + 1) rfl g : GL (Fin (n + 1)) ℂ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
@@ -21,7 +21,7 @@ theorem emb_cc_A (g : GL (Fin n) ℂ) (i j : Fin n) :
   simp [embGL, blkHom, Matrix.reindexAlgEquiv_apply]
 
 /- English proof (translation)
-Simplify using `[embGL, blkHom, Matrix.reindexAlgEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_cl_A (g : GL (Fin n) ℂ) (i : Fin n) :
     ((embGL ℂ n (n + 1) rfl g : GL (Fin (n + 1)) ℂ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
@@ -29,7 +29,7 @@ theorem emb_cl_A (g : GL (Fin n) ℂ) (i : Fin n) :
   simp [embGL, blkHom, Matrix.reindexAlgEquiv_apply]
 
 /- English proof (translation)
-Simplify using `[embGL, blkHom, Matrix.reindexAlgEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_lc_A (g : GL (Fin n) ℂ) (i : Fin n) :
     ((embGL ℂ n (n + 1) rfl g : GL (Fin (n + 1)) ℂ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
@@ -37,7 +37,7 @@ theorem emb_lc_A (g : GL (Fin n) ℂ) (i : Fin n) :
   simp [embGL, blkHom, Matrix.reindexAlgEquiv_apply]
 
 /- English proof (translation)
-Simplify using `[embGL, blkHom, Matrix.reindexAlgEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_ll_A (g : GL (Fin n) ℂ) :
     ((embGL ℂ n (n + 1) rfl g : GL (Fin (n + 1)) ℂ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
@@ -45,16 +45,16 @@ theorem emb_ll_A (g : GL (Fin n) ℂ) :
   simp [embGL, blkHom, Matrix.reindexAlgEquiv_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A .. | (apply UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_emb_unitri_A (g : GL (Fin n) ℂ) (hl : ∀ i j, j < i → g i j = 0) (hd : ∀ i, g i i = 1) :
     Matrix.GeneralLinearGroup.det (embGL ℂ n (n + 1) rfl g) = 1 := by
   first | exact UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A .. | (apply UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A n g hl hd | exact @UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A n g hl | exact @UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A n g | exact @UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A n
 
 /- English proof (translation)
-Establish `h : (eval x).comp (rowAct ℂ (n` using `c) M).toRingHom = eval (fun v => ∑ b, M v.1 b * x (b, v.2)) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[rowAct]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[rowAct]`. Conclude with `congrArg (fun φ => φ f) h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_rowAct_A {r c : ℕ} (M : Matrix (Fin r) (Fin r) ℂ) (x : Fin r × Fin c → ℂ)
     (f : MvPolynomial (Fin r × Fin c) ℂ) :
@@ -80,7 +80,7 @@ def elemGL_A (a b : Fin n) (hab : a ≠ b) (t : ℂ) : GL (Fin n) ℂ where
     abel
 
 /- English proof (translation)
-Use `show (1 + Matrix.single a b t) i j = _`. Rewrite using `[Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem elemGL_apply_A (a b : Fin n) (hab : a ≠ b) (t : ℂ) (i j : Fin n) :
     ((elemGL_A a b hab t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j =
@@ -89,23 +89,23 @@ theorem elemGL_apply_A (a b : Fin n) (hab : a ≠ b) (t : ℂ) (i j : Fin n) :
   rw [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]
 
 /- English proof (translation)
-Establish `hl : ∀ i j, j < i → ((elemGL_A a b hab.ne t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j = 0`. Introduce `i j hji`. Rewrite using `[elemGL_apply_A, if_neg (ne_of_gt hji), if_neg]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `lt_asymm hab hji`. Establish `hd : ∀ i, ((elemGL_A a b hab.ne t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i i = 1`. Introduce `i`. Rewrite using `[elemGL_apply_A, if_pos rfl, if_neg]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨rfl, h⟩`. Conclude with `hab.ne h.symm`. Establish `hg` using `hf.1 (elemGL_A a b hab.ne t) hl hd`. Unfold `sqAct detPow at hg`. Rewrite `hg` using `[det_emb_unitri_A _ hl hd, one_zpow, Units.val_one, one_smul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg (eval x) hg`. Rewrite `h2` using `[eval_rowAct_A]`. Rewrite using `[← h2]`. Use `congr 2`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨ρ, s⟩` from `v`. Simplify using `only [Matrix.transpose_apply, Fin.sum_univ_castSucc, lhwline_rowOp]`. Proceed by induction on `ρ using Fin.lastCases with`. Consider the case `last`. Simplify using `only [emb_cl_A, emb_ll_A, zero_mul, Finset.sum_const_zero, one_mul, zero_add]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[if_neg (Fin.castSucc_lt_last b).ne']`. Consider the case `cast ρ`. Simplify using `only [emb_cc_A, emb_lc_A, zero_mul, add_zero, elemGL_apply_A, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq' Finset.univ ρ, if_pos (Finset.mem_univ _)]`. Distinguish the cases in `hρ : ρ = b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hρ` using the available equality. Rewrite using `[if_pos rfl]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (fun h => hc h.1.symm)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => hρ (Fin.castSucc_injective _ h))]`. Rewrite using `[Finset.sum_eq_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c _`. Rewrite using `[if_neg (fun h => hρ h.2.symm)]`.
+A detailed English derivation is pending.
 -/
 theorem fixed_rowOp_A (lam : DomWeight (n + 1)) (mu : DomWeight n) (f : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)
     (hf : IsFixedW rfl lam mu f) (a b : Fin n) (hab : a < b) (t : ℂ) (x : Fin (n + 1) × Fin (n + 1) → ℂ) :
@@ -155,7 +155,7 @@ theorem fixed_rowOp_A (lam : DomWeight (n + 1)) (mu : DomWeight n) (f : MvPolyno
         rw [if_neg (fun h => hρ h.2.symm)]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_eq_single ρ]`. Simplify using `[rowW]`. Introduce `b _ hb`. Simplify using `[rowW, Ne.symm hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -170,9 +170,9 @@ theorem weight_row_A {r c : ℕ} (m : Fin r × Fin c →₀ ℕ) (ρ : Fin r) :
   · simp
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial m' k`. Rewrite using `[rowActDiagWeight ℂ r c s _ _ (isWeightedHomogeneous_monomial _ _ _ rfl), coeff_smul, coeff_monomial, smul_eq_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [weight_row_A]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_rowAct_diag_A {r c : ℕ} (s : Fin r → ℂ) (f : MvPolynomial (Fin r × Fin c) ℂ)
     (m : Fin r × Fin c →₀ ℕ) :
@@ -189,7 +189,7 @@ theorem coeff_rowAct_diag_A {r c : ℕ} (s : Fin r → ℂ) (f : MvPolynomial (F
     rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Establish `h2` using `congrArg (fun z : ℂ => ‖z‖) h`. Simplify using `only [norm_zpow] at h2`. Establish `h3 : ‖(2 : ℂ)‖ = 2` using `by simp`. Rewrite `h2` using `[h3]`. Conclude with `zpow_right_injective₀ (by norm_num : (0:ℝ) < 2) (by norm_num) h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_two_inj_A (a b : ℤ) (h : (2 : ℂ) ^ a = 2 ^ b) : a = b := by
   have h2 := congrArg (fun z : ℂ => ‖z‖) h
@@ -199,23 +199,23 @@ theorem zpow_two_inj_A (a b : ℤ) (h : (2 : ℂ) ^ a = 2 ^ b) : a = b := by
   exact zpow_right_injective₀ (by norm_num : (0:ℝ) < 2) (by norm_num) h2
 
 /- English proof (translation)
-Use `set t : Fin n → ℂˣ := fun j => if j = a then Units.mk0 2 two_ne_zero else 1 with ht`. Establish `hg` using `hf.2 t`. Establish `hdiag : ((embGL ℂ n (n + 1) rfl (diagGL ℂ n t) : GL (Fin (n + 1)) ℂ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ).transpose = Matrix.diagonal (fun c => if c = Fin.castSucc a then (2 : ℂ) else 1)`. Use extensionality with `ρ c`. Rewrite using `[Matrix.transpose_apply, Matrix.diagonal_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `ρ using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `c using Fin.lastCases with`. Consider the case `last => simp [emb_ll_A, (Fin.castSucc_lt_last a).ne']`. Consider the case `cast c => simp [emb_cl_A, (Fin.castSucc_lt_last c).ne']`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `cast ρ`. Proceed by induction on `c using Fin.lastCases with`. Consider the case `last => simp [emb_lc_A, (Fin.castSucc_lt_last ρ).ne]`. Consider the case `cast c`. Rewrite using `[emb_cc_A]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [diagGL, Matrix.diagonal_apply, ht, Fin.castSucc_inj]`. Distinguish the cases in `hc : c = ρ`. Substitute `hc` using the available equality. Apply the tactic sequence `by_cases hca : c = a <;> simp [hca]`. Simplify using `[hc, Ne.symm hc]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet : ((Matrix.GeneralLinearGroup.det (embGL ℂ n (n + 1) rfl (diagGL ℂ n t)) : ℂˣ) : ℂ) = 2`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.det_transpose, hdiag, Matrix.det_diagonal, Fintype.prod_ite_eq']`. Unfold `sqAct detPow at hg`. Rewrite `hg` using `[hdiag]`. Establish `hc` using `congrArg (coeff m) hg`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[coeff_smul, coeff_smul, coeff_rowAct_diag_A, smul_eq_mul, smul_eq_mul, Units.val_zpow_eq_zpow_val, hdet]`. Establish `hcf : coeff m f ≠ 0` using `mem_support_iff.mp hm`. Establish `hprod : (∏ ρ : Fin (n + 1), (if ρ = Fin.castSucc a then (2 : ℂ) else 1) ^ (∑ j, m (ρ, j))) = 2 ^ (∑ j, m (Fin.castSucc a, j))`. Rewrite using `[Finset.prod_eq_single (Fin.castSucc a)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Establish `hmu : ((∏ j, t j ^ mu.w j : ℂˣ) : ℂ) = 2 ^ mu.w a`. Rewrite using `[Units.coe_prod, Finset.prod_eq_single a]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[ht]`. Introduce `b _ hb`. Simplify using `[ht, hb]`. Simplify using the standard rewrite rules. Rewrite `hc` using `[hprod, hmu, ← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc2` using `mul_right_cancel₀ hcf hc`. Rewrite `hc2` using `[← zpow_natCast, ← zpow_add₀ two_ne_zero]`. Use `zpow_two_inj_A _ _ hc2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fixed_rowDeg_A (lam : DomWeight (n + 1)) (mu : DomWeight n) (f : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)
     (hf : IsFixedW rfl lam mu f) (m : Fin (n + 1) × Fin (n + 1) →₀ ℕ) (hm : m ∈ f.support) (a : Fin n) :

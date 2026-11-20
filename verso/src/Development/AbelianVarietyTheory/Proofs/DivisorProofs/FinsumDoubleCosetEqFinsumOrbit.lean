@@ -26,11 +26,11 @@ theorem doubleCosetToOrbit_mk (ι : Γ →* G) (H : Subgroup Γ) (K : Subgroup G
       Quotient.mk (MulAction.orbitRel H (LeftCosets ι K)) (LeftCosets.mk ι K x) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `p q hpq`. Rewrite `hpq`, the goal using `[← DoubleCoset.out_eq' _ _ p, ← DoubleCoset.out_eq' _ _ q]`. Rewrite `hpq` using `[doubleCosetToOrbit_mk, doubleCosetToOrbit_mk]`. Take `⟨h, hh⟩` from `Quotient.exact hpq`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hh' : LeftCosets.mk ι K (ι (h : Γ) * q.out) = LeftCosets.mk ι K p.out` using `hh`. Rewrite `hh'` using `[LeftCosets.mk_eq_mk]`. Use `((DoubleCoset.eq _ _ _ _).2 ⟨ι h, Subgroup.mem_map_of_mem ι h.2, _, hh', ?_⟩).symm` and prove the remaining obligations. Use `group`. Introduce `o`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `o using Quotient.inductionOn with`. Consider the case `h y`. Use `⟨DoubleCoset.mk _ _ (LeftCosets.rep ι K y), ?_⟩` and prove the remaining obligations. Rewrite using `[doubleCosetToOrbit_mk, LeftCosets.mk_rep]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem doubleCosetToOrbit_bijective (ι : Γ →* G) (H : Subgroup Γ) (K : Subgroup G) :
     Function.Bijective (doubleCosetToOrbit ι H K) := by
@@ -50,9 +50,9 @@ theorem doubleCosetToOrbit_bijective (ι : Γ →* G) (H : Subgroup Γ) (K : Sub
       rw [doubleCosetToOrbit_mk, LeftCosets.mk_rep]
 
 /- English proof (translation)
-Set `e` to `Equiv.ofBijective _ (doubleCosetToOrbit_bijective ι H K)`. Rewrite using `[← finsum_comp_equiv e]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Establish `hq : e q = Quotient.mk (MulAction.orbitRel H (LeftCosets ι K)) (LeftCosets.mk ι K q.out)` using `by show doubleCosetToOrbit ι H K q = _ conv_lhs => rw [← DoubleCoset.out_eq' _ _ q]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Rewrite using `[hq]`. Take `⟨h, hh⟩` from `Quotient.exact (Quotient.out_eq (Quotient.mk (MulAction.orbitRel H (LeftCosets ι K)) (LeftCosets.mk ι K q.out)))`. Rewrite using `[← hh]`. Conclude with `(hg h h.2 _).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_doubleCoset_eq_finsum_orbit {Γ G : Type} [Group Γ] [Group G] (ι : Γ →* G) (H : Subgroup Γ)
     (K : Subgroup G) (g : LeftCosets ι K → ℂ) (hg : ∀ h ∈ H, ∀ y : LeftCosets ι K, g (h • y) = g y) :

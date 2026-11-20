@@ -9,7 +9,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Unfold `Scheme.stalkClosedPointTo`. Rewrite using `[CommRingCat.hom_comp]`. Conclude with `(Flat.stalkMap ξ _).comp (RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso (stalkClosedPointIso R).hom))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_stalkClosedPointTo {S : Scheme.{0}} {R : CommRingCat.{0}} [IsLocalRing R]
     (ξ : Spec R ⟶ S) [Flat ξ] : (Scheme.stalkClosedPointTo ξ).hom.Flat := by
@@ -19,11 +19,9 @@ theorem flat_stalkClosedPointTo {S : Scheme.{0}} {R : CommRingCat.{0}} [IsLocalR
     (RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso (stalkClosedPointIso R).hom))
 
 /- English proof (translation)
-Introduce `S R₁ _ _ ξ x hx hf`. Substitute `hx` using the available equality. Establish `hflat` using `flat_stalkClosedPointTo (R := CommRingCat.of R₁) ξ`. Use `⟨Spec.map (Scheme.stalkClosedPointTo (R := CommRingCat.of R₁) ξ), Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of R₁) ξ, (HasRingHomProperty.Spec_iff (P := @Flat)).2 hflat, ⟨?_⟩, inferInstance⟩` and prove the remaining obligations. Use `set φ := (Scheme.stalkClosedPointTo (R := CommRingCat.of R₁) ξ).hom with hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl : IsLocalHom φ` using `by rw [hφ]; infer_instance`. Use `letI := φ.toAlgebra`. Establish `: Module.Flat (S.presheaf.stalk (ξ (closedPoint R₁))) R₁` using `hflat`. Establish `: IsLocalHom (algebraMap (S.presheaf.stalk (ξ (closedPoint R₁))) R₁)` using `hl`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := S.presheaf.stalk (ξ (closedPoint R₁))) (B := R₁)` as an intermediate fact.
-
-Conclude with `PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := S.presheaf.stalk (ξ (closedPoint R₁))) (B := R₁)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_faithfullyFlat_factor_localScheme :
     ∀ (S : Scheme.{0}) (R₁ : Type) [CommRing R₁] [IsLocalRing R₁] (ξ : Sp R₁ ⟶ S) (x : S),

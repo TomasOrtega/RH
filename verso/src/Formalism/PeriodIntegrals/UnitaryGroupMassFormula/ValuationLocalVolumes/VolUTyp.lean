@@ -21,7 +21,7 @@ section V
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `h` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 F) v (algebraMap (𝓞 F) F x)`. Rewrite `h` using `[HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h' : Valued.v (algebraMap F (Fv F v) (x : F)) = v.intValuation x` using `h`. Rewrite using `[h']`. Conclude with `v.intValuation_le_one x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_int (x : 𝓞 F) : Valued.v (algebraMap F (Fv F v) (x : F)) ≤ 1 := by
   have h := HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 F) v (algebraMap (𝓞 F) F x)
@@ -31,7 +31,7 @@ theorem val_int (x : 𝓞 F) : Valued.v (algebraMap F (Fv F v) (x : F)) ≤ 1 :=
   exact v.intValuation_le_one x
 
 /- English proof (translation)
-Establish `h` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 F) v (algebraMap (𝓞 F) F x)`. Rewrite `h` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 hx]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_unit (x : 𝓞 F) (hx : x ∉ v.asIdeal) : Valued.v (algebraMap F (Fv F v) (x : F)) = 1 := by
   have h := HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 F) v (algebraMap (𝓞 F) F x)
@@ -39,9 +39,9 @@ theorem val_unit (x : 𝓞 F) (hx : x ∉ v.asIdeal) : Valued.v (algebraMap F (F
   exact h
 
 /- English proof (translation)
-Take `⟨y, hy, hyv⟩` from `Set.not_subset.1 h`. Unfold `dV`. Use `split_ifs with hd`. Take `⟨-, hle, x, hx, hxe⟩` from `hd.choose_spec`. Establish `h1` using `hle y hy`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[val_unit v y hyv]`. Rewrite `h1`, the goal using `[← hxe]`. Conclude with `le_antisymm (val_int v x) h1`. Conclude with `map_one _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_dV (h : ¬ (differentIdeal ℤ (𝓞 F) ≤ v.asIdeal)) : Valued.v (dV v) = 1 := by
   obtain ⟨y, hy, hyv⟩ := Set.not_subset.1 h
@@ -55,9 +55,9 @@ theorem val_dV (h : ¬ (differentIdeal ℤ (𝓞 F) ≤ v.asIdeal)) : Valued.v (
   · exact map_one _
 
 /- English proof (translation)
-Unfold `absV`. Rewrite using `[dif_neg (by rw [h]; exact one_ne_zero)]`. Establish `: WithZero.unzero (show Valued.v x ≠ 0 by rw [h]; exact one_ne_zero) = 1`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem absV_of_val_one {x : Fv F v} (h : Valued.v x = 1) : absV v x = 1 := by
   unfold absV
@@ -70,9 +70,9 @@ theorem absV_of_val_one {x : Fv F v} (h : Valued.v x = 1) : absV v x = 1 := by
   simp
 
 /- English proof (translation)
-Establish `hv` using `VolUAr.val_natCast_of v g hg1 hg2`. Establish `e1 : ((g : v.adicCompletionIntegers F) : v.adicCompletion F) = (g : Fv F v)` using `by simp`. Rewrite `hv` using `[e1]`. Unfold `absV`. Rewrite using `[dif_neg (by rw [hv]; exact WithZero.coe_ne_zero)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : WithZero.unzero (show Valued.v (g : Fv F v) ≠ 0 by rw [hv]; exact WithZero.coe_ne_zero) = Multiplicative.ofAdd (-1 : ℤ)`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, hv]`. Both sides reduce to the same expression. Rewrite using `[hu, toAdd_ofAdd, Ideal.absNorm_apply, Submodule.cardQuot_apply, hcard, zpow_neg, zpow_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem absV_g (g : ℕ) (hcard : Nat.card (𝓞 F ⧸ v.asIdeal) = g) (hg1 : (g : 𝓞 F) ∈ v.asIdeal)
     (hg2 : (g : 𝓞 F) ∉ v.asIdeal ^ 2) : absV v (g : Fv F v) = (g : ℝ)⁻¹ := by
@@ -95,7 +95,7 @@ section X
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `hty` using `(mem_typSet X.B.I.F (D.host.g 0) (D.host.g 1) (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero v).1 hv`. Unfold `gAt`. Use `split_ifs with h`. Conclude with `h`. Conclude with `hty.resolve_left h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gAt_mem (v : PlX X) (hv : TypAt X v) : ((gAt X v : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal := by
   have hty := (mem_typSet X.B.I.F (D.host.g 0) (D.host.g 1) (D.host.g_prime 0).ne_zero
@@ -106,7 +106,7 @@ theorem gAt_mem (v : PlX X) (hv : TypAt X v) : ((gAt X v : ℕ) : 𝓞 X.B.I.F) 
   · exact hty.resolve_left h
 
 /- English proof (translation)
-Unfold `gAt`. Use `split_ifs`. Conclude with `VolUAr.split_transport X.ιE _ (D.nd.g_split 0)`. Conclude with `VolUAr.split_transport X.ιE _ (D.nd.g_split 1)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gAt_split (v : PlX X) : {w : HeightOneSpectrum (𝓞 X.B.I.E) |
     ((gAt X v : ℕ) : 𝓞 X.B.I.E) ∈ w.asIdeal}.ncard = Module.finrank ℚ X.B.I.E := by
@@ -116,9 +116,9 @@ theorem gAt_split (v : PlX X) : {w : HeightOneSpectrum (𝓞 X.B.I.E) |
   · exact VolUAr.split_transport X.ιE _ (D.nd.g_split 1)
 
 /- English proof (translation)
-Use `haveI : Fact (gAt X v).Prime := ⟨gAt_prime X v⟩`. Establish `hmem` using `gAt_mem X v hv`. Take `⟨he, hf⟩` from `VolUAr.locDeg_one_below (F := X.B.I.F) (E := X.B.I.E) (gAt X v) (gAt_split X v) v hmem`. Take `⟨hc, hn⟩` from `VolUAr.arith_of_loc (gAt X v) v hmem he hf`. Establish `hun : Algebra.IsUnramifiedAt ℤ v.asIdeal` using `(Algebra.isUnramifiedAt_iff_of_isDedekindDomain (R := ℤ) (S := 𝓞 X.B.I.F) (p := v.asIdeal)).2 he`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnd : ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 X.B.I.F)` using `not_dvd_differentIdeal_iff.mpr hun`. Rewrite `hnd` using `[Ideal.dvd_iff_le]`. Establish `hval` using `val_dV v hnd`. Conclude with `⟨absV_g v (gAt X v) hc hmem hn, hval, absV_of_val_one v hval⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem typ_arith (v : PlX X) (hv : TypAt X v) :
     absV v (gAt X v : Fv X.B.I.F v) = (gAt X v : ℝ)⁻¹ ∧ Valued.v (dV v) = 1 ∧ absV v (dV v) = 1 := by
@@ -142,7 +142,7 @@ section OfX
 variable {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
 /- English proof (translation)
-Take `⟨hg, hdv, hd⟩` from `VolUT.typ_arith X v hv`. Establish `hann : VolUL.AnnAt (E` using `X.B.I.E) ψ v := VolUTr.annX_of X ψ hC hψ hs v`. Establish `hfin` using `X.B.I.cm.deg2`. Establish `hg0 : gAt X v ≠ 0` using `(gAt_prime X v).ne_zero`. Conclude with `⟨VolUL.volTAff_of ψ v hψ hfin hann hd hg0 hg _, VolUL.volTLocPres_of ψ v hψ hfin hann hd _, hH, hT, volTUOEq_of v hdv hg0 _, VolUL.volTProdU_of' ψ v hψ hfin hann hd hg0 hg _, (VolUL.sd_facts ψ v hψ hfin hann hd _).2.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem volU_steps_of (hC : CondAll) (hψ : IsCharAF X.B.I.F ψ) (hs : IsStdChar ψ) (v : PlX X) (hv : TypAt X v)
     (hH : VolTHermCnt X.B.I.cm.sig ψ v (gAt X v) D.R.rS) (hT : VolTTFCong X u u' v) : VolUSteps X u u' ψ v := by
@@ -155,7 +155,7 @@ theorem volU_steps_of (hC : CondAll) (hψ : IsCharAF X.B.I.F ψ) (hs : IsStdChar
     (VolUL.sd_facts ψ v hψ hfin hann hd _).2.2⟩
 
 /- English proof (translation)
-The claim follows from `volTypV_of_steps' X u u' ψ fun hh v hv => volU_steps_of X u u' ψ hC hh.1 hh.2.1 v hv (hH hh v hv) (hT hh v hv)`.
+A detailed English derivation is pending.
 -/
 theorem volTypV_of_cnt (hC : CondAll)
     (hH : VolUHyp X u u' ψ → ∀ v, TypAt X v → VolTHermCnt X.B.I.cm.sig ψ v (gAt X v) D.R.rS)

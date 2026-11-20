@@ -13,13 +13,13 @@ open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed I
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `k _ P hP R P₁ h _`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨⟨f, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers P₁) z`. Simplify using `only at hz ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Unfold `IsLocalization.Away.lift at hz`. Rewrite `hz` using `[IsLocalization.lift_mk'_spec, mul_zero]`. Establish `h2` using `hz`. Establish `hinj : Function.Injective (algebraMap (Polynomial k) (Localization.Away P))` using `IsLocalization.injective (Localization.Away P) (powers_le_nonZeroDivisors_of_noZeroDivisors hP)`. Establish `h3 : f.map R.subtype = 0`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Simplify using `using h2`. Establish `h4 : f = 0`. Use `Polynomial.map_injective R.subtype Subtype.val_injective` as an intermediate fact. Conclude with `this (by simpa using h3)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `h4` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.descentLocInj : ∀ (k : Type) [Field k] (P : Polynomial k), P ≠ 0 → ∀ (R : Subring k) (P₁ : Polynomial R) (h : IsUnit (((algebraMap (Polynomial k) (Localization.Away P)).comp (Polynomial.mapRingHom R.subtype)) P₁)), P₁.map R.subtype = P → Function.Injective (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ h) := by
   intro k _ P hP R P₁ h _

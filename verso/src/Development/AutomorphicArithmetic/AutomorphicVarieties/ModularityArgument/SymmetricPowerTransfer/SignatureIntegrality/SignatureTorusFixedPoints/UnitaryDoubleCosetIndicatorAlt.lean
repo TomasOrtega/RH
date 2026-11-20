@@ -7,15 +7,13 @@ noncomputable section
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Introduce `k _ _ _ _ V d hd g hg`. Establish `hmem : g * (Phi k)⁻¹ ∈ V.DC d`. Assume the negation of the conclusion as `h`. Conclude with `hg (by simp [Lev.unitaryDoubleCosetIndicator, h])`. Take `⟨hP, -, -, -, -, -, hcomm⟩` from `thFacts k V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, s, hs, hjs⟩` from `contract k V 3 (th' k) hP d hd _ hmem`. Take `⟨t, ht, rfl⟩` from `Subgroup.mem_map.mp hs`. Use `⟨j, t 0 * d 0, t 1 * d 1, t 2 * d 2, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : dg ![t 0 * d 0, t 1 * d 1, t 2 * d 2] = diagT k (Fin 3) t * dg d`. Rewrite using `[dg, ← map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[h1, ← hjs]`. Establish `h2 : th' k j * Phi k = Phi k * th k 3 j` using `hcomm j`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Use `symm`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : t 0 * d 0 / (t 2 * d 2) / (d 0 / d 2) = t 0 / t 2`. Rewrite using `[mul_div_mul_comm, mul_div_cancel_right]`. Rewrite using `[h3]`.
-
-Conclude with `div_mem (ht 0 trivial) (ht 2 trivial)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.supp0 : UpperTheory.V.Z.Sym.Sig.Supp0 := by
   intro k _ _ _ _ V d hd g hg

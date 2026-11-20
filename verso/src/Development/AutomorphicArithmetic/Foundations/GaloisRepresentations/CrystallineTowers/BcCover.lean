@@ -14,7 +14,7 @@ open UpperTheory.Gal.Int.Geo UpperTheory.Gal.G3
 namespace UpperTheory.Gal.Seam
 
 /- English proof (translation)
-Substitute `hA` using the available equality. Substitute `h2` using the available equality. Establish `s : IsPullback (f' ≫ pB) fA g (f ≫ qB)` using `hA'.flip`. Conclude with `(IsPullback.of_right s h1 hB.flip).flip`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sq_up {A B A' B' S S' : Scheme.{0}} {f : A ⟶ B} {qB : B ⟶ S} {qA : A ⟶ S} (hA : f ≫ qB = qA) {g : S' ⟶ S}
     {fA : A' ⟶ A} {pA : A' ⟶ S'} (hA' : IsPullback fA pA qA g) {w : B' ⟶ B} {pB : B' ⟶ S'} (hB : IsPullback w pB qB g)
@@ -26,12 +26,12 @@ private theorem sq_up {A B A' B' S S' : Scheme.{0}} {f : A ⟶ B} {qB : B ⟶ S}
 private abbrev spf {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) : sp B ⟶ sp A := Spec.map (CommRingCat.ofHom f)
 
 /- English proof (translation)
-The claim follows from `pFEtBasic pPtsOfSplits`.
+A detailed English derivation is pending.
 -/
 private theorem fEt_bc : FEtBasic := pFEtBasic pPtsOfSplits
 
 /- English proof (translation)
-The claim follows from `pSplitsBasic (pSplitsPts pIsoPts) pPtsOfSplits`.
+A detailed English derivation is pending.
 -/
 private theorem splits_bc : SplitsBasic := pSplitsBasic (pSplitsPts pIsoPts) pPtsOfSplits
 
@@ -41,7 +41,7 @@ variable {k K O O' L : Type} [Field k] [Field K] [CommRing O] [CommRing O'] [Alg
   (τ : k →+* K) (φ : O →+* O')
 
 /- English proof (translation)
-Simplify using `only [gen, spf, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `x`. Conclude with `hφ x`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem gen_sq (hφ : ∀ x, algebraMap O' K (φ x) = τ (algebraMap O k x)) :
     gen O' K ≫ spf φ = spf τ ≫ gen O k := by
@@ -54,7 +54,7 @@ variable {H : HTower k} {θ : H.Γ → L} (C : Cover H θ O) (hφ : ∀ x, algeb
 
 include hφ in
 /- English proof (translation)
-Rewrite using `[Category.assoc, C.ov, Category.assoc, gen_sq τ φ hφ, ← Category.assoc, pullback.condition, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pullback_square_commutes : (pullback.fst H.q (spf τ) ≫ C.π) ≫ C.p = (pullback.snd H.q (spf τ) ≫ gen O' K) ≫ spf φ := by
   rw [Category.assoc, C.ov, Category.assoc, gen_sq τ φ hφ, ← Category.assoc, pullback.condition, Category.assoc]
@@ -63,12 +63,12 @@ private def piY : pullback H.q (spf τ) ⟶ pullback C.p (spf φ) :=
   pullback.lift (pullback.fst H.q (spf τ) ≫ C.π) (pullback.snd H.q (spf τ) ≫ gen O' K) (pullback_square_commutes τ φ C hφ)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem piY_fst : piY τ φ C hφ ≫ pullback.fst C.p (spf φ) = pullback.fst H.q (spf τ) ≫ C.π := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem piY_snd : piY τ φ C hφ ≫ pullback.snd C.p (spf φ) = pullback.snd H.q (spf τ) ≫ gen O' K := pullback.lift_snd _ _ _
 
@@ -77,19 +77,19 @@ private def wG : pullback (pullback.snd C.p (spf φ)) (gen O' K) ⟶ pullback C.
     rw [Category.assoc, pullback.condition, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, gen_sq τ φ hφ])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem wG_fst : wG τ φ C hφ ≫ pullback.fst C.p (gen O k) =
     pullback.fst (pullback.snd C.p (spf φ)) (gen O' K) ≫ pullback.fst C.p (spf φ) := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem wG_snd : wG τ φ C hφ ≫ pullback.snd C.p (gen O k) =
     pullback.snd (pullback.snd C.p (spf φ)) (gen O' K) ≫ spf τ := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Establish `a` using `IsPullback.of_hasPullback (pullback.snd C.p (spf φ)) (gen O' K)`. Establish `b` using `IsPullback.of_hasPullback C.p (spf φ)`. Establish `c : IsPullback (pullback.fst (pullback.snd C.p (spf φ)) (gen O' K) ≫ pullback.fst C.p (spf φ)) (pullback.snd (pullback.snd C.p (spf φ)) (gen O' K)) C.p (gen O' K ≫ spf φ)` using `a.paste_horiz b`. Rewrite `c` using `[gen_sq τ φ hφ, ← wG_fst τ φ C hφ]`. Conclude with `IsPullback.of_right c (wG_snd τ φ C hφ) (IsPullback.of_hasPullback C.p (gen O k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sqG : IsPullback (wG τ φ C hφ) (pullback.snd (pullback.snd C.p (spf φ)) (gen O' K))
     (pullback.snd C.p (gen O k)) (spf τ) := by
@@ -104,18 +104,18 @@ private def piK' : pullback H.q (spf τ) ⟶ pullback (pullback.snd C.p (spf φ)
   pullback.lift (piY τ φ C hφ) (pullback.snd H.q (spf τ)) (piY_snd τ φ C hφ)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem piK'_fst : piK' τ φ C hφ ≫ pullback.fst (pullback.snd C.p (spf φ)) (gen O' K) = piY τ φ C hφ := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem piK'_snd : piK' τ φ C hφ ≫ pullback.snd (pullback.snd C.p (spf φ)) (gen O' K) = pullback.snd H.q (spf τ) :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Use `sq_up (piK_snd C) (IsPullback.of_hasPullback H.q (spf τ)) (sqG τ φ C hφ) ?_ (piK'_snd τ φ C hφ)` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, wG_fst, ← Category.assoc, piK'_fst, piY_fst, Category.assoc, pullback.lift_fst]`. Rewrite using `[Category.assoc, wG_snd, ← Category.assoc, piK'_snd, Category.assoc, piK_snd, pullback.condition]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sqPi : IsPullback (pullback.fst H.q (spf τ)) (piK' τ φ C hφ) (piK C) (wG τ φ C hφ) := by
   refine sq_up (piK_snd C) (IsPullback.of_hasPullback H.q (spf τ)) (sqG τ φ C hφ) ?_ (piK'_snd τ φ C hφ)
@@ -124,7 +124,7 @@ private theorem sqPi : IsPullback (pullback.fst H.q (spf τ)) (piK' τ φ C hφ)
   · rw [Category.assoc, wG_snd, ← Category.assoc, piK'_snd, Category.assoc, piK_snd, pullback.condition]
 
 /- English proof (translation)
-Take `⟨h, -⟩` from `id C.spl`. Use `congrArg (· ≫ pullback.snd C.p (gen O k)) (h δ)` as an intermediate fact. Simplify `this` using `only [Category.assoc, pullback.lift_snd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem a_q (δ : C.Δ) : C.a δ ≫ H.q = H.q := by
   obtain ⟨h, -⟩ := id C.spl
@@ -142,13 +142,11 @@ private abbrev tB (g : H.Γ) : pullback (H.s g ≫ H.q) (spf τ) ⟶ pullback H.
 private abbrev aB (δ : C.Δ) : pullback H.q (spf τ) ⟶ pullback H.q (spf τ) := bcMap (spf τ) (C.a δ) (a_q C δ)
 
 /- English proof (translation)
-Use `haveI := C.finπ`. Use `haveI := C.etπ`. Establish `h0` using `splits_bc.1 (piK C) (piK C) C.Δ C.a (pullback.fst H.q (spf τ)) C.spl`. Establish `hσ : ∀ δ, aB τ C δ ≫ piK' τ φ C hφ = piK' τ φ C hφ`. Introduce `δ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ha, -⟩` from `id C.spl`. Establish `e1 : piK' τ φ C hφ ≫ wG τ φ C hφ = pullback.fst H.q (spf τ) ≫ piK C` using `(sqPi τ φ C hφ).w.symm`. Apply `(sqG τ φ C hφ).hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e1, ← Category.assoc, bcMap_fst, Category.assoc, ha δ]`. Rewrite using `[Category.assoc, piK'_snd, bcMap_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(splits_bc.2 _ _ _ _ (sqPi τ φ C hφ) (piK' τ φ C hφ) C.Δ (aB τ C) hσ).2 ?_` and prove the remaining obligations. Establish `e1 : piK' τ φ C hφ ≫ wG τ φ C hφ = pullback.fst H.q (spf τ) ≫ piK C` using `(sqPi τ φ C hφ).w.symm`. Establish `e2 : (fun δ => aB τ C δ ≫ pullback.fst H.q (spf τ)) = fun δ => pullback.fst H.q (spf τ) ≫ C.a δ`. Use function extensionality and compare the values at `fun δ => bcMap_fst _ _ _`. Rewrite using `[e1, e2]`.
-
-Conclude with `h0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem a_spl : Splits (piK' τ φ C hφ) (piK' τ φ C hφ) (aB τ C) := by
   haveI := C.finπ
@@ -205,25 +203,25 @@ private def bcC : Cover (bcAlong H τ) θ O' where
     exact ⟨d, MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension d) (IsPullback.of_hasPullback C.p (spf φ)) hd⟩
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @Surjective) (sqPi τ φ C hφ) h`.
+A detailed English derivation is pending.
 -/
 private theorem bcC_onto (h : C.Onto) : (bcC τ φ C hφ).Onto :=
   MorphismProperty.of_isPullback (P := @Surjective) (sqPi τ φ C hφ) h
 
 /- English proof (translation)
-Take `⟨hm, κ, h, h2, hF⟩` from `hL`. Establish `hsf : sB τ H g ≫ pullback.fst H.q (spf τ) = pullback.fst (H.s g ≫ H.q) (spf τ) ≫ H.s g` using `bcMap_fst _ _ _`. Establish `htf : tB τ H g ≫ pullback.fst H.q (spf τ) = pullback.fst (H.s g ≫ H.q) (spf τ) ≫ H.t g` using `bcMap_fst _ _ _`. Establish `hss : sB τ H g ≫ pullback.snd H.q (spf τ) = pullback.snd (H.s g ≫ H.q) (spf τ)` using `bcMap_snd _ _ _`. Establish `hts : tB τ H g ≫ pullback.snd H.q (spf τ) = pullback.snd (H.s g ≫ H.q) (spf τ)` using `bcMap_snd _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l1 : (pullback.fst (H.s g ≫ H.q) (spf τ) ≫ κ) ≫ s = (sB τ H g ≫ piY τ φ C hφ) ≫ pullback.fst C.p (spf φ)`. Rewrite using `[Category.assoc, Category.assoc, piY_fst, ← Category.assoc (sB τ H g), hsf, Category.assoc, h]`. Establish `k1 : hv.lift _ _ l1 ≫ v = pullback.fst (H.s g ≫ H.q) (spf τ) ≫ κ` using `hv.lift_fst _ _ _`. Establish `k2 : hv.lift _ _ l1 ≫ s' = sB τ H g ≫ piY τ φ C hφ` using `hv.lift_snd _ _ _`. Generalize the expression as in `hv.lift _ _ l1 = κ' at k1 k2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `e1 : κ' ≫ t' = tB τ H g ≫ piY τ φ C hφ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ht, ← Category.assoc, k1, Category.assoc, Category.assoc, piY_fst, h2, ← Category.assoc (tB τ H g), htf, Category.assoc]`. Rewrite using `[Category.assoc, hp, ← Category.assoc, k2, Category.assoc, Category.assoc, piY_snd, ← Category.assoc, ← Category.assoc, hss, hts]`. Set `b : pullback (piY τ φ C hφ) s' ⟶ pullback C.π s` to `pullback.lift (pullback.fst _ _ ≫ pullback.fst H.q (spf τ)) (pullback.snd _ _ ≫ v) (by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, ← piY_fst τ φ C hφ, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, hv.w])`. Establish `b1 : b ≫ pullback.fst C.π s = pullback.fst (piY τ φ C hφ) s' ≫ pullback.fst H.q (spf τ)` using `pullback.lift_fst _ _ _`. Establish `b2 : b ≫ pullback.snd C.π s = pullback.snd (piY τ φ C hφ) s' ≫ v` using `pullback.lift_snd _ _ _`. Establish `sA : IsPullback (pullback.fst (piY τ φ C hφ) s') (b ≫ pullback.snd C.π s) (pullback.fst H.q (spf τ) ≫ C.π) s`. Rewrite using `[b2, ← piY_fst τ φ C hφ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsPullback.of_hasPullback (piY τ φ C hφ) s').paste_vert hv.flip`. Establish `sB' : IsPullback (pullback.fst (piY τ φ C hφ) s') b (pullback.fst H.q (spf τ)) (pullback.fst C.π s)` using `IsPullback.of_bot sA b1.symm (IsPullback.of_hasPullback C.π s)`. Establish `sC : IsPullback b (pullback.fst (piY τ φ C hφ) s' ≫ pullback.snd H.q (spf τ)) (pullback.fst C.π s ≫ H.q) (spf τ)` using `sB'.flip.paste_vert (IsPullback.of_hasPullback H.q (spf τ))`. Establish `h' : sB τ H g ≫ piY τ φ C hφ = κ' ≫ s'` using `k2.symm`. Establish `sq : IsPullback (pullback.fst (H.s g ≫ H.q) (spf τ)) (pullback.lift (sB τ H g) κ' h') (pullback.lift (H.s g) κ h) b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sq_up (by rw [pullback.lift_fst_assoc]) (IsPullback.of_hasPullback _ _) sC ?_ ?_` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, b1, ← Category.assoc, pullback.lift_fst, hsf, Category.assoc, pullback.lift_fst]`. Rewrite using `[Category.assoc, b2, ← Category.assoc, pullback.lift_snd, k1, Category.assoc, pullback.lift_snd]`. Rewrite using `[← Category.assoc, pullback.lift_fst, hss]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hm, κ', h', e1, fEt_bc.1 _ _ _ _ m sq hF⟩`.
+A detailed English derivation is pending.
 -/
 private theorem bcC_lies (g : H.Γ) {T : Scheme.{0}} (s t : T ⟶ C.Y) (m : ℕ) (hL : C.Lies g s t m) {T' : Scheme.{0}}
     (v : T' ⟶ T) (s' t' : T' ⟶ pullback C.p (spf φ)) (hv : IsPullback v s' s (pullback.fst C.p (spf φ)))
@@ -267,9 +265,9 @@ private theorem bcC_lies (g : H.Γ) {T : Scheme.{0}} (s t : T ⟶ C.Y) (m : ℕ)
   exact ⟨hm, κ', h', e1, fEt_bc.1 _ _ _ _ m sq hF⟩
 
 /- English proof (translation)
-Introduce `g`. Take `⟨T, s, t, d, m, hs, hst, hL⟩` from `h g`. Establish `hv` using `IsPullback.of_hasPullback s (pullback.fst C.p (spf φ))`. Establish `c : (pullback.fst s (pullback.fst C.p (spf φ)) ≫ t) ≫ C.p = (pullback.snd s (pullback.fst C.p (spf φ)) ≫ pullback.snd C.p (spf φ)) ≫ spf φ`. Rewrite using `[Category.assoc, hst, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, pullback.condition]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `sq` using `IsPullback.of_hasPullback C.p (spf φ)`. Conclude with `⟨pullback s (pullback.fst C.p (spf φ)), pullback.snd _ _, sq.lift _ _ c, d, m, fEt_bc.1 _ _ _ _ d hv hs, sq.lift_snd _ _ _, bcC_lies τ φ C hφ g s t m hL _ _ _ hv (sq.lift_fst _ _ _) (sq.lift_snd _ _ _)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem bcC_good (h : C.Good) : (bcC τ φ C hφ).Good := by
   intro g
@@ -285,7 +283,7 @@ private theorem bcC_good (h : C.Good) : (bcC τ φ C hφ).Good := by
 end
 
 /- English proof (translation)
-Introduce `k K O O' L _ _ _ _ _ _ _ τ φ hφ H θ C`. Use `⟨bcC τ φ C hφ, pullback.fst C.p (spf φ), IsPullback.of_hasPullback C.p (spf φ), piY_fst τ φ C hφ, bcC_onto τ φ C hφ, bcC_good τ φ C hφ, ?_⟩` and prove the remaining obligations. Introduce `g T s t m _ hL T' v s' t' hv ht hp`. Conclude with `bcC_lies τ φ C hφ g s t m hL v s' t' hv ht hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bcCover : BcCover := by
   intro k K O O' L _ _ _ _ _ _ _ τ φ hφ H θ C

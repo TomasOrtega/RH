@@ -10,11 +10,11 @@ open Complex ReciprocityTheory.ChartRestriction.G.FD.GramDeterminantReal Recipro
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Establish `hqi : 0 < q⁻¹` using `inv_pos.mpr hq`. Break down `le_total q q⁻¹ with h | h` into its components or cases. Establish `hl : Real.log q ≤ 0`. Establish `h1` using `Real.log_le_log hq h`. Rewrite `h1` using `[Real.log_inv]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[min_eq_left h, max_eq_right h, Real.log_inv, abs_of_nonpos hl]`. Apply the tactic sequence `constructor <;> ring`. Establish `hl : 0 ≤ Real.log q`. Establish `h1` using `Real.log_le_log hqi h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.log_inv]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[min_eq_right h, max_eq_left h, Real.log_inv, abs_of_nonneg hl]`. Apply the tactic sequence `constructor <;> ring`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem log_min_max {q : ℝ} (hq : 0 < q) :
     Real.log (min q q⁻¹) = -|Real.log q| ∧ Real.log (max q q⁻¹) = |Real.log q| := by
@@ -34,7 +34,7 @@ private theorem log_min_max {q : ℝ} (hq : 0 < q) :
     constructor <;> ring
 
 /- English proof (translation)
-The claim follows from `|∑ i ∈ Finset.range r, l i * (L (i + 1) - L i)| ≤ (M - μ) * |L p0| := by have htel : ∀ n, ∑ i ∈ Finset.range n, (L (i + 1) - L i) = L n - L 0 := fun n => Finset.sum_range_sub L n have hsplit : ∀ f : ℕ → ℝ, ∑ i ∈ Finset.range r, f i = ∑ i ∈ Finset.range p0, f i + ∑ i ∈ Finset.Ico …`.
+A detailed English derivation is pending.
 -/
 private theorem mul_norm_sq_sum_le_re_inner_of_orthogonal_eigen {r p0 : ℕ} (hp0 : p0 ≤ r) (L l : ℕ → ℝ) (hL0 : L 0 = 0) (hLr : L r = 0)
     (hmono : ((∀ i, i < p0 → L i ≤ L (i + 1)) ∧ (∀ i, p0 ≤ i → i < r → L (i + 1) ≤ L i)) ∨
@@ -99,51 +99,47 @@ private theorem mul_norm_sq_sum_le_re_inner_of_orthogonal_eigen {r p0 : ℕ} (hp
         ring
 
 /- English proof (translation)
-Establish `he0 : hermC τ.1 X.Gm (e τ) (e τ) = 0` using `(he τ).1`. Establish `hx' : ∀ τ' : X.Ψ, (mat x τ').det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ' i).re` using `hx`. Establish `hT' : ∀ τ' : X.Ψ, (mat (X.flowV e s x) τ').det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm (X.flowV e s x) τ' i).re` using `hT`. Take `⟨m, hm⟩ : ∃ m : ℕ → ℝ, m = fun i => mN τ.1 X.Gm (mat x τ) (e τ) i` from `⟨_, rfl⟩`. Establish `hm' : ∀ i, m i = mN τ.1 X.Gm (mat x τ) (e τ) i` using `fun i => by rw [hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩ : ∃ a : ℕ → ℝ, a = fun i => 1 + 2 * X.c τ * (s τ).im * m i` from `⟨_, rfl⟩`. Establish `ha' : ∀ i, a i = 1 + 2 * X.c τ * (s τ).im * m i` using `fun i => by rw [ha]`. Establish `hd' : ∀ i : Fin (r + 1), dmin X.Gm (X.flowV e s x) τ i = dmin X.Gm x τ i * ((a i : ℝ) : ℂ)`. Introduce `i`. Rewrite using `[dmin_eq, dmin_eq, dmin_flow (X := X) (he := he0) (s := s) (i := (i : ℕ)) (h := Nat.le_of_lt_succ i.isLt) .., ha', hm']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals first | exact hx | exact hT`. Establish `hapos : ∀ i : ℕ, i ≤ r → 0 < a i`. Introduce `i hi`. Establish `h1` using `(hx' τ).2 ⟨i, Nat.lt_succ_of_le hi⟩`. Establish `h2` using `(hT' τ).2 ⟨i, Nat.lt_succ_of_le hi⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hd']`. Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero, Fin.val_mk] at h1 h2`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hle h1.le]`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdne : ∀ i : Fin (r + 1), dmin X.Gm x τ i ≠ 0`. Introduce `i h`. Establish `h1` using `(hx' τ).2 i`. Rewrite `h1` using `[h, Complex.zero_re, mul_zero]`. Conclude with `lt_irrefl _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfac : ∀ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2) / ‖dmin X.Gm (X.flowV e s x) τ i.succ / dmin X.Gm (X.flowV e s x) τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2) = (a (i + 1) / a i) ^ ((la τ i : ℝ) / 2)`. Introduce `i`. Establish `hs` using `hapos (i + 1) i.isLt`. Establish `hc` using `hapos i i.isLt.le`. Establish `hX : 0 < ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖` using `norm_pos_iff.mpr (div_ne_zero (hdne _) (hdne _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hY : 0 < a (i + 1) / a i` using `div_pos hs hc`. Rewrite using `[hd', hd', mul_div_mul_comm, ← Complex.ofReal_div, norm_mul, Complex.norm_real]`. Simplify using `only [Fin.val_succ, Fin.coe_castSucc]`. Rewrite using `[Real.norm_of_nonneg hY.le, Real.mul_rpow hX.le hY.le, div_mul_eq_div_div, div_self (Real.rpow_pos_of_pos hX _).ne', one_div, ← Real.rpow_neg hY.le]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hq : 1 + (s τ).im / X.ttV e x τ = a X.p0`. Rewrite using `[ha', hm']`. Unfold `Data.ttV`. Rewrite using `[div_div_eq_mul_div, div_one, maj_eq (X := X) (he := he0) ..]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `all_goals first | exact hx | exact hT`. Simplify using `only [hfac]`. Rewrite using `[hq]`. Establish `hq0 : 0 < a X.p0` using `hapos _ X.p0_le`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPpos : 0 < ∏ i : Fin r, (a (i + 1) / a i) ^ ((la τ i : ℝ) / 2)` using `Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (div_pos (hapos _ i.isLt) (hapos _ i.isLt.le)) _`. Take `⟨l, hl⟩ : ∃ l : ℕ → ℝ, l = fun k => if h : k < r then (la τ ⟨k, h⟩ : ℝ) else 0` from `⟨_, rfl⟩`. Establish `hli : ∀ i : Fin r, l i = (la τ i : ℝ)`. Introduce `i`. Rewrite using `[hl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[i.isLt]`. Establish `hlogP : Real.log (∏ i : Fin r, (a (i + 1) / a i) ^ ((la τ i : ℝ) / 2)) = (∑ k ∈ Finset.range r, l k * (Real.log (a (k + 1)) - Real.log (a k))) / 2`. Rewrite using `[Real.log_prod (fun i _ => (Real.rpow_pos_of_pos (div_pos (hapos _ i.isLt) (hapos _ i.isLt.le)) _).ne')]`. Rewrite using `[Finset.sum_div, ← Fin.sum_univ_eq_sum_range (fun k => l k * (Real.log (a (k + 1)) - Real.log (a k)) / 2) r]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Real.log_rpow (div_pos (hapos _ i.isLt) (hapos _ i.isLt.le)), Real.log_div (hapos _ i.isLt).ne' (hapos _ i.isLt.le).ne', hli i]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlb : ∀ k, k < r → (⨅ i, (la τ i : ℝ)) ≤ l k ∧ l k ≤ ⨆ i, (la τ i : ℝ)`. Introduce `k hk`. Establish `h1` using `hli ⟨k, hk⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_mk] at h1`. Rewrite using `[h1]`. Conclude with `⟨ciInf_le (Finite.bddBelow_range _) _, le_ciSup (Finite.bddAbove_range (fun i => (la τ i : ℝ))) ⟨k, hk⟩⟩`. Establish `hxg : ∀ (i : ℕ) (h : i ≤ r), 0 < psgn X.p0 i * (gramF τ.1 X.Gm (famN (mat x τ) i h)).det.re`. Introduce `i h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(hx' τ).2 ⟨i, Nat.lt_succ_of_le h⟩`. Rewrite `h1` using `[dmin_eq]`. Conclude with `h1`. Establish `hL0 : Real.log (a 0) = 0`. Rewrite using `[ha', hm', mN_zero, mul_zero, add_zero, Real.log_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hLr : Real.log (a r) = 0`. Rewrite using `[ha', hm', mN_top (e := e τ) (p0 := X.p0) .., mul_zero, add_zero, Real.log_one]`. Apply the tactic sequence `all_goals first | exact hxg | exact hG_of (X := X) τ | exact X.signature τ | exact X.p0_le | exact (hx' τ).1 | exact hx | exact he0`. Establish `hL : ∀ i j, i ≤ r → j ≤ r → m i ≤ m j → ((0 ≤ 2 * X.c τ * (s τ).im → Real.log (a i) ≤ Real.log (a j)) ∧ (2 * X.c τ * (s τ).im ≤ 0 → Real.log (a j) ≤ Real.log (a i)))`. Introduce `i j hi hj hmij`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hκ`. Apply `Real.log_le_log (hapos i hi)` to reduce the goal to its premises. Rewrite using `[ha', ha']`. Use polynomial arithmetic with `[mul_nonneg hκ (sub_nonneg.2 hmij)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hκ`. Apply `Real.log_le_log (hapos j hj)` to reduce the goal to its premises. Rewrite using `[ha', ha']`. Use polynomial arithmetic with `[mul_nonneg_of_nonpos_of_nonpos hκ (sub_nonpos.2 hmij)]`. Establish `hup : ∀ i, i < X.p0 → m i ≤ m (i + 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Rewrite using `[hm', hm']`. Apply `mN_up (p0 := X.p0) (j := i + 1) (hj := hi) (i := i) (hi := Nat.le_succ i)` to reduce the goal to its premises. Apply the tactic sequence `all_goals first | exact hxg | exact hG_of (X := X) τ | exact X.signature τ | exact X.p0_le | exact (hx' τ).1 | exact hx | exact he0`. Establish `hdown : ∀ i, X.p0 ≤ i → i < r → m (i + 1) ≤ m i`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Introduce `i hi hir`. Rewrite using `[hm', hm']`. Apply `mN_down (p0 := X.p0) (i := i) (hi := hi) (j := i + 1) (hij := Nat.le_succ i) (hj := hir)` to reduce the goal to its premises. Apply the tactic sequence `all_goals first | exact hxg | exact hG_of (X := X) τ | exact X.signature τ | exact X.p0_le | exact (hx' τ).1 | exact hx | exact he0`. Establish `hp0r` using `X.p0_le`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmono : ((∀ i, i < X.p0 → Real.log (a i) ≤ Real.log (a (i + 1))) ∧ (∀ i, X.p0 ≤ i → i < r → Real.log (a (i + 1)) ≤ Real.log (a i))) ∨ ((∀ i, i < X.p0 → Real.log (a (i + 1)) ≤ Real.log (a i)) ∧ (∀ i, X.p0 ≤ i → i < r → Real.log (a i) ≤ Real.log (a (i + 1))))`. Break down `le_total 0 (2 * X.c τ * (s τ).im) with hκ | hκ` into its components or cases. Use `left`. Conclude with `⟨fun i hi => (hL i (i + 1) (by omega) (by omega) (hup i hi)).1 hκ, fun i hi hir => (hL (i + 1) i hir (by omega) (hdown i hi hir)).1 hκ⟩`. Use `right`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `⟨fun i hi => (hL i (i + 1) (by omega) (by omega) (hup i hi)).2 hκ, fun i hi hir => (hL (i + 1) i hir (by omega) (hdown i hi hir)).2 hκ⟩`. Establish `hbound` using `mul_norm_sq_sum_le_re_inner_of_orthogonal_eigen X.p0_le (fun k => Real.log (a k)) l hL0 hLr hmono (⨆ i, (la τ i : ℝ)) (⨅ i, (la τ i : ℝ)) hlb`. Establish `hsp : X.spread la τ = (⨆ i, (la τ i : ℝ)) - ⨅ i, (la τ i : ℝ)` using `rfl`. Take `⟨hmin, hmax⟩` from `log_min_max hq0`. Establish `hminpos : 0 < min (a X.p0) (a X.p0)⁻¹` using `lt_min hq0 (inv_pos.mpr hq0)`.
-
-Establish `hmaxpos : 0 < max (a X.p0) (a X.p0)⁻¹` using `lt_max_of_lt_left hq0`. Rewrite `hbound` using `[abs_le]`. Use `⟨(Real.rpow_pos_of_pos hminpos _).le, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_def_of_pos hminpos, ← Real.exp_log hPpos, Real.exp_le_exp, hlogP, hmin, hsp]`. Use polynomial arithmetic with `[hbound.1]`.
-
-Rewrite using `[Real.rpow_def_of_pos hmaxpos, ← Real.exp_log hPpos, Real.exp_le_exp, hlogP, hmax, hsp]`. Use polynomial arithmetic with `[hbound.2]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem ratio_tau {r : ℕ} (X : Data E r) (e : X.Ψ → Fin r → ℂ) (he : X.IsIsoV e)
     (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (s : X.Ψ → ℂ) (hT : X.flowV e s x ∈ X.dom)
@@ -295,11 +291,9 @@ private theorem ratio_tau {r : ℕ} (X : Data E r) (e : X.Ψ → Fin r → ℂ) 
     nlinarith [hbound.2]
 
 /- English proof (translation)
-Introduce `r X e he la x hx s hT`. Simplify using `only`. Establish `key : X.nfac la x / X.nfac la (X.flowV e s x) = ∏ τ, ∏ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2) / ‖dmin X.Gm (X.flowV e s x) τ i.succ / dmin X.Gm (X.flowV e s x) τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2)`. Unfold `Data.nfac`. Rewrite using `[← Finset.prod_div_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_div_distrib]`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Conclude with `Finset.prod_le_prod (fun τ _ => (ratio_tau X e he la hx s hT τ).1) (fun τ _ => (ratio_tau X e he la hx s hT τ).2.1)`.
-
-Conclude with `Finset.prod_le_prod (fun τ _ => (ratio_tau X e he la hx s hT τ).1.trans (ratio_tau X e he la hx s hT τ).2.1) (fun τ _ => (ratio_tau X e he la hx s hT τ).2.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem m3bNorm_holds : FlowNormRatio (E := E) := by
   intro r X e he la x hx s hT

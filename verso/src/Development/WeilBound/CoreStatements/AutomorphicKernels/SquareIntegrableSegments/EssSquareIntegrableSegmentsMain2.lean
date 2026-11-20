@@ -8,13 +8,13 @@ noncomputable section
 namespace PositivityTheory.PfEss
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.langlands_socle_of_order_free PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top (GlobalTheory.T.local_langlands_of_irreducible_admissible PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top) hO`.
+A detailed English derivation is pending.
 -/
 theorem lSocleGL_of_orderFree (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hO : Zc.LOrderFree k) : Zc.LSocleGL k :=
   GlobalTheory.T.langlands_socle_of_order_free PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top (GlobalTheory.T.local_langlands_of_irreducible_admissible PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top) hO
 
 /- English proof (translation)
-The claim follows from `essSquareIntegrableSegments_main hE hF (fun k _ _ _ _ _ => lSocleGL_of_orderFree k (hO k)) hL hJ`.
+A detailed English derivation is pending.
 -/
 theorem essSquareIntegrableSegments_main2 (hE : GlobalTheory.Published.LanglandsExhaustionGL)
     (hF : GlobalTheory.Published.StandardFunctorsFiniteLength)

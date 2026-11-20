@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => exact M.A_smooth`. Consider the case `some r => exact M.x_smooth t r`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem line_smooth_at (M : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) : IsSmoothHerm (M.line t j) := by
   cases j with
@@ -18,7 +18,7 @@ theorem line_smooth_at (M : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N))
   | some r => exact M.x_smooth t r
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => rfl`. Consider the case `some r => exact (M.x_deg t r).trans (M.x_deg s r).symm`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem line_a_eq (M : RootModel Ψ N) (t s : ℝ) (j : Option (Ψ × Fin N)) : (M.line t j).a = (M.line s j).a := by
   cases j with
@@ -26,7 +26,7 @@ theorem line_a_eq (M : RootModel Ψ N) (t s : ℝ) (j : Option (Ψ × Fin N)) : 
   | some r => exact (M.x_deg t r).trans (M.x_deg s r).symm
 
 /- English proof (translation)
-Unfold `monoLines`. Use `split_ifs with h`. Conclude with `line_smooth_at M t _`. Conclude with `contDiffOn_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem monoLines_line_smooth (M : RootModel Ψ N) (t : ℝ) (m : Option (Ψ × Fin N) →₀ ℕ) (d : ℕ) (k : Fin d) :
     IsSmoothHerm (monoLines (M.line t) m d k) := by
@@ -36,7 +36,7 @@ theorem monoLines_line_smooth (M : RootModel Ψ N) (t : ℝ) (m : Option (Ψ × 
   · exact contDiffOn_const
 
 /- English proof (translation)
-Unfold `monoLines`. Use `split_ifs with h`. Conclude with `line_a_eq M t s _`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem monoLines_line_a (M : RootModel Ψ N) (t s : ℝ) (m : Option (Ψ × Fin N) →₀ ℕ) (d : ℕ) (k : Fin d) :
     (monoLines (M.line t) m d k).a = (monoLines (M.line s) m d k).a := by
@@ -46,7 +46,7 @@ theorem monoLines_line_a (M : RootModel Ψ N) (t s : ℝ) (m : Option (Ψ × Fin
   · rfl
 
 /- English proof (translation)
-Rewrite using `[hD M.K M.ι M.P (dimFl Ψ N) _ 2 M.arith (monoLines_line_smooth M t m _) Nat.prime_two, hD M.K M.ι M.P (dimFl Ψ N) _ 2 M.arith (monoLines_line_smooth M s m _) Nat.prime_two]`. Simplify using `only [monoLines_line_a M t s m]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ptsIntegral_line_eq (hD : DegreeStatement) (M : RootModel Ψ N) (t s : ℝ) (m : Option (Ψ × Fin N) →₀ ℕ) :
     ptsIntegral M.P (pot (monoLines (M.line t) m (dimFl Ψ N))) (fun _ => 1) =
@@ -56,9 +56,9 @@ theorem ptsIntegral_line_eq (hD : DegreeStatement) (M : RootModel Ψ N) (t s : �
   simp only [monoLines_line_a M t s m]
 
 /- English proof (translation)
-Establish `hdeg : (m.mapDomain some).degree = dimFl Ψ N`. Rewrite using `[Finsupp.degree_mapDomain, hm]`. Establish `hnone : (m.mapDomain some) none = 0` using `Finsupp.mapDomain_notin_range _ _ (by simp)`. Rewrite using `[ptsIntegral_line_eq hD M t 1]`. Unfold `RootModel.geoMono`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos hdeg, hnone, pow_zero, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem geoMono_eq (hD : DegreeStatement) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M : RootModel Ψ N) (t : ℝ)
     (m : Ψ × Fin N →₀ ℕ) (hm : m.degree = dimFl Ψ N) :

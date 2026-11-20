@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ _ l _ e x`. Establish `hx : IsIntegral ℤ (e (algebraMap (NumberField.RingOfIntegers K) K x))` using `(NumberField.RingOfIntegers.isIntegral_coe x).map e.toIntAlgHom`. Generalize the expression as in `e (algebraMap (NumberField.RingOfIntegers K) K x) = y at hx`. Set `S : Subring (PadicAlgCl l)` to `(NormedField.valuation (K := PadicAlgCl l)).integer`. Establish `hS : IsIntegral S y` using `hx.tower_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `(Valuation.integer.integers (NormedField.valuation (K := PadicAlgCl l))).mem_of_integral hS`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.norm_integers_le_one :
     ∀ (K : Type) [Field K] [NumberField K] (l : ℕ) [Fact (Nat.Prime l)] (e : K →+* PadicAlgCl l) (x : NumberField.RingOfIntegers K), ‖e (algebraMap (NumberField.RingOfIntegers K) K x)‖ ≤ 1 := by

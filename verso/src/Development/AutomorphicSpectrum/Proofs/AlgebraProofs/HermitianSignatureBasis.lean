@@ -12,18 +12,18 @@ variable {E : Type} [Field E] [NumberField E] {K W : Type} [Field K] [AddCommGro
   {ρ : 𝓞 E →+* Module.End K W} {ρH : 𝓞 E →+* Module.End K (W × Module.Dual K W)}
 
 /- English proof (translation)
-Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply, Prod.fst_sum, Prod.smul_fst, hact]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fst_proj (hact : ∀ a y, (ρH a y).1 = ρ a y.1) (σ : E →+* K) (y : W × Module.Dual K W) :
     (HT.eigProj ρH σ y).1 = HT.eigProj ρ σ y.1 := by
   simp only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply, Prod.fst_sum, Prod.smul_fst, hact]
 
 /- English proof (translation)
-Establish `h3 : ∀ k z, φ (ρ (RingOfIntegers.basis E k) z) = σ' ((RingOfIntegers.basis E k : 𝓞 E) : E) • φ z`. Introduce `k z`. Establish `h1` using `HT.LatBasic.mem_eigSp.1 h (bar (RingOfIntegers.basis E k))`. Rewrite `h1` using `[hinr, hb, ← hσ]`. Establish `h2` using `congrArg Prod.snd h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `LinearMap.congr_fun h2 z`. Establish `h2 : ∑ k, σ' (HT.dualInt E k) * σ' ((RingOfIntegers.basis E k : 𝓞 E) : E) = 1`. Rewrite using `[← map_one σ', ← HT.LatBasic.sum_dualInt_mul, map_sum]`. Simplify using the standard rewrite rules. Use extensionality with `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [HT.eigProj, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, h3, smul_smul]`. Rewrite using `[← Finset.sum_smul, h2, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_proj {bar : 𝓞 E ≃+* 𝓞 E} (hinr : ∀ a f, ρH a (0, f) = (0, f ∘ₗ ρ (bar a))) {σ σ' : E →+* K}
     (hσ : ∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) (hb : ∀ a, bar (bar a) = a) {φ : Module.Dual K W}
@@ -43,15 +43,15 @@ theorem comp_proj {bar : 𝓞 E ≃+* 𝓞 E} (hinr : ∀ a f, ρH a (0, f) = (0
   rw [← Finset.sum_smul, h2, one_smul]
 
 /- English proof (translation)
-Set `B` to `Module.Basis.span hb`. Set `π : W →ₗ[K] Submodule.span K (Set.range b)` to `(HT.eigProj ρ τ).codRestrict _ fun x => by`. Rewrite using `[hspan]`. Conclude with `HT.LatBasic.eigProj_mem ρ τ x`. Establish `hπ : ∀ x, ((π x : Submodule.span K (Set.range b)) : W) = HT.eigProj ρ τ x` using `fun x => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ x ∈ HT.eigSp ρ τ, HT.eigProj ρ τ x = x` using `fun x hx => HT.LatBasic.eigProj_of_mem hx`. Use `⟨fun j => B.coord j ∘ₗ π, fun x => ?_, fun j j' => ?_, fun j c => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Subtype.val (B.sum_repr (π x))`. Rewrite `h1` using `[hπ]`. Rewrite using `[← h1, AddSubmonoidClass.coe_finsetSum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[B, Module.Basis.span_apply]`. Establish `h1 : π (b j') = B j'` using `Subtype.ext (by`. Rewrite using `[hπ, Module.Basis.span_apply]`. Conclude with `hfix _ (hspan ▸ Submodule.subset_span ⟨j', rfl⟩))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[h1, Finsupp.single_apply, eq_comm]`. Use extensionality with `x`. Establish `h1 : π (ρ c x) = τ (c : E) • π x` using `Subtype.ext (by`. Establish `h2 : HT.eigProj ρ τ (ρ c x) = ρ c (HT.eigProj ρ τ x)`. Establish `hcomm : ∀ k, ρ (RingOfIntegers.basis E k) (ρ c x) = ρ c (ρ (RingOfIntegers.basis E k) x)` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]`. Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hcomm]`. Rewrite using `[hπ, h2, HT.LatBasic.mem_eigSp.1 (HT.LatBasic.eigProj_mem ρ τ x) c]`. Use the proof step `rfl)`. Simplify using `[h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_frame [CharZero K] {q : ℕ} {b : Fin q → W} (hb : LinearIndependent K b) {τ : E →+* K}
     (hspan : Submodule.span K (Set.range b) = HT.eigSp ρ τ) :
@@ -88,37 +88,37 @@ theorem dual_frame [CharZero K] {q : ℕ} {b : Fin q → W} (hb : LinearIndepend
 end Main
 
 /- English proof (translation)
-Introduce `E _ _ K W _ _ _ _ _ ρ ρH bar σ σ' p q v w hact hinr hσσ' hbar hv hvs hw hws`. Take `⟨f, hf1, hf2, hf4⟩` from `dual_frame hw hws`. Set `u : Fin (p + q) → W × Module.Dual K W` to `Fin.addCases (fun i => HT.eigProj ρH σ (v i, 0)) (fun j => ((0 : W), f j))`. Establish `hul : ∀ i, u (Fin.castAdd q i) = HT.eigProj ρH σ (v i, 0)` using `fun i => by simp [u]`. Establish `hur : ∀ j, u (Fin.natAdd p j) = ((0 : W), f j)` using `fun j => by simp [u]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvm : ∀ i, v i ∈ HT.eigSp ρ σ` using `fun i => hvs ▸ Submodule.subset_span ⟨i, rfl⟩`. Establish `hu1 : ∀ i, (u (Fin.castAdd q i)).1 = v i` using `fun i => by`. Rewrite using `[hul, fst_proj hact]`. Conclude with `HT.LatBasic.eigProj_of_mem (hvm i)`. Establish `hueig : ∀ i, u i ∈ HT.eigSp ρH σ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Rewrite using `[hul]`. Conclude with `HT.LatBasic.eigProj_mem _ _ _`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `right j`. Rewrite using `[hur, HT.LatBasic.mem_eigSp]`. Introduce `a`. Establish `h1` using `hf4 j (bar a)`. Rewrite `h1` using `[hσσ', hbar]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hinr, h1]`. Simplify using the standard rewrite rules. Establish `had : IsAdapted ρH σ v w u`. Unfold `IsAdapted`. Conclude with `⟨hueig, hu1, fun j => ⟨by rw [hur], fun j' => by rw [hur]; exact hf2 j j'⟩⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, had, ?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_add]`. Establish `h1 : ∑ i, g (Fin.castAdd q i) • v i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `congrArg Prod.fst hg`. Simplify `h` using `[Prod.fst_sum, hu1, hur]`. Establish `hc` using `Fintype.linearIndependent_iff.1 hv _ h1`. Establish `h3 : ∑ j, g (Fin.natAdd p j) • f j = 0`. Establish `h` using `congrArg Prod.snd hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `[Prod.snd_sum, hur, hc]`. Establish `hd : ∀ j', g (Fin.natAdd p j') = 0` using `fun j' => by`. Establish `h` using `LinearMap.congr_fun h3 (w j')`. Simplify `h` using `[LinearMap.sum_apply, hf2]`. Introduce `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => exact hc i`. Consider the case `right j => exact hd j`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hueig i`. Introduce `y hye`. Establish `hy1 : y.1 ∈ Submodule.span K (Set.range v)`. Rewrite using `[hvs]`. Use `HT.LatBasic.mem_eigSp.2 fun a => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hact, HT.LatBasic.mem_eigSp.1 hye a]`. Both sides reduce to the same expression. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hy1`. Take `⟨z, hz⟩ : ∃ z, z = y - ∑ i, c i • u (Fin.castAdd q i)` from `⟨_, rfl⟩`. Establish `hze : z ∈ HT.eigSp ρH σ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `Submodule.sub_mem _ hye (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hueig _))`. Establish `hz1 : z.1 = 0`. Rewrite using `[hz, Prod.fst_sub, Prod.fst_sum, sub_eq_zero, ← hc]`. Simplify using `[hu1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hzz : ((0 : W), z.2) = z` using `Prod.ext hz1.symm rfl`. Establish `hcomp : z.2 ∘ₗ HT.eigProj ρ σ' = z.2` using `comp_proj hinr hσσ' hbar (hzz.symm ▸ hze)`. Establish `hd : z.2 = ∑ j, z.2 (w j) • f j`. Use extensionality with `x`. Establish `h1` using `LinearMap.congr_fun hcomp x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[LinearMap.comp_apply, hf1, map_sum]`. Rewrite using `[← h1]`. Simplify using `[LinearMap.sum_apply, mul_comm]`. Establish `e2 : ∑ j, z.2 (w j) • (((0 : W), f j) : W × Module.Dual K W) = z`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `[Prod.fst_sum, hz1]`. Rewrite using `[Prod.snd_sum]`. Simplify using `using hd.symm`. Establish `e3 : y = ∑ i, (Fin.addCases c (fun j => z.2 (w j)) i : K) • u i`. Rewrite using `[Fin.sum_univ_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.addCases_left, Fin.addCases_right, hur]`. Rewrite using `[e2, hz]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_adapted_basis : ∀ (E : Type) [Field E] [NumberField E] (K W : Type) [Field K] [CharZero K] [AddCommGroup W] [Module K W] [FiniteDimensional K W] (ρ : 𝓞 E →+* Module.End K W) (ρH : 𝓞 E →+* Module.End K (W × Module.Dual K W)) (bar : 𝓞 E ≃+* 𝓞 E) (σ σ' : E →+* K) (p q : ℕ) (v : Fin p → W) (w : Fin q → W), (∀ a y, (ρH a y).1 = ρ a y.1) → (∀ a φ, ρH a (0, φ) = (0, φ ∘ₗ ρ (bar a))) → (∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) → (∀ a, bar (bar a) = a) → LinearIndependent K v → Submodule.span K (Set.range v) = HT.eigSp ρ σ → LinearIndependent K w → Submodule.span K (Set.range w) = HT.eigSp ρ σ' → ∃ u, IsAdapted ρH σ v w u ∧ LinearIndependent K u ∧ Submodule.span K (Set.range u) = HT.eigSp ρH σ := by
   intro E _ _ K W _ _ _ _ _ ρ ρH bar σ σ' p q v w hact hinr hσσ' hbar hv hvs hw hws

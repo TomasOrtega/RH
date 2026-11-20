@@ -17,17 +17,17 @@ variable {m n : ℕ} {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e : ℤ} {sL
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, ← map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem split_mul (x₀ : G) (y k : GR n) : x₀ * ι y * ι k = x₀ * ι (y * k) := by
   rw [mul_assoc, ← map_mul]
 
 /- English proof (translation)
-Take `⟨x₀, y, S, r, hr, hx, h⟩` from `hG.split x`. Substitute `hx` using the available equality. Establish `hfun : (fun k : KR n => hz Ht sec s₀ z 1 (x₀ * ι y * ι ((k : GR n) * b))) = fun k : KR n => ((r * hLoc (y * ((k : GR n) * b)) : ℝ) : ℂ) ^ (z - s₀) * (S * sL 1 (y * ((k : GR n) * b)))`. Use function extensionality and compare the values at `k`. Unfold `hz`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[split_mul, (h _).1, (h _).2]`. Rewrite using `[hfun]`. Establish `hcy : Continuous fun k : KR n => y * ((k : GR n) * b)` using `continuous_const.mul (continuous_subtype_val.mul continuous_const)`. Use `Continuous.mul ?_ (continuous_const.mul ((hL.cont 1).comp hcy))` and prove the remaining obligations. Use `Continuous.cpow ?_ continuous_const (fun k => Complex.ofReal_mem_slitPlane.2 (mul_pos hr (hLoc_pos hD _)))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Complex.continuous_ofReal.comp (continuous_const.mul ((continuous_hLoc hD).comp hcy))`.
+A detailed English derivation is pending.
 -/
 theorem cont_hz (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ)
     (z : ℂ) (b : GR n) (x : G) : Continuous fun k : KR n => hz Ht sec s₀ z 1 (x * ι ((k : GR n) * b)) := by
@@ -48,11 +48,11 @@ theorem cont_hz (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ) 
   exact Complex.continuous_ofReal.comp (continuous_const.mul ((continuous_hLoc hD).comp hcy))
 
 /- English proof (translation)
-Take `⟨x₀, y, S, r, hr, hx, h⟩` from `hG.split x`. Substitute `hx` using the available equality. Establish `key : ∀ (P : PX m n) (g : GR n), hz Ht sec s₀ z P (x₀ * ι g) = (r : ℂ) ^ (z - s₀) * S * ((hLoc g : ℂ) ^ (z - s₀) * sL P g)`. Introduce `P g`. Unfold `hz`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[(h g).1, (h g).2, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hr.le (hLoc_pos hD g).le]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx' : ∀ k : KR n, x₀ * ι y * ι ((k : GR n) * yy i) = x₀ * ι (y * (k : GR n) * yy i)`. Introduce `k`. Rewrite using `[split_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hx', key, hL.vac]`. Simplify using `only [mul_left_comm (κ _) ((r : ℂ) ^ (z - s₀) * S)]`. Rewrite using `[integral_const_mul, hMid (z - s₀) i y, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pointId [MeasurableSpace (KR n)] (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ)
     (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) {ν : Measure (KR n)} {κ : KR n → ℂ} {N : ℕ}

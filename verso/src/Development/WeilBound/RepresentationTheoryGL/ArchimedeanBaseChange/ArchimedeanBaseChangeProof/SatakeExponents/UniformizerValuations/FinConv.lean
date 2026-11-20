@@ -20,7 +20,7 @@ def szL (w : Pl E) (g : GLw n w) : ℝ :=
   Real.posLog (⨆ p : Fin n × Fin n, ‖g.val p.1 p.2‖) + Real.posLog (⨆ p : Fin n × Fin n, ‖(g⁻¹ : GLw n w).val p.1 p.2‖)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w y`. Simplify using `[adL]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem adL_adL (φ : Fam E a b) : adL (adL φ) = φ := by
   funext w y

@@ -9,23 +9,21 @@ open NumberField Module
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Use `set M : Submodule A (Fin n → E) := Submodule.span A (L : Set (Fin n → E)) with hM`. Establish `: Submodule.IsLattice E M` using `{ fg := by`. Take `⟨s, hs⟩` from `hfg`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[hM, ← hs, Submodule.span_span_of_tower]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `span_eq_top := by rw [hM, Submodule.span_span_of_tower, hsp] }`. Establish `hrk : Module.finrank A M = n`. Simplify using `using Submodule.IsLattice.finrank_of_pi E M`. Set `c : Basis (Fin n) A M` to `Module.finBasisOfFinrankEq A M hrk`. Establish `hc : ∀ i, ∃ t : S, (t : O) • (c i : Fin n → E) ∈ L` using `fun i => by`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span S A (L : Set (Fin n → E)) _ (c i).2`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t, ht⟩`. Use `choose t ht using hc`. Set `u : Fin n → Aˣ` to `fun i => (IsLocalization.map_units A (t i)).unit`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `c' : Basis (Fin n) A M` to `c.unitsSMul u`. Establish `hc' : ∀ i, (c' i : Fin n → E) = (t i : O) • (c i : Fin n → E)` using `fun i => by`. Simplify using `only [c', Basis.unitsSMul_apply, u, Units.smul_def, IsUnit.unit_spec, algebraMap_smul, Submodule.coe_smul_of_tower]`. Set `b : Fin n → Fin n → E` to `fun i => (c' i : Fin n → E)`. Establish `hli : LinearIndependent E b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : b = c'.extendOfIsLattice E` using `funext fun i => by simp [b]`. Rewrite using `[h]`. Conclude with `(c'.extendOfIsLattice E).linearIndependent`. Establish `hspanA : Submodule.span A (Set.range b) = M`. Establish `: Set.range b = M.subtype '' Set.range c'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, c'.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hw : ∀ w ∈ L, ∃ r : S, (r : O) • w ∈ Submodule.span O (Set.range b)` using `fun w hw => by`. Take `⟨r, hr⟩` from `multiple_mem_span_of_mem_localization_span S A (Set.range b) w (hspanA ▸ Submodule.subset_span hw)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨r, hr⟩`. Take `⟨G, hG⟩` from `hfg`. Use `choose! r hr using hw`. Use `⟨∏ x ∈ G, r x, b, hli, fun i => by simpa only [b, hc'] using ht i, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[← hG]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`. Establish `hy' : y ∈ G` using `hy`. Rewrite using `[← Finset.prod_erase_mul G r hy', Submonoid.coe_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hr y (hG ▸ Submodule.subset_span hy))`.
-
-Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_basis_up_to {O A E : Type} [CommRing O] [CommRing A] [IsDomain A] [Field E] [Algebra O A] [Algebra A E]
     [Algebra O E] [IsScalarTower O A E] (S : Submonoid O) [IsLocalization S A] [IsFractionRing A E]
@@ -88,9 +86,9 @@ def primeTo (R : Type) [CommRing R] (m : ℕ) : Submonoid R where
     exact ⟨a * b, mul_ne_zero ha0 hb0, Nat.Coprime.mul_left ha hb, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `a using induction_on_primes with`. Consider the case `zero => exact absurd rfl ha`. Consider the case `one => exact absurd ((Ideal.eq_top_iff_one Q).2 (by simpa using h)) hQ.ne_top`. Consider the case `prime_mul p a hp ih`. Rewrite `h` using `[Nat.cast_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hQ.mem_or_mem h with h | h` into its components or cases. Conclude with `⟨p, hp, h⟩`. Conclude with `ih (by rintro rfl; simp at ha) h`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_prime_mem {R : Type} [CommRing R] (Q : Ideal R) (hQ : Q.IsPrime) (a : ℕ) (ha : a ≠ 0)
     (h : (a : R) ∈ Q) : ∃ p : ℕ, p.Prime ∧ (p : R) ∈ Q := by
@@ -104,19 +102,17 @@ theorem exists_prime_mem {R : Type} [CommRing R] (Q : Ideal R) (hQ : Q.IsPrime) 
     · exact ih (by rintro rfl; simp at ha) h
 
 /- English proof (translation)
-Establish `: IsDedekindDomain A` using `IsLocalization.isDedekindDomain (𝓞 E) hS A`. Establish `hinj : Function.Injective (algebraMap (𝓞 E) A)` using `IsLocalization.injective A hS`. Establish `hm0 : (m : A) ≠ 0`. Rewrite using `[← map_natCast (algebraMap (𝓞 E) A), map_ne_zero_iff _ hinj]`. Conclude with `hm.ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : (Ideal.span {(m : A)}) ≠ 0` using `by simpa using hm0`. Apply `IsPrincipalIdealRing.of_finite_primes` to reduce the goal to its premises. Apply `(((Ideal.finite_factors hI).image (fun v => v.asIdeal)).insert ⊥).subset` to reduce the goal to its premises. Introduce `P hP`. Establish `hP' : P.IsPrime` using `hP`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : P = ⊥`. Conclude with `Or.inl hb`. Use `Or.inr ⟨⟨P, hP', hb⟩, ?_, rfl⟩` and prove the remaining obligations. Use `set Q := P.comap (algebraMap (𝓞 E) A) with hQ`. Establish `hQb : Q ≠ ⊥`.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Rewrite using `[← IsLocalization.map_under (primeTo (𝓞 E) m) A P]`. Express the relevant statement in the definitionally equal form `Q.map _ = ⊥`. Rewrite using `[h, Ideal.map_bot]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((Ideal.absNorm Q : ℕ) : A) ∈ P`. Use `Ideal.absNorm_mem Q` as an intermediate fact. Rewrite `this` using `[hQ, Ideal.mem_comap, map_natCast]`. Conclude with `this`. Take `⟨p, hp, hpP⟩` from `exists_prime_mem P hP' _ (by rwa [Ne, Ideal.absNorm_eq_zero_iff]) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpm : p ∣ m`. Assume the negation of the conclusion as `hn`. Establish `hu` using `IsLocalization.map_units A (⟨(p : 𝓞 E), p, hp.ne_zero, (Nat.Prime.coprime_iff_not_dvd hp).2 hn, rfl⟩ : primeTo (𝓞 E) m)`. Simplify using `only [map_natCast] at hu`. Conclude with `hP'.ne_top (Ideal.eq_top_of_isUnit_mem _ hpP hu)`.
-
-Take `⟨c, rfl⟩` from `hpm`. Simplify using `only [Set.mem_setOf_eq, Ideal.dvd_span_singleton, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hpP`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPrincipalIdealRing_loc (E : Type) [Field E] [NumberField E] (m : ℕ) (hm : 0 < m)
     (hS : primeTo (𝓞 E) m ≤ (𝓞 E)⁰) (A : Type) [CommRing A] [IsDomain A] [Algebra (𝓞 E) A]
@@ -167,27 +163,25 @@ open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt.LocBasis
 
 /- English proof (translation)
-Introduce `E _ _ n L N hN hle hNL m hm`. Establish `hmem : ∀ v : Fin n → E, v ∈ stdLat E n ↔ ∃ u : Fin n → 𝓞 E, v = fun i => algebraMap (𝓞 E) E (u i)` using `fun v => by`. Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, forall_true_left, Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose u hu using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨u, funext fun i => (hu i).symm⟩`. Introduce and unpack `⟨u, rfl⟩ i`. Conclude with `⟨u i, rfl⟩`. Establish `hS : primeTo (𝓞 E) m ≤ nonZeroDivisors (𝓞 E)`. Introduce and unpack `_ ⟨k, hk, -, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hk)`. Set `A` to `Localization.subalgebra E (primeTo (𝓞 E) m) hS`. Establish `: IsPrincipalIdealRing A` using `isPrincipalIdealRing_loc E m hm hS A`. Establish `hstd : (stdLat E n).FG` using `Submodule.fg_pi fun _ => by`. Rewrite using `[Submodule.one_eq_span]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.fg_span_singleton _`. Establish `hfg : L.FG` using `hstd.of_le hle`. Establish `hN0 : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq, Submodule.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Apply the tactic sequence `have h1 : (Pi.basisFun E (Fin n) i) ∈ stdLat E n := (hmem _).2 ⟨Pi.single i 1, funext fun j => by by_cases h : j = i <;> simp [h, Pi.single_apply]⟩`. Establish `h2` using `hNL (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self (N : 𝓞 E)) h1)`. Establish `h3` using `Submodule.smul_mem (Submodule.span E (L : Set (Fin n → E))) (N : E)⁻¹ (Submodule.subset_span h2)`. Rewrite `h3` using `[← algebraMap_smul E (N : 𝓞 E), smul_smul, map_natCast, inv_mul_cancel₀ hN0, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨⟨_, k, hk0, hk, rfl⟩, b, hli, hb, hw⟩` from `exists_basis_up_to (A := A) (primeTo (𝓞 E) m) L hfg hsp`. Use `choose u hu using fun j => (hmem (b j)).1 (hle (hb j))`. Set `g : Matrix (Fin n) (Fin n) (𝓞 E)` to `Matrix.of fun i j => u j i`. Establish `hg : ∀ a : Fin n → 𝓞 E, (g.map (algebraMap (𝓞 E) E)).mulVec (fun i => algebraMap (𝓞 E) E (a i)) = ∑ j, a j • b j` using `fun a => by`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, g, Matrix.map_apply, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hu j, Algebra.smul_def, mul_comm]`. Use `⟨k, g, hk, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hcol : (g.map (algebraMap (𝓞 E) E)).col = b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `j i`. Rewrite using `[hu j]`. Both sides reduce to the same expression. Establish `hunit : IsUnit (g.map (algebraMap (𝓞 E) E))` using `Matrix.linearIndependent_cols_iff_isUnit.1 (hcol ▸ hli)`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `((Matrix.isUnit_iff_isUnit_det _).1 hunit).ne_zero` as an intermediate fact. Apply `this` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Introduce `v hv`. Take `⟨a, rfl⟩` from `(hmem v).1 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hg]`. Conclude with `Submodule.sum_mem _ fun j _ => L.smul_mem _ (hb j)`. Introduce `w hwL`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hw w hwL)`. Use `⟨_, (hmem _).2 ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hg, ha]`. Express the relevant statement in the definitionally equal form `_ = (k : 𝓞 E) • w`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_matrix_primeTo : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (N : ℕ), 0 < N → L ≤ stdLat E n → Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ L → ∀ m : ℕ, 0 < m → ∃ (k₁ : ℕ) (g : Matrix (Fin n) (Fin n) (𝓞 E)), Nat.Coprime k₁ m ∧ g.det ≠ 0 ∧ (∀ v ∈ stdLat E n, (g.map (algebraMap (𝓞 E) E)).mulVec v ∈ L) ∧ ∀ w ∈ L, ∃ v ∈ stdLat E n, (k₁ : E) • w = (g.map (algebraMap (𝓞 E) E)).mulVec v := by
   intro E _ _ n L N hN hle hNL m hm

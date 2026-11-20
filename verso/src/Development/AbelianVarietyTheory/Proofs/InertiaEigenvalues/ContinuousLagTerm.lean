@@ -17,19 +17,17 @@ namespace GlobalTheory.RawLift.TermCont
 open GlobalTheory.RawLift
 
 /- English proof (translation)
-Introduce `D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS f₁ f₂ h₁ h₂ Y _`. Establish `hw` using `hS.weil`. Establish `hψ` using `hw.std`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V`. Establish `: BorelSpace (WO V W)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ h₂`. Establish `hJ` using `GlobalTheory.ThetaJointCont.continuous_om_oriented hw h₁`. Establish `hrm : ∀ (C : Matrix (Fin W.rank) (Fin W.rank) D.host.E), Continuous fun u : WO V W => ratMul C u` using `fun C => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ratMul`. Conclude with `continuous_const.matrix_mul continuous_id`. Establish `hμ1 : μ 𝓕 = 1` using `hS.covol.2.2`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `isFiniteMeasure_restrict.2 (by rw [hμ1]; exact ENNReal.one_ne_top)`. Establish `: SecondCountableTopology (GA D W)` using `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D W).2.1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Establish `hc0 : Continuous fun w : WO V W => om ((1 : GA D V), g₀) f₁ w` using `hJ.comp (continuous_const.prodMk continuous_id)`. Take `⟨κ, hκ⟩` from `hK.exists_bound_of_continuousOn hc0.continuousOn`. Establish `hev : ∀ᶠ g in 𝓝 g₀, ∀ w ∈ K, ‖om ((1 : GA D V), g) f₁ w‖ ≤ κ + 1`. Use `hK.eventually_forall_of_forall_eventually fun w hw' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : Continuous fun y : GA D W × WO V W => ‖om ((1 : GA D V), y.1) f₁ y.2‖` using `(hJ.comp ((continuous_const.prodMk continuous_fst).prodMk continuous_snd)).norm`. Conclude with `(hc.continuousAt.eventually_lt continuousAt_const ((hκ w hw').trans_lt (lt_add_one κ))).mono fun y hy => hy.le`. Establish `hall : ∀ᶠ g in 𝓝 g₀, ∀ w, ‖om ((1 : GA D V), g) f₁ w‖ ≤ κ + 1` using `hev.mono fun g hg w => by`. Take `⟨γ, hγ, h⟩` from `hKc w`. Rewrite using `[← GlobalTheory.OrientedHeis.theta_norm_periodic hψ (hw.om_pres _ f₁ h₁) γ hγ w]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hg _ h`. Unfold `lagTerm`. Use `continuousAt_of_dominated (bound := fun _ => (κ + 1) * C₂) ?_ ?_ (integrable_const _) ?_` and prove the remaining obligations. Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations. Conclude with `((((hw.om_pres _ f₁ h₁).cont.comp (hrm _)).mul (continuous_star.comp (h₂.cont.comp (hrm _))))).aestronglyMeasurable`.
-
-Use `hall.mono fun g hg => Eventually.of_forall fun u => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`. Conclude with `mul_le_mul (hg _) (hC₂ _) (norm_nonneg _) ((norm_nonneg _).trans (hg 0))`. Use `Eventually.of_forall fun u => ?_` and prove the remaining obligations. Conclude with `((hw.om_cont f₁ h₁ _).comp (continuous_const.prodMk continuous_id)).continuousAt.mul continuousAt_const`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_lagTerm : ∀ D : D7, ∀ ψ (V W : HSp D) χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr,
     SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr → ∀ f₁ f₂, IsThetaFunO ψ V W f₁ → IsThetaFunO ψ V W f₂ →

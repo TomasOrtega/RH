@@ -17,9 +17,9 @@ namespace UpperTheory.HilbertEisensteinWeightOne.LibOpenLevel
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hk`. Set `p : Ohat F →+* w.adicCompletionIntegers F` to `((pLoc F w).comp (Ohat F).subtype).codRestrict (w.adicCompletionIntegers F) fun x => GlobalFixedVectors.mem_Ohat.1 x.2 w`. Use `⟨GeneralLinearGroup.map p g, ?_, Units.ext rfl⟩` and prove the remaining obligations. Establish `key : GeneralLinearGroup.map (n` using `Fin 2) (Ideal.Quotient.mk (IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c)) (GeneralLinearGroup.map p g) = 1 := by`. Set `q` to `Ideal.quotientMap (I := Ideal.span {(M : ↥(Ohat F))}) (IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c) p ((Ideal.span_singleton_le_iff_mem _).2 (by simpa using hM))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `congrArg (GeneralLinearGroup.map q) (MonoidHom.mem_ker.1 hg)` as an intermediate fact. Rewrite `this` using `[map_one]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Conclude with `Subgroup.mem_comap.2 (key ▸ one_mem _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem local_mem_principal_congruence {M : ℕ} (w : HeightOneSpectrum (𝓞 F)) (c : ℕ)
     (hM : (M : w.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c)
@@ -39,13 +39,11 @@ private theorem local_mem_principal_congruence {M : ℕ} (w : HeightOneSpectrum 
   exact Subgroup.mem_comap.2 (key ▸ one_mem _)
 
 /- English proof (translation)
-Use `⟨∏ w ∈ hc.toFinset, Ideal.absNorm w.asIdeal ^ c w, ?_, fun w => ?_⟩` and prove the remaining obligations. Use `Nat.pos_of_ne_zero (Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ ?_)` and prove the remaining obligations. Conclude with `fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Distinguish the cases in `h : c w = 0`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem (fun w : HeightOneSpectrum (𝓞 F) => Ideal.absNorm w.asIdeal ^ c w) (hc.mem_toFinset.2 h)`. Rewrite using `[hm, Nat.cast_mul, Nat.cast_pow]`. Use `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow ?_ _)` and prove the remaining obligations. Establish `h1` using `Ideal.absNorm_mem w.asIdeal`. Rewrite using `[← map_natCast (algebraMap (𝓞 F) (w.adicCompletionIntegers F))]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(Ideal.absNorm w.asIdeal : 𝓞 F) = x at h1`. Use `(Valuation.mem_maximalIdeal_iff _ (Valued.v : Valuation (w.adicCompletion F) _)).2 ?_` and prove the remaining obligations. Establish `h2 : Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) x) < 1`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (w.adicCompletion F)]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).trans_lt ((w.valuation_lt_one_iff_mem x).2 h1)`.
-
-Conclude with `h2`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_level (c : HeightOneSpectrum (𝓞 F) → ℕ) (hc : {w | c w ≠ 0}.Finite) :
     ∃ M : ℕ, 1 ≤ M ∧ ∀ w : HeightOneSpectrum (𝓞 F),
@@ -69,9 +67,9 @@ private theorem exists_level (c : HeightOneSpectrum (𝓞 F) → ℕ) (hc : {w |
     exact h2
 
 /- English proof (translation)
-Take `⟨m, hm, hω⟩` from `isOfFinOrder_iff_pow_eq_one.1 hH.fin`. Establish `ho` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow ω.1 ω.2.1 hm fun x => by`. Use `congrArg (fun ξ : HChar F => ξ.1 x) hω` as an intermediate fact. Simplify using `using this`. Take `⟨S, M, hS, key⟩` from `GlobalTheory.OpenIdeleCongr.localIdele_mem_of_isOpen ω.1.ker ho`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `hS.subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hwS`. Conclude with `hw (Nat.le_zero.1 ((hH.cond w).2 fun x hu _ => MonoidHom.mem_ker.1 (key w x hu fun h => absurd h hwS)))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem finite_support {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) :
     {w | c w ≠ 0}.Finite := by
@@ -90,14 +88,14 @@ def Kc (c : HeightOneSpectrum (𝓞 F) → ℕ) : Subgroup (GL (Fin 2) (Af F)) :
   ⨅ w, (K1 w (c w)).comap (GeneralLinearGroup.map (pLoc F w))
 
 /- English proof (translation)
-Simplify using `[Kc, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Kc {c : HeightOneSpectrum (𝓞 F) → ℕ} {k : GL (Fin 2) (Af F)} :
     k ∈ Kc F c ↔ ∀ w, GeneralLinearGroup.map (pLoc F w) k ∈ K1 w (c w) := by
   simp [Kc, Subgroup.mem_iInf]
 
 /- English proof (translation)
-Take `⟨M, hM1, hM⟩` from `exists_level c hc`. Conclude with `Subgroup.isOpen_mono (fun k hk => mem_Kc.2 fun w => local_mem_principal_congruence w _ (hM w) hk) (isOpen_KLev hM1)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isOpen_Kc {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite) : IsOpen (Kc F c : Set (GL (Fin 2) (Af F))) := by
   obtain ⟨M, hM1, hM⟩ := exists_level c hc
@@ -115,14 +113,14 @@ def stab (φ : UpperTheory.V.TR.Sm F 2) : Subgroup (GL (Fin 2) (Af F)) where
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono (H₂ := stab φ) (fun k hk => h k hk) (isOpen_Kc (finite_support hH))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_stab {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) (φ : UpperTheory.V.TR.Sm F 2)
     (h : ∀ k ∈ Kc F c, UpperTheory.V.TR.finRep F 2 k φ = φ) : IsOpen {k | UpperTheory.V.TR.finRep F 2 k φ = φ} :=
   Subgroup.isOpen_mono (H₂ := stab φ) (fun k hk => h k hk) (isOpen_Kc (finite_support hH))
 
 /- English proof (translation)
-The claim follows from `isOpen_stab hH φ fun k hk => Subtype.ext (funext fun g => h k (mem_Kc.1 hk) g)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_stab_of_glob {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c)
     (φ : UpperTheory.V.TR.Sm F 2)

@@ -13,13 +13,13 @@ section General
 variable {K : Type u} [NormedField K] {ι : Type v}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem monoWtGe_iff {pi : ℝ} {r : ι → ℝ} {wt : ℝ} {n : ι →₀ ℕ} {c : K} :
     MonoWtGe pi r wt n c ↔ ‖c‖ ≤ pi ^ (wt - dot n r) := Iff.rfl
 
 /- English proof (translation)
-Unfold `dot`. Conclude with `Finsupp.sum_add_index' (fun i => by simp) (fun i a b => by push_cast; ring)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dot_add (m n : ι →₀ ℕ) (r : ι → ℝ) : dot (m + n) r = dot m r + dot n r := by
   classical
@@ -27,28 +27,28 @@ theorem dot_add (m n : ι →₀ ℕ) (r : ι → ℝ) : dot (m + n) r = dot m r
   exact Finsupp.sum_add_index' (fun i => by simp) (fun i a b => by push_cast; ring)
 
 /- English proof (translation)
-Simplify using `[dot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_zero (r : ι → ℝ) : dot (0 : ι →₀ ℕ) r = 0 := by simp [dot]
 
 /- English proof (translation)
-Unfold `dot Finsupp.sum`. Conclude with `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (h i) (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dot_mono (n : ι →₀ ℕ) {r r' : ι → ℝ} (h : ∀ i, r i ≤ r' i) : dot n r ≤ dot n r' := by
   unfold dot Finsupp.sum
   exact Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (h i) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Introduce `n` and use `le_trans (monoWtGe_iff.mp (hf n)) (Real.rpow_le_rpow_of_exponent_ge h0 h1 (by linarith))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wtGe_mono {pi : ℝ} (h0 : 0 < pi) (h1 : pi ≤ 1) {r : ι → ℝ} {w w' : ℝ} (hw : w' ≤ w)
     {f : MvPowerSeries ι K} (hf : WtGe pi r w f) : WtGe pi r w' f := fun n =>
   le_trans (monoWtGe_iff.mp (hf n)) (Real.rpow_le_rpow_of_exponent_ge h0 h1 (by linarith))
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[monoWtGe_iff, MvPowerSeries.coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[dot_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Real.rpow_nonneg h0.le _`.
+A detailed English derivation is pending.
 -/
 theorem wtGe_one {pi : ℝ} (h0 : 0 < pi) (r : ι → ℝ) : WtGe pi r 0 (1 : MvPowerSeries ι K) := by
   classical
@@ -61,7 +61,7 @@ theorem wtGe_one {pi : ℝ} (h0 : 0 < pi) (r : ι → ℝ) : WtGe pi r 0 (1 : Mv
 variable [IsUltrametricDist K]
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[monoWtGe_iff, map_add]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `wtGe_mono h0 h1 (min_le_left w1 w2) hf n`. Conclude with `wtGe_mono h0 h1 (min_le_right w1 w2) hg n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wtGe_add {pi : ℝ} (h0 : 0 < pi) (h1 : pi ≤ 1) {r : ι → ℝ} {w1 w2 : ℝ}
     {f g : MvPowerSeries ι K} (hf : WtGe pi r w1 f) (hg : WtGe pi r w2 g) :
@@ -73,7 +73,7 @@ theorem wtGe_add {pi : ℝ} (h0 : 0 < pi) (h1 : pi ≤ 1) {r : ι → ℝ} {w1 w
   · exact wtGe_mono h0 h1 (min_le_right w1 w2) hg n
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[monoWtGe_iff, map_sum]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg h0.le _) fun i hi => h i hi n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtGe_sum {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {wt : ℝ} {α : Type w} (s : Finset α)
     (F : α → MvPowerSeries ι K) (h : ∀ i ∈ s, WtGe pi r wt (F i)) :
@@ -84,9 +84,9 @@ theorem wtGe_sum {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {wt : ℝ} {α : Type
     fun i hi => h i hi n
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[monoWtGe_iff, MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg h0.le _) fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[norm_mul, ← hx, dot_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add h0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wtGe_mul {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {w1 w2 : ℝ}
     {f g : MvPowerSeries ι K} (hf : WtGe pi r w1 f) (hg : WtGe pi r w2 g) :
@@ -105,7 +105,7 @@ theorem wtGe_mul {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {w1 w2 : ℝ}
         rw [← Real.rpow_add h0]; congr 1; ring
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qk29.wtGe_prod .. | (apply UpperTheory.Reformulated.B.Qk29.wtGe_prod <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk29.wtGe_prod <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk29.wtGe_prod <;> assumption) | (intros; …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtGe_prod {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {α : Type w} (s : Finset α) (wt : α → ℝ)
     (F : α → MvPowerSeries ι K) (h : ∀ i ∈ s, WtGe pi r (wt i) (F i)) :
@@ -113,9 +113,9 @@ theorem wtGe_prod {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {α : Type w} (s : F
   first | exact UpperTheory.Reformulated.B.Qk29.wtGe_prod .. | (apply UpperTheory.Reformulated.B.Qk29.wtGe_prod <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk29.wtGe_prod <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk29.wtGe_prod <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qk29.wtGe_prod <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk29.wtGe_prod <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι ‹_› pi h0 r α s wt F h | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι ‹_› pi h0 r α s wt F | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι ‹_› pi h0 r α s wt | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι ‹_› pi h0 r α s | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι ‹_› pi h0 r α | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι ‹_› pi h0 r | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι ‹_› pi h0 | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι ‹_› pi | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι ‹_› | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› ι | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K ‹_› | exact @UpperTheory.Reformulated.B.Qk29.wtGe_prod K
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using wtGe_one (K := K) h0 r`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Use `wtGe_mul h0 ih hf` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[add_mul, one_mul]` and apply the resulting hypothesis.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem wtGe_pow {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {wt : ℝ} {f : MvPowerSeries ι K}
     (hf : WtGe pi r wt f) (k : ℕ) : WtGe pi r (k * wt) (f ^ k) := by
@@ -130,7 +130,7 @@ theorem wtGe_pow {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {wt : ℝ} {f : MvPow
 end General
 
 /- English proof (translation)
-Distinguish the cases in `hfin : (Function.support g).Finite`. Rewrite using `[finsum_eq_sum g hfin]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC (fun i _ => hg i)`. Rewrite using `[finsum_of_infinite_support hfin]`. Simplify using `using hC`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_finsum_le_of {K : Type u} [NormedField K] [IsUltrametricDist K] {α : Type v}
     {g : α → K} {C : ℝ} (hC : 0 ≤ C) (hg : ∀ n, ‖g n‖ ≤ C) : ‖∑ᶠ n, g n‖ ≤ C := by
@@ -142,11 +142,11 @@ theorem norm_finsum_le_of {K : Type u} [NormedField K] [IsUltrametricDist K] {α
     simpa using hC
 
 /- English proof (translation)
-Introduce `K _ _ pi h0 h1 σ τ _ a r r' wt f ha0 ha hf`. Establish `hs : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`. Establish `hp : ∀ d : σ →₀ ℕ, WtGe pi r' (dot d r) (d.prod fun s e => a s ^ e)`. Introduce `d`. Use `wtGe_prod h0 d.support (fun s => (d s : ℝ) * r s) (fun s => a s ^ d s) fun s _ => wtGe_pow h0 (ha s) (d s)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[dot, Finsupp.sum, Finsupp.prod]`. Introduce `m`. Rewrite using `[monoWtGe_iff, MvPowerSeries.coeff_subst hs]`. Use `norm_finsum_le_of (Real.rpow_nonneg h0.le _) fun d => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, norm_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem substitution_weight_bound : SubstWt.{u, v, w} := by
   intro K _ _ pi h0 h1 σ τ _ a r r' wt f ha0 ha hf
@@ -167,7 +167,7 @@ theorem substitution_weight_bound : SubstWt.{u, v, w} := by
     _ = pi ^ (wt - dot m r') := by rw [← Real.rpow_add h0]; congr 1; ring
 
 /- English proof (translation)
-Introduce `K _ pi h0 h1 ι r r' wt hr`. Establish `key : ∀ (n : ι →₀ ℕ) (c : K), MonoWtGe pi r wt n c → MonoWtGe pi r' wt n c` using `fun n c hc => le_trans (monoWtGe_iff.mp hc) (Real.rpow_le_rpow_of_exponent_ge h0 h1.le (by linarith [dot_mono n hr]))`. Conclude with `⟨fun f hf n => key n _ (hf n), fun κ f hf n hn => key n _ (hf n hn)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem radical_weight_monotone : RadMono.{u, v} := by
   intro K _ pi h0 h1 ι r r' wt hr

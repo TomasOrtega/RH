@@ -4,15 +4,15 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.RepresentedByUnits
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.t_E6Cut UpperTheory.Aff
 
 /- English proof (translation)
-Introduce `D _ d U hU`. Use `UpperTheory.represented_by_units (varIdeal (RingHom.id (MvPolynomial (Fin d) D))) U hU (Vec D d).psh (fun T x => ringOf ((Vec.toAff d).app Γ(T, ⊤) x)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `T T' f x`. Conclude with `ringOf_map D f.appTop.hom ((Vec.toAff d).app Γ(T, ⊤) x)`. Introduce `T x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_varIdeal, ← x.2]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `[ringOf, Vec.toAff]`. Introduce `T ξ hξ`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hξ` using `[map_varIdeal]`. Use `⟨⟨(ξ.comp MvPolynomial.C, fun j => ξ (MvPolynomial.X j)), hξ⟩, ?_, ?_⟩` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `[ringOf, Vec.toAff]`. Simplify using `[ringOf, Vec.toAff]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Substitute `hy` using the available equality. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Use extensionality with `c`. Simplify using `[ringOf, Vec.toAff]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using `[ringOf, Vec.toAff]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.vector_bundle_affine_rep :
     ∀ (D : Type) [CommRing D] (d : ℕ) (U : (Spec (CommRingCat.of (MvPolynomial (Fin d) D))).Opens), IsCompl' (varIdeal (RingHom.id (MvPolynomial (Fin d) D))) U → ∃ φ : (Vec D d).psh ⟶ yoneda.obj (U : Scheme.{0}), (∀ (T : Scheme.{0}) (x : (Vec D d).obj Γ(T, ⊤)), φ.app (op T) x ≫ U.ι = specOf (ringOf ((Vec.toAff d).app _ x))) ∧ ∀ T : Scheme.{0}, IsAffine T → Function.Bijective (φ.app (op T)) := by

@@ -14,7 +14,7 @@ noncomputable def mapPush {k k' : Under j} (f : k ⟶ k') :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `pushout.inl_desc _ _ _ @[reassoc]`.
+A detailed English derivation is pending.
 -/
 lemma inl_mapPush {k k' : Under j} (f : k ⟶ k') :
     pushout.inl g' (D.map k.hom) ≫ mapPush D j g' f = pushout.inl g' (D.map k'.hom) :=
@@ -22,7 +22,7 @@ lemma inl_mapPush {k k' : Under j} (f : k ⟶ k') :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `pushout.inr_desc _ _ _ @[simps]`.
+A detailed English derivation is pending.
 -/
 lemma inr_mapPush {k k' : Under j} (f : k ⟶ k') :
     pushout.inr g' (D.map k.hom) ≫ mapPush D j g' f = D.map f.right ≫ pushout.inr g' (D.map k'.hom) :=
@@ -66,17 +66,17 @@ noncomputable def toB (c : Cocone D) {B : CommRingCat.{0}} (h : B' ⟶ B) (g : c
         ← Category.assoc, c.w]
 
 /- English proof (translation)
-Introduce `J _ _ D c hc j B' B g' h g hsq`. Use `⟨diag D j g', toB D j g' c h g hsq.w, inrNat D j g', inlNat D j g', ⟨?_⟩, fun k => ⟨IsPushout.of_hasPushout _ _, pushout.inl_desc _ _ _, pushout.inr_desc _ _ _⟩⟩` and prove the remaining obligations. Establish `hc' : IsColimit (c.whisker (Under.forget j))` using `(Functor.Final.isColimitWhiskerEquiv _ _).symm hc`. Set `k0 : Under j` to `Under.mk (𝟙 j)`. Set `e : ∀ (s : Cocone (diag D j g')) (k : Under j), pushout g' (D.map k.hom) ⟶ s.pt` to `fun s k => s.ι.app k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `he : ∀ (s : Cocone (diag D j g')) {k k' : Under j} (f : k ⟶ k'), mapPush D j g' f ≫ e s k' = e s k` using `fun s _ _ f => s.w f`. Set `r : Cocone (diag D j g') → Cocone (Under.forget j ⋙ D)` to `fun s => { pt := s.pt, ι := inrNat D j g' ≫ s.ι }`. Establish `hl : ∀ (s : Cocone (diag D j g')) (k : Under j), pushout.inl g' (D.map k.hom) ≫ e s k = pushout.inl g' (D.map k0.hom) ≫ e s k0`. Introduce `s k`. Rewrite using `[← he s (Under.homMk k.hom (Category.id_comp k.hom) : k0 ⟶ k), inl_mapPush_assoc]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfr : ∀ (s : Cocone (diag D j g')) (k : Under j), c.ι.app k.right ≫ hc'.desc (r s) = pushout.inr g' (D.map k.hom) ≫ e s k` using `fun s k => hc'.fac (r s) k`. Establish `hw : ∀ s : Cocone (diag D j g'), g' ≫ (pushout.inl g' (D.map k0.hom) ≫ e s k0) = c.ι.app j ≫ hc'.desc (r s)`. Introduce `s`. Rewrite using `[show c.ι.app j = c.ι.app k0.right from rfl, hfr, ← Category.assoc, pushout.condition, Category.assoc]`. Conclude with `(congrArg (· ≫ (pushout.inr g' (D.map k0.hom) ≫ e s k0)) (D.map_id j)).trans (Category.id_comp _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `{ desc := fun s => hsq.desc _ _ (hw s) fac := fun s k => by`. Express the relevant statement in the definitionally equal form `pushout.desc _ _ _ ≫ _ = e s k`. Apply `pushout.hom_ext` to reduce the goal to its premises. Rewrite using `[pushout.inl_desc_assoc, hsq.inl_desc, hl s k]`. Rewrite using `[pushout.inr_desc_assoc, Category.assoc, hsq.inr_desc, hfr]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `uniq := fun s m hm => by`. Establish `hm' : ∀ k : Under j, pushout.desc h (c.ι.app k.right ≫ g) (by rw [hsq.w, ← c.w k.hom, Category.assoc]) ≫ m = e s k` using `hm`. Apply `hsq.hom_ext` to reduce the goal to its premises. Rewrite using `[hsq.inl_desc, ← hm' k0, pushout.inl_desc_assoc]`. Rewrite using `[hsq.inr_desc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `hc'.hom_ext` to reduce the goal to its premises. Introduce `k`. Express the relevant statement in the definitionally equal form `c.ι.app k.right ≫ g ≫ m = c.ι.app k.right ≫ hc'.desc (r s)`. Rewrite using `[hfr, ← hm' k, pushout.inr_desc_assoc, Category.assoc] }`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isColimit_pushout_under : ∀ (J : Type) [SmallCategory J] [IsFiltered J] (D : J ⥤ CommRingCat.{0}) (c : Cocone D), IsColimit c → ∀ (j : J) (B' B : CommRingCat.{0}) (g' : D.obj j ⟶ B') (h : B' ⟶ B) (g : c.pt ⟶ B), IsPushout g' (c.ι.app j) h g → ∃ (D' : Under j ⥤ CommRingCat.{0}) (ι : D' ⟶ (Functor.const _).obj B) (u : Under.forget j ⋙ D ⟶ D') (v : (Functor.const _).obj B' ⟶ D'), Nonempty (IsColimit (Cocone.mk B ι)) ∧ ∀ k : Under j, IsPushout g' (D.map k.hom) (v.app k) (u.app k) ∧ v.app k ≫ ι.app k = h ∧ u.app k ≫ ι.app k = c.ι.app k.right ≫ g := by
   intro J _ _ D c hc j B' B g' h g hsq

@@ -13,11 +13,9 @@ noncomputable section
 namespace GlobalTheory.ZM.FieldPoint
 
 /- English proof (translation)
-Establish `hL` using `LB.isLB_pull hM x`. Take `⟨t, ht⟩` from `GlobalTheory.LB.exists_isGen_of_subsingleton_pic hL`. Set `a` to `ReciprocityTheory.ChartRestriction.G.DVR.genSec t ht`. Establish `ha : ⊤ ≤ nonzeroLocus a` using `(nonzeroLocus_genSec hL t ht).ge`. Use `choose v hv using fun j => fnOn_top_bijective.2 (resG _ ha (secRatio a (secPull (σ j) x)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, t, ht, fun i j h => ?_⟩` and prove the remaining obligations. Establish `h1` using `secRatio_on a (secPull (σ i) x) j (le_top.trans ha) le_rfl`. Rewrite `h1` using `[resG_self, resG_self]`. Express the relevant statement in the definitionally equal form `_ = fnOn _ (v i) * a.f j`. Rewrite using `[← resG_fnOn (le_top : _ ≤ ⊤), hv, resG_resG]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_secCoord_of_subsingleton_pic {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) {I : Type} (σ : I → M.Sec)
     {A : Type} [CommRing A] [Subsingleton (CommRing.Pic A)] (x : Sp A ⟶ X) : ∃ v : I → A, SecCoord M σ x v := by
@@ -34,7 +32,7 @@ theorem exists_secCoord_of_subsingleton_pic {X : Scheme.{0}} {M : LB X} (hM : M.
   exact h1
 
 /- English proof (translation)
-Introduce `o _ m _ _ y` and use `exists_secCoord_of_subsingleton_pic (O1_isLB o m) _ y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_secCoord : ∀ (o : Type) [CommRing o] (m : ℕ) (K : Type) [Field K] (y : Sp K ⟶ PSpace o m),
     ∃ v : Fin (m + 1) → K, SecCoord (GlobalTheory.ProjSpace.O1 o m) (GlobalTheory.ProjSpace.coord o m) y v :=

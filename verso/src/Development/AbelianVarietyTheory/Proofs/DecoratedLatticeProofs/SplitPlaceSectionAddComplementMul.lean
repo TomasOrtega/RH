@@ -11,13 +11,13 @@ namespace GlobalTheory.SplitLinAt
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[← p.sec_pr, p.pr_sec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_self (p : SplitPt D k) (a : k) : p.e * p.sec a = p.sec a := by
   rw [← p.sec_pr, p.pr_sec]
 
 /- English proof (translation)
-Establish `h` using `p.sec_pr (p.sec a * p.sec b)`. Rewrite `h` using `[map_mul, p.pr_sec, p.pr_sec]`. Rewrite using `[h, ← mul_assoc, sec_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_mul (p : SplitPt D k) (a b : k) : p.sec (a * b) = p.sec a * p.sec b := by
   have h := p.sec_pr (p.sec a * p.sec b)
@@ -25,14 +25,14 @@ theorem sec_mul (p : SplitPt D k) (a b : k) : p.sec (a * b) = p.sec a * p.sec b 
   rw [h, ← mul_assoc, sec_self]
 
 /- English proof (translation)
-Establish `h` using `p.sec_pr 1`. Rewrite `h` using `[map_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sec_one (p : SplitPt D k) : p.sec 1 = p.e := by
   have h := p.sec_pr 1
   rwa [map_one, mul_one] at h
 
 /- English proof (translation)
-Establish `he : p.e * p.e = p.e` using `p.split.1`. Establish `ha` using `sec_self p a`. Establish `hb` using `sec_self p b`. Rewrite using `[sec_mul]`. Take the linear combination `(-1 : AE D) * ha + (-1 : AE D) * hb + he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem splitPlaceSection_add_complement_mul (p : SplitPt D k) (a b : k) :
     (p.sec a + (1 - p.e)) * (p.sec b + (1 - p.e)) = p.sec (a * b) + (1 - p.e) := by

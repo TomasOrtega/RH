@@ -13,7 +13,7 @@ open scoped NNReal
 namespace GlobalTheory.AlmostEt
 
 /- English proof (translation)
-Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨t, ht⟩` from `h`. Conclude with `⟨t, by simpa [Algebra.smul_def] using ht⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_of_smul_mk_eq_zero {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
     (s : integralClosure (O0 p) Ω) (ω : Ω)
@@ -24,23 +24,23 @@ theorem exists_eq_of_smul_mk_eq_zero {p : ℕ} [Fact p.Prime] {Ω : Type} [Field
   exact ⟨t, by simpa [Algebra.smul_def] using ht⟩
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hp2 hclo T n hn x y zi qi hz hq hrel`. Establish `hpΩ : (p : Ω) ≠ 0` using `by haveI := GlobalTheory.K5.Basic.charZero_of_isClo hclo`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Establish `hrel' : ∑ i, (![x * zi, y * qi] : Fin 2 → integralClosure (O0 p) Ω) i • KaehlerDifferential.D (O0 p) (integralClosure (O0 p) Ω) ((![zS T n, qS T n] : Fin 2 → integralClosure (O0 p) Ω) i) = 0`. Simplify `hrel` using `[Fin.sum_univ_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩` from `GlobalTheory.T.kaehler_relation_of_derivation_on_large_subalgebra (O0 p) (integralClosure (O0 p) Ω) 2 _ _ hrel'`. Take `⟨C, tr, m, a, b, hFC, htr⟩` from `GlobalTheory.T.exists_almostDualTraceData_towerUnionAdjoin p Ω hp2 hclo T F`. Establish `hzT : zS T n ∈ towerAlg T` using `Algebra.subset_adjoin (Or.inl ⟨n, rfl⟩)`. Establish `hqT : qS T n ∈ towerAlg T` using `Algebra.subset_adjoin (Or.inr ⟨n, rfl⟩)`. Establish `hyC : ∀ i, (![zS T n, qS T n] : Fin 2 → integralClosure (O0 p) Ω) i ∈ C`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `fin_cases i`. Conclude with `htr.le hzT`. Conclude with `htr.le hqT`. Establish `hzΩ : T.ζ n * (zi : Ω) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hz` as an intermediate fact. Simplify `this` using `[zS]`. Establish `hqΩ : T.qq n * (qi : Ω) = 1`. Use `congrArg Subtype.val hq` as an intermediate fact. Simplify `this` using `[qS]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Prove the components needed by the constructor for the conclusion. Take `⟨Dz, hDz, hDzv⟩` from `GlobalTheory.T.exists_towerUnion_zetaDerivation_modIntegralClosure p Ω hclo T`. Take `⟨D', hD', hD'v⟩` from `GlobalTheory.T.exists_derivationOn_extension_cube_defect (O0 p) (integralClosure (O0 p) Ω) (Frac p Ω) (towerAlg T) C tr m a b _ htr Dz hDz`. Establish `h` using `hF C hFC hyC (Frac p Ω) D' hD'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h`. Rewrite `h` using `[hD'v _ hzT, hD'v _ hqT, (hDzv (k + 1)).1, (hDzv (k + 1)).2, smul_zero, smul_zero, add_zero, smul_smul]`. Take `⟨t, ht⟩` from `exists_eq_of_smul_mk_eq_zero _ _ h`. Use `⟨t, Subtype.ext ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at ht ⊢`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-((x : Ω) * (p : Ω) ^ (k + 1))) * hzΩ`. Take `⟨Dq, hDq, hDqv⟩` from `GlobalTheory.T.exists_towerUnion_qDerivation_modIntegralClosure p Ω hclo T`. Take `⟨D', hD', hD'v⟩` from `GlobalTheory.T.exists_derivationOn_extension_cube_defect (O0 p) (integralClosure (O0 p) Ω) (Frac p Ω) (towerAlg T) C tr m a b _ htr Dq hDq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hF C hFC hyC (Frac p Ω) D' hD'`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h`. Rewrite `h` using `[hD'v _ hzT, hD'v _ hqT, (hDqv (k + 1)).1, (hDqv (k + 1)).2, smul_zero, smul_zero, zero_add, smul_smul]`. Take `⟨t, ht⟩` from `exists_eq_of_smul_mk_eq_zero _ _ h`. Use `⟨t, Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Move the coercions through the operations in `at ht ⊢`. Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(y : Ω)) * hqΩ`.
+A detailed English derivation is pending.
 -/
 theorem dlog_indep_pow_three : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω],
     p ≠ 2 → IsClo p Ω → ∀ (T : Tower p Ω) (n : ℕ), 1 ≤ n →

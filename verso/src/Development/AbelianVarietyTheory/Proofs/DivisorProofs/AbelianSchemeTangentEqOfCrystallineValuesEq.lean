@@ -24,13 +24,13 @@ open GlobalTheory.CechDR
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Introduce `ω`. Take `⟨-, hinj, -⟩` from `(hH R A g hab hdim).2.2.2.2.1`. Use `haveI := hab.smooth`. Use `haveI := hab.proper`. Establish `hb` using `(cechDeRham_comparison_bijective_cup_smooth hP R A.left (A.hom ≫ 𝟙 (Sp R)) inferInstance inferInstance inferInstance).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hb.2 (clForm _ ω)`. Establish `hmem : clForm (A.hom ≫ 𝟙 (Sp R)) ω ∈ CechHodgeFiltration (A.hom ≫ 𝟙 (Sp R))`. Rewrite using `[cechHodgeFiltration_eq_range]`. Conclude with `⟨ω, rfl⟩`. Establish `h0 : toHO1 _ (cmp1 (A.hom ≫ 𝟙 (Sp R)) c) = 0` using `by rw [hc]; exact hmem`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[structureSheaf_comparison_comm]`. Establish `h1 : toH1O _ c = 0` using `GlobalTheory.CechDR.cmpO_injective R A.left _ (h0.trans (map_zero _).symm)`. Establish `h2 : c ∈ F1 (A.hom ≫ 𝟙 (Sp R))` using `h1`. Rewrite `h2` using `[hodgeFiltration_eq_range]`. Take `⟨f, rfl⟩` from `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨f, hinj ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `clForm (A.hom ≫ 𝟙 (Sp R)) (cmpForm _ f) = clForm (A.hom ≫ 𝟙 (Sp R)) ω`. Rewrite using `[← comparison_formClass, hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmpForm_surjective (hP : GlobalTheory.Published.CrystallineSmoothLift) (hH : GlobalTheory.Published.AbelianHodgeDeRham)
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hab : IsAbelianScheme A)
@@ -61,9 +61,9 @@ open ReciprocityTheory.ChartRestriction.G MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Use `haveI : Smooth A.hom := hdim.smooth`. Use `GlobalTheory.LieProj.finite_projective_of_localBasis (M := GlobalTheory.Serre.Lie a) g fun p ↦ ?_` and prove the remaining obligations. Take `⟨r, hr, ⟨C⟩, v, hv⟩` from `GlobalTheory.LieProj.exists_chart_lieBasis A g hdim p`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Take `⟨a', -⟩` from `GlobalTheory.OActPull.exists_oAct_of_isGrpPullback a (isGrpPullback_pullback A (ReciprocityTheory.ChartRestriction.G.Chart.fB R (Localization.Away r)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `GlobalTheory.LieAway.lie_away A a r a' ⟨C⟩`. Conclude with `⟨(GlobalTheory.Serre.Lie.basis a' hv).map e.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lie_finite_projective (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (g : ℕ)
     (hdim : SmoothOfRelativeDimension g A.hom) (a : OAct ℤ A) :
@@ -89,7 +89,7 @@ def valMap (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (a : OAct ℤ A) :
     rw [LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul, ← tanVal_epsScale, GlobalTheory.Serre.Lie.hom_smul]
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `f hf`. Conclude with `GlobalTheory.TanVanish.tanVal_eq_zero_of_cmpForm_eq_zero R A u.hom f hf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem valMap_mem (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (a : OAct ℤ A) (u : GlobalTheory.Serre.Lie a) :
     valMap A a u ∈ (LinearMap.ker (cmpForm (A.hom ≫ 𝟙 (Sp R)))).dualAnnihilator := by
@@ -98,9 +98,9 @@ theorem valMap_mem (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (a : OAct ℤ A
   exact GlobalTheory.TanVanish.tanVal_eq_zero_of_cmpForm_eq_zero R A u.hom f hf
 
 /- English proof (translation)
-Establish `hex` using `GlobalTheory.LieDual.exists_tangent_of_functional hP hH R A g hab hdim`. Establish `key : ∀ φ : Module.Dual R (Form (A.hom ≫ 𝟙 (Sp R))), (∀ f, cmpForm (A.hom ≫ 𝟙 (Sp R)) f = 0 → φ f = 0) → ∃ u : GlobalTheory.Serre.Lie a, valMap A a u = φ`. Introduce `φ hφ`. Take `⟨u, hu, hu'⟩` from `hex φ hφ`. Conclude with `⟨GlobalTheory.Serre.Lie.mk a u hu, LinearMap.ext hu'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `ψ`. Establish `hψ : ∀ f, cmpForm (A.hom ≫ 𝟙 (Sp R)) f = 0 → ψ.1 f = 0` using `fun f hf ↦ (Submodule.mem_dualAnnihilator ψ.1).1 ψ.2 f (LinearMap.mem_ker.2 hf)`. Conclude with `(key ψ.1 hψ).imp fun u hu ↦ Subtype.ext hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valMap_surjective (hP : GlobalTheory.Published.CrystallineSmoothLift) (hH : GlobalTheory.Published.AbelianHodgeDeRham)
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hab : IsAbelianScheme A)
@@ -118,13 +118,9 @@ theorem valMap_surjective (hP : GlobalTheory.Published.CrystallineSmoothLift) (h
   exact (key ψ.1 hψ).imp fun u hu ↦ Subtype.ext hu
 
 /- English proof (translation)
-Introduce `hP hH R _ A _ g hab hdim v w hv hw hvw`. Use `haveI : IsCommMonObj A := hab.comm`. Establish `hT` using `lie_finite_projective A g hdim (GlobalTheory.Serre.intAct A)`. Use `haveI := hT.1`. Use `haveI := hT.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : ClosedForm (A.hom ≫ 𝟙 (Sp R)) = ⊤` using `(hH R A g hab hdim).2.2.2.2.1.1`. Establish `hG` using `(hH R A g hab hdim).2.2.1`. Use `haveI : Module.Finite R (GlobForm (A.hom ≫ 𝟙 (Sp R))) := hG.1`. Use `haveI : Module.Projective R (GlobForm (A.hom ≫ 𝟙 (Sp R))) := hG.2.1`. Establish `e1 : (Form (A.hom ≫ 𝟙 (Sp R)) ⧸ LinearMap.ker (cmpForm (A.hom ≫ 𝟙 (Sp R)))) ≃ₗ[R] GlobForm (A.hom ≫ 𝟙 (Sp R))` using `((cmpForm (A.hom ≫ 𝟙 (Sp R))).quotKerEquivOfSurjective (cmpForm_surjective hP hH A g hab hdim)).trans (LinearEquiv.ofTop _ hcl)`.
-
-Establish `eN : (LinearMap.ker (cmpForm (A.hom ≫ 𝟙 (Sp R)))).dualAnnihilator ≃ₗ[R] Module.Dual R (GlobForm (A.hom ≫ 𝟙 (Sp R)))` using `(Submodule.dualQuotEquivDualAnnihilator _).symm.trans e1.symm.dualMap`. Use `haveI : Module.Finite R (LinearMap.ker (cmpForm (A.hom ≫ 𝟙 (Sp R)))).dualAnnihilator := Module.Finite.equiv eN.symm`. Use `haveI : Module.Projective R (LinearMap.ker (cmpForm (A.hom ≫ 𝟙 (Sp R)))).dualAnnihilator := Module.Projective.of_equiv eN.symm`. Establish `hbij` using `Module.bijective_of_surjective_of_rankAtStalk_eq (valMap_surjective hP hH A g hab hdim (GlobalTheory.Serre.intAct A)) fun m _ ↦ by`. Rewrite using `[hT.2.2, congrFun (Module.rankAtStalk_eq_of_equiv eN) _, GlobalTheory.TopExt.rankAtStalk_dual]`.
-
-Conclude with `(hG.2.2 _).symm`. Establish `h` using `hbij.1 (a₁ := GlobalTheory.Serre.Lie.mk (GlobalTheory.Serre.intAct A) v hv) (a₂ := GlobalTheory.Serre.Lie.mk (GlobalTheory.Serre.intAct A) w hw) (Subtype.ext (LinearMap.ext hvw))`. Conclude with `congrArg GlobalTheory.Serre.Lie.hom h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tangent_eq_of_tanVal_eq : GlobalTheory.Published.CrystallineSmoothLift → GlobalTheory.Published.AbelianHodgeDeRham →
     ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →

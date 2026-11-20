@@ -16,7 +16,7 @@ def NDense : Prop :=
       ∃ ν ∈ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I, ν.1 ∈ X.NinfU u ∧ ν.2 ∈ X.NfinU u ∧ ν.2 ∈ U
 
 /- English proof (translation)
-Introduce `D X u hK hKL n hn c`. Establish `hcl` using `Formalism.L2.SG.PoincareInHH.Cut.level_subgroup_isClopen X hK hKL`. Establish `hc : Continuous fun m : X.B.I.Gf => c⁻¹ * (m⁻¹ * n) * c` using `(continuous_const.mul (continuous_inv.mul continuous_const)).mul continuous_const`. Take `⟨ν, hνr, hν1, hν2, hνU⟩` from `hD D X u n hn {m | c⁻¹ * (m⁻¹ * n) * c ∈ X.K2} (hcl.2.preimage hc) (by simpa using hK.1)`. Conclude with `⟨ν, hνr, hν1, hν2, hνU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nStrongApproxC_of (hD : NDense) : NStrongApproxC := by
   intro D X u hK hKL n hn c

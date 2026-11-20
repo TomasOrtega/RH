@@ -7,7 +7,7 @@ open MeasureTheory
 namespace Formalism.L2.SG.NGCut.SplitEmbedding
 
 /- English proof (translation)
-The claim follows from `IsAddFundamentalDomain.mk' hF.nullMeasurableSet fun v => h v`.
+A detailed English derivation is pending.
 -/
 private theorem isAddFundamentalDomain_of_existsUnique {V : Type} [AddCommGroup V]
     [MeasurableSpace V] (μ : Measure V) (L : AddSubgroup V) (F : Set V) (hF : MeasurableSet F)
@@ -15,11 +15,11 @@ private theorem isAddFundamentalDomain_of_existsUnique {V : Type} [AddCommGroup 
   IsAddFundamentalDomain.mk' hF.nullMeasurableSet fun v => h v
 
 /- English proof (translation)
-Establish `key : ∀ q : L ⧸ Λ.addSubgroupOf L, (-((σ q : L) : V) + m ∈ Λ ↔ q = QuotientAddGroup.mk ⟨m, hm⟩)`. Introduce `q`. Establish `e : q = QuotientAddGroup.mk ⟨m, hm⟩ ↔ (QuotientAddGroup.mk (σ q) : L ⧸ Λ.addSubgroupOf L) = QuotientAddGroup.mk ⟨m, hm⟩`. Rewrite using `[hσ q]`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `rw [QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Consider the case `rw [QuotientAddGroup.eq', AddSubgroup.mem_addSubgroupOf]`. Use `first`. Consider the case `exact Iff.rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `simp`. Conclude with `⟨QuotientAddGroup.mk ⟨m, hm⟩, (key _).2 rfl, fun q hq => (key q).1 hq⟩`.
+A detailed English derivation is pending.
 -/
 private theorem existsUnique_neg_section_add_mem {V : Type} [AddCommGroup V]
     (L Λ : AddSubgroup V) (σ : L ⧸ Λ.addSubgroupOf L → L)
@@ -41,17 +41,15 @@ private theorem existsUnique_neg_section_add_mem {V : Type} [AddCommGroup V]
   exact ⟨QuotientAddGroup.mk ⟨m, hm⟩, (key _).2 rfl, fun q hq => (key q).1 hq⟩
 
 /- English proof (translation)
-Take `⟨l, hl, hlu⟩` from `hdL v`. Take `⟨i, hi, hiu⟩` from `hρ (-(l : V)) (L.neg_mem l.2)`. Establish `ha : (l : V) - ρ i ∈ Λ`. Establish `e : (l : V) - ρ i = -(ρ i + -(l : V))` using `by abel`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Λ.neg_mem hi`. Use `⟨⟨(l : V) - ρ i, ha⟩, ?_, ?_⟩` and prove the remaining obligations. Use `Set.mem_iUnion.2 ⟨i, ?_⟩ show ρ i + (((l : V) - ρ i) + v) ∈ FL` and prove the remaining obligations. Rewrite using `[show ρ i + (((l : V) - ρ i) + v) = (l : V) + v by abel]`. Conclude with `hl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b hb`. Take `⟨j, hj⟩` from `Set.mem_iUnion.1 hb`. Establish `hj' : ((⟨ρ j + (b : V), L.add_mem (hρL j) (hle b.2)⟩ : L) : V) + v ∈ FL` using `by show ρ j + (b : V) + v ∈ FL`. Rewrite using `[add_assoc]`. Conclude with `hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ρ j + (b : V) = l` using `congrArg Subtype.val (hlu _ hj')`. Establish `hj2 : ρ j + -(l : V) ∈ Λ`. Establish `e : ρ j + -(l : V) = -(b : V)` using `by rw [← hy]; abel`. Rewrite using `[e]`. Conclude with `Λ.neg_mem b.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hji : j = i` using `hiu j hj2`. Rewrite `hy` using `[hji]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (b : V) = (l : V) - ρ i`. Rewrite using `[← hy]`.
-
-Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem existsUnique_mem_iUnion_translate_preimage {V : Type} [AddCommGroup V]
     (L Λ : AddSubgroup V) (hle : Λ ≤ L) (FL : Set V) (hdL : ∀ v, ∃! l : L, (l : V) + v ∈ FL)
@@ -87,9 +85,9 @@ private theorem existsUnique_mem_iUnion_translate_preimage {V : Type} [AddCommGr
     abel
 
 /- English proof (translation)
-Introduce `i j hij`. Use `Set.disjoint_left.2 fun w hi hj => hij ?_` and prove the remaining obligations. Establish `e : (⟨ρ i, hρL i⟩ : L) = ⟨ρ j, hρL j⟩` using `(hdL w).unique (show ((⟨ρ i, hρL i⟩ : L) : V) + w ∈ FL from hi) (show ((⟨ρ j, hρL j⟩ : L) : V) + w ∈ FL from hj)`. Establish `e' : ρ i = ρ j` using `congrArg Subtype.val e`. Take `⟨q, -, hq⟩` from `hρ (-ρ i) (L.neg_mem (hρL i))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : i = q` using `hq i (by simp)`. Establish `h2 : j = q` using `hq j (by show ρ j + -ρ i ∈ Λ; rw [← e']; simp)`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pairwise_disjoint_translate_preimage {V : Type} [AddCommGroup V]
     (L Λ : AddSubgroup V) (FL : Set V) (hdL : ∀ v, ∃! l : L, (l : V) + v ∈ FL)
@@ -107,13 +105,11 @@ private theorem pairwise_disjoint_translate_preimage {V : Type} [AddCommGroup V]
   rw [h1, h2]
 
 /- English proof (translation)
-Establish `hcard : Nat.card (L ⧸ Λ.addSubgroupOf L) = k` using `hk`. Use `haveI : Finite (L ⧸ Λ.addSubgroupOf L) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hk0)`. Use `haveI : Fintype (L ⧸ Λ.addSubgroupOf L) := Fintype.ofFinite _`. Use `haveI : Countable Λ := Function.Injective.countable (AddSubgroup.inclusion_injective hle)`. Use `haveI : MeasurableVAdd Λ V := by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `infer_instance`. Consider the case `exact ⟨fun c => measurable_const_add (c : V), fun v => (measurable_add_const v).comp measurable_subtype_coe⟩`. Use `haveI : VAddInvariantMeasure Λ V μ := by first`. Consider the case `infer_instance`. Consider the case `exact ⟨fun c s _ => measure_preimage_add μ (c : V) s⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (QuotientAddGroup.mk : L → L ⧸ Λ.addSubgroupOf L)` using `QuotientAddGroup.mk_surjective`. Take `⟨ρ, hρL, hρ⟩ : ∃ ρ : L ⧸ Λ.addSubgroupOf L → V, (∀ q, ρ q ∈ L) ∧ ∀ m ∈ L, ∃! q, ρ q + m ∈ Λ` from `⟨fun q => -((Function.surjInv hsurj q : L) : V), fun q => L.neg_mem (Function.surjInv hsurj q).2, fun m hm => existsUnique_neg_section_add_mem L Λ (Function.surjInv hsurj) (Function.surjInv_eq hsurj) m hm⟩`. Establish `hmeas : ∀ q, MeasurableSet ((fun w => ρ q + w) ⁻¹' FL)` using `fun q => measurable_const_add (ρ q) hFL`. Establish `hU : IsAddFundamentalDomain Λ (⋃ q, (fun w => ρ q + w) ⁻¹' FL) μ` using `isAddFundamentalDomain_of_existsUnique μ Λ _ (MeasurableSet.iUnion hmeas) (existsUnique_mem_iUnion_translate_preimage L Λ hle FL hdL ρ hρL hρ)`. Establish `hΛ : IsAddFundamentalDomain Λ FΛ μ` using `isAddFundamentalDomain_of_existsUnique μ Λ FΛ hFΛ hdΛ`.
-
-Rewrite using `[hΛ.measure_eq hU, measure_iUnion (pairwise_disjoint_translate_preimage L Λ FL hdL ρ hρL hρ) hmeas]`. Simplify using `only [measure_preimage_add]`. Rewrite using `[tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card, hcard]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fund_index {V : Type} [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd V] (μ : Measure V)
     [μ.IsAddLeftInvariant] (L Λ : AddSubgroup V) [Countable L] (hle : Λ ≤ L) (k : ℕ)

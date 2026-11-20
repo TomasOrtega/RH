@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.OneCosetEmb
 
 /- English proof (translation)
-Introduce `_ _ _ _ d _ _ hg` and use `GlobalTheory.IwaPlace.wittCoreEmbedding_preserves_supportedUnitarySubgroup d hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wittCoreEmbedding_mem_unitaryAdelicSupportedSubgroup : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (P : Pl D → Prop) (g : GA D S₀), g ∈ grpAt S₀ P → d.emb0 g ∈ grpAt S P := fun _ _ _ _ d _ _ hg => GlobalTheory.IwaPlace.wittCoreEmbedding_preserves_supportedUnitarySubgroup d hg
 

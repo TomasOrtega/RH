@@ -18,13 +18,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E 
   (J : Matrix (Fin n) (Fin n) E) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-Unfold `Kgv Kv Kloc at *`. Take `⟨hy1, hy2⟩` from `hy`. Simplify using `only [Set.mem_setOf_eq] at ha hy1 ⊢`. Establish `hm : HA.mat (Fv F v) σ J (a⁻¹ * y * a) = (HA.mat (Fv F v) σ J a)⁻¹ * HA.mat (Fv F v) σ J y * HA.mat (Fv F v) σ J a` using `rfl`. Rewrite using `[hm]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ ha) hy1) ha, fun y0 hy0 => ?_⟩` and prove the remaining obligations. Use `set A := HA.mat (Fv F v) σ J a`. Use `set Y := HA.mat (Fv F v) σ J y`. Establish `ha' : ∀ x, x ∈ latLoc v Λ ↔ (A : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) *ᵥ x ∈ latLoc v Λ` using `ha`. Take `⟨z1, hz1, hz1e⟩` from `hy2 ((A : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) *ᵥ y0) ((ha' y0).mp hy0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((A⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) *ᵥ z1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha', Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `hz1`. Establish `key : ((A⁻¹ * Y * A : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) - 1 = ((A⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) * ((Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) - 1) * (A : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))`. Rewrite using `[Units.val_mul, Units.val_mul, mul_sub, sub_mul, mul_one, Units.inv_mul]`.
-
-Rewrite using `[key, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hz1e, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kgv_conj (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (a y : HA (Fv F v) σ J) (ha : a ∈ Kv σ J Λ v)
     (hy : y ∈ Kgv σ J Λ g v) : a⁻¹ * y * a ∈ Kgv σ J Λ g v := by
@@ -51,7 +49,7 @@ theorem kgv_conj (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (a y : HA (Fv F v) �
 end Gen
 
 /- English proof (translation)
-Rewrite using `[IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one, ← map_natCast (algebraMap (𝓞 F) (v.adicCompletionIntegers F)) m, IsDedekindDomain.HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletio …`. Conclude with `le_antisymm (IsDedekindDomain.HeightOneSpectrum.intValuation_le_one v _) (not_lt.1 fun h => hm ((IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_mem v _).1 h))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_of_not_mem {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (m : ℕ)
     (hm : (m : 𝓞 F) ∉ v.asIdeal) : IsUnit ((m : v.adicCompletionIntegers F)) := by
@@ -66,13 +64,13 @@ theorem isUnit_natCast_of_not_mem {F : Type} [Field F] [NumberField F] (v : Heig
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hg` using `X.g_eq`. Establish `hp0` using `D.host.g_prime 0`. Establish `hp1` using `D.host.g_prime 1`. Establish `hne` using `D.host.g_ne`. Unfold `Formalism.L2.SG.TypedSets.gOf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h0`. Establish `h1 : ((D.host.g 1 : ℕ) : 𝓞 X.B.I.F) ∉ p.1.asIdeal`. Introduce `h1`. Establish `hcop : IsCoprime ((D.host.g 0 : ℕ) : 𝓞 X.B.I.F) ((D.host.g 1 : ℕ) : 𝓞 X.B.I.F)`. Establish `h` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp0 hp1).2 hne)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h.map (Int.castRingHom (𝓞 X.B.I.F))`. Take `⟨a, b, hab⟩` from `hcop`. Establish `h1mem : (1 : 𝓞 X.B.I.F) ∈ p.1.asIdeal`. Rewrite using `[← hab]`. Conclude with `p.1.asIdeal.add_mem (p.1.asIdeal.mul_mem_left a h0) (p.1.asIdeal.mul_mem_left b h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `p.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1mem)`. Use `⟨(isUnit_natCast_of_not_mem p.1 _ h1).unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, hg, Nat.cast_mul]`. Use `⟨(isUnit_natCast_of_not_mem p.1 _ h0).unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, hg, Nat.cast_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_eq_gOf_mul_unit (X : HidaSetting D) (p : TypX X) :
     ∃ w : (p.1.adicCompletionIntegers X.B.I.F)ˣ,
@@ -100,9 +98,9 @@ theorem g_eq_gOf_mul_unit (X : HidaSetting D) (p : TypX X) :
     rw [IsUnit.unit_spec, hg, Nat.cast_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `g_eq_gOf_mul_unit X p`. Simplify using `only [Formalism.L2.SG.TypedSets.Kgv, Set.mem_setOf_eq] at hy ⊢`. Take `⟨hKv, h⟩` from `hy`. Use `⟨hKv, fun y' hy' => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `h y' hy'`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨((w⁻¹ : (p.1.adicCompletionIntegers X.B.I.F)ˣ) : p.1.adicCompletionIntegers X.B.I.F) • z, Submodule.smul_mem _ _ hz, ?_⟩` and prove the remaining obligations. Rewrite using `[e, smul_smul, hw, mul_assoc, Units.mul_inv, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kgv_of_gOf (X : HidaSetting D) (p : TypX X) (y : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J)
     (hy : y ∈ Kgv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) (gOf p) p.1) :
@@ -117,17 +115,15 @@ theorem kgv_of_gOf (X : HidaSetting D) (p : TypX X) (y : HA (Fv X.B.I.F p.1) X.B
   rw [e, smul_smul, hw, mul_assoc, Units.mul_inv, mul_one]
 
 /- English proof (translation)
-Take `⟨h1, hmul, hinv, -, -⟩` from `hK`. Establish `fmul : ∀ a b : X.B.I.Gf, finHA X hb (a * b) = finHA X hb a * finHA X hb b`. Introduce `a b`. Unfold `finHA`. Rewrite using `[← Prod.snd_mul, ← map_mul, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `finv : ∀ a : X.B.I.Gf, finHA X hb a⁻¹ = (finHA X hb a)⁻¹`. Introduce `a`. Unfold `finHA`. Rewrite using `[← Prod.snd_inv, ← map_inv, ← map_inv, Prod.inv_mk, inv_one]`. Establish `fone : finHA X hb 1 = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `finHA`. Use `show ((splitA X.B.I.cm.sig X.B.I.J) ((toHA X.B.I hb) 1)).2 = 1`. Rewrite using `[map_one, map_one, Prod.snd_one]`. Set `S : Subgroup (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))` to `{ carrier := Subtype.val ⁻¹' K2u X hb u mul_mem' := by`. Introduce and unpack `x y ⟨_, ⟨k1, hk1, rfl⟩, hx⟩ ⟨_, ⟨k2, hk2, rfl⟩, hy⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨finHA X hb (k1 * k2), ⟨k1 * k2, hmul k1 hk1 k2 hk2, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, ← hx, ← hy, fmul]`. Use `group`. Use the proof step `one_mem' := ⟨finHA X hb 1, ⟨1, h1, rfl⟩, by simp [fone]⟩`. Use the proof step `inv_mem' := by`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Introduce and unpack `x ⟨_, ⟨k, hk, rfl⟩, hx⟩`. Use `⟨finHA X hb k⁻¹, ⟨k⁻¹, hinv k hk, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_inv, ← hx, finv]`. Use `group }`. Unfold `unitaryLevelClosureSubgroup`.
-
-Conclude with `congrArg (fun H : Subgroup (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) => (H : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))) (Subgroup.closure_eq S)`.
+A detailed English derivation is pending.
 -/
 theorem coe_K2Hg (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (u : D.what₂.Word) :
     (unitaryLevelClosureSubgroup X hb u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) = Subtype.val ⁻¹' K2u X hb u := by
@@ -162,13 +158,13 @@ theorem coe_K2Hg (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgr
     (H : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))) (Subgroup.closure_eq S)
 
 /- English proof (translation)
-Establish `ha : finHA X hb (X.xu u) ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))` using `(PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb (X.xu u)).2 (X.xu_K u)`. Take `⟨y, hy⟩` from `PI.MassDataKppVolLemmas.Bridge_tf_surjective X.B.I hb ((finHA X hb (X.xu u))⁻¹ * z * finHA X hb (X.xu u))`. Establish `hyK : y ∈ X.B.I.Kset`. Rewrite using `[← PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb, hy]`. Conclude with `mul_mem (mul_mem (inv_mem ha) hz) ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgc` using `PI.MassDataKppVolLemmas.Cst_gc X.B.I (D.host.g 0) (D.host.g 1) (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Rewrite `hgc` using `[← X.g_eq]`. Establish `hy2 : y ∈ X.K2`. Use `PI.MassDataKppVolLemmas.LocK_mem X.B.I X.K2 hK.1 hK.2.1 X.B.g (fun x hx => (hL.1 x hx).1) Finset.univ (fun p : TypX X => PI.MassDataKppVolLemmas.chi X.B.I p.1) (fun p => PI.MassDataKppVolLemmas.Comp_chi_idem X.B.I p.1) (fun p q hpq => PI.MassDataKppVolLemmas.Comp_chi_orth X.B.I p …` and prove the remaining obligations. Introduce `p _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hkz⟩` from `hloc p`. Rewrite using `[PI.MassDataKppVolLemmas.Comp_sep X.B.I hb p.1 y k (by rw [hy]; exact hkz.symm)]`. Conclude with `PI.MassDataKppVolLemmas.LocB_K2set X.B.I _ _ _ _ _ (PI.MassDataKppVolLemmas.Comp_chi_idem X.B.I p.1) (PI.MassDataKppVolLemmas.Comp_chi_int X.B.I p.1) k hk`. Rewrite using `[mem_conjugate_level_iff]`. Use `⟨y, hy2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : finHA X hb y = (finHA X hb (X.xu u))⁻¹ * z * finHA X hb (X.xu u)` using `hy`. Rewrite using `[e]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem mem_conjugate_level_of_local (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormalized)
     (u : D.what₂.Word) (z : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)
@@ -204,13 +200,13 @@ theorem mem_conjugate_level_of_local (X : HidaSetting D) (hb : AdBridgeIso X.B.I
   group
 
 /- English proof (translation)
-Introduce `D X hb hK u hMT hL z hz hloc`. Establish `hc` using `coe_K2Hg X hb hK u`. Establish `hmem : (z : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) ∈ K2u X hb u`. Use `mem_conjugate_level_of_local X hb hK hL u z (Subgroup.mem_subgroupOf.mp hz) ?_` and prove the remaining obligations. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, hwe⟩` from `hloc p`. Establish `hw' : (w : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) ∈ K2u X hb u`. Establish `h2 : w ∈ (unitaryLevelClosureSubgroup X hb u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))` using `hw`. Rewrite `h2` using `[hc]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨k, hk, rfl⟩, hwk⟩` from `hw'`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `hv : haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F ↑p) (w : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) = haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F ↑p) (z : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `congrArg Subtype.val hwe`. Unfold `PI.MassDataKppVolLemmas.piV`. Simplify using `only [map_mul, map_inv, ← hv, ← hwk]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `group`. Establish `h3 : z ∈ (unitaryLevelClosureSubgroup X hb u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))`. Rewrite using `[hc]`. Conclude with `hmem`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_membership_local : LocH := by
   intro D X hb hK u hMT hL z hz hloc
@@ -237,23 +233,19 @@ theorem level_membership_local : LocH := by
   exact h3
 
 /- English proof (translation)
-Introduce `x hx`. Use `set y : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J := ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) with hy_def`. Establish `hyK : y ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1` using `x.2`. Establish `hyg : y ∈ Kgv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) (gOf p) p.1` using `hx`. Take `⟨h, hKf, h1, h2⟩` from `PI.MassDataKppVolLemmas.single_component_surjective X.B.I p.1 y hyK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hH : h ∈ Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)`. Apply `mem_stabT_of_comp X.B.I h` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `hv : v = p.1`. Substitute `hv` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)).2`. Rewrite using `[h2 v hv]`. Conclude with `one_mem _`. Establish `ha : finHA X hb (X.xu u) ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))` using `(PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb (X.xu u)).2 (X.xu_K u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK2u : h ∈ K2u X hb u`. Apply `mem_conjugate_level_of_local X hb hK hL u h hKf` to reduce the goal to its premises. Introduce `q`. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hap : PI.MassDataKppVolLemmas.piV X.B.I q.1 (finHA X hb (X.xu u)) ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) q.1`. Use `ha` as an intermediate fact. Rewrite `this` using `[Kf, Subgroup.mem_iInf]`. Conclude with `this q.1`. Establish `hmem : PI.MassDataKppVolLemmas.piV X.B.I q.1 ((finHA X hb (X.xu u))⁻¹ * h * finHA X hb (X.xu u)) ∈ Kgv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) X.B.g q.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_mul, map_inv, h1]`. Conclude with `kgv_of_gOf X q _ (kgv_conj X.B.I.cm.sig X.B.I.J _ q.1 (gOf q) _ _ hap hyg)`. Establish `hg0 : X.B.g ≠ 0`. Rewrite using `[X.g_eq]`. Conclude with `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk, hkc⟩` from `PI.MassDataKppVolLemmas.LocIdxLift_Kg X.B.I hb q.1 X.B.g hg0 _ hmem`. Conclude with `⟨k, (hL.1 k hk).1, hkc⟩`. Use `⟨1, hK.1, ?_⟩` and prove the remaining obligations. Establish `hq1 : q.1 ≠ p.1` using `fun e => hq (Subtype.ext e)`. Rewrite using `[finHA_one, map_one, map_mul, map_mul, map_inv, h2 q.1 hq1, mul_one, inv_mul_cancel]`.
-
-Rewrite using `[Subgroup.mem_subgroupOf]`. Use `⟨⟨h, hH⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Conclude with `hK2u`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem hKerIn_of_levelSubgroupCharacter_of_normalized (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormalized)
     (u : D.what₂.Word) (p : TypX X) : HKerIn X hb u p := by

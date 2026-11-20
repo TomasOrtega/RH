@@ -26,14 +26,14 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree (ComponentData ComponentSett
 namespace RootFieldNumerics
 
 /- English proof (translation)
-The claim follows from `RF.rootFlatOnHodge_of RF.cptEx RF.periodOf RF.smoothLine (RF.localCmp_of RF.pointEx RF.valuePhi RF.intFrames RF.fibSandwich) RF.chiEx RF.numerics hFD hG`.
+A detailed English derivation is pending.
 -/
 theorem rootFlatOnHodge (hFD : Fl.FlatDegree) (hG : Given) : Flat.RootFlatOnHodge :=
   RF.rootFlatOnHodge_of RF.cptEx RF.periodOf RF.smoothLine
     (RF.localCmp_of RF.pointEx RF.valuePhi RF.intFrames RF.fibSandwich) RF.chiEx RF.numerics hFD hG
 
 /- English proof (translation)
-Introduce `hFD hG E _ _ _ _ H D Xo l c Y _ T o II hY _ _ _ _ a τ`. Conclude with `Flat.OnHodge.tower (rootFlatOnHodge hFD hG) hY ⟨o.toTowerOrigin, o.omVB⟩ a τ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem global_model_tower_final_condition : Fl.FlatDegree → Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : RootTower (CMType H) (D.p + D.q)) (o : GoodOrigin Y T) (II : IntersectionSystem), IsGlobal Xo l c Y → o.Extra → IsFullIntersectionSystem II → 1 ≤ D.p → 1 ≤ D.q → ∀ a τ, ∃ R : Flat.RootFlat (T.M 2 a) τ, Flat.NearRecord (D.p + D.q) T.bad (hostRd E) (hostLval H) R.ht := by
   intro hFD hG E _ _ _ _ H D Xo l c Y _ T o II hY _ _ _ _ a τ

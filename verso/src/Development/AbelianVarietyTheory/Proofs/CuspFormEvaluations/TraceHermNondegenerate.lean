@@ -15,19 +15,19 @@ section Rational
 variable {V : Type} [AddCommGroup V] [Module ℚ V]
 
 /- English proof (translation)
-Set `_ : Invertible (2 : ℚ)` to `invertibleOfNonzero two_ne_zero`. Take `⟨v, hv⟩` from `LinearMap.BilinForm.exists_orthogonal_basis (LinearMap.BilinForm.isSymm_iff.mp hs)`. Set `e : Fin M ≃ Fin (finrank ℚ V)` to `finCongr hM.symm`. Set `c : Fin M → ℝ` to `fun i => Real.sqrt (B (v (e i)) (v (e i)))`. Set `F : V → Fin M → ℝ` to `fun x i => c i * (v.repr x (e i) : ℝ)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : V →ₗ[ℚ] EuclideanSpace ℝ (Fin M)` to `{ toFun := fun x => (EuclideanSpace.equiv (Fin M) ℝ).symm (F x) map_add' := fun x y => by`. Use extensionality with `i`. Simplify using `[F, mul_add]`. Use the proof step `map_smul' := fun q x => by`. Use extensionality with `i`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[F, Rat.smul_def, mul_left_comm] }`. Use `⟨φ, fun x y => ?_⟩` and prove the remaining obligations. Establish `hB : B x y = ∑ j, v.repr x j * v.repr y j * B (v j) (v j)` using `by conv_lhs => rw [← v.sum_repr x, ← v.sum_repr y]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single j]`. Expand and normalize the polynomial expressions, which then agree. Introduce `k _ hk`. Establish `h0 : B (v k) (v j) = 0` using `hv hk`. Simplify using `[h0]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hinner : inner ℝ (φ x) (φ y) = ∑ i, c i ^ 2 * ((v.repr x (e i) : ℝ) * (v.repr y (e i) : ℝ))`. Simplify using `only [φ, LinearMap.coe_mk, AddHom.coe_mk, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[F]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hinner, hB, Rat.cast_sum]`. Use `Fintype.sum_equiv e _ _ fun i => ?_` and prove the remaining obligations. Simplify using `only [c, Rat.cast_mul]`. Rewrite using `[Real.sq_sqrt (Rat.cast_nonneg.mpr (hp _))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_euclidean {M : ℕ} [FiniteDimensional ℚ V] (hM : finrank ℚ V = M)
     (B : LinearMap.BilinForm ℚ V) (hs : B.IsSymm) (hp : ∀ x, 0 ≤ B x x) :
@@ -70,35 +70,33 @@ theorem exists_euclidean {M : ℕ} [FiniteDimensional ℚ V] (hM : finrank ℚ V
   ring
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ V` using `b.finiteDimensional_of_finite`. Establish `hM : finrank ℚ V = M` using `by rw [Module.finrank_eq_card_basis b, Fintype.card_fin]`. Take `⟨φ, hφ⟩` from `exists_euclidean hM B hs hp`. Set `bd` to `B.dualBasis hn b`. Establish `hd1 : ∀ i j, B (bd i) (b j) = if j = i then 1 else 0` using `fun i j => LinearMap.BilinForm.apply_dualBasis_left hn b i j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd2 : ∀ i j, inner ℝ (φ (bd i)) (φ (b j)) = if j = i then 1 else 0`. Introduce `i j`. Rewrite using `[hφ, hd1]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hd3 : ∀ i j, inner ℝ (φ (b j)) (φ (bd i)) = if j = i then 1 else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[real_inner_comm]`. Conclude with `hd2 i j`. Establish `hli : LinearIndependent ℝ (fun i => φ (bd i))`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg i`. Establish `h` using `congrArg (fun z => inner ℝ z (φ (b i))) hg`. Simplify using `only [sum_inner, real_inner_smul_left, hd2, inner_zero_left, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Conclude with `h`. Set `b' : Basis (Fin M) ℝ (EuclideanSpace ℝ (Fin M))` to `basisOfLinearIndependentOfCardEqFinrank' _ hli (by simp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : ∀ i, b' i = φ (bd i)` using `fun i => by simp [b']`. Establish `hint : ∀ u ∈ Submodule.span ℤ (Set.range bd), ∀ j, ∃ k : ℤ, B u (b j) = k`. Introduce `u hu j`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨i, rfl⟩` from `hx`. Apply the tactic sequence `exact ⟨if j = i then 1 else 0, by rw [hd1]; split_ifs <;> simp⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨k1, h1⟩` from `hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k2, h2⟩` from `hy`. Conclude with `⟨k1 + k2, by rw [map_add, LinearMap.add_apply, h1, h2]; push_cast; ring⟩`. Consider the case `smul a x _ hx`. Take `⟨k, h⟩` from `hx`. Conclude with `⟨a * k, by rw [map_zsmul, LinearMap.smul_apply, h, zsmul_eq_mul]; push_cast; ring⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmin' : ∀ x ∈ Submodule.span ℤ (Set.range b'), x ≠ 0 → lam ≤ ‖x‖`. Introduce `x hx hx0`. Establish `hr : Set.range b' = φ.toAddMonoidHom.toIntLinearMap '' Set.range bd`. Rewrite using `[← Set.range_comp]`. Use extensionality with `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hb']`. Rewrite `hx` using `[hr, ← Submodule.map_span]`. Take `⟨u, hu, rfl⟩` from `hx`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at hx0`. Establish `h1` using `hmin u hu0 (hint u hu)`. Establish `h2 : (B u u : ℝ) = ‖φ u‖ ^ 2` using `by rw [← hφ, real_inner_self_eq_norm_sq]`. Rewrite `h1` using `[h2]`. Establish `h3 : 0 ≤ ‖φ u‖` using `norm_nonneg _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use the polynomial consequences of the given equalities and inequalities.
 
-Express the relevant statement in the definitionally equal form `lam ≤ ‖φ u‖`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨y, hyli, hyint, hynorm⟩` from `ReciprocityTheory.ChartRestriction.G.T0.transference_dual b' lam hlam hmin'`. Use `choose m hm using hyint`. Establish `hyv : ∀ i, φ (∑ j, (m i j : ℚ) • b j) = y i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use `InnerProductSpace.ext_inner_right_basis b' fun k => ?_` and prove the remaining obligations. Rewrite using `[hm, hb', map_sum, sum_inner]`. Simplify using `only [map_smul, ← Rat.cast_smul_eq_qsmul ℝ, real_inner_smul_left, hd3, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Rat.cast_intCast]`. Use `⟨fun i => ∑ j, (m i j : ℚ) • b j, fun i => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `congrArg φ hg`. Rewrite `h` using `[map_sum, map_zero]`. Simplify using `only [map_smul, hyv, ← Rat.cast_smul_eq_qsmul ℝ] at h`. Use `(Fintype.linearIndependent_iff.mp hyli) (fun i => (g i : ℝ)) h i` as an intermediate fact. Conclude with `this` after adjusting the coercions.
-
-Rewrite using `[← hφ, hyv, real_inner_self_eq_norm_sq]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hynorm i) 2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transference_rat {M : ℕ} (b : Basis (Fin M) ℚ V)
     (B : LinearMap.BilinForm ℚ V) (hs : B.IsSymm) (hp : ∀ x, 0 ≤ B x x) (hn : B.Nondegenerate)
@@ -205,9 +203,9 @@ theorem traceHerm_apply {n : ℕ} (x y : Fin n → E) :
     traceHerm n x y = Algebra.trace ℚ E (herm 1 x y) := rfl
 
 /- English proof (translation)
-Rewrite using `[traceHerm_apply]`. Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := herm 1 x x)`. Establish `h2 : ∑ σ : E →ₐ[ℚ] ℂ, σ (herm 1 x x) = ∑ σ : E →+* ℂ, σ (herm 1 x x)` using `(Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ fun σ => rfl).symm`. Rewrite `h1` using `[h2]`. Simplify using `only [TraceDualMin.embedding_herm_self] at h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_ratCast, ← eq_ratCast (algebraMap ℚ ℂ), h1, Complex.ofReal_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem traceHerm_self {n : ℕ} (x : Fin n → E) :
     (traceHerm n x x : ℝ) = ∑ σ : E →+* ℂ, ∑ k, ‖σ (x k)‖ ^ 2 := by
@@ -221,14 +219,14 @@ theorem traceHerm_self {n : ℕ} (x : Fin n → E) :
   rw [Complex.ofReal_ratCast, ← eq_ratCast (algebraMap ℚ ℂ), h1, Complex.ofReal_sum]
 
 /- English proof (translation)
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[traceHerm_apply, traceHerm_apply, DualFamily.herm_one_symm x y, TraceDualMin.trace_cc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem traceHerm_isSymm (n : ℕ) : (traceHerm (E := E) n).IsSymm := by
   refine ⟨fun x y => ?_⟩
   rw [traceHerm_apply, traceHerm_apply, DualFamily.herm_one_symm x y, TraceDualMin.trace_cc]
 
 /- English proof (translation)
-Establish `h : (0 : ℝ) ≤ (traceHerm n x x : ℝ)`. Rewrite using `[traceHerm_self]`. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceHerm_nonneg {n : ℕ} (x : Fin n → E) : 0 ≤ traceHerm n x x := by
   have h : (0 : ℝ) ≤ (traceHerm n x x : ℝ) := by
@@ -237,11 +235,11 @@ theorem traceHerm_nonneg {n : ℕ} (x : Fin n → E) : 0 ≤ traceHerm n x x := 
   exact_mod_cast h
 
 /- English proof (translation)
-Rewrite using `[traceHerm_self]`. Set `f : (E →+* ℂ) → ℝ` to `fun σ => ∑ k, ‖σ (x k)‖ ^ 2`. Establish `hne : NumberField.ComplexEmbedding.conjugate τ ≠ τ`. Introduce `h`. Establish `hr : NumberField.ComplexEmbedding.IsReal τ` using `NumberField.ComplexEmbedding.isReal_iff.mpr h`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `NumberField.InfinitePlace.not_isReal_of_mk_isComplex (NumberField.IsTotallyComplex.isComplex (NumberField.InfinitePlace.mk τ)) hr`. Establish `hf : f (NumberField.ComplexEmbedding.conjugate τ) = f τ`. Simplify using `[f, NumberField.ComplexEmbedding.conjugate_coe_eq]`. Establish `hnn : ∀ σ ∈ (Finset.univ : Finset (E →+* ℂ)), σ ∉ ({τ, NumberField.ComplexEmbedding.conjugate τ} : Finset _) → 0 ≤ f σ` using `fun σ _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ σ ∈ ({τ, NumberField.ComplexEmbedding.conjugate τ} : Finset _), f σ := by`. Rewrite using `[Finset.sum_pair hne.symm]`. Use `_ ≤ ∑ σ, f σ := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) hnn`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_le_traceHerm {n : ℕ} (x : Fin n → E) (τ : E →+* ℂ) :
     2 * ∑ k, ‖τ (x k)‖ ^ 2 ≤ (traceHerm n x x : ℝ) := by
@@ -264,11 +262,11 @@ theorem two_mul_le_traceHerm {n : ℕ} (x : Fin n → E) (τ : E →+* ℂ) :
     _ ≤ ∑ σ, f σ := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) hnn
 
 /- English proof (translation)
-Establish `hl : ∀ x : Fin n → E, (∀ y, traceHerm n x y = 0) → x = 0`. Introduce `x hx`. Establish `h0` using `traceHerm_self x`. Rewrite `h0` using `[hx x, Rat.cast_zero]`. Take `⟨σ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `k`. Establish `hs` using `(Finset.sum_eq_zero_iff_of_nonneg (fun σ _ => Finset.sum_nonneg fun k _ => sq_nonneg ‖σ (x k)‖)).mp h0.symm σ (Finset.mem_univ _)`. Establish `hk` using `(Finset.sum_eq_zero_iff_of_nonneg (fun k _ => sq_nonneg ‖σ (x k)‖)).mp hs k (Finset.mem_univ _)`. Establish `h1 : σ (x k) = 0` using `by simpa using hk`. Simplify using `using h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨hl, fun y hy => hl y fun x => by rw [(traceHerm_isSymm n).eq]; exact hy x⟩`.
+Supply the required witnesses or components.
 -/
 theorem traceHerm_nondegenerate (n : ℕ) : (traceHerm (E := E) n).Nondegenerate := by
   have hl : ∀ x : Fin n → E, (∀ y, traceHerm n x y = 0) → x = 0 := by
@@ -287,17 +285,17 @@ theorem traceHerm_nondegenerate (n : ℕ) : (traceHerm (E := E) n).Nondegenerate
 
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `key : ∀ (a : E) (v : Fin n → E), v ∈ Λ → a • v ∈ span ℚ (Λ : Set (Fin n → E))`. Introduce `a v hv`. Take `⟨m, s, hm, hs⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic a)).exists_nsmul_eq (𝓞 E)`. Establish `hinv : ((m : ℚ)⁻¹) • (m • a) = a`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hm), one_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : a = ((m : ℚ)⁻¹) • (algebraMap (𝓞 E) E s)`. Rewrite using `[← hs, hinv]`. Establish `hsv : (algebraMap (𝓞 E) E s) • v = s • v` using `algebraMap_smul E s v`. Rewrite using `[ha, smul_assoc, hsv]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Λ.smul_mem s hv))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `closed : ∀ (a : E) (x : Fin n → E), x ∈ span ℚ (Λ : Set (Fin n → E)) → a • x ∈ span ℚ (Λ : Set (Fin n → E))`. Introduce `a x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem v hv => exact key a v hv`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul q x _ hx`. Rewrite using `[smul_comm]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.smul_mem _ q hx`. Rewrite using `[eq_top_iff]`. Introduce and unpack `w -`. Establish `hw : w ∈ span E (Λ : Set (Fin n → E))` using `h ▸ Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem v hv => exact Submodule.subset_span hv`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul a x _ hx => exact closed a x hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_rat_eq_top {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
     (h : span E (Λ : Set (Fin n → E)) = ⊤) : span ℚ (Λ : Set (Fin n → E)) = ⊤ := by
@@ -335,24 +333,24 @@ theorem span_rat_eq_top {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
   | smul a x _ hx => exact closed a x hx
 
 /- English proof (translation)
-Rewrite using `[fdeg, NumberField.IsTotallyComplex.finrank]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_eq : finrank ℚ E = 2 * fdeg E := by
   rw [fdeg, NumberField.IsTotallyComplex.finrank]
   omega
 
 /- English proof (translation)
-Establish `hq` using `span_rat_eq_top Λ h`. Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.mpr hfg`. Establish `: Module.Finite ℤ Λ` using `Module.Finite.trans (𝓞 E) Λ`. Set `bz` to `Module.finBasis ℤ Λ`. Set `u : Fin (finrank ℤ Λ) → Fin n → E` to `fun i => (bz i : Fin n → E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hspanZ : (Submodule.span ℤ (Set.range u) : Set (Fin n → E)) = Λ`. Establish `h1 : Submodule.span ℤ (Set.range u) = (⊤ : Submodule ℤ Λ).map (Λ.subtype.restrictScalars ℤ)`. Rewrite using `[← bz.span_eq, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h1, Submodule.map_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hliZ : LinearIndependent ℤ u` using `bz.linearIndependent.map' (Λ.subtype.restrictScalars ℤ) (LinearMap.ker_eq_bot.mpr Subtype.val_injective)`. Establish `hliQ : LinearIndependent ℚ u` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp hliZ`. Establish `hspQ : ⊤ ≤ Submodule.span ℚ (Set.range u)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hq, Submodule.span_le]`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span ℤ (Set.range u)`. Rewrite using `[← SetLike.mem_coe, hspanZ]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Submodule.span_le_restrictScalars ℤ ℚ _ hx'`. Set `bq : Basis (Fin (finrank ℤ Λ)) ℚ (Fin n → E)` to `Basis.mk hliQ hspQ`. Establish `hcard : finrank ℤ Λ = 2 * fdeg E * n`. Establish `h1` using `Module.finrank_eq_card_basis bq`. Rewrite `h1` using `[Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, Module.finrank_pi_fintype]`. Simplify using `[finrank_eq]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨bq.reindex (finCongr hcard), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Basis.range_reindex, Basis.coe_mk, ← SetLike.mem_coe, hspanZ, SetLike.mem_coe]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ.FG)
     (h : span E (Λ : Set (Fin n → E)) = ⊤) :
@@ -400,25 +398,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 open ShortVectors in
 
 /- English proof (translation)
-Establish `hspan` using `DualFamily.span_eq_top Λ hfg hdual`. Take `⟨b, hb⟩` from `exists_basis Λ hfg hspan`. Establish `hfin : finrank ℚ E = 2 * fdeg E` using `finrank_eq`. Establish `hf : 0 < fdeg E`. Use `Module.finrank_pos (R := ℚ) (M := E)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hrd : 0 < rdE E`. Unfold `rdE dE`. Conclude with `Real.rpow_pos_of_pos (abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero E))) _`. Establish `hF0 : (0 : ℝ) < fdeg E` using `by exact_mod_cast hf`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set lam : ℝ := Real.sqrt (2 * fdeg E) / rdE E with hlam_def`. Establish `hlam : 0 < lam` using `div_pos (Real.sqrt_pos.mpr (by positivity)) hrd`. Establish `hl2 : lam ^ 2 = 2 * fdeg E / rdE E ^ 2`. Rewrite using `[hlam_def, div_pow, Real.sq_sqrt (by positivity)]`. Establish `hmin : ∀ u, u ≠ 0 → (∀ j, ∃ k : ℤ, traceHerm n u (b j) = k) → lam ^ 2 ≤ (traceHerm n u u : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu hj`. Establish `htr : ∀ y ∈ Λ, ∃ k : ℤ, Algebra.trace ℚ E (herm 1 u y) = k`. Introduce `y hy`. Establish `hy'` using `(hb y).mpr hy`. Use `clear hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Simplify using `only [← traceHerm_apply]`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Conclude with `hj j`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨k1, h1⟩` from `hx`. Take `⟨k2, h2⟩` from `hz`. Conclude with `⟨k1 + k2, by rw [map_add, h1, h2]; push_cast; ring⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Consider the case `smul a x _ hx`. Take `⟨k, h⟩` from `hx`. Conclude with `⟨a * k, by rw [map_zsmul, h, zsmul_eq_mul]; push_cast; ring⟩`. Establish `h1` using `trace_dual_min Λ hint hdual u hu htr`. Rewrite using `[traceHerm_self, hl2]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1`. Take `⟨v, hvΛ, hvli, hvB⟩` from `transference_rat b (traceHerm n) (traceHerm_isSymm n) traceHerm_nonneg (traceHerm_nondegenerate n) lam hlam hmin`. Use `⟨v, fun i => (hb _).mp (hvΛ i), hvli, ?_, fun i τ => ?_⟩` and prove the remaining obligations. Conclude with `hvli.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin, Module.finrank_eq_card_basis b, Fintype.card_fin])`. Establish `h2` using `two_mul_le_traceHerm (v i) τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hvB i`. Establish `hF3 : ((fdeg E : ℝ) ^ ((3 : ℝ) / 2)) ^ 2 = (fdeg E : ℝ) ^ 3`. Rewrite using `[← Real.rpow_natCast ((fdeg E : ℝ) ^ ((3 : ℝ) / 2)) 2, ← Real.rpow_mul hF0.le, ← Real.rpow_natCast (fdeg E : ℝ) 3]`. Evaluate the numerical expressions. Establish `key : (((2 * fdeg E * n : ℕ) : ℝ) ^ 2 / lam) ^ 2 = 2 * (2 * (fdeg E : ℝ) ^ ((3 : ℝ) / 2) * n ^ 2 * rdE E) ^ 2`.
-
-Rewrite using `[div_pow, hl2, mul_pow, mul_pow, mul_pow, hF3]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_short_vectors {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ.FG)
     (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y)) (hdual : ∀ x, (∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y)) → x ∈ Λ) :

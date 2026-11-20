@@ -43,7 +43,7 @@ def bind (τ : ι → Ex κ) : Ex ι → Ex κ
   | mul a b => mul (a.bind τ) (b.bind τ)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [pow, ev]`. Consider the case `succ k ih => simp [pow, ev, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ev_pow (x : ι → ℂ) (e : Ex ι) (k : ℕ) : (e.pow k).ev x = e.ev x ^ k := by
   induction k with
@@ -51,7 +51,7 @@ theorem ev_pow (x : ι → ℂ) (e : Ex ι) (k : ℕ) : (e.pow k).ev x = e.ev x 
   | succ k ih => simp [pow, ev, ih, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => simp [pow, bind, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem bind_pow (τ : ι → Ex κ) (e : Ex ι) (k : ℕ) : (e.pow k).bind τ = (e.bind τ).pow k := by
   induction k with

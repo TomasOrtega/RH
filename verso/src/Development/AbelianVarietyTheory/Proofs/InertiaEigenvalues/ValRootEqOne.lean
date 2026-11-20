@@ -5,9 +5,9 @@ namespace GlobalTheory.RootValuationOne
 open Finset
 
 /- English proof (translation)
-Rewrite using `[← geom_sum₂_mul, map_mul]`. Establish `hs : A.valuation (∑ j ∈ range i, x ^ j * y ^ (i - 1 - j)) ≤ 1`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[map_mul, map_pow, map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one' (pow_le_one' hx _) (pow_le_one' hy _)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sub_pow_lt_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {x y : Ω}
     (hx : A.valuation x ≤ 1) (hy : A.valuation y ≤ 1) (hd : A.valuation (x - y) < 1) (i : ℕ) :
@@ -22,7 +22,7 @@ theorem sub_pow_lt_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {x y : �
     _ < 1 := by rw [one_mul]; exact hd
 
 /- English proof (translation)
-Establish `h : A.valuation x ^ n = 1` using `by rw [← map_pow, hx, map_one]`. Break down `lt_trichotomy (A.valuation x) 1 with h' | h' | h'` into its components or cases. Conclude with `absurd h (pow_lt_one₀ zero_le' h' hn0).ne`. Conclude with `h'`. Conclude with `absurd h (one_lt_pow₀ h' hn0).ne'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem val_root_eq_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {n : ℕ} (hn0 : n ≠ 0)
     {x : Ω} (hx : x ^ n = 1) : A.valuation x = 1 := by
@@ -33,15 +33,13 @@ theorem val_root_eq_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {n : �
   · exact absurd h (one_lt_pow₀ h' hn0).ne'
 
 /- English proof (translation)
-Introduce `Ω _ A n hn ξ ξ' h1 h2 hd`. Establish `hn0 : n ≠ 0` using `by rintro rfl; apply hn; simp`. Establish `hv1` using `val_root_eq_one A hn0 h1`. Establish `hv2` using `val_root_eq_one A hn0 h2`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hs : ∑ i ∈ range n, ξ ^ i * ξ' ^ (n - 1 - i) = 0`. Use `geom_sum₂_mul ξ ξ' n` as an intermediate fact. Rewrite `this` using `[h1, h2, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_right (sub_ne_zero.mpr hne)`. Establish `hlt : A.valuation (∑ i ∈ range n, (ξ ^ i * ξ' ^ (n - 1 - i) - ξ' ^ (n - 1))) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Valuation.map_sum_lt _ one_ne_zero` to reduce the goal to its premises. Introduce `i hi`. Establish `hi' : i + (n - 1 - i) = n - 1`. Use `mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `e : ξ ^ i * ξ' ^ (n - 1 - i) - ξ' ^ (n - 1) = (ξ ^ i - ξ' ^ i) * ξ' ^ (n - 1 - i)`. Rewrite using `[sub_mul, ← pow_add, hi']`. Rewrite using `[e, map_mul, map_pow, hv2, one_pow, mul_one]`. Conclude with `sub_pow_lt_one A hv1.le hv2.le hd i`. Rewrite `hlt` using `[sum_sub_distrib, hs, sum_const, card_range, zero_sub, Valuation.map_neg, nsmul_eq_mul, map_mul, map_pow, hv2, one_pow, mul_one]`.
-
-Conclude with `hn hlt`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {Ω : Type} [inst : Field Ω] (A : ValuationSubring Ω) (n : ℕ),
     ¬(ValuationSubring.valuation A : Ω → ValuationSubring.ValueGroup A) (↑n : Ω) < (1 : ValuationSubring.ValueGroup A) →

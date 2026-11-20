@@ -41,13 +41,13 @@ def IsTransPull (φ : A ⟶ A) (N : ℕ) {T : Over X} (s : LB.Sec (LPow A L.L 1 
   ∃ h₁ : LB.Sec (LPow A L.L (N : ℤ) T), IsNormPull A L φ (N : ℤ) 1 s h₁ ∧ IsSymAct A L N b h₁ hh
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsSymAct.pow_eq_one {N : ℕ} {T : Over X} {b : T ⟶ A} {s s' : LB.Sec (LPow A L.L (N : ℤ) T)}
     (h : IsSymAct A L N b s s') : b ^ N = 1 := h.1
 
 /- English proof (translation)
-The claim follows from `h.choose_spec.2.1`.
+A detailed English derivation is pending.
 -/
 theorem IsTransPull.pow_eq_one {φ : A ⟶ A} {N : ℕ} {T : Over X} {s : LB.Sec (LPow A L.L 1 T)} {b : T ⟶ A}
     {hh : LB.Sec (LPow A L.L (N : ℤ) T)} (h : IsTransPull A L φ N s b hh) : b ^ N = 1 := h.choose_spec.2.1
@@ -80,7 +80,7 @@ def SecTieF (q : ℕ) (σ : P.U.toUnifPre.SecGF F q)
 variable {I P F xF}
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨r, h1, h2, -⟩` from `h`. Establish `hw : I.m1.φ ≫ Xo.univ.t.G.hom = I.t'.G.hom ≫ y.x` using `I.m1.cart.1.w`. Establish `hb : b.left ≫ Xo.univ.t.G.hom = xF` using `Over.w b`. Rewrite using `[← hb, ← h2, Category.assoc, hw, ← Category.assoc, h1]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem PtTieF.base {x : TFK (R := T.V) F ⟶ P.A.A} {b : ptO Xo xF ⟶ Xo.univ.t.G} (h : PtTieF I P F xF x b) :
     xF = spMap (algebraMap T.Fr F) ≫ (letI := io.toAlgebra; y.x) := by
@@ -91,7 +91,7 @@ theorem PtTieF.base {x : TFK (R := T.V) F ⟶ P.A.A} {b : ptO Xo xF ⟶ Xo.univ.
   rw [← hb, ← h2, Category.assoc, hw, ← Category.assoc, h1]
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem SecTieF.base {q : ℕ} {σ : P.U.toUnifPre.SecGF F q}
     {hh : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L (q : ℤ) (ptO Xo xF))} (h : SecTieF I P F xF q σ hh) :
@@ -116,7 +116,7 @@ def ShortBasis {X : Type} [AddCommGroup X] (Q : X → ℤ) (r : ℕ) (Φ M0 : �
     ∀ j z, |((Q (b j + z) - Q (b j) - Q z : ℤ) : ℝ)| ≤ M0 * Q z
 
 /- English proof (translation)
-Simplify using `[nrm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_zero (Dw : Datum H) (c : Coeff l) (α : 𝓞 E) : nrm Dw c 0 α = 1 := by simp [nrm]
 end Num
@@ -133,11 +133,11 @@ def RunNum (D : D7) {j : ℕ} (w : WeightFamilies.Wt D j) (c : ℝ) : Prop :=
       rr0 D * ((2 * D.R.f * D.R.m : ℝ) ^ 4 * w.n + 2 * (2 * D.R.f * D.R.m : ℝ) ^ 3) * (WeightAlgebra.DF w : ℝ) ^ 2 / (D.host.g i : ℝ) ≤ c)
 
 /- English proof (translation)
-Establish `r0 : 0 ≤ rr0 D` using `by unfold rr0; positivity`. Establish `p0 : (0 : ℝ) ≤ (2 * D.R.f * D.R.m : ℝ) ^ 4 * w.n + 2 * (2 * D.R.f * D.R.m : ℝ) ^ 3` using `by positivity`. Establish `hR` using `r0.trans h4`. Establish `hP` using `p0.trans h5`. Use `⟨h1, ?_, h3, by unfold WeightAlgebra.cc; positivity, fun _ i => ⟨h6 i, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ h2` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos D.R.r with h | h` into its components or cases. Simplify using `[h]`. Use polynomial arithmetic with `[Nat.mul_le_mul_left (D.R.f * D.R.r) (show 2 ≤ D.R.r + 1 by omega)]`. Establish `hq : WeightAlgebra.qq D ≤ D.host.g i` using `by fin_cases i exacts [min_le_left _ _, min_le_right _ _]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hq0 : 0 < WeightAlgebra.qq D` using `lt_min (by have := h3 0; omega) (by have := h3 1; omega)`. Unfold `WeightAlgebra.cc`. Use `gcongr`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem runNum_cc (D : D7) (L : SizeData₂ D) {j : ℕ} (w : WeightFamilies.Wt D j) (C2 A2 CR : ℝ) (h1 : w.LastPos)
     (h2 : D.R.f * D.R.r * (D.R.r + 1) ≤ w.n) (h3 : ∀ i, 4 * WeightAlgebra.DF w + 4 ≤ D.host.g i)

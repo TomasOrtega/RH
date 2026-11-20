@@ -19,9 +19,9 @@ open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.G
 variable {F : Type} [Field F] [NumberField F] {N : ℕ}
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : V × K => p.1 + L p.2)` using `by fun_prop`. Establish `hS : MeasurableSet {p : V × K | p.1 + L p.2 ∈ Z}` using `hc.measurable hZ`. Establish `h1 : (μ.prod ρ) {p : V × K | p.1 + L p.2 ∈ Z} = 0`. Rewrite using `[Measure.measure_prod_null hS]`. Conclude with `Filter.Eventually.of_forall fun x => (h x).measure_zero ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Measure.prod_apply_symm hS]`. Establish `h2 : ∀ t : K, μ ((fun x => (x, t)) ⁻¹' {p : V × K | p.1 + L p.2 ∈ Z}) = μ Z` using `fun t => measure_preimage_add_right μ (L t) Z`. Simplify `h1` using `only [h2, lintegral_const, mul_eq_zero, hρ, or_false]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem null_of_finite_curve {V K : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [LocallyCompactSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V]
@@ -44,7 +44,7 @@ variable (R : Type) [CommRing R] [Algebra F R] (a : Fin N → F)
 
 omit [NumberField F] in
 /- English proof (translation)
-Simplify using `only [qd, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qd_smul (c : R) (x : Fin N → R) : qd R a (c • x) = c ^ 2 * qd R a x := by
   simp only [qd, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
@@ -52,7 +52,7 @@ theorem qd_smul (c : R) (x : Fin N → R) : qd R a (c • x) = c ^ 2 * qd R a x 
 
 omit [NumberField F] in
 /- English proof (translation)
-Simplify using `only [qd, Bd, Pi.add_apply, ← Finset.sum_add_distrib, map_mul, map_ofNat]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qd_add (x y : Fin N → R) : qd R a (x + y) = qd R a x + qd R a y + Bd R a x y := by
   simp only [qd, Bd, Pi.add_apply, ← Finset.sum_add_distrib, map_mul, map_ofNat]
@@ -60,14 +60,14 @@ theorem qd_add (x y : Fin N → R) : qd R a (x + y) = qd R a x + qd R a y + Bd R
 
 omit [NumberField F] in
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun l _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem Bd_symm (x y : Fin N → R) : Bd R a x y = Bd R a y x :=
   Finset.sum_congr rfl fun l _ => by ring
 
 omit [NumberField F] in
 /- English proof (translation)
-Simplify using `only [Bd, Pi.add_apply, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Bd_add (x x' y : Fin N → R) : Bd R a (x + x') y = Bd R a x y + Bd R a x' y := by
   simp only [Bd, Pi.add_apply, ← Finset.sum_add_distrib]
@@ -75,7 +75,7 @@ theorem Bd_add (x x' y : Fin N → R) : Bd R a (x + x') y = Bd R a x y + Bd R a 
 
 omit [NumberField F] in
 /- English proof (translation)
-Simplify using `only [Bd, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Bd_smul (c : R) (x y : Fin N → R) : Bd R a (c • x) y = c * Bd R a x y := by
   simp only [Bd, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
@@ -83,7 +83,7 @@ theorem Bd_smul (c : R) (x y : Fin N → R) : Bd R a (c • x) y = c * Bd R a x 
 
 omit [NumberField F] in
 /- English proof (translation)
-Rewrite using `[Bd, Finset.sum_eq_single l (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Bd_single (x : Fin N → R) (l : Fin N) (t : R) :
     Bd R a x (Pi.single l t) = algebraMap F R (2 * a l) * x l * t := by
@@ -92,14 +92,14 @@ theorem Bd_single (x : Fin N → R) (l : Fin N) (t : R) :
 
 omit [NumberField F] in
 /- English proof (translation)
-Rewrite using `[qd, Finset.sum_eq_single l (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qd_single (l : Fin N) (t : R) : qd R a (Pi.single l t) = algebraMap F R (a l) * t ^ 2 := by
   rw [qd, Finset.sum_eq_single l (fun b _ hb => by simp [hb]) (by simp)]
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Establish `h1` using `h (Pi.single l 1)`. Rewrite `h1` using `[Bd_single, mul_one]`. Establish `hu : IsUnit (algebraMap F R (2 * a l))` using `(IsUnit.mk0 _ (mul_ne_zero two_ne_zero (ha l))).map _`. Conclude with `(hu.mul_right_eq_zero).1 h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Bd_nondeg (ha : ∀ l, a l ≠ 0) (x : Fin N → R) (h : ∀ y, Bd R a x y = 0) : x = 0 := by
   funext l
@@ -111,14 +111,14 @@ theorem Bd_nondeg (ha : ∀ l, a l ≠ 0) (x : Fin N → R) (h : ∀ y, Bd R a x
 
 omit [NumberField F] in
 /- English proof (translation)
-Unfold `qd`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_qd [TopologicalSpace R] [IsTopologicalRing R] : Continuous (qd R a) := by
   unfold qd; fun_prop
 
 omit [NumberField F] in
 /- English proof (translation)
-Unfold `Bd`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_Bd [TopologicalSpace R] [IsTopologicalRing R] (y : Fin N → R) :
     Continuous fun x => Bd R a x y := by
@@ -132,15 +132,15 @@ def bil : LinearMap.BilinForm R (Fin N → R) :=
 end Alg
 
 /- English proof (translation)
-Set `χ : AddChar (Fv F v) ℂ` to `ψ.compAddMonoidHom ((AddMonoidHom.inr (Ainf F) (Af F)).comp (GlobalTheory.AdelicU.singleFin v).toAddMonoidHom)`. Establish `hc : Continuous χ` using `hψ.1.comp (Continuous.prodMk continuous_const (GlobalTheory.AdelicU.continuous_singleFin v))`. Establish `hu : ∀ t, ‖χ t‖ = 1` using `fun t => hψ.2.1 _`. Establish `hne : ∃ t, χ t ≠ 1` using `(CharLoc.char_local F ψ hψ).1 v`. Take `⟨ν, hν, -⟩` from `GlobalTheory.SelfDualFinite.existsUnique_of_bilin v χ hc hu hne (Fv F v) (LinearMap.mul _ _) (fun x y => mul_comm x y) (fun x hx => by simpa using hx 1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ, -⟩` from `GlobalTheory.SelfDualFinite.existsUnique_of_bilin v χ hc hu hne (Fin N → Fv F v) (bil (Fv F v) a) (Bd_symm _ a) (Bd_nondeg _ a ha)`. Use `haveI := hμ.1`. Use `haveI := hν.1`. Establish `e : {c : Fv F v | c ≠ 0} = {c | IsUnit c}` using `by ext c; exact isUnit_iff_ne_zero.symm`. Take `⟨f, hf⟩` from `FibExist.exists_fibreFamily ((nice_ainf_fv F).2 v) μ ν (qd (Fv F v) a) (continuous_qd _ a) (qd_smul _ a) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [isUnit_iff_ne_zero]`. Rewrite using `[ae_iff]`. Simplify using `only [ne_eq, not_not]`. Use `letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField _ _`. Use `haveI : NullSingletonClass ν := inferInstance`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `l : Fin N` to `⟨0, hN⟩`. Use `null_of_finite_curve ν (isOpen_univ.measure_ne_zero ν Set.univ_nonempty) μ (isClosed_eq (continuous_qd _ a) continuous_const).measurableSet (L := fun t => Pi.single l t) (continuous_single (A := fun _ : Fin N => Fv F v) l) fun x => ?_` and prove the remaining obligations. Establish `ha' : algebraMap F (Fv F v) (a l) ≠ 0` using `(map_ne_zero _).2 (ha l)`. Use `(FibExist.finite_quadratic_zeros ha' (algebraMap F _ (2 * a l) * x l) (qd _ a x)).subset fun t ht => ?_` and prove the remaining obligations. Establish `h1 : qd (Fv F v) a (x + Pi.single l t) = 0` using `ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h1` using `[qd_add, qd_single, Bd_single]`. Rewrite using `[Set.mem_setOf_eq, ← h1]`. Use the proof step `ring)`. Conclude with `⟨μ, ν, f, hμ, hν, e ▸ hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_fin (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCharAF F ψ) (a : Fin N → F)
     (ha : ∀ l, a l ≠ 0) (hN : 0 < N) (v : HeightOneSpectrum (𝓞 F)) :
@@ -180,25 +180,23 @@ theorem exists_fin (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCharAF F
   exact ⟨μ, ν, f, hμ, hν, e ▸ hf⟩
 
 /- English proof (translation)
-Establish `hnd` using `(CharLoc.char_local F ψ hψ).2.2`. Take `⟨A, hA, hA'⟩` from `SdInf.exists_equiv_Ainf F`. Establish `hpc : Continuous (psiInf F ψ)` using `hψ.1.comp (continuous_id.prodMk continuous_const)`. Take `⟨L₀, hL₀c, hL₀a, hL₀⟩` from `SdInf.exists_log_char (fun u => psiInf F ψ (A.symm u)) (hpc.comp hA') (fun u => hψ.2.1 _) (fun u v => by`. Simplify using `only [psiInf, map_add, ← AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `Prod.ext rfl (add_zero _).symm)`. Set `L : Ainf F → ℝ` to `fun x => L₀ (A x)`. Establish `hLc : Continuous L` using `hL₀c.comp hA`. Establish `hLa : ∀ x y, L (x + y) = L x + L y` using `fun x y => by simp only [L, map_add, hL₀a]`.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ x, psiInf F ψ x = Complex.exp (2 * Real.pi * Complex.I * ((L x : ℝ) : ℂ))` using `fun x => by simpa using hL₀ (A x)`. Establish `hLn : ∀ x, (∀ y, L (x * y) = 0) → x = 0` using `fun x h => hnd x fun y => by simp [hL, h]`. Take `⟨ν, hν, -⟩` from `SdInf.existsUnique_of_equiv A hA hA' (fun s t => L (s * t)) (fun x x' y => by rw [add_mul, hLa]) (fun x y => by rw [mul_comm]) (fun y => hLc.comp (continuous_id.mul continuous_const)) hLn`. Take `⟨μ, hμ, -⟩` from `SdInf.existsUnique_of_equiv (V := Fin N → Ainf F) (AddEquiv.piCongrRight fun _ : Fin N => A) (show Continuous fun (X : Fin N → Ainf F) i => A (X i) by fun_prop) (show Continuous fun (X : Fin N → InfinitePlace F → ℝ) i => A.symm (X i) by fun_prop) (fun X Y => L (Bd (Ainf F) a X Y) …`. Rewrite using `[mul_comm, Bd_symm, ← Bd_smul, Bd_symm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h _)`. Use `haveI := hμ.1`. Use `haveI := hν.1`. Establish `e : {c : Ainf F | ∀ w, c w ≠ 0} = {c | IsUnit c}`. Use extensionality with `c`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(FibExist.isUnit_ainf_iff c).symm`. Establish `hq` using `continuous_qd (Ainf F) a`. Take `⟨f, hf⟩` from `FibExist.exists_fibreFamily (nice_ainf_fv F).1 μ ν (qd (Ainf F) a) hq (qd_smul _ a) (by`. Simplify using `only [FibExist.isUnit_ainf_iff]`. Use `ae_all_iff.2 fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Set `l : Fin N` to `⟨0, hN⟩`. Set `i` to `(InfinitePlace.Completion.isometryEquivRealOfIsReal hw).symm`. Set `j : ℝ → Ainf F` to `fun t => Pi.single (M := fun w : InfinitePlace F => w.Completion) w (i t)`. Establish `hj : Continuous j` using `(continuous_single (A := fun w : InfinitePlace F => w.Completion) w).comp i.continuous`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hev : Continuous fun c : Ainf F => c w` using `continuous_apply w`. Rewrite using `[ae_iff]`. Simplify using `only [ne_eq, not_not]`. Use `FibExist.null_of_finite_curve μ (isClosed_eq (hev.comp hq) continuous_const).measurableSet (L := fun t => Pi.single l (j t)) ((continuous_single l).comp hj) fun x => ?_` and prove the remaining obligations. Establish `ha' : algebraMap F w.Completion (a l) ≠ 0` using `(map_ne_zero _).2 (ha l)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `((FibExist.finite_quadratic_zeros ha' ((algebraMap F (Ainf F) (2 * a l) * x l) w) (qd (Ainf F) a x w)).preimage i.injective.injOn).subset fun t ht => ?_` and prove the remaining obligations. Establish `h1 : qd (Ainf F) a (x + Pi.single l (j t)) w = 0` using `ht`. Establish `h3 : qd (Ainf F) a (x + Pi.single l (j t)) = algebraMap F (Ainf F) (a l) * j t ^ 2 + algebraMap F (Ainf F) (2 * a l) * x l * j t + qd (Ainf F) a x`. Rewrite using `[qd_add, qd_single, Bd_single]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[h3]`. Establish `h2 : j t w = i t` using `Pi.single_eq_same _ _`. Rewrite using `[Set.mem_preimage, Set.mem_setOf_eq, ← h2]`. Conclude with `h1)`. Use `⟨μ, ν, f, ?_, ?_, e ▸ hf⟩` and prove the remaining obligations.
-
-Simplify `hμ` using `only [hL]`. Simplify `hν` using `only [SdR, hL]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_inf (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCharAF F ψ) (a : Fin N → F)
     (ha : ∀ l, a l ≠ 0) (hN : 0 < N) :
@@ -267,7 +265,7 @@ theorem exists_inf (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCharAF F
   · simpa only [SdR, hL] using hν
 
 /- English proof (translation)
-Take `⟨μ, ν, f, h1, h2, h3⟩` from `exists_inf ψ hψ a ha hN`. Use `choose μv νv fv g1 g2 g3 using exists_fin ψ hψ a ha hN`. Conclude with `⟨⟨μ, ν, μv, νv, f, fv, h1, h2, g1, g2, h3, g3⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_locData (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCharAF F ψ) (a : Fin N → F)
     (ha : ∀ l, a l ≠ 0) (hN : 0 < N) : Nonempty (LocData ψ a) := by
@@ -276,24 +274,22 @@ theorem nonempty_locData (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCh
   exact ⟨⟨μ, ν, μv, νv, f, fv, h1, h2, g1, g2, h3, g3⟩⟩
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `CharZero.exists_isCharAF ℚ`. Conclude with `⟨ψ, hψ, nonempty_locData ψ hψ _ (fun _ => one_ne_zero) (by norm_num)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locData_rat : ∃ ψ : AddChar (AF ℚ) ℂ, IsCharAF ℚ ψ ∧ Nonempty (LocData ψ (fun _ : Fin 6 => (1 : ℚ))) := by
   obtain ⟨ψ, hψ⟩ := CharZero.exists_isCharAF ℚ
   exact ⟨ψ, hψ, nonempty_locData ψ hψ _ (fun _ => one_ne_zero) (by norm_num)⟩
 
 /- English proof (translation)
-Set `Γ` to `(algebraMap F (AF F)).range.toAddSubgroup`. Use `haveI : DiscreteTopology Γ := by`. Take `⟨U, hU, h0⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F`. Take `⟨V, hVU, hVo, hV0⟩` from `mem_nhds_iff.1 hU`. Use `discreteTopology_of_isOpen_singleton_zero ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hVo.preimage (continuous_subtype_val (p := fun x => x ∈ Γ)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `⟨_, x, rfl⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg Subtype.val (Set.mem_singleton_iff.1 h)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : algebraMap F (AF F) x = 0` using `h1`. Use `show algebraMap F (AF F) x ∈ V`. Rewrite using `[h2]`. Conclude with `hV0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hx : x = 0` using `h0 x (hVU h)`. Substitute `hx` using the available equality. Conclude with `Subtype.ext (map_zero _)`. Take `⟨K, hK, h⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Take `⟨μ, D, hμ, hD, h1⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (AF F) Γ K hK fun x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `h x`. Conclude with `⟨_, ⟨-y, rfl⟩, by rw [map_neg, neg_add_eq_sub]; exact hy⟩).1`. Take `⟨t, hts, htm, hae⟩` from `hD.nullMeasurableSet.exists_measurable_superset_ae_eq`. Use `⟨μ, hμ, t, htm, ⟨htm.nullMeasurableSet, ?_, fun g g' hg => ?_⟩, by rw [measure_congr hae, h1]⟩` and prove the remaining obligations. Conclude with `hD.ae_covers.mono fun x ⟨g, hg⟩ => ⟨g, hts hg⟩`.
-
-Establish `e : ∀ g : Γ, (g +ᵥ t : Set (AF F)) =ᵐ[μ] (g +ᵥ D : Set (AF F))` using `fun g => Measure.QuasiMeasurePreserving.vadd_ae_eq_of_ae_eq g (measurePreserving_add_left μ _).quasiMeasurePreserving hae`. Conclude with `(hD.aedisjoint hg).congr (e g) (e g')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isCov1 : ∃ ν : Measure (AF F), IsCov1 ν := by
   let Γ := (algebraMap F (AF F)).range.toAddSubgroup
@@ -326,17 +322,17 @@ theorem exists_isCov1 : ∃ ν : Measure (AF F), IsCov1 ν := by
     exact (hD.aedisjoint hg).congr (e g) (e g')
 
 /- English proof (translation)
-Establish `hnd` using `(CharLoc.char_local F ψ hψ).2.2`. Set `A : Ainf F ≃+* (InfinitePlace F → ℝ)` to `RingEquiv.piCongrRight fun v => InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)`. Establish `hA' : Continuous A.symm` using `continuous_pi fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).symm.continuous.comp (continuous_apply v)`. Establish `hre : ∀ x w, re x w = A x w` using `fun x w => by show _ = InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w) (x w)`. Rewrite using `[re, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w), Complex.ofReal_re]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpc : Continuous (psiInf F ψ)` using `hψ.1.comp (continuous_id.prodMk continuous_const)`. Take `⟨L₀, hL₀c, hL₀a, hL₀⟩` from `SdInf.exists_log_char (fun u => psiInf F ψ (A.symm u)) (hpc.comp hA') (fun u => hψ.2.1 _) (fun u v => by`. Simplify using `only [psiInf, map_add, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Conclude with `Prod.ext rfl (add_zero _).symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Set `L : (InfinitePlace F → ℝ) →L[ℝ] ℝ` to `(AddMonoidHom.mk' L₀ hL₀a).toRealLinearMap hL₀c`. Establish `hL : ∀ u, L₀ u = ∑ w, L₀ (Pi.single w 1) * u w` using `fun u => by`. Establish `: L u = ∑ w, L (Pi.single w 1) * u w` using `by conv_lhs => rw [← Finset.univ_sum_single u, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← smul_eq_mul, ← map_smul, ← Pi.single_smul, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Use `⟨fun w => L₀ (Pi.single w 1), fun w hw => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `hnd (A.symm (Pi.single w 1)) fun y => by` as an intermediate fact. Establish `h` using `hL₀ (Pi.single w 1 * A y)`. Rewrite `h` using `[map_mul, A.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, hL, Finset.sum_eq_single w (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `only at hw`. Simplify using `[hw]`. Establish `h2` using `congrFun (A.symm.injective (this.trans (map_zero _).symm)) w`. Simplify using `at h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hL₀ (A x)`. Rewrite `h` using `[A.symm_apply_apply, hL]`. Simplify `h` using `only [hre]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isLam (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCharAF F ψ) : ∃ lam, IsLam ψ lam := by
   classical
@@ -376,7 +372,7 @@ theorem exists_isLam (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCharAF
     simpa only [hre] using h
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `CharZero.exists_isCharAF F`. Take `⟨lam, hl⟩` from `exists_isLam ψ hψ`. Take `⟨ν, hν⟩` from `exists_isCov1 (F := F)`. Conclude with `⟨ψ, lam, ν, ⟨hF, hψ, hl, hν, ha⟩, nonempty_locData ψ hψ a ha hN⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ctx [hF : IsTotallyReal F] (a : Fin N → F) (ha : ∀ l, a l ≠ 0) (hN : 0 < N) :
     ∃ ψ lam ν, Ctx ψ lam ν a ∧ Nonempty (LocData ψ a) := by
@@ -386,7 +382,7 @@ theorem exists_ctx [hF : IsTotallyReal F] (a : Fin N → F) (ha : ∀ l, a l ≠
   exact ⟨ψ, lam, ν, ⟨hF, hψ, hl, hν, ha⟩, nonempty_locData ψ hψ a ha hN⟩
 
 /- English proof (translation)
-The claim follows from `(CharLoc.char_local F ψ hψ).2.1`.
+A detailed English derivation is pending.
 -/
 example (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCharAF F ψ) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ y : Fv F v,
@@ -394,11 +390,11 @@ example (ψ : AddChar (AF F) ℂ) [IsTotallyReal F] (hψ : IsCharAF F ψ) :
   (CharLoc.char_local F ψ hψ).2.1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Establish `h2 : algebraMap F (AF F) (1 / 2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]`. Simplify using the standard rewrite rules. Establish `hx : Bd (AF F) a x x = 2 * qd (AF F) a x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [qd, Bd, Finset.mul_sum, map_mul, map_ofNat]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Simplify using `only [rho, Ub, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Rewrite using `[qd_add, Bd_symm _ a u (b • x + y), Bd_symm _ a x (b • x + y), Bd_add, Bd_add, Bd_smul, Bd_smul, hx, Bd_symm _ a x u, Bd_symm _ a y u, Bd_symm _ a y x]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(b * qd (AF F) a x)) * h2`.
+A detailed English derivation is pending.
 -/
 theorem rho_Ub (ψ : AddChar (AF F) ℂ) (a : Fin N → F) (b : AF F) (x y : Fin N → AF F)
     (Φ : (Fin N → AF F) → ℂ) : rho ψ a x y (Ub ψ a b Φ) = Ub ψ a b (rho ψ a x (b • x + y) Φ) := by
@@ -415,7 +411,7 @@ theorem rho_Ub (ψ : AddChar (AF F) ℂ) (a : Fin N → F) (b : AF F) (x y : Fin
   linear_combination (-(b * qd (AF F) a x)) * h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Establish `e : ∀ z, Bd (AF F) a (t • z) (s • y) = Bd (AF F) a z y` using `fun z => by`. Rewrite using `[Bd_smul, Bd_symm, Bd_smul, ← mul_assoc, h, one_mul, Bd_symm]`. Simplify using `only [rho, Da, e, smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rho_Da (ψ : AddChar (AF F) ℂ) (a : Fin N → F) (t s : AF F) (h : t * s = 1) (x y : Fin N → AF F)
     (Φ : (Fin N → AF F) → ℂ) : rho ψ a x y (Da t Φ) = Da t (rho ψ a (t • x) (s • y) Φ) := by
@@ -425,9 +421,9 @@ theorem rho_Da (ψ : AddChar (AF F) ℂ) (a : Fin N → F) (t s : AF F) (h : t *
   simp only [rho, Da, e, smul_add]
 
 /- English proof (translation)
-Establish `hm : MeasurableSet {u : Fin N → AF F | ¬ ∃ β : F, qd (AF F) a u = algebraMap F (AF F) β}` using `by haveI : Countable F := (Module.finBasis ℚ F).equivFun.injective.countable`. Conclude with `((continuous_qd (AF F) a).measurable (Set.countable_range (algebraMap F (AF F))).measurableSet).compl.congr (by`. Use extensionality with `u`. Simplify using `[eq_comm])`. Rewrite using `[Measure.sum_apply _ hm, ENNReal.tsum_eq_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ξ`. Rewrite using `[Measure.dirac_apply' _ hm, Set.indicator_of_notMem]`. Conclude with `fun h => h ⟨qd F a ξ, by simp [qd, rat]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem count_ratl (a : Fin N → F) :
     (Measure.sum fun ξ : {ξ : Fin N → F // ξ ≠ 0} => Measure.dirac (rat (ξ : Fin N → F)))

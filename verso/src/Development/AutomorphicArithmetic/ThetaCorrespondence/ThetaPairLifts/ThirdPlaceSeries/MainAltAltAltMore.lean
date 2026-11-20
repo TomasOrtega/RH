@@ -13,11 +13,11 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.ChiOneNoPt
 open GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary GlobalTheory.JumpDictionaryFoundation
 /- English proof (translation)
-Introduce `hF D _h0 h2 h5 hB hM i hl w hw L' hL`. Take `⟨ρ, hρc, haway, habove⟩` from `(_root_.UpperTheory.GalS.weak' h2 i).2.2 (D.naut.tw (D.naut.muC i) D.naut.etaTinv) (sOne D) (integral D hB i)`. Establish `hρ` using `eq_chi D h5 i w hw ρ hρc haway`. Take `⟨hdR, hwd, -⟩` from `habove w hw`. Establish `hun : D.naut.unr (D.naut.wdOf i ρ w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hwd]`. Conclude with `(D.naut.unr_tw _ _).2 (hM i hl w hw)`. Establish `hcW : D.naut.IsCrysW i ρ w` using `(D.naut.wdOf_unrL i ρ w hw hρc hdR).1 hun`. Substitute `hρ` using the available equality. Establish `hc : Br.IsCrysW D.loc D.nbr i w hw (chiGL D i 1)` using `(((D.loc_tie i w hw).2.1 1 _ (continuous_chiGL D i 1)).1).1 hcW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `GlobalTheory.BlockCrys.subDualRules_of_fontaine hF (D.nd.l i) (D.loc _) (D.locA _) ⟨D.locT _⟩`. Establish `hE` using `GlobalTheory.CrysCoef.isCrys_inclusion (D.nd.l i) (D.loc _) (D.nbr i w hw).Kw (D.nbr i w hw).LL L' hL _ _ ((GlobalTheory.BlockCrys.matCrysAt_iff D i w hw _).2 hc)`. Conclude with `GlobalTheory.BlockCrys.isCrys_inv _ (hR.1 _ _) (hR.2 _ _) _ (GlobalTheory.ChiOneEnl.isCrys_chiE_of_constituent D i w hw L' hL (hR.1 _ _) _ _ (isConstituent_chiGL D i) hE)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main_alt_alt_alt : GlobalTheory.Published.FontaineBcris → ∀ D : D7, SumRepresentations.tie0 D → _root_.Formalism.MainNotions.SumRepresentations.adm2_alt D → SumRepresentations.adm5 D →
     GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.BlockCharParam D → GlobalTheory.HubX.MuUnr D → ∀ i : D.nd.Loc, D.nd.l i ∉ TwistedPlaces.gset D →

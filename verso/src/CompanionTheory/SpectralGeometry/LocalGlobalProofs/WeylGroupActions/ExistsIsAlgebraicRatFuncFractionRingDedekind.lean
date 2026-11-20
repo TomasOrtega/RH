@@ -15,7 +15,7 @@ variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
 
 omit [Algebra ℂ A] in
 /- English proof (translation)
-Introduce `a b c d`. Simplify `hE (σ a) (σ b) (σ c) (σ d)` using `only [σ.injective.eq_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem glRel_perm {E : Fin n → Fin n → A} (hE : GlRel E) (σ : Equiv.Perm (Fin n)) :
     GlRel fun a b => E (σ a) (σ b) := by
@@ -23,9 +23,9 @@ theorem glRel_perm {E : Fin n → Fin n → A} (hE : GlRel E) (σ : Equiv.Perm (
   simpa only [σ.injective.eq_iff] using hE (σ a) (σ b) (σ c) (σ d)
 
 /- English proof (translation)
-Set `P : Matrix (Fin n) (Fin n) ℂ` to `Matrix.of fun c a => if c = σ a then 1 else 0`. Set `Q : Matrix (Fin n) (Fin n) ℂ` to `Matrix.of fun b d => if d = σ b then 1 else 0`. Establish `hQP : Q * P = 1`. Use extensionality with `b a`. Simplify using `[P, Q, Matrix.mul_apply, Matrix.one_apply, eq_comm]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h` using `(Formalism.FourierDecayAlt.P.contractions_covariant A n E P Q hE hQP (mul_eq_one_comm.1 hQP) u 0 0 0 0).1`. Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `a b`. Simplify using `[Formalism.FourierDecayAlt.Q.Econj, P, Q, ite_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qdet_perm {E : Fin n → Fin n → A} (hE : GlRel E) (σ : Equiv.Perm (Fin n)) (u : ℂ) :
     qdet (fun a b => E (σ a) (σ b)) u = qdet E u := by

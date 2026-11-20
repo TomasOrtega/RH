@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.PartRed.IntEntry
 
 /- English proof (translation)
-Take `⟨r, q⟩` from `e`. Simplify using `[fillAt, hI, hE]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem fill_entry {k : Type} [Field k] {R Q : Type} [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q]
     (β : Matrix R Q k) (E I : Finset (R × Q)) (x : Matrix R Q k) (y : I → k) (e : R × Q)
@@ -19,9 +19,9 @@ theorem fill_entry {k : Type} [Field k] {R Q : Type} [Fintype R] [Fintype Q] [De
   simp [fillAt, hI, hE]
 
 /- English proof (translation)
-Take `⟨r₀, q₀⟩` from `e`. Use extensionality with `r q`. Distinguish the cases in `h1 : (r, q) ∈ I`. Establish `: ¬ (r₀ = r ∧ q₀ = q)` using `by rintro ⟨rfl, rfl⟩; exact hI h1`. Simplify using `[fillAt, h1, Matrix.single_apply, this]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : (r, q) ∈ E`. Establish `: ¬ (r₀ = r ∧ q₀ = q)` using `by rintro ⟨rfl, rfl⟩; exact hE h2`. Simplify using `[fillAt, h1, h2, Matrix.single_apply, this]`. Simplify using `[fillAt, h1, h2]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fill_add_single {k : Type} [Field k] {R Q : Type} [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q]
     (β : Matrix R Q k) (E I : Finset (R × Q)) (x : Matrix R Q k) (y : I → k) (e : R × Q)
@@ -38,17 +38,15 @@ theorem fill_add_single {k : Type} [Field k] {R Q : Type} [Fintype R] [Fintype Q
     · simp [fillAt, h1, h2]
 
 /- English proof (translation)
-Establish `hm : Measurable (fun (p : X × (I → X)) (i : ↥(insert e I : Finset ι)) => if h : i.1 ∈ I then p.2 ⟨i.1, h⟩ else p.1)`. Use `measurable_pi_lambda _ fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.1 ∈ I`. Simplify using `only [dif_pos h]`. Use `fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg h]`. Use `fun_prop`. Use `⟨hm, (Measure.pi_eq fun s hs => ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun (p : X × (I → X)) (i : ↥(insert e I : Finset ι)) => if h : i.1 ∈ I then p.2 ⟨i.1, h⟩ else p.1) ⁻¹' Set.univ.pi s = s ⟨e, Finset.mem_insert_self e I⟩ ×ˢ Set.univ.pi fun i : I => s ⟨i.1, Finset.mem_insert_of_mem i.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `p`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_imp_iff, Set.mem_prod]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨by simpa [he] using h ⟨e, Finset.mem_insert_self e I⟩, fun i => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify `h ⟨i.1, Finset.mem_insert_of_mem i.2⟩` using `[i.2]`. Introduce and unpack `⟨h1, h2⟩ ⟨i, hi⟩`. Distinguish the cases in `h : i ∈ I`. Simplify `h2 ⟨i, h⟩` using `[h]`. Take `rfl : i = e` from `(Finset.mem_insert.1 hi).resolve_right h`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `h1` using `[h]`. Rewrite using `[hpre, Measure.prod_prod, Measure.pi_pi, Finset.univ_eq_attach (insert e I), Finset.attach_insert, Finset.prod_insert, Finset.prod_image, Finset.univ_eq_attach]`. Introduce `a _ b _ hab`. Conclude with `Subtype.ext (congrArg (fun z : ↥(insert e I : Finset ι) => z.1) hab)`. Introduce `h`.
-
-Take `⟨a, -, ha⟩` from `Finset.mem_image.1 h`. Establish `: a.1 = e` using `congrArg (fun z : ↥(insert e I : Finset ι) => z.1) ha`. Conclude with `he (this ▸ a.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurePreserving_adjoin {ι X : Type} [DecidableEq ι] [MeasurableSpace X] (ν : Measure X) [SigmaFinite ν]
     (I : Finset ι) (e : ι) (he : e ∉ I) :
@@ -87,17 +85,13 @@ theorem measurePreserving_adjoin {ι X : Type} [DecidableEq ι] [MeasurableSpace
     exact he (this ▸ a.2)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν hψ hν R Q _ _ _ _ w β E I Φ hΦ x`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : LocallyCompactSpace k := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `haveI : (Measure.pi fun _ : I => ν).IsAddHaarMeasure := inferInstance`. Establish `hf : Continuous (fillAt β E I x)`. Use `continuous_matrix fun r q => ?_` and prove the remaining obligations. Simplify using `only [fillAt, Matrix.of_apply]`. Distinguish the cases in `h : (r, q) ∈ I`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [dif_pos h]`. Use `fun_prop`. Simplify using `only [dif_neg h]`. Use `fun_prop`. Establish `hw : Continuous w`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (w : Matrix R Q k → k) = fun t => ∑ r, ∑ q, t r q * w (Matrix.single r q 1)`. Use function extensionality and compare the values at `t`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single t]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← smul_eq_mul, ← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[this]`. Use `fun_prop`. Establish `hc : Continuous fun y : I → k => Φ (fillAt β E I x y) * (ψ (-w (fillAt β E I x y)) : ℂ)` using `(hΦ.1.continuous.comp hf).mul (continuous_subtype_val.comp (hψ.comp (hw.comp hf).neg))`. Use `hc.integrable_of_hasCompactSupport (HasCompactSupport.intro (K := Set.univ.pi fun i : I => (fun t : Matrix R Q k => t i.1.1 i.1.2) '' tsupport Φ) (isCompact_univ_pi fun i => hΦ.2.image (by fun_prop)) fun y hy => ?_)` and prove the remaining obligations.
-
-Rewrite using `[image_eq_zero_of_notMem_tsupport (f := Φ) fun h => hy fun i _ => ⟨_, h, ?_⟩, zero_mul]`. Simplify using `[fillAt, i.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_red : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ν.IsAddHaarMeasure → ∀ (R Q : Type) [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q] (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k) (E I : Finset (R × Q)) (Φ : Matrix R Q k → ℂ), Φ ∈ SB (Matrix R Q k) → ∀ x : Matrix R Q k, Integrable (fun y : I → k => Φ (fillAt β E I x y) * (ψ (-w (fillAt β E I x y)) : ℂ)) (Measure.pi fun _ => ν) := by
   intro k _ _ _ _ _ _ ψ ν hψ hν R Q _ _ _ _ w β E I Φ hΦ x
@@ -130,17 +124,15 @@ theorem integrable_red : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalS
   simp [fillAt, i.2]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν hψ hν R Q _ _ _ _ w β E I e hE hI Φ x hint`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : LocallyCompactSpace k := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmp` using `measurePreserving_adjoin ν I e hI`. Establish `hfill : ∀ p : k × (I → k), fillAt β E (insert e I) x (fun i => if h : i.1 ∈ I then p.2 ⟨i.1, h⟩ else p.1) = fillAt β E I (x + Matrix.single e.1 e.2 (p.1 - x e.1 e.2)) p.2`. Introduce `p`. Take `⟨r₀, q₀⟩` from `e`. Use extensionality with `r q`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h1 : (r, q) ∈ I`. Simplify using `[fillAt, h1]`. Distinguish the cases in `h2 : (r, q) = (r₀, q₀)`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj h2`. Simplify using `[fillAt, h1, hE]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h3 : (r, q) ∉ insert (r₀, q₀) I`. Rewrite using `[Finset.mem_insert, not_or]`. Conclude with `⟨h2, h1⟩`. Establish `h4 : ¬ (r₀ = r ∧ q₀ = q)` using `by rintro ⟨rfl, rfl⟩; exact h2 rfl`. Simplify using `only [fillAt, Matrix.of_apply, dif_neg h1, dif_neg h3, Matrix.add_apply, Matrix.single_apply, if_neg h4, add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hmp.integrable_comp_of_integrable hint`. Unfold `red`. Rewrite using `[← hmp.map_eq, integral_map hmp.measurable.aemeasurable (by rw [hmp.map_eq]; exact hint.1)]`. Use `(integral_prod _ h1).trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
-
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun t => Φ t * (ψ (-w t) : ℂ)) (hfill (s, y))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem red_insert : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ν.IsAddHaarMeasure → ∀ (R Q : Type) [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q] (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k) (E I : Finset (R × Q)) (e : R × Q), e ∉ E → e ∉ I → ∀ (Φ : Matrix R Q k → ℂ) (x : Matrix R Q k), Integrable (fun y : ↥(insert e I : Finset (R × Q)) → k => Φ (fillAt β E (insert e I) x y) * (ψ (-w (fillAt β E (insert e I) x y)) : ℂ)) (Measure.pi fun _ => ν) → red ψ ν w β E (insert e I) Φ x = ∫ s, red ψ ν w β E I Φ (x + Matrix.single e.1 e.2 (s - x e.1 e.2)) ∂ν := by
   intro k _ _ _ _ _ _ ψ ν hψ hν R Q _ _ _ _ w β E I e hE hI Φ x hint
@@ -174,17 +166,15 @@ theorem red_insert : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace
   exact congrArg (fun t => Φ t * (ψ (-w t) : ℂ)) (hfill (s, y))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ R Q _ _ _ _ Φ hΦ e c`. Establish `hs : Continuous fun u : k => Matrix.single e.1 e.2 u`. Use `continuous_matrix fun r q => ?_` and prove the remaining obligations. Simplify using `only [Matrix.single_apply]`. Distinguish the cases in `h : e.1 = r ∧ e.2 = q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos h]`. Use `fun_prop`. Simplify using `only [if_neg h]`. Use `fun_prop`. Establish `h1 : ∀ᶠ u in 𝓝 (0 : k), ∀ z ∈ tsupport Φ, Φ (z + Matrix.single e.1 e.2 u) = Φ z`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsCompact.eventually_forall_of_forall_eventually hΦ.2 fun z _ => ?_` and prove the remaining obligations. Establish `h2 : IsLocallyConstant fun q : k × Matrix R Q k => (Φ (q.2 + Matrix.single e.1 e.2 q.1), Φ q.2)` using `(hΦ.1.comp_continuous (continuous_snd.add (hs.comp continuous_fst))).prodMk (hΦ.1.comp_continuous continuous_snd)`. Use `filter_upwards [h2.eventually_eq (0, z)] with q hq`. Simplify using `only [Prod.mk.injEq, Matrix.single_zero, add_zero] at hq`. Rewrite using `[hq.1, hq.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s₀, hs₀⟩` from `exists_cball_addChar_eq_one ψ hψ`. Establish `h3 : ∀ᶠ u in 𝓝 (0 : k), ψ (u * c) = 1`. Establish `: (fun u : k => u * c) ⁻¹' cball s₀ ∈ 𝓝 (0 : k)` using `((isOpen_cball s₀).preimage (by fun_prop)).mem_nhds (by simp [cball])`. Use `filter_upwards [this] with u hu using hs₀ _ hu`. Take `⟨s, hUs⟩` from `exists_cball_subset (h1.and h3)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `⟨HaarFactor.cballSub s, isOpen_cball s, isCompact_cball s, fun u hu => ⟨(hUs hu).2, fun z => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ tsupport Φ`. Conclude with `(hUs hu).1 z hz`. Distinguish the cases in `hz' : z + Matrix.single e.1 e.2 u ∈ tsupport Φ`. Use `(hUs (neg_mem_cball hu)).1 _ hz'` as an intermediate fact.
-
-Rewrite `this` using `[add_assoc, ← Matrix.single_add, add_neg_cancel, Matrix.single_zero, add_zero]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz, image_eq_zero_of_notMem_tsupport hz']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subgroup : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ∀ (R Q : Type) [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q] (Φ : Matrix R Q k → ℂ), Φ ∈ SB (Matrix R Q k) → ∀ (e : R × Q) (c : k), ∃ U : AddSubgroup k, IsOpen (U : Set k) ∧ IsCompact (U : Set k) ∧ ∀ u ∈ U, ψ (u * c) = 1 ∧ ∀ t, Φ (t + Matrix.single e.1 e.2 u) = Φ t := by
   intro k _ _ _ _ ψ hψ R Q _ _ _ _ Φ hΦ e c
@@ -218,11 +208,11 @@ theorem exists_subgroup : ∀ (k : Type) [Field k] [ValuativeRel k] [Topological
   · rw [image_eq_zero_of_notMem_tsupport hz, image_eq_zero_of_notMem_tsupport hz']
 
 /- English proof (translation)
-Introduce `k _ _ _ _ R Q _ _ Φ hΦ U hU e`. Establish `hK : IsCompact ((fun t : Matrix R Q k => t e.1 e.2) '' tsupport Φ)` using `hΦ.2.image (by fun_prop)`. Take `⟨T, -, hT⟩` from `hK.elim_nhds_subcover (fun a => (fun b => b - a) ⁻¹' (U : Set k)) (fun a _ => (hU.preimage (by fun_prop)).mem_nhds (by simp))`. Use `⟨T.image fun a : k => (a : k ⧸ U).out, ?_, fun t ht => ?_⟩` and prove the remaining obligations. Introduce `a ha b hb hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a', -, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨b', -, rfl⟩` from `Finset.mem_image.1 hb`. Use `QuotientAddGroup.eq_iff_sub_mem.mpr hab` as an intermediate fact. Rewrite `this` using `[QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, hta⟩` from `Set.mem_iUnion₂.mp (hT ⟨t, subset_tsupport Φ ht, rfl⟩)`. Use `⟨_, Finset.mem_image.mpr ⟨a, ha, rfl⟩, QuotientAddGroup.eq_iff_sub_mem.mp ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.out_eq']`. Conclude with `QuotientAddGroup.eq_iff_sub_mem.mpr hta`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_representatives : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (R Q : Type) [Fintype R] [Fintype Q] (Φ : Matrix R Q k → ℂ), Φ ∈ SB (Matrix R Q k) → ∀ (U : AddSubgroup k), IsOpen (U : Set k) → ∀ e : R × Q, ∃ S : Finset k, (∀ a ∈ S, ∀ b ∈ S, a - b ∈ U → a = b) ∧ ∀ t : Matrix R Q k, Φ t ≠ 0 → ∃ a ∈ S, t e.1 e.2 - a ∈ U := by
   intro k _ _ _ _ R Q _ _ Φ hΦ U hU e
@@ -243,19 +233,17 @@ theorem exists_representatives : ∀ (k : Type) [Field k] [ValuativeRel k] [Topo
     exact QuotientAddGroup.eq_iff_sub_mem.mpr hta
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν U hUo hUc S hS h hinv hsupp`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `he` using `HaarFactor.integrable_of_SB ν (HaarFactor.ind_mem hUo hUc)`. Establish `hshift : ∀ c : k, ∫ a, (U : Set k).indicator (fun _ => (1 : ℂ)) (a - c) ∂ν = (ν.real (U : Set k) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[integral_sub_right_eq_self (fun a => (U : Set k).indicator (fun _ => (1 : ℂ)) a) c, integral_indicator_const _ hUo.measurableSet]`. Simplify using the standard rewrite rules. Establish `hT : ∀ s, h s = ∑ a ∈ S, h a * (U : Set k).indicator (fun _ => (1 : ℂ)) (s - a)`. Introduce `s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hv : ∀ a, s - a ∈ U → h s = h a` using `fun a ha => by rw [← hinv a _ ha, add_sub_cancel]`. Distinguish the cases in `hs : h s = 0`. Rewrite using `[hs]`. Use `(Finset.sum_eq_zero fun a _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `ha : s - a ∈ U`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv a ha, hs, zero_mul]`. Rewrite using `[Set.indicator_of_notMem (show s - a ∉ (U : Set k) from ha), mul_zero]`. Take `⟨a, ha, hsa⟩` from `hsupp s hs`. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[Set.indicator_of_mem (show s - a ∈ (U : Set k) from hsa), mul_one, hv a hsa]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb hba`. Rewrite using `[Set.indicator_of_notMem, mul_zero]`. Introduce `hsb`. Establish `hm` using `U.sub_mem hsa hsb`. Rewrite `hm` using `[sub_sub_sub_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hba (hS b hb a ha hm)`. Conclude with `fun ha' => absurd ha ha'`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hT), integral_finset_sum _ fun q _ => (he.comp_sub_right _).const_mul _]`. Simplify using `only [integral_const_mul, hshift, ← Finset.sum_mul]`. Rewrite using `[mul_comm]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_cosets : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), ν.IsAddHaarMeasure → ∀ (U : AddSubgroup k), IsOpen (U : Set k) → IsCompact (U : Set k) → ∀ (S : Finset k), (∀ a ∈ S, ∀ b ∈ S, a - b ∈ U → a = b) → ∀ h : k → ℂ, (∀ s u, u ∈ U → h (s + u) = h s) → (∀ s, h s ≠ 0 → ∃ a ∈ S, s - a ∈ U) → ∫ s, h s ∂ν = ((ν (U : Set k)).toReal : ℂ) * ∑ a ∈ S, h a := by
   intro k _ _ _ _ _ _ ν hν U hUo hUc S hS h hinv hsupp
@@ -293,9 +281,9 @@ theorem integral_cosets : ∀ (k : Type) [Field k] [ValuativeRel k] [Topological
   rfl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ R Q _ _ Φ hΦ U hU e a`. Establish `hc : Continuous fun t : Matrix R Q k => t e.1 e.2 - a` using `by fun_prop`. Establish `hcl : IsClopen {t : Matrix R Q k | t e.1 e.2 - a ∈ U}` using `⟨(U.isClosed_of_isOpen hU).preimage hc, hU.preimage hc⟩`. Use `⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_, HasCompactSupport.intro hΦ.2 fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ {t : Matrix R Q k | t e.1 e.2 - a ∈ U}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [hcl.isOpen.mem_nhds hx, hΦ.1.eventually_eq x] with z hz hz'`. Conclude with `(Set.indicator_of_mem (s := {t : Matrix R Q k | t e.1 e.2 - a ∈ U}) hz Φ).trans (hz'.trans (Set.indicator_of_mem hx Φ).symm)`. Use `filter_upwards [hcl.compl.isOpen.mem_nhds hx] with z hz`. Conclude with `(Set.indicator_of_notMem (s := {t : Matrix R Q k | t e.1 e.2 - a ∈ U}) hz Φ).trans (Set.indicator_of_notMem hx Φ).symm`. Conclude with `Set.indicator_apply_eq_zero.mpr fun _ => image_eq_zero_of_notMem_tsupport hy`.
+A detailed English derivation is pending.
 -/
 theorem indicator_mem : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (R Q : Type) [Fintype R] [Fintype Q] (Φ : Matrix R Q k → ℂ), Φ ∈ SB (Matrix R Q k) → ∀ (U : AddSubgroup k), IsOpen (U : Set k) → ∀ (e : R × Q) (a : k), Set.indicator {t : Matrix R Q k | t e.1 e.2 - a ∈ U} Φ ∈ SB (Matrix R Q k) := by
   intro k _ _ _ _ R Q _ _ Φ hΦ U hU e a
@@ -314,9 +302,9 @@ theorem indicator_mem : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
   · exact Set.indicator_apply_eq_zero.mpr fun _ => image_eq_zero_of_notMem_tsupport hy
 
 /- English proof (translation)
-Introduce `k _ _ _ ψ ν R Q _ _ _ _ w β E I e hE hI Φ u hΦ hψ x`. Establish `hw : w (Matrix.single e.1 e.2 u) = u * w (Matrix.single e.1 e.2 1)`. Rewrite using `[← smul_eq_mul, ← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `h1 : ψ (-w (Matrix.single e.1 e.2 u)) = 1` using `by rw [AddChar.map_neg_eq_inv, hw, hψ, inv_one]`. Unfold `red`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [fill_add_single β E I x _ e hI hE u, hΦ, map_add, neg_add, AddChar.map_add_eq_mul, h1, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem red_shift : ∀ (k : Type) [Field k] [TopologicalSpace k] [MeasurableSpace k] (ψ : AddChar k Circle) (ν : Measure k) (R Q : Type) [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q] (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k) (E I : Finset (R × Q)) (e : R × Q), e ∉ E → e ∉ I → ∀ (Φ : Matrix R Q k → ℂ) (u : k), (∀ t, Φ (t + Matrix.single e.1 e.2 u) = Φ t) → ψ (u * w (Matrix.single e.1 e.2 1)) = 1 → ∀ x, red ψ ν w β E I Φ (x + Matrix.single e.1 e.2 u) = red ψ ν w β E I Φ x := by
   intro k _ _ _ ψ ν R Q _ _ _ _ w β E I e hE hI Φ u hΦ hψ x
@@ -327,13 +315,11 @@ theorem red_shift : ∀ (k : Type) [Field k] [TopologicalSpace k] [MeasurableSpa
   simp only [fill_add_single β E I x _ e hI hE u, hΦ, map_add, neg_add, AddChar.map_add_eq_mul, h1, mul_one]
 
 /- English proof (translation)
-Introduce `k _ _ _ ψ ν R Q _ _ _ _ w β E I e hE hI Φ A x`. Distinguish the cases in `hx : x e.1 e.2 ∈ A`. Rewrite using `[Set.indicator_of_mem (show x ∈ {z : Matrix R Q k | z e.1 e.2 ∈ A} from hx)]`. Unfold `red`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[Set.indicator_of_mem]`. Use `show fillAt β E I x y e.1 e.2 ∈ A`. Apply the tactic sequence `rwa [fill_entry β E I x y e hI hE]`. Rewrite using `[Set.indicator_of_notMem (show x ∉ {z : Matrix R Q k | z e.1 e.2 ∈ A} from hx)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `red`. Use `integral_eq_zero_of_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Set.indicator_of_notMem, zero_mul, Pi.zero_apply]`. Use `show ¬ fillAt β E I x y e.1 e.2 ∈ A`.
-
-Apply the tactic sequence `rwa [fill_entry β E I x y e hI hE]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem red_indicator : ∀ (k : Type) [Field k] [TopologicalSpace k] [MeasurableSpace k] (ψ : AddChar k Circle) (ν : Measure k) (R Q : Type) [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q] (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k) (E I : Finset (R × Q)) (e : R × Q), e ∉ E → e ∉ I → ∀ (Φ : Matrix R Q k → ℂ) (A : Set k) (x : Matrix R Q k), red ψ ν w β E I (Set.indicator {t : Matrix R Q k | t e.1 e.2 ∈ A} Φ) x = Set.indicator {z : Matrix R Q k | z e.1 e.2 ∈ A} (red ψ ν w β E I Φ) x := by
   intro k _ _ _ ψ ν R Q _ _ _ _ w β E I e hE hI Φ A x
@@ -354,9 +340,9 @@ theorem red_indicator : ∀ (k : Type) [Field k] [TopologicalSpace k] [Measurabl
     rwa [fill_entry β E I x y e hI hE]
 
 /- English proof (translation)
-Introduce `k _ _ _ ψ ν R Q _ _ _ _ w β E I e hE hI Φ x hx`. Assume the negation of the conclusion as `hne`. Use `hx (integral_eq_zero_of_ae (Filter.Eventually.of_forall fun y => ?_))` and prove the remaining obligations. Establish `: Φ (fillAt β E I x y) = 0`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply the tactic sequence `exact hne ⟨_, h, fill_entry β E I x y e hI hE⟩`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem red_support : ∀ (k : Type) [Field k] [TopologicalSpace k] [MeasurableSpace k] (ψ : AddChar k Circle) (ν : Measure k) (R Q : Type) [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q] (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k) (E I : Finset (R × Q)) (e : R × Q), e ∉ E → e ∉ I → ∀ (Φ : Matrix R Q k → ℂ) (x : Matrix R Q k), red ψ ν w β E I Φ x ≠ 0 → ∃ t, Φ t ≠ 0 ∧ t e.1 e.2 = x e.1 e.2 := by
   intro k _ _ _ ψ ν R Q _ _ _ _ w β E I e hE hI Φ x hx
@@ -368,39 +354,33 @@ theorem red_support : ∀ (k : Type) [Field k] [TopologicalSpace k] [MeasurableS
   simp [this]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν hψ hν R Q _ _ _ _ M _ _ L w β E I e heE hK hInt`. Distinguish the cases in `heI : e ∈ I`. Rewrite using `[Finset.insert_eq_of_mem heI]` and apply the resulting hypothesis. Introduce `Φ hΦ`. Take `⟨U, hUo, hUc, hU⟩` from `exists_subgroup k ψ hψ R Q Φ.1 Φ.2 e (w (Matrix.single e.1 e.2 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hSd, hS⟩` from `exists_representatives k R Q Φ.1 Φ.2 U hUo e`. Establish `hsh : ∀ x (u : k), u ∈ U → red ψ ν w β E I Φ.1 (x + Matrix.single e.1 e.2 u) = red ψ ν w β E I Φ.1 x` using `fun x u hu => red_shift k ψ ν R Q w β E I e heE heI Φ.1 u (hU u hu).2 (hU u hu).1 x`. Establish `hlin : ∀ (f : k → Matrix R Q k → ℂ), (∀ a, f a ∈ SB (Matrix R Q k)) → ∀ x, red ψ ν w β E I (∑ a ∈ S, f a) x = ∑ a ∈ S, red ψ ν w β E I (f a) x`. Introduce `f hf x`. Unfold `red`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `only [Finset.sum_apply, Finset.sum_mul]`. Conclude with `integral_finset_sum S fun a _ => integrable_red k ψ ν hψ hν R Q w β E I (f a) (hf a) x`. Establish `hsum : ∀ x, ∑ a ∈ S, red ψ ν w β E I Φ.1 (x + Matrix.single e.1 e.2 (a - x e.1 e.2)) = 0`. Introduce `x`. Establish `h0 : red ψ ν w β E (insert e I) Φ.1 x = 0` using `congrFun hΦ x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[red_insert k ψ ν hψ hν R Q w β E I e heE heI Φ.1 x (integrable_red k ψ ν hψ hν R Q w β E (insert e I) Φ.1 Φ.2 x)]`. Rewrite `h0` using `[integral_cosets k ν hν U hUo hUc S hSd (fun s => red ψ ν w β E I Φ.1 (x + Matrix.single e.1 e.2 (s - x e.1 e.2))) ?_ ?_]`. Establish `h1 : ν (U : Set k) ≠ 0` using `hUo.measure_ne_zero ν ⟨0, U.zero_mem⟩`. Establish `h2 : ν (U : Set k) ≠ ⊤` using `hUc.measure_lt_top.ne`. Establish `hpos : ((ν (U : Set k)).toReal : ℂ) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(ENNReal.toReal_pos h1 h2).ne'` after adjusting the coercions. Conclude with `(mul_eq_zero.1 h0).resolve_left hpos`. Introduce `s u hu`. Rewrite using `[show s + u - x e.1 e.2 = (s - x e.1 e.2) + u by ring, Matrix.single_add, ← add_assoc]`. Conclude with `hsh _ u hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs`. Take `⟨t, ht, hte⟩` from `red_support k ψ ν R Q w β E I e heE heI Φ.1 _ hs`. Take `⟨a, ha, hta⟩` from `hS t ht`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `hxe : (x + Matrix.single e.1 e.2 (s - x e.1 e.2)) e.1 e.2 = s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.add_apply, Matrix.single_apply_same, add_sub_cancel]`. Rewrite `hta` using `[hte, hxe]`. Conclude with `hta`. Set `Φc : k → SB (Matrix R Q k)` to `fun a => ⟨Set.indicator {t : Matrix R Q k | t e.1 e.2 - a ∈ U} Φ.1, indicator_mem k R Q Φ.1 Φ.2 U hUo e a⟩`. Establish `hcov : ∑ a ∈ S, Φc a = Φ`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Distinguish the cases in `ht : Φ.1 t = 0`. Rewrite using `[ht]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_eq_zero fun a _ => Set.indicator_apply_eq_zero.mpr fun _ => ht`. Take `⟨a, ha, hta⟩` from `hS t ht`. Rewrite using `[Finset.sum_eq_single a]`. Conclude with `Set.indicator_of_mem (s := {t : Matrix R Q k | t e.1 e.2 - a ∈ U}) hta Φ.1`. Introduce `b hb hba`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.indicator_of_notMem (s := {t : Matrix R Q k | t e.1 e.2 - b ∈ U}) ?_ Φ.1` and prove the remaining obligations. Introduce `htb`. Establish `hm` using `U.sub_mem hta htb`. Rewrite `hm` using `[sub_sub_sub_cancel_left]`. Conclude with `hba (hSd b hb a ha hm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `ha'`. Conclude with `absurd ha ha'`. Use `choose Φ' hΦ'L hΦ'r using fun a => hInt a (Φc a)`. Establish `hred' : ∀ a x, red ψ ν w β E I (Φ' a).1 x = Set.indicator {z : Matrix R Q k | z e.1 e.2 ∈ (U : Set k)} (fun z => red ψ ν w β E I Φ.1 (z + Matrix.single e.1 e.2 (a - z e.1 e.2))) x`. Introduce `a x`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ'r a x]`. Establish `h8` using `red_indicator k ψ ν R Q w β E I e heE heI Φ.1 {s : k | s - a ∈ U} (x + Matrix.single e.1 e.2 a)`. Establish `hxe : (x + Matrix.single e.1 e.2 a) e.1 e.2 - a = x e.1 e.2`. Simplify using `[Matrix.add_apply, Matrix.single_apply]`. Express the relevant statement in the definitionally equal form `red ψ ν w β E I (Set.indicator {t : Matrix R Q k | t e.1 e.2 ∈ {s : k | s - a ∈ U}} Φ.1) _ = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h8]`. Distinguish the cases in `hx : x e.1 e.2 ∈ U`. Rewrite using `[Set.indicator_of_mem (show (x + Matrix.single e.1 e.2 a) ∈ {z : Matrix R Q k | z e.1 e.2 ∈ {s : k | s - a ∈ U}} by show (x + Matrix.single e.1 e.2 a) e.1 e.2 - a ∈ U`. Rewrite using `[hxe]`. Conclude with `hx),`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `Set.indicator_of_mem (show x ∈ {z : Matrix R Q k | z e.1 e.2 ∈ (U : Set k)} from hx)]`. Rewrite using `[← hsh (x + Matrix.single e.1 e.2 (a - x e.1 e.2)) (x e.1 e.2) hx, add_assoc, ← Matrix.single_add, sub_add_cancel]`. Rewrite using `[Set.indicator_of_notMem (show (x + Matrix.single e.1 e.2 a) ∉ {z : Matrix R Q k | z e.1 e.2 ∈ {s : k | s - a ∈ U}} by show ¬ ((x + Matrix.single e.1 e.2 a) e.1 e.2 - a ∈ U)`. Rewrite using `[hxe]`. Conclude with `hx),`.
-
-Use the proof step `Set.indicator_of_notMem (show x ∉ {z : Matrix R Q k | z e.1 e.2 ∈ (U : Set k)} from hx)]`. Establish `hΞ : red ψ ν w β E I (∑ a ∈ S, Φ' a).1 = 0`. Use function extensionality and compare the values at `x`. Rewrite using `[Submodule.coe_sum, hlin (fun a => (Φ' a).1) (fun a => (Φ' a).2) x]`. Simplify using `only [hred']`.
-
-Distinguish the cases in `hx : x e.1 e.2 ∈ U`. Simplify using `only [Set.indicator_of_mem (show x ∈ {z : Matrix R Q k | z e.1 e.2 ∈ (U : Set k)} from hx)]`. Conclude with `hsum x`. Simplify using `only [Set.indicator_of_notMem (show x ∉ {z : Matrix R Q k | z e.1 e.2 ∈ (U : Set k)} from hx), Finset.sum_const_zero, Pi.zero_apply]`. Establish `hL` using `hK (∑ a ∈ S, Φ' a) hΞ`.
-
-Rewrite using `[← hcov, map_sum]`. Rewrite `hL` using `[map_sum]`. Rewrite using `[← hL]`. Conclude with `Finset.sum_congr rfl fun a _ => (hΦ'L a).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrate_entry : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ν.IsAddHaarMeasure → ∀ (R Q : Type) [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q] (M : Type) [AddCommGroup M] [Module ℂ M] (L : SB (Matrix R Q k) →ₗ[ℂ] M) (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k) (E I : Finset (R × Q)) (e : R × Q), e ∉ E → GlobalTheory.PartRed.Kills L ψ ν w β E I → GlobalTheory.PartRed.IntLaw L ψ ν w β E I e → GlobalTheory.PartRed.Kills L ψ ν w β E (insert e I) := by
   intro k _ _ _ _ _ _ ψ ν hψ hν R Q _ _ _ _ M _ _ L w β E I e heE hK hInt

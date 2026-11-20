@@ -4,11 +4,11 @@ open TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `hEmb hSubq hOfAnn hAnnSub hAnnExt hAdmExact`. Introduce `F G B _ _ _ _ σ ψ hσψ L _ _ e hB V _ _ _ ρ q n T hAdm hAnn U _ _ ρU i TU θ hi hinj hT hTg hTT hnil W _ _ _ _ ρW I _ C _ _ ρC f hsub hf hsep`. Use `letI : Module F U := Module.compHom _ (algebraMap F L)`. Use `haveI : IsScalarTower F L U := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `letI : ∀ a, Module F (C a) := fun a => Module.compHom _ (algebraMap F L)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : ∀ a, IsScalarTower F L (C a) := fun a => IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `haveI : Module.Finite L U := Module.Finite.of_injective i hinj`. Take `⟨hE1, hE2⟩` from `hAnnExt F G B σ ψ L V ρ`. Establish `hAdmL` using `hE1 e hAdm`. Establish `hAnnL` using `hE2 q n T hAnn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAdmU : admitted σ e ρU` using `(hAdmExact F G B σ L e hB U (L ⊗[F] V) ρU (extRep L ρ) i hi).1 hinj hAdmL`. Establish `hAnnU : AnnD σ ψ q n ρU TU` using `hAnnSub F G B σ ψ L U (L ⊗[F] V) ρU (extRep L ρ) i hi hinj q n TU (fun j => (T j).baseChange L) hT hAnnL`. Establish `hNilU : NilD σ ψ ρU (heckePol q n θ)` using `hOfAnn F G B σ ψ hσψ L U ρU q n TU θ hTg hTT hnil hAnnU`. Establish `hNilC : ∀ a, NilD σ ψ (ρC a) (heckePol q n θ)` using `fun a => (hSubq F G B σ ψ L e hB U (C a) ρU (ρC a) (hsub a) hAdmU).2 _ hNilU`. Conclude with `hEmb F G B σ ψ L W ρW I C ρC f hf hsep _ hNilC`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.joinAbs_of :
     NilEmb → NilSubq → NilOfAnn → AnnSub → AnnExt → AdmExact → JoinAbs := by

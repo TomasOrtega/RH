@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.TestSideCounting
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 MvPolynomial
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Distinguish the cases in `hs : s ∈ TT`. Use `congrFun (lambda_zero_eq_product TT lam0) s` as an intermediate fact. Simplify using `only [topW, if_pos hs, Pi.add_apply] at this ⊢`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[topW, hs, flW, dT]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topW_lam {n' m : ℕ} (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ) :
     topW TT lam0 = flW (dT TT lam0) + topW TT (restW TT lam0) := by
@@ -22,21 +22,21 @@ theorem topW_lam {n' m : ℕ} (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m +
     simp [topW, hs, flW, dT]
 
 /- English proof (translation)
-Take `⟨hb, hdom, hw⟩` from `hW`. Establish `hdr` using `topW_dom TT (restW_dom (by omega) TT lam0 hdom)`. Establish `hl0 : Fin.last m ≠ 0`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hv1 : ((1 : Fin (m + 1)) : ℕ) = 1`. Rewrite using `[Fin.val_one']`. Conclude with `Nat.mod_eq_of_lt (by omega)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ s, topW TT (restW TT lam0) s 0 - topW TT (restW TT lam0) s (Fin.last m) ≤ (if s ∈ TT then (c0 : ℤ) else 0)`. Introduce `s`. Distinguish the cases in `hs : s ∈ TT`. Establish `e1 : restW TT lam0 s (Fin.last m) = lam0 s (Fin.last m)`. Unfold `restW flW`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, hl0]`. Establish `e0 : restW TT lam0 s 0 = lam0 s 0 - (dT TT lam0 s : ℤ)`. Unfold `restW flW`. Simplify using the standard rewrite rules. Simplify using `only [topW, if_pos hs]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, e1]`. Take `⟨_, elast, hc⟩` from `(hb s).1 hs`. Take `⟨_, _, hb0, hbc⟩` from `hw s hs`. Establish `h01 : lam0 s 1 ≤ lam0 s 0` using `hdom s (Fin.zero_le _)`. Establish `hc1` using `abs_le.1 (hc 1 (by omega) (by omega))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dT flatDeg`. Rewrite using `[if_pos hs, Int.toNat_of_nonneg (by omega), elast]`. Use linear arithmetic over natural numbers and integers. Simplify using `[topW, hs]`. Unfold `ordMax`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hr0 : (0 : ℤ) ≤ r` using `Int.natCast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_sum, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const]`. Use `push_cast`. Simplify using `only [nsmul_eq_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ordMax_top {n' m : ℕ} (hm : 2 ≤ m) {TT : Finset (Fin n')} {aT bT : Fin n' → ℤ} {cpp c0 : ℕ} {a : ℝ}
     {lam0 : Fin n' → Fin (m + 1) → ℤ} (hW : tableLineDegreeFive.WeightHyp TT aT bT cpp c0 a lam0) (r : ℕ) :
@@ -105,7 +105,7 @@ def RestPairTop (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ CK C₁ : ℝ, 0 < CK ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → PairTopStep C CK
 
 /- English proof (translation)
-Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ e he htgt hm g hhm hg hbasis Θ hΘ`. Establish `hkr : orbitWindowCount r de h x + 2 * r ≤ (m + 1) - r` using `H.2.2.2.2.2.2.2.1`. Establish `hr2 : 2 ≤ r` using `H.2.1`. Establish `hdom : IsDominant lam0` using `H.2.2.2.2.1.2.1`. Conclude with `rhoAtG_of_pair D hSet.1 r TT (dT TT lam0) (topW TT (restW TT lam0)) (topW TT lam0) (topW_lam TT lam0) (topW_dom TT (restW_dom (by omega) TT lam0 hdom)) c0 (r * TT.card * c0) (ordMax_top (by omega) H.2.2.2.2.1 r) _ e he Θ (hR p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rhoTopStep_of_pair (D : Formalism.BasicNotions.D7) (C CK : ℝ) (hR : PairTopStep C CK) : RhoTopStep C CK := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ
@@ -120,7 +120,7 @@ theorem rhoTopStep_of_pair (D : Formalism.BasicNotions.D7) (C CK : ℝ) (hR : Pa
       e he htgt hm g hhm hg hbasis Θ hΘ)
 
 /- English proof (translation)
-Introduce `hA`. Take `⟨CK, C₁, h1, h2, h3⟩` from `h hA`. Conclude with `⟨CK, C₁, h1, h2, fun C hC => rhoTopStep_of_pair D C CK (h3 C hC)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem restRhoTop_of_pair (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (h : RestPairTop D CLa Ck Crk Cdeg) :
     RestRhoTop D CLa Ck Crk Cdeg := by
@@ -129,7 +129,7 @@ theorem restRhoTop_of_pair (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : �
   exact ⟨CK, C₁, h1, h2, fun C hC => rhoTopStep_of_pair D C CK (h3 C hC)⟩
 
 /- English proof (translation)
-The claim follows from `restCloudB_of_top D CLa Ck Crk Cdeg (restRhoTop_of_pair D CLa Ck Crk Cdeg h)`.
+A detailed English derivation is pending.
 -/
 theorem restCloudB_of_pair (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (h : RestPairTop D CLa Ck Crk Cdeg) :
     RestCloudB D CLa Ck Crk Cdeg :=

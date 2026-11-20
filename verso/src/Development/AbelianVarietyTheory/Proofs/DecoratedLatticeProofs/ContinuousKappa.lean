@@ -69,7 +69,7 @@ section Bil
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Unfold `Link.κ GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj`. Establish `h : Continuous fun w : WO S L' => giA S ⬝ (adj (rat l.τ ⬝ w) ⬝ gA B.L)` using `Continuous.matrix_mul continuous_const (Continuous.matrix_mul (GlobalTheory.MixModel.continuous_adj.comp (continuous_const.matrix_mul continuous_id)) continuous_const)`. Conclude with `h.const_smul ((incA D) (-D.host.xi0⁻¹))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_kappa {ρ : ℕ} {B : BesLev D ρ} {L' : HSp D} {ζ' : Fin L'.rank → D.host.E}
     (l : Link B L' ζ') (S : HSp D) : Continuous (l.κ S) := by
@@ -80,9 +80,9 @@ theorem continuous_kappa {ρ : ℕ} {B : BesLev D ρ} {L' : HSp D} {ζ' : Fin L'
   exact h.const_smul ((incA D) (-D.host.xi0⁻¹))
 
 /- English proof (translation)
-Use `haveI : ∀ m n, BorelSpace (Mx D m n) := fun _ _ => ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (vL.μ.restrict vL.𝓕) := ⟨by rw [Measure.restrict_apply_univ, vL.covol.2.2]; exact ENNReal.one_lt_top⟩`. Take `⟨C₁, hC₁⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded _ _ ψ hψ Ξ₁ h₁`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded _ _ ψ hψ Ξ₂ h₂`. Establish `hc : Continuous fun w => Ξ₂ ((B'.o.resT S).symm (v, w)) * Ξ₁ ((B.o.resS S).symm (u, l.κ S w))` using `(h₂.cont.comp ((OrthDec.continuous_resT_symm _ _).comp (Continuous.prodMk continuous_const continuous_id))).mul (h₁.cont.comp ((OrthDec.continuous_resS_symm _ _).comp (Continuous.prodMk continuous_const (continuous_kappa l S))))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(integrable_const (C₂ * C₁)).mono' hc.aestronglyMeasurable (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hC₂ _) (hC₁ _) (norm_nonneg _) ((norm_nonneg _).trans (hC₂ 0))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_contr (hψ : IsStdChar D ψ (-1)) {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ}
     (l : Link B B'.L B'.ζ) (S : HSp D) (vL : VolM D B'.L.rank S.rank) {Ξ₁ : WO B.V₀ S → ℂ} {Ξ₂ : WO S B'.V₀ → ℂ}
@@ -143,11 +143,11 @@ end GlobalTheory.ContractionLocal
 namespace GlobalTheory.ContractionLocal
 
 /- English proof (translation)
-Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Use `haveI := hν`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Set `L` to `GlobalTheory.LatPair.stdLat k n`. Establish `hc` using `GlobalTheory.FinPl.Comm.fpair_ne_zero ψk hψ (-1) (Or.inr rfl) (Measure.pi fun _ => ν) L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set c := GlobalTheory.FinPl.Comm.fpair ψk (-1) (Measure.pi fun _ => ν) (GlobalTheory.FinPl.vecInd L) (GlobalTheory.FinPl.dualInd L)`. Use `⟨⟨_, GlobalTheory.FinPl.Comm.vecInd_mem L⟩, c⁻¹ • ⟨_, GlobalTheory.FinPl.Comm.dualInd_mem L⟩, ?_⟩` and prove the remaining obligations. Establish `e : c = ∫ u, (GlobalTheory.FinPl.dualInd L u) * GlobalTheory.StepData.hat ψk ν (-1) (GlobalTheory.FinPl.vecInd L) u ∂(Measure.pi fun _ => ν)`. Simplify using `only [c, GlobalTheory.FinPl.Comm.fpair, GlobalTheory.StepData.hat]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [SetLike.val_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[integral_const_mul, ← e, inv_mul_cancel₀ hc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_normPair {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ψk : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψk)
@@ -168,11 +168,11 @@ theorem exists_normPair {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   rw [integral_const_mul, ← e, inv_mul_cancel₀ hc]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.LocFlat.contr, colTens_apply, rowTens_apply, Matrix.toCols₁_fromCols, Matrix.toRows₁_fromRows, GlobalTheory.StepData.hat]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Establish `h1 : (Matrix.fromRows q.2 (Matrix.of fun _ : Unit => u)) (Sum.inr ()) = u` using `rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2 : ∀ y : n → k, (fun r => Matrix.fromCols q.1 (Matrix.of fun r (_ : Unit) => y r) r (Sum.inr ())) = y` using `fun y => rfl`. Simplify using `only [h1, h2]`. Rewrite using `[show (∫ y, Ξ₁.1 q.1 * φ₀.1 y * ((ψk ((-1) * (u ⬝ᵥ y)) : Circle) : ℂ) ∂(Measure.pi fun _ => ν)) = Ξ₁.1 q.1 * ∫ y, φ₀.1 y * ((ψk ((-1) * (u ⬝ᵥ y)) : Circle) : ℂ) ∂(Measure.pi fun _ => ν) by`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `y`. Use the proof step `ring]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem contr_tens {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ψk : AddChar k Circle) (ν : Measure k)

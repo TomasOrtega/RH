@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.ThK.SplitInv
 
 /- English proof (translation)
-Introduce `kp F E _ _ _ _ _ σ B a a' G X om om' R Rf hm hq d₁ H' i₀ i₁ sp pl hH hpl c hb0 hbj i hi f hf hct hdec co hco om₁ hom Φ hΦ μ 𝓕 hμ h𝓕`. Take `⟨T₁, hT₁⟩` from `GlobalTheory.T.matched_tower_adapted_planes_first kp F E σ B a a' G X om om' R Rf hm hq d₁ H' i₀ i₁ sp pl hH hpl c hb0 hbj i hi f hf hct hdec co hco om₁ hom Φ hΦ μ 𝓕 hμ h𝓕`. Take `⟨T₂, hT₂⟩` from `GlobalTheory.T.matched_tower_adapted_planes_second kp F E σ B a a' G X om om' R Rf hm hq d₁ H' i₀ i₁ sp pl hH hpl c hb0 hbj i hi f hf hct hdec co hco om₁ hom Φ hΦ μ 𝓕 hμ h𝓕`. Take `⟨T₃, hT₃⟩` from `GlobalTheory.T.matched_tower_adapted_planes_third kp F E σ B a a' G X om om' R Rf hm hq d₁ H' i₀ i₁ sp pl hH hpl c hb0 hbj i hi f hf hct hdec co hco om₁ hom Φ hΦ μ 𝓕 hμ h𝓕`. Use `⟨T₁ ∪ T₂ ∪ T₃, fun v hv hsp g k hk => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.mem_union, not_or] at hv`. Take `⟨𝒦, h𝒦⟩` from `hT₁ v hv.1.1 hsp`. Establish `hst` using `rStable_liftSpace (X := G.V') (W := sp i) om₁ Φ μ 𝓕 f v`. Conclude with `GlobalTheory.T.right_invariant_under_subgroup _ _ _ hst (GlobalTheory.T.unitary_admissible_completely_reducible _ _ _ 𝒦 hst h𝒦 (hT₂ v hv.1.2 hsp)) (hT₃ v hv.2 hsp) _ (thLift_mem_liftSpace (X := G.V') (W := sp i) om₁ Φ μ 𝓕 f v) k hk g`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem splitInv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),

@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem mul_coord' (x y : Af E) (w : HeightOneSpectrum (𝓞 E)) : (x * y) w = x w * y w := rfl
 
 /- English proof (translation)
-Use `show (((coord w z)⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = _`. Rewrite using `[Units.val_inv_eq_inv_val, coe_coord]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_coord' (z : (Af E)ˣ) (w : HeightOneSpectrum (𝓞 E)) : (↑z⁻¹ : Af E) w = ((z : Af E) w)⁻¹ := by
   show (((coord w z)⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = _
@@ -32,9 +32,9 @@ theorem inv_coord' (z : (Af E)ˣ) (w : HeightOneSpectrum (𝓞 E)) : (↑z⁻¹ 
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Units.val_one, one_coord']`. Simplify using the standard rewrite rules. Consider the case `insert a S ha ih`. Rewrite using `[Finset.prod_insert ha, Units.val_mul, mul_coord', ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : w' = a`. Substitute `h` using the available equality. Simplify using `[ha, single_self]`. Rewrite using `[suppAt_single a (x a) w' h]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_single_coord (S : Finset (HeightOneSpectrum (𝓞 E)))
     (x : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (w' : HeightOneSpectrum (𝓞 E)) :
@@ -48,11 +48,11 @@ theorem prod_single_coord (S : Finset (HeightOneSpectrum (𝓞 E)))
     · rw [suppAt_single a (x a) w' h]; simp [h]
 
 /- English proof (translation)
-Establish `key : ∀ z : Af E, (∀ w : HeightOneSpectrum (𝓞 E), Valued.v (z w - 1) ≤ WithZero.exp (-(multiplicity w.asIdeal (Ideal.map (algebraMap (OF E) (𝓞 E)) c) : ℤ))) → z ∈ hatO c` using `fun z h => (GlobalTheory.T.mem_completedOrder_iff_placewise E c hc z).2 ⟨1, one_mem _, fun w => by rw [one_coord', map_one], h⟩`. Use `⟨key _ fun w => (hz w).le, key _ fun w => ?_⟩` and prove the remaining obligations. Establish `h1 : Valued.v ((z : Af E) w - 1) < Valued.v (1 : w.adicCompletion E)`. Rewrite using `[map_one]`. Conclude with `(hz w).trans_le (by rw [← WithZero.exp_zero, WithZero.exp_le_exp]; omega)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : Valued.v ((z : Af E) w) = 1`. Use `Valuation.map_eq_of_sub_lt _ h1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Establish `hz0 : (z : Af E) w ≠ 0` using `by rw [← coe_coord]; exact (coord w z).ne_zero`. Use `show Valued.v ((↑z⁻¹ : Af E) w - 1) ≤ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inv_coord']`. Establish `he : ((z : Af E) w)⁻¹ - 1 = -(((z : Af E) w - 1) * ((z : Af E) w)⁻¹)` using `by field_simp; ring`. Rewrite using `[he, Valuation.map_neg, map_mul, map_inv₀, hv, inv_one, mul_one]`. Conclude with `(hz w).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hatOUnits [IsCMField E] {c : Ideal (OF E)} (hc : c ≠ ⊥) (z : (Af E)ˣ)
     (hz : ∀ w : HeightOneSpectrum (𝓞 E), Valued.v ((z : Af E) w - 1) <
@@ -77,17 +77,15 @@ theorem mem_hatOUnits [IsCMField E] {c : Ideal (OF E)} (hc : c ≠ ⊥) (z : (Af
   exact (hz w).le
 
 /- English proof (translation)
-Introduce `E _ _ _ c l hc hl q`. Establish `hfin : {w : HeightOneSpectrum (𝓞 E) | (l : 𝓞 E) ∈ w.asIdeal}.Finite`. Establish `hl0 : Ideal.span {(l : 𝓞 E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hl.ne_zero` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Ideal.finite_factors hl0).subset fun w hw => Ideal.dvd_span_singleton.2 hw`. Take `⟨y0, rfl⟩` from `QuotientGroup.mk_surjective q`. Take `⟨a, ha, -⟩` from `PI.FinOrdValD.WA.weakApprox_units hfin.toFinset (fun w => (coord w y0)⁻¹) (fun w => (multiplicity w.asIdeal (Ideal.map (algebraMap (OF E) (𝓞 E)) c) : ℤ))`. Use `set A : (Af E)ˣ := Units.map (algebraMap E (Af E)).toMonoidHom a with hAdef`. Use `set y1 : (Af E)ˣ := A * y0 with hy1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set u : (Af E)ˣ := ∏ w ∈ hfin.toFinset, single w (coord w y1) with hudef`. Establish `hA : A ∈ princ ⊔ hatOUnits c` using `Subgroup.mem_sup_left ⟨a, rfl⟩`. Establish `hu : u ∈ princ ⊔ hatOUnits c`. Use `Subgroup.mem_sup_right (mem_hatOUnits hc u fun w => ?_)` and prove the remaining obligations. Rewrite using `[hudef, prod_single_coord]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `split_ifs with hw`. Rewrite using `[coe_coord, hy1, Units.val_mul, mul_coord']`. Establish `hAw : (A : Af E) w = algebraMap E (w.adicCompletion E) (a : E)` using `rfl`. Use `ha w hw` as an intermediate fact. Rewrite using `[hAw]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[Units.val_inv_eq_inv_val, coe_coord]`. Rewrite using `[sub_self, map_zero]`. Conclude with `WithZero.exp_pos.bot_lt`. Use `⟨y1 * u⁻¹, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.mk_inv, hy1, QuotientGroup.mk_mul, (QuotientGroup.eq_one_iff A).2 hA, (QuotientGroup.eq_one_iff u).2 hu, one_mul, inv_one, mul_one]`.
-
-Establish `hwT : w ∈ hfin.toFinset` using `hfin.mem_toFinset.2 hw`. Rewrite using `[Units.val_mul, mul_coord', inv_coord', hudef, prod_single_coord, if_pos hwT, coe_coord]`. Conclude with `mul_inv_cancel₀ (by rw [← coe_coord]; exact (coord w y1).ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep_trivial_above : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)) (l : ℕ),
     c ≠ ⊥ → l.Prime → ∀ q : PicO c, ∃ y : (Af E)ˣ, (QuotientGroup.mk y : PicO c) = q ∧

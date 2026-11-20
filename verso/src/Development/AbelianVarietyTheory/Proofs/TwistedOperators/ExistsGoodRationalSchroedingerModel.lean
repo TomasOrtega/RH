@@ -19,11 +19,11 @@ namespace GlobalTheory.SquareAgree
 open Classical in
 
 /- English proof (translation)
-Introduce `D Bs hB n d V Ws r s r' s' hV hW μ dom hμ hdom`. Take `⟨co, hco⟩` from `GlobalTheory.T.exists_rational_darboux_hermitian_tensor_adeles D.sp.cm.sig Bs V Ws r s r' s' hB hV hW`. Set `M0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig V Ws` to `⟨co, fun _ => 0, μ, dom⟩`. Establish `hb` using `GlobalTheory.T.exists_latticeVacuum_finitePlaces_rationalDarboux D.sp.cm.sig Bs V Ws r s r' s' hB hV hW M0 hco`. Establish `hc` using `GlobalTheory.T.eventually_integralPointsIndicator_isVacuum D.sp.cm.sig Bs V Ws r s r' s' hB hV hW M0 hco`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ind : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F, (Fin n × Fin d → Fv D.host.F v) → ℂ` to `fun v => Set.indicator {x : Fin n × Fin d → Fv D.host.F v | ∀ k, x k ∈ v.adicCompletionIntegers D.host.F} 1`. Use `⟨⟨co, fun v => if M0.IsVac Bs.ψ v (ind v) then ind v else (hb v).choose, μ, dom⟩, rfl, rfl, ?_⟩` and prove the remaining obligations. Use `⟨hco, fun v => ?_, ?_, hμ, hdom⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M0.IsVac Bs.ψ v (if M0.IsVac Bs.ψ v (ind v) then ind v else (hb v).choose) split_ifs with h`. Conclude with `h`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(hb v).choose_spec`. Use `filter_upwards [hc] with v hv`. Express the relevant statement in the definitionally equal form `(if M0.IsVac Bs.ψ v (ind v) then ind v else (hb v).choose) = ind v`. Conclude with `if_pos hv`.
+A detailed English derivation is pending.
 -/
 theorem exists_good_model : ∀ (D : D7) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E), Bs.IsGood D.sp.cm.sig →
     ∀ {n d : ℕ} (V : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E n) (Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d) (r s r' s' : ℕ),

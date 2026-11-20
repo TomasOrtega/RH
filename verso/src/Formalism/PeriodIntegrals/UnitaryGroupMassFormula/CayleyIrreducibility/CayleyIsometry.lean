@@ -13,13 +13,11 @@ namespace DensPf
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h1 : (1 - Aᴴ) * G = G * (1 + A)`. Rewrite using `[sub_mul, mul_add, Matrix.one_mul, Matrix.mul_one, hskew, sub_neg_eq_add]`. Establish `h2 : G * (1 - A) = (1 + Aᴴ) * G`. Rewrite using `[mul_sub, add_mul, Matrix.one_mul, Matrix.mul_one, hskew, sub_eq_add_neg]`. Establish `h3 : (1 + A) * (1 - A) = (1 - A) * (1 + A)` using `by noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBH : IsUnit (1 + Aᴴ).det`. Rewrite using `[show (1 : Matrix (Fin n) (Fin n) ℂ) + Aᴴ = (1 + A)ᴴ by`. Rewrite using `[conjTranspose_add, conjTranspose_one], det_conjTranspose]`. Conclude with `hB.star`. Rewrite using `[conjTranspose_mul, conjTranspose_nonsing_inv, conjTranspose_sub, conjTranspose_add, conjTranspose_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (1 + A), h3]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = (1 + Aᴴ)⁻¹ * ((1 + Aᴴ) * G) := by rw [h2, mul_nonsing_inv _ hB, Matrix.mul_one]`. Use `_ = G := by rw [← Matrix.mul_assoc, nonsing_inv_mul _ hBH, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cayley_isometry (G A : Matrix (Fin n) (Fin n) ℂ) (hskew : Aᴴ * G = -(G * A))
     (hB : IsUnit (1 + A).det) :
@@ -44,7 +42,7 @@ theorem cayley_isometry (G A : Matrix (Fin n) (Fin n) ℂ) (hskew : Aᴴ * G = -
     _ = G := by rw [← Matrix.mul_assoc, nonsing_inv_mul _ hBH, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hi : (G⁻¹)ᴴ = G⁻¹` using `by rw [conjTranspose_nonsing_inv, hH]`. Simplify using `only [conjTranspose_sub, conjTranspose_mul, conjTranspose_conjTranspose, hi, hH]`. Simplify using `only [sub_mul, mul_sub, Matrix.mul_assoc, nonsing_inv_mul _ hG, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc G G⁻¹, mul_nonsing_inv _ hG, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem skew_of (G P : Matrix (Fin n) (Fin n) ℂ) (hH : Gᴴ = G) (hG : IsUnit G.det) :
     (P - G⁻¹ * Pᴴ * G)ᴴ * G = -(G * (P - G⁻¹ * Pᴴ * G)) := by
@@ -74,16 +72,16 @@ def hq (G : Matrix (Fin n) (Fin n) ℂ) (p : MvPolynomial (Fin n × Fin n) ℂ) 
     ∏ i : Fin n × Fin n, Mp G i.1 i.2 ^ d i
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[RingHom.mapMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_C_mat (z : Bool × Fin n × Fin n → ℂ) (H : Matrix (Fin n) (Fin n) ℂ) :
     (eval z).mapMatrix (H.map C) = H := by
   ext i j; simp [RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Establish `hP : (eval z).mapMatrix (Pm n) = Matrix.of (fun i j => z (true, i, j) + Complex.I * z (false, i, j))`. Use extensionality with `i j`. Simplify using `[Pm, RingHom.mapMatrix_apply]`. Establish `hQ : (eval z).mapMatrix (Qm n) = Matrix.of (fun i j => z (true, j, i) - Complex.I * z (false, j, i))`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Qm, RingHom.mapMatrix_apply]`. Rewrite using `[Lp, map_sub, map_mul, map_mul, hP, hQ, map_C_mat, map_C_mat]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_Lp (G : Matrix (Fin n) (Fin n) ℂ) (z : Bool × Fin n × Fin n → ℂ) :
     (eval z).mapMatrix (Lp G) =
@@ -96,20 +94,20 @@ theorem map_Lp (G : Matrix (Fin n) (Fin n) ℂ) (z : Bool × Fin n × Fin n → 
   rw [Lp, map_sub, map_mul, map_mul, hP, hQ, map_C_mat, map_C_mat]
 
 /- English proof (translation)
-Rewrite using `[dp, RingHom.map_det, map_add, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_dp (G : Matrix (Fin n) (Fin n) ℂ) (z : Bool × Fin n × Fin n → ℂ) :
     eval z (dp G) = det (1 + (eval z).mapMatrix (Lp G)) := by
   rw [dp, RingHom.map_det, map_add, map_one]
 
 /- English proof (translation)
-Establish `hMm : (eval z).mapMatrix (Mp G) = (1 - A) * adjugate (1 + A)`. Rewrite using `[Mp, map_mul, map_sub, map_one, RingHom.map_adjugate, map_add, map_one, hA]`. Establish `hM : ∀ i j, eval z (Mp G i j) = det (1 + A) * ((1 - A) * (1 + A)⁻¹) i j`. Introduce `i j`. Establish `h2 : (1 - A) * (1 + A)⁻¹ = (det (1 + A))⁻¹ • ((1 - A) * adjugate (1 + A))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[inv_def, Ring.inverse_eq_inv', Matrix.mul_smul]`. Rewrite using `[h2, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hd, one_mul, ← hMm]`. Both sides reduce to the same expression. Establish `hdz : eval z (dp G) = det (1 + A)` using `by rw [eval_dp, hA]`. Rewrite using `[hq, map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hdm => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, map_prod, eval_C, hdz, hM, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Establish `hle : d.degree ≤ p.totalDegree` using `le_totalDegree hdm`. Rewrite using `[← Finsupp.degree_eq_sum, show det (1 + A) ^ p.totalDegree = det (1 + A) ^ (p.totalDegree - d.degree) * det (1 + A) ^ d.degree by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_add, Nat.sub_add_cancel hle]]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval_hq (G : Matrix (Fin n) (Fin n) ℂ) (p : MvPolynomial (Fin n × Fin n) ℂ)
     (z : Bool × Fin n × Fin n → ℂ) (A : Matrix (Fin n) (Fin n) ℂ) (hA : (eval z).mapMatrix (Lp G) = A)
@@ -140,29 +138,27 @@ end DensPf
 
 open DensPf in
 /- English proof (translation)
-Introduce `n G hGpd p hp g hg`. Establish `hH : Gᴴ = G` using `hGpd.1`. Establish `hGu : IsUnit G.det` using `(Matrix.isUnit_iff_isUnit_det G).1 hGpd.isUnit`. Establish `hzero : hq G p * dp G = 0`. Apply `funext_set (fun _ => Set.range Complex.ofReal) (fun _ => Set.infinite_range_of_injective Complex.ofReal_injective)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z hz`. Simplify using `only [Set.mem_pi, Set.mem_univ, Set.mem_range, true_implies] at hz`. Use `choose r hr using hz`. Establish `hz' : z = fun v => (r v : ℂ)` using `funext fun v => (hr v).symm`. Substitute `hz'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `set P : Matrix (Fin n) (Fin n) ℂ := Matrix.of (fun i j => (r (true, i, j) : ℂ) + Complex.I * r (false, i, j)) with hPdef`. Establish `hA : (eval (fun v => (r v : ℂ))).mapMatrix (Lp G) = P - G⁻¹ * Pᴴ * G`. Rewrite using `[map_Lp]`. Use `congr 3`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hPdef, conjTranspose_apply, of_apply, star_add, star_mul', Complex.star_def, Complex.conj_ofReal, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_zero, map_mul]`. Distinguish the cases in `hd : det (1 + (P - G⁻¹ * Pᴴ * G)) = 0`. Rewrite using `[eval_dp, hA, hd, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [eval_hq G p _ _ hA hd, hp _ (cayley_isometry G _ (skew_of G P hH hGu) (isUnit_iff_ne_zero.2 hd)), mul_zero, zero_mul]`. Establish `hB : (1 + g) * (1 + g)⁻¹ = 1` using `mul_nonsing_inv _ hg`. Establish `hB' : (1 + g)⁻¹ * (1 + g) = 1` using `nonsing_inv_mul _ hg`. Take `⟨Y, hY⟩ : ∃ Y : Matrix (Fin n) (Fin n) ℂ, Y = (1 - g) * (1 + g)⁻¹` from `⟨_, rfl⟩`. Establish `hY1 : 1 + Y = (2 : ℂ) • (1 + g)⁻¹`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (1 + g) + (1 - g) = (2 : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) by rw [two_smul]; abel, Matrix.smul_mul, Matrix.one_mul]`. Establish `hY2 : 1 - Y = (2 : ℂ) • (g * (1 + g)⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (1 + g) - (1 - g) = (2 : ℂ) • g by rw [two_smul]; abel, Matrix.smul_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : (1 + Y) * ((1 / 2 : ℂ) • (1 + g)) = 1`. Rewrite using `[hY1, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hB']`. Evaluate the numerical expressions. Establish `hYu : IsUnit (1 + Y).det` using `isUnit_det_of_right_inverse hR`. Establish `hcay : (1 - Y) * (1 + Y)⁻¹ = g`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[inv_eq_right_inv hR, hY2, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc, hB', Matrix.mul_one]`. Evaluate the numerical expressions. Set `z0 : Bool × Fin n × Fin n → ℂ` to `fun v => if v.1 then Y v.2.1 v.2.2 / 2 else -Complex.I * Y v.2.1 v.2.2 / 2`. Establish `hA0 : (eval z0).mapMatrix (Lp G) = Y`. Rewrite using `[map_Lp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hP0 : Matrix.of (fun i j => z0 (true, i, j) + Complex.I * z0 (false, i, j)) = Y`. Use extensionality with `i j`. Simplify using `only [z0, of_apply, if_true, Bool.false_eq_true, if_false]`. Take the linear combination `(-(Y i j) / 2) * Complex.I_sq`. Establish `hQ0 : Matrix.of (fun i j => z0 (true, j, i) - Complex.I * z0 (false, j, i)) = 0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [z0, of_apply, if_true, Bool.false_eq_true, if_false, Matrix.zero_apply]`. Take the linear combination `(Y j i / 2) * Complex.I_sq`. Rewrite using `[hP0, hQ0, Matrix.mul_zero, Matrix.zero_mul, sub_zero]`. Establish `hd0 : det (1 + Y) ≠ 0` using `hYu.ne_zero`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg (eval z0) hzero`. Rewrite `h` using `[map_mul, map_zero, eval_hq G p z0 Y hA0 hd0, eval_dp, hA0, hcay]`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd h (pow_ne_zero _ hd0)`.
-
-Conclude with `h`. Conclude with `absurd h hd0`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem density_holds : Dens := by
   intro n G hGpd p hp g hg

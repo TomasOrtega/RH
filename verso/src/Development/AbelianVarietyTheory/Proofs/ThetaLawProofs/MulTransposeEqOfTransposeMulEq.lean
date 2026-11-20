@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory.TransposeMulCommute
 
 /- English proof (translation)
-Introduce `al m hm h`. Establish `hm0 : (m : ℤ) ≠ 0`. Establish `: m ≠ 0` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hdet : al.det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `h1` using `congrArg Matrix.det h`. Rewrite `h1` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hm0 h1.symm`. Establish `h2 : (al * al.transpose) * al = ((m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ)) * al`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, h, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]`. Establish `h3` using `congrArg (fun X => X * al.adjugate) h2`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one] at h3`. Use extensionality with `i j`. Establish `h4` using `congrFun (congrFun h3 i) j`.
-
-Rewrite `h4` using `[Matrix.smul_apply, Matrix.smul_apply al.det, smul_eq_mul, smul_eq_mul al.det]`. Conclude with `mul_left_cancel₀ hdet h4`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_transpose_eq_of_transpose_mul_eq :
     ∀ {al : Matrix (Fin (4 : ℕ)) (Fin (4 : ℕ)) ℤ} {m : ℕ}, (1 : ℕ) ≤ m →

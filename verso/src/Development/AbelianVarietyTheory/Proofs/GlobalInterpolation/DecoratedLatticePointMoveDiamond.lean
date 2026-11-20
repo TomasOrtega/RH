@@ -9,9 +9,9 @@ namespace GlobalTheory.LvT.Built
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem.Col2 GlobalTheory.LvT GlobalTheory.LvT.Built
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `phiT`. Use `@if_congr _ _ _ (_) (_) _ _ _ _ ?_ rfl rfl` and prove the remaining obligations. Use `forall_congr' fun Q => forall_congr' fun y => ?_` and prove the remaining obligations. Use `imp_congr Iff.rfl (and_congr Iff.rfl ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [DecoSet.dia1, DecoSet.dia, Deco.dia]`. Conclude with `Units.mul_right_inj _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levelPrimeDatum_diamond_invariant {E : Type} [Field E] [NumberField E] [StarRing E] (K : Type) [Field K] {n n' : ℕ}
     {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : DecoSet E n ST SG) (d' : DecoSet E n' ST SG') (P : ST)
@@ -25,7 +25,7 @@ theorem levelPrimeDatum_diamond_invariant {E : Type} [Field E] [NumberField E] [
   exact Units.mul_right_inj _
 
 /- English proof (translation)
-Establish `h : p.mv (DecoSet.dia1 P a p.1.1.deco) = ⟨(⟨(DecoSet.dia1 P a p.1.1.deco, p.1.1.1.2), p.1.1.2⟩, p.1.2), p.2⟩` using `dif_pos ⟨p.1.1.2, p.2⟩`. Rewrite using `[h]`. Conclude with `⟨rfl, rfl, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem decoratedLatticePoint_move_diamond {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))} {y : Ys X n} (p : PtY ST SG Q y) (P : ST)
     (a : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) :
@@ -37,13 +37,13 @@ theorem decoratedLatticePoint_move_diamond {X : Fields} {n : ℕ} {ST SG Q : Fin
   exact ⟨rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `X Pr R W Ch sel S mu cst L G m2 u i _ _ _ _ _ Tp A h b b' d d' P a`. Take `⟨Ξ, -, -, -, -, h⟩` from `h b b' d d'`. Establish `key : ∀ {j : ℕ} (p : PtAt R sel mu cst u j), SameOffPt sel mu cst u p (p.mv (DecoSet.dia1 P a p.1.1.deco))`. Introduce `j p`. Take `⟨h1, h2, h3⟩` from `decoratedLatticePoint_move_diamond p P a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, h2.symm, h3.symm⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `fun _ _ => rfl`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h0` using `h d d' ⟨fun _ _ => rfl, rfl, rfl, rfl⟩ ⟨fun _ _ => rfl, rfl, rfl, rfl⟩`. Establish `h1` using `h _ _ (key d) (key d')`. Use `h1.trans (Eq.trans ?_ h0.symm)` and prove the remaining obligations. Rewrite using `[(decoratedLatticePoint_move_diamond d P a).1, (decoratedLatticePoint_move_diamond d' P a).1]`. Unfold `GlobalTheory.KerT.term`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[levelPrimeDatum_diamond_invariant]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kAt_dia : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ) (u : Pr.Word) (i : ℕ), X.Ok → Pr.Ok → IsSel X sel → Pr.T u ∈ S → L.Ok Ch sel mu cst G m2 → ∀ (Tp : TopLev X Pr R (QE sel (mu : Chr X.F X.E X.K))) (A : Formalism.L2.Ker.Amb X), KerIsTerm W Ch sel mu cst L A u i → ∀ b b' d d' (P : Pr.vT u) a, kAt W Ch sel mu cst L A u i b b' ((tdatAt sel mu cst L Tp u i).dia b P a d) ((tdatAt sel mu cst L Tp u (i + 1)).dia b' P a d') = kAt W Ch sel mu cst L A u i b b' d d' := by
   intro X Pr R W Ch sel S mu cst L G m2 u i _ _ _ _ _ Tp A h b b' d d' P a

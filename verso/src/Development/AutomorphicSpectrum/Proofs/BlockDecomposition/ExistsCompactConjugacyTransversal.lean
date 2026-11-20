@@ -6,13 +6,13 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.OrbitalCount
 
 /- English proof (translation)
-Introduce `H _ _ _ K N hK hfin C hC`. Use `⟨⋃ q ∈ {q : DoubleCoset.Quotient (twCent (MonoidHom.id H) N : Set H) (K : Set H) | ∃ k ∈ K, (Quotient.out q * k)⁻¹ * N * MonoidHom.id H (Quotient.out q * k) ∈ C}, (fun k => Quotient.out q * k) '' (K : Set H), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hfin C hC).isCompact_biUnion fun q _ => hK.image (continuous_const.mul continuous_id)`. Introduce `x hx`. Take `⟨h, k, hh, hk, hout⟩` from `DoubleCoset.mk_out_eq_mul (twCent (MonoidHom.id H) N) K x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomm : h * N = N * h` using `hh`. Establish `hconj : (h * x)⁻¹ * N * (h * x) = x⁻¹ * N * x`. Establish `: h⁻¹ * N * h = N`. Rewrite using `[mul_assoc, ← hcomm, inv_mul_cancel_left]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `set q := DoubleCoset.mk (twCent (MonoidHom.id H) N) K x with hq`. Establish `hd : Quotient.out q * k⁻¹ = h * x`. Rewrite using `[hout]`. Use `group`. Use `⟨h⁻¹, inv_mem hh, Quotient.out q * k⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Set.mem_biUnion (x := q) ?_ ⟨k⁻¹, inv_mem hk, rfl⟩` and prove the remaining obligations. Use `⟨k⁻¹, inv_mem hk, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.id_apply, hd, hconj]`. Conclude with `hx`. Rewrite using `[hd, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_reps_of_finite_doubleCosets :
     ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (K : Subgroup H) (N : H),

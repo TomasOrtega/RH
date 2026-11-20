@@ -14,9 +14,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {p : 𝒪[k]}
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) < resCard k` using `by exact_mod_cast GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.one_lt_resCard k`. Establish `h1` using `GlobalTheory.LGrp.nabs_eq_zpow (Matrix.GeneralLinearGroup.det y)`. Rewrite `h1` using `[GlobalTheory.LGrp.nabs_det_of_mem_KO hy]`. Establish `h2 : ((resCard k : ℝ)) ^ (-ord k (Matrix.GeneralLinearGroup.det y)) = (resCard k : ℝ) ^ (0 : ℤ)`. Rewrite using `[← h1, zpow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_eq_zero.1 (zpow_right_injective₀ (by positivity) hq.ne' h2)`.
+A detailed English derivation is pending.
 -/
 theorem ord_det_of_mem_KO {y : GL (Fin n) k} (hy : y ∈ KO k (Fin n)) :
     ord k (Matrix.GeneralLinearGroup.det y) = 0 := by
@@ -31,9 +31,9 @@ end Cosets
 
 open MeasureTheory ValuativeRel in
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (_root_.GlobalTheory.SplitWeil.KO k (Fin n)) (_root_.GlobalTheory.SatakeBound.hermGL hp a c)`. Establish `hint` using `((_root_.GlobalTheory.SplitFlip.mem_KO_iff (h : GL (Fin n) k)).1 h.2).1`. Introduce `i j`. Rewrite using `[hh, Matrix.GeneralLinearGroup.coe_mul, Matrix.mul_apply]`. Use `Subring.sum_mem _ fun l _ => Subring.mul_mem _ ?_ (hint l j)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.GlobalTheory.SatakeBound.val_hermGL]`. Conclude with `((_root_.GlobalTheory.SatakeBound.hermMat p a c) i l).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hermGL_coset_out_entries_integral {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} {p : 𝒪[k]} (hp : Irreducible p)
@@ -51,21 +51,19 @@ private theorem hermGL_coset_out_entries_integral {k : Type} [Field k] [Valuativ
 
 open MeasureTheory ValuativeRel in
 /- English proof (translation)
-Take `⟨b, hb, w, hw, hgbw⟩` from `_root_.GlobalTheory.SplitWeil.iwasawa_blockTriangular k (Fin n) (fun i => (i : ℕ)) g`. Establish `hbint : ∀ i j, (b : Matrix (Fin n) (Fin n) k) i j ∈ 𝒪[k]`. Establish `hbg : b = g * w⁻¹` using `by rw [hgbw]; group`. Establish `hwinv` using `((_root_.GlobalTheory.SplitFlip.mem_KO_iff w).1 hw).2`. Introduce `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hbg, Matrix.GeneralLinearGroup.coe_mul, Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hg i l) (hwinv l j)`. Set `b' : Matrix (Fin n) (Fin n) 𝒪[k]` to `Matrix.of fun i j => ⟨(b : Matrix (Fin n) (Fin n) k) i j, hbint i j⟩`. Establish `hlow : ∀ i j, j < i → b' i j = 0` using `fun i j h => Subtype.ext (hb h)`. Establish `hdiag : ∀ i, b' i i ≠ 0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i h`. Establish `hb' : (b : Matrix (Fin n) (Fin n) k).BlockTriangular id` using `fun i j h => hb h`. Establish `hdet` using `Matrix.det_of_upperTriangular hb'`. Establish `hne : (b : Matrix (Fin n) (Fin n) k).det ≠ 0`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Units.ne_zero _`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hdet]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (congrArg Subtype.val h)`. Take `⟨a, c, W, hW⟩` from `_root_.GlobalTheory.SatakeBound.exists_hermMat hp b' hlow hdiag`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨a, c, ?_⟩` and prove the remaining obligations. Set `Wk : GL (Fin n) k` to `Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) W`. Establish `hWk : Wk ∈ _root_.GlobalTheory.SplitWeil.KO k (Fin n)`. Rewrite using `[_root_.GlobalTheory.SplitFlip.mem_KO_iff]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Conclude with `((W : Matrix (Fin n) (Fin n) 𝒪[k]) i j).2`. Introduce `i j`. Rewrite using `[show Wk⁻¹ = Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) W⁻¹ from (map_inv _ _).symm]`. Conclude with `((W⁻¹ : GL (Fin n) 𝒪[k]) i j).2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hhnf : _root_.GlobalTheory.SatakeBound.hermGL hp a c = b * Wk`. Use extensionality with `i j`. Rewrite using `[_root_.GlobalTheory.SatakeBound.val_hermGL, hW, Matrix.GeneralLinearGroup.coe_mul, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.mul_apply, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
-
-Both sides reduce to the same expression. Rewrite using `[hhnf, hgbw, QuotientGroup.eq]`. Use `mul_mem (inv_mem hWk) hw using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_hermGL_coset_eq_of_integral {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} {p : 𝒪[k]} (hp : Irreducible p)
@@ -117,7 +115,7 @@ private theorem exists_hermGL_coset_eq_of_integral {k : Type} [Field k] [Valuati
 
 open MeasureTheory ValuativeRel in
 /- English proof (translation)
-Establish `hq : (1 : ℝ) < _root_.GlobalTheory.SplitWeil.resCard k`. Conclude with `_root_.GlobalTheory.SplitWeil.one_lt_resCard k` after adjusting the coercions. Rewrite `hx` using `[_root_.GlobalTheory.LGrp.nabs_eq_zpow]`. Use `zpow_right_injective₀ (by linarith) hq.ne' hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem ord_eq_of_nabs_eq_resCard_zpow_neg {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {x : kˣ} {m : ℤ}
@@ -131,17 +129,17 @@ private theorem ord_eq_of_nabs_eq_resCard_zpow_neg {k : Type} [Field k] [Valuati
 
 open MeasureTheory ValuativeRel in
 /- English proof (translation)
-Establish `hp0 : (p : k) ≠ 0`. Introduce `h`. Conclude with `hp.ne_zero (Subtype.ext h)`. Use `set u : kˣ := Units.mk0 (p : k) hp0 with hu`. Establish `hu1 : _root_.GlobalTheory.SmGL.ord k u = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `ord_eq_of_nabs_eq_resCard_zpow_neg` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.SplitWeil.nabs_uniformiser hp (x := u) rfl, zpow_neg, zpow_one]`. Establish `hupow : ∀ m : ℕ, _root_.GlobalTheory.SmGL.ord k (u ^ m) = m`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `_root_.GlobalTheory.SmGL.ord_eq_zero_iff.2 (by simp)`. Consider the case `succ m ih => rw [pow_succ, _root_.GlobalTheory.SmGL.ord_mul, ih, hu1]`. Use `push_cast`.
+Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hw0 : _root_.GlobalTheory.SmGL.ord k (Matrix.GeneralLinearGroup.det w) = 0`. Apply `ord_eq_of_nabs_eq_resCard_zpow_neg` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.GLDoubling.nabs_det_of_mem_KO hw]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : Matrix.GeneralLinearGroup.det (_root_.GlobalTheory.SatakeBound.hermGL hp a c) = u ^ (∑ i, a i)`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, _root_.GlobalTheory.SatakeBound.val_hermGL, RingHom.mapMatrix_apply, show ((_root_.GlobalTheory.SatakeBound.hermMat p a c).map (algebraMap 𝒪[k] k)).det = algebraMap 𝒪[k] k (_root_.GlobalTheory.SatakeBound.hermMat p a c).det from (RingHom. …`. Simplify using `[u]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul, _root_.GlobalTheory.SmGL.ord_mul, hw0, hdet, hupow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem ord_det_hermGL_mul_eq_sum {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} {p : 𝒪[k]} (hp : Irreducible p)
@@ -181,7 +179,7 @@ private theorem ord_det_hermGL_mul_eq_sum {k : Type} [Field k] [ValuativeRel k]
 
 open MeasureTheory ValuativeRel in
 /- English proof (translation)
-The claim follows from `| 0, β, _ => by refine ⟨Summable.of_finite, ?_⟩ simpa using (hasSum_fintype (fun a : Fin 0 → ℕ => (1 : ℂ))) | n + 1, β, hβ => by obtain ⟨hs, hh⟩ := hasSum_prod_pow_eq_prod_one_sub_inv n (fun i => β i.succ) (fun i => hβ i.succ) have hg : HasSum (fun m : ℕ => β 0 ^ m) (1 - β 0)⁻¹ : …`.
+A detailed English derivation is pending.
 -/
 private theorem hasSum_prod_pow_eq_prod_one_sub_inv : ∀ (n : ℕ) (β : Fin n → ℂ), (∀ i, ‖β i‖ < 1) →
     Summable (fun a : Fin n → ℕ => ‖∏ i, β i ^ a i‖) ∧
@@ -213,25 +211,23 @@ private theorem hasSum_prod_pow_eq_prod_one_sub_inv : ∀ (n : ℕ) (β : Fin n 
 open MeasureTheory ValuativeRel in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n γ φ hφ X hX`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Set `F : (Σ a : Fin n → ℕ, _root_.GlobalTheory.SatakeBound.HermIdx p a) → {c : GL (Fin n) k ⧸ _root_.GlobalTheory.SplitWeil.KO k (Fin n) // (∀ i j, (c.out : GL (Fin n) k).1 i j ∈ 𝒪[k])}` to `fun x => ⟨(_root_.GlobalTheory.SatakeBound.hermGL hp x.1 x.2 : GL (Fin n) k ⧸ _), hermGL_coset_out_entries_integral hp x.1 x.2⟩`. Establish `hF : Function.Bijective F`. Use `⟨fun x y h => _root_.GlobalTheory.SatakeBound.hermGL_injective hp (congrArg Subtype.val h), fun s => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, c, h⟩` from `exists_hermGL_coset_eq_of_integral hp s.1.out s.2`. Use `⟨⟨a, c⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((_root_.GlobalTheory.SatakeBound.hermGL hp a c : GL (Fin n) k) : GL (Fin n) k ⧸ _) = s.1`. Rewrite using `[h]`. Conclude with `QuotientGroup.out_eq' s.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (Equiv.ofBijective F hF).hasSum_iff]`. Use `set β : Fin n → ℂ := fun i => (_root_.GlobalTheory.SplitWeil.resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * γ i * X with hβ`. Establish `hterm : ∀ x : (Σ a : Fin n → ℕ, _root_.GlobalTheory.SatakeBound.HermIdx p a), X ^ (_root_.GlobalTheory.SmGL.ord k (Matrix.GeneralLinearGroup.det (F x).1.out)).toNat * φ (F x).1.out = ∏ i, (γ i * X) ^ x.1 i`. Introduce `x`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (_root_.GlobalTheory.SplitWeil.KO k (Fin n)) (_root_.GlobalTheory.SatakeBound.hermGL hp x.1 x.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord` using `ord_det_hermGL_mul_eq_sum hp x.1 x.2 h.2`. Establish `hval` using `_root_.GlobalTheory.SatakeBound.apply_hermGL hp hφ x.1 x.2`. Express the relevant statement in the definitionally equal form `X ^ (_root_.GlobalTheory.SmGL.ord k (Matrix.GeneralLinearGroup.det (Quotient.out ((_root_.GlobalTheory.SatakeBound.hermGL hp x.1 x.2 : GL (Fin n) k) : GL (Fin n) k ⧸ _root_.GlobalTheory.SplitWeil.KO k (Fin n))))).toNat * φ (Quotient.out ((_root_.GlobalTheory.SatakeBound.hermGL hp …`. Rewrite using `[hval, hh, hord, show (∑ i, (x.1 i : ℤ)) = ((∑ i, x.1 i : ℕ) : ℤ) by push_cast; rfl, Int.toNat_natCast, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [mul_pow, mul_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : ∀ a : Fin n → ℕ, (Nat.card (_root_.GlobalTheory.SatakeBound.HermIdx p a) : ℂ) * ∏ i, (γ i * X) ^ a i = ∏ i, β i ^ a i`. Introduce `a`. Rewrite using `[_root_.GlobalTheory.SatakeBound.card_hermIdx hp a]`. Use `push_cast`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Finset.prod_congr rfl fun i _ => by simp only [hβ, mul_assoc, mul_pow]`. Establish `hfin : ∀ a : Fin n → ℕ, Finite (_root_.GlobalTheory.SatakeBound.HermIdx p a)`. Introduce `a`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.SatakeBound.card_hermIdx hp a]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (pow_ne_zero _ (by have := _root_.GlobalTheory.SplitWeil.one_lt_resCard k; omega))`. Take `⟨hsn, hsum⟩` from `hasSum_prod_pow_eq_prod_one_sub_inv n β hX`. Establish `hfib : ∀ a : Fin n → ℕ, ∑' c : _root_.GlobalTheory.SatakeBound.HermIdx p a, ∏ i, (γ i * X) ^ a i = ∏ i, β i ^ a i`. Introduce `a`. Rewrite using `[tsum_const, nsmul_eq_mul, hcard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Establish `hsig : Summable (fun x : (Σ a : Fin n → ℕ, _root_.GlobalTheory.SatakeBound.HermIdx p a) => ‖∏ i, (γ i * X) ^ x.1 i‖)`. Rewrite using `[summable_sigma_of_nonneg (fun _ => norm_nonneg _)]`. Use `⟨fun a => Summable.of_finite, hsn.congr fun a => ?_⟩` and prove the remaining obligations. Use `symm`. Use `show ∑' _ : _root_.GlobalTheory.SatakeBound.HermIdx p a, ‖∏ i, (γ i * X) ^ a i‖ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[tsum_const, nsmul_eq_mul, ← hcard, norm_mul, Complex.norm_natCast]`. Establish `hs` using `hsig.of_norm`. Establish `h2` using `hs.hasSum.sigma (fun a => (Summable.of_finite).hasSum)`. Simplify using `only [hfib] at h2`. Establish `hval` using `hsum.unique h2`.
-
-Establish `hfinal : HasSum (fun x : (Σ a : Fin n → ℕ, _root_.GlobalTheory.SatakeBound.HermIdx p a) => ∏ i, (γ i * X) ^ x.1 i) (∏ i, (1 - β i)⁻¹)`. Rewrite using `[hval]`. Conclude with `hs.hasSum`. Use `hfinal.congr_fun fun x => ?_` and prove the remaining obligations. Conclude with `hterm x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HeckeSeries.hasSum_integral_cosets : ∀ (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (γ : Fin n → ℂ)

@@ -21,19 +21,19 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ}
   {E₂ : Fin n → Fin n → Module.End ℂ D₂} {V₂ : Submodule ℂ D₂}
 
 /- English proof (translation)
-Establish `hst₁` using `closGen_stable hgap hσ₁ hD₁ hV₁ hc₁ hVK₁`. Establish `hint : ∀ g ∈ UJset ε, ∀ z ∈ closGen E₁ V₁, ICD.ext U (σ₁ g z) = σ₂ g (ICD.ext U z)` using `fun g hg z hz => ICD.ext_intertw U hU hst₁ hg hz`. Establish `hV12 : ∀ v ∈ V₁, ∃ w ∈ V₂, (w : H₂) = ICD.ext U (v : H₁)`. Establish `hK` using `data_isKTypeOf hgap hσ₁ hD₁ hV₁ hc₁ hVK₁`. Establish `hle : V₁.map D₁.subtype ≤ closGen E₁ V₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `ICD.mem_closGen (ICD.le_gen E₁ V₁ hv)`. Establish `hT` using `ICD.ktype_map (σ₂ := σ₂) (closGen E₁ V₁) (ICD.ext U : H₁ →ₗ[ℂ] H₂) (fun z hz w hw h => ICD.ext_inj U hz hw h) (fun g hg z hz => hint g (smd_inUJ_of_Kset hg) z hz) (fun g hg z hz => hst₁ g (smd_inUJ_of_Kset hg) z hz) hle hK`. Establish `hS2 : (V₁.map D₁.subtype).map (ICD.ext U : H₁ →ₗ[ℂ] H₂) ≤ closGen E₂ V₂`. Introduce and unpack `_ ⟨z, -, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `ICD.ext_mem U z`. Establish `heq` using `data_lowK_eq hgap hσ₂ hD₂ hV₂ hc₂ hVK₂ _ hS2 hT`. Introduce `v hv`. Establish `hm : (ICD.ext U : H₁ →ₗ[ℂ] H₂) (D₁.subtype v) ∈ (V₁.map D₁.subtype).map (ICD.ext U : H₁ →ₗ[ℂ] H₂)` using `Submodule.mem_map_of_mem (Submodule.mem_map_of_mem hv)`. Rewrite `hm` using `[heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, hw, e⟩` from `hm`. Conclude with `⟨w, hw, e⟩`. Set `P : Submodule ℂ D₁` to `{ carrier := {z | z ∈ genSub E₁ V₁ ∧ ∃ y : D₂, y ∈ genSub E₂ V₂ ∧ ICD.ext U (z : H₁) = (y : H₂)} add_mem' := by`. Introduce and unpack `a b ⟨ha, ya, hya, ea⟩ ⟨hb, yb, hyb, eb⟩`. Conclude with `⟨add_mem ha hb, ya + yb, add_mem hya hyb, by simp [ea, eb]⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `zero_mem' := ⟨zero_mem _, 0, zero_mem _, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨ha, ya, hya, ea⟩`. Conclude with `⟨Submodule.smul_mem _ c ha, c • ya, Submodule.smul_mem _ c hya, by simp [ea]⟩ }`. Establish `hle : genSub E₁ V₁ ≤ P`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `ICD.gen_le (fun v hv => ?_) (fun a b z hz => ?_)` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `hV12 v hv`. Conclude with `⟨ICD.le_gen E₁ V₁ hv, w, ICD.le_gen E₂ V₂ hw, e.symm⟩`. Take `⟨hz1, y, hy, e⟩` from `hz`. Conclude with `⟨ICD.gen_stable hz1 a b, E₂ a b y, ICD.gen_stable hy a b, ICD.map_E hD₁ hD₂ (ICD.ext U) (closGen E₁ V₁) hint z (ICD.mem_closGen hz1) y e a b⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, y, hy, e⟩` from `hle hx`. Use `⟨y, hy, ?_, fun a b x'' hx'' => ?_⟩` and prove the remaining obligations. Rewrite using `[← ICD.ext_apply', hx', e]`. Rewrite using `[← ICD.ext_apply', hx'', ICD.map_E hD₁ hD₂ (ICD.ext U) (closGen E₁ V₁) hint x (ICD.mem_closGen hx) y e a b]`.
+A detailed English derivation is pending.
 -/
 theorem data_equiv_derived (hgap : StdGap ε lam)
     (hσ₁ : IsURepOn (UJset ε) σ₁) (hD₁ : IsDerivedOn ε σ₁ D₁ E₁) (hV₁ : IsKIrrHW ε E₁ (lowK ε lam) V₁)
@@ -102,7 +102,7 @@ end Two
 namespace ICD
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor, Formalism.REAL.Tm, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, map_add, apply_ite (⇑f), map_zero, AlgHom.commutes]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qdet_map {A B : Type*} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B)
     (E : Fin n → Fin n → A) (u : ℂ) : f (Formalism.REAL.qdet E u) = Formalism.REAL.qdet (fun a b => f (E a b)) u := by
@@ -110,9 +110,9 @@ theorem qdet_map {A B : Type*} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B]
     List.map_ofFn, Function.comp_def, map_add, apply_ite (⇑f), map_zero, AlgHom.commutes]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qdet Formalism.REAL.qminor`. Use `S.sum_mem fun τ _ => S.mul_mem ?_ (list_prod_mem fun z hz => ?_)` and prove the remaining obligations. Rewrite using `[← zsmul_one]`. Conclude with `zsmul_mem S.one_mem _`. Take `⟨k, rfl⟩` from `(List.mem_ofFn' _ _).1 hz`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.REAL.Tm`. Use `S.add_mem ?_ (hF _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qdet_mem {B : Type*} [Ring B] [Algebra ℂ B] (S : Subalgebra ℂ B) (F : Fin n → Fin n → B)
     (hF : ∀ a b, F a b ∈ S) (u : ℂ) : Formalism.REAL.qdet F u ∈ S := by
@@ -150,17 +150,17 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ}
   {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
 
 /- English proof (translation)
-Establish `hv₀ : T.w ≠ 0`. Introduce `h`. Use `T.w_norm` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU⟩` from `sigLam_equiv_data hgap hP hv₀ hσ hD hV hc hVK hV0`. Establish `hσ₂` using `rreg_isURepOn ε`. Establish `hD₂` using `isDerivedOn_smE hσ₂`. Establish `hU' : ∀ g ∈ UJset ε, ∀ x y : closGen E V, (x : H) = σ g (y : H) → ((U.symm x : Hlam ε Ψ T.w) : L2 ε) = rreg ε g ((U.symm y : Hlam ε Ψ T.w) : L2 ε)`. Introduce `g hg x y hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hU g hg (U.symm y)`. Rewrite `h1` using `[U.apply_symm_apply]`. Establish `: x = U (sigLam ε Ψ T.w g (U.symm y))` using `Subtype.ext (hxy.trans h1.symm)`. Rewrite using `[this, U.symm_apply_apply, sigLam_coe hgap hP hv₀ hg]`. Establish `hst` using `closGen_stable hgap hσ hD hV hc hVK`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ g ∈ UJset ε, ∀ z ∈ closGen E V, ICD.ext U.symm (σ g z) = rreg ε g (ICD.ext U.symm z)` using `fun g hg z hz => ICD.ext_intertw U.symm hU' hst hg hz`. Set `R : D → smD ε (rreg ε) → Prop` to `fun x y => x ∈ genSub E V ∧ y ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ T.w) ∧ ICD.ext U.symm (x : H) = (y : L2 ε)`. Set `S` to `ICD.relAlg R (fun x y x' y' ⟨h1, h2, h3⟩ ⟨h1', h2', h3'⟩ => ⟨add_mem h1 h1', add_mem h2 h2', by simp [h3, h3']⟩) (fun c x y ⟨h1, h2, h3⟩ => ⟨Submodule.smul_mem _ c h1, Submodule.smul_mem _ c h2, by simp [h3]⟩)`. Establish `hgen : Algebra.adjoin ℂ (Set.range fun ab : Fin n × Fin n => (E ab.1 ab.2, smE ε (rreg ε) ab.1 ab.2)) ≤ S`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨⟨a, b⟩, rfl⟩`. Use `show ∀ x y, R x y → R (E a b x) (smE ε (rreg ε) a b y)`. Introduce and unpack `x y ⟨h1, h2, h3⟩`. Conclude with `⟨ICD.gen_stable h1 a b, ICD.gen_stable h2 a b, ICD.map_E hD hD₂ (ICD.ext U.symm) (closGen E V) hint x (ICD.mem_closGen h1) y h3 a b⟩`. Take `⟨y, hy, hxy, -⟩` from `data_equiv_derived hgap hσ hD hV hc hVK hσ₂ hD₂ (datumV_isKIrrHW hP hv₀) (datumV_casimir hP T.w) (datumV_kStable hP T.w) U.symm hU' x hx ⟨x, ICD.mem_closGen hx⟩ rfl`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : R x y` using `⟨hx, hy, by rw [ICD.ext_apply U.symm _ (ICD.mem_closGen hx)]; exact hxy⟩`. Establish `hpS : ∀ x y, R x y → R (p₁ x) (p₂ y)` using `hgen hp`. Take `⟨h1, -, h3⟩` from `hpS x y hR`. Use `Subtype.ext (ICD.ext_inj U.symm (ICD.mem_closGen h1) (ICD.mem_closGen (Submodule.smul_mem _ c hx)) ?_)` and prove the remaining obligations. Rewrite using `[h3, hc2 T.w hv₀ y hy, Submodule.coe_smul, Submodule.coe_smul, map_smul, hR.2.2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ICD.transfer (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -210,7 +210,7 @@ theorem ICD.transfer (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD :
   rw [h3, hc2 T.w hv₀ y hy, Submodule.coe_smul, Submodule.coe_smul, map_smul, hR.2.2]
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨(a, b), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ICD.pair_mem_adjoin {M₁ M₂ : Type*} [AddCommGroup M₁] [Module ℂ M₁] [AddCommGroup M₂] [Module ℂ M₂]
     (E₁ : Fin n → Fin n → Module.End ℂ M₁) (E₂ : Fin n → Fin n → Module.End ℂ M₂) (a b : Fin n) :
@@ -218,9 +218,9 @@ theorem ICD.pair_mem_adjoin {M₁ M₂ : Type*} [AddCommGroup M₁] [Module ℂ 
   Algebra.subset_adjoin ⟨(a, b), rfl⟩
 
 /- English proof (translation)
-Establish `hF : ∀ a b, (E a b, smE ε (rreg ε) a b) ∈ Algebra.adjoin ℂ (Set.range fun ab : Fin n × Fin n => (E ab.1 ab.2, smE ε (rreg ε) ab.1 ab.2))` using `ICD.pair_mem_adjoin _ _`. Establish `hm` using `ICD.qdet_mem _ (fun a b => (E a b, smE ε (rreg ε) a b)) hF (Y + ((n : ℂ) - 1) / 2)`. Establish `h1` using `ICD.qdet_map (AlgHom.fst ℂ _ _) (fun a b => (E a b, smE ε (rreg ε) a b)) (Y + ((n : ℂ) - 1) / 2)`. Establish `h2` using `ICD.qdet_map (AlgHom.snd ℂ _ _) (fun a b => (E a b, smE ε (rreg ε) a b)) (Y + ((n : ℂ) - 1) / 2)`. Simplify using `only [AlgHom.fst_apply, AlgHom.snd_apply] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp : (Formalism.REAL.qdet E (Y + ((n : ℂ) - 1) / 2), Formalism.REAL.qdet (smE ε (rreg ε)) (Y + ((n : ℂ) - 1) / 2)) ∈ Algebra.adjoin ℂ (Set.range fun ab : Fin n × Fin n => (E ab.1 ab.2, smE ε (rreg ε) ab.1 ab.2))`. Rewrite using `[← h1, ← h2]`. Conclude with `hm`. Conclude with `ICD.transfer hgap hσ hD hV hc hVK hV0 hP hp _ (fun v₀ hv₀ y hy => capelli_sigLam hgap hP hv₀ hcap Y y hy) x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capelli_data (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)

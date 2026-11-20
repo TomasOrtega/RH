@@ -42,7 +42,7 @@ namespace GlobalTheory.ThetaConj
 variable {D : D7} {N N' r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[← (GlobalTheory.T.hasSum_taylor_coordinateSpace_entire D N N' F' h.2.1 z).tsum_eq]`. Unfold `fnConj`. Use `tsum_congr fun α => ?_` and prove the remaining obligations. Rewrite using `[(h.2.2 α).2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -55,16 +55,16 @@ theorem CjF.fnConj_eq {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ} {
   rw [(h.2.2 α).2]; rfl
 
 /- English proof (translation)
-Rewrite using `[← h.fnConj_eq, h'.fnConj_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem CjF.unique {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ} {F F₁ F₂ : VC D N N' → ℂ}
     (h : CjF D M ρ F F₁) (h' : CjF D M ρ F F₂) : F₁ = F₂ := by
   rw [← h.fnConj_eq, h'.fnConj_eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[← (GlobalTheory.T.hasSum_taylor_coordinateSpace_entire D N N' F h.1 z).tsum_eq]`. Establish `: ∀ α, TaylorLogMetric.taylor D F α = 0` using `fun α => by`. Establish `h1` using `(h.2.2 α).2`. Rewrite `h1` using `[taylor_zero, cj_mem ρ (h.2.2 α).1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(map_eq_zero ρ).1 h1.symm`. Conclude with `congrArg Subtype.val h2`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CjF.eq_zero {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ} {F : VC D N N' → ℂ}
     (h : CjF D M ρ F 0) : F = 0 := by
@@ -78,7 +78,7 @@ theorem CjF.eq_zero {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ} {F 
   simp [this]
 
 /- English proof (translation)
-Distinguish the cases in `hz : F' = 0`. Rewrite using `[h0 hz, hz]`. Conclude with `CjF.zero D M ρ`. Substitute `he` using the available equality. Conclude with `⟨hF, hF', fun α => ⟨hc α, (GlobalTheory.T.taylorCoeff_conjugateSeries D N N' M ρ F hF' hz).1 α⟩⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cjF_of {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ} {F F' : VC D N N' → ℂ}
     (hF : Differentiable ℂ F) (hc : CoefIn D F M) (he : fnConj D M ρ F = F')
@@ -89,7 +89,7 @@ theorem cjF_of {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ} {F F' : 
     exact ⟨hF, hF', fun α => ⟨hc α, (GlobalTheory.T.taylorCoeff_conjugateSeries D N N' M ρ F hF' hz).1 α⟩⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Use `congrFun h (z - x)` as an intermediate fact. Simplify `this` using `[U]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem U_eq_zero {T : Tor D} {x : VC D N N'} {F : VC D N N' → ℂ} (h : U D T x F = 0) : F = 0 := by
   funext z
@@ -97,13 +97,13 @@ theorem U_eq_zero {T : Tor D} {x : VC D N N'} {F : VC D N N' → ℂ} (h : U D T
   simpa [U] using this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[U]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem U_of_zero (T : Tor D) (x : VC D N N') : U D T x (0 : VC D N N' → ℂ) = 0 := by
   funext z; simp [U]
 
 /- English proof (translation)
-Establish `hM : ∀ τ x, embT D τ x ∈ M` using `hD.1`. Use `GlobalTheory.T.conj_prod_comp_linearForms_of_coeff_conj D N N' r M ρ (fun _ => g) (fun _ => g') (fun j τ a c => (starRingEnd ℂ) (embT D τ (b j a c))) (fun j τ a c => (starRingEnd ℂ) (cj M ρ (embT D τ (b j a c)))) (fun _ => hg) (fun _ => hg') (fun _ => h) (fun j τ a c => ?_)` and prove the remaining obligations. Rewrite using `[← emb_conj, ← cjEmb_apply D M ρ hM, ← cjEmb_apply D M ρ hM]`. Conclude with `⟨hM _ _, (emb_conj D _ _).symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pull_cjF (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {M : IntermediateField ℚ ℂ} (ρ : M →ₐ[ℚ] ℂ)
     (hD : DataIn D (tor0 D cc δ) M) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) {g g' : ℂ → ℂ}
@@ -119,11 +119,9 @@ theorem pull_cjF (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {M : IntermediateField 
   exact ⟨hM _ _, (emb_conj D _ _).symm⟩
 
 /- English proof (translation)
-Unfold `LaS at hx ⊢`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, A, hA, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨c * w, hc w hw, A, hA, by rw [smul_smul]⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [smul_neg]`.
-
-Conclude with `neg_mem hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_LaS {T : Tor D} {Y : Set (Matrix (Fin N') (Fin N) D.host.E)} {c : ℂ}
     (hc : ∀ w ∈ T.abelian₂, c * w ∈ T.abelian₂) {x : VC D N N'} (hx : x ∈ LaS D T Y) : c • x ∈ LaS D T Y := by
@@ -137,13 +135,13 @@ theorem smul_mem_LaS {T : Tor D} {Y : Set (Matrix (Fin N') (Fin N) D.host.E)} {c
   | neg y _ hy => rw [smul_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Unfold `LaS at hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, A, hA, rfl⟩` from `hz`. Take `⟨a, ha⟩` from `hC.1 A hA`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : k • embV D T A = ∑ j, D.host.φ₀ (((a j : D.host.K) : D.host.E)) • embV D T (b j)`. Establish `h2` using `congrArg (hT.embHom N N') ha`. Rewrite `h2` using `[map_nsmul, map_sum]`. Use `h2.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Conclude with `hT.embV_smul _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm, h1, Finset.smul_sum]`. Use `sum_mem fun j _ => AddSubgroup.subset_closure ⟨_, hst (a j) w hw, j, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [smul_neg]`. Conclude with `neg_mem hy`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_mem_LaB {T : Tor D} (hT : Good D T)
     (hst : ∀ a : 𝓞 D.host.K, ∀ w ∈ T.abelian₂, D.host.φ₀ (((a : D.host.K) : D.host.E)) * w ∈ T.abelian₂)
@@ -167,15 +165,13 @@ theorem nsmul_mem_LaB {T : Tor D} (hT : Good D T)
   | neg y _ hy => rw [smul_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Establish `key : ∀ w ∈ T.abelian₂, ∀ y ∈ AddSubgroup.closure Y, w • hT.embHom N N' y ∈ LaS D T Y`. Introduce `w hw y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz => exact AddSubgroup.subset_closure ⟨w, hw, z, hz, rfl⟩`. Consider the case `zero => rw [map_zero, smul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add, smul_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg, smul_neg]`. Conclude with `neg_mem hy`.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Unfold `LaB at hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, j, rfl⟩` from `hz`. Use `key w hw _ (hC.2 j)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite `this` using `[map_nsmul, smul_comm]`. Conclude with `this`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`.
-
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [smul_neg]`. Conclude with `neg_mem hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_LaS {T : Tor D} (hT : Good D T)
     {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} {k : ℕ} {Y : Set (Matrix (Fin N') (Fin N) D.host.E)}
@@ -199,7 +195,7 @@ theorem nsmul_mem_LaS {T : Tor D} (hT : Good D T)
   | neg y _ hy => rw [smul_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Use `haveI : AddGroup.FG A₂ := (AddGroup.fg_iff_addSubgroup_fg A₂).2 hf`. Use `haveI := AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg A₂ hm.ne'`. Use `AddSubgroup.finiteIndex_of_le (H := (nsmulAddMonoidHom m : A₂ →+ A₂).range) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `h x x.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem finiteIndex_of {V : Type*} [AddCommGroup V] {A₁ A₂ : AddSubgroup V} (hf : A₂.FG) {m : ℕ}
     (hm : 0 < m) (h : ∀ x ∈ A₂, m • x ∈ A₁) : (A₁.addSubgroupOf A₂).FiniteIndex := by
@@ -210,9 +206,9 @@ theorem finiteIndex_of {V : Type*} [AddCommGroup V] {A₁ A₂ : AddSubgroup V} 
   exact h x x.2
 
 /- English proof (translation)
-Take `⟨k, f, g, rfl⟩` from `Submodule.mem_span_set'.1 hF`. Use `choose t ht hg using fun i => (g i).2`. Use `choose m hm hmt using ht`. Use `⟨k, fun i => (f i : ℂ), t, ∏ i, m i, Finset.prod_pos fun i _ => hm i, fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hq, mul_nsmul]`. Conclude with `AddSubgroup.nsmul_mem _ (hmt i) q`. Use function extensionality and compare the values at `z`. Simplify using `only [comb, Finset.sum_apply, hg]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tr_comb {T : Tor D} {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} {F : VC D N N' → ℂ}
     (hF : F ∈ Tr D T b) : ∃ (k : ℕ) (c : Fin k → ℂ) (t : Fin k → VC D N N') (m : ℕ), 0 < m ∧
@@ -229,7 +225,7 @@ theorem tr_comb {T : Tor D} {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} {F 
     rfl
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_half_int (m : ℤ) : ee ((m : ℝ) / 2) = (-1 : ℂ) ^ m := by
   unfold ee
@@ -238,9 +234,9 @@ theorem ee_half_int (m : ℤ) : ee ((m : ℝ) / 2) = (-1 : ℂ) ^ m := by
   push_cast; ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Unfold `al`. Establish `: Real.sqrt D.host.d / 2 * (Hf D T x x).re = m` using `h`. Rewrite using `[this, round_intCast]`. Unfold `wdPh`.
+Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, ee_half_int]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem al_eq {T : Tor D} {x : VC D N N'} {m : ℤ} (h : qH D T x = m) :
     al D T x = (-1 : ℂ) ^ m ∧ wdPh D T x = (-1 : ℂ) ^ m := by
@@ -252,11 +248,11 @@ theorem al_eq {T : Tor D} {x : VC D N N'} {m : ℤ} (h : qH D T x = m) :
     rw [h, ee_half_int]
 
 /- English proof (translation)
-Establish `h1 : Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (qH D T x : ℂ)) = 1`. Rewrite using `[← h]`. Unfold `wdPh ee`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.1 h1`. Establish `h2 : (qH D T x : ℂ) = m`. Establish `h3 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0` using `Complex.two_pi_I_ne_zero`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ h3` to reduce the goal to its premises. Rewrite using `[hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : qH D T x = m` using `by exact_mod_cast h2`. Rewrite using `[(al_eq h4).1, (al_eq h4).2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem al_eq_wdPh {T : Tor D} {x : VC D N N'} (h : wdPh D T x ^ 2 = 1) : al D T x = wdPh D T x := by
   have h1 : Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (qH D T x : ℂ)) = 1 := by
@@ -288,18 +284,18 @@ variable {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {ρ : Qbar �
 include hc
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.admJ_and_torsion_data_algebraic D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1).2 cc δ hc).1`.
+A detailed English derivation is pending.
 -/
 theorem dataIn : DataIn D (tor0 D cc δ) Qbar := ((GlobalTheory.T.admJ_and_torsion_data_algebraic D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1).2 cc δ hc).1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.oddThetaFunction_existence_uniqueness _ (GlobalTheory.T.idealPeriodLattice_of_curveDatum D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc).1).1.1`.
+A detailed English derivation is pending.
 -/
 theorem sg_diff : Differentiable ℂ (sgStar (lamOf D cc δ)) :=
   (GlobalTheory.T.oddThetaFunction_existence_uniqueness _ (GlobalTheory.T.idealPeriodLattice_of_curveDatum D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc).1).1.1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.oddThetaFunction_existence_uniqueness _ (GlobalTheory.T.conjugateLattice_eq_closure_independent_pair D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc Qbar ρ (dataIn hc).2.1 (dataIn hc).2.2)).1.1`.
+A detailed English derivation is pending.
 -/
 theorem sg_diff' (ρ : Qbar →ₐ[ℚ] ℂ) : Differentiable ℂ (sgStar (lamConj Qbar ρ (lamOf D cc δ))) :=
   (GlobalTheory.T.oddThetaFunction_existence_uniqueness _ (GlobalTheory.T.conjugateLattice_eq_closure_independent_pair D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc Qbar ρ (dataIn hc).2.1 (dataIn hc).2.2)).1.1
@@ -307,9 +303,9 @@ theorem sg_diff' (ρ : Qbar →ₐ[ℚ] ℂ) : Differentiable ℂ (sgStar (lamCo
 include hb
 
 /- English proof (translation)
-Establish `hU` using `GlobalTheory.T.torsionTranslatesSpan_taylorCoeffs_algebraic D cc δ hc N N' r b hb _ (GlobalTheory.T.torsionTranslate_mem_thetaPullbackSpan D cc δ hc N N' r b hb F hF x m hm hx)`. Establish `h` using `GlobalTheory.T.galois_conj_torsionTranslates_oddThetaProduct D cc δ hc Qbar ρ hK (dataIn hc) N N' r b hb k c t x x' m hm hx ht ha (he ▸ (GlobalTheory.T.torsionTranslatesSpan_taylorCoeffs_algebraic D cc δ hc N N' r b hb F hF).2) (he ▸ hU.2)`. Rewrite `h` using `[← he, hFF.fnConj_eq]`. Use `⟨cjF_of hU.1 hU.2 h.1 (differentiable_U D _ _ hFF.2.1) fun h0 => ?_, fun hw => (h.2 hw).1⟩` and prove the remaining obligations. Establish `h1` using `U_eq_zero h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `h1` using the available equality. Rewrite using `[hFF.eq_zero, U_of_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem step (hK : FixK D Qbar ρ) {F F' : VC D N N' → ℂ} (hF : F ∈ Tr D (tor0 D cc δ) b)
     {k : ℕ} {c : Fin k → ℂ} {t : Fin k → VC D N N'} {m : ℕ} (hm : 0 < m)
@@ -330,15 +326,15 @@ theorem step (hK : FixK D Qbar ρ) {F F' : VC D N N' → ℂ} (hF : F ∈ Tr D (
   rw [hFF.eq_zero, U_of_zero]
 
 /- English proof (translation)
-Establish `hD` using `dataIn hc`. Establish `hcoef : ∀ n, coef1 (sgStar (lamOf D cc δ)) n ∈ Qbar` using `fun n => by`. Establish `h` using `(GlobalTheory.T.forall_use1 D cc δ hc).1 0 ⟨1, one_pos, by simpa using zero_mem _⟩ n`. Establish `e : U1 (lamOf D cc δ) 0 (sgStar (lamOf D cc δ)) = sgStar (lamOf D cc δ)`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[U1]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hS` using `pull_cjF cc δ ρ hD b (sg_diff hc) (sg_diff' hc ρ) fun n => ⟨hcoef n, (GlobalTheory.T.galois_taylorSeries_canonicalOddTheta_all D cc δ hc Qbar ρ hK hD.2.1 hD.2.2 hcoef n).symm⟩`. Establish `hSm : pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ)) ∈ Tr D (tor0 D cc δ) b` using `Submodule.subset_span ⟨0, ⟨1, one_pos, by rw [smul_zero]; exact zero_mem _⟩, (U_zero D _ _).symm⟩`. Unfold `Tr at hF`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨t, ⟨m, hm, ht⟩, rfl⟩` from `hF`. Take `⟨t', ht'⟩` from `(GlobalTheory.T.torsionMap_carries_torus_lattices D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 (GlobalTheory.T.galStar_complexMultiplication_points D) cc δ hc Qbar ρ hK hD ((GlobalTheory.T.admJ_and_torsion_data_algebraic D (GlobalTheory.T.inducedType_thetaGenusOne_pe …`. Use `⟨_, (step hc hb hK hSm (k := 1) (c := fun _ => 1) (t := fun _ => 0) hm (fun _ => by rw [smul_zero]; exact zero_mem _) ?_ hS ht ht').1⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `z`. Simplify using `[comb, U_zero]`. Consider the case `zero => exact ⟨0, CjF.zero D _ ρ⟩`. Consider the case `add F G _ _ hF hG`. Take `⟨F', hF⟩` from `hF`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨G', hG⟩` from `hG`. Conclude with `⟨_, hF.add hG⟩`. Consider the case `smul a F _ hF`. Take `⟨F', hF⟩` from `hF`. Conclude with `⟨_, hF.mul a.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_conj_fix (hK : FixK D Qbar ρ) {F : VC D N N' → ℂ} (hF : F ∈ Tr D (tor0 D cc δ) b) :
     ∃ F', CjF D Qbar ρ F F' := by
@@ -372,19 +368,17 @@ theorem exists_conj_fix (hK : FixK D Qbar ρ) {F : VC D N N' → ℂ} (hF : F �
     exact ⟨_, hF.mul a.2⟩
 
 /- English proof (translation)
-Establish `hG` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Take `⟨s, c, t, m, hm, ht, he⟩` from `tr_comb hF`. Establish `hmk : 0 < m * k` using `Nat.mul_pos hm hk`. Take `⟨h1, -, h2⟩` from `GlobalTheory.T.torsionMap_carries_torus_lattices D hG (GlobalTheory.T.galStar_complexMultiplication_points D) cc δ hc Qbar ρ hK (dataIn hc) ((GlobalTheory.T.admJ_and_torsion_data_algebraic D hG).2 cc δ hc).2 N N' r b hb (2 * (m * k)) (by omega)`. Use `⟨AdpB D (tor0 D cc δ) Qbar ρ b (2 * (m * k)), h1, fun Y hY hKL => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h3, h4, h5⟩` from `h2 k Y hk ⟨2 * m, by ring⟩ hY`. Use `⟨h3, h4, h5, fun x x' hR hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : (m * k) • x ∈ LaB D (tor0 D cc δ) b` using `nsmul_mem_LaB (isTraceCompatibleTorusEmbedding_standardTorus D hG cc δ) (GlobalTheory.T.idealPeriodLattice_of_curveDatum D hG cc δ hc).2.2.2.2 (hY.mul m) hx`. Take `⟨h6, h7⟩` from `step hc hb hK hF hmk (fun i => by`. Rewrite using `[mul_nsmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.nsmul_mem _ (ht i) k) he hFF hx1 hR`. Take `⟨q, hq⟩` from `(GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hG cc δ hc N N' _ hKL).2.2.2.2.2.2 x hx`. Take `⟨e1, e2⟩` from `al_eq hq`. Establish `hpm : (-1 : ℂ) ^ q = 1 ∨ (-1 : ℂ) ^ q = -1`. Break down `Int.even_or_odd q with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl h.neg_one_zpow`. Conclude with `Or.inr h.neg_one_zpow`. Establish `hmem : (-1 : ℂ) ^ q ∈ Qbar` using `zpow_mem (neg_mem (one_mem _)) q`. Establish `h8` using `h7 (e2 ▸ hmem)`. Rewrite `h8` using `[e2]`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h9 : al D (torConj D (tor0 D cc δ) Qbar ρ) x' = cj Qbar ρ ((-1 : ℂ) ^ q)`. Rewrite using `[al_eq_wdPh, h8]`. Rewrite using `[← h8]`. Break down `hpm with h | h` into its components or cases. Rewrite using `[h, cj_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Rewrite using `[h, cj_neg_one]`. Evaluate the numerical expressions. Unfold `aU`. Rewrite using `[h9, e1]`.
-
-Conclude with `h6.mul hmem`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galRel_fix (hK : FixK D Qbar ρ) {F F' : VC D N N' → ℂ} (hF : F ∈ Tr D (tor0 D cc δ) b)
     (hFF : CjF D Qbar ρ F F') {k : ℕ} (hk : 0 < k) :
@@ -423,21 +417,21 @@ theorem galRel_fix (hK : FixK D Qbar ρ) {F F' : VC D N N' → ℂ} (hF : F ∈ 
 end Fix
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `[vBar]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vBar_invol (x : VC D N N') : vBar D (vBar D x) = x := by
   funext τ i j; simp [vBar]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `[vBar]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vBar_sub (x y : VC D N N') : vBar D (x - y) = vBar D x - vBar D y := by
   funext τ i j; simp [vBar]
 
 /- English proof (translation)
-Take `⟨e, Λ⟩` from `T`. Unfold `torBar`. Use `congr 1`. Use function extensionality and compare the values at `τ x`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use extensionality with `z`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem torBar_torBar (T : Tor D) : torBar D (torBar D T) = T := by
   obtain ⟨e, Λ⟩ := T
@@ -447,13 +441,13 @@ theorem torBar_torBar (T : Tor D) : torBar D (torBar D T) = T := by
   · ext z; simp
 
 /- English proof (translation)
-Unfold `LaS at hx ⊢`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, A, hA, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨(starRingEnd ℂ) w, ⟨w, hw, rfl⟩, A, hA, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `τ i j`. Simplify using `[vBar, embV, torBar]`. Consider the case `zero`. Establish `: vBar D (0 : VC D N N') = 0` using `by funext τ i j; simp [vBar]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz`. Establish `: vBar D (y + z) = vBar D y + vBar D z` using `by funext τ i j; simp [vBar]`. Rewrite using `[this]`. Conclude with `add_mem hy hz`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `neg y _ hy`. Establish `: vBar D (-y) = -vBar D y` using `by funext τ i j; simp [vBar]`. Rewrite using `[this]`. Conclude with `neg_mem hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vBar_mem {T : Tor D} {Y : Set (Matrix (Fin N') (Fin N) D.host.E)} {x : VC D N N'}
     (hx : x ∈ LaS D T Y) : vBar D x ∈ LaS D (torBar D T) Y := by
@@ -474,9 +468,9 @@ theorem vBar_mem {T : Tor D} {Y : Set (Matrix (Fin N') (Fin N) D.host.E)} {x : V
     rw [this]; exact neg_mem hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `vBar_mem h` as an intermediate fact. Rewrite `this` using `[vBar_invol]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `vBar_mem h` as an intermediate fact. Rewrite `this` using `[torBar_torBar]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem vBar_mem_iff {T : Tor D} {Y : Set (Matrix (Fin N') (Fin N) D.host.E)} {x : VC D N N'} :
     vBar D x ∈ LaS D T Y ↔ x ∈ LaS D (torBar D T) Y := by
@@ -485,11 +479,11 @@ theorem vBar_mem_iff {T : Tor D} {Y : Set (Matrix (Fin N') (Fin N) D.host.E)} {x
   · intro h; have := vBar_mem h; rwa [torBar_torBar] at this
 
 /- English proof (translation)
-Unfold `area`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq]`. Use `and_congr_right fun _ => ⟨?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨_, ⟨w₁, h1, rfl⟩, _, ⟨w₂, h2, rfl⟩, rfl⟩`. Use `⟨w₁, h1, w₂, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← abs_neg]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨w₁, h1, w₂, h2, rfl⟩`. Use `⟨_, ⟨w₁, h1, rfl⟩, _, ⟨w₂, h2, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← abs_neg]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -507,16 +501,16 @@ theorem area_bar (T : Tor D) : area (torBar D T).abelian₂ = area T.abelian₂ 
     rw [← abs_neg]; congr 1; simp; ring
 
 /- English proof (translation)
-Simplify using `[Hf, area_bar, vBar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_torBar (T : Tor D) (x y : VC D N N') :
     Hf D (torBar D T) (vBar D x) (vBar D y) = (starRingEnd ℂ) (Hf D T x y) := by
   simp [Hf, area_bar, vBar]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `h1` using `Hf_torBar T (vBar D z) (vBar D x)`. Establish `h2` using `Hf_torBar T (vBar D x) (vBar D x)`. Rewrite `h1`, `h2` using `[vBar_invol]`. Rewrite `h1` using `[vBar_invol]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : vBar D (z + x) = vBar D z + vBar D x` using `by funext τ i j; simp [vBar]`. Simplify using `only [cBar, aU, U, al, h1, h2, h3, map_mul, ← Complex.exp_conj, map_zpow₀, Complex.conj_re]`. Simplify using `[map_ofNat]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cBar_aU (T : Tor D) (x : VC D N N') (F : VC D N N' → ℂ) :
     cBar D (aU D T (vBar D x) F) = aU D (torBar D T) x (cBar D F) := by
@@ -530,7 +524,7 @@ theorem cBar_aU (T : Tor D) (x : VC D N N') (F : VC D N N' → ℂ) :
   simp [map_ofNat]
 
 /- English proof (translation)
-Introduce `z`. Establish `h` using `(hF (star z)).star_star`. Rewrite `h` using `[star_star]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entire_cBar {F : VC D N N' → ℂ} (hF : Differentiable ℂ F) :
     Differentiable ℂ (cBar D F) := by
@@ -540,21 +534,21 @@ theorem entire_cBar {F : VC D N N' → ℂ} (hF : Differentiable ℂ F) :
   exact h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[cBar, vBar_invol]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cBar_cBar (F : VC D N N' → ℂ) : cBar D (cBar D F) = F := by
   funext z; simp [cBar, vBar_invol]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[rhoBar]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rhoBar_rhoBar (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) : rhoBar M (rhoBar M ρ) = ρ := by
   ext x; simp [rhoBar]
 
 /- English proof (translation)
-Rewrite `he` using `[h.fnConj_eq]`. Use `cjF_of h.1 (fun α => (h.2.2 α).1) he (entire_cBar h.2.1) fun h0 => ?_` and prove the remaining obligations. Establish `: F' = 0`. Rewrite using `[← cBar_cBar F', h0]`. Use function extensionality and compare the values at `z`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[cBar]`. Substitute `this` using the available equality. Conclude with `h.eq_zero`.
+Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem CjF.bar {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ} {F F' : VC D N N' → ℂ}
     (h : CjF D M ρ F F') (he : fnConj D M (rhoBar M ρ) F = cBar D (fnConj D M ρ F)) :
@@ -567,11 +561,9 @@ theorem CjF.bar {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ} {F F' :
   exact h.eq_zero
 
 /- English proof (translation)
-Take `⟨R, h1, h2⟩` from `h`. Use `⟨fun x x' => R x (vBar D x'), fun x x' y y' hx hy => ?_, fun Y hY hK => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[vBar_sub]`. Conclude with `h1 _ _ _ _ hx hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h3, h4, h5, h6⟩` from `h2 Y hY hK`. Use `⟨fun x hx => ?_, fun x' hx' => h4 _ (vBar_mem_iff.2 hx'), fun x x' hR => ?_, fun x x' hR hx => ?_⟩` and prove the remaining obligations. Take `⟨x', hx', hR⟩` from `h3 x hx`. Conclude with `⟨vBar D x', vBar_mem hx', by beta_reduce; rwa [vBar_invol]⟩`. Rewrite using `[h5 _ _ hR, vBar_mem_iff]`.
-
-Rewrite using `[← cBar_aU]`. Conclude with `(h6 _ _ hR hx).bar (he _)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GalRel.bar {T T' : Tor D} {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ}
     {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} {k : ℕ} {F F' : VC D N N' → ℂ}
@@ -590,11 +582,11 @@ theorem GalRel.bar {T T' : Tor D} {M : IntermediateField ℚ ℂ} {ρ : M →ₐ
     exact (h6 _ _ hR hx).bar (he _)
 
 /- English proof (translation)
-Break down `(GlobalTheory.T.cmTheta_complexConjugation_compatible D cc δ hc Qbar ρ (dataIn hc)).1 with hK | hK` into its components or cases. Take `⟨F', h⟩` from `exists_conj_fix hc hb hK hF`. Conclude with `⟨F', h, galRel_fix hc hb hK hF h hk⟩`. Take `⟨F', h⟩` from `exists_conj_fix hc hb hK hF`. Take `⟨-, h1, h2⟩` from `GlobalTheory.T.cmTheta_complexConjugation_compatible D cc δ hc Qbar (rhoBar Qbar ρ) (dataIn hc)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `fun G => (h2 N N' ⊥ ⊥ G).1`. Establish `h4` using `(galRel_fix hc hb hK hF h hk).bar h3`. Establish `h5` using `h.bar (h3 F)`. Rewrite `h4` using `[← h1]`. Rewrite `h4`, `h5` using `[rhoBar_rhoBar]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, h5, h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem galRel_all {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) (ρ : Qbar →ₐ[ℚ] ℂ)
     {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} (hb : OnB D b) {F : VC D N N' → ℂ}
@@ -614,29 +606,27 @@ theorem galRel_all {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) (�
     exact ⟨_, h5, h4⟩
 
 /- English proof (translation)
-Establish `hG` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Establish `hT` using `isTraceCompatibleTorusEmbedding_standardTorus D hG cc δ`. Establish `hst` using `(GlobalTheory.T.idealPeriodLattice_of_curveDatum D hG cc δ hc).2.2.2.2`. Take `⟨F', hFF, R, hsub, hR⟩` from `galRel_all hc ρ hb hF hk`. Take `⟨-, a2, a3, a4⟩` from `hR Y₁ h₁ k₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, b2, -, b4⟩` from `hR Y₂ h₂ k₂`. Take `⟨-, -, l1, -, l2, -, l3⟩` from `GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hG cc δ hc N N' _ k₂`. Establish `hB : ∀ x ∈ LaS D (tor0 D cc δ) Y₂, k • x ∈ LaB D (tor0 D cc δ) b` using `fun x hx => nsmul_mem_LaB hT hst h₂ hx`. Establish `hfin` using `finiteIndex_of (A₁ := LaS D (tor0 D cc δ) Y₁) l2 (Nat.mul_pos hk hk) fun x hx => by`. Rewrite using `[mul_nsmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nsmul_mem_LaS hT h₁ (hB x hx)`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_integer_map_eq_halfOneAddSqrt D`. Establish `hri` using `GlobalTheory.T.twistedTranslateClassInvariant_of_mem_thetaSpace D _ N N' _ _ F l3 (fun x hx y hy => l1 _ (smul_mem_LaS (fun w hw => ha ▸ hst a w hw) hx) y hy) hth`. Establish `hiff : ∀ x x' y y', R x x' → R y y' → (x - y ∈ LaS D (tor0 D cc δ) Y₁ ↔ x' - y' ∈ LaS D (torConj D (tor0 D cc δ) Qbar ρ) Y₁)` using `fun x x' y y' hx hy => a3 _ _ (hsub _ _ _ _ hx hy)`. Establish `hri' : RepInd D (torConj D (tor0 D cc δ) Qbar ρ) (LaS D (torConj D (tor0 D cc δ) Qbar ρ) Y₁) (LaS D (torConj D (tor0 D cc δ) Qbar ρ) Y₂) F'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x' hx' y' hy' hd`. Take `⟨x, hx, rx⟩` from `b2 x' hx'`. Take `⟨y, hy, ry⟩` from `b2 y' hy'`. Establish `e` using `hri x hx y hy ((hiff _ _ _ _ rx ry).2 hd)`. Conclude with `(b4 _ _ rx hx).unique (e ▸ b4 _ _ ry hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, x, x', hx, e1, e2⟩` from `GlobalTheory.T.thetaIntertwiner_pair_eq_sum_corresponding_representatives D _ _ N N' _ _ _ _ F F' R hfin hri hri' b1 b2 hiff`. Establish `hsq : ((Real.sqrt (n : ℝ) : ℝ) : ℂ) * ((Real.sqrt (n : ℝ) : ℝ) : ℂ) = n`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg n)]`. Simplify using the standard rewrite rules. Establish `hsm : ((Real.sqrt (n : ℝ) : ℝ) : ℂ) ∈ Qbar`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_algebraicClosure_iff]`. Use `IsAlgebraic.of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[sq, hsq]`. Conclude with `isAlgebraic_nat n`. Establish `him` using `inv_mem hsm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, F', hFF, ⟨hFF.2.1, fun y' hy' => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Establish `hal : ∀ i, al D (tor0 D cc δ) (x i) ∈ Qbar` using `fun i => zpow_mem (neg_mem (one_mem _)) _`. Use `Submodule.smul_mem _ (⟨_, him⟩ : Qbar) (Submodule.sum_mem _ (t := Finset.univ) fun i _ => Submodule.smul_mem _ (⟨_, hal i⟩ : Qbar) (GlobalTheory.T.torsionTranslate_mem_thetaPullbackSpan D cc δ hc N N' r b hb F hF (x i) k hk (hB _ (hx i).1)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Take `⟨y, hy, ry⟩` from `a2 y' hy'`. Establish `h` using `a4 _ _ ry hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : aU D (tor0 D cc δ) y F = F` using `funext (hth.2 y hy)`. Rewrite `h` using `[e]`. Conclude with `congrFun (h.unique hFF)`. Establish `h` using `(CjF.sum Finset.univ fun i _ => b4 _ _ (hx i).2.2 (hx i).1).mul him`. Establish `hs : cj Qbar ρ ((Real.sqrt (n : ℝ) : ℝ) : ℂ)⁻¹ ^ 2 = ((Real.sqrt (n : ℝ) : ℝ) : ℂ)⁻¹ ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sq, sq, ← cj_mul ρ him him, ← mul_inv, hsq, cj_mem ρ (inv_mem (natCast_mem _ n))]`. Establish `: (⟨(n : ℂ)⁻¹, inv_mem (natCast_mem _ n)⟩ : Qbar) = (n : Qbar)⁻¹` using `rfl`. Rewrite using `[this, map_inv₀, map_natCast]`. Rewrite using `[e1, e2]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hs with hs | hs` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, Or.inl rfl, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hs]`. Simplify `h` using `only [one_mul]`. Use `⟨-1, Or.inr rfl, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hs]`.
-
-Simplify `h` using `only [neg_mul, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem conj_iop {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) (ρ : Qbar →ₐ[ℚ] ℂ)
     {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} (hb : OnB D b) {F : VC D N N' → ℂ}
@@ -715,11 +705,11 @@ theorem conj_iop {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) (ρ 
       simpa only [neg_mul, one_mul] using h
 
 /- English proof (translation)
-Take `⟨hκ, h⟩` from `h`. Establish `hm : ∀ x : Qbar, ρ x ∈ Qbar` using `fun x => by`. Rewrite using `[mem_algebraicClosure_iff]`. Establish `hx : IsAlgebraic ℚ (Qbar.val x)` using `(mem_algebraicClosure_iff).1 x.2`. Conclude with `((isAlgebraic_algHom_iff Qbar.val Subtype.val_injective).1 hx).algHom ρ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `fun σ : Qbar →+* ℂ => h (σ.comp ((ρ : Qbar →+* ℂ).codRestrict Qbar.toSubfield hm))`. Rewrite using `[cj_mem ρ hκ]`. Break down `hs with rfl | rfl` into its components or cases. Rewrite using `[mul_one]`. Conclude with `⟨hm _, h1⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_neg_one]`. Use `⟨neg_mem (hm _), fun σ => ?_⟩` and prove the remaining obligations. Establish `: (⟨-ρ ⟨κ, hκ⟩, neg_mem (hm _)⟩ : Qbar) = -⟨ρ ⟨κ, hκ⟩, hm _⟩` using `rfl`. Rewrite using `[this, map_neg, norm_neg]`. Conclude with `h1 σ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mod1All_cj (ρ : Qbar →ₐ[ℚ] ℂ) {κ sg : ℂ} (h : Mod1All κ) (hs : sg = 1 ∨ sg = -1) :
     Mod1All (cj Qbar ρ κ * sg) := by
@@ -739,7 +729,7 @@ theorem mod1All_cj (ρ : Qbar →ₐ[ℚ] ℂ) {κ sg : ℂ} (h : Mod1All κ) (h
     exact h1 σ
 
 /- English proof (translation)
-Unfold `GL3Theta.th0 U1`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_thetaTorsionTranslate {Λ : AddSubgroup ℂ} (h : Differentiable ℂ (sgStar Λ)) (t : ℂ) :
     Differentiable ℂ (GL3Theta.th0 Λ t) := by
@@ -747,29 +737,25 @@ theorem differentiable_thetaTorsionTranslate {Λ : AddSubgroup ℂ} (h : Differe
   fun_prop
 
 /- English proof (translation)
-Introduce `D cc δ hc t0 ht0 N N' L L' hL hL' _ G hE M ρ₀ hD₀ hcG`. Establish `hG` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Establish `hD` using `dataIn hc`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_algClosure_embedding_extending_on_algebraic M ρ₀`. Establish `hlam : lamConj M ρ₀ (lamOf D cc δ) = lamConj Qbar ρ (lamOf D cc δ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hρ _ hD.2.1 hD₀.2.1`. Establish `h3` using `hρ _ hD.2.2 hD₀.2.2`. Unfold `lamConj`. Use `congr 1`. Use function extensionality and compare the values at `Λ'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrArg₂ (fun a b => g2 Λ' = a ∧ g3 Λ' = b) h2 h3`. Establish `htor : torConj D (tor0 D cc δ) M ρ₀ = torConj D (tor0 D cc δ) Qbar ρ`. Unfold `torConj`. Use `congr 1`. Use function extensionality and compare the values at `τ x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `hρ _ (hD.1 τ x) (hD₀.1 τ x)`. Establish `hfn : ∀ F : VC D N N' → ℂ, CoefIn D F Qbar → CoefIn D F M → fnConj D M ρ₀ F = fnConj D Qbar ρ F` using `fun F h1 h2 => by`. Use function extensionality and compare the values at `z`. Conclude with `tsum_congr fun α => congrArg (· * mono D α z) (hρ _ (h1 α) (h2 α))`. Take `⟨b, κ, hb, hκ, rfl⟩` from `hE`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk, hC⟩` from `GlobalTheory.T.exists_homLattice_commensurable_orthonormal D N N' _ b L L' hb hL hL'`. Establish `kB : KLat D (tor0 D cc δ) (LaB D (tor0 D cc δ) b)` using `Or.inl ⟨_, b, hb, rfl⟩`. Establish `kL : KLat D (tor0 D cc δ) (La D (tor0 D cc δ) L L')` using `Or.inr ⟨L, L', hL, hL', rfl⟩`. Take `⟨-, -, c1, c2, -⟩` from `GlobalTheory.T.coords_along_orthonormal_realSubfield_basis D hG cc δ N N' _ b hb`. Take `⟨d1, d2⟩` from `GlobalTheory.T.halfPeriodTheta_differentiable_and_signedTranslate_invariant D hG cc δ hc t0 ht0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hth0` using `GlobalTheory.T.orthoProductTheta_mem_thetaSpace_of_lattice D (tor0 D cc δ) N N' _ b _ c1 c2 d1 d2`. Establish `hI` using `(GlobalTheory.T.intertwinerUnitary_all D cc δ hc N N' _ _ kB kL _ hth0).2.1`. Establish `hCb : Comm D b k (Set.range b)` using `by simpa using (comm_range D b).mul k`. Take `⟨m1, F₀', m2, -, sg, hsg, m3⟩` from `conj_iop hc ρ hb (GlobalTheory.T.pullB_th0_mem_tr D cc δ hc t0 ht0 N N' _ b hb) hk hCb hC (LaB_eq D _ b ▸ kB) kL (LaB_eq D _ b ▸ hth0)`. Rewrite `m1` using `[← LaB_eq, ← La_eq]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `m3` using `[← LaB_eq, ← La_eq, ← LaB_eq, ← La_eq]`. Establish `m4` using `m3.mul hκ.1`. Establish `hGm` using `Submodule.smul_mem _ (⟨κ, hκ.1⟩ : Qbar) m1`. Use `set G : VC D N N' → ℂ := fun z => κ * Iop D (tor0 D cc δ) (LaB D (tor0 D cc δ) b) (La D (tor0 D cc δ) L L') (pullB D (tor0 D cc δ) b (GL3Theta.th0 (tor0 D cc δ).abelian₂ t0)) z with hGd`. Express the relevant statement in the definitionally equal form `G ∈ _ at hGm`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `CjF D Qbar ρ G _ at m4`. Establish `hGth : G ∈ ThSp D (tor0 D cc δ) (La D (tor0 D cc δ) L L')`. Use `⟨m4.1, fun x hx z => ?_⟩` and prove the remaining obligations. Use `hI.2 x hx z` as an intermediate fact. Conclude with `Eq.trans (by simp only [hGd, U]; rw [mul_left_comm κ, mul_assoc κ]; rfl) (congrArg (κ * ·) this)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[htor, hlam, hfn G (fun α => (m4.2.2 α).1) hcG]`. Use `⟨?_, fun t0' ht0' => ⟨b, cj Qbar ρ κ * sg, hb, mod1All_cj ρ hκ hsg, ?_⟩, fun L₁ L₁' hL₁ hL₁' hcI => ?_⟩` and prove the remaining obligations. Take `⟨-, G', n1, n2, -⟩` from `conj_iop hc ρ hb hGm hk hC hC kL kL hGth`. Rewrite using `[n1.fnConj_eq]`. Conclude with `n2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, u1, u2⟩` from `GlobalTheory.T.forall_use1 D cc δ hc`. Establish `e` using `m2.unique (pull_cjF cc δ ρ hD b d1 (differentiable_thetaTorsionTranslate (sg_diff' hc ρ) t0') fun n => ⟨u1 t0 ht0 n, (u2 Qbar ρ hD.2.1 hD.2.2 t0 t0' ht0 ht0' (u1 t0 ht0) n).symm⟩)`. Rewrite using `[m4.fnConj_eq, e]`. Use function extensionality and compare the values at `z`. Conclude with `(mul_assoc _ _ _).symm`.
-
-Take `⟨k₁, hk₁, hC₁⟩` from `GlobalTheory.T.exists_homLattice_commensurable_orthonormal D N N' _ b L₁ L₁' hb hL₁ hL₁'`. Establish `hC₂` using `hC₁.mul k`. Rewrite `hC₂` using `[mul_comm k k₁]`. Take `⟨-, G', n1, -, s, hs, n2⟩` from `conj_iop hc ρ hb hGm (Nat.mul_pos hk₁ hk) (hC.mul k₁) hC₂ kL (Or.inr ⟨L₁, L₁', hL₁, hL₁', rfl⟩) hGth`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[n1.fnConj_eq]`. Conclude with `(hfn _ (fun α => (n2.2.2 α).1) hcI).trans n2.fnConj_eq`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem useConj_all : ∀ D : D7, useConj D := by
   intro D cc δ hc t0 ht0 N N' L L' hL hL' _ G hE M ρ₀ hD₀ hcG

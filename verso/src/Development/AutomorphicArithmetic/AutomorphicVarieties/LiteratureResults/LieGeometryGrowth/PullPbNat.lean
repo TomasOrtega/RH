@@ -5,15 +5,15 @@ open UpperTheory.V.Lit.Geo
 open scoped ContDiff
 
 /- English proof (translation)
-Establish `hd : ∀ (U : V → V) (x : V), DifferentiableAt ℝ U x → ∀ v : V, fderiv ℝ (flow U t) x v = v + t • fderiv ℝ U x v`. Introduce `U x hU v`. Establish `h` using `(hasFDerivAt_id x).add (hU.hasFDerivAt.const_smul t)`. Establish `hfl : flow U t = id + t • U`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[flow]`. Rewrite using `[hfl, h.fderiv]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Simplify using `only [flow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[he p hp]`. Simplify using `[map_add, map_smul]`. Introduce `v`. Establish `hWd : DifferentiableAt ℝ W p` using `(hW.1.contDiffAt (hY.mem_nhds hp)).differentiableAt (by simp)`. Establish `hW'd : DifferentiableAt ℝ W' (ρ p)` using `(hW'.1.contDiffAt (hY.mem_nhds (hρ p hp))).differentiableAt (by simp)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : (fun x => W' (ρ x)) =ᶠ[nhds p] (fun x => ρ (W x))` using `by filter_upwards [hY.mem_nhds hp] with x hx using he x hx`. Establish `hder : fderiv ℝ W' (ρ p) (ρ v) = ρ (fderiv ℝ W p v)`. Establish `h1` using `heq.fderiv_eq (𝕜 := ℝ)`. Establish `c1 : fderiv ℝ (fun x => W' (ρ x)) p = (fderiv ℝ W' (ρ p)).comp ρ` using `(hW'd.hasFDerivAt.comp p ρ.hasFDerivAt).fderiv`. Establish `c2 : fderiv ℝ (fun x => ρ (W x)) p = ρ.comp (fderiv ℝ W p)` using `(ρ.hasFDerivAt.comp p hWd.hasFDerivAt).fderiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun L => L v) (c1.symm.trans (h1.trans c2))`. Simplify using `using h3`. Rewrite using `[hd W' (ρ p) hW'd, hd W p hWd, hder]`. Simplify using `[map_add, map_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pbNat_flow {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {Y : Set V} (hY : IsOpen Y)
     (ρ : V →L[ℝ] V) {W W' : V → V} (hW : IsField Y W) (hW' : IsField Y W') (hρ : ∀ p ∈ Y, ρ p ∈ Y)
@@ -51,21 +51,21 @@ private theorem pbNat_flow {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     simp [map_add, map_smul]
 
 /- English proof (translation)
-Unfold `PbNat`. Introduce `V F _ _ _ _ _ _ Y hY ρ A W W' hW hW' hρ he q`. Prove the components needed by the constructor for the conclusion. Introduce `w w' hww t ht p hp v`. Take `⟨h1, h2⟩` from `pbNat_flow hY ρ hW hW' hρ he t hp`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pb_apply, pb_apply, h1]`. Simplify using `only [h2]`. Conclude with `hww _ (hW.2 p hp t ht) _`. Introduce `w w' hww`. Establish `hb1 : ∀ t ∈ Set.Icc (0 : ℝ) 1, ∀ p ∈ Y, ∀ v : Fin q → V, (hk W' t w' (ρ p)) (fun i => ρ (v i)) = A ((hk W t w p) v)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht p hp v`. Take `⟨h1, h2⟩` from `pbNat_flow hY ρ hW hW' hρ he t hp`. Rewrite using `[hk_apply, hk_apply, h1, he p hp]`. Simplify using `only [h2]`. Use `hww (flow W t p) (hW.2 p hp t ht) (Matrix.vecCons (W p) fun i => fderiv ℝ (flow W t) p (v i)) using 2` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp`. Use `⟨hb1, fun hwc hw'c p hp v => ?_⟩` and prove the remaining obligations. Establish `hk1` using `(hkSmooth V F Y hY W hW q w hwc).2.2.1 p hp`. Establish `hk2` using `(hkSmooth V F Y hY W' hW' q w' hw'c).2.2.1 (ρ p) (hρ p hp)`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1 : IntervalIntegrable (fun t => hk W t w p) MeasureTheory.volume 0 1`. Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises. Rewrite using `[Set.uIcc_of_le zero_le_one]`. Conclude with `hk1`. Establish `i2 : IntervalIntegrable (fun t => hk W' t w' (ρ p)) MeasureTheory.volume 0 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises. Rewrite using `[Set.uIcc_of_le zero_le_one]`. Conclude with `hk2`. Establish `i3 : IntervalIntegrable (fun t => (hk W t w p) v) MeasureTheory.volume 0 1`. Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.uIcc_of_le zero_le_one]`. Conclude with `(ContinuousAlternatingMap.apply ℝ V F v).continuous.comp_continuousOn hk1`. Establish `e1 : (∫ t in (0 : ℝ)..1, hk W' t w' (ρ p)) (fun i => ρ (v i)) = ∫ t in (0 : ℝ)..1, (hk W' t w' (ρ p)) (fun i => ρ (v i))` using `((ContinuousAlternatingMap.apply ℝ V F (fun i => ρ (v i))).intervalIntegral_comp_comm i2).symm`. Establish `e2 : (∫ t in (0 : ℝ)..1, hk W t w p) v = ∫ t in (0 : ℝ)..1, (hk W t w p) v` using `((ContinuousAlternatingMap.apply ℝ V F v).intervalIntegral_comp_comm i1).symm`. Unfold `hom`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, e2, ← A.intervalIntegral_comp_comm i3]`. Apply `intervalIntegral.integral_congr` to reduce the goal to its premises. Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le zero_le_one]`. Conclude with `hb1 t ht p hp v`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.pbNat :
     PbNat := by

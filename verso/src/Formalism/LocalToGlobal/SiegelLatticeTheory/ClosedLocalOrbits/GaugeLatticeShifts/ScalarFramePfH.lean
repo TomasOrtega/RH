@@ -18,20 +18,20 @@ section Lat
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
 /- English proof (translation)
-Take `⟨p, hp0, hp⟩` from `Ring.not_isField_iff_exists_prime.1 (NumberField.RingOfIntegers.not_isField E)`. Conclude with `⟨⟨p, hp, hp0⟩, trivial⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hos : ∃ _P : HeightOneSpectrum (𝓞 E), True := by
   obtain ⟨p, hp0, hp⟩ := Ring.not_isField_iff_exists_prime.1 (NumberField.RingOfIntegers.not_isField E)
   exact ⟨⟨p, hp, hp0⟩, trivial⟩
 
 /- English proof (translation)
-Take `⟨P, -⟩` from `exists_hos (E := E)`. Use `P.isPrime` as an intermediate fact. Take `⟨c, hc0, -, heq⟩` from `hc.1 P`. Rewrite using `[Xsp, FlagG.X, Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1 : c a • F.fl.e a ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (XLam Λ F)`. Rewrite using `[heq]`. Conclude with `⟨1, Submonoid.one_mem _, by rw [one_smul]; exact Submodule.subset_span ⟨a, rfl⟩⟩`. Take `⟨s, hs, hsx⟩` from `h1`. Establish `hs0 : (algebraMap (𝓞 E) E s) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `(FaithfulSMul.algebraMap_injective (𝓞 E) E) (by rw [h, map_zero])`. Rewrite using `[this]`. Conclude with `P.asIdeal.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : s • (c a • F.fl.e a) ∈ spanE S (XLam Λ F)` using `Submodule.subset_span hsx`. Establish `e : F.fl.e a = ((algebraMap (𝓞 E) E s) * c a)⁻¹ • (s • (c a • F.fl.e a))`. Rewrite using `[algebra_compatible_smul E s, smul_smul, smul_smul, mul_assoc, inv_mul_cancel₀ (mul_ne_zero hs0 (hc0 a)), one_smul]`. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_le_spanE_of_conv (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (g : ℕ) (hc : IsFixedConv Λ g F) :
     Xsp F ≤ spanE S (XLam Λ F) := by
@@ -58,7 +58,7 @@ theorem X_le_spanE_of_conv (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (g : 
   exact Submodule.smul_mem _ _ hmem
 
 /- English proof (translation)
-Establish `h : (fun a : Fin r => F.fvec a.castSucc) = F.e` using `funext fun a => fvec_castSucc F a`. Use `show Submodule.span E (Set.range fun a : Fin r => F.fvec a.castSucc) = _`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Xs_fvec (F : FlagG S r T) : Xs (S := S) F.fvec = F.X := by
   have h : (fun a : Fin r => F.fvec a.castSucc) = F.e := funext fun a => fvec_castSucc F a
@@ -67,9 +67,9 @@ theorem Xs_fvec (F : FlagG S r T) : Xs (S := S) F.fvec = F.X := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[Xflag, FlagG.Xa, Xsp, FlagG.X]`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_image, Set.mem_ofPred_eq, Set.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨i, -, rfl⟩`. Conclude with `⟨i, rfl⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨i, i.2, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Xflag_top (F : LFlag S r T) : Xflag F r = Xsp F := by
   rw [Xflag, FlagG.Xa, Xsp, FlagG.X]
@@ -81,13 +81,13 @@ theorem Xflag_top (F : LFlag S r T) : Xflag F r = Xsp F := by
   · rintro ⟨i, rfl⟩; exact ⟨i, i.2, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ w : S.V, (∀ a, S.hT (F.e a) w = 0) → ∀ x ∈ F.X, S.hT x w = 0`. Introduce `w hw x hx`. Establish `hx' : x ∈ Submodule.span E (Set.range F.e)` using `hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x h`. Take `⟨a, rfl⟩` from `h`. Conclude with `hw a`. Consider the case `zero`. Establish `h0` using `hT_sub_left (S := S) w w w`.
+Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Rewrite `h0` using `[sub_self, sub_self]`. Then use the resulting hypothesis. Consider the case `add x y _ _ ihx ihy => rw [hT_add_left, ihx, ihy, add_zero]`. Consider the case `smul c x _ ihx => rw [hT_smul_left, ihx, mul_zero]`. Use `key y (fun a => ?_) x hx` and prove the remaining obligations. Rewrite using `[hT_swap]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : S.hT y (F.e a) = 0` using `key (F.e a) (fun b => F.e_iso b a) y hy`. Rewrite using `[h1, star_zero]`.
+A detailed English derivation is pending.
 -/
 theorem hT_X_X (F : FlagG S r T) {x y : S.V} (hx : x ∈ F.X) (hy : y ∈ F.X) : S.hT x y = 0 := by
   have key : ∀ w : S.V, (∀ a, S.hT (F.e a) w = 0) → ∀ x ∈ F.X, S.hT x w = 0 := by
@@ -109,11 +109,11 @@ theorem hT_X_X (F : FlagG S r T) {x y : S.V} (hx : x ∈ F.X) (hy : y ∈ F.X) :
   rw [h1, star_zero]
 
 /- English proof (translation)
-Establish `key : ∀ w : S.V, (∀ a, S.hT (F.e a) w = 0) → ∀ x ∈ F.X, S.hT x w = 0`. Introduce `w hw x hx`. Establish `hx' : x ∈ Submodule.span E (Set.range F.e)` using `hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x h`. Take `⟨a, rfl⟩` from `h`. Conclude with `hw a`. Consider the case `zero`. Establish `h0` using `hT_sub_left (S := S) w w w`.
+Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Rewrite `h0` using `[sub_self, sub_self]`. Then use the resulting hypothesis. Consider the case `add x y _ _ ihx ihy => rw [hT_add_left, ihx, ihy, add_zero]`. Consider the case `smul c x _ ihx => rw [hT_smul_left, ihx, mul_zero]`. Rewrite using `[hT_swap, key F.z F.z_orth y hy, star_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hT_z_X (F : FlagG S r T) {y : S.V} (hy : y ∈ F.X) : S.hT F.z y = 0 := by
   have key : ∀ w : S.V, (∀ a, S.hT (F.e a) w = 0) → ∀ x ∈ F.X, S.hT x w = 0 := by
@@ -132,11 +132,11 @@ theorem hT_z_X (F : FlagG S r T) {y : S.V} (hy : y ∈ F.X) : S.hT F.z y = 0 := 
   rw [hT_swap, key F.z F.z_orth y hy, star_zero]
 
 /- English proof (translation)
-Establish `key : ∀ w : S.V, (∀ a, S.hT (F.e a) w = 0) → ∀ x ∈ F.X, S.hT x w = 0`. Introduce `w hw x hx`. Establish `hx' : x ∈ Submodule.span E (Set.range F.e)` using `hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x h`. Take `⟨a, rfl⟩` from `h`. Conclude with `hw a`. Consider the case `zero`. Establish `h0` using `hT_sub_left (S := S) w w w`.
+Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Rewrite `h0` using `[sub_self, sub_self]`. Then use the resulting hypothesis. Consider the case `add x y _ _ ihx ihy => rw [hT_add_left, ihx, ihy, add_zero]`. Consider the case `smul c x _ ihx => rw [hT_smul_left, ihx, mul_zero]`. Conclude with `key F.z F.z_orth x hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hT_X_alt (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) : S.hT x F.z = 0 := by
   have key : ∀ w : S.V, (∀ a, S.hT (F.e a) w = 0) → ∀ x ∈ F.X, S.hT x w = 0 := by
@@ -155,23 +155,21 @@ theorem hT_X_alt (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) : S.hT x F.z = 0 :
   exact key F.z F.z_orth x hx
 
 /- English proof (translation)
-Establish `hH1 : finrank E (Hp Λ F F') + 1 = k`. Use `finrank_orth S (UUE Λ F F')` as an intermediate fact. Rewrite using `[Hp]`. Use linear arithmetic over natural numbers and integers. Establish `hH2 : finrank E (Hp Λ F F'') + 1 = k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `finrank_orth S (UUE Λ F F'')` as an intermediate fact. Rewrite using `[Hp]`. Use linear arithmetic over natural numbers and integers. Establish `hTh : finrank E (Th Λ F F' F'' β) + 1 = k`. Unfold `s0 at hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Establish `hThle : Th Λ F F' F'' β ≤ Hp Λ F F'`. Introduce and unpack `x ⟨p, hp, rfl⟩`. Conclude with `((mem_ThPairs Λ F F' F'' β p).1 hp).1`. Use `⟨Submodule.eq_of_le_of_finrank_eq hThle (by omega), ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hTh''le : Th'' Λ F F' F'' β ≤ Hp Λ F F''`. Introduce and unpack `x ⟨p, hp, rfl⟩`. Conclude with `((mem_ThPairs Λ F F' F'' β p).1 hp).2.1`. Use `Submodule.eq_of_le_of_finrank_eq hTh''le ?_` and prove the remaining obligations. Set `f` to `(LinearMap.snd E S.V S.V).comp (ThPairs Λ F F' F'' β).subtype`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `p hp`. Establish `hm` using `(mem_ThPairs Λ F F' F'' β p.1).1 p.2`. Establish `h2 : p.1.2 = 0` using `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : p.1.1 ∈ F.fl.X`. Use `hm.2.2.1` as an intermediate fact. Rewrite `this` using `[h2, sub_zero]`. Then use the resulting hypothesis. Establish `h1 : p.1.1 = 0`. Use `PI.ScalarPairDr.W.eq_zero_of_orth F.fl F'.fl hG' hx1 fun b => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm1` using `hm.1`. Rewrite `hm1` using `[Hp, mem_orth]`. Conclude with `hm1 _ (by rw [hU1]; exact Submodule.subset_span ⟨Sum.inr b, rfl⟩)`. Conclude with `Subtype.ext (Prod.ext h1 h2)`. Establish `hrange : LinearMap.range f = Th'' Λ F F' F'' β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Both sides reduce to the same expression. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker f`. Rewrite `h1` using `[hker, hrange, finrank_bot]`. Establish `h2 : finrank E (Th Λ F F' F'' β) ≤ finrank E (ThPairs Λ F F' F'' β)` using `Submodule.finrank_map_le _ _`.
-
-Establish `h3` using `Submodule.finrank_mono hTh''le`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem theta_eq (Λ : Submodule (𝓞 E) S.V) (k : ℕ) (F : LFlag S r T) (F' F'' : LFlag S r T')
     (β : S.V ≃ₗ[E] S.V) (hn : finrank E S.V = k + 2 * r + 1)
@@ -224,11 +222,11 @@ theorem theta_eq (Λ : Submodule (𝓞 E) S.V) (k : ℕ) (F : LFlag S r T) (F' F
   omega
 
 /- English proof (translation)
-Rewrite using `[← orth_orth S (UUE Λ F F'), mem_orth]`. Introduce `v hv`. Establish `hv' : v ∈ Th Λ F F' F'' β` using `by rw [hTh]; exact hv`. Take `⟨p, hp, rfl⟩` from `hv'`. Establish `hm` using `(mem_ThPairs Λ F F' F'' β p).1 hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : S.hT p.2 y = 0`. Use `(mem_orth S).1 hm.2.1 _ hy` as an intermediate fact. Rewrite using `[hT_swap, this, star_zero]`. Establish `e2 : S.hT (p.1 - p.2) y = 0` using `(mem_orth S).1 hyo _ (Submodule.mem_sup_left hm.2.2.1)`. Establish `: p.1 = (p.1 - p.2) + p.2` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show S.hT p.1 y = 0`. Rewrite using `[this, hT_add_left, e1, e2, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ylift_tr (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' F'' : LFlag S r T') (β : S.V ≃ₗ[E] S.V)
     (hTh : Th Λ F F' F'' β = Hp Λ F F') {y : S.V} (hy : y ∈ UUE Λ F F'') (hyo : y ∈ orth S (Xplus F)) :
@@ -247,11 +245,11 @@ theorem ylift_tr (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' F'' : LFlag
   rw [this, hT_add_left, e1, e2, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← orth_orth S (UUE Λ F F''), mem_orth]`. Introduce `v hv`. Establish `hv' : v ∈ Th'' Λ F F' F'' β` using `by rw [hTh]; exact hv`. Take `⟨p, hp, rfl⟩` from `hv'`. Establish `hm` using `(mem_ThPairs Λ F F' F'' β p).1 hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : S.hT p.1 y = 0`. Use `(mem_orth S).1 hm.1 _ hy` as an intermediate fact. Rewrite using `[hT_swap, this, star_zero]`. Establish `e2 : S.hT (p.1 - p.2) y = 0` using `(mem_orth S).1 hyo _ (Submodule.mem_sup_left hm.2.2.1)`. Establish `: p.2 = p.1 - (p.1 - p.2)` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show S.hT p.2 y = 0`. Rewrite using `[this, hT_sub_left, e1, e2, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ylift_tr' (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' F'' : LFlag S r T') (β : S.V ≃ₗ[E] S.V)
     (hTh : Th'' Λ F F' F'' β = Hp Λ F F'') {y : S.V} (hy : y ∈ UUE Λ F F') (hyo : y ∈ orth S (Xplus F)) :
@@ -270,13 +268,13 @@ theorem ylift_tr' (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' F'' : LFla
   rw [this, hT_sub_left, e1, e2, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[← orth_orth S (UUE Λ F F''), mem_orth]`. Introduce `v hv`. Establish `hv' : v ∈ Th'' Λ F F' F'' β` using `by rw [hTh]; exact hv`. Take `⟨p, hp, rfl⟩` from `hv'`. Establish `hm` using `(mem_ThPairs Λ F F' F'' β p).1 hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : S.hT (β p.1) (β y) = 0`. Rewrite using `[hiso]`. Use `(mem_orth S).1 hm.1 _ hy` as an intermediate fact. Rewrite using `[hT_swap, this, star_zero]`. Establish `e2 : S.hT (β p.1 - p.2) (β y) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hX _ hm.2.2.2`. Establish `: β p.1 - p.2 = β (β.symm (β p.1 - p.2))` using `(β.apply_symm_apply _).symm`. Rewrite using `[this, hiso]`. Conclude with `(mem_orth S).1 hyo _ h`. Establish `: p.2 = β p.1 - (β p.1 - p.2)` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show S.hT p.2 (β y) = 0`. Rewrite using `[this, hT_sub_left, e1, e2, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ylift_beta (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' F'' : LFlag S r T') (β : S.V ≃ₗ[E] S.V)
     (hiso : ∀ x y, S.hT (β x) (β y) = S.hT x y) (hX : ∀ x ∈ Xsp F'', β.symm x ∈ Xsp F')

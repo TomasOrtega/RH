@@ -11,11 +11,11 @@ open GlobalTheory.Mem.R3.LiftBrg
 namespace GlobalTheory.Mem.SDFrameStd
 
 /- English proof (translation)
-Introduce `D V Λ hβ y`. Take `⟨c, hf, -, -, h1, h2⟩` from `hβ`. Establish `hset : (Λ : Set (Fin V.rank → D.host.E)) = L0c D V`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Use `h2 x hx` as an intermediate fact. Simplify using `using this`. Introduce `hx`. Use `h1 x hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `e1 : y ∈ Formalism.L2.NTheta.LamHat V ↔ (fun i => GlobalTheory.LevSplit.swp D.host.F D.host.E (y i)) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ := by`. Rewrite using `[← GlobalTheory.LevSplit.latHat_iff Λ y, hset]`. Rewrite using `[e1, hf]`. Simplify using `only [inv_one, Units.val_one, one_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

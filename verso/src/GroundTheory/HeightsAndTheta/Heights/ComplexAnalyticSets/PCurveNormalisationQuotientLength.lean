@@ -8,11 +8,9 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial ComplexSets
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe e`. Establish `h' : e + 1 ≤ 1` using `by exact_mod_cast h`. Establish `: e ≤ 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top => simp at h'`. Consider the case `coe k`. Establish `hk : k + 1 ≤ 1` using `by exact_mod_cast h'`. Conclude with `(show k ≤ 0 by omega)` after adjusting the coercions.
-
-Conclude with `this` after adjusting the coercions.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem withBot_enat_le_zero_of_add_one_le_one {x : WithBot ℕ∞} (h : x + 1 ≤ 1) : x ≤ 0 := by
   induction x using WithBot.recBotCoe with
@@ -28,19 +26,15 @@ theorem withBot_enat_le_zero_of_add_one_le_one {x : WithBot ℕ∞} (h : x + 1 �
     exact_mod_cast this
 
 /- English proof (translation)
-Introduce `n I q hrad hdim`. Use `set O := curveLocalRing I q`. Use `set N := curveNormalisation I q`. Use `set M := N ⧸ LinearMap.range (Algebra.linearMap O N)`. Establish `hfin : Module.Finite O N` using `hF n I q hrad`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := O) (M := N)`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) s (fun x : N ↦ ((show ↥(integralClosure O (FractionRing O)) from x) : FractionRing O))`. Establish `hmul : ∀ y : N, (b : O) • y ∈ LinearMap.range (Algebra.linearMap O N)`. Introduce `y`. Establish `hle : Submodule.span O (s : Set N) ≤ (LinearMap.range (Algebra.linearMap O N)).comap ((b : O) • LinearMap.id)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Take `⟨a, ha⟩` from `hb x hx`. Use `⟨a, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `hle (hs ▸ Submodule.mem_top : y ∈ Submodule.span O (s : Set N))`. Establish `hann : (b : O) ∈ Module.annihilator O M`. Rewrite using `[Module.mem_annihilator]`. Introduce `m`. Proceed by induction on `m using Submodule.Quotient.induction_on with`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `H y => rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hmul y`. Establish `hd` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.mk (Module.annihilator O M)) Ideal.Quotient.mk_surjective b.2 (Ideal.Quotient.eq_zero_iff_mem.2 hann)`. Rewrite `hd` using `[hdim]`. Establish `: Ring.KrullDimLE 0 (O ⧸ Module.annihilator O M)` using `Ring.krullDimLE_iff.2 (by exact_mod_cast withBot_enat_le_zero_of_add_one_le_one hd)`.
-
-Establish `: IsArtinianRing (O ⧸ Module.annihilator O M)` using `isArtinianRing_iff_krullDimLE_zero.2 inferInstance`. Set `` to `Module.quotientAnnihilator (R := O) (M := M)`. Use `(Module.isTorsionBySet_annihilator O M).isScalarTower (S := O)` as an intermediate fact. Establish `: Module.Finite (O ⧸ Module.annihilator O M) M` using `Module.Finite.of_restrictScalars_finite O _ _`. Establish `: IsArtinian O M` using `isArtinian_of_surjective_algebraMap (S := O) (R := O ⧸ Module.annihilator O M) (show Function.Surjective (algebraMap O (O ⧸ Module.annihilator O M)) from Ideal.Quotient.mk_surjective)`.
-
-Conclude with `Module.length_ne_top`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CurveNormalisationQuotientLength.proof (hF : CurveNormalisationFinite.Statement) :
     CurveNormalisationQuotientLength.Statement := by

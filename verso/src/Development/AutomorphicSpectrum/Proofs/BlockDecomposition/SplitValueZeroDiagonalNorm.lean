@@ -19,7 +19,7 @@ namespace GlobalTheory.CompanionTheory.FexTheta
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap (Qv v) (Kv K w))` using `(algebraMap (Qv v) (Kv K w)).injective`. Establish `h` using `Function.leftInverse_invFun hinj (0 : Qv v)`. Simplify `h` using `[dg1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem degreeOneEmbedding_zero (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] : dg1 v w (0 : K) = 0 := by
   have hinj : Function.Injective (algebraMap (Qv v) (Kv K w)) := (algebraMap (Qv v) (Kv K w)).injective
@@ -27,13 +27,13 @@ theorem degreeOneEmbedding_zero (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIde
   simpa [dg1] using h
 
 /- English proof (translation)
-Introduce `K _ _ _ c v L hok hsp g κ`. Consider the cases of `L with`. Consider the case `ns w σ η Φ => exact hsp.elim`. Consider the case `sp w₁ w₂ Φ`. Take `⟨-, hlc, hcs⟩` from `hok`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hc : Continuous ((GP.psiF v)⁻¹ : AddChar (Qv v) Circle)`. Establish `h` using `(continuous_localAdelicChar (K := ℚ) v).comp continuous_neg`. Establish `e : (⇑((GP.psiF v)⁻¹ : AddChar (Qv v) Circle)) = (⇑(localAdelicChar ℚ v)) ∘ Neg.neg`. Use function extensionality and compare the values at `x`. Simplify using `[AddChar.inv_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h`. Establish `hn : ((GP.psiF v)⁻¹ : AddChar (Qv v) Circle) ≠ 1` using `inv_ne_one.2 (localAdelicChar_ne_one v)`. Establish `key` using `GlobalTheory.T.split_weil_action_diagonal (Qv v) ((GP.psiF v)⁻¹) hc hn (cAt c v w₁) Φ hlc hcs (nv v κ) g (0, 0)`. Simplify using `only [LM.val, c0, degreeOneEmbedding_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using key`.
+A detailed English derivation is pending.
 -/
 theorem value_zero_diagonal_norm : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
     ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),

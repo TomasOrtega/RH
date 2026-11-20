@@ -6,7 +6,7 @@ namespace GlobalTheory
 
 open scoped TensorProduct in
 /- English proof (translation)
-Establish `hb : ¬ ∃ s : Finset V, Nonempty (Module.Basis s ℂ V)`. Introduce and unpack `⟨s, ⟨b⟩⟩`. Conclude with `h (Module.Finite.of_basis b)`. Simplify using `[LinearMap.trace, hb]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma trace_eq_zero_of_not_finite' {V : Type} [AddCommGroup V] [Module ℂ V]
     (h : ¬ Module.Finite ℂ V) (f : V →ₗ[ℂ] V) : LinearMap.trace ℂ V f = 0 := by
@@ -17,9 +17,9 @@ private lemma trace_eq_zero_of_not_finite' {V : Type} [AddCommGroup V] [Module �
 
 open scoped TensorProduct in
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Take `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ W, φ w ≠ 0` from `by by_contra! h`. Conclude with `hw ((Module.forall_dual_apply_eq_zero_iff ℂ w).mp h)`. Set `p : V ⊗[ℂ] W →ₗ[ℂ] V` to `(TensorProduct.rid ℂ V).toLinearMap ∘ₗ TensorProduct.map LinearMap.id φ`. Use `Module.Finite.of_surjective p fun v => ⟨v ⊗ₜ ((φ w)⁻¹ • w), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[p, hφ]`.
+A detailed English derivation is pending.
 -/
 private lemma finite_left_of_finite_tensor_of_nontrivial {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [Nontrivial W] [Module.Finite ℂ (V ⊗[ℂ] W)] :
@@ -35,7 +35,7 @@ private lemma finite_left_of_finite_tensor_of_nontrivial {V W : Type} [AddCommGr
 
 open scoped TensorProduct in
 /- English proof (translation)
-Establish `: Module.Finite ℂ (W ⊗[ℂ] V)` using `Module.Finite.equiv (TensorProduct.comm ℂ V W)`. Conclude with `finite_left_of_finite_tensor_of_nontrivial (W := V)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma finite_right_of_finite_tensor_of_nontrivial {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [Nontrivial V] [Module.Finite ℂ (V ⊗[ℂ] W)] :
@@ -47,11 +47,11 @@ private lemma finite_right_of_finite_tensor_of_nontrivial {V W : Type} [AddCommG
 open scoped TensorProduct in
 
 /- English proof (translation)
-Distinguish the cases in `hU : Module.Finite ℂ U`. Distinguish the cases in `hU' : Module.Finite ℂ U'`. Conclude with `LinearMap.trace_tensorProduct' T T'`. Rewrite using `[trace_eq_zero_of_not_finite' hU' T', mul_zero]`. Distinguish the cases in `hUU : Module.Finite ℂ (U ⊗[ℂ] U')`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `subsingleton_or_nontrivial U with hs | hs` into its components or cases. Rewrite using `[Subsingleton.elim T 0, TensorProduct.map_zero_left, map_zero]`. Conclude with `absurd (finite_right_of_finite_tensor_of_nontrivial (V := U)) hU'`. Conclude with `trace_eq_zero_of_not_finite' hUU _`. Rewrite using `[trace_eq_zero_of_not_finite' hU T, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hUU : Module.Finite ℂ (U ⊗[ℂ] U')`. Break down `subsingleton_or_nontrivial U' with hs | hs` into its components or cases. Rewrite using `[Subsingleton.elim T' 0, TensorProduct.map_zero_right, map_zero]`. Conclude with `absurd (finite_left_of_finite_tensor_of_nontrivial (W := U')) hU`. Conclude with `trace_eq_zero_of_not_finite' hUU _`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.trace_tensorProduct_map_complex {U U' : Type} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup U'] [Module ℂ U'] (T : U →ₗ[ℂ] U) (T' : U' →ₗ[ℂ] U') :

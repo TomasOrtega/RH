@@ -22,18 +22,18 @@ namespace GlobalTheory
 
 open GlobalTheory.SmGL GlobalTheory.LocGL in
 /- English proof (translation)
-Substitute `h1` using the available equality. Conclude with `clTwist_one c hχ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem clTwist_eq_self_of_eq_one {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (c : IrrCl G) (χ : G →* ℂˣ) (hχ : IsSmoothChar χ) (h1 : χ = 1) : clTwist c χ hχ = c := by
   subst h1; exact clTwist_one c hχ
 
 /- English proof (translation)
-Establish `h1 : (CG.mk π).IsLoc w (Quotient.mk _ σ)` using `hσ`. Rewrite `h1` using `[hπ]`. Establish `h2` using `CG.IsLoc.unique E 1 _ w _ _ h1 (CG.isLoc_ofChar ψ w)`. Take `⟨e⟩` from `Quotient.exact h2`. Unfold `algNorm IrrGL.nu IrrGL.tw IrrGL.of IrrGL.ofChar`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `(clTwist_eq_self_of_eq_one _ _ _ ?_).trans ?_` and prove the remaining obligations. Use extensionality with `g`. Simplify using `[GlobalTheory.SmGL.detChar, GlobalTheory.SmGL.absPow]`. Apply `Quotient.sound` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨e.trans (Representation.Equiv.refl _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem rankOne_algNorm_locComp (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (π : CuspSub E 1)
     (ψ : HChar E) (hπ : CG.mk π = CG.ofChar ψ) (w : HeightOneSpectrum (𝓞 E))

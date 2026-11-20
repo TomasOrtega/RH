@@ -14,7 +14,7 @@ variable {d : ℕ} (hd : 1 ≤ d) (u : (Fbar g)ˣ) (hu : orderOf u = g ^ d - 1)
 
 include hd hu in
 /- English proof (translation)
-Establish `h2` using `one_lt_pow_g (g := g) hd`. Use `isOfFinOrder_iff_pow_eq_one.mpr ⟨g ^ d - 1, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, ← Units.val_pow_eq_pow_val, ← hu, pow_orderOf_eq_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finOrd (i : ℕ) : IsOfFinOrder ((u : Fbar g) ^ (g ^ i)) := by
   have h2 := one_lt_pow_g (g := g) hd
@@ -24,9 +24,9 @@ theorem finOrd (i : ℕ) : IsOfFinOrder ((u : Fbar g) ^ (g ^ i)) := by
 
 include hd hu in
 /- English proof (translation)
-Introduce `h`. Establish `h1 : u ^ (g ^ i * ℓ ^ c) = 1` using `Units.ext (by rw [Units.val_pow_eq_pow_val, pow_mul, h]; rfl)`. Establish `h2 : g ^ d - 1 ∣ ℓ ^ c` using `((coprime_n d hd).pow_right i).dvd_of_dvd_mul_left (hu ▸ orderOf_dvd_of_pow_eq_one h1)`. Establish `h3 : g - 1 ∣ g ^ d - 1` using `by simpa using Nat.sub_dvd_pow_sub_pow g 1 d`. Establish `e1` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_two hℓ).mp (Nat.prime_two.dvd_of_dvd_pow ((h2g.trans h3).trans h2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(Nat.prime_dvd_prime_iff_eq hq0 hℓ).mp (hq0.dvd_of_dvd_pow ((hqg.trans h3).trans h2))`. Conclude with `hq2 (e2.trans e1.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem no_prime_power {q0 ℓ : ℕ} (hℓ : ℓ.Prime) (hq0 : q0.Prime) (hq2 : q0 ≠ 2) (h2g : 2 ∣ g - 1)
     (hqg : q0 ∣ g - 1) (i c : ℕ) : ((u : Fbar g) ^ (g ^ i)) ^ (ℓ ^ c) ≠ 1 := by
@@ -42,13 +42,11 @@ theorem no_prime_power {q0 ℓ : ℕ} (hℓ : ℓ.Prime) (hq0 : q0.Prime) (hq2 :
 
 include hd hu in
 /- English proof (translation)
-Establish `key : ∀ {i j : ℕ}, i < j → j < d → u ^ (g ^ i * ℓ ^ c) = u ^ (g ^ j * ℓ ^ c) → Exc g d ℓ`. Introduce `i j hij hj h`. Use `exc_of_dvd (e := j - i) hg.out.two_le hℓ hd ?_ (dvd_of_pow_eq hd u hu hij.le h)` and prove the remaining obligations. Take `⟨t, ht⟩` from `Nat.gcd_dvd_left d (j - i)`. Establish `h1 : Nat.gcd d (j - i) ≤ j - i` using `Nat.gcd_le_right _ (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : 0 < Nat.gcd d (j - i)` using `Nat.gcd_pos_of_pos_left _ hd`. Establish `ht2 : 2 ≤ t`. Assume the negation of the conclusion as `hlt`. Use `interval_cases t`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Establish `h' : u ^ (g ^ i * ℓ ^ c) = u ^ (g ^ j * ℓ ^ c)` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, pow_mul, pow_mul, h])`. Break down `lt_or_gt_of_ne hij with h1 | h1` into its components or cases.
-
-Conclude with `key h1 hj h'`. Conclude with `key h1 hi h'.symm`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exc_same {ℓ : ℕ} (hℓ : ℓ.Prime) {i j c : ℕ} (hi : i < d) (hj : j < d) (hij : i ≠ j)
     (h : ((u : Fbar g) ^ (g ^ i)) ^ (ℓ ^ c) = ((u : Fbar g) ^ (g ^ j)) ^ (ℓ ^ c)) : Exc g d ℓ := by
@@ -75,9 +73,9 @@ theorem exc_same {ℓ : ℕ} (hℓ : ℓ.Prime) {i j c : ℕ} (hi : i < d) (hj :
 end One
 
 /- English proof (translation)
-Establish `h' : u ^ (g ^ i * ℓ ^ c) = w ^ (g ^ j * ℓ ^ c)` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, pow_mul, pow_mul, h])`. Establish `h1 : u ^ (g ^ i * (ℓ ^ c * (g ^ s - 1))) = 1`. Rewrite using `[← mul_assoc, pow_mul, h', ← pow_mul, mul_comm, pow_mul, ← hw, pow_orderOf_eq_one, one_pow]`. Establish `h2 : g ^ p - 1 ∣ ℓ ^ c * (g ^ s - 1)` using `((coprime_n p (by omega)).pow_right i).dvd_of_dvd_mul_left (hu ▸ orderOf_dvd_of_pow_eq_one h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `exc_of_dvd hg.out.two_le hℓ (by omega) (by rw [hc]; omega) h2`.
+A detailed English derivation is pending.
 -/
 theorem exc_cross {p s ℓ : ℕ} (hℓ : ℓ.Prime) (hp : 2 ≤ p) (hs : 1 ≤ s) (hc : Nat.Coprime p s)
     (u w : (Fbar g)ˣ) (hu : orderOf u = g ^ p - 1) (hw : orderOf w = g ^ s - 1) (i j c : ℕ)
@@ -100,31 +98,27 @@ structure LabelOK (N : ℕ) (f : (ZMod g)[X]) : Prop where
   ne1 : ∀ ℓ : ℕ, ℓ.Prime → ∀ x ∈ rootsBar f, primeToPart ℓ x ≠ primeToPart ℓ (1 : Fbar g)
 
 /- English proof (translation)
-Establish `hN : 1 ≤ N` using `by omega`. Use `set s := N - p with hs`. Establish `hs1 : 1 ≤ s` using `by omega`. Establish `hp1 : 1 ≤ p` using `hp.one_lt.le`. Take `⟨uN, huN⟩` from `exists_gen (g := g) N hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨up, hup⟩` from `exists_gen (g := g) p hp1`. Take `⟨us, hus⟩` from `exists_gen (g := g) s hs1`. Take `⟨PN, hPN, dN, mN⟩` from `exists_orbP hN uN huN`. Take `⟨Pp, hPp, dp, mp⟩` from `exists_orbP hp1 up hup`. Take `⟨Ps, hPs, ds, ms⟩` from `exists_orbP hs1 us hus`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `iN` using `irreducible_P hN uN huN hPN dN`. Establish `ip` using `irreducible_P hp1 up hup hPp dp`. Establish `is` using `irreducible_P hs1 us hus hPs ds`. Establish `one_fin : IsOfFinOrder (1 : Fbar g)` using `IsOfFinOrder.one`. Establish `hcop : Nat.Coprime p s` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr (Nat.not_dvd_of_pos_of_lt (by omega) (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memB : ∀ y, y ∈ rootsBar (Pp * Ps) ↔ y ∈ rootsBar Pp ∨ y ∈ rootsBar Ps` using `fun y => by`. Unfold `rootsBar`. Rewrite using `[Polynomial.map_mul, roots_mul (mul_ne_zero (by rw [hPp]; exact (orbQ_monic up).ne_zero) (by rw [hPs]; exact (orbQ_monic us).ne_zero)), Multiset.mem_add]`. Use `⟨PN, Pp * Ps, Pp, ⟨mN, dN, coeff_zero_P uN hPN, iN.squarefree, ?_, ?_⟩, ⟨mp.mul ms, by rw [mp.natDegree_mul ms, dp, ds]; omega, ?_, ?_, ?_, ?_⟩, fun r hr hr0 => le_natDegree_of_dvd hN uN huN hPN hr hr0, ip, Dvd.intro _ rfl, dp⟩` and prove the remaining obligations. Introduce `ℓ hℓ hBB x hx y hy hxy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, rfl⟩` from `(mem_rootsBar_P uN hPN).mp hx`. Take `⟨j, hj, rfl⟩` from `(mem_rootsBar_P uN hPN).mp hy`. Take `⟨c, hc⟩` from `exists_pow_eq hℓ _ _ (finOrd hN uN huN i) (finOrd hN uN huN j) hxy`. Assume the negation of the conclusion as `hne`. Conclude with `hBB (Or.inr ⟨N, hN, le_rfl, exc_same hN uN huN hℓ hi hj (fun e => hne (by rw [e])) hc⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `ℓ hℓ x hx hxy`. Take `⟨i, hi, rfl⟩` from `(mem_rootsBar_P uN hPN).mp hx`. Take `⟨c, hc⟩` from `exists_pow_eq hℓ _ _ (finOrd hN uN huN i) one_fin hxy`. Conclude with `no_prime_power hN uN huN hℓ hq0 hq2 h2g hqg i c (by rw [hc, one_pow])`. Rewrite using `[mul_coeff_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `mul_ne_zero (coeff_zero_P up hPp) (coeff_zero_P us hPs)`. Use `squarefree_mul_iff.mpr ⟨ip.isRelPrime_iff_not_dvd.mpr fun hdv => ?_, ip.squarefree, is.squarefree⟩` and prove the remaining obligations. Use `natDegree_le_of_dvd hdv ms.ne_zero` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `ℓ hℓ hBB x hx y hy hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `hBp : ¬ Exc g p ℓ` using `fun h => hBB (Or.inr ⟨p, hp1, by omega, h⟩)`. Establish `hBs : ¬ Exc g s ℓ` using `fun h => hBB (Or.inr ⟨s, hs1, by omega, h⟩)`. Apply the tactic sequence `rcases (memB x).mp hx with hx | hx <;> rcases (memB y).mp hy with hy | hy`. Take `⟨i, hi, rfl⟩` from `(mem_rootsBar_P up hPp).mp hx`. Take `⟨j, hj, rfl⟩` from `(mem_rootsBar_P up hPp).mp hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_pow_eq hℓ _ _ (finOrd hp1 up hup i) (finOrd hp1 up hup j) hxy`. Assume the negation of the conclusion as `hne`. Conclude with `hBp (exc_same hp1 up hup hℓ hi hj (fun e => hne (by rw [e])) hc)`. Take `⟨i, hi, rfl⟩` from `(mem_rootsBar_P up hPp).mp hx`. Take `⟨j, hj, rfl⟩` from `(mem_rootsBar_P us hPs).mp hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_pow_eq hℓ _ _ (finOrd hp1 up hup i) (finOrd hs1 us hus j) hxy`. Conclude with `(hBp (exc_cross hℓ hp.two_le hs1 hcop up us hup hus i j c hc)).elim`. Take `⟨i, hi, rfl⟩` from `(mem_rootsBar_P us hPs).mp hx`. Take `⟨j, hj, rfl⟩` from `(mem_rootsBar_P up hPp).mp hy`. Take `⟨c, hc⟩` from `exists_pow_eq hℓ _ _ (finOrd hs1 us hus i) (finOrd hp1 up hup j) hxy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(hBp (exc_cross hℓ hp.two_le hs1 hcop up us hup hus j i c hc.symm)).elim`. Take `⟨i, hi, rfl⟩` from `(mem_rootsBar_P us hPs).mp hx`. Take `⟨j, hj, rfl⟩` from `(mem_rootsBar_P us hPs).mp hy`. Take `⟨c, hc⟩` from `exists_pow_eq hℓ _ _ (finOrd hs1 us hus i) (finOrd hs1 us hus j) hxy`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hBs (exc_same hs1 us hus hℓ hi hj (fun e => hne (by rw [e])) hc)`. Introduce `ℓ hℓ x hx hxy`. Break down `(memB x).mp hx with hx | hx` into its components or cases. Take `⟨i, hi, rfl⟩` from `(mem_rootsBar_P up hPp).mp hx`. Take `⟨c, hc⟩` from `exists_pow_eq hℓ _ _ (finOrd hp1 up hup i) one_fin hxy`.
-
-Conclude with `no_prime_power hp1 up hup hℓ hq0 hq2 h2g hqg i c (by rw [hc, one_pow])`. Take `⟨i, hi, rfl⟩` from `(mem_rootsBar_P us hPs).mp hx`. Take `⟨c, hc⟩` from `exists_pow_eq hℓ _ _ (finOrd hs1 us hus i) one_fin hxy`. Conclude with `no_prime_power hs1 us hus hℓ hq0 hq2 h2g hqg i c (by rw [hc, one_pow])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_labels (N p q0 : ℕ) (hp : p.Prime) (h1 : N < 2 * p) (h2 : p + 3 ≤ N) (hq0 : q0.Prime)
     (hq2 : q0 ≠ 2) (h2g : 2 ∣ g - 1) (hqg : q0 ∣ g - 1) :
@@ -200,11 +194,11 @@ theorem exists_labels (N p q0 : ℕ) (hp : p.Prime) (h1 : N < 2 * p) (h2 : p + 3
       exact no_prime_power hs1 us hus hℓ hq0 hq2 h2g hqg i c (by rw [hc, one_pow])
 
 /- English proof (translation)
-Take `⟨fA, fB, q, hA, hB, hdiv, hq, hqB, hqd⟩` from `exists_labels (g := g) N p q0 hp h1 h2 hq0 hq2 h2g hqg`. Use `⟨fA, fB, fun e => ?_, ⟨hA.monic, hA.deg, hA.c0⟩, ⟨hB.monic, hB.deg, hB.c0⟩, fun PP J t ⟨vA, hvA⟩ ⟨vB, hvB⟩ => ?_⟩` and prove the remaining obligations. Use `hdiv q (e ▸ hqB) (by rw [hqd]; exact hp.ne_zero)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `have hOK : ∀ v, LabelOK N (if t v then fA else fB) := fun v => by split_ifs <;> assumption`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨fun v => ⟨(hOK v).monic, (hOK v).deg, (hOK v).c0⟩, fun v => (hOK v).sqf, fun ℓ hℓ hBB v => (hOK v).inj ℓ hℓ hBB, fun ℓ hℓ _ v _ x hx => ?_, fun a ha1 ha2 => ⟨vA, ?_⟩, ⟨vB, q, hq, ?_, hqd ▸ hp, by omega, by omega⟩⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, map_one]`. Conclude with `(hOK v).ne1 ℓ hℓ x hx`. Introduce and unpack `⟨r, hr, hra⟩`. Simplify using `only [hvA, if_true] at hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hdiv r hr (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [hvB]`. Conclude with `hqB`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_good (N p q0 : ℕ) (hp : p.Prime) (h1 : N < 2 * p) (h2 : p + 3 ≤ N) (hq0 : q0.Prime)
     (hq2 : q0 ≠ 2) (h2g : 2 ∣ g - 1) (hqg : q0 ∣ g - 1) :

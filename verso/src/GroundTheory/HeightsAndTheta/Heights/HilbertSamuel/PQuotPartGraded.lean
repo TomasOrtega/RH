@@ -17,7 +17,7 @@ open Classical in
 def blockWeight (ι : K → Type) : (Σ k, ι k) → (K → ℤ) := fun x => Pi.single x.1 1
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype d (fun i c => c • blockWeight ι i) (by intro i; simp), Finset.sum_apply, Fintype.sum_sigma]`. Simplify using `[blockWeight, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockWeight_apply (d : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (blockWeight ι) d k = ∑ i, (d ⟨k, i⟩ : ℤ) := by
@@ -27,11 +27,9 @@ theorem blockWeight_apply (d : (Σ k, ι k) →₀ ℕ) (k : K) :
   simp [blockWeight, Pi.single_apply]
 
 /- English proof (translation)
-Unfold `IsMultiHomog`. Prove the components needed by the constructor for the conclusion. Introduce `h d hd`. Use function extensionality and compare the values at `k`. Rewrite using `[blockWeight_apply]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `h d (mem_support_iff.2 hd) k` as an intermediate fact. Conclude with `this` after adjusting the coercions. Introduce `h m hm k`. Use `congrFun (h (mem_support_iff.1 hm)) k` as an intermediate fact. Rewrite `this` using `[blockWeight_apply]`.
-
-Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_iff (p : MRingOver S ι) (a : K → ℕ) :
     IsMultiHomog p a ↔ IsWeightedHomogeneous (blockWeight ι) p (fun k => (a k : ℤ)) := by
@@ -48,7 +46,7 @@ theorem isMultiHomog_iff (p : MRingOver S ι) (a : K → ℕ) :
     exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `ne_zero_iff.1 h0`. Introduce `k`. Rewrite using `[← hp hd, blockWeight_apply]`. Check the signs of the components of the expression.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem nonneg_of_isWeightedHomogeneous {p : MRingOver S ι} {c : K → ℤ}
     (hp : IsWeightedHomogeneous (blockWeight ι) p c) (h0 : p ≠ 0) : ∀ k, 0 ≤ c k := by
@@ -58,13 +56,13 @@ theorem nonneg_of_isWeightedHomogeneous {p : MRingOver S ι} {c : K → ℤ}
   positivity
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `p ⟨hc, hp⟩`. Rewrite using `[SetLike.mem_coe, mem_weightedHomogeneousSubmodule]`. Establish `h'` using `(isMultiHomog_iff p _).1 hp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcc : (fun k => (((c k).toNat : ℕ) : ℤ)) = c` using `funext fun k => Int.toNat_of_nonneg (hc k)`. Rewrite `h'` using `[hcc]`. Then use the resulting hypothesis. Introduce `p hp`. Distinguish the cases in `h0 : p = 0`. Rewrite using `[h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Apply `Submodule.subset_span` to reduce the goal to its premises. Establish `hc` using `nonneg_of_isWeightedHomogeneous hp h0`. Use `⟨hc, (isMultiHomog_iff p _).2 ?_⟩` and prove the remaining obligations. Establish `hcc : (fun k => (((c k).toNat : ℕ) : ℤ)) = c` using `funext fun k => Int.toNat_of_nonneg (hc k)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcc]`. Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem span_eq (c : K → ℤ) :
     Submodule.span S {p : MRingOver S ι | (∀ k, 0 ≤ c k) ∧ IsMultiHomog p (fun k => (c k).toNat)} =
@@ -87,7 +85,7 @@ theorem span_eq (c : K → ℤ) :
       exact hp
 
 /- English proof (translation)
-Rewrite using `[KH.quotPart, ← span_eq, Submodule.map_span]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem quotPart_eq (V : Ideal (MRingOver S ι)) (c : K → ℤ) :
     KH.quotPart S V c =
@@ -98,7 +96,7 @@ theorem quotPart_eq (V : Ideal (MRingOver S ι)) (c : K → ℤ) :
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Take `⟨T, hT, rfl⟩` from `hV`. Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce `f hf`. Take `⟨a, ha⟩` from `hT f hf`. Conclude with `⟨fun k => (a k : ℤ), (isMultiHomog_iff f a).1 ha⟩`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isHomogeneous {V : Ideal (MRingOver S ι)} (hV : IsMultiHomogIdeal V) :
     V.IsHomogeneous (weightedHomogeneousSubmodule S (blockWeight ι)) := by
@@ -113,23 +111,21 @@ end QuotPartGraded
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Introduce `S _ K _ ι _ V hV`. Establish `hq` using `QuotPartGraded.quotPart_eq (S := S) (ι := ι) V`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]`. Introduce `s v hv hsum`. Establish `hlift : ∀ c, ∃ p : MRingOver S ι, c ∈ s → (p ∈ weightedHomogeneousSubmodule S (QuotPartGraded.blockWeight ι) c ∧ Ideal.Quotient.mk V p = v c)`. Introduce `c`. Distinguish the cases in `hc : c ∈ s`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `hv c hc`. Rewrite `h1` using `[hq]`. Take `⟨y, hy, hyv⟩` from `Submodule.mem_map.1 h1`. Conclude with `⟨y, fun _ => ⟨hy, hyv⟩⟩`. Conclude with `⟨0, fun h => absurd h hc⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose p hp using hlift`. Establish `hsumV : ∑ c ∈ s, p c ∈ V`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sum, ← hsum]`. Conclude with `Finset.sum_congr rfl fun c hc => (hp c hc).2`. Introduce `c hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcomp` using `weightedHomogeneousComponent_mem_of_mem S (QuotPartGraded.blockWeight ι) (QuotPartGraded.isHomogeneous hV) hsumV c`. Rewrite `hcomp` using `[map_sum, Finset.sum_eq_single c]`. Rewrite using `[← (hp c hc).2, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `hcomp` using `[weightedHomogeneousComponent_eq_self (hp c hc).1]`. Then use the resulting hypothesis. Introduce `d hd hdc`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `IsWeightedHomogeneous.weightedHomogeneousComponent_ne c (hp d hd).1 (Ne.symm hdc)`. Introduce `h`. Conclude with `absurd hc h`. Establish `htop` using `(DirectSum.Decomposition.isInternal (weightedHomogeneousSubmodule S (QuotPartGraded.blockWeight ι))).submodule_iSup_eq_top`. Rewrite using `[show KH.quotPart S V = fun c => (weightedHomogeneousSubmodule S (QuotPartGraded.blockWeight ι) c).map (Ideal.Quotient.mkₐ S V).toLinearMap from funext hq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Submodule.map_iSup, htop, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `Ideal.Quotient.mkₐ_surjective S V`. Introduce `a c p m hp hm`. Rewrite `hm`, the goal using `[hq]`. Take `⟨q, hq', rfl⟩` from `Submodule.mem_map.1 hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `Submodule.mem_map.2 ⟨p * q, ?_, ?_⟩` and prove the remaining obligations. Use `((QuotPartGraded.isMultiHomog_iff p a).1 hp).mul hq'` as an intermediate fact. Rewrite using `[mem_weightedHomogeneousSubmodule, add_comm]`. Conclude with `this`. Simplify using `only [AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem QuotPartGraded.proof : QuotPartGraded.Statement := by
   intro S _ K _ ι _ V hV

@@ -5,9 +5,7 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Use `haveI : IsAlgClosure (maximalRealSubfield L) Ω := ⟨IsAlgClosure.isAlgClosed L, Algebra.IsAlgebraic.trans _ L Ω⟩`. Establish `hAv : IsPlaceOver A (w.under (𝓞 (maximalRealSubfield L)))` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (maximalRealSubfield L) L Ω]`. Conclude with `hA (algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) x)`. Take `⟨-, he⟩` from `GlobalTheory.InertFixVal.ramificationIdx_eq_one A (w.under (𝓞 (maximalRealSubfield L))) w hAv hA fun σ hσ => hfix σ (Ine_le_Dec A hσ)`.
-
-Conclude with `Ideal.ramificationIdx_eq_one_iff.1 he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem unramifiedAt_of_dec_fixes (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 L)) (hA : IsPlaceOver A w)
@@ -23,7 +21,7 @@ private theorem unramifiedAt_of_dec_fixes (L Ω : Type) [Field L] [NumberField L
   exact Ideal.ramificationIdx_eq_one_iff.1 he
 
 /- English proof (translation)
-Introduce `hS Y Ω _ _ _ _ _ T Q hQ w`. Distinguish the cases in `hw : IsSplitAt w`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Conclude with `unramifiedAt_of_dec_fixes ↥Q.K Ω A w hA ((hS ↥Q.K Ω A w hA).1 hw)`. Conclude with `(hQ.2.2.2.1 w hw).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.allUnr :
     SplitIff → AllUnr := by

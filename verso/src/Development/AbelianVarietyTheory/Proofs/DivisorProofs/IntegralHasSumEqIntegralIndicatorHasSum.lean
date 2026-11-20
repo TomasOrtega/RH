@@ -4,23 +4,19 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X ι _ _ μ k hk hfin p K Kp hK hKp h0`. Use `set s := hfin.toFinset with hs`. Establish `hnull : ∀ i ∉ s, k i =ᵐ[μ] 0`. Introduce `i hi`. Establish `hi' : ∫ x, ‖k i x‖ ∂μ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hi (by simpa [hs] using h)`. Use `(integral_eq_zero_iff_of_nonneg (fun x => norm_nonneg (k i x)) (hk i).norm).1 hi'` as an intermediate fact. Use `filter_upwards [this] with x hx`. Simplify using `using hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hall : ∀ᵐ x ∂μ, ∀ i, i ∉ s → k i x = 0`. Rewrite using `[ae_all_iff]`. Introduce `i`. Distinguish the cases in `hi : i ∈ s`. Conclude with `Filter.Eventually.of_forall (fun x h => absurd hi h)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [hnull i hi] with x hx _`. Conclude with `hx`. Establish `hKae : K =ᵐ[μ] fun x => ∑ i ∈ s, k i x` using `by filter_upwards [hall] with x hx`. Conclude with `(hK x).unique (hasSum_sum_of_ne_finset_zero (fun i hi => hx i hi))`. Establish `hKpae : Kp =ᵐ[μ] fun x => ∑ i ∈ s, p.indicator (fun i => k i x) i` using `by filter_upwards [hall] with x hx`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `(hKp x).unique (hasSum_sum_of_ne_finset_zero (fun i hi => ?_))` and prove the remaining obligations. Distinguish the cases in `hp : i ∈ p`. Simplify using `[Set.indicator_of_mem hp, hx i hi]`. Simplify using `[Set.indicator_of_notMem hp]`. Establish `hind : ∀ i, (fun x => p.indicator (fun i => k i x) i) = if i ∈ p then k i else fun _ => 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Distinguish the cases in `hp : i ∈ p`. Use function extensionality and compare the values at `x`. Simplify using `[Set.indicator_of_mem hp, hp]`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator_of_notMem hp, hp]`. Rewrite using `[integral_congr_ae hKae, integral_congr_ae hKpae, integral_finset_sum s (fun i _ => hk i), integral_finset_sum s (fun i _ => by`. Rewrite using `[hind i]`. Use `split_ifs`. Conclude with `hk i`.
-
-Conclude with `integrable_zero _ _ _)]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hind i]`. Use `split_ifs with hp`. Both sides reduce to the same expression.
-
-Simplify using `[h0 i hp]`.
+A detailed English derivation is pending.
 -/
 theorem integral_hasSum_eq_integral_indicator_hasSum :
     ∀ {X ι : Type} [MeasurableSpace X] [Countable ι] (μ : Measure X) (k : ι → X → ℂ),

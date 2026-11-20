@@ -28,15 +28,13 @@ def CCF : Prop :=
           ∃ s ∈ S, ∃ u ∈ U, z = dg D p γ * s * u
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.borel_finite_classNumber_centraliserTorus GlobalTheory.T.exists_polynomialLocus_similitudeCentralizerTorus GlobalTheory.classNumberFinite_holds`.
+A detailed English derivation is pending.
 -/
 theorem ccf_holds : CCF :=
   GlobalTheory.T.borel_finite_classNumber_centraliserTorus GlobalTheory.T.exists_polynomialLocus_similitudeCentralizerTorus GlobalTheory.classNumberFinite_holds
 
 /- English proof (translation)
-Use `haveI : Finite S := hS.to_subtype`. Use `Finite.of_surjective (fun s : S => DoubleCoset.mk Γ K (s : H)) fun q => ?_` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, k, hk, e⟩` from `h q.out`. Use `⟨⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DoubleCoset.mk Γ K s = q`.
-
-Use `conv_rhs => rw [← DoubleCoset.out_eq' Γ K q]`. Conclude with `(DoubleCoset.eq Γ K _ _).2 ⟨γ, hγ, k, hk, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem finite_of_cover {H : Type} [Group H] (Γ K : Subgroup H) (S : Set H) (hS : S.Finite)
     (h : ∀ g : H, ∃ γ ∈ Γ, ∃ s ∈ S, ∃ k ∈ K, g = γ * s * k) :
@@ -50,9 +48,9 @@ theorem finite_of_cover {H : Type} [Group H] (Γ K : Subgroup H) (S : Set H) (hS
   exact (DoubleCoset.eq Γ K _ _).2 ⟨γ, hγ, k, hk, e⟩
 
 /- English proof (translation)
-Use `haveI : (K'.subgroupOf K₂).FiniteIndex := ⟨hK⟩`. Set `T : Set (A × B)` to `Set.range (fun c : K₂ ⧸ K'.subgroupOf K₂ => ((1 : A), ((c.out : K₂) : B)))`. Establish `hT : T.Finite` using `Set.finite_range _`. Use `⟨S * T, hS.mul hT, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, k, hk, rfl⟩` from `h g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hk1, hk2⟩` from `Subgroup.mem_prod.1 hk`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul (K'.subgroupOf K₂) (⟨k.2, hk2⟩ : K₂)`. Use `⟨γ, hγ, s * (1, ((((⟨k.2, hk2⟩ : K₂) : K₂ ⧸ K'.subgroupOf K₂).out : K₂) : B)), Set.mul_mem_mul hs ⟨_, rfl⟩, (k.1, ((u : K₂) : B)⁻¹), Subgroup.mem_prod.2 ⟨hk1, K'.inv_mem (Subgroup.mem_subgroupOf.1 u.2)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`. Apply the tactic sequence `ext <;> simp [mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cover_of_relIndex {A B : Type} [Group A] [Group B] (Γ : Subgroup (A × B)) (K₁ : Subgroup A)
     (K₂ K' : Subgroup B) (hK : K'.relIndex K₂ ≠ 0) (S : Set (A × B)) (hS : S.Finite)
@@ -78,21 +76,21 @@ namespace GlobalTheory.DefClassFin
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, by rw [map_one]; exact Commute.one_right _⟩`.
+Supply the required witnesses or components.
 -/
 theorem inT_of_TC (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] (β : G.C)
     (z : (R ⊗[ℚ] G.C)ˣ × Rˣ) (h : TC G.C G.star β 1 R z) : InT G R β 1 z :=
   ⟨h.1, by rw [map_one]; exact Commute.one_right _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, by rw [← Algebra.TensorProduct.one_def]; exact Commute.one_right _⟩`.
+Supply the required witnesses or components.
 -/
 theorem TC_of_inT (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] (β : G.C)
     (z : (R ⊗[ℚ] G.C)ˣ × Rˣ) (h : InT G R β 1 z) : TC G.C G.star β 1 R z :=
   ⟨h.1, by rw [← Algebra.TensorProduct.one_def]; exact Commute.one_right _⟩
 
 /- English proof (translation)
-Simplify using `only [psiAway_apply, inv_inv]`. Conclude with `Prod.ext (by group) rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiAway_psiAway_inv (G : HTGroup p) (x : (AfP p ⊗[ℚ] G.C)ˣ)
     (w : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) : psiAway G x (psiAway G x⁻¹ w) = w := by
@@ -100,31 +98,29 @@ theorem psiAway_psiAway_inv (G : HTGroup p) (x : (AfP p ⊗[ℚ] G.C)ˣ)
   exact Prod.ext (by group) rfl
 
 /- English proof (translation)
-Use `set x := B.trivAf.choose with hxdef`. Use `set t := B.trivAf.choose_spec.choose with htdef`. Establish `hx : Triv G (AfP p) B.β x t` using `B.trivAf.choose_spec.choose_spec`. Establish `hemb : ∀ y, B.emb y = (toAfF G B.β x t hx y, toP1 G B.β y)` using `fun y => rfl`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : TopologicalSpace (ℚ_[p] ⊗[ℚ] G.C) := moduleTopology ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C)`. Set `U : Subgroup (((AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) × ((ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ))` to `(Subgroup.comap (psiAway G x) (L.K.toSubgroup.map (UPts G.star (AfP p)).subtype)).prod (Subgroup.comap (psiP G) (KHT p G.m G.n 1 G.Fw))`. Take `⟨O₁, hO₁, h1O₁, hO₁U⟩` from `exists_open_psiAway_mem_conj_level p G L B.β x t hx 1 1`. Take `⟨O₂, hO₂, h1O₂, hO₂U⟩` from `GlobalTheory.TorCls.OpenP.openp p G 1`. Establish `hO : ∃ O : Set (((AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) × ((ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ)), IsOpen O ∧ 1 ∈ O ∧ ∀ z ∈ O, TC G.C G.star (B.β : G.C) 1 (AfP p) z.1 → TC G.C G.star (B.β : G.C) 1 ℚ_[p] z.2 → z ∈ U`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨O₁ ×ˢ O₂, hO₁.prod hO₂, ⟨h1O₁, h1O₂⟩, fun z hz h1 _ => Subgroup.mem_prod.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨k, hk, e⟩` from `hO₁U z.1 hz.1 (inT_of_TC G _ _ _ h1)`. Conclude with `⟨k, hk, by simpa using e⟩`. Use `hO₂U z.2 hz.2` as an intermediate fact. Simplify using `using this`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨S, hS⟩` from `P G.C G.star (B.β : G.C) 1 p U hO`. Set `Neg : Prop` to `∃ γ : G.Cˣ × ℚˣ, (γ.1 : G.C) * (B.β : G.C) * (G.star γ.1).unop = algebraMap ℚ G.C γ.2 * (B.β : G.C) ∧ (γ.2 : ℚ) < 0`. Set `gm : G.Cˣ × ℚˣ` to `if h : Neg then h.choose else 1`. Set `S₂ : Set (((AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) × ((ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ))` to `(S : Set _) ∪ (fun s => dg G.C p gm * s) '' (S : Set _)`. Establish `hS₂ : S₂.Finite` using `S.finite_toSet.union (S.finite_toSet.image _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Ψ : (((AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) × ((ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ)) →* ((AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) × Gr G 1` to `(psiAway G x).prodMap (psiP G)`. Set `fH : G.GAf × Gr G 1 →* ((AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) × Gr G 1` to `(UPts G.star (AfP p)).subtype.prodMap (MonoidHom.id _)`. Establish `hfH : Function.Injective fH` using `Prod.map_injective.2 ⟨Subtype.val_injective, Function.injective_id⟩`. Use `⟨fH ⁻¹' (Ψ '' S₂), (hS₂.image Ψ).preimage hfH.injOn, fun g => ?_⟩` and prove the remaining obligations. Establish `hz₁` using `inT_psiAway_inv_of_commute p G B.β x t hx 1 g.1 (by simp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [OneMemClass.coe_one, Prod.fst_one, Units.val_one] at hz₁`. Take `⟨z₂, hz₂, hψ₂⟩` from `GlobalTheory.T.exists_unitaryCentralizer_of_commute_padicPoints_split p G B.β B.sym 1 g.2 (by simp)`. Simplify using `only [OneMemClass.coe_one, Prod.fst_one, Units.val_one] at hz₂`. Use `set z₁ := psiAway G x⁻¹ (g.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) with hz₁def`. Take `⟨γ, hγ, -, s, hs, u, hu, hz⟩` from `hS (z₁, z₂) (TC_of_inT G _ _ _ hz₁) (TC_of_inT G _ _ _ hz₂)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `key : ∃ δ : grp G B.β, ∃ s' ∈ S₂, (z₁, z₂) = dg G.C p (δ : G.Cˣ × ℚˣ) * s' * u`. Break down `lt_or_gt_of_ne (Units.ne_zero γ.2) with hneg | hpos` into its components or cases. Establish `hN : Neg` using `⟨γ, hγ, hneg⟩`. Establish `hgm : gm = hN.choose` using `dif_pos hN`. Take `⟨hgmf, hgmn⟩` from `hN.choose_spec`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hgmf`, `hgmn` using `[← hgm]`. Establish `hδ` using `form_mul_inv G.star (B.β : G.C) γ.1 gm.1 γ.2 gm.2 hγ hgmf`. Establish `hδpos : (0 : ℚ) < ((γ.2 * gm.2⁻¹ : ℚˣ) : ℚ)`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Conclude with `mul_pos_of_neg_of_neg hneg (inv_lt_zero.2 hgmn)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `⟨⟨γ * gm⁻¹, hδ, hδpos⟩, dg G.C p gm * s, Or.inr ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Simplify using `only [map_mul, map_inv, mul_assoc, inv_mul_cancel_left]`. Conclude with `⟨⟨γ, hγ, hpos⟩, s, Or.inl hs, hz⟩`. Take `⟨δ, s', hs', hz'⟩` from `key`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨hu1, hu2⟩` from `Subgroup.mem_prod.1 hu`. Take `⟨k₁, hk₁, ek₁⟩` from `Subgroup.mem_map.1 (Subgroup.mem_comap.1 hu1)`. Establish `hk₂ : psiP G u.2 ∈ KHT p G.m G.n 1 G.Fw` using `Subgroup.mem_comap.1 hu2`. Set `k : G.GAf × Gr G 1` to `(k₁, psiP G u.2)`. Establish `hk : k ∈ L.K.toSubgroup.prod (KHT p G.m G.n 1 G.Fw)` using `Subgroup.mem_prod.2 ⟨hk₁, hk₂⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨B.emb δ, ⟨δ, rfl⟩, (B.emb δ)⁻¹ * g * k⁻¹, ⟨s', hs', ?_⟩, k, hk, by group⟩` and prove the remaining obligations. Establish `hΨz : Ψ (z₁, z₂) = fH g`. Use `Prod.ext ?_ hψ₂` and prove the remaining obligations. Conclude with `psiAway_psiAway_inv G x _`. Establish `hΨd : Ψ (dg G.C p (δ : G.Cˣ × ℚˣ)) = fH (B.emb δ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `(toAfF_eq_psiAway G B.β x t hx δ).symm`. Conclude with `(formGroupToPadicPointsDegreeOne_eq_unitaryPoints G B.β δ).symm`. Establish `hΨu : Ψ u = fH k` using `Prod.ext ek₁.symm rfl`. Establish `e` using `congrArg Ψ hz'`.
-
-Rewrite `e` using `[map_mul, map_mul, hΨz, hΨd, hΨu]`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, e]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem cover_KHT (P : CCF) (G : HTGroup p) (L : G.Level) (B : GlobalTheory.LKDef.DForm G) :
     ∃ S : Set (G.GAf × Gr G 1), S.Finite ∧ ∀ g : G.GAf × Gr G 1, ∃ γ ∈ B.emb.range, ∃ s ∈ S,
@@ -208,7 +204,7 @@ end GlobalTheory.DefClassFin
 namespace GlobalTheory.DefClassFin
 
 /- English proof (translation)
-Introduce `p _ G _ L K' hK B`. Take `⟨S, hS, hcov⟩` from `cover_KHT ccf_holds G L B`. Take `⟨S', hS', hcov'⟩` from `cover_of_relIndex B.emb.range L.K.toSubgroup _ K' hK.1 S hS hcov`. Conclude with `finite_of_cover _ _ S' hS' hcov'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_doubleCoset : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → ∀ (L : G.Level)
     (K' : Subgroup (Gr G 1)), Subgroup.Commensurable K' (KHT p G.m G.n 1 G.Fw) → ∀ B : GlobalTheory.LKDef.DForm G,

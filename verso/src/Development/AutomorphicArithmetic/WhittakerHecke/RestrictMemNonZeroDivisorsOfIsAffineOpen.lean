@@ -8,11 +8,11 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace MvPolyn
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Introduce `W V O hV h t ht`. Rewrite `ht`, the goal using `[mem_nonZeroDivisors_iff_right]`. Introduce `s hs`. Use `TopCat.Presheaf.section_ext W.sheaf O s 0 (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hxV : x ∈ V` using `h hx`. Use `algebraize [(W.presheaf.germ V x hxV).hom]`. Use `hV.isLocalization_stalk ⟨x, hxV⟩` as an intermediate fact. Establish `hloc` using `IsLocalization.nonZeroDivisors_le_comap (hV.primeIdealOf ⟨x, hxV⟩).asIdeal.primeCompl (W.presheaf.stalk x) (mem_nonZeroDivisors_iff_right.mpr ht)`. Rewrite `hloc` using `[Submonoid.mem_comap, RingHom.algebraMap_toAlgebra, mem_nonZeroDivisors_iff_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hloc` to reduce the goal to its premises. Establish `e` using `congrArg (W.presheaf.germ O x hx).hom hs`. Rewrite `e` using `[map_mul, map_zero, TopCat.Presheaf.germ_res_apply]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.restrict_mem_nonZeroDivisors_of_isAffineOpen :
     ∀ {W : Scheme.{0}} {V O : W.Opens}, IsAffineOpen V → ∀ (h : O ≤ V) (t : Γ(W, V)), t ∈ nonZeroDivisors Γ(W, V) →

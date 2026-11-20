@@ -22,19 +22,17 @@ noncomputable section
 namespace GlobalTheory.TrMultSep
 
 /- English proof (translation)
-Introduce `D V T U hU μf hμ hK ν hν n Ws _ _ σs hσ a hyp`. Use `haveI : ν.IsHaarMeasure := hν.1`. Take `⟨e, he, hP, hfam⟩` from `GlobalTheory.T.exists_testFamilies_projectedTranslationOperators D V T U hU μf hμ hK ν hν`. Establish `hex : ∀ i, ∃ P : Ws i →ₗ[ℂ] Ws i, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν (σs i) (finFn V e) P ∧ FiniteDimensional ℂ (LinearMap.range P)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, A, hA, hAf⟩` from `(GlobalTheory.T.admissibleRep_hasTrace_finiteAdelicPureTensorFunction D V ν e he (Ws i) (σs i) (hσ.2.1 i)).1`. Conclude with `⟨A, hA, hAf.1⟩`. Use `choose P hPint using hex`. Establish `hidem : ∀ i, P i ∘ₗ P i = P i` using `fun i => (hP (Ws i) (σs i) (hσ.2.1 i).1 (P i) (hPint i).1).1`. Establish `hne : ∀ i, HasTypeVec T (σs i) → P i ≠ 0` using `fun i h => (hP (Ws i) (σs i) (hσ.2.1 i).1 (P i) (hPint i).1).2 h`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Use `GlobalTheory.T.coeff_eq_zero_of_sum_trace_projections_inequivalent_irreps (GfC V) n Ws σs hσ.1 hσ.2.2 P hidem (fun i => (hPint i).2) a ?_ i (hne i hi)` and prove the remaining obligations. Introduce `g c hc`. Take `⟨ff, hff, hffI, hffT, hffOp⟩` from `hfam g`. Establish `htr : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace ν (σs i) (finFn V ff) (c i)` using `fun i => ⟨_, hffOp (Ws i) (σs i) (hσ.2.1 i).1 (P i) (hPint i).1, hc i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hloc` using `fun i => GlobalTheory.T.exists_irreducible_admissible_localComponent_finiteAdelic D V U.u (Ws i) (σs i) (hσ.1 i) (hσ.2.1 i)`. Use `choose N instA instM π hπ using hloc`. Use `letI : ∀ i, AddCommGroup (N i) := instA`. Use `letI : ∀ i, Module ℂ (N i) := instM`. Establish `hfac` using `fun i => GlobalTheory.T.pure_tensor_trace_eq_const_mul_local_trace D V U.u μf hμ hK ν hν (Ws i) (σs i) (hσ.2.1 i) (N i) (π i) (hπ i).1 (hπ i).2.1 (hπ i).2.2 ff hff`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose c' hc' using hfac`. Establish `hd : ∀ t ∈ strictTorus V.rank U.ϖ, ∀ b : Fin n → ℂ, (∀ i, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace (μf U.u) (π i) (U.frame.cosetFn t) (b i)) → ∑ i, (a i * c' i) * b i = 0`. Introduce `t ht b hb`. Establish `h` using `hyp (Function.update ff U.u (U.frame.cosetFn t)) (hffT t ht).1 (hffT t ht).2 (fun i => c' i * b i) (fun i => (hc' i _ (U.frame.cosetFn_mem t)).2 (b i) (hb i))`. Simplify `h` using `[mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb` using `fun i => (hc' i (ff U.u) (hff.1 U.u)).1`. Use `choose b hb using hb`. Establish `key` using `GlobalTheory.T.admissible_irreducible_torus_characters hI hE D V U (μf U.u) (hμ U.u) n N π (fun i => (hπ i).1) (fun i => (hπ i).2.1) (fun i => a i * c' i) hd (ff U.u) (hff.1 U.u) hffI b hb`. Establish `hceq : ∀ i, c i = c' i * b i`. Introduce `i`.
-
-Establish `h` using `(hc' i (ff U.u) (hff.1 U.u)).2 (b i) (hb i)`. Rewrite `h` using `[Function.update_eq_self]`. Conclude with `(htr i).unique h`. Repeatedly rewrite using `[hceq, ← mul_assoc]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem separation_of_iwahoriTrace (hI : GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IwahoriTrace) (hE : GlobalTheory.IndefiniteRowSideFullHecke.ExponentSeparationTwistedDiscreteSeries.ExponentsSeparate) :
     Separation := by

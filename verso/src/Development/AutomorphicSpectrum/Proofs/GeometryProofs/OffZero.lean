@@ -30,7 +30,7 @@ def OffZero (V : Unf Xo c σ r) (T : TorFlag Xo c) {e : Ix D → ℤ} (k : V.Com
     T.X.ptY (V.un k ⟨x, hx⟩) ≠ y.1) → h i y = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ _ _ => (mul_zero _).symm, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (V : Unf Xo c σ r) (T : TorFlag Xo c) (e : Ix D → ℤ) (k : V.Comp) :
     Reads V T e k 0 (0 : (T.X.LL e).ι → GlobalTheory.CxPts (flagStr T.X) σ → ℂ) ∧ OffZero V T k

@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.Gal.InertialTypesAlt.SeparatedBlocks
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[ZMod.natCast_eq_natCast_iff]`. Conclude with `⟨Nat.ModEq.mul_right_cancel' hc0.ne', Nat.ModEq.mul_right' c⟩`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem key {N M c x y : ℕ} (hc0 : 0 < c) (h : M * c = N) :
     ((x * c : ℕ) : ZMod N) = ((y * c : ℕ) : ZMod N) ↔ x ≡ y [MOD M] := by
@@ -20,7 +20,7 @@ private theorem key {N M c x y : ℕ} (hc0 : 0 < c) (h : M * c = N) :
   exact ⟨Nat.ModEq.mul_right_cancel' hc0.ne', Nat.ModEq.mul_right' c⟩
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_mul, show t * (x * c) = (x * t) * c by ring]`. Conclude with `key hc0 h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_iff {N M c x : ℕ} (t : ℕ) (hc0 : 0 < c) (h : M * c = N) :
     ((t : ℕ) : ZMod N) * ((x * c : ℕ) : ZMod N) = ((x * c : ℕ) : ZMod N) ↔ x * t ≡ x [MOD M] := by
@@ -28,7 +28,7 @@ private theorem fix_iff {N M c x : ℕ} (t : ℕ) (hc0 : 0 < c) (h : M * c = N) 
   exact key hc0 h
 
 /- English proof (translation)
-Establish `hdvd : q ^ m - 1 ∣ q ^ f - 1` using `Nat.pow_sub_one_dvd_pow_sub_one q hd`. Establish `h1 : (q ^ m - 1) * ((q ^ f - 1) / (q ^ m - 1)) = q ^ f - 1` using `Nat.mul_div_cancel' hdvd`. Use `⟨h1, Nat.pos_of_ne_zero fun h0 => ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[h0, mul_zero]`. Establish `: 2 ≤ q ^ f` using `le_trans hq (Nat.le_self_pow hf.ne' q)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -45,7 +45,7 @@ private def cl (q f m k j : ℕ) : ZMod (q ^ f - 1) :=
   ((k * q ^ j * ((q ^ f - 1) / (q ^ m - 1)) : ℕ) : ZMod (q ^ f - 1))
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `quot hq hf hd`. Unfold `cl`. Conclude with `fix_iff (q ^ r) h2 h1`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem cl_fix {q f m : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (hd : m ∣ f) (k j r : ℕ) :
     ((q ^ r : ℕ) : ZMod (q ^ f - 1)) * cl q f m k j = cl q f m k j ↔
@@ -55,7 +55,7 @@ private theorem cl_fix {q f m : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (hd : m ∣ f) 
   exact fix_iff (q ^ r) h2 h1
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `quot hq hf hd`. Unfold `cl at h`. Conclude with `(key h2 h1).1 h`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem cl_eq {q f m : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (hd : m ∣ f) {k k' j j' : ℕ}
     (h : cl q f m k j = cl q f m k' j') : k * q ^ j ≡ k' * q ^ j' [MOD q ^ m - 1] := by
@@ -64,13 +64,13 @@ private theorem cl_eq {q f m : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (hd : m ∣ f) {
   exact (key h2 h1).1 h
 
 /- English proof (translation)
-Conclude with `Nat.modEq_sub (Nat.one_le_pow _ _ (by omega))`.
+A detailed English derivation is pending.
 -/
 private theorem pow_one_mod {q m : ℕ} (hq : 2 ≤ q) : q ^ m ≡ 1 [MOD q ^ m - 1] := by
   exact Nat.modEq_sub (Nat.one_le_pow _ _ (by omega))
 
 /- English proof (translation)
-Use `hr.not_modEq_of_lt hq (u := j) (v := j + r) (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[pow_add, ← mul_assoc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem not_fix {q m k : ℕ} (hq : 2 ≤ q) (hr : Reg q m k) (j r : ℕ) (h0 : 0 < r) (h1 : r < m) :
     ¬ k * q ^ j * q ^ r ≡ k * q ^ j [MOD q ^ m - 1] := by
@@ -78,7 +78,7 @@ private theorem not_fix {q m k : ℕ} (hq : 2 ≤ q) (hr : Reg q m k) (j r : ℕ
   rwa [pow_add, ← mul_assoc] at this
 
 /- English proof (translation)
-Introduce `h`. Establish `hm : 0 < m` using `Nat.pos_of_dvd_of_pos hd hf`. Establish `a` using `(cl_fix hq hf hd k j m).2 (by simpa using (pow_one_mod (m := m) hq).mul_left (k * q ^ j))`. Rewrite `a` using `[h]`. Conclude with `not_fix hq hr j' m hm hlt ((cl_fix hq hf hd' k' j' m).1 a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cross {q f m m' k k' j j' : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (hd : m ∣ f) (hd' : m' ∣ f)
     (hr : Reg q m' k') (hlt : m < m') : cl q f m k j ≠ cl q f m' k' j' := by
@@ -89,9 +89,9 @@ private theorem cross {q f m m' k k' j j' : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (hd
   exact not_fix hq hr j' m hm hlt ((cl_fix hq hf hd' k' j' m).1 a)
 
 /- English proof (translation)
-Use `⟨j + (m - j'), ?_⟩` and prove the remaining obligations. Establish `e` using `(cl_eq hq hf hd h).mul_right (q ^ (m - j'))`. Establish `e2 : k' * q ^ j' * q ^ (m - j') = k' * q ^ m`. Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' hj'.le]`. Establish `e3 : k * q ^ j * q ^ (m - j') = k * q ^ (j + (m - j'))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← pow_add]`. Rewrite `e` using `[e2, e3]`. Establish `e4 : k' * q ^ m ≡ k' [MOD q ^ m - 1]`. Simplify using `using (pow_one_mod (m := m) hq).mul_left k'`. Conclude with `e4.symm.trans e.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem same {q f m k k' j j' : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (hd : m ∣ f) (hj' : j' < m)
     (h : cl q f m k j = cl q f m k' j') : ∃ i, k' ≡ k * q ^ i [MOD q ^ m - 1] := by
@@ -107,9 +107,9 @@ private theorem same {q f m k k' j j' : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (hd : m
   exact e4.symm.trans e.symm
 
 /- English proof (translation)
-Use `Multiset.Nodup.map_on ?_ (Multiset.nodup_range m)` and prove the remaining obligations. Introduce `x hx y hy hxy`. Rewrite `hx`, `hy` using `[Multiset.mem_range]`. Establish `e` using `cl_eq hq hf hd hxy`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Break down `Nat.lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Conclude with `Reg.not_modEq_of_lt hq hr hlt (by omega) e.symm`. Conclude with `Reg.not_modEq_of_lt hq hr hlt (by omega) e`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem block_nodup {q f m k : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (hd : m ∣ f) (hr : Reg q m k) :
     ((Multiset.range m).map (cl q f m k)).Nodup := by
@@ -126,7 +126,7 @@ private def blk (q f : ℕ) (L : List (ℕ × ℕ)) : Multiset (ℕ × ZMod (q ^
   (L.map fun p => (Multiset.range p.1).map fun j => ((1 : ℕ), cl q f p.1 p.2 j)).sum
 
 /- English proof (translation)
-Simplify using `[blk, Multiset.map_map, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem map_snd_cons (q f : ℕ) (p : ℕ × ℕ) (L : List (ℕ × ℕ)) :
     (blk q f (p :: L)).map Prod.snd =
@@ -134,9 +134,9 @@ private theorem map_snd_cons (q f : ℕ) (p : ℕ × ℕ) (L : List (ℕ × ℕ)
   simp [blk, Multiset.map_map, Function.comp_def]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [blk] at h`. Consider the case `cons p L ih`. Rewrite `h` using `[map_snd_cons, Multiset.mem_add]`. Break down `h with h | h` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨j, hj, rfl⟩` from `Multiset.mem_map.1 h`. Conclude with `⟨p, List.mem_cons.2 (Or.inl rfl), j, Multiset.mem_range.1 hj, rfl⟩`. Take `⟨r, hr, j, hj, he⟩` from `ih h`. Conclude with `⟨r, List.mem_cons.2 (Or.inr hr), j, hj, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem mem_blk {q f : ℕ} {L : List (ℕ × ℕ)} {e : ZMod (q ^ f - 1)}
     (h : e ∈ (blk q f L).map Prod.snd) : ∃ p ∈ L, ∃ j < p.1, e = cl q f p.1 p.2 j := by
@@ -151,15 +151,13 @@ private theorem mem_blk {q f : ℕ} {L : List (ℕ × ℕ)} {e : ZMod (q ^ f - 1
       exact ⟨r, List.mem_cons.2 (Or.inr hr), j, hj, he⟩
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [blk]`. Consider the case `cons p L ih`. Rewrite `hP` using `[List.pairwise_cons]`. Establish `hp` using `hL p (List.mem_cons.2 (Or.inl rfl))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hL' : ∀ r ∈ L, Reg q r.1 r.2 ∧ r.1 ∣ f` using `fun r hr => hL r (List.mem_cons.2 (Or.inr hr))`. Rewrite using `[map_snd_cons, Multiset.nodup_add]`. Use `⟨block_nodup hq hf hp.2 hp.1, ih hL' hP.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.disjoint_left]`. Introduce `e he1 he2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, hj, rfl⟩` from `Multiset.mem_map.1 he1`. Rewrite `hj` using `[Multiset.mem_range]`. Take `⟨r, hr, j', hj', he⟩` from `mem_blk he2`. Establish `hrr` using `hL' r hr`. Break down `lt_trichotomy p.1 r.1 with hlt | heq | hgt` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `cross hq hf hp.2 hrr.2 hrr.1 hlt he`. Establish `he' : cl q f p.1 p.2 j = cl q f p.1 r.2 j'`. Rewrite using `[he, heq]`. Take `⟨i, hi⟩` from `same hq hf hp.2 (by omega) he'`. Conclude with `hP.1 r hr heq i hi`.
-
-Conclude with `cross hq hf hrr.2 hp.2 hp.1 hgt he.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem blk_nodup {q f : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (L : List (ℕ × ℕ))
     (hL : ∀ p ∈ L, Reg q p.1 p.2 ∧ p.1 ∣ f)
@@ -188,18 +186,18 @@ private theorem blk_nodup {q f : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (L : List (ℕ
     · exact cross hq hf hrr.2 hp.2 hp.1 hgt he.symm
 
 /- English proof (translation)
-Simplify using `using quot hq hf (one_dvd f)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem d_quot {q f : ℕ} (hq : 2 ≤ q) (hf : 0 < f) :
     (q - 1) * ((q ^ f - 1) / (q - 1)) = q ^ f - 1 ∧ 0 < (q ^ f - 1) / (q - 1) := by
   simpa using quot hq hf (one_dvd f)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `d_quot hq hf`. Establish `e : D.map (fun p => ((p.2 * ((q ^ f - 1) / (q - 1)) : ℕ) : ZMod (q ^ f - 1))) = (D.map Prod.snd).map (fun k => ((k * ((q ^ f - 1) / (q - 1)) : ℕ) : ZMod (q ^ f - 1)))`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `List.Nodup.map_on ?_ hnd` and prove the remaining obligations. Introduce `x hx y hy hxy`. Take `⟨a, ha, rfl⟩` from `List.mem_map.1 hx`. Take `⟨b, hb, rfl⟩` from `List.mem_map.1 hy`. Establish `hm` using `(key h2 h1).1 hxy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha'` using `hlt a ha`. Establish `hb'` using `hlt b hb`. Unfold `Nat.ModEq at hm`. Rewrite `hm` using `[Nat.mod_eq_of_lt ha', Nat.mod_eq_of_lt hb']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem d_nodup {q f : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (D : List (ℕ × ℕ))
     (hlt : ∀ p ∈ D, p.2 < q - 1) (hnd : (D.map Prod.snd).Nodup) :
@@ -221,7 +219,7 @@ private theorem d_nodup {q f : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (D : List (ℕ �
   rwa [Nat.mod_eq_of_lt ha', Nat.mod_eq_of_lt hb'] at hm
 
 /- English proof (translation)
-Use `(fix_iff _ (d_quot hq hf).2 (d_quot hq hf).1).2 ?_` and prove the remaining obligations. Simplify using `using (pow_one_mod (m := 1) hq).mul_left k`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem d_fix {q f : ℕ} (hq : 2 ≤ q) (hf : 0 < f) (k : ℕ) :
     ((q ^ 1 : ℕ) : ZMod (q ^ f - 1)) * ((k * ((q ^ f - 1) / (q - 1)) : ℕ) : ZMod (q ^ f - 1)) =
@@ -233,15 +231,13 @@ end UpperTheory.Gal.InertialTypesAlt.SeparatedBlocks
 
 open UpperTheory.Gal.InertialTypesAlt.SeparatedBlocks in
 /- English proof (translation)
-Introduce `a Q hok hap hsp`. Take `⟨hq, -, hL⟩` from `hok`. Take `⟨hDlt, hDnd, hL2, hP⟩` from `hap`. Take `⟨f, hf, rfl, hdiv⟩` from `hsp`. Establish `hB : ((blk a.q f a.L).map Prod.snd).Nodup` using `blk_nodup hq hf a.L (fun p hp => ⟨(hL p hp).2, hdiv p hp⟩) hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDn` using `d_nodup hq hf a.D hDlt hDnd`. Unfold `Lbl.Sep Lbl.blocks`. Rewrite using `[Multiset.map_add, Multiset.nodup_add]`. Use `⟨?_, hB, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_coe, Multiset.coe_nodup, List.map_map]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hDn`. Rewrite using `[Multiset.disjoint_left]`. Introduce `e he1 he2`. Rewrite `he1` using `[Multiset.map_coe, Multiset.mem_coe, List.map_map]`. Take `⟨p, hp, hpe⟩` from `List.mem_map.1 he1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, j, hj, he⟩` from `mem_blk (q := a.q) (f := f) (L := a.L) he2`. Establish `e1 : e = ((p.2 * ((a.q ^ f - 1) / (a.q - 1)) : ℕ) : ZMod (a.q ^ f - 1))` using `hpe.symm`. Establish `hfix` using `d_fix hq hf p.2`. Rewrite `hfix` using `[← e1, he]`. Establish `hr'` using `(cl_fix hq hf (hdiv r hr) r.2 j 1).1 hfix`.
-
-Conclude with `not_fix hq (hL r hr).2 j 1 one_pos (by have := hL2 r hr; omega) hr'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.sepOf :
     SepOf := by

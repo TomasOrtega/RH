@@ -12,7 +12,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {N : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Zls.diagPow, Matrix.diagonal_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coe_diagPow (l : Fin N → ℤ) :
     ((Zls.diagPow k N l : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) =
@@ -21,7 +21,7 @@ theorem coe_diagPow (l : Fin N → ℤ) :
   simp [Zls.diagPow, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, coe_diagPow, coe_diagPow, coe_diagPow, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, _root_.zpow_add, Units.val_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagPow_add (l l' : Fin N → ℤ) :
     Zls.diagPow k N (l + l') = Zls.diagPow k N l * Zls.diagPow k N l' := by
@@ -32,7 +32,7 @@ theorem diagPow_add (l l' : Fin N → ℤ) :
   rw [Pi.add_apply, _root_.zpow_add, Units.val_mul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_diagPow]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagPow_zero : Zls.diagPow k N 0 = 1 := by
   apply Units.ext
@@ -40,15 +40,15 @@ theorem diagPow_zero : Zls.diagPow k N 0 = 1 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[eq_inv_iff_mul_eq_one, ← diagPow_add, neg_add_cancel, diagPow_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diagPow_neg (l : Fin N → ℤ) : Zls.diagPow k N (-l) = (Zls.diagPow k N l)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← diagPow_add, neg_add_cancel, diagPow_zero]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp [diagPow_zero]`. Consider the case `succ j ih`. Rewrite using `[pow_succ, ih, ← diagPow_add]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diagPow_pow (l : Fin N → ℤ) (j : ℕ) :
     Zls.diagPow k N l ^ j = Zls.diagPow k N ((j : ℤ) • l) := by
@@ -62,7 +62,7 @@ theorem diagPow_pow (l : Fin N → ℤ) (j : ℕ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[← diagPow_neg, Units.val_mul, Units.val_mul, coe_diagPow, coe_diagPow, Matrix.mul_diagonal, Matrix.diagonal_mul, Pi.neg_apply, sub_eq_add_neg, _root_.zpow_add, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_apply (l : Fin N → ℤ) (y : GL (Fin N) k) (i j : Fin N) :
     ((Zls.diagPow k N l * y * (Zls.diagPow k N l)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j =
@@ -75,9 +75,7 @@ def contractMat (l : Fin N → ℤ) (s : k) (m : Matrix (Fin N) (Fin N) k) : Mat
   Matrix.of fun i j => if l j < l i then s ^ (l i - l j).toNat * m i j else (1 : Matrix (Fin N) (Fin N) k) i j
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `h : l j < l i`. Simplify using `only [contractMat, Matrix.of_apply, h, if_true]`. Conclude with `(hf.pow _).mul (hg.matrix_elem i j)`. Simplify using `only [contractMat, Matrix.of_apply, h, if_false]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_contractMat (l : Fin N → ℤ) {X : Type} [TopologicalSpace X] {f : X → k}
     {g : X → Matrix (Fin N) (Fin N) k} (hf : Continuous f) (hg : Continuous g) :
@@ -90,9 +88,9 @@ theorem continuous_contractMat (l : Fin N → ℤ) {X : Type} [TopologicalSpace 
     exact continuous_const
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : l j < l i`. Establish `hij : i ≠ j` using `fun e => by subst e; exact lt_irrefl _ h`. Establish `he : (l i - l j).toNat ≠ 0` using `by omega`. Simplify using `[contractMat, h, hij, he]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[contractMat, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contractMat_zero (l : Fin N → ℤ) (m : Matrix (Fin N) (Fin N) k) : contractMat l 0 m = 1 := by
   ext i j
@@ -103,13 +101,13 @@ theorem contractMat_zero (l : Fin N → ℤ) (m : Matrix (Fin N) (Fin N) k) : co
   · simp [contractMat, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[conj_apply]`. Distinguish the cases in `h : l j < l i`. Simplify using `only [contractMat, Matrix.of_apply, h, if_true]`. Use `congr 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `he : ((l i - l j).toNat : ℤ) = l i - l j` using `Int.toNat_of_nonneg (by omega)`. Establish `: ((c : ℤ) • l) i - ((c : ℤ) • l) j = ((c * (l i - l j).toNat : ℕ) : ℤ)`. Use `push_cast`. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, zpow_natCast, Units.val_pow_eq_pow_val, pow_mul]`. Establish `h' : l i ≤ l j` using `not_lt.1 h`. Simplify using `only [contractMat, Matrix.of_apply, h, if_false]`. Rewrite using `[hy i j h']`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem val_conj_eq (l : Fin N → ℤ) (c : ℕ) (y : GL (Fin N) k)
     (hy : ∀ i j, l i ≤ l j → (y : Matrix (Fin N) (Fin N) k) i j = (1 : Matrix (Fin N) (Fin N) k) i j) :
@@ -137,17 +135,15 @@ theorem val_conj_eq (l : Fin N → ℤ) (c : ℕ) (y : GL (Fin N) k)
     · simp [hij]
 
 /- English proof (translation)
-Take `⟨W, hWo, rfl⟩` from `isOpen_induced_iff.1 hU`. Set `Φ : k × GL (Fin N) k → Matrix (Fin N) (Fin N) k × (Matrix (Fin N) (Fin N) k)ᵐᵒᵖ` to `fun p => (contractMat l p.1 (p.2 : Matrix (Fin N) (Fin N) k), MulOpposite.op (contractMat l p.1 ((p.2⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k)))`. Establish `hΦ : Continuous Φ`. Use `Continuous.prodMk ?_ (MulOpposite.continuous_op.comp ?_)` and prove the remaining obligations. Conclude with `continuous_contractMat l continuous_fst (Units.continuous_val.comp continuous_snd)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `continuous_contractMat l continuous_fst (Units.continuous_val.comp (continuous_inv.comp continuous_snd))`. Establish `hsub : ({0} : Set k) ×ˢ (J : Set (GL (Fin N) k)) ⊆ Φ ⁻¹' W`. Introduce and unpack `⟨s, y⟩ ⟨hs, -⟩`. Take `rfl : s = 0` from `hs`. Establish `: Φ (0, y) = Units.embedProduct _ (1 : GL (Fin N) k)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one]`. Use `show (contractMat l 0 _, MulOpposite.op (contractMat l 0 _)) = 1`. Rewrite using `[contractMat_zero, contractMat_zero]`. Both sides reduce to the same expression. Use `show Φ (0, y) ∈ W`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `h1`. Take `⟨u, v, hu, -, h0u, hJv, huv⟩` from `generalized_tube_lemma isCompact_singleton hJ (hWo.preimage hΦ) hsub`. Establish `hev` using `(GlobalTheory.CompanionTheory.UnifPow.tendsto_unifU_pow k).eventually (hu.mem_nhds (h0u rfl))`. Take `⟨c₀, hc₀⟩` from `Filter.eventually_atTop.1 hev`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨c₀, fun c hc y hyJ hyS => ?_⟩` and prove the remaining obligations. Establish `hin : Φ (((Zls.unifU k : kˣ) : k) ^ c, y) ∈ W` using `huv ⟨hc₀ c hc, hJv hyJ⟩`. Establish `hinv : (Zls.diagPow k N ((c : ℤ) • l) * y * (Zls.diagPow k N ((c : ℤ) • l))⁻¹)⁻¹ = Zls.diagPow k N ((c : ℤ) • l) * y⁻¹ * (Zls.diagPow k N ((c : ℤ) • l))⁻¹` using `by group`. Use `show Units.embedProduct _ _ ∈ W`. Establish `: Units.embedProduct _ (Zls.diagPow k N ((c : ℤ) • l) * y * (Zls.diagPow k N ((c : ℤ) • l))⁻¹) = Φ (((Zls.unifU k : kˣ) : k) ^ c, y)`.
-
-Simplify using `only [Units.embedProduct_apply, Φ]`. Rewrite using `[hinv, val_conj_eq l c y (hS y hyS), val_conj_eq l c y⁻¹ (hS _ (inv_mem hyS))]`. Rewrite using `[this]`. Conclude with `hin`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_contract (l : Fin N → ℤ) (J : Subgroup (GL (Fin N) k))
     (hJ : IsCompact (J : Set (GL (Fin N) k))) (S : Subgroup (GL (Fin N) k))
@@ -206,7 +202,7 @@ theorem coe_zLevi (d : Fin h → ℕ) (w : Fin h → ℤ) (b : Fin h) :
       Matrix.scalar (Fin (d b)) ((Zls.unifU k ^ w b : kˣ) : k) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((zLevi d w b : GL (Fin (d b)) k) : Matrix (Fin (d b)) (Fin (d b)) k) * (x b : GL (Fin (d b)) k) = ((x b : GL (Fin (d b)) k) : Matrix (Fin (d b)) (Fin (d b)) k) * (zLevi d w b : GL (Fin (d b)) k)`. Rewrite using `[coe_zLevi]`. Conclude with `Matrix.scalar_commute _ (fun r => Commute.all _ r) _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zLevi_comm (d : Fin h → ℕ) (w : Fin h → ℤ) (x : Levi k (Bl d)) :
     zLevi d w * x = x * zLevi d w := by
@@ -218,18 +214,18 @@ theorem zLevi_comm (d : Fin h → ℕ) (w : Fin h → ℤ) (x : Levi k (Bl d)) :
   exact Matrix.scalar_commute _ (fun r => Commute.all _ r) _
 
 /- English proof (translation)
-Introduce `e` and use `hab ((stdBlocks d hd).injective e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stdBlocks_ne (d : Fin h → ℕ) (hd : ∑ a, d a = N) {a b : Fin h} (i : Fin (d a)) (j : Fin (d b))
     (hab : (⟨a, i⟩ : Σ a, Fin (d a)) ≠ ⟨b, j⟩) : stdBlocks d hd ⟨a, i⟩ ≠ stdBlocks d hd ⟨b, j⟩ :=
   fun e => hab ((stdBlocks d hd).injective e)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `(stdBlocks d hd).surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `(stdBlocks d hd).surjective j`. Rewrite using `[coe_diagPow]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[coe_zLevi, Matrix.scalar_apply, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, blk_apply]`. Establish `hne` using `stdBlocks_ne d hd i j (fun e => hij (by simpa using e))`. Rewrite using `[Matrix.diagonal_apply_ne _ hne, coe_zLevi, Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hij]`. Establish `hne` using `stdBlocks_ne d hd i j (fun e => hab (congrArg Sigma.fst e))`. Rewrite using `[leviEmb_apply_ne k _ _ hab, Matrix.diagonal_apply_ne _ hne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviEmb_zLevi (d : Fin h → ℕ) (hd : ∑ a, d a = N) (w : Fin h → ℤ) :
     leviEmb k (stdBlocks d hd) (zLevi d w) =
@@ -254,7 +250,7 @@ def lam (d : Fin h → ℕ) (hd : ∑ a, d a = N) : Fin N → ℤ :=
   fun i => -(((blk (stdBlocks d hd) i : Fin h) : ℕ) : ℤ)
 
 /- English proof (translation)
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (stdBlocks_ne d hd i j (fun e => hij (by simpa using e)))]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_block (d : Fin h → ℕ) (hd : ∑ a, d a = N) (a : Fin h) (i j : Fin (d a)) :
     (1 : Matrix (Fin N) (Fin N) k) (stdBlocks d hd ⟨a, i⟩) (stdBlocks d hd ⟨a, j⟩) =
@@ -266,9 +262,9 @@ theorem one_block (d : Fin h → ℕ) (hd : ∑ a, d a = N) (a : Fin h) (i j : F
       Matrix.one_apply_ne (stdBlocks_ne d hd i j (fun e => hij (by simpa using e)))]
 
 /- English proof (translation)
-Take `⟨⟨a, i⟩, rfl⟩` from `(stdBlocks d hd).surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `(stdBlocks d hd).surjective j`. Establish `hab : b ≤ a`. Simplify using `only [lam, blk_apply, neg_le_neg_iff, Nat.cast_le] at hl`. Conclude with `hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hp, hdg⟩` from `mem_unipRad.1 hy`. Break down `hab.eq_or_lt with rfl | hlt` into its components or cases. Rewrite using `[hdg, one_block]`. Rewrite using `[mem_parab_iff.1 hp a b i j hlt, Matrix.one_apply_ne (stdBlocks_ne d hd i j (fun e => hlt.ne' (congrArg Sigma.fst e)))]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_entries (d : Fin h → ℕ) (hd : ∑ a, d a = N) (y : GL (Fin N) k)
     (hy : y ∈ unipRad k (stdBlocks d hd)) (i j : Fin N) (hl : lam d hd i ≤ lam d hd j) :
@@ -285,9 +281,9 @@ theorem unip_entries (d : Fin h → ℕ) (hd : ∑ a, d a = N) (y : GL (Fin N) k
       Matrix.one_apply_ne (stdBlocks_ne d hd i j (fun e => hlt.ne' (congrArg Sigma.fst e)))]
 
 /- English proof (translation)
-Take `⟨⟨a, i⟩, rfl⟩` from `(stdBlocks d hd).surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `(stdBlocks d hd).surjective j`. Establish `hab : a ≤ b`. Simplify using `only [lam, Pi.neg_apply, blk_apply, neg_neg, Nat.cast_le] at hl`. Conclude with `hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hp, hdg⟩` from `(mem_unipRadLower k).1 hy`. Break down `hab.eq_or_lt with rfl | hlt` into its components or cases. Rewrite using `[hdg, one_block]`. Rewrite using `[(mem_parabLower_iff k).1 hp a b i j hlt, Matrix.one_apply_ne (stdBlocks_ne d hd i j (fun e => hlt.ne (congrArg Sigma.fst e)))]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipLower_entries (d : Fin h → ℕ) (hd : ∑ a, d a = N) (y : GL (Fin N) k)
     (hy : y ∈ unipRadLower k (stdBlocks d hd)) (i j : Fin N) (hl : (-lam d hd) i ≤ (-lam d hd) j) :
@@ -304,25 +300,23 @@ theorem unipLower_entries (d : Fin h → ℕ) (hd : ∑ a, d a = N) (y : GL (Fin
       Matrix.one_apply_ne (stdBlocks_ne d hd i j (fun e => hlt.ne (congrArg Sigma.fst e)))]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N h d hd J hJo hJc _ _`. Establish `hc` using `fun (l : Fin N → ℤ) S hS U hU h1 => exists_contract (k := k) l J hJc S hS U hU h1`. Take `⟨c₁, hc₁⟩` from `hc (lam d hd) (unipRad k (stdBlocks d hd)) (unip_entries d hd) J hJo J.one_mem`. Take `⟨c₂, hc₂⟩` from `hc (-lam d hd) (unipRadLower k (stdBlocks d hd)) (unipLower_entries d hd) J hJo J.one_mem`. Take `⟨c, hc1, hcc₁, hcc₂⟩ : ∃ c : ℕ, 1 ≤ c ∧ c₁ ≤ c ∧ c₂ ≤ c` from `⟨max c₁ c₂ + 1, by omega, by omega, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `a : Levi k (Bl d)` to `zLevi d ((c : ℤ) • fun b : Fin h => -((b : ℕ) : ℤ))`. Establish `hemb : leviEmb k (stdBlocks d hd) a = Zls.diagPow k N ((c : ℤ) • lam d hd)` using `leviEmb_zLevi d hd _`. Establish `hpow : ∀ j : ℕ, leviEmb k (stdBlocks d hd) a ^ j = Zls.diagPow k N (((j * c : ℕ) : ℤ) • lam d hd)`. Introduce `j`. Rewrite using `[hemb, diagPow_pow, smul_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hinv : ∀ j : ℕ, Zls.diagPow k N (((j * c : ℕ) : ℤ) • (-lam d hd)) = (leviEmb k (stdBlocks d hd) a ^ j)⁻¹`. Introduce `j`. Rewrite using `[smul_neg, diagPow_neg, hpow]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hemb' : Zls.diagPow k N ((c : ℤ) • (-lam d hd)) = (leviEmb k (stdBlocks d hd) a)⁻¹`. Rewrite using `[smul_neg, diagPow_neg, hemb]`. Establish `hcent : ∀ x : Levi k (Bl d), a * x = x * a` using `zLevi_comm d _`. Use `⟨a, hcent, ⟨⟨?_, ?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `n hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hemb]`. Conclude with `hc₁ c hcc₁ n hn.1 hn.2`. Conclude with `(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer k _ a) n).1 hn.2`. Introduce `n hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hc₂ c hcc₂ n hn.1 hn.2` as an intermediate fact. Rewrite `this` using `[hemb', inv_inv]`. Then use the resulting hypothesis. Use `(Subgroup.mem_normalizer_iff.1 (inv_mem (leviEmb_mem_normalizer_lower k (stdBlocks d hd) a)) n).1 hn.2` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcent x, mul_inv_cancel_right]`. Conclude with `hx`. Rewrite using `[mul_assoc, ← hcent x, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx`. Introduce `U hU h1`. Take `⟨c₃, hc₃⟩` from `hc (lam d hd) (unipRad k (stdBlocks d hd)) (unip_entries d hd) U hU h1`. Use `⟨c₃, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hpow]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hc₃ _ (Nat.le_mul_of_pos_right _ hc1) n hn.1 hn.2`. Introduce `U hU h1`. Take `⟨c₃, hc₃⟩` from `hc (-lam d hd) (unipRadLower k (stdBlocks d hd)) (unipLower_entries d hd) U hU h1`. Use `⟨c₃, fun y hy => ?_⟩` and prove the remaining obligations. Use `hc₃ _ (Nat.le_mul_of_pos_right _ hc1) y hy.1 hy.2` as an intermediate fact.
-
-Rewrite `this` using `[hinv, inv_inv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_central_strictlyDominant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N h : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (J : Subgroup (GL (Fin N) k)), IsOpen (J : Set (GL (Fin N) k)) → IsCompact (J : Set (GL (Fin N) k)) → HasIwahoriFact k N J d hd → (∀ a, 0 < d a) → ∃ a : Levi k (Bl d), (∀ x : Levi k (Bl d), a * x = x * a) ∧ IsStrictlyDominant k N J d hd a ∧ ∀ U : Set (GL (Fin N) k), IsOpen U → (1 : GL (Fin N) k) ∈ U → ∃ j : ℕ, ∀ y ∈ KNl k N J d hd, (leviEmb k (stdBlocks d hd) a ^ j)⁻¹ * y * leviEmb k (stdBlocks d hd) a ^ j ∈ U := by
   intro k _ _ _ _ N h d hd J hJo hJc _ _

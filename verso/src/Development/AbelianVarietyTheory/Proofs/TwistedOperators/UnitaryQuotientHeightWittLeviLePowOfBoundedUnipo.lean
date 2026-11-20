@@ -19,11 +19,11 @@ open scoped NNReal
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `by_contra! h0`. Establish `e : (L * M).det = ∑ r : ι → m, (∏ i, L i (r i)) • (M.submatrix r id).det`. Establish `e1 : L * M = Matrix.of fun i => ∑ j, L i j • M j`. Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Express the relevant statement in the definitionally equal form `Matrix.detRowAlternating.toMultilinearMap (fun i => ∑ j, L i j • M j) = _`. Rewrite using `[MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `[h, h0] at e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_minor_ne_zero [Nontrivial R] {ι m : Type} [Fintype ι] [DecidableEq ι] [Fintype m] [DecidableEq m]
     (L : Matrix ι m R) (M : Matrix m ι R) (h : L * M = 1) : ∃ r : ι → m, (M.submatrix r id).det ≠ 0 := by
@@ -44,7 +44,7 @@ variable (N : R → ℝ≥0) (κ : ℕ → ℝ≥0) (hmul : ∀ x y, N (x * y) �
 
 include hmul hone in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hone`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(hmul _ _).trans (mul_le_mul' le_rfl ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem size_prod_le {ι : Type} (s : Finset ι) (f : ι → R) : N (∏ i ∈ s, f i) ≤ ∏ i ∈ s, N (f i) := by
   classical
@@ -54,9 +54,9 @@ theorem size_prod_le {ι : Type} (s : Finset ι) (f : ι → R) : N (∏ i ∈ s
 
 include hmul hone hneg hsum in
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `hsum _ _ _ fun σ => ?_` and prove the remaining obligations. Establish `h1 : N (∏ i, M (σ i) i) ≤ ∏ j, c j` using `(size_prod_le N hmul hone _ _).trans (Finset.prod_le_prod' fun j _ => h _ j)`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e` into its components or cases. Rewrite using `[e, one_smul]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[e, Units.neg_smul, one_smul, hneg]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem size_det_le {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι R) (c : ι → ℝ≥0) (h : ∀ i j, N (M i j) ≤ c j) :
     N M.det ≤ κ (Fintype.card (Equiv.Perm ι)) * ∏ j, c j := by
@@ -73,11 +73,11 @@ def cst (κ : ℕ → ℝ≥0) (m k ρ : ℕ) (K : ℝ≥0) : ℝ≥0 :=
 
 include hmul hone hneg hsum in
 /- English proof (translation)
-Establish `h1 : ∀ j, N ((i₀ *ᵥ x) j) ≤ κ k * (K * X)` using `fun j => by`. Use `hsum (Fin k) (fun l => i₀ j l * x l) (K * X) fun l => (hmul _ _).trans (mul_le_mul' (hi j l) (hx l))` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis. Use `(size_det_le N κ hmul hone hneg hsum _ (Sum.elim (fun _ => κ m * (H * K)) fun _ => κ m * (H * (κ k * (K * X)))) fun i j => ?_).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[submatrix_apply, Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `j with j | j` into its components or cases. Use `hsum (Fin m) (fun l => g (r i) l * e l j) (H * K) fun l => (hmul _ _).trans (mul_le_mul' (hg _ l) (he l j))` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis. Use `hsum (Fin m) (fun l => g (r i) l * (i₀ *ᵥ x) l) _ fun l => (hmul _ _).trans (mul_le_mul' (hg _ l) (h1 l))` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Fintype.card_unique, pow_one, cst]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem size_minor_le {m k ρ : ℕ} (g : Matrix (Fin m) (Fin m) R) (e : Matrix (Fin m) (Fin ρ) R)
     (i₀ : Matrix (Fin m) (Fin k) R) (x : Fin k → R) (r : Fin ρ ⊕ Unit → Fin m) {H K X : ℝ≥0}
@@ -99,9 +99,9 @@ theorem size_minor_le {m k ρ : ℕ} (g : Matrix (Fin m) (Fin m) R) (e : Matrix 
     ring
 
 /- English proof (translation)
-Establish `e1 : n * fromCols e (replicateCol Unit (i₀ *ᵥ y)) = fromCols e (replicateCol Unit (i₀ *ᵥ y)) * (fromBlocks (1 + T) (replicateCol Unit (b *ᵥ y)) 0 1 : Matrix (Fin ρ ⊕ Unit) (Fin ρ ⊕ Unit) R)`. Rewrite using `[mul_fromCols, fromCols_mul_fromBlocks, h1, ← replicateCol_mulVec, mulVec_mulVec, h2, add_mulVec, ← replicateCol_mulVec, mulVec_mulVec, Matrix.mul_zero, add_zero, Matrix.mul_one, Matrix.mul_add, Matrix.mul_one, replicateCol_add, add_comm (replicateCol Unit (i₀ *ᵥ y))]`. Establish `e2 : (1 + T).det = 1`. Rewrite using `[det_of_upperTriangular]`. Simplify using `[hT]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i j hij`. Establish `: j < i` using `hij`. Simplify using `[hT i j this.le, Matrix.one_apply_ne this.ne']`. Rewrite using `[Matrix.mul_assoc, e1, ← Matrix.mul_assoc, submatrix_mul _ _ _ id _ Function.bijective_id, submatrix_id_id, det_mul, det_fromBlocks_zero₂₁, e2, det_one, mul_one, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem minor_unip {m k ρ : ℕ} (γ n : Matrix (Fin m) (Fin m) R) (e : Matrix (Fin m) (Fin ρ) R)
     (i₀ : Matrix (Fin m) (Fin k) R) (T : Matrix (Fin ρ) (Fin ρ) R) (b : Matrix (Fin ρ) (Fin k) R)
@@ -125,13 +125,11 @@ theorem minor_unip {m k ρ : ℕ} (γ n : Matrix (Fin m) (Fin m) R) (e : Matrix 
     det_fromBlocks_zero₂₁, e2, det_one, mul_one, mul_one]
 
 /- English proof (translation)
-Establish `fs : ∀ {f : β → ℝ≥0}, (∀ᶠ v in Filter.cofinite, f v = 1) → (Function.mulSupport f).Finite` using `fun h => Filter.eventually_cofinite.1 h`. Establish `h5 : ∀ᶠ v in Filter.cofinite, h' v = 1` using `Filter.eventually_cofinite.2 hh`. Establish `h6 : ∀ᶠ v in Filter.cofinite, x' v = 1` using `by filter_upwards [hK, hy, h5, hx] with v a1 a2 a3 a4`. Use `h2 v` as an intermediate fact. Rewrite `this` using `[a1, a2, a3, one_pow, one_mul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_antisymm a4 this`. Establish `hK' : ∀ᶠ v in Filter.cofinite, K v ^ n = 1` using `hK.mono fun v hv => by rw [hv, one_pow]`. Establish `h5' : ∀ᶠ v in Filter.cofinite, h' v ^ n = 1` using `h5.mono fun v hv => by rw [hv, one_pow]`. Establish `h7 : ∏ᶠ v, y' v ≤ (∏ᶠ v, K v ^ n) * (∏ᶠ v, h' v) ^ n * ∏ᶠ v, x' v`. Rewrite using `[finprod_pow hh, ← finprod_mul_distrib (fs hK') (fs h5'), ← finprod_mul_distrib (fs ((hK'.and h5').mono fun v hv => by rw [hv.1, hv.2, one_mul])) (fs h6)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finprod_le_finprod' (fs hy) (fs (((hK'.and h5').and h6).mono fun v hv => by`. Rewrite using `[hv.1.1, hv.1.2, hv.2, one_mul, one_mul])) h2`. Establish `h8 : ∏ w, y w ≤ (∏ w, c w) * (∏ w, h w) ^ n * ∏ w, x w`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod' fun w _ => h1 w`.
-
-Use `(mul_le_mul' h8 h7).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem prod_bound {α β : Type} [Fintype α] (n : ℕ) {y c h x : α → ℝ≥0} {y' K h' x' : β → ℝ≥0}
     (h1 : ∀ w, y w ≤ c w * h w ^ n * x w) (h2 : ∀ v, y' v ≤ K v ^ n * h' v ^ n * x' v)
@@ -180,14 +178,14 @@ def nInf (w : InfinitePlace D.host.F) (z : AE D) : ℝ≥0 :=
 def nFin (v : HeightOneSpectrum (𝓞 D.host.F)) (z : AE D) : ℝ≥0 := absFin D.host.F v (compFin D.host.F D.host.E v z)
 
 /- English proof (translation)
-Simplify using `[nInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nInf_le_iff {w : InfinitePlace D.host.F} {z : AE D} {c : ℝ≥0} :
     nInf w z ≤ c ↔ ∀ τ : EmbOver D.host.E w, ‖infEmb τ (compInf D.host.F D.host.E w z)‖₊ ≤ c := by
   simp [nInf]
 
 /- English proof (translation)
-Simplify using `only [vInf, nInf_le_iff, Finset.sup_le_iff, Finset.mem_univ, true_imp_iff, Prod.forall]`. Conclude with `forall_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vInf_le_iff {w : InfinitePlace D.host.F} {n : ℕ} {x : Fin n → AE D} {c : ℝ≥0} :
     vInf w x ≤ c ↔ ∀ i, nInf w (x i) ≤ c := by
@@ -195,25 +193,25 @@ theorem vInf_le_iff {w : InfinitePlace D.host.F} {n : ℕ} {x : Fin n → AE D} 
   exact forall_comm
 
 /- English proof (translation)
-Simplify using `only [vFin, nFin, Finset.sup_le_iff, Finset.mem_univ, true_imp_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vFin_le_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {n : ℕ} {x : Fin n → AE D} {c : ℝ≥0} :
     vFin v x ≤ c ↔ ∀ i, nFin v (x i) ≤ c := by
   simp only [vFin, nFin, Finset.sup_le_iff, Finset.mem_univ, true_imp_iff]
 
 /- English proof (translation)
-The claim follows from `eventually_absFin_le_one _ z`.
+A detailed English derivation is pending.
 -/
 theorem eventually_nFin_le_one (z : AE D) : ∀ᶠ v in cofinite, nFin v z ≤ 1 := eventually_absFin_le_one _ z
 
 /- English proof (translation)
-Unfold `nFin`. Rewrite using `[RingHom.map_mul]`. Conclude with `absFin_mul_le _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nFin_mul_le (v : HeightOneSpectrum (𝓞 D.host.F)) (x y : AE D) : nFin v (x * y) ≤ nFin v x * nFin v y := by
   unfold nFin; rw [RingHom.map_mul]; exact absFin_mul_le _ _ _ _
 
 /- English proof (translation)
-Unfold `nFin`. Rewrite using `[RingHom.map_one]`. Conclude with `absFin_one _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nFin_one (v : HeightOneSpectrum (𝓞 D.host.F)) : nFin v (1 : AE D) = 1 := by
   unfold nFin; rw [RingHom.map_one]; exact absFin_one _ _
@@ -223,11 +221,9 @@ section Minor
 variable {m k ρ : ℕ} (g : GL (Fin m) (AE D)) (e : Mx D m ρ) (i₀ : Mx D m k) (x : Fin k → AE D) (r : Fin ρ ⊕ Unit → Fin m)
 
 /- English proof (translation)
-Use `size_minor_le (nInf w) Nat.cast (fun x y => nInf_le_iff.2 fun τ => ?_) (nInf_le_iff.2 fun τ => ?_) (fun x => ?_) (fun ι _ f c h => nInf_le_iff.2 fun τ => ?_) g.1 e i₀ x r (fun i j => nInf_le_iff.2 fun τ => ?_) he hi (vInf_le_iff.1 le_rfl)` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, RingHom.map_mul, nnnorm_mul]`. Conclude with `mul_le_mul' (nInf_le_iff.1 le_rfl τ) (nInf_le_iff.1 le_rfl τ)`. Rewrite using `[RingHom.map_one, RingHom.map_one, nnnorm_one]`. Simplify using `only [nInf, RingHom.map_neg, nnnorm_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, map_sum]`. Use `(nnnorm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ c fun i _ => nInf_le_iff.1 (h i) τ).trans ?_)` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, Finset.card_univ]`. Use `le_trans ?_ (le_htOf _ _)` and prove the remaining obligations. Use `le_trans ?_ ((normInf_le_iff _ w).1 le_rfl τ)` and prove the remaining obligations.
-
-Conclude with `NNReal.coe_le_coe.1 (HeightProper.norm_entry_le_opNorm ((bc (compInf D.host.F D.host.E w) g).1.map (infEmb τ)) i j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nInf_minor_le (w : InfinitePlace D.host.F) {K : ℝ≥0} (he : ∀ i j, nInf w (e i j) ≤ K)
     (hi : ∀ i j, nInf w (i₀ i j) ≤ K) :
@@ -249,9 +245,7 @@ theorem nInf_minor_le (w : InfinitePlace D.host.F) {K : ℝ≥0} (he : ∀ i j, 
       ((bc (compInf D.host.F D.host.E w) g).1.map (infEmb τ)) i j)
 
 /- English proof (translation)
-Use `(size_minor_le (nFin v) (fun _ => 1) (nFin_mul_le v) (nFin_one v).le (fun x => ?_) (fun ι _ f c h => ?_) g.1 e i₀ x r (H := htFin D.host.F v (bc (compFin D.host.F D.host.E v) g)) (fun i j => ?_) he hi (vFin_le_iff.1 le_rfl)).trans_eq ?_` and prove the remaining obligations. Simplify using `only [nFin, RingHom.map_neg, absFin_neg]`. Rewrite using `[one_mul, nFin, map_sum]`. Conclude with `absFin_sum_le _ v _ _ fun i _ => h i`. Conclude with `(absFin_le_normFin D.host.F v (bc (compFin D.host.F D.host.E v) g).1 i j).trans (le_htOf _ _)`.
-
-Simplify using `only [cst, one_mul, pow_succ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nFin_minor_le (v : HeightOneSpectrum (𝓞 D.host.F)) {K : ℝ≥0} (he : ∀ i j, nFin v (e i j) ≤ K)
     (hi : ∀ i j, nFin v (i₀ i j) ≤ K) :
@@ -267,7 +261,7 @@ theorem nFin_minor_le (v : HeightOneSpectrum (𝓞 D.host.F)) {K : ℝ≥0} (he 
   · simp only [cst, one_mul, pow_succ]
 
 /- English proof (translation)
-Take `⟨z', hz'⟩` from `hz.exists_right_inv`. Use `((eventually_nFin_le_one z).and (eventually_nFin_le_one z')).mono fun v hv => le_antisymm hv.1 ?_` and prove the remaining obligations. Use `nFin_mul_le v z z'` as an intermediate fact. Rewrite `this` using `[hz', nFin_one]`. Conclude with `this.trans (mul_le_of_le_one_right' hv.2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_nFin_eq_one {z : AE D} (hz : IsUnit z) : ∀ᶠ v in cofinite, nFin v z = 1 := by
   obtain ⟨z', hz'⟩ := hz.exists_right_inv
@@ -277,14 +271,14 @@ theorem eventually_nFin_eq_one {z : AE D} (hz : IsUnit z) : ∀ᶠ v in cofinite
   exact this.trans (mul_le_of_le_one_right' hv.2)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (vFin_le_iff.2 fun _ => le_rfl) (vFin_le_iff.1 (le_refl (vFin v fun _ : Fin l => z)) ⟨0, hl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem vFin_const (v : HeightOneSpectrum (𝓞 D.host.F)) {l : ℕ} (hl : 0 < l) (z : AE D) :
     vFin v (fun _ : Fin l => z) = nFin v z :=
   le_antisymm (vFin_le_iff.2 fun _ => le_rfl) (vFin_le_iff.1 (le_refl (vFin v fun _ : Fin l => z)) ⟨0, hl⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => Finset.univ.sup fun p => nInf w (a p), fun v => max 1 (Finset.univ.sup fun p => nFin v (a p)), fun w p => Finset.le_sup (f := fun p => nInf w (a p)) (Finset.mem_univ p), fun v p => le_max_of_le_right (Finset.le_sup (f := fun p => nFin v (a p)) (Finset.mem_univ p)), (eve …`.
+Supply the required witnesses or components.
 -/
 theorem exists_local_bounds {ι : Type} [Fintype ι] (a : ι → AE D) :
     ∃ (KI : InfinitePlace D.host.F → ℝ≥0) (KF : HeightOneSpectrum (𝓞 D.host.F) → ℝ≥0),
@@ -295,9 +289,9 @@ theorem exists_local_bounds {ι : Type} [Fintype ι] (a : ι → AE D) :
     (eventually_all.2 fun p => eventually_nFin_le_one (a p)).mono fun _ hv => max_eq_left (Finset.sup_le fun p _ => hv p)⟩
 
 /- English proof (translation)
-Take `⟨KI, KF, hI, hF, hK⟩` from `exists_local_bounds fun p : Fin m × (Fin ρ ⊕ Fin k) => fromCols e i₀ p.1 p.2`. Use `⟨((∏ w, cst Nat.cast m k ρ (KI w)) * ∏ᶠ v, KF v ^ (ρ + 1) : ℝ≥0), fun g x r z hz e1 l hl => ?_⟩` and prove the remaining obligations. Unfold `vsize heightGL`. Rewrite using `[← NNReal.coe_pow, ← NNReal.coe_mul, ← NNReal.coe_mul, NNReal.coe_le_coe]`. Use `prod_bound (ρ + 1) (fun w => vInf_le_iff.2 fun _ => ?_) (fun v => ?_) hK (finite_mulSupport_htFin D.host.F g) ((eventually_nFin_eq_one hz).mono fun v hv => (vFin_const v hl z).trans hv) ((eventually_all.2 fun i => eventually_nFin_le_one (x i)).mono fun v hv => vFin_le_iff.2 hv)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (nInf w) e1).trans_le (nInf_minor_le g e i₀ x r w (fun i j => hI w (i, .inl j)) fun i j => hI w (i, .inr j))`. Conclude with `((vFin_const v hl z).trans (congrArg (nFin v) e1)).trans_le (nFin_minor_le g e i₀ x r v (fun i j => hF v (i, .inl j)) fun i j => hF v (i, .inr j))`.
+A detailed English derivation is pending.
 -/
 theorem exists_vsize_minor_le : ∃ C : ℝ, ∀ (g : GL (Fin m) (AE D)) (x : Fin k → AE D) (r : Fin ρ ⊕ Unit → Fin m) (z : AE D),
     IsUnit z → z = ((g.1 ⬝ fromCols e (replicateCol Unit (i₀ *ᵥ x))).submatrix r id).det → ∀ l : ℕ, 0 < l →
@@ -319,15 +313,15 @@ end Minor
 variable {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Take `⟨γ₀, h0⟩` from `(mem_GQ_iff S γ).1 hγ`. Take `⟨γ₁, h1⟩` from `(mem_GQ_iff S γ⁻¹).1 (inv_mem hγ)`. Use `replace h0 : rat γ₀ = mt S γ := h0`. Use `replace h1 : rat γ₁ = mt S γ⁻¹ := h1`. Establish `h2 : γ₁ * γ₀ = 1` using `rat_injective (by rw [rat_mul, h0, h1, rat_one, GlobalTheory.BesselChar.mt_inv_mul])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hη`. Establish `a1 : d.qX * d.e = 1` using `rat_injective (by rw [rat_mul, rat_one]; exact d.pX_jX)`. Establish `a2 : d.qX * d.i₀ = 0` using `rat_injective (by rw [rat_mul, rat_zero]; exact d.pX_j0)`. Establish `a3 : d.q0 * d.e = 0` using `rat_injective (by rw [rat_mul, rat_zero]; exact d.p0_jX)`. Establish `a4 : d.q0 * d.i₀ = 1` using `rat_injective (by rw [rat_mul, rat_one]; exact d.p0_j0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr⟩` from `exists_minor_ne_zero (fromRows d.qX (replicateRow Unit (Pi.single i (η i)⁻¹ ᵥ* d.q0)) ⬝ γ₁) (γ₀ ⬝ fromCols d.e (replicateCol Unit (d.i₀ *ᵥ η))) (by`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc γ₁, h2, Matrix.one_mul, fromRows_mul_fromCols, a1, ← replicateCol_mulVec, mulVec_mulVec, a2, zero_mulVec, ← replicateRow_vecMul, vecMul_vecMul, a3, vecMul_zero, ← fromBlocks_one]`. Use `congr 1`. Use `ext`. Rewrite using `[replicateRow_mul_replicateCol_apply, ← dotProduct_mulVec, mulVec_mulVec, a4, one_mulVec, single_dotProduct, inv_mul_cancel₀ hi]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Use `⟨r, _, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det, ← h0]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((γ₀ ⬝ fromCols d.e (replicateCol Unit (d.i₀ *ᵥ η))).map (incA D)).submatrix r id = _`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.map_mul]`. Use `congr 2`. Use extensionality with `a (b | b)`. Both sides reduce to the same expression. Conclude with `RingHom.map_mulVec (incA D) d.i₀ η a`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_rat_minor {γ : GA D S} (hγ : γ ∈ GQ S) {η : Fin S₀.rank → D.host.E} (hη : η ≠ 0) :
     ∃ (r : Fin ρ ⊕ Unit → Fin S.rank) (Δ : D.host.E), Δ ≠ 0 ∧
@@ -363,13 +357,13 @@ theorem exists_rat_minor {γ : GA D S} (hγ : γ ∈ GQ S) {η : Fin S₀.rank �
   · exact RingHom.map_mulVec (incA D) d.i₀ η a
 
 /- English proof (translation)
-Take `⟨c, N, hc, hP⟩` from `hP`. Take `⟨C, hC⟩` from `exists_vsize_minor_le d.jX d.j0`. Use `⟨c, max C 0 * 2 ^ (ρ + 1), hc, fun n hn h η hη => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hle⟩` from `exists_height_le_two_mul_quotHeight S (n * d.emb0 h)`. Take `⟨r, Δ, hΔ, e1⟩` from `exists_rat_minor d hγ hη`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, b, hT, h1, h2⟩` from `exists_blocks d hn`. Establish `hl : 0 < S.rank` using `Fin.pos (r (.inr ()))`. Establish `e2 : mt S (d.emb0 h) ⬝ fromCols d.jX (replicateCol Unit (d.j0 *ᵥ seen S₀ h η)) = fromCols d.jX (replicateCol Unit (d.j0 *ᵥ fun i => incA D (η i)))`. Rewrite using `[mul_fromCols, d.wittDecomp_anisotropicEmbedding_inclX, ← replicateCol_mulVec, mulVec_mulVec, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, seen, mulVec_mulVec, Matrix.mul_assoc, GlobalTheory.BesselChar.mt_mul_inv, Matrix.mul_one]`. Establish `h3` using `hC (matHom S (γ * (n * d.emb0 h))) (seen S₀ h η) r (incA D Δ) ((Ne.isUnit hΔ).map _) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, ← minor_unip (mt S γ) (mt S n) d.jX d.j0 T b hT h1 h2, ← e2, ← Matrix.mul_assoc, ← GlobalTheory.BesselChar.mt_mul, ← GlobalTheory.BesselChar.mt_mul, mul_assoc]`. Use the proof step `rfl) S.rank hl`. Establish `h4` using `hP 1 (fun _ => Δ) fun h0 => hΔ (congrFun h0 ⟨0, hl⟩)`. Rewrite `h4` using `[quotHeight_of_mem S (one_mem _), one_pow, mul_one, seen, inv_one, GlobalTheory.BesselChar.mt_one, one_mulVec]`. Establish `hv` using `vsize_nonneg (seen S₀ h η)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `height_pos S (γ * (n * d.emb0 h))`. Express the relevant statement in the definitionally equal form `_ ≤ C * height S (γ * (n * d.emb0 h)) ^ (ρ + 1) * _ at h3`. Combine the equalities or inequalities in the displayed calculation.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_le_vsize (hP : ∃ (c : ℝ) (N : ℕ), 0 < c ∧ ∀ (g : GA D S) (ξ : Fin S.rank → D.host.E), ξ ≠ 0 →
       c ≤ vsize (seen S g ξ) * quotHeight S g ^ N) :
@@ -410,13 +404,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Asc
 
 /- English proof (translation)
-Take `⟨C₁, b, hM⟩` from `GlobalTheory.T.unitaryQuotientHeight_le_of_no_short_vector D S₀`. Take `⟨c, C, hc, hP⟩` from `exists_le_vsize d (GlobalTheory.T.le_adelicVectorSizeProduct_mul_unitaryQuotientHeight_pow D S)`. Establish `hK : 0 < max C c` using `lt_max_of_lt_right hc`. Use `⟨C₁ * (max C c / c) ^ b, (ρ + 1) * b, fun n hn h => ?_⟩` and prove the remaining obligations. Establish `hH : 1 ≤ quotHeight S (n * d.emb0 h) ^ (ρ + 1)` using `one_le_pow₀ (one_le_quotHeight S _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `fun η hη => hP n hn h η hη`. Rewrite using `[pow_mul]`. Generalize the expression as in `quotHeight S (n * d.emb0 h) ^ (ρ + 1) = H at hH h1`. Establish `hKH : 0 < max C c * H` using `by positivity`. Establish `h2` using `hM h (c / (max C c * H)) (div_pos hc hKH) ((div_le_one hKH).2 ((le_max_right C c).trans (le_mul_of_one_le_right hK.le hH))) fun η hη => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `GlobalTheory.HtOrth.vsize_nonneg (GlobalTheory.HtOrth.seen S₀ h η)`. Rewrite using `[div_le_iff₀' hKH]`. Use `(h1 η hη).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `le_max_left _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[div_pow, ← mul_div_assoc, div_le_iff₀ (by positivity), ← le_div_iff₀ (by positivity)]`. Use `h2.trans_eq ?_` and prove the remaining obligations. Rewrite using `[mul_pow, div_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem quotHeight_le_pow (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) : ∃ (C : ℝ) (a : ℕ), ∀ n ∈ flagN d,
     ∀ h : GA D S₀, quotHeight S₀ h ≤ C * quotHeight S (n * d.emb0 h) ^ a := by
@@ -442,7 +436,7 @@ theorem quotHeight_le_pow (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S�
   ring
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d _`. Take `⟨C, a, h⟩` from `quotHeight_le_pow D S S₀ ρ d`. Conclude with `⟨C, a, fun n hn _ => h n hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem quotHeight_le_of_height_le : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (C₀ : ℝ), ∃ (C : ℝ) (a : ℕ),
     ∀ n ∈ flagN d, height S n ≤ C₀ → ∀ h : GA D S₀, quotHeight S₀ h ≤ C * quotHeight S (n * d.emb0 h) ^ a := by

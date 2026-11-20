@@ -12,9 +12,7 @@ open Classical
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `haveI : (RingHom.ker φ).IsMaximal := (RingHom.ker_isPrime φ).isMaximal h`. Use `letI := Ideal.Quotient.field (RingHom.ker φ)`. Use `haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int`. Use `haveI : Module.Finite ℤ (o ⧸ RingHom.ker φ) := finite_of_finite_type_of_isJacobsonRing ℤ _`.
-
-Use `haveI : CharZero (o ⧸ RingHom.ker φ) := (RingHom.charZero_iff (RingHom.kerLift_injective φ)).2 inferInstance`. Conclude with `Int.not_isField (isField_of_isIntegral_of_isField (R := ℤ) (S := o ⧸ RingHom.ker φ) (fun _ _ h => Int.cast_injective (α := o ⧸ RingHom.ker φ) (by simpa using h)) (Field.toIsField _))`.
+Assume the negation of the conclusion and derive a contradiction. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem ker_eq_bot_of_charZero {o K : Type} [CommRing o] [IsDedekindDomain o] [Algebra.FiniteType ℤ o] [Field K]
     [CharZero K] (φ : o →+* K) : RingHom.ker φ = ⊥ := by
@@ -28,9 +26,7 @@ theorem ker_eq_bot_of_charZero {o K : Type} [CommRing o] [IsDedekindDomain o] [A
     (fun _ _ h => Int.cast_injective (α := o ⧸ RingHom.ker φ) (by simpa using h)) (Field.toIsField _))
 
 /- English proof (translation)
-Use `haveI := C.ded`. Use `haveI := C.ft`. Take `⟨φ, rfl⟩` from `Spec.map_surjective x`. Introduce and unpack `_ ⟨w, rfl⟩`. Use `⟨(⊥ : PrimeSpectrum c.F), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations.
-
-Use `show Ideal.comap C.b ⊥ = Ideal.comap φ.hom w.asIdeal`. Rewrite using `[Subsingleton.elim w (⊥ : PrimeSpectrum K)]`. Conclude with `((RingHom.injective_iff_ker_eq_bot _).1 C.inj).trans (ker_eq_bot_of_charZero (K := K) φ.hom).symm`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UCompact.range_subset_generic {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli D l} {c : Coeff l} (C : UCompact Xo c) {K : Type} [Field K] [CharZero K]
@@ -45,15 +41,13 @@ theorem UCompact.range_subset_generic {E : Type} [Field E] [NumberField E] [IsCM
   exact ((RingHom.injective_iff_ker_eq_bot _).1 C.inj).trans (ker_eq_bot_of_charZero (K := K) φ.hom).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C`. Use `letI := C.b.toAlgebra`. Use `haveI := C.isFractionRing`. Use `haveI := C.iF_open`. Use `haveI := C.ded`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsPreimmersion (spMap C.b) := IsPreimmersion.of_isLocalization (nonZeroDivisors C.o)`. Establish `hg : Topology.IsEmbedding (pullback.fst C.z (spMap C.b) :)` using `(pullback.fst C.z (spMap C.b)).isEmbedding`. Take `⟨U, hU, hUe⟩` from `hg.isInducing.isOpen_iff.1 C.iF.isOpenEmbedding.isOpen_range`. Use `⟨⟨U, hU⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: C.iF x ∈ (pullback.fst C.z (spMap C.b) :) ⁻¹' U` using `hUe ▸ ⟨x, rfl⟩`. Conclude with `this`. Introduce `p _ y hy`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `h1 : (gPt p ≫ y) w ∈ Set.range (pullback.fst C.z (spMap C.b) :)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `C.range_subset_generic ((gPt p ≫ y) ≫ C.z) ⟨w, rfl⟩`. Take `⟨t, ht⟩` from `h1`. Establish `h2 : t ∈ (pullback.fst C.z (spMap C.b) :) ⁻¹' U` using `by show _ ∈ U`. Rewrite using `[ht]`.
-
-Conclude with `hy ⟨w, rfl⟩`. Rewrite `h2` using `[hUe]`. Take `⟨x, rfl⟩` from `h2`. Conclude with `⟨x, ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_open_generic_subset_moduli : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c), ∃ W : C.Z.Opens, Set.range C.i ⊆ W ∧ ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ C.Z), Set.range (gPt p ≫ y) ⊆ W → Set.range (gPt p ≫ y) ⊆ Set.range C.i := by
   intro E _ _ _ H Dw l Xo c C

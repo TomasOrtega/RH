@@ -25,15 +25,13 @@ namespace GlobalTheory.ClosedImmFieldDescent
 set_option backward.isDefEq.respectTransparency.types false
 
 /- English proof (translation)
-Use `GlobalTheory.isAffineHom_descendsAlong_fpqc.{0}` as an intermediate fact. Establish `hP : HasAffineProperty @IsClosedImmersion (affineAnd fun f ↦ Function.Surjective f)` using `IsClosedImmersion.hasAffineProperty`. Establish `H₂ : ∀ {R S : CommRingCat.{0}} {f : R ⟶ S}, (@Surjective ⊓ @Flat) (Spec.map f) → RingHom.FaithfullyFlat f.hom`. Introduce `R S f ⟨hf₁, hf₂⟩`. Rewrite using `[RingHom.FaithfullyFlat.iff_flat_and_comap_surjective]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, (Spec.map f).surjective⟩` and prove the remaining obligations. Rewrite `hf₂` using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Then use the resulting hypothesis. Use `IsZariskiLocalAtTarget.descendsAlong_inf_quasiCompact _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[inf_comm]`. Conclude with `inf_le_inf le_rfl (IsLocalIso.le_of_isZariskiLocalAtSource _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `R S Y φ g h hf`. Establish `: IsAffine Y`. Establish `: IsAffineHom g` using `MorphismProperty.of_pullback_fst_of_descendsAlong (P := @IsAffineHom) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) ⟨h, inferInstance⟩ (HasAffineProperty.affineAnd_le_isAffineHom @IsClosedImmersion hP _ hf)`. Conclude with `isAffine_of_isAffineHom g`. Use `wlog hY : ∃ S, Y = Spec S generalizing Y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← MorphismProperty.cancel_left_of_respectsIso (P := @IsClosedImmersion) Y.isoSpec.inv]`. Establish `heq : pullback.fst (Spec.map φ) (Y.isoSpec.inv ≫ g) = pullback.map _ _ _ _ (𝟙 _) (Y.isoSpec.inv) (𝟙 _) (by simp) (by simp) ≫ pullback.fst (Spec.map φ) g` using `(pullback.lift_fst _ _ _).symm`. Use `this _ ?_ inferInstance ⟨_, rfl⟩` and prove the remaining obligations. Rewrite using `[heq, MorphismProperty.cancel_left_of_respectsIso (P := @IsClosedImmersion)]` and apply the resulting hypothesis. Take `⟨Y, rfl⟩` from `hY`.
-
-Apply `of_pullback_fst_Spec_of_codescendsAlong _ _ RingHom.FaithfullyFlat.codescendsAlong_surjective H₂ _ h hf` to reduce the goal to its premises. Introduce `R' S' f'`. Conclude with `HasAffineProperty.SpecMap_iff_of_affineAnd hP RingHom.surjective_respectsIso f'`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_descendsAlong_fpqc :
     MorphismProperty.DescendsAlong (@IsClosedImmersion : MorphismProperty Scheme.{0})
@@ -69,9 +67,9 @@ theorem isClosedImmersion_descendsAlong_fpqc :
   exact HasAffineProperty.SpecMap_iff_of_affineAnd hP RingHom.surjective_respectsIso f'
 
 /- English proof (translation)
-Establish `e : Spec.map (CommRingCat.ofHom (algebraMap k Ω)) ≫ Spec.map (CommRingCat.ofHom (algebraMap R k)) = Spec.map (CommRingCat.ofHom (algebraMap R Ω))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Use `IsPullback.of_bot ?_ (pullback.lift_snd _ _ _).symm (IsPullback.of_hasPullback c _).flip` and prove the remaining obligations. Establish `h0` using `(IsPullback.of_hasPullback c (Spec.map (CommRingCat.ofHom (algebraMap R Ω)))).flip`. Rewrite using `[pullback.lift_fst, Category.comp_id, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_baseChange_step {R k Ω : Type} [CommRing R] [Field k] [Field Ω] [Algebra R k]
     [Algebra k Ω] [Algebra R Ω] [IsScalarTower R k Ω] {C : Scheme.{0}} (c : C ⟶ Spec (CommRingCat.of R)) :
@@ -90,7 +88,7 @@ theorem isPullback_baseChange_step {R k Ω : Type} [CommRing R] [Field k] [Field
   exact h0
 
 /- English proof (translation)
-Use `⟨⟨⟨fun x ↦ ?_⟩, ?_⟩, inferInstance⟩` and prove the remaining obligations. Take `⟨y⟩ : Nonempty (Spec (CommRingCat.of Ω))` from `inferInstanceAs (Nonempty (PrimeSpectrum Ω))`. Conclude with `⟨y, Subsingleton.elim (α := PrimeSpectrum k) _ _⟩`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fpqc_specMap_field (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] :
     (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) := by
@@ -101,15 +99,15 @@ theorem fpqc_specMap_field (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] :
     exact RingHom.flat_algebraMap_iff.mpr inferInstance
 
 /- English proof (translation)
-Introduce `R k Ω _ _ _ _ _ _ _ V W f hΩ`. Establish `hd` using `isClosedImmersion_descendsAlong_fpqc`. Establish `e : (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) ≫ (Spec.map (CommRingCat.ofHom (algebraMap R k))) = (Spec.map (CommRingCat.ofHom (algebraMap R Ω)))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Set `vX` to `pullback.map V.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) V.hom (Spec.map (CommRingCat.ofHom (algebraMap R k))) (𝟙 _) (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) (𝟙 _) (by simp) (by rw [Category.comp_id, e])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `vY` to `pullback.map W.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) W.hom (Spec.map (CommRingCat.ofHom (algebraMap R k))) (𝟙 _) (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) (𝟙 _) (by simp) (by rw [Category.comp_id, e])`. Establish `sX : IsPullback (pullback.snd V.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω)))) vX (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) (pullback.snd V.hom (Spec.map (CommRingCat.ofHom (algebraMap R k))))` using `isPullback_baseChange_step (k := k) (Ω := Ω) V.hom`. Establish `sY : IsPullback (pullback.snd W.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω)))) vY (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) (pullback.snd W.hom (Spec.map (CommRingCat.ofHom (algebraMap R k))))` using `isPullback_baseChange_step (k := k) (Ω := Ω) W.hom`. Set `φk` to `((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R k).map f).left`. Set `φΩ` to `((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R Ω).map f).left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hk2 : φk ≫ pullback.snd W.hom (Spec.map (CommRingCat.ofHom (algebraMap R k))) = pullback.snd V.hom (Spec.map (CommRingCat.ofHom (algebraMap R k)))` using `by simp only [φk, Over.pullback_map_left, pullback.lift_fst, pullback.lift_snd, Category.comp_id, Category.assoc]`. Establish `hk1 : φk ≫ pullback.fst W.hom (Spec.map (CommRingCat.ofHom (algebraMap R k))) = pullback.fst V.hom (Spec.map (CommRingCat.ofHom (algebraMap R k))) ≫ f.left` using `by simp only [φk, Over.pullback_map_left, pullback.lift_fst, pullback.lift_snd, Category.comp_id, Category.assoc]`. Establish `hΩ2 : φΩ ≫ pullback.snd W.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) = pullback.snd V.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω)))` using `by simp only [φΩ, Over.pullback_map_left, pullback.lift_fst, pullback.lift_snd, Category.comp_id, Category.assoc]`. Establish `hΩ1 : φΩ ≫ pullback.fst W.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) = pullback.fst V.hom (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) ≫ f.left` using `by simp only [φΩ, Over.pullback_map_left, pullback.lift_fst, pullback.lift_snd, Category.comp_id, Category.assoc]`. Establish `comm : φΩ ≫ vY = vX ≫ φk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [vX, vY, Category.assoc, hk1, pullback.lift_fst, pullback.lift_fst_assoc, Category.comp_id]`. Conclude with `hΩ1`. Simplify using `only [vX, vY, Category.assoc, hk2, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id]`. Rewrite using `[← Category.assoc, hΩ2]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `sq : IsPullback φΩ vX vY φk`. Use `IsPullback.of_right ?_ comm sY` and prove the remaining obligations. Rewrite using `[hΩ2, hk2]`. Conclude with `sX`. Conclude with `MorphismProperty.of_isPullback_of_descendsAlong (P := @IsClosedImmersion) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) sq (MorphismProperty.of_isPullback (P := @Surjective ⊓ @Flat ⊓ @QuasiCompact) sY (fpqc_specMap_field k Ω)) hΩ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_of_baseChange_extension :
     ∀ (R k Ω : Type) [CommRing R] [Field k] [Field Ω] [Algebra R k] [Algebra k Ω] [Algebra R Ω] [IsScalarTower R k Ω] (V W : Over (Spec (CommRingCat.of R))) (f : V ⟶ W), IsClosedImmersion ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R Ω).map f).left → IsClosedImmersion ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R k).map f).left := by

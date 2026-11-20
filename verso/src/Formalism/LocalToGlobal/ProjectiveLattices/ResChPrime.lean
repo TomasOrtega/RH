@@ -52,9 +52,7 @@ def lies (j : ℕ) (la : HeightOneSpectrum (𝓞 Q.c.F)) (T : CDVR) (io : Q.c.F 
 end In66
 
 /- English proof (translation)
-Unfold `WeightAlgebra.resCh`. Use `haveI := la.isPrime`. Use `haveI : Finite (𝓞 K ⧸ la.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot la.asIdeal la.ne_bot`. Use `first`. Consider the case `exact CharP.char_is_prime (𝓞 K ⧸ la.asIdeal) _`.
-
-Consider the case `exact (CharP.char_is_prime_or_zero (𝓞 K ⧸ la.asIdeal) _).resolve_right (ringChar.char_ne_zero_of_finite _)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem resCh_prime {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) : (WeightAlgebra.resCh la).Prime := by
   unfold WeightAlgebra.resCh
@@ -68,9 +66,9 @@ theorem resCh_prime {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum
 variable {Q}
 
 /- English proof (translation)
-Introduce `la T io e ho y hy`. Distinguish the cases in `hm : j < D.R.m`. Take `⟨z, hz⟩` from `h2 j hj.1 hm la T io e ho y hy`. Take `⟨η, hη⟩` from `(h1 j hj.1 hm la z ⟨T, io, e, y, ho, hy, hz⟩).1`. Conclude with `⟨η, fun _ => ⟨z, hη, hz⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(G.P.ex (G.dat j) (WeightAlgebra.resCh la)).yEta (Classical.choice ((G.P.ex (G.dat j) (WeightAlgebra.resCh la)).genNe _)), fun h => absurd h hm⟩`.
+Supply the required witnesses or components.
 -/
 theorem In66.liesTotal (G : In66 Q) (h1 : G.PinPts) (h2 : G.BaseChange) {j : ℕ} (hj : InR D j) :
     LiesTotal (Q.Xo j) Q.c (algCls (Q.Xo j) Q.c) (fun la => G.PY j (WeightAlgebra.resCh la)) (G.lies j) := by

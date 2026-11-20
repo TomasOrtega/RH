@@ -18,9 +18,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] {e : F ≃+* c.F}
 
 /- English proof (translation)
-Set `X : Scheme` to `C.Y.X`. Set `ι` to `{q : Σ U : X.Opens, (∀ τ : E →+* ℂ, Above (Dw.mult τ) → Γ(X, U)) // CellAt C hV f₀ w q.1 q.2}`. Set `Ui : ι → X.Opens` to `fun i => i.1.1`. Establish `hle : ∀ i : ι, Ui i ≤ cellOpen C hV f₀ w` using `fun i => le_sSup ⟨i.1.2, i.2⟩`. Establish `hcov : cellOpen C hV f₀ w ≤ iSup Ui` using `sSup_le fun U ⟨a, h⟩ => le_iSup Ui (⟨⟨U, a⟩, h⟩ : ι)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hglue : ∀ (τ : E →+* ℂ) (p : Above (Dw.mult τ)), ∃ s : Γ(X, cellOpen C hV f₀ w), ∀ i : ι, X.presheaf.map (homOfLE (hle i)).op s = i.1.2 τ p` using `fun τ p => by`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' Ui (cellOpen C hV f₀ w) (fun i => homOfLE (hle i)) hcov (fun i => i.1.2 τ p) (fun i j => cellAt_coord_eq_inf C hV f₀ w _ _ _ _ i.2 j.2 τ p)`. Conclude with `⟨s, hs⟩`. Use `choose u hu using hglue`. Conclude with `⟨fun q => u q.1 q.2, fun U a h hle' τ p => hu τ p ⟨⟨U, a⟩, h⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isCoord (C : FlagCpt Z e) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)}
     (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)) (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) :

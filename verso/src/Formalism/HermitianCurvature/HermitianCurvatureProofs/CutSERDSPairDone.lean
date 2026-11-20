@@ -10,7 +10,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSERDSPLoc
 namespace Formalism.FourierDecayAlt.P.CutSE
 
 /- English proof (translation)
-The claim follows from `rDSPair_of_cut spectral_pairing_inner_swap spectral_pairing_big_cell spectral_pairing_zero_right spectral_pairing_exhaustion spectral_pairing_orbital_membership spectral_pairing_operator spectral_pairing_locality`.
+A detailed English derivation is pending.
 -/
 theorem spectral_pairing_identity : RDSPair :=
   rDSPair_of_cut spectral_pairing_inner_swap spectral_pairing_big_cell spectral_pairing_zero_right spectral_pairing_exhaustion spectral_pairing_orbital_membership spectral_pairing_operator

@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Crys
 open NumberField UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ h2 a _ ha π _`. Break down `Br.weakEx cyc F E h2 a ha π with ⟨η, hη, ht⟩ | ⟨P, hP⟩` into its components or cases. Conclude with `Or.inl ⟨η, Br.normQuad hN.aut.art F E h2 η hη, Br.selfIso smo F a ha π η (h2 ▸ hη.2.1) ht⟩`. Use `Or.inr ⟨P, hP, fun hreg ⟨χ, hχ⟩ => ?_⟩ haveI : Algebra.IsQuadraticExtension F E := { finrank_eq_two' := h2 } haveI : IsCMField E := IsCMField.ofCMExtension F E` and prove the remaining obligations. Conclude with `Br.splitOf hN hC hR F E h2 a ha π χ P hreg hχ hP`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.quadBCw_of_cyclic (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) (smo : StrongMultOneReal) (cyc : CyclicBaseChange) (hC : ExC) (hR : ExR) :
     UpperTheory.V.Br.QuadBCw := by

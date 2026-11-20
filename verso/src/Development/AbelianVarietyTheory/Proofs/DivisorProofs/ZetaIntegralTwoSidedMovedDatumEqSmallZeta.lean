@@ -18,17 +18,17 @@ open GlobalTheory.PureMatch GlobalTheory.SquareFlipReach ValuativeRel
 noncomputable section
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ a A' C _ _ _ _ μ _ σ ν β ϖ n c Ψ g₀ N h hϖ`. Use `set h' : GL C k := h * invT N with hh'`. Establish `hX : X0 k σ * (invT h).val * N.val = X0 k σ * (invT h').val`. Rewrite using `[hh', map_mul, invT_invT, Units.val_mul, Matrix.mul_assoc]`. Establish `hF : bigF (haarVol (KO k (Fin a))) ϖ ν (fun Z => phiA μ σ ν ϖ n (diagLat c) Ψ (g₀.val * Z * N.val)) (X0 k σ * (invT h).val) = bigF (haarVol (KO k (Fin a))) ϖ ν (fun Z => phiA μ σ ν ϖ n (diagLat c) Ψ (g₀.val * Z)) (X0 k σ * (invT h').val)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hX]`. Simplify using `only [bigF, Matrix.mul_assoc]`. Establish `hL` using `GlobalTheory.T.zetaIntegral_leftTranslate_primitiveFrames k a A' C μ σ ν ϖ n c Ψ g₀ h' hϖ`. Rewrite `hL` using `[splitTheta_fFun_frameFirstBlock_mul]`. Establish `hS : smallF μ ν Ψ (Y0 k σ * h'.val) = smallF μ ν (fun Y => Ψ (Y * (invT N).val)) (Y0 k σ * h.val)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [smallF, hh', Units.val_mul, Matrix.mul_assoc]`. Establish `hdet : gdet h' = gdet h * (gdet N)⁻¹` using `by rw [hh', gdet_mul, gdet_invT]`. Rewrite `hL` using `[hS, hdet, map_mul ν, apow_mul, apow_inv, map_inv ν, Units.val_mul]`. Rewrite using `[bigZetaIntegral_eq, hF, smallP]`. Establish `hC : (Fintype.card C : ℂ) = a + Fintype.card A'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fintype.card_congr σ, Fintype.card_sum, Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e : apow (gdet h) (-(a : ℂ) / 2) * apow (gdet h) ((Fintype.card C : ℂ) / 2) = apow (gdet h) ((Fintype.card A' : ℂ) / 2)`. Rewrite using `[← apow_add, hC]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `eN : apow (gdet N) ((Fintype.card C : ℂ) / 2) * apow (gdet N) (-((Fintype.card C : ℂ) / 2)) = 1`. Rewrite using `[apow_neg, mul_inv_cancel₀ (apow_ne_zero _ _)]`. Establish `eν : (ν (gdet N) : ℂ) * ((ν (gdet N))⁻¹ : ℂˣ) = 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul]`. Take the linear combination `((β (gdet h) : ℂ) * apow (gdet h) (-(a : ℂ) / 2) * (ν (gdet N) : ℂ) * apow (gdet N) ((Fintype.card C : ℂ) / 2)) * hL + ((β (gdet h) : ℂ) * (ν (gdet h) : ℂ) * smallF μ ν (fun Y => Ψ (Y * (invT N).val)) (Y0 k σ * h.val)) * (apow (gdet h) (-(a : ℂ) / 2) * apow (gdet h) ((Fintype.car …`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OneSquareZeta.bigZeta_phiA_twist_eq_smallZeta : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (a : ℕ) (A' C : Type) [Fintype A'] [DecidableEq A'] [Fintype C] [DecidableEq C] (μ : Measure (GL A' k)) [μ.IsHaarMeasure]

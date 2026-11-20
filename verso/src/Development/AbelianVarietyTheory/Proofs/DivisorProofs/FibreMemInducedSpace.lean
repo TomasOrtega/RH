@@ -13,19 +13,19 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 local notation:70 M:70 " ⬝ₘ " N:71 => HMul.hMul (self := Matrix.instHMulOfFintypeOfMulOfAddCommMonoid) M N
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[stdSum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stdSum_rfl' (a b : ℕ) : stdSum (rfl : a + b = a + b) = finSumFinEquiv := by
   ext x; simp [stdSum]
 
 /- English proof (translation)
-Establish `hA : (invT (leviProj k (blocks a b) p false)).val = ((leviProj k (blocks a b) p⁻¹ false : GL (Fin a) k) : Matrix (Fin a) (Fin a) k)ᵀ`. Rewrite using `[invT_val, map_inv]`. Both sides reduce to the same expression. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[frameMatrixFirstColumnBlock_mul_apply, invT_val, hA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective j`. Break down `s with j | j` into its components or cases. Use `leviProj_apply k (blocks a b) p⁻¹ false j i` as an intermediate fact. Simplify using `[stdSum_rfl'] at this`. Simplify using `[Matrix.mul_apply, X0, this]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hne : ∀ (i : Fin a), Fin.castAdd b i ≠ Fin.natAdd a j` using `fun i h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Use `(mem_parab_two k).1 (p⁻¹).2 j i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `[stdSum_rfl'] at this`. Simplify using `[Matrix.mul_apply, X0, this, hne]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem X0_mul_invT_parab (a b : ℕ) (p : parab k (blocks a b)) :
     X0 k finSumFinEquiv ⬝ₘ (invT (p : GL (Fin (a + b)) k)).val =
@@ -49,23 +49,21 @@ theorem X0_mul_invT_parab (a b : ℕ) (p : parab k (blocks a b)) :
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Introduce `p x`. Rewrite using `[ofChar_apply]`. Use `set A := leviProj k (blocks a b) p false with hAdef`. Use `set D := leviProj k (blocks a b) p true with hDdef`. Use `set Ψ := omA ν β 1 x Φ with hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set z : ℂ := ((a + b : ℕ) : ℂ) / 2 with hz`. Use `set F : GL (Fin a) k → ℂ := fun g => Ψ (g.val ⬝ₘ X0 k finSumFinEquiv) * (ν (gdet g) : ℂ) * apow (gdet g) z with hF`. Use `set c : ℂ := (β (gdet (p : GL (Fin (a + b)) k)) : ℂ) * apow (gdet (p : GL (Fin (a + b)) k)) (-(a : ℂ) / 2) * ν (gdet A) * apow (gdet A) z with hc`. Establish `h1 : omA ν β 1 ((p : GL (Fin (a + b)) k) * x) Φ = omA ν β 1 ↑p Ψ` using `by rw [hΨ, ← omA_mul, one_mul]`. Establish `h2 : ∀ Y, omA ν β 1 (↑p : GL (Fin (a + b)) k) Ψ Y = (β (gdet (p : GL (Fin (a + b)) k)) : ℂ) * apow (gdet (p : GL (Fin (a + b)) k)) (-(a : ℂ) / 2) * Ψ (Y ⬝ₘ (invT (p : GL (Fin (a + b)) k)).val)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Y`. Simplify using `[omA]`. Establish `hm : ∀ g : GL (Fin a) k, (g.val ⬝ₘ X0 k finSumFinEquiv) ⬝ₘ (invT (p : GL (Fin (a + b)) k)).val = (g * invT A).val ⬝ₘ X0 k finSumFinEquiv`. Introduce `g`. Rewrite using `[Matrix.mul_assoc, X0_mul_invT_parab, ← Matrix.mul_assoc, ← Units.val_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ g : GL (Fin a) k, omA ν β 1 ((p : GL (Fin (a + b)) k) * x) Φ (g.val ⬝ₘ X0 k finSumFinEquiv) * (ν (gdet g) : ℂ) * apow (gdet g) z = c * F (g * invT A)`. Introduce `g`. Rewrite using `[h1, h2, hm g]`. Simplify using `only [hF, hc, gdet_mul, gdet_invT, map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, apow_mul, apow_inv, apow_neg]`. Establish `n1 : (ν (gdet A) : ℂ) ≠ 0` using `Units.ne_zero _`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `n2 : apow (gdet A) z ≠ 0` using `apow_ne_zero _ _`. Clear the denominators using the available nonvanishing facts. Establish `hdet : gdet (p : GL (Fin (a + b)) k) = gdet A * gdet D`. Use `det_parab k (blocks a b) p` as an intermediate fact. Rewrite `this` using `[Fintype.prod_bool]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this.trans (mul_comm _ _)`. Establish `hL : leviProj k (blocks a b) p = leviTwo k (Fin a) (Fin b) (A, D)`. Apply the tactic sequence `funext t; cases t <;> rfl`. Establish `hab : ∀ (s : ℂ) (y : kˣ), ((absPow k s y : ℂˣ) : ℂ) = apow y s` using `fun _ _ => rfl`. Establish `hchar : ((parChar ν β a b p : ℂˣ) : ℂ) = c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [parChar, MonoidHom.comp_apply, MonoidHom.mul_apply, Units.val_mul, hL, MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe, MulEquiv.symm_apply_apply, deltaHalf_two, MonoidHom.coe_fst, MonoidHom.coe_snd, detChar_apply, hab, Fintype.card_fin]`. Establish `e : apow (gdet A) z * apow (gdet A) (-(a : ℂ) / 2) = apow (gdet A) ((b : ℂ) / 2)`. Rewrite using `[← apow_add, hz]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, hdet, map_mul, Units.val_mul, apow_mul]`. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hchar]`.
-
-Establish `I1 : fibre ν β a b Φ ((p : GL (Fin (a + b)) k) * x) = ∫ g, c * F (g * invT A) ∂(haarVol (GlobalTheory.SplitWeil.KO k (Fin a)))` using `integral_congr_ae (Filter.Eventually.of_forall key)`. Establish `I2 : fibre ν β a b Φ x = ∫ g, F g ∂(haarVol (GlobalTheory.SplitWeil.KO k (Fin a)))` using `rfl`. Rewrite using `[I1, I2, integral_const_mul, integral_mul_right_eq_self F (invT A)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_mem_indSpace (a b : ℕ) (ν β : kˣ →* ℂˣ) (Φ : Matrix (Fin a) (Fin (a + b)) k → ℂ) :
     fibre ν β a b Φ ∈ indSpace (parab k (blocks a b)) (ofChar (parChar ν β a b)) := by

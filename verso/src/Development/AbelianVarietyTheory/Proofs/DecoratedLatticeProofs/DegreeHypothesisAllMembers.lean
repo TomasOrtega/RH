@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.HypAt
 
 /- English proof (translation)
-Establish `hx0 : 0 ≤ x` using `by linarith`. Establish `hk0' : 0 ≤ k` using `le_trans hk0 hfk`. Establish `h1 : x ^ eps ≤ x ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx he`. Establish `h2 : k * f ≤ x ^ (5 : ℝ) * x ^ (5 : ℝ)` using `mul_le_mul hk (le_trans hfk hk) hk0 (by positivity)`. Establish `h3 : k * f * x ^ eps ≤ x ^ (11 : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x ^ (11 : ℝ) = x ^ (5 : ℝ) * x ^ (5 : ℝ) * x ^ (1 : ℝ)`. Rewrite using `[← Real.rpow_add' hx0 (by norm_num), ← Real.rpow_add' hx0 (by norm_num)]; norm_num`. Rewrite using `[this]`. Conclude with `mul_le_mul h2 h1 (by positivity) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem del_lo {x eps k f CD cD : ℝ} (hx : 1 ≤ x) (he : eps ≤ 1) (hk0 : 0 ≤ f) (hfk : f ≤ k)
     (hk : k ≤ x ^ (5 : ℝ)) (hCD : 0 ≤ CD) (hc : 11 * CD ≤ cD) :
@@ -37,23 +37,23 @@ theorem del_lo {x eps k f CD cD : ℝ} (hx : 1 ≤ x) (he : eps ≤ 1) (hk0 : 0 
     _ ≤ _ := Nat.le_ceil _
 
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps C8 C5 c6 Cb he _ he52 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hStd _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c1, hN⟩` from `szRow_numAt eps he he52 C hStd`. Establish `hCD3 : (3 : ℝ) ≤ max (B C) 40` using `le_trans (by norm_num) (le_max_right _ _)`. Establish `hCD0 : (0 : ℝ) < max (B C) 40` using `by linarith`. Use `⟨max c1 (11 * max (B C) 40), fun cD hcD => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c2, hN⟩` from `hN cD (le_trans (le_max_left _ _) hcD)`. Use `⟨c2, fun ch hch _ => ?_⟩` and prove the remaining obligations. Take `⟨x1, hN⟩` from `hN ch hch`. Take `⟨x2, hNo⟩` from `GlobalTheory.Diag.PG.NodeParameters.nodes_of_parameters eps he he52`. Take `⟨x3, hH⟩` from `GlobalTheory.T.hypotheses_of_global_rows_and_nodes eps (max (B C) 40) he he52 hCD3 (max (A C) (8 * C.CGam)) (max (B C) 40) (C.P.CYL + 1) hCD0 le_rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max (max x1 x2) (max x3 ((max 2 (5 / (eps / 100))) ^ (eps / 100)⁻¹)), fun K hK hx β hW => ?_⟩` and prove the remaining obligations. Take `⟨hC, hcD', hch', heps, -⟩` from `hK`. Establish `hsc : β.O.L.sc = K.s` using `β.sc`. Establish `hx' : max (max x1 x2) (max x3 ((max 2 (5 / (eps / 100))) ^ (eps / 100)⁻¹)) ≤ β.O.L.sc.x` using `by rw [hsc]; exact hx`. Establish `hse : β.O.L.sc.eps = eps` using `by rw [hsc]; exact heps`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : Val C cD ch β.O.L`. Rewrite using `[show C = K.C from hC.symm, show cD = K.cD from hcD'.symm, show ch = K.ch from hch'.symm]`. Conclude with `β.p.pt_val β.val`. Take `⟨⟨N⟩, -, -⟩` from `hN _ _ hse (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx') hv (GlobalTheory.Plug.hostArith_bpt β)`. Establish `hx1 : 1 < β.O.L.sc.x` using `β.O.L.sc.one_lt_alt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : max 2 (5 / (eps / 100)) ≤ S.XX β.O.L`. Unfold `S.XX szTh`. Rewrite using `[hse]`. Establish `h0 : (0 : ℝ) ≤ max 2 (5 / (eps / 100))` using `le_trans (by norm_num) (le_max_left _ _)`. Establish `hp : 0 < eps / 100` using `by positivity`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyP : (max 2 (5 / (eps / 100))) ^ (eps / 100)⁻¹ ≤ β.O.L.sc.x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx'`. Use `Real.rpow_le_rpow (Real.rpow_nonneg h0 _) hyP hp.le` as an intermediate fact. Rewrite `this` using `[Real.rpow_inv_rpow h0 hp.ne']`. Then use the resulting hypothesis. Establish `G0` using `GlobalTheory.Diag.PG.Model0.globalRows_of_sizeData β.O.L N.params N.sizes ((le_max_left _ _).trans hX) (by unfold szTh; rw [hse]; exact (le_max_right _ _).trans hX) N.params.CCount N.params.CCount_pos le_rfl`. Establish `e2 : N.params.CYL = C.P.CYL` using `congrArg (fun l : List ℝ => l.getD 19 0) N.params_K`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `G0` using `[hse, e2]`. Establish `hDel : ((β.D.s.Del : ℚ) : ℝ) = ((⌈β.O.L.sc.x ^ cD⌉₊ : ℕ) : ℝ)`. Rewrite using `[hv.Del_eq]`. Unfold `Delv`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hDl : ((β.D.R.k : ℝ) * (β.D.R.f : ℝ) * β.O.L.sc.x ^ eps) ^ max (B C) 40 ≤ ((β.D.s.Del : ℚ) : ℝ)`. Rewrite using `[hDel]`. Conclude with `del_lo hx1.le (by linarith) (by positivity) G0.nums.fk G0.nums.k_hi hCD0.le (le_trans (le_max_right _ _) hcD)`. Establish `G : GlobalTheory.Diag.PG.Glob0 β.D β.O.L.sc.x eps (max (B C) 40) (C.P.CYL + 1)` using `⟨⟨G0.nums.m_lo, G0.nums.mf, G0.nums.fk, G0.nums.k_lo, G0.nums.k_hi, G0.nums.lrd_lo, G0.nums.lrd_hi, hDl, G0.nums.Del_hi⟩, G0.g_win, G0.gap, G0.cloud, G0.off, G0.rd_lo⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNd` using `hNo β.D β.O.L N.params N.sizes hse (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx')`. Establish `hL : β.O.L.sc.L = β.O.L.sc.x ^ eps` using `by rw [← hse]; rfl`. Establish `h8 : 8 * β.O.L.CGam ≤ max (A C) (8 * C.CGam)` using `by rw [N.CGam_eq]; exact le_max_right _ _`. Conclude with `GlobalTheory.Core.Deg.hypL_of (hH β.O.L.sc.x (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx') β.D β.O.L (1 / 2) C.CTu hL h8 G hNd hW)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evP_hypL (A B : Formalism.MainNotions.Inhab.FC → ℝ) : EvP fun κ K => ∀ β : BPt K,
     (∀ u : β.D.what₂.Word, β.O.L.sc.b ^ ((1 / 2 : ℝ) * (β.D.R.m : ℝ)) ≤ Formalism.MainNotions.S.Tr β.D u ∧
@@ -111,7 +111,7 @@ theorem evP_hypL (A B : Formalism.MainNotions.Inhab.FC → ℝ) : EvP fun κ K =
     (1 / 2) C.CTu hL h8 G hNd hW)
 
 /- English proof (translation)
-Introduce `hL p A B`. Conclude with `(EvP.and (RowE.and (GlobalTheory.T.trace_lower_bound_all_members hL p) (GlobalTheory.T.trace_upper_bound_all_members hL p)) (evP_hypL A B)).mono fun _ _ _ H β hq c b hl => H.2 β fun u => ⟨(H.1 β hq c b hl).1 u, (H.1 β hq c b hl).2 u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hypL_at_points : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL) (A B : Formalism.MainNotions.Inhab.FC → ℝ), GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun κ D O _ _ => GlobalTheory.Core.Deg.HypL D O.L.sc.L (max (A κ.C) (8 * κ.C.CGam)) (max (B κ.C) 40) (κ.C.P.CYL + 1) (1 / 4) 3 (1 / 2) κ.C.CTu) := by
   intro hL p A B

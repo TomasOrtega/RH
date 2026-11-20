@@ -22,14 +22,14 @@ Both sides reduce to the same expression.
 theorem cg_apply (g : S.V ≃ₗ[E] S.V) (Y : S.V →ₗ[E] S.V) (v : S.V) : cg g Y v = g (Y (g.symm v)) := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem_X (F : FlagG S r T) (c : Fin r → E) :
     (∑ j, c j • F.e j) ∈ Submodule.span E (Set.range F.e) :=
   Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Unfold `FlagG.coefX`. Rewrite using `[dif_pos (sum_mem_X F c)]`. Rewrite using `[F.e_indep.repr_eq (l := Finsupp.equivFunOnFinite.symm c) (x := ⟨_, sum_mem_X F c⟩) (by simp [Finsupp.linearCombination_apply, Finsupp.sum_fintype])]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coefX_sum (F : FlagG S r T) (c : Fin r → E) (i : Fin r) : F.coefX (∑ j, c j • F.e j) i = c i := by
   unfold FlagG.coefX
@@ -39,9 +39,9 @@ theorem coefX_sum (F : FlagG S r T) (c : Fin r → E) (i : Fin r) : F.coefX (∑
   simp
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (R := E)).1 hv`. Establish `hw' : w ∈ Submodule.span E (F.e '' {j | j < i})` using `hw`. Take `⟨d, hd0, rfl⟩` from `exists_coeffs (S := S) F.e i w hw'`. Rewrite using `[← Finset.sum_add_distrib]`. Repeatedly rewrite using `[← add_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[coefX_sum, coefX_sum, hd0 i (lt_irrefl i), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coefX_add_low (F : FlagG S r T) {v w : S.V} (hv : v ∈ F.X) (i : Fin r) (hw : w ∈ F.Xa i.1) :
     F.coefX (v + w) i = F.coefX v i := by
@@ -53,13 +53,13 @@ theorem coefX_add_low (F : FlagG S r T) {v w : S.V} (hv : v ∈ F.X) (i : Fin r)
   rw [coefX_sum, coefX_sum, hd0 i (lt_irrefl i), add_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hv : v ∈ Submodule.span E (Set.range F₁.e)`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (R := E)).1 hv`. Establish `: g (∑ j, c j • F₁.e j) = ∑ j, c j • F₂.e j` using `by simp [he, map_sum, map_smul]`. Rewrite using `[this, coefX_sum, coefX_sum]`. Establish `hgv : g v ∉ Submodule.span E (Set.range F₂.e)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hm`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (R := E)).1 hm`. Apply `hv` to reduce the goal to its premises. Establish `: v = ∑ j, c j • F₁.e j`. Apply `g.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hc]`. Simplify using `[he, map_sum, map_smul]`. Rewrite using `[this]`. Conclude with `sum_mem_X F₁ c`. Unfold `FlagG.coefX`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hgv, dif_neg hv]`.
+A detailed English derivation is pending.
 -/
 theorem coefX_transport (F₁ : FlagG S r T) (F₂ : FlagG S r T') (g : S.V ≃ₗ[E] S.V)
     (he : ∀ j, F₂.e j = g (F₁.e j)) (v : S.V) (i : Fin r) : F₂.coefX (g v) i = F₁.coefX v i := by
@@ -81,9 +81,9 @@ theorem coefX_transport (F₁ : FlagG S r T) (F₂ : FlagG S r T') (g : S.V ≃�
     rw [dif_neg hgv, dif_neg hv]
 
 /- English proof (translation)
-Establish `he : ∀ j, F₂.e j = g (F₁.e j)` using `fun j => by`. Use `hf (Fin.castSucc j)` as an intermediate fact. Simplify `this` using `[FlagG.fvec]`. Unfold `FlagG.ell`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cg_apply, hf, LinearEquiv.symm_apply_apply]`. Conclude with `coefX_transport F₁ F₂ g he (Y (F₁.fvec i.succ)) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ell_transport (F₁ : FlagG S r T) (F₂ : FlagG S r T') (g : S.V ≃ₗ[E] S.V)
     (hf : ∀ a, F₂.fvec a = g (F₁.fvec a)) (Y : S.V →ₗ[E] S.V) : F₂.ell (cg g Y) = F₁.ell Y := by
@@ -96,15 +96,13 @@ theorem ell_transport (F₁ : FlagG S r T) (F₂ : FlagG S r T') (g : S.V ≃ₗ
   exact coefX_transport F₁ F₂ g he (Y (F₁.fvec i.succ)) i
 
 /- English proof (translation)
-Take `⟨hU, hfl, hp⟩` from `hY`. Establish `hU' : ∀ u v, S.hT (Y u) v + S.hT u (Y v) = 0` using `hU`. Establish `hp' : ∀ x, (∀ u ∈ F₁.X, S.hT u x = 0) → Y x ∈ F₁.X` using `fun x hx => hp x hx`. Use `show cg g Y ∈ LieU S ∧ (∀ a : ℕ, 1 ≤ a → a ≤ r → ∀ x ∈ F₂.Xa a, cg g Y x ∈ F₂.Xa (a - 1)) ∧ ∀ x ∈ perpS S F₂.X, cg g Y x ∈ F₂.X`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ∀ u v, S.hT (cg g Y u) v + S.hT u (cg g Y v) = 0`. Introduce `u v`. Rewrite using `[cg_apply, cg_apply]`. Establish `e1` using `hg (Y (g.symm u)) (g.symm v)`. Establish `e2` using `hg (g.symm u) (Y (g.symm v))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1`, `e2` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[e1, e2]`. Conclude with `hU' _ _`. Introduce `a h1 h2 v hv`. Rewrite using `[hXa, cg_apply, LinearEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfl a h1 h2 _ ((hXa a v).1 hv)`. Introduce `v hv`. Establish `hv' : ∀ u ∈ F₂.X, S.hT u v = 0` using `hv`. Rewrite using `[hX, cg_apply, LinearEquiv.symm_apply_apply]`. Use `hp' _ fun u hu => ?_` and prove the remaining obligations.
-
-Establish `h1` using `hv' (g u) ((hX (g u)).2 (by simpa using hu))`. Rewrite using `[← hg u (g.symm v), LinearEquiv.apply_symm_apply]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieN_transport (F₁ : FlagG S r T) (F₂ : FlagG S r T') (g : S.V ≃ₗ[E] S.V)
     (hg : ∀ u v, S.hT (g u) (g v) = S.hT u v)
@@ -136,22 +134,22 @@ theorem lieN_transport (F₁ : FlagG S r T) (F₂ : FlagG S r T') (g : S.V ≃�
     exact h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hv => symm_mem_of_maps n U h v hv, fun hv => by simpa using h _ hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem maps_iff {U : Submodule E S.V} (n : S.V ≃ₗ[E] S.V) (h : ∀ x ∈ U, n x ∈ U) (v : S.V) :
     v ∈ U ↔ n.symm v ∈ U :=
   ⟨fun hv => symm_mem_of_maps n U h v hv, fun hv => by simpa using h _ hv⟩
 
 /- English proof (translation)
-Simplify using `[FlagG.Xa]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Xa_zero (F : FlagG S r T) : F.Xa 0 = ⊥ := by
   simp [FlagG.Xa]
 
 /- English proof (translation)
-Consider the cases of `a with`. Consider the case `zero`. Introduce `x hx`. Rewrite `hx`, the goal using `[Xa_zero]`. Rewrite using `[(Submodule.mem_bot E).1 hx, map_zero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `succ j => exact nlam_maps_Xflag hn j`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nlam_maps_Xa (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F)
     (a : ℕ) : ∀ x ∈ F.fl.Xa a, n x ∈ F.fl.Xa a := by
@@ -164,7 +162,7 @@ theorem nlam_maps_Xa (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {n : S.V �
   | succ j => exact nlam_maps_Xflag hn j
 
 /- English proof (translation)
-The claim follows from `lieN_transport F.fl F.fl n (isom_app hn.1.1) (fun a v => maps_iff n (nlam_maps_Xa Λ hn a) v) (fun v => maps_iff n (nlam_maps_X hn) v) hY`.
+A detailed English derivation is pending.
 -/
 theorem lieN_conj_nlam (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V}
     (hn : n ∈ NLam Λ F) {Y : S.V →ₗ[E] S.V} (hY : Y ∈ F.fl.LieN) : cg n Y ∈ F.fl.LieN :=
@@ -172,9 +170,9 @@ theorem lieN_conj_nlam (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {n : S.V 
     (fun v => maps_iff n (nlam_maps_X hn) v) hY
 
 /- English proof (translation)
-Use `show ∀ x ∈ F.X, S.hT x F.z = 0`. Introduce `x hx`. Simplify using `only [Formalism.MainNotions.S.FlagG.X] at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hy`. Conclude with `F.z_orth i`. Consider the case `zero => simp`. Consider the case `add y y' _ _ h1 h2 => rw [map_add, LinearMap.add_apply, h1, h2, add_zero]`. Consider the case `smul c y _ h => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem z_mem_perp (F : FlagG S r T) : F.z ∈ perpS S F.X := by
   show ∀ x ∈ F.X, S.hT x F.z = 0
@@ -189,7 +187,7 @@ theorem z_mem_perp (F : FlagG S r T) : F.z ∈ perpS S F.X := by
   | smul c y _ h => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h, smul_zero]
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.FlagG.X, Formalism.MainNotions.S.FlagG.Xa]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨j, j.2, rfl⟩`.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem X_le_Xa_r (F : FlagG S r T) : F.X ≤ F.Xa r := by
   dsimp only [Formalism.MainNotions.S.FlagG.X, Formalism.MainNotions.S.FlagG.Xa]
@@ -198,11 +196,11 @@ theorem X_le_Xa_r (F : FlagG S r T) : F.X ≤ F.Xa r := by
   exact ⟨j, j.2, rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `hi : i.1 + 1 < r`. Set `j : Fin r` to `⟨i.1 + 1, hi⟩`. Establish `hs : i.succ = Fin.castSucc j` using `Fin.ext rfl`. Establish `hf : F.fvec i.succ = F.e j` using `by rw [hs]; simp [FlagG.fvec]`. Rewrite using `[hf]`.
+Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : F.e j ∈ F.Xa (i.1 + 2)` using `Submodule.subset_span ⟨j, (show j.1 < i.1 + 2 by simp [j]), rfl⟩`. Establish `h` using `hY.2.1 (i.1 + 2) (by omega) (by omega) (F.e j) hj`. Simplify using `using h`. Establish `hr : i.1 + 1 = r` using `by omega`. Establish `hs : i.succ = Fin.last r` using `Fin.ext (by simp; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : F.fvec i.succ = F.z` using `by rw [hs]; simp [FlagG.fvec]`. Rewrite using `[hf, hr]`. Conclude with `X_le_Xa_r F (hY.2.2 _ (z_mem_perp F))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Yf_mem (F : FlagG S r T) {Y : S.V →ₗ[E] S.V} (hY : Y ∈ F.LieN) (i : Fin r) :
     Y (F.fvec i.succ) ∈ F.Xa (i.1 + 1) := by
@@ -221,9 +219,9 @@ theorem Yf_mem (F : FlagG S r T) {Y : S.V →ₗ[E] S.V} (hY : Y ∈ F.LieN) (i 
     exact X_le_Xa_r F (hY.2.2 _ (z_mem_perp F))
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Establish `hc' : c.1 < i.1 + 1`. Use `Fin.lt_def.1 hc` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcr : c.1 < r` using `by omega`. Establish `hce : c = Fin.castSucc ⟨c.1, hcr⟩` using `Fin.ext rfl`. Rewrite using `[hce, frame_castSucc]`. Conclude with `Submodule.subset_span ⟨⟨c.1, hcr⟩, hc', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_frame_lt_succ (F : LFlag S r T) (i : Fin r) :
     Submodule.span E (frame F '' {c | c < i.succ}) ≤ F.fl.Xa (i.1 + 1) := by
@@ -238,13 +236,13 @@ theorem span_frame_lt_succ (F : LFlag S r T) (i : Fin r) :
   exact Submodule.subset_span ⟨⟨c.1, hcr⟩, hc', rfl⟩
 
 /- English proof (translation)
-Unfold `FlagG.ell`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hni : n.symm ∈ NLam Λ F` using `nlam_inv hn`. Establish `hu : n.symm (frame F i.succ) - frame F i.succ ∈ F.fl.Xa (i.1 + 1)` using `span_frame_lt_succ F i (nlam_frame Λ hni i.succ)`. Establish `hYf : Y (frame F i.succ) ∈ F.fl.Xa (i.1 + 1)` using `Yf_mem F.fl hY i`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set v := Y (n.symm (frame F i.succ)) with hvdef`. Establish `hYu : v - Y (frame F i.succ) ∈ F.fl.Xa i.1`. Establish `h` using `hY.2.1 (i.1 + 1) (by omega) (by omega) _ hu`. Rewrite `h` using `[map_sub]`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hvmem : v ∈ F.fl.Xa (i.1 + 1)`. Use `Submodule.add_mem _ hYf (Xflag_mono F i.1 hYu)` as an intermediate fact. Simplify using `using this`. Establish `hnv : n v - v ∈ F.fl.Xa i.1` using `hn.2.1 i.1 _ hvmem`. Establish `key : n v = Y (frame F i.succ) + ((v - Y (frame F i.succ)) + (n v - v))` using `by abel`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show F.fl.coefX (n v) i = F.fl.coefX (Y (frame F i.succ)) i`. Rewrite using `[key]`. Conclude with `coefX_add_low F.fl (Xflag_le_X F _ hYf) i (Submodule.add_mem _ hYu hnv)`.
+A detailed English derivation is pending.
 -/
 theorem ell_conj_nlam (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V}
     (hn : n ∈ NLam Λ F) {Y : S.V →ₗ[E] S.V} (hY : Y ∈ F.fl.LieN) : F.fl.ell (cg n Y) = F.fl.ell Y := by
@@ -269,23 +267,23 @@ theorem ell_conj_nlam (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {n : S.V �
   exact coefX_add_low F.fl (Xflag_le_X F _ hYf) i (Submodule.add_mem _ hYu hnv)
 
 /- English proof (translation)
-Introduce `Y hY`. Take `⟨hYF, hYy⟩` from `hY`. Take `⟨n, hn, m, hm, hfr, -⟩` from `h`. Set `g : S.V ≃ₗ[E] S.V` to `m.trans n`. Establish `hfr' : ∀ a, frame y a = g (frame x a)` using `fun a => hfr a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgi : ∀ u v, S.hT (g.symm.symm u) (g.symm.symm v) = S.hT u v`. Introduce `u v`. Rewrite using `[LinearEquiv.symm_symm]`. Use `show S.hT (n (m u)) (n (m v)) = S.hT u v`. Rewrite using `[isom_app hn.1.1, isom_app hm.1.1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgs : ∀ u v, S.hT (g.symm u) (g.symm v) = S.hT u v`. Introduce `u v`. Use `hgi (g.symm u) (g.symm v)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.symm_symm, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hni : n.symm ∈ NLam Λ F` using `nlam_inv hn`. Establish `hY1F` using `lieN_conj_nlam Λ hni hYF`. Establish `hY1e` using `ell_conj_nlam Λ hni hYF`. Establish `hXa : ∀ a v, v ∈ x.fl.Xa a ↔ g.symm.symm v ∈ y.fl.Xa a`. Introduce `a v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[LinearEquiv.symm_symm]`. Conclude with `⟨fun hv => (Xflag_mem_transport hfr' a (g v)).2 (by simpa using hv), fun hv => by simpa using (Xflag_mem_transport hfr' a (g v)).1 hv⟩`. Establish `hX : ∀ v, v ∈ x.fl.X ↔ g.symm.symm v ∈ y.fl.X`. Introduce `v`. Rewrite using `[LinearEquiv.symm_symm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun hv => (Xsp_mem_transport hfr' (g v)).2 (by simpa using hv), fun hv => by simpa using (Xsp_mem_transport hfr' (g v)).1 hv⟩`. Establish `hY2 : cg g.symm Y ∈ x.fl.LieN` using `lieN_transport y.fl x.fl g.symm hgs hXa hX hYy`. Establish `hY2e : x.fl.ell (cg g.symm Y) = y.fl.ell Y`. Use `ell_transport y.fl x.fl g.symm (fun a => ?_) Y` and prove the remaining obligations. Use `hfr' a` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [frame] at this`. Rewrite using `[this, LinearEquiv.symm_apply_apply]`. Establish `hc : cg m (cg g.symm Y) = cg n.symm Y`. Use extensionality with `v`. Simplify using `only [cg_apply, LinearEquiv.symm_symm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show m (m.symm (n.symm (Y (n (m (m.symm v)))))) = n.symm (Y (n v))`. Rewrite using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hY1x : cg n.symm Y ∈ x.fl.LieN` using `hc ▸ lieN_conj_nlam Λ hm hY2`. Establish `hY1xe : x.fl.ell (cg n.symm Y) = x.fl.ell (cg g.symm Y)`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ell_conj_nlam Λ hm hY2`. Establish `key` using `hx (cg n.symm Y) ⟨hY1F, hY1x⟩`. Unfold `FlagG.dpsi at key ⊢`. Rewrite using `[← hY1e, key, hY1xe, hY2e]`.
+A detailed English derivation is pending.
 -/
 theorem rel_fwd (K : Type) [Field K] [Algebra K E] (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T}
     {x y : LFlag S r T'} (h : DCRel Λ F x y) (hx : Relevant K F.fl x.fl) : Relevant K F.fl y.fl := by
@@ -337,7 +335,7 @@ theorem rel_fwd (K : Type) [Field K] [Algebra K E] (Λ : Submodule (𝓞 E) S.V)
   rw [← hY1e, key, hY1xe, hY2e]
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h' : DCRel Λ F x.1 y.1` using `h`. Establish `hs : DCRel Λ F y.1 x.1` using `(dCRelEquivAll_holds E S r T T' Λ F).symm h'`. Conclude with `⟨rel_fwd K Λ h', rel_fwd K Λ hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem relFun_all (K : Type) [Field K] [Algebra K E] (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T)
     (P : LFlag S r T' → Prop) : RelFun Λ F P K := by

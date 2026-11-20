@@ -29,7 +29,7 @@ def compIso (j : S ⟶ T) [IsOpenImmersion j] (f : T ⟶ Y) :
     ((Scheme.Modules.pullbackPushforwardAdjunction f).comp (Scheme.Modules.restrictAdjunction j))
 
 /- English proof (translation)
-Use `Adjunction.unit_leftAdjointUniq_hom_app ((Scheme.Modules.pullbackPushforwardAdjunction (j ≫ f)).ofNatIsoRight (Scheme.Modules.pushforwardComp j f).symm) ((Scheme.Modules.pullbackPushforwardAdjunction f).comp (Scheme.Modules.restrictAdjunction j)) G` as an intermediate fact. Establish `H` using `congr(($this).app ⊤ s)`. Use `Eq.trans ?_ H` and prove the remaining obligations. Conclude with `congrArg _ (QCoh.res_self _ le_rfl _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem compIso_app_pullbackSections (j : S ⟶ T) [IsOpenImmersion j] (f : T ⟶ Y) (G : Y.Modules)
     (h : ⊤ ≤ (j ≫ f) ⁻¹ᵁ ⊤) (h' : j ''ᵁ ⊤ ≤ f ⁻¹ᵁ ⊤) (s : Γ(G, ⊤)) :
@@ -43,7 +43,7 @@ theorem compIso_app_pullbackSections (j : S ⟶ T) [IsOpenImmersion j] (f : T �
   exact congrArg _ (QCoh.res_self _ le_rfl _)
 
 /- English proof (translation)
-Rewrite using `[← Vert.DivPull.pullbackComp_inv_app b a E h₁ h₂ h]`. Conclude with `congr(($((Scheme.Modules.pullbackComp b a).inv_hom_id_app E)).app W _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullbackComp_hom_app (b : S ⟶ Y) (a : Y ⟶ Z) (E : Z.Modules) {U : Z.Opens} {V : Y.Opens}
     {W : S.Opens} (h₁ : V ≤ a ⁻¹ᵁ U) (h₂ : W ≤ b ⁻¹ᵁ V) (h : W ≤ (b ≫ a) ⁻¹ᵁ U) (s : Γ(E, U)) :
@@ -53,15 +53,15 @@ theorem pullbackComp_hom_app (b : S ⟶ Y) (a : Y ⟶ Z) (E : Z.Modules) {U : Z.
   exact congr(($((Scheme.Modules.pullbackComp b a).inv_hom_id_app E)).app W _)
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Set `t : κ → Γ((Scheme.Modules.pullback f).obj F, j ''ᵁ ⊤)` to `fun k => ((compIso j f).hom.app F).app ⊤ (s k)`. Establish `ht : IsFrame t` using `(isFrame_restrict_iff j t).1 (hs.map_iso ((compIso j f).hom.app F))`. Use `⟨_, ht.res hV, fun k => ?_⟩` and prove the remaining obligations. Establish `h2 : ((Scheme.Modules.pullback (j ≫ f)).map i).app ⊤ (s k) = ∑ m, c k m • pullbackSections (j ≫ f) _ (V` using `⊤) le_top (pullbackSections q E (U := ⊤) le_top (e m)) := by`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(ConcreteCategory.bijective_of_isIso (((Scheme.Modules.pullbackComp (j ≫ f) q).hom.app E).app ⊤)).1 ((h k).trans ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, pullbackComp_hom_app]`. Establish `h3 : ((Scheme.Modules.pullback f).map i).app (j ''ᵁ ⊤) (t k) = ∑ m, (j.appIso ⊤).inv (c k m) • pullbackSections f _ (V` using `⊤) le_top (pullbackSections q E (U := ⊤) le_top (e m)) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn` using `congr(($((compIso j f).hom.naturality i)).app ⊤ (s k))`. Use `hn.symm.trans ?_` and prove the remaining obligations. Use `(congrArg (((compIso j f).hom.app _).app ⊤) h2).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.Modules.Hom.app_smul, compIso_app_pullbackSections j f _ _ le_top]`. Both sides reduce to the same expression. Use `(app_resM _ hV _).trans ?_` and prove the remaining obligations. Use `(congrArg (fun x => resM _ hV (((Scheme.Modules.pullbackComp f q).hom.app E).app _ x)) h3).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, pullbackComp_hom_app f q E _ _ le_top, Twist.resM_smul]`. Conclude with `congrArg _ (res_pullbackSections _ _ _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame_image (j : S ⟶ T) [IsOpenImmersion j] (f : T ⟶ Y) (p : S ⟶ Y) (hp : p = j ≫ f) (q : Y ⟶ Z)
     (E : Z.Modules) (F : Y.Modules) (i : F ⟶ (Scheme.Modules.pullback q).obj E) {κ μ : Type} [Fintype κ] [Fintype μ]
@@ -101,11 +101,11 @@ theorem exists_frame_image (j : S ⟶ T) [IsOpenImmersion j] (f : T ⟶ Y) (p : 
   exact congrArg _ (res_pullbackSections _ _ _ _ _)
 
 /- English proof (translation)
-Introduce `ι _ N fl hfl T g g' w V hV G hG a l`. Substitute `w` using the available equality. Take `⟨s, hs, h⟩` from `hfl Γ(T, V) G a l`. Establish `hp : flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd G = hV.fromSpec ≫ g'`. Rewrite using `[IsAffineOpen.fromSpec, Category.assoc, hG]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hV.isoSpec.inv_hom_id_assoc _).symm`. Take `⟨t, ht, h'⟩` from `exists_frame_image hV.fromSpec g' _ hp (flStr ι N) (Taut.stdE N) _ ((fl a).ι l) (freeFrame (Sp ℤ) (Fin N)) _ s hs _ h V (QCoh.fromSpec_image_top hV).ge le_top`. Use `⟨t, ht, fun k => (h' k).trans (Finset.sum_congr rfl fun m _ => ?_)⟩` and prove the remaining obligations. Use `congr 1`. Use `QCoh.fromSpec_appIso_inv_res hV ⊤ ((G a).1 m (Fin.castLE l.is_le k))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[show ∀ x, (Spec Γ(T, V)).presheaf.map (⊤ : (Spec Γ(T, V)).Opens).leTop.op x = x from QCoh.res_self_ring (X := Spec Γ(T, V)) le_rfl]`. Use `(congrArg (resG T _) this).trans ?_` and prove the remaining obligations. Conclude with `(LB.resG_resG _ _ _).trans (LB.resG_self _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_frame_pullback_taut : ∀ (ι : Type) [Fintype ι] (N : ℕ)
     (fl : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N)) N), Taut.IsTaut ι N fl →

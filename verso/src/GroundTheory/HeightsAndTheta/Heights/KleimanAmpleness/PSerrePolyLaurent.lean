@@ -21,7 +21,7 @@ def expHom : (Fin (N + 1) →₀ ℕ) →+ (Fin (N + 1) → ℤ) where
   map_add' e f := by funext j; simp [expToInt]
 
 /- English proof (translation)
-Introduce `e f h` and use `Finsupp.ext fun j => by have := congrFun h j simpa [expToInt] using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem expToInt_injective : Function.Injective (expToInt N) := fun e f h =>
   Finsupp.ext fun j => by
@@ -38,7 +38,7 @@ Both sides reduce to the same expression.
 theorem coeff_toL (p : Poly S N) : (toL S N p).coeff = polyToLaurent S N p := rfl
 
 /- English proof (translation)
-Introduce `p q h` and use `by have h' : polyToLaurent S N p = polyToLaurent S N q := by rw [← coeff_toL, ← coeff_toL, h] exact AddMonoidAlgebra.coeff_injective (Finsupp.mapDomain_injective (expToInt_injective N) h')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toL_injective : Function.Injective (toL S N) := fun p q h => by
   have h' : polyToLaurent S N p = polyToLaurent S N q := by rw [← coeff_toL, ← coeff_toL, h]
@@ -47,14 +47,14 @@ theorem toL_injective : Function.Injective (toL S N) := fun p q h => by
 variable {S N}
 
 /- English proof (translation)
-The claim follows from `AddMonoidAlgebra.mapDomain_single`.
+A detailed English derivation is pending.
 -/
 theorem toL_monomial (f : Fin (N + 1) →₀ ℕ) (r : S) :
     toL S N (monomial f r) = AddMonoidAlgebra.single (expToInt N f) r :=
   AddMonoidAlgebra.mapDomain_single
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, AddMonoidAlgebra.single_mul_single, neg_add_cancel, mul_one]`. Conclude with `one_mul x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_neg_mul (b : Fin (N + 1) → ℤ) (x : LRing S N) :
     AddMonoidAlgebra.single (-b) (1 : S) * (AddMonoidAlgebra.single b 1 * x) = x := by
@@ -62,11 +62,11 @@ theorem single_neg_mul (b : Fin (N + 1) → ℤ) (x : LRing S N) :
   exact one_mul x
 
 /- English proof (translation)
-Introduce `hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Use `⟨Finsupp.single i 1, fun j hj => ?_, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce and unpack `rfl`. Conclude with `hj hi`. Consider the case `one => exact ⟨0, fun _ _ => rfl, rfl⟩`. Consider the case `mul x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, rfl⟩` from `hx`. Take `⟨g, hg, rfl⟩` from `hy`. Use `⟨f + g, fun j hj => by simp [hf j hj, hg j hj], ?_⟩` and prove the remaining obligations. Rewrite using `[monomial_mul, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_monos_iff {I : Finset (Fin (N + 1))} {s : Poly S N} :
     s ∈ monos I → ∃ f : Fin (N + 1) →₀ ℕ, (∀ j ∉ I, f j = 0) ∧ s = monomial f 1 := by
@@ -85,7 +85,7 @@ theorem mem_monos_iff {I : Finset (Fin (N + 1))} {s : Poly S N} :
     rw [monomial_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, C_1, one_mul]`. Use `Submonoid.prod_mem _ fun i hi => Submonoid.pow_mem _ (X_mem_monos ?_) _` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `(Finsupp.mem_support_iff.mp hi) (hf i h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem monomial_mem_monos {I : Finset (Fin (N + 1))} (f : Fin (N + 1) →₀ ℕ) (hf : ∀ j ∉ I, f j = 0) :
     (monomial f 1 : Poly S N) ∈ monos I := by
@@ -95,7 +95,7 @@ theorem monomial_mem_monos {I : Finset (Fin (N + 1))} (f : Fin (N + 1) →₀ �
   exact (Finsupp.mem_support_iff.mp hi) (hf i h)
 
 /- English proof (translation)
-Take `⟨f, -, rfl⟩` from `mem_monos_iff hs`. Rewrite using `[toL_monomial]`. Use `isUnit_iff_exists_inv.mpr ⟨AddMonoidAlgebra.single (-expToInt N f) 1, ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidAlgebra.single_mul_single, add_neg_cancel, mul_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isUnit_toL {I : Finset (Fin (N + 1))} {s : Poly S N} (hs : s ∈ monos I) : IsUnit (toL S N s) := by
   obtain ⟨f, -, rfl⟩ := mem_monos_iff hs
@@ -122,7 +122,7 @@ instance : IsScalarTower S (Poly S N) (LRing S N) :=
     rfl
 
 /- English proof (translation)
-Rewrite using `[Module.End.isUnit_iff]`. Establish `hu` using `(isUnit_toL s.2).unit.mulLeft_bijective`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_end (I : Finset (Fin (N + 1))) (s : monos (S := S) I) :
     IsUnit (algebraMap (Poly S N) (Module.End (Poly S N) (LRing S N)) s) := by
@@ -134,7 +134,7 @@ def iotaP (I : Finset (Fin (N + 1))) : LocMod S N (Poly S N) I →ₗ[Poly S N] 
   LocalizedModule.lift (monos I) (Algebra.linearMap (Poly S N) (LRing S N)) (isUnit_end I)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(↑((isUnit_end (S := S) I s).unit⁻¹) : Module.End (Poly S N) (LRing S N)) (Algebra.linearMap (Poly S N) (LRing S N) p) = y ↔ _`. Rewrite using `[Module.End.algebraMap_isUnit_inv_apply_eq_iff]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem localizationToLaurent_mk_eq_iff (I : Finset (Fin (N + 1))) (p : Poly S N) (s : monos (S := S) I) (y : LRing S N) :
     iotaP I (LocalizedModule.mk p s) = y ↔ toL S N p = toL S N s * y := by
@@ -144,16 +144,16 @@ theorem localizationToLaurent_mk_eq_iff (I : Finset (Fin (N + 1))) (p : Poly S N
   rfl
 
 /- English proof (translation)
-The claim follows from `(localizationToLaurent_mk_eq_iff I p s _).mp rfl`.
+A detailed English derivation is pending.
 -/
 theorem toL_mul_iotaP (I : Finset (Fin (N + 1))) (p : Poly S N) (s : monos (S := S) I) :
     toL S N p = toL S N s * iotaP I (LocalizedModule.mk p s) :=
   (localizationToLaurent_mk_eq_iff I p s _).mp rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Proceed by induction on `z using LocalizedModule.induction_on with`. Consider the case `h p s`. Rewrite `hz` using `[localizationToLaurent_mk_eq_iff, mul_zero, ← map_zero (toL S N)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[toL_injective S N hz]`. Conclude with `LocalizedModule.zero_mk s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localizationToLaurent_injective (I : Finset (Fin (N + 1))) : Function.Injective (iotaP (S := S) (N := N) I) := by
   rw [injective_iff_map_eq_zero]
@@ -181,7 +181,7 @@ Both sides reduce to the same expression.
 theorem iota_apply (I : StdCell N) (z : LocMod S N (Poly S N) I.1) : iota I z = (iotaP I.1 z).coeff := rfl
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `[expToInt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_expToInt (d : Fin (N + 1) →₀ ℕ) :
     ∑ j, expToInt N d j = Finsupp.weight (fun _ : Fin (N + 1) => (1 : ℤ)) d := by
@@ -189,7 +189,7 @@ theorem sum_expToInt (d : Fin (N + 1) →₀ ℕ) :
   simp [expToInt]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `[expToInt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_expToInt' (d : Fin (N + 1) →₀ ℕ) :
     ∑ j, expToInt N d j = ((Finsupp.weight (1 : Fin (N + 1) → ℕ) d : ℕ) : ℤ) := by
@@ -197,11 +197,11 @@ theorem sum_expToInt' (d : Fin (N + 1) →₀ ℕ) :
   simp [expToInt]
 
 /- English proof (translation)
-Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd, rfl⟩`. Conclude with `⟨(sum_expToInt d).trans hd, fun j _ => by simp [expToInt]⟩`. Introduce and unpack `⟨hs, hnn⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `ha : expToInt N (Finsupp.equivFunOnFinite.symm fun j => (a j).toNat) = a`. Use function extensionality and compare the values at `j`. Simplify using `[expToInt, Int.toNat_of_nonneg (hnn j (Finset.notMem_empty j))]`. Use `⟨Finsupp.equivFunOnFinite.symm fun j => (a j).toNat, ?_, ha⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = c`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← sum_expToInt, ha, hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem image_exps (c : ℤ) :
     expToInt N '' {d | Finsupp.weight (fun _ : Fin (N + 1) => (1 : ℤ)) d = c} = laurentExps N c ∅ := by
@@ -217,7 +217,7 @@ theorem image_exps (c : ℤ) :
     rw [← sum_expToInt, ha, hs]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(weightedHomogeneousSubmodule S (fun _ => (1 : ℤ)) c).map _ = _`. Rewrite using `[weightedHomogeneousSubmodule_eq_finsupp_supported, AddMonoidAlgebra.supported_eq_map, ← Submodule.map_comp]`. Establish `: (polyToLaurent S N).comp (AddMonoidAlgebra.coeffLinearEquiv S).symm.toLinearMap = Finsupp.lmapDomain S S (expToInt N)` using `LinearMap.ext fun _ => rfl`. Rewrite using `[this, Finsupp.lmapDomain_supported, image_exps]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_piece (c : ℤ) : ((polyGraded S N).piece c).map (polyToLaurent S N) =
     Finsupp.supported S S (laurentExps N c ∅) := by
@@ -229,7 +229,7 @@ theorem map_piece (c : ℤ) : ((polyGraded S N).piece c).map (polyToLaurent S N)
   rw [this, Finsupp.lmapDomain_supported, image_exps]
 
 /- English proof (translation)
-Rewrite using `[localizationToLaurent_mk_eq_iff, hf, toL_monomial, ← mul_assoc, AddMonoidAlgebra.single_mul_single, add_neg_cancel, mul_one]`. Conclude with `(one_mul _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localizationToLaurent_mk_monomial (I : Finset (Fin (N + 1))) (p : Poly S N) (s : monos (S := S) I)
     (f : Fin (N + 1) →₀ ℕ) (hf : (s : Poly S N) = monomial f 1) :
@@ -239,9 +239,9 @@ theorem localizationToLaurent_mk_monomial (I : Finset (Fin (N + 1))) (p : Poly S
   exact (one_mul _).symm
 
 /- English proof (translation)
-Rewrite using `[iota_apply, ← coeff_toL]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `iotaP I.1 (LocalizedModule.mk p 1) = _`. Rewrite using `[localizationToLaurent_mk_eq_iff]`. Express the relevant statement in the definitionally equal form `_ = toL S N 1 * _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_mk (I : StdCell N) (p : Poly S N) :
     iota I (locMk (Poly S N) I.1 p) = polyToLaurent S N p := by
@@ -253,9 +253,9 @@ theorem iota_mk (I : StdCell N) (p : Poly S N) :
   rw [map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[iota_apply, iota_apply]`. Use `congr 1`. Proceed by induction on `z using LocalizedModule.induction_on with`. Consider the case `h p s`. Express the relevant statement in the definitionally equal form `iotaP J.1 (locRes h (LocalizedModule.mk p s)) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[locRes_mk, localizationToLaurent_mk_eq_iff]`. Conclude with `toL_mul_iotaP I.1 p s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_res (I J : StdCell N) (h : I.1 ⊆ J.1) (z : LocMod S N (Poly S N) I.1) :
     iota J (locResS I J h z) = iota I z := by
@@ -268,7 +268,7 @@ theorem iota_res (I J : StdCell N) (h : I.1 ⊆ J.1) (z : LocMod S N (Poly S N) 
     exact toL_mul_iotaP I.1 p s
 
 /- English proof (translation)
-The claim follows from `(AddMonoidAlgebra.coeffLinearEquiv S).injective.comp (localizationToLaurent_injective I.1)`.
+A detailed English derivation is pending.
 -/
 theorem iota_injective (I : StdCell N) : Function.Injective (iota (S := S) I) :=
   (AddMonoidAlgebra.coeffLinearEquiv S).injective.comp (localizationToLaurent_injective I.1)
@@ -282,15 +282,15 @@ variable {S : Type u} [CommRing S] {N : ℕ}
 attribute [local instance] algP
 
 /- English proof (translation)
-Take `⟨f, hfI, hf⟩` from `mem_monos_iff s.2`. Express the relevant statement in the definitionally equal form `((iotaP I.1 (LocalizedModule.mk m s)).coeff.support : Set _) ⊆ laurentExps N c I.1`. Rewrite using `[localizationToLaurent_mk_monomial I.1 m s f hf]`. Introduce `y hy`. Rewrite `hy` using `[Finset.mem_coe, Finsupp.mem_support_iff, AddMonoidAlgebra.coeff_single_mul_apply, one_mul, neg_neg, coeff_toL]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy2 : expToInt N f + y ∈ (Finsupp.mapDomain (expToInt N) (AddMonoidAlgebra.coeff m)).support` using `Finsupp.mem_support_iff.mpr hy`. Take `⟨d, hd, hdy⟩` from `Finset.mem_image.mp (Finsupp.mapDomain_support hy2)`. Establish `: Nontrivial S` using `nontrivial_of_ne _ _ hy`. Establish `hwd : Finsupp.weight (fun _ : Fin (N + 1) => (1 : ℤ)) d = a` using `hm (Finsupp.mem_support_iff.mp hd)`. Establish `hwf : Finsupp.weight (1 : Fin (N + 1) → ℕ) f = e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hs ?_` and prove the remaining obligations. Rewrite using `[hf, coeff_monomial, if_pos rfl]`. Conclude with `one_ne_zero`. Establish `hy' : y = expToInt N d - expToInt N f` using `by rw [hdy]; abel`. Use `⟨?_, fun j hj => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `sum_expToInt d`. Establish `h2 : ∑ j, expToInt N f j = (e : ℤ)` using `by rw [sum_expToInt', ← hwf]`. Rewrite using `[hy']`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[Finset.sum_sub_distrib, h1, h2, hwd, hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy']`. Simplify using `[expToInt, hfI j hj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iota_gen_mem (c : ℤ) (I : StdCell N) (m : Poly S N) (s : monos (S := S) I.1) (a : ℤ) (e : ℕ)
     (hm : m ∈ (polyGraded S N).piece a) (hs : (s : Poly S N).IsHomogeneous e) (hc : a - e = c) :
@@ -323,17 +323,15 @@ theorem iota_gen_mem (c : ℤ) (I : StdCell N) (m : Poly S N) (s : monos (S := S
     simp [expToInt, hfI j hj]
 
 /- English proof (translation)
-Take `⟨hsum, hnn⟩` from `hx`. Use `set dp : Fin (N + 1) →₀ ℕ := Finsupp.equivFunOnFinite.symm fun j => (x j).toNat`. Use `set dm : Fin (N + 1) →₀ ℕ := Finsupp.equivFunOnFinite.symm fun j => (-x j).toNat`. Establish `hdm : ∀ j ∉ I.1, dm j = 0` using `fun j hj => by`. Simplify using `[dm, Int.toNat_eq_zero, hnn j hj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hx' : -expToInt N dm + expToInt N dp = x`. Use function extensionality and compare the values at `j`. Establish `h1 : ((dp j : ℕ) : ℤ) = ((x j).toNat : ℤ)` using `by simp [dp]`. Establish `h2 : ((dm j : ℕ) : ℤ) = ((-x j).toNat : ℤ)` using `by simp [dm]`. Use `Int.toNat_sub_toNat_neg (x j)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Pi.add_apply, Pi.neg_apply, expToInt]`. Use linear arithmetic over natural numbers and integers. Set `s : monos (S` to `S) I.1 := ⟨monomial dm 1, monomial_mem_monos dm hdm⟩`. Use `⟨LocalizedModule.mk (monomial dp 1) s, Submodule.subset_span ⟨monomial dp 1, s, Finsupp.weight (fun _ : Fin (N + 1) => (1 : ℤ)) dp, dm.degree, ?_, ?_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `isWeightedHomogeneous_monomial _ _ _ rfl`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `isHomogeneous_monomial _ rfl`. Establish `h2 : ((dm.degree : ℕ) : ℤ) = ∑ j, expToInt N dm j`. Rewrite using `[sum_expToInt', Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression. Rewrite using `[← sum_expToInt, h2, ← Finset.sum_sub_distrib, ← hsum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← congrFun hx' j]`. Simplify using `only [Pi.add_apply, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(iotaP I.1 (LocalizedModule.mk (monomial dp 1) s)).coeff = _`.
-
-Rewrite using `[localizationToLaurent_mk_monomial I.1 _ s dm rfl, toL_monomial, AddMonoidAlgebra.single_mul_single, mul_one, hx']`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem single_mem_map (c : ℤ) (I : StdCell N) (x : Fin (N + 1) → ℤ) (hx : x ∈ laurentExps N c I.1) :
     Finsupp.single x (1 : S) ∈ (degLoc (polyGraded S N) c I).map (iota I) := by
@@ -366,9 +364,9 @@ theorem single_mem_map (c : ℤ) (I : StdCell N) (x : Fin (N + 1) → ℤ) (hx :
     rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[degLoc, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨z, ⟨m, s, a, e, hm, hs, hc, rfl⟩, rfl⟩`. Conclude with `iota_gen_mem c I m s a e hm hs hc`. Rewrite using `[laurentDeg, Finsupp.supported_eq_span_single, Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `single_mem_map c I x hx`.
+A detailed English derivation is pending.
 -/
 theorem iota_deg (c : ℤ) (I : StdCell N) :
     (degLoc (polyGraded S N) c I).map (iota I) = laurentDeg S N c I := by
@@ -383,7 +381,7 @@ theorem iota_deg (c : ℤ) (I : StdCell N) :
 end LaurentLoc
 
 /- English proof (translation)
-Introduce `S _ N`. Use `⟨fun p q h => LaurentLoc.toL_injective S N (AddMonoidAlgebra.coeff_injective h), LaurentLoc.map_piece, LaurentLoc.iota, LaurentLoc.iota_injective, LaurentLoc.iota_res, LaurentLoc.iota_mk, LaurentLoc.iota_deg⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem SerrePoly.Laurent.proof : SerrePoly.Laurent.Statement.{u} := by
   intro S _ N

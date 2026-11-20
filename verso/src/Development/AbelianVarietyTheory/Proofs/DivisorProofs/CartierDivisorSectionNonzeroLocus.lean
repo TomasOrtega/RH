@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.PullRatSec
 
 /- English proof (translation)
-Rewrite using `[gs_eq (𝟙 X) x U hx]`. Conclude with `algebraMap_germ hx a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_gs' {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} {x : X} (hx : x ∈ U) (a : Γ(X, U)) :
     algebraMap (X.presheaf.stalk x) X.functionField (gs (𝟙 X) x U a) = fnOf U (gen_mem hx) a := by
@@ -32,13 +32,11 @@ theorem algebraMap_gs' {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} {x : X} (hx
   exact algebraMap_germ hx a
 
 /- English proof (translation)
-Set `O : V → Z.Opens` to `fun z => i ⁻¹ᵁ W z.1`. Set `a : ∀ z : V, Γ(Z, O z)` to `fun z => (i.app (W z.1)).hom (f z.1)`. Establish `ga : ∀ (z : V) (y : Z) (hy : y ∈ O z), gs (𝟙 Z) y (O z) (a z) = gs i y (W z.1) (f z.1)` using `fun z y hy => (gs_pull (𝟙 Z) i y _ hy _).trans (by rw [Category.id_comp])`. Establish `hcov : V ≤ iSup O` using `fun z hzV => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨z, hzV⟩, hz z hzV⟩`. Establish `hcomp : TopCat.Presheaf.IsCompatible Z.presheaf O a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z₁ z₂`. Apply `ReciprocityTheory.ChartRestriction.G.Geo.Tor.fn_ext` to reduce the goal to its premises. Introduce `y hyO`. Use `erw [gs_res (𝟙 Z) y inf_le_left hyO, gs_res (𝟙 Z) y inf_le_right hyO]`. Rewrite using `[ga z₁ y hyO.1, ga z₂ y hyO.2, gs_stalkMap i y _ hyO.1, gs_stalkMap i y _ hyO.2, hd z₁.1 z₁.2 z₂.1 z₂.2 y hyO.1 hyO.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, -⟩` from `Z.sheaf.existsUnique_gluing' O V (fun z => homOfLE (hWV z.1 z.2)) hcov a hcomp`. Use `⟨g, fun z hzV => ?_⟩` and prove the remaining obligations. Establish `hzO : z ∈ O ⟨z, hzV⟩` using `hz z hzV`. Rewrite using `[← gs_res (𝟙 Z) z (hWV z hzV) hzO g]`. Use `erw [hg ⟨z, hzV⟩]`.
-
-Conclude with `ga _ z hzO`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_glue_of_germ_eq {X Z : Scheme.{0}} (i : Z ⟶ X) (V : Z.Opens) (W : Z → X.Opens)
     (f : ∀ z, Γ(X, W z)) (hz : ∀ z ∈ V, i z ∈ W z) (hWV : ∀ z ∈ V, i ⁻¹ᵁ W z ≤ V)
@@ -65,19 +63,19 @@ theorem exists_glue_of_germ_eq {X Z : Scheme.{0}} (i : Z ⟶ X) (V : Z.Opens) (W
   exact ga _ z hzO
 
 /- English proof (translation)
-Introduce `X Z _ B _ R hR f i hreg`. Establish `hdata : ∀ (a : B.ι) (z : Z), ∃ (W : X.Opens) (g : Γ(X, W)), W ≤ B.U a ∧ (i z ∈ B.U a → i z ∈ W) ∧ ∀ h, fnOf W h g = f * R a`. Introduce `a z`. Distinguish the cases in `hz : i z ∈ B.U a`. Take `⟨W, hW, g, hg⟩` from `(hreg z a hz).exists_fnOf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `⟨W ⊓ B.U a, resG X inf_le_left g, inf_le_right, fun _ => ⟨hW, hz⟩, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[fnOf_resG, hg]`. Conclude with `⟨⊥, 0, bot_le, fun h => (hz h).elim, fun h => absurd h (by simp)⟩`. Use `choose W g hW hWz hg using hdata`. Establish `hgs : ∀ (a : B.ι) (z₁ z₂ y : Z) (h₁ : i y ∈ W a z₁) (h₂ : i y ∈ W a z₂), gs (𝟙 X) (i y) (W a z₁) (g a z₁) = gs (𝟙 X) (i y) (W a z₂) (g a z₂)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a z₁ z₂ y h₁ h₂`. Apply `IsFractionRing.injective (X.presheaf.stalk (i y)) X.functionField` to reduce the goal to its premises. Rewrite using `[algebraMap_gs' h₁, algebraMap_gs' h₂, hg, hg]`. Establish `hglue : ∀ (j : (B.pull i).ι), ∃ G : Γ(Z, (B.pull i).U j), ∀ z ∈ (B.pull i).U j, gs (𝟙 Z) z _ G = gs i z (W (j PUnit.unit) z) (g (j PUnit.unit) z)`. Introduce `j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `exists_glue_of_germ_eq i _ (fun z => W (j PUnit.unit) z) (fun z => g (j PUnit.unit) z) (fun z hz => hWz _ _ (mem_pull.1 hz)) (fun z _ y hy => mem_pull.2 (hW _ _ hy)) (fun z₁ _ z₂ _ y h₁ h₂ => hgs _ z₁ z₂ y h₁ h₂)`. Use `choose G hG using hglue`. Establish `hsec : ∀ (y : Z) (j j' : (B.pull i).ι), y ∈ (B.pull i).U j → y ∈ (B.pull i).U j' → gs (𝟙 Z) y _ (G j) = (gm (𝟙 Z) y ((B.pull i).U j ⊓ (B.pull i).U j') ((B.pull i).g j j')).val * gs (𝟙 Z) y _ (G j')`. Introduce `y j j' hj hj'`. Establish `ha` using `mem_pull.1 hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha'` using `mem_pull.1 hj'`. Establish `hm : i y ∈ B.U (j PUnit.unit) ⊓ B.U (j' PUnit.unit)` using `⟨ha, ha'⟩`. Rewrite using `[hG j y hj, hG j' y hj', gm_pull_g B i (𝟙 Z) y j j' hj hj', Category.id_comp, ← gs_unit i y _ hm, gs_stalkMap i y _ (hWz _ _ ha), gs_stalkMap i y _ (hWz _ _ ha'), gs_stalkMap i y _ hm, ← map_mul]`. Use `congr 1`. Apply `IsFractionRing.injective (X.presheaf.stalk (i y)) X.functionField` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, algebraMap_gs' (hWz _ _ ha), algebraMap_gs' hm, algebraMap_gs' (hWz _ _ ha'), hg, hg, hR _ _ (gen_mem hm)]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨LBGerm.secOfGerm G hsec, fun z a ha => ?_⟩` and prove the remaining obligations. Establish `hz : z ∈ (B.pull i).U (fun _ => a)` using `mem_pull.2 ha`. Rewrite using `[mem_nonzeroLocus_iff_isUnit _ hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `IsUnit (gs (𝟙 Z) z _ (G (fun _ => a))) ↔ _`. Rewrite using `[hG _ z hz, gs_stalkMap i z _ (hWz _ _ ha), isUnit_map_iff]`. Use `⟨fun hu => ⟨_, hu, by rw [algebraMap_gs' (hWz _ _ ha), hg]⟩, fun ⟨b, hb, e⟩ => ?_⟩` and prove the remaining obligations. Establish `hb' : b = gs (𝟙 X) (i z) _ (g a z)` using `IsFractionRing.injective _ X.functionField (by rw [e, algebraMap_gs' (hWz _ _ ha), hg])`. Conclude with `hb' ▸ hb`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sec_pull : ∀ (X Z : Scheme.{0}) [IsIntegral X] (B : ReciprocityTheory.ChartRestriction.G.Semi.LB X), B.IsLB →
     ∀ (R : B.ι → X.functionFieldˣ), GlobalTheory.Cartier.IsRatSec B R → ∀ (f : X.functionField) (i : Z ⟶ X),

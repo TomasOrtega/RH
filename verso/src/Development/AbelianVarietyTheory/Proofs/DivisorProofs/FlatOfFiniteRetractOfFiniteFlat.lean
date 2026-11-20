@@ -19,17 +19,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : IsAffine H.left := isAffine_of_isAffineHom H.hom`. Use `haveI : IsAffine K.left := isAffine_of_isAffineHom K.hom`. Rewrite `hKf`, the goal using `[HasRingHomProperty.iff_of_isAffine (P := @Flat)]`. Establish `wr : r.left ≫ H.hom = K.hom` using `Over.w r`. Establish `ws : s.left ≫ K.hom = H.hom` using `Over.w s`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hid : s.left ≫ r.left = 𝟙 H.left` using `by rw [← Over.comp_left, hsr, Over.id_left]`. Use `letI := H.hom.appTop.hom.toAlgebra`. Use `letI := K.hom.appTop.hom.toAlgebra`. Establish `hKf' : Module.Flat Γ(Sp R, ⊤) Γ(K.left, ⊤)` using `hKf`. Use `show Module.Flat Γ(Sp R, ⊤) Γ(H.left, ⊤)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Set `rs : Γ(H.left, ⊤) →ₗ[Γ(Sp R, ⊤)] Γ(K.left, ⊤)` to `{ toFun := r.left.appTop.hom map_add' := map_add _ map_smul' := fun a x => by`. Simplify using `only [RingHom.id_apply, Algebra.smul_def, map_mul]`. Use `congr 1`. Use `show (H.hom.appTop ≫ r.left.appTop) a = _`. Rewrite using `[← Scheme.Hom.comp_appTop, wr]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `rfl }`. Set `ss : Γ(K.left, ⊤) →ₗ[Γ(Sp R, ⊤)] Γ(H.left, ⊤)` to `{ toFun := s.left.appTop.hom map_add' := map_add _ map_smul' := fun a x => by`. Simplify using `only [RingHom.id_apply, Algebra.smul_def, map_mul]`. Use `congr 1`. Use `show (K.hom.appTop ≫ s.left.appTop) a = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_appTop, ws]`. Use `rfl }`. Use `Module.Flat.of_retract rs ss ?_` and prove the remaining obligations. Use extensionality with `x`. Use `show (r.left.appTop ≫ s.left.appTop) x = x`.
-
-Rewrite using `[← Scheme.Hom.comp_appTop, hid]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem retract_flat_of_finite (R : Type) [CommRing R] (H K : Over (Sp R)) (s : H ⟶ K) (r : K ⟶ H)
     (hsr : s ≫ r = 𝟙 H) (hH : IsFinite H.hom) (hK : IsFinite K.hom) (hKf : Flat K.hom) :

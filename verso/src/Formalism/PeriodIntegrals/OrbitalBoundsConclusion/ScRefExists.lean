@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeReferenceFrame.P
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeReferenceFrame.WeilBasisExistence
 
 /- English proof (translation)
-The claim follows from `PI.ScRefExists.Top.target_of_wframe (PI.ScRefExists.WF.wFrame_of PI.ScRefExists.ApP.principal_ideal_ring_at_prime PI.ScRefExists.WB.weil_basis_existence)`.
+A detailed English derivation is pending.
 -/
 theorem sc_reference_exists : PI.ScRefExists.Target :=
   PI.ScRefExists.Top.target_of_wframe

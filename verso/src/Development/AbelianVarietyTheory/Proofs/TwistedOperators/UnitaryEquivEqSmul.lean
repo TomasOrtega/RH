@@ -22,7 +22,7 @@ def diagU (hN : N = n + 1) (u : ι → Matrix.unitaryGroup (Fin n) ℂ) : ι →
   fun τ => Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ n N hN.symm (GlobalTheory.Branching.unitaryIncl n (u τ))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Establish `hu : IsUnit ((g τ : Matrix (Fin n) (Fin n) K)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (g τ).isUnit`. Simplify using `[invTrK, inside₂, Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hu]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem invTrK_invTrK {K : Type} [Field K] (g : ι → GL (Fin n) K) : invTrK (invTrK g) = g := by
   funext τ
@@ -31,7 +31,7 @@ theorem invTrK_invTrK {K : Type} [Field K] (g : ι → GL (Fin n) K) : invTrK (i
   simp [invTrK, inside₂, Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hu]
 
 /- English proof (translation)
-Rewrite using `[pairBK_apply, pairBK_apply, rhoK_coe, rhoK_coe]`. Establish `h` using `pairingBInvariantK_holds ℂ ι n σ (invTrK g) x.1 y.1`. Rewrite `h` using `[invTrK_invTrK]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pairBK_rhoK (σ : ι → DomWeight n) (g : ι → GL (Fin n) ℂ) (x y : VV ℂ σ) :
     pairBK σ (rhoK σ g x) (rhoK σ (invTrK g) y) = pairBK σ x y := by
@@ -40,7 +40,7 @@ theorem pairBK_rhoK (σ : ι → DomWeight n) (g : ι → GL (Fin n) ℂ) (x y :
   rwa [invTrK_invTrK] at h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_eq_smul_brStd_of_equivariant hN hn Λ σ hI hS φ (GlobalTheory.T.equivariant_GL_of_equivariant_unitary_coefficientSpace hN Λ σ φ hφ)`.
+A detailed English derivation is pending.
 -/
 theorem unitaryEquiv_eq_smul (hN : N = n + 1) (hn : 1 ≤ n) {Λ : ι → DomWeight N} {σ : ι → DomWeight n}
     (hI : ∀ τ, Br.Interlace hN (Λ τ) (σ τ)) (hS : ∀ τ, Br.SameShift (Λ τ) (σ τ)) (φ : VV ℂ Λ →ₗ[ℂ] VV ℂ σ)
@@ -49,13 +49,13 @@ theorem unitaryEquiv_eq_smul (hN : N = n + 1) (hn : 1 ≤ n) {Λ : ι → DomWei
   GlobalTheory.T.exists_eq_smul_brStd_of_equivariant hN hn Λ σ hI hS φ (GlobalTheory.T.equivariant_GL_of_equivariant_unitary_coefficientSpace hN Λ σ φ hφ)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ (VV ℂ σ) := Module.Finite.of_basis (bVV ℂ σ)`. Establish `hnd` using `pairingBNondegenerate_holds ℂ ι n σ`. Set `φ : VV ℂ Λ →ₗ[ℂ] VV ℂ σ` to `(LinearMap.BilinForm.toDual (pairBK σ) hnd).symm.toLinearMap ∘ₗ B.compl₂ (GlobalTheory.FunObj.funEquiv σ).toLinearMap`. Establish `hp : ∀ v y, pairBK σ (φ v) y = B v (GlobalTheory.FunObj.funEquiv σ y)` using `fun v y => by`. Simplify using `only [φ, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.BilinForm.apply_toDual_symm_apply, LinearMap.compl₂_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinv : ∀ (u : ι → Matrix.unitaryGroup (Fin n) ℂ) v F, B (rhoK Λ (diagU hN u) v) F = B v (rhoK (fun τ => (σ τ).dual) (uGL u)⁻¹ F)` using `fun u v F => by`. Establish `h` using `hB u v (rhoK (fun τ => (σ τ).dual) (uGL u)⁻¹ F)`. Rewrite `h` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `hφ : ∀ (u : ι → Matrix.unitaryGroup (Fin n) ℂ) (v : VV ℂ Λ), φ (rhoK Λ (diagU hN u) v) = rhoK σ (uGL u) (φ v)` using `fun u v => by`. Use `sub_eq_zero.1 (hnd.1 _ fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, LinearMap.sub_apply, sub_eq_zero, hp, hinv]`. Take `⟨y', rfl⟩ : ∃ y', y = rhoK σ (invTrK (uGL u)) y'` from `⟨rhoK σ (invTrK (uGL u))⁻¹ y, by rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]⟩`. Rewrite using `[pairBK_rhoK, hp, GlobalTheory.FunObj.funEquiv_rhoK, ← Module.End.mul_apply, ← map_mul, invTrK_invTrK, inv_mul_cancel, map_one, Module.End.one_apply]`. Take `⟨c, hc⟩` from `unitaryEquiv_eq_smul hN hn hI hS φ hφ`. Use `⟨c, LinearMap.ext₂ fun v f => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : f = GlobalTheory.FunObj.funEquiv σ (GlobalTheory.FunObj.covOf σ f)` using `by rw [GlobalTheory.BrRat.covOf_eq, LinearEquiv.apply_symm_apply]`. Rewrite using `[e, ← hp, hc, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, LinearMap.smul_apply, ← e]`. Simplify using `only [GlobalTheory.FunObj.brPair, LinearMap.compl₁₂_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem brPair_unique (hN : N = n + 1) (hn : 1 ≤ n) {Λ : ι → DomWeight N} {σ : ι → DomWeight n}
     (hI : ∀ τ, Br.Interlace hN (Λ τ) (σ τ)) (hS : ∀ τ, Br.SameShift (Λ τ) (σ τ))

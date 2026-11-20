@@ -157,7 +157,7 @@ section Params
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `R.m_even`. Establish `h2` using `R.two_le_m`. Use `show 2 * (R.m / 2 - 1) + R.k + 1 = R.k + R.m - 1`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dimS_eq (R : Ranks) : 2 * R.rS + R.k + 1 = R.r := by
   obtain ⟨j, hj⟩ := R.m_even
@@ -549,9 +549,9 @@ def IsCutoff (χ : ℝ → ℝ) : Prop :=
   ContDiff ℝ ∞ χ ∧ (∀ x, 0 ≤ χ x ∧ χ x ≤ 1) ∧ (∀ x ≤ 1 / 2, χ x = 0) ∧ ∀ x, 1 ≤ x → χ x = 1
 
 /- English proof (translation)
-Use `⟨fun x => Real.smoothTransition (2 * x - 1), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Real.smoothTransition.contDiff.comp ((contDiff_const.mul contDiff_id).sub contDiff_const)`. Introduce `x`. Conclude with `⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Real.smoothTransition.zero_of_nonpos (by linarith)`. Introduce `x hx`. Conclude with `Real.smoothTransition.one_of_one_le (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem isCutoff_exists : ∃ χ : ℝ → ℝ, IsCutoff χ := by
   refine ⟨fun x => Real.smoothTransition (2 * x - 1), ?_, ?_, ?_, ?_⟩

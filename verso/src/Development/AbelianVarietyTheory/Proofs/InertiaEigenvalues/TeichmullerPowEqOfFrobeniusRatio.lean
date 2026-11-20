@@ -14,11 +14,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon.Gauss
 
 /- English proof (translation)
-Introduce `a b hab`. Take `⟨j, hj⟩` from `GlobalTheory.MemLoc.exists_isCrisP l`. Establish `hinj` using `GlobalTheory.MemLoc.crisP_injective l j hj`. Establish `key : ∀ y : Formalism.Per.Fl l, j (tc l y) = algebraMap (Formalism.Per.AinfP l) (Formalism.Per.BdRp l) (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.AinfP l) (Formalism.Per.tm y))`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hj.on0 (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris0 l) (Formalism.Per.tm y))` as an intermediate fact. Rewrite `this` using `[Subalgebra.coe_algebraMap, ← GlobalTheory.RingIface.tower]`. Conclude with `this`. Establish `h1` using `congrArg j hab`. Rewrite `h1` using `[key, key]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.MemLoc.ainf_isDomain_and_injective l).2.2 (GlobalTheory.MemLoc.algebraMap_AinfP_BdRp_injective l h1)`. Establish `h3` using `congrArg (fun w : Formalism.Per.Ainf l => w.coeff 0) h2`. Simplify using `using h3`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tc_injective (l : ℕ) [Fact l.Prime] : Function.Injective (tc l) := by
   intro a b hab
@@ -39,11 +39,9 @@ theorem tc_injective (l : ℕ) [Fact l.Prime] : Function.Injective (tc l) := by
   simpa using h3
 
 /- English proof (translation)
-Introduce `l _ w' ζ hw h`. Establish `hφ : φc l w' ≠ 0` using `((GlobalTheory.T.acrisValuation_radius_laws l 1 one_pos le_rfl).2.1 w' hw).1`. Establish `hprod : w' * φc l w' ≠ 0`. Introduce `h0`. Break down `GlobalTheory.T.acris_eq_zero_or_eq_zero_of_mul_eq_zero l _ _ h0 with h0 | h0` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hw h0`. Conclude with `hφ h0`. Rewrite `h` using `[map_mul, frob_teich]`. Establish `h' : (tc l (ζ ^ l) - tc l ζ) * (w' * φc l w') = 0`. Take the linear combination `h`.
-
-Break down `GlobalTheory.T.acris_eq_zero_or_eq_zero_of_mul_eq_zero l _ _ h' with h0 | h0` into its components or cases. Conclude with `tc_injective l (sub_eq_zero.1 h0)`. Conclude with `absurd h0 hprod`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem teich_eq_of_phi_ratio : ∀ (l : ℕ) [Fact l.Prime] (w' : Formalism.Per.Acris l) (ζ : Formalism.Per.Fl l), w' ≠ 0 →
     φc l (tc l ζ * w') * w' = tc l ζ * w' * φc l w' → ζ ^ l = ζ := by

@@ -10,7 +10,7 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.LimV
 
 /- English proof (translation)
-Introduce and unpack `φ ⟨ψ, hψ, rfl⟩`. Use `⟨mulChi N (GlobalTheory.CuspRep.Model.absC E z') ψ, ⟨ψ, hψ, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `e : ∀ s : ℂ, ((chiDet N (GlobalTheory.CuspRep.Model.absC E s) x : ℂˣ) : ℂ) = Complex.exp (s * GlobalTheory.Mem.Chr.CharModel.logNorm E (GeneralLinearGroup.det x))` using `fun _ => rfl`. Simplify using `only [LinearEquiv.coe_coe, mulChi_apply, absFn]`. Rewrite using `[e z', e (z' - z), e z, mul_left_comm, ← Complex.exp_add, ← add_mul, sub_add_cancel]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem carries_absFn_tw {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
     (U : Submodule ℂ (Sm E N)) (z z' : ℂ) : Carries (absFn N (z' - z)) (tw U z) (tw U z') := by

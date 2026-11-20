@@ -23,21 +23,19 @@ open GlobalTheory.CompanionTheory.PointSurjectivity
 namespace GlobalTheory.CompanionTheory.PointSurjFibre
 
 /- English proof (translation)
-Introduce `k _ X T Z a b p q H _ _ G hG R _ t Y π f Hy κ _ _ D hD hc hac s σ hs h₁ h₂`. Take `⟨χ, rfl⟩ : ∃ χ : R →+* k, Spec.map (CommRingCat.ofHom χ) = s` from `⟨(Spec.preimage s).hom, by simp⟩`. Establish `Hx : IsPullback (π ≫ p) f a (t ≫ b)` using `Hy.paste_horiz H`. Use `haveI : Flat f := MorphismProperty.of_isPullback (P := @Flat) Hx inferInstance`. Use `haveI : IsSeparated f := MorphismProperty.of_isPullback (P := @IsSeparated) Hx inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM` using `LB.isLB_pull hG π`. Establish `hI` using `GlobalTheory.MumfordSupport.isAffineOpen_biInf_of_isSeparated f hD`. Establish `Hs` using `IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom χ))`. Take `⟨F, π', g, Hs⟩ : ∃ (F : Scheme.{0}) (π' : F ⟶ Y) (g : F ⟶ Spec (CommRingCat.of k)), IsPullback π' g f (Spec.map (CommRingCat.ofHom χ))` from `⟨_, _, _, Hs⟩`. Establish `hext` using `GlobalTheory.T.flat_bounded_acyclic_base_change R k χ (cechLB f (G.pull π) D) (Fintype.card κ) (fun p hp => isZero_cechLB_X _ _ _ hp.le) (flat_cechLB_X f hM hI) hac`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : (cechLB g ((G.pull π).pull π') fun i => π' ⁻¹ᵁ D i).Acyclic` using `fun n => (hext n).of_iso (cechLBBaseChangeIso hM Hs hI)`. Establish `Hu : IsPullback (π' ≫ π ≫ p) g a (Spec.map (CommRingCat.ofHom χ) ≫ t ≫ b)` using `Hs.paste_horiz Hx`. Rewrite `Hu` using `[hs]`. Take `⟨u, hu⟩ : ∃ u : F ⟶ X, u = π' ≫ π ≫ p` from `⟨_, rfl⟩`. Rewrite `Hu` using `[← hu]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsIso u := Hu.isIso_fst_of_isIso`. Establish `hua : u ≫ a = g` using `Hu.w.trans (Category.comp_id _)`. Establish `he : u ≫ σ = π' ≫ π`. Use `H.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, h₁, Category.comp_id, hu, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, h₂, ← Category.assoc, hua, Category.assoc π', Hy.w, ← Category.assoc π', Hs.w, Category.assoc]`. Use `⟨fun i => inv u ⁻¹ᵁ π' ⁻¹ᵁ D i, fun i => (isAffineOpen_preimage_of_isPullback Hs (hD i)).preimage_of_isIso _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_iSup, ← Scheme.Hom.preimage_iSup, hc]`. Both sides reduce to the same expression. Establish `hN` using `LB.isLB_pull hG σ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i₁⟩` from `cechLB_pull_iso_of_isOpenImmersion k X a (G.pull σ) F u κ (fun i => inv u ⁻¹ᵁ π' ⁻¹ᵁ D i) hN (fun i => by rw [Scheme.Hom.opensRange_of_isIso]; exact le_top)`. Establish `hD' : (fun i => u ⁻¹ᵁ inv u ⁻¹ᵁ π' ⁻¹ᵁ D i) = fun i => π' ⁻¹ᵁ D i` using `funext fun i => by`. Rewrite using `[← Scheme.Hom.comp_preimage, IsIso.hom_inv_id]`. Both sides reduce to the same expression. Rewrite `i₁` using `[hua, hD']`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w₁, hw₁⟩` from `GlobalTheory.MumfordSupport.exists_iso_pull_pull hG π π'`. Take `⟨w₂, hw₂⟩ : ∃ w : LB.Iso ((G.pull σ).pull u) (G.pull (π' ≫ π)), w.IsGen` from `he ▸ GlobalTheory.MumfordSupport.exists_iso_pull_pull hG σ u`. Establish `hP` using `LB.isLB_pull hG (π' ≫ π)`. Establish `i₂` using `cechLBCongr g (fun i => π' ⁻¹ᵁ D i) (LB.isLB_pull hM π') hP w₁ hw₁`. Establish `i₃` using `cechLBCongr g (fun i => π' ⁻¹ᵁ D i) (LB.isLB_pull hN u) hP w₂ hw₂`.
-
-Conclude with `fun n => (hF n).of_iso (i₂ ≪≫ i₃.symm ≪≫ i₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem cech_fibre_acyclic : ∀ {k : Type} [Field k] {X T Z : Scheme.{0}} (a : X ⟶ Sp k) (b : T ⟶ Sp k) (p : Z ⟶ X)
     (q : Z ⟶ T) (H : IsPullback p q a b) [IsSeparated a] [Flat a] (G : LB Z) (hG : G.IsLB)

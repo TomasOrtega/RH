@@ -42,7 +42,7 @@ def trH {X Y : Scheme.{0}} (τ : fr R X ⟶ fr R Y) (F : Shv R) (n : ℤ) : H R 
   HK.pull R (chMap τ) F n
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `z.mk_surjective`. Conclude with `congrArg CohomologyClass.mk (Cocycle.ext (Cochain.comp_smul _ _ _ (zero_add n)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem trH_smul {X Y : Scheme.{0}} (τ : fr R X ⟶ fr R Y) (F : Shv R) (n : ℤ) (r : R) (z : H R (sch.obj Y) F n) :
     trH τ F n (r • z) = r • trH τ F n z := by
@@ -50,11 +50,11 @@ theorem trH_smul {X Y : Scheme.{0}} (τ : fr R X ⟶ fr R Y) (F : Shv R) (n : �
   exact congrArg CohomologyClass.mk (Cocycle.ext (Cochain.comp_smul _ _ _ (zero_add n)))
 
 /- English proof (translation)
-Establish `h : chMap (σ + τ) = chMap σ + chMap τ`. Establish `: (AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (simp0 (σ + τ)) = (AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (simp0 σ) + (AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (simp0 τ)`. Use extensionality with `n : 1`. Both sides reduce to the same expression. Conclude with `(congrArg (ComplexShape.embeddingDownNat.extendFunctor (Shv R)).map this).trans (Functor.map_add _)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `z.mk_surjective`. Unfold `trH`. Rewrite using `[h]`. Use `Eq.trans ?_ (CohomologyClass.mk_add _ _)` and prove the remaining obligations. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[zcomp, Cochain.ofHom_add]`.
+A detailed English derivation is pending.
 -/
 theorem trH_add {X Y : Scheme.{0}} (σ τ : fr R X ⟶ fr R Y) (F : Shv R) (n : ℤ)
     (z : H R (sch.obj Y) F n) : trH (σ + τ) F n z = trH σ F n z + trH τ F n z := by

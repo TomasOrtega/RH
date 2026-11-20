@@ -7,7 +7,7 @@ open ContinuousAlternatingMap
 namespace UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun r : ℝ => (p, r)) ((0 : V), (1 : ℝ)) t` using `(hasDerivAt_const t p).prodMk (hasDerivAt_id t)`. Establish `h2 : HasDerivAt (fun r : ℝ => Ω (p, r)) (fderiv ℝ Ω (p, t) (0, 1)) t` using `HasFDerivAt.comp_hasDerivAt t (l := Ω) h.hasFDerivAt h1`. Conclude with `(compContinuousLinearMapCLM (ι := Fin q) (F := F) (ContinuousLinearMap.inl ℝ V ℝ)).hasFDerivAt.comp_hasDerivAt t h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem line_der {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {q : ℕ} (p : V) (t : ℝ) (Ω : V × ℝ → (V × ℝ) [⋀^Fin q]→L[ℝ] F) (h : DifferentiableAt ℝ Ω (p, t)) :
@@ -19,7 +19,7 @@ private theorem line_der {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
   exact (compContinuousLinearMapCLM (ι := Fin q) (F := F) (ContinuousLinearMap.inl ℝ V ℝ)).hasFDerivAt.comp_hasDerivAt t h2
 
 /- English proof (translation)
-Establish `hs : HasFDerivAt (fun x : V => ((x, t) : V × ℝ)) ((ContinuousLinearMap.id ℝ V).prod 0) p` using `(hasFDerivAt_id p).prodMk (hasFDerivAt_const t p)`. Conclude with `h.hasFDerivAt.comp p hs`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hasFDerivAt_slice_of_differentiableAt {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {m : ℕ} (p : V) (t : ℝ) (Ω : V × ℝ → (V × ℝ) [⋀^Fin m]→L[ℝ] F)
@@ -31,7 +31,7 @@ private theorem hasFDerivAt_slice_of_differentiableAt {V F : Type} [NormedAddCom
   exact h.hasFDerivAt.comp p hs
 
 /- English proof (translation)
-Rewrite using `[((hasFDerivAt_slice_of_differentiableAt p t Ω h).continuousAlternatingMap_apply_const c).fderiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fderiv_slice_apply_eq_fderiv_prod_inl {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {m : ℕ} (p : V) (t : ℝ) (Ω : V × ℝ → (V × ℝ) [⋀^Fin m]→L[ℝ] F)
@@ -41,7 +41,7 @@ private theorem fderiv_slice_apply_eq_fderiv_prod_inl {V F : Type} [NormedAddCom
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using `[Fin.removeNth, Fin.succ_succAbove_zero]`. Simplify using `[Fin.removeNth, Fin.succ_succAbove_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem removeNth_succ_vecCons' {α : Type*} {n : ℕ} (a : α) (w : Fin (n + 1) → α) (i : Fin (n + 1)) :
     Fin.removeNth i.succ (Matrix.vecCons a w) = Matrix.vecCons a (Fin.removeNth i w) := by
@@ -51,11 +51,11 @@ private theorem removeNth_succ_vecCons' {α : Type*} {n : ℕ} (a : α) (w : Fin
   · simp [Fin.removeNth, Fin.succ_succAbove_succ]
 
 /- English proof (translation)
-Introduce `V F _ _ _ _ p t`. Use `⟨fun Ω h => ?_, fun q Ω h => ?_⟩` and prove the remaining obligations. Use `line_der p t Ω h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Simplify using `[curryLeft_apply_apply, extDeriv_apply h, fderiv_continuousAlternatingMap_apply_const h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hβ : DifferentiableAt ℝ (fun x => ((Ω (x, t)).curryLeft (0, 1)).compContinuousLinearMap (ContinuousLinearMap.inl ℝ V ℝ)) p`. Establish `hs` using `(hasFDerivAt_slice_of_differentiableAt p t Ω h).differentiableAt`. Conclude with `((compContinuousLinearMapCLM (ContinuousLinearMap.inl ℝ V ℝ)).differentiableAt).comp p ((((curryLeftLI (𝕜 := ℝ) (E := V × ℝ) (F := F) (n := q)).toContinuousLinearMap.differentiableAt).comp p hs).clm_apply (differentiableAt_const _))`. Use `line_der p t Ω h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousAlternatingMap.add_apply, compContinuousLinearMap_apply, curryLeft_apply_apply, extDeriv_apply h, Fin.sum_univ_succ, extDeriv_apply hβ]`. Establish `hc : ∀ i : Fin (q + 1), (⇑(ContinuousLinearMap.inl ℝ V ℝ) ∘ Fin.removeNth i v) = Fin.removeNth i (⇑(ContinuousLinearMap.inl ℝ V ℝ) ∘ v)` using `fun i => rfl`. Simplify using `only [compContinuousLinearMap_apply, curryLeft_apply_apply, fderiv_slice_apply_eq_fderiv_prod_inl p t Ω h, fderiv_continuousAlternatingMap_apply_const h, removeNth_succ_vecCons', hc, ContinuousLinearMap.flipAlternating_apply_apply, Matrix.cons_val_succ, Matrix.cons_val_zero, Fin. …`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem prodDer : ProdDer := by
   intro V F _ _ _ _ p t

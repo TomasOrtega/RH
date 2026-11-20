@@ -16,9 +16,9 @@ namespace GlobalTheory.DataPos
 variable {V : Type} [CommRing V] [IsDomain V]
 
 /- English proof (translation)
-Establish `e : (toUnit (TK V)).left = jK V` using `GlobalTheory.Mum.UnitValuedLeadingSection.toUnit_TK_left V`. Use `fin_cases k`. Use `show ((toUnit (TK V) ≫ D.c a) * (toUnit (TK V) ≫ D.c b)).left = jK V ≫ (D.c a * D.c b).left`. Rewrite using `[← MonObj.comp_mul, Over.comp_left, e]`. Use `show (toUnit (TK V) ≫ D.c a).left = jK V ≫ (D.c a).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, e]`. Use `show (toUnit (TK V) ≫ D.c b).left = jK V ≫ (D.c b).left`. Rewrite using `[Over.comp_left, e]`. Use `show (1 : TK V ⟶ D.P.A).left = jK V ≫ (1 : 𝟙_ _ ⟶ D.P.A).left`. Rewrite using `[← e, ← Over.comp_left, MonObj.comp_one]`.
+A detailed English derivation is pending.
 -/
 theorem lamPts_generic (D : DegPre V) (a b : D.X) (k : Fin 4) :
     lamPts (toUnit (TK V) ≫ D.c a) (toUnit (TK V) ≫ D.c b) k = jK V ≫ lamPts (D.c a) (D.c b) k := by
@@ -34,37 +34,33 @@ theorem lamPts_generic (D : DegPre V) (a b : D.X) (k : Fin 4) :
     rw [← e, ← Over.comp_left, MonObj.comp_one]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> exact GlobalTheory.Mum.UnitValuedLeadingSection.left_comp_hom_unit _`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lamPts_sec (D : DegPre V) (a b : D.X) (k : Fin 4) : lamPts (D.c a) (D.c b) k ≫ D.P.A.hom = 𝟙 _ := by
   fin_cases k <;> exact GlobalTheory.Mum.UnitValuedLeadingSection.left_comp_hom_unit _
 
 /- English proof (translation)
-Introduce `V _ _ _ D y hy`. Take `⟨z₀⟩ : Nonempty (TK V).left` from `⟨⟨⊥, Ideal.isPrime_bot⟩⟩`. Take `⟨J₀, hJ₀⟩` from `GlobalTheory.Mum.UnitValuedLeadingSection.exists_topGood V D.toPre.P z₀`. Take `⟨u₁, hu₁⟩` from `GlobalTheory.Mum.UnitValuedLeadingSection.tau_diag_eq_unit_mul_psi_sq V D.toPre D.tau_bimult D.psi_even z₀ J₀ hJ₀ y`. Take `⟨r₀, hr₀, e₀⟩` from `(GlobalTheory.Mum.UnitValuedLeadingSection.psiIn_iff_val V D.toPre z₀ J₀ hJ₀ y (maximalIdeal V)).1 (D.psi_pos y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hr : (u₁ : V) * r₀ ^ 2 ∈ maximalIdeal V` using `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hr₀ 2 two_pos)`. Establish `eT : ((val (D.toPre.tau y y) (𝟙 _) z₀ J₀ : ((TK V).left.presheaf.stalk z₀)ˣ) : (TK V).left.presheaf.stalk z₀) = GlobalTheory.Mum.UnitValuedLeadingSection.thK V z₀ (algebraMap V _ ((u₁ : V) * r₀ ^ 2))`. Rewrite using `[hu₁, Units.val_mul, Units.val_pow_eq_pow_val, e₀, map_mul, map_mul, map_pow, map_pow]`. Both sides reduce to the same expression. Establish `hr0 : algebraMap V (FractionRing V) ((u₁ : V) * r₀ ^ 2) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `h`. Use `(val (D.toPre.tau y y) (𝟙 _) z₀ J₀).ne_zero` as an intermediate fact. Rewrite `this` using `[eT, h, map_zero]`. Conclude with `this rfl`. Use `⟨_, hr, Units.mk0 _ hr0, rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set k : (FractionRing V)ˣ := Units.mk0 _ hr0 with hk`. Use `set φV := lamPts (D.toPre.c y) (D.toPre.c y) with hφVdef`. Use `set φK := lamPts (toUnit (TK V) ≫ D.toPre.c y) (toUnit (TK V) ≫ D.toPre.c y) with hφKdef`. Establish `hφ : ∀ k, φK k = jK V ≫ φV k` using `lamPts_generic D.toPre y y`. Set `jst : Fin 4 → D.toPre.P.L.ι` to `fun k => J₀ (jK V ≫ φV k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ k, φV k ⁻¹ᵁ D.toPre.P.L.U (jst k) = ⊤` using `fun k => hJ₀.2 (φV k) (lamPts_sec D.toPre y y k)`. Establish `htop : LB.wchart D.toPre.P.L φV jst = ⊤` using `eq_top_iff.2 fun p _ => Set.mem_iInter.2 fun k => by`. Establish `: p ∈ φV k ⁻¹ᵁ D.toPre.P.L.U (jst k)` using `by rw [hint k]; trivial`. Conclude with `this`. Establish `htopK : LB.wchart D.toPre.P.L φK jst = ⊤` using `eq_top_iff.2 fun p _ => Set.mem_iInter.2 fun k => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `: jK V p ∈ φV k ⁻¹ᵁ D.toPre.P.L.U (jst k)` using `by rw [hint k]; trivial`. Use `show p ∈ (φK k).base ⁻¹' (D.toPre.P.L.U (jst k) : Set _)`. Rewrite using `[hφ k]`. Conclude with `this`. Establish `hle : ∀ j, LB.wchart D.toPre.P.L φV j ≤ LB.wchart D.toPre.P.L φV j ⊓ LB.wchart D.toPre.P.L φV jst` using `fun j => le_inf le_rfl (by rw [htop]; exact le_top)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `u : LB.Gen (LB.LinComb D.toPre.P.L φV negε)` to `⟨fun j => res (hle j) ((LB.LinComb D.toPre.P.L φV negε).g j jst)⟩`. Take `⟨t, htg, ht⟩` from `GlobalTheory.PolDeg.Wit.exists_tau D.toPre y y`. Establish `hkey : t.s jst = res le_top (unitOn k)`. Use `unit_ext fun x hx => ?_` and prove the remaining obligations. Take `rfl : x = z₀` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing V)) x z₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[gm_res _ x _ hx]`. Establish `e1 : gm (𝟙 _) x ((LB.LinComb D.toPre.P.L φK negε).U jst) (t.s jst) = val t (𝟙 _) x J₀` using `(val_of t (𝟙 _) x J₀ jst (fun k => by show J₀ (𝟙 _ ≫ φK k) = J₀ (jK V ≫ φV k); rw [Category.id_comp, hφ k])).symm`. Rewrite using `[e1, ht _ _ x J₀ hJ₀.1, eT]`. Establish `e2` using `GlobalTheory.RefTauCoord.gm_unitOn (R := V) (RingHom.id (FractionRing V)) x k`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : spMap (RingHom.id (FractionRing V)) = 𝟙 _` using `by show Spec.map (CommRingCat.ofHom (RingHom.id _)) = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Rewrite `e2` using `[e3]`. Conclude with `e2.symm`. Use `⟨u, fun Z ρ z J hJ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmK : ρ z ∈ LB.wchart D.toPre.P.L φK jst` using `by rw [htopK]; trivial`. Establish `hmV : (ρ ≫ jK V) z ∈ LB.wchart D.toPre.P.L φV jst` using `by rw [htop]; trivial`. Establish `L1 : val (D.toPre.tau y y) ρ z J = ReciprocityTheory.ChartRestriction.G.Geo.Tor.trF φK negε ρ z (fun k => J (ρ ≫ φK k)) jst * gm ρ z ⊤ (unitOn k)`. Rewrite using `[← ht Z ρ z J hJ]`. Use `(gen_trans htg ρ z (hJ.mem φK ρ) hmK).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hkey]`. Conclude with `congrArg (_ * ·) (gm_res _ z _ hmK _)`. Establish `L2 : val u (ρ ≫ jK V) z J = ReciprocityTheory.ChartRestriction.G.Geo.Tor.trF φV negε (ρ ≫ jK V) z (fun k => J ((ρ ≫ jK V) ≫ φV k)) jst`. Establish `hm` using `hJ.mem φV (ρ ≫ jK V)`. Conclude with `(gm_res _ z (hle _) hm _).trans (gm_linComb _ _ _ _ z _ _ hm hmV)`.
-
-Establish `L3 : ReciprocityTheory.ChartRestriction.G.Geo.Tor.trF φK negε ρ z (fun k => J (ρ ≫ φK k)) jst = ReciprocityTheory.ChartRestriction.G.Geo.Tor.trF φV negε (ρ ≫ jK V) z (fun k => J ((ρ ≫ jK V) ≫ φV k)) jst`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.trF`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : ρ ≫ φK k = (ρ ≫ jK V) ≫ φV k` using `by rw [hφ k, Category.assoc]`. Establish `h : ∀ a b : Z ⟶ D.toPre.P.A.left, a = b → gm a z (D.toPre.P.L.U (J a) ⊓ D.toPre.P.L.U (jst k)) (D.toPre.P.L.g (J a) (jst k)) = gm b z (D.toPre.P.L.U (J b) ⊓ D.toPre.P.L.U (jst k)) (D.toPre.P.L.g (J b) (jst k))`.
-
-Introduce and unpack `a b rfl`. Both sides reduce to the same expression. Conclude with `congrArg (· ^ negε k) (h _ _ e)`. Rewrite using `[L1, L2, L3, mul_comm]`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_diag_pos : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (D : DegData V (maximalIdeal V))
     (y : D.toPre.X), y ≠ 0 → ∃ r ∈ maximalIdeal V, ∃ k : (FractionRing V)ˣ, (k : FractionRing V) = algebraMap V _ r ∧

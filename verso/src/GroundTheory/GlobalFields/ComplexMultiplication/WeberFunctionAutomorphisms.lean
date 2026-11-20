@@ -14,13 +14,13 @@ noncomputable def automorphismOrder (W : WeierstrassCurve F) : ℕ :=
   if W.a₆ = 0 then 4 else if W.a₄ = 0 then 6 else 2
 
 /- English proof (translation)
-Simplify using `[automorphismOrder, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem automorphismOrder_of_a₆_eq_zero {W : WeierstrassCurve F} (hb : W.a₆ = 0) : automorphismOrder W = 4 := by
   simp [automorphismOrder, hb]
 
 /- English proof (translation)
-Simplify using `[automorphismOrder, ha, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem automorphismOrder_of_a₄_eq_zero {W : WeierstrassCurve F} (ha : W.a₄ = 0) (hb : W.a₆ ≠ 0) :
     automorphismOrder W = 6 := by
@@ -41,14 +41,14 @@ section CharZero
 variable [CharZero F] {W : WeierstrassCurve F}
 
 /- English proof (translation)
-The claim follows from `variableChange_rst_eq_zero hW ((MulAction.mem_stabilizer_iff.mp ξ.2).symm ▸ hW)`.
+A detailed English derivation is pending.
 -/
 theorem automorphism_rst_eq_zero (hW : IsShortForm W)
     (ξ : MulAction.stabilizer (VariableChange F) W) : ξ.1.r = 0 ∧ ξ.1.s = 0 ∧ ξ.1.t = 0 :=
   variableChange_rst_eq_zero hW ((MulAction.mem_stabilizer_iff.mp ξ.2).symm ▸ hW)
 
 /- English proof (translation)
-Introduce `ξ η h`. Take `⟨hr, hs, ht⟩` from `automorphism_rst_eq_zero hW ξ`. Take `⟨hr', hs', ht'⟩` from `automorphism_rst_eq_zero hW η`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `VariableChange.ext h (hr.trans hr'.symm) (hs.trans hs'.symm) (ht.trans ht'.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem automorphismScale_injective (hW : IsShortForm W) :
     Function.Injective (automorphismScale W) := by
@@ -59,13 +59,13 @@ theorem automorphismScale_injective (hW : IsShortForm W) :
   exact VariableChange.ext h (hr.trans hr'.symm) (hs.trans hs'.symm) (ht.trans ht'.symm)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ξ, rfl⟩`. Establish `hξ : ξ.1 • W = W` using `MulAction.mem_stabilizer_iff.mp ξ.2`. Establish `hCW : IsShortForm (ξ.1 • W)` using `hξ.symm ▸ hW`. Establish `h4` using `variableChange_a₄_of_isShortForm hW hCW`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `variableChange_a₆_of_isShortForm hW hCW`. Rewrite `h4`, `h6` using `[hξ]`. Conclude with `⟨h4.symm, h6.symm⟩`. Introduce and unpack `⟨h4, h6⟩`. Establish `hC : (⟨u, 0, 0, 0⟩ : VariableChange F) • W = W`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[variableChange_a₁, hW.a₁_eq]`. Simplify using `[variableChange_a₂, hW.a₂_eq, hW.a₁_eq]`. Simplify using `[variableChange_a₃, hW.a₃_eq, hW.a₁_eq]`. Simplify `h4` using `[variableChange_a₄, hW.a₁_eq, hW.a₂_eq, hW.a₃_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h6` using `[variableChange_a₆, hW.a₁_eq, hW.a₂_eq, hW.a₃_eq]`. Conclude with `⟨⟨_, MulAction.mem_stabilizer_iff.mpr hC⟩, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem mem_range_automorphismScale (hW : IsShortForm W) (u : Fˣ) :
     u ∈ (automorphismScale W).range ↔
@@ -93,17 +93,15 @@ variable [W.IsElliptic]
 omit [CharZero F] in
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (c : F), c ≠ 0 → (w⁻¹ ^ k * c = c ↔ w ^ k = 1)`. Introduce `k c hc`. Rewrite using `[inv_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `inv_eq_one.mp (mul_right_cancel₀ hc (h.trans (one_mul c).symm))`. Introduce `h`. Rewrite using `[h, inv_one, one_mul]`. Unfold `automorphismOrder`. Distinguish the cases in `h6 : W.a₆ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h4 : W.a₄ ≠ 0`. Break down `hW.a₄_ne_zero_or_a₆_ne_zero with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h6 h`. Simplify using `only [h6, mul_zero, and_true, if_true]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `key 4 _ h4`. Distinguish the cases in `h4 : W.a₄ = 0`. Simplify using `only [h4, h6, mul_zero, true_and, if_false, if_true]`. Conclude with `key 6 _ h6`. Simplify using `only [h4, h6, if_false, key 4 _ h4, key 6 _ h6]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Establish `: w ^ 6 = w ^ 4 * w ^ 2` using `by ring`. Rewrite `b` using `[this, a, one_mul]`. Conclude with `b`.
-
-Introduce `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show w ^ 4 = (w ^ 2) ^ 2 by ring, h, one_pow]`. Rewrite using `[show w ^ 6 = (w ^ 2) ^ 3 by ring, h, one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_conditions_iff (hW : IsShortForm W) (w : F) :
     (w⁻¹ ^ 4 * W.a₄ = W.a₄ ∧ w⁻¹ ^ 6 * W.a₆ = W.a₆) ↔ w ^ automorphismOrder W = 1 := by
@@ -138,7 +136,7 @@ theorem scale_conditions_iff (hW : IsShortForm W) (w : F) :
       · rw [show w ^ 6 = (w ^ 2) ^ 3 by ring, h, one_pow]
 
 /- English proof (translation)
-Use extensionality with `u`. Rewrite using `[mem_range_automorphismScale hW, mem_rootsOfUnity', Units.val_inv_eq_inv_val]`. Conclude with `scale_conditions_iff hW _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_automorphismScale (hW : IsShortForm W) :
     (automorphismScale W).range = rootsOfUnity (automorphismOrder W) F := by
@@ -160,7 +158,7 @@ theorem automorphismEquivRootsOfUnity_apply (hW : IsShortForm W)
     ((automorphismEquivRootsOfUnity hW ξ : Fˣ)) = ξ.1.u := rfl
 
 /- English proof (translation)
-The claim follows from `weberFunction_variableChangePoint ξ.1 _ hW hW P`.
+A detailed English derivation is pending.
 -/
 theorem weberFunction_automorphismPoint (hW : IsShortForm W)
     (ξ : MulAction.stabilizer (VariableChange F) W) (P : W.toAffine.Point) :
@@ -176,7 +174,7 @@ variable [CharZero F] {W : WeierstrassCurve F} [W.IsElliptic]
 omit [CharZero F] [W.IsElliptic] in
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Rewrite `this` using `[Affine.equation_iff]`. Simplify `this` using `[hW.a₁_eq, hW.a₂_eq, hW.a₃_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsShortForm.sq_eq (hW : IsShortForm W) {x y : F} (h : W.toAffine.Nonsingular x y) :
     y ^ 2 = x ^ 3 + W.a₄ * x + W.a₆ := by
@@ -185,21 +183,21 @@ theorem IsShortForm.sq_eq (hW : IsShortForm W) {x y : F} (h : W.toAffine.Nonsing
   simpa [hW.a₁_eq, hW.a₂_eq, hW.a₃_eq] using this
 
 /- English proof (translation)
-Establish `hΔ : W.Δ ≠ 0` using `W.isUnit_Δ.ne_zero`. Distinguish the cases in `h6 : W.a₆ = 0`. Establish `h4 : W.a₄ ≠ 0`. Break down `hW.a₄_ne_zero_or_a₆_ne_zero with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h6 h`. Rewrite `hx` using `[weberValue_of_a₆_eq_zero h6, weberValue_of_a₆_eq_zero h6]`. Establish `hc : g₂ W ^ 2 / W.Δ ≠ 0` using `by simp [g₂, h4, hΔ]`. Establish `hsq : x₁ ^ 2 = x₂ ^ 2` using `mul_left_cancel₀ hc hx`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨1, one_ne_zero, by simp, by simp, by simp [h]⟩`. Take `⟨i, hi⟩` from `IsAlgClosed.exists_eq_mul_self (-1 : F)`. Establish `hi4 : i ^ 4 = 1` using `by linear_combination (1 - i * i) * hi`. Use `⟨i, ?_, by rw [hi4, one_mul], by rw [h6, mul_zero], ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `at hi`. Take the linear combination `(-x₁) * hi - h`. Distinguish the cases in `h4 : W.a₄ = 0`. Rewrite `hx` using `[weberValue_of_a₄_eq_zero h4 h6, weberValue_of_a₄_eq_zero h4 h6]`. Establish `hc : g₃ W / W.Δ ≠ 0` using `by simp [g₃, h6, hΔ]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hcube : x₁ ^ 3 = x₂ ^ 3` using `mul_left_cancel₀ hc hx`. Distinguish the cases in `hx1 : x₁ = 0`. Establish `hx2 : x₂ = 0`. Rewrite `hcube` using `[hx1, zero_pow (by norm_num)]`. Conclude with `pow_eq_zero_iff (n := 3) (by norm_num) |>.mp hcube.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨1, one_ne_zero, by simp, by simp, by simp [hx1, hx2]⟩`. Take `⟨w, hw⟩ : ∃ w, w = x₂ / x₁` from `⟨_, rfl⟩`. Establish `hw3 : w ^ 3 = 1`. Rewrite using `[hw, div_pow, ← hcube, div_self (pow_ne_zero 3 hx1)]`. Establish `hw0 : w ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Simplify using `at hw3`. Use `⟨w ^ 2, pow_ne_zero 2 hw0, by simp [h4], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (w ^ 2) ^ 6 = (w ^ 3) ^ 4 by ring, hw3, one_pow, one_mul]`. Rewrite using `[show (w ^ 2) ^ 2 = w ^ 3 * w by ring, hw3, one_mul, hw, div_mul_cancel₀ _ hx1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx` using `[weberValue_of_ne_zero h4 h6, weberValue_of_ne_zero h4 h6]`. Establish `hc : g₂ W * g₃ W / W.Δ ≠ 0` using `by simp [g₂, g₃, h4, h6, hΔ]`. Establish `h : x₁ = x₂` using `mul_left_cancel₀ hc hx`. Conclude with `⟨1, one_ne_zero, by simp, by simp, by simp [h]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scale_of_weberValue_eq [IsAlgClosed F] (hW : IsShortForm W) {x₁ x₂ : F}
     (hx : weberValue W x₁ = weberValue W x₂) :
@@ -247,9 +245,9 @@ theorem exists_scale_of_weberValue_eq [IsAlgClosed F] (hW : IsShortForm W) {x₁
 omit [W.IsElliptic] in
 
 /- English proof (translation)
-Take `⟨ξ, hξ⟩` from `(mem_range_automorphismScale hW ((Units.mk0 v hv)⁻¹)).mpr ⟨by simpa using h4, by simpa using h6⟩`. Use `⟨ξ, ?_⟩` and prove the remaining obligations. Take `⟨hr, hs, ht⟩` from `automorphism_rst_eq_zero hW ξ`. Establish `hu : (↑ξ.1.u⁻¹ : F) = v`. Establish `: ξ.1.u = (Units.mk0 v hv)⁻¹` using `hξ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, inv_inv, Units.val_mk0]`. Simplify using `only [automorphismPoint, variableChangePoint_some, hr, hs, ht, hu, sub_zero, zero_mul, Affine.Point.some.injEq]`. Conclude with `⟨hx, hy⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_automorphismPoint_of_scale (hW : IsShortForm W) {v x₁ y₁ x₂ y₂ : F} (hv : v ≠ 0)
     (h4 : v ^ 4 * W.a₄ = W.a₄) (h6 : v ^ 6 * W.a₆ = W.a₆) (hx : v ^ 2 * x₁ = x₂)
@@ -269,17 +267,17 @@ theorem exists_automorphismPoint_of_scale (hW : IsShortForm W) {v x₁ y₁ x₂
   exact ⟨hx, hy⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hPQ`. Consider the cases of `P with`. Consider the case `zero`. Consider the cases of `Q with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact ⟨1, rfl⟩`. Consider the case `some x y h => simp at hPQ`. Consider the case `some x₁ y₁ h₁`. Consider the cases of `Q with`. Consider the case `zero => simp at hPQ`.
+Treat this case separately. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some x₂ y₂ h₂`. Simplify using `only [weberFunction_some] at hPQ`. Establish `hx : weberValue W x₁ = weberValue W x₂` using `Option.some_injective _ hPQ`. Take `⟨v, hv, h4, h6, hx2⟩` from `exists_scale_of_weberValue_eq hW hx`. Establish `hy : y₂ ^ 2 = (v ^ 3 * y₁) ^ 2`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hW.sq_eq h₂, ← hx2]`. Take the linear combination `(-(v ^ 6)) * hW.sq_eq h₁ - v ^ 2 * x₁ * h4 - h6`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hy with hy | hy` into its components or cases. Conclude with `exists_automorphismPoint_of_scale hW hv h4 h6 hx2 hy.symm h₁ h₂`. Use `exists_automorphismPoint_of_scale (v := -v) hW (neg_ne_zero.mpr hv) ?_ ?_ ?_ ?_ h₁ h₂` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (-v) ^ 4 = v ^ 4 by ring, h4]`. Rewrite using `[show (-v) ^ 6 = v ^ 6 by ring, h6]`. Rewrite using `[show (-v) ^ 2 = v ^ 2 by ring, hx2]`. Rewrite using `[hy]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨ξ, rfl⟩`. Conclude with `(weberFunction_automorphismPoint hW ξ P).symm`.
+A detailed English derivation is pending.
 -/
 theorem weberFunction_eq_iff [IsAlgClosed F] (hW : IsShortForm W) (P Q : W.toAffine.Point) :
     weberFunction W P = weberFunction W Q ↔

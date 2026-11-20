@@ -15,30 +15,28 @@ def HiRel (a : 𝓞 E) (X Y : Submodule (𝓞 E) (Sp E n)) : Prop :=
   (∀ x ∈ X, a • x ∈ Y) ∧ ∀ y ∈ Y, a • y ∈ X
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2, h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem HiRel.symm {a : 𝓞 E} {X Y : Submodule (𝓞 E) (Sp E n)} (h : HiRel a X Y) : HiRel a Y X := ⟨h.2, h.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx => h1 (Submodule.smul_mem_smul ha hx), fun y hy => h2 (Submodule.smul_mem_smul ha hy)⟩`.
+Supply the required witnesses or components.
 -/
 theorem HiRel.of_ideal {I : Ideal (𝓞 E)} {X Y : Submodule (𝓞 E) (Sp E n)} (h1 : I • X ≤ Y) (h2 : I • Y ≤ X)
     {a : 𝓞 E} (ha : a ∈ I) : HiRel a X Y := ⟨fun x hx => h1 (Submodule.smul_mem_smul ha hx), fun y hy => h2 (Submodule.smul_mem_smul ha hy)⟩
 
 /- English proof (translation)
-Set `g : X →ₗ[𝓞 E] X'` to `LinearMap.codRestrict X' ((α • LinearMap.id : Sp E n →ₗ[𝓞 E] Sp E n).comp X.subtype) (fun x => hXX'.1 x.1 x.2)`. Set `f : X →ₗ[𝓞 E] (X' ⧸ (Y' ⊓ X').comap X'.subtype)` to `((Y' ⊓ X').comap X'.subtype).mkQ.comp g`. Establish `key : α * α + β * (1 + α) = 1` using `by linear_combination (1 + α) * hab`. Establish `hker : LinearMap.ker f = (Y ⊓ X).comap X.subtype`. Use extensionality with `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (g x) = 0 ↔ (x : Sp E n) ∈ Y ⊓ X`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.mem_inf, Submodule.mem_inf]`. Express the relevant statement in the definitionally equal form `(α • (x : Sp E n) ∈ Y' ∧ α • (x : Sp E n) ∈ X') ↔ ((x : Sp E n) ∈ Y ∧ (x : Sp E n) ∈ X)`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, -⟩`. Use `⟨?_, x.2⟩` and prove the remaining obligations. Establish `e : (x : Sp E n) = α • (α • (x : Sp E n)) + β • ((1 + α) • (x : Sp E n))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Y.add_mem (hYY'.2 _ h1) (hXY.1 _ (X.smul_mem _ x.2))`. Introduce and unpack `⟨h1, -⟩`. Conclude with `⟨hYY'.1 _ h1, hXX'.1 _ x.2⟩`. Establish `hsurj : Function.Surjective f`. Introduce `q`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x', rfl⟩` from `Submodule.mkQ_surjective _ q`. Use `⟨⟨α • (x' : Sp E n), hXX'.2 _ x'.2⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (g ⟨α • (x' : Sp E n), hXX'.2 _ x'.2⟩) = Submodule.Quotient.mk x'`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap, Submodule.mem_inf]`. Express the relevant statement in the definitionally equal form `(α • (α • (x' : Sp E n)) - (x' : Sp E n) ∈ Y') ∧ (α • (α • (x' : Sp E n)) - (x' : Sp E n) ∈ X')`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e : α • (α • (x' : Sp E n)) - (x' : Sp E n) = -(β • ((1 + α) • (x' : Sp E n)))`. Rewrite using `[smul_smul, smul_smul, eq_neg_iff_add_eq_zero, sub_add_eq_add_sub, ← add_smul, key, one_smul, sub_self]`. Use `⟨?_, X'.sub_mem (X'.smul_mem _ (X'.smul_mem _ x'.2)) x'.2⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Y'.neg_mem (hX'Y'.1 _ (X'.smul_mem _ x'.2))`.
-
-Conclude with `⟨(Submodule.quotEquivOfEq _ _ hker.symm).trans (f.quotKerEquivOfSurjective hsurj)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hi_quot {α β : 𝓞 E} (hab : α + β = 1) {X X' Y Y' : Submodule (𝓞 E) (Sp E n)}
     (hXX' : HiRel α X X') (hYY' : HiRel α Y Y') (hXY : HiRel β X Y) (hX'Y' : HiRel β X' Y') :
@@ -80,7 +78,7 @@ theorem hi_quot {α β : 𝓞 E} (hab : α + β = 1) {X X' Y Y' : Submodule (�
   exact ⟨(Submodule.quotEquivOfEq _ _ hker.symm).trans (f.quotKerEquivOfSurjective hsurj)⟩
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : x = α • x + β • x` using `by rw [← add_smul, hab, one_smul]`. Rewrite using `[hx']`. Conclude with `Z.add_mem (hN x (Submodule.mem_inf.1 hx).1) (hM x (Submodule.mem_inf.1 hx).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hi_inf_le {α β : 𝓞 E} (hab : α + β = 1) {N M Z : Submodule (𝓞 E) (Sp E n)}
     (hN : ∀ x ∈ N, α • x ∈ Z) (hM : ∀ x ∈ M, β • x ∈ Z) : N ⊓ M ≤ Z := by
@@ -90,11 +88,11 @@ theorem hi_inf_le {α β : 𝓞 E} (hab : α + β = 1) {N M Z : Submodule (𝓞 
   exact Z.add_mem (hN x (Submodule.mem_inf.1 hx).1) (hM x (Submodule.mem_inf.1 hx).2)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hNM : N ⊓ M ≤ X₁` using `hi_inf_le hab h1N.2 h1M.2`. Establish `hc : α • (β • x) ∈ X₁`. Use `hNM (Submodule.mem_inf.2 ⟨hXN.1 _ (X.smul_mem β hx), ?_⟩)` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hXM.1 _ (X.smul_mem α hx)`. Establish `hd : α • (α • x) ∈ X₁` using `h1N.2 _ (hXN.1 x hx)`. Establish `he : β • (β • x) ∈ X₁` using `h1M.2 _ (hXM.1 x hx)`. Establish `key : α * α + α * β + (α * β + β * β) = 1`. Establish `h2 : (α + β) * (α + β) = 1` using `by rw [hab, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h2`. Establish `hx' : x = α • (α • x) + α • (β • x) + (α • (β • x) + β • (β • x))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx']`. Conclude with `X₁.add_mem (X₁.add_mem hd hc) (X₁.add_mem hc he)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hi_le {α β : 𝓞 E} (hab : α + β = 1) {X X₁ N M : Submodule (𝓞 E) (Sp E n)}
     (hXN : HiRel α X N) (hXM : HiRel β X M) (h1N : HiRel α X₁ N) (h1M : HiRel β X₁ M) : X ≤ X₁ := by
@@ -117,17 +115,17 @@ theorem hi_le {α β : 𝓞 E} (hab : α + β = 1) {X X₁ N M : Submodule (𝓞
   exact X₁.add_mem (X₁.add_mem hd hc) (X₁.add_mem hc he)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (hi_le hab hXN hXM h1N h1M) (hi_le hab h1N h1M hXN hXM)`.
+A detailed English derivation is pending.
 -/
 theorem hi_eq {α β : 𝓞 E} (hab : α + β = 1) {X X₁ N M : Submodule (𝓞 E) (Sp E n)}
     (hXN : HiRel α X N) (hXM : HiRel β X M) (h1N : HiRel α X₁ N) (h1M : HiRel β X₁ M) : X = X₁ := le_antisymm (hi_le hab hXN hXM h1N h1M) (hi_le hab h1N h1M hXN hXM)
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Submodule.smul_le]`. Introduce `k hk x hx`. Establish `h1 : γ • (γ • (k • x)) ∈ Y'`. Establish `e : γ • (γ • (k • x)) = γ • (k • (γ • x))` using `by rw [smul_comm γ k x]`. Rewrite using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hYY'.1 _ (h k hk _ (hXX'.2 x hx))`. Establish `h2 : δ • ((1 + γ) • (k • x)) ∈ Y'` using `hX'Y' _ (X'.smul_mem _ (X'.smul_mem _ hx))`. Establish `key : γ * γ + δ * (1 + γ) = 1` using `by linear_combination (1 + γ) * hgd`. Establish `e2 : k • x = γ • (γ • (k • x)) + δ • ((1 + γ) • (k • x))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `Y'.add_mem h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem hi_transport {γ δ : 𝓞 E} (hgd : γ + δ = 1) {X X' Y Y' : Submodule (𝓞 E) (Sp E n)}
     (hXX' : HiRel γ X X') (hYY' : HiRel γ Y Y') (hX'Y' : ∀ x ∈ X', δ • x ∈ Y') {K : Ideal (𝓞 E)}
@@ -151,9 +149,9 @@ def hiCorner (α β : 𝓞 E) (M N : Submodule (𝓞 E) (Sp E n)) : Submodule (�
   α • M ⊔ β • N
 
 /- English proof (translation)
-Unfold `hiCorner`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨m, hm, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hz`. Conclude with `h1 m hm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Take `⟨x, hx, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hz`. Conclude with `h2 x hx`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hiCorner_le {α β : 𝓞 E} {M N Z : Submodule (𝓞 E) (Sp E n)} (h1 : ∀ m ∈ M, α • m ∈ Z)
     (h2 : ∀ x ∈ N, β • x ∈ Z) : hiCorner α β M N ≤ Z := by
@@ -167,19 +165,19 @@ theorem hiCorner_le {α β : 𝓞 E} {M N Z : Submodule (𝓞 E) (Sp E n)} (h1 :
     exact h2 x hx
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_left (Submodule.smul_mem_pointwise_smul m α M hm)`.
+A detailed English derivation is pending.
 -/
 theorem hiCorner_memL (α β : 𝓞 E) (M N : Submodule (𝓞 E) (Sp E n)) {m : Sp E n} (hm : m ∈ M) :
     α • m ∈ hiCorner α β M N := Submodule.mem_sup_left (Submodule.smul_mem_pointwise_smul m α M hm)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_right (Submodule.smul_mem_pointwise_smul x β N hx)`.
+A detailed English derivation is pending.
 -/
 theorem hiCorner_memR (α β : 𝓞 E) (M N : Submodule (𝓞 E) (Sp E n)) {x : Sp E n} (hx : x ∈ N) :
     β • x ∈ hiCorner α β M N := Submodule.mem_sup_right (Submodule.smul_mem_pointwise_smul x β N hx)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : x = α • x + β • x` using `by rw [← add_smul, hab, one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.add_mem_sup (Submodule.smul_mem_pointwise_smul x α M (Submodule.mem_inf.1 hx).1) (Submodule.smul_mem_pointwise_smul x β N (Submodule.mem_inf.1 hx).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hiCorner_inf {α β : 𝓞 E} (hab : α + β = 1) (M N : Submodule (𝓞 E) (Sp E n)) :
     M ⊓ N ≤ hiCorner α β M N := by
@@ -190,11 +188,11 @@ theorem hiCorner_inf {α β : 𝓞 E} (hab : α + β = 1) (M N : Submodule (𝓞
     (Submodule.smul_mem_pointwise_smul x β N (Submodule.mem_inf.1 hx).2)
 
 /- English proof (translation)
-Establish `hmem : ∀ y ∈ hiCorner α β M N, ∃ m ∈ M, ∃ x ∈ N, α • m + β • x = y`. Introduce `y hy`. Unfold `hiCorner at hy`. Take `⟨y1, hy1, y2, hy2, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨m, hm, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy2`. Conclude with `⟨m, hm, x, hx, rfl⟩`. Use `⟨⟨fun x hx => hiCorner_memR α β M N hx, fun y hy => ?_⟩, ⟨fun y hy => ?_, fun m hm => hiCorner_memL α β M N hm⟩⟩` and prove the remaining obligations. Take `⟨m, hm, x, hx, rfl⟩` from `hmem y hy`. Rewrite using `[smul_add, smul_comm β α m]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `N.add_mem (hNe.2 _ (heM.2 _ hm)) (N.smul_mem _ (N.smul_mem _ hx))`. Take `⟨m, hm, x, hx, rfl⟩` from `hmem y hy`. Rewrite using `[smul_add, smul_comm α β x]`. Conclude with `M.add_mem (M.smul_mem _ (M.smul_mem _ hm)) (heM.1 _ (hNe.1 _ hx))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hiCorner_rel {α β : 𝓞 E} {N e M : Submodule (𝓞 E) (Sp E n)} (hNe : HiRel α N e) (heM : HiRel β e M) :
     HiRel β N (hiCorner α β M N) ∧ HiRel α (hiCorner α β M N) M := by
@@ -215,9 +213,9 @@ theorem hiCorner_rel {α β : 𝓞 E} {N e M : Submodule (𝓞 E) (Sp E n)} (hNe
     exact M.add_mem (M.smul_mem _ (M.smul_mem _ hm)) (heM.1 _ (hNe.1 _ hx))
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (show (1 : 𝓞 E) ∈ I ⊔ J by rw [hIJ]; exact Submodule.mem_top)`. Establish `hc1 : cO E a + cO E b = 1` using `by rw [← map_add, hab, map_one]`. Use `⟨a * cO E a, Ideal.mul_mem_right _ _ ha, 1 - a * cO E a, ?_, by ring, ?_, ?_⟩` and prove the remaining obligations. Establish `e : 1 - a * cO E a = a * cO E b + b * cO E a + b * cO E b`. Establish `h1 : (a + b) * (cO E a + cO E b) = 1` using `by rw [hab, hc1, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `-h1`. Rewrite using `[e]`. Conclude with `J.add_mem (J.add_mem (Ideal.mul_mem_left _ _ (hJ b hb)) (Ideal.mul_mem_right _ _ hb)) (Ideal.mul_mem_right _ _ hb)`. Rewrite using `[map_mul, cO_cO, mul_comm]`. Rewrite using `[map_sub, map_one, map_mul, cO_cO, mul_comm]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hi_exists_conj {I J : Ideal (𝓞 E)} (hJ : ∀ a ∈ J, cO E a ∈ J) (hIJ : I ⊔ J = ⊤) :
     ∃ α ∈ I, ∃ β ∈ J, α + β = 1 ∧ cO E α = α ∧ cO E β = β := by
@@ -235,22 +233,20 @@ theorem hi_exists_conj {I J : Ideal (𝓞 E)} (hJ : ∀ a ∈ J, cO E a ∈ J) (
   · rw [map_sub, map_one, map_mul, cO_cO, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[wmp_hStd_osmul_left, wmp_hStd_osmul_right, ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hi_hStd_conj {a : 𝓞 E} (ha : cO E a = a) (m x : Sp E n) :
     hStd E n (a • m) x = hStd E n m (a • x) := by
   rw [wmp_hStd_osmul_left, wmp_hStd_osmul_right, ha]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[mem_dual]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← show dual (hStd E n) M = M from hM, mem_dual]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Rewrite using `[← hi_hStd_conj hα]`. Conclude with `hx _ (hiCorner_memL α β M N hm)`. Rewrite using `[← show dual (hStd E n) N = N from hN, mem_dual]`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hi_hStd_conj hβ]`. Conclude with `hx _ (hiCorner_memR α β M N hy)`. Introduce and unpack `⟨h1, h2⟩`. Establish `hM' : α • x ∈ dual (hStd E n) M` using `by rw [show dual (hStd E n) M = M from hM]; exact h1`. Establish `hN' : β • x ∈ dual (hStd E n) N` using `by rw [show dual (hStd E n) N = N from hN]; exact h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_dual]`. Introduce `y hy`. Take `⟨y1, hy1, y2, hy2, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨m, hm, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy1`. Take `⟨z, hz, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy2`.
-
-Rewrite using `[map_add, LinearMap.add_apply, hi_hStd_conj hα, hi_hStd_conj hβ]`. Conclude with `Submodule.add_mem _ ((mem_dual M _).1 hM' m hm) ((mem_dual N _).1 hN' z hz)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hiCorner_mem_dual {α β : 𝓞 E} (hα : cO E α = α) (hβ : cO E β = β) {M N : Submodule (𝓞 E) (Sp E n)}
     (hM : IsUnimodular (hStd E n) M) (hN : IsUnimodular (hStd E n) N) (x : Sp E n) :
@@ -279,11 +275,11 @@ theorem hiCorner_mem_dual {α β : 𝓞 E} (hα : cO E α = α) (hβ : cO E β =
     exact Submodule.add_mem _ ((mem_dual M _).1 hM' m hm) ((mem_dual N _).1 hN' z hz)
 
 /- English proof (translation)
-Take `⟨hr1, hr2⟩` from `hiCorner_rel hNe heM`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨h1, h2⟩` from `(hiCorner_mem_dual hα hβ hM hN x).1 hx`. Establish `hinf` using `hiCorner_inf hab M N`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `mem_of_smul_mem_of_add_eq_one hab ?_ ?_` and prove the remaining obligations. Use `mem_of_smul_mem_of_add_eq_one hab (hiCorner_memL α β M N h1) (hinf ⟨M.smul_mem β h1, ?_⟩)` and prove the remaining obligations. Rewrite using `[smul_comm β α x]`. Conclude with `N.smul_mem α h2`. Use `mem_of_smul_mem_of_add_eq_one hab (hinf ⟨?_, N.smul_mem α h2⟩) (hiCorner_memR α β M N h2)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm α β x]`. Conclude with `M.smul_mem β h1`. Introduce `x hx`. Conclude with `(hiCorner_mem_dual hα hβ hM hN x).2 ⟨hr2.1 x hx, hr1.2 x hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hiCorner_unimodular {α β : 𝓞 E} (hab : α + β = 1) (hα : cO E α = α) (hβ : cO E β = β)
     {N e M : Submodule (𝓞 E) (Sp E n)} (hN : IsUnimodular (hStd E n) N) (hM : IsUnimodular (hStd E n) M)
@@ -304,9 +300,9 @@ theorem hiCorner_unimodular {α β : 𝓞 E} (hab : α + β = 1) (hα : cO E α 
     exact (hiCorner_mem_dual hα hβ hM hN x).2 ⟨hr2.1 x hx, hr1.2 x hx⟩
 
 /- English proof (translation)
-Establish `hD : Submodule.IsLattice E (M ⊔ N)` using `⟨hM.fg.sup hN.fg, by`. Rewrite using `[eq_top_iff, ← hM.span_eq_top]`. Conclude with `Submodule.span_mono (SetLike.coe_subset_coe.2 (le_sup_left : M ≤ M ⊔ N))⟩`. Use `lattice_of_smul hN hD (hiCorner_le (fun m hm => Submodule.mem_sup_left (M.smul_mem α hm)) (fun x hx => Submodule.mem_sup_right (N.smul_mem β hx))) (mul_ne_zero hj hi) fun x hx => ?_` and prove the remaining obligations. Use `hiCorner_inf hab M N ⟨?_, N.smul_mem _ hx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Conclude with `hej _ (hNi x hx)`.
+A detailed English derivation is pending.
 -/
 theorem hiCorner_lattice {α β : 𝓞 E} (hab : α + β = 1) {N e M : Submodule (𝓞 E) (Sp E n)}
     (hN : Submodule.IsLattice E N) (hM : Submodule.IsLattice E M) {i j : 𝓞 E} (hi : i ≠ 0) (hj : j ≠ 0)

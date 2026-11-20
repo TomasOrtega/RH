@@ -27,11 +27,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 open GlobalTheory.CompanionTheory.MatchPow in
 
 /- English proof (translation)
-Take `⟨m, -, τ, hτ, e⟩` from `GlobalTheory.CompanionTheory.ThetaContraction.contr_tw hU w hw ϖ hϖ a y hy δ hδ`. Take `⟨v, hv, rfl⟩` from `GlobalTheory.CompanionTheory.TwSide.exists_diagT_of_mem_TO hτ`. Establish `hdu : m⁻¹ * δ * thL a w m = GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin a) fun i => ϖ ^ y i * v i`. Rewrite using `[e, tdiag, ← map_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hord : ∀ i, ordL (((ϖ ^ y i * v i : (w.adicCompletion E)ˣ)) : w.adicCompletion E) = y i`. Introduce `i`. Simplify using `only [Units.val_mul]`. Rewrite using `[GlobalTheory.CompanionTheory.UnitaryCorrection.ordL_mul_of_ne (Units.ne_zero _) (Units.ne_zero _), GlobalTheory.CompanionTheory.UnitaryContraction.ordL_zpow, hϖ.1, GlobalTheory.CompanionTheory.UnitaryCorrection.ordL_congr (b := (1 : w.adicCompletion E)) (by rw [hv, map_one]), Gl …`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← GlobalTheory.CompanionTheory.MatchLinear.charpoly_nrmL_twConj hU a w δ m, hdu, GlobalTheory.CompanionTheory.TwSide.nrmL_diagT hw, GlobalTheory.SmGL.val_diagT, Matrix.charpoly_diagonal]`. Apply the tactic sequence `exact ⟨fun i => _, rfl, fun i => ⟨Units.ne_zero _, GlobalTheory.CompanionTheory.TwSide.ordL_norm_entry hU _ y hord i⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hasVals_nrm (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w) {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {a : ℕ}
     {y : Fin a → ℤ} (hy : StrictAnti y) {δ : GLw a w} (hδ : dcos a w (tdiag ϖ y) δ ≠ 0) :
@@ -56,11 +56,11 @@ theorem hasVals_nrm (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w) {ϖ : (w.adicC
 open GlobalTheory.CompanionTheory.MatchPow in
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨J, inferInstance, c, x, hx, fun s => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Use `conv_unit (iwahori_pair_le_maximal a (n - a) w) (iwahori_pair_index_ne_zero a (n - a) w) (fun k hk z => ((entT_hecke n w ϖ a c x s).2 k hk z).2) y` as an intermediate fact.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[pow_zero, one_mul]`. Conclude with `this`. Consider the case `succ k ih`. Take `⟨J', _, c', x', hx', e⟩` from `ih`. Use `⟨J × J', inferInstance, fun p => c p.1 * c' p.2, fun p => x p.1 + x' p.2, fun p => ⟨?_, ?_⟩, fun s => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun i j hij => add_lt_add ((hx p.1).1 hij) ((hx' p.2).1 hij)`. Rewrite using `[lOf_add]`. Conclude with `cone_add (hx p.1).2 (hx' p.2).2`. Use `show mconv _ (mpow w _ (k + 1)) = _`. Rewrite using `[e, mconv_entT GlobalTheory.CompanionTheory.DcosProduct.dcosMul n ϖ hϖ a c x c' x' hx hx', pow_succ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mpow_entT {w : Pl E} {n : ℕ} (a : ℕ) {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {J : Type} [Fintype J]
     (c : J → ℂ) (x : J → Fin n → ℤ) (hx : ∀ j, StrictAnti (x j) ∧ Cone (lOf (x j))) (k : ℕ) :
@@ -85,13 +85,13 @@ theorem mpow_entT {w : Pl E} {n : ℕ} (a : ℕ) {ϖ : (w.adicCompletion E)ˣ} (
       rw [e, mconv_entT GlobalTheory.CompanionTheory.DcosProduct.dcosMul n ϖ hϖ a c x c' x' hx hx', pow_succ]
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n d _ hm a ha m w hT y hy`. Take `⟨hw, -, hϖ, hc⟩` from `hm.T w hT`. Rewrite `hy` using `[GlobalTheory.CompanionTheory.MatchLMB2.trace_test_function_eq d ha hT m]`. Take `⟨s, -, hs⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hy`. Take `⟨J', _, c', x', hx', e⟩` from `mpow_entT a hϖ (GlobalTheory.CompanionTheory.MatchLMPlaces.cc d w) (GlobalTheory.CompanionTheory.MatchLMPlaces.xx d w) (fun j => hc j.1 j.2) m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hs` using `[GlobalTheory.CompanionTheory.MatchLMPlaces.qT_eq d s, GlobalTheory.CompanionTheory.MatchLMPlaces.mpow_scale, e s]`. Establish `h1 : entT n w (d.ϖ w) a c' x' s y ≠ 0` using `fun h => hs (by simp [h])`. Distinguish the cases in `hA : MT.admitted n a s`. Use `swap`. Conclude with `absurd (dif_neg hA) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `entT at h1`. Rewrite `h1` using `[dif_pos hA]`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h1`. Establish `hd2 : dcos (n - a) w (tdiag (d.ϖ w) (restr (x' j) _ hA.2.2.2.2)) y.2 ≠ 0` using `right_ne_zero_of_mul hj`. Establish `hd1 : dcos a w (tdiag (d.ϖ w) (restr (x' j) _ hA.2.2.2.1)) y.1 ≠ 0` using `right_ne_zero_of_mul (left_ne_zero_of_mul hj)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₁, hQ₁, hu₁⟩` from `hasVals_nrm hU hw hϖ (GlobalTheory.CompanionTheory.SymmetricIndexRegularity.restr_strictAnti (hx' j).1 _ hA.2.2.2.1) hd1`. Take `⟨u₂, hQ₂, hu₂⟩` from `hasVals_nrm hU hw hϖ (GlobalTheory.CompanionTheory.SymmetricIndexRegularity.restr_strictAnti (hx' j).1 _ hA.2.2.2.2) hd2`. Rewrite using `[hQ₁, hQ₂]`. Conclude with `GlobalTheory.CompanionTheory.SymmetricIndexRegularity.localization_quotient_separated_dvd (fun z => ordL z) (hx' j).1 _ _ hA.2.2.2.1 hA.2.2.2.2 (GlobalTheory.CompanionTheory.SymmetricIndexRegularity.symIdx_rev n _ s) (GlobalTheory.CompanionTheory.SymmetricIndexRegularity.symIdx_r …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regPowT : RegPowT := by
   intro E _ _ _ hU n d _ hm a ha m w hT y hy

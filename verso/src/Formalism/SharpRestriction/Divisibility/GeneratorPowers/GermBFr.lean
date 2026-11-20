@@ -30,9 +30,9 @@ instance jetAug_isLocalHom (m : ℕ) : IsLocalHom ((jetAug : Jet S Idx m →ₐ[
   simpa using this
 
 /- English proof (translation)
-Apply `ReciprocityTheory.ChartRestriction.G.DVR.eq_top_of_closedPoint_mem` to reduce the goal to its premises. Establish `h1 : (IsLocalRing.closedPoint S : Sp S) ∈ e ⁻¹ᵁ U` using `by rw [hU]; trivial`. Establish `h2 : (spMap ((jetAug : Jet S Idx m →ₐ[S] S) : Jet S Idx m →+* S)).base (IsLocalRing.closedPoint S) = IsLocalRing.closedPoint (Jet S Idx m)` using `IsLocalRing.comap_closedPoint ((jetAug : Jet S Idx m →ₐ[S] S) : Jet S Idx m →+* S)`. Rewrite `h1` using `[← he]`. Use `show ψ.base (IsLocalRing.closedPoint (Jet S Idx m)) ∈ U`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem pre_top [IsLocalRing S] (m : ℕ) {X : Scheme.{0}} (U : X.Opens) (ψ : Sp (Jet S Idx m) ⟶ X) (e : Sp S ⟶ X)
     (he : spMap ((jetAug : Jet S Idx m →ₐ[S] S) : Jet S Idx m →+* S) ≫ ψ = e) (hU : e ⁻¹ᵁ U = ⊤) : ψ ⁻¹ᵁ U = ⊤ := by
@@ -47,7 +47,7 @@ theorem pre_top [IsLocalRing S] (m : ℕ) {X : Scheme.{0}} (U : X.Opens) (ψ : S
   exact h1
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `(List.finRange n).filter (· ∈ I) with`. Consider the case `nil => rfl`. Consider the case `cons k l ih => exact (congrArg (padd G 1) ih).trans (_root_.one_mul (1 : T ⟶ G))`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psum_one {X0 : Scheme.{0}} (G : Over X0) [GrpObj G] [IsCommMonObj G] {T : Over X0} {n : ℕ}
     (I : Finset (Fin n)) : psum G (fun _ => (1 : T ⟶ G)) I = 1 := by
@@ -57,7 +57,7 @@ theorem psum_one {X0 : Scheme.{0}} (G : Over X0) [GrpObj G] [IsCommMonObj G] {T 
   | cons k l ih => exact (congrArg (padd G 1) ih).trans (_root_.one_mul (1 : T ⟶ G))
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Use `show MvPolynomial.aeval (fun _ => (0 : S)) (MvPolynomial.aeval (fun q : Fin 1 × Fin d => (MvPolynomial.X (i, q.2) : MvPolynomial (Fin n × Fin d) S)) (MvPolynomial.X p)) = MvPolynomial.aeval (fun _ => (0 : S)) (MvPolynomial.X p)`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aug_copy {d n : ℕ} (m : ℕ) (i : Fin n) :
     (jetAug : Jet S (Fin n × Fin d) m →ₐ[S] S).comp (jetCopy d m i) = jetAug := by
@@ -73,11 +73,11 @@ end Pt
 section Axes
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv Equiv.ulift _ (fun I : Finset (Fin 2) => h (psum G xs I) ^ cε 2 ⟨I⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations. Establish `hu : (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}}` using `by decide`. Rewrite using `[hu, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Establish `c0 : cε 2 ⟨(∅ : Finset (Fin 2))⟩ = 1` using `rfl`. Establish `c1 : cε 2 ⟨({0} : Finset (Fin 2))⟩ = -1` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : cε 2 ⟨({1} : Finset (Fin 2))⟩ = -1` using `rfl`. Establish `c3 : cε 2 ⟨({0, 1} : Finset (Fin 2))⟩ = 1` using `rfl`. Establish `p0 : psum G xs ∅ = 1` using `rfl`. Establish `p1 : psum G xs {0} = xs 0 * 1` using `rfl`. Establish `p2 : psum G xs {1} = xs 1 * 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p3 : psum G xs {0, 1} = xs 0 * (xs 1 * 1)` using `rfl`. Rewrite using `[c0, c1, c2, c3, p0, p1, p2, p3]`. Simplify using `only [zpow_one, zpow_neg, _root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_cube2 {X0 : Scheme.{0}} (G : Over X0) [GrpObj G] [IsCommMonObj G] {T : Over X0} {M : Type} [CommGroup M]
     (h : (T ⟶ G) → M) (xs : Fin 2 → (T ⟶ G)) :
@@ -101,7 +101,7 @@ theorem prod_cube2 {X0 : Scheme.{0}} (G : Over X0) [GrpObj G] [IsCommMonObj G] {
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Use `show MvPolynomial.aeval (fun _ => (0 : S)) (MvPolynomial.X q) = 0`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetAug_X {Idx : Type} (m : ℕ) (q : Idx) :
     (jetAug : Jet S Idx m →ₐ[S] S) (Ideal.Quotient.mk _ (MvPolynomial.X q)) = 0 := by
@@ -119,7 +119,7 @@ abbrev axis1 (m : ℕ) : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S (Fin 1 × Fin 
     (![fun j => MvPolynomial.X ((0 : Fin 1), j), fun _ => 0] : Fin 2 → Fin d → MvPolynomial (Fin 1 × Fin d) S) p.1 p.2
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[jetSubstP, jetCopy, jetMap_mk, jetAug_X]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem first_axis_at_first_copy (m : ℕ) : (axis0 (S := S) d m).comp (jetCopy d m (0 : Fin 2)) =
     (Algebra.ofId S (Jet S (Fin 1 × Fin d) m)).comp jetAug := by
@@ -129,7 +129,7 @@ theorem first_axis_at_first_copy (m : ℕ) : (axis0 (S := S) d m).comp (jetCopy 
   simp [jetSubstP, jetCopy, jetMap_mk, jetAug_X]
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[jetSubstP, jetCopy, jetMap_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem first_axis_at_second_copy (m : ℕ) : (axis0 (S := S) d m).comp (jetCopy d m (1 : Fin 2)) = AlgHom.id S _ := by
   apply jet_hom_ext
@@ -138,7 +138,7 @@ theorem first_axis_at_second_copy (m : ℕ) : (axis0 (S := S) d m).comp (jetCopy
   simp [jetSubstP, jetCopy, jetMap_mk]
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[jetSubstP, jetCopy, jetMap_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem second_axis_at_first_copy (m : ℕ) : (axis1 (S := S) d m).comp (jetCopy d m (0 : Fin 2)) = AlgHom.id S _ := by
   apply jet_hom_ext
@@ -147,7 +147,7 @@ theorem second_axis_at_first_copy (m : ℕ) : (axis1 (S := S) d m).comp (jetCopy
   simp [jetSubstP, jetCopy, jetMap_mk]
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[jetSubstP, jetCopy, jetMap_mk, jetAug_X]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem second_axis_at_second_copy (m : ℕ) : (axis1 (S := S) d m).comp (jetCopy d m (1 : Fin 2)) =
     (Algebra.ofId S (Jet S (Fin 1 × Fin d) m)).comp jetAug := by
@@ -166,7 +166,7 @@ variable {S : Type} [CommRing S] [IsLocalRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (x
 abbrev e0 : Sp S ⟶ t.G.left := (1 : overAt x0 S ⟶ t.G).left
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.exists_chart_top (V := S) t.PP.L t.PP.isLB (fun _ : Fin 1 => e0 t x0) (fun _ => 1)`. Conclude with `⟨j 0, top_unique (by rw [← hj]; exact LB.wchart_le _ _ j 0)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_covering_index : ∃ i0 : t.PP.L.ι, (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤ := by
   obtain ⟨j, hj⟩ := ReciprocityTheory.ChartRestriction.G.DVR.exists_chart_top (V := S) t.PP.L t.PP.isLB (fun _ : Fin 1 => e0 t x0)
@@ -174,7 +174,7 @@ theorem exists_chart_covering_index : ∃ i0 : t.PP.L.ι, (e0 t x0) ⁻¹ᵁ t.P
   exact ⟨j 0, top_unique (by rw [← hj]; exact LB.wchart_le _ _ j 0)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vec2 {α : Type*} (f : Fin 2 → α) : (![f 0, f 1] : Fin 2 → α) = f := by
   funext i
@@ -185,7 +185,7 @@ variable {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E → Fin 
 
 variable {t x0 d x} in
 /- English proof (translation)
-Rewrite using `[jptG, ← Category.assoc, homAt_comp, aug_copy, hch.zero m]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jpt_aug (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i : Fin n) :
     homAt x0 (jetAug : Jet S (Fin n × Fin d) m →ₐ[S] S) ≫ jptG t x0 d x m i = 1 := by
@@ -193,7 +193,7 @@ theorem jpt_aug (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i :
 
 variable {t x0 d x} in
 /- English proof (translation)
-Establish `hc : (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _).comp (jetCopy d (m + 1) i) = (jetCopy d m i).comp (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] _)`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Both sides reduce to the same expression. Rewrite using `[jptG, jptG, ← Category.assoc, homAt_comp, hc, ← homAt_comp, Category.assoc, hch.trunc m]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem jpt_trunc (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i : Fin n) :
     homAt x0 (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _) ≫ jptG t x0 d x (m + 1) i = jptG t x0 d x m i := by
@@ -205,7 +205,7 @@ theorem jpt_trunc (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i
   rw [jptG, jptG, ← Category.assoc, homAt_comp, hc, ← homAt_comp, Category.assoc, hch.trunc m]
 
 /- English proof (translation)
-The claim follows from `(psum_hom (preHom (homAt x0 (jetAug : Jet S (Fin n × Fin d) m →ₐ[S] S))) xs I).trans ((congrArg (fun f => psum t.G f I) (funext hxs)).trans (psum_one t.G I))`.
+A detailed English derivation is pending.
 -/
 theorem psum_aug {m n : ℕ} (xs : Fin n → (jOG x0 d m n ⟶ t.G))
     (hxs : ∀ i, homAt x0 (jetAug : Jet S (Fin n × Fin d) m →ₐ[S] S) ≫ xs i = 1) (I : Finset (Fin n)) :
@@ -214,7 +214,7 @@ theorem psum_aug {m n : ℕ} (xs : Fin n → (jOG x0 d m n ⟶ t.G))
     ((congrArg (fun f => psum t.G f I) (funext hxs)).trans (psum_one t.G I))
 
 /- English proof (translation)
-Use `top_unique fun y _ => Set.mem_iInter.2 fun I => ?_` and prove the remaining obligations. Establish `h` using `pre_top m (t.PP.L.U i0) (cφG t xs I) (e0 t x0) (congrArg Over.Hom.left (psum_aug t x0 d xs hxs I.down)) hi0`. Establish `: y ∈ (cφG t xs I) ⁻¹ᵁ t.PP.L.U i0` using `by rw [h]; trivial`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wchart_top (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) {m n : ℕ}
     (xs : Fin n → (jOG x0 d m n ⟶ t.G))
@@ -235,7 +235,7 @@ def fr (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0)
 
 variable {t x0 d x} in
 /- English proof (translation)
-Introduce `m` and use `corr_of_val t.PP.isLB fun y J hJ => by have hmor : ∀ I : ULift (Finset (Fin 2)), (𝟙 _ ≫ (homAt x0 (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] _)).left) ≫ cφG t ![jptG t x0 d x (m + 1) (0 : Fin 2), jptG t x0 d x (m + 1) (1 : Fin 2)] I = 𝟙 _ ≫ cφG t ![jptG t x0 d x m (0 : Fin 2 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fr_trunc (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) :
     FrTrunc t x0 d x (fr hch i0 hi0) := fun m => corr_of_val t.PP.isLB fun y J hJ => by
@@ -255,17 +255,15 @@ theorem fr_trunc (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 :
 
 variable {t x0 d x} in
 /- English proof (translation)
-Establish `hL` using `t.PP.isLB`. Establish `key : ∀ (m : ℕ) (σ : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S (Fin 1 × Fin d) m) (a b : jOG x0 d m 1 ⟶ t.G), homAt x0 σ ≫ jptG t x0 d x m (0 : Fin 2) = a → homAt x0 σ ≫ jptG t x0 d x m (1 : Fin 2) = b → (a = 1 ∨ b = 1) → LB.Gen.Corr t.PP.L _ _ _ _ (LB.pullGen t.PP.L (cφG t ![jptG t x0 …`. Introduce `m σ a b ha hb hab`. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ((val_cgen _ _ _ _ _ _ y J hJ).trans (Eq.trans ?_ (val_one _).symm))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hI : ∀ I : ULift (Finset (Fin 2)), (𝟙 _ ≫ (homAt x0 σ).left) ≫ cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] I = (psum t.G ![a, b] I.down).left`. Introduce `I`. Rewrite using `[Category.id_comp]`. Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `ha`. Conclude with `hb`. Rewrite using `[Finset.prod_congr rfl fun I _ => congrArg (fun ψ => cv t.PP.L i0 y J ψ ^ cε 2 I) (hI I)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hc` using `prod_cube2 t.G (fun p : jOG x0 d m 1 ⟶ t.G => cv t.PP.L i0 y J p.left) ![a, b]`. Rewrite using `[hc]`. Apply the tactic sequence `rcases hab with rfl | rfl <;> simp`. Introduce `m`. Use `⟨key m (axis0 d m) 1 (x m) ?_ ?_ (Or.inl rfl), key m (axis1 d m) (x m) 1 ?_ ?_ (Or.inr rfl)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jptG, ← Category.assoc, homAt_comp, first_axis_at_first_copy, ← homAt_comp, Category.assoc, hch.zero m]`. Conclude with `map_one (preHom (homAt x0 (Algebra.ofId S (Jet S (Fin 1 × Fin d) m))))`. Rewrite using `[jptG, ← Category.assoc, homAt_comp, first_axis_at_second_copy, homAt_id, Category.id_comp]`. Rewrite using `[jptG, ← Category.assoc, homAt_comp, second_axis_at_first_copy, homAt_id, Category.id_comp]`. Rewrite using `[jptG, ← Category.assoc, homAt_comp, second_axis_at_second_copy, ← homAt_comp, Category.assoc, hch.zero m]`.
-
-Conclude with `map_one (preHom (homAt x0 (Algebra.ofId S (Jet S (Fin 1 × Fin d) m))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fr_axes (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) :
     FrAxes t x0 d x (fr hch i0 hi0) := by

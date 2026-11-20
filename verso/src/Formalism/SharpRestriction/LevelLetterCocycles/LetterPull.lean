@@ -18,7 +18,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Unfold `dv`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Formalism.MainNotions.UnusedSlot80.ArcF.dv_single]`. Unfold `dv`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem dv_sum (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (c₀ : Fin d → LL) :
     dv W T e b c₀ = ∑ k, c₀ k • dv W T e b (Pi.single k 1) := by
@@ -29,14 +29,14 @@ theorem dv_sum (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T)
   rfl
 
 /- English proof (translation)
-Unfold `dvO`. Rewrite using `[dv_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dvO_sum (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (c : Fin d → O) :
     dvO W T e b c = ∑ k, algebraMap O LL (c k) • dv W T e b (Pi.single k 1) := by
   unfold dvO; rw [dv_sum]
 
 /- English proof (translation)
-Rewrite using `[dvO_sum, dvO_sum, Finset.smul_sum]`. Simplify using `only [map_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dvO_smul (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (o : O) (c : Fin d → O) :
     dvO W T e b (fun k => o * c k) = algebraMap O LL o • dvO W T e b c := by
@@ -44,7 +44,7 @@ theorem dvO_smul (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD 
   simp only [map_mul, mul_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hu (fun j => x j - y j) (by simp only [sub_smul, Finset.sum_sub_distrib, h, sub_self]) j)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coef_eq {M : Type} [AddCommGroup M] [Module LL M] {dY : ℕ} (u : Fin dY → M)
     (hu : LinearIndependent LL u) (x y : Fin dY → LL) (h : ∑ j, x j • u j = ∑ j, y j • u j) : x = y := by
@@ -54,7 +54,7 @@ theorem coef_eq {M : Type} [AddCommGroup M] [Module LL M] {dY : ℕ} (u : Fin dY
 
 include W in
 /- English proof (translation)
-Use `choose mm oo hoo using fun i => Formalism.MainNotions.UnusedSlot80.ArcF.exists_pow_mul W hV (ρ i)`. Use `⟨∑ i, mm i, fun i => ((PD.p : ℕ) : O) ^ (∑ j, mm j - mm i) * oo i, fun i => ?_⟩` and prove the remaining obligations. Establish `hle : mm i ≤ ∑ j, mm j` using `Finset.single_le_sum (fun j _ => Nat.zero_le _) (Finset.mem_univ i)`. Rewrite using `[map_mul, hoo, map_pow, map_natCast, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_vec (hV : ValRing (LL := LL) O v) {ι₀ : Type} [Fintype ι₀] (ρ : ι₀ → LL) :
     ∃ (m : ℕ) (r : ι₀ → O), ∀ i, algebraMap O LL (r i) = (PD.p : LL) ^ m * ρ i := by
@@ -64,9 +64,9 @@ theorem int_vec (hV : ValRing (LL := LL) O v) {ι₀ : Type} [Fintype ι₀] (ρ
   rw [map_mul, hoo, map_pow, map_natCast, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]
 
 /- English proof (translation)
-Establish `hinj` using `(ses_exact PD hK h9 T₂ Y W.one ι π hses h2 hY (Formalism.MainNotions.LiftingTheory.gen_one_crys W)).1`. Establish `hL` using `(Strict.mem_DcrisL_iff PD τ₀ _).1 h`. Rewrite using `[Strict.mem_DcrisL_iff]`. Use `⟨hξ, fun c => ?_⟩` and prove the remaining obligations. Establish `hm : mulVB (LL` using `LL) (V := T₂.V) (B := B) c ξ - τ₀ c • ξ ∈ Dcris PD T₂.ρ := (Dcris PD T₂.ρ).sub_mem (mulVB_Dcris PD c hξ) ((Dcris PD T₂.ρ).smul_mem _ hξ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 (hinj _ hm (by rw [map_sub, map_smul, Strict.crisMap_mulVB, hL.2 c, sub_self]))`.
+A detailed English derivation is pending.
 -/
 theorem letter_pull [FiniteDimensional Qp LL] (hK : Function.Bijective (algebraMap K₀ K))
     (h9 : DcrisExactStrict PD LL) (T₂ Y : LocLat G Qp LL O) (ι : LatHom T₂.L Y.L) (π : LatHom Y.L W.one.L)
@@ -84,21 +84,21 @@ theorem letter_pull [FiniteDimensional Qp LL] (hK : Function.Bijective (algebraM
 variable [IsDomain O]
 
 /- English proof (translation)
-Establish `hpull : ∀ s < e, α s < 0 → ∃ ξ ∈ Dcris PD T₂.ρ, ξ ∈ FilS W T₂ a s (-(α s)) ∧ crisMap B ι.f ξ = dvO W Y e bY cY`. Introduce `s hs hneg`. Take `⟨ν, hν, hνlam⟩` from `Submodule.mem_map.1 (hN s hs)`. Take `⟨μ, hμ, hμν⟩` from `fil_pull PD W hK h9 T₂ Y ι π hses h2 hY (-(α s)) (by omega) _ hν`. Use `⟨((φVB PD (LL := LL) (V := T₂.V)) ^ s) μ, φVB_pow_Dcris PD s hμ.1.1, ⟨μ, hμ, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[crisMap_φVB_pow, hμν]`. Conclude with `hνlam`. Take `⟨s₀, hs₀, hneg₀⟩` from `hpol`. Take `⟨ξ, hξD, -, hξlam⟩` from `hpull s₀ hs₀ hneg₀`. Establish `hinjD` using `(ses_exact PD hK h9 T₂ Y W.one ι π hses h2 hY (Formalism.MainNotions.LiftingTheory.gen_one_crys W)).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ s < e, α s < 0 → ξ ∈ FilS W T₂ a s (-(α s))`. Introduce `s hs hneg`. Take `⟨ξ', hξ'D, hξ'F, hξ'lam⟩` from `hpull s hs hneg`. Establish `h0 : ξ' - ξ = 0` using `hinjD _ ((Dcris PD T₂.ρ).sub_mem hξ'D hξD) (by rw [map_sub, hξ'lam, hξlam, sub_self])`. Rewrite using `[← sub_eq_zero.1 h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hξ'F`. Establish `hlamL : dvO W Y e bY cY ∈ DcrisL PD Y.ρ (W.emb a)`. Rewrite using `[← hspanY, dvO_sum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hξL` using `letter_pull W hK h9 T₂ Y ι π hses h2 hY (W.emb a) hξD (by rw [hξlam]; exact hlamL)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hξL` using `[← hspan2]`. Take `⟨ρ, hρ⟩` from `(Submodule.mem_span_range_iff_exists_fun LL).1 hξL`. Take `⟨m, r, hr⟩` from `int_vec W hV ρ`. Establish `hdvr : dvO W T₂ e b r = (PD.p : LL) ^ m • ξ`. Rewrite using `[dvO_sum, ← hρ, Finset.smul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hr, mul_smul]`. Use `⟨m, r, fun j => ?_, fun s hs hneg => ?_⟩` and prove the remaining obligations. Establish `h1 : crisMap B ι.f (dvO W T₂ e b r) = ∑ j, (∑ k, algebraMap O LL (r k) * algebraMap O LL (o k j)) • dv W Y e bY (Pi.single j 1)`. Rewrite using `[dvO_sum, map_sum]`. Simplify using `only [map_smul, ho, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`. Establish `h2' : crisMap B ι.f (dvO W T₂ e b r) = ∑ j, ((PD.p : LL) ^ m * algebraMap O LL (cY j)) • dv W Y e bY (Pi.single j 1)`. Rewrite using `[hdvr, map_smul, hξlam, dvO_sum, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Use `congrFun (coef_eq _ hindY _ _ (h1.symm.trans h2')) j` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sum, map_mul, map_pow, map_natCast]`. Simplify `this` using `only [map_mul]`. Rewrite using `[hdvr]`. Conclude with `Submodule.smul_mem _ _ (hall s hs hneg)`.
+A detailed English derivation is pending.
 -/
 theorem pull_vec [FiniteDimensional Qp LL] (hK : Function.Bijective (algebraMap K₀ K))
     (h9 : DcrisExactStrict PD LL) (hV : ValRing (LL := LL) O v) (hinj : Function.Injective (algebraMap O LL))
@@ -160,11 +160,11 @@ theorem pull_vec [FiniteDimensional Qp LL] (hK : Function.Bijective (algebraMap 
     exact Submodule.smul_mem _ _ (hall s hs hneg)
 
 /- English proof (translation)
-Establish `hinjD` using `(ses_exact PD hK h9 T₂ Y W.one ι π hses h2 hY (Formalism.MainNotions.LiftingTheory.gen_one_crys W)).1`. Use `set ξ := ∑ k, ρ k • dv W T₂ e b (Pi.single k 1) with hξ`. Establish `hξD : ξ ∈ Dcris PD T₂.ρ`. Establish `: ξ ∈ DcrisL PD T₂.ρ (W.emb a)`. Rewrite using `[← hspan2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `((Strict.mem_DcrisL_iff PD _ ξ).1 this).1`. Establish `h0 : crisMap B ι.f ξ = 0`. Rewrite using `[hξ, map_sum]`. Simplify using `only [map_smul, ho, Finset.smul_sum, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, hρ, zero_smul, Finset.sum_const_zero]`. Establish `hξ0` using `hinjD ξ hξD h0`. Use function extensionality and compare the values at `k`. Conclude with `Fintype.linearIndependent_iff.1 hind2 ρ (by rw [← hξ, hξ0]) k`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem o_inj [FiniteDimensional Qp LL] (hK : Function.Bijective (algebraMap K₀ K))
     (h9 : DcrisExactStrict PD LL) (T₂ Y : LocLat G Qp LL O) (ι : LatHom T₂.L Y.L) (π : LatHom Y.L W.one.L)
@@ -196,19 +196,19 @@ theorem o_inj [FiniteDimensional Qp LL] (hK : Function.Bijective (algebraMap K�
 include W in
 
 /- English proof (translation)
-Set `oL : Matrix (Fin d) (Fin dY) LL` to `fun k j => algebraMap O LL (o k j)`. Set `f : (Fin d → LL) →ₗ[LL] (Fin dY → LL)` to `Matrix.vecMulLinear oL`. Establish `hf : ∀ ρ j, f ρ j = ∑ k, ρ k * algebraMap O LL (o k j)` using `fun ρ j => by show (Matrix.vecMul ρ oL) j = _`. Both sides reduce to the same expression. Establish `hker : LinearMap.ker f = ⊥` using `LinearMap.ker_eq_bot'.2 fun ρ hρ => hinjo ρ fun j => by rw [← hf, hρ]; rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective f hker`. Set `Dl : Fin dY → Fin d → LL` to `fun j m => g (Pi.single j 1) m`. Establish `key : ∀ k m, ∑ j, algebraMap O LL (o k j) * Dl j m = if k = m then 1 else 0`. Introduce `k m`. Establish `hv : f (Pi.single k 1) = ∑ j, algebraMap O LL (o k j) • (Pi.single j 1 : Fin dY → LL)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j'`. Rewrite using `[hf, Finset.sum_apply]`. Simplify using `[Pi.single_apply]`. Establish `h1` using `congrArg (fun φ : (Fin d → LL) →ₗ[LL] (Fin d → LL) => φ (Pi.single k 1)) hg`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, hv, map_sum, map_smul] at h1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrFun h1 m`. Rewrite `h2` using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`. Rewrite using `[h2]`. Distinguish the cases in `hkm : k = m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hkm` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Ne.symm hkm, hkm]`. Take `⟨q, D, hD⟩` from `int_vec W hV fun x : Fin dY × Fin d => Dl x.1 x.2`. Use `⟨q, fun j m => D (j, m), fun k m => hinj ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_mul, hD]`. Establish `: ∑ j, algebraMap O LL (o k j) * ((PD.p : LL) ^ q * Dl j m) = (PD.p : LL) ^ q * ∑ j, algebraMap O LL (o k j) * Dl j m`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this, key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem right_inv (hV : ValRing (LL := LL) O v) (hinj : Function.Injective (algebraMap O LL)) {d dY : ℕ}
     (o : Fin d → Fin dY → O)

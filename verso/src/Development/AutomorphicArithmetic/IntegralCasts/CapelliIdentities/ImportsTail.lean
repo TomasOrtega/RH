@@ -1,13 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Ω Ω₀ F F₀ _ _ _ _ _ _ i ι hι W A hA T`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ Submodule.span (↥A) T` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (hy ‹_›) (hz ‹_›)`. Consider the case `smul a y _ hy`. Establish `h1 : ι (a • y) = (⟨i a, hA a a.2⟩ : ↥W) • ι y` using `hι (a : Ω₀) y`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (hy ‹_›)`.
-
-Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYha5.main :
     ∀ {Ω Ω₀ F F₀ : Type} [inst : Field Ω] [inst_1 : Field Ω₀] [inst_2 : AddCommGroup F] [inst_3 : _root_.Module Ω F]

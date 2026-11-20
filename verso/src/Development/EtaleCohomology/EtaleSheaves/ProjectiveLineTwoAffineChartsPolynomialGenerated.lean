@@ -19,7 +19,7 @@ def ChartBC : Prop := ∀ (A : Type) [CommRing A] {L : Scheme.{0}} (l : L ⟶ Sp
   IsAffineOpen (f ⁻¹ᵁ W) ∧ Function.Surjective (Polynomial.eval₂RingHom (rA l (f ⁻¹ᵁ W)) (f.app W x))
 
 /- English proof (translation)
-Simplify using `only [rA]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE u l ⊤ W (u ⁻¹ᵁ W) le_top le_rfl, u.appLE_eq_app]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rA_comp {A : Type} [CommRing A] {Z L : Scheme.{0}} (u : Z ⟶ L) (l : L ⟶ Spec (CommRingCat.of A))
     (W : L.Opens) : rA (u ≫ l) (u ⁻¹ᵁ W) = (u.app W).hom.comp (rA l W) := by
@@ -28,7 +28,7 @@ theorem rA_comp {A : Type} [CommRing A] {Z L : Scheme.{0}} (u : Z ⟶ L) (l : L 
   rfl
 
 /- English proof (translation)
-Use `congrArg (fun φ => φ.hom x) (g.naturality (homOfLE h).op)` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_app {X Y : Scheme.{0}} (g : X ⟶ Y) {W W' : Y.Opens} (h : W' ≤ W) (x : Γ(Y, W)) :
     X.presheaf.map (homOfLE (g.preimage_mono h)).op (g.app W x) = g.app W' (Y.presheaf.map (homOfLE h).op x) := by
@@ -36,9 +36,9 @@ theorem res_app {X Y : Scheme.{0}} (g : X ⟶ Y) {W W' : Y.Opens} (h : W' ≤ W)
   exact this.symm
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_sup, h1]`. Both sides reduce to the same expression. Rewrite using `[← Scheme.preimage_basicOpen, h2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Scheme.preimage_basicOpen, h3]`. Both sides reduce to the same expression. Use `erw [res_app g inf_le_left s, res_app g inf_le_right s', ← map_mul, h4]`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transport {X Y : Scheme.{0}} (g : X ⟶ Y) {U V : Y.Opens} (s : Γ(Y, U)) (s' : Γ(Y, V))
     (h1 : U ⊔ V = ⊤) (h2 : Y.basicOpen s = U ⊓ V) (h3 : Y.basicOpen s' = U ⊓ V)
@@ -56,23 +56,19 @@ theorem transport {X Y : Scheme.{0}} (g : X ⟶ Y) {U V : Y.Opens} (s : Γ(Y, U)
     exact map_one _
 
 /- English proof (translation)
-Introduce `A _ _ Z p hIL hZ`. Take `⟨L, u, l, hu, ⟨_, f, hf⟩, rfl⟩` from `hIL`. Take `⟨U0, V0, x, y, hU0, hV0, h1, h2, h3, h4, hsx, hsy⟩` from `hP`. Take `⟨hU1, hsU⟩` from `hB A l f hf U0 x hU0 hsx`. Take `⟨hV1, hsV⟩` from `hB A l f hf V0 y hV0 hsy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k1, k2, k3, k4⟩` from `transport f x y h1 h2 h3 h4`. Take `⟨m1, m2, m3, m4⟩` from `transport u _ _ k1 k2 k3 k4`. Establish `hUa : IsAffineOpen (u ⁻¹ᵁ (f ⁻¹ᵁ U0))` using `hU1.preimage u`. Establish `hVa : IsAffineOpen (u ⁻¹ᵁ (f ⁻¹ᵁ V0))` using `hV1.preimage u`. Establish `hint : ∀ (W : L.Opens) (z : Γ(L, W)), IsAffineOpen W → Function.Surjective (Polynomial.eval₂RingHom (rA l W) z) → (Polynomial.eval₂RingHom (rA (u ≫ l) (u ⁻¹ᵁ W)) (u.app W z)).IsIntegral`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `W z hW hs`. Establish `he : Polynomial.eval₂RingHom (rA (u ≫ l) (u ⁻¹ᵁ W)) (u.app W z) = (u.app W).hom.comp (Polynomial.eval₂RingHom (rA l W) z)`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[rA_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[he]`. Conclude with `RingHom.IsIntegral.trans _ _ (RingHom.isIntegral_of_surjective _ hs) (u.isIntegral_app W hW)`. Distinguish the cases in `hne : ((u ⁻¹ᵁ (f ⁻¹ᵁ U0) ⊓ u ⁻¹ᵁ (f ⁻¹ᵁ V0) : Z.Opens) : Set Z).Nonempty`. Conclude with `Or.inr ⟨_, _, _, _, hUa, hVa, m1, m2, m3, hne, m4, hint _ _ hU1 hsU, hint _ _ hV1 hsV⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact.
 
-Use `left`. Establish `: IsIntegral Z` using `hZ.1`. Establish `hUV : ¬ (((u ⁻¹ᵁ (f ⁻¹ᵁ U0) : Z.Opens) : Set Z).Nonempty ∧ ((u ⁻¹ᵁ (f ⁻¹ᵁ V0) : Z.Opens) : Set Z).Nonempty)`. Introduce and unpack `⟨a, b⟩`. Conclude with `hne (nonempty_preirreducible_inter (u ⁻¹ᵁ (f ⁻¹ᵁ U0)).isOpen (u ⁻¹ᵁ (f ⁻¹ᵁ V0)).isOpen a b)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `not_and_or.mp hUV with h | h` into its components or cases. Establish `: u ⁻¹ᵁ (f ⁻¹ᵁ V0) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `hz : z ∈ u ⁻¹ᵁ (f ⁻¹ᵁ U0) ⊔ u ⁻¹ᵁ (f ⁻¹ᵁ V0)` using `m1 ▸ trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `(TopologicalSpace.Opens.mem_sup.mp hz) with hz | hz` into its components or cases. Conclude with `absurd ⟨z, hz⟩ h`. Conclude with `hz`. Conclude with `this ▸ hVa`. Establish `: u ⁻¹ᵁ (f ⁻¹ᵁ U0) = ⊤`.
-
-Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `hz : z ∈ u ⁻¹ᵁ (f ⁻¹ᵁ U0) ⊔ u ⁻¹ᵁ (f ⁻¹ᵁ V0)` using `m1 ▸ trivial`. Break down `(TopologicalSpace.Opens.mem_sup.mp hz) with hz | hz` into its components or cases. Conclude with `hz`.
-
-Conclude with `absurd ⟨z, hz⟩ h`. Conclude with `this ▸ hUa`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem LineOpens_of (hP : ProjectiveLineTwoAffineChartsPolynomialGenerated) (hB : ChartBC) : LineOpens := by
   intro A _ _ Z p hIL hZ

@@ -7,9 +7,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
 /- English proof (translation)
-Use `haveI : Countable K := by`. Establish `: Module.Finite ℚ K` using `inferInstance`. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' ℚ K`. Conclude with `hf.countable`. Use `haveI : Countable (Matrix (Fin 2) (Fin 2) K) := inferInstanceAs (Countable (Fin 2 → Fin 2 → K))`.
-
-Use `haveI : Countable (Matrix.SpecialLinearGroup (Fin 2) K) := Function.Injective.countable (f := fun g => (g.1 : Matrix (Fin 2) (Fin 2) K)) Subtype.val_injective`. Unfold `Gam`. Conclude with `(Set.countable_range (ratS K)).to_subtype`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma countable_gam (K : Type) [Field K] [NumberField K] : Countable (Gam K) := by
   haveI : Countable K := by
@@ -23,15 +21,15 @@ private lemma countable_gam (K : Type) [Field K] [NumberField K] : Countable (Ga
   exact (Set.countable_range (ratS K)).to_subtype
 
 /- English proof (translation)
-Introduce `K _ _ M u hu hint k`. Use `haveI := M.haar`. Use `haveI := M.right`. Use `haveI := countable_gam K`. Establish `hmp : MeasurePreserving (· * k) M.μ M.μ` using `measurePreserving_mul_right M.μ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hemb : MeasurableEmbedding (· * k : G1 K → G1 K)` using `(MeasurableEquiv.mulRight k).measurableEmbedding`. Establish `hfd : IsFundamentalDomain (Gam K) ((Equiv.mulRight k) '' M.D) M.μ`. Use `M.fund.image_of_equiv (Equiv.mulRight k) ?_ (Equiv.refl _) ?_` and prove the remaining obligations. Conclude with `(measurePreserving_mul_right M.μ k⁻¹).quasiMeasurePreserving`. Introduce `g x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Subgroup.smul_def, mul_assoc]`. Establish `hinv : ∀ (g : Gam K) x, u (g • x) = u x`. Introduce and unpack `⟨_, γ, rfl⟩ x`. Simplify `hu γ x` using `[Subgroup.smul_def]`. Establish `hpre : (· * k : G1 K → G1 K) ⁻¹' ((Equiv.mulRight k) '' M.D) = M.D`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Establish `h1 : IntegrableOn u ((Equiv.mulRight k) '' M.D) M.μ` using `(M.fund.integrableOn_iff hfd hinv).1 hint`. Establish `h2` using `(hmp.integrableOn_comp_preimage hemb).2 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hpre]`. Then use the resulting hypothesis. Establish `h3` using `hmp.setIntegral_preimage_emb hemb u ((Equiv.mulRight k) '' M.D)`. Rewrite `h3` using `[hpre]`. Rewrite using `[h3]`. Conclude with `hfd.setIntegral_eq M.fund hinv`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.H.rightInv :
     ∀ (K : Type) [Field K] [NumberField K] (M : Meas K) (u : G1 K → ℂ), (∀ γ g, u (ratS K γ * g) = u g) → IntegrableOn u M.D M.μ →

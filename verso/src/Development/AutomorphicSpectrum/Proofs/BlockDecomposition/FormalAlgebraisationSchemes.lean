@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FormalAlg
 
 /- English proof (translation)
-Use `choose L hL using step`. Conclude with `⟨fun e i => Nat.rec (motive := fun e => LB.Sec (pw (N e) D)) (a₀ i) (fun e x => L e x) e, rfl, fun e i => hL e _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_compatible {R : Type} [CommRing R] (I : Ideal R) {Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))}
     {β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left} {N : ∀ e, LB (Y e).left}
@@ -33,19 +33,17 @@ theorem exists_compatible {R : Type} [CommRing R] (I : Ideal R) {Y : ∀ e : ℕ
     rfl, fun e i => hL e _⟩
 
 /- English proof (translation)
-Introduce `R _ _ I Y β hβ hP N v hN hA`. Take `⟨d, hd, m₁, s, m₂, s', hs, hs'⟩` from `GlobalTheory.T.relatively_ample_consecutive_very_ample (R ⧸ I ^ (0 + 1)) (Y 0) (N 0) (hN 0).1 hA`. Take `⟨t₁, ht₁⟩` from `GlobalTheory.T.formal_line_bundle_very_ample_system R I Y β hβ hP N v hN d hd m₁ s hs`. Take `⟨t₂, ht₂⟩` from `GlobalTheory.T.formal_line_bundle_very_ample_system R I Y β hβ hP N v hN (d + 1) (by omega) m₂ s' hs'`. Use `set k := max t₁ t₂ with hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set t := 1 + (d + 1) * k with ht`. Use `set t' := 1 + d * k with ht'`. Establish `hkt : k ≤ t` using `by nlinarith`. Establish `hkt' : k ≤ t'` using `by nlinarith`. Establish `h1 : t₁ ≤ t` using `(le_max_left _ _).trans hkt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : t₂ ≤ t'` using `(le_max_right _ _).trans hkt'`. Establish `e₁ : ((d * t : ℕ) : ℤ) = (d : ℤ) * (t : ℕ)` using `by push_cast; ring`. Establish `e₂ : ((d * t : ℕ) : ℤ) + 1 = ((d + 1 : ℕ) : ℤ) * (t' : ℕ)`. Simplify using `only [ht, ht']`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc₁ : 0 < Fintype.card (Fin t → Fin (m₁ + 1))` using `Fintype.card_pos`. Establish `hc₂ : 0 < Fintype.card (Fin t' → Fin (m₂ + 1))` using `Fintype.card_pos`. Take `⟨p, hp⟩ : ∃ p, Fintype.card (Fin t → Fin (m₁ + 1)) = p + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hc₁).symm⟩`. Take `⟨q, hq⟩ : ∃ q, Fintype.card (Fin t' → Fin (m₂ + 1)) = q + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hc₂).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `E₁ : Fin (p + 1) ≃ (Fin t → Fin (m₁ + 1))` to `(Fintype.equivFinOfCardEq hp).symm`. Set `E₂ : Fin (q + 1) ≃ (Fin t' → Fin (m₂ + 1))` to `(Fintype.equivFinOfCardEq hq).symm`. Establish `ht1 : 1 ≤ t` using `by omega`. Establish `ht1' : 1 ≤ t'` using `by omega`. Establish `va` using `GlobalTheory.T.very_ample_tensor_power_sections _ (Y 0).hom (N 0) _ _ t e₁.symm m₁ s (hN 0).1 ht1 hs p E₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `vc` using `GlobalTheory.T.very_ample_tensor_power_sections _ (Y 0).hom (N 0) _ _ t' e₂.symm m₂ s' (hN 0).1 ht1' hs' q E₂`. Take `⟨a, ha0, ha⟩` from `exists_compatible I (v := v) (ht₁ t h1 _ e₁) (fun j => secMono e₁.symm s (E₁ j))`. Take `⟨c, hc0, hc⟩` from `exists_compatible I (v := v) (ht₂ t' h2 _ e₂) (fun j => secMono e₂.symm s' (E₂ j))`. Use `⟨d * t, p, q, a, c, Nat.mul_pos hd ht1, ?_, ?_, ha, hc⟩` and prove the remaining obligations. Rewrite using `[ha0]`.
-
-Conclude with `va`. Rewrite using `[hc0]`. Conclude with `vc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tower_sections : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → (∀ e, IsProper (Y e).hom) → ∀ (N : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (N e) ((N (e + 1)).pull (β e))), (∀ e, (N e).IsLB ∧ (v e).IsGen) → RelAmple (Y 0) (N 0) → ∃ (n p q : ℕ) (a : ∀ e, Fin (p + 1) → LB.Sec (pw (N e) (n : ℤ))) (c : ∀ e, Fin (q + 1) → LB.Sec (pw (N e) ((n : ℤ) + 1))), 1 ≤ n ∧ VeryAmpleBy (Y 0).hom (pw (N 0) (n : ℤ)) (a 0) ∧ VeryAmpleBy (Y 0).hom (pw (N 0) ((n : ℤ) + 1)) (c 0) ∧ (∀ e i, SecMaps (pullPow (v e) (n : ℤ)) (a e i) (secPull (a (e + 1) i) (β e))) ∧ (∀ e i, SecMaps (pullPow (v e) ((n : ℤ) + 1)) (c e i) (secPull (c (e + 1) i) (β e))) := by
   intro R _ _ I Y β hβ hP N v hN hA
@@ -79,29 +77,27 @@ theorem tower_sections : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : I
   · rw [hc0]; exact vc
 
 /- English proof (translation)
-Introduce `hGE R _ _ I hI Y β hβ hP N hN hv hA`. Use `choose v hvg using hv`. Establish `hNv : ∀ e, (N e).IsLB ∧ (v e).IsGen` using `fun e => ⟨hN e, hvg e⟩`. Take `⟨n, p, q, a, c, hn, ha0, hc0, hca, hcc⟩` from `tower_sections R I Y β hβ hP N v hNv hA`. Use `set D : ℤ := (n : ℤ) * ((n + 1 : ℕ) : ℤ) with hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (n : ℤ) * ((n + 1 : ℕ) : ℤ) = D` using `rfl`. Establish `h2 : ((n : ℤ) + 1) * ((n : ℕ) : ℤ) = D` using `by rw [hD]; push_cast; ring`. Establish `hcard : ∀ (k r : ℕ), ∃ m, Fintype.card (Fin k → Fin (r + 1)) = m + 1` using `fun k r => ⟨_, (Nat.succ_pred_eq_of_pos (Fintype.card_pos (α := Fin k → Fin (r + 1)))).symm⟩`. Take `⟨m₁, hm₁⟩` from `hcard (n + 1) p`. Take `⟨m₂, hm₂⟩` from `hcard n q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `E₁ : Fin (m₁ + 1) ≃ (Fin (n + 1) → Fin (p + 1))` to `(Fintype.equivFinOfCardEq hm₁).symm`. Set `E₂ : Fin (m₂ + 1) ≃ (Fin n → Fin (q + 1))` to `(Fintype.equivFinOfCardEq hm₂).symm`. Set `m` to `m₁ + 1 + m₂`. Set `E : Fin (m + 1) ≃ Fin (m₁ + 1) ⊕ Fin (m₂ + 1)` to `(finCongr (by omega)).trans finSumFinEquiv.symm`. Set `z : ∀ e, Fin (m + 1) → LB.Sec (pw (N e) D)` to `fun e j => Sum.elim (fun i => secMono h1 (a e) (E₁ i)) (fun i => secMono h2 (c e) (E₂ i)) (E j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz1 : ∀ e w, z e (E.symm (Sum.inl (E₁.symm w))) = secMono h1 (a e) w` using `fun e w => by`. Simplify using `[z]`. Establish `hz2 : ∀ e w, z e (E.symm (Sum.inr (E₂.symm w))) = secMono h2 (c e) w` using `fun e w => by`. Simplify using `[z]`. Establish `hva : VeryAmpleBy (Y 0).hom (pw (N 0) D) (z 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x1` using `GlobalTheory.T.very_ample_tensor_power_sections _ (Y 0).hom (N 0) _ _ (n + 1) h1 p (a 0) (hN 0) (by omega) ha0 m₁ E₁`. Establish `x2` using `GlobalTheory.T.very_ample_tensor_power_sections _ (Y 0).hom (N 0) _ _ n h2 q (c 0) (hN 0) hn hc0 m₂ E₂`. Conclude with `GlobalTheory.T.very_ample_union_sections _ (Y 0).hom _ (isLB_pw (hN 0) D) m₁ m₂ m _ _ E x1 x2`. Establish `hzc : ∀ e j, SecMaps (pullPow (v e) D) (z e j) (secPull (z (e + 1) j) (β e))` using `fun e j => by`. Simplify using `only [z]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Break down `E j with i | i` into its components or cases. Conclude with `secMaps_secMono (v e) h1 (a e) (a (e + 1)) (hca e) _`. Conclude with `secMaps_secMono (v e) h2 (c e) (c (e + 1)) (hcc e) _`. Take `⟨X, Q, ζ, b, ω, hQ, hX, hXa, hb, hbc, hω, hωz, hquad, hcov⟩` from `GlobalTheory.T.formal_sections_compatible_system hGE R I hI Y β hβ (fun e => pw (N e) D) (fun e => pullPow (v e) D) (fun e => ⟨isLB_pw (hN e) D, pullPow_isGen _ _ (hvg e)⟩) m z hzc hva`. Set `ia : (Fin (n + 1) → Fin (p + 1)) → Fin (m + 1)` to `fun w => E.symm (Sum.inl (E₁.symm w))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `ic : (Fin n → Fin (q + 1)) → Fin (m + 1)` to `fun w => E.symm (Sum.inr (E₂.symm w))`. Establish `hA' : ⨆ i : Fin (p + 1), nonzeroLocus (ζ (ia fun _ => i)) = ⊤`. Use `hcov (Set.range fun i : Fin (p + 1) => ia fun _ => i) (by` as an intermediate fact. Rewrite using `[iSup_range, ← ha0.1]`. Use `iSup_congr fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz1, nonzeroLocus_secMono_const h1 _ _ (by omega)])`. Rewrite `this` using `[iSup_range]`. Then use the resulting hypothesis. Establish `hC' : ⨆ i : Fin (q + 1), nonzeroLocus (ζ (ic fun _ => i)) = ⊤`. Use `hcov (Set.range fun i : Fin (q + 1) => ic fun _ => i) (by` as an intermediate fact. Rewrite using `[iSup_range, ← hc0.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `iSup_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[hz2, nonzeroLocus_secMono_const h2 _ _ hn])`. Rewrite `this` using `[iSup_range]`. Then use the resulting hypothesis. Take `⟨A, ωA, hAL, hωA, hAc⟩` from `GlobalTheory.T.line_bundle_root_from_relations X.left Q hQ (n + 1) (by omega) (Fin (p + 1)) (fun w => ζ (ia w)) (fun w₁ w₂ w₃ w₄ hw c' => hquad _ _ _ _ (fun e c'' => by`. Simplify using `only [ia, hz1]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `secMono_mul h1 (a e) w₁ w₂ w₃ w₄ hw c'') c') hA'`. Take `⟨C, ωC, hCL, hωC, hCc⟩` from `GlobalTheory.T.line_bundle_root_from_relations X.left Q hQ n hn (Fin (q + 1)) (fun w => ζ (ic w)) (fun w₁ w₂ w₃ w₄ hw c' => hquad _ _ _ _ (fun e c'' => by`. Simplify using `only [ic, hz2]`. Conclude with `secMono_mul h2 (c e) w₁ w₂ w₃ w₄ hw c'') c') hC'`. Use `⟨X, tw C A (-1), b, hX, isLB_tw hCL hAL _, GlobalTheory.T.relatively_ample_twist_difference R X Q m ζ hQ hXa A C n hn hAL hCL ⟨ωA, hωA⟩ ⟨ωC, hωC⟩, hb, hbc, fun e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.T.pullback_twist_iso_difference (b e) A C (N e) n hAL hCL (hN e) ?_ ?_` and prove the remaining obligations. Use `hAc _ (b e) (N e) n D h1 (a e) (ω e) (hN e) (hω e) fun w => ?_` and prove the remaining obligations. Use `hωz e (ia w)` as an intermediate fact. Simplify using `only [ia, hz1] at this`. Conclude with `this`.
-
-Use `hCc _ (b e) (N e) ((n : ℤ) + 1) D h2 (c e) (ω e) (hN e) (hω e) fun w => ?_` and prove the remaining obligations. Use `hωz e (ic w)` as an intermediate fact. Simplify using `only [ic, hz2] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem schemes_of_closedProj : GEClosedProj → GlobalTheory.Published.FormalAlgebraisation.Schemes := by
   intro hGE R _ _ I hI Y β hβ hP N hN hv hA

@@ -21,9 +21,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Take `⟨hu, -⟩` from `GlobalTheory.RecLaws.rec_hasSatGL H σ B hB`. Take `⟨α, hα⟩` from `ParLaws.exists_hasSatake_of_unr H hu`. Use `⟨α, hB.unique (GlobalTheory.T.hasSatakeGL_of_hasSatakeParameters_principalSeries E w n _ σ.ρ α hα), ?_⟩` and prove the remaining obligations. Establish `e : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `ParLaws.rec_eq_diag H hα`. Rewrite using `[rec_algNorm H, e, WD.lpTw_mk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `WD.sound ⟨.refl _ _, fun g v => funext fun i => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[mul_zpow, mul_comm, mul_left_comm, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rec_algNorm_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) {n : ℕ}
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ) (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B) :
@@ -39,7 +39,7 @@ theorem rec_algNorm_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h
   simp [mul_zpow, mul_comm, mul_left_comm, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), zpow_neg_one, Units.val_mul, mul_inv, Units.val_inv_eq_inv_val, inv_inv, coe_qPow, ← Complex.cpow_neg, mul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_inv_eq (n : ℕ) (a : ℂˣ) :
     (((a⁻¹ * qPow w ((1 - (n : ℝ)) / 2) : ℂˣ) : ℂ)) ^ (-1 : ℤ) =
@@ -55,11 +55,11 @@ end GlobalTheory.SatFrobLit
 open GlobalTheory.SatFrobLit in
 
 /- English proof (translation)
-Introduce `P F Ω _ _ _ _ _ l _ ι n r _ w hl σ B hB H A h`. Establish `L` using `P.loc`. Take `⟨rc, hrc⟩` from `L.llc F Ω A w h`. Establish `hrec : IsRec h rc` using `GlobalTheory.T.rec_of_rec_literal L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz F Ω A w h rc hrc`. Take `⟨α, rfl, e⟩` from `rec_algNorm_diag hrec σ B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx` using `H A h rc hrec`. Establish `hw` using `(hx.wdOf_eq hl).trans e`. Take `⟨t, ht, φ, hφ, N, a, hN, -⟩` from `hx`. Use `⟨(hN.unr_wdOf_iff hl ht ι).1 (by rw [hw, WD.unr_mk]; exact WDRep.unr_diag _), fun s hs => ?_⟩` and prove the remaining obligations. Establish `hd : deg (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h) = 1` using `deg_eq_one_iff.2 hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hN.charPol_wdOf hl ht ι (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h)⁻¹` as an intermediate fact. Rewrite `this` using `[hw, WD.charPol_mk, WDRep.diag_ρ, charpoly_diagEnd, deg_inv, hd]`. Use `this.symm.trans ?_` and prove the remaining obligations. Simplify using `only [val_inv_eq, algSat, Multiset.map_map, Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.RealGal.satFrob_of_litN : GlobalTheory.Mem.LiteralAutomorphy.LitN → SatFrob := by
   intro P F Ω _ _ _ _ _ l _ ι n r _ w hl σ B hB H A h

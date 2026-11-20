@@ -7,25 +7,23 @@ namespace Formalism.MainNotions.N.Ln34.UniversalLiftFrames
 open Module
 
 /- English proof (translation)
-Take `⟨L₁, L₂, hc, hrk, hCL, hFL⟩` from `DualFramesAlt.SatDVR.decomp (O := O) (K := LL) C hC Fs hF`. Take `⟨k, bu⟩` from `Submodule.basisOfPid (Pi.basisFun O (Fin r)) L₁`. Use `set pr := L₁.projectionOnto L₂ hc with hpr`. Use `set P : Fin k → Fin r → O := fun j i => bu.coord j (pr (fun i' => if i = i' then 1 else 0)) with hP`. Establish `hrepr : ∀ (u : Fin r → O) (i : Fin r), bL.repr (bL.equivFun.symm u) i = u i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u i`. Rewrite using `[← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `hsum : ∀ (i : Fin r), ∑ j, P j i • ((bu j : L₁) : Fin r → O) = ((pr (fun i' => if i = i' then 1 else 0) : L₁) : Fin r → O)`. Introduce `i`. Establish `h` using `congrArg Subtype.val (bu.sum_repr (pr (fun i' => if i = i' then 1 else 0)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[Submodule.coe_sum]`. Simplify `h` using `[hP, Basis.coord_apply]`. Establish `hrow : ∀ (j : Fin k) (y : Fin r → O), ∑ i, P j i * y i = bu.coord j (pr y)`. Introduce `j y`. Rewrite using `[← LinearMap.comp_apply, LinearMap.pi_apply_eq_sum_univ ((bu.coord j).comp pr) y]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[hP, smul_eq_mul, mul_comm]`. Use `⟨k, fun j => bL.equivFun.symm (bu j), L₂.map (bL.equivFun.symm : (Fin r → O) →ₗ[O] L), P, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.finrank_map_eq]`. Conclude with `hrk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `j τ`. Use `hCL τ (bu j) (bu j).2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[DualFramesAlt.SatDVR.toK_apply, hrepr]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_symm, map_sub, map_sum]`. Simplify using `only [map_smul, LinearEquiv.apply_symm_apply]`. Rewrite using `[hsum i, ← Submodule.ker_projectionOnto hc, LinearMap.mem_ker, map_sub, ← hpr, Submodule.projectionOnto_apply_left, sub_eq_zero]`. Use `congr 1`. Use function extensionality and compare the values at `i'`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Introduce `τ d hd j`. Set `ψ : (Fin r → LL) →ₗ[LL] LL` to `∑ i, algebraMap O LL (P j i) • LinearMap.proj i`. Establish `hψ : ∀ x : Fin r → LL, ψ x = ∑ i, algebraMap O LL (P j i) * x i`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ψ, LinearMap.sum_apply, Algebra.smul_def]`. Establish `hker : Submodule.span LL (DualFramesAlt.SatDVR.toK O LL r '' (L₂ : Set (Fin r → O))) ≤ LinearMap.ker ψ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hψ]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [DualFramesAlt.SatDVR.toK_apply, ← map_mul, ← map_sum]`. Rewrite using `[hrow j y]`. Establish `h0 : pr y = 0` using `Submodule.projectionOnto_apply_right hc ⟨y, hy⟩`. Rewrite using `[h0, map_zero, map_zero]`. Use `hker (hFL τ hd)` as an intermediate fact.
-
-Rewrite `this` using `[LinearMap.mem_ker, hψ]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem decomp_coord {O LL : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field LL]
     [Algebra O LL] [IsFractionRing O LL] {L : Type*} [AddCommGroup L] [Module O L] {r m : ℕ}

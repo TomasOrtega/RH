@@ -30,7 +30,7 @@ theorem toZ_mul (V : Z.Opens) {O : V.toScheme.Opens} (a b : Γ(V.toScheme, O)ˣ)
     toZ V (a * b) = toZ V a * toZ V b := rfl
 
 /- English proof (translation)
-The claim follows from `Set.image_preimage_subset _ _`.
+A detailed English derivation is pending.
 -/
 theorem image_preimage_le' (V : Z.Opens) (O : Z.Opens) : V.ι ''ᵁ V.ι ⁻¹ᵁ O ≤ O :=
   Set.image_preimage_subset _ _
@@ -42,16 +42,16 @@ theorem toZ_pullU (V : Z.Opens) (O : Z.Opens) (a : Γ(Z, O)ˣ) :
     toZ V (pullU V.ι O a) = res (image_preimage_le' V O) a := rfl
 
 /- English proof (translation)
-Rewrite using `[toZ_pullU, LB.res_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_toZ_pullU (V : Z.Opens) (O : Z.Opens) {W : Z.Opens} (hW : W ≤ V.ι ''ᵁ V.ι ⁻¹ᵁ O) (a : Γ(Z, O)ˣ) :
     res hW (toZ V (pullU V.ι O a)) = res (hW.trans (image_preimage_le' V O)) a := by
   rw [toZ_pullU, LB.res_res]
 
 /- English proof (translation)
-Establish `hle : ∀ k, V ⊓ L'.U k ≤ V.ι ''ᵁ LB.wchart L' (fun _ : PUnit => V.ι) (fun _ => k)`. Introduce `k z hz`. Conclude with `⟨⟨z, hz.1⟩, Set.mem_iInter.2 fun _ => hz.2, rfl⟩`. Use `⟨fun k => res (hle k) (toZ V (LB.ts t (fun _ => k))), fun k k' => ?_⟩` and prove the remaining obligations. Establish `hle2 : V ⊓ L'.U k ⊓ (V ⊓ L'.U k') ≤ V.ι ''ᵁ (LB.wchart L' (fun _ : PUnit => V.ι) (fun _ => k) ⊓ LB.wchart L' (fun _ : PUnit => V.ι) (fun _ => k'))` using `fun z hz => ⟨⟨z, hz.1.1⟩, ⟨Set.mem_iInter.2 fun _ => hz.1.2, Set.mem_iInter.2 fun _ => hz.2.2⟩, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun x => res hle2 (toZ V x)) ((LB.isGen_iff L' t).1 ht (fun _ => k) (fun _ => k'))`. Simplify using `only [toZ_mul, toZ_res, map_mul, LB.res_res, LB.lcg, Fintype.prod_unique, zpow_one, res_toZ_pullU] at e`. Simplify using `only [LB.res_res]`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transport (L' : LB Z) (V : Z.Opens) (t : LB.Gen (L'.pull V.ι)) (ht : t.IsGen) :
     ∃ T : ∀ k : L'.ι, Γ(Z, V ⊓ L'.U k)ˣ, ∀ k k',
@@ -72,7 +72,7 @@ theorem transport (L' : LB Z) (V : Z.Opens) (t : LB.Gen (L'.pull V.ι)) (ht : t.
   exact e
 
 /- English proof (translation)
-Establish `hm : f w ∈ V ⊓ L'.U k ⊓ (V ⊓ L'.U k')` using `⟨⟨hV, hk⟩, hV, hk'⟩`. Establish `e` using `congrArg (gm f w (V ⊓ L'.U k ⊓ (V ⊓ L'.U k'))) (hT k k')`. Rewrite `e` using `[map_mul, gm_res f w _ hm, gm_res f w _ hm, gm_res f w _ hm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gm_compat (L' : LB Z) (V : Z.Opens) (T : ∀ k : L'.ι, Γ(Z, V ⊓ L'.U k)ˣ)
     (hT : ∀ k k', res (inf_le_left : V ⊓ L'.U k ⊓ (V ⊓ L'.U k') ≤ V ⊓ L'.U k) (T k) =
@@ -87,11 +87,11 @@ theorem gm_compat (L' : LB Z) (V : Z.Opens) (T : ∀ k : L'.ι, Γ(Z, V ⊓ L'.U
   rwa [map_mul, gm_res f w _ hm, gm_res f w _ hm, gm_res f w _ hm] at e
 
 /- English proof (translation)
-Establish `l₁ : ∀ k, p ⁻¹ᵁ (V₁ ⊓ V₂) ⊓ L'.U k ≤ p ⁻¹ᵁ V₁ ⊓ L'.U k` using `fun _ x hx => ⟨hx.1.1, hx.2⟩`. Establish `l₂ : ∀ k, p ⁻¹ᵁ (V₁ ⊓ V₂) ⊓ L'.U k ≤ p ⁻¹ᵁ V₂ ⊓ L'.U k` using `fun _ x hx => ⟨hx.1.2, hx.2⟩`. Establish `hu : ∀ {W : Scheme.{0}} (f : W ⟶ Z) (w : W) (k : L'.ι) (hw : f w ∈ p ⁻¹ᵁ (V₁ ⊓ V₂) ⊓ L'.U k), gm f w _ (res (l₂ k) (T₂ k) * (res (l₁ k) (T₁ k))⁻¹) = gm f w _ (T₂ k) * (gm f w _ (T₁ k))⁻¹`. Introduce `W f w k hw`. Rewrite using `[map_mul, map_inv, gm_res f w _ hw, gm_res f w _ hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `glue_unit (p ⁻¹ᵁ (V₁ ⊓ V₂)) (fun k => p ⁻¹ᵁ (V₁ ⊓ V₂) ⊓ L'.U k) (fun _ => inf_le_left) (fun x hx => by`. Take `⟨k, hk⟩` from `exists_chart hL' x`. Conclude with `Opens.mem_iSup.2 ⟨k, hx, hk⟩)`. Use the proof step `(fun k => res (l₂ k) (T₂ k) * (res (l₁ k) (T₁ k))⁻¹)`. Use the proof step `(fun i j x hx => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hu (𝟙 Z) x i hx.1, hu (𝟙 Z) x j hx.2, h₁ (𝟙 Z) x i j hx.1.1.1 hx.1.2 hx.2.2, h₂ (𝟙 Z) x i j hx.1.1.2 hx.1.2 hx.2.2, mul_inv, _root_.mul_mul_mul_comm, _root_.mul_inv_cancel, _root_.one_mul])`. Use `⟨s, fun f w k hw hk => ?_⟩` and prove the remaining obligations. Establish `hm : f w ∈ p ⁻¹ᵁ (V₁ ⊓ V₂) ⊓ L'.U k` using `⟨hw, hk⟩`. Rewrite using `[← gm_res f w inf_le_left hm s, hs k, hu f w k hm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio (p : Z ⟶ Y) (L' : LB Z) (hL' : L'.IsLB) {V₁ V₂ : Y.Opens}
     (T₁ : ∀ k : L'.ι, Γ(Z, p ⁻¹ᵁ V₁ ⊓ L'.U k)ˣ) (T₂ : ∀ k : L'.ι, Γ(Z, p ⁻¹ᵁ V₂ ⊓ L'.U k)ˣ)
@@ -120,7 +120,7 @@ theorem ratio (p : Z ⟶ Y) (L' : LB Z) (hL' : L'.IsLB) {V₁ V₂ : Y.Opens}
   rw [← gm_res f w inf_le_left hm s, hs k, hu f w k hm]
 
 /- English proof (translation)
-Set `e` to `RingEquiv.ofBijective (p.app O).hom (hp O)`. Use `⟨Units.map e.symm.toRingHom.toMonoidHom r, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `e.apply_symm_apply r.val`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem descend (p : Z ⟶ Y) (hp : ∀ V : Y.Opens, Function.Bijective (p.app V).hom) (O : Y.Opens)
     (r : Γ(Z, p ⁻¹ᵁ O)ˣ) : ∃ g : Γ(Y, O)ˣ, pullU p O g = r := by
@@ -129,7 +129,7 @@ theorem descend (p : Z ⟶ Y) (hp : ∀ V : Y.Opens, Function.Bijective (p.app V
   exact e.apply_symm_apply r.val
 
 /- English proof (translation)
-Establish `e : pullU p O a = pullU p O b` using `unit_ext fun z hz => by`. Rewrite using `[gm_pull (𝟙 Z) p z O hz a, gm_pull (𝟙 Z) p z O hz b]`. Conclude with `h z hz`. Conclude with `Units.ext ((hp O).1 (congrArg Units.val e))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_gm (p : Z ⟶ Y) (hp : ∀ V : Y.Opens, Function.Bijective (p.app V).hom) {O : Y.Opens}
     {a b : Γ(Y, O)ˣ} (h : ∀ z : Z, p z ∈ O → gm (𝟙 Z ≫ p) z O a = gm (𝟙 Z ≫ p) z O b) : a = b := by
@@ -141,7 +141,7 @@ theorem eq_of_gm (p : Z ⟶ Y) (hp : ∀ V : Y.Opens, Function.Bijective (p.app 
 def descLB (V : Y → Y.Opens) (g : ∀ y y', Γ(Y, V y ⊓ V y')ˣ) : LB Y := ⟨Y, V, g⟩
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun y _ => Opens.mem_iSup.2 ⟨y, hyV y⟩ g_self := fun y => eq_of_gm p hp fun z hz => by obtain ⟨k, hk⟩ := exists_chart hL' z rw [gm_res (𝟙 Z ≫ p) z _ hz, map_one] exact (key (𝟙 Z) z y y k hz hz hk).trans (mul_inv_cancel _) cocycle := fun a b c => eq_of_gm p hp fun z h …`.
+A detailed English derivation is pending.
 -/
 theorem isLB_descLB (p : Z ⟶ Y) (hp : ∀ V : Y.Opens, Function.Bijective (p.app V).hom) (L' : LB Z) (hL' : L'.IsLB)
     (V : Y → Y.Opens) (hyV : ∀ y, y ∈ V y) (T : ∀ (y : Y) (k : L'.ι), Γ(Z, p ⁻¹ᵁ V y ⊓ L'.U k)ˣ)
@@ -165,7 +165,7 @@ theorem isLB_descLB (p : Z ⟶ Y) (hp : ∀ V : Y.Opens, Function.Bijective (p.a
     abel
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨Set.mem_iInter.1 hx.1 PUnit.unit, hx.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem chart_le (p : Z ⟶ Y) (L' : LB Z) (V : Y → Y.Opens) (g : ∀ y y', Γ(Y, V y ⊓ V y')ˣ)
     (q : (LB.div ((descLB V g).pull p) L').ι) :
@@ -177,7 +177,7 @@ def descIso (p : Z ⟶ Y) (L' : LB Z) (V : Y → Y.Opens) (T : ∀ (y : Y) (k : 
   ⟨fun q => (res (chart_le p L' V g q) (T (q.1 PUnit.unit) q.2))⁻¹⟩
 
 /- English proof (translation)
-Unfold `gw descIso`. Conclude with `(map_inv (gm f x _) _).trans (congrArg (·⁻¹) (gm_res f x (chart_le p L' V g (fun _ => j, k)) ⟨Set.mem_iInter.2 fun _ => hj, hk⟩ (T j k)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gw_descIso (p : Z ⟶ Y) (L' : LB Z) (V : Y → Y.Opens) (T : ∀ (y : Y) (k : L'.ι), Γ(Z, p ⁻¹ᵁ V y ⊓ L'.U k)ˣ)
     (g : ∀ y y', Γ(Y, V y ⊓ V y')ˣ) {W : Scheme.{0}} (f : W ⟶ Z) (x : W) (j : Y) (k : L'.ι)
@@ -188,7 +188,7 @@ theorem gw_descIso (p : Z ⟶ Y) (L' : LB Z) (V : Y → Y.Opens) (T : ∀ (y : Y
     ⟨Set.mem_iInter.2 fun _ => hj, hk⟩ (T j k)))
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGen_iff]`. Introduce `W f x j j' k k' hj hj' hk hk'`. Rewrite using `[gw_descIso p L' V T g f x j k hj hk, gw_descIso p L' V T g f x j' k' hj' hk', key f x j j' k hj hj' hk, hc j' f x k k' hj' hk hk']`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -216,9 +216,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (gm gm_pull)
 open GlobalTheory.Mum.LBDesc
 
 /- English proof (translation)
-Introduce `Z Y p hp L' hL' hloc`. Use `choose V hyV t ht using hloc`. Use `choose T hT using fun y => transport L' (p ⁻¹ᵁ V y) (t y) (ht y)`. Establish `hc : ∀ (y : Y) {W : Scheme.{0}} (f : W ⟶ Z) (w : W) (k k' : L'.ι), f w ∈ p ⁻¹ᵁ V y → f w ∈ L'.U k → f w ∈ L'.U k' → gm f w _ (T y k) = gm f w (L'.U k ⊓ L'.U k') (L'.g k k') * gm f w _ (T y k')` using `fun y _ f w k k' h hk hk' => gm_compat L' _ (T y) (hT y) f w k k' h hk hk'`. Use `choose r hr using fun y y' => ratio p L' hL' (T y) (T y') (hc y) (hc y')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `choose g hg using fun y y' => descend p hp _ (r y y')`. Establish `key : ∀ {W : Scheme.{0}} (f : W ⟶ Z) (w : W) (y y' : Y) (k : L'.ι), p (f w) ∈ V y → p (f w) ∈ V y' → f w ∈ L'.U k → gm (f ≫ p) w ((descLB V g).U y ⊓ (descLB V g).U y') ((descLB V g).g y y') = gm f w _ (T y' k) * (gm f w _ (T y k))⁻¹`. Introduce `W f w y y' k h1 h2 hk`. Conclude with `(gm_pull f p w (V y ⊓ V y') ⟨h1, h2⟩ (g y y')).symm.trans ((congrArg _ (hg y y')).trans (hr y y' f w k ⟨h1, h2⟩ hk))`. Conclude with `⟨descLB V g, isLB_descLB p hp L' hL' V hyV T g key, descIso p L' V T g, isGen_descIso p L' V T g hc key⟩`.
+A detailed English derivation is pending.
 -/
 theorem lb_descend : ∀ (Z Y : Scheme.{0}) (p : Z ⟶ Y), (∀ V : Y.Opens, Function.Bijective (p.app V).hom) →
     ∀ L' : LB Z, L'.IsLB → (∀ y : Y, ∃ V : Y.Opens, y ∈ V ∧ ∃ t : LB.Gen (L'.pull (p ⁻¹ᵁ V).ι), t.IsGen) →

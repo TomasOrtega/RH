@@ -10,7 +10,7 @@ open scoped InnerProductSpace ComplexOrder ENNReal
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData Formalism.MainNotions.BridgeLemma
 
 /- English proof (translation)
-Take `⟨C₁₀, h1, h⟩` from `cnd_deepP C Cq hC hCq hCC`. Use `⟨C₁₀, h1, fun C₁ hC₁ X S volK n₀ A hn₀ hX hq hV hst hsep hS => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hn : 1 ≤ X.I.n` using `le_trans hn₀ hX.1.1`. Conclude with `cnd_far S C₁ hn (cnd_two_le_Y X hn₀ hX) hst (cnd_pack S hn hst hsep)`. Conclude with `h C₁ hC₁ X S volK n₀ A hn₀ hX hq hV hst hS`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cnd_far_deep (C Cq : ℝ) (hC : 1 ≤ C) (hCq : 0 ≤ Cq) (hCC : 16 * Cq ≤ C) :
     ∃ C₁₀ : ℝ, 1 ≤ C₁₀ ∧ ∀ C₁ ≥ C₁₀, ∀ (X : CData) (S : CSize X) (volK : ℝ) (n₀ : ℕ) (A : ℝ), 1 ≤ n₀ → X.HypB n₀ A →

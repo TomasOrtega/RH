@@ -20,13 +20,11 @@ noncomputable section
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Use `letI : Algebra R T := ι.toAlgebra`. Use `letI : Algebra (MvPolynomial (Fin r) R) T := (MvPolynomial.eval₂Hom ι τ).toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial (Fin r) R) T := IsScalarTower.of_algebraMap_eq' (by`. Use extensionality with `a`. Simplify using `[RingHom.algebraMap_toAlgebra])`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.FormallyEtale (MvPolynomial (Fin r) R) T := h.etale`. Set `d : Derivation R (MvPolynomial (Fin r) R) T` to `(Algebra.linearMap (MvPolynomial (Fin r) R) T).compDer (MvPolynomial.pderiv i)`. Set `f : Ω[MvPolynomial (Fin r) R⁄R] →ₗ[MvPolynomial (Fin r) R] T` to `d.liftKaehlerDifferential`. Establish `hb` using `KaehlerDifferential.isBaseChange_of_formallyEtale R (MvPolynomial (Fin r) R) T`. Set `g : Ω[T⁄R] →ₗ[T] T` to `hb.lift f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : g (KaehlerDifferential.D R T (algebraMap (MvPolynomial (Fin r) R) T P)) = algebraMap (MvPolynomial (Fin r) R) T (MvPolynomial.pderiv i P)`. Rewrite using `[← KaehlerDifferential.map_D R R (MvPolynomial (Fin r) R) T]`. Use `erw [hb.lift_eq]`. Simplify using `[f, d]`. Establish `h0 : algebraMap (MvPolynomial (Fin r) R) T P = 0` using `hP`.
-
-Rewrite `key` using `[h0, map_zero, map_zero]`. Conclude with `key.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEtTower.eval₂Hom_pderiv_eq_zero {K L : Type} [Field K] [Field L] {cK : ℂ →+* K} {cL : ℂ →+* L} {r : ℕ}
     {R : Subring K} {T : Subring L} {ι : R →+* T} {ψ : T →+* R} {τ : Fin r → T}
@@ -53,7 +51,7 @@ theorem IsEtTower.eval₂Hom_pderiv_eq_zero {K L : Type} [Field K] [Field L] {cK
   exact key.symm
 
 /- English proof (translation)
-Use `haveI : CharZero K := charZero_of_injective_ringHom cK.injective`. Conclude with `⟨fun a b h => by`. Use `congrArg (fun t : R => (t : K)) h` as an intermediate fact. Simplify using `using this⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charZero_subring_of_complex {K : Type} [Field K] (cK : ℂ →+* K) (R : Subring K) :
     CharZero R := by
@@ -63,7 +61,7 @@ theorem charZero_subring_of_complex {K : Type} [Field K] (cK : ℂ →+* K) (R :
     simpa using this⟩
 
 /- English proof (translation)
-Use `haveI := charZero_subring_of_complex cK R`. Establish `hI` using `GlobalTheory.T.mvPolynomial_ideal_eq_bot_of_pderiv_stable_no_constants r (RingHom.ker (MvPolynomial.eval₂Hom ι τ)) (fun P hP i => h.eval₂Hom_pderiv_eq_zero P i hP) (fun a ha => by`. Rewrite `ha` using `[RingHom.mem_ker, MvPolynomial.eval₂Hom_C]`. Simplify `congrArg ψ ha)` using `[h.retr]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).2 hI`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsEtTower.eval₂Hom_injective {K L : Type} [Field K] [Field L] {cK : ℂ →+* K}
     {cL : ℂ →+* L} {r : ℕ} {R : Subring K} {T : Subring L} {ι : R →+* T} {ψ : T →+* R}
@@ -78,9 +76,9 @@ theorem IsEtTower.eval₂Hom_injective {K L : Type} [Field K] [Field L] {cK : �
   exact (RingHom.injective_iff_ker_eq_bot _).2 hI
 
 /- English proof (translation)
-Introduce `K L _ _ cK cL n r R T ι ψ τ x h hx`. Establish `hinj` using `h.eval₂Hom_injective`. Use `letI := cL.toAlgebra`. Establish `hind` using `GlobalTheory.T.algebraicIndependent_etaleTower_coordinates cK cL n r R T ι ψ τ x h hx hinj`. Establish `halg : Algebra.IsAlgebraic (Algebra.adjoin ℂ (Set.range (Fin.append (fun i => (τ i : L)) (fun i => (ι (x i) : L))))) L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun z => GlobalTheory.T.isAlgebraic_of_isAlgebraic_over_algebraic_subring _ _ z ?_ (GlobalTheory.T.isAlgebraic_over_mvPolynomial_range_etaleTower cK cL r R T ι ψ τ h hinj z)⟩` and prove the remaining obligations. Introduce and unpack `b ⟨a, rfl⟩`. Conclude with `GlobalTheory.T.isAlgebraic_mvPolynomialEval_adjoin_etaleTowerCoords cK cL n r R T ι ψ τ x h hx a`. Establish `htr : TrBasis cL (Fin.append (fun i => (τ i : L)) (fun i => (ι (x i) : L)))` using `isTranscendenceBasis_iff_algebraicIndependent_isAlgebraic.2 ⟨hind, halg⟩`. Conclude with `isFreeGen_dForm_of_trBasis cL htr`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFreeGen_dForm_tower : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L)
     (n r : ℕ) (R : Subring K) (T : Subring L) (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T)

@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F _ _ R _ _ _ f hf _ j v hv r r₂ z γ _ hr hz hγ hd`. Establish `hvl : v ≠ F.vl` using `fun h => hv (h ▸ Set.mem_insert _ _)`. Use `⟨fun h => absurd h hvl, fun h => absurd (Set.mem_insert_of_mem _ h) hv, fun _ s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : r s = 1` using `hr.2.2 hv s hs`. Establish `hz0 : z s = 0` using `hz.2.1 hvl s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ0 : γ s = 0`. Use extensionality with `a b`. Take `⟨o, ho, e⟩` from `hγ s a b`. Rewrite `ho` using `[hz0]`. Establish `ho' : o ∈ maximalIdeal O` using `(residue_eq_zero_iff o).1 ho`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : algebraMap O R o ∈ maximalIdeal R` using `fun h => ho' (IsLocalHom.map_nonunit o h)`. Rewrite using `[e, Algebra.smul_def]`. Conclude with `hf _ hm`. Take `⟨e1, e2⟩` from `hd s`. Rewrite `e1` using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[h1, hγ0, add_zero, one_mul]`. Conclude with `SemidirectProduct.ext (Units.ext e2) e1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.locAt_deform_u :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

@@ -12,11 +12,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D S T JA JB ξ κ _ co h x`. Take `⟨y₁, z₁, h₁⟩` from `h (x.submatrix id finSumFinEquiv).toCols₁`. Take `⟨y₂, z₂, h₂⟩` from `h (x.submatrix id finSumFinEquiv).toCols₂`. Use `⟨Sum.elim y₁ y₂, Sum.elim z₁ (-z₂), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.DblSchr.ddr, GlobalTheory.DblSchr.reD_e, Equiv.symm_symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((incM D.host.F x).submatrix id finSumFinEquiv).toCols₁ = incM D.host.F (x.submatrix id finSumFinEquiv).toCols₁` using `rfl`. Establish `e2 : ((incM D.host.F x).submatrix id finSumFinEquiv).toCols₂ = incM D.host.F (x.submatrix id finSumFinEquiv).toCols₂` using `rfl`. Simplify using `only [GlobalTheory.DblSchr.dblD, LinearEquiv.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, e1, e2, h₁, h₂]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `funext i; rcases i with i | i <;> rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `funext i; rcases i with i | i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem GlobalTheory.DblSchr.ddr_rat : ∀ (D : D7) (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
     (ξ : AF D.host.F ⊗[D.host.F] D.host.E) (κ : Type) [Fintype κ]

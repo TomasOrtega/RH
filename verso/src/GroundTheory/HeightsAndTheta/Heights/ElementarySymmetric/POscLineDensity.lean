@@ -13,11 +13,11 @@ open InnerProductSpace Laplacian ReciprocityTheory.ChartRestriction.G.Geo Filter
 namespace OscLineDensity
 
 /- English proof (translation)
-Use `set E : (Fin 1 → ℂ) ≃L[ℝ] ℂ := ContinuousLinearEquiv.funUnique (Fin 1) ℝ ℂ with hE`. Establish `hf : (fun y' : Fin 1 → ℂ => u (y' 0)) = u ∘ E` using `rfl`. Establish `key : ∀ v : Fin 1 → ℂ, fderiv ℝ (fderiv ℝ (fun y' : Fin 1 → ℂ => u (y' 0))) y v v = iteratedFDeriv ℝ 2 u (y 0) ![v 0, v 0]`. Introduce `v`. Establish `h2` using `iteratedFDeriv_two_apply (𝕜 := ℝ) (u ∘ E) y ![v, v]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at h2`. Establish `h3` using `E.iteratedFDerivWithin_comp_right u uniqueDiffOn_univ (Set.mem_univ (E y)) 2`. Simplify using `only [Set.preimage_univ, iteratedFDerivWithin_univ] at h3`. Rewrite using `[hf, ← h2, h3]`. Simplify using `only [ContinuousMultilinearMap.compContinuousLinearMap_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[maDensity_one (fun y' => u (y' 0)) y, key, key, laplacian_eq_iteratedFDeriv_complexPlane]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem maDensity_comp_eval (u : ℂ → ℝ) (y : Fin 1 → ℂ) :
     maDensity (fun _ y' => u (y' 0)) y = Δ u (y 0) / (2 * Real.pi) := by
@@ -39,7 +39,7 @@ theorem maDensity_comp_eval (u : ℂ → ℝ) (y : Fin 1 → ℂ) :
   simp
 
 /- English proof (translation)
-Simplify using `[OscLine.oscChartPot, OscLine.oscMuNorm, OscLine.oscRho]`.
+Simplify using the standard rewrite rules.
 -/
 theorem oscChartPot_eq (x : ℂ) : OscLine.oscChartPot x =
     Real.log (Real.sqrt (Real.exp (2 * Taut.oscW x)) /
@@ -47,11 +47,11 @@ theorem oscChartPot_eq (x : ℂ) : OscLine.oscChartPot x =
   simp [OscLine.oscChartPot, OscLine.oscMuNorm, OscLine.oscRho]
 
 /- English proof (translation)
-Establish `hfun : OscLine.oscChartPot = fun x : ℂ => Real.log (Real.sqrt (Real.exp (2 * Taut.oscW x)) / Real.sqrt (1 + Real.exp (2 * Taut.oscW x) * ‖x‖ ^ 2))` using `funext oscChartPot_eq`. Rewrite using `[hfun]`. Establish `hW : ContDiffAt ℝ 2 Taut.oscW x` using `(Taut.contDiffAt_oscW hx).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hρ : ContDiffAt ℝ 2 (fun x : ℂ => Real.exp (2 * Taut.oscW x)) x` using `(contDiffAt_const.mul hW).exp`. Establish `hn : ContDiffAt ℝ 2 (fun x : ℂ => ‖x‖ ^ 2) x` using `(contDiff_norm_sq ℝ).contDiffAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ContDiffAt ℝ 2 (fun x : ℂ => 1 + Real.exp (2 * Taut.oscW x) * ‖x‖ ^ 2) x` using `contDiffAt_const.add (hρ.mul hn)`. Establish `hbpos : 0 < 1 + Real.exp (2 * Taut.oscW x) * ‖x‖ ^ 2` using `by positivity`. Establish `hs1` using `hρ.sqrt (Real.exp_pos _).ne'`. Establish `hs2` using `hb.sqrt hbpos.ne'`. Use `(hs1.div hs2 (Real.sqrt_pos.2 hbpos).ne').log ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(div_pos (Real.sqrt_pos.2 (Real.exp_pos _)) (Real.sqrt_pos.2 hbpos)).ne'`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_oscChartPot {x : ℂ} (hx : x ≠ 0) : ContDiffAt ℝ 2 OscLine.oscChartPot x := by
   have hfun : OscLine.oscChartPot = fun x : ℂ => Real.log (Real.sqrt (Real.exp (2 * Taut.oscW x)) /
@@ -71,11 +71,11 @@ theorem contDiffAt_oscChartPot {x : ℂ} (hx : x ≠ 0) : ContDiffAt ℝ 2 OscLi
   exact (div_pos (Real.sqrt_pos.2 (Real.exp_pos _)) (Real.sqrt_pos.2 hbpos)).ne'
 
 /- English proof (translation)
-Establish `hz : (fun p : (Σ _ : Unit, Fin 2) => A p.2 + B p.2 * t) = torusSmul (fun _ : Unit => A 0 + B 0 * t) (fun p : (Σ _ : Unit, Fin 2) => ![1, (A 1 + B 1 * t) / (A 0 + B 0 * t)] p.2)`. Use function extensionality and compare the values at `p`. Take `⟨k, i⟩` from `p`. Simplify using `only [torusSmul]`. Use `fin_cases i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[mul_div_cancel₀ _ h0]`. Establish `hpos : 0 < OscLine.oscMuNorm (fun p : (Σ _ : Unit, Fin 2) => ![1, (A 1 + B 1 * t) / (A 0 + B 0 * t)] p.2)` using `OscLine.oscMuNorm_pos ⟨0, by simp⟩`. Rewrite using `[hz, OscLine.oscMuNorm_homog _ _ (fun _ => h0)]`. Simplify using `only [Finset.univ_unique, Finset.prod_singleton]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_mul (zpow_ne_zero _ (norm_ne_zero_iff.mpr h0)) hpos.ne', Real.log_zpow]`. Unfold `OscLine.oscChartPot`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_oscMuNorm_line (A B : Fin 2 → ℂ) {t : ℂ} (h0 : A 0 + B 0 * t ≠ 0) :
     Real.log (OscLine.oscMuNorm (fun p => A p.2 + B p.2 * t)) =
@@ -100,17 +100,15 @@ theorem log_oscMuNorm_line (A B : Fin 2 → ℂ) {t : ℂ} (h0 : A 0 + B 0 * t �
   ring
 
 /- English proof (translation)
-Introduce `A B y hd h0 h1`. Use `set t0 := y 0 with ht0`. Use `set z0 : ℂ → ℂ := fun t => A 0 + B 0 * t with hz0`. Use `set xf : ℂ → ℂ := fun t => (A 1 + B 1 * t) / (A 0 + B 0 * t) with hxf`. Use `set g : ℂ → ℝ := fun t => Real.log (OscLine.oscMuNorm (fun p => A p.2 + B p.2 * t)) with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden : maDensity (fun _ y' => Real.log (OscLine.oscMuNorm (fun p => A p.2 + B p.2 * y' 0))) y = Δ g t0 / (2 * Real.pi)` using `maDensity_comp_eval g y`. Rewrite using `[hden]`. Establish `hz0an : AnalyticAt ℂ z0 t0` using `analyticAt_const.add (analyticAt_const.mul analyticAt_id)`. Establish `hz1an : AnalyticAt ℂ (fun t : ℂ => A 1 + B 1 * t) t0` using `analyticAt_const.add (analyticAt_const.mul analyticAt_id)`. Establish `hxan : AnalyticAt ℂ xf t0` using `hz1an.div hz0an h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : xf t0 ≠ 0` using `div_ne_zero h1 h0`. Establish `hev : ∀ᶠ t in 𝓝 t0, z0 t ≠ 0` using `hz0an.continuousAt.eventually_ne h0`. Establish `hgeq : g =ᶠ[𝓝 t0] (OscLine.oscChartPot ∘ xf) - (fun t => Real.log ‖z0 t‖)` using `by filter_upwards [hev] with t ht`. Conclude with `log_oscMuNorm_line A B ht`. Establish `hφ : ContDiffAt ℝ 2 OscLine.oscChartPot (xf t0)` using `contDiffAt_oscChartPot hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : ContDiffAt ℝ 2 (OscLine.oscChartPot ∘ xf) t0` using `hφ.comp t0 (hxan.contDiffAt.restrict_scalars ℝ)`. Establish `hharm : HarmonicAt (fun t => Real.log ‖z0 t‖) t0` using `hz0an.harmonicAt_log_norm h0`. Establish `hΔg : Δ g t0 = ‖deriv xf t0‖ ^ 2 * Δ OscLine.oscChartPot (xf t0)`. Rewrite using `[(laplacian_congr_nhds hgeq).eq_of_nhds, hcomp.laplacian_sub hharm.1, hharm.2.eq_of_nhds, Pi.zero_apply, sub_zero]`. Conclude with `h _ _ _ hφ hxan`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hdx : HasDerivAt xf ((B 1 * 1 * (A 0 + B 0 * t0) - (A 1 + B 1 * t0) * (B 0 * 1)) / (A 0 + B 0 * t0) ^ 2) t0` using `(((hasDerivAt_id t0).const_mul (B 1)).const_add (A 1)).div (((hasDerivAt_id t0).const_mul (B 0)).const_add (A 0)) h0`. Establish `hderiv : deriv xf t0 = (A 0 * B 1 - A 1 * B 0) / (A 0 + B 0 * t0) ^ 2`. Rewrite using `[hdx.deriv]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hΔg, hderiv, norm_div, norm_pow]`. Establish `hn0 : 0 < ‖A 0 + B 0 * t0‖` using `norm_pos_iff.mpr h0`. Use `Real.pi_pos` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem proof (h : LaplacianHoloComp.Statement) : OscLineDensity.Statement := by
   intro A B y hd h0 h1

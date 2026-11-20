@@ -8,7 +8,7 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.AV.AbVar.not_dvd_deg_of_no_torsion_in_kernel) | (exact GlobalTheory.AV.AbVar.not_dvd_deg_of_no_torsion_in_kernel) | (intros; apply GlobalTheory.AV.AbVar.not_dvd_deg_of_no_torsion_in_kernel <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.not_dvd_deg_of_no_torsion_in_kernel' : ∀ (K : Type) [Field K] (l : ℕ) [Fact l.Prime], (l : K) ≠ 0 → ∀ (A B : AbVar K) (h : A ⟶ B), IsIsogeny h → (∀ x : A.Pt, x ^ l = 1 → x ≫ h.hom = 1 → x = 1) → ¬ l ∣ deg h := by
   first | (exact @GlobalTheory.AV.AbVar.not_dvd_deg_of_no_torsion_in_kernel) | (exact GlobalTheory.AV.AbVar.not_dvd_deg_of_no_torsion_in_kernel) | (intros; apply GlobalTheory.AV.AbVar.not_dvd_deg_of_no_torsion_in_kernel  <;> assumption)

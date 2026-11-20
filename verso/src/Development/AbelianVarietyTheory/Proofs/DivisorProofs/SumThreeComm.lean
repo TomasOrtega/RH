@@ -12,9 +12,9 @@ namespace GlobalTheory.ArchSch.OrthPlane
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `hTens`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hTens_eq_sum {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) {α β : Type}
     [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A) (x y : Matrix α β A) :
@@ -30,7 +30,7 @@ theorem hTens_eq_sum {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_congr rfl fun j _ => Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_three_comm {A α β γ : Type} [AddCommMonoid A] [Fintype α] [Fintype β] [Fintype γ] (f : α → β → γ → A) :
     ∑ j, ∑ l, ∑ m, f j l m = ∑ m, ∑ j, ∑ l, f j l m := by
@@ -38,20 +38,20 @@ theorem sum_three_comm {A α β γ : Type} [AddCommMonoid A] [Fintype α] [Finty
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) :
     cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
 /- English proof (translation)
-Simplify using `[incM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incM_one {n : ℕ} : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   simp [incM]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hinv, hskew, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (f := fun a b => σ (v a) * (-J b a * x b)), ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -65,11 +65,11 @@ theorem form_swap {σ : E →ₐ[F] E} (hinv : ∀ t, σ (σ t) = t) {d : ℕ} {
   ring
 
 /- English proof (translation)
-Establish `h' : ∀ m, ∑ j, ∑ l, inclR (F` using `F) (AF F) (ι j m) * inclR (F := F) (AF F) (J j l) * inclR (F := F) (AF F) (σ (x₀ l)) = 0 := by`. Introduce `m`. Use `congrArg (inclR (F := F) (AF F)) (h m)` as an intermediate fact. Simplify `this` using `only [map_sum, map_mul, map_zero]`. Rewrite using `[incM_one, Matrix.one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, incM, Matrix.map_apply, Matrix.vecMulVec_apply, incV, map_mul, cA_inclR, Finset.sum_mul]`. Rewrite using `[sum_three_comm]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zero (z i m * cA σ (a k)), ← h' m, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_left {σ : E →ₐ[F] E} {n d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E) (ι : Matrix (Fin d) (Fin d₁) E)
     (x₀ : Fin d → E) (h : ∀ m, ∑ j, ∑ l, ι j m * J j l * σ (x₀ l) = 0) (a : Fin n → AE F E)
@@ -93,11 +93,11 @@ theorem inner_left {σ : E →ₐ[F] E} {n d d₁ : ℕ} (J : Matrix (Fin d) (Fi
   ring
 
 /- English proof (translation)
-Establish `h' : ∀ m, ∑ j, ∑ l, inclR (F` using `F) (AF F) (x₀ j) * inclR (F := F) (AF F) (J j l) * inclR (F := F) (AF F) (σ (ι l m)) = 0 := by`. Introduce `m`. Use `congrArg (inclR (F := F) (AF F)) (h m)` as an intermediate fact. Simplify `this` using `only [map_sum, map_mul, map_zero]`. Rewrite using `[incM_one, Matrix.one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, incM, Matrix.map_apply, Matrix.vecMulVec_apply, incV, map_mul, map_sum, cA_inclR, Finset.mul_sum]`. Rewrite using `[sum_three_comm]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zero (a i * cA σ (z k m)), ← h' m, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_right {σ : E →ₐ[F] E} {n d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E) (ι : Matrix (Fin d) (Fin d₁) E)
     (x₀ : Fin d → E) (h : ∀ m, ∑ j, ∑ l, x₀ j * J j l * σ (ι l m) = 0) (a : Fin n → AE F E)
@@ -121,19 +121,19 @@ theorem inner_right {σ : E →ₐ[F] E} {n d d₁ : ℕ} (J : Matrix (Fin d) (F
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ W W₁ H' r' s' i₀ i₁ JX hB hW hA a z`. Establish `hinv : ∀ t, σ (σ t) = t` using `fun t => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : ∀ u v : Fin d → E, ∑ j, ∑ l, u j * W.J j l * σ (v l) = form σ W.J u v`. Introduce `u v`. Simplify using `only [form, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `hcol : ∀ m, H'.ι *ᵥ Pi.single m 1 = fun j => H'.ι j m`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `h1 : ∀ m, ∑ j, ∑ l, H'.ι j m * W.J j l * σ (H'.x l) = 0`. Introduce `m`. Rewrite using `[hF (fun j => H'.ι j m), ← hcol]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hA.orth _).1`. Establish `h2 : ∀ v : Fin d → E, (∀ u, form σ W.J (H'.ι *ᵥ u) v = 0) → ∀ m, ∑ j, ∑ l, v j * W.J j l * σ (H'.ι l m) = 0`. Introduce `v hv m`. Rewrite using `[hF v (fun l => H'.ι l m), form_swap hinv hW.skew, ← hcol, hv, map_zero, neg_zero]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `symp`. Rewrite using `[hTens_eq_sum]`. Rewrite using `[Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun k _ => by`. Rewrite using `[inner_left (σ := σ) W.J H'.ι H'.x h1 a z i k, mul_zero]]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `symp`. Rewrite using `[hTens_eq_sum]`. Rewrite using `[Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun k _ => by`. Rewrite using `[inner_right (σ := σ) W.J H'.ι H'.x (h2 _ fun u => (hA.orth u).1) a z i k, mul_zero]]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `symp`. Rewrite using `[hTens_eq_sum]`. Rewrite using `[Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun k _ => by`. Rewrite using `[inner_right (σ := σ) W.J H'.ι H'.y (h2 _ fun u => (hA.orth u).2) a z i k, mul_zero]]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem symp_tens_orth : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (r' s' i₀ i₁ : ℕ) (JX : Matrix (Fin n) (Fin n) E),

@@ -18,9 +18,9 @@ namespace GlobalTheory.FormsLocus
 open GlobalTheory.AbLaw in
 
 /- English proof (translation)
-Establish `hq : φ z ∈ N.U ((Q d).ch i)` using `(Q d).le i hz`. Establish `hψ : ∀ x : Γ(T, ⊤), gs p z ⊤ x = ((X.presheaf.germ (p ⁻¹ᵁ ⊤) z trivial).hom.comp (p.app ⊤).hom) x` using `fun x => gs_eq p z ⊤ trivial x`. Rewrite using `[GlobalTheory.T.germ_form_pulledBack_combinations_expand_monomials Rg A₀ T X f N mA mB a g φ p hw d F hF z _ hq]`. Establish `hv : ∀ ν, gs φ z (N.U ((Q d).ch i)) ((monSec a d ν).f ((Q d).ch i)) = ∑ k, gs p z ⊤ (ringOf g (MvPolynomial.C (vecOf (Q d) (monSec a d ν) k))) * gs φ z ((Q d).W i) ((Q d).u k i)`. Introduce `ν`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(GlobalTheory.T.section_local_expansion Rg A₀ X f _ (Q d) (monSec a d ν) φ z i hz).trans (Finset.sum_congr rfl fun k _ => by rw [GlobalTheory.T.germ_constants_eq_along_affineSpace_square Rg A₀ T X f (mA * mB) g φ p hw z])`. Simplify using `only [hv, polys, hψ, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun ν _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_eq {Rg : Type} [CommRing Rg] {A₀ T X : Scheme.{0}} {f : A₀ ⟶ Sp Rg} {N : LB A₀} {mA mB : ℕ}
     (Q : ∀ d : ℕ, Perf f (GlobalTheory.AbLaw.pw N (d : ℤ))) (a : Fin mA → LB.Sec N)
@@ -43,15 +43,13 @@ theorem germ_eq {Rg : Type} [CommRing Rg] {A₀ T X : Scheme.{0}} {f : A₀ ⟶ 
   exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun ν _ => by ring
 
 /- English proof (translation)
-Introduce `Rg _ _ A₀ B₀ f fB N H mA mB a b hf hp hN`. Establish `Q : ∀ d : ℕ, GlobalTheory.AbLaw.Perf f (GlobalTheory.AbLaw.pw N (d : ℤ))` using `fun d => (GlobalTheory.AbLaw.nonempty_perf_of_noetherian Rg A₀ f hf hp _ (GlobalTheory.AbLaw.isLB_pw hN d)).some`. Use `⟨Sp (MvPolynomial (Fin (mA * mB)) Rg ⧸ formIdeal Q a fB b), Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (formIdeal Q a fB b))), IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective, ?_⟩` and prove the remaining obligations. Introduce `T X' g φ p hpb`. Rewrite using `[GlobalTheory.T.factors_through_zero_locus]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ d (z : X'), ∃ i, φ z ∈ (Q d).W i` using `fun d z => TopologicalSpace.Opens.mem_iSup.1 (by rw [(Q d).cover]; trivial)`. Prove the components needed by the constructor for the conclusion. Introduce `hF`. Establish `hle : formIdeal Q a fB b ≤ RingHom.ker (ringOf g)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨d, F, k, hFh, hK, rfl⟩`. Use `GlobalTheory.T.eq_zero_of_differential_kernel_zero_germs Rg A₀ T X' f _ (Q d) (g ≫ affπ Rg (mA * mB)) φ p hpb (fun k => ringOf g (polys Q a d F k)) (GlobalTheory.T.coordinatePolynomials_form_mem_kernel_differential Rg A₀ T f N mA mB Q a g d F) (fun z i hz => by` as an intermediate fact. Rewrite using `[← germ_eq Q a g φ p hpb.w d F hFh z i hz]`. Conclude with `hF d F hFh hK z ((Q d).ch i) ((Q d).le i hz))`. Conclude with `congrFun this k`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun P hP => hle hP`. Introduce `h d F hFh hK z q hq`. Take `⟨i, hi⟩` from `hmem d z`. Rewrite using `[GlobalTheory.T.homogeneousForm_vanishing_combination_chart_indep Rg A₀ T X' N mA mB a φ p _ (matOf g) d F hFh z q ((Q d).ch i) hq ((Q d).le i hi), germ_eq Q a g φ p hpb.w d F hFh z i hi]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[h _ (Ideal.subset_span ⟨d, F, k, hFh, hK, rfl⟩), gs_eq p z ⊤ trivial, map_zero, map_zero, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closed_formsOK : ∀ (Rg : Type) [CommRing Rg] [IsNoetherianRing Rg] (A₀ B₀ : Scheme.{0}) (f : A₀ ⟶ Sp Rg) (fB : B₀ ⟶ Sp Rg) (N : LB A₀) (H : LB B₀) (mA mB : ℕ) (a : Fin mA → LB.Sec N) (b : Fin mB → LB.Sec H), Flat f → GlobalTheory.AbLaw.IsProjBy f → N.IsLB → ∃ (Z : Scheme.{0}) (ιZ : Z ⟶ Sp (MvPolynomial (Fin (mA * mB)) Rg)), IsClosedImmersion ιZ ∧ ∀ (T X' : Scheme.{0}) (g : T ⟶ Sp (MvPolynomial (Fin (mA * mB)) Rg)) (φ : X' ⟶ A₀) (p : X' ⟶ T), IsPullback φ p f (g ≫ affπ Rg (mA * mB)) → (GlobalTheory.HomFixUniv.FormsOK a fB b φ p (g ≫ affπ Rg (mA * mB)) (matOf g) ↔ ∃ w : T ⟶ Z, w ≫ ιZ = g) := by
   intro Rg _ _ A₀ B₀ f fB N H mA mB a b hf hp hN

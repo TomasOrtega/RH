@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.CosetOrth.Cong
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.count_coe E w hJ, Nat.cast_ne_zero, Associates.count_ne_zero_iff_dvd hJ w.irreducible, Ideal.dvd_iff_le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem count_coe_ne_zero_iff {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) {J : Ideal (𝓞 E)}
     (hJ : J ≠ ⊥) : FractionalIdeal.count E w (J : FractionalIdeal (𝓞 E)⁰ E) ≠ 0 ↔ J ≤ w.asIdeal := by
@@ -31,13 +31,13 @@ theorem count_coe_ne_zero_iff {E : Type} [Field E] [NumberField E] (w : HeightOn
     Ideal.dvd_iff_le]
 
 /- English proof (translation)
-Take `⟨p, -, hp⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin n)) (fun k => v (G k j)) ⟨i, Finset.mem_univ _⟩`. Use `(hp i (Finset.mem_univ _)).trans ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `h0 : v (G p j) ≠ 0` using `(zero_lt_one.trans hlt).ne'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : G = 1 + (1 - H) * G` using `by rw [sub_mul, hHG, one_mul]; abel`. Establish `e2 : G p j = (1 : Matrix (Fin n) (Fin n) K) p j + ∑ k, (1 - H) p k * G k j` using `by conv_lhs => rw [e]`. Rewrite using `[Matrix.add_apply, Matrix.mul_apply]`. Establish `h1 : v ((1 : Matrix (Fin n) (Fin n) K) p j) < v (G p j)`. Use `lt_of_le_of_lt ?_ hlt` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Establish `h2 : v (∑ k, (1 - H) p k * G k j) < v (G p j)`. Use `v.map_sum_lt h0 fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `v.map_add_lt h1 h2` as an intermediate fact. Rewrite `this` using `[← e2]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_one_of_mul_eq_one {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) {n : ℕ}
     (G H : Matrix (Fin n) (Fin n) K) (hHG : H * G = 1) (hH : ∀ i j, v ((1 - H) i j) < 1) (i j : Fin n) : v (G i j) ≤ 1 := by
@@ -74,9 +74,9 @@ def evAt (w : HeightOneSpectrum (𝓞 D.host.E)) : FA D →+* w.adicCompletion D
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Establish `hh : Formalism.UG.cT (Formalism.MainNotions.StandardLatticesGL3.sgA D) (y.1 : Matrix (Fin n) (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * y.1 = 1`. Establish `h2` using `y.2`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ (y.1 : Matrix (Fin n) (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * _ * _ = _ at h2`. Rewrite `h2` using `[Matrix.map_one _ (map_zero _) (map_one _), mul_one]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_inv, Units.inv_eq_of_mul_eq_one_left hh]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inv_apply {n : ℕ} (y : Formalism.MainNotions.StandardLatticesGL3.GA D n) (i j : Fin n) :
     (((y⁻¹ : Formalism.MainNotions.StandardLatticesGL3.GA D n) : GL (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin n) (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j =
@@ -90,7 +90,7 @@ theorem inv_apply {n : ℕ} (y : Formalism.MainNotions.StandardLatticesGL3.GA D 
   rfl
 
 /- English proof (translation)
-Unfold `finMat`. Use `(Matrix.map_mul (f := GlobalTheory.BotFormula.toFinE D) (L := (((y⁻¹ : Formalism.MainNotions.StandardLatticesGL3.GA D n) : GL (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin n) (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D))) (M := ((y : GL (Fin …` as an intermediate fact. Rewrite using `[this, Subgroup.coe_inv, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finMat_inv_mul {n : ℕ} (y : Formalism.MainNotions.StandardLatticesGL3.GA D n) : finMat y⁻¹ * finMat y = 1 := by
   unfold finMat
@@ -100,7 +100,7 @@ theorem finMat_inv_mul {n : ℕ} (y : Formalism.MainNotions.StandardLatticesGL3.
   rw [this, Subgroup.coe_inv, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Valued.v (evAt w ((1 : Matrix (Fin n) (Fin n) (FA D)) i j)) ≤ 1`. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem val_one_le {n : ℕ} (i j : Fin n) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     Valued.v ((1 : Matrix (Fin n) (Fin n) (FA D)) i j w) ≤ 1 := by
@@ -108,7 +108,7 @@ theorem val_one_le {n : ℕ} (i j : Fin n) (w : HeightOneSpectrum (𝓞 D.host.E
   rw [Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Valued.v (evAt w (x - y)) ≤ 1`. Rewrite using `[map_sub]`. Conclude with `(Valued.v.map_sub _ _).trans (max_le hx hy)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sub_le {x y : FA D} {w : HeightOneSpectrum (𝓞 D.host.E)} (hx : Valued.v (x w) ≤ 1) (hy : Valued.v (y w) ≤ 1) :
     Valued.v ((x - y) w) ≤ 1 := by
@@ -117,11 +117,11 @@ theorem val_sub_le {x y : FA D} {w : HeightOneSpectrum (𝓞 D.host.E)} (hx : Va
   exact (Valued.v.map_sub _ _).trans (max_le hx hy)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `val_le_one_of_mul_eq_one Valued.v ((finMat y).map (evAt w)) ((finMat y⁻¹).map (evAt w)) ?_ (fun a b => ?_) i j` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, finMat_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `: (1 - (finMat y⁻¹).map (evAt w)) a b = evAt w ((1 - finMat y⁻¹) a b)`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, map_sub, Matrix.map_apply, Matrix.one_apply, Matrix.one_apply]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this]`. Conclude with `h a b`. Establish `: finMat y⁻¹ i j = (1 : Matrix (Fin n) (Fin n) (FA D)) i j - (1 - finMat y⁻¹) i j`. Rewrite using `[Matrix.sub_apply, sub_sub_cancel]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `val_sub_le (val_one_le i j w) (h i j).le`.
+A detailed English derivation is pending.
 -/
 theorem integral_of_cong {n : ℕ} (y : Formalism.MainNotions.StandardLatticesGL3.GA D n) (w : HeightOneSpectrum (𝓞 D.host.E))
     (h : ∀ i j, Valued.v ((1 - finMat y⁻¹) i j w) < 1) (i j : Fin n) :
@@ -139,27 +139,25 @@ theorem integral_of_cong {n : ℕ} (y : Formalism.MainNotions.StandardLatticesGL
     exact val_sub_le (val_one_le i j w) (h i j).le
 
 /- English proof (translation)
-Introduce `D hc 𝔪 Sf hG n y hoff hcong`. Take `⟨h0, hsup, -, hS⟩` from `hG`. Establish `h0' : D.host.conj • 𝔪 ≠ ⊥` using `fun h => h0 (by`. Use `congrArg (fun I => D.host.conj⁻¹ • I) h` as an intermediate fact. Simplify using `using this)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hb : ∀ w : HeightOneSpectrum (𝓞 D.host.E), D.host.conj • 𝔪 ≤ w.asIdeal → ∀ i j, Valued.v (finMat y i j w) ≤ 1 ∧ Valued.v (finMat y⁻¹ i j w) ≤ 1`. Introduce `w hw`. Use `integral_of_cong y w fun i j => (hcong w hw i j).trans_lt ?_` and prove the remaining obligations. Establish `h1` using `(count_coe_ne_zero_iff w h0').2 hw`. Establish `h2` using `FractionalIdeal.count_coe_nonneg D.host.E w (D.host.conj • 𝔪)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ w : HeightOneSpectrum (𝓞 D.host.E), ∀ i j, Valued.v (finMat y i j w) ≤ 1 ∧ Valued.v (finMat y⁻¹ i j w) ≤ 1 ∧ Valued.v ((finMat y - 1) i j w) ≤ WithZero.exp (-(FractionalIdeal.count D.host.E w (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)))`. Introduce `w i j`. Distinguish the cases in `hw : 𝔪 ≤ w.asIdeal`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨w', e', hv, hcnt, -⟩` from `hc w`. Establish `hw' : D.host.conj • 𝔪 ≤ w'.asIdeal`. Rewrite using `[e']`. Conclude with `Ideal.pointwise_smul_le_pointwise_smul_iff.2 hw`. Establish `t : ∀ (z : Formalism.MainNotions.StandardLatticesGL3.GA D n) (a b : Fin n), Valued.v (finMat z a b w) = Valued.v (finMat z⁻¹ b a w')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z a b`. Unfold `finMat`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, inv_apply, hv]`. Use `⟨(t y i j).trans_le (hb w' hw' j i).2, (t y⁻¹ i j).trans_le (by rw [inv_inv]; exact (hb w' hw' j i).1), ?_⟩` and prove the remaining obligations. Rewrite using `[← hcnt 𝔪 h0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_eq_of_le ?_ (hcong w' hw' j i)` and prove the remaining obligations. Establish `e1 : (finMat y - 1) i j = GlobalTheory.BotFormula.toFinE D ((((y : GL (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin n) (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) - 1) i j)`. Unfold `finMat`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, map_sub, Matrix.map_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e2 : (1 - finMat y⁻¹) j i = -GlobalTheory.BotFormula.toFinE D (Formalism.MainNotions.StandardLatticesGL3.sgA D ((((y : GL (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin n) (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)) - 1) i j))`. Unfold `finMat`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, map_sub, map_sub, Matrix.map_apply, inv_apply, neg_sub, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hij, if_neg (Ne.symm hij)]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, ← hv]`. Conclude with `(Valuation.map_neg _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hint : Valued.v (finMat y i j w) ≤ 1 ∧ Valued.v (finMat y⁻¹ i j w) ≤ 1`. Distinguish the cases in `hu : w.under (𝓞 D.host.F) ∈ Sf`. Take `⟨w₀, hw₀, e₀⟩` from `(hS _).1 hu`. Take `⟨w', e', -, -, hun⟩` from `hc w₀`. Break down `(hun w).1 e₀.symm with rfl | rfl` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `absurd hw₀ hw`. Conclude with `hb _ (by rw [e']; exact Ideal.pointwise_smul_le_pointwise_smul_iff.2 hw₀) i j`. Conclude with `hoff w hu i j`. Use `⟨hint.1, hint.2, ?_⟩` and prove the remaining obligations. Establish `hz : FractionalIdeal.count D.host.E w (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) = 0`.
-
-Assume the negation of the conclusion as `h`. Conclude with `hw ((count_coe_ne_zero_iff w h0).1 h)`. Rewrite using `[hz, neg_zero, WithZero.exp_zero, Matrix.sub_apply]`. Conclude with `val_sub_le hint.1 (val_one_le i j w)`. Conclude with `fun i j => ⟨(inHat_one_iff _).2 fun w => (key w i j).1, (inHat_one_iff _).2 fun w => (key w i j).2.1, fun w => (key w i j).2.2⟩`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inHat_of_inv_cong : ∀ {D : D7}, (∀ w : HeightOneSpectrum (𝓞 D.host.E), ∃ w' : HeightOneSpectrum (𝓞 D.host.E), w'.asIdeal = D.host.conj • w.asIdeal ∧
     (∀ x : Formalism.MainNotions.StandardLatticesGL3.AE D, Valued.v (GlobalTheory.BotFormula.toFinE D (Formalism.MainNotions.StandardLatticesGL3.sgA D x) w') = Valued.v (GlobalTheory.BotFormula.toFinE D x w)) ∧

@@ -23,7 +23,7 @@ def copies (ρ : Representation k G V) (Y : Submodule k V) (σ : Representation 
   ⨆ f : Into ρ Y σ, LinearMap.range f.1
 
 /- English proof (translation)
-Introduce `x` and use `h (j x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Stab.comp {ρ : Representation k G V} {W : Submodule k V} (h : Stab ρ W) {H : Type} [Group H] (j : H →* G) :
     Stab (ρ.comp j) W := fun x => h (j x)
@@ -49,7 +49,7 @@ structure LocFac {G H : Type} [Group G] [Group H] (j : H →* G) (p : G →* H) 
   comm : ∀ g, p g = 1 → ∀ h, Commute (j h) g
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv, h.left, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LocFac.dec {G H : Type} [Group G] [Group H] {j : H →* G} {p : G →* H} (h : LocFac j p) (g : G) :
     p ((j (p g))⁻¹ * g) = 1 := by rw [map_mul, map_inv, h.left, inv_mul_cancel]

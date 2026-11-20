@@ -19,7 +19,7 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 
 /- English proof (translation)
-The claim follows from `exists_inf_A C`.
+A detailed English derivation is pending.
 -/
 theorem exists_inf (C : Ctx σ B JS JT ξ₀ θ ι) : ∃ oi, IsInfWeilF σ JS JT ξ₀ B.ψ oi ∧
     ∀ s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ, s * s = 1 → ((HMF JS JT ξ₀ (tauB B)) * s).PosDef → ∀ p,
@@ -28,7 +28,7 @@ theorem exists_inf (C : Ctx σ B JS JT ξ₀ θ ι) : ∃ oi, IsInfWeilF σ JS J
   exists_inf_A C
 
 /- English proof (translation)
-The claim follows from `integral_gaussV_B hH hs hQ hg hc hi hd`.
+A detailed English derivation is pending.
 -/
 theorem integral_gaussV {κ : Type} [Fintype κ] [DecidableEq κ] {H s g g' : Matrix κ κ ℂ} (hH : Hᴴ = H) (hs : s * s = 1)
     (hQ : (H * s).PosDef) (hg : gᴴ * H * g = H) (hc : s * g = g * s) (hi : g * g' = 1) (hd : (g - 1).det ≠ 0) :
@@ -37,7 +37,7 @@ theorem integral_gaussV {κ : Type} [Fintype κ] [DecidableEq κ] {H s g g' : Ma
   integral_gaussV_B hH hs hQ hg hc hi hd
 
 /- English proof (translation)
-The claim follows from `det_mMF_B C ha hb`.
+A detailed English derivation is pending.
 -/
 theorem det_mMF (C : Ctx σ B JS JT ξ₀ θ ι) {g : GAF σ JS} {h : GAF σ JT} {a b}
     (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b) :

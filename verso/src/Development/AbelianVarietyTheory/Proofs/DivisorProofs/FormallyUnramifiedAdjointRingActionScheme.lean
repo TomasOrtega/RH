@@ -44,7 +44,7 @@ def chartPullPullAlong (L : LB X) (a₁ : Y₁ ⟶ X) (a₂ : Z ⟶ Y₁) (c₁ 
     rw [l₁, l₂, l₃, l₄, e, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullPullAlong Q φ₂' m₁' φ₂ m₁ u (by rw [hφ, ← Category.assoc, h₁, Category.assoc])) (chartPullPullAlong Q φ₂' m₂' φ₂ m₂ u (by rw [hφ, ← Category.assoc, h₂, Category.assoc])) H`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pullPull_along (Q : LB X) (φ₂ : Y₁ ⟶ X) (m₁ m₂ : Y₁ ⟶ Y₁) (φ₂' : Y₂ ⟶ X) (m₁' m₂' : Y₂ ⟶ Y₂)
     (u : Y₂ ⟶ Y₁) (hφ : φ₂' = u ≫ φ₂) (h₁ : m₁' ≫ u = u ≫ m₁) (h₂ : m₂' ≫ u = u ≫ m₂)
@@ -64,21 +64,21 @@ def sqMap (w : φ ≫ G.hom = B.hom ≫ f) : (B ⊗ B).left ⟶ (G ⊗ G).left :
   (lift (pushPt w (fst B B)) (pushPt w (snd B B))).left
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z => z.left) (lift_fst (pushPt w (fst B B)) (pushPt w (snd B B)))`.
+A detailed English derivation is pending.
 -/
 theorem sqMap_fst (w : φ ≫ G.hom = B.hom ≫ f) : sqMap w ≫ (fst G G).left = (fst B B).left ≫ φ :=
   congrArg (fun z => z.left) (lift_fst (pushPt w (fst B B)) (pushPt w (snd B B)))
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z => z.left) (lift_snd (pushPt w (fst B B)) (pushPt w (snd B B)))`.
+A detailed English derivation is pending.
 -/
 theorem sqMap_snd (w : φ ≫ G.hom = B.hom ≫ f) : sqMap w ≫ (snd G G).left = (snd B B).left ≫ φ :=
   congrArg (fun z => z.left) (lift_snd (pushPt w (fst B B)) (pushPt w (snd B B)))
 
 /- English proof (translation)
-Establish `hw : y ≫ (G ⊗ G).hom = x ≫ (G ⊗ G).hom`. Rewrite using `[← Over.w (fst G G), ← Category.assoc, ← h1, Category.assoc]`. Set `x' : Over.mk (x ≫ (G ⊗ G).hom) ⟶ G ⊗ G` to `Over.homMk x rfl`. Set `y' : Over.mk (x ≫ (G ⊗ G).hom) ⟶ G ⊗ G` to `Over.homMk y hw`. Establish `: x' = y'` using `CartesianMonoidalCategory.hom_ext _ _ (Over.OverMorphism.ext h1) (Over.OverMorphism.ext h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg (fun t => t.left) this`.
+A detailed English derivation is pending.
 -/
 theorem left_hom_ext {H Z : Scheme.{0}} {G : Over H} {x y : Z ⟶ (G ⊗ G).left}
     (h1 : x ≫ (fst G G).left = y ≫ (fst G G).left) (h2 : x ≫ (snd G G).left = y ≫ (snd G G).left) : x = y := by
@@ -90,7 +90,7 @@ theorem left_hom_ext {H Z : Scheme.{0}} {G : Over H} {x y : Z ⟶ (G ⊗ G).left
   exact congrArg (fun t => t.left) this
 
 /- English proof (translation)
-Apply `left_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, sqMap_fst, ← Category.assoc, ← Over.comp_left, lift_fst, hx, Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[Category.assoc, sqMap_snd, ← Category.assoc, ← Over.comp_left, lift_snd, hy, Category.assoc, ← Over.comp_left, lift_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_left_comp_sqMap (w : φ ≫ G.hom = B.hom ≫ f) (x' y' : B ⊗ B ⟶ B) (x y : G ⊗ G ⟶ G)
     (hx : x'.left ≫ φ = sqMap w ≫ x.left) (hy : y'.left ≫ φ = sqMap w ≫ y.left) :
@@ -108,9 +108,9 @@ section Act
 variable {O : Type} [Ring O]
 
 /- English proof (translation)
-Use `⟨fun a => ?_, ?_, fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Use `haveI := h.1 a infer_instance`. Simplify using `only`. Rewrite using `[h.2.1]`. Conclude with `(Over.pullback g).map_id _`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[h.2.2.1, Functor.map_comp]`. Simplify using `only`. Rewrite using `[h.2.2.2, Functor.map_mul]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRAct_pullback {H T : Scheme.{0}} (g : T ⟶ H) (AH : Over H) [GrpObj AH] (act : O → (AH ⟶ AH))
     (h : IsRAct AH act) : IsRAct ((Over.pullback g).obj AH) (fun a => (Over.pullback g).map (act a)) := by
@@ -126,9 +126,9 @@ theorem isRAct_pullback {H T : Scheme.{0}} (g : T ⟶ H) (AH : Over H) [GrpObj A
     rw [h.2.2.2, Functor.map_mul]
 
 /- English proof (translation)
-Use `⟨fun a => ?_, ?_, fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Use `haveI := h.1 a infer_instance`. Simplify using `only [h.2.1, Category.id_comp, Iso.hom_inv_id]`. Simplify using `only [h.2.2.1, Category.assoc, Iso.inv_hom_id_assoc]`. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.2.2.2, MonObj.mul_comp, MonObj.comp_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isRAct_conj {T : Scheme.{0}} {B C : Over T} [GrpObj B] [GrpObj C] (e : B ≅ C) [IsMonHom e.hom]
     (act : O → (C ⟶ C)) (h : IsRAct C act) : IsRAct B (fun a => e.hom ≫ act a ≫ e.inv) := by
@@ -141,7 +141,7 @@ theorem isRAct_conj {T : Scheme.{0}} {B C : Over T} [GrpObj B] [GrpObj C] (e : B
     rw [h.2.2.2, MonObj.mul_comp, MonObj.comp_mul]
 
 /- English proof (translation)
-Introduce `a` and use `lbIso_pullPull_along Q φ₂ _ _ (sqMap w ≫ φ₂) _ _ (sqMap w) rfl (lift_left_comp_sqMap w _ _ _ _ (by rw [Over.comp_left, Category.assoc, hv, ← Category.assoc, ← sqMap_fst w, Category.assoc, Over.comp_left]) (by rw [sqMap_snd])) (lift_left_comp_sqMap w _ _ _ _ (by rw [sqMap_fst]) (b …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem adj_along {H T : Scheme.{0}} {AH : Over H} {AT : Over T} [GrpObj AH] [GrpObj AT] {g : T ⟶ H}
     {χ : AT.left ⟶ AH.left} (w : χ ≫ AH.hom = AT.hom ≫ g) (act : O → (AH ⟶ AH)) (v : O → (AT ⟶ AT))
@@ -164,29 +164,29 @@ namespace GlobalTheory.EndLoc
 open ActUnr in
 
 /- English proof (translation)
-Introduce `S A _ _ Q O _ bar Rp hA`. Use `FormallyUnramified.of_hom_ext _ fun R R₀ q hq hsq g₁ g₂ hi hg ↦ ?_` and prove the remaining obligations. Set `f : Spec R ⟶ S` to `g₁ ≫ Rp.π`. Set `AT : Over (Spec R)` to `(Over.pullback f).obj A`. Set `ψ : AT.left ⟶ A.left` to `pullback.fst A.hom f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hAT : IsGrpPullback AT A f ψ` using `isGrpPullback_pullback A f`. Establish `hAbT : IsAbelianScheme AT` using `GlobalTheory.isAbelianScheme_pullback_obj f A hA`. Establish `build : ∀ g : Spec R ⟶ Rp.H, g ≫ Rp.π = f → ∃ (v : O → (AT ⟶ AT)) (χ : AT.left ⟶ Rp.AH.left) (φ₂' : (AT ⊗ AT).left ⟶ (A ⊗ A).left), IsRAct AT v ∧ IsSquare ψ φ₂' ∧ Adj AT (Q.pull φ₂') bar v ∧ IsGrpPullback AT Rp.AH g χ ∧ χ ≫ Rp.φ = ψ ∧ ∀ a, (v a).left ≫ χ = χ ≫ (Rp.act a).left`. Introduce `g hgf`. Establish `h' : IsGrpPullback ((Over.pullback g).obj Rp.AH) A f (pullback.fst Rp.AH.hom g ≫ Rp.φ)` using `((isGrpPullback_pullback Rp.AH g).comp Rp.pb).congr hgf rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨e, he, heφ⟩` from `grpPullback_iso hAT h'`. Use `haveI := he`. Establish `hie : e.inv.left ≫ e.hom.left = 𝟙 _` using `by rw [← Over.comp_left, e.inv_hom_id, Over.id_left]`. Set `χ : AT.left ⟶ Rp.AH.left` to `e.hom.left ≫ pullback.fst Rp.AH.hom g`. Set `v : O → (AT ⟶ AT)` to `fun a ↦ e.hom ≫ (Over.pullback g).map (Rp.act a) ≫ e.inv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hχφ : χ ≫ Rp.φ = ψ` using `by simp only [χ, Category.assoc]; exact heφ`. Establish `hw : χ ≫ Rp.AH.hom = AT.hom ≫ g`. Simplify using `only [χ]`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `Over.w e.hom`. Establish `hv : ∀ a, (v a).left ≫ χ = χ ≫ (Rp.act a).left` using `fun a ↦ by`. Establish `hm : ((Over.pullback g).map (Rp.act a)).left ≫ pullback.fst Rp.AH.hom g = pullback.fst Rp.AH.hom g ≫ (Rp.act a).left` using `pullback.lift_fst _ _ _`. Simplify using `only [v, χ, Over.comp_left, Category.assoc]`. Rewrite using `[reassoc_of% hie, hm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR : IsRAct AT v` using `isRAct_conj e _ (isRAct_pullback g Rp.AH Rp.act Rp.isAct)`. Use `⟨v, χ, sqMap hw ≫ Rp.φ₂, hR, ⟨?_, ?_⟩, adj_along hw Rp.act v hv Q Rp.φ₂ bar Rp.adj, Rp.pb.cancel ((hAT.congr hgf.symm hχφ.symm)) hw, hχφ, hv⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Rp.sq.1, ← Category.assoc, sqMap_fst, Category.assoc, hχφ]`. Rewrite using `[Category.assoc, Rp.sq.2, ← Category.assoc, sqMap_snd, Category.assoc, hχφ]`. Take `⟨v₁, χ₁, φ₂₁, hR₁, hsq₁, hadj₁, hpb₁, hχ₁φ, hχ₁u⟩` from `build g₁ rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨v₂, χ₂, -, hR₂, -, -, hpb₂, hχ₂φ, hχ₂u⟩` from `build g₂ hg.symm`. Set `I : Ideal R` to `RingHom.ker q.hom`. Establish `hI : IsNilpotent I` using `⟨2, hsq⟩`. Set `j : Sp (R ⧸ I) ⟶ Sp R` to `spMap (Ideal.Quotient.mk I)`. Establish `hj : j ≫ g₁ = j ≫ g₂`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ε : (R ⧸ I) ≃+* R₀` to `RingHom.quotientKerEquivOfSurjective hq`. Establish `hε : Spec.map q = Spec.map (CommRingCat.ofHom ε.toRingHom) ≫ j`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use `haveI : IsIso (CommRingCat.ofHom ε.toRingHom) := ε.toCommRingCatIso.isIso_hom`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hi` using `[hε, Category.assoc, Category.assoc]`. Conclude with `(cancel_epi _).1 hi`. Establish `hχ : pullback.fst AT.hom j ≫ χ₁ = pullback.fst AT.hom j ≫ χ₂`. Apply `Rp.pb.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hχ₁φ, hχ₂φ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, Category.assoc, hpb₁.1.w, hpb₂.1.w, pullback.condition_assoc, pullback.condition_assoc, hj]`. Establish `hv : ∀ a, v₁ a = v₂ a` using `fun a ↦ by haveI := hR₁.1 a haveI := hR₂.1 a`. Use `GlobalTheory.NilRigidity.eq_of_pullback_quotient_eq I hI AT AT hAbT (v₁ a) (v₂ a) ?_` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((Over.pullback j).map (v₁ a)).left ≫ pullback.fst AT.hom j = pullback.fst AT.hom j ≫ (v₁ a).left from pullback.lift_fst _ _ _, show ((Over.pullback j).map (v₂ a)).left ≫ pullback.fst AT.hom j = pullback.fst AT.hom j ≫ (v₂ a).left from pullback.lift_fst _ _ _]`. Apply `hAT.1.hom_ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, Category.assoc, Over.w (v₁ a), Over.w (v₂ a)]`. Rewrite using `[show ((Over.pullback j).map (v₁ a)).left ≫ pullback.snd AT.hom j = pullback.snd AT.hom j from pullback.lift_snd _ _ _, show ((Over.pullback j).map (v₂ a)).left ≫ pullback.snd AT.hom j = pullback.snd AT.hom j from pullback.lift_snd _ _ _]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, -, hg'⟩` from `Rp.rep (Spec R) f AT ψ φ₂₁ v₁ hAT hsq₁ hR₁ hadj₁`. Establish `e1` using `hg' g₁ ⟨rfl, χ₁, hpb₁, hχ₁φ, hχ₁u⟩`. Establish `e2` using `hg' g₂ ⟨hg.symm, χ₂, hpb₂, hχ₂φ, fun a ↦ by rw [hv a]; exact hχ₂u a⟩`. Rewrite using `[e1, e2]`.
+A detailed English derivation is pending.
 -/
 theorem formallyUnramified_actRep : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A ⊗ A).left)
     (O : Type) [Ring O] (bar : O → O) (R : ActRep A Q bar), IsAbelianScheme A → FormallyUnramified R.π := by

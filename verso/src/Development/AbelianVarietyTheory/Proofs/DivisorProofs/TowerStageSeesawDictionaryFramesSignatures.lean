@@ -28,9 +28,9 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨CF1, h1⟩` from `hP`. Take `⟨CF2, h2⟩` from `hQ`. Use `⟨max CF1 CF2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, g1⟩` from `h1 ε CF (le_of_max_le_left hCF)`. Take `⟨C2, x2, g2⟩` from `h2 ε CF (le_of_max_le_right hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨max C1 C2, max x1 x2, fun C hC D large₂ he hx hr T Lc μ₀ hμ G => h G μ₀ _ _ _ hμ (g1 C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) hr T Lc μ₀ hμ G) (g2 C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hr T Lc μ₀ hμ G)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem gBig_both {P Q S : GP} (hP : GBig P) (hQ : GBig Q)
     (h : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -45,15 +45,15 @@ private theorem gBig_both {P Q S : GP} (hP : GBig P) (hQ : GBig Q)
     (g2 C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hr T Lc μ₀ hμ G)⟩
 
 /- English proof (translation)
-Establish `hv` using `hX.isVac`. Establish `hν : Formalism.L2.Theta.IsHeckeChar D (α t / β t)`. Establish `h` using `(hX.weil t).hecT`. Rewrite using `[← inv_div]`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_inv.comp h.1`. Use `show ((β t / α t) _)⁻¹ = 1`. Rewrite using `[h.2 x, inv_one]`. Establish `hI : X.ideal S t ≠ ⊥`. Unfold `Tri.ideal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Ideal.zero_eq_bot]`. Use `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[Ideal.zero_eq_bot]`. Conclude with `w.ne_bot`. Take `⟨f₁, h1, h1t⟩` from `GlobalTheory.Adopt.first_standard_pair_member_has_theta_function D ψ θ A WW X.rA X.rW (α t / β t) (X.e t) (S t) (X.ideal S t) X.vac hX.rigA hX.rigW hν (hX.idem t) hI hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : X.f t = f₁`. Take `⟨⟨Tm, hT⟩, hall⟩` from `hX.fst t`. Rewrite using `[hall Tm hT, h1.2 Tm hT]`. Establish `hft : IsThetaFunO ψ (GlobalTheory.Grid.neg A) WW (X.f t)` using `heq ▸ h1t`. Use `⟨hft, fun τ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hX.idem t)`. Establish `hF` using `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hv.1.1.1 hv.2.inf ho.infPart_eq ho.conj.infPart_eq (hX.fst t) hv.2.theta hft (hv.2.fock τ)`. Rewrite using `[hA τ, hW τ]`. Conclude with `hF`.
+A detailed English derivation is pending.
 -/
 private theorem fst_fin {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → Formalism.L2.Host.HChar D.host.E) (S : T → Finset (HeightOneSpectrum (𝓞 D.host.E)))
@@ -87,9 +87,9 @@ private theorem fst_fin {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW
   exact hF
 
 /- English proof (translation)
-Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hI.idem t)`. Establish `hth : IsThetaFunO ψ A' WW (X.f' t)` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hI.isVac'.1 hI.isVac'.2.inf (hI.snd t) hI.isVac'.2.theta`. Use `⟨hth, fun τ => ?_⟩` and prove the remaining obligations. Establish `hF` using `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hI.isVac'.1.1.1 hI.isVac'.2.inf ho.conj.infPart_eq ho.conj.conj.infPart_eq (hI.snd t) hI.isVac'.2.theta hth (hI.isVac'.2.fock τ)`. Rewrite using `[hA' τ, hW τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF`.
+A detailed English derivation is pending.
 -/
 private theorem snd_fin {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → Formalism.L2.Host.HChar D.host.E) (S : T → Finset (HeightOneSpectrum (𝓞 D.host.E)))
@@ -106,17 +106,17 @@ private theorem snd_fin {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW
 
 open GlobalTheory.StageDict in
 /- English proof (translation)
-Use `gBig_both GlobalTheory.T.gridSquare_infinityExponent_gap_largeGrids GlobalTheory.T.towerStage_finitePlaces_unramified_or_split ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b _ hinf hram W i j p q A A' WW X hX`. Take `⟨hp, hq, hrA, hrA', hnA, hnA', hnW, hXi⟩` from `hX`. Take `⟨a, b, hab⟩` from `hinf W i j`. Establish `hsz` using `stage_sizes i j hp hq hrA hrA'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrk : WW.rank = A.rank + A'.rank` using `hXi.rank.symm`. Establish `e1 : ∀ τ, (GlobalTheory.SquareComm.frSgn true (rigFr X.rA hXi.rigA)).cart τ = -X.rA.s τ` using `cart_frSgn_true_rigFr X.rA hXi.rigA`. Establish `e1' : ∀ τ, (GlobalTheory.SquareComm.frSgn false (rigFr X.rA' hXi.rigA')).cart τ = X.rA'.s τ` using `cart_frSgn_false_rigFr X.rA' hXi.rigA'`. Establish `e2 : ∀ τ, (rigFr X.rW hXi.rigW).cart τ = X.rW.s τ` using `cart_rigFr X.rW hXi.rigW`. Use `⟨rigFr X.rA hXi.rigA, rigFr X.rA' hXi.rigA', rigFr X.rW hXi.rigW, a, b, hnA, hnA', hnW, fun t => ⟨?_, fun τ => ⟨(hab t τ).1, (hab t τ).2.1⟩, fst_fin X _ _ _ _ _ _ _ _ e1 e2 hXi t, snd_fin X _ _ _ _ _ _ _ _ e1' e2 hXi t, ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `{ hecA := (hXi.weil' t).hecS hecB := (hXi.weil t).hecS resA := (hXi.weil' t).resS resB := (hXi.weil t).resS rank := hrk even := by rw [hrk]; exact hsz.1 sig := ⟨p, q, fun τ => ⟨hnA τ, hnA' τ, hnW τ⟩, hsz.2.1, hsz.2.2.1⟩ gap := fun τ => ⟨a τ, b τ, (hab t τ).1, (hab t τ).2.1, ?_⟩ r …` and prove the remaining obligations. Establish `h1` using `(hab t τ).2.2`. Establish `h2 : ((WW.rank : ℕ) : ℚ) ≤ ((rankV D (i + 1) (j + 1) + rankV D i j : ℕ) : ℚ)`. Conclude with `(hrk ▸ hsz.2.2.2)` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P g h`. Establish `f1 : (GlobalTheory.SquareComm.frSgn true (rigFr X.rA hXi.rigA)).cart = fun τ => -X.rA.s τ` using `funext e1`. Establish `f2 : (rigFr X.rW hXi.rigW).cart = X.rW.s` using `funext e2`. Establish `f3 : (rigFr X.rA hXi.rigA).onb = X.rA.B` using `funext (onb_rigFr X.rA hXi.rigA)`. Establish `f4 : (rigFr X.rW hXi.rigW).onb = X.rW.B` using `funext (onb_rigFr X.rW hXi.rigW)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.SquareComm.fockF GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri.ker`. Rewrite using `[f1, f2, f3, f4]`. Introduce `P g h`. Establish `f1 : (GlobalTheory.SquareComm.frSgn false (rigFr X.rA' hXi.rigA')).cart = X.rA'.s` using `funext e1'`. Establish `f2 : (rigFr X.rW hXi.rigW).cart = X.rW.s` using `funext e2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f3 : (rigFr X.rA' hXi.rigA').onb = X.rA'.B` using `funext (onb_rigFr X.rA' hXi.rigA')`. Establish `f4 : (rigFr X.rW hXi.rigW).onb = X.rW.B` using `funext (onb_rigFr X.rW hXi.rigW)`. Unfold `GlobalTheory.SquareComm.fockF GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri.ker'`. Rewrite using `[f1, f2, f3, f4]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.T.towerStage_seesawDictionary_framesSignatures : GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW),
   GlobalTheory.SqTower.IsStageC W i j p q X → ∃ (FA : GlobalTheory.ChainFr.Fr A) (FA' : GlobalTheory.ChainFr.Fr A') (FW : GlobalTheory.ChainFr.Fr WW) (a b : D.what₂.Tau → ℚ),

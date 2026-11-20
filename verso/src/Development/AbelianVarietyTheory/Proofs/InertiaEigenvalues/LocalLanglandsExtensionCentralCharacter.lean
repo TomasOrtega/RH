@@ -14,7 +14,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocLanglands
 
 /- English proof (translation)
-Establish `h0 : (0 : ℂ[X]) ∉ s.map p`. Rewrite using `[Multiset.mem_map]`. Introduce and unpack `⟨i, -, hi⟩`. Conclude with `(hp i).ne_zero hi`. Rewrite using `[Polynomial.roots_multiset_prod _ h0, Multiset.bind_map, Multiset.prod_bind]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_roots_prod_of_monic {ι : Type*} (s : Multiset ι) (p : ι → ℂ[X]) (hp : ∀ i, (p i).Monic) :
     (s.map p).prod.roots.prod = (s.map fun i => (p i).roots.prod).prod := by

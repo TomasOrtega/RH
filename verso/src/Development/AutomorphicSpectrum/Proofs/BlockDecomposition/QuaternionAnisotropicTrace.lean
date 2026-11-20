@@ -7,13 +7,13 @@ open scoped TensorProduct Quaternion
 namespace GlobalTheory.CompanionTheory.PlaneSA
 
 /- English proof (translation)
-Introduce `F K _ _ _ d β h2 han b hb hre r hr`. Establish `hz : qn (⟨r, 2 * b.imI, 2 * b.imJ, 2 * b.imK⟩ : Q d β K) = 0`. Simplify using `only [qn] at hb ⊢`. Take the linear combination `hr + 4 * hb`. Establish `h0` using `han _ hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hI : b.imI = 0`. Use `congrArg QuaternionAlgebra.imI h0` as an intermediate fact. Simplify `this` using `[h2]`. Establish `hJ : b.imJ = 0`. Use `congrArg QuaternionAlgebra.imJ h0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[h2]`. Establish `hK : b.imK = 0`. Use `congrArg QuaternionAlgebra.imK h0` as an intermediate fact. Simplify `this` using `[h2]`. Apply `hre` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hb` using `[qn, hI, hJ, hK]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem anis_trace_sq_sub_four_ne_sq :
     ∀ {F K : Type} [Field F] [Field K] [Algebra F K] (d β : F), (2 : K) ≠ 0 →

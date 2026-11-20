@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective k`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl y`. Use `⟨a, s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.algebraMap_residueField_eq_zero]`. Conclude with `s.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply R (Localization.AtPrime p) p.ResidueField, IsScalarTower.algebraMap_apply R (Localization.AtPrime p) p.ResidueField a]`. Simplify using `only [IsLocalRing.ResidueField.algebraMap_eq]`. Rewrite using `[← map_mul, IsLocalization.mk'_spec']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueField_exists_algebraMap_mul_eq (R : Type) [CommRing R] (p : Ideal R) [p.IsPrime]
     (k : p.ResidueField) : ∃ a s : R, algebraMap R p.ResidueField s ≠ 0 ∧
@@ -32,9 +32,9 @@ theorem residueField_exists_algebraMap_mul_eq (R : Type) [CommRing R] (p : Ideal
     rw [← map_mul, IsLocalization.mk'_spec']
 
 /- English proof (translation)
-Introduce `R O _ _ _ _ M _ _ _ _ _ _ hK`. Set `b` to `Module.Free.chooseBasis ℤ O`. Use `GlobalTheory.T.locally_free_of_maximal_ideal_generator R O _ b M fun p hp => ?_` and prove the remaining obligations. Take `⟨N, _, _, _, _, e, he, hinv⟩` from `hK p.ResidueField`. Take `⟨m, hm⟩` from `GlobalTheory.T.module_action_fraction_field R O _ b M p.ResidueField (residueField_exists_algebraMap_mul_eq R p) N e he hinv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, h1, h2⟩` from `GlobalTheory.T.exists_local_generators_residue_basis R M _ (fun i => b i • m) p hm`. Conclude with `⟨g, hg, m, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem invertible_of_fibres_invertible : ∀ (R O : Type) [CommRing R] [CommRing O] [Module.Free ℤ O] [Module.Finite ℤ O] (M : Type)
     [AddCommGroup M] [Module R M] [Module O M] [SMulCommClass R O M] [Module.Finite R M] [Module.Projective R M],

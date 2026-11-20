@@ -9,14 +9,14 @@ noncomputable section
 namespace GlobalTheory.KZ
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vs_mem_of_isIntegral {K : Type} [Field K] (W : ValuationSubring K) {x : K} (h : IsIntegral W x) : x ∈ W := by
   obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.mp h
   rw [← hy]; exact y.2
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.algebraMap_apply']`. Establish `: algebraMap Ω (PowerSeries Ω) c = PowerSeries.C c` using `rfl`. Rewrite using `[this, HahnSeries.ofPowerSeries_C, HahnSeries.C_apply, HahnSeries.coeff_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hs_coeff_algebraMap {Ω : Type} [Field Ω] (c : Ω) (r : ℚ) :
     (algebraMap Ω (HahnSeries ℚ Ω) c).coeff r = if r = 0 then c else 0 := by
@@ -28,7 +28,7 @@ theorem hs_coeff_algebraMap {Ω : Type} [Field Ω] (c : Ω) (r : ℚ) :
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Apply `(X.exp : X.K →+* HahnSeries ℚ Ω).injective` to reduce the goal to its premises. Use extensionality with `r`. Express the relevant statement in the definitionally equal form `(X.exp (X.gal s (algebraMap Ω X.K c))).coeff r = (X.exp (algebraMap Ω X.K (s c))).coeff r`. Rewrite using `[X.gal_exp, AlgHom.commutes, AlgHom.commutes, hs_coeff_algebraMap, hs_coeff_algebraMap]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Tower.gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) :
     X.gal s (algebraMap Ω X.K c) = algebraMap Ω X.K (s c) := by
@@ -39,9 +39,9 @@ theorem Tower.gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `(X.exp : X.K →+* HahnSeries ℚ Ω).injective` to reduce the goal to its premises. Use extensionality with `r`. Express the relevant statement in the definitionally equal form `(X.exp (X.gal s X.jK)).coeff r = (X.exp X.jK).coeff r`. Rewrite using `[X.gal_exp]`. Take `⟨n, hn⟩` from `X.j_exp.2.2 r`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hn, map_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Tower.gal_jK (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) : X.gal s X.jK = X.jK := by
   apply (X.exp : X.K →+* HahnSeries ℚ Ω).injective
@@ -52,9 +52,9 @@ theorem Tower.gal_jK (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) : X.gal s X.jK = 
   rw [hn, map_intCast]
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Rewrite using `[Set.mem_singleton_iff.mp hy]`. Conclude with `hW.2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap c => exact hW.1 c`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Tower.adjoin_le_of_overY (X : Tower Ω ε) (W : ValuationSubring X.K) (hW : X.OverY W) :
     ∀ x ∈ Algebra.adjoin Ω {X.jK}, x ∈ W := by
@@ -67,15 +67,13 @@ theorem Tower.adjoin_le_of_overY (X : Tower Ω ε) (W : ValuationSubring X.K) (h
   | mul a b _ _ ha hb => exact mul_mem ha hb
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X hε hj W hW`. Use `⟨fun g => ⟨fun c => ?_, ?_⟩, fun s => ⟨fun c => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_comap]`. Express the relevant statement in the definitionally equal form `X.sl g (algebraMap Ω X.K c) ∈ W`. Rewrite using `[AlgEquiv.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hW.1 c`. Rewrite using `[ValuationSubring.mem_comap]`. Express the relevant statement in the definitionally equal form `X.sl g X.jK ∈ W`. Establish `hint` using `GlobalTheory.T.isIntegral_modularTower_j_comp_glTwoPosRat ε X hε hj g`. Set `A` to `Algebra.adjoin Ω {X.jK}`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : A.toSubring ≤ W.toSubring` using `fun x hx => X.adjoin_le_of_overY W hW x hx`. Set `ι : A →+* W` to `Subring.inclusion hle`. Set `_ : Algebra A W` to `ι.toAlgebra`. Establish `: IsScalarTower A W X.K` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Conclude with `vs_mem_of_isIntegral W (hint.tower_top)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ValuationSubring.mem_comap]`. Express the relevant statement in the definitionally equal form `X.gal s (algebraMap Ω X.K c) ∈ W`. Rewrite using `[X.gal_algebraMap]`. Conclude with `hW.1 (s c)`. Rewrite using `[ValuationSubring.mem_comap]`.
-
-Express the relevant statement in the definitionally equal form `X.gal s X.jK ∈ W`. Rewrite using `[X.gal_jK]`. Conclude with `hW.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tower.overY_comap_sl_gal : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ)
     (X : Tower Ω ε), Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →

@@ -6,7 +6,7 @@ import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.CuspidalExhaustion
 namespace CompanionTheory.Groth
 
 /- English proof (translation)
-The claim follows from `groth_of_three hZ (fun k _ _ _ _ => CompanionTheory.Exh.lUnlinkedIrr_of_seg hZ k) fun k _ _ _ _ => ⟨CompanionTheory.Exh.midP' k CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top, CompanionTheory.Exh.refineP' k, CompanionTheory.Exh.swapP' k (ClsOfF.comm_of (CompanionTheory.Exh …`.
+A detailed English derivation is pending.
 -/
 theorem grothendieckRingPolynomial_of_seg (hZ : GlobalTheory.Published.SegmentRepresentation) : GlobalTheory.Published.GrothendieckRingPolynomial :=
   groth_of_three hZ (fun k _ _ _ _ => CompanionTheory.Exh.lUnlinkedIrr_of_seg hZ k) fun k _ _ _ _ =>

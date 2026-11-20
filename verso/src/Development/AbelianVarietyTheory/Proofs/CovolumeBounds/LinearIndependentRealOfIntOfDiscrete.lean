@@ -10,7 +10,7 @@ section Gram
 variable {𝕜 : Type*} [RCLike 𝕜] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h : b.toBasis.det v = (Matrix.of fun i j ↦ b.repr (v j) i).det`. Rewrite using `[Basis.det_apply]`. Use `congr 1`. Rewrite using `[gram_eq_conjTranspose_mul b v, det_mul, det_conjTranspose, h, RCLike.star_def, RCLike.conj_mul]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -24,11 +24,11 @@ theorem det_gram_eq_normSq_det {V : Type*} [NormedAddCommGroup V] [InnerProductS
   push_cast; rfl
 
 /- English proof (translation)
-Set `e` to `(Fintype.equivFin ι).symm`. Establish `h' : finrank 𝕜 V = Fintype.card (Fin (Fintype.card ι))` using `by simpa using h`. Establish `h1 : (gram 𝕜 v).det = (gram 𝕜 (v ∘ e)).det`. Rewrite using `[← det_submatrix_equiv_self e]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `b` to `InnerProductSpace.gramSchmidtOrthonormalBasis h' (v ∘ e)`. Establish `hb : b.toBasis.det (v ∘ e) = ∏ i, ⟪b i, (v ∘ e) i⟫_𝕜` using `InnerProductSpace.gramSchmidtOrthonormalBasis_det h' _`. Rewrite using `[h1, det_gram_eq_normSq_det b, hb, RCLike.ofReal_le_ofReal, norm_prod, ← Finset.prod_pow, ← e.prod_comp (fun i ↦ ‖v i‖ ^ 2)]`. Use `Finset.prod_le_prod (fun i _ ↦ by positivity) fun i _ ↦ ?_` and prove the remaining obligations. Use `gcongr`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using norm_inner_le_norm (𝕜 := 𝕜) (b i) (v (e i))`.
+A detailed English derivation is pending.
 -/
 theorem det_gram_le_of_finrank_eq {V : Type*} [NormedAddCommGroup V] [InnerProductSpace 𝕜 V]
     [FiniteDimensional 𝕜 V] (h : finrank 𝕜 V = Fintype.card ι) (v : ι → V) :
@@ -47,9 +47,9 @@ theorem det_gram_le_of_finrank_eq {V : Type*} [NormedAddCommGroup V] [InnerProdu
   simpa using norm_inner_le_norm (𝕜 := 𝕜) (b i) (v (e i))
 
 /- English proof (translation)
-Set `v : ι → EuclideanSpace 𝕜 ι` to `fun j ↦ WithLp.toLp 2 fun i ↦ A i j`. Establish `h` using `det_gram_le_of_finrank_eq (𝕜 := 𝕜) (by simp) v`. Rewrite `h` using `[det_gram_eq_normSq_det (EuclideanSpace.basisFun ι 𝕜), RCLike.ofReal_le_ofReal]`. Establish `h2 : (EuclideanSpace.basisFun ι 𝕜).toBasis.det v = A.det`. Rewrite using `[Basis.det_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite `h` using `[h2]`. Use `h.trans_eq (Finset.prod_congr rfl fun j _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[EuclideanSpace.norm_sq_eq]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_det_sq_le_prod_col (A : Matrix ι ι 𝕜) :
     ‖A.det‖ ^ 2 ≤ ∏ j, ∑ i, ‖A i j‖ ^ 2 := by
@@ -63,9 +63,9 @@ theorem norm_det_sq_le_prod_col (A : Matrix ι ι 𝕜) :
   rw [EuclideanSpace.norm_sq_eq]
 
 /- English proof (translation)
-Take `⟨B, rfl⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.1 hA.nonneg`. Establish `h` using `norm_det_sq_le_prod_col B`. Rewrite `h` using `[← RCLike.ofReal_le_ofReal (K := 𝕜)]`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[det_mul, star_eq_conjTranspose, det_conjTranspose, RCLike.star_def, RCLike.conj_mul] push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `push_cast`. Use `Finset.prod_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Simplify using `[mul_apply, RCLike.conj_mul]`.
+Both sides reduce to the same expression. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem posSemidef_det_le_prod_diag {A : Matrix ι ι 𝕜} (hA : A.PosSemidef) :
     A.det ≤ ∏ i, A i i := by
@@ -80,9 +80,9 @@ theorem posSemidef_det_le_prod_diag {A : Matrix ι ι 𝕜} (hA : A.PosSemidef) 
     simp [mul_apply, RCLike.conj_mul]
 
 /- English proof (translation)
-Establish `h` using `posSemidef_det_le_prod_diag hA`. Establish `h2 : ∏ i, A i i = ((∏ i, RCLike.re (A i i) : ℝ) : 𝕜)`. Use `push_cast`. Use `Finset.prod_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Conclude with `(hA.isHermitian.coe_re_apply_self i).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2]`. Simplify `(RCLike.le_iff_re_im.1 h).1` using `only [RCLike.ofReal_re]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem posSemidef_re_det_le_prod_diag {A : Matrix ι ι 𝕜} (hA : A.PosSemidef) :
     RCLike.re A.det ≤ ∏ i, RCLike.re (A i i) := by
@@ -104,7 +104,7 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDim
   {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Establish `hle : span ℤ (Set.range v) ≤ L` using `span_le.2 (Set.range_subset_iff.2 hv)`. Establish `hd : DiscreteTopology (span ℤ (Set.range v))` using `DiscreteTopology.of_continuous_injective (β := L) (f := Set.inclusion hle) (continuous_inclusion hle) (Set.inclusion_injective hle)`. Rewrite `hli`, the goal using `[linearIndependent_iff_card_eq_finrank_span]`. Rewrite using `[Real.finrank_eq_int_finrank_of_discrete hd, hli]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem linearIndependent_real_of_int_of_discrete {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] (L : Submodule ℤ F) [DiscreteTopology L]
@@ -119,7 +119,7 @@ theorem linearIndependent_real_of_int_of_discrete {F : Type*} [NormedAddCommGrou
 variable [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-Set `o : OrthonormalBasis ι ℝ E` to `(stdOrthonormalBasis ℝ E).reindex (Fintype.equivFinOfCardEq (finrank_eq_card_basis b).symm).symm`. Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain _ volume (ZSpan.isAddFundamentalDomain b volume), ZSpan.measureReal_fundamentalDomain b volume o.toBasis, measureReal_congr (ZSpan.fundamentalDomain_ae_parallelepiped o.toBasis volume), det_gram_eq_normSq_det o, measureReal_def, o.c …`. Simplify using `[Real.sqrt_sq_eq_abs]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem covolume_span_basis_eq_sqrt_det_gram [DecidableEq ι] (b : Basis ι ℝ E) :
     ZLattice.covolume (span ℤ (Set.range b)) = √(gram ℝ b).det := by
@@ -133,7 +133,7 @@ theorem covolume_span_basis_eq_sqrt_det_gram [DecidableEq ι] (b : Basis ι ℝ 
   simp [Real.sqrt_sq_eq_abs]
 
 /- English proof (translation)
-Establish `h` using `covolume_span_basis_eq_sqrt_det_gram (b.ofZLatticeBasis ℝ L)`. Rewrite `h` using `[b.ofZLatticeBasis_span ℝ]`. Rewrite using `[h]`. Use `congr 3`. Use extensionality with `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/

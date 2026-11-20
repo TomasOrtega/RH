@@ -19,7 +19,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `h` using `comap_le_strictTransform f Z (⊤ : X.IdealSheafData)`. Establish `h2 : (⊤ : X'.IdealSheafData) ≤ Blowup.strictTransform f Z ⊤`. Use `le_trans ?_ h` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `top_le_iff.mp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem strictTransform_top_eq_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.IdealSheafData) :
     Blowup.strictTransform f Z ⊤ = ⊤ := by
@@ -30,9 +30,9 @@ theorem strictTransform_top_eq_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.Ide
   exact top_le_iff.mp h2
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Rewrite using `[BlowupSequenceData.iteratedStrictTransform_zero]`. Simplify using the standard rewrite rules. Consider the case `succ i ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[BlowupSequenceData.iteratedStrictTransform_succ, ih, strictTransform_top_eq_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem BlowupSequenceData.iteratedStrictTransform_top {X : Scheme.{u}} (d : BlowupSequenceData X) (i : ℕ) :
     d.iteratedStrictTransform i ⊤ = ⊤ := by

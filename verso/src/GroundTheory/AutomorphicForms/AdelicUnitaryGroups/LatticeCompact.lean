@@ -22,7 +22,7 @@ def vecCoordsHomeomorph : (ι → R ⊗[K] E) ≃ₜ (ι → κ → R) :=
   Homeomorph.piCongrRight fun _ => tensorCoordsHomeomorph R b
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [stdLattice, Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, SetLike.mem_coe]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem stdLattice_eq_preimage (O : Subring R) :
     stdLattice ι R b O = vecCoordsHomeomorph R b ⁻¹'
@@ -33,7 +33,7 @@ theorem stdLattice_eq_preimage (O : Subring R) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[stdLattice_eq_preimage]`. Conclude with `(vecCoordsHomeomorph R b).continuous.isOpen_preimage _ (isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => hO)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_stdLattice {O : Subring R} (hO : IsOpen (O : Set R)) :
     IsOpen (stdLattice ι R b O) := by
@@ -42,7 +42,7 @@ theorem isOpen_stdLattice {O : Subring R} (hO : IsOpen (O : Set R)) :
     (isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => hO)
 
 /- English proof (translation)
-Rewrite using `[stdLattice_eq_preimage]`. Conclude with `(vecCoordsHomeomorph R b).isCompact_preimage.2 (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hO)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_stdLattice {O : Subring R} (hO : IsCompact (O : Set R)) :
     IsCompact (stdLattice ι R b O) := by
@@ -51,7 +51,7 @@ theorem isCompact_stdLattice {O : Subring R} (hO : IsCompact (O : Set R)) :
     (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hO)
 
 /- English proof (translation)
-Establish `h1 : Continuous fun p : unitaryPoints K E H R × (ι → R ⊗[K] E) => unitaryMat p.1` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_fst`. Conclude with `h1.matrix_mulVec continuous_snd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_unitaryMat_mulVec :
     Continuous fun p : unitaryPoints K E H R × (ι → R ⊗[K] E) => unitaryMat p.1 *ᵥ p.2 := by

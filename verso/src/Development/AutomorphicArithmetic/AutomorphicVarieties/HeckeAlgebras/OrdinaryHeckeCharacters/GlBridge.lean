@@ -11,13 +11,13 @@ section SlopeTestRemainingChoices
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing`.
+A detailed English derivation is pending.
 -/
 private theorem br_loc : IsLocalRing 𝒪[k] := (inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing
 attribute [local instance] br_loc
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `valuation_surjective (uniformizer k)`. Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `uniformizer_pos.ne (by simpa using hx)`. Conclude with `Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = uniformizer k) ⟨Units.mk0 x h0, hx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem br_unif : valuation k (unif k : k) = uniformizer k := by
   obtain ⟨x, hx⟩ := valuation_surjective (uniformizer k)
@@ -27,9 +27,9 @@ private theorem br_unif : valuation k (unif k : k) = uniformizer k := by
   exact Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = uniformizer k) ⟨Units.mk0 x h0, hx⟩
 
 /- English proof (translation)
-Establish `hI` using `Valuation.integer.integers (valuation k)`. Set `p : 𝒪[k]` to `⟨unif k, (br_unif.trans_lt uniformizer_lt_one).le⟩`. Establish `hp : valuation k (algebraMap 𝒪[k] k p) = uniformizer k` using `br_unif`. Establish `e : IsLocalRing.maximalIdeal 𝒪[k] = Ideal.span {p}`. Use extensionality with `y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff, GlobalTheory.StepData.residue_eq_zero_iff_lt, Ideal.mem_span_singleton, hI.dvd_iff_le, hp, le_uniformizer_iff]`. Both sides reduce to the same expression. Rewrite using `[e, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hI.dvd_iff_le, map_pow, map_pow, hp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem br_pow (c : ℕ) (x : 𝒪[k]) :
     x ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c ↔ valuation k (x : k) ≤ uniformizer k ^ c := by
@@ -45,11 +45,11 @@ private theorem br_pow (c : ℕ) (x : 𝒪[k]) :
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ u : GL (Fin n) 𝒪[k], u ∈ (Matrix.GeneralLinearGroup.map (n` using `Fin n) (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c))).ker ↔ ∀ i j, valuation k (((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u).val - 1) i j) ≤ uniformizer k ^ c := by`. Introduce `u`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `e : ((1 : GL (Fin n) (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c)).val) i j = Ideal.Quotient.mk _ ((1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `simp only [Units.val_one, Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[e]`. Use `(Ideal.Quotient.eq.trans (br_pow c _)).trans (iff_of_eq ?_)` and prove the remaining obligations. Use `congr 2`. Apply the tactic sequence `simp only [Matrix.sub_apply, Matrix.one_apply]; split_ifs <;> simp <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨⟨u, rfl⟩, (key u).1 hu⟩`. Introduce and unpack `⟨⟨u, rfl⟩, hu⟩`. Conclude with `⟨u, (key u).2 hu, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem br_memKc {c : ℕ} {g : GL (Fin n) k} :
     g ∈ Kc k n c ↔ g ∈ KO k (Fin n) ∧ ∀ i j, valuation k ((g.val - 1) i j) ≤ uniformizer k ^ c := by
@@ -73,16 +73,16 @@ private theorem br_memKc {c : ℕ} {g : GL (Fin n) k} :
     exact ⟨u, (key u).2 hu, rfl⟩
 
 /- English proof (translation)
-Introduce `_ hg` and use `br_memKc.2 ⟨(br_memKc.1 hg).1, fun i j => ((br_memKc.1 hg).2 i j).trans (pow_le_pow_right_of_le_one' uniformizer_lt_one.le h)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem br_Kc_anti {c d : ℕ} (h : c ≤ d) : Kc k n d ≤ Kc k n c := fun _ hg =>
   br_memKc.2 ⟨(br_memKc.1 hg).1, fun i j => ((br_memKc.1 hg).2 i j).trans
     (pow_le_pow_right_of_le_one' uniformizer_lt_one.le h)⟩
 
 /- English proof (translation)
-Establish `e : (Kc k n c : Set (GL (Fin n) k)) = (KO k (Fin n) : Set (GL (Fin n) k)) ∩ ⋂ i, ⋂ j, (fun g : GL (Fin n) k => (g.val - 1) i j) ⁻¹' {x | valuation k x ≤ uniformizer k ^ c}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, br_memKc, Set.mem_iInter, Set.mem_inter_iff]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.SplitFlip.isOpen_KO.inter <| isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.preimage ?_ ?_` and prove the remaining obligations. Use `Units.continuous_val (M := Matrix (Fin n) (Fin n) k) fun_prop` as an intermediate fact. Establish `h0 : (valuation k).restrict ((unif k : k) ^ c) ≠ 0` using `by simp`. Simplify `Valuation.isOpen_closedBall h0` using `only [Valuation.restrict_le_iff, map_pow (valuation k), br_unif]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem br_Kc_open (c : ℕ) : IsOpen (Kc k n c : Set (GL (Fin n) k)) := by
   have e : (Kc k n c : Set (GL (Fin n) k)) = (KO k (Fin n) : Set (GL (Fin n) k)) ∩
@@ -97,9 +97,9 @@ private theorem br_Kc_open (c : ℕ) : IsOpen (Kc k n c : Set (GL (Fin n) k)) :=
     simpa only [Valuation.restrict_le_iff, map_pow (valuation k), br_unif] using Valuation.isOpen_closedBall h0
 
 /- English proof (translation)
-Use `exists_subset_nhds_of_isCompact' (V := fun c => (Kc k n c : Set (GL (Fin n) k))) (directed_of_isDirected_le fun _ _ h => br_Kc_anti h) (fun c => GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (br_Kc_open c)) fun g hg => (br_memKc.1 hg).1) (f …` and prove the remaining obligations. Establish `: g = 1`. Use extensionality with `i j`. Assume the negation of the conclusion as `h`. Establish `h0 : valuation k ((g.val - 1) i j) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify `h` using `[sub_eq_zero]`. Take `⟨c, hc⟩` from `exists_pow_lt₀ (uniformizer_lt_one (R := k)) (Units.mk0 _ h0)`. Conclude with `hc.not_ge ((br_memKc.1 (Set.mem_iInter.1 hg c)).2 i j)`. Rewrite using `[this]`. Conclude with `hU.mem_nhds (one_mem U)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem br_basis (U : Subgroup (GL (Fin n) k)) (hU : IsOpen (U : Set (GL (Fin n) k))) :
     ∃ c, Kc k n c ≤ U := by
@@ -118,9 +118,9 @@ private theorem br_basis (U : Subgroup (GL (Fin n) k)) (hU : IsOpen (U : Set (GL
   exact hU.mem_nhds (one_mem U)
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.1, GlobalTheory.StepData.intM_of_mem_KO h.2⟩, fun ⟨h, h1⟩ => ⟨h, ?_⟩⟩` and prove the remaining obligations. Take `⟨h2, h3⟩` from `(mem_unipB k).1 h`. Set `A : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨g.val i j, h1 i j⟩`. Establish `hA : A.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (M := A) fun i j hij => Subtype.ext (h2 i j hij)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun i _ => Subtype.ext (h3 i)`. Conclude with `⟨Matrix.GeneralLinearGroup.mk'' A (by rw [hA]; exact isUnit_one), Units.ext rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem br_memN {g : GL (Fin n) k} :
     g ∈ (glIwa k n).N ↔ g ∈ unipB k (Fin n) ∧ ∀ i j, valuation k (g.val i j) ≤ 1 := by
@@ -133,9 +133,9 @@ private theorem br_memN {g : GL (Fin n) k} :
   exact ⟨Matrix.GeneralLinearGroup.mk'' A (by rw [hA]; exact isUnit_one), Units.ext rfl⟩
 
 /- English proof (translation)
-Establish `e : (MulAut.conj (upow k n a)).symm g = diagT k (Fin n) (fun i => unif k ^ a i)⁻¹ * g * (diagT k (Fin n) (fun i => unif k ^ a i)⁻¹)⁻¹`. Simplify using `[upow]`. Establish `e' : g = diagT k (Fin n) (fun i => unif k ^ a i) * (diagT k (Fin n) (fun i => unif k ^ a i)⁻¹ * g * (diagT k (Fin n) (fun i => unif k ^ a i)⁻¹)⁻¹) * (diagT k (Fin n) (fun i => unif k ^ a i))⁻¹`. Rewrite using `[map_inv]`. Use `group`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Iwa.Nconj, Subgroup.mem_map_equiv, e, br_memN]`. Use `and_congr ⟨fun h => e' ▸ GlobalTheory.IwahoriTraceProof.conj_mem_unipB _ h, GlobalTheory.IwahoriTraceProof.conj_mem_unipB _⟩ (forall₂_congr fun i j => ?_)` and prove the remaining obligations. Rewrite using `[← map_inv, inv_inv, GlobalTheory.IwahoriTraceProof.diag_mul_mul_diag, map_mul, Pi.inv_apply, ← _root_.zpow_neg, ← _root_.zpow_add, Units.val_zpow_eq_zpow_val, map_zpow₀, br_unif, show -a i + a j = -(a i - a j) by ring, _root_.zpow_neg, inv_mul_le_iff₀ (zpow_pos uniformizer_pos _ …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem br_memNconj (a : Fin n → ℤ) {g : GL (Fin n) k} :
     g ∈ (glIwa k n).Nconj (upow k n a) ↔
@@ -153,7 +153,7 @@ private theorem br_memNconj (a : Fin n → ℤ) {g : GL (Fin n) k} :
     show -a i + a j = -(a i - a j) by ring, _root_.zpow_neg, inv_mul_le_iff₀ (zpow_pos uniformizer_pos _), mul_one]
 
 /- English proof (translation)
-Use `and_congr ?_ Iff.rfl` and prove the remaining obligations. Rewrite using `[← inv_mem_iff (H := unipBLower k (Fin n)), GlobalTheory.IwahoriTraceProof.mem_unipBLower]`. Use `(mem_unipB k).trans ?_` and prove the remaining obligations. Conclude with `⟨fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩, fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 private theorem br_memNm {c : ℕ} {g : GL (Fin n) k} :
     g ∈ (glIwa k n).Nm c ↔ g ∈ unipBLower k (Fin n) ∧ g ∈ Kc k n (c + 1) := by
@@ -163,20 +163,20 @@ private theorem br_memNm {c : ℕ} {g : GL (Fin n) k} :
   exact ⟨fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩, fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem br_memT {g : GL (Fin n) k} :
     g ∈ (glIwa k n).T ↔ ∃ t ∈ torusO k (Fin n), diagT k (Fin n) t = g := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.BranchingSmooth.br_smooth π h`.
+A detailed English derivation is pending.
 -/
 private theorem br_smooth {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V)
     (h : GlobalTheory.PRep.IsSmooth π) : (glIwa k n).Smooth π :=
   _root_.UpperTheory.Reformulated.B.BranchingSmooth.br_smooth π h
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[br_memKc, pow_one]`. Simplify using `only [le_uniformizer_iff]`. Conclude with `⟨fun h => GlobalTheory.StepData.mem_KOne.2 h.2, fun h => ⟨GlobalTheory.StepData.KOne_le_KO h, GlobalTheory.StepData.mem_KOne.1 h⟩⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem br_Kone : Kc k n 1 = KOne k (Fin n) := by
   ext g
@@ -185,9 +185,9 @@ private theorem br_Kone : Kc k n 1 = KOne k (Fin n) := by
   exact ⟨fun h => GlobalTheory.StepData.mem_KOne.2 h.2, fun h => ⟨GlobalTheory.StepData.KOne_le_KO h, GlobalTheory.StepData.mem_KOne.1 h⟩⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le (sup_le (fun g hg => (GlobalTheory.IwahoriTraceProof.mem_unipO_iff hg.1).2 hg) ?_) fun g hg => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `diagT_mem_iwahori ht`. Conclude with `KOne_le_iwahori k _ (br_Kone (k := k) (n := n) ▸ hg.2)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg`. Take `⟨u, hu, d, hd, y, hy, rfl⟩` from `GlobalTheory.IwahoriTraceProof.iwahori_factorisation hg`. Conclude with `(iwMem _ _ 0 _).1.2 ⟨u, hu, _, ⟨d, hd, rfl⟩, y, br_memNm.2 ⟨hy.1, br_Kone (k := k) (n := n) ▸ hy.2⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem br_Iw : (glIwa k n).Iw 0 = iwahori k (Fin n) := by
   apply le_antisymm
@@ -200,19 +200,19 @@ private theorem br_Iw : (glIwa k n).Iw 0 = iwahori k (Fin n) := by
     exact (iwMem _ _ 0 _).1.2 ⟨u, hu, _, ⟨d, hd, rfl⟩, y, br_memNm.2 ⟨hy.1, br_Kone (k := k) (n := n) ▸ hy.2⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hg1 : g ∈ iwahori k (Fin n)` using `KOne_le_iwahori k _ (br_Kone (k := k) (n := n) ▸ br_Kc_anti (Nat.le_add_left 1 c) hg)`. Take `⟨u, hu, d, hd, y, hy, e⟩` from `GlobalTheory.IwahoriTraceProof.iwahori_factorisation hg1`. Establish `hdK : diagT k (Fin n) d ∈ KO k (Fin n)` using `iwahori_le_KO k _ (diagT_mem_iwahori hd)`. Establish `hw` using `GlobalTheory.StepData.intM_of_mem_KO (mul_mem hu.2 hdK)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u2, u3⟩` from `(mem_unipB k).1 hu.1`. Take `⟨y2, y3⟩` from `GlobalTheory.IwahoriTraceProof.mem_unipBLower.1 (inv_mem hy.1)`. Establish `e1 : (y⁻¹).val - (u * diagT k (Fin n) d).val = ((g⁻¹).val - 1) * (u * diagT k (Fin n) d).val`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, ← Units.val_mul, e]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Establish `key : ∀ i j, valuation k ((y⁻¹).val i j - u.val i j * d j) ≤ uniformizer k ^ (c + 1)`. Introduce `i j`. Establish `e2` using `congrFun (congrFun e1 i) j`. Rewrite `e2` using `[Matrix.sub_apply, Units.val_mul, val_diagT, Matrix.mul_diagonal, ← val_diagT, ← Units.val_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_right' (hw l j)).trans ((br_memKc.1 (inv_mem hg)).2 i l)`. Use `(iwMem _ _ c _).2.1.2 ⟨u, hu, _, ⟨⟨d, hd, rfl⟩, br_memKc.2 ⟨hdK, fun i j => ?_⟩⟩, y, br_memNm.2 ⟨hy.1, inv_mem_iff.1 (br_memKc.2 ⟨inv_mem (GlobalTheory.StepData.KOne_le_KO hy.2), fun i j => ?_⟩)⟩, e⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[val_diagT]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Use `key i i` as an intermediate fact. Rewrite `this` using `[y3, u3, one_mul, Valuation.map_sub_swap]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using this`. Simplify using `[hij]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Simplify using `only [Matrix.sub_apply, y2 i j hij, Matrix.one_apply_ne hij.ne, sub_self, map_zero, zero_le]`. Simplify using `only [Matrix.sub_apply, y3 i, Matrix.one_apply_eq, sub_self, map_zero, zero_le]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `key i j` as an intermediate fact. Rewrite `this` using `[u2 i j hij, zero_mul]`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_ne hij.ne']` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem br_K_le (c : ℕ) : Kc k n (c + 1) ≤ (glIwa k n).I1 c := by
   intro g hg
@@ -252,21 +252,21 @@ private theorem br_K_le (c : ℕ) : Kc k n (c + 1) ≤ (glIwa k n).I1 c := by
       rwa [Matrix.sub_apply, Matrix.one_apply_ne hij.ne']
 
 /- English proof (translation)
-The claim follows from `sup_le (sup_le (fun _ hg => hg.2) fun _ hg => (br_memKc.1 hg.2).1) fun _ hg => (br_memKc.1 hg.2).1`.
+A detailed English derivation is pending.
 -/
 private theorem iwahori_first_le_maximal_compact (c : ℕ) : (glIwa k n).I1 c ≤ KO k (Fin n) :=
   sup_le (sup_le (fun _ hg => hg.2) fun _ hg => (br_memKc.1 hg.2).1) fun _ hg => (br_memKc.1 hg.2).1
 
 /- English proof (translation)
-Establish `key : ∀ m : ℕ, ((List.range m).map (al k n)).prod = upow k n fun i => ((m - 1 - i : ℕ) : ℤ)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[upow, List.range_zero, List.map_nil, List.prod_nil, ← (diagT k (Fin n)).map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, ih, List.map_singleton, List.prod_singleton, al, upow, upow, upow, ← map_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.mul_apply, ← _root_.zpow_add]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[key]`. Use `show upow k n _ = _`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `i.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem iwahori_z_eq_product : (glIwa k n).z = ((List.range n).map (al k n)).prod := by
   have key : ∀ m : ℕ, ((List.range m).map (al k n)).prod = upow k n fun i => ((m - 1 - i : ℕ) : ℤ) := by
@@ -293,9 +293,9 @@ private theorem iwahori_z_eq_product : (glIwa k n).z = ((List.range n).map (al k
   omega
 
 /- English proof (translation)
-Take `⟨_, d, hd, rfl⟩` from `t`. Use `⟨fun i => ⟨d i, hd i⟩, ?_, fun c hc i => ?_⟩` and prove the remaining obligations. Use `show diagT k (Fin n) d = (List.ofFn fun i => diagT k (Fin n) (Pi.mulSingle i (d i))).prod`. Rewrite using `[show (fun i => diagT k (Fin n) (Pi.mulSingle i (d i))) = diagT k (Fin n) ∘ fun i => Pi.mulSingle i (d i) from rfl, ← List.map_ofFn, ← map_list_prod, List.prod_ofFn, Finset.univ_prod_mulSingle]`. Establish `h` using `(br_memKc.1 hc.2).2 i i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `u : 𝒪[k]ˣ` to `⟨⟨d i, (hd i).le⟩, ⟨((d i)⁻¹ : kˣ), (inv_mem hd i).le⟩, Subtype.ext (d i).mul_inv, Subtype.ext (d i).inv_mul⟩`. Use `⟨u, ?_, Units.ext rfl⟩` and prove the remaining obligations. Use `Units.ext (show Ideal.Quotient.mk _ u.val = Ideal.Quotient.mk _ 1 from ?_)` and prove the remaining obligations. Use `Ideal.Quotient.eq.2 ((br_pow _ _).2 ?_)` and prove the remaining obligations. Simplify `h` using `[val_diagT]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem iwahori_torus_product_form (t : (glIwa k n).T) : ∃ y : Fin n → Uo k,
     (t : GL (Fin n) k) = (List.ofFn fun i => (eT k n i (y i) : GL (Fin n) k)).prod ∧
@@ -314,43 +314,35 @@ private theorem iwahori_torus_product_form (t : (glIwa k n).T) : ∃ y : Fin n �
     simpa [val_diagT] using h
 
 /- English proof (translation)
-Establish `hint : ∀ x : BlockIx n j → 𝒪[k], unip (fun p => (x p : k)) ∈ (glIwa k n).N`. Introduce `x`. Use `br_memN.2 ⟨(mem_unipB k).2 ⟨fun a b hab => ?_, fun a => ?_⟩, fun a b => ?_⟩` and prove the remaining obligations. Establish `: (b : ℕ) < a` using `hab show (1 + nilM _ : Matrix _ _ k) a b = 0`. Simplify using `only [nilM, Matrix.add_apply, Matrix.of_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg (fun h => by omega), add_zero, Matrix.one_apply_ne hab.ne']`. Use `show (1 + nilM _ : Matrix _ _ k) a a = 1`. Simplify using `only [nilM, Matrix.add_apply, Matrix.of_apply]`. Rewrite using `[dif_neg (fun h => by omega), add_zero, Matrix.one_apply_eq]`. Use `show (1 + nilM _ : Matrix _ _ k) a b ∈ 𝒪[k]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `add_mem (GlobalTheory.StepData.intM_one a b) ?_` and prove the remaining obligations. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs`. Use `exacts [(x _).2, zero_mem _]`. Establish `hmem : ∀ g ∈ (glIwa k n).N, g ∈ (glIwa k n).Nconj (al k n j) ↔ ∀ p : BlockIx n j, valuation k (g.val p.1.1 p.1.2) < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg`. Take `⟨h1, h2⟩` from `br_memN.1 hg`. Rewrite using `[al, br_memNconj]`. Use `⟨fun h p => ?_, fun h => ⟨h1, fun a b => ?_⟩⟩` and prove the remaining obligations. Use `h.2 p.1.1 p.1.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[if_pos p.2.1, if_neg p.2.2.not_gt, sub_zero, zpow_one, le_uniformizer_iff]`. Then use the resulting hypothesis. Use `split_ifs with ha hb hb`. Simplify using `using h2 a b`. Simplify `h ⟨(a, b), ha, not_lt.1 hb⟩` using `[le_uniformizer_iff]`. Rewrite using `[((mem_unipB k).1 h1).1 a b (show (b : ℕ) < a by omega), map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `zero_le`. Simplify using `using h2 a b`. Set `f : Multiplicative (BlockIx n j → 𝒪[k]) →* GL (Fin n) k` to `MonoidHom.mk' (fun x => unip fun p => (x.toAdd p : k)) fun x y => unip_add _ _`. Set `r : Multiplicative (BlockIx n j → 𝒪[k]) →* Multiplicative (BlockIx n j → 𝓀[k])` to `AddMonoidHom.toMultiplicative ((IsLocalRing.residue 𝒪[k]).toAddMonoidHom.compLeft _)`. Establish `hle : f.range ≤ (glIwa k n).N`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hint _`. Establish `h1 : ((glIwa k n).Nconj (al k n j)).comap f = r.ker`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_comap, hmem _ (hle ⟨x, rfl⟩), MonoidHom.mem_ker]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Iff.trans (forall_congr' fun p => ?_) (funext_iff (f := (r x).toAdd) (g := 0)).symm` and prove the remaining obligations. Use `Iff.trans (iff_of_eq ?_) (GlobalTheory.StepData.residue_eq_zero_iff_lt (x.toAdd p)).symm` and prove the remaining obligations. Use `congr 2`. Use `show (1 + nilM _ : Matrix _ _ k) _ _ = _`. Simplify using `only [nilM, Matrix.add_apply, Matrix.of_apply]`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[dif_pos p.2, Matrix.one_apply_ne (fun h => by have := p.2; rw [h] at this; omega), zero_add]`. Establish `h2 : r.range = ⊤`. Use `MonoidHom.range_eq_top.2 fun y => ?_` and prove the remaining obligations. Use `choose x hx using fun p => IsLocalRing.residue_surjective (y.toAdd p)`. Conclude with `⟨.ofAdd x, funext hx⟩`.
+Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3 : Nat.card (BlockIx n j) = j * (n - j)`. Set `e : BlockIx n j ≃ Fin j × Fin (n - j)` to `{ toFun := fun p => (⟨p.1.1, p.2.1⟩, ⟨p.1.2 - j, by have := p.2.2; have := p.1.2.2; omega⟩) invFun := fun q => ⟨(⟨q.1, by have := q.1.2; omega⟩, ⟨j + q.2, by have := q.2.2; omega⟩), q.1.2, Nat.le_add_right _ _⟩ left_inv := fun p => by`. Use `p.2.2` as an intermediate fact. Use `ext`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `show j + (p.1.2 - j) = p.1.2`. Use linear arithmetic over natural numbers and integers. Use `right_inv := fun q => by`. Use `ext`. Both sides reduce to the same expression.
+Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show j + q.2 - j = q.2`. Use `omega }`. Rewrite using `[Nat.card_congr e]`. Simplify using the standard rewrite rules. Establish `h4 : ((glIwa k n).Nconj (al k n j)).relIndex f.range = ((glIwa k n).Nconj (al k n j)).relIndex (glIwa k n).N`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Nat.card_congr (Equiv.ofBijective (Subgroup.quotientSubgroupOfEmbeddingOfLE _ hle) ⟨Function.Embedding.injective _, fun q => ?_⟩)` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x`. Take `⟨x, hx⟩` from `x`. Set `B : Matrix (Fin n) (Fin n) k` to `nilM fun p : BlockIx n j => x.val p.1.1 p.1.2`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : GlobalTheory.StepData.IntM B` using `fun a b => by`. Simplify using `only [B, nilM, Matrix.of_apply]`. Use `split_ifs`. Use `exacts [(br_memN.1 hx).2 _ _, zero_mem _]`. Establish `hY` using `hB.mul (GlobalTheory.StepData.intM_of_mem_KO (inv_mem hx).2)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `y : BlockIx n j → 𝒪[k]` to `fun p => ⟨_, hY p.1.1 p.1.2⟩`. Establish `e : nilM (fun p => (y p : k)) = B * (x⁻¹).val`. Use extensionality with `a b`. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs with h`.
-
-Both sides reduce to the same expression. Rewrite using `[Matrix.mul_apply]`. Use `(Finset.sum_eq_zero fun l _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `hl : (a : ℕ) < j ∧ j ≤ (l : ℕ)`. Rewrite using `[((mem_unipB k).1 (inv_mem hx).1).1 l b (show (b : ℕ) < l by omega), mul_zero]`.
-
-Simplify using `only [B, nilM, Matrix.of_apply, dif_neg hl, zero_mul]`. Use `⟨((⟨f (.ofAdd y), _, rfl⟩ : f.range) : _ ⧸ _), ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.quotientSubgroupOfEmbeddingOfLE_apply_mk, QuotientGroup.eq, Subgroup.mem_subgroupOf, hmem _ (Subtype.mem _)]`. Introduce `p`. Establish `e2 : ((f (.ofAdd y))⁻¹ * x).val = x.val - B` using `by show (1 - nilM (fun p => (y p : k))) * x.val = _`.
-
-Rewrite using `[e, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Use `show valuation k (((f (.ofAdd y))⁻¹ * x).val _ _) < 1`. Rewrite using `[e2]`. Simplify using `only [B, nilM, Matrix.sub_apply, Matrix.of_apply, dif_pos p.2, sub_self, map_zero, zero_lt_one]`. Rewrite using `[← h4, ← Subgroup.index_comap, h1, Subgroup.index_ker, h2, Subgroup.card_top, ← h3]`.
-
-Conclude with `Nat.card_fun`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem br_index (j : ℕ) (hj : j ≤ n) :
     ((glIwa k n).Nconj (al k n j)).relIndex (glIwa k n).N = Nat.card 𝓀[k] ^ (j * (n - j)) := by
@@ -459,9 +451,9 @@ private theorem br_index (j : ℕ) (hj : j ≤ n) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π`. Use `⟨?_, br_smooth π, fun c => ?_, br_basis, br_K_le, br_Iw, br_unif, br_index, iwahori_z_eq_product, iwahori_torus_product_form⟩` and prove the remaining obligations. Use `congrArg (Submodule.span ℂ) (Set.ext fun w => ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨x, hx, v, rfl⟩`. Conclude with `⟨⟨x, hx⟩, v, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, v, rfl⟩`. Conclude with `⟨x, x.2, v, by simp⟩`. Establish `ho` using `Subgroup.isOpen_mono (br_K_le c) (br_Kc_open (k := k) (n := n) (c + 1))`. Conclude with `⟨ho, GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) (iwahori_first_le_maximal_compact c)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Hi.glBridge :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), ((glIwa k n).jacKer π = GlobalTheory.PRep.twKer π (unipB k (Fin n)) 1) ∧ (GlobalTheory.PRep.IsSmooth π → (glIwa k n).Smooth π) ∧ (∀ c, IsOpen ((glIwa k n).I1 c : Set (GL (Fin n) k)) ∧ IsCompact ((glIwa k n).I1 c : Set (GL (Fin n) k))) ∧ (∀ U : Subgroup (GL (Fin n) k), IsOpen (U : Set (GL (Fin n) k)) → ∃ c, Kc k n c ≤ U) ∧ (∀ c, Kc k n (c + 1) ≤ (glIwa k n).I1 c) ∧ (glIwa k n).Iw 0 = iwahori k (Fin n) ∧ valuation k (unif k : k) = uniformizer k ∧ (∀ j ≤ n, ((glIwa k n).Nconj (al k n j)).relIndex (glIwa k n).N = Nat.card 𝓀[k] ^ (j * (n - j))) ∧ (glIwa k n).z = ((List.range n).map (al k n)).prod ∧ ∀ t : (glIwa k n).T, ∃ y : Fin n → Uo k, (t : GL (Fin n) k) = (List.ofFn fun i => (eT k n i (y i) : GL (Fin n) k)).prod ∧ ∀ c, (t : GL (Fin n) k) ∈ (glIwa k n).Tc c → ∀ i, (y i : kˣ) ∈ Uc k (c + 1) := by

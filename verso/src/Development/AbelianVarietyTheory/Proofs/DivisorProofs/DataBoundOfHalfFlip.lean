@@ -18,29 +18,23 @@ section Integral
 variable {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
 
 /- English proof (translation)
-Establish `hT : IsCompact (tsupport f)` using `hc`. Use `haveI : CompactSpace (tsupport f) := isCompact_iff_compactSpace.1 hT`. Establish `hfin : (f '' tsupport f).Finite`. Use `(hf.comp_continuous (continuous_subtype_val : Continuous (Subtype.val : tsupport f → X))).range_finite` as an intermediate fact. Rewrite `this` using `[Set.range_comp, Subtype.range_coe]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set V : Finset ℂ := hfin.toFinset.erase 0 with hV`. Establish `hmem : ∀ x, f x ≠ 0 → f x ∈ V` using `fun x hx => Finset.mem_erase.2 ⟨hx, hfin.mem_toFinset.2 ⟨x, subset_tsupport f hx, rfl⟩⟩`. Establish `hm : ∀ c : ℂ, MeasurableSet (f ⁻¹' {c})` using `fun c => (hf.isOpen_fiber c).measurableSet`. Establish `hSf : μ S ≠ ⊤` using `ne_top_of_le_ne_top ENNReal.ofReal_ne_top hSb`. Establish `hsub : f ⁻¹' (V : Set ℂ) ⊆ S` using `fun x hx => hS x (Finset.mem_erase.1 hx).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfi : ∀ c ∈ V, μ (f ⁻¹' {c}) ≠ ⊤` using `fun c hc' => ne_top_of_le_ne_top hSf (measure_mono fun x hx => hsub (show f x ∈ (V : Set ℂ) from (show f x = c from hx) ▸ hc'))`. Establish `hrat : ∀ c ∈ V, ∃ r : ℚ, (r : ℝ) = μ.real (f ⁻¹' {c})` using `fun c hc' => by`. Establish `hc0 : c ≠ 0` using `(Finset.mem_erase.1 hc').1`. Take `⟨r, hr⟩` from `GlobalTheory.LCIntegralField.integral_mem_range μ H hHo hHc hH0 hμH (Rat.castHom ℂ) ((fun z => if z = c then (1 : ℂ) else 0) ∘ f) (hf.comp _) (hc.comp_left (by simp [hc0.symm])) fun x => by`. Simplify using `only [Function.comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `split_ifs`. Conclude with `⟨1, map_one _⟩`. Conclude with `⟨0, map_zero _⟩`. Establish `e : ((fun z => if z = c then (1 : ℂ) else 0) ∘ f) = (f ⁻¹' {c}).indicator fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Set.indicator_apply]`. Rewrite `hr` using `[e, integral_indicator_const _ (hm c)]`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `: ((r : ℝ) : ℂ) = (μ.real (f ⁻¹' {c}) : ℂ)` using `by simpa using hr`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hval : ∀ c ∈ V, ∃ y, D.what₂.embLL y = c ∧ ‖σ y‖ ≤ Real.exp a` using `fun c hc' => by`. Take `⟨x, -, rfl⟩` from `hfin.mem_toFinset.1 (Finset.mem_erase.1 hc').2`. Conclude with `hv x (Finset.mem_erase.1 hc').1`. Use `choose! r hr using hrat`. Use `choose! y hy hy' using hval`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdec : f = fun x => ∑ c ∈ V, (f ⁻¹' {c}).indicator (fun _ => c) x`. Use function extensionality and compare the values at `x`. Simplify using `only [Set.indicator_apply, Set.mem_preimage, Set.mem_singleton_iff, Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h'`. Conclude with `h (hmem x h')`. Establish `hint : ∫ x, f x ∂μ = ∑ c ∈ V, (μ.real (f ⁻¹' {c}) : ℂ) * c` using `by conv_lhs => rw [hdec]`. Rewrite using `[integral_finset_sum _ fun c hc' => (integrable_indicator_iff (hm c)).2 (integrableOn_const (hfi c hc'))]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [integral_indicator_const _ (hm c), Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ c ∈ V, (r c : D.what₂.LL) * y c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hint, map_sum]`. Use `Finset.sum_congr rfl fun c hc' => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_ratCast, hy c hc', ← hr c hc', Complex.ofReal_ratCast]`. Establish `h1 : ∑ c ∈ V, μ.real (f ⁻¹' {c}) ≤ Real.exp b`.
-
-Rewrite using `[sum_measureReal_preimage_singleton V (fun c _ => hm c) hfi]`. Conclude with `ENNReal.toReal_le_of_le_ofReal (Real.exp_pos b).le ((measure_mono hsub).trans hSb)`. Rewrite using `[map_sum]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Use `Finset.sum_le_sum fun c hc' => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_ratCast, norm_mul, ← Complex.ofReal_ratCast, hr c hc', Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg measureReal_nonneg]`. Conclude with `mul_le_mul_of_nonneg_left (hy' c hc') measureReal_nonneg`. Use `_ ≤ Real.exp b * Real.exp a := by`. Rewrite using `[← Finset.sum_mul]`.
-
-Conclude with `mul_le_mul_of_nonneg_right h1 (Real.exp_pos a).le`. Use `_ = Real.exp (a + b) := by rw [Real.exp_add, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absLe_integral [MeasurableSpace X] [OpensMeasurableSpace X] [MeasurableAdd X] [T2Space X]
     (μ : Measure X) [μ.IsAddLeftInvariant] (H : Set X) (hHo : IsOpen H) (hHc : IsCompact H) (hH0 : (0 : X) ∈ H)
@@ -118,13 +112,13 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hq : resCard k ≠ 0` using `Nat.card_pos.ne'`. Establish `h1 : valuation k ((resCard k : ℕ) : k) < 1`. Establish `h2 : IsLocalRing.residue 𝒪[k] ((resCard k : ℕ) : 𝒪[k]) = 0`. Rewrite using `[map_natCast]`. Use `haveI := Fintype.ofFinite 𝓀[k]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[resCard, Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero _`. Rewrite `h2` using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Simplify using `using h2`. Distinguish the cases in `ha : a = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨1, one_ne_zero, by simp [ha]⟩`. Establish `hv : valuation k a ≠ 0` using `by simpa using ha`. Take `⟨n, hn⟩` from `exists_pow_lt₀ h1 (Units.mk0 _ hv)⁻¹`. Use `⟨resCard k ^ n, pow_ne_zero _ hq, ?_⟩` and prove the remaining obligations. Rewrite using `[← AddChar.map_nsmul_eq_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(hψ 1).2 le_rfl _ ?_` and prove the remaining obligations. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_mk0] at hn`. Rewrite using `[nsmul_eq_mul, map_mul, Nat.cast_pow, map_pow, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_one {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (a : k) : ∃ n : ℕ, n ≠ 0 ∧ ψ a ^ n = 1 := by
   have hq : resCard k ≠ 0 := Nat.card_pos.ne'
@@ -150,9 +144,9 @@ theorem exists_pow_eq_one {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (a :
     _ = 1 := inv_mul_cancel₀ hv
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Take `⟨n, hn, h1⟩` from `exists_pow_eq_one hψ a`. Establish `h2 : c ^ n = 1` using `D.what₂.embLL.injective (by rw [map_pow, hc, map_one, ← Circle.coe_pow, h1, Circle.coe_one])`. Establish `h3 : ‖σ c‖ = 1`. Establish `: ‖σ c‖ ^ n = 1` using `by rw [← norm_pow, ← map_pow, h2, map_one, norm_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this`. Use `⟨c⁻¹, by rw [map_inv₀, hc, AddChar.map_neg_eq_inv, Circle.coe_inv], ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, norm_inv, h3, inv_one, Real.exp_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absLe_psi {D : D7} (σ : D.what₂.LL →+* ℂ) {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (a : k)
     (h : (ψ a : ℂ) ∈ Set.range D.what₂.embLL) : AbsLe σ (ψ (-a) : ℂ) 0 := by
@@ -172,13 +166,13 @@ section Grid
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `nabs_uniformiser hϖ.irreducible rfl`.
+A detailed English derivation is pending.
 -/
 theorem nabs_of_isUnif {ϖ : kˣ} (hϖ : IsUnif ϖ) : nabs k ϖ = (resCard k : ℝ)⁻¹ :=
   nabs_uniformiser hϖ.irreducible rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, apow_mul, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem apow_pow (x : kˣ) (n : ℕ) (z : ℂ) : apow (x ^ n) z = apow x z ^ n := by
   induction n with
@@ -186,7 +180,7 @@ theorem apow_pow (x : kˣ) (n : ℕ) (z : ℂ) : apow (x ^ n) z = apow x z ^ n :
   | succ n ih => rw [pow_succ, apow_mul, ih, pow_succ]
 
 /- English proof (translation)
-Establish `h : apow ϖ (1 / 2) = ((Real.sqrt (resCard k) : ℝ) : ℂ)⁻¹`. Rewrite using `[apow, nabs_of_isUnif hϖ, ← Complex.ofReal_inv, ← Real.sqrt_inv, Real.sqrt_eq_rpow, Complex.ofReal_cpow (by positivity)]`. Evaluate the numerical expressions. Rewrite using `[← inv_pow, ← h, apow, apow, ← Complex.cpow_nat_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -203,11 +197,11 @@ theorem apow_half {ϖ : kˣ} (hϖ : IsUnif ϖ) (r : ℕ) :
 variable {D : D7} (σ : D.what₂.LL →+* ℂ)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast Nat.pos_of_ne_zero hq`. Establish `h2 : s ^ 2 = (q : D.what₂.LL)` using `D.what₂.embLL.injective (by`. Rewrite using `[map_pow, hs, map_natCast, ← Complex.ofReal_pow, Real.sq_sqrt hq0.le, Complex.ofReal_natCast])`. Establish `h3 : ‖σ s‖ = Real.exp (Real.log q / 2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ‖σ s‖ ^ 2 = q` using `by rw [← norm_pow, ← map_pow, h2, map_natCast, Complex.norm_natCast]`. Use `(pow_left_inj₀ (norm_nonneg _) (Real.exp_pos _).le two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[h4, ← Real.exp_nat_mul]`. Rewrite using `[show ((2 : ℕ) : ℝ) * (Real.log q / 2) = Real.log q by push_cast; ring, Real.exp_log hq0]`. Establish `h5 : ‖σ (s ^ n)‖ = Real.exp (n * (Real.log q / 2))` using `by rw [map_pow, norm_pow, h3, Real.exp_nat_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨⟨s ^ n, by rw [map_pow, hs], h5.le⟩, (s ^ n)⁻¹, by rw [map_inv₀, map_pow, hs], ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, norm_inv, h5, ← Real.exp_neg]`. Establish `: 0 ≤ n * (Real.log q / 2)` using `by have := Real.log_natCast_nonneg q; positivity`. Conclude with `Real.exp_le_exp.2 (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absLe_sqrt_pow {q : ℕ} (hq : q ≠ 0) (h : ((Real.sqrt q : ℝ) : ℂ) ∈ Set.range D.what₂.embLL) (n : ℕ) :
     AbsLe σ (((Real.sqrt q : ℝ) : ℂ) ^ n) (n * (Real.log q / 2)) ∧
@@ -231,18 +225,18 @@ def IsDiag (G : Grid k) (ϖ : kˣ) (a : ℕ) (g : G.VertexGroup) : Prop :=
   ∀ X, ∃ κ : Fin (G.rank X) → ℕ, g X = diagGL (fun i => ϖ ^ κ i) ∧ ∀ i, κ i ≤ a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 0, Units.ext (by simp), fun _ => Nat.zero_le _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_diag_one (n : ℕ) (ϖ : kˣ) (a : ℕ) :
     ∃ κ : Fin n → ℕ, (1 : GL (Fin n) k) = diagGL (fun i => ϖ ^ κ i) ∧ ∀ i, κ i ≤ a :=
   ⟨fun _ => 0, Units.ext (by simp), fun _ => Nat.zero_le _⟩
 
 /- English proof (translation)
-Take `⟨κ, hκ, hb⟩` from `hg X`. Establish `hd : gdet (g X) = ϖ ^ ∑ i, κ i`. Rewrite using `[hκ, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Units.ext (by simp [diagGL_val])`. Establish `hs : ∑ i, κ i ≤ N * a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hn : ((r * ∑ i, κ i : ℕ) : ℝ) ≤ a * N ^ 2`. Establish `: r * ∑ i, κ i ≤ a * N ^ 2` using `(Nat.mul_le_mul hr hs).trans (le_of_eq (by ring))`. Conclude with `this` after adjusting the coercions. Establish `hl : 0 ≤ Real.log (resCard k) / 2` using `by have := Real.log_natCast_nonneg (resCard k); positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `absLe_sqrt_pow σ (q := resCard k) Nat.card_pos.ne' h (r * ∑ i, κ i)`. Rewrite using `[neg_div, apow_inv, apow_inv, neg_neg, apow_neg, hd, apow_pow, apow_half hϖ, inv_pow, inv_inv, ← pow_mul]`. Conclude with `⟨absLe_mono h1 (mul_le_mul_of_nonneg_right hn hl), absLe_mono h2 (mul_le_mul_of_nonneg_right hn hl)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem absLe_det {G : Grid k} {ϖ : kˣ} (hϖ : IsUnif ϖ) {a N : ℕ} {g : G.VertexGroup} (hg : IsDiag G ϖ a g)
     (h : ((Real.sqrt (resCard k) : ℝ) : ℂ) ∈ Set.range D.what₂.embLL) {X : ℕ × ℕ} (hX : G.rank X ≤ N) {r : ℕ} (hr : r ≤ N) :
@@ -265,9 +259,9 @@ theorem absLe_det {G : Grid k} {ϖ : kˣ} (hϖ : IsUnif ϖ) {a N : ℕ} {g : G.V
   exact ⟨absLe_mono h1 (mul_le_mul_of_nonneg_right hn hl), absLe_mono h2 (mul_le_mul_of_nonneg_right hn hl)⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨1, by simp, by simp⟩`. Consider the case `cons i l ih`. Rewrite using `[List.map_cons, List.prod_cons]`. Use `absLe_mono (absLe_mul (h i (by simp)) (ih fun j hj => h j (by simp [hj]))) (le_of_eq ?_)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [List.length_cons]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem absLe_listProd {ι : Type} (l : List ι) (z : ι → ℂ) {B : ℝ} (h : ∀ i ∈ l, AbsLe σ (z i) B) :
     AbsLe σ (l.map z).prod (l.length * B) := by
@@ -281,11 +275,11 @@ theorem absLe_listProd {ι : Type} (l : List ι) (z : ι → ℂ) {B : ℝ} (h :
     ring
 
 /- English proof (translation)
-Rewrite using `[moved_false]`. Use `absLe_mul (absLe_mono (absLe_listProd σ _ _ (B := a * N ^ 2 * Real.log (resCard k)) fun b hb => ?_) (le_of_eq ?_)) (hT _)` and prove the remaining obligations. Establish `hb' : G.rank b.src ≤ N ∧ G.rank b.tgt ≤ N`. Simplify using `only [oppositePath, List.mem_append, List.mem_map, List.mem_reverse, List.mem_range] at hb`. Break down `hb with ⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨hN _ _ hi.le le_rfl, hN _ _ hi le_rfl⟩`. Conclude with `⟨hN _ _ le_rfl hi, hN _ _ le_rfl hi.le⟩`. Conclude with `absLe_mono (absLe_mul (absLe_det σ hϖ hg h hb'.1 hb'.2).1 (absLe_det σ hϖ hg h hb'.2 hb'.1).2) (le_of_eq (by ring))`. Simplify using `only [oppositePath, List.length_append, List.length_map, List.length_reverse, List.length_range]`. Use `push_cast`.
+Supply the required witnesses or components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem absLe_moved {G : Grid k} {ϖ : kˣ} (hϖ : IsUnif ϖ) {a N : ℕ} {g : G.VertexGroup} (hg : IsDiag G ϖ a g)
     (h : ((Real.sqrt (resCard k) : ℝ) : ℂ) ∈ Set.range D.what₂.embLL) (hN : ∀ i j, i ≤ G.m → j ≤ G.m → G.rank (i, j) ≤ N)
@@ -304,15 +298,15 @@ theorem absLe_moved {G : Grid k} {ϖ : kˣ} (hϖ : IsUnif ϖ) {a N : ℕ} {g : G
     ring
 
 /- English proof (translation)
-Apply the tactic sequence `choose r s c h using exists_fill_entry hs x y`. Use `⟨c, fun v hv j rs => ?_⟩` and prove the remaining obligations. Establish `hT0 : T (G.moveArgs .one g (fill hs x y v)) ≠ 0` using `fun h0 => hv (by simp [flatIntegrand, moved, Grid.pathAct, h0])`. Establish `hm : (G.moveArgs .one g (fill hs x y v)) (.theta G.m j) ∈ matLat _ (stdLat k _)`. Assume the negation of the conclusion as `hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hT0 (hT.2.1 _ (.theta G.m j) (by have := j.2; simp [oppositePath]; omega) hn)`. Establish `h1` using `mem_matLat_stdLat.1 hm (r j rs) (s j rs)`. Take `⟨κ, hκ, hb⟩` from `hg (Edge.theta G.m j).tgt`. Take `⟨κ', hκ', -⟩` from `hg (Edge.theta G.m j).src`. Establish `hi : ((diagGL fun i => ϖ ^ κ' i)⁻¹).val = diagonal fun i => (((ϖ ^ κ' i)⁻¹ : kˣ) : k)` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Grid.moveArgs, Assignment.read] at h1`. Rewrite `h1` using `[invT_inv_val, invT_val, hκ, hκ', hi, diagGL_val, diagonal_transpose, diagonal_transpose, mul_diagonal, diagonal_mul]`. Rewrite using `[h j rs v, add_sub_cancel]`. Use `set t := fill hs x y v (.theta G.m j) (r j rs) (s j rs)`. Establish `h2 : ((ϖ ^ a : kˣ) : k) * t ∈ 𝒪[k]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (hb (r j rs))`. Use `mul_mem (mul_mem h1 (pow_mem hϖ.mem (κ' (s j rs)))) (pow_mem hϖ.mem d)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hd]`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `ϖ.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cball_eq_smul, Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_box {G : Grid k} (hs : 1 ≤ G.s) (ψ : AddChar k Circle) {ϖ : kˣ} (hϖ : IsUnif ϖ) {a e : ℕ} {g : G.VertexGroup}
     (hg : IsDiag G ϖ a g) {T : G.Args → ℂ} (hT : G.IsTensor ϖ e (oppositePath G.m) T) (x : ColArgs G) (y : RowArgs G) :
@@ -344,11 +338,9 @@ theorem exists_box {G : Grid k} (hs : 1 ≤ G.s) (ψ : AddChar k Circle) {ϖ : k
   exact h2
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `(Nat.card_le_card_of_injective _ Subtype.val_injective).trans ?_` and prove the remaining obligations. Establish `hj` using `j.2`. Establish `h1` using `topRank_add hs j`. Establish `h2` using `topRank_add hs (j + 1)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hN G.m j le_rfl (by omega)`. Establish `h4` using `hN G.m (j + 1) le_rfl (by omega)`. Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_prod, Fintype.card_sum, Fintype.card_fin]`. Rewrite using `[pow_two]`. Conclude with `Nat.mul_le_mul (by omega) (by omega)`.
-
-Use `_ = (G.m - 1) * N ^ 2 := by simp`. Use `_ ≤ G.m * N ^ 2 := Nat.mul_le_mul_right _ (Nat.sub_le _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_vars_le {G : Grid k} (hs : 1 ≤ G.s) {N : ℕ} (hN : ∀ i j, i ≤ G.m → j ≤ G.m → G.rank (i, j) ≤ N) :
     ∑ j : Fin (G.m - 1), Nat.card (StepVar (Fin (topRank G (j + 1))) (G.m - 2 - j) (Fin (topRank G j))) ≤ G.m * N ^ 2 := by
@@ -368,15 +360,15 @@ theorem card_vars_le {G : Grid k} (hs : 1 ≤ G.s) {N : ℕ} (hN : ∀ i j, i �
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI := hν.1`. Use `haveI : (varsVol G ν).IsAddLeftInvariant := by unfold varsVol; infer_instance`. Establish `hmv : Continuous (G.moveArgs .one g)` using `continuous_pi fun b => (continuous_const.matrix_mul (continuous_apply b)).matrix_mul continuous_const`. Establish `hψ' : IsLocallyConstant fun v => ((ψ (-phase x v) : Circle) : ℂ)` using `((hψ.isLocallyConstant.comp Subtype.val).comp_continuous (continuous_phase x).neg)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlc : IsLocallyConstant (flatIntegrand hs ψ (moved G false g T) x y)` using `((IsLocallyConstant.const _).mul ((IsLocallyConstant.const _).mul ((isLocallyConstant_of_isTensor hT).comp_continuous (hmv.comp (continuous_fill hs x y))))).mul hψ'`. Take `⟨c, hc⟩` from `exists_box hs ψ hϖ hg hT x y`. Establish `hq1 : (1 : ℝ) ≤ resCard k` using `by exact_mod_cast Nat.card_pos (α := 𝓀[k])`. Establish `hball : ν (cball (ϖ ^ a)⁻¹) = ENNReal.ofReal ((resCard k : ℝ) ^ a)`. Rewrite using `[cball_eq_smul, Model.nabs_vol ν hν]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `h1 : nabs k (ϖ ^ a)⁻¹ = (nabs k ϖ ^ a)⁻¹` using `by simp [nabs]`. Rewrite using `[h1, nabs_of_isUnif hϖ, inv_pow, inv_inv]`. Establish `hvol : varsVol G ν ((fun v => c + v) ⁻¹' (Set.univ.pi fun _ => Set.univ.pi fun _ => cball (ϖ ^ a)⁻¹)) ≤ ENNReal.ofReal (Real.exp (G.m * (a * N ^ 2 * Real.log (resCard k))))`. Rewrite using `[measure_preimage_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [varsVol, Measure.pi_pi, hball, Finset.prod_const, Finset.card_univ, ← Nat.card_eq_fintype_card]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, ← ENNReal.ofReal_pow (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ((pow_le_pow_right₀ (one_le_pow₀ hq1) (card_vars_le hs hN)).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[← pow_mul, ← Real.exp_log (x := (resCard k : ℝ) ^ _) (by positivity), Real.log_pow]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `absLe_integral (varsVol G ν) (Set.univ.pi fun _ => Set.univ.pi fun _ => (𝒪[k] : Set k)) (isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => Model.isOpen_int) (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact …`. Conclude with `absLe_mono key (le_of_eq (by ring))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absLe_flatTensor {G : Grid k} (hs : 1 ≤ G.s) {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measure k}
     (hν : IsUnitVol ν) {ϖ : kˣ} (hϖ : IsUnif ϖ) {a e N : ℕ} {g : G.VertexGroup} (hg : IsDiag G ϖ a g)
@@ -425,7 +417,7 @@ theorem absLe_flatTensor {G : Grid k} (hs : 1 ≤ G.s) {ψ : AddChar k Circle} (
 omit [MeasurableSpace k] [BorelSpace k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, fun i => Nat.mul_le_mul_left _ (by have := topRank_add hs j; have := i.2; omega)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_diag_stair {G : Grid k} (hs : 1 ≤ G.s) (ϖ : kˣ) (e j : ℕ) :
     ∃ κ : Fin (G.rank (G.m, j)) → ℕ, stair G ϖ e j = diagGL (fun i => ϖ ^ κ i) ∧ ∀ i, κ i ≤ e * G.m :=
@@ -434,13 +426,11 @@ theorem exists_diag_stair {G : Grid k} (hs : 1 ≤ G.s) (ϖ : kˣ) (e j : ℕ) :
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Introduce and unpack `⟨i, j⟩`. Distinguish the cases in `hi : i = G.m`. Substitute `hi` using the available equality. Rewrite using `[Reps.elt, onColumn_apply]`. Consider the cases of `j with`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact exists_diag_stair hs ϖ e 0`. Consider the case `succ j`. Distinguish the cases in `hj : j < G.m - 2`. Simplify using `only [Reps.through, dif_pos hj, if_true]`. Conclude with `exists_diag_stair hs ϖ e (j + 1)`.
+Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg hj]`. Conclude with `exists_diag_one _ _ _`. Establish `: (Reps.through hs J (stair G ϖ e)).elt (fun i => DoubleCoset.mk _ _ (stair G ϖ e (i + 1))) (i, j) = 1`. Simplify using `[Reps.elt, onColumn, hi]`. Rewrite using `[this]`.
-
-Conclude with `exists_diag_one _ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDiag_stair {G : Grid k} (hs : 1 ≤ G.s) (J : G.Level) (ϖ : kˣ) (e : ℕ) :
     IsDiag G ϖ (e * G.m) ((Reps.through hs J (stair G ϖ e)).elt fun i => DoubleCoset.mk _ _ (stair G ϖ e (i + 1))) := by
@@ -476,9 +466,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
 
 /- English proof (translation)
-Establish `h1` using `Nat.mul_le_mul_right D.R.t hj`. Establish `h2` using `Nat.mul_le_mul_right (sLen D) hi`. Establish `hr : D.R.r ≤ D.R.k + D.R.m`. Establish `: D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Express the relevant statement in the definitionally equal form `D.R.r + j * D.R.t + i * sLen D ≤ D.R.k + D.R.m * (D.R.t + sLen D + 1)`. Express the relevant statement in the definitionally equal form `j * D.R.t ≤ D.R.m * D.R.t at h1`. Express the relevant statement in the definitionally equal form `i * sLen D ≤ D.R.m * sLen D at h2`. Use the polynomial consequences of the given equalities and inequalities.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rank_locGrid_le (t : T) (P : Pl D.host.E) (i j : ℕ) (hi : i ≤ (locGrid G t P).m) (hj : j ≤ (locGrid G t P).m) :
     (locGrid G t P).rank (i, j) ≤ bigN D := by
@@ -493,19 +483,19 @@ theorem rank_locGrid_le (t : T) (P : Pl D.host.E) (i j : ℕ) (hi : i ≤ (locGr
   nlinarith
 
 /- English proof (translation)
-Distinguish the cases in `h0 : (S.term t Φ β ⟨P, hl⟩).datum x y = 0`. Conclude with `⟨0, by rw [h0, map_zero], by rw [map_zero, norm_zero]; exact (Real.exp_pos _).le⟩`. Establish `hs : 1 ≤ (locGrid G t P).s` using `one_le_sLen`. Establish `hkeep : keepAt G P = false` using `by simp [keepAt, hP]`. Establish `hdep : depthAt G P = cosExp G P`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hP`. Take `⟨h1, h2⟩` from `depthAt_w G hv`. Rewrite using `[h1, h2]`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `h00` using `((Good.locGrid_isGood hL G W t hde hc).1 P hl).square 0 hm 0 hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := (isUnitVol_unitVol P).1`. Establish `hT` using `isTensor_Tflip hL W S.B t Φ hde hc hl`. Rewrite `hT` using `[hdep]`. Establish `hO` using `oneCoset hs (psiAt W P) (unitVol P) (givenLevel G t P) (Tflip W S.B t Φ P) (unifAt P) (cosExp G P) D.R.m_even (isUnif_unifAt P) h00.cond hT (fun j hj _ => ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.VolVal.givenLevel_KO G t P hj)`. Establish `hb` using `hβ ⟨P, hl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : β ⟨P, hl⟩ ∈ unfSupport (psiAt W P) (unitVol P) false (Reps.through hs (givenLevel G t P) (stair (locGrid G t P) (unifAt P) (cosExp G P))) (Tflip W S.B t Φ P)`. Establish `: keepAt G (⟨P, hl⟩ : locPl G t).1 = false` using `hkeep`. Rewrite `hb` using `[this]`. Conclude with `hb`. Establish `hβ'` using `funext (hO _ hb')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : IsDiag (locGrid G t P) (unifAt P) (cosExp G P * D.R.m) ((repsAt G t P).elt (β ⟨P, hl⟩))`. Rewrite using `[hβ']`. Conclude with `isDiag_stair hs _ _ _`. Establish `hq : resCard (Kw P) = Ideal.absNorm P.asIdeal` using `ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.ResCardPlace.resCard_Kw P`. Establish `hph` using `fun v => hN.phases t Φ β hβ ⟨P, hl⟩ x y v h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (S.term t Φ β ⟨P, hl⟩).datum x y = flatTensor hs (psiAt W P) (unitVol P) (moved (locGrid G t P) (keepAt G P) ((repsAt G t P).elt (β ⟨P, hl⟩)) (Tflip W S.B t Φ P)) x y` using `rfl`. Simplify using `only [hkeep] at hph`. Rewrite using `[e, hkeep]`. Use `absLe_mono (absLe_flatTensor σ hs h00.cond (isUnitVol_unitVol P) (isUnif_unifAt P) hg (by rw [hq]; exact hN.sqrt P (Or.inr ⟨t, hl⟩)) (rank_locGrid_le t P) hT hB x y hph) ?_` and prove the remaining obligations. Establish `h1` using `ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.VolVal.log_absNorm_le P`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (locGrid G t P).m = D.R.m` using `rfl`. Rewrite using `[hq, h2, placeSz]`. Establish `h3` using `mul_le_mul_of_nonneg_left h1 (by positivity : (0 : ℝ) ≤ 3 * (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2 * (cosExp G P : ℝ))`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem absLe_datum {μ₀ μ₁ : T} (hL : L.Is μ₀) (S : GridChoice W Set.univ) (hN : NumbersIn D.what₂.embLL S μ₁) (t : T) (Φ : G.Datum)
     (hde : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q))
@@ -556,11 +546,9 @@ theorem absLe_datum {μ₀ μ₁ : T} (hL : L.Is μ₀) (S : GridChoice W Set.un
   linarith
 
 /- English proof (translation)
-Introduce `_`. Use `⟨0, fun CF _ => ⟨12, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ hok hF σ Φ β hβ w x y => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hP : w.1 ∈ ch.G.pl.W0`. Break down `Finset.mem_union.1 w.2 with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Rewrite `h` using `[show R.toLevCh.Q A.μ0 = ∅ from GlobalTheory.BaseScalar.Q_base R hL]`. Conclude with `absurd h (Finset.notMem_empty _)`. Establish `hsz : 0 ≤ (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2 * placeSz ch.G w` using `mul_nonneg (by positivity) (placeSz_nonneg ch.G w)`. Use `absLe_mono (absLe_datum hL ch.S.toGridChoice hok A.μ0 Φ (GlobalTheory.FlipIntegrand.pde_ne_q_of_setting s) (hch.guard A.μ0) hP w.2 hβ σ (hF σ Φ w) _ _) ?_` and prove the remaining obligations.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem datK : GlobalTheory.FunPr.Hypotheses₂ → BigC fun _ ch C _ => FlipAt ch (C / 2) → DatAt ch C := by
   classical

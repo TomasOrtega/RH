@@ -29,12 +29,12 @@ def toX (L : StrictLoc X x) : L.scheme ⟶ X :=
   Spec.map (CommRingCat.ofHom L.φ) ≫ X.fromSpecStalk x
 
 /- English proof (translation)
-The claim follows from `L.isStrictHenselisation.1`.
+A detailed English derivation is pending.
 -/
 theorem henselian (L : StrictLoc X x) : HenselianLocalRing L.A := L.isStrictHenselisation.1
 
 /- English proof (translation)
-The claim follows from `L.isStrictHenselisation.2.1`.
+A detailed English derivation is pending.
 -/
 theorem isSepClosed (L : StrictLoc X x) : IsSepClosed (ResidueField L.A) := L.isStrictHenselisation.2.1
 
@@ -72,20 +72,20 @@ def gfibAut {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) (σ : K ≃ₐ[
     simp)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem gfibAut_fst {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) (σ : K ≃ₐ[O] K) :
     gfibAut K g σ ≫ pullback.fst _ _ = pullback.fst _ _ := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem gfibAut_snd {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) (σ : K ≃ₐ[O] K) :
     gfibAut K g σ ≫ pullback.snd _ _ = pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom (σ : K →+* K)) :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[gfibAut_fst, Category.id_comp]`. Establish `h : CommRingCat.ofHom ((1 : K ≃ₐ[O] K) : K →+* K) = 𝟙 _` using `by ext a; rfl`. Rewrite using `[gfibAut_snd, h, Spec.map_id, Category.id_comp, Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gfibAut_one {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) : gfibAut K g 1 = 𝟙 _ := by
   apply pullback.hom_ext
@@ -94,7 +94,7 @@ theorem gfibAut_one {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) : gfibA
     rw [gfibAut_snd, h, Spec.map_id, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, gfibAut_fst, gfibAut_fst, gfibAut_fst]`. Establish `h : CommRingCat.ofHom ((σ * τ : K ≃ₐ[O] K) : K →+* K) = CommRingCat.ofHom (τ : K →+* K) ≫ CommRingCat.ofHom (σ : K →+* K)` using `by ext a; rfl`. Rewrite using `[Category.assoc, gfibAut_snd, gfibAut_snd, gfibAut_snd_assoc, h, Spec.map_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gfibAut_mul {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) (σ τ : K ≃ₐ[O] K) :
     gfibAut K g (σ * τ) = gfibAut K g σ ≫ gfibAut K g τ := by
@@ -115,26 +115,26 @@ def gfibMap {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶
   pullback.lift (pullback.fst _ _ ≫ u) (pullback.snd _ _) (by rw [Category.assoc, hu, pullback.condition])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem gfibMap_fst {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶ Spec (CommRingCat.of O)}
     (u : T ⟶ T') (hu : u ≫ g' = g) : gfibMap K u hu ≫ pullback.fst _ _ = pullback.fst _ _ ≫ u := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem gfibMap_snd {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶ Spec (CommRingCat.of O)}
     (u : T ⟶ T') (hu : u ≫ g' = g) : gfibMap K u hu ≫ pullback.snd _ _ = pullback.snd _ _ := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;> simp [gfibMap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gfibMap_id {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of O)) :
     gfibMap K (𝟙 T) (Category.id_comp g) = 𝟙 _ := by
   apply pullback.hom_ext <;> simp [gfibMap]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[gfibMap_fst, Category.assoc, gfibMap_fst, gfibMap_fst_assoc]`. Rewrite using `[gfibMap_snd, Category.assoc, gfibMap_snd, gfibMap_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gfibMap_comp {T T' T'' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶ Spec (CommRingCat.of O)}
     {g'' : T'' ⟶ Spec (CommRingCat.of O)} (u : T ⟶ T') (hu : u ≫ g' = g) (v : T' ⟶ T'') (hv : v ≫ g'' = g') :
@@ -144,7 +144,7 @@ theorem gfibMap_comp {T T' T'' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)}
   · rw [gfibMap_snd, Category.assoc, gfibMap_snd, gfibMap_snd]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, gfibMap_fst, gfibAut_fst, gfibAut_fst_assoc, gfibMap_fst]`. Rewrite using `[Category.assoc, Category.assoc, gfibMap_snd, gfibAut_snd, gfibAut_snd, gfibMap_snd_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gfibMap_aut {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶ Spec (CommRingCat.of O)}
     (u : T ⟶ T') (hu : u ≫ g' = g) (σ : K ≃ₐ[O] K) :
@@ -158,7 +158,7 @@ def gfibPull {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' �
   GlobalTheory.Et.pull R n (gfibMap K u hu)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(GlobalTheory.Et.pull R n (gfibMap K u hu)).comp (GlobalTheory.Et.pull R n (gfibAut K g' σ)) = (GlobalTheory.Et.pull R n (gfibAut K g σ)).comp (GlobalTheory.Et.pull R n (gfibMap K u hu))`. Rewrite using `[← GlobalTheory.Et.pull_comp, ← GlobalTheory.Et.pull_comp, gfibMap_aut]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gfibPull_rep {T T' : Scheme.{0}} {g : T ⟶ Spec (CommRingCat.of O)} {g' : T' ⟶ Spec (CommRingCat.of O)}
     (u : T ⟶ T') (hu : u ≫ g' = g) (n : ℕ) (σ : K ≃ₐ[O] K) :
@@ -201,7 +201,7 @@ def stalkPull (f : X ⟶ Y) (hf : f ≫ q = p) {x : SpecialPoint p} {y : Special
   gfibPull R K h (by rw [← Category.assoc, hh, Category.assoc, hf]) n
 
 /- English proof (translation)
-The claim follows from `gfibPull_rep R K h _ n σ`.
+A detailed English derivation is pending.
 -/
 theorem stalkPull_inertia (f : X ⟶ Y) (hf : f ≫ q = p) {x : SpecialPoint p} {y : SpecialPoint q}
     (L : StrictLoc X x.1) (M : StrictLoc Y y.1) (h : L.scheme ⟶ M.scheme) (hh : h ≫ M.toX = L.toX ≫ f) (n : ℕ)
@@ -211,7 +211,7 @@ theorem stalkPull_inertia (f : X ⟶ Y) (hf : f ≫ q = p) {x : SpecialPoint p} 
   gfibPull_rep R K h _ n σ
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GlobalTheory.Et.pull R n (gfibMap K (𝟙 _) _) = _`. Rewrite using `[gfibMap_id, GlobalTheory.Et.pull_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stalkPull_id {x : SpecialPoint p} (L : StrictLoc X x.1) (n : ℕ) :
     stalkPull R K (𝟙 X) (Category.id_comp p) L L (𝟙 _) (by rw [Category.id_comp, Category.comp_id]) n =
@@ -220,7 +220,7 @@ theorem stalkPull_id {x : SpecialPoint p} (L : StrictLoc X x.1) (n : ℕ) :
   rw [gfibMap_id, GlobalTheory.Et.pull_id]; rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GlobalTheory.Et.pull R n (gfibMap K (h ≫ k) _) = (GlobalTheory.Et.pull R n (gfibMap K h _)).comp (GlobalTheory.Et.pull R n (gfibMap K k _))`. Rewrite using `[gfibMap_comp K h _ k _, GlobalTheory.Et.pull_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkPull_comp {Z : Scheme.{0}} {r : Z ⟶ Spec (CommRingCat.of O)} (f : X ⟶ Y) (hf : f ≫ q = p) (g : Y ⟶ Z)
     (hg : g ≫ r = q) {x : SpecialPoint p} {y : SpecialPoint q} {z : SpecialPoint r} (L : StrictLoc X x.1)
@@ -256,14 +256,14 @@ def pushAut {X' : Scheme.{0}} (π : X' ⟶ X) (g : X' ⟶ X') (hg : g ≫ π = �
     (by rw [← Category.assoc, pullback.lift_snd, Category.comp_id]) n
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pushAut_congr {X' : Scheme.{0}} (π : X' ⟶ X) {g g' : X' ⟶ X'} (e : g = g') (hg : g ≫ π = π) (hg' : g' ≫ π = π)
     (n : ℕ) (x : SpecialPoint p) (L : StrictLoc X x.1) : pushAut R K p π g hg n x L = pushAut R K p π g' hg' n x L := by
   subst e; rfl
 
 /- English proof (translation)
-Unfold `pushAut gfibPull`. Use `erw [← GlobalTheory.Et.pull_id, ← gfibMap_id]`. Use `congr 2`. Apply the tactic sequence `apply pullback.hom_ext <;> simp only [pullback.map, pullback.lift_fst, pullback.lift_snd, Category.comp_id, Category.id_comp]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pushAut_id {X' : Scheme.{0}} (π : X' ⟶ X) (n : ℕ) (x : SpecialPoint p) (L : StrictLoc X x.1) :
     pushAut R K p π (𝟙 _) (Category.id_comp _) n x L = LinearMap.id := by
@@ -274,7 +274,7 @@ theorem pushAut_id {X' : Scheme.{0}} (π : X' ⟶ X) (n : ℕ) (x : SpecialPoint
     Category.id_comp]
 
 /- English proof (translation)
-Unfold `pushAut gfibPull`. Use `erw [← GlobalTheory.Et.pull_comp, ← gfibMap_comp]`. Use `congr 2`. Apply the tactic sequence `apply pullback.hom_ext <;> simp only [pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pushAut_comp {X' : Scheme.{0}} (π : X' ⟶ X) (g g' : X' ⟶ X') (hg : g ≫ π = π) (hg' : g' ≫ π = π) (n : ℕ)
     (x : SpecialPoint p) (L : StrictLoc X x.1) :
@@ -287,7 +287,7 @@ theorem pushAut_comp {X' : Scheme.{0}} (π : X' ⟶ X) (g g' : X' ⟶ X') (hg : 
     pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id]
 
 /- English proof (translation)
-The claim follows from `gfibPull_rep R K _ _ n σ`.
+A detailed English derivation is pending.
 -/
 theorem pushAut_inertia {X' : Scheme.{0}} (π : X' ⟶ X) (g : X' ⟶ X') (hg : g ≫ π = π) (n : ℕ) (x : SpecialPoint p)
     (L : StrictLoc X x.1) (σ : K ≃ₐ[O] K) :
@@ -315,7 +315,7 @@ theorem pushAct_apply {X' : Scheme.{0}} (π : X' ⟶ X) {G : Type} [Group G] (ρ
     pushAct R K p π ρ hρ n x L g = pushAut R K p π (ρ g⁻¹) (hρ _) n x L := rfl
 
 /- English proof (translation)
-The claim follows from `pushAut_inertia R K p π _ (hρ _) n x L σ`.
+A detailed English derivation is pending.
 -/
 theorem pushAct_inertia {X' : Scheme.{0}} (π : X' ⟶ X) {G : Type} [Group G] (ρ : G →* End X')
     (hρ : ∀ g, ρ g ≫ π = π) (n : ℕ) (x : SpecialPoint p) (L : StrictLoc X x.1) (g : G) (σ : K ≃ₐ[O] K) :
@@ -331,7 +331,7 @@ abbrev SpecialPoint.closed (O : Type) [CommRing O] [IsLocalRing O] : SpecialPoin
   ⟨closedPoint O, rfl⟩
 
 /- English proof (translation)
-Use `haveI : IsSepClosed (ResidueField ℂ) := by`. Establish `e : ℂ ≃+* ResidueField ℂ` using `RingEquiv.ofBijective (residue ℂ) ⟨(residue ℂ).injective, residue_surjective⟩`. Use `haveI : IsAlgClosed (ResidueField ℂ) := IsAlgClosed.of_ringEquiv ℂ _ e`. Use `infer_instance`. Conclude with `StrictLoc.ofStrictlyHenselian ℂ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example : StrictLoc (Spec (CommRingCat.of ℂ)) (closedPoint ℂ) := by
   haveI : IsSepClosed (ResidueField ℂ) := by
@@ -341,7 +341,7 @@ example : StrictLoc (Spec (CommRingCat.of ℂ)) (closedPoint ℂ) := by
   exact StrictLoc.ofStrictlyHenselian ℂ
 
 /- English proof (translation)
-The claim follows from `stalk R K (𝟙 (Spec (CommRingCat.of O))) n (SpecialPoint.closed O) (StrictLoc.ofStrictlyHenselian O)`.
+A detailed English derivation is pending.
 -/
 example (O : Type) [CommRing O] [HenselianLocalRing O] [IsSepClosed (ResidueField O)] (K : Type) [Field K]
     [Algebra O K] [IsAlgClosed K] [FaithfulSMul O K] [Algebra.IsAlgebraic O K] (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] (n : ℕ) : Type 1 :=
@@ -354,7 +354,7 @@ end GlobalTheory.NCyc
 namespace GlobalTheory.NCyc
 
 /- English proof (translation)
-Establish `: IsAdicComplete (maximalIdeal (PowerSeries ℂ)) (PowerSeries ℂ)`. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`. Conclude with `{ is_henselian := fun f hf a h1 h2 => HenselianRing.is_henselian (I := maximalIdeal (PowerSeries ℂ)) f hf a h1 (h2.map _) }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem henselian_powerSeries_complex : HenselianLocalRing (PowerSeries ℂ) := by
   have : IsAdicComplete (maximalIdeal (PowerSeries ℂ)) (PowerSeries ℂ) := by
@@ -363,9 +363,9 @@ theorem henselian_powerSeries_complex : HenselianLocalRing (PowerSeries ℂ) := 
     HenselianRing.is_henselian (I := maximalIdeal (PowerSeries ℂ)) f hf a h1 (h2.map _) }
 
 /- English proof (translation)
-Set `f : ℂ →+* ResidueField (PowerSeries ℂ)` to `(residue _).comp PowerSeries.C`. Establish `hs : Function.Surjective f`. Introduce `y`. Take `⟨g, rfl⟩` from `residue_surjective y`. Use `⟨PowerSeries.constantCoeff g, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [f, RingHom.comp_apply]`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff, PowerSeries.maximalIdeal_eq_span_X, Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]`. Simplify using the standard rewrite rules. Use `haveI : IsAlgClosed (ResidueField (PowerSeries ℂ)) := IsAlgClosed.of_ringEquiv ℂ _ (RingEquiv.ofBijective f ⟨f.injective, hs⟩)`. Use `infer_instance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSepClosed_residueField_powerSeries_complex : IsSepClosed (ResidueField (PowerSeries ℂ)) := by
   let f : ℂ →+* ResidueField (PowerSeries ℂ) := (residue _).comp PowerSeries.C
@@ -384,7 +384,7 @@ theorem isSepClosed_residueField_powerSeries_complex : IsSepClosed (ResidueField
 attribute [local instance] henselian_powerSeries_complex isSepClosed_residueField_powerSeries_complex
 
 /- English proof (translation)
-Rewrite using `[faithfulSMul_iff_algebraMap_injective, IsScalarTower.algebraMap_eq (PowerSeries ℂ) (FractionRing (PowerSeries ℂ))]`. Conclude with `(algebraMap (FractionRing (PowerSeries ℂ)) _).injective.comp (IsFractionRing.injective _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem faithfulSMul_powerSeries_complex :
     FaithfulSMul (PowerSeries ℂ) (AlgebraicClosure (FractionRing (PowerSeries ℂ))) := by
@@ -392,7 +392,7 @@ theorem faithfulSMul_powerSeries_complex :
   exact (algebraMap (FractionRing (PowerSeries ℂ)) _).injective.comp (IsFractionRing.injective _ _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => (IsFractionRing.isAlgebraic_iff (PowerSeries ℂ) (FractionRing (PowerSeries ℂ)) _).2 (Algebra.IsAlgebraic.isAlgebraic x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAlgebraic_powerSeries_complex :
     Algebra.IsAlgebraic (PowerSeries ℂ) (AlgebraicClosure (FractionRing (PowerSeries ℂ))) :=
@@ -402,13 +402,13 @@ theorem isAlgebraic_powerSeries_complex :
 attribute [local instance] faithfulSMul_powerSeries_complex isAlgebraic_powerSeries_complex
 
 /- English proof (translation)
-The claim follows from `StrictLoc.ofStrictlyHenselian (PowerSeries ℂ)`.
+A detailed English derivation is pending.
 -/
 example : StrictLoc (Spec (CommRingCat.of (PowerSeries ℂ))) (closedPoint (PowerSeries ℂ)) :=
   StrictLoc.ofStrictlyHenselian (PowerSeries ℂ)
 
 /- English proof (translation)
-The claim follows from `inertia _ _ _ n _ _`.
+A detailed English derivation is pending.
 -/
 example (n : ℕ) : Representation ℤ_[3] (AlgebraicClosure (FractionRing (PowerSeries ℂ)) ≃ₐ[PowerSeries ℂ]
     AlgebraicClosure (FractionRing (PowerSeries ℂ)))

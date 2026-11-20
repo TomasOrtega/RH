@@ -47,7 +47,7 @@ def ShortAssembly : Prop :=
 def ShortLevelOwnAssembly : Prop := ShortAtLevelPrime ∧ ShortAtOwnPrime ∧ ShortAssembly
 
 /- English proof (translation)
-Establish `hg : ((D.host.g i : ℕ) : 𝓞 D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (D.host.g_prime i).ne_zero`. Rewrite `hg` using `[← h.1]`. Conclude with `mul_ne_zero_iff.1 hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Oriented.ne_zero {T : Full D} {i : Fin 2} {π : 𝓞 D.host.E} (h : Oriented T i π) :
     π ≠ 0 ∧ T.Q.H.bar π ≠ 0 := by

@@ -23,14 +23,14 @@ def E (a b : PowerSeries R) : PowerSeries R :=
     + C W.a₆ * (a ^ 2 + a * b + b ^ 2)
 
 /- English proof (translation)
-Simplify using `only [T, E]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem T_sub (a b : PowerSeries R) : T W a - T W b = (a - b) * E W a b := by
   simp only [T, E]
   ring
 
 /- English proof (translation)
-Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`. Use `⟨C W.a₁ + C W.a₂ * X + C W.a₃ * (a' + b') + C W.a₄ * X * (a' + b') + C W.a₆ * X * (a' ^ 2 + a' * b' + b' ^ 2), ?_⟩` and prove the remaining obligations. Simplify using `only [E]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem X_dvd_E {a b : PowerSeries R} (ha : X ∣ a) (hb : X ∣ b) : X ∣ E W a b := by
   obtain ⟨a', rfl⟩ := ha
@@ -41,7 +41,7 @@ theorem X_dvd_E {a b : PowerSeries R} (ha : X ∣ a) (hb : X ∣ b) : X ∣ E W 
   ring
 
 /- English proof (translation)
-Take `⟨a', rfl⟩` from `ha`. Use `⟨X ^ 2 + C W.a₁ * X * a' + C W.a₂ * X ^ 2 * a' + C W.a₃ * X * a' ^ 2 + C W.a₄ * X ^ 2 * a' ^ 2 + C W.a₆ * X ^ 2 * a' ^ 3, ?_⟩` and prove the remaining obligations. Simplify using `only [T]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem X_dvd_wMap {a : PowerSeries R} (ha : X ∣ a) : X ∣ T W a := by
   obtain ⟨a', rfl⟩ := ha
@@ -51,7 +51,7 @@ theorem X_dvd_wMap {a : PowerSeries R} (ha : X ∣ a) : X ∣ T W a := by
   ring
 
 /- English proof (translation)
-Rewrite using `[T_sub, pow_succ]`. Conclude with `mul_dvd_mul h (X_dvd_E W ha hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contract {k : ℕ} {a b : PowerSeries R} (ha : X ∣ a) (hb : X ∣ b) (h : X ^ k ∣ a - b) :
     X ^ (k + 1) ∣ T W a - T W b := by
@@ -60,7 +60,7 @@ theorem contract {k : ℕ} {a b : PowerSeries R} (ha : X ∣ a) (hb : X ∣ b) (
 
 omit W in
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `using (X_pow_dvd_iff.mp (h (n + 1))) n (Nat.lt_succ_self n)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_forall_X_pow_dvd {d : PowerSeries R} (h : ∀ k, X ^ k ∣ d) : d = 0 := by
   ext n
@@ -71,7 +71,7 @@ def seq : ℕ → PowerSeries R
   | k + 1 => T W (seq k)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => show X ∣ (0 : PowerSeries R)`. Conclude with `dvd_zero _`. Consider the case `succ k ih => show X ∣ T W (seq W k)`. Conclude with `X_dvd_wMap W ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem X_dvd_seq (k : ℕ) : X ∣ seq W k := by
   induction k with
@@ -79,7 +79,7 @@ theorem X_dvd_seq (k : ℕ) : X ∣ seq W k := by
   | succ k ih => show X ∣ T W (seq W k); exact X_dvd_wMap W ih
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `one_dvd _`. Consider the case `succ k ih => show X ^ (k + 1) ∣ T W (seq W (k + 1)) - T W (seq W k)`. Conclude with `contract W (X_dvd_seq W _) (X_dvd_seq W _) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem seq_step (k : ℕ) : X ^ k ∣ seq W (k + 1) - seq W k := by
   induction k with
@@ -89,9 +89,9 @@ theorem seq_step (k : ℕ) : X ^ k ∣ seq W (k + 1) - seq W k := by
     exact contract W (X_dvd_seq W _) (X_dvd_seq W _) ih
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `h1` using `seq_step W (j + i)`. Establish `h2 : (X : PowerSeries R) ^ j ∣ X ^ (j + i)` using `pow_dvd_pow X (Nat.le_add_right j i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : j + (i + 1) = j + i + 1` using `by omega`. Rewrite using `[e, show seq W (j + i + 1) - seq W j = (seq W (j + i + 1) - seq W (j + i)) + (seq W (j + i) - seq W j) by ring]`. Conclude with `dvd_add (h2.trans h1) ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seq_far (j i : ℕ) : X ^ j ∣ seq W (j + i) - seq W j := by
   induction i with
@@ -107,9 +107,9 @@ theorem seq_far (j i : ℕ) : X ^ j ∣ seq W (j + i) - seq W j := by
 def lim : PowerSeries R := PowerSeries.mk fun n => coeff n (seq W (n + 1))
 
 /- English proof (translation)
-Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Take `⟨i, rfl⟩ : ∃ i, k = m + 1 + i` from `⟨k - (m + 1), by omega⟩`. Establish `h` using `X_pow_dvd_iff.mp (seq_far W (m + 1) i) m (Nat.lt_succ_self m)`. Simplify using `only [map_sub, lim, coeff_mk] at h ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `-h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem lim_approx (k : ℕ) : X ^ k ∣ lim W - seq W k := by
   rw [X_pow_dvd_iff]
@@ -120,13 +120,13 @@ theorem lim_approx (k : ℕ) : X ^ k ∣ lim W - seq W k := by
   linear_combination -h
 
 /- English proof (translation)
-Establish `h1` using `lim_approx W 1`. Rewrite `h1` using `[pow_one]`. Establish `hX : X ∣ lim W`. Use `dvd_add h1 (X_dvd_seq W 1)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨X_dvd_iff.mp hX, ?_⟩` and prove the remaining obligations. Use `show lim W = T W (lim W)`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_forall_X_pow_dvd` to reduce the goal to its premises. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `lim_approx W (k + 1)`. Establish `h3 : X ^ (k + 1) ∣ T W (seq W k) - T W (lim W)` using `contract W (X_dvd_seq W k) hX (by rw [← neg_sub]; exact dvd_neg.mpr (lim_approx W k))`. Establish `e : lim W - T W (lim W) = (lim W - seq W (k + 1)) + (T W (seq W k) - T W (lim W))`. Rewrite using `[show seq W (k + 1) = T W (seq W k) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(pow_dvd_pow X (Nat.le_succ k)).trans (dvd_add h2 h3)`.
+A detailed English derivation is pending.
 -/
 theorem lim_fixed : WFixed W (lim W) := by
   have h1 := lim_approx W 1
@@ -151,11 +151,9 @@ theorem lim_fixed : WFixed W (lim W) := by
   exact (pow_dvd_pow X (Nat.le_succ k)).trans (dvd_add h2 h3)
 
 /- English proof (translation)
-Establish `hX : X ∣ w` using `X_dvd_iff.mpr hw.1`. Establish `hX' : X ∣ w'` using `X_dvd_iff.mpr hw'.1`. Establish `key : ∀ k, X ^ k ∣ w - w'`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [pow_zero]`. Conclude with `one_dvd _`. Consider the case `succ k ih`. Establish `h` using `contract W hX hX' ih`. Rewrite `h` using `[show T W w = w from hw.2.symm, show T W w' = w' from hw'.2.symm]`. Then use the resulting hypothesis.
-
-Conclude with `sub_eq_zero.mp (eq_zero_of_forall_X_pow_dvd key)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fixed_unique {w w' : PowerSeries R} (hw : WFixed W w) (hw' : WFixed W w') : w = w' := by
   have hX : X ∣ w := X_dvd_iff.mpr hw.1
@@ -170,15 +168,15 @@ theorem fixed_unique {w w' : PowerSeries R} (hw : WFixed W w) (hw' : WFixed W w'
   exact sub_eq_zero.mp (eq_zero_of_forall_X_pow_dvd key)
 
 /- English proof (translation)
-Establish `hX : X ∣ w` using `X_dvd_iff.mpr hw.1`. Establish `e0 : T W 0 = X ^ 3` using `by simp only [T]; ring`. Establish `hw2 : T W w = w` using `hw.2.symm`. Establish `step : ∀ n, X ^ n ∣ w → X ^ (n + 1) ∣ w - X ^ 3`. Introduce `n h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : w - X ^ 3 = (w - 0) * E W w 0`. Rewrite using `[← T_sub, e0, hw2]`. Rewrite using `[e, sub_zero, pow_succ]`. Conclude with `mul_dvd_mul h (X_dvd_E W hX (dvd_zero X))`. Establish `hadd : ∀ n, n ≤ 3 → X ^ n ∣ w - X ^ 3 → X ^ n ∣ w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn h`. Use `dvd_add h (pow_dvd_pow (X : PowerSeries R) hn)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h1 : X ^ 1 ∣ w` using `by rw [pow_one]; exact hX`. Establish `h2 : X ^ 2 ∣ w` using `hadd 2 (by norm_num) (step 1 h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : X ^ 3 ∣ w` using `hadd 3 le_rfl (step 2 h2)`. Establish `h4 : X ^ 4 ∣ w - X ^ 3` using `step 3 h3`. Establish `c` using `X_pow_dvd_iff.mp h3`. Establish `c4` using `X_pow_dvd_iff.mp h4 3 (by norm_num)`. Rewrite `c4` using `[map_sub, coeff_X_pow_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨c 0 (by norm_num), c 1 (by norm_num), c 2 (by norm_num), sub_eq_zero.mp c4⟩`.
+A detailed English derivation is pending.
 -/
 theorem lead {w : PowerSeries R} (hw : WFixed W w) :
     coeff 0 w = 0 ∧ coeff 1 w = 0 ∧ coeff 2 w = 0 ∧ coeff 3 w = 1 := by
@@ -211,9 +209,9 @@ section Subst
 variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 
 /- English proof (translation)
-Establish `hc : IsUnit (MvPowerSeries.constantCoeff (1 - e))`. Rewrite using `[map_sub, map_one, he, sub_zero]`. Conclude with `isUnit_one`. Establish `hu : IsUnit (1 - e)` using `MvPowerSeries.isUnit_iff_constantCoeff.mpr hc`. Establish `h0 : d * (1 - e) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_sub, mul_one, ← h, sub_self]`. Conclude with `hu.mul_left_eq_zero.mp h0`.
+A detailed English derivation is pending.
 -/
 theorem mv_eq_zero {σ : Type*} {d e : MvPowerSeries σ R}
     (he : MvPowerSeries.constantCoeff e = 0) (h : d = d * e) : d = 0 := by
@@ -226,21 +224,21 @@ theorem mv_eq_zero {σ : Type*} {d e : MvPowerSeries σ R}
   exact hu.mul_left_eq_zero.mp h0
 
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero hs`.
+A detailed English derivation is pending.
 -/
 private theorem hasSubst_of_constantCoeff_eq_zero_elliptic_torsion {σ : Type} {s : MvPowerSeries σ R}
     (hs : MvPowerSeries.constantCoeff s = 0) : PowerSeries.HasSubst s :=
   PowerSeries.HasSubst.of_constantCoeff_zero hs
 
 /- English proof (translation)
-The claim follows from `congrFun (PowerSeries.coe_substAlgHom ha) f`.
+A detailed English derivation is pending.
 -/
 private theorem substAlgHom_apply' {σ : Type} {s : MvPowerSeries σ R} (ha : PowerSeries.HasSubst s)
     (f : PowerSeries R) : PowerSeries.substAlgHom ha f = f.subst s :=
   congrFun (PowerSeries.coe_substAlgHom ha) f
 
 /- English proof (translation)
-Rewrite using `[substAlgHom_apply']`. Conclude with `PowerSeries.subst_X ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem substAlgHom_X' {σ : Type} {s : MvPowerSeries σ R} (ha : PowerSeries.HasSubst s) :
     PowerSeries.substAlgHom ha (X : PowerSeries R) = s := by
@@ -248,13 +246,13 @@ private theorem substAlgHom_X' {σ : Type} {s : MvPowerSeries σ R} (ha : PowerS
   exact PowerSeries.subst_X ha
 
 /- English proof (translation)
-The claim follows from `PowerSeries.smul_eq_C_mul f r`.
+A detailed English derivation is pending.
 -/
 private theorem powerSeries_smul_eq_C_mul (r : R) (f : PowerSeries R) : r • f = C r * f :=
   PowerSeries.smul_eq_C_mul f r
 
 /- English proof (translation)
-Rewrite using `[show (C r : PowerSeries R) = r • (1 : PowerSeries R) by rw [powerSeries_smul_eq_C_mul, mul_one], map_smul, map_one, Algebra.smul_def, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem substAlgHom_C {σ : Type} {s : MvPowerSeries σ R} (ha : PowerSeries.HasSubst s)
     (r : R) : PowerSeries.substAlgHom ha (C r) = algebraMap R (MvPowerSeries σ R) r := by
@@ -262,7 +260,7 @@ private theorem substAlgHom_C {σ : Type} {s : MvPowerSeries σ R} (ha : PowerSe
     map_smul, map_one, Algebra.smul_def, mul_one]
 
 /- English proof (translation)
-Establish `ha` using `hasSubst_of_constantCoeff_eq_zero_elliptic_torsion hs`. Take `⟨w₁, hw₁⟩` from `X_dvd_iff.mpr hw0`. Rewrite using `[← substAlgHom_apply' ha, hw₁, map_mul, substAlgHom_X' ha, map_mul, hs, zero_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem constantCoeff_subst_eq_zero_elliptic_torsion {w : PowerSeries R} (hw0 : constantCoeff w = 0)
     {σ : Type} (s : MvPowerSeries σ R) (hs : MvPowerSeries.constantCoeff s = 0) :
@@ -272,9 +270,9 @@ private theorem constantCoeff_subst_eq_zero_elliptic_torsion {w : PowerSeries R}
   rw [← substAlgHom_apply' ha, hw₁, map_mul, substAlgHom_X' ha, map_mul, hs, zero_mul]
 
 /- English proof (translation)
-Establish `ha` using `hasSubst_of_constantCoeff_eq_zero_elliptic_torsion hs`. Establish `e` using `congrArg (PowerSeries.substAlgHom ha) hw.2`. Simplify using `only [map_add, map_mul, map_pow, substAlgHom_C ha, substAlgHom_X' ha] at e`. Rewrite `e` using `[substAlgHom_apply' ha]`. Unfold `Formalism.ELL.WEqAt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Algebra.smul_def]`. Take the linear combination `e`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem subst_eq {w : PowerSeries R} (hw : WFixed W w) {σ : Type} (s : MvPowerSeries σ R)
     (hs : MvPowerSeries.constantCoeff s = 0) : WEqAt W s (w.subst s) := by
@@ -292,7 +290,7 @@ end WeierstrassSeriesLimit
 
 open WeierstrassSeriesLimit in
 /- English proof (translation)
-Introduce `R _ W`. Conclude with `⟨Formalism.ELL.WeierstrassSeriesLimit.lim W, Formalism.ELL.WeierstrassSeriesLimit.lim_fixed W, fun w hw => Formalism.ELL.WeierstrassSeriesLimit.fixed_unique W hw (Formalism.ELL.WeierstrassSeriesLimit.lim_fixed W)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem wSeriesExistsUnique_holds : WSeriesUnique.{u} := by
   intro R _ W
@@ -301,7 +299,7 @@ theorem wSeriesExistsUnique_holds : WSeriesUnique.{u} := by
 
 open WeierstrassSeriesLimit in
 /- English proof (translation)
-Introduce `R _ W w hw`. Conclude with `Formalism.ELL.WeierstrassSeriesLimit.lead W hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wSeriesLeadingTerm_holds : WSeriesLead.{u} := by
   intro R _ W w hw
@@ -309,9 +307,9 @@ theorem wSeriesLeadingTerm_holds : WSeriesLead.{u} := by
 
 open WeierstrassSeriesLimit in
 /- English proof (translation)
-Introduce `R _ W w hw σ _ s hs`. Use `⟨Formalism.ELL.WeierstrassSeriesLimit.subst_eq W hw s hs, fun v hv hvE => ?_⟩` and prove the remaining obligations. Establish `hu` using `Formalism.ELL.WeierstrassSeriesLimit.subst_eq W hw s hs`. Establish `hu0 : MvPowerSeries.constantCoeff (w.subst s) = 0` using `_root_.Formalism.ELL.WeierstrassSeriesLimit.constantCoeff_subst_eq_zero_elliptic_torsion hw.1 s hs`. Unfold `WEqAt at hu hvE`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Algebra.smul_def] at hu hvE`. Establish `key : v - w.subst s = (v - w.subst s) * (algebraMap R (MvPowerSeries σ R) W.a₁ * s + algebraMap R (MvPowerSeries σ R) W.a₂ * s ^ 2 + algebraMap R (MvPowerSeries σ R) W.a₃ * (v + w.subst s) + algebraMap R (MvPowerSeries σ R) W.a₄ * s * (v + w.subst s) + algebraMap R (MvPowerSeries …`. Take the linear combination `hvE - hu`. Use `sub_eq_zero.mp (Formalism.ELL.WeierstrassSeriesLimit.mv_eq_zero ?_ key)` and prove the remaining obligations. Simplify using `[hs, hv, hu0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem wSeriesSubstUnique_holds : WSubstUnique.{u} := by
   intro R _ W w hw σ _ s hs

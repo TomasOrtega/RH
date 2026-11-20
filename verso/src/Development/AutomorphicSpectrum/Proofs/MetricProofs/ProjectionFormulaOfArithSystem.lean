@@ -32,20 +32,20 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv.ProjF
 open GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `Inter.PFIntZero.proof (Inter.pointFormRank_holds.proof Inter.RatioAlgDep.proof)`.
+A detailed English derivation is pending.
 -/
 theorem pfIntZero : Inter.PFIntZero.Statement :=
   Inter.PFIntZero.proof (Inter.pointFormRank_holds.proof Inter.RatioAlgDep.proof)
 
 /- English proof (translation)
-The claim follows from `Inter.PFVert.proof (by intros; exact geoNumStatement _) (by intros; exact Targets.ExistsUnique.full _ _) Targets.contractMixedField`.
+A detailed English derivation is pending.
 -/
 theorem pfVert : Inter.PFVert.Statement :=
   Inter.PFVert.proof (by intros; exact geoNumStatement _) (by intros; exact Targets.ExistsUnique.full _ _)
     Targets.contractMixedField
 
 /- English proof (translation)
-The claim follows from `Targets.ContractMixed.of_found imageArith Targets.Contract.pulledBackForms_topDensity_vanish (Inter.ProjectivePointVertical.proof (by intros; exact geoNumStatement _) (by intros; exact Targets.ExistsUnique.full _ _) (by intros; exact Targets.ProjContract.full _ _ _ _ _)) pfIntZer …`.
+A detailed English derivation is pending.
 -/
 theorem contractMixed : ContractMixedStatement :=
   Targets.ContractMixed.of_found imageArith Targets.Contract.pulledBackForms_topDensity_vanish
@@ -54,7 +54,7 @@ theorem contractMixed : ContractMixedStatement :=
     pfIntZero pfVert
 
 /- English proof (translation)
-The claim follows from `Inter.PFStep.proof (Inter.PFSecRed.proof (by intros; exact Targets.Multilin.full _ _) GlobalTheory.CompanionTheory.Ar.Giv.fibreDim) pfVert pfIntZero Inter.PFHoriz.proof (Inter.PFFibreSum.proof GlobalTheory.CompanionTheory.Ar.Giv.fibreDim Inter.PFFibreBij.proof Inter.PFFibreMult.p …`.
+A detailed English derivation is pending.
 -/
 theorem pfStep : Inter.PFStep.Statement :=
   Inter.PFStep.proof (Inter.PFSecRed.proof (by intros; exact Targets.Multilin.full _ _) GlobalTheory.CompanionTheory.Ar.Giv.fibreDim) pfVert pfIntZero
@@ -62,7 +62,7 @@ theorem pfStep : Inter.PFStep.Statement :=
     imageArith contractMixed
 
 /- English proof (translation)
-Introduce `h` and use `Inter.PushforwardProjLineFlag.proof (GlobalTheory.T.generic_degree_of_arith_system h) pfStep`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem projFormula : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → PFStatement := fun h =>
   Inter.PushforwardProjLineFlag.proof (GlobalTheory.T.generic_degree_of_arith_system h) pfStep

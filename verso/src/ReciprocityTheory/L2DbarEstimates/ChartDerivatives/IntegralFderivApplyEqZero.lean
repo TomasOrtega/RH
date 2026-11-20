@@ -9,7 +9,7 @@ open scoped ContDiff ENNReal
 noncomputable section
 
 /- English proof (translation)
-Establish `hi : Integrable (fun y => fderiv ℝ H y v)` using `((hH.continuous_fderiv one_ne_zero).clm_apply continuous_const).integrable_of_hasCompactSupport (hc.fderiv_apply (𝕜 := ℝ) v)`. Use `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (μ := volume) (f := fun _ => (1 : ℂ)) (g := H) (v := v) (by simp) (by simpa using hi) (by simpa using hH.continuous.integrable_of_hasCompactSupport hc) (fun x _ => differentiableAt_const _) (fun x _ => hH.differentiable one_ne_z …` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_fderiv_apply_eq_zero (n : ℕ) (H : V n → ℂ) (hH : ContDiff ℝ 1 H)
     (hc : HasCompactSupport H) (v : V n) : ∫ y, fderiv ℝ H y v = 0 := by
@@ -23,7 +23,7 @@ theorem integral_fderiv_apply_eq_zero (n : ℕ) (H : V n → ℂ) (hH : ContDiff
   simpa using this
 
 /- English proof (translation)
-Unfold `wd`. Establish `i1 : Integrable (fun y => fderiv ℝ H y (bas n j))` using `((hH.continuous_fderiv one_ne_zero).clm_apply continuous_const).integrable_of_hasCompactSupport (hc.fderiv_apply (𝕜 := ℝ) _)`. Establish `i2 : Integrable (fun y => fderiv ℝ H y (Complex.I • bas n j))` using `((hH.continuous_fderiv one_ne_zero).clm_apply continuous_const).integrable_of_hasCompactSupport (hc.fderiv_apply (𝕜 := ℝ) _)`. Rewrite using `[integral_div, integral_sub i1 (i2.const_mul Complex.I), integral_const_mul, integral_fderiv_apply_eq_zero n H hH hc, integral_fderiv_apply_eq_zero n H hH hc]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_wd_eq_zero (n : ℕ) (j : Fin n) (H : V n → ℂ) (hH : ContDiff ℝ 1 H)
     (hc : HasCompactSupport H) : ∫ y, wd n j H y = 0 := by
@@ -39,7 +39,7 @@ theorem integral_wd_eq_zero (n : ℕ) (j : Fin n) (H : V n → ℂ) (hH : ContDi
   simp
 
 /- English proof (translation)
-Unfold `wdb`. Establish `i1 : Integrable (fun y => fderiv ℝ H y (bas n j))` using `((hH.continuous_fderiv one_ne_zero).clm_apply continuous_const).integrable_of_hasCompactSupport (hc.fderiv_apply (𝕜 := ℝ) _)`. Establish `i2 : Integrable (fun y => fderiv ℝ H y (Complex.I • bas n j))` using `((hH.continuous_fderiv one_ne_zero).clm_apply continuous_const).integrable_of_hasCompactSupport (hc.fderiv_apply (𝕜 := ℝ) _)`. Rewrite using `[integral_div, integral_add i1 (i2.const_mul Complex.I), integral_const_mul, integral_fderiv_apply_eq_zero n H hH hc, integral_fderiv_apply_eq_zero n H hH hc]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_wdb_eq_zero (n : ℕ) (j : Fin n) (H : V n → ℂ) (hH : ContDiff ℝ 1 H)
     (hc : HasCompactSupport H) : ∫ y, wdb n j H y = 0 := by
@@ -55,7 +55,7 @@ theorem integral_wdb_eq_zero (n : ℕ) (j : Fin n) (H : V n → ℂ) (hH : ContD
   simp
 
 /- English proof (translation)
-Use `haveI := vol_isFiniteMeasureOnCompacts n z hz`. Conclude with `hf.integrable_of_hasCompactSupport hc`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_continuous {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (f : M → ℂ) (hf : Continuous f) (hc : HasCompactSupport f) :
     Integrable f (vol n z) := by
@@ -63,7 +63,7 @@ theorem integrable_of_continuous {M : Type*} [TopologicalSpace M] [T2Space M] [S
   exact hf.integrable_of_hasCompactSupport hc
 
 /- English proof (translation)
-Establish `h` using `integrable_of_continuous n z hz (fun x => (f x : ℂ)) (Complex.continuous_ofReal.comp hf) (hc.comp_left Complex.ofReal_zero)`. Simplify using `using h.re`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integrable_of_continuous_real {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (f : M → ℝ) (hf : Continuous f) (hc : HasCompactSupport f) :
     Integrable f (vol n z) := by
@@ -72,19 +72,19 @@ theorem integrable_of_continuous_real {M : Type*} [TopologicalSpace M] [T2Space 
   simpa using h.re
 
 /- English proof (translation)
-The claim follows from `integrable_of_continuous n z hz f (Smooth.continuous n z hz f hf) hc`.
+A detailed English derivation is pending.
 -/
 theorem Smooth.integrable {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (f : M → ℂ) (hf : Smooth n z f) (hc : HasCompactSupport f) :
     Integrable f (vol n z) := integrable_of_continuous n z hz f (Smooth.continuous n z hz f hf) hc
 
 /- English proof (translation)
-Establish `hKc : IsCompact (e '' tsupport h)` using `hc.isCompact.image_of_continuousOn (e.continuousOn.mono hs)`. Establish `hKt : e '' tsupport h ⊆ e.target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `e.map_source (hs hx)`. Establish `hout : ∀ w, w ∉ e '' tsupport h → e.target.indicator (h ∘ e.symm) w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Distinguish the cases in `hwt : w ∈ e.target`. Rewrite using `[Set.indicator_of_mem hwt, Function.comp_apply]`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hmem`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hw ⟨e.symm w, hmem, e.right_inv hwt⟩`. Conclude with `Set.indicator_of_notMem hwt _`. Establish `hin : ∀ y ∈ e.target, e.target.indicator (h ∘ e.symm) =ᶠ[𝓝 y] h ∘ e.symm` using `fun y hy => Filter.eventually_of_mem (e.open_target.mem_nhds hy) fun w hw => Set.indicator_of_mem hw _`. Establish `hzero : ∀ y ∉ e '' tsupport h, e.target.indicator (h ∘ e.symm) =ᶠ[𝓝 y] fun _ => 0` using `fun y hy => Filter.eventually_of_mem (hKc.isClosed.isOpen_compl.mem_nhds hy) fun w hw => hout w hw`. Use `⟨e.target.indicator (h ∘ e.symm), ?_, HasCompactSupport.intro hKc hout, hin, fun y hy => hzero y fun hyK => hy (hKt hyK)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `y`. Distinguish the cases in `hy : y ∈ e.target`. Conclude with `((hh e he).contDiffAt (e.open_target.mem_nhds hy)).congr_of_eventuallyEq (hin y hy)`. Conclude with `contDiffAt_const.congr_of_eventuallyEq (hzero y fun hyK => hy (hKt hyK))`.
+A detailed English derivation is pending.
 -/
 theorem chart_extend {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (h : M → ℂ) (hh : Ck n z 1 h)
@@ -116,21 +116,21 @@ theorem chart_extend {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   · exact contDiffAt_const.congr_of_eventuallyEq (hzero y fun hyK => hy (hKt hyK))
 
 /- English proof (translation)
-Simplify using `[wd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wd_zero_fun (n : ℕ) (j : Fin n) (y : V n) : wd n j (fun _ => (0 : ℂ)) y = 0 := by
   simp [wd]
 
 /- English proof (translation)
-Simplify using `[wdb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wdb_zero_fun (n : ℕ) (j : Fin n) (y : V n) : wdb n j (fun _ => (0 : ℂ)) y = 0 := by
   simp [wdb]
 
 /- English proof (translation)
-Take `⟨e, he, hxe⟩` from `exists_chart n z hz x`. Rewrite using `[d_eq_wd n z e he j f x hxe, db_eq_wdb n z e he j f x hxe]`. Establish `hzero : f ∘ e.symm =ᶠ[𝓝 (z x)] fun _ => 0`. Establish `h1 : (tsupport f)ᶜ ∈ 𝓝 x` using `(isClosed_tsupport f).isOpen_compl.mem_nhds hx`. Rewrite using `[he hxe]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ᶠ y in 𝓝 (e x), e.symm y ∈ (tsupport f)ᶜ` using `(e.continuousAt_symm (e.map_source hxe)).preimage_mem_nhds (by rw [e.left_inv hxe]; exact h1)`. Use `filter_upwards [h2] with y hy`. Conclude with `image_eq_zero_of_notMem_tsupport (f := f) hy`. Conclude with `⟨(wd_congr n j _ _ _ hzero).trans (wd_zero_fun n j _), (wdb_congr n j _ _ _ hzero).trans (wdb_zero_fun n j _)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem d_db_eq_zero_of_not_mem_tsupport {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (j : Fin n) (f : M → ℂ) (x : M) (hx : x ∉ tsupport f) :
@@ -148,11 +148,11 @@ private theorem d_db_eq_zero_of_not_mem_tsupport {M : Type*} [TopologicalSpace M
     (wdb_congr n j _ _ _ hzero).trans (wdb_zero_fun n j _)⟩
 
 /- English proof (translation)
-Establish `hcont : Continuous (db n z j h)` using `Ck.continuous n z hz 0 _ (Ck.db n z 0 j h hh)`. Establish `hzero : ∀ x, x ∉ e.source → db n z j h x = 0` using `fun x hx => (d_db_eq_zero_of_not_mem_tsupport n z hz j h x fun h' => hx (hs h')).2`. Rewrite using `[integral_vol_chart n z hz e he _ hcont.measurable hzero]`. Take `⟨H, hH1, hHc, hHt, hHo⟩` from `chart_extend n z e he h hh hc hs`. Establish `h1 : ∫ y in e.target, db n z j h (e.symm y) = ∫ y in e.target, wdb n j H y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `setIntegral_congr_fun e.open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[db_comp_symm n z e he j h y hy]`. Conclude with `wdb_congr n j _ _ y (hHt y hy).symm`. Establish `h2 : ∫ y in e.target, wdb n j H y = ∫ y, wdb n j H y`. Use `setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(wdb_congr n j _ _ y (hHo y hy)).trans (wdb_zero_fun n j y)`. Rewrite using `[h1, h2, integral_wdb_eq_zero n j H hH1 hHc]`.
+A detailed English derivation is pending.
 -/
 theorem integral_db_chart_eq_zero {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (j : Fin n) (h : M → ℂ) (hh : Ck n z 1 h)
@@ -173,7 +173,7 @@ theorem integral_db_chart_eq_zero {M : Type*} [TopologicalSpace M] [T2Space M] [
   rw [h1, h2, integral_wdb_eq_zero n j H hH1 hHc]
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `ContDiffOn.sum fun i _ => hF i e he`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Ck.finset_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
     (s : Finset ι) (F : ι → M → ℂ) (hF : ∀ i, Ck n z 1 (F i)) :
@@ -182,9 +182,9 @@ theorem Ck.finset_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   exact ContDiffOn.sum fun i _ => hF i e he
 
 /- English proof (translation)
-Establish `hF : fderiv ℝ (fun w => ∑ i ∈ s, G i w) y = ∑ i ∈ s, fderiv ℝ (G i) y`. Establish `H` using `HasFDerivAt.sum (u := s) (A := G) fun i hi => (hG i hi).hasFDerivAt`. Apply the tactic sequence `try simp only [Finset.sum_fn] at H`. Conclude with `H.fderiv`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [wd, hF, ContinuousLinearMap.sum_apply, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]`. Simplify using `only [wdb, hF, ContinuousLinearMap.sum_apply, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_div]`.
+A detailed English derivation is pending.
 -/
 private theorem wd_wdb_finset_sum {ι : Type*} {n : ℕ} (s : Finset ι) (G : ι → V n → ℂ) (y : V n)
     (hG : ∀ i ∈ s, DifferentiableAt ℝ (G i) y) (j : Fin n) :
@@ -201,9 +201,9 @@ private theorem wd_wdb_finset_sum {ι : Type*} {n : ℕ} (s : Finset ι) (G : ι
       Finset.sum_div]
 
 /- English proof (translation)
-Unfold `d`. Use `split_ifs with h`. Take `⟨hc, hxc⟩` from `Classical.choose_spec h`. Establish `hzx : z x ∈ (Classical.choose h).target`. Rewrite using `[hc hxc]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(Classical.choose h).map_source hxc`. Conclude with `(wd_wdb_finset_sum s (fun i => F i ∘ (Classical.choose h).symm) (z x) (fun i _ => ((hF i _ hc).contDiffAt ((Classical.choose h).open_target.mem_nhds hzx)).differentiableAt one_ne_zero) j).1`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem d_finset_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
     (s : Finset ι) (F : ι → M → ℂ) (hF : ∀ i, Ck n z 1 (F i)) (j : Fin n) (x : M) :
@@ -219,9 +219,9 @@ theorem d_finset_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
   · simp
 
 /- English proof (translation)
-Unfold `db`. Use `split_ifs with h`. Take `⟨hc, hxc⟩` from `Classical.choose_spec h`. Establish `hzx : z x ∈ (Classical.choose h).target`. Rewrite using `[hc hxc]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(Classical.choose h).map_source hxc`. Conclude with `(wd_wdb_finset_sum s (fun i => F i ∘ (Classical.choose h).symm) (z x) (fun i _ => ((hF i _ hc).contDiffAt ((Classical.choose h).open_target.mem_nhds hzx)).differentiableAt one_ne_zero) j).2`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem db_finset_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
     (s : Finset ι) (F : ι → M → ℂ) (hF : ∀ i, Ck n z 1 (F i)) (j : Fin n) (x : M) :
@@ -237,11 +237,11 @@ theorem db_finset_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   · simp
 
 /- English proof (translation)
-Take `⟨N, e, χ, he, hχs, -, hχsub, -, -, hχ1⟩` from `exists_chart_partition n z hz (tsupport g) univ hc isOpen_univ (subset_univ _)`. Use `⟨N, e, fun i x => (χ i x : ℂ) * g x, he, fun i => Ck.mul n z 1 _ _ (Smooth.ck n z 1 _ (hχs i)) hg, fun i => hc.mul_left, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `(tsupport_mul_subset_left (f := fun x => (χ i x : ℂ)) (g := g)).trans ?_` and prove the remaining obligations. Use `(tsupport_comp_subset Complex.ofReal_zero (χ i)).trans ?_` and prove the remaining obligations. Conclude with `(hχsub i).trans inter_subset_left`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ tsupport g`. Rewrite using `[← Finset.sum_mul, ← Complex.ofReal_sum, hχ1 x hx]`. Simplify using the standard rewrite rules. Establish `: g x = 0` using `image_eq_zero_of_notMem_tsupport hx`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_decomp {M : Type*} [TopologicalSpace M] [T2Space M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (g : M → ℂ) (hg : Ck n z 1 g) (hc : HasCompactSupport g) :
@@ -262,9 +262,9 @@ theorem exists_chart_decomp {M : Type*} [TopologicalSpace M] [T2Space M] (n : �
       simp [this]
 
 /- English proof (translation)
-Take `⟨N, e, h, he, hh, hc', hs, rfl⟩` from `exists_chart_decomp n z hz g hg hc`. Establish `dint : ∀ i, Integrable (fun x => db n z j (h i) x) (vol n z)` using `fun i => integrable_of_continuous n z hz _ (Ck.continuous n z hz 0 _ (Ck.db n z 0 j (h i) (hh i))) ((hc' i).mono' fun x hx => by`. Assume the negation of the conclusion as `hx'`. Conclude with `hx (d_db_eq_zero_of_not_mem_tsupport n z hz j _ x hx').2)`. Establish `hsum : (fun x => db n z j (fun x => ∑ i, h i x) x) = fun x => ∑ i, db n z j (h i) x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun x => db_finset_sum n z Finset.univ h (fun i => hh i) j x`. Rewrite using `[hsum, integral_finset_sum _ fun i _ => dint i]`. Conclude with `Finset.sum_eq_zero fun i _ => integral_db_chart_eq_zero n z hz (e i) (he i) j (h i) (hh i) (hc' i) (hs i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_db_eq_zero {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (j : Fin n) (g : M → ℂ) (hg : Ck n z 1 g) (hc : HasCompactSupport g) :
     ∫ x, db n z j g x ∂vol n z = 0 := by
@@ -281,7 +281,7 @@ theorem integral_db_eq_zero {M : Type*} [TopologicalSpace M] [T2Space M] [Second
     integral_db_chart_eq_zero n z hz (e i) (he i) j (h i) (hh i) (hc' i) (hs i)
 
 /- English proof (translation)
-Establish `hF : fderiv ℝ (fun w => u w * v w) y = u y • fderiv ℝ v y + v y • fderiv ℝ u y` using `(hu.hasFDerivAt.mul hv.hasFDerivAt).fderiv`. Apply the tactic sequence `constructor <;>`. Apply the tactic sequence `simp only [wd, wdb, hF, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul] <;> ring`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem wd_wdb_mul {n : ℕ} {u v : V n → ℂ} {y : V n} (hu : DifferentiableAt ℝ u y)
     (hv : DifferentiableAt ℝ v y) (j : Fin n) :
@@ -294,11 +294,9 @@ private theorem wd_wdb_mul {n : ℕ} {u v : V n → ℂ} {y : V n} (hu : Differe
       smul_eq_mul] <;> ring
 
 /- English proof (translation)
-Take `⟨e, he, hxe⟩` from `exists_chart n z hz x`. Establish `hT : e.target ∈ 𝓝 (z x)`. Rewrite using `[he hxe]`. Conclude with `e.open_target.mem_nhds (e.map_source hxe)`. Establish `du : DifferentiableAt ℝ (f ∘ e.symm) (z x)` using `((hf e he).contDiffAt hT).differentiableAt one_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dv : DifferentiableAt ℝ (g ∘ e.symm) (z x)` using `((hg e he).contDiffAt hT).differentiableAt one_ne_zero`. Establish `hx' : e.symm (z x) = x` using `by rw [he hxe, e.left_inv hxe]`. Rewrite using `[d_eq_wd n z e he j _ x hxe, d_eq_wd n z e he j f x hxe, d_eq_wd n z e he j g x hxe, db_eq_wdb n z e he j _ x hxe, db_eq_wdb n z e he j f x hxe, db_eq_wdb n z e he j g x hxe]`. Establish `key` using `wd_wdb_mul du dv j`. Simplify using `only [Function.comp_apply, hx'] at key`.
-
-Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem d_db_mul_of_ck_one {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (f g : M → ℂ) (hf : Ck n z 1 f) (hg : Ck n z 1 g) (j : Fin n) (x : M) :
@@ -319,11 +317,11 @@ private theorem d_db_mul_of_ck_one {M : Type*} [TopologicalSpace M] (n : ℕ) (z
   exact key
 
 /- English proof (translation)
-Establish `hfg1 : Ck n z 1 (fun y => f y * g y)` using `fun e he => (hf e he).mul (hg e he)`. Establish `h0` using `integral_db_eq_zero n z hz j (fun y => f y * g y) hfg1 hc.mul_left`. Establish `dcs : HasCompactSupport (db n z j g)` using `hc.mono' fun x hx => by`. Assume the negation of the conclusion as `hx'`. Conclude with `hx (d_db_eq_zero_of_not_mem_tsupport n z hz j _ x hx').2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `i1 : Integrable (fun x => db n z j f x * g x) (vol n z)` using `integrable_of_continuous n z hz _ ((Ck.continuous n z hz 0 _ (Ck.db n z 0 j f hf)).mul (Ck.continuous n z hz 1 g hg)) hc.mul_left`. Establish `i2 : Integrable (fun x => f x * db n z j g x) (vol n z)` using `integrable_of_continuous n z hz _ ((Ck.continuous n z hz 1 f hf).mul (Ck.continuous n z hz 0 _ (Ck.db n z 0 j g hg))) dcs.mul_left`. Establish `hprod : (fun x => db n z j (fun y => f y * g y) x) = fun x => db n z j f x * g x + f x * db n z j g x`. Use function extensionality and compare the values at `fun x => (d_db_mul_of_ck_one n z hz f g hf hg j x).2`. Rewrite `h0` using `[hprod, integral_add i1 i2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h0`.
+A detailed English derivation is pending.
 -/
 theorem integral_db_mul {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (j : Fin n) (f g : M → ℂ) (hf : Ck n z 1 f) (hg : Ck n z 1 g) (hc : HasCompactSupport g) :
     ∫ x, db n z j f x * g x ∂vol n z = -∫ x, f x * db n z j g x ∂vol n z := by

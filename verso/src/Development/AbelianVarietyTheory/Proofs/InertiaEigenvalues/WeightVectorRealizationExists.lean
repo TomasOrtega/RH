@@ -16,9 +16,9 @@ namespace GlobalTheory.GeoTie
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ScalarMultipleMembership.main`. Consider the case `exact _root_.GlobalTheory.ScalarMultipleMembership.main`. Consider the case `(apply _root_.GlobalTheory.ScalarMultipleMembership.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ScalarMultipleMembership.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ScalarMultipleMembership.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ScalarMultipleMembership.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_intMul_mem_MK {LL Ks WL G : Type} [Field LL] [NumberField LL] [Field Ks]
     [NumberField Ks] [Algebra Ks LL] [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL]
@@ -35,11 +35,11 @@ theorem exists_intMul_mem_MK {LL Ks WL G : Type} [Field LL] [NumberField LL] [Fi
   | (intros; exact _root_.GlobalTheory.ScalarMultipleMembership.main ..)
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 I0 T1 A3 T0 _ Rl cG S YS κ v₀ fw i iC _ b j hball f`. Establish `hfull` using `GlobalTheory.GoodLat.Obj.mkFull_of_tie fw j`. Establish `hwk : (YS.fi j).e (show ↥(S.A ((j : ℕ) + 1)).WK from f).1 ∈ (Rl.FW j).WK` using `((YS.fi j).wk _).1 (show ↥(S.A ((j : ℕ) + 1)).WK from f).2`. Take `⟨a, ha, hamk⟩` from `exists_intMul_mem_MK (Rl.FW j) hfull.2 _ hwk`. Use `⟨(YS.fi j).eK.symm (a : T0.Q.c.F), ?_, hball _ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Apply `ha` to reduce the goal to its premises. Establish `: ((a : T0.Q.c.F)) = 0`. Use `congrArg (YS.fi j).eK h` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this` after adjusting the coercions. Rewrite using `[(YS.fi j).mkK]`. Establish `h1 : ((show ↥(S.A ((j : ℕ) + 1)).WK from (YS.fi j).eK.symm (a : T0.Q.c.F) • f)).1 = (YS.fi j).eK.symm (a : T0.Q.c.F) • (show ↥(S.A ((j : ℕ) + 1)).WK from f).1` using `rfl`. Rewrite using `[h1, ← algebraMap_smul D.what₂.LL, map_smul, ← (YS.fi j).eK_LL, RingEquiv.apply_symm_apply, algebraMap_smul, algebraMap_smul]`. Conclude with `hamk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_locBall : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T1 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T1 D.R.m) (T0 : CoreJ D) [Algebra T0.Q.c.F D.what₂.LL] (Rl : RealDat3 D A3 T0.Q.c.F) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (fw : FWTie T0 Rl.toRealDat κ v₀) (i : D.ntw.Tw) (iC : FractionRing (D.ntw.O i) →+* ℂ_[D.ntw.l i]), (∀ x, ‖iC x‖ ≤ 1 ↔ x ∈ (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i))).range) → ∀ (b : Bool) (j : Fin D.R.m), (∀ f : NX.FmK S ((j : ℕ) + 1), (show ↥(S.A ((j : ℕ) + 1)).WK from f).1 ∈ (S.A ((j : ℕ) + 1)).MK → f ∈ locBall YS fw iC b j) → (∀ f : NX.FmK S ((j : ℕ) + 1), ∃ c : S.Ks, c ≠ 0 ∧ c • f ∈ locBall YS fw iC b j) := by
   intro D Γ _ _ Pl0 I0 T1 A3 T0 _ Rl cG S YS κ v₀ fw i iC _ b j hball f

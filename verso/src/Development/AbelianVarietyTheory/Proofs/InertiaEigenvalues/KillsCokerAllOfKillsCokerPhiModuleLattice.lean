@@ -17,25 +17,25 @@ def psi (l : ℕ) : K⟦X⟧ →ₗ[K] K⟦X⟧ where
   map_smul' c f := by ext n; simp
 
 /- English proof (translation)
-Simplify using `[psi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_psi (l : ℕ) (f : K⟦X⟧) (n : ℕ) : coeff n (psi l f) = coeff (l * n) f := by
   simp [psi]
 
 /- English proof (translation)
-Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Use extensionality with `n`. Rewrite using `[coeff_psi, coeff_mul, coeff_mul]`. Establish `hinj : Function.Injective (fun p : ℕ × ℕ => (l * p.1, l * p.2))`. Introduce `p q h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (Nat.eq_of_mul_eq_mul_left hl h.1) (Nat.eq_of_mul_eq_mul_left hl h.2)`. Establish `h1 : ∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, coeff p.1 g * coeff p.2 (psi l h) = ∑ p ∈ (Finset.HasAntidiagonal.antidiagonal n).map ⟨_, hinj⟩, coeff p.1 (frob K l g) * coeff p.2 h`. Rewrite using `[Finset.sum_map]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.Embedding.coeFn_mk, coeff_frob, coeff_psi, dvd_mul_right, if_true, Nat.mul_div_cancel_left _ hl]`. Rewrite using `[h1]`. Use `(Finset.sum_subset ?_ ?_).symm` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, rfl⟩` from `hp`. Rewrite `hq`, the goal using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using `only [Function.Embedding.coeFn_mk]`. Rewrite using `[← mul_add, hq]`. Introduce `p hp hp'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_frob, if_neg, zero_mul]`. Introduce and unpack `⟨c, hc⟩`. Apply `hp'` to reduce the goal to its premises. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[Finset.mem_map]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(c, n - c), ?_, ?_⟩` and prove the remaining obligations. Establish `: l * c ≤ l * n` using `by omega`. Use `Nat.le_of_mul_le_mul_left this hl` as an intermediate fact. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `Prod.ext hc.symm ?_` and prove the remaining obligations. Simplify using `only [Function.Embedding.coeFn_mk, Nat.mul_sub]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem psi_frob_mul (l : ℕ) [Fact l.Prime] (g h : K⟦X⟧) :
     psi l (frob K l g * h) = g * psi l h := by
@@ -76,7 +76,7 @@ theorem psi_frob_mul (l : ℕ) [Fact l.Prime] (g h : K⟦X⟧) :
       omega
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_psi, coeff_frob, if_pos (dvd_mul_right _ _), Nat.mul_div_cancel_left _ (Fact.out : l.Prime).pos]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_frob (l : ℕ) [Fact l.Prime] (g : K⟦X⟧) : psi l (frob K l g) = g := by
   ext n
@@ -84,7 +84,7 @@ theorem psi_frob (l : ℕ) [Fact l.Prime] (g : K⟦X⟧) : psi l (frob K l g) = 
     Nat.mul_div_cancel_left _ (Fact.out : l.Prime).pos]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, psi_frob_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem psi_mulVec {ι κ : Type} [Fintype ι] (l : ℕ) [Fact l.Prime] (Y : Matrix κ ι K⟦X⟧)
     (m : ι → K⟦X⟧) :
@@ -109,20 +109,20 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `n` and use `by rw [coeff_psi] exact hf _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem psi_mem_A {f : K⟦X⟧} (hf : f ∈ A O K) : psi l f ∈ A O K := fun n => by
   rw [coeff_psi]
   exact hf _
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨x, hx, hxy⟩` from `hL (Q.phi y) (Q.phi_mem_L hy)`. Establish `hm (τ : ZMod a)` using `P.mem_extc_iff.1 (mem_tot.1 hx τ)`. Use `⟨fun σ i => psi l ((P.mxInv (σ + 1) *ᵥ x (σ + 1)) i), mem_tot.2 fun σ i => psi_mem_A (hm (σ + 1) i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : (F.mat σ).map (frob K l) *ᵥ (P.mxInv (σ + 1) *ᵥ x (σ + 1)) = n • frobV l (y σ)`. Establish `hc` using `F.comm (σ + 1)`. Rewrite `hc` using `[add_sub_cancel_right]`. Establish `h2 : (F.mat σ).map (frob K l) = Q.mxInv (σ + 1) * (F.mat (σ + 1) * P.mx (σ + 1))`. Rewrite using `[hc, ← Matrix.mul_assoc, Q.mxInv_mul_mx, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrFun hxy (σ + 1)`. Rewrite `h3` using `[Hom.app_apply, Pi.smul_apply, Q.phi_apply, add_sub_cancel_right]`. Rewrite using `[h2, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, P.mx_mul_mxInv, Matrix.mul_one, ← Matrix.mulVec_mulVec, h3, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Q.mxInv_mul_mx, Matrix.one_mulVec]`. Rewrite using `[Hom.app_apply, ← psi_mulVec, key]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, frobV_apply, map_nsmul, psi_frob]`.
+Simplify using the standard rewrite rules.
 -/
 theorem killsCoker_M {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q) (n : ℕ)
     (hL : KillsCoker F.app n P.L Q.L) : KillsCoker F.app n P.M Q.M := by
@@ -147,9 +147,9 @@ theorem killsCoker_M {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Ho
   simp only [Pi.smul_apply, frobV_apply, map_nsmul, psi_frob]
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨x, hx, hxy⟩` from `hM _ hy`. Use `⟨Ezpow K l e (-(η : ℤ)) • x, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `E K l e ^ η • Ezpow K l e (-(η : ℤ)) • x ∈ P.M`. Rewrite using `[smul_smul, E_pow_mul_Ezpow_neg, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite using `[map_smul, hxy, smul_comm, smul_smul, mul_comm, E_pow_mul_Ezpow_neg, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killsCoker_EM [NormedAlgebra ℚ_[l] K] [NeZero e] {P : PhiMod O K l e a ι}
     {Q : PhiMod O K l e a κ} (F : Hom P Q) (n η : ℕ) (hM : KillsCoker F.app n P.M Q.M) :
@@ -163,9 +163,9 @@ theorem killsCoker_EM [NormedAlgebra ℚ_[l] K] [NeZero e] {P : PhiMod O K l e a
   · rw [map_smul, hxy, smul_comm, smul_smul, mul_comm, E_pow_mul_Ezpow_neg, one_smul]
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨hy1, hy2⟩` from `Δ₂.mem_invOf.1 hy`. Take `⟨x, hx, hxy⟩` from `h y hy1`. Use `⟨Δ₁.avg x, Δ₁.mem_invOf.2 ⟨Δ₁.avg_mem (W₁.restrictScalars O) fun g => hW g x hx, fun g => Δ₁.avg_mem_inv x g⟩, ?_⟩` and prove the remaining obligations. Use `Δ₁.map_avg (F.app.restrictScalars K) (v := x) fun g => by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.restrictScalars_apply]`. Rewrite using `[F.app_act, hxy, map_nsmul, hy2 g]`. Conclude with `this.trans hxy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killsCoker_invOf [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a]
     {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {Δ₁ : Descent P} {Δ₂ : Descent Q}
@@ -183,7 +183,7 @@ theorem killsCoker_invOf [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDe
   exact this.trans hxy
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨y₀, h₀, rfl⟩` from `Δ₂.mem_Y'.1 hy`. Take `⟨x, hx, hxy⟩` from `hY y₀ h₀`. Conclude with `⟨_, Δ₁.mem_Y'.2 ⟨x, hx, rfl⟩, by rw [map_smul, hxy, smul_comm]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem killsCoker_Y' [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a]
     {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {Δ₁ : Descent P} {Δ₂ : Descent Q}
@@ -197,7 +197,7 @@ theorem killsCoker_Y' [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDesce
 end Main
 
 /- English proof (translation)
-Introduce `r hL`. Establish `hM` using `killsCoker_M F.toHom _ hL`. Establish `hEM` using `killsCoker_EM F.toHom _ η hM`. Establish `hY` using `killsCoker_invOf F _ _ _ (fun g _ hv => D₁.desc.act_mem_EM g hv) hEM`. Conclude with `⟨hL, hM, hEM, killsCoker_invOf F _ _ _ (fun g v hv => D₁.desc.act_mem_M g v hv) hM, hY, killsCoker_Y' F _ η hY⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem killsAll_of_killsCoker_L (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]

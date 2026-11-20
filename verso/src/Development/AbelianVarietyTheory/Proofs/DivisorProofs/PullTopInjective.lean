@@ -25,7 +25,7 @@ namespace GlobalTheory.PullBig
 open GlobalTheory.Vanishing GlobalTheory.Vanishing.H0 Filter
 
 /- English proof (translation)
-Establish `h` using `(genericPoint_spec X).image σ.continuous`. Rewrite `h` using `[Set.image_univ, hσ.closure_range]`. Conclude with `h.eq (genericPoint_spec Y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_genericPoint {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (σ : X ⟶ Y)
     (hσ : DenseRange σ) : σ (genericPoint X) = genericPoint Y := by
@@ -34,13 +34,11 @@ theorem map_genericPoint {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (σ : 
   exact h.eq (genericPoint_spec Y)
 
 /- English proof (translation)
-Establish `hη` using `map_genericPoint σ hσ`. Establish `hF : IsField (Y.presheaf.stalk (σ (genericPoint X)))`. Rewrite using `[hη]`. Conclude with `Field.toIsField Y.functionField`. Use `(injective_iff_map_eq_zero _).2 fun f hf => LB.sec_ext fun i => fun_ext_ger fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hηi : genericPoint Y ∈ B.U i` using `((genericPoint_spec Y).mem_open_set_iff (B.U i).isOpen).2 ⟨y, Set.mem_univ _, hy.2⟩`. Establish `hxi : σ (genericPoint X) ∈ B.U i` using `hη ▸ hηi`. Establish `h0 : germ (p` using `p) (O := ⊤) i (σ (genericPoint X)) trivial hxi f = 0 := by`. Establish `e` using `congrArg (germ (p := σ ≫ p) (B := B.pull σ) (O := ⊤) (fun _ => i) (genericPoint X) trivial (mem_pull.2 hxi)) hf`. Establish `e'` using `(germ_pull (p := p) (B := B) (O := ⊤) σ (W := ⊤) le_top (fun _ => i) (genericPoint X) trivial (mem_pull.2 hxi) f).symm.trans (e.trans (map_zero _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨b, hb⟩` from `hF.mul_inv_cancel hne`. Use `congrArg (σ.stalkMap (genericPoint X)).hom hb` as an intermediate fact. Rewrite `this` using `[map_mul, e', zero_mul, map_one]`. Conclude with `zero_ne_one this`.
-
-Establish `hloc : f.loc i = 0` using `germ_injective_of_isIntegral Y (U := ⊤ ⊓ B.U i) (σ (genericPoint X)) ⟨trivial, hxi⟩ (h0.trans (map_zero _).symm)`. Conclude with `congrArg _ hloc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_top_injective {k : Type} [Field k] {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
     {p : Y ⟶ Sp k} (σ : X ⟶ Y) (hσ : DenseRange σ) (B : LB Y) :
@@ -67,11 +65,11 @@ theorem pull_top_injective {k : Type} [Field k] {X Y : Scheme.{0}} [IsIntegral X
   exact congrArg _ hloc
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p σ hp hq hdim hσ L hL`. Use `letI := algebraΓOfHom p`. Use `letI := algebraΓOfHom (σ ≫ p)`. Take `⟨D, hD, c, hc, hm⟩` from `hL.growth`. Establish `hL'` using `LB.isLB_pull hL.isLB σ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key (m : ℕ) : lbH0 k (lbPow L m) ≤ lbH0 k (lbPow (L.pull σ) m)`. Establish `hLm` using `isLB_lbPow hL.isLB m`. Establish `hP` using `LB.isLB_pull hLm σ`. Use `haveI := finite_top hq hP`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cls_pull hLm, cls_lbPow hL.isLB, cls_lbPow hL', cls_pull hL.isLB, map_nsmul])`. Use `(isBig_iff (fun _ => rfl) hq (hdim.trans hD)).2 ⟨hL', c, hc, hm.mono fun m hm' => ?_⟩` and prove the remaining obligations. Conclude with `hm'.trans (by exact_mod_cast key m)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isBig_pull : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y]
     (p : Y ⟶ Sp k) (σ : X ⟶ Y), IsProjOver p → IsProjOver (σ ≫ p) →

@@ -11,9 +11,9 @@ namespace GIso
 variable {F G : GMod B R k}
 
 /- English proof (translation)
-Rewrite using `[← φ.map_gr m]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Establish `: y = x` using `φ.e.injective hxy`. Conclude with `this ▸ hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_gr_iff (φ : GIso F G) (m : Deg k) (x : F.M) : φ.e x ∈ G.gr m ↔ x ∈ F.gr m := by
   rw [← φ.map_gr m]
@@ -94,9 +94,9 @@ def ann (φ : GIso F G) (s : R) (d : Deg k) : GIso (F.ann s d) (G.ann s d) :=
 end GIso
 
 /- English proof (translation)
-Proceed by induction on `ts with`. Consider the case `nil`. Introduce `F G φ m`. Simplify using `only [chi]`. Rewrite using `[(φ.grEquiv m).length_eq]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`. Introduce `F G φ m`. Simplify using `only [chi]`. Rewrite using `[ih _ _ (φ.quot s) m, ih _ _ (φ.ann s d) m]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_congr (ts : List (Deg k × R)) : ∀ (F G : GMod B R k), GIso F G →
     ∀ m, chi ts F m = chi ts G m := by
@@ -112,7 +112,7 @@ theorem chi_congr (ts : List (Deg k × R)) : ∀ (F G : GMod B R k), GIso F G �
     rw [ih _ _ (φ.quot s) m, ih _ _ (φ.ann s d) m]
 
 /- English proof (translation)
-Introduce `_ _ ts F G φ m` and use `chi_congr ts F G φ m`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ruleIso : RuleIso := fun _ _ ts F G φ m => chi_congr ts F G φ m
 

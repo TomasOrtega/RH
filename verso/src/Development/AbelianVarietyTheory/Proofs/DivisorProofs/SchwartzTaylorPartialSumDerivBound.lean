@@ -5,11 +5,11 @@ open scoped Nat
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set L : V →L[ℝ] (Fin j → V) := ContinuousLinearMap.pi (fun _ => ContinuousLinearMap.id ℝ V) with hL`. Establish `hLn : ‖L‖ ≤ 1` using `ContinuousLinearMap.norm_pi_le_of_le (fun _ => ContinuousLinearMap.norm_id_le) zero_le_one`. Establish `hfun : (fun y => f (fun _ => y)) = (⇑f) ∘ ⇑L` using `rfl`. Rewrite using `[hfun, L.iteratedFDeriv_comp_right (f.contDiff (n := ⊤)) x (by exact_mod_cast le_top)]`. Establish `hLx : ‖L x‖ ≤ ‖x‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `L.le_opNorm x` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg x]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun _ _ => hLn)`. Use `_ ≤ (j.descFactorial a : ℝ) * ‖f‖ * ‖L x‖ ^ (j - a) := by`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[mul_one]`. Use `f.norm_iteratedFDeriv_le a (L x)` as an intermediate fact. Simplify using `using this`. Use `_ ≤ (j.descFactorial a : ℝ) * ‖f‖ * ‖x‖ ^ (j - a) := by gcongr`.
+A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_diag_le {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {j : ℕ} (f : ContinuousMultilinearMap ℝ (fun _ : Fin j => V) F)
@@ -36,29 +36,25 @@ theorem norm_iteratedFDeriv_diag_le {V F : Type} [NormedAddCommGroup V] [NormedS
         gcongr
 
 /- English proof (translation)
-Introduce `V _ _ _ ψ A ρ hψ m a x`. Establish `hcd : ∀ j ∈ Finset.range (m + 1), ContDiff ℝ (a : ℕ) (fun y : V => ((j ! : ℝ))⁻¹ • iteratedFDeriv ℝ j ψ 0 (fun _ => y))`. Introduce `j _`. Establish `h1 : ContDiff ℝ (a : ℕ) (fun y : V => iteratedFDeriv ℝ j ψ 0 (fun _ => y))` using `(iteratedFDeriv ℝ j ψ 0).contDiff.comp (contDiff_pi.2 fun _ => contDiff_id)`. Conclude with `h1.const_smul _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iteratedFDeriv_sum hcd, Finset.sum_apply]`. Use `set t := |ρ| * ‖x‖ with ht`. Establish `ht0 : 0 ≤ t` using `by positivity`. Use `set h : ℕ → ℝ := fun j => if a ≤ j then |A| * |ρ| ^ a * (t ^ (j - a) / ((j - a) ! : ℝ)) else 0 with hh`. Establish `hterm : ∀ j ∈ Finset.range (m + 1), ‖iteratedFDeriv ℝ a (fun y : V => ((j ! : ℝ))⁻¹ • iteratedFDeriv ℝ j ψ 0 (fun _ => y)) x‖ ≤ h j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _`. Establish `hsm : (fun y : V => ((j ! : ℝ))⁻¹ • iteratedFDeriv ℝ j ψ 0 (fun _ => y)) = ((j ! : ℝ))⁻¹ • (fun y : V => iteratedFDeriv ℝ j ψ 0 (fun _ => y))` using `rfl`. Rewrite using `[hsm, iteratedFDeriv_const_smul_apply (f := fun y : V => iteratedFDeriv ℝ j ψ 0 (fun _ => y)) ((((iteratedFDeriv ℝ j ψ 0).contDiff (n := ⊤)).comp (contDiff_pi.2 fun _ => contDiff_id)).contDiffAt.of_le (by exact_mod_cast le_top)), norm_smul]`. Establish `hb` using `norm_iteratedFDeriv_diag_le (iteratedFDeriv ℝ j ψ 0) a x`. Establish `hM : ‖iteratedFDeriv ℝ j ψ 0‖ ≤ |A| * |ρ| ^ j`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hinv : ‖((j ! : ℝ))⁻¹‖ = ((j ! : ℝ))⁻¹`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Rewrite using `[hinv]`. Distinguish the cases in `haj : a ≤ j`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hh, if_pos haj]`. Establish `hfac : ((j ! : ℝ))⁻¹ * (j.descFactorial a : ℝ) = (((j - a) ! : ℝ))⁻¹`. Use `Nat.factorial_mul_descFactorial haj` as an intermediate fact. Establish `hpos : (0 : ℝ) < ((j - a) ! : ℝ)` using `by positivity`. Establish `hpos2 : (0 : ℝ) < (j ! : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use `norm_cast`. Rewrite using `[mul_comm]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfac]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (((j - a) ! : ℝ))⁻¹ * (|A| * |ρ| ^ j) * ‖x‖ ^ (j - a) := by gcongr`. Use `_ = |A| * |ρ| ^ a * (t ^ (j - a) / ((j - a) ! : ℝ)) := by`. Establish `: j = a + (j - a)` using `by omega`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ht, mul_pow]`. Use `conv_lhs => rw [this, pow_add]`. Rewrite using `[show a + (j - a) - a = j - a by omega]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hh, if_neg haj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Establish `hz : j.descFactorial a = 0` using `Nat.descFactorial_eq_zero_iff_lt.2 (by omega)`. Rewrite `hb` using `[hz, Nat.cast_zero, zero_mul, zero_mul]`. Establish `: ‖iteratedFDeriv ℝ a (fun y : V => iteratedFDeriv ℝ j ψ 0 (fun _ => y)) x‖ = 0` using `le_antisymm hb (norm_nonneg _)`. Rewrite using `[this, mul_zero]`. Establish `hh0 : ∀ j, 0 ≤ h j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `intro j; simp only [hh]; split_ifs <;> positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_range_add]`. Establish `: ∑ j ∈ Finset.range a, h j = 0` using `Finset.sum_eq_zero (fun j hj => by`. Establish `hja` using `Finset.mem_range.1 hj`.
-
-Simplify using `only [hh]`. Rewrite using `[if_neg (by omega)])`. Rewrite using `[this, zero_add]`. Use `_ = |A| * |ρ| ^ a * ∑ i ∈ Finset.range (m + 1), t ^ i / (i ! : ℝ) := by`. Rewrite using `[Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [hh, if_pos (Nat.le_add_right a i), Nat.add_sub_cancel_left]`. Use `_ ≤ |A| * |ρ| ^ a * Real.exp t := by gcongr`. Conclude with `Real.sum_le_exp_of_nonneg ht0 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem taylorPoly_iteratedFDeriv_le : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (ψ : SchwartzMap V ℂ) (A ρ : ℝ), (∀ (j : ℕ) (y : V), ‖iteratedFDeriv ℝ j ψ y‖ ≤ A * ρ ^ j) →

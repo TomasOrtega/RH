@@ -18,19 +18,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Module.Flat.lTensor_preserves_injective_linearMap (R := Qp) (M := T.V) (PD.ι.toLinearMap.restrictScalars Qp) PD.ι_inj`.
+A detailed English derivation is pending.
 -/
 theorem lemGA0_ιV_inj (T : LocLat G Qp LL O) : Function.Injective (ιV PD (LL := LL) (V := T.V)) :=
   Module.Flat.lTensor_preserves_injective_linearMap (R := Qp) (M := T.V)
     (PD.ι.toLinearMap.restrictScalars Qp) PD.ι_inj
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simpa using IsPrimitiveRoot.one⟩`.
+Supply the required witnesses or components.
 -/
 theorem lemGA0_one_root (l : ℕ) : ∃ j : ℕ, IsPrimitiveRoot (1 : LL) (l ^ j) := ⟨0, by simpa using IsPrimitiveRoot.one⟩
 
 /- English proof (translation)
-Take `⟨E, hE0, -, hE⟩` from `W.lev_π i 1 (lemGA0_one_root PD.p)`. Establish `h` using `congrArg PowerSeries.constantCoeff hE`. Simplify using `only [map_add, map_one, hE0, one_mul] at h`. Take the linear combination `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem lemGA0_cc_letπ (W : LocWach PD LL O v n) (i : ZMod n) :
     PowerSeries.constantCoeff (W.lev i 1 (letπ : LetA O n)) = 0 := by
@@ -40,7 +40,7 @@ theorem lemGA0_cc_letπ (W : LocWach PD LL O v n) (i : ZMod n) :
   linear_combination h
 
 /- English proof (translation)
-Unfold `LocWach.π₀₁`. Establish `h2 : ∀ δ, PowerSeries.constantCoeff (W.γ₀ δ PowerSeries.X) = (0 : O)` using `fun δ => (W.γ₀_X δ).1`. Simplify using `only [map_add, map_sub, map_one, map_natCast, map_sum, h2, add_zero, Finset.sum_const, nsmul_eq_mul, mul_one, hcard]`. Move the coercions through the operations in `[Nat.cast_sub hp]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lemGA0_cc_π₀₁ (W : LocWach PD LL O v n) (hcard : W.DelF.card = PD.p - 1) (hp : 1 ≤ PD.p) :
     PowerSeries.constantCoeff W.π₀₁ = 0 := by
@@ -52,9 +52,7 @@ theorem lemGA0_cc_π₀₁ (W : LocWach PD LL O v n) (hcard : W.DelF.card = PD.p
   ring
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `PowerSeries.X_dvd_iff.mpr h0`. Establish `e : W.π₀ = (letπ : LetA O n) * (fun _ => g)`. Use function extensionality and compare the values at `j`. Use `show W.π₀₁ = PowerSeries.X * g`. Conclude with `hg`.
-
-Rewrite using `[e, map_mul, map_mul, lemGA0_cc_letπ, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lemGA0_cc_π₀ (W : LocWach PD LL O v n) (i : ZMod n) (h0 : PowerSeries.constantCoeff W.π₀₁ = 0) :
     PowerSeries.constantCoeff (W.lev i 1 W.π₀) = 0 := by
@@ -66,7 +64,7 @@ theorem lemGA0_cc_π₀ (W : LocWach PD LL O v n) (i : ZMod n) (h0 : PowerSeries
   rw [e, map_mul, map_mul, lemGA0_cc_letπ, zero_mul]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.qp`. Rewrite using `[map_add, map_natCast, map_add, lemGA0_cc_π₀ W i h0, map_natCast, zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lemGA0_cc_qp (W : LocWach PD LL O v n) (i : ZMod n) (h0 : PowerSeries.constantCoeff W.π₀₁ = 0) :
     PowerSeries.constantCoeff (W.lev i 1 (Formalism.MainNotions.LiftingTheory.qp W)) = (PD.p : LL) := by
@@ -76,7 +74,7 @@ theorem lemGA0_cc_qp (W : LocWach PD LL O v n) (i : ZMod n) (h0 : PowerSeries.co
 variable {Zl Ai : Type} [CommRing Zl] [CommRing Ai] [Algebra Zl O] [Algebra Zl Ai]
 
 /- English proof (translation)
-Establish `e : Formalism.MainNotions.LiftingTheory.pk W 1 = W.φA (Formalism.MainNotions.LiftingTheory.qp W)`. Unfold `Formalism.MainNotions.LiftingTheory.pk`. Rewrite using `[pow_one]`. Rewrite using `[e, C.lev_φ i 1 (lemGA0_one_root PD.p) (Formalism.MainNotions.LiftingTheory.qp W), one_pow, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero, one_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, lemGA0_cc_qp W (i - 1) h0]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lemGA0_cc_pk (W : LocWach PD LL O v n) {RW : Type} [CommRing RW] [Algebra O RW]
     {inclR : (O ⊗[Zl] Ai) →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : O ⊗[Zl] Ai}
@@ -90,15 +88,15 @@ theorem lemGA0_cc_pk (W : LocWach PD LL O v n) {RW : Type} [CommRing RW] [Algebr
     PowerSeries.coeff_zero_eq_constantCoeff_apply, lemGA0_cc_qp W (i - 1) h0]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hsupp`. Establish `key : ∀ t : ℕ, ∀ r : ℤ, r < m + t → r < 0 → d r = 0`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro r hr _; exact hm r (by simpa using hr)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ t ih`. Introduce `r hr hr0`. Distinguish the cases in `hlt : r < m + t`. Conclude with `ih r hlt hr0`. Establish `hs : ∑ᶠ j : ℕ, PowerSeries.coeff j f • d (r - j) = PowerSeries.coeff 0 f • d (r - ((0 : ℕ) : ℤ))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `finsum_eq_single _ 0` to reduce the goal to its premises. Introduce `j hj`. Rewrite using `[ih (r - j) (by push_cast at hr; omega) (by omega), smul_zero]`. Establish `h` using `hneg r hr0`. Rewrite `h` using `[hs, Nat.cast_zero, sub_zero, PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (fun z => (PowerSeries.constantCoeff f)⁻¹ • z) h`. Simplify `h'` using `[inv_smul_smul₀ hf]`. Introduce `r hr`. Distinguish the cases in `h : r < m`. Conclude with `hm r h`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `key (r - m + 1).toNat r _ hr` to reduce the goal to its premises. Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lemGA0_conv_vanish {M : Type} [AddCommGroup M] [Module LL M] (f : PowerSeries LL) (d : ℤ → M)
     (hf : PowerSeries.constantCoeff f ≠ 0) (hsupp : ∃ m : ℤ, ∀ k < m, d k = 0)
@@ -130,7 +128,7 @@ theorem lemGA0_conv_vanish {M : Type} [AddCommGroup M] [Module LL M] (f : PowerS
     omega
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `j hj`. Rewrite using `[hd _ (by have : (0 : ℕ) < j := Nat.pos_of_ne_zero hj; omega), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem lemGA0_conv_zero {M : Type} [AddCommGroup M] [Module LL M] (f : PowerSeries LL) (d : ℤ → M)
     (hd : ∀ r : ℤ, r < 0 → d r = 0) :
@@ -141,25 +139,25 @@ theorem lemGA0_conv_zero {M : Type} [AddCommGroup M] [Module LL M] (f : PowerSer
     rw [hd _ (by have : (0 : ℕ) < j := Nat.pos_of_ne_zero hj; omega), smul_zero]
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F b S η m hS i hi y hy hyD la hla x hx hxD hxe`. Establish `hA : Formalism.MainNotions.LiftingTheory.CaseA W` using `hS.1`. Establish `hp11 : 11 ≤ PD.p` using `hS.2.1`. Establish `hsur : Formalism.MainNotions.LiftingTheory.Sur W F` using `hS.2.2.2.2.2.1`. Establish `hcr : IsCrys PD T₂.ρ` using `by unfold Formalism.MainNotions.LiftingTheory.Sur at hsur; exact hsur.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (PD.p : LL) ≠ 0`. Take `⟨ζ, hζ⟩` from `hS.2.2.2.2.1`. Establish `hpos : 0 < PD.p` using `by omega`. Establish `: NeZero PD.p` using `⟨hpos.ne'⟩`. Conclude with `(hζ.neZero').out`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : finrank K₀ K = 1`. Rewrite using `[← (LinearEquiv.ofBijective (Algebra.linearMap K₀ K) hA.1).finrank_eq, Module.finrank_self]`. Take `⟨hcard, -, h9K⟩` from `h9 T₂ hcr hA.2.1 hA.2.2`. Rewrite `hcard` using `[hfr, Nat.div_one]`. Establish `h0 : PowerSeries.constantCoeff W.π₀₁ = 0` using `lemGA0_cc_π₀₁ W hcard (by omega)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hmod⟩` from `h9K hfr`. Establish `hyI : Formalism.MainNotions.CrystallineLiftingInputs.InI W T₂ (i - 2) y`. Use `⟨hyD, ⟨0, 0, by simpa using hy⟩, ?_⟩` and prove the remaining obligations. Take `⟨x', hx', he⟩` from `hmod.2 y ⟨hy, hyD.2⟩`. Conclude with `⟨x', hx'.1, hx'.2, by rw [pow_one]; exact he⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hk : (Formalism.MainNotions.LiftingTheory.qp W ^ 0 * Formalism.MainNotions.LiftingTheory.pk W 1 ^ (b (i - 1) + S)) • la ∈ W.N T₂`. Rewrite using `[pow_zero, one_mul, ← hxe]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hTH` using `hT hA hp11 2 1 (2 * (hpar n b S + η)) (lemG_sig PD.p (hpar n b S + η)) (Or.inr ⟨rfl, rfl, rfl⟩) T₂ hcr (i - 2) y la hy hyI hla.1 1 ((PD.p - 1) * 1) 0 (Formalism.MainNotions.LiftingTheory.pk W 1 ^ (b (i - 1) + S)) hk (Or.inr ⟨rfl, rfl⟩)`. Establish `hneg` using `hTH.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0v` using `hTH.2 0 (by omega)`. Establish `hi2 : i - 2 + ((2 : ℕ) : ZMod n) = i` using `by rw [Nat.cast_ofNat, sub_add_cancel]`. Establish `hsub : (⟨(Formalism.MainNotions.LiftingTheory.qp W ^ 0 * Formalism.MainNotions.LiftingTheory.pk W 1 ^ (b (i - 1) + S)) • la, hk⟩ : ↥(W.N T₂)) = (Formalism.MainNotions.LiftingTheory.qp W ^ b i) • (⟨x, hx⟩ : ↥(W.N T₂))`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, pow_zero, one_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hxe.symm`. Rewrite `hneg`, `h0v` using `[hi2, hsub]`. Rewrite `h0v` using `[Nat.cast_zero]`. Establish `hsm : ∀ r : ℤ, W.levN T₂ i 1 ((Formalism.MainNotions.LiftingTheory.qp W ^ b i) • (⟨x, hx⟩ : ↥(W.N T₂))) r = ∑ᶠ j : ℕ, PowerSeries.coeff j (W.lev i 1 (Formalism.MainNotions.LiftingTheory.qp W ^ b i)) • W.levN T₂ i 1 ⟨x, hx⟩ (r - j)` using `fun r => W.levN_smul T₂ i 1 _ _ r`. Establish `hccb : PowerSeries.constantCoeff (W.lev i 1 (Formalism.MainNotions.LiftingTheory.qp W ^ b i)) = (PD.p : LL) ^ b i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_pow, map_pow, lemGA0_cc_qp W i h0]`. Establish `hxneg : ∀ r : ℤ, r < 0 → W.levN T₂ i 1 ⟨x, hx⟩ r = 0` using `lemGA0_conv_vanish (W.lev i 1 (Formalism.MainNotions.LiftingTheory.qp W ^ b i)) (W.levN T₂ i 1 ⟨x, hx⟩) (by rw [hccb]; exact pow_ne_zero _ hp0) (W.levN_supp T₂ i 1 _) (fun r hr => by rw [← hsm r]; exact hneg r hr)`. Establish `he : ((letE i : LetA O n) • (⟨x, hx⟩ : ↥(W.N T₂))) = ⟨x, hx⟩` using `Subtype.ext hxD.1`. Establish `hL : W.levN T₂ i 1 ((Formalism.MainNotions.LiftingTheory.qp W ^ b i) • (⟨x, hx⟩ : ↥(W.N T₂))) 0 = (PD.p : LL) ^ b i • ιV PD (LL` using `LL) (V := T₂.V) (W.cmp T₂ ⟨x, hx⟩) := by`. Rewrite using `[hsm, lemGA0_conv_zero _ _ hxneg, hccb, C.levN_eq, ← C.cmp_eq T₂ hcr i, he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcch : PowerSeries.coeff 0 (W.lev i 1 (Formalism.MainNotions.LiftingTheory.qp W ^ 0 * Formalism.MainNotions.LiftingTheory.pk W 1 ^ (b (i - 1) + S))) = (PD.p : LL) ^ (b (i - 1) + S)`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, pow_zero, one_mul, map_pow, map_pow, lemGA0_cc_pk W C i h0]`. Establish `hmain : (PD.p : LL) ^ b i • W.cmp T₂ ⟨x, hx⟩ = (PD.p : LL) ^ (b (i - 1) + S) • ((PD.p : LL) ^ lemG_sig PD.p (hpar n b S + η) • (φVB PD (LL` using `LL) (V := T₂.V))^[2] (W.cmp T₂ ⟨y, hy⟩)) := by`. Apply `lemGA0_ιV_inj (PD := PD) T₂` to reduce the goal to its premises. Rewrite using `[map_smul, map_smul, map_smul, ← hL, h0v, hcch]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← inv_smul_smul₀ (pow_ne_zero (b i) hp0) (W.cmp T₂ ⟨x, hx⟩), hmain, smul_smul, smul_smul, zpow_sub₀ hp0, zpow_add₀ hp0, zpow_natCast, zpow_natCast, zpow_natCast]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lemGA0_of_tools [NeZero n] (W : LocWach PD LL O v n) {RW : Type} [CommRing RW] [Algebra O RW]
     {inclR : (O ⊗[Zl] Ai) →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : O ⊗[Zl] Ai}

@@ -32,13 +32,13 @@ theorem freeRep_apply {P : Type} [Group P] {N : ℕ} (g : P) (x : Fin N → Mono
     freeRep P N g x = (MonoidAlgebra.single g (1 : ℂ) : MonoidAlgebra ℂ P) • x := rfl
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite P`. Set `b` to `Pi.basis fun _ : Fin N => MonoidAlgebra.basis P ℂ`. Establish `hb : ∀ (j : Fin N) (q : P), b ⟨j, q⟩ = Pi.single j (MonoidAlgebra.single q 1)`. Introduce `j q`. Simplify using `[b, Pi.basis_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ b, Matrix.trace]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Take `⟨j, p⟩` from `i`. Establish `hmove : freeRep P N g (b ⟨j, p⟩) = b ⟨j, g * p⟩`. Rewrite using `[hb, hb, freeRep_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[MonoidAlgebra.single_mul_single]`. Simplify using `[hk]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply, hmove, b.repr_self, Finsupp.single_apply, if_neg]`. Introduce `h`. Rewrite `h` using `[Sigma.mk.inj_iff, heq_iff_eq]`. Conclude with `hg (mul_right_cancel (h.2.trans (one_mul p).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_freeRep {P : Type} [Group P] [Finite P] (N : ℕ) {g : P} (hg : g ≠ 1) :
     LinearMap.trace ℂ _ (freeRep P N g) = 0 := by
@@ -64,7 +64,7 @@ theorem trace_freeRep {P : Type} [Group P] [Finite P] (N : ℕ) {g : P} (hg : g 
   exact hg (mul_right_cancel (h.2.trans (one_mul p).symm))
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite P`. Rewrite using `[Module.finrank_eq_card_basis (Pi.basis fun _ : Fin N => MonoidAlgebra.basis P ℂ), Fintype.card_sigma, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, Nat.card_eq_fintype_card, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_free (P : Type) [Group P] [Finite P] (N : ℕ) :
     Module.finrank ℂ (Fin N → MonoidAlgebra ℂ P) = Nat.card P * N := by
@@ -74,21 +74,19 @@ theorem finrank_free (P : Type) [Group P] [Finite P] (N : ℕ) :
     Nat.card_eq_fintype_card, mul_comm]
 
 /- English proof (translation)
-Introduce `P M _ _ _ _ _ ρ hρ`. Use `haveI := Fintype.ofFinite P`. Establish `hcard : (Nat.card P : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Use `haveI : Invertible (Nat.card P : ℂ) := invertibleOfNonzero hcard`. Establish `hz : ∀ g : P, g ≠ 1 → ρ.character g = 0` using `hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `havg` using `Representation.card_inv_mul_sum_char_eq_finrank ρ`. Rewrite `havg` using `[Finset.sum_eq_single (1 : P) (fun g _ hg => hz g hg) (by simp), Representation.char_one]`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, Nat.card P * N = Module.finrank ℂ M := by`. Use `⟨Module.finrank ℂ (Representation.invariants ρ), ?_⟩` and prove the remaining obligations. Establish `hc : ((Nat.card P * Module.finrank ℂ (Representation.invariants ρ) : ℕ) : ℂ) = (Module.finrank ℂ M : ℂ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[← havg, ← mul_assoc, mul_inv_cancel₀ hcard, one_mul]`. Conclude with `hc` after adjusting the coercions. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional ℂ (MonoidAlgebra ℂ P) := Module.Finite.of_basis (MonoidAlgebra.basis P ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hχ : ρ.character = (freeRep P N).character`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g = 1`. Substitute `hg` using the available equality. Rewrite using `[Representation.char_one, Representation.char_one, finrank_free, hN]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `(hz g hg).trans (trace_freeRep N hg).symm`. Take `⟨e⟩` from `GlobalTheory.CharacterDetermines.nonempty_equiv_of_character_eq P M (Fin N → MonoidAlgebra ℂ P) ρ (freeRep P N) hχ`. Establish `hlin : ∀ (r : MonoidAlgebra ℂ P) (x : M), e.toLinearEquiv (ρ.asAlgebraHom r x) = (freeRep P N).asAlgebraHom r (e.toLinearEquiv x)`. Introduce `r x`. Proceed by induction on `r using MonoidAlgebra.induction_on with`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `of g`. Simplify using `only [Representation.asAlgebraHom_of]`. Conclude with `e.toIntertwiningMap.isIntertwining _ _ g x`. Consider the case `add f f' hf hf' => simp only [map_add, LinearMap.add_apply, hf, hf']`. Consider the case `smul c f hf => simp only [map_smul, LinearMap.smul_apply, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hact : ∀ (r : MonoidAlgebra ℂ P) (y : Fin N → MonoidAlgebra ℂ P), (freeRep P N).asAlgebraHom r y = r • y`. Introduce `r y`. Proceed by induction on `r using MonoidAlgebra.induction_on with`. Consider the case `of g => rw [Representation.asAlgebraHom_of, freeRep_apply, MonoidAlgebra.of_apply]`. Consider the case `add f f' hf hf' => rw [map_add, LinearMap.add_apply, hf, hf', add_smul]`.
-
-Consider the case `smul c f hf => rw [map_smul, LinearMap.smul_apply, hf, smul_assoc]`. Conclude with `⟨{ (ρ.asModuleEquiv.trans e.toLinearEquiv).toAddEquiv with map_smul' := fun r x => by`. Express the relevant statement in the definitionally equal form `e.toLinearEquiv (ρ.asModuleEquiv (r • x)) = r • e.toLinearEquiv (ρ.asModuleEquiv x)`. Rewrite using `[Representation.asModuleEquiv_map_smul, hlin, hact] }⟩`.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_of_trace_eq_zero : ∀ (P M : Type) [Group P] [Finite P] [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (ρ : Representation ℂ P M), (∀ g : P, g ≠ 1 → LinearMap.trace ℂ M (ρ g) = 0) → ∃ N : ℕ, Nat.card P * N = Module.finrank ℂ M ∧ Nonempty (ρ.asModule ≃ₗ[MonoidAlgebra ℂ P] (Fin N → MonoidAlgebra ℂ P)) := by
   intro P M _ _ _ _ _ ρ hρ

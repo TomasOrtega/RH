@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
   {μ : Measure (normOneGL E n)} [μ.IsHaarMeasure] {v : LL μ} {φ : Sm E n}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Use `conv_rhs => rw [← Quotient.out_eq y]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem out_eq (h : Umg φ) :
     (fun y : RightCosetSpace (rationalGLOne E n) => φ.1 ((Quotient.out y : normOneGL E n) : GA E n)) = cuspQuot h.left := by
@@ -24,9 +24,9 @@ private theorem out_eq (h : Umg φ) :
   rfl
 
 /- English proof (translation)
-Use `⟨(((umgOps E) n).2 φ h.umg).1.comp continuous_subtype_val, fun γ hγ y => ?_, ?_⟩` and prove the remaining obligations. Take `⟨γ', hγ'⟩` from `Subgroup.mem_subgroupOf.1 hγ`. Express the relevant statement in the definitionally equal form `φ.1 ((γ : AdelicGLn.AdelicGL E n) * y) = _`. Rewrite using `[← hγ']`. Conclude with `h.umg.left γ' _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `h.ae`. Rewrite `e` using `[out_eq h.umg]`. Use `filter_upwards [(quasiMeasurePreserving_mk _ μ).ae_eq e] with y hy`. Conclude with `hy.trans (cuspQuot_mk _ y)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_of (h : Rep μ v φ) : IsContRep μ v fun y => φ.1 (y : GA E n) := by
   refine ⟨(((umgOps E) n).2 φ h.umg).1.comp continuous_subtype_val, fun γ hγ y => ?_, ?_⟩
@@ -40,7 +40,7 @@ private theorem cont_of (h : Rep μ v φ) : IsContRep μ v fun y => φ.1 (y : GA
     exact hy.trans (cuspQuot_mk _ y)
 
 /- English proof (translation)
-Use `⟨hu, hc, h.ae_eq_quotFun.trans (Filter.Eventually.of_forall fun y => ?_)⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Quotient.out_eq y]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem of_cont (hu : Umg φ) (hc : ∀ t g, φ.1 (zt E n t * g) = φ.1 g)
     (h : IsContRep μ v fun y => φ.1 (y : GA E n)) : Rep μ v φ := by
@@ -49,7 +49,7 @@ private theorem of_cont (hu : Umg φ) (hc : ∀ t g, φ.1 (zt E n t * g) = φ.1 
   rfl
 
 /- English proof (translation)
-Establish `e1 : g = (retractOne g : AdelicGLn.AdelicGL E n) * centralSection E n (detModule E n g)`. Rewrite using `[coe_retractOne, inv_mul_cancel_right]`. Establish `e2 : centralSection E n (detModule E n g) = zt E n (Real.log (detModule E n g).1)` using `congrArg (centralSection E n) (Subtype.ext (Real.exp_log (detModule E n g).2).symm)`. Use `conv_lhs => rw [e1, ← mul_assoc, ← centralSection_mul_comm, e2, h.cen]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem retr (h : Rep μ v φ) (x g : GA E n) : φ.1 (x * g) = φ.1 (x * (retractOne g : GA E n)) := by
   have e1 : g = (retractOne g : AdelicGLn.AdelicGL E n) * centralSection E n (detModule E n g) := by
@@ -59,7 +59,7 @@ private theorem retr (h : Rep μ v φ) (x g : GA E n) : φ.1 (x * g) = φ.1 (x *
   conv_lhs => rw [e1, ← mul_assoc, ← centralSection_mul_comm, e2, h.cen]
 
 /- English proof (translation)
-Establish `hu` using `(((umgOps E) n).2 φ h.umg).2.2.1 c`. Use `of_cont ((((umgOps E) n).2 _ hu).2.1 ψ h'.umg) (fun t g => ?_) (((cont_of h).smul c).add (cont_of h'))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c • φ.1 _ + ψ.1 _ = c • φ.1 _ + ψ.1 _`. Rewrite using `[h.cen, h'.cen]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rep_comb {v' : LL μ} {ψ : Sm E n} (h : Rep μ v φ) (c : ℂ) (h' : Rep μ v' ψ) :
     Rep μ (c • v + v') (c • φ + ψ) := by
@@ -69,14 +69,14 @@ private theorem rep_comb {v' : LL μ} {ψ : Sm E n} (h : Rep μ v φ) (c : ℂ) 
   rw [h.cen, h'.cen]
 
 /- English proof (translation)
-The claim follows from `of_cont ((umgOps E) n).1 (fun _ _ => rfl) isContRep_zero`.
+A detailed English derivation is pending.
 -/
 private theorem rep_zero : Rep μ 0 (0 : Sm E n) := of_cont ((umgOps E) n).1 (fun _ _ => rfl) isContRep_zero
 
 /- English proof (translation)
-Use `of_cont ((((umgOps E) n).2 φ h.umg).2.2.2.2.1 g) (fun t x => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (zt E n t * x * g) = φ.1 (x * g)`. Rewrite using `[mul_assoc, h.cen]`. Establish `e : (fun y : normOneGL E n => (rt E n g φ).1 (y : GA E n)) = fun y : normOneGL E n => φ.1 ((y * retractOne g : normOneGL E n) : GA E n)` using `funext fun y => retr h y g`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(cont_of h).translate (retractOne g)`.
+A detailed English derivation is pending.
 -/
 private theorem rep_rt (h : Rep μ v φ) (g : GA E n) : Rep μ (RG μ g v) (rt E n g φ) := by
   refine of_cont ((((umgOps E) n).2 φ h.umg).2.2.2.2.1 g) (fun t x => ?_) ?_
@@ -88,9 +88,9 @@ private theorem rep_rt (h : Rep μ v φ) (g : GA E n) : Rep μ (RG μ g v) (rt E
     exact (cont_of h).translate (retractOne g)
 
 /- English proof (translation)
-Establish `hf` using `Formalism.UG.P.finite_support_cosets (Final.GLintComm E w n) hT.2`. Rewrite using `[heckeVec, heckeVec, finsum_eq_sum_of_support_subset (s := hf.toFinset) _ fun c hc => by`. Rewrite using `[Set.Finite.coe_toFinset]; exact fun h0 => hc (by simp [h0]),`. Use `finsum_eq_sum_of_support_subset (s := hf.toFinset) _ fun c hc => by`. Rewrite using `[Set.Finite.coe_toFinset]; exact fun h0 => hc (by simp [h0])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hf.toFinset using Finset.induction_on with`. Consider the case `empty => exact rep_zero`. Consider the case `insert c s hc ih`. Rewrite using `[Finset.sum_insert hc, Finset.sum_insert hc]`. Conclude with `rep_comb (rep_rt h _) _ ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rep_hecke (h : Rep μ v φ) (w : Pl E) {T : GL (Fin n) (w.adicCompletion E) → ℂ} (hT : T ∈ Hecke ℂ (KGL w n)) :
     Rep μ (heckeVec (localRepresentationL2 μ w) (KGL w n) T v) (heckeVec (rw n w) (KGL w n) T φ) := by
@@ -109,19 +109,17 @@ private theorem rep_hecke (h : Rep μ v φ) (w : Pl E) {T : GL (Fin n) (w.adicCo
 end UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ _ v φ h`. Use `⟨fun ψ h' => Subtype.ext (funext fun g => ?_), fun v' ψ c h' => rep_comb h c h', fun hc r hr hrn => ?_, fun w i hw => ?_⟩` and prove the remaining obligations. Establish `e1` using `retr h 1 g`. Establish `e2` using `retr h' 1 g`. Rewrite `e1`, `e2` using `[one_mul, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e1.trans ((congrFun ((cont_of h).unique (cont_of h')) (retractOne g)).trans e2.symm)`. Establish `e` using `h.ae`. Rewrite `e` using `[out_eq h.umg]`. Use `filter_upwards [ae_ctFun_congr μ r e] with y hy`. Rewrite using `[constantTermL2, hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc r hr hrn y`. Establish `hv : v ∈ fixL μ w (KGL w n)` using `(mem_fixL μ w _ v).2 fun k hk => by`. Establish `h1` using `rep_rt h (finGL E n (locGL E n w k))`. Establish `e : rt E n (finGL E n (locGL E n w k)) φ = φ` using `hw k hk`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Lp.ext (h1.ae.trans h.ae.symm)`. Establish `hϖ` using `(exists_isUnifV w).choose_spec`. Establish `ht` using `tj_eq w hϖ (GroundTheory.BlockD.SatakeBound.valued_uniformizer_eq w) (i + 1) (Cartan.diagPow (w.adicCompletion E) n fun a => if a ≤ i then 1 else 0) (by`. Rewrite using `[Cartan.coe_diagPow, diagJ]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a ≤ i`. Rewrite using `[if_pos ha, if_pos (Nat.lt_succ_of_le ha), zpow_one]`. Rewrite using `[if_neg ha, if_neg (fun h' => ha (Nat.le_of_lt_succ h')), zpow_zero])`. Establish `hq : (0 : ℝ) < (Ideal.absNorm w.asIdeal : ℝ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero (qV_ne_zero w))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Establish `he : (qc w) ^ (((((i : ℕ) + 1 : ℕ) : ℂ) * ((n : ℂ) - (((i : ℕ) + 1 : ℕ) : ℂ))) / 2) = ((((Ideal.absNorm w.asIdeal : ℝ) ^ (-((((i : ℕ) + 1) * (n - ((i : ℕ) + 1)) : ℕ) : ℝ) / 2) : ℝ) : ℂ))⁻¹`. Rewrite using `[← Complex.ofReal_inv, ← Real.rpow_neg hq.le, Complex.ofReal_cpow hq.le, qc, qV]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub (Nat.succ_le_of_lt i.2)]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[Tsph, ContinuousLinearMap.smul_apply, kgl_eq, hop_apply μ w _ _ (Final.GLintComm E w n) hv, ← ht, (hkOps E n w (i + 1)).1, he, inv_inv]`. Simplify `rep_comb (rep_hecke h w (Tj_mem_hecke hϖ (i + 1))) _ rep_zero` using `only [add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.repOps :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.RepOps E := by

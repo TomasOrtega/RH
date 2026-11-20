@@ -23,17 +23,17 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hf, hSB, hev, rfl⟩` from `hx`. Use `⟨(Filter.eventually_cofinite.1 hev).toFinset, 1, fun _ => f, fun _ => φ, fun _ => ⟨hf, hSB, fun v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv ((Set.Finite.mem_toFinset _).2 hc)`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨∅, 0, Fin.elim0, Fin.elim0, fun i => Fin.elim0 i, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨T₁, m₁, f₁, φ₁, h₁, rfl⟩` from `hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T₂, m₂, f₂, φ₂, h₂, rfl⟩` from `hy`. Use `⟨T₁ ∪ T₂, m₁ + m₂, Fin.append f₁ f₂, Fin.append φ₁ φ₂, fun k => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Conclude with `⟨(h₁ i).1, (h₁ i).2.1, fun v hv => (h₁ i).2.2 v fun h => hv (Finset.mem_union_left _ h)⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.append_right]`. Conclude with `⟨(h₂ i).1, (h₂ i).2.1, fun v hv => (h₂ i).2.2 v fun h => hv (Finset.mem_union_right _ h)⟩`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Consider the case `smul c x _ hx`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨T, m, f, φ, h, rfl⟩` from `hx`. Use `⟨T, m, fun i => c • f i, φ, fun i => ⟨(M.Pol ψ emb).smul_mem c (h i).1, (h i).2.1, (h i).2.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.smul_apply, SchwartzMap.smul_apply, smul_eq_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem RelV.exists_decomp_of_mem_algD {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (ψ : AddChar (AF F) ℂ)
     (emb : ∀ w : InfinitePlace F, EmbOver E w) {Φ : (Fin n × Fin d → AF F) → ℂ}
@@ -70,7 +70,7 @@ theorem RelV.exists_decomp_of_mem_algD {n d : ℕ} {Y : Spc F E n} {W : Spc F E 
     simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.smul_apply, SchwartzMap.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.neg_apply, Pi.neg_apply, neg_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem RelV.pure_neg {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     pure (-f) φ = -pure f φ := by
@@ -78,27 +78,25 @@ theorem RelV.pure_neg {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl 
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.neg_apply, Pi.neg_apply, neg_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM v g hg Φ hΦ`. Take `⟨T₀, m, f, φ, hφ, rfl⟩` from `RelV.exists_decomp_of_mem_algD G.M Bs.ψ Bs.emb hΦ`. Establish `hT` using `hM.triple`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `h1W : (1 : UA σ G.W.J) ∈ UAt σ G.W (evFin F v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u _`. Use `show u • ((1 : Matrix _ _ _) - 1) = 0`. Simplify using the standard rewrite rules. Use `choose ψ hψ using fun i => GlobalTheory.ThK.LocalOps.acts_exists hP v (g, 1) hg h1W (φ i v) ((hφ i).2.1 v)`. Establish `hpv : ∀ i, Rf.p v (ψ i) = Rf.p v (φ i v)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hmem : ψ i - φ i v ∈ augAt om v` using `Submodule.subset_span ⟨g, hg, φ i v, (hφ i).2.1 v, ψ i, (hψ i).1, (hψ i).2, rfl⟩`. Use `hM.fin.inv v hmem` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hstd : ∀ i, ∀ᶠ w in Filter.cofinite, φ i w = Set.indicator {x | ∀ j, x j ∈ w.adicCompletionIntegers F} 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `e0 : ∀ᶠ w in Filter.cofinite, φ i w = G.M.vac w` using `Filter.eventually_cofinite.2 ((T₀.finite_toSet).subset fun w hw => by`. Assume the negation of the conclusion as `hc`. Conclude with `hw ((hφ i).2.2 w hc))`. Use `filter_upwards [e0, hT.geo.hM.std] with w e1 e2`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, e2]`. Use `set T : Finset (Pl F) := insert v (Xc.T ∪ T₀) with hTdef`. Establish `hvT : ∀ w, w ∉ T → w ≠ v` using `fun w hw e => hw (e ▸ Finset.mem_insert_self _ _)`. Establish `hT₀ : ∀ w, w ∉ T → w ∉ T₀` using `fun w hw h => hw (Finset.mem_insert_of_mem (Finset.mem_union_right _ h))`. Use `⟨T, fun w hw => Finset.mem_insert_of_mem (Finset.mem_union_left _ hw), m + m, Fin.append f fun i => -f i, Fin.append (fun i => Function.update (φ i) v (ψ i)) φ, fun k => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `Fin.addCases (fun i => ?_) (fun i => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Use `⟨(hφ i).1, fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[Function.update_self]`. Conclude with `(hψ i).1`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `(hφ i).2.1 w`. Rewrite using `[Function.update_of_ne (hvT w hw)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hφ i).2.2 w (hT₀ w hw)`. Simplify using `only [Fin.append_right]`. Conclude with `⟨neg_mem (hφ i).1, (hφ i).2.1, fun w hw => (hφ i).2.2 w (hT₀ w hw)⟩`. Rewrite using `[map_sum, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, RelV.pure_neg, Finset.sum_neg_distrib, ← sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.ThK.PolMatchStep.pure_update v (om (g, 1)) (f i) (φ i) (hφ i).2.1 (hstd i) (hψ i).2`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, map_neg, TensorProduct.neg_tmul, Finset.sum_neg_distrib]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ i, (fun w : T => Rf.p w (Function.update (φ i) v (ψ i) w)) = fun w : T => Rf.p w (φ i w)`. Introduce `i`. Use function extensionality and compare the values at `w`. Take `⟨w, hw⟩` from `w`. Distinguish the cases in `hwv : w = v`.
-
-Substitute `hwv` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `hpv i`. Simplify using `only [Function.update_of_ne hwv]`. Simplify using `only [e, add_neg_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem polZero_relV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

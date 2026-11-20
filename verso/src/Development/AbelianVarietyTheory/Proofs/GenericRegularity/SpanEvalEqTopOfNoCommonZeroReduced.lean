@@ -12,11 +12,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hL a n m ws hws hnz S _ _ _ y`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `letI : Field (S ⧸ M) := Ideal.Quotient.field M`. Set `T : Type` to `AlgebraicClosure (S ⧸ M)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `φ : S →ₐ[c.F] T` to `(IsScalarTower.toAlgHom c.F (S ⧸ M) T).comp (Ideal.Quotient.mkₐ c.F M)`. Take `⟨z, hz⟩` from `hL.bc S T φ y`. Take `⟨i, hi⟩` from `hnz T z`. Apply `hi` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.naturalRule_value_baseChange_of_isReduced E H Dw l Xo c hL a n (ws i) (hws i) S T φ y z hz]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : evR Xo c (ws i) y ∈ M` using `hle (Ideal.subset_span ⟨i, rfl⟩)`. Establish `h0 : Ideal.Quotient.mkₐ c.F M (evR Xo c (ws i) y) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hm`. Use `show (IsScalarTower.toAlgHom c.F (S ⧸ M) T) (Ideal.Quotient.mkₐ c.F M (evR Xo c (ws i) y)) = 0`. Rewrite using `[h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_evR_eq_top_of_noCommonZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), EvLaws Xo c → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (ws : Fin m → Rul Xo c), (∀ i, ws i ∈ sec Xo c a n) → Formalism.L2.PjFree.NoCommonZero Xo c ws → ∀ (S : Type) [CommRing S] [IsReduced S] [Algebra c.F S] (y : FrPt Xo c S), Ideal.span (Set.range fun i => evR Xo c (ws i) y) = ⊤ := by
   intro E _ _ _ H Dw l Xo c hL a n m ws hws hnz S _ _ _ y

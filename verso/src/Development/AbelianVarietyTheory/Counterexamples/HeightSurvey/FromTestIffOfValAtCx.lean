@@ -20,22 +20,22 @@ abbrev pn (σ : c.F →+* ℂ) (fσ : FrPt Xo c (CAt σ) → Ix Dw → ℝ) (e :
   ptNorm (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) σ fσ e f y
 
 /- English proof (translation)
-Unfold `evR evalAt`. Rewrite using `[dif_neg hy]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evR_of_not_ft {S : Type} [CommRing S] [Algebra c.F S] (f : Rul Xo c) (y : FrPt Xo c S) (hy : ¬ FT y) :
     evR Xo c f y = 0 := by
   unfold evR evalAt; rw [dif_neg hy]
 
 /- English proof (translation)
-The claim follows from `evalAt_one _ _ y hy`.
+A detailed English derivation is pending.
 -/
 theorem evR_one {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (hy : FT y) :
     evR Xo c 1 y = 1 := evalAt_one _ _ y hy
 
 /- English proof (translation)
-Establish `hT2 : FT y₂`. Take `⟨p, ψ, y', hy'⟩` from `hT1`. Conclude with `⟨p, φ.comp ψ, y', frMap_trans (Xo := Xo) (c := c) _ _ _ ψ φ y' y₁ y₂ hy' hm⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos hT2, dif_pos hT1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hWD f hf K₂ _ _ _ _ _ _ y₂ hT2.choose_spec.choose_spec.choose_spec (frMap_trans (Xo := Xo) (c := c) _ _ _ _ φ _ y₁ y₂ hT1.choose_spec.choose_spec.choose_spec hm)`.
+A detailed English derivation is pending.
 -/
 theorem evR_map (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (f : Rul Xo c)
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
@@ -51,23 +51,23 @@ theorem evR_map (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z 
     (frMap_trans (Xo := Xo) (c := c) _ _ _ _ φ _ y₁ y₂ hT1.choose_spec.choose_spec.choose_spec hm)
 
 /- English proof (translation)
-Apply the tactic sequence `cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_zero (i : Ix Dw) : ex Dw 0 0 i = 0 := by cases i <;> rfl
 
 /- English proof (translation)
-Use `⟨fun p q φ y z _ => by simp, fun p t y y' _ => ?_⟩` and prove the remaining obligations. Simplify using `[wchar, ex_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_sec : (1 : Rul Xo c) ∈ sec Xo c 0 0 := by
   refine ⟨fun p q φ y z _ => by simp, fun p t y y' _ => ?_⟩
   simp [wchar, ex_zero]
 
 /- English proof (translation)
-The claim follows from `norm_one (α := ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem cabs_one (σ : c.F →+* ℂ) : cabs (1 : CAt σ) = 1 := norm_one (α := ℂ)
 /- English proof (translation)
-The claim follows from `norm_zero (E := ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem cabs_zero (σ : c.F →+* ℂ) : cabs (0 : CAt σ) = 0 := norm_zero (E := ℂ)
 
@@ -75,11 +75,9 @@ variable {h : GenFrEx Xo c} {fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) →
   {yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))}
 
 /- English proof (translation)
-Establish `h1` using `hcx Z P 0 0 1 one_mem_sec`. Unfold `evC at h1`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Assume the negation of the conclusion as `hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h1` using `[evR_one _ hg, evR_of_not_ft _ _ hy, map_one, norm_one, cabs_zero]`. Conclude with `one_ne_zero h1`. Introduce `hy`. Assume the negation of the conclusion as `hg`. Rewrite `h1` using `[evR_one _ hy, evR_of_not_ft _ _ hg, map_zero, norm_zero, cabs_one]`.
-
-Conclude with `zero_ne_one h1`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromTest_iff_of_valAtCx (hcx : ValAtCx h yP) (Z : Comp Xo c) (P : Om Z →+* ℂ) :
     FT (genFr h Z) ↔ FT (yP Z P) := by
@@ -96,7 +94,7 @@ theorem fromTest_iff_of_valAtCx (hcx : ValAtCx h yP) (Z : Comp Xo c) (P : Om Z �
     exact zero_ne_one h1
 
 /- English proof (translation)
-Take `⟨Z, hZ⟩` from `hN`. Use `⟨Z, hZ, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hg`. Conclude with `hZ (evR_of_not_ft _ _ hg)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem fromTest_of_nzSome {f : Rul Xo c} (hN : NZSome h f) : ∃ Z, evC h Z f ≠ 0 ∧ FT (genFr h Z) := by
   obtain ⟨Z, hZ⟩ := hN
@@ -105,9 +103,9 @@ theorem fromTest_of_nzSome {f : Rul Xo c} (hN : NZSome h f) : ∃ Z, evC h Z f �
   exact hZ (evR_of_not_ft _ _ hg)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hN`. Take `⟨Z, _, hZ⟩` from `fromTest_of_nzSome hN`. Conclude with `⟨Z, hZ⟩`. Introduce and unpack `⟨Z, hZ⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨Z, ?_⟩` and prove the remaining obligations. Unfold `evC`. Rewrite using `[evR_one _ hZ]`. Conclude with `one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzSome_one_iff : NZSome h (1 : Rul Xo c) ↔ ∃ Z, FT (genFr h Z) := by
   constructor
@@ -121,23 +119,23 @@ theorem nzSome_one_iff : NZSome h (1 : Rul Xo c) ↔ ∃ Z, FT (genFr h Z) := by
     exact one_ne_zero
 
 /- English proof (translation)
-Introduce and unpack `⟨Z, hZ⟩`. Conclude with `hZ (evalAt_zero _ _ _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_nzSome_zero : ¬ NZSome h (0 : Rul Xo c) := by
   rintro ⟨Z, hZ⟩
   exact hZ (evalAt_zero _ _ _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun Z => hne.elim Z, fun Z => hne.elim Z, fun ⟨Z, _⟩ => hne.elim Z⟩`.
+Supply the required witnesses or components.
 -/
 theorem laws_of_no_comp (hne : IsEmpty (Comp Xo c)) (f : Rul Xo c) :
     PTNe Xo c ∧ ValAtCx h yP ∧ ¬ NZSome h f :=
   ⟨fun Z => hne.elim Z, fun Z => hne.elim Z, fun ⟨Z, _⟩ => hne.elim Z⟩
 
 /- English proof (translation)
-Take `⟨Z, hZ⟩` from `hN`. Take `⟨P, hP⟩` from `hPT Z σ`. Establish `h1` using `nrmC_valC_le hcx hS hB Z P`. Establish `hP' : sgOf P = σ` using `hP`. Rewrite `h1` using `[hP']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_of_lt_of_le (nrmC_pos fn (yP Z) hfn P (valC_mem h a n f Z) (valC_ne_zero hZ)) h1`.
+A detailed English derivation is pending.
 -/
 theorem supR_pos [Fintype (Comp Xo c)] (hfn : FnNe Xo c fn) (hPT : PTNe Xo c) (hcx : ValAtCx h yP)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hS : f ∈ sec Xo c a n) (hB : SupBdd Xo c fn a n f)
@@ -150,9 +148,7 @@ theorem supR_pos [Fintype (Comp Xo c)] (hfn : FnNe Xo c fn) (hPT : PTNe Xo c) (h
   exact lt_of_lt_of_le (nrmC_pos fn (yP Z) hfn P (valC_mem h a n f Z) (valC_ne_zero hZ)) h1
 
 /- English proof (translation)
-Use `show cabs (evR Xo c 1 y) * ∏ i, |fn σ y i|⁻¹ ^ ex Dw 0 0 i ≤ 1`. Simplify using `only [ex_zero, pow_zero, Finset.prod_const_one, mul_one]`. Distinguish the cases in `hy : FT y`. Rewrite using `[evR_one _ hy, cabs_one]`. Rewrite using `[evR_of_not_ft _ _ hy, cabs_zero]`.
-
-Conclude with `zero_le_one`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pn_one_le (σ : c.F →+* ℂ) (y : FrPt Xo c (CAt σ)) : pn σ (fn σ) (ex Dw 0 0) 1 y ≤ 1 := by
   show cabs (evR Xo c 1 y) * ∏ i, |fn σ y i|⁻¹ ^ ex Dw 0 0 i ≤ 1
@@ -162,13 +158,13 @@ theorem pn_one_le (σ : c.F →+* ℂ) (y : FrPt Xo c (CAt σ)) : pn σ (fn σ) 
   · rw [evR_of_not_ft _ _ hy, cabs_zero]; exact zero_le_one
 
 /- English proof (translation)
-Introduce `σ` and use `⟨1, Set.forall_mem_range.2 fun y => pn_one_le σ y⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem supBdd_one : SupBdd Xo c fn 0 0 1 := fun σ =>
   ⟨1, Set.forall_mem_range.2 fun y => pn_one_le σ y⟩
 
 /- English proof (translation)
-The claim follows from `Real.iSup_le (fun y => pn_one_le σ y) zero_le_one`.
+A detailed English derivation is pending.
 -/
 theorem supR_one_le (σ : c.F →+* ℂ) : supR Xo c fn σ 0 0 1 ≤ 1 :=
   Real.iSup_le (fun y => pn_one_le σ y) zero_le_one
@@ -183,7 +179,7 @@ variable (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMa
 
 include hWD hcj htr hS in
 /- English proof (translation)
-Distinguish the cases in `hy : FT y`. Conclude with `(SupNormExample.ptNorm_conj _ _ σ (fn σ) (fn _) (ex Dw a n) f y (cj y) (evR_map hWD f hS.1 (SupNormExample.conjAt σ) y hy (cj y) (hcj y)) (htr y)).ge`. Use `le_trans (le_of_eq ?_) (ptNorm_nonneg _ _ _ _ _ _ _) show cabs (evR Xo c f y) * _ = 0` and prove the remaining obligations. Rewrite using `[evR_of_not_ft _ _ hy, cabs_zero, zero_mul]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pn_le_conj (y : FrPt Xo c (CAt σ)) :
     pn σ (fn σ) (ex Dw a n) f y ≤ pn _ (fn _) (ex Dw a n) f (cj y) := by
@@ -196,7 +192,7 @@ theorem pn_le_conj (y : FrPt Xo c (CAt σ)) :
 
 include hWD hcj htr hS in
 /- English proof (translation)
-Take `⟨b, hb⟩` from `hB`. Conclude with `⟨b, Set.forall_mem_range.2 fun y => (pn_le_conj hWD σ cj hcj htr hS y).trans (hb ⟨cj y, rfl⟩)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bdd_of_conj
     (hB : BddAt (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ((starRingEnd ℂ).comp σ) (fn _)
@@ -207,7 +203,7 @@ theorem bdd_of_conj
 
 include hWD hcj htr hS in
 /- English proof (translation)
-The claim follows from `Real.iSup_le (fun y => (pn_le_conj hWD σ cj hcj htr hS y).trans (le_ciSup hB (cj y))) (Real.iSup_nonneg fun _ => ptNorm_nonneg _ _ _ _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem supR_le_conj
     (hB : BddAt (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ((starRingEnd ℂ).comp σ) (fn _)
@@ -219,7 +215,7 @@ theorem supR_le_conj
 end Conj
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun σ => (SupNormExample.bddAt_of_fnorm_zero _ _ σ (ex Dw a n) none hn f).1, fun σ => (SupNormExample.bddAt_of_fnorm_zero _ _ σ (ex Dw a n) none hn f).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem supBdd_of_fn_zero (a : (E →+* ℂ) × ℕ → ℕ) {n : ℕ} (hn : n ≠ 0) (f : Rul Xo c) :
     SupBdd Xo c (fun _ _ _ => 0) a n f ∧ ∀ σ, supR Xo c (fun _ _ _ => 0) σ a n f = 0 :=
@@ -227,7 +223,7 @@ theorem supBdd_of_fn_zero (a : (E →+* ℂ) × ℕ → ℕ) {n : ℕ} (hn : n �
    fun σ => (SupNormExample.bddAt_of_fnorm_zero _ _ σ (ex Dw a n) none hn f).2⟩
 
 /- English proof (translation)
-Use `choose g hg using fun σ : c.F →+* ℂ => SupNormExample.exists_fnorm_small (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) σ (ex Dw a n) none hn f`. Conclude with `⟨g, fun σ y i => ((hg σ).1 y i).ne', fun σ => (hg σ).2.1, fun σ => (hg σ).2.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fn_small (a : (E →+* ℂ) × ℕ → ℕ) {n : ℕ} (hn : n ≠ 0) (f : Rul Xo c) :
     ∃ fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ,

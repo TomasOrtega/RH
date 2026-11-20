@@ -8,7 +8,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryQuotientCompactn
 
 open PI.QuotSetU.UnitaryGroupMassFormula in
 /- English proof (translation)
-The claim follows from `quotSetU_of unitary_hermitian_group siegel_set_subset (SW.sGroup_of unitary_weyl_compact) exists_modular_function unitary_group_modular_function_trivial (SW.trivS_of (SW.sGroup_of unitary_weyl_compact) unitary_weyl_compact SW.nilpotent_subgroup SW.unipotent_radical_contracting)`.
+A detailed English derivation is pending.
 -/
 theorem quotient_measure_unitary_group : PI.QuotSetU :=
   quotSetU_of unitary_hermitian_group siegel_set_subset (SW.sGroup_of unitary_weyl_compact) exists_modular_function unitary_group_modular_function_trivial

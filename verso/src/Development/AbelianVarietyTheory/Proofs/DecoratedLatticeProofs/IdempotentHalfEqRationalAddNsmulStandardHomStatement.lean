@@ -12,7 +12,7 @@ open GlobalTheory.KJInf Formalism.L2.Ker
 open GlobalTheory.SeeSaw GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AdForm.DenseHalf.half_eq_rat_add_nsmul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIdempotentHalfEqRationalAddNsmulStandardHom.lean&line=17#L17)
 -/

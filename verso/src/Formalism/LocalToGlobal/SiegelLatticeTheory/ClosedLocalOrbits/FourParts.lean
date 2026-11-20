@@ -21,19 +21,19 @@ def IsIdF (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (F' : LFlag
   ∃ n ∈ NLam Λ F, (∀ a, n (F.fl.e a) = F'.fl.e a) ∧ n F.fl.z - F'.fl.z ∈ Xsp F
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, by simp, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem e_mem_Xflag {T : E} (F : LFlag S r T) (a : Fin r) : F.fl.e a ∈ Xflag F (a.val + 1) :=
   Submodule.subset_span ⟨a, by simp, rfl⟩
 
 /- English proof (translation)
-Simplify using `[Xflag, FlagG.Xa]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Xflag_zero {T : E} (F : LFlag S r T) : Xflag F 0 = ⊥ := by
   simp [Xflag, FlagG.Xa]
 
 /- English proof (translation)
-Simplify using `only [FlagG.Xa, Xsp, FlagG.X]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Xflag_r {T : E} (F : LFlag S r T) : F.fl.Xa r = Xsp F := by
   simp only [FlagG.Xa, Xsp, FlagG.X]
@@ -42,9 +42,9 @@ theorem Xflag_r {T : E} (F : LFlag S r T) : F.fl.Xa r = Xsp F := by
   simp
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `F.fl.z_orth a`. Consider the case `zero => simp`. Consider the case `add y w _ _ hy hw => simp [hy, hw]`. Consider the case `smul c y _ hy => simp [hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem z_mem_orth {T : E} (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
@@ -58,9 +58,9 @@ theorem z_mem_orth {T : E} (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   | smul c y _ hy => simp [hy]
 
 /- English proof (translation)
-Take `⟨n, hn, he, hz⟩` from `h`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← he a]`. Conclude with `hn.2.1 a.val _ (e_mem_Xflag F a)`. Establish `e : F'.fl.z - F.fl.z = (n F.fl.z - F.fl.z) - (n F.fl.z - F'.fl.z)` using `by abel`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (hn.2.2 _ (z_mem_orth F)) hz`.
+A detailed English derivation is pending.
 -/
 theorem inSF_of_isIdF (Λ : Submodule (𝓞 E) S.V) {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'}
     (h : IsIdF Λ F F') : InSF F F' := by
@@ -73,25 +73,23 @@ theorem inSF_of_isIdF (Λ : Submodule (𝓞 E) S.V) {T T' : E} {F : LFlag S r T}
     exact Submodule.sub_mem _ (hn.2.2 _ (z_mem_orth F)) hz
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Establish `hz : F'.fl.z = F.fl.z`. Use `h.2` as an intermediate fact. Simplify using `[Xsp, FlagG.X] at this`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.1 this`. Establish `hTT : T' = T`. Establish `h1` using `F'.fl.z_norm`. Establish `h2` using `F.fl.z_norm`. Rewrite `h1` using `[hz, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `(neg_inj.1 h1).symm`. Substitute `hTT` using the available equality. Establish `hf : ∀ {T₁ : E} (G : LFlag S 0 T₁) (i : Fin 1), G.fl.fvec i = G.fl.z`. Introduce `T₁ G i`. Rewrite using `[Subsingleton.elim i (Fin.last 0)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Fin.snoc_last (α := fun _ => S.V) (p := G.fl.e) (x := G.fl.z)`. Establish `hD1 : Dl F.fl F'.fl 1 = -T'`. Simplify using `only [Dl, leadMinorE]`. Simplify using `only [Nat.le_refl, dif_pos, Matrix.det_unique]`. Use `show S.hT (F.fl.fvec _) (F'.fl.fvec _) = -T'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf F, hf F', hz, F.fl.z_norm]`. Establish `hD0 : Dl F.fl F'.fl 0 = 1`. Simplify using `[Dl, leadMinorE]`. Simplify using `only [Gval, Gflag, zero_add, hD1, hD0]`. Simplify using `[star_neg, hT]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : F'.fl.e ⟨0, hr⟩ = F.fl.e ⟨0, hr⟩`. Use `h.1 ⟨0, hr⟩` as an intermediate fact. Rewrite `this` using `[Xflag_zero, Submodule.mem_bot]`. Conclude with `sub_eq_zero.1 this`. Establish `hcol : ∀ a : Fin (r + 1), Zhat F.fl F'.fl a ⟨0, by omega⟩ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Establish `hv : F'.fl.fvec ⟨0, by omega⟩ = F.fl.e ⟨0, hr⟩` using `by show Fin.snoc (α := fun _ => S.V) F'.fl.e F'.fl.z (Fin.castSucc ⟨0, hr⟩) = _`. Rewrite using `[Fin.snoc_castSucc, h0]`. Simplify using `only [Zhat, brS, hv]`. Use `Fin.lastCases ?_ (fun b => ?_) a` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Conclude with `S.herm.eq_iff.1 (F.fl.z_orth ⟨0, hr⟩)`. Simplify using `[FlagG.fvec, F.fl.e_iso]`. Establish `hDl : ∀ l, 1 ≤ l → l ≤ r + 1 → Dl F.fl F'.fl l = 0`. Introduce `l hl1 hl2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Dl, leadMinorE, dif_pos hl2]`. Use `Matrix.det_eq_zero_of_column_eq_zero ⟨0, by omega⟩ (fun i => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply]`. Establish `: (Fin.castLE hl2 ⟨0, by omega⟩ : Fin (r + 1)) = ⟨0, by omega⟩` using `rfl`. Rewrite using `[this]`.
-
-Conclude with `hcol _`. Simplify using `only [Gval, Gflag, hDl (r + 1) (by omega) le_rfl, hDl r hr (by omega)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gval_eq_zero_of_inSF {T T' : E} (hT : star T = T) {F : LFlag S r T} {F' : LFlag S r T'}
     (h : InSF F F') : Gval F F' = 0 := by
@@ -162,16 +160,16 @@ def InSRel (K : Type) [Field K] [Algebra K E] : Prop :=
 variable {Λ F P}
 
 /- English proof (translation)
-Take `⟨F', hr, hid⟩` from `h`. Conclude with `⟨F', hr, inSF_of_isIdF Λ hid⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isInS_of_isIdT {t : TermQ Λ F P} (h : IsIdT Λ F P t) : IsInS Λ F P t := by
   obtain ⟨F', hr, hid⟩ := h
   exact ⟨F', hr, inSF_of_isIdF Λ hid⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, hmk⟩, hin⟩`. Use `const_of_mk (fun y : Carrier P => InSF F y.1) (fun a b hab => propext (hI a b hab)) hmk` as an intermediate fact. Simplify `hin` using `[this]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x.1, rep_mk x, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInS_mk (hI : InSFun Λ F P) (x : Carrier P) : IsInS Λ F P (mk Λ F P x) ↔ InSF F x.1 := by
   constructor
@@ -182,7 +180,7 @@ theorem isInS_mk (hI : InSFun Λ F P) (x : Carrier P) : IsInS Λ F P (mk Λ F P 
     exact ⟨x.1, rep_mk x, h⟩
 
 /- English proof (translation)
-Take `⟨F', ⟨hP, hmk⟩, hin⟩` from `h`. Substitute `hmk` using the available equality. Rewrite using `[Gt_mk hG]`. Conclude with `gval_eq_zero_of_inSF hT hin`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gt_eq_zero_of_isInS (hG : GFun Λ F P) (hT : star T = T) {t : TermQ Λ F P} (h : IsInS Λ F P t) :
     Gt Λ F P t = 0 := by
@@ -205,7 +203,7 @@ def termInS (t : Term D u u' F0 what₂) : Prop := IsInS _ _ _ t.cls
 def termIsId (t : Term D u u' F0 what₂) : Prop := IsIdT _ _ _ t.cls
 
 /- English proof (translation)
-The claim follows from `isInS_of_isIdT h`.
+A detailed English derivation is pending.
 -/
 theorem termInS_of_termIsId {t : Term D u u' F0 what₂} (h : termIsId t) : termInS t := isInS_of_isIdT h
 
@@ -224,7 +222,7 @@ def genSet : Set (Term D u u' F0 what₂) := {t | t.relevant ∧ t.G ≠ 0 ∧ t
 variable {D u u' F0 what₂}
 
 /- English proof (translation)
-Use `gt_eq_zero_of_isInS (T := ((Tu D u : ℕ) : D.host.E)) hG ?_ h` and prove the remaining obligations. Conclude with `star_natCast _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem G_eq_zero_of_termInS {t : Term D u u' F0 what₂} (hG : GFun t.lam (lf D F0) (PD D t.lam (lf D F0) u'))
     (h : termInS t) : t.G = 0 := by
@@ -261,11 +259,9 @@ def TermInSRel (u u' : D.what₂.Word) : Prop :=
 variable {D}
 
 /- English proof (translation)
-Introduce `F0 what₂ hrows`. Establish `hG : ∀ t : Term D u u' F0 what₂, termInS t → t.G = 0` using `fun t h => G_eq_zero_of_termInS (hF F0 t.lam (hrows.1 t.lam t.mem)).1 h`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Simplify using `only [idSet, degSet, ngSet, genSet, relSet, Set.mem_union, Set.mem_ofPred_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h1 : termInS t <;> by_cases h2 : t.G = 0 <;> by_cases h3 : t.generic <;> tauto`. Conclude with `Set.disjoint_left.2 fun t h1 h2 => h2.2.2 h1.2`. Conclude with `Set.disjoint_left.2 fun t h1 h2 => h2.2.1 (hG t h1.2)`. Conclude with `Set.disjoint_left.2 fun t h1 h2 => h2.2.1 (hG t h1.2)`. Conclude with `Set.disjoint_left.2 fun t h1 h2 => h2.2.1 h1.2.1`.
-
-Conclude with `Set.disjoint_left.2 fun t h1 h2 => h2.2.1 h1.2.1`. Conclude with `Set.disjoint_left.2 fun t h1 h2 => h1.2.2 h2.2.2`. Conclude with `fun t h => hG t h.2`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem fourParts_of_termFun {u u' : D.what₂.Word} (hF : TermFun D u u') : FourParts D u u' := by
   intro F0 what₂ hrows

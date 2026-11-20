@@ -17,7 +17,7 @@ namespace KC
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `: GLs n = (fun g : Mat n => g.det) ⁻¹' {0}ᶜ`. Use extensionality with `g`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isOpen_compl_singleton.preimage (Continuous.matrix_det continuous_id)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) := by
   have : GLs n = (fun g : Mat n => g.det) ⁻¹' {0}ᶜ := by
@@ -26,7 +26,7 @@ theorem isOpen_GLs : IsOpen (GLs n) := by
   exact isOpen_compl_singleton.preimage (Continuous.matrix_det continuous_id)
 
 /- English proof (translation)
-Use `show (x * y.val).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hx ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_val_mem {x : Mat n} (hx : x ∈ GLs n) (y : G n) : x * y.val ∈ GLs n := by
   show (x * y.val).det ≠ 0
@@ -34,7 +34,7 @@ theorem mul_val_mem {x : Mat n} (hx : x ∈ GLs n) (y : G n) : x * y.val ∈ GLs
   exact mul_ne_zero hx ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
 /- English proof (translation)
-Use `show y.val.det ≠ 0`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem val_mem (y : G n) : y.val ∈ GLs n := by
   show y.val.det ≠ 0
@@ -45,7 +45,7 @@ section Congr
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [Rd]`. Rewrite using `[Filter.EventuallyEq.fderiv_eq (h.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hg))]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rd_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (X : Mat n) : EqOn (Rd X f₁) (Rd X f₂) (GLs n) := by
   intro g hg
@@ -53,7 +53,7 @@ theorem rd_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (X : Mat
   rw [Filter.EventuallyEq.fderiv_eq (h.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hg))]
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h1` using `rd_congr h (Matrix.single a b 1) hg`. Establish `h2` using `rd_congr h (Matrix.single a b Complex.I) hg`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem eu_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (s : Bool) (a b : Fin n) :
     EqOn (Eu s a b f₁) (Eu s a b f₂) (GLs n) := by
@@ -63,7 +63,7 @@ theorem eu_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (s : Boo
   simp only [Eu, Pi.smul_apply, Pi.add_apply, h1, h2]
 
 /- English proof (translation)
-The claim follows from `| 0, a, b => by intro g hg simp only [Epow] split_ifs · exact h hg · rfl | m + 1, a, b => by intro g hg simp only [Epow, Finset.sum_apply] exact Finset.sum_congr rfl fun c _ => eu_congr (epow_congr h s m c b) s a c hg`.
+A detailed English derivation is pending.
 -/
 theorem epow_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (s : Bool) :
     ∀ (m : ℕ) (a b : Fin n), EqOn (Epow s m a b f₁) (Epow s m a b f₂) (GLs n)
@@ -79,7 +79,7 @@ theorem epow_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (s : B
     exact Finset.sum_congr rfl fun c _ => eu_congr (epow_congr h s m c b) s a c hg
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [gel, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => epow_congr h s m a a hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (s : Bool) (m : ℕ) :
     EqOn (gel s m f₁) (gel s m f₂) (GLs n) := by
@@ -88,7 +88,7 @@ theorem gel_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (s : Bo
   exact Finset.sum_congr rfl fun a _ => epow_congr h s m a a hg
 
 /- English proof (translation)
-The claim follows from `| [], _, _, h => h | p :: w, _, _, h => by intro g hg exact gel_congr (zop_congr w h) p.1 p.2 hg`.
+A detailed English derivation is pending.
 -/
 theorem zop_congr : ∀ (w : List (Bool × ℕ)) {f₁ f₂ : Mat n → V}, EqOn f₁ f₂ (GLs n) →
     EqOn (zOp w f₁) (zOp w f₂) (GLs n)
@@ -104,7 +104,7 @@ section Props
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Introduce `u hu x hx`. Establish `h1` using `((hGC n V V s m F hF).2 x hx).2.1 u.val (val_mem u)`. Rewrite using `[← h1.1]`. Conclude with `gel_congr (fun y hy => hN u hu y hy) s m hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gel_ninv (hGC : GelComm) {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {F : Mat n → V}
     (hF : ContDiffOn ℝ ∞ F (GLs n)) (hN : NInv W₁ W₂ F) (s : Bool) (m : ℕ) : NInv W₁ W₂ (gel s m F) := by
@@ -114,7 +114,7 @@ theorem gel_ninv (hGC : GelComm) {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {F 
   exact gel_congr (fun y hy => hN u hu y hy) s m hx
 
 /- English proof (translation)
-The claim follows from `| [], F, hF, hN => ⟨hF, hN⟩ | p :: w, F, hF, hN => by obtain ⟨h1, h2⟩ := zop_props hGC w F hF hN exact ⟨(hGC n V V p.1 p.2 _ h1).1, gel_ninv hGC h1 h2 p.1 p.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem zop_props (hGC : GelComm) {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} :
     ∀ (w : List (Bool × ℕ)) (F : Mat n → V), ContDiffOn ℝ ∞ F (GLs n) → NInv W₁ W₂ F →
@@ -125,7 +125,7 @@ theorem zop_props (hGC : GelComm) {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} :
     exact ⟨(hGC n V V p.1 p.2 _ h1).1, gel_ninv hGC h1 h2 p.1 p.2⟩
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _ => fun _ _ => rfl | p :: w, F, hF, hN => by intro x hx have ih := zop_field hGC hGF hW A hA hQ w F hF hN obtain ⟨h1, h2⟩ := zop_props hGC w F hF hN show gel p.1 p.2 (zOp w (fun y => A y (F y))) x = A x (gel p.1 p.2 (zOp w F) x) rw [gel_congr ih p.1 p.2 hx] exact hGF …`.
+A detailed English derivation is pending.
 -/
 theorem zop_field (hGC : GelComm) (hGF : GelFlag) {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂)
     (A : Mat n → (V →L[ℂ] V)) (hA : ContDiffOn ℝ ∞ A (GLs n)) (hQ : QInv W₁ W₂ A) :
@@ -148,7 +148,7 @@ variable {P Q W : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCom
   [NormedAddCommGroup W] [NormedSpace ℝ W]
 
 /- English proof (translation)
-The claim follows from `| 0, x, _ => by ext h simp [iteratedFDeriv_zero_apply] | m + 1, x, hx => by have hS : IsOpen (Set.univ ×ˢ O : Set (P × Q)) := isOpen_univ.prod hO have hpx : (p, x) ∈ (Set.univ ×ˢ O : Set (P × Q)) := ⟨trivial, hx⟩ have hev : (iteratedFDeriv ℝ m (fun y => U (p, y))) =ᶠ[nhds x] (fun …`.
+A detailed English derivation is pending.
 -/
 theorem slice_eq {U : P × Q → W} {O : Set Q} (hO : IsOpen O) (hU : ContDiffOn ℝ ∞ U (Set.univ ×ˢ O)) (p : P) :
     ∀ m : ℕ, ∀ x ∈ O, iteratedFDeriv ℝ m (fun y => U (p, y)) x =
@@ -186,9 +186,9 @@ theorem slice_eq {U : P × Q → W} {O : Set Q} (hO : IsOpen O) (hU : ContDiffOn
     rfl
 
 /- English proof (translation)
-Establish `hS : IsOpen (Set.univ ×ˢ O : Set (P × Q))` using `isOpen_univ.prod hO`. Establish `h1 : ContinuousOn (iteratedFDeriv ℝ m U) (Set.univ ×ˢ O)` using `(hU.continuousOn_iteratedFDerivWithin (m := m) (by exact_mod_cast le_top) hS.uniqueDiffOn).congr fun y hy => (iteratedFDerivWithin_of_isOpen m hS hy).symm`. Establish `h2` using `((ContinuousMultilinearMap.compContinuousLinearMapL (𝕜 := ℝ) (F := W) (fun _ : Fin m => ContinuousLinearMap.inr ℝ P Q)).continuous.comp_continuousOn h1)`. Use `h2.congr fun q hq => ?_` and prove the remaining obligations. Use `slice_eq hO hU q.1 m q.2 hq.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, ContinuousMultilinearMap.compContinuousLinearMapL_apply]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem slice_cont {U : P × Q → W} {O : Set Q} (hO : IsOpen O) (hU : ContDiffOn ℝ ∞ U (Set.univ ×ˢ O)) (m : ℕ) :
     ContinuousOn (fun q : P × Q => iteratedFDeriv ℝ m (fun y => U (q.1, y)) q.2) (Set.univ ×ˢ O) := by
@@ -209,29 +209,25 @@ end KC
 
 open KC in
 /- English proof (translation)
-Introduce `hWE hWS hGC hGF hIS n _ _ μ _ E w g T k hg hk W₁ W₂ hW A hA hQ f hf hfN x hx`. Take `⟨u, hu, hu0, huN⟩` from `hWN hWE hWS hGC n E W₁ W₂ f hf hfN`. Establish `hv` using `hWA hGF n E W₁ W₂ hW A u hA hQ hu huN`. Establish `h1` using `hk.2.2.2 _ hv x hx`. Establish `h2` using `hk.2.2.2 _ hu x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsOpen (Set.univ ×ˢ GLs n : Set (ℝ × Mat n))` using `isOpen_univ.prod isOpen_GLs`. Establish `hgc : ContDiff ℝ ∞ fun p : ℝ × Mat n => ((g p.1 : ℝ) : ℂ)` using `Complex.ofRealCLM.contDiff.comp (hg.1.comp contDiff_fst)`. Establish `hU' : ContDiffOn ℝ ∞ (fun p : ℝ × Mat n => ((g p.1 : ℝ) : ℂ) • u p.1 p.2) (Set.univ ×ˢ GLs n)` using `hgc.contDiffOn.smul hu.1`. Establish `hFs : ContDiffOn ℝ ∞ (fun x' => ∫ t, ((g t : ℝ) : ℂ) • u t x') (GLs n)`. Use `hIS n ℝ MeasureTheory.volume E.V (fun t x' => ((g t : ℝ) : ℂ) • u t x') ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t`. Conclude with `hU'.comp ((contDiff_const.prodMk contDiff_id).contDiffOn) fun y hy => ⟨trivial, hy⟩`. Introduce `m`. Conclude with `slice_cont isOpen_GLs hU' m`. Introduce `x₀ _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Set.univ, Filter.univ_mem, Set.Icc (-T) T, isCompact_Icc, fun t ht y _ => ?_⟩` and prove the remaining obligations. Establish `: T < |t|`. Assume the negation of the conclusion as `hc`. Conclude with `ht ⟨by linarith [neg_abs_le t, not_lt.1 hc], le_trans (le_abs_self t) (not_lt.1 hc)⟩`. Simplify using `[hg.2.2 t this]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hFN : NInv W₁ W₂ (fun x' => ∫ t, ((g t : ℝ) : ℂ) • u t x')`. Introduce `v hv' y hy`. Simplify using `only`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[huN t v hv' y hy]`. Establish `hint : ∀ x' ∈ GLs n, Integrable (fun t => ((g t : ℝ) : ℂ) • u t x')`. Introduce `x' hx'`. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Use `hU'.continuousOn.comp_continuous (continuous_id.prodMk continuous_const) fun t => ⟨trivial, hx'⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `this`. Use `HasCompactSupport.intro (K := Set.Icc (-T) T) isCompact_Icc fun t ht => ?_` and prove the remaining obligations. Establish `: T < |t|`. Assume the negation of the conclusion as `hc`. Conclude with `ht ⟨by linarith [neg_abs_le t, not_lt.1 hc], le_trans (le_abs_self t) (not_lt.1 hc)⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hg.2.2 t this]`. Establish `hcong : EqOn (fun x' => ∫ t, ((g t : ℝ) : ℂ) • A x' (u t x')) (fun x' => A x' (∫ t, ((g t : ℝ) : ℂ) • u t x')) (GLs n)`. Introduce `x' hx'`. Simplify using `only`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (hint x' hx')]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[map_smul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [act]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[hu0 _ (mul_val_mem hx y)]`. Use `_ = zOp w (fun x' => ∫ t, ((g t : ℝ) : ℂ) • A x' (u t x')) x := h1`. Use `_ = zOp w (fun x' => A x' (∫ t, ((g t : ℝ) : ℂ) • u t x')) x := zop_congr w hcong hx`.
-
-Use `_ = A x (zOp w (fun x' => ∫ t, ((g t : ℝ) : ℂ) • u t x') x) := zop_field hGC hGF hW A hA.1 hQ w _ hFs hFN hx`. Use `_ = A x (act μ E k (u 0) x) := by rw [h2]`. Use `_ = A x (act μ E k f x) := by`. Use `congr 1`. Simplify using `only [act]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[hu0 _ (mul_val_mem hx y)]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerComm_of (hWN : WaveN) (hWA : WaveA) : KerComm := by
   intro hWE hWS hGC hGF hIS n _ _ μ _ E w g T k hg hk W₁ W₂ hW A hA hQ f hf hfN x hx

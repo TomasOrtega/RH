@@ -4,9 +4,9 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C Polynomial Topology
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R A`. Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basis fun _ : ι => b), Matrix.trace, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.trace_eq_matrix_trace b, Matrix.trace]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Algebra.leftMulMatrix_eq_repr_mul, Pi.basis_repr, Pi.basis_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem algebra_trace_pi_eq_sum_trace {R A ι : Type*} [CommRing R] [CommRing A] [Algebra R A] [Fintype ι]
     [Module.Free R A] [Module.Finite R A] (x : ι → A) :
@@ -20,7 +20,7 @@ private theorem algebra_trace_pi_eq_sum_trace {R A ι : Type*} [CommRing R] [Com
   simp [Algebra.leftMulMatrix_eq_repr_mul, Pi.basis_repr, Pi.basis_apply]
 
 /- English proof (translation)
-Introduce `K _ _ x`. Rewrite using `[Algebra.trace_prod_apply, algebra_trace_pi_eq_sum_trace, algebra_trace_pi_eq_sum_trace]`. Simplify using `[mixedTraceL, Algebra.trace_complex_apply, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.trace_mixedSpace_eq_mixedTraceL_mul :
     ∀ (K : Type) [Field K] [NumberField K] (x : NumberField.mixedEmbedding.mixedSpace K), Algebra.trace ℝ (NumberField.mixedEmbedding.mixedSpace K) x = mixedTraceL K (x * ((fun _ => (1 : ℝ)), (fun _ => (2 : ℂ)))) := by

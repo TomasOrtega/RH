@@ -20,21 +20,21 @@ Both sides reduce to the same expression.
 theorem sub_apply (A : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) : sub A a b = A (Fin.rev a) (Fin.rev b) := rfl
 
 /- English proof (translation)
-Simplify using `only [sub]`. Conclude with `(Matrix.submatrix_mul_equiv _ _ _ _ _).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_mul (A B : Matrix (Fin n) (Fin n) ℂ) : sub (A * B) = sub A * sub B := by
   simp only [sub]
   exact (Matrix.submatrix_mul_equiv _ _ _ _ _).symm
 
 /- English proof (translation)
-Simplify using `only [sub]`. Conclude with `Matrix.submatrix_one_equiv _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_one : sub (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   simp only [sub]
   exact Matrix.submatrix_one_equiv _
 
 /- English proof (translation)
-Simplify using `[sub, Matrix.conjTranspose_submatrix]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sub_H (A : Matrix (Fin n) (Fin n) ℂ) : (sub A)ᴴ = sub Aᴴ := by
   simp [sub, Matrix.conjTranspose_submatrix]
@@ -57,9 +57,9 @@ theorem sub_zero : sub (0 : Matrix (Fin n) (Fin n) ℂ) = 0 := rfl
 def Pr (n : ℕ) : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun i j => if i = Fin.rev j then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Simplify using `[Pr]`. Introduce `k _ hk`. Simplify using `only [Pr, Matrix.of_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (fun h => hk (by rw [h, Fin.rev_rev]))]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem Pr_mul (A : Matrix (Fin n) (Fin n) ℂ) : Pr n * A = A.submatrix Fin.rev id := by
   ext i j
@@ -72,9 +72,9 @@ theorem Pr_mul (A : Matrix (Fin n) (Fin n) ℂ) : Pr n * A = A.submatrix Fin.rev
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev j)]`. Simplify using `[Pr]`. Introduce `k _ hk`. Simplify using `only [Pr, Matrix.of_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hk]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem mul_Pr (A : Matrix (Fin n) (Fin n) ℂ) : A * Pr n = A.submatrix id Fin.rev := by
   ext i j
@@ -87,7 +87,7 @@ theorem mul_Pr (A : Matrix (Fin n) (Fin n) ℂ) : A * Pr n = A.submatrix id Fin.
   · simp
 
 /- English proof (translation)
-Rewrite using `[Pr_mul, mul_Pr]`. Use extensionality with `i j`. Simplify using `[sub]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Pr_conj (A : Matrix (Fin n) (Fin n) ℂ) : Pr n * A * Pr n = sub A := by
   rw [Pr_mul, mul_Pr]
@@ -95,7 +95,7 @@ theorem Pr_conj (A : Matrix (Fin n) (Fin n) ℂ) : Pr n * A * Pr n = sub A := by
   simp [sub]
 
 /- English proof (translation)
-Rewrite using `[Pr_mul]`. Use extensionality with `i j`. Simplify using `[Pr, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Pr_Pr : Pr n * Pr n = 1 := by
   rw [Pr_mul]
@@ -103,13 +103,13 @@ theorem Pr_Pr : Pr n * Pr n = 1 := by
   simp [Pr, Matrix.one_apply]
 
 /- English proof (translation)
-Conclude with `Matrix.inv_eq_left_inv Pr_Pr`.
+A detailed English derivation is pending.
 -/
 theorem Pr_inv : (Pr n)⁻¹ = Pr n := by
   exact Matrix.inv_eq_left_inv Pr_Pr
 
 /- English proof (translation)
-Establish `hu : IsUnit (Pr n)` using `⟨⟨Pr n, Pr n, Pr_Pr, Pr_Pr⟩, rfl⟩`. Rewrite using `[← Pr_conj, ← Pr_conj (NormedSpace.exp A)]`. Establish `h1 : Pr n * A * Pr n = Pr n * A * (Pr n)⁻¹` using `by rw [Pr_inv]`. Rewrite using `[h1, Matrix.exp_conj _ _ hu, Pr_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_sub (A : Matrix (Fin n) (Fin n) ℂ) : NormedSpace.exp (sub A) = sub (NormedSpace.exp A) := by
   have hu : IsUnit (Pr n) := ⟨⟨Pr n, Pr n, Pr_Pr, Pr_Pr⟩, rfl⟩
@@ -118,14 +118,14 @@ theorem exp_sub (A : Matrix (Fin n) (Fin n) ℂ) : NormedSpace.exp (sub A) = sub
   rw [h1, Matrix.exp_conj _ _ hu, Pr_inv]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[sub, Jm, Matrix.diagonal_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Jm_rev (ε : Fin n → Bool) : sub (Jm (ε ∘ Fin.rev)) = Jm ε := by
   ext a b
   simp [sub, Jm, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Use `show (sub g)ᴴ * Jm ε * sub g = Jm ε`. Establish `hg' : gᴴ * Jm (ε ∘ Fin.rev) * g = Jm (ε ∘ Fin.rev)` using `hg`. Rewrite using `[← Jm_rev ε, sub_H, ← sub_mul, ← sub_mul, hg']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inUJ_sub {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset (ε ∘ Fin.rev)) :
     sub g ∈ UJset ε := by
@@ -134,7 +134,7 @@ theorem inUJ_sub {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g 
   rw [← Jm_rev ε, sub_H, ← sub_mul, ← sub_mul, hg']
 
 /- English proof (translation)
-Unfold `inG at *`. Rewrite using `[← Jm_rev ε, sub_H, ← sub_mul, ← sub_mul, ← sub_add, hX, sub_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inG_sub {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG (ε ∘ Fin.rev) X) :
     inG ε (sub X) := by
@@ -142,9 +142,9 @@ theorem inG_sub {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG
   rw [← Jm_rev ε, sub_H, ← sub_mul, ← sub_mul, ← sub_add, hX, sub_zero]
 
 /- English proof (translation)
-Simplify using `only [Kset, Set.mem_setOf_eq] at hk ⊢`. Take `⟨hu, hc⟩` from `hk`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[Matrix.mem_unitaryGroup_iff]`. Rewrite `hu`, the goal using `[Matrix.star_eq_conjTranspose]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[sub_H, ← sub_mul, hu, sub_one]`. Rewrite using `[← Jm_rev ε, ← sub_mul, ← sub_mul, hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem K_sub {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset (ε ∘ Fin.rev)) :
     sub k ∈ Kset ε := by
@@ -157,7 +157,7 @@ theorem K_sub {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈
   · rw [← Jm_rev ε, ← sub_mul, ← sub_mul, hc]
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hX b) a`. Rewrite `h` using `[Matrix.add_apply, Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply]`. Apply the tactic sequence `cases hεa : ε a <;> cases hεb : ε b <;> simp [hεa, hεb, Complex.star_def] at h ⊢ <;> first | linear_combination h | linear_combination -h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inG_entry {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (a b : Fin n) :
     X b a = (if ε a = ε b then -1 else 1) * conj (X a b) := by
@@ -224,7 +224,7 @@ Both sides reduce to the same expression.
 theorem toD_smul (c : ℂ) (x : cjSub D) : toD (c • x) = conj c • toD x := rfl
 
 /- English proof (translation)
-Establish `h` using `toD_smul (conj c) (ofD u)`. Rewrite `h` using `[toD_ofD, Complex.conj_conj]`. Rewrite using `[← h, ofD_toD]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofD_smul (c : ℂ) (u : D) : ofD (c • u) = conj c • ofD u := by
   have h := toD_smul (conj c) (ofD u)
@@ -232,7 +232,7 @@ theorem ofD_smul (c : ℂ) (u : D) : ofD (c • u) = conj c • ofD u := by
   rw [← h, ofD_toD]
 
 /- English proof (translation)
-Introduce `u v h`. Use `congrArg toD h` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ofD_injective : Function.Injective (ofD : D → cjSub D) := by
   intro u v h
@@ -245,7 +245,7 @@ def ofDh : D →+ cjSub D where
   map_add' := ofD_add
 
 /- English proof (translation)
-Conclude with `map_sum ofDh f s`.
+A detailed English derivation is pending.
 -/
 theorem ofD_sum {ι : Type*} (s : Finset ι) (f : ι → D) : ofD (∑ i ∈ s, f i) = ∑ i ∈ s, ofD (f i) := by
   exact map_sum ofDh f s
@@ -266,21 +266,21 @@ def cjEnd (A : Module.End ℂ D) : Module.End ℂ (cjSub D) where
 def sg (ε : Fin n → Bool) (a : Fin n) : ℂ := if ε (Fin.rev a) then 1 else -1
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_sq (ε : Fin n → Bool) (a : Fin n) : sg ε a * sg ε a = 1 := by
   unfold sg
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_sg (ε : Fin n → Bool) (a : Fin n) : conj (sg ε a) = sg ε a := by
   unfold sg
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_ne (ε : Fin n → Bool) (a : Fin n) : sg ε a ≠ 0 := by
   unfold sg
@@ -296,21 +296,21 @@ theorem Edd_ofD (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ D)
     Edd ε E a b (ofD u) = ofD ((-(sg ε a * sg ε b)) • E (Fin.rev b) (Fin.rev a) u) := rfl
 
 /- English proof (translation)
-Introduce `a b c d`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨u, rfl⟩ : ∃ u, x = ofD u` from `⟨toD x, (ofD_toD x).symm⟩`. Establish `key` using `congrArg (fun T : Module.End ℂ D => T u) (hE (Fin.rev b) (Fin.rev a) (Fin.rev d) (Fin.rev c))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Fin.rev_inj] at key`. Establish `lhs : (Edd ε E a b * Edd ε E c d - Edd ε E c d * Edd ε E a b) (ofD u) = ofD ((sg ε a * sg ε b * (sg ε c * sg ε d)) • (E (Fin.rev b) (Fin.rev a) (E (Fin.rev d) (Fin.rev c) u) - E (Fin.rev d) (Fin.rev c) (E (Fin.rev b) (Fin.rev a) u)))`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Edd_ofD, LinearMap.map_smul]`. Rewrite using `[← ofD_sub]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `module`. Rewrite using `[lhs, key, LinearMap.sub_apply]`. Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a`. Substitute `c` using the available equality. Substitute `d` using the available equality.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [eq_self_iff_true, if_true, Edd_ofD]`. Rewrite using `[← ofD_sub]`. Use `congr 1`. Unfold `sg`. Apply the tactic sequence `split_ifs <;> module`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `c` using the available equality. Establish `hda' : ¬ Fin.rev a = Fin.rev d` using `fun h => hda (Fin.rev_injective h).symm`. Simplify using `only [eq_self_iff_true, if_true, if_neg hda, if_neg (Ne.symm hda), if_neg hda', LinearMap.zero_apply, Edd_ofD, sub_zero, zero_sub]`. Use `first`. Consider the case `(congr 1; unfold sg; split_ifs <;> module)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [← ofD_neg]; congr 1; unfold sg; split_ifs <;> module)`. Consider the case `(apply ofD_injective; unfold sg; split_ifs <;> module)`. Consider the case `(simp only [← ofD_neg, ← ofD_sub, ← ofD_zero]; congr 1; unfold sg; split_ifs <;> module)`. Substitute `d` using the available equality. Establish `hbc' : ¬ Fin.rev c = Fin.rev b` using `fun h => hbc (Fin.rev_injective h).symm`.
+Treat this case separately. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [eq_self_iff_true, if_true, if_neg hbc, if_neg (Ne.symm hbc), if_neg hbc', LinearMap.zero_apply, Edd_ofD, sub_zero, zero_sub]`. Simplify using `only [sub_zero, zero_sub, LinearMap.zero_apply, ← ofD_neg, ← ofD_sub]`. Use `congr 1`. Unfold `sg`. Apply the tactic sequence `split_ifs <;> module`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hda' : ¬ Fin.rev a = Fin.rev d` using `fun h => hda (Fin.rev_injective h).symm`. Establish `hbc' : ¬ Fin.rev c = Fin.rev b` using `fun h => hbc (Fin.rev_injective h).symm`. Simplify using `only [if_neg hbc, if_neg (Ne.symm hbc), if_neg hda, if_neg (Ne.symm hda), if_neg hda', if_neg hbc', LinearMap.zero_apply, sub_zero, smul_zero]`. Simplify using `[ofD_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glRep_Edd (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ D} (hE : IsGlRep E) :
     IsGlRep (Edd ε E) := by

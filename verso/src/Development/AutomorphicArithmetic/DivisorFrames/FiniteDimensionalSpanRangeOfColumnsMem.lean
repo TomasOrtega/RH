@@ -9,9 +9,9 @@ open GlobalTheory.Doubling (absE ideleAtInf)
 open GlobalTheory.UAut (IsMaxCpt)
 
 /- English proof (translation)
-Introduce `A B Φ S hS hcol`. Set `F : Module.Dual ℂ S →ₗ[ℂ] (B → ℂ)` to `{ toFun := fun f b => f ⟨fun a => Φ a b, hcol b⟩ map_add' := fun f g => rfl map_smul' := fun c f => rfl }`. Establish `hle : Submodule.span ℂ (Set.range Φ) ≤ LinearMap.range F`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨(LinearMap.proj (R := ℂ) (φ := fun _ : A => ℂ) a).comp S.subtype, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finiteDimensional_span_range_of_columns_mem :
     ∀ (A B : Type) (Φ : A → B → ℂ) (S : Submodule ℂ (A → ℂ)), FiniteDimensional ℂ S → (∀ b, (fun a => Φ a b) ∈ S) →

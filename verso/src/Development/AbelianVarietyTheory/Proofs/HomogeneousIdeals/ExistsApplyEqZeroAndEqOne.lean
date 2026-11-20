@@ -9,17 +9,15 @@ open Topology Filter Set Polynomial
 variable {A B : Type*} [CommRing A] [Algebra ℂ A] [CommRing B] [Algebra ℂ B]
 
 /- English proof (translation)
-Use `letI : Algebra A B := φ.toRingHom.toAlgebra`. Use `haveI : Algebra.IsIntegral A B := ⟨hφ⟩`. Establish `hsurj : Function.Surjective p` using `fun c => ⟨algebraMap K A c, by simp⟩`. Use `haveI : (RingHom.ker p).IsMaximal := RingHom.ker_isMaximal_of_surjective p hsurj`. Take `⟨Q, hQ, hQp⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := B) (RingHom.ker p) hp`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : ∀ a, Ideal.Quotient.mk Q (φ a) = algebraMap K (B ⧸ Q) (p a)`. Introduce `a`. Establish `: a - algebraMap K A (p a) ∈ Q.comap (algebraMap A B)`. Rewrite using `[hQp]`. Simplify using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : φ (a - algebraMap K A (p a)) ∈ Q` using `this`. Rewrite `h2` using `[map_sub, AlgHom.commutes]`. Conclude with `Ideal.Quotient.eq.2 h2`. Use `haveI : Algebra.IsIntegral K (B ⧸ Q) := ⟨fun x => by`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨h, hm, hb⟩` from `hφ b`. Use `⟨h.map p.toRingHom, hm.map _, ?_⟩` and prove the remaining obligations. Establish `: (algebraMap K (B ⧸ Q)).comp p.toRingHom = (Ideal.Quotient.mk Q).comp φ.toRingHom`. Use extensionality with `a`. Conclude with `(hcomp a).symm`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[eval₂_map, this, ← hom_eval₂, hb, map_zero]⟩`. Set `e : K ≃ₐ[K] (B ⧸ Q)` to `AlgEquiv.ofBijective (Algebra.ofId K (B ⧸ Q)) IsAlgClosed.algebraMap_bijective_of_isIntegral`. Use `⟨e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ K Q), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `e.symm (Ideal.Quotient.mk Q (φ a)) = p a`.
-
-Rewrite using `[hcomp, AlgEquiv.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_comap_eq_of_isIntegral {K A B : Type*} [Field K] [IsAlgClosed K] [CommRing A]
     [Algebra K A] [CommRing B] [Algebra K B] (φ : A →ₐ[K] B) (hφ : φ.toRingHom.IsIntegral)
@@ -51,7 +49,7 @@ theorem exists_comap_eq_of_isIntegral {K A B : Type*} [Field K] [IsAlgClosed K] 
   rw [hcomp, AlgEquiv.commutes]; rfl
 
 /- English proof (translation)
-Introduce `p` and use `exists_comap_eq_of_isIntegral φ hφ p fun a ha => by rw [(injective_iff_map_eq_zero φ).1 hinj a ha, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem surjective_comap_of_isIntegral {K A B : Type*} [Field K] [IsAlgClosed K] [CommRing A]
     [Algebra K A] [CommRing B] [Algebra K B] (φ : A →ₐ[K] B) (hφ : φ.toRingHom.IsIntegral)
@@ -61,9 +59,9 @@ theorem surjective_comap_of_isIntegral {K A B : Type*} [Field K] [IsAlgClosed K]
     rw [(injective_iff_map_eq_zero φ).1 hinj a ha, map_zero]
 
 /- English proof (translation)
-Use `letI : Algebra A B := φ.toRingHom.toAlgebra`. Use `letI : Algebra A K := p.toRingHom.toAlgebra`. Use `haveI : Module.Finite A B := hφ`. Set `F : ((comap φ : (B →ₐ[R] K) → (A →ₐ[R] K)) ⁻¹' {p}) → (B →ₐ[A] K)` to `fun q => { q.1.toRingHom with commutes' := fun a => DFunLike.congr_fun q.2 a }`. Use `Set.finite_coe_iff.1 (Finite.of_injective F fun q q' h => ?_)` and prove the remaining obligations.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Conclude with `DFunLike.congr_fun h b`.
+A detailed English derivation is pending.
 -/
 theorem finite_fiber_comap {R A B K : Type*} [CommRing R] [CommRing A] [Algebra R A] [CommRing B]
     [Algebra R B] [Field K] [Algebra R K] (φ : A →ₐ[R] B) (hφ : φ.Finite) (p : A →ₐ[R] K) :
@@ -78,9 +76,9 @@ theorem finite_fiber_comap {R A B K : Type*} [CommRing R] [CommRing A] [Algebra 
   exact DFunLike.congr_fun h b
 
 /- English proof (translation)
-Establish `h1` using `ht.norm_lt_cauchyBound hm.ne_zero`. Establish `h2 : h.cauchyBound ≤ ∑ i ∈ Finset.range h.natDegree, ‖h.coeff i‖₊ + 1`. Simplify using `only [cauchyBound, hm.leadingCoeff, nnnorm_one, div_one, add_le_add_iff_right]`. Conclude with `Finset.sup_le fun i hi => Finset.single_le_sum (f := fun i => ‖h.coeff i‖₊) (fun _ _ => zero_le) hi`. Establish `h3` using `h1.le.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `NNReal.coe_le_coe.2 h3` using `[NNReal.coe_sum]`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_isRoot_monic {h : ℂ[X]} (hm : h.Monic) {t : ℂ} (ht : h.IsRoot t) :
     ‖t‖ ≤ ∑ i ∈ Finset.range h.natDegree, ‖h.coeff i‖ + 1 := by
@@ -93,17 +91,15 @@ theorem norm_le_of_isRoot_monic {h : ℂ[X]} (hm : h.Monic) {t : ℂ} (ht : h.Is
   simpa [NNReal.coe_sum] using NNReal.coe_le_coe.2 h3
 
 /- English proof (translation)
-Use `isProperMap_iff_ultrafilter_of_t2.2 ⟨continuous_comap φ, fun 𝒰 p hp => ?_⟩` and prove the remaining obligations. Establish `hlim : ∀ b : B, ∃ t : ℂ, Tendsto (fun q : B →ₐ[ℂ] ℂ => q b) 𝒰 (𝓝 t)`. Introduce `b`. Take `⟨h, hm, hb⟩` from `hφ b`. Set `M : (A →ₐ[ℂ] ℂ) → ℝ` to `fun r => ∑ i ∈ Finset.range h.natDegree, ‖r (h.coeff i)‖ + 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hM : Continuous M` using `(continuous_finset_sum _ fun i _ => (continuous_eval _).norm).add continuous_const`. Establish `hbd : ∀ q : B →ₐ[ℂ] ℂ, ‖q b‖ ≤ M (comap φ q)`. Introduce `q`. Establish `hr : (h.map (comap φ q).toRingHom).IsRoot (q b)`. Establish `: (comap φ q).toRingHom = q.toRingHom.comp φ.toRingHom` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsRoot, eval_map, this]`. Express the relevant statement in the definitionally equal form `eval₂ _ (q.toRingHom b) h = 0`. Rewrite using `[← hom_eval₂, hb, map_zero]`. Use `norm_le_of_isRoot_monic (hm.map _) hr` as an intermediate fact. Simplify `this` using `[hm.natDegree_map, M]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hev : ∀ᶠ q in (𝒰 : Filter (B →ₐ[ℂ] ℂ)), q b ∈ Metric.closedBall (0 : ℂ) (M p + 1)` using `by filter_upwards [((hM.tendsto p).comp hp).eventually (gt_mem_nhds (lt_add_one (M p)))] with q hq`. Conclude with `mem_closedBall_zero_iff.2 ((hbd q).trans hq.le)`. Take `⟨t, -, ht⟩` from `(isCompact_closedBall (0 : ℂ) (M p + 1)).ultrafilter_le_nhds (𝒰.map fun q : B →ₐ[ℂ] ℂ => q b) (le_principal_iff.2 hev)`. Conclude with `⟨t, ht⟩`. Use `choose u hu using hlim`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu' : Tendsto (fun q : B →ₐ[ℂ] ℂ => (q : B → ℂ)) 𝒰 (𝓝 u)` using `tendsto_pi_nhds.2 hu`. Take `⟨q, hq⟩` from `(isClosedEmbedding_coe (R := ℂ) (A := B) (C := ℂ)).isClosed_range.mem_of_tendsto hu' (Eventually.of_forall fun q => ⟨q, rfl⟩)`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[← tendsto_id', tendsto_nhds_iff]`. Introduce `b`.
-
-Rewrite using `[show q b = u b from congrFun hq b]`. Conclude with `hu b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProperMap_comap (φ : A →ₐ[ℂ] B) (hφ : φ.toRingHom.IsIntegral) :
     IsProperMap (comap φ : (B →ₐ[ℂ] ℂ) → (A →ₐ[ℂ] ℂ)) := by
@@ -141,9 +137,9 @@ theorem isProperMap_comap (φ : A →ₐ[ℂ] B) (hφ : φ.toRingHom.IsIntegral)
   exact hu b
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.RootNormBound.exists_root_norm_lt`. Consider the case `exact _root_.GlobalTheory.RootNormBound.exists_root_norm_lt`. Consider the case `(apply _root_.GlobalTheory.RootNormBound.exists_root_norm_lt <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RootNormBound.exists_root_norm_lt <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.RootNormBound.exists_root_norm_lt <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RootNormBound.exists_root_norm_lt ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_isRoot_norm_lt {h : ℂ[X]} (hm : h.Monic) {ε : ℝ} (hε : 0 ≤ ε)
     (h0 : ‖h.coeff 0‖ < ε ^ h.natDegree) : ∃ t, h.IsRoot t ∧ ‖t‖ < ε := by
@@ -156,11 +152,9 @@ theorem exists_isRoot_norm_lt {h : ℂ[X]} (hm : h.Monic) {ε : ℝ} (hε : 0 �
   | (intros; exact _root_.GlobalTheory.RootNormBound.exists_root_norm_lt ..)
 
 /- English proof (translation)
-Establish `: ∀ q ∈ S, ∃ e : A, p e = 1 ∧ q e = 0`. Introduce `q hq`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, p b ≠ q b := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hp (by rwa [AlgHom.ext h])`. Use `⟨(p b - q b)⁻¹ • (b - algebraMap K A (q b)), ?_, by simp⟩` and prove the remaining obligations. Simplify using `[inv_mul_cancel₀ (sub_ne_zero.2 hb)]`. Use `choose! e he using this`. Use `⟨1 - ∏ q ∈ hS.toFinset, e q, ?_, fun q hq => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_sub, map_one, map_prod, Finset.prod_eq_one fun q hq => (he q (by simpa using hq)).1, sub_self]`. Rewrite using `[map_sub, map_one, map_prod, Finset.prod_eq_zero (i := q) (by simpa using hq) (he q hq).2, sub_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_apply_eq_zero_and_eq_one {K : Type*} [Field K] [Algebra K A] (p : A →ₐ[K] K)
     {S : Set (A →ₐ[K] K)} (hS : S.Finite) (hp : p ∉ S) :
@@ -182,23 +176,21 @@ theorem exists_apply_eq_zero_and_eq_one {K : Type*} [Field K] [Algebra K A] (p :
       sub_zero]
 
 /- English proof (translation)
-Establish `hint : φ.toRingHom.IsIntegral` using `RingHom.Finite.to_isIntegral hφ`. Use `letI : Algebra A B := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ A B := IsScalarTower.of_algebraMap_eq fun x => (φ.commutes x).symm`. Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective A B).2 hinj`. Introduce `U hU`.
+Establish an intermediate fact. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `_ ⟨p, hpU, rfl⟩`. Take `⟨a, hpa, ha⟩` from `exists_apply_eq_zero_and_eq_one p ((finite_fiber_comap φ hφ (comap φ p)).diff (t := U)) (fun h => h.2 hpU)`. Establish `hai : IsIntegral A a` using `hint a`. Establish `hm` using `minpoly.monic hai`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsClosed (comap φ '' (Uᶜ ∩ {q : B →ₐ[ℂ] ℂ | ‖q a‖ ≤ 1 / 2}))` using `(isProperMap_comap φ hint).isClosedMap _ (hU.isClosed_compl.inter (isClosed_le (continuous_eval a).norm continuous_const))`. Establish `hW : IsOpen {r : A →ₐ[ℂ] ℂ | ‖r ((minpoly A a).coeff 0)‖ < (1 / 2) ^ (minpoly A a).natDegree}` using `isOpen_lt (continuous_eval _).norm continuous_const`. Use `mem_of_superset ((hK.isOpen_compl.inter hW).mem_nhds ⟨?_, ?_⟩) ?_` and prove the remaining obligations. Introduce and unpack `⟨q, ⟨hqU, hqa⟩, hq⟩`. Rewrite `hqa` using `[mem_setOf_eq, ha q ⟨hq, hqU⟩]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at hqa`. Establish `h1 : p (φ ((minpoly A a).coeff 0)) = 0`. Establish `h2 : p.toRingHom (eval₂ φ.toRingHom a (minpoly A a)) = 0`. Rewrite using `[show eval₂ φ.toRingHom a (minpoly A a) = 0 from minpoly.aeval A a, map_zero]`. Rewrite `h2` using `[hom_eval₂, show p.toRingHom a = 0 from hpa, eval₂_at_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Conclude with `h2`. Rewrite using `[mem_setOf_eq, comap_apply, h1, norm_zero]`. Check the signs of the components of the expression. Introduce and unpack `r ⟨hrK, hrW⟩`. Take `⟨t, ht, htn⟩` from `exists_isRoot_norm_lt (h := (minpoly A a).map r.toRingHom) (hm.map _) (ε := 1 / 2) (by norm_num) (by simpa [hm.natDegree_map] using hrW)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `χ : A[X] →ₐ[ℂ] B` to `(aeval a).restrictScalars ℂ`. Establish `hχ : χ.toRingHom.IsIntegral`. Use `RingHom.IsIntegral.tower_top (C : A →+* A[X]) χ.toRingHom ?_` and prove the remaining obligations. Use `hint` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `[χ, RingHom.algebraMap_toAlgebra]`. Take `⟨q, hq⟩` from `exists_comap_eq_of_isIntegral χ hχ (aevalTower r t) fun f hf => by`. Take `⟨k, rfl⟩` from `minpoly.isIntegrallyClosed_dvd hai (p := f) hf`. Establish `: aevalTower r t (minpoly A a) = 0`. Rewrite `ht` using `[IsRoot, eval_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `ht`. Rewrite using `[map_mul, this, zero_mul]`. Establish `hqr : comap φ q = r`. Use extensionality with `x`. Simplify `DFunLike.congr_fun hq (C x)` using `[χ, RingHom.algebraMap_toAlgebra]`.
-
-Establish `hqa : q a = t` using `by simpa [χ] using DFunLike.congr_fun hq X`. Use `⟨q, ?_, hqr⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hqU`. Conclude with `hrK ⟨q, ⟨hqU, by rw [mem_setOf_eq, hqa]; exact htn.le⟩, hqr⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isOpenMap_comap [IsDomain A] [IsIntegrallyClosed A] [IsDomain B] (φ : A →ₐ[ℂ] B)
     (hφ : φ.Finite) (hinj : Function.Injective φ) :

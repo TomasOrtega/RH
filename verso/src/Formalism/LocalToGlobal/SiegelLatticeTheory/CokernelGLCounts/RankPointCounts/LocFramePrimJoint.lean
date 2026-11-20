@@ -10,7 +10,7 @@ open scoped TensorProduct Classical
 namespace ChkLocFramePrim
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (w : D.what₂.Word) (v : PlX X) :
     PI.LocFramePrim.IsPrim v (LamX X)
@@ -18,7 +18,7 @@ example {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (w : D.what₂.Word)
     IsPrim v (LamX X) (locF v (ratTup (Fv X.B.I.F v) (F0 (frameOf X w)))) := Iff.rfl
 
 /- English proof (translation)
-Introduce `v` and use `hS X.B.I.F X.B.I.E v X.B.I.n D.R.rS X.B.I.L Lb (frameOf X w).e (frameOf X w).f (frameOf X w).z hFG hsplit hind hdir hz hzp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem primX_of (hS : PI.LocFramePrim.Statement) {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (w : D.what₂.Word)
     (Lb : Submodule (𝓞 X.B.I.E) (Fin X.B.I.n → X.B.I.E))

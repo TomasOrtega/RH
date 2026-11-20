@@ -5,46 +5,46 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLoga
 namespace Formalism.L2.Th1.D
 
 /- English proof (translation)
-The claim follows from `NRDense_of sqrtKur`.
+A detailed English derivation is pending.
 -/
 theorem nrDense : NRDense := NRDense_of sqrtKur
 
 /- English proof (translation)
-The claim follows from `NRCM_of sqrtKur denseOK homothetic_lattice_integral_s2 nrDense`.
+A detailed English derivation is pending.
 -/
 theorem nrcmOfCM4 : Formalism.L2.Th1.CM.CM4 → NRCM := NRCM_of sqrtKur denseOK homothetic_lattice_integral_s2 nrDense
 
 /- English proof (translation)
-The claim follows from `ThmAEntryFinal_of' nrcmOfCM4`.
+A detailed English derivation is pending.
 -/
 theorem thmAEntryFinal : ThmAEntryFinal := ThmAEntryFinal_of' nrcmOfCM4
 /- English proof (translation)
-The claim follows from `ThmAGaussFinal_of' nrcmOfCM4`.
+A detailed English derivation is pending.
 -/
 theorem thmAGaussFinal : ThmAGaussFinal := ThmAGaussFinal_of' nrcmOfCM4
 /- English proof (translation)
-The claim follows from `OneLetterGaussFinal_of' nrcmOfCM4`.
+A detailed English derivation is pending.
 -/
 theorem oneLetterGaussFinal : OneLetterGaussFinal := OneLetterGaussFinal_of' nrcmOfCM4
 /- English proof (translation)
-The claim follows from `KernelFinal_of' nrcmOfCM4`.
+A detailed English derivation is pending.
 -/
 theorem kernelFinal : KernelFinal := KernelFinal_of' nrcmOfCM4
 
 /- English proof (translation)
-The claim follows from `ThmAEntryEvery_of nrcmOfCM4`.
+A detailed English derivation is pending.
 -/
 theorem thmAEntryEvery : ThmAEntryEvery := ThmAEntryEvery_of nrcmOfCM4
 /- English proof (translation)
-The claim follows from `ThmAGaussEvery_of nrcmOfCM4`.
+A detailed English derivation is pending.
 -/
 theorem thmAGaussEvery : ThmAGaussEvery := ThmAGaussEvery_of nrcmOfCM4
 /- English proof (translation)
-The claim follows from `OneLetterGaussEvery_of nrcmOfCM4`.
+A detailed English derivation is pending.
 -/
 theorem oneLetterGaussEvery : OneLetterGaussEvery := OneLetterGaussEvery_of nrcmOfCM4
 /- English proof (translation)
-The claim follows from `KernelEvery_of nrcmOfCM4`.
+A detailed English derivation is pending.
 -/
 theorem kernelEvery : KernelEvery := KernelEvery_of nrcmOfCM4
 

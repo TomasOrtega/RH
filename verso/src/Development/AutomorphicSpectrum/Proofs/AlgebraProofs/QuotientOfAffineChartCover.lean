@@ -17,9 +17,9 @@ open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hyp
 namespace GlobalTheory.CompanionTheory.FreeQuotGlue
 
 /- English proof (translation)
-Set `f : Y₁ ⟶ Y₂` to `EffectiveEpi.desc q₁ q₂ fun {Z} g₁ g₂ e ↦ (h Z g₁ g₂).1 e`. Set `g : Y₂ ⟶ Y₁` to `EffectiveEpi.desc q₂ q₁ fun {Z} g₁ g₂ e ↦ (h Z g₁ g₂).2 e`. Establish `hf : q₁ ≫ f = q₂` using `EffectiveEpi.fac _ _ _`. Establish `hg : q₂ ≫ g = q₁` using `EffectiveEpi.fac _ _ _`. Use `⟨⟨f, g, ?_, ?_⟩, hf⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← cancel_epi q₁, reassoc_of% hf, hg, Category.comp_id]`. Rewrite using `[← cancel_epi q₂, reassoc_of% hg, hf, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_iso_of_effectiveEpi {T Y₁ Y₂ : Scheme.{0}} (q₁ : T ⟶ Y₁) (q₂ : T ⟶ Y₂)
     [EffectiveEpi q₁] [EffectiveEpi q₂]
@@ -34,9 +34,9 @@ theorem exists_iso_of_effectiveEpi {T Y₁ Y₂ : Scheme.{0}} (q₁ : T ⟶ Y₁
   · rw [← cancel_epi q₂, reassoc_of% hg, hf, Category.comp_id]
 
 /- English proof (translation)
-Take `⟨D, rfl⟩` from `GlobalTheory.T.invariant_open_chart_preimage h V' hle h'.stable`. Take `⟨hle₂, q'', hc, hq⟩` from `GlobalTheory.T.chart_restrict_preimage_open h D`. Use `h'.effectiveEpi` as an intermediate fact. Use `hc.effectiveEpi` as an intermediate fact. Take `⟨e, he⟩` from `exists_iso_of_effectiveEpi q' q'' fun Z g₁ g₂ ↦ by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h'.comp_eq_iff, hc.comp_eq_iff]`. Use `⟨e.hom ≫ D.ι, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[reassoc_of% he, hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsChart.exists_isOpenImmersion {P X Y Y' : Scheme.{0}} {a b : P ⟶ X} {V V' : X.Opens}
     {q : V.toScheme ⟶ Y} {q' : V'.toScheme ⟶ Y'} (h : IsChart a b V q) (h' : IsChart a b V' q')
@@ -51,13 +51,13 @@ theorem IsChart.exists_isOpenImmersion {P X Y Y' : Scheme.{0}} {a b : P ⟶ X} {
   rw [reassoc_of% he, hq]
 
 /- English proof (translation)
-Take `⟨Y, q, hY, hq⟩` from `(hasAffineChart_iff a b U).1 hU`. Take `⟨D, hD⟩` from `GlobalTheory.T.invariant_open_chart_preimage hq (U ⊓ V) inf_le_left (by`. Establish `h1` using `hq.stable`. Establish `h2` using `hV.1`. Use extensionality with `p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1'` using `SetLike.ext_iff.1 h1 p`. Establish `h2'` using `SetLike.ext_iff.1 h2 p`. Conclude with `and_congr h1' h2')`. Establish `hx : x ∈ U.ι ''ᵁ (q ⁻¹ᵁ D)` using `hD ▸ ⟨hxU, hxV⟩`. Take `⟨u, hu, rfl⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D', hD', hm, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := Y) (x := q u) (U := D) hu`. Take `⟨hW, q', hc, hq'⟩` from `GlobalTheory.T.chart_restrict_preimage_open hq D'`. Establish `hle' : U.ι ''ᵁ (q ⁻¹ᵁ D') ≤ U ⊓ V`. Rewrite using `[← hD]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨v, hle hv, rfl⟩`. Establish `: IsAffine D'.toScheme` using `hD'`. Conclude with `⟨_, (hasAffineChart_iff a b _).2 ⟨_, q', this, hc⟩, ⟨u, hm, rfl⟩, hW, hle'.trans inf_le_right⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common {P X : Scheme.{0}} {a b : P ⟶ X} {U V : X.Opens}
     (hU : HasAffineChart a b U) (hV : HasAffineChart a b V) (x : X) (hxU : x ∈ U) (hxV : x ∈ V) :
@@ -82,11 +82,11 @@ theorem exists_common {P X : Scheme.{0}} {a b : P ⟶ X} {U V : X.Opens}
   exact ⟨_, (hasAffineChart_iff a b _).2 ⟨_, q', this, hc⟩, ⟨u, hm, rfl⟩, hW, hle'.trans inf_le_right⟩
 
 /- English proof (translation)
-Use `IsZariskiLocalAtTarget.of_iSup_eq_top (fun j ↦ (em j).opensRange) ?_ fun j ↦ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨j, z, rfl⟩` from `hsurj y`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, z, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Q.arrow_mk_iso_iff (morphismRestrictOpensRange π (em j))).mpr ?_` and prove the remaining obligations. Establish `H : IsPullback (q j) (V j).ι (em j) π` using `IsOpenImmersion.isPullback _ _ _ _ (hcomm j) (by`. Rewrite using `[Scheme.Opens.opensRange_ι, hpre])`. Establish `e : H.flip.isoPullback.hom ≫ pullback.snd π (em j) = q j` using `H.flip.isoPullback_hom_snd`. Establish `h'` using `hq j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[← e]`. Conclude with `(Q.cancel_left_of_respectsIso _ _).1 h'`.
+A detailed English derivation is pending.
 -/
 theorem prop_of_charts (Q : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget Q]
     {X Y' : Scheme.{0}} (π : X ⟶ Y') {J : Type} (V : J → X.Opens)
@@ -113,17 +113,11 @@ end GlobalTheory.CompanionTheory.FreeQuotGlue
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `P X a b h`. Set `𝒰 : Set X.Opens` to `{V | HasAffineChart a b V}`. Establish `hU (U : 𝒰)` using `(hasAffineChart_iff a b U.1).1 U.2`. Use `choose Y q hY hq using hU`. Set `R : X → X → Prop` to `fun x y ↦ ∃ p : P, a p = x ∧ b p = y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hk (U V : 𝒰) (h : U.1 ≤ V.1)` using `(hq V).exists_isOpenImmersion (hq U) h`. Use `choose k hk hqk using hk`. Take `⟨Y', π, em, hem, hcomm, hpre, hsurj⟩` from `GlobalTheory.T.glue_quotient_charts_cover R 𝒰 (fun U hU V hV x hx hx' ↦ by`. Take `⟨W, h1, h2, h3, h4⟩` from `exists_common hU hV x hx hx'`. Conclude with `⟨W, h1, h2, h3, h4⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(fun x ↦ by`. Take `⟨V, h1, h2⟩` from `h x`. Conclude with `⟨⟨V, h2⟩, h1⟩)`. Use `Y q (fun U ↦ by have := (hq U).effectiveEpi; infer_instance)`. Use the proof step `(fun U ↦ by have := (hq U).surjective; exact Surjective.surj)`.
-
-Use the proof step `(fun U u v ↦ (hq U).apply_eq_iff u v)`. Use the proof step `(fun U x y ⟨p, h1, h2⟩ hx ↦ by`. Establish `: p ∈ a ⁻¹ᵁ U.1` using `by change a p ∈ U.1; rwa [h1]`. Rewrite `this` using `[(hq U).stable]`. Rewrite using `[← h2]`.
-
-Conclude with `this)`. Use `k hk hqk`. Use `⟨Y', π, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `prop_of_charts (@IsFinite.{0}) π _ Y q em hcomm hpre hsurj fun U ↦ (hq U).isFinite`. Conclude with `prop_of_charts @Flat.{0} π _ Y q em hcomm hpre hsurj fun U ↦ (hq U).flat`.
-
-Conclude with `prop_of_charts @LocallyOfFinitePresentation.{0} π _ Y q em hcomm hpre hsurj fun U ↦ (hq U).lfp`. Conclude with `prop_of_charts @Surjective.{0} π _ Y q em hcomm hpre hsurj fun U ↦ (hq U).surjective`. Conclude with `GlobalTheory.T.pullback_of_glued_charts a b π _ Y q em hq hcomm hpre hsurj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.FreeQuotGlue.exists_of_affineCharts : ∀ {P X : Scheme.{0}} (a b : P ⟶ X), (∀ x : X, ∃ V : X.Opens, x ∈ V ∧ HasAffineChart a b V) → ∃ (Y : Scheme.{0}) (q : X ⟶ Y), IsFinite q ∧ Flat q ∧ LocallyOfFinitePresentation q ∧ Surjective q ∧ IsPullback a b q q := by
   intro P X a b h

@@ -19,7 +19,7 @@ Both sides reduce to the same expression.
 theorem comp_base_pt {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (x : X) : (f ≫ g).base x = g.base (f.base x) := rfl
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' W ⊤ (fun i => homOfLE le_top) hc a (fun i j => fn_ext (V := W i ⊓ W j) fun y hy => (gs_res (𝟙 X) y inf_le_left hy _).trans ((h i j y hy.1 hy.2).trans (gs_res (𝟙 X) y inf_le_right hy _).symm))`. Use `⟨s, fun i x hx => ?_⟩` and prove the remaining obligations. Conclude with `(gs_res (𝟙 X) x (le_top : W i ≤ ⊤) hx s).symm.trans (congrArg (gs (𝟙 X) x (W i)) (hs i))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem glue_fn {X : Scheme.{0}} {J : Type} (W : J → X.Opens) (hc : (⊤ : X.Opens) ≤ iSup W) (a : ∀ i, Γ(X, W i))
     (h : ∀ i j x, x ∈ W i → x ∈ W j → gs (𝟙 X) x (W i) (a i) = gs (𝟙 X) x (W j) (a j)) :
@@ -31,31 +31,27 @@ theorem glue_fn {X : Scheme.{0}} {J : Type} (W : J → X.Opens) (hc : (⊤ : X.O
   exact (gs_res (𝟙 X) x (le_top : W i ≤ ⊤) hx s).symm.trans (congrArg (gs (𝟙 X) x (W i)) (hs i))
 
 /- English proof (translation)
-Use `set S : Scheme.{0} := (𝟙_ (Over (Sp Rg))).left with hS`. Use `set e : S ⟶ (topS Rg ⊗ A).left := eSec A ≫ θ A with he_def`. Establish `he : e ≫ (snd (topS Rg) A).left = eSec A`. Rewrite using `[he_def, Category.assoc, θ_snd, Category.comp_id]`. Establish `memN : ∀ (z : S) (q : Fin 1 → L.ι), e z ∈ (LPow A L (k : ℤ) (topS Rg)).U q ↔ eSec A z ∈ L.U (q 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `z q`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `Set.mem_iInter.1 h 0`. Rewrite `h0` using `[Set.mem_preimage, ← comp_base_pt, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h0`. Introduce `h`. Use `Set.mem_iInter.2 fun t => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim t 0, Set.mem_preimage, ← comp_base_pt, he]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Set `W : L.ι → S.Opens` to `fun i => e ⁻¹ᵁ (LPow A L (k : ℤ) (topS Rg)).U (fun _ => i) ⊓ (L.pull (eSec A)).U (fun _ => i)`. Establish `memW : ∀ (z : S) (i : L.ι), z ∈ W i ↔ eSec A z ∈ L.U i`. Introduce `z i`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `mem_pull.1 h.2`. Introduce `h`. Conclude with `⟨(memN z _).2 h, mem_pull.2 h⟩`. Set `a : ∀ i, Γ(S, W i)` to `fun i => (S.presheaf.map (homOfLE (inf_le_left : W i ≤ e ⁻¹ᵁ (LPow A L (k : ℤ) (topS Rg)).U (fun _ => i))).op).hom ((e.app _).hom (s.f (fun _ => i))) * ((res (inf_le_right : W i ≤ (L.pull (eSec A)).U (fun _ => i)) (eA.s (fun _ => i)))⁻¹ ^ k).val`. Establish `ga : ∀ i x, x ∈ W i → gs (𝟙 S) x (W i) (a i) = gs e x ((LPow A L (k : ℤ) (topS Rg)).U (fun _ => i)) (s.f (fun _ => i)) * ((gm (𝟙 S) x _ (eA.s (fun _ => i)))⁻¹ ^ k).val`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i x hx`. Rewrite using `[gs_mul (𝟙 S) x _ hx, gs_res (𝟙 S) x _ hx, gs_pull (𝟙 S) e x _ hx.1, Category.id_comp, gs_unit (𝟙 S) x _ hx, map_pow, map_inv, gm_res (𝟙 S) x _ hx]`. Establish `compat : ∀ i j x, x ∈ W i → x ∈ W j → gs (𝟙 S) x (W i) (a i) = gs (𝟙 S) x (W j) (a j)`. Introduce `i j x hx hy`. Establish `hxi` using `(memW x i).1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hxj` using `(memW x j).1 hy`. Establish `hx' : e x ∈ (LPow A L (k : ℤ) (topS Rg)).U (fun _ => i) ⊓ (LPow A L (k : ℤ) (topS Rg)).U (fun _ => j)` using `⟨hx.1, hy.1⟩`. Establish `mem : (snd (topS Rg) A).left (e x) ∈ L.U i ⊓ L.U j`. Rewrite using `[← comp_base_pt, he]`. Conclude with `⟨hxi, hxj⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg : gm e x ((LPow A L (k : ℤ) (topS Rg)).U (fun _ => i) ⊓ (LPow A L (k : ℤ) (topS Rg)).U (fun _ => j)) ((LPow A L (k : ℤ) (topS Rg)).g (fun _ => i) (fun _ => j)) = (gm (eSec A) x _ (L.g i j)) ^ k` using `by show gm e x _ (∏ _t : Fin 1, (res _ (pullU (snd (topS Rg) A).left _ (L.g i j))) ^ (k : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, map_zpow]`. Use `erw [gm_res e x _ hx']`. Rewrite using `[gm_pull e _ x _ mem, he, zpow_natCast]`. Establish `hs` using `congrArg (gs e x ((LPow A L (k : ℤ) (topS Rg)).U (fun _ => i) ⊓ (LPow A L (k : ℤ) (topS Rg)).U (fun _ => j))) (s.compat (fun _ => i) (fun _ => j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[gs_res e x _ hx', gs_mul e x _ hx', gs_res e x _ hx', gs_unit e x _ hx', hg]`. Establish `hp : x ∈ (L.pull (eSec A)).U (fun _ => i) ⊓ (L.pull (eSec A)).U (fun _ => j)` using `⟨hx.2, hy.2⟩`. Establish `mem' : (eSec A) ((𝟙 S : S ⟶ S) x) ∈ L.U i ⊓ L.U j` using `⟨hxi, hxj⟩`. Establish `hg' : gm (𝟙 S) x _ ((L.pull (eSec A)).g (fun _ => i) (fun _ => j)) = gm (eSec A) x _ (L.g i j)` using `by show gm (𝟙 S) x _ (∏ _t : PUnit, (res _ (pullU (eSec A) _ (L.g i j))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `erw [gm_res (𝟙 S) x _ hp]`. Rewrite using `[gm_pull (𝟙 S) (eSec A) x _ mem', Category.id_comp]`. Establish `hA'` using `congrArg (gm (𝟙 S) x ((L.pull (eSec A)).U (fun _ => i) ⊓ (L.pull (eSec A)).U (fun _ => j))) (hA (fun _ => i) (fun _ => j))`. Rewrite `hA'` using `[map_mul, gm_res _ x _ hp, gm_res _ x _ hp, hg']`. Rewrite using `[ga i x hx, ga j x hy, hs, hA']`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set u := gm (eSec A) x _ (L.g i j)`. Use `set B := gm (𝟙 S) x _ (eA.s (fun _ => j))`. Establish `hinv : (u * B)⁻¹ ^ k = (u ^ k)⁻¹ * B⁻¹ ^ k` using `by rw [mul_inv, mul_pow, inv_pow]`. Establish `hU : (u ^ k).val * ((u ^ k)⁻¹).val = 1` using `Units.mul_inv _`. Rewrite using `[hinv, Units.val_mul]`.
-
-Take the linear combination `(gs e x ((LPow A L (k : ℤ) (topS Rg)).U (fun _ => j)) (s.f (fun _ => j)) * (B⁻¹ ^ k).val) * hU`. Take `⟨α, hα⟩` from `glue_fn W (fun x _ => by`. Take `⟨i, hi⟩` from `exists_chart hL (eSec A x)`. Conclude with `Opens.mem_iSup.2 ⟨i, (memW x i).2 hi⟩) a compat`. Use `⟨α, fun z q hz => ?_⟩` and prove the remaining obligations.
-
-Take `⟨i, rfl⟩ : ∃ i, q = fun _ => i` from `⟨q 0, funext fun t => by rw [Subsingleton.elim t 0]⟩`. Establish `hzW : z ∈ W i` using `(memW z i).2 ((memN z _).1 hz)`. Rewrite using `[hα i z hzW, ga i z hzW]`. Use `show _ = _ * ((gm (𝟙 S) z _ (eA.s fun _ => i)) ^ k).val`. Rewrite using `[_root_.mul_assoc, ← Units.val_mul, inv_pow, inv_mul_cancel, Units.val_one, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vals (Rg : Type) [CommRing Rg] (A : Over (Sp Rg)) [GrpObj A] (L : LB A.left) (k : ℕ)
     (eA : LB.Gen (L.pull (eSec A))) (s : LB.Sec (LPow A L (k : ℤ) (topS Rg))) (hL : L.IsLB) (hA : eA.IsGen) :

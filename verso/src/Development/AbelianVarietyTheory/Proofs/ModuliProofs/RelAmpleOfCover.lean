@@ -13,15 +13,13 @@ open GlobalTheory.ZM
 namespace GlobalTheory.CoverGlue
 
 /- English proof (translation)
-Introduce `S I U A _ G _ ψ hU hψ L M hL hM hiso hA _ hamp`. Establish `: IsProper A.hom` using `hA.proper`. Use `GlobalTheory.AmpleLocal.relAmple_of_locally S A L hL inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_mem hU s`. Take `⟨V, hV, hs, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := U i) (x := s) hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hle' : V ≤ U i` using `hle`. Use `⟨V, hs, ?_⟩` and prove the remaining obligations. Establish `h` using `(hψ i).1`. Establish `hf : S.homOfLE hle' ≫ (U i).ι = V.ι` using `S.homOfLE_ι hle'`. Establish `sq : (A.hom ⁻¹ᵁ V).ι ≫ A.hom = ((A.hom ∣_ V) ≫ S.homOfLE hle') ≫ (U i).ι`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hf, morphismRestrict_ι]`. Set `φ : (A.hom ⁻¹ᵁ V).toScheme ⟶ (G i).left` to `h.lift _ _ sq`. Establish `hφ : φ ≫ ψ i = (A.hom ⁻¹ᵁ V).ι` using `h.lift_fst _ _ _`. Establish `H : IsPullback φ (A.hom ∣_ V) (G i).hom (S.homOfLE hle')`. Use `IsPullback.of_right ?_ (h.lift_snd _ _ _) h` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hφ, hf]`. Conclude with `(isPullback_morphismRestrict A.hom V).flip`. Take `⟨w, hw⟩ : LBIso (L.pull (A.hom ⁻¹ᵁ V).ι) ((M i).pull φ)` from `LBIso.chartPull (chartPullSame L (fun _ : PUnit => (A.hom ⁻¹ᵁ V).ι) (fun _ => ψ i) (fun _ => 1) φ fun _ => hφ.symm) (chartPullPull (M i) φ φ rfl) (hiso i).symm`. Use `relAmple_pull (A' := Over.mk (A.hom ∣_ V)) H (hM i) (pull_isLB hL _) ((isGen_iff w).1 hw) ((U i).ι ⁻¹ᵁ V) (hV.preimage_of_isOpenImmersion _ (by simpa using hle')) (fun y => ?_) (hamp i)` and prove the remaining obligations. Use `show (U i).ι (S.homOfLE hle' y) ∈ V`.
-
-Rewrite using `[← Scheme.Hom.comp_apply, hf]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relAmple_of_cover : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) [GrpObj A] (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left), iSup U = ⊤ → (∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) → ∀ (L : LB A.left) (M : ∀ i, LB (G i).left), L.IsLB → (∀ i, (M i).IsLB) → (∀ i, LBIso (M i) (L.pull (ψ i))) → IsAbelianScheme A → (∀ i, IsAbelianScheme (G i)) → (∀ i, Out.RelAmple (G i) (M i)) → Out.RelAmple A L := by
   intro S I U A _ G _ ψ hU hψ L M hL hM hiso hA _ hamp

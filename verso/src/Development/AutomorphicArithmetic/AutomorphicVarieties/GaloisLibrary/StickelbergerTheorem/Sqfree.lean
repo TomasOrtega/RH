@@ -4,15 +4,15 @@ open NumberField IsDedekindDomain UpperTheory.V.Kum UpperTheory.V.Stick
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Introduce `I h`. Rewrite `h` using `[Finset.prod_empty]`. Establish `h1` using `Ideal.dvd_iff_le.1 h`. Rewrite `h1` using `[Ideal.one_eq_top, top_le_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨∅, Finset.empty_subset _, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, h1, Ideal.one_eq_top]`. Introduce `a t ha ih I h`. Rewrite `h` using `[Finset.prod_insert ha]`. Take `⟨K, hK⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hpa` using `hP a`. Distinguish the cases in `hd : P a ∣ I`. Take `⟨J, rfl⟩` from `hd`. Establish `h' : J ∣ ∏ i ∈ t, P i` using `⟨K, mul_left_cancel₀ hpa.ne_zero (by rw [hK, mul_assoc])⟩`. Take `⟨u, hu, rfl⟩` from `ih J h'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨insert a u, Finset.insert_subset_insert a hu, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert (fun h => ha (hu h))]`. Establish `hk : P a ∣ K` using `(hpa.dvd_or_dvd ⟨_, hK.symm⟩).resolve_left hd`. Take `⟨L, rfl⟩` from `hk`. Establish `h' : I ∣ ∏ i ∈ t, P i` using `⟨L, mul_left_cancel₀ hpa.ne_zero (by rw [hK]; exact mul_left_comm _ _ _)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, e⟩` from `ih I h'`. Conclude with `⟨u, hu.trans (Finset.subset_insert a t), e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem sub_prod {R : Type} [CommRing R] [IsDedekindDomain R] {ι : Type} (P : ι → Ideal R)
     (hP : ∀ i, Prime (P i)) (t : Finset ι) :
@@ -42,11 +42,11 @@ private theorem sub_prod {R : Type} [CommRing R] [IsDedekindDomain R] {ι : Type
       exact ⟨u, hu.trans (Finset.subset_insert a t), e⟩
 
 /- English proof (translation)
-Introduce `R _ _ ι _ P hinj hP x s hdiv hs`. Take `⟨u, -, hu⟩` from `sub_prod P hP Finset.univ _ hdiv`. Rewrite using `[hu]`. Use `congr 1`. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hs i, ← Ideal.dvd_span_singleton, hu, (hP i).dvd_finset_prod_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hi`. Conclude with `⟨i, hi, dvd_rfl⟩`. Introduce and unpack `⟨j, hj, hij⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `e` using `((hP i).dvd_prime_iff_associated (hP j)).1 hij`. Rewrite `e` using `[associated_iff_eq]`. Rewrite using `[hinj e]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.V.Stick.sqfree :
     ∀ (R : Type) [CommRing R] [IsDedekindDomain R] (ι : Type) [Fintype ι] (P : ι → Ideal R),

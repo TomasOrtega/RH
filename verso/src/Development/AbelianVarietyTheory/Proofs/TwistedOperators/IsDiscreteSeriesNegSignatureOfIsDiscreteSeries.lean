@@ -14,7 +14,7 @@ namespace GlobalTheory.DSFlip
 variable {n : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Apply the tactic sequence `subst hab; cases h : ε a <;> simp [Formalism.REAL.Jm, h]`. Simplify using `[Formalism.REAL.Jm, hab]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem jm_not : Formalism.REAL.Jm (fun a => !ε a) = -Formalism.REAL.Jm ε := by
   ext a b
@@ -23,57 +23,57 @@ theorem jm_not : Formalism.REAL.Jm (fun a => !ε a) = -Formalism.REAL.Jm ε := b
   · simp [Formalism.REAL.Jm, hab]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inUJ`. Rewrite using `[jm_not, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inUJ_not (g : Matrix (Fin n) (Fin n) ℂ) : Formalism.REAL.inUJ (fun a => !ε a) g ↔ Formalism.REAL.inUJ ε g := by
   unfold Formalism.REAL.inUJ
   rw [jm_not, Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
 /- English proof (translation)
-The claim follows from `Set.ext fun g => inUJ_not ε g`.
+A detailed English derivation is pending.
 -/
 theorem uJset_not : Formalism.MainNotions.S.UJset (fun a => !ε a) = Formalism.MainNotions.S.UJset ε :=
   Set.ext fun g => inUJ_not ε g
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Formalism.REAL.Kset, Set.mem_setOf_eq, jm_not, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem kset_not : Formalism.REAL.Kset (fun a => !ε a) = Formalism.REAL.Kset ε := by
   ext g
   simp only [Formalism.REAL.Kset, Set.mem_setOf_eq, jm_not, Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[Formalism.REAL.rhoC]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rhoC_not : Formalism.REAL.rhoC (fun a => !ε a) = Formalism.REAL.rhoC ε := by
   funext a; simp [Formalism.REAL.rhoC]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[Formalism.REAL.rhoN]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rhoN_not : Formalism.REAL.rhoN (fun a => !ε a) = Formalism.REAL.rhoN ε := by
   funext a; simp [Formalism.REAL.rhoN]
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.lowK, rhoC_not, rhoN_not]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lowK_not (lam : Fin n → ℝ) : Formalism.QuantumDeterminants.lowK (fun a => !ε a) lam = Formalism.QuantumDeterminants.lowK ε lam := by
   simp only [Formalism.QuantumDeterminants.lowK, rhoC_not, rhoN_not]
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.vNormSq, rhoC_not]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vNormSq_not (μ : Fin n → ℝ) : Formalism.MainNotions.S.vNormSq (fun a => !ε a) μ = Formalism.MainNotions.S.vNormSq ε μ := by
   simp only [Formalism.MainNotions.S.vNormSq, rhoC_not]
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.S.CDom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cDom_not (μ Λ : Fin n → ℝ) : Formalism.MainNotions.S.CDom (fun a => !ε a) μ Λ ↔ Formalism.MainNotions.S.CDom ε μ Λ := by
   simp [Formalism.MainNotions.S.CDom]
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.IsKTypeOf, Formalism.MainNotions.S.IsKStableOn, kset_not, cDom_not]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isKTypeOf_not {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Λ : Fin n → ℝ) (S : Submodule ℂ H) :
@@ -88,19 +88,19 @@ def flipU : Formalism.REAL.UJ (fun a => !ε a) ≃* Formalism.REAL.UJ ε where
   map_mul' g h := rfl
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk continuous_subtype_val _`.
+A detailed English derivation is pending.
 -/
 theorem flipU_cont : Continuous (flipU ε) :=
   Continuous.subtype_mk continuous_subtype_val _
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk continuous_subtype_val _`.
+A detailed English derivation is pending.
 -/
 theorem flipU_symm_cont : Continuous (flipU ε).symm :=
   Continuous.subtype_mk continuous_subtype_val _
 
 /- English proof (translation)
-Use `haveI : ((Formalism.REAL.muG (fun a => !ε a)).map (flipU ε)).IsHaarMeasure := MulEquiv.isHaarMeasure_map _ (flipU ε) (flipU_cont ε) (flipU_symm_cont ε)`. Use `MemLp.comp_of_map ?_ (flipU_cont ε).measurable.aemeasurable` and prove the remaining obligations. Rewrite using `[Measure.isMulLeftInvariant_eq_smul ((Formalism.REAL.muG (fun a => !ε a)).map (flipU ε)) (Formalism.REAL.muG ε)]`. Conclude with `hF.smul_measure ENNReal.coe_ne_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memLp_flip {F : Formalism.REAL.UJ ε → ℂ} (hF : MemLp F 2 (Formalism.REAL.muG ε)) :
     MemLp (F ∘ flipU ε) 2 (Formalism.REAL.muG (fun a => !ε a)) := by
@@ -117,7 +117,7 @@ theorem flipU_apply (g : Formalism.REAL.UJ (fun a => !ε a)) :
     ((flipU ε g : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) = (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, Formalism.MainNotions.S.coefOn, Formalism.MainNotions.S.umat, flipU_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coefOn_flip {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v w : H) :
@@ -128,11 +128,9 @@ theorem coefOn_flip {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 end GlobalTheory.DSFlip
 
 /- English proof (translation)
-Introduce `n H _ _ ε lam σ ⟨hc, hn, hu, hi, hsq, ⟨S, hS⟩, hmin⟩`. Use `⟨hc, hn, ?_, ?_, ?_, ⟨S, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.DSFlip.uJset_not]`. Conclude with `hu`. Rewrite using `[GlobalTheory.DSFlip.uJset_not]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hi`. Introduce `v w`. Rewrite using `[GlobalTheory.DSFlip.coefOn_flip]`. Conclude with `GlobalTheory.DSFlip.memLp_flip ε (hsq v w)`. Rewrite using `[GlobalTheory.DSFlip.isKTypeOf_not, GlobalTheory.DSFlip.lowK_not]`.
-
-Conclude with `hS`. Introduce `μ S' hS'`. Rewrite using `[GlobalTheory.DSFlip.lowK_not, GlobalTheory.DSFlip.vNormSq_not, GlobalTheory.DSFlip.vNormSq_not]`. Conclude with `hmin μ S' ((GlobalTheory.DSFlip.isKTypeOf_not ε σ μ S').1 hS')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PairLift.isDS_flip : ∀ (n : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool)
     (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)),

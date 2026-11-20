@@ -22,7 +22,7 @@ section Num
 variable {p n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] {X : Dat n' r}
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`. Conclude with `le_rfl`. Consider the case `succ i ih => intro h; exact (ih (by omega)).trans (hV.2.2.1 j i h).le`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem frame_zero_le {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (j : ℤ) : ∀ i, i < r → F.fr j 0 ≤ F.fr j i := by
   intro i
@@ -31,9 +31,9 @@ theorem frame_zero_le {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F.Valid L₁ N�
   | succ i ih => intro h; exact (ih (by omega)).trans (hV.2.2.1 j i h).le
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `Nat.pos_of_ne_zero (NeZero.ne r)`. Establish `h1` using `frame_zero_le hV (j - 1) (r - 1) (by omega)`. Establish `h2` using `hV.2.2.2.1 (j - 1)`. Rewrite `h2` using `[sub_add_cancel]`. Establish `h3` using `frame_zero_le hV j (r - 1) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨le_rfl, by omega⟩, (hV.2.2.2.2.1 (j - 1) 0 hr).1⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem reflection_mem_Glev_castSucc {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (j : ℤ) : F.fr (j - 1) 0 ∈ F.letters j := by
   have hr : 0 < r := Nat.pos_of_ne_zero (NeZero.ne r)
@@ -45,7 +45,7 @@ theorem reflection_mem_Glev_castSucc {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F
   exact ⟨⟨le_rfl, by omega⟩, (hV.2.2.2.2.1 (j - 1) 0 hr).1⟩
 
 /- English proof (translation)
-Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc] at hx`. Conclude with `⟨hx.1.1, hx.1.2, hx.2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_letters_bounds {F : Frames n' r} {j x : ℤ} (hx : x ∈ F.letters j) :
     F.fr (j - 1) 0 ≤ x ∧ x ≤ F.fr j (r - 1) ∧ posOf n' x ∈ F.TT := by
@@ -61,11 +61,11 @@ structure Basics (X : Dat n' r) (p K : ℕ) : Prop where
   Y1 : (1 : ℝ) ≤ X.Y
 
 /- English proof (translation)
-Establish `hV` using `hX.valid`. Establish `hw` using `reflection_mem_Glev_castSucc hV 0`. Establish `hp : (13 : ℝ) ≤ p` using `by exact_mod_cast hX.p13`. Establish `hc : 1 ≤ (X.F.letters 0).card` using `Finset.card_pos.mpr ⟨_, hw⟩`. Establish `hNs : 1 ≤ X.Ns` using `hc.trans (hX.card 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `hX.NsK`. Establish `hr` using `hX.r2`. Establish `hQ` using `hX.twist 0 _ hw`. Use `⟨by linarith, by exact_mod_cast hNs, ?_, ?_, ?_, hX.Y1⟩` and prove the remaining obligations. Unfold `Dat.k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `(by omega : 5 ≤ r + K)` after adjusting the coercions. Unfold `Dat.k`. Conclude with `(by omega : r ≤ r + K)` after adjusting the coercions. Conclude with `le_trans (one_le_pow₀ (by linarith : (1 : ℝ) ≤ p)) hQ`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem basics (hX : X.Hyp p K) : Basics X p K := by
   have hV := hX.valid
@@ -87,7 +87,7 @@ def Tj (X : Dat n' r) (p K : ℕ) (j : ℤ) : ℝ :=
   X.a / (8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ X.F.dist j (X.F.fr (j - 1) 0))
 
 /- English proof (translation)
-Establish `B` using `basics hX`. Establish `h1 : (0 : ℝ) < p` using `by linarith [B.p1]`. Establish `h2 : (0 : ℝ) < X.Y` using `by linarith [B.Y1]`. Establish `h3 : (0 : ℝ) < Dat.k (r` using `r) K := by linarith [B.k5]`. Establish `h4 : (0 : ℝ) < X.Ns` using `by linarith [B.Ns1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Check the signs of the components of the expression.
 -/
@@ -101,11 +101,11 @@ theorem den_pos (hX : X.Hyp p K) (j : ℤ) :
   positivity
 
 /- English proof (translation)
-Establish `b` using `basics hX`. Establish `hd` using `den_pos hX j`. Establish `hw` using `reflection_mem_Glev_castSucc hX.valid j`. Establish `hQ` using `hX.twist j _ hw`. Establish `P3` using `hX.P3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : 0 ≤ X.Y` using `by linarith [b.Y1]`. Establish `hp0 : (0 : ℝ) ≤ p` using `by linarith [b.p1]`. Establish `hdQ : (p : ℝ) ^ X.F.dist j (X.F.fr (j - 1) 0) ≤ X.Q ^ 2` using `hQ.trans (by nlinarith [b.Q1])`. Establish `hk : Dat.k (r` using `r) K = ((r + K : ℕ) : ℝ) := rfl`. Establish `hc : 0 ≤ (p : ℝ) * X.Y * ((r + K : ℕ) : ℝ) ^ 2 * (X.Ns : ℝ) * ((X.E₀ : ℝ) + X.mStar + 1)` using `mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hp0 hY) (sq_nonneg _)) (Nat.cast_nonneg _)) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `mul_le_mul_of_nonneg_left hdQ hc`. Unfold `Tj`. Rewrite using `[le_div_iff₀ hd, hk]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem Tj_ge (hX : X.Hyp p K) (j : ℤ) : 4 * (p : ℝ) * ((X.E₀ : ℝ) + X.mStar + 1) ≤ Tj X p K j := by
   have b := basics hX
@@ -130,11 +130,11 @@ theorem Tj_ge (hX : X.Hyp p K) (j : ℤ) : 4 * (p : ℝ) * ((X.E₀ : ℝ) + X.m
     _ ≤ X.a := P3
 
 /- English proof (translation)
-Establish `B` using `basics hX`. Establish `hT` using `Tj_ge hX j`. Establish `hT1 : (1 : ℝ) ≤ Tj X p K j`. Establish `h0 : (0 : ℝ) ≤ (X.E₀ : ℝ) + X.mStar` using `by positivity`. Use polynomial arithmetic with `[B.p1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hfl : ⌊Tj X p K j⌋₊ ≠ 0`. Establish `: 1 ≤ ⌊Tj X p K j⌋₊` using `Nat.le_floor (by simpa using hT1)`. Use linear arithmetic over natural numbers and integers. Establish `h1 : p ^ X.Rj p K j ≤ ⌊Tj X p K j⌋₊` using `Nat.pow_log_le_self p hfl`. Establish `h2 : ((⌊Tj X p K j⌋₊ : ℕ) : ℝ) ≤ Tj X p K j` using `Nat.floor_le (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((p ^ X.Rj p K j : ℕ) : ℝ) ≤ ((⌊Tj X p K j⌋₊ : ℕ) : ℝ)` using `by exact_mod_cast h1`. Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pow_Rj_le (hX : X.Hyp p K) (j : ℤ) : ((p : ℝ) ^ X.Rj p K j) ≤ Tj X p K j := by
   have B := basics hX
@@ -152,7 +152,7 @@ theorem pow_Rj_le (hX : X.Hyp p K) (j : ℤ) : ((p : ℝ) ^ X.Rj p K j) ≤ Tj X
   linarith
 
 /- English proof (translation)
-Establish `h1 : ⌊Tj X p K j⌋₊ < p ^ (X.Rj p K j + 1)` using `Nat.lt_pow_succ_log_self hX.prime.one_lt _`. Establish `h2 : Tj X p K j < (⌊Tj X p K j⌋₊ : ℝ) + 1` using `Nat.lt_floor_add_one _`. Establish `h3 : ((⌊Tj X p K j⌋₊ : ℕ) : ℝ) + 1 ≤ ((p ^ (X.Rj p K j + 1) : ℕ) : ℝ)` using `by exact_mod_cast h1`. Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lt_pow_Rj (hX : X.Hyp p K) (j : ℤ) : Tj X p K j < (p : ℝ) ^ (X.Rj p K j + 1) := by
   have h1 : ⌊Tj X p K j⌋₊ < p ^ (X.Rj p K j + 1) := Nat.lt_pow_succ_log_self hX.prime.one_lt _
@@ -162,11 +162,11 @@ theorem lt_pow_Rj (hX : X.Hyp p K) (j : ℤ) : Tj X p K j < (p : ℝ) ^ (X.Rj p 
   linarith
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X hX _ _ j`. Establish `B` using `basics hX`. Establish `h1` using `Tj_ge hX j`. Establish `h2` using `lt_pow_Rj hX j`. Rewrite `h2` using `[pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp : (0 : ℝ) < p` using `by linarith [B.p1]`. Establish `hE : (0 : ℝ) ≤ X.E₀` using `Nat.cast_nonneg _`. Establish `hm : (0 : ℝ) ≤ X.mStar` using `Nat.cast_nonneg _`. Establish `h3 : 4 * ((X.E₀ : ℝ) + X.mStar + 1) < (p : ℝ) ^ X.Rj p K j`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Use `mul_le_mul_of_nonneg_right hcon hp.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : (X.mStar : ℝ) < ((p ^ X.Rj p K j : ℕ) : ℝ)` using `by push_cast; linarith`. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem power_exceeds_max_multiplicity (C₀ : ℝ) : PowerExceedsMaxMultiplicity C₀ := by
   intro p n' r K _ _ _ X hX _ _ j
@@ -186,13 +186,13 @@ theorem power_exceeds_max_multiplicity (C₀ : ℝ) : PowerExceedsMaxMultiplicit
   exact_mod_cast h4
 
 /- English proof (translation)
-Establish `b` using `basics hX`. Establish `hd` using `den_pos hX j`. Establish `hy'` using `mem_letters_bounds hy`. Establish `hdist : X.F.dist j y ≤ X.F.dist j (X.F.fr (j - 1) 0)`. Unfold `Frames.dist`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Int.toNat_le_toNat (by linarith [hy'.1])`. Establish `hp1 : (1 : ℝ) ≤ p` using `b.p1.le`. Establish `hpow : (p : ℝ) ^ X.F.dist j y ≤ (p : ℝ) ^ X.F.dist j (X.F.fr (j - 1) 0)` using `pow_le_pow_right₀ hp1 hdist`. Establish `hR` using `pow_Rj_le hX j`. Establish `hY : 0 ≤ X.Y` using `by linarith [b.Y1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTa : 8 * X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ X.F.dist j (X.F.fr (j - 1) 0) * Tj X p K j = X.a := by`. Unfold `Tj`. Conclude with `mul_div_cancel₀ _ hd.ne'`. Establish `hc0 : 0 ≤ 8 * X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) := mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hY) (sq_nonneg _)) (Nat.cast_nonneg _)`. Establish `hm` using `mul_le_mul_of_nonneg_left (mul_le_mul hpow hR (pow_nonneg (by linarith) _) (pow_nonneg (by linarith) _)) hc0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem l42b (hX : X.Hyp p K) (j y : ℤ) (hy : y ∈ X.F.letters j) :
     8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ (X.F.dist j y + X.Rj p K j) ≤ X.a := by

@@ -6,19 +6,17 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ`. Introduce `τ`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `h1 : ((Algebra.norm ℚ d : ℚ) : ℂ) = ∏ τ : E →+* ℂ, τ d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Algebra.norm_eq_prod_embeddings ℚ ℂ d` as an intermediate fact. Rewrite `this` using `[eq_ratCast]`. Rewrite using `[this]`. Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ).symm _ _ (fun σ => rfl)`. Establish `hcompl : ∏ τ ∈ Ψᶜ, τ d = ∏ τ ∈ Ψ, (starRingEnd ℂ) (τ d)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_nbij' ComplexEmbedding.conjugate ComplexEmbedding.conjugate ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`. Simplify using `only [Finset.mem_compl, Finset.coe_compl, Set.mem_compl_iff, Finset.mem_coe] at hτ ⊢`. Rewrite using `[hΨ, hcc]`. Conclude with `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `τ hτ`. Simplify using `only [Finset.mem_compl, Finset.coe_compl, Set.mem_compl_iff, Finset.mem_coe] at hτ ⊢`. Conclude with `(hΨ τ).mp hτ`. Introduce `τ _`. Conclude with `hcc τ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `τ _`. Conclude with `hcc τ`. Introduce `τ _`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hsub : ∏ τ : Ψ, τ.1 d = ∏ τ ∈ Ψ, τ d` using `Finset.prod_coe_sort Ψ (fun τ => τ d)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set P := ∏ τ ∈ Ψ, τ d with hP`. Establish `h2 : ((Algebra.norm ℚ d : ℚ) : ℂ) = ((Complex.normSq P : ℝ) : ℂ)`. Rewrite using `[h1, ← Finset.prod_mul_prod_compl Ψ, hcompl, ← map_prod, Complex.mul_conj]`. Establish `h3 : ((Algebra.norm ℚ d : ℚ) : ℝ) = Complex.normSq P`. Use `h2` as an intermediate fact.
-
-Rewrite `this` using `[show ((Algebra.norm ℚ d : ℚ) : ℂ) = (((Algebra.norm ℚ d : ℚ) : ℝ) : ℂ) by push_cast; rfl]`. Conclude with `this` after adjusting the coercions. Rewrite using `[hsub, h3, Complex.normSq_eq_norm_sq, abs_of_nonneg (sq_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cm_type_normSq_prod_eq_abs_norm (E : Type) [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ))
     (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) (d : E) :

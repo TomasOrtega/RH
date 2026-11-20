@@ -9,9 +9,9 @@ namespace GlobalTheory.HilbertThetaSeries.FormLat
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Establish `h` using `hG.1.1`. Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `[Matrix.conjTranspose_apply, Matrix.map_apply] at this`. Simplify using `only [Matrix.transpose_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem symm_of_evenPos {G : Matrix κ κ ℤ} (hG : EvenPos G) : Gᵀ = G := by
   have h := hG.1.1
@@ -22,38 +22,38 @@ theorem symm_of_evenPos {G : Matrix κ κ ℤ} (hG : EvenPos G) : Gᵀ = G := by
   exact_mod_cast this
 
 /- English proof (translation)
-Unfold `BF`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.transpose_map, hG]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bf_symm {G : Matrix κ κ ℤ} (hG : Gᵀ = G) (x y : κ → F) : BF G x y = BF G y x := by
   unfold BF
   rw [Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.transpose_map, hG]
 
 /- English proof (translation)
-Unfold `BF`. Rewrite using `[add_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bf_add_left (G : Matrix κ κ ℤ) (x y z : κ → F) : BF G (x + y) z = BF G x z + BF G y z := by
   unfold BF; rw [add_dotProduct]
 
 /- English proof (translation)
-Unfold `BF`. Rewrite using `[Matrix.mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bf_add_right (G : Matrix κ κ ℤ) (x y z : κ → F) : BF G x (y + z) = BF G x y + BF G x z := by
   unfold BF; rw [Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Unfold `BF`. Rewrite using `[smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bf_smul_left (G : Matrix κ κ ℤ) (a : F) (x y : κ → F) : BF G (a • x) y = a * BF G x y := by
   unfold BF; rw [smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `BF`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bf_smul_right (G : Matrix κ κ ℤ) (a : F) (x y : κ → F) : BF G x (a • y) = a * BF G x y := by
   unfold BF; rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `QF`. Rewrite using `[bf_add_left, bf_add_right, bf_add_right, bf_symm hG y x]`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qf_add {G : Matrix κ κ ℤ} (hG : Gᵀ = G) (x y : κ → F) : QF G (x + y) = QF G x + BF G x y + QF G y := by
   unfold QF
@@ -63,19 +63,19 @@ theorem qf_add {G : Matrix κ κ ℤ} (hG : Gᵀ = G) (x y : κ → F) : QF G (x
   ring
 
 /- English proof (translation)
-Simplify using `[LL, AddSubgroup.mem_pi, mem_integralClosure_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_LL {x : κ → F} : x ∈ LL F κ ↔ ∀ i, IsIntegral ℤ (x i) := by
   simp [LL, AddSubgroup.mem_pi, mem_integralClosure_iff]
 
 /- English proof (translation)
-Simplify using `using isIntegral_algebraMap (R := ℤ) (A := F) (x := n)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intCast_isIntegral (n : ℤ) : IsIntegral ℤ (n : F) := by
   simpa using isIntegral_algebraMap (R := ℤ) (A := F) (x := n)
 
 /- English proof (translation)
-Unfold `BF`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply]`. Conclude with `IsIntegral.sum _ fun i _ => (hx i).mul (IsIntegral.sum _ fun j _ => (intCast_isIntegral _).mul (hy j))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bf_int (G : Matrix κ κ ℤ) {x y : κ → F} (hx : ∀ i, IsIntegral ℤ (x i)) (hy : ∀ i, IsIntegral ℤ (y i)) :
     IsIntegral ℤ (BF G x y) := by
@@ -84,7 +84,7 @@ theorem bf_int (G : Matrix κ κ ℤ) {x y : κ → F} (hx : ∀ i, IsIntegral �
   exact IsIntegral.sum _ fun i _ => (hx i).mul (IsIntegral.sum _ fun j _ => (intCast_isIntegral _).mul (hy j))
 
 /- English proof (translation)
-Use `Algebra.isIntegral_trace (L := ℚ) hx` as an intermediate fact. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.mp this`. Conclude with `⟨n, by rw [← hn]; simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem trace_int {x : F} (hx : IsIntegral ℤ x) : ∃ n : ℤ, Algebra.trace ℚ F x = n := by
   have := Algebra.isIntegral_trace (L := ℚ) hx
@@ -92,25 +92,25 @@ theorem trace_int {x : F} (hx : IsIntegral ℤ x) : ∃ n : ℤ, Algebra.trace �
   exact ⟨n, by rw [← hn]; simp⟩
 
 /- English proof (translation)
-Simplify using `[QF, BF, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qf_single (G : Matrix κ κ ℤ) (i : κ) (c : F) : QF G (Pi.single i c) = c * ((G i i : F) * c) / 2 := by
   simp [QF, BF, Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hs : Gᵀ = G` using `symm_of_evenPos hG`. Establish `hsingle : ∀ i, IsIntegral ℤ (QF G (Pi.single i (x i)))`. Introduce `i`. Take `⟨m, hm⟩` from `hG.2 i`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: QF G (Pi.single i (x i)) = (m : F) * x i * x i`. Rewrite using `[qf_single, hm]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Conclude with `((intCast_isIntegral m).mul (hx i)).mul (hx i)`. Establish `hvi : ∀ (s : Finset κ) (j : κ), IsIntegral ℤ ((∑ i ∈ s, Pi.single i (x i) : κ → F) j)`. Introduce `s j`. Rewrite using `[Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `IsIntegral.sum _ fun i _ => by`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hx j`. Simplify using `[Pi.single_apply, h, isIntegral_zero]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ s : Finset κ, IsIntegral ℤ (QF G (∑ i ∈ s, Pi.single i (x i)))`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify `(isIntegral_zero : IsIntegral ℤ (0 : F))` using `[QF, BF]`. Introduce `i s hi ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_insert hi, qf_add hs]`. Use `((hsingle i).add (bf_int G ?_ (hvi s))).add ih` and prove the remaining obligations. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using hx j`. Simplify using `[Pi.single_apply, h, isIntegral_zero]`. Simplify `key Finset.univ` using `[Finset.univ_sum_single]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem qf_int {G : Matrix κ κ ℤ} (hG : EvenPos G) {x : κ → F} (hx : ∀ i, IsIntegral ℤ (x i)) : IsIntegral ℤ (QF G x) := by
   have hs : Gᵀ = G := symm_of_evenPos hG
@@ -143,15 +143,15 @@ theorem qf_int {G : Matrix κ κ ℤ} (hG : EvenPos G) {x : κ → F} (hx : ∀ 
   simpa [Finset.univ_sum_single] using key Finset.univ
 
 /- English proof (translation)
-Establish `h0 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0` using `by simp [Real.pi_ne_zero]`. Establish `hiff : et x = 1 ↔ ∃ n : ℤ, Algebra.trace ℚ F x = n`. Unfold `et`. Rewrite using `[Complex.exp_eq_one_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: ((Algebra.trace ℚ F x : ℚ) : ℂ) = ((n : ℚ) : ℂ)`. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[hn]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Introduce and unpack `⟨n, hn⟩`. Conclude with `⟨n, by rw [hn]; push_cast; ring⟩`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, hiff, fun hx => hiff.mpr (trace_int hx)⟩` and prove the remaining obligations. Unfold `et`. Rewrite using `[map_add, Rat.cast_add, mul_add, Complex.exp_add]`. Unfold `et`. Establish `: 2 * (Real.pi : ℂ) * Complex.I * ((Algebra.trace ℚ F x : ℚ) : ℂ) = ((2 * Real.pi * (Algebra.trace ℚ F x : ℚ) : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`.
+A detailed English derivation is pending.
 -/
 theorem et_props (x y : F) : et (x + y) = et x * et y ∧ ‖et x‖ = 1 ∧ (et x = 1 ↔ ∃ n : ℤ, Algebra.trace ℚ F x = n) ∧
     (IsIntegral ℤ x → et x = 1) := by
@@ -180,13 +180,13 @@ end GlobalTheory.HilbertThetaSeries.FormLat
 open GlobalTheory.HilbertThetaSeries.FormLat in
 
 /- English proof (translation)
-Introduce `F _ _ κ _ _ G hG`. Establish `hs : Gᵀ = G` using `symm_of_evenPos hG`. Use `⟨fun x y => ⟨bf_symm hs x y, qf_add hs x y⟩, fun a x y => ⟨bf_smul_left G a x y, ?_, ?_⟩, bf_add_left G, fun x hx => ⟨qf_int hG (mem_LL.mp hx), fun y hy => bf_int G (mem_LL.mp hx) (mem_LL.mp hy)⟩, fun x => mem_LL, fun a x => ?_, et_props, ?_⟩` and prove the remaining obligations. Unfold `QF`. Rewrite using `[bf_smul_left, bf_smul_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `QF BF`. Rewrite using `[Matrix.mulVec_neg, dotProduct_neg, neg_dotProduct, neg_neg]`. Unfold `aL`. Rewrite using `[AddSubgroup.mem_map]`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, rfl⟩`. Conclude with `⟨l, hl, rfl⟩`. Introduce and unpack `⟨l, hl, rfl⟩`. Conclude with `⟨l, hl, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `y hy l hl`. Conclude with `trace_int (bf_int G (mem_LL.mp hy) (mem_LL.mp hl))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HilbertThetaSeries.formLatticeProps : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → (∀ x y : κ → F, BF G x y = BF G y x ∧ QF G (x + y) = QF G x + BF G x y + QF G y) ∧ (∀ (a : F) (x y : κ → F), BF G (a • x) y = a * BF G x y ∧ QF G (a • x) = a ^ 2 * QF G x ∧ QF G (-x) = QF G x) ∧ (∀ x y z : κ → F, BF G (x + y) z = BF G x z + BF G y z) ∧ (∀ x ∈ LL F κ, IsIntegral ℤ (QF G x) ∧ ∀ y ∈ LL F κ, IsIntegral ℤ (BF G x y)) ∧ (∀ x : κ → F, x ∈ LL F κ ↔ ∀ i, IsIntegral ℤ (x i)) ∧ (∀ (a : F) (x : κ → F), x ∈ aL κ a ↔ ∃ l ∈ LL F κ, x = a • l) ∧ (∀ x y : F, et (x + y) = et x * et y ∧ ‖et x‖ = 1 ∧ (et x = 1 ↔ ∃ n : ℤ, Algebra.trace ℚ F x = n) ∧ (IsIntegral ℤ x → et x = 1)) ∧ LL F κ ≤ dualL F G := by
   intro F _ _ κ _ _ G hG
@@ -208,7 +208,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.formLatticeProps | exact GlobalTheory.HilbertThetaSeries.formLatticeProps | (intros; apply GlobalTheory.HilbertThetaSeries.formLatticeProps <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.evenPos_gramForm_integral_lattice_properties : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → (∀ x y : κ → F, BF G x y = BF G y x ∧ QF G (x + y) = QF G x + BF G x y + QF G y) ∧ (∀ (a : F) (x y : κ → F), BF G (a • x) y = a * BF G x y ∧ QF G (a • x) = a ^ 2 * QF G x ∧ QF G (-x) = QF G x) ∧ (∀ x y z : κ → F, BF G (x + y) z = BF G x z + BF G y z) ∧ (∀ x ∈ LL F κ, IsIntegral ℤ (QF G x) ∧ ∀ y ∈ LL F κ, IsIntegral ℤ (BF G x y)) ∧ (∀ x : κ → F, x ∈ LL F κ ↔ ∀ i, IsIntegral ℤ (x i)) ∧ (∀ (a : F) (x : κ → F), x ∈ aL κ a ↔ ∃ l ∈ LL F κ, x = a • l) ∧ (∀ x y : F, et (x + y) = et x * et y ∧ ‖et x‖ = 1 ∧ (et x = 1 ↔ ∃ n : ℤ, Algebra.trace ℚ F x = n) ∧ (IsIntegral ℤ x → et x = 1)) ∧ LL F κ ≤ dualL F G := by
   first | exact @GlobalTheory.HilbertThetaSeries.formLatticeProps | exact GlobalTheory.HilbertThetaSeries.formLatticeProps | (intros; apply GlobalTheory.HilbertThetaSeries.formLatticeProps <;> assumption)

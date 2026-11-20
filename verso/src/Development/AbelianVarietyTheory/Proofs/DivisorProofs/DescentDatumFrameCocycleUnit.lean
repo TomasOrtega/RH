@@ -11,44 +11,42 @@ set_option autoImplicit false
 namespace GlobalTheory.LBDescent
 
 /- English proof (translation)
-Rewrite using `[mul_comm G₁ a]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem alg {G : Type*} [CommGroup G] (a P b G₁ G₃ : G) :
     a * P * b⁻¹ = G₁ * a * (G₁⁻¹ * P * G₃) * (G₃⁻¹ * b⁻¹) := by
   rw [mul_comm G₁ a]; group
 
 /- English proof (translation)
-Establish `hf : ∀ z : ↥(pullback f f), f (pullback.snd f f z) = f (pullback.fst f f z)` using `fun z => by`. Express the relevant statement in the definitionally equal form `(pullback.snd f f ≫ f) z = (pullback.fst f f ≫ f) z`. Rewrite using `[pullback.condition]`. Use `set V' : (pullback f f).Opens := pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V with hV'`. Set `W : L.ι × L.ι → (pullback f f).Opens` to `fun p => chart f L p.1 p.2 ⊓ V'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `le1 : ∀ p : L.ι × L.ι, W p ≤ pullback.fst f f ⁻¹ᵁ (f ⁻¹ᵁ V ⊓ L.U p.1)` using `fun p z hz => ⟨hz.2, hz.1.1⟩`. Establish `le2 : ∀ p : L.ι × L.ι, W p ≤ chart f L p.1 p.2` using `fun p => inf_le_left`. Establish `le3 : ∀ p : L.ι × L.ι, W p ≤ pullback.snd f f ⁻¹ᵁ (f ⁻¹ᵁ V ⊓ L.U p.2)` using `fun p z hz => ⟨show f (pullback.snd f f z) ∈ V by rw [hf]; exact hz.2, hz.1.2⟩`. Set `u : ∀ p, Γ(pullback f f, W p)ˣ` to `fun p => res (le1 p) (pullU (pullback.fst f f) _ (t p.1)) * res (le2 p) (φ p.1 p.2) * (res (le3 p) (pullU (pullback.snd f f) _ (t p.2)))⁻¹`. Establish `key : ∀ {T : Scheme.{0}} (h : T ⟶ pullback f f) (y : T) (p : L.ι × L.ι) (hy : h y ∈ W p), gm h y (W p) (u p) = gm (h ≫ pullback.fst f f) y _ (t p.1) * gm h y _ (φ p.1 p.2) * (gm (h ≫ pullback.snd f f) y _ (t p.2))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T h y p hy`. Simplify using `only [u, map_mul, map_inv]`. Rewrite using `[gm_res h y (le1 p) hy, gm_res h y (le2 p) hy, gm_res h y (le3 p) hy, gm_pull h (pullback.fst f f) y _ (le1 p hy), gm_pull h (pullback.snd f f) y _ (le3 p hy)]`. Establish `tpull : ∀ {T : Scheme.{0}} (h : T ⟶ X) (y : T) (i j : L.ι), f (h y) ∈ V → h y ∈ L.U i → h y ∈ L.U j → gm h y _ (t i) = gm h y _ (L.g i j) * gm h y _ (t j)`. Introduce `T h y i j hV hi hj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle1 : f ⁻¹ᵁ V ⊓ (L.U i ⊓ L.U j) ≤ f ⁻¹ᵁ V ⊓ L.U i` using `inf_le_inf_left _ inf_le_left`. Establish `hle2 : f ⁻¹ᵁ V ⊓ (L.U i ⊓ L.U j) ≤ L.U i ⊓ L.U j` using `inf_le_right`. Establish `hle3 : f ⁻¹ᵁ V ⊓ (L.U i ⊓ L.U j) ≤ f ⁻¹ᵁ V ⊓ L.U j` using `inf_le_inf_left _ inf_le_right`. Establish `e : res hle1 (t i) = res hle2 (L.g i j) * res hle3 (t j)`. Apply `unit_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[map_mul, gm_res _ x hle1 hx, gm_res _ x hle2 hx, gm_res _ x hle3 hx]`. Conclude with `ht i j x hx.1 hx.2.1 hx.2.2`. Establish `hm : h y ∈ f ⁻¹ᵁ V ⊓ (L.U i ⊓ L.U j)` using `⟨hV, hi, hj⟩`. Use `congrArg (gm h y _) e` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, gm_res h y hle1 hm, gm_res h y hle2 hm, gm_res h y hle3 hm]`. Then use the resulting hypothesis. Establish `hW : ∀ p, W p ≤ V'` using `fun p => inf_le_right`. Establish `hcov : V' ≤ iSup W`. Introduce `z hz`. Take `⟨i, hi⟩` from `exists_chart hL (pullback.fst f f z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `exists_chart hL (pullback.snd f f z)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, j), ⟨hi, hj⟩, hz⟩`. Establish `hagree : ∀ p q, ∀ x ∈ W p ⊓ W q, gm (𝟙 _) x (W p) (u p) = gm (𝟙 _) x (W q) (u q)`. Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩ x ⟨hp, hq⟩`. Rewrite using `[key (𝟙 _) x _ hp, key (𝟙 _) x _ hq]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.id_comp]`. Establish `hx1 : f (pullback.fst f f x) ∈ V` using `hp.2`. Establish `hx2 : f (pullback.snd f f x) ∈ V` using `by rw [hf]; exact hx1`. Rewrite using `[tpull (pullback.fst f f) x i' i hx1 hq.1.1 hp.1.1, tpull (pullback.snd f f) x j' j hx2 hq.1.2 hp.1.2, hC x i i' j j' hp.1.1 hq.1.1 hp.1.2 hq.1.2]`. Establish `hg : gm (pullback.fst f f) x _ (L.g i' i) * gm (pullback.fst f f) x _ (L.g i i') = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[gm_cocycle hL _ x hq.1.1 hp.1.1 hq.1.1, gm_self hL _ x hq.1.1]`. Rewrite using `[eq_inv_of_mul_eq_one_right hg, mul_inv]`. Conclude with `alg _ _ _ _ _`. Take `⟨c, hc⟩` from `glue_unit V' W hW hcov u hagree`. Establish `cgerm : ∀ {T : Scheme.{0}} (h : T ⟶ pullback f f) (y : T) (p : L.ι × L.ι) (hy : h y ∈ W p), gm h y V' c = gm (h ≫ pullback.fst f f) y _ (t p.1) * gm h y _ (φ p.1 p.2) * (gm (h ≫ pullback.snd f f) y _ (t p.2))⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T h y p hy`. Rewrite using `[← key h y p hy, ← hc p, gm_res h y (hW p) hy]`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Introduce `z i j hV hi hj`. Use `cgerm (𝟙 _) z (i, j) ⟨⟨hi, hj⟩, hV⟩` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [Category.id_comp]`. Introduce `w hV set q₁ := pullback.fst (pullback.snd f f) (pullback.fst f f) set q₂ := pullback.snd (pullback.snd f f) (pullback.fst f f)`. Establish `hmid : q₁ ≫ pullback.snd f f = q₂ ≫ pullback.fst f f` using `pullback.condition`. Establish `h13a : pr13 f ≫ pullback.fst f f = q₁ ≫ pullback.fst f f` using `by unfold pr13; exact pullback.lift_fst _ _ _`. Establish `h13b : pr13 f ≫ pullback.snd f f = q₂ ≫ pullback.snd f f` using `by unfold pr13; exact pullback.lift_snd _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `pmid : pullback.snd f f (q₁ w) = pullback.fst f f (q₂ w)`. Express the relevant statement in the definitionally equal form `(q₁ ≫ pullback.snd f f) w = (q₂ ≫ pullback.fst f f) w`. Rewrite using `[hmid]`. Establish `p13a : pullback.fst f f (pr13 f w) = pullback.fst f f (q₁ w)`. Express the relevant statement in the definitionally equal form `(pr13 f ≫ pullback.fst f f) w = (q₁ ≫ pullback.fst f f) w`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h13a]`. Establish `p13b : pullback.snd f f (pr13 f w) = pullback.snd f f (q₂ w)`. Express the relevant statement in the definitionally equal form `(pr13 f ≫ pullback.snd f f) w = (q₂ ≫ pullback.snd f f) w`. Rewrite using `[h13b]`. Take `⟨i, hi⟩` from `exists_chart hL (pullback.fst f f (q₁ w))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `exists_chart hL (pullback.snd f f (q₁ w))`. Take `⟨k, hk⟩` from `exists_chart hL (pullback.snd f f (q₂ w))`. Establish `hV2 : f (pullback.fst f f (q₂ w)) ∈ V` using `by rw [← pmid, hf]; exact hV`. Establish `hV3 : f (pullback.fst f f (pr13 f w)) ∈ V` using `by rw [p13a]; exact hV`. Establish `m1 : q₁ w ∈ W (i, j)` using `⟨⟨hi, hj⟩, hV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Establish `m2 : q₂ w ∈ W (j, k)` using `⟨⟨show pullback.fst f f (q₂ w) ∈ L.U j by rw [← pmid]; exact hj, hk⟩, hV2⟩`. Establish `m3 : pr13 f w ∈ W (i, k)` using `⟨⟨show pullback.fst f f (pr13 f w) ∈ L.U i by rw [p13a]; exact hi, show pullback.snd f f (pr13 f w) ∈ L.U k by rw [p13b]; exact hk⟩, hV3⟩`. Rewrite using `[cgerm q₁ w (i, j) m1, cgerm q₂ w (j, k) m2, cgerm (pr13 f) w (i, k) m3, hmid, h13a, h13b, ← hK w i j k hi hj hk]`. Simplify using `only`. Simplify using `only [q₁, q₂]`.
-
-Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_cocycle {X Y : Scheme.{0}} (f : X ⟶ Y) (L : LB X) (hL : L.IsLB)
     (φ : ∀ i j, Γ(pullback f f, chart f L i j)ˣ) (hC : DescCompat f L φ) (hK : DescCocycle f L φ)

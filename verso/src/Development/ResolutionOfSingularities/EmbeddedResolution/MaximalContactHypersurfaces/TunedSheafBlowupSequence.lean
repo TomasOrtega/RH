@@ -24,7 +24,7 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `hx : x ∈ (⨆ U : X.affineOpens, (U : X.Opens))`. Rewrite using `[AlgebraicGeometry.iSup_affineOpens_eq_top X]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨U, hU⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Conclude with `⟨U, hU⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_affineOpen_mem {X : Scheme.{u}} (x : X) :
     ∃ U : X.affineOpens, x ∈ U.1.1 := by
@@ -35,9 +35,9 @@ private theorem exists_affineOpen_mem {X : Scheme.{u}} (x : X) :
   exact ⟨U, hU⟩
 
 /- English proof (translation)
-Take `⟨U, hxU0⟩` from `exists_affineOpen_mem x`. Establish `hxU : x ∈ U.1` using `hxU0`. Establish `hUeq : (iSup F).ideal U = ⨆ i, (F i).ideal U`. Simplify using `only [Scheme.IdealSheafData.ideal_iSup, iSup_apply]`. Rewrite using `[stalkIdeal_eq_map_germ _ x U hxU, hUeq, (Ideal.gc_map_comap _).l_iSup]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `iSup_le fun i => ?_` and prove the remaining obligations. Rewrite using `[← stalkIdeal_eq_map_germ (F i) x U hxU]`. Conclude with `h i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stalkIdeal_iSup_le_of_forall {X : Scheme.{u}} {ι : Type}
     (F : ι → X.IdealSheafData) (x : X) (Jd : Ideal (X.presheaf.stalk x))
@@ -52,7 +52,7 @@ private theorem stalkIdeal_iSup_le_of_forall {X : Scheme.{u}} {ι : Type}
   exact h i
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Rewrite using `[List.range_succ, List.map_append, List.sum_append, ih, Finset.sum_range_succ]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sum_map_range_eq_sum_range (w : ℕ → ℕ) (n : ℕ) :
     ((List.range n).map w).sum = ∑ j ∈ Finset.range n, w j := by
@@ -63,7 +63,7 @@ private theorem sum_map_range_eq_sum_range (w : ℕ → ℕ) (n : ℕ) :
       simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, ih]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem prod_map_range_pow_ite_eq {X : Scheme.{u}} (f : ℕ → X.IdealSheafData) (s n : ℕ) :
     ((List.range (n + 1)).map (fun j => f j ^ (if j = 0 then s else 0))).prod = f 0 ^ s := by
@@ -74,9 +74,9 @@ private theorem prod_map_range_pow_ite_eq {X : Scheme.{u}} (f : ℕ → X.IdealS
       simp
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil, List.sum_nil]`. Rewrite using `[orderAtLeastLocus_zero]`. Conclude with `Set.mem_univ x`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cons a t ih`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Conclude with `inter_orderAtLeastLocus_subset_orderAtLeastLocus_mul _ _ _ _ ⟨h a, ih⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_orderAtLeastLocus_prod_map_of_forall {X : Scheme.{u}} (x : X)
     (g : ℕ → X.IdealSheafData) (w : ℕ → ℕ) (h : ∀ j, x ∈ orderAtLeastLocus (g j) (w j)) (l : List ℕ) :
@@ -91,11 +91,9 @@ private theorem mem_orderAtLeastLocus_prod_map_of_forall {X : Scheme.{u}} (x : X
       exact inter_orderAtLeastLocus_subset_orderAtLeastLocus_mul _ _ _ _ ⟨h a, ih⟩
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[mem_orderAtLeastLocus_iff_stalkIdeal_le_maximalIdeal_pow, tunedSheaf_eq_iSup]`. Use `stalkIdeal_iSup_le_of_forall _ x _ ?_` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`. Use `(mem_orderAtLeastLocus_iff_stalkIdeal_le_maximalIdeal_pow _ n x).mp ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `mem_orderAtLeastLocus_prod_map_of_forall x (fun j => derivIdealSheafIterate k p j A ^ c j) (fun j => c j * (m - j)) (fun j => orderAtLeastLocus_subset_orderAtLeastLocus_pow _ _ _ (orderAtLeastLocus_subset_orderAtLeastLocus_derivIdealSheafIterate k p A j m hx)) (List.range m)`. Establish `hn : n ≤ ((List.range m).map (fun j => c j * (m - j))).sum`. Rewrite using `[sum_map_range_eq_sum_range]`. Use `le_trans hc (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun j _ => Nat.mul_comm _ _`.
-
-Conclude with `orderAtLeastLocus_subset_of_le _ hn key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_subset_orderAtLeastLocus_tunedSheaf (k : Type u) [Field k] [IsNoetherianRing k]
     {Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -117,7 +115,7 @@ theorem orderAtLeastLocus_subset_orderAtLeastLocus_tunedSheaf (k : Type u) [Fiel
   exact orderAtLeastLocus_subset_of_le _ hn key
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `orderAtLeastLocus_pow_mul k p A hs m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_pow_mul_eq_orderAtLeastLocus (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (A : X.IdealSheafData)
@@ -127,7 +125,7 @@ theorem orderAtLeastLocus_pow_mul_eq_orderAtLeastLocus (k : Type u) [Field k] [C
   exact orderAtLeastLocus_pow_mul k p A hs m
 
 /- English proof (translation)
-Use `Set.Subset.antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[← orderAtLeastLocus_pow_mul_eq_orderAtLeastLocus k p I m hs]`. Conclude with `orderAtLeastLocus_subset_of_le_ideal h1 (m * s)`. Conclude with `fun x hx => orderAtLeastLocus_subset_of_le_ideal h2 (m * s) (orderAtLeastLocus_subset_orderAtLeastLocus_tunedSheaf k p I m (m * s) hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_eq_of_pow_le_of_le_tunedSheaf (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -141,9 +139,9 @@ theorem orderAtLeastLocus_eq_of_pow_le_of_le_tunedSheaf (k : Type u) [Field k] [
       (orderAtLeastLocus_subset_orderAtLeastLocus_tunedSheaf k p I m (m * s) hx)
 
 /- English proof (translation)
-Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Establish `hsum : (m' + 1) * s ≤ ∑ j ∈ Finset.range (m' + 1), (m' + 1 - j) * (if j = 0 then s else 0)`. Establish `h` using `Finset.sum_eq_single_of_mem (s := Finset.range (m' + 1)) (f := fun j => (m' + 1 - j) * (if j = 0 then s else 0)) 0 (Finset.mem_range.mpr (Nat.succ_pos m')) (fun b _ hb => by simp [hb])`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle` using `le_iSup (fun c : {c : ℕ → ℕ // (m' + 1) * s ≤ ∑ j ∈ Finset.range (m' + 1), (m' + 1 - j) * c j} => ((List.range (m' + 1)).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod) ⟨fun j => if j = 0 then s else 0, hsum⟩`. Rewrite using `[tunedSheaf_eq_iSup]`. Use `le_trans (le_of_eq ?_) hle` and prove the remaining obligations. Use `prod_map_range_pow_ite_eq (fun j => derivIdealSheafIterate k p j I) s m'` as an intermediate fact. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -171,13 +169,13 @@ theorem pow_le_tunedSheaf (k : Type u) [Field k] [IsNoetherianRing k] {X : Schem
   simp
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge m 2 with h | h` into its components or cases. Establish `hm1 : m = 1` using `by omega`. Substitute `hm1` using the available equality. Use `⟨1, 1, by omega, ?_, le_rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[tuningExponent_one, lcmUpTo_one]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tuningExponent_one]`. Take `⟨t, ht⟩` from `dvd_lcmUpTo m m (by omega) le_rfl`. Establish `htpos : 0 < t`. Break down `Nat.eq_zero_or_pos t with h0 | h0` into its components or cases. Rewrite `ht` using `[h0, Nat.mul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos` using `lcmUpTo_pos m`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Use `⟨m - 1, (m - 1) * t, le_rfl, tuningExponent_of_two_le h, ?_, ?_⟩` and prove the remaining obligations. Establish `: 0 < (m - 1) * t` using `Nat.mul_pos (by omega) htpos`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[tuningExponent_of_two_le h, ht]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_tuningExponent_eq {m : ℕ} (hm : 1 ≤ m) :
     ∃ r s : ℕ, m - 1 ≤ r ∧ tuningExponent m = r * lcmUpTo m ∧ 1 ≤ s ∧ tuningExponent m = m * s := by
@@ -201,11 +199,11 @@ theorem exists_tuningExponent_eq {m : ℕ} (hm : 1 ≤ m) :
       ring
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Use `hiso` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[BlowupSequenceData.projectionToBase_zero]`. Use `infer_instance`. Consider the case `succ j ih`. Introduce `hj`. Use `ih (Nat.le_of_succ_le hj)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `smooth_comp_of_isBlowupAlongIdealSheaf (hsnc j hj) (d.isBlowup j hj)`. Rewrite using `[BlowupSequenceData.projectionToBase_succ, Category.assoc]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_projectionToBase_comp_of_snc (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -228,7 +226,7 @@ private theorem smooth_projectionToBase_comp_of_snc (k : Type u) [Field k] {X : 
       exact hb
 
 /- English proof (translation)
-Introduce `i hi`. Use `smooth_projectionToBase_comp_of_snc k p E d hiso hsnc i hi` as an intermediate fact. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem locallyOfFiniteType_projectionToBase_comp_of_snc (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -241,11 +239,11 @@ private theorem locallyOfFiniteType_projectionToBase_comp_of_snc (k : Type u) [F
   infer_instance
 
 /- English proof (translation)
-Establish `: IsLocallyNoetherian P₁` using `LocallyOfFiniteType.isLocallyNoetherian p₁`. Establish `: LocallyOfFiniteType (π ≫ p)`. Rewrite using `[← hp₁]`. Use `infer_instance`. Establish `hF : Blowup.IsLocallyGeneratedByNonZeroDivisor (Blowup.exceptionalIdeal π Z)` using `isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Use `hF.le_of_pow_mul_le_pow_mul (m * s) ?_` and prove the remaining obligations. Establish `hcm : (A.comap π) ^ s ≤ B.comap π`. Rewrite using `[← AlgebraicGeometry.Scheme.IdealSheafData.comap_pow]`. Conclude with `Scheme.IdealSheafData.comap_mono π h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `hF.le_of_pow_mul_le_pow_mul (m * s) ?_` and prove the remaining obligations. Establish `hct : A' = controlledTransform π Z A m hπ hA` using `eq_controlledTransform_of_mul_eq_comap π Z A m hπ hA A' hA'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem pow_le_and_le_tunedSheaf_of_isBlowupAlongIdealSheaf (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {P P₁ : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k))
@@ -284,33 +282,31 @@ private theorem pow_le_and_le_tunedSheaf_of_isBlowupAlongIdealSheaf (k : Type u)
       _ = Blowup.exceptionalIdeal π Z ^ (m * s) * tunedSheaf k p₁ A' m (m * s) := by rw [hct]
 
 /- English proof (translation)
-Establish `hsm : ∀ i, i ≤ d.length → AlgebraicGeometry.Smooth (d.projectionToBase i ≫ p)` using `smooth_projectionToBase_comp_of_snc k p E d hiso hsnc`. Establish `key : ∀ i, i ≤ d.length → (d.controlledTransform I m i) ^ s ≤ d.controlledTransform J (m * s) i ∧ ∀ [_hq : LocallyOfFiniteType (d.projectionToBase i ≫ p)], d.controlledTransform J (m * s) i ≤ tunedSheaf k (d.projectionToBase i ≫ p) (d.controlledTransform I m i) m (m * s)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Prove the components needed by the constructor for the conclusion. Simplify using `only [BlowupSequenceData.controlledTransform_zero]`. Rewrite using `[← AlgebraicGeometry.Scheme.IdealSheafData.comap_pow]`. Conclude with `Scheme.IdealSheafData.comap_mono _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hq0`. Use `hq0` as an intermediate fact. Use `hiso` as an intermediate fact. Simplify using `only [BlowupSequenceData.controlledTransform_zero]`. Establish `heq : (tunedSheaf k p I m (m * s)).comap d.isoZero.hom = tunedSheaf k (d.projectionToBase 0 ≫ p) (I.comap d.isoZero.hom) m (m * s)` using `comap_tunedSheaf_of_smooth k p d.isoZero.hom (d.projectionToBase 0 ≫ p) rfl I m (m * s)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← heq]`. Conclude with `Scheme.IdealSheafData.comap_mono _ h2`. Consider the case `succ j ih`. Introduce `hj`. Establish `hj' : j < d.length` using `hj`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hjle : j ≤ d.length` using `Nat.le_of_succ_le hj`. Take `⟨ih1, ih2⟩` from `ih hjle`. Use `hsm j hjle` as an intermediate fact. Use `hft j hjle` as an intermediate fact. Use `hft (j + 1) hj` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcosj : orderAtLeastLocus (d.controlledTransform J (m * s) j) (m * s) = orderAtLeastLocus (d.controlledTransform I m j) m` using `orderAtLeastLocus_eq_of_pow_le_of_le_tunedSheaf k (d.projectionToBase j ≫ p) _ _ m hs ih1 ih2`. Establish `hordj` using `hord j hj' hcosj`. Establish `hAZ : d.controlledTransform I m j ≤ d.center j ^ m` using `le_pow_of_hasStrictNormalCrossingsWith (d.projectionToBase j ≫ p) (d.center j) _ (d.boundaryFrom E j) (hsnc j hj') m hordj`. Establish `hBZ : d.controlledTransform J (m * s) j ≤ d.center j ^ (m * s)`. Use `le_pow_of_hasStrictNormalCrossingsWith (d.projectionToBase j ≫ p) (d.center j) _ (d.boundaryFrom E j) (hsnc j hj') (m * s) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcosj]`. Conclude with `hordj`. Establish `: IsLocallyNoetherian (d.obj (j + 1))` using `LocallyOfFiniteType.isLocallyNoetherian (d.projectionToBase (j + 1) ≫ p)`. Take `⟨A1, hA1, -⟩` from `existsUnique_pow_mul_eq_comap_of_isBlowupAlongIdealSheaf (d.map j) (d.center j) (d.controlledTransform I m j) m (d.isBlowup j hj') hAZ`. Take `⟨B1, hB1, -⟩` from `existsUnique_pow_mul_eq_comap_of_isBlowupAlongIdealSheaf (d.map j) (d.center j) (d.controlledTransform J (m * s) j) (m * s) (d.isBlowup j hj') hBZ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA1' : Blowup.exceptionalIdeal (d.map j) (d.center j) ^ m * d.controlledTransform I m (j + 1) = (d.controlledTransform I m j).comap (d.map j)` using `d.pow_exceptionalIdeal_mul_controlledTransform_succ I m j ⟨A1, hA1⟩`. Establish `hB1' : Blowup.exceptionalIdeal (d.map j) (d.center j) ^ (m * s) * d.controlledTransform J (m * s) (j + 1) = (d.controlledTransform J (m * s) j).comap (d.map j)` using `d.pow_exceptionalIdeal_mul_controlledTransform_succ J (m * s) j ⟨B1, hB1⟩`. Establish `hp1 : d.projectionToBase (j + 1) ≫ p = d.map j ≫ (d.projectionToBase j ≫ p)`. Rewrite using `[BlowupSequenceData.projectionToBase_succ, Category.assoc]`. Take `⟨r1, r2⟩` from `pow_le_and_le_tunedSheaf_of_isBlowupAlongIdealSheaf k (d.projectionToBase j ≫ p) (d.map j) (d.projectionToBase (j + 1) ≫ p) hp1 (d.center j) (d.boundaryFrom E j) (hsnc j hj') (d.isBlowup j hj') m s (d.controlledTransform I m j) (d.controlledTransform J (m * s) j) (d.controlledTra …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨r1, ?_⟩` and prove the remaining obligations. Introduce `_`. Conclude with `r2`. Establish `hcos : ∀ i, i ≤ d.length → orderAtLeastLocus (d.controlledTransform J (m * s) i) (m * s) = orderAtLeastLocus (d.controlledTransform I m i) m`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hsm i hi` as an intermediate fact. Use `hft i hi` as an intermediate fact. Conclude with `orderAtLeastLocus_eq_of_pow_le_of_le_tunedSheaf k (d.projectionToBase i ≫ p) _ _ m hs (key i hi).1 (key i hi).2`. Establish `hdiv : ∀ i, i < d.length → (d.controlledTransform I m i ≤ d.center i ^ m) ∧ (d.controlledTransform J (m * s) i ≤ d.center i ^ (m * s))`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hsm i (Nat.le_of_succ_le hi)` as an intermediate fact. Establish `hordi` using `hord i hi (hcos i (Nat.le_of_succ_le hi))`. Prove the components needed by the constructor for the conclusion. Conclude with `le_pow_of_hasStrictNormalCrossingsWith (d.projectionToBase i ≫ p) (d.center i) _ (d.boundaryFrom E i) (hsnc i hi) m hordi`. Use `le_pow_of_hasStrictNormalCrossingsWith (d.projectionToBase i ≫ p) (d.center i) _ (d.boundaryFrom E i) (hsnc i hi) (m * s) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hcos i (Nat.le_of_succ_le hi)]`. Conclude with `hordi`. Use `⟨hcos, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Use `hft (i + 1) hi` as an intermediate fact.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsLocallyNoetherian (d.obj (i + 1))` using `LocallyOfFiniteType.isLocallyNoetherian (d.projectionToBase (i + 1) ≫ p)`. Take `⟨B, hB, -⟩` from `existsUnique_pow_mul_eq_comap_of_isBlowupAlongIdealSheaf (d.map i) (d.center i) (d.controlledTransform I m i) m (d.isBlowup i hi) (hdiv i hi).1`. Conclude with `⟨B, hB⟩`. Introduce `i hi`. Use `hft (i + 1) hi` as an intermediate fact.
-
-Establish `: IsLocallyNoetherian (d.obj (i + 1))` using `LocallyOfFiniteType.isLocallyNoetherian (d.projectionToBase (i + 1) ≫ p)`. Take `⟨B, hB, -⟩` from `existsUnique_pow_mul_eq_comap_of_isBlowupAlongIdealSheaf (d.map i) (d.center i) (d.controlledTransform J (m * s) i) (m * s) (d.isBlowup i hi) (hdiv i hi).2`. Conclude with `⟨B, hB⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_eq_and_exceptionalIdeal_dvd_of_blowupSequence (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -432,17 +428,13 @@ private theorem orderAtLeastLocus_eq_and_exceptionalIdeal_dvd_of_blowupSequence 
     exact ⟨B, hB⟩
 
 /- English proof (translation)
-Introduce `k hk1 hk2 hk3 X p hp1 hp2 I m _hm _hmax s hs J h1 h2 E d`. Establish `hiso : AlgebraicGeometry.Smooth d.isoZero.hom` using `inferInstance`. Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Introduce `hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hft` using `locallyOfFiniteType_projectionToBase_comp_of_snc k p E d hiso hI.center_snc`. Take `⟨hc, -, hdivJ⟩` from `orderAtLeastLocus_eq_and_exceptionalIdeal_dvd_of_blowupSequence k p I J m s hs h1 h2 E d hiso hft hI.center_snc (fun i hi _ => hI.center_order i hi)`. Conclude with `{ divisible := hdivJ center_order := fun i hi => by`. Rewrite using `[hc i (Nat.le_of_succ_le hi)]`. Conclude with `hI.center_order i hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `center_smooth := hI.center_smooth`. Use `center_snc := hI.center_snc }`. Introduce `hJ`. Establish `hft` using `locallyOfFiniteType_projectionToBase_comp_of_snc k p E d hiso hJ.center_snc`. Take `⟨hc, hdivI, -⟩` from `orderAtLeastLocus_eq_and_exceptionalIdeal_dvd_of_blowupSequence k p I J m s hs h1 h2 E d hiso hft hJ.center_snc (fun i hi heq => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← heq]`. Conclude with `hJ.center_order i hi)`. Conclude with `{ divisible := hdivI center_order := fun i hi => by`. Rewrite using `[← hc i (Nat.le_of_succ_le hi)]`. Conclude with `hJ.center_order i hi`.
-
-Use `center_smooth := hJ.center_smooth`. Use `center_snc := hJ.center_snc }`. Introduce `hI i hi`. Establish `hft` using `locallyOfFiniteType_projectionToBase_comp_of_snc k p E d hiso hI.center_snc`. Take `⟨hc, -, -⟩` from `orderAtLeastLocus_eq_and_exceptionalIdeal_dvd_of_blowupSequence k p I J m s hs h1 h2 E d hiso hft hI.center_snc (fun i hi _ => hI.center_order i hi)`.
-
-Conclude with `hc i hi`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isMarked_iff_of_pow_le_of_le_tunedSheaf : IsMarkedIffOfPowLeOfLeTunedSheaf.{u} := by
   intro k hk1 hk2 hk3 X p hp1 hp2 I m _hm _hmax s hs J h1 h2 E d
@@ -479,13 +471,13 @@ theorem isMarked_iff_of_pow_le_of_le_tunedSheaf : IsMarkedIffOfPowLeOfLeTunedShe
     exact hc i hi
 
 /- English proof (translation)
-Introduce `k hk1 hk2 hk3 X p hp1 hp2 I m hm hmax E d`. Take `⟨r, s, hr, hre, hs, hms⟩` from `exists_tuningExponent_eq hm`. Establish `hWe : balancedTunedSheaf k p I m = tunedSheaf k p I m (m * s)` using `by rw [balancedTunedSheaf_eq, hms]`. Establish `h1 : I ^ s ≤ balancedTunedSheaf k p I m`. Rewrite using `[hWe]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_tunedSheaf k p I hm s`. Establish `h2 : balancedTunedSheaf k p I m ≤ tunedSheaf k p I m (m * s)` using `le_of_eq hWe`. Establish `hmarked` using `isMarked_iff_of_pow_le_of_le_tunedSheaf.{u} k X p I m hm hmax s hs (balancedTunedSheaf k p I m) h1 h2 E d`. Rewrite `hmarked` using `[← hms]`. Establish `he1 : 1 ≤ tuningExponent m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hms]`. Conclude with `Nat.mul_pos hm hs`. Use `⟨hmarked.1, hmarked.2, ?_, ?_⟩` and prove the remaining obligations. Establish `h5` using `isMaxContactInvariantTunedSheaf.{u} k X p I m hm hmax (tuningExponent m) he1`. Rewrite using `[balancedTunedSheaf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h5`. Establish `h8` using `isDerivBalanced_tunedSheaf_mul_lcmUpTo.{u} k X p I m hm hmax r hr`. Rewrite `h8` using `[← hre]`. Rewrite using `[balancedTunedSheaf_eq]`. Conclude with `h8`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMarked_iff_balanced_tunedSheaf : IsMarkedIffBalancedTunedSheaf.{u} := by
   intro k hk1 hk2 hk3 X p hp1 hp2 I m hm hmax E d
@@ -512,7 +504,7 @@ theorem isMarked_iff_balanced_tunedSheaf : IsMarkedIffBalancedTunedSheaf.{u} := 
     exact h8
 
 /- English proof (translation)
-The claim follows from `isMarked_iff_balanced_tunedSheaf.{u} tunedSheaf_succ_le := h1 tunedSheaf_mul_le := h2 derivIdealSheaf_tunedSheaf_succ := derivIdealSheaf_tunedSheaf_succ.{u} derivIdealSheafIter_pred_tunedSheaf := maxContactIdealTunedSheafEq.{u} derivIdealSheafIter_mul_derivIdealSheaf_le_tunedShea …`.
+A detailed English derivation is pending.
 -/
 theorem tunedSheafProperties_of_succ_le_of_mul_le (h1 : TunedSheafSuccLe.{u}) (h2 : TunedSheafMulLeAdd.{u}) :
     TunedSheafProperties.{u} where

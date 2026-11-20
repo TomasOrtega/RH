@@ -12,15 +12,13 @@ namespace PositivityTheory.Xgp.c_bm_exists_period
 open GlobalTheory GlobalTheory.FibreDeriv GlobalTheory.VerticalDeriv
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Z) (U := ⊤) (x := e 0 (default : PrimeSpectrum ℂ)) trivial`. Establish `h0 : ⊤ ≤ e 0 ⁻¹ᵁ U` using `(top_le_preimage_iff_mem _ U).2 hxU`. Establish `hd` using `LocalLift.hol_differentiableAt hol hB h0`. Set `J : Γ(Z, U) →+* DualNumber ℂ` to `{ toFun := fun f => jet w (fun z => valAt' (e z) U f) map_one' := by`. Establish `: (fun z => valAt' (e z) U 1) =ᶠ[nhds 0] fun _ => 1` using `by filter_upwards [LocalLift.hol_eventually_mem hol hB h0] with z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `valAt'_one _ hz.2`. Rewrite using `[jet_congr w this, jet_const, map_one]`. Use the proof step `map_zero' := by`. Simplify using `only [valAt'_zero]`. Rewrite using `[jet_const, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `map_add' := fun f f' => by`. Simplify using `only [valAt'_add]`. Conclude with `jet_add w (hd f) (hd f')`. Use the proof step `map_mul' := fun f f' => by`. Simplify using `only [valAt'_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `jet_mul w (hd f) (hd f') }`. Take `⟨v, hv, hve⟩` from `TangentOrigin.exists_evalPt_eq hU J`. Use `⟨v, isDerivAt0_of_affine ?_ hU hv fun a => ⟨hd a, DFunLike.congr_fun hve a⟩⟩` and prove the remaining obligations. Use `TangentOrigin.ext_evalPt hU ((TangentOrigin.top_le_preimage_iff v U).1 hv) h0 (RingHom.ext fun f => ?_)` and prove the remaining obligations. Use `(TangentOrigin.evalPt_spMap_comp TangentOrigin.fstC v U hv _ f).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[hve, ← TangentOrigin.valAt'_eq_evalPt]`. Conclude with `fst_jet w (fun z => valAt' (e z) U f)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isDerivAt0_loc {g : ℕ} {Z : Scheme.{0}} {B : Set (Fin g → ℂ)} {e : (Fin g → ℂ) → (Sp ℂ ⟶ Z)}
     (hol : IsHolTo B e) (hB : 0 ∈ B) (w : Fin g → ℂ) :

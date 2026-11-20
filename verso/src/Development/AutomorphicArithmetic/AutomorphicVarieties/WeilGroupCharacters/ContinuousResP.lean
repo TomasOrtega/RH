@@ -21,13 +21,11 @@ def GDet.IsTwist {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) 
         map_mul' := fun g h => by simp [MonoidAlgebra.single_mul_single] } y)
 
 /- English proof (translation)
-Establish `hsep : TotallySeparatedSpace (G ⧸ N)`. Rewrite using `[totallySeparatedSpace_iff_exists_isClopen]`. Introduce `x y hxy`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `_ a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `_ b`. Establish `hcl : IsClosed ((fun g : G => b⁻¹ * g) ⁻¹' (N : Set G))` using `hN.preimage (continuous_const.mul continuous_id)`. Establish `ha : a ∈ ((fun g : G => b⁻¹ * g) ⁻¹' (N : Set G))ᶜ`. Introduce `h`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hxy (QuotientGroup.eq.2 h).symm`. Take `⟨C, hC, haC, hCsub⟩` from `compact_exists_isClopen_in_isOpen hcl.isOpen_compl ha`. Use `⟨QuotientGroup.mk '' C, ⟨?_, QuotientGroup.isOpenMap_coe _ hC.isOpen⟩, ⟨a, haC, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← (QuotientGroup.isQuotientMap_mk N).isClosed_preimage, QuotientGroup.preimage_image_mk_eq_mul]`. Conclude with `hN.mul_left_of_isCompact hC.isClosed.isCompact`.
-
-Introduce and unpack `⟨c, hc, hcb⟩`. Conclude with `hCsub hc (QuotientGroup.eq.1 hcb.symm)`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
@@ -126,7 +124,7 @@ structure Lev where
   ε_cont : Continuous ε
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `s.hc`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Simplify using `[hj]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem c_sq : s.c * s.c = 1 := by
   obtain ⟨j, hj⟩ := s.hc
@@ -142,7 +140,7 @@ def pr : G L Ω →* V.η.ker :=
   ((toGS Ω V.S').comp (resP L Ω)).codRestrict _ fun g => (V.hη _).2 ⟨g, rfl⟩
 
 /- English proof (translation)
-The claim follows from `((continuous_toGS Ω _).comp h).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem pr_cont (h : Continuous (resP L Ω)) : Continuous V.pr := ((continuous_toGS Ω _).comp h).subtype_mk _
 
@@ -151,7 +149,7 @@ end Lev
 end HidaSetting
 
 /- English proof (translation)
-The claim follows from `Af.continuous_restrictScalarsHom _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_resP : Continuous (resP L Ω) := Af.continuous_restrictScalarsHom _ _ _
 

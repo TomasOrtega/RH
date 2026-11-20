@@ -11,7 +11,7 @@ namespace GlobalTheory.SW.Neumann
 noncomputable section
 
 /- English proof (translation)
-Use `GlobalTheory.SCV.differentiableOn_tsum_of_locally_normal hU hg fun x hx => ?_` and prove the remaining obligations. Establish `h1 : ∀ᶠ z in 𝓝 x, w z < w x + 1` using `(hw.continuousAt (hU.mem_nhds hx)).eventually (gt_mem_nhds (by linarith))`. Use `⟨_, Filter.inter_mem (hU.mem_nhds hx) h1, fun i => u i * (w x + 1), hu.mul_right _, fun i z hz => (hb i z hz.1).trans (mul_le_mul_of_nonneg_left (le_of_lt hz.2) (hu0 i))⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem diffOn_tsum {H ι : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] [FiniteDimensional ℂ H]
     {U : Set H} (hU : IsOpen U) {w : H → ℝ} (hw : ContinuousOn w U) {g : ι → H → ℂ}
@@ -27,7 +27,7 @@ theorem diffOn_tsum {H ι : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] [Fi
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `h : Continuous fun x : Frame X.Ψ r => FD.gram τ.1 X.Gm (mat x τ)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [FD.gram, hermC, FD.col, mat, Matrix.of_apply]`. Use `fun_prop`. Conclude with `(h.matrix_submatrix _ _).matrix_det`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_dmin (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i := by
@@ -38,9 +38,9 @@ theorem cont_dmin (τ : X.Ψ) (i : Fin (r + 1)) :
   exact (h.matrix_submatrix _ _).matrix_det
 
 /- English proof (translation)
-Establish `h : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩ ⋂ i : Fin (r + 1), {x | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re})`. Use extensionality with `x`. Simplify using `[Data.dom, GG]`. Rewrite using `[h]`. Use `isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isOpen_ne_fun (show Continuous fun x : Frame X.Ψ r => mat x τ from continuous_apply τ).matrix_det continuous_const`. Conclude with `isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (cont_dmin X τ i)))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_frames : IsOpen X.dom := by
   have h : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩
@@ -55,7 +55,7 @@ theorem isOpen_frames : IsOpen X.dom := by
       (cont_dmin X τ i)))
 
 /- English proof (translation)
-Introduce `h`. Use `(hx τ).2 i` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dmin_ne {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm x τ i ≠ 0 := by
@@ -68,14 +68,14 @@ def fac (la : Wt X.Ψ r) (x : Frame X.Ψ r) : ℝ :=
   ∏ τ, ∏ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun τ _ => Finset.prod_pos fun _ _ => Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (dmin_ne X hx τ _) (dmin_ne X hx τ _))) _`.
+A detailed English derivation is pending.
 -/
 theorem fac_pos (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) : 0 < fac X la x :=
   Finset.prod_pos fun τ _ => Finset.prod_pos fun _ _ =>
     Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (dmin_ne X hx τ _) (dmin_ne X hx τ _))) _
 
 /- English proof (translation)
-Use `ContinuousOn.inv₀ ?_ fun x hx => (fac_pos X la hx).ne'` and prove the remaining obligations. Use `continuousOn_finsetProd _ fun τ _ => continuousOn_finsetProd _ fun i _ => ?_` and prove the remaining obligations. Use `ContinuousOn.rpow_const ?_ fun x hx => Or.inl ?_` and prove the remaining obligations. Conclude with `(((cont_dmin X τ _).continuousOn).div (cont_dmin X τ _).continuousOn fun x hx => dmin_ne X hx τ _).norm`. Conclude with `norm_ne_zero_iff.mpr (div_ne_zero (dmin_ne X hx τ _) (dmin_ne X hx τ _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fac_cont (la : Wt X.Ψ r) : ContinuousOn (fun x => (fac X la x)⁻¹) X.dom := by
   refine ContinuousOn.inv₀ ?_ fun x hx => (fac_pos X la hx).ne'
@@ -86,7 +86,7 @@ theorem fac_cont (la : Wt X.Ψ r) : ContinuousOn (fun x => (fac X la x)⁻¹) X.
   · exact norm_ne_zero_iff.mpr (div_ne_zero (dmin_ne X hx τ _) (dmin_ne X hx τ _))
 
 /- English proof (translation)
-Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (fac_pos X la hx)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pnorm_le_iff (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (B : ℝ) : X.pnorm la P x ≤ B ↔ ‖P x‖ ≤ B * (fac X la x)⁻¹ := by
@@ -94,7 +94,7 @@ theorem pnorm_le_iff (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) {x : Frame X.Ψ
 
 omit [IsCMField E] in
 /- English proof (translation)
-Unfold `mapL`. Rewrite using `[← Submodule.map_comp, Units.val_mul, Matrix.toLin'_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mapL_mul (γ δ : GL (Fin r) E) (L : Lt E r) : mapL (γ * δ) L = mapL γ (mapL δ L) := by
   unfold mapL
@@ -103,7 +103,7 @@ theorem mapL_mul (γ δ : GL (Fin r) E) (L : Lt E r) : mapL (γ * δ) L = mapL �
 
 omit [IsCMField E] in
 /- English proof (translation)
-Unfold `mapL`. Rewrite using `[Units.val_one, Matrix.toLin'_one]`. Conclude with `Submodule.map_id L`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapL_one (L : Lt E r) : mapL (1 : GL (Fin r) E) L = L := by
   unfold mapL
@@ -124,9 +124,9 @@ variable {X} {Δ : Subgroup (GL (Fin r) E)} {𝓛 : Set (Lt E r)} {μ : GL (Fin 
   {la : Wt X.Ψ r} {C : Lt E r → Lt E r → ℂ} {a θ : ℝ}
 
 /- English proof (translation)
-Establish `h1 : ‖∑' L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L}, C L L'.1 * G L'.1 x‖ ≤ (∑' L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L}, ‖C L L'.1‖) * B`. Use `tsum_of_norm_bounded ((hC L hL).1.hasSum.mul_right B) fun L' => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hG _ L'.2.1) (norm_nonneg _)`. Establish `h2` using `h1.trans (mul_le_mul_of_nonneg_right (hC L hL).2 hB)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `op`. Rewrite using `[norm_mul, norm_neg, norm_inv, Complex.norm_real, Real.norm_of_nonneg ha.le, inv_mul_le_iff₀ ha]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem op_bound (ha : 0 < a)
     (hC : ∀ L ∈ 𝓛, Summable (fun L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L} => ‖C L L'.1‖) ∧
@@ -146,17 +146,17 @@ theorem op_bound (ha : 0 < a)
   linarith
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hG.bdd`. Establish `hB' : ∀ L ∈ 𝓛, ∀ x ∈ X.dom, ‖G L x‖ ≤ max B 0 * (fac X la x)⁻¹` using `fun L hL x hx => (pnorm_le_iff X la _ hx _).1 ((hB L hL x hx).trans (le_max_left _ _))`. Use `⟨fun L hL => ?_, fun L hL x hx b hb => ?_, fun γ hγ L hL x hx => ?_, θ * max B 0, fun L hL x hx => ?_⟩` and prove the remaining obligations. Use `DifferentiableOn.const_mul (diffOn_tsum (isOpen_frames X) (fac_cont X la) (fun L' => (hG.hol _ L'.2.1).const_mul _) ((hC L hL).1.mul_right (max B 0)) (fun L' => mul_nonneg (norm_nonneg _) (le_max_right _ _)) fun L' x hx => ?_) _` and prove the remaining obligations. Rewrite using `[norm_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hB' _ L'.2.1 x hx) (norm_nonneg _)`. Unfold `op`. Rewrite using `[mul_left_comm, ← tsum_mul_left (a := bchar la b)]`. Use `congr 1`. Use `tsum_congr fun L' => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG.bor _ L'.2.1 x hx b hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `he : ∀ L', (L' ∈ 𝓛 ∧ L' ≠ L) ↔ (mapE γ L' ∈ 𝓛 ∧ mapE γ L' ≠ mapL γ L)`. Introduce `L'`. Use `and_congr ⟨fun h => (hμ γ hγ L' h).1, fun h => ?_⟩ (mapE γ).injective.ne_iff.symm` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hμ γ⁻¹ (Δ.inv_mem hγ) _ h).1` as an intermediate fact. Rewrite `this` using `[show mapL γ⁻¹ (mapE γ L') = L' from (mapE γ).left_inv L']`. Then use the resulting hypothesis. Unfold `op`. Rewrite using `[mul_left_comm, ← tsum_mul_left (a := (μ γ L)⁻¹), ← ((mapE γ).subtypeEquiv he).tsum_eq]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun L' => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `C (mapL γ L) (mapL γ L'.1) * G (mapL γ L'.1) (lact γ x) = _`. Rewrite using `[hG.aut γ hγ _ L'.2.1 x hx, ← hinv γ hγ L hL _ L'.2.1, ← Complex.inv_eq_conj (hμ γ hγ _ L'.2.1).2]`. Establish `h0 : μ γ L ≠ 0` using `norm_ne_zero_iff.1 (by rw [(hμ γ hγ L hL).2]; exact one_ne_zero)`. Clear the denominators using the available nonvanishing facts.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pnorm_le_iff X la _ hx, mul_assoc]`. Conclude with `op_bound ha hC (mul_nonneg (le_max_right _ _) (inv_pos.2 (fac_pos X la hx)).le) (fun L hL => hB' L hL x hx) hL`.
+A detailed English derivation is pending.
 -/
 theorem op_form (ha : 0 < a)
     (hμ : ∀ γ ∈ Δ, ∀ L ∈ 𝓛, mapL γ L ∈ 𝓛 ∧ ‖μ γ L‖ = 1)
@@ -203,33 +203,29 @@ theorem op_form (ha : 0 < a)
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Δ 𝓛 μ la C a θ₀ ha hθ₀ hμ _ hC₀ hinv F hF`. Use `set θ : ℝ := max θ₀ 0 with hθ`. Establish `hθ0 : 0 ≤ θ` using `le_max_right _ _`. Establish `hθ1 : θ < 1` using `max_lt hθ₀ one_pos`. Establish `hC : ∀ L ∈ 𝓛, Summable (fun L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L} => ‖C L L'.1‖) ∧ ∑' L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L}, ‖C L L'.1‖ ≤ θ * a` using `fun L hL => ⟨(hC₀ L hL).2.1, (hC₀ L hL).2.2.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) ha.le)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG0, hGs⟩ : ∃ G : ℕ → Lt E r → Frame X.Ψ r → ℂ, G 0 = F ∧ ∀ k, G (k + 1) = op X 𝓛 C a (G k)` from `⟨fun k => (op X 𝓛 C a)^[k] F, rfl, fun k => Function.iterate_succ_apply' _ _ _⟩`. Establish `hGf : ∀ k, IsForm X Δ 𝓛 μ la (G k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rwa [hG0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k ih => rw [hGs]`. Conclude with `op_form ha hμ hC hinv ih`. Take `⟨B₀, hB₀⟩` from `hF.bdd`. Use `set B : ℝ := max B₀ 0 with hBd`. Establish `hB0 : 0 ≤ B` using `le_max_right _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : ∀ x ∈ X.dom, 0 ≤ (fac X la x)⁻¹` using `fun x hx => (inv_pos.2 (fac_pos X la hx)).le`. Establish `hGb : ∀ k, ∀ x ∈ X.dom, ∀ L ∈ 𝓛, ‖G k L x‖ ≤ θ ^ k * B * (fac X la x)⁻¹`. Introduce `k x hx`. Proceed by induction on `k with`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `L hL`. Rewrite using `[hG0, pow_zero, one_mul]`. Conclude with `(pnorm_le_iff X la _ hx _).1 ((hB₀ L hL x hx).trans (le_max_left _ _))`. Consider the case `succ k ih`. Introduce `L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hGs]`. Use `(op_bound ha hC (mul_nonneg (by positivity) (hw x hx)) ih hL).trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hgeo : Summable fun k : ℕ => θ ^ k * B` using `(summable_geometric_of_lt_one hθ0 hθ1).mul_right B`. Establish `hac : (a : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 ha.ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun L x => (a : ℂ)⁻¹ * ∑' k, G k L x, ⟨fun L hL => ?_, fun L hL x hx b hb => ?_, fun γ hγ L hL x hx => ?_, ‖(a : ℂ)⁻¹‖ * ∑' k : ℕ, θ ^ k * B, fun L hL x hx => ?_⟩, fun L hL x hx => ?_⟩` and prove the remaining obligations. Conclude with `(diffOn_tsum (isOpen_frames X) (fac_cont X la) (fun k => (hGf k).hol L hL) hgeo (fun k => by positivity) fun k x hx => hGb k x hx L hL).const_mul _`. Rewrite using `[mul_left_comm, ← tsum_mul_left (a := bchar la b)]`. Use `congr 1`. Conclude with `tsum_congr fun k => (hGf k).bor L hL x hx b hb`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_left_comm, ← tsum_mul_left (a := (μ γ L)⁻¹)]`. Use `congr 1`. Conclude with `tsum_congr fun k => (hGf k).aut γ hγ L hL x hx`. Rewrite using `[pnorm_le_iff X la _ hx, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (tsum_of_norm_bounded (hgeo.hasSum.mul_right _) fun k => hGb k x hx L hL) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : Summable fun k => G k L x` using `Summable.of_norm_bounded (hgeo.mul_right _) fun k => hGb k x hx L hL`. Establish `hp : Summable fun p : {L' // L' ∈ 𝓛 ∧ L' ≠ L} × ℕ => (a : ℂ)⁻¹ * (C L p.1.1 * G p.2 p.1.1 x)`. Use `Summable.mul_left _ (Summable.of_norm_bounded (Summable.mul_of_nonneg (hC L hL).1 (hgeo.mul_right (fac X la x)⁻¹) (fun _ => norm_nonneg _) fun k => mul_nonneg (by positivity) (hw x hx)) fun p => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hGb _ x hx _ p.1.2.1) (norm_nonneg _)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcomm` using `Summable.tsum_comm (f := fun (L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L}) (k : ℕ) => (a : ℂ)⁻¹ * (C L L'.1 * G k L'.1 x)) hp`. Establish `hterm : ∀ L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L}, ∑' k, (a : ℂ)⁻¹ * (C L L'.1 * G k L'.1 x) = C L L'.1 * ((a : ℂ)⁻¹ * ∑' k, G k L'.1 x)`. Introduce `L'`. Rewrite using `[tsum_mul_left, tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hk : ∀ k, ∑' L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L}, (a : ℂ)⁻¹ * (C L L'.1 * G k L'.1 x) = -G (k + 1) L x`. Introduce `k`. Rewrite using `[tsum_mul_left, hGs, op]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : HasSum (fun L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L} => C L L'.1 * ((a : ℂ)⁻¹ * ∑' k, G k L'.1 x)) (-∑' k, G (k + 1) L x)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Establish `h` using `hp.prod.hasSum`. Simplify using `only at h`. Rewrite `h` using `[← hcomm]`. Simplify using `only [hterm, hk, tsum_neg] at h`. Conclude with `h`.
-
-Establish `hall : ∀ s : Set (Lt E r), s = {L} ∪ {L' | L' ∈ 𝓛 ∧ L' ≠ L} → HasSum (fun L' : s => C L L'.1 * ((a : ℂ)⁻¹ * ∑' k, G k L'.1 x)) (C L L * ((a : ℂ)⁻¹ * ∑' k, G k L x) + -∑' k, G (k + 1) L x)`. Introduce and unpack `s rfl`. Conclude with `HasSum.add_disjoint (f := fun L' => C L L' * ((a : ℂ)⁻¹ * ∑' k, G k L' x)) (by simp) (hasSum_singleton L fun L' => C L L' * ((a : ℂ)⁻¹ * ∑' k, G k L' x)) hsum`. Rewrite using `[(hall 𝓛 ?_).tsum_eq, (hC₀ L hL).1, mul_inv_cancel_left₀ hac, hs.tsum_eq_zero_add, hG0]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use extensionality with `L'`. Apply the tactic sequence `by_cases h : L' = L <;> simp [h, hL]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Δ : Subgroup (GL (Fin r) E)) (𝓛 : Set (Lt E r)) (μ : GL (Fin r) E → Lt E r → ℂ) (la : Wt X.Ψ r) (C : Lt E r → Lt E r → ℂ) (a θ : ℝ), 0 < a → θ < 1 → (∀ γ ∈ Δ, ∀ L ∈ 𝓛, mapL γ L ∈ 𝓛 ∧ ‖μ γ L‖ = 1) → (∀ γ ∈ Δ, ∀ x ∈ X.dom, lact γ x ∈ X.dom) → (∀ L ∈ 𝓛, C L L = a ∧ Summable (fun L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L} => ‖C L L'.1‖) ∧ ∑' L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L}, ‖C L L'.1‖ ≤ θ * a) → (∀ γ ∈ Δ, ∀ L ∈ 𝓛, ∀ L' ∈ 𝓛, C (mapL γ L) (mapL γ L') * μ γ L * conj (μ γ L') = C L L') → ∀ F, IsForm X Δ 𝓛 μ la F → ∃ F', IsForm X Δ 𝓛 μ la F' ∧ ∀ L ∈ 𝓛, ∀ x ∈ X.dom, F L x = ∑' L' : 𝓛, C L L'.1 * F' L'.1 x := by
   intro E _ _ _ r X Δ 𝓛 μ la C a θ₀ ha hθ₀ hμ _ hC₀ hinv F hF

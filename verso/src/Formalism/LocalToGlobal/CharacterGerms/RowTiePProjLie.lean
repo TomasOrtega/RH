@@ -19,14 +19,14 @@ def linM (φ : Pt C 1 dd) : Matrix (Fin dd) (Fin dd) C :=
   Matrix.of fun i j => coeff (Finsupp.single ((0 : Fin 1), j) 1) (φ i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem linAct_eq (φ : Pt C 1 dd) (v : Fin dd → C) : linAct φ v = Matrix.mulVec (linM φ) v := by
   funext i
   rfl
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_single_cc {σ : Type} (s : σ) (f : MvPowerSeries σ C) :
     coeff (Finsupp.single s 1) f = constantCoeff (pderiv C s f) := by
@@ -34,9 +34,9 @@ theorem coeff_single_cc {σ : Type} (s : σ) (f : MvPowerSeries σ C) :
   simp
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.constantCoeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha), finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd`. Establish `h0 : MvPowerSeries.constantCoeff (d.prod fun s e => a s ^ e) = 0`. Rewrite using `[map_finsuppProd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `Finsupp.ne_iff.mp hd`. Apply `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs)` to reduce the goal to its premises. Use `show MvPowerSeries.constantCoeff (a s ^ d s) = 0`. Rewrite using `[map_pow, ha s, zero_pow hs]`. Rewrite using `[h0, smul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_subst {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, constantCoeff (a s) = 0)
     (g : MvPowerSeries σ C) : constantCoeff (MvPowerSeries.subst a g) = constantCoeff g := by
@@ -52,9 +52,9 @@ theorem cc_subst {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C} (ha 
     rw [h0, smul_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [linM, Matrix.of_apply, Matrix.mul_apply, coeff_single_cc]`. Use `show constantCoeff (pderiv C ((0 : Fin 1), j) (MvPowerSeries.subst (fun p : Fin 1 × Fin dd => (![ψ] : Fin 1 → Pt C 1 dd) p.1 p.2) (φ i))) = _`. Rewrite using `[Formalism.G.LogCR.pderiv_subst (a := fun p : Fin 1 × Fin dd => (![ψ] : Fin 1 → Pt C 1 dd) p.1 p.2) (fun p => (z0_1 ψ hψ) p.1 p.2), map_sum, Fintype.sum_prod_type, Fin.sum_univ_one]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, cc_subst (a := fun p : Fin 1 × Fin dd => (![ψ] : Fin 1 → Pt C 1 dd) p.1 p.2) (fun p => (z0_1 ψ hψ) p.1 p.2)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lin_comp1 {φ ψ : Pt C 1 dd} (hψ : ∀ k, constantCoeff (ψ k) = 0) :
     linM (comp1 φ ψ) = linM φ * linM ψ := by
@@ -70,9 +70,9 @@ theorem lin_comp1 {φ ψ : Pt C 1 dd} (hψ : ∀ k, constantCoeff (ψ k) = 0) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [linM, pt, Matrix.of_apply, Matrix.one_apply, MvPowerSeries.coeff_X]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg, if_neg h]`. Introduce `h2`. Apply `h` to reduce the goal to its premises. Establish `h3` using `(Finsupp.single_left_inj (one_ne_zero : (1 : ℕ) ≠ 0)).mp h2`. Conclude with `(Prod.mk.inj h3).2.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lin_pt : linM (pt C (n := 1) dd 0) = 1 := by
   ext i j
@@ -87,7 +87,7 @@ theorem lin_pt : linM (pt C (n := 1) dd 0) = 1 := by
     exact (Prod.mk.inj h3).2.symm
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.pderiv_X]`. Distinguish the cases in `h : t = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cc_pderiv_X {σ : Type} [DecidableEq σ] (s t : σ) : constantCoeff (pderiv C s (X t : MvPowerSeries σ C)) = if t = s then 1 else 0 := by
   rw [MvPowerSeries.pderiv_X]
@@ -97,9 +97,9 @@ theorem cc_pderiv_X {σ : Type} [DecidableEq σ] (s t : σ) : constantCoeff (pde
   · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Establish `hA : Z0 (![pt C (n` using `1) dd 0, 0] : Fin 2 → Pt C 1 dd) := z0_p0 _ (z0_pt 0)`. Establish `h` using `congrArg (fun f => constantCoeff (pderiv C ((0 : Fin 1), j) f)) (formalGroupLaw_ev_x_zero Y (pt C (n := 1) dd 0) (z0_pt 0) i)`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.ev at h`. Rewrite `h` using `[Formalism.G.LogCR.pderiv_subst (a := fun p : Fin 2 × Fin dd => (![pt C (n := 1) dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2) (fun p => hA p.1 p.2), map_sum, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `only [map_mul, cc_subst (a := fun p : Fin 2 × Fin dd => (![pt C (n := 1) dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2) (fun p => hA p.1 p.2), Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pt, Pi.zero_apply, map_zero, mul_zero, Finset.sum_const_zero, add_zero, cc_pderiv_X, …`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formal_group_coeff_first_linear {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) (i j : Fin dd) :
     constantCoeff (pderiv C ((0 : Fin 2), j) (Y.B.G.F i)) = if i = j then 1 else 0 := by
@@ -115,9 +115,9 @@ theorem formal_group_coeff_first_linear {V : VF C} {O : Type} [CommRing O] [Star
   rw [h]
 
 /- English proof (translation)
-Establish `hA : Z0 (![0, pt C (n` using `1) dd 0] : Fin 2 → Pt C 1 dd) := by`. Introduce `k j'`. Use `fin_cases k`. Simplify using the standard rewrite rules. Conclude with `z0_pt 0 j'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h` using `congrArg (fun f => constantCoeff (pderiv C ((0 : Fin 1), j) f)) (Y.B.G.unit i)`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.ev at h`. Rewrite `h` using `[Formalism.G.LogCR.pderiv_subst (a := fun p : Fin 2 × Fin dd => (![0, pt C (n := 1) dd 0] : Fin 2 → Pt C 1 dd) p.1 p.2) (fun p => hA p.1 p.2), map_sum, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `only [map_mul, cc_subst (a := fun p : Fin 2 × Fin dd => (![0, pt C (n := 1) dd 0] : Fin 2 → Pt C 1 dd) p.1 p.2) (fun p => hA p.1 p.2), Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pt, Pi.zero_apply, map_zero, mul_zero, Finset.sum_const_zero, zero_add, cc_pderiv_X, …`. Rewrite using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formal_group_coeff_second_linear {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) (i j : Fin dd) :
     constantCoeff (pderiv C ((1 : Fin 2), j) (Y.B.G.F i)) = if i = j then 1 else 0 := by
@@ -136,9 +136,9 @@ theorem formal_group_coeff_second_linear {V : VF C} {O : Type} [CommRing O] [Sta
   rw [h]
 
 /- English proof (translation)
-Establish `hZ : Z0 (![A, B] : Fin 2 → Pt C 1 dd)` using `constant_zero_two_points A B hA hB`. Use extensionality with `i j`. Simplify using `only [linM, Matrix.of_apply, Matrix.add_apply, coeff_single_cc]`. Use `show constantCoeff (pderiv C ((0 : Fin 1), j) (MvPowerSeries.subst (fun p : Fin 2 × Fin dd => (![A, B] : Fin 2 → Pt C 1 dd) p.1 p.2) (Y.B.G.F i))) = _`. Rewrite using `[Formalism.G.LogCR.pderiv_subst (a := fun p : Fin 2 × Fin dd => (![A, B] : Fin 2 → Pt C 1 dd) p.1 p.2) (fun p => hZ p.1 p.2), map_sum, Fintype.sum_prod_type, Fin.sum_univ_two]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, cc_subst (a := fun p : Fin 2 × Fin dd => (![A, B] : Fin 2 → Pt C 1 dd) p.1 p.2) (fun p => hZ p.1 p.2), formal_group_coeff_first_linear Y, formal_group_coeff_second_linear Y, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ite_mul, one_mul, zero_mul, Fi …`.
+A detailed English derivation is pending.
 -/
 theorem lin_addOf {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) {A B : Pt C 1 dd}
     (hA : ∀ k, constantCoeff (A k) = 0) (hB : ∀ k, constantCoeff (B k) = 0) :
@@ -186,13 +186,13 @@ def KeySt : Prop :=
       (∏ c : ZMod d, (Polynomial.X - Polynomial.C (p.em g c x))) * linM e = 0
 
 /- English proof (translation)
-Establish `hT` using `tends_of_endomorphism_limit Y he`. Establish `e0 : ∀ i, constantCoeff (e i) = 0` using `const_of_lim Y hT`. Establish `act0 : ∀ x i, constantCoeff (Y.B.A.act x i) = 0` using `Y.B.A.const`. Use `⟨e0, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `L` using `TendsS.comp1 (φ := fun n => Y.B.A.act (ε ^ V.l ^ n)) (b := fun n => Y.B.A.act (ε ^ V.l ^ n)) (fun n => act0 _) e0 hT hT i`. Establish `R` using `tendsS_of_small lSmall_holds Y (x := fun n => ε ^ V.l ^ n * ε ^ V.l ^ n) (sq_cong hε) hT i`. Establish `eq : (fun n => comp1 (Y.B.A.act (ε ^ V.l ^ n)) (Y.B.A.act (ε ^ V.l ^ n)) i) = fun n => Y.B.A.act (ε ^ V.l ^ n * ε ^ V.l ^ n) i` using `funext fun n => by rw [Y.B.A.mul_act]`. Rewrite `L` using `[eq]`. Conclude with `L.unique R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Use function extensionality and compare the values at `i`. Establish `L` using `TendsS.comp1 (φ := fun n => Y.B.A.act (ε ^ V.l ^ n)) (b := fun _ => Y.B.A.act a) (fun _ => act0 a) (act0 a) hT (fun _ => TendsS.const _) i`. Establish `R` using `TendsS.comp1 (φ := fun _ => Y.B.A.act a) (b := fun n => Y.B.A.act (ε ^ V.l ^ n)) (fun n => act0 _) e0 (fun _ => TendsS.const _) hT i`. Establish `eq : (fun n => comp1 (Y.B.A.act (ε ^ V.l ^ n)) (Y.B.A.act a) i) = fun n => comp1 (Y.B.A.act a) (Y.B.A.act (ε ^ V.l ^ n)) i` using `funext fun n => by`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Y.B.A.mul_act, ← Y.B.A.mul_act, mul_comm]`. Rewrite `L` using `[eq]`. Conclude with `L.unique R`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_core (Y : FBChart C V O dd) (ε : O) (hε : ∃ y, ε * ε - ε = (V.l : O) * y) (e : Pt C 1 dd)
     (he : ∀ (N : ℕ) i μ, ∃ n0 : ℕ, ∀ n ≥ n0,
@@ -224,13 +224,13 @@ theorem proj_core (Y : FBChart C V O dd) (ε : O) (hε : ∃ y, ε * ε - ε = (
     exact L.unique R
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p g ε hε hε1 hεx e he v`. Take `⟨e0, hidem, hcomm⟩` from `proj_core Y ε hε e he`. Establish `hinj : Function.Injective (fun c : ZMod d => p.em g c)`. Introduce `c c' h`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨x, hx⟩` from `p.em_sep (g, c) (g, c') (by simp [hne])`. Establish `h2 : p.em g c = p.em g c'` using `h`. Rewrite `hx` using `[h2, sub_self, AddValuation.map_zero]`. Simplify using `at hx`. Establish `hPP : linM e * linM e = linM e` using `by rw [← lin_comp1 e0, hidem]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hPM : ∀ x, linM e * linHom Y x = linHom Y x * linM e` using `fun x => by show linM e * linM (Y.B.A.act x) = linM (Y.B.A.act x) * linM e`. Rewrite using `[← lin_comp1 (Y.B.A.const x), ← lin_comp1 e0, hcomm x]`. Take `⟨w, hw, hwe⟩` from `hS C O dd (ZMod d) (linHom Y) (linM e) (fun c => p.em g c) hPP hPM hinj (fun x => hK C V O dd Y d I p g ε hε hε1 hεx e he x) v`. Establish `hb : ∀ c, ∃ b : I g → C, (∀ c', p.ty g c' ≠ c → b c' = 0) ∧ w c = ∑ c', b c' • p.u g c'` using `fun c => p.u_full g c (w c) fun x => by rw [linAct_eq]; exact hwe c x`. Use `choose b _ hbw using hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun c' => ∑ c, b c c', ?_⟩` and prove the remaining obligations. Rewrite using `[linAct_eq, hw]`. Repeatedly rewrite using `[hbw, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projLie_of (hK : KeySt) (hS : SplitSt) : ProjLieSt := by
   intro C _ _ V O _ _ dd Y d _ I _ p g ε hε hε1 hεx e he v

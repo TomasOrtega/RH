@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `a d p C hp h`. Establish `key : ∀ m : ℕ, a m ≤ (∑ j ∈ Finset.range p, a j) + C * (d * (m + 1) ^ (d - 1)) * m`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Distinguish the cases in `hm : m < p`. Conclude with `le_trans (Finset.single_le_sum (f := a) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 hm)) (Nat.le_add_right _ _)`. Take `⟨n, rfl⟩ : ∃ n, m = n + p` from `⟨m - p, by omega⟩`. Establish `h1` using `ih n (by omega)`. Establish `h2` using `h n`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : C * (d * (n + 1) ^ (d - 1)) * n ≤ C * (d * (n + p + 1) ^ (d - 1)) * n` using `by gcongr`. Use linear arithmetic over natural numbers and integers. Establish `h4 : C * (d * (n + p + 1) ^ (d - 1)) * (n + 1) ≤ C * (d * (n + p + 1) ^ (d - 1)) * (n + p)` using `by gcongr`. Rewrite `h4` using `[Nat.mul_succ]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(∑ j ∈ Finset.range p, a j) + C, fun m => (key m).trans ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ (d + 1) * (m + 1) ^ d` using `Nat.succ_le_of_lt (by positivity)`. Establish `h2 : d * (m + 1) ^ (d - 1) * m ≤ (d + 1) * (m + 1) ^ d`. Consider the cases of `d with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k`. Rewrite using `[Nat.add_sub_cancel, pow_succ, mul_assoc]`. Apply the tactic sequence `gcongr <;> omega`. Rewrite using `[add_mul, mul_assoc C]`. Conclude with `add_le_add (Nat.le_mul_of_pos_right _ h1) (Nat.mul_le_mul_left _ h2)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_bound_of_step_diff :
     ∀ (a : ℕ → ℕ) (d p C : ℕ), 1 ≤ p →

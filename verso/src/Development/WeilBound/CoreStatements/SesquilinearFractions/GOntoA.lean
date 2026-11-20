@@ -13,15 +13,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {P : D.La →+ (Fin g → ℂ)}
 
 /- English proof (translation)
-Establish `hw : ty i ((H.w0 : 𝓞 E) : E) = ty j ((H.w0 : 𝓞 E) : E)`. Establish `e : (2 : E) * ((H.w0 : 𝓞 E) : E) = 1 + ((H.rt : 𝓞 E) : E)`. Establish `e0` using `congrArg (fun z : 𝓞 E => (z : E)) H.two_weight_eq_one_add_root`. Move the coercions through the operations in `at e0`. Conclude with `e0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hi` using `congrArg (ty i) e`. Establish `hj` using `congrArg (ty j) e`. Simplify using `only [map_mul, map_add, map_one, map_ofNat] at hi hj`. Establish `h2 : (2 : ℂ) * ty i ((H.w0 : 𝓞 E) : E) = 2 * ty j ((H.w0 : 𝓞 E) : E)`. Rewrite using `[hi, hj, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion.
 
-Conclude with `mul_left_cancel₀ two_ne_zero h2`. It suffices to establish `hs : ∀ β ∈ OK H, ty i ((β : 𝓞 E) : E) = ty j ((β : 𝓞 E) : E) from hs _ α.2`. Introduce `β hβ`. Proceed by induction on `hβ using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Set.mem_singleton_iff.1 hx]`. Conclude with `hw`. Consider the case `algebraMap r => simp`. Consider the case `add x y _ _ hx hy`. Use `push_cast`.
+Treat this case separately. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Treat this case separately. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_add, map_add, hx, hy]`. Consider the case `mul x y _ _ hx hy`. Use `push_cast`. Rewrite using `[map_mul, map_mul, hx, hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ty_eq_of_rt {i j : Fin g} (h : ty i (H.rt : E) = ty j (H.rt : E)) (α : OK H) :
     ty i ((α : 𝓞 E) : E) = ty j ((α : 𝓞 E) : E) := by
@@ -56,9 +56,9 @@ def kap (ty : Fin g → (E →+* ℂ)) (H : Host E) (b : Bool) (α : OK H) : ℂ
   if h : ∃ i, ty i (H.rt : E) = sgnRt H b then ty h.choose ((α : 𝓞 E) : E) else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, hP.1]`. Distinguish the cases in `hi : ty i (H.rt : E) = sgnRt H b`. Establish `hex : ∃ i, ty i (H.rt : E) = sgnRt H b` using `⟨i, hi⟩`. Rewrite using `[kap, dif_pos hex, ty_eq_of_rt (hi.trans hex.choose_spec.symm) α]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : P (a : D.La) i = 0` using `a.2 i hi`. Rewrite using `[h0, mul_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem P_smul (hP : IsPeriod D ty P) {b : Bool} (a : PureType.lat hP (sgnRt H b)) (α : OK H) :
     P ((α : 𝓞 E) • (a : D.La)) = kap ty H b α • P a := by
@@ -71,13 +71,13 @@ theorem P_smul (hP : IsPeriod D ty P) {b : Bool} (a : PureType.lat hP (sgnRt H b
     rw [h0, mul_zero, mul_zero]
 
 /- English proof (translation)
-Use `set W := Submodule.span ℂ (Set.range fun k => P (a k)) with hW`. Establish `hmem : ∀ y, P y ∈ W`. Introduce `y`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (OK H)).1 (hN y)`. Establish `h1 : P (N • y) ∈ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, P_smul hP (a k) (c k)]`. Conclude with `W.smul_mem _ (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite `h1` using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `W.smul_mem ((N : ℂ)⁻¹) h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ (by exact_mod_cast hN0.ne'), one_smul]`. Then use the resulting hypothesis. Establish `hR : Submodule.span ℝ (Set.range P) ≤ W.restrictScalars ℝ` using `Submodule.span_le.2 (by rintro _ ⟨y, rfl⟩; exact hmem y)`. Rewrite using `[eq_top_iff]`. Introduce `z _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : z ∈ Submodule.span ℝ (Set.range P)`. Rewrite using `[hP.2.2.2.1]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hR hz`.
+Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem span_top (hP : IsPeriod D ty P) (b : Fin g → Bool) (a : ∀ k, PureType.lat hP (sgnRt H (b k))) (N : ℕ)
     (hN0 : 0 < N) (hN : ∀ y : D.La, N • y ∈ Submodule.span (OK H) (Set.range fun k => (a k : D.La))) :
@@ -104,7 +104,7 @@ theorem span_top (hP : IsPeriod D ty P) (b : Fin g → Bool) (a : ∀ k, PureTyp
   exact hR hz
 
 /- English proof (translation)
-Establish `hz : z ∈ Submodule.span ℂ (Set.range fun k => P (a k))` using `by rw [span_top hP b a N hN0 hN]; trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hz`. Conclude with `⟨c, hc.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coeffs (hP : IsPeriod D ty P) (b : Fin g → Bool) (a : ∀ k, PureType.lat hP (sgnRt H (b k))) (N : ℕ)
     (hN0 : 0 < N) (hN : ∀ y : D.La, N • y ∈ Submodule.span (OK H) (Set.range fun k => (a k : D.La))) (z : Fin g → ℂ) :
@@ -114,7 +114,7 @@ theorem exists_coeffs (hP : IsPeriod D ty P) (b : Fin g → Bool) (a : ∀ k, Pu
   exact ⟨c, hc.symm⟩
 
 /- English proof (translation)
-Apply `linearIndependent_of_top_le_span_of_card_eq_finrank` to reduce the goal to its premises. Rewrite using `[span_top hP b a N hN0 hN]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linIndep (hP : IsPeriod D ty P) (b : Fin g → Bool) (a : ∀ k, PureType.lat hP (sgnRt H (b k))) (N : ℕ)
     (hN0 : 0 < N) (hN : ∀ y : D.La, N • y ∈ Submodule.span (OK H) (Set.range fun k => (a k : D.La))) :
@@ -124,11 +124,11 @@ theorem linIndep (hP : IsPeriod D ty P) (b : Fin g → Bool) (a : ∀ k, PureTyp
   · simp
 
 /- English proof (translation)
-Establish `hli` using `linIndep hP b a N hN0 hN`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (OK H)).1 (hN y)`. Use `⟨c, fun k => ?_⟩` and prove the remaining obligations. Establish `e1 : ∑ k, ((N : ℂ) * s k) • P (a k) = (N : ℂ) • P y`. Simplify using `only [mul_smul, ← Finset.smul_sum, hs]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∑ k, kap ty H (b k) (c k) • P (a k) = (N : ℂ) • P y`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← map_nsmul, ← hc, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, P_smul hP (a k) (c k)]`. Establish `hsum : ∑ k, ((N : ℂ) * s k - kap ty H (b k) (c k)) • P (a k) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, e1, e2, sub_self]`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hli _ hsum k)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_of_period (hP : IsPeriod D ty P) (b : Fin g → Bool) (a : ∀ k, PureType.lat hP (sgnRt H (b k))) (N : ℕ)
     (hN0 : 0 < N) (hN : ∀ y : D.La, N • y ∈ Submodule.span (OK H) (Set.range fun k => (a k : D.La)))

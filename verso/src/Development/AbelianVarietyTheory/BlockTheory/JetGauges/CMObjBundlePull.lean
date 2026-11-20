@@ -174,9 +174,9 @@ def Good (La : ℝ) : Prop :=
 end CMObj
 
 /- English proof (translation)
-Establish `h1 : τ (H.rt : E) ^ 2 = H.rt0 ^ 2`. Use `congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq` as an intermediate fact. Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_pow, map_neg, map_natCast] at this`. Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 h`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem mem_psiBar_of_notMem_psi (H : Host E) (τ : E →+* ℂ) (h : τ ∉ psi H) : τ ∈ psiBar H := by
   have h1 : τ (H.rt : E) ^ 2 = H.rt0 ^ 2 := by
@@ -188,7 +188,7 @@ theorem mem_psiBar_of_notMem_psi (H : Host E) (τ : E →+* ℂ) (h : τ ∉ psi
   · exact h2
 
 /- English proof (translation)
-Establish `: epsScaleR (1 : R) = RingHom.id _`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsScaleR]`. Simplify using `[IsMultiple, this, spMap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 example {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} {t : Sp R ⟶ S} (v : epsAt t ⟶ G) :
     IsMultiple 1 v v := by

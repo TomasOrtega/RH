@@ -12,7 +12,7 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory.ImageModel
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.Points.valR_appLE y.1 p (U := ⊤) (V := U) (by simp) h ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom a)`. Establish `h2 : y.1 ≫ p = Spec.map (CommRingCat.ofHom τ)` using `y.2`. Rewrite `h1` using `[h2]`. Conclude with `h1.trans (GlobalTheory.Points.valR_specMap (CommRingCat.ofHom τ) a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_algX_cxPts {k : Type} [CommRing k] {Y : Scheme.{0}} (p : Y ⟶ Sp k) (τ : k →+* ℂ)
     (U : Y.Opens) (y : GlobalTheory.CxPts p τ) (h : ⊤ ≤ y.1 ⁻¹ᵁ U) (a : k) :
@@ -24,7 +24,7 @@ theorem valR_algX_cxPts {k : Type} [CommRing k] {Y : Scheme.{0}} (p : Y ⟶ Sp k
   exact h1.trans (GlobalTheory.Points.valR_specMap (CommRingCat.ofHom τ) a)
 
 /- English proof (translation)
-Introduce `K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev τ i y hy m β u x hx`. Establish `h : ⊤ ≤ y.1 ⁻¹ᵁ L.B.U i` using `hy`. Rewrite using `[GlobalTheory.T.imageModel_sections_linear_ringOfIntegers K V Ω Nm W ev D X p L ψ s hM hev m β u x hx i, GlobalTheory.Points.valR_eq _ _ h, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Points.valR_eq _ _ h, GlobalTheory.Points.valR_mul _ _ h, valR_algX_cxPts p τ _ y h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_section_sum : ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec), GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s → ev ≠ 0 → ∀ (τ : 𝓞 K →+* ℂ) (i : L.B.ι) (y : GlobalTheory.CxPts p τ), y ∈ GlobalTheory.CxPts.ptsIn p τ (L.B.U i) → ∀ (m : ℕ) (β : Fin m → 𝓞 K) (u : Fin m → W) (x : W), (x : V) = ∑ k, β k • (u k : V) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR y.1 (L.B.U i) ((s x).f i) = ∑ k, τ (β k) * ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR y.1 (L.B.U i) ((s (u k)).f i) := by
   intro K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev τ i y hy m β u x hx

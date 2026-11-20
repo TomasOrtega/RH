@@ -7,7 +7,7 @@ open scoped ENNReal ComplexConjugate
 namespace GlobalTheory.CompanionTheory.FSCrofton
 
 /- English proof (translation)
-Take `rfl : inst = Unique.fintype` from `Subsingleton.elim _ _`. Conclude with `(measurePreserving_funUnique (volume : Measure ℂ) U).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem measurePreserving_funUnique_symm {U : Type} [inst : Fintype U] [Unique U] :
     MeasurePreserving (MeasurableEquiv.funUnique U ℂ).symm (volume : Measure ℂ)
@@ -16,11 +16,11 @@ theorem measurePreserving_funUnique_symm {U : Type} [inst : Fintype U] [Unique U
   exact (measurePreserving_funUnique (volume : Measure ℂ) U).symm
 
 /- English proof (translation)
-Use `haveI : Unique {j : α // ¬ j ≠ j₀} := { default := ⟨j₀, by simp⟩ uniq := fun x => Subtype.ext (by simpa using x.2) }`. Establish `h1` using `(measurePreserving_piEquivPiSubtypeProd (fun _ : α => (volume : Measure ℂ)) (fun j => j ≠ j₀)).symm`. Establish `h2 : MeasurePreserving (MeasurableEquiv.funUnique {j : α // ¬ j ≠ j₀} ℂ).symm (volume : Measure ℂ) (Measure.pi fun _ : {j : α // ¬ j ≠ j₀} => (volume : Measure ℂ))` using `measurePreserving_funUnique_symm`. Establish `h3` using `(MeasurePreserving.id (Measure.pi fun _ : {j : α // j ≠ j₀} => (volume : Measure ℂ))).prod h2`. Establish `h4 : MeasurePreserving (Prod.swap : ℂ × ({j : α // j ≠ j₀} → ℂ) → _) ((volume : Measure ℂ).prod (Measure.pi fun _ : {j : α // j ≠ j₀} => (volume : Measure ℂ))) ((Measure.pi fun _ : {j : α // j ≠ j₀} => (volume : Measure ℂ)).prod (volume : Measure ℂ))` using `Measure.measurePreserving_swap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `h1.comp (h3.comp h4)`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p j`. Distinguish the cases in `h : j = j₀`. Substitute `h` using the available equality.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd]`. Simplify using `[MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurePreserving_joinEntry {α : Type} [Fintype α] [DecidableEq α] (j₀ : α) :
     MeasurePreserving
@@ -51,7 +51,7 @@ theorem measurePreserving_joinEntry {α : Type} [Fintype α] [DecidableEq α] (j
   · simp [MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, h]
 
 /- English proof (translation)
-Establish `h1` using `(volume_measurePreserving_arrowProdEquivProdArrow ℂ ({j : α // j ≠ j₀} → ℂ) (Fin d)).symm`. Apply the tactic sequence `have h2 := measurePreserving_pi (fun _ : Fin d => (volume : Measure (ℂ × ({j : α // j ≠ j₀} → ℂ)))) (fun _ : Fin d => (volume : Measure (α → ℂ))) (fun _ => measurePreserving_joinEntry j₀)`. Conclude with `h2.comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurePreserving_joinCol (d : ℕ) {α : Type} [Fintype α] [DecidableEq α] (j₀ : α) :
     MeasurePreserving
@@ -63,7 +63,7 @@ theorem measurePreserving_joinCol (d : ℕ) {α : Type} [Fintype α] [DecidableE
   exact h2.comp h1
 
 /- English proof (translation)
-Introduce `d α _ _ j₀ Φ hΦ`. Establish `hT` using `measurePreserving_joinCol d j₀`. Rewrite using `[← hT.lintegral_comp hΦ]`. Conclude with `lintegral_prod_symm _ (hΦ.comp hT.measurable).aemeasurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_joinCol : ∀ (d : ℕ) (α : Type) [Fintype α] [DecidableEq α] (j₀ : α) (Φ : (Fin d → α → ℂ) → ℝ≥0∞), Measurable Φ → ∫⁻ C : Fin d → α → ℂ, Φ C = ∫⁻ C' : Fin d → {j : α // j ≠ j₀} → ℂ, ∫⁻ c : Fin d → ℂ, Φ (joinCol j₀ c C') := by
   intro d α _ _ j₀ Φ hΦ

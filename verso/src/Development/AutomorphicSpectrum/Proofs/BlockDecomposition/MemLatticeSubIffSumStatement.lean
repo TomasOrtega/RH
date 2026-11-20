@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 open DividedPowers CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.LatSpan.mem_sub_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FMemLatticeSubIffSum.lean&line=77#L77)
 -/

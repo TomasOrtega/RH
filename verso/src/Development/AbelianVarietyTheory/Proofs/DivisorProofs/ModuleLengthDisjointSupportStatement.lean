@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace
 open GlobalTheory GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.length_sectionsOn_top_eq_sum_of_separating` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModuleLengthDisjointSupport.lean&line=67#L67)
 -/

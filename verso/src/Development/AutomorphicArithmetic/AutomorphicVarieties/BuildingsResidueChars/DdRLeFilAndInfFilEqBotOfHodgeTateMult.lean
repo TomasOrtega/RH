@@ -16,9 +16,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Rewrite using `[JsetEmb.de_rham_filtration_eq_iSup_embeddings PD hcard ρ (c + 1), JsetEmb.de_rham_filtration_eq_iSup_embeddings PD hcard ρ c]`. Use `iSup_congr fun τ => ?_` and prove the remaining obligations. Establish `hle : FildR PD ρ τ c ≤ DdR PD ρ` using `fun x hx => hx.1.1`. Establish `: FiniteDimensional LL ↥(FildR PD ρ τ c)` using `Submodule.finiteDimensional_of_le hle`. Establish `h0` using `h τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `multV at h0`. Use `Submodule.eq_of_le_of_finrank_eq (Ln03.Pf.jb_FildR_anti PD ρ τ (by omega)) ?_` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem step_of_mult [CharZero Qp] (PD : PeriodData G Qp K₀ K B BdR)
     [Fintype (K →ₐ[Qp] LL)] (hcard : Fintype.card (K →ₐ[Qp] LL) = finrank Qp K)
@@ -35,17 +35,15 @@ private theorem step_of_mult [CharZero Qp] (PD : PeriodData G Qp K₀ K B BdR)
   omega
 
 /- English proof (translation)
-Use `⟨fun a ha x hx => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Ln03.Pf.jb_FilV_exh PD (LL := LL) (V := V) x`. Break down `le_total a c with h | h` into its components or cases. Conclude with `Ln03.Pf.jb_FilV_anti PD (LL := LL) (V := V) h hc`. Establish `key : ∀ d, c ≤ d → d ≤ a → x ∈ FilV PD (LL` using `LL) (V := V) d := by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Proceed by induction on `d, hd using Int.le_induction with`. Consider the case `base => exact fun _ => hc`. Consider the case `succ d hd ih`. Introduce `hda`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : x ∈ DdR PD ρ ⊓ FilV PD (LL` using `LL) (V := V) d := ⟨hx, ih (by omega)⟩`. Rewrite `hm` using `[← step_of_mult PD hcard ρ hfin d fun τ => ha τ d (by omega)]`. Conclude with `hm.2`. Conclude with `key a h le_rfl`. Rewrite using `[eq_bot_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`. Use `Ln03.Pf.jb_FilV_sep PD (LL := LL) (V := V) x fun d => ?_` and prove the remaining obligations. Break down `le_total d (b + 1) with h | h` into its components or cases. Conclude with `Ln03.Pf.jb_FilV_anti PD (LL := LL) (V := V) h hx.2`.
+Separate the alternatives or extract the components of the hypothesis. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `d, h using Int.le_induction with`. Consider the case `base => exact hx.2`. Consider the case `succ d hd ih`. Establish `hm : x ∈ DdR PD ρ ⊓ FilV PD (LL` using `LL) (V := V) d := ⟨hx.1, ih⟩`. Rewrite `hm` using `[← step_of_mult PD hcard ρ hfin d fun τ => hb τ d (by omega)]`.
-
-Conclude with `hm.2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gen_fil [CharZero Qp] (PD : PeriodData G Qp K₀ K B BdR)
     [Fintype (K →ₐ[Qp] LL)] (hcard : Fintype.card (K →ₐ[Qp] LL) = finrank Qp K)
@@ -84,9 +82,9 @@ private theorem gen_fil [CharZero Qp] (PD : PeriodData G Qp K₀ K B BdR)
 end Gen
 
 /- English proof (translation)
-Introduce `l _ P K LL key V _ _ _ _ _ ρ hfin`. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `: FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Establish `hc : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥K.1`. Set `e : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) ≃ (↥K.1 →ₐ[ℚ_[l]] Om l)` to `{ toFun := fun f => LL.1.val.comp f invFun := fun g => g.codRestrict LL.1.toSubalgebra (key g) left_inv := fun f => by ext; rfl right_inv := fun g => by ext; rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[Nat.card_congr e]`. Conclude with `AlgHom.natCard_of_splits _ _ _ (fun _ => IsAlgClosed.splits _)`. Establish `: Finite (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact Module.finrank_pos.ne')`. Use `letI := Fintype.ofFinite (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)`. Conclude with `gen_fil (P.PD K) (by rw [Fintype.card_eq_nat_card, hc]) ρ hfin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ddR_le_fil_and_inf_fil_eq_bot_of_hodgeTate_mult :
     ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K LL : FinExt l}, (∀ (τ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), τ x ∈ LL.1) → ∀ {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), FiniteDimensional ↥LL.1 ↥(DdR (P.PD K) ρ) → (∀ a : ℤ, (∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (c : ℤ), c < a → multV (P.PD K) ρ τ c = 0) → DdR (P.PD K) ρ ≤ FilV (P.PD K) (LL := ↥LL.1) (V := V) a) ∧ ∀ b : ℤ, (∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (c : ℤ), b < c → multV (P.PD K) ρ τ c = 0) → DdR (P.PD K) ρ ⊓ FilV (P.PD K) (LL := ↥LL.1) (V := V) (b + 1) = ⊥ := by

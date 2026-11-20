@@ -12,7 +12,7 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalT
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Apply `Measure.pi_eq` to reduce the goal to its premises. Introduce `s hs`. Rewrite using `[Measure.smul_apply, Measure.pi_pi, smul_eq_mul, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -28,25 +28,17 @@ theorem pi_const_smul {ι X : Type} [Fintype ι] [MeasurableSpace X] (κ : Measu
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D u w hw f hf`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `D.hR`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hT2`. Take `⟨iTR, iLC, iSC, iT2, -, -, -, iB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R`. Use `haveI := iTR`. Use `haveI := iLC`. Use `haveI := iSC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := iT2`. Take `⟨jLC, jSC, jT2, jB, -⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R n`. Use `haveI := jLC`. Use `haveI := jSC`. Use `haveI := jT2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := jB`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Take `⟨hK, -, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ D.hCM R d b lam D.hlam`. Use `haveI := hK`. Use `haveI := hH n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hVU : ((((u⁻¹ : Rˣ) : R) ⊗ₜ[F] (algebraMap F E t⁻¹)) : R ⊗[F] E) * ((u : R) ⊗ₜ[F] (algebraMap F E t)) = 1`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, ← map_mul, inv_mul_cancel₀ D.ht, map_one, Units.inv_mul]`. Both sides reduce to the same expression. Establish `hTm : Measurable (fun (r : Fin n → R ⊗[F] E) (j : Fin n) => ((u : R) ⊗ₜ[F] (algebraMap F E t)) * r j)` using `measurable_pi_lambda _ fun j => (measurable_pi_apply j).const_mul _`. Establish `hDm : Measurable (fun (r : Fin n → R ⊗[F] E) (j : Fin n) => (((u⁻¹ : Rˣ) : R) ⊗ₜ[F] (algebraMap F E t⁻¹)) * r j)` using `measurable_pi_lambda _ fun j => (measurable_pi_apply j).const_mul _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmap : (Measure.pi fun _ : Fin n => coordK R b lam).map (fun (r : Fin n → R ⊗[F] E) (j : Fin n) => ((u : R) ⊗ₜ[F] (algebraMap F E t)) * r j) = ((cm u : ℝ≥0∞) ^ n) • Measure.pi fun _ : Fin n => coordK R b lam`. Establish `hm : ∀ _ : Fin n, (coordK R b lam).map (fun y => ((u : R) ⊗ₜ[F] (algebraMap F E t)) * y) = cm u • coordK R b lam` using `fun _ => D.hmod u`. Establish `hsf : ∀ _ : Fin n, SigmaFinite ((coordK R b lam).map (fun y => ((u : R) ⊗ₜ[F] (algebraMap F E t)) * y))` using `fun i => by`. Rewrite using `[hm i]`. Use `infer_instance`.
-
-Establish `h1` using `Measure.pi_map_pi (X := fun _ : Fin n => R ⊗[F] E) (Y := fun _ : Fin n => R ⊗[F] E) (hμ := hsf) (μ := fun _ : Fin n => coordK R b lam) (f := fun _ y => ((u : R) ⊗ₜ[F] (algebraMap F E t)) * y) (fun _ => (measurable_const_mul _).aemeasurable)`. Rewrite using `[h1]`. Simplify using `only [D.hmod u]`. Rewrite using `[pi_const_smul, Fintype.card_fin]`. Establish `hh : Measurable (fun r : Fin n → R ⊗[F] E => ∫⁻ S'', f (fun j => ((((u⁻¹ : Rˣ) : R) ⊗ₜ[F] (algebraMap F E t⁻¹)) * r j), S'' - w r) ∂(coordHerm R σ b lam n))`.
-
-Use `Measurable.lintegral_prod_right' (f := fun p : (Fin n → R ⊗[F] E) × HermR R σ n => f (fun j => ((((u⁻¹ : Rˣ) : R) ⊗ₜ[F] (algebraMap F E t⁻¹)) * p.1 j), p.2 - w p.1)) ?_` and prove the remaining obligations. Conclude with `hf.comp ((hDm.comp measurable_fst).prodMk (measurable_snd.sub (hw.comp measurable_fst)))`. Establish `hsm : ∀ g : (Fin n → R ⊗[F] E) → ℝ≥0∞, ((cm u : ℝ≥0∞) ^ n) * ∫⁻ r, g r ∂(Measure.pi fun _ : Fin n => coordK R b lam) = ∫⁻ r, g r ∂(((cm u : ℝ≥0∞) ^ n) • Measure.pi fun _ : Fin n => coordK R b lam)` using `fun g => by`. Rewrite using `[lintegral_smul_measure, smul_eq_mul]`. Rewrite using `[hsm, ← hmap, lintegral_map hh hTm]`.
-
-Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Establish `hc : (fun j => ((((u⁻¹ : Rˣ) : R) ⊗ₜ[F] (algebraMap F E t⁻¹)) * (((u : R) ⊗ₜ[F] (algebraMap F E t)) * c j))) = c`. Use function extensionality and compare the values at `j`. Rewrite using `[← mul_assoc, hVU, one_mul]`. Rewrite using `[hc]`.
-
-Conclude with `(lintegral_sub_right_eq_self (fun S' => f (c, S')) _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_row_translate : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F) (n : ℕ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R) (m₁ : HermR R σ 1 → Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m' : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)) (s : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → HA R σ (blockOne (algebraMap F E t) J)) (B₀ : Set R) (a : R → Rˣ) (κ₁ cm : Rˣ → ℝ≥0), StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm → ∀ (u : Rˣ) (w : (Fin n → R ⊗[F] E) → HermR R σ n), Measurable w → ∀ f : (Fin n → R ⊗[F] E) × HermR R σ n → ℝ≥0∞, Measurable f → ∫⁻ c, ∫⁻ S', f (c, S') ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) = (cm u : ℝ≥0∞) ^ n * ∫⁻ r, ∫⁻ S'', f (fun j => ((((u⁻¹ : Rˣ) : R) ⊗ₜ[F] (algebraMap F E t⁻¹)) * r j), S'' - w r) ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) := by
   intro F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D u w hw f hf

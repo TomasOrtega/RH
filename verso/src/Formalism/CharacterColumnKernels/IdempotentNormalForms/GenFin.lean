@@ -12,9 +12,9 @@ noncomputable section
 namespace Formalism.NG
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun σ _ => ?_)` and prove the remaining obligations. Establish `hprod : (∏ i, A (σ i) i).totalDegree ≤ Fintype.card n`. Use `(MvPolynomial.totalDegree_finset_prod _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Rewrite using `[hs, one_smul]`. Conclude with `hprod`. Rewrite using `[hs, Units.neg_smul, one_smul, MvPolynomial.totalDegree_neg]`. Conclude with `hprod`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma genfin_det_totalDegree {ι K n : Type*} [CommRing K] [Fintype n] [DecidableEq n]
     (A : Matrix n n (MvPolynomial ι K)) (h : ∀ i j, (A i j).totalDegree ≤ 1) :
@@ -32,39 +32,33 @@ lemma genfin_det_totalDegree {ι K n : Type*} [CommRing K] [Fintype n] [Decidabl
     exact hprod
 
 /- English proof (translation)
-Introduce `R O _ _ _ _ _ m g s _ _ _ _ d _ _ hcard ρ hρ P`. Establish `hk` using `fun w => gen_key (O := O) (bigRect (ρ w) P)`. Use `choose n U f e hC0 hgood using hk`. Use `choose C0 hC0 using hC0`. Set `res` to `IsLocalRing.residue O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `r : ∀ w, d w → d w → R` to `fun w a b => Function.surjInv (hρ w) (Matrix.single a b 1)`. Set `c : (Σ w : s, g × m × d w × d w) → Matrix g m R` to `fun j => Matrix.single j.2.1 j.2.2.1 (r j.1 j.2.2.2.1 j.2.2.2.2)`. Set `L : ∀ w, Matrix (g × d w) (m × d w) (MvPolynomial (Σ w : s, g × m × d w × d w) (IsLocalRing.ResidueField O))` to `fun w p q => ∑ j, MvPolynomial.X j * MvPolynomial.C (res (ρ w (c j p.1 q.1) p.2 q.2))`. Set `Q : s → MvPolynomial (Σ w : s, g × m × d w × d w) (IsLocalRing.ResidueField O)` to `fun w => (Matrix.of fun p q => ∑ l, L w (e w p) l * MvPolynomial.C (res (U w l (f w q)))).det`. Establish `hevalQ : ∀ w (t : (Σ w : s, g × m × d w × d w) → O), MvPolynomial.eval (fun j => res (t j)) (Q w) = res (Matrix.of fun p q => (bigRect (ρ w) (∑ j, t j • c j) * U w) (e w p) (f w q)).det`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w t`. Simplify using `only [Q]`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[L, Matrix.mul_apply, bigRect, Matrix.sum_apply, map_sum]`. Establish `hsum : ∀ w (φ : g × m × d w × d w → O), bigRect (ρ w) (∑ j : (Σ w : s, g × m × d w × d w), (Pi.single (M` using `fun w => g × m × d w × d w → O) w φ j.1 j.2) • c j) = fun p q => φ (p.1, q.1, p.2, q.2) := by`. Introduce `w φ`. Use function extensionality and compare the values at `p q`. Simplify using `only [bigRect, Matrix.sum_apply, Matrix.smul_apply, map_sum, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_sigma]`. Rewrite using `[Fintype.sum_eq_single w (fun x hx => by simp [Pi.single_eq_of_ne hx])]`. Simplify using `only [Pi.single_eq_same]`. Rewrite using `[Fintype.sum_eq_single (p.1, q.1, p.2, q.2)]`. Simplify using `[c, r, Function.surjInv_eq (hρ w)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨i', k', a', b'⟩ hy`. Simplify using `only [c, r, Matrix.single_apply]`. Use `split_ifs with h1`. Take `⟨rfl, rfl⟩` from `h1`. Rewrite using `[Function.surjInv_eq (hρ w), Matrix.single_apply, if_neg, smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hy rfl`. Simplify using the standard rewrite rules. Establish `hQne : ∀ w, Q w ≠ 0`. Introduce `w hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set t0 : (Σ w : s, g × m × d w × d w) → O := fun j => Pi.single (M := fun w => g × m × d w × d w → O) w (fun x => C0 w (x.1, x.2.2.1) (x.2.1, x.2.2.2)) j.1 j.2 with ht0`. Establish `h1` using `hevalQ w t0`. Rewrite `h1` using `[hQ, map_zero]`. Establish `h2 : bigRect (ρ w) (∑ j, t0 j • c j) = C0 w`. Rewrite using `[ht0, hsum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h2]`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 (hC0 w) h1.symm`. Establish `hprod : (∏ w, Q w) ≠ 0` using `Finset.prod_ne_zero_iff.2 (fun w _ => hQne w)`. Establish `hL : ∀ w p q, (L w p q).totalDegree ≤ 1` using `fun w p q => MvPolynomial.totalDegree_finsetSum_le fun j _ => (MvPolynomial.totalDegree_mul _ _).trans (by rw [MvPolynomial.totalDegree_X, MvPolynomial.totalDegree_C])`. Establish `hQdeg : ∀ w, (Q w).totalDegree ≤ Fintype.card g * Fintype.card (d w)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Simplify using `only [Q]`. Use `(genfin_det_totalDegree _ fun p q => ?_).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply]`. Conclude with `MvPolynomial.totalDegree_finsetSum_le fun l _ => (MvPolynomial.totalDegree_mul _ _).trans (by rw [MvPolynomial.totalDegree_C, add_zero]; exact hL _ _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fintype.card_fin, ← Fintype.card_prod]`. Establish `he` using `Fintype.card_le_of_embedding (e w)`. Rewrite `he` using `[Fintype.card_fin]`. Then use the resulting hypothesis. Use `set D : ℕ := Fintype.card g * ∑ w, Fintype.card (d w) with hD`. Establish `hdeg : (∏ w, Q w).totalDegree ≤ D`.
+Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(MvPolynomial.totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hD, Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun w _ => hQdeg w`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS⟩ : ∃ S : Finset (IsLocalRing.ResidueField O), D < S.card := by`. Break down `finite_or_infinite (IsLocalRing.ResidueField O) with hk | hk` into its components or cases.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Consider the cases of `nonempty_fintype (IsLocalRing.ResidueField O)`. Use `⟨Finset.univ, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_univ]`. Rewrite `hcard` using `[Cardinal.mk_fintype, Nat.cast_lt]`. Conclude with `hcard`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨S, hS⟩` from `Infinite.exists_subset_card_eq (IsLocalRing.ResidueField O) (D + 1)`. Conclude with `⟨S, by omega⟩`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, MvPolynomial.eval x (∏ w, Q w) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_not] at hcon`.
-
-Conclude with `hprod (MvPolynomial.eq_zero_of_eval_zero_at_prod_finset _ (fun _ => S) (fun i => lt_of_le_of_lt ((MvPolynomial.degreeOf_le_totalDegree _ i).trans hdeg) hS) (fun x _ => hcon x))`. Rewrite `hx` using `[map_prod]`. Establish `hxw : ∀ w, MvPolynomial.eval x (Q w) ≠ 0` using `fun w => (Finset.prod_ne_zero_iff.1 hx) w (Finset.mem_univ w)`. Set `t : (Σ w : s, g × m × d w × d w) → O` to `fun j => Function.surjInv (IsLocalRing.residue_surjective (R := O)) (x j)`. Establish `htx : (fun j => res (t j)) = x` using `funext fun j => Function.surjInv_eq _ _`.
-
-Use `⟨∑ j, t j • c j, fun w => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (Matrix.of fun p q => (bigRect (ρ w) (∑ j, t j • c j) * U w) (e w p) (f w q)).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, ← hevalQ w t, htx]`. Conclude with `hxw w`. Use `show Module.length O (LinearMap.ker (relMap O (KO O) (bigMat (ρ w) (_ * P)))) = _`.
-
-Rewrite using `[gen_bigMat_mul, hgood w _ hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genericFin : StatGenericFin := by
   intro R O _ _ _ _ _ m g s _ _ _ _ d _ _ hcard ρ hρ P
@@ -180,9 +174,9 @@ variable {R : Type*} [Ring R] {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteV
   (ρ : R →+* Matrix d d O) [SMulCommClass R O (LatQ O d ρ)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨i, a⟩` from `p`. Use `show (∑ j, P i j • v j : LatQ O d ρ) a = ∑ q : g × d, ρ (P i q.1) a q.2 • v q.1 q.2`. Rewrite using `[Fintype.sum_prod_type]`. Establish `hsum : (∑ j, P i j • v j : LatQ O d ρ) a = ∑ j, ((P i j • v j : LatQ O d ρ) : d → KO O) a` using `Finset.sum_apply (M := fun _ : d => KO O) a univ (fun j => (P i j • v j : LatQ O d ρ))`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem genfin_uncurry_relMap (P : Matrix m g R) (v : g → LatQ O d ρ) :
     uncurryEquiv (g := m) ρ (relMap O (LatQ O d ρ) P v) =
@@ -198,11 +192,9 @@ theorem genfin_uncurry_relMap (P : Matrix m g R) (v : g → LatQ O d ρ) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[Submodule.mem_map_equiv, LinearMap.mem_ker, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `genfin_uncurry_relMap ρ P ((uncurryEquiv ρ).symm w)` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h, map_zero, LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`. Introduce `h`. Use `genfin_uncurry_relMap ρ P ((uncurryEquiv ρ).symm w)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, h]`.
-
-Conclude with `(uncurryEquiv ρ).map_eq_zero_iff.mp this`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genfin_ker_map_uncurry (P : Matrix m g R) :
     (LinearMap.ker (relMap O (LatQ O d ρ) P)).map (uncurryEquiv (g := g) ρ).toLinearMap =
@@ -222,7 +214,7 @@ theorem genfin_ker_map_uncurry (P : Matrix m g R) :
 end KerHomRectAux
 
 /- English proof (translation)
-Introduce `R O _ _ _ _ m g d _ _ _ _ _ ρ _ P`. Rewrite using `[(homEquiv (O := O) (M := LatQ O d ρ) P).length_eq]`. Conclude with `((LinearEquiv.ofSubmodules (uncurryEquiv ρ) _ _ (genfin_ker_map_uncurry ρ P)).length_eq).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerHomRect : StatKerHomRect := by
   intro R O _ _ _ _ m g d _ _ _ _ _ ρ _ P

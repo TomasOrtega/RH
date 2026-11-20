@@ -457,12 +457,12 @@ def Route (D : D7) : Prop :=
     ∀ (X' : HSp D) (X : End ψ X') (s κ t : ℕ) (Y : X.Tower s κ t), Y.Value
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example {X : Type} (R : Fin 0 → X → X → Prop) (f₀ f : X) : StepsAll R f₀ f ↔ f = f₀ := Iff.rfl
 
 /- English proof (translation)
-Simplify using `[StepsAll, List.finRange_succ, Steps]`.
+Simplify using the standard rewrite rules.
 -/
 example {X : Type} (R : Fin 1 → X → X → Prop) (f₀ f : X) : StepsAll R f₀ f ↔ R 0 f₀ f := by
   simp [StepsAll, List.finRange_succ, Steps]

@@ -5,31 +5,27 @@ open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFul
 open scoped ComplexConjugate Classical InnerProductSpace
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ m _ τ I s J χ A e hCO hχ hm hA he hty hone hs hI`. Establish `hJo : IsOpen (J : Set G)` using `hCO.2`. Establish `hcc : ∀ g ∈ J, conj (χ g) * χ g = 1`. Introduce `g hg`. Rewrite using `[Complex.conj_mul', hχ.2.1 g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hAe : A e = e`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, sub_eq_zero, (hA e l).2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (fun g => ((J : Set G).indicator (fun x => conj (χ x)) g) * l (τ.ρ g e)) = (J : Set G).indicator fun _ => l e`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ (J : Set G)`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem hg, hty g hg, map_smul, smul_eq_mul, ← mul_assoc, hcc g hg, one_mul]`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem hg, zero_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, integral_indicator_const _ hJo.measurableSet]`. Simplify using `[Measure.real, hm]`. Establish `hAty : ∀ x, ∀ u ∈ J, τ.ρ u (A x) = χ u • A x`. Introduce `x u hu`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Establish `h1` using `(hA x (l ∘ₗ τ.ρ u)).2`. Establish `h2` using `(hA x l).2`. Rewrite using `[map_sub, map_smul, sub_eq_zero, h2, smul_eq_mul, ← integral_const_mul, ← integral_mul_left_eq_self (fun g => χ u * (((J : Set G).indicator (fun x => conj (χ x)) g) * l (τ.ρ g x))) u]`. Use `h1.trans (integral_congr_ae (Filter.Eventually.of_forall fun g => ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : χ u * (J : Set G).indicator (fun x => conj (χ x)) (u * g) = (J : Set G).indicator (fun x => conj (χ x)) g`. Distinguish the cases in `hg : g ∈ J`. Establish `hug : u * g ∈ (J : Set G)` using `J.mul_mem hu hg`. Establish `hg' : g ∈ (J : Set G)` using `hg`. Rewrite using `[Set.indicator_of_mem hug, Set.indicator_of_mem hg', hχ.2.2 u hu g hg, map_mul, ← mul_assoc, mul_comm (χ u), hcc u hu, one_mul]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hug : u * g ∉ (J : Set G)` using `fun h => hg ((J.mul_mem_cancel_left hu).1 h)`. Establish `hg' : g ∉ (J : Set G)` using `hg`. Rewrite using `[Set.indicator_of_notMem hug, Set.indicator_of_notMem hg', mul_zero]`. Simplify using `only [← mul_assoc, h3, map_mul, LinearMap.comp_apply, Module.End.mul_apply]`. Take `⟨a, ha⟩` from `hone (I.symm e) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `g hg`. Apply `I.injective` to reduce the goal to its premises. Rewrite using `[hI, map_smul, LinearEquiv.apply_symm_apply, hty _ (hs g hg).1, (hs g hg).2])`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `ha` using `[zero_smul]`. Conclude with `he (by simpa using ha)`. Establish `hIe : I e = a⁻¹ • e`. Establish `h1 : e = a • I e`. Use `congrArg I ha` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[LinearEquiv.apply_symm_apply, map_smul]`. Then use the resulting hypothesis. Rewrite using `[eq_inv_smul_iff₀ ha0]`. Conclude with `h1.symm`. Take `⟨t, ht, htr⟩` from `UpperTheory.V.Z.Tf.L4.traceLine τ.V (Submodule.span ℂ {e}) (finrank_span_singleton he) A 1 one_ne_zero (fun v => by`. Take `⟨c, hc⟩` from `hone (A v) (hAty v)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self e))`. Use the proof step `(fun v hv => by`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Rewrite using `[map_smul, hAe, one_smul])`.
-
-Use `I`. Use the proof step `(fun v hv => by`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Rewrite using `[map_smul, hIe]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self e)))`.
-
-Conclude with `⟨t, ht, A, hA, htr⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integralOp_eigenline_scalar_of_twist :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (m : Measure G)

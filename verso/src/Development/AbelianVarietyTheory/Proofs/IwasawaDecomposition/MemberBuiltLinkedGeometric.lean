@@ -20,11 +20,11 @@ set_option maxHeartbeats 2000000
 namespace GlobalTheory.Mem.Top.Bl
 
 /- English proof (translation)
-Establish `h` using `StepW.and hB (hA.and (hMt.and (hRat.and (hCu.and (hB0.and (hB1.and (hB2.and (hC.and hFin))))))))`. Use `h.trans (StepW.of_all ?_)` and prove the remaining obligations. Introduce `K B f T w _ _ H`. Take `⟨⟨P, x, sat, hLoc, -⟩, a, mt, rat, cu, b0, b1, b2, c, fin⟩` from `H`. Take `⟨x1, ⟨la⟩, -⟩` from `a P x hLoc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨imt⟩` from `mt P x1`. Take `⟨irat⟩` from `rat P x1 la`. Establish `li : LI hL x1` using `{ toLA := la, mt := imt, rat := irat, cusp := cu P x1 la }`. Take `⟨x2, ⟨l0⟩, p2⟩` from `b0 P x1 li`. Take `⟨x3, ⟨l1⟩, p3⟩` from `b1 P x2 l0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x4, ⟨l2⟩, p4⟩` from `b2 P x3 l1`. Take `⟨sc⟩` from `c P x4 l2`. Take `⟨Z, v, -, -⟩` from `fin P x4 { toStrictHenselianAcyclic := l2, c := sc } S Γ ⟨p4 (p3 p2), sat⟩`. Conclude with `⟨Z, ⟨v⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem has3_neo_of_localLanglands (hL : GlobalTheory.Published.LocalLanglandsGL) (cDep : ℝ) (hB : ExistsUnlocalizedSaturatedState) (hA : SA hL) (hMt : SMt) (hRat : SRat hL)
     (hCu : SCusp hL) (hB0 : SettingsFormsExistList hL cDep) (hB1 : SeriesExistList hL cDep) (hB2 : ModuliPointsExistList hL cDep) (hC : SC hL) (hFin : SFino hL cDep)
@@ -45,7 +45,7 @@ theorem has3_neo_of_localLanglands (hL : GlobalTheory.Published.LocalLanglandsGL
   exact ⟨Z, ⟨v⟩⟩
 
 /- English proof (translation)
-Establish `exp` using `GlobalTheory.T.automorphy_of_hypotheses hE.e1 hE.e2 hE.e3 hE.e4 hE.e5 hE.e6 hE.e7 hE.e8 hE.e9 hE.e10 hE.e11 hE.e12 hE.e13 hA.a6 hE.e14 hA.a22 hE.e15 hE.e16 hE.e17 hE.e18 hE.e19 hE.e20 hE.e21 hE.e22 hE.e23 hE.e24 hE.e25 hN.pr hN.ser hL hN.parMem N SExt.none (geoCl anyGeometry) toB`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.published_inputs_imply_conclusion hA.a1 hA.a2 hA.a3 hA.a11 hA.a10 hA.a6 hA.a12 hA.a13 hA.a14 hA.a15 hA.a16 hA.a17 hA.a18 hA.a8 hA.a6 hA.a7 hA.a5 hA.a19 hA.a20 hA.a21 hL N Ng has3 lv lvg exp second toN`. Conclude with `GlobalTheory.T.geometric_parameter_uniform hH.h1.q12 hH.cover hA.a5 hA.a7 hA.a8 hA.a9 hA.a10 hA.a6 hA.a22 hA.a23 hA.a1 hL N (geoCl anyGeometry) (prmR N SExt.none (geoCl anyGeometry)) rfl toB intersection_update_fsHerm_neg_one hMQ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem memberE_exBL_of_pair (hA : HypA) (hE : HypE) (hH : HypH) (hL : GlobalTheory.Published.LocalLanglandsGL) (hN : HypN hL) (N Ng : NExt hL)
     (toB : ∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (NEb hL K B f T w Z Wt p0 t nch n xd c))
@@ -70,9 +70,9 @@ theorem memberE_exBL_of_pair (hA : HypA) (hE : HypE) (hH : HypH) (hL : GlobalThe
       (prmR N SExt.none (geoCl anyGeometry)) rfl toB intersection_update_fsHerm_neg_one hMQ
 
 /- English proof (translation)
-Introduce `hA hE hH hW hL hN cDep hMQ`. Establish `holdsW : WeightCaseCondition` using `GlobalTheory.T.weight_set_residue_characteristic hH.h1 hH.h2 hH.h3 hH.multW`. Establish `datE : DatExt` using `GlobalTheory.T.fineAdelicDatum_extends_to_larger_field_of_hypotheses hH.cover hA.a5 hA.a6 hA.a7 hA.a8 hA.a9 hA.a10`. Apply the tactic sequence `have h := GlobalTheory.T.all_reduction_statements_hold (by first | exact hA.a5 | exact hA.a7) (by first | exact hA.a5 | exact hA.a7)`. Apply the tactic sequence `repeat (first | specialize h hA.a8 | specialize h hA.a9 | specialize h hA.a12 | specialize h hA.a5 | specialize h hA.a6 | specialize h hA.a7 | specialize h hA.a10 | specialize h hA.a22 | specialize h hH | specialize h hN.pr | specialize h hN.ser | specialize h hL | specialize h h …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨sA, sMt, sRat, sCusp, -, -, -, sC, -, sl⟩` from `h`. Apply the tactic sequence `obtain ⟨fin, second⟩ := GlobalTheory.T.finite_level_and_second hH.cover (by first | exact hA.a5 | exact hA.a7) (by first | exact hA.a5 | exact hA.a7) hN.pr hN.ser datE holdsW hA.a9 hN.arch.pht hL sMt sRat sCusp cDep (sl cDep).2.2.2`. Establish `has3` using `has3_neo_of_localLanglands hL cDep hW sA sMt sRat sCusp (sl cDep).1 (sl cDep).2.1 (sl cDep).2.2.1 sC fin SExt.none (geoCl anyGeometry)`. Establish `lv` using `GlobalTheory.T.lv3Mv_prmR_NEo_and_NEog hL cDep SExt.none (geoCl anyGeometry)`. Conclude with `memberE_exBL_of_pair hA hE hH hL hN (NEo hL cDep) (NEog hL cDep) (fun _ _ _ _ _ _ _ _ _ _ _ _ _ h => ⟨h.1.1⟩) (fun _ _ _ _ _ _ _ _ _ _ _ _ _ h => ⟨⟨h.1⟩, h.2.down⟩) has3 lv.1 lv.2 (GlobalTheory.T.movable_geometric hL cDep anyGeometry) (second SExt.none (geoCl anyGeometry)) hMQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem memberE_exBL_prm1 : HypA → HypE → HypH → ExistsUnlocalizedSaturatedState → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, HypN hL → ∀ cDep : ℝ,
     MultQ (prmR (NEo hL cDep) SExt.none (geoCl anyGeometry)) → MemberE (prmR (NEo hL cDep) SExt.none (geoCl anyGeometry)).s ∧

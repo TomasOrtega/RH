@@ -31,13 +31,11 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hnum k _ X _ q hq`. Use `letI := algebraΓOfHom q`. Introduce `N N₁ N₂ hN h₁ h₂ a x _ ha e hx hn₂`. Establish `hf : ∀ r, algebraMap k Γ(X, ⊤) r = q.appTop ((Scheme.ΓSpecIso (.of k)).inv r)` using `algebraΓOfHom_algebraMap q`. Establish `hp : IsProjOver (strHom k X)` using `(strHom_eq hf) ▸ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, A, s, hm, hA, hAmp, hxs⟩` from `hx`. Establish `hD` using `Semi.LB.isLB_div (isLB_lbPow h₁ m) hA`. Establish `hsec : HasNonzeroSec (LB.div (lbPow N₁ m) A)` using `⟨s, sec_ne_zero_of_mem hxs⟩`. Establish `hB : IsBig k (tens (lbPow N₂ m) A)` using `(hn₂.pow hAmp m).isBig_tens_ample hnum hp hAmp`. Establish `hP` using `isLB_lbPow hN (a * m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : (a * m) • cls N hN = m • (cls N₁ h₁ + cls N₂ h₂)`. Rewrite using `[← e, smul_smul, mul_comm a m]`. Establish `hbig : IsBig k (lbPow N (a * m))` using `hB.of_cls_eq_add hf hq hD hsec hP (by`. Rewrite using `[cls_tens (isLB_lbPow h₂ m) hA, cls_div (isLB_lbPow h₁ m) hA hD, cls_lbPow hN, cls_lbPow h₂, cls_lbPow h₁, e₂]`. Use the proof step `module)`.
-
-Conclude with `hbig.of_pow hN (Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero ha.ne' hm.ne')) fun n => finite_coh_zero_twist_of_isProjOver hf hq (isLB_lbPow hN n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBig_of_smul_cls_eq_add_ampleAt : GlobalTheory.Published.NefNumerics → ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k), IsProjOver q → letI := algebraΓOfHom q; ∀ (N N₁ N₂ : LB X) (hN : N.IsLB) (h₁ : N₁.IsLB) (h₂ : N₂.IsLB) (a : ℕ) (x : X), IsNef k N → 0 < a → a • cls N hN = cls N₁ h₁ + cls N₂ h₂ → AmpleAt N₁ x → IsNef k N₂ → IsBig k N := by
   intro hnum k _ X _ q hq

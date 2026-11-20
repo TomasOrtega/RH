@@ -6,7 +6,7 @@ section
 variable {l : ℕ} [Fact l.Prime] (F : GFrame l) {n : ℕ} {A R : Type} [CommRing A] [CommRing R] [Algebra A R]
 
 /- English proof (translation)
-Simplify using `only [dY, Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem dY_add (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (Y Y' : Matrix (Fin n) (Fin n) R) (g : F.G₀) :
     dY F ρ (Y + Y') g = dY F ρ Y g + dY F ρ Y' g := by
@@ -14,20 +14,20 @@ private theorem dY_add (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (Y Y' : Matrix
   abel
 
 /- English proof (translation)
-Simplify using `[dY]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dY_zero (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (g : F.G₀) : dY F ρ 0 g = 0 := by
   simp [dY]
 
 /- English proof (translation)
-Simplify using `only [dY, Matrix.mul_smul, Matrix.smul_mul, smul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dY_smul (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (c : A) (Y : Matrix (Fin n) (Fin n) R) (g : F.G₀) :
     dY F ρ (c • Y) g = c • dY F ρ Y g := by
   simp only [dY, Matrix.mul_smul, Matrix.smul_mul, smul_sub]
 
 /- English proof (translation)
-Introduce `N`. Establish `key` using `(h N).add (h' N)`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem ac_add {Γ : Type} [TopologicalSpace Γ] {I : Ideal R} {f f' : Γ → R} (h : AdicCont I f)
     (h' : AdicCont I f') : AdicCont I fun g => f g + f' g := by
@@ -38,7 +38,7 @@ private theorem ac_add {Γ : Type} [TopologicalSpace Γ] {I : Ideal R} {f f' : �
   simp [map_add]
 
 /- English proof (translation)
-Introduce `N`. Establish `key` using `(h N).comp (fun x => Ideal.Quotient.mk (I ^ N) (algebraMap A R c) * x)`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[Function.comp, Algebra.smul_def, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem ac_smul {Γ : Type} [TopologicalSpace Γ] {I : Ideal R} {f : Γ → R} (c : A) (h : AdicCont I f) :
     AdicCont I fun g => c • f g := by
@@ -51,31 +51,31 @@ private theorem ac_smul {Γ : Type} [TopologicalSpace Γ] {I : Ideal R} {f : Γ 
 end
 
 /- English proof (translation)
-Introduce `l _ F n A R _ _ _ t ρ w wi V`. Use `⟨⟨⟨⟨⟨SelZ F t ρ w wi V, ?_⟩, ?_⟩, ?_⟩, rfl⟩, ⟨⟨⟨⟨Bd F ρ V, ?_⟩, ?_⟩, ?_⟩, rfl⟩⟩` and prove the remaining obligations. Introduce `z z' hz hz'`. Simplify using `only [SelZ, Set.mem_setOf_eq] at hz hz' ⊢`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨h1', h2', h3', h4', h5', h6'⟩` from `hz'`. Use `⟨fun g => V.add_mem (h1 g) (h1' g), fun i j => ?_, fun g k => ?_, fun g => ?_, fun u g hg => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `e` using `ac_add (h2 i j) (h2' i j)`. Simplify `e` using `only [Pi.add_apply, Matrix.add_apply]`. Rewrite using `[Pi.add_apply, Pi.add_apply, Pi.add_apply, h3, h3', Matrix.mul_add, Matrix.add_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[Pi.add_apply, Pi.add_apply, h4, h4', Matrix.transpose_add, neg_add]`. Rewrite using `[Pi.add_apply, h5 u g hg, h5' u g hg, add_zero]`. Take `⟨Y, hY, hl⟩` from `h6 v`. Take `⟨Y', hY', hl'⟩` from `h6' v`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Y + Y', V.add_mem hY hY', ?_⟩` and prove the remaining obligations. Introduce `g`. Take `⟨a, b⟩` from `hl g`. Take `⟨a', b'⟩` from `hl' g`. Establish `e : ∀ x, (z + z') x - dY F ρ (Y + Y') x = (z x - dY F ρ Y x) + (z' x - dY F ρ Y' x)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[Pi.add_apply, dY_add]`. Normalize the expressions using the abelian group laws. Use `⟨fun i j hij => ?_, fun hm i => ?_⟩` and prove the remaining obligations. Rewrite using `[e, Matrix.mul_add, Matrix.add_mul, Matrix.add_apply, a i j hij, a' i j hij, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mul_add, Matrix.add_mul, Matrix.add_apply, b hm i, b' hm i, add_zero]`. Simplify using `only [SelZ, Set.mem_setOf_eq]`. Use `⟨fun g => V.zero_mem, fun i j => ?_, fun g k => ?_, fun g => ?_, fun u g hg => rfl, fun v => ?_⟩` and prove the remaining obligations. Introduce `N`. Simplify using `only [Pi.zero_apply, Matrix.zero_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `IsLocallyConstant.const 0`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `⟨0, V.zero_mem, ?_⟩` and prove the remaining obligations. Introduce `g`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[dY_zero]`. Introduce `c z hz`. Simplify using `only [SelZ, Set.mem_setOf_eq] at hz ⊢`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hz`. Use `⟨fun g => V.smul_mem c (h1 g), fun i j => ?_, fun g k => ?_, fun g => ?_, fun u g hg => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `ac_smul c (h2 i j)`. Simplify `e` using `only [Pi.smul_apply, Matrix.smul_apply]`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, h3, smul_add, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, h4, Matrix.transpose_smul, smul_neg]`. Rewrite using `[Pi.smul_apply, h5 u g hg, smul_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hY, hl⟩` from `h6 v`. Use `⟨c • Y, V.smul_mem c hY, ?_⟩` and prove the remaining obligations. Introduce `g`. Take `⟨a, b⟩` from `hl g`. Establish `e : ∀ x, (c • z) x - dY F ρ (c • Y) x = c • (z x - dY F ρ Y x)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[Pi.smul_apply, dY_smul, smul_sub]`. Use `⟨fun i j hij => ?_, fun hm i => ?_⟩` and prove the remaining obligations. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, a i j hij, smul_zero]`. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, b hm i, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `z z' ⟨Y, hY, hT, rfl⟩ ⟨Y', hY', hT', rfl⟩`. Use `⟨Y + Y', V.add_mem hY hY', by rw [Matrix.transpose_add, hT, hT', neg_add], ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.add_apply, dY_add]`. Conclude with `⟨0, V.zero_mem, by simp, by funext g; rw [dY_zero]; rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `c z ⟨Y, hY, hT, rfl⟩`. Use `⟨c • Y, V.smul_mem c hY, by rw [Matrix.transpose_smul, hT, smul_neg], ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, dY_smul]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.selSub :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l) {n : ℕ} {A R : Type} [CommRing A] [CommRing R] [Algebra A R] (t : A) (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (w wi : F.Vl → Matrix (Fin n) (Fin n) R) (V : Submodule A (Matrix (Fin n) (Fin n) R)), (∃ S : Submodule A (F.G₀ → Matrix (Fin n) (Fin n) R), (S : Set _) = SelZ F t ρ w wi V) ∧ ∃ S : Submodule A (F.G₀ → Matrix (Fin n) (Fin n) R), (S : Set _) = Bd F ρ V := by

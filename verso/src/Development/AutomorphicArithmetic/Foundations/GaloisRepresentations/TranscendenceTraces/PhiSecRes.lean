@@ -14,14 +14,14 @@ def pbm {U' U : Scheme.{0}} (g : U' ⟶ U) (u : U ⟶ S) (u' : U' ⟶ S) (h : g 
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem pbm_fst {U' U : Scheme.{0}} (g : U' ⟶ U) (u : U ⟶ S) (u' : U' ⟶ S) (h : g ≫ u = u') :
     pbm p g u u' h ≫ pullback.fst p u = pullback.fst p u' := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pbm_snd {U' U : Scheme.{0}} (g : U' ⟶ U) (u : U ⟶ S) (u' : U' ⟶ S) (h : g ≫ u = u') :
     pbm p g u u' h ≫ pullback.snd p u = pullback.snd p u' ≫ g := pullback.lift_snd _ _ _
@@ -32,14 +32,14 @@ def inc (G : Shv R) {U : Scheme.{0}} (u : U ⟶ S) : Sec G (pullback p u) →ₗ
   DirectSum.lof (ULift.{1} R) (U ⟶ S) (fun u => Sec G (pullback p u)) u
 
 /- English proof (translation)
-The claim follows from `DirectSum.linearMap_ext _ fun u => LinearMap.ext fun a => h u a`.
+A detailed English derivation is pending.
 -/
 theorem DS.hom_ext {G : Shv R} {U : Scheme.{0}} {M : Type 1} [AddCommGroup M] [Module (ULift.{1} R) M]
     {f f' : DS p G U →ₗ[ULift.{1} R] M} (h : ∀ u a, f (inc p G u a) = f' (inc p G u a)) : f = f' :=
   DirectSum.linearMap_ext _ fun u => LinearMap.ext fun a => h u a
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: k = 𝟙 _` using `pullback.hom_ext (by simpa using h1) (by simpa using h2)`. Rewrite using `[this, res_id]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inc_congr (G : Shv R) {U : Scheme.{0}} {u u' : U ⟶ S} (h : u' = u) (k : pullback p u' ⟶ pullback p u)
     (h1 : k ≫ pullback.fst p u = pullback.fst p u') (h2 : k ≫ pullback.snd p u = pullback.snd p u')
@@ -52,7 +52,7 @@ def DS.res (G : Shv R) {U' U : Scheme.{0}} (g : U' ⟶ U) : DS p G U →ₗ[ULif
   DirectSum.toModule _ _ _ fun u => inc p G (g ≫ u) ∘ₗ (G.obj.map (pbm p g u _ rfl).op).hom
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `DirectSum.toModule_lof _ _ _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem DS.res_inc (G : Shv R) {U' U : Scheme.{0}} (g : U' ⟶ U) (u : U ⟶ S) (u' : U' ⟶ S) (h : g ≫ u = u')
     (a : Sec G (pullback p u)) : DS.res p G g (inc p G u a) = inc p G u' (Sec.res (pbm p g u u' h) a) := by
@@ -63,7 +63,7 @@ def DS.map {G G' : Shv R} (f : G ⟶ G') (U : Scheme.{0}) : DS p G U →ₗ[ULif
   DirectSum.toModule _ _ _ fun u => inc p G' u ∘ₗ (f.hom.app (op (pullback p u))).hom
 
 /- English proof (translation)
-The claim follows from `DirectSum.toModule_lof _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem DS.map_inc {G G' : Shv R} (f : G ⟶ G') {U : Scheme.{0}} (u : U ⟶ S) (a : Sec G (pullback p u)) :
     DS.map p f U (inc p G u a) = inc p G' u (Sec.map f a) := DirectSum.toModule_lof _ _ _
@@ -110,14 +110,14 @@ def phiSec (G : Shv R) (U : Scheme.{0}) : DS p G U →ₗ[ULift.{1} R] Sec ((phi
   ((toSheafify Scheme.etaleTopology (phiP p G)).app (op U)).hom
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun h => h.hom x) ((toSheafify Scheme.etaleTopology (phiP p G)).naturality g.op)).symm`.
+A detailed English derivation is pending.
 -/
 theorem phiSec_res (G : Shv R) {V U : Scheme.{0}} (g : V ⟶ U) (x : DS p G U) :
     Sec.res g (phiSec p G U x) = phiSec p G V (DS.res p G g x) :=
   (congrArg (fun h => h.hom x) ((toSheafify Scheme.etaleTopology (phiP p G)).naturality g.op)).symm
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun h => (h.app (op U)).hom x) (toSheafify_naturality Scheme.etaleTopology ((phiPF p R).map f))).symm`.
+A detailed English derivation is pending.
 -/
 theorem phiSec_map {G G' : Shv R} (f : G ⟶ G') (U : Scheme.{0}) (x : DS p G U) :
     Sec.map ((phi p R).map f) (phiSec p G U x) = phiSec p G' U (DS.map p f U x) :=
@@ -128,13 +128,13 @@ def Sq.cmp {p : Z ⟶ S} (A : Sq p) : pullback p A.u ⟶ A.V :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `A.pb.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem Sq.cmp_v {p : Z ⟶ S} (A : Sq p) : A.cmp ≫ A.v = pullback.fst p A.u := A.pb.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `A.pb.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Sq.cmp_r {p : Z ⟶ S} (A : Sq p) : A.cmp ≫ A.r = pullback.snd p A.u := A.pb.lift_snd _ _ _
 
@@ -154,7 +154,7 @@ theorem phiE_app (G : Shv R) (A : Sq p) (a : Sec G A.V) :
     (phiE p G).app A a = phiSec p G A.U (inc p G A.u (Sec.res A.cmp a)) := rfl
 
 /- English proof (translation)
-Use `(phiE_app p G (Sq.of p u) a).trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (inc_congr p G rfl _ (Sq.cmp_v (Sq.of p u)) (Sq.cmp_r (Sq.of p u)) a)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phiE_of (G : Shv R) {U : Scheme.{0}} (u : U ⟶ S) (a : Sec G (pullback p u)) :
     (phiE p G).app (Sq.of p u) a = phiSec p G U (inc p G u a) := by

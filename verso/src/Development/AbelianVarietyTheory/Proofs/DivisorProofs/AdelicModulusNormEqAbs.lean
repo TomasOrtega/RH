@@ -10,7 +10,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ x`. Conclude with `congrArg (fun r : ℝ≥0 => (r : ℝ)) (GlobalTheory.ModuAdele.modu_norm_eq_absE F E x)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ModuAdeleReal.modu_norm_eq_absE_real : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (x : (AE F E)ˣ),
     (((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) x) : ℝ≥0) : ℝ) = (absE F E x : ℝ) := by

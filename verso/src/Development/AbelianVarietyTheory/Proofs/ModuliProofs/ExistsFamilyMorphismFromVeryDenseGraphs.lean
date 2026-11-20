@@ -27,7 +27,7 @@ noncomputable section
 namespace GlobalTheory.ZM.GraphMor
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_hom {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -35,9 +35,9 @@ theorem spMap_comp_hom {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f 
   rfl
 
 /- English proof (translation)
-Take `⟨W, hW, j, hj, ht, hc⟩` from `RepUniq.exists_affine_secCoord h₁ th₁ a₁ t`. Take `⟨t', rfl⟩ : t ∈ Set.range hW.fromSpec` from `by rw [hW.range_fromSpec]; exact ht`. Take `⟨W', hW', j', hj', ht', hc'⟩` from `RepUniq.exists_affine_secCoord h₂ th₂ (hW.fromSpec ≫ a₂) t'`. Take `⟨t'', rfl⟩ : t' ∈ Set.range hW'.fromSpec` from `by rw [hW'.range_fromSpec]; exact ht'`. Take `⟨β, hβ⟩` from `RepUniq.exists_spMap (R := Γ(Y, W)) (A := Γ(Spec Γ(Y, W), W')) hW'.fromSpec`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `Coord.baseChange hc β`. Rewrite `hb` using `[← hβ]`. Conclude with `⟨Γ(Spec Γ(Y, W), W'), inferInstance, hW'.fromSpec ≫ hW.fromSpec, (inferInstance : IsOpenImmersion (hW'.fromSpec ≫ hW.fromSpec)), _, _, ⟨t'', rfl⟩, hb, hc'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_chart_two {Y X₁ X₂ : Scheme.{0}} {σ₁ σ₂ : Type} {M₁ : LB X₁} {M₂ : LB X₂} (h₁ : M₁.IsLB) (h₂ : M₂.IsLB)
     (th₁ : σ₁ → M₁.Sec) (th₂ : σ₂ → M₂.Sec) (a₁ : Y ⟶ X₁) (a₂ : Y ⟶ X₂) (t : Y) :
@@ -54,9 +54,9 @@ theorem exists_chart_two {Y X₁ X₂ : Scheme.{0}} {σ₁ σ₂ : Type} {M₁ :
     (inferInstance : IsOpenImmersion (hW'.fromSpec ≫ hW.fromSpec)), _, _, ⟨t'', rfl⟩, hb, hc'⟩
 
 /- English proof (translation)
-Set `t : Sp K` to `(default : PrimeSpectrum K)`. Take `⟨j, hj⟩` from `LB.mem_of_cover h (y t)`. Establish `hle : (⊤ : (Sp K).Opens) ≤ y ⁻¹ᵁ M.U j` using `fun t' _ => by`. Take `rfl : t' = t` from `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Conclude with `hj`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom ((y.appLE _ ⊤ hle).hom ((th i).f j)), RepUniq.secCoord_of_frame h ⟨j, hle, 1, isUnit_one, fun i => ?_⟩⟩` and prove the remaining obligations. Simplify using `[RepUniq.fn]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord_field {X : Scheme.{0}} {σ : Type} {M : LB X} (h : M.IsLB) (th : σ → M.Sec) {K : Type} [Field K]
     (y : Sp K ⟶ X) : ∃ v, SecCoord M th y v := by
@@ -70,7 +70,7 @@ theorem exists_coord_field {X : Scheme.{0}} {σ : Type} {M : LB X} (h : M.IsLB) 
   simp [RepUniq.fn]
 
 /- English proof (translation)
-Use `Scheme.hom_ext_of_forall _ _ fun t => ?_` and prove the remaining obligations. Take `⟨T, y, _, ht, e⟩` from `h t`. Use `⟨y.opensRange, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← y.isoOpensRange_inv_comp, Category.assoc, Category.assoc, e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_ext_chart {Y X : Scheme.{0}} (a b : Y ⟶ X)
     (h : ∀ t : Y, ∃ (T : Scheme.{0}) (y : T ⟶ Y) (_ : IsOpenImmersion y), t ∈ Set.range y ∧ y ≫ a = y ≫ b) : a = b := by
@@ -80,9 +80,9 @@ theorem hom_ext_chart {Y X : Scheme.{0}} (a b : Y ⟶ X)
   rw [← y.isoOpensRange_inv_comp, Category.assoc, Category.assoc, e]
 
 /- English proof (translation)
-Set `t : Sp K` to `(default : PrimeSpectrum K)`. Set `t' : Sp K'` to `(default : PrimeSpectrum K')`. Establish `e : spMap β t' = spMap x t` using `PrimeSpectrum.ext (by`. Rewrite using `[VeryDenseFibres.spMap_apply_asIdeal, VeryDenseFibres.spMap_apply_asIdeal, h])`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := spMap β) (g := spMap x) t' t e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `L : Type` to `(pullback (spMap β) (spMap x)).residueField z`. Take `⟨a, ha⟩` from `RepUniq.exists_spMap (R := K') (A := L) ((pullback (spMap β) (spMap x)).fromSpecResidueField z ≫ pullback.fst _ _)`. Take `⟨b, hb⟩` from `RepUniq.exists_spMap (R := K) (A := L) ((pullback (spMap β) (spMap x)).fromSpecResidueField z ≫ pullback.snd _ _)`. Use `⟨L, inferInstance, a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, ← hb, Category.assoc, Category.assoc, pullback.condition]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_common_field {R K K' : Type} [CommRing R] [Field K] [Field K'] (x : R →+* K) (β : R →+* K')
     (h : RingHom.ker x = RingHom.ker β) :
@@ -101,9 +101,9 @@ theorem exists_common_field {R K K' : Type} [CommRing R] [Field K] [Field K'] (x
   rw [← ha, ← hb, Category.assoc, Category.assoc, pullback.condition]
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.smoothLocus_eq_top_iff]`. Use `VeryDenseFibres.eq_top_of_forall_mem s P (fun q hq => ?_) _ fun z hz => ?_` and prove the remaining obligations. Take `⟨p, h1, h2, h3, -⟩` from `hP q 1 hq ((Ideal.ne_top_iff_one _).1 hq.ne_top)`. Conclude with `⟨p, h1, h2, h3⟩`. Take `⟨K, _, x, hx, hs⟩` from `h _ hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Set `w : Sp K` to `(default : PrimeSpectrum K)`. Establish `hw : s z = spMap x w` using `PrimeSpectrum.ext (by rw [VeryDenseFibres.spMap_apply_asIdeal, hx])`. Use `VeryDenseFibres.mem_smoothLocus_of_smooth_fiber s z ?_` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `VeryDenseFibres.smooth_fiber_of_smooth_fiber s (spMap x) w (inferInstanceAs (Smooth (pullback.snd (pullback.snd s (spMap x)) ((Sp K).fromSpecResidueField w))))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_of_veryDense {R : Type} [CommRing R] {Z : Scheme.{0}} (s : Z ⟶ Sp R) [IsProper s] [Flat s]
     [LocallyOfFinitePresentation s] {P : Set (Ideal R)} (hP : VeryDense P)
@@ -122,7 +122,7 @@ theorem smooth_of_veryDense {R : Type} [CommRing R] {Z : Scheme.{0}} (s : Z ⟶ 
       (inferInstanceAs (Smooth (pullback.snd (pullback.snd s (spMap x)) ((Sp K).fromSpecResidueField w))))
 
 /- English proof (translation)
-Use `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := R)).dense_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩ ⟨q, hq⟩`. Take `⟨p, h1, h2, -, h4⟩` from `hP q.asIdeal f q.isPrime hq`. Conclude with `⟨⟨p, h2⟩, h4, h1⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dense_of_veryDense {R : Type} [CommRing R] {P : Set (Ideal R)} (hP : VeryDense P) :
     Dense {q : Sp R | q.asIdeal ∈ P} := by
@@ -132,7 +132,7 @@ theorem dense_of_veryDense {R : Type} [CommRing R] {P : Set (Ideal R)} (hP : Ver
   exact ⟨⟨p, h2⟩, h4, h1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pullback.lift a₁ a₂ h, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_pair {S Y : Scheme.{0}} (Z₁ Z₂ : Over S) (a₁ : Y ⟶ Z₁.left) (a₂ : Y ⟶ Z₂.left)
     (h : a₁ ≫ Z₁.hom = a₂ ≫ Z₂.hom) :
@@ -140,7 +140,7 @@ theorem exists_pair {S Y : Scheme.{0}} (Z₁ Z₂ : Over S) (a₁ : Y ⟶ Z₁.l
   ⟨pullback.lift a₁ a₂ h, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.sum_homogeneousComponent F]`. Conclude with `Ideal.sum_mem _ fun e _ => h e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_components {R σ : Type} [CommRing R] {I : Ideal (MvPolynomial σ R)} {F : MvPolynomial σ R}
     (h : ∀ e, MvPolynomial.homogeneousComponent e F ∈ I) : F ∈ I := by
@@ -148,7 +148,7 @@ theorem mem_of_components {R σ : Type} [CommRing R] {I : Ideal (MvPolynomial σ
   exact Ideal.sum_mem _ fun e _ => h e
 
 /- English proof (translation)
-Simplify using `only [idealOf, Ideal.mem_iInf] at hF`. Conclude with `hF T inferInstance β y v ⟨hy, by rwa [Category.comp_id]⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_eq_zero_of_mem_idealOf {R σ : Type} [CommRing R] {Y : Scheme.{0}} {s : Y ⟶ Sp R} {M : LB Y}
     {th : σ → M.Sec} {F : MvPolynomial σ R} (hF : F ∈ idealOf s M th (𝟙 Y)) {T : Type} [CommRing T] {β : R →+* T}
@@ -157,37 +157,37 @@ theorem eval_eq_zero_of_mem_idealOf {R σ : Type} [CommRing R] {Y : Scheme.{0}} 
   exact hF T inferInstance β y v ⟨hy, by rwa [Category.comp_id]⟩
 
 /- English proof (translation)
-Introduce `R σ₁ σ₂ Hh _ _ _ _ _ _ Z₁ Z₂ I₁ I₂ M₁ M₂ th₁ th₂ p₁ p₂ Q d G h₁ h₂ hp₁ hp₂ hsm hG hP`. Take `⟨Γ', M, th, hΓ, -, hflat, hlfp, hfib⟩` from `GlobalTheory.T.exists_flat_projective_through_points_goodFibres R (σ₁ × σ₂) Hh (fun h i => p₁ h i.1 * p₂ h i.2) Q d (fun K _ x I => ∃ f, G K x f ∧ I = graphIdeal (pullback.snd Z₁.hom (spMap x)) M₁ th₁ (pullback.fst _ _) M₂ th₂ f) (by`. Introduce and unpack `K _ x _ ⟨f, hf, rfl⟩`. Conclude with `⟨ideals_homogeneous.2.1 _ _ _ _ _ _ _ _ _ _ _ _ _ h₁.1 h₂.1, (hG K x f hf).2⟩)`. Use the proof step `(fun q r hq hr => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨p, ⟨K, _, x, f, hx, hf⟩, hp⟩` from `hP q r hq hr`. Conclude with `⟨p, ⟨K, _, x, _, hx, f, hf, rfl⟩, hp⟩)`. Establish `hpr : IsProper Γ'.hom` using `(projRep_projective_ample R _ _ Γ' M th hΓ).2.1`. Establish `good : ∀ (K : Type) [Field K] (x : R →+* K) f, G K x f → ∃ φ : pullback Z₁.hom (spMap x) ⟶ Γ'.left, IsPullback φ (pullback.snd _ _) Γ'.hom (spMap x) ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ pullback Z₁.hom (spMap x)) (v₁ : σ₁ → T) (v₂ : σ₂ → T), SecCoord M₁ th₁ (y ≫ pullback.fst _ …`. Introduce `K _ x f hf`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, ty, hN, hc⟩` from `GlobalTheory.T.projRep_graph_segre_coordinates_fibre R K σ₁ σ₂ x I₁ I₂ Z₁ Z₂ M₁ M₂ th₁ th₂ _ (pullback.snd _ _) (pullback.fst _ _) f h₁ h₂ (IsPullback.of_hasPullback _ _) (hG K x f hf).1`. Take `⟨φ, hφ, -, hφc⟩` from `hfib K x _ _ _ N ty ⟨f, hf, rfl⟩ hN`. Conclude with `⟨φ, hφ, fun T _ y v₁ v₂ e₁ e₂ => (hφc T y _).1 (hc T y v₁ v₂ e₁ e₂)⟩`. Establish `hsmΓ : Smooth Γ'.hom` using `smooth_of_veryDense Γ'.hom hP (by`. Introduce and unpack `_ ⟨K, _, x, f, rfl, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ, -⟩` from `good K x f hf`. Use `⟨K, _, x, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ.isoPullback_inv_snd]`. Use the proof step `infer_instance)`. Establish `hred : IsReduced Γ'.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced Γ'.hom`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨I₃, M₃, th₃, h₃', hseg⟩` from `SegreCoord.segre_coordinates R σ₁ σ₂ I₁ I₂ Z₁ Z₂ M₁ M₂ th₁ th₂ h₁ h₂`. Establish `h₃` using `ideals_homogeneous.2.2 R _ _ _ _ _ _ h₃'`. Establish `w₁ : (fst Z₁ Z₂).left ≫ Z₁.hom = (Z₁ ⊗ Z₂).hom` using `Over.w _`. Establish `w₂ : (snd Z₁ Z₂).left ≫ Z₂.hom = (Z₁ ⊗ Z₂).hom` using `Over.w _`. Establish `hle : idealOf (Z₁ ⊗ Z₂).hom M₃ th₃ (𝟙 _) ≤ idealOf Γ'.hom M th (𝟙 _)` using `fun F hF => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_of_components fun e => ?_` and prove the remaining obligations. Use `DenseFib.mem_idealOf_of_dense R _ _ _ M th _ _ e hred hflat hlfp hΓ.1 (dense_of_veryDense hP) (MvPolynomial.homogeneousComponent_isHomogeneous e F) ?_` and prove the remaining obligations. Introduce `K' _ _ β y v hy hβ hv`. Establish `hF'` using `ideals_homogeneous.1 R _ _ _ _ _ _ _ h₃.1 F hF e`. Take `⟨K, _, x, f, hx, hf⟩` from `hβ ⟨(default : PrimeSpectrum K'), rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[VeryDenseFibres.spMap_apply_asIdeal]`. Take `⟨L, _, a, b, hab⟩` from `exists_common_field x β hx`. Take `⟨φ, hφ, hc⟩` from `good K x f hf`. Establish `hw : (spMap a ≫ y) ≫ Γ'.hom = spMap b ≫ spMap x` using `by rw [Category.assoc, hy, hab]`. Set `z` to `hφ.lift _ _ hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v₁, hv₁⟩` from `exists_coord_field h₁.1 th₁ (z ≫ pullback.fst _ _)`. Take `⟨v₂, hv₂⟩` from `exists_coord_field h₂.1 th₂ (z ≫ f)`. Establish `hz` using `hc L z v₁ v₂ hv₁ hv₂`. Rewrite `hz` using `[hφ.lift_fst]`. Take `⟨u, hu⟩` from `Coord.unique hΓ.1 hz (Coord.baseChange hv a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, g₁, g₂⟩` from `exists_pair Z₁ Z₂ (pullback.fst _ _) f (pullback.condition.trans (hG K x f hf).1.symm)`. Establish `hs` using `Coord.scale (hseg L (z ≫ c) v₁ v₂ (by rwa [Category.assoc, g₁]) (by rwa [Category.assoc, g₂])) u`. Establish `hb : (z ≫ c) ≫ (Z₁ ⊗ Z₂).hom = spMap (a.comp β)`. Rewrite using `[spMap_comp_hom, hab, ← w₁, Category.assoc, reassoc_of% g₁, pullback.condition, hφ.lift_snd_assoc]`. Establish `h0` using `eval_eq_zero_of_mem_idealOf hF' hb hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `a.injective` to reduce the goal to its premises. Rewrite using `[map_zero, MvPolynomial.eval₂_comp_left, ← h0]`. Use `congr 1`. Conclude with `funext hu`. Take `⟨g, hg, -, hgc, -⟩` from `RepMap.exists_map_of_coord R _ _ _ _ _ Γ'.hom M₃ M th₃ th h₃ hΓ.1 (fun T _ β y v hy hv => ⟨(hΓ.2.1 T β y v hy hv).1, fun F hF => eval_eq_zero_of_mem_idealOf (hle hF) hy hv⟩)`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `fib : ∀ (K : Type) [Field K] (x : R →+* K) f, G K x f → ∃ φ : pullback Z₁.hom (spMap x) ⟶ Γ'.left, IsPullback φ (pullback.snd _ _) Γ'.hom (spMap x) ∧ φ ≫ g ≫ (fst Z₁ Z₂).left = pullback.fst _ _ ∧ φ ≫ g ≫ (snd Z₁ Z₂).left = f`. Introduce `K _ x f hf`. Take `⟨φ, hφ, hc⟩` from `good K x f hf`. Take `⟨c, g₁, g₂⟩` from `exists_pair Z₁ Z₂ (pullback.fst _ _) f (pullback.condition.trans (hG K x f hf).1.symm)`. Establish `e : φ ≫ g = c` using `hom_ext_chart _ _ fun t => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨A, _, y, hy, v₁, v₂, ht, hv₁, hv₂⟩` from `exists_chart_two h₁.1 h₂.1 th₁ th₂ (pullback.fst _ _) f t`. Use `⟨_, y, hy, ht, ?_⟩` and prove the remaining obligations. Establish `c₁` using `(hgc A _ _).1 (hc A y v₁ v₂ hv₁ hv₂)`. Establish `c₂` using `hseg A (y ≫ c) v₁ v₂ (by rwa [Category.assoc, g₁]) (by rwa [Category.assoc, g₂])`. Take `⟨β, hβ⟩` from `RepUniq.exists_spMap ((y ≫ c) ≫ (Z₁ ⊗ Z₂).hom)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k₁, k₂⟩` from `h₃.2.1 A β _ _ hβ c₂`. Rewrite using `[← Category.assoc]`. Use `(h₃.2.2 A β _ k₁ k₂).unique ⟨?_, c₁⟩ ⟨hβ, c₂⟩` and prove the remaining obligations. Rewrite using `[← hβ, Category.assoc, hg, Category.assoc, hφ.w, Category.assoc, ← w₁, reassoc_of% g₁, pullback.condition]`. Conclude with `⟨φ, hφ, by rw [reassoc_of% e, g₁], by rw [reassoc_of% e, g₂]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : (g ≫ (fst Z₁ Z₂).left) ≫ Z₁.hom = Γ'.hom` using `by rw [Category.assoc, w₁, hg]`. Establish `hππ : IsProper ((g ≫ (fst Z₁ Z₂).left) ≫ Z₁.hom)` using `hπ ▸ hpr`. Establish `hiso : IsIso (g ≫ (fst Z₁ Z₂).left)` using `DenseFibreIso.main R _ _ Z₁.hom _ _ hP hp₁ inferInstance (IsProper.of_comp _ Z₁.hom) (hπ ▸ hflat) (by`. Introduce and unpack `_ ⟨K, _, x, f, rfl, hf⟩`. Take `⟨φ, hφ, e₁, -⟩` from `fib K x f hf`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨K, _, x, rfl, ?_⟩` and prove the remaining obligations. Establish `hq : IsPullback φ (𝟙 _) (g ≫ (fst Z₁ Z₂).left) (pullback.fst Z₁.hom (spMap x))` using `IsPullback.of_bot (by rwa [Category.id_comp, hπ]) (by rw [e₁, Category.id_comp]) (IsPullback.of_hasPullback Z₁.hom (spMap x))`. Rewrite using `[← hq.isoPullback_inv_snd]`. Use the proof step `infer_instance)`. Use `⟨Over.homMk (inv (g ≫ (fst Z₁ Z₂).left) ≫ g ≫ (snd Z₁ Z₂).left) ?_, fun K _ x f hf => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, w₂, hg, ← hπ, IsIso.inv_hom_id_assoc]`. Take `⟨φ, -, e₁, e₂⟩` from `fib K x f hf`. Express the relevant statement in the definitionally equal form `f = pullback.fst _ _ ≫ inv (g ≫ (fst Z₁ Z₂).left) ≫ g ≫ (snd Z₁ Z₂).left`. Rewrite using `[← e₁, Category.assoc, IsIso.hom_inv_id_assoc, e₂]`.
+A detailed English derivation is pending.
 -/
 theorem exists_hom_of_graphs : ∀ (R σ₁ σ₂ Hh : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] [Finite σ₁] [Finite σ₂] [Finite Hh] (Z₁ Z₂ : Over (Sp R)) (I₁ : Ideal (MvPolynomial σ₁ R)) (I₂ : Ideal (MvPolynomial σ₂ R)) (M₁ : LB Z₁.left) (M₂ : LB Z₂.left) (th₁ : σ₁ → M₁.Sec) (th₂ : σ₂ → M₂.Sec) (p₁ : Hh → σ₁ → R) (p₂ : Hh → σ₂ → R) (Q : Polynomial ℚ) (d : ℕ) (G : ∀ (K : Type) [Field K] (x : R →+* K), (pullback Z₁.hom (spMap x) ⟶ Z₂.left) → Prop), ProjRep I₁ Z₁.hom M₁ th₁ → ProjRep I₂ Z₂.hom M₂ th₂ → IsProper Z₁.hom → IsProper Z₂.hom → Smooth Z₁.hom → (∀ (K : Type) [Field K] (x : R →+* K) f, G K x f → f ≫ Z₂.hom = pullback.snd _ _ ≫ spMap x ∧ CutBy (graphIdeal (pullback.snd Z₁.hom (spMap x)) M₁ th₁ (pullback.fst _ _) M₂ th₂ f) Q d (fun h i => x (p₁ h i.1 * p₂ h i.2))) → VeryDense {q | ∃ (K : Type) (_ : Field K) (x : R →+* K) (f : _), RingHom.ker x = q ∧ G K x f} → ∃ F : Z₁ ⟶ Z₂, ∀ (K : Type) [Field K] (x : R →+* K) f, G K x f → f = pullback.fst _ _ ≫ F.left := by
   intro R σ₁ σ₂ Hh _ _ _ _ _ _ Z₁ Z₂ I₁ I₂ M₁ M₂ th₁ th₂ p₁ p₂ Q d G h₁ h₂ hp₁ hp₂ hsm hG hP

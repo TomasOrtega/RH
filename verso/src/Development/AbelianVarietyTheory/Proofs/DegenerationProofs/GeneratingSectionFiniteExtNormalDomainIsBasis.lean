@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.Ex.OneGenBasis
 
 /- English proof (translation)
-Take `rfl : (fun k => p ≫ φ k) = φ'` from `funext e`. Use `p.app_injective _ (fn_ext fun y hy => ?_)` and prove the remaining obligations. Establish `hy' : (𝟙 Y' : _ ⟶ _) y ∈ LB.wchart L (fun k => p ≫ φ k) j` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Conclude with `(gs_res _ y _ hy' _).symm.trans ((congrArg (gs (𝟙 _) y _) (h j)).trans (gs_res _ y _ hy' _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pullTo_injective {X Y Y' : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ' : K → (Y' ⟶ X)} (p : Y' ⟶ Y) (e : ∀ k, p ≫ φ k = φ' k) [IsSchemeTheoreticallyDominant p] [QuasiCompact p]
@@ -28,9 +28,9 @@ theorem pullTo_injective {X Y Y' : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
   exact (gs_res _ y _ hy' _).symm.trans ((congrArg (gs (𝟙 _) y _) (h j)).trans (gs_res _ y _ hy' _))
 
 /- English proof (translation)
-Establish `hp : IsPullback (h ▷ G).left (fst T' G).left (fst T G).left h.left`. Use `IsPullback.of_right (h₁₂ := (snd T G).left) (v₁₃ := G.hom) (h₂₂ := T.hom) ?_ ?_ (IsPullback.of_hasPullback T.hom G.hom).flip` and prove the remaining obligations. Rewrite using `[VVRank.whisker_snd_left, Over.w]`. Conclude with `(IsPullback.of_hasPullback T'.hom G.hom).flip`. Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Flat (fst T G).left` using `MorphismProperty.of_isPullback (P := @Flat) (IsPullback.of_hasPullback T.hom G.hom).flip inferInstance`. Establish `: IsSchemeTheoreticallyDominant (h ▷ G).left` using `.of_isPullback hp.flip`. Establish `: QuasiCompact (h ▷ G).left` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hp.flip inferInstance`. Introduce `s t e`. Conclude with `Subtype.ext (funext (pullTo_injective (s := SecM.toSec G s) (t := SecM.toSec G t) (h ▷ G).left (fun _ => VVRank.whisker_snd_left G h) fun j => congrFun (congrArg Subtype.val e) j))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pullM_injective {S : Scheme.{0}} (G : Over S) [GrpObj G] [Flat G.hom] (L : LB G.left) (a : ℤ) {T T' : Over S}
     (h : T' ⟶ T) [IsSchemeTheoreticallyDominant h.left] [QuasiCompact h.left] :
@@ -50,9 +50,9 @@ theorem pullM_injective {S : Scheme.{0}} (G : Over S) [GrpObj G] [Flat G.hom] (L
     (fun _ => VVRank.whisker_snd_left G h) fun j => congrFun (congrArg Subtype.val e) j))
 
 /- English proof (translation)
-Establish `h₁ : i' (b / a) = algebraMap W' _ r`. Rewrite using `[map_div₀, h, mul_div_cancel_right₀ _ ((map_ne_zero i').2 ha)]`. Take `⟨p, hp, h₂⟩` from `hf.to_isIntegral r`. Establish `h₃ : IsIntegral W (b / a)` using `⟨p, hp, i'.injective (by`. Rewrite using `[Polynomial.hom_eval₂, hi, h₁, ← Polynomial.hom_eval₂, h₂, map_zero, map_zero])⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r₀, hr⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral h₃`. Conclude with `⟨r₀, by rw [hr, div_mul_cancel₀ _ ha]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_mul {W W' : Type} [CommRing W] [IsDomain W] [IsIntegrallyClosed W] [CommRing W'] [IsDomain W']
     (i : W →+* W') (hf : i.Finite) (i' : FractionRing W →+* FractionRing W')
@@ -67,7 +67,7 @@ theorem exists_eq_mul {W W' : Type} [CommRing W] [IsDomain W] [IsIntegrallyClose
   exact ⟨r₀, by rw [hr, div_mul_cancel₀ _ ha]⟩
 
 /- English proof (translation)
-Establish `hg : Function.Injective ((algebraMap W' (FractionRing W')).comp i)`. Rewrite using `[RingHom.coe_comp]`. Conclude with `(IsFractionRing.injective W' (FractionRing W')).comp hi`. Use `⟨IsFractionRing.lift (K := FractionRing W) hg, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fractionMap {W W' : Type} [CommRing W] [IsDomain W] [CommRing W'] [IsDomain W'] (i : W →+* W')
     (hi : Function.Injective i) : ∃ i' : FractionRing W →+* FractionRing W',
@@ -79,7 +79,7 @@ theorem exists_fractionMap {W W' : Type} [CommRing W] [IsDomain W] [CommRing W']
   rw [RingHom.comp_apply, IsFractionRing.lift_algebraMap]
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun q => q.hom x) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))).symm`.
+A detailed English derivation is pending.
 -/
 theorem appTop_inv {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (x : R) :
     (spMap f).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x) =
@@ -87,16 +87,16 @@ theorem appTop_inv {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (x 
   (congrArg (fun q => q.hom x) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))).symm
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv`.
+A detailed English derivation is pending.
 -/
 theorem inv_bijective (R : Type) [CommRing R] :
     Function.Bijective (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom :=
   ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(inv_bijective _).2 a`. Take `⟨b, rfl⟩` from `(inv_bijective _).2 b`. Take `⟨r, rfl⟩` from `(inv_bijective _).2 r`. Rewrite `h` using `[appTop_inv, appTop_inv, appTop_inv, ← map_mul]`. Take `⟨r₀, hr⟩` from `exists_eq_mul i hf i' hi (a := a) (fun e => ha (by rw [e, map_zero])) ((inv_bijective (FractionRing W')).1 h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom r₀, by`. Rewrite using `[appTop_inv (algebraMap W (FractionRing W)), ← map_mul, ← hr]⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eq_mul_fn {W W' : Type} [CommRing W] [IsDomain W] [IsIntegrallyClosed W] [CommRing W'] [IsDomain W']
     (i : W →+* W') (hf : i.Finite) (i' : FractionRing W →+* FractionRing W')
@@ -113,13 +113,13 @@ theorem exists_eq_mul_fn {W W' : Type} [CommRing W] [IsDomain W] [IsIntegrallyCl
     rw [appTop_inv (algebraMap W (FractionRing W)), ← map_mul, ← hr]⟩
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `h₀ (p σ)`. Establish `ha0 : a ≠ 0` using `fun h => hne (ha.trans (by rw [h, zero_smul]))`. Use `⟨Fintype.linearIndependent_iff.2 fun c hc k => ?_, eq_top_iff.2 fun s _ => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[Fin.sum_univ_one]`. Rewrite using `[Subsingleton.elim k 0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `t` using `congrArg p hc`. Rewrite `t` using `[map_smulₛₗ, ha, smul_smul, map_zero]`. Establish `t'` using `(h₀ 0).unique t.symm (zero_smul _ _).symm`. Conclude with `hf (((mul_eq_zero.1 t').resolve_right ha0).trans (map_zero _).symm)`. Take `⟨b, hb, -⟩` from `h₀ (p s)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `hgen s`. Establish `t` using `congrArg p' hr`. Rewrite `t` using `[map_smulₛₗ, ← hsq, ← hsq, ha, hb, map_smulₛₗ, map_smulₛₗ, smul_smul]`. Take `⟨r₀, hr₀⟩` from `hint a b r ha0 ((h₁ _).unique rfl t)`. Establish `: s = r₀ • σ` using `hp (by rw [map_smulₛₗ, ha, hb, smul_smul, hr₀])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem basis_of_square {A A' K K' M M' N N' : Type} [CommRing A] [CommRing A'] [CommRing K] [CommRing K'] [IsDomain K]
     [AddCommGroup M] [AddCommGroup M'] [AddCommGroup N] [AddCommGroup N'] [Module A M] [Module A' M'] [Module K N]
@@ -148,15 +148,15 @@ theorem basis_of_square {A A' K K' M M' N N' : Type} [CommRing A] [CommRing A'] 
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
 
 /- English proof (translation)
-Introduce `S G _ _ L hL W W' _ _ _ _ _ i hinj hf χ σ hgen ⟨e, he⟩ hne`. Take `⟨i', hi⟩` from `exists_fractionMap i hinj`. Establish `hsq : spMap i' ≫ jK W = jK W' ≫ spMap i`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hi]`. Set `hK : Over.mk (jK W ≫ χ) ⟶ Over.mk χ` to `Over.homMk (jK W) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `hI : Over.mk (spMap i ≫ χ) ⟶ Over.mk χ` to `Over.homMk (spMap i) rfl`. Set `hI' : Over.mk (spMap i' ≫ jK W ≫ χ) ⟶ Over.mk (jK W ≫ χ)` to `Over.homMk (spMap i') rfl`. Set `hK' : Over.mk (spMap i' ≫ jK W ≫ χ) ⟶ Over.mk (spMap i ≫ χ)` to `Over.homMk (jK W') (by`. Express the relevant statement in the definitionally equal form `jK W' ≫ spMap i ≫ χ = spMap i' ≫ jK W ≫ χ`. Rewrite using `[← Category.assoc, ← hsq, Category.assoc])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq' : hI' ≫ hK = hK' ≫ hI` using `Over.OverMorphism.ext hsq`. Establish `: IsSchemeTheoreticallyDominant hK.left` using `(ExtUnique.spec_fractionRing W (FractionRing W)).2`. Establish `: QuasiCompact hK.left` using `(ExtUnique.spec_fractionRing W (FractionRing W)).1`. Establish `hρ` using `pullM_injective G L ((1 : ℕ) : ℤ) hK`. Establish `hid : spMap (RingHom.id (FractionRing W)) = 𝟙 _` using `Spec.map_id _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₀ : ∀ s : SecM G L ((1 : ℕ) : ℤ) (Over.mk (jK W ≫ χ)), ∃! c : Γ((Over.mk (jK W ≫ χ)).left, ⊤), s = c • SecM.ofSec G e` using `fun s => by`. Establish `q` using `he _ (RingHom.id _) _ (by rw [hid, Category.id_comp]) s`. Rewrite `q` using `[← VVRank.pullM_ofSec, show (Over.homMk (spMap (RingHom.id (FractionRing W))) _ : Over.mk (jK W ≫ χ) ⟶ Over.mk (jK W ≫ χ)) = 𝟙 _ from Over.OverMorphism.ext hid, VVRank.pullM_id G hL]`. Then use the resulting hypothesis. Establish `h₁ : ∀ s, ∃! c : Γ((Over.mk (spMap i' ≫ jK W ≫ χ)).left, ⊤), s = c • VVRank.pullM G L ((1 : ℕ) : ℤ) hI' (SecM.ofSec G e)` using `he _ i' _ rfl`. Establish `hdom : IsDomain Γ((Over.mk (jK W ≫ χ)).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of (FractionRing W))).commRingCatIsoToRingEquiv.toMulEquiv.isDomain _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `basis_of_square (VVRank.pullM G L ((1 : ℕ) : ℤ) hK) (VVRank.pullM G L _ hI) (VVRank.pullM G L _ hK') (VVRank.pullM G L _ hI') (fun x => by rw [VVRank.pullM_comp G hL, VVRank.pullM_comp G hL, hsq']) hρ (hK.left.app_injective ⊤) _ h₀ h₁ (SecM.ofSec G σ) hne (fun s => (hgen (SecM.to …`. Rewrite `key` using `[← VVRank.pullM_id G hL _ (SecM.ofSec G σ)]`. Conclude with `(GlobalTheory.LN.PolFrames.basisAlong_iff G L 1 (𝟙 _) hL (b' := fun _ => VVRank.pullS G _ (𝟙 _) σ) fun _ => VVRank.isPullSec_pullS G _ _ σ).2 key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basisAlong_of_isGenSec : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [Flat G.hom] (L : LB G.left), L.IsLB → ∀ (W W' : Type) [CommRing W] [IsDomain W] [IsIntegrallyClosed W] [CommRing W'] [IsDomain W'] (i : W →+* W'), Function.Injective i → i.Finite → ∀ (χ : Sp W ⟶ S) (σ : LB.Sec (LPow G L ((1 : ℕ) : ℤ) (Over.mk χ))), IsGenSec G L ((1 : ℕ) : ℤ) (VVRank.pullS G _ (Over.homMk (spMap i) rfl : Over.mk (spMap i ≫ χ) ⟶ Over.mk χ) σ) → (∃ e, UnivBasis G L (jK W ≫ χ) e) → SecM.ofSec G (VVRank.pullS G _ (Over.homMk (jK W) rfl : Over.mk (jK W ≫ χ) ⟶ Over.mk χ) σ) ≠ 0 → GlobalTheory.LN.BasisAlong G L 1 (𝟙 (Over.mk χ)) (fun _ : Fin 1 => σ) := by
   intro S G _ _ L hL W W' _ _ _ _ _ i hinj hf χ σ hgen ⟨e, he⟩ hne

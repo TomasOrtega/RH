@@ -13,27 +13,25 @@ noncomputable section
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ s hs n f f' hf hf'`. Use `haveI : Finite F := Finite.of_injective (algebraMap F F') (algebraMap F F').injective`. Use `letI : Fintype (GL (Fin n) F) := Fintype.ofFinite _`. Use `letI : Fintype (GL (Fin n) F') := Fintype.ofFinite _`. Establish `hex` using `GlobalTheory.T.every_element_is_norm F F' s hs n`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfib` using `GlobalTheory.T.card_isGaloisTwistedNormGL_mul_card_GL F F' s hs n`. Establish `hlf` using `(GlobalTheory.T.base_change_lift_class_function F F' s hs n f hf).1`. Establish `hlf'` using `(GlobalTheory.T.base_change_lift_class_function F F' s hs n f' hf').1`. Establish `hnd` using `GlobalTheory.T.isConj_of_isConj_glFieldExtensionInclusion F F' n`. Take `⟨c, hc⟩ : ∃ c : GL (Fin n) F → ℂ, ∀ γ, c γ = (Nat.card {γ' : GL (Fin n) F // IsConj γ γ'} : ℂ)` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩ : ∃ v : GL (Fin n) F → ℂ, ∀ γ, v γ = f γ * star (f' γ)` from `⟨_, fun _ => rfl⟩`. Establish `hcne : ∀ γ, c γ ≠ 0`. Introduce `γ`. Rewrite using `[hc, Nat.cast_ne_zero]`. Use `haveI : Nonempty {γ' : GL (Fin n) F // IsConj γ γ'} := ⟨⟨γ, IsConj.refl γ⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Nat.card_pos.ne'`. Establish `hclass : ∀ (δ : GL (Fin n) F') (γ : GL (Fin n) F), IsNorm s δ γ → ∀ γ' : GL (Fin n) F, IsNorm s δ γ' ↔ IsConj γ γ'`. Introduce `δ γ h γ'`. Unfold `IsNorm at *`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h'`. Conclude with `hnd γ γ' (IsConj.trans h (IsConj.symm h'))`. Introduce `h'`. Conclude with `IsConj.trans (IsConj.symm (MonoidHom.map_isConj (incl F F' n) h')) h`. Establish `hcard : ∀ (δ : GL (Fin n) F') (γ : GL (Fin n) F), IsNorm s δ γ → c γ = ((Finset.univ.filter fun γ' => IsNorm s δ γ').card : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `δ γ h`. Rewrite using `[hc, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 2`. Use extensionality with `γ'`. Simplify using `[hclass δ γ h γ']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ δ : GL (Fin n) F', (∑ γ, if IsNorm s δ γ then v γ / c γ else 0) = shLift s f δ * star (shLift s f' δ)`. Introduce `δ`. Take `⟨γ0, h0⟩` from `hex δ`. Establish `e : ∀ γ, (if IsNorm s δ γ then v γ / c γ else 0) = if IsNorm s δ γ then (shLift s f δ * star (shLift s f' δ)) / c γ0 else 0`. Introduce `γ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[hv, hcard δ γ h, ← hcard δ γ0 h0, hlf δ γ h, hlf' δ γ h]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl (fun γ _ => e γ), Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul, ← hcard δ γ0 h0]`. Clear denominators, using `[hcne γ0]` for the nonvanishing conditions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Establish `lhs : (∑ δ, shLift s f δ * star (shLift s f' δ)) = ∑ γ, ((Finset.univ.filter fun δ => IsNorm s δ γ).card : ℂ) * (v γ / c γ)`. Rewrite using `[← Finset.sum_congr rfl (fun δ _ => key δ), Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun γ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lhs, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun γ _ => ?_)` and prove the remaining obligations. Establish `h` using `hfib γ`. Rewrite `h` using `[Nat.card_eq_fintype_card (α := {δ : GL (Fin n) F' // IsNorm s δ γ}), Fintype.card_subtype]`. Establish `h' : (Nat.card (GL (Fin n) F) : ℂ) * ((Finset.univ.filter fun δ => IsNorm s δ γ).card : ℂ) = c γ * (Nat.card (GL (Fin n) F') : ℂ)`.
-
-Rewrite using `[hc]`. Conclude with `(by rw [mul_comm]; exact h)` after adjusting the coercions. Rewrite using `[show (Nat.card (GL (Fin n) F) : ℂ) * (((Finset.univ.filter fun δ => IsNorm s δ γ).card : ℂ) * (v γ / c γ)) = ((Nat.card (GL (Fin n) F) : ℂ) * ((Finset.univ.filter fun δ => IsNorm s δ γ).card : ℂ)) * v γ / c γ by ring, h', hv]`. Clear denominators, using `[hcne γ]` for the nonvanishing conditions.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem shLift_isometry : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'),
     (∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) → ∀ (n : ℕ) (f f' : GL (Fin n) F → ℂ), IsCl f → IsCl f' →

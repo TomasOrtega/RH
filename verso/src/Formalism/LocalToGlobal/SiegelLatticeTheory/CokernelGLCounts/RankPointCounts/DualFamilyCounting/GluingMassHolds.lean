@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.Pf.Cnt
 
 /- English proof (translation)
-The claim follows from `glueMass_of' jordan_splitting_exists jordan_invariants_holds alpha_discriminant_holds local_gluing_holds gluing_product_holds`.
+A detailed English derivation is pending.
 -/
 theorem gluing_mass_holds : GlueMass :=
   glueMass_of' jordan_splitting_exists jordan_invariants_holds alpha_discriminant_holds local_gluing_holds gluing_product_holds

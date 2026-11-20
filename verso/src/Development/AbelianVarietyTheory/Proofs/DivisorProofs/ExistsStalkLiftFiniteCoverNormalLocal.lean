@@ -11,11 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FiniteLift
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap V (FractionRing V))` using `IsFractionRing.injective _ _`. Establish `hmem : ∀ b, ψ b ∈ (algebraMap V (FractionRing V)).range`. Introduce `b`. Take `⟨p, hp, hpb⟩` from `hφ b`. Establish `: IsIntegral V (ψ b)` using `⟨p, hp, by rw [← h, ← Polynomial.hom_eval₂, hpb, map_zero]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `IsIntegrallyClosed.algebraMap_eq_of_integral this`. Set `e` to `RingEquiv.ofBijective (algebraMap V (FractionRing V)).rangeRestrict ⟨fun a b hab => hinj (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective _⟩`. Establish `key : ∀ b, algebraMap V (FractionRing V) (e.symm (ψ.codRestrict _ hmem b)) = ψ b` using `fun b => congrArg Subtype.val (e.apply_symm_apply (ψ.codRestrict _ hmem b))`. Use `⟨e.symm.toRingHom.comp (ψ.codRestrict _ hmem), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Conclude with `(key (φ v)).trans (DFunLike.congr_fun h v)`. Use extensionality with `b`. Conclude with `key b`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_retraction {V B : Type} [CommRing V] [IsDomain V] [IsIntegrallyClosed V] [CommRing B]
     (φ : V →+* B) (hφ : φ.IsIntegral) (ψ : B →+* FractionRing V)
@@ -39,15 +39,13 @@ theorem exists_retraction {V B : Type} [CommRing V] [IsDomain V] [IsIntegrallyCl
     exact key b
 
 /- English proof (translation)
-Establish `: IsAffine (pullback π f)` using `isAffine_of_isAffineHom (pullback.snd π f)`. Set `P` to `pullback π f`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (P.isoSpec.inv ≫ pullback.snd π f)`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (pullback.lift y (jK V) h ≫ P.isoSpec.hom)`. Establish `hfin : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hfin` using `[IsFinite.SpecMap_iff]`. Establish `hc : φ ≫ ψ = CommRingCat.ofHom (algebraMap V (FractionRing V))`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ, hψ, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `pullback.lift_snd _ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs1, hs2⟩` from `exists_retraction φ.hom hfin.to_isIntegral ψ.hom (congrArg CommRingCat.Hom.hom hc)`. Establish `h1 : Spec.map (CommRingCat.ofHom s) ≫ P.isoSpec.inv ≫ pullback.snd π f = 𝟙 _`. Rewrite using `[← hφ, ← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext hs1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : jK V ≫ Spec.map (CommRingCat.ofHom s) = pullback.lift y (jK V) h ≫ P.isoSpec.hom`. Rewrite using `[← hψ, ← Spec.map_comp]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext hs2`. Use `⟨Spec.map (CommRingCat.ofHom s) ≫ P.isoSpec.inv ≫ pullback.fst π f, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, Category.assoc, pullback.condition, reassoc_of% h1]`. Rewrite using `[reassoc_of% h2, Iso.hom_inv_id_assoc]`. Conclude with `pullback.lift_fst _ _ _`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {V : Type} [CommRing V] [IsDomain V] [IsIntegrallyClosed V]
     {X Z : Scheme.{0}} (π : X ⟶ Z) [IsFinite π] (f : Sp V ⟶ Z) (y : Sp (FractionRing V) ⟶ X)
@@ -79,9 +77,9 @@ theorem exists_lift {V : Type} [CommRing V] [IsDomain V] [IsIntegrallyClosed V]
     exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Introduce `V _ _ _ hV X Z π hπ f y h`. Take `⟨l, h1, h2⟩` from `exists_lift π f y h`. Establish `e : spMap (Scheme.stalkClosedPointTo (R` using `.of V) l).hom ≫ X.fromSpecStalk _ = l := Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of V) l`. Use `⟨_, (Scheme.stalkClosedPointTo (R := .of V) l).hom, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[reassoc_of% e, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_stalk_lift : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsIntegrallyClosed V₁ → ∀ (X Z : Scheme.{0}) (π : X ⟶ Z), IsFinite π → ∀ (f : Sp V₁ ⟶ Z) (yM : Sp (FractionRing V₁) ⟶ X), yM ≫ π = jK V₁ ≫ f → ∃ (z₁ : X) (ev : X.presheaf.stalk z₁ →+* V₁), IsLocalHom ev ∧ spMap ev ≫ X.fromSpecStalk z₁ ≫ π = f ∧ jK V₁ ≫ spMap ev ≫ X.fromSpecStalk z₁ = yM := by
   intro V _ _ _ hV X Z π hπ f y h

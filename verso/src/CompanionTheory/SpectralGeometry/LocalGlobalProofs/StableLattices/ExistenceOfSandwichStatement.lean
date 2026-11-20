@@ -11,7 +11,7 @@ variable {L : Type} [NontriviallyNormedField L] [IsUltrametricDist L]
   {V : Type} [AddCommGroup V] [Module L V]
 
 /- English proof (translation)
-Rewrite using `[hh.2.2.1 z (x + y), hh.1, map_add, ← hh.2.2.1 z x, ← hh.2.2.1 z y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_add_left {s : L →+* L} {h : V → V → L} (hh : IsHerm s h) (x y z : V) :
     h (x + y) z = h x z + h y z := by
@@ -23,7 +23,7 @@ def hLin {s : L →+* L} {h : V → V → L} (hh : IsHerm s h) (z : V) : V →�
   map_smul' a y := by simpa using hh.2.1 a z y
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem herm_eq_sum {s : L →+* L} {h : V → V → L} (hh : IsHerm s h) {ι : Type} [Fintype ι]
     (b : Module.Basis ι L V) (z y : V) : h z y = ∑ j, b.repr y j * h z (b j) := by
@@ -36,17 +36,17 @@ theorem herm_eq_sum {s : L →+* L} {h : V → V → L} (hh : IsHerm s h) {ι : 
       rfl
 
 /- English proof (translation)
-Simplify `IsUltrametricDist.norm_add_le_max a (-b)` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_sub_le_max_of_ultrametric_field (a b : L) : ‖a - b‖ ≤ max ‖a‖ ‖b‖ := by
   simpa [sub_eq_add_neg] using IsUltrametricDist.norm_add_le_max a (-b)
 
 /- English proof (translation)
-Use `(hδ.2.1 (h x y)).1 fun t ht => ?_` and prove the remaining obligations. Establish `hy' : t • y ∈ M` using `hO t ht y hy`. Establish `e1 : h x (t • y) = h x y * t` using `by rw [hh.2.1, mul_comm]`. Establish `e2 : h (t • y) x = s (h x y * t)` using `by rw [hh.2.2.1 x (t • y), e1]`. Establish `e3 : h (x + t • y) (x + t • y) = h x x + (h x y * t + s (h x y * t)) + h (t • y) (t • y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[herm_add_left hh, hh.1, hh.1, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : h x y * t + s (h x y * t) = h (x + t • y) (x + t • y) - h x x - h (t • y) (t • y)`. Rewrite using `[e3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e4]`. Conclude with `(norm_sub_le_max_of_ultrametric_field _ _).trans (max_le ((norm_sub_le_max_of_ultrametric_field _ _).trans (max_le (hM _ (M.add_mem hx hy')) (hM _ hx))) (hM _ hy'))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_herm_le_delta {s : L →+* L} {δ : L} {h : V → V → L} (hδ : IsDelta s δ)
     (hh : IsHerm s h) {M : AddSubgroup V} (hO : ∀ a : L, ‖a‖ ≤ 1 → ∀ x ∈ M, a • x ∈ M)
@@ -67,13 +67,13 @@ theorem norm_herm_le_delta {s : L →+* L} {δ : L} {h : V → V → L} (hδ : I
       (max_le (hM _ (M.add_mem hx hy')) (hM _ hx))) (hM _ hy'))
 
 /- English proof (translation)
-Set `e` to `Module.finBasis L V`. Set `K : ℝ` to `∑ i, ∑ j, ‖h (e i) (e j)‖`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hKij : ∀ i j, ‖h (e i) (e j)‖ ≤ K` using `fun i j => (Finset.single_le_sum (f := fun j => ‖h (e i) (e j)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖h (e i) (e j)‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))`. Take `⟨t, ht0, ht⟩` from `NormedField.exists_norm_lt L (show (0 : ℝ) < 1 / (K + 1) by positivity)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htK : ‖t‖ * (K + 1) ≤ 1`. Rewrite `ht` using `[lt_div_iff₀ (by positivity)]`. Conclude with `ht.le`. Establish `ht1 : ‖t‖ ≤ 1` using `by nlinarith [norm_nonneg t]`. Establish `htK' : ‖t‖ * K ≤ 1` using `by nlinarith [norm_nonneg t]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tne : t ≠ 0` using `norm_pos_iff.1 ht0`. Establish `hu : ∀ i : Fin (Module.finrank L V), IsUnit ((fun _ => t) i : L)` using `fun _ => isUnit_iff_ne_zero.2 tne`. Use `⟨_, e.isUnitSMul hu, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.isUnitSMul_apply]`. Establish `e1 : h (t • e i) (t • e j) = t * (s t * h (e i) (e j))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh.2.1, hh.2.2.1 (e j) (t • e i), hh.2.1, map_mul, ← hh.2.2.1 (e j) (e i)]`. Rewrite using `[e1, norm_mul, norm_mul, hs.2.1]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hKij i j`. Use `_ ≤ 1 := by linarith`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_basis_herm_le_one [FiniteDimensional L V] {s : L →+* L} {h : V → V → L}
     (hs : IsInv s) (hh : IsHerm s h) :
@@ -113,7 +113,7 @@ def ball {ι : Type} (b : Module.Basis ι L V) : AddSubgroup V where
   neg_mem' {x} hx i := by simpa using hx i
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[b.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem basis_mem_ball {ι : Type} [DecidableEq ι] (b : Module.Basis ι L V) (j : ι) :
     b j ∈ ball b := by
@@ -122,7 +122,7 @@ theorem basis_mem_ball {ι : Type} [DecidableEq ι] (b : Module.Basis ι L V) (j
   split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨m, b, hb⟩` from `hΛ`. Rewrite `hx`, the goal using `[hb]`. Introduce `i`. Simplify using `using mul_le_one₀ ha (norm_nonneg _) (hx i)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsLat.smul_mem {Λ : AddSubgroup V} (hΛ : IsLat L Λ) {a : L} (ha : ‖a‖ ≤ 1) {x : V}
     (hx : x ∈ Λ) : a • x ∈ Λ := by
@@ -132,9 +132,9 @@ theorem IsLat.smul_mem {Λ : AddSubgroup V} (hΛ : IsLat L Λ) {a : L} (ha : ‖
   simpa using mul_le_one₀ ha (norm_nonneg _) (hx i)
 
 /- English proof (translation)
-Set `K : ℝ` to `∑ i, ‖b.repr x i‖`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Take `⟨t, ht0, ht⟩` from `NormedField.exists_norm_lt L (show (0 : ℝ) < 1 / (K + 1) by positivity)`. Establish `htK : ‖t‖ * (K + 1) ≤ 1`. Rewrite `ht` using `[lt_div_iff₀ (by positivity)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ht.le`. Use `⟨t, norm_pos_iff.1 ht0, fun i => ?_⟩` and prove the remaining obligations. Establish `hi : ‖b.repr x i‖ ≤ K` using `Finset.single_le_sum (f := fun i => ‖b.repr x i‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg t, norm_nonneg (b.repr x i)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ball_absorbing {m : ℕ} (b : Module.Basis (Fin m) L V) (x : V) :
     ∃ a : L, a ≠ 0 ∧ a • x ∈ ball b := by
@@ -151,9 +151,9 @@ theorem ball_absorbing {m : ℕ} (b : Module.Basis (Fin m) L V) (x : V) :
   nlinarith [norm_nonneg t, norm_nonneg (b.repr x i)]
 
 /- English proof (translation)
-Establish `h1 : ∀ j, ‖h (b j) x‖ ≤ 1` using `fun j => by`. Rewrite using `[herm_eq_sum hh b]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hx i) (norm_nonneg _) (hb j i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[herm_eq_sum hh b]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hh.2.2.1 (b j) x, hs.2.1]`. Conclude with `mul_le_one₀ (hx j) (norm_nonneg _) (h1 j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_herm_ball_le_one {s : L →+* L} {h : V → V → L} (hs : IsInv s) (hh : IsHerm s h)
     {m : ℕ} (b : Module.Basis (Fin m) L V) (hb : ∀ i j, ‖h (b i) (b j)‖ ≤ 1) {x : V}
@@ -169,19 +169,17 @@ theorem norm_herm_ball_le_one {s : L →+* L} {h : V → V → L} (hs : IsInv s)
   exact mul_le_one₀ (hx j) (norm_nonneg _) (h1 j)
 
 /- English proof (translation)
-Set `T : V →ₗ[L] (Fin m → L)` to `LinearMap.pi fun j => hLin hh (b j)`. Establish `hT : LinearMap.ker T = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun x hx => hh.2.2.2 x fun y => ?_` and prove the remaining obligations. Establish `hj : ∀ j, h (b j) x = 0` using `fun j => congrFun hx j`. Rewrite using `[herm_eq_sum hh b]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hh.2.2.1 (b j) x, hj j, map_zero, mul_zero]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective T hT`. Set `w : Fin m → V` to `fun k => g fun j => if k = j then 1 else 0`. Establish `hx : ∀ x, x = ∑ k, h (b k) x • w k` using `fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : g (T x) = x` using `by simpa using LinearMap.congr_fun hg x`. Establish `h2` using `LinearMap.pi_apply_eq_sum_univ g (T x)`. Rewrite `h2` using `[h1]`. Conclude with `h2`. Set `C : ℝ` to `∑ k, ∑ i, ‖b.repr (w k) i‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ C` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hCki : ∀ k i, ‖b.repr (w k) i‖ ≤ C` using `fun k i => (Finset.single_le_sum (f := fun i => ‖b.repr (w k) i‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)).trans (Finset.single_le_sum (f := fun k => ∑ i, ‖b.repr (w k) i‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ k))`. Take `⟨c, hc0, hc⟩` from `NormedField.exists_norm_lt L (show (0 : ℝ) < 1 / (B * C + 1) by positivity)`. Establish `hcK : ‖c‖ * (B * C + 1) ≤ 1`. Rewrite `hc` using `[lt_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hc.le`. Use `⟨c, norm_pos_iff.1 hc0, fun x hxB i => ?_⟩` and prove the remaining obligations. Establish `hr : b.repr x i = ∑ k, h (b k) x * b.repr (w k) i` using `by conv_lhs => rw [hx x]`. Simplify using `[map_sum, Finsupp.finset_sum_apply]`. Establish `hbound : ‖b.repr x i‖ ≤ B * C`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hxB k) (hCki k i) (norm_nonneg _) hB`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, norm_mul]`.
-
-Use polynomial arithmetic with `[norm_nonneg c, norm_nonneg (b.repr x i)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_scale {s : L →+* L} {h : V → V → L} (hh : IsHerm s h) (B : ℝ) (hB : 0 ≤ B)
     {m : ℕ} (b : Module.Basis (Fin m) L V) :
@@ -225,15 +223,15 @@ theorem exists_scale {s : L →+* L} {h : V → V → L} (hh : IsHerm s h) (B : 
   nlinarith [norm_nonneg c, norm_nonneg (b.repr x i)]
 
 /- English proof (translation)
-Introduce `hSw`. Unfold `StExists ForAll`. Introduce `L _ _ _ _ s hs δ hδ V _ _ _ h hh`. Take `⟨m, b, hb⟩` from `exists_basis_herm_le_one hs hh`. Take `⟨c, hc0, hc⟩` from `exists_scale hh ‖δ‖ (norm_nonneg _) b`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `S : Set (AddSubgroup V)` to `{Λ | (∀ a : L, ‖a‖ ≤ 1 → ∀ x ∈ Λ, a • x ∈ Λ) ∧ ∀ x ∈ Λ, ‖h x x‖ ≤ 1}`. Establish `hlat0 : IsLat L (ball b)` using `⟨m, b, fun _ => Iff.rfl⟩`. Establish `hS0 : ball b ∈ S` using `⟨fun a ha x hx => IsLat.smul_mem hlat0 ha hx, fun x hx => norm_herm_ball_le_one hs hh b hb hx⟩`. Establish `hchain : ∀ C ⊆ S, IsChain (· ≤ ·) C → ∀ y ∈ C, ∃ ub ∈ S, ∀ z ∈ C, z ≤ ub`. Introduce `C hCS hC y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ x, x ∈ sSup C ↔ ∃ t ∈ C, x ∈ t` using `fun x => AddSubgroup.mem_sSup_of_directedOn ⟨y, hy⟩ hC.directedOn`. Use `⟨sSup C, ⟨fun a ha x hx => ?_, fun x hx => ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Take `⟨t, ht, hxt⟩` from `(hmem x).1 hx`. Conclude with `(hmem _).2 ⟨t, ht, (hCS ht).1 a ha x hxt⟩`. Take `⟨t, ht, hxt⟩` from `(hmem x).1 hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hCS ht).2 x hxt`. Take `⟨M, hM0, hMax⟩` from `zorn_le_nonempty₀ S hchain (ball b) hS0`. Establish `hMlat : IsLat L M`. Use `hSw L V (ball b) M c hlat0 hc0 (fun x hx => hc x fun j => ?_) (fun x => ?_) hMax.prop.1` and prove the remaining obligations. Conclude with `norm_herm_le_delta hδ hh hMax.prop.1 hMax.prop.2 (hM0 (basis_mem_ball b j)) hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, hax⟩` from `ball_absorbing b x`. Conclude with `⟨a, ha, hM0 hax⟩`. Use `⟨M, hMlat, hMax.prop.2, fun Λ' hL hI hle => ?_⟩` and prove the remaining obligations. Conclude with `le_antisymm (hMax.2 ⟨fun a ha x hx => IsLat.smul_mem hL ha hx, hI⟩ hle) hle`.
+A detailed English derivation is pending.
 -/
 theorem stExists_of_stSandwich : StSandwich → StExists := by
   intro hSw

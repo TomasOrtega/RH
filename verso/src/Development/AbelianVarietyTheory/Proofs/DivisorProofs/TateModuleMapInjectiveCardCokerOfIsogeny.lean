@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ l _ hl A B f hf`. Establish `hsurj : Function.Surjective (ptMap f)` using `(surjective_iff_ptMap_surjective K A B f).1 hf.2`. Establish `hfin : Finite (ptMap f).ker` using `(isFinite_iff_finite_ker K A B f).1 hf.1`. Establish `hdiv : ∀ x : A.Pt, ∃ y, y ^ l = x` using `pt_divisible K A l (Fact.out : l.Prime).ne_zero`. Take `⟨h1, h2⟩` from `GlobalTheory.T.tateModuleMap_coker_card_eq_kerTorsion_card l A.Pt B.Pt (ptMap f) hdiv hsurj hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2.trans (GlobalTheory.T.card_lPowerTorsion_kernel_eq_lPart_isogenyDegree K l hl A B f hf)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tmap_injective_card_coker_of_isIsogeny : ∀ (K : Type) [Field K] (l : ℕ) [Fact l.Prime], (l : K) ≠ 0 →
     ∀ (A B : AbVar K) (f : A ⟶ B), IsIsogeny f → Function.Injective (tmap l A B f) ∧

@@ -12,15 +12,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ s Φ hΦ`. Use function extensionality and compare the values at `h`. Take `⟨hadd, -, hder, -, -⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.exPar E (zE s)`. Establish `h0 : ex (zE s) 0 = 1`. Establish `h00` using `hadd 0 0`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h00` using `[add_zero]`. Conclude with `left_eq_mul.mp h00`. Take `⟨z, c, hc, hz⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.cenExp F E D s`. Take `⟨ω, -, hω⟩` from `UpperTheory.ConvolutionTheory.R2.cen F π`. Establish `hE` using `(UpperTheory.ConvolutionTheory.R2.equiv F E D W M π f hf φ).2 ω (hω f hf)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin` using `(UpperTheory.ConvolutionTheory.R2.Ff.lin F E D W M π).2.2.2`. Establish `h1` using `GlobalTheory.CuspRep.hasDerivAt_curve Φ h (ex (zE s)) (zE s) h0 hder`. Establish `h2` using `UpperTheory.ConvolutionTheory.R2.Ff.derF F E D W M π f hf φ hφ c _ hc h`. Establish `key : ∀ t, lift W M (fun x => f.1 (x * TR.infGL F 2 (c t))) φ h = Φ.1 (h * infGL E 2 (ex (zE s) t))`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, e2⟩` from `hz t`. Establish `e3 : (fun x => f.1 (x * TR.infGL F 2 (c t))) = ((ω (ideleNorm F E (z t)) : ℂˣ) : ℂ) • f.1`. Use function extensionality and compare the values at `x`. Rewrite using `[← e2, ← UpperTheory.ConvolutionTheory.R2.scalar_comm, hω f hf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, e1, e3, hlin, ← UpperTheory.ConvolutionTheory.R2.scalar_comm (z t) h, hE]`. Both sides reduce to the same expression. Establish `h3 : HasDerivAt (fun t => Φ.1 (h * infGL E 2 (ex (zE s) t))) (lift W M (TR.lie F 2 (zF (trI F s)) f).1 φ h) 0`. Simplify `h2` using `only [key]`. Conclude with `h1.unique h3`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.lieZ :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), LieZ W M π := by

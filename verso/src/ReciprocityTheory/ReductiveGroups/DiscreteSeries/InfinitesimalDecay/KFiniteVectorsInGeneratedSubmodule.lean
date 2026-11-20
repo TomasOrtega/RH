@@ -10,7 +10,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨S, hSf, hxS, hSK⟩` from `hx`. Establish `h` using `sigLam_kfin hgap hP hv₀ S hSf hSK hxS`. Simplify using `only [kfinLam, Submodule.mem_comap, Submodule.mem_map] at h`. Take `⟨y, hy, hyx⟩` from `h`. Conclude with `⟨y, hy, hyx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kfin_mem_genSub {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}

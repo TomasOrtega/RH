@@ -5,9 +5,9 @@ open Module
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx : x = ∑ k, x k • (Pi.single k 1 : Fin n → K)`. Use extensionality with `l`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hx]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.map_smulₛₗ]`.
+A detailed English derivation is pending.
 -/
 theorem semilinear_pi_eq_sum_single {K : Type} [Field K] (σ : K →+* ℂ) {W : Type} [AddCommGroup W]
     [Module ℂ W] {n : ℕ} (j : (Fin n → K) →ₛₗ[σ] W) (x : Fin n → K) :
@@ -20,27 +20,25 @@ theorem semilinear_pi_eq_sum_single {K : Type} [Field K] (σ : K →+* ℂ) {W :
   simp only [LinearMap.map_smulₛₗ]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `w ⟨hw, hw0⟩`. Establish `hle : Submodule.span ℂ (Set.range j) ≤ Submodule.span ℂ (Set.range fun k => j (Pi.single k 1))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[semilinear_pi_eq_sum_single σ j x]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hle hw)`. Establish `h0 : f (∑ k, c k • j (Pi.single k 1)) = 0` using `hw0`. Establish `h1 : ∑ l, (∑ k, σ (M l k) * c k) • j' (Pi.single l 1) = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0, map_sum]`. Simplify using `only [map_smul, hf, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[semilinear_pi_eq_sum_single σ j' (M.mulVec _), Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ l, ∑ k, σ (M l k) * c k = 0` using `Fintype.linearIndependent_iff.1 hli _ h1`. Use `letI : Algebra K ℂ := σ.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `b` to `Basis.ofVectorSpace K ℂ`. Set `s` to `Finset.univ.biUnion fun k => (b.repr (c k)).support`. Establish `hc : ∀ k, c k = ∑ i ∈ s, σ (b.repr (c k) i) * b i`. Introduce `k`. Establish `h3` using `b.linearCombination_repr (c k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ (s := s) (Finset.subset_biUnion_of_mem (fun k => (b.repr (c k)).support) (Finset.mem_univ k)) _ (by simp)]`. Conclude with `h3.symm`. Establish `hw' : ∑ k, c k • j (Pi.single k 1) = ∑ i ∈ s, b i • j (fun k => b.repr (c k) i)`. Establish `h5 : ∀ i, b i • j (fun k => b.repr (c k) i) = ∑ k, b i • σ (b.repr (c k) i) • j (Pi.single k 1)` using `fun i => by`. Rewrite using `[semilinear_pi_eq_sum_single σ j (fun k => b.repr (c k) i), Finset.smul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_congr rfl fun i _ => h5 i, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [hc k, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[hw']`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ?_, rfl⟩)` and prove the remaining obligations. Use extensionality with `l`. Establish `h4 : b.repr (∑ k, M l k • c k) i = 0`. Establish `: ∑ k, M l k • c k = 0` using `h2 l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite `h4` using `[map_sum, Finsupp.finset_sum_apply]`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul] at h4`. Conclude with `h4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨Submodule.subset_span ⟨x, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hx' : M.mulVec x = 0` using `hx`. Express the relevant statement in the definitionally equal form `f (j x) = 0`.
-
-Rewrite using `[hf, hx', map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_range_inf_ker_eq_span_rational_ker {K : Type} [Field K] (σ : K →+* ℂ) {W E : Type}
     [AddCommGroup W] [Module ℂ W] [AddCommGroup E] [Module ℂ E] {n d : ℕ}

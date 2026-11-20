@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.HalfPowField
 
 /- English proof (translation)
-Introduce `D F w hs u`. Simplify using `using GlobalTheory.MovedField.apow_half_mem hs u 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem apow_half_mem_of_sqrt : ∀ {D : D7} (F : Subfield ℂ) (w : Pl D.host.E), ((Real.sqrt (Ideal.absNorm w.asIdeal) : ℝ) : ℂ) ∈ F → ∀ u : (Kw w)ˣ, apow u (1 / 2) ∈ F := by
   intro D F w hs u

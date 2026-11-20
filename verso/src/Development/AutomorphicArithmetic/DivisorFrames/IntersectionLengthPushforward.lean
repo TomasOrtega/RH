@@ -10,11 +10,11 @@ open GlobalTheory.VertCmp
 open scoped Classical
 
 /- English proof (translation)
-Establish `hT (n : ℕ) : IsScalarTower k K (coh F n)`. Use `⟨fun a b x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cohOn.action F ⊤ n (algebraMap K Γ(X, ⊤) (a • b)) x = cohOn.action F ⊤ n (algebraMap k Γ(X, ⊤) a) (cohOn.action F ⊤ n (algebraMap K Γ(X, ⊤) b) x)`. Rewrite using `[Algebra.smul_def, map_mul, map_mul, hk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e (n : ℕ) : ((-1 : ℤ) ^ n * hdim k F n) = (Module.finrank k K : ℤ) * ((-1 : ℤ) ^ n * hdim K F n)`. Rewrite using `[hdim_def, hdim_def, ← Module.finrank_mul_finrank k K (coh F n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[chi_def, chi_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Conclude with `(mul_finsum _ _).symm`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chi_tower' {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra k K] [Algebra K Γ(X, ⊤)]
     [Algebra k Γ(X, ⊤)] (hk : ∀ a : k, algebraMap k Γ(X, ⊤) a = algebraMap K Γ(X, ⊤) (algebraMap k K a))
@@ -34,7 +34,7 @@ private theorem chi_tower' {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Al
   exact (mul_finsum _ _).symm
 
 /- English proof (translation)
-Rewrite using `[interNum_def, interNum_def, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[chi_tower' k K hk]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem interNum_tower' {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra k K] [Algebra K Γ(X, ⊤)]
     [Algebra k Γ(X, ⊤)] (hk : ∀ a : k, algebraMap k Γ(X, ⊤) a = algebraMap K Γ(X, ⊤) (algebraMap k K a))
@@ -46,30 +46,28 @@ private theorem interNum_tower' {X : Scheme.{0}} (k K : Type) [Field k] [Field K
   ring
 
 /- English proof (translation)
-Rewrite using `[← Set.image_singleton, i.isClosedEmbedding.closure_image_eq, (genericPoint_spec Z).def, Set.image_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem range_eq_closure' {X Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] :
     Set.range i = closure {i (genericPoint Z)} := by
   rw [← Set.image_singleton, i.isClosedEmbedding.closure_image_eq, (genericPoint_spec Z).def, Set.image_univ]
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B L hL Z i _ _ hZ G hG`. Set `φ : O →+* Γ(Z, ⊤)` to `((Scheme.ΓSpecIso (.of O)).inv ≫ (i ≫ B.str).appTop).hom`. Establish `eφ : ∀ a, φ a = i.appTop (B.const a)` using `fun a => by`. Rewrite using `[Vert.Model.const, Vert.Model.const_eq]`. Simplify using `only [φ, Scheme.Hom.comp_appTop]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hφ : ∀ a ∈ maximalIdeal O, φ a = 0` using `fun a ha => by`. Rewrite using `[← basicOpen_eq_bot_iff]`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `h0 : B.str (i x) = closedPoint O` using `not_not.1 (mt Vert.Model.mem_gen.2 (hZ x))`. Rewrite `hx` using `[eφ, ← Scheme.preimage_basicOpen_top]`. Conclude with `Vert.Model.mem_basicOpen_const.1 hx (h0 ▸ ha)`. Set `ψ : ResidueField O →+* Γ(Z, ⊤)` to `Ideal.Quotient.lift _ φ hφ`. Use `letI : Algebra (ZMod p) (ResidueField O) := ZMod.algebra _ p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra (ResidueField O) Γ(Z, ⊤) := ψ.toAlgebra`. Use `letI : Algebra (ZMod p) Γ(Z, ⊤) := (ψ.comp (algebraMap (ZMod p) (ResidueField O))).toAlgebra`. Establish `h₁ : strHom (ResidueField O) Z ≫ spMap (residue O) = i ≫ B.str`. Establish `e : CommRingCat.ofHom (residue O) ≫ CommRingCat.ofHom ψ = (Scheme.ΓSpecIso (.of O)).inv ≫ (i ≫ B.str).appTop` using `rfl`. Use `(Category.assoc _ _ _).trans ((congrArg (Z.toSpecΓ ≫ ·) ((Spec.map_comp _ _).symm.trans (congrArg Spec.map e))).trans ?_)` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Establish `hp : IsProjOver (strHom (ResidueField O) Z)` using `RegCoverExists.isProjOver_of_comp_spMap (residue O) (h₁ ▸ ProjSpace.isProjOver_comp_of_isClosedImmersion i B.isProjOver)`. Establish `hL' : ∀ j, ((L j).pull i).IsLB` using `fun j => LB.isLB_pull (hL j) i`. Establish `e₁ : interLen O ((Scheme.Modules.pushforward i).obj G) L = interNum (ResidueField O) G fun j => (L j).pull i`. Rewrite using `[interLen_eq_multiDiff O _ hL, chiLenPic_pushforward O (ResidueField O) residue_surjective i (fun r => (eφ r).symm), multiDiff_comap, interNum_eq_multiDiff _ _ hL', Function.comp_apply, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hdim : ∀ {Z' : Scheme.{0}} (i' : Z' ⟶ B.X) [IsClosedImmersion i'] [IsIntegral Z'], topologicalKrullDim (closure {i' (genericPoint Z')} : Set B.X) = topologicalKrullDim Z'` using `fun i' _ _ => topologicalKrullDim_eq_of_isEmbedding i'.isClosedEmbedding.isEmbedding (range_eq_closure' i')`. Establish `hd : topologicalKrullDim Z ≤ (B.relDim : WithBot ℕ∞)`. Rewrite using `[← topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding rfl]`. Use `(QCoh.topologicalKrullDim_mono ?_).trans B.dim_special_le` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hZ z`. Rewrite using `[e₁, UpperTheory.intersection_number_generic_rank (ResidueField O) Z hp _ hd _ hL' G hG, mul_assoc]`. Use `congr 1`. Break down `hd.eq_or_lt with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[UpperTheory.pdeg_eq_of_isDeg p B.X _ L hL _ _ ⟨Z, i, inferInstance, inferInstance, inferInstance, rfl, h, rfl⟩, interNum_tower' (ZMod p) (ResidueField O) (fun _ => rfl), mul_comm]`. Both sides reduce to the same expression. Establish `h' : ¬ ∃ a, IsDeg p L (i (genericPoint Z)) a` using `fun ⟨_, Z', i', _, _, _, hz, hd', _⟩ => by`. Rewrite `hd'` using `[← hdim i', hz, hdim i]`. Conclude with `h.ne hd'`.
-
-Rewrite using `[pdeg, dif_neg h', interNum_eq_zero_of_isProjOver (algebraMap_eq_strHom (ResidueField O) Z) (structureModule Z) hp (by rwa [QCoh.suppDim_structureModule, Fintype.card_fin]) hL', zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.intersection_length_pushforward :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharP (ResidueField O) p] [Finite (ResidueField O)] (B : Vert.Model O) (L : Fin B.relDim → LB B.X), (∀ k, (L k).IsLB) → ∀ (Z : Scheme.{0}) (i : Z ⟶ B.X) [IsClosedImmersion i] [IsIntegral Z], (∀ z : Z, i z ∉ B.gen) → ∀ (G : Z.Modules), GlobalTheory.QCoh.IsFiniteQC G → interLen O ((Scheme.Modules.pushforward i).obj G) L * (resDeg O p : ℤ) = (GlobalTheory.VB.genRank G : ℤ) * pdeg p L (i (genericPoint Z)) := by

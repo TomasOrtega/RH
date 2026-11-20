@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.G.SymmetricFormBlocks
 open Finset Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNotions.G.CountingStatementReduction
 
 /- English proof (translation)
-Establish `hs0 : 0 ≤ s` using `le_trans ht0 hts`. Establish `hA : 0 ≤ (((2 * s + 1) + 1) * r + (t + 1) * 2) + (t + 1)` using `by nlinarith`. Establish `e1 : ((((2 * s + 1) + 1) * r + (t + 1) * 2) + (t + 1)) * L1 ≤ ((2 * s + 2) * r + 3 * (s + 1)) * Λ`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : U ≤ (s + 1) * ((r + 1) * (Λ + 1) + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `: 0 ≤ (r + 1) * (Λ + 1) + 1` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `e3 : (s + 1) * ((r + 1) * (Λ + 1) + 1) ≤ (s + 1) * ((2 * r + 3) * Λ)`. Apply `mul_le_mul_of_nonneg_left _ (by linarith)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -36,35 +36,33 @@ section Inst
 variable (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst)
 
 /- English proof (translation)
-Introduce `aTop hT aPlus hP b hK l hl j' jp' hl' μ hw`. Take `⟨hA1, h2, h3, h4, h5⟩` from `gB_deg_le C0 CE1 CE2 X hCYb hCE1 hCE2 hH aTop hT aPlus hP b hK`. Establish `hF` using `hiFacts C0 CYb Cde Ck CD Cb Cc X hCYb hH`. Establish `hlok : (gB C0 CE1 CE2 X aTop aPlus b).LevelOK l.1 l.2` using `(Finset.mem_filter.1 hl).2`. Establish `hv` using `val_gen X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus b) (gB_blockOK C0 CE1 CE2 X aTop aPlus b) (aBig X) h2 h3 h4 h5 l.1 l.2 hlok j' jp' hl' μ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvR : (padicValNat X.p (lvC (r` using `X.r) (gB C0 CE1 CE2 X aTop aPlus b) l.1 l.2 * degFact (gB C0 CE1 CE2 X aTop aPlus b) l.1 l.2) : ℝ) ≤ (padicValNat X.p (μ.prod fun _ k => k.factorial) : ℝ) + (((((2 * (X.s : ℝ) + 1) + 1) * (X.r : ℝ) + (((X.S C0 CE1 CE2).t : ℝ) + 1) * 2) + (((X.S C0 CE1 CE2).t : ℝ) + 1)) * (Nat.log …`. Use `(Nat.cast_le (α := ℝ)).2 hv` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hmR : (4 : ℝ) ≤ (X.r : ℝ)` using `by exact_mod_cast hF.m4`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp25 : (25 : ℝ) ≤ (X.p : ℝ)` using `by nlinarith [hF.p_ge]`. Establish `hp1 : (1 : ℝ) < (X.p : ℝ)` using `by linarith`. Establish `hs0 : (0 : ℝ) ≤ (X.s : ℝ)` using `Nat.cast_nonneg _`. Establish `ha1 : (1 : ℝ) ≤ (X.L.a : ℝ)` using `hF.a1`. Establish `hsm : 2 * (X.s : ℝ) + 2 ≤ (X.r : ℝ)` using `by exact_mod_cast hF.s_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp : 3 * (X.s : ℝ) + 2 ≤ (X.p : ℝ)` using `by nlinarith [hF.p_ge]`. Establish `hbase : (0 : ℝ) < 8 * (X.L.a : ℝ) + (X.r : ℝ)` using `by linarith`. Establish `hΛ : 1 ≤ lgA X.p X.L.a X.r`. Unfold `lgA`. Establish `: 0 ≤ Real.logb X.p (8 * (X.L.a : ℝ) + (X.r : ℝ))` using `Real.logb_nonneg hp1 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbig : Real.logb X.p (8 * (aBig X : ℝ) + (X.r : ℝ)) ≤ lgA X.p X.L.a X.r`. Establish `e1 : 8 * (aBig X : ℝ) + (X.r : ℝ) ≤ (3 * (X.s : ℝ) + 2) * (8 * (X.L.a : ℝ) + (X.r : ℝ))`. Unfold `aBig`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `e0 : (0 : ℝ) < 8 * (aBig X : ℝ) + (X.r : ℝ)`. Establish `: (0 : ℝ) ≤ (aBig X : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2` using `Real.logb_le_logb_of_le hp1 e0 e1`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[Real.logb_mul (by linarith) hbase.ne']`. Establish `e3 : Real.logb X.p (3 * (X.s : ℝ) + 2) ≤ 1`. Rewrite using `[Real.logb_le_iff_le_rpow hp1 (by linarith), Real.rpow_one]`. Conclude with `hsp`. Unfold `lgA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL1 : (Nat.log X.p (8 * aBig X + X.r) : ℝ) ≤ lgA X.p X.L.a X.r`. Use `Real.natLog_le_logb (8 * aBig X + X.r) X.p` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this.trans hbig`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hU : (expU X.p (r` using `X.r) (gB C0 CE1 CE2 X aTop aPlus b) (aBig X) : ℝ) ≤ (((X.S C0 CE1 CE2).t : ℝ) + 1) * (((X.r : ℝ) + 1) * (lgA X.p X.L.a X.r + 1) + 1) := by`. Establish `e1 : (expU X.p (r` using `X.r) (gB C0 CE1 CE2 X aTop aPlus b) (aBig X) : ℝ) = (((X.S C0 CE1 CE2).t : ℝ) + 1) * (⌈((X.r : ℝ) + 1) * Formalism.GM.lgV2 X.p (aBig X) X.r⌉₊ : ℝ) := by`. Unfold `expU`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Establish `e2 : Formalism.GM.lgV2 X.p (aBig X) X.r ≤ lgA X.p X.L.a X.r + 1`. Unfold `Formalism.GM.lgV2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e3 : 0 ≤ Formalism.GM.lgV2 X.p (aBig X) X.r`. Unfold `Formalism.GM.lgV2`. Establish `: 0 ≤ Real.logb X.p (8 * (aBig X : ℝ) + (X.r : ℝ))`. Apply `Real.logb_nonneg hp1` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ (aBig X : ℝ)` using `Nat.cast_nonneg _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4` using `(Nat.ceil_lt_add_one (show 0 ≤ ((X.r : ℝ) + 1) * Formalism.GM.lgV2 X.p (aBig X) X.r by positivity)).le`. Use `e4.trans ?_` and prove the remaining obligations. Establish `: ((X.r : ℝ) + 1) * Formalism.GM.lgV2 X.p (aBig X) X.r ≤ ((X.r : ℝ) + 1) * (lgA X.p X.L.a X.r + 1)` using `mul_le_mul_of_nonneg_left e2 (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk0 : 0 ≤ kappaZeroExponent X.p X.L.a X.Nt X.r`. Unfold `kappaZeroExponent`. Establish `: 0 ≤ Real.logb X.p (X.L.a : ℝ)` using `Real.logb_nonneg hp1 ha1`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hts : ((X.S C0 CE1 CE2).t : ℝ) ≤ (X.s : ℝ)`. Establish `: (X.S C0 CE1 CE2).t ≤ X.s` using `Nat.sub_le _ _`. Conclude with `this` after adjusting the coercions. Establish `hfin` using `loss_num (X.s : ℝ) ((X.S C0 CE1 CE2).t : ℝ) (X.r : ℝ) (lgA X.p X.L.a X.r) (Nat.log X.p (8 * aBig X + X.r) : ℝ) (expU X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus b) (aBig X) : ℝ) (kappaZeroExponent X.p X.L.a X.Nt X.r) (Nat.cast_nonneg _) hts hmR hΛ (Nat.cast_nonneg _) hL1 hU hk0`. Unfold `levelPassageLoss`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem restValNum_proved {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 ≤ CE1) (hCE2 : 0 ≤ CE2)
     (hH : flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X) : RestValNum C0 CE1 CE2 X := by
@@ -151,7 +149,7 @@ theorem restValNum_proved {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 :
   linarith
 
 /- English proof (translation)
-The claim follows from `block_valuation_Zp_of_numeric_bound C0 CE1 CE2 X hCYb hCE1 hCE2 hH (restValNum_proved C0 CE1 CE2 X hCYb hCE1 hCE2 hH)`.
+A detailed English derivation is pending.
 -/
 theorem block_valuation_over_Zp_holds {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 ≤ CE1) (hCE2 : 0 ≤ CE2)
     (hH : flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X) : BlockBoundIntegers C0 CE1 CE2 X :=

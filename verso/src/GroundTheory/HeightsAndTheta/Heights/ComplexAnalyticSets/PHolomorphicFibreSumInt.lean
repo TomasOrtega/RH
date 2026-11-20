@@ -11,7 +11,7 @@ open MeasureTheory ReciprocityTheory.AnForm.A
 noncomputable section
 
 /- English proof (translation)
-Introduce `t ht`. Simplify using `only`. Rewrite using `[det_fderiv_real_eq_normSq τ t (hτ.differentiableAt (hΩ.mem_nhds ht)), abs_of_nonneg (Complex.normSq_nonneg _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem abs_det_fderiv_real_mul_eq_normSq {d : ℕ} {Ω : Set (Fin d → ℂ)} {τ : (Fin d → ℂ) → Fin d → ℂ}
     (hΩ : IsOpen Ω) (hτ : DifferentiableOn ℂ τ Ω) (H : (Fin d → ℂ) → ℝ) :
@@ -22,7 +22,7 @@ theorem abs_det_fderiv_real_mul_eq_normSq {d : ℕ} {Ω : Set (Fin d → ℂ)} {
     abs_of_nonneg (Complex.normSq_nonneg _)]
 
 /- English proof (translation)
-Introduce `d Ω τ H hΩ hτ hfin hint`. Establish `heq` using `abs_det_fderiv_real_mul_eq_normSq hΩ hτ H`. Establish `hint' : IntegrableOn (fun t => |(fderiv ℝ τ t).det| * H t) Ω` using `(integrableOn_congr_fun heq hΩ.measurableSet).2 hint`. Take `⟨h1, h2⟩` from `h (Fin d → ℂ) volume Ω τ H hΩ (hτ.restrictScalars ℝ) hfin hint'`. Conclude with `⟨h1, h2.trans (setIntegral_congr_fun hΩ.measurableSet heq)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HolomorphicFibreSumInt.proof (h : WeightedAreaFormula.Statement) :
     HolomorphicFibreSumInt.Statement := by

@@ -15,7 +15,7 @@ namespace GlobalTheory.FinAdeleHaarNorm
 open scoped RestrictedProduct Topology
 
 /- English proof (translation)
-Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), CompactSpace (v.adicCompletionIntegers F : Set (v.adicCompletion F)) := fun v => GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Establish `h` using `isCompact_range (RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := Filter.cofinite)).continuous`. Rewrite `h` using `[RestrictedProduct.range_structureMap]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_integral (F : Type) [Field F] [NumberField F] :
     IsCompact {b : Af F | ∀ v : HeightOneSpectrum (𝓞 F), evalV F v b ∈ v.adicCompletionIntegers F} := by
@@ -28,7 +28,7 @@ theorem isCompact_integral (F : Type) [Field F] [NumberField F] :
   exact h
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integral (F : Type) [Field F] [NumberField F] :
     IsOpen {b : Af F | ∀ v : HeightOneSpectrum (𝓞 F), evalV F v b ∈ v.adicCompletionIntegers F} :=
@@ -37,9 +37,9 @@ theorem isOpen_integral (F : Type) [Field F] [NumberField F] :
     (fun v => Valued.isOpen_valuationSubring _)
 
 /- English proof (translation)
-Introduce `F _ _ κ _ _ _`. Use `set U : Set (κ → Af F) := {y | ∀ i (v : HeightOneSpectrum (𝓞 F)), evalV F v (y i) ∈ v.adicCompletionIntegers F}`. Establish `hU : U = Set.pi Set.univ (fun _ : κ => {b : Af F | ∀ v : HeightOneSpectrum (𝓞 F), evalV F v b ∈ v.adicCompletionIntegers F})`. Use extensionality with `y`. Simplify using `[U]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : IsCompact U` using `hU ▸ isCompact_univ_pi (fun _ => isCompact_integral F)`. Establish `ho : IsOpen U` using `hU ▸ isOpen_set_pi Set.finite_univ (fun _ _ => isOpen_integral F)`. Establish `h0 : (0 : κ → Af F) ∈ U` using `fun i v => by simp`. Set `K₀ : TopologicalSpace.PositiveCompacts (κ → Af F)` to `⟨⟨U, hc⟩, ⟨0, ho.interior_eq.symm ▸ h0⟩⟩`. Conclude with `⟨Measure.addHaarMeasure K₀, inferInstance, Measure.addHaarMeasure_self⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_addHaar_integral_eq_one : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → Af F)] [BorelSpace (κ → Af F)],
     ∃ μf : Measure (κ → Af F), μf.IsAddHaarMeasure ∧ μf {y | ∀ i (v : HeightOneSpectrum (𝓞 F)), evalV F v (y i) ∈ v.adicCompletionIntegers F} = 1 := by

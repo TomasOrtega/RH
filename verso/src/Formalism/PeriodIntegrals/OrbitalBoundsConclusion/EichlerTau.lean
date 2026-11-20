@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.MX
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.HermitianXiOrthogonal
 
 /- English proof (translation)
-The claim follows from `PI.PolynomialProperness.tauMem_of PI.PolynomialProperness.mxFacts PI.PolynomialProperness.TauN.neFacts`.
+A detailed English derivation is pending.
 -/
 theorem eichlerTau : Formalism.FourierDecayAlt.C2.TauMem :=
   PI.PolynomialProperness.tauMem_of PI.PolynomialProperness.mxFacts PI.PolynomialProperness.TauN.neFacts

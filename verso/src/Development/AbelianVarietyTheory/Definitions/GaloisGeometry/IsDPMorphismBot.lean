@@ -111,24 +111,24 @@ variable {L}
     Units.map (Ideal.Quotient.mk T'.J).toMonoidHom (u j) * Units.map (Ideal.quotientMap T'.J φ hle).toMonoidHom (T.v j)
 
 /- English proof (translation)
-Introduce `_ h` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_id (T : Thick L) : T.J ≤ T.J.comap (RingHom.id T.B) := fun _ h => h
 
 /- English proof (translation)
-Introduce `_ h` and use `g.hle (f.hle h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_comp {T T' T'' : Thick L} (f : Hom T T') (g : Hom T' T'') : T.J ≤ T''.J.comap (g.φ.comp f.φ) :=
   fun _ h => g.hle (f.hle h)
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem qmap_id (T : Thick L) (h) : Ideal.quotientMap T.J (RingHom.id T.B) h = RingHom.id _ := by
   ext; rfl
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem qmap_comp {T T' T'' : Thick L} (f : Hom T T') (g : Hom T' T'') (h) :
     Ideal.quotientMap T''.J (g.φ.comp f.φ) h =
@@ -183,32 +183,32 @@ def pdPow (T : Thick L) (r : ℕ) : Ideal T.B :=
     z = (l.map fun q => T.δ.dpow q.1 q.2).prod}
 
 /- English proof (translation)
-The claim follows from `T.compat.1 (Ideal.mem_map_of_mem T.i hx)`.
+A detailed English derivation is pending.
 -/
 theorem i_mem (T : Thick L) {x : b.R} (hx : x ∈ b.I) : T.i x ∈ T.J :=
   T.compat.1 (Ideal.mem_map_of_mem T.i hx)
 
 /- English proof (translation)
-The claim follows from `T.compat.2 x hx`.
+A detailed English derivation is pending.
 -/
 theorem dpow_i (T : Thick L) (n : ℕ) {x : b.R} (hx : x ∈ b.I) : T.δ.dpow n (T.i x) = T.i (b.γ.dpow n x) :=
   T.compat.2 x hx
 
 /- English proof (translation)
-Rewrite using `[Ideal.eq_top_iff_one]`. Conclude with `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pdPow_zero (T : Thick L) : T.pdPow 0 = ⊤ := by
   rw [Ideal.eq_top_iff_one]
   exact Ideal.subset_span ⟨[], by simp, by simp, by simp⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.span_mono fun _ ⟨l, hl, hr, hz⟩ => ⟨l, hl, h.trans hr, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem pdPow_anti (T : Thick L) {r r' : ℕ} (h : r ≤ r') : T.pdPow r' ≤ T.pdPow r :=
   Ideal.span_mono fun _ ⟨l, hl, hr, hz⟩ => ⟨l, hl, h.trans hr, hz⟩
 
 /- English proof (translation)
-Introduce `x hx`. Use `Ideal.subset_span ⟨[(1, x)], by simpa using hx, by simp, ?_⟩` and prove the remaining obligations. Simplify using `[T.δ.dpow_one hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem J_le_pdPow_one (T : Thick L) : T.J ≤ T.pdPow 1 := by
   intro x hx
@@ -237,7 +237,7 @@ def Fil (n r : ℕ) : Set (H L n) :=
     ∀ s, (show (s.obj (Fin.last n)).B from z.1 s) ∈ (s.obj (Fin.last n)).pdPow r}
 
 /- English proof (translation)
-Use extensionality with `c`. Use `⟨fun _ => trivial, fun _ => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Conclude with `⟨z, rfl, fun s => by rw [Thick.pdPow_zero]; trivial⟩`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fil_zero (n : ℕ) : Fil L n 0 = Set.univ := by
   ext c
@@ -246,7 +246,7 @@ theorem fil_zero (n : ℕ) : Fil L n 0 = Set.univ := by
   exact ⟨z, rfl, fun s => by rw [Thick.pdPow_zero]; trivial⟩
 
 /- English proof (translation)
-Introduce `_ ⟨z, hz, hs⟩` and use `⟨z, hz, fun s => Thick.pdPow_anti _ h (hs s)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fil_anti (n : ℕ) {r r' : ℕ} (h : r ≤ r') : Fil L n r' ⊆ Fil L n r :=
   fun _ ⟨z, hz, hs⟩ => ⟨z, hz, fun s => Thick.pdPow_anti _ h (hs s)⟩
@@ -285,7 +285,7 @@ namespace Mor
 variable {b b' : Base} {L : b.Fun} {L' : b'.Fun} {σ : b.R →+* b'.R} (m : Mor L L' σ)
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_comm, ← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [Finset.prod_pow_eq_pow_sum, m.he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pow {M : Type} [CommMonoid M] (z : L'.ι → M) : ∏ i, ∏ j, z j ^ m.e i j = (∏ j, z j) ^ m.m := by
   rw [Finset.prod_comm, ← Finset.prod_pow]
@@ -405,7 +405,7 @@ end Mor
 namespace Ex
 
 /- English proof (translation)
-Rewrite using `[isDPMorphism_iff]`. Use `⟨by rw [Ideal.map_bot]; exact bot_le, fun n hn a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot.1 ha, map_zero, δ.dpow_eval_zero hn, (dividedPowersBot A).dpow_eval_zero hn, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDPMorphism_bot {A B : Type} [CommRing A] [DecidableEq A] [CommRing B] {J : Ideal B} (δ : DividedPowers J)
     (f : A →+* B) : IsDPMorphism (dividedPowersBot A) δ f := by
@@ -446,7 +446,7 @@ abbrev node (k : Type) [CommRing k] (τ : k) : LogFun k τ where
   prod_g _ _ := by simp
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨{1}, by simp, fun _ _ => ⟨(), trivial⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem node_covers (k : Type) [CommRing k] (τ : k) : (node k τ).Covers :=
   fun _ _ => ⟨{1}, by simp, fun _ _ => ⟨(), trivial⟩⟩
@@ -458,7 +458,7 @@ abbrev D := DualNumber ℚ
 abbrev J : Ideal D := Ideal.span {DualNumber.eps}
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, pow_two, DualNumber.eps_mul_eps, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem J_sq : J ^ 2 = 0 := by
   rw [Ideal.span_singleton_pow, pow_two, DualNumber.eps_mul_eps, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
@@ -490,7 +490,7 @@ def T : Thick nodeL where
   hv := by simp
 
 /- English proof (translation)
-Introduce `h`. Establish `: (DualNumber.eps : D) ∈ (⊥ : Ideal D)` using `h ▸ Ideal.subset_span rfl`. Establish `h0 : (DualNumber.eps : D) = 0` using `(Submodule.mem_bot _).1 this`. Simplify using `using congrArg TrivSqZeroExt.snd h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem T_J_ne_bot : T.J ≠ ⊥ := by
   intro h
@@ -521,12 +521,12 @@ def sq : Mor nodeL nodeL (RingHom.id ℚ) where
   hw _ := by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨T⟩`.
+Supply the required witnesses or components.
 -/
 example : Nonempty (Thick nodeL) := ⟨T⟩
 
 /- English proof (translation)
-Use `show ∏ j, T.x j ^ sq.e 0 j = 0`. Rewrite using `[Fin.prod_univ_two]`. Simplify using `[sq, pow_two]`. Conclude with `DualNumber.eps_mul_eps`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : (sq.functor.obj T).x 0 = 0 := by
   show ∏ j, T.x j ^ sq.e 0 j = 0

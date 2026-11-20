@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 namespace PositivityTheory.Xgn.DualLatticeFamily
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Ar.Num.dotDual`. Simplify using `only [AddSubgroup.mem_iInf, AddSubgroup.mem_comap]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_dotDual {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] (R : Subalgebra O Ω) {r : ℕ}
     (L : AddSubgroup (Fin r → Ω)) (e : Fin r → Ω) :
@@ -30,9 +30,9 @@ Both sides reduce to the same expression.
 theorem dotB_apply {Ω : Type} [Field Ω] {r : ℕ} (a b : Fin r → Ω) : dotB Ω r a b = a ⬝ᵥ b := rfl
 
 /- English proof (translation)
-Use `⟨fun a b h => funext fun i => ?_, fun ψ => ⟨fun i => ψ (Pi.single i 1), ?_⟩⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h (Pi.single i 1)` as an intermediate fact. Simplify `this` using `[dotB_apply]`. Use `LinearMap.pi_ext fun i x => ?_` and prove the remaining obligations. Establish `hx : (Pi.single i x : Fin r → Ω) = x • (Pi.single i 1 : Fin r → Ω)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Pi.single_smul, smul_eq_mul, _root_.mul_one]`. Rewrite using `[LinearMap.flip_apply, dotB_apply, single_dotProduct, hx, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dotB_bij (Ω : Type) [Field Ω] (r : ℕ) : Function.Bijective (dotB Ω r).flip := by
   classical
@@ -45,13 +45,13 @@ theorem dotB_bij (Ω : Type) [Field Ω] (r : ℕ) : Function.Bijective (dotB Ω 
     rw [LinearMap.flip_apply, dotB_apply, single_dotProduct, hx, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite `hw` using `[mem_dotDual]`. Establish `hdiv : x i / x j ∈ chartRing O x j` using `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing x j i`. Take `⟨m, hm⟩` from `GlobalTheory.CompanionTheory.Ar.Num.Reflexive.exists_uniform_denominator (chartRing O x j) r Lj hL (x i / x j) hdiv ((dotB Ω r).flip w) fun e he => by`. Take `⟨m, hm⟩` from `hov e he`. Establish `h1` using `hw _ hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[smul_dotProduct, smul_eq_mul]`. Take `⟨m', hm'⟩ : ∃ m' : ℕ, (x i / x j) ^ m' * ((x j / x i) ^ m * (e ⬝ᵥ w)) ∈ chartRing O x j` from `ReciprocityTheory.ChartRestriction.G.Geo.exists_pow_mul_mem_chartRing x i j hi h1`. Establish `hone : (x i / x j) ^ m * (x j / x i) ^ m = 1`. Rewrite using `[← mul_pow, div_mul_div_comm, _root_.mul_comm (x i), div_self (mul_ne_zero hj hi), one_pow]`. Establish `h2` using `mul_mem (pow_mem hdiv m) hm'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (x i / x j) ^ m * ((x i / x j) ^ m' * ((x j / x i) ^ m * (e ⬝ᵥ w))) = (x i / x j) ^ m' * (e ⬝ᵥ w)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[h3]`. Conclude with `⟨m', h2⟩`. Use `⟨m, (mem_dotDual _ _ _).2 fun l hl => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dotProduct_smul, smul_eq_mul]`. Conclude with `hm l hl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem overlap {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {T : Type} (x : T → Ω) {r : ℕ}
     (i j : T) (hi : x i ≠ 0) (hj : x j ≠ 0) (Li Lj : AddSubgroup (Fin r → Ω))
@@ -84,9 +84,7 @@ end PositivityTheory.Xgn.DualLatticeFamily
 
 open PositivityTheory.Xgn.DualLatticeFamily in
 /- English proof (translation)
-Introduce `O _ Ω _ _ K _ J _ y r Γ hΓ hL`. Use `⟨⟨fun s _ a ha w hw => ?_, fun s t hs ht w hw => ?_⟩, fun c hc => ?_⟩` and prove the remaining obligations. Use `(mem_dotDual _ _ _).2 fun l hl => ?_` and prove the remaining obligations. Rewrite using `[dotProduct_smul, smul_eq_mul]`. Conclude with `mul_mem ha ((mem_dotDual _ _ _).1 hw l hl)`.
-
-Conclude with `overlap (mseg y) s t hs ht (Γ s) (Γ t) (hΓ.2 t s ht hs) (hL t ht) w hw`. Conclude with `(GlobalTheory.CompanionTheory.Ar.Num.DualLattice.locFree_dual _ (dotB Ω r) (dotB_bij Ω r) r (Γ c) _ (hL c hc) fun w => mem_dotDual _ _ w).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.dual_lattice_family : ∀ (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (r : ℕ) (Γ : (∀ k, J k) → AddSubgroup (Fin r → Ω)), IsLatFamily O y Γ → (∀ c, mseg y c ≠ 0 → LocFree (chartRing O (mseg y) c) r (Γ c)) → IsLatFamily O y (fun c => dotDual (chartRing O (mseg y) c) (Γ c)) ∧ ∀ c, mseg y c ≠ 0 → LocFree (chartRing O (mseg y) c) r (dotDual (chartRing O (mseg y) c) (Γ c)) := by
   intro O _ Ω _ _ K _ J _ y r Γ hΓ hL

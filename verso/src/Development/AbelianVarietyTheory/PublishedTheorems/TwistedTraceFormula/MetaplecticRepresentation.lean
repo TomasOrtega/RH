@@ -15,7 +15,7 @@ variable {ι : Type} [Fintype ι]
 def eChar : AddChar ℝ ℂ := Circle.coeHom.compAddChar Real.fourierChar
 
 /- English proof (translation)
-Use `show ((Real.fourierChar x : Circle) : ℂ) = _`. Rewrite using `[Real.fourierChar_apply]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem eChar_apply (x : ℝ) : eChar x = cexp (2 * π * x * I) := by
   show ((Real.fourierChar x : Circle) : ℂ) = _
@@ -24,17 +24,15 @@ theorem eChar_apply (x : ℝ) : eChar x = cexp (2 * π * x * I) := by
   ring_nf
 
 /- English proof (translation)
-Establish `hf : (eChar : ℝ → ℂ) = fun x : ℝ => cexp (2 * π * x * I)` using `funext eChar_apply`. Establish `hlin : ∀ x : ℝ, HasDerivAt (fun y : ℝ => (2 * π * y * I : ℂ)) (2 * π * I) x`. Introduce `x`. Establish `h` using `(((hasDerivAt_id x).ofReal_comp).const_mul (2 * π : ℂ)).mul_const I`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hd : ∀ c : ℂ, deriv (fun x : ℝ => c * cexp (2 * π * x * I)) = fun x : ℝ => c * (2 * π * I) * cexp (2 * π * x * I)`. Introduce `c`. Use function extensionality and compare the values at `x`. Rewrite using `[((hlin x).cexp.const_mul c).deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hit : ∀ n : ℕ, iteratedDeriv n (fun x : ℝ => cexp (2 * π * x * I)) = fun x : ℝ => (2 * π * I) ^ n * cexp (2 * π * x * I)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => funext x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih => rw [iteratedDeriv_succ, ih, hd, pow_succ]`. Establish `hnorm : ∀ x : ℝ, ‖cexp (2 * π * x * I)‖ = 1`. Introduce `x`. Rewrite using `[show (2 * π * x * I : ℂ) = ((2 * π * x : ℝ) : ℂ) * I by push_cast; ring]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Use `⟨?_, fun n => ⟨0, (2 * π) ^ n, fun x => ?_⟩⟩` and prove the remaining obligations. Conclude with `((contDiff_const.mul Complex.ofRealCLM.contDiff).mul contDiff_const).cexp`. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, hit n]`. Simplify using `only [norm_mul, norm_pow, hnorm, mul_one, pow_zero]`.
-
-Simplify using `[abs_of_pos Real.pi_pos]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_eChar : Function.HasTemperateGrowth (eChar : ℝ → ℂ) := by
   have hf : (eChar : ℝ → ℂ) = fun x : ℝ => cexp (2 * π * x * I) := funext eChar_apply
@@ -70,7 +68,7 @@ def rho (w : (ι → ℝ) × (ι → ℝ)) : 𝓢(ι → ℝ, ℂ) →L[ℂ] �
     SchwartzMap.compSubConstCLM ℂ (-w.1)
 
 /- English proof (translation)
-Establish `hl : (fun x : ι → ℝ => x ⬝ᵥ w.2).HasTemperateGrowth`. Establish `h : (fun x : ι → ℝ => x ⬝ᵥ w.2) = fun x => ∑ i, x i * w.2 i` using `rfl`. Rewrite using `[h]`. Conclude with `Function.HasTemperateGrowth.sum fun i _ => (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : ι => ℝ) i).hasTemperateGrowth.mul (Function.HasTemperateGrowth.const _)`. Conclude with `hasTemperateGrowth_eChar.comp (hl.add (Function.HasTemperateGrowth.const _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hasTemperateGrowth_eChar_dotProduct_phase (w : (ι → ℝ) × (ι → ℝ)) :
     (fun x : ι → ℝ => eChar (x ⬝ᵥ w.2 + ⅟(2 : ℝ) * (w.1 ⬝ᵥ w.2))).HasTemperateGrowth := by
@@ -83,7 +81,7 @@ private lemma hasTemperateGrowth_eChar_dotProduct_phase (w : (ι → ℝ) × (ι
   exact hasTemperateGrowth_eChar.comp (hl.add (Function.HasTemperateGrowth.const _))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [rho, ContinuousLinearMap.comp_apply]`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_eChar_dotProduct_phase w), SchwartzMap.compSubConstCLM_apply]`. Simplify using `[GlobalTheory.WeilM.schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_rho (w : (ι → ℝ) × (ι → ℝ)) (φ : 𝓢(ι → ℝ, ℂ)) : ⇑(rho w φ) = GlobalTheory.WeilM.schr eChar w φ := by
   funext x
@@ -92,7 +90,7 @@ theorem coe_rho (w : (ι → ℝ) × (ι → ℝ)) (φ : 𝓢(ι → ℝ, ℂ)) 
   simp [GlobalTheory.WeilM.schr]
 
 /- English proof (translation)
-Rewrite using `[coe_rho]`. Simplify using `only [GlobalTheory.WeilM.schr, eChar_apply, invOf_eq_inv]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_apply (p q : ι → ℝ) (φ : 𝓢(ι → ℝ, ℂ)) (x : ι → ℝ) :
     rho (p, q) φ x = cexp (2 * π * ((x ⬝ᵥ q + p ⬝ᵥ q / 2 : ℝ) : ℂ) * I) * φ (x + p) := by
@@ -106,7 +104,7 @@ def act (g : Matrix (ι ⊕ ι) (ι ⊕ ι) ℝ) (w : (ι → ℝ) × (ι → �
   ((g *ᵥ Sum.elim w.1 w.2) ∘ Sum.inl, (g *ᵥ Sum.elim w.1 w.2) ∘ Sum.inr)
 
 /- English proof (translation)
-Simplify using `[act, Matrix.fromBlocks_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_fromBlocks (A B C D : Matrix ι ι ℝ) (p q : ι → ℝ) :
     act (fromBlocks A B C D) (p, q) = (A *ᵥ p + B *ᵥ q, C *ᵥ p + D *ᵥ q) := by

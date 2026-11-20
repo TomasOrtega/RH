@@ -30,7 +30,7 @@ theorem val_baseGL (X : Data E r) (τ : X.Ψ) : (baseGL X τ : Matrix (Fin r) (F
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[UnitaryFrames.gram_eq_mul, UnitaryFrames.gram_eq_mul, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_mul_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (A g : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G (A * g) = gᵀ * gram τ G A * g.map (starRingEnd ℂ) := by
@@ -40,9 +40,9 @@ theorem gram_mul_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (A g : 
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a b`. Simplify using `only [gram, Matrix.of_apply, UnitaryFrames.col_mul', h]`. Introduce `h u w`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u', rfl⟩ : ∃ u', u = (P : Matrix (Fin r) (Fin r) ℂ) *ᵥ u'` from `⟨((P⁻¹ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) *ᵥ u, by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]⟩`. Take `⟨w', rfl⟩ : ∃ w', w = (P : Matrix (Fin r) (Fin r) ℂ) *ᵥ w'` from `⟨((P⁻¹ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) *ᵥ w, by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]⟩`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, UnitaryFrames.hermC_mulVec, UnitaryFrames.hermC_mulVec, h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isometry_iff_gram (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (n : Matrix (Fin r) (Fin r) ℂ)
     (P : GL (Fin r) ℂ) :
@@ -111,9 +111,7 @@ def isoEquiv (X : Data E r) : RealGrp X ≃ₜ* UnitaryFrames.unitarySubgroup X 
     exact (continuous_const.mul ((continuous_apply τ).comp continuous_subtype_val)).mul continuous_const
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `key : mat (frameOf X g) τ = mat (X.lmulC (fun τ => (((toIso X g : UnitaryFrames.unitarySubgroup X) : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) (baseFr X)) τ`. Rewrite using `[PeterssonCompare.mat_frameOf, show ∀ (n : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (x : Frame X.Ψ r),`. Use `mat (X.lmulC n x) τ = n τ * mat x τ from fun _ _ => rfl, ← val_baseGL]`. Use `show _ = ((baseGL X τ * ((g τ : Upq r X.p0) : GL (Fin r) ℂ) * (baseGL X τ)⁻¹ : GL (Fin r) ℂ) :`.
-
-Use `Matrix (Fin r) (Fin r) ℂ) * _`. Rewrite using `[← Units.val_mul, ← Units.val_mul, inv_mul_cancel_right]`. Conclude with `key`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameOf_eq_lmulC (X : Data E r) (g : RealGrp X) :
     frameOf X g = X.lmulC (fun τ => (((toIso X g : UnitaryFrames.unitarySubgroup X) : X.Ψ → GL (Fin r) ℂ) τ :
@@ -129,11 +127,11 @@ theorem frameOf_eq_lmulC (X : Data E r) (g : RealGrp X) :
   exact key
 
 /- English proof (translation)
-Establish `hO` using `OntoB.isOpen_OmF X x0`. Unfold `muF`. Rewrite using `[withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]`. Introduce `h0`. Establish `hm : AEMeasurable (fun z => ENNReal.ofReal (densF X x0 z)) (volume.restrict (OmF X x0))` using `(OntoB.densF_continuousOn.aemeasurable hO.measurableSet).ennreal_ofReal`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h0` using `[lintegral_eq_zero_iff' hm]`. Establish `h1 : ∀ᵐ z ∂(volume.restrict (OmF X x0)), False` using `by filter_upwards [h0, ae_restrict_mem hO.measurableSet] with z hz hz'`. Use `OntoB.densF_pos hz'` as an intermediate fact. Simplify using `only [Pi.zero_apply, ENNReal.ofReal_eq_zero] at hz`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[ae_iff]`. Simplify using `only [not_false_eq_true, Set.setOf_true, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter] at h1`. Conclude with `(hO.measure_pos volume ⟨0, IW.zero_mem_OmF X x0 h⟩).ne' h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem muF_univ_ne_zero (X : Data E r) {x0 : Frame X.Ψ r} (h : IsOrth X x0) : muF X x0 Set.univ ≠ 0 := by
   have hO := OntoB.isOpen_OmF X x0
@@ -154,21 +152,15 @@ theorem muF_univ_ne_zero (X : Data E r) {x0 : Frame X.Ψ r} (h : IsOrth X x0) : 
   exact (hO.measure_pos volume ⟨0, IW.zero_mem_OmF X x0 h⟩).ne' h1
 
 /- English proof (translation)
-Use `set H := UnitaryFrames.unitarySubgroup X with hHdef`. Use `letI : MeasurableSpace H := borel H`. Use `haveI : BorelSpace H := ⟨rfl⟩`. Establish `hHm : ∀ g, g ∈ H ↔ X.IsUnitaryC fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)` using `fun _ => Iff.rfl`. Take `⟨hLC, hSC, -⟩` from `UnitaryFrames.unitary_group_frames.2 r X H hHm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hLC`. Use `haveI := hSC`. Establish `hx0 : IsOrth X (baseFr X)` using `fun τ => baseFr_mem X τ`. Take `⟨ν, hνl, hνf, hν⟩` from `UnitaryInvMeasure.invMeas FrameMeasureClosed.measure_statements.2.1 GramSchmidtCont.exists_continuous_gramSchmidt isOrth_rmul_iff_unitary_diagonal (SatFin.muF_sat_lt_top FrameMeasureClosed.measure_statements.2.1) UnitaryFrames.unitary_group_frames.2 r X H hHm (baseFr X) hx0`. Use `haveI := hνl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hνf`. Use `haveI : (haarR X).IsHaarMeasure := by unfold haarR; infer_instance`. Use `set e := isoEquiv X`. Use `set μ : Measure H := (haarR X).map e with hμdef`. Use `haveI : μ.IsHaarMeasure := e.isHaarMeasure_map (haarR X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `Measure.isMulLeftInvariant_eq_smul ν μ`. Use `set s := ν.haarScalarFactor μ`. Use `set L : H → Frame X.Ψ r := fun h => X.lmulC (fun τ => ((h : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) (baseFr X)`. Establish `hR : ∀ F : H → ℝ≥0∞, ∫⁻ g, F (e g) ∂haarR X = ∫⁻ h, F h ∂μ`. Introduce `F`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_map_equiv F (e.toHomeomorph.toMeasurableEquiv) (μ := haarR X)` as an intermediate fact. Conclude with `this.symm`. Establish `hs0 : s ≠ 0`. Introduce `h0`. Establish `h1` using `hν (fun _ => 1) measurable_const (fun _ _ _ _ => rfl)`.
-
-Simplify using `only [lintegral_const, one_mul] at h1`. Rewrite `h1` using `[hs, h0, zero_smul, Measure.coe_zero, Pi.zero_apply]`. Conclude with `muF_univ_ne_zero X hx0 h1.symm`. Use `⟨((s : ℝ≥0∞))⁻¹, ENNReal.inv_ne_zero.2 ENNReal.coe_ne_top, ENNReal.inv_ne_top.2 (ENNReal.coe_ne_zero.2 hs0), fun φ hφ hφb => ?_⟩` and prove the remaining obligations. Establish `h1` using `hν φ hφ hφb`.
-
-Rewrite `h1` using `[hs, lintegral_smul_measure]`. Establish `h2 : ∫⁻ g, φ (frameOf X g) ∂haarR X = ∫⁻ h, φ (L h) ∂μ`. Rewrite using `[← hR]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[frameOf_eq_lmulC]`.
-
-Both sides reduce to the same expression. Rewrite using `[h2, ← h1, ENNReal.smul_def, smul_eq_mul, ← mul_assoc, ENNReal.inv_mul_cancel (ENNReal.coe_ne_zero.2 hs0) ENNReal.coe_ne_top, one_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_haarChart (X : Data E r) : ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ HaarChart X c := by
   classical

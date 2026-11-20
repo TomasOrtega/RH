@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CtS
 
 /- English proof (translation)
-Establish `hU : IsUnit (Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 m.1.isUnit).mul ((Matrix.isUnit_iff_isUnit_det _).1 m.2.isUnit)`. Unfold `blk`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hU]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blk_val_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : ℕ} (h : a + b = n) (w : Pl E)
     (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
@@ -33,13 +33,13 @@ theorem blk_val_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : �
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b h w m X`. Rewrite using `[blk_val_eq]`. Use `set e : Fin a ⊕ Fin b ≃ Fin n := finSumFinEquiv.trans (finCongr h) with he`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify `H (e (Sum.inl i)) (e (Sum.inl j))` using `[Matrix.reindex_apply, Matrix.submatrix_apply]`. Simplify `H (e (Sum.inr i)) (e (Sum.inr j))` using `[Matrix.reindex_apply, Matrix.submatrix_apply]`. Simplify `H (e (Sum.inl i)) (e (Sum.inr j))` using `[Matrix.reindex_apply, Matrix.submatrix_apply]`. Introduce and unpack `⟨h1, h2, h3⟩ i j`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify `h1 i j` using `[Matrix.reindex_apply, Matrix.submatrix_apply]`. Simplify `h3 i j` using `[Matrix.reindex_apply, Matrix.submatrix_apply]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(Ov E w).zero_mem` using `[Matrix.reindex_apply, Matrix.submatrix_apply]`. Simplify `h2 i j` using `[Matrix.reindex_apply, Matrix.submatrix_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isInt_blk_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)), IsInt w (blk h w m X).val ↔ IsInt w m.1.val ∧ IsInt w m.2.val ∧ IsInt w (m.1.val * X) := by
   intro E _ _ _ n a b h w m X

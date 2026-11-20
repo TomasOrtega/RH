@@ -8,7 +8,7 @@ open NumberField Module Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.R
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.inZl_of_twisted_difference | exact GlobalTheory.inZl_of_twisted_difference | (intros; apply GlobalTheory.inZl_of_twisted_difference <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.isRatInPadicIntegers_of_twisted_difference : ∀ {G : Type} [CommGroup G] [Finite G] (l : ℕ) [Fact l.Prime] (g : G) (q : ℕ), l ∣ q →
     ∀ x : G → ℚ, (∀ C, InZl l (x C - (q : ℚ) * x (C * g))) → ∀ C, InZl l (x C) := by

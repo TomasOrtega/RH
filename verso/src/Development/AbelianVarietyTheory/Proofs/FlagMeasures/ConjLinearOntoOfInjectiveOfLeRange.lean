@@ -8,13 +8,13 @@ open scoped InnerProductSpace TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `W M _ _ _ _ _ S J₀ J₁ h0 hinj hS`. Set `f0 : W →ₗ[ℝ] M` to `{ toFun := J₀ map_add' := J₀.map_add map_smul' := fun r x => by show J₀ (r • x) = r • J₀ x`. Rewrite using `[← Complex.coe_smul, J₀.map_smulₛₗ, Complex.conj_ofReal, Complex.coe_smul] }`. Set `f1 : W →ₗ[ℝ] M` to `{ toFun := J₁ map_add' := J₁.map_add map_smul' := fun r x => by show J₁ (r • x) = r • J₁ x`. Rewrite using `[← Complex.coe_smul, J₁.map_smulₛₗ, Complex.conj_ofReal, Complex.coe_smul] }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hle0 : S.restrictScalars ℝ ≤ LinearMap.range f0` using `fun p hp => h0 p hp`. Establish `hle1 : LinearMap.range f1 ≤ S.restrictScalars ℝ`. Introduce and unpack `_ ⟨ξ, rfl⟩`. Conclude with `hS ξ`. Establish `hf1 : Function.Injective f1` using `hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℝ (S.restrictScalars ℝ)` using `Submodule.finiteDimensional_of_le hle0`. Establish `hdim : Module.finrank ℝ (S.restrictScalars ℝ) ≤ Module.finrank ℝ (LinearMap.range f1)`. Rewrite using `[LinearMap.finrank_range_of_inj hf1]`. Conclude with `(Submodule.finrank_mono hle0).trans (LinearMap.finrank_range_le f0)`. Establish `heq : LinearMap.range f1 = S.restrictScalars ℝ` using `Submodule.eq_of_le_of_finrank_le hle1 hdim`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp`. Establish `hp' : p ∈ LinearMap.range f1` using `heq ▸ hp`. Take `⟨ξ, hξ⟩` from `hp'`. Conclude with `⟨ξ, hξ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conjLinear_onto_of_injective_of_le_range :
     ∀ (W M : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M) (J₀ J₁ : W →ₗ⋆[ℂ] M), (∀ p ∈ S, ∃ ξ, J₀ ξ = p) → Function.Injective J₁ → (∀ ξ, J₁ ξ ∈ S) → ∀ p ∈ S, ∃ ξ, J₁ ξ = p := by

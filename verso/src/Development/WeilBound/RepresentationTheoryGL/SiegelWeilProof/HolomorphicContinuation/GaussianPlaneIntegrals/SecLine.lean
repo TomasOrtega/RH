@@ -20,16 +20,16 @@ def Fk (ε : Fin m → Bool) (c t : ℝ) (P : PX m n) (b : Matrix (Fin n) (Fin n
 def dl (c t : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) : ℝ := c / (4 * (|t| * kb b + 1))
 
 /- English proof (translation)
-Use `kb_nonneg b` as an intermediate fact. Unfold `dl`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma dl_pos {c : ℝ} (hc : 0 < c) (t : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) : 0 < dl c t b := by
   have := kb_nonneg b
   unfold dl; positivity
 
 /- English proof (translation)
-Establish `hk` using `kb_nonneg b`. Establish `hA : 0 ≤ |t| * kb b` using `by positivity`. Establish `h1 : |t| * dl c t b * kb b = c / 4 * (|t| * kb b / (|t| * kb b + 1))`. Unfold `dl`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h1]`. Conclude with `mul_le_of_le_one_right (by positivity) ((div_le_one (by positivity)).2 (by linarith))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dl_mul {c : ℝ} (hc : 0 < c) (t : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) : |t| * dl c t b * kb b ≤ c / 4 := by
   have hk := kb_nonneg b
@@ -40,16 +40,16 @@ lemma dl_mul {c : ℝ} (hc : 0 < c) (t : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) :
   exact mul_le_of_le_one_right (by positivity) ((div_le_one (by positivity)).2 (by linarith))
 
 /- English proof (translation)
-Unfold `gs sq`. Rewrite using `[Complex.norm_exp, Complex.neg_re, Complex.ofReal_re, neg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_gs (c : ℝ) (x : Fin m → Fin n → ℂ) : ‖gs c x‖ = Real.exp (-c * sq x) := by
   unfold gs sq
   rw [Complex.norm_exp, Complex.neg_re, Complex.ofReal_re, neg_mul]
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hre : (Complex.I * t * z * T).re = -(t * z.im * T.re)`. Simplify using `[Complex.mul_re, Complex.mul_im, hT]`. Rewrite using `[hre]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_cexp_le (t : ℝ) (z T : ℂ) (hT : T.im = 0) :
     ‖Complex.exp (Complex.I * t * z * T)‖ ≤ Real.exp (|t| * |z.im| * ‖T‖) := by
@@ -65,9 +65,9 @@ lemma norm_cexp_le (t : ℝ) (z T : ℂ) (hT : T.im = 0) :
 variable (ε : Fin m → Bool) (c t : ℝ) (P : PX m n) (b : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-Use `(norm_cexp_le t z _ (trace_im ε b hb x)).trans (Real.exp_le_exp.mpr ?_)` and prove the remaining obligations. Establish `h1` using `norm_trace_le ε b x`. Establish `hs` using `sq_nonneg' x`. Establish `hk` using `kb_nonneg b`. Establish `hd` using `(dl_pos hc t b).le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma cexp_bound (hb : b.IsHermitian) (hc : 0 < c) (z : ℂ) (hz : |z.im| ≤ dl c t b) (x : Fin m → Fin n → ℂ) :
     ‖Complex.exp (Complex.I * t * z * (b * gramX ε x).trace)‖ ≤ Real.exp (c / 4 * sq x) := by
@@ -82,9 +82,9 @@ lemma cexp_bound (hb : b.IsHermitian) (hc : 0 < c) (z : ℂ) (hz : |z.im| ≤ dl
     _ ≤ c / 4 * sq x := mul_le_mul_of_nonneg_right (dl_mul hc t b) hs
 
 /- English proof (translation)
-Establish `hs` using `sq_nonneg' x`. Establish `hkb` using `kb_nonneg b`. Establish `hT : ‖Complex.I * t * (b * gramX ε x).trace‖ ≤ |t| * kb b * (1 + sq x)`. Rewrite using `[norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Unfold `hk`. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_gs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow (|t| * kb b), pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hk_bound (Cp : ℝ) (hCp : 0 ≤ Cp) (D : ℕ) (hP : ∀ x, ‖evX P x‖ ≤ Cp * (1 + sq x) ^ D) (k : ℕ)
     (x : Fin m → Fin n → ℂ) :
@@ -108,7 +108,7 @@ lemma hk_bound (Cp : ℝ) (hCp : 0 ≤ Cp) (D : ℕ) (hP : ∀ x, ‖evX P x‖ 
         rw [mul_pow (|t| * kb b), pow_add]; ring
 
 /- English proof (translation)
-Establish `hs` using `sq_nonneg' x`. Establish `hkb` using `kb_nonneg b`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc ((1 + sq x) ^ (D + k)), ← Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
 Put the polynomial expressions in normal form.
 -/
@@ -128,7 +128,7 @@ lemma int_bound (hb : b.IsHermitian) (hc : 0 < c) (Cp : ℝ) (hCp : 0 ≤ Cp) (D
         rw [mul_assoc, mul_assoc ((1 + sq x) ^ (D + k)), ← Real.exp_add]; ring_nf
 
 /- English proof (translation)
-Unfold `hk gs`. Establish `h1` using `continuous_evX P`. Establish `h2` using `continuous_trace ε b`. Establish `h3 : Continuous (fun x : Fin m → Fin n → ℂ => ∑ a, ∑ i, ‖x a i‖ ^ 2)` using `continuous_sq`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuous_integrand (k : ℕ) (z : ℂ) :
     Continuous (fun x : Fin m → Fin n → ℂ => hk ε c t P b k x * Complex.exp (Complex.I * t * z * (b * gramX ε x).trace)) := by
@@ -139,11 +139,11 @@ lemma continuous_integrand (k : ℕ) (z : ℂ) :
   fun_prop
 
 /- English proof (translation)
-Establish `hSo : IsOpen {z : ℂ | |z.im| < dl c t b}` using `isOpen_lt (continuous_abs.comp Complex.continuous_im) continuous_const`. Establish `hS : {z : ℂ | |z.im| < dl c t b} ∈ 𝓝 z₀` using `hSo.mem_nhds hz₀`. Establish `hbd : ∀ j, Integrable (fun x : Fin m → Fin n → ℂ => Cp * (|t| * kb b) ^ j * ((1 + sq x) ^ (D + j) * Real.exp (-(3 * c / 4) * sq x)))` using `fun j => (integrable_poly_gauss (D + j) (by positivity)).const_mul _`. Establish `hint : Integrable (fun x : Fin m → Fin n → ℂ => hk ε c t P b k x * Complex.exp (Complex.I * t * z₀ * (b * gramX ε x).trace))` using `(hbd k).mono' (continuous_integrand ε c t P b k z₀).aestronglyMeasurable (Eventually.of_forall fun x => int_bound ε c t P b hb hc Cp hCp D hP k z₀ hz₀.le x)`. Establish `hder : ∀ (x : Fin m → Fin n → ℂ) (z : ℂ), HasDerivAt (fun z => hk ε c t P b k x * Complex.exp (Complex.I * t * z * (b * gramX ε x).trace)) (hk ε c t P b (k + 1) x * Complex.exp (Complex.I * t * z * (b * gramX ε x).trace)) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x z`. Establish `h1 : HasDerivAt (fun z : ℂ => Complex.I * t * z * (b * gramX ε x).trace) (Complex.I * t * (b * gramX ε x).trace) z`. Simplify using `using ((hasDerivAt_id z).const_mul (Complex.I * t)).mul_const ((b * gramX ε x).trace)`. Establish `h2` using `(h1.cexp).const_mul (hk ε c t P b k x)`. Use `h2.congr_deriv ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hk, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := volume) (F := fun z x => hk ε c t P b k x * Complex.exp (Complex.I * t * z * (b * gramX ε x).trace)) (F' := fun z x => hk ε c t P b (k + 1) x * Complex.exp (Complex.I * t * z * (b * gramX ε x).trace)) (bound := fun x => Cp * …`. Conclude with `key.2`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_Fk (hb : b.IsHermitian) (hc : 0 < c) (Cp : ℝ) (hCp : 0 ≤ Cp) (D : ℕ)
     (hP : ∀ x, ‖evX P x‖ ≤ Cp * (1 + sq x) ^ D) (k : ℕ) (z₀ : ℂ) (hz₀ : |z₀.im| < dl c t b) :
@@ -179,9 +179,9 @@ lemma hasDerivAt_Fk (hb : b.IsHermitian) (hc : 0 < c) (Cp : ℝ) (hCp : 0 ≤ Cp
   exact key.2
 
 /- English proof (translation)
-Establish `hSo : IsOpen {z : ℂ | |z.im| < dl c t b}` using `isOpen_lt (continuous_abs.comp Complex.continuous_im) continuous_const`. Proceed by induction on `k with`. Consider the case `zero => intro z _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `z hz`. Rewrite using `[iteratedDeriv_succ]`. Establish `heq : iteratedDeriv k (Fk ε c t P b 0) =ᶠ[𝓝 z] Fk ε c t P b k` using `Filter.eventuallyEq_of_mem (hSo.mem_nhds hz) fun w hw => ih w hw`. Rewrite using `[heq.deriv_eq]`. Conclude with `(hasDerivAt_Fk ε c t P b hb hc Cp hCp D hP k z hz).deriv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma iter (hb : b.IsHermitian) (hc : 0 < c) (Cp : ℝ) (hCp : 0 ≤ Cp) (D : ℕ)
     (hP : ∀ x, ‖evX P x‖ ≤ Cp * (1 + sq x) ^ D) (k : ℕ) :
@@ -202,13 +202,13 @@ end SecondLineEstimates
 
 open SecondLineEstimates in
 /- English proof (translation)
-Introduce `m n ε c t hc P b hb`. Take `⟨Cp, hCp, D, hP⟩` from `evX_bound P`. Establish `hF : (fun z : ℂ => ∫ x : Fin m → Fin n → ℂ, evX P x * gs c x * Complex.exp (Complex.I * t * z * (b * gramX ε x).trace)) = Fk ε c t P b 0`. Use function extensionality and compare the values at `z`. Simplify using `[Fk, hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨dl c t b, dl_pos hc t b, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`. Introduce `z hz`. Conclude with `(hasDerivAt_Fk ε c t P b hb hc Cp hCp D hP 0 z hz).differentiableAt.differentiableWithinAt`. Introduce `z _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [secN, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul, mul_assoc]`. Introduce `k`. Rewrite using `[hF, iter ε c t P b hb hc Cp hCp D hP k 0 (by simpa using dl_pos hc t b)]`. Simplify using `only [Fk, hk, mul_zero, zero_mul, Complex.exp_zero, mul_one]`. Rewrite using `[← integral_const_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem secLine : SecLine := by
   intro m n ε c t hc P b hb

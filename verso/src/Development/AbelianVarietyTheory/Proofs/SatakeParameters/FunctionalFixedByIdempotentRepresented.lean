@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set U := LinearMap.range P`. Set `T : V →ₗ[ℂ] Module.Dual ℂ U` to `(B.domRestrict U).flip`. Establish `hT : ∀ ψ (u : U), T ψ u = B u ψ` using `fun _ _ => rfl`. Establish `hcoann : (LinearMap.range T).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Rewrite `hu` using `[Submodule.mem_dualCoannihilator]`. Establish `: (u : V) = 0` using `hL u (fun ψ => by`. Use `hu (T ψ) ⟨ψ, rfl⟩` as an intermediate fact. Simplify `this)` using `[hT]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Subtype.ext this`. Establish `hsurj : LinearMap.range T = ⊤`. Establish `h` using `Subspace.dualCoannihilator_dualAnnihilator_eq (W := LinearMap.range T)`. Rewrite `h` using `[hcoann]`. Rewrite using `[← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.dualAnnihilator_bot`. Establish `: f.domRestrict U ∈ LinearMap.range T` using `by rw [hsurj]; trivial`. Take `⟨ψ, hψ⟩` from `this`. Use `⟨P' ψ, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hadj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : T ψ ⟨P φ, φ, rfl⟩ = f (P φ)` using `by rw [hψ]; rfl`. Rewrite `h1` using `[hT]`. Rewrite using `[h1]`. Conclude with `congrArg (fun g : V →ₗ[ℂ] ℂ => g φ) hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem functional_fixed_by_idempotent_represented
     {V : Type} [AddCommGroup V] [Module ℂ V] (B : V →ₗ[ℂ] V →ₗ[ℂ] ℂ)

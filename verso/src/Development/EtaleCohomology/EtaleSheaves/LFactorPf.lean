@@ -10,15 +10,15 @@ def LEtaleLift : Prop := ∀ (A : Type) [CommRing A] (I : Ideal A) [HenselianRin
   ∃ ψ : A' →ₐ[A] A, (Ideal.Quotient.mkₐ A I).comp ψ = φ
 
 /- English proof (translation)
-Introduce `A _ I _ f g₀ h₀ hf hg hh hgh e`. Break down `subsingleton_or_nontrivial (A ⧸ I) with hs | hs` into its components or cases. Establish `hI : I = ⊤` using `Ideal.Quotient.subsingleton_iff.mp hs`. Establish `h1 : (1 : A) ∈ (⊥ : Ideal A).jacobson` using `HenselianRing.jac (I := I) (hI ▸ Submodule.mem_top)`. Establish `hu` using `Ideal.mem_jacobson_bot.mp h1 (-1)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : Subsingleton A`. Simplify using `at hu`. Conclude with `subsingleton_of_zero_eq_one (by simpa using hu)`. Use `⟨1, 1, monic_one, monic_one, Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _⟩` and prove the remaining obligations. Establish `hn : f.natDegree = g₀.natDegree + h₀.natDegree`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg.natDegree_mul hh, ← e, hf.natDegree_map]`. Set `p : MonicDegreeEq A f.natDegree` to `.mk f hf rfl`. Establish `e' : g₀ * h₀ = p.1.map (algebraMap A (A ⧸ I))` using `e.symm`. Set `φ` to `(UniversalCoprimeFactorizationRing.homEquiv (A ⧸ I) _ _ hn p).symm ⟨(.mk g₀ hg rfl, .mk h₀ hh rfl), e', hgh⟩`. Take `⟨ψ, hψ⟩` from `hE A I _ φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `q` to `UniversalCoprimeFactorizationRing.homEquiv A _ _ hn p ψ`. Use `⟨q.1.1.1, q.1.2.1, q.1.1.monic, q.1.2.monic, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `q.2.1` as an intermediate fact. Simplify `this.symm` using `[p]`. Use `UniversalCoprimeFactorizationRing.homEquiv_comp_fst A _ _ hn p ψ (Ideal.Quotient.mkₐ A I)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hψ, Equiv.apply_symm_apply]`. Conclude with `congr($(this).1).symm`. Use `UniversalCoprimeFactorizationRing.homEquiv_comp_snd A _ _ hn p ψ (Ideal.Quotient.mkₐ A I)` as an intermediate fact. Rewrite `this` using `[hψ, Equiv.apply_symm_apply]`. Conclude with `congr($(this).1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LFactor_of (hE : LEtaleLift) : LateralTheory.E.HensIdemCut.LFactor := by
   intro A _ I _ f g₀ h₀ hf hg hh hgh e

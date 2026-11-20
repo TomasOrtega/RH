@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GoodRedProper
 
 /- English proof (translation)
-Introduce `W L _ _ _ _ _ _ G _ h _ h2`. Take `⟨a, b, c, d, e⟩` from `h`. Use `GlobalTheory.grpObj_geometricallyIntegral_of_smooth _ G` as an intermediate fact. Conclude with `GlobalTheory.T.isProper_of_properSpecialFibre_universallyOpen_dvr W G.left G.hom inferInstance inferInstance inferInstance inferInstance inferInstance h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_of_proper_fibres :
     ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G], GlobalTheory.SS.SmConn G → IsProper ((Over.pullback (spMap (algebraMap W L))).obj G).hom → IsProper (GlobalTheory.SS.spFibre G).hom → IsProper G.hom := by

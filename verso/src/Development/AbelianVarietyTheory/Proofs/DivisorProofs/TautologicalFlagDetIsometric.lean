@@ -28,9 +28,9 @@ open GlobalTheory.QCoh (pullbackSections res_pullbackSections pullbackSections_r
 open GlobalTheory.Twist (resM resM_resM app_resM resM_self resM_smul)
 
 /- English proof (translation)
-Establish `e` using `Adjunction.unit_leftAdjointUniq_hom_app (Scheme.Modules.restrictAdjunction j) (Scheme.Modules.pullbackPushforwardAdjunction j) G`. Establish `H` using `congr(($e).app (j ''ᵁ ⊤) t)`. Rewrite using `[QCoh.pullbackSections_apply]`. Use `(congrArg _ H.symm).trans ?_` and prove the remaining obligations. Use `(app_resM ((Scheme.Modules.restrictFunctorIsoPullback j).hom.app G) h _).symm.trans (congrArg _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(resM_resM (F := G) _ _ t).trans (resM_self _ _)`.
+A detailed English derivation is pending.
 -/
 theorem pullbackSections_image_top {X Y : Scheme.{0}} (j : Y ⟶ X) [IsOpenImmersion j] (G : X.Modules)
     (h : ⊤ ≤ j ⁻¹ᵁ j ''ᵁ ⊤) (t : Γ(G, j ''ᵁ ⊤)) :
@@ -46,13 +46,13 @@ theorem pullbackSections_image_top {X Y : Scheme.{0}} (j : Y ⟶ X) [IsOpenImmer
 variable {ι : Type} [Fintype ι] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `hfl (R ι N) (cellGL Prod.fst Prod.snd w) a l`. Set `c : Sp (R ι N) ⟶ Fl ι N` to `cell Prod.fst Prod.snd w`. Establish `hc : ⊤ ≤ c ⁻¹ᵁ c ''ᵁ ⊤` using `(c.preimage_image_eq ⊤).ge`. Set `ρ` to `Scheme.Modules.restrictFunctorIsoPullback c`. Use `⟨fun k => (ρ.inv.app ((fl a).F l)).app ⊤ (s k), (VB.isFrame_restrict_iff c _).1 (hs.map_iso (ρ.inv.app ((fl a).F l))), fun k => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `inj : Function.Injective (pullbackSections c ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N)) hc)`. Rewrite using `[funext (pullbackSections_image_top c _ hc)]`. Conclude with `(ConcreteCategory.bijective_of_isIso ((ρ.hom.app _).app ⊤)).1`. Use `inj ((ConcreteCategory.bijective_of_isIso (((Scheme.Modules.pullbackComp c (flStr ι N)).hom.app (Taut.stdE N)).app ⊤)).1 ?_)` and prove the remaining obligations. Establish `e₁ : pullbackSections c _ hc ((ρ.inv.app ((fl a).F l)).app ⊤ (s k)) = s k` using `(pullbackSections_image_top c _ hc _).trans congr(($(ρ.inv_hom_id_app ((fl a).F l))).app ⊤ (s k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((congrArg _ ((pullback_map_app_pullbackSections c ((fl a).ι l) hc _).symm.trans (congrArg _ e₁))).trans (h k)).trans ?_` and prove the remaining obligations. Rewrite using `[Taut.colSec, colP, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `erw [pullbackSections_smul]`. Rewrite using `[Scheme.Modules.Hom.app_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg₂ (· • ·) ?_ ?_` and prove the remaining obligations. Establish `e₂` using `congr($(c.appIso_inv_appLE hc) ((Scheme.ΓSpecIso (CommRingCat.of (R ι N))).inv ((cellGL (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w a).1 i (Fin.castLE l.is_le k))))`. Conclude with `(e₂.trans (GlobalTheory.Cartier.resG_self (X := Sp (R ι N)) le_top _)).symm`. Use `Eq.trans ?_ (congrArg _ (Vert.DivPull.pullbackComp_inv_app c (flStr ι N) (Taut.stdE N) (U := ⊤) _ hc le_top _))` and prove the remaining obligations. Conclude with `congr(($((Scheme.Modules.pullbackComp c (flStr ι N)).inv_hom_id_app (Taut.stdE N))).app ⊤ _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_frame_step
     (fl : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N)) N) (hfl : Taut.IsTaut ι N fl)
@@ -88,11 +88,11 @@ theorem exists_frame_step
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Use `set h := (((HermVB.std (𝟙 (Sp ℤ)) N).h.pull (flStr ι N) (Category.comp_id _)).met σ)`. Set `b : Fin N → Γ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N), cellU w)` to `fun i => pullbackSections (flStr ι N) (Taut.stdE N) (by simp) (VB.freeFrame (Sp ℤ) (Fin N) i)`. Establish `hb (i i' : Fin N) : h.form (b i) (b i') y = (1 : Matrix (Fin N) (Fin N) ℂ) i i'`. Use `(Met.form_pull _ (flStr ι N) (Category.comp_id _) _ _ _ hy).trans ?_` and prove the remaining obligations. Use `(Met.form_frame _ ⟨⊤, _, VB.isFrame_freeFrame (Sp ℤ) (Fin N)⟩ CxPts.mem_ptsIn_top i i').trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrFun₂ (Met.ofFrame_G (VB.isFrame_freeFrame (Sp ℤ) (Fin N)) (fun _ => 1) (fun _ => Matrix.PosDef.one) _) i i'`. Establish `hsum (t : Γ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N), cellU w)) (j : Fin N) : h.form (colP w a j) t y = ∑ i, matAt w a y i j * h.form (b i) t y`. Establish `h0 : h.form 0 t y = 0` using `by simpa using h.form_add_left 0 0 t y`. Set `φ : Γ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N), cellU w) →+ ℂ` to `⟨⟨fun s => h.form s t y, h0⟩, fun s s' => h.form_add_left s s' t y⟩`. Use `(map_sum φ _ _).trans (Finset.sum_congr rfl fun i _ => h.form_smul_left _ _ _ _)` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsum]`. Use `Finset.sum_congr rfl fun i _ => congrArg _ ?_` and prove the remaining obligations. Rewrite using `[← h.conj_form, hsum]`. Simplify using `[hb, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_colP (a : ι) (w : ι → Equiv.Perm (Fin N)) (σ : ℤ →+* ℂ) (y : CxPts (flStr ι N) σ)
     (hy : y ∈ CxPts.ptsIn (flStr ι N) σ (cellU w)) (j k : Fin N) :
@@ -118,9 +118,9 @@ theorem form_colP (a : ι) (w : ι → Equiv.Perm (Fin N)) (σ : ℤ →+* ℂ) 
   simp [hb, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hG : (((HermVB.std (𝟙 (Sp ℤ)) N).h.pull (flStr ι N) (Category.comp_id _)).met σ).gram (fun j => ((fl a).ι l).app (cellU w) (e j)) y = ((cols (matAt w a y) l).conjTranspose * cols (matAt w a y) l).transpose`. Use extensionality with `j k`. Simplify using `only [hP]`. Use `(form_colP a w σ y hy _ _).trans ?_` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, cols, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(congrArg (fun M : Matrix (Fin l) (Fin l) ℂ => -Real.log M.det.re) hG).trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.det_transpose, ← volSq_eq_det, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem det_step_φ (fl : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N)) N)
     (a : ι) (l : Fin (N + 1)) (w : ι → Equiv.Perm (Fin N)) (e : Fin l → Γ((fl a).F l, cellU w)) (he : VB.IsFrame e)
@@ -139,13 +139,13 @@ theorem det_step_φ (fl : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback (flStr
   simp only [Matrix.det_transpose, ← volSq_eq_det, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hE : (Taut.stdE N).IsQuasicoherent` using `(HermVB.std (𝟙 (Sp ℤ)) N).h.isVB.isQuasicoherent`. Establish `hb` using `(VB.isFrame_freeFrame (Sp ℤ) (Fin N)).pullback (F := Taut.stdE N) (flStr ι N)`. Set `B` to `hb.basis (V := cellU w ⊓ cellU w') le_top`. Establish `hcol (v : ι → Equiv.Perm (Fin N)) (hv : cellU w ⊓ cellU w' ≤ cellU v) (i j : Fin N) : B.repr (resM _ hv (colP v a j)) i = resG (Fl ι N) hv ((cellMat v a).1 i j)`. Establish `: resM _ hv (colP v a j) = ∑ i, resG (Fl ι N) hv ((cellMat v a).1 i j) • B i`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[colP, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[resM_smul, VB.IsFrame.basis_apply]`. Conclude with `congrArg _ ((res_pullbackSections _ _ _ _ _).trans (res_pullbackSections _ _ _ _ _).symm)`. Rewrite using `[this, Module.Basis.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[VB.IsFrame.val_detUnit, Module.Basis.det_apply, minor, minor, RingHom.map_det, RingHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i j`. Establish `h₁` using `congrArg (((fl a).ι l).app _) ((he.basis (inf_le_left : cellU w ⊓ cellU w' ≤ _)).sum_repr (resM _ inf_le_right (e' j)))`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, VB.IsFrame.basis_apply, app_resM, hP, hP'] at h₁`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h₂` using `congrArg (fun s => B.repr s (subsetEnum I i)) h₁`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, hcol, smul_eq_mul] at h₂`. Use `h₂.symm.trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_eq_mul_detUnit (fl : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N)) N)
     (a : ι) (l : Fin (N + 1)) (w w' : ι → Equiv.Perm (Fin N))
@@ -179,13 +179,13 @@ theorem minor_eq_mul_detUnit (fl : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullba
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Set `g : ι → GL (Fin N) ℂ` to `fun τ => Matrix.GeneralLinearGroup.map (Points.valMap y.1 (cellU w) hy).hom (cellMat w τ)`. Establish `e : y = cxPt Prod.fst Prod.snd σ g` using `Subtype.ext (eq_flagPt_of_le w y.1 hy)`. Establish `hm : matAt w a y = (g a).1`. Use extensionality with `i j`. Conclude with `Points.valR_eq _ _ hy _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε⟩` from `exists_minor_cellMat_rowsW w a l`. Establish `h1 : ‖minor (g a).1 l (rowsW w a l)‖ = 1`. Rewrite using `[show minor (g a).1 l (rowsW w a l) = _ from minor_map (Points.valMap y.1 (cellU w) hy).hom _ l _, hε, map_intCast]`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with h | h <;> simp [h]`. Establish `h2` using `detDual_φ Prod.fst Prod.snd σ g (a, l) (rowsW w a l) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `h1` using `[show minor (g a).1 l (rowsW w a l) = 0 from h]`. Simplify using `at h1)`. Rewrite `h2` using `[← e]`. Use `(congrArg (- ·) h2).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, show ‖minor (g a).1 l (rowsW w a l)‖ = 1 from h1, one_pow, div_one]`.
+A detailed English derivation is pending.
 -/
 theorem dual_flDet_φ (a : ι) (l : Fin (N + 1)) (w : ι → Equiv.Perm (Fin N)) (σ : ℤ →+* ℂ) (y : CxPts (flStr ι N) σ)
     (hy : y ∈ CxPts.ptsIn (flStr ι N) σ (cellU w)) :
@@ -211,15 +211,15 @@ theorem dual_flDet_φ (a : ι) (l : Fin (N + 1)) (w : ι → Equiv.Perm (Fin N))
   rw [hm, show ‖minor (g a).1 l (rowsW w a l)‖ = 1 from h1, one_pow, div_one]
 
 /- English proof (translation)
-The claim follows from `(Scheme.preimage_eq_top_of_closedPoint_mem _ (by simpa using hx)).ge`.
+A detailed English derivation is pending.
 -/
 theorem top_le_fromSpecStalk {X : Scheme.{0}} (x : X) {U : X.Opens} (hx : x ∈ U) : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U :=
   (Scheme.preimage_eq_top_of_closedPoint_mem _ (by simpa using hx)).ge
 
 /- English proof (translation)
-Rewrite using `[Points.valR_eq _ _ (top_le_fromSpecStalk x hx)]`. Establish `: Points.valMap (C` using `X.presheaf.stalk x) (X.fromSpecStalk x) U (top_le_fromSpecStalk x hx) = X.presheaf.germ U x hx := by`. Rewrite using `[Points.valMap, Scheme.Hom.appLE, Scheme.fromSpecStalk_app hx]`. Simplify using `only [Category.assoc]`. Use `erw [← (Spec (X.presheaf.stalk x)).presheaf.map_comp_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← op_comp, Subsingleton.elim (_ ≫ _ : (⊤ : (Spec (X.presheaf.stalk x)).Opens) ⟶ ⊤) (𝟙 _), op_id, CategoryTheory.Functor.map_id, Category.id_comp]`. Conclude with `(congrArg _ (Iso.inv_hom_id _)).trans (Category.comp_id _)`. Conclude with `congr($(this).hom f)`.
+A detailed English derivation is pending.
 -/
 theorem valR_fromSpecStalk {X : Scheme.{0}} (x : X) {U : X.Opens} (hx : x ∈ U) (f : Γ(X, U)) :
     valR (A := X.presheaf.stalk x) (X.fromSpecStalk x) U f = (X.presheaf.germ U x hx).hom f := by
@@ -235,13 +235,13 @@ theorem valR_fromSpecStalk {X : Scheme.{0}} (x : X) {U : X.Opens} (hx : x ∈ U)
   exact congr($(this).hom f)
 
 /- English proof (translation)
-Set `π : Fl ι N ⟶ PSpace ℤ (plDim N l)` to `plEmb Prod.fst Prod.snd ≫ Limits.Pi.π _ (a, l)`. Set `p : Sp ((Fl ι N).presheaf.stalk x) ⟶ Fl ι N` to `(Fl ι N).fromSpecStalk x`. Establish `hp : ⊤ ≤ p ⁻¹ᵁ cellU w` using `top_le_fromSpecStalk x hx`. Set `g : ι → GL (Fin N) ((Fl ι N).presheaf.stalk x)` to `fun τ => Matrix.GeneralLinearGroup.map (Points.valMap p (cellU w) hp).hom (cellMat w τ)`. Establish `e₀ : p ≫ π = ProjSpace.pt (Int.castRingHom _) (plVec (g a).1 l) (span_plVec _ _)` using `(congrArg (· ≫ π) (eq_flagPt_of_le w p hp)).trans ((flagPt_plEmb_assoc _ _ g _).trans (plPt_π Prod.fst Prod.snd g (a, l)))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm (K : Rows N l) : plVec (g a).1 l (rowsEquiv N l K) = ((Fl ι N).presheaf.germ _ x hx).hom (minor (cellMat w a).1 l K)`. Rewrite using `[plVec_rowsEquiv, ← valR_fromSpecStalk, Points.valR_eq _ _ hp]`. Conclude with `minor_map _ _ l K`. Establish `hI' : π x ∈ ProjSpace.chart ℤ _ (rowsEquiv N l I)` using `mem_pull.1 hI`. Establish `hJ' : π x ∈ ProjSpace.chart ℤ _ (rowsEquiv N l J)` using `mem_pull.1 hJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIJ : x ∈ π ⁻¹ᵁ (ProjSpace.chart ℤ _ (rowsEquiv N l I) ⊓ ProjSpace.chart ℤ _ (rowsEquiv N l J))` using `⟨hI', hJ'⟩`. Establish `hu : IsUnit (plVec (g a).1 l (rowsEquiv N l I))` using `(Points.le_pt_preimage_chart_iff (Int.castRingHom _) _ (span_plVec _ _) _).1 (by rw [← e₀]; exact top_le_fromSpecStalk (U := π ⁻¹ᵁ ProjSpace.chart ℤ _ (rowsEquiv N l I)) x hI')`. Establish `e₁ : (gm (𝟙 _ ≫ π) x _ ((ProjSpace.O1 ℤ _).g (rowsEquiv N l I) (rowsEquiv N l J))).val = plVec (g a).1 l (rowsEquiv N l J) * Ring.inverse (plVec (g a).1 l (rowsEquiv N l I))`. Rewrite using `[← Points.valR_pt_ratio (Int.castRingHom _) _ (span_plVec _ _) hu, ← e₀]`. Use `(gm_val _ x _ hIJ _).trans ((valR_fromSpecStalk x hIJ _).symm.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ ((Points.valR_appLE p π le_rfl (top_le_fromSpecStalk x hIJ) _).trans (Points.valR_res (p ≫ π) inf_le_left (top_le_fromSpecStalk x hIJ) _))` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Establish `e₂ : gm (𝟙 _) x _ ((flDet a l).dual.B.g (frameIdx Prod.fst Prod.snd (a, l) I) (frameIdx Prod.fst Prod.snd (a, l) J)) = (gm (𝟙 _ ≫ π) x _ ((ProjSpace.O1 ℤ _).g (rowsEquiv N l I) (rowsEquiv N l J)))⁻¹` using `(map_inv _ _).trans (congrArg (·⁻¹) (gm_pull_g (ProjSpace.O1 ℤ _) π (𝟙 _) x _ _ hI hJ))`. Rewrite using `[e₂, Units.eq_inv_mul_iff_mul_eq, e₁, ← hm, ← hm, mul_assoc, Ring.inverse_mul_cancel _ hu, mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_dual_flDet_g (a : ι) (l : Fin (N + 1)) (w : ι → Equiv.Perm (Fin N)) (I J : Rows N l) (x : Fl ι N)
     (hx : x ∈ cellU w) (hI : x ∈ (flDet a l).dual.B.U (frameIdx Prod.fst Prod.snd (a, l) I))
@@ -282,17 +282,15 @@ theorem gm_dual_flDet_g (a : ι) (l : Fin (N + 1)) (w : ι → Equiv.Perm (Fin N
   rw [e₂, Units.eq_inv_mul_iff_mul_eq, e₁, ← hm, ← hm, mul_assoc, Ring.inverse_mul_cancel _ hu, mul_one]
 
 /- English proof (translation)
-Introduce `ι _ N fl hfl a l`. Use `choose e he hP using fun w => exists_frame_step fl hfl a l w`. Use `choose ε hε using fun w : ι → Equiv.Perm (Fin N) => exists_minor_cellMat_rowsW w a l`. Set `u (w : ι → Equiv.Perm (Fin N)) : Γ(Fl ι N, cellU w)ˣ` to `Units.map (Int.castRingHom _).toMonoidHom (ε w)`. Establish `hu (w : ι → Equiv.Perm (Fin N)) : (u w).val = minor (cellMat w a).1 l (rowsW w a l)` using `(hε w).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `HermLB.isometric_of_local (J := ι → Equiv.Perm (Fin N)) cellU ?_ (fun w => frameIdx Prod.fst Prod.snd (a, l) (rowsW w a l)) (fun w => (⟨_, e w, he w⟩ : GlobalTheory.VB.Chart ((fl a).F l) l)) (fun w => cellU_le_chart a l w) (fun w => le_rfl) u (fun x w w' hw hw' => ?_) ?_` and prove the remaining obligations. Introduce `x`. Take `⟨w, hw⟩` from `exists_mem_range_cell ι (ι × Fin (N + 1)) N Prod.fst Prod.snd x`. Conclude with `⟨w, by simpa [cellU] using hw⟩`. Establish `hx : x ∈ cellU w ⊓ cellU w'` using `⟨hw, hw'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `gm_dual_flDet_g a l w _ _ x hw (cellU_le_chart a l w hw) (cellU_le_chart a l w' hw')`. Establish `e₂` using `congrArg ((Fl ι N).presheaf.germ _ x hx).hom (minor_eq_mul_detUnit fl a l w w' (e w) (e w') (he w) (he w') (hP w) (hP w') (rowsW w' a l))`. Rewrite `e₂` using `[map_mul]`. Use `erw [TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply] at e₂`. Establish `e₃ : (gm (𝟙 _) x _ ((he w).detUnit (he w') (inf_le_left : cellU w ⊓ cellU w' ≤ _) inf_le_right)).val = ((Fl ι N).presheaf.germ _ x hx).hom ((he w).detUnit (he w') inf_le_left inf_le_right).val` using `gm_val _ _ _ hx _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₄ (v : ι → Equiv.Perm (Fin N)) (hv : x ∈ cellU v) : (gm (𝟙 _) x _ (u v)).val = ((Fl ι N).presheaf.germ _ x hv).hom (minor (cellMat v a).1 l (rowsW v a l))` using `(gm_val _ _ _ hv _).trans (by rw [hu]; rfl)`. Rewrite using `[mul_right_comm, eq_mul_inv_iff_mul_eq]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, e₄ w hw, e₄ w' hw', e₁, mul_assoc]`. Conclude with `congrArg (_ * ·) ((congrArg (_ * ·) e₃).trans e₂.symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `σ w y hy`. Establish `h0 : CxPts.logSq y (cellU w) (u w) = 0`. Rewrite using `[CxPts.logSq, hu, hε, CxPts.ev_eq hy, map_intCast]`. Apply the tactic sequence `rcases Int.units_eq_one_or (ε w) with h | h <;> simp [h]`. Rewrite using `[dual_flDet_φ a l w _ y hy, h0, add_zero]`.
-
-Conclude with `(det_step_φ fl a l w (e w) (he w) (hP w) _ y hy).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometric_det_step : ∀ (ι : Type) [Fintype ι] (N : ℕ)
     (fl : ∀ _ : ι, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback (GlobalTheory.FlagZ.flStr ι N)).obj (GlobalTheory.FlagZ.Taut.stdE N)) N),

@@ -11,7 +11,7 @@ noncomputable section
 namespace RightCosetSpace
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem compMeasurePreserving_congr {α : Type*} [MeasurableSpace α] {ν : Measure α} {p : ℝ≥0∞}
     {f f' : α → α} (h : f = f') (hf : MeasurePreserving f ν ν) (hf' : MeasurePreserving f' ν ν)
@@ -51,7 +51,7 @@ theorem rightTranslate_apply (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Lp.coeFn_compMeasurePreserving φ _`.
+A detailed English derivation is pending.
 -/
 theorem coeFn_rightTranslate (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     rightTranslate Γ μ g φ =ᵐ[quotientMeasure Γ μ] fun x ↦ φ (rightMul Γ g x) :=
@@ -91,7 +91,7 @@ theorem rightRegularUnitary_apply (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)
   rfl
 
 /- English proof (translation)
-The claim follows from `(rightRegular Γ μ g).inner_map_map φ ψ`.
+A detailed English derivation is pending.
 -/
 theorem inner_rightRegular (g : G) (φ ψ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     inner ℂ (rightRegular Γ μ g φ) (rightRegular Γ μ g ψ) = inner ℂ φ ψ :=
@@ -104,19 +104,17 @@ variable [IsFiniteMeasureOnCompacts μ]
 omit [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-Take `⟨N, hN, hNn⟩` from `exists_compact_mem_nhds g₀`. Use `set K : Set (RightCosetSpace Γ) := (fun p : RightCosetSpace Γ × G ↦ rightMul Γ p.2⁻¹ p.1) '' (tsupport ψ ×ˢ N) with hKdef`. Establish `hK : IsCompact K` using `(hs.prod hN).image ((continuous_rightMul_prod Γ).comp (continuous_fst.prodMk continuous_snd.inv))`. Take `⟨M, hM⟩` from `hc.bounded_above_of_compact_support hs`. Establish `hzero : ∀ g ∈ N, ∀ x ∉ K, ψ (rightMul Γ g x) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg x hx`. Assume the negation of the conclusion as `h`. Use `hx ⟨(rightMul Γ g x, g), ⟨subset_tsupport ψ h, hg⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rightMul Γ g⁻¹ (rightMul Γ g x) = x`. Rewrite using `[rightMul_rightMul, mul_inv_cancel, rightMul_one, id]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg₀N : g₀ ∈ N` using `mem_of_mem_nhds hNn`. Use `set c : ℝ≥0∞ := ENNReal.ofReal (2 * M) ^ (2 : ℝ) with hc_def`. Establish `hmeas : ∀ g, Measurable fun x ↦ ‖ψ (rightMul Γ g x) - ψ (rightMul Γ g₀ x)‖ₑ ^ (2 : ℝ)` using `fun g ↦ (((hc.comp (continuous_rightMul Γ g)).sub (hc.comp (continuous_rightMul Γ g₀))).measurable.enorm).pow_const _`. It suffices to establish `key : Tendsto (fun g ↦ ∫⁻ x, ‖ψ (rightMul Γ g x) - ψ (rightMul Γ g₀ x)‖ₑ ^ (2 : ℝ) ∂quotientMeasure Γ μ) (𝓝 g₀) (𝓝 (∫⁻ _, (0 : ℝ≥0∞) ∂quotientMeasure Γ μ)) by`. Rewrite `key` using `[lintegral_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_lintegral_filter_of_dominated_convergence (K.indicator fun _ ↦ c) (Eventually.of_forall hmeas) ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hNn] with g hg`. Use `Eventually.of_forall fun x ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ K`. Rewrite using `[Set.indicator_of_mem hx]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.rpow_le_rpow ?_ (by norm_num)` and prove the remaining obligations. Rewrite using `[← ofReal_norm]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzero g hg x hx, hzero g₀ hg₀N x hx, sub_self, enorm_zero, ENNReal.zero_rpow_of_pos (by norm_num)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `zero_le`. Rewrite using `[lintegral_indicator_const hK.measurableSet]`. Conclude with `ENNReal.mul_ne_top (ENNReal.rpow_ne_top_of_nonneg (by norm_num) ENNReal.ofReal_ne_top) hK.measure_lt_top.ne`. Use `Eventually.of_forall fun x ↦ ?_` and prove the remaining obligations. Establish `hcont : Continuous fun g ↦ ‖ψ (rightMul Γ g x) - ψ (rightMul Γ g₀ x)‖ₑ ^ (2 : ℝ)` using `(ENNReal.continuous_rpow_const).comp (continuous_enorm.comp ((hc.comp ((continuous_rightMul_prod Γ).comp (continuous_const.prodMk continuous_id))).sub continuous_const))`.
-
-Use `hcont.tendsto g₀` as an intermediate fact. Rewrite `this` using `[sub_self, enorm_zero, ENNReal.zero_rpow_of_pos (by norm_num)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tendsto_lintegral_rightMul_sub {ψ : RightCosetSpace Γ → ℂ} (hc : Continuous ψ)
     (hs : HasCompactSupport ψ) (g₀ : G) :
@@ -169,9 +167,9 @@ theorem tendsto_lintegral_rightMul_sub {ψ : RightCosetSpace Γ → ℂ} (hc : C
     rwa [sub_self, enorm_zero, ENNReal.zero_rpow_of_pos (by norm_num)] at this
 
 /- English proof (translation)
-Establish `hψ : MemLp ψ 2 (quotientMeasure Γ μ)` using `hc.memLp_of_hasCompactSupport hs`. Rewrite using `[Lp.tendsto_Lp_iff_tendsto_eLpNorm']`. Establish `hae : ∀ g, ⇑(rightRegular Γ μ g (hψ.toLp ψ)) =ᵐ[quotientMeasure Γ μ] fun x ↦ ψ (rightMul Γ g x)` using `fun g ↦ (coeFn_rightTranslate Γ μ g _).trans ((measurePreserving_rightMul μ g).quasiMeasurePreserving.ae_eq_comp hψ.coeFn_toLp)`. Establish `heq : ∀ g, eLpNorm (⇑(rightRegular Γ μ g (hψ.toLp ψ)) - ⇑(rightRegular Γ μ g₀ (hψ.toLp ψ))) 2 (quotientMeasure Γ μ) = (∫⁻ x, ‖ψ (rightMul Γ g x) - ψ (rightMul Γ g₀ x)‖ₑ ^ (2 : ℝ) ∂quotientMeasure Γ μ) ^ (1 / (2 : ℝ))` using `fun g ↦ by`. Rewrite using `[eLpNorm_congr_ae ((hae g).sub (hae g₀)), eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply, ENNReal.toReal_ofNat]`. Repeatedly rewrite using `[heq]`. Use `((ENNReal.continuous_rpow_const (y := 1 / (2 : ℝ))).tendsto 0).comp (tendsto_lintegral_rightMul_sub Γ μ hc hs g₀)` as an intermediate fact. Rewrite `this` using `[ENNReal.zero_rpow_of_pos (by norm_num)]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tendsto_rightRegular_of_continuous {ψ : RightCosetSpace Γ → ℂ} (hc : Continuous ψ)
     (hs : HasCompactSupport ψ) (g₀ : G) :
@@ -195,11 +193,9 @@ theorem tendsto_rightRegular_of_continuous {ψ : RightCosetSpace Γ → ℂ} (hc
   rwa [ENNReal.zero_rpow_of_pos (by norm_num)] at this
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun g₀ ↦ Metric.tendsto_nhds.2 fun ε hε ↦ ?_` and prove the remaining obligations. Establish `hε4 : 0 < ε / 4` using `by positivity`. Take `⟨ψ, hs, hψφ, hc, hmem⟩` from `(Lp.memLp φ).exists_hasCompactSupport_eLpNorm_sub_le ENNReal.ofNat_ne_top (ε := ENNReal.ofReal (ε / 4)) (by simpa using hε4)`. Use `set φ₀ : Lp ℂ 2 (quotientMeasure Γ μ) := (hc.memLp_of_hasCompactSupport hs).toLp ψ`. Establish `hd : dist φ φ₀ ≤ ε / 4`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Lp.dist_def, eLpNorm_congr_ae (EventuallyEq.rfl.sub (MemLp.coeFn_toLp _))]`. Conclude with `ENNReal.toReal_le_of_le_ofReal hε4.le hψφ`. Use `filter_upwards [Metric.tendsto_nhds.1 (tendsto_rightRegular_of_continuous Γ μ hc hs g₀) (ε / 4) hε4] with g hg`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LinearIsometryEquiv.dist_map, LinearIsometryEquiv.dist_map]`.
-
-Use `_ < ε := by`. Rewrite using `[dist_comm φ₀ φ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_rightRegular_apply (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     Continuous fun g ↦ rightRegular Γ μ g φ := by
@@ -225,9 +221,9 @@ theorem continuous_rightRegular_apply (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
         linarith
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun ⟨g₀, φ₀⟩ ↦ Metric.tendsto_nhds.2 fun ε hε ↦ ?_` and prove the remaining obligations. Establish `h1` using `(continuous_rightRegular_apply Γ μ φ₀).tendsto g₀`. Establish `h2 : ∀ᶠ p : G × Lp ℂ 2 (quotientMeasure Γ μ) in 𝓝 (g₀, φ₀), dist (rightRegular Γ μ p.1 φ₀) (rightRegular Γ μ g₀ φ₀) < ε / 2` using `(Metric.tendsto_nhds.1 h1 (ε / 2) (by positivity)).prod_inl_nhds φ₀`. Establish `h3 : ∀ᶠ p : G × Lp ℂ 2 (quotientMeasure Γ μ) in 𝓝 (g₀, φ₀), dist p.2 φ₀ < ε / 2` using `(Metric.tendsto_nhds.1 tendsto_id (ε / 2) (by positivity)).prod_inr_nhds g₀`. Use `filter_upwards [h2, h3] with p hp2 hp3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LinearIsometryEquiv.dist_map]`. Use `_ < ε := by linarith`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_rightRegular_prod :
     Continuous fun p : G × Lp ℂ 2 (quotientMeasure Γ μ) ↦ rightRegular Γ μ p.1 p.2 := by

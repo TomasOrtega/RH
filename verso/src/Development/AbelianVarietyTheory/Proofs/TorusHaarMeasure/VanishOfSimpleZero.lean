@@ -13,17 +13,17 @@ namespace GlobalTheory.VanishAtSimpleZero
 open Filter Metric
 
 /- English proof (translation)
-Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (hg.and hS)`. Establish `hr0 : 0 < min ε ρ` using `lt_min hε hρ`. Establish `hsubε : ball (0 : V n) (min ε ρ) ⊆ ball 0 ε` using `ball_subset_ball (min_le_left _ _)`. Establish `hsubρ : ball (0 : V n) (min ε ρ) ⊆ ball 0 ρ` using `ball_subset_ball (min_le_right _ _)`. Establish `: Nonempty (Fin n)` using `⟨⟨0, hn⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ᵐ z ∂(volume : Measure (V n)), z ≠ 0`. Rewrite using `[ae_iff]`. Simplify using `only [ne_eq, not_not, Set.ofPred_eq_eq_singleton]`. Conclude with `measure_singleton 0`. Establish `hinf : ∫⁻ z in ball (0 : V n) (min ε ρ), ENNReal.ofReal ((c * ‖z‖ ^ 2) ^ (-(n : ℝ))) = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : Tendsto (fun k : ℕ => (1 : ℝ) / ((k : ℝ) + 1)) atTop (𝓝[>] 0)` using `tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat, Eventually.of_forall fun k => Set.mem_Ioi.2 (by positivity)⟩`. Establish `hT` using `ReciprocityTheory.L2DbarEstimates.I.vanish_div n hn ReciprocityTheory.L2DbarEstimates.C.mvDiv hr0 hc hδ`. Use `top_unique (le_of_tendsto' hT fun k => ?_)` and prove the remaining obligations. Use `lintegral_mono_ae ((ae_restrict_iff' measurableSet_ball).2 (h0.mono fun z hz _ => ?_))` and prove the remaining obligations. Establish `hpos : 0 < c * ‖z‖ ^ 2` using `mul_pos hc (pow_pos (norm_pos_iff.2 hz) 2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow_of_nonpos hpos ?_ ?_)` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ 1 / ((k : ℝ) + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish `hlow : ENNReal.ofReal a * ∫⁻ z in ball (0 : V n) (min ε ρ), ENNReal.ofReal ((c * ‖z‖ ^ 2) ^ (-(n : ℝ))) ≤ ∫⁻ z in ball (0 : V n) ρ, ENNReal.ofReal (g z * S z ^ (-(n : ℝ)))`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `le_trans ?_ (lintegral_mono_set hsubρ)` and prove the remaining obligations. Use `lintegral_mono_ae ((ae_restrict_iff' measurableSet_ball).2 (h0.mono fun z hz hzb => ?_))` and prove the remaining obligations. Take `⟨hgz, hSz⟩` from `hball z (hsubε hzb)`. Take `⟨hS0, hSle⟩` from `hSz hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul ha.le]`. Conclude with `ENNReal.ofReal_le_ofReal (mul_le_mul hgz (Real.rpow_le_rpow_of_nonpos hS0 hSle (by simp)) (Real.rpow_nonneg (by positivity) _) (ha.le.trans hgz))`. Rewrite `hlow` using `[hinf, ENNReal.mul_top (by simpa using ha)]`. Conclude with `top_unique hlow`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_eq_top {n : ℕ} (hn : 0 < n) {g S : V n → ℝ} {a c ρ : ℝ} (ha : 0 < a) (hc : 0 < c)
     (hρ : 0 < ρ) (hg : ∀ᶠ z in 𝓝 (0 : V n), a ≤ g z)
@@ -65,19 +65,17 @@ theorem lintegral_eq_top {n : ℕ} (hn : 0 < n) {g S : V n → ℝ} {a c ρ : �
   exact top_unique hlow
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hu0`. Use `set f : V n → V n := fun z => (WithLp.toLp 2 fun k => s k z / w z : V n) with hf`. Establish `hfd : DifferentiableAt ℂ f 0`. Assume the negation of the conclusion as `hnd`. Apply `hdet` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fderiv_zero_of_not_differentiableAt hnd]`. Simplify using `[ContinuousLinearMap.det, LinearMap.det_zero, hn.ne']`. Establish `hf0 : f 0 = 0`. Use extensionality with `k`. Simplify using `[hf, hs0 k]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hiso⟩` from `ReciprocityTheory.ChartRestriction.G.AR.Up.HE.iso_zero hfd.hasFDerivAt hdet hf0`. Establish `hSpos : ∀ᶠ z in 𝓝 (0 : V n), z ≠ 0 → 0 < ∑ k, ‖s k z‖ ^ 2` using `by filter_upwards [closedBall_mem_nhds (0 : V n) hδ] with z hz hz0`. Use `lt_of_le_of_ne (Finset.sum_nonneg fun k _ => by positivity) (Ne.symm fun hsum => hz0 ?_)` and prove the remaining obligations. Use `hiso z hz ?_` and prove the remaining obligations. Establish `hk : ∀ k, s k z = 0` using `fun k => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Finset.sum_eq_zero_iff_of_nonneg (fun k _ => by positivity)).1 hsum k (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`. Use extensionality with `k`. Simplify using `[hf, hk k]`. Establish `hbig : ∀ k, ∃ C > 0, ∀ᶠ z in 𝓝 (0 : V n), ‖s k z‖ ≤ C * ‖z‖` using `fun k => by`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hCw⟩` from `((hs k).hasFDerivAt.isBigO_sub).exists_pos`. Use `⟨C, hC, hCw.bound.mono fun z hz => ?_⟩` and prove the remaining obligations. Simplify `hz` using `[hs0 k]`. Use `choose C hC hCb using hbig`. Establish `hSle : ∀ᶠ z in 𝓝 (0 : V n), ∑ k, ‖s k z‖ ^ 2 ≤ (∑ k, C k ^ 2 + 1) * ‖z‖ ^ 2` using `by filter_upwards [Filter.eventually_all.2 hCb] with z hz`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < ‖u 0‖ ^ 2` using `pow_pos (norm_pos_iff.2 hu0) 2`. Establish `hcont : ContinuousAt (fun z => ‖u z‖ ^ 2) 0` using `hu.norm.pow 2`. Establish `hg : ∀ᶠ z in 𝓝 (0 : V n), ‖u 0‖ ^ 2 / 2 ≤ ‖u z‖ ^ 2` using `hcont.eventually (le_mem_nhds (show ‖u 0‖ ^ 2 / 2 < ‖u 0‖ ^ 2 by linarith))`. Establish `htop` using `lintegral_eq_top hn (g := fun z => ‖u z‖ ^ 2) (S := fun z => ∑ k, ‖s k z‖ ^ 2) (by positivity) (by positivity : (0 : ℝ) < ∑ k, C k ^ 2 + 1) hρ hg (by filter_upwards [hSpos, hSle] with z h1 h2 hz0 using ⟨h1 hz0, h2⟩)`.
-
-Conclude with `absurd hint (by rw [htop]; exact lt_irrefl _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vanish_of_simple_zero {n : ℕ} (hn : 0 < n) {u w : V n → ℂ} {s : Fin n → V n → ℂ} {ρ : ℝ}
     (hρ : 0 < ρ) (hu : ContinuousAt u 0) (hs : ∀ k, DifferentiableAt ℂ (s k) 0)
@@ -132,7 +130,7 @@ namespace GlobalTheory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X x1 hn _ _ u w0 s ρ hρ hdu hds hdw hw0 hs0 hdet hint`. Establish `h0` using `ReciprocityTheory.ChartRestriction.G.AR.Up.IW.cpt_zero X x1`. Establish `hb : Metric.ball (0 : V (nd X)) ρ ∈ 𝓝 0` using `Metric.ball_mem_nhds 0 hρ`. Establish `key` using `VanishAtSimpleZero.vanish_of_simple_zero hn (u := fun z => u (cpt X x1 z)) (w := fun z => w0 (cpt X x1 z)) (s := fun k z => s k (cpt X x1 z)) hρ ((hdu.differentiableAt hb).continuousAt) (fun k => (hds k).differentiableAt hb) (hdw.differentiableAt hb) (by simpa [h0] using hw0) (fu …`. Simplify `key` using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vanishAtS_holds : VanishAtSStatement (E := E) := by
   intro r X x1 hn _ _ u w0 s ρ hρ hdu hds hdw hw0 hs0 hdet hint

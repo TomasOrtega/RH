@@ -17,18 +17,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[lin_apply, Matrix.mul_apply, mulVec, dotProduct, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem row_mul (γ : GL (Fin r) E) (y : Matrix (Fin n) (Fin r) E) (j : Fin n) :
     (y * (γ : Matrix (Fin r) (Fin r) E)ᵀ) j = lin γ (y j) := by
   funext i; simp [lin_apply, Matrix.mul_apply, mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, _, ⟨u, hu, rfl⟩, rfl⟩` from `hx`. Use `⟨vecMulVec v u, AddSubgroup.subset_closure ⟨v, hv, u, hu, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.vecMulVec_mul, Matrix.vecMul_transpose]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, add_mem ha hb, by rw [Matrix.add_mul]⟩`. Consider the case `neg x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨-a, neg_mem ha, by rw [Matrix.neg_mul]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tens_mapL {Λ : Lt E n} {L : Lt E r} {γ : GL (Fin r) E} {y : Matrix (Fin n) (Fin r) E}
     (hy : y ∈ tens Λ (mapL γ L)) :
@@ -49,7 +49,7 @@ theorem tens_mapL {Λ : Lt E n} {L : Lt E r} {γ : GL (Fin r) E} {y : Matrix (Fi
     exact ⟨-a, neg_mem ha, by rw [Matrix.neg_mul]⟩
 
 /- English proof (translation)
-Establish `(k : Fin n) : EF X (lin γ (y k)) (w • lin γ (y k)) = EF X (y k) (w • y k)`. Establish `: w • lin γ (y k) = lin γ (w • y k)` using `by simp [lin_apply, Matrix.mulVec_smul]`. Rewrite using `[this, EF_lin h, lin_inv]`. Simplify using `only [epsW, row_mul, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem epsW_mul {γ : GL (Fin r) E} (h : IsUn X γ) (w : E) (y : Matrix (Fin n) (Fin r) E) :
     epsW X w (y * (γ : Matrix (Fin r) (Fin r) E)ᵀ) = epsW X w y := by
@@ -61,15 +61,13 @@ theorem epsW_mul {γ : GL (Fin r) E} (h : IsUn X γ) (w : E) (y : Matrix (Fin n)
 variable {D : Level X}
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, u, hu, rfl⟩` from `hx`. Take `⟨-, -, s, -, hs, h1, -⟩` from `hΛ`. Take `⟨-, t, ht, h2, -⟩` from `hL`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, m', hm', e⟩` from `Ideal.isCoprime_iff_exists.1 D.cop`. Establish `hs' : IsCoprime (Ideal.span {(s : 𝓞 E)}) D.𝔪`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hs`. Use `cop_iff.2 ⟨(a : 𝓞 E), (b : 𝓞 E) * M, Ideal.mul_mem_left _ _ hM, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (Int.cast : ℤ → 𝓞 E) hab` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu' : u ∈ loc D.𝔪 (D.𝔪 • X.Λ)` using `loc_loc (s := m') (cop_iff.2 ⟨1, m, hm, by linear_combination e⟩) ⟨t, ht.of_mul_right_left, smul_map_mem LinearMap.id h2 (hu m' hm')⟩`. Establish `hi : IsIntegral ℤ ((s : E) * v k)` using `(Base.mem_stdL _).1 (h1 v hv) k`. Use `loc_loc hs' ?_` and prove the remaining obligations. Establish `: (s : 𝓞 E) • vecMulVec v u k = (⟨_, hi⟩ : 𝓞 E) • u`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_assoc (s : E) (v k) (u i)).symm`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hu'`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
-
-Consider the case `neg x _ hx => exact neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem row_mem {M : ℕ} (hM : (M : 𝓞 E) ∈ D.𝔪) {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt E r}
     (hL : L ∈ D.lats) {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ tens Λ (D.sh L)) (k : Fin n) :
@@ -99,15 +97,15 @@ theorem row_mem {M : ℕ} (hM : (M : 𝓞 E) ∈ D.𝔪) {Λ : Lt E n} (hΛ : Λ
   | neg x _ hx => exact neg_mem hx
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_lift k⁻¹`. Establish `h3` using `red_comb h hb`. Rewrite `h3` using `[mul_inv_cancel]`. Establish `h4` using `cong_of_red red_one h3`. Establish `h0 (i) : lin γ (u i) ∈ loc D.𝔪 X.Λ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, -, h'⟩` from `h'`. Use `add_mem (loc_mono Submodule.smul_le_right (cong_iff.1 (h' i))) (le_loc _ (X.Λ.sum_mem (t := Finset.univ) fun j _ => X.Λ.smul_mem (a j i) (D.β_mem j)))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h2 : X.Λ ≤ (loc D.𝔪 X.Λ).comap (lin γ) ⊔ D.𝔪 • X.Λ`. Use `D.β_span.trans (sup_le (Submodule.span_le.2 ?_) le_sup_right)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Use `mem_of_loc (D.β_mem i) le_sup_right ?_` and prove the remaining obligations. Use `add_mem (loc_mono (le_sup_right (a := (loc D.𝔪 X.Λ).comap (lin γ))) (cong_iff.1 (h4 i))) (le_loc _ (Submodule.mem_sup_left (((loc D.𝔪 X.Λ).comap (lin γ)).sum_mem (t := Finset.univ) fun j _ => Submodule.smul_mem _ (b j i) (x := u j) (h0 j))))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Take `⟨t, ht, h2⟩` from `nakayama X.Λ_fg h2`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h1 : mapL γ X.Λ ≤ loc D.𝔪 X.Λ`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `loc_loc ht ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t • lin γ v ∈ _`. Rewrite using `[← map_smul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 v hv`. Take `⟨s, hs, h1⟩` from `exists_mul_of_fg (X.Λ_fg.map _) h1`. Use `red_congr (fun i => ?_) (red_comb h' hb)` and prove the remaining obligations. Simplify `cong_lin hs (fun v hv => h1 _ ⟨v, hv, rfl⟩) (h4 i)` using `only [map_sum, map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem red_of_red {γ : GL (Fin r) E} {u : Fin r → Fin r → E} {k l : GL (Fin r) (𝓞 E ⧸ D.𝔪)}
     (h : D.Red u k) (h' : D.Red (fun i => lin γ (u i)) l) :
@@ -142,7 +140,7 @@ theorem red_of_red {γ : GL (Fin r) E} {u : Fin r → Fin r → E} {k l : GL (Fi
   simpa only [map_sum, map_smul] using cong_lin hs (fun v hv => h1 _ ⟨v, hv, rfl⟩) (h4 i)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Rewrite `h` using `[Level.dat, dif_neg fun H' => H H'.1, norm_zero]`. Conclude with `zero_ne_one h`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_of_dat (hn : r ≤ n) {y : Matrix (Fin n) (Fin r) E} (h : ‖D.dat hn y‖ = 1) :
     ∃ k : D.J, D.Red (fun i => y (Fin.castLE hn i)) k := by
@@ -155,7 +153,7 @@ variable {w : E} {A A' : AddSubgroup (Matrix (Fin n) (Fin r) E)}
 include idx hs hn
 
 /- English proof (translation)
-Establish `h` using `hA.ip_eq_zero idx hs hn hv hy`. Rewrite `h` using `[ip_smul_left _ (laws idx hs hn y hv.1).1 hv.1]`. Conclude with `(mul_eq_zero.1 h).resolve_left (Complex.exp_ne_zero _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_heis_zero (hA : Good X w A) {v : TF n g} (hv : IsVac X bas w A v) {y}
     (hy : y ∉ A) : SW.ip (heisG X bas y v) v = 0 := by
@@ -164,13 +162,11 @@ theorem ip_heis_zero (hA : Good X w A) {v : TF n g} (hv : IsVac X bas w A v) {y}
   exact (mul_eq_zero.1 h).resolve_left (Complex.exp_ne_zero _)
 
 /- English proof (translation)
-Establish `hφ` using `(laws idx hs hn t hv'.1).1`. Establish `hfin` using `hA.finite idx hs hn hφ`. Establish `hsb : ∀ ψ ∈ hfin.toFinset, IsSB ψ`. Introduce `ψ hψ`. Take `⟨y, -, rfl⟩` from `hfin.mem_toFinset.1 hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `rho_sb idx hs hn y hφ`. Take `⟨h1, h2⟩` from `sum_sb_ip _ hsb hv'.1`. Establish `h3` using `congrArg (SW.ip · v') (hA.proj idx hs hn hφ hv).2`. Rewrite `h3` using `[projA, finsum_mem_eq_finite_toFinset_sum _ hfin, ip_smul_left _ h1 hv'.1, h2, Finset.sum_eq_zero, mul_zero, ip_smul_left _ hv.1 hv'.1]`. Use `(mul_eq_zero.1 h3.symm).resolve_right fun h => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hA.overlap idx hs hn hA' hv hv'` as an intermediate fact. Simplify using `[h] at this`. Introduce `ψ hψ`. Take `⟨a, ha, rfl⟩` from `hfin.mem_toFinset.1 hψ`. Use `beta_reduce`.
-
-Rewrite using `[(laws idx hs hn a hv'.1).2.2.1, smul_smul, ip_smul_left _ (laws idx hs hn _ hv'.1).1 hv'.1, ip_heis_zero idx hs hn hA' hv' (ht a ha), mul_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_heis_vac (hA : Good X w A) (hA' : Good X w A') {v v' : TF n g}
     (hv : IsVac X bas w A v) (hv' : IsVac X bas w A' v') {t} (ht : ∀ a ∈ A, a + t ∉ A') :
@@ -196,7 +192,7 @@ theorem ip_heis_vac (hA : Good X w A) (hA' : Good X w A') {v v' : TF n g}
       mul_zero]
 
 /- English proof (translation)
-Rewrite using `[← (laws idx hs hn (-y) (laws idx hs hn z hv'.1).1).2.2.2 _ (laws idx hs hn y hv.1).1, (laws idx hs hn (-y) hv'.1).2.2.1, (laws idx hs hn (-y) hv.1).2.2.1, neg_add_cancel, (laws idx hs hn 0 hv.1).2.1, ip_smul_left _ (laws idx hs hn _ hv'.1).1 (sb_smul _ hv.1), ip_smul_right _ (la …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_heis_heis (hA : Good X w A) (hA' : Good X w A') {v v' : TF n g}
     (hv : IsVac X bas w A v) (hv' : IsVac X bas w A' v') {y z}
@@ -208,7 +204,7 @@ theorem ip_heis_heis (hA : Good X w A) (hA' : Good X w A') {v v' : TF n g}
     mul_zero, mul_zero]
 
 /- English proof (translation)
-Take `⟨h1, -, h2, -, -, -, h3⟩` from `wG_laws E r X g bas idx n hs hn γ hγ v hv.1`. Use `⟨h1, (h2 v hv.1).1.trans hv.2.1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `tens_mapL hy`. Rewrite using `[epsW_mul hγ, ← h3, ← (wG_laws E r X g bas idx n hs hn γ hγ _ (laws idx hs hn z hv.1).1).2.2.2.1, hv.2.2 z hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isVac_wG {γ : GL (Fin r) E} (hγ : IsUn X γ) {Λ : Lt E n} {L : Lt E r} {v : TF n g}
     (hv : IsVac X bas w (tens Λ L) v) :
@@ -226,27 +222,25 @@ namespace GlobalTheory.SW
 open Lev TensVac Supp
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs he D hn M hM0 hM v₀ hv₀ γ hγ hγ' L hL L' hL' Λ hΛ`. Take `⟨hsb, hv, H, -⟩` from `GlobalTheory.T.levelTestFunction_finite_sum_equivariant E r X g bas idx n hs he D hn M hM0 hM v₀ hv₀ L hL Λ hΛ`. Take `⟨hsb', hv', -⟩` from `GlobalTheory.T.levelTestFunction_finite_sum_equivariant E r X g bas idx n hs he D hn M hM0 hM v₀ hv₀ L' hL' Λ hΛ`. Take `⟨s, -, hs1, e, e'⟩` from `H L' hL'`. Generalize the expression as in `unitv (projA X bas D.w (tens Λ (D.sh L)) (v₀ L)) = v at hv e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `unitv (projA X bas D.w (tens Λ (D.sh L')) (v₀ L')) = v' at hv' e'`. Establish `good (L) (hL : SelfD X L) : Good X D.w (tens Λ L)`. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.T.tensorLattice_selfDual_semicharacter_index E r X g bas idx n hs he D.w D.w_int D.w_tr L hL M Λ hΛ`. Conclude with `⟨h1, h2, h3⟩`. Establish `hA` using `good _ (selfD_idq D.ne_bot D.proper D.cop hL.1)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hA'` using `good _ (selfD_mapL hγ (selfD_idq D.ne_bot D.proper D.cop hL'.1))`. Establish `hw` using `isVac_wG idx hs he hγ hv'`. Establish `W` using `wG_laws E r X g bas idx n hs he γ hγ`. Establish `key : ∀ y ∈ s, ∀ y' ∈ s, SW.ip (heisG X bas y v) (heisG X bas (y' * (γ : Matrix (Fin r) (Fin r) E)ᵀ) (wG X bas idx γ v')) = 0`. Introduce `y hy y' hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ip_conj (laws idx hs he _ hw.1).1 (laws idx hs he _ hv.1).1, ip_heis_heis idx hs he hA hA' hv hw, map_zero]`. Introduce `a ha h`. Take `⟨a', ha', h⟩` from `tens_mapL h`. Take `⟨k, hk⟩` from `red_of_dat hn (hs1 y hy).2.1`. Take `⟨k', hk'⟩` from `red_of_dat hn (hs1 y' hy').2.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (y' - a') * (γ : Matrix (Fin r) (Fin r) E)ᵀ = y - a`. Rewrite using `[Matrix.sub_mul, ← h]`. Normalize the expressions using the abelian group laws. Establish `hsub (p q : Matrix (Fin n) (Fin r) E) (j) : (p - q) j - p j = -q j` using `sub_sub_cancel_left (p j) (q j)`. Establish `h2 : D.Red (fun i => (y' - a') (Fin.castLE hn i)) k'` using `red_congr (fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cong_iff, hsub]`. Conclude with `neg_mem (row_mem hM hΛ hL' ha' _)) hk'`. Establish `h3 : D.Red (fun i => lin γ ((y' - a') (Fin.castLE hn i))) k` using `red_congr (fun i => by`. Rewrite using `[cong_iff, ← row_mul, h1, hsub]`. Conclude with `neg_mem (row_mem hM hΛ hL ha _)) hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hγ' ((mem_grp γ).2 ⟨hγ, _, mul_mem k.2 (inv_mem k'.2), red_of_red h2 h3⟩)`. Establish `add {φ ψ : TF n g} (h : IsSB φ) (h' : IsSB ψ) : IsSB (φ + ψ)` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ _ _ _ _ h h').1`. Establish `zero {ψ : TF n g} (h : IsSB ψ) : SW.ip 0 ψ = 0` using `by simpa using ip_smul_left 0 h h`. Establish `key2 : ∀ y ∈ s, SW.ip (wG X bas idx γ (D.phi bas hn v₀ L' Λ)) (heisG X bas y v) = 0`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy1` using `(laws idx hs he y hv.1).1`. Rewrite using `[e']`. Use `(Finset.sum_induction _ (fun φ => IsSB φ ∧ SW.ip (wG X bas idx γ φ) (heisG X bas y v) = 0) (fun φ ψ hφ hψ => ⟨add hφ.1 hψ.1, ?_⟩) ⟨isSB_zero, ?_⟩ fun y' hy' => ?_).2` and prove the remaining obligations. Rewrite using `[((W φ hφ.1).2.2.1 ψ hψ.1).2.1, ip_add_left (W φ hφ.1).1 (W ψ hψ.1).1 hy1, hφ.2, hψ.2, add_zero]`. Use `(W 0 isSB_zero).2.2.2.1 0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_smul, zero_smul]`. Rewrite using `[this, zero hy1]`. Establish `h1` using `(laws idx hs he y' hv'.1).1`. Use `⟨sb_smul _ h1, ?_⟩` and prove the remaining obligations. Rewrite using `[(W _ h1).2.2.2.1, ip_smul_left _ (W _ h1).1 hy1, (W _ hv'.1).2.2.2.2.2.2, ip_conj hy1 (laws idx hs he _ hw.1).1, key y hy y' hy', map_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hW` using `(W _ hsb').1`. Rewrite using `[e]`. Use `(Finset.sum_induction _ (fun φ => IsSB φ ∧ SW.ip φ (wG X bas idx γ (D.phi bas hn v₀ L' Λ)) = 0) (fun φ ψ hφ hψ => ⟨add hφ.1 hψ.1, ?_⟩) ⟨isSB_zero, zero hW⟩ fun y hy => ?_).2` and prove the remaining obligations. Rewrite using `[ip_add_left hφ.1 hψ.1 hW, hφ.2, hψ.2, add_zero]`. Establish `h1` using `(laws idx hs he y hv.1).1`.
-
-Use `⟨sb_smul _ h1, ?_⟩` and prove the remaining obligations. Rewrite using `[ip_smul_left _ h1 hW, ip_conj hW h1, key2 y hy, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_overlap_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ (D : Level X) (hn : r ≤ n) (M : ℕ), 0 < M → (M : 𝓞 E) ∈ D.𝔪 → ∀ v₀ : Lt E r → TF n g, (∀ L ∈ D.lats, IsVac X bas D.w (tens (stdL E n) (D.sh L)) (v₀ L)) → ∀ γ, IsUn X γ → γ ∉ D.grp → ∀ L ∈ D.lats, ∀ L' ∈ D.lats, ∀ Λ ∈ Vset E n M, ip (D.phi bas hn v₀ L Λ) (wG X bas idx γ (D.phi bas hn v₀ L' Λ)) = 0 := by
   intro E _ _ _ r X g bas idx n hs he D hn M hM0 hM v₀ hv₀ γ hγ hγ' L hL L' hL' Λ hΛ

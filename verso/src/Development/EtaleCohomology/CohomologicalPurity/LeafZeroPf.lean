@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity.Cl.Flq
 
 /- English proof (translation)
-Establish `h1 : Sec.map (𝟙 G) a = a` using `rfl`. Establish `h2 : Sec.map (0 : G ⟶ G) a = 0` using `rfl`. Rewrite using `[← h1, hG.eq_of_src (𝟙 G) 0, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_eq_zero_of_isZero {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0}} (hG : IsZero G) (a : Sec G X) :
     a = 0 := by
@@ -15,9 +15,9 @@ theorem sec_eq_zero_of_isZero {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0
   rw [← h1, hG.eq_of_src (𝟙 G) 0, h2]
 
 /- English proof (translation)
-Introduce `R _ K X U n hz`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `V W h a _`. Rewrite using `[sec_eq_zero_of_isZero hz (rs h a)]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W a _`. Rewrite using `[sec_eq_zero_of_isZero hz a]`. Conclude with `zero_mem _`. Introduce `V W h a _`. Conclude with `⟨0, zero_mem _, (sec_eq_zero_of_isZero hz _).trans (sec_eq_zero_of_isZero hz a).symm⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeafZero_of : LeafZero := by
   intro R _ K X U n hz

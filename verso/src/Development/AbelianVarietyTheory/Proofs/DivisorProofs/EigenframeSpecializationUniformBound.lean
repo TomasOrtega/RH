@@ -13,14 +13,14 @@ namespace GlobalTheory.ShFam.PerPoly
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ga5b.exists_nat_smul_mem X v`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem {N : ℕ} (X : Data E N) (v : Fin N → E) :
     ∃ n : ℕ, 0 < n ∧ (n : E) • v ∈ X.Λ :=
   _root_.UpperTheory.Reformulated.B.Ga5b.exists_nat_smul_mem X v
 
 /- English proof (translation)
-Establish `he : ∀ τ : E →+* ℂ, Data.emb τ ((n : E) • v) = (n : ℂ) • Data.emb τ v` using `fun τ => funext fun a => by`. Simplify using `[Data.emb, map_natCast]`. Unfold `perFr`. Apply the tactic sequence `split_ifs <;> simp [he, Matrix.mulVec_smul, ReciprocityTheory.ChartRestriction.G.FD.hermC, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem perFr_natCast_smul {N : ℕ} (X : Data E N) (x : Frame X.Ψ N) (v : Fin N → E) (n : ℕ) (τ : E →+* ℂ) (i : ℕ) :
     perFr X x ((n : E) • v) τ i = (n : ℂ) * perFr X x v τ i := by
@@ -34,25 +34,23 @@ end GlobalTheory.ShFam.PerPoly
 namespace GlobalTheory.ShFam.PerPoly
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ N U A _ φ x fr ψ r y k T M γ xx hσ hU harc hm horb hlift v R`. Take `⟨n, hn, hnv⟩` from `exists_nat_smul_mem (U.X k) v`. Take `⟨C₁, B, h₁⟩` from `GlobalTheory.T.periods_polynomial_growth_lattice_vector_arc E H Dw l Xo c O β Z σ N U A φ x fr ψ r y k T M γ xx hσ hU harc hm horb hlift _ hnv R`. Choose the witnesses or unpack the hypotheses as in `⟨C₃, h₃⟩ : ∃ C₃ : ℝ, ∀ᶠ w in imTop, (U.X k).p0 = 0 → ∀ (τ : E →+* ℂ) (i : ℕ), τ ∉ (U.X k).Ψ → ‖perFr (U.X k) (xx w) v τ i‖ ≤ C₃ := by`. Distinguish the cases in `h0 : (U.X k).p0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨C₃, h⟩` from `GlobalTheory.T.periods_bounded_outside_cmType_of_definite_arc_lift E H Dw l Xo c O β Z σ N U A φ x fr ψ r y k T M γ xx hσ hU harc hm horb hlift h0 v`. Conclude with `⟨C₃, h.mono fun w hw _ => hw⟩`. Conclude with `⟨0, .of_forall fun w h => absurd h h0⟩`. Establish `him : ∀ᶠ w in imTop, 1 ≤ w.im` using `(tendsto_comap (f := Complex.im) (x := atTop)).eventually (eventually_ge_atTop 1)`. Establish `hn' : (0 : ℝ) < n` using `Nat.cast_pos.2 hn`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨max (C₁ / n) 0 + max C₃ 0, B, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h₁, h₃, him] with w hw1 hw3 hwi hR τ i`. Establish `hpow : 1 ≤ w.im ^ B` using `one_le_pow₀ hwi`. Establish `hK0 : 0 ≤ max (C₁ / n) 0 + max C₃ 0` using `add_nonneg (le_max_right _ _) (le_max_right _ _)`. Establish `hK1 : C₁ / n ≤ max (C₁ / n) 0 + max C₃ 0` using `(le_max_left _ _).trans (le_add_of_nonneg_right (le_max_right _ _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK3 : C₃ ≤ max (C₁ / n) 0 + max C₃ 0` using `(le_max_left _ _).trans (le_add_of_nonneg_left (le_max_right _ _))`. Establish `hlat : ∀ (τ : E →+* ℂ) (i : ℕ), (τ ∈ (U.X k).Ψ ∧ i < N - (U.X k).p0) ∨ (conjEmb τ ∈ (U.X k).Ψ ∧ i < (U.X k).p0) → ‖perFr (U.X k) (xx w) v τ i‖ ≤ (max (C₁ / n) 0 + max C₃ 0) * w.im ^ B`. Introduce `τ i h`. Establish `h2` using `hw1 hR τ i h`. Rewrite `h2` using `[perFr_natCast_smul, norm_mul, Complex.norm_natCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ‖perFr (U.X k) (xx w) v τ i‖ ≤ C₁ / n * w.im ^ B`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hn']`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h3.trans (mul_le_mul_of_nonneg_right hK1 (by positivity))`. Establish `hzero : 0 ≤ (max (C₁ / n) 0 + max C₃ 0) * w.im ^ B` using `mul_nonneg hK0 (by positivity)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hτ : τ ∈ (U.X k).Ψ`. Distinguish the cases in `hi : i < N - (U.X k).p0`. Conclude with `hlat τ i (Or.inl ⟨hτ, hi⟩)`. Establish `e : perFr (U.X k) (xx w) v τ i = 0`. Unfold `perFr`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos hτ, dif_neg (by omega)]`. Rewrite using `[e, norm_zero]`. Conclude with `hzero`. Distinguish the cases in `hc : conjEmb τ ∈ (U.X k).Ψ`. Distinguish the cases in `h0 : (U.X k).p0 = 0`.
+Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hi : i < (U.X k).p0`. Conclude with `hlat τ i (Or.inr ⟨hc, hi⟩)`. Establish `e : perFr (U.X k) (xx w) v τ i = perFr (U.X k) (xx w) v τ ((U.X k).p0 - 1)`. Establish `e1 : (U.X k).p0 - 1 - i = (U.X k).p0 - 1 - ((U.X k).p0 - 1)` using `by omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `perFr`. Rewrite using `[dif_neg hτ, dif_neg hτ, dif_pos hc, dif_pos hc]`. Simplify using `only [e1]`. Rewrite using `[e]`. Conclude with `hlat τ _ (Or.inr ⟨hc, by omega⟩)`.
-
-Establish `e : perFr (U.X k) (xx w) v τ i = 0`. Unfold `perFr`. Rewrite using `[dif_neg hτ, dif_neg hc]`. Rewrite using `[e, norm_zero]`. Conclude with `hzero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem periods_le_pow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (N : ℕ) (U : Unf Xo c σ N) (A : Type) [CommRing A] (φ : c.F →+* A) (x : Sp A ⟶ gen Z) (fr : EigFrame Z φ (x ≫ genι Z)) (ψ : ℂ → (A →+* ℂ)) (r : ℝ) (y : ℂ → FrPt Xo c (CAt σ)) (k : U.Comp) (T : ℝ) (M : ℕ) (γ : GL (Fin N) E) (xx : ℂ → Frame (U.X k).Ψ N), GoodEmb c σ → IsUnf U → IsArc Z σ φ x ψ r → (∀ u ∈ Metric.ball (0 : ℂ) r, u ≠ 0 → Matches fr (ψ u) (y u)) → IsOrbit (U.X k) T M γ xx → IsLift U k y T xx → ∀ (v : Fin N → E) (R : ℝ), ∃ (C : ℝ) (B : ℕ), ∀ᶠ w in imTop, |w.re| ≤ R → ∀ (ρ : E →+* ℂ) (i : ℕ), ‖perFr (U.X k) (xx w) v ρ i‖ ≤ C * w.im ^ B := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ N U A _ φ x fr ψ r y k T M γ xx hσ hU harc hm horb hlift v R

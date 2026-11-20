@@ -26,9 +26,9 @@ abbrev TwJacquet (ρ : Representation k G V) (N : Subgroup G) (ψ : N →* kˣ) 
 abbrev Jacquet (ρ : Representation k G V) (N : Subgroup G) : Type := TwJacquet ρ N 1
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨n, v, rfl⟩`. Establish `hn : g * (n : G) * g⁻¹ ∈ N` using `(Subgroup.mem_normalizer_iff.1 hg n).1 n.2`. Use `Submodule.subset_span ⟨⟨_, hn⟩, ρ g v, ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem twKer_le_comap (ρ : Representation k G V) (N : Subgroup G) (g : G) (hg : g ∈ Subgroup.normalizer (N : Set G)) :
     twKer ρ N 1 ≤ (twKer ρ N 1).comap (ρ g) := by
@@ -143,11 +143,11 @@ def smoothPart (ρ : Representation k G V) : Submodule k V where
       rw [this]; exact hv
 
 /- English proof (translation)
-Establish `: {x : G | ρ x (ρ g v) = ρ g v} = (fun x => g⁻¹ * x * g) ⁻¹' {x : G | ρ x v = v}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, map_mul, Module.End.mul_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Introduce `h`. Use `congrArg (ρ g) h` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `show IsOpen {x : G | ρ x (ρ g v) = ρ g v}`. Rewrite using `[this]`. Conclude with `IsOpen.preimage (by fun_prop) hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothPart_stable (ρ : Representation k G V) (g : G) (v : V) (hv : v ∈ smoothPart ρ) :
     ρ g v ∈ smoothPart ρ := by

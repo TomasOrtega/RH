@@ -23,7 +23,7 @@ noncomputable def polyToDiag : Polynomial R →ₐ[R] (MvPolynomial (Fin 2) R �
   Polynomial.aeval (Ideal.Quotient.mk (diagonalIdeal R) (X 0))
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq]`. Conclude with `Ideal.mem_span_singleton'.2 ⟨-1, by ring⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mk_X_one_eq : Ideal.Quotient.mk (diagonalIdeal R) (X 1) =
     Ideal.Quotient.mk (diagonalIdeal R) (X 0) := by
@@ -37,7 +37,7 @@ Both sides reduce to the same expression.
     diagToPoly R (Ideal.Quotient.mk _ p) = diagEval R p := rfl
 
 /- English proof (translation)
-Simplify using `[diagEval]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma diagEval_X (i : Fin 2) : diagEval R (X i) = Polynomial.X := by
   simp [diagEval]
@@ -83,12 +83,12 @@ Both sides reduce to the same expression.
     mixedToLaurent R (Ideal.Quotient.mk _ p) = mixedEval R p := rfl
 
 /- English proof (translation)
-Simplify using `[mixedEval]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma mixedEval_X_zero : mixedEval R (X 0) = T 1 := by simp [mixedEval]
 
 /- English proof (translation)
-Simplify using `[mixedEval]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma mixedEval_X_one : mixedEval R (X 1) = T (-1) := by simp [mixedEval]
 
@@ -112,7 +112,7 @@ noncomputable def laurentToMixed :
       rw [← LaurentPolynomial.C_eq_algebraMap, LaurentPolynomial.eval₂_C] }
 
 /- English proof (translation)
-The claim follows from `LaurentPolynomial.eval₂_T _ _ n`.
+A detailed English derivation is pending.
 -/
 @[simp] lemma laurentToMixed_alt (n : ℤ) :
     laurentToMixed R (T n) = ((mixedUnit R ^ n : (MvPolynomial (Fin 2) R ⧸ mixedDiagonalIdeal R)ˣ) :
@@ -120,7 +120,7 @@ The claim follows from `LaurentPolynomial.eval₂_T _ _ n`.
   LaurentPolynomial.eval₂_T _ _ n
 
 /- English proof (translation)
-Rewrite using `[LaurentPolynomial.C_eq_algebraMap, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] lemma laurentToMixed_C (a : R) :
     laurentToMixed R (LaurentPolynomial.C a) = algebraMap R _ a := by
@@ -149,11 +149,9 @@ end DiagonalQuotient
 open DiagonalQuotient in
 
 /- English proof (translation)
-Introduce `R _`. Use `⟨⟨diagEquiv R, ?_, ?_⟩, ?_, ?_, ⟨mixedEquiv R, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[diagEquiv]`. Simplify using `[diagEquiv]`. Conclude with `Module.Flat.of_linearEquiv (diagEquiv R).toLinearEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_`. Conclude with `Function.Injective.isDomain (diagEquiv R) (diagEquiv R).injective`. Simplify using `[mixedEquiv]`. Simplify using `[mixedEquiv]`. Conclude with `Module.Flat.of_linearEquiv (mixedEquiv R).toLinearEquiv`.
-
-Introduce `_`. Conclude with `Function.Injective.isDomain (mixedEquiv R) (mixedEquiv R).injective`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DiagonalQuotient.proof : DiagonalQuotient.Statement := by
   intro R _

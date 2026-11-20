@@ -8,7 +8,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 namespace GlobalTheory.CoreHt.RowsOfDesign
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `h1 : n = 0 ∨ n = 1` using `by omega`. Apply the tactic sequence `rcases h1 with rfl | rfl <;> simp at h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem two_le_of_log_pos' (n : ℕ) (h : 0 < Real.log (n : ℝ)) : 2 ≤ n := by
   by_contra hn
@@ -16,9 +16,9 @@ theorem two_le_of_log_pos' (n : ℕ) (h : 0 < Real.log (n : ℝ)) : 2 ≤ n := b
   rcases h1 with rfl | rfl <;> simp at h
 
 /- English proof (translation)
-Establish `h` using `(factRd D.R D.host).2.2`. Establish `hf : (2 : ℝ) ≤ D.R.f`. Use `D.host.four_le_n'` as an intermediate fact. Establish `h2 : D.R.f = 2 * D.R.n` using `rfl`. Conclude with `(by omega : 2 ≤ D.R.f)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ D.host.rdE` using `by unfold Host.rdE; positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem two_le_rdE' (D : D7) (hq : 2 ≤ D.host.q) (hd : 2 ≤ D.host.d) : 2 ≤ D.host.rdE := by
   have h := (factRd D.R D.host).2.2
@@ -30,33 +30,33 @@ theorem two_le_rdE' (D : D7) (hq : 2 ≤ D.host.q) (hd : 2 ≤ D.host.d) : 2 ≤
   nlinarith
 
 /- English proof (translation)
-Introduce `D L P hS hx4 hDN hTU`. Take `⟨-, -, -, -, hT, hCond, hQD, -, hLa, hRho, hBot, -, -, hEta, hNodes, -, hDel, -⟩` from `hS`. Establish `hx1 : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hL1 : 1 ≤ L.sc.L` using `by unfold Scale.L; exact Real.one_le_rpow hx1.le L.sc.eps_pos.le`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : 2 ≤ D.host.q` using `two_le_of_log_pos' _ (lt_of_lt_of_le (Real.rpow_pos_of_pos hx0 _) hQD.1)`. Establish `hd2 : 2 ≤ D.host.d` using `two_le_of_log_pos' _ (lt_of_lt_of_le (Real.rpow_pos_of_pos hx0 _) hQD.2.2.2.1)`. Establish `hq' : (2 : ℝ) ≤ D.host.q` using `by exact_mod_cast hq2`. Establish `hd' : (2 : ℝ) ≤ D.host.d` using `by exact_mod_cast hd2`. Establish `hrd2` using `two_le_rdE' D hq2 hd2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1 : (1 : ℝ) ≤ D.R.n`. Establish `: 1 ≤ D.R.n` using `by unfold Ranks.n; exact Nat.succ_le_of_lt (by positivity)`. Conclude with `this` after adjusting the coercions. Establish `ht1 : (1 : ℝ) ≤ D.R.t` using `hT.1`. Establish `hm1 : (1 : ℝ) ≤ D.R.m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`. Conclude with `this` after adjusting the coercions. Establish `hk0 : (0 : ℝ) < D.R.k`. Establish `: 0 < D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb1 : 1 ≤ L.sc.b` using `by unfold Scale.b; exact Real.one_le_exp (by linarith)`. Use `⟨⟨P⟩, ⟨?_, hQD.2.2.2.2.2.1, hx4⟩, ?_, ⟨?_, hEta.1, hEta.2.2.2.2.1, hDel.2.2.2.1, ?_⟩, hDN, hTU⟩` and prove the remaining obligations. Establish `hqd : (1 : ℝ) ≤ (D.host.q : ℝ) * D.host.d` using `by nlinarith`. Establish `hs : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.q : ℝ) * D.host.d` using `Real.sqrt_le_iff.2 ⟨by linarith, by nlinarith⟩`. Establish `hc : D.host.rdE ≤ Formalism.MainNotions.szCond L`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `hQD.2.2.2.2.2.2.2.trans ?_` and prove the remaining obligations. Unfold `Formalism.MainNotions.szCond`. Establish `: (D.host.QS : ℝ) / 2 * Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.QS : ℝ) / 2 * ((D.host.q : ℝ) * D.host.d)` using `mul_le_mul_of_nonneg_left hs (by positivity)`. Establish `h0 : 0 ≤ (D.host.QS : ℝ) * ((D.host.q : ℝ) * D.host.d)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : 1 ≤ Formalism.MainNotions.szCond L` using `by linarith`. Establish `h36 : Formalism.MainNotions.szCond L ≤ Formalism.MainNotions.szCond L ^ 36` using `le_self_pow₀ hc1 (by norm_num)`. Establish `h150 : Formalism.MainNotions.szCond L ^ 36 ≤ Formalism.MainNotions.szCond L ^ 36 * (D.R.t : ℝ) ^ 150` using `le_mul_of_one_le_right (by positivity) (one_le_pow₀ ht1)`. Establish `hsb : Real.sqrt L.sc.b ≤ L.sc.b` using `Real.sqrt_le_iff.2 ⟨by linarith, by nlinarith⟩`. Establish `hfin : D.host.rdE ≤ L.sc.b` using `hc.trans (h36.trans (h150.trans (hCond.trans hsb)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Real.log_le_log (by linarith) hfin` as an intermediate fact. Rewrite `this` using `[show Real.log L.sc.b = L.sc.L by unfold Scale.b; exact Real.log_exp _]`. Then use the resulting hypothesis. Introduce `i`. Take `⟨Y, hY1, -, hY3, hY4⟩` from `P.g_Y`. Establish `hY0 : 0 < Y` using `lt_of_lt_of_le (by positivity) hY1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg0 : (0 : ℝ) < D.host.g i` using `lt_of_lt_of_le hY0 (hY4 i).1`. Establish `h1` using `Real.log_le_log hg0 (hY4 i).2`. Rewrite `h1` using `[Real.log_mul (by norm_num) hY0.ne']`. Establish `h2 : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hNodes.2.2.2.1`. Establish `h2 : L.etaSz / D.R.m ≤ L.etaSz` using `div_le_self L.etaSz_pos.le hm1`. Establish `h3 : (0 : ℝ) ≤ D.R.t` using `by linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Establish `h1` using `hBot t`. Establish `hLa0 : 0 ≤ L.LaG` using `le_trans (Real.rpow_pos_of_pos hx0 _).le hLa.1`. Establish `h2 : 0 ≤ L.sc.x ^ Formalism.MainNotions.szTh L * Real.log L.sc.x * L.LaG / D.R.k` using `div_nonneg (mul_nonneg (mul_nonneg (Real.rpow_pos_of_pos hx0 _).le (Real.log_nonneg hx1.le)) hLa0) hk0.le`. Establish `h3 : L.sc.x ^ (-2 : ℝ) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx1.le (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Establish `hb' : 0 ≤ L.sc.b'`. Unfold `Scale.b' Scale.a Scale.X' Scale.b`. Check the signs of the components of the expression. Establish `hR : 4 * Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k + L.sc.x ^ Formalism.MainNotions.szTh L * Real.log L.sc.x * L.LaG / D.R.k ≤ L.sc.x ^ (-2 : ℝ)` using `hRho`. Establish `h4 : Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `: 4 * Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k = 4 * (Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k)` using `by ring`. Establish `h0 : 0 ≤ Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k`. Unfold `Formalism.MainNotions.szNst Scale.delta1`. Use `Real.rpow_pos_of_pos hx0 (-(L.sc.eps / 8))` as an intermediate fact. Use `Real.rpow_pos_of_pos hx0 L.sc.eps` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / D.R.k = Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k * L.sc.b'` using `by ring`. Rewrite `h1` using `[h5]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rows_of_design : ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L), Formalism.MainNotions.SizesAt L → Real.log (4 * L.sc.x) ≤ L.sc.L →
     DelNat D → ThickUp L → HtRowsS L P.CYL := by

@@ -9,9 +9,7 @@ open Matrix
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Rewrite using `[h0]`. Conclude with `zero_le'`. Rewrite `hx`, the goal using `[← WithZero.exp_log h0]`. Rewrite `hx` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
-
-Conclude with `WithZero.exp_le_exp.2 (by omega)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one_of_lt {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ WithZero.exp (-1) := by
   by_cases h0 : x = 0
@@ -21,7 +19,7 @@ theorem le_exp_neg_one_of_lt {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : 
   exact WithZero.exp_le_exp.2 (by omega)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hM i l) (hN l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_mul {n : ℕ} {M N : Matrix (Fin n) (Fin n) K}
     (hM : ∀ i j, Valued.v (M i j) ≤ 1) (hN : ∀ i j, Valued.v (N i j) ≤ 1) :
@@ -33,7 +31,7 @@ theorem int_mul {n : ℕ} {M N : Matrix (Fin n) (Fin n) K}
   exact mul_le_one' (hM i l) (hN l j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_lt _ one_ne_zero (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hM i l)) (hN l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small_mul {n : ℕ} {M N : Matrix (Fin n) (Fin n) K}
     (hM : ∀ i j, Valued.v (M i j) ≤ 1) (hN : ∀ i j, Valued.v (N i j) < 1) :
@@ -45,23 +43,21 @@ theorem small_mul {n : ℕ} {M N : Matrix (Fin n) (Fin n) K}
   exact lt_of_le_of_lt (mul_le_of_le_one_left' (hM i l)) (hN l j)
 
 /- English proof (translation)
-Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`. Establish `hDD : Formalism.UG.diagJ n ϖ⁻¹ k * Formalism.UG.diagJ n ϖ k = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.UG.diagJ`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; funext i; split_ifs <;> simp [hϖ0]`. Establish `hinv : ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = ((b⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * Formalism.UG.diagJ n ϖ⁻¹ k * ((a⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Establish `e : ((b⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * Formalism.UG.diagJ n ϖ⁻¹ k * ((a⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * ((a : Matrix (Fin n) (Fin n) K) * Formalism.UG.diagJ n ϖ k * (b : Matrix (Fin n) (Fin n) K)) = ((b⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K …`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, Units.inv_mul, Matrix.mul_one, hDD, Matrix.mul_one, Units.inv_mul]`. Establish `key : ((b⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * Formalism.UG.diagJ n ϖ⁻¹ k * ((a⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * ((a' : Matrix (Fin n) (Fin n) K) * Formalism.UG.diagJ n ϖ k * (b' : Matrix (Fin n) (Fin n) K)) = ((b⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_sub, Units.inv_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hDD, add_sub_cancel]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hsub' : ∀ i j, Valued.v (((a' : Matrix (Fin n) (Fin n) K) - (a : Matrix (Fin n) (Fin n) K)) i j) < 1`. Introduce `i j`. Rewrite using `[Matrix.sub_apply, Valuation.map_sub_swap]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hsub i j`. Establish `hN` using `small_mul hai hsub'`. Establish `hX : ∀ i j, Valued.v ((1 + Formalism.UG.diagJ n ϖ⁻¹ k * (((a⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * ((a' : Matrix (Fin n) (Fin n) K) - (a : Matrix (Fin n) (Fin n) K))) * Formalism.UG.diagJ n ϖ k) i j) ≤ 1`. Introduce `i j`. Rewrite using `[Matrix.add_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply `Valuation.map_add_le` to reduce the goal to its premises. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Simplify using `only [Formalism.UG.diagJ, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Rewrite using `[map_mul, map_mul]`. Establish `h1 : Valued.v (if (i : ℕ) < k then ϖ⁻¹ else 1) ≤ WithZero.exp (1 : ℤ)` using `by split_ifs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv₀, hϖ, ← WithZero.exp_neg, neg_neg]`. Rewrite using `[map_one, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions. Establish `h2 : Valued.v (if (j : ℕ) < k then ϖ else 1) ≤ 1` using `by split_ifs`. Rewrite using `[hϖ, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[map_one]`. Establish `h3` using `le_exp_neg_one_of_lt (hN i j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul, hinv, hg', key]`.
-
-Conclude with `int_mul (int_mul hbi hX) hb'`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mul_int_of_left_congr {n : ℕ} (ϖ : K) (k : ℕ)
     (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (a a' b b' g g' : GL (Fin n) K)
@@ -139,7 +135,7 @@ end GlobalTheory.HeckeLocInt
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ v n ϖ k hϖ a a' b b' g g' ha' hai hbi hb' hsub hg hg'`. Conclude with `HeckeLocInt.inv_mul_int_of_left_congr ϖ k hϖ a a' b b' g g' ha' hai hbi hb' hsub hg hg'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hecke_loc_inv_mul_int : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) (ϖ : v.adicCompletion F) (k : ℕ), Valued.v ϖ = WithZero.exp (-1 : ℤ) → ∀ (a a' b b' g g' : GL (Fin n) (v.adicCompletion F)), (∀ i j, Valued.v ((a' : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j) ≤ 1) → (∀ i j, Valued.v (((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j) ≤ 1) → (∀ i j, Valued.v (((b⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j) ≤ 1) → (∀ i j, Valued.v ((b' : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j) ≤ 1) → (∀ i j, Valued.v ((a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j - (a' : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j) < 1) → (g : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = (a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Formalism.UG.diagJ n ϖ k * (b : Matrix (Fin n) (Fin n) (v.adicCompletion F)) → (g' : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = (a' : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Formalism.UG.diagJ n ϖ k * (b' : Matrix (Fin n) (Fin n) (v.adicCompletion F)) → ∀ i j, Valued.v (((g⁻¹ * g' : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j) ≤ 1 := by
   intro F _ _ v n ϖ k hϖ a a' b b' g g' ha' hai hbi hb' hsub hg hg'

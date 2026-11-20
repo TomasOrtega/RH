@@ -21,9 +21,9 @@ def dPart (s : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) : DVar ι a 
   s.comapDomain Sum.inr Sum.inr_injective.injOn
 
 /- English proof (translation)
-Establish `h1 : MvPolynomial.monomial s r = r • MvPolynomial.monomial s (1 : K)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h1, LinearMap.map_smul]`. Use `congr 1`. Unfold `jetLin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[show (MvPolynomial.monomial s (1 : K)) = MvPolynomial.basisMonomials _ K s by`. Simplify using `[MvPolynomial.coe_basisMonomials], Module.Basis.constr_basis]`. Apply the tactic sequence `all_goals rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem jetLin_monomial' (J : (DVar ι a b →₀ ℕ) → K)
     (s : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) (r : K) :
@@ -39,7 +39,7 @@ private theorem jetLin_monomial' (J : (DVar ι a b →₀ ℕ) → K)
   all_goals rfl
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' Q (fun s r => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, jetLin_monomial', jetLin_monomial', MvPolynomial.smul_monomial, MvPolynomial.smul_monomial, MvPolynomial.map_monomial, smul_eq_mul, smul_eq_mul, map_mul]`. Rewrite using `[map_add, map_add, map_add, map_add, hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_jetLin {L : Type} [Field L] (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K)
     (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) :
@@ -50,7 +50,7 @@ theorem map_jetLin {L : Type} [Field L] (σ : K →+* L) (J : (DVar ι a b →�
   · rw [map_add, map_add, map_add, map_add, hp, hq]
 
 /- English proof (translation)
-Unfold `frDet`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `α s`. Simplify using `[RingHom.mapMatrix_apply, MvPolynomial.map_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_frDet {L : Type} [Field L] (σ : K →+* L) (τ : ι) :
     MvPolynomial.map σ (frDet K a τ) = frDet L a τ := by
@@ -61,9 +61,9 @@ theorem map_frDet {L : Type} [Field L] (σ : K →+* L) (τ : ι) :
   simp [RingHom.mapMatrix_apply, MvPolynomial.map_X]
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.map σ).comp (subD K ι a b).toRingHom = (subD L ι a b).toRingHom.comp (MvPolynomial.map σ)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[subD]`. Introduce `v show MvPolynomial.map σ (subD K ι a b (MvPolynomial.X v)) = subD L ι a b (MvPolynomial.map σ (MvPolynomial.X v))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.map_X]`. Simplify using `only [subD, MvPolynomial.aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `RingHom.congr_fun h P`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem map_subD {L : Type} [Field L] (σ : K →+* L) (P : Pol K ι a) :
     MvPolynomial.map σ (subD K ι a b P) = subD L ι a b (MvPolynomial.map σ P) := by
@@ -80,7 +80,7 @@ theorem map_subD {L : Type} [Field L] (σ : K →+* L) (P : Pol K ι a) :
   exact RingHom.congr_fun h P
 
 /- English proof (translation)
-Simplify using `only [jetMap, LinearMap.coe_comp, Function.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulRight_apply]`. Rewrite using `[map_jetLin, map_subD, map_mul, map_prod]`. Simplify using `only [map_pow, map_frDet]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_jetMap {L : Type} [Field L] (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) (P : Pol K ι a) :
     MvPolynomial.map σ (jetMap J n P) =

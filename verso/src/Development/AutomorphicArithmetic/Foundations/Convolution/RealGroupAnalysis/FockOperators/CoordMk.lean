@@ -14,14 +14,14 @@ namespace UpperTheory.ConvolutionTheory.R2.Fo
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E]
 
 /- English proof (translation)
-The claim follows from `AddMonoidHomClass.continuous_of_bound (coord τ) 1 fun x => by simpa using FieldIso.norm_coord_le τ x`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_coordE (τ : E →+* ℂ) : Continuous (coord τ) :=
   AddMonoidHomClass.continuous_of_bound (coord τ) 1 fun x => by
     simpa using FieldIso.norm_coord_le τ x
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_infEqE_symm : Continuous (GlobalTheory.CuspRep.infEq E).symm :=
   continuous_pi fun w =>
@@ -29,7 +29,7 @@ private theorem continuous_infEqE_symm : Continuous (GlobalTheory.CuspRep.infEq 
       (continuous_apply w)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_infEqF_symm : Continuous (TR.infEq F).symm :=
   continuous_pi fun w =>
@@ -37,7 +37,7 @@ private theorem continuous_infEqF_symm : Continuous (TR.infEq F).symm :=
       (continuous_apply w)
 
 /- English proof (translation)
-Establish `h : TR.pInf F (rt k) w = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w) k` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe (IsTotallyReal.isReal w) _`. Rewrite using `[cw, h, InfinitePlace.embedding_of_isReal_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cw_rt (w : InfinitePlace F) (k : F) :
     cw w (rt k) = w.embedding k := by
@@ -46,7 +46,7 @@ private theorem cw_rt (w : InfinitePlace F) (k : F) :
   rw [cw, h, InfinitePlace.embedding_of_isReal_apply]
 
 /- English proof (translation)
-Establish `h : (pl F τ).IsReal` using `IsTotallyReal.isReal _`. Establish `h'` using `InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 h)`. Conclude with `RingHom.congr_fun h' k`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem embedding_pl (τ : E →+* ℂ) (k : F) :
     (pl F τ).embedding k = τ (algebraMap F E k) := by
@@ -55,15 +55,15 @@ private theorem embedding_pl (τ : E →+* ℂ) (k : F) :
   exact RingHom.congr_fun h' k
 
 /- English proof (translation)
-Rewrite using `[cw_rt, embedding_pl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cw_rt_pl (τ : E →+* ℂ) (k : F) : cw (pl F τ) (rt k) = τ (algebraMap F E k) := by
   rw [cw_rt, embedding_pl]
 
 /- English proof (translation)
-Establish `key : (fun b : InfiniteAdeleRing F => coord τ ((GlobalTheory.CuspRep.infEq E).symm (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K` using `F) (L := E) b))) = fun b => (((TR.infEq F).symm b (pl F τ) : ℝ) : ℂ) := by`. Use `(InfiniteAdeleRing.denseRange_algebraMap F).equalizer ((continuous_coordE τ).comp (continuous_infEqE_symm.comp GroundTheory.Global.InfinitePlace.continuous_infiniteAdeleRingMap)) (Complex.continuous_ofReal.comp ((continuous_apply _).comp continuous_infEqF_symm)) (funext fun k => …` and prove the remaining obligations. Establish `h1` using `cw_rt_pl (E := E) τ k`. Establish `h2` using `coord_algebraMap τ (algebraMap F E k)`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_algebraMap]`. Conclude with `h2.trans h1.symm`. Conclude with `congrFun key a.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coord_adeleMap (τ : E →+* ℂ) (a : A F) :
     coord τ (pInf E (AdeleBaseChange.adeleMap F E a)) = cw (pl F τ) a := by
@@ -85,19 +85,19 @@ end UpperTheory.ConvolutionTheory.R2.Fo
 
 open UpperTheory.ConvolutionTheory.R2.Fo in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D`. Establish `hneg : ∀ w : InfinitePlace F, ∃ r : ℝ, r < 0 ∧ cw w (rt D.δ) = r` using `fun w => ⟨InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w) D.δ, D.neg _, by`. Rewrite using `[cw_rt, InfinitePlace.embedding_of_isReal_apply]⟩`. Establish `hsq : ∀ τ : E →+* ℂ, τ D.θ ^ 2 = cw (pl F τ) (rt D.δ)` using `fun τ => by`. Rewrite using `[cw_rt_pl, ← map_pow, D.sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun τ u t => ?_, fun τ => ⟨hsq τ, ?_, ?_⟩, fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Dat.mkE, map_add, map_add, map_mul, map_mul, coord_adeleMap, coord_adeleMap, coord_algebraMap, mul_comm (cw _ t)]`. Take `⟨r, hr, e⟩` from `hneg (pl F τ)`. Establish `h` using `(hsq τ).trans e`. Establish `hre` using `congrArg Complex.re h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him` using `congrArg Complex.im h`. Simplify using `only [pow_two, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im] at hre him`. Establish `h0 : (τ D.θ).re = 0`. Assume the negation of the conclusion as `hc`. Establish `: (τ D.θ).im = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: (τ D.θ).re * (τ D.θ).im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left hc`. Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg (τ D.θ).re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Take `⟨r, hr, e⟩` from `hneg (pl F τ)`. Establish `h` using `(hsq τ).trans e`. Rewrite `h` using `[h0]`. Establish `: (r : ℂ) = 0` using `by simpa using h.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hr.ne (by exact_mod_cast this)`. Take `⟨r, hr, e⟩` from `hneg w`. Rewrite using `[e]`. Conclude with `hr.ne` after adjusting the coercions. Take `⟨W, hW⟩` from `InfinitePlace.comap_surjective (k := F) (K := E) w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨W.embedding, ?_⟩` and prove the remaining obligations. Rewrite using `[← hW]`. Express the relevant statement in the definitionally equal form `InfinitePlace.mk (W.embedding.comp (algebraMap F E)) = W.comap (algebraMap F E)`. Rewrite using `[← InfinitePlace.comap_mk, InfinitePlace.mk_embedding]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.coordMk :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E), (∀ (τ : E →+* ℂ) u t, coord τ (pInf E (D.mkE u t)) = cw (pl F τ) u + τ D.θ * cw (pl F τ) t) ∧

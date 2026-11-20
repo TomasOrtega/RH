@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.LBDescent
 
 /- English proof (translation)
-Use `letI : Algebra Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) := (f.app V₀).hom.toAlgebra`. Establish `hV' : IsAffineOpen (f ⁻¹ᵁ V₀)` using `hV₀.preimage f`. Establish `P` using `ReciprocityTheory.ChartRestriction.G.Out.GtBCPf.isPushout_appLE (IsPullback.of_hasPullback f f).flip inferInstance hV₀ hV' le_rfl h`. Rewrite `P` using `[Scheme.Hom.appLE_eq_app]`. Establish `T` using `CommRingCat.isPushout_tensorProduct Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) Γ(X, f ⁻¹ᵁ V₀)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `I` to `IsPushout.isoIsPushout _ _ T P.flip`. Use `⟨I.commRingCatIsoToRingEquiv, fun a b => ?_⟩` and prove the remaining obligations. Establish `h1 : I.hom.hom (a ⊗ₜ 1) = ((pullback.fst f f).app (f ⁻¹ᵁ V₀)).hom a` using `congrArg (fun t => t.hom a) (IsPushout.inl_isoIsPushout_hom _ _ T P.flip)`. Establish `h2 : I.hom.hom (1 ⊗ₜ b) = ((pullback.snd f f).appLE (f ⁻¹ᵁ V₀) _ h).hom b` using `congrArg (fun t => t.hom b) (IsPushout.inr_isoIsPushout_hom _ _ T P.flip)`. Establish `hab : (a ⊗ₜ[Γ(Y, V₀)] b : Γ(X, f ⁻¹ᵁ V₀) ⊗[Γ(Y, V₀)] Γ(X, f ⁻¹ᵁ V₀)) = (a ⊗ₜ 1) * (1 ⊗ₜ b)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Express the relevant statement in the definitionally equal form `I.hom.hom (a ⊗ₜ b) = _`. Rewrite using `[hab, map_mul, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_tensorSquare_equiv_sections {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (V₀ : Y.Opens)
     (hV₀ : IsAffineOpen V₀)

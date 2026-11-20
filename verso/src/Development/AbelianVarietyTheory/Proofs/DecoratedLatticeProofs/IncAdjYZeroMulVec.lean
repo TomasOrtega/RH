@@ -25,11 +25,11 @@ namespace GlobalTheory.GoodPos
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : (incA D (-D.host.xi0⁻¹) • (adj (a • yZero V₀ ρ z) ⬝ gA V₀)) *ᵥ y = Pi.single r (incA D D.host.xi0⁻¹ * hermAt V₀ y (a • ratV z))`. Rewrite using `[smul_mulVec, ← mulVec_mulVec, herm_eq]`. Generalize the expression as in `gA V₀ *ᵥ y = t`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mulVec, dotProduct, adj, yZero, zEll, ell, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.neg_apply, vecMulVec_apply, RingHom.map_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : i = r`. Substitute `hi` using the available equality. Simplify using `only [hr, if_true, mul_one, Pi.single_eq_same, mul_neg, RingHom.map_neg, neg_mul, Finset.sum_neg_distrib, neg_neg]`. Establish `: ¬ (i.1 + 1 = ρ)` using `fun h => hi (Fin.ext (by omega))`. Simplify using `only [this, if_false, mul_zero, neg_zero, RingHom.map_zero, zero_mul, Finset.sum_const_zero, Pi.single_eq_of_ne hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(d.jY ⬝ (incA D (-D.host.xi0⁻¹) • (adj (a • yZero V₀ ρ z) ⬝ gA V₀))) *ᵥ y = _`. Rewrite using `[← mulVec_mulVec, h1, mulVec_single]`. Use function extensionality and compare the values at `k`. Conclude with `mul_comm _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem incAdj_yZero_mulVec {V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (r : Fin ρ) (hr : r.1 + 1 = ρ)
     (z : Fin V₀.rank → D.host.E) (a : AE D) (y : Fin V₀.rank → AE D) :
@@ -53,25 +53,25 @@ theorem incAdj_yZero_mulVec {V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ 
   exact mul_comm _ _
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (h k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_mul {P : Pl D → Prop} {l m n : ℕ} (M : Mx D l m) {N : Mx D m n} (h : MxAt P N) : MxAt P (M ⬝ N) := fun i j => by
   rw [Matrix.mul_apply]; exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (h k j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (h i k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_mul' {P : Pl D → Prop} {l m n : ℕ} {M : Mx D l m} (N : Mx D m n) (h : MxAt P M) : MxAt P (M ⬝ N) := fun i j => by
   rw [Matrix.mul_apply]; exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (h i k)
 
 /- English proof (translation)
-Introduce `i j` and use `Ideal.mul_mem_left _ _ (h i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_smul {P : Pl D → Prop} {m n : ℕ} (a : AE D) {N : Mx D m n} (h : MxAt P N) : MxAt P (a • N) := fun i j =>
   Ideal.mul_mem_left _ _ (h i j)
 
 /- English proof (translation)
-Introduce `i j` and use `id_conj (h j i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_adj {x : Pl D} {m n : ℕ} {N : Mx D m n} (h : MxAt (· = x) N) : MxAt (· = x) (adj N) := fun i j =>
   id_conj (h j i)
@@ -79,19 +79,19 @@ theorem mxAt_adj {x : Pl D} {m n : ℕ} {N : Mx D m n} (h : MxAt (· = x) N) : M
 def xiU (D : D7) : (AE D)ˣ := inU D.host.xi0 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)
 
 /- English proof (translation)
-Rewrite using `[FrameLat.cA_incA, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, RingHom.map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_xi : cA D (incA D D.host.xi0) = -incA D D.host.xi0 := by
   rw [FrameLat.cA_incA, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, RingHom.map_neg]
 
 /- English proof (translation)
-Rewrite using `[FrameLat.cA_incA, star_inv₀, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, inv_neg, RingHom.map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_xi_inv : cA D (incA D D.host.xi0⁻¹) = -incA D D.host.xi0⁻¹ := by
   rw [FrameLat.cA_incA, star_inv₀, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, inv_neg, RingHom.map_neg]
 
 /- English proof (translation)
-Introduce `a ha` and use `by have hsd := LocSD.isSDAt_latV D V₀ M x hM have hr : (⟨ρ - 1, by omega⟩ : Fin ρ).1 + 1 = ρ := by simp only; omega have hmx : MxAt (· = x) (d.incAdj V₀ (a • yZero V₀ ρ z)) := mxAt_mul _ (mxAt_smul _ (mxAt_mul' _ (mxAt_adj fun i j => Ideal.mul_mem_right _ _ ha))) rw [LatMem.mem_l …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem last_of {V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (z : Fin V₀.rank → D.host.E) {M : Lat V₀} {LW : Lat W}
     (hM : IsSelfDualC V₀ M) (hLW : IsSelfDualC W LW) {x : Pl D} {α m : (AE D)ˣ} {b : Fin ρ → (AE D)ˣ}
@@ -124,9 +124,9 @@ theorem last_of {V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (z : Fin
     (cA D m * hermAt V₀ y (a • ratV z)) * e3
 
 /- English proof (translation)
-Rewrite using `[mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `hermAt S ((incA D (-D.host.xi0⁻¹) • (giA S ⬝ (adj (rat τ ⬝ w) ⬝ gA L))) *ᵥ l) s = _`. Generalize the expression as in `((rat τ : Mx D _ _) ⬝ w : Mx D L.rank S.rank) = u`. Rewrite using `[herm_eq, herm_eq, mulVec_mulVec, Matrix.mul_smul, gA_giA_cancel, smul_mulVec, dotProduct_smul, smul_eq_mul, ← mulVec_mulVec, dotProduct_mulVec]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [vecMul, mulVec, dotProduct, adj, map_sum, RingHom.map_mul, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_kap {L L'' S : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (w : WO S L'') (l : Fin L.rank → AE D)
     (s : Fin S.rank → AE D) :
@@ -143,19 +143,19 @@ theorem herm_kap {L L'' S : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.ho
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Introduce `w hw`. Rewrite `hw` using `[LatMem.mem_latO_iff D S L'' LS LZ hLS hLZ]`. Establish `hsd` using `LocSD.isSDAt_latV D S LS x hLS`. Establish `hmx : MxAt (· = x) (kap τ S w)` using `mxAt_smul _ (mxAt_mul _ (mxAt_mul' _ (mxAt_adj (mxAt_mul _ hw.1))))`. Rewrite using `[LatMem.mem_latO_iff D L S LL LS hLL hLS]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hmx, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hn` using `line_norm hζ hLL hm`. Take `⟨a, ha, rfl⟩` from `line_vec hζ (latV_idAt hl)`. Rewrite using `[hα]`. Use `(hsd.2.2 _ ?_).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun i => Ideal.mul_mem_left _ _ (mulVec_mem_idAt _ (latV_idAt hl) i)`. Introduce `s hs`. Establish `h1` using `(hα _ _ _).1 (hw.2 s hs)`. Take `⟨a', ha', e'⟩` from `line_vec hζ₀ (latV_idAt h1)`. Rewrite `h1` using `[e']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (show Matrix (Fin L''.rank) (Fin S.rank) (AE D) from w) *ᵥ s = ((α : AE D) * a') • ratV ζ₀`. Rewrite using `[mul_smul, ← e', smul_smul, Units.mul_inv, one_smul]`. Establish `e1` using `herm_smul S ((α⁻¹ : (AE D)ˣ) : AE D) 1 ((show Matrix (Fin S.rank) (Fin L.rank) (AE D) from kap τ S w) *ᵥ a • ratV ζ) s`. Rewrite `e1` using `[one_smul]`. Rewrite using `[e1, herm_kap, e2, mulVec_smul, rat_mulVec, hτ, ratV_smul, smul_smul, herm_smul, herm_rat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `int_mul ((hm a ha).1 hl) (int_conj.2 ((hμ a' ha').1 h1))`. Rewrite `h2` using `[hn _ h2.1]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Generalize the expression as in `hm' : α * μ * inU lam hlam * (xiU D * cU α)⁻¹ = m`. Establish `f1` using `m.mul_inv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `f2 : cA D (μ : AE D) * cA D ((μ⁻¹ : (AE D)ˣ) : AE D) = 1` using `(cU μ).mul_inv`. Establish `f3 : cA D (m : AE D) = cA D α * cA D μ * cA D (incA D lam) * (-incA D D.host.xi0⁻¹ * (α⁻¹ : (AE D)ˣ))`. Rewrite using `[← hm', mul_inv]`. Simplify using `only [Units.val_mul, RingHom.map_mul, inU_val, cU_inv, cA_cA, xiU, inU_inv, cA_xi_inv]`. Rewrite using `[f3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.map_mul, RingHom.map_neg, RingHom.map_one]`. Generalize the expression as in `incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ) = h`. Take the linear combination `(cA D α * cA D (incA D lam) * incA D D.host.xi0⁻¹ * (α⁻¹ : (AE D)ˣ) * h * a * cA D a') * f2 + (cA D α * cA D (incA D lam) * incA D D.host.xi0⁻¹ * (α⁻¹ : (AE D)ˣ) * h * a * cA D a' * (cA D μ * cA D (μ⁻¹ : (AE D)ˣ))) * f1`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem kap_of {L L'' S : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) {ζ : Fin L.rank → D.host.E}
     {ζ₀ : Fin L''.rank → D.host.E} (hζ : IsLineVec L ζ) (hζ₀ : IsLineVec L'' ζ₀) {lam : D.host.E} (hlam : lam ≠ 0)
@@ -206,15 +206,15 @@ section Split
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {p : SplitPt D k}
 
 /- English proof (translation)
-The claim follows from `IsU.of_pres (xiU D).mul_inv (fun a ha => (h.1 a ha).1) fun a ha => (h.1 a ha).2`.
+A detailed English derivation is pending.
 -/
 theorem isU_xi (h : p.UnitAA) : IsU p.v (xiU D : AE D) :=
   IsU.of_pres (xiU D).mul_inv (fun a ha => (h.1 a ha).1) fun a ha => (h.1 a ha).2
 
 /- English proof (translation)
-Take `⟨e, he, hg⟩` from `line_gen hζ (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat L).1 p.v`. Use `IsU.inv (fun a ha => ?_) α.inv_mul` and prove the remaining obligations. Establish `h1` using `hα L (GlobalTheory.AdelicU.frameLat L) ((incA D e * a) • ratV ζ)`. Establish `e1 : incA D e⁻¹ * incA D e = 1` using `(inU e he).inv_mul`. Rewrite `h1` using `[h.2, smul_smul, hg _ (Ideal.mul_mem_left _ _ ha), hg _ (Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ ha)), mul_left_comm (incA D e⁻¹) ((α⁻¹ : (AE D)ˣ) : AE D), ← mul_assoc (incA D e⁻¹), e1, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem isU_alpha (h : p.UnitAA) {L : HSp D} {ζ : Fin L.rank → D.host.E} (hζ : IsLineVec L ζ) {α : (AE D)ˣ}
     (hα : ∀ (S : HSp D) (L : Lat S) y, y ∈ latA S L (· = p.v) ↔ ((α⁻¹ : (AE D)ˣ) : AE D) • y ∈ latV S L (· = p.v)) :
@@ -228,7 +228,7 @@ theorem isU_alpha (h : p.UnitAA) {L : HSp D} {ζ : Fin L.rank → D.host.E} (hζ
   exact h1
 
 /- English proof (translation)
-Use `(p.int_iff _).2 ?_` and prove the remaining obligations. Rewrite using `[p.sec_pr, mul_comm]`. Conclude with `((h _ (FrameLat.e_mem_idAt p)).1 (FrameLat.e_mem_intAt p)).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_one {u : AE D} (h : IsU p.v u) : valuation k (p.pr u) ≤ 1 := by
   refine (p.int_iff _).2 ?_
@@ -236,7 +236,7 @@ theorem val_le_one {u : AE D} (h : IsU p.v u) : valuation k (p.pr u) ≤ 1 := by
   exact ((h _ (FrameLat.e_mem_idAt p)).1 (FrameLat.e_mem_intAt p)).2
 
 /- English proof (translation)
-Establish `h1` using `val_le_one h`. Establish `h2` using `val_le_one (h.inv u.mul_inv)`. Establish `h3 : valuation k (p.pr u) * valuation k (p.pr (u⁻¹ : (AE D)ˣ)) = 1`. Rewrite using `[← map_mul, ← map_mul, u.mul_inv, map_one, map_one]`. Conclude with `le_antisymm h1 (by rw [← h3]; exact mul_le_of_le_one_right' h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_one {u : (AE D)ˣ} (h : IsU p.v (u : AE D)) : valuation k (p.pr u) = 1 := by
   have h1 := val_le_one h

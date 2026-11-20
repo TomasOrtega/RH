@@ -20,7 +20,7 @@ variable {O : Type} [CommRing O] {bar : O → O} {X Y : Type} [AddCommGroup X] [
   [AddCommGroup Y] [Module O Y] [Module.Finite O Y]
 
 /- English proof (translation)
-Take `⟨n, u, h1, h2, h3, h4, h5, h6, c, hc, h7⟩` from `h`. Use `⟨n, fun i => pull e.symm.toLinearMap (u i), fun i => pull_mem _ (h1 i), fun i y => h2 i _, (linearOn_pull_iff e.symm.surjective).2 h3, (linearOn_pull_iff e.symm.surjective).2 h4, fun i => by rw [evalZ_pull φ e.symm.surjective]; exact h5 i, fun i => by rw [evalZ_pull χ e.symm.surj …` and prove the remaining obligations. Use `LinearMap.congr_fun₂ h7 (e.symm x) (e.symm y)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem transport {φ χ : InvFun O} {b : ℕ} (e : X ≃ₗ[O] Y) {β : LinearMap.BilinForm ℤ Y}
     (h : ∃ (n : ℕ) (u : Fin n → LinearMap.BilinForm ℤ X), (∀ i, u i ∈ balForms bar X) ∧ (∀ i y, 0 ≤ u i y y) ∧
@@ -37,7 +37,7 @@ theorem transport {φ χ : InvFun O} {b : ℕ} (e : X ≃ₗ[O] Y) {β : LinearM
   simpa [LinearMap.sum_apply] using this
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[linearOn_iff]`. Introduce `c hc`. Simplify `h c hc` using `[starFun_evalR, starFun_evalZ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linearOn_starDepth {ψ w : InvFun O} {n : ℕ} {u : Fin n → LinearMap.BilinForm ℤ X}
     (h : (starFun bar ψ w 0 1).LinearOn u) : (starDepth bar ψ w).LinearOn u := by
@@ -48,9 +48,9 @@ theorem linearOn_starDepth {ψ w : InvFun O} {n : ℕ} {u : Fin n → LinearMap.
 omit [Module O X] [Module.Finite O X] in
 
 /- English proof (translation)
-Take `⟨g, hg, hBg⟩` from `hm`. Establish `key` using `apply_eq_of_toReal_eq (β := β) (γ := Fin.cons v γ) (c := Fin.cons t g) (by`. Simplify using `only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← hBg]`. Use the proof step `abel) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ] at key`. Establish `hpos : 0 ≤ ∑ i, g i * (h (γ i) : ℝ)` using `Finset.sum_nonneg fun i _ => mul_nonneg (hg i) (by exact_mod_cast hγ i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mul_le_of_sub_mem_rcone {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ}
     (hγ : ∀ i, 0 ≤ h (γ i)) {β v : LinearMap.BilinForm ℤ X} {t : ℝ} (hm : toReal β - t • toReal v ∈ rcone γ) :
@@ -65,7 +65,7 @@ theorem mul_le_of_sub_mem_rcone {m : ℕ} {γ : Fin m → LinearMap.BilinForm �
   linarith
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `(hS.image f).bddAbove`. Conclude with `⟨⌈r⌉₊, fun x hx => (hr ⟨x, hx, rfl⟩).trans (Nat.le_ceil r)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nat_bound {α : Type} {S : Set α} (hS : S.Finite) (f : α → ℝ) : ∃ b : ℕ, ∀ x ∈ S, f x ≤ b := by
   obtain ⟨r, hr⟩ := (hS.image f).bddAbove
@@ -78,9 +78,9 @@ section CM
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {q : ℕ} {ψ w : InvFun (𝓞 E)}
 
 /- English proof (translation)
-Use `(hS.finite_subsets.biUnion (t := fun T => {v | v ∈ balForms H.bar X ∧ (∀ y, 0 ≤ v y y) ∧ w.evalZ v = 1 ∧ ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ Set.range γ = T ∧ InRCone γ v}) fun T _ => Set.Subsingleton.finite ?_).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨a1, a2, a3, m, γ, a4, a5, a6⟩ v' ⟨b1, b2, b3, m', γ', -, b5, b6⟩`. Use `(hw X hX).2.2 m γ a4 v a1 a2 v' b1 b2 a3 b3 a6 (inRCone_trans (fun j => ?_) b6)` and prove the remaining obligations. Take `⟨i, hi⟩ : γ' j ∈ Set.range γ` from `by rw [a5, ← b5]; exact ⟨j, rfl⟩`. Rewrite using `[← hi]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inRCone_self γ i`. Introduce and unpack `v ⟨a1, a2, a3, m, γ, a4, a5, a6⟩`. Conclude with `Set.mem_biUnion (x := Set.range γ) (by rintro _ ⟨i, rfl⟩; exact a5 i) ⟨a1, a2, a3, m, γ, a4, rfl, a6⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem centres_finite (hw : IsCentreSet H.bar q ψ w) (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
     [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] (hX : Module.finrank (𝓞 E) X ≤ q)
@@ -98,15 +98,15 @@ theorem centres_finite (hw : IsCentreSet H.bar q ψ w) (X : Type) [AddCommGroup 
     exact Set.mem_biUnion (x := Set.range γ) (by rintro _ ⟨i, rfl⟩; exact a5 i) ⟨a1, a2, a3, m, γ, a4, rfl, a6⟩
 
 /- English proof (translation)
-Take `⟨hC1, hC2, hC3⟩` from `hw X hX`. Take `⟨lin1, lin2⟩` from `GlobalTheory.T.starSubdivision_function_linearOn_cells E H q ψ w 0 1 hw`. Distinguish the cases in `hc : ∃ v ∈ balForms H.bar X, (∀ y, 0 ≤ v y y) ∧ w.evalZ v = 1 ∧ InRCone γ v`. Take `⟨v, hv, hvp, hvw, hvin⟩` from `hc`. Establish `hne : v ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Use `hC2 0 hv hvp hvw 2 0 (by simp)` as an intermediate fact. Evaluate the numerical expressions using `at this`. Take `⟨m', s, h, hcut, hh, hin⟩` from `GlobalTheory.StarCover.star_cover X m γ v (toReal β) (fun i => (hγ.mem i).1) hγ.nonneg hne hvin hβ`. Establish `hh' : (0 : ℝ) < h v` using `by exact_mod_cast hh`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ j, InRCone γ ((Fin.cons v fun j => γ (s j) : Fin (m' + 1) → _) j)` using `fun j => Fin.cases (by simpa using hvin) (fun k => by simpa using inRCone_self γ (s k)) j`. Establish `hle : ∀ j, (h ((Fin.cons v fun j => γ (s j) : Fin (m' + 1) → _) j) : ℝ) ≤ h v` using `fun j => Fin.cases (by simp) (fun k => by`. Simplify using `only [Fin.cons_succ]`. Rewrite using `[(hcut.2 (s k)).2 ⟨k, rfl⟩]`. Simplify using `using hh.le) j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨m' + 1, Fin.cons v fun j => γ (s j), fun j => Fin.cases hv (fun k => hγ.mem (s k)) j, fun j => Fin.cases hvp (fun k => hγ.nonneg (s k)) j, linearOn_of_forall_inRCone ψ hγ.linear hmem, linearOn_starDepth (lin2 X hX m γ hγ v hv hvp hvw hvin m' s h hcut hh), fun j => Fin.cases (hb' …` and prove the remaining obligations. Rewrite using `[← evalR_toReal]`. Use `evalR_starDepth_le _ H.bar ψ w X m γ _ 1 hγ (hmem j) zero_le_one fun v' a1 a2 a3 a4 t _ ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[hC3 m γ hγ v' a1 a2 v hv hvp a3 hvw a4 hvin]`. Use `(mul_le_of_sub_mem_rcone hcut.1 ht).trans (hle j)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hno : ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → w.evalZ β = 0` using `fun v a1 a2 a3 => (hC1 v a1 a2).resolve_right fun a4 => hc ⟨v, a1, a2, a4, a3⟩`. Use `⟨m, γ, hγ.mem, hγ.nonneg, hγ.linear, linearOn_starDepth (lin1 X hX m γ hγ hno), hb, fun j => ?_, hβ⟩` and prove the remaining obligations. Rewrite using `[← evalR_toReal]`. Conclude with `evalR_starDepth_le _ H.bar ψ w X m γ _ 1 hγ (inRCone_self γ j) zero_le_one fun v' a1 a2 a3 a4 _ _ _ => (hc ⟨v', a1, a2, a3, a4⟩).elim`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_cell (hw : IsCentreSet H.bar q ψ w) (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
     [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] (hX : Module.finrank (𝓞 E) X ≤ q) {b m : ℕ}
@@ -149,9 +149,9 @@ theorem of_cell (hw : IsCentreSet H.bar q ψ w) (X : Type) [AddCommGroup X] [Mod
       (hc ⟨v', a1, a2, a3, a4⟩).elim
 
 /- English proof (translation)
-Take `⟨S, hS, hcov⟩` from `(hψ X hX).finite`. Take `⟨b, hb⟩` from `exists_nat_bound (hS.union (centres_finite H hw X hX hS)) fun v => ψ.evalZ v`. Use `⟨b, fun β hβ hp => ?_⟩` and prove the remaining obligations. Take `⟨e, m, γ, c, hγ, hγS, hc, hsum⟩` from `hcov _ (toReal_mem_psdCone_of_nonneg E H X β hβ hp)`. Use `transport e (of_cell H hw X hX hγ (fun i => hb _ (Or.inl (hγS i))) (fun v a1 a2 a3 a4 => hb _ (Or.inr ⟨a1, a2, a3, m, γ, hγ, hγS, a4⟩)) ⟨c, hc, ?_⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hsum]`. Conclude with `LinearMap.ext₂ fun x y => by simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_module (hψ : IsPolyFan H.bar q ψ) (hw : IsCentreSet H.bar q ψ w) (X : Type) [AddCommGroup X]
     [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] (hX : Module.finrank (𝓞 E) X ≤ q) :
@@ -171,9 +171,9 @@ theorem per_module (hψ : IsPolyFan H.bar q ψ) (hw : IsCentreSet H.bar q ψ w) 
 end CM
 
 /- English proof (translation)
-Introduce `E _ _ _ H q ψ w hψ hw`. Take `⟨n, R, hR, hiso⟩` from `GlobalTheory.exists_fin_reps_projective_finrank_le E q`. Establish `key` using `fun k => @per_module E _ _ _ H q ψ w hψ hw (R k) _ _ (hR k).1 (hR k).2.1 (hR k).2.2`. Use `choose b hb using key`. Use `⟨Finset.univ.sup b, fun X _ _ _ _ hX β hβ hp => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, ⟨f⟩⟩` from `hiso X hX`. Use `haveI := (hR k).1`. Take `⟨m, u, h1, h2, h3, h4, h5, h6, h7⟩` from `hb k (pull f.symm.toLinearMap β) (pull_mem _ hβ) fun y => hp _`. Establish `hk : (b k : ℝ) ≤ (Finset.univ.sup b : ℕ)` using `by exact_mod_cast Finset.le_sup (f := b) (Finset.mem_univ k)`. Conclude with `transport f.symm ⟨m, u, h1, h2, h3, h4, fun i => (h5 i).trans hk, h6, h7⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_bounded_gens : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ w : InvFun (𝓞 E)), IsPolyFan H.bar q ψ → IsCentreSet H.bar q ψ w → ∃ b : ℕ, ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → ∃ (n : ℕ) (u : Fin n → LinearMap.BilinForm ℤ X), (∀ i, u i ∈ balForms H.bar X) ∧ (∀ i y, 0 ≤ u i y y) ∧ ψ.LinearOn u ∧ (starDepth H.bar ψ w).LinearOn u ∧ (∀ i, ψ.evalZ (u i) ≤ b) ∧ (∀ i, (starDepth H.bar ψ w).evalZ (u i) ≤ 1) ∧ InRCone u β := by
   intro E _ _ _ H q ψ w hψ hw

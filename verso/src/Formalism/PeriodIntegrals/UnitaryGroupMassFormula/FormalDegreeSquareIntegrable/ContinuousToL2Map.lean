@@ -32,7 +32,7 @@ theorem toL2Map_apply (c : H →ₗ[ℂ] (X → ℂ)) (hL : ∀ v, MemLp (c v) 2
     toL2Map c hL v = (hL v).toLp (c v) := rfl
 
 /- English proof (translation)
-Rewrite using `[toL2Map_apply]`. Conclude with `(hL v).coeFn_toLp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toL2Map_apply_ae_eq (c : H →ₗ[ℂ] (X → ℂ)) (hL : ∀ v, MemLp (c v) 2 μ) (v : H) :
     (toL2Map c hL v : X → ℂ) =ᵐ[μ] c v := by
@@ -40,9 +40,9 @@ theorem toL2Map_apply_ae_eq (c : H →ₗ[ℂ] (X → ℂ)) (hL : ∀ v, MemLp (
   exact (hL v).coeFn_toLp
 
 /- English proof (translation)
-Use `LinearMap.continuous_of_seq_closed_graph (g := toL2Map c hL) ?_` and prove the remaining obligations. Introduce `u v y hu hy`. Take `⟨ns, hns, hae⟩` from `(tendstoInMeasure_of_tendsto_Lp hy).exists_seq_tendsto_ae`. Establish `hall : ∀ᵐ x ∂μ, ∀ n, (toL2Map c hL (u n) : X → ℂ) x = c (u n) x` using `ae_all_iff.2 fun n => toL2Map_apply_ae_eq c hL (u n)`. Apply `Lp.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `filter_upwards [hae, hall, toL2Map_apply_ae_eq c hL v] with x hx hxa hxv`. Rewrite using `[hxv]`. Establish `h2 : Tendsto (fun i => c (u (ns i)) x) atTop (𝓝 (c v x))` using `((hcont x).tendsto v).comp (hu.comp hns.tendsto_atTop)`. Use `tendsto_nhds_unique hx (h2.congr fun i => ?_)` and prove the remaining obligations. Conclude with `(hxa (ns i)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_toL2Map [CompleteSpace H] (c : H →ₗ[ℂ] (X → ℂ))
     (hcont : ∀ x, Continuous fun v => c v x) (hL : ∀ v, MemLp (c v) 2 μ) :
@@ -63,7 +63,7 @@ theorem continuous_toL2Map [CompleteSpace H] (c : H →ₗ[ℂ] (X → ℂ))
 end
 
 /- English proof (translation)
-Introduce `X H _ μ _ _ _ c hcont hL`. Conclude with `⟨⟨toL2Map c hL, continuous_toL2Map c hcont hL⟩, toL2Map_apply_ae_eq c hL⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem stBdd : StBdd := by
   intro X H _ μ _ _ _ c hcont hL

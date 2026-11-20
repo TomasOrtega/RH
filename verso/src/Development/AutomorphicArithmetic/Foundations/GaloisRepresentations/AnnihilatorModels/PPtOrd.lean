@@ -5,7 +5,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `hC l q n Y π T hO V _ _ _ _ hl y hy φ hφ I _ z hz`. Apply `hC` to reduce the goal to its premises. Take `⟨k, H, x, hk, x2, x3, hf, C, A, e, h1, h2, h3, h4⟩` from `hO V hl y hy φ hφ`. Conclude with `⟨k, H, x, hk, x2, x3, hf, C, A, fun j => (Equiv.ofBijective (z j) (hz j)).trans (e j), h1, h2, h3, fun j i => h4 j (z j i)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.crystallineComparison.ptOrd_of :
     OrdCount → PtIdOfOrd := by

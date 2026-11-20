@@ -12,7 +12,7 @@ open scoped Classical TensorProduct
 namespace PositivityTheory.Rg.BcB.G3.FinPol2P
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).1, le_rfl, fun k hk => GlobalTheory.BCT.ThBasic.thL_mem_KGL hU n w k hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLevel_KGL {E : Type} [Field E] [NumberField E] [IsCMField E] (hU : Unr E) (n : ℕ) (w : Pl E) :
     IsLevel (thL n w) (GlobalTheory.LFun.KGL w n) (GlobalTheory.LFun.KGL w n) :=
@@ -22,17 +22,17 @@ end PositivityTheory.Rg.BcB.G3.FinPol2P
 
 open PositivityTheory.Rg.BcB.G3.FinPol2P in
 /- English proof (translation)
-Introduce `E _ _ _ hU a b S hS φ hφc hφ1`. Establish `hC₁ : ∀ w, IsCompact (Prod.fst '' tsupport (φ w))` using `fun w => (hφc w).image continuous_fst`. Establish `hC₂ : ∀ w, IsCompact (Prod.snd '' tsupport (φ w))` using `fun w => (hφc w).image continuous_snd`. Use `choose γ₁ hγ₁0 hγ₁ using fun w => GlobalTheory.LocBound.bound_charpoly_nrmL E a w _ (hC₁ w)`. Use `choose γ₂ hγ₂0 hγ₂ using fun w => GlobalTheory.LocBound.bound_charpoly_nrmL E b w _ (hC₂ w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `good : Pl E → Prop` to `fun w => φ w = (((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b) : Subgroup _) : Set (GLw a w × GLw b w)).indicator 1`. Set `g₁ : Pl E → WithZero (Multiplicative ℤ)` to `fun w => if good w then 1 else γ₁ w`. Set `g₂ : Pl E → WithZero (Multiplicative ℤ)` to `fun w => if good w then 1 else γ₂ w`. Apply the tactic sequence `have hfin₁ := GlobalTheory.BCT.GeoFin.finite_ell_bounded E a S hS g₁ (fun w => by by_cases h : good w <;> simp [g₁, h, hγ₁0]) (hφ1.mono fun w h => by simp [g₁, good, h])`. Apply the tactic sequence `have hfin₂ := GlobalTheory.BCT.GeoFin.finite_ell_bounded E b S hS g₂ (fun w => by by_cases h : good w <;> simp [g₂, h, hγ₂0]) (hφ1.mono fun w h => by simp [g₂, good, h])`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(hfin₁.prod hfin₂).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨h₁, h₂, hp⟩`. Establish `key : ∀ w ∈ S, ((∀ i, Valued.v ((atPl w p.1).coeff i) ≤ g₁ w) ∧ (g₁ w)⁻¹ ≤ Valued.v ((atPl w p.1).coeff 0)) ∧ ((∀ i, Valued.v ((atPl w p.2).coeff i) ≤ g₂ w) ∧ (g₂ w)⁻¹ ≤ Valued.v ((atPl w p.2).coeff 0))`. Introduce `w hw`. Take `⟨y, hy, e₁, e₂⟩` from `hp w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← e₁, ← e₂]`. Distinguish the cases in `hg : good w`. Simplify using `only [g₁, g₂, if_pos hg, inv_one]`. Establish `hy' : y ∈ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)`. Establish `hy2` using `hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hy2` using `[show φ w = _ from hg]`. Assume the negation of the conclusion as `hc`. Conclude with `hy2 (Set.indicator_of_notMem hc _)`. Conclude with `⟨GlobalTheory.BCT.GeoFin.charpoly_nrmL_integral E a w (isLevel_KGL hU a w) y.1 hy'.1, GlobalTheory.BCT.GeoFin.charpoly_nrmL_integral E b w (isLevel_KGL hU b w) y.2 hy'.2⟩`. Simplify using `only [g₁, g₂, if_neg hg]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hyt : y ∈ tsupport (φ w)` using `subset_tsupport _ hy`. Conclude with `⟨hγ₁ w y.1 ⟨y, hyt, rfl⟩, hγ₂ w y.2 ⟨y, hyt, rfl⟩⟩`. Conclude with `⟨⟨h₁, fun w hw => (key w hw).1⟩, ⟨h₂, fun w hw => (key w hw).2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.G3.finPol2_pf : FinPol2 := by
   intro E _ _ _ hU a b S hS φ hφc hφ1

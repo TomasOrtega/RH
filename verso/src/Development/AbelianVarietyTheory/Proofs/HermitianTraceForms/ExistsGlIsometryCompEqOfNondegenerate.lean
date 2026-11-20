@@ -13,14 +13,14 @@ def quasiRefl (B : V →ₗ[E] V →ₛₗ[c] E) (v : V) (a : E) : V →ₗ[E] V
   LinearMap.id - (a⁻¹ • B.flip v).smulRight v
 
 /- English proof (translation)
-Simplify using `[quasiRefl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quasiRefl_apply (B : V →ₗ[E] V →ₛₗ[c] E) (v : V) (a : E) (z : V) :
     quasiRefl B v a z = z - (a⁻¹ * B z v) • v := by
   simp [quasiRefl]
 
 /- English proof (translation)
-Rewrite using `[quasiRefl_apply, quasiRefl_apply, LinearMap.map_sub₂, LinearMap.map_smul₂, ← hab, sub_sub, ← add_smul, smul_eq_mul]`. Establish `: a⁻¹ * B z v + b⁻¹ * (B z v - a⁻¹ * B z v * (a + b)) = 0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, zero_smul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem quasiRefl_quasiRefl (B : V →ₗ[E] V →ₛₗ[c] E) {v : V} {a b : E} (ha : a ≠ 0) (hb : b ≠ 0)
     (hab : a + b = B v v) (z : V) : quasiRefl B v b (quasiRefl B v a z) = z := by
@@ -32,7 +32,7 @@ theorem quasiRefl_quasiRefl (B : V →ₗ[E] V →ₛₗ[c] E) {v : V} {a b : E}
   rw [this, zero_smul, sub_zero]
 
 /- English proof (translation)
-Establish `hca : c a ≠ 0` using `(map_ne_zero c).2 ha`. Simplify using `only [quasiRefl_apply, map_sub, LinearMap.sub_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, map_mul, map_inv₀, hB, ← hab]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem apply_quasiRefl_quasiRefl {B : V →ₗ[E] V →ₛₗ[c] E} (hB : ∀ x y, c (B x y) = B y x)
     {v : V} {a : E} (ha : a ≠ 0) (hab : a + c a = B v v) (z w : V) :
@@ -44,11 +44,11 @@ theorem apply_quasiRefl_quasiRefl {B : V →ₗ[E] V →ₛₗ[c] E} (hB : ∀ x
   ring
 
 /- English proof (translation)
-Establish `hca : c (B x (x - y)) ≠ 0` using `(map_ne_zero c).2 ha`. Establish `hab : B x (x - y) + c (B x (x - y)) = B (x - y) (x - y)`. Rewrite using `[hB]`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Take the linear combination `hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨LinearEquiv.ofLinear (quasiRefl B (x - y) (B x (x - y))) (quasiRefl B (x - y) (c (B x (x - y)))) ?_ ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Conclude with `quasiRefl_quasiRefl B hca ha (by rw [add_comm, hab]) z`. Use extensionality with `z`. Conclude with `quasiRefl_quasiRefl B ha hca hab z`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `apply_quasiRefl_quasiRefl hB ha hab`. Rewrite using `[LinearEquiv.ofLinear_apply, quasiRefl_apply, inv_mul_cancel₀ ha, one_smul, sub_sub_cancel]`. Introduce `u hu`. Rewrite using `[LinearEquiv.ofLinear_apply, quasiRefl_apply, hu, mul_zero, zero_smul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isometry_of_apply_sub_ne_zero {B : V →ₗ[E] V →ₛₗ[c] E}
     (hB : ∀ x y, c (B x y) = B y x) {x y : V} (hxy : B x x = B y y) (ha : B x (x - y) ≠ 0) :
@@ -71,15 +71,13 @@ theorem exists_isometry_of_apply_sub_ne_zero {B : V →ₗ[E] V →ₛₗ[c] E}
     rw [LinearEquiv.ofLinear_apply, quasiRefl_apply, hu, mul_zero, zero_smul, sub_zero]
 
 /- English proof (translation)
-Distinguish the cases in `ha : B x (x - y) = 0`. Establish `h1 : B x (x - -y) ≠ 0`. Establish `: B x (x - -y) = 2 * B x x`. Simplify using `only [map_sub, map_neg] at ha ⊢`. Take the linear combination `-ha`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[this]`. Conclude with `mul_ne_zero h2 hx`. Establish `h3 : B (-y) (-y - y) ≠ 0`. Establish `: B (-y) (-y - y) = 2 * B x x`. Simplify using `only [map_sub, map_neg, LinearMap.neg_apply, hxy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_ne_zero h2 hx`. Take `⟨γ₁, i₁, e₁, f₁⟩` from `exists_isometry_of_apply_sub_ne_zero hB (by simpa using hxy) h1`. Take `⟨γ₂, i₂, e₂, f₂⟩` from `exists_isometry_of_apply_sub_ne_zero hB (by simp) h3`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨γ₁.trans γ₂, fun z w => ?_, ?_, fun u hux huy => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, i₂, i₁]`. Rewrite using `[LinearEquiv.trans_apply, e₁, e₂]`. Rewrite using `[LinearEquiv.trans_apply, f₁ u (by simp [hux, huy]), f₂ u (by simp [huy])]`. Take `⟨γ, i, e, f⟩` from `exists_isometry_of_apply_sub_ne_zero hB hxy ha`.
-
-Conclude with `⟨γ, i, e, fun u hux huy => f u (by simp [hux, huy])⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isometry_apply_eq (h2 : (2 : E) ≠ 0) {B : V →ₗ[E] V →ₛₗ[c] E}
     (hB : ∀ x y, c (B x y) = B y x) {x y : V} (hxy : B x x = B y y) (hx : B x x ≠ 0) :
@@ -108,13 +106,13 @@ theorem exists_isometry_apply_eq (h2 : (2 : E) ≠ 0) {B : V →ₗ[E] V →ₛ�
     exact ⟨γ, i, e, fun u hux huy => f u (by simp [hux, huy])⟩
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Establish `key : ∀ s : Finset ι, ∃ γ : V ≃ₗ[E] V, (∀ z w, B (γ z) (γ w) = B z w) ∧ ∀ i ∈ s, γ (x i) = y i`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨LinearEquiv.refl E V, fun _ _ => rfl, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert i s hi ih`. Take `⟨γ, hγ, e⟩` from `ih`. Take `⟨δ, hδ, e', f⟩` from `exists_isometry_apply_eq h2 hB (x := γ (x i)) (y := y i) (by rw [hγ, hxy]) (by rw [hγ]; exact hne i)`. Use `⟨γ.trans δ, fun z w => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, hδ, hγ]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.trans_apply]`. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `e'`. Establish `hji : j ≠ i` using `fun h => hi (h ▸ hj)`. Rewrite using `[f _ (by rw [hγ]; exact hx j i hji) (by rw [e j hj]; exact hy j i hji), e j hj]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, e⟩` from `key Finset.univ`. Conclude with `⟨γ, hγ, fun i => e i (Finset.mem_univ i)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isometry_of_orthogonal (h2 : (2 : E) ≠ 0) {B : V →ₗ[E] V →ₛₗ[c] E}
     (hB : ∀ x y, c (B x y) = B y x) {ι : Type*} [Finite ι] {x y : ι → V}
@@ -143,11 +141,9 @@ theorem exists_isometry_of_orthogonal (h2 : (2 : E) ≠ 0) {B : V →ₗ[E] V �
   exact ⟨γ, hγ, fun i => e i (Finset.mem_univ i)⟩
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_orthogonal_basis_fin h2 (finrank E W) (LinearMap.mk₂'ₛₗ (RingHom.id E) c (fun a b => B (g a) (g b)) (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp)) (fun a b => hB _ _) rfl`. Use `replace hv : ∀ i j, i ≠ j → B (g (v i)) (g (v j)) = 0 := hv`. Take `⟨γ, hγ, e⟩` from `exists_isometry_of_orthogonal h2 hB (x := fun i => g (v i)) (y := fun i => f (v i)) hv (fun i j hij => by rw [hgf]; exact hv i j hij) (fun i => (hgf _ _).symm) (fun i hi => v.ne_zero i (hW _ fun b => by`. Establish `: (B.flip (g (v i))) ∘ₗ g = 0` using `v.ext fun j => by`. Distinguish the cases in `hij : j = i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Conclude with `hi`. Conclude with `hv j i hij`. Conclude with `LinearMap.congr_fun this b))`. Use `⟨γ, hγ, fun a => ?_⟩` and prove the remaining obligations.
-
-Establish `: γ.toLinearMap ∘ₗ g = f` using `v.ext e`. Conclude with `LinearMap.congr_fun this a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isometry_comp_eq_of_nondegenerate (h2 : (2 : E) ≠ 0) {B : V →ₗ[E] V →ₛₗ[c] E}
     (hB : ∀ x y, c (B x y) = B y x) {W : Type*} [AddCommGroup W] [Module E W]
@@ -175,13 +171,11 @@ theorem exists_isometry_comp_eq_of_nondegenerate (h2 : (2 : E) ≠ 0) {B : V →
   exact LinearMap.congr_fun this a
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_orthogonal_basis_fin h2 (finrank E V) B hB rfl`. Establish `hne : ∀ i, B (v i) (v i) ≠ 0` using `fun i hi => v.ne_zero i (hV _ fun b => by`. Establish `: B.flip (v i) = 0` using `v.ext fun j => by`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hi`. Conclude with `hv j i hij`. Conclude with `LinearMap.congr_fun this b)`. Use `⟨∑ i, c (ψ (v i) / B (v i) (v i)) • v i, fun z => ?_⟩` and prove the remaining obligations. Establish `: B.flip (∑ i, c (ψ (v i) / B (v i) (v i)) • v i) = ψ` using `v.ext fun j => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.flip_apply, map_sum, Finset.sum_eq_single j]`. Rewrite using `[LinearMap.map_smulₛₗ, hc, smul_eq_mul, div_mul_cancel₀ _ (hne j)]`. Introduce `i _ hij`. Rewrite using `[LinearMap.map_smulₛₗ, hv j i hij.symm, smul_zero]`. Simplify using the standard rewrite rules.
-
-Conclude with `LinearMap.congr_fun this z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_flip_eq [FiniteDimensional E V] (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {B : V →ₗ[E] V →ₛₗ[c] E} (hB : ∀ x y, c (B x y) = B y x)
@@ -204,29 +198,29 @@ theorem exists_flip_eq [FiniteDimensional E V] (h2 : (2 : E) ≠ 0) (hc : ∀ t,
   exact LinearMap.congr_fun this z
 
 /- English proof (translation)
-Establish `hr1 : r.1 ≠ 0` using `fun h => hr0 (Prod.ext h ((h0 r hr).1 h))`. Establish `hrad2 : ∀ p ∈ Γ, B p.2 r.2 = 0` using `fun p hp => by rw [hΓ p hp r hr, hrad p hp]`. Choose the witnesses or unpack the hypotheses as in `⟨w₀, hw₀⟩ : ∃ w₀, B w₀ r.1 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hr1 (hV _ h)`. Take `⟨w₁, hw₁⟩ : ∃ w₁, B w₁ r.1 = 1` from `⟨(B w₀ r.1)⁻¹ • w₀, by simp [inv_mul_cancel₀ hw₀]⟩`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective (LinearMap.snd E V V ∘ₗ Γ.subtype) (by`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `p hp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Prod.ext ((h0 p p.2).2 hp) hp))`. Take `⟨w, hw⟩` from `exists_flip_eq h2 hc hB hV (B.flip w₁ ∘ₗ LinearMap.fst E V V ∘ₗ Γ.subtype ∘ₗ L)`. Establish `hw' : ∀ p ∈ Γ, B p.2 w = B p.1 w₁` using `fun p hp => by`. Establish `h` using `LinearMap.congr_fun hL ⟨p, hp⟩`. Establish `h' : L p.2 = ⟨p, hp⟩` using `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Simplify using `[h']`. Establish `hr1w : B r.1 w₁ = 1` using `by rw [← hB, hw₁, map_one]`. Establish `hr2w : B r.2 w = 1` using `by rw [hw' r hr, hr1w]`. Establish `hwr2 : B w r.2 = 1` using `by rw [← hB, hr2w, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w₂, ha, hb⟩ : ∃ w₂, (∀ p ∈ Γ, B p.2 w₂ = B p.1 w₁) ∧ B w₂ w₂ = B w₁ w₁ := by`. Establish `hs : c ((B w₁ w₁ - B w w) / 2) = (B w₁ w₁ - B w w) / 2`. Rewrite using `[map_div₀, map_sub, hB, hB, map_ofNat]`. Use `⟨w + ((B w₁ w₁ - B w w) / 2) • r.2, fun p hp => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.map_smulₛₗ, hrad2 p hp, smul_zero, add_zero, hw' p hp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, hs, smul_eq_mul, hr2w, hwr2, hrad2 r hr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `ha' : ∀ p ∈ Γ, B w₂ p.2 = B w₁ p.1` using `fun p hp => by rw [← hB, ha p hp, hB]`. Establish `hmem : ∀ p ∈ Γ ⊔ Submodule.span E {(w₁, w₂)}, ∃ q ∈ Γ, ∃ t : E, p = (q.1 + t • w₁, q.2 + t • w₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `p hp`. Take `⟨q, hq, z, hz, rfl⟩` from `Submodule.mem_sup.1 hp`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Conclude with `⟨q, hq, t, rfl⟩`. Use `⟨Γ ⊔ Submodule.span E {(w₁, w₂)}, lt_of_le_of_ne le_sup_left fun h => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (w₁, w₂) ∈ Γ`. Rewrite using `[h]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Establish `h1` using `hrad _ this`. Rewrite `h1` using `[hw₁]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero h1`. Introduce `p hp`. Take `⟨q, hq, t, rfl⟩` from `hmem p hp`. Establish `e1 : B (q.1 + t • w₁) r.1 = t` using `by simp [hrad q hq, hw₁]`. Establish `e2 : B (q.2 + t • w₂) r.2 = t` using `by simp [hrad2 q hq, ha' r hr, hw₁]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Substitute using the available equality.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h dsimp only at h ⊢`. Establish `ht : t = 0` using `by rw [← e1, h]; simp`. Substitute `ht` using the available equality. Simplify `h)` using `using (h0 q hq).1 (by simpa`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Substitute using the available equality.
 
-Introduce `h dsimp only at h ⊢`. Establish `ht : t = 0` using `by rw [← e2, h]; simp`. Substitute `ht` using the available equality. Simplify `h)` using `using (h0 q hq).2 (by simpa`. Introduce `p hp p' hp'`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨q, hq, t, rfl⟩` from `hmem p hp`. Take `⟨q', hq', t', rfl⟩` from `hmem p' hp'`. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, hΓ q hq q' hq', ha q hq, ha' q' hq', hb]`.
+A detailed English derivation is pending.
 -/
 theorem exists_graph_lt [FiniteDimensional E V] (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {B : V →ₗ[E] V →ₛₗ[c] E} (hB : ∀ x y, c (B x y) = B y x)
@@ -303,11 +297,11 @@ theorem exists_graph_lt [FiniteDimensional E V] (h2 : (2 : E) ≠ 0) (hc : ∀ t
       hΓ q hq q' hq', ha q hq, ha' q' hq', hb]
 
 /- English proof (translation)
-Proceed by induction on `Γ using WellFoundedGT.induction with`. Consider the case `ind Γ ih`. Distinguish the cases in `h : ∃ r ∈ Γ, r ≠ 0 ∧ ∀ p ∈ Γ, B p.1 r.1 = 0`. Take `⟨r, hr, hr0, hrad⟩` from `h`. Take `⟨Γ', hlt, h0', hΓ'⟩` from `exists_graph_lt h2 hc hB hV Γ h0 hΓ hr hr0 hrad`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, e⟩` from `ih Γ' hlt h0' hΓ'`. Conclude with `⟨γ, hγ, fun p hp => e p (hlt.le hp)⟩`. Take `⟨γ, hγ, e⟩` from `exists_isometry_comp_eq_of_nondegenerate h2 hB (g := LinearMap.fst E V V ∘ₗ Γ.subtype) (f := LinearMap.snd E V V ∘ₗ Γ.subtype) (fun a b => hΓ a a.2 b b.2) (fun a ha => by`. Assume the negation of the conclusion as `hne`. Conclude with `h ⟨a, a.2, fun h' => hne (Subtype.ext h'), fun p hp => ha ⟨p, hp⟩⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Conclude with `⟨γ, hγ, fun p hp => e ⟨p, hp⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isometry_of_graph [FiniteDimensional E V] (h2 : (2 : E) ≠ 0)
     (hc : ∀ t, c (c t) = t) {B : V →ₗ[E] V →ₛₗ[c] E} (hB : ∀ x y, c (B x y) = B y x)
@@ -330,7 +324,7 @@ theorem exists_isometry_of_graph [FiniteDimensional E V] (h2 : (2 : E) ≠ 0)
       exact ⟨γ, hγ, fun p hp => e ⟨p, hp⟩⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ, e⟩` from `exists_isometry_of_graph h2 hc hB hV (LinearMap.range (g.prod f)) (by rintro _ ⟨a, rfl⟩; exact h0 a) (by rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩; exact hgf a b)`. Conclude with `⟨γ, hγ, fun a => e _ ⟨a, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isometry_comp_eq [FiniteDimensional E V] (h2 : (2 : E) ≠ 0)
     (hc : ∀ t, c (c t) = t) {B : V →ₗ[E] V →ₛₗ[c] E} (hB : ∀ x y, c (B x y) = B y x)
@@ -343,7 +337,7 @@ theorem exists_isometry_comp_eq [FiniteDimensional E V] (h2 : (2 : E) ≠ 0)
   exact ⟨γ, hγ, fun a => e _ ⟨a, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `exists_isometry_comp_eq h2 hc hB hV (g := U.subtype) (f := U'.subtype ∘ₗ f.toLinearMap) (fun a => by simp) hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_isometry_extend [FiniteDimensional E V] (h2 : (2 : E) ≠ 0)
     (hc : ∀ t, c (c t) = t) {B : V →ₗ[E] V →ₛₗ[c] E} (hB : ∀ x y, c (B x y) = B y x)
@@ -362,7 +356,7 @@ variable {E : Type*} [Field E] {c : E →+* E} {n : Type*} [Fintype n] [Decidabl
 omit [DecidableEq n] in
 
 /- English proof (translation)
-Establish `h : c ∘ (P *ᵥ y) = P.map c *ᵥ (c ∘ y)` using `funext fun i => RingHom.map_mulVec c P y i`. Rewrite using `[h, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dotProduct_congr_mulVec {m : Type*} [Fintype m] (c : E →+* E) (G : Matrix n n E)
     (P : Matrix n m E) (x y : m → E) :
@@ -372,9 +366,9 @@ theorem dotProduct_congr_mulVec {m : Type*} [Fintype m] (c : E →+* E) (G : Mat
     Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `(Matrix.toLinearMapₛₗ₂' E (RingHom.id E) c).injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[toLinearMapₛₗ₂'_eq_dotProduct, toLinearMapₛₗ₂'_eq_dotProduct, dotProduct_congr_mulVec, h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h x y`. Rewrite using `[← dotProduct_congr_mulVec, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isometry_iff_congr_eq (c : E →+* E) (G P : Matrix n n E) :
     (∀ x y, (P *ᵥ x) ⬝ᵥ G *ᵥ (c ∘ (P *ᵥ y)) = x ⬝ᵥ G *ᵥ (c ∘ y)) ↔ Pᵀ * G * P.map c = G := by
@@ -387,9 +381,9 @@ theorem isometry_iff_congr_eq (c : E →+* E) (G P : Matrix n n E) :
     rw [← dotProduct_congr_mulVec, h]
 
 /- English proof (translation)
-Establish `h1 : G *ᵥ (c ∘ x) = 0`. Use function extensionality and compare the values at `i`. Simplify using `using hx (Pi.single i 1)`. Establish `h3` using `Matrix.eq_zero_of_mulVec_eq_zero hG h1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(map_eq_zero c).1 (congrFun h3 i)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_dotProduct_eq_zero {G : Matrix n n E} (hG : G.det ≠ 0) {x : n → E}
     (hx : ∀ y, y ⬝ᵥ G *ᵥ (c ∘ x) = 0) : x = 0 := by
@@ -401,7 +395,7 @@ theorem eq_zero_of_forall_dotProduct_eq_zero {G : Matrix n n E} (hG : G.det ≠ 
   exact (map_eq_zero c).1 (congrFun h3 i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨LinearMap.toMatrix' γ.toLinearMap, LinearMap.toMatrix' γ.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩, fun x => by simp [← Matrix.toLin'_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_gl_mulVec_eq (γ : (n → E) ≃ₗ[E] (n → E)) :
     ∃ g : GL n E, ∀ x, (g : Matrix n n E) *ᵥ x = γ x :=
@@ -410,9 +404,7 @@ theorem exists_gl_mulVec_eq (γ : (n → E) ≃ₗ[E] (n → E)) :
     fun x => by simp [← Matrix.toLin'_apply]⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `exists_isometry_apply_eq h2 (B := Matrix.toLinearMapₛₗ₂' E (RingHom.id E) c G) (fun x y => by`. Simplify using `only [toLinearMapₛₗ₂'_eq_dotProduct, map_dotProduct_mulVec_comp hc hG])`. Use the proof step `(x := x) (y := y) (by simpa only [toLinearMapₛₗ₂'_eq_dotProduct] using hxy)`. Use the proof step `(by simpa only [toLinearMapₛₗ₂'_eq_dotProduct] using hx)`. Take `⟨g, hg⟩` from `exists_gl_mulVec_eq γ`.
-
-Conclude with `⟨g, by simpa only [toLinearMapₛₗ₂'_eq_dotProduct, hg] using hγ⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gl_isometry_mulVec_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {G : Matrix n n E} (hG : ∀ a b, c (G a b) = G b a) {x y : n → E}
@@ -431,9 +423,7 @@ theorem exists_gl_isometry_mulVec_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) =
   exact ⟨g, by simpa only [toLinearMapₛₗ₂'_eq_dotProduct, hg] using hγ⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `exists_isometry_comp_eq_of_nondegenerate h2 (B := Matrix.toLinearMapₛₗ₂' E (RingHom.id E) c G) (fun x y => by`. Simplify using `only [toLinearMapₛₗ₂'_eq_dotProduct, map_dotProduct_mulVec_comp hc hG])`. Use the proof step `(g := g) (f := f) (by simpa only [toLinearMapₛₗ₂'_eq_dotProduct] using hgf)`. Use the proof step `(by simpa only [toLinearMapₛₗ₂'_eq_dotProduct] using hW)`. Take `⟨g, hg⟩` from `exists_gl_mulVec_eq γ`.
-
-Conclude with `⟨g, by simpa only [toLinearMapₛₗ₂'_eq_dotProduct, hg] using hγ⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gl_isometry_comp_eq_of_nondegenerate (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {G : Matrix n n E} (hG : ∀ a b, c (G a b) = G b a) {W : Type*} [AddCommGroup W] [Module E W]
@@ -453,9 +443,7 @@ theorem exists_gl_isometry_comp_eq_of_nondegenerate (h2 : (2 : E) ≠ 0) (hc : �
   exact ⟨g, by simpa only [toLinearMapₛₗ₂'_eq_dotProduct, hg] using hγ⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `exists_isometry_comp_eq h2 hc (B := Matrix.toLinearMapₛₗ₂' E (RingHom.id E) c G) (fun x y => by`. Simplify using `only [toLinearMapₛₗ₂'_eq_dotProduct, map_dotProduct_mulVec_comp hc hG])`. Use the proof step `(fun x hx => eq_zero_of_forall_dotProduct_eq_zero hdet (by simpa only [toLinearMapₛₗ₂'_eq_dotProduct] using hx))`. Use the proof step `(g := g) (f := f) h0 (by simpa only [toLinearMapₛₗ₂'_eq_dotProduct] using hgf)`. Take `⟨g, hg⟩` from `exists_gl_mulVec_eq γ`.
-
-Conclude with `⟨g, by simpa only [toLinearMapₛₗ₂'_eq_dotProduct, hg] using hγ⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gl_isometry_comp_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {G : Matrix n n E} (hG : ∀ a b, c (G a b) = G b a) (hdet : G.det ≠ 0)
@@ -476,7 +464,7 @@ theorem exists_gl_isometry_comp_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t
   exact ⟨g, by simpa only [toLinearMapₛₗ₂'_eq_dotProduct, hg] using hγ⟩
 
 /- English proof (translation)
-The claim follows from `exists_gl_isometry_comp_eq h2 hc hG hdet (g := U.subtype) (f := U'.subtype ∘ₗ f.toLinearMap) (fun a => by simp) hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_gl_isometry_extend (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {G : Matrix n n E} (hG : ∀ a b, c (G a b) = G b a) (hdet : G.det ≠ 0)
@@ -490,7 +478,7 @@ theorem exists_gl_isometry_extend (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     (fun a => by simp) hf
 
 /- English proof (translation)
-Take `⟨γ, hγ, e⟩` from `exists_gl_isometry_comp_eq h2 hc hG hdet (g := X.mulVecLin) (f := Y.mulVecLin) h0 (fun a b => by`. Simplify using `only [Matrix.mulVecLin_apply, ← dotProduct_congr_mulVec, hXY])`. Use `⟨γ, (isometry_iff_congr_eq c G _).1 hγ, Matrix.ext_of_mulVec_single fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `e _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gl_isometry_mul_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {G : Matrix n n E} (hG : ∀ a b, c (G a b) = G b a) (hdet : G.det ≠ 0)
@@ -507,9 +495,9 @@ theorem exists_gl_isometry_mul_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
   exact e _
 
 /- English proof (translation)
-Take `⟨γ, hγ, e⟩` from `exists_gl_isometry_comp_eq_of_nondegenerate h2 hc hG (g := X.mulVecLin) (f := Y.mulVecLin) (fun a b => by`. Simplify using `only [Matrix.mulVecLin_apply, ← dotProduct_congr_mulVec, hXY])`. Use the proof step `(fun a ha => eq_zero_of_forall_dotProduct_eq_zero (c := c) hX fun b => by`. Rewrite using `[dotProduct_congr_mulVec]`. Conclude with `ha b)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨γ, (isometry_iff_congr_eq c G _).1 hγ, Matrix.ext_of_mulVec_single fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `e _`.
+A detailed English derivation is pending.
 -/
 theorem exists_gl_isometry_mul_eq_of_det_ne_zero (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {G : Matrix n n E} (hG : ∀ a b, c (G a b) = G b a)
@@ -528,21 +516,19 @@ theorem exists_gl_isometry_mul_eq_of_det_ne_zero (h2 : (2 : E) ≠ 0) (hc : ∀ 
   exact e _
 
 /- English proof (translation)
-Establish `hH : ∀ a b, c (fromBlocks D 0 0 G₁ a b) = fromBlocks D 0 0 G₁ b a`. Apply the tactic sequence `rintro (a | a) (b | b) <;> simp [hD, hG]`. Set `J : Matrix (m ⊕ n) m E` to `fromRows 1 0`. Establish `hJ : ∀ G : Matrix n n E, Jᵀ * fromBlocks D 0 0 G * J.map c = D`. Introduce `G`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: J.map c = J`. Apply the tactic sequence `ext (a | a) b <;> simp [J, Matrix.one_apply]`. Rewrite using `[this]`. Simplify using `[J, transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`. Establish `hPJ : (P * J)ᵀ * fromBlocks D 0 0 G₁ * (P * J).map c = D`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hJ G₂]`. Use `conv_rhs => rw [h]`. Rewrite using `[hJ G₂, transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Take `⟨γ, hγ, e⟩` from `exists_gl_isometry_mul_eq_of_det_ne_zero h2 hc hH (X := P * J) (Y := J) (by rwa [hPJ]) (by rw [hPJ, hJ])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ : fromBlocks D 0 0 G₂ = ((γ : Matrix _ _ E) * P)ᵀ * fromBlocks D 0 0 G₁ * ((γ : Matrix _ _ E) * P).map c`. Rewrite using `[h]`. Use `conv_lhs => rw [← hγ]`. Rewrite using `[transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQd : ((γ : Matrix _ _ E) * P).det ≠ 0`. Rewrite using `[det_mul]`. Conclude with `mul_ne_zero (Matrix.GeneralLinearGroup.det_ne_zero γ) hP`. Rewrite `e` using `[← Matrix.mul_assoc]`. Generalize the expression as in `(γ : Matrix _ _ E) * P = Q at hQ hQd e`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨A, B, C, F, rfl⟩ : ∃ A B C F, Q = fromBlocks A B C F` from `⟨_, _, _, _, (fromBlocks_toBlocks Q).symm⟩`. Establish `e' : A = 1 ∧ C = 0`. Simplify `e` using `[J, fromBlocks_mul_fromRows, fromRows_ext_iff]`. Take `⟨rfl, rfl⟩` from `e'`. Rewrite `hQd` using `[det_fromBlocks_zero₂₁, det_one, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hQ` using `[fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_inj]`. Take `⟨-, h12, -, h22⟩` from `hQ`. Establish `hB : D * B.map c = 0` using `by simpa using h12.symm`. Use `⟨F, hQd, ?_⟩` and prove the remaining obligations. Rewrite using `[h22]`.
-
-Simplify using `[Matrix.mul_assoc, hB]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem congr_of_fromBlocks_congr (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {m : Type*} [Fintype m] [DecidableEq m] {D : Matrix m m E} (hD : ∀ a b, c (D a b) = D b a)
@@ -600,7 +586,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [herm_eq_dotProduct] at hxy hx ⊢`. Conclude with `exists_gl_isometry_mulVec_eq (c := (IsCMField.complexConj E : E →+* E)) two_ne_zero (IsCMField.complexConj_apply_apply E) hG hxy hx`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gl_isometry_mulVec_eq_herm {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, FD.cc (G a b) = G b a) {x y : Fin r → E}
@@ -615,7 +601,7 @@ theorem exists_gl_isometry_mulVec_eq_herm {G : Matrix (Fin r) (Fin r) E}
     two_ne_zero (IsCMField.complexConj_apply_apply E) hG hxy hx
 
 /- English proof (translation)
-The claim follows from `congr_of_fromBlocks_congr (c := (IsCMField.complexConj E : E →+* E)) two_ne_zero (IsCMField.complexConj_apply_apply E) hD hdet hG hP h`.
+A detailed English derivation is pending.
 -/
 theorem congr_of_fromBlocks_congr_cc {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n]
     [DecidableEq n] {D : Matrix m m E} (hD : ∀ a b, FD.cc (D a b) = D b a)
@@ -627,7 +613,7 @@ theorem congr_of_fromBlocks_congr_cc {m n : Type*} [Fintype m] [DecidableEq m] [
     two_ne_zero (IsCMField.complexConj_apply_apply E) hD hdet hG hP h
 
 /- English proof (translation)
-Simplify using `only [herm_eq_dotProduct] at hf ⊢`. Conclude with `exists_gl_isometry_extend (c := (IsCMField.complexConj E : E →+* E)) two_ne_zero (IsCMField.complexConj_apply_apply E) hG hdet f hf`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gl_isometry_extend_herm {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, FD.cc (G a b) = G b a) (hdet : G.det ≠ 0)
@@ -644,7 +630,7 @@ theorem exists_gl_isometry_extend_herm {G : Matrix (Fin r) (Fin r) E}
 end CM
 
 /- English proof (translation)
-Use `⟨fun x y hxy hx => ?_, fun D hD hdet G' ⟨P, hP, h⟩ => ?_, fun hdet U U' f hf => ?_⟩` and prove the remaining obligations. Take `⟨γ, h1, h3, -⟩` from `exists_gl_isometry_mulVec_eq h2 hc hG hxy hx`. Conclude with `⟨γ, h1, h3⟩`. Conclude with `congr_of_fromBlocks_congr h2 hc hD hdet hG hP h`. Conclude with `exists_gl_isometry_extend h2 hc hG hdet f hf`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem witt_theorem {E : Type*} [Field E] (h2 : (2 : E) ≠ 0) (c : E →+* E)
     (hc : ∀ t, c (c t) = t) {r : ℕ} (G : Matrix (Fin r) (Fin r) E)

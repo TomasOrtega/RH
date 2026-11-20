@@ -10,13 +10,13 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.GenCoreMain
 
 /- English proof (translation)
-Introduce `b hb`. Assume the negation of the conclusion as `hbT`. Take `⟨a, haA, haBT⟩` from `SetLike.not_le_iff_exists.mp hA`. Take `⟨v₀, hv₀⟩` from `rank_le_one_iff.mp hT`. Take `⟨r, hr⟩` from `hv₀ (Submodule.Quotient.mk b)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hv₀ (Submodule.Quotient.mk a)`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Apply `hbT` to reduce the goal to its premises. Rewrite `hr` using `[zero_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero T).mp hr.symm`. Establish `hmk : Submodule.Quotient.mk (p` using `T) (a - (s * r⁻¹) • b) = 0 := by`. Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, ← hr, ← hs, smul_smul, mul_assoc, inv_mul_cancel₀ hr0, mul_one, sub_self]`. Establish `ht : a - (s * r⁻¹) • b ∈ T` using `(Submodule.Quotient.mk_eq_zero T).mp hmk`. Apply `haBT` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: a = (s * r⁻¹) • b + (a - (s * r⁻¹) • b)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (B.smul_mem _ hb) ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_not_le_sup {V : Type} [AddCommGroup V] [Module ℂ V] (T A B : Submodule ℂ V)
     (hT : Module.rank ℂ (V ⧸ T) ≤ 1) (hA : ¬ A ≤ B ⊔ T) : B ≤ T := by
@@ -41,15 +41,15 @@ theorem le_of_not_le_sup {V : Type} [AddCommGroup V] [Module ℂ V] (T A B : Sub
   exact Submodule.add_mem_sup (B.smul_mem _ hb) ht
 
 /- English proof (translation)
-Establish `hBT : B.toSubmodule ≤ T` using `le_of_not_le_sup T _ _ hT hA`. Establish `hDT : D.toSubmodule ≤ T` using `le_of_not_le_sup T _ _ hT hC`. Establish `hAT : ¬ A.toSubmodule ≤ T` using `fun h => hA (h.trans le_sup_right)`. Establish `hCT : ¬ C.toSubmodule ≤ T` using `fun h => hC (h.trans le_sup_right)`. Establish `hET : ¬ (A ⊓ C).toSubmodule ≤ T` using `GlobalTheory.T.inf_not_in_codim_one_submodule ρ T hT A C (hsup A C) hAT hCT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEA : A ⊓ C ≤ A` using `inf_le_left`. Establish `hEC : A ⊓ C ≤ C` using `inf_le_right`. Establish `hEB : ¬ A ⊓ C ≤ B` using `fun h => hET (le_trans h hBT)`. Establish `hED : ¬ A ⊓ C ≤ D` using `fun h => hET (le_trans h hDT)`. Establish `hfillB` using `GlobalTheory.T.sup_eq_of_irreducible_subquotient ρ A B (A ⊓ C) hBA hAB hEA hEB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfillD` using `GlobalTheory.T.sup_eq_of_irreducible_subquotient ρ C D (A ⊓ C) hDC hCD hEC hED`. Take `⟨e₁⟩` from `GlobalTheory.T.subquotient_equiv_of_sup_eq ρ A B (A ⊓ C) hEA hfillB`. Take `⟨e₂⟩` from `GlobalTheory.T.subquotient_equiv_of_sup_eq ρ C D (A ⊓ C) hEC hfillD`. Establish `hiB : (subQuot (A ⊓ C) B).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv e₁.symm hAB`. Establish `hiD : (subQuot (A ⊓ C) D).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv e₂.symm hCD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnot : ¬ A ⊓ C ≤ (A ⊓ C) ⊓ B ⊔ (A ⊓ C) ⊓ D`. Introduce `h`. Apply `hET` to reduce the goal to its premises. Establish `h3 : ((A ⊓ C) ⊓ B ⊔ (A ⊓ C) ⊓ D).toSubmodule ≤ T`. Rewrite using `[Subrepresentation.toSubmodule_sup, Subrepresentation.toSubmodule_inf, Subrepresentation.toSubmodule_inf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sup_le (inf_le_right.trans hBT) (inf_le_right.trans hDT)`. Conclude with `(fun v hv => h3 (h hv) : (A ⊓ C).toSubmodule ≤ T)`. Take `⟨e₃⟩` from `GlobalTheory.T.irreducible_subquotients_equiv_of_not_le ρ (A ⊓ C) B D hiB hiD hnot`. Conclude with `⟨(e₁.symm.trans e₃).trans e₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_of_generic {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (T : Submodule ℂ V) (hT : Module.rank ℂ (V ⧸ T) ≤ 1)

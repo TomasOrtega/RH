@@ -8,25 +8,25 @@ namespace GlobalTheory
 open UniqueFactorizationMonoid in
 
 /- English proof (translation)
-Introduce `K _ _ m c hc`. Set `d : Ideal (𝓞 K) → ℂ` to `fun Q => if h : Q.IsPrime ∧ Q ≠ ⊥ then (if m ≤ Q then 0 else c ⟨Q, h.1, h.2⟩) else 0`. Establish `hd : ∀ P : HeightOneSpectrum (𝓞 K), ¬ m ≤ P.asIdeal → d P.asIdeal = c P`. Introduce `P hP`. Simplify using `only [d]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos ⟨P.isPrime, P.ne_bot⟩, if_neg hP]`. Establish `hd0 : ∀ Q, m ≤ Q → d Q = 0`. Introduce `Q hQ`. Simplify using `only [d]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨fun I => if I = ⊥ then 0 else ((normalizedFactors I).map d).prod, by simp, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (⊤ : Ideal (𝓞 K)) ≠ ⊥` using `top_ne_bot`. Simplify using `only [if_neg this]`. Rewrite using `[← Ideal.one_eq_top, normalizedFactors_one]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `I J`. Distinguish the cases in `hI : I = ⊥`. Simplify using `[hI]`. Distinguish the cases in `hJ : J = ⊥`. Simplify using `[hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hIJ : I * J ≠ ⊥` using `mul_ne_zero hI hJ`. Simplify using `only [if_neg hI, if_neg hJ, if_neg hIJ]`. Rewrite using `[normalizedFactors_mul hI hJ, Multiset.map_add, Multiset.prod_add]`. Introduce `I hI hm`. Simplify using `only [if_neg hI]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Multiset.prod_induction (fun z : ℂ => ‖z‖ = 1) _ ?_ (by simp) ?_` and prove the remaining obligations. Introduce `a b ha hb`. Simplify using `[ha, hb]`. Introduce `a ha`. Take `⟨Q, hQ, rfl⟩` from `Multiset.mem_map.1 ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hp : Prime Q` using `prime_of_normalized_factor Q hQ`. Establish `hle : I ≤ Q` using `Ideal.le_of_dvd (dvd_of_mem_normalizedFactors hQ)`. Establish `hQp : Q.IsPrime` using `Ideal.isPrime_of_prime hp`. Establish `hm' : ¬ m ≤ Q` using `fun h => hQp.ne_top (top_le_iff.1 (hm ▸ sup_le hle h))`. Use `hd ⟨Q, hQp, hp.ne_zero⟩ hm'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at this`. Rewrite using `[this]`. Conclude with `hc _ hm'`. Introduce `I hm`. Distinguish the cases in `hI : I = ⊥`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hI]`. Simplify using `only [if_neg hI]`. Take `⟨Q, hQ, hle⟩` from `Ideal.exists_le_maximal _ hm`. Apply `Multiset.prod_eq_zero` to reduce the goal to its premises. Use `Multiset.mem_map.2 ⟨Q, ?_, hd0 Q (le_sup_right.trans hle)⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Ideal.mem_normalizedFactors_iff hI).2 ⟨hQ.isPrime, le_sup_left.trans hle⟩`. Introduce `P hP`. Simplify using `only [if_neg P.ne_bot]`. Rewrite using `[normalizedFactors_irreducible P.irreducible, normalize_eq]`. Simplify using `[hd P hP]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_multiplicative_ideal_extension :
     ∀ (K : Type) [Field K] [NumberField K] (m : Ideal (𝓞 K)) (c : HeightOneSpectrum (𝓞 K) → ℂ), (∀ P, ¬ m ≤ P.asIdeal → ‖c P‖ = 1) → ∃ X : Ideal (𝓞 K) → ℂ, X ⊥ = 0 ∧ X ⊤ = 1 ∧ (∀ I J, X (I * J) = X I * X J) ∧ (∀ I, I ≠ ⊥ → I ⊔ m = ⊤ → ‖X I‖ = 1) ∧ (∀ I, I ⊔ m ≠ ⊤ → X I = 0) ∧ ∀ P, ¬ m ≤ P.asIdeal → X P.asIdeal = c P := by

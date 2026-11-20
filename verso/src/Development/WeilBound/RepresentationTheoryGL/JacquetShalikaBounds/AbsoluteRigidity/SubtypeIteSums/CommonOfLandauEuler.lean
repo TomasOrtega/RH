@@ -13,19 +13,19 @@ def Pw (q : W → ℕ) (A : ∀ x, W → Fin (d x) → ℂ) {ι : Type} [Fintype
   ∑ i, ∑ a, (A (u i).1 w a * (q w : ℂ) ^ (-((u i).2 : ℂ))) ^ (k + 1)
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg q), Complex.ofReal_natCast, Complex.ofReal_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpow_real (q : ℕ) (t : ℝ) : (q : ℂ) ^ (-(t : ℂ)) = (((q : ℝ) ^ (-t) : ℝ) : ℂ) := by
   rw [Complex.ofReal_cpow (Nat.cast_nonneg q), Complex.ofReal_natCast, Complex.ofReal_neg]
 
 /- English proof (translation)
-Establish `hq0 : (q p.1 : ℂ) ≠ 0`. Use `hq p.1` as an intermediate fact. Conclude with `(by omega : q p.1 ≠ 0)` after adjusting the coercions. Unfold `lterm`. Establish `e : (q p.1 : ℂ) ^ (-(((σ + t + t' : ℝ)) : ℂ)) = (q p.1 : ℂ) ^ (-(σ : ℂ)) * (q p.1 : ℂ) ^ (-(t : ℂ)) * (q p.1 : ℂ) ^ (-(t' : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.cpow_add _ _ hq0, ← Complex.cpow_add _ _ hq0]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hr' : conj ((q p.1 : ℂ) ^ (-(t' : ℂ))) = (q p.1 : ℂ) ^ (-(t' : ℂ))`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cpow_real, Complex.conj_ofReal]`. Establish `h1 : ∑ x, (a p.1 x * (q p.1 : ℂ) ^ (-(t : ℂ))) ^ (p.2 + 1) = (∑ x, a p.1 x ^ (p.2 + 1)) * ((q p.1 : ℂ) ^ (-(t : ℂ))) ^ (p.2 + 1)`. Rewrite using `[Finset.sum_mul]`. Simplify using `only [mul_pow]`. Establish `h2 : ∑ y, (b p.1 y * (q p.1 : ℂ) ^ (-(t' : ℂ))) ^ (p.2 + 1) = (∑ y, b p.1 y ^ (p.2 + 1)) * ((q p.1 : ℂ) ^ (-(t' : ℂ))) ^ (p.2 + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Simplify using `only [mul_pow]`. Rewrite using `[h1, h2, map_mul, map_pow, hr', e]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lterm_pair (q : W → ℕ) (hq : ∀ w, 2 ≤ q w) {α β : Type} [Fintype α] [Fintype β] (a : W → α → ℂ)
     (b : W → β → ℂ) (σ t t' : ℝ) (p : W × ℕ) :
@@ -57,7 +57,7 @@ theorem lterm_pair (q : W → ℕ) (hq : ∀ w, 2 ≤ q w) {α β : Type} [Finty
   ring
 
 /- English proof (translation)
-Simplify using `only [lterm_pair q hq]`. Unfold `Pw`. Rewrite using `[map_sum, Finset.sum_mul_sum]`. Simplify using `only [Finset.sum_mul, Finset.sum_div]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_lterm (q : W → ℕ) (hq : ∀ w, 2 ≤ q w) (A : ∀ x, W → Fin (d x) → ℂ) {ι κ : Type} [Fintype ι] [Fintype κ]
     (u : ι → X × ℝ) (v : κ → X × ℝ) (σ : ℝ) (p : W × ℕ) :
@@ -74,14 +74,14 @@ def cc (q : W → ℕ) (A : ∀ x, W → Fin (d x) → ℂ) {ι : Type} [Fintype
 def ll (q : W → ℕ) (p : W × ℕ) : ℝ := ((p.2 : ℝ) + 1) * Real.log (q p.1)
 
 /- English proof (translation)
-Unfold `cc`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem cc_nonneg (q : W → ℕ) (A : ∀ x, W → Fin (d x) → ℂ) {ι : Type} [Fintype ι] (u : ι → X × ℝ) (p : W × ℕ) :
     0 ≤ cc q A u p := by
   unfold cc; positivity
 
 /- English proof (translation)
-Unfold `ll`. Establish `h : (1 : ℝ) ≤ q p.1` using `by exact_mod_cast (le_trans (by norm_num) (hq p.1))`. Use `Real.log_nonneg h` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem ll_nonneg (q : W → ℕ) (hq : ∀ w, 2 ≤ q w) (p : W × ℕ) : 0 ≤ ll q p := by
   unfold ll
@@ -90,11 +90,11 @@ theorem ll_nonneg (q : W → ℕ) (hq : ∀ w, 2 ≤ q w) (p : W × ℕ) : 0 ≤
   positivity
 
 /- English proof (translation)
-Establish `hqpos : (0 : ℝ) < q p.1` using `by exact_mod_cast (lt_of_lt_of_le (by norm_num) (hq p.1))`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, cpow_real]`. Establish `e : ((q p.1 : ℝ) ^ (-σ)) ^ (p.2 + 1) = Real.exp (-(ll q p * σ))`. Rewrite using `[← Real.rpow_mul_natCast hqpos.le, Real.rpow_def_of_pos hqpos]`. Unfold `ll`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Complex.ofReal_pow, e]`. Unfold `cc`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_real (q : W → ℕ) (hq : ∀ w, 2 ≤ q w) (A : ∀ x, W → Fin (d x) → ℂ) {ι : Type} [Fintype ι]
     (u : ι → X × ℝ) (σ : ℝ) (p : W × ℕ) :
@@ -114,7 +114,7 @@ theorem term_real (q : W → ℕ) (hq : ∀ w, 2 ≤ q w) (A : ∀ x, W → Fin 
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hs : (univ.filter P).Nonempty`. Use `⟨min 1 ((univ.filter P).inf' hs f), lt_min one_pos ((Finset.lt_inf'_iff hs).2 fun j hj => h j ?_), min_le_left _ _, fun i hi => (min_le_right _ _).trans (Finset.inf'_le _ ?_)⟩` and prove the remaining obligations. Simplify using `using hj`. Simplify using `using hi`. Conclude with `⟨1, one_pos, le_rfl, fun i hi => absurd ⟨i, by simpa using hi⟩ hs⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem exists_pos_le {ι : Type} [Fintype ι] (f : ι → ℝ) (P : ι → Prop) (h : ∀ i, P i → 0 < f i) :
     ∃ δ : ℝ, 0 < δ ∧ δ ≤ 1 ∧ ∀ i, P i → δ ≤ f i := by
@@ -127,7 +127,7 @@ theorem exists_pos_le {ι : Type} [Fintype ι] (f : ι → ℝ) (P : ι → Prop
   · exact ⟨1, one_pos, le_rfl, fun i hi => absurd ⟨i, by simpa using hi⟩ hs⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Conclude with `(Finset.sum_subtype (univ.filter P) (by simp) f).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_subtype_ite {ι : Type} [Fintype ι] (P : ι → Prop) [DecidablePred P] (f : ι → ℂ) :
     ∑ i : {i // P i}, f i = ∑ i, if P i then f i else 0 := by
@@ -135,7 +135,7 @@ theorem sum_subtype_ite {ι : Type} [Fintype ι] (P : ι → Prop) [DecidablePre
   exact (Finset.sum_subtype (univ.filter P) (by simp) f).symm
 
 /- English proof (translation)
-Rewrite using `[sum_subtype_ite P (fun i => ∑ j : {i // P i}, f i j)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : P i`. Simplify using `[hi, sum_subtype_ite P (fun j => f i j)]`. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dsum_subtype {ι : Type} [Fintype ι] (P : ι → Prop) [DecidablePred P] (f : ι → ι → ℂ) :
     ∑ i : {i // P i}, ∑ j : {i // P i}, f i j = ∑ i, ∑ j, if P i ∧ P j then f i j else 0 := by
@@ -155,63 +155,57 @@ end PositivityTheory.RgJS.Common0Aux
 
 open PositivityTheory.RgJS.Common0Aux in
 /- English proof (translation)
-Introduce `hL hE hC hU W q X d A hS ι κ _ _ x y hR ht ht' h0`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hq` using `hS.primes.two`. Establish `hP : ∀ w k, Pw q A y w k = Pw q A x w k` using `fun w k => (hR w (k + 1)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy : ∀ (σ : ℝ) (p : W × ℕ), ∑ i, ∑ j, lterm q (A (x i).1) (A (y j).1) (((σ + (x i).2 + (y j).2 : ℝ)) : ℂ) p = ((cc q A x p * Real.exp (-(ll q p * σ)) : ℝ) : ℂ)` using `fun σ p => by`. Rewrite using `[sum_lterm q hq A x y σ p, hP, term_real q hq A x σ p]`. Establish `hxx : ∀ (σ : ℝ) (p : W × ℕ), ∑ i, ∑ j, lterm q (A (x i).1) (A (x j).1) (((σ + (x i).2 + (x j).2 : ℝ)) : ℂ) p = ((cc q A x p * Real.exp (-(ll q p * σ)) : ℝ) : ℂ)` using `fun σ p => by`. Rewrite using `[sum_lterm q hq A x x σ p, term_real q hq A x σ p]`. Establish `hsum : ∀ (u v : X) (s : ℝ), 1 < s → Summable fun p => ‖lterm q (A u) (A v) (s : ℂ) p‖` using `fun u v s hs => (hC W q X d A hS u v).1 s hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcn : ∀ (σ : ℝ) (p : W × ℕ), 0 ≤ cc q A x p * Real.exp (-(ll q p * σ))` using `fun σ p => mul_nonneg (cc_nonneg q A x p) (Real.exp_pos _).le`. Establish `hD1 : ∀ σ : ℝ, 1 < σ → Summable fun p => cc q A x p * Real.exp (-(ll q p * σ))`. Introduce `σ hσ`. Use `Summable.of_nonneg_of_le (hcn σ) (fun p => ?_) (summable_sum (s := Finset.univ) fun i _ => summable_sum (s := Finset.univ) fun j _ => hsum (x i).1 (y j).1 (σ + (x i).2 + (y j).2) (by linarith [ht i, ht' j]))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (hcn σ p)]`. Use `_ = ‖∑ i, ∑ j, lterm q (A (x i).1) (A (y j).1) (((σ + (x i).2 + (y j).2 : ℝ)) : ℂ) p‖ := by rw [hxy]`. Use `_ ≤ ∑ i, ∑ j, ‖lterm q (A (x i).1) (A (y j).1) (((σ + (x i).2 + (y j).2 : ℝ)) : ℂ) p‖ := (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => norm_sum_le _ _)`. Take `⟨δ, hδ, hδ1, hδle⟩` from `exists_pos_le (fun p : ι × κ => (x p.1).2 + (y p.2).2) (fun p => (x p.1).1 = (y p.2).1) (by`. Introduce and unpack `⟨i, j⟩ hij`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1` using `ht i`. Establish `h2` using `ht' j`. Break down `(add_nonneg h1 h2).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a1 : (x i).2 = 0` using `by linarith`. Establish `a2 : (y j).2 = 0` using `by linarith`. Conclude with `hne i j (Prod.ext hij (by rw [a1, a2])))`. Use `choose F σ0 hFa hFe using fun p : ι × κ => hS.rs (x p.1).1 (y p.2).1`. Establish `hGa' : ∀ σ : ℝ, 1 - δ < σ → ∀ p : ι × κ, AnalyticAt ℂ (gf F x y p) σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Introduce `σ hσ p`. Establish `hpos : 0 < σ + ((x p.1).2 + (y p.2).2)` using `by linarith [ht p.1, ht' p.2]`. Establish `hF' : AnalyticAt ℂ (fun s : ℂ => F p (s + (((x p.1).2 + (y p.2).2 : ℝ) : ℂ))) (σ : ℂ)`. Use `hFa p (σ + ((x p.1).2 + (y p.2).2)) hpos` as an intermediate fact. Establish `hlin : AnalyticAt ℂ (fun s : ℂ => s + (((x p.1).2 + (y p.2).2 : ℝ) : ℂ)) (σ : ℂ)` using `analyticAt_id.add analyticAt_const`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `AnalyticAt.comp_of_eq this hlin (by push_cast; ring)`. Distinguish the cases in `hc : (x p.1).1 = (y p.2).1`. Establish `hne1 : (σ : ℂ) + (((x p.1).2 + (y p.2).2 : ℝ) : ℂ) - 1 ≠ 0`. Establish `h3 : 1 < σ + ((x p.1).2 + (y p.2).2)` using `by have := hδle p hc; linarith`. Introduce `h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: AnalyticAt ℂ (fun s : ℂ => F p (s + (((x p.1).2 + (y p.2).2 : ℝ) : ℂ)) / (s + (((x p.1).2 + (y p.2).2 : ℝ) : ℂ) - 1)) (σ : ℂ)` using `hF'.div ((analyticAt_id.add analyticAt_const).sub analyticAt_const) hne1`. Establish `hgf : gf F x y p = fun s : ℂ => F p (s + (((x p.1).2 + (y p.2).2 : ℝ) : ℂ)) / (s + (((x p.1).2 + (y p.2).2 : ℝ) : ℂ) - 1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `s`. Unfold `gf`. Rewrite using `[if_pos hc]`. Rewrite using `[hgf]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgf : gf F x y p = fun s : ℂ => F p (s + (((x p.1).2 + (y p.2).2 : ℝ) : ℂ))`. Use function extensionality and compare the values at `s`. Unfold `gf`. Rewrite using `[if_neg hc]`. Rewrite using `[hgf]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hF'`. Establish `hGa : ∀ σ : ℝ, 1 - δ < σ → AnalyticAt ℂ (fun s => ∏ p, gf F x y p s) σ`. Introduce `σ hσ`. Use `Finset.analyticAt_prod (f := fun p => gf F x y p) Finset.univ (fun p _ => hGa' σ hσ p)` as an intermediate fact. Rewrite `this` using `[Finset.prod_fn]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `this`. Use `set σ₁ : ℝ := 2 + ∑ p, |σ0 p| with hσ₁`. Establish `hσ0le : ∀ p, σ0 p ≤ σ₁ - 2` using `fun p => by`. Use `Finset.single_le_sum (f := fun p => |σ0 p|) (fun p _ => abs_nonneg _) (Finset.mem_univ p)` as an intermediate fact. Use `le_abs_self (σ0 p)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hσ₁]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hσ₁2 : 2 ≤ σ₁`. Establish `: 0 ≤ ∑ p, |σ0 p|` using `Finset.sum_nonneg fun p _ => abs_nonneg _`. Simplify using `only [hσ₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hGe : ∀ σ : ℝ, σ₁ < σ → (fun s => ∏ p, gf F x y p s) σ = ((Real.exp (∑' p, cc q A x p * Real.exp (-(ll q p * σ))) : ℝ) : ℂ)`. Introduce `σ hσ`. Establish `hs' : ∀ p : ι × κ, Summable fun r => lterm q (A (x p.1).1) (A (y p.2).1) (((σ + (x p.1).2 + (y p.2).2 : ℝ)) : ℂ) r` using `fun p => (hsum _ _ _ (by linarith [ht p.1, ht' p.2])).of_norm`. Establish `hg : ∀ p : ι × κ, gf F x y p σ = Complex.exp (∑' r, lterm q (A (x p.1).1) (A (y p.2).1) (((σ + (x p.1).2 + (y p.2).2 : ℝ)) : ℂ) r)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Introduce `p`. Establish `hs : σ0 p < σ + (x p.1).2 + (y p.2).2` using `by linarith [hσ0le p, ht p.1, ht' p.2]`. Establish `hs2 : 2 < ((((σ + (x p.1).2 + (y p.2).2 : ℝ)) : ℂ)).re`. Rewrite using `[Complex.ofReal_re]`. Combine the linear relations using `[ht p.1, ht' p.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hEL` using `(hE W q (Fin (d (x p.1).1)) (Fin (d (y p.2).1)) (A (x p.1).1) (A (y p.2).1) _ hS.primes (hS.bd _) (hS.bd _) hs2).2.1`. Establish `hFE` using `hFe p _ hs`. Establish `ecast : (σ : ℂ) + (((x p.1).2 + (y p.2).2 : ℝ) : ℂ) = (((σ + (x p.1).2 + (y p.2).2 : ℝ)) : ℂ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `gf`. Rewrite using `[ecast]`. Use `split_ifs with hc`. Establish `hne1 : ((((σ + (x p.1).2 + (y p.2).2 : ℝ)) : ℂ)) - 1 ≠ 0`. Introduce `h`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear relations using `[ht p.1, ht' p.2]`. Rewrite using `[hFE, if_pos hc, mul_div_cancel_left₀ _ hne1, hEL]`. Rewrite using `[hFE, if_neg hc, one_mul, hEL]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ∏ p, gf F x y p σ = _`. Simplify using `only [hg]`. Rewrite using `[← Complex.exp_sum, ← Summable.tsum_finsetSum (fun p _ => hs' p)]`. Simplify using `only [Fintype.sum_prod_type]`. Rewrite using `[show (fun r => ∑ i, ∑ j, lterm q (A (x i).1) (A (y j).1) (((σ + (x i).2 + (y j).2 : ℝ)) : ℂ) r) = fun r => ((cc q A x r * Real.exp (-(ll q r * σ)) : ℝ) : ℂ) from funext (hxy σ)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_tsum, ← Complex.ofReal_exp]`. Establish `hL1` using `hL (W × ℕ) (cc q A x) (ll q) (1 - δ) σ₁ (fun s => ∏ p, gf F x y p s) (cc_nonneg q A x) (ll_nonneg q hq) hGa (fun σ hσ => hD1 σ (by linarith)) hGe 1 (by linarith)`. Take `⟨τ, hτ, -, hτle⟩` from `exists_pos_le (fun i => (x i).2) (fun i => (x i).2 ≠ 0) (fun i hi => lt_of_le_of_ne (ht i) (Ne.symm hi))`. Use `choose M hM using fun i i' : ι => (hC W q X d A hS (x i).1 (x i').1).2 (1 + τ) (by linarith)`. Take `⟨i₀, hi₀⟩` from `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Nonempty {i // (x i).2 = 0}` using `⟨⟨i₀, hi₀⟩⟩`. Use `hU W q X d A hS {i // (x i).2 = 0} (fun i => (x i.1).1) ⟨(∑' p, cc q A x p * Real.exp (-(ll q p * 1))) + ∑ i, ∑ i', |M i i'|, fun σ hσ1 hσ2 => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ i j, Summable fun p => lterm q (A (x i).1) (A (x j).1) (((σ + (x i).2 + (x j).2 : ℝ)) : ℂ) p` using `fun i j => (hsum _ _ _ (by linarith [ht i, ht j])).of_norm`. Establish `hform : ∑ i : {i // (x i).2 = 0}, ∑ j : {i // (x i).2 = 0}, ∑' p, lterm q (A (x i.1).1) (A (x j.1).1) (σ : ℂ) p = ∑ i : {i // (x i).2 = 0}, ∑ j : {i // (x i).2 = 0}, ∑' p, lterm q (A (x i.1).1) (A (x j.1).1) (((σ + (x i.1).2 + (x j.1).2 : ℝ)) : ℂ) p`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[i.2, j.2, add_zero, add_zero]`. Establish `htot : ∑ i, ∑ j, ∑' p, lterm q (A (x i).1) (A (x j).1) (((σ + (x i).2 + (x j).2 : ℝ)) : ℂ) p = ((∑' p, cc q A x p * Real.exp (-(ll q p * σ)) : ℝ) : ℂ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hform, dsum_subtype (fun i => (x i).2 = 0) (fun i j => ∑' p, lterm q (A (x i).1) (A (x j).1) (((σ + (x i).2 + (x j).2 : ℝ)) : ℂ) p)]`. Use `set f : ι → ι → ℂ := fun i j => ∑' p, lterm q (A (x i).1) (A (x j).1) (((σ + (x i).2 + (x j).2 : ℝ)) : ℂ) p with hf`.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : ∑ i, ∑ j, f i j = (∑ i, ∑ j, if (x i).2 = 0 ∧ (x j).2 = 0 then f i j else 0) + ∑ i, ∑ j, if (x i).2 = 0 ∧ (x j).2 = 0 then 0 else f i j`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hrest : ‖∑ i, ∑ j, if (x i).2 = 0 ∧ (x j).2 = 0 then (0 : ℂ) else f i j‖ ≤ ∑ i, ∑ i', |M i i'|`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_))` and prove the remaining obligations. Use `split_ifs with hij`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hge : 1 + τ ≤ σ + (x i).2 + (x j).2`. Break down `not_and_or.1 hij with h | h` into its components or cases. Combine the linear relations using `[hτle i h, ht j]`. Combine the linear relations using `[hτle j h, ht i]`. Conclude with `(hM i j _ hge).trans (le_abs_self _)`.
-
-Establish `hDle : (∑' p, cc q A x p * Real.exp (-(ll q p * σ))) ≤ ∑' p, cc q A x p * Real.exp (-(ll q p * 1))`. Use `Summable.tsum_le_tsum (fun p => ?_) (hD1 σ hσ1) hL1` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (cc_nonneg q A x p)` and prove the remaining obligations. Use `ll_nonneg q hq p` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `hD0 : 0 ≤ ∑' p, cc q A x p * Real.exp (-(ll q p * σ))` using `tsum_nonneg (hcn σ)`. Establish `heq : (∑ i, ∑ j, if (x i).2 = 0 ∧ (x j).2 = 0 then f i j else 0) = ((∑' p, cc q A x p * Real.exp (-(ll q p * σ)) : ℝ) : ℂ) - ∑ i, ∑ j, if (x i).2 = 0 ∧ (x j).2 = 0 then 0 else f i j`. Rewrite using `[← htot, hsplit]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hD0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.RgJS.common_of_landau_euler : LandauL → EulerLog → Conv1 → Unb → Common0 := by
   classical

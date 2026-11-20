@@ -21,13 +21,13 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-The claim follows from `ClassFin.finG_injective V ((GlobalTheory.SuppLevO.finE_finPartG V g).trans (finG_finOf V g).symm)`.
+A detailed English derivation is pending.
 -/
 theorem fp_eq (V : HSp D) (g : GA D V) : GlobalTheory.IndefiniteRowSideFullHecke.BasisPolynomialParabolics.fp V g = finOf V g :=
   ClassFin.finG_injective V ((GlobalTheory.SuppLevO.finE_finPartG V g).trans (finG_finOf V g).symm)
 
 /- English proof (translation)
-Establish `e' : realAct θ N.fr X = GlobalTheory.RealType.rhoAt θ N X` using `rfl`. Rewrite using `[e', GlobalTheory.RealType.rhoVr_rhoAt, ← Module.End.mul_apply (rhoVr _ _ _), ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, GlobalTheory.RealType.rhoFr_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_real {L : LevCh D T} {sc : Consts} {G : GridData L sc} {U : Set T} (θ : InfFam D) (N : Std G U) (X : Node)
     (g : GA D (G.V X)) (v : VV ℂ (wt G X)) :
@@ -38,7 +38,7 @@ theorem frame_real {L : LevCh D T} {sc : Consts} {G : GridData L sc} {U : Set T}
     Module.End.one_apply, GlobalTheory.RealType.rhoFr_one]
 
 /- English proof (translation)
-Take `⟨Λ, h⟩` from `RealTypeOf.colFn_realType ch`. Use `⟨Λ ∘ₗ rhoVr (tauE D) _ (ch.S.N.fr (.top 0)), fun a g => ?_⟩` and prove the remaining obligations. Rewrite using `[h, fp_eq, LinearMap.comp_apply, frame_real]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem col_real (ch : Choice R) : ∃ Λ : Module.Dual ℂ (VV ℂ (wt ch.G (.top 0))), ∀ a,
     IsFinReal (realAct ch.W.θ ch.S.N.fr (.top 0)) (colFn ch a) Λ
@@ -48,9 +48,9 @@ theorem col_real (ch : Choice R) : ∃ Λ : Module.Dual ℂ (VV ℂ (wt ch.G (.t
   rw [h, fp_eq, LinearMap.comp_apply, frame_real]
 
 /- English proof (translation)
-Take `⟨Λ, h⟩` from `RealTypeOf.formTop_realType ch hc`. Set `φ` to `GlobalTheory.FunObj.funEquiv (K := ℂ) (listedWt ch.G (.grid 0 D.R.m))`. Establish `hφ : ∀ F, funOf (listedWt ch.G (.grid 0 D.R.m)) F = φ F` using `fun F => (GlobalTheory.FunObj.isFunForm_iff_eq _ _ _).1 ((readOK_of_equiv _ φ (GlobalTheory.FunObj.isFunForm_funEquiv _)).1 F)`. Use `⟨Λ ∘ₗ φ.symm.toLinearMap ∘ₗ rhoVr (tauE D) (wt ch.G (.grid 0 D.R.m)) (ch.S.N.fr (.grid 0 D.R.m)), fun t y g => ?_⟩` and prove the remaining obligations. Rewrite using `[h, fp_eq]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `frame_real ch.W.θ ch.S.N (.grid 0 D.R.m) g⁻¹ (funOf (listedWt ch.G (.grid 0 D.R.m)) (ch.S.formC t y (finOf _ g)))`. Establish `e2` using `GlobalTheory.FunObj.funEquiv_rhoK (K := ℂ) (listedWt ch.G (.grid 0 D.R.m)) (GlobalTheory.CoefModel.realGL ch.W.θ (ch.G.V (.grid 0 D.R.m)) g⁻¹) (ch.S.formC t y (finOf _ g))`. Establish `e3` using `e2.trans ((congrArg _ (hφ _).symm).trans e1.symm)`. Conclude with `congrArg Λ ((φ.symm_apply_apply _).symm.trans (congrArg φ.symm e3))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem form_real (ch : Choice R) (hc : R.cX.Is) : ∃ Λ : Module.Dual ℂ (VV ℂ (wt ch.G (.grid 0 D.R.m))), ∀ t y,
     IsFinReal (realAct ch.W.θ ch.S.N.fr (.grid 0 D.R.m)) (formTop ch t y) Λ
@@ -70,7 +70,7 @@ theorem form_real (ch : Choice R) (hc : R.cX.Is) : ∃ Λ : Module.Dual ℂ (VV 
   exact congrArg Λ ((φ.symm_apply_apply _).symm.trans (congrArg φ.symm e3))
 
 /- English proof (translation)
-Establish `e : ch.Psi a (finG (Xp ch.G) (x * k)) = ch.Psi a (finG (Xp ch.G) x)`. Rewrite using `[show finG (Xp ch.G) (x * k) = finG (Xp ch.G) x * finG (Xp ch.G) k from map_mul _ _ _]`. Conclude with `psi_right _ _ a _ hk`. Conclude with `Subtype.ext (congrArg (fun z => (GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP ch.G) z).1) e)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiC_right (ch : Choice R) (a : Fin ch.n) (x k : FinPt ch.G (.top 0)) (hk : finG (ch.G.V (.top 0)) k ∈ ch.G.Kplus) :
     psiC (ch.Psi a) (x * k) = psiC (ch.Psi a) x := by
@@ -80,13 +80,13 @@ theorem psiC_right (ch : Choice R) (a : Fin ch.n) (x k : FinPt ch.G (.top 0)) (h
   exact Subtype.ext (congrArg (fun z => (GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP ch.G) z).1) e)
 
 /- English proof (translation)
-Introduce `γ hγ g` and use `GlobalTheory.RowBplus.pairVec_left ch.G ch.W.θ ch.ξ (col_mem ch a) hγ g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem col_left (ch : Choice R) (a : Fin ch.n) : ∀ γ ∈ GQ (ch.G.V (.top 0)), ∀ g, colFn ch a (γ * g) = colFn ch a g :=
   fun γ hγ g => GlobalTheory.RowBplus.pairVec_left ch.G ch.W.θ ch.ξ (col_mem ch a) hγ g
 
 /- English proof (translation)
-Rewrite using `[h, h, finOf_mul_fin, hk, mul_inv_rev, map_mul, hρ _ (inv_mem k.2), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem real_right {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : GA D V →* Module.End ℂ M}
     (hρ : ∀ g ∈ GfC V, ρ g = 1) {F : GA D V → ℂ} {Λ : Module.Dual ℂ M} {v : GfC V → M} (h : IsFinReal ρ F Λ v)
@@ -94,7 +94,7 @@ theorem real_right {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : 
   rw [h, h, finOf_mul_fin, hk, mul_inv_rev, map_mul, hρ _ (inv_mem k.2), one_mul]
 
 /- English proof (translation)
-Take `⟨Λ, h⟩` from `col_real ch`. Use `filter_upwards [hK.1.mem_nhds (one_mem _)] with k hk hf g`. Conclude with `real_right (fun g hg => realAct_fin _ _ _ hg) (h a) ⟨k, hf⟩ (fun x => congrArg _ (psiC_right ch a x ⟨k, hf⟩ hk)) g`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem col_fix (ch : Choice R) (a : Fin ch.n) (hK : IsOpenCompactLevel (ch.G.V (.top 0)) ch.G.Kplus) :
     ∀ᶠ k in 𝓝 (1 : GA D (ch.G.V (.top 0))), k ∈ GfC _ → ∀ g, colFn ch a (g * k) = colFn ch a g := by
@@ -103,7 +103,7 @@ theorem col_fix (ch : Choice R) (a : Fin ch.n) (hK : IsOpenCompactLevel (ch.G.V 
   exact real_right (fun g hg => realAct_fin _ _ _ hg) (h a) ⟨k, hf⟩ (fun x => congrArg _ (psiC_right ch a x ⟨k, hf⟩ hk)) g
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hφ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem aut_cast' {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.host.E)} (X : LSp D) (h : X = ⟨D.sp.X', Λ⟩)
     (φ : GA D D.sp.X' → ℂ) (hφ : IsAutFun D.sp.X' φ) :
@@ -112,9 +112,9 @@ theorem aut_cast' {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.host.E
   exact hφ
 
 /- English proof (translation)
-Establish `hm` using `hS.core.models`. Take `⟨h1, -, -⟩` from `GlobalTheory.EndCusp.formX_props R hm.inf hm.cX hm.prX hm.HX ch.cv t y`. Establish `k` using `aut_cast' (columnBlock R.toLevCh D.R.m) (colY_m R.toLevCh) (ch.cv.formX t y) h1.toIsAutFun`. Take `⟨U, hU, e⟩` from `k.level`. Use `⟨k.left, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hU.mem_nhds (one_mem _)] with z hz using e z hz`.
+A detailed English derivation is pending.
 -/
 theorem form_aut {large₂ : SizeData₂ D} {F : Face D A} (hS : HidaSetting large₂ R F) (ch : Choice R) (t : T) (y : (R.HX t).H) :
     (∀ γ ∈ GQ (ch.G.V (.grid 0 D.R.m)), ∀ g, formTop ch t y (γ * g) = formTop ch t y g) ∧

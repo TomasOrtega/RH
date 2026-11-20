@@ -13,20 +13,20 @@ section Loc
 variable {U : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `hP`. Conclude with `⟨S, hS, fun V g hg => h V g (hP V g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_mono {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : ∀ V g, P V g → Q V g) (hP : Loc U P) : Loc U Q := by
   obtain ⟨S, hS, hP⟩ := hP
   exact ⟨S, hS, fun V g hg => h V g (hP V g hg)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => h V g⟩`.
+Supply the required witnesses or components.
 -/
 theorem loc_of_forall {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : ∀ V g, P V g) : Loc U P :=
   ⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => h V g⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `hP`. Take `⟨T, hT, hQ⟩` from `hQ`. Conclude with `⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨hP V g hg.1, hQ V g hg.2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_and {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P) (hQ : Loc U Q) :
     Loc U fun V g => P V g ∧ Q V g := by
@@ -35,7 +35,7 @@ theorem loc_and {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P) (h
   exact ⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨hP V g hg.1, hQ V g hg.2⟩⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Use `choose T hT hTP using hP`. Use `⟨Sieve.bind S.arrows (fun V g hg => T V g hg), Scheme.etaleTopology.bind_covering hS (fun V g hg => hT V g hg), ?_⟩` and prove the remaining obligations. Introduce and unpack `W f ⟨V, k, g, hg, hk, rfl⟩`. Conclude with `hTP V g hg W k hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem loc_trans {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (h : Loc U fun V g => Loc V fun W k => P W (k ≫ g)) : Loc U P := by
@@ -47,9 +47,9 @@ theorem loc_trans {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
   exact hTP V g hg W k hk
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LocalizedFinsetForAll.loc_forall_finset`. Consider the case `exact _root_.GlobalTheory.LocalizedFinsetForAll.loc_forall_finset`. Consider the case `(apply _root_.GlobalTheory.LocalizedFinsetForAll.loc_forall_finset <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LocalizedFinsetForAll.loc_forall_finset <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LocalizedFinsetForAll.loc_forall_finset <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LocalizedFinsetForAll.loc_forall_finset ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem loc_finset {ι : Type*} (s : Finset ι) {P : ι → ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (h : ∀ i ∈ s, Loc U (P i)) : Loc U fun V g => ∀ i ∈ s, P i V g := by
@@ -94,7 +94,7 @@ def tensP {ι : Type} (A B : ι → Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1
     simp [DirectSum.lof_eq_of, DirectSum.lmap_of]
 
 /- English proof (translation)
-Conclude with `(DirectSum.lmap_of (fun i => TensorProduct.map ((A i).map g).hom ((B i).map g).hom) i (a ⊗ₜ b)).trans (by rw [TensorProduct.map_tmul])`.
+A detailed English derivation is pending.
 -/
 theorem tensP_map_of {ι : Type} [DecidableEq ι] (A B : ι → Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R))
     {U V : Scheme.{0}ᵒᵖ} (g : U ⟶ V) (i : ι) (a : (A i).obj U) (b : (B i).obj U) :
@@ -118,7 +118,7 @@ def tensMap {ι : Type} {A B M N : ι → Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (UL
     rw [← LinearMap.comp_apply, ← TensorProduct.map_comp, hf, hg, TensorProduct.map_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-Conclude with `(DirectSum.lmap_of (fun i => TensorProduct.map ((f i).app U).hom ((g i).app U).hom) i (a ⊗ₜ b)).trans (by rw [TensorProduct.map_tmul])`.
+A detailed English derivation is pending.
 -/
 theorem tensMap_of {ι : Type} [DecidableEq ι] {A B M N : ι → Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)}
     (f : ∀ i, A i ⟶ M i) (g : ∀ i, B i ⟶ N i) (U : Scheme.{0}ᵒᵖ) (i : ι) (a : (A i).obj U) (b : (B i).obj U) :
@@ -128,9 +128,9 @@ theorem tensMap_of {ι : Type} [DecidableEq ι] {A B M N : ι → Scheme.{0}ᵒ�
     (by rw [TensorProduct.map_tmul])
 
 /- English proof (translation)
-Unfold `Pair.lift`. Use `DirectSum.toModule_lof (ULift.{1} R) (φ := fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => TensorProduct.lift (μ.mul U p.1.1 p.1.2 w p.2)) p (a ⊗ₜ b) using 2` and compare the differences between its conclusion and the goal. Reduce the equality to equality of the corresponding arguments. Conclude with `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem lift_of {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) [DecidableEq {p : ℤ × ℤ // p.1 + p.2 = w}]
     (p : {p : ℤ × ℤ // p.1 + p.2 = w}) (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -156,7 +156,7 @@ def liftN {I J K : Cx R} (μ : Pair I J K) (w : ℤ) :
     exact ModuleCat.hom_ext (LinearMap.ext fun x => LinearMap.congr_fun h x)
 
 /- English proof (translation)
-The claim follows from `congr(($((liftN μ w).naturality g.op)).hom x)`.
+A detailed English derivation is pending.
 -/
 theorem lift_res {I J K : Cx R} (μ : Pair I J K) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     μ.lift V w (Tens.res g w x) = Sec.res g (μ.lift U w x) :=
@@ -168,9 +168,9 @@ namespace GlobalTheory.EtC.FlatTens
 open TensorProduct LinearMap
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨⊥, ⊥, 0, Submodule.fg_bot, Submodule.fg_bot, map_zero _⟩`. Consider the case `tmul a b`. Conclude with `⟨S ∙ a, S ∙ b, ⟨a, Submodule.mem_span_singleton_self a⟩ ⊗ₜ ⟨b, Submodule.mem_span_singleton_self b⟩, Submodule.fg_span_singleton a, Submodule.fg_span_singleton b, rfl⟩`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨A1, B1, x1, hA1, hB1, rfl⟩` from `hx`. Take `⟨A2, B2, y2, hA2, hB2, rfl⟩` from `hy`. Use `⟨A1 ⊔ A2, B1 ⊔ B2, TensorProduct.map (Submodule.inclusion le_sup_left) (Submodule.inclusion le_sup_left) x1 + TensorProduct.map (Submodule.inclusion le_sup_right) (Submodule.inclusion le_sup_right) y2, hA1.sup hA2, hB1.sup hB2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← LinearMap.comp_apply, ← LinearMap.comp_apply (TensorProduct.map _ _), ← TensorProduct.map_comp, ← TensorProduct.map_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_fg_tens {S A B : Type*} [CommRing S] [AddCommGroup A] [Module S A] [AddCommGroup B] [Module S B]
     (y : A ⊗[S] B) : ∃ (A0 : Submodule S A) (B0 : Submodule S B) (y0 : A0 ⊗[S] B0), A0.FG ∧ B0.FG ∧
@@ -190,7 +190,7 @@ theorem exists_fg_tens {S A B : Type*} [CommRing S] [AddCommGroup A] [Module S A
     rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comm_lTensor {S M N N' : Type*} [CommRing S] [AddCommGroup M] [Module S M] [AddCommGroup N] [Module S N]
     [AddCommGroup N'] [Module S N'] (h : N →ₗ[S] N') (z : M ⊗[S] N) :
@@ -201,17 +201,15 @@ theorem comm_lTensor {S M N N' : Type*} [CommRing S] [AddCommGroup M] [Module S 
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Take `⟨A0, B0, y0, hA0, hB0, rfl⟩` from `exists_fg_tens y`. Use `set I0 := A0.map f`. Use `set J0 := B0.map g`. Use `set z0 : I0 ⊗[S] J0 := TensorProduct.map (f.submoduleMap A0) (g.submoduleMap B0) y0 with hz0`. Establish `hz : TensorProduct.map I0.subtype J0.subtype z0 = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz0, ← LinearMap.comp_apply, ← TensorProduct.map_comp]`. Conclude with `(congrArg (fun h => h y0) (TensorProduct.map_comp f g A0.subtype B0.subtype)).trans hy`. Establish `h1 : rTensor J I0.subtype (lTensor I0 J0.subtype z0) = rTensor J I0.subtype 0`. Rewrite using `[map_zero, ← LinearMap.comp_apply, rTensor_comp_lTensor]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨I1, hI1, hle, e1⟩` from `(hA0.map f).exists_rTensor_fg_inclusion_eq h1`. Rewrite `e1` using `[map_zero]`. Use `set z1 : I1 ⊗[S] J0 := rTensor J0 (Submodule.inclusion hle) z0 with hz1`. Establish `hl : lTensor I1 J0.subtype z1 = 0`. Rewrite using `[hz1, ← LinearMap.comp_apply, lTensor_comp_rTensor, ← rTensor_comp_lTensor, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1`. Establish `h2 : rTensor I1 J0.subtype (TensorProduct.comm S I1 J0 z1) = rTensor I1 J0.subtype 0`. Rewrite using `[map_zero, ← comm_lTensor, hl, map_zero]`. Take `⟨J1, hJ1, hle', e2⟩` from `(hB0.map g).exists_rTensor_fg_inclusion_eq h2`. Rewrite `e2` using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hA : A0 ≤ I1.comap f` using `fun a ha => hle (Submodule.mem_map_of_mem ha)`. Establish `hB : B0 ≤ J1.comap g` using `fun b hb => hle' (Submodule.mem_map_of_mem hb)`. Use `⟨A0, B0, I1, J1, hA, hB, y0, hI1, hJ1, rfl, ?_⟩` and prove the remaining obligations. Establish `ef : f.restrict hA = Submodule.inclusion hle ∘ₗ f.submoduleMap A0` using `LinearMap.ext fun _ => rfl`. Establish `eg : g.restrict hB = Submodule.inclusion hle' ∘ₗ g.submoduleMap B0` using `LinearMap.ext fun _ => rfl`.
-
-Rewrite using `[ef, eg, TensorProduct.map_comp, LinearMap.comp_apply, ← hz0, ← lTensor_comp_rTensor, LinearMap.comp_apply, ← hz1]`. Apply `(TensorProduct.comm S I1 J1).injective` to reduce the goal to its premises. Rewrite using `[comm_lTensor, e2, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_alg {S A B I J : Type*} [CommRing S] [AddCommGroup A] [Module S A] [AddCommGroup B] [Module S B]
     [AddCommGroup I] [Module S I] [AddCommGroup J] [Module S J] (f : A →ₗ[S] I) (g : B →ₗ[S] J) (y : A ⊗[S] B)
@@ -262,7 +260,7 @@ def locZero2 (A B : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)) (V : Schem
   smul_mem' r x hx := loc_mono (fun W k h => by simp [h]) hx
 
 /- English proof (translation)
-Use `congr(($(f.naturality k)).hom a)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nat_apply {A M : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (f : A ⟶ M) {U V : Scheme.{0}ᵒᵖ} (k : U ⟶ V)
     (a : A.obj U) : (f.app V).hom ((A.map k).hom a) = (M.map k).hom ((f.app U).hom a) := by
@@ -270,27 +268,25 @@ theorem nat_apply {A M : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (f : 
   simpa using this
 
 /- English proof (translation)
-Take `⟨A0, B0, I1, J1, hA, hB, y0, ⟨sI, hsI⟩, ⟨sJ, hsJ⟩, rfl, hy0⟩` from `key_alg _ _ y hy`. Establish `cI` using `loc_finset sI (fun m _ => hfs U m)`. Establish `cJ` using `loc_finset sJ (fun m _ => hgs U m)`. Use `loc_trans (loc_mono (fun V k h => ?_) (loc_and cI cJ))` and prove the remaining obligations. Take `⟨hI, hJ⟩` from `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `lI : I1 ≤ (LinearMap.range (f.app (op V)).hom).comap (M.map k.op).hom`. Rewrite using `[← hsI, Submodule.span_le]`. Introduce `m hm`. Take `⟨x, hx⟩` from `hI m hm`. Conclude with `⟨x, hx⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `lJ : J1 ≤ (LinearMap.range (g.app (op V)).hom).comap (N.map k.op).hom`. Rewrite using `[← hsJ, Submodule.span_le]`. Introduce `m hm`. Take `⟨x, hx⟩` from `hJ m hm`. Conclude with `⟨x, hx⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `set yV := TensorProduct.map (A.map k.op).hom (B.map k.op).hom (TensorProduct.map A0.subtype B0.subtype y0) with hyV`. Establish `e1 : (f.app (op V)).hom.rangeRestrict ∘ₗ (A.map k.op).hom ∘ₗ A0.subtype = ((M.map k.op).hom.restrict (fun x hx => lI hx)) ∘ₗ (f.app (op U)).hom.restrict hA` using `LinearMap.ext fun a => Subtype.ext (nat_apply f k.op a.1)`. Establish `e2 : (g.app (op V)).hom.rangeRestrict ∘ₗ (B.map k.op).hom ∘ₗ B0.subtype = ((N.map k.op).hom.restrict (fun x hx => lJ hx)) ∘ₗ (g.app (op U)).hom.restrict hB` using `LinearMap.ext fun a => Subtype.ext (nat_apply g k.op a.1)`. Establish `hker : yV ∈ LinearMap.ker (TensorProduct.map (f.app (op V)).hom.rangeRestrict (g.app (op V)).hom.rangeRestrict)`. Establish `ec : TensorProduct.map (f.app (op V)).hom.rangeRestrict (g.app (op V)).hom.rangeRestrict ∘ₗ TensorProduct.map (A.map k.op).hom (B.map k.op).hom ∘ₗ TensorProduct.map A0.subtype B0.subtype = TensorProduct.map ((M.map k.op).hom.restrict (fun x hx => lI hx)) ((N.map k.op).hom.restric …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TensorProduct.map_comp, ← TensorProduct.map_comp, e1, e2, TensorProduct.map_comp]`. Rewrite using `[LinearMap.mem_ker, hyV]`. Conclude with `(LinearMap.congr_fun ec y0).trans (by rw [LinearMap.comp_apply, hy0, map_zero])`. Rewrite `hker` using `[TensorProduct.map_ker (LinearMap.exact_subtype_ker_map _) (LinearMap.surjective_rangeRestrict _) (LinearMap.exact_subtype_ker_map _) (LinearMap.surjective_rangeRestrict _)]`. Establish `hle : LinearMap.range (LinearMap.lTensor (A.obj (op V)) (LinearMap.ker (g.app (op V)).hom.rangeRestrict).subtype) ⊔ LinearMap.range (LinearMap.rTensor (B.obj (op V)) (LinearMap.ker (f.app (op V)).hom.rangeRestrict).subtype) ≤ locZero2 A B V`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `add_mem ha hb`. Consider the case `tmul a b`. Establish `hb : (g.app (op V)).hom b.1 = 0`. Use `b.2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val this`. Use `loc_mono (fun W k' h => ?_) (hgi V b.1 hb)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `TensorProduct.map _ _ (a ⊗ₜ b.1) = 0`. Rewrite using `[TensorProduct.map_tmul, h, TensorProduct.tmul_zero]`. Introduce and unpack `_ ⟨u, rfl⟩`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `tmul a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `ha : (f.app (op V)).hom a.1 = 0`. Use `a.2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker]`. Conclude with `congrArg Subtype.val this`. Use `loc_mono (fun W k' h => ?_) (hfi V a.1 ha)` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `TensorProduct.map _ _ (a.1 ⊗ₜ b) = 0`. Rewrite using `[TensorProduct.map_tmul, h, TensorProduct.zero_tmul]`. Use `loc_mono (fun W k' h => ?_) (hle hker)` and prove the remaining obligations. Rewrite using `[op_comp, Functor.map_comp, Functor.map_comp, ModuleCat.hom_comp, ModuleCat.hom_comp, TensorProduct.map_comp, LinearMap.comp_apply]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_locally_zero_of_exact {A B M N : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (f : A ⟶ M) (g : B ⟶ N)
     (hfs : ∀ (U : Scheme.{0}) (y : M.obj (op U)), Loc U fun V k => ∃ x, (f.app (op V)).hom x = (M.map k.op).hom y)
@@ -372,13 +368,11 @@ open TensorProduct
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-It suffices to establish `h : ∀ x' : ⨁ i, (M i).obj (op U) ⊗[ULift.{1} R] (N i).obj (op U), x' ∈ locIm (tensMap f g) U from h x`. Introduce `x'`. Proceed by induction on `x' using DirectSum.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b ha hb => exact add_mem ha hb`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `of i y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b ha hb => rw [map_add]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem ha hb`. Consider the case `tmul a b`. Use `loc_mono (fun V k h => ?_) (loc_and (hfs i U a) (hgs i U b))` and prove the remaining obligations. Take `⟨⟨a', ha'⟩, ⟨b', hb'⟩⟩` from `h`. Use `⟨DirectSum.of (fun i => (A i).obj (op V) ⊗[ULift.{1} R] (B i).obj (op V)) i (a' ⊗ₜ b'), ?_⟩` and prove the remaining obligations.
-
-Use `erw [tensMap_of, tensP_map_of, ha', hb']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tens_locIm {ι : Type} {A B M N : ι → Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (f : ∀ i, A i ⟶ M i)
     (g : ∀ i, B i ⟶ N i)
@@ -402,11 +396,9 @@ theorem tens_locIm {ι : Type} {A B M N : ι → Scheme.{0}ᵒᵖ ⥤ ModuleCat.
       erw [tensMap_of, tensP_map_of, ha', hb']
 
 /- English proof (translation)
-Set `x' : ⨁ i, (A i).obj (op U) ⊗[ULift.{1} R] (B i).obj (op U)` to `x`. Establish `hc : ∀ i, TensorProduct.map ((f i).app (op U)).hom ((g i).app (op U)).hom (x' i) = 0` using `fun i => congrArg (fun z : ⨁ i, (M i).obj (op U) ⊗[ULift.{1} R] (N i).obj (op U) => z i) hx`. Establish `hof : ∀ i (y : (A i).obj (op U) ⊗[ULift.{1} R] (B i).obj (op U)), y ∈ locZero2 (A i) (B i) U → DirectSum.of (fun i => (A i).obj (op U) ⊗[ULift.{1} R] (B i).obj (op U)) i y ∈ locZero (tensP A B) U`. Introduce `i y hy`. Use `loc_mono (fun V k h => ?_) hy` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `DirectSum.lmap _ (DirectSum.of (fun i => (A i).obj (op U) ⊗[ULift.{1} R] (B i).obj (op U)) i y) = 0`. Rewrite using `[DirectSum.lmap_of]`. Conclude with `(congrArg _ h).trans (map_zero _)`. Establish `hx' : x = ∑ i ∈ x'.support, DirectSum.of _ i (x' i)` using `(DirectSum.sum_support_of x').symm`. Rewrite using `[hx']`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => hof i _ (tensor_locally_zero_of_exact (f i) (g i) (hfs i) (hgs i) (hfi i) (hgi i) U _ (hc i))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_locZero {ι : Type} {A B M N : ι → Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (f : ∀ i, A i ⟶ M i)
     (g : ∀ i, B i ⟶ N i)
@@ -432,15 +424,13 @@ theorem tens_locZero {ι : Type} {A B M N : ι → Scheme.{0}ᵒᵖ ⥤ ModuleCa
   exact Submodule.sum_mem _ fun i _ => hof i _ (tensor_locally_zero_of_exact (f i) (g i) (hfs i) (hgs i) (hfi i) (hgi i) U _ (hc i))
 
 /- English proof (translation)
-Introduce `R _ I J T τ hτ hI hJ w`. Use `choose PI φI sI iI fI using hI`. Use `choose PJ φJ sJ iJ fJ using hJ`. Use `⟨tensP (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => PI p.1.1) (fun p => PJ p.1.2), tensMap (fun p => φI p.1.1) (fun p => φJ p.1.2) ≫ liftN τ w, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `loc_trans (loc_mono (fun V g h => ?_) (hτ.1 U w y))` and prove the remaining obligations. Take `⟨x, hx⟩` from `h`. Use `loc_mono (fun W k h' => ?_) (tens_locIm (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => φI p.1.1) (fun p => φJ p.1.2) (fun p => sI p.1.1) (fun p => sJ p.1.2) V x)` and prove the remaining obligations. Take `⟨z, hz⟩` from `h'`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[NatTrans.comp_app, ModuleCat.hom_comp, LinearMap.comp_apply, hz]`. Express the relevant statement in the definitionally equal form `τ.lift W w (Tens.res k w x) = _`. Rewrite using `[lift_res, hx]`. Simplify using `[Sec.res]`. Introduce `U x hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `loc_trans (loc_mono (fun V g h => ?_) (hτ.2 U w _ hx))` and prove the remaining obligations. Establish `h' : ((tensMap (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => φI p.1.1) (fun p => φJ p.1.2)).app (op V)).hom (((tensP (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => PI p.1.1) (fun p => PJ p.1.2)).map g.op).hom x) = 0`. Rewrite using `[nat_apply]`. Conclude with `h`. Use `loc_mono (fun W k h'' => ?_) (tens_locZero (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => φI p.1.1) (fun p => φJ p.1.2) (fun p => sI p.1.1) (fun p => sJ p.1.2) (fun p => iI p.1.1) (fun p => iJ p.1.2) V _ h')` and prove the remaining obligations.
-
-Rewrite using `[op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`. Conclude with `h''`. Introduce `U hU haveI : ∀ p : {p : ℤ × ℤ // p.1 + p.2 = w}, Module.Flat (ULift.{1} R) ((PI p.1.1).obj (op U)) := fun p => fI _ U hU haveI : ∀ p : {p : ℤ × ℤ // p.1 + p.2 = w}, Module.Flat (ULift.{1} R) ((PJ p.1.2).obj (op U)) := fun p => fJ _ U hU haveI : ∀ p : {p : ℤ × ℤ // p.1 + p.2 = w}, …`. Conclude with `Module.Flat.directSum`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem flatS_tens : ∀ (R : Type) [CommRing R] {I J T : Cx R} (τ : Pair I J T), τ.IsTensor → (∀ t, FlatS (I.X t)) →
     (∀ t, FlatS (J.X t)) → ∀ w, FlatS (T.X w) := by

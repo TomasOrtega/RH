@@ -12,9 +12,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Use `choose c₀ hc₀ using fun r : ℕ => h (e + r • N)`. Use `⟨((Finset.range q).sup c₀ + 1) * q, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hr : c % q ∈ Finset.range q` using `Finset.mem_range.mpr (Nat.mod_lt _ (by omega))`. Establish `h1 : c₀ (c % q) ≤ (Finset.range q).sup c₀` using `Finset.le_sup (f := c₀) hr`. Establish `h2 : (Finset.range q).sup c₀ + 1 ≤ c / q` using `(Nat.le_div_iff_mul_le (by omega)).mpr hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hc₀ (c % q) (c / q) (by omega)`. Establish `e' : e + (c % q) • N + (c / q * q) • N = e + c • N`. Rewrite using `[add_assoc, ← add_smul, Nat.mod_add_div' c q]`. Rewrite `h3` using `[e']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem vanish_of_vanish_nsmul {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K → Type}
     [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M]
@@ -33,9 +33,9 @@ theorem vanish_of_vanish_nsmul {S : Type} [CommRing S] {K : Type} [Fintype K] [L
   rwa [e'] at h3
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ _ I Q α b a hI hQ hN hb ha`. Use `hGen F K ι Q _ inferInstance (hDev F K ι Q _ inferInstance fun P hP hQP e => ?_)` and prove the remaining obligations. Take `⟨D, hKD, hD⟩` from `Targets.ContractMixedField.exists_dim hP`. Establish `hPd : IsProjVarF P (D - Fintype.card K)` using `⟨hP, by rw [hD, Nat.sub_add_cancel hKD]⟩`. Establish `hNP : KH.NefOnF I P α` using `fun W hW hPW => hN W hW (hQP.trans hPW)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq, -, hvan⟩` from `hK F K ι I P _ α b a hI hPd hNP hb ha`. Conclude with `vanish_of_vanish_nsmul _ _ hq hvan e`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem KleimanVarietyH1Generation.proof (hK : KH.KAmpStatement) (hDev : H1VanishingDevissage.Statement)
     (hGen : GenerationOfH1Vanishing.Statement) : KleimanVarietyH1Generation.Statement := by

@@ -22,9 +22,9 @@ section aux
 variable {P : M.Par}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `π`. Rewrite using `[Finset.sum_apply]`. Unfold `MA.actA`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun π' _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_apply]`. Conclude with `map_sum (a π π').1 (fun c => g c π') s`. Use `_ = ∑ c ∈ s, ∑ π', (a π π').1 (g c π') := Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nf_actA_fsum (a : MA.A P (MA.DQ P)) {κ : Type} (s : Finset κ) (g : κ → M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P a (∑ k ∈ s, g k) = ∑ k ∈ s, MA.actA P a (g k) := by
@@ -38,7 +38,7 @@ theorem nf_actA_fsum (a : MA.A P (MA.DQ P)) {κ : Type} (s : Finset κ) (g : κ 
     _ = ∑ c ∈ s, ∑ π', (a π π').1 (g c π') := Finset.sum_comm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_sum_le _ _`. Use `_ ≤ s.card * ∑ k ∈ s, ‖a k‖ ^ 2 := sq_sum_le_card_mul_sum_sq`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nf_norm_sum_sq {E : Type*} [SeminormedAddCommGroup E] {κ : Type*} (s : Finset κ) (a : κ → E) :
     ‖∑ k ∈ s, a k‖ ^ 2 ≤ s.card * ∑ k ∈ s, ‖a k‖ ^ 2 := by
@@ -48,7 +48,7 @@ theorem nf_norm_sum_sq {E : Type*} [SeminormedAddCommGroup E] {κ : Type*} (s : 
     _ ≤ s.card * ∑ k ∈ s, ‖a k‖ ^ 2 := sq_sum_le_card_mul_sum_sq
 
 /- English proof (translation)
-Break down `le_total G 1 with h | h` into its components or cases. Establish `h1 : G ^ a ≤ 1` using `pow_le_one₀ hG h`. Establish `h2 : 0 ≤ G ^ (2 * N)` using `pow_nonneg hG _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : G ^ a ≤ G ^ (2 * N)` using `pow_le_pow_right₀ h (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

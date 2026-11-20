@@ -22,15 +22,15 @@ def modelOfEquiv {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G
   smul c v := by rw [map_smul, M.smul]
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Take `⟨F, _, _, ⟨M'⟩⟩` from `lieModel_exists _ G R' (spMap c ≫ x)`. Take `⟨j, hj, -⟩` from `LieBaseChange.existsUnique_semilinear_lifts S G R R' c x _ F M M'`. Use `letI : Algebra R R' := c.toAlgebra`. Use `letI : Module R F := Module.compHom F c`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower R R' F := ⟨fun r s f => by`. Express the relevant statement in the definitionally equal form `(c r * s) • f = c r • s • f`. Rewrite using `[mul_smul]⟩`. Set `j' : (Fin g → R) →ₗ[R] F` to `{ toFun := j, map_add' := j.map_add, map_smul' := fun r e => j.map_smulₛₗ r e }`. Establish `hb : IsBaseChange R' j'` using `lieModel_isBaseChange S G R R' x _ F M M' j' hj`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨modelOfEquiv M' ((TensorProduct.piScalarRight R R' R' (Fin g)).symm.trans hb.equiv), fun e => ?_⟩` and prove the remaining obligations. Establish `h1 : (TensorProduct.piScalarRight R R' R' (Fin g)).symm (fun i => c (e i)) = (1 : R') ⊗ₜ[R] e`. Rewrite using `[LinearEquiv.symm_apply_eq, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul]`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `c (e i) = c (e i) * 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_one]`. Establish `h2 : ((TensorProduct.piScalarRight R R' R' (Fin g)).symm.trans hb.equiv) (fun i => c (e i)) = j e`. Rewrite using `[LinearEquiv.trans_apply, h1, IsBaseChange.equiv_tmul, one_smul]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `M.Lifts c (𝟙 _) e (M'.pt (((TensorProduct.piScalarRight R R' R' (Fin g)).symm.trans hb.equiv) (fun i => c (e i))))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `hj e`.
+A detailed English derivation is pending.
 -/
 theorem exists_model (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (R R' : Type)
     [CommRing R] [CommRing R'] (c : R →+* R') (x : Sp R ⟶ S) (g : ℕ) (M : LieModel G x (Fin g → R))
@@ -64,7 +64,7 @@ theorem exists_model (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] [
 end PositivityTheory.Xgn.QuotientUniformizationModel
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ n a C u`. Use `C.t.semi.smooth` as an intermediate fact. Conclude with `PositivityTheory.Xgn.QuotientUniformizationModel.exists_model _ C.t.G C.R ℂ (C.ψ u) (𝟙 _) C.g C.M _ (Category.comp_id _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.quotient_uniformization_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : Flat.BdryChart Xo σ n a) (u : Fin n → ℂ), ∃ Mz : LieModel C.t.G (spMap (C.ψ u)) (Fin C.g → ℂ), ∀ e : Fin C.g → C.R, C.M.Lifts (C.ψ u) (𝟙 _) e (Mz.pt fun i => C.ψ u (e i)) := by
   intro E _ _ _ H D l Xo σ n a C u

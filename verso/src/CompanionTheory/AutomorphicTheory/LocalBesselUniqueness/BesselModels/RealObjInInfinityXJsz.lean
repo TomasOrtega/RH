@@ -9,19 +9,19 @@ namespace Formalism.L2.SG.RealObj.EnergyConvJ
 namespace BM
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.RealObj.EnergyFinal.BM.stepIntG_holds (CompanionTheory.Lime.BM.inputs2_of hJ)`.
+A detailed English derivation is pending.
 -/
 theorem stepIntG_jsz (hJ : CompanionTheory.Lime.BM.UniqGap) : Formalism.L2.SG.RealObj.EnergyInt.StepIntG :=
   Formalism.L2.SG.RealObj.EnergyFinal.BM.stepIntG_holds (CompanionTheory.Lime.BM.inputs2_of hJ)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.RealObj.EnergyConvJ.BM.stepConvG_holds (CompanionTheory.Lime.BM.inputs2_of hJ)`.
+A detailed English derivation is pending.
 -/
 theorem stepConvG_jsz (hJ : CompanionTheory.Lime.BM.UniqGap) : Formalism.L2.S.Pv.ConvG.StepConvG :=
   Formalism.L2.SG.RealObj.EnergyConvJ.BM.stepConvG_holds (CompanionTheory.Lime.BM.inputs2_of hJ)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.realObj_inInfinityX_ofG (Formalism.L2.SG.RealObj.EnergyConvJ.BM.stepIntG_jsz hJ) (Formalism.L2.SG.RealObj.EnergyConvJ.BM.stepConvG_jsz hJ) hg X u u' sc hsc`.
+A detailed English derivation is pending.
 -/
 theorem realObj_inInfinityX_jsz (hJ : CompanionTheory.Lime.BM.UniqGap) {D : Formalism.BasicNotions.D7}
     (hg : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (sc : ℝ)

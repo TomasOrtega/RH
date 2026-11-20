@@ -10,17 +10,17 @@ open NumberField Module
 open scoped nonZeroDivisors TensorProduct
 
 /- English proof (translation)
-Use `choose p hp using fun i => IsLocalizedModule.surj S f (b i)`. Establish `hinj : Function.Injective (algebraMap O B)` using `IsLocalization.injective B hS`. Use `⟨Fintype.linearCombination O (fun i => (p i).1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[Fintype.linearCombination_apply]`. Establish `h1 : ∑ i, algebraMap O B (y i * (p i).2) • b i = 0`. Establish `h` using `congrArg f hy`. Rewrite `h` using `[map_sum, map_zero]`. Rewrite using `[← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hp i, Submonoid.smul_def, algebraMap_smul, mul_smul]`. Establish `h2` using `Fintype.linearIndependent_iff.mp b.linearIndependent _ h1`. Use function extensionality and compare the values at `i`. Establish `h3 : y i * (p i).2 = 0` using `hinj (by rw [h2 i, map_zero])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mul_eq_zero.mp h3).resolve_right (nonZeroDivisors.ne_zero (hS (p i).2.2))`. Introduce `x`. Establish `hx` using `b.sum_repr (f x)`. Take `⟨t, ht⟩` from `IsLocalization.exist_integer_multiples S Finset.univ (fun i => b.repr (f x) i * ((IsLocalization.map_units B (p i).2).unit⁻¹ : Bˣ))`. Use `choose a ha using fun i => RingHom.mem_rangeS.mp (ht i (Finset.mem_univ i))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ i, algebraMap O B (a i) * algebraMap O B (p i).2 = algebraMap O B t * b.repr (f x) i`. Introduce `i`. Rewrite using `[ha i, Algebra.smul_def, mul_assoc, mul_assoc, IsUnit.val_inv_mul, mul_one]`. Establish `key : f ((t : O) • x) = f (Fintype.linearCombination O (fun i => (p i).1) a)`. Rewrite using `[map_smul, Fintype.linearCombination_apply, map_sum, ← hx, Finset.smul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hp i, Submonoid.smul_def, ← algebraMap_smul B (a i), ← algebraMap_smul B ((p i).2 : O), smul_smul, hc i, mul_smul, algebraMap_smul]`. Take `⟨c, hc'⟩` from `IsLocalizedModule.exists_of_eq (S := S) (f := f) key`. Use `⟨c * t, (c : O) • a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Submonoid.coe_mul, mul_smul, ← Submonoid.smul_def, hc', Submonoid.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_map_of_basis {O B M Mb : Type} [CommRing O] [IsDomain O] [CommRing B] [Algebra O B]
     (S : Submonoid O) (hS : S ≤ O⁰) [IsLocalization S B] [AddCommGroup M] [Module O M]
@@ -63,19 +63,19 @@ theorem exists_map_of_basis {O B M Mb : Type} [CommRing O] [IsDomain O] [CommRin
     rw [map_smul, Submonoid.coe_mul, mul_smul, ← Submonoid.smul_def, hc', Submonoid.smul_def]
 
 /- English proof (translation)
-Introduce `hfin hproj n N hn hN`. Use `set S := GlobalTheory.PlaceInt.LocBasis.primeTo (𝓞 E) N with hSdef`. Establish `hS : S ≤ (𝓞 E)⁰`. Introduce and unpack `s ⟨k, hk0, -, rfl⟩`. Conclude with `mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.mpr hk0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDomain (Localization S)` using `IsLocalization.isDomain_localization hS`. Establish `: IsPrincipalIdealRing (Localization S)` using `GlobalTheory.PlaceInt.LocBasis.isPrincipalIdealRing_loc E N hN hS (Localization S)`. Establish `hrank : Module.finrank (Localization S) (LocalizedModule S M) = n`. Rewrite using `[IsLocalization.finrank_eq (Localization S) S hS, IsLocalizedModule.finrank_eq S (LocalizedModule.mkLinearMap S M) hS, hn]`. Set `b` to `Module.finBasisOfFinrankEq (Localization S) (LocalizedModule S M) hrank`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ, hsurj⟩` from `exists_map_of_basis S hS (LocalizedModule.mkLinearMap S M) b`. Establish `hunit : ∀ s : S, ∃ k : ℕ, (s : 𝓞 E) = k ∧ ∃ u v : ℤ, u * k + v * N = 1`. Introduce and unpack `⟨_, k, -, hkc, rfl⟩`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.mpr hkc`. Conclude with `⟨k, rfl, u, v, huv⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨φ, fun m => ?_, fun x c hxc => ?_⟩` and prove the remaining obligations. Take `⟨s, y, hs⟩` from `hsurj m`. Take `⟨k, hk, u, v, huv⟩` from `hunit s`. Rewrite `hs` using `[hk, Nat.cast_smul_eq_nsmul]`. Use `⟨u • y, v • m, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_smul, mul_smul, mul_comm v, mul_smul]`. Use `_ = φ (u • y) + N • (v • m) := by`. Rewrite using `[map_zsmul, ← hs, natCast_zsmul, natCast_zsmul]`. Take `⟨s, y, hs⟩` from `hsurj c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, hk, u, v, huv⟩` from `hunit s`. Rewrite `hs` using `[hk, Nat.cast_smul_eq_nsmul]`. Establish `hNy : N • y = k • x`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_nsmul, ← hs, hxc, smul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u • y + v • x, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_smul, mul_smul, mul_smul]`. Use `_ = N • (u • y + v • x) := by`. Rewrite using `[natCast_zsmul, natCast_zsmul, ← hNy, smul_add, smul_comm u N y, smul_comm v N x]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_free_map_mod (E : Type) [Field E] [NumberField E] (M : Type) [AddCommGroup M]
     [Module (𝓞 E) M] : Module.Finite (𝓞 E) M → Module.Projective (𝓞 E) M →

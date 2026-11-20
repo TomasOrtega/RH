@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ n U T hU hT i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k i with hk | hk` into its components or cases. Rewrite using `[hU i k hk, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT k j (lt_of_lt_of_le hij hk), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qe38.upper_triangular_mul :
     ∀ {K : Type} [inst : Field K] {n : ℕ}

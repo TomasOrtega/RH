@@ -16,13 +16,13 @@ namespace EntryDatum
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {a b : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ (x z : HomE E a b), (∀ P ∈ ST, ∀ y ∈ d.at P, z y ∈ d'.at P) → (∀ P : ST, ∀ y ∈ d.at P.1, x y ∈ d'.at P.1 ∧ d'.f P (x y) = d.f P y) → ∀ P : ST, ∀ y ∈ d.at P.1, (x + c • z) y ∈ d'.at P.1 ∧ d'.f P ((x + c • z) y) = d.f P y`. Introduce `x z hz h P y hy`. Take `⟨h1, h2⟩` from `h P y hy`. Establish `h3` using `hz P.1 P.2 y hy`. Establish `h4 : c • z y ∈ d'.at P.1` using `Submodule.smul_mem _ c h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (x + c • z) y = x y + c • z y` using `rfl`. Rewrite using `[e]`. Use `⟨add_mem h1 h4, ?_⟩` and prove the remaining obligations. Rewrite using `[hd'.f_add P _ h1 _ h4, hd'.f_smul P c _ h3, Ideal.Quotient.eq_zero_iff_mem.2 (hc P.1 P.2), zero_mul, add_zero, h2]`. Establish `hiff : (∀ P : ST, ∀ y ∈ d.at P.1, (x + c • z) y ∈ d'.at P.1 ∧ d'.f P ((x + c • z) y) = d.f P y) ↔ (∀ P : ST, ∀ y ∈ d.at P.1, x y ∈ d'.at P.1 ∧ d'.f P (x y) = d.f P y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun h => ?_, key x z hz⟩` and prove the remaining obligations. Establish `h'` using `key (x + c • z) (-z) (fun P hP y hy => neg_mem (hz P hP y hy)) h`. Establish `e : x + c • z + c • (-z) = x` using `by rw [smul_neg, add_neg_cancel_right]`. Rewrite `h'` using `[e]`. Then use the resulting hypothesis. Unfold `phiT`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : ∀ P : ST, ∀ y ∈ d.at P.1, x y ∈ d'.at P.1 ∧ d'.f P (x y) = d.f P y`. Rewrite using `[if_pos h, if_pos (hiff.2 h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (hiff.1 h'))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiT_add {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a ST SG) (d' : Deco E b ST SG') (hd' : d'.Ok)
     (c : 𝓞 E) (hc : ∀ P ∈ ST, c ∈ P.asIdeal) (x z : HomE E a b)
@@ -50,7 +50,7 @@ theorem phiT_add {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a
   · rw [if_neg h, if_neg (fun h' => h (hiff.1 h'))]
 
 /- English proof (translation)
-Introduce `P hP y hy`. Unfold `phiT at hx`. Use `split_ifs at hx with h`. Conclude with `(h ⟨P, hP⟩ y hy).1`. Conclude with `absurd rfl hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phiT_support {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a ST SG) (d' : Deco E b ST SG')
     (x : HomE E a b) (hx : phiT K d d' x ≠ 0) : ∀ P ∈ ST, ∀ y ∈ d.at P, x y ∈ d'.at P := by
@@ -61,7 +61,7 @@ theorem phiT_support {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco
   · exact absurd rfl hx
 
 /- English proof (translation)
-Unfold `phiT`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_phiT_le {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a ST SG) (d' : Deco E b ST SG')
     (σ : K →+* ℂ) (x : HomE E a b) : ‖σ (phiT K d d' x)‖ ≤ 1 := by
@@ -69,9 +69,9 @@ theorem norm_phiT_le {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e : ∀ y, f' (inFr f f' x y) = x (f y)` using `fun y => by simp [inFr]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Establish `h1 : f.symm y ∈ M₀` using `(hf _).1 (by simpa using hy)`. Establish `h2` using `(hf' _).2 (h _ h1)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[e]`. Simplify using `using h2`. Introduce `h y hy`. Rewrite using `[← hf', e]`. Conclude with `h _ ((hf y).2 hy)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFr_maps_iff (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E b)
     {M M₀ : Submodule (𝓞 E) (Sp E a)} {M' M₀' : Submodule (𝓞 E) (Sp E b)}
@@ -89,7 +89,7 @@ theorem inFr_maps_iff (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E 
     exact h _ ((hf y).2 hy)
 
 /- English proof (translation)
-Establish `e : ∀ n : ℕ, ((n : ℕ) : 𝓞 E) • z = (n : E) • z` using `fun n => by`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e, e]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `[inFr, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem inFr_add_smul (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E b) (x z : HomE E a b) (q k : ℕ) :
     inFr f f' (x + ((q * k : ℕ) : 𝓞 E) • z) = inFr f f' x + (q : E) • inFr f f' ((k : 𝓞 E) • z) := by
@@ -100,15 +100,13 @@ theorem inFr_add_smul (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E 
   simp [inFr, mul_smul]
 
 /- English proof (translation)
-Use `⟨fun x hx P hP => ?_, fun x y hy => ?_, fun σ x => ?_⟩` and prove the remaining obligations. Break down `(hS P).1 hP with h | h` into its components or cases. Conclude with `phiT_support d d' x (left_ne_zero_of_mul hx) P h`. Establish `h1` using `Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) ⟨P, h⟩ (Finset.mem_univ _)`. Conclude with `(inFr_maps_iff _ _ (hfr ⟨P, h⟩) (hfr' ⟨P, h⟩) x).1 ((hΦ ⟨P, h⟩).1 _ h1)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz, rfl⟩` from `hy`. Establish `e : ((c : 𝓞 E) • (LinearMap.id : HomE E a b →ₗ[𝓞 E] HomE E a b)) z = (c : 𝓞 E) • z` using `rfl`. Rewrite using `[e]`. Use `show phiT K d d' _ * _ = phiT K d d' _ * _`. Rewrite using `[phiT_add d d' hd' _ hc x z (fun P hP => hz P ((hS P).2 (Or.inl hP)))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `hq P`. Rewrite using `[hk, inFr_add_smul]`. Use `(hΦ P).2.1 _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(inFr_maps_iff _ _ (hfr P) (hfr' P) _).2 fun y hy => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (k : 𝓞 E) (hz P.1 ((hS P.1).2 (Or.inr P.2)) y hy)`. Use `show ‖σ (phiT K d d' x * _)‖ ≤ _`. Rewrite using `[map_mul, norm_mul, map_prod, norm_prod]`. Establish `h1 : ∏ P : SB, ‖σ (Φ P (inFr (fr P) (fr' P) x))‖ ≤ ∏ P : SB, β P` using `Finset.prod_le_prod (fun P _ => norm_nonneg _) fun P _ => (hΦ P).2.2 σ _`.
-
-Establish `h0 : 0 ≤ ∏ P : SB, ‖σ (Φ P (inFr (fr P) (fr' P) x))‖` using `Finset.prod_nonneg fun P _ => norm_nonneg _`. Conclude with `(mul_le_of_le_one_left h0 (norm_phiT_le d d' σ x)).trans h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smallDatum_prod {ST SG SG' SB S : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a ST SG) (d' : Deco E b ST SG')
     (hd' : d'.Ok) (fr : Frs E a SB) (fr' : Frs E b SB)

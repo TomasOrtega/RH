@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SatOfFixed
 
 /- English proof (translation)
-Introduce `P F _ _ _ n M π hπ w hw`. Take `⟨⟨σ, hσ⟩, h⟩` from `locCompR P F n π w`. Conclude with `sat_of_isotypic (satLoc P) π.finPart hπ w hw σ (h σ hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.satR :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.SatR := by

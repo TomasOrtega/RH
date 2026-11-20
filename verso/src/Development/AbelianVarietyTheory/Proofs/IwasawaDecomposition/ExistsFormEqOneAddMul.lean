@@ -9,25 +9,23 @@ noncomputable section
 namespace GlobalTheory.LocM
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_def'.1 (inferInstance : Module.Projective O M)`. Take `⟨x₀, hx₀⟩` from `exists_ne (0 : M)`. Establish `hsx : s x₀ ≠ 0` using `fun h => hx₀ (by simpa [h] using (LinearMap.congr_fun hs x₀).symm)`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.1 hsx`. Use `set g₀ : M →ₗ[O] O := Finsupp.lapply i ∘ₗ s with hg₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg₀x : g₀ x₀ ≠ 0` using `by simpa [hg₀] using hi`. Distinguish the cases in `hq : IsUnit q`. Take `⟨u, rfl⟩` from `hq`. Conclude with `⟨g₀, x₀, ↑u⁻¹ * (g₀ x₀ - 1), by rw [← mul_assoc, Units.mul_inv, one_mul]; ring⟩`. Use `set J : Ideal O := LinearMap.range g₀ with hJ`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ0 : J ≠ ⊥` using `fun h => hg₀x (by`. Establish `: g₀ x₀ ∈ J` using `LinearMap.mem_range_self _ _`. Rewrite using `[h, Ideal.mem_bot] at this)` and apply the resulting hypothesis. Establish `h0 : Ideal.span {q} * J ≠ ⊥` using `mul_ne_zero (by simpa using hq0) hJ0`. Take `⟨a, ha⟩` from `IsDedekindDomain.exists_sup_span_eq (I := Ideal.span {q} * J) (J := J) Ideal.mul_le_right h0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `haJ : a ∈ J` using `ha ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self a)`. Take `⟨x, hx⟩` from `LinearMap.mem_range.1 haJ`. Take `⟨J', hJ'⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 haJ)`. Establish `hcop : Ideal.span {q} ⊔ J' = ⊤`. Apply `mul_left_cancel₀ hJ0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.mul_sup, Ideal.mul_top, mul_comm J, ← hJ', ha]`. Take `⟨y, hy, c, hc, hyc⟩` from `Submodule.mem_sup.1 (hcop ▸ Submodule.mem_top : (1 : O) ∈ Ideal.span {q} ⊔ J')`. Take `⟨t', rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hq` to reduce the goal to its premises. Establish `hJ'0 : J' = ⊥`. Establish `h1 : J * J' = ⊥` using `by rw [← hJ', Ideal.span_singleton_eq_bot]`. Conclude with `(mul_eq_zero.1 h1).resolve_left hJ0`. Rewrite `hcop` using `[hJ'0, sup_bot_eq, Ideal.span_singleton_eq_top]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hcop`. Establish `hmem : ∀ z, (c • g₀) z ∈ LinearMap.range (LinearMap.mulLeft O a)`. Introduce `z`. Establish `: g₀ z * c ∈ Ideal.span {a}` using `hJ' ▸ Ideal.mul_mem_mul (LinearMap.mem_range_self g₀ z) hc`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 this`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨w, by rw [LinearMap.mulLeft_apply, mul_comm, hw, LinearMap.smul_apply, smul_eq_mul, mul_comm]⟩`. Set `e` to `LinearEquiv.ofInjective (LinearMap.mulLeft O a) (mul_right_injective₀ ha0)`. Set `g : M →ₗ[O] O` to `e.symm.toLinearMap ∘ₗ (c • g₀).codRestrict _ hmem`. Establish `hg : ∀ z, a * g z = c * g₀ z` using `fun z => by set w := e.symm ⟨_, hmem z⟩ with hw`. Establish `h1 : ((e w) : O) = (c • g₀) z` using `by rw [hw, e.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((e w) : O) = a * w` using `LinearEquiv.ofInjective_apply _ _`. Use `show a * w = c * g₀ z`. Rewrite using `[← h2, h1, LinearMap.smul_apply, smul_eq_mul]`. Use `⟨g, x, -t', mul_left_cancel₀ ha0 ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hx]`.
-
-Take the linear combination `a * hyc`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_form_eq_one_add_mul {O M : Type} [CommRing O] [IsDomain O] [IsDedekindDomain O] [AddCommGroup M]
     [Module O M] [Module.Projective O M] [Nontrivial M] {q : O} (hq0 : q ≠ 0) :
@@ -81,11 +79,11 @@ theorem exists_form_eq_one_add_mul {O M : Type} [CommRing O] [IsDomain O] [IsDed
   linear_combination a * hyc
 
 /- English proof (translation)
-Set `σ : (O ⧸ I) →ₗ[O] M` to `Submodule.liftQ I (LinearMap.toSpanSingleton O M x) fun r hr => by`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Conclude with `hIx r hr`. Establish `hσ : ∀ u, ψ (σ u) = u`. Introduce `u`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Use `show ψ (σ (Submodule.Quotient.mk r)) = _`. Rewrite using `[Submodule.liftQ_apply, LinearMap.toSpanSingleton_apply, map_smul, hx, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective σ` using `Function.LeftInverse.injective hσ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : M →ₗ[O] LinearMap.range σ` to `(σ ∘ₗ ψ).codRestrict _ fun m => LinearMap.mem_range_self σ _`. Use `⟨LinearMap.range σ, ⟨_, LinearMap.isCompl_of_proj (f := f) ?_⟩, ⟨(LinearEquiv.ofInjective σ hinj).symm⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨_, u, rfl⟩`. Conclude with `Subtype.ext (congrArg σ (hσ u))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_isCompl_equiv_quot {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (I : Ideal O)
     (ψ : M →ₗ[O] O ⧸ I) (x : M) (hx : ψ x = 1) (hIx : ∀ r ∈ I, r • x = 0) :
@@ -106,13 +104,13 @@ theorem exists_isCompl_equiv_quot {O M : Type} [CommRing O] [AddCommGroup M] [Mo
   exact Subtype.ext (congrArg σ (hσ u))
 
 /- English proof (translation)
-Introduce `D A N j S κ p ct`. Use `S.Dw.proj` as an intermediate fact. Establish `: Nontrivial S.Dw.La` using `Module.nontrivial_of_finrank_pos (R := 𝓞 D.host.E) (by rw [S.Dw.rank, S.rank_eq]; exact lt_of_lt_of_le two_pos S.two_le)`. Establish `hp0 : (p : 𝓞 D.host.E) ≠ 0` using `by exact_mod_cast ct.hp.ne_zero`. Take `⟨g, x, t, hg⟩` from `exists_form_eq_one_add_mul (M := S.Dw.La) hp0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `P : Submodule (𝓞 D.host.E) S.Dw.La` to `Ideal.span {(p : 𝓞 D.host.E)} • ⊤`. Set `ψ : ct.LaP →ₗ[𝓞 D.host.E] 𝓞 D.host.E ⧸ Ideal.span {(p : 𝓞 D.host.E)}` to `P.liftQ ((Ideal.span {(p : 𝓞 D.host.E)}).mkQ ∘ₗ g) (Submodule.smul_le.2 fun r hr n _ => by`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, map_smul, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ hr)`. Establish `hx : ψ (Submodule.Quotient.mk x) = 1` using `by show Submodule.Quotient.mk (g x) = (1 : 𝓞 D.host.E ⧸ Ideal.span {(p : 𝓞 D.host.E)})`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.Quotient.eq _).2 (by`. Rewrite using `[hg, add_sub_cancel_left]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Establish `hIx : ∀ r ∈ Ideal.span {(p : 𝓞 D.host.E)}, r • (Submodule.Quotient.mk x : ct.LaP) = 0`. Introduce `r hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Take `⟨l, hl, he⟩` from `exists_isCompl_equiv_quot _ ψ _ hx hIx`. Conclude with `⟨⟨l, hl, he⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_sum1 :
     ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) (ct : At S κ p), Nonempty ct.Sum1 := by

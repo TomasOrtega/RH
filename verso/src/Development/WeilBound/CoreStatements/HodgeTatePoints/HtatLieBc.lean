@@ -10,25 +10,19 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `S G _ _ R _ x E _ _ M`. Take `⟨J, hJ, f, hspan, hch⟩` from `Lie.exists_cover (G := G) x`. Establish `hloc : ∀ i : J, ∃ (F : Type) (_ : AddCommGroup F) (_ : Module R F) (_ : Module (Localization.Away (f i)) F) (_ : IsScalarTower R (Localization.Away (f i)) F) (_ : Module.Finite (Localization.Away (f i)) F) (_ : Module.Projective (Localization.Away (f i)) F) (r : E →ₗ[R] F), IsLoc …`. Introduce `i`. Take `⟨P, _, _, _, _, hfin, hproj, m, hm⟩` from `(hch i).lieChart`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hC : IsUnit ((algebraMap R (Localization.Away (f i))) (f i))` using `IsLocalization.Away.algebraMap_isUnit (f i)`. Set `Mi` to `m (Localization.Away (f i)) hC`. Take `⟨j, hj, -⟩` from `LieBaseChange.existsUnique_semilinear_lifts S G R (Localization.Away (f i)) (algebraMap R (Localization.Away (f i))) x E (P →ₗ[R] Localization.Away (f i)) M Mi`. Set `r : E →ₗ[R] (P →ₗ[R] Localization.Away (f i))` to `{ toFun := j map_add' := j.map_add map_smul' := fun a e => by`. Rewrite using `[j.map_smulₛₗ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `algebraMap_smul (Localization.Away (f i)) a (j e) }`. Establish `e1 : (P →ₗ[R] Localization.Away (f i)) ≃ₗ[Localization.Away (f i)] Module.Dual (Localization.Away (f i)) P` using `LinearMap.extendScalarsOfIsLocalizationEquiv (Submonoid.powers (f i)) (Localization.Away (f i))`. Establish `hF1 : Module.Finite (Localization.Away (f i)) (P →ₗ[R] Localization.Away (f i))` using `Module.Finite.equiv e1.symm`. Establish `hF2 : Module.Projective (Localization.Away (f i)) (P →ₗ[R] Localization.Away (f i))` using `Module.Projective.of_equiv e1.symm`. Establish `hb` using `Lie.isBaseChange_lie x M (Localization.Away (f i)) (P →ₗ[R] Localization.Away (f i)) Mi r (fun e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hj e` as an intermediate fact. Simplify using `only [LieModel.Lifts, Category.comp_id] at this`. Conclude with `this)`. Establish `hy : IsLocalizedModule (Submonoid.powers (f i)) r` using `(isLocalizedModule_iff_isBaseChange (Submonoid.powers (f i)) (Localization.Away (f i)) r).mpr hb`. Conclude with `⟨P →ₗ[R] Localization.Away (f i), inferInstance, inferInstance, inferInstance, inferInstance, hF1, hF2, r, hy⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose F iA iR iL iT hF1 hF2 r hr using hloc`. Set `s : Set R` to `Set.range f`. Establish `hidx : ∀ g : s, ∃ i, f i = g.1` using `fun g => g.2`. Use `choose idx hidx using hidx`. Establish `hfp : Module.FinitePresentation R E` using `by haveI : ∀ g : s, IsLocalization.Away g.1 (Localization.Away (f (idx g))) := fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hidx g]`. Use `infer_instance`. Use `haveI : ∀ g : s, IsLocalizedModule (Submonoid.powers g.1) (r (idx g)) := fun g => by`. Rewrite using `[← hidx g]`. Conclude with `hr (idx g)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.FinitePresentation.of_localizationSpan' s hspan (Rₚ := fun g => Localization.Away (f (idx g))) (Mₚ := fun g => F (idx g)) (fun g => r (idx g)) (fun g => by haveI := hF1 (idx g) haveI := hF2 (idx g)`. Conclude with `Module.finitePresentation_of_projective _ _)`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.freeLocus_eq_univ_iff]`. Use `Set.eq_univ_of_forall fun p => ?_` and prove the remaining obligations.
-
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, f i ∉ p.asIdeal := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `p.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← hspan, Ideal.span_le]`.
-
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `h k`. Establish `hP : Module.Projective (Localization.Away (f i)) (LocalizedModule.Away (f i) E)`. Set `eq` to `(IsLocalizedModule.linearEquiv (Submonoid.powers (f i)) (LocalizedModule.mkLinearMap (Submonoid.powers (f i)) E) (r i)).extendScalarsOfIsLocalization (Submonoid.powers (f i)) (Localization.Away (f i))`. Conclude with `Module.Projective.of_equiv eq.symm`.
-
-Conclude with `(Module.basicOpen_subset_freeLocus_iff.mpr hP) ((PrimeSpectrum.mem_basicOpen _ _).mpr hi)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem lie_fin : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [Smooth G.hom] (R : Type) [CommRing R] (x : Sp R ⟶ S) (E : Type) [AddCommGroup E] [Module R E] (M : LieModel G x E), Module.Finite R E ∧ Module.Projective R E := by
   intro S G _ _ R _ x E _ _ M
@@ -87,15 +81,13 @@ theorem lie_fin : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [Smooth G.hom] (R
   exact (Module.basicOpen_subset_freeLocus_iff.mpr hP) ((PrimeSpectrum.mem_basicOpen _ _).mpr hi)
 
 /- English proof (translation)
-Introduce `S G _ R R' _ _ _ x E E' _ _ _ _ M M'`. Take `⟨j, hj, -⟩` from `LieBaseChange.existsUnique_semilinear_lifts S G R R' (algebraMap R R') x E E' M M'`. Use `⟨j.toAddMonoidHom, fun e => ?_, fun a e => j.map_smulₛₗ a e, fun hsm n b => ?_⟩` and prove the remaining obligations. Use `hj e` as an intermediate fact. Simplify using `only [LieModel.Lifts, Category.comp_id] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Use `haveI : Smooth G.hom := hsm`. Use `letI : Module R E' := Module.compHom E' (algebraMap R R')`. Use `haveI : IsScalarTower R R' E' := ⟨fun a c v => by show (a • c) • v = algebraMap R R' a • c • v`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `β : E →ₗ[R] E'` to `{ toFun := j map_add' := j.map_add map_smul' := fun a e => j.map_smulₛₗ a e }`. Establish `hb` using `Lie.isBaseChange_lie x M R' E' M' β (fun e => by`. Use `hj e` as an intermediate fact. Simplify using `only [LieModel.Lifts, Category.comp_id] at this`. Conclude with `this)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hbk : ∀ k, hb.basis b k = j (b k)` using `fun k => by`. Rewrite using `[IsBaseChange.basis_apply]`. Both sides reduce to the same expression. Establish `hfun : (fun k => j.toAddMonoidHom (b k)) = ⇑(hb.basis b)` using `funext fun k => (hbk k).symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hfun]`. Conclude with `(hb.basis b).linearIndependent`. Rewrite using `[hfun]`. Conclude with `(hb.basis b).span_eq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_bc : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (x : Spec (CommRingCat.of R) ⟶ S) (E E' : Type) [AddCommGroup E] [Module R E] [AddCommGroup E'] [Module R' E'] (M : LieModel G x E) (M' : LieModel G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) E'), ∃ j : E →+ E', (∀ e, (M'.pt (j e)).left = Spec.map (CommRingCat.ofHom (dualMap (algebraMap R R'))) ≫ (M.pt e).left) ∧ (∀ (a : R) e, j (a • e) = algebraMap R R' a • j e) ∧ (Smooth G.hom → ∀ (n : ℕ) (b : Module.Basis (Fin n) R E), LinearIndependent R' (fun k => j (b k)) ∧ Submodule.span R' (Set.range fun k => j (b k)) = ⊤) := by
   intro S G _ R R' _ _ _ x E E' _ _ _ _ M M'

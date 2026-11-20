@@ -15,21 +15,17 @@ open GlobalTheory.UPel.HT
 namespace GlobalTheory.AdjFwd
 
 /- English proof (translation)
-Introduce `A _ _ g hA _ N _ _ M u Hm χ hM hF f f' F F' hf hf' e e' hiso`. Use `haveI := hf`. Use `haveI := hf'`. Take `⟨Mr, hMr, ⟨c⟩⟩` from `GlobalTheory.AHWeilAny.exists_cubical A hA M hM`. Substitute `hMr` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `GlobalTheory.AdjPolLocal.rosatiAdj_of_lbIso _ A Mr.L f f' hM hiso`. Establish `hFl : ∀ a : u.Λ, F a ∈ u.Λ` using `fun a => by rw [← u.ker, e, (u.ker _).2 a.2, MonObj.one_comp]`. Establish `hF'l : ∀ a : u.Λ, F' a ∈ u.Λ` using `fun a => by rw [← u.ker, e', (u.ker _).2 a.2, MonObj.one_comp]`. Use `GlobalTheory.HermAdjoint.adjoint_of_im Hm F F' _ u.full fun a ha b hb => ?_` and prove the remaining obligations. Take `⟨E₁, hE₁⟩` from `GlobalTheory.AHWeilFactor.im_hermForm_int hM u hF ⟨_, hFl ⟨a, ha⟩⟩ ⟨b, hb⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨E₂, hE₂⟩` from `GlobalTheory.AHWeilFactor.im_hermForm_int hM u hF ⟨a, ha⟩ ⟨_, hF'l ⟨b, hb⟩⟩`. Establish `hE : E₁ = E₂` using `GlobalTheory.HermAdjoint.int_eq_of_exp fun n hn => by`. Establish `hx` using `GlobalTheory.HermAdjoint.ex_period_pow u hn ⟨a, ha⟩`. Establish `hy` using `GlobalTheory.HermAdjoint.ex_period_pow u hn ⟨b, hb⟩`. Establish `hy' : (u.ex ((n : ℂ)⁻¹ • b) ≫ f') ^ n = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← MonObj.pow_comp]`. Conclude with `(congrArg (· ≫ f') hy).trans (MonObj.one_comp _)`. Set `c₁ : ℂˣ` to `Units.mk0 _ (Complex.exp_ne_zero (-(2 * Real.pi * Complex.I) * (E₁ : ℂ) / n))`. Set `c₂ : ℂˣ` to `Units.mk0 _ (Complex.exp_ne_zero (-(2 * Real.pi * Complex.I) * (E₂ : ℂ) / n))`. Establish `v₁ : Out.WeilIs A Mr.L n (u.ex ((n : ℂ)⁻¹ • a) ≫ f) (u.ex ((n : ℂ)⁻¹ • b)) (unitOn c₁)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, map_smul]`. Use `GlobalTheory.AHWeilFactor.weilIs_exp_riemannForm A hA Mr.L hM g u Hm χ hF n (F a) b c₁ hn (hFl ⟨a, ha⟩) hb ?_` and prove the remaining obligations. Use `show Complex.exp _ = _`. Rewrite using `[← hE₁, Complex.ofReal_intCast]`. Establish `v₂ : Out.WeilIs A Mr.L n (u.ex ((n : ℂ)⁻¹ • a)) (u.ex ((n : ℂ)⁻¹ • b) ≫ f') (unitOn c₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e', map_smul]`. Use `GlobalTheory.AHWeilFactor.weilIs_exp_riemannForm A hA Mr.L hM g u Hm χ hF n a (F' b) c₂ hn ha (hF'l ⟨b, hb⟩) ?_` and prove the remaining obligations. Use `show Complex.exp _ = _`. Rewrite using `[← hE₂, Complex.ofReal_intCast]`. Establish `v₁'` using `(GlobalTheory.WeilCube.weilIs_rosati c GlobalTheory.globalFns_holds hA f f' hR hx hy _).1 v₁`.
-
-Take `⟨e₀, he₀⟩` from `GlobalTheory.WeilCube.exists_isRatio c n _ _ hx hy'`. Establish `h₁` using `(GlobalTheory.WeilCube.weilIs_iff c GlobalTheory.globalFns_holds hA hx hy' he₀ _).1 v₁'`. Establish `h₂` using `(GlobalTheory.WeilCube.weilIs_iff c GlobalTheory.globalFns_holds hA hx hy' he₀ _).1 v₂`. Conclude with `congrArg Units.val (GlobalTheory.HermAdjoint.unitOn_injective (h₁.trans h₂.symm))`. Use `show (F a ⬝ᵥ Hm *ᵥ star b).im = (a ⬝ᵥ Hm *ᵥ star (F' b)).im`.
-
-Rewrite using `[← hE₁, ← hE₂, hE]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_hermForm_of_lbIso : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (N : LB A.left), N.IsLB → Out.RelAmple A N → ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), M.IsLB → GlobalTheory.TorusRM.IsFactorAH u Hm χ → ∀ (f f' : A ⟶ A) (F F' : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), IsMonHom f → IsMonHom f' → (∀ z, u.ex (F z) = u.ex z ≫ f) → (∀ z, u.ex (F' z) = u.ex z ≫ f') → LBIso (cubeLB A ![fst A A ≫ f, snd A A] M) (cubeLB A ![fst A A, snd A A ≫ f'] M) → ∀ z w, hermForm Hm (F z) w = hermForm Hm z (F' w) := by
   intro A _ _ g hA _ N _ _ M u Hm χ hM hF f f' F F' hf hf' e e' hiso

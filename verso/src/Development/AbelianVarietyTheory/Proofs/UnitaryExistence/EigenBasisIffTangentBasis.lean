@@ -12,25 +12,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Establish `key : ∀ a : ∀ τ, Fin (m τ) → S, ∑ j, a (e j).1 (e j).2 • b (e j).1 (e j).2 = ∑ τ, ∑ i, a τ i • b τ i`. Introduce `a`. Rewrite using `[e.sum_comp (fun p : Σ τ : J, Fin (m τ) => a p.1 p.2 • b p.1 p.2), Fintype.sum_sigma]`. Establish `key' : ∀ a : Fin g → S, ∑ j, a j • b (e j).1 (e j).2 = ∑ τ, ∑ i, a (e.symm ⟨τ, i⟩) • b τ i`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← key (fun τ i => a (e.symm ⟨τ, i⟩))]`. Simplify using the standard rewrite rules. Establish `hmem : ∀ τ (a : Fin (m τ) → S), ∑ i, a i • b τ i ∈ M τ` using `fun τ a => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hb τ i)`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, ⟨hf, hfn⟩, hu⟩` from `hs n`. Use `choose a ha hau using fun τ => h τ (f τ) (hf τ)`. Use `⟨fun j => a (e j).1 (e j).2, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `n = ∑ j, a (e j).1 (e j).2 • b (e j).1 (e j).2`. Rewrite using `[key, ← hfn]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => ha τ`. Introduce `a' ha'`. Rewrite `ha'` using `[key']`. Establish `h1` using `hu (fun τ => ∑ i, a' (e.symm ⟨τ, i⟩) • b τ i) ⟨fun τ => hmem τ _, ha'.symm⟩`. Use function extensionality and compare the values at `j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hau (e j).1 (fun i => a' (e.symm ⟨(e j).1, i⟩)) (congrFun h1 (e j).1).symm`. Establish `h3` using `congrFun h2 (e j).2`. Simplify using `using h3`. Introduce `h τ n hn`. Take `⟨a', ha', hu'⟩` from `h n`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ a : Fin (m τ) → S, n = ∑ i, a i • b τ i → (fun j => (Pi.single τ a : ∀ σ, Fin (m σ) → S) (e j).1 (e j).2) = a'`. Introduce `a ha`. Apply `hu'` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `n = ∑ j, (Pi.single τ a : ∀ σ, Fin (m σ) → S) (e j).1 (e j).2 • b (e j).1 (e j).2`. Rewrite using `[key, Finset.sum_eq_single τ]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using ha`. Introduce `σ _ hσ`. Simplify using `[Pi.single_eq_of_ne hσ]`. Simplify using the standard rewrite rules. Use `⟨fun i => a' (e.symm ⟨τ, i⟩), ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha2 : n = ∑ j, a' j • b (e j).1 (e j).2` using `ha'`. Rewrite `ha2` using `[key']`. Establish `h1` using `(hs n).unique (y₁ := fun τ => ∑ i, a' (e.symm ⟨τ, i⟩) • b τ i) (y₂ := Pi.single τ n) ⟨fun τ => hmem τ _, ha2.symm⟩ ⟨fun σ => by`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using hn`. Simplify using `[Pi.single_eq_of_ne hσ], by simp⟩`. Establish `h2` using `congrFun h1 τ`. Simplify using `using h2.symm`. Introduce `a ha`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun (hA a ha) (e.symm ⟨τ, i⟩)`. Rewrite using `[← h1, Equiv.apply_symm_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem basis_iff_of_split {S N J : Type} [CommRing S] [AddCommGroup N] [Module S N] [Fintype J]
     (m : J → ℕ) (M : J → Submodule S N)
@@ -94,21 +94,19 @@ theorem basis_iff_of_split {S N J : Type} [CommRing S] [AddCommGroup N] [Module 
       simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _ x u g e ht he`. Take `⟨N, _, _, v, ρ, hinj, htan, hcomb, hρ, hsm⟩` from `GlobalTheory.T.exists_tangent_module_universal_group E H Dw l Xo S x`. Use `choose b hb using fun τ i => (htan (u τ i)).1 (ht τ i)`. Take `rfl : u = fun τ i => v (b τ i)` from `by funext τ i; exact (hb τ i).symm`. Set `M : (E →+* ℂ) → Submodule S N` to `fun τ => ⨅ a : 𝓞 E, Module.End.eigenspace (ρ a) (algebraMap c.F S (embK c τ a))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM : ∀ τ n, n ∈ M τ ↔ ∀ a, ρ a n = algebraMap c.F S (embK c τ a) • n`. Introduce `τ n`. Simplify using `only [M, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Establish `hE : ∀ τ n, IsEigAt c τ (v n) ↔ n ∈ M τ`. Introduce `τ n`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← hρ, ← hsm, hinj.eq_iff]`. Establish `hs : ∀ n : N, ∃! f : (E →+* ℂ) → N, (∀ τ, f τ ∈ M τ) ∧ ∑ τ, f τ = n`. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hM]`. Conclude with `GlobalTheory.T.existsUnique_cmEmbedding_eigenvector_sum E H l c S N ρ n`. Establish `hmain` using `basis_iff_of_split (fun τ => Dw.mult τ) M hs b (fun τ i => (hE τ _).1 (he τ i)) g e`. Establish `hT : ∀ n, IsTanAt x (v n)` using `fun n => (htan _).2 ⟨n, rfl⟩`. Establish `hC : ∀ (k : ℕ) (b : Fin k → N) (a : Fin k → S) (n : N), IsCombAt x (fun i => v (b i)) a (v n) ↔ n = ∑ i, a i • b i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k b a n`. Rewrite using `[hcomb, hinj.eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun j => hT _, fun w hw => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, rfl⟩` from `(htan w).1 hw`. Establish `h1` using `hmain.1 (fun τ n hn => by`. Establish `h2` using `h τ (v n) (hT n) ((hE τ n).2 hn)`. Simplify `h2) n` using `only [hC]`. Simplify `h1` using `only [hC]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨-, h⟩ τ w hw hew`. Take `⟨n, rfl⟩` from `(htan w).1 hw`. Establish `h1` using `hmain.2 (fun n => by`. Establish `h2` using `h (v n) (hT n)`. Simplify `h2) τ n ((hE τ n).1 hew)` using `only [hC]`.
-
-Simplify `h1` using `only [hC]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eigBasis_iff_tanBasis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X) (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)), (∀ τ i, IsTanAt x (u τ i)) → (∀ τ i, IsEigAt c τ (u τ i)) → ((∀ τ w, IsTanAt x w → IsEigAt c τ w → ∃! a : Fin (Dw.mult τ) → S, IsCombAt x (u τ) a w) ↔ TanBasis x (fun j => u (e j).1 (e j).2)) := by
   intro E _ _ _ H Dw l Xo c S _ _ x u g e ht he

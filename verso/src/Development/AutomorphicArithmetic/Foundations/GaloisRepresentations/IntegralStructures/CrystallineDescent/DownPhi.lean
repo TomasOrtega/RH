@@ -11,17 +11,17 @@ open GlobalTheory.GLq GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 open UpperTheory.Gal.Int.Core
 open GlobalTheory.RoadU GlobalTheory.RoadU.PhiDescent in
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a π Q P hP r w B hB hQdec hyp Pr AI hT A h O _ _ _ Bw hj g`. Establish `hdec` using `hQdec A h`. Establish `hjK` using `GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le E Ω Q.K l A O Bw hdec`. Take `⟨Bw', e1, e2, e3⟩` from `UpperTheory.V.Af.Cq.exBridge E Q.K Ω l A O Bw hjK`. Establish `hj' : Induces Bw'` using `fun x => by rw [e2]; exact hj x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w', h', i, hi⟩` from `GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range E Ω Q.K w A h hdec`. Establish `hunder : w'.under (𝓞 E) = w`. Use `GlobalTheory.PlaceIsoDec.liesOver_of_isPlaceOver h h'` as an intermediate fact. Use `ext1`. Conclude with `this.over.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hdegc, hq, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi`. Take `⟨S, hS, -, -, -, -, hTw, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso_symm E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi`. Establish `hB' : (CG.mk P).HasSat w' B`. Use `hP.sat w' 1 B (by rw [pow_one, hunder, hq]) (by rw [hunder]; exact hB)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `D` using `GlobalTheory.RealGal.dRSstCrysPstJumps_descend E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r`. Establish `hrel : WDRel (RingEquiv.refl Ω) (wdAt Pr ι Bw h hj (r.comp (Dec (F` using `E) A).subtype)) (wdAt Pr ι Bw' h' hj' ((r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)).comp (Dec (F := Q.K) A).subtype)) := by`. Distinguish the cases in `hp : IsPstAt Pr Bw (r.comp (Dec (F := E) A).subtype)`. Conclude with `GlobalTheory.RealGal.wdRelRes_gen E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r hp ι w w' h h' hj hj' i hi`. Establish `hp' : ¬ IsPstAt Pr Bw' ((r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)).comp (Dec (F` using `Q.K) A).subtype) := fun H => hp (D.2.2.2.1 H)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[wdAt_of_not_isPstAt _ _ _ _ hp, wdAt_of_not_isPstAt _ _ _ _ hp']`. Conclude with `wdRel_trivWD h h' _ a`. Establish `hsat : WDRel (RingEquiv.refl Ω) (satWD h a B) (satWD h' a B)`. Establish `h0` using `GlobalTheory.RSGam.Transport.wdRel_lpUnr c hc hdegc (B.map fun b => ((b⁻¹ : ℂˣ) : ℂ))`. Unfold `satWD`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, hTw, (hS _ _).mp h0]`. Establish `hgc : WeilRel (RingEquiv.refl Ω) g (c g)` using `(hc g (c g)).2 rfl`. Establish `hcl` using `hyp w' hunder hB' Pr AI hT A h' O Bw' hj' (c g)`. Rewrite using `[charPol_eq hrel hgc, charPol_eq hsat hgc]`. Conclude with `hcl`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Core.downPhi_holds : SphDown .phi := by
   intro E Ω _ _ _ _ _ _ l _ ι a π Q P hP r w B hB hQdec hyp Pr AI hT A h O _ _ _ Bw hj g

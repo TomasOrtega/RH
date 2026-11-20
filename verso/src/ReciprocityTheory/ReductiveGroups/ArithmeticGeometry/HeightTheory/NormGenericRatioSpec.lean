@@ -5,7 +5,7 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open NumberField
 
 /- English proof (translation)
-Unfold `ratio`. Establish `hex : ∃ a : Ω, s • g = a • g` using `⟨s, rfl⟩`. Rewrite using `[dif_pos hex]`. Conclude with `(smul_left_injective Ω hg hex.choose_spec).symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hx4v2_ratio_smul {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {g : V}
     (hg : g ≠ 0) (s : Ω) : ratio (Ω := Ω) (s • g) g = s := by
@@ -15,9 +15,9 @@ theorem hx4v2_ratio_smul {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V
   exact (smul_left_injective Ω hg hex.choose_spec).symm
 
 /- English proof (translation)
-Establish `hg' : (⟨g, hgW⟩ : W) ≠ 0` using `fun e => hg (congrArg Subtype.val e)`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨g, hgW⟩ : W) hg').mp hW ⟨f, hf⟩`. Establish `hex : ∃ a : Ω, f = a • g` using `⟨a, (congrArg Subtype.val ha).symm⟩`. Unfold `ratio`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hex.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem hx4v2_eq_ratio_smul {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V]
     (W : Submodule Ω V) (hW : Module.finrank Ω W = 1) {f g : V} (hf : f ∈ W) (hgW : g ∈ W)
@@ -41,9 +41,9 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Use `hd.tower c` as an intermediate fact. Establish `hg` using `hd.w_base c`. Establish `hrep : ∀ j, d.w j c = ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c) • d.w (d.jc c) c := fun j => hx4v2_eq_ratio_smul _ (hd.finrank_one c d.wL) (hd.w_mem j c) (hd.w_mem (d.jc c) c) hg`. Establish `hsum : d.wx x c = (∑ j, algebraMap K (Ω c) (x j) * ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c)) • d.w (d.jc c) c := by`. Simplify using `only [Data.wx, Finset.sum_apply, Pi.smul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [hrep j]`. Rewrite using `[mul_smul, algebraMap_smul]`. Rewrite using `[hsum, hx4v2_ratio_smul hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hx4v2_ratio_wx (hd : d.AxH 𝒜) (c : ι) (x : Fin (d.N + 1) → K) :
     ratio (Ω := Ω c) (d.wx x c) (d.w (d.jc c) c) =
@@ -62,25 +62,23 @@ theorem hx4v2_ratio_wx (hd : d.AxH 𝒜) (c : ι) (x : Fin (d.N + 1) → K) :
   rw [hsum, hx4v2_ratio_smul hg]
 
 /- English proof (translation)
-Set `_ : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N)` to `(d.KTtoS h c).toAlgebra`. Take `⟨n, b, Q0, M, hQ0, hQ0s, hMs, hM⟩` from `d.basis_block0 hd h c`. Set `r : Fin (d.N + 1) → OmS (Ω c) d.D d.N` to `fun j => algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c))`. Set `ι0 : KTp K d.D d.N →+* KTf K d.D d.N` to `algebraMap (KTp K d.D d.N) (KTf K d.D d.N)`. Establish `hQ0' : ι0 Q0 ≠ 0` using `fun e => hQ0 (IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N) (by rw [e, map_zero]))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ a : Fin (d.N + 1) → KTp K d.D d.N, Algebra.norm (KTf K d.D d.N) (∑ j, ι0 (a j) • r j) = ι0 (∑ j, a j • M j).det / ι0 Q0 ^ n`. Introduce `a`. Rewrite using `[Algebra.norm_eq_matrix_det b, map_sum]`. Repeatedly rewrite using `[map_smul]`. Establish `hmat : (∑ j, ι0 (a j) • Algebra.leftMulMatrix b (r j)) = (ι0 Q0)⁻¹ • (∑ j, a j • M j).map ι0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i i'`. Rewrite using `[Matrix.smul_apply, Matrix.map_apply, Matrix.sum_apply, Matrix.sum_apply, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hM j, Matrix.smul_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hmat, Matrix.det_smul, Fintype.card_fin]`. Establish `hdet : ((∑ j, a j • M j).map ι0).det = ι0 (∑ j, a j • M j).det` using `(RingHom.map_det ι0 _).symm`. Rewrite using `[hdet, inv_pow, div_eq_mul_inv, mul_comm]`. Establish `hw0 : d.rationalBaseRow c = ∑ j, ι0 (MvPolynomial.X ((0 : Fin (d.D + 1)), j) : KTp K d.D d.N) • r j`. Simplify using `only [Data.rationalBaseRow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Simplify using `only [Data.KTtoS, ι0, IsFractionRing.lift_algebraMap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, r]`. Use `⟨(∑ j, (MvPolynomial.X ((0 : Fin (d.D + 1)), j) : KTp K d.D d.N) • M j).det, Q0 ^ n, pow_ne_zero _ hQ0, fun x => by rw [map_pow, hQ0s], ?_, ?_⟩` and prove the remaining obligations. Use `show ι0 _ = ι0 (Q0 ^ n) * Algebra.norm (KTf K d.D d.N) (d.rationalBaseRow c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw0, key, map_pow]`. Clear the denominators using the available nonvanishing facts. Introduce `x _`. Establish `hs : d.sub0 x (∑ j, (MvPolynomial.X ((0 : Fin (d.D + 1)), j) : KTp K d.D d.N) • M j).det = (∑ j, (MvPolynomial.C (x j) : KTp K d.D d.N) • M j).det`. Establish `hmd` using `RingHom.map_det (d.sub0 x : KTp K d.D d.N →+* KTp K d.D d.N) (∑ j, (MvPolynomial.X ((0 : Fin (d.D + 1)), j) : KTp K d.D d.N) • M j)`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmd` using `[RingHom.coe_coe]`. Rewrite using `[hmd]`. Use `congr 1`. Use extensionality with `i i'`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, RingHom.coe_coe, hMs]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hr : algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω` using `Ω c) (d.wx x c) (d.w (d.jc c) c)) = ∑ j, ι0 (MvPolynomial.C (x j) : KTp K d.D d.N) • r j := by`. Rewrite using `[d.hx4v2_ratio_wx hd c x, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Data.KTtoS, ι0, IsFractionRing.lift_algebraMap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes]`. Conclude with `(IsScalarTower.algebraMap_apply K (Ω c) (OmS (Ω c) d.D d.N) (x j)).symm`. Use `show ι0 _ = ι0 (Q0 ^ n) * _`.
-
-Rewrite using `[hs, hr, key, map_pow]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem norm_generic_ratio_spec (hd : d.AxH 𝒜) (h : d.S1) (c : ι) :
     ∃ P Q : KTp K d.D d.N, Q ≠ 0 ∧ (∀ x, d.sub0 x Q = Q) ∧

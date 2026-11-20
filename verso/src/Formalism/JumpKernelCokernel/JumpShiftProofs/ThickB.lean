@@ -3,7 +3,7 @@ import Formalism.JumpKernelCokernel.Statement
 namespace Formalism.KernelCokernelLengths.ThicknessSecondBoundLogLemmas
 
 /- English proof (translation)
-Establish `h : (11 : ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`. Establish `hpos : 0 < ((ℓ : ℝ) - 1) ^ 2` using `by nlinarith`. Rewrite using `[div_le_div_iff₀ hpos (by norm_num)]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr h) (by linarith : (0 : ℝ) ≤ 21 * ℓ - 11)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma coef_le (ℓ : ℕ) (hℓ : 11 ≤ ℓ) :
     (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 2 ≤ 21 / 100 := by
@@ -13,7 +13,7 @@ lemma coef_le (ℓ : ℕ) (hℓ : 11 ≤ ℓ) :
   nlinarith [mul_nonneg (sub_nonneg.mpr h) (by linarith : (0 : ℝ) ≤ 21 * ℓ - 11)]
 
 /- English proof (translation)
-Establish `h1` using `Real.log_le_sub_one_of_pos (show 0 < x / 100 by positivity)`. Establish `h2` using `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 100 by norm_num)`. Establish `h3 : Real.log x = Real.log (x / 100) + Real.log 100`. Rewrite using `[← Real.log_mul (by positivity) (by norm_num)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -27,7 +27,7 @@ lemma log_two_le (x : ℝ) (hx : 0 < x) : Real.log x ≤ x / 100 + 98 := by
   linarith
 
 /- English proof (translation)
-Establish `h : (11 : ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma one_le_log (ℓ : ℕ) (hℓ : 11 ≤ ℓ) : 1 ≤ Real.log (ℓ : ℝ) := by
   have h : (11 : ℝ) ≤ ℓ := by exact_mod_cast hℓ
@@ -36,14 +36,14 @@ lemma one_le_log (ℓ : ℕ) (hℓ : 11 ≤ ℓ) : 1 ≤ Real.log (ℓ : ℝ) :=
   linarith
 
 /- English proof (translation)
-Conclude with `div_le_self (Real.log_nonneg hx) (one_le_log ℓ hℓ)`.
+A detailed English derivation is pending.
 -/
 lemma logb_le (ℓ : ℕ) (hℓ : 11 ≤ ℓ) (x : ℝ) (hx : 1 ≤ x) :
     Real.logb (ℓ : ℝ) x ≤ Real.log x := by
   exact div_le_self (Real.log_nonneg hx) (one_le_log ℓ hℓ)
 
 /- English proof (translation)
-Establish `h : (1 : ℝ) < ℓ`. Establish `: (11 : ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Real.logb_nonneg h hx`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma logb_nonneg' (ℓ : ℕ) (hℓ : 11 ≤ ℓ) (x : ℝ) (hx : 1 ≤ x) :
     0 ≤ Real.logb (ℓ : ℝ) x := by
@@ -56,25 +56,23 @@ end Formalism.KernelCokernelLengths.ThicknessSecondBoundLogLemmas
 
 open Formalism.KernelCokernelLengths.ThicknessSecondBoundLogLemmas in
 /- English proof (translation)
-Use `⟨1 / 100, by norm_num, 10000, ?_⟩` and prove the remaining obligations. Introduce `ℓ hℓ b η S t bi h hb hη hS ht h1 h2 h3`. Establish `hbR : (10000 : ℝ) ≤ b` using `by exact_mod_cast hb`. Establish `hη' : 100 * η ≤ b`. Establish `: ((100 * η : ℕ) : ℝ) ≤ b` using `by push_cast; linarith`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hS' : 100 * S ≤ b`. Establish `: ((100 * S : ℕ) : ℝ) ≤ b` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Establish `ht' : 100 * t ≤ b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((100 * t : ℕ) : ℝ) ≤ b` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Use `⟨by omega, by omega, ?_⟩` and prove the remaining obligations. Establish `hHn : h + (η + t + 1) ≤ b + 2 * η + 2 * t + S + 2` using `by omega`. Establish `hH1 : 1 ≤ h + (η + t + 1)` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHR : ((h + (η + t + 1) : ℕ) : ℝ) ≤ b + 2 * η + 2 * t + S + 2` using `by exact_mod_cast hHn`. Establish `hH1R : (1 : ℝ) ≤ ((h + (η + t + 1) : ℕ) : ℝ)` using `by exact_mod_cast hH1`. Establish `hbi : b ≤ bi + t + 1` using `h1`. Establish `hbiR : (b : ℝ) ≤ bi + t + 1` using `by exact_mod_cast hbi`. Use `set H : ℕ := h + (η + t + 1) with hHdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : (1 : ℝ) ≤ 2 * (H : ℝ)` using `by linarith`. Establish `hlb` using `logb_le ℓ hℓ (2 * (H : ℝ)) hx1`. Establish `hlb0` using `logb_nonneg' ℓ hℓ (2 * (H : ℝ)) hx1`. Establish `hlog` using `log_two_le (2 * (H : ℝ)) (by linarith)`. Establish `hc` using `coef_le ℓ hℓ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hcoef0 : 0 ≤ (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 2`. Establish `hl : (11 : ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`. Apply the tactic sequence `apply div_nonneg <;> nlinarith`. Establish `hH0 : (0 : ℝ) ≤ H` using `by positivity`. Establish `hA : (H : ℝ) * (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 2 ≤ (H : ℝ) * (21 / 100)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hc hH0`. Establish `hA0 : 0 ≤ (H : ℝ) * (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 2`. Rewrite using `[mul_div_assoc]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `haR0 : 0 ≤ Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR ℓ H`. Unfold `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.lam`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `haR : Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR ℓ H ≤ (H : ℝ) * (21 / 100) + 4 + ((2 * (H : ℝ)) / 100 + 98)`. Unfold `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.lam`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hceil` using `Nat.ceil_lt_add_one haR0`. Establish `hηR : (100 : ℝ) * η ≤ b` using `by exact_mod_cast hη'`. Establish `hSR : (100 : ℝ) * S ≤ b` using `by exact_mod_cast hS'`. Establish `htR : (100 : ℝ) * t ≤ b` using `by exact_mod_cast ht'`.
-
-Establish `key : ((2 * ⌈Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR ℓ H⌉₊ + (η + t + 1) + 1 : ℕ) : ℝ) ≤ (bi : ℝ)`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `key` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem Formalism.KernelCokernelLengths.thickness_second_bound : Formalism.KernelCokernelLengths.ThickB := by
   refine ⟨1 / 100, by norm_num, 10000, ?_⟩

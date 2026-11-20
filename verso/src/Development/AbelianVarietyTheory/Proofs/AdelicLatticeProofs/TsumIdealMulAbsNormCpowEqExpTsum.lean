@@ -7,21 +7,19 @@ open scoped ContDiff nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ X hbot htop hmul hle s hs`. Establish `hnorm : ∀ P : HeightOneSpectrum (𝓞 K), 1 < Ideal.absNorm P.asIdeal`. Introduce `P`. Establish `h0 : Ideal.absNorm P.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.ne_bot`. Establish `h1 : Ideal.absNorm P.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `P.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.Mem.tsum_eq_exp_tsum_neg_log_of_primes (fun P : HeightOneSpectrum (𝓞 K) => P.asIdeal) (fun P => P.prime) ?_ (fun I => X I * ((Ideal.absNorm I : ℕ) : ℂ) ^ (-s)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `P Q h`. Rewrite `h` using `[Ideal.dvd_iff_le]`. Conclude with `HeightOneSpectrum.ext (Q.isMaximal.eq_of_le P.isPrime.ne_top h).symm`. Introduce `I J`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmul, map_mul, Nat.cast_mul, Complex.natCast_mul_natCast_cpow]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Ideal.one_eq_top, htop]`. Introduce `I hI hfI`. Establish `hbot' : I ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `rfl; exact hfI (by simp [hbot])`. Establish `htop' : I ≠ ⊤` using `by rwa [← Ideal.one_eq_top]`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I htop'`. Establish `hMbot : M ≠ ⊥` using `fun h => hbot' (le_bot_iff.mp (h ▸ hIM))`. Conclude with `⟨⟨M, hM.isPrime, hMbot⟩, (Ideal.dvd_iff_le).mpr hIM⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun I => ?_) (GlobalTheory.Mem.summable_norm_absNorm_cpow K hs)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hle I)`. Introduce `P hP`. Establish `hlt : ‖X P.asIdeal * ((Ideal.absNorm P.asIdeal : ℕ) : ℂ) ^ (-s)‖ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hn` using `hnorm P`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos (by omega)]`. Establish `hr : ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ (-s).re < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hn) (by simp; linarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hP` using `[sub_eq_zero]`.
-
-Rewrite `hlt` using `[← hP, norm_one]`. Conclude with `lt_irrefl _ hlt`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_ideal_mul_absNorm_cpow_eq_exp_tsum :
     ∀ (K : Type) [Field K] [NumberField K] (X : Ideal (𝓞 K) → ℂ), X ⊥ = 0 → X ⊤ = 1 → (∀ I J, X (I * J) = X I * X J) → (∀ I, ‖X I‖ ≤ 1) → ∀ s : ℂ, 1 < s.re → ∑' I, X I * ((Ideal.absNorm I : ℕ) : ℂ) ^ (-s) = Complex.exp (∑' P : HeightOneSpectrum (𝓞 K), -Complex.log (1 - X P.asIdeal * ((Ideal.absNorm P.asIdeal : ℕ) : ℂ) ^ (-s))) := by

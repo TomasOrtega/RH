@@ -14,9 +14,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace UpperTheory.TNZ.Grp.P_spPiSub
 
 /- English proof (translation)
-Establish `hc : ∀ c, Fintype.card {i // f i = c} = Fintype.card {j // g j = c}`. Introduce `c`. Establish `h1` using `congrArg (Multiset.count c) h`. Rewrite `h1` using `[Multiset.count_map, Multiset.count_map]`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `h1` using `[Finset.card, Finset.filter_val, eq_comm]`. Conclude with `⟨Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hc c), fun i => Equiv.ofFiberEquiv_map _ i⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem exists_equiv_of_map_eq {ι κ α : Type*} [Fintype ι] [Fintype κ] (f : ι → α) (g : κ → α)
     (h : Finset.univ.val.map f = Finset.univ.val.map g) : ∃ e : ι ≃ κ, ∀ i, g (e i) = f i := by
@@ -29,7 +29,7 @@ theorem exists_equiv_of_map_eq {ι κ α : Type*} [Fintype ι] [Fintype κ] (f :
   exact ⟨Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hc c), fun i => Equiv.ofFiberEquiv_map _ i⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_multiset_sum, ← Multiset.sum_map_singleton (Multiset.map φ Finset.univ.val), Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_univ_eq_sum {ι α : Type*} [Fintype ι] (φ : ι → α) :
     Finset.univ.val.map φ = ∑ i, ({φ i} : Multiset α) := by
@@ -38,7 +38,7 @@ theorem map_univ_eq_sum {ι α : Type*} [Fintype ι] (φ : ι → α) :
   rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_univ_eq_sum]`. Use `_ = ∑ p : Σ a, Fin (d a), ({F p.1 p.2} : Multiset α) := (Fintype.sum_sigma (fun p : Σ a, Fin (d a) => ({F p.1 p.2} : Multiset α))).symm`. Use `_ = ∑ i, ({F (e.symm i).1 (e.symm i).2} : Multiset α) := (Equiv.sum_comp e.symm (fun p : Σ a, Fin (d a) => ({F p.1 p.2} : Multiset α))).symm`. Use `_ = _ := (map_univ_eq_sum _).symm`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_map_univ {s n : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin n) {α : Type*}
     (F : ∀ a, Fin (d a) → α) :
@@ -59,15 +59,15 @@ open P_spPiSub
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `hOrd hL Y _ _ τ _ _ ν hν hc hI`. Set `χ : Fin G.s → kˣ →* ℂˣ` to `fun a => absPow k (-((modExp (fun b : Fin G.s => Fin (G.d b)) a : ℂ) / 2))`. Establish `hχ : ∀ a, IsSmoothChar (χ a)` using `fun a => isSmoothChar_absPow _`. Establish `hsupp : ∀ a, HasSupport (G.twD τ a) (Finset.univ.val.map fun j => IrrGL.ofChar (ν a j * χ a) ((hν a j).mul (hχ a)))`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(hasSupport_of_isCuspSupport (hc a)).tw (χ a) (hχ a)`. Rewrite `h1` using `[Multiset.map_map]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Name the introduced variables `j _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(IrrGL.tw_ofChar (ν a j) (χ a) (hν a j) (hχ a)).symm`. Establish `hcOf : ∀ i, IsSmoothChar (G.cOf ν i)` using `fun i => (hν _ _).mul (isSmoothChar_absPow _)`. Establish `hS` using `SupportRing.hasSupport_multiProd hL.loc.zel G.hd (G.twD τ) (fun a => (hsupp a).isSmooth) (fun a => (hsupp a).isIrreducible) hsupp hI`. Establish `hsum : (∑ a, Finset.univ.val.map fun j => IrrGL.ofChar (ν a j * χ a) ((hν a j).mul (hχ a))) = Finset.univ.val.map fun i => IrrGL.ofChar (G.cOf ν i) (hcOf i)` using `sum_map_univ G.e (fun a j => IrrGL.ofChar (ν a j * χ a) ((hν a j).mul (hχ a)))`. Take `⟨h, x, hx, -, -, e', he⟩` from `hS`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[hsum]`. Take `⟨σ, hσ⟩` from `exists_equiv_of_map_eq x (fun i => IrrGL.ofChar (G.cOf ν i) (hcOf i)) hx`. Take `rfl : x = fun b => IrrGL.ofChar (G.cOf ν (σ b)) (hcOf _)` from `funext fun b => (hσ b).symm`. Establish `hn : h = n` using `by simpa using Fintype.card_congr σ`. Substitute `hn` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ` to `multiProdEquiv e' fun b => (equivRep (IrrRep.det (Fin 1) (G.cOf ν (σ b)) (hcOf _))).symm`. Establish `hsq : IsSubquotient (multiProd G.e (G.twD τ)) (prinSeries fun b => G.cOf ν (σ b))` using `(he.trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)).trans (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries e' _)`. Conclude with `hOrd hL _ _ (isSmooth_parInd _ _) hI _ hcOf σ hsq`.
+A detailed English derivation is pending.
 -/
 theorem step_spPiSub {n : ℕ} (G : Grp k n) : G.SpecialRepresentationSubProp := by
   intro hOrd hL Y _ _ τ _ _ ν hν hc hI

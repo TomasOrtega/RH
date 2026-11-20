@@ -27,13 +27,13 @@ def nn (Dw : Datum H) {l : Level H} (c : Coeff l) (α : 𝓞 E) (a : (E →+* �
   ∏ τ : E →+* ℂ, embK c τ α ^ (∑ i : Fin (Dw.mult τ), a (τ, i))
 
 /- English proof (translation)
-Simplify using `[nn]`.
+Simplify using the standard rewrite rules.
 -/
 example (Dw : Datum H) {l : Level H} (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) : nn Dw c 1 a = 1 := by
   simp [nn]
 
 /- English proof (translation)
-Simplify using `[nn, mul_pow, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 example (Dw : Datum H) {l : Level H} (c : Coeff l) (α β : 𝓞 E) (a : (E →+* ℂ) × ℕ → ℕ) :
     nn Dw c (α * β) a = nn Dw c α a * nn Dw c β a := by

@@ -24,7 +24,7 @@ def lau (V : Type) [AddCommGroup V] [Module ℂ V] (c : (ι → ℤ) →₀ ℂ)
   c.sum fun μ w => w • shift V μ
 
 /- English proof (translation)
-Use extensionality with `l v`. Simplify using `[shift, univ, add_right_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem shift_univ (deg : M →* Multiplicative (ι → ℤ)) (ρ : Representation ℂ M V) (μ : ι → ℤ) (g : M) :
     shift V μ ∘ₗ univ deg ρ g = univ deg ρ g ∘ₗ shift V μ := by
@@ -134,7 +134,7 @@ def IsRegular (n : ℕ) (Z : Multiset (IrrGL k) → ℂ) : Prop :=
   ∀ (t : ℕ) (x : Fin t → IrrGL k), (∀ a, (x a).IsCusp) → ∑ a, (x a).1 = n → ∃ c, Reps Z x c
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `⟨Finsupp.single 0 1, fun u => by simp [evalLau]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isRegular_one (n : ℕ) : IsRegular k n fun _ => 1 := fun _ _ _ _ =>
   ⟨Finsupp.single 0 1, fun u => by simp [evalLau]⟩

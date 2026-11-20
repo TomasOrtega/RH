@@ -93,7 +93,7 @@ def WtRam (O : OnObj S P c) (Nd : NumDatum) (ι : Bs.J → ℕ) : Prop :=
     min (Nd.w (ι j) (false, t)) (Nd.w (ι j) (true, t)) ≤ 2 * O.bp
 
 /- English proof (translation)
-Use `show 2 ∈ Nd.H.QS.primeFactors`. Conclude with `Nat.mem_primeFactors.mpr ⟨Nat.prime_two, dvd_trans (dvd_pow_self 2 (by omega)) Nd.H.tower_dvd, Nd.H.QS_pos.ne'⟩`.
+A detailed English derivation is pending.
 -/
 private lemma two_mem_small_nd (Nd : NumDatum) : 2 ∈ Nd.H.small := by
   show 2 ∈ Nd.H.QS.primeFactors
@@ -101,9 +101,9 @@ private lemma two_mem_small_nd (Nd : NumDatum) : 2 ∈ Nd.H.small := by
     dvd_trans (dvd_pow_self 2 (by omega)) Nd.H.tower_dvd, Nd.H.QS_pos.ne'⟩
 
 /- English proof (translation)
-Take `⟨s, hs0, hs⟩` from `hσ`. Establish `hT1 : (1 : ℝ) ≤ O.T` using `by rw [tT]; exact_mod_cast hT`. Establish `hr : ((ramw v : ℤ) : ℝ) = (e₁ v : ℝ) * (e₂ v : ℝ)` using `by rw [hram]; push_cast; ring`. Establish `hround` using `cR (e₁ v) (e₂ v) (O.T * (ν v j + 1)) (O.E v j) he1 he2 (by rw [← mul_assoc]; exact hE)`. Establish `hlev` using `cL (e₂ v) O.T (ν v j) s (O.nn v j) ((O.E v j : ℝ) / ((e₁ v : ℝ) * (e₂ v : ℝ))) h2 hT1 hTν hs0 hround`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : O.e0 v j = (O.E v j : ℝ) / ((e₁ v : ℝ) * (e₂ v : ℝ)) - (O.nn v j + s)`. Rewrite using `[← hs, ← hr]`. Simplify using `only [OnObj.e0, sub_div]`. Rewrite using `[he0]`. Conclude with `hlev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma level_at (O : OnObj S P c) (TO : ℕ) (e₁ e₂ : HeightOneSpectrum (𝓞 K) → ℕ)
     (ν : HeightOneSpectrum (𝓞 K) → Bs.J → ℝ) (cR : RoundCore) (cL : LevelCore) (tT : TieT O TO) (hT : 1 ≤ TO)
@@ -125,11 +125,11 @@ private lemma level_at (O : OnObj S P c) (TO : ℕ) (e₁ e₂ : HeightOneSpectr
   exact hlev
 
 /- English proof (translation)
-Establish `hr : ((ramw v : ℤ) : ℝ) = (e₁ v : ℝ) * (e₂ v : ℝ)` using `by rw [hram]; push_cast; ring`. Establish `hround` using `cR (e₁ v) (e₂ v) (O.T * (ν v j + 1)) (O.E v j) he1 he2 (by rw [← mul_assoc]; exact hE)`. Establish `he2' : (1 : ℝ) ≤ e₂ v` using `by exact_mod_cast he2`. Establish `hinv : 1 / (e₂ v : ℝ) ≤ 1` using `by rw [div_le_one (by linarith)]; exact he2'`. Establish `hX : (O.E v j : ℝ) / ((e₁ v : ℝ) * (e₂ v : ℝ)) < O.T * (νW v j + sW v j + 1) + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hS]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm` using `cM l O.T (νW v j) (sW v j) (s1 v j) D D' C₀ O.k (O.sB j) _ hl hT0 hν hs1 hD hW hP hB hX`. Establish `he0 : O.e0 v j = (O.E v j : ℝ) / ((e₁ v : ℝ) * (e₂ v : ℝ)) - (O.T * sW v j + s1 v j)`. Rewrite using `[← hσ, ← hr]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [OnObj.e0, sub_div]`. Rewrite using `[he0]`. Conclude with `hm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma ram_at (O : OnObj S P c) (e₁ e₂ : HeightOneSpectrum (𝓞 K) → ℕ)
     (ν νW sW s1 : HeightOneSpectrum (𝓞 K) → Bs.J → ℝ) (cR : RoundCore) (cM : RamCore)
@@ -154,23 +154,21 @@ private lemma ram_at (O : OnObj S P c) (e₁ e₂ : HeightOneSpectrum (𝓞 K) �
   exact hm
 
 /- English proof (translation)
-Take `⟨hC, hk, hm, hf, hT0, hSc, heta, hbp, hvd, hNc, hg1p, hg2p, hq1p, hddp, hg12, hqd, hqg1, hqg2, hdg1, hdg2, hg1s, hg2s, hq1s, hdds, hx⟩` from `hPg`. Take `⟨tg1, tg2, tq, td, tsm⟩` from `tP`. Establish `h2s : 2 ∈ O.sm` using `by rw [tsm]; exact two_mem_small_nd Nd`. Introduce `w hw hpl j`. Apply the tactic sequence `have hpr : (plc w).Prime := by rcases hpl with h | h <;> rw [h] <;> assumption`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hne : plc w ≠ 2` using `fun h2 => by`. Break down `hpl with h | h` into its components or cases. Conclude with `hg1s (by rw [← h, h2]; exact h2s)`. Conclude with `hg2s (by rw [← h, h2]; exact h2s)`. Establish `hp3 : (3 : ℝ) ≤ (plc w : ℝ)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hpr.two_le` as an intermediate fact. Establish `h3 : 3 ≤ plc w` using `by omega`. Conclude with `h3` after adjusting the coercions. Establish `hbad : plc w ∈ O.Bad`. Unfold `OnObj.Bad`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `rcases hpl with h | h <;> simp [h]`. Establish `key : ∀ v, plc v = plc w → (2 : ℝ) ≤ e₂ v → (∃ s : ℝ, 0 ≤ s ∧ (vw v (O.σ v j) : ℝ) / (ramw v : ℝ) = O.nn v j + s) → ν v j ≤ DL j / ((plc w : ℝ) - 1) → (1 ≤ e₁ v ∧ 1 ≤ e₂ v ∧ ramw v = (e₁ v : ℤ) * (e₂ v : ℤ) ∧ ∀ j, (O.E v j : ℤ) ≤ (e₁ v : ℤ) * ⌈(e₂ v : ℝ) * O.T * (ν v j + if plc v …`. Introduce `v hv he2 hσ hν hq`. Take `⟨he1, he2', hram, hE⟩` from `hq`. Establish `hE'` using `hE j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hE'` using `[if_pos (by rw [hv]; exact hbad)]`. Establish `hTν : O.T * ν v j < 1 / 2`. Establish `hDk` using `iP j`. Break down `hpl with h | h` into its components or cases. Conclude with `cN (plc w) O.T (ν v j) (DL j) (Dk j) hp3 hT0 hν (iD j) (by rw [h]; exact hDk.1)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `cN (plc w) O.T (ν v j) (DL j) (Dk j) hp3 hT0 hν (iD j) (by rw [h]; exact hDk.2)`. Conclude with `level_at O TO e₁ e₂ ν cR cL tT hT v j he1 he2' hram hE' he2 hTν hσ`. Establish `hr` using `iR w hw hpl`. Establish `hν` using `iν w hw hpl j`. Establish `hs` using `iS w hw hpl j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `htE` using `tE w hw`. Use `⟨key w rfl (by linarith [hr.1]) hs.1 hν.1 htE.1, key (conjPl w) (plc_conjPl w) (by linarith [hr.2]) hs.2 hν.2 htE.2, ?_⟩` and prove the remaining obligations. Rewrite using `[iN w hw hpl j, tF w j]`. Establish `hFj : Nd.Fj (ι j) w = Nd.FTypeG (ι j)` using `by show Nd.FjP (ι j) (plc w) = _`. Use `(cF Nd (ι j) (plc w)).1 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Break down `hpl with h | h` into its components or cases. Use `left`. Rewrite using `[h, tg1]`. Use `right`. Rewrite using `[h, tg2]`.
-
-Rewrite using `[hFj]`. Simplify using `only [NumDatum.FTypeG]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem leafDepthLevel_of (N : IndefNum Bs) (O : OnObj S P c) (Nd : NumDatum) (ι : Bs.J → ℕ) (TO : ℕ)
     (e₁ e₂ : HeightOneSpectrum (𝓞 K) → ℕ) (ν : HeightOneSpectrum (𝓞 K) → Bs.J → ℝ) (DL Dk : Bs.J → ℝ)
@@ -230,27 +228,25 @@ theorem leafDepthLevel_of (N : IndefNum Bs) (O : OnObj S P c) (Nd : NumDatum) (�
   ring
 
 /- English proof (translation)
-Take `⟨hC, hk, hm, hf, hT0, hSc, heta, hbp, hvd, hNc, hg1p, hg2p, hq1p, hddp, hg12, hqd, hqg1, hqg2, hdg1, hdg2, hg1s, hg2s, hq1s, hdds, hx⟩` from `hPg`. Take `⟨tg1, tg2, tq, td, tsm⟩` from `tP`. Establish `h2s : 2 ∈ O.sm` using `by rw [tsm]; exact two_mem_small_nd Nd`. Take `⟨tf, tk⟩` from `tK`. Take `⟨hwt, -⟩` from `hSz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `w hw hpl j`. Establish `hbad : plc w ∈ O.Bad`. Unfold `OnObj.Bad`. Apply the tactic sequence `rcases hpl with h | h <;> simp [h]`. Establish `hl1 : (1 : ℝ) < (plc w : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `have hpr : (plc w).Prime := by rcases hpl with h | h <;> rw [h] <;> assumption`. Conclude with `hpr.one_lt` after adjusting the coercions. Establish `hB : 0 ≤ O.sB j`. Unfold `OnObj.sB OnObj.Se`. Conclude with `add_nonneg (hwt j).1 (mul_nonneg (by linarith) (add_nonneg hSc heta))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hPl : C₀ * O.k ≤ (plc w : ℝ) - 1`. Apply the tactic sequence `rcases hpl with h | h <;> rw [h]`. Use `exacts [iP.1, iP.2]`. Establish `key : ∀ v, plc v = plc w → νW v j ≤ DL j / ((plc w : ℝ) - 1) → 0 ≤ s1 v j → ν v j = νW v j + sW v j → (vw v (O.σ v j) : ℝ) / (ramw v : ℝ) = O.T * sW v j + s1 v j → (1 ≤ e₁ v ∧ 1 ≤ e₂ v ∧ ramw v = (e₁ v : ℤ) * (e₂ v : ℤ) ∧ ∀ j, (O.E v j : ℤ) ≤ (e₁ v : ℤ) * ⌈(e₂ v : ℝ) * O.T * (ν v …`. Introduce `v hv hν hs1 hS hσ hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨he1, he2, hram, hE⟩` from `hq`. Establish `hE'` using `hE j`. Rewrite `hE'` using `[if_pos (by rw [hv]; exact hbad)]`. Conclude with `ram_at O e₁ e₂ ν νW sW s1 cR cM v j (plc w) (DL j) (Dk j) C₀ he1 he2 hram hE' hS hσ hl1 hT0 hν hs1 (iD j) (iW j) hPl hB`. Establish `hν` using `iν w hw hpl j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `iS w hw hpl j`. Establish `htE` using `tE w hw`. Establish `htS` using `tS w hw`. Establish `htσ` using `tσ w hw`. Use `⟨key w rfl hν.1 hs.1 (htS.1 j) (htσ.1 j) htE.1, key (conjPl w) (plc_conjPl w) hν.2 hs.2 (htS.2 j) (htσ.2 j) htE.2, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hq`. Rewrite using `[tF w j]`. Use `show Nd.FjP (ι j) (plc w) = 0`. Use `(cF Nd (ι j) (plc w)).2.1 ?_ ?_ (Or.inr ?_)` and prove the remaining obligations. Rewrite using `[hq, ← tg1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hqg1`. Rewrite using `[hq, ← tg2]`. Conclude with `hqg2`. Rewrite using `[hq, tq]`. Introduce `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tF w j]`. Use `show -(2 * (O.f * O.k * O.bp)) ≤ Nd.FjP (ι j) (plc w) ∧ Nd.FjP (ι j) (plc w) ≤ 0`. Establish `hdne2 : O.dd ≠ 2` using `fun h => hdds (by rw [h]; exact h2s)`. Establish `hF : Nd.FjP (ι j) (plc w) = Nd.FRamD (ι j)` using `(cF Nd (ι j) (plc w)).2.2 (by rw [hd, ← tg1]; exact hdg1) (by rw [hd, ← tg2]; exact hdg2) (by rw [hd]; exact hdne2) (by rw [hd, ← tq]; exact fun h => hqd h.symm) (by rw [hd, td])`. Establish `hk1 : 1 ≤ Nd.R.k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : (1 : ℝ) ≤ (Nd.R.k : ℝ)` using `by rw [← tk]; exact hk`. Conclude with `h1` after adjusting the coercions. Take `⟨h1, h2⟩` from `cD Nd (ι j) O.bp hk1 (iB j)`. Rewrite using `[hF]`. Use `⟨le_trans ?_ h1, h2⟩` and prove the remaining obligations.
-
-Rewrite using `[tf, tk]`. Establish `hn : (0 : ℝ) ≤ Nd.R.n` using `Nat.cast_nonneg _`. Establish `hk' : (1 : ℝ) ≤ Nd.R.k` using `by exact_mod_cast hk1`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hn hbp) (by linarith : (0 : ℝ) ≤ 3 * (Nd.R.k : ℝ) + 1)]`.
+A detailed English derivation is pending.
 -/
 theorem leafDepthRam_of (N : IndefNum Bs) (O : OnObj S P c) (Nd : NumDatum) (ι : Bs.J → ℕ)
     (e₁ e₂ : HeightOneSpectrum (𝓞 K) → ℕ) (ν νW sW s1 : HeightOneSpectrum (𝓞 K) → Bs.J → ℝ) (DL Dk : Bs.J → ℝ) (C₀ : ℝ)

@@ -12,7 +12,7 @@ open Formalism.MainNotions.UnusedSlot33.SlopeTestRemainingChoices
 namespace CMIdealEquivalence
 
 /- English proof (translation)
-Establish `h` using `IntermediateField.adjoin_map (S := {bE ζ a b}) (f := (hostE ζ a b).val)`. Rewrite `h` using `[Set.image_singleton]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_KinE {L : Type} [Field L] [NumberField L] (ζ a b : L) :
     (KinE ζ a b).map (hostE ζ a b).val = Kd b := by
@@ -25,9 +25,9 @@ def kEquiv {L : Type} [Field L] [NumberField L] (ζ a b : L) : KinE ζ a b ≃+*
     (IntermediateField.equivOfEq (map_KinE ζ a b))).toRingEquiv
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hi : IsIntegral (𝓞 M) x` using `isIntegral_of_smul_mem_submodule (I : Submodule (𝓞 M) M) (fun h0 => hI (FractionalIdeal.coeToSubmodule_eq_bot.1 h0)) (FractionalIdeal.fg_of_isNoetherianRing le_rfl I) x (fun n hn => h n hn)`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx y hy`. Establish `: (⟨x, hx⟩ : 𝓞 M) • y ∈ (I : Submodule (𝓞 M) M)` using `Submodule.smul_mem (I : Submodule (𝓞 M) M) _ hy`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mult_ring {M : Type} [Field M] [NumberField M]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 M)) M) (hI : I ≠ 0) (x : M) :
@@ -46,9 +46,9 @@ theorem mult_ring {M : Type} [Field M] [NumberField M]
     exact this
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.mem_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', rfl⟩`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe x'`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨t, h⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem mem_one_iff'' {M : Type} [Field M] [NumberField M] (t : M) :
     t ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 M)) M) ↔ IsIntegral ℤ t := by
@@ -60,14 +60,14 @@ private theorem mem_one_iff'' {M : Type} [Field M] [NumberField M] (t : M) :
     exact ⟨⟨t, h⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `isIntegral_algEquiv (σ.restrictScalars ℤ)`.
+A detailed English derivation is pending.
 -/
 private theorem integ_iff' {M : Type} [Field M] [NumberField M] (σ : M ≃ₐ[ℚ] M) (t : M) :
     IsIntegral ℤ (σ t) ↔ IsIntegral ℤ t :=
   isIntegral_algEquiv (σ.restrictScalars ℤ)
 
 /- English proof (translation)
-Introduce `h`. Apply `hB` to reduce the goal to its premises. Establish `h2 : σ⁻¹ • (σ • B) = σ⁻¹ • (⊥ : Ideal (𝓞 M))` using `by rw [h]`. Rewrite `h2` using `[inv_smul_smul, Ideal.pointwise_smul_def, Ideal.map_bot]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem smul_ne_bot' {M : Type} [Field M] [NumberField M] (σ : M ≃ₐ[ℚ] M)
     (B : Ideal (𝓞 M)) (hB : B ≠ ⊥) : σ • B ≠ ⊥ := by
@@ -77,13 +77,13 @@ private theorem smul_ne_bot' {M : Type} [Field M] [NumberField M] (σ : M ≃ₐ
   rwa [inv_smul_smul, Ideal.pointwise_smul_def, Ideal.map_bot] at h2
 
 /- English proof (translation)
-Establish `hc : ∀ b : 𝓞 M, algebraMap (𝓞 M) M (σ • b) = σ (algebraMap (𝓞 M) M b)` using `fun b => rfl`. Establish `h1 : ((σ • B : Ideal (𝓞 M)) : FractionalIdeal (nonZeroDivisors (𝓞 M)) M) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (smul_ne_bot' σ B hB)`. Establish `h2 : ((B : Ideal (𝓞 M)) : FractionalIdeal (nonZeroDivisors (𝓞 M)) M) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hB`. Rewrite using `[FractionalIdeal.mem_inv_iff h1, FractionalIdeal.mem_inv_iff h2]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h z hz`. Take `⟨b, hb, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hz`. Use `h (σ (algebraMap (𝓞 M) M b)) ((FractionalIdeal.mem_coeIdeal _).2 ⟨σ • b, Ideal.smul_mem_pointwise_smul σ b B hb, hc b⟩)` as an intermediate fact. Rewrite `this` using `[mem_one_iff'', ← map_mul, integ_iff']`. Rewrite using `[mem_one_iff'']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Introduce `h z hz`. Take `⟨c, hc', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hz`. Establish `hb : σ⁻¹ • c ∈ B` using `Ideal.mem_pointwise_smul_iff_inv_smul_mem.1 hc'`. Use `h _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨_, hb, rfl⟩)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `this`, the goal using `[mem_one_iff'']`. Establish `e : algebraMap (𝓞 M) M c = σ (algebraMap (𝓞 M) M (σ⁻¹ • c))`. Rewrite using `[← hc, smul_inv_smul]`. Rewrite using `[e, ← map_mul, integ_iff']`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_inv_smul' {M : Type} [Field M] [NumberField M] (σ : M ≃ₐ[ℚ] M)
     (B : Ideal (𝓞 M)) (hB : B ≠ ⊥) (y : M) :
@@ -114,7 +114,7 @@ private theorem mem_inv_smul' {M : Type} [Field M] [NumberField M] (σ : M ≃�
     exact this
 
 /- English proof (translation)
-Use `show (D.host.conj * D.host.conj) x = x`. Rewrite using `[show D.host.conj * D.host.conj = 1 by`. Simplify using `only [Formalism.HC.HostRaw.conj, ← map_mul, Formalism.HC.Frame.cc_mul_cc, map_one]]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   show (D.host.conj * D.host.conj) x = x
@@ -123,7 +123,7 @@ theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := b
   rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h, Ideal.pointwise_smul_def, Ideal.map_bot, bot_sup_eq]`. Conclude with `bot_ne_top h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   intro h
@@ -132,7 +132,7 @@ theorem b_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   exact bot_ne_top h2
 
 /- English proof (translation)
-Introduce `p hp hK P hP hl σ τ hτ`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI := hP`. Use `haveI := hl`. Conclude with `(D.host.der.ordinary p P).2 hK σ τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ordinary (D : D7) : ∀ p : ℕ, p.Prime →
     (primesOver (span {(p : ℤ)}) (𝓞 D.host.K)).ncard = 2 →
@@ -161,11 +161,11 @@ def PolPart (D : D7) : Prop :=
           Algebra.trace ℚ D.host.E (ξ * D.host.conj x * y) ∈ (algebraMap ℤ ℚ).range
 
 /- English proof (translation)
-Establish `hb` using `b_ne_bot D`. Establish `hσb : D.host.conj • D.host.𝔟 ≠ ⊥` using `smul_ne_bot' D.host.conj _ hb`. Establish `hb0 : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hb`. Use `⟨D.host.AA0, ((D.host.conj • D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)⁻¹, ?_, ?_, ?_, ordinary D⟩` and prove the remaining obligations. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hσσ : D.host.conj • D.host.conj • D.host.𝔟 = D.host.𝔟`. Rewrite using `[smul_smul, show D.host.conj * D.host.conj = 1 from AlgEquiv.ext (conj_conj D), one_smul]`. Establish `h` using `mem_inv_smul' D.host.conj (D.host.conj • D.host.𝔟) hσb x`. Rewrite `h` using `[hσσ]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [D.host.𝔟_spec.1, FractionalIdeal.coeIdeal_mul, mul_inv] try rfl`. Introduce `cc hcc`. Establish `hm : Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot hcc`. Establish `hne : ((Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) * D.host.AA0 ≠ 0` using `mul_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hm) (inv_ne_zero hb0)`. Conclude with `⟨fun x => mult_ring _ hne x, hPol cc hcc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lemma_one_eight_of_polarisation (D : D7) (hPol : PolPart D) : Conclusion8 D := by
   have hb := b_ne_bot D

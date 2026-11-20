@@ -106,9 +106,9 @@ def LogNormIntegrablePoincare : Prop :=
       (absLogNorm L s) < ∞
 
 /- English proof (translation)
-Use `Set.eq_univ_of_forall fun x => ⟨trivial, ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Use `⟨A.chart j, ⟨le_rfl, fun i => ⟨A.holo i j, A.holo j i⟩, ?_⟩, hj⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [Set.univ_inter, Set.mem_setOf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => ⟨h, fun k hk => absurd k.2 (not_lt.2 hk)⟩, fun h => h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem regularLocus_univ (A : FinHolAtlas d X) : regularLocus A Set.univ d = Set.univ := by
   refine Set.eq_univ_of_forall fun x => ⟨trivial, ?_⟩

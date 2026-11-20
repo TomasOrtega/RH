@@ -25,20 +25,20 @@ open PositivityTheory.Rg.BcB.F
 attribute [local instance] borelG borelF borelA
 
 /- English proof (translation)
-The claim follows from `cas_infOf_im' lam`.
+A detailed English derivation is pending.
 -/
 theorem cas_infOf_im {n : ℕ} (lam : Fin n → ℤ) : (cas (infOf lam)).im = 0 :=
   cas_infOf_im' lam
 
 /- English proof (translation)
-The claim follows from `bump_one' ι c hc`.
+A detailed English derivation is pending.
 -/
 theorem bump_one (ι : Type) [Fintype ι] (c : ι → ℂ) (hc : ∀ i, (c i).im = 0) :
     ∃ (g : ℝ → ℝ) (T : ℝ), 0 ≤ T ∧ IsBump g T ∧ ∏ i, coshT g (c i) = 1 :=
   bump_one' ι c hc
 
 /- English proof (translation)
-The claim follows from `phiOf_cs' μ M Tθ k val T h`.
+A detailed English derivation is pending.
 -/
 theorem phiOf_cs {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) (M : KMod n) (Tθ : M.V →L[ℂ] M.V)
     (k : Mat n → (M.V →L[ℂ] M.V)) (val : Inf n → ℂ) (T : ℝ) (h : IsMult μ M k val T) :
@@ -46,17 +46,15 @@ theorem phiOf_cs {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) (M : KMo
   phiOf_cs' μ M Tθ k val T h
 
 /- English proof (translation)
-Introduce `E _ _ _ hE a b l₁ l₂ μ₁ μ₂ μa μb h₁ h₂ ha hb`. Use `haveI : Nontrivial (InfinitePlace E) := GlobalTheory.T.nontrivial_infinite_place_of_unramified E hE`. Use `haveI : BorelSpace (GA E a) := ⟨rfl⟩`. Use `haveI : BorelSpace (GA E b) := ⟨rfl⟩`. Use `haveI : BorelSpace (G a) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (G b) := ⟨rfl⟩`. Use `haveI : BorelSpace (Hf E a b) := ⟨rfl⟩`. Use `h₁` as an intermediate fact. Use `h₂` as an intermediate fact. Use `ha` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hb` as an intermediate fact. Take `⟨D, hD⟩` from `hG E a b μ₁ μ₂`. Take `⟨ν, hν, hν', hcomp⟩` from `hC E a b D μa μb`. Take `⟨-, -, ca, hca0, hca⟩` from `GlobalTheory.CompanionTheory.Growth.size_facts E a`. Take `⟨-, -, cb, hcb0, hcb⟩` from `GlobalTheory.CompanionTheory.Growth.size_facts E b`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `LA` using `fun v : InfinitePlace E => hL a (l₁ v).w (l₁ v).anti`. Establish `LB` using `fun v : InfinitePlace E => hL b (l₂ v).w (l₂ v).anti`. Apply the tactic sequence `obtain ⟨bump, T, hT, hbump, hone⟩ := bump_one (InfinitePlace E ⊕ InfinitePlace E) (Sum.elim (fun v => cas (infOf (l₁ v).w)) fun v => cas (infOf (l₂ v).w)) (fun i => by cases i <;> exact cas_infOf_im _)`. Take `⟨_, hKa⟩` from `hK a`. Take `⟨_, hKb⟩` from `hK b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Ma : Mods E a` to `fun v => (LA v).choose`. Set `Mb : Mods E b` to `fun v => (LB v).choose`. Set `Ta : Ops Ma` to `fun v => (LA v).choose_spec.choose`. Set `Tb : Ops Mb` to `fun v => (LB v).choose_spec.choose`. Establish `sa` using `fun v => (LA v).choose_spec.choose_spec`.
-
-Establish `sb` using `fun v => (LB v).choose_spec.choose_spec`. Set `ka : List (Bool × ℕ) → Kers Ma` to `fun w v => ((hKa μa (Ma v)).1 w bump T hbump).choose`. Set `kb : List (Bool × ℕ) → Kers Mb` to `fun w v => ((hKb μb (Mb v)).1 w bump T hbump).choose`. Conclude with `⟨{ D := D Ma := Ma Mb := Mb ν := ν ha := ha hb := hb hν := hν hν' := hν' compat := hcomp c := max ca cb c_nonneg := le_max_of_le_left hca0 ca := fun g h => (hca g h).trans (by gcongr; exact le_max_left _ _) cb := fun g h => (hcb g h).trans (by gcongr; exact le_max_right _ _) grow …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem archEx_of (hG : PositivityTheory.Rg.BcB.E1.GrowthJ) (hC : CompatEx) (hL : Lef) (hV : VCBridge) (hP : LefPair)
     (hK : KerEx) : ArchEx := by

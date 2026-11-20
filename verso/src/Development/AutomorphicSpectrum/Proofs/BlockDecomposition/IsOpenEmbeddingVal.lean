@@ -14,22 +14,22 @@ def infIdele : (InfiniteAdeleRing L)ˣ →* Ideles L :=
   Units.map (MonoidHom.inl (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L))
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infIdele : Continuous (infIdele L) :=
   Continuous.units_map _ (continuous_id.prodMk continuous_const)
 
 /- English proof (translation)
-The claim follows from `Units.isOpenEmbedding_val (R := ∀ v : InfinitePlace L, v.Completion)`.
+A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_val :
     IsOpenEmbedding (Units.val : (InfiniteAdeleRing L)ˣ → InfiniteAdeleRing L) :=
   Units.isOpenEmbedding_val (R := ∀ v : InfinitePlace L, v.Completion)
 
 /- English proof (translation)
-Use `dense_iff_inter_open.2 fun U hU ⟨u, hu⟩ => ?_` and prove the remaining obligations. Take `⟨l, w, hw, hl⟩` from `(InfiniteAdeleRing.denseRange_algebraMap L).exists_mem_open ((isOpenEmbedding_val L).isOpenMap U hU) ⟨_, u, hu, rfl⟩`. Establish `hl0 : l ≠ 0`. Introduce and unpack `rfl`. Rewrite `hl` using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `w.ne_zero hl`. Conclude with `⟨w, hw, Units.mk0 l hl0, Units.ext hl.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem denseRange_units :
     DenseRange (Units.map (algebraMap L (InfiniteAdeleRing L)).toMonoidHom : Lˣ → (InfiniteAdeleRing L)ˣ) := by

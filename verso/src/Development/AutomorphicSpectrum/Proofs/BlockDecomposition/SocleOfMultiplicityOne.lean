@@ -24,9 +24,9 @@ variable {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGrou
   [AddCommGroup U] [Module ℂ U]
 
 /- English proof (translation)
-Set `R : Subrepresentation ρ` to `ι.range`. Set `p : ρ.IntertwiningMap (subQuot ⊤ R)` to `⟨Submodule.mkQ _ ∘ₗ LinearMap.codRestrict (⊤ : Subrepresentation ρ).toSubmodule LinearMap.id (fun _ => trivial), fun _ => rfl⟩`. Establish `hp : ∀ v, p v = 0 ↔ v ∈ R.toSubmodule` using `fun v => Submodule.Quotient.mk_eq_zero _`. Rewrite using `[jhMult_exact ι p hσ hι (fun x => ?_) (fun u => (hp _).2 ⟨u, rfl⟩) (fun v hv => (hp v).1 hv)]`. Conclude with `le_self_add`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨v.1, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jhMult_le_of_injective {σ : Representation ℂ G U} {ρ₁ : Representation ℂ G V}
     {ρ : Representation ℂ G W} (hσ : σ.IsIrreducible) (ι : ρ₁.IntertwiningMap ρ)
@@ -49,11 +49,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [AddCommGroup W] [Module ℂ W] [AddCommGroup U] [Module ℂ U] [AddCommGroup X] [Module ℂ X]
 
 /- English proof (translation)
-Use `jhMult_exact (jacMap e ι) (jacMap e p) hσ (GlobalTheory.JacInj.jacMap_injective k _ _ _ e W V π₁ π ι hπ hι) (fun x => ?_) (fun x => ?_) (fun x hx => ?_)` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨v, rfl⟩` from `hp u`. Conclude with `⟨Submodule.Quotient.mk v, rfl⟩`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ x show Submodule.Quotient.mk (p (ι u)) = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he.apply_apply_eq_zero]`. Both sides reduce to the same expression. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : p v ∈ twKer π₂ (unipRad k e) 1` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Take `⟨v', hv', h2⟩` from `GlobalTheory.SmGL.Exponents.Additive.exists_mem_twKer p hp _ h1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `(he (v - v')).1 (by rw [map_sub, h2, sub_self])`. Use `⟨Submodule.Quotient.mk u, ?_⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk (ι u) = Submodule.Quotient.mk v`. Rewrite using `[hu]`. Conclude with `(Submodule.Quotient.eq _).2 (by simpa using hv')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jhMult_jac_exact (e : (Σ a, m a) ≃ n) {σ : Representation ℂ (Levi k m) X}
     (hσ : σ.IsIrreducible) {π : Representation ℂ (GL n k) V} {π₁ : Representation ℂ (GL n k) W}
@@ -81,13 +81,11 @@ theorem jhMult_jac_exact (e : (Σ a, m a) ≃ n) {σ : Representation ℂ (Levi 
     exact (Submodule.Quotient.eq _).2 (by simpa using hv')
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hf`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, (f v).1.1 x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hv (Subtype.ext (Subtype.ext (funext h)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ` to `GlobalTheory.SmGL.Model.evalOne e f`. Establish `h1 : φ (Submodule.Quotient.mk (τ x v)) ≠ 0`. Establish `: φ (Submodule.Quotient.mk (τ x v)) = (f v).1.1 x` using `by show (f (τ x v)).1.1 1 = _`. Rewrite using `[f.isIntertwining, parInd_apply, one_mul]`. Rewrite using `[this]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : Function.Surjective φ`. Introduce `w`. Break down `eq_bot_or_eq_top φ.range with e' | e'` into its components or cases. Establish `h3 : φ (Submodule.Quotient.mk (τ x v)) ∈ φ.range` using `(Representation.IntertwiningMap.mem_range _ _ _ _).2 ⟨_, rfl⟩`. Rewrite `h3` using `[e']`.
-
-Conclude with `absurd h3 h1`. Establish `h3 : w ∈ φ.range` using `e' ▸ trivial`. Conclude with `(Representation.IntertwiningMap.mem_range _ _ _ _).1 h3`. Conclude with `ENat.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 (.of_surjective φ h2))`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_jhMult_jac (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi k m) X}
     (hρ : ρ.IsIrreducible) {τ : Representation ℂ (GL n k) V} (f : τ.IntertwiningMap (parInd e ρ))
@@ -115,7 +113,7 @@ theorem one_le_jhMult_jac (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi
   exact ENat.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 (.of_surjective φ h2))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur _ (fun a => (x a).2.rep.irr) fun a φ hφ => GlobalTheory.SchurAdm.schur_admissible (GL (Fin (x a).1) k) (KO k (Fin (x a).1)) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO _ (x a).rep (x a).2.rep.i …`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_piTensor (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h : ℕ} (x : Fin h → IrrGL k) :
     (piTensor fun a => (x a).rep).IsIrreducible :=
@@ -125,21 +123,19 @@ theorem isIrreducible_piTensor (hA : GlobalTheory.Published.IrreducibleAdmissibl
       (hA k _ _ _ (x a).2.rep.smooth (x a).2.rep.irr) φ hφ
 
 /- English proof (translation)
-Take `⟨hGT, hLT⟩` from `(hasFiniteLength_iff_wellFounded _).1 hfl`. Use `haveI : IsAtomic (Subrepresentation π) := isAtomic_of_orderBot_wellFounded_lt wellFounded_lt`. Establish `hnt : (⊤ : Subrepresentation π) ≠ ⊥` using `fun hb => by`. Take `⟨u, hu⟩` from `exists_ne (0 : V)`. Establish `h1 : u ∈ (⊥ : Subrepresentation π)` using `hb ▸ trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hu h1`. Take `⟨S, hS, -⟩` from `(eq_bot_or_exists_atom_le (⊤ : Subrepresentation π)).resolve_left hnt`. Set `ι : S.toRepresentation.IntertwiningMap π` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Establish `huniq : ∀ T : Subrepresentation π, IsAtom T → T = S`. Introduce `T hT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hdis : T ⊓ S = ⊥` using `(hT.disjoint_of_ne hS hne).eq_bot`. Set `p : π.IntertwiningMap (subQuot ⊤ S)` to `⟨Submodule.mkQ _ ∘ₗ LinearMap.codRestrict (⊤ : Subrepresentation π).toSubmodule LinearMap.id (fun _ => trivial), fun _ => rfl⟩`. Establish `hp0 : ∀ v, p v = 0 ↔ v ∈ S.toSubmodule` using `fun v => Submodule.Quotient.mk_eq_zero _`. Establish `hps : Function.Surjective p` using `fun y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨v.1, rfl⟩`. Establish `hQ : IsSmooth (subQuot ⊤ S)` using `(IsSubquotient.of_surjective p hps).isSmooth hs`. Establish `hex : Function.Exact ι p` using `fun v => ⟨fun h0 => ⟨⟨v, (hp0 v).1 h0⟩, rfl⟩, fun ⟨u, hu⟩ => (hp0 v).2 (hu ▸ u.2)⟩`. Establish `hadd` using `jhMult_jac_exact e hρ ι p hs Subtype.val_injective hps hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ιT : T.toRepresentation.IntertwiningMap π` to `⟨T.toSubmodule.subtype, fun _ => rfl⟩`. Establish `hinj : Function.Injective (p.comp ιT)`. Use `(injective_iff_map_eq_zero _).2 fun u hu => ?_` and prove the remaining obligations. Establish `h1 : (u : V) ∈ S.toSubmodule` using `(hp0 _).1 hu`. Establish `h2 : (u : V) ∈ (T ⊓ S)` using `⟨u.2, h1⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hdis]`. Conclude with `Subtype.ext h2`. Establish `h1 : 1 ≤ jhMult ρ (jac e (subQuot ⊤ S))` using `(hone T hT).trans (jhMult_le_of_injective hρ (jacMap e (p.comp ιT)) (GlobalTheory.JacInj.jacMap_injective k _ _ _ e _ _ _ _ _ hQ hinj))`. Establish `h2 : (2 : ℕ∞) ≤ jhMult ρ (jac e π)`. Rewrite using `[hadd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(by norm_num : (2 : ℕ∞) = 1 + 1).le.trans (add_le_add (hone S hS) h1)`. Conclude with `absurd (h2.trans hjm) (by norm_num)`. Establish `hirr` using `GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom S hS`. Use `⟨⟨S.toSubmodule, S.toRepresentation, (IsSubquotient.of_injective ι Subtype.val_injective).isSmooth hs, hirr⟩, hirr, ι, Subtype.val_injective, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[huniq T hT]`.
-
-Use `SetLike.ext fun v => ⟨fun hv => (Representation.IntertwiningMap.mem_range _ _ _ _).2 ⟨⟨v, hv⟩, rfl⟩, fun hv => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `(Representation.IntertwiningMap.mem_range _ _ _ _).1 hv`. Conclude with `u.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isSocle_of_forall_isAtom (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi k m) X}
     (hρ : ρ.IsIrreducible) {π : Representation ℂ (GL n k) V} (hs : IsSmooth π) [Nontrivial V]
@@ -194,7 +190,7 @@ theorem exists_isSocle_of_forall_isAtom (e : (Σ a, m a) ≃ n) {ρ : Representa
   exact u.2
 
 /- English proof (translation)
-Use `haveI : Nontrivial X := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hρ`. Take `⟨u, hu⟩` from `exists_ne (0 : X)`. Take `⟨f, hf, -⟩` from `GlobalTheory.SmGL.ProdIrr.exists_indSp_apply_one e ρ hsρ u`. Conclude with `⟨f, 0, fun h => hu (by rw [← hf, h]; rfl)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nontrivial_indSp (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi k m) X}
     (hρ : ρ.IsIrreducible) (hsρ : IsSmooth ρ) : Nontrivial (IndSp e ρ) := by
@@ -204,7 +200,7 @@ theorem nontrivial_indSp (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi 
   exact ⟨f, 0, fun h => hu (by rw [← hf, h]; rfl)⟩
 
 /- English proof (translation)
-Set `ιT : T.toRepresentation.IntertwiningMap (parInd e ρ)` to `⟨T.toSubmodule.subtype, fun _ => rfl⟩`. Use `one_le_jhMult_jac e hρ ιT ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hT.1 (Subrepresentation.toSubmodule_injective (eq_bot_iff.2 fun v hv => (Submodule.mem_bot ℂ).2 (hc ⟨v, hv⟩)))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem one_le_jhMult_jac_atom (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi k m) X}
     (hρ : ρ.IsIrreducible) (T : Subrepresentation (parInd e ρ)) (hT : IsAtom T) :
@@ -217,7 +213,7 @@ theorem one_le_jhMult_jac_atom (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ 
     (Submodule.mem_bot ℂ).2 (hc ⟨v, hv⟩)))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA h N x hd hjm`. Establish `hρ` using `isIrreducible_piTensor hA x`. Establish `hsρ : IsSmooth (piTensor fun a => (x a).rep)` using `isSmooth_piTensor fun a => (x a).2.rep.smooth`. Use `haveI := nontrivial_indSp (stdBlocks (fun a => (x a).1) hd) hρ hsρ`. Conclude with `exists_isSocle_of_forall_isAtom (stdBlocks (fun a => (x a).1) hd) hρ (isSmooth_parInd _ _) (GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength k _ _ _ _ _ _ hsρ (hasFiniteLength_of_isIrreducible hρ)) (one_le_jhMult_jac_atom _ hρ) hjm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isSocle_of_jm_le_one : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ}

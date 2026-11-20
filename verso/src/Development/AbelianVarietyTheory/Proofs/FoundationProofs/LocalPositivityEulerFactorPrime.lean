@@ -11,11 +11,11 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.LocIneq
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) ≤ p` using `Nat.cast_nonneg p`. Establish `hne : p ^ e ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Rewrite using `[LSeries.term_of_ne_zero hne]`. Establish `h1 : ((p ^ e : ℕ) : ℂ) ^ ((1 + s : ℝ) : ℂ) = ((((p : ℝ) ^ (1 + s)) ^ e : ℝ) : ℂ)`. Rewrite using `[show ((p ^ e : ℕ) : ℂ) = (((p ^ e : ℕ) : ℝ) : ℂ) by push_cast; rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Use `congr 1`. Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast_mul hp0, mul_comm, Real.rpow_mul_natCast hp0]`. Rewrite using `[h1, div_eq_mul_inv]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Rewrite using `[one_div, inv_pow]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_prime_pow (b : ℕ → ℂ) (s : ℝ) (p : ℕ) (hp : p.Prime) (e : ℕ) :
     LSeries.term b ((1 + s : ℝ) : ℂ) (p ^ e) = b (p ^ e) * ((1 / (p : ℝ) ^ (1 + s) : ℝ) : ℂ) ^ e := by
@@ -33,7 +33,7 @@ theorem term_prime_pow (b : ℕ → ℂ) (s : ℝ) (p : ℕ) (hp : p.Prime) (e :
   rw [one_div, inv_pow]
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) ≤ p` using `Nat.cast_nonneg p`. Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast_mul hp0, mul_comm, Real.rpow_mul_natCast hp0, div_eq_mul_inv, one_div, inv_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem real_term_prime_pow (b : ℕ → ℂ) (s : ℝ) (p : ℕ) (e : ℕ) :
     ‖b (p ^ e)‖ ^ 2 / ((p ^ e : ℕ) : ℝ) ^ (1 + s) = ‖b (p ^ e)‖ ^ 2 * (1 / (p : ℝ) ^ (1 + s)) ^ e := by
@@ -42,33 +42,31 @@ theorem real_term_prime_pow (b : ℕ → ℂ) (s : ℝ) (p : ℕ) (e : ℕ) :
     one_div, inv_pow]
 
 /- English proof (translation)
-Introduce `b ω s C p hs hp hb1 hω hrec hbd`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hC : 0 ≤ C`. Use `hbd 1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hb1]`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z, hz⟩` from `IsAlgClosed.exists_eq_mul_self (b p ^ 2 - 4 * ω p)`. Use `set x : ℂ := (b p + z) / 2 with hx`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set y : ℂ := (b p - z) / 2 with hy`. Establish `hxy : x + y = b p` using `by rw [hx, hy]; ring`. Establish `hxy' : x * y = ω p` using `by rw [hx, hy]; linear_combination (1 / 4 : ℂ) * hz`. Establish `hc0 : b (p ^ 0) = 1` using `by simpa using hb1`. Establish `hc1 : b (p ^ 1) = x + y` using `by rw [pow_one, hxy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcr : ∀ r, b (p ^ (r + 2)) = (x + y) * b (p ^ (r + 1)) - x * y * b (p ^ r)`. Introduce `r`. Rewrite using `[hxy, hxy']`. Conclude with `hrec r`. Establish `hroots` using `GlobalTheory.roots_norm_le_of_bounded_two_step_recursion x y (fun r => b (p ^ r)) (Real.sqrt C) (Real.sqrt p) (Real.sqrt_nonneg _) hc0 hc1 hcr (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r`. Establish `h` using `hbd (p ^ r)`. Use `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, mul_comm r 2, pow_mul, Real.sq_sqrt hC, Real.sq_sqrt hp0.le]`. Simplify using `using h)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (p : ℝ) < (p : ℝ) ^ (1 + s)` using `by conv_lhs => rw [← Real.rpow_one (p : ℝ)]`. Conclude with `Real.rpow_lt_rpow_of_exponent_lt hp1 (by linarith)`. Establish `hP0 : 0 < (p : ℝ) ^ (1 + s)` using `by linarith`. Establish `hsq : 1 / (p : ℝ) ^ (2 * (1 + s)) = (1 / (p : ℝ) ^ (1 + s)) ^ 2`. Rewrite using `[mul_comm, Real.rpow_mul hp0.le, Real.rpow_two, div_pow, one_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [term_prime_pow b s p hp, real_term_prime_pow b s p, hsq]`. Rewrite using `[div_eq_mul_one_div (‖1 + b p‖ ^ 2)]`. Establish `hT0 : 0 < 1 / (p : ℝ) ^ (1 + s)` using `by positivity`. Establish `hpT : p * (1 / (p : ℝ) ^ (1 + s)) < 1`. Rewrite using `[mul_one_div, div_lt_one hP0]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hP`. Generalize the expression as in `1 / (p : ℝ) ^ (1 + s) = T at hT0 hpT ⊢`. Establish `hT1 : T < 1` using `by nlinarith`. Establish `hb : ∀ w : ℂ, ‖w‖ ≤ Real.sqrt p → ‖w‖ ^ 2 * T < 1`. Introduce `w hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ‖w‖ ^ 2 ≤ p`. Rewrite using `[← Real.sq_sqrt hp0.le]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hw 2`. Use the polynomial consequences of the given equalities and inequalities. Establish `hxT` using `hb x hroots.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hyT` using `hb y hroots.2`. Take `⟨hL, hR⟩` from `GlobalTheory.T.twoStepRecursion_localEulerFactors x y (fun r => b (p ^ r)) T hT0.le hT1 hxT hyT hc0 hc1 hcr`. Establish `hI` using `GlobalTheory.EisM.locineq x y T hT0.le hT1 hxT hyT`. Rewrite `hI` using `[add_assoc, hxy]`. Rewrite `hR` using `[hxy', hω]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hR0 : 0 ≤ ∑' r : ℕ, ‖b (p ^ r)‖ ^ 2 * T ^ r` using `tsum_nonneg fun r => by positivity`. Establish `hLn` using `congrArg (fun w : ℂ => ‖w‖ ^ 2) hL`. Simplify using `only [norm_one, one_pow] at hLn`. Rewrite `hLn` using `[norm_mul, mul_pow]`. Establish `hL0 : 0 ≤ ‖∑' r : ℕ, b (p ^ r) * (T : ℂ) ^ r‖ ^ 2` using `by positivity`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `(∑' r : ℕ, ‖b (p ^ r)‖ ^ 2 * T ^ r) = R at hR hR0 ⊢`. Generalize the expression as in `‖∑' r : ℕ, b (p ^ r) * (T : ℂ) ^ r‖ ^ 2 = L at hLn hL0 ⊢`. Generalize the expression as in `‖(1 - x * T) * (1 - y * T)‖ ^ 2 = D at hLn hI`. Generalize the expression as in `(1 - ‖x‖ ^ 2 * T) * (1 - ‖y‖ ^ 2 * T) * ‖1 - x * conj y * T‖ ^ 2 = E at hR hI`. Generalize the expression as in `Real.exp (‖1 + b p‖ ^ 2 * T) = A at hI ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : 0 < 1 - T` using `by linarith`. Establish `h2 : 0 < 1 - T ^ 2` using `by nlinarith`. Rewrite `hR` using `[one_pow, one_mul]`. Establish `hK : 0 ≤ (1 - T)⁻¹ * L * R * (1 - T ^ 2)⁻¹` using `by positivity`. Establish `hone : ((1 - T) * D * E) * ((1 - T)⁻¹ * L * R * (1 - T ^ 2)⁻¹) = 1`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `mul_le_mul_of_nonneg_right hI hK`. Rewrite `h3` using `[mul_assoc, hone, mul_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem local_positivity_eulerFactor : ∀ (b ω : ℕ → ℂ) (s C : ℝ) (p : ℕ), 0 < s → p.Prime → b 1 = 1 → ‖ω p‖ = 1 → (∀ r : ℕ, b (p ^ (r + 2)) = b p * b (p ^ (r + 1)) - ω p * b (p ^ r)) → (∀ n : ℕ, ‖b n‖ ^ 2 ≤ C * n) → Real.exp (‖1 + b p‖ ^ 2 / (p : ℝ) ^ (1 + s)) ≤ (1 - 1 / (p : ℝ) ^ (1 + s))⁻¹ * ‖∑' e : ℕ, LSeries.term b ((1 + s : ℝ) : ℂ) (p ^ e)‖ ^ 2 * (∑' e : ℕ, ‖b (p ^ e)‖ ^ 2 / ((p ^ e : ℕ) : ℝ) ^ (1 + s)) * (1 - 1 / (p : ℝ) ^ (2 * (1 + s)))⁻¹ := by
   intro b ω s C p hs hp hb1 hω hrec hbd

@@ -35,7 +35,7 @@ noncomputable def mF (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U 
     (eta a ha p s h)
 
 /- English proof (translation)
-Establish `e` using `toSheafify_sheafifyLift Scheme.etaleTopology.{0} (eta a ha p s h) (I.X s).property`. Establish `e2` using `congrArg (fun φ => (φ.app (op U)).hom (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up.{1} x))) e`. Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp] at e2`. Conclude with `e2.trans (ModuleCat.freeDesc_apply _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mF_gen (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Scheme.{0}, Sx E p U → Sec (I.X s) U)
     (ha : ∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), Sec.res g (a p s h U x) = a p s h V (x.res g))
@@ -55,7 +55,7 @@ noncomputable def mC (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U 
   else 0
 
 /- English proof (translation)
-Establish `key : ∀ (q : ℕ), q = p → ∀ (e : -(p : ℤ) = -(q : ℤ)) (h' : -(q : ℤ) + n = s), (((chains R).obj E).XIsoOfEq e).hom ≫ (chainsXIso R E q).hom ≫ mF a ha q s h' = (chainsXIso R E p).hom ≫ mF a ha p s h`. Introduce and unpack `q rfl e h'`. Simplify using the standard rewrite rules. Rewrite using `[mC, Cochain.mk_v, dif_pos (by omega)]`. Conclude with `key _ (by omega) _ _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mC_v (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Scheme.{0}, Sx E p U → Sec (I.X s) U)
     (ha : ∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), Sec.res g (a p s h U x) = a p s h V (x.res g))
@@ -73,7 +73,7 @@ end LateralTheory.EtaleFoundations.MkPf
 
 open LateralTheory.EtaleFoundations LateralTheory.EtaleFoundations.MkPf in
 /- English proof (translation)
-Introduce `R _ E I n a ha`. Use `⟨mC a ha, fun p s h U x => ?_⟩` and prove the remaining obligations. Unfold `ev`. Rewrite using `[mC_v, Iso.inv_hom_id_assoc]`. Conclude with `mF_gen a ha p s h U x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_simplicial_chains_cochain_mk_of_compatible_sections : EtaleSimplicialCochainExistsFromNaturalSections := by
   intro R _ E I n a ha

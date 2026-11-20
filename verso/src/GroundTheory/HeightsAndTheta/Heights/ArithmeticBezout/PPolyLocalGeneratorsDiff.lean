@@ -34,15 +34,15 @@ Both sides reduce to the same expression.
 theorem dotForm_apply (w v : Fin n → ℂ) : dotForm w v = ∑ j, w j * v j := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_polyTangent_iff (S : Set (MvPolynomial (Fin n) ℂ)) (p v : Fin n → ℂ) :
     v ∈ polyTangent S p ↔ ∀ q ∈ S, dotForm (polyDiff p q) v = 0 := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[mem_polyTangent_iff, mem_polyTangent_iff]`. Use `⟨fun hv f hf => ?_, fun hv f hf => hv f (hST hf)⟩` and prove the remaining obligations. Establish `hle : Submodule.span ℂ (polyDiff p '' S) ≤ LinearMap.ker (dotForm.flip v)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.flip_apply]`. Conclude with `hv g hg`. Use `hle (h f hf)` as an intermediate fact. Simplify `this` using `only [LinearMap.mem_ker, LinearMap.flip_apply]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem polyTangent_eq_of_subset (S T : Set (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ)
     (hST : S ⊆ T) (h : ∀ f ∈ T, polyDiff p f ∈ Submodule.span ℂ (polyDiff p '' S)) :
@@ -61,31 +61,31 @@ theorem polyTangent_eq_of_subset (S T : Set (MvPolynomial (Fin n) ℂ)) (p : Fin
 def tanLinPoly (p w : Fin n → ℂ) : MvPolynomial (Fin n) ℂ := ∑ j, C (w j) * (X j - C (p j))
 
 /- English proof (translation)
-Simplify using `[tanLinPoly]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_tanLinPoly (p w : Fin n → ℂ) : eval p (tanLinPoly p w) = 0 := by
   simp [tanLinPoly]
 
 /- English proof (translation)
-Simplify using `only [tanLinPoly, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tanLinPoly_add (p w w' : Fin n → ℂ) : tanLinPoly p (w + w') = tanLinPoly p w + tanLinPoly p w' := by
   simp only [tanLinPoly, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [tanLinPoly, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tanLinPoly_smul (p w : Fin n → ℂ) (c : ℂ) : tanLinPoly p (c • w) = C c * tanLinPoly p w := by
   simp only [tanLinPoly, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[tanLinPoly]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tanLinPoly_zero (p : Fin n → ℂ) : tanLinPoly p 0 = 0 := by
   simp [tanLinPoly]
 
 /- English proof (translation)
-Simplify using `only [tanLinPoly, Pi.single_apply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tanLinPoly_single (p : Fin n → ℂ) (i : Fin n) :
     tanLinPoly p (Pi.single i 1) = X i - C (p i) := by
@@ -94,7 +94,7 @@ theorem tanLinPoly_single (p : Fin n → ℂ) (i : Fin n) :
   simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[polyDiff_apply, tanLinPoly, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem polyDiff_tanLinPoly (p w : Fin n → ℂ) : polyDiff p (tanLinPoly p w) = w := by
   classical
@@ -102,24 +102,24 @@ theorem polyDiff_tanLinPoly (p w : Fin n → ℂ) : polyDiff p (tanLinPoly p w) 
   simp [polyDiff_apply, tanLinPoly, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[RingHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem X_sub_C_mem_ker (p : Fin n → ℂ) (j : Fin n) :
     X j - C (p j) ∈ RingHom.ker (eval p) := by
   simp [RingHom.mem_ker]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h : polyDiff p (C a) = 0` using `by ext j; simp [polyDiff_apply]`. Simplify using `[h, tanLinPoly_zero]`. Consider the case `add f g hf hg`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `e : f + g - C (eval p (f + g)) - tanLinPoly p (polyDiff p (f + g)) = (f - C (eval p f) - tanLinPoly p (polyDiff p f)) + (g - C (eval p g) - tanLinPoly p (polyDiff p g))`. Rewrite using `[map_add, map_add, map_add, tanLinPoly_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem hf hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X f i hf`. Establish `hd : polyDiff p (f * X i) = p i • polyDiff p f + eval p f • Pi.single i 1`. Use extensionality with `j`. Simplify using `only [polyDiff_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Derivation.leibniz, pderiv_X, map_add]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using `only [Pi.single_eq_same, mul_one, map_mul, eval_X]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.single_eq_of_ne hij, Pi.single_eq_of_ne (Ne.symm hij), mul_zero, map_zero, map_mul, eval_X, zero_add, add_zero]`. Establish `e : f * X i - C (eval p (f * X i)) - tanLinPoly p (polyDiff p (f * X i)) = C (p i) * (f - C (eval p f) - tanLinPoly p (polyDiff p f)) + (f - C (eval p f)) * (X i - C (p i))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, tanLinPoly_add, tanLinPoly_smul, tanLinPoly_smul, tanLinPoly_single, map_mul, eval_X, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `add_mem (Ideal.mul_mem_left _ _ hf) ?_` and prove the remaining obligations. Rewrite using `[pow_two]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mul_mem_mul ?_ (X_sub_C_mem_ker p i)` and prove the remaining obligations. Simplify using `[RingHom.mem_ker]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_tanLinPoly_mem_sq (p : Fin n → ℂ) (f : MvPolynomial (Fin n) ℂ) :
     f - C (eval p f) - tanLinPoly p (polyDiff p f) ∈ RingHom.ker (eval p) ^ 2 := by
@@ -158,16 +158,16 @@ theorem sub_tanLinPoly_mem_sq (p : Fin n → ℂ) (f : MvPolynomial (Fin n) ℂ)
     simp [RingHom.mem_ker]
 
 /- English proof (translation)
-Simplify `sub_tanLinPoly_mem_sq p f` using `[h0, h1, tanLinPoly_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_sq_of_polyDiff_eq_zero (p : Fin n → ℂ) {f : MvPolynomial (Fin n) ℂ}
     (h0 : eval p f = 0) (h1 : polyDiff p f = 0) : f ∈ RingHom.ker (eval p) ^ 2 := by
   simpa [h0, h1, tanLinPoly_zero] using sub_tanLinPoly_mem_sq p f
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hd`. Establish `hg0 : eval p (f - ∑ i, C (c i) * h i) = 0` using `by simp [hf, hh]`. Establish `hg1 : polyDiff p (f - ∑ i, C (c i) * h i) = 0`. Simplify using `only [map_sub, map_sum, C_mul', map_smul]`. Rewrite using `[← hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hsum : ∑ i, C (c i) * h i ∈ Ideal.span (Set.range h)` using `sum_mem fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Establish `e : f = (f - ∑ i, C (c i) * h i) + ∑ i, C (c i) * h i` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mem_sup_right (mem_sq_of_polyDiff_eq_zero p hg0 hg1)) (Ideal.mem_sup_left hsum)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_sup_sq_of_polyDiff_mem (p : Fin n → ℂ) {ι : Type*} [Fintype ι]
     (h : ι → MvPolynomial (Fin n) ℂ) (hh : ∀ i, eval p (h i) = 0) {f : MvPolynomial (Fin n) ℂ}
@@ -187,7 +187,7 @@ theorem mem_span_sup_sq_of_polyDiff_mem (p : Fin n → ℂ) {ι : Type*} [Fintyp
     (Ideal.mem_sup_left hsum)
 
 /- English proof (translation)
-Apply `Submodule.le_of_le_smul_of_le_jacobson_bot (IsNoetherian.noetherian _) (IsLocalRing.maximalIdeal_le_jacobson ⊥)` to reduce the goal to its premises. Rewrite using `[Ideal.smul_eq_mul, ← pow_two]` and apply the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem maximalIdeal_le_span_of_le_sup_sq {R : Type*} [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] (T : Set R)
@@ -198,19 +198,17 @@ theorem maximalIdeal_le_span_of_le_sup_sq {R : Type*} [CommRing R] [IsLocalRing 
   rwa [Ideal.smul_eq_mul, ← pow_two]
 
 /- English proof (translation)
-Use `set D : Submodule ℂ (Fin n → ℂ) := (J.restrictScalars ℂ).map (polyDiff p) with hDdef`. Establish `hinj : Function.Injective (dotForm : (Fin n → ℂ) →ₗ[ℂ] Module.Dual ℂ (Fin n → ℂ))`. Introduce `w w' hww`. Use extensionality with `j`. Use `LinearMap.congr_fun hww (Pi.single j 1)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[dotForm_apply, Pi.single_apply]`. Use `set W := D.map (dotForm : (Fin n → ℂ) →ₗ[ℂ] Module.Dual ℂ (Fin n → ℂ))`. Establish `hW : finrank ℂ W = finrank ℂ D` using `(LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj D)).symm`. Establish `hco : W.dualCoannihilator = polyTangent (J : Set (MvPolynomial (Fin n) ℂ)) p`. Use extensionality with `v`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Submodule.mem_dualCoannihilator, mem_polyTangent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h q hq`. Conclude with `h _ (Submodule.mem_map_of_mem (Submodule.mem_map_of_mem (p := J.restrictScalars ℂ) hq))`. Introduce and unpack `h _ ⟨w, ⟨q, hq, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h q hq`. Establish `hsum` using `Subspace.finrank_add_finrank_dualCoannihilator_eq W`. Rewrite `hsum` using `[hco, hW, Module.finrank_fin_fun]`. Establish `hD : finrank ℂ D = n - finrank ℂ (polyTangent (J : Set (MvPolynomial (Fin n) ℂ)) p)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `b` to `Module.finBasisOfFinrankEq ℂ D hD`. Establish `hb : ∀ i, ∃ q ∈ J, polyDiff p q = (b i : Fin n → ℂ)`. Introduce `i`. Take `⟨q, hq, e⟩` from `Submodule.mem_map.1 (b i).2`. Conclude with `⟨q, hq, e⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose q hqJ hq using hb`. Establish `hcomp : polyDiff p ∘ q = D.subtype ∘ b` using `funext hq`. Use `⟨q, hqJ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomp]`. Conclude with `b.linearIndependent.map' D.subtype (Submodule.ker_subtype D)`.
-
-Introduce `f hf`. Establish `hspan : Submodule.span ℂ (Set.range (polyDiff p ∘ q)) = D`. Rewrite using `[hcomp, Set.range_comp, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_map_of_mem (p := J.restrictScalars ℂ) hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_polyDiff_basis (J : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ) :
     ∃ q : Fin (n - finrank ℂ (polyTangent (J : Set (MvPolynomial (Fin n) ℂ)) p)) →

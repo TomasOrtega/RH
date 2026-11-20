@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace UpperTheory.One.M.B
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a c => ?_)` and prove the remaining obligations. Establish `h0 : φ (y.val a c - (1 : Matrix (Fin n) (Fin n) (Os s)) a c) = 0`. Rewrite using `[hφ.ker]`. Establish `e : ((y.val a c - (1 : Matrix (Fin n) (Fin n) (Os s)) a c : Os s) : s.v.adicCompletion (maximalRealSubfield L)) = ((s.loc n κ).val - 1) a c`. Rewrite using `[Matrix.sub_apply, ← hy a c]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h : a = c <;> simp [Matrix.one_apply, h]`. Rewrite using `[e]`. Conclude with `hK a c`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Use `h0.trans ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `map_one _`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 private theorem map_eq_one {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (s : SplitPlace L) {κ : GAf L n}
     (hK : IsPrincipalCongruenceAt s κ) {y : GL (Fin n) (Os s)} (hy : IsCompOf s κ y) {k : Type} [CommRing k] (φ : Os s →+* k)
@@ -40,11 +40,11 @@ private theorem map_eq_one {L : Type} [Field L] [NumberField L] [IsCMField L] {n
   · exact map_zero _
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `GlobalTheory.BlockLiftFrame.exists_isCompOf s hU`. Establish `h1 : Matrix.GeneralLinearGroup.map (φ : Os s →+* k) y = 1` using `map_eq_one s hK hy φ ⟨hφ.surj, hφ.ker⟩`. Establish `h2 : Matrix.GeneralLinearGroup.map (φ : Os s →+* k) y⁻¹ = 1` using `by rw [map_inv, h1, inv_one]`. Establish `h3 : Matrix.GeneralLinearGroup.map (s.v.adicCompletionIntegers (maximalRealSubfield L)).subtype y = s.loc n κ` using `Units.ext (Matrix.ext fun a c => hy a c)`. Use `Units.ext (Matrix.ext fun a c => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : y'.val a c = (y⁻¹).val c a`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h4 : (s.loc n κ)⁻¹ = Matrix.GeneralLinearGroup.map (s.v.adicCompletionIntegers (maximalRealSubfield L)).subtype y⁻¹` using `(congrArg _ h3.symm).trans (MonoidHom.map_inv _ y).symm`. Rewrite using `[hy' a c, GlobalTheory.ConjLoc.loc_conjSP, h4]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : (Matrix.GeneralLinearGroup.map (φ : Os s →+* k) y⁻¹).val c a = (1 : GL (Fin n) k).val c a` using `by rw [h2]`. Use `((congrArg φ e).trans e2).trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Conclude with `if_congr eq_comm rfl rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_eq_one_conj {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (s : SplitPlace L) {κ : GAf L n}
     (hU : κ ∈ Umax L n) (hK : IsPrincipalCongruenceAt s κ) {y' : GL (Fin n) (Os (GlobalTheory.TypeTame.conjSP s))}
@@ -71,9 +71,9 @@ private theorem map_eq_one_conj {L : Type} [Field L] [NumberField L] [IsCMField 
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨φ, b, hφ, hfr⟩` from `GlobalTheory.FrameRedSplit.frameRed_exists D V n hn hF P β Λ hP hB s`. Take `⟨y, hy⟩` from `GlobalTheory.BlockLiftFrame.exists_isCompOf s hU`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `e` using `hfr κ hU y hy (Fin.cast hn i) (Fin.cast hn j)`. Rewrite `e` using `[h y hy φ hφ, mul_one, mul_inv_cancel]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_one, Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Conclude with `if_congr (Fin.cast_injective hn).eq_iff rfl rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem red_of_comp {V : TH.HSp D} {n : ℕ} (hn : V.rank = n) {hF : D.host.F = maximalRealSubfield D.host.E}
     {P : Formalism.IndefR.principalLevelFrame.RowPsi V n} (hP : StdFrame hF P) {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
@@ -91,11 +91,11 @@ private theorem red_of_comp {V : TH.HSp D} {n : ℕ} (hn : V.rank = n) {hF : D.h
   exact if_congr (Fin.cast_injective hn).eq_iff rfl rfl
 
 /- English proof (translation)
-Distinguish the cases in `ho : NG.OverPl PP s.v`. Establish `hk` using `hK ho`. Break down `GlobalTheory.SplitConjPlace.eq_or_eq_conjPlE s.w PP (Eq.trans ho s.w_under.symm) with e | e` into its components or cases. Rewrite using `[e]`. Conclude with `red_of_comp hn hP hB s hU fun y hy φ hφ => map_eq_one s hk hy φ hφ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : PP = (GlobalTheory.TypeTame.conjSP s).w`. Rewrite using `[e]`. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Conclude with `(GlobalTheory.SplitConjPlace.mem_conj_w s x).symm`. Rewrite using `[e']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `red_of_comp hn hP hB _ hU fun y hy φ hφ => map_eq_one_conj s hU hk hy φ hφ`. Establish `hS` using `(GlobalTheory.FinZeta.LevelOff.finE_mem_St_iff hB (P.into κ)).2 ((hP.2 κ).1 hU)`. Use `GlobalTheory.FinZeta.LevelOff.redFn_eq_one_of_proj β {PP.under (𝓞 D.host.F)} hS (fun u hu => ?_) (Finset.mem_singleton_self _)` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 hu]`. Conclude with `GlobalTheory.NonSplitLevel.projV_eq_one hP κ PP (hT _ fun e => ho (congrArg HeightOneSpectrum.asIdeal e))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem red_one {V : TH.HSp D} {n : ℕ} (hn : V.rank = n) {hF : D.host.F = maximalRealSubfield D.host.E}
     {P : Formalism.IndefR.principalLevelFrame.RowPsi V n} (hP : StdFrame hF P) {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
@@ -122,13 +122,11 @@ private theorem red_one {V : TH.HSp D} {n : ℕ} (hn : V.rank = n) {hF : D.host.
 end UpperTheory.One.M.B
 
 /- English proof (translation)
-Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w _ Z Wt hX z p0 Y _ _ _ _ _ i P hP s κ hU hT hK => ?_` and prove the remaining obligations. Establish `hlev` using `z.pins.char.base.lev`. Take `⟨c, hc⟩` from `hlev.βV i`. Rewrite `hc` using `[one_pow]`. Establish `hS` using `(GlobalTheory.FinZeta.LevelOff.finE_mem_St_iff hc (P.into κ)).2 ((hP.2 κ).1 hU)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hred : ∀ PP, PP ∈ (Formalism.IndefR.RecTie.datVP z.R.toRealDat i (Y.tupT (w.st Z).toD7.what₂.mu0) (z.R.toRealDat.levR z.F.lv2 false)).Pg ∨ PP ∈ (Formalism.IndefR.RecTie.datVP z.R.toRealDat i (Y.tupT (w.st Z).toD7.what₂.mu0) (z.R.toRealDat.levR z.F.lv2 false)).Q → Formalism.L2.DIV …`. Introduce `PP hPP`. Break down `hPP with h | h` into its components or cases. Take `⟨k, hk⟩` from `(hlev.Pg PP).1 h`. Conclude with `UpperTheory.One.M.B.red_one (GlobalTheory.FrameBlockDiagonal.rankV _ i) hP hc s hU hT PP fun ho => hK ⟨PP, ho, k, GlobalTheory.Mem.TypePl.div_over _ hk⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `absurd ?_ ((hlev.Q_ram _ PP).2 (Or.inl h))` and prove the remaining obligations. Establish `e` using `(congrArg z.R.toRealDat.toLevCh.xiH ((congrArg Y.tupT Y.tup0).symm.trans (Y.tupT_tup _))).trans hlev.xi_base`. Conclude with `e ▸ fun _ _ => rfl`. Use `⟨⟨P.into κ, GlobalTheory.LevSplit.mem_lev_of_red _ _ _ _ _ (GlobalTheory.LevSplit.finE_mem_UA _ _) hS hred⟩, ?_⟩` and prove the remaining obligations. Unfold `Formalism.IndefR.Lev.levChi`.
-
-Rewrite using `[GlobalTheory.LevSplit.levFn_eq_one _ _ _ hred, Units.val_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.One.M.B.levSplit :
     UpperTheory.One.M.B.LevSplit := by

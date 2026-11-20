@@ -5,9 +5,9 @@ namespace GlobalTheory.IntMulIntegerSmulMemLattice
 open NumberField
 
 /- English proof (translation)
-Establish `hQ : IsAlgebraic ℚ c` using `Algebra.IsAlgebraic.isAlgebraic c`. Establish `hZ : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 hQ`. Take `⟨d, hd, hint⟩` from `hZ.exists_integral_multiple`. Use `⟨d, hd, ⟨d • c, hint⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d • c = (d : E) * c`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_int_mul_eq_integer {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ d : ℤ, d ≠ 0 ∧ ∃ r : 𝓞 E, (r : E) = (d : E) * c := by
@@ -19,17 +19,15 @@ theorem exists_int_mul_eq_integer {E : Type} [Field E] [NumberField E] (c : E) :
   rw [zsmul_eq_mul]
 
 /- English proof (translation)
-Establish `hw : w ∈ Submodule.span E (Λ : Set (Fin n → E))`. Rewrite using `[hΛ.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ((a * b : ℤ) : 𝓞 E) • (x + y) = (b : 𝓞 E) • ((a : 𝓞 E) • x) + (a : 𝓞 E) • ((b : 𝓞 E) • y)`. Rewrite using `[smul_add, smul_smul, smul_smul, Int.cast_mul, mul_comm (b : 𝓞 E) (a : 𝓞 E)]`. Rewrite using `[h]`. Conclude with `Λ.add_mem (Λ.smul_mem _ hax) (Λ.smul_mem _ hby)`. Consider the case `smul c x _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hax⟩` from `hx`. Take `⟨d, hd, r, hr⟩` from `exists_int_mul_eq_integer c`. Use `⟨d * a, mul_ne_zero hd ha, ?_⟩` and prove the remaining obligations. Establish `h : ((d * a : ℤ) : 𝓞 E) • (c • x) = r • ((a : 𝓞 E) • x)`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_intCast, Algebra.algebraMap_self, RingHom.id_apply, Int.cast_mul, map_mul]`. Establish `hr' : algebraMap (𝓞 E) E r = (d : E) * c` using `hr`. Rewrite using `[hr', Pi.mul_apply, Pi.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
-
-Conclude with `Λ.smul_mem _ hax`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem_lattice {E : Type} [Field E] [NumberField E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ) (w : Fin n → E) :

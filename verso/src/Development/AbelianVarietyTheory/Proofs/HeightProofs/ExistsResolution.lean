@@ -13,15 +13,15 @@ variable {R K W : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFra
   [AddCommGroup W] [Module K W] [Module R W] [IsScalarTower R K W]
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K (L : Set W)` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hx⟩` from `hx`. Take `⟨b, hb, hy⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Establish `e : (a * b) • (x + y) = b • (a • x) + a • (b • y)`. Rewrite using `[smul_add, mul_smul, smul_comm a b x, mul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `L.add_mem (L.smul_mem b hx) (L.smul_mem a hy)`. Consider the case `smul k x _ hx`. Take `⟨a, ha, hx⟩` from `hx`. Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := R) k`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hdK : algebraMap R K d ≠ 0`. Simplify using `using hd0`. Use `⟨d * a, mul_ne_zero hd0 ha, ?_⟩` and prove the remaining obligations. Establish `e : (d * a) • ((algebraMap R K n / algebraMap R K d) • x) = n • (a • x)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K (d * a), ← algebraMap_smul K n, ← algebraMap_smul K a, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `L.smul_mem n hx`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (L : Submodule R W) (hL : Submodule.span K (L : Set W) = ⊤) (v : W) :
     ∃ c : R, c ≠ 0 ∧ c • v ∈ L := by
@@ -53,13 +53,13 @@ theorem exists_smul_mem (L : Submodule R W) (hL : Submodule.span K (L : Set W) =
     exact L.smul_mem n hx
 
 /- English proof (translation)
-Establish `hloc : IsLocalizedModule (nonZeroDivisors R) L.subtype`. Use `⟨fun s => ?_, fun v => ?_, fun {x y} h => ⟨1, by simpa using h⟩⟩` and prove the remaining obligations. Establish `hs : algebraMap R K s ≠ 0`. Simplify using `using nonZeroDivisors.ne_zero s.2`. Rewrite using `[Module.End.isUnit_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Establish `h' : (algebraMap R K s) • x = (algebraMap R K s) • y`. Simplify using `using h`. Conclude with `smul_right_injective W hs h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Use `⟨(algebraMap R K s)⁻¹ • y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(s : R) • ((algebraMap R K s)⁻¹ • y) = y`. Rewrite using `[← algebraMap_smul K (s : R), smul_smul, mul_inv_cancel₀ hs, one_smul]`. Take `⟨c, hc, hv⟩` from `exists_smul_mem L hL v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨⟨_, hv⟩, ⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩⟩, rfl⟩`. Set `g : L →ₗ[R] K` to `(Algebra.linearMap R K).comp f`. Set `F₀ : W →ₗ[R] K` to `IsLocalizedModule.lift (nonZeroDivisors R) L.subtype g (IsLocalizedModule.map_units (Algebra.linearMap R K))`. Use `⟨F₀.extendScalarsOfIsLocalization (nonZeroDivisors R) K, fun x => ?_⟩` and prove the remaining obligations. Conclude with `IsLocalizedModule.lift_apply (nonZeroDivisors R) L.subtype g (IsLocalizedModule.map_units (Algebra.linearMap R K)) x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_extension (L : Submodule R W) (hL : Submodule.span K (L : Set W) = ⊤)
     (f : L →ₗ[R] R) : ∃ F : W →ₗ[K] K, ∀ x : L, F x = algebraMap R K (f x) := by
@@ -89,7 +89,7 @@ theorem exists_extension (L : Submodule R W) (hL : Submodule.span K (L : Set W) 
 end General
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_one]`. Establish `hi : IsIntegral ℤ (star (algebraMap (𝓞 E) E a))` using `IsIntegral.map ((starRingEnd E).toIntAlgHom) a.isIntegral_coe`. Conclude with `⟨⟨_, hi⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem star_mem_one {E : Type} [Field E] [NumberField E] [StarRing E] (a : 𝓞 E) :
     star (algebraMap (𝓞 E) E a) ∈ (1 : Submodule (𝓞 E) E) := by

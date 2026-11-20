@@ -6,7 +6,7 @@ universe u
 namespace Formalism.RepresentationBoundsCohomology.LOC
 
 /- English proof (translation)
-The claim follows from `propLoc_of locQuotLen`.
+A detailed English derivation is pending.
 -/
 theorem propLoc : StatPropLoc.{u} := propLoc_of locQuotLen
 

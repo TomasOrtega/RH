@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory.MomT
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.finite_divLat_quot_mulLat_homAt`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot_divLat_mulLat_homAt :
     ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Sp E a)) (N' : Submodule (𝓞 E) (Sp E b)) (cA c : ℕ), Submodule.IsLattice E N → Submodule.IsLattice E N' → 0 < cA → 0 < c → Finite (↥(divLat cA (homAt S N N')) ⧸ (mulLat c (homAt S N N')).comap (divLat cA (homAt S N N')).subtype) :=

@@ -21,21 +21,19 @@ open scoped WithZero
 namespace UpperTheory.Reformulated.B.NormIndexQuadratic
 
 /- English proof (translation)
-Use `set T : Submodule ℤ M := Submodule.torsion ℤ M with hT`. Use `set D := (nsmulAddMonoidHom (α := M) 2).range with hD`. Establish `hTfin : Finite T` using `Module.finite_of_fg_torsion T (Submodule.torsion_isTorsion)`. Establish `h1 : D ⊔ T.toAddSubgroup = ((nsmulAddMonoidHom (α` using `M ⧸ T) 2).range).comap T.mkQ.toAddMonoidHom := by`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [AddSubgroup.mem_sup, AddSubgroup.mem_comap, AddMonoidHom.mem_range, hD]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, z, hz, rfl⟩`. Use `⟨T.mkQ y, ?_⟩` and prove the remaining obligations. Establish `: T.mkQ z = 0` using `(Submodule.Quotient.mk_eq_zero T).2 hz`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `only [nsmulAddMonoidHom_apply, LinearMap.toAddMonoidHom_coe, map_add, map_nsmul, this, add_zero]`. Introduce and unpack `⟨y, hy⟩`. Take `⟨y, rfl⟩` from `T.mkQ_surjective y`. Use `⟨_, ⟨y, rfl⟩, x - 2 • y, ?_, by simp⟩` and prove the remaining obligations. Establish `: T.mkQ (x - 2 • y) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [nsmulAddMonoidHom_apply, LinearMap.toAddMonoidHom_coe] at hy`. Rewrite using `[map_sub, map_nsmul, hy, sub_self]`. Conclude with `(Submodule.Quotient.mk_eq_zero T).1 this`. Establish `h2 : (D ⊔ T.toAddSubgroup).index = 2 ^ finrank ℤ M`. Rewrite using `[h1, AddSubgroup.index_comap_of_surjective _ T.mkQ_surjective, AddSubgroup.index_range_nsmul, finrank_quotient_eq_of_le_torsion le_rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h3 : D.addSubgroupOf T.toAddSubgroup = (nsmulAddMonoidHom (α` using `T.toAddSubgroup) 2).range := by`. Use extensionality with `⟨x, hx⟩`. Simplify using `only [AddSubgroup.mem_addSubgroupOf, hD, AddMonoidHom.mem_range, nsmulAddMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨a, ha⟩, h⟩` from `hx`. Use `⟨⟨y, ⟨⟨a * 2, mul_mem ha (mem_nonZeroDivisors_of_ne_zero two_ne_zero)⟩, ?_⟩⟩, rfl⟩` and prove the remaining obligations. Use `show (a * 2) • y = 0`. Rewrite using `[mul_smul, ofNat_smul_eq_nsmul]`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨y, h⟩`. Conclude with `⟨y, congrArg Subtype.val h⟩`. Establish `h4 : Nat.card (nsmulAddMonoidHom (α` using `T.toAddSubgroup) 2).ker = Nat.card (nsmulAddMonoidHom (α := M) 2).ker := by`. Use `Nat.card_congr ⟨fun x => ⟨x.1.1, congrArg Subtype.val x.2⟩, fun x => ⟨⟨x.1, ⟨⟨2, mem_nonZeroDivisors_of_ne_zero two_ne_zero⟩, ?_⟩⟩, Subtype.ext x.2⟩, fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations. Use `show (2 : ℤ) • x.1 = 0`.
-
-Rewrite using `[ofNat_smul_eq_nsmul]`. Conclude with `x.2`. Establish `: Finite T.toAddSubgroup` using `hTfin`. Rewrite using `[← AddSubgroup.relIndex_mul_index (le_sup_left : D ≤ D ⊔ T.toAddSubgroup), h2, AddSubgroup.relIndex_sup_left, AddSubgroup.relIndex, h3, AddSubgroup.index_range, h4, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma index_two {M : Type*} [AddCommGroup M] [Module.Finite ℤ M] :
     (nsmulAddMonoidHom (α := M) 2).range.index
@@ -89,15 +87,15 @@ private lemma index_two {M : Type*} [AddCommGroup M] [Module.Finite ℤ M] :
     AddSubgroup.relIndex_sup_left, AddSubgroup.relIndex, h3, AddSubgroup.index_range, h4, mul_comm]
 
 /- English proof (translation)
-Establish `h1` using `index_two (M := Additive H)`. Establish `h2 : (nsmulAddMonoidHom (α` using `Additive H) 2).range = (powMonoidHom (α := H) 2).range.toAddSubgroup := by`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `h3 : Nat.card (nsmulAddMonoidHom (α` using `Additive H) 2).ker = 2 := by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_eq_two_iff]`. Use `⟨0, ⟨Additive.ofMul ⟨-1, h⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show (⟨-1, h⟩ : H) ^ 2 = 1 ext`. Simplify using the standard rewrite rules. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (1 : K) = -1`. Simplify using `using congrArg (fun x => ((Additive.toMul x.1 : H) : Kˣ).val) h0`. Evaluate the numerical expressions using `at this`. Rewrite using `[Set.eq_univ_iff_forall]`. Introduce and unpack `⟨x, hx⟩`.
+Simplify to obtain the desired conclusion from the available facts. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h5 : ((Additive.toMul x : H) : Kˣ).val ^ 2 = 1`. Establish `: (Additive.toMul x : H) ^ 2 = 1` using `hx`. Simplify using `using congrArg (fun x : H => (x : Kˣ).val) this`. Break down `sq_eq_one_iff.1 h5 with h6 | h6` into its components or cases. Conclude with `Or.inl (Subtype.ext (Subtype.ext (Units.ext h6)))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Subtype.ext (Subtype.ext (Units.ext h6)))`. Rewrite `h1` using `[h2, Subgroup.index_toAddSubgroup, h3]`. Rewrite using `[h1, pow_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma index_sq {K : Type*} [Field K] [CharZero K] (H : Subgroup Kˣ) (h : -1 ∈ H)
     [Module.Finite ℤ (Additive H)] :
@@ -127,9 +125,9 @@ private lemma index_sq {K : Type*} [Field K] [CharZero K] (H : Subgroup Kˣ) (h 
   rw [h1, pow_succ]
 
 /- English proof (translation)
-Establish `hi : Function.Injective (fun q : B ⧸ H.subgroupOf B => g q.out)`. Introduce `p q hpq`. Rewrite using `[← p.out_eq, ← q.out_eq]`. Conclude with `Quotient.sound (QuotientGroup.leftRel_apply.2 (hg _ _ hpq))`. Establish `: Finite (B ⧸ H.subgroupOf B)` using `Finite.of_injective _ hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨Nat.card_pos.ne', Nat.card_le_card_of_injective _ hi⟩`.
+A detailed English derivation is pending.
 -/
 private lemma relIndex_le_card {G α : Type*} [Group G] [Finite α] (H B : Subgroup G) (g : B → α)
     (hg : ∀ x y, g x = g y → (x : G)⁻¹ * y ∈ H) :
@@ -142,13 +140,13 @@ private lemma relIndex_le_card {G α : Type*} [Group G] [Finite α] (H B : Subgr
   exact ⟨Nat.card_pos.ne', Nat.card_le_card_of_injective _ hi⟩
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a I ha ih`. Rewrite `h0`, the goal using `[Finset.iInf_insert]`. Rewrite `h0`, the goal using `[← Subgroup.relIndex_inf_mul_relIndex]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_insert_of_notMem ha, pow_succ, mul_comm]`. Use `Nat.mul_le_mul ?_ (ih ?_ (right_ne_zero_of_mul h0))` and prove the remaining obligations. Take `⟨x, hH, hxa, hj⟩` from `hx a (Finset.mem_insert_self _ _)`. Establish `h1` using `left_ne_zero_of_mul h0`. Establish `h2 : (L a).relIndex ((⨅ i ∈ I, L i) ⊓ H) ≠ 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, Subgroup.relIndex_eq_one]`. Introduce `hle`. Use `hxa (hle ⟨?_, hH⟩)` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun j => Subgroup.mem_iInf.2 fun hjI => ?_` and prove the remaining obligations. Conclude with `hj j (Finset.mem_insert_of_mem hjI) (fun h => ha (h ▸ hjI))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Take `⟨x, hH, hxa, hj⟩` from `hx i (Finset.mem_insert_of_mem hi)`. Conclude with `⟨x, hH, hxa, fun j hjI => hj j (Finset.mem_insert_of_mem hjI)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma pow_le_relIndex {G ι : Type*} [CommGroup G] (L : ι → Subgroup G) (H : Subgroup G)
     (I : Finset ι) (hx : ∀ i ∈ I, ∃ x ∈ H, x ∉ L i ∧ ∀ j ∈ I, j ≠ i → x ∈ L j)
@@ -175,7 +173,7 @@ private lemma pow_le_relIndex {G ι : Type*} [CommGroup G] (L : ι → Subgroup 
       exact ⟨x, hH, hxa, fun j hjI => hj j (Finset.mem_insert_of_mem hjI)⟩
 
 /- English proof (translation)
-Use `choose g hg using h1`. Conclude with `relIndex_le_card H B (fun x => g x x.2) (fun x y h => h2 _ x.2 _ y.2 _ (hg x x.2) (by rw [show g x x.2 = g y y.2 from h]; exact hg y y.2))`.
+A detailed English derivation is pending.
 -/
 private lemma relIndex_le_card' {G α : Type*} [Group G] [Finite α] (H B : Subgroup G)
     (R : G → α → Prop) (h1 : ∀ x ∈ B, ∃ a, R x a)
@@ -186,7 +184,7 @@ private lemma relIndex_le_card' {G α : Type*} [Group G] [Finite α] (H B : Subg
     (fun x y h => h2 _ x.2 _ y.2 _ (hg x x.2) (by rw [show g x x.2 = g y y.2 from h]; exact hg y y.2))
 
 /- English proof (translation)
-Establish `h1` using `Subgroup.relIndex_mul_index (le_sup_left : N ≤ N ⊔ φ.range)`. Establish `h2` using `Subgroup.relIndex_mul_index h`. Rewrite `h1` using `[Subgroup.relIndex_sup_left, ← Subgroup.index_comap]`. Establish `h3 : (N.comap φ).index ≠ 0` using `fun h3 => h0 (by rw [← h2, h3, mul_zero])`. Conclude with `mul_left_cancel₀ h3 (by rw [h1, mul_comm, h2])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma index_sup_range {G : Type*} [CommGroup G] (N : Subgroup G) (φ : G →* G)
     (h0 : N.index ≠ 0) (h : N ≤ N.comap φ) :
@@ -201,7 +199,7 @@ section loc
 variable {K : Type*} [Field K] (v : Valuation K ℤᵐ⁰)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => push_cast; exact v.map_add_le ih (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private lemma v_nat (n : ℕ) : v (n : K) ≤ 1 := by
   induction n with
@@ -209,37 +207,37 @@ private lemma v_nat (n : ℕ) : v (n : K) ≤ 1 := by
   | succ n ih => push_cast; exact v.map_add_le ih (by simp)
 
 /- English proof (translation)
-Simplify using `using v_nat v 2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma v_two : v (2 : K) ≤ 1 := by simpa using v_nat v 2
 
 /- English proof (translation)
-Rewrite using `[← map_pow]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private lemma v_four_eq : v (4 : K) = v 2 ^ 2 := by
   rw [← map_pow]; norm_num
 
 /- English proof (translation)
-Simplify using `using v_nat v 4`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma v_four : v (4 : K) ≤ 1 := by simpa using v_nat v 4
 
 /- English proof (translation)
-Use `v.map_one_add_of_lt h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma v_eq_one {x : K} (h : v (x - 1) < 1) : v x = 1 := by
   have := v.map_one_add_of_lt h
   simpa using this
 
 /- English proof (translation)
-Use `v.map_add_eq_of_lt_left h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma v_eq_of {x y : K} (h : v (x - y) < v y) : v x = v y := by
   have := v.map_add_eq_of_lt_left h
   simpa using this
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Use `⟨c / r, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[hc, sq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 private lemma sq_cancel {x r : ℤᵐ⁰} (hr : r ≠ 0) (h : IsSquare (x * r ^ 2)) : IsSquare x := by
   obtain ⟨c, hc⟩ := h
@@ -248,7 +246,7 @@ private lemma sq_cancel {x r : ℤᵐ⁰} (hr : r ≠ 0) (h : IsSquare (x * r ^ 
   rw [hc, sq]
 
 /- English proof (translation)
-Introduce and unpack `⟨c, hc⟩`. Establish `h0 : c ≠ 0` using `by rintro rfl; simp at hc`. Use `congrArg WithZero.log hc` as an intermediate fact. Rewrite `this` using `[WithZero.log_mul h0 h0, WithZero.log_exp]`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma not_sq_exp : ¬ IsSquare (WithZero.exp (-1 : ℤ)) := by
   rintro ⟨c, hc⟩
@@ -288,16 +286,16 @@ private def near2 : Subgroup Kˣ := near v 2 two_ne_zero (v_two v)
 private def near4 : Subgroup Kˣ := near v 4 (by norm_num) (v_four v)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private lemma mem_near4 {x : Kˣ} : x ∈ near4 v ↔ v ((x : K) - 1) < v 4 := Iff.rfl
 
 private def Qv : Subgroup Kˣ := near4 v ⊔ (powMonoidHom 2).range
 
 /- English proof (translation)
-Rewrite using `[Qv, Subgroup.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, _, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨z, hz, y, rfl⟩`. Introduce and unpack `⟨z, hz, y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, hz, _, ⟨y, rfl⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private lemma mem_Qv {x : Kˣ} : x ∈ Qv v ↔ ∃ z ∈ near4 v, ∃ y : Kˣ, x = z * y ^ 2 := by
   rw [Qv, Subgroup.mem_sup]
@@ -308,14 +306,14 @@ private lemma mem_Qv {x : Kˣ} : x ∈ Qv v ↔ ∃ z ∈ near4 v, ∃ y : Kˣ, 
     exact ⟨z, hz, _, ⟨y, rfl⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(mem_Qv v).2 ⟨1, one_mem _, y, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private lemma sq_mem_Qv (y : Kˣ) : y ^ 2 ∈ Qv v := (mem_Qv v).2 ⟨1, one_mem _, y, by simp⟩
 
 /- English proof (translation)
-Establish `h1 : v (y ^ 2) = 1`. Rewrite using `[← hx]`. Use `v_eq_of v ?_` and prove the remaining obligations. Rewrite using `[v.map_sub_swap, hx]`. Conclude with `h.trans_le (v_four v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : y ≠ 0` using `by rintro rfl; simp at h1`. Use `(mem_Qv v).2 ⟨x / (Units.mk0 y h0) ^ 2, ?_, Units.mk0 y h0, by simp⟩` and prove the remaining obligations. Rewrite using `[mem_near4]`. Establish `: ((x / (Units.mk0 y h0) ^ 2 : Kˣ) : K) - 1 = (x - y ^ 2) / y ^ 2` using `by simp; field_simp`. Rewrite using `[this, map_div₀, h1, div_one]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private lemma mem_Qv_of {x : Kˣ} {y : K} (hx : v x = 1) (h : v (x - y ^ 2) < v 4) : x ∈ Qv v := by
   have h1 : v (y ^ 2) = 1 := by
@@ -348,7 +346,7 @@ private def Nm (θ : K) : Subgroup Kˣ where
 private def LN (θ : K) : Subgroup Kˣ := Nm θ ⊔ near4 v
 
 /- English proof (translation)
-Use `sup_le le_sup_right ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `Subgroup.mem_sup_left ⟨y, 0, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private lemma Qv_le_LN (θ : K) : Qv v ≤ LN v θ := by
   refine sup_le le_sup_right ?_
@@ -356,7 +354,7 @@ private lemma Qv_le_LN (θ : K) : Qv v ≤ LN v θ := by
   exact Subgroup.mem_sup_left ⟨y, 0, by simp⟩
 
 /- English proof (translation)
-Take `⟨n, ⟨a, b, hn⟩, z, hz, rfl⟩` from `Subgroup.mem_sup.1 h`. Conclude with `⟨((z⁻¹ : Kˣ) : K), a, b, inv_mem hz, by rw [← hn]; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma mem_LN {θ : K} {x : Kˣ} (h : x ∈ LN v θ) :
     ∃ z a b : K, v (z - 1) < v 4 ∧ x * z = a ^ 2 - θ * b ^ 2 := by
@@ -367,9 +365,9 @@ private def Irr (ρ : K) : Prop := v ρ ≤ 1 ∧ ∀ X : K, v X ≤ 1 → v (X 
 
 omit [CharZero K] in
 /- English proof (translation)
-Use `⟨?_, fun X hX => ?_⟩` and prove the remaining obligations. Use `v.map_add_le h'.le h.1` as an intermediate fact. Simplify using `using this`. Rewrite using `[← h.2 X hX]`. Use `v_eq_of v ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h.2 X hX, v.map_sub_swap]`. Use `h' using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma Irr.perturb {ρ ρ' : K} (h : Irr v ρ) (h' : v (ρ' - ρ) < 1) : Irr v ρ' := by
   refine ⟨?_, fun X hX => ?_⟩
@@ -383,11 +381,11 @@ private lemma Irr.perturb {ρ ρ' : K} (h : Irr v ρ) (h' : v (ρ' - ρ) < 1) : 
 
 omit [CharZero K] in
 /- English proof (translation)
-Distinguish the cases in `hX : v X ≤ 1`. Conclude with `⟨1, one_ne_zero, by simp [h.2 X hX]⟩`. Use `push Not at hX`. Establish `h0 : v X ≠ 0` using `(zero_lt_one.trans hX).ne'`. Use `⟨v X, h0, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow]`. Use `v_eq_of v ?_` and prove the remaining obligations. Establish `h1 : v X < v (X ^ 2)`. Rewrite using `[map_pow, sq]`. Conclude with `lt_mul_of_one_lt_left (zero_lt_one.trans hX) hX`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: X ^ 2 + X - ρ - X ^ 2 = X - ρ` using `by ring`. Rewrite using `[this]`. Conclude with `v.map_sub_lt h1 (h.1.trans_lt (hX.trans h1))`.
+A detailed English derivation is pending.
 -/
 private lemma Irr.aux {ρ : K} (h : Irr v ρ) (X : K) :
     ∃ r, r ≠ 0 ∧ v (X ^ 2 + X - ρ) = r ^ 2 := by
@@ -406,7 +404,7 @@ private lemma Irr.aux {ρ : K} (h : Irr v ρ) (X : K) :
     exact v.map_sub_lt h1 (h.1.trans_lt (hX.trans h1))
 
 /- English proof (translation)
-Take `⟨r, hr, h1⟩` from `h.aux v ((x - 1) / 2)`. Use `⟨v 2 * r, mul_ne_zero (v_two_ne v) hr, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← h1, ← map_pow, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma Irr.aux2 {ρ : K} (h : Irr v ρ) (x : K) :
     ∃ r, r ≠ 0 ∧ v (x ^ 2 - (1 + 4 * ρ)) = r ^ 2 := by
@@ -417,9 +415,9 @@ private lemma Irr.aux2 {ρ : K} (h : Irr v ρ) (x : K) :
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Conclude with `⟨v x, by simp [sq]⟩`. Take `⟨r, -, h1⟩` from `h.aux2 v (x / y)`. Use `⟨r * v y, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sq, mul_pow, ← h1, ← map_pow, ← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 private lemma Irr.isSquare {ρ : K} (h : Irr v ρ) (x y : K) :
     IsSquare (v (x ^ 2 - (1 + 4 * ρ) * y ^ 2)) := by
@@ -433,9 +431,9 @@ private lemma Irr.isSquare {ρ : K} (h : Irr v ρ) (x y : K) :
     field_simp
 
 /- English proof (translation)
-Break down `(v_two v).eq_or_lt with h2 | h2` into its components or cases. Use `h.2 (-1 / 2) (by simp [h2])` as an intermediate fact. Establish `h3 : (1 + 4 * ρ) = - (2 ^ 2 * ((-1 / 2) ^ 2 + -1 / 2 - ρ))` using `by ring`. Rewrite using `[h3, v.map_neg, map_mul, this, map_pow, h2]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `v.map_one_add_of_lt ?_` and prove the remaining obligations. Rewrite using `[map_mul, v_four_eq]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private lemma Irr.unit {ρ : K} (h : Irr v ρ) : v (1 + 4 * ρ) = 1 := by
   rcases (v_two v).eq_or_lt with h2 | h2
@@ -449,13 +447,13 @@ private lemma Irr.unit {ρ : K} (h : Irr v ρ) : v (1 + 4 * ρ) = 1 := by
       _ < 1 := by rw [mul_one]; exact pow_lt_one₀ zero_le h2 two_ne_zero
 
 /- English proof (translation)
-Establish `hu` using `h.unit v`. Establish `h0 : 1 + 4 * ρ ≠ 0` using `by intro h; simp [h] at hu`. Use `⟨Units.mk0 _ h0, fun hm => ?_⟩` and prove the remaining obligations. Take `⟨z, a, b, hz, hn⟩` from `mem_LN v hm`. Simplify using `only [Units.val_mk0] at hn`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h1 : Irr v (((1 + 4 * ρ) * z - 1) / 4)`. Use `h.perturb v ?_` and prove the remaining obligations. Establish `: ((1 + 4 * ρ) * z - 1) / 4 - ρ = (1 + 4 * ρ) * (z - 1) / 4` using `by ring`. Rewrite using `[this, map_div₀, map_mul, hu, one_mul]`. Conclude with `(div_lt_one₀ (zero_lt_iff.2 (v_four_ne v))).2 hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, h2⟩` from `h1.aux2 v a`. Establish `h3 : a ^ 2 - (1 + 4 * (((1 + 4 * ρ) * z - 1) / 4)) = θ * b ^ 2`. Take the linear combination `-hn`. Rewrite `h2` using `[h3, map_mul, map_pow]`. Establish `hb : v b ≠ 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hb`. Rewrite `h2` using `[hb]`. Conclude with `hr (by simpa using h2.symm)`. Conclude with `hθ (sq_cancel hb ⟨r, by rw [h2, sq]⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma nonnorm_odd {ρ θ : K} (h : Irr v ρ) (hθ : ¬ IsSquare (v θ)) :
     ∃ α : Kˣ, α ∉ LN v θ := by
@@ -480,17 +478,15 @@ private lemma nonnorm_odd {ρ θ : K} (h : Irr v ρ) (hθ : ¬ IsSquare (v θ)) 
   exact hθ (sq_cancel hb ⟨r, by rw [h2, sq]⟩)
 
 /- English proof (translation)
-Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy`. Establish `h4` using `zero_lt_iff.2 (v_four_ne v)`. Establish `hρ : v ((θ - y ^ 2) / (4 * y ^ 2)) ≤ 1`. Rewrite using `[map_div₀, map_mul, map_pow, hy, one_pow, mul_one]`. Conclude with `(div_le_one₀ h4).2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : Irr v ((θ - y ^ 2) / (4 * y ^ 2))`. Use `⟨hρ, fun X hX => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `v.map_sub_le (v.map_add_le ?_ hX) hρ` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `pow_le_one₀ zero_le hX`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `h2 (y * (1 + 2 * X))`. Establish `: θ - (y * (1 + 2 * X)) ^ 2 = - (4 * (y ^ 2 * (X ^ 2 + X - (θ - y ^ 2) / (4 * y ^ 2))))` using `by field_simp; ring`. Rewrite `h5` using `[this, v.map_neg, map_mul, map_mul, map_pow, hy, one_pow, one_mul]`. Conclude with `(le_mul_iff_one_le_right h4).1 h5`. Take `⟨π, hπ⟩` from `hs (WithZero.exp (-1))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hπ0 : π ≠ 0` using `by rintro rfl; exact WithZero.exp_ne_zero (by rw [← hπ, map_zero])`. Use `⟨Units.mk0 _ hπ0, fun hm => ?_⟩` and prove the remaining obligations. Take `⟨z, a, b, hz, hn⟩` from `mem_LN v hm`. Establish `h6` using `hI.isSquare v a (y * b)`. Establish `: a ^ 2 - (1 + 4 * ((θ - y ^ 2) / (4 * y ^ 2))) * (y * b) ^ 2 = π * z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Units.val_mk0] at hn`. Rewrite using `[hn]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `h6` using `[this, map_mul, v_eq_one v (hz.trans_le (v_four v)), mul_one, hπ]`.
-
-Conclude with `not_sq_exp h6`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma nonnorm_unram (hs : Function.Surjective v) {θ y : K} (hy : v y = 1)
     (h1 : v (θ - y ^ 2) ≤ v 4) (h2 : ∀ x, v 4 ≤ v (θ - x ^ 2)) : ∃ α : Kˣ, α ∉ LN v θ := by
@@ -522,21 +518,19 @@ private lemma nonnorm_unram (hs : Function.Surjective v) {θ y : K} (hy : v y = 
   exact not_sq_exp h6
 
 /- English proof (translation)
-Establish `hu` using `h.unit v`. Use `set Δ := 1 + 4 * ρ with hΔ`. Take `⟨a, ha⟩ : ∃ a, a = Δ * y ^ 2` from `⟨_, rfl⟩`. Take `⟨b, hb⟩ : ∃ b, b = θ - a` from `⟨_, rfl⟩`. Establish `hva : v a = 1` using `by simp [ha, hu, hy]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvb : v b = v (θ - y ^ 2)`. Use `v_eq_of v (lt_of_le_of_lt ?_ h1)` and prove the remaining obligations. Establish `: b - (θ - y ^ 2) = - (4 * (ρ * y ^ 2))` using `by rw [hb, ha, hΔ]; ring`. Rewrite using `[this, v.map_neg, map_mul, map_mul, map_pow, hy, one_pow, mul_one]`. Conclude with `mul_le_of_le_one_right' h.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[← hvb]`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hva`. Establish `hb0 : b ≠ 0` using `by rintro rfl; simp at h1`. Use `⟨Units.mk0 (-(a * b)) (by simp [ha0, hb0]), fun hm => ?_⟩` and prove the remaining obligations. Take `⟨z, s, t, hz, hn⟩` from `mem_LN v hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mk0] at hn`. Establish `key : ∀ ε : K, ε ^ 2 = 1 → v (s - ε * a) < v 2`. Introduce `ε hε`. Assume the negation of the conclusion as `hR`. Use `push Not at hR`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `h.isSquare v (θ * t) (y * (s + ε * b))`. Establish `h7 : (θ * t) ^ 2 - (1 + 4 * ρ) * (y * (s + ε * b)) ^ 2 = b * ((s - ε * a) ^ 2 + θ * a * (z - 1))`. Establish `h8 : θ = a + b` using `by rw [hb]; ring`. Rewrite using `[mul_pow y, ← mul_assoc, ← hΔ, ← ha]`. Substitute `h8` using the available equality.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(a + b) * hn - a * b * (a + b) * hε`. Establish `h9 : v ((s - ε * a) ^ 2 + θ * a * (z - 1)) = v (s - ε * a) ^ 2`. Rewrite using `[← map_pow]`. Use `v.map_add_eq_of_lt_left ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hθ, hva, one_mul, one_mul, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hz.trans_le ?_` and prove the remaining obligations. Rewrite using `[v_four_eq]`. Use `gcongr`. Rewrite `h6` using `[h7, map_mul, h9]`. Conclude with `h2 (sq_cancel ((zero_lt_iff.2 (v_two_ne v)).trans_le hR).ne' h6)`.
-
-Use `v.map_sub_lt (key (-1) (by ring)) (key 1 (by ring))` as an intermediate fact. Establish `h10 : s - -1 * a - (s - 1 * a) = 2 * a` using `by ring`. Rewrite `this` using `[h10, map_mul, hva, mul_one]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma nonnorm_ram {ρ θ y : K} (h : Irr v ρ) (hθ : v θ = 1) (hy : v y = 1)
     (h1 : v 4 < v (θ - y ^ 2)) (h2 : ¬ IsSquare (v (θ - y ^ 2))) : ∃ α : Kˣ, α ∉ LN v θ := by
@@ -582,27 +576,25 @@ private lemma nonnorm_ram {ρ θ y : K} (h : Irr v ρ) (hθ : v θ = 1) (hy : v 
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `hl : ∀ x : K, v 4 ≤ v (θ - x ^ 2)` using `fun x => not_lt.1 fun hx => hQ (mem_Qv_of v hθ hx)`. Establish `hl0 : ∀ x : K, v (θ - x ^ 2) ≠ 0` using `fun x => ((zero_lt_iff.2 (v_four_ne v)).trans_le (hl x)).ne'`. Take `⟨_, ⟨y, rfl⟩, hmin⟩` from `Int.exists_least_of_bdd (P := fun m => ∃ y : K, WithZero.log (v (θ - y ^ 2)) = m) ⟨WithZero.log (v 4), by`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `(WithZero.log_le_log (v_four_ne v) (hl0 y)).2 (hl y)⟩ ⟨_, 0, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hm : ∀ x : K, v (θ - y ^ 2) ≤ v (θ - x ^ 2)` using `fun x => (WithZero.log_le_log (hl0 y) (hl0 x)).1 (hmin _ ⟨x, rfl⟩)`. Establish `hβ : v (θ - y ^ 2) ≤ 1` using `by simpa [hθ] using hm 0`. Establish `sq1 : ∀ x : K, v (x ^ 2) ≤ 1 → v x ≤ 1` using `fun x hx => by`. Rewrite `hx` using `[map_pow, pow_le_one_iff_of_nonneg zero_le two_ne_zero]`. Then use the resulting hypothesis. Establish `hy1 : v y ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sq1 y ?_` and prove the remaining obligations. Use `v.map_sub_le hθ.le hβ` as an intermediate fact. Simplify using `using this`. Establish `hy2 : v (θ - y ^ 2) < 1 → v y = 1` using `fun h' => by`. Establish `: v (y ^ 2) = v θ` using `v_eq_of v (by rwa [v.map_sub_swap, hθ])`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hθ, map_pow, pow_eq_one_iff_of_nonneg zero_le two_ne_zero]`. Then use the resulting hypothesis. Break down `(v_two v).eq_or_lt with h2 | h2` into its components or cases. Use `nonnorm_unram v hs (y := 1) (by simp) ?_ hl` and prove the remaining obligations. Rewrite using `[v_four_eq, h2, one_pow]`. Conclude with `v.map_sub_le hθ.le (by simp)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : v (4 : K) < 1`. Rewrite using `[v_four_eq]`. Conclude with `pow_lt_one₀ zero_le h2 two_ne_zero`. Break down `(hl y).eq_or_lt with h5 | h5` into its components or cases. Conclude with `nonnorm_unram v hs (hy2 (h5 ▸ h4)) h5.ge hl`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hns : ¬ IsSquare (v (θ - y ^ 2))`. Introduce and unpack `⟨r, hr⟩`. Take `⟨c, rfl⟩` from `hs r`. Rewrite `hr` using `[← sq]`. Establish `hc : v c ≠ 0` using `fun h0 => hl0 y (by simp [hr, h0])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : c ≠ 0` using `by simpa using hc`. Establish `hcp` using `zero_lt_iff.2 hc`. Establish `hε : v ((θ - y ^ 2) / c ^ 2) = 1`. Rewrite using `[map_div₀, hr, map_pow, div_self (pow_ne_zero _ hc)]`. Take `⟨η, hη⟩` from `hp h2 _ hε.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hη1 : v η ≤ 1`. Use `sq1 η ?_` and prove the remaining obligations. Use `v.map_sub_le hε.le hη.le` as an intermediate fact. Simplify using `using this`. Establish `h6 : v 2 < v c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h5` using `[hr, v_four_eq]`. Conclude with `lt_of_pow_lt_pow_left₀ 2 zero_le h5`. Use `absurd (hm (y + c * η)) (not_le.2 ?_)` and prove the remaining obligations. Establish `: θ - (y + c * η) ^ 2 = c ^ 2 * ((θ - y ^ 2) / c ^ 2 - η ^ 2) - c * (2 * (y * η))` using `by field_simp; ring`. Rewrite using `[this, hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `v.map_sub_lt ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Conclude with `mul_lt_of_lt_one_right (pow_pos hcp 2) hη`. Rewrite using `[map_mul, sq]`. Use `mul_lt_mul_of_pos_left (lt_of_le_of_lt ?_ h6) hcp` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' (mul_le_one' hy1 hη1)`. Use `nonnorm_ram v h hθ (hy2 (hβ.lt_of_ne fun h1 => hns ?_)) h5 hns` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `IsSquare.one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma nonnorm_unit (hs : Function.Surjective v) {ρ : K} (h : Irr v ρ)
     (hp : v 2 < 1 → ∀ ε : K, v ε ≤ 1 → ∃ η, v (ε - η ^ 2) < 1) {θ : Kˣ} (hθ : v θ = 1)
@@ -668,11 +660,11 @@ private lemma nonnorm_unit (hs : Function.Surjective v) {ρ : K} (h : Irr v ρ)
   exact IsSquare.one
 
 /- English proof (translation)
-Distinguish the cases in `hsq : IsSquare (v θ)`. Take `⟨r, hr⟩` from `hsq`. Take `⟨c, rfl⟩` from `hs r`. Establish `hc0 : c ≠ 0` using `by rintro rfl; simp at hr`. Establish `hc : v c ≠ 0` using `by simpa using hc0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨α, hα⟩` from `nonnorm_unit v hs h hp (θ := θ / Units.mk0 c hc0 ^ 2) (by simp [hr, sq, hc]) (fun h' => hQ (by simpa using mul_mem h' (sq_mem_Qv v (Units.mk0 c hc0))))`. Use `⟨α, fun h' => hα ((sup_le_sup_right (?_ : Nm (θ : K) ≤ Nm _) (near4 v) :) h')⟩` and prove the remaining obligations. Introduce and unpack `x ⟨a, b, hx⟩`. Use `⟨a, b * c, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Conclude with `nonnorm_odd v h hsq`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private lemma nonnorm (hs : Function.Surjective v) {ρ : K} (h : Irr v ρ)
     (hp : v 2 < 1 → ∀ ε : K, v ε ≤ 1 → ∃ η, v (ε - η ^ 2) < 1) {θ : Kˣ}
@@ -696,32 +688,32 @@ section nf
 variable {K : Type*} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-The claim follows from `v.valuation_of_algebraMap a`.
+A detailed English derivation is pending.
 -/
 private lemma val_alg (a : 𝓞 K) : v.valuation K (algebraMap _ K a) = v.intValuation a :=
   v.valuation_of_algebraMap a
 
 /- English proof (translation)
-The claim follows from `v.valuation_le_one a`.
+A detailed English derivation is pending.
 -/
 private lemma val_le_one (a : 𝓞 K) : v.valuation K (algebraMap _ K a) ≤ 1 :=
   v.valuation_le_one a
 
 /- English proof (translation)
-Rewrite using `[val_alg, v.intValuation_le_pow_iff_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma val_le_iff (a : 𝓞 K) (n : ℕ) :
     v.valuation K (algebraMap _ K a) ≤ WithZero.exp (-(n : ℤ)) ↔ a ∈ v.asIdeal ^ n := by
   rw [val_alg, v.intValuation_le_pow_iff_mem]
 
 /- English proof (translation)
-The claim follows from `v.valuation_lt_one_iff_mem a`.
+A detailed English derivation is pending.
 -/
 private lemma val_lt_one_iff (a : 𝓞 K) :
     v.valuation K (algebraMap _ K a) < 1 ↔ a ∈ v.asIdeal := v.valuation_lt_one_iff_mem a
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `v.exists_valuation_sub_lt_of_integer hx (Units.mk0 γ h)`. Conclude with `⟨a, by rwa [Valuation.map_sub_swap]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma approx {x : K} (hx : v.valuation K x ≤ 1) {γ : ℤᵐ⁰} (h : γ ≠ 0) :
     ∃ a : 𝓞 K, v.valuation K (x - algebraMap _ K a) < γ := by
@@ -729,21 +721,21 @@ private lemma approx {x : K} (hx : v.valuation K x ≤ 1) {γ : ℤᵐ⁰} (h : 
   exact ⟨a, by rwa [Valuation.map_sub_swap]⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero n v.ne_bot)`.
+A detailed English derivation is pending.
 -/
 private lemma fin_quot (n : ℕ) : Finite (𝓞 K ⧸ v.asIdeal ^ n) :=
   Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero n v.ne_bot)
 
 /- English proof (translation)
-Establish `: Finite (𝓞 K ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Use `v.isPrime` as an intermediate fact. Establish `hns : ¬ Function.Surjective (fun x : 𝓞 K ⧸ v.asIdeal => x ^ 2 + x)`. Rewrite using `[← Finite.injective_iff_surjective]`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `@h 0 (-1) (by simp)` as an intermediate fact. Simplify using `at this`. Take `⟨r, hr⟩` from `not_forall.1 hns`. Take `⟨ρ, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Use `⟨algebraMap _ K ρ, val_le_one v ρ, fun X hX => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `approx v hX one_ne_zero`. Establish `h1 : v.valuation K (algebraMap _ K (a ^ 2 + a - ρ)) = 1`. Rewrite using `[v.valuation_eq_one_iff_notMem]`. Introduce `h`. Conclude with `hr ⟨Ideal.Quotient.mk _ a, by simpa using Ideal.Quotient.eq.2 h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Use `v_eq_of _ ?_` and prove the remaining obligations. Rewrite using `[h1]`. Establish `: X ^ 2 + X - algebraMap _ K ρ - algebraMap _ K (a ^ 2 + a - ρ) = (X - algebraMap _ K a) * (X + algebraMap _ K a + 1)`. Simplify using `only [map_sub, map_add, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_mul]`. Use `lt_of_le_of_lt (mul_le_of_le_one_right' ?_) ha` and prove the remaining obligations. Conclude with `Valuation.map_add_le _ (Valuation.map_add_le _ hX (val_le_one v a)) (by simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma exists_irr : ∃ ρ, Irr (v.valuation K) ρ := by
   have : Finite (𝓞 K ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot
@@ -772,13 +764,13 @@ private lemma exists_irr : ∃ ρ, Irr (v.valuation K) ρ := by
   exact Valuation.map_add_le _ (Valuation.map_add_le _ hX (val_le_one v a)) (by simp)
 
 /- English proof (translation)
-Establish `: Finite (𝓞 K ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Use `v.isPrime` as an intermediate fact. Establish `h0 : (2 : 𝓞 K ⧸ v.asIdeal) = 0`. Establish `: (2 : 𝓞 K) ∈ v.asIdeal` using `(val_lt_one_iff v 2).1 (by rwa [map_ofNat])`. Use `Ideal.Quotient.eq_zero_iff_mem.2 this` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hs : Function.Surjective (fun x : 𝓞 K ⧸ v.asIdeal => x ^ 2)`. Rewrite using `[← Finite.injective_iff_surjective]`. Introduce `x y h`. Establish `h : x ^ 2 = y ^ 2` using `h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (x - y) ^ 2 = 0` using `by linear_combination h + (y ^ 2 - x * y) * h0`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 this)`. Take `⟨a, ha⟩` from `approx v hε one_ne_zero`. Take `⟨r, hr⟩` from `hs (Ideal.Quotient.mk _ a)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective r`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap _ K b, ?_⟩` and prove the remaining obligations. Establish `h1 : a - b ^ 2 ∈ v.asIdeal` using `Ideal.Quotient.eq.1 (by rw [← hr]; simp)`. Use `Valuation.map_add_lt _ ha ((val_lt_one_iff v _).2 h1)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma perfect (h2 : v.valuation K 2 < 1) (ε : K) (hε : v.valuation K ε ≤ 1) :
     ∃ η, v.valuation K (ε - η ^ 2) < 1 := by
@@ -804,7 +796,7 @@ private lemma perfect (h2 : v.valuation K 2 < 1) (ε : K) (hε : v.valuation K �
   simp
 
 /- English proof (translation)
-Take `⟨ρ, h⟩` from `exists_irr v`. Conclude with `nonnorm _ (v.valuation_surjective K) h (perfect v) hQ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma nonnorm' {θ : Kˣ} (hQ : θ ∉ Qv (v.valuation K)) :
     ∃ α : Kˣ, α ∉ LN (v.valuation K) θ := by
@@ -814,7 +806,7 @@ private lemma nonnorm' {θ : Kˣ} (hQ : θ ∉ Qv (v.valuation K)) :
 private noncomputable def ev : ℕ := (- WithZero.log (v.valuation K 2)).toNat
 
 /- English proof (translation)
-Establish `h0` using `v_two_ne (v.valuation K)`. Establish `: WithZero.log (v.valuation K 2) ≤ 0` using `(WithZero.log_le_iff_le_exp h0).2 (by simpa using v_two (v.valuation K))`. Rewrite using `[ev, Int.toNat_of_nonneg (by omega), neg_neg, WithZero.exp_log h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma v_two_eq : v.valuation K 2 = WithZero.exp (-(ev v : ℤ)) := by
   have h0 := v_two_ne (v.valuation K)
@@ -829,12 +821,12 @@ private def Wv : Subgroup Kˣ where
   inv_mem' := by intro a ha; simp_all
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private lemma mem_Wv {x : Kˣ} : x ∈ Wv v ↔ v.valuation K x = 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_near4]`. Establish `: ((x⁻¹ * y : Kˣ) : K) - 1 = (y - x) / x` using `by push_cast; field_simp`. Rewrite using `[this, map_div₀, hx, div_one]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private lemma mem_near_four_of_close {x y : Kˣ} (hx : v.valuation K x = 1)
     (h : v.valuation K (y - x) < v.valuation K 4) : x⁻¹ * y ∈ near4 (v.valuation K) := by
@@ -843,33 +835,31 @@ private lemma mem_near_four_of_close {x y : Kˣ} (hx : v.valuation K x = 1)
   rwa [this, map_div₀, hx, div_one]
 
 /- English proof (translation)
-Establish `h40` using `v_four_ne (v.valuation K)`. Establish `h20` using `v_two_ne (v.valuation K)`. Establish `h2p` using `zero_lt_iff.2 h20`. Use `set N := (near4 (v.valuation K)).subgroupOf (Wv v) with hN`. Establish `hfin : N.index ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `WithZero.exists_exp_neg_natCast_lt h40`. Use `fin_quot v k` as an intermediate fact. Use `(relIndex_le_card' (α := 𝓞 K ⧸ v.asIdeal ^ k) _ (Wv v) (fun x q => ∃ a, Ideal.Quotient.mk _ a = q ∧ v.valuation K (x - algebraMap _ K a) < v.valuation K 4) ?_ ?_).1` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, ha⟩` from `approx v (le_of_eq hx) h40`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, a, rfl, ha⟩`. Introduce and unpack `x hx y - _ ⟨a, rfl, ha⟩ ⟨b, hab, hb⟩`. Use `mem_near_four_of_close v hx ?_` and prove the remaining obligations. Establish `h1` using `((val_le_iff v _ k).2 (Ideal.Quotient.eq.1 hab)).trans_lt hk`. Use `Valuation.map_sub_lt _ (Valuation.map_add_lt _ hb h1) ha` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Establish `h1` using `index_sup_range N (powMonoidHom 2) hfin (fun x hx => pow_mem hx 2)`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer K`. Establish `hπ0 : v.valuation K π ≠ 0` using `by rw [hπ]; exact WithZero.exp_ne_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ1 : v.valuation K π < 1` using `by rw [hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]; norm_num`. Establish `hπ0' : π ≠ 0` using `by simpa using hπ0`. Use `fin_quot v (ev v)` as an intermediate fact. Establish `h2` using `relIndex_le_card' (α := ℤˣ × (𝓞 K ⧸ v.asIdeal ^ ev v)) N (N.comap (powMonoidHom 2)) (fun x q => ∃ a, Ideal.Quotient.mk _ a = q.2 ∧ v.valuation K (((q.1 : ℤ) : K) * ((x : Kˣ) : K) - 1 - 2 * π * algebraMap _ K a) < v.valuation K 4) ?_ ?_`. Rewrite `h2` using `[← h1, Nat.card_prod, Nat.card_eq_fintype_card, Fintype.card_units_int]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : N ⊔ (powMonoidHom 2).range ≤ (Qv (v.valuation K)).subgroupOf (Wv v)`. Use `sup_le (Subgroup.subgroupOf_mono _ le_sup_left) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `sq_mem_Qv _ _`. Establish `h3` using `Subgroup.index_dvd_of_le hle`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ne_zero_of_dvd_ne_zero h2.1 h3, (Nat.le_of_dvd (Nat.pos_of_ne_zero h2.1) h3).trans h2.2⟩`. Introduce and unpack `⟨x, hx1⟩ hx`. Establish `hx : v.valuation K ((x : K) ^ 2 - 1) < v.valuation K 4` using `hx`. Establish `: ∃ s : ℤˣ, v.valuation K (((s : ℤ) : K) * x - 1) < v.valuation K 2`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push Not at hc`. Establish `h3` using `mul_le_mul' (hc 1) (hc (-1))`. Rewrite `h3` using `[← sq, ← v_four_eq, ← map_mul, ← Valuation.map_neg _ (_ * _)]`. Use `absurd hx (not_lt.2 ?_)` and prove the remaining obligations. Use `h3 using 2` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Take `⟨s, hs⟩` from `this`. Establish `h3 : v.valuation K ((((s : ℤ) : K) * x - 1) / (2 * π)) ≤ 1`. Rewrite using `[map_div₀, map_mul, div_le_one₀ (zero_lt_iff.2 (mul_ne_zero h20 hπ0)), ← WithZero.lt_mul_exp_iff_le (mul_ne_zero h20 hπ0), hπ, mul_assoc, ← WithZero.exp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hs`. Take `⟨a, ha⟩` from `approx v h3 h20`. Use `⟨(s, _), a, rfl, ?_⟩` and prove the remaining obligations. Establish `: ((s : ℤ) : K) * x - 1 - 2 * π * algebraMap _ K a = 2 * (π * ((((s : ℤ) : K) * x - 1) / (2 * π) - algebraMap _ K a))` using `by field_simp`. Simplify using `only`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, map_mul, map_mul, v_four_eq, sq]`. Conclude with `mul_lt_mul_of_pos_left (lt_of_le_of_lt (mul_le_of_le_one_left' hπ1.le) ha) h2p`. Introduce and unpack `⟨x, hx⟩ - ⟨y, hy⟩ - ⟨s, _⟩ ⟨a, rfl, ha⟩ ⟨b, hab, hb⟩`. Use `mem_near_four_of_close v hx ?_` and prove the remaining obligations. Establish `h1` using `(val_le_iff v _ _).2 (Ideal.Quotient.eq.1 hab)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[← v_two_eq]`. Establish `h3 : v.valuation K (2 * (π * algebraMap _ K (b - a))) < v.valuation K 4`. Rewrite using `[map_mul, map_mul, v_four_eq, sq]`. Use `mul_lt_mul_of_pos_left (lt_of_le_of_lt (mul_le_mul_right h1 _) ?_) h2p` and prove the remaining obligations. Conclude with `mul_lt_of_lt_one_left h2p hπ1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h4` using `Valuation.map_sub_lt _ (Valuation.map_add_lt _ hb h3) ha`. Establish `h5 : v.valuation K ((y : K) - x) = v.valuation K (((s : ℤ) : K) * (y - x))`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> simp [Valuation.map_sub_swap]`. Rewrite using `[h5]`. Use `h4 using 2` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma relIndex_Qv : (Qv (v.valuation K)).relIndex (Wv v) ≠ 0 ∧
     (Qv (v.valuation K)).relIndex (Wv v) ≤ 2 * Ideal.absNorm (v.asIdeal ^ ev v) := by
@@ -947,13 +937,13 @@ private lemma relIndex_Qv : (Qv (v.valuation K)).relIndex (Wv v) ≠ 0 ∧
     simp only [map_sub]; ring
 
 /- English proof (translation)
-Establish `h1` using `relIndex_Qv v`. Establish `h2` using `relIndex_le_card (Qv (v.valuation K) ⊔ Wv v) ⊤ (fun x => ((WithZero.log (v.valuation K ((x : Kˣ) : K)) : ℤ) : ZMod 2)) ?_`. Rewrite `h2` using `[Subgroup.relIndex_top_right, Nat.card_zmod]`. Rewrite using `[← Subgroup.relIndex_mul_index (le_sup_left : _ ≤ Qv (v.valuation K) ⊔ Wv v), Subgroup.relIndex_sup_left]`. Use `⟨mul_ne_zero h1.1 h2.1, (Nat.mul_le_mul h1.2 h2.2).trans (le_of_eq (by ring))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨x, hx'⟩ ⟨y, hy'⟩ h`. Take `⟨k, hk⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ 2).1 h`. Take `⟨c, hc⟩` from `v.valuation_surjective K (WithZero.exp k)`. Establish `hc0 : c ≠ 0` using `by rintro rfl; exact WithZero.exp_ne_zero (by rw [← hc, map_zero])`. Use `Subgroup.mem_sup.2 ⟨_, sq_mem_Qv _ (Units.mk0 c hc0), x⁻¹ * y / Units.mk0 c hc0 ^ 2, ?_, by simp⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : v.valuation K x ≠ 0` using `by simp`. Establish `hy : v.valuation K y ≠ 0` using `by simp`. Rewrite using `[mem_Wv]`. Simplify using `only [Units.val_div_eq_div_val, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, Units.val_mk0, map_div₀, map_mul, map_inv₀, map_pow, hc] at hk ⊢`. Rewrite using `[← WithZero.exp_log hx, ← WithZero.exp_log hy, ← WithZero.exp_neg, ← WithZero.exp_add, ← WithZero.exp_nsmul, ← WithZero.exp_sub, WithZero.exp_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [nsmul_eq_mul, Nat.cast_ofNat] at hk ⊢`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma index_Qv : (Qv (v.valuation K)).index ≠ 0 ∧
     (Qv (v.valuation K)).index ≤ 4 * Ideal.absNorm (v.asIdeal ^ ev v) := by
@@ -981,11 +971,11 @@ private lemma index_Qv : (Qv (v.valuation K)).index ≠ 0 ∧
     omega
 
 /- English proof (translation)
-Establish `h` using `relIndex_Qv v`. Establish `he : ev v = 0`. Use `v_two_eq v` as an intermediate fact. Rewrite `this` using `[h2, eq_comm, WithZero.exp_eq_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h` using `[he]`. Simplify using `only [pow_zero, map_one, mul_one] at h`. Establish `h1 : (Qv (v.valuation K)).relIndex (Wv v) ≠ 1`. Rewrite using `[Ne, Subgroup.relIndex_eq_one]`. Conclude with `fun h => hx' (h hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `h3 : ((Qv (v.valuation K)).subgroupOf (Wv v)).index = 2`. Rewrite using `[← Subgroup.relIndex]`. Use linear arithmetic over natural numbers and integers. Conclude with `(Subgroup.mul_mem_iff_of_index_two h3 (a := ⟨x, hx⟩) (b := ⟨y, hy⟩)).2 (iff_of_false hx' hy')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma mul_mem_Qv (h2 : v.valuation K 2 = 1) {x y : Kˣ} (hx : v.valuation K x = 1)
     (hy : v.valuation K y = 1) (hx' : x ∉ Qv (v.valuation K)) (hy' : y ∉ Qv (v.valuation K)) :
@@ -1006,11 +996,11 @@ private lemma mul_mem_Qv (h2 : v.valuation K 2 = 1) {x y : Kˣ} (hx : v.valuatio
     (iff_of_false hx' hy')
 
 /- English proof (translation)
-Rewrite using `[iInf_subtype']`. Use `⟨Subgroup.index_iInf_ne_zero fun i => (index_Qv _).1, (Subgroup.index_iInf_le _).trans ?_⟩` and prove the remaining obligations. Use `(Finset.prod_le_prod' (fun i _ => (index_Qv i.1).2)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_coe, ← map_prod]`. Use `Nat.mul_le_mul_left _ (Nat.le_of_dvd (by positivity) ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← RingOfIntegers.rank, ← Ideal.absNorm_span_natCast]`. Use `map_dvd _ (Finset.prod_dvd_of_coprime ?_ ?_)` and prove the remaining obligations. Introduce `i _ j _ hij`. Conclude with `HeightOneSpectrum.isCoprime_pow_of_ne _ _ (fun h => hij (Subtype.ext h)) _ _`. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.dvd_span_singleton, ← val_le_iff, ← v_two_eq]`. Simplify using `[map_ofNat]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma index_QS (S : Finset (HeightOneSpectrum (𝓞 K))) :
     (⨅ v ∈ S, Qv (v.valuation K)).index ≠ 0 ∧
@@ -1030,7 +1020,7 @@ private lemma index_QS (S : Finset (HeightOneSpectrum (𝓞 K))) :
     simp [map_ofNat]
 
 /- English proof (translation)
-Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Establish `h0` using `nonZeroDivisors.ne_zero hd`. Conclude with `⟨a, d, h0, div_mul_cancel₀ _ (by simpa using h0)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private lemma exists_den (x : K) :
     ∃ a d : 𝓞 K, d ≠ 0 ∧ x * algebraMap _ K d = algebraMap _ K a := by
@@ -1039,17 +1029,15 @@ private lemma exists_den (x : K) :
   exact ⟨a, d, h0, div_mul_cancel₀ _ (by simpa using h0)⟩
 
 /- English proof (translation)
-Take `⟨a, d, hd, h⟩` from `exists_den (α : K)`. Establish `hd' : algebraMap _ K d ≠ 0` using `by simpa using hd`. Use `set D := Units.mk0 _ hd' with hD`. Establish `hA : algebraMap _ K (a * d) = ((α * D ^ 2 : Kˣ) : K)`. Rewrite using `[map_mul, ← h, hD]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[sq, mul_assoc]`. Establish `h0 : ∀ w : HeightOneSpectrum (𝓞 K), w.valuation K 4 * w.valuation K (α * D ^ 2 : Kˣ) ≠ 0` using `fun w => mul_ne_zero (v_four_ne _) (by simp)`. Use `choose k hk using fun w => WithZero.exists_exp_neg_natCast_lt (h0 w)`. Take `⟨y, hy⟩` from `exists_forall_sub_mem_ideal (s := insert v S) (fun w => w.asIdeal) k (fun w _ => w.prime) (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun w => if w.1 = v then a * d else 1)`. Establish `h1` using `((val_le_iff _ _ _).2 (hy v (Finset.mem_insert_self _ _))).trans_lt (hk v)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [if_true, map_sub, hA] at h1`. Establish `hy0 : algebraMap _ K y ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, zero_sub, Valuation.map_neg]`. Conclude with `absurd h1 (not_lt.2 (mul_le_of_le_one_left' (v_four _)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Units.mk0 _ hy0, (mem_Qv _).2 ⟨(α * D ^ 2)⁻¹ * Units.mk0 _ hy0, ?_, D, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_near4]`. Establish `: (((α * D ^ 2)⁻¹ * Units.mk0 _ hy0 : Kˣ) : K) - 1 = (algebraMap _ K y - (α * D ^ 2 : Kˣ)) / (α * D ^ 2 : Kˣ)`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, map_div₀, div_lt_iff₀ (zero_lt_iff.2 (by simp))]` and apply the resulting hypothesis. Rewrite using `[mul_inv, mul_right_comm _ _ (D ^ 2), inv_mul_cancel_right]`. Introduce `w hw hwv`. Establish `h2` using `((val_le_iff _ _ _).2 (hy w (Finset.mem_insert_of_mem hw))).trans_lt (hk w)`. Simplify using `only [if_neg hwv, map_sub, map_one] at h2`.
-
-Use `Subgroup.mem_sup_left ((mem_near4 _).2 (h2.trans_le (mul_le_of_le_one_right' ?_)))` and prove the remaining obligations. Rewrite using `[← hA]`. Conclude with `val_le_one _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma weak_approx (S : Finset (HeightOneSpectrum (𝓞 K))) (α : Kˣ) :
     ∃ x : Kˣ, α⁻¹ * x ∈ Qv (v.valuation K) ∧ ∀ w ∈ S, w ≠ v → x ∈ Qv (w.valuation K) := by
@@ -1097,19 +1085,19 @@ private def US (S : Finset (HeightOneSpectrum (𝓞 K))) : Subgroup Kˣ where
   inv_mem' := by intro a ha v hv; simp [ha v hv]
 
 /- English proof (translation)
-Introduce `_ hx v hv` and use `hx v fun h' => hv (h h')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma US_mono {S T : Finset (HeightOneSpectrum (𝓞 K))} (h : S ⊆ T) : US S ≤ US T :=
   fun _ hx v hv => hx v fun h' => hv (h h')
 
 /- English proof (translation)
-Introduce `v _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private lemma neg_one_mem_US (S : Finset (HeightOneSpectrum (𝓞 K))) : -1 ∈ US S := by
   intro v _; simp
 
 /- English proof (translation)
-Establish `h1` using `HeightOneSpectrum.Support.finite (𝓞 K) (x : K)`. Establish `h2` using `HeightOneSpectrum.Support.finite (𝓞 K) (x : K)⁻¹`. Use `⟨(h1.union h2).toFinset, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_union, HeightOneSpectrum.Support, Set.mem_setOf_eq, not_or, not_lt, map_inv₀] at hv`. Conclude with `le_antisymm hv.1 ((inv_le_one₀ (zero_lt_iff.2 (by simp))).1 hv.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma exists_US (x : Kˣ) : ∃ S, x ∈ US S := by
   have h1 := HeightOneSpectrum.Support.finite (𝓞 K) (x : K)
@@ -1120,7 +1108,7 @@ private lemma exists_US (x : Kˣ) : ∃ S, x ∈ US S := by
   exact le_antisymm hv.1 ((inv_le_one₀ (zero_lt_iff.2 (by simp))).1 hv.2)
 
 /- English proof (translation)
-Introduce `v hv`. Use `h v hv` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val, map_pow, pow_eq_one_iff_of_nonneg zero_le two_ne_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma root_mem_US {S : Finset (HeightOneSpectrum (𝓞 K))} {x : Kˣ} (h : x ^ 2 ∈ US S) :
     x ∈ US S := by
@@ -1129,9 +1117,9 @@ private lemma root_mem_US {S : Finset (HeightOneSpectrum (𝓞 K))} {x : Kˣ} (h
   rwa [Units.val_pow_eq_pow_val, map_pow, pow_eq_one_iff_of_nonneg zero_le two_ne_zero] at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h1 : v.asIdeal ^ n ≤ w.asIdeal` using `fun a ha => by`. Assume the negation of the conclusion as `h'`. Conclude with `hc a ha (w.valuation_eq_one_iff_notMem.2 h')`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(HeightOneSpectrum.isCoprime_pow_of_ne v w h.symm n 1)`. Rewrite `h2` using `[Ideal.isCoprime_iff_sup_eq, pow_one, sup_eq_right.2 h1]`. Conclude with `w.isPrime.ne_top h2`.
+A detailed English derivation is pending.
 -/
 private lemma not_mem_of_pow {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ v) (n : ℕ) :
     ∃ a ∈ v.asIdeal ^ n, w.valuation K (algebraMap _ K a) = 1 := by
@@ -1145,13 +1133,13 @@ private lemma not_mem_of_pow {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ v) (n
   exact w.isPrime.ne_top h2
 
 /- English proof (translation)
-Use `set h := Nat.card (ClassGroup (𝓞 K))`. Establish `hv : v.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 K))` using `mem_nonZeroDivisors_of_ne_zero v.ne_bot`. Establish `h1 : ClassGroup.mk0 ⟨v.asIdeal ^ h, pow_mem hv h⟩ = 1`. Establish `: (⟨v.asIdeal ^ h, pow_mem hv h⟩ : nonZeroDivisors (Ideal (𝓞 K))) = ⟨_, hv⟩ ^ h` using `rfl`. Rewrite using `[this, map_pow, pow_card_eq_one']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(ClassGroup.mk0_eq_one_iff _).1 h1`. Establish `hc : v.asIdeal ^ h = Ideal.span {c}` using `hc`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `pow_ne_zero h v.ne_bot (by simpa using hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Units.mk0 (algebraMap _ K c) (by simpa using hc0), ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, val_alg, v.intValuation_eq_exp_neg_multiplicity hc0, ← hc, multiplicity_pow_self_of_prime v.prime]`. Take `⟨a, ha, h2⟩` from `not_mem_of_pow hw h`. Rewrite `ha` using `[hc, Ideal.mem_span_singleton']`. Take `⟨b, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[map_mul, map_mul]`. Use `le_antisymm (val_le_one _ _) ?_` and prove the remaining obligations. Rewrite using `[← h2]`. Conclude with `mul_le_of_le_one_left' (val_le_one _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_gen (v : HeightOneSpectrum (𝓞 K)) :
     ∃ c : Kˣ, v.valuation K c = WithZero.exp (-(Nat.card (ClassGroup (𝓞 K)) : ℤ)) ∧
@@ -1178,29 +1166,29 @@ private lemma exists_gen (v : HeightOneSpectrum (𝓞 K)) :
     exact mul_le_of_le_one_left' (val_le_one _ _)
 
 /- English proof (translation)
-Set `φ : Additive (US S) →ₗ[ℤ] (S → ℤ)` to `AddMonoidHom.toIntLinearMap { toFun := fun x v => WithZero.log (v.1.valuation K ((x.toMul : Kˣ) : K)) map_zero' := by ext; simp map_add' := by`. Introduce `x y`. Use extensionality with `v`. Simplify using `[WithZero.log_mul] }`. Establish `hφ : ∀ x v, φ x v = WithZero.log (v.1.valuation K ((x.toMul : Kˣ) : K))` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu : ∀ (u : (𝓞 K)ˣ) (v : HeightOneSpectrum (𝓞 K)), v.valuation K (algebraMap _ K (u : 𝓞 K)) = 1` using `fun u v => v.valuation_eq_one_iff_notMem.2 fun h => v.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h u.isUnit)`. Set `ψ : Additive (𝓞 K)ˣ →ₗ[ℤ] Additive (US S)` to `AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive ((Units.map (algebraMap (𝓞 K) K : 𝓞 K →* K)).codRestrict (US S) fun u v _ => hu u v))`. Establish `hψ : ∀ u, (((ψ u).toMul : Kˣ) : K) = algebraMap _ K (u.toMul : 𝓞 K)` using `fun _ => rfl`. Establish `hinj : Function.Injective ψ` using `fun x y h => by`. Use `hψ x` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h, hψ]`. Conclude with `Additive.toMul.injective (Units.ext (IsFractionRing.injective _ K this.symm))`. Establish `hker : LinearMap.range ψ = LinearMap.ker φ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, rfl⟩`. Use extensionality with `v`. Rewrite using `[hφ, hψ, hu]`. Simplify using the standard rewrite rules. Introduce `hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ∀ v : HeightOneSpectrum (𝓞 K), v.valuation K ((x.toMul : Kˣ) : K) = 1`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Use `congrFun hx ⟨v, hv⟩` as an intermediate fact. Rewrite `this` using `[hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_log (x := v.valuation K ((x.toMul : Kˣ) : K)) (by simp), this]`. Simplify using the standard rewrite rules. Conclude with `x.toMul.2 v hv`. Take `⟨a, ha⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one K _ fun v => (h1 v).le`. Take `⟨b, hb⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K ((x.toMul : Kˣ) : K)⁻¹ fun v => by simp [h1 v]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hab : a * b = 1` using `IsFractionRing.injective _ K (by rw [map_mul, ha, hb]; simp)`. Conclude with `⟨Additive.ofMul ⟨a, b, hab, by rw [mul_comm, hab]⟩, Subtype.ext (Units.ext ha)⟩`. Establish `hfin : Module.Finite ℤ (Additive (US S))`. Use `⟨Submodule.fg_of_fg_map_of_fg_inf_ker φ (IsNoetherian.noetherian _) ?_⟩` and prove the remaining obligations. Rewrite using `[top_inf_eq, ← hker, LinearMap.range_eq_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Module.Finite.fg_top.map _`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `h1` using `(LinearMap.ker φ).finrank_quotient_add_finrank`. Rewrite `h1` using `[φ.quotKerEquivRange.finrank_eq, ← hker, LinearMap.finrank_range_of_inj hinj, Units.finrank_eq]`. Establish `h2` using `(LinearMap.range φ).finrank_quotient_add_finrank`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : finrank ℤ ((S → ℤ) ⧸ LinearMap.range φ) = 0`. Rewrite using `[Module.finrank_eq_zero_iff_isTorsion]`. Introduce `q`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `⟨⟨-(Nat.card (ClassGroup (𝓞 K)) : ℤ), mem_nonZeroDivisors_of_ne_zero (by simpa using Nat.card_pos.ne')⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, pi_eq_sum_univ' x, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun v _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨c, hc, hc'⟩` from `exists_gen v.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Additive.ofMul ⟨c, fun w hw => hc' w fun h => hw (h ▸ v.2)⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Rewrite using `[hφ]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hc]`. Simplify using `[hc' w fun h => hw (Subtype.ext h), hw]`. Rewrite `h2` using `[h3]`. Simplify using `only [finrank_fintype_fun_eq_card, Fintype.card_coe] at h2`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma US_rank (S : Finset (HeightOneSpectrum (𝓞 K))) :
     Module.Finite ℤ (Additive (US S)) ∧ finrank ℤ (Additive (US S)) = Units.rank K + S.card := by
@@ -1275,7 +1263,7 @@ private lemma US_rank (S : Finset (HeightOneSpectrum (𝓞 K))) :
   omega
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `US_rank S`. Rewrite using `[index_sq _ (neg_one_mem_US S), h2, Units.rank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero]`. Use `IsTotallyComplex.finrank K` as an intermediate fact. Use `finrank_pos (R := ℚ) (M := K)` as an intermediate fact. Use `congr 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -1294,7 +1282,7 @@ private def Good (S : Finset (HeightOneSpectrum (𝓞 K))) : Prop :=
     ∀ v ∉ S, ∀ a ∈ I, v.valuation K (algebraMap _ K a) ≤ v.valuation K (algebraMap _ K c)
 
 /- English proof (translation)
-Use `⟨fun v hv => hS.1 v fun h' => hv (h h'), fun I hI => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, h0, h1⟩` from `hS.2 I hI`. Conclude with `⟨c, hc, h0, fun v hv => h1 v fun h' => hv (h h')⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma Good.mono {S T : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S) (h : S ⊆ T) :
     Good T := by
@@ -1303,11 +1291,11 @@ private lemma Good.mono {S T : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S
   exact ⟨c, hc, h0, fun v hv => h1 v fun h' => hv (h h')⟩
 
 /- English proof (translation)
-Establish `h0 : ∀ C : ClassGroup R, ∃ j : R, j ≠ 0 ∧ ∀ I : nonZeroDivisors (Ideal R), C = (ClassGroup.mk0 I)⁻¹ → ∃ c ∈ I.1, c ≠ 0 ∧ ∀ a ∈ I.1, ∃ b, b * c = a * j`. Introduce `C`. Take `⟨J, rfl⟩` from `ClassGroup.mk0_surjective C`. Take `⟨j, hj, hj0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (nonZeroDivisors.coe_ne_zero J)`. Use `⟨j, hj0, fun I hI => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc0, hc⟩` from `ClassGroup.mk0_eq_mk0_inv_iff.1 hI`. Take `⟨I, hI'⟩` from `I`. Take `⟨J, hJ'⟩` from `J`. Establish `hc : J * I = Ideal.span {c}` using `hc`. Establish `hc1 : c ∈ J * I` using `by rw [hc]; exact Ideal.mem_span_singleton_self c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c, Ideal.mul_le_right hc1, hc0, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton', ← hc, mul_comm a]`. Conclude with `Ideal.mul_mem_mul hj ha`. Use `choose j hj0 hj using h0`. Conclude with `⟨j, hj0, fun I hI => ⟨_, hj _ ⟨I, mem_nonZeroDivisors_of_ne_zero hI⟩ rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_reps (R : Type*) [CommRing R] [IsDedekindDomain R] :
     ∃ j : ClassGroup R → R, (∀ C, j C ≠ 0) ∧ ∀ I : Ideal R, I ≠ ⊥ → ∃ C, ∃ c ∈ I, c ≠ 0 ∧
@@ -1330,11 +1318,11 @@ private lemma exists_reps (R : Type*) [CommRing R] [IsDedekindDomain R] :
   exact ⟨j, hj0, fun I hI => ⟨_, hj _ ⟨I, mem_nonZeroDivisors_of_ne_zero hI⟩ rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨j, hj0, hj⟩` from `exists_reps (𝓞 K)`. Establish `hj1 : ∀ C, algebraMap _ K (j C) ≠ 0` using `fun C => by simpa using hj0 C`. Use `choose T hT using fun C => exists_US (Units.mk0 _ (hj1 C))`. Take `⟨T2, hT2⟩` from `exists_US (Units.mk0 (2 : K) two_ne_zero)`. Use `⟨T2 ∪ Finset.univ.biUnion T, fun v hv => hT2 v fun h => hv (Finset.mem_union_left _ h), fun I hI => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C, c, hc, hc0, h⟩` from `hj I hI`. Use `⟨c, hc, hc0, fun v hv a ha => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h a ha`. Establish `h3 : v.valuation K (algebraMap _ K (j C)) = 1` using `hT C v fun h => hv (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨C, Finset.mem_univ _, h⟩))`. Establish `h4 : v.valuation K (algebraMap _ K (b * c)) = v.valuation K (algebraMap _ K (a * j C))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Rewrite `h4` using `[map_mul, map_mul, map_mul, map_mul, h3, mul_one]`. Rewrite using `[← h4]`. Conclude with `mul_le_of_le_one_left' (val_le_one _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_good : ∃ S : Finset (HeightOneSpectrum (𝓞 K)), Good S := by
   classical
@@ -1356,17 +1344,15 @@ private lemma exists_good : ∃ S : Finset (HeightOneSpectrum (𝓞 K)), Good S 
   exact mul_le_of_le_one_left' (val_le_one _ _)
 
 /- English proof (translation)
-Take `⟨a', d, hd, h1⟩` from `exists_den a`. Take `⟨b', e, he, h2⟩` from `exists_den b`. Establish `hd' : algebraMap _ K d ≠ 0` using `by simpa using hd`. Establish `he' : algebraMap _ K e ≠ 0` using `by simpa using he`. Establish `h3 : algebraMap _ K (a' * e) = a * algebraMap _ K (d * e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, ← h1, mul_assoc]`. Establish `h4 : algebraMap _ K (b' * d) = b * algebraMap _ K (d * e)`. Rewrite using `[map_mul, map_mul, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hde : algebraMap _ K (d * e) ≠ 0` using `by rw [map_mul]; exact mul_ne_zero hd' he'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take `⟨c, hc, hc0, h5⟩` from `hS.2 (Ideal.span {a' * e, b' * d}) (by`. Rewrite using `[Ne, Ideal.span_eq_bot]`. Introduce `h0`. Rewrite `h3` using `[h0 (a' * e) (by simp), map_zero]`. Rewrite `h4` using `[h0 (b' * d) (by simp), map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `h with h | h` into its components or cases. Conclude with `mul_ne_zero h hde h3.symm`. Conclude with `mul_ne_zero h hde h4.symm)`. Use `⟨Units.mk0 (algebraMap _ K c / algebraMap _ K (d * e)) (div_ne_zero (by simpa using hc0) hde), fun v hv => ?_⟩` and prove the remaining obligations. Establish `hp : 0 < v.valuation K (algebraMap _ K (d * e))` using `zero_lt_iff.2 (by simpa using hde)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_mk0, map_div₀, div_eq_iff hp.ne', max_mul, ← map_mul, ← map_mul, ← h3, ← h4]`. Use `le_antisymm ?_ (max_le (h5 v hv _ (Ideal.subset_span (by simp))) (h5 v hv _ (Ideal.subset_span (by simp))))` and prove the remaining obligations. Take `⟨x, y, rfl⟩` from `Ideal.mem_span_pair.1 hc`. Rewrite using `[map_add, map_mul _ x, map_mul _ y]`. Apply the tactic sequence `refine (Valuation.map_add _ _ _).trans (max_le_max ?_ ?_) <;>`.
-
-Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_one_left' (val_le_one _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma Good.gen {S : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S) {a b : K}
     (h : a ≠ 0 ∨ b ≠ 0) :
@@ -1402,13 +1388,13 @@ private lemma Good.gen {S : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S) {
     exact mul_le_of_le_one_left' (val_le_one _ _)
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∃ c : Kˣ, v.valuation K c = WithZero.exp (-(n : ℤ)) ∧ ∀ w ∉ S, w ≠ v → w.valuation K c = 1`. Introduce `n`. Take `⟨c, hc, hc0, h1⟩` from `hS.2 _ (pow_ne_zero n v.ne_bot)`. Use `⟨Units.mk0 (algebraMap _ K c) (by simpa using hc0), le_antisymm ((val_le_iff _ _ _).2 hc) ?_, fun w hw hwv => le_antisymm (val_le_one _ _) ?_⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `v.intValuation_exists_uniformizer`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h2 : v.valuation K (algebraMap _ K (π ^ n)) = WithZero.exp (-(n : ℤ))`. Rewrite using `[val_alg, map_pow, hπ, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Rewrite using `[← h2]`. Conclude with `h1 v hv _ ((val_le_iff _ _ _).1 h2.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, h2⟩` from `not_mem_of_pow hwv n`. Rewrite using `[← h2]`. Conclude with `h1 w hw a ha`. Take `⟨c, hc, hc'⟩` from `key 1`. Use `⟨c ^ (- WithZero.log (v.valuation K α)), ?_, fun w hw hwv => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, hc, ← WithZero.exp_zsmul]`. Simplify using `[WithZero.exp_log]`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, hc' w hw hwv, one_zpow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma Good.single {S : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S)
     {v : HeightOneSpectrum (𝓞 K)} (hv : v ∉ S) (α : Kˣ) :
@@ -1439,9 +1425,9 @@ section ext
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `⟨_, ?_, fun x => (HeightOneSpectrum.valuation_liesOver L (w.under (𝓞 K)) w x).symm⟩` and prove the remaining obligations. Introduce `h0`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (w.under (𝓞 K)).ne_bot`. Establish `h1` using `HeightOneSpectrum.intValuation_liesOver (w.under (𝓞 K)) w a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, pow_zero, eq_comm, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `h1 ha`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma val_under (w : HeightOneSpectrum (𝓞 L)) : ∃ e : ℕ, e ≠ 0 ∧ ∀ x : K,
     w.valuation L (algebraMap K L x) = (w.under (𝓞 K)).valuation K x ^ e := by
@@ -1454,7 +1440,7 @@ private lemma val_under (w : HeightOneSpectrum (𝓞 L)) : ∃ e : ℕ, e ≠ 0 
   exact h1 ha
 
 /- English proof (translation)
-Take `⟨e, he, h⟩` from `val_under (K := K) w`. Rewrite using `[h, h, pow_lt_pow_iff_left₀ zero_le zero_le he]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma val_lt (w : HeightOneSpectrum (𝓞 L)) {x y : K} :
     w.valuation L (algebraMap K L x) < w.valuation L (algebraMap K L y) ↔
@@ -1463,7 +1449,7 @@ private lemma val_lt (w : HeightOneSpectrum (𝓞 L)) {x y : K} :
   rw [h, h, pow_lt_pow_iff_left₀ zero_le zero_le he]
 
 /- English proof (translation)
-Take `⟨e, he, h⟩` from `val_under (K := K) w`. Rewrite using `[h, pow_eq_one_iff_of_nonneg zero_le he]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma val_eq_one (w : HeightOneSpectrum (𝓞 L)) {x : K} :
     w.valuation L (algebraMap K L x) = 1 ↔ (w.under (𝓞 K)).valuation K x = 1 := by
@@ -1471,7 +1457,7 @@ private lemma val_eq_one (w : HeightOneSpectrum (𝓞 L)) {x : K} :
   rw [h, pow_eq_one_iff_of_nonneg zero_le he]
 
 /- English proof (translation)
-Take `⟨z, hz, y, rfl⟩` from `(mem_Qv _).1 h`. Use `(mem_Qv _).2 ⟨Units.map (algebraMap K L : K →* L) z, ?_, Units.map (algebraMap K L : K →* L) y, by simp⟩` and prove the remaining obligations. Use `(val_lt w).2 ((mem_near4 _).1 hz)` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, map_ofNat]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma map_mem_Qv (w : HeightOneSpectrum (𝓞 L)) {x : Kˣ}
     (h : x ∈ Qv ((w.under (𝓞 K)).valuation K)) :
@@ -1484,11 +1470,9 @@ private lemma map_mem_Qv (w : HeightOneSpectrum (𝓞 L)) {x : Kˣ}
   exact this
 
 /- English proof (translation)
-Establish `key : ∀ x y : ℤᵐ⁰, y ≤ 1 → (∀ n : ℕ, y ≤ WithZero.exp (-(n : ℤ)) → x ≤ WithZero.exp (-(n : ℤ))) → x ≤ y`. Introduce `x y hy h`. Distinguish the cases in `hy0 : y = 0`. Assume the negation of the conclusion as `hc`. Take `⟨k, hk⟩` from `WithZero.exists_exp_neg_natCast_lt (x := x) (by rintro rfl; simp at hc)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (h k (by simp [hy0])) (not_le.2 hk)`. Establish `h1 : WithZero.log y ≤ 0` using `(WithZero.log_le_iff_le_exp hy0).2 (by simpa using hy)`. Establish `h2 : y = WithZero.exp (-((- WithZero.log y).toNat : ℤ))`. Rewrite using `[Int.toNat_of_nonneg (by omega), neg_neg, WithZero.exp_log hy0]`. Conclude with `(h _ h2.le).trans h2.ge`.
-
-Conclude with `le_antisymm (key _ _ hy fun n => (h n).2) (key _ _ hx fun n => (h n).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eq_of_le_exp {x y : ℤᵐ⁰} (hx : x ≤ 1) (hy : y ≤ 1)
     (h : ∀ n : ℕ, x ≤ WithZero.exp (-(n : ℤ)) ↔ y ≤ WithZero.exp (-(n : ℤ))) : x = y := by
@@ -1506,13 +1490,13 @@ private lemma eq_of_le_exp {x y : ℤᵐ⁰} (hx : x ≤ 1) (hy : y ≤ 1)
   exact le_antisymm (key _ _ hy fun n => (h n).2) (key _ _ hx fun n => (h n).1)
 
 /- English proof (translation)
-Set `e : 𝓞 L ≃+* 𝓞 L` to `RingOfIntegers.mapRingEquiv σ.toRingEquiv`. Establish `he : ∀ a, algebraMap _ L (e a) = σ (algebraMap _ L a)` using `fun _ => rfl`. Set `w'` to `HeightOneSpectrum.comap (e : 𝓞 L →+* 𝓞 L) e.surjective w`. Establish `h1 : ∀ a : 𝓞 L, w'.valuation L (algebraMap _ L a) = w.valuation L (σ (algebraMap _ L a))`. Introduce `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← he]`. Use `eq_of_le_exp (val_le_one _ _) (val_le_one _ _) fun n => ?_` and prove the remaining obligations. Rewrite using `[val_le_iff, val_le_iff]`. Use `show a ∈ (w.asIdeal.comap (e : 𝓞 L →+* 𝓞 L)) ^ n ↔ _`. Rewrite using `[Ideal.comap_coe, ← Ideal.map_symm, ← Ideal.map_pow, Ideal.map_symm, Ideal.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w', ?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `a show e (algebraMap _ _ a) ∈ w.asIdeal ↔ algebraMap _ _ a ∈ w.asIdeal`. Establish `: e (algebraMap (𝓞 K) (𝓞 L) a) = algebraMap _ _ a` using `Subtype.ext (σ.commutes (algebraMap _ K a))`. Rewrite using `[this]`. Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 L) x`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_div₀, map_div₀, h1, h1]`.
+A detailed English derivation is pending.
 -/
 private lemma exists_conj (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) :
     ∃ w' : HeightOneSpectrum (𝓞 L), w'.under (𝓞 K) = w.under (𝓞 K) ∧
@@ -1538,7 +1522,7 @@ private lemma exists_conj (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) 
 
 variable (L) in
 /- English proof (translation)
-Use `v.isMaximal` as an intermediate fact. Take `⟨P, hP, h⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) v.asIdeal`. Conclude with `⟨⟨P, hP.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, HeightOneSpectrum.ext h.over.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_over (v : HeightOneSpectrum (𝓞 K)) :
     ∃ w : HeightOneSpectrum (𝓞 L), w.under (𝓞 K) = v := by
@@ -1549,9 +1533,9 @@ private lemma exists_over (v : HeightOneSpectrum (𝓞 K)) :
 
 variable (L) in
 /- English proof (translation)
-Establish `: ((fun w : HeightOneSpectrum (𝓞 L) => w.under (𝓞 K)) ⁻¹' S).Finite`. Use `S.finite_toSet.preimage' fun v _ => ?_` and prove the remaining obligations. Use `v.isMaximal` as an intermediate fact. Use `((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 L)).preimage (f := HeightOneSpectrum.asIdeal) (fun _ _ _ _ h => HeightOneSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce and unpack `w rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨w.isPrime, ⟨rfl⟩⟩`. Conclude with `⟨this.toFinset, fun w => by simp⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private lemma exists_SL (S : Finset (HeightOneSpectrum (𝓞 K))) :
     ∃ T : Finset (HeightOneSpectrum (𝓞 L)), ∀ w, w ∈ T ↔ w.under (𝓞 K) ∈ S := by
@@ -1565,15 +1549,15 @@ private lemma exists_SL (S : Finset (HeightOneSpectrum (𝓞 K))) :
   exact ⟨this.toFinset, fun w => by simp⟩
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `exists_over L v`. Take `⟨w', h1, h2⟩` from `exists_conj σ w`. Use `⟨w, w', ?_, rfl, h1⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨z, hz, y, rfl⟩` from `(mem_Qv _).1 h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hy : algebraMap K L y ≠ 0` using `by simp`. Establish `h3` using `(val_lt w).2 ((mem_near4 _).1 hz)`. Rewrite `h3` using `[map_ofNat]`. Use `set s := r / algebraMap K L y with hs`. Establish `h4 : w.valuation L (1 + s) = w.valuation L (1 - s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hs, map_add, map_one, map_div₀, hσ, σ.commutes, neg_div, sub_eq_add_neg]`. Establish `h5 : algebraMap K L (z - 1) = - ((1 + s) * (1 - s))`. Establish `: s ^ 2 = algebraMap K L z`. Rewrite using `[hs, div_pow, hr]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_one, ← this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[h5, Valuation.map_neg, map_mul, ← h4, v_four_eq, ← sq]`. Establish `h6` using `lt_of_pow_lt_pow_left₀ 2 zero_le h3`. Establish `h7` using `Valuation.map_add_lt _ h6 (h4 ▸ h6)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 + s + (1 - s) = 2` using `by ring`. Rewrite `h7` using `[this]`. Conclude with `lt_irrefl _ h7`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma split {θ : Kˣ} {r : L} (hr : r ^ 2 = algebraMap K L θ) (σ : L ≃ₐ[K] L)
     (hσ : σ r = -r) {v : HeightOneSpectrum (𝓞 K)} (h : θ ∈ Qv (v.valuation K)) :
@@ -1601,11 +1585,9 @@ private lemma split {θ : Kˣ} {r : L} (hr : r ^ 2 = algebraMap K L θ) (σ : L 
   exact lt_irrefl _ h7
 
 /- English proof (translation)
-Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := fun w => w.under (𝓞 K)) (s := T) (t := S) (fun w hw => (hT w).1 hw)]`. Establish `: S.card + P.card = ∑ v ∈ S, (1 + if v ∈ P then 1 else 0)`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_mem, Finset.inter_eq_right.2 hP]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun v hv => ?_` and prove the remaining obligations. Use `split_ifs with hvP`. Take `⟨w, w', h1, rfl, h3⟩` from `split hr σ hσ (h v hvP)`. Conclude with `Finset.one_lt_card.2 ⟨w, by simp [hT, hv], w', by simp [hT, hv, h3], h1⟩`. Take `⟨w, rfl⟩` from `exists_over L v`.
-
-Conclude with `Finset.card_pos.2 ⟨w, by simp [hT, hv]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma card_SL {θ : Kˣ} {r : L} (hr : r ^ 2 = algebraMap K L θ) (σ : L ≃ₐ[K] L)
     (hσ : σ r = -r) {S P : Finset (HeightOneSpectrum (𝓞 K))} (hP : P ⊆ S)
@@ -1627,7 +1609,7 @@ private lemma card_SL {θ : Kˣ} {r : L} (hr : r ^ 2 = algebraMap K L θ) (σ : 
 end ext
 
 /- English proof (translation)
-Establish `h1` using `(LinearMap.ker g).finrank_quotient_add_finrank`. Rewrite `h1` using `[g.quotKerEquivRange.finrank_eq]`. Establish `h2` using `Submodule.finrank_mono h`. Establish `h3` using `LinearMap.finrank_range_le f`. Establish `h4` using `Submodule.finrank_le (LinearMap.range g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -1645,23 +1627,21 @@ section ct
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `(map_ne_zero (algebraMap K L)).2 θ.ne_zero (by rw [← hr]; simp)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx0, hx⟩ : ∃ x : L, x ≠ 0 ∧ u * σ x = x := by`. Distinguish the cases in `h : 1 + (u : L) = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨r, hr0, by rw [hσ]; linear_combination (-r) * h⟩`. Conclude with `⟨1 + u, h, by rw [map_add, map_one]; linear_combination hu1⟩`. Take `⟨a, b, hab⟩` from `hb x`. Establish `hσx : σ x = algebraMap K L a - algebraMap K L b * r`. Rewrite using `[hab, map_add, map_mul, hσ, σ.commutes, σ.commutes]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩` from `hS.gen (a := a) (b := b) (by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Simplify using `[h.1, h.2, hx0] at hab)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc0 : algebraMap K L c ≠ 0` using `by simp`. Use `⟨Units.mk0 (x / algebraMap K L c) (div_ne_zero hx0 hc0), fun w hw => ?_, ?_⟩` and prove the remaining obligations. Establish `hv` using `(hT w).not.1 hw`. Establish `h1 : w.valuation L (σ x) = w.valuation L x` using `by conv_rhs => rw [← hx, map_mul, hu w hw, one_mul]`. Establish `h2 : w.valuation L 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(val_eq_one w).2 (hS.1 _ hv)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `h3 : w.valuation L r = 1`. Use `(val_eq_one w).2 (hθ _ hv)` as an intermediate fact. Rewrite `this` using `[← hr, map_pow, pow_eq_one_iff_of_nonneg zero_le two_ne_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h4 : w.valuation L (algebraMap K L c) = max (w.valuation L (algebraMap K L a)) (w.valuation L (algebraMap K L b))`. Take `⟨e, -, h⟩` from `val_under (K := K) w`. Rewrite using `[h, h, h, hc _ hv]`. Conclude with `Monotone.map_max (f := fun x : ℤᵐ⁰ => x ^ e) (fun _ _ h => pow_le_pow_left' h e)`. Rewrite using `[Units.val_mk0, map_div₀, div_eq_one_iff_eq (by simp), h4]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm ?_ (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[hab]`. Use `(Valuation.map_add _ _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[map_mul, h3, mul_one]`. Use `Valuation.map_add_le _ le_rfl h1.le` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h5 : x + σ x = 2 * algebraMap K L a` using `by rw [hσx]; linear_combination hab`. Rewrite `this` using `[h5, map_mul, h2, one_mul]`. Then use the resulting hypothesis. Use `Valuation.map_sub_le _ le_rfl h1.le` as an intermediate fact. Establish `h5 : x - σ x = 2 * (algebraMap K L b * r)` using `by rw [hσx]; linear_combination hab`. Rewrite `this` using `[h5, map_mul, map_mul, h2, h3, one_mul, mul_one]`. Then use the resulting hypothesis.
-
-Rewrite using `[Units.val_mk0, map_div₀, σ.commutes, ← mul_div_assoc, hx]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_unit {θ : Kˣ} {r : L} (hr : r ^ 2 = algebraMap K L θ) (σ : L ≃ₐ[K] L)
     (hσ : σ r = -r) (hb : ∀ x : L, ∃ a b : K, x = algebraMap K L a + algebraMap K L b * r)
@@ -1712,49 +1692,47 @@ private lemma exists_unit {θ : Kˣ} {r : L} (hr : r ^ 2 = algebraMap K L θ) (�
   · rw [Units.val_mk0, map_div₀, σ.commutes, ← mul_div_assoc, hx]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `exists_SL L S`. Establish `hcard` using `card_SL hr σ hσ hP h hT`. Establish `hn0 : ∀ a b : K, (algebraMap K L a + algebraMap K L b * r) * σ (algebraMap K L a + algebraMap K L b * r) = algebraMap K L (a ^ 2 - θ * b ^ 2)`. Introduce `a b`. Rewrite using `[map_add, map_mul, hσ, σ.commutes, σ.commutes, map_sub, map_mul, map_pow, map_pow, ← hr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hσσ : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨a, b, rfl⟩` from `hb x`. Simplify using `[hσ]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hn : ∀ x : Lˣ, ∃ y : Kˣ, algebraMap K L y = x * σ x`. Introduce `x`. Take `⟨a, b, hx⟩` from `hb x`. Use `hn0 a b` as an intermediate fact. Rewrite `this` using `[← hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Units.mk0 (a ^ 2 - θ * b ^ 2) fun h0 => by simp [h0] at this, this.symm⟩`. Use `choose n hn using hn`. Establish `inj : ∀ {x y : Kˣ}, algebraMap K L x = algebraMap K L y → x = y` using `fun h => Units.ext ((algebraMap K L).injective h)`. Set `N : Lˣ →* Kˣ` to `MonoidHom.mk' n fun x y => inj (by`. Rewrite using `[Units.val_mul, map_mul, hn, hn, hn, Units.val_mul, map_mul]`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `ring)`. Establish `hN : ∀ x, algebraMap K L (N x) = x * σ x` using `hn`. Set `s : Lˣ →* Lˣ` to `Units.map (σ : L →* L)`. Establish `hs : ∀ x, (s x : L) = σ x` using `fun _ => rfl`. Set `ι : Kˣ →* Lˣ` to `Units.map (algebraMap K L : K →* L)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι : ∀ x, (ι x : L) = algebraMap K L x` using `fun _ => rfl`. Establish `hsT : ∀ x ∈ US T, s x ∈ US T`. Introduce `x hx w hw`. Take `⟨w', h1, h2⟩` from `exists_conj σ w`. Rewrite using `[hs, ← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx w' (by rwa [hT, h1, ← hT])`. Establish `hιT : ∀ x ∈ US S, ι x ∈ US T` using `fun x hx w hw => (val_eq_one w).2 (hx _ ((hT w).not.1 hw))`. Establish `hNT : ∀ x ∈ US T, N x ∈ US S`. Introduce `x hx v hv`. Take `⟨w, rfl⟩` from `exists_over L v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← val_eq_one, hN]`. Conclude with `mul_mem hx (hsT x hx) w ((hT w).not.2 hv)`. Set `NU : US T →* US S` to `(N.comp (US T).subtype).codRestrict _ fun x => hNT _ x.2`. Set `U1 : Subgroup Lˣ` to `US T ⊓ N.ker`. Establish `hU1 : ∀ x, x ∈ U1 ↔ x ∈ US T ∧ (x : L) * σ x = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x`. Use `and_congr_right fun _ => ⟨fun h => ?_, fun h => inj (by rw [hN, h]; simp)⟩` and prove the remaining obligations. Rewrite using `[← hN, show N x = 1 from h]`. Simplify using the standard rewrite rules. Set `δ : US T →* U1` to `(((MonoidHom.id Lˣ) / s).comp (US T).subtype).codRestrict _ fun x => by`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hU1 _).2 ⟨div_mem x.2 (hsT _ x.2), ?_⟩` and prove the remaining obligations. Simplify using `[hs, hσσ]`. Establish `hδ : ∀ x, ((δ x : Lˣ) : L) = (x : Lˣ) / σ (x : Lˣ)` using `fun x => by`. Rewrite using `[← hs, ← Units.val_div_eq_div_val]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective δ`. Introduce and unpack `⟨u, hu⟩`. Take `⟨y, hy, h1⟩` from `exists_unit hr σ hσ hb hS hθ hT ((hU1 u).1 hu).1 ((hU1 u).1 hu).2`. Use `⟨⟨y, hy⟩, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hδ, div_eq_iff (by simp), h1]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hfK, hrK⟩` from `US_rank S`. Take `⟨hfL, hrL⟩` from `US_rank T`. Set `j : Additive U1 →ₗ[ℤ] Additive (US T)` to `(MonoidHom.toAdditive (Subgroup.inclusion inf_le_left)).toIntLinearMap`. Establish `hf1 : Module.Finite ℤ (Additive U1)` using `Module.Finite.of_injective j (Subgroup.inclusion_injective inf_le_left)`. Establish `hrk` using `finrank_le_add j (MonoidHom.toAdditive NU).toIntLinearMap (by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hx⟩ h`. Conclude with `⟨Additive.ofMul ⟨x, hx, congrArg Subtype.val h⟩, rfl⟩)`. Establish `hi1` using `index_sq U1 ((hU1 _).2 ⟨neg_one_mem_US T, by simp⟩)`. Establish `hiK` using `index_sq_US S`. Use `set D := (powMonoidHom (α := US S) 2).range with hD`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hDR : D ≤ NU.range`. Introduce and unpack `_ ⟨c, rfl⟩`. Use `⟨⟨ι c, hιT _ c.2⟩, Subtype.ext (inj ?_)⟩` and prove the remaining obligations. Use `(hN _).trans ?_` and prove the remaining obligations. Simplify using `[hι, sq]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcom : D.comap NU ≤ (powMonoidHom (α` using `U1) 2).range.comap δ := by`. Introduce and unpack `x ⟨c, hc⟩`. Establish `hc : algebraMap K L ((c : Kˣ) : K) ^ 2 = (x : Lˣ) * σ (x : Lˣ)`. Rewrite using `[← hN]`. Use `congrArg (fun t : US S => algebraMap K L ((t : Kˣ) : K)) hc` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ this` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hc0 : algebraMap K L ((c : Kˣ) : K) ≠ 0` using `by simp`. Establish `hx0 : σ (x : Lˣ) ≠ 0` using `by simp`. Use `⟨⟨x / ι c, (hU1 _).2 ⟨div_mem x.2 (hιT _ c.2), ?_⟩⟩, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[Units.val_div_eq_div_val, hι, map_div₀, σ.commutes, div_mul_div_comm, ← hc, sq, div_self (mul_ne_zero hc0 hc0)]`. Rewrite using `[hδ] show (((x : Lˣ) / ι c : Lˣ) : L) ^ 2 = _`. Rewrite using `[Units.val_div_eq_div_val, hι, div_pow, hc]`. Clear the denominators using the available nonvanishing facts. Establish `hRN : NU.range ≤ (Nm (θ : K)).subgroupOf (US S)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨a, b, hx⟩` from `hb (x : Lˣ)`. Use `⟨a, b, (algebraMap K L).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hn0, ← hx]`. Conclude with `hN _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `Subgroup.relIndex_mul_index hDR`. Rewrite `e1` using `[← Subgroup.index_comap, hiK]`. Establish `e2` using `Subgroup.index_dvd_of_le hcom`. Rewrite `e2` using `[Subgroup.index_comap_of_surjective _ hsurj, hi1]`. Establish `e3` using `mul_dvd_mul e2 (Subgroup.index_dvd_of_le hRN)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e3` using `[e1, ← Subgroup.relIndex]`. Use `⟨fun h0 => by simp [h0] at e3, ?_⟩` and prove the remaining obligations. Establish `e4` using `Nat.le_of_dvd (by positivity) e3`. Establish `: IsTotallyComplex L` using `isTotallyComplex_of_algebra K L`. Establish `f1` using `IsTotallyComplex.finrank K`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `f2` using `IsTotallyComplex.finrank L`. Establish `f3` using `finrank_mul_finrank ℚ K L`. Establish `f4` using `finrank_pos (R := ℚ) (M := K)`. Rewrite `hrk` using `[hrK, hrL, Units.rank, Units.rank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, IsTotallyComplex.nrRealPlaces_eq_zero]`. Rewrite `f3` using `[h2]`.
-
-Establish `e5 : 2 ^ (InfinitePlace.nrComplexPlaces K + (P.card + 1)) ≤ 2 ^ (finrank ℤ (Additive U1) + 1)` using `Nat.pow_le_pow_right two_pos (by omega)`. Establish `e6` using `(Nat.mul_le_mul_right _ e5).trans e4`. Rewrite `e6` using `[pow_add, pow_add 2 _ S.card, mul_assoc]`. Conclude with `Nat.le_of_mul_le_mul_left e6 (by positivity)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_index_count_bound [IsTotallyComplex K] {θ : Kˣ} {r : L} (hr : r ^ 2 = algebraMap K L θ)
     (σ : L ≃ₐ[K] L) (hσ : σ r = -r)
@@ -1883,9 +1861,9 @@ private lemma norm_index_count_bound [IsTotallyComplex K] {θ : Kˣ} {r : L} (hr
 end ct
 
 /- English proof (translation)
-Establish `: Fact (∀ r : K, r ^ 2 ≠ θ + 0 * r)` using `⟨fun r hr => h ⟨r, by rw [← sq, hr]; simp⟩⟩`. Establish `: NumberField (QuadraticAlgebra K θ 0)` using `NumberField.of_module_finite K _`. Use `⟨QuadraticAlgebra K θ 0, inferInstance, this, inferInstance, QuadraticAlgebra.omega, { (starRingAut : RingAut (QuadraticAlgebra K θ 0)) with commutes' := ?_ }, ?_, ?_, ?_, QuadraticAlgebra.finrank_eq_two _ _⟩` and prove the remaining obligations. Apply the tactic sequence `intro r; ext <;> simp`. Apply the tactic sequence `ext <;> simp [sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show star _ = _`. Apply the tactic sequence `ext <;> simp`. Introduce `x`. Apply the tactic sequence `exact ⟨x.re, x.im, by ext <;> simp⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma exists_quad {K : Type} [Field K] [NumberField K] {θ : K} (h : ¬ IsSquare θ) :
     ∃ (L : Type) (_ : Field L) (_ : NumberField L) (_ : Algebra K L) (r : L) (σ : L ≃ₐ[K] L),
@@ -1907,7 +1885,7 @@ section glob
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
 
 /- English proof (translation)
-Take `⟨L, _, _, _, r, σ, h1, h2, h3, h4⟩` from `exists_quad hsq`. Conclude with `norm_index_count_bound h1 σ h2 h3 h4 hS hθ hP h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma count {θ : Kˣ} (hsq : ¬ IsSquare (θ : K))
     {S P : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S) (hθ : θ ∈ US S) (hP : P ⊆ S)
@@ -1918,9 +1896,9 @@ private lemma count {θ : Kˣ} (hsq : ¬ IsSquare (θ : K))
   exact norm_index_count_bound h1 σ h2 h3 h4 hS hθ hP h
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `count hsq hS hθ (Finset.filter_subset (fun v => θ ∈ Qv (v.valuation K)) S) (fun v hv => by rw [Finset.mem_filter] at hv; exact hv.2)`. Establish `hle : Nm (θ : K) ≤ ⨅ v ∈ S.filter (fun v => θ ∉ Qv (v.valuation K)), LN (v.valuation K) θ` using `le_iInf₂ fun _ _ => le_sup_left`. Establish `h2` using `pow_le_relIndex (fun v : HeightOneSpectrum (𝓞 K) => LN (v.valuation K) θ) (US S) (S.filter (fun v => θ ∉ Qv (v.valuation K))) (fun v hv => by`. Take `⟨x, h1, h2, h3⟩` from `hx v (Finset.mem_filter.1 hv).1 (Finset.mem_filter.1 hv).2`. Conclude with `⟨x, h1, h2, fun w hw => h3 w (Finset.mem_filter.1 hw).1 (Finset.mem_filter.1 hw).2⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(ne_zero_of_dvd_ne_zero h0 (Subgroup.relIndex_dvd_of_le_left _ hle))`. Establish `h3` using `(Nat.mul_le_mul_left _ (h2.trans (Subgroup.relIndex_le_of_le_left hle h0))).trans h1`. Rewrite `h3` using `[← pow_add, Nat.pow_le_pow_iff_right one_lt_two]`. Use `Finset.card_filter_add_card_filter_not (s := S) (fun v => θ ∈ Qv (v.valuation K))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma count_contra {θ : Kˣ} (hsq : ¬ IsSquare (θ : K))
     {S : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S) (hθ : θ ∈ US S)
@@ -1943,7 +1921,7 @@ private lemma count_contra {θ : Kˣ} (hsq : ¬ IsSquare (θ : K))
 
 omit [IsTotallyComplex K] in
 /- English proof (translation)
-Introduce `hx` and use `hα (by simpa using mul_mem hx (inv_mem (Qv_le_LN _ θ h)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma not_LN {v : HeightOneSpectrum (𝓞 K)} {θ : K} {α x : Kˣ}
     (hα : α ∉ LN (v.valuation K) θ) (h : α⁻¹ * x ∈ Qv (v.valuation K)) :
@@ -1952,7 +1930,7 @@ private lemma not_LN {v : HeightOneSpectrum (𝓞 K)} {θ : K} {α x : Kˣ}
 
 omit [IsTotallyComplex K] in
 /- English proof (translation)
-Distinguish the cases in `h : θ ∈ Qv (v.valuation K)`. Conclude with `⟨1, fun h' => absurd h h', fun _ _ _ => one_mem _⟩`. Take `⟨α, hα⟩` from `nonnorm' v h`. Take `⟨x, h1, h2⟩` from `weak_approx v S α`. Conclude with `⟨x, fun _ => not_LN hα h1, fun w hw hwv => Qv_le_LN _ _ (h2 w hw hwv)⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_dual {θ : Kˣ} (S : Finset (HeightOneSpectrum (𝓞 K)))
     (v : HeightOneSpectrum (𝓞 K)) : ∃ x : Kˣ, (θ ∉ Qv (v.valuation K) → x ∉ LN (v.valuation K) θ) ∧
@@ -1964,9 +1942,9 @@ private lemma exists_dual {θ : Kˣ} (S : Finset (HeightOneSpectrum (𝓞 K)))
   exact ⟨x, fun _ => not_LN hα h1, fun w hw hwv => Qv_le_LN _ _ (h2 w hw hwv)⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `choose x hx hx' using exists_dual (θ := θ) S`. Use `choose T hT using fun v => exists_US (x v)`. Take `⟨G, hG⟩` from `exists_good (K := K)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨A, hA⟩` from `exists_US θ`. Establish `hS : ∀ v, θ ∉ Qv (v.valuation K) → v ∈ S` using `fun v hv => by_contra fun h => hv (hc v h)`. Use `count_contra hsq (S := G ∪ (A ∪ S.biUnion T)) (hG.mono Finset.subset_union_left) (US_mono (Finset.subset_union_left.trans Finset.subset_union_right) hA) fun v _ hv => ?_` and prove the remaining obligations. Use `⟨x v, US_mono ?_ (hT v), hx v hv, fun w _ hw => hx' v w (hS w hw)⟩` and prove the remaining obligations. Conclude with `(Finset.subset_biUnion_of_mem T (hS v hv)).trans (Finset.subset_union_right.trans Finset.subset_union_right)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma exists_nonsplit {θ : Kˣ} (hsq : ¬ IsSquare (θ : K))
     (S : Finset (HeightOneSpectrum (𝓞 K))) : ∃ v ∉ S, θ ∉ Qv (v.valuation K) := by
@@ -1985,17 +1963,17 @@ private lemma exists_nonsplit {θ : Kˣ} (hsq : ¬ IsSquare (θ : K))
     (Finset.subset_union_right.trans Finset.subset_union_right)
 
 /- English proof (translation)
-Take `⟨L, _, _, _, r, σ, h1, h2, h3, -⟩` from `exists_quad hsq`. Establish `: IsTotallyComplex L` using `isTotallyComplex_of_algebra K L`. Take `⟨T, hT⟩` from `exists_SL L S`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(map_ne_zero (algebraMap K L)).2 θ.ne_zero (by rw [← h1]; simp)`. Take `⟨w, hw, h4⟩` from `exists_nonsplit (θ := Units.map (algebraMap K L : K →* L) u) (by`. Introduce and unpack `⟨x, hx⟩`. Take `⟨a, b, rfl⟩` from `h3 x`. Establish `hx : algebraMap K L u = _` using `hx`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `congrArg σ hx`. Simplify using `only [map_mul, map_add, h2, σ.commutes] at h5`. Establish `h6 : 4 * algebraMap K L a * algebraMap K L b * r = 0` using `by linear_combination h5 - hx`. Simplify using `only [mul_eq_zero, map_eq_zero, hr0, or_false] at h6`. Break down `h6 with (h6 | rfl) | rfl` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at h6`. Use `huθ ⟨b * θ, (algebraMap K L).injective ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, hx, ← h1, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Use `hu ⟨a, (algebraMap K L).injective ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hx]) T`. Establish `hv` using `(hT w).not.1 hw`. Establish `h5 : u ∉ Qv ((w.under (𝓞 K)).valuation K)` using `fun h => h4 (map_mem_Qv w h)`. Use `⟨_, hv, by_contra fun h6 => h4 ?_, h5⟩` and prove the remaining obligations. Establish `h7` using `map_mem_Qv w (mul_mem_Qv _ (hS.1 _ hv) (huS _ hv) (hθS _ hv) h5 h6)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : Units.map (algebraMap K L : K →* L) θ = Units.mk0 r hr0 ^ 2` using `Units.ext h1.symm`. Rewrite `h7` using `[map_mul, h8]`. Conclude with `(Subgroup.mul_mem_cancel_right _ (sq_mem_Qv _ _)).1 h7`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_prime {θ u : Kˣ} (hsq : ¬ IsSquare (θ : K)) (hu : ¬ IsSquare (u : K))
     (huθ : ¬ IsSquare (u * θ : K)) {S : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S)
@@ -2031,7 +2009,7 @@ private lemma exists_prime {θ u : Kˣ} (hsq : ¬ IsSquare (θ : K)) (hu : ¬ Is
 
 omit [IsTotallyComplex K] in
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy`. Establish `: Units.mk0 y hy0 ^ 2 = u` using `Units.ext (by simp [hy, sq])`. Conclude with `⟨⟨Units.mk0 y hy0, root_mem_US (this ▸ u.2)⟩, Subtype.ext this⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private lemma mem_sq {S : Finset (HeightOneSpectrum (𝓞 K))} (u : US S)
     (h : IsSquare ((u : Kˣ) : K)) : u ∈ (powMonoidHom (α := US S) 2).range := by
@@ -2042,7 +2020,7 @@ private lemma mem_sq {S : Finset (HeightOneSpectrum (𝓞 K))} (u : US S)
 
 omit [IsTotallyComplex K] in
 /- English proof (translation)
-Distinguish the cases in `h1 : x ∈ Qv (v.valuation K)`. Conclude with `mul_mem h1 (h.1 h1)`. Conclude with `mul_mem_Qv v h2 hx hy h1 (h.not.1 h1)`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 private lemma mul_mem_Qv' {v : HeightOneSpectrum (𝓞 K)} (h2 : v.valuation K 2 = 1) {x y : Kˣ}
     (hx : v.valuation K x = 1) (hy : v.valuation K y = 1)
@@ -2052,27 +2030,25 @@ private lemma mul_mem_Qv' {v : HeightOneSpectrum (𝓞 K)} (h2 : v.valuation K 2
   · exact mul_mem_Qv v h2 hx hy h1 (h.not.1 h1)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨∅, rfl, by simp, by simp, fun _ => ⟨1, one_mem _, by simp⟩⟩`. Consider the case `succ k ih`. Take `⟨T, hT, h1, h2, h3⟩` from `ih (by omega)`. Establish `: ∃ u ∈ US S, (∀ v ∈ T, u ∈ Qv (v.valuation K)) ∧ ¬ IsSquare (u : K) ∧ ¬ IsSquare (u * θ : K)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `set KT := ⨅ v ∈ T, Qv (v.valuation K) with hKT`. Establish `hm : ∀ x, x ∈ KT ↔ ∀ v ∈ T, x ∈ Qv (v.valuation K)` using `by simp [hKT, Subgroup.mem_iInf]`. Establish `e1` using `relIndex_le_card KT (US S) (fun x (v : T) => decide ((x : Kˣ) ∈ Qv (v.1.valuation K))) (fun x y h => (hm _).2 fun v hv => mul_mem_Qv' (hS.1 _ (h1 v hv)) (inv_mem x.2 _ (h1 v hv)) (y.2 _ (h1 v hv)) (by simpa using congrFun h ⟨v, hv⟩))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `e2` using `relIndex_le_card (powMonoidHom (α := US S) 2).range (KT.subgroupOf (US S)) (fun x => decide (IsSquare (((x : US S) : Kˣ) : K))) (by`. Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩ h`. Use `mem_sq _ ?_` and prove the remaining obligations. Simplify using `only [decide_eq_decide] at h`. Use `show IsSquare (((x : Kˣ)⁻¹ * y : Kˣ) : K)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Distinguish the cases in `hs : IsSquare ((x : Kˣ) : K)`. Conclude with `hs.inv.mul (h.1 hs)`. Use `(hc _ x.2 ((hm _).1 hx) hs).inv.mul (hc _ y.2 ((hm _).1 hy) (h.not.1 hs))` as an intermediate fact. Establish `e : ((x : Kˣ) : K)⁻¹ * (y : Kˣ) = ((x : Kˣ) * θ : K)⁻¹ * ((y : Kˣ) * θ)`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e])` and apply the resulting hypothesis. Establish `e3` using `Subgroup.relIndex_mul_index (H := (powMonoidHom (α := US S) 2).range) (K := KT.subgroupOf (US S)) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `(hm _).2 fun v _ => sq_mem_Qv _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e4` using `Nat.mul_le_mul e2.2 e1.2`. Rewrite `e4` using `[Subgroup.relIndex, Subgroup.relIndex]`. Rewrite `e3` using `[Subgroup.relIndex, index_sq_US]`. Rewrite `e4` using `[e3, Nat.card_fun]`. Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_bool, Fintype.card_coe] at e4`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e4` using `[← pow_succ', Nat.pow_le_pow_iff_right one_lt_two]`. Use linear arithmetic over natural numbers and integers. Take `⟨u, hu, hu1, hu2, hu3⟩` from `this`. Take `⟨v, hv, hv1, hv2⟩` from `exists_prime hsq hu2 hu3 hS hθ hu`. Establish `hvT : v ∉ T` using `fun h => hv2 (hu1 v h)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨insert v T, by rw [Finset.card_insert_of_notMem hvT, hT], ?_, ?_, fun A => ?_⟩` and prove the remaining obligations. Simplify `h1` using `[hv]`. Simplify `h2` using `[hv1]`. Take `⟨x, hx, hx1⟩` from `h3 A`. Distinguish the cases in `h : x ∈ Qv (v.valuation K) ↔ A v`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨x, hx, by simpa [h] using hx1⟩`. Use `⟨x * u, mul_mem hx hu, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Distinguish the cases in `h' : x ∈ Qv (w.valuation K)`.
+Rewrite the conclusion using the stated equalities. The claim follows by propositional logic. Establish an intermediate fact. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mul_mem_cancel_left _ h']`. The claim follows by propositional logic. Use `mul_mem_Qv w (hS.1 _ hv) (hx _ hv) (hu _ hv) h' hv2` as an intermediate fact. The claim follows by propositional logic. Rewrite using `[Subgroup.mul_mem_cancel_right _ (hu1 w hw)]`.
-
-Conclude with `hx1 w hw`.
+A detailed English derivation is pending.
 -/
 private lemma exists_strictHenselian_absolutely_closed_local_ring {θ : Kˣ} (hsq : ¬ IsSquare (θ : K))
     {S : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S) (hθ : θ ∈ US S) (k : ℕ)
@@ -2139,13 +2115,13 @@ private lemma exists_strictHenselian_absolutely_closed_local_ring {θ : Kˣ} (hs
         exact hx1 w hw
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hsq`. Use `count_contra hsq (hS.mono Finset.subset_union_left) hb fun v hv hvb => ?_` and prove the remaining obligations. Establish `hT : ∀ v ∈ S ∪ T, b ∉ Qv (v.valuation K) → v ∈ T` using `fun v hv hvb => (Finset.mem_union.1 hv).resolve_left fun h => hvb (hb' v h)`. Establish `hvT` using `hT v hv hvb`. Establish `hvS` using `h1 v hvT`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨α, hα⟩` from `nonnorm' v hvb`. Take `⟨c, hc, hc'⟩` from `hS.single hvS α`. Take `⟨u, hu, hu'⟩` from `h3 fun w => (if w = v then α⁻¹ * c else c) ∈ Qv (w.valuation K)`. Use `⟨c * u, mul_mem ?_ (US_mono Finset.subset_union_left hu), not_LN hα ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw` using `[Finset.mem_union, not_or]`. Conclude with `hc' w hw.1 fun h => hw.2 (h ▸ hvT)`. Rewrite using `[← mul_assoc]`. Conclude with `mul_mem_Qv' (hS.1 _ hvS) (by simp [hc]) (hu _ hvS) (by simpa using (hu' v hvT).symm)`. Introduce `w hw hwb hwv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwT` using `hT w hw hwb`. Establish `hwS` using `h1 w hwT`. Conclude with `Qv_le_LN _ _ (mul_mem_Qv' (hS.1 _ hwS) (hc' w hwS hwv) (hu _ hwS) (by simpa [hwv] using (hu' w hwT).symm))`.
+A detailed English derivation is pending.
 -/
 private lemma isSquare_of [DecidableEq (HeightOneSpectrum (𝓞 K))]
     {S T : Finset (HeightOneSpectrum (𝓞 K))} (hS : Good S)
@@ -2175,33 +2151,29 @@ private lemma isSquare_of [DecidableEq (HeightOneSpectrum (𝓞 K))]
       (by simpa [hwv] using (hu' w hwT).symm))
 
 /- English proof (translation)
-Distinguish the cases in `hsq : IsSquare (θ : K)`. Take `⟨t, ht⟩` from `hsq`. Establish `: t ≠ 0` using `by rintro rfl; simp at ht`. Use `⟨(ε + 1) / 2, (ε - 1) / (2 * t), ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨G, hG⟩` from `exists_good (K := K)`. Take `⟨A, hA⟩` from `exists_US θ`. Take `⟨B, hB⟩` from `exists_US ε`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hθ, hε⟩ : ∃ S, Good S ∧ θ ∈ US S ∧ ε ∈ US S` from `⟨G ∪ (A ∪ B), hG.mono Finset.subset_union_left, US_mono (Finset.subset_union_left.trans Finset.subset_union_right) hA, US_mono (Finset.subset_union_right.trans Finset.subset_union_right) hB⟩`. Establish `f1` using `IsTotallyComplex.finrank K`. Establish `f4` using `finrank_pos (R := ℚ) (M := K)`. Take `⟨T, hT, h1, h2, h3⟩` from `exists_strictHenselian_absolutely_closed_local_ring hsq hS hθ (InfinitePlace.nrComplexPlaces K + S.card - 1) (by omega)`. Establish `hcard : (S ∪ T).card = S.card + T.card` using `Finset.card_union_of_disjoint (Finset.disjoint_right.2 h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set U := US (S ∪ T) with hU`. Use `set I := S.filter (fun v => θ ∉ Qv (v.valuation K)) with hI`. Use `set Λ := ⨅ v ∈ I, LN (v.valuation K) θ with hΛ`. Take `⟨q0, q1⟩` from `index_QS S`. Use `set QS := ⨅ v ∈ S, Qv (v.valuation K) with hQS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQΛ : QS ≤ Λ` using `le_iInf₂ fun v hv => (iInf₂_le v (Finset.mem_filter.1 hv).1).trans (Qv_le_LN _ _)`. Establish `split : ∀ H : Subgroup Kˣ, H.relIndex U * (H ⊔ U).index = H.index` using `fun H => by`. Rewrite using `[← Subgroup.relIndex_sup_left, Subgroup.relIndex_mul_index le_sup_left]`. Establish `e1` using `split QS`. Establish `e2` using `split Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : QS.subgroupOf U ≤ (powMonoidHom (α` using `U) 2).range := fun x hx => mem_sq x (isSquare_of hS h1 h3 x.2 fun v hv => (iInf₂_le v hv : QS ≤ _) hx)`. Establish `e4` using `Nat.le_of_dvd (Nat.pos_of_ne_zero (left_ne_zero_of_mul (e1 ▸ q0))) (Subgroup.index_dvd_of_le e3)`. Rewrite `e4` using `[index_sq_US, hcard]`. Establish `e5 : (QS ⊔ U).index ≤ 2`. Use `(Nat.mul_le_mul_right _ e4).trans (e1.le.trans q1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `h5 : 4 ^ S.card * 2 ^ finrank ℚ K = 2 ^ (InfinitePlace.nrComplexPlaces K + (S.card + T.card)) * 2`. Rewrite using `[show 4 = 2 ^ 2 by norm_num, ← pow_mul, ← pow_add, ← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[h5]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Nat.le_of_mul_le_mul_left this (by positivity)`. Establish `e6 : (Λ ⊔ U).index ≤ 2` using `(Nat.le_of_dvd (Nat.pos_of_ne_zero (right_ne_zero_of_mul (e1 ▸ q0))) (Subgroup.index_dvd_of_le (sup_le_sup_right hQΛ U))).trans e5`. Establish `e7` using `pow_le_relIndex (fun v : HeightOneSpectrum (𝓞 K) => LN (v.valuation K) θ) ⊤ I (fun v hv => by`. Take `⟨x, h1, h2⟩` from `exists_dual (θ := θ) I v`. Conclude with `⟨x, trivial, h1 (Finset.mem_filter.1 hv).2, h2⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(by`. Rewrite using `[Subgroup.relIndex_top_right]`. Conclude with `ne_zero_of_dvd_ne_zero q0 (Subgroup.index_dvd_of_le hQΛ))`. Rewrite `e7` using `[Subgroup.relIndex_top_right, ← hΛ, ← e2]`. Take `⟨e8, e9⟩` from `count hsq (P := S.filter (fun v => θ ∈ Qv (v.valuation K)) ∪ T) (hS.mono Finset.subset_union_left) (US_mono Finset.subset_union_left hθ) (Finset.union_subset_union_left (Finset.filter_subset _ _)) (fun v hv => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Finset.mem_union.1 hv with h | h` into its components or cases. Conclude with `(Finset.mem_filter.1 h).2`. Conclude with `h2 v h)`. Rewrite `e9` using `[Finset.card_union_of_disjoint (Finset.disjoint_right.2 fun v hv h => h1 v hv (Finset.mem_filter.1 h).1), hcard, ← hU]`. Establish `hc` using `Finset.card_filter_add_card_filter_not (s := S) (fun v => θ ∈ Qv (v.valuation K))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[← hI]`. Establish `e10 : 2 * (Nm (θ : K)).relIndex U ≤ 2 ^ I.card`. Establish `h5 : S.card + T.card = (S.filter (fun v => θ ∈ Qv (v.valuation K))).card + T.card + I.card` using `by omega`. Rewrite `e9` using `[h5, pow_succ, pow_add 2 _ I.card, mul_assoc]`. Conclude with `Nat.le_of_mul_le_mul_left e9 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Nm (θ : K) ≤ Λ` using `le_iInf₂ fun _ _ => le_sup_left`. Establish `e11` using `Subgroup.relIndex_inf_mul_relIndex (Nm (θ : K)) Λ U`. Rewrite `e11` using `[inf_eq_left.2 hle]`. Rewrite `e8` using `[← hU]`. Establish `e12 : (Nm (θ : K)).relIndex (Λ ⊓ U) = 1`.
-
-Establish `a1` using `e7.trans (Nat.mul_le_mul_left _ e6)`. Establish `a2` using `left_ne_zero_of_mul (e11 ▸ e8)`. Establish `a3` using `right_ne_zero_of_mul (e11 ▸ e8)`. Establish `a4 : (Nm (θ : K)).relIndex (Λ ⊓ U) * Λ.relIndex U ≤ 1 * Λ.relIndex U` using `by omega`. Use `Nat.le_of_mul_le_mul_right a4 (Nat.pos_of_ne_zero a3)` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Use `Subgroup.relIndex_eq_one.1 e12 ⟨?_, US_mono Finset.subset_union_left hε⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_iInf.2 fun v => Subgroup.mem_iInf.2 fun _ => h v`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma hasse {θ ε : Kˣ} (h : ∀ v : HeightOneSpectrum (𝓞 K), ε ∈ LN (v.valuation K) θ) :
     ε ∈ Nm (θ : K) := by
@@ -2292,7 +2264,7 @@ private lemma hasse {θ ε : Kˣ} (h : ∀ v : HeightOneSpectrum (𝓞 K), ε �
 end glob
 
 /- English proof (translation)
-Establish `hc : Continuous fun p : A × A => (p.1 ^ 2 - f Δ * p.2 ^ 2 + 1) * f c` using `by fun_prop`. Take `⟨⟨x, y⟩, hxy⟩` from `(hf.prodMap hf).exists_mem_open ((Valued.isOpen_valuationSubring A).preimage hc) ⟨(a, b), by simp [← h]⟩`. Use `⟨x, y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul f, map_add f, map_sub f, map_mul f, map_pow f, map_pow f, map_one f]`. Conclude with `hxy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma powerSeries_expansion_image_dense_with_denominator {F A : Type*} [Field F] [Field A] [Valued A ℤᵐ⁰] (f : F →+* A)
     (hf : DenseRange f) {Δ : F} (c : F) (a b : A) (h : -1 = a ^ 2 - f Δ * b ^ 2) :
@@ -2305,11 +2277,9 @@ private lemma powerSeries_expansion_image_dense_with_denominator {F A : Type*} [
   exact hxy
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hπ0 : v.valuation F π ≠ 0` using `by rw [hπ]; exact WithZero.exp_ne_zero`. Establish `hπ1 : v.valuation F π < 1` using `by rw [hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]; norm_num`. Take `⟨x, y, h1⟩` from `powerSeries_expansion_image_dense_with_denominator (algebraMap F (v.adicCompletion F)) (v.denseRange_algebraMap F) (4 * π)⁻¹ a b h`. Use `⟨x, y, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : v.valuation F ((x ^ 2 - Δ * y ^ 2 + 1) * (4 * π)⁻¹) ≤ 1`. Rewrite using `[← HeightOneSpectrum.adicCompletion.valued_coe F v]`. Conclude with `h1`. Establish `h4` using `zero_lt_iff.2 (v_four_ne (v.valuation F))`. Rewrite `h2` using `[← div_eq_mul_inv, map_div₀, map_mul, div_le_one₀ (mul_pos h4 (zero_lt_iff.2 hπ0))]`.
-
-Conclude with `h2.trans_lt (mul_lt_of_lt_one_right h4 hπ1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma local_norm {F : Type} [Field F] [NumberField F] {Δ : F}
     (v : HeightOneSpectrum (𝓞 F)) (a b : v.adicCompletion F)
@@ -2329,21 +2299,21 @@ private lemma local_norm {F : Type} [Field F] [NumberField F] {Δ : F}
   exact h2.trans_lt (mul_lt_of_lt_one_right h4 hπ1)
 
 /- English proof (translation)
-Establish `hsq : ¬ IsSquare d`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `absurd (hd σ₀) (not_lt.2 (by rw [map_mul]; exact mul_self_nonneg _))`. Take `⟨E, _, _, _, r, σ, h1, h2, h3, -⟩` from `exists_quad hsq`. Establish `: IsTotallyComplex E` using `⟨fun w => InfinitePlace.not_isReal_iff_isComplex.1 fun hw => by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hd ((InfinitePlace.embedding_of_isReal hw).comp (algebraMap F E))` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, ← h1, map_pow]`. Conclude with `absurd this (not_lt.2 (sq_nonneg _))⟩`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hsq ⟨0, (algebraMap F E).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Take `⟨p, q, hpq⟩` from `hasse (K := E) (θ := Units.mk0 (algebraMap F E Δ) (by simpa using hΔ)) (ε := -1) fun w => by`. Take `⟨a, b, hab⟩` from `h (w.under (𝓞 F))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `(val_lt w).2 hab`. Rewrite `h4` using `[map_ofNat, map_add, map_one]`. Use `set n := algebraMap F E (a ^ 2 - Δ * b ^ 2) with hn`. Establish `h5 : w.valuation E (-n - 1) < w.valuation E 4`. Rewrite using `[← Valuation.map_neg, neg_sub, sub_neg_eq_add, add_comm]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn0 : -n ≠ 0`. Introduce `h0`. Use `v_eq_one _ (h5.trans_le (v_four _))` as an intermediate fact. Simplify using `[h0] at this`. Establish `h6 : Units.mk0 _ hn0 ∈ near4 (w.valuation E)` using `h5`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Subgroup.mem_sup.2 ⟨-Units.mk0 _ hn0, ⟨algebraMap F E a, algebraMap F E b, ?_⟩, _, inv_mem h6, by simp⟩` and prove the remaining obligations. Simplify using `[hn]`. Take `⟨p₀, p₁, rfl⟩` from `h3 p`. Take `⟨q₀, q₁, rfl⟩` from `h3 q`. Simplify using `only [Units.val_neg, Units.val_one, Units.val_mk0] at hpq`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h7` using `congrArg σ hpq`. Simplify using `only [map_neg, map_one, map_sub, map_mul, map_add, map_pow, h2, σ.commutes] at h7`. Use `⟨p₀, p₁, q₀, q₁, (algebraMap F E).injective ?_, (algebraMap F E).injective ?_⟩` and prove the remaining obligations. Simplify using `only [map_neg, map_one, map_sub, map_mul, map_add, map_pow, ← h1]`. Take the linear combination `(-1 / 2) * hpq + (-1 / 2) * h7`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [map_mul]`. Use `mul_right_cancel₀ hr0 ?_` and prove the remaining obligations. Take the linear combination `(-1 / 4) * hpq + (1 / 4) * h7`.
+A detailed English derivation is pending.
 -/
 private lemma main {F : Type} [Field F] [NumberField F] {Δ d : F} (hΔ : Δ ≠ 0)
     (h : ∀ v : HeightOneSpectrum (𝓞 F),
@@ -2396,7 +2366,7 @@ end UpperTheory.Reformulated.B.NormIndexQuadratic
 end aux
 
 /- English proof (translation)
-Introduce `F _ _ Δ d hΔ h σ₀ hd`. Use `UpperTheory.Reformulated.B.NormIndexQuadratic.main hΔ (fun v => ?_) σ₀ hd` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `h v`. Conclude with `UpperTheory.Reformulated.B.NormIndexQuadratic.local_norm v a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.NormIndexQuadratic.glob_neg_one :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F] {Δ d : F},

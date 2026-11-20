@@ -23,21 +23,19 @@ def muCDtr {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) (ε : Fin n → Bool) : M
     (ENNReal.ofReal (cPQ ε) • muPolarMat ε)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun i _ => by positivity`.
+A detailed English derivation is pending.
 -/
 theorem tie_volU_pos (N : ℕ) : 0 < volU N :=
   Finset.prod_pos fun i _ => by positivity
 
 /- English proof (translation)
-Rewrite using `[tendsto_order]`. Use `⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hat : a ≠ ⊤` using `ne_top_of_lt ha`. Establish `ht : a.toReal < x`. Use `(ENNReal.toReal_lt_toReal hat ENNReal.ofReal_ne_top).2 ha` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[ENNReal.toReal_ofReal hx.le]`. Then use the resulting hypothesis. Establish `ht0 : 0 ≤ a.toReal` using `ENNReal.toReal_nonneg`. Establish `hη : 0 < (x - a.toReal) / (2 * x)` using `div_pos (by linarith) (by linarith)`. Use `filter_upwards [h _ hη] with r hr`. Establish `e1 : (1 - (x - a.toReal) / (2 * x)) * x = (x + a.toReal) / 2` using `by field_simp; ring`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1]; exact (ENNReal.ofReal_lt_ofReal_iff (by linarith)).2 (by linarith)`. Use `_ ≤ f r := hr.1`. Distinguish the cases in `hat : a = ⊤`. Use `filter_upwards [h 1 one_pos] with r hr`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `lt_of_le_of_lt hr.2 (hat ▸ ENNReal.ofReal_lt_top)`. Establish `ht : x < a.toReal`. Use `(ENNReal.toReal_lt_toReal ENNReal.ofReal_ne_top hat).2 ha` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_ofReal hx.le]`. Then use the resulting hypothesis. Establish `hη : 0 < (a.toReal - x) / (2 * x)` using `div_pos (by linarith) (by linarith)`.
-
-Use `filter_upwards [h _ hη] with r hr`. Establish `e1 : (1 + (a.toReal - x) / (2 * x)) * x = (x + a.toReal) / 2` using `by field_simp; ring`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1]; exact (ENNReal.ofReal_lt_ofReal_iff (by linarith)).2 (by linarith)`. Use `_ = a := ENNReal.ofReal_toReal hat`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_tendsto {f : ℝ → ENNReal} {x : ℝ} (hx : 0 < x)
     (h : ∀ η : ℝ, 0 < η → ∀ᶠ r in 𝓝[>] (0 : ℝ),
@@ -72,7 +70,7 @@ theorem tie_tendsto {f : ℝ → ENNReal} {x : ℝ} (hx : 0 < x)
         _ = a := ENNReal.ofReal_toReal hat
 
 /- English proof (translation)
-Use `(ENNReal.mul_le_mul_iff_left hv0 hvt).1 h` as an intermediate fact. Establish `h2` using `(ENNReal.ofReal_le_ofReal_iff hq).1 this`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tie_cancel {p q : ℝ} {v : ENNReal} (hv0 : v ≠ 0) (hvt : v ≠ ⊤) (hq : 0 ≤ q)
     (h : ENNReal.ofReal p * v ≤ ENNReal.ofReal q * v) : p ≤ q := by
@@ -81,33 +79,29 @@ theorem tie_cancel {p q : ℝ} {v : ENNReal} (hv0 : v ≠ 0) (hvt : v ≠ ⊤) (
   exact h2
 
 /- English proof (translation)
-Use `haveI := muPolar_isHaar ε`. Take `⟨hK, hP, hG⟩` from `gco_haar ε`. Establish `hpol` using `haar_pol_density (muPolar ε) d hd`. Use `set x := volU (pOf ε) * volU (qOf ε) with hx`. Establish `hx0 : 0 < x` using `mul_pos (tie_volU_pos _) (tie_volU_pos _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := 1 / x with hD`. Establish `hD0 : 0 < D` using `by positivity`. Establish `key : ∀ η : ℝ, 0 < η → η < 1 → (1 - η) * d ≤ (1 + η) * D ∧ (1 - η) * D ≤ (1 + η) * d`. Introduce `η hη hη1`. Take `⟨δ1, hδ1, h1⟩` from `hpol η hη`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨δ2, hδ2, h2⟩` from `muPolar_near_one ε η hη`. Use `set δ := min δ1 δ2`. Establish `hδ : 0 < δ` using `lt_min hδ1 hδ2`. Use `set B := Metric.ball (0 : KCo ε) (δ / 2)`. Use `set C := Metric.ball (0 : PCoord ε → ℂ) (δ / 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : volume B ≠ 0` using `(Metric.measure_ball_pos volume _ (by positivity)).ne'`. Establish `hC0 : volume C ≠ 0` using `(Metric.measure_ball_pos volume _ (by positivity)).ne'`. Establish `hBt : volume B ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hCt : volume C ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hBm : MeasurableSet B` using `Metric.isOpen_ball.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCm : MeasurableSet C` using `Metric.isOpen_ball.measurableSet`. Establish `hSm : MeasurableSet (B ×ˢ C)` using `hBm.prod hCm`. Establish `hvS : volume (B ×ˢ C) = volume B * volume C`. Rewrite using `[Measure.volume_eq_prod, Measure.prod_prod]`. Establish `hv0 : volume B * volume C ≠ 0` using `mul_ne_zero hB0 hC0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvt : volume B * volume C ≠ ⊤` using `ENNReal.mul_ne_top hBt hCt`. Establish `hsm : ∀ s ∈ B ×ˢ C, ‖s‖ < δ1`. Introduce `s hs`. Establish `h1' : ‖s.1‖ < δ / 2` using `by simpa [B] using hs.1`. Establish `h2' : ‖s.2‖ < δ / 2` using `by simpa [C] using hs.2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: ‖s‖ ≤ δ / 2` using `norm_prod_le_iff.2 ⟨h1'.le, h2'.le⟩`. Combine the linear relations using `[min_le_left δ1 δ2]`. Establish `hB : ∀ w ∈ B, ‖w‖ < δ2`. Introduce `w hw`. Establish `: ‖w‖ < δ / 2` using `by simpa [B] using hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Combine the linear relations using `[min_le_right δ1 δ2]`. Establish `hC : ∀ z ∈ C, ‖z‖ < δ2`. Introduce `z hz`. Establish `: ‖z‖ < δ / 2` using `by simpa [C] using hz`. Combine the linear relations using `[min_le_right δ1 δ2]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u1, l1⟩` from `h1 (B ×ˢ C) hSm hsm`. Take `⟨u2, l2⟩` from `h2 B C hBm hCm hB hC`. Rewrite `u1`, `l1` using `[hvS]`. Establish `e1 : (1 + η) / x = (1 + η) * D` using `by rw [hD]; ring`. Establish `e2 : (1 - η) / x = (1 - η) * D` using `by rw [hD]; ring`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite `u2` using `[e1]`. Rewrite `l2` using `[e2]`. Prove the components needed by the constructor for the conclusion. Conclude with `tie_cancel hv0 hvt (by positivity) (l1.trans u2)`. Conclude with `tie_cancel hv0 hvt (by positivity) (l2.trans u1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Break down `lt_trichotomy d D with hlt | heq | hgt` into its components or cases. Use `exfalso set η := (D - d) / (2 * (D + d))`. Establish `hη : 0 < η` using `div_pos (by linarith) (by linarith)`. Establish `hη1 : η < 1`. Rewrite using `[div_lt_one (by linarith)]; linarith`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : η * (2 * (D + d)) = D - d` using `div_mul_cancel₀ _ (by linarith)`. Use `(key η hη hη1).2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Conclude with `heq`. Use `exfalso set η := (d - D) / (2 * (D + d))`.
-
-Establish `hη : 0 < η` using `div_pos (by linarith) (by linarith)`. Establish `hη1 : η < 1`. Rewrite using `[div_lt_one (by linarith)]; linarith`. Establish `e : η * (2 * (D + d)) = d - D` using `div_mul_cancel₀ _ (by linarith)`. Use `(key η hη hη1).1` as an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem tie_d_eq (ε : Fin n → Bool) (d : ℝ) (hd0 : 0 < d)
     (hd : DensOn (fun S => muPolar ε (expSet S)) d) : d = 1 / (volU (pOf ε) * volU (qOf ε)) := by
@@ -185,7 +179,7 @@ section
 variable {P Q : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]`. Rewrite using `[← Equiv.sum_comp e (fun a => ∑ b, ‖M a b‖)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Equiv.sum_comp e (fun b => ‖M (e i) b‖)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tie_sum_reindex (e : Fin P ⊕ Fin Q ≃ Fin n) (M : Matrix (Fin n) (Fin n) ℂ) :
     ∑ i, ∑ j, ‖Matrix.reindex e.symm e.symm M i j‖ = ∑ a, ∑ b, ‖M a b‖ := by
@@ -195,7 +189,7 @@ theorem tie_sum_reindex (e : Fin P ⊕ Fin Q ≃ Fin n) (M : Matrix (Fin n) (Fin
   exact Equiv.sum_comp e (fun b => ‖M (e i) b‖)
 
 /- English proof (translation)
-Use `show ∑ i, ∑ j, ‖Matrix.reindex e.symm e.symm (gMat s) i j‖ < r ↔ _`. Rewrite using `[tie_sum_reindex]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_mem_ball (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) (r : ℝ) (s : GCo ε) :
@@ -204,7 +198,7 @@ theorem tie_mem_ball (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
   rw [tie_sum_reindex]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun s : GCo ε => gToLieMat e s` using `(LinearMap.continuous_of_finiteDimensional (gMatL ε)).matrix_submatrix _ _`. Conclude with `h1.subtype_mk _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tie_gToLie_cont (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) :
@@ -214,7 +208,7 @@ theorem tie_gToLie_cont (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
   exact h1.subtype_mk _
 
 /- English proof (translation)
-The claim follows from `isOpen_lt (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => continuous_norm.comp (continuous_subtype_val.matrix_elem i j)) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem tie_ball_open (P Q : ℕ) (r : ℝ) : IsOpen (Formalism.BasicNotions.ballU P Q r) :=
   isOpen_lt (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
@@ -223,29 +217,27 @@ theorem tie_ball_open (P Q : ℕ) (r : ℝ) : IsOpen (Formalism.BasicNotions.bal
 end
 
 /- English proof (translation)
-Use `haveI := muPolar_isHaar ε`. Use `haveI := lieU_borel P Q`. Take `⟨hK, hP, hG⟩` from `gco_haar ε`. Take `⟨d, hd0, hd⟩` from `haar_exp_density (muPolar ε)`. Establish `hdD` using `tie_d_eq ε d hd0 hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨_, isOmegaLeb_gToLie e he1 he2, ?_⟩` and prove the remaining obligations. Use `set κ : ℝ := 2 ^ (n * (n - 1) / 2) with hκ`. Establish `hκ0 : 0 < κ` using `by positivity`. Establish `hσc : Continuous fun s : GCo ε => ∑ a, ∑ b, ‖gMat s a b‖` using `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => continuous_norm.comp ((LinearMap.continuous_of_finiteDimensional (gMatL ε)).matrix_elem a b)`. Establish `hnum : ∀ r, muCDtr e ε {g | ∃ X ∈ Formalism.BasicNotions.ballU P Q r, Formalism.BasicNotions.UpqT.mat g = NormedSpace.exp (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)} = ENNReal.ofReal (cPQ ε) * muPolar ε (expSet {s : GCo ε | gToLie e he1 he2 s ∈ Formalism.BasicNotions.ballU P …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Establish `hE` using `measurableEmbedding_upqMat e he1 he2`. Use `show Measure.comap (β := Fin n → Fin n → ℂ) (fun g => upqMat e g) (ENNReal.ofReal (cPQ ε) • muPolarMat ε) _ = _ * Measure.comap (β := Fin n → Fin n → ℂ) (fun g : UJ ε => toM g) (muPolarMat ε) _`. Rewrite using `[hE.comap_apply, (measurableEmbedding_toM ε).comap_apply, Measure.smul_apply, smul_eq_mul]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `image_expBall e he1 he2 r`. Establish `hden : ∀ r, (ENNReal.ofReal κ • Measure.map (gToLie e he1 he2) volume) (Formalism.BasicNotions.ballU P Q r) = ENNReal.ofReal κ * volume {s : GCo ε | gToLie e he1 he2 s ∈ Formalism.BasicNotions.ballU P Q r}`. Introduce `r`. Rewrite using `[Measure.smul_apply, smul_eq_mul, Measure.map_apply (tie_gToLie_cont e he1 he2).measurable (tie_ball_open P Q r).measurableSet]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvn` using `tie_volU_pos n`. Establish `hvp` using `tie_volU_pos (pOf ε)`. Establish `hvq` using `tie_volU_pos (qOf ε)`. Establish `hc : cOmega n * κ = cPQ ε * d`. Rewrite using `[hdD, cPQ_eq_volU, cOmega, ← hκ]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Establish `hc0 : 0 < cOmega n` using `cOmega_pos n`. Establish `hcP : 0 ≤ cPQ ε` using `(cPQ_pos ε).le`. Use `tie_tendsto hc0 (fun η hη => ?_)` and prove the remaining obligations. Take `⟨δ, hδ, hdδ⟩` from `hd η hη`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [Ioo_mem_nhdsGT hδ] with r hr`. Rewrite using `[hnum r, hden r]`. Use `set S := {s : GCo ε | gToLie e he1 he2 s ∈ Formalism.BasicNotions.ballU P Q r} with hS`. Establish `hSe : S = {s | ∑ a, ∑ b, ‖gMat s a b‖ < r}` using `Set.ext fun s => tie_mem_ball e he1 he2 r s`. Establish `hSo : IsOpen S` using `by rw [hSe]; exact isOpen_lt hσc continuous_const`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0S : (0 : GCo ε) ∈ S`. Rewrite using `[hSe, Set.mem_ofPred_eq, show gMat (0 : GCo ε) = 0 from (gMatL ε).map_zero]`. Simplify using `using hr.1`. Establish `hSb : ∀ s ∈ S, ‖s‖ < δ` using `fun s hs => by`. Rewrite `hs` using `[hSe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt (norm_le_sum_gMat s) (lt_trans hs hr.2)`. Establish `hSball : S ⊆ Metric.ball 0 r` using `fun s hs => by`. Rewrite `hs` using `[hSe]`. Rewrite using `[mem_ball_zero_iff]`. Conclude with `lt_of_le_of_lt (norm_le_sum_gMat s) hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hV0 : volume S ≠ 0` using `(hSo.measure_pos volume ⟨0, h0S⟩).ne'`. Establish `hVt : volume S ≠ ⊤` using `((measure_mono hSball).trans_lt measure_ball_lt_top).ne`. Take `⟨hu, hl⟩` from `hdδ S hSo.measurableSet hSb`. Establish `hden0 : ENNReal.ofReal κ * volume S ≠ 0` using `mul_ne_zero (ENNReal.ofReal_pos.2 hκ0).ne' hV0`. Establish `hdent : ENNReal.ofReal κ * volume S ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hVt`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `eq1 : (1 - η) * cOmega n * κ = cPQ ε * ((1 - η) * d)` using `by linear_combination (1 - η) * hc`. Establish `eq2 : (1 + η) * cOmega n * κ = cPQ ε * ((1 + η) * d)` using `by linear_combination (1 + η) * hc`. Prove the components needed by the constructor for the conclusion. Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl hden0) (Or.inl hdent)]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul' hκ0.le, eq1, ENNReal.ofReal_mul hcP, mul_assoc]`. Use `_ ≤ _ := by gcongr`. Apply `ENNReal.div_le_of_le_mul` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul hcP, ← eq2, ENNReal.ofReal_mul' hκ0.le, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem omegaDensity_muCDtr {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) :

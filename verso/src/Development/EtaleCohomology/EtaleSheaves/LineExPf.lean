@@ -10,11 +10,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 abbrev 𝒜 := MvPolynomial.homogeneousSubmodule (Fin 2) ℤ
 
 /- English proof (translation)
-Introduce and unpack `⟨x, hx⟩`. Use `⟨MvPolynomial.coeff 0 x, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h : MvPolynomial.IsHomogeneous x 0` using `(MvPolynomial.mem_homogeneousSubmodule _ _).mp hx`. Distinguish the cases in `h0 : x = 0`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Use `h.totalDegree h0` as an intermediate fact. Rewrite `this` using `[MvPolynomial.totalDegree_eq_zero_iff_eq_C]`. Express the relevant statement in the definitionally equal form `((algebraMap ℤ (𝒜 0) _ : 𝒜 0) : MvPolynomial (Fin 2) ℤ) = x`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Eq.trans ?_ this.symm` and prove the remaining obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma zero_surj : Function.Surjective (algebraMap ℤ (𝒜 0)) := by
   rintro ⟨x, hx⟩
@@ -34,14 +34,14 @@ instance ft : Algebra.FiniteType (𝒜 0) (MvPolynomial (Fin 2) ℤ) :=
   Algebra.FiniteType.of_restrictScalars_finiteType ℤ (𝒜 0) (MvPolynomial (Fin 2) ℤ)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 lemma proj_proper : IsProper (Proj.toSpecZero 𝒜) := inferInstance
 
 /- English proof (translation)
-Establish `h1 : IsProper (Proj.toSpecZero 𝒜)` using `proj_proper`. Establish `h2 : IsClosedImmersion (Spec.map (CommRingCat.ofHom (algebraMap ℤ (𝒜 0))))` using `IsClosedImmersion.spec_of_surjective _ zero_surj`. Establish `e : terminal.from P1 = Proj.toSpecZero 𝒜 ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ (𝒜 0))) ≫ terminal.from (Spec (CommRingCat.of ℤ))` using `terminal.hom_ext _ _`. Establish `: IsIso (terminal.from (Spec (CommRingCat.of ℤ)))` using `⟨⟨specZIsTerminal.from _, specZIsTerminal.hom_ext _ _, terminal.hom_ext _ _⟩⟩`. Establish `h3 : IsProper (terminal.from (Spec (CommRingCat.of ℤ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion (terminal.from (Spec (CommRingCat.of ℤ)))` using `inferInstance`. Use `infer_instance`. Establish `h2' : IsProper (Spec.map (CommRingCat.ofHom (algebraMap ℤ (𝒜 0))))` using `inferInstance`. Rewrite using `[e]`. Conclude with `MorphismProperty.comp_mem @IsProper _ _ h1 (MorphismProperty.comp_mem @IsProper _ _ h2' h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma projective_line_over_integers_isProper : IsProper (terminal.from P1) := by
   have h1 : IsProper (Proj.toSpecZero 𝒜) := proj_proper
@@ -59,7 +59,7 @@ lemma projective_line_over_integers_isProper : IsProper (terminal.from P1) := by
   exact MorphismProperty.comp_mem @IsProper _ _ h1 (MorphismProperty.comp_mem @IsProper _ _ h2' h3)
 
 /- English proof (translation)
-Introduce `S`. Use `⟨pullback (terminal.from P1) (terminal.from S), pullback.snd _ _, ?_, pullback.fst _ _, IsPullback.of_hasPullback _ _⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (IsPullback.of_hasPullback _ _) projective_line_over_integers_isProper`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LineEx_of : LateralTheory.E.ChowLCut.LineEx := by
   intro S

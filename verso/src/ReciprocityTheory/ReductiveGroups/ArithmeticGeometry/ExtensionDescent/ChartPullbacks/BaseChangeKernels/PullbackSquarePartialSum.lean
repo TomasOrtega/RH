@@ -24,14 +24,14 @@ section Div
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `Set.mem_iInter.mp (show y ∈ (⋂ k, a.base ⁻¹' (M.U (p k) : Set X)) from h) PUnit.unit`.
+A detailed English derivation is pending.
 -/
 private theorem mem_pull_lemma (M : LB X) (a : Y ⟶ X) (p : PUnit.{1} → M.ι) (y : Y)
     (h : y ∈ (M.pull a).U p) : a.base y ∈ M.U (p PUnit.unit) :=
   Set.mem_iInter.mp (show y ∈ (⋂ k, a.base ⁻¹' (M.U (p k) : Set X)) from h) PUnit.unit
 
 /- English proof (translation)
-The claim follows from `show y ∈ (⋂ k, a.base ⁻¹' (M.U (p k) : Set X)) from Set.mem_iInter.mpr (fun k => by cases k; exact h)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_pull_of_lemma_2 (M : LB X) (a : Y ⟶ X) (p : PUnit.{1} → M.ι) (y : Y)
     (h : a.base y ∈ M.U (p PUnit.unit)) : y ∈ (M.pull a).U p :=
@@ -39,13 +39,13 @@ private theorem mem_pull_of_lemma_2 (M : LB X) (a : Y ⟶ X) (p : PUnit.{1} → 
     Set.mem_iInter.mpr (fun k => by cases k; exact h)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Establish `hU : ∀ p : (LB.div (M.pull a) (N.pull a)).ι, (LB.div (M.pull a) (N.pull a)).U p ≤ ((LB.div M N).pull a).U (fun u => (p.1 u, p.2 u))`. Introduce `p y hy`. Take `⟨h1, h2⟩` from `hy`. Conclude with `mem_pull_of_lemma_2 (LB.div M N) a (fun u => (p.1 u, p.2 u)) y (And.intro (mem_pull_lemma M a p.1 y h1) (mem_pull_lemma N a p.2 y h2))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_gen_transfer (L := (LB.div M N).pull a) (L' := LB.div (M.pull a) (N.pull a)) (fun p u => (p.1 u, p.2 u)) hU ?_ ⟨LB.genPull _ t a, LB.isGen_genPull _ t ht a⟩` and prove the remaining obligations. Introduce `i j y hy`. Take `⟨⟨hMi, hNi⟩, ⟨hMj, hNj⟩⟩` from `id hy`. Establish `hMi'` using `mem_pull_lemma M a i.1 y hMi`. Establish `hNi'` using `mem_pull_lemma N a i.2 y hNi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMj'` using `mem_pull_lemma M a j.1 y hMj`. Establish `hNj'` using `mem_pull_lemma N a j.2 y hNj`. Establish `hM : y ∈ a ⁻¹ᵁ (M.U (i.1 PUnit.unit) ⊓ M.U (j.1 PUnit.unit))` using `And.intro hMi' hMj'`. Establish `hN : y ∈ a ⁻¹ᵁ (N.U (i.2 PUnit.unit) ⊓ N.U (j.2 PUnit.unit))` using `And.intro hNi' hNj'`. Establish `hD : y ∈ a ⁻¹ᵁ ((LB.div M N).U (i.1 PUnit.unit, i.2 PUnit.unit) ⊓ (LB.div M N).U (j.1 PUnit.unit, j.2 PUnit.unit))` using `And.intro (And.intro hMi' hNi') (And.intro hMj' hNj')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(germ_div _ _ i j y hy).trans ?_` and prove the remaining obligations. Use `Eq.trans (congrArg₂ (fun u v => u * v⁻¹) ((germ_pull M a i.1 j.1 y (And.intro hMi hMj) hM).trans (gU_pullU a _ y hM _)) ((germ_pull N a i.2 j.2 y (And.intro hNi hNj) hN).trans (gU_pullU a _ y hN _))) ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((germ_pull (LB.div M N) a (fun u => (i.1 u, i.2 u)) (fun u => (j.1 u, j.2 u)) y _ hD).trans (gU_pullU a _ y hD _)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (Units.map _) (germ_div M N _ _ _ hD)).symm` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gen_div_pull (M N : LB X) (a : Y ⟶ X) (h : ∃ t : LB.Gen (LB.div M N), t.IsGen) :
     ∃ t : LB.Gen (LB.div (M.pull a) (N.pull a)), t.IsGen := by
@@ -86,15 +86,15 @@ section Div2
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Establish `hU : ∀ p : (LB.div (LB.div (A.pull a) (B.pull a)) (C.pull a)).ι, (LB.div (LB.div (A.pull a) (B.pull a)) (C.pull a)).U p ≤ ((LB.div (LB.div A B) C).pull a).U (fun u => ((p.1.1 u, p.1.2 u), p.2 u))`. Introduce `p y hy`. Take `⟨⟨h1, h2⟩, h3⟩` from `hy`. Conclude with `mem_pull_of_lemma_2 (LB.div (LB.div A B) C) a (fun u => ((p.1.1 u, p.1.2 u), p.2 u)) y (And.intro (And.intro (mem_pull_lemma A a p.1.1 y h1) (mem_pull_lemma B a p.1.2 y h2)) (mem_pull_lemma C a p.2 y h3))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_gen_transfer (L := (LB.div (LB.div A B) C).pull a) (L' := LB.div (LB.div (A.pull a) (B.pull a)) (C.pull a)) (fun p u => ((p.1.1 u, p.1.2 u), p.2 u)) hU ?_ ⟨LB.genPull _ t a, LB.isGen_genPull _ t ht a⟩` and prove the remaining obligations. Introduce `i j y hy`. Take `⟨⟨⟨hAi, hBi⟩, hCi⟩, ⟨⟨hAj, hBj⟩, hCj⟩⟩` from `id hy`. Establish `hAi'` using `mem_pull_lemma A a i.1.1 y hAi`. Establish `hBi'` using `mem_pull_lemma B a i.1.2 y hBi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCi'` using `mem_pull_lemma C a i.2 y hCi`. Establish `hAj'` using `mem_pull_lemma A a j.1.1 y hAj`. Establish `hBj'` using `mem_pull_lemma B a j.1.2 y hBj`. Establish `hCj'` using `mem_pull_lemma C a j.2 y hCj`. Establish `hA : y ∈ a ⁻¹ᵁ (A.U (i.1.1 PUnit.unit) ⊓ A.U (j.1.1 PUnit.unit))` using `And.intro hAi' hAj'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : y ∈ a ⁻¹ᵁ (B.U (i.1.2 PUnit.unit) ⊓ B.U (j.1.2 PUnit.unit))` using `And.intro hBi' hBj'`. Establish `hC : y ∈ a ⁻¹ᵁ (C.U (i.2 PUnit.unit) ⊓ C.U (j.2 PUnit.unit))` using `And.intro hCi' hCj'`. Establish `hD : y ∈ a ⁻¹ᵁ ((LB.div (LB.div A B) C).U ((i.1.1 PUnit.unit, i.1.2 PUnit.unit), i.2 PUnit.unit) ⊓ (LB.div (LB.div A B) C).U ((j.1.1 PUnit.unit, j.1.2 PUnit.unit), j.2 PUnit.unit))` using `And.intro (And.intro (And.intro hAi' hBi') hCi') (And.intro (And.intro hAj' hBj') hCj')`. Establish `hE : a.base y ∈ (LB.div A B).U (i.1.1 PUnit.unit, i.1.2 PUnit.unit) ⊓ (LB.div A B).U (j.1.1 PUnit.unit, j.1.2 PUnit.unit)` using `And.intro (And.intro hAi' hBi') (And.intro hAj' hBj')`. Use `(germ_div _ _ i j y hy).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (congrArg₂ (fun u v => u * v⁻¹) ((germ_div _ _ i.1 j.1 y (And.intro (And.intro hAi hBi) (And.intro hAj hBj))).trans (congrArg₂ (fun u v => u * v⁻¹) ((germ_pull A a i.1.1 j.1.1 y (And.intro hAi hAj) hA).trans (gU_pullU a _ y hA _)) ((germ_pull B a i.1.2 j.1.2 y (And.intro …` and prove the remaining obligations. Use `Eq.trans ?_ ((germ_pull (LB.div (LB.div A B) C) a (fun u => ((i.1.1 u, i.1.2 u), i.2 u)) (fun u => ((j.1.1 u, j.1.2 u), j.2 u)) y _ hD).trans (gU_pullU a _ y hD _)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (Units.map _) ((germ_div (LB.div A B) C _ _ _ hD).trans (congrArg (fun u => u * _) (germ_div A B _ _ _ hE)))).symm` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gen_div_div_pull (A B C : LB X) (a : Y ⟶ X)
     (h : ∃ t : LB.Gen (LB.div (LB.div A B) C), t.IsGen) :
@@ -170,7 +170,7 @@ def F2 : (G2 ((Over.pullback f).obj E.B)).left ⟶ (G2 E.B).left :=
     (pushPt (isGrpPullback_pullback E.B f).1.w (x2 ((Over.pullback f).obj E.B) 1))).left
 
 /- English proof (translation)
-Use `psum_push (isGrpPullback_pullback E.B f) _ _ _ (fun i => ?_) I` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [x2]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pullbackSquare_partialSum (I : Finset (Fin 2)) :
     (psum ((Over.pullback f).obj E.B) (x2 ((Over.pullback f).obj E.B)) I).left ≫ (mB f E).F =

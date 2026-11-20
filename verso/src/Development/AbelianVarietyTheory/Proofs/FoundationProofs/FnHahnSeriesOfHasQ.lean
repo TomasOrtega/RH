@@ -13,13 +13,11 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Ω _ ε N f a hN hf`. Take `⟨Φ, hΦ1, hΦ0⟩` from `GlobalTheory.T.powerSeries_as_rat_hahnSeries_fractional_q Ω N hN`. Use `set h := Φ (PowerSeries.mk a) with hh`. Establish `hc : ∀ k : ℕ, h.coeff ((k : ℚ) / N) = a k` using `fun k => by`. Rewrite using `[hh, hΦ1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h0 : ∀ r : ℚ, (∀ k : ℕ, r ≠ (k : ℚ) / N) → h.coeff r = 0` using `fun r hr => hΦ0 _ r hr`. Use `⟨h, ⟨⟨N, hN, fun r hr => ?_⟩, 0, fun z hz => ?_⟩, hc, h0⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne push_neg at hne`. Conclude with `hr (h0 r fun k hk => hne k (by rw [hk]; push_cast; rfl))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc' : ∀ k : ℕ, h.coeff (((0 + k : ℤ) : ℚ) / N) = a k` using `fun k => by`. Simplify using `using hc k`. Establish `h0' : ∀ r : ℚ, (∀ k : ℕ, r ≠ ((0 + k : ℤ) : ℚ) / N) → h.coeff r = 0` using `fun r hr => h0 r fun k hk => hr k (by simpa using hk)`. Rewrite using `[fn_hasSum_reindex_nat Ω ε h N 0 a z (up f z) hN hc' h0']`. Establish `hq` using `(hasQ_iff N f _).mp hf ⟨z, hz⟩`.
-
-Simplify `hq` using `[up, UpperHalfPlane.ofComplex_apply_of_im_pos hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fn_hahnSeries_of_hasQ : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ) (N : ℕ) (f : ℍ → ℂ) (a : ℕ → Ω), 0 < N → HasQ N f (fun n => ε (a n)) → ∃ h : HahnSeries ℚ Ω, IsExp ε f h ∧ (∀ k : ℕ, h.coeff ((k : ℚ) / N) = a k) ∧ ∀ r : ℚ, (∀ k : ℕ, r ≠ (k : ℚ) / N) → h.coeff r = 0 := by
   intro Ω _ ε N f a hN hf

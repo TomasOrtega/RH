@@ -5,9 +5,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnramifiedSameDiagonal.
 namespace SameDiaZero
 
 /- English proof (translation)
-Introduce `D u T`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply upSame <;> assumption`. Apply the tactic sequence `apply dnDiaSame0F_holds <;> assumption`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `(apply eSame <;> assumption)`. Consider the case `(apply e_main <;> assumption)`. Consider the case `(apply eDiaSame0F <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem diamond_same_place_matchings : Formalism.L2.GlobalTheoryTheory.UnramifiedDiagonal.SameAll := by
   intro D u T

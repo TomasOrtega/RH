@@ -28,7 +28,7 @@ variable {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup
 omit [DiscreteTopology M] in
 include hA in
 /- English proof (translation)
-Take `⟨z, -, hz⟩` from `exists_cocycle_H0Iso_inv A ⟨eA m.1, fun g => by`. Rewrite using `[← hA, (mem_riemannRochSpace_iff_regularAt_everywhere rho m.1).1 m.2 g]⟩`. Conclude with `⟨z, fun s => by rw [hz]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_cocycle_zero [IsTopologicalAddGroup M] [ContinuousConstSMul (ZMod n) M]
     (m : H0 rho) :
@@ -39,11 +39,11 @@ theorem exists_cocycle_zero [IsTopologicalAddGroup M] [ContinuousConstSMul (ZMod
 
 include hA hD hB hev in
 /- English proof (translation)
-Take `⟨e0, he0⟩` from `h0 G (ZMod n) M rho A eA hA`. Take `⟨e2, hex, he2⟩` from `h2 G (ZMod n) M' rho' (dualRep D A) eB hB`. Take `⟨eP, -, heP⟩` from `h2 G (ZMod n) P rhoP D eD hD`. Use `bij_transport _ _ e0 e2 (eP.trans t) (fun m y => ?_) hd` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `exists_cocycle_zero rho A eA hA m`. Take `⟨w, hw⟩` from `hex z`. Rewrite using `[he0 m x hx, he2 z w hw, dualityMap_apply, cupPairing_cohomologyπ, AddEquiv.trans_apply]`. Use `congrArg t (heP (cupCocycleH0Z2 rho rho' rhoP b hbc hbe m z) _ fun s => ?_)` and prove the remaining obligations. Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, hx, hw, ← hB]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(evalPairing_tmul D A _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hev, cupCocycleH0Z2_apply]`. Use `congr 2`. Simplify using `[Fin.partialProd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem cup_product_H0_H2_bijective (h0 : Sgc0) (h2 : Sgc2)
     (hd : Function.Bijective (dualityMap D (rfl : 0 + 2 = 2) t.toAddMonoidHom A)) :
@@ -65,11 +65,11 @@ theorem cup_product_H0_H2_bijective (h0 : Sgc0) (h2 : Sgc2)
 
 include hA hD hB hev in
 /- English proof (translation)
-Take `⟨e0, he0⟩` from `h0 G (ZMod n) M' rho' (dualRep D A) eB hB`. Take `⟨e2, hex, he2⟩` from `h2 G (ZMod n) M rho A eA hA`. Take `⟨eP, -, heP⟩` from `h2 G (ZMod n) P rhoP D eD hD`. Use `bij_transport _ _ e2 e0 (eP.trans t) (fun y m => ?_) hd` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `exists_cocycle_zero rho' (dualRep D A) eB hB m`. Take `⟨w, hw⟩` from `hex z`. Rewrite using `[he0 m x hx, he2 z w hw, dualityMap_apply, cupPairing_cohomologyπ, AddEquiv.trans_apply]`. Use `congrArg t (heP (cupCocycleZ2H0 rho rho' rhoP b hbc hbe z m) _ fun s => ?_)` and prove the remaining obligations. Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, hx, hw, ← hB]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(evalPairing_tmul D A _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hev, cupCocycleZ2H0_apply, (mem_riemannRochSpace_iff_regularAt_everywhere rho' m.1).1 m.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cup_product_H2_H0_bijective (h0 : Sgc0) (h2 : Sgc2)
     (hd : Function.Bijective (dualityMap D (rfl : 2 + 0 = 2) t.toAddMonoidHom A)) :
@@ -89,11 +89,11 @@ theorem cup_product_H2_H0_bijective (h0 : Sgc0) (h2 : Sgc2)
 
 include hA hD hB hev in
 /- English proof (translation)
-Take `⟨e1, hex1, he1⟩` from `h1 G (ZMod n) M rho A eA hA`. Take `⟨e1', hex1', he1'⟩` from `h1 G (ZMod n) M' rho' (dualRep D A) eB hB`. Take `⟨eP, -, heP⟩` from `h2 G (ZMod n) P rhoP D eD hD`. Use `bij_transport _ _ e1 e1' (eP.trans t) (fun y y' => ?_) hd` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z', rfl⟩` from `Submodule.Quotient.mk_surjective _ y'`. Take `⟨x, hx⟩` from `hex1 z`. Take `⟨w, hw⟩` from `hex1' z'`. Rewrite using `[he1 z x hx, he1' z' w hw, dualityMap_apply, cupPairing_cohomologyπ, AddEquiv.trans_apply]`. Use `congrArg t (heP (cupCocycleZ1Z1 rho rho' rhoP b hbc hbe hc z z') _ fun s => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, hx, hw, ← hB]`. Use `(evalPairing_tmul D A _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hev, cupCocycleZ1Z1_apply]`. Use `congr 2`. Simplify using `[Fin.partialProd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem cup_product_H1_H1_bijective (h1 : Sgc1) (h2 : Sgc2) (hc : ContAction rho')
     (hd : Function.Bijective (dualityMap D (rfl : 1 + 1 = 2) t.toAddMonoidHom A)) :

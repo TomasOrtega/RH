@@ -91,7 +91,7 @@ Both sides reduce to the same expression.
 theorem HostNF.ofHost_toHost {R : Ranks} (N : HostNF R) : HostNF.ofHost N.toHost = N := rfl
 
 /- English proof (translation)
-Establish `h` using `H.der.cmType.2.1`. Use `φ.ord_pos` as an intermediate fact. Conclude with `Set.nonempty_of_ncard_ne_zero (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_cmType {φ : Frame} (H : HostAx φ) : ∃ ψ : H.E →+* ℂ, ψ ∈ H.toHostRaw.cmType := by
   have h := H.der.cmType.2.1
@@ -99,7 +99,7 @@ theorem exists_cmType {φ : Frame} (H : HostAx φ) : ∃ ψ : H.E →+* ℂ, ψ 
   exact Set.nonempty_of_ncard_ne_zero (by omega)
 
 /- English proof (translation)
-Take `⟨s, hs1, hs2⟩` from `h.sqq`. Take `⟨ψ, hψ⟩` from `exists_cmType H`. Take `⟨𝔟, h1, h2, h3⟩` from `H.der.principal`. Conclude with `⟨⟨H, b, h, hq, s, hs1, hs2, ψ, hψ, 𝔟, ⟨h1, h2⟩, h3, c⟩, rfl, rfl, HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hostNF (R : Ranks) (H : HostAx R.toFrame) {b : ℕ} (h : FieldRows H.toHostRaw b)
     (hq : 4 * R.t * R.r + 1 < H.q ∧ 4 * R.t * R.r + 1 < H.d) (c : Choices R.toFrame H.toHostRaw) :
@@ -110,7 +110,7 @@ theorem exists_hostNF (R : Ranks) (H : HostAx R.toFrame) {b : ℕ} (h : FieldRow
   exact ⟨⟨H, b, h, hq, s, hs1, hs2, ψ, hψ, 𝔟, ⟨h1, h2⟩, h3, c⟩, rfl, rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Take `⟨N, hN1, hN2, hN3⟩` from `exists_hostNF R H h hq c`. Conclude with `⟨N.toHost, hN1, hN2, hN3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_host (R : Ranks) (H : HostAx R.toFrame) {b : ℕ} (h : FieldRows H.toHostRaw b)
     (hq : 4 * R.t * R.r + 1 < H.q ∧ 4 * R.t * R.r + 1 < H.d) (c : Choices R.toFrame H.toHostRaw) :
@@ -119,9 +119,9 @@ theorem exists_host (R : Ranks) (H : HostAx R.toFrame) {b : ℕ} (h : FieldRows 
   exact ⟨N.toHost, hN1, hN2, hN3⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `hu : IsUnit (m : 𝓞 K)` using `Ideal.span_singleton_eq_top.mp (top_le_iff.mp h)`. Establish `hn` using `hu.map (Algebra.norm ℤ (S := 𝓞 K))`. Rewrite `hn` using `[show ((m : 𝓞 K)) = algebraMap ℤ (𝓞 K) (m : ℤ) by simp, Algebra.norm_algebraMap]`. Establish `hd : Module.finrank ℤ (𝓞 K) ≠ 0` using `Module.finrank_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn` using `[isUnit_pow_iff hd, Int.isUnit_iff]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem span_natCast_ne_whole_of_one_lt (K : Type) [Field K] [NumberField K] (m : ℕ) (hm : 1 < m) :
     ¬ (⊤ : Ideal (𝓞 K)) ≤ Ideal.span {(m : 𝓞 K)} := by
@@ -134,13 +134,9 @@ private theorem span_natCast_ne_whole_of_one_lt (K : Type) [Field K] [NumberFiel
   omega
 
 /- English proof (translation)
-Take `⟨a, hla, ha⟩` from `Nat.exists_infinite_primes (H.QS + 1)`. Take `⟨b, hlb, hb⟩` from `Nat.exists_infinite_primes (a + 1)`. Take `⟨c, hc, hbc, hc1⟩` from `Nat.exists_prime_gt_modEq_one (k := 15) b (by norm_num)`. Take `⟨d, hd, hcd, hd1⟩` from `Nat.exists_prime_gt_modEq_one (k := 15) c (by norm_num)`. Establish `cop : ∀ p : ℕ, p.Prime → H.QS < p → Nat.Coprime p H.QS` using `fun p hp hlt => (Nat.Prime.coprime_iff_not_dvd hp).2 (fun hdv => absurd (Nat.le_of_dvd H.QS_pos hdv) (by omega))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `refine ⟨{ levelPrimes := {a, b, c, d} g := ![a, b] g_prime := fun i => by fin_cases i <;> simpa g_ne := by simp; omega g_level := fun i => by fin_cases i <;> simp pde := c pde' := d pde_prime := hc pde'_prime := hd pde_ne := by omega pde_level := by simp pde_mod := ⟨by simpa [Nat …`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton]`. Apply the tactic sequence `rintro p (rfl | rfl | rfl | rfl) <;> apply cop <;> first | assumption | omega`. Use `TT := ∅`. Use `T2 := ∅`.
-
-Use `u0 := Classical.arbitrary _`. Use `Lw := 2`. Use `two_le_Lw := le_rfl`. Use `second_set_range := by simp`. Use `second_set_no_relation := by simp [NoRel]`.
-
-Use `CT2 := 0 }⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem nonempty_choices {φ : Frame} (H : HostRaw φ) : Nonempty (Choices φ H) := by
   classical

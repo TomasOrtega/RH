@@ -15,15 +15,15 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `F0 Λ hΛ t _hrel F₁ F₂ hR1 hA1 hR2 hA2 w _hw`. Take `⟨p1, e1⟩` from `hR1`. Take `⟨p2, e2⟩` from `hR2`. Establish `hDC : DCRel Λ (lf D F0) F₁ F₂` using `((hE F0 Λ hΛ) ⟨F₁, p1⟩ ⟨F₂, p2⟩).mp (e1.trans e2.symm)`. Take `⟨n, hn, m, hm, hfr, -⟩` from `hDC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hNu, hNe⟩` from `h1 Λ (lf D F0) n hn`. Take `⟨hMu, hMe⟩` from `h1 Λ F₁ m hm`. Establish `hG` using `h2 (lf D F0) F₁ F₂ n m (fmat D (lf D F0) n) (fmat D F₁ m) hn.1.1 hNe hMe hfr`. Take `⟨A, B, hA, hB, hZ, hs⟩` from `core_Z _ _ _ _ hNu hMu hG`. Use `⟨A, B, hA, hB, hZ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs]`. Take `⟨_, ⟨_, _, hLift0, hConv0⟩, hXS0⟩` from `hΛ`. Take `⟨hLift1, _, hConv1, hXS1⟩` from `p1`. Establish `hglob : ∀ δ ∈ ddS D, ∃ o : 𝓞 D.host.E, (o : D.host.E) = (sgUp (fmat D (lf D F0) n) + sgUp (fmat D F₁ m)) * δ`. Introduce `δ hδ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨o1, ho1⟩` from `h3 Λ (lf D F0) n hn hXS0 hLift0.1 δ hδ`. Take `⟨o2, ho2⟩` from `h3 Λ F₁ m hm hXS1 hLift1.1 δ hδ`. Conclude with `⟨o1 + o2, by rw [add_mul, ← ho1, ← ho2]; norm_cast⟩`. Establish `hloc` using `h4 Λ (lf D F0) F₁ F₂ n m hn hm hfr hConv0 hConv1 hA1 hA2 hLift0.1 hLift1.1`. Take `⟨k, hk⟩` from `h5 _ hglob hloc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `psiInf_of_trace (gS D) _ _ k hk`.
+A detailed English derivation is pending.
 -/
 theorem normRepMove_of_steps (D : D7) (u u' : D.what₂.Word) (hE : TermEqIff D u u')
     (h1 : StepExp D) (h2 : StepGram D) (h3 : StepGlob D) (h4 : StepLoc D) (h5 : StepTr D) :

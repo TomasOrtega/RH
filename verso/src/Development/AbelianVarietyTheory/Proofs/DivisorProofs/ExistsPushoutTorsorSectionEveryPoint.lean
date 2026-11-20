@@ -22,7 +22,7 @@ namespace GlobalTheory.PtExt.PushSec
 variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] [IsCommMonObj A]
 
 /- English proof (translation)
-Use `letI : Algebra D D' := (ψ : D →+* D').toAlgebra`. Use `haveI : Module.FaithfullyFlat D D' := h`. Conclude with `FaithfulSMul.algebraMap_injective D D'`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem injective_of_ff {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D']
     (ψ : D →ₐ[R] D') (h : (ψ : D →+* D').FaithfullyFlat) : Function.Injective ψ := by
@@ -31,7 +31,7 @@ theorem injective_of_ff {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [
   exact FaithfulSMul.algebraMap_injective D D'
 
 /- English proof (translation)
-Rewrite using `[← MonObj.comp_pow, hz, ← Category.assoc, spOver_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem root_map {n : ℕ} {D D' E : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] [CommRing E]
     [Algebra R E] (φ : D →ₐ[R] D') (ρ : D' →ₐ[R] E) (x : Pt A D) (z : Pt A D') (hz : z ^ n = spOver φ ≫ x) :
@@ -39,7 +39,7 @@ theorem root_map {n : ℕ} {D D' E : Type} [CommRing D] [Algebra R D] [CommRing 
   rw [← MonObj.comp_pow, hz, ← Category.assoc, spOver_comp]
 
 /- English proof (translation)
-Rewrite using `[mul_pow, inv_pow, hy, hw, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mul_inv_eq_one {n : ℕ} {E : Type} [CommRing E] [Algebra R E] {y w u : Pt A E} (hy : y ^ n = u)
     (hw : w ^ n = u) : (y * w⁻¹) ^ n = 1 := by
@@ -61,7 +61,7 @@ variable (hb : IsTorsChar n b) (ψ : D →ₐ[R] D₁) (x : Pt A D) (z₀ : Pt A
 include hz₀ in
 
 /- English proof (translation)
-The claim follows from `pow_mul_inv_eq_one (root_map φ ρ x z hz) (by rw [root_map ψ φ' x z₀ hz₀, h])`.
+A detailed English derivation is pending.
 -/
 theorem val_tors {D' F : Type} [CommRing D'] [Algebra R D'] [CommRing F] [Algebra R F] (φ : D →ₐ[R] D')
     (z : Pt A D') (hz : z ^ n = spOver φ ≫ x) (ρ : D' →ₐ[R] F) (φ' : D₁ →ₐ[R] F) (h : ρ.comp φ = φ'.comp ψ) :
@@ -71,7 +71,7 @@ theorem val_tors {D' F : Type} [CommRing D'] [Algebra R D'] [CommRing F] [Algebr
 include hb hz₀ in
 
 /- English proof (translation)
-Unfold `val`. Rewrite using `[map_add, ← hb.1 F G g₁ _ (val_tors ψ x z₀ hz₀ φ z hz ρ φ' h), MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_val {D' F G : Type} [CommRing D'] [Algebra R D'] [CommRing F] [Algebra R F] [CommRing G] [Algebra R G]
     (φ : D →ₐ[R] D') (z : Pt A D') (hz : z ^ n = spOver φ ≫ x) (ρ : D' →ₐ[R] F) (φ' : D₁ →ₐ[R] F)
@@ -85,9 +85,9 @@ theorem map_val {D' F G : Type} [CommRing D'] [Algebra R D'] [CommRing F] [Algeb
 include hb hz₀ ha in
 
 /- English proof (translation)
-Unfold `val`. Establish `t1` using `val_tors ψ x z₀ hz₀ φ z hz ρ β hβ`. Establish `t2 : ((spOver β ≫ z₀) * (spOver α ≫ z₀)⁻¹) ^ n = 1` using `pow_mul_inv_eq_one (by rw [root_map ψ β x z₀ hz₀, ← hβ]) (by rw [root_map ψ α x z₀ hz₀, ← hα])`. Establish `e : (spOver ρ ≫ z) * (spOver α ≫ z₀)⁻¹ = ((spOver ρ ≫ z) * (spOver β ≫ z₀)⁻¹) * ((spOver β ≫ z₀) * (spOver α ≫ z₀)⁻¹)`. Rewrite using `[_root_.mul_assoc, _root_.inv_mul_cancel_left]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hb.2 F _ _ t1 t2, ha F α β (hα.symm.trans hβ)]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem val_indep {D' F : Type} [CommRing D'] [Algebra R D'] [CommRing F] [Algebra R F] (φ : D →ₐ[R] D')
     (z : Pt A D') (hz : z ^ n = spOver φ ≫ x) (ρ : D' →ₐ[R] F) (α β : D₁ →ₐ[R] F) (hα : ρ.comp φ = α.comp ψ)
@@ -109,13 +109,13 @@ def IsVal {D' : Type} [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (z : Pt
 include hb hz₀ ha in
 
 /- English proof (translation)
-Take `⟨E', _, _, ρ₀, φ₀, hff, hsq⟩` from `GlobalTheory.exists_pushout_faithfullyFlat R D D₁ D' ψ φ hψ`. Take `⟨e, he, -⟩` from `GlobalTheory.ff_descent_pairs R D' E' ρ₀ hff (val b z₀ a ρ₀ φ₀ z) (by`. Introduce `G _ _ g₁ g₂ hg₁g₂`. Rewrite using `[map_val hb ψ x z₀ hz₀ a φ z hz ρ₀ φ₀ hsq g₁, map_val hb ψ x z₀ hz₀ a φ z hz ρ₀ φ₀ hsq g₂, ← hg₁g₂]`. Use `val_indep hb ψ x z₀ hz₀ a ha φ z hz _ _ _ ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AlgHom.comp_assoc, hsq, AlgHom.comp_assoc]`. Rewrite using `[hg₁g₂, AlgHom.comp_assoc, hsq, AlgHom.comp_assoc])`. Use `⟨e, fun F _ _ ρ φ' h ↦ ?_⟩` and prove the remaining obligations. Take `⟨G, _, _, ρ₀', ρ', hff', hsq'⟩` from `GlobalTheory.exists_pushout_faithfullyFlat R D' E' F ρ₀ ρ hff`. Apply `injective_of_ff ρ₀' hff'` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_val hb ψ x z₀ hz₀ a φ z hz ρ φ' h ρ₀']`. Express the relevant statement in the definitionally equal form `(ρ₀'.comp ρ) e = _`. Rewrite using `[hsq', AlgHom.comp_apply, he, map_val hb ψ x z₀ hz₀ a φ z hz ρ₀ φ₀ hsq ρ']`. Use `val_indep hb ψ x z₀ hz₀ a ha φ z hz _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_assoc, hsq, AlgHom.comp_assoc]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsq', AlgHom.comp_assoc, h, AlgHom.comp_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isVal (hψ : (ψ : D →+* D₁).FaithfullyFlat) {D' : Type} [CommRing D'] [Algebra R D']
     (φ : D →ₐ[R] D') (z : Pt A D') (hz : z ^ n = spOver φ ≫ x) : ∃ e : D', IsVal (b := b) ψ z₀ a φ z e := by
@@ -137,7 +137,7 @@ theorem exists_isVal (hψ : (ψ : D →+* D₁).FaithfullyFlat) {D' : Type} [Com
   · rw [← hsq', AlgHom.comp_assoc, h, AlgHom.comp_assoc]
 
 /- English proof (translation)
-Take `⟨E', _, _, ρ₀, φ₀, hff, hsq⟩` from `GlobalTheory.exists_pushout_faithfullyFlat R D D₁ D' ψ φ hψ`. Conclude with `injective_of_ff ρ₀ hff ((he E' ρ₀ φ₀ hsq).trans (he' E' ρ₀ φ₀ hsq).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isVal_unique (hψ : (ψ : D →+* D₁).FaithfullyFlat) {D' : Type} [CommRing D'] [Algebra R D']
     (φ : D →ₐ[R] D') (z : Pt A D') {e e' : D'} (he : IsVal (b := b) ψ z₀ a φ z e) (he' : IsVal (b := b) ψ z₀ a φ z e') : e = e' := by
@@ -161,7 +161,7 @@ def sec : RootFn A D := fun D' _ _ φ z ↦
   if h : z ^ n = spOver φ ≫ x then Classical.choose (exists_isVal hb ψ x z₀ hz₀ a ha hψ φ z h) else 0
 
 /- English proof (translation)
-Unfold `sec`. Rewrite using `[dif_pos hz]`. Conclude with `Classical.choose_spec (exists_isVal hb ψ x z₀ hz₀ a ha hψ φ z hz)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_spec {D' : Type} [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (z : Pt A D')
     (hz : z ^ n = spOver φ ≫ x) : IsVal (b := b) ψ z₀ a φ z (sec hb ψ x z₀ hz₀ a ha hψ D' φ z) := by
@@ -170,11 +170,11 @@ theorem sec_spec {D' : Type} [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') 
   exact Classical.choose_spec (exists_isVal hb ψ x z₀ hz₀ a ha hψ φ z hz)
 
 /- English proof (translation)
-Use `⟨fun D' _ _ D'' _ _ φ ψ₂ z hz ↦ ?_, fun D' _ _ φ z w hz hw ↦ ?_⟩` and prove the remaining obligations. Establish `hz' : (spOver ψ₂ ≫ z) ^ n = spOver (ψ₂.comp φ) ≫ x` using `root_map φ ψ₂ x z hz`. Use `isVal_unique ψ z₀ a hψ (ψ₂.comp φ) _ (sec_spec hb ψ x z₀ hz₀ a ha hψ _ _ hz') ?_` and prove the remaining obligations. Introduce `F _ _ ρ φ' h`. Express the relevant statement in the definitionally equal form `(ρ.comp ψ₂) _ = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[sec_spec hb ψ x z₀ hz₀ a ha hψ φ z hz F (ρ.comp ψ₂) φ' (by rw [AlgHom.comp_assoc]; exact h)]`. Unfold `val`. Rewrite using `[← Category.assoc, spOver_comp]`. Establish `hzw : (z * w) ^ n = spOver φ ≫ x` using `by rw [mul_pow, hz, hw, _root_.mul_one]`. Use `isVal_unique ψ z₀ a hψ φ _ (sec_spec hb ψ x z₀ hz₀ a ha hψ _ _ hzw) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F _ _ ρ φ' h`. Establish `tw : (spOver ρ ≫ w) ^ n = 1` using `by rw [← MonObj.comp_pow, hw, MonObj.comp_one]`. Rewrite using `[map_add, sec_spec hb ψ x z₀ hz₀ a ha hψ φ z hz F ρ φ' h, ← hb.1 D' F ρ w hw]`. Unfold `val`. Rewrite using `[add_assoc, ← hb.2 F _ _ (val_tors ψ x z₀ hz₀ φ z hz ρ φ' h) tw, MonObj.comp_mul, _root_.mul_right_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSec_sec : IsSec n b x (sec hb ψ x z₀ hz₀ a ha hψ) := by
   refine ⟨fun D' _ _ D'' _ _ φ ψ₂ z hz ↦ ?_, fun D' _ _ φ z w hz hw ↦ ?_⟩
@@ -196,11 +196,11 @@ theorem isSec_sec : IsSec n b x (sec hb ψ x z₀ hz₀ a ha hψ) := by
 end Sec
 
 /- English proof (translation)
-Introduce `R _ A _ _ n hR b hb D _ _ x`. Take `⟨D₁, _, _, ψ, z₀, hψ, hz₀⟩` from `hR D x`. Take `⟨a, ha⟩` from `GlobalTheory.FlatDescent.cocycle_descends R D D₁ ψ hψ (fun E _ _ α β ↦ b E ((spOver β ≫ z₀) * (spOver α ≫ z₀)⁻¹)) (by`. Introduce `E _ _ E' _ _ α β g hαβ`. Establish `t : ((spOver β ≫ z₀) * (spOver α ≫ z₀)⁻¹) ^ n = 1` using `pow_mul_inv_eq_one (root_map ψ β x z₀ hz₀) (by rw [root_map ψ α x z₀ hz₀, hαβ])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show b E' _ = g (b E _)`. Rewrite using `[← hb.1 E E' g _ t, MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp]) (by`. Introduce `E _ _ f₁ f₂ f₃ h12 h23`. Establish `t1 : ((spOver f₂ ≫ z₀) * (spOver f₁ ≫ z₀)⁻¹) ^ n = 1` using `pow_mul_inv_eq_one (root_map ψ f₂ x z₀ hz₀) (by rw [root_map ψ f₁ x z₀ hz₀, h12])`. Establish `t2 : ((spOver f₃ ≫ z₀) * (spOver f₂ ≫ z₀)⁻¹) ^ n = 1` using `pow_mul_inv_eq_one (root_map ψ f₃ x z₀ hz₀) (by rw [root_map ψ f₂ x z₀ hz₀, h23])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (spOver f₃ ≫ z₀) * (spOver f₁ ≫ z₀)⁻¹ = ((spOver f₂ ≫ z₀) * (spOver f₁ ≫ z₀)⁻¹) * ((spOver f₃ ≫ z₀) * (spOver f₂ ≫ z₀)⁻¹)`. Rewrite using `[_root_.mul_comm ((spOver f₂ ≫ z₀) * _), _root_.mul_assoc, _root_.inv_mul_cancel_left]`. Use `show b E _ = b E _ + b E _`. Rewrite using `[e, hb.2 E _ _ t1 t2])`. Conclude with `⟨_, isSec_sec hb ψ x z₀ hz₀ a (fun E _ _ α β h ↦ ha E α β h) hψ⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isSec : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (n : ℕ), HasRoots A n →
     ∀ b : Fn0 A, IsTorsChar n b → ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D),

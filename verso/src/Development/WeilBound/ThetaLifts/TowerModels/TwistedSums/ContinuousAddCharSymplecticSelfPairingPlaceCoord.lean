@@ -16,9 +16,7 @@ namespace Tw.ContSymp
 open _root_.GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ ψ hψ n d JA JB o v M _ g`. Establish `ht : ∀ m : M, Continuous (fun a : M → v.adicCompletionIntegers F => GlobalTheory.EmbChart.atPlace v (a m : Fv F v))` using `fun m => (GlobalTheory.VacAny.continuous_atPlace v).comp (continuous_subtype_val.comp (continuous_apply m))`. Use `hψ.comp ?_` and prove the remaining obligations. Use `delta GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, map_sum, map_smul, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_eq_mul]`.
-
-Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_psi_symp_atPlace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (ψ : AddChar (AF F) ℂ), Continuous ψ → ∀ {n d : ℕ} (JA : Matrix (Fin n) (Fin n) E) (JB : Matrix (Fin d) (Fin d) E)

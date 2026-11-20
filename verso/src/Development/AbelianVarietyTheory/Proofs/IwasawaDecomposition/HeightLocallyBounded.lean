@@ -12,9 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.LiftHeight
 
 /- English proof (translation)
-Introduce `D θ hθ V g₀`. Take `⟨C, hC, h⟩` from `GlobalTheory.Grow.height_comparison V hθ`. Establish `hc` using `(GlobalTheory.Grow.continuous_height V).continuousAt (x := g₀)`. Use `⟨C * (GlobalTheory.Grow.height V g₀ + 1), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hc.eventually_lt continuousAt_const (lt_add_one _)] with g hg`.
-
-Conclude with `(h g).1.trans (mul_le_mul_of_nonneg_left hg.le hC.le)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem height_locally_bounded : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D), ∀ g₀ : GA D V,
     ∃ C : ℝ, ∀ᶠ g in 𝓝 g₀, (height θ V g : ℝ) ≤ C := by

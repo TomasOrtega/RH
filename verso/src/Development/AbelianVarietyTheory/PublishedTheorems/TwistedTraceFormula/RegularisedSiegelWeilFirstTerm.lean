@@ -32,7 +32,7 @@ def stab : Subgroup (GA D T) where
     conv_lhs => rw [← e, cancel₂ (mt_inv_mul T q), Matrix.one_mul]⟩
 
 /- English proof (translation)
-Rewrite using `[h, cancel₂ d.pX_jX, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_mul_jX {q : GA D T} {α : Mx D r r} (h : mt T q ⬝ d.jX = d.jX ⬝ α) : α = d.pX ⬝ (mt T q ⬝ d.jX) := by
   rw [h, cancel₂ d.pX_jX, Matrix.one_mul]
@@ -47,17 +47,17 @@ def onX : stab d →* GL (Fin r) (AE D) :=
       cancel₂ d.pX_jX, Matrix.one_mul, Units.val_mul]
 
 /- English proof (translation)
-The claim follows from `q.2.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mul_jX (q : stab d) : mt T q ⬝ d.jX = d.jX ⬝ (onX d q).1 := q.2.choose_spec
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨α, d.levi_jX α⟩`.
+Supply the required witnesses or components.
 -/
 theorem levi_mem (α : GL (Fin r) (AE D)) : d.levi α ∈ stab d := ⟨α, d.levi_jX α⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext ((eq_of_mul_jX d (mul_jX d _)).trans (eq_of_mul_jX d (d.levi_jX α)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem onX_levi (α : GL (Fin r) (AE D)) : onX d ⟨_, levi_mem d α⟩ = α :=
   Units.ext ((eq_of_mul_jX d (mul_jX d _)).trans (eq_of_mul_jX d (d.levi_jX α)).symm)
@@ -67,7 +67,7 @@ def absDet : stab d →* ℝ≥0 := (absA D).comp (Matrix.GeneralLinearGroup.det
 def HasIw (K : Subgroup (GA D T)) : Prop := ∀ h : GA D T, ∃ q : stab d, ∃ k ∈ K, h = q * k
 
 /- English proof (translation)
-Establish `h : Continuous fun q : stab d => (onX d q).1` using `(continuous_const.matrix_mul (((continuous_mt T).comp continuous_subtype_val).matrix_mul continuous_const)).congr fun q => (eq_of_mul_jX d (mul_jX d q)).symm`. Conclude with `Units.continuous_iff.2 ⟨h, (h.comp continuous_inv).congr fun q => by simp⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_onX : Continuous (onX d) := by
   have h : Continuous fun q : stab d => (onX d q).1 :=
@@ -76,7 +76,7 @@ theorem continuous_onX : Continuous (onX d) := by
   exact Units.continuous_iff.2 ⟨h, (h.comp continuous_inv).congr fun q => by simp⟩
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Conclude with `continuous_absE.comp (Units.continuous_iff.2 ⟨(Units.continuous_val.comp (continuous_onX d)).matrix_det, (Units.continuous_coe_inv.comp (continuous_onX d)).matrix_det.congr fun p => by`. Rewrite using `[MonoidHom.comp_apply, ← map_inv]`. Use the proof step `rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_absDet : Continuous (absDet d) := by
   haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -86,11 +86,9 @@ theorem continuous_absDet : Continuous (absDet d) := by
         rw [MonoidHom.comp_apply, ← map_inv]; rfl⟩)
 
 /- English proof (translation)
-Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Use `haveI := t2Space_tensorProduct_finiteExtension (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Establish `h1 : IsClosed {q : GA D T | mt T q ⬝ d.jX = d.jX ⬝ (d.pX ⬝ (mt T q ⬝ d.jX))}` using `isClosed_eq ((continuous_mt T).matrix_mul continuous_const) (continuous_const.matrix_mul (continuous_const.matrix_mul ((continuous_mt T).matrix_mul continuous_const)))`. Establish `key : ∀ p q : GA D T, mt T q ⬝ d.jX = d.jX ⬝ (d.pX ⬝ (mt T q ⬝ d.jX)) → mt T p * mt T q = 1 → d.pX ⬝ (mt T p ⬝ d.jX) * (d.pX ⬝ (mt T q ⬝ d.jX)) = 1` using `fun p q hq e => by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← hq, cancel₂ e, Matrix.one_mul, d.pX_jX]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.inter (h1.preimage continuous_inv) using 1` and compare the differences between its conclusion and the goal. Use `Set.ext fun q => ⟨fun h => ⟨?_, ?_⟩, fun h => ⟨⟨_, _, key q q⁻¹ h.2 (mt_mul_inv T q), key q⁻¹ q h.1 (mt_inv_mul T q)⟩, h.1⟩⟩` and prove the remaining obligations. Take `⟨α, h⟩` from `h`. Conclude with `h.trans (congrArg _ (eq_of_mul_jX d h))`. Take `⟨α, h⟩` from `inv_mem h`.
-
-Conclude with `h.trans (congrArg _ (eq_of_mul_jX d h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isClosed_stab : IsClosed (stab d : Set (GA D T)) := by
   haveI := t2Space_adeleRing' (F := D.host.F)
@@ -112,7 +110,7 @@ theorem isClosed_stab : IsClosed (stab d : Set (GA D T)) := by
 variable (b : GL (Fin T.rank) (AE D))
 
 /- English proof (translation)
-The claim follows from `haveI := isLattice_frameLat_host T isIwasawa_of_isCompact (isClosed_stab d) (continuous_absDet d) (isCompact_levelAll (AdelicU.isCMExt_host D) _ _ _) h`.
+A detailed English derivation is pending.
 -/
 theorem HasIw.isIwasawa {d : HypDec T T₀ r} {b : GL (Fin T.rank) (AE D)} (h : HasIw d (Kmax T b)) :
     IsIwasawa (absDet d) (Kmax T b) :=
@@ -140,7 +138,7 @@ def EisensteinContinues : Prop :=
     ∀ h, PoleLE (sphericalEisenstein d b h) (rhoH T r) 1 ∧ ResidueAt (sphericalEisenstein d b h) (rhoH T r) (eisensteinResidue d b)
 
 /- English proof (translation)
-Use `h.isIwasawa.iwAbs_mul ⟨_, levi_mem d α⟩ hk` as an intermediate fact. Rewrite `this` using `[absDet, MonoidHom.comp_apply, MonoidHom.comp_apply, onX_levi]`. Conclude with `congrArg (npow · _) this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphericalSection_levi_mul {d : HypDec T T₀ r} {b : GL (Fin T.rank) (AE D)} (h : HasIw d (Kmax T b)) (s : ℂ)
     (α : GL (Fin r) (AE D)) {k : GA D T} (hk : k ∈ Kmax T b) :
@@ -162,7 +160,7 @@ def ikeda (ψ : AddChar (AF D.host.F) ℂ) {t : ℕ} (d : HypDec T T' t) (μ : M
     (𝓕 : Set (Mx D t S.rank)) (φ : WO S T → ℂ) : WO S T' → ℂ := d.mixT S ψ μ 𝓕 φ 0
 
 /- English proof (translation)
-Use `integral_congr_ae (.of_forall fun ξ => (d.integrandT_eq φ 0 ξ w).trans ?_)` and prove the remaining obligations. Rewrite using `[map_zero, symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, add_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ikeda_apply (ψ : AddChar (AF D.host.F) ℂ) {t : ℕ} (d : HypDec T T' t) (μ : Measure (Mx D t S.rank))
     (𝓕 : Set (Mx D t S.rank)) (φ : WO S T → ℂ) (w : WO S T') :
@@ -182,7 +180,7 @@ def omCentreT (p : MvPolynomial ℕ ℂ) (φ : WO S T → ℂ) : WO S T → ℂ 
   fun w => centreAct θ τ T p (fun h => om (1, h) φ w) 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Distinguish the cases in `hc : c = 0`. Simplify using `[omCentreT, centreAct, polyAct, hc]`. Simplify using `[omCentreT, centreAct, polyAct, opPow, MvPolynomial.support_C, hc, show ((1 : GA D S), (1 : GA D T)) = 1 from rfl]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem omCentreT_C (c : ℂ) (φ : WO S T → ℂ) : omCentreT om θ τ (MvPolynomial.C c) φ = c • φ := by
   funext w
@@ -265,7 +263,7 @@ def RegularisedSiegelWeilFirstTerm : Prop :=
             (κ • regRes ω' m θ τ d₀ b' zH P (ikeda ψ d μ₁ 𝓕₁ (projK ω ν φ)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨diagSp D 2 ![false, false] 2 0, _, _, 1, hypDecThree D, rfl, (by decide : 1 < 3), Nat.one_pos⟩`.
+Supply the required witnesses or components.
 -/
 example (D : D7) : ∃ (V T T' : HSp D) (t : ℕ) (_ : HypDec T T' t),
     T.rank + T'.rank = 2 * V.rank ∧ T'.rank < T.rank ∧ 0 < T'.rank :=

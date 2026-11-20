@@ -21,7 +21,7 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B.ψ)}
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.ThKW.exists_inf_A_k C`.
+A detailed English derivation is pending.
 -/
 theorem exists_inf_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) : ∃ oi, IsInfWeilF σ JS JT ξ₀ B.ψ oi ∧
     ∀ s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ, s * s = 1 → ((HMF JS JT ξ₀ (tauB B)) * s).PosDef → ∀ p,
@@ -29,7 +29,7 @@ theorem exists_inf_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ
         oi p f = GlobalTheory.RealWeil.dP s (mMF σ JS JT θ p) • f :=
   _root_.PositivityTheory.ThKW.exists_inf_A_k C
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.ThKW.det_mMF_B_k C ha hb`.
+A detailed English derivation is pending.
 -/
 theorem det_mMF_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) {g : GAF σ JS} {h : GAF σ JT} {a b}
     (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b) :

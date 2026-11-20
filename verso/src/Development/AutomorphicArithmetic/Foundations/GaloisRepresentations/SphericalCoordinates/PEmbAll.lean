@@ -8,11 +8,11 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `p _ G τ`. Break down `HTGroupOver.liesOver_or_conj p G τ with h | h` into its components or cases. Take `⟨i, σ, hσ⟩` from `G.emb_all τ h`. Use `⟨i, σ, Or.inl fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨i, σ, hσ⟩` from `G.emb_all _ h`. Use `⟨i, σ, Or.inr fun x => ?_⟩` and prove the remaining obligations. Establish `hx` using `congrArg (fun f : G.F →+* PadicAlgCl p => f (IsCMField.complexConj G.F x)) hσ`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, conjQ_apply] at hx`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : (conjQ G.F).toRingHom ((IsCMField.complexConj G.F) x) = x`. Simplify using `[conjQ_apply]`. Rewrite `hx` using `[hc]`. Conclude with `hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.embAll_of :
     UpperTheory.Gal.W2.EmbAll := by

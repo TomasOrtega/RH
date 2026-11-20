@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.Forms
 open scoped InnerProductSpace Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DualWeylType.dual_weyl_type` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFiniteDimUnitaryKTypeEqDualWeylModule.lean&line=17#L17)
 -/

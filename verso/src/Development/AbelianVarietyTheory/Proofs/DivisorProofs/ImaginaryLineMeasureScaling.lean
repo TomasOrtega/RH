@@ -19,9 +19,9 @@ namespace GlobalTheory.UnipConj.LineModulus
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hne : ∃ e : E, σ e ≠ e`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `h.2.1` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun y => (h.2.2.2 τ y).symm.trans (congrArg τ (hc y)))))`. Take `⟨e, he⟩` from `hne`. Use `⟨e - σ e, sub_ne_zero.2 (Ne.symm he), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, GlobalTheory.ThK.UnipDom.Inverse.sigma_sigma h]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_anti {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : E, δ ≠ 0 ∧ σ δ = -δ := by
   have hne : ∃ e : E, σ e ≠ e := by
@@ -38,11 +38,11 @@ theorem exists_anti {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : E, δ �
   ring
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `h2 : σ (algebraMap F E s + algebraMap F E t * δ) = 0` using `by rw [hst, map_zero]`. Rewrite `h2` using `[map_add, map_mul, AlgHom.commutes, AlgHom.commutes, hσδ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs2 : algebraMap F E s * 2 = 0` using `by linear_combination hst + h2`. Establish `ht2 : algebraMap F E t * δ * 2 = 0` using `by linear_combination hst - h2`. Establish `h2ne : (2 : E) ≠ 0` using `two_ne_zero`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(mul_eq_zero.1 hs2).resolve_right h2ne` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(map_eq_zero_iff _ (algebraMap F E).injective).1 this`. Use `((mul_eq_zero.1 ht2).resolve_right h2ne)` as an intermediate fact. Use `(mul_eq_zero.1 this).resolve_right hδ` as an intermediate fact. Conclude with `(map_eq_zero_iff _ (algebraMap F E).injective).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linIndep_one_anti {σ : E →ₐ[F] E} {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ) :
     LinearIndependent F ![1, δ] := by
@@ -62,7 +62,7 @@ theorem linIndep_one_anti {σ : E →ₐ[F] E} {δ : E} (hδ : δ ≠ 0) (hσδ 
     exact (map_eq_zero_iff _ (algebraMap F E).injective).1 this
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_eq_sigR (σ : E →ₐ[F] E) (x : AE F E) : cA σ x = sigR (AF F) σ x := by
   induction x using TensorProduct.induction_on with
@@ -79,12 +79,12 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def delta (h : IsCMExt F E σ) : E := (exists_anti h).choose
 
 /- English proof (translation)
-The claim follows from `(exists_anti h).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem delta_ne_zero (h : IsCMExt F E σ) : delta h ≠ 0 := (exists_anti h).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_anti h).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem sigma_delta (h : IsCMExt F E σ) : σ (delta h) = -delta h := (exists_anti h).choose_spec.2
 
@@ -93,7 +93,7 @@ def basisE (h : IsCMExt F E σ) : Module.Basis (Fin 2) F E :=
     (by rw [Fintype.card_fin, h.2.2.1])
 
 /- English proof (translation)
-The claim follows from `coe_basisOfLinearIndependentOfCardEqFinrank _ _`.
+A detailed English derivation is pending.
 -/
 theorem coe_basisE (h : IsCMExt F E σ) : ⇑(basisE h) = ![1, delta h] :=
   coe_basisOfLinearIndependentOfCardEqFinrank _ _
@@ -102,38 +102,36 @@ def basisA (h : IsCMExt F E σ) : Module.Basis (Fin 2) (AF F) (AE F E) :=
   Algebra.TensorProduct.basis (AF F) (basisE h)
 
 /- English proof (translation)
-Rewrite using `[basisA, Algebra.TensorProduct.basis_apply, coe_basisE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem basisA_zero (h : IsCMExt F E σ) : basisA h 0 = 1 := by
   rw [basisA, Algebra.TensorProduct.basis_apply, coe_basisE]
   rfl
 
 /- English proof (translation)
-Rewrite using `[basisA, Algebra.TensorProduct.basis_apply, coe_basisE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem basisA_one (h : IsCMExt F E σ) : basisA h 1 = (1 : AF F) ⊗ₜ[F] delta h := by
   rw [basisA, Algebra.TensorProduct.basis_apply, coe_basisE]
   rfl
 
 /- English proof (translation)
-Rewrite using `[basisA_zero, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_basisA_zero (h : IsCMExt F E σ) : cA σ (basisA h 0) = basisA h 0 := by
   rw [basisA_zero, map_one]
 
 /- English proof (translation)
-Rewrite using `[basisA_one]`. Simplify using `[cA, sigma_delta h, TensorProduct.tmul_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cA_basisA_one (h : IsCMExt F E σ) : cA σ (basisA h 1) = -basisA h 1 := by
   rw [basisA_one]
   simp [cA, sigma_delta h, TensorProduct.tmul_neg]
 
 /- English proof (translation)
-Establish `hsum` using `(basisA h).sum_repr t`. Rewrite `hsum` using `[Fin.sum_univ_two]`. Use `set c0 := (basisA h).repr t 0`. Use `set c1 := (basisA h).repr t 1`. Establish `key : t + cA σ t = (c0 + c0) • basisA h 0` using `by conv_lhs => rw [← hsum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[map_add, map_smul, map_smul, cA_basisA_zero, cA_basisA_one, add_smul, smul_neg]`. Normalize the expressions using the abelian group laws. Rewrite `key` using `[mem_imLine.1 ht]`. Establish `h0` using `congrArg (fun x => (basisA h).repr x 0) key`. Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one] at h0`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem repr_zero_of_mem (h : IsCMExt F E σ) {t : AE F E} (ht : t ∈ imLine σ) : (basisA h).repr t 0 = 0 := by
   have hsum := (basisA h).sum_repr t
@@ -152,7 +150,7 @@ theorem repr_zero_of_mem (h : IsCMExt F E σ) {t : AE F E} (ht : t ∈ imLine σ
     _ = 0 := by rw [two_mul, ← h0, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[mem_imLine, map_smul, cA_basisA_one, smul_neg, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_basisA_one_mem (h : IsCMExt F E σ) (s : AF F) : s • basisA h 1 ∈ imLine σ := by
   rw [mem_imLine, map_smul, cA_basisA_one, smul_neg, add_neg_cancel]
@@ -180,11 +178,11 @@ theorem lineEquiv_apply (h : IsCMExt F E σ) (s : AF F) : (lineEquiv h s : AE F 
 end GlobalTheory.UnipConj.LineModulus
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h l _ _ _ _ Bl hBl`. Use `letI : MeasurableSpace (AF F) := borel _`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `set u : (AF F)ˣ := Units.map (Algebra.norm (AF F) : AE F E →* AF F) l`. Establish `hB : Bl = ((lineEquiv h).symm.trans (GlobalTheory.ModuNorm.mulUnitCE u)).trans (lineEquiv h)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `t`. Take `⟨s, rfl⟩ : ∃ s, lineEquiv h s = t` from `⟨(lineEquiv h).symm t, (lineEquiv h).apply_symm_apply t⟩`. Establish `e1 : (((lineEquiv h).symm.trans (GlobalTheory.ModuNorm.mulUnitCE u)).trans (lineEquiv h)) (lineEquiv h s) = lineEquiv h (u.1 * s)`. Express the relevant statement in the definitionally equal form `lineEquiv h (GlobalTheory.ModuNorm.mulUnitCE u ((lineEquiv h).symm (lineEquiv h s))) = _`. Rewrite using `[ContinuousAddEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1, hBl, lineEquiv_apply, lineEquiv_apply, cA_eq_sigR, ← GlobalTheory.Doubling.algebraMap_norm_eq h, ← Algebra.smul_def, smul_smul]`. Both sides reduce to the same expression. Rewrite using `[hB, GlobalTheory.ModuLR.addEquivAddHaarChar_transport, ← GlobalTheory.ModuNorm.distribHaarChar_eq_addEquivAddHaarChar]`. Conclude with `GlobalTheory.ModuAdele.modu_norm_eq_absE F E l`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnipConj.LineModulus.addEquivAddHaarChar_imLine : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (l : (AE F E)ˣ) [IsTopologicalAddGroup (GlobalTheory.UnipConj.imLine σ)] [LocallyCompactSpace (GlobalTheory.UnipConj.imLine σ)]

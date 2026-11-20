@@ -18,11 +18,11 @@ namespace GlobalTheory.IdemDenominatorCp
 open GlobalTheory.IndefiniteRowSideFullHecke.IntegralPartDecomposition GlobalTheory.IdemCompare
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hp0 : (p : ℂ_[p]) ≠ 0`. Introduce `h0`. Use `GlobalTheory.PadicComplexHost.norm_p p` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, norm_zero]`. Establish `: (0 : ℝ) < (p : ℝ)⁻¹` using `inv_pos.2 (by exact_mod_cast hp.out.pos)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (𝓞_ℂ_[p]).valuation ((p : ℂ_[p])⁻¹) ≤ 1`. Rewrite using `[map_inv₀]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_le_one_of_one_le₀ h`. Establish `h2` using `((𝓞_ℂ_[p]).valuation_le_one_iff _).1 h1`. Rewrite `h2` using `[GlobalTheory.PadicComplexHost.mem_iff_norm, norm_inv, GlobalTheory.PadicComplexHost.norm_p, inv_inv]`. Establish `: (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem val_p_lt_one (p : ℕ) [hp : Fact p.Prime] :
     (𝓞_ℂ_[p]).valuation (p : ℂ_[p]) < 1 := by
@@ -43,25 +43,23 @@ theorem val_p_lt_one (p : ℕ) [hp : Fact p.Prime] :
   linarith
 
 /- English proof (translation)
-Introduce `E _ _ _ p _ φ`. Establish `hp : p.Prime` using `Fact.out`. Use `set n := Module.finrank ℚ E with hn_def`. Use `set a := padicValNat p (discr E).natAbs with ha_def`. Establish `hn : n ≠ 0` using `Module.finrank_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `IsAlgClosed.exists_pow_nat_eq ((p : ℂ_[p]) ^ a) (Nat.pos_of_ne_zero hn)`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hnorm : ‖d‖ = (p : ℝ) ^ (-((a : ℝ) / n))`. Establish `h1 : ‖d‖ ^ n = ((p : ℝ) ^ (-((a : ℝ) / n))) ^ n`. Rewrite using `[← norm_pow, hd, norm_pow, GlobalTheory.PadicComplexHost.norm_p, ← Real.rpow_natCast _ n, ← Real.rpow_mul hp0.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Rewrite using `[show -((a : ℝ) / n) * n = -(a : ℝ) by field_simp]`. Rewrite using `[Real.rpow_neg hp0.le, Real.rpow_natCast, inv_pow]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) hn).1 h1`. Set `b` to `Module.finBasis ℤ (𝓞 E)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `O : ValuationSubring ℂ_[p]` to `𝓞_ℂ_[p]`. Establish `hint : ∀ x : 𝓞 E, φ (x : E) ∈ O` using `fun x => integer_mem O φ x.isIntegral_coe`. Set `ψ : 𝓞 E →+* O` to `(φ.comp (algebraMap (𝓞 E) E)).codRestrict O hint`. Establish `hψ : ∀ x : 𝓞 E, x ∈ (IsLocalRing.maximalIdeal O).comap ψ ↔ O.valuation (φ (x : E)) < 1` using `fun x => by`. Rewrite using `[Ideal.mem_comap, O.valuation_lt_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Establish `hpw : (p : 𝓞 E) ∈ (IsLocalRing.maximalIdeal O).comap ψ` using `(hψ _).2 (by simpa using val_p_lt_one p)`. Set `w : HeightOneSpectrum (𝓞 E)` to `⟨(IsLocalRing.maximalIdeal O).comap ψ, inferInstance, fun h0 => hp.ne_zero (by rw [h0] at hpw; simpa using hpw)⟩`. Establish `hw : Induces O φ w` using `hψ`. Take `⟨m, hm, hdisc⟩` from `(GlobalTheory.DifferentExponentCompare.exists_cofactor_iff (E := E) hp a).mpr rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hexp : differentExp_vw w * n = a * ramExp p w` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.diffExp E p a m hp hm hdisc w.asIdeal w.isPrime hpw`. Establish `hv : ValGeDifferent_vp O p w d`. Unfold `ValGeDifferent_vp`. Establish `key : (O.valuation d ^ ramExp p w) ^ n = (O.valuation (p : ℂ_[p]) ^ differentExp_vw w) ^ n`. Rewrite using `[← pow_mul, ← pow_mul, hexp, mul_comm (ramExp p w), pow_mul, ← map_pow, hd, map_pow, ← pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `(pow_lt_pow_left₀ hh zero_le' hn).ne' key`. Establish `hmem` using `(dualDiffSt_iff_vp.1 dual_difference) E ℂ_[p] _ b φ p hp O (val_p_lt_one p) w hw d hv`. Rewrite `hmem` using `[mul_idem_mem_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hev` using `(idemEvalSt_iff.1 idempotent_evaluation) E ℂ_[p] _ b φ`. Use `⟨d, _, fun i => ⟨d * φ (dualBasis b i), hmem i⟩, fun i => b i, ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[hnorm]`. Establish `hsum : ∑ k, algebraMap 𝓞_ℂ_[p] ℂ_[p] ⟨d * φ (dualBasis b k), hmem k⟩ * σ ((b k : 𝓞 E) : E) = d * evalAt σ (GlobalTheory.IndefiniteRowSideFullHecke.IntegralPartDecomposition.idem b φ)`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.IntegralPartDecomposition.idem, map_sum, evalAt_tmul, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d * φ (dualBasis b k) * σ ((b k : 𝓞 E) : E) = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Use `split_ifs with h`.
-
-Substitute `h` using the available equality. Rewrite using `[hev.1, _root_.mul_one]`. Rewrite using `[hev.2 σ h, MulZeroClass.mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_denominator : ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (p : ℕ) [Fact p.Prime] (φ : E →+* ℂ_[p]), ∃ (d : ℂ_[p]) (n : ℕ) (r : Fin n → 𝓞_ℂ_[p]) (a : Fin n → 𝓞 E), (p : ℝ) ^ (-((padicValNat p (discr E).natAbs : ℝ) / (Module.finrank ℚ E : ℝ))) ≤ ‖d‖ ∧ ∀ σ : E →+* ℂ_[p], ∑ k, algebraMap 𝓞_ℂ_[p] ℂ_[p] (r k) * σ (a k) = if σ = φ then d else 0 := by
   intro E _ _ _ p _ φ

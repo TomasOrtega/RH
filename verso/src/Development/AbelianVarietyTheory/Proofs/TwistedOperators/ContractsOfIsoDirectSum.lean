@@ -9,31 +9,31 @@ open scoped TensorProduct DirectSum
 namespace GlobalTheory.OneFunctional
 
 /- English proof (translation)
-Use `Contracts.congr ?_ hφ (Iso.refl σ) (Iso.refl _)` and prove the remaining obligations. Take `⟨⟨ε, hε⟩, hne, hspan⟩` from `finrank_eq_one_iff'.1 h1`. Establish `hε0 : ε ≠ 0` using `fun h => hne (Subtype.ext h)`. Establish `hεi : ∀ h x v, ε (a i₀ h x ⊗ₜ σ h v) = ε (x ⊗ₜ v)` using `fun h x v => by`. Simplify using `using mem_invFun.1 hε h (x ⊗ₜ v)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨z, hz⟩ : ∃ z, ε z = 1` from `LinearMap.surjective hε0 1`. Set `P : (A i₀ ⊗[ℂ] B i₀) ⊗[ℂ] V →ₗ[ℂ] B i₀` to `(TensorProduct.lid ℂ (B i₀)).toLinearMap ∘ₗ LinearMap.rTensor (B i₀) ε ∘ₗ (TensorProduct.rightComm ℂ (A i₀) (B i₀) V).toLinearMap`. Establish `hP : ∀ x y v, P ((x ⊗ₜ y) ⊗ₜ v) = ε (x ⊗ₜ v) • y` using `fun x y v => by simp [P]`. Set `J : ∀ i, B i → A i ⊗[ℂ] V →ₗ[ℂ] (⨁ i, A i ⊗[ℂ] B i) ⊗[ℂ] V` to `fun i y => LinearMap.rTensor V (DirectSum.lof ℂ I (fun i => A i ⊗[ℂ] B i) i ∘ₗ (TensorProduct.mk ℂ (A i) (B i)).flip y)`. Establish `hJ : ∀ i y x v, J i y (x ⊗ₜ v) = DirectSum.lof ℂ I (fun i => A i ⊗[ℂ] B i) i (x ⊗ₜ y) ⊗ₜ v` using `fun i y x v => by simp [J]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `π : (⨁ i, A i ⊗[ℂ] B i) ⊗[ℂ] V →ₗ[ℂ] B i₀` to `P ∘ₗ LinearMap.rTensor V (DirectSum.component ℂ I (fun i => A i ⊗[ℂ] B i) i₀)`. Establish `hπ : ∀ f v, π (f ⊗ₜ v) = P (DirectSum.component ℂ I (fun i => A i ⊗[ℂ] B i) i₀ f ⊗ₜ v)` using `fun f v => by simp [π]`. Establish `hπJ : ∀ y w, π (J i₀ y w) = ε w • y` using `fun y w => by`. Proceed by induction on `w with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x v => rw [hJ, hπ, DirectSum.component.lof_self, hP]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht, add_smul]`. Establish `hπJ' : ∀ i, i ≠ i₀ → ∀ y x v, π (J i y (x ⊗ₜ v)) = 0` using `fun i hi y x v => by`. Rewrite using `[hJ, hπ, DirectSum.component.of, dif_neg hi]`. Simplify using the standard rewrite rules.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨π, fun y => ⟨J i₀ y z, by rw [hπJ, hz, one_smul]⟩, fun h g f v => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[hπ, hπ]`. Establish `e : DirectSum.component ℂ I (fun i => A i ⊗[ℂ] B i) i₀ ((Representation.directSum fun i => Representation.tprod ((a i).comp (MonoidHom.fst H G)) ((b i).comp (MonoidHom.snd H G))) (h, g) f) = TensorProduct.map (a i₀ h) (b i₀ g) (DirectSum.component ℂ I (fun i => A i ⊗[ℂ] B i) i₀ f …` using `rfl`. Rewrite using `[e]`. Generalize the expression as in `DirectSum.component ℂ I (fun i => A i ⊗[ℂ] B i) i₀ f = t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul x y => rw [TensorProduct.map_tmul, hP, hP, hεi, map_smul]`. Consider the case `add s t hs ht => simp only [map_add, TensorProduct.add_tmul, hs, ht]`. Establish `hinv : ∀ i y, l ∘ₗ J i y ∈ invFun ((a i).tprod σ)` using `fun i y => mem_invFun.2 fun h w => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul x v`. Use `hl h (DirectSum.lof ℂ I (fun i => A i ⊗[ℂ] B i) i (x ⊗ₜ y)) v` as an intermediate fact. Simplify `this` using `[hJ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Set `c : B i₀ →ₗ[ℂ] ℂ` to `l ∘ₗ LinearMap.rTensor V (DirectSum.lof ℂ I (fun i => A i ⊗[ℂ] B i) i₀) ∘ₗ (TensorProduct.rightComm ℂ (A i₀) (B i₀) V).symm.toLinearMap ∘ₗ TensorProduct.mk ℂ _ _ z`. Establish `hc : ∀ y, c y = l (J i₀ y z)` using `fun y => by`. Simplify using `only [c, LinearMap.comp_apply, TensorProduct.mk_apply, LinearEquiv.coe_coe]`. Use `congr 1`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Generalize the expression as in `z = w`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul x v => simp [hJ]`. Consider the case `add s t hs ht => simp only [map_add, TensorProduct.add_tmul, hs, ht]`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `key : ∀ i y x v, l (J i y (x ⊗ₜ v)) = c (π (J i y (x ⊗ₜ v)))` using `fun i y x v => by`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Take `⟨r, hr⟩` from `hspan ⟨_, hinv i y⟩`. Establish `hr' : ∀ w, l (J i y w) = r * ε w` using `fun w => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using (congrArg (fun m : invFun ((a i).tprod σ) => m.1 w) hr).symm`. Rewrite using `[hπJ, map_smul, hc, hr', hr', hz, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `hinv i y` as an intermediate fact. Rewrite `this` using `[h0 i hi, Submodule.mem_bot]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hπJ' i hi, map_zero]`. Conclude with `LinearMap.congr_fun this _`. Establish `hl' : l = c ∘ₗ π`. Use `TensorProduct.ext (DirectSum.linearMap_ext _ fun i => TensorProduct.ext' fun x y => ?_)` and prove the remaining obligations. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `key i y x v` using `[hJ]`. Introduce `x hx`. Rewrite using `[hl', LinearMap.comp_apply, hx, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contracts_of_iso_directSum (H G I F V : Type) [Monoid H] [Monoid G] [AddCommGroup F] [Module ℂ F]
     [AddCommGroup V] [Module ℂ V] (A B : I → Type) [∀ i, AddCommGroup (A i)] [∀ i, Module ℂ (A i)]

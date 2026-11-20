@@ -11,7 +11,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `show (X.presheaf.map (homOfLE h).op).hom g = g`. Establish `e : (homOfLE h).op = 𝟙 (Opposite.op U)` using `Subsingleton.elim _ _`. Conclude with `(congrArg (fun F => (X.presheaf.map F).hom g) e).trans (by rw [CategoryTheory.Functor.map_id]; rfl)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wtf_id_appLE {X : Scheme.{0}} (U : X.Opens) (h : U ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ U) (g : Γ(X, U)) :
     ((𝟙 X : X ⟶ X).appLE U U h).hom g = g := by
@@ -20,7 +20,7 @@ theorem wtf_id_appLE {X : Scheme.{0}} (U : X.Opens) (h : U ≤ (𝟙 X : X ⟶ X
   exact (congrArg (fun F => (X.presheaf.map F).hom g) e).trans (by rw [CategoryTheory.Functor.map_id]; rfl)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem wtf_appLE_congr {X Y : Scheme.{0}} {f g : X ⟶ Y} (e : f = g) (U : Y.Opens) (V : X.Opens)
     (h : V ≤ f ⁻¹ᵁ U) (h' : V ≤ g ⁻¹ᵁ U) : f.appLE U V h = g.appLE U V h' := by
@@ -28,9 +28,9 @@ theorem wtf_appLE_congr {X Y : Scheme.{0}} {f g : X ⟶ Y} (e : f = g) (U : Y.Op
   rfl
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hp' : ∀ k, p ∈ (snd (Over.mk x') Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)` using `Set.mem_iInter.1 hp`. Establish `e` using `congrArg (fun f : Gx x' ⟶ Xo.univ.t.G.left => f.base p) hs`. Use `show pm.base p ∈ ⋂ k, (snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (pm ≫ (snd (Over.mk x) Xo.univ.t.G).left).base p ∈ (Xo.univ.t.PP.L.U (i k) : Set _)`. Rewrite using `[e]`. Conclude with `hp' k`.
+A detailed English derivation is pending.
 -/
 theorem wtf_ppx_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
@@ -47,7 +47,7 @@ theorem wtf_ppx_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x
   exact hp' k
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun s => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`.
+A detailed English derivation is pending.
 -/
 theorem wtf_dualMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : S →+* T) (g : R →+* S) :
     (dualMap f).comp (dualMap g) = dualMap (f.comp g) :=
@@ -108,7 +108,7 @@ def wtf_borPt (hA : TanAddSt Xo) (z : FrPt Xo c R) (t₀ : Ix Dw → Rˣ)
       rw [← h2, _root_.mul_assoc, Units.mul_inv, _root_.mul_one]
 
 /- English proof (translation)
-Use `⟨rfl, fun τ i => ⟨M τ i, hd τ i, hlow τ i, ?_⟩, 𝟙 _, Category.id_comp _, Category.id_comp _, fun i h => ?_⟩` and prove the remaining obligations. Conclude with `(wtfA_isComb_iff z.x (z.u τ) (z.tan τ) (M τ i) _).2 rfl`. Conclude with `wtf_id_appLE _ h _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wtf_frBor (hA : TanAddSt Xo) (z : FrPt Xo c R) (t₀ : Ix Dw → Rˣ)
     (M : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R)
@@ -122,23 +122,21 @@ theorem wtf_frBor (hA : TanAddSt Xo) (z : FrPt Xo c R) (t₀ : Ix Dw → Rˣ)
 end Bor
 
 /- English proof (translation)
-Take `⟨hx1, hu1, pma, hsa, hfa, hga⟩` from `hyp`. Take `⟨hx2, hu2, pmz, hsz, hfz, hgz⟩` from `hz`. Take `⟨hxb, -, pmb, hsb, hfb, hgb⟩` from `hb`. Establish `hφ : φ.toRingHom = χ.toRingHom.comp α.toRingHom` using `by rw [← hχα]; rfl`. Establish `hxz : spMap χ.toRingHom ≫ z.x = y'.x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx2, ← Category.assoc, spMap_comp_spMap, ← hφ, hxb, hx1]`. Establish `hxy : spMap χ.toRingHom ≫ z.x = y.x` using `hxz.trans hxb`. Use `⟨hxz.symm, fun τ i => ?_, wtfA_bcPmE χ.toRingHom z.x y'.x hxz, wtfA_bcPmE_snd _ _ _ _, wtfA_bcPmE_fst _ _ _ _, fun i h => ?_⟩` and prove the remaining obligations. Set `D : tEps y.x ⟶ tEps z.x` to `Over.homMk (spMap (dualMap χ.toRingHom)) (by show spMap (dualMap χ.toRingHom) ≫ spMap (algebraMap R (DualNumber R)) ≫ z.x = spMap (algebraMap S (DualNumber S)) ≫ y.x`. Rewrite using `[← Category.assoc, spMap_comp_spMap, dualMap_comp_alg, ← spMap_comp_spMap, Category.assoc, hxy])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hM' : ∀ τ i j, χ.toRingHom (M τ i j) = cf τ i j` using `hM`. Establish `hD : D ≫ wtfA_comb z.x (fun j => wtfA_lt z.x (z.u τ j) (z.tan τ j)) (M τ i) = wtfA_comb y.x (fun j => wtfA_lt y.x (y.u τ j) (y.tan τ j)) (cf τ i)`. Unfold `wtfA_comb`. Rewrite using `[wtfA_pre_prod]`. Use `Finset.prod_congr rfl fun j _ => Over.OverMorphism.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show spMap (dualMap χ.toRingHom) ≫ spMap (epsMul (M τ i j)) ≫ z.u τ j = spMap (epsMul (cf τ i j)) ≫ y.u τ j`. Rewrite using `[hu2 τ j, hu1 τ j, ← Category.assoc, spMap_comp_spMap, dualMap_comp_epsMul, ← spMap_comp_spMap, hM', Category.assoc, ← Category.assoc (spMap (dualMap χ.toRingHom)), spMap_comp_spMap, wtf_dualMap_comp, ← hφ]`. Rewrite using `[← (wtfA_isComb_iff y.x (y.u τ) (y.tan τ) (cf τ i) (y'.u τ i)).1 (hcf τ i), ← hD]`. Both sides reduce to the same expression. Establish `hpm : wtfA_bcPmE χ.toRingHom z.x y'.x hxz ≫ pmz = pmb ≫ pma`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `wtfA_gx_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hfz, ← Category.assoc, wtfA_bcPmE_fst, Category.assoc, spMap_comp_spMap, ← hφ, Category.assoc, hfa, ← Category.assoc, hfb]`. Rewrite using `[Category.assoc, hsz, wtfA_bcPmE_snd, Category.assoc, hsa, hsb]`. Establish `hfb' : pmb ≫ (fst (Over.mk y.x) Xo.univ.t.G).left = (fst (Over.mk y'.x) Xo.univ.t.G).left ≫ spMap (RingHom.id S)`. Rewrite using `[wtfA_spMap_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hfb.trans (Category.comp_id _).symm`. Establish `hz1` using `wtf_ppx_le pmz hsz i`. Establish `hy1` using `wtf_ppx_le pma hsa i`. Establish `hb1` using `wtf_ppx_le pmb hsb i`. Use `show ((wtfA_bcPmE χ.toRingHom z.x y'.x hxz).appLE _ _ h).hom (scal z.x (t₀ none : R) i * z.s.f i) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(map_mul _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) (wtfA_scal_pull χ.toRingHom _ (wtfA_bcPmE_fst _ _ _ _) _ i h) rfl).trans ?_` and prove the remaining obligations. Rewrite using `[← hgb i hb1]`. Use `Eq.trans ?_ (map_mul _ _ _).symm` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[wtfA_scal_pull (RingHom.id S) pmb hfb' _ i hb1]`. Conclude with `congrArg (fun a => scal y'.x a i) (ht none)`. Rewrite using `[← hgz i hz1, ← hga i hy1]`. Establish `c1` using `congrArg (fun F => F.hom (yp.s.f i)) (Scheme.Hom.appLE_comp_appLE (wtfA_bcPmE χ.toRingHom z.x y'.x hxz) pmz _ _ _ hz1 h)`. Establish `c2` using `congrArg (fun F => F.hom (yp.s.f i)) (Scheme.Hom.appLE_comp_appLE pmb pma _ _ _ hy1 hb1)`.
-
-Establish `c3` using `congrArg (fun F => CommRingCat.Hom.hom F (yp.s.f i)) (wtf_appLE_congr hpm ((PPx yp.x).U i) ((PPx y'.x).U i) (h.trans ((TopologicalSpace.Opens.map (wtfA_bcPmE χ.toRingHom z.x y'.x hxz).base).map (homOfLE hz1)).le) (hb1.trans ((TopologicalSpace.Opens.map pmb.base).map (homOfLE hy1) …`. Conclude with `c1.trans (c3.trans c2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wtf_frMap (hA : TanAddSt Xo) {S : Type} [CommRing S] [Algebra c.F S] {p : TRing c.F}
     {yp : FrPt Xo c p.R} {y y' : FrPt Xo c S} {φ : p.R →ₐ[c.F] S} (hyp : FrMap φ yp y) {t : Ix Dw → Sˣ}
@@ -204,15 +202,15 @@ theorem wtf_frMap (hA : TanAddSt Xo) {S : Type} [CommRing S] [Algebra c.F S] {p 
       exact c1.trans (c3.trans c2.symm)
 
 /- English proof (translation)
-Introduce `a n f hf S _ _ t y y' hy hy' hb`. Establish `key : ∀ (p q : TRing c.F) (φ : p.R →ₐ[c.F] S) (ψ : q.R →ₐ[c.F] S) (yp : FrPt Xo c p.R) (yq : FrPt Xo c q.R), FrMap φ yp y → FrMap ψ yq y' → ψ (f q yq) = wchar (ex Dw a n) t * φ (f p yp)`. Introduce `p q φ ψ yp yq hp hq`. Set `cf : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Fin (Dw.mult τ) → S` to `fun τ i => (hb.2.1 τ i).choose`. Set `g : (Ix Dw ⊕ Ix Dw ⊕ (Σ τ : E →+* ℂ, Fin (Dw.mult τ) × Fin (Dw.mult τ))) → S` to `Sum.elim (fun i => (t i : S)) (Sum.elim (fun i => (((t i)⁻¹ : Sˣ) : S)) (fun k => cf k.1 k.2.1 k.2.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨r, α, χ, gr, hinj, hχα, hgr⟩` from `wtfA_tring p φ g`. Establish `hg1 : ∀ i, χ (gr (.inl i)) = t i` using `fun i => hgr _`. Establish `hg2 : ∀ i, χ (gr (.inr (.inl i))) = (((t i)⁻¹ : Sˣ) : S)` using `fun i => hgr _`. Set `t₀ : Ix Dw → r.Rˣ` to `fun i => ⟨gr (.inl i), gr (.inr (.inl i)), hinj (by rw [map_mul, hg1, hg2, map_one, Units.mul_inv]), hinj (by rw [map_mul, hg1, hg2, map_one, Units.inv_mul])⟩`. Set `M : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) r.R` to `fun τ i j => gr (.inr (.inr ⟨τ, i, j⟩))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hM : ∀ τ i j, χ (M τ i j) = cf τ i j` using `fun τ i j => hgr _`. Establish `ht : ∀ i, χ (t₀ i : r.R) = t i` using `hg1`. Establish `hd : ∀ τ i, M τ i i = t₀ (some ⟨τ, i⟩)` using `fun τ i => hinj (by rw [hM, ht]; exact (hb.2.1 τ i).choose_spec.1)`. Establish `hlow : ∀ τ i j, i < j → M τ i j = 0` using `fun τ i j hij => hinj (by rw [hM, map_zero]; exact (hb.2.1 τ i).choose_spec.2.1 j hij)`. Establish `hz` using `frMap_bcPtR hG hL p α yp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz'` using `wtf_frMap hA hp hb hχα hz t₀ M hd hlow ht cf (fun τ i => (hb.2.1 τ i).choose_spec.2.2) hM`. Establish `hbor` using `wtf_frBor hA (bcPtR hG hL p α yp) t₀ M hd hlow`. Rewrite using `[hW f hf.1 S q r ψ χ yq _ y' hq hz', hf.2 r t₀ _ _ hbor, map_mul, hf.1 p r α yp _ hz, ← AlgHom.comp_apply, hχα]`. Use `congr 1`. Simplify using `only [wchar, map_prod, map_pow, ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Unfold `evR evalAt`. Rewrite using `[dif_pos hy, dif_pos hy']`. Conclude with `key _ _ _ _ _ _ hy.choose_spec.choose_spec.choose_spec hy'.choose_spec.choose_spec.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtField_of_bcR (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z))
     (hA : TanAddSt Xo) (hG : BcGenRSt Xo c) (hL : BcLieRSt Xo c) : WtField Xo c := by

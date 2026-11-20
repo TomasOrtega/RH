@@ -9,15 +9,15 @@ noncomputable section
 namespace Formalism.DivisionValues
 
 /- English proof (translation)
-Introduce `J Pl _ _ TT _ muC mu0 Lpass logκ Fo Eb hu hP mlam e6 eP logOm logT kk hK eK pq a w phν nν fa eE δ h1 h2 h3 h4 h5 h6 h7 h8`. Establish `hpt : ∀ j ρ, pq j * w j ρ * logOm + phν j ρ - fa j ρ - nν j ρ * logOm ≤ (if ρ ∈ TT then Formalism.LatticeIndexTer.ph (a ρ) - a ρ * logOm else 0) + eE j ρ + |pq j - kk| * |w j ρ| * |logOm| + |δ j ρ| * |logOm|`. Introduce `j ρ`. Establish `e7` using `h7 j ρ`. Rewrite using `[h8 j ρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : (pq j - kk) * w j ρ * logOm ≤ |pq j - kk| * |w j ρ| * |logOm|`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : -(δ j ρ * logOm) ≤ |δ j ρ| * |logOm|` using `by rw [← abs_mul]; exact neg_le_abs _`. Apply the tactic sequence `split_ifs at e7 ⊢ with hρ <;> linarith`. Establish `hsum : ∑ j, ∑ ρ, (pq j * w j ρ * logOm + phν j ρ - fa j ρ - nν j ρ * logOm) ≤ ∑ j, ∑ ρ, ((if ρ ∈ TT then Formalism.LatticeIndexTer.ph (a ρ) - a ρ * logOm else 0) + eE j ρ + |pq j - kk| * |w j ρ| * |logOm| + |δ j ρ| * |logOm|)` using `sum_le_sum fun j _ => sum_le_sum fun ρ _ => hpt j ρ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hite : (∑ ρ : Pl, (if ρ ∈ TT then Formalism.LatticeIndexTer.ph (a ρ) - a ρ * logOm else 0)) = ∑ t ∈ TT, (Formalism.LatticeIndexTer.ph (a t) - a t * logOm)`. Rewrite using `[← sum_filter]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hK' : ∑ j, hK j ≤ ∑ j, ((∑ ρ, (phν j ρ - nν j ρ * logOm)) + eK j)` using `sum_le_sum fun j _ => h4 j`. Simplify using `only [sum_add_distrib, sum_sub_distrib, sum_const, card_univ, nsmul_eq_mul] at hsum hK'`. Rewrite `hsum` using `[hite]`. Establish `hTT : ∑ t ∈ TT, ((Fintype.card J : ℝ) * (Formalism.LatticeIndexTer.ph (a t) - a t * logOm) - a t * logT) = (Fintype.card J : ℝ) * ∑ t ∈ TT, (Formalism.LatticeIndexTer.ph (a t) - a t * logOm) - ∑ t ∈ TT, a t * logT`. Rewrite using `[sum_sub_distrib, mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTT]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem divisor_inequality_assembly : DivAssembly := by
   intro J Pl _ _ TT _ muC mu0 Lpass logκ Fo Eb hu hP mlam e6 eP logOm logT kk hK eK pq a w phν nν fa

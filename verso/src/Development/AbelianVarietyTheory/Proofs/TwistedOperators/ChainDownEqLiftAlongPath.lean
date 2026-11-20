@@ -17,7 +17,7 @@ open GlobalTheory.FunObj GlobalTheory.RowChain
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (M : GlobalTheory.FunObj.Vol G)
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _ => rfl | _, .snoc a q, d => congrArg (liftA Wl M a d.2) (pathLift_comp_split p F q d.1)`.
+A detailed English derivation is pending.
 -/
 theorem pathLift_comp_split {X Y : Node} (p : Path T X Y) (F : Fn G X) : ∀ {Z : Node} (q : Path T Y Z) (d : PureT G (p.comp q)),
     liftP Wl M (p.comp q) d F = liftP Wl M q (splitFam q d).2 (liftP Wl M p (splitFam q d).1 F)
@@ -32,7 +32,7 @@ noncomputable def lowLift {N : ℕ} (g : ∀ j, j < N → Sch G (.down t i j)) :
   | n + 1, h, F => lowLift g n (Nat.le_of_succ_le h) (liftA Wl M (.down t i n) (g n h) F)
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _ => rfl | n + 1, h, h', hg, F => by show lowLift Wl M t i g n _ (liftA Wl M (.down t i n) (g n h) F) = lowLift Wl M t i g' n _ (liftA Wl M (.down t i n) (g' n h') F) rw [hg n (Nat.lt_succ_self n)] exact lowLift_congr g g' n _ _ (fun j hj => hg j (by omega)) _`.
+A detailed English derivation is pending.
 -/
 theorem lowLift_congr {N N' : ℕ} (g : ∀ j, j < N → Sch G (.down t i j)) (g' : ∀ j, j < N' → Sch G (.down t i j)) :
     ∀ n (h : n ≤ N) (h' : n ≤ N'), (∀ j (hj : j < n), g j (by omega) = g' j (by omega)) →
@@ -44,7 +44,7 @@ theorem lowLift_congr {N N' : ℕ} (g : ∀ j, j < N → Sch G (.down t i j)) (g
     exact lowLift_congr g g' n _ _ (fun j hj => hg j (by omega)) _
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | n + 1, d, F => by have e := pathLift_comp_split G Wl M (Path.one (.down t i n)) F (downPath t i n) d refine e.trans ?_ rw [pathLift_downPath n] show _ = lowLift Wl M t i (getD t i (n + 1) d) n _ (liftA Wl M (.down t i n) (getD t i (n + 1) d n (Nat.lt_succ_self …`.
+A detailed English derivation is pending.
 -/
 theorem pathLift_downPath : ∀ n (d : PureT G (downPath t i n)) (F : Fn G (.grid i n)),
     liftP Wl M (downPath t i n) d F = lowLift Wl M t i (getD t i n d) n le_rfl F
@@ -66,7 +66,7 @@ def castFn {n n' : ℕ} (e : n = n') (F : Fn G (.grid i n)) : Fn G (.grid i n') 
   Eq.rec (motive := fun k _ => Fn G (.grid i k)) F e
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem lowLift_two {N : ℕ} (g : ∀ j, j < N → Sch G (.down t i j)) (j n : ℕ) (hn : n ≤ N) (e : j + 1 + 1 = n)
     (F : Fn G (.grid i n)) :
@@ -76,7 +76,7 @@ theorem lowLift_two {N : ℕ} (g : ∀ j, j < N → Sch G (.down t i j)) (j n : 
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castLift (j n : ℕ) (e : j + 1 + 1 = n) (f : Sch G (.down t D.R.m (j + 1))) (F : Fn G (.grid D.R.m n)) :
     GlobalTheory.MixPer.liftS (castOm G e (Wl.om (.mu t D.R.m (j + 1)))) (M.ν (.grid D.R.m n)) (M.fd (.grid D.R.m n)) F (castSch G e f) =
@@ -87,7 +87,7 @@ theorem castLift (j n : ℕ) (e : j + 1 + 1 = n) (f : Sch G (.down t D.R.m (j + 
 variable {t M}
 
 /- English proof (translation)
-The claim follows from `| 0, j, hj, vN => by rw [lowLift_two Wl M t _ _ j D.R.m le_rfl (by omega) F, ← castLift Wl M t j D.R.m (by omega) (getD t D.R.m D.R.m d (j + 1) (by omega)) F] rfl | σ + 1, j, hj, vN => (chainFrom_down hM d F σ (j + 1 + 1) (by omega) _).trans ((lowLift_two Wl M t D.R.m (getD t D.R …`.
+A detailed English derivation is pending.
 -/
 theorem chainFrom_down (hM : M.Is t) (d : PureT G (downPath t D.R.m D.R.m)) (F : Fn G (.grid D.R.m D.R.m)) :
     ∀ σ j (hj : j + 2 * σ + 2 = D.R.m) (vN : GlobalTheory.Unf.VolN (besDecAt G j σ hj)),
@@ -108,7 +108,7 @@ namespace GlobalTheory.RowChainDown
 open GlobalTheory.FunObj GlobalTheory.RowChain
 
 /- English proof (translation)
-Introduce `G Wl t M hM d F` and use `by show (chainFrom G Wl t hM _ 0 top_idx (topVN hM)).down (dataFrom G Wl t hM d _ 0 top_idx (topVN hM)) F = _ rw [pathLift_downPath] exact (chainFrom_down Wl hM d F _ 0 top_idx (topVN hM)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chain_down_eq_liftP : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T) (M : GlobalTheory.FunObj.Vol G)
     (hM : M.Is t) (d : PureT G (downPath t D.R.m D.R.m)) (F : Fn G (.grid D.R.m D.R.m)),

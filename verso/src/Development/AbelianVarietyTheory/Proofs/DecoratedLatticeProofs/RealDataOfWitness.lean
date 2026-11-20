@@ -18,9 +18,9 @@ namespace GlobalTheory.Fam.LinkedPins
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x, pack, _⟩` from `a`. Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, _⟩` from `x`. Simplify using `only at pack ⊢`. Consider the cases of `pack`. Use `⟨hs.fin, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hs.conj)`. Conclude with `(hs.mat)`.
+A detailed English derivation is pending.
 -/
 theorem seeAt_twArgs {K : Ctx} {B : GlobalTheory.Mem.Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {L : SizeData₂ (w.st Z).toD7} {hT : GatTies (w.st Z).toD7} {Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L} {Gl : Formalism.MainNotions.G.LatInst (w.st Z).toD7}
@@ -37,7 +37,7 @@ theorem seeAt_twArgs {K : Ctx} {B : GlobalTheory.Mem.Base} {f : Fr B.toPre} {T :
   · exact (hs.mat)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Consider the cases of `hP`. Conclude with `h`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem setting_congr {D : D7} (M : ∀ X : Formalism.L2.SG.HidaSetting.HidaSetting D, X.B.I = Formalism.L2.SG.InstExistsPf.instOf D → Prop)
     {F0 F0' : ∀ u, Formalism.L2.Forms.Forms0 D u} (e : F0 = F0') {P : SPack D F0} {P' : SPack D F0'} (hP : HEq P P')
@@ -49,9 +49,7 @@ theorem setting_congr {D : D7} (M : ∀ X : Formalism.L2.SG.HidaSetting.HidaSett
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hι : y.ιS = (iotaX P.X P.inst).toMulEquiv` using `((JIota.heq_iota_iff D P.X P.inst y.ιS).mp y.ιS_eq)`. Use `realPins_realTOf _ _ _ _ _ _ _ _ ex x Rc _ y hC hD hPg hs.fin ?_ ?_` and prove the remaining obligations. Rewrite using `[hι]`. Conclude with `(hs.conj)`.
-
-Conclude with `(hs.mat)`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realPins_of_seeAt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {K : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl K Yd cX} {x : TwIn ex} {Rc : Formalism.L2.RecT ex}
@@ -69,7 +67,7 @@ theorem realPins_of_seeAt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Fo
 open Classical in
 
 /- English proof (translation)
-Substitute `hX` using the available equality. Consider the cases of `hs`. Consider the cases of `hP`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem image_congr {D : D7} {X X' : Formalism.L2.Col.Fields} (hX : X = X') {s : Formalism.L2.Ker.Seam D X} {s' : Formalism.L2.Ker.Seam D X'}
     (hs : HEq s s') {Pr : Formalism.L2.Col.Primes X} {Pr' : Formalism.L2.Col.Primes X'} (hP : HEq Pr Pr') :
@@ -82,9 +80,9 @@ theorem image_congr {D : D7} {X X' : Formalism.L2.Col.Fields} (hX : X = X') {s :
 open Classical in
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Establish `h : Formalism.L2.Host.CT.plMap (RingEquiv.refl E) = id`. Use function extensionality and compare the values at `P`. Use extensionality with `x`. Conclude with `Formalism.L2.Host.CT.mem_plMap (RingEquiv.refl E) P x`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Finset.image_id]`.
+A detailed English derivation is pending.
 -/
 theorem image_refl {E : Type} [Field E] [NumberField E] (f : E ≃+* E) (hf : f = RingEquiv.refl E)
     (S : Finset (HeightOneSpectrum (𝓞 E))) : S.image (Formalism.L2.Host.CT.plMap f) = S := by
@@ -100,13 +98,13 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx}
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨x, a, ax, y, recPin, ⟨sP, sS, hP, -, e⟩, ⟨pt, -⟩, _⟩` from `w`. Consider the cases of `ax`. Take `⟨h1, h2, -⟩` from `twArgs_lev _ _ _ _ _ _ _ _ _ _ _ _ _ _ q.O.ex q.x.what₂ a`. Establish `hk` using `recPin.k.std`. Establish `fd : ∀ V : Formalism.BasicNotions.TH.HSp (q.w.D q.Z), GlobalTheory.Mem.HostFrames.SignFrame V → IsFDiag V` using `fun V hV => by`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, -, h⟩` from `hV.gram_eq (q.w.D q.Z).host.F`. Conclude with `⟨d, h⟩`. Establish `hWV` using `(GlobalTheory.Mem.HostFrames.frames_of_over K (q.w.st q.Z) q.x.isOver).2.1`. Use `realPins_of_seeAt y.y sS e ?_ (fun i => ⟨fd _ (hWV i).1, fd _ (hWV i).2⟩) ?_ ?_` and prove the remaining obligations. Establish `hc : b.R.T.n.cf = TC.cf q.w.I q.w.l q.Z` using `congrArg Sigma.fst recPin.s.chr`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hC : Top.Fr.at (q.w.st q.Z) q.w.I.C = Top.Fr.at (q.w.st q.Z) q.f` using `congrArg (Top.Fr.at (q.w.st q.Z)) q.w.C_eq`. Conclude with `(eq_of_heq h1).trans (hC.symm.trans hc.symm)`. Rewrite using `[image_congr hk.X_eq hk.seam hk.Pr]`. Conclude with `(eq_of_heq h2).trans (image_refl _ rfl _).symm`. Establish `ht : y.y.tS = q.sat.t` using `eq_of_heq pt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcols : b.R.T.cols = q.x.col.C` using `recPin.s.cols`. Rewrite using `[ht]`. Conclude with `seeAt_twArgs a sP.X sP.inst q.sat.t (setting_congr (D := (q.w.st q.Z).toD7) (fun X h => SeeAt (D := (q.w.st q.Z).toD7) q.x.what₂.r.z.R.toRealDat q.x.what₂.r.z.F.lv2 X h q.sat.t) (congrArg (fun C u => (C.forms u).to0) hcols) hP q.sat.see)`.
+A detailed English derivation is pending.
 -/
 theorem realPins_wit (q : WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c) (w : BWit q b) : RealPins (realTOf w.y.y) := by
   obtain ⟨x, a, ax, y, recPin, ⟨sP, sS, hP, -, e⟩, ⟨pt, -⟩, _⟩ := w
@@ -136,7 +134,7 @@ open GlobalTheory.MiS GlobalTheory.Fam in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hL p K q c b w`. Use `show (fun k : Bl.RPk b.R b.S => Formalism.IndefR.RealPins k.B.Q) (Bl.rpkB b)`. Rewrite using `[w.y.eq]`. Conclude with `GlobalTheory.Fam.LinkedPins.realPins_wit q b w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fam.realPins_of_bWit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → Formalism.IndefR.RealPins b.B.Q := by

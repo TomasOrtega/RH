@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsHeisTrivial
 open GlobalTheory.FinWeil
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HermitianGauss.gauss_hermitian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGaussSumNondegenerateFiniteHermitianModule.lean&line=458#L458)
 -/

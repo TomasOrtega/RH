@@ -14,9 +14,9 @@ open GlobalTheory.BesselCompare (hA_add hA_smul hA_sum hA_vec hD_swap_zero)
 variable {D : D7} {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
 
 /- English proof (translation)
-Establish `hz : star (B.hT d.z d.z) = B.hT d.z d.z` using `(hT_swap rfl).symm`. Establish `zz : B.hT d.z d.z ≠ 0` using `d.zz`. Unfold `BesselDatum.aux dual`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) i <;> refine Fin.lastCases ?_ (fun k => ?_) l`. Simplify using `[HSpace.hD, starRingEnd_apply, hz, zz]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `: B.hT d.z (d.e k) = 0` using `d.ez k`. Simplify using `[HSpace.hD, this, Fin.castSucc_ne_last]`. Rewrite using `[Fin.snoc_last, Fin.snoc_castSucc, hD_swap_zero (d.fz j), if_neg (Fin.castSucc_ne_last j).symm]`. Rewrite using `[Fin.snoc_castSucc, Fin.snoc_castSucc, d.ef]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hD_basis_dual (d : BesselDatum A B ι) (i l) : B.hD (d.aux l) (dual d i) = if l = i then 1 else 0 := by
   have hz : star (B.hT d.z d.z) = B.hT d.z d.z := (hT_swap rfl).symm
@@ -31,7 +31,7 @@ theorem hD_basis_dual (d : BesselDatum A B ι) (i l) : B.hD (d.aux l) (dual d i)
     simp
 
 /- English proof (translation)
-Unfold `dual`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Establish `: B.hT d.z (d.f l) = 0` using `d.fz l`. Simplify using `[HSpace.hD, this]`. Rewrite using `[Fin.snoc_castSucc, d.ff]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem f_dual (d : BesselDatum A B ι) (i l) : B.hD (d.f l) (dual d i) = 0 := by
   unfold dual
@@ -41,7 +41,7 @@ theorem f_dual (d : BesselDatum A B ι) (i l) : B.hD (d.f l) (dual d i) = 0 := b
   · rw [Fin.snoc_castSucc, d.ff]
 
 /- English proof (translation)
-Unfold `BesselDatum.aux`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.snoc_last, hD_swap_zero (d.ez l)]`. Rewrite using `[Fin.snoc_castSucc, d.ee]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hD_basis_e (d : BesselDatum A B ι) (i l) : B.hD (d.aux i) (d.e l) = 0 := by
   unfold BesselDatum.aux
@@ -50,9 +50,9 @@ theorem hD_basis_e (d : BesselDatum A B ι) (i l) : B.hD (d.aux i) (d.e l) = 0 :
   · rw [Fin.snoc_castSucc, d.ee]
 
 /- English proof (translation)
-Establish `h : B.hT (d.e l) (d.f k) = star (if l = k then 1 else 0)` using `hT_swap (d.ef l k)`. Unfold `HSpace.hD`. Rewrite using `[h]`. Distinguish the cases in `e : k = l`. Simplify using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[e, Ne.symm e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem f_e (d : BesselDatum A B ι) (k l) : B.hD (d.f k) (d.e l) = if k = l then 1 else 0 := by
   have h : B.hT (d.e l) (d.f k) = star (if l = k then 1 else 0) := hT_swap (d.ef l k)
@@ -67,15 +67,15 @@ def comb (d : BesselDatum A B ι) :
   ι.coprod ((Fintype.linearCombination D.host.E d.aux).coprod (Fintype.linearCombination D.host.E d.f))
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 ?_` and prove the remaining obligations. Introduce and unpack `⟨a, s, r⟩ h`. Simplify using `only [comb, LinearMap.coprod_apply, Fintype.linearCombination_apply] at h`. Establish `h1 : ∀ i l, B.hT (dual d i) (d.aux l) = if l = i then 1 else 0` using `hD_basis_dual d`. Establish `h2 : ∀ i l, B.hT (dual d i) (d.f l) = 0` using `f_dual d`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ i l, B.hT (d.e l) (d.aux i) = 0` using `hD_basis_e d`. Establish `h4 : ∀ k l, B.hT (d.e l) (d.f k) = if k = l then 1 else 0` using `f_e d`. Establish `h5 : ∀ i, B.hT (dual d i) (ι a) = 0` using `fun i => hD_swap_zero (dual_perp d i a)`. Establish `h6 : ∀ l, B.hT (d.e l) (ι a) = 0` using `fun l => hD_swap_zero (d.eA l a)`. Establish `hs : s = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify `congrArg (B.hT (dual d i)) h` using `[map_sum, h1, h2, h5]`. Establish `hr : r = 0`. Use function extensionality and compare the values at `l`. Simplify `congrArg (B.hT (d.e l)) h` using `[map_sum, h3, h4, h6]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hs hr` using the available equality. Establish `ha : ι a = 0` using `by simpa using h`. Establish `: a = 0`. Use `A.nondeg.1 a fun y => ?_` and prove the remaining obligations. Rewrite using `[← d.isom a y, ha]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem comb_inj (d : BesselDatum A B ι) : Function.Injective (comb d) := by
   refine (injective_iff_map_eq_zero _).2 ?_
@@ -102,7 +102,7 @@ theorem comb_inj (d : BesselDatum A B ι) : Function.Injective (comb d) := by
   rfl
 
 /- English proof (translation)
-Use `Module.Finite.of_basis A.frame` as an intermediate fact. Use `Module.Finite.of_basis B.frame` as an intermediate fact. Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 (comb_inj d)` and prove the remaining obligations. Rewrite using `[Module.finrank_prod, Module.finrank_prod, Module.finrank_fin_fun, Module.finrank_fin_fun, A.rank_eq, B.rank_eq, d.rank_eq]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem comb_surj (d : BesselDatum A B ι) : Function.Surjective (comb d) := by
   have := Module.Finite.of_basis A.frame
@@ -113,20 +113,20 @@ theorem comb_surj (d : BesselDatum A B ι) : Function.Surjective (comb d) := by
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[vecA]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecA_add (v w : B.V) : vecA B (v + w) = vecA B v + vecA B w := by
   funext k; simp [vecA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[vecA, map_sum, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecA_sum {n : ℕ} (c : Fin n → D.host.E) (v : Fin n → B.V) :
     vecA B (∑ i, c i • v i) = ∑ i, incA D (c i) • vecA B (v i) := by
   funext k; simp [vecA, map_sum, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[iA, GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.eMat_mulVec]`. Use `conv_lhs => rw [← A.frame.sum_repr a, map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[vecA_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vecA_iota (a : A.V) : vecA B (ι a) = iA ι (vecA A a) := by
   rw [iA, GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.eMat_mulVec]
@@ -136,13 +136,13 @@ theorem vecA_iota (a : A.V) : vecA B (ι a) = iA ι (vecA A a) := by
   rfl
 
 /- English proof (translation)
-Establish `hx : x = ∑ k, x k • vecA B (B.frame k)`. Use function extensionality and compare the values at `j`. Simplify using `[vecA, Finset.sum_apply, Finsupp.single_apply, apply_ite (incA D)]`. Rewrite using `[hx]`. Use `Finset.sum_induction _ (fun y => ∃ (t : Fin A.rank → AE D) (s : Fin (d.ρ + 1) → AE D) (r : Fin d.ρ → AE D), y = iA ι t + ∑ i, s i • vecA B (d.aux i) + ∑ l, r l • vecA B (d.f l)) ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ _ ⟨t, s, r, rfl⟩ ⟨t', s', r', rfl⟩`. Use `⟨t + t', s + s', r + r', ?_⟩` and prove the remaining obligations. Simplify using `only [iA_add, Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Conclude with `⟨0, 0, 0, by simp [iA]⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Supply the required witnesses or components.
 
-Introduce `k _`. Take `⟨⟨a, s, r⟩, h⟩` from `comb_surj d (B.frame k)`. Simplify using `only [comb, LinearMap.coprod_apply, Fintype.linearCombination_apply] at h`. Use `⟨x k • vecA A a, fun i => x k * incA D (s i), fun l => x k * incA D (r l), ?_⟩` and prove the remaining obligations. Rewrite using `[← h, vecA_add, vecA_add, vecA_sum, vecA_sum, vecA_iota, iA_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_add, Finset.smul_sum, smul_smul, add_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_comb (d : BesselDatum A B ι) (x : Fin B.rank → AE D) :
     ∃ (t : Fin A.rank → AE D) (s : Fin (d.ρ + 1) → AE D) (r : Fin d.ρ → AE D),
@@ -166,15 +166,15 @@ theorem exists_comb (d : BesselDatum A B ι) (x : Fin B.rank → AE D) :
     simp only [smul_add, Finset.smul_sum, smul_smul, add_assoc]
 
 /- English proof (translation)
-Rewrite using `[← hA_herm, hA_vec_iA h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iA_vec {v : B.V} (h : ∀ x, B.hD v (ι x) = 0) (t : Fin A.rank → AE D) : hA B (iA ι t) (vecA B v) = 0 := by
   rw [← hA_herm, hA_vec_iA h, map_zero]
 
 /- English proof (translation)
-Introduce `D A B ι d`. Use `⟨hD_basis_dual d, f_dual d, fun x => ?_⟩` and prove the remaining obligations. Take `⟨t, s, r, h⟩` from `exists_comb d x`. Establish `hs : ∀ i, hA B x (vecA B (dual d i)) = s i` using `fun i => by`. Rewrite using `[h, hA_add, hA_add, hA_sum, hA_sum, iA_vec (dual_perp d i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hA_smul, hA_vec, hD_basis_dual, f_dual, apply_ite (incA D)]`. Establish `hr : ∀ l, hA B x (vecA B (d.e l)) = r l` using `fun l => by`. Rewrite using `[h, hA_add, hA_add, hA_sum, hA_sum, iA_vec (d.eA l)]`. Simplify using `[hA_smul, hA_vec, hD_basis_e, f_e, apply_ite (incA D)]`. Conclude with `⟨t, by simp only [hs, hr]; exact h⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem decomp : ∀ (D : D7) (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : BesselDatum A B ι),
     (∀ i l, B.hD (d.aux l) (dual d i) = if l = i then 1 else 0) ∧ (∀ i l, B.hD (d.f l) (dual d i) = 0) ∧

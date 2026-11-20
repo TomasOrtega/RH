@@ -12,7 +12,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.CellFace
 
 /- English proof (translation)
-Introduce `O _ bar ψ X _ _ _ m n γ γ' hγ hγ' hin`. Conclude with `exists_cut_of_cell_le O bar ψ X m n γ γ' hγ hγ' hin`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_face_form : ∀ {O : Type} [CommRing O] (bar : O → O) (ψ : InvFun O) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m n : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ X) (γ' : Fin n → LinearMap.BilinForm ℤ X),

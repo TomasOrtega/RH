@@ -11,15 +11,15 @@ noncomputable section
 namespace GlobalTheory.MeanSquareEstimates
 
 /- English proof (translation)
-Establish `hp` using `GlobalTheory.T.hasSum_parseval_qExpansion_horizontal_line h h y hc.1.1 hc.1.1 hy`. Use `set I := ∫ x in (0 : ℝ)..1, conj (qs h (ofComplex (x + y * Complex.I))) * qs h (ofComplex (x + y * Complex.I))`. Establish `hr` using `Complex.hasSum_re hp`. Establish `e : (fun n : ℕ => (conj (h n) * h n * ((Real.exp (-4 * π * n * y) : ℝ) : ℂ)).re) = fun n : ℕ => ‖h n‖ ^ 2 * Real.exp (-4 * π * n * y)`. Use function extensionality and compare the values at `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.conj_mul']`. Use `norm_cast`. Rewrite `hr` using `[e]`. Use `⟨hr.summable, ?_⟩` and prove the remaining obligations. Rewrite using `[hr.tsum_eq]`.
+Put the expressions in a common number system so they can be compared. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ∀ x ∈ Set.uIoc (0 : ℝ) 1, ‖conj (qs h (ofComplex (x + y * Complex.I))) * qs h (ofComplex (x + y * Complex.I))‖ ≤ C / y ^ k`. Introduce `x _`. Establish `him : 0 < ((x : ℂ) + y * Complex.I).im` using `by simpa using hy`. Rewrite using `[ofComplex_apply_of_im_pos him, Complex.conj_mul']`. Establish `h1` using `hC ⟨(x : ℂ) + y * Complex.I, him⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (⟨(x : ℂ) + y * Complex.I, him⟩ : ℍ).im = y` using `by simp [UpperHalfPlane.im]`. Rewrite `h1` using `[h2]`. Rewrite using `[le_div_iff₀ (by positivity)]`. Simplify using `using h1`. Use `intervalIntegral.norm_integral_le_of_norm_le_const hb` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem key (k L : ℕ) (χ : ℤ → ℂ) (h : ℕ → ℂ) (hc : CF k L χ h) (C : ℝ)
     (hC : ∀ τ : ℍ, ‖qs h τ‖ ^ 2 * τ.im ^ k ≤ C) (y : ℝ) (hy : 0 < y) :
@@ -51,9 +51,9 @@ theorem key (k L : ℕ) (χ : ℤ → ℂ) (h : ℕ → ℂ) (hc : CF k L χ h) 
     _ = C / y ^ k := by simp
 
 /- English proof (translation)
-Establish `hy : 0 < t / (4 * π)` using `by positivity`. Take `⟨hs, hb⟩` from `key k L χ h hc C hC _ hy`. Establish `e : ∀ n : ℕ, -4 * π * n * (t / (4 * π)) = -(n : ℝ) * t` using `fun n => by field_simp`. Simplify using `only [e] at hs hb`. Establish `e2 : C / (t / (4 * π)) ^ k = C * (4 * π) ^ k / t ^ k` using `by rw [div_pow]; field_simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hb` using `[e2]`. Conclude with `(hs.sum_le_tsum _ (fun n _ => by positivity)).trans hb`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key2 (k L : ℕ) (χ : ℤ → ℂ) (h : ℕ → ℂ) (hc : CF k L χ h) (C : ℝ)
     (hC : ∀ τ : ℍ, ‖qs h τ‖ ^ 2 * τ.im ^ k ≤ C) (t : ℝ) (ht : 0 < t) (N : ℕ) :
@@ -67,29 +67,25 @@ theorem key2 (k L : ℕ) (χ : ℤ → ℂ) (h : ℕ → ℂ) (hc : CF k L χ h)
   exact (hs.sum_le_tsum _ (fun n _ => by positivity)).trans hb
 
 /- English proof (translation)
-Use `set x : ℝ := (2 : ℝ) ^ (-s) with hxdef`. Establish `hx0 : 0 ≤ x` using `by positivity`. Establish `hx1 : x < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by linarith)`. Establish `hD0 : 0 ≤ D`. Use `hD 1 one_pos 0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `set G : ℕ → ℕ → ℝ := fun j n => Real.exp 2 * (x ^ j / ((2 : ℝ) ^ j) ^ k) * (a n * Real.exp (-(n : ℝ) * ((2 : ℝ) ^ j)⁻¹)) with hG`. Establish `G0 : ∀ j n, 0 ≤ G j n` using `fun j n => by have := ha n; positivity`. Establish `pt : ∀ n ∈ Finset.range N, a n / (n : ℝ) ^ ((k : ℝ) + s) ≤ ∑ j ∈ Finset.range N, G j n`. Introduce `n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn0` into its components or cases. Rewrite using `[a0, zero_div]`. Conclude with `Finset.sum_nonneg fun j _ => G0 j 0`. Use `set j := Nat.log 2 n`. Establish `hj1 : 2 ^ j ≤ n` using `Nat.pow_log_le_self 2 hn0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj2 : n < 2 ^ (j + 1)` using `Nat.lt_pow_succ_log_self (by norm_num) n`. Establish `hjN : j < N`. Establish `: j < 2 ^ j` using `Nat.lt_two_pow_self`. Use `Finset.mem_range.mp hn` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ (Finset.single_le_sum (fun i _ => G0 i n) (Finset.mem_range.mpr hjN))` and prove the remaining obligations. Establish `npos : (0 : ℝ) < n` using `by exact_mod_cast hn0`. Establish `h2j : ((2 : ℝ) ^ j) ≤ n` using `by exact_mod_cast hj1`. Establish `h2j' : (n : ℝ) ≤ 2 * (2 : ℝ) ^ j`. Establish `: (n : ℝ) < ((2 ^ (j + 1) : ℕ) : ℝ)` using `by exact_mod_cast hj2`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Rewrite `this` using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `P : ((2 : ℝ) ^ j) ^ k * ((2 : ℝ) ^ j) ^ s ≤ (n : ℝ) ^ k * (n : ℝ) ^ s` using `by gcongr`. Establish `E : 1 ≤ Real.exp 2 * Real.exp (-(n : ℝ) * ((2 : ℝ) ^ j)⁻¹)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_add]`. Apply `Real.one_le_exp` to reduce the goal to its premises. Establish `: (n : ℝ) * ((2 : ℝ) ^ j)⁻¹ ≤ 2`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ (by positivity)]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxj : x ^ j = (((2 : ℝ) ^ j) ^ s)⁻¹`. Rewrite using `[hxdef, Real.rpow_neg (by norm_num), inv_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), ← Real.rpow_mul (by norm_num), mul_comm]`. Establish `L : (n : ℝ) ^ ((k : ℝ) + s) = (n : ℝ) ^ k * (n : ℝ) ^ s`. Rewrite using `[Real.rpow_add npos, Real.rpow_natCast]`. Establish `R : G j n = a n * (Real.exp 2 * Real.exp (-(n : ℝ) * ((2 : ℝ) ^ j)⁻¹)) / (((2 : ℝ) ^ j) ^ k * ((2 : ℝ) ^ j) ^ s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hG]`. Simplify using `only`. Rewrite using `[hxj]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[L, R]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `an` using `ha n`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hG, Finset.mul_sum]`. Use `_ ≤ ∑ j ∈ Finset.range N, Real.exp 2 * (x ^ j / ((2 : ℝ) ^ j) ^ k) * (D / (((2 : ℝ) ^ j)⁻¹) ^ k) := by gcongr with j _`.
-
-Conclude with `hD _ (by positivity) N`. Use `_ = ∑ j ∈ Finset.range N, Real.exp 2 * D * x ^ j := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts.
-
-Use `_ = Real.exp 2 * D * ∑ j ∈ Finset.range N, x ^ j := by rw [Finset.mul_sum]`. Use `_ ≤ Real.exp 2 * D * (x ^ 0 / (1 - x)) := by gcongr`. Rewrite using `[Finset.range_eq_Ico]`. Conclude with `geom_sum_Ico_le_of_lt_one hx0 hx1`. Use `_ = Real.exp 2 * D / (1 - x) := by rw [pow_zero]; ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk (a : ℕ → ℝ) (ha : ∀ n, 0 ≤ a n) (a0 : a 0 = 0) (k : ℕ) (D : ℝ)
     (hD : ∀ t : ℝ, 0 < t → ∀ N : ℕ, ∑ n ∈ Finset.range N, a n * Real.exp (-(n : ℝ) * t) ≤ D / t ^ k)
@@ -156,11 +152,11 @@ theorem blk (a : ℕ → ℝ) (ha : ∀ n, 0 ≤ a n) (a0 : a 0 = 0) (k : ℕ) (
     _ = Real.exp 2 * D / (1 - x) := by rw [pow_zero]; ring
 
 /- English proof (translation)
-Establish `L` using `Real.log_two_gt_d9`. Establish `h1 : 1 + s * Real.log 2 ≤ (2 : ℝ) ^ s`. Rewrite using `[Real.rpow_def_of_pos (by norm_num), mul_comm]`. Combine the linear relations using `[Real.add_one_le_exp (Real.log 2 * s)]`. Establish `hp : 0 < 1 + s * Real.log 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2 : (2 : ℝ) ^ (-s) ≤ 1 / (1 + s * Real.log 2)`. Rewrite using `[Real.rpow_neg (by norm_num), one_div]`. Conclude with `inv_anti₀ hp h1`. Establish `h3 : 1 / (1 + s * Real.log 2) ≤ 1 - s / 3`. Rewrite using `[div_le_iff₀ hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `q : 0 ≤ Real.log 2 - 1 / 3 - s * Real.log 2 / 3` using `by nlinarith`. Use polynomial arithmetic with `[mul_nonneg hs.le q]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem geo (s : ℝ) (hs : 0 < s) (hs1 : s ≤ 1) : s / 3 ≤ 1 - (2 : ℝ) ^ (-s) := by
   have L := Real.log_two_gt_d9
@@ -184,21 +180,19 @@ namespace GlobalTheory
 open GlobalTheory.MeanSquareEstimates in
 
 /- English proof (translation)
-Introduce `k L χ h hk hc`. Take `⟨C, hC⟩` from `hc.2`. Establish `C0 : 0 ≤ C` using `le_trans (by positivity) (hC UpperHalfPlane.I)`. Use `set D := C * (4 * π) ^ k with hDdef`. Establish `D0 : 0 ≤ D` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `K` using `key2 k L χ h hc C hC`. Establish `K1 : ∀ t : ℝ, 0 < t → ∀ n : ℕ, ‖h n‖ ^ 2 * Real.exp (-(n : ℝ) * t) ≤ D / t ^ k`. Introduce `t ht n`. Use `le_trans ?_ (K t ht (n + 1))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun m : ℕ => ‖h m‖ ^ 2 * Real.exp (-(m : ℝ) * t)) (fun m _ => by positivity) (Finset.mem_range.mpr (Nat.lt_succ_self n))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : h 0 = 0`. Establish `lim : Tendsto (fun t : ℝ => D / t ^ k) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop (tendsto_pow_atTop (by omega))`. Establish `b : ‖h 0‖ ^ 2 ≤ 0`. Use `ge_of_tendsto lim ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with t ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using K1 t ht 0`. Establish `: ‖h 0‖ = 0` using `by nlinarith [norm_nonneg (h 0)]`. Conclude with `norm_eq_zero.mp this`. Establish `B : ∀ s : ℝ, 0 < s → ∀ N : ℕ, ∑ n ∈ Finset.range N, ‖h n‖ ^ 2 / (n : ℝ) ^ ((k : ℝ) + s) ≤ Real.exp 2 * D / (1 - (2 : ℝ) ^ (-s))` using `fun s hs N => blk (fun n => ‖h n‖ ^ 2) (fun n => by positivity) (by simp [h0]) k D K s hs N`. Establish `nn : ∀ s : ℝ, ∀ n : ℕ, 0 ≤ ‖h n‖ ^ 2 / (n : ℝ) ^ ((k : ℝ) + s)` using `fun s n => by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨h0, ⟨D * Real.exp 1, fun n => ?_⟩, fun s hs => summable_of_sum_range_le (nn s) (B s hs), ⟨3 * (Real.exp 2 * D), fun s hs hs1 => ?_⟩⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[h0, zero_pow (by omega : k ≠ 0)]`. Establish `npos : (0 : ℝ) < n` using `by exact_mod_cast hn`. Use `K1 (n : ℝ)⁻¹ (by positivity) n` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[neg_mul, mul_inv_cancel₀ npos.ne', inv_pow, div_inv_eq_mul]`. Establish `e : ‖h n‖ ^ 2 = ‖h n‖ ^ 2 * Real.exp (-1) * Real.exp 1`. Rewrite using `[mul_assoc, ← Real.exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `T` using `Real.tsum_le_of_sum_range_le (nn s) (B s hs)`. Establish `g` using `geo s hs hs1`. Establish `pos : 0 < 1 - (2 : ℝ) ^ (-s)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_div_assoc', div_le_iff₀ pos]`. Establish `: 0 ≤ Real.exp 2 * D` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rankin_mean_square : ∀ (k L : ℕ) (χ : ℤ → ℂ) (h : ℕ → ℂ), 1 ≤ k → CF k L χ h → h 0 = 0 ∧ (∃ C : ℝ, ∀ n : ℕ, ‖h n‖ ^ 2 ≤ C * (n : ℝ) ^ k) ∧ (∀ s : ℝ, 0 < s → Summable fun n : ℕ => ‖h n‖ ^ 2 / (n : ℝ) ^ ((k : ℝ) + s)) ∧ ∃ C : ℝ, ∀ s : ℝ, 0 < s → s ≤ 1 → s * ∑' n : ℕ, ‖h n‖ ^ 2 / (n : ℝ) ^ ((k : ℝ) + s) ≤ C := by
   intro k L χ h hk hc

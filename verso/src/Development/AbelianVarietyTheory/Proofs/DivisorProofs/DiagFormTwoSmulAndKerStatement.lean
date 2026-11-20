@@ -7,7 +7,7 @@ open scoped Matrix
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SymBirig.diag_form_two_smul_and_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDiagFormTwoSmulAndKer.lean&line=24#L24)
 -/

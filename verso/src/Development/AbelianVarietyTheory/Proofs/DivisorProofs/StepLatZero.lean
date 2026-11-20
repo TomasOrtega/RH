@@ -28,7 +28,7 @@ def stepLat {K : Type} [Field K] [NumberField K] (F : SemiFib K) (τ : D.host.E 
     (letters O.S.Dw)[(i : ℕ)]? = some x ∧ v = Pi.single i 1}).restrictScalars (𝓞 K)
 
 /- English proof (translation)
-Establish `: {v : Fin F.P₀.g → K | ∃ (i : Fin F.P₀.g) (x : Letter O.S.Dw), x.1 = τ ∧ (x.2 : ℕ) < 0 ∧ (letters O.S.Dw)[(i : ℕ)]? = some x ∧ v = Pi.single i 1} = ∅`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[stepLat, this, Submodule.span_empty, Submodule.restrictScalars_bot, inf_bot_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem stepLat_zero {K : Type} [Field K] [NumberField K] (F : SemiFib K) (τ : D.host.E →+* ℂ) :
     stepLat O F τ 0 = ⊥ := by

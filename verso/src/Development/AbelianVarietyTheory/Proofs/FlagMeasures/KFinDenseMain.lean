@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.KFinDense
 namespace GlobalTheory.KFinDenseCarrier
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.KFinDenseDS.kFin_dense`.
+A detailed English derivation is pending.
 -/
 theorem kFinDense_main : Formalism.L2.SG.Pf.CarrierXAll.KFinDense :=
   GlobalTheory.KFinDenseDS.kFin_dense

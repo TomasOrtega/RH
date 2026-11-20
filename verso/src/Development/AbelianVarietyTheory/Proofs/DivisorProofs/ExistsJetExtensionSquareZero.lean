@@ -12,11 +12,9 @@ open CategoryTheory GlobalTheory.CatCoh GlobalTheory.AnPer GlobalTheory.AnPer.Ch
 namespace GlobalTheory.AnPer.Charts
 
 /- English proof (translation)
-Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.SquareLiftLemmas.exists_hom_jet`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.SquareLiftLemmas.exists_hom_jet`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact @_root_.GlobalTheory.SquareLiftLemmas.exists_hom_jet`. Consider the case `exact _root_.GlobalTheory.SquareLiftLemmas.exists_hom_jet`. Consider the case `(apply _root_.GlobalTheory.SquareLiftLemmas.exists_hom_jet <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SquareLiftLemmas.exists_hom_jet <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SquareLiftLemmas.exists_hom_jet <;> first | assumption | infer_instance)`.
-
-Consider the case `(intros; exact _root_.GlobalTheory.SquareLiftLemmas.exists_hom_jet ..)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_jet_factor {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
     (K : Charts F) {k : K.K} {T : K.Obj} (f₁ f₂ : K.triv k ⟶ T) (n : Fin g → T.C) (hd : f₁.deg = f₂.deg)

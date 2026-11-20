@@ -19,11 +19,11 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 namespace GlobalTheory.SpecLevel
 
 /- English proof (translation)
-Establish `: JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace π`. Use `(basicOpen_eq_bot_iff f).1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hne' : ((X.basicOpen f : X.Opens) : Set X).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun e => hne (SetLike.coe_injective e)`. Take `⟨y, hy, hc⟩` from `nonempty_inter_closedPoints hne' (X.basicOpen f).isOpen.isLocallyClosed`. Establish `hb : ⊤ ≤ (pointOfClosedPoint π y hc) ⁻¹ᵁ X.basicOpen f` using `fun q _ => by show pointOfClosedPoint π y hc q ∈ X.basicOpen f`. Rewrite using `[pointOfClosedPoint_apply π y hc q]`. Conclude with `hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU : ⊤ ≤ (pointOfClosedPoint π y hc) ⁻¹ᵁ U` using `hb.trans (Scheme.Hom.preimage_mono _ (X.basicOpen_le f))`. Conclude with `((Points.le_preimage_basicOpen_iff _ hU f).1 hb).ne_zero (h _ (pointOfClosedPoint_comp π y hc) hU)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_rational_points {k : Type} [Field k] [IsAlgClosed k] {X : Scheme.{0}} [IsReduced X] (π : X ⟶ Sp k)
     [LocallyOfFiniteType π] (U : X.Opens) (f : Γ(X, U))
@@ -43,19 +43,15 @@ theorem eq_zero_of_rational_points {k : Type} [Field k] [IsAlgClosed k] {X : Sch
   exact ((Points.le_preimage_basicOpen_iff _ hU f).1 hb).ne_zero (h _ (pointOfClosedPoint_comp π y hc) hU)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fib_fst {R : Type} [CommRing R] {S : Scheme.{0}} {G : Over S} {y : Sp R ⟶ S} (x : Over.mk y ⟶ G) :
     fib x ≫ pullback.fst G.hom y = x.left := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Use `haveI := P.isAb.smooth`. Use `haveI := P.isAb.geomConnected`. Use `haveI : IsIntegral (pullback P.A.hom y) := (geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres P.A.hom).geometrically_isIntegral y _ _ (IsPullback.of_hasPullback P.A.hom y)`. Take `⟨j, rfl⟩ : ∃ j, i = fun _ => j` from `⟨i 0, funext fun a => by rw [Subsingleton.elim a 0]⟩`. Use `eq_zero_of_rational_points (pullback.snd P.A.hom y) _ _ fun x hx hU => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `a : Over.mk y ⟶ P.A` to `Over.homMk (x ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx]`. Conclude with `Category.id_comp _)`. Establish `e : fib a = x`. Apply `pullback.hom_ext` to reduce the goal to its premises.
-
-Conclude with `fib_fst a`. Rewrite using `[hx]`. Conclude with `pullback.lift_snd _ _ _`. Use `h a j fun p hp => Set.mem_iInter.1 (hU hp) 0` as an intermediate fact. Rewrite `this` using `[e]`.
-
-Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq_zero {S : Scheme.{0}} (P : Out.PolAV S) {k : Type} [Field k] [IsAlgClosed k] (y : Sp k ⟶ S) (m : ℕ)
     (u : SecP P.L (pullback.fst P.A.hom y) m)
@@ -79,7 +75,7 @@ theorem sec_eq_zero {S : Scheme.{0}} (P : Out.PolAV S) {k : Type} [Field k] [IsA
   exact this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih => simpa [pow_succ] using A.mul_mem_Theta ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_mem_Theta {O : Type} [CommRing O] [StarRing O] (A : AnArc O) {th : (Fin A.gB → ℂ) → ℂ}
     (h : th ∈ A.Theta 1 0) (n : ℕ) : th ^ (n + 1) ∈ A.Theta (n + 1) 0 := by
@@ -88,7 +84,7 @@ theorem pow_mem_Theta {O : Type} [CommRing O] [StarRing O] (A : AnArc O) {th : (
   | succ n ih => simpa [pow_succ] using A.mul_mem_Theta ih h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, pow_zero, SpecGroup.map_zero_eq_one x h]`. Consider the case `succ n ih => rw [succ_nsmul, h, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_nsmul_eq_pow {V M : Type} [AddGroup V] [Group M] (x : V → M) (h : ∀ v v', x (v + v') = x v * x v')
     (n : ℕ) (v : V) : x (n • v) = x v ^ n := by
@@ -97,18 +93,18 @@ theorem map_nsmul_eq_pow {V M : Type} [AddGroup V] [Group M] (x : V → M) (h : 
   | succ n ih => rw [succ_nsmul, h, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[Over.comp_left, Over.comp_left, Over.toUnit_left, Over.toUnit_left, ← Category.assoc, hr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem left_toUnit_comp {S : Scheme.{0}} {G T T' : Over S} (ξ : 𝟙_ (Over S) ⟶ G) (r : T'.left ⟶ T.left)
     (hr : r ≫ T.hom = T'.hom) : (toUnit T' ≫ ξ).left = r ≫ (toUnit T ≫ ξ).left := by
   rw [Over.comp_left, Over.comp_left, Over.toUnit_left, Over.toUnit_left, ← Category.assoc, hr]
 
 /- English proof (translation)
-Take `⟨T₀, h₀⟩` from `exists_formal_convergence O A`. Use `⟨T₀, fun w hw la hla α th hth z => ?_⟩` and prove the remaining obligations. Establish `hk : (k : ℂ) ≠ 0` using `NeZero.ne _`. Take `⟨hm, hev⟩` from `((h₀ T₀ le_rfl k).1 _ _ (A.shift_mem_Theta hth la)).1 z`. Use `⟨Subalgebra.inclusion (Γ.le T₀ w hw) (⟨_, Conv.single_mem_halfRing T₀ (A.be la.y α / k) (Complex.exp (A.lin la z))⟩ * ⟨_, hm⟩), ⟨⟨NeZero.ne k, hla α⟩, fun n => ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subalgebra.coe_inclusion, MulMemClass.coe_mul, ← A.FSumShift_eq k la (Int.mul_ediv_cancel' (hla α)).symm, AnArc.coeff_FSumShift]`. Use `(finsum_cond_eq_sum_of_cond_iff _ fun {m} _ => ?_).symm` and prove the remaining obligations. Rewrite using `[AnArc.mem_level, eq_sub_iff_add_eq]`. Rewrite using `[Γ.ev_eq T₀ w hw, map_mul, hev w hw, Conv.ev_single hw, ← AnArc.e_mul_intCast]`. Take `⟨m, hm⟩` from `hla α`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[A.Sum_add_Pw_div, hm, Int.mul_ediv_cancel_left _ (NeZero.ne (k : ℤ))]`. Use `congr 3`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_germ_shift {O : Type} [CommRing O] [StarRing O] (A : AnArc O) (Γ : Germs) (k : ℕ) [NeZero k] :
     ∃ T₀ : ℝ, ∀ w : ℂ, T₀ < w.im → ∀ la : A.La, (∀ α, (k : ℤ) ∣ A.be la.y α) → ∀ α, ∀ th ∈ A.Theta k α, ∀ z,
@@ -132,27 +128,25 @@ theorem exists_germ_shift {O : Type} [CommRing O] [StarRing O] (A : AnArc O) (Γ
     field_simp
 
 /- English proof (translation)
-Introduce `hL hL2 E _ _ _ H _ D l B _ bb S _ s o A y Φ Γ Ψ hA hR k _`. Take `⟨T₁, hT₁, hsec⟩` from `GlobalTheory.T.thetaSections_extend_germRings_and_span_fibres hL hL2 E H D l B bb S s o A y Φ Γ Ψ hA hR k`. Take `⟨T₂, hsh⟩` from `exists_germ_shift A Γ k`. Take `⟨T₃, hT₃⟩` from `A.exists_isConvLine`. Use `⟨max T₁ (max T₂ T₃), hT₁.trans (le_max_left _ _), fun w hw' surj per ξ la hξ hlev => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h₁, h₂, h₃⟩ : T₁ < w.im ∧ T₂ < w.im ∧ T₃ < w.im` from `by simpa using hw'`. Establish `hw : Ψ.T < w.im` using `lt_of_le_of_lt hT₁ h₁`. Take `⟨σt, hσt, σ₀, hσ₀, hval, hspan⟩` from `hsec w hw h₁`. Establish `hk : k ≠ 0` using `NeZero.ne k`. Take `⟨θ, hθ, hθ0⟩` from `hA.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hθk : θ ^ k ∈ A.Theta k 0`. Take `⟨n, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk`. Conclude with `pow_mem_Theta A hθ n`. Establish `hθk0 : θ ^ k ≠ 0` using `fun e => hθ0 (funext fun z => pow_eq_zero_iff hk |>.1 (congrFun e z))`. Establish `hv : ∀ α, ∀ th ∈ A.Theta k α, ∀ v j, ⊤ ≤ (Ψ.pi w v).left ⁻¹ᵁ o.t.PP.L.U j → ArcPts.sval (σ₀ α th) (fib (Ψ.pi w v)) j = A.Sum k α th w v * Ψ.fr w j v ^ k` using `fun α th hth v j hj => hval α th hth v j (by rw [fib_fst]; exact hj)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LevelUnique.torsion_eq_of_same_ratios hL hL2 E H D l B bb S s o ℂ (Ψ.yw w) A.V (Ψ.pi w) k _ _ (fun _ => True) (σ₀ 0 (θ ^ k)) (Nat.one_le_iff_ne_zero.2 hk) ?_ ?_ (fun m _ u hu => ?_) ?_ (fun _ _ _ _ => trivial) fun v _ t₁ t₂ j j' hj hj' => ?_` and prove the remaining obligations. Rewrite using `[← MonObj.comp_pow, hξ, MonObj.comp_one]`. Rewrite using `[← map_nsmul_eq_pow _ (SpecGroup.pi_add Ψ hw), ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hk), one_smul, per]`. Use `sec_eq_zero (objPolAV o) (Ψ.yw w) m u fun x j hj => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `surj x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hu v j hj`. Take `⟨v, hv0⟩` from `A.exists_Sum_ne_zero hk 0 hθk0 fun z => AnArc.summable_term hT₃ hk hθk h₃ (0, z)`. Take `⟨j, hj⟩` from `exists_chart o.t.PP.isLB ((Ψ.pi w v).left (default : PrimeSpectrum ℂ))`. Establish `hj'` using `(HolHom.le_preimage_iff (Ψ.pi w v).left _).2 hj`. Use `⟨fun _ => j, fun e => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ArcPts.sval (σ₀ 0 (θ ^ k)) (fib (Ψ.pi w v)) j = 0`. Rewrite using `[ArcPts.sval, e]`. Use `Points.valR_zero _ _ fun p hp => Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `hj' hp` as an intermediate fact. Rewrite `this` using `[← fib_fst]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Rewrite `h0` using `[hv 0 _ hθk v j hj']`. Conclude with `mul_ne_zero hv0 (pow_ne_zero _ ((SpecGroup.pi_frm Ψ hw v).1 j hj').ne_zero) h0`. Establish `e₀ : (Ψ.pi w v * (toUnit _ ≫ ξ)).left = spMap (Γ.ev w).toRingHom ≫ (Ψ.xt w hw v * (toUnit _ ≫ ξ)).left` using `SpecGroup.left_mul_of_comp (T' := Over.mk (Ψ.yw w)) _ (SpecGroup.ev_base Ψ hw) (Ψ.pi_eq w hw v) (left_toUnit_comp ξ _ (SpecGroup.ev_base Ψ hw))`. Establish `e₁ : (Φ.x v * (toUnit _ ≫ ξ)).left = spMap (Γ.R w).val.toRingHom ≫ (Ψ.xt w hw v * (toUnit _ ≫ ξ)).left` using `SpecGroup.left_mul_of_comp (T' := Over.mk y) _ (SpecGroup.val_base Ψ hw) (Ψ.xt_gen w hw v).symm (left_toUnit_comp ξ _ (SpecGroup.val_base Ψ hw))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `ht : ⊤ ≤ (Ψ.xt w hw v * (toUnit _ ≫ ξ)).left ⁻¹ᵁ o.t.PP.L.U j` using `SpecGroup.le_preimage_of_unit (Γ.ev w).toRingHom (Γ.unit w) _ _ (e₀ ▸ hj)`. Establish `hg : ⊤ ≤ (Φ.x v * (toUnit _ ≫ ξ)).left ⁻¹ᵁ o.t.PP.L.U j`. Rewrite using `[e₁]`. Conclude with `fun p _ => ht (x := spMap (Γ.R w).val.toRingHom p) trivial`. Establish `key : ∀ α α', ∀ th ∈ A.Theta k α, ∀ th' ∈ A.Theta k α', ArcPts.sval (σ₀ α th) (fib (Ψ.pi w v * (toUnit _ ≫ ξ))) j * A.Sum k α' th' w (v + (k : ℂ)⁻¹ • A.Pw w la) = ArcPts.sval (σ₀ α' th') (fib (Ψ.pi w v * (toUnit _ ≫ ξ))) j * A.Sum k α th w (v + (k : ℂ)⁻¹ • A.Pw w la)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `α α' th hth th' hth'`. Take `⟨F, hF, hFe⟩` from `hsh w h₂ la hlev.dvd α th hth v`. Take `⟨F', hF', hFe'⟩` from `hsh w h₂ la hlev.dvd α' th' hth' v`. Establish `h` using `hlev.2.2 α α' th hth th' hth' v F F' j hF hF' hg`. Rewrite `h` using `[← hσt α th hth _ _ j e₁.symm ht, ← hσt α' th' hth' _ _ j e₁.symm ht, ← MulMemClass.coe_mul, ← MulMemClass.coe_mul, Subtype.val_inj]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hσ₀ α th _ _ j e₀ hj, hσ₀ α' th' _ _ j e₀ hj, ← hFe, ← hFe', ← map_mul, ← map_mul, h]`. Take `⟨n₁, r₁, α₁, θ₁, m₁, s₁⟩` from `hspan t₁`. Take `⟨n₂, r₂, α₂, θ₂, m₂, s₂⟩` from `hspan t₂`. Rewrite `hj'`, the goal using `[← SpecGroup.pi_add Ψ hw]`. Rewrite using `[s₁ _ j hj, s₂ _ j hj, s₁ _ j' hj', s₂ _ j' hj', Finset.sum_mul_sum, Finset.sum_mul_sum, Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hv _ _ (m₁ b) _ j' hj', hv _ _ (m₂ a) _ j' hj']`. Take the linear combination `(r₁ b * r₂ a * Ψ.fr w j' (v + (k : ℂ)⁻¹ • A.Pw w la) ^ k) * key _ _ _ (m₁ b) _ (m₂ a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem level_on_fibre : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (B : Type) [CommRing B] (bb : Base l B) (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp B) (o : Obj D l bb s) (A : AnArc (𝓞 E)) (y : Sp ℂ⸨X⸩ ⟶ S) (Φ : GenPts A o.t y) (Γ : Germs) (Ψ : SpecPts Φ Γ), AnFin A → Φ.Rational → ∀ (k : ℕ) [NeZero k], ∃ T' ≥ Ψ.T, ∀ w : ℂ, T' < w.im → Function.Surjective (Ψ.pi w) → (∀ la, Ψ.pi w (A.Pw w la) = 1) → ∀ (ξ : 𝟙_ (Over S) ⟶ o.t.G) (la : A.La), ξ ^ k = 1 → Φ.LevelPt k (toUnit _ ≫ ξ) la → toUnit _ ≫ ξ = Ψ.pi w ((k : ℂ)⁻¹ • A.Pw w la) := by
   intro hL hL2 E _ _ _ H _ D l B _ bb S _ s o A y Φ Γ Ψ hA hR k _

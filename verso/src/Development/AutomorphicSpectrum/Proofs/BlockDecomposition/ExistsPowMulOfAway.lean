@@ -22,9 +22,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.TrivLoc
 
 /- English proof (translation)
-Set `K : Ideal R` to `LinearMap.ker (LinearMap.toSpanSingleton R R b)`. Establish `hK : K.radical = ⊤`. Rewrite using `[eq_top_iff, ← hs, Ideal.span_le]`. Introduce `a ha`. Take `⟨n, hn⟩` from `h a ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by simpa [K, LinearMap.mem_ker] using hn⟩`. Establish `h1 : (1 : R) ∈ K`. Rewrite using `[Ideal.radical_eq_top.1 hK]`. Discharge the goal by the elementary cases of `trivial`. Simplify `h1` using `[K, LinearMap.mem_ker]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_pow_mul {R : Type} [CommRing R] (s : Set R) (hs : Ideal.span s = ⊤) (b : R)
     (h : ∀ a ∈ s, ∃ n : ℕ, a ^ n * b = 0) : b = 0 := by
@@ -39,7 +39,7 @@ theorem eq_zero_of_pow_mul {R : Type} [CommRing R] (s : Set R) (hs : Ideal.span 
   simpa [K, LinearMap.mem_ker] using h1
 
 /- English proof (translation)
-Take `⟨⟨_, n, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers a) (Localization.Away a) x).1 h`. Conclude with `⟨n, hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_mul_of_away {R : Type} [CommRing R] (a x : R)
     (h : algebraMap R (Localization.Away a) x = 0) : ∃ n : ℕ, a ^ n * x = 0 := by
@@ -47,33 +47,31 @@ theorem exists_pow_mul_of_away {R : Type} [CommRing R] (a x : R)
   exact ⟨n, hm⟩
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away a) a`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_away {R : Type} [CommRing R] (a : R) : IsUnit (algebraMap R (Localization.Away a) a) :=
   IsLocalization.Away.algebraMap_isUnit (S := Localization.Away a) a
 
 /- English proof (translation)
-Set `B : R → Type` to `fun f => Localization.Away (Ideal.Quotient.mk (I f) f)`. Set `b : ∀ f, R →+* B f` to `fun f => (algebraMap (R ⧸ I f) (B f)).comp (Ideal.Quotient.mk (I f))`. Establish `bu : ∀ f, IsUnit (b f f)` using `fun f => isUnit_away _`. Establish `bI : ∀ f, I f ≤ RingHom.ker (b f)` using `fun f x hx => by`. Simplify using `[b, RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem.2 hx]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `bQ : ∀ f ∈ s, Q (B f) (b f)` using `fun f hf => (hI f hf _ _ (bu f)).2 (bI f)`. Establish `fac : ∀ f ∈ s, ∀ (R' : Type) [CommRing R'] (g : R →+* R'), Q R' g → IsUnit (g f) → ∃ h : B f →+* R', h.comp (b f) = g` using `fun f hf R' _ g hq hu => by`. Establish `hle` using `(hI f hf R' g hu).1 hq`. Set `g₁ : R ⧸ I f →+* R'` to `Ideal.Quotient.lift (I f) g fun x hx => hle hx`. Establish `hu' : IsUnit (g₁ (Ideal.Quotient.mk (I f) f))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[show g₁ (Ideal.Quotient.mk (I f) f) = g f from Ideal.Quotient.lift_mk _ _ _]`. Conclude with `hu`. Use `⟨IsLocalization.Away.lift (S := B f) (Ideal.Quotient.mk (I f) f) hu', ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `IsLocalization.Away.lift (S := B f) (Ideal.Quotient.mk (I f) f) hu' (algebraMap (R ⧸ I f) (B f) (Ideal.Quotient.mk (I f) x)) = g x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalization.Away.lift_eq]`. Conclude with `Ideal.Quotient.lift_mk _ _ _`. Use `⟨⨅ f ∈ s, RingHom.ker (b f), fun R' _ g => ⟨fun hq a ha => ?_, fun hJ => ?_⟩⟩` and prove the remaining obligations. Establish `ha' : ∀ f ∈ s, b f a = 0` using `fun f hf => by`. Use `(Submodule.mem_iInf _).1 ha f` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.mem_iInf _).1 this hf`. Use `eq_zero_of_pow_mul (g '' (s : Set R)) ?_ (g a) ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_span, hs, Ideal.map_top]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Set `L` to `Localization.Away (g f)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `fac f hf L ((algebraMap R' L).comp g) (stab _ _ _ _ hq) (isUnit_away _)`. Apply `exists_pow_mul_of_away` to reduce the goal to its premises. Use `congrArg (fun q => q a) hh` as an intermediate fact. Simplify `this.symm` using `[ha' f hf]`. Use `set J : Ideal R := ⨅ f ∈ s, RingHom.ker (b f) with hJdef`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-It suffices to establish `H : Q (R ⧸ J) (Ideal.Quotient.mk J) by`. Use `stab _ _ _ (Ideal.Quotient.lift J g fun x hx => hJ hx) H` as an intermediate fact. Establish `e : (Ideal.Quotient.lift J g fun x hx => hJ hx).comp (Ideal.Quotient.mk J) = g`. Conclude with `RingHom.ext fun x => Ideal.Quotient.lift_mk J g fun x hx => hJ hx`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `loc _ _ (Ideal.Quotient.mk J '' (s : Set R)) (by rw [← Ideal.map_span, hs]; exact Ideal.map_top _) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `(hI f hf _ ((algebraMap (R ⧸ J) (Localization.Away (Ideal.Quotient.mk J f))).comp (Ideal.Quotient.mk J)) (isUnit_away (Ideal.Quotient.mk J f))).2 fun x hx => ?_` and prove the remaining obligations. Establish `key : ∀ f' ∈ s, ∃ n : ℕ, b f' f ^ n * b f' x = 0` using `fun f' hf' => by`. Set `L` to `Localization.Away (b f' f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(hI f hf L ((algebraMap (B f') L).comp (b f')) (isUnit_away _)).1 (stab _ _ _ _ (bQ f' hf'))`. Conclude with `exists_pow_mul_of_away _ _ (h1 hx)`. Use `choose! n hn using key`. Establish `hmem : Ideal.Quotient.mk J f ^ (s.sup n) * Ideal.Quotient.mk J x = 0`. Rewrite using `[← map_pow, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Submodule.mem_iInf _).2 fun f' => (Submodule.mem_iInf _).2 fun hf' => ?_` and prove the remaining obligations. Establish `hle : n f' ≤ s.sup n` using `Finset.le_sup hf'`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[RingHom.mem_ker, map_mul, map_pow, hd, pow_add, mul_comm (b f' f ^ n f'), _root_.mul_assoc, hn f' hf', mul_zero]`. Establish `hu : IsUnit (algebraMap (R ⧸ J) (Localization.Away (Ideal.Quotient.mk J f)) (Ideal.Quotient.mk J f ^ (s.sup n)))`.
-
-Rewrite using `[map_pow]`. Conclude with `(isUnit_away _).pow _`. Use `congrArg (algebraMap (R ⧸ J) (Localization.Away (Ideal.Quotient.mk J f))) hmem` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`. Conclude with `(hu.mul_right_eq_zero).1 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ideal_of_local {R : Type} [CommRing R] (Q : ∀ (R' : Type) [CommRing R'], (R →+* R') → Prop)
     (stab : ∀ (R' R'' : Type) [CommRing R'] [CommRing R''] (g : R →+* R') (h : R' →+* R''), Q R' g → Q R'' (h.comp g))
@@ -153,7 +151,7 @@ def IsTrivAt (N : LB (A ⊗ Y).left) {T : Over S} (y : T ⟶ Y) : Prop :=
   Triv (ev N (fst A T) (snd A T ≫ y))
 
 /- English proof (translation)
-Establish `e : lift (fst A T') (snd A T' ≫ u ≫ y) = lift (fst A T') (snd A T' ≫ u) ≫ lift (fst A T) (snd A T ≫ y)`. Apply the tactic sequence `ext <;> simp`. Unfold `IsTrivAt ev at *`. Rewrite using `[e, Over.comp_left]`. Conclude with `GlobalTheory.Biadditive.triv_pull_comp h _`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTrivAt.comp {N : LB (A ⊗ Y).left} {T T' : Over S} {y : T ⟶ Y} (h : IsTrivAt N y) (u : T' ⟶ T) :
     IsTrivAt N (u ≫ y) := by
@@ -167,11 +165,11 @@ def Locus (N : LB (A ⊗ Y).left) {T : Scheme.{0}} (t : T ⟶ Y.left) : Prop :=
   IsTrivAt N (Over.homMk t rfl : Over.mk (t ≫ Y.hom) ⟶ Y)
 
 /- English proof (translation)
-Establish `w : y.left ≫ Y.hom = T.hom` using `Over.w y`. Set `u : T ⟶ Over.mk (y.left ≫ Y.hom)` to `Over.homMk (𝟙 _) (by simp [w])`. Set `v : Over.mk (y.left ≫ Y.hom) ⟶ T` to `Over.homMk (𝟙 _) (by simp [w])`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `IsTrivAt.comp h u` as an intermediate fact. Establish `e : u ≫ (Over.homMk y.left rfl : Over.mk (y.left ≫ Y.hom) ⟶ Y) = y` using `by ext; simp [u]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce `h`. Use `IsTrivAt.comp h v` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : v ≫ y = (Over.homMk y.left rfl : Over.mk (y.left ≫ Y.hom) ⟶ Y)` using `by ext; simp [v]`. Unfold `Locus`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem locus_left_iff {N : LB (A ⊗ Y).left} {T : Over S} (y : T ⟶ Y) : Locus N y.left ↔ IsTrivAt N y := by
   have w : y.left ≫ Y.hom = T.hom := Over.w y
@@ -191,7 +189,7 @@ theorem locus_left_iff {N : LB (A ⊗ Y).left} {T : Over S} (y : T ⟶ Y) : Locu
     rwa [e] at this
 
 /- English proof (translation)
-Set `v : Over.mk ((u ≫ t) ≫ Y.hom) ⟶ Over.mk (t ≫ Y.hom)` to `Over.homMk u (by simp)`. Use `IsTrivAt.comp h v` as an intermediate fact. Establish `e : v ≫ (Over.homMk t rfl : Over.mk (t ≫ Y.hom) ⟶ Y) = (Over.homMk (u ≫ t) rfl : Over.mk ((u ≫ t) ≫ Y.hom) ⟶ Y)` using `by ext; simp [v]`. Unfold `Locus`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Locus.comp {N : LB (A ⊗ Y).left} {T T' : Scheme.{0}} {t : T ⟶ Y.left} (h : Locus N t) (u : T' ⟶ T) :
     Locus N (u ≫ t) := by

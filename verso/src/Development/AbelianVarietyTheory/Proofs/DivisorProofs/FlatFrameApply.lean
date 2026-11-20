@@ -26,7 +26,7 @@ def flatFrame {K : Type} [CommRing K] (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw
   (Matrix.blockDiagonal' A).submatrix e.symm e'.symm
 
 /- English proof (translation)
-Simplify using `[flatFrame, Matrix.blockDiagonal'_apply_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flatFrame_apply {K : Type} [CommRing K] (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
     {n n' : ℕ} (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (e' : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n')

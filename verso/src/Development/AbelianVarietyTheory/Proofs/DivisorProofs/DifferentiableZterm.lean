@@ -19,16 +19,16 @@ section Generic
 variable {G : Type} [CommGroup G] {H H' : Subgroup G} {F : G → ℂ} {a : ℂ}
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul H g`. Rewrite using `[hu, hF _ _ u.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem out_mk (hF : ∀ g, ∀ u ∈ H, F (g * u) = F g) (g : G) : F (QuotientGroup.mk g : G ⧸ H).out = F g := by
   obtain ⟨u, hu⟩ := QuotientGroup.mk_out_eq_mul H g
   rw [hu, hF _ _ u.2]
 
 /- English proof (translation)
-Unfold `QSum at *`. Rewrite `h` using `[← (Equiv.mulLeft (QuotientGroup.mk t : G ⧸ H)).hasSum_iff]`. Use `h.congr_fun fun q => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Establish `h2 : ∀ g, ∀ u ∈ H, F (t * (g * u)) = F (t * g)` using `fun g u hu => by rw [← mul_assoc, hF _ _ hu]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(out_mk (F := fun g => F (t * g)) h2 g).trans (out_mk hF (t * g)).symm`.
+A detailed English derivation is pending.
 -/
 theorem QSum.translate (hF : ∀ g, ∀ u ∈ H, F (g * u) = F g) (h : QSum H F a) (t : G) :
     QSum H (fun g => F (t * g)) a := by
@@ -40,9 +40,9 @@ theorem QSum.translate (hF : ∀ g, ∀ u ∈ H, F (g * u) = F g) (h : QSum H F 
   exact (out_mk (F := fun g => F (t * g)) h2 g).trans (out_mk hF (t * g)).symm
 
 /- English proof (translation)
-Establish `h1` using `h.translate hF t`. Unfold `QSum at *`. Simplify using `only [ht] at h1`. Establish `h2` using `h1.unique (h.mul_left c)`. Establish `: (c - 1) * a = 0` using `by linear_combination -h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hc)`.
+A detailed English derivation is pending.
 -/
 theorem QSum.eq_zero (hF : ∀ g, ∀ u ∈ H, F (g * u) = F g) (h : QSum H F a) {t : G} {c : ℂ} (hc : c ≠ 1)
     (ht : ∀ g, F (t * g) = c * F g) : a = 0 := by
@@ -54,15 +54,15 @@ theorem QSum.eq_zero (hF : ∀ g, ∀ u ∈ H, F (g * u) = F g) (h : QSum H F a)
   exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hc)
 
 /- English proof (translation)
-Unfold `QSum`. Use `haveI : (H.subgroupOf H').FiniteIndex := ⟨hn⟩`. Use `haveI := Fintype.ofFinite (H' ⧸ H.subgroupOf H')`. Establish `hc : (Fintype.card (H' ⧸ H.subgroupOf H') : ℂ) = H.relIndex H'`. Rewrite using `[Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hn' : (H.relIndex H' : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Set `e` to `Subgroup.quotientEquivProdOfLE hle`. Establish `he : ∀ q : G ⧸ H, F q.out = (fun p : (G ⧸ H') × (H' ⧸ H.subgroupOf H') => F p.1.out * 1) (e q)` using `fun q => by`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Rewrite using `[out_mk fun g u hu => hF g u (hle hu)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show _ = F (QuotientGroup.mk g : G ⧸ H').out * 1`. Rewrite using `[out_mk hF, mul_one]`. Simplify using `only [he]`. Rewrite using `[show (fun q => (fun p : (G ⧸ H') × (H' ⧸ H.subgroupOf H') => F p.1.out * 1) (e q)) = (fun p : (G ⧸ H') × (H' ⧸ H.subgroupOf H') => F p.1.out * 1) ∘ e from rfl, e.hasSum_iff]`. Establish `h1 : HasSum (fun _ : H' ⧸ H.subgroupOf H' => (1 : ℂ)) (H.relIndex H')`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hasSum_fintype (fun _ : H' ⧸ H.subgroupOf H' => (1 : ℂ))` using `[hc]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[mul_comm]`. Establish `h3` using `summable_mul_of_summable_norm (f := fun q : G ⧸ H' => F q.out) (g := fun _ : H' ⧸ H.subgroupOf H' => (1 : ℂ)) h.summable.norm h1.summable.norm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `HasSum.mul (f := fun q : G ⧸ H' => F q.out) (g := fun _ : H' ⧸ H.subgroupOf H' => (1 : ℂ)) h h1 h3`. Introduce `h`. Establish `h2` using `(h.prod_fiberwise fun q => h1.mul_left (F q.out)).mul_right (H.relIndex H' : ℂ)⁻¹`. Simplify using `only [mul_assoc, mul_inv_cancel₀ hn', mul_one] at h2`. Rewrite `h2` using `[mul_left_comm, mul_inv_cancel₀ hn', mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem qsum_index (hle : H ≤ H') (hn : H.relIndex H' ≠ 0) (hF : ∀ g, ∀ u ∈ H', F (g * u) = F g) :
     QSum H' F a ↔ QSum H F (H.relIndex H' * a) := by
@@ -123,7 +123,7 @@ def congr (r : HeightOneSpectrum (𝓞 E) → WithZero (Multiplicative ℤ)) : S
     exact (ha w).2
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_congr {r : HeightOneSpectrum (𝓞 E) → WithZero (Multiplicative ℤ)} {z : (Af E)ˣ} :
     z ∈ congr r ↔ ∀ w, Valued.v ((z : Af E) w) = 1 ∧ Valued.v ((z : Af E) w - 1) ≤ r w := Iff.rfl
@@ -134,7 +134,7 @@ def radN (E : Type) [Field E] [NumberField E] (N : ℕ) (w : HeightOneSpectrum (
 def zterm (χ : HChar E) (s : ℂ) (z : (Af E)ˣ) : ℂ := (finPart χ z : ℂ) * ((modF z : ℝ) : ℂ) ^ s
 
 /- English proof (translation)
-Unfold `zterm`. Rewrite using `[map_mul, ObjModel.modF_mul, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (ObjModel.modF_pos _).le (ObjModel.modF_pos _).le, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zterm_mul (χ : HChar E) (s : ℂ) (z z' : (Af E)ˣ) : zterm χ s (z * z') = zterm χ s z * zterm χ s z' := by
   unfold zterm
@@ -143,14 +143,14 @@ theorem zterm_mul (χ : HChar E) (s : ℂ) (z z' : (Af E)ˣ) : zterm χ s (z * z
   ring
 
 /- English proof (translation)
-The claim follows from `Differentiable.const_mul (Differentiable.const_cpow differentiable_id (Or.inl (by exact_mod_cast (ObjModel.modF_pos z).ne'))) _`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_zterm (χ : HChar E) (z : (Af E)ˣ) : Differentiable ℂ fun s => zterm χ s z :=
   Differentiable.const_mul (Differentiable.const_cpow differentiable_id
     (Or.inl (by exact_mod_cast (ObjModel.modF_pos z).ne'))) _
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (Units.ne_zero _) (by rw [Ne, Complex.cpow_eq_zero_iff, not_and_or] exact Or.inl (by exact_mod_cast (ObjModel.modF_pos z).ne'))`.
+A detailed English derivation is pending.
 -/
 theorem zterm_ne_zero (χ : HChar E) (s : ℂ) (z : (Af E)ˣ) : zterm χ s z ≠ 0 :=
   mul_ne_zero (Units.ne_zero _) (by
@@ -158,28 +158,28 @@ theorem zterm_ne_zero (χ : HChar E) (s : ℂ) (z : (Af E)ˣ) : zterm χ s z ≠
     exact Or.inl (by exact_mod_cast (ObjModel.modF_pos z).ne'))
 
 /- English proof (translation)
-Unfold `modF`. Conclude with `finprod_eq_one_of_forall_eq_one fun v => by simp [hu v]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem modF_eq_one {u : (Af E)ˣ} (hu : ∀ w, Valued.v ((u : Af E) w) = 1) : modF u = 1 := by
   unfold modF
   exact finprod_eq_one_of_forall_eq_one fun v => by simp [hu v]
 
 /- English proof (translation)
-Simplify using `[zterm, modF_eq_one hu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zterm_unit (χ : HChar E) (s : ℂ) {u : (Af E)ˣ} (hu : ∀ w, Valued.v ((u : Af E) w) = 1) :
     zterm χ s u = finPart χ u := by
   simp [zterm, modF_eq_one hu]
 
 /- English proof (translation)
-Establish `: ‖(finPart χ z : ℂ)‖ = 1` using `h _`. Rewrite using `[zterm, norm_mul, this, one_mul, Complex.norm_cpow_eq_rpow_re_of_pos (ObjModel.modF_pos z)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_zterm {χ : HChar E} (h : IsUnitary χ) (s : ℂ) (z : (Af E)ˣ) : ‖zterm χ s z‖ = modF z ^ s.re := by
   have : ‖(finPart χ z : ℂ)‖ = 1 := h _
   rw [zterm, norm_mul, this, one_mul, Complex.norm_cpow_eq_rpow_re_of_pos (ObjModel.modF_pos z)]
 
 /- English proof (translation)
-Establish `key : ∀ z u : (Af E)ˣ, u ∈ congr r → z ∈ box r → z * u ∈ box r` using `fun z u hu hz w => by`. Establish `: ((z * u : (Af E)ˣ) : Af E) w = (z : Af E) w * (u : Af E) w` using `rfl`. Rewrite using `[this, show (z : Af E) w * (u : Af E) w - 1 = (u : Af E) w * ((z : Af E) w - 1) + ((u : Af E) w - 1) by ring]`. Conclude with `Valuation.map_add_le _ (by rw [map_mul, (hu w).1, one_mul]; exact hz w) (hu w).2`. Conclude with `⟨fun h => by simpa using key _ _ (inv_mem hu) h, key _ _ hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mul_mem_box {r : HeightOneSpectrum (𝓞 E) → WithZero (Multiplicative ℤ)} {z u : (Af E)ˣ} (hu : u ∈ congr r) :
     z * u ∈ box r ↔ z ∈ box r := by
@@ -190,17 +190,15 @@ theorem mul_mem_box {r : HeightOneSpectrum (𝓞 E) → WithZero (Multiplicative
   exact ⟨fun h => by simpa using key _ _ (inv_mem hu) h, key _ _ hu⟩
 
 /- English proof (translation)
-Introduce `_ hz w` and use `⟨(hz w).1, (hz w).2.trans (h w)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem congr_mono {r r' : HeightOneSpectrum (𝓞 E) → WithZero (Multiplicative ℤ)} (h : ∀ w, r w ≤ r' w) :
     congr r ≤ congr r' := fun _ hz w => ⟨(hz w).1, (hz w).2.trans (h w)⟩
 
 /- English proof (translation)
-Establish `hn0 : (n : E) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `key` using `GlobalTheory.IntDense.mem_of_isClosed E (C := {α | algebraMap E (Af E) n * α ∈ hatO c}) ((Subring.isClosed_topologicalClosure _).preimage (continuous_const.mul continuous_id)) (fun a => by show _ ∈ hatO c`. Rewrite using `[← map_mul]`. Use `algebraMap_mem_hatO (mem_orderC.2 ⟨0, algebraMap (OF E) (𝓞 E) n * a, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hc), ?_⟩)` and prove the remaining obligations. Use the proof step `simp) (algebraMap E (Af E) (n : E)⁻¹ * (z - a)) fun P => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `GlobalTheory.AdLat.valued_natCast_ne_zero P hn`. Use `show Valued.v (algebraMap E (P.adicCompletion E) (n : E)⁻¹ * (z P - a P)) ≤ 1`. Rewrite using `[map_mul, map_inv₀, map_inv₀, map_natCast, inv_mul_le_iff₀ (zero_lt_iff.2 h0), mul_one]`. Conclude with `hz P`. Establish `e : z = algebraMap E (Af E) n * (algebraMap E (Af E) (n : E)⁻¹ * (z - a)) + a`.
-
-Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hn0, map_one, one_mul, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `add_mem key ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hatO_of_sub {c : Ideal (OF E)} {n : ℕ} (hn : 0 < n) (hc : (n : OF E) ∈ c) {a z : Af E} (ha : a ∈ hatO c)
     (hz : ∀ P, Valued.v (z P - a P) ≤ radN E n P) : z ∈ hatO c := by
@@ -222,7 +220,7 @@ theorem mem_hatO_of_sub {c : Ideal (OF E)} {n : ℕ} (hn : 0 < n) (hc : (n : OF 
   exact add_mem key ha
 
 /- English proof (translation)
-Introduce `_ hu` and use `mem_hatOUnits.2 ⟨mem_hatO_of_sub hn hc (one_mem _) fun P => (hu P).2, mem_hatO_of_sub hn hc (one_mem _) fun P => (inv_mem hu P).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem congr_le_hatOUnits {c : Ideal (OF E)} {n : ℕ} (hn : 0 < n) (hc : (n : OF E) ∈ c) :
     congr (radN E n) ≤ hatOUnits c := fun _ hu =>
@@ -230,7 +228,7 @@ theorem congr_le_hatOUnits {c : Ideal (OF E)} {n : ℕ} (hn : 0 < n) (hc : (n : 
     mem_hatO_of_sub hn hc (one_mem _) fun P => (inv_mem hu P).2⟩
 
 /- English proof (translation)
-Introduce `u hu w` and use `by have h : Valued.v ((u : Af E) w) = 1 := GlobalTheory.Mem.TupHecke.valued_eq_one_of_le (coord w u) (ObjModel.hatO_integral hu.1 w) (ObjModel.hatO_integral hu.2 w) exact ⟨h, Valuation.map_sub_le _ h.le (by simp)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hatOUnits_le_congr (c : Ideal (OF E)) : hatOUnits c ≤ congr (fun _ => 1) := fun u hu w => by
   have h : Valued.v ((u : Af E) w) = 1 :=

@@ -13,9 +13,9 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Break down `le_or_gt 1 y with h | h` into its components or cases. Establish `: y ^ s ≤ y ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le h hs1`. Rewrite `this` using `[Real.rpow_one]`. Establish `: 0 ≤ y⁻¹` using `inv_nonneg.mpr hy.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : y ^ s ≤ 1` using `Real.rpow_le_one hy.le h.le hs0`. Establish `h2 : 1 ≤ y⁻¹` using `by rw [le_inv_comm₀ one_pos hy]; simpa using h.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma rpow_le_add_inv_of_mem_Icc {y s : ℝ} (hy : 0 < y) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) :
     y ^ s ≤ y + y⁻¹ := by
@@ -29,14 +29,14 @@ lemma rpow_le_add_inv_of_mem_Icc {y s : ℝ} (hy : 0 < y) (hs0 : 0 ≤ s) (hs1 :
     linarith
 
 /- English proof (translation)
-Take `⟨C, A, h⟩` from `hF`. Conclude with `⟨C, A, fun τ => by simpa using h τ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma mod_ofReal_norm {F : ℍ → ℂ} (hF : Mod F) : Mod (fun τ => ((‖F τ‖ : ℝ) : ℂ)) := by
   obtain ⟨C, A, h⟩ := hF
   exact ⟨C, A, fun τ => by simpa using h τ⟩
 
 /- English proof (translation)
-Use `⟨1, A, fun τ => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ τ.im ^ A + (τ.im ^ A)⁻¹`. Use `τ.im_pos` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg h0, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 -/
 lemma mod_im_pow (A : ℕ) : Mod (fun τ : ℍ => (((τ.im ^ A + (τ.im ^ A)⁻¹ : ℝ)) : ℂ)) := by
   refine ⟨1, A, fun τ => ?_⟩
@@ -45,7 +45,7 @@ lemma mod_im_pow (A : ℕ) : Mod (fun τ : ℍ => (((τ.im ^ A + (τ.im ^ A)⁻�
   rw [Complex.norm_real, Real.norm_of_nonneg h0, one_mul]
 
 /- English proof (translation)
-Use `⟨1, 1, fun τ => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ τ.im + τ.im⁻¹`. Use `τ.im_pos` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg h0, one_mul, pow_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 -/
 lemma mod_im_add_inv : Mod (fun τ : ℍ => (((τ.im + τ.im⁻¹ : ℝ)) : ℂ)) := by
   refine ⟨1, 1, fun τ => ?_⟩
@@ -54,23 +54,21 @@ lemma mod_im_add_inv : Mod (fun τ : ℍ => (((τ.im + τ.im⁻¹ : ℝ)) : ℂ)
   rw [Complex.norm_real, Real.norm_of_nonneg h0, one_mul, pow_one]
 
 /- English proof (translation)
-Introduce `k j L L' N ε Φ ρ h b hk hj hL hL' hN hρ hh hb hΦ`. Take `⟨⟨C, A, hC⟩, hmeas, hlim⟩` from `GlobalTheory.T.regularizedEisensteinLatticeSum_moderate_measurable_tendsto j L Φ hj hL hΦ`. Establish `hbc : Continuous (qs b)` using `(GlobalTheory.T.qExpansion_polyGrowth_summable_continuous b hb).2`. Establish `hhc : Continuous (qs h)` using `(GlobalTheory.T.qExpansion_polyGrowth_summable_continuous h hh.1.1).2`. Establish `him : Continuous (fun τ : ℍ => τ.im)` using `UpperHalfPlane.continuous_im`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G : ℍ → ℂ := fun τ => ((‖qs b τ‖ : ℝ) : ℂ) * ((C : ℂ) * (((τ.im ^ A + (τ.im ^ A)⁻¹ : ℝ)) : ℂ)) * (((τ.im + τ.im⁻¹ : ℝ)) : ℂ) with hG`. Establish `hGc : Continuous G`. Establish `h1 : Continuous (fun τ : ℍ => (τ.im ^ A)⁻¹)` using `(him.pow A).inv₀ (fun τ => (pow_pos τ.im_pos A).ne')`. Establish `h2 : Continuous (fun τ : ℍ => τ.im⁻¹)` using `him.inv₀ (fun τ => τ.im_pos.ne')`. Simplify using `only [hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `hGmod : Mod G`. Establish `M` using `GlobalTheory.T.hasModerateGrowth_algebra_slash_stable`. Conclude with `(M.1 _ _ ((M.1 _ _ (mod_ofReal_norm (GlobalTheory.T.hasModerateGrowth_qExpansion_of_coeffPolynomialGrowth b hb)) ((M.1 _ _ (M.2.1 (C : ℂ)) (mod_im_pow A)).2)).2) mod_im_add_inv).2`. Establish `hint` using `GlobalTheory.T.integrable_petersson_integrand_moderateGrowth k L' L' N ε h ρ G hk hL' hN hρ hh hGc.aestronglyMeasurable hGmod`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hρm : Measurable (fun τ => (ρ τ : ℂ))` using `Complex.measurable_ofReal.comp hρ.meas`. Simplify using `only [pet]`. Use `tendsto_integral_filter_of_dominated_convergence (fun τ => ‖(ρ τ : ℂ) * (conj (qs h τ) * G τ * (τ.im : ℂ) ^ k)‖) ?_ ?_ hint.norm ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall (fun s => ?_)` and prove the remaining obligations. Establish `hs : Measurable (fun τ : ℍ => (((τ.im ^ s : ℝ)) : ℂ))` using `Complex.measurable_ofReal.comp ((him.measurable).pow_const s)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hρm.mul ((((Complex.continuous_conj.comp hhc).measurable).mul ((hbc.measurable.mul (hmeas s)).mul hs)).mul ((Complex.measurable_ofReal.comp him.measurable).pow_const k))).aestronglyMeasurable`. Establish `hev : ∀ᶠ s in 𝓝[>] (0 : ℝ), s ∈ Set.Ioo (0 : ℝ) 1` using `Ioo_mem_nhdsGT one_pos filter_upwards [hev] with s hs`. Use `Filter.Eventually.of_forall (fun τ => ?_)` and prove the remaining obligations. Establish `hy` using `τ.im_pos`. Establish `hρ0` using `hρ.nonneg τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `hC s τ hs.1.le hs.2.le`. Establish `hys` using `rpow_le_add_inv_of_mem_Icc hy hs.1.le hs.2.le`. Establish `hX : 0 ≤ C * (τ.im ^ A + (τ.im ^ A)⁻¹)` using `le_trans (norm_nonneg _) hl`. Establish `hys0 : 0 ≤ τ.im ^ s` using `Real.rpow_nonneg hy.le s`. Establish `key : ‖lat j s L (0, 1) Φ τ‖ * τ.im ^ s ≤ |C * (τ.im ^ A + (τ.im ^ A)⁻¹)| * (τ.im + τ.im⁻¹)` using `mul_le_mul (hl.trans (le_abs_self _)) hys hys0 (abs_nonneg _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hG, norm_mul, Complex.norm_real, Complex.norm_conj, norm_pow, Real.norm_eq_abs, norm_norm, abs_norm, Complex.ofReal_mul]`. Rewrite using `[abs_of_nonneg hy.le, abs_of_nonneg (Real.rpow_nonneg hy.le s), abs_of_nonneg (by positivity : (0:ℝ) ≤ τ.im + τ.im⁻¹)]`. Establish `hcomb : |C| * |τ.im ^ A + (τ.im ^ A)⁻¹| = |C * (τ.im ^ A + (τ.im ^ A)⁻¹)|` using `(abs_mul _ _).symm`. Establish `hP : 0 ≤ |ρ τ| * ‖qs h τ‖ * ‖qs b τ‖ * τ.im ^ k` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hcomb]`. Expand and normalize the polynomial expressions, which then agree. Use `Filter.Eventually.of_forall (fun τ => ?_)` and prove the remaining obligations. Establish `hy` using `τ.im_pos`. Establish `h1 : Tendsto (fun s : ℝ => (((τ.im ^ s : ℝ)) : ℂ)) (𝓝[>] 0) (𝓝 (((τ.im ^ (0:ℝ) : ℝ)) : ℂ))`.
-
-Establish `: ContinuousAt (fun s : ℝ => τ.im ^ s) 0` using `Real.continuousAt_const_rpow hy.ne'`. Conclude with `(Complex.continuous_ofReal.continuousAt.tendsto.comp this.tendsto).mono_left nhdsWithin_le_nhds`. Establish `h2` using `((tendsto_const_nhds (x := (ρ τ : ℂ))).mul (((tendsto_const_nhds (x := conj (qs h τ))).mul (((tendsto_const_nhds (x := qs b τ)).mul (hlim τ)).mul h1)).mul (tendsto_const_nhds (x := (τ.im : ℂ) ^ k))))`. Simplify `h2` using `only [Real.rpow_zero, Complex.ofReal_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rankin_tendsto : ∀ (k j L L' N : ℕ) (ε : DirichletCharacter ℂ N) (Φ : ℤ × ℤ → ℂ) (ρ : ℍ → ℝ) (h b : ℕ → ℂ), 1 ≤ k → 2 ≤ j → 0 < L → 0 < L' → N ∣ L' → Wt L' ρ → CF k L' (ch ε) h → PolyB b → (∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C) → Tendsto (fun s : ℝ => pet k ρ (qs h) (fun τ => qs b τ * lat j s L (0, 1) Φ τ * ((τ.im ^ s : ℝ) : ℂ))) (𝓝[>] 0) (𝓝 (pet k ρ (qs h) (fun τ => qs b τ * lat j 0 L (0, 1) Φ τ))) := by
   intro k j L L' N ε Φ ρ h b hk hj hL hL' hN hρ hh hb hΦ

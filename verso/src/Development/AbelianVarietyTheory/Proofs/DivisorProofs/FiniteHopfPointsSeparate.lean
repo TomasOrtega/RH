@@ -13,15 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HopfPoints
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ A _ _ _ _ _`. Establish `hRK : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Use `haveI : FaithfulSMul R K := (faithfulSMul_iff_algebraMap_injective R K).2 hRK`. Use `haveI : Algebra.Etale K (K ⊗[R] A) := GlobalTheory.etale_of_hopfAlgebra K (K ⊗[R] A)`. Set `e : (A →ₐ[R] K) ≃ (K ⊗[R] A →ₐ[K] K)` to `AlgHom.liftEquiv R K A K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Finite (A →ₐ[R] K)` using `by haveI : Finite (K ⊗[R] A →ₐ[K] K) := Finite.algHom K (K ⊗[R] A) K`. Conclude with `Finite.of_equiv _ e.symm`. Establish `hcard : Nat.card (A →ₐ[R] K) = Module.finrank R A`. Rewrite using `[Nat.card_congr e, GlobalTheory.natCard_algHom_eq_finrank_of_etale K (K ⊗[R] A) K]`. Conclude with `(TensorProduct.isBaseChange R A K).finrank_eq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨hfin, fun a ha ↦ ?_, fun q ↦ ?_⟩` and prove the remaining obligations. Take `⟨n, ⟨f⟩⟩` from `Algebra.IsFiniteSplit.nonempty_algEquiv_fun K (K ⊗[R] A)`. Establish `h1 : (1 : K) ⊗ₜ[R] a = 0`. Apply `f.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `i`. Set `φ : K ⊗[R] A →ₐ[K] K` to `(Pi.evalAlgHom K (fun _ : Fin n ↦ K) i).comp f.toAlgHom`. Use `ha ((φ.restrictScalars R).comp Algebra.TensorProduct.includeRight)` as an intermediate fact. Simplify `this` using `[φ]`. Establish `hinj : Function.Injective ((Algebra.linearMap R K).rTensor A ∘ₗ (TensorProduct.lid R A).symm.toLinearMap)` using `(Module.Flat.rTensor_preserves_injective_linearMap _ hRK).comp (TensorProduct.lid R A).symm.injective`.
-
-Apply `hinj` to reduce the goal to its premises. Simplify using `using h1`. Rewrite using `[hcard, Module.rankAtStalk_eq q]`. Conclude with `Ideal.finrank_fiber_eq_finrank q.asIdeal`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_points_separate_rank : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A], Finite (A →ₐ[R] K) ∧ (∀ a : A, (∀ ψ : A →ₐ[R] K, ψ a = 0) → a = 0) ∧ ∀ q : PrimeSpectrum R, Module.rankAtStalk (R := R) A q = Nat.card (A →ₐ[R] K) := by
   intro R K _ _ _ _ _ _ _ _ A _ _ _ _ _

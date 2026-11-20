@@ -23,11 +23,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N a d : ℕ}
 
 /- English proof (translation)
-Take `⟨ω, hω⟩` from `Central.exists_hasCentral E a π`. Establish `hs : ∀ (b : ℕ) (t : ℝ), splitCentre E b t = Matrix.GeneralLinearGroup.scalar (Fin b) (infId E (expU fun _ => (t : ℂ)))` using `fun b t => (cornerGL_scalar (sInf E) _)`. Establish `h1 : ∀ t : ℝ, ((ω.1 (infId E (expU fun _ => (t : ℂ))) : ℂˣ) : ℂ) = 1` using `fun t => by`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h0 (Subtype.ext (funext hc))`. Establish `h2` using `hω.apply hφ (infId E (expU fun _ => (t : ℂ))) g`. Rewrite `h2` using `[← hs, h φ hφ]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ hg (h2.symm.trans (one_mul _).symm)`. Establish `h3 : ((CuspSub.triv E (le_refl 1)).twist ω).HasCentral ω` using `CuspSub.hasCentral_iff.2 (CG.hasCentChar_ofChar ω)`. Establish `h4 : IsNormalised ((CuspSub.triv E (le_refl 1)).twist ω)` using `fun φ hφ t g => by`. Rewrite using `[hs, h3.apply hφ, h1, one_mul]`. Conclude with `hω.isUnitary_iff.2 (h3.isUnitary_iff.1 (Model.isUnitary_of_isNormalised h4))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnitary_of_isNormalised {π : CuspSub E a} (h : IsNormalised π) : π.IsUnitary := by
   obtain ⟨ω, hω⟩ := Central.exists_hasCentral E a π
@@ -50,13 +50,11 @@ theorem isUnitary_of_isNormalised {π : CuspSub E a} (h : IsNormalised π) : π.
   exact hω.isUnitary_iff.2 (h3.isUnitary_iff.1 (Model.isUnitary_of_isNormalised h4))
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hV.ne_bot`. Use `filter_upwards [LocSph.eventually_mem ((hV.aut φ hφ).level.mem_nhds (by simp))] with w hw σ hσ`. Take `⟨f, hf0, hfV, hf⟩` from `hσ`. Set `F : σ.V →ₗ[ℂ] V` to `f.codRestrict V hfV`. Establish `hF : ∀ g v, F (σ.ρ g v) = DiscLocEx.locRepD hV.stable w g (F v)` using `fun g v => Subtype.ext (hf g v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0 : F ≠ 0` using `fun e => hf0 (LinearMap.ext fun v => congrArg Subtype.val (LinearMap.congr_fun e v))`. Establish `hi : LinearMap.ker F = ⊥` using `((isIrreducible_iff σ.ρ).1 σ.irred).2 _ (fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hF, hv, map_zero]) |>.resolve_right fun e => hF0 (LinearMap.ker_eq_top.1 e)`. Establish `hfix : (⟨φ, hφ⟩ : V) ∈ GlobalTheory.PRep.fixed (DiscLocEx.locRepD hV.stable w) (KGL w N)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `hk`. Conclude with `hw g)`. Establish `h1 : LinearMap.range F ⊓ GlobalTheory.PRep.fixed (DiscLocEx.locRepD hV.stable w) (KGL w N) ≠ ⊥` using `fun e => hF0 (LinearMap.range_eq_bot.1 (DiscLocEx.eq_bot_of_fixedD hV w GlobalTheory.SatInd.isCompact_KGL (fun e => h0 (congrArg Subtype.val e)) hfix _ (by rintro g _ ⟨v, rfl⟩; exact ⟨_, hF g v⟩) e))`. Take `⟨_, ⟨⟨v, rfl⟩, hv⟩, hv0⟩` from `(Submodule.ne_bot_iff _).1 h1`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 fun k hk => LinearMap.ker_eq_bot.1 hi (by`.
-
-Rewrite using `[hF, GlobalTheory.LGrp.mem_fixed.1 hv k hk]), fun e => hv0 (by rw [e, map_zero])⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_spherical {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ σ, IsLocCompGL V w σ →
@@ -82,9 +80,9 @@ theorem eventually_spherical {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) :
     rw [hF, GlobalTheory.LGrp.mem_fixed.1 hv k hk]), fun e => hv0 (by rw [e, map_zero])⟩
 
 /- English proof (translation)
-Take `⟨S, hS, e⟩` from `GlobalTheory.SatInd.exists_sat_of_isSpeh hd σ.smooth σ.irred h hT`. Use `⟨_, fun i => GlobalTheory.SphGal.hasSatGL_twist E a π _ w S ((hν _).1 w) (GlobalTheory.HeightCounting.Blocks.hasSatGL_locRep hσ hS), ?_⟩` and prove the remaining obligations. Use `Multiset.map_injective Units.val_injective (Eq.trans ?_ e)` and prove the remaining obligations. Use `(map_sum (Multiset.mapAddMonoidHom _) _ _).trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Multiset.coe_mapAddMonoidHom, Multiset.map_map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, (hν _).2.1 w, spehExp]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_sat_twist (hd : 1 ≤ d) {π : CuspSub E a} {w : HeightOneSpectrum (𝓞 E)}
     {σ : SmIrr (GL (Fin a) (w.adicCompletion E))} {σ' : SmIrr (GL (Fin N) (w.adicCompletion E))}

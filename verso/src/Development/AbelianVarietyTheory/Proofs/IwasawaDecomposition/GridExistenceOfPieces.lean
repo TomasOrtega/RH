@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.Mem.LiteralAutomorphy
 
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `hv` using the available equality. Substitute `hw` using the available equality. Substitute `hc` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem gridKey_heq_of_eq_preData_components (P P' : Pre) (h : P = P') (v : Pl P.host.F) (v' : Pl P'.host.F) (w : Pl P.host.F → Pl P.host.E)
     (w' : Pl P'.host.F → Pl P'.host.E) (c : ℕ → HChar P.host.E) (c' : ℕ → HChar P'.host.E) (hv : HEq v v') (hw : HEq w w')
@@ -25,7 +25,7 @@ theorem gridKey_heq_of_eq_preData_components (P P' : Pre) (h : P = P') (v : Pl P
   subst h; subst hv; subst hw; subst hc; rfl
 
 /- English proof (translation)
-The claim follows from `gridKey_heq_of_eq_preData_components _ _ hp _ _ _ _ _ _ h.v0 h.w h.chiH`.
+A detailed English derivation is pending.
 -/
 theorem gkeyOf_heq {X X' : Stages} {T T' : Type} {L : Formalism.IndefR.Links.LevCh X.toD7 T} {L' : Formalism.IndefR.Links.LevCh X'.toD7 T'} {sc : GlobalTheory.ChiGrid.Consts}
     {G : GridData L sc} {G' : GridData L' sc} (h : GAgree G G') (hp : X'.B.toPre = X.B.toPre) : HEq (gkeyOf G') (gkeyOf G) :=
@@ -38,41 +38,37 @@ namespace GlobalTheory.Mem.LiteralAutomorphy
 set_option maxHeartbeats 3200000 in
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 cG cW cS t1 t2 t3 t4 t5 kF gF`. Take `⟨a1, h1⟩` from `h1`. Take `⟨a2, h2⟩` from `h2`. Take `⟨a3, h3⟩` from `h3`. Take `⟨a4, h4⟩` from `h4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max a1 (max a2 (max a3 a4)), fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x1, h1⟩` from `h1 ε CF (le_of_max_le_left hC)`. Take `⟨x2, h2⟩` from `h2 ε CF (le_of_max_le_left (le_of_max_le_right hC))`. Take `⟨x3, h3⟩` from `h3 ε CF (le_of_max_le_left (le_of_max_le_right (le_of_max_le_right hC)))`. Take `⟨x4, h4⟩` from `h4 ε CF (le_of_max_le_right (le_of_max_le_right (le_of_max_le_right hC)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max x1 (max x2 (max x3 x4)), fun s he hx P f Ξ hΞ => ?_⟩` and prove the remaining obligations. Establish `hx1` using `le_of_max_le_left hx`. Establish `hx2` using `le_of_max_le_left (le_of_max_le_right hx)`. Establish `hx3` using `le_of_max_le_left (le_of_max_le_right (le_of_max_le_right hx))`. Establish `hx4` using `le_of_max_le_right (le_of_max_le_right (le_of_max_le_right hx))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `per : ∀ (κ : Key P) (γ : GKey P), ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ (X : Stages) (f' : Fr X.B.toPre), X.B.toPre = P → HEq f' f → ∀ large₂ : SizeData₂ X.toD7, large₂.sc = s → GlobalTheory.SqTop.Rec large₂ → ∀ (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn …`. Introduce `κ γ`. Distinguish the cases in `H : ∃ (X : Stages) (f' : Fr X.B.toPre) (_ : X.B.toPre = P) (_ : HEq f' f) (large₂ : SizeData₂ X.toD7) (_ : large₂.sc = s) (_ : GlobalTheory.SqTop.Rec large₂) (Γ : Type) (_ : Group Γ) (_ : Fintype Γ) (Pl0 T : Type) (A : FamIn X.toD7.what₂.LL Γ Pl0 T X.toD7.R.m) (Ks : Type) (_ : Fi …`. Use `swap`. Conclude with `⟨∅, by simp, fun X f' a b large₂ c r Γ _ _ Pl0 T A Ks _ _ _ R F d e g i G₀ j _ => absurd ⟨X, f', a, b, large₂, c, r, Γ, _, _, Pl0, T, A, Ks, _, _, _, R, F, G₀, d, e, g, i, j⟩ H⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨X0, f0, a0, b0, Lg0, rfl, r0, Γ0, _, _, Pl00, T0, A0, Ks0, _, _, _, R0, F0, G00, d0, e0, g0, i0, j0⟩` from `H`. Take `⟨W0, hW0, ⟨S0⟩⟩` from `h1 _ Lg0 he hx1 Γ0 Pl00 T0 A0 Ks0 R0 F0 d0 G00`. Take `⟨M, ρ, ξ, cv, rm, S, rp, n, e, c, hS, hIs⟩` from `h2 _ Lg0 he hx2 Γ0 Pl00 T0 A0 Ks0 R0 F0 d0 G00 W0 hW0 S0`. Take `⟨N, hN, hAll⟩` from `h3 _ Lg0 he hx3 Γ0 Pl00 T0 A0 Ks0 R0 F0 d0 _ hIs rfl`. Take `⟨N2, hN2, hSq⟩` from `h4 _ Lg0 he hx4 r0 T0 R0.toLevCh A0.μ0 d0.core.lev G00`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b⟩ : Nonempty (Module.Basis (Fin (Module.finrank ℚ N)) ℚ N)` from `⟨Module.finBasis ℚ N⟩`. Take `⟨b2⟩ : Nonempty (Module.Basis (Fin (Module.finrank ℚ N2)) ℚ N2)` from `⟨Module.finBasis ℚ N2⟩`. Use `⟨(Finset.univ.image fun i => ((b i : N) : ℂ)) ∪ Finset.univ.image fun i => ((b2 i : N2) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Break down `Finset.mem_union.1 hz with hz | hz` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `IntermediateField.isAlgebraic_iff.1 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `IntermediateField.isAlgebraic_iff.1 (Algebra.IsAlgebraic.isAlgebraic _)`. Introduce `X f' a b' large₂ hs hr Γ _ _ Pl0 T A Ks _ _ _ R F d e' g i G₀ j hz`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Establish `rng : ∀ (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K] (bK : Module.Basis (Fin (Module.finrank ℚ K)) ℚ K), (∀ i, ((bK i : K) : ℂ) ∈ Set.range X.toD7.what₂.embLL) → Set.range (algebraMap K ℂ) ⊆ Set.range X.toD7.what₂.embLL`. Introduce `K _ bK hK`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[← bK.sum_repr y, map_sum]`. Use `X.toD7.what₂.embLL.fieldRange.sum_mem fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Rat.smul_def, map_mul, map_ratCast]`. Conclude with `X.toD7.what₂.embLL.fieldRange.mul_mem (SubfieldClass.ratCast_mem _ _) (hK i)`. Establish `r1` using `rng N b fun i => hz _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`. Establish `r2` using `rng N2 b2 fun i => hz _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`. Establish `hk : HEq (keyOf R.toLevCh) (keyOf R0.toLevCh)` using `i.trans i0.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hpre : X.B.toPre = X0.B.toPre` using `a.trans a0.symm`. Establish `key : ∀ (P P' : Pre) (_ : P = P') (k : Key P) (k' : Key P'), HEq k k' → ∀ x ∈ k, ∃ y ∈ k', HEq x.1 y.1 ∧ HEq x.2 y.2`. Introduce and unpack `P _ rfl k k' h x hx`. Take `rfl` from `eq_of_heq h`. Conclude with `⟨x, hx, HEq.rfl, HEq.rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hι : ∀ t : T, ∃ t0 : T0, HEq (R.xiH t) (R0.xiH t0) ∧ HEq (R.Q t) (R0.Q t0)` using `fun t => by`. Take `⟨_, ⟨t0, rfl⟩, h⟩` from `key _ _ hpre _ _ hk _ ⟨t, rfl⟩`. Conclude with `⟨t0, h⟩`. Use `choose ι hι using hι`. Establish `one : ∀ (P P' : Pre) (_ : P = P'), HEq (1 : HChar P.host.E) (1 : HChar P'.host.E)` using `by rintro P _ rfl; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ι A.μ0 = A0.μ0` using `d0.core.lev.xi_inj (by`. Rewrite using `[d0.core.lev.xi_base]`. Use `(hι A.μ0).1` as an intermediate fact. Rewrite `this` using `[d.core.lev.xi_base]`. Conclude with `eq_of_heq (this.symm.trans (one _ _ hpre)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : LAgree R0.toLevCh R.toLevCh A0.μ0 A.μ0 ι` using `⟨hpre, d0.core.lev, d.core.lev, ⟨f0, f', b'.trans b0.symm, e0, e'⟩, hb, fun t => (hι t).1, fun t => (hι t).2, d0.betaX, d.betaX⟩`. Take `⟨G, hG⟩` from `cG _ _ _ _ _ _ _ _ _ hL _ G00`. Take `⟨W, hW, hWA⟩` from `cW _ _ _ _ _ Γ Pl0 A Ks R _ ι hL d.core.chain d.core.models _ G00 G hG W0`. Take `⟨S', hS'⟩` from `cS _ _ _ _ _ _ _ _ _ hL _ G00 G hG W0 W hWA S.toGridChoice`. Establish `hA : Agree S.toGridChoice S' A0.μ0 A.μ0 ι` using `⟨hL, hG, hWA, hS'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h2'` using `h2 _ large₂ (hs ▸ he) (hs ▸ hx2) Γ Pl0 T A Ks R F d`. Rewrite `h2'` using `[hs]`. Take `⟨M', ρ', ξ', cv', rm', S2, rp', n', e2, c', hS2, hIs'⟩` from `h2' G W hW S'`. Establish `gk : gkeyOf G = gkeyOf G₀` using `eq_of_heq ((gkeyOf_heq hG hpre).trans (j0.trans j.symm))`. Use `⟨G, gk, W, M', ρ', ξ', cv', rm', S2, rp', n', e2, c', hIs', ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u1, u2, u3⟩` from `t1 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA N (algebraMap N ℂ)`. Establish `hAll' : AllIn (algebraMap N ℂ) S' A.μ0` using `⟨u1 hAll.chars, u2 hAll.root, t2 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA N _ hAll.phase, t3 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA N _ hAll.jet, u3 hAll.ratios, t4 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA N _ hAll.bot⟩`. Substitute `hS2` using the available equality. Conclude with `hAll'.numbersIn.mono r1`. Conclude with `(t5 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA N2 _ hSq).mono r2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Take `⟨𝒦, hK, H⟩` from `kF P Ξ hΞ`. Take `⟨𝒢, hG, HG⟩` from `gF P 1`. Use `choose S hS HS using per`. Use `⟨hK.toFinset.biUnion fun κ => hG.toFinset.biUnion fun γ => S κ γ, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
-
-Take `⟨κ, -, hz⟩` from `Finset.mem_biUnion.1 hz`. Take `⟨γ, -, hz⟩` from `Finset.mem_biUnion.1 hz`. Conclude with `hS κ γ z hz`. Introduce `X f' Ξ' hP hf hΞ' hz large₂ hs hRec Γ _ _ Pl0 T A Ks _ _ _ R F st hCf ho htw G₀`. Substitute `hP` using the available equality.
-
-Take `rfl` from `eq_of_heq hΞ'`. Take `⟨κ, hκ, hk⟩` from `H X T R.toLevCh A.μ0 rfl st.core.lev htw`. Take `⟨γ, hγ, hg⟩` from `HG X T R.toLevCh _ G₀ rfl rfl`. Conclude with `HS κ γ X f' rfl hf large₂ hs hRec Γ Pl0 T A Ks R F st hCf ho hk G₀ hg fun z hz' => hz z (Finset.mem_biUnion.2 ⟨κ, hK.mem_toFinset.2 hκ, Finset.mem_biUnion.2 ⟨γ, hG.mem_toFinset.2 hγ, hz'⟩⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exGrid_of : WeilEx → IsEx → NFAll → NFSq → CarryG → CarryW → CarryS → TrEasy → TrPhase → TrJet → TrBot → TrSq → KeyFin →
     GKeyFin → ExGrid := by

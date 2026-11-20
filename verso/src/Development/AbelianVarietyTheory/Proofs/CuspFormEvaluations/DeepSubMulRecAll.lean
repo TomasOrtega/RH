@@ -14,7 +14,7 @@ open Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.NetNorms NumberField 
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D T h j hj`. Establish `h0 : EtaleWeightGaps.DeepSubMul (recPJ h j hj)` using `recSubMul D T h j hj`. Establish `h1 : EtaleWeightGaps.DeepSubMul (recPlus h j hj)` using `h0`. Conclude with `⟨h0, h1, fun j' ka Nt hM hL => h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem deepSubMul_rec_all : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j), EtaleWeightGaps.DeepSubMul (recPJ h j hj) ∧ EtaleWeightGaps.DeepSubMul (recPlus h j hj) ∧ ∀ (j' : ℕ) (ka : WeightFamilies.Wt D j') (Nt : NetData (recB h.toLawsCore) j' ka) (hM : NetMax Nt) (hL : NetLeSup Nt), EtaleWeightGaps.DeepSubMul (B := Nt.Bp hM hL) (PJ.tol2NormAlt _ _ _ _ _ _ (recPlus h j hj)) := by
   intro D T h j hj

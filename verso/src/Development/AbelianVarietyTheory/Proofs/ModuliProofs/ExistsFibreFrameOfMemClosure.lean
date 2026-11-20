@@ -33,11 +33,11 @@ def SpansFibre (L : RigLB G) (y : Sp ℂ ⟶ S) (V : S.Opens) (θ₀ : ∀ j, Γ
       a * valAt' (x ≫ pullback.fst _ _) (G.hom ⁻¹ᵁ V ⊓ L.L.U j) (θ₀ j)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨fr, h1, h2, h3, h4, h5⟩`. Conclude with `⟨fun j z => fr j (b, z), fun j => (h1 j).comp (f := fun z => (b, z)) (by fun_prop) fun z hz => ⟨rfl, hz⟩, fun j z => h2 j b z rfl, fun j j' z => h3 j j' b z rfl, fun j => h4 j b rfl, h5 b rfl⟩`. Introduce and unpack `⟨fr, h1, h2, h3, h4, h5⟩`. Use `⟨fun j bz => fr j bz.2, fun j => (h1 j).comp (f := Prod.snd) (by fun_prop) ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨_, z⟩ ⟨rfl, hz⟩`. Conclude with `hz`. Introduce and unpack `j _ z rfl`. Conclude with `h2 j z`. Introduce and unpack `j j' _ z rfl`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `h3 j j' z`. Introduce and unpack `j _ rfl`. Conclude with `h4 j`. Introduce and unpack `_ rfl`. Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem isThetaFrame_singleton_iff {y : (Fin m → ℂ) → (Sp ℂ ⟶ S)}
     {e : (Fin m → ℂ) → (Fin g → ℂ) → (Sp ℂ ⟶ G.left)} {θ : (Fin m → ℂ) → (Fin g → ℂ) → ℂ} {b : Fin m → ℂ} :
@@ -59,16 +59,16 @@ section Fibre
 variable {y : Sp ℂ ⟶ S} {e : (Fin g → ℂ) → (Sp ℂ ⟶ G.left)} {θ θ' : (Fin g → ℂ) → ℂ} {fr : L.L.ι → (Fin g → ℂ) → ℂ}
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `exists_chart L.isLB (x (default : PrimeSpectrum ℂ))`. Conclude with `⟨j, (top_le_preimage_iff_mem _ _).2 hj⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_point (L : RigLB G) (x : Sp ℂ ⟶ G.left) : ∃ j, ⊤ ≤ x ⁻¹ᵁ L.L.U j := by
   obtain ⟨j, hj⟩ := exists_chart L.isLB (x (default : PrimeSpectrum ℂ))
   exact ⟨j, (top_le_preimage_iff_mem _ _).2 hj⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, s, h5⟩` from `h`. Use `⟨fun j => (h1 j).mul ((differentiable_const _).mul (hd.inv h0)).differentiableOn, fun j z hz => mul_ne_zero (h2 j z hz) (mul_ne_zero (h0 _) (inv_ne_zero (h0 _))), fun j j' z hz => by simp only [h3 j j' z hz, _root_.mul_assoc], fun j hj => by simp only [mul_inv_cancel₀ (h0 0), _ro …` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_sec_const_mul (pullback.snd G.hom y) s (ρ 0)`. Use `⟨t, fun j z x x1 x2 hz => ?_⟩` and prove the remaining obligations. Establish `hz' : ⊤ ≤ (x ≫ pullback.fst G.hom y) ⁻¹ᵁ L.L.U j` using `by rw [x1]; exact hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ht (fun _ => j) x x2 (fun p hp => mem_pull.2 (hz' hp)), h5 j z x x1 x2 hz, ← hρ]`. Use `h0 z` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem IsFibreFrame.rescale (h : IsFibreFrame L y e θ fr) {ρ : (Fin g → ℂ) → ℂ} (hd : Differentiable ℂ ρ)
     (h0 : ∀ z, ρ z ≠ 0) (hρ : ∀ z, ρ z * θ z = θ' z) :
@@ -86,13 +86,13 @@ theorem IsFibreFrame.rescale (h : IsFibreFrame L y e θ fr) {ρ : (Fin g → ℂ
   field_simp
 
 /- English proof (translation)
-Take `⟨-, h2, -, -, s, hs⟩` from `h`. Take `⟨a, ha⟩` from `hV s`. Establish `key : ∀ j z, ⊤ ≤ e z ⁻¹ᵁ L.L.U j → θ z * fr j z = a * valAt' (e z) (G.hom ⁻¹ᵁ V ⊓ L.L.U j) (θ₀ j)`. Introduce `j z hz`. Set `x : Sp ℂ ⟶ pullback G.hom y` to `pullback.lift (e z) (𝟙 _) ((he z).trans (Category.id_comp _).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `h₁ : x ≫ pullback.fst _ _ = e z` using `pullback.lift_fst _ _ _`. Establish `h₂ : x ≫ pullback.snd _ _ = 𝟙 _` using `pullback.lift_snd _ _ _`. Rewrite using `[← hs j z x h₁ h₂ hz, ha j x h₂ (by rw [h₁]; exact hz), h₁]`. Establish `a0 : a ≠ 0` using `fun h0 => hθ (funext fun z => by`. Take `⟨j, hj⟩` from `exists_chart_point L (e z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e` using `key j z hj`. Rewrite `e` using `[h0, zero_mul]`. Conclude with `(mul_eq_zero.1 e).resolve_right (h2 j z hj))`. Use `⟨a, a0, fun j z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_right_comm, mul_comm (fr j z), key j z hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem IsFibreFrame.ratio (h : IsFibreFrame L y e θ fr) (he : ∀ z, e z ≫ G.hom = y) (hθ : θ ≠ 0) {V : S.Opens}
     {θ₀ : ∀ j, Γ(G.left, G.hom ⁻¹ᵁ V ⊓ L.L.U j)} (hV : SpansFibre L y V θ₀) :
@@ -123,30 +123,28 @@ variable {B : Set (Fin m → ℂ)} {y : (Fin m → ℂ) → (Sp ℂ ⟶ S)} {e :
   {θ : (Fin m → ℂ) → (Fin g → ℂ) → ℂ}
 
 /- English proof (translation)
-Rewrite using `[top_le_preimage_inf, ← top_le_preimage_comp, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_chart_iff {x : Sp ℂ ⟶ G.left} {u : Sp ℂ ⟶ S} (h : x ≫ G.hom = u) (V : S.Opens) (U : G.left.Opens) :
     ⊤ ≤ x ⁻¹ᵁ (G.hom ⁻¹ᵁ V ⊓ U) ↔ ⊤ ≤ u ⁻¹ᵁ V ∧ ⊤ ≤ x ⁻¹ᵁ U := by
   rw [top_le_preimage_inf, ← top_le_preimage_comp, h]
 
 /- English proof (translation)
-Establish `ne : ∀ {f : (Fin g → ℂ) → ℂ}, (∀ z, ∃ᶠ w in 𝓝 z, f w ≠ 0) → f ≠ 0` using `fun h h0 => (h 0).exists.elim fun w hw => hw (congrFun h0 w)`. Take `⟨a', ha', hr'⟩` from `h'.ratio (he b₀ hb₀) (ne hnz') (hV b₀ hb₀ hV₀)`. It suffices to establish `hloc : ∀ z, ∃ ρ : (Fin g → ℂ) → ℂ, ρ z ≠ 0 ∧ ∀ᶠ w in 𝓝 z, DifferentiableAt ℂ ρ w ∧ ρ w * θ' w = θ b₀ w by`. Take `⟨ρ, h1, h2, h3⟩` from `exists_entire_quotient hnz' hloc`. Conclude with `⟨_, h'.rescale h1 h2 h3⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `z₀`. Take `⟨j, hj⟩` from `exists_chart_point L (e b₀ z₀)`. Take `⟨hW, hf⟩` from `hol (G.hom ⁻¹ᵁ V ⊓ L.L.U j) (θ₀ j)`. Use `set W := {bz ∈ B ×ˢ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ e bz.1 bz.2 ⁻¹ᵁ (G.hom ⁻¹ᵁ V ⊓ L.L.U j)} with hWd`. Establish `mW : ∀ b z, (b, z) ∈ W → b ∈ B ∧ ⊤ ≤ y b ⁻¹ᵁ V ∧ ⊤ ≤ e b z ⁻¹ᵁ L.L.U j` using `fun b z h => ⟨h.1.1, (mem_chart_iff (he b h.1.1 z) _ _).1 h.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : (b₀, z₀) ∈ W` using `⟨⟨hb₀, trivial⟩, (mem_chart_iff (he b₀ hb₀ z₀) _ _).2 ⟨hV₀, hj⟩⟩`. Establish `hθW` using `hd.mono (fun bz h => h.1 : W ⊆ B ×ˢ Set.univ)`. Establish `hS : ∀ b ∈ T, ∃ F : (Fin g → ℂ) → ℂ, DifferentiableOn ℂ F {z | (b, z) ∈ W} ∧ ∀ z, (b, z) ∈ W → F z ≠ 0 ∧ F z * θ b z = valAt' (e b z) (G.hom ⁻¹ᵁ V ⊓ L.L.U j) (θ₀ j)`. Introduce `b hb`. Distinguish the cases in `hm : b ∈ B ∧ ⊤ ≤ y b ⁻¹ᵁ V`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨fr, h⟩` from `hT b hb`. Take `⟨a, ha, hr⟩` from `h.ratio (he b hm.1) (ne (hnz b hm.1)) (hV b hm.1 hm.2)`. Conclude with `⟨fun z => fr j z * a⁻¹, ((h.1 j).mono fun z hz => (mW b z hz).2.2).mul_const _, fun z hz => ⟨mul_ne_zero (h.2.1 j z (mW b z hz).2.2) (inv_ne_zero ha), hr j z (mW b z hz).2.2⟩⟩`. Conclude with `⟨0, differentiableOn_const _, fun z hz => absurd ⟨(mW b z hz).1, (mW b z hz).2.1⟩ hm⟩`. Establish `hc : Continuous fun z : Fin g → ℂ => (b₀, z)` using `by fun_prop`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWz : ∀ᶠ z in 𝓝 z₀, (b₀, z) ∈ W` using `hc.continuousAt.eventually (hW.mem_nhds hw)`. Take `⟨U₁, G₁, o₁, w₁, -, d₁, q₁⟩` from `exists_quotient_closure hW hf hθW (S := T) (fun b hb => (hS b hb).imp fun F h => ⟨h.1, fun z hz => (h.2 z hz).2⟩) hw (hnz b₀ hb₀ z₀)`. Take `⟨U₂, G₂, o₂, w₂, -, d₂, q₂⟩` from `exists_quotient_closure hW hθW hf (S := T) (fun b hb => (hS b hb).elim fun F h => ⟨fun z => (F z)⁻¹, h.1.inv fun z hz => (h.2 z hz).1, fun z hz => by`. Rewrite using `[← (h.2 z hz).2, inv_mul_cancel_left₀ (h.2 z hz).1]⟩) hw`. Use the proof step `(((hnz' z₀).and_eventually hWz).mono fun z hz => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(mW _ _ hz.2).2.2` as an intermediate fact. Rewrite using `[← hr' j z this]`. Conclude with `mul_ne_zero (mul_ne_zero (h'.2.1 j z this) (inv_ne_zero ha')) hz.1)`. Establish `e₁ : ∀ᶠ z in 𝓝 z₀, (b₀, z) ∈ U₁` using `hc.continuousAt.eventually (o₁.mem_nhds w₁)`. Establish `e₂ : ∀ᶠ z in 𝓝 z₀, (b₀, z) ∈ U₂` using `hc.continuousAt.eventually (o₂.mem_nhds w₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι : Differentiable ℂ fun z : Fin g → ℂ => (b₀, z)` using `by fun_prop`. Establish `s₁ : DifferentiableAt ℂ (fun z => G₁ (b₀, z)) z₀` using `(d₁.differentiableAt (o₁.mem_nhds w₁)).comp z₀ (hι z₀)`. Establish `s₂ : ∀ z, (b₀, z) ∈ U₂ → DifferentiableAt ℂ (fun z => G₂ (b₀, z)) z` using `fun z hz => (d₂.differentiableAt (o₂.mem_nhds hz)).comp z (hι z)`. Establish `one : G₂ (b₀, z₀) * G₁ (b₀, z₀) = 1`. Use `tendsto_nhds_unique_of_frequently_eq ((s₂ z₀ w₂).mul s₁).continuousAt tendsto_const_nhds (((hnz b₀ hb₀ z₀).and_eventually (e₁.and e₂)).mono fun z hz => mul_right_cancel₀ hz.1 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `p₁` using `q₁ _ hz.2.1 hcl`. Establish `p₂` using `q₂ _ hz.2.2 hcl`. Simplify using `only [Pi.mul_apply] at p₁ p₂ ⊢`. Rewrite using `[_root_.mul_assoc, p₁, p₂, _root_.one_mul]`. Use `⟨fun z => G₂ (b₀, z) * (fr' j z * a'⁻¹), mul_ne_zero (left_ne_zero_of_mul_eq_one one) (mul_ne_zero (h'.2.1 j z₀ hj) (inv_ne_zero ha')), ?_⟩` and prove the remaining obligations.
-
-Use `filter_upwards [e₂, hWz.eventually_nhds] with z hz hz'`. Use `⟨(s₂ z hz).mul (((h'.1 j).differentiableAt (hz'.mono fun w hw => (mW _ _ hw).2.2)).mul_const _), ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, hr' j z (mW _ _ hz'.self_of_nhds).2.2]`. Conclude with `q₂ _ hz hcl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibreFrame_of_mem_closure (he : ∀ b ∈ B, ∀ z, e b z ≫ G.hom = y b)
     (hol : IsHolTo (B ×ˢ Set.univ) (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => e bz.1 bz.2))
@@ -212,21 +210,17 @@ theorem exists_fibreFrame_of_mem_closure (he : ∀ b ∈ B, ∀ z, e b z ≫ G.h
   exact q₂ _ hz hcl
 
 /- English proof (translation)
-Use `choose! fr hfr using hT`. Use `⟨fun j bz => fr bz.1 j bz.2, fun j w hw => ?_, fun j b z hb => (hfr b hb).2.1 j z, fun j j' b z hb => (hfr b hb).2.2.1 j j' z, fun j b hb => (hfr b hb).2.2.2.1 j, fun b hb => (hfr b hb).2.2.2.2⟩` and prove the remaining obligations. Take `⟨b₀, z₀⟩` from `w`. Take `⟨hb₀, hj⟩ : b₀ ∈ B ∧ ⊤ ≤ e b₀ z₀ ⁻¹ᵁ L.L.U j` from `hw`. Take `⟨V, θ₀, hV₀, hV⟩` from `hsec b₀ hb₀`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ex : ∀ b, b ∈ B ∧ ⊤ ≤ y b ⁻¹ᵁ V → ∃ a : ℂ, a ≠ 0 ∧ ∀ j z, ⊤ ≤ e b z ⁻¹ᵁ L.L.U j → fr b j z * a⁻¹ * θ b z = valAt' (e b z) (G.hom ⁻¹ᵁ V ⊓ L.L.U j) (θ₀ j)` using `fun b hb => (hfr b hb.1).ratio (he b hb.1) (fun h0 => (hnz b hb.1 0).exists.elim fun w hw => hw (congrFun h0 w)) (hV b hb.1 hb.2)`. Use `choose! a ha hr using ex`. Establish `hF : ∀ k z, ⊤ ≤ e b₀ z ⁻¹ᵁ L.L.U k → DifferentiableAt ℂ (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => fr bz.1 k bz.2 * (a bz.1)⁻¹) (b₀, z)`. Introduce `k z hk`. Take `⟨hW, hf⟩` from `hol (G.hom ⁻¹ᵁ V ⊓ L.L.U k) (θ₀ k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W := {bz ∈ B ×ˢ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ e bz.1 bz.2 ⁻¹ᵁ (G.hom ⁻¹ᵁ V ⊓ L.L.U k)} with hWd`. Establish `mW : ∀ b z, (b, z) ∈ W → (b ∈ B ∧ ⊤ ≤ y b ⁻¹ᵁ V) ∧ ⊤ ≤ e b z ⁻¹ᵁ L.L.U k` using `fun b z h => and_assoc.2 ⟨h.1.1, (mem_chart_iff (he b h.1.1 z) _ _).1 h.2⟩`. Establish `hw : (b₀, z) ∈ W` using `⟨⟨hb₀, trivial⟩, (mem_chart_iff (he b₀ hb₀ z) _ _).2 ⟨hV₀, hk⟩⟩`. Use `(differentiableOn_quotient_of_differentiableOn_slice _ _ W _ _ _ hW hf (hd.mono fun bz h => h.1) (fun w hw => hr _ (mW _ _ hw).1 k _ (mW _ _ hw).2) (fun b => ?_) (fun w hw => hnz _ hw.1.1 _)).differentiableAt (hW.mem_nhds hw)` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ B`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(((hfr b hb).1 k).mono fun z hz => (mW b z hz).2).mul_const (a b)⁻¹`. Conclude with `fun z hz => absurd hz.1.1 hb`. Take `⟨k, hk⟩` from `exists_chart_point L (e b₀ 0)`. Take `⟨hO, hρ⟩` from `holy ((L.L.pull (eSec G)).U (fun _ => k)) (L.rig.s (fun _ => k)).val`. Establish `mO : ∀ b ∈ B, ⊤ ≤ y b ⁻¹ᵁ ((L.L.pull (eSec G)).U (fun _ => k)) ↔ ⊤ ≤ e b 0 ⁻¹ᵁ L.L.U k` using `fun b hb => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he0 b hb, top_le_preimage_iff_mem, top_le_preimage_iff_mem]`. Conclude with `mem_pull`. Establish `nO` using `hO.mem_nhds (⟨hb₀, (mO b₀ hb₀).2 hk⟩ : b₀ ∈ {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ ((L.L.pull (eSec G)).U (fun _ => k))})`. Establish `nV` using `(holy V 0).1.mem_nhds (⟨hb₀, hV₀⟩ : b₀ ∈ {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ V})`. Establish `hι : Differentiable ℂ fun b : Fin m → ℂ => (b, (0 : Fin g → ℂ))` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d0 : DifferentiableAt ℂ (fun b => fr b k 0 * (a b)⁻¹) b₀` using `DifferentiableAt.comp (f := fun b : Fin m → ℂ => (b, (0 : Fin g → ℂ))) b₀ (hF k 0 hk) (hι b₀)`. Establish `da : DifferentiableAt ℂ a b₀`. Use `((hρ.differentiableAt nO).mul (d0.inv (mul_ne_zero ((hfr b₀ hb₀).2.1 k 0 hk) (inv_ne_zero (ha b₀ ⟨hb₀, hV₀⟩))))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [nO, nV] with b h1 h2`. Establish `h3` using `(mO b h1.1).1 h1.2`.
-
-Establish `h4` using `(hfr b h1.1).2.1 k 0 h3`. Establish `h5` using `ha b h2`. Use `Eq.trans ?_ (congrArg (· * (fr b k 0 * (a b)⁻¹)⁻¹) ((hfr b h1.1).2.2.2.1 k h3))` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `(((hF j z₀ hj).mul (da.comp (b₀, z₀) differentiableAt_fst)).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations.
-
-Use `filter_upwards [(continuous_fst.continuousAt (x := (b₀, z₀))).preimage_mem_nhds nV] with bz h`. Conclude with `(inv_mul_cancel_right₀ (ha _ h) _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isThetaFrame_of_fibreFrames (he : ∀ b ∈ B, ∀ z, e b z ≫ G.hom = y b) (he0 : ∀ b ∈ B, e b 0 = y b ≫ eSec G)
     (holy : IsHolTo B y) (hol : IsHolTo (B ×ˢ Set.univ) (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => e bz.1 bz.2))

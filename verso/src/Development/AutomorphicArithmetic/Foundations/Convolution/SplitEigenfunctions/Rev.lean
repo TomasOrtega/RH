@@ -6,13 +6,13 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical
 
 /- English proof (translation)
-Introduce and unpack `hE hC hF hD hB hP E _ _ _ D W M N P ⟨φ, hφ, h, hne⟩`. Choose the witnesses or unpack the hypotheses as in `⟨ph, hph, h0⟩ : ∃ ph ∈ Fock D.δ, f0 W N ph φ.1 ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `hne (hP E D W M N P φ hφ (fun ph hph => ?_) h)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hC E D W M N P ph hph φ hφ (qr D.δ X0) 1`. Rewrite `h1` using `[← hE E D W M N P ph hph φ hφ, hn ph hph]`. Establish `hδ : qr D.δ X0 ≠ 0`. Use `D.neg (Rat.castHom ℝ)` as an intermediate fact. Simplify using `only [qr, X0, eq_ratCast, Rat.cast_lt_zero] at this ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.ne`. Establish `e : {ξ | qr D.δ ξ ≠ 0 ∧ qr D.δ ξ = qr D.δ X0} = {ξ | qr D.δ ξ = qr D.δ X0}` using `Set.ext fun ξ => ⟨fun h => h.2, fun h => ⟨(show qr D.δ ξ = _ from h) ▸ hδ, h⟩⟩`. Rewrite `h1` using `[e]`. Simplify using `only [Pi.zero_apply, zero_mul, integral_zero] at h1`. Use `(mul_eq_zero.1 h1.symm).resolve_left ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Measure.real, adeleMeasure_fundamentalSet]`. Take `⟨π, hπ, f, hf, h2⟩` from `hD M _ (hF E D W M N P ph hph φ hφ) h0`. Conclude with `⟨π, hπ, f, hf, ph, hph, φ, hφ, hB E D W M N P ph hph φ hφ π f hf ▸ h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.rev :
     ThetaLiftEqAnisotropicPart → Coef → ThetaLiftIsBoundedCuspidal → Dens → Fub → CoefPer → Rev := by

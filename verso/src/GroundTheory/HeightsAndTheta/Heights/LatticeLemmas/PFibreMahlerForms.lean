@@ -19,7 +19,7 @@ section Dual
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr' ξ]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem apply_eq_sum (b : OrthonormalBasis ι ℂ V) (ℓ : V →ₗ[ℂ] ℂ) (ξ : V) :
     ℓ ξ = ∑ j, inner ℂ (b j) ξ * ℓ (b j) := by
@@ -27,7 +27,7 @@ theorem apply_eq_sum (b : OrthonormalBasis ι ℂ V) (ℓ : V →ₗ[ℂ] ℂ) (
   simp only [map_sum, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← b.sum_repr_symm]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem apply_repr_symm (b : OrthonormalBasis ι ℂ V) (ℓ : V →ₗ[ℂ] ℂ) (v : ι → ℂ) :
     ℓ (b.repr.symm (WithLp.toLp 2 v)) = ∑ j, ℓ (b j) * v j := by
@@ -35,17 +35,17 @@ theorem apply_repr_symm (b : OrthonormalBasis ι ℂ V) (ℓ : V →ₗ[ℂ] ℂ
   simp only [map_sum, map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Use `set v : V := ∑ j, star (ℓ (b j)) • b j`. Establish `hv : ∀ ξ, ℓ ξ = inner ℂ v ξ`. Introduce `ξ`. Rewrite using `[apply_eq_sum b ℓ ξ]`. Simplify using `only [v, sum_inner, inner_smul_left, Complex.star_def, Complex.conj_conj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ ↦ mul_comm _ _`. Establish `hvv : ‖v‖ = √(∑ j, ‖ℓ (b j)‖ ^ 2)`. Establish `h2 : ‖v‖ ^ 2 = ∑ j, ‖ℓ (b j)‖ ^ 2`. Rewrite using `[@norm_sq_eq_re_inner ℂ, ← hv]`. Simplify using `only [v, map_sum, map_smul, smul_eq_mul, Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, RCLike.re_to_complex, Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, Real.sqrt_sq (norm_nonneg _)]`. Rewrite using `[← hvv]`. Establish `hle : ∀ ξ : {ξ : V // ‖ξ‖ ≤ 1}, ‖ℓ ξ‖ ≤ ‖v‖` using `fun ξ ↦ by`. Rewrite using `[hv]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Nonempty {ξ : V // ‖ξ‖ ≤ 1}` using `⟨⟨0, by simp⟩⟩`. Use `le_antisymm (ciSup_le hle) ?_` and prove the remaining obligations. Establish `hbdd : BddAbove (Set.range fun ξ : {ξ : V // ‖ξ‖ ≤ 1} ↦ ‖ℓ ξ‖)` using `⟨‖v‖, by`. Introduce and unpack `_ ⟨ξ, rfl⟩`. Conclude with `hle ξ⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : v = 0`. Rewrite using `[h0, norm_zero]`. Conclude with `le_trans (norm_nonneg _) (le_ciSup hbdd ⟨0, by simp⟩)`. Establish `hn : (‖v‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr h0`. Use `le_trans (le_of_eq ?_) (le_ciSup hbdd ⟨(‖v‖ : ℂ)⁻¹ • v, ?_⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `hn' : ‖v‖ ≠ 0` using `norm_ne_zero_iff.mpr h0`. Rewrite using `[hv, inner_smul_right, inner_self_eq_norm_sq_to_K (𝕜 := ℂ), norm_mul, norm_inv, norm_pow]`. Simplify using `only [Complex.norm_real, RCLike.norm_ofReal, Real.norm_eq_abs, abs_norm]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm, inv_mul_cancel₀ (norm_ne_zero_iff.mpr h0)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_norm_ball (b : OrthonormalBasis ι ℂ V) (ℓ : V →ₗ[ℂ] ℂ) :
     ⨆ ξ : {ξ : V // ‖ξ‖ ≤ 1}, ‖ℓ ξ‖ = √(∑ j, ‖ℓ (b j)‖ ^ 2) := by
@@ -90,19 +90,17 @@ section Mahler
 variable {d : ℕ}
 
 /- English proof (translation)
-Take `⟨j0, hj0⟩` from `hc`. Use `set S := ∑ j, ‖c j‖ ^ 2 with hS`. Establish `hSpos : 0 < S` using `lt_of_lt_of_le (by positivity : 0 < ‖c j0‖ ^ 2) (Finset.single_le_sum (f := fun j ↦ ‖c j‖ ^ 2) (fun j _ ↦ by positivity) (Finset.mem_univ j0))`. Use `set ν := √S with hνdef`. Establish `hν : 0 < ν` using `Real.sqrt_pos.mpr hSpos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν2 : ν ^ 2 = S` using `Real.sq_sqrt hSpos.le`. Establish `hνC : (ν : ℂ) ≠ 0` using `by exact_mod_cast hν.ne'`. Use `set p : Fin d → ℂ := fun j ↦ star (c j) / (ν : ℂ) with hpdef`. Establish `hsplit : (∑ j, C (c j) * X ((0 : Fin 1), j) : MvPolynomial (Fin 1 × Fin d) ℂ) = C (ν : ℂ) * ∑ j, C (star (p j)) * X ((0 : Fin 1), j)`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← C_mul]`. Use `congr 2`. Simplify using `only [p, star_div₀, Complex.star_def, Complex.conj_ofReal, Complex.conj_conj]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp : ∑ j, ‖p j‖ ^ 2 = 1`. Simplify using `only [p, norm_div, norm_star, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hν, div_pow, ← Finset.sum_div, hν2]`. Conclude with `div_self hSpos.ne'`. Establish `hL : (∑ j, C (star (p j)) * X ((0 : Fin 1), j) : MvPolynomial (Fin 1 × Fin d) ℂ) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (eval fun ij : Fin 1 × Fin d ↦ p ij.2) h0`. Simplify using `only [map_sum, map_mul, eval_C, eval_X, map_zero, Complex.star_def, Complex.conj_mul'] at h1`. Establish `h2 : ((∑ j, ‖p j‖ ^ 2 : ℝ) : ℂ) = 0` using `by push_cast; exact h1`. Rewrite `h2` using `[hp]`. Evaluate the numerical expressions using `at h2`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hsplit, mahlerMul d 1 _ _ _ (C_ne_zero.mpr hνC) hL, mahler_C, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hν]`. Establish `hlin` using `sphereMeanLinear d p hp`. Establish `hfun : (fun u : Fin 1 × Fin d → ℂ ↦ Real.log ‖eval u (∑ j, C (star (p j)) * X ((0 : Fin 1), j))‖) = fun z ↦ Real.log ‖∑ j, z (0, j) * star (p j)‖`. Use function extensionality and compare the values at `u`. Simplify using `only [map_sum, map_mul, eval_C, eval_X, mul_comm]`.
-
-Unfold `mahler`. Rewrite using `[hfun, hlin]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mahler_linear (c : Fin d → ℂ) (hc : ∃ j, c j ≠ 0) :
     mahler (HermNorm.std d) 1 (∑ j, C (c j) * X ((0 : Fin 1), j)) =
@@ -148,7 +146,7 @@ theorem mahler_linear (c : Fin d → ℂ) (hc : ∃ j, c j ≠ 0) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty, mul_one, mahler_C, Finset.sum_empty, add_zero]`. Consider the case `insert q s hq ih`. Establish `hne : (C a * ∏ q ∈ s, L q : MvPolynomial (Fin 1 × Fin d) ℂ) ≠ 0` using `mul_ne_zero (C_ne_zero.mpr ha) (Finset.prod_ne_zero_iff.mpr fun q _ ↦ hL q)`. Rewrite using `[Finset.prod_insert hq, mul_left_comm, mahlerMul d 1 _ _ _ (hL q) hne, ih, Finset.sum_insert hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -174,7 +172,7 @@ variable {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Modul
   [Module.Finite (𝓞 F) W] [Module.Projective (𝓞 F) W]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_linearIndependent_fin (K := F) (E := W)`. Set `b` to `Module.Basis.mk (linearIndependent_fibreVec h σ hs) (LatticeLemmas.span_fibreVec_eq_top h σ hs (Fintype.card_fin _)).ge`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_fibreSpace (h : HermitianMetric F W) (σ : F →+* ℂ) :
     Module.finrank ℂ (FibreSpace h σ) = Module.finrank (𝓞 F) W := by
@@ -184,15 +182,13 @@ theorem finrank_fibreSpace (h : HermitianMetric F W) (σ : F →+* ℂ) :
   rw [Module.finrank_eq_card_basis b, Fintype.card_fin]
 
 /- English proof (translation)
-Use `set T := Submodule.span ℂ (Set.range fun k ↦ fibreVec h σ (w k))`. Establish `hvec : ∀ e : W, fibreVec h σ e ∈ T`. Introduce `e`. Establish `he : e ∈ Submodule.span (𝓞 F) (Set.range w)` using `hw ▸ Submodule.mem_top`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 F)).mp he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fibreVec_sum]`. Conclude with `Submodule.sum_mem _ fun k _ ↦ T.smul_mem _ (Submodule.subset_span ⟨k, rfl⟩)`. Introduce `ξ`. Establish `hξ : ξ ∈ T`. Take `⟨y, rfl⟩` from `(FibreSpace.equiv h σ).surjective ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `T.zero_mem`. Consider the case `tmul z e`. Establish `: FibreSpace.equiv h σ (z ⊗ₜ e) = ((ofComplex σ).symm z) • fibreVec h σ e`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[fibreVec, ← map_smul, smul_tmul', complex_smul_def, mul_one, AlgEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `T.smul_mem _ (hvec e)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `T.add_mem hx hy`.
-
-Take `⟨x, hx⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hξ`. Conclude with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fibreGen_surjective (h : HermitianMetric F W) (σ : F →+* ℂ) {n : ℕ} (w : Fin n → W)
     (hw : Submodule.span (𝓞 F) (Set.range w) = ⊤) : Function.Surjective (fibreGen h σ w) := by
@@ -236,7 +232,7 @@ def archLin (h : HermitianMetric F W) (τ : K →+* ℂ) (yv : DualVec F W K) :
       simp only [smul_add, map_add, hx, hy, RingHom.id_apply, smul_eq_mul, mul_add]
 
 /- English proof (translation)
-Simplify using `only [archLin, LinearMap.coe_mk, AddHom.coe_mk, fibreVec, LinearEquiv.symm_apply_apply, archFunctional, TensorProduct.lift.tmul, LinearMap.mk₂_apply, one_mul, AlgEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem archLin_fibreVec (h : HermitianMetric F W) (τ : K →+* ℂ) (yv : DualVec F W K) (e : W) :
     archLin h τ yv (fibreVec h (τ.comp (algebraMap F K)) e) = τ (yv e) := by
@@ -245,7 +241,7 @@ theorem archLin_fibreVec (h : HermitianMetric F W) (τ : K →+* ℂ) (yv : Dual
     AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Simplify using `only [fibreGen, map_sum, map_smul, archLin_fibreVec, smul_eq_mul, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem archLin_fibreGen (h : HermitianMetric F W) (τ : K →+* ℂ) (yv : DualVec F W K) {n : ℕ}
     (w : Fin n → W) (x : Fin n → ℂ) :
@@ -253,7 +249,7 @@ theorem archLin_fibreGen (h : HermitianMetric F W) (τ : K →+* ℂ) (yv : Dual
   simp only [fibreGen, map_sum, map_smul, archLin_fibreVec, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `iSup_norm_ball b (archLin h τ yv)`.
+A detailed English derivation is pending.
 -/
 theorem archDualNorm_eq (h : HermitianMetric F W) (τ : K →+* ℂ) (yv : DualVec F W K) {ι : Type*}
     [Fintype ι] (b : OrthonormalBasis ι ℂ (FibreSpace h (τ.comp (algebraMap F K)))) :
@@ -261,9 +257,9 @@ theorem archDualNorm_eq (h : HermitianMetric F W) (τ : K →+* ℂ) (yv : DualV
   iSup_norm_ball b (archLin h τ yv)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, yv e ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hy (LinearMap.ext hc)`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push Not at hc`. Establish `h1` using `apply_eq_sum b (archLin h τ yv) (fibreVec h _ e)`. Rewrite `h1` using `[archLin_fibreVec]`. Simplify using `only [hc, mul_zero, Finset.sum_const_zero] at h1`. Conclude with `(map_ne_zero τ).mpr he h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_archLin_ne_zero (h : HermitianMetric F W) (τ : K →+* ℂ) (yv : DualVec F W K)
     (hy : yv ≠ 0) {ι : Type*} [Fintype ι]
@@ -287,17 +283,17 @@ end FibreMahlerForms
 open FibreMahlerForms in
 
 /- English proof (translation)
-Introduce `F _ _ W _ _ _ _ h n w hw K _ _ _ τ m yv hyv a ha`. Use `set σ := τ.comp (algebraMap F K) with hσ`. Set `b` to `stdOrthonormalBasis ℂ (FibreSpace h σ)`. Establish `hsurj` using `fibreGen_surjective h σ w hw`. Establish `hG : fibreMahler h σ w (C a * ∏ q, ∑ k, C (τ (yv q (w k))) * X k) = mahler (HermNorm.std (Module.finrank ℂ (FibreSpace h σ))) 1 (C a * ∏ q, ∑ j, C (archLin h τ (yv q) (b j)) * X ((0 : Fin 1), j))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `fibreMahler fibreSphereMean mahler`. Use `congr 1`. Use function extensionality and compare the values at `u`. Use `set ξ := b.repr.symm (WithLp.toLp 2 fun j ↦ u (0, j))`. Establish `hx : fibreGen h σ w (Function.invFun (fibreGen h σ w) ξ) = ξ` using `Function.invFun_eq (hsurj ξ)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [fibrePoly, map_mul, eval_C, map_prod, map_sum, eval_X]`. Use `congrArg (fun z ↦ Real.log ‖a * z‖) (Finset.prod_congr rfl fun q _ ↦ ?_)` and prove the remaining obligations. Establish `h1` using `archLin_fibreGen h τ (yv q) w (Function.invFun (fibreGen h σ w) ξ)`. Rewrite `h1` using `[hx]`. Rewrite using `[← h1, apply_repr_symm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hG, mahler_C_mul_prod]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ ↦ ?_` and prove the remaining obligations. Establish `hd : (harmonic (Module.finrank ℂ (FibreSpace h σ) - 1) : ℝ) = harmonic (Module.finrank (𝓞 F) W - 1)` using `by rw [finrank_fibreSpace]`. Rewrite using `[mahler_linear _ (exists_archLin_ne_zero h τ (yv q) (hyv q) b), archDualNorm_eq h τ (yv q) b, hd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `q hq`. Take `⟨j, hj⟩` from `exists_archLin_ne_zero h τ (yv q) (hyv q) b`. Establish `h1` using `congrArg (eval fun ij : Fin 1 × Fin (Module.finrank ℂ (FibreSpace h σ)) ↦ star (archLin h τ (yv q) (b ij.2))) hq`. Simplify using `only [map_sum, map_mul, eval_C, eval_X, map_zero, Complex.star_def, Complex.mul_conj'] at h1`. Establish `h2 : ((∑ j, ‖archLin h τ (yv q) (b j)‖ ^ 2 : ℝ) : ℂ) = 0` using `by push_cast; exact h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ∑ j, ‖archLin h τ (yv q) (b j)‖ ^ 2 = 0` using `by exact_mod_cast h2`. Rewrite `h3` using `[Finset.sum_eq_zero_iff_of_nonneg (fun _ _ ↦ by positivity)]`. Conclude with `hj (by simpa using h3 j (Finset.mem_univ _))`. Conclude with `ha`.
+A detailed English derivation is pending.
 -/
 theorem FibreMahlerForms.proof : FibreMahlerForms.Statement := by
   intro F _ _ W _ _ _ _ h n w hw K _ _ _ τ m yv hyv a ha

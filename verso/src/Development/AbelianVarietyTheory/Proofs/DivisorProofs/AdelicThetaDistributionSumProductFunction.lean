@@ -7,9 +7,9 @@ open scoped Matrix TensorProduct
 namespace GlobalTheory.ThetaBox
 
 /- English proof (translation)
-Introduce `F _ _ κ κ' _ _ φ₁ h₁ φ₂ h₂`. Establish `s₁` using `(thetaSum_summable_linear F κ).2.1 φ₁ h₁`. Establish `s₂` using `(thetaSum_summable_linear F κ').2.1 φ₂ h₂`. Unfold `thetaSum`. Rewrite using `[tsum_mul_tsum_of_summable_norm s₁ s₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (Equiv.sumArrowEquivProdArrow κ κ' F).symm.tsum_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thetaSum_boxFun : ∀ (F : Type) [Field F] [NumberField F] (κ κ' : Type) [Fintype κ] [Fintype κ'], ∀ φ₁ ∈ schA F κ, ∀ φ₂ ∈ schA F κ', thetaSum F (boxFun φ₁ φ₂) = thetaSum F φ₁ * thetaSum F φ₂ := by
   intro F _ _ κ κ' _ _ φ₁ h₁ φ₂ h₂

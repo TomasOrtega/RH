@@ -6,11 +6,9 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `_ L _ _ n w τ ψ hψ hs hl`. Use `⟨GlobalTheory.RoadU.chars ψ hψ, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.IwahoriSupport.hasSupport_chars τ.irred ψ hψ hs).of_equiv (IrrGL.equivOf τ.ρ τ.smooth τ.irred)`. Introduce `y hy`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `y hy z hz h`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hz`. Rewrite `h` using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`.
-
-Conclude with `hl i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.W.plainOf :
     UpperTheory.V.Z.Sym.W.PlainOf := by

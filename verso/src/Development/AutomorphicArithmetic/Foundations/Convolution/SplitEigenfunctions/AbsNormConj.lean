@@ -10,7 +10,7 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Introduce `x hx`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Complex.exp (s * GlobalTheory.Mem.Chr.CharModel.logNorm F (GlobalTheory.Mem.Chr.localIdele F w x)) = 1`. Rewrite using `[GlobalTheory.Mem.Chr.CharModel.logNorm_local w x 0 (by simpa [IsUnitAt] using hx)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem absQ_unrAt {F : Type} [Field F] [NumberField F] (s : ℂ) (w : HeightOneSpectrum (𝓞 F)) :
     (GlobalTheory.CuspRep.Model.absC F s).UnrAt w := by
@@ -22,7 +22,7 @@ private theorem absQ_unrAt {F : Type} [Field F] [NumberField F] (s : ℂ) (w : H
 
 open ReciprocityTheory.Neutral.Bridge.HCFR GlobalTheory.UnitaryBC GlobalTheory.DiscSpec in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Complex.exp (s * GlobalTheory.Mem.Chr.CharModel.logNorm F (GlobalTheory.Mem.Chr.localIdele F w (atFin w (unif w)))) = _`. Establish `h0 : (Ideal.absNorm w.asIdeal : ℕ) ≠ 0` using `by simpa [Ideal.absNorm_eq_zero_iff] using w.ne_bot`. Rewrite using `[GlobalTheory.Mem.Chr.CharModel.logNorm_local w _ 1 (unif_spec w), Complex.cpow_def_of_ne_zero (by exact_mod_cast h0), ← Complex.natCast_log]`. Use `congr 1`. Use `push_cast`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -36,7 +36,7 @@ private theorem absQ_val {F : Type} [Field F] [NumberField F] (s : ℂ) (w : Hei
 
 open scoped Pointwise in
 /- English proof (translation)
-Use `haveI : Algebra.IsQuadraticExtension ℚ M := { finrank_eq_two' := h2 }`. Use `haveI : IsGalois ℚ M := inferInstance`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 ℚ) (𝓞 M) (M ≃ₐ[ℚ] M) w.asIdeal w'.asIdeal (congrArg HeightOneSpectrum.asIdeal h.symm)`. Rewrite using `[hg, Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv w.asIdeal (g • w.asIdeal) (MulSemiringAction.toRingEquiv _ _ g) rfl).toEquiv.symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem absNorm_conj {M : Type} [Field M] [NumberField M] (h2 : Module.finrank ℚ M = 2)
     {w w' : HeightOneSpectrum (𝓞 M)} (h : w'.under (𝓞 ℚ) = w.under (𝓞 ℚ)) :
@@ -49,23 +49,21 @@ private theorem absNorm_conj {M : Type} [Field M] [NumberField M] (h2 : Module.f
   exact Nat.card_congr (Ideal.quotientEquiv w.asIdeal (g • w.asIdeal) (MulSemiringAction.toRingEquiv _ _ g) rfl).toEquiv.symm
 
 /- English proof (translation)
-Introduce `M _ _ h2 hM sat' inf' hc _ _ hi`. Use `haveI := hM`. Break down `hc with ⟨_, P, rfl, rfl⟩ | ⟨hR, -⟩` into its components or cases. Use `swap`. It suffices to derive a contradiction.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v⟩ : Nonempty (InfinitePlace M)` from `inferInstance`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v) (IsTotallyReal.isReal v)`. Take `⟨s, hs⟩` from `GlobalTheory.CompanionTheory.Clozel.exists_twist_isNormalised M 2 (by norm_num) P fun τ => ⟨_, ParLaws.hasInfChar_infChar (CG.mk P) τ⟩`. Establish `hval : ∀ w w' : HeightOneSpectrum (𝓞 M), Ideal.absNorm w'.asIdeal = Ideal.absNorm w.asIdeal → (GlobalTheory.CuspRep.Model.absC M s).val w' = (GlobalTheory.CuspRep.Model.absC M s).val w` using `fun w w' e => Units.ext (by rw [PositivityTheory.Rg.Rs.StrStepB.absC_val, PositivityTheory.Rg.Rs.StrStepB.absC_val, e])`. Establish `hcon : ConjInv (P.twist (GlobalTheory.CuspRep.Model.absC M s))` using `hi.mono fun w h w' e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨B, h1, h3⟩` from `h w' e`. Use `⟨B.map (· * (GlobalTheory.CuspRep.Model.absC M s).val w), PositivityTheory.Rg.Rs.StrStepB.hasSat_twist_absC P h1 s, ?_⟩` and prove the remaining obligations. Use `PositivityTheory.Rg.Rs.StrStepB.hasSat_twist_absC P h3 s` as an intermediate fact. Rewrite `this` using `[hval w w' (absNorm_conj h2 e)]`. Then use the resulting hypothesis. Take `⟨π', h3, h4⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.downN M h2 _ hs hcon`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(π'.twist (GlobalTheory.CuspRep.Model.absC ℚ (-s))).HasSat, fun τ => (π'.twist (GlobalTheory.CuspRep.Model.absC ℚ (-s))).HasInfChar (InfinitePlace.mk τ), Or.inr ⟨inferInstance, _, rfl, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hi, h3] with w a b e`. Take `⟨B', c, d⟩` from `b e`. Take `⟨B, h1, -⟩` from `a w rfl`. Establish `h5` using `PositivityTheory.Rg.Rs.StrStepB.hasSat_twist_absC P h1 s`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hB : B' = B.map (· * (GlobalTheory.CuspRep.Model.absC M s).val w)` using `GlobalTheory.LFun.HasSatGL.unique d h5`. Substitute `hB` using the available equality. Use `⟨B, ?_, h1⟩` and prove the remaining obligations. Establish `h6` using `c.twist (absQ_unrAt (-s) (w.under (𝓞 ℚ)))`. Establish `h7 : (GlobalTheory.CuspRep.Model.absC M s).val w * (GlobalTheory.CuspRep.Model.absC ℚ (-s)).val (w.under (𝓞 ℚ)) = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `hn : Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 ℚ)).asIdeal` using `e`. Establish `h0 : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ≠ 0`. Simplify `w.ne_bot` using `[Ideal.absNorm_eq_zero_iff]`. Rewrite using `[Units.val_mul, PositivityTheory.Rg.Rs.StrStepB.absC_val, absQ_val, ← hn, neg_neg, Units.val_one, ← Complex.cpow_add _ _ h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `h6 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Multiset.map_map]`. Use `conv_lhs => rw [← Multiset.map_id B]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[mul_assoc, h7]`. Introduce `τ m hm`. Establish `h5` using `hm.twist (GlobalTheory.CuspRep.Model.absC M s)`. Rewrite `h5` using `[GlobalTheory.CuspRep.Model.expo_absC]`. Establish `h6` using `(h4 τ _ h5).twist (GlobalTheory.CuspRep.Model.absC ℚ (-s))`.
-
-Rewrite `h6` using `[UpperTheory.V.TR.SS.expo_absC, Multiset.map_map]`. Use `h6 using 1` and compare the differences between its conclusion and the goal. Use `conv_lhs => rw [← Multiset.map_id m]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.descS :
     UpperTheory.V.Z.Bc.DescS := by

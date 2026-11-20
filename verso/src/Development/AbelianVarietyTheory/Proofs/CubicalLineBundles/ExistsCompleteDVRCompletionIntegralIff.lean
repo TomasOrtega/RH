@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `valV`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Conclude with `(IsDiscreteValuationRing.maximalIdeal T.V).valuation_le_one r`. Introduce `h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `IsDiscreteValuationRing.exists_lift_of_le_one h`. Conclude with `⟨a, ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma mem_range_algebraMap_iff_valV_le_one (T : CDVR) (x : T.Fr) :
     x ∈ Set.range (algebraMap T.V T.Fr) ↔ valV T.V x ≤ 1 := by
@@ -35,20 +35,20 @@ private lemma mem_range_algebraMap_iff_valV_le_one (T : CDVR) (x : T.Fr) :
     exact ⟨a, ha⟩
 
 /- English proof (translation)
-Use `conv_lhs => rw [← WithZero.exp_log hx, ← WithZero.exp_zero]`. Conclude with `WithZero.exp_le_exp`.
+A detailed English derivation is pending.
 -/
 private lemma withZero_le_one_iff_log_nonpos {x : WithZero (Multiplicative ℤ)} (hx : x ≠ 0) : x ≤ 1 ↔ WithZero.log x ≤ 0 := by
   conv_lhs => rw [← WithZero.exp_log hx, ← WithZero.exp_zero]
   exact WithZero.exp_le_exp
 
 /- English proof (translation)
-Introduce `K _ _ p`. Take `⟨T, k, e, hO, hfin⟩` from `locFld K K (RingHom.id K) p`. Unfold `OverLa vV vLa at hO`. Take `⟨he, hv⟩` from `hO`. Simplify using `only [RingHom.comp_id] at hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨T, k, hfin, fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Rewrite using `[map_zero, map_zero]`. Conclude with `⟨fun _ => zero_le, fun _ => ⟨0, map_zero _⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hky : k y ≠ 0` using `(map_ne_zero k).2 hy`. Establish `ha : valV T.V (k y) ≠ 0`. Unfold `valV`. Conclude with `(Valuation.ne_zero_iff _).2 hky`. Establish `hb : p.valuation K y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_range_algebraMap_iff_valV_le_one, withZero_le_one_iff_log_nonpos ha, withZero_le_one_iff_log_nonpos hb]`. Establish `h` using `hv y`. Establish `he' : (0 : ℤ) < e` using `by exact_mod_cast he`. Apply the tactic sequence `constructor <;> intro h' <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_cdvr_completion_integral_iff :
     ∀ (K : Type) [Field K] [NumberField K] (p : HeightOneSpectrum (𝓞 K)),

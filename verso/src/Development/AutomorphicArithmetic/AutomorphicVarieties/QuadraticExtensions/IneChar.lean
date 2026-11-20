@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hv` using `congrArg A.valuation h`. Rewrite `hv` using `[map_pow, map_one]`. Conclude with `(pow_eq_one_iff.mp hv).resolve_right hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aux_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0) {ζ : Ω}
     (h : ζ ^ m = 1) : A.valuation ζ = 1 := by
@@ -13,9 +13,9 @@ private theorem aux_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : �
   exact (pow_eq_one_iff.mp hv).resolve_right hm
 
 /- English proof (translation)
-Establish `hS : A.valuation (∑ j ∈ Finset.range i, η ^ j) ≤ 1`. Rewrite using `[ValuationSubring.valuation_le_one_iff]`. Use `Subring.sum_mem A.toSubring (fun j _ => ?_)` and prove the remaining obligations. Establish `hj : η ^ j ∈ A`. Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_pow, h1, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hj`. Rewrite using `[← mul_neg_geom_sum, map_mul, Valuation.map_sub_swap]`. Conclude with `mul_lt_one_of_lt_of_le h hS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem power_bounds_of_between {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {η : Ω} (h1 : A.valuation η = 1)
     (h : A.valuation (η - 1) < 1) (i : ℕ) : A.valuation (1 - η ^ i) < 1 := by
@@ -29,11 +29,11 @@ private theorem power_bounds_of_between {Ω : Type} [Field Ω] (A : ValuationSub
   exact mul_lt_one_of_lt_of_le h hS
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hS : ∑ i ∈ Finset.range m, η ^ i = 0`. Establish `hg` using `mul_neg_geom_sum η m`. Rewrite `hg` using `[hη, sub_self]`. Conclude with `(mul_eq_zero.mp hg).resolve_left (sub_ne_zero.mpr (Ne.symm hne))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : A.valuation η = 1` using `aux_one A hm hη`. Establish `hlt : A.valuation ((m : Ω) - ∑ i ∈ Finset.range m, η ^ i) < 1`. Establish `he : (m : Ω) - ∑ i ∈ Finset.range m, η ^ i = ∑ i ∈ Finset.range m, (1 - η ^ i)`. Simplify using `[Finset.sum_sub_distrib]`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Valuation.map_sum_lt _ one_ne_zero (fun i _ => power_bounds_of_between A h1 h i)`. Rewrite `hlt` using `[hS, sub_zero]`. Conclude with `hv hlt`.
+A detailed English derivation is pending.
 -/
 private theorem root_of_unity_eq_one_of_close_residue {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0)
     (hv : ¬ A.valuation (m : Ω) < 1) {η : Ω} (hη : η ^ m = 1) (h : A.valuation (η - 1) < 1) : η = 1 := by
@@ -52,11 +52,11 @@ private theorem root_of_unity_eq_one_of_close_residue {Ω : Type} [Field Ω] (A 
   exact hv hlt
 
 /- English proof (translation)
-Establish `hI : g ∈ Inertia (F` using `ℚ) A := hg`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow hm]`. Conclude with `zero_ne_one hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv1` using `aux_one A hm hζ`. Establish `key` using `hI.2 ζ hv1.le`. Establish `hη : (g ζ * ζ⁻¹) ^ m = 1`. Rewrite using `[mul_pow, ← map_pow, hζ, map_one, inv_pow, hζ, inv_one, one_mul]`. Establish `hlt : A.valuation (g ζ * ζ⁻¹ - 1) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : g ζ * ζ⁻¹ - 1 = (g ζ - ζ) * ζ⁻¹` using `by rw [sub_mul, mul_inv_cancel₀ hζ0]`. Rewrite using `[he, map_mul, map_inv₀, hv1, inv_one, mul_one]`. Conclude with `key`. Establish `hfin` using `root_of_unity_eq_one_of_close_residue A hm hA hη hlt`. Rewrite `hfin` using `[mul_inv_eq_one₀ hζ0]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem inertia_fixes_prime_to_roots {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0)
     (hA : ¬ A.valuation (m : Ω) < 1) {g : G ℚ Ω} (hg : g ∈ Ine (F := ℚ) A) {ζ : Ω} (hζ : ζ ^ m = 1) : g ζ = ζ := by
@@ -77,13 +77,11 @@ private theorem inertia_fixes_prime_to_roots {Ω : Type} [Field Ω] [Algebra ℚ
   rwa [mul_inv_eq_one₀ hζ0] at hfin
 
 /- English proof (translation)
-Introduce `Ω _ _ _ m _ A hA g hg`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : NeZero ((m : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr (NeZero.ne m)⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfix` using `inertia_fixes_prime_to_roots A (NeZero.ne m) hA hg hz.pow_eq_one`. Rewrite `hfix` using `[galChar_spec m g z hz.pow_eq_one]`. Take `⟨u, rfl⟩` from `hz.isUnit (NeZero.ne m)`. Establish `hu : IsPrimitiveRoot u m` using `IsPrimitiveRoot.coe_units_iff.mp hz`. Establish `heq : u ^ ((galChar Ω m g : ZMod m).val) = u ^ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, pow_one]`. Conclude with `hfix`. Establish `hmod` using `pow_eq_pow_iff_modEq.mp heq`. Rewrite `hmod` using `[← hu.eq_orderOf]`.
-
-Rewrite using `[MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one, ← ZMod.natCast_zmod_val ((galChar Ω m g : ZMod m)), ← Nat.cast_one]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).mpr hmod`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.ineChar :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m : ℕ) [NeZero m] (A : ValuationSubring Ω), ¬ A.valuation (m : Ω) < 1 → Ine (F := ℚ) A ≤ (galChar Ω m).ker := by

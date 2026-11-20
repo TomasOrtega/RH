@@ -29,13 +29,11 @@ private noncomputable def latQ {E : Type} [Field E] [NumberField E] (D : Dat ℚ
 open GroundTheory.Automorphic.FourierWhittaker in
 
 /- English proof (translation)
-Set `β : (Fin 2 → A ℚ) ≃ₜ+ A E` to `D.coE.symm`. Set `m` to `β.toHomeomorph.toMeasurableEquiv`. Use `haveI : (adeleMeasurePi ℚ (ι := Fin 2)).IsAddHaarMeasure := inferInstanceAs (Measure.pi fun _ : Fin 2 => adeleMeasure ℚ).IsAddHaarMeasure`. Use `haveI : ((adeleMeasurePi ℚ (ι := Fin 2)).map m).IsAddHaarMeasure := β.isAddHaarMeasure_map (adeleMeasurePi ℚ)`. Establish `hF : IsAddFundamentalDomain (AdeleRing.principalSubgroup (𝓞 E) E) (m '' FS2 ℚ) ((adeleMeasurePi ℚ (ι` using `Fin 2)).map m) := (isAddFundamentalDomain_vecDomain (K := ℚ) (ι := Fin 2)).image_of_equiv m.toEquiv (MeasurePreserving.symm m ⟨m.measurable, rfl⟩).quasiMeasurePreserving (latQ D).symm fun y x => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `β (D.coE y.1 + x) = y.1 + β x`. Rewrite using `[map_add]`. Use `congr 1`. Conclude with `D.coE.symm_apply_apply y.1`. Establish `hF' : IsAddFundamentalDomain (AdeleRing.principalSubgroup (𝓞 E) E) (m '' FS2 ℚ) (adeleMeasure E)` using `hF.mono (Measure.absolutelyContinuous_isAddHaarMeasure _ _)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hp : ∀ (g : AdeleRing.principalSubgroup (𝓞 E) E) (x : A E), H (g +ᵥ x) = H x`. Introduce and unpack `⟨_, k, rfl⟩ x`. Conclude with `hper k x`. Use `haveI : Countable (AdeleRing.principalSubgroup (𝓞 E) E) := (latQ D).symm.injective.countable`. Establish `h1` using `(isAddFundamentalDomain_fundamentalSet E).setIntegral_eq hF' (f := H) hp`.
-
-Rewrite using `[h1, Measure.isAddLeftInvariant_eq_smul (adeleMeasure E) ((adeleMeasurePi ℚ (ι := Fin 2)).map m), Measure.restrict_smul, integral_smul_nnreal_measure, m.measurableEmbedding.setIntegral_map, m.injective.preimage_image]`. Establish `h3 : ∫ u in FS2 ℚ, H (m u) ∂(adeleMeasurePi ℚ) = 0` using `h0`. Rewrite using `[h3, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_zero {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (H : A E → ℂ)
     (hper : ∀ (k : E) x, H (rt k + x) = H x)
@@ -68,15 +66,15 @@ private theorem int_zero {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (H
   rw [h3, smul_zero]
 
 /- English proof (translation)
-Set `χ : AddChar (A E) Circle` to `{ toFun := fun z => adelicChar ℚ (D.co z 1) map_zero_eq_one' := by rw [D.co_zero]; simp map_add_eq_mul' := fun a b => by rw [D.co_add, Pi.add_apply, AddChar.map_add_eq_mul] }`. Establish `h1 : Continuous fun z : A E => D.co z 1` using `(continuous_apply 1).comp D.continuous_co`. Establish `h2 : Continuous fun z : A E => adelicChar ℚ (D.co z 1)` using `(continuous_adelicChar (K := ℚ)).comp h1`. Establish `hχ : Continuous χ` using `h2`. Take `⟨ξ, hξ, -⟩` from `existsUnique_eq_adelicChar_mul (K := E) χ hχ fun k => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `adelicChar ℚ (D.co (rt k) 1) = 1`. Rewrite using `[D.co_rt]`. Conclude with `adelicChar_algebraMap _`. Establish `h0 : ξ ≠ 0`. Introduce and unpack `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `adelicChar_ne_one (K := ℚ)` to reduce the goal to its premises. Use `DFunLike.ext _ _ fun t => ?_` and prove the remaining obligations. Use `hξ (D.mkE 0 t)` as an intermediate fact. Express the relevant statement in the definitionally equal form `adelicChar ℚ (D.co (D.mkE 0 t) 1) = _ at this`. Rewrite `this` using `[D.co_mkE]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `⟨Units.mk0 ξ h0, fun z => ?_⟩` and prove the remaining obligations. Use `hξ z` as an intermediate fact. Express the relevant statement in the definitionally equal form `adelicChar ℚ (D.co z 1) = _ at this`. Simplify using `only [ψ, Units.val_mk0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_mul {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) :
     ∃ ξ : Eˣ, ∀ z : A E, ψ (rt (ξ : E) * z) = ψ (D.co z 1) := by
@@ -106,15 +104,13 @@ private theorem exists_mul {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) 
   rw [this]
 
 /- English proof (translation)
-Introduce `E _ _ _ D P ω hA`. Take `⟨f, hf, h0⟩` from `(Submodule.ne_bot_iff _).1 P.ne_bot`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hT : f.1 ∈ Tr P` using `Submodule.subset_span ⟨f, hf, 1, by simp⟩`. Establish `hL : Pp.Lf f.1` using `⟨(hA _ hT).cont, (hA _ hT).left⟩`. Take `⟨ξ, hξ⟩` from `exists_mul D`. Establish `hW : ∀ g, Wf f.1 g = 0` using `fun g => by`. Establish `e` using `Pp.wfT E f.1 hL ξ ((aE (IdeleGroup.diagonal E ξ))⁻¹ * g)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[mul_inv_cancel_left]`. Rewrite using `[← e]`. Use `int_zero D _ (fun k x => ?_) ?_` and prove the remaining obligations. Rewrite using `[hL.per, mul_add, ← map_mul, Pp.ψ_add, Pp.ψ_rt, one_mul]`. Rewrite using `[← hn ((aE (IdeleGroup.diagonal E ξ))⁻¹ * g)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hξ, D.co_mkE]`. Both sides reduce to the same expression. Take `⟨φ, rfl⟩` from `Cm.mem_range_ofCusp.2 (P.cusp f hf)`.
-
-Conclude with `h0 (Subtype.ext (Pp.eq_zero_of_Wf φ.2 hL hW))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_whittakerCoeff_ne_zero_of_admissible :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (P : CuspSub E 2) (ω : HChar ℚ), (∀ φ ∈ Tr P, admitted D ω φ) → ∃ f ∈ P.V, ∃ h, Wo D f.1 h ≠ 0 := by

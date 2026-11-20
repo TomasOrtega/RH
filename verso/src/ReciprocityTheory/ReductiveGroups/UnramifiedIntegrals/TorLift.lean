@@ -15,9 +15,9 @@ open Formalism.L2.Th1.A (shortW)
 variable {l : ℕ} [Fact l.Prime] {g2 g3 : ℂ_[l]}
 
 /- English proof (translation)
-Establish `e : (a ^ 3 + p * a + q) - (x ^ 3 + p * x + q) = (a - x) * (a ^ 2 + a * x + x ^ 2 + p)` using `by ring`. Rewrite using `[e, norm_mul]`. Establish `h1 : ‖a ^ 2‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha`. Establish `h2 : ‖a * x‖ ≤ 1` using `by rw [norm_mul]; exact mul_le_one₀ ha (norm_nonneg _) hx`. Establish `h3 : ‖x ^ 2‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ‖a ^ 2 + a * x + x ^ 2 + p‖ ≤ 1` using `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)) h3)) hp)`. Rewrite `hxa` using `[norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cubic_close {C : Type} [NormedField C] [IsUltrametricDist C] {x a p q : C} (hx : ‖x‖ ≤ 1)
     (ha : ‖a‖ ≤ 1) (hp : ‖p‖ ≤ 1) (hxa : ‖x - a‖ < 1) :
@@ -35,7 +35,7 @@ theorem cubic_close {C : Type} [NormedField C] [IsUltrametricDist C] {x a p q : 
     _ < 1 := by rw [mul_one]; exact hxa
 
 /- English proof (translation)
-Establish `hne : ‖d‖ ≠ ‖c - d‖` using `by rw [hd]; exact (ne_of_lt h).symm`. Establish `h2` using `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne`. Rewrite `h2` using `[add_sub_cancel, hd]`. Rewrite using `[h2]`. Conclude with `max_eq_left h.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_one_of_close {C : Type} [NormedField C] [IsUltrametricDist C] {c d : C} (hd : ‖d‖ = 1)
     (h : ‖c - d‖ < 1) : ‖c‖ = 1 := by
@@ -46,27 +46,25 @@ theorem norm_one_of_close {C : Type} [NormedField C] [IsUltrametricDist C] {c d 
   exact max_eq_left h.le
 
 /- English proof (translation)
-Establish `hI` using `good_int h`. Establish `hC` using `good_coeff h`. Take `⟨-, -, -, h4, h6, -⟩` from `hI`. Take `⟨-, -, -, m4, m6⟩` from `hC`. Establish `hl2 : l ≠ 2` using `by have := h.five; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the cases of `P with`. Consider the case `zero => exact absurd rfl hP0`. Consider the case `some x y hns`. Express the relevant statement in the definitionally equal form `‖x‖ ≤ 1 at hx`. Express the relevant statement in the definitionally equal form `‖y‖ = 1 at hy`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨a, haT, hxa⟩` from `res_full l x hx`. Establish `haK : a ∈ MaximalUnramifiedExtension l` using `tch_mem_kur l haT`. Establish `ha1 : ‖a‖ ≤ 1` using `tch_norm_le l haT`. Establish `hE : y ^ 2 = x ^ 3 + (shortW g2 g3).a₄ * x + (shortW g2 g3).a₆`. Use `(WeierstrassCurve.Affine.equation_iff _ _).1 hns.1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[shortW]`. Use `set p := (shortW g2 g3).a₄ with hp`. Use `set q := (shortW g2 g3).a₆ with hq`. Establish `hc1 : ‖a ^ 3 + p * a + q‖ = 1`. Use `norm_one_of_close (d := y ^ 2) (by rw [norm_pow, hy, one_pow]) ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE]`. Conclude with `cubic_close hx ha1 h4 hxa`. Establish `hcK : a ^ 3 + p * a + q ∈ MaximalUnramifiedExtension l` using `add_mem (add_mem (pow_mem haK 3) (mul_mem m4 haK)) m6`. Take `⟨b, hbK, hb2, hb1⟩` from `exists_sqrt l hl2 _ hcK hc1`. Establish `hb0 : b ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hb1` using `[h0, norm_zero]`. Conclude with `zero_ne_one hb1`. Establish `hQns : (shortW g2 g3).toAffine.Nonsingular a b`. Rewrite using `[WeierstrassCurve.Affine.nonsingular_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.equation_iff]`. Simplify using `only [shortW] at hb2 hp hq ⊢`. Rewrite using `[hb2, hp, hq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [shortW]`. Introduce `hh`. Apply `hb0` to reduce the goal to its premises. Establish `h2 : (2 : ℂ_[l]) * b = 0` using `by linear_combination hh`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `absurd h3 two_ne_zero`. Conclude with `h3`. Use `set P : (shortW g2 g3).toAffine.Point := .some x y hns with hPdef`. Use `set Q : (shortW g2 g3).toAffine.Point := .some a b hQns with hQdef`. Establish `hQS : InSub (MaximalUnramifiedExtension l) Q` using `⟨haK, hbK⟩`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `h1 : InFormalGroupPoints (P - Q)`. Conclude with `⟨Q, hQS, h1⟩`. Distinguish the cases in `h2 : InFormalGroupPoints (P + Q)`. Conclude with `⟨-Q, inSub_neg _ _ (good_coeff h) Q hQS, by rwa [sub_neg_eq_add]⟩`. It suffices to derive a contradiction.
-
-Take `⟨d0, dx, -⟩` from `integral_of_not_mem_formalGroup h _ h1`. Take `⟨s0, sx, -⟩` from `integral_of_not_mem_formalGroup h _ h2`. Establish `hu` using `Formalism.L2.Th1.E.UnitDiff_of Formalism.L2.Th1.E.nonsingular_norm ℂ_[l] (shortW g2 g3) (good_int h) P Q hP0 (WeierstrassCurve.Affine.Point.some_ne_zero _) s0 d0 hx hy.le ha1 hb1.le sx dx`. Express the relevant statement in the definitionally equal form `‖x - a‖ = 1 at hu`. Conclude with `absurd hu hxa.ne`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem tor_lift (h : GoodPair l g2 g3) (P : (shortW g2 g3).toAffine.Point) (hP0 : P ≠ 0)
     (hx : ‖px _ P‖ ≤ 1) (hy : ‖py _ P‖ = 1) :

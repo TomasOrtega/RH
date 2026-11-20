@@ -35,13 +35,13 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE 
   {lam : ℕ →* ℂ} {w₀ : 𝓞 D.host.E} {Om : GA D S × GA D T →* Module.End ℂ (thetaSub ψ S T)}
 
 /- English proof (translation)
-Take `⟨o, ho⟩` from `exists_extend (thetaSub ψ S T) Om`. Establish `ho' : ∀ p f (hf : IsThetaFunO ψ S T f), o p f = (Om p ⟨f, hf⟩ : WO S T → ℂ)` using `fun p f hf => ho p ⟨f, hf⟩`. Establish `hpres : ∀ p f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (o p f)` using `fun p f hf => by`. Rewrite using `[ho' p f hf]`. Conclude with `(Om p ⟨f, hf⟩).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hheis : ∀ (g' : GA D S) (k' : GA D T), g' ∈ GfC S → k' ∈ GfC T → ∀ u f, IsThetaFunO ψ S T f → o (g', k') (heisO ψ S T u f) = heisO ψ S T (actO S T g' k' u) (o (g', k') f)`. Introduce `g' k' hg' hk' u f hf`. Take `⟨f', h1, h2⟩` from `hL.Heisenberg₂ hψ hg' hk' u ⟨f, hf⟩`. Rewrite using `[ho' _ f hf, ← h2, ← h1]`. Conclude with `ho _ f'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, h⟩` from `GlobalTheory.ThetaSchur.schur D ψ hψ S T (om (g, 1) * o (g⁻¹, 1⁻¹)) (fun f hf => hW.om_pres _ _ (hpres _ _ hf)) (fun u f hf => by`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hheis _ _ (inv_mem hg) (inv_mem (one_mem _)) u f hf, hW.om_heis _ _ _ _ (hpres _ _ hf), GlobalTheory.FinWeilForm.actO_actO_inv])`. Use the proof step `(fun μ 𝓕 hμ h𝓕 f hf => by`. Rewrite using `[Module.End.mul_apply, hW.om_unit μ 𝓕 hμ h𝓕 _ _ (hpres _ _ hf), ho' _ f hf, hL.unit hlam μ 𝓕 hμ h𝓕 _ ⟨f, hf⟩])`. Use `⟨c, hc, fun f hf => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `h _ (hpres (g, 1) f hf)`. Rewrite `h1` using `[Module.End.mul_apply, ← Module.End.mul_apply (o _), ← map_mul, show ((g⁻¹, 1⁻¹) * (g, 1) : GA D S × GA D T) = 1 from inv_mul_cancel (g, (1 : GA D T)), map_one, Module.End.one_apply]`. Rewrite using `[h1, ho' _ f hf]`.
+A detailed English derivation is pending.
 -/
 theorem weilDatum_source_eq_scalar_smul_latticeIntertwiner (hψ : IsStdChar D ψ (-1)) (hW : IsWeilDatumO ψ S T χS χT om) (hL : IsLatRep hψ.1 ΛS ΛT w₀ lam Om)
     (hlam : GoodNorm (sgO D) lam) {g : GA D S} (hg : g ∈ GfC S) :
@@ -73,13 +73,13 @@ theorem weilDatum_source_eq_scalar_smul_latticeIntertwiner (hψ : IsStdChar D ψ
   rw [h1, ho' _ f hf]
 
 /- English proof (translation)
-Establish `hs` using `fun g : GA D S => weilDatum_source_eq_scalar_smul_latticeIntertwiner hψ hW hL hlam (pFin_mem S g)`. Use `choose c hc h using hs`. Take `⟨f, f0, hf⟩` from `GlobalTheory.FinWeilForm.exists_theta hψ S T`. Establish `hne : ∀ p, (Om p ⟨f, hf⟩ : WO S T → ℂ) ≠ 0` using `fun p h0 => f0 (by`. Establish `h1 : Om p ⟨f, hf⟩ = 0` using `Subtype.ext h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (Om p⁻¹) h1`. Rewrite `h2` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, map_zero, Module.End.one_apply]`. Conclude with `congrArg Subtype.val h2)`. Use `⟨MonoidHom.mk' (fun g => ⟨c g, mem_sphere_zero_iff_norm.2 (hc g)⟩) fun p q => Circle.ext ?_, fun g hg f hf => ?_⟩` and prove the remaining obligations. Use `show c (p * q) = c p * c q`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : (pFin S (p * q), (1 : GA D T)) = (pFin S p, 1) * (pFin S q, 1)` using `Prod.ext (map_mul _ _ _) (one_mul _).symm`. Establish `e2` using `h (p * q) f hf`. Rewrite `e2` using `[e1, map_mul, Module.End.mul_apply, h q f hf, map_smul, h p _ (Om (pFin S q, 1) ⟨f, hf⟩).2, smul_smul, map_mul, Module.End.mul_apply]`. Establish `e3` using `smul_left_injective ℂ (hne ((pFin S p, 1) * (pFin S q, 1))) (a₁ := c q * c p) (a₂ := c (p * q)) (by`. Simplify `e2)` using `only [map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← e3, mul_comm]`. Establish `e` using `h g f hf`. Rewrite `e` using `[pFin_of_mem hg]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_weilScalarCharacter_sourceFinitePart (hψ : IsStdChar D ψ (-1)) (hW : IsWeilDatumO ψ S T χS χT om) (hL : IsLatRep hψ.1 ΛS ΛT w₀ lam Om)
     (hlam : GoodNorm (sgO D) lam) :
@@ -108,11 +108,11 @@ theorem exists_weilScalarCharacter_sourceFinitePart (hψ : IsStdChar D ψ (-1)) 
     rwa [pFin_of_mem hg] at e
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Use `GlobalTheory.T.adelic_unitary_character_trivial_at_nonsplit_place D S ΛS hS v ε hv ν (fun k hk hst => ?_) g hg` and prove the remaining obligations. Take `⟨f₀, f0, hf₀, hvac⟩` from `GlobalTheory.FinWeilForm.exists_vacuum hψ hL`. Establish `hfix` using `hvac v ε hv`. Establish `hst'` using `GlobalTheory.T.mem_localHomLattice_of_keeps_completedLattices D S T ΛS ΛT hS hT v ε hv.1 k 1 hst (fun y => by rw [GlobalTheory.FinWeilForm.finMat_one, Matrix.one_mulVec])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : SuppPl ε T (1 : GA D T)` using `fun i j => by`. Rewrite using `[GlobalTheory.FinWeilO.mt_one, sub_self, Matrix.zero_apply, mul_zero]`. Establish `a` using `GlobalTheory.T.weilDatum_fixes_vacuum_nonSplitPlace_unramified D ψ hψ S T ΛS ΛT hS hT χS χT om ((GlobalTheory.Mem.EtaTilde.exists_etaTilde D).imp fun _ h => ⟨h.1, h.2.2.2, h.2.2.1, h.2.1⟩) hW v ε hv uS uT k 1 hk s1 hst' f₀ hf₀ hfix`. Establish `b` using `hL.inert hv hk s1 (fun u hu => (hst' u).1 hu) ⟨f₀, hf₀⟩ hfix`. Establish `hkf : k ∈ GfC S` using `GlobalTheory.IdemSupport.mem_GfC_of_suppF S (GlobalTheory.IdemSupport.place_comp hΦ hv.1).1 hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c` using `hν k hkf f₀ hf₀`. Rewrite `c` using `[a, b]`. Conclude with `Circle.ext (smul_left_injective ℂ f0 (c.symm.trans (one_smul ℂ f₀).symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilScalar_source_eq_one_nonsplit_unramified (hψ : IsStdChar D ψ (-1)) (hW : IsWeilDatumO ψ S T χS χT om) (hS : IsSelfDualC S ΛS)
     (hT : IsSelfDualC T ΛT) (hL : IsLatRep hψ.1 ΛS ΛT w₀ lam Om) {ν : GA D S →* Circle}
@@ -141,9 +141,9 @@ end GlobalTheory.WeilAtPlaceSrc
 end
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hW hψ lam w₀ Om hL hlam v w h hi uS uT a f`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨ν, hν⟩` from `GlobalTheory.WeilAtPlaceSrc.exists_weilScalarCharacter_sourceFinitePart hψ hW hL hlam`. Take `⟨ε, hns, hp⟩` from `GlobalTheory.WeilAtPlace.exists_nonSplit_of_inert hi h`. Establish `hsu : GlobalTheory.WeilParts.SuppPl ε S (embV S v a)` using `(Supp.suppF_iff_of_isPrimeIdem S hp h _).2 ⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : embV S v a ∈ GfC S` using `GlobalTheory.IdemSupport.mem_GfC_of_suppF S (GlobalTheory.IdemSupport.place_comp hΦ hns.1).1 hsu`. Establish `e1` using `GlobalTheory.WeilAtPlaceSrc.weilScalar_source_eq_one_nonsplit_unramified hψ hW (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat S) (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat T) hL hν hns (GlobalTheory.WeilAtPlace.unramAt_of_unrAt hp uS) (GlobalTheory.WeilAtPlace.unramAt_of_unrA …`. Establish `e2` using `hν _ hk f.1 f.2`. Rewrite `e2` using `[e1, Circle.coe_one, one_smul]`. Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeilAtPlaceSrc.weilDatum_src_inert : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (hψ : IsStdChar D ψ (-1)) (lam : ℕ →* ℂ) (w₀ : 𝓞 D.host.E) (Om : GA D S × GA D T →* Module.End ℂ (GlobalTheory.FinWeilO.thetaSub ψ S T)), GlobalTheory.FinWeilO.IsLatRep hψ.1 (frameLat S) (frameLat T) w₀ lam Om → GlobalTheory.FinWeil.GoodNorm (GlobalTheory.FinWeil.sgO D) lam → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → IsInertAt D.host.F D.host.E v w → UnrAt χS w → UnrAt χT w → ∀ (a : Gv S v) (f : GlobalTheory.FinWeilO.thetaSub ψ S T), om (embV S v a, 1) f = (Om (embV S v a, 1) f : WO S T → ℂ) := by
   intro D ψ S T χS χT om hW hψ lam w₀ Om hL hlam v w h hi uS uT a f

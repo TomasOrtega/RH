@@ -10,13 +10,11 @@ namespace PositivityTheory.Rg.Sw.Glob.GaussH
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hg` using `inG_mR y`. Establish `hM` using `det_CZD hg hZ`. Establish `hM'` using `det_CZhD hg hZ`. Establish `hid` using `identG hg Z Zᴴ`. Rewrite `hid` using `[sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hE` using `sub_eq_zero.mp hid`. Unfold `actZ`. Use `set N := (mR y).toBlocks₁₁ * Z + (mR y).toBlocks₁₂`. Use `set M := (mR y).toBlocks₂₁ * Z + (mR y).toBlocks₂₂`. Use `set N' := (mR y).toBlocks₁₁ * Zᴴ + (mR y).toBlocks₁₂`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set M' := (mR y).toBlocks₂₁ * Zᴴ + (mR y).toBlocks₂₂`. Establish `hMh : IsUnit (Mᴴ).det`. Rewrite using `[det_conjTranspose]`. Conclude with `hM.star`. Rewrite using `[conjTranspose_mul, conjTranspose_nonsing_inv]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hM', Matrix.mul_one]`. Use `_ = (Mᴴ)⁻¹ * (Mᴴ * N') * M'⁻¹ := by rw [hE]`. Use `_ = N' * M'⁻¹ := by rw [← Matrix.mul_assoc, nonsing_inv_mul _ hMh, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actZ_conj (y : GR n) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : IsSiegel Z) :
     (actZ y Z)ᴴ = ((mR y).toBlocks₁₁ * Zᴴ + (mR y).toBlocks₁₂) * ((mR y).toBlocks₂₁ * Zᴴ + (mR y).toBlocks₂₂)⁻¹ := by
@@ -41,15 +39,13 @@ theorem actZ_conj (y : GR n) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : IsSiegel Z) 
     _ = N' * M'⁻¹ := by rw [← Matrix.mul_assoc, nonsing_inv_mul _ hMh, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hg` using `inG_mR y`. Establish `hM` using `det_CZD hg hZ`. Establish `hid` using `identG hg Z Z`. Unfold `IsSiegel actZ`. Unfold `IsSiegel at hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use `set N := (mR y).toBlocks₁₁ * Z + (mR y).toBlocks₁₂`. Use `set M := (mR y).toBlocks₂₁ * Z + (mR y).toBlocks₂₂`. Establish `hMM : M * M⁻¹ = 1` using `mul_nonsing_inv _ hM`. Establish `hMM' : ∀ X : Matrix (Fin n) (Fin n) ℂ, (M⁻¹)ᴴ * (Mᴴ * X) = X`. Introduce `X`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← conjTranspose_mul, hMM, conjTranspose_one, Matrix.one_mul]`. Establish `hZZ : Mᴴ * N - Nᴴ * M = Z - Zᴴ`. Rewrite using `[← neg_sub, hid, neg_sub]`. Establish `key : -(Complex.I / 2) • (N * M⁻¹ - (N * M⁻¹)ᴴ) = (M⁻¹)ᴴ * (-(Complex.I / 2) • (Z - Zᴴ)) * M⁻¹`. Rewrite using `[← hZZ, conjTranspose_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul]`. Simplify using `only [Matrix.mul_assoc, hMM, Matrix.mul_one, hMM']`. Rewrite using `[key]`. Use `Matrix.PosDef.conjTranspose_mul_mul_same hZ ?_` and prove the remaining obligations.
-
-Conclude with `mulVec_injective_iff_isUnit.mpr ((isUnit_iff_isUnit_det _).mpr (isUnit_nonsing_inv_det _ hM))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSiegel_actZ (y : GR n) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : IsSiegel Z) : IsSiegel (actZ y Z) := by
   have hg := inG_mR y

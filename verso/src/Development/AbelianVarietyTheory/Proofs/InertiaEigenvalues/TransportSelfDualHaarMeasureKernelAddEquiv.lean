@@ -5,7 +5,7 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.TransportSD
 
 /- English proof (translation)
-Distinguish the cases in `hg : AEMeasurable g (μ.map e)`. Conclude with `AEMeasurable.map_map_of_aemeasurable hg e.measurable.aemeasurable`. Establish `hg' : ¬ AEMeasurable (g ∘ e) μ` using `by rwa [← aemeasurable_map_equiv_iff e]`. Rewrite using `[Measure.map_of_not_aemeasurable hg, Measure.map_of_not_aemeasurable hg']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_map_equiv_left {α β γ : Type} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     (μ : Measure α) (e : α ≃ᵐ β) (g : β → γ) : (μ.map e).map g = μ.map (g ∘ e) := by
@@ -15,9 +15,9 @@ theorem map_map_equiv_left {α β γ : Type} [MeasurableSpace α] [MeasurableSpa
     rw [Measure.map_of_not_aemeasurable hg, Measure.map_of_not_aemeasurable hg']
 
 /- English proof (translation)
-Distinguish the cases in `hT : AEMeasurable T μ`. Conclude with `AEMeasurable.map_map_of_aemeasurable e.measurable.aemeasurable hT`. Establish `hT' : ¬ AEMeasurable (e ∘ T) μ`. Introduce `h`. Apply `hT` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `e.symm.measurable.comp_aemeasurable h` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Rewrite using `[Measure.map_of_not_aemeasurable hT, Measure.map_of_not_aemeasurable hT', Measure.map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_map_equiv_right {α β γ : Type} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     (μ : Measure α) (T : α → β) (e : β ≃ᵐ γ) : (μ.map T).map e = μ.map (e ∘ T) := by
@@ -34,27 +34,27 @@ end GlobalTheory.TransportSD
 
 open GlobalTheory.TransportSD in
 /- English proof (translation)
-Introduce `V V' _ _ _ _ _ _ _ _ h hc hs μ B`. Set `he : V ≃ₜ V'` to `{ toEquiv := h.symm.toEquiv, continuous_toFun := hs, continuous_invFun := hc }`. Set `e : V ≃ᵐ V'` to `he.toMeasurableEquiv`. Establish `he_eq : (e : V → V') = h.symm` using `rfl`. Establish `hμ : Measure.map h.symm μ = Measure.map e μ` using `by rw [he_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `four : ∀ (f : V' → ℂ) (y : V'), fourB (Measure.map h.symm μ) (fun x y => B (h x) (h y)) f y = fourB μ B (fun v => f (h.symm v)) (h y)`. Introduce `f y`. Unfold `fourB`. Rewrite using `[hμ, integral_map_equiv]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[he_eq]`. Simplify using the standard rewrite rules. Use `⟨fun hsd => ⟨?_, ?_⟩, four⟩` and prove the remaining obligations. Take `⟨hH, -⟩` from `hsd`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hμ]`. Establish `h1 : IsFiniteMeasureOnCompacts (Measure.map e μ)`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`. Establish `: (e : V → V') ⁻¹' K = h '' K`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `v`. Rewrite using `[he_eq]`. Simplify using `[Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hv; exact ⟨h.symm v, hv, by simp⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`. Rewrite using `[this]`. Conclude with `(hK.image hc).measure_lt_top`. Establish `h2 : (Measure.map e μ).IsAddLeftInvariant`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x' => ?_⟩` and prove the remaining obligations. Rewrite using `[map_map_equiv_left]`. Establish `hcomp : (fun y' => x' + y') ∘ (e : V → V') = (e : V → V') ∘ (fun v => h x' + v)`. Use function extensionality and compare the values at `v`. Rewrite using `[he_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hcomp, ← map_map_equiv_right, hH.toIsAddLeftInvariant.map_add_left_eq_self (h x')]`. Establish `h3 : (Measure.map e μ).IsOpenPosMeasure`. Use `⟨fun U hU hne => ?_⟩` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU' : IsOpen ((e : V → V') ⁻¹' U)` using `hU.preimage (by rw [he_eq]; exact hs)`. Establish `hne' : ((e : V → V') ⁻¹' U).Nonempty`. Take `⟨u, hu⟩` from `hne`. Conclude with `⟨h u, by rw [he_eq]; simpa using hu⟩`. Conclude with `hU'.measure_ne_zero μ hne'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `{ toIsFiniteMeasureOnCompacts := h1, toIsAddLeftInvariant := h2, toIsOpenPosMeasure := h3 }`. Introduce `f hf y`. Establish `hf' : IsTest (fun v => f (h.symm v))` using `⟨hf.1.comp_continuous hs, hf.2.comp_homeomorph he⟩`. Rewrite using `[four]`. Establish `: (fun v => fourB (Measure.map h.symm μ) (fun x y => B (h x) (h y)) f (h.symm v)) = fourB μ B (fun v => f (h.symm v))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[four]`. Simplify using the standard rewrite rules. Rewrite using `[this, hsd.2 _ hf' (h y)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.transport_selfDual_fourB : ∀ {V V' : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V] [AddCommGroup V'] [TopologicalSpace V'] [MeasurableSpace V'] [BorelSpace V'] (h : V' ≃+ V), Continuous h → Continuous h.symm → ∀ (μ : Measure V) (B : V → V → ℂ), (SelfDual μ B → SelfDual (Measure.map h.symm μ) (fun x y => B (h x) (h y))) ∧ ∀ (f : V' → ℂ) (y : V'), fourB (Measure.map h.symm μ) (fun x y => B (h x) (h y)) f y = fourB μ B (fun v => f (h.symm v)) (h y) := by
   intro V V' _ _ _ _ _ _ _ _ h hc hs μ B

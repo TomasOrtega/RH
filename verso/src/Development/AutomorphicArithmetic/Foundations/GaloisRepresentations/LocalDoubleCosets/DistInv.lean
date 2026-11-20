@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL ValuativeRel Matrix MeasureTheory UpperTheory.ConvolutionTheory.Loc MulAction UpperTheory.Gal.LocD
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hf`. Set `e : X ≃ₜ X` to `{ toFun := s invFun := s^[q] left_inv := fun y => by show s^[q] (s y) = y`. Rewrite using `[← Function.iterate_succ_apply s q y, hsp]`. Use `right_inv := fun y => by show s (s^[q] y) = y`. Rewrite using `[← Function.iterate_succ_apply' s q y, hsp]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `continuous_toFun := hs`. Use `continuous_invFun := hs.iterate q }`. Conclude with `⟨h1.comp_continuous hs, h2.comp_homeomorph e⟩`.
+A detailed English derivation is pending.
 -/
 private theorem comp_mem_Cc {X : Type} [TopologicalSpace X] (s : X → X) (q : ℕ) (hs : Continuous s)
     (hsp : ∀ x, s^[q + 1] x = x) {f : X → ℂ} (hf : f ∈ Cc X) : f ∘ s ∈ Cc X := by
@@ -25,17 +25,15 @@ private theorem comp_mem_Cc {X : Type} [TopologicalSpace X] (s : X → X) (q : �
   exact ⟨h1.comp_continuous hs, h2.comp_homeomorph e⟩
 
 /- English proof (translation)
-Introduce `hZ X H _ _ _ _ _ _ _ _ _ _ _ _ _ s τ p hp hs hτ hsp hτp hsτ χ hχL hχτ k x hxs horb hcl D hD f hf`. Establish `hsp' : ∀ y, s^[p - 1 + 1] y = y` using `fun y => by rw [Nat.sub_add_cancel hp]; exact hsp y`. Establish `cc : ∀ g ∈ Cc X, g ∘ s ∈ Cc X` using `fun g hg => comp_mem_Cc s (p - 1) hs hsp' hg`. Set `D' : (X → ℂ) →ₗ[ℂ] ℂ` to `D.comp (LinearMap.funLeft ℂ ℂ s) - D`. Establish `hD'apply : ∀ g, D' g = D (g ∘ s) - D g` using `fun g => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key` using `hZ X H s τ p hp hs hτ hsp hτp hsτ χ hχL k x hxs horb hcl D' ?_ ?_ f hf`. Rewrite `key` using `[hD'apply, sub_eq_zero]`. Conclude with `key`. Introduce `h g hg`. Rewrite using `[hD'apply, hD'apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set h' := τ^[p - 1] h with hh'`. Establish `hτh : τ h' = h`. Rewrite using `[hh', ← Function.iterate_succ_apply' τ (p - 1) h, Nat.succ_eq_add_one, Nat.sub_add_cancel hp, hτp]`. Establish `hχh : χ h' = χ h` using `by rw [← hχτ h', hτh]`. Establish `hcomp : GroundTheory.Automorphic.Whittaker.transl h g ∘ s = GroundTheory.Automorphic.Whittaker.transl h' (g ∘ s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Simplify using `only [Function.comp_apply, GroundTheory.Automorphic.Whittaker.transl_apply]`. Rewrite using `[hsτ, map_inv, hτh]`. Rewrite using `[hcomp, hD h' _ (cc g hg), hD h g hg, hχh]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `h1 : ∀ i, D' (g ∘ s^[i]) = D (g ∘ s^[i + 1]) - D (g ∘ s^[i])` using `fun i => rfl`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_range_sub (fun i => D (g ∘ s^[i]))]`. Establish `hid : s^[p] = id` using `funext hsp`.
-
-Simplify using `[hid]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocD.distInv :
     DistZero → DistInv := by

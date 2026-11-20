@@ -4,31 +4,29 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hp1 : ∀ k, q ≤ p k + N₀` using `fun k => by`. Use `(abs_le.mp (hp k)).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hp2 : ∀ k, p k ≤ q + N₀` using `fun k => by`. Use `(abs_le.mp (hp k)).2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hq0 : ξ ^ q ≠ 0` using `pow_ne_zero _ hξ`. Establish `cancel : ∀ (s : R), s ≠ 0 → ∀ M M' : Matrix (Fin d) (Fin d) R, s • M = s • M' → M = M'`. Introduce `s hs M M' h`. Use extensionality with `i j`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hs this`. Establish `hA1 : ξ ^ q • A = ξ ^ N • (V₀ * Matrix.diagonal (fun j => ξ ^ p j) * (c' * B'))`. Establish `: A = A * B * c * (c' * B')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.mul_assoc (A * B) c c', hc, Matrix.mul_one, Matrix.mul_assoc, hB, Matrix.mul_one]`. Use `conv_lhs => rw [this]`. Rewrite using `[← Matrix.smul_mul, hid, Matrix.smul_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrFun (congrFun hA1 i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at e`. Rewrite `e` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal] at e`. Establish `hdiv : ξ ^ q * ξ ^ (N - N₀) ∣ ξ ^ q * A i j`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[e, Finset.mul_sum]`. Apply `Finset.dvd_sum` to reduce the goal to its premises. Introduce `k _`. Establish `h1 : ξ ^ q * ξ ^ (N - N₀) ∣ ξ ^ N * ξ ^ p k`. Rewrite using `[← pow_add, ← pow_add]; exact pow_dvd_pow _ (by have := hp1 k; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans ⟨V₀ i k * (c' * B') k j, by ring⟩`. Conclude with `(mul_dvd_mul_iff_left hq0).mp hdiv`. Use `set D' : Matrix (Fin d) (Fin d) R := Matrix.diagonal (fun k => ξ ^ (N₀ + q - p k)) with hD'`. Establish `hDD : Matrix.diagonal (fun j => ξ ^ p j) * D' = ξ ^ (N₀ + q) • (1 : Matrix (Fin d) (Fin d) R)`. Rewrite using `[hD', Matrix.diagonal_mul_diagonal]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Rewrite using `[← pow_add]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Use `hp2 i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`. Use `set Z := B * c * D' * V₀' with hZ`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hAZ : ξ ^ q • (A * Z) = ξ ^ (N + (N₀ + q)) • (1 : Matrix (Fin d) (Fin d) R)`. Establish `: A * Z = A * B * c * D' * V₀'` using `by simp only [hZ, Matrix.mul_assoc]`. Rewrite using `[this, Matrix.mul_assoc (A * B * c), ← Matrix.smul_mul, hid, Matrix.smul_mul, Matrix.mul_assoc V₀, ← Matrix.mul_assoc _ D', hDD, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, hV, smul_smul, ← pow_add]`. Establish `hAZ2 : A * (ξ ^ (N - N₀) • Z) = A * A'`. Apply `cancel _ hq0` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_smul, smul_comm, hAZ, smul_smul, hA, smul_smul, ← pow_add, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `hdetA : A.det ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Matrix.det hA` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ (pow_ne_zero _ hξ) this.symm`. Establish `hA' : A' = ξ ^ (N - N₀) • Z`. Apply `cancel _ hdetA` to reduce the goal to its premises.
-
-Rewrite using `[← Matrix.one_mul A', ← Matrix.one_mul (ξ ^ (N - N₀) • Z), ← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.adjugate_mul, Matrix.mul_assoc, Matrix.mul_assoc, hAZ2]`. Introduce `i j`. Rewrite using `[hA', Matrix.smul_apply, smul_eq_mul]`. Conclude with `dvd_mul_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_matrix_comatrix_divisible {R : Type} [CommRing R] [IsDomain R] (d N N₀ q : ℕ) (p : Fin d → ℕ) (ξ : R)
     (A A' B B' c c' V₀ V₀' : Matrix (Fin d) (Fin d) R) (hξ : ξ ≠ 0) (hB : B * B' = 1) (hc : c * c' = 1)

@@ -30,7 +30,7 @@ section SqZero
 variable {M : Type} [AddCommGroup M] [Module R M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M]
 
 /- English proof (translation)
-Rewrite using `[← le_bot_iff, pow_two, Ideal.mul_le]`. Introduce `a ha b hb`. Establish `ha0 : a.fst = 0` using `ha`. Establish `hb0 : b.fst = 0` using `hb`. Rewrite using `[Ideal.mem_bot, show a = TrivSqZeroExt.inr a.snd from TrivSqZeroExt.ext ha0 rfl, show b = TrivSqZeroExt.inr b.snd from TrivSqZeroExt.ext hb0 rfl, TrivSqZeroExt.inr_mul_inr]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_fst_sq : (RingHom.ker (TrivSqZeroExt.fstHom R R M)) ^ (1 + 1) = ⊥ := by
   rw [← le_bot_iff, pow_two, Ideal.mul_le]
@@ -45,20 +45,20 @@ def modLift (c : Fin n → M) : JetR R (Fin n) 1 →ₐ[R] TrivSqZeroExt R M :=
     (fun j => TrivSqZeroExt.fst_inr R (c j))
 
 /- English proof (translation)
-The claim follows from `jetLift_zR _ _ _ _ j`.
+A detailed English derivation is pending.
 -/
 theorem modLift_zR (c : Fin n → M) (j : Fin n) : modLift (R := R) c (zR 1 j) = TrivSqZeroExt.inr (c j) :=
   jetLift_zR _ _ _ _ j
 
 /- English proof (translation)
-The claim follows from `jet_ext fun j => by rw [AlgHom.comp_apply, modLift_zR, jetAug_zR]; exact TrivSqZeroExt.fst_inr R (c j)`.
+A detailed English derivation is pending.
 -/
 theorem fst_comp_modLift (c : Fin n → M) :
     (TrivSqZeroExt.fstHom R R M).comp (modLift c) = jetAug R (Fin n) 1 :=
   jet_ext fun j => by rw [AlgHom.comp_apply, modLift_zR, jetAug_zR]; exact TrivSqZeroExt.fst_inr R (c j)
 
 /- English proof (translation)
-Establish `t : spMap (TrivSqZeroExt.fstHom R R M) ≫ spMap (modLift (R` using `R) c) = spMap ((TrivSqZeroExt.fstHom R R M).comp (modLift c)) := spMap_comp _ _`. Rewrite using `[← Category.assoc, t, fst_comp_modLift, spMap_jetAug_alt hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_modPt (hx : IsUnivChart G n x) (c : Fin n → M) :
     spMap (TrivSqZeroExt.fstHom R R M) ≫ spMap (modLift (R := R) c) ≫ x 1 = 1 := by
@@ -67,7 +67,7 @@ theorem fst_modPt (hx : IsUnivChart G n x) (c : Fin n → M) :
   rw [← Category.assoc, t, fst_comp_modLift, spMap_jetAug_alt hx]
 
 /- English proof (translation)
-The claim follows from `hx.2.2 (TrivSqZeroExt R M) (TrivSqZeroExt.fstHom R R M) 1 ker_fst_sq y hy`.
+A detailed English derivation is pending.
 -/
 theorem univ_mod (hx : IsUnivChart G n x) (y : sp (R₀ := R) (TrivSqZeroExt R M) ⟶ G)
     (hy : spMap (TrivSqZeroExt.fstHom R R M) ≫ y = 1) :
@@ -76,7 +76,7 @@ theorem univ_mod (hx : IsUnivChart G n x) (y : sp (R₀ := R) (TrivSqZeroExt R M
   hx.2.2 (TrivSqZeroExt R M) (TrivSqZeroExt.fstHom R R M) 1 ker_fst_sq y hy
 
 /- English proof (translation)
-Establish `h0` using `fst_modPt hx c`. Establish `e` using `(univ_mod hx _ h0).unique (y₁ := modLift c) (y₂ := modLift c') ⟨fst_comp_modLift c, rfl⟩ ⟨fst_comp_modLift c', h⟩`. Use function extensionality and compare the values at `j`. Use `congrArg TrivSqZeroExt.snd (AlgHom.congr_fun e (zR 1 j))` as an intermediate fact. Rewrite `this` using `[modLift_zR, modLift_zR, TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_inr]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem modPt_inj (hx : IsUnivChart G n x) {c c' : Fin n → M}
     (h : spMap (modLift (R := R) c) ≫ x 1 = spMap (modLift c') ≫ x 1) : c = c' := by
@@ -88,7 +88,7 @@ theorem modPt_inj (hx : IsUnivChart G n x) {c c' : Fin n → M}
   rwa [modLift_zR, modLift_zR, TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_inr] at this
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, spMap_comp]`. Use `congr 2`. Conclude with `jet_ext fun j => by rw [AlgHom.comp_apply, modLift_zR, modLift_zR, TrivSqZeroExt.map_inr]; rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_modPt {N : Type} [AddCommGroup N] [Module R N] [Module Rᵐᵒᵖ N] [IsCentralScalar R N] (l : M →ₗ[R] N)
     (c : Fin n → M) : spMap (TrivSqZeroExt.map l) ≫ spMap (modLift (R := R) c) ≫ x 1 =
@@ -98,7 +98,7 @@ theorem map_modPt {N : Type} [AddCommGroup N] [Module R N] [Module Rᵐᵒᵖ N]
   exact jet_ext fun j => by rw [AlgHom.comp_apply, modLift_zR, modLift_zR, TrivSqZeroExt.map_inr]; rfl
 
 /- English proof (translation)
-Establish `: modLift (R` using `R) (0 : Fin n → M) = (Algebra.ofId R _).comp (jetAug R (Fin n) 1) := jet_ext fun j => by`. Rewrite using `[modLift_zR, AlgHom.comp_apply, jetAug_zR, map_zero, Pi.zero_apply, TrivSqZeroExt.inr_zero]`. Rewrite using `[this, ← spMap_comp, Category.assoc, spMap_jetAug_alt hx, comp_one']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem modPt_zero (hx : IsUnivChart G n x) : spMap (modLift (R := R) (0 : Fin n → M)) ≫ x 1 = 1 := by
   have : modLift (R := R) (0 : Fin n → M) = (Algebra.ofId R _).comp (jetAug R (Fin n) 1) :=
@@ -107,17 +107,15 @@ theorem modPt_zero (hx : IsUnivChart G n x) : spMap (modLift (R := R) (0 : Fin n
   rw [this, ← spMap_comp, Category.assoc, spMap_jetAug_alt hx, comp_one']
 
 /- English proof (translation)
-Set `P : sp (R₀` to `R) (TrivSqZeroExt R (M × M)) ⟶ G := (spMap (modLift (LinearMap.inl R M M ∘ c)) ≫ x 1) * (spMap (modLift (LinearMap.inr R M M ∘ c')) ≫ x 1)`. Establish `hP : spMap (TrivSqZeroExt.fstHom R R (M × M)) ≫ P = 1`. Use `(MonObj.comp_mul _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[fst_modPt hx, fst_modPt hx, _root_.mul_one]`. Take `⟨ψ, ⟨h1, h2⟩, -⟩` from `univ_mod hx P hP`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩ : ∃ a : Fin n → M × M, ψ = modLift a` from `⟨fun j => (ψ (zR 1 j)).snd, jet_ext fun j => by`. Rewrite using `[modLift_zR]`. Use `TrivSqZeroExt.ext ?_ rfl` and prove the remaining obligations. Use `AlgHom.congr_fun h1 (zR 1 j)` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply, jetAug_zR]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this⟩`. Establish `key : ∀ l : M × M →ₗ[R] M, spMap (modLift (l ∘ a)) ≫ x 1 = (spMap (modLift (l ∘ LinearMap.inl R M M ∘ c)) ≫ x 1) * (spMap (modLift (l ∘ LinearMap.inr R M M ∘ c')) ≫ x 1)` using `fun l => by`. Rewrite using `[← map_modPt, ← h2, MonObj.comp_mul, map_modPt, map_modPt]`. Establish `k1` using `key (LinearMap.fst R M M)`. Establish `k2` using `key (LinearMap.snd R M M)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k3` using `key (LinearMap.fst R M M + LinearMap.snd R M M)`. Rewrite `k1` using `[show (LinearMap.fst R M M) ∘ LinearMap.inr R M M ∘ c' = 0 from rfl, modPt_zero hx, _root_.mul_one]`. Rewrite `k2` using `[show (LinearMap.snd R M M) ∘ LinearMap.inl R M M ∘ c = 0 from rfl, modPt_zero hx, _root_.one_mul]`. Establish `e1` using `modPt_inj hx k1`. Establish `e2` using `modPt_inj hx k2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1 : (LinearMap.fst R M M + LinearMap.snd R M M) ∘ LinearMap.inl R M M ∘ c = c` using `by funext j; simp`. Establish `f2 : (LinearMap.fst R M M + LinearMap.snd R M M) ∘ LinearMap.inr R M M ∘ c' = c'` using `by funext j; simp`. Establish `f3 : (LinearMap.fst R M M + LinearMap.snd R M M) ∘ a = c + c'`. Use function extensionality and compare the values at `j`. Conclude with `congrArg₂ (· + ·) (congrFun e1 j) (congrFun e2 j)`.
-
-Rewrite `k3` using `[f1, f2, f3]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem modPt_add (hx : IsUnivChart G n x) (c c' : Fin n → M) :
     spMap (modLift (R := R) (c + c')) ≫ x 1 = (spMap (modLift c) ≫ x 1) * (spMap (modLift c') ≫ x 1) := by
@@ -157,15 +155,15 @@ end SqZero
 variable {S : Type} [CommRing S] [Algebra R S]
 
 /- English proof (translation)
-The claim follows from `jetLift_zR _ _ _ _ j`.
+A detailed English derivation is pending.
 -/
 theorem dualLiftOver_zR (c : Fin n → S) (j : Fin n) :
     dualLiftOver (R := R) c (zR 1 j) = TrivSqZeroExt.inr (c j) := jetLift_zR _ _ _ _ j
 
 /- English proof (translation)
-Set `_ : Module Rᵐᵒᵖ S` to `Module.compHom S ((RingHom.id R).fromOpposite mul_comm)`. Establish `_ : IsCentralScalar R S` using `⟨fun _ _ => rfl⟩`. Set `g : TrivSqZeroExt R S →ₐ[R] DualNumber S` to `TrivSqZeroExt.liftEquivOfComm ⟨(TrivSqZeroExt.inrHom S S).restrictScalars R, fun a b => TrivSqZeroExt.inr_mul_inr S a b⟩`. Establish `h : ∀ c : Fin n → S, tvecOver x c = spMap g ≫ spMap (modLift (R` using `R) c) ≫ x 1 := fun c => by`. Rewrite using `[← Category.assoc, spMap_comp, tvecOver]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, modLift_zR, dualLiftOver_zR]`. Simplify using `[g, TrivSqZeroExt.liftEquivOfComm]`. Rewrite using `[h, h, h, modPt_add hx, MonObj.comp_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tvecOver_add (hx : IsUnivChart G n x) (c c' : Fin n → S) :
     tvecOver x (c + c') = tvecOver x c * tvecOver x c' := by
@@ -182,7 +180,7 @@ theorem tvecOver_add (hx : IsUnivChart G n x) (c c' : Fin n → S) :
   rw [h, h, h, modPt_add hx, MonObj.comp_mul]
 
 /- English proof (translation)
-Rewrite using `[tvecOver, tvecOver, ← Category.assoc, spMap_comp]`. Use `congr 2`. Conclude with `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, dualLiftOver_zR, dualLiftOver_zR]`. Conclude with `(TrivSqZeroExt.map_inr (s • LinearMap.id : S →ₗ[S] S) (c j)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tvecOver_smul (s : S) (c : Fin n → S) :
     tvecOver x (s • c) = spMap (scaleOver R s) ≫ tvecOver x c := by
@@ -199,7 +197,7 @@ def dualAlg : DualNumber R →ₐ[R] DualNumber S :=
     commutes' := fun r => by ext <;> simp [dualMapR, TrivSqZeroExt.algebraMap_eq_inl'] }
 
 /- English proof (translation)
-Rewrite using `[tvec, tvecOver, ← Category.assoc, spMap_comp]`. Use `congr 2`. Conclude with `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, dualLift_zR, dualLiftOver_zR]`. Apply the tactic sequence `ext <;> simp [dualAlg, dualMapR]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dualAlg_tvec (c : Fin n → R) :
     spMap (dualAlg R S) ≫ tvec (x := x) c = tvecOver x (algebraMap R S ∘ c) := by
@@ -210,7 +208,7 @@ theorem dualAlg_tvec (c : Fin n → R) :
     ext <;> simp [dualAlg, dualMapR]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q : sp (R₀ := R) (DualNumber S) ⟶ G => q.left) (dualAlg_tvec (x := x) c)`.
+A detailed English derivation is pending.
 -/
 theorem dualMapR_tvec (c : Fin n → R) :
     Spec.map (CommRingCat.ofHom (dualMapR (algebraMap R S))) ≫ (tvec (x := x) c).left =
@@ -218,11 +216,11 @@ theorem dualMapR_tvec (c : Fin n → R) :
   congrArg (fun q : sp (R₀ := R) (DualNumber S) ⟶ G => q.left) (dualAlg_tvec (x := x) c)
 
 /- English proof (translation)
-Establish `h0 : F 0 = F' 0`. Use `h 0` as an intermediate fact. Rewrite `this` using `[show algebraMap R S ∘ (0 : Fin n → R) = 0 from funext fun _ => map_zero _]`. Then use the resulting hypothesis. Proceed by induction on `c using Pi.single_induction with`. Consider the case `zero => exact h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately.
 
-Consider the case `add c c' hc hc' => rw [a, a', hc, hc']`. Consider the case `single i r`. Establish `e : (Pi.single i r : Fin n → S) = r • (algebraMap R S ∘ (Pi.single i 1 : Fin n → R))`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`. Rewrite using `[e, s, s', h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem family_ext {F F' : (Fin n → S) → (sp (R₀ := R) (DualNumber S) ⟶ G)}
     (a : ∀ c c', F (c + c') = F c * F c') (a' : ∀ c c', F' (c + c') = F' c * F' c')
@@ -245,7 +243,7 @@ theorem family_ext {F F' : (Fin n → S) → (sp (R₀ := R) (DualNumber S) ⟶ 
     rw [e, s, s', h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[extendLin, Matrix.toLin'_apply, ← RingHom.map_mulVec, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extendLin_comp (T : (Fin n → R) →ₗ[R] (Fin n → R)) (c : Fin n → R) :
     extendLin S T (algebraMap R S ∘ c) = algebraMap R S ∘ T c := by
@@ -287,13 +285,13 @@ def CoordBC (hx : IsUnivChart G n x) (S : Type) [CommRing S] [Algebra R S] : Pro
   ∀ (f : G ⟶ G) [IsMonHom f] (c : Fin n → S), tvecOver x c ≫ f = tvecOver x (extendLin S (tmap hx f) c)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isTan_tvec hx, exists_coord hx, tvec_add hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTangentChart_of_isUnivChart (hx : IsUnivChart G n x) : IsTangentChart G n x :=
   ⟨isTan_tvec hx, exists_coord hx, tvec_add hx⟩
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ h => ⟨isTangentChart_of_isUnivChart h.1, h.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem chartBCOne_of_chartBC {S : Type} [CommRing S] {φ : R →+* S} (h : ChartBC φ G n x) : ChartBCOne φ G n x :=
   h.imp fun _ h => ⟨isTangentChart_of_isUnivChart h.1, h.2⟩
@@ -302,7 +300,7 @@ variable {S : Type} [CommRing S] [Algebra R S]
 
 variable (G S) in
 /- English proof (translation)
-The claim follows from `exists_mulEquiv_of_isGrpPullback (Geo.Tor.isGrpPullback_pullback G _) _ _ (by rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq])`.
+A detailed English derivation is pending.
 -/
 theorem exists_push (P : Type) [CommRing P] [Algebra S P] [Algebra R P] [IsScalarTower R S P] :
     ∃ e : (sp (R₀ := S) P ⟶ (Over.pullback (Spec.map (CommRingCat.ofHom (algebraMap R S)))).obj G) ≃*
@@ -317,13 +315,13 @@ def push (P : Type) [CommRing P] [Algebra S P] [Algebra R P] [IsScalarTower R S 
       (sp (R₀ := R) P ⟶ G) := (exists_push G S P).choose
 
 /- English proof (translation)
-The claim follows from `(exists_push G S P).choose_spec y`.
+A detailed English derivation is pending.
 -/
 theorem push_left {P : Type} [CommRing P] [Algebra S P] [Algebra R P] [IsScalarTower R S P] (y) :
     (push G S P y).left = y.left ≫ pullback.fst _ _ := (exists_push G S P).choose_spec y
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[push_left, Over.comp_left, Over.comp_left, push_left, Category.assoc]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_spMap {P P' : Type} [CommRing P] [Algebra S P] [Algebra R P] [IsScalarTower R S P]
     [CommRing P'] [Algebra S P'] [Algebra R P'] [IsScalarTower R S P'] (g : P →ₐ[S] P') (y) :
@@ -333,15 +331,15 @@ theorem push_spMap {P P' : Type} [CommRing P] [Algebra S P] [Algebra R P] [IsSca
   rfl
 
 /- English proof (translation)
-Rewrite using `[IsTan, ← push_spMap, map_eq_one_iff _ (push G S S).injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isTan_iff_push (w) : IsTan w ↔ spMap (fstOver R S) ≫ push G S (DualNumber S) w = 1 := by
   rw [IsTan, ← push_spMap, map_eq_one_iff _ (push G S S).injective]
 
 /- English proof (translation)
-Use `family_ext (F := fun c => tvecOver x c ≫ f) (F' := fun c => tvecOver x (extendLin S (tmap hx f) c)) (fun c c' => ?_) (fun c c' => ?_) (fun r c => ?_) (fun r c => ?_) (fun c => ?_) c` and prove the remaining obligations. Rewrite using `[tvecOver_add hx, Hom.mul_def, Hom.mul_def, Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]`. Rewrite using `[map_add, tvecOver_add hx]`. Rewrite using `[tvecOver_smul, Category.assoc]`. Rewrite using `[map_smul, tvecOver_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extendLin_comp, ← dualAlg_tvec, ← dualAlg_tvec, tvec_tmap, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tvecOver_comp (hx : IsUnivChart G n x) (f : G ⟶ G) [IsMonHom f] (c : Fin n → S) :
     tvecOver x c ≫ f = tvecOver x (extendLin S (tmap hx f) c) := by
@@ -354,17 +352,15 @@ theorem tvecOver_comp (hx : IsUnivChart G n x) (f : G ⟶ G) [IsMonHom f] (c : F
   · rw [extendLin_comp, ← dualAlg_tvec, ← dualAlg_tvec, tvec_tmap, Category.assoc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, -, -⟩`. Set `jm : ∀ m, JetR R (Fin n) m →ₐ[R] JetR S (Fin n) m` to `fun m => jetLift R (RingHom.ker (jetAug S (Fin n) m)) (ker_jetAug_pow (Fin n) m) (fun j => zR m j) (fun j => zR_mem_ker m j)`. Set `x'` to `fun m => (push G S (JetR S (Fin n) m)).symm (spMap (jm m) ≫ x m)`. Establish `key : ∀ c, push G S _ (tvec (x` using `x') c) = tvecOver x c := fun c => by`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[tvec, push_spMap, MulEquiv.apply_symm_apply, ← Category.assoc, spMap_comp, tvecOver]`. Use `congr 2`. Conclude with `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, jetLift_zR, dualLiftOver_zR]`. Conclude with `dualLift_zR c j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x', ⟨fun c => ?_, fun w hw => ?_, fun c c' => ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[isTan_iff_push, key, h1]`. Use `(existsUnique_congr fun c => ?_).1 (h2 _ ((isTan_iff_push w).1 hw))` and prove the remaining obligations. Rewrite using `[← key, (push G S _).injective.eq_iff]`. Apply `(push G S _).injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, key, key, key, h3]`. Rewrite using `[← push_left, key, dualMapR_tvec]`. Introduce and unpack `⟨x', ⟨h1, h2, h3⟩, h4⟩`. Establish `key : ∀ c, push G S _ (tvec (x` using `x') c) = tvecOver x c := family_ext (fun c c' => by rw [h3, map_mul]) (tvecOver_add hx) (fun r c => by`. Rewrite using `[show tvec (x := x') (r • c) = spMap (scaleOver S r) ≫ tvec (x := x') c from tvecOver_smul (x := x') r c, push_spMap]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl) tvecOver_smul`. Use the proof step `(fun c => Over.OverMorphism.ext (by rw [push_left, h4, dualMapR_tvec]))`. Use `⟨fun c => ?_, fun w hw => ?_, tvecOver_add hx, tvecOver_smul, tvecOver_comp hx⟩` and prove the remaining obligations. Rewrite using `[← key, ← isTan_iff_push]`. Conclude with `h1 c`.
-
-Take `⟨w, rfl⟩` from `(push G S _).surjective w`. Use `(existsUnique_congr fun c => ?_).1 (h2 _ ((isTan_iff_push w).2 hw))` and prove the remaining obligations. Rewrite using `[← key, (push G S _).injective.eq_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordBC_iff (hx : IsUnivChart G n x) : CoordBC hx S ↔ ChartBCOne (algebraMap R S) G n x := by
   constructor
@@ -407,7 +403,7 @@ def TanBCOne : Prop :=
     IsUnivChart G n x → ChartBCOne φ G n x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h R S _ _ _ φ G _ n x hx => by let _ := φ.toAlgebra exact (coordBC_iff hx).1 (h R G n x hx S), fun h R _ _ G _ n x hx S _ _ => (coordBC_iff hx).2 (h R S _ G n x hx)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tangentBaseChange_iff_one : TangentBaseChange ↔ TanBCOne :=
   ⟨fun h R S _ _ _ φ G _ n x hx => by
@@ -416,7 +412,7 @@ theorem tangentBaseChange_iff_one : TangentBaseChange ↔ TanBCOne :=
   fun h R _ _ G _ n x hx S _ _ => (coordBC_iff hx).2 (h R S _ G n x hx)⟩
 
 /- English proof (translation)
-Introduce `R S _ _ _ φ G _ n x hx` and use `chartBCOne_of_chartBC (h R S φ G n x hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tanBCOne_of_tanBCSt (h : TanBCSt) : TanBCOne :=
   fun R S _ _ _ φ G _ n x hx => chartBCOne_of_chartBC (h R S φ G n x hx)
@@ -426,15 +422,15 @@ end Tangent
 section Rank
 
 /- English proof (translation)
-Set `T' : Multiplicative (Fin n → k) →* A` to `MonoidHom.mk' (fun c => T c.toAdd) fun c c' => ha _ _`. Establish `pr : ∀ c : Fin N → Fin n → k, (List.ofFn fun i => T (c i)).prod = T (∑ i, c i)` using `fun c => by`. Use `map_list_prod T' (List.ofFn fun i => Multiplicative.ofAdd (c i))` as an intermediate fact. Rewrite `this` using `[List.map_ofFn, List.prod_ofFn, ← ofAdd_sum]`. Conclude with `this.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `comb : ∀ (b : Fin N → W) (c : W) (d : Fin N → k), (∃ u : Fin N → A, (∀ i, Q (d i) (u i) (T (b i))) ∧ T c = (List.ofFn u).prod) ↔ Fintype.linearCombination k b d = c` using `fun b c d => by`. Simplify using `only [hQ, ← funext_iff, exists_eq_left]`. Rewrite using `[pr, hT.eq_iff, Subtype.ext_iff, Fintype.linearCombination_apply]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul]`. Conclude with `eq_comm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, H⟩ choose b hb hb' using fun i => (hP _).1 (hv i)`. Take `rfl : v = fun i => T (b i)` from `funext hb'`. Rewrite using `[← (LinearEquiv.ofBijective (Fintype.linearCombination k fun i => (⟨b i, hb i⟩ : W)) ((Function.bijective_iff_existsUnique _).2 fun c => (existsUnique_congr (comb (fun i => ⟨b i, hb i⟩) c)).1 (H _ ((hP _).2 ⟨c, c.2, rfl⟩)))).finrank_eq, Module.finrank_fin_fun]`. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `b` to `Module.finBasisOfFinrankEq _ _ h`. Use `⟨fun i => T (b i), fun i => (hP _).2 ⟨_, (b i).2, rfl⟩, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `(hP _).1 hw`. Use `(existsUnique_congr (comb b ⟨c, hc⟩)).2 ((Function.bijective_iff_existsUnique _).1 ?_ _)` and prove the remaining obligations. Use `b.equivFun.symm.bijective using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `r`. Simplify using `[Fintype.linearCombination_apply]`.
+A detailed English derivation is pending.
 -/
 theorem basis_iff_finrank {k A : Type} [Field k] [Group A] {n : ℕ} (T : (Fin n → k) → A) (hT : Function.Injective T)
     (ha : ∀ c c', T (c + c') = T c * T c') (W : Submodule k (Fin n → k)) {P : A → Prop} {Q : k → A → A → Prop}
@@ -473,7 +469,7 @@ theorem basis_iff_finrank {k A : Type} [Field k] [Group A] {n : ℕ} (T : (Fin n
 def under {S X : Scheme.{0}} {G : Over S} {a : X ⟶ S} (y : Over.mk a ⟶ G) : X ⟶ G.left := y.left
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext_iff`.
+A detailed English derivation is pending.
 -/
 theorem under_inj {S X : Scheme.{0}} {G : Over S} {a : X ⟶ S} {y y' : Over.mk a ⟶ G} :
     y = y' ↔ under y = under y' := Over.OverMorphism.ext_iff
@@ -485,7 +481,7 @@ theorem under_comp {S X : Scheme.{0}} {G : Over S} {a : X ⟶ S} (y : Over.mk a 
     under (y ≫ f) = under y ≫ f.left := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨MulEquiv.refl _, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_mulEquiv_of_eq {S X : Scheme.{0}} (G : Over S) [GrpObj G] {a b : X ⟶ S} (h : a = b) :
     ∃ e : (Over.mk a ⟶ G) ≃* (Over.mk b ⟶ G), ∀ y, under (e y) = under y := by
@@ -493,7 +489,7 @@ theorem exists_mulEquiv_of_eq {S X : Scheme.{0}} (G : Over S) [GrpObj G] {a b : 
   exact ⟨MulEquiv.refl _, fun _ => rfl⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isLieEigen_under {S : Scheme.{0}} {G : Over S} [GrpObj G] {k : Type} [Field k] {O : Type} [CommRing O]
     (act : OAct O G) (t : Sp k ⟶ S) (τ : O →+* k) (v : epsPt t ⟶ G) :
@@ -517,7 +513,7 @@ theorem under_fst {k : Type} [Field k] [Algebra R k] (w : sp (R₀ := R) (DualNu
     under (spMap (fstOver R k) ≫ w) = Geo.Tor.spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ under w := rfl
 
 /- English proof (translation)
-The claim follows from `exists_mulEquiv_of_eq G (by rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq])`.
+A detailed English derivation is pending.
 -/
 theorem exists_eps {k : Type} [Field k] [Algebra R k] :
     ∃ e : (sp (R₀ := R) (DualNumber k) ⟶ G) ≃* (epsPt (Geo.Tor.spMap (algebraMap R k)) ⟶ G),
@@ -525,7 +521,7 @@ theorem exists_eps {k : Type} [Field k] [Algebra R k] :
   exists_mulEquiv_of_eq G (by rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq])
 
 /- English proof (translation)
-Rewrite using `[isLieEigen_under, he]`. Use `and_congr ?_ (forall_congr' fun a => ?_)` and prove the remaining obligations. Rewrite using `[under_inj, under_fst]`. Rewrite using `[under_inj, under_comp, under_scale]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLieEigen_iff {k : Type} [Field k] [Algebra R k] {O : Type} [CommRing O] (act : OAct O G) (τ : O →+* k)
     (w : sp (R₀ := R) (DualNumber k) ⟶ G) (w' : epsPt (Geo.Tor.spMap (algebraMap R k)) ⟶ G)
@@ -538,9 +534,9 @@ theorem isLieEigen_iff {k : Type} [Field k] [Algebra R k] {O : Type} [CommRing O
   · rw [under_inj, under_comp, under_scale]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hB`. Establish `inj : Function.Injective (tvecOver x : (Fin n → k) → _)` using `fun c c' h => (h2 _ (h1 c)).unique rfl h`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Use `act.hom a` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h5, ← h4, inj.eq_iff, lieAct]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_eig_iff (hx : IsUnivChart G n x) {k : Type} [Field k] [Algebra R k] (hB : CoordBC hx k) {O : Type}
     [CommRing O] (act : OAct O G) (τ : O →+* k) (c : Fin n → k) :
@@ -555,11 +551,11 @@ theorem mem_eig_iff (hx : IsUnivChart G n x) {k : Type} [Field k] [Algebra R k] 
   rw [h5, ← h4, inj.eq_iff, lieAct]
 
 /- English proof (translation)
-Establish `m` using `mem_eig_iff hx hB act τ`. Take `⟨h1, h2, h3, h4, -⟩` from `hB`. Take `⟨e, he⟩` from `exists_eps (G := G) (k := k)`. Establish `inj : Function.Injective (tvecOver x : (Fin n → k) → _)` using `fun c c' h => (h2 _ (h1 c)).unique rfl h`. Use `basis_iff_finrank (fun c => e (tvecOver x c)) (e.injective.comp inj) (fun c c' => by rw [h3, map_mul]) _ (P := IsLieEigen act _ τ) (Q := fun d u v => under u = Geo.Tor.spMap (epsScale d) ≫ under v) (fun w => ?_) (fun d u c => ?_) N` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, rfl⟩` from `e.surjective w`. Rewrite using `[isLieEigen_iff act τ w _ (he w)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t1, t2⟩`. Take `⟨c, rfl, -⟩` from `h2 w t1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, (m c).2 t2, rfl⟩`. Introduce and unpack `⟨c, hc, hw⟩`. Take `rfl` from `e.injective hw`. Conclude with `⟨h1 c, (m c).1 hc⟩`. Rewrite using `[under_inj, he, he, h4, under_scale]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieMult_iff (hx : IsUnivChart G n x) {k : Type} [Field k] [Algebra R k] (hB : CoordBC hx k) {O : Type}
     [CommRing O] (act : OAct O G) (τ : O →+* k) (N : ℕ) :
@@ -584,9 +580,9 @@ theorem lieMult_iff (hx : IsUnivChart G n x) {k : Type} [Field k] [Algebra R k] 
   · rw [under_inj, he, he, h4, under_scale]
 
 /- English proof (translation)
-Set `_` to `i.toAlgebra`. Establish `h : ∀ a, ∃ z : K, i z = τ a` using `fun a => by`. Establish `hi : IsIntegral K (τ a)` using `((Algebra.IsIntegral.isIntegral (R := ℤ) a).map τ.toIntAlgHom).tower_top`. Conclude with `minpoly.mem_range_of_degree_eq_one K _ (IsAlgClosed.degree_eq_one_of_irreducible K (minpoly.irreducible hi))`. Use `choose f hf using h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `inj` using `i.injective`. Conclude with `⟨⟨⟨⟨f, inj (by simp [hf])⟩, fun a b => inj (by simp [hf])⟩, inj (by simp [hf]), fun a b => inj (by simp [hf])⟩, RingHom.ext hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor {O K k : Type} [CommRing O] [Algebra.IsIntegral ℤ O] [Field K] [IsAlgClosed K] [Field k]
     (i : K →+* k) (τ : O →+* k) : ∃ χ : O →+* K, i.comp χ = τ := by

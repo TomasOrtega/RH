@@ -30,19 +30,17 @@ noncomputable section
 namespace GlobalTheory.ThetaDet
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hLB : (lbPow P.L N).IsLB` using `isLB_lbPow P.isLB N`. Establish `hsm : SmoothOfRelativeDimension g P.A.hom`. Rewrite using `[← hg]`. Conclude with `P.smoothDim`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hpr, hhom, hX, hdim⟩` from `ZH.ConePrime.isPrime_vanishingIdeal_cone K P.A.left P.A.hom (lbPow P.L N) J s Set.univ hLB hs (polAV_isIntegral_of_isAlgClosed K P) g hsm`. Establish `hnz : ∃ i ∈ (Set.univ : Set J), w i ≠ 0`. Take `⟨x, -, hxw⟩` from `hw`. Establish `h1 : ⊤ ≤ x ⁻¹ᵁ (⨆ i ∈ (Set.univ : Set J), Out.nonzeroLocus (s' i))`. Rewrite using `[hs'.1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [Set.mem_univ, iSup_pos] at h1`. Establish `h2` using `(ZH.CrdCalc.top_le_iff x _).1 h1`. Rewrite `h2` using `[TopologicalSpace.Opens.mem_iSup]`. Take `⟨i, hi⟩` from `h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨i, Set.mem_univ _, ((ZH.CrdCalc.crd_isUnit_iff i hxw).2 ((ZH.CrdCalc.top_le_iff x _).2 hi)).ne_zero⟩`. Use `ZH.ConeClosed.mem_cone_of_vanishing K P.A.left P.A.hom (lbPow P.L N) J s Set.univ hLB hs w hnz ?_` and prove the remaining obligations. Introduce `Pf hPf`. Use `ZH.eval_eq_zero_of_hilb_le K J _ g N hpr hhom hX hdim ?_ w ?_ Pf hPf` and prove the remaining obligations. Introduce `d hd`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `AbelianFormCount.hilb_cone_le h K P N J s d (by omega) hd` as an intermediate fact. Rewrite `this` using `[hg]`. Then use the resulting hypothesis. Introduce `d F hd hF hFI`. Establish `hFI' : F ∈ MvPolynomial.vanishingIdeal K (cone P'.A.hom (lbPow P'.L N) s')`. Use `T.mem_vanishingIdeal_of_form_vanishing_torsion h K P' N d k J s' F hN hk ?_ hF ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg']`. Combine the equalities or inequalities in the displayed calculation. Introduce `x hx1`. Take `⟨v, hv, hvC⟩` from `hx x hx1`. Conclude with `⟨v, hv, MvPolynomial.mem_vanishingIdeal_iff.1 hFI v hvC⟩`.
-
-Conclude with `MvPolynomial.mem_vanishingIdeal_iff.1 hFI' w hw`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cone_subset (h : Out.Laws) {K : Type} [Field K] [IsAlgClosed K] (P P' : Out.PolAV (Sp K)) {g N k : ℕ}
     (hg : P.g = g) (hg' : P'.g = g) (hN : 4 ≤ N) (hk : (k : K) ≠ 0) (hb : N ^ g * g.factorial < k) {J : Type}
@@ -87,7 +85,7 @@ theorem cone_subset (h : Out.Laws) {K : Type} [Field K] [IsAlgClosed K] (P P' : 
     exact MvPolynomial.mem_vanishingIdeal_iff.1 hFI' w hw
 
 /- English proof (translation)
-Rewrite using `[ThetaPtDet.levelPoint_eq]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Out.linComb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levelPoint_zero {S : Scheme.{0}} {P : Out.PolAV S} {M : ℕ} {ze : Γ(S, ⊤)ˣ} (lev : Out.Level P M ze) {g : ℕ}
     (hg : P.g = g) : levelPoint lev hg 0 = 1 := by
@@ -95,7 +93,7 @@ theorem levelPoint_zero {S : Scheme.{0}} {P : Out.PolAV S} {M : ℕ} {ze : Γ(S,
   simp [ReciprocityTheory.ChartRestriction.G.Out.linComb]
 
 /- English proof (translation)
-Rewrite using `[ThetaPtDet.levelPoint_eq, ReciprocityTheory.ChartRestriction.G.Out.linComb, List.prod_ofFn, Finset.prod_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)]`. Establish `ht : levelBasis lev hg i ^ M = 1` using `lev.torsion _`. Rewrite using `[Pi.single_eq_same, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 ht, pow_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelPoint_single {S : Scheme.{0}} {P : Out.PolAV S} {M : ℕ} {ze : Γ(S, ⊤)ˣ} (lev : Out.Level P M ze) {g : ℕ}
     (hg : P.g = g) (i : Fin (2 * g)) : levelPoint lev hg (Pi.single i 1) = levelBasis lev hg i := by
@@ -105,13 +103,13 @@ theorem levelPoint_single {S : Scheme.{0}} {P : Out.PolAV S} {M : ℕ} {ze : Γ(
   rw [Pi.single_eq_same, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 ht, pow_one]
 
 /- English proof (translation)
-Establish `hodd : Odd N'` using `hv.1`. Take `⟨⟨th, t, hth, htf⟩, hform⟩` from `(theta_coordinates h g m r N N' hN hN').1 (Sp K) P hg ze lev v hv`. Take `⟨hcoord, -⟩` from `hform th t hth htf`. Take `⟨-, -, hrest⟩` from `(theta_coordinates h g m r N N' hN hN').2 K hodd hK P hg ze lev`. Take `⟨hspan, -, -⟩` from `hrest th t hth htf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, e⟩ : ∃ ρ : P.A.left ⟶ (Out.baseOver (Sp K) ⊗ P.A).left, ρ ≫ (snd (Out.baseOver (Sp K)) P.A).left = 𝟙 P.A.left` from `⟨(lift (Over.homMk P.A.hom (by simp [Out.baseOver])) (𝟙 P.A)).left, by rw [← Over.comp_left, lift_snd]; rfl⟩`. Take `⟨hθ, hassoc⟩` from `T.thetaFamily_origin_germ_of_multiplication h K P N m _ (fun a => levelPoint lev hg a ^ r ^ 2) th t ρ e 0 hth htf (by rw [levelPoint_zero, one_pow])`. Use `⟨fun a => PowSec.down P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e (N : ℤ) (t a), PowSec.down P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e ((1 : ℕ) : ℤ) th, T.isClosedImmersion_of_span_linePowerSections h K P N _ t ρ e h4 hspan, ?_, hθ, hassoc⟩` and prove the remaining obligations. Introduce `c`. Take `⟨u, hu⟩` from `hcoord c _ (DVR.exists_gen_of_local (V := K) P.L P.isLB _ _).choose_spec`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `T.homogeneousCoords_of_isValueAt_frame K P N _ t ρ e (levelPoint lev hg c ^ N') _ _ hu`. Use `set φ := CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of K)).hom with hφ`. Establish `hu1 : φ ((u⁻¹ : Γ((Out.baseOver (Sp K)).left, ⊤)ˣ) : Γ((Out.baseOver (Sp K)).left, ⊤)) * φ (u : Γ((Out.baseOver (Sp K)).left, ⊤)) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Use `ZH.CrdCalc.crd_smul (Units.map φ.toMonoidHom u⁻¹) hc using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Units.val_mul, map_mul]`. Take the linear combination `(-(φ ((ze ^ thetaCoordExp m r a c : Γ((Out.baseOver (Sp K)).left, ⊤)ˣ) : Γ((Out.baseOver (Sp K)).left, ⊤)) * φ (v (thetaCoordIdx m r a c)))) * hu1`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_embedding (h : Out.Laws) {g m r N N' : ℕ} (hN : N = m ^ 2) (hN' : N' = r * m) (h4 : 4 ≤ N) {K : Type}
     [Field K] [IsAlgClosed K] (hK : (N' : K) ≠ 0) [NeZero (N' ^ 2)] (P : Out.PolAV (Sp K)) (hg : P.g = g)
@@ -157,31 +155,27 @@ namespace GlobalTheory
 open ThetaDet in
 
 /- English proof (translation)
-Introduce `h g n k j N N' hn hodd hk hN hN' hb K _ _ hn0 P P' hg hg' ze lev lev' v hv hv'`. Use `haveI := P.isAb`. Use `haveI := P'.isAb`. Use `haveI : IsProper P.A.hom := IsAbelianScheme.proper`. Use `haveI : IsProper P'.A.hom := IsAbelianScheme.proper`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : AlgebraicGeometry.IsIntegral P.A.left := polAV_isIntegral_of_isAlgClosed K P`. Use `haveI : AlgebraicGeometry.IsIntegral P'.A.left := polAV_isIntegral_of_isAlgClosed K P'`. Establish `hN'' : N' = n ^ j * n ^ k * n ^ k` using `by rw [hN', hN]; ring`. Establish `hn3 : 3 ≤ n`. Establish `h2` using `hn.two_le`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : n ≠ 2`. Introduce and unpack `rfl`. Conclude with `(by decide : ¬ Odd 2) hodd`. Use linear arithmetic over natural numbers and integers. Establish `h4 : 4 ≤ N`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `h1 : 3 ≤ n ^ k` using `le_trans hn3 (Nat.le_self_pow (by omega) n)`. Rewrite using `[hN]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hK : ((N' : ℕ) : K) ≠ 0`. Rewrite using `[hN'']`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hn0) (pow_ne_zero _ hn0)) (pow_ne_zero _ hn0)`. Establish `hN'0 : N' ≠ 0`. Introduce and unpack `h0`. Rewrite `hK` using `[h0, Nat.cast_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hK rfl`. Use `haveI : NeZero (N' ^ 2) := ⟨pow_ne_zero 2 hN'0⟩`. Establish `hoddN' : Odd N'` using `hv.1`. Take `⟨s, θ, hs, hcrd, hθ, hass⟩` from `ThetaDet.exists_embedding h hN hN'' h4 hK P hg lev hv`. Take `⟨s', θ', hs', hcrd', hθ', hass'⟩` from `ThetaDet.exists_embedding h hN hN'' h4 hK P' hg' lev' hv'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hcone1 : cone P'.A.hom _ s' ⊆ cone P.A.hom _ s`. Use `ThetaDet.cone_subset h P P' hg hg' h4 hK hb hs hs' ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨c, rfl⟩` from `((theta_coordinates h g (n ^ k) (n ^ j * n ^ k) N N' hN hN'').2 K hoddN' hK P' hg' ze lev').2.1 x |>.1 hx`. Conclude with `⟨_, hcrd' c, _, Over.w _, hcrd c⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcone2 : cone P.A.hom _ s ⊆ cone P'.A.hom _ s'`. Use `ThetaDet.cone_subset h P' P hg' hg h4 hK hb hs' hs ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨c, rfl⟩` from `((theta_coordinates h g (n ^ k) (n ^ j * n ^ k) N N' hN hN'').2 K hoddN' hK P hg ze lev).2.1 x |>.1 hx`. Conclude with `⟨_, hcrd c, _, Over.w _, hcrd' c⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `T.exists_iso_of_equal_coordinateCones K P.A P'.A (lbPow P.L N) (lbPow P'.L N) _ s s' (isLB_lbPow P.isLB N) (isLB_lbPow P'.isLB N) hs hs' (Set.Subset.antisymm hcone2 hcone1)`. Establish `heq : ∀ c, (levelPoint lev hg c ^ N') ≫ φ.hom = levelPoint lev' hg' c ^ N'`. Introduce `c`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ZH.ImmSep.eq_of_crd_eq K P'.A.left P'.A.hom (lbPow P'.L N) _ s' Set.univ (isLB_lbPow P'.isLB N) hs' K _ _ _ (by rw [Category.assoc, Over.w φ.hom, Over.w, Over.w]) (hφ K _ _ (hcrd c)) (hcrd' c)`. Establish `hη : η ≫ φ.hom = η`. Establish `h0` using `heq 0`. Rewrite `h0` using `[ThetaDet.levelPoint_zero, ThetaDet.levelPoint_zero, one_pow, one_pow]`. Establish `e1 : (1 : Out.baseOver (Sp K) ⟶ P.A) = η` using `Over.OverMorphism.ext rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (1 : Out.baseOver (Sp K) ⟶ P'.A) = η` using `Over.OverMorphism.ext rfl`. Rewrite `h0` using `[e1, e2]`. Conclude with `h0`. Use `haveI hmon : IsMonHom φ.hom := h.rigidity (Sp K) P.A P'.A P.isAb P'.isAb φ.hom hη`. Establish `hLBiso` using `T.lbIso_pull_of_hom_preserving_coordinates h K P P' N (n ^ k) _ s s' 0 θ θ' φ.hom (Nat.one_le_iff_ne_zero.2 (pow_ne_zero _ (by omega))) hmon (by simpa only [Set.mem_univ, iSup_pos] using hs.1) (fun F _ y w hw => hφ F y w hw) hθ hass hass'`.
-
-Establish `hpol : IsPolIso P P' φ` using `⟨hmon, hLBiso⟩`. Take `⟨lev'', hb'', hv''⟩` from `T.exists_level_thetaPt_of_polarisedIso h g N' K P P' hg hg' φ hpol ze lev' v hv'`. Establish `hnv` using `T.thetaPt_support_meets_every_coset h g n N' hn.two_le (by rw [hN'']; exact Dvd.dvd.mul_left (pow_dvd_pow n hk) _) K P hg ze lev v hv`. Establish `hpowN : N' = n ^ (j + 2 * k)` using `by rw [hN'']; ring`. Establish `hpw : ∀ i, levelBasis lev hg i ^ N' = levelBasis lev'' hg i ^ N'`.
-
-Introduce `i`. Apply `(cancel_mono φ.hom).1` to reduce the goal to its premises. Rewrite using `[pow_comp, pow_comp, hb'' i, ← pow_comp, ← ThetaDet.levelPoint_single lev hg i, heq, ThetaDet.levelPoint_single]`. Use `⟨φ, hpol, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[T.levelBasis_eq_of_same_thetaPt h g n (j + 2 * k) N' hodd hpowN K P hg ze lev lev'' v hv hv'' hpw hnv i, hb'' i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaPt_determines : Out.Laws → ThetaPtDeterminesSt := by
   intro h g n k j N N' hn hodd hk hN hN' hb K _ _ hn0 P P' hg hg' ze lev lev' v hv hv'

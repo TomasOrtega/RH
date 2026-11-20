@@ -15,7 +15,7 @@ namespace GlobalTheory.CovHt.KnownOf
 open GlobalTheory.CovTop GlobalTheory.CovHt
 
 /- English proof (translation)
-Introduce `hX hY h2 hH hSW hPD hJ hC` and use `heightEstimates_of_lieSlope hX h2 hH hY hSW hPD (GlobalTheory.LieSlopeProof.lieSlope hY.mat hY.sieg hJ) hC`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem known : HypothesesXH → HypothesesY → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB →
     GlobalTheory.Published.PoincareDeRhamDuality → GlobalTheory.LieHt.SecJets4 → (∃ r, GlobalTheory.CovTest.Ch2Const r) → Known₂ :=

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GeometricLemmaCe
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hB hF k _ _ _ _`. Conclude with `⟨hF k, GlobalTheory.T.geometricLemma_cell_semisimplification_GL hB k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem geometricLemma_of_filtration :
     GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemmaFiltration →

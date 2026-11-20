@@ -19,9 +19,9 @@ noncomputable section
 section Hilbert90
 
 /- English proof (translation)
-Use `IsZero.of_iso ?_ (cohomologyIsoGroupCohomology (galUnitsZ K L) 1)` and prove the remaining obligations. Establish `hz : ∀ x : groupCohomology (galUnitsZ K L) 1, x = 0` using `fun x => H1_induction_on x fun f => by`. Rewrite using `[H1π_eq_zero_iff]`. Establish `hf` using `(mem_cocycles₁_iff (A := galUnitsZ K L) f).1 f.2`. Take `⟨β, hβ⟩` from `groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units (fun σ => Additive.toMul (α := Lˣ) (f σ)) fun g h => congrArg (Additive.toMul (α := Lˣ)) (hf g h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Additive.ofMul β, funext fun σ => congrArg (Additive.ofMul (α := Lˣ)) (hβ σ)⟩`. Establish `: Subsingleton (groupCohomology (galUnitsZ K L) 1)` using `⟨fun a b => by rw [hz a, hz b]⟩`. Conclude with `ModuleCat.isZero_of_subsingleton _`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_one_galUnitsZ (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] :
     IsZero (cohomology (galUnitsZ K L) 1) := by
@@ -38,7 +38,7 @@ theorem isZero_cohomology_one_galUnitsZ (K L : Type) [Field K] [Field L] [Algebr
   exact ModuleCat.isZero_of_subsingleton _
 
 /- English proof (translation)
-Establish `hz : ∀ z : cohomology (unitsLimitRep E) 1, z = 0` using `fun z => by`. Take `⟨p, w, rfl⟩` from `exists_unitsLevelInfl_eq 1 z`. Rewrite using `[ModuleCat.subsingleton_of_isZero (isZero_cohomology_one_galUnitsZ E.1 p.1.1) |>.elim w 0, map_zero]`. Establish `: Subsingleton (cohomology (unitsLimitRep E) 1)` using `⟨fun x y => by rw [hz x, hz y]⟩`. Conclude with `ModuleCat.isZero_of_subsingleton _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_one_unitsLimitRep (E : FiniteSubfield) : IsZero (cohomology (unitsLimitRep E) 1) := by
   have hz : ∀ z : cohomology (unitsLimitRep E) 1, z = 0 := fun z => by
@@ -58,13 +58,13 @@ section Field
 variable {K E : FiniteSubfield} [Fact (K ≤ E)]
 
 /- English proof (translation)
-Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Set `φ : ℚ̄ →ₐ[K.1] ℚ̄` to `(IntermediateField.fixingSubgroupEquiv K.1 g⁻¹).toAlgHom`. Establish `hφ : ∀ y : ℚ̄, φ y = ((g⁻¹ : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) y` using `fun _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ((g⁻¹ : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) x ∈ E.1`. Establish `hc` using `φ.restrictNormal_commutes E.1 ⟨x, hx⟩`. Rewrite `hc` using `[hφ]`. Express the relevant statement in the definitionally equal form `_ = ((g⁻¹ : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) x at hc`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(φ.restrictNormal E.1 ⟨x, hx⟩).2`. Establish `h1` using `hn _ hmem`. Express the relevant statement in the definitionally equal form `((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) * (n : ℚ̄ ≃ₐ[ℚ] ℚ̄) * (g : ℚ̄ ≃ₐ[ℚ] ℚ̄)⁻¹) x = x`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply]`. Express the relevant statement in the definitionally equal form `(g : ℚ̄ ≃ₐ[ℚ] ℚ̄) ((n : ℚ̄ ≃ₐ[ℚ] ℚ̄) (((g⁻¹ : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) x)) = x`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `((g * g⁻¹ : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) x = x`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem normal_subgroupOf_of_isGalois [IsGalois K.1 E.1] :
     (E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal := by
@@ -93,7 +93,7 @@ attribute [local instance] normal_subgroupOf_of_isGalois
 omit [Fact (K ≤ E)] in
 
 /- English proof (translation)
-The claim follows from `E.1.fixingSubgroup_isOpen.preimage continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_subgroupOf_fixingSubgroup :
     IsOpen ((E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup : Subgroup K.1.fixingSubgroup) :
@@ -101,7 +101,7 @@ theorem isOpen_subgroupOf_fixingSubgroup :
   E.1.fixingSubgroup_isOpen.preimage continuous_subtype_val
 
 /- English proof (translation)
-Set `e` to `(QuotientGroup.quotientMulEquivOfEq (ker_restrictHom (F := K) (E := E)).symm).trans (QuotientGroup.quotientKerEquivOfSurjective _ (restrictHom_surjective (F := K) (E := E)))`. Conclude with `isCyclic_of_surjective e.symm.toMonoidHom e.symm.surjective`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isCyclic_quotient_subgroupOf [IsGalois K.1 E.1] [IsCyclic (E.1 ≃ₐ[K.1] E.1)] :
     IsCyclic (K.1.fixingSubgroup ⧸ E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup) := by
@@ -110,7 +110,7 @@ theorem isCyclic_quotient_subgroupOf [IsGalois K.1 E.1] [IsCyclic (E.1 ≃ₐ[K.
   exact isCyclic_of_surjective e.symm.toMonoidHom e.symm.surjective
 
 /- English proof (translation)
-Rewrite using `[unitsResField, cohomologyRes, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (by ext; rfl) (fun _ => rfl) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsResField_eq_cohomologyRes_comp (n : ℕ) :
     unitsResField K E n = cohomologyRes (unitsLimitRep K) (E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup) n ≫
@@ -121,7 +121,7 @@ theorem unitsResField_eq_cohomologyRes_comp (n : ℕ) :
   exact cohomologyMapAlong_congr _ _ _ _ (by ext; rfl) (fun _ => rfl) n
 
 /- English proof (translation)
-Rewrite using `[unitsResField_eq_cohomologyRes_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`. Establish `hinj : Function.Injective (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe (IntermediateField.fixingSubgroup_le (Fact.out : K ≤ E))).symm.toMonoidHom (continuous_subgroupOfEquivOfLe_symm _) (resSubgroupOfHom _ unitsRep) n).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Conclude with `⟨fun hx => hinj (by rw [hx, map_zero]), fun hx => by rw [hx, map_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem unitsResField_eq_zero_iff (n : ℕ) (x : cohomology (unitsLimitRep K) n) :
     (unitsResField K E n).hom x = 0 ↔
@@ -134,7 +134,7 @@ theorem unitsResField_eq_zero_iff (n : ℕ) (x : cohomology (unitsLimitRep K) n)
   exact ⟨fun hx => hinj (by rw [hx, map_zero]), fun hx => by rw [hx, map_zero]⟩
 
 /- English proof (translation)
-The claim follows from `(isZero_cohomology_one_unitsLimitRep E).of_iso (asIso (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe (IntermediateField.fixingSubgroup_le (Fact.out : K ≤ E))).symm.toMonoidHom (continuous_subgroupOfEquivOfLe_symm _) (resSubgroupOfHom _ unitsRep) 1))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_one_res_subgroupOf :
     IsZero (cohomology (Rep.res (E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).subtype (unitsLimitRep K)) 1) :=
@@ -146,11 +146,11 @@ theorem isZero_cohomology_one_res_subgroupOf :
 end Field
 
 /- English proof (translation)
-Use `set u : ℚ̄ˣ := Additive.toMul (a : Additive ℚ̄ˣ) with hu`. Establish `hfix : (u : ℚ̄) ∈ IntermediateField.fixedField K.1.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `g hg`. Establish `h` using `a.2 ⟨g, hg⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (fun z : Additive ℚ̄ˣ => ((Additive.toMul z : ℚ̄ˣ) : ℚ̄)) h`. Simplify using `only at h'`. Conclude with `(coe_galUnitsHom_apply ℚ ℚ̄ g u).symm.trans h'`. Rewrite `hfix` using `[InfiniteGalois.fixedField_fixingSubgroup]`. Use `⟨Units.mk0 (⟨(u : ℚ̄), hfix⟩ : K.1) (fun h0 => u.ne_zero (congrArg Subtype.val h0)), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_unitsInvariantLimit_eq {K : FiniteSubfield} (a : (unitsLimitRep K).ρ.invariants) :
     ∃ b : K.1ˣ, unitsInvariantLimit K b = a := by
@@ -170,7 +170,7 @@ theorem exists_unitsInvariantLimit_eq {K : FiniteSubfield} (a : (unitsLimitRep K
   rfl
 
 /- English proof (translation)
-Use `normal_subgroupOf_of_isGalois (K := K) (E := E)` as an intermediate fact. Use `isCyclic_quotient_subgroupOf (K := K) (E := E)` as an intermediate fact. Take `⟨χ, a, hχ, rfl⟩` from `exists_cupCharClassProf_eq_of_cohomologyRes_eq_zero (unitsLimitRep K) (E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup) isOpen_subgroupOf_fixingSubgroup isZero_cohomology_one_res_subgroupOf x ((unitsResField_eq_zero_iff 2 x).1 hx)`. Take `⟨b, rfl⟩` from `exists_unitsInvariantLimit_eq a`. Conclude with `⟨χ, b, fun g hg => hχ g (Subgroup.mem_subgroupOf.2 hg), rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_globalCupClass_eq_of_unitsResField_eq_zero {K E : FiniteSubfield} [Fact (K ≤ E)]
     [IsGalois K.1 E.1] [IsCyclic (E.1 ≃ₐ[K.1] E.1)] (x : cohomology (unitsLimitRep K) 2)

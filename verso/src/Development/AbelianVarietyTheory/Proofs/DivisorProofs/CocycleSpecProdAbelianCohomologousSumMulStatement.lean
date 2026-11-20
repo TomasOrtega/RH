@@ -11,7 +11,7 @@ open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham Glob
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PtExt.cohom_sumMul_fv_of_abelian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCocycleSpecProdAbelianCohomologousSumMul.lean&line=49#L49)
 -/

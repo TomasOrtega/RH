@@ -15,7 +15,7 @@ namespace GlobalTheory.RegParPrime
 open ReciprocityTheory.AnForm.R.IrreducibleComponentPreimages
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h`. Take `⟨⟨s, t⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl (S := R) r`. Use `⟨t, t.2, s, ?_⟩` and prove the remaining obligations. Apply `IsLocalization.injective R (M := p.primeCompl) (Ideal.primeCompl_le_nonZeroDivisors p)` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← hr, ← mul_assoc, IsLocalization.mk'_spec']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mul_eq_of_mem_span {A : Type} [CommRing A] [IsDomain A] (p : Ideal A) [p.IsPrime]
     (R : Type) [CommRing R] [Algebra A R] [IsLocalization.AtPrime R p] {b x : A}
@@ -27,53 +27,45 @@ theorem exists_mul_eq_of_mem_span {A : Type} [CommRing A] [IsDomain A] (p : Idea
   rw [map_mul, map_mul, ← hr, ← mul_assoc, IsLocalization.mk'_spec']
 
 /- English proof (translation)
-Introduce `Y _ _ y U hy c a hreg hrsp`. Take `⟨V, hV, hyV, hVU⟩` from `exists_isAffineOpen_mem_and_subset hy`. Establish `hVU' : V ≤ U` using `hVU`. Set `b : Fin c → Γ(Y, V)` to `fun i => resG Y hVU' (a i)`. Establish `hgerm : ∀ i, Y.presheaf.germ V y hyV (b i) = Y.presheaf.germ U y hy (a i)` using `fun i => Y.presheaf.germ_res_apply (homOfLE hVU') y hyV (a i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrsp' : FinalTheorems.Rsp (Y.presheaf.stalk y) c (fun i => Y.presheaf.germ V y hyV (b i))`. Simplify `hrsp` using `only [hgerm]`. Use `haveI := hreg`. Take `⟨q, hq⟩` from `exists_parPrimes hV hyV b hrsp'`. Establish `hprime : ∀ i, Prime (Y.presheaf.germ V y hyV (b i))` using `prime_of_regular_params _ hrsp'.1 hrsp'.2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Nonempty V := ⟨⟨y, hyV⟩⟩`. Use `haveI : IsNoetherianRing Γ(Y, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Establish `hb0 : ∀ i, b i ≠ 0` using `fun i h => (hprime i).ne_zero (by rw [h, map_zero])`. Establish `hfn : ∀ i, fnOf U (gen_mem hy) (a i) = fnOf V (gen_mem hyV) (b i)` using `fun i => (fnOf_resG hVU' (gen_mem hyV) (a i)).symm`. Establish `ha0 : ∀ i, fnOf U (gen_mem hy) (a i) ≠ 0` using `fun i h => hb0 i (fnOf_injective V (gen_mem hyV) (by rw [← hfn, h, map_zero]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbas : ∀ i, Y.basicOpen (b i) ≤ Y.basicOpen (a i)` using `fun i => by`. Use `Scheme.basicOpen_res Y (a i) (homOfLE hVU').op` as an intermediate fact. Introduce `z hz`. Establish `hz' : z ∈ V ⊓ Y.basicOpen (a i)` using `by rw [← this]; exact hz`. Conclude with `hz'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq1 : ∀ j, (q j).asIdeal.height = 1`. Introduce `j`. Establish `hmin : (q j).asIdeal ∈ (Ideal.span {b j}).minimalPrimes`. Use `⟨⟨(q j).2, (Ideal.span_singleton_le_iff_mem _).2 (hq.2.1 j)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Q ⟨hQp, hQb⟩ hQle`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hq.2.2.1 j ⟨Q, hQp⟩ (le_trans (show (⟨Q, hQp⟩ : PrimeSpectrum Γ(Y, V)) ≤ q j from hQle) (hq.1 j))).mp (hQb (Ideal.mem_span_singleton_self _))`. Use `le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hmin) ?_` and prove the remaining obligations. Use `ENat.one_le_iff_ne_zero.2 fun h0 => hb0 j ?_` and prove the remaining obligations. Establish `hmin0` using `Ideal.height_eq_zero_iff.1 h0`. Establish `hbot : (q j).asIdeal ≤ ⊥` using `hmin0.2 ⟨Ideal.isPrime_bot, bot_le⟩ bot_le`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hbot (hq.2.1 j)`. Set `w : Fin c → Y` to `fun j => hV.fromSpec (q j)`. Establish `hwV : ∀ j, w j ∈ V` using `fun j => fromSpec_mem hV (q j)`. Establish `hpw : ∀ j, hV.primeIdealOf ⟨w j, hwV j⟩ = q j` using `fun j => pOf_fromSpec hV (q j)`. Establish `hcoh : ∀ j, Order.coheight (w j) = 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Use `letI := Y.presheaf.algebra_section_stalk (⟨w j, hwV j⟩ : V)`. Use `haveI := hV.isLocalization_stalk ⟨w j, hwV j⟩`. Use `IsLocalization.AtPrime.ringKrullDim_eq_height (hV.primeIdealOf ⟨w j, hwV j⟩).asIdeal (Y.presheaf.stalk (w j))` as an intermediate fact. Rewrite `this` using `[ringKrullDim_stalk_eq_coheight, hpw, hq1]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use `⟨w, fun j => Units.mk0 _ (ha0 j), ?_, fun j => ?_⟩` and prove the remaining obligations. Introduce `i j h`. Establish `key : ∀ {z z' : Y} (hz : z ∈ V) (hz' : z' ∈ V), z = z' → hV.primeIdealOf ⟨z, hz⟩ = hV.primeIdealOf ⟨z', hz'⟩`. Introduce and unpack `z z' hz hz' rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `h2 : q i = q j` using `(hpw i).symm.trans ((key (hwV i) (hwV j) h).trans (hpw j))`. Conclude with `(hq.2.2.2 i j (h2 ▸ hq.2.1 j)).symm`. Establish `hwb : w j ∉ Y.basicOpen (b j)`. Introduce `h'`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : q j ∈ hV.fromSpec ⁻¹ᵁ Y.basicOpen (b j)` using `h'`. Rewrite `h1` using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `h1 (hq.2.1 j)`. Use `⟨rfl, fromSpec_specializes hq j, hcoh j, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hwb ((Y.basicOpen_res (a j) (homOfLE hVU').op).symm ▸ ⟨hwV j, h'⟩ : w j ∈ Y.basicOpen (b j))`. Use `letI := Y.presheaf.algebra_section_stalk (⟨w j, hwV j⟩ : V) haveI hloc0 := hV.isLocalization_stalk ⟨w j, hwV j⟩ haveI hloc : IsLocalization.AtPrime (Y.presheaf.stalk (w j)) (q j).asIdeal := by`. Rewrite using `[← hpw j]`. Conclude with `hloc0`. Establish `hgalg : Y.presheaf.germ V (w j) (hwV j) (b j) = algebraMap Γ(Y, V) (Y.presheaf.stalk (w j)) (b j)` using `rfl`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg0 : Y.presheaf.germ V (w j) (hwV j) (b j) ≠ 0` using `fun h0 => ha0 j (by rw [hfn, ← algebraMap_germ (hwV j), h0, map_zero])`. Establish `hmax : Ideal.span {Y.presheaf.germ V (w j) (hwV j) (b j)} = IsLocalRing.maximalIdeal (Y.presheaf.stalk (w j))`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, ← IsLocalization.AtPrime.map_eq_maximalIdeal (q j).asIdeal (Y.presheaf.stalk (w j)), hgalg]`. Conclude with `Ideal.mem_map_of_mem _ (hq.2.1 j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal (q j).asIdeal (Y.presheaf.stalk (w j)), Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap]`. Use `letI := Y.presheaf.algebra_section_stalk (⟨y, hyV⟩ : V)`. Use `haveI := hV.isLocalization_stalk ⟨y, hyV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : (Ideal.span {Y.presheaf.germ V y hyV (b j)}).IsPrime := (Ideal.span_singleton_prime (hprime j).ne_zero).2 (hprime j)`. Set `P : Ideal Γ(Y, V)` to `Ideal.comap (algebraMap Γ(Y, V) (Y.presheaf.stalk y)) (Ideal.span {Y.presheaf.germ V y hyV (b j)})`. Establish `hPp : P.IsPrime` using `Ideal.IsPrime.comap _`. Establish `hPle : P ≤ (hV.primeIdealOf ⟨y, hyV⟩).asIdeal`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hz' : algebraMap Γ(Y, V) (Y.presheaf.stalk y) z ∈ IsLocalRing.maximalIdeal (Y.presheaf.stalk y)` using `(Ideal.span_singleton_le_iff_mem _).2 ((IsLocalRing.mem_maximalIdeal _).2 (hprime j).not_unit) hz`. Rewrite using `[← IsLocalization.AtPrime.comap_maximalIdeal (Y.presheaf.stalk y) (hV.primeIdealOf ⟨y, hyV⟩).asIdeal]`. Conclude with `hz'`. Establish `hbP : b j ∈ P` using `Ideal.mem_span_singleton_self _`. Establish `hqP : q j ≤ ⟨P, hPp⟩` using `(hq.2.2.1 j ⟨P, hPp⟩ hPle).mp hbP`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨t, ht, s, hts⟩` from `exists_mul_eq_of_mem_span (hV.primeIdealOf ⟨y, hyV⟩).asIdeal (Y.presheaf.stalk y) (hqP hx)`. Establish `htq : t ∉ (q j).asIdeal` using `fun h => ht (hq.1 j h)`. Establish `hu : IsUnit (algebraMap Γ(Y, V) (Y.presheaf.stalk (w j)) t)` using `IsLocalization.map_units (Y.presheaf.stalk (w j)) (⟨t, htq⟩ : (q j).asIdeal.primeCompl)`. Establish `e : algebraMap Γ(Y, V) (Y.presheaf.stalk (w j)) t * algebraMap Γ(Y, V) (Y.presheaf.stalk (w j)) x = algebraMap Γ(Y, V) (Y.presheaf.stalk (w j)) s * algebraMap Γ(Y, V) (Y.presheaf.stalk (w j)) (b j)`. Rewrite using `[← map_mul, ← map_mul, hts]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Ideal.mem_span_singleton'.2 ⟨↑hu.unit⁻¹ * algebraMap Γ(Y, V) (Y.presheaf.stalk (w j)) s, ?_⟩` and prove the remaining obligations. Rewrite using `[hgalg, mul_assoc, ← e, ← mul_assoc, hu.val_inv_mul, one_mul]`. Establish `hlen : Module.length (Y.presheaf.stalk (w j)) (Y.presheaf.stalk (w j) ⧸ Ideal.span {Y.presheaf.germ V (w j) (hwV j) (b j)}) = 1`. Rewrite using `[hmax, Module.length_eq_one_iff, isSimpleModule_iff_isCoatom]`. Conclude with `Ideal.isMaximal_def.1 (IsLocalRing.maximalIdeal.isMaximal _)`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show Scheme.ord (fnOf U (gen_mem hy) (a j)) (w j) = 1`. Rewrite using `[hfn, ← algebraMap_germ (hwV j), GlobalTheory.Cartier.ord_algebraMap (hcoh j) hg0, hlen]`. Both sides reduce to the same expression. Introduce `v hvy hv1 hvw`. Assume the negation of the conclusion as `hva`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hvV : v ∈ V` using `hvy.mem_open V.isOpen hyV`. Establish `hbQ : b j ∈ (hV.primeIdealOf ⟨v, hvV⟩).asIdeal`. Assume the negation of the conclusion as `hn`. Apply `hva` to reduce the goal to its premises. Establish `h1 : hV.primeIdealOf ⟨v, hvV⟩ ∈ hV.fromSpec ⁻¹ᵁ Y.basicOpen (b j)`.
-
-Rewrite using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `hn`. Establish `h3 : hV.fromSpec (hV.primeIdealOf ⟨v, hvV⟩) ∈ Y.basicOpen (b j)` using `h1`. Rewrite `h3` using `[hV.fromSpec_primeIdealOf]`. Conclude with `hbas j h3`.
-
-Establish `hle : q j ≤ hV.primeIdealOf ⟨v, hvV⟩` using `(hq.2.2.1 j _ ((specializes_iff_pOf hV hvV hyV).mp hvy)).mp hbQ`. Establish `hQv1 : (hV.primeIdealOf ⟨v, hvV⟩).asIdeal.height = 1`. Use `letI := Y.presheaf.algebra_section_stalk (⟨v, hvV⟩ : V)`. Use `haveI := hV.isLocalization_stalk ⟨v, hvV⟩`. Use `IsLocalization.AtPrime.ringKrullDim_eq_height (hV.primeIdealOf ⟨v, hvV⟩).asIdeal (Y.presheaf.stalk v)` as an intermediate fact.
-
-Rewrite `this` using `[ringKrullDim_stalk_eq_coheight, hv1]`. Conclude with `this.symm` after adjusting the coercions. Establish `heq : q j = hV.primeIdealOf ⟨v, hvV⟩`. Assume the negation of the conclusion as `hne`. Use `haveI : (q j).asIdeal.FiniteHeight := (q j).asIdeal.finiteHeight_iff.mpr (Or.inr (by rw [hq1 j]; exact ENat.one_ne_top))`.
-
-Establish `hlt : (q j).asIdeal < (hV.primeIdealOf ⟨v, hvV⟩).asIdeal` using `lt_of_le_of_ne hle (fun h => hne (PrimeSpectrum.ext h))`. Use `Ideal.height_strict_mono_of_isPrime hlt` as an intermediate fact. Rewrite `this` using `[hq1 j, hQv1]`. Conclude with `lt_irrefl _ this`. Conclude with `hvw (eq_of_pOf_eq hV hvV (hwV j) (by rw [hpw j]; exact heq.symm))`.
+A detailed English derivation is pending.
 -/
 theorem exists_primeDivisors_of_regularParams : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (y : Y) (U : Y.Opens) (hy : y ∈ U) (c : ℕ) (a : Fin c → Γ(Y, U)), IsRegularLocalRing (Y.presheaf.stalk y) → FinalTheorems.Rsp (Y.presheaf.stalk y) c (fun i => Y.presheaf.germ U y hy (a i)) → ∃ (w : Fin c → Y) (u : Fin c → Y.functionFieldˣ), Function.Injective w ∧ ∀ j, (u j : Y.functionField) = fnOf U (gen_mem hy) (a j) ∧ w j ⤳ y ∧ Order.coheight (w j) = 1 ∧ w j ∉ Y.basicOpen (a j) ∧ Scheme.ord (u j : Y.functionField) (w j) = 1 ∧ ∀ v, v ⤳ y → Order.coheight v = 1 → v ≠ w j → v ∈ Y.basicOpen (a j) := by
   intro Y _ _ y U hy c a hreg hrsp

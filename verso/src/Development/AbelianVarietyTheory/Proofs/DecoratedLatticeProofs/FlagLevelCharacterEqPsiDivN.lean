@@ -47,7 +47,7 @@ def IsRefFrame (I : AutInst) (g : ℕ) {ρ k : ℕ} (e0 f0 : Fin ρ → VA I) (z
   ∀ y ∈ I.Lf, InMod I g (Set.range e0 ∪ Set.range f0 ∪ {z0} ∪ Set.range bw ∪ Set.range bwd) y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.vectorsInLattice, X.gramIntegral, X.formsAtZero, X.weightVectorsIntegral, ⟨X.ew_idem, X.ew_orth, X.ew_int, X.ew_full⟩, ⟨X.bw_w, X.bwd_w⟩, fun i j => by convert X.bw_dual i j, X.latticeSpan⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRefFrame_setting {D : Formalism.BasicNotions.D7} (X : HidaSetting D) :
     IsRefFrame X.B.I X.B.g X.e0 X.f0 X.z0 X.bw X.bwd X.ew :=

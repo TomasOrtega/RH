@@ -22,17 +22,15 @@ noncomputable section
 namespace GlobalTheory.KapRec.Eigen
 
 /- English proof (translation)
-Set `b : Module.Basis (Fin n) ℂ W` to `Module.Basis.mk hli (le_of_eq hsp.symm)`. Set `u` to `b.constr ℂ (fun i => k (Pi.single i 1))`. Establish `hb : ∀ i, b i = j (Pi.single i 1)` using `fun i => Module.Basis.mk_apply _ _ _`. Establish `hu : ∀ i, u (b i) = k (Pi.single i 1)` using `fun i => Module.Basis.constr_basis _ _ _ _`. Establish `hdec : ∀ x : Fin n → K, x = ∑ i, x i • Pi.single i 1` using `fun x => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `l`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hj : ∀ x, j x = ∑ i, σ (x i) • b i` using `fun x => by conv_lhs => rw [hdec x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smulₛₗ, hb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : ∀ x, k x = ∑ i, σ (x i) • k (Pi.single i 1)` using `fun x => by conv_lhs => rw [hdec x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smulₛₗ]`. Establish `hA : ∀ x, u (j x) = k x` using `fun x => by`. Rewrite using `[hj, map_sum, hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, hu]`. Establish `hbas : ∀ i l, ⟪u (b i), u (b l)⟫_ℂ = (c : ℂ) * ⟪b i, b l⟫_ℂ` using `fun i l => by`. Rewrite using `[hu, hu, hb, hb, hc]`. Establish `key : ∀ z w, ⟪u z, u w⟫_ℂ = (c : ℂ) * ⟪z, w⟫_ℂ` using `fun z w => by`. Rewrite using `[← b.sum_repr z, ← b.sum_repr w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hbas, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring`. Use `⟨u, fun w => ?_, hA⟩` and prove the remaining obligations. Establish `h` using `key w w`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`.
-
-Conclude with `Complex.ofReal_injective (by push_cast; exact h)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scaled_ext {K : Type} [Field K] (σ : K →+* ℂ) {n : ℕ} {W H : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (j : (Fin n → K) →ₛₗ[σ] W) (hli : LinearIndependent ℂ fun i => j (Pi.single i 1))
@@ -71,11 +69,11 @@ theorem exists_scaled_ext {K : Type} [Field K] (σ : K →+* ℂ) {n : ℕ} {W H
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH`. Establish `hFT` using `Y.formsA A3.A.μ0`. Establish `hpos : (0 : ℝ) < RealDat.nP F.lv2 true`. Unfold `RealDat.nP`. Conclude with `Nat.card_pos` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression.
 
-Set `rf : (Fin (rDim D A3.A F.P1 F.ψ1 A3.A.μ0) → D.what₂.LL) →ₗ[D.what₂.LL] A3.A.fam.amb.FR A3.A.μ0` to `{ toFun := rowForm A3.A F.P1 F.ψ1 A3.A.μ0 map_add' := DatApi.rowForm_add A3.A F.P1 F.ψ1 A3.A.μ0 map_smul' := DatApi.rowForm_smul A3.A F.P1 F.ψ1 A3.A.μ0 }`. Use `exists_scaled_ext D.what₂.embLL (Y.jA A3.A.μ0) hFT.li hFT.span ((R.jX A3.A.μ0).comp rf) fun x y => ?_` and prove the remaining obligations. Establish `h1 : (((RealDat.nP F.lv2 true)⁻¹ : ℝ) : ℂ) * ⟪R.jX A3.A.μ0 (rowForm A3.A F.P1 F.ψ1 A3.A.μ0 x), R.jX A3.A.μ0 (rowForm A3.A F.P1 F.ψ1 A3.A.μ0 y)⟫_ℂ = D.what₂.embLL (Formalism.DivisionValues.hform (rH D A3.A F.P1 F.ψ1 A3.A.μ0) x y)` using `GlobalTheory.T.hilbert_inner_rowForms_eq_level_class_sum D G Pl0 T A3.A Ks R.toRealDat F.lv2 hP.char.base true A3.A.μ0 x y`. Establish `alg : ∀ a : ℂ, a = ((RealDat.nP F.lv2 true : ℝ) : ℂ) * ((((RealDat.nP F.lv2 true)⁻¹ : ℝ) : ℂ) * a)` using `fun a => by`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ hpos.ne', Complex.ofReal_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hFT.inner x y]`. Use `Eq.trans ?_ (congrArg (fun z => ((RealDat.nP F.lv2 true : ℝ) : ℂ) * z) h1)` and prove the remaining obligations. Conclude with `alg ⟪R.jX A3.A.μ0 (rowForm A3.A F.P1 F.ψ1 A3.A.μ0 x), R.jX A3.A.μ0 (rowForm A3.A F.P1 F.ψ1 A3.A.μ0 y)⟫_ℂ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem topMap_exists : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0), Pins R F cG → Holds R F → ∃ uA : D.what₂.Amb (Y.tup A3.A.μ0) →ₗ[ℂ] (R.HX A3.A.μ0).H, (∀ x, ‖uA x‖ ^ 2 = RealDat.nP F.lv2 true * ‖x‖ ^ 2) ∧ ∀ x, uA (Y.jA A3.A.μ0 x) = R.jX A3.A.μ0 (rowForm A3.A F.P1 F.ψ1 A3.A.μ0 x) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH
@@ -97,17 +95,15 @@ theorem topMap_exists : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T 
   exact alg ⟪R.jX A3.A.μ0 (rowForm A3.A F.P1 F.ψ1 A3.A.μ0 x), R.jX A3.A.μ0 (rowForm A3.A F.P1 F.ψ1 A3.A.μ0 y)⟫_ℂ
 
 /- English proof (translation)
-Use `set w := LinearMap.adjoint (S.iotaQ μ) y with hw`. Use `set z := LinearMap.adjoint (S.iota μ) y with hz`. Establish `hQ : ∀ q : S.Qsp μ, ⟪(q : S.Amb μ), (w : S.Amb μ)⟫_ℂ = ⟪(q : S.Amb μ), z⟫_ℂ`. Introduce `q`. Rewrite using `[← Submodule.coe_inner, hw, hz, LinearMap.adjoint_inner_right, LinearMap.adjoint_inner_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `heV : ∀ x ∈ S.V0 μ, S.eOp μ x = x`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `congrArg (fun f : S.Amb μ →ₗ[ℂ] S.Amb μ => f a) (S.eOp_idem μ)`. Use `set d := S.eOp μ z - (w : S.Amb μ) with hd`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hdV : d ∈ S.V0 μ` using `sub_mem (LinearMap.mem_range_self _ _) w.2.1`. Establish `hdQ : ∀ q : S.Qsp μ, ⟪(q : S.Amb μ), d⟫_ℂ = 0`. Introduce `q`. Rewrite using `[hd, inner_sub_right, hQ, ← S.eOp_sa μ, heV _ q.2.1, sub_self]`. Establish `hdU : d ∈ S.Usp μ` using `by set r := d - (S.Usp μ).starProjection d with hr0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUV : S.Usp μ ≤ S.V0 μ` using `inf_le_left`. Establish `hr : r ∈ S.Qsp μ` using `⟨sub_mem hdV (hUV (Submodule.starProjection_apply_mem _ _)), Submodule.sub_starProjection_mem_orthogonal d⟩`. Establish `h1 : ⟪r, d⟫_ℂ = 0` using `hdQ ⟨r, hr⟩`. Establish `h2 : ⟪r, (S.Usp μ).starProjection d⟫_ℂ = 0` using `Submodule.inner_left_of_mem_orthogonal (Submodule.starProjection_apply_mem _ _) hr.2`. Establish `h3 : ⟪r, r⟫_ℂ = 0` using `by conv_lhs => rw [hr0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_sub_right, ← hr0, h1, h2, sub_zero]`. Establish `h4 : r = 0` using `inner_self_eq_zero.1 h3`. Rewrite `h4` using `[hr0, sub_eq_zero]`. Rewrite using `[h4]`. Conclude with `Submodule.starProjection_apply_mem _ _`.
-
-Establish `hk : S.iota μ d = 0` using `hdU.2`. Rewrite `hk` using `[hd, map_sub, sub_eq_zero]`. Conclude with `hk.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iiStar_apply_eq {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
     (S : RowSide D EE) (μ : D.what₂.Tup) (y : EE) :
@@ -146,7 +142,7 @@ theorem iiStar_apply_eq {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProdu
   exact hk.symm
 
 /- English proof (translation)
-Substitute `hμ` using the available equality. Rewrite using `[← iiStar_apply_eq]`. Conclude with `GlobalTheory.KappaLevels.iota_adjoint_transport Θ (S.iota μ) (S.V0 μ) uA uE hn nA nE (fun x _ => hι x) y hy ha`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_eig {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
     (S : RowSide D EE) {E H : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
@@ -162,17 +158,15 @@ theorem transport_eig {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProduct
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hCRD D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hL hI σ`. Take `⟨uE, -, nE, hE⟩` from `GlobalTheory.Adopt.levelRowsReading_embedding_goodRowsModel_with_norm D G Pl0 T A3.A Ks R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop true D.what₂.EE (RowSide.sharp D) Y.Ish hP.char.base.models.HE Y.tied.sharp.ee`. Take `⟨uA, nA, hA⟩` from `topMap_exists D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH`. Take `⟨p, hp, hl⟩` from `GlobalTheory.T.basisRow_mem_definiteFamily_type_part hCRD D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hL hI uE hE σ`. Establish `hup` using `GlobalTheory.T.adjoint_compositeLift_row_mem_span_goodRationalForms hCRD.2.2.2.2 D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH uE hE (D.what₂.onb σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdt` using `(GlobalTheory.T.compositeIntertwiner_eq_thetaLift_goodProjector hCRD D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH).1 A3.A.μ0`. Establish `ha : R.Th A3.A.μ0 (LinearMap.adjoint (R.Th A3.A.μ0) (uE (D.what₂.onb σ))) = ((R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, D.what₂.lamP D.what₂.mu0 j (D.what₂.ft σ) : ℝ) : ℂ) • uE (D.what₂.onb σ)`. Use `(hH.prim.thmB A3.A.μ0 p (uE (D.what₂.onb σ)) hp).trans ?_` and prove the remaining obligations. Rewrite using `[hl]`. Establish `hpos : (0 : ℝ) < RealDat.nP F.lv2 true`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `RealDat.nP`. Conclude with `Nat.card_pos` after adjusting the coercions. Establish `hFT` using `Y.formsA A3.A.μ0`. Establish `hι : ∀ a, uE ((RowSide.sharp D).iota (Y.tup A3.A.μ0) a) = R.Th A3.A.μ0 (uA a)`. Establish `key : uE ∘ₗ (RowSide.sharp D).iota (Y.tup A3.A.μ0) = R.Th A3.A.μ0 ∘ₗ uA`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext_on_range hFT.span fun i => ?_` and prove the remaining obligations. Use `show uE ((RowSide.sharp D).iota (Y.tup A3.A.μ0) (Y.jA A3.A.μ0 (Pi.single i 1))) = R.Th A3.A.μ0 (uA (Y.jA A3.A.μ0 (Pi.single i 1)))`. Rewrite using `[← GlobalTheory.Mem.R3.DTheta.iota_sharp, hA]`. Establish `h1` using `hdt (Pi.single i 1)`. Rewrite `h1` using `[hE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `hP.char.base.models.HE.1 (PiTensorProduct.lift.injective h1)`. Conclude with `fun a => LinearMap.congr_fun key a`. Establish `hy : LinearMap.adjoint (R.Th A3.A.μ0) (uE (D.what₂.onb σ)) ∈ ((RowSide.sharp D).V0 (Y.tup A3.A.μ0)).map uA`. Use `(Submodule.span_le.2 ?_) hup` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
-
-Conclude with `⟨Y.jA A3.A.μ0 ((rE D A3.A F.P1 F.ψ1 A3.A.μ0).mulVec x), ⟨Y.jA A3.A.μ0 x, hFT.op_eq x⟩, hA _⟩`. Conclude with `transport_eig (RowSide.sharp D) (R.Th A3.A.μ0) Y.tup0 uA uE hpos nA nE hι (D.what₂.onb σ) hy ha`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eigen : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → Lam3 Z → (∀ σ (i : Fin D.R.m), D.what₂.isot ((i : ℕ) + 1) (D.what₂.ft σ) ≠ ⊥) → ∀ σ, (RowSide.sharp D).iota D.what₂.mu0 ((RowSide.sharp D).eOp D.what₂.mu0 (LinearMap.adjoint ((RowSide.sharp D).iota D.what₂.mu0) (D.what₂.onb σ))) = ((R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, D.what₂.lamP D.what₂.mu0 j (D.what₂.ft σ) : ℝ) : ℂ) • D.what₂.onb σ := by
   intro hCRD D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hL hI σ

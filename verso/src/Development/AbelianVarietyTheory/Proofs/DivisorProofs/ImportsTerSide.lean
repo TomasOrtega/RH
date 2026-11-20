@@ -23,7 +23,7 @@ def ball (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (C 
     simpa using ha
 
 /- English proof (translation)
-The claim follows from `Valued.toNormedField.norm_le_one_iff.mpr h`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (a : Fv F v) (h : a ∈ v.adicCompletionIntegers F) :
     ‖a‖ ≤ 1 :=
@@ -36,19 +36,17 @@ def coordE (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (
   map_add' := by intro a b; simp
 
 /- English proof (translation)
-Introduce `d1 F E _ _ _ _ _ n W hL v`. Take `⟨s, hs⟩` from `(hL.restrictScalars : (W.L.restrictScalars ℤ).FG)`. Use `set C : ℝ := ∑ x : (_ : Fin n) × Fin (Module.finrank F E), ∑ g ∈ s, ‖coordE (F := F) (E := E) v n x g‖ with hCdef`. Establish `hC : 0 ≤ C` using `by positivity`. Use `⟨C, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hLb : ∀ x, ∀ y ∈ W.L, ‖coordE (F` using `F) (E := E) v n x y‖ ≤ C := by`. Introduce `x y hy`. Establish `hle : W.L.restrictScalars ℤ ≤ ((ball v C hC).comap (coordE (F` using `F) (E := E) v n x)).toIntSubmodule := by`. Rewrite using `[← hs, Submodule.span_le]`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Use `show ‖coordE (F := F) (E := E) v n x g‖ ≤ C`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hle hy`. Introduce `z hz x`. Set `φ : (Fin n → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) →+ Fv F v` to `(GlobalTheory.AdelicU.evFin F v).toAddMonoidHom.comp ((Finsupp.applyAddHom x).comp (d1 F E n).repr.toLinearMap.toAddMonoidHom)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hφ : ∀ z, φ z = GlobalTheory.AdelicU.evFin F v ((d1 F E n).repr z x)` using `fun z => rfl`. Establish `key : GlobalTheory.InertSph.latAt W v ≤ (ball v C hC).comap φ`. Unfold `GlobalTheory.InertSph.latAt`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, -, ha, y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ‖φ _‖ ≤ C`. Rewrite using `[hφ]`. Establish `: (d1 F E n).repr (a • fun i => inclR (F` using `F) (AF F) (y i)) x = a * algebraMap F (AF F) ((Module.finBasis F E).repr (y x.1) x.2) := by`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [d1, Pi.basis_repr]`. Use `show ((Module.finBasis F E).baseChange (AF F)).repr ((1 : AF F) ⊗ₜ[F] y x.1) x.2 = _`. Rewrite using `[Module.Basis.baseChange_repr_tmul, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[this, map_mul, AlgHom.commutes, norm_mul]`. Establish `h1` using `norm_le_one_of_mem _ ha`.
-
-Establish `h2` using `hLb x y hy`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key hz`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main : (let d1 : (F E : Type) → [inst : Field F] → [inst_1 : NumberField F] → [inst_2 : Field E] → [NumberField E] → [inst_4 : Algebra F E] → (n : ℕ) → Module.Basis ((_ : Fin n) × Fin (Module.finrank F E)) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (Fin n → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) := @(fun (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) ↦ Pi.basis fun (x : Fin n) ↦ Module.Basis.baseChange (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (Module.finBasis F E)); ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : NumberField E] [inst_4 : Algebra F E] {n : ℕ} (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n), Submodule.FG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc.L W) → ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), ∃ (C : ℝ), ∀ z ∈ GlobalTheory.InertSph.latAt W v, ∀ (x : (_ : Fin n) × Fin (Module.finrank F E)), ‖(GlobalTheory.AdelicU.evFin F v : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (((Module.Basis.repr (d1 F E n) : (Fin n → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → (_ : Fin n) × Fin (Module.finrank F E) →₀ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) z : (_ : Fin n) × Fin (Module.finrank F E) → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) x)‖ ≤ C) := by
   intro d1 F E _ _ _ _ _ n W hL v

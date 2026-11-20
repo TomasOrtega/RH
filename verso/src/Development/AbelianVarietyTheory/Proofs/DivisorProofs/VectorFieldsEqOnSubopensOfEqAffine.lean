@@ -15,13 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LogKS
 
 /- English proof (translation)
-Establish `hle : Z.basicOpen s ≤ V` using `Z.basicOpen_le s`. Use `haveI := hV.isLocalization_basicOpen s`. Establish `halg : ∀ x, algebraMap Γ(Z, V) Γ(Z, Z.basicOpen s) x = resG Z hle x` using `fun _ => rfl`. Establish `hres : ∀ x : Γ(Z, V), d₁ _ (resG Z hle x) = d₂ _ (resG Z hle x)`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₁.2.2 V _ hle le_rfl, h₂.2.2 V _ hle le_rfl, h]`. Take `⟨⟨a, m⟩, hm⟩` from `IsLocalization.surj (Submonoid.powers s) g`. Simplify using `only [halg] at hm`. Establish `hu : IsUnit (resG Z hle (m : Γ(Z, V)))`. Rewrite using `[← halg]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IsLocalization.map_units _ m`. Establish `e₁` using `congrArg (d₁ _) hm`. Establish `e₂` using `congrArg (d₂ _) hm`. Rewrite `e₁` using `[h₁.2.1 _ hle]`. Rewrite `e₂` using `[h₂.2.1 _ hle]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : resG Z hle (m : Γ(Z, V)) * (d₁ _ g - d₂ _ g) = 0`. Rewrite `e₁` using `[hres m]`. Rewrite `e₁` using `[hres a]`. Take the linear combination `e₁ - e₂`. Conclude with `sub_eq_zero.mp ((hu.mul_right_eq_zero).mp key)`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isField_eq_basicOpen {Z : Scheme.{0}} {V : Z.Opens} (hV : IsAffineOpen V)
     {d₁ d₂ : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)} (h₁ : IsField V d₁) (h₂ : IsField V d₂)
@@ -49,9 +49,9 @@ theorem isField_eq_basicOpen {Z : Scheme.{0}} {V : Z.Opens} (hV : IsAffineOpen V
   exact sub_eq_zero.mp ((hu.mul_right_eq_zero).mp key)
 
 /- English proof (translation)
-Introduce `Z V hV d₁ d₂ h₁ h₂ h O hO f`. Use `TopCat.Presheaf.section_ext Z.sheaf O _ _ fun x hx => ?_` and prove the remaining obligations. Take `⟨r, hrO, hxr⟩` from `hV.exists_basicOpen_le ⟨x, hx⟩ (hO hx)`. Establish `e₁` using `h₁.2.2 O _ hrO hO f`. Establish `e₂` using `h₂.2.2 O _ hrO hO f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `isField_eq_basicOpen hV h₁ h₂ h r (resG Z hrO f)`. Rewrite `e` using `[e₁, e₂]`. Establish `g₁` using `TopCat.Presheaf.germ_res_apply Z.presheaf (homOfLE hrO) x hxr (d₁ O f)`. Establish `g₂` using `TopCat.Presheaf.germ_res_apply Z.presheaf (homOfLE hrO) x hxr (d₂ O f)`. Conclude with `g₁.symm.trans ((congrArg _ e).trans g₂)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isField_eq_of_affine : ∀ (Z : Scheme.{0}) (V : Z.Opens), IsAffineOpen V → ∀ (d₁ d₂ : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)), IsField V d₁ → IsField V d₂ → (∀ a, d₁ V a = d₂ V a) → ∀ O : Z.Opens, O ≤ V → ∀ f, d₁ O f = d₂ O f := by
   intro Z V hV d₁ d₂ h₁ h₂ h O hO f

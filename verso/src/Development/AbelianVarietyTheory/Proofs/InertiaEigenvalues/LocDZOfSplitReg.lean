@@ -21,19 +21,17 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {B : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver B w} {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Establish `H : TeichmullerInertiaLabelCondition B w τ γ`. Assume the negation of the conclusion as `H`. Rewrite `hχ` using `[WD.lab_of_not H]`. Use `congrArg natDegree hχ` as an intermediate fact. Rewrite `this` using `[natDegree_one, natDegree_X_sub_C]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Establish `htχ : WD.tame χ` using `WD.tame_of_natDegree_lab (by rw [hχ, natDegree_X_sub_C, hd])`. Establish `hc1 : ∀ σ : Ine (F` using `E) B, (σ : G E Ω) ∈ Wild E B → χ.charPol (ineIncl h σ) = X - C 1 := by`. Introduce `σ hσ`. Use `(WD.tame_iff_inePol χ).1 htχ σ hσ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[WD.inePol_of_mem_Ine _ σ.2, hd, pow_one]`. Rewrite using `[C_1]`. Conclude with `this`. Establish `hdim : (x.lpChar χ).lpDim = x.lpDim`. Take `⟨σ, hσ⟩ : ∃ σ : Ine (F` from `E) B, (σ : G E Ω) ∈ Wild E B := ⟨1, (Wild E B).one_mem⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `charPol_lpChar_of_unr x χ hx σ 1 (hc1 σ hσ)`. Rewrite using `[← WD.charPol_natDegree (x.lpChar χ) (ineIncl h σ), h1, natDegree_pow, natDegree_X_sub_C, mul_one]`. Establish `ht : WD.tame (x.lpChar χ)`. Rewrite using `[WD.tame_iff_inePol]`. Introduce `σ hσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[WD.inePol_of_mem_Ine _ (Wild_le_Ine hσ), hdim, charPol_lpChar_of_unr x χ hx ⟨σ, Wild_le_Ine hσ⟩ 1 (hc1 ⟨σ, Wild_le_Ine hσ⟩ hσ), C_1]`. Use `set p := χ.charPol (ineIncl h ⟨γ, H.2.1⟩) with hp`. Establish `hpm : p.Monic` using `WD.charPol_monic _ _`. Establish `hpd : p.natDegree = 1` using `by rw [hp, WD.charPol_natDegree, hd]`. Establish `hpe : p = X - C (-p.coeff 0)` using `by rw [map_neg, sub_neg_eq_add]; exact hpm.eq_X_add_C hpd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hχ'` using `(WD.lab_eq_iff_of_tame H htχ).1 hχ`. Establish `hr1` using `WD.rootsBar_X_sub_C_pow u 1`. Rewrite `hr1` using `[pow_one, one_nsmul]`. Rewrite `hχ'` using `[WD.inePol_of_mem_Ine _ H.2.1, ← hp, hpe, roots_X_sub_C, hr1, Multiset.map_singleton, Multiset.singleton_inj]`. Rewrite using `[WD.lab_eq_iff_of_tame H ht, WD.inePol_of_mem_Ine _ H.2.1, charPol_lpChar_of_unr x χ hx ⟨γ, H.2.1⟩ (-p.coeff 0) (hpe ▸ rfl), roots_pow, roots_X_sub_C, WD.rootsBar_X_sub_C_pow, Multiset.map_nsmul, Multiset.map_singleton, hχ'.2]`.
-
-Conclude with `⟨(monic_X_sub_C u).pow _, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lab_lpChar_of_unr (τ : AlgebraicClosure (ZMod g) →* ℂ) (γ : G E Ω) (x χ : WD h) (hx : x.unr)
     (hd : χ.lpDim = 1) (u : ZMod g) (hχ : WD.lab τ γ χ = X - C u) :
@@ -83,11 +81,11 @@ open GlobalTheory.WeilDeligne (WD)
 open GlobalTheory.SplitRead.BlockParam (twistIrr)
 
 /- English proof (translation)
-Introduce `hL D hS hR k v χ hχ u π ρ f ht hlab hser hsq hnr hx`. Take `⟨π₁, π₂, hsph, e, y, hy1, hy2⟩` from `hS k v χ hχ u π ρ f ht hlab hser hnr hx`. Take `⟨hm1, hl1⟩` from `hR k v π₁ ρ f hser hsq ⟨y, hy1, hy2⟩`. Establish `L : RecLaws (rcAt hL D (D.naut.plGw k v))` using `(GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))).recLaws`. Establish `e' : Nonempty (π.π.Equiv (GlobalTheory.SmGL.prod₂ π₁.π (twistIrr π₂ χ hχ).π))` using `e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `L.prod D.R.r D.R.t π₁ (twistIrr π₂ χ hχ) π e'`. Establish `e2` using `L.twist D.R.t χ (Irr.ofDet 1 χ hχ) π₂ (twistIrr π₂ χ hχ) ⟨.refl _⟩ ⟨.refl _⟩`. Establish `hu` using `(L.sph _ π₂).2 hsph`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, WD.monomial_sum_iff, e2, WD.monomial_char_iff _ _ (L.dim _ _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hm1, WD.unr_mono0 _ hu⟩`. Unfold `labAt at hl1 hlab ⊢`. Rewrite using `[e1, WD.lab_lpSum, e2, lab_lpChar_of_unr _ _ _ _ hu (L.dim _ _) u hlab, hl1, L.dim]`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem locDZ_of_split_reg : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7), SplitLoc hL D → RegLoc hL D → LocDZ hL D := by
   intro hL D hS hR k v χ hχ u π ρ f ht hlab hser hsq hnr hx

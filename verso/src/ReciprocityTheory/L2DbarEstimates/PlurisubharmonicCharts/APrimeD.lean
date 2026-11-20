@@ -14,11 +14,11 @@ namespace LeviFormQuadraticSums
 variable {n d : ℕ} {p : V n → V d} {U : Set (V n)}
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_sum, norm_mul, mul_pow, EuclideanSpace.norm_sq_eq]`. Establish `cs` using `norm_sum_mul_sq_le x y`. Simplify using `only [hP] at cs`. Rewrite `cs` using `[← hB]`. Establish `hn : ‖(c : ℂ)⁻¹‖ = c⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_inv, Complex.norm_real, Real.norm_of_nonneg hc.le]`. Rewrite using `[hn]`. Establish `e : (∑ k, ‖P k‖ ^ 2) / c * (c⁻¹ * B) = c⁻¹ ^ 2 * ((∑ k, ‖P k‖ ^ 2) * B)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left cs (sq_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_bound (c : ℝ) (hc : 0 < c) (x y : Fin d → ℂ) (P : V d) (hP : ∀ k, ‖x k‖ = ‖P k‖)
     (B : ℝ) (hB : B = ∑ k, ‖y k‖ ^ 2) :
@@ -36,7 +36,7 @@ theorem norm_bound (c : ℝ) (hc : 0 < c) (x y : Fin d → ℂ) (P : V d) (hP : 
   exact mul_le_mul_of_nonneg_left cs (sq_nonneg _)
 
 /- English proof (translation)
-Break down `le_total 0 b with hb | hb` into its components or cases. Check the signs of the components of the expression. Use polynomial arithmetic with `[mul_le_mul_of_nonpos_left hs hb, mul_nonneg hab hL]`.
+Separate the alternatives or extract the components of the hypothesis. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem arith {a b t L s : ℝ} (ha : 0 ≤ a) (hab : 0 ≤ a + t * b) (hL : 0 ≤ L) (hs0 : 0 ≤ s)
     (hs : s ≤ t * L) : 0 ≤ a * L + b * s := by

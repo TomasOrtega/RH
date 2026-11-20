@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ hx]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zpow_toNat_div' {K : Type} [Field K] (x : K) (hx : x ≠ 0) (e : ℤ) :
     x ^ e.toNat * (x ^ (-e).toNat)⁻¹ = x ^ e := by
@@ -21,13 +21,11 @@ theorem zpow_toNat_div' {K : Type} [Field K] (x : K) (hx : x ≠ 0) (e : ℤ) :
   omega
 
 /- English proof (translation)
-Establish `hκ : c * δ⁻¹ ≠ 0` using `mul_ne_zero hc (inv_ne_zero hδ)`. Establish `hd : δ⁻¹ ≠ 0` using `inv_ne_zero hδ`. Establish `hκN : (c * δ⁻¹) ^ N ≠ 0` using `pow_ne_zero _ hκ`. Establish `e1 : ((c * δ⁻¹) ^ (N - 1)) ^ ((N : ℤ) * cM - sz).toNat = (c * δ⁻¹) ^ (((N : ℤ) - 1) * ((N : ℤ) * cM - sz))`. Rewrite using `[← pow_mul, ← zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Move the coercions through the operations in `[Int.toNat_of_nonneg h0, Nat.cast_sub hN]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = (c * δ⁻¹) ^ (((N : ℤ) - 1) * ((N : ℤ) * cM - sz)) * (δ⁻¹) ^ (cM - sz) * (c * δ⁻¹) ^ ((N : ℤ) * (cM - (N : ℤ) * cM + sz)) := by`. Rewrite using `[zpow_toNat_div' _ hd, zpow_toNat_div' _ hκN, e1, ← zpow_natCast (c * δ⁻¹) N, ← zpow_mul]`. Use `_ = c ^ (((N : ℤ) - 1) * ((N : ℤ) * cM - sz) + (N : ℤ) * (cM - (N : ℤ) * cM + sz)) * δ ^ (-(((N : ℤ) - 1) * ((N : ℤ) * cM - sz)) + -(cM - sz) + -((N : ℤ) * (cM - (N : ℤ) * cM + sz))) := by`. Rewrite using `[mul_zpow, mul_zpow, inv_zpow', inv_zpow', inv_zpow', zpow_add₀ hc, zpow_add₀ hδ, zpow_add₀ hδ]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = _ := by`. Apply the tactic sequence `congr 2 <;> ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem blk_scal_odd {K : Type} [Field K] (c δ : K) (hc : c ≠ 0) (hδ : δ ≠ 0) (N : ℕ) (hN : 1 ≤ N) (cM sz : ℤ)
     (h0 : 0 ≤ (N : ℤ) * cM - sz) :
@@ -60,27 +58,25 @@ theorem blk_scal_odd {K : Type} [Field K] (c δ : K) (hc : c ≠ 0) (hδ : δ �
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `p _ X D pos Kc _ _ _ ι ρ hT fd c hc j hN La' M hU hFr ν hν`. Take `⟨-, hsz, -, hle, -⟩` from `GlobalTheory.T.modelPartition_size_extension_firstLast_rows X D pos j hN ν hν`. Establish `hN1 : 1 ≤ NN X.G.P.m X.t j` using `by unfold NN; omega`. Establish `hdet : ∀ (v : X.Pl) (s : Fin (X.G.P.n' v)), (GlobalTheory.FrameB.mk Kc fd j La' v s).det = Formalism.L2.G.Pend.tw X Kc v s (ρ v (M : Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) D.host.E).det)`. Introduce `v s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GlobalTheory.FrameB.mk`. Rewrite using `[det_mAt, hFr v, Matrix.det_submatrix_equiv_self, RingHom.map_det (ρ v)]`. Both sides reduce to the same expression. Establish `hdet0 : ∀ (v : X.Pl) (s : Fin (X.G.P.n' v)), (GlobalTheory.FrameB.mk Kc fd j La' v s).det ≠ 0`. Introduce `v s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hdet]`. Conclude with `(((M.isUnit.map (Matrix.detMonoidHom))).map (ρ v)).map (Formalism.L2.G.Pend.tw X Kc v s) |>.ne_zero`. Establish `hbd : ∀ b : (Σ v : X.Pl, Fin (X.G.P.n' v)), 0 ≤ (NN X.G.P.m X.t j : ℤ) * cMu X j b.1 b.2 - szMu X j b.1 b.2`. Introduce `b`. Establish `h1 : szMu X j b.1 b.2 = szT X D pos j (pos b)` using `by show _ = szMu X j (pos.symm (pos b)).1 (pos.symm (pos b)).2; rw [Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : cMu X j b.1 b.2 = cT1 X D pos j (pos b)` using `by show _ = cMu X j (pos.symm (pos b)).1 (pos.symm (pos b)).2; rw [Equiv.symm_apply_apply]`. Rewrite using `[h1, h2, hsz, ← hN.1]`. Establish `: ∑ r : Fin (D.R.N j), (ν (pos b) r : ℤ) ≤ ∑ _r : Fin (D.R.N j), cT1 X D pos j (pos b)`. Use `Finset.sum_le_sum fun r _ => ?_` and prove the remaining obligations. Use `hle (pos b) (Fin.castLE (rk_le X D hN) r)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[extNu]`. Rewrite `this` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkN : GlobalTheory.FrameB.kN X Kc j (GlobalTheory.FrameB.wV Kc fd c j La') (GlobalTheory.FrameB.kV Kc fd c j La') = ∏ b : (Σ v : X.Pl, Fin (X.G.P.n' v)), if IsOddPos b.2 then ((GlobalTheory.FrameB.wV Kc fd c j La' b.1 b.2).det⁻¹) ^ (exY X j b.1 b.2).toNat * (GlobalTheory.FrameB.k …`. Unfold `GlobalTheory.FrameB.kN`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.prod_sigma]`. Establish `hkD : GlobalTheory.FrameB.kD X Kc j (GlobalTheory.FrameB.wV Kc fd c j La') (GlobalTheory.FrameB.kV Kc fd c j La') = ∏ b : (Σ v : X.Pl, Fin (X.G.P.n' v)), if IsOddPos b.2 then ((GlobalTheory.FrameB.wV Kc fd c j La' b.1 b.2).det⁻¹) ^ (-exY X j b.1 b.2).toNat * (GlobalTheory.FrameB. …`. Unfold `GlobalTheory.FrameB.kD`. Rewrite using `[Fintype.prod_sigma]`. Rewrite using `[← Fintype.prod_equiv pos _ _ (fun _ => rfl), hkN, hkD, GlobalTheory.FrameB.sS, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Equiv.symm_apply_apply]`. Distinguish the cases in `ho : IsOddPos b.2`. Simplify using `only [if_pos ho]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hw : GlobalTheory.FrameB.wV Kc fd c j La' b.1 b.2 = GlobalTheory.FrameB.mk Kc fd j La' b.1 b.2`. Unfold `GlobalTheory.FrameB.wV`. Rewrite using `[if_pos ho]`. Establish `hk : GlobalTheory.FrameB.kV Kc fd c j La' b.1 b.2 = c * (GlobalTheory.FrameB.mk Kc fd j La' b.1 b.2).det⁻¹`. Unfold `GlobalTheory.FrameB.kV`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ho]`. Rewrite using `[hw, hk, exY, exT, blk_scal_odd c _ hc (hdet0 b.1 b.2) _ hN1 _ _ (hbd b)]`. Establish `h1 : szMu X j b.1 b.2 = szT X D pos j (pos b)` using `by show _ = szMu X j (pos.symm (pos b)).1 (pos.symm (pos b)).2; rw [Equiv.symm_apply_apply]`. Establish `h2 : cMu X j b.1 b.2 = cT1 X D pos j (pos b)` using `by show _ = cMu X j (pos.symm (pos b)).1 (pos.symm (pos b)).2; rw [Equiv.symm_apply_apply]`. Establish `h3` using `(GlobalTheory.T.unitaryBlockMatrices_read_in_placeField X D pos Kc ι ρ hT M hU b.1 b.2).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[if_pos ho]`. Rewrite using `[h1, h2, hdet, h3, ← zpow_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg ho]`.
-
-Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scal_tauV : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (Kc : Type) [Field Kc] [Algebra (Formalism.MainNotions.FormalGroupSystem.K0 p) Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v), PosTie X D pos Kc ι ρ → ∀ (fd : FData X D) (c : Kc), c ≠ 0 → ∀ (j : ℕ) (hN : RankTie X D j) (La' : X.Lt (j + 1)) (M : GL (Fin (D.R.N (j + 1))) D.host.E), StdU D M → FrIs fd ρ (j + 1) La' (rkT X D hN) M → ∀ (ν : D.what₂.Tau → Fin (D.R.N j) → ℕ), NuIs X D pos j ν → GlobalTheory.FrameB.sS X Kc j (GlobalTheory.FrameB.kV Kc fd c j La') * GlobalTheory.FrameB.kN X Kc j (GlobalTheory.FrameB.wV Kc fd c j La') (GlobalTheory.FrameB.kV Kc fd c j La') * (GlobalTheory.FrameB.kD X Kc j (GlobalTheory.FrameB.wV Kc fd c j La') (GlobalTheory.FrameB.kV Kc fd c j La'))⁻¹ = ∏ τ, if IsOddPos (pos.symm τ).2 then c ^ szT X D pos j τ * ι (embT D τ (M : Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) D.host.E).det) ^ cT1 X D pos j τ else 1 := by
   intro p _ X D pos Kc _ _ _ ι ρ hT fd c hc j hN La' M hU hFr ν hν

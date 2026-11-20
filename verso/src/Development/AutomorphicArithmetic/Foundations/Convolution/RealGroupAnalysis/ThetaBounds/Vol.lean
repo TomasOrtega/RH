@@ -7,7 +7,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ _ M₀`. Conclude with `UpperTheory.ConvolutionTheory.R2.M.volD F M₀`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.vol :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], Vol F := by

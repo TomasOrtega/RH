@@ -16,49 +16,43 @@ open ValuativeRel Formalism.L2.Host
 namespace GlobalTheory.CosetVanish
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ A' _ _ μ _ ν z hν c x hx`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu1, hνu⟩ : ∃ u : kˣ, valuation k (u : k) = 1 ∧ ν u ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hν fun y hy => h y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w0, hw0, hw0x⟩` from `(Matrix.exists_vecMul_eq_zero_iff (M := x)).2 hx`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, w0 j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hw0 (funext h)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : Nonempty A' := ⟨j⟩`. Take `⟨i₀, hi₀⟩` from `Finite.exists_max (fun i => valuation k (w0 i))`. Establish `hwi₀ : w0 i₀ ≠ 0`. Introduce `h0`. Use `hi₀ j` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[h0, map_zero]`. Conclude with `hj ((valuation k).zero_iff.1 (le_antisymm this zero_le'))`. Use `set w : A' → k := (w0 i₀)⁻¹ • w0 with hwdef`. Establish `hwi : w i₀ = 1` using `by simp [w, hwi₀]`. Establish `hwint : ∀ i, valuation k (w i) ≤ 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `only [w, Pi.smul_apply, smul_eq_mul, map_mul, map_inv₀]`. Establish `hpos : valuation k (w0 i₀) ≠ 0` using `by simpa using hwi₀`. Combine the equalities or inequalities in the displayed calculation. Establish `hwx : ∀ j, ∑ l, w l * x l j = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j`. Use `congrFun hw0x j` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply] at this`. Simplify using `only [w, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, this, mul_zero]`. Use `set e : A' → k := Pi.single i₀ ((u : k) - 1) with hedef`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `he : ∀ i, valuation k (e i) ≤ 1`. Introduce `i`. Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using `only [e, Pi.single_eq_same]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `((valuation k).map_sub _ _).trans ?_` and prove the remaining obligations. Simplify using `[hu1]`. Simplify using `[e, Pi.single_eq_of_ne h]`. Establish `hwe : ∑ l, w l * e l = (u : k) - 1`. Simplify using `[e, Pi.single_apply, hwi]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M : Matrix A' A' k := 1 + Matrix.vecMulVec e w with hMdef`. Establish `hMdet : M.det = u`. Rewrite using `[hMdef, Matrix.vecMulVec_eq Unit, Matrix.det_one_add_replicateCol_mul_replicateRow]`. Simplify using `only [dotProduct]`. Rewrite using `[hwe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hMne : M.det ≠ 0` using `by rw [hMdet]; exact u.ne_zero`. Use `set m : GL A' k := Matrix.GeneralLinearGroup.mkOfDetNeZero M hMne with hmdef`. Establish `hmdet : gdet m = u` using `by ext; simp [gdet, Matrix.GeneralLinearGroup.val_det_apply, m, hMdet]`. Establish `hmval : (m : Matrix A' A' k) = M` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hMG : ∀ (G : Matrix A' A' k) i j, (M * G) i j = G i j + e i * ∑ l, w l * G l j`. Introduce `G i j`. Rewrite using `[hMdef, Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.vecMulVec_apply, mul_assoc, Finset.mul_sum]`. Establish `hsum : ∀ (G : Matrix A' A' k) j, ∑ l, w l * G l j = ∑ l, w l * (G l j - x l j)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `G j`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, hwx, sub_zero]`. Establish `hkey : ∀ g : GL A' k, (m * g ∈ {g : GL A' k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k (c : k)}) ↔ g ∈ {g : GL A' k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k (c : k)}`. Introduce `g`. Simplify using `only [Set.mem_setOf_eq, Units.val_mul, hmval, hMG]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i j set s := ∑ l, w l * (g.val l j) with hs`. Establish `h2 : ∑ l, w l * ((g.val l j + e l * s) - x l j) = (u : k) * s`. Establish `: ∀ l, w l * ((g.val l j + e l * s) - x l j) = w l * (g.val l j - x l j) + (w l * e l) * s`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, Finset.sum_add_distrib, ← Finset.sum_mul, hwe, ← hsum, ← hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsv : valuation k s ≤ valuation k (c : k)`. Establish `: s = (u : k)⁻¹ * ∑ l, w l * ((g.val l j + e l * s) - x l j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h2, ← mul_assoc, inv_mul_cancel₀ u.ne_zero, one_mul]`. Rewrite using `[this, map_mul, map_inv₀, hu1, inv_one, one_mul]`. Use `(valuation k).map_sum_le fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' (hwint l)).trans (h l j) |>.trans' (by rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: g.val i j - x i j = ((g.val i j + e i * s) - x i j) + (-(e i * s))` using `by ring`. Rewrite using `[this]`. Use `(valuation k).map_add_le (h i j) ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_neg, map_mul]`. Conclude with `(mul_le_of_le_one_left' (he i)).trans hsv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i j`. Establish `hsv : valuation k (∑ l, w l * g.val l j) ≤ valuation k (c : k)`. Rewrite using `[hsum]`. Use `(valuation k).map_sum_le fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_le_of_le_one_left' (hwint l)).trans (h l j)`. Establish `: g.val i j + e i * (∑ l, w l * g.val l j) - x i j = (g.val i j - x i j) + e i * (∑ l, w l * g.val l j)` using `by ring`. Rewrite using `[this]`. Use `(valuation k).map_add_le (h i j) ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `(mul_le_of_le_one_left' (he i)).trans hsv`. Use `set S := {g : GL A' k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k (c : k)} with hSdef`. Establish `hpre : (fun g => m * g) ⁻¹' S = S` using `Set.ext hkey`. Use `set χ : GL A' k → ℂ := fun g => (ν (gdet g) : ℂ) * apow (gdet g) z with hχ`. Establish `hχm : ∀ g, χ (m * g) = (ν u : ℂ) * χ g`.
-
-Introduce `g`. Simplify using `only [χ, gdet, map_mul] at hmdet ⊢`. Rewrite using `[hmdet, apow_mul, apow_of_valuation_eq_one hu1, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmp : MeasurePreserving (fun g => m * g) μ μ` using `measurePreserving_mul_left μ m`.
-
-Establish `hemb : MeasurableEmbedding (fun g => m * g)` using `(MeasurableEquiv.mulLeft m).measurableEmbedding`. Establish `h1` using `hmp.setIntegral_preimage_emb hemb χ S`. Rewrite `h1` using `[hpre]`. Simplify using `only [hχm, integral_const_mul] at h1`. Express the relevant statement in the definitionally equal form `∫ g in S, χ g ∂μ = 0`.
-
-Establish `hne : (ν u : ℂ) ≠ 1`. Introduce `h`. Conclude with `hνu (Units.ext h)`. Establish `h3 : ((ν u : ℂ) - 1) * ∫ g in S, χ g ∂μ = 0` using `by rw [sub_mul, h1, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_coset_singular_eq_zero : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {A' : Type} [Fintype A'] [DecidableEq A'] (μ : Measure (GL A' k)) [μ.IsMulLeftInvariant] (ν : kˣ →* ℂˣ) (z : ℂ), ¬ IsUnram ν → ∀ (c : kˣ) (x : Matrix A' A' k), x.det = 0 → ∫ g in {g : GL A' k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k (c : k)}, (ν (gdet g) : ℂ) * apow (gdet g) z ∂μ = 0 := by
   intro k _ _ _ _ _ _ A' _ _ μ _ ν z hν c x hx

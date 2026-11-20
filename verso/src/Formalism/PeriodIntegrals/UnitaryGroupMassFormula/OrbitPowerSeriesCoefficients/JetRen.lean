@@ -25,9 +25,9 @@ def xzEmb (φ : Lt ↪ Lt') : XZ Lt N0 N1 ↪ XZ Lt' N0 N1 :=
   ⟨xzMap φ, Function.Injective.sumMap (pEmb φ _).injective (pEmb φ _).injective⟩
 
 /- English proof (translation)
-Unfold `minorXZ`. Establish `h` using `RingHom.map_det (MvPolynomial.rename (R := ℤ) (xzMap (N0 := N0) (N1 := N1) φ)).toRingHom (Matrix.of fun i k : Fin p => ∑ a : Fin N0, MvPolynomial.X (Sum.inl (s, (i : ℕ), a)) * MvPolynomial.X (Sum.inr (s, a, I k)))`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h`. Rewrite using `[h]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i k`. Simplify using `[xzMap, pEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rename_minorXZ (φ : Lt ↪ Lt') (s : Lt) (p : ℕ) (I : Fin p ↪o Fin N1) :
     MvPolynomial.rename (xzMap (N0 := N0) (N1 := N1) φ) (minorXZ N0 N1 s p I) = minorXZ N0 N1 (φ s) p I := by
@@ -42,9 +42,9 @@ theorem rename_minorXZ (φ : Lt ↪ Lt') (s : Lt) (p : ℕ) (I : Fin p ↪o Fin 
   simp [xzMap, pEmb]
 
 /- English proof (translation)
-Unfold `minorXZ`. Rewrite using `[Matrix.det_apply]`. Use `Subalgebra.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `zsmul_mem (Subalgebra.prod_mem _ fun i _ => ?_) _` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.of_apply]`. Use `Subalgebra.sum_mem _ fun a _ => Subalgebra.mul_mem _ ?_ ?_` and prove the remaining obligations. Conclude with `MvPolynomial.X_mem_supported.mpr (by simp [xzLetter])`. Conclude with `MvPolynomial.X_mem_supported.mpr (by simp [xzLetter])`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem minorXZ_supported (s : Lt) (p : ℕ) (I : Fin p ↪o Fin N1) :
     minorXZ N0 N1 s p I ∈ MvPolynomial.supported ℤ (xzLetter (Lt := Lt) (N0 := N0) (N1 := N1) ⁻¹' {s}) := by
@@ -59,15 +59,15 @@ theorem minorXZ_supported (s : Lt) (p : ℕ) (I : Fin p ↪o Fin N1) :
   · exact MvPolynomial.X_mem_supported.mpr (by simp [xzLetter])
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[Finsupp.fst_sumFinsuppEquivProdFinsupp]`. Distinguish the cases in `hy : y ∈ Set.range (pEmb φ (ℕ × Fin N0))`. Take `⟨y0, rfl⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finsupp.embDomain_apply_self, Finsupp.fst_sumFinsuppEquivProdFinsupp, show (Sum.inl (pEmb φ (ℕ × Fin N0) y0) : XZ Lt' N0 N1) = xzEmb φ (Sum.inl y0) from rfl, Finsupp.embDomain_apply_self]`. Rewrite using `[Finsupp.embDomain_of_notMem_range _ _ _ hy, Finsupp.embDomain_of_notMem_range]`. Introduce and unpack `⟨x, hx⟩`. Consider the cases of `x with`. Consider the case `inl x => exact hy ⟨x, Sum.inl_injective hx⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr x => cases hx`. Use extensionality with `y`. Rewrite using `[Finsupp.snd_sumFinsuppEquivProdFinsupp]`. Distinguish the cases in `hy : y ∈ Set.range (pEmb φ (Fin N0 × Fin N1))`. Take `⟨y0, rfl⟩` from `hy`.
+Treat this case separately. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finsupp.embDomain_apply_self, Finsupp.snd_sumFinsuppEquivProdFinsupp, show (Sum.inr (pEmb φ (Fin N0 × Fin N1) y0) : XZ Lt' N0 N1) = xzEmb φ (Sum.inr y0) from rfl, Finsupp.embDomain_apply_self]`. Rewrite using `[Finsupp.embDomain_of_notMem_range _ _ _ hy, Finsupp.embDomain_of_notMem_range]`. Introduce and unpack `⟨x, hx⟩`. Consider the cases of `x with`. Consider the case `inl x => cases hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr x => exact hy ⟨x, Sum.inr_injective hx⟩`.
+Treat this case separately.
 -/
 theorem split_embDomain (φ : Lt ↪ Lt') (μ : XZ Lt N0 N1 →₀ ℕ) :
     Finsupp.sumFinsuppEquivProdFinsupp (Finsupp.embDomain (xzEmb φ) μ) =
@@ -102,7 +102,7 @@ theorem split_embDomain (φ : Lt ↪ Lt') (μ : XZ Lt N0 N1 →₀ ℕ) :
 variable [Fintype Lt] [DecidableEq Lt] [Fintype Lt'] [DecidableEq Lt'] (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Unfold `applyTerm`. Rewrite using `[split_embDomain, MvPolynomial.rename_monomial, ← Finsupp.embDomain_eq_mapDomain]`. Use `congr 2`. Rewrite using `[Finsupp.prod_embDomain]`. Conclude with `MvPowerSeries.coeff_embDomain_rename _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem applyTerm_rename (φ : Lt ↪ Lt') (T : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l])
     (μ : XZ Lt N0 N1 →₀ ℕ) (c : ℤ) :
@@ -115,7 +115,7 @@ theorem applyTerm_rename (φ : Lt ↪ Lt') (T : MvPowerSeries (Lt × Fin N0 × F
   · exact MvPowerSeries.coeff_embDomain_rename _ _ _
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial μ c`. Rewrite using `[MvPolynomial.rename_monomial, applyAt0_monomial, applyAt0_monomial, show Finsupp.mapDomain (xzMap φ) μ = Finsupp.embDomain (xzEmb φ) μ from (Finsupp.embDomain_eq_mapDomain (xzEmb φ) μ).symm]`. Conclude with `applyTerm_rename l φ T μ c`. Consider the case `add P Q hP hQ => rw [map_add, applyAt0_add, applyAt0_add, hP, hQ, map_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem applyAt0_rename (φ : Lt ↪ Lt') (T : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l])
     (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
@@ -132,9 +132,9 @@ theorem applyAt0_rename (φ : Lt ↪ Lt') (T : MvPowerSeries (Lt × Fin N0 × Fi
 end Rename₂
 
 /- English proof (translation)
-Introduce `ν hν v hv`. Assume the negation of the conclusion as `hvr`. Apply `hν` to reduce the goal to its premises. Apply `MvPowerSeries.coeff_rename_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨ν', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite `hv` using `[← Finsupp.embDomain_eq_mapDomain]`. Distinguish the cases in `h : v ∈ Set.range (φ.prodMap (Function.Embedding.refl γ))`. Take `⟨w, rfl⟩` from `h`. Conclude with `hvr ⟨w.1, rfl⟩`. Conclude with `hv (Finsupp.embDomain_of_notMem_range _ _ _ h)`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem serIn_rename {Lt Lt' γ K : Type*} [CommSemiring K] (φ : Lt ↪ Lt') (T : MvPowerSeries (Lt × γ) K) :
     SerIn {v : Lt' × γ | v.1 ∈ Set.range φ}
@@ -151,9 +151,9 @@ theorem serIn_rename {Lt Lt' γ K : Type*} [CommSemiring K] (φ : Lt ↪ Lt') (T
   · exact hv (Finsupp.embDomain_of_notMem_range _ _ _ h)
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ m', Finsupp.mapDomain f m' = m`. Take `⟨m', rfl⟩` from `h`. Rewrite using `[MvPolynomial.coeff_rename_mapDomain f f.injective]`. Conclude with `hA m'`. Rewrite using `[MvPolynomial.coeff_rename_eq_zero f A m (fun u hu => absurd ⟨u, hu⟩ h)]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hb`.
+A detailed English derivation is pending.
 -/
 theorem norm_coeff_rename_le {σ τ K : Type*} [NormedCommRing K] (f : σ ↪ τ) (A : MvPolynomial σ K) {b : ℝ}
     (hb : 0 ≤ b) (hA : ∀ m, ‖MvPolynomial.coeff m A‖ ≤ b) (m : τ →₀ ℕ) :

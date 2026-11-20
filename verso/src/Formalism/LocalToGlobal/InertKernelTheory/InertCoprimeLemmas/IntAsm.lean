@@ -8,7 +8,7 @@ namespace Formalism.L2.KerInert
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
 
 /- English proof (translation)
-Take `⟨s, hs, h1, h2⟩` from `h`. Conclude with `⟨s, hs, h2, h1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eqAt_symm' {D : D7} {p N : ℕ} {L L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     (h : EqAt D p L L₁) : EqAt D p L₁ L := by
@@ -16,7 +16,7 @@ theorem eqAt_symm' {D : D7} {p N : ℕ} {L L₁ : Submodule (𝓞 D.host.E) (Fin
   exact ⟨s, hs, h2, h1⟩
 
 /- English proof (translation)
-Introduce `C wq r b hC hwq hb hon`. Conclude with `h C wq r b hC hwq ((hPair D cc δ p N N' L L₁ L' L₁' hE hE').1 r b hb) hon`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intS_of_pair (hPair : PairFact) {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {p : ℕ} [Fact p.Prime]
     {lam : Qbar →+* ℂ_[p]} {N N' : ℕ}
@@ -27,7 +27,7 @@ theorem intS_of_pair (hPair : PairFact) {D : D7} {cc : Ideal (𝓞 D.host.K)} {�
   exact h C wq r b hC hwq ((hPair D cc δ p N N' L L₁ L' L₁' hE hE').1 r b hb) hon
 
 /- English proof (translation)
-The claim follows from `hBI D cc δ hcc hδ p hp hin lam N N' _ _ _ (hTens D cc δ B hcc hδ p hp hin lam (fun s1 hs1 => ⟨(hAlg D cc δ B hcc hδ χ hχ p hp hin 2 2).2 s1 hs1, hMM D cc δ B hcc hδ p hp hin lam s1 hs1, hBI D cc δ hcc hδ p hp hin lam 2 2 _ _ _ (hMM D cc δ B hcc hδ p hp hin lam s1 hs1)⟩) N N' hN h …`.
+A detailed English derivation is pending.
 -/
 theorem thZeroInt (hAlg : AlgFact) (hBI : BasisInv) (hTens : TensFact) (hMM : ThFourInt)
     {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (hcc : IsCurveIdeal D cc) (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ)
@@ -42,9 +42,7 @@ theorem thZeroInt (hAlg : AlgFact) (hBI : BasisInv) (hTens : TensFact) (hMM : Th
        hBI D cc δ hcc hδ p hp hin lam 2 2 _ _ _ (hMM D cc δ B hcc hδ p hp hin lam s1 hs1)⟩) N N' hN hN' s hs)
 
 /- English proof (translation)
-Take `⟨m, c, s, hc, hs, heq⟩` from `hStd D cc δ B hcc hδ χ hχ p hp hin lam N N' M M' hA hE hE' t ht`. Establish `hL` using `hLin D p lam N N' m c (fun k => U D B.tor (s k) (B.thZero N N')) (fun k => (hc k).1) (fun k => (hAlg D cc δ B hcc hδ χ hχ p hp hin N N').2 (s k) (hs k))`. Rewrite using `[heq]`. Use `show IntS D B.tor p lam M M' (pSer D lam (fun z => ∑ k, c k * (fun k => U D B.tor (s k) (B.thZero N N')) k z))`. Rewrite using `[hL]`.
-
-Conclude with `hComb D B.tor p lam N N' M M' m (fun k => lamC lam (c k)) _ (fun k => (hc k).2) (fun k => intS_of_pair hPair (eqAt_symm' hE) (eqAt_symm' hE') (thZeroInt hAlg hBI hTens hMM B hcc hδ χ hχ p hp hin lam N N' hA.1 hA.2.1 (s k) (hs k)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdInt (hComb : CombFact) (hPair : PairFact) (hAlg : AlgFact) (hLin : PSerLin) (hStd : StdStep)
     (hBI : BasisInv) (hTens : TensFact) (hMM : ThFourInt)
@@ -67,9 +65,9 @@ theorem stdInt (hComb : CombFact) (hPair : PairFact) (hAlg : AlgFact) (hLin : PS
       (thZeroInt hAlg hBI hTens hMM B hcc hδ χ hχ p hp hin lam N N' hA.1 hA.2.1 (s k) (hs k)))
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Take `⟨γ, γ', M, M', hAM, hE, hE', rfl, rfl⟩` from `hWA D p hp hin N N' L L' hA`. Establish `hEq : Formalism.MainNotions.TaylorLogMetric.eq22 D B.tor χ (B.eNat χ)` using `Formalism.L2.PairingIndexBounds.Eq.SqG.eulerProduct_eq_of_curve_ideal B hcc hδ χ hχ`. Take `⟨h1, -, -⟩` from `hEq`. Take `⟨hN, hN', hSM, hSM'⟩` from `id hAM`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcov : pull D B.tor (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E) (B.eNat χ N N' M M') = B.eNat χ N N' (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) M) (SDLat.smulLat (γ' : Matrix (Fin N') (Fin N') D.host.E) M')` using `h1 N N' ⟨M, hSM⟩ ⟨M', hSM'⟩ hN hN' γ γ'`. Rewrite using `[← hcov]`. Establish `ht'` using `hPT D cc δ p N N' γ γ' M M' t ht`. Conclude with `hPull D cc δ p lam N N' γ γ' M M' t (B.eNat χ N N' M M') ((hAlg D cc δ B hcc hδ χ hχ p hp hin N N').1 M M' hAM hE hE' _ ht') (stdInt hComb hPair hAlg hLin hStd hBI hTens hMM B hcc hδ χ hχ p hp hin lam N N' M M' hAM hE hE' _ ht')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem transOne (hComb : CombFact) (hPair : PairFact) (hWA : WeakApprox) (hPT : PullTors) (hPull : PullFact)
     (hAlg : AlgFact) (hLin : PSerLin) (hStd : StdStep) (hBI : BasisInv) (hTens : TensFact) (hMM : ThFourInt)
@@ -96,9 +94,9 @@ theorem transOne (hComb : CombFact) (hPair : PairFact) (hWA : WeakApprox) (hPT :
     (stdInt hComb hPair hAlg hLin hStd hBI hTens hMM B hcc hδ χ hχ p hp hin lam N N' M M' hAM hE hE' _ ht')
 
 /- English proof (translation)
-Unfold `IntInert`. Introduce `D cc δ B hcc hδ χ hχ p _ hp hin lam N N' L L' _hA`. Unfold `IntFirst`. Introduce `F hF`. Take `⟨m, r, t, L₁, L₁', hr, ht, hL, rfl⟩` from `hF`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `hComb D B.tor p lam N N' L L' m r _ hr (fun k => ?_)` and prove the remaining obligations. Take `⟨hA₁, hE, hE'⟩` from `hL k`. Conclude with `intS_of_pair hPair hE hE' (transOne hComb hPair hWA hPT hPull hAlg hLin hStd hBI hTens hMM B hcc hδ χ hχ p hp hin lam N N' (L₁ k) (L₁' k) hA₁ (t k) ((hPair D cc δ p N N' L (L₁ k) L' (L₁' k) hE hE').2 (t k) (ht k)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem intInert_of (hComb : CombFact) (hPair : PairFact) (hWA : WeakApprox) (hPT : PullTors) (hPull : PullFact)
     (hAlg : AlgFact) (hLin : PSerLin) (hStd : StdStep) (hBI : BasisInv) (hTens : TensFact) (hMM : ThFourInt) :

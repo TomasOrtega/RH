@@ -21,19 +21,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ d g r F FB J Q hE hFH ρG N αB hB hA ⟨cp, hU, H, S, hP, hPL, hS, hα, hu⟩`. Take `⟨h0, A', B', hA', hB', hAB⟩` from `hE.exact`. Establish `hdet : IsUnit S.det` using `(Matrix.isUnit_iff_isUnit_det S).1 hS`. Establish `hS1 : S⁻¹ * S = 1` using `Matrix.nonsing_inv_mul S hdet`. Establish `hS2 : S * S⁻¹ = 1` using `Matrix.mul_nonsing_inv S hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose u1 hu1 hu1' using hu`. Use `choose u2 hu2 hu2' using GlobalTheory.T.exists_formalTorus_character_lift_to_law p C v O hv d r F hFH J A' hE.homI hA'`. Take `⟨hc1, -, hc3⟩` from `GlobalTheory.T.formalSeriesJacobian_chain_rule_linearPart O d g Q hE.homQ.1`. Set `w : (Fin g ⊕ Fin g) ⊕ Fin r → PS O 1 d` to `Sum.elim (fun i => sub ![Q] (u1 i)) u2`. Set `e` to `Fintype.equivFin ((Fin g ⊕ Fin g) ⊕ Fin r)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨cp, hU, H, S⁻¹ * lin Q, _, fun k => w (e.symm k), ?_, ⟨hP, hPL⟩, ⟨?_, A', B' * S, hA', ?_, ?_⟩, ?_, hA, ?_, ?_⟩` and prove the remaining obligations. Introduce `k show IsCh F.F (w (e.symm k))`. Break down `e.symm k with i | i` into its components or cases. Conclude with `hc3 F FB hE.homQ _ (hu1 i)`. Conclude with `hu2 i`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_assoc, h0, Matrix.mul_zero]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (lin Q), hB', Matrix.one_mul, hS1]`. Rewrite using `[Matrix.mul_assoc B', ← Matrix.mul_assoc S, hS2, Matrix.one_mul, hAB]`. Introduce `a`. Establish `h : S⁻¹ * lin (αB a) = H.ρL (1 ⊗ₜ[ℤ] a) * S⁻¹`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hS2, Matrix.mul_one]`. Use `_ = _ := by rw [hα a, ← Matrix.mul_assoc, hS1, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hB a, ← Matrix.mul_assoc, h, Matrix.mul_assoc]`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e (Sum.inl i), ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply, w, Sum.elim_inl]`. Rewrite using `[(hc1 _).1, ← hu1' i, Matrix.mulVec_mulVec, ← Matrix.transpose_mul, ← Matrix.mul_assoc, hS2, Matrix.one_mul]`. Introduce `i`. Use `⟨e (Sum.inr i), ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Equiv.symm_apply_apply, w, Sum.elim_inr]`. Conclude with `hu2' i`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_linDat_of_extSer : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [StarRing OE] (d g r : ℕ) (F : FGLaw O d) (FB : FGLaw O g) (J : Fin d → PS O 1 r) (Q : Fin g → PS O 1 d), ExtSer F.F FB.F J Q → FH p F.F → ∀ (ρG : OE →+* Matrix (Fin d) (Fin d) O) (N : OE →+* Matrix (Fin r) (Fin r) ℤ) (αB : OE → Fin g → PS O 1 g), (∀ a, lin Q * ρG a = lin (αB a) * lin Q) → (∀ a, ρG a * lin J = lin J * (N a).map (Int.castRingHom O)) → (∃ (cp : O) (_ : HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (S : Matrix (Fin g) (Fin g) O), H.P = 0 ∧ H.PL = 0 ∧ IsUnit S ∧ (∀ a : OE, lin (αB a) * S = S * H.ρL (1 ⊗ₜ[ℤ] a)) ∧ ∀ i, ∃ u : PS O 1 g, IsCh FB.F u ∧ Sᵀ *ᵥ dl u = fun l => H.Ht l i) → ∃ (cp : O) (_ : HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (B : Matrix (Fin g) (Fin d) O) (m : ℕ) (u : Fin m → PS O 1 d), (∀ k, IsCh F.F (u k)) ∧ LinDat H (lin J) B ρG N (fun k => dl (u k)) := by
   intro p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ d g r F FB J Q hE hFH ρG N αB hB hA ⟨cp, hU, H, S, hP, hPL, hS, hα, hu⟩

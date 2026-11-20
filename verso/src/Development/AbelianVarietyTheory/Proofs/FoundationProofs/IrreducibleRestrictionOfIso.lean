@@ -6,9 +6,9 @@ open scoped Matrix
 namespace GlobalTheory.IrrConj
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ConjugateIrreducibility.target`. Consider the case `exact _root_.GlobalTheory.ConjugateIrreducibility.target`. Consider the case `(apply _root_.GlobalTheory.ConjugateIrreducibility.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ConjugateIrreducibility.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ConjugateIrreducibility.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ConjugateIrreducibility.target ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIrrSub_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ}
     (H H' : Subgroup Γ) (hH : ∀ s, s ∈ H → s ∈ H')
@@ -23,7 +23,7 @@ theorem isIrrSub_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ}
   | (intros; exact _root_.GlobalTheory.ConjugateIrreducibility.target ..)
 
 /- English proof (translation)
-Simplify using `only [dt, MonoidHom.comp_apply, hg s, map_mul, map_inv]`. Rewrite using `[mul_comm (Matrix.GeneralLinearGroup.det g), mul_assoc, mul_inv_cancel, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dt_eq_of_repIso {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
     (W W' : R2 Ω l) (g : GL (Fin 2) (Qbar l)) (hg : ∀ s, W' s = g * W s * g⁻¹) (s : G ℚ Ω) :
@@ -32,7 +32,7 @@ theorem dt_eq_of_repIso {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact 
   rw [mul_comm (Matrix.GeneralLinearGroup.det g), mul_assoc, mul_inv_cancel, mul_one]
 
 /- English proof (translation)
-Introduce `Ω _ _ l _ W W' ⟨g, hg⟩ h`. Use `isIrrSub_conj (H0g W) (H0g W') ?_ W W' g hg h` and prove the remaining obligations. Introduce `s hs`. Simplify using `only [H0g, Subgroup.mem_inf, MonoidHom.mem_ker] at hs ⊢`. Conclude with `⟨hs.1, by rw [dt_eq_of_repIso W W' g hg]; exact hs.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem irr_of_repIso : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (l : ℕ) [Fact l.Prime] (W W' : R2 Ω l),
     RepIso W W' → IsIrr (W.comp (H0g W).subtype) → IsIrr (W'.comp (H0g W').subtype) := by

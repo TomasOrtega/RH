@@ -8,22 +8,20 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.TameTau
 
 /- English proof (translation)
-The claim follows from `(A.valuation_le_one_iff _).2 (mem_of_isIntegral_int A (RingOfIntegers.isIntegral_coe x).algebraMap)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_algebraMap_int_le_one {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (x : 𝓞 E) : A.valuation (algebraMap E Ω (x : E)) ≤ 1 :=
   (A.valuation_le_one_iff _).2 (mem_of_isIntegral_int A (RingOfIntegers.isIntegral_coe x).algebraMap)
 
 /- English proof (translation)
-Establish `hdvd : P.asIdeal ∣ Ideal.span {ϖ}` using `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 h1)`. Take `⟨J, hJ⟩` from `hdvd`. Establish `hJP : ¬ (J : Set (𝓞 E)) ⊆ P.asIdeal`. Introduce `hle`. Apply `h2` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: Ideal.span {ϖ} ≤ P.asIdeal ^ 2`. Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mul_mono_right hle`. Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this`. Take `⟨s, hsJ, hsP⟩` from `Set.not_subset.1 hJP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ϖ' * s ∈ Ideal.span {ϖ}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul h1' hsJ`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hmem`. Establish `hs1 : A.valuation (algebraMap E Ω (s : E)) = 1` using `le_antisymm (valuation_algebraMap_int_le_one A s) (not_lt.1 fun h => hsP ((hP s).1 h))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : algebraMap E Ω (a : E) * algebraMap E Ω (ϖ : E) = algebraMap E Ω (ϖ' : E) * algebraMap E Ω (s : E)`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Conclude with `ha` after adjusting the coercions. Establish `hv` using `congrArg A.valuation e`.
-
-Rewrite `hv` using `[map_mul, map_mul, hs1, mul_one]`. Rewrite using `[← hv]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem valuation_uniformiser_le {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     {A : ValuationSubring Ω} {P : HeightOneSpectrum (𝓞 E)} (hP : IsPlaceOver A P) {ϖ ϖ' : 𝓞 E}
@@ -56,23 +54,19 @@ theorem valuation_uniformiser_le {E Ω : Type} [Field E] [NumberField E] [Field 
     _ = A.valuation (algebraMap E Ω (ϖ : E)) := one_mul _
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A P hP m hm0 hmP ϖ ϖ' h1 h2 h1' h2' π π' hπ hπ' σ hσ`. Establish `hne : ∀ x : 𝓞 E, x ∉ P.asIdeal ^ 2 → algebraMap E Ω (x : E) ≠ 0`. Introduce `x hx h0`. Apply `hx` to reduce the goal to its premises. Establish `hx0 : (x : E) = 0` using `(map_eq_zero_iff _ (algebraMap E Ω).injective).1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: x = 0` using `by exact_mod_cast hx0`. Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl; exact hne ϖ h2 (by rw [← hπ, zero_pow hm0.ne'])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hπ0' : π' ≠ 0`. Introduce and unpack `rfl; exact hne ϖ' h2' (by rw [← hπ', zero_pow hm0.ne'])`. Establish `hv : A.valuation (algebraMap E Ω (ϖ : E)) = A.valuation (algebraMap E Ω (ϖ' : E))` using `le_antisymm (valuation_uniformiser_le hP h1' h2' h1) (valuation_uniformiser_le hP h1 h2 h1')`. Use `set ρ := π' / π with hρ`. Establish `hρ0 : ρ ≠ 0` using `div_ne_zero hπ0' hπ0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρm : ρ ^ m = algebraMap E Ω ((ϖ' : E) / (ϖ : E))`. Rewrite using `[hρ, div_pow, hπ, hπ', map_div₀]`. Establish `hvρm : A.valuation ρ ^ m = 1`. Rewrite using `[← Valuation.map_pow, hρm, map_div₀, map_div₀, hv, div_self]`. Simplify using `using hne ϖ' h2'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hvρ : A.valuation ρ = 1`. Break down `lt_trichotomy (A.valuation ρ) 1 with h | h | h` into its components or cases. Conclude with `absurd hvρm (pow_lt_one₀ zero_le h hm0.ne').ne`. Conclude with `h`. Conclude with `absurd hvρm (one_lt_pow₀ h hm0.ne').ne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmv : ¬ A.valuation (m : Ω) < 1`. Introduce `h`. Apply `hmP` to reduce the goal to its premises. Apply `(hP _).1` to reduce the goal to its premises. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσρm : (σ ρ / ρ) ^ m = 1`. Rewrite using `[div_pow, ← map_pow, hρm, AlgEquiv.commutes, ← hρm]`. Conclude with `div_self (pow_ne_zero _ hρ0)`. Establish `hclose : A.valuation (σ ρ / ρ - 1) < 1`. Establish `e : σ ρ / ρ - 1 = (σ ρ - ρ) / ρ` using `by field_simp`.
-
-Rewrite using `[e, map_div₀, hvρ, div_one]`. Conclude with `hσ.2 ρ hvρ.le`. Establish `hfix : σ ρ / ρ = 1` using `root_eq_of_close A m hσρm (one_pow m) hmv hclose`. Establish `hfix' : σ ρ = ρ` using `(div_eq_one_iff_eq hρ0).1 hfix`. Establish `eπ' : π' = ρ * π` using `by rw [hρ]; field_simp`.
-
-Rewrite using `[eπ', map_mul, hfix', mul_div_mul_left _ _ hρ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_quot_indep : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (P : HeightOneSpectrum (𝓞 E)), IsPlaceOver A P → ∀ (m : ℕ), 0 < m → ((m : ℕ) : 𝓞 E) ∉ P.asIdeal → ∀ (ϖ ϖ' : 𝓞 E), ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → ϖ' ∈ P.asIdeal → ϖ' ∉ P.asIdeal ^ 2 → ∀ (π π' : Ω), π ^ m = algebraMap E Ω (ϖ : E) → π' ^ m = algebraMap E Ω (ϖ' : E) → ∀ σ ∈ Ine (F := E) A, σ π / π = σ π' / π' := by
   intro E Ω _ _ _ _ _ A P hP m hm0 hmP ϖ ϖ' h1 h2 h1' h2' π π' hπ hπ' σ hσ

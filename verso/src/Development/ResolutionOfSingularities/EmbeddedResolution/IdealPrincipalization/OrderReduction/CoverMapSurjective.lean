@@ -12,7 +12,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace MaxContactCoverData
 
 /- English proof (translation)
-Establish `hc` using `(isMaxContactCover_chosenCoverData T hv h).covers`. Rewrite using `[coverMap_eq_sigmaOpensDesc]`. Conclude with `surjective_sigmaOpensDesc T.scheme (chosenCoverData T hv).opens hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_coverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (h : ∃ D : MaxContactReduction.FiniteOpenCoverWithIdeals T,

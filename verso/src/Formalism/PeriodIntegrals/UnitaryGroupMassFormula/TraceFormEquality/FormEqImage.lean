@@ -14,7 +14,7 @@ variable {K : Type} [Field K] {σ : K →+* ℂ} {G : Type} [Group G] [Fintype G
   {EE : Type} [AddCommGroup EE] [Module ℂ EE] {ρE : Representation ℂ G EE}
 
 /- English proof (translation)
-Rewrite using `[asAlg_apply, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, map_smul, M.j_eq, M.io_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma io_j_asAlg (M : GMap K σ G T EE ρE) (a : MonoidAlgebra K G) (x : M.VK) :
     M.io (M.j (M.rhoK.asAlgebraHom a x)) = ∑ g : G, σ (a.coeff g) • ρE g (M.io (M.j x)) := by
@@ -23,9 +23,9 @@ lemma io_j_asAlg (M : GMap K σ G T EE ρE) (a : MonoidAlgebra K G) (x : M.VK) :
   rw [LinearMap.map_smulₛₗ, map_smul, M.j_eq, M.io_eq]
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Use `⟨M.io (M.j x), ⟨x, by simp⟩, ?_⟩` and prove the remaining obligations. Conclude with `(io_j_asAlg M a x).symm`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Use `⟨x, ?_⟩` and prove the remaining obligations. Simplify using `only [map_one, Module.End.one_apply]`. Conclude with `io_j_asAlg M a x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma form_eq_image (M : GMap K σ G T EE ρE) (a : MonoidAlgebra K G) :
     M.form a = (fun z => ∑ g : G, σ (a.coeff g) • ρE g z) '' M.form 1 := by
@@ -40,17 +40,17 @@ lemma form_eq_image (M : GMap K σ G T EE ρE) (a : MonoidAlgebra K G) :
     exact io_j_asAlg M a x
 
 /- English proof (translation)
-Use `set A := AddSubgroup.closure {z | ∃ g, ∃ y ∈ M.form (eps P0), z = ρE g y}`. Establish `key : ∀ (d : MonoidAlgebra K G) (y : M.VK), M.io (M.j (M.rhoK.asAlgebraHom d (M.rhoK.asAlgebraHom (eps P0) y))) ∈ A`. Introduce `d y`. Establish `hs : ∀ g, d.coeff g • M.rhoK g (M.rhoK.asAlgebraHom (eps P0) y) = M.rhoK g (M.rhoK.asAlgebraHom (eps P0) (d.coeff g • y))` using `fun g => by`. Rewrite using `[map_smul, map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[asAlg_apply, Finset.sum_congr rfl (fun g _ => hs g), map_sum, map_sum]`. Use `AddSubgroup.sum_mem _ fun g _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations. Use `⟨g, M.io (M.j (M.rhoK.asAlgebraHom (eps P0) (d.coeff g • y))), ⟨d.coeff g • y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[M.j_eq, M.io_eq]`. Apply `Set.Subset.antisymm` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨n, a, b, h⟩` from `eG_mem T P0 hM`. Establish `hx : x = M.rhoK.asAlgebraHom (eG T) x` using `by rw [M.good]; rfl`. Simplify using `only [map_one, Module.End.one_apply]`. Rewrite using `[hx, h, map_sum, LinearMap.sum_apply, map_sum, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, Module.End.mul_apply]`. Conclude with `key _ _`. Introduce `z hz`. Set `f : M.VK →+ EE` to `(M.io.toAddMonoidHom).comp M.j.toAddMonoidHom`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : A ≤ f.range`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨g, _, ⟨y, rfl⟩, rfl⟩`. Use `⟨M.rhoK g (M.rhoK.asAlgebraHom (eps P0) y), ?_⟩` and prove the remaining obligations. Simplify using `[f, M.j_eq, M.io_eq]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, rfl⟩` from `hA hz`. Conclude with `⟨x, by simp [f]⟩`.
+A detailed English derivation is pending.
 -/
 lemma form_one_eq (M : GMap K σ G T EE ρE) (P0 : Pair K G) (hM : M1 T P0) :
     M.form 1 = (AddSubgroup.closure {z | ∃ g, ∃ y ∈ M.form (eps P0), z = ρE g y} : Set EE) := by

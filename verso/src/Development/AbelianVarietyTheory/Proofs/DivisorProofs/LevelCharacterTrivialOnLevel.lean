@@ -11,13 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolRead
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R hT hL hC i σ hσ k hk`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hodd : Odd (D.host.g 0 * D.host.g 1)` using `((D.host.g_prime 0).odd_of_ne_two (g_ne_two D 0)).mul ((D.host.g_prime 1).odd_of_ne_two (g_ne_two D 1))`. Take `⟨hk1, hk2⟩` from `(hT.levelK _ hj _ hσ k).1 hk`. Take `⟨x, hxu, hxr, hxc⟩` from `GlobalTheory.UnitDetRoot.exists_unit_detRoot D _ _ hodd k hk1 hk2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0 : R.mu0 ((i : ℕ) + 1) x = 1`. Use `GlobalTheory.tame_heckeChar_eq_one_of_finUnit D _ _ (hL.mu0 i) (R.C.isMu0 i).tame _ (fun P hP => ?_) x hxu hxc` and prove the remaining obligations. Use `(R.C.isMu0 i).unr P fun l hl => hP ?_` and prove the remaining obligations. Establish `hl' : ((D.host.g l : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal` using `hl`. Rewrite using `[Nat.cast_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases l`. Conclude with `P.asIdeal.mul_mem_right _ hl'`. Conclude with `P.asIdeal.mul_mem_left _ hl'`. Take `⟨y, hy1, hy2⟩` from `(hC i σ hσ).2.2.2.1 x hxu.1`. Rewrite `hy1` using `[h0, Circle.coe_one]`.
-
-Establish `hy : algebraMap T.Q.c.F D.what₂.LL y = 1` using `D.what₂.embLL.injective (hy1.symm.trans (map_one _).symm)`. Rewrite `hy2` using `[hy, map_one]`. Conclude with `((hT.muVal _ hj _ hσ).2 k x hxr).trans hy2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_eq_one_of_mem_level : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F), LawsJ T → R.toLevCh.Is A.μ0 → ChiR T R → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), GoodEmb T.Q.c (res T σ) → ∀ k ∈ T.Kf ((i : ℕ) + 1) (res T σ), T.mu ((i : ℕ) + 1) (res T σ) k = 1 := by
   intro D G _ _ Pl0 T0 A T _ R hT hL hC i σ hσ k hk

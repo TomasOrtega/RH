@@ -20,21 +20,21 @@ theorem genMat_eq (R : Type) [CommRing R] (n : ℕ) : genMat R n = Matrix.mvPoly
   rfl
 
 /- English proof (translation)
-Rewrite using `[genMat_eq]`. Conclude with `Matrix.det_mvPolynomialX_ne_zero _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genMat_det_ne_zero (R : Type) [CommRing R] [Nontrivial R] (n : ℕ) : (genMat R n).det ≠ 0 := by
   rw [genMat_eq]
   exact Matrix.det_mvPolynomialX_ne_zero _ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[genMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genMat_map (f : R →+* R') (n : ℕ) : (MvPolynomial.map f).mapMatrix (genMat R n) = genMat R' n := by
   ext a b
   simp [genMat]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det, genMat_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem genMat_det_map (f : R →+* R') (n : ℕ) : MvPolynomial.map f (genMat R n).det = (genMat R' n).det := by
   rw [RingHom.map_det, genMat_map]
@@ -46,7 +46,7 @@ def glMap (f : R →+* R') (n : ℕ) : GLCoord R n →+* GLCoord R' n :=
       exact ⟨k, by simp [genMat_det_map]⟩)
 
 /- English proof (translation)
-Unfold `glMap`. Conclude with `IsLocalization.map_eq _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem glMap_algebraMap (f : R →+* R') (n : ℕ) (x : MvPolynomial (Fin n × Fin n) R) :
     glMap f n (algebraMap _ (GLCoord R n) x) = algebraMap _ (GLCoord R' n) (MvPolynomial.map f x) := by
@@ -54,9 +54,9 @@ theorem glMap_algebraMap (f : R →+* R') (n : ℕ) (x : MvPolynomial (Fin n × 
   exact IsLocalization.map_eq _ _
 
 /- English proof (translation)
-Establish `h1 : algebraMap _ (GLCoord R' n) (genMat R' n).det * glMap f n (IsLocalization.Away.invSelf (genMat R n).det) = 1`. Establish `e : algebraMap _ (GLCoord R' n) (genMat R' n).det = glMap f n (algebraMap _ _ (genMat R n).det)`. Rewrite using `[glMap_algebraMap, genMat_det_map]`. Rewrite using `[e, ← map_mul, IsLocalization.Away.mul_invSelf, map_one]`. Establish `h2 : algebraMap _ (GLCoord R' n) (genMat R' n).det * (IsLocalization.Away.invSelf (genMat R' n).det : GLCoord R' n) = 1` using `IsLocalization.Away.mul_invSelf _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem glMap_invSelf (f : R →+* R') (n : ℕ) :
     glMap f n (IsLocalization.Away.invSelf (genMat R n).det) = IsLocalization.Away.invSelf (genMat R' n).det := by
@@ -75,7 +75,7 @@ theorem glMap_invSelf (f : R →+* R') (n : ℕ) :
     _ = _ := by rw [h1, one_mul]
 
 /- English proof (translation)
-Unfold `glMap`. Use `IsLocalization.map_injective_of_injective' (hN := ?_) (hf' := MvPolynomial.map_injective f hf) ..` and prove the remaining obligations. Introduce and unpack `⟨k, hk⟩`. Conclude with `pow_ne_zero k (genMat_det_ne_zero R' n) hk`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem glMap_injective [IsDomain R'] (f : R →+* R') (hf : Function.Injective f) (n : ℕ) :
     Function.Injective (glMap f n) := by
@@ -87,7 +87,7 @@ theorem glMap_injective [IsDomain R'] (f : R →+* R') (hf : Function.Injective 
 def lMap (f : R →+* R') (n : ℕ) : GLLaurent R n →+* GLLaurent R' n := AddMonoidAlgebra.mapRingHom ℤ (glMap f n)
 
 /- English proof (translation)
-Rewrite using `[← LaurentPolynomial.single_eq_C, ← LaurentPolynomial.single_eq_C]`. Conclude with `AddMonoidAlgebra.mapRingHom_single _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lMap_C (f : R →+* R') (n : ℕ) (x : GLCoord R n) :
     lMap f n (LaurentPolynomial.C x) = LaurentPolynomial.C (glMap f n x) := by
@@ -95,7 +95,7 @@ theorem lMap_C (f : R →+* R') (n : ℕ) (x : GLCoord R n) :
   exact AddMonoidAlgebra.mapRingHom_single _ _ _
 
 /- English proof (translation)
-Unfold `LaurentPolynomial.T lMap`. Rewrite using `[AddMonoidAlgebra.mapRingHom_single, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lMap_alt (f : R →+* R') (n : ℕ) (k : ℤ) :
     lMap f n (LaurentPolynomial.T k) = LaurentPolynomial.T k := by
@@ -103,13 +103,13 @@ theorem lMap_alt (f : R →+* R') (n : ℕ) (k : ℤ) :
   rw [AddMonoidAlgebra.mapRingHom_single, map_one]
 
 /- English proof (translation)
-The claim follows from `AddMonoidAlgebra.coeff_mapRingHom _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem lMap_coeff (f : R →+* R') (n : ℕ) (x : GLLaurent R n) (k : ℤ) :
     (lMap f n x).coeff k = glMap f n (x.coeff k) := AddMonoidAlgebra.coeff_mapRingHom _ _ _
 
 /- English proof (translation)
-Introduce `x y h`. Use `LaurentPolynomial.ext fun k => glMap_injective f hf n ?_` and prove the remaining obligations. Rewrite using `[← lMap_coeff, ← lMap_coeff, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lMap_injective [IsDomain R'] (f : R →+* R') (hf : Function.Injective f) (n : ℕ) :
     Function.Injective (lMap f n) := by
@@ -118,7 +118,7 @@ theorem lMap_injective [IsDomain R'] (f : R →+* R') (hf : Function.Injective f
   rw [← lMap_coeff, ← lMap_coeff, h]
 
 /- English proof (translation)
-Use extensionality with `k`. Rewrite using `[Finsupp.mem_support_iff, Finsupp.mem_support_iff, lMap_coeff, Ne, Ne, map_eq_zero_iff _ (glMap_injective f hf n)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem lMap_support [IsDomain R'] (f : R →+* R') (hf : Function.Injective f) (n : ℕ) (x : GLLaurent R n) :
     (lMap f n x).coeff.support = x.coeff.support := by
@@ -127,20 +127,20 @@ theorem lMap_support [IsDomain R'] (f : R →+* R') (hf : Function.Injective f) 
     map_eq_zero_iff _ (glMap_injective f hf n)]
 
 /- English proof (translation)
-Simplify using `[coefL, lMap_C, glMap_algebraMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lMap_coefL (f : R →+* R') (n : ℕ) (a : R) : lMap f n (coefL R n a) = coefL R' n (f a) := by
   simp [coefL, lMap_C, glMap_algebraMap]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[gL, lMap_C, glMap_algebraMap, genMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gL_map (f : R →+* R') (n : ℕ) : (lMap f n).mapMatrix (gL R n) = gL R' n := by
   ext a b
   simp [gL, lMap_C, glMap_algebraMap, genMat]
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h : MvPolynomial.map f ((genMat R n).adjugate a b) = (genMat R' n).adjugate a b`. Rewrite using `[← genMat_map f, ← RingHom.map_adjugate]`. Both sides reduce to the same expression. Simplify using `[gLinv, lMap_C, glMap_algebraMap, glMap_invSelf, h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem gLinv_map (f : R →+* R') (n : ℕ) : (lMap f n).mapMatrix (gLinv R n) = gLinv R' n := by
   ext a b
@@ -149,9 +149,9 @@ theorem gLinv_map (f : R →+* R') (n : ℕ) : (lMap f n).mapMatrix (gLinv R n) 
   simp [gLinv, lMap_C, glMap_algebraMap, glMap_invSelf, h]
 
 /- English proof (translation)
-Unfold `twistMat`. Rewrite using `[map_mul, map_mul, gL_map, gLinv_map]`. Use `congr 2`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Apply the tactic sequence `by_cases ha : a = j <;> simp [ha, lMap_alt]`. Simplify using `[hab]`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem twistMat_map (f : R →+* R') (n : ℕ) (j : Fin n) (k : ℤ) :
     (lMap f n).mapMatrix (twistMat R n j k) = twistMat R' n j k := by
@@ -165,16 +165,16 @@ theorem twistMat_map (f : R →+* R') (n : ℕ) (j : Fin n) (k : ℤ) :
   · simp [hab]
 
 /- English proof (translation)
-Rewrite using `[← twistMat_map f]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twistMat_map_apply (f : R →+* R') (n : ℕ) (j : Fin n) (k : ℤ) (a b : Fin n) :
     lMap f n (twistMat R n j k a b) = twistMat R' n j k a b := by
   rw [← twistMat_map f]; rfl
 
 /- English proof (translation)
-Proceed by induction on `A using MvPolynomial.induction_on with`. Consider the case `C a => simp [twistSub, lMap_coefL]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [twistSub, eval₂Hom_X']`. Distinguish the cases in `h1 : v.1 ∈ S`. Apply the tactic sequence `by_cases h2 : LL.vec v.1 = true <;> simp [h1, h2, map_sum, twistMat_map_apply]`. Simplify using `[h1]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem twistSub_map (f : R →+* R') {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (A : MvPolynomial (ι × Fin n) R) :
@@ -191,7 +191,7 @@ theorem twistSub_map (f : R →+* R') {ι : Type} {n : ℕ} (LL : Letters ι) (S
     · simp [h1]
 
 /- English proof (translation)
-Unfold `sDegs`. Rewrite using `[twistSub_map, support_map_of_injective _ (lMap_injective f hf n)]`. Use `Finset.biUnion_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, lMap_support f hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sDegs_map [IsDomain R'] (f : R →+* R') (hf : Function.Injective f) {ι : Type} {n : ℕ} (LL : Letters ι)
     (S : Set ι) (j : Fin n) (A : MvPolynomial (ι × Fin n) R) :
@@ -202,7 +202,7 @@ theorem sDegs_map [IsDomain R'] (f : R →+* R') (hf : Function.Injective f) {ι
   rw [coeff_map, lMap_support f hf]
 
 /- English proof (translation)
-Unfold `valS`. Rewrite using `[sDegs_map f hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valS_map [IsDomain R'] (f : R →+* R') (hf : Function.Injective f) {ι : Type} {n : ℕ} [NeZero n]
     (LL : Letters ι) (S : Set ι) (A : MvPolynomial (ι × Fin n) R) :
@@ -210,7 +210,7 @@ theorem valS_map [IsDomain R'] (f : R →+* R') (hf : Function.Injective f) {ι 
   unfold valS; rw [sDegs_map f hf]
 
 /- English proof (translation)
-Unfold `lam1S`. Rewrite using `[sDegs_map f hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowest_degree_map_of_injective [IsDomain R'] (f : R →+* R') (hf : Function.Injective f) {ι : Type} {n : ℕ} [NeZero n]
     (LL : Letters ι) (S : Set ι) (A : MvPolynomial (ι × Fin n) R) :
@@ -226,14 +226,14 @@ variable {R : Type} [CommRing R]
 def SuppIn {n : ℕ} (s : Set ℤ) (x : GLLaurent R n) : Prop := ∀ m, x.coeff m ≠ 0 → m ∈ s
 
 /- English proof (translation)
-Introduce `_ h` and use `absurd rfl h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SuppIn.zero {n : ℕ} (s : Set ℤ) : SuppIn s (0 : GLLaurent R n) := fun _ h => absurd rfl h
 
 /- English proof (translation)
-Introduce `m h`. Assume the negation of the conclusion as `hm`. Establish `h1 : x.coeff m = 0` using `by by_contra h1; exact hm (hx m h1)`. Establish `h2 : y.coeff m = 0` using `by by_contra h2; exact hm (hy m h2)`. Apply `h` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[AddMonoidAlgebra.coeff_add, Finsupp.add_apply, h1, h2, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SuppIn.add {n : ℕ} {s : Set ℤ} {x y : GLLaurent R n} (hx : SuppIn s x) (hy : SuppIn s y) :
     SuppIn s (x + y) := by
@@ -245,9 +245,9 @@ theorem SuppIn.add {n : ℕ} {s : Set ℤ} {x y : GLLaurent R n} (hx : SuppIn s 
   rw [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, h1, h2, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty]`. Conclude with `SuppIn.zero s`. Consider the case `@insert a t ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha]`. Conclude with `SuppIn.add (h a (Finset.mem_insert_self a t)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+A detailed English derivation is pending.
 -/
 theorem SuppIn.sum {n : ℕ} {s : Set ℤ} {α : Type} (t : Finset α) (f : α → GLLaurent R n)
     (h : ∀ a ∈ t, SuppIn s (f a)) : SuppIn s (∑ a ∈ t, f a) := by
@@ -261,7 +261,7 @@ theorem SuppIn.sum {n : ℕ} {s : Set ℤ} {α : Type} (t : Finset α) (f : α �
     exact SuppIn.add (h a (Finset.mem_insert_self a t)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
 /- English proof (translation)
-Introduce `m h`. Use `LaurentPolynomial.support_C_mul_T a k (Finsupp.mem_support_iff.mpr h)` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Rewrite using `[this]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem SuppIn.C_mul_T {n : ℕ} {s : Set ℤ} (a : GLCoord R n) (k : ℤ) (hk : k ∈ s) :
     SuppIn s (LaurentPolynomial.C a * LaurentPolynomial.T k) := by
@@ -271,9 +271,9 @@ theorem SuppIn.C_mul_T {n : ℕ} {s : Set ℤ} (a : GLCoord R n) (k : ℤ) (hk :
   rwa [this]
 
 /- English proof (translation)
-Unfold `twistMat`. Rewrite using `[Matrix.mul_apply]`. Use `SuppIn.sum _ _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [gL, gLinv, Matrix.map_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hc : c = j`. Rewrite using `[if_pos hc, mul_assoc, LaurentPolynomial.T_mul, ← mul_assoc, ← map_mul]`. Conclude with `SuppIn.C_mul_T _ _ (by simp)`. Rewrite using `[if_neg hc, mul_one, ← map_mul, ← mul_one (LaurentPolynomial.C _), ← LaurentPolynomial.T_zero]`. Conclude with `SuppIn.C_mul_T _ _ (by simp)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistMat_suppIn (n : ℕ) (j : Fin n) (k : ℤ) (a b : Fin n) :
     SuppIn ({0, k} : Set ℤ) (twistMat R n j k a b) := by
@@ -289,7 +289,7 @@ theorem twistMat_suppIn (n : ℕ) (j : Fin n) (k : ℤ) (a b : Fin n) :
     exact SuppIn.C_mul_T _ _ (by simp)
 
 /- English proof (translation)
-Introduce `k hk`. Unfold `sDegs at hk`. Rewrite `hk` using `[Finset.mem_biUnion]`. Take `⟨m, -, hm⟩` from `hk`. Conclude with `h m k (Finsupp.mem_support_iff.mp hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sDegs_subset {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n) (G : MvPolynomial (ι × Fin n) R)
     (s : Set ℤ) (h : ∀ m, SuppIn s ((twistSub LL S j G).coeff m)) : ∀ k ∈ sDegs LL S j G, k ∈ s := by
@@ -300,9 +300,9 @@ theorem sDegs_subset {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : F
   exact h m k (Finsupp.mem_support_iff.mp hm)
 
 /- English proof (translation)
-Use `sDegs_subset LL S j _ _ fun m => ?_` and prove the remaining obligations. Simplify using `only [twistSub, eval₂Hom_X', hl, hv, if_true, coeff_sum, coeff_C_mul]`. Use `SuppIn.sum _ _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_X]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one]`. Conclude with `twistMat_suppIn n j 1 b c`. Rewrite using `[mul_zero]`. Conclude with `SuppIn.zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sDegs_X_vec {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n) (l : ι) (c : Fin n) (hl : l ∈ S)
     (hv : LL.vec l = true) : ∀ k ∈ sDegs LL S j (X (l, c) : MvPolynomial (ι × Fin n) R), k ∈ ({0, 1} : Set ℤ) := by
@@ -316,9 +316,9 @@ theorem sDegs_X_vec {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fi
   · rw [mul_zero]; exact SuppIn.zero _
 
 /- English proof (translation)
-Use `sDegs_subset LL S j _ _ fun m => ?_` and prove the remaining obligations. Simplify using `only [twistSub, eval₂Hom_X', hl, hv, if_true, coeff_sum, coeff_C_mul, Bool.false_eq_true, if_false]`. Use `SuppIn.sum _ _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_X]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one]`. Conclude with `twistMat_suppIn n j (-1) c b`. Rewrite using `[mul_zero]`. Conclude with `SuppIn.zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sDegs_X_cov {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n) (l : ι) (c : Fin n) (hl : l ∈ S)
     (hv : LL.vec l = false) : ∀ k ∈ sDegs LL S j (X (l, c) : MvPolynomial (ι × Fin n) R), k ∈ ({0, -1} : Set ℤ) := by
@@ -332,23 +332,23 @@ theorem sDegs_X_cov {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fi
   · rw [mul_zero]; exact SuppIn.zero _
 
 /- English proof (translation)
-Simplify using `only [valS, Finset.le_inf_iff, WithTop.coe_le_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem le_valS_iff {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι) (G : MvPolynomial (ι × Fin n) R)
     (th : ℤ) : (th : WithTop ℤ) ≤ valS LL S G ↔ ∀ k ∈ sDegs LL S (lastIdx n) G, th ≤ k := by
   simp only [valS, Finset.le_inf_iff, WithTop.coe_le_coe]
 
 /- English proof (translation)
-Simplify using `only [lam1S, Finset.sup_le_iff, WithBot.coe_le_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lowest_degree_le_iff {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι) (G : MvPolynomial (ι × Fin n) R)
     (M : ℤ) : lam1S LL S G ≤ (M : WithBot ℤ) ↔ ∀ k ∈ sDegs LL S (0 : Fin n) G, k ≤ M := by
   simp only [lam1S, Finset.sup_le_iff, WithBot.coe_le_coe]
 
 /- English proof (translation)
-Use `⟨fun hv => ⟨?_, ?_⟩, fun hv => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(le_valS_iff LL S _ 0).mpr fun k hk => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases sDegs_X_vec LL S _ l c hl hv k hk with h | h <;> simp_all`. Use `(lowest_degree_le_iff LL S _ 1).mpr fun k hk => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases sDegs_X_vec LL S _ l c hl hv k hk with h | h <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(le_valS_iff LL S _ (-1)).mpr fun k hk => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases sDegs_X_cov LL S _ l c hl hv k hk with h | h <;> simp_all`. Use `(lowest_degree_le_iff LL S _ 0).mpr fun k hk => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases sDegs_X_cov LL S _ l c hl hv k hk with h | h <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coord_clauses {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι) (l : ι) (hl : l ∈ S) (c : Fin n) :
     (LL.vec l = true → (0 : WithTop ℤ) ≤ valS LL S (X (l, c) : MvPolynomial (ι × Fin n) R) ∧
@@ -366,11 +366,11 @@ theorem coord_clauses {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Se
     rcases sDegs_X_cov LL S _ l c hl hv k hk with h | h <;> simp_all
 
 /- English proof (translation)
-Set `φ : MvPolynomial (Fin n × Fin n) R →+* GLLaurent R n` to `(LaurentPolynomial.C).comp (algebraMap _ (GLCoord R n))`. Establish `h1 : gL R n = φ.mapMatrix (genMat R n)` using `rfl`. Establish `h2 : gLinv R n = LaurentPolynomial.C (IsLocalization.Away.invSelf (genMat R n).det : GLCoord R n) • φ.mapMatrix (genMat R n).adjugate`. Use extensionality with `a b`. Simplify using `[gLinv, φ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, Matrix.mul_smul, ← map_mul, Matrix.mul_adjugate]`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `only [RingHom.mapMatrix_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ, RingHom.comp_apply]`. Rewrite using `[← map_mul, mul_comm, IsLocalization.Away.mul_invSelf, map_one]`. Simplify using `[hab]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gL_mul_gLinv (n : ℕ) : gL R n * gLinv R n = 1 := by
   let φ : MvPolynomial (Fin n × Fin n) R →+* GLLaurent R n :=
@@ -390,7 +390,7 @@ theorem gL_mul_gLinv (n : ℕ) : gL R n * gLinv R n = 1 := by
   · simp [hab]
 
 /- English proof (translation)
-Unfold `twistMat`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Finset.prod_ite_eq' Finset.univ j, if_pos (Finset.mem_univ j), mul_right_comm, ← Matrix.det_mul, gL_mul_gLinv, Matrix.det_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistMat_det (n : ℕ) (j : Fin n) (k : ℤ) : (twistMat R n j k).det = LaurentPolynomial.T k := by
   unfold twistMat
@@ -398,9 +398,9 @@ theorem twistMat_det (n : ℕ) (j : Fin n) (k : ℤ) : (twistMat R n j k).det = 
     mul_right_comm, ← Matrix.det_mul, gL_mul_gLinv, Matrix.det_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det, RingHom.map_det, ← twistMat_det n j 1, RingHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply, map_X]`. Simplify using `only [twistSub, eval₂Hom_X', (hy a).1, (hy a).2, if_true]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistSub_det {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n) (y : Fin n → ι)
     (hy : ∀ i, y i ∈ S ∧ LL.vec (y i) = true) :
@@ -417,9 +417,9 @@ theorem twistSub_det {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : F
   rw [mul_comm]
 
 /- English proof (translation)
-Establish `hM : Submonoid.powers (genMat R n).det ≤ nonZeroDivisors _` using `powers_le_nonZeroDivisors_of_noZeroDivisors (genMat_det_ne_zero R n)`. Introduce `a b h`. Simplify using `only [coefL, RingHom.comp_apply] at h`. Establish `h1` using `congrArg (fun x : GLLaurent R n => x.coeff 0) h`. Simplify using `only [LaurentPolynomial.C_apply, if_true] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `MvPolynomial.C_injective _ _ (IsLocalization.injective (GLCoord R n) hM h1)`.
+A detailed English derivation is pending.
 -/
 theorem coefL_injective [IsDomain R] (n : ℕ) : Function.Injective (coefL R n) := by
   have hM : Submonoid.powers (genMat R n).det ≤ nonZeroDivisors _ :=
@@ -431,11 +431,11 @@ theorem coefL_injective [IsDomain R] (n : ℕ) : Function.Injective (coefL R n) 
   exact MvPolynomial.C_injective _ _ (IsLocalization.injective (GLCoord R n) hM h1)
 
 /- English proof (translation)
-Establish `hg : Function.Injective (fun v : Fin n × Fin n => (y v.1, v.2))`. Introduce `a b h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (hy h.1) h.2`. Establish `e : Matrix.det (Matrix.of fun a b : Fin n => (X (y a, b) : MvPolynomial (ι × Fin n) R)) = rename (fun v : Fin n × Fin n => (y v.1, v.2)) (genMat R n).det`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[genMat]`. Rewrite using `[e]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => genMat_det_ne_zero R n (rename_injective _ hg (by rw [h, map_zero]))`.
+A detailed English derivation is pending.
 -/
 theorem detX_ne_zero [Nontrivial R] {ι : Type} {n : ℕ} (y : Fin n → ι) (hy : Function.Injective y) :
     Matrix.det (Matrix.of fun a b : Fin n => (X (y a, b) : MvPolynomial (ι × Fin n) R)) ≠ 0 := by
@@ -453,17 +453,15 @@ theorem detX_ne_zero [Nontrivial R] {ι : Type} {n : ℕ} (y : Fin n → ι) (hy
   exact fun h => genMat_det_ne_zero R n (rename_injective _ hg (by rw [h, map_zero]))
 
 /- English proof (translation)
-Use `set d := Matrix.det (Matrix.of fun a b : Fin n => (X (y a, b) : MvPolynomial (ι × Fin n) R)) with hd`. Establish `hc : ∀ m, ((twistSub LL S j d).coeff m) = LaurentPolynomial.C (algebraMap (MvPolynomial (Fin n × Fin n) R) (GLCoord R n) (C (d.coeff m))) * LaurentPolynomial.T 1`. Introduce `m`. Rewrite using `[hd, twistSub_det LL S j y hy, mul_comm, coeff_C_mul, coeff_map, mul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hM : Submonoid.powers (genMat R n).det ≤ nonZeroDivisors _` using `powers_le_nonZeroDivisors_of_noZeroDivisors (genMat_det_ne_zero R n)`. Establish `hne : ∀ m, d.coeff m ≠ 0 → algebraMap (MvPolynomial (Fin n × Fin n) R) (GLCoord R n) (C (d.coeff m)) ≠ 0`. Introduce `m hm h`. Apply `hm` to reduce the goal to its premises. Use `IsLocalization.injective (GLCoord R n) hM (h.trans (map_zero _).symm)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `MvPolynomial.C_injective _ _ (this.trans (map_zero _).symm)`. Take `⟨m0, hm0⟩` from `MvPolynomial.ne_zero_iff.mp (detX_ne_zero (R := R) y hinj)`. Rewrite using `[Finset.eq_singleton_iff_unique_mem]`. Prove the components needed by the constructor for the conclusion. Unfold `sDegs`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.mem_biUnion.mpr ⟨m0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_support_iff, hc]`. Introduce `h`. Use `LaurentPolynomial.support_coeff_C_mul_T_of_ne_zero (hne m0 hm0) 1` as an intermediate fact. Rewrite `this` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at this`. Rewrite using `[hc, LaurentPolynomial.support_coeff_C_mul_T_of_ne_zero (hne m0 hm0) 1]`. Simplify using the standard rewrite rules. Introduce `k hk`. Use `sDegs_subset LL S j d {1} (fun m => by rw [hc]; exact SuppIn.C_mul_T _ _ rfl) k hk` as an intermediate fact.
-
-Conclude with `this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sDegs_det [IsDomain R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n) (y : Fin n → ι)
     (hinj : Function.Injective y) (hy : ∀ i, y i ∈ S ∧ LL.vec (y i) = true) :
@@ -500,7 +498,7 @@ theorem sDegs_det [IsDomain R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set 
 end Coord
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨valS_map _ (IsFractionRing.injective O (KK O)) LL S A, lowest_degree_map_of_injective _ (IsFractionRing.injective O (KK O)) LL S A⟩`.
+Supply the required witnesses or components.
 -/
 theorem valuation_lowest_degree_map_fraction_field (O : Type) [CommRing O] [IsDomain O] (ι : Type) (n : ℕ) [NeZero n] (LL : Letters ι)
     (S : Set ι) (A : MvPolynomial (ι × Fin n) O) :
@@ -509,16 +507,16 @@ theorem valuation_lowest_degree_map_fraction_field (O : Type) [CommRing O] [IsDo
   ⟨valS_map _ (IsFractionRing.injective O (KK O)) LL S A, lowest_degree_map_of_injective _ (IsFractionRing.injective O (KK O)) LL S A⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun R _ ι κ f n _ LL S A hf => Formalism.MainNotions.SelectionLemmas.valuation_lowest_degree_rename R ι κ f n LL S A hf, fun O _ _ ι n _ LL S A => valuation_lowest_degree_map_fraction_field O ι n LL S A⟩`.
+Supply the required witnesses or components.
 -/
 theorem transport_statement_holds (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.SelectionLemmas.TypeDecompositionsCommute D :=
   ⟨fun R _ ι κ f n _ LL S A hf => Formalism.MainNotions.SelectionLemmas.valuation_lowest_degree_rename R ι κ f n LL S A hf,
     fun O _ _ ι n _ LL S A => valuation_lowest_degree_map_fraction_field O ι n LL S A⟩
 
 /- English proof (translation)
-Take `⟨s, F₁, G₁, hF, hG⟩` from `exists_finset_rename₂ F G`. Set `t : Finset ι` to `s.image Prod.fst`. Set `e : {x // x ∈ s} → {x // x ∈ t} × Fin n` to `fun v => (⟨v.1.1, Finset.mem_image_of_mem _ v.2⟩, v.1.2)`. Use `⟨t, rename e F₁, rename e G₁, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rename_rename, hF]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[rename_rename, hG]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_finset_letters {R : Type} [CommRing R] {ι : Type} {n : ℕ} (F G : MvPolynomial (ι × Fin n) R) :
     ∃ (t : Finset ι) (F' G' : MvPolynomial ({x // x ∈ t} × Fin n) R),
@@ -533,11 +531,11 @@ theorem exists_finset_letters {R : Type} [CommRing R] {ι : Type} {n : ℕ} (F G
   · rw [rename_rename, hG]; rfl
 
 /- English proof (translation)
-Introduce `O _ _ _ ι n _ LL S`. Use `⟨fun F G => ?_, fun l hl c => coord_clauses LL S l hl c, fun y hinj hy => ?_⟩` and prove the remaining obligations. Take `⟨t, F', G', rfl, rfl⟩` from `exists_finset_letters F G`. Establish `hf : Function.Injective (fun i : {x // x ∈ t} => (i : ι))` using `Subtype.val_injective`. Establish `T : ∀ A : MvPolynomial ({x // x ∈ t} × Fin n) O, valS LL S (rename (fun v : {x // x ∈ t} × Fin n => ((v.1 : ι), v.2)) A) = valS (⟨fun i : {x // x ∈ t} => LL.vec i⟩ : Letters {x // x ∈ t}) ((fun i : {x // x ∈ t} => (i : ι)) ⁻¹' S) (MvPolynomial.map (algebraMap O (KK O)) A) ∧ lam1S …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `A`. Establish `h1` using `Formalism.MainNotions.SelectionLemmas.valuation_lowest_degree_rename O {x // x ∈ t} ι (fun i : {x // x ∈ t} => (i : ι)) n LL S A hf`. Establish `h2` using `valuation_lowest_degree_map_fraction_field O {x // x ∈ t} n (⟨fun i : {x // x ∈ t} => LL.vec i⟩ : Letters {x // x ∈ t}) ((fun i : {x // x ∈ t} => (i : ι)) ⁻¹' S) A`. Conclude with `⟨h1.1.trans h2.1.symm, h1.2.trans h2.2.symm⟩`. Take `⟨v1, v2, v3, v4, -, -⟩` from `h (KK O) {x // x ∈ t} (⟨fun i : {x // x ∈ t} => LL.vec i⟩ : Letters {x // x ∈ t}) n ((fun i : {x // x ∈ t} => (i : ι)) ⁻¹' S)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_mul, ← map_add, (T _).1, (T _).1, (T _).1, (T _).1, (T _).2, (T _).2, (T _).2, (T _).2, map_mul, map_add]`. Conclude with `⟨v1 _ _, v2 _ _, v3 _ _, v4 _ _⟩`. Unfold `valS`. Rewrite using `[sDegs_det LL S _ y hinj hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valuation_transport_of_lemma (D : Formalism.BasicNotions.D7) (h : Formalism.MainNotions.CovariantDegrees.ValuationsAdditive D) : Formalism.MainNotions.SelectionLemmas.admB2 D := by
   intro O _ _ _ ι n _ LL S
@@ -573,9 +571,9 @@ def suppProj (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ ℕ)) : MvP
 
 open Classical in
 /- English proof (translation)
-Establish `h : (monomial m a : MvPolynomial σ R) = a • basisMonomials σ R m`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h, map_smul, suppProj, Module.Basis.constr_basis]`. Use `split_ifs`. Rewrite using `[coe_basisMonomials]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem suppProj_monomial (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ ℕ)) (m : σ →₀ ℕ) (a : R) :
     suppProj R s (monomial m a) = if m ∈ s then monomial m a else 0 := by
@@ -588,13 +586,13 @@ theorem suppProj_monomial (R : Type) [CommRing R] {σ : Type} (s : Set (σ →�
 
 open Classical in
 /- English proof (translation)
-Proceed by induction on `A using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[suppProj_monomial]`. Distinguish the cases in `hu : u ∈ s`. Rewrite using `[if_pos hu]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : m ∈ s`. Rewrite using `[if_pos hm]`. Rewrite using `[if_neg hm, coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Conclude with `hm hu`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hu, coeff_zero]`. Distinguish the cases in `hm : m ∈ s`. Rewrite using `[if_pos hm, coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Conclude with `hu hm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[if_neg hm]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, hp, hq, coeff_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem coeff_suppProj (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ ℕ)) (A : MvPolynomial σ R) (m : σ →₀ ℕ) :
     coeff m (suppProj R s A) = if m ∈ s then coeff m A else 0 := by
@@ -617,9 +615,9 @@ theorem coeff_suppProj (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ �
     split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, coeff_suppProj]`. Rewrite using `[MvPolynomial.mem_support_iff]`. Distinguish the cases in `h : m ∈ s`. Rewrite `hm` using `[if_pos h]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hm` using `[if_neg h]`. Conclude with `absurd rfl hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppProj_support_subset (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ ℕ)) (A : MvPolynomial σ R) :
     (suppProj R s A).support ⊆ A.support := by
@@ -632,9 +630,9 @@ theorem suppProj_support_subset (R : Type) [CommRing R] {σ : Type} (s : Set (σ
     exact absurd rfl hm
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_coe, MvPolynomial.mem_support_iff, coeff_suppProj]`. Distinguish the cases in `h : m ∈ s`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[if_neg h]`. Conclude with `absurd rfl hm`.
+A detailed English derivation is pending.
 -/
 theorem suppProj_mem (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ ℕ)) (A : MvPolynomial σ R) :
     suppProj R s A ∈ restrictSupport R s := by
@@ -647,9 +645,9 @@ theorem suppProj_mem (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ ℕ
     exact absurd rfl hm
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_suppProj]`. Distinguish the cases in `h : m ∈ s`. Rewrite using `[if_pos h]`. Rewrite using `[if_neg h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hA` using `[MvPolynomial.mem_restrictSupport_iff]`. Assume the negation of the conclusion as `hc`. Conclude with `h (hA (by rw [Finset.mem_coe, MvPolynomial.mem_support_iff]; exact fun h0 => hc h0.symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem suppProj_of_mem (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ ℕ)) (A : MvPolynomial σ R)
     (hA : A ∈ restrictSupport R s) : suppProj R s A = A := by
@@ -663,9 +661,9 @@ theorem suppProj_of_mem (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ 
     exact h (hA (by rw [Finset.mem_coe, MvPolynomial.mem_support_iff]; exact fun h0 => hc h0.symm))
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_suppProj, MvPolynomial.coeff_zero]`. Distinguish the cases in `h : m ∈ s`. Rewrite using `[if_pos h]`. Assume the negation of the conclusion as `hc`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hA` using `[MvPolynomial.mem_restrictSupport_iff]`. Establish `hmt : m ∈ t` using `hA (by rw [Finset.mem_coe, MvPolynomial.mem_support_iff]; exact hc)`. Conclude with `Set.disjoint_left.mp hst h hmt`. Rewrite using `[if_neg h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppProj_of_disjoint (R : Type) [CommRing R] {σ : Type} (s t : Set (σ →₀ ℕ)) (A : MvPolynomial σ R)
     (hA : A ∈ restrictSupport R t) (hst : Disjoint s t) : suppProj R s A = 0 := by
@@ -680,7 +678,7 @@ theorem suppProj_of_disjoint (R : Type) [CommRing R] {σ : Type} (s t : Set (σ 
   · rw [if_neg h]
 
 /- English proof (translation)
-Rewrite `hA`, the goal using `[MvPolynomial.mem_supported]`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_coe, MvPolynomial.mem_vars]`. Take `⟨d, hd, hid⟩` from `hi`. Conclude with `hA (by rw [Finset.mem_coe, MvPolynomial.mem_vars]; exact ⟨d, suppProj_support_subset R s A hd, hid⟩)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem suppProj_mem_supported (R : Type) [CommRing R] {σ : Type} (s : Set (σ →₀ ℕ)) (A : MvPolynomial σ R)
     (v : Set σ) (hA : A ∈ supported R v) : suppProj R s A ∈ supported R v := by
@@ -695,23 +693,23 @@ def polComp (R : Type) [CommRing R] {ι : Type} (n : ℕ) (d : ι → ℕ) :
   suppProj R {m | ∀ i, multideg m i = d i}
 
 /- English proof (translation)
-Conclude with `suppProj_mem R _ A`.
+A detailed English derivation is pending.
 -/
 theorem polComp_mem_Pol (R : Type) [CommRing R] {ι : Type} (n : ℕ) (d : ι → ℕ) (A : MvPolynomial (ι × Fin n) R) :
     polComp R n d A ∈ Pol R n d := by
   exact suppProj_mem R _ A
 
 /- English proof (translation)
-Conclude with `suppProj_of_mem R _ A hA`.
+A detailed English derivation is pending.
 -/
 theorem polComp_of_mem (R : Type) [CommRing R] {ι : Type} (n : ℕ) (d : ι → ℕ) (A : MvPolynomial (ι × Fin n) R)
     (hA : A ∈ Pol R n d) : polComp R n d A = A := by
   exact suppProj_of_mem R _ A hA
 
 /- English proof (translation)
-Use `suppProj_of_disjoint R _ {m | ∀ i, multideg m i = d' i} A hA ?_` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce `m h1 h2`. Establish `h1' : ∀ i, multideg m i = d i` using `h1`. Establish `h2' : ∀ i, multideg m i = d' i` using `h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hd (funext fun i => (h1' i).symm.trans (h2' i))`.
+A detailed English derivation is pending.
 -/
 theorem polComp_of_ne (R : Type) [CommRing R] {ι : Type} (n : ℕ) (d d' : ι → ℕ) (A : MvPolynomial (ι × Fin n) R)
     (hA : A ∈ Pol R n d') (hd : d ≠ d') : polComp R n d A = 0 := by
@@ -723,7 +721,7 @@ theorem polComp_of_ne (R : Type) [CommRing R] {ι : Type} (n : ℕ) (d d' : ι �
   exact hd (funext fun i => (h1' i).symm.trans (h2' i))
 
 /- English proof (translation)
-Conclude with `suppProj_mem_supported R _ A s hA`.
+A detailed English derivation is pending.
 -/
 theorem polComp_mem_supported (R : Type) [CommRing R] {ι : Type} (n : ℕ) (d : ι → ℕ)
     (A : MvPolynomial (ι × Fin n) R) (s : Set (ι × Fin n)) (hA : A ∈ supported R s) :
@@ -731,7 +729,7 @@ theorem polComp_mem_supported (R : Type) [CommRing R] {ι : Type} (n : ℕ) (d :
   exact suppProj_mem_supported R _ A s hA
 
 /- English proof (translation)
-Unfold `multideg`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hom_multideg_add {ι : Type} {n : ℕ} (a b : ι × Fin n →₀ ℕ) (i : ι) :
     multideg (a + b) i = multideg a i + multideg b i := by
@@ -739,9 +737,9 @@ theorem hom_multideg_add {ι : Type} {n : ℕ} (a b : ι × Fin n →₀ ℕ) (i
   simp only [Finsupp.add_apply, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `Pol at *`. Rewrite `*` using `[mem_restrictSupport_iff]`. Introduce `m hm`. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp (support_mul P Q (by simpa using hm))`. Introduce `i`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hom_multideg_add, hP (by simpa using ha) i, hQ (by simpa using hb) i]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hom_Pol_mul (R : Type) [CommRing R] {ι : Type} {n : ℕ} {d d' : ι → ℕ} {P Q : MvPolynomial (ι × Fin n) R}
     (hP : P ∈ Pol R n d) (hQ : Q ∈ Pol R n d') : P * Q ∈ Pol R n (d + d') := by
@@ -755,11 +753,11 @@ theorem hom_Pol_mul (R : Type) [CommRing R] {ι : Type} {n : ℕ} {d d' : ι →
   rfl
 
 /- English proof (translation)
-Unfold `Pol`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `m hm`. Establish `hm' : coeff m (C a : MvPolynomial (ι × Fin n) R) ≠ 0` using `mem_support_iff.mp (by simpa using hm)`. Rewrite `hm'` using `[coeff_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (0 : ι × Fin n →₀ ℕ) = m`. Assume the negation of the conclusion as `h`. Conclude with `hm' (if_neg h)`. Introduce `i`. Rewrite using `[← h0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[multideg]`.
+A detailed English derivation is pending.
 -/
 theorem hom_Pol_C (R : Type) [CommRing R] {ι : Type} {n : ℕ} (a : R) :
     (C a : MvPolynomial (ι × Fin n) R) ∈ Pol R n (0 : ι → ℕ) := by
@@ -778,13 +776,13 @@ theorem hom_Pol_C (R : Type) [CommRing R] {ι : Type} {n : ℕ} (a : R) :
 
 open Classical in
 /- English proof (translation)
-Unfold `Pol`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `m hm`. Establish `hm' : coeff m (C a * X (l, c) : MvPolynomial (ι × Fin n) R) ≠ 0` using `mem_support_iff.mp (by simpa using hm)`. Rewrite `hm'` using `[coeff_C_mul, coeff_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : Finsupp.single (l, c) 1 = m`. Assume the negation of the conclusion as `h`. Rewrite `hm'` using `[if_neg h, mul_zero]`. Conclude with `hm' rfl`. Introduce `i`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0]`. Unfold `multideg`. Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality. Simplify using `[Finsupp.single_apply]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hi]`.
+A detailed English derivation is pending.
 -/
 theorem hom_Pol_CX (R : Type) [CommRing R] {ι : Type} {n : ℕ} (a : R) (l : ι) (c : Fin n) :
     (C a * X (l, c) : MvPolynomial (ι × Fin n) R) ∈ Pol R n (fun i => if i = l then 1 else 0) := by
@@ -807,9 +805,7 @@ theorem hom_Pol_CX (R : Type) [CommRing R] {ι : Type} {n : ℕ} (a : R) (l : ι
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [twistSub, eval₂Hom_X']`. Use `split_ifs`. Conclude with `Submodule.sum_mem _ fun b _ => hom_Pol_CX _ _ _ _`. Conclude with `Submodule.sum_mem _ fun b _ => hom_Pol_CX _ _ _ _`. Use `hom_Pol_CX (GLLaurent R n) (ι := ι) (n := n) 1 v.1 v.2` as an intermediate fact.
-
-Rewrite `this` using `[C_1, one_mul]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hom_twistSub_X_mem {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (v : ι × Fin n) : twistSub LL S j (X v : MvPolynomial (ι × Fin n) R) ∈
@@ -822,11 +818,11 @@ theorem hom_twistSub_X_mem {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : L
     rwa [C_1, one_mul] at this
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on_monomial (motive := fun p => ∃ d : ι → ℕ, p ∈ Pol R n d ∧ twistSub LL S j p ∈ Pol (GLLaurent R n) n d) ?_ ?_ m a` and prove the remaining obligations. Introduce `a`. Use `⟨0, hom_Pol_C R a, ?_⟩` and prove the remaining obligations. Establish `: twistSub LL S j (C a : MvPolynomial (ι × Fin n) R) = C (coefL R n a)` using `by simp [twistSub]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hom_Pol_C _ _`. Introduce and unpack `p v ⟨d, h1, h2⟩`. Use `⟨d + fun i => if i = v.1 then 1 else 0, hom_Pol_mul R h1 ?_, ?_⟩` and prove the remaining obligations. Use `hom_Pol_CX R (ι := ι) (n := n) 1 v.1 v.2` as an intermediate fact. Rewrite `this` using `[C_1, one_mul]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `hom_Pol_mul _ h2 (hom_twistSub_X_mem LL S j v)`.
+A detailed English derivation is pending.
 -/
 theorem hom_twistSub_monomial {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (m : ι × Fin n →₀ ℕ) (a : R) :
@@ -848,9 +844,9 @@ theorem hom_twistSub_monomial {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL 
       exact hom_Pol_mul _ h2 (hom_twistSub_X_mem LL S j v)
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, monomial_zero, map_zero]`. Conclude with `Submodule.zero_mem _`. Take `⟨d, h1, h2⟩` from `hom_twistSub_monomial LL S j m a`. Unfold `Pol at h1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[monomial_mem_restrictSupport]`. Break down `h1 with h1 | h1` into its components or cases. Establish `: (fun i => multideg m i) = d` using `funext h1`. Rewrite using `[this]` and apply the resulting hypothesis. Conclude with `absurd h1 ha`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hom_twistSub_monomial' {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (m : ι × Fin n →₀ ℕ) (a : R) :
@@ -866,9 +862,9 @@ theorem hom_twistSub_monomial' {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL
     · exact absurd h1 ha
 
 /- English proof (translation)
-Rewrite using `[← support_sum_monomial_coeff A, map_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hd : (fun i => multideg m i) = d`. Unfold `Pol at hA`. Rewrite `hA` using `[mem_restrictSupport_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `funext (hA (by simpa using hm))`. Rewrite using `[← hd]`. Conclude with `hom_twistSub_monomial' LL S j m _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistSub_mem_Pol {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (d : ι → ℕ) (A : MvPolynomial (ι × Fin n) R) (hA : A ∈ Pol R n d) :
@@ -883,9 +879,9 @@ theorem twistSub_mem_Pol {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Let
   exact hom_twistSub_monomial' LL S j m _
 
 /- English proof (translation)
-Proceed by induction on `A using MvPolynomial.induction_on' with`. Consider the case `monomial m a`. Establish `hm : (monomial m a : MvPolynomial (ι × Fin n) R) ∈ Pol R n (fun i => multideg m i)`. Unfold `Pol`. Rewrite using `[monomial_mem_restrictSupport]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inl fun i => rfl`. Distinguish the cases in `hd : d = fun i => multideg m i`. Rewrite using `[hd, polComp_of_mem R n _ _ hm, polComp_of_mem _ n _ _ (hom_twistSub_monomial' LL S j m a)]`. Rewrite using `[polComp_of_ne R n _ _ _ hm hd, polComp_of_ne _ n _ _ _ (hom_twistSub_monomial' LL S j m a) hd, map_zero]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]`.
+Prove the first alternative. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem twistSub_polComp {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (d : ι → ℕ) (A : MvPolynomial (ι × Fin n) R) :
@@ -903,11 +899,11 @@ theorem twistSub_polComp {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Let
   | add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]
 
 /- English proof (translation)
-Introduce `k hk`. Unfold `sDegs at hk ⊢`. Take `⟨m, hm, hmk⟩` from `Finset.mem_biUnion.mp hk`. Rewrite `hm`, `hmk` using `[twistSub_polComp]`. Establish `hc : coeff m (polComp (GLLaurent R n) n d (twistSub LL S j A)) = coeff m (twistSub LL S j A)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `mem_support_iff.mp hm`. Unfold `polComp at h0 ⊢`. Rewrite `h0`, the goal using `[coeff_suppProj]`. Use `split_ifs at h0 ⊢ with h`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd rfl h0`. Use `Finset.mem_biUnion.mpr ⟨m, suppProj_support_subset _ _ _ hm, ?_⟩` and prove the remaining obligations. Rewrite `hmk` using `[hc]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sDegs_polComp_subset {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (d : ι → ℕ) (A : MvPolynomial (ι × Fin n) R) : sDegs LL S j (polComp R n d A) ⊆ sDegs LL S j A := by
@@ -927,7 +923,7 @@ theorem sDegs_polComp_subset {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL :
   rwa [hc] at hmk
 
 /- English proof (translation)
-Unfold `valS`. Conclude with `Finset.inf_mono (sDegs_polComp_subset LL S (lastIdx n) d A)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem valS_le_polComp {R : Type} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (d : ι → ℕ) (A : MvPolynomial (ι × Fin n) R) : valS LL S A ≤ valS LL S (polComp R n d A) := by
@@ -935,7 +931,7 @@ theorem valS_le_polComp {R : Type} [CommRing R] {ι : Type} {n : ℕ} [NeZero n]
   exact Finset.inf_mono (sDegs_polComp_subset LL S (lastIdx n) d A)
 
 /- English proof (translation)
-Unfold `lam1S`. Conclude with `Finset.sup_mono (sDegs_polComp_subset LL S 0 d A)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lowest_degree_compose_le {R : Type} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (d : ι → ℕ) (A : MvPolynomial (ι × Fin n) R) : lam1S LL S (polComp R n d A) ≤ lam1S LL S A := by
@@ -943,11 +939,11 @@ theorem lowest_degree_compose_le {R : Type} [CommRing R] {ι : Type} {n : ℕ} [
   exact Finset.sup_mono (sDegs_polComp_subset LL S 0 d A)
 
 /- English proof (translation)
-Use `⟨A.support.image fun m i => multideg m i, ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Rewrite using `[coeff_sum]`. Establish `h : ∀ d : ι → ℕ, coeff m (polComp R n d A) = if (fun i => multideg m i) = d then coeff m A else 0`. Introduce `d`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `polComp`. Rewrite using `[coeff_suppProj]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Conclude with `⟨fun h => funext h, fun h i => congrFun h i⟩`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hm`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `hm (Finset.mem_image_of_mem _ (mem_support_iff.mpr hne))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_sum_polComp (R : Type) [CommRing R] {ι : Type} (n : ℕ) (A : MvPolynomial (ι × Fin n) R) :
     ∃ T : Finset (ι → ℕ), A = ∑ d ∈ T, polComp R n d A := by
@@ -977,25 +973,25 @@ open Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.CovariantDegree
 variable {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ)
 
 /- English proof (translation)
-Introduce `a b h`. Conclude with `((F.letters j).orderIsoOfFin rfl).strictMono h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem segE_strictMono : StrictMono (segE F j) := by
   intro a b h
   exact ((F.letters j).orderIsoOfFin rfl).strictMono h
 
 /- English proof (translation)
-The claim follows from `((F.letters j).orderIsoOfFin rfl i).2`.
+A detailed English derivation is pending.
 -/
 theorem segE_mem (i : Fin (segN F j)) : segE F j i ∈ F.letters j := ((F.letters j).orderIsoOfFin rfl i).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((F.letters j).orderIsoOfFin rfl).symm ⟨x, hx⟩, by simp [segE]⟩`.
+Supply the required witnesses or components.
 -/
 theorem segE_surj {x : ℤ} (hx : x ∈ F.letters j) : ∃ i, segE F j i = x :=
   ⟨((F.letters j).orderIsoOfFin rfl).symm ⟨x, hx⟩, by simp [segE]⟩
 
 /- English proof (translation)
-Introduce `a b h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext ((segE_strictMono F j).injective h.1) h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem segVar_injective (n : ℕ) : Function.Injective (fun v : Fin (segN F j) × Fin n => (segE F j v.1, v.2)) := by
   intro a b h
@@ -1003,7 +999,7 @@ theorem segVar_injective (n : ℕ) : Function.Injective (fun v : Fin (segN F j) 
   exact Prod.ext ((segE_strictMono F j).injective h.1) h.2
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `exists_rename_eq_of_vars_subset_range A _ (segVar_injective F j n) (by`. Introduce `v hv`. Take `⟨i, hi⟩` from `segE_surj F j ((mem_supported.mp hA) hv)`. Conclude with `⟨(i, v.2), by simp [hi]⟩)`. Conclude with `⟨q, hq.symm⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_segRen {R : Type} [CommRing R] {n : ℕ} (A : MvPolynomial (ℤ × Fin n) R)
     (hA : A ∈ supported R {v : ℤ × Fin n | v.1 ∈ F.letters j}) : ∃ A₀, A = segRen F j R n A₀ := by
@@ -1016,7 +1012,7 @@ theorem exists_segRen {R : Type} [CommRing R] {n : ℕ} (A : MvPolynomial (ℤ �
 def pre {N : ℕ} (i : Fin (N + 1)) : Set (Fin N) := {k | k.val < i.val}
 
 /- English proof (translation)
-Use extensionality with `k`. Use `show k.val < i.val + 1 ↔ k.val ≤ i.val`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem pre_succ {N : ℕ} (i : Fin N) : pre i.succ = {k : Fin N | k ≤ i} := by
   ext k
@@ -1024,24 +1020,24 @@ theorem pre_succ {N : ℕ} (i : Fin N) : pre i.succ = {k : Fin N | k ≤ i} := b
   omega
 
 /- English proof (translation)
-Use extensionality with `k`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem pre_castSucc {N : ℕ} (i : Fin N) : pre i.castSucc = {k : Fin N | k < i} := by
   ext k
   exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[pre]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pre_zero {N : ℕ} : pre (0 : Fin (N + 1)) = (∅ : Set (Fin N)) := by
   ext k; simp [pre]
 
 /- English proof (translation)
-Establish `h1 : (segE F j) ⁻¹' {y | y ≤ segE F j i} = pre i.succ`. Rewrite using `[pre_succ]`. Use extensionality with `k`. Simplify using `[(segE_strictMono F j).le_iff_le]`. Establish `h2 : (segE F j) ⁻¹' {y | y < segE F j i} = pre i.castSucc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[pre_castSucc]`. Use extensionality with `k`. Simplify using `[(segE_strictMono F j).lt_iff_lt]`. Establish `a1` using `valuation_lowest_degree_rename R _ ℤ (segE F j) n LZ {y | y ≤ segE F j i} A₀ (segE_strictMono F j).injective`. Establish `a2` using `valuation_lowest_degree_rename R _ ℤ (segE F j) n LZ {y | y < segE F j i} A₀ (segE_strictMono F j).injective`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a1` using `[h1]`. Rewrite `a2` using `[h2]`. Conclude with `⟨a1.1, a2.1, a1.2, a2.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem seg_val {R : Type} [CommRing R] {n : ℕ} [NeZero n] (A₀ : MvPolynomial (Fin (segN F j) × Fin n) R)
     (i : Fin (segN F j)) :
@@ -1060,7 +1056,7 @@ theorem seg_val {R : Type} [CommRing R] {n : ℕ} [NeZero n] (A₀ : MvPolynomia
   exact ⟨a1.1, a2.1, a1.2, a2.2⟩
 
 /- English proof (translation)
-Simplify using `only [segRen, plEmb, nmEmb, map_mul, rename_rename]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem segRen_mul {R : Type} [CommRing R] {K : ℕ} (a : MvPolynomial (Fin (segN F j) × Fin r) R)
     (g : MvPolynomial (Fin (segN F j) × Fin K) R) :
@@ -1076,9 +1072,9 @@ section Empty
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Proceed by induction on `A using MvPolynomial.induction_on with`. Consider the case `C a => simp [twistSub]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[twistSub]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem twistSub_empty {ι : Type} {n : ℕ} (LL : Letters ι) (j : Fin n) (A : MvPolynomial (ι × Fin n) R) :
     twistSub LL ∅ j A = MvPolynomial.map (coefL R n) A := by
@@ -1091,9 +1087,9 @@ theorem twistSub_empty {ι : Type} {n : ℕ} (LL : Letters ι) (j : Fin n) (A : 
     simp [twistSub]
 
 /- English proof (translation)
-Use `sDegs_subset LL ∅ j A _ fun m => ?_` and prove the remaining obligations. Rewrite using `[twistSub_empty, coeff_map]`. Establish `: coefL R n (coeff m A) = LaurentPolynomial.C (algebraMap (MvPolynomial (Fin n × Fin n) R) (GLCoord R n) (C (coeff m A))) * LaurentPolynomial.T 0`. Rewrite using `[LaurentPolynomial.T_zero, mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `SuppIn.C_mul_T _ _ rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sDegs_empty_subset {ι : Type} {n : ℕ} (LL : Letters ι) (j : Fin n) (A : MvPolynomial (ι × Fin n) R) :
     ∀ k ∈ sDegs LL ∅ j A, k ∈ ({0} : Set ℤ) := by
@@ -1106,11 +1102,11 @@ theorem sDegs_empty_subset {ι : Type} {n : ℕ} (LL : Letters ι) (j : Fin n) (
   exact SuppIn.C_mul_T _ _ rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.eq_singleton_iff_unique_mem]`. Use `⟨?_, fun k hk => sDegs_empty_subset LL j A k hk⟩` and prove the remaining obligations. Take `⟨m0, hm0⟩` from `MvPolynomial.ne_zero_iff.mp hA`. Establish `hne : coefL R n (coeff m0 A) ≠ 0` using `fun h => hm0 (coefL_injective n (h.trans (map_zero _).symm))`. Unfold `sDegs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[twistSub_empty]`. Use `Finset.mem_biUnion.mpr ⟨m0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_support_iff, coeff_map]`. Conclude with `hne`. Rewrite using `[coeff_map, Finsupp.mem_support_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hm0` to reduce the goal to its premises. Establish `hM : Submonoid.powers (genMat R n).det ≤ nonZeroDivisors _` using `powers_le_nonZeroDivisors_of_noZeroDivisors (genMat_det_ne_zero R n)`. Simplify using `only [coefL, RingHom.comp_apply, LaurentPolynomial.C_apply, if_true] at h0`. Conclude with `MvPolynomial.C_injective _ _ ((IsLocalization.injective (GLCoord R n) hM (h0.trans (map_zero _).symm)).trans (map_zero _).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sDegs_empty [IsDomain R] {ι : Type} {n : ℕ} (LL : Letters ι) (j : Fin n) (A : MvPolynomial (ι × Fin n) R)
     (hA : A ≠ 0) : sDegs LL ∅ j A = {0} := by
@@ -1140,7 +1136,7 @@ open Formalism.MainNotions.CovariantDegrees
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Proceed by induction on `v using WithTop.recTopCoe with`. Consider the case `top`. Take `⟨t, ht⟩` from `Bv.exists_le`. Conclude with `⟨t, le_top, fun X hX _ => ht X hX⟩`. Consider the case `coe z => exact ⟨z, le_rfl, fun X _ h => WithTop.coe_le_coe.mp h⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 -/
 theorem exists_thr_top (v : WithTop ℤ) (Bv : Finset ℤ) :
     ∃ t : ℤ, (t : WithTop ℤ) ≤ v ∧ ∀ X ∈ Bv, (X : WithTop ℤ) ≤ v → X ≤ t := by
@@ -1151,9 +1147,9 @@ theorem exists_thr_top (v : WithTop ℤ) (Bv : Finset ℤ) :
   | coe z => exact ⟨z, le_rfl, fun X _ h => WithTop.coe_le_coe.mp h⟩
 
 /- English proof (translation)
-Proceed by induction on `v using WithBot.recBotCoe with`. Consider the case `bot`. Take `⟨t, ht⟩` from `(Bl.image (fun x => -x)).exists_le`. Conclude with `⟨-t, bot_le, fun X hX _ => by`. Use `ht (-X) (Finset.mem_image_of_mem _ hX)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use the proof step `omega⟩`. Consider the case `coe z => exact ⟨z, le_rfl, fun X _ h => WithBot.coe_le_coe.mp h⟩`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_thr_bot (v : WithBot ℤ) (Bl : Finset ℤ) :
     ∃ t : ℤ, v ≤ (t : WithBot ℤ) ∧ ∀ X ∈ Bl, v ≤ (X : WithBot ℤ) → t ≤ X := by
@@ -1166,15 +1162,15 @@ theorem exists_thr_bot (v : WithBot ℤ) (Bl : Finset ℤ) :
   | coe z => exact ⟨z, le_rfl, fun X _ h => WithBot.coe_le_coe.mp h⟩
 
 /- English proof (translation)
-Distinguish the cases in `h0 : A = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Use `choose th hth using fun k : Fin N => exists_thr_top (valS LL {i | i ≤ k} A) Bv`. Use `choose M hM using fun k : Fin N => exists_thr_bot (lam1S LL {i | i ≤ k} A) Bl`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : A ∈ {G : MvPolynomial (Fin N × Fin n) R | G ∈ Pol R n B ∧ ∀ i : Fin N, ((th i : ℤ) : WithTop ℤ) ≤ valS LL {j | j ≤ i} G ∧ lam1S LL {j | j ≤ i} G ≤ ((M i : ℤ) : WithBot ℤ)}` using `⟨hA, fun i => ⟨(hth i).1, (hM i).1⟩⟩`. Rewrite `hmem` using `[hA3 th M]`. Use `Submodule.span_mono ?_ hmem` and prove the remaining obligations. Introduce and unpack `G ⟨P, I, hI, hc, rfl⟩`. Use `⟨P, I, hI, fun i => ?_, rfl⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Rewrite using `[pre_zero, P.zero]`. Prove the components needed by the constructor for the conclusion. Introduce `X _ hX`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `valS at hX`. Rewrite `hX` using `[sDegs_empty LL _ A h0]`. Simplify using `using hX`. Introduce `Y _ hY`. Unfold `lam1S at hY`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite `hY` using `[sDegs_empty LL _ A h0]`. Simplify using `using hY`. Consider the case `succ k`. Rewrite using `[pre_succ]`. Conclude with `⟨fun X hX h => ((hth k).2 X hX h).trans (hc k).1, fun Y hY h => (hc k).2.trans ((hM k).2 Y hY h)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_span_standard_of_bounds [IsDomain R] {N n : ℕ} [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ)
     (hA3 : ∀ th M : Fin N → ℤ, A3at R N n LL B th M) (A : MvPolynomial (Fin N × Fin n) R) (hA : A ∈ Pol R n B)
@@ -1210,13 +1206,13 @@ theorem mem_span_standard_of_bounds [IsDomain R] {N n : ℕ} [NeZero n] (LL : Le
     exact ⟨fun X hX h => ((hth k).2 X hX h).trans (hc k).1, fun Y hY h => (hc k).2.trans ((hM k).2 Y hY h)⟩
 
 /- English proof (translation)
-Establish `hmem : Psi R P.mu I ∈ (Submodule.span R {G | ∃ P' : PPath n N LL B, ∃ I : ℤ → Finset (Fin n), IsSt P'.mu I ∧ (∀ i : Fin N, P.mu i.succ (lastIdx n) ≤ P'.mu i.succ (lastIdx n) ∧ P'.mu i.succ 0 ≤ P.mu i.succ 0) ∧ G = Psi R P'.mu I} : Set _)` using `Submodule.subset_span ⟨P, I, hI, fun i => ⟨le_rfl, le_rfl⟩, rfl⟩`. Rewrite `hmem` using `[← hA3 (fun i => P.mu i.succ (lastIdx n)) (fun i => P.mu i.succ 0)]`. Use `⟨hmem.1, fun i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Rewrite using `[pre_zero, P.zero]`. Prove the components needed by the constructor for the conclusion. Use `(le_valS_iff LL ∅ _ _).mpr fun k hk => ?_` and prove the remaining obligations. Use `sDegs_empty_subset LL _ _ k hk` as an intermediate fact. Simplify the hypotheses and the goal together.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify the hypotheses and the goal together.
 
-Use `(lowest_degree_le_iff LL ∅ _ _).mpr fun k hk => ?_` and prove the remaining obligations. Use `sDegs_empty_subset LL _ _ k hk` as an intermediate fact. Simplify the hypotheses and the goal together. Consider the case `succ k`. Rewrite using `[pre_succ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify the hypotheses and the goal together. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem.2 k`.
+A detailed English derivation is pending.
 -/
 theorem standard_polynomial_mem_bounds {N n : ℕ} [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ)
     (hA3 : ∀ th M : Fin N → ℤ, A3at R N n LL B th M) (P : PPath n N LL B) (I : ℤ → Finset (Fin n))
@@ -1249,11 +1245,11 @@ end A3
 section Gen
 
 /- English proof (translation)
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem y hy => exact h x hx y hy`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [map_add, mul_add]`. Conclude with `X.add_mem hy hz`. Consider the case `smul c y _ hy => rw [map_smul, mul_smul_comm]`. Conclude with `X.smul_mem c hy`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, add_mul]`. Conclude with `X.add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul, smul_mul_assoc]`. Conclude with `X.smul_mem c hx`.
+A detailed English derivation is pending.
 -/
 theorem span_mul_mem {R A B C : Type} [CommRing R] [CommRing A] [Algebra R A] [CommRing B] [Algebra R B] [CommRing C]
     [Algebra R C] (φ : A →ₐ[R] C) (ψ : B →ₐ[R] C) (Sa : Set A) (Sb : Set B) (X : Submodule R C)
@@ -1271,9 +1267,7 @@ theorem span_mul_mem {R A B C : Type} [CommRing R] [CommRing A] [Algebra R A] [C
   | smul c x _ hx => rw [map_smul, smul_mul_assoc]; exact X.smul_mem c hx
 
 /- English proof (translation)
-Take `⟨d, hd, hud⟩` from `(mem_vars_iff_mem_support u).mp hu`. Use `(mem_vars_iff_mem_support _).mpr ⟨Finsupp.mapDomain f d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[support_rename_of_injective hf]`. Conclude with `Finset.mem_image_of_mem _ hd`. Rewrite using `[Finsupp.mem_support_iff, Finsupp.mapDomain_apply hf]`.
-
-Conclude with `Finsupp.mem_support_iff.mp hud`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_vars_rename_inj {R σ τ : Type} [CommRing R] (f : σ → τ) (hf : Function.Injective f) (p : MvPolynomial σ R)
     {u : σ} (hu : u ∈ p.vars) : f u ∈ (rename f p).vars := by
@@ -1284,7 +1278,7 @@ theorem mem_vars_rename_inj {R σ τ : Type} [CommRing R] (f : σ → τ) (hf : 
   · rw [Finsupp.mem_support_iff, Finsupp.mapDomain_apply hf]; exact Finsupp.mem_support_iff.mp hud
 
 /- English proof (translation)
-Unfold `Pol`. Rewrite using `[mem_restrictSupport_iff]`. Conclude with `⟨fun h m hm => h (Finset.mem_coe.mpr hm), fun h m hm => h m (Finset.mem_coe.mp hm)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_Pol_iff {R ι : Type} [CommRing R] {n : ℕ} {d : ι → ℕ} {g : MvPolynomial (ι × Fin n) R} :
     g ∈ Pol R n d ↔ ∀ m ∈ g.support, ∀ i, multideg m i = d i := by
@@ -1293,9 +1287,9 @@ theorem mem_Pol_iff {R ι : Type} [CommRing R] {n : ℕ} {d : ι → ℕ} {g : M
   exact ⟨fun h m hm => h (Finset.mem_coe.mpr hm), fun h m hm => h m (Finset.mem_coe.mp hm)⟩
 
 /- English proof (translation)
-Take `⟨m0, hm0⟩` from `MvPolynomial.ne_zero_iff.mp h0`. Establish `hm : m0 ∈ g.support` using `MvPolynomial.mem_support_iff.mpr hm0`. Use `mem_Pol_iff.mp hg m0 hm i` as an intermediate fact. Rewrite using `[← this]`. Unfold `multideg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hi c ((mem_vars_iff_mem_support _).mpr ⟨m0, hm, Finsupp.mem_support_iff.mpr hc⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem pol_deg_zero {R ι : Type} [CommRing R] {n : ℕ} {d : ι → ℕ} {g : MvPolynomial (ι × Fin n) R}
     (hg : g ∈ Pol R n d) (h0 : g ≠ 0) (i : ι) (hi : ∀ c, (i, c) ∉ g.vars) : d i = 0 := by
@@ -1309,9 +1303,9 @@ theorem pol_deg_zero {R ι : Type} [CommRing R] {n : ℕ} {d : ι → ℕ} {g : 
   exact hi c ((mem_vars_iff_mem_support _).mpr ⟨m0, hm, Finsupp.mem_support_iff.mpr hc⟩)
 
 /- English proof (translation)
-Take `⟨m0, hm, hum⟩` from `(mem_vars_iff_mem_support u).mp hu`. Use `mem_Pol_iff.mp hg m0 hm u.1` as an intermediate fact. Rewrite using `[← this]`. Unfold `multideg`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Finset.sum_eq_zero_iff.mp h) u.2 (Finset.mem_univ _)` as an intermediate fact. Conclude with `(Finsupp.mem_support_iff.mp hum) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pol_vars_deg {R ι : Type} [CommRing R] {n : ℕ} {d : ι → ℕ} {g : MvPolynomial (ι × Fin n) R}
     (hg : g ∈ Pol R n d) {u : ι × Fin n} (hu : u ∈ g.vars) : d u.1 ≠ 0 := by
@@ -1343,7 +1337,7 @@ def segPairs0 [NeZero r] (K : ℕ) [NeZero K] (m : ℤ → ℤ) (th : ℤ → �
           th (segE F j i) ≤ ((q.1 i.castSucc (lastIdx r) : ℤ) : ℝ))}
 
 /- English proof (translation)
-Proceed by induction on `v using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe z => exact WithTop.coe_le_coe.mpr (Int.ceil_le.mpr (h z rfl))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ceil_le_of_geR {v : WithTop ℤ} {t : ℝ} (h : geR v t) : ((⌈t⌉ : ℤ) : WithTop ℤ) ≤ v := by
   induction v using WithTop.recTopCoe with
@@ -1351,23 +1345,21 @@ theorem ceil_le_of_geR {v : WithTop ℤ} {t : ℝ} (h : geR v t) : ((⌈t⌉ : �
   | coe z => exact WithTop.coe_le_coe.mpr (Int.ceil_le.mpr (h z rfl))
 
 /- English proof (translation)
-Take `⟨A₀, rfl⟩` from `exists_segRen F j A hA`. Take `⟨G₀, rfl⟩` from `exists_segRen F j G (supported_mono (fun v hv => hv.1) hG)`. Establish `hG₀ : ∀ u ∈ G₀.vars, ¬ F.IsW j (segE F j u.1)` using `fun u hu => ((mem_supported.mp hG) (Finset.mem_coe.mpr (mem_vars_rename_inj _ (segVar_injective F j K) G₀ hu))).2`. Rewrite using `[← segRen_mul]`. Use `⟨_, ?_, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T', hT'⟩` from `exists_sum_polComp R r A₀`. Take `⟨T'', hT''⟩` from `exists_sum_polComp R K G₀`. Establish `hsum : rename (plVar (K` using `K)) A₀ * rename (tanVar (r := r)) G₀ = ∑ d' ∈ T', ∑ d'' ∈ T'', rename (plVar (K := K)) (polComp R r d' A₀) * rename (tanVar (r := r)) (polComp R K d'' G₀) := by conv_lhs => rw [hT', hT'']`. Rewrite using `[map_sum, map_sum, Finset.sum_mul_sum]`. Rewrite using `[SetLike.mem_coe, hsum]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun b' _ => Submodule.sum_mem _ fun b'' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hg0 : polComp R K b'' G₀ = 0`. Rewrite using `[hg0, map_zero, mul_zero]`. Conclude with `Submodule.zero_mem _`. Set `Bv : Finset ℤ` to `(Finset.univ.image fun i => M (segE F j i) + m (segE F j i)) ∪ Finset.univ.image fun i => ⌈th (segE F j i)⌉`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Bl : Finset ℤ` to `Finset.univ.image fun i => M (segE F j i)`. Establish `ha` using `mem_span_standard_of_bounds (segLL F j) b' (hA3 _ r _ b') (polComp R r b' A₀) (polComp_mem_Pol R r b' A₀) Bv ∅`. Establish `hg` using `mem_span_standard_of_bounds (segLL F j) b'' (hA3 _ K _ b'') (polComp R K b'' G₀) (polComp_mem_Pol R K b'' G₀) ∅ Bl`. Use `span_mul_mem (rename (plVar (K := K))) (rename (tanVar (r := r))) _ _ _ ?_ ha hg` and prove the remaining obligations. Introduce and unpack `_ ⟨P1, I', hI', h1, rfl⟩ _ ⟨P2, I'', hI'', h2, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨(P1.mu, P2.mu), ⟨b', b'', ⟨P1, rfl⟩, ⟨P2, rfl⟩, fun i => ⟨fun hW => ?_, fun hW => ?_⟩⟩, I', I'', hI', hI'', rfl⟩` and prove the remaining obligations. Use `pol_deg_zero (polComp_mem_Pol R K b'' G₀) hg0 i fun c hcv => ?_` and prove the remaining obligations. Establish `hs : polComp R K b'' G₀ ∈ supported R (G₀.vars : Set _)` using `polComp_mem_supported R K b'' G₀ _ (mem_supported.mpr (le_refl _))`. Conclude with `hG₀ _ (Finset.mem_coe.mp ((mem_supported.mp hs) (Finset.mem_coe.mpr hcv))) hW`. Take `⟨hE, hO, hR⟩` from `hc (segE F j i) (segE_mem F j i) hW`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨sA1, sA2, -, -⟩` from `seg_val F j A₀ i`. Take `⟨-, -, sG3, sG4⟩` from `seg_val F j G₀ i`. Rewrite `hE` using `[sA2, sG3]`. Rewrite `hO` using `[sA1, sG4]`. Rewrite `hR` using `[sA2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mem1 : M (segE F j i) + m (segE F j i) ∈ Bv` using `Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Establish `mem2 : ⌈th (segE F j i)⌉ ∈ Bv` using `Finset.mem_union_right _ (Finset.mem_image_of_mem (fun i => ⌈th (segE F j i)⌉) (Finset.mem_univ i))`. Establish `mem3 : M (segE F j i) ∈ Bl` using `Finset.mem_image_of_mem (fun i => M (segE F j i)) (Finset.mem_univ i)`. Use `⟨fun he => ?_, fun ho => ?_, ?_⟩` and prove the remaining obligations. Establish `l` using `(h2 i.succ).2 _ mem3 ((lowest_degree_compose_le _ _ b'' G₀).trans (hE he).1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `v` using `(h1 i.castSucc).1 _ mem1 ((hE he).2.trans (valS_le_polComp _ _ b' A₀))`. Use `show P2.mu i.succ 0 + m _ ≤ P1.mu i.castSucc _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `l` using `(h2 i.castSucc).2 _ mem3 ((lowest_degree_compose_le _ _ b'' G₀).trans (hO ho).1)`. Establish `v` using `(h1 i.succ).1 _ mem1 ((hO ho).2.trans (valS_le_polComp _ _ b' A₀))`.
-
-Use `show P2.mu i.castSucc 0 + m _ ≤ P1.mu i.succ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `v` using `(h1 i.castSucc).1 _ mem2 ((ceil_le_of_geR hR).trans (valS_le_polComp _ _ b' A₀)) show th _ ≤ ((P1.mu i.castSucc _ : ℤ) : ℝ)`. Conclude with `(Int.le_ceil _).trans (by exact_mod_cast v)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem crit_alt [NeZero r] {K : ℕ} [NeZero K] (R : Type) [CommRing R] [IsDomain R]
     (hA3 : ∀ (N n : ℕ) [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ) (th M : Fin N → ℤ), A3at R N n LL B th M)
@@ -1446,7 +1438,7 @@ open Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.CovariantDegree
 variable {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ)
 
 /- English proof (translation)
-Unfold `ordDeg`. Apply the tactic sequence `split_ifs <;> simp [Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ordDeg_add {K : ℕ} (m1 m2 : ℤ × Fin (r + K) →₀ ℕ) (x : ℤ) :
     ordDeg (m1 + m2) x = ordDeg m1 x + ordDeg m2 x := by
@@ -1454,25 +1446,23 @@ theorem ordDeg_add {K : ℕ} (m1 m2 : ℤ × Fin (r + K) →₀ ℕ) (x : ℤ) :
   split_ifs <;> simp [Finset.sum_add_distrib]
 
 /- English proof (translation)
-Introduce `mm hmm i`. Take `⟨m1, h1, m2, h2, rfl⟩` from `Finset.mem_add.mp (support_mul _ _ hmm)`. Establish `hf1 : Function.Injective (fun v : Fin (segN F j) × Fin r => (segE F j v.1, Fin.castAdd K v.2))`. Introduce `x y h`. Simplify using `only [Prod.mk.injEq] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext ((segE_strictMono F j).injective h.1) (Fin.castAdd_injective _ _ h.2)`. Establish `hf2 : Function.Injective (fun v : Fin (segN F j) × Fin K => (segE F j v.1, Fin.natAdd r v.2))`. Introduce `x y h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext ((segE_strictMono F j).injective h.1) (Fin.natAdd_injective _ _ h.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : plEmb R r K (segRen F j R r a) = rename (fun v : Fin (segN F j) × Fin r => (segE F j v.1, Fin.castAdd K v.2)) a`. Simplify using `only [plEmb, segRen, rename_rename]`. Both sides reduce to the same expression. Establish `e2 : nmEmb R r K (segRen F j R K g) = rename (fun v : Fin (segN F j) × Fin K => (segE F j v.1, Fin.natAdd r v.2)) g`. Simplify using `only [nmEmb, segRen, rename_rename]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[e1, support_rename_of_injective hf1]`. Rewrite `h2` using `[e2, support_rename_of_injective hf2]`. Take `⟨u1, hu1, rfl⟩` from `Finset.mem_image.mp h1`. Take `⟨u2, hu2, rfl⟩` from `Finset.mem_image.mp h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1` using `mem_Pol_iff.mp ha u1 hu1 i`. Establish `d2` using `mem_Pol_iff.mp hg u2 hu2 i`. Establish `hne : ∀ (x : Fin r) (c : Fin K), Fin.castAdd K x ≠ Fin.natAdd r c`. Introduce `x c h`. Use `congrArg Fin.val h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ordDeg_add]`. Unfold `ordDeg`. Use `split_ifs with he`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `z1 : ∀ c : Fin K, Finsupp.mapDomain (fun v : Fin (segN F j) × Fin r => (segE F j v.1, Fin.castAdd K v.2)) u1 (segE F j i, Fin.natAdd r c) = 0`. Introduce `c`. Use `Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Simplify using `only [Prod.mk.injEq] at hv`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hne _ _ hv.2`. Establish `z2 : ∀ c : Fin K, Finsupp.mapDomain (fun v : Fin (segN F j) × Fin K => (segE F j v.1, Fin.natAdd r v.2)) u2 (segE F j i, Fin.natAdd r c) = u2 (i, c)` using `fun c => Finsupp.mapDomain_apply hf2 u2 (i, c)`. Simplify using `only [z1, z2, Finset.sum_const_zero, zero_add]`. Conclude with `d2`. Establish `z1 : ∀ c : Fin r, Finsupp.mapDomain (fun v : Fin (segN F j) × Fin r => (segE F j v.1, Fin.castAdd K v.2)) u1 (segE F j i, Fin.castAdd K c) = u1 (i, c)` using `fun c => Finsupp.mapDomain_apply hf1 u1 (i, c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `z2 : ∀ c : Fin r, Finsupp.mapDomain (fun v : Fin (segN F j) × Fin K => (segE F j v.1, Fin.natAdd r v.2)) u2 (segE F j i, Fin.castAdd K c) = 0`. Introduce `c`. Use `Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Simplify using `only [Prod.mk.injEq] at hv`.
-
-Conclude with `hne _ _ hv.2.symm`. Simplify using `only [z1, z2, Finset.sum_const_zero, add_zero]`. Conclude with `d1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem word_ord {R : Type} [CommRing R] {K : ℕ} (b' b'' : Fin (segN F j) → ℕ)
     (a : MvPolynomial (Fin (segN F j) × Fin r) R) (ha : a ∈ Pol R r b')
@@ -1537,23 +1527,21 @@ def ordSet (K : ℕ) (o : ℤ → ℝ) : Set (ℤ × Fin (r + K) →₀ ℕ) :=
   {mm | ∀ x ∈ F.letters j, ¬ F.IsW j x → (ordDeg mm x : ℝ) ≤ o x}
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ Submodule.map (segRen F j R (r + K)).toLinearMap (XXZ R (segPairs0 F j K m th)), suppProj R (ordSet F j K o) y ∈ Submodule.map (segRen F j R (r + K)).toLinearMap (XXZ R (segPairs F j K m th o))`. Introduce `y hy`. Unfold `XXZ at hy`. Rewrite `hy` using `[Submodule.map_span]`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨_, ⟨q, ⟨b', b'', ⟨P1, h1⟩, ⟨P2, h2⟩, hcond⟩, I', I'', hI', hI'', rfl⟩, rfl⟩` from `hy`. Take `⟨nu, ka⟩` from `q`. Simplify using `only at h1 h2 hcond hI' hI''`. Substitute `h1` using the available equality.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Establish `e : (segRen F j R (r + K)).toLinearMap (PsiPl R P1.mu I' * PsiTan R P2.mu I'') = plEmb R r K (segRen F j R r (Psi R P1.mu I')) * nmEmb R r K (segRen F j R K (Psi R P2.mu I''))` using `segRen_mul F j _ _`. Establish `hw` using `word_ord F j b' b'' _ (hPol r b' P1 I' hI') _ (hPol K b'' P2 I'' hI'')`. Distinguish the cases in `hord : ∀ i, ¬ F.IsW j (segE F j i) → (((if Even (segE F j i) then b'' i else b' i : ℕ)) : ℝ) ≤ o (segE F j i)`. Rewrite using `[suppProj_of_mem]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, Submodule.subset_span ⟨(P1.mu, P2.mu), ⟨b', b'', ⟨P1, rfl⟩, ⟨P2, rfl⟩, fun i => ⟨(hcond i).1, fun hW => ?_⟩⟩, I', I'', hI', hI'', rfl⟩, rfl⟩` and prove the remaining obligations. Take `⟨cE, cO, cR⟩` from `(hcond i).2 hW`. Establish `ho` using `hord i hW`. Use `⟨fun he => ⟨cE he, ?_⟩, fun he => ⟨cO he, ?_⟩, cR⟩` and prove the remaining obligations. Rewrite `ho` using `[if_pos he]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `ho` using `[if_neg he]`. Then use the resulting hypothesis. Rewrite using `[e, mem_restrictSupport_iff]`. Introduce `mm hmm x hx hW`. Take `⟨i, rfl⟩` from `segE_surj F j hx`. Rewrite using `[hw mm (Finset.mem_coe.mp hmm) i]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hord i hW`. Rewrite using `[suppProj_of_disjoint R _ {mm | ∀ i, ordDeg mm (segE F j i) = if Even (segE F j i) then b'' i else b' i}]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[e, mem_restrictSupport_iff]`. Introduce `mm hmm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw mm (Finset.mem_coe.mp hmm)`. Rewrite using `[Set.disjoint_left]`. Introduce `mm h1 h2`. Apply `hord` to reduce the goal to its premises. Introduce `i hW`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← h2 i]`. Conclude with `h1 _ (segE_mem F j i) hW`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
-
-Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hy`. Rewrite using `[← suppProj_of_mem R _ x hx2]`. Conclude with `key x hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_proj [NeZero r] {K : ℕ} [NeZero K] (R : Type) [CommRing R]
     (hPol : ∀ (n : ℕ) [NeZero n] (b : Fin (segN F j) → ℕ) (P : PPath n (segN F j) (segLL F j) b)
@@ -1612,7 +1600,7 @@ theorem ord_proj [NeZero r] {K : ℕ} [NeZero K] (R : Type) [CommRing R]
   exact key x hx
 
 /- English proof (translation)
-Use `ord_proj F j R (fun n _ b P I hI => (standard_polynomial_mem_bounds (segLL F j) b (hA3 _ n _ b) P I hI).1) m th o _ (crit_alt F j R hA3 m th A G M hA hG hc) ?_` and prove the remaining obligations. Rewrite using `[mem_restrictSupport_iff]`. Introduce `mm hmm`. Conclude with `ho mm (Finset.mem_coe.mp hmm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem crit_words [NeZero r] {K : ℕ} [NeZero K] (R : Type) [CommRing R] [IsDomain R]
     (hA3 : ∀ (N n : ℕ) [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ) (th M : Fin N → ℤ), A3at R N n LL B th M)
@@ -1636,27 +1624,25 @@ theorem crit_words [NeZero r] {K : ℕ} [NeZero K] (R : Type) [CommRing R] [IsDo
   exact ho mm (Finset.mem_coe.mp hmm)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.mp hx`. Use `ord_proj F j R (fun n _ b P I hI => (standard_polynomial_mem_bounds (segLL F j) b (hA3 _ n _ b) P I hI).1) m th o x ?_ hx2` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_ hx1` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨A, G, M, hA, hG, hc, rfl⟩`. Conclude with `crit_alt F j R hA3 m th A G M hA hG hc`. Unfold `XXZ`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨q, hq, I', I'', hI', hI'', rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨b', b'', ⟨P1, h1⟩, ⟨P2, h2⟩, hcond⟩` from `hq`. Take `⟨nu, ka⟩` from `q`. Simplify using `only at h1 h2 hcond hI' hI''`. Substitute `h1` using the available equality. Substitute `h2` using the available equality.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `u1` using `standard_polynomial_mem_bounds (segLL F j) b' (hA3 _ r _ b') P1 I' hI'`. Establish `u2` using `standard_polynomial_mem_bounds (segLL F j) b'' (hA3 _ K _ b'') P2 I'' hI''`. Establish `e : (segRen F j R (r + K)).toLinearMap (PsiPl R P1.mu I' * PsiTan R P2.mu I'') = plEmb R r K (segRen F j R r (Psi R P1.mu I')) * nmEmb R r K (segRen F j R K (Psi R P2.mu I''))` using `segRen_mul F j _ _`. Rewrite using `[SetLike.mem_coe, e]`. Set `M : ℤ → ℤ` to `Function.extend (segE F j) (fun i => if Even (segE F j i) then P2.mu i.succ 0 else P2.mu i.castSucc 0) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM : ∀ i, M (segE F j i) = if Even (segE F j i) then P2.mu i.succ 0 else P2.mu i.castSucc 0` using `fun i => (segE_strictMono F j).injective.extend_apply _ _ i`. Use `space_criterion_clause R n' r K F j m th o _ _ M ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `mem_supported.mpr fun v hv => ?_` and prove the remaining obligations. Take `⟨u, _, rfl⟩` from `mem_vars_rename _ _ (Finset.mem_coe.mp hv)`. Conclude with `segE_mem F j u.1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `mem_supported.mpr fun v hv => ?_` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `mem_vars_rename _ _ (Finset.mem_coe.mp hv)`. Conclude with `⟨segE_mem F j u.1, fun hW => pol_vars_deg u2.1 hu ((hcond u.1).1 hW)⟩`. Introduce `x hx hW`. Take `⟨i, rfl⟩` from `segE_surj F j hx`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨sA1, sA2, -, -⟩` from `seg_val F j (Psi R P1.mu I') i`. Take `⟨-, -, sG3, sG4⟩` from `seg_val F j (Psi R P2.mu I'') i`. Take `⟨cE, cO, cR⟩` from `(hcond i).2 hW`. Rewrite using `[sA1, sA2, sG3, sG4, hM]`. Use `⟨fun he => ⟨?_, ?_⟩, fun he => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos he]`. Conclude with `(u2.2 i.succ).2`. Rewrite using `[if_pos he]`. Conclude with `le_trans (WithTop.coe_le_coe.mpr (cE he).1) (u1.2 i.castSucc).1`. Rewrite using `[if_neg he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(u2.2 i.castSucc).2`. Rewrite using `[if_neg he]`. Conclude with `le_trans (WithTop.coe_le_coe.mpr (cO he).1) (u1.2 i.succ).1`. Introduce `z hz`. Establish `h` using `(u1.2 i.castSucc).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hz]`. Establish `h' : P1.mu i.castSucc (lastIdx r) ≤ z` using `WithTop.coe_le_coe.mp h`. Conclude with `cR.trans (by exact_mod_cast h')`. Introduce `mm hmm x hx hW`. Take `⟨i, rfl⟩` from `segE_surj F j hx`.
-
-Take `⟨cE, cO, cR⟩` from `(hcond i).2 hW`. Rewrite using `[word_ord F j b' b'' _ u1.1 _ u2.1 mm hmm i]`. Use `split_ifs with he`. Conclude with `(cE he).2`. Conclude with `(cO he).2`.
+A detailed English derivation is pending.
 -/
 theorem first_clause_segment_rename [NeZero r] {K : ℕ} [NeZero K] (R : Type) [CommRing R] [IsDomain R]
     (hA3 : ∀ (N n : ℕ) [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ) (th M : Fin N → ℤ), A3at R N n LL B th M)
@@ -1753,7 +1739,7 @@ def ordOK (o : ℤ → ℝ) (b' b'' : Fin (segN F j) → ℕ) : Prop :=
 end Four0
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hm (((MvPolynomial.mem_restrictSupport_iff (R := R)).mp hp) (Finset.mem_coe.mpr (mem_support_iff.mpr h)))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem li_coeff_zero {R σ : Type} [CommRing R] {T : Set (σ →₀ ℕ)} {p : MvPolynomial σ R}
     (hp : p ∈ restrictSupport R T) {m : σ →₀ ℕ} (hm : m ∉ T) : coeff m p = 0 := by
@@ -1761,13 +1747,13 @@ theorem li_coeff_zero {R σ : Type} [CommRing R] {T : Set (σ →₀ ℕ)} {p : 
   exact hm (((MvPolynomial.mem_restrictSupport_iff (R := R)).mp hp) (Finset.mem_coe.mpr (mem_support_iff.mpr h)))
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hs x0 hx0`. Establish `hfil : ∑ x ∈ s with d x = d x0, g x • f x = 0`. Use extensionality with `m`. Rewrite using `[coeff_sum, coeff_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : m ∈ T (d x0)`. Establish `h0` using `congrArg (coeff m) hs`. Rewrite `h0` using `[coeff_sum, coeff_zero]`. Rewrite using `[Finset.sum_filter]`. Use `Eq.trans ?_ h0` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `split_ifs with hx`. Both sides reduce to the same expression. Rewrite using `[coeff_smul, li_coeff_zero (hmem x) (fun h => hx (hT _ _ m h hm)), smul_zero]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_smul, li_coeff_zero (hmem x) (by rw [(Finset.mem_filter.mp hx).2]; exact hm), smul_zero]`. Establish `hk : ∑ x ∈ s.subtype (fun x => d x = d x0), g x • f x = 0`. Rewrite using `[Finset.sum_subtype_eq_sum_filter (f := fun x => g x • f x)]`. Conclude with `hfil`. Conclude with `(linearIndependent_iff'.mp (hli (d x0))) _ (fun x => g x) hk ⟨x0, rfl⟩ (Finset.mem_subtype.mpr hx0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem li_graded {R : Type} [CommRing R] {σ ι κ : Type} (f : ι → MvPolynomial σ R) (d : ι → κ)
     (T : κ → Set (σ →₀ ℕ)) (hT : ∀ k k' m, m ∈ T k → m ∈ T k' → k = k')
@@ -1799,17 +1785,15 @@ abbrev li_Idx (n N : ℕ) (LL : Letters (Fin N)) :=
     (∃ B : Fin N → ℕ, ∃ P : PPath n N LL B, P.mu = x.1) ∧ IsSt x.1 x.2}
 
 /- English proof (translation)
-Use `li_graded (fun x : li_Idx n N LL => Psi O x.1.1 x.1.2) (fun x => Classical.choose x.2.1) (fun B => {m | ∀ i, multideg m i = B i}) ?_ ?_ ?_` and prove the remaining obligations. Introduce `k k' m h1 h2`. Use function extensionality and compare the values at `i`. Rewrite using `[← h1 i, h2 i]`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, hP⟩` from `Classical.choose_spec x.2.1`. Establish `h1 : Psi O x.1.1 x.1.2 ∈ Pol O n (Classical.choose x.2.1)`. Rewrite using `[← (h _).2]`. Conclude with `Submodule.subset_span ⟨P, x.1.2, by rw [hP]; exact x.2.2, by rw [hP]⟩`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `B`. Establish `hex : ∀ x : {x : li_Idx n N LL // Classical.choose x.2.1 = B}, ∃ P : PPath n N LL B, P.mu = x.1.1.1`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `Classical.choose_spec x.2.1`. Set `φ : {x : li_Idx n N LL // Classical.choose x.2.1 = B} → {x : PPath n N LL B × (ℤ → Finset (Fin n)) // IsSt x.1.mu x.2}` to `fun x => ⟨(Classical.choose (hex x), x.1.1.2), by show IsSt (Classical.choose (hex x)).mu x.1.1.2`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Classical.choose_spec (hex x)]`. Conclude with `x.1.2.2⟩`. Establish `hφ : Function.Injective φ`. Introduce `x y hxy`. Establish `h1 : (Classical.choose (hex x)).mu = (Classical.choose (hex y)).mu` using `congrArg (fun z => z.1.1.mu) hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : x.1.1.2 = y.1.1.2` using `congrArg (fun z => z.1.2) hxy`. Rewrite `h1` using `[Classical.choose_spec (hex x), Classical.choose_spec (hex y)]`. Conclude with `Subtype.ext (Subtype.ext (Prod.ext h1 h2))`. Establish `h3` using `(h B).1.comp φ hφ`. Establish `e : (fun x : {x : li_Idx n N LL // Classical.choose x.2.1 = B} => Psi O x.1.1.1 x.1.1.2) = (fun x : {x : PPath n N LL B × (ℤ → Finset (Fin n)) // IsSt x.1.mu x.2} => Psi O x.1.1.mu x.1.2) ∘ φ`.
-
-Use function extensionality and compare the values at `x`. Use `show Psi O x.1.1.1 x.1.1.2 = Psi O (Classical.choose (hex x)).mu x.1.1.2`. Rewrite using `[Classical.choose_spec (hex x)]`. Rewrite using `[e]`. Conclude with `h3`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem li_allDeg (O : Type) [CommRing O] (N n : ℕ) (LL : Letters (Fin N))
     (h : ∀ B : Fin N → ℕ,
@@ -1856,7 +1840,7 @@ theorem li_allDeg (O : Type) [CommRing O] (N n : ℕ) (LL : Letters (Fin N))
     exact h3
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [sumAlgEquiv_C_inl]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp only [map_mul, hp, rename_X, map_X, sumAlgEquiv_X_inl]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem li_sum_inl {R σ τ : Type} [CommRing R] (p : MvPolynomial σ R) :
     sumAlgEquiv R σ τ (rename Sum.inl p) = MvPolynomial.map C p := by
@@ -1866,7 +1850,7 @@ theorem li_sum_inl {R σ τ : Type} [CommRing R] (p : MvPolynomial σ R) :
   | mul_X p v hp => simp only [map_mul, hp, rename_X, map_X, sumAlgEquiv_X_inl]
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simp [sumAlgEquiv_C_inl]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp only [map_mul, hp, rename_X, sumAlgEquiv_X_inr]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem li_sum_inr {R σ τ : Type} [CommRing R] (q : MvPolynomial τ R) :
     sumAlgEquiv R σ τ (rename Sum.inr q) = C q := by
@@ -1876,26 +1860,26 @@ theorem li_sum_inr {R σ τ : Type} [CommRing R] (q : MvPolynomial τ R) :
   | mul_X p v hp => simp only [map_mul, hp, rename_X, sumAlgEquiv_X_inr]
 
 /- English proof (translation)
-Rewrite using `[map_mul, li_sum_inl, li_sum_inr, mul_comm, coeff_C_mul, coeff_map, mul_comm, ← smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem li_key {R σ τ : Type} [CommRing R] (p : MvPolynomial σ R) (q : MvPolynomial τ R) (m : σ →₀ ℕ) :
     coeff m (sumAlgEquiv R σ τ (rename Sum.inl p * rename Sum.inr q)) = coeff m p • q := by
   rw [map_mul, li_sum_inl, li_sum_inr, mul_comm, coeff_C_mul, coeff_map, mul_comm, ← smul_eq_C_mul]
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hs x0 hx0`. Set `g' : α → β → R` to `fun a b => if (a, b) ∈ s then g (a, b) else 0`. Establish `hs' : ∑ a ∈ s.image Prod.fst, ∑ b ∈ s.image Prod.snd, g' a b • (rename Sum.inl (u a) * rename Sum.inr (v b) : MvPolynomial (σ ⊕ τ) R) = 0`. Rewrite using `[← Finset.sum_product' (s.image Prod.fst) (s.image Prod.snd) (fun a b => g' a b • (rename Sum.inl (u a) * rename Sum.inr (v b) : MvPolynomial (σ ⊕ τ) R)), ← hs]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `symm`. Use `Finset.sum_subset_zero_on_sdiff ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `Finset.mem_product.mpr ⟨Finset.mem_image_of_mem _ hx, Finset.mem_image_of_mem _ hx⟩`. Introduce `x hx`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : (x.1, x.2) ∉ s` using `(Finset.mem_sdiff.mp hx).2`. Simplify using `only [g', if_neg hx', zero_smul]`. Introduce `x hx`. Establish `hx' : (x.1, x.2) ∈ s` using `hx`. Simplify using `only [g', if_pos hx']`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `step : ∀ m : σ →₀ ℕ, ∑ b ∈ s.image Prod.snd, (∑ a ∈ s.image Prod.fst, g' a b * coeff m (u a)) • v b = 0`. Introduce `m`. Establish `h1` using `congrArg (fun P => coeff m (sumAlgEquiv R σ τ P)) hs'`. Simplify using `only [map_sum, map_smul, coeff_sum, coeff_smul, li_key, map_zero, coeff_zero] at h1`. Rewrite `h1` using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [mul_smul]`. Establish `hb : ∀ b ∈ s.image Prod.snd, ∀ m : σ →₀ ℕ, ∑ a ∈ s.image Prod.fst, g' a b * coeff m (u a) = 0` using `fun b hb m => linearIndependent_iff'.mp hv _ _ (step m) b hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : ∀ b ∈ s.image Prod.snd, ∑ a ∈ s.image Prod.fst, g' a b • u a = 0`. Introduce `b hb'`. Use extensionality with `m`. Rewrite using `[coeff_sum, coeff_zero, ← hb b hb' m]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [coeff_smul, smul_eq_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `linearIndependent_iff'.mp hu _ (fun a => g' a x0.2) (ha x0.2 (Finset.mem_image_of_mem _ hx0)) x0.1 (Finset.mem_image_of_mem _ hx0)`. Establish `hx0' : (x0.1, x0.2) ∈ s` using `hx0`. Simplify `h2` using `only [g', if_pos hx0']`.
+A detailed English derivation is pending.
 -/
 theorem li_ext {R : Type} [CommRing R] {σ τ α β : Type} (u : α → MvPolynomial σ R) (v : β → MvPolynomial τ R)
     (hu : LinearIndependent R u) (hv : LinearIndependent R v) :
@@ -1942,7 +1926,7 @@ theorem li_ext {R : Type} [CommRing R] {σ τ α β : Type} (u : α → MvPolyno
 
 open Formalism.MainNotions.SelectionLemmas in
 /- English proof (translation)
-Introduce `_ _ h` and use `(OrderIso.injective _) (Subtype.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem li_segE_injective {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ) : Function.Injective (segE F j) :=
   fun _ _ h => (OrderIso.injective _) (Subtype.ext h)
@@ -1950,19 +1934,19 @@ theorem li_segE_injective {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ) :
 open Formalism.MainNotions.SelectionLemmas in
 
 /- English proof (translation)
-Establish `hu` using `li_allDeg O (segN F j) r (segLL F j) (fun B => hA2 _ r _ B)`. Establish `hv` using `li_allDeg O (segN F j) K (segLL F j) (fun B => hA2 _ K _ B)`. Establish `hext` using `li_ext _ _ hu hv`. Set `gv : (Fin (segN F j) × Fin r) ⊕ (Fin (segN F j) × Fin K) → ℤ × Fin (r + K)` to `Sum.elim (fun v => (segE F j v.1, Fin.castAdd K v.2)) (fun v => (segE F j v.1, Fin.natAdd r v.2))`. Establish `hg : Function.Injective gv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `(a | a) (b | b) hab`. Simplify using `only [gv, Sum.elim_inl, Prod.mk.injEq] at hab`. Conclude with `congrArg Sum.inl (Prod.ext (li_segE_injective F j hab.1) (Fin.castAdd_injective _ _ hab.2))`. Simplify using `only [gv, Sum.elim_inl, Sum.elim_inr, Prod.mk.injEq] at hab`. Use `congrArg Fin.val hab.2` as an intermediate fact.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use `a.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [gv, Sum.elim_inl, Sum.elim_inr, Prod.mk.injEq] at hab`. Use `congrArg Fin.val hab.2` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use `b.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [gv, Sum.elim_inr, Prod.mk.injEq] at hab`. Conclude with `congrArg Sum.inr (Prod.ext (li_segE_injective F j hab.1) (Fin.natAdd_injective _ _ hab.2))`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h3` using `hext.map' (rename gv : _ →ₐ[O] _).toLinearMap (LinearMap.ker_eq_bot.mpr (rename_injective gv hg))`. Set `ψ : {x : ((Fin (segN F j + 1) → Fin r → ℤ) × (Fin (segN F j + 1) → Fin K → ℤ)) × ((ℤ → Finset (Fin r)) × (ℤ → Finset (Fin K))) // x.1 ∈ segPairsAll F j K ∧ IsSt x.1.1 x.2.1 ∧ IsSt x.1.2 x.2.2} → li_Idx r (segN F j) (segLL F j) × li_Idx K (segN F j) (segLL F j)` to `fun x => (⟨(x.1.1.1, x.1.2.1), ⟨by obtain ⟨b', _, h1, _⟩ := x.2.1; exact ⟨b', h1⟩, x.2.2.1⟩⟩, ⟨(x.1.1.2, x.1.2.2), ⟨by obtain ⟨_, b'', _, h2⟩ := x.2.1; exact ⟨b'', h2⟩, x.2.2.2⟩⟩)`. Establish `hψ : Function.Injective ψ`. Introduce `x y hxy`. Establish `h1 : (x.1.1.1, x.1.2.1) = (y.1.1.1, y.1.2.1)` using `congrArg (fun z => z.1.1) hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : (x.1.1.2, x.1.2.2) = (y.1.1.2, y.1.2.2)` using `congrArg (fun z => z.2.1) hxy`. Simplify using `only [Prod.mk.injEq] at h1 h2`. Conclude with `Subtype.ext (Prod.ext (Prod.ext h1.1 h2.1) (Prod.ext h1.2 h2.2))`. Establish `h4` using `h3.comp ψ hψ`. Establish `e : (fun x : {x : ((Fin (segN F j + 1) → Fin r → ℤ) × (Fin (segN F j + 1) → Fin K → ℤ)) × ((ℤ → Finset (Fin r)) × (ℤ → Finset (Fin K))) // x.1 ∈ segPairsAll F j K ∧ IsSt x.1.1 x.2.1 ∧ IsSt x.1.2 x.2.2} => segRen F j O (r + K) (PsiPl O x.1.1.1 x.1.2.1 * PsiTan O x.1.1.2 x.1.2.2)) …`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp, AlgHom.toLinearMap_apply, map_mul, rename_rename, segRen, PsiPl, PsiTan, ψ]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem space_statement_linear_independent (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (hA2 : ∀ (N n : ℕ) [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ),
@@ -2028,11 +2012,11 @@ section Sat
 open Formalism.MainNotions.SelectionLemmas
 
 /- English proof (translation)
-Rewrite `hf` using `[← Finsupp.range_linearCombination]`. Take `⟨c, rfl⟩` from `hf`. Take `⟨l, hl, hle⟩` from `(Finsupp.mem_span_image_iff_linearCombination R).mp haf`. Establish `hlc : l = a • c` using `hv (by rw [hle, map_smul])`. Use `(Finsupp.mem_span_image_iff_linearCombination R).mpr ⟨c, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hl`, the goal using `[Finsupp.mem_supported]`. Introduce `x hx`. Apply `hl` to reduce the goal to its premises. Establish `hx' : c x ≠ 0` using `Finsupp.mem_support_iff.mp hx`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff, hlc, Finsupp.smul_apply, smul_eq_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero ha hx'`.
+A detailed English derivation is pending.
 -/
 theorem sat_li {R M ι : Type*} [CommRing R] [IsDomain R] [AddCommGroup M] [Module R M] (v : ι → M)
     (hv : LinearIndependent R v) (s : Set ι) (f : M) (hf : f ∈ Submodule.span R (Set.range v)) (a : R) (ha : a ≠ 0)
@@ -2050,11 +2034,11 @@ theorem sat_li {R M ι : Type*} [CommRing R] [IsDomain R] [AddCommGroup M] [Modu
   exact mul_ne_zero ha hx'
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `h`. Use `exists_rename_eq_of_vars_subset_range f g hg ?_` and prove the remaining obligations. Introduce `i hi`. Establish `hi' : i ∈ (a • f).vars`. Rewrite `hi` using `[Finset.mem_coe, mem_vars_iff_mem_support]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_vars_iff_mem_support]`. Take `⟨d, hd, hid⟩` from `hi`. Conclude with `⟨d, by rwa [support_smul_eq ha], hid⟩`. Rewrite `hi'` using `[← hq]`. Take `⟨x, _, rfl⟩` from `Finset.mem_image.mp (vars_rename g q hi')`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem sat_range {R σ τ : Type*} [CommRing R] [IsDomain R] (g : τ → σ) (hg : Function.Injective g)
     (f : MvPolynomial σ R) (a : R) (ha : a ≠ 0) (h : ∃ q, rename g q = a • f) : ∃ q, rename g q = f := by
@@ -2072,13 +2056,13 @@ theorem sat_range {R σ τ : Type*} [CommRing R] [IsDomain R] (g : τ → σ) (h
   exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `f _`. Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `h1 : monomial u a ∈ Pol O n (fun i => multideg u i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Unfold `Pol`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `d hd`. Use `support_monomial_subset hd` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `this` using the available equality. Introduce `i`. Both sides reduce to the same expression. Rewrite `h1` using `[← hA2]`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `G ⟨P, I, hI, rfl⟩`. Conclude with `⟨_, P, I, hI, rfl⟩`. Consider the case `add p q hp hq => exact Submodule.add_mem _ (hp trivial) (hq trivial)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Treat this case separately.
 -/
 theorem sat_psi_top (O : Type) [CommRing O]
     (N n : ℕ) (LL : Letters (Fin N))
@@ -2107,15 +2091,15 @@ theorem sat_psi_top (O : Type) [CommRing O]
   | add p q hp hq => exact Submodule.add_mem _ (hp trivial) (hq trivial)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `f _`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c`. Use `Submodule.subset_span ⟨C c, 1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Consider the case `add p q hp hq => exact Submodule.add_mem _ (hp trivial) (hq trivial)`. Consider the case `mul_X p v hp`. Establish `hle : Submodule.span O {G : MvPolynomial (Fin N × Fin (r + K)) O | ∃ (a : MvPolynomial (Fin N × Fin r) O) (b : MvPolynomial (Fin N × Fin K) O), G = rename (plVar (K` using `K)) a * rename (tanVar (r := r)) b} ≤ Submodule.comap (LinearMap.mulRight O (X v : MvPolynomial (Fin N × Fin (r + K)) O)) (Submodule.span O {G : MvPolynomial (Fin N × Fin (r + K)) O | ∃ (a : MvPolynomial (Fin N × Fin r) O) (b : MvPolynomial (Fin N × Fin K) O), G = rename (plVar ( …`. Rewrite using `[Submodule.span_le]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `G ⟨a, b, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulRight_apply]`. Take `⟨i, c⟩` from `v`. Use `Fin.addCases (fun c' => ?_) (fun c' => ?_) c` and prove the remaining obligations. Use `Submodule.subset_span ⟨a * X (i, c'), b, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, rename_X]`. Simplify using `only [plVar]`. Expand and normalize the polynomial expressions, which then agree. Use `Submodule.subset_span ⟨a, b * X (i, c'), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, rename_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tanVar]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hle (hp trivial)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sat_prod_top (O : Type) [CommRing O] (N r K : ℕ) :
     Submodule.span O {G : MvPolynomial (Fin N × Fin (r + K)) O | ∃ (a : MvPolynomial (Fin N × Fin r) O)
@@ -2149,13 +2133,11 @@ theorem sat_prod_top (O : Type) [CommRing O] (N r K : ℕ) :
     exact hle (hp trivial)
 
 /- English proof (translation)
-Use `set X0 := Formalism.MainNotions.CovariantDegrees.XXZ O {q : (Fin (N + 1) → Fin r → ℤ) × (Fin (N + 1) → Fin K → ℤ) | ∃ b' b'' : Fin N → ℕ, (∃ P1 : PPath r N LL b', P1.mu = q.1) ∧ ∃ P2 : PPath K N LL b'', P2.mu = q.2} with hX0`. Establish `h1 : ∀ (b'' : Fin N → ℕ) (P2 : PPath K N LL b'') (I'' : ℤ → Finset (Fin K)), IsSt P2.mu I'' → ∀ a : MvPolynomial (Fin N × Fin r) O, rename (plVar (K` using `K)) a * rename (tanVar (r := r)) (Psi O P2.mu I'') ∈ X0 := by`. Introduce `b'' P2 I'' hI'' a`. Establish `hle : Submodule.span O {G : MvPolynomial (Fin N × Fin r) O | ∃ (B : Fin N → ℕ) (P : PPath r N LL B) (I : ℤ → Finset (Fin r)), IsSt P.mu I ∧ G = Psi O P.mu I} ≤ Submodule.comap ((LinearMap.mulRight O (rename (tanVar (r` using `r)) (Psi O P2.mu I''))) ∘ₗ (rename (plVar (K := K)) : MvPolynomial (Fin N × Fin r) O →ₐ[O] _).toLinearMap) X0 := by`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `G ⟨b', P1, I', hI', rfl⟩`. Conclude with `Submodule.subset_span ⟨(P1.mu, P2.mu), ⟨b', b'', ⟨P1, rfl⟩, ⟨P2, rfl⟩⟩, I', I'', hI', hI'', rfl⟩`. Use `hle (by rw [sat_psi_top O N r LL hr]; trivial : a ∈ _)` as an intermediate fact. Conclude with `this`. Establish `h2 : ∀ (a : MvPolynomial (Fin N × Fin r) O) (b : MvPolynomial (Fin N × Fin K) O), rename (plVar (K` using `K)) a * rename (tanVar (r := r)) b ∈ X0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Establish `hle : Submodule.span O {G : MvPolynomial (Fin N × Fin K) O | ∃ (B : Fin N → ℕ) (P : PPath K N LL B) (I : ℤ → Finset (Fin K)), IsSt P.mu I ∧ G = Psi O P.mu I} ≤ Submodule.comap ((LinearMap.mulLeft O (rename (plVar (K` using `K)) a)) ∘ₗ (rename (tanVar (r := r)) : MvPolynomial (Fin N × Fin K) O →ₐ[O] _).toLinearMap) X0 := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `G ⟨b'', P2, I'', hI'', rfl⟩`. Conclude with `h1 b'' P2 I'' hI'' a`.
-
-Use `hle (by rw [sat_psi_top O N K LL hK]; trivial : b ∈ _)` as an intermediate fact. Conclude with `this`. Rewrite using `[eq_top_iff, ← sat_prod_top O N r K, Submodule.span_le]`. Introduce and unpack `G ⟨a, b, rfl⟩`. Conclude with `h2 a b`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sat_words_top (O : Type) [CommRing O] (N r K : ℕ) (LL : Letters (Fin N))
     (hr : ∀ B : Fin N → ℕ,
@@ -2199,7 +2181,7 @@ theorem sat_words_top (O : Type) [CommRing O] (N r K : ℕ) (LL : Letters (Fin N
   exact h2 a b
 
 /- English proof (translation)
-Introduce `a b h`. Unfold `segE at h`. Conclude with `((F.letters j).orderIsoOfFin rfl).injective (Subtype.ext h)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sat_segE_injective {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ) : Function.Injective (segE F j) := by
   intro a b h
@@ -2207,21 +2189,19 @@ theorem sat_segE_injective {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ) 
   exact ((F.letters j).orderIsoOfFin rfl).injective (Subtype.ext h)
 
 /- English proof (translation)
-Introduce `f a ha haf`. Use `set v := (fun x : {x : ((Fin (segN F j + 1) → Fin r → ℤ) × (Fin (segN F j + 1) → Fin K → ℤ)) × ((ℤ → Finset (Fin r)) × (ℤ → Finset (Fin K))) // x.1 ∈ segPairsAll F j K ∧ IsSt x.1.1 x.2.1 ∧ IsSt x.1.2 x.2.2} => segRen F j O (r + K) (PsiPl O x.1.1.1 x.1.2.1 * PsiTan O x.1.1.2 x.1.2 …`. Establish `hsub : segPairs F j K m th o ⊆ segPairsAll F j K`. Introduce and unpack `q ⟨b', b'', hP1, hP2, -⟩`. Conclude with `⟨b', b'', hP1, hP2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hXX : XX' O r K F j m th o = Submodule.span O (v '' {x | x.1.1 ∈ segPairs F j K m th o})`. Rewrite using `[h1, Formalism.MainNotions.CovariantDegrees.XXZ, Submodule.map_span]`. Use `congr 1`. Use extensionality with `G`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨q, hq, I', I'', hI', hI'', rfl⟩, rfl⟩`. Conclude with `⟨⟨(q, (I', I'')), hsub hq, hI', hI''⟩, hq, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨_, ⟨x.1.1, hx, x.1.2.1, x.1.2.2, x.2.2.1, x.2.2.2, rfl⟩, rfl⟩`. Establish `hg : Function.Injective (fun w : Fin (segN F j) × Fin (r + K) => (segE F j w.1, w.2))`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (sat_segE_injective F j h.1) h.2`. Establish `hr : ∃ q, rename (fun w : Fin (segN F j) × Fin (r + K) => (segE F j w.1, w.2)) q = f`. Use `sat_range _ hg f a ha ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `haf` using `[h1]`. Take `⟨q, _, hq⟩` from `haf`. Conclude with `⟨q, hq⟩`. Take `⟨f₀, hf₀⟩` from `hr`. Establish `htop` using `sat_words_top O (segN F j) r K (segLL F j) (fun B => (hA2 _ r _ B).2) (fun B => (hA2 _ K _ B).2)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : f ∈ Submodule.span O (Set.range v)`. Establish `h0 : f₀ ∈ Formalism.MainNotions.CovariantDegrees.XXZ O (segPairsAll F j K)`. Unfold `segPairsAll`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : f ∈ Submodule.map (segRen F j O (r + K)).toLinearMap (Formalism.MainNotions.CovariantDegrees.XXZ O (segPairsAll F j K))` using `⟨f₀, h0, hf₀⟩`. Rewrite `h3` using `[Formalism.MainNotions.CovariantDegrees.XXZ, Submodule.map_span]`. Use `Submodule.span_mono ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨q, hq, I', I'', hI', hI'', rfl⟩, rfl⟩`. Conclude with `⟨⟨(q, (I', I'')), hq, hI', hI''⟩, rfl⟩`.
-
-Rewrite `haf`, the goal using `[hXX]`. Conclude with `sat_li v h2 _ f hf a ha haf`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem space_statement_saturated (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (hA2 : ∀ (N n : ℕ) [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ),
@@ -2284,7 +2264,7 @@ theorem space_statement_saturated (O : Type) [CommRing O] [IsDomain O] [IsDiscre
 end Sat
 
 /- English proof (translation)
-Unfold `extOne`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_extOne_map {n : ℕ} {P P' : Type} [CommRing P] [CommRing P'] (g : P →+* P') (J : Finset (Fin n)) :
     g (extOne J) = extOne J := by
@@ -2292,7 +2272,7 @@ theorem lift_extOne_map {n : ℕ} {P P' : Type} [CommRing P] [CommRing P'] (g : 
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[wedgeR, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_wedgeR_map {n : ℕ} {P P' : Type} [CommRing P] [CommRing P'] (g : P →+* P') (x : Fin n → P)
     (K : Finset (Fin n) → P) (J : Finset (Fin n)) :
@@ -2300,7 +2280,7 @@ theorem lift_wedgeR_map {n : ℕ} {P P' : Type} [CommRing P] [CommRing P'] (g : 
   simp [wedgeR, map_sum]
 
 /- English proof (translation)
-Simplify using `[contrR, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_contrR_map {n : ℕ} {P P' : Type} [CommRing P] [CommRing P'] (g : P →+* P') (x : Fin n → P)
     (K : Finset (Fin n) → P) (J : Finset (Fin n)) :
@@ -2308,9 +2288,7 @@ theorem lift_contrR_map {n : ℕ} {P P' : Type} [CommRing P] [CommRing P'] (g : 
   simp [contrR, map_sum]
 
 /- English proof (translation)
-Unfold `colStep`. Use `split_ifs`. Conclude with `lift_wedgeR_map g x K J`. Conclude with `lift_contrR_map g x K J`. Conclude with `lift_contrR_map g x K J`.
-
-Conclude with `lift_wedgeR_map g x K J`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lift_colStep_map {n : ℕ} {P P' : Type} [CommRing P] [CommRing P'] (g : P →+* P') (c : ℤ) (hP hN : ℕ)
     (x : Fin n → P) (K : Finset (Fin n) → P) (J : Finset (Fin n)) :
@@ -2324,11 +2302,11 @@ theorem lift_colStep_map {n : ℕ} {P P' : Type} [CommRing P] [CommRing P'] (g :
   · rfl
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => intro J`. Conclude with `lift_extOne_map _ J`. Consider the case `succ j ih`. Introduce `J`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Kcol]`. Use `split_ifs with h`. Establish `e1 : (fun m => MvPolynomial.map f (letVec R (N` using `N) (n := n) ⟨j, h⟩ m)) = letVec R' ⟨j, h⟩ := by`. Use function extensionality and compare the values at `m`. Simplify using `[letVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun J => MvPolynomial.map f (Kcol R mu c j J)) = Kcol R' mu c j` using `funext ih`. Rewrite using `[lift_colStep_map, e1, e2]`. Conclude with `ih J`.
+A detailed English derivation is pending.
 -/
 theorem lift_Kcol_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {N n : ℕ}
     (mu : Fin (N + 1) → Fin n → ℤ) (c : ℤ) (j : ℕ) :
@@ -2346,7 +2324,7 @@ theorem lift_Kcol_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') 
     · exact ih J
 
 /- English proof (translation)
-Unfold `Psi`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun c _ => lift_Kcol_map f mu c N (I c)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Psi_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {N n : ℕ}
     (mu : Fin (N + 1) → Fin n → ℤ) (I : ℤ → Finset (Fin n)) :
@@ -2356,7 +2334,7 @@ theorem Psi_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {N n :
   exact Finset.prod_congr rfl fun c _ => lift_Kcol_map f mu c N (I c)
 
 /- English proof (translation)
-Unfold `PsiPl`. Rewrite using `[map_rename, Psi_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem PsiPl_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {N r K : ℕ}
     (nu : Fin (N + 1) → Fin r → ℤ) (I : ℤ → Finset (Fin r)) :
@@ -2365,7 +2343,7 @@ theorem PsiPl_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {N r
   rw [map_rename, Psi_map]
 
 /- English proof (translation)
-Unfold `PsiTan`. Rewrite using `[map_rename, Psi_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem PsiTan_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {N r K : ℕ}
     (ka : Fin (N + 1) → Fin K → ℤ) (I : ℤ → Finset (Fin K)) :
@@ -2374,13 +2352,13 @@ theorem PsiTan_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {N 
   rw [map_rename, Psi_map]
 
 /- English proof (translation)
-Introduce `y hy`. Unfold `Formalism.MainNotions.CovariantDegrees.XXZ at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨q, hq, I', I'', h1, h2, rfl⟩` from `hG`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨PsiPl O q.1 I' * PsiTan O q.2 I'', Submodule.subset_span ⟨q, hq, I', I'', h1, h2, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, PsiPl_map, PsiTan_map]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, map_zero _⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨x1, hx1, rfl⟩` from `hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x2, hx2, rfl⟩` from `hv`. Conclude with `⟨x1 + x2, Submodule.add_mem _ hx1 hx2, map_add _ _ _⟩`. Consider the case `smul a u _ hu`. Take `⟨x1, hx1, rfl⟩` from `hu`. Take `⟨a', rfl⟩` from `IsLocalRing.residue_surjective a`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a' • x1, Submodule.smul_mem _ _ hx1, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem XXZ_lift (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {N r K : ℕ}
     (PP : Set ((Fin (N + 1) → Fin r → ℤ) × (Fin (N + 1) → Fin K → ℤ))) :
@@ -2406,9 +2384,9 @@ theorem XXZ_lift (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O
 open Formalism.MainNotions.SelectionLemmas in
 
 /- English proof (translation)
-Introduce `A G M hA hG hc ho`. Take `⟨y, hy, hyeq⟩` from `hcrit A G M hA hG hc ho`. Take `⟨x, hx, rfl⟩` from `XXZ_lift O _ y hy`. Use `⟨segRen F j O (r + K) x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem hx`. Rewrite using `[← hyeq]`. Simplify using `only [segRen, AlgHom.toLinearMap_apply]`. Rewrite using `[map_rename]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem space_statement_sixth_clause (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (n' r K : ℕ) [NeZero n']
     [NeZero r] [NeZero K] (F : Frames n' r) (j : ℤ) (m : ℤ → ℤ) (th o : ℤ → ℝ)
@@ -2494,7 +2472,7 @@ def SpaceStatementAtRing (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuati
       MvPolynomial.map (IsLocalRing.residue O) P = plEmb (FF O) r K A * nmEmb (FF O) r K G)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem space_statement_iff_forall_dvr (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.SelectionLemmas.NestedTypeBound D ↔
     ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (_S : UniformizedDVR p O),
@@ -2512,7 +2490,7 @@ def FourthClauseAtRing (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuation
       (⨆ q ∈ segPairs F j K m th o, Formalism.MainNotions.CovariantDegrees.jointType (KK O) (segLL F j) q.1 q.2)})
 
 /- English proof (translation)
-Introduce `n' r K _ _ _ F L₁ N₁ j m th o hV hK hm`. Establish `h1` using `first_clause_segment_rename (K := K) F j O h3 m th o`. Establish `h2` using `space_statement_linear_independent O hA2 n' r K F j`. Conclude with `⟨h1, h2, space_statement_saturated O hA2 n' r K F j m th o h1 h2, h4 n' r K F L₁ N₁ j m th o hV hK hm, fun A G M hA hG hc ho => space_criterion_clause O n' r K F j m th o A G M hA hG hc ho, space_statement_sixth_clause O n' r K F j m th o h1 (fun A G M hA hG hc ho => crit_words F …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem space_statement_at_ring_of_basis (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (hA2 : ∀ (N n : ℕ) [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ),
@@ -2536,11 +2514,9 @@ section Comb
 open Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h1` using `P.step i`. Establish `h2` using `P'.step i`. Rewrite `h2` using `[← h]`. Distinguish the cases in `hv : LL.vec i = true`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `h1`, `h2` using `[if_pos hv]`. Use `h1.2.2.symm.trans h2.2.2` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite `h1`, `h2` using `[if_neg hv]`. Use `h1.2.2.symm.trans h2.2.2` as an intermediate fact.
-
-Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comb_deg_unique {n N : ℕ} {LL : Letters (Fin N)} {b c : Fin N → ℕ} (P : PPath n N LL b)
     (P' : PPath n N LL c) (h : P.mu = P'.mu) : b = c := by
@@ -2557,7 +2533,7 @@ theorem comb_deg_unique {n N : ℕ} {LL : Letters (Fin N)} {b c : Fin N → ℕ}
     exact_mod_cast this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `hs : ∑ a, (mu a - nu a) = 0` using `by simpa using h.2.2`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => sub_nonneg.mpr (h.1 a))).mp hs a (Finset.mem_univ a)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem comb_hstrip_zero {n : ℕ} {nu mu : Fin n → ℤ} (h : HStrip nu mu 0) : mu = nu := by
   funext a
@@ -2566,11 +2542,11 @@ theorem comb_hstrip_zero {n : ℕ} {nu mu : Fin n → ℤ} (h : HStrip nu mu 0) 
   linarith
 
 /- English proof (translation)
-Proceed by induction on `k using Fin.induction with`. Consider the case `zero => exact P.zero`. Consider the case `succ l ih`. Establish `ih'` using `ih (fun l' hl' => h l' (by`. Establish `h1 : l'.val < l.val` using `hl'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show l'.val < l.val + 1`. Use the proof step `omega))`. Establish `hB` using `h l (by show l.val < l.val + 1; omega)`. Establish `hs` using `P.step l`. Rewrite `hs` using `[hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hv : LL.vec l = true`. Rewrite `hs` using `[if_pos hv]`. Rewrite using `[comb_hstrip_zero hs, ih']`. Rewrite `hs` using `[if_neg hv]`. Rewrite using `[← comb_hstrip_zero hs, ih']`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_zero_of_deg {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} (P : PPath n N LL B) (k : Fin (N + 1))
     (h : ∀ l : Fin N, l.val < k.val → B l = 0) : P.mu k = 0 := by
@@ -2591,11 +2567,11 @@ theorem comb_zero_of_deg {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} 
       rw [← comb_hstrip_zero hs, ih']
 
 /- English proof (translation)
-Proceed by induction on `k using Fin.induction with`. Consider the case `zero => intro a`. Rewrite using `[P.zero]`. Conclude with `le_rfl`. Consider the case `succ l ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun l' hl' => h l' (by`. Establish `h1 : l'.val < l.val` using `hl'`. Use `show l'.val < l.val + 1`. Use the proof step `omega))`. Establish `hv` using `h l (by show l.val < l.val + 1; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `P.step l`. Rewrite `hs` using `[if_pos hv]`. Introduce `a`. Conclude with `(ih' a).trans (hs.1 a)`.
+A detailed English derivation is pending.
 -/
 theorem comb_nonneg_of_vec {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} (P : PPath n N LL B) (k : Fin (N + 1))
     (h : ∀ l : Fin N, l.val < k.val → LL.vec l = true) : ∀ a, 0 ≤ P.mu k a := by
@@ -2615,15 +2591,15 @@ theorem comb_nonneg_of_vec {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ
 variable {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ)
 
 /- English proof (translation)
-Simplify using `[segLL, LZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comb_vec (i : Fin (segN F j)) : (segLL F j).vec i = true ↔ Even (segE F j i) := by
   simp [segLL, LZ]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, h6, -⟩` from `hV`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, hk, le_antisymm hxk h0⟩`. Consider the case `succ k ih`. Distinguish the cases in `h1 : x ≤ F.fr J k`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Conclude with `ih (by omega) h1`. Distinguish the cases in `h2 : x = F.fr J (k + 1)`. Conclude with `⟨k + 1, hk, h2⟩`. Conclude with `absurd hx (h6 J k x hk (not_le.mp h1) (lt_of_le_of_ne hxk h2))`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comb_frame_top {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (J x : ℤ) (hx : posOf n' x ∈ F.TT) (h0 : F.fr J 0 ≤ x)
     (k : ℕ) (hk : k < r) (hxk : x ≤ F.fr J k) : ∃ i, i < r ∧ x = F.fr J i := by
@@ -2638,7 +2614,7 @@ theorem comb_frame_top {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (J x : ℤ) (h
       · exact absurd hx (h6 J k x hk (not_le.mp h1) (lt_of_le_of_ne hxk h2))
 
 /- English proof (translation)
-Establish `hx'` using `hx`. Unfold `Frames.letters at hx'`. Rewrite `hx'` using `[Finset.mem_filter, Finset.mem_Icc]`. Take `⟨i, hi, rfl⟩` from `comb_frame_top F hV (j - 1) x hx'.2 hx'.1.1 (r - 1) (Nat.sub_lt (NeZero.pos r) Nat.one_pos) hW`. Conclude with `(hV.2.2.2.2.1 (j - 1) i hi).2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comb_W_even [NeZero r] {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (x : ℤ) (hx : x ∈ F.letters j) (hW : F.IsW j x) :
     Even x := by
@@ -2651,11 +2627,11 @@ theorem comb_W_even [NeZero r] {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (x : �
   exact (hV.2.2.2.2.1 (j - 1) i hi).2
 
 /- English proof (translation)
-Unfold `segL`. Rewrite using `[List.mem_flatMap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, -, hi⟩`. Distinguish the cases in `hW : F.IsW j (segE F j i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Rewrite `hi` using `[if_pos hW]`. Conclude with `absurd hi (List.not_mem_nil)`. Rewrite `hi` using `[if_neg hW]`. Use `⟨i, hW, ?_⟩` and prove the remaining obligations. Simplify using `using hi`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, hW, hi⟩`. Use `⟨i, List.mem_finRange i, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hW]`. Simplify using `using hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem comb_mem_segL (m : ℤ → ℤ) (th : ℤ → ℝ) (e : PathInequality (segN F j)) :
     e ∈ segL F j m th ↔ ∃ i : Fin (segN F j), ¬ F.IsW j (segE F j i) ∧
@@ -2678,13 +2654,11 @@ theorem comb_mem_segL (m : ℤ → ℤ) (th : ℤ → ℝ) (e : PathInequality (
     simpa using hi
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i hW`. Establish `h1` using `h _ ((comb_mem_segL F j m th _).mpr ⟨i, hW, Or.inl rfl⟩)`. Establish `h2` using `h _ ((comb_mem_segL F j m th _).mpr ⟨i, hW, Or.inr rfl⟩)`. Use `⟨fun he => ?_, fun he => ?_, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[if_pos he]`. Conclude with `h1`. Rewrite `h1` using `[if_neg he]`. Conclude with `h1`. Conclude with `Int.ceil_le.mp h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h e he`. Take `⟨i, hW, rfl | rfl⟩` from `(comb_mem_segL F j m th e).mp he`. Take `⟨cE, cO, -⟩` from `h i hW`. Distinguish the cases in `hev : Even (segE F j i)`. Rewrite using `[if_pos hev]`.
-
-Conclude with `cE hev`. Rewrite using `[if_neg hev]`. Conclude with `cO hev`. Conclude with `Int.ceil_le.mpr (h i hW).2.2`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_sat_iff [NeZero r] {K : ℕ} [NeZero K] (m : ℤ → ℤ) (th : ℤ → ℝ)
     (nu : Fin (segN F j + 1) → Fin r → ℤ) (ka : Fin (segN F j + 1) → Fin K → ℤ) :
@@ -2709,23 +2683,21 @@ theorem comb_sat_iff [NeZero r] {K : ℕ} [NeZero K] (m : ℤ → ℤ) (th : ℤ
     · exact Int.ceil_le.mpr (h i hW).2.2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c', c'', ⟨Q1, h1⟩, ⟨Q2, h2⟩, hcond⟩`. Establish `e1 : c' = b'` using `comb_deg_unique Q1 P1 h1`. Establish `e2 : c'' = b''` using `comb_deg_unique Q2 P2 h2`. Substitute `e1` using the available equality.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `e2` using the available equality. Simplify using `only at hcond`. Use `⟨⟨?_, ?_⟩, fun i => ⟨(hcond i).1, fun hW => ⟨fun he => (((hcond i).2 hW).1 he).2, fun he => (((hcond i).2 hW).2.1 he).2⟩⟩⟩` and prove the remaining obligations. Use `(hB1 (segN F j) r K (segLL F j) (c' + c'') hK P1.mu P2.mu).mpr ⟨c', c'', fun i => rfl, ⟨P1, rfl⟩, ⟨P2, rfl⟩, fun i => ?_⟩` and prove the remaining obligations. Unfold `CondC`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hW : F.IsW j (segE F j i)`. Establish `hWl : ∀ l : Fin (segN F j), l.val ≤ i.val → F.IsW j (segE F j l)`. Introduce `l hl`. Conclude with `le_trans ((segE_strictMono F j).monotone (Fin.le_def.mpr hl)) hW`. Establish `hev : (segLL F j).vec i = true` using `(comb_vec F j i).mpr (comb_W_even F j hV _ (segE_mem F j i) hW)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hev]`. Establish `z : P2.mu i.succ = 0` using `comb_zero_of_deg P2 i.succ (fun l hl => (hcond l).1 (hWl l (by`. Establish `h3 : l.val < i.val + 1` using `hl`. Use the proof step `omega)))`. Establish `nn` using `comb_nonneg_of_vec P1 i.castSucc (fun l hl => (comb_vec F j l).mpr (comb_W_even F j hV _ (segE_mem F j l) (hWl l (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : l.val < i.val` using `hl`. Use the proof step `omega)))) (lastIdx r)`. Rewrite using `[z]`. Conclude with `nn`. Take `⟨cE, cO, -⟩` from `(hcond i).2 hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm'` using `hm (segE F j i)`. Distinguish the cases in `he : Even (segE F j i)`. Rewrite using `[if_pos ((comb_vec F j i).mpr he)]`. Use `(cE he).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg (fun h => he ((comb_vec F j i).mp h))]`. Use `(cO he).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `(comb_sat_iff F j m th P1.mu P2.mu).mpr fun i hW => ?_` and prove the remaining obligations. Take `⟨cE, cO, cR⟩` from `(hcond i).2 hW`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun he => (cE he).1, fun he => (cO he).1, cR⟩`. Introduce and unpack `⟨⟨-, hsat⟩, hord⟩`. Establish `hs` using `(comb_sat_iff F j m th P1.mu P2.mu).mp hsat`. Use `⟨b', b'', ⟨P1, rfl⟩, ⟨P2, rfl⟩, fun i => ⟨(hord i).1, fun hW => ?_⟩⟩` and prove the remaining obligations. Take `⟨cE, cO, cR⟩` from `hs i hW`.
-
-Conclude with `⟨fun he => ⟨cE he, ((hord i).2 hW).1 he⟩, fun he => ⟨cO he, ((hord i).2 hW).2 he⟩, cR⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem segPairs_iff (D : Formalism.BasicNotions.D7) (hB1 : Formalism.MainNotions.CovariantDegrees.RotatedSumBound D) [NeZero r] {K : ℕ} [NeZero K] (L₁ N₁ : ℕ)
     (hV : F.Valid L₁ N₁) (hK : segN F j + r ≤ K) (m : ℤ → ℤ) (hm : ∀ x, 0 ≤ m x) (th o : ℤ → ℝ)
@@ -2780,7 +2752,7 @@ theorem segPairs_iff (D : Formalism.BasicNotions.D7) (hB1 : Formalism.MainNotion
     exact ⟨fun he => ⟨cE he, ((hord i).2 hW).1 he⟩, fun he => ⟨cO he, ((hord i).2 hW).2 he⟩, cR⟩
 
 /- English proof (translation)
-Take `⟨b', b'', hs, h1, h2, -⟩` from `(hB1 (segN F j) r K (segLL F j) B hK q.1 q.2).mp hq.1`. Conclude with `⟨b', b'', funext hs, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem segPPB_paths (D : Formalism.BasicNotions.D7) (hB1 : Formalism.MainNotions.CovariantDegrees.RotatedSumBound D) [NeZero r] {K : ℕ} [NeZero K]
     (hK : segN F j + r ≤ K) (m : ℤ → ℤ) (th : ℤ → ℝ) (B : Fin (segN F j) → ℕ)
@@ -2805,9 +2777,9 @@ def jone_w (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k) : Fin 
   fun v => if v.1 ∈ S ∧ v.2 ∈ Set.range e then (if LL.vec v.1 then 1 else -1) else 0
 
 /- English proof (translation)
-Establish `key : ∀ c : Fin m, jone_w LL S e (l, e c) = if l ∈ S then (if LL.vec l then 1 else -1) else 0`. Introduce `c`. Unfold `jone_w`. Distinguish the cases in `hl : l ∈ S`. Establish `h : (l, e c).1 ∈ S ∧ (l, e c).2 ∈ Set.range e` using `⟨hl, c, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h, if_pos hl]`. Establish `h : ¬ ((l, e c).1 ∈ S ∧ (l, e c).2 ∈ Set.range e)` using `fun h => hl h.1`. Rewrite using `[if_neg h, if_neg hl]`. Rewrite using `[key a, key b]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem jone_w_eq (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k) (l : Fin N) (a b : Fin m) :
     jone_w LL S e (l, e a) = jone_w LL S e (l, e b) := by
@@ -2823,11 +2795,11 @@ theorem jone_w_eq (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k)
   rw [key a, key b]
 
 /- English proof (translation)
-Rewrite using `[← mem_weightedHomogeneousSubmodule]`. Simplify using `only [glOpsE, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Establish `key : ∀ a b, (X (l, e a) * pderiv (l, e b) φ) ∈ weightedHomogeneousSubmodule Fd (jone_w LL S e) t`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (pderiv (l, e b) φ).IsWeightedHomogeneous (jone_w LL S e) (t - jone_w LL S e (l, e b))` using `h.pderiv (sub_add_cancel _ _)`. Establish `h2` using `(isWeightedHomogeneous_X (R := Fd) (jone_w LL S e) (l, e a)).mul h1`. Rewrite `h2` using `[jone_w_eq LL S e l a b, add_sub_cancel]`. Conclude with `h2`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key a b`. Rewrite using `[LinearMap.neg_apply]`. Conclude with `Submodule.neg_mem _ (key b a)`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem jone_stable (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k) (a b : Fin m)
     (φ : MvPolynomial (Fin N × Fin k) Fd) (t : ℤ) (h : φ.IsWeightedHomogeneous (jone_w LL S e) t) :
@@ -2849,9 +2821,9 @@ theorem jone_stable (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin 
   · rw [LinearMap.zero_apply]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Unfold `Umon at hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu`. Take `⟨ab, rfl⟩` from `hu`. Conclude with `fun y hy => jone_stable LL S e _ _ y t hy`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Consider the case `one => exact fun y hy => hy`. Consider the case `mul u1 u2 _ _ h1 h2 => exact fun y hy => h1 _ (h2 y hy)`.
+Treat this case separately. Treat this case separately.
 -/
 theorem jone_umon (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k) (t : ℤ)
     (u : Module.End Fd (MvPolynomial (Fin N × Fin k) Fd)) (hu : u ∈ Umon (glOpsE Fd LL S e)) :
@@ -2867,11 +2839,11 @@ theorem jone_umon (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k)
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_eq_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l ∈ S`. Rewrite using `[if_pos hl]`. Establish `h1 : ∀ c, mm (l, c) • jone_w LL S e (l, c) = if c ∈ Set.range e then (if LL.vec l then (mm (l, c) : ℤ) else -(mm (l, c) : ℤ)) else 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Simplify using `only [jone_w, hl, true_and]`. Apply the tactic sequence `split_ifs <;> simp`. Repeatedly rewrite using `[h1]`. Rewrite using `[← Fintype.sum_of_injective e he (fun a => if LL.vec l then (mm (l, e a) : ℤ) else -(mm (l, e a) : ℤ)) _ (fun c hc => if_neg hc) (fun a => by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[jone_w, hl]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem jone_weight (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k) (he : Function.Injective e)
     (mm : Fin N × Fin k →₀ ℕ) :
@@ -2893,9 +2865,9 @@ theorem jone_weight (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin 
   · simp [jone_w, hl]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[X_mul_pderiv_monomial, coeff_smul, coeff_monomial]`. Distinguish the cases in `h : u = mm`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Consider the case `add p q hp hq => rw [map_add, mul_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem jone_coeff_XD (i : Fin N × Fin k) (p : MvPolynomial (Fin N × Fin k) Fd) (mm : Fin N × Fin k →₀ ℕ) :
     coeff mm (X i * pderiv i p) = (mm i : Fd) * coeff mm p := by
@@ -2910,9 +2882,9 @@ theorem jone_coeff_XD (i : Fin N × Fin k) (p : MvPolynomial (Fin N × Fin k) Fd
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [glOpsE, LinearMap.sum_apply, coeff_sum]`. Rewrite using `[Int.cast_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using `using jone_coeff_XD (l, e a) v mm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using jone_coeff_XD (l, e a) v mm`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jone_coeff_Eaa (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k) (a : Fin m)
     (v : MvPolynomial (Fin N × Fin k) Fd) (mm : Fin N × Fin k →₀ ℕ) :
@@ -2928,11 +2900,11 @@ theorem jone_coeff_Eaa (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → F
   · simp
 
 /- English proof (translation)
-Introduce `mm hmm`. Establish `h : ∀ a, (∑ l, if l ∈ S then (if LL.vec l then (mm (l, e a) : ℤ) else -(mm (l, e a) : ℤ)) else 0 : ℤ) = lam a`. Introduce `a`. Establish `ha : glOpsE Fd LL S e a a v = (lam a : Fd) • v`. Use `(Submodule.mem_iInf _).mp hv a` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `this`. Establish `hc` using `congrArg (coeff mm) ha`. Rewrite `hc` using `[jone_coeff_Eaa, coeff_smul, smul_eq_mul]`. Conclude with `Int.cast_injective (mul_right_cancel₀ hmm hc)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[jone_weight LL S e he]`. Repeatedly rewrite using `[← h]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem jone_wt [CharZero Fd] (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k)
     (he : Function.Injective e) (lam : Fin m → ℤ) (v : MvPolynomial (Fin N × Fin k) Fd)
@@ -2955,7 +2927,7 @@ theorem jone_wt [CharZero Fd] (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin 
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← mem_weightedHomogeneousSubmodule]`. Use `Submodule.span_le.mpr ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, v, hv, rfl⟩`. Conclude with `jone_umon LL S e _ u hu v (jone_wt LL S e he lam v hv.2.1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem jone_iso [CharZero Fd] (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k)
     (he : Function.Injective e) (lam : Fin m → ℤ) (x : MvPolynomial (Fin N × Fin k) Fd)
@@ -2967,9 +2939,9 @@ theorem jone_iso [CharZero Fd] (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_eq_single i]`. Rewrite using `[if_pos ((h1 i).mpr (Or.inr rfl)), if_neg h0, sub_zero]`. Introduce `l _ hl`. Distinguish the cases in `h : l ∈ S0`. Rewrite using `[if_pos ((h1 l).mpr (Or.inl h)), if_pos h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h' => ((h1 l).mp h').elim h hl), if_neg h, sub_self]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jone_diff (f : Fin N → ℤ) (i : Fin N) (S0 S1 : Set (Fin N)) (h1 : ∀ l, l ∈ S1 ↔ l ∈ S0 ∨ l = i)
     (h0 : i ∉ S0) : (∑ l, if l ∈ S1 then f l else 0) - (∑ l, if l ∈ S0 then f l else 0) = f i := by
@@ -2982,17 +2954,15 @@ theorem jone_diff (f : Fin N → ℤ) (i : Fin N) (S0 S1 : Set (Fin N)) (h1 : �
   · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Introduce `mm hmm i`. Establish `hc : coeff mm x ≠ 0` using `MvPolynomial.mem_support_iff.mp hmm`. Establish `h1` using `jone_iso LL _ e he _ x (hx i.succ) hc`. Establish `h0` using `jone_iso LL _ e he _ x (hx i.castSucc) hc`. Rewrite `h1`, `h0` using `[jone_weight LL _ e he]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd` using `jone_diff (fun l => if LL.vec l then (∑ a, (mm (l, e a) : ℤ)) else -∑ a, (mm (l, e a) : ℤ)) i {j : Fin N | j.val < i.castSucc.val} {j : Fin N | j.val < i.succ.val} (by`. Introduce `l`. Simplify using `only [Set.mem_ofPred_eq, Fin.val_succ, Fin.val_castSucc, Fin.ext_iff]`. Use the proof step `omega)`. Use the proof step `(by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[h1, h0]`. Establish `hs` using `P.step i`. Establish `hgoal : (∑ a, (mm (i, e a) : ℤ)) = (b i : ℤ)`. Distinguish the cases in `hv : LL.vec i = true`. Rewrite `hs` using `[if_pos hv]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hv, if_true] at hd`. Establish `h3` using `hs.2.2`. Rewrite `h3` using `[Finset.sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hs` using `[if_neg hv]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hv] at hd`. Establish `h3` using `hs.2.2`. Rewrite `h3` using `[Finset.sum_sub_distrib]`. Simplify using `only [Bool.false_eq_true, if_false] at hd`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `hgoal` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem jone_letter [CharZero Fd] (LL : Letters (Fin N)) (e : Fin m → Fin k) (he : Function.Injective e)
     (b : Fin N → ℕ) (P : PPath m N LL b) (x : MvPolynomial (Fin N × Fin k) Fd)
@@ -3029,9 +2999,9 @@ theorem jone_letter [CharZero Fd] (LL : Letters (Fin N)) (e : Fin m → Fin k) (
   exact_mod_cast hgoal
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `biPol`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `mm hmm i`. Establish `hx'` using `fun i => Submodule.mem_inf.mp ((Submodule.mem_iInf _).mp hx i)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨jone_letter LL _ (Fin.castAdd_injective _ _) b' P1 x (fun i => (hx' i).1) mm (Finset.mem_coe.mp hmm) i, jone_letter LL _ (Fin.natAdd_injective _ _) b'' P2 x (fun i => (hx' i).2) mm (Finset.mem_coe.mp hmm) i⟩`.
+Supply the required witnesses or components.
 -/
 theorem jointType_le_biPol (Fd : Type) [Field Fd] [CharZero Fd] {N r K : ℕ} (LL : Letters (Fin N))
     (b' b'' : Fin N → ℕ) (P1 : PPath r N LL b') (P2 : PPath K N LL b'') :
@@ -3051,7 +3021,7 @@ section Proj
 open Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Rewrite using `[Set.disjoint_left]`. Introduce `mm h1 h2`. Conclude with `h ⟨funext fun i => ((h2 i).1.symm.trans (h1 i).1), funext fun i => ((h2 i).2.symm.trans (h1 i).2)⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem proj_biSet_disjoint {N r K : ℕ} {b' b'' c' c'' : Fin N → ℕ} (h : ¬ (b' = c' ∧ b'' = c'')) :
     Disjoint (biSet (r := r) (K := K) c' c'') (biSet (r := r) (K := K) b' b'') := by
@@ -3060,7 +3030,7 @@ theorem proj_biSet_disjoint {N r K : ℕ} {b' b'' c' c'' : Fin N → ℕ} (h : �
   exact h ⟨funext fun i => ((h2 i).1.symm.trans (h1 i).1), funext fun i => ((h2 i).2.symm.trans (h1 i).2)⟩
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_suppProj, coeff_map, coeff_map, coeff_suppProj]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[map_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_suppProj_map {R R' σ : Type} [CommRing R] [CommRing R'] (f : R →+* R') (s : Set (σ →₀ ℕ))
     (A : MvPolynomial σ R) : suppProj R' s (MvPolynomial.map f A) = MvPolynomial.map f (suppProj R s A) := by
@@ -3072,13 +3042,13 @@ theorem proj_suppProj_map {R R' σ : Type} [CommRing R] [CommRing R'] (f : R →
   · rw [map_zero]
 
 /- English proof (translation)
-Use `⟨A.support.image fun mm => (fun i => ∑ c : Fin r, mm (i, Fin.castAdd K c), fun i => ∑ c : Fin K, mm (i, Fin.natAdd r c)), ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Rewrite using `[coeff_sum]`. Establish `h : ∀ d : (Fin N → ℕ) × (Fin N → ℕ), coeff m (suppProj R (biSet d.1 d.2) A) = if ((fun i => ∑ c : Fin r, m (i, Fin.castAdd K c), fun i => ∑ c : Fin K, m (i, Fin.natAdd r c)) : (Fin N → ℕ) × (Fin N → ℕ)) = d then coeff m A else 0`. Introduce `d`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_suppProj]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Prod.ext (funext fun i => (h i).1) (funext fun i => (h i).2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i`. Rewrite using `[← h]`. Conclude with `⟨rfl, rfl⟩`. Simplify using `only [h]`. Rewrite using `[Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `split_ifs with hm`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `hm (Finset.mem_image_of_mem _ (mem_support_iff.mpr hne))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem proj_exists_sum (R : Type) [CommRing R] {N r K : ℕ} (A : MvPolynomial (Fin N × Fin (r + K)) R) :
     ∃ T : Finset ((Fin N → ℕ) × (Fin N → ℕ)), A = ∑ d ∈ T, suppProj R (biSet d.1 d.2) A := by
@@ -3107,23 +3077,21 @@ theorem proj_exists_sum (R : Type) [CommRing R] {N r K : ℕ} (A : MvPolynomial 
     exact hm (Finset.mem_image_of_mem _ (mem_support_iff.mpr hne))
 
 /- English proof (translation)
-Unfold `biPol`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `mm hmm i`. Take `⟨m1, h1, m2, h2, rfl⟩` from `Finset.mem_add.mp (support_mul _ _ (Finset.mem_coe.mp hmm))`. Establish `hf1 : Function.Injective (plVar (N` using `N) (r := r) (K := K)) := by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x y h`. Simplify using `only [plVar, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.castAdd_injective _ _ h.2)`. Establish `hf2 : Function.Injective (tanVar (N` using `N) (r := r) (K := K)) := by`. Introduce `x y h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [tanVar, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.natAdd_injective _ _ h.2)`. Rewrite `h1` using `[support_rename_of_injective hf1]`. Rewrite `h2` using `[support_rename_of_injective hf2]`. Take `⟨u1, hu1, rfl⟩` from `Finset.mem_image.mp h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u2, hu2, rfl⟩` from `Finset.mem_image.mp h2`. Establish `d1` using `mem_Pol_iff.mp ha u1 hu1 i`. Establish `d2` using `mem_Pol_iff.mp hg u2 hu2 i`. Establish `hne : ∀ (x : Fin r) (c : Fin K), Fin.castAdd K x ≠ Fin.natAdd r c`. Introduce `x c h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `z1 : ∀ c : Fin K, Finsupp.mapDomain (plVar (N` using `N) (r := r) (K := K)) u1 (i, Fin.natAdd r c) = 0 := by`. Introduce `c`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Simplify using `only [plVar, Prod.mk.injEq] at hv`. Conclude with `hne _ _ hv.2`. Establish `z2 : ∀ c : Fin K, Finsupp.mapDomain (tanVar (N` using `N) (r := r) (K := K)) u2 (i, Fin.natAdd r c) = u2 (i, c) := fun c => Finsupp.mapDomain_apply hf2 u2 (i, c)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `z3 : ∀ c : Fin r, Finsupp.mapDomain (plVar (N` using `N) (r := r) (K := K)) u1 (i, Fin.castAdd K c) = u1 (i, c) := fun c => Finsupp.mapDomain_apply hf1 u1 (i, c)`. Establish `z4 : ∀ c : Fin r, Finsupp.mapDomain (tanVar (N` using `N) (r := r) (K := K)) u2 (i, Fin.castAdd K c) = 0 := by`. Introduce `c`. Use `Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [tanVar, Prod.mk.injEq] at hv`. Conclude with `hne _ _ hv.2.symm`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Finsupp.add_apply, z3, z4, add_zero]`. Conclude with `d1`.
-
-Simplify using `only [Finsupp.add_apply, z1, z2, zero_add]`. Conclude with `d2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_word_biPol {R : Type} [CommRing R] {N r K : ℕ} (b' b'' : Fin N → ℕ)
     (a : MvPolynomial (Fin N × Fin r) R) (ha : a ∈ Pol R r b')
@@ -3180,11 +3148,11 @@ def proj_HasPaths {N r K : ℕ} (LL : Letters (Fin N))
   ∃ b' b'' : Fin N → ℕ, (∃ P1 : PPath r N LL b', P1.mu = q.1) ∧ ∃ P2 : PPath K N LL b'', P2.mu = q.2
 
 /- English proof (translation)
-Establish `hle : (⨆ q ∈ Q, jointType Kf LL q.1 q.2) ≤ Submodule.comap (suppProj Kf (biSet (r` using `r) (K := K) c' c'')) (⨆ q ∈ Q', jointType Kf LL q.1 q.2) := by`. Use `iSup₂_le fun q hq y hy => ?_` and prove the remaining obligations. Take `⟨b', b'', ⟨P1, h1⟩, ⟨P2, h2⟩⟩` from `hQ q hq`. Take `⟨nu, ka⟩` from `q`. Simplify using `only at h1 h2 hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Rewrite using `[Submodule.mem_comap]`. Distinguish the cases in `h : b' = c' ∧ b'' = c''`. Take `⟨rfl, rfl⟩` from `h`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[suppProj_of_mem _ _ _ (hJ1 b' b'' P1 P2 hy)]`. Conclude with `(le_iSup₂ (f := fun (q : (Fin (N + 1) → Fin r → ℤ) × (Fin (N + 1) → Fin K → ℤ)) (_ : q ∈ Q') => jointType Kf LL q.1 q.2) (P1.mu, P2.mu) (hQQ P1 P2 hq)) hy`. Rewrite using `[suppProj_of_disjoint _ _ _ _ (hJ1 b' b'' P1 P2 hy) (proj_biSet_disjoint h)]`. Conclude with `Submodule.zero_mem _`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_sup {Kf : Type} [Field Kf] {N r K : ℕ} (LL : Letters (Fin N))
     (hJ1 : ∀ (b' b'' : Fin N → ℕ) (P1 : PPath r N LL b') (P2 : PPath K N LL b''),
@@ -3213,15 +3181,13 @@ theorem proj_sup {Kf : Type} [Field Kf] {N r K : ℕ} (LL : Letters (Fin N))
   exact hle hx
 
 /- English proof (translation)
-Unfold `XXZ at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨q, hq, I', I'', hI', hI'', rfl⟩` from `hy`. Take `⟨b', b'', ⟨P1, h1⟩, ⟨P2, h2⟩⟩` from `hQ q hq`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨nu, ka⟩` from `q`. Simplify using `only at h1 h2 hI' hI''`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Establish `hw : PsiPl R P1.mu I' * PsiTan R P2.mu I'' ∈ biPol R b' b''` using `proj_word_biPol b' b'' _ (hPol1 b' P1 I' hI') _ (hPol2 b'' P2 I'' hI'')`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact.
 
-Distinguish the cases in `h : b' = c' ∧ b'' = c''`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[suppProj_of_mem _ _ _ hw]`. Conclude with `Submodule.subset_span ⟨(P1.mu, P2.mu), hQQ P1 P2 hq, I', I'', hI', hI'', rfl⟩`. Rewrite using `[suppProj_of_disjoint _ _ _ _ hw (proj_biSet_disjoint h)]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
-
-Consider the case `smul c y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem proj_words {R : Type} [CommRing R] {N r K : ℕ} (LL : Letters (Fin N))
     (hPol1 : ∀ (b : Fin N → ℕ) (P : PPath r N LL b) (I : ℤ → Finset (Fin r)), IsSt P.mu I → Psi R P.mu I ∈ Pol R r b)
@@ -3255,7 +3221,7 @@ theorem proj_words {R : Type} [CommRing R] {N r K : ℕ} (LL : Letters (Fin N))
 variable {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ)
 
 /- English proof (translation)
-Introduce and unpack `q ⟨b', b'', h1, h2, -⟩`. Conclude with `⟨b', b'', h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem proj_segPairs_hasPaths [NeZero r] {K : ℕ} [NeZero K] (m : ℤ → ℤ) (th o : ℤ → ℝ) :
     ∀ q ∈ segPairs F j K m th o, proj_HasPaths (segLL F j) q := by
@@ -3263,25 +3229,23 @@ theorem proj_segPairs_hasPaths [NeZero r] {K : ℕ} [NeZero K] (m : ℤ → ℤ)
   exact ⟨b', b'', h1, h2⟩
 
 /- English proof (translation)
-Establish `hPB : ∀ B, ∀ q ∈ segPPB F j K m th B, proj_HasPaths (segLL F j) q`. Introduce `B q hq`. Take `⟨b', b'', -, h1, h2⟩` from `hpaths B q hq`. Conclude with `⟨b', b'', h1, h2⟩`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hf`. Unfold `XXZ at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨q, hq, I', I'', hI', hI'', rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b', b'', ⟨P1, h1⟩, ⟨P2, h2⟩⟩` from `proj_segPairs_hasPaths F j m th o q hq`. Take `⟨nu, ka⟩` from `q`. Simplify using `only at h1 h2 hI' hI''`. Substitute `h1` using the available equality. Substitute `h2` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality.
 
-Establish `hq'` using `(hcomb b' b'' P1 P2).mp hq`. Establish `hw : PsiPl O P1.mu I' * PsiTan O P2.mu I'' ∈ biPol O b' b''` using `proj_word_biPol b' b'' _ (hPol r b' P1 I' hI') _ (hPol K b'' P2 I'' hI'')`. Establish `hmem : PsiPl O P1.mu I' * PsiTan O P2.mu I'' ∈ (XXZ O (segPPB F j K m th (b' + b'')) : Set _)` using `Submodule.subset_span ⟨(P1.mu, P2.mu), hq'.1, I', I'', hI', hI'', rfl⟩`. Rewrite `hmem` using `[hB3 (b' + b'')]`. Use `proj_sup (segLL F j) hJ1 (segPPB F j K m th (b' + b'')) (segPairs F j K m th o) (hPB _) b' b'' (fun P1' P2' h => (hcomb b' b'' P1' P2').mpr ⟨h, hq'.2⟩) _ hmem` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[proj_suppProj_map, suppProj_of_mem _ _ _ hw]`. Then use the resulting hypothesis. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c y _ hy`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, map_C, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hy`. Introduce `hf`. Take `⟨T, hT⟩` from `proj_exists_sum O f₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hT]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Take `⟨c', c''⟩` from `d`. Use `show suppProj O (biSet c' c'') f₀ ∈ XXZ O (segPairs F j K m th o)`. Establish `hg : MvPolynomial.map (algebraMap O (KK O)) (suppProj O (biSet c' c'') f₀) = suppProj (KK O) (biSet c' c'') (MvPolynomial.map (algebraMap O (KK O)) f₀)` using `(proj_suppProj_map _ _ _).symm`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hok : ordOK F j o c' c''`. Establish `h2 : MvPolynomial.map (algebraMap O (KK O)) (suppProj O (biSet c' c'') f₀) ∈ ⨆ q ∈ segPPB F j K m th (c' + c''), jointType (KK O) (segLL F j) q.1 q.2`. Rewrite using `[hg]`. Conclude with `proj_sup (segLL F j) hJ1 (segPairs F j K m th o) (segPPB F j K m th (c' + c'')) (proj_segPairs_hasPaths F j m th o) c' c'' (fun P1 P2 h => ((hcomb c' c'' P1 P2).mp h).1) _ hf`. Establish `h3 : suppProj O (biSet c' c'') f₀ ∈ (XXZ O (segPPB F j K m th (c' + c'')) : Set _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hB3 (c' + c'')]`. Conclude with `h2`. Establish `h4` using `proj_words (segLL F j) (hPol r) (hPol K) (segPPB F j K m th (c' + c'')) (segPairs F j K m th o) (hPB _) c' c'' (fun P1 P2 h => (hcomb c' c'' P1 P2).mpr ⟨h, hok⟩) _ h3`. Rewrite `h4` using `[suppProj_of_mem _ _ _ (suppProj_mem O _ f₀)]`. Then use the resulting hypothesis. Establish `h2` using `proj_sup (segLL F j) hJ1 (segPairs F j K m th o) ∅ (proj_segPairs_hasPaths F j m th o) c' c'' (fun P1 P2 h => absurd ((hcomb c' c'' P1 P2).mp h).2 hok) _ hf`.
-
-Rewrite `h2` using `[← hg]`. Simplify using `only [Set.mem_empty_iff_false, iSup_false, iSup_bot, Submodule.mem_bot] at h2`. Establish `h0 : suppProj O (biSet c' c'') f₀ = 0` using `MvPolynomial.map_injective _ (IsFractionRing.injective O (KK O)) (h2.trans (map_zero _).symm)`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_claimA [NeZero r] {K : ℕ} [NeZero K] (O : Type) [CommRing O] [IsDomain O]
     (m : ℤ → ℤ) (th o : ℤ → ℝ)
@@ -3361,15 +3325,15 @@ theorem proj_claimA [NeZero r] {K : ℕ} [NeZero K] (O : Type) [CommRing O] [IsD
       exact Submodule.zero_mem _
 
 /- English proof (translation)
-Establish `hA` using `proj_claimA F j O m th o hPol hJ1 hcomb hpaths hB3`. Use extensionality with `f`. Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f₀, hf₀, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, (hA f₀).mp hf₀, (map_rename _ _ _).symm⟩`. Introduce and unpack `⟨t, ht, hte⟩`. Establish `hte' : rename (fun v : Fin (segN F j) × Fin (r + K) => (segE F j v.1, v.2)) t = MvPolynomial.map (algebraMap O (KK O)) f` using `hte`. Take `⟨f₀, hf₀⟩` from `exists_rename_eq_of_vars_subset_range f _ (segVar_injective F j (r + K)) (by`. Introduce `i hi`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi' : i ∈ (MvPolynomial.map (algebraMap O (KK O)) f).vars`. Rewrite using `[vars_map_of_injective _ (IsFractionRing.injective O (KK O))]`. Conclude with `Finset.mem_coe.mp hi`. Rewrite `hi'` using `[← hte']`. Take `⟨x, _, rfl⟩` from `mem_vars_rename _ _ hi'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, rfl⟩)`. Use `⟨f₀, ?_, hf₀⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, hA f₀]`. Establish `: MvPolynomial.map (algebraMap O (KK O)) f₀ = t`. Apply `rename_injective _ (segVar_injective F j (r + K))` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_rename, hf₀, hte']`. Rewrite using `[this]`. Conclude with `ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem space_statement_fourth_clause [NeZero r] {K : ℕ} [NeZero K] (O : Type) [CommRing O] [IsDomain O]
     (m : ℤ → ℤ) (th o : ℤ → ℝ)
@@ -3433,9 +3397,9 @@ def LastInequalityClause (O : Type) [CommRing O] [IsDomain O] : Prop :=
           (∃ P : PPath (r + K) N LL B, P.mu = joinPT q.1 q.2) ∧ ∀ e ∈ L, e.Sat q.1 q.2}, jointType (KK O) LL q.1 q.2}
 
 /- English proof (translation)
-Introduce `N r K _ _ LL B hK L`. Establish `hanti : StrictAnti (fun i : Fin N => N - i.val)`. Introduce `a b hab`. Establish `h1` using `a.2`. Establish `h2` using `b.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : a.val < b.val` using `hab`. Use `show N - b.val < N - a.val`. Use linear arithmetic over natural numbers and integers. Conclude with `(h p O S N r K LL B (fun i => N - i.val) hK hanti (fun i => Nat.sub_pos_of_lt i.2) _ (fun q hq => hq.1)).2.2 L rfl`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem last_inequality_clause_of_lemma (D : Formalism.BasicNotions.D7) (h : ConclusionB3 D) (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (S : UniformizedDVR p O) : LastInequalityClause O := by
@@ -3451,7 +3415,7 @@ theorem last_inequality_clause_of_lemma (D : Formalism.BasicNotions.D7) (h : Con
     (fun q hq => hq.1)).2.2 L rfl
 
 /- English proof (translation)
-Introduce `n' r K _ _ _ F L₁ N₁ j m th o hV hK hm hchar`. Establish `: CharZero O` using `hchar`. Conclude with `space_statement_fourth_clause F j O m th o (first_clause_segment_rename (K := K) F j O h3 m th o) (fun n _ b P I hI => (standard_polynomial_mem_bounds (segLL F j) b (h3 _ n _ b) P I hI).1) (fun b' b'' P1 P2 => jointType_le_biPol (KK O) (segLL F j) b' b'' P1 P2) (fun b' b'' P1 P2 …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fourth_clause_of_lemmas (D : Formalism.BasicNotions.D7) (hB1 : RotatedSumBound D) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (h3 : StandardBasisAllData O) (hB3 : LastInequalityClause O) : FourthClauseAtRing O := by
@@ -3465,7 +3429,7 @@ theorem fourth_clause_of_lemmas (D : Formalism.BasicNotions.D7) (hB1 : RotatedSu
     (fun B => hB3 _ r K (segLL F j) B hK (segL F j m th))
 
 /- English proof (translation)
-Rewrite using `[space_statement_iff_forall_dvr]`. Introduce `p _ O _ _ _ S`. Establish `h3 : StandardBasisAllData O` using `fun N n _ LL B th M => (hA3 p O S N n LL B th M).1`. Establish `h3F : StandardBasisAllData (FF O)` using `fun N n _ LL B th M => (hA3 p O S N n LL B th M).2`. Conclude with `space_statement_at_ring_of_basis O (fun N n _ LL B => hA2 O N n LL B) h3 h3F (fourth_clause_of_lemmas D hB1 O h3 (last_inequality_clause_of_lemma D hB3 p O S))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem space_statement_of_lemmas (D : Formalism.BasicNotions.D7) (hA2 : HyperplaneRank D) (hA3 : DefiniteRankOne D) (hB1 : RotatedSumBound D) (hB3 : ConclusionB3 D) :
     Formalism.MainNotions.SelectionLemmas.NestedTypeBound D := by
@@ -3482,7 +3446,7 @@ section Fin3
 open Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ S n' r K _ _ _ Fr j m th o`. Establish `h3 : StandardBasisAllData O` using `fun N n _ LL B th M => (hA3 p O S N n LL B th M).1`. Establish `h3F : StandardBasisAllData (FF O)` using `fun N n _ LL B th M => (hA3 p O S N n LL B th M).2`. Conclude with `⟨fun A G M hA hG hc ho => space_criterion_clause O n' r K Fr j m th o A G M hA hG hc ho, space_statement_sixth_clause O n' r K Fr j m th o (first_clause_segment_rename (K := K) Fr j O h3 m th o) (fun A G M hA hG hc ho => crit_words Fr j (FF O) h3F m th o A G M hA hG hc ho)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem space_criterion_of_standard_basis (D : Formalism.BasicNotions.D7) (hA3 : DefiniteRankOne D) : Formalism.MainNotions.SourceCleaning.SpaceCriterionModuloUniformiser D := by
   intro p _ O _ _ _ S n' r K _ _ _ Fr j m th o
@@ -3499,24 +3463,24 @@ end Formalism.MainNotions.G.Joints.StandardMonomialSpace
 namespace Formalism.MainNotions.G.Joints
 
 /- English proof (translation)
-The claim follows from `StandardMonomialSpace.transport_statement_holds D`.
+A detailed English derivation is pending.
 -/
 theorem transport_statement_holds (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.SelectionLemmas.TypeDecompositionsCommute D := StandardMonomialSpace.transport_statement_holds D
 
 /- English proof (translation)
-The claim follows from `StandardMonomialSpace.valuation_transport_of_lemma D h`.
+A detailed English derivation is pending.
 -/
 theorem valuation_transport_of_lemma (D : Formalism.BasicNotions.D7) (h : Formalism.MainNotions.CovariantDegrees.ValuationsAdditive D) : Formalism.MainNotions.SelectionLemmas.admB2 D := StandardMonomialSpace.valuation_transport_of_lemma D h
 
 /- English proof (translation)
-The claim follows from `StandardMonomialSpace.space_statement_of_lemmas D hA2 hA3 hB1 hB3`.
+A detailed English derivation is pending.
 -/
 theorem space_statement_of_lemmas (D : Formalism.BasicNotions.D7) (hA2 : Formalism.MainNotions.CovariantDegrees.HyperplaneRank D) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D)
     (hB1 : Formalism.MainNotions.CovariantDegrees.RotatedSumBound D) (hB3 : Formalism.MainNotions.CovariantDegrees.ConclusionB3 D) : Formalism.MainNotions.SelectionLemmas.NestedTypeBound D :=
   StandardMonomialSpace.space_statement_of_lemmas D hA2 hA3 hB1 hB3
 
 /- English proof (translation)
-The claim follows from `StandardMonomialSpace.space_criterion_of_standard_basis D hA3`.
+A detailed English derivation is pending.
 -/
 theorem space_criterion_of_standard_basis (D : Formalism.BasicNotions.D7) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D) : Formalism.MainNotions.SourceCleaning.SpaceCriterionModuloUniformiser D :=
   StandardMonomialSpace.space_criterion_of_standard_basis D hA3

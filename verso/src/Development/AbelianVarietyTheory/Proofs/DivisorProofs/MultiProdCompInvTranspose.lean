@@ -28,7 +28,7 @@ theorem revPlace_apply (e : (Σ a, Fin (d a)) ≃ Fin n) (a : Fin h) (i : Fin (d
     revPlace e ⟨a, i⟩ = e ⟨Fin.rev a, i⟩ := rfl
 
 /- English proof (translation)
-Take `⟨⟨a, i⟩, rfl⟩` from `(revPlace e).surjective x`. Rewrite using `[blk_apply, revPlace_apply, blk_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_revPlace (e : (Σ a, Fin (d a)) ≃ Fin n) (x : Fin n) :
     blk e x = Fin.rev (blk (revPlace e) x) := by
@@ -36,7 +36,7 @@ theorem blk_revPlace (e : (Σ a, Fin (d a)) ≃ Fin n) (x : Fin n) :
   rw [blk_apply, revPlace_apply, blk_apply]
 
 /- English proof (translation)
-Use `mem_parab.2 fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[invTranspose_val, Matrix.transpose_apply]`. Use `mem_parab.1 (inv_mem hq) j i ?_` and prove the remaining obligations. Rewrite using `[blk_revPlace e i, blk_revPlace e j]`. Conclude with `Fin.rev_lt_rev.2 hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_parab_revPlace (e : (Σ a, Fin (d a)) ≃ Fin n) {q : GL (Fin n) k} (hq : q ∈ parab k e) :
     invTranspose n q ∈ parab k (revPlace e) := by
@@ -47,7 +47,7 @@ theorem mem_parab_revPlace (e : (Σ a, Fin (d a)) ≃ Fin n) {q : GL (Fin n) k} 
   exact Fin.rev_lt_rev.2 hij
 
 /- English proof (translation)
-Use `mem_parab.2 fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[invTranspose_val, Matrix.transpose_apply]`. Use `mem_parab.1 (inv_mem hp) j i ?_` and prove the remaining obligations. Rewrite `hij` using `[blk_revPlace e i, blk_revPlace e j]`. Conclude with `Fin.rev_lt_rev.1 hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_parab_of_revPlace (e : (Σ a, Fin (d a)) ≃ Fin n) {p : GL (Fin n) k}
     (hp : p ∈ parab k (revPlace e)) : invTranspose n p ∈ parab k e := by
@@ -58,7 +58,7 @@ theorem mem_parab_of_revPlace (e : (Σ a, Fin (d a)) ≃ Fin n) {p : GL (Fin n) 
   exact Fin.rev_lt_rev.1 hij
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[invTranspose_val, Matrix.transpose_apply, ← Pi.inv_apply, ← map_inv, leviProj_apply, leviProj_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leviProj_revPlace (e : (Σ a, Fin (d a)) ≃ Fin n) (q : parab k e)
     (hq : invTranspose n (q : GL (Fin n) k) ∈ parab k (revPlace e)) (b : Fin h) :
@@ -69,7 +69,7 @@ theorem leviProj_revPlace (e : (Σ a, Fin (d a)) ≃ Fin n) (q : parab k e)
   rfl
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, invTranspose_val, Matrix.det_transpose, ← GeneralLinearGroup.val_det_apply, map_inv]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_invTranspose (m : ℕ) (g : GL (Fin m) k) :
     GeneralLinearGroup.det (invTranspose m g) = (GeneralLinearGroup.det g)⁻¹ := by
@@ -79,7 +79,7 @@ theorem det_invTranspose (m : ℕ) (g : GL (Fin m) k) :
 
 omit [Field k] in
 /- English proof (translation)
-Unfold `modExp`. Simplify using `only [Fintype.card_fin, Finset.sum_filter]`. Establish `h1 : (∑ c : Fin h, if b < c then (d (Fin.rev c) : ℤ) else 0) = ∑ c : Fin h, if c < Fin.rev b then (d c : ℤ) else 0` using `Fintype.sum_equiv Fin.revPerm _ _ fun c => by simp [Fin.rev_lt_rev]`. Establish `h2 : (∑ c : Fin h, if c < b then (d (Fin.rev c) : ℤ) else 0) = ∑ c : Fin h, if Fin.rev b < c then (d c : ℤ) else 0` using `Fintype.sum_equiv Fin.revPerm _ _ fun c => by simp [Fin.rev_lt_rev]`. Rewrite using `[h1, h2]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -101,7 +101,7 @@ section Local
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Use `Fintype.prod_equiv Fin.revPerm _ _ fun b => ?_` and prove the remaining obligations. Rewrite using `[leviProj_revPlace e q hq b, det_invTranspose, modExp_rev]`. Simplify using `only [Int.cast_neg, neg_div, absPow_neg, MonoidHom.inv_apply, map_inv, inv_inv, Fin.revPerm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem deltaHalf_revPlace (e : (Σ a, Fin (d a)) ≃ Fin n) (q : parab k e)
     (hq : invTranspose n (q : GL (Fin n) k) ∈ parab k (revPlace e)) :
@@ -119,7 +119,7 @@ def revTensor : (⨂[ℂ] a, X a) ≃ₗ[ℂ] ⨂[ℂ] a, X (Fin.rev a) :=
   PiTensorProduct.reindex ℂ X Fin.revPerm
 
 /- English proof (translation)
-The claim follows from `PiTensorProduct.reindex_tprod _ _`.
+A detailed English derivation is pending.
 -/
 theorem revTensor_tprod (z : ∀ a, X a) :
     revTensor X (PiTensorProduct.tprod ℂ z) = PiTensorProduct.tprod ℂ fun a => z (Fin.rev a) :=
@@ -139,9 +139,9 @@ def revRepEquiv (π' : ∀ a, Representation ℂ (GL (Fin (d (Fin.rev a))) k) (X
     simp [revRep]
 
 /- English proof (translation)
-Establish `key : (piTensor fun a => (π (Fin.rev a)).comp (invTranspose (d (Fin.rev a)))) (leviProj k (revPlace e) ⟨invTranspose n q, hq⟩) ∘ₗ (revTensor X).toLinearMap = (revTensor X).toLinearMap ∘ₗ piTensor π (leviProj k e q)`. Use `PiTensorProduct.ext (MultilinearMap.ext fun z => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, revTensor_tprod, piTensor_tprod]`. Use `congr 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (revTensor X).symm _ = _`. Rewrite using `[(revTensor X).symm_apply_eq]`. Conclude with `LinearMap.congr_fun key v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem revRep_leviProj (e : (Σ a, Fin (d a)) ≃ Fin n)
     (π : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)) (q : parab k e)
@@ -163,13 +163,11 @@ theorem revRep_leviProj (e : (Σ a, Fin (d a)) ≃ Fin n)
 end Local
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h n d e e' X _ _ π _`. Use `set π' : ∀ a, Representation ℂ (GL (Fin (d (Fin.rev a))) k) (X (Fin.rev a)) := fun a => (π (Fin.rev a)).comp (invTranspose (d (Fin.rev a))) with hπ'`. Establish `key : ∀ (q : parab k e) (hq : invTranspose n (q : GL (Fin n) k) ∈ parab k (revPlace e)), ((twist (revRep π') (deltaHalf k _)).comp (leviProj k (revPlace e))) ⟨invTranspose n q, hq⟩ = ((twist (piTensor π) (deltaHalf k _)).comp (leviProj k e)) q`. Introduce `q hq`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, twist_apply, twist_apply, deltaHalf_revPlace e q hq, hπ', revRep_leviProj e π q hq]`. Choose the witnesses or unpack the hypotheses as in `⟨A⟩ : Nonempty ((parInd (revPlace e) (revRep π')).Equiv ((multiProd e π).comp (invTranspose n))) := by`. Use `Relabel.smInd_equiv_comp (P := parab k (revPlace e)) (Q := parab k e) (σ := (twist (revRep π') (deltaHalf k _)).comp (leviProj k (revPlace e))) (τ := (twist (piTensor π) (deltaHalf k _)).comp (leviProj k e)) (invTranspose n) (invTranspose n) (continuous_invTranspose n) (continuou …` and prove the remaining obligations. Establish `hp : invTranspose n (invTranspose n (p : GL (Fin n) k)) ∈ parab k (revPlace e)`. Rewrite using `[invTranspose_invTranspose]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `p.2`. Use `⟨⟨_, mem_parab_of_revPlace e p.2⟩, rfl, ?_⟩` and prove the remaining obligations. Use `(key ⟨_, mem_parab_of_revPlace e p.2⟩ hp).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (Subtype.ext (invTranspose_invTranspose n (p : GL (Fin n) k)))`. Take `⟨B⟩` from `GlobalTheory.T.product_representation_reorder_equiv k h n (fun a => d (Fin.rev a)) (revPlace e) e' (fun a => X (Fin.rev a)) π'`.
-
-Conclude with `⟨A.symm.trans ((parIndEquiv (revPlace e) (revRepEquiv π')).trans B)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem multiProd_comp_invTranspose : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (h n : ℕ) (d : Fin h → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) (e' : (Σ a, Fin (d (Fin.rev a))) ≃ Fin n) (X : Fin h → Type) [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (π : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)), (∀ a, IsSmooth (π a)) → Nonempty (Representation.Equiv ((multiProd e π).comp (GlobalTheory.TypeTame.invTranspose n)) (multiProd e' fun a => ((π (Fin.rev a)).comp (GlobalTheory.TypeTame.invTranspose (d (Fin.rev a))) : Representation ℂ (GL (Fin (d (Fin.rev a))) k) (X (Fin.rev a))))) := by
   intro k _ _ _ _ h n d e e' X _ _ π _

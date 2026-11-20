@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.CovHt.Link
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, l1, ← L.ψ.sum_comp]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Conclude with `(finCongr S.rank_eq.symm).sum_comp (fun i => |(u (L.ψ t) i : ℝ)|)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_abs_wtR (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (L : CmList A) (u : AllWt.Weight S.Dw) :
     ∑ z : DV.Rt D.what₂.Tau N, |wtR L u z.1 z.2| = l1 u := by
@@ -25,19 +25,17 @@ theorem sum_abs_wtR (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (L : CmList
   exact (finCongr S.rank_eq.symm).sum_comp (fun i => |(u (L.ψ t) i : ℝ)|)
 
 /- English proof (translation)
-Introduce `hP hH D A N j S κ s Φ L x P B u k`. Take `⟨c, hc, hcb⟩` from `GlobalTheory.T.bounded_finite_norm_almost_all hP hH D A N j S κ s Φ x P k`. Take `⟨hL1, -, hL3⟩` from `GlobalTheory.T.height_log_sum_and_prime_bound D A κ B`. Use `set dS : ℝ := ∑ z : DV.Rt D.what₂.Tau N, |P.dir z.1 z.2| with hdS`. Use `⟨fun v => c v + htLog κ B v * dS, (hc.union hL1).subset fun v hv => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at h`. Conclude with `hv (by simp [h.1, h.2])`. Introduce `r hr τ hτ f hf v e y`. Establish `h3` using `GlobalTheory.T.finite_norm_le_exp_weight_gap D A N j S κ s Φ L x P B u r hr k τ hτ f hf v e y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h3.trans ?_` and prove the remaining obligations. Use `set M := mbarOf P B (wtR L u) r k`. Establish `hr' : (0 : ℝ) < r` using `Rat.cast_pos.2 hr`. Establish `hτ' : (0 : ℝ) ≤ τ` using `Nat.cast_nonneg τ`. Establish `hM : 0 ≤ M.nrmFin v τ f e y` using `mul_nonneg (Real.rpow_nonneg (e.w.nonneg _) _) (Real.exp_pos _).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : 0 ≤ (bdQ P k).nrmFin v 1 1 e y` using `mul_nonneg (Real.rpow_nonneg (e.w.nonneg _) _) (Real.exp_pos _).le`. Establish `hH0 : 0 ≤ htLog κ B v` using `(hL3 v).1`. Establish `hQ : (bdQ P k).nrmFin v 1 1 e y ^ ((τ : ℝ) * r) ≤ Real.exp (τ * (r * c v))`. Use `(Real.rpow_le_rpow hQ0 (hcb v e y) (mul_nonneg hτ' hr'.le)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Put the polynomial expressions in normal form. Establish `hS : ∑ z : DV.Rt D.what₂.Tau N, |wtR L u z.1 z.2 - r * P.dir z.1 z.2| * |lgOf (Φ.C k) (rootSym S.Dw (fun _ => false) none (DV.tauEmb D z.1) z.2) v e y - lgOf (Φ.C k) (rootSym S.Dw (ArIn.ind (setB κ B)) none (DV.tauEmb D z.1) z.2) v e y| ≤ htLog κ B v * (l1 u + r * dS)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun z _ => mul_le_mul ?_ (GlobalTheory.T.log_root_symbol_difference_height D A N j S κ s Φ k B z v e y) (abs_nonneg _) (by positivity)` and prove the remaining obligations. Use `(abs_sub _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[abs_mul, abs_of_pos hr']`. Use `_ = htLog κ B v * (l1 u + r * dS) := by`. Rewrite using `[← sum_abs_wtR D A N j S L u, hdS, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun z _ => by ring`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finN_le_nrmFin_mbarOf : Hypotheses2 → HypothesesH → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (L : CmList A) (x : ToroidalCompactificationData s) (P : Mean4O.PolOf x Φ) (B : ℝ) (u : AllWt.Weight S.Dw) (k : s.Comp), ∃ cX : HeightOneSpectrum (𝓞 D.what₂.LL) → ℝ, (Function.support cX).Finite ∧ ∀ r : ℚ, 0 < r → ∀ τ : ℕ, 1 ≤ τ → ∀ f ∈ (mbarOf P B (wtR L u) r k).secs τ, ∀ v e y, finN Φ k (τ • u) v e y f ≤ (mbarOf P B (wtR L u) r k).nrmFin v τ f e y * Real.exp (τ * (r * cX v + htLog κ B v * l1 u)) := by
   intro hP hH D A N j S κ s Φ L x P B u k

@@ -38,7 +38,7 @@ def smAut (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
   smul_mem' := fun c _ ha => GlobalTheory.Mem.AutSpace.isAutFunSm_smul c ha
 
 /- English proof (translation)
-Establish `hA : GlobalTheory.CuspGK.IsGKSub θ M (smAut θ V)` using `⟨fun τ g hg f hf => GlobalTheory.Mem.RealTranslate.isAutFunSm_rTr_atTau D θ hθ V f hf τ g hg.1, fun τ X hX f hf => GlobalTheory.CuspLie.isAutFunSm_Rder hθ hX hf⟩`. Conclude with `fun f hf => GlobalTheory.CuspGK.gkGen_le θ M (A := smAut θ V) hψ hA hf`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAutFunSm_of_mem_gkGen (hθ : IsInfFam θ) {ψ : GA D V → ℂ} (hψ : IsAutFunSm θ V ψ) :
     ∀ f ∈ GlobalTheory.CuspGK.gkGen θ M ψ, IsAutFunSm θ V f := by
@@ -48,11 +48,9 @@ theorem isAutFunSm_of_mem_gkGen (hθ : IsInfFam θ) {ψ : GA D V → ℂ} (hψ :
   exact fun f hf => GlobalTheory.CuspGK.gkGen_le θ M (A := smAut θ V) hψ hA hf
 
 /- English proof (translation)
-Take `⟨U, hU, hψU⟩` from `hψ.level`. Set `A : Submodule ℂ (GA D V → ℂ)` to `{ carrier := {f | ∀ u ∈ U, u ∈ GfC V → ∀ g, f (g * u) = f g} add_mem' := fun ha hb u hu hu' g => by simp only [Pi.add_apply, ha u hu hu' g, hb u hu hu' g] zero_mem' := fun _ _ _ _ => rfl smul_mem' := fun c f hf u hu hu' g => by simp only [Pi.smul_apply, hf u hu hu' g] }`. Establish `hA : GlobalTheory.CuspGK.IsGKSub θ M A`. Use `⟨fun τ g _ f hf u hu hu' x => ?_, fun τ X _ f hf u hu hu' x => ?_⟩` and prove the remaining obligations. Use `show f (x * u * atTau θ V τ g) = f (x * atTau θ V τ g)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ← GlobalTheory.PointAtPlaceHom.comm_of_mem V (GlobalTheory.PointAtPlaceHom.atTau_mem (θ := θ) V τ g) hu', ← mul_assoc]`. Conclude with `hf u hu hu' _`. Use `congrFun (GlobalTheory.Mem.FinTranslate.Rder_rTr (θ := θ) hu' τ X f) x` as an intermediate fact. Rewrite `this` using `[show rTr V u f = f from funext (hf u hu hu')]`. Conclude with `this.symm`.
-
-Conclude with `⟨U, hU, fun f hf => GlobalTheory.CuspGK.gkGen_le θ M (A := A) (fun u hu hu' g => hψU u hu hu' g) hA hf⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem level_gkGen {ψ : GA D V → ℂ} (hψ : IsAutFunSm θ V ψ) :
     ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧
@@ -75,11 +73,11 @@ theorem level_gkGen {ψ : GA D V → ℂ} (hψ : IsAutFunSm θ V ψ) :
   exact ⟨U, hU, fun f hf => GlobalTheory.CuspGK.gkGen_le θ M (A := A) (fun u hu hu' g => hψU u hu hu' g) hA hf⟩
 
 /- English proof (translation)
-Introduce `f hf`. Establish `hC : ∀ Z, ∀ g ∈ A, RderC θ V τ Z g ∈ A` using `fun Z g hg => by`. Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem (V := V) τ Z`. Conclude with `A.add_mem (hA.lie τ _ h1 g hg) (A.smul_mem _ (hA.lie τ _ h2 g hg))`. Establish `key : ∀ l : List ((GA D V → ℂ) → (GA D V → ℂ)), (∀ F ∈ l, ∀ g ∈ A, F g ∈ A) → l.foldr (fun F acc => F acc) f ∈ A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons F l ih => exact hl F (by simp) _ (ih fun F' hF' => hl F' (by simp [hF']))`. Use `Submodule.sum_mem _ fun idx _ => key _ fun F hF => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hF`. Conclude with `hC _`.
+A detailed English derivation is pending.
 -/
 theorem gelf_mem_of_isGKSub {A : Submodule ℂ (GA D V → ℂ)} (hA : GlobalTheory.CuspGK.IsGKSub θ M A) (τ : D.what₂.Tau) (k : ℕ) :
     ∀ f ∈ A, gelf θ V τ k f ∈ A := by

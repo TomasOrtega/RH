@@ -11,11 +11,11 @@ namespace NormHilbertSchmidtBlocks
 open Formalism.L2.SG.NormCut
 
 /- English proof (translation)
-Introduce `C C' V V' _ _ _ _ _ _ _ A B`. Establish `hS : ∀ {W U : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [NormedAddCommGroup U] [InnerProductSpace ℂ U] (S T : W →L[ℂ] U), inner ℂ (hsV S) (hsV T) = ∑ i, inner ℂ (S (stdOrthonormalBasis ℂ W i)) (T (stdOrthonormalBasis ℂ W i))`. Introduce `W U _ _ _ _ _ S T`. Simplify using `[hsV, PiLp.inner_apply]`. Establish `hblk : ∀ (T : PiLp 2 (fun _ : C' => V') →L[ℂ] PiLp 2 (fun _ : C => V)) (ρ : C) (ρ' : C') (v : V'), blockOf T ρ ρ' v = T (WithLp.toLp 2 (Pi.single ρ' v : C' → V')) ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `T ρ ρ' v`. Both sides reduce to the same expression. Establish `hch` using `sum_inner_change (stdOrthonormalBasis ℂ (PiLp 2 (fun _ : C' => V'))) (fun p : (Σ _ : C', Fin (Module.finrank ℂ V')) => WithLp.toLp 2 (Pi.single p.1 (stdOrthonormalBasis ℂ V' p.2) : C' → V')) (parseval_single) A.toLinearMap B.toLinearMap`. Simplify using `only [ContinuousLinearMap.coe_coe] at hch`. Rewrite using `[hS, ← hch, Fintype.sum_sigma]`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hS]`. Simplify using `only [hblk, PiLp.inner_apply]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ρ' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hSBlocks_main : HSBlocks := by
   intro C C' V V' _ _ _ _ _ _ _ A B

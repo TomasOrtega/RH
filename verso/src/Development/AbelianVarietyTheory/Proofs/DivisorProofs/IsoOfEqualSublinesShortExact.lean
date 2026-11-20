@@ -14,11 +14,11 @@ open Limits
 namespace GlobalTheory.SameLine
 
 /- English proof (translation)
-Establish `hsum (P : Type) [AddCommGroup P] [Module R P] (C : Module.Basis (Fin 1) R P) (m : P) : m = C.repr m 0 • C 0` using `by conv_lhs => rw [← C.sum_repr m]`. Simplify using the standard rewrite rules. Use `set c := B.repr (f (B' 0)) 0`. Establish `hf (m : M) : B.repr (f m) 0 = B'.repr m 0 * c` using `by conv_lhs => rw [hsum M B' m]`. Simplify using `[c]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hac : B'.repr t 0 * c = 1`. Rewrite using `[← hf, ht]`. Simplify using the standard rewrite rules. Use `(injective_iff_map_eq_zero f).2 fun m hm => ?_` and prove the remaining obligations. Establish `h0 : B'.repr m 0 * c = 0` using `by rw [← hf, hm]; simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: B'.repr m 0 = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum M B' m, this, zero_smul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_of_mem_range {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (B' : Module.Basis (Fin 1) R M) (B : Module.Basis (Fin 1) R N)
@@ -42,9 +42,9 @@ theorem injective_of_mem_range {R M N : Type} [CommRing R] [AddCommGroup M] [Mod
   rw [hsum M B' m, this, zero_smul]
 
 /- English proof (translation)
-Establish `: Mono π`. Use `GlobalTheory.QCoh.mono_of_locally_app_injective π fun W x hx => ?_` and prove the remaining obligations. Take `⟨U₁, e', -, hx₁, h₁, he'⟩` from `hQ'.exists_affine hx`. Take `⟨U₂, e, -, hx₂, h₂, he⟩` from `hQ.exists_affine hx₁`. Take `⟨U₃, h₃, hx₃, t, ht⟩` from `exists_app_eq_of_epi π (e 0) hx₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨U₃, hx₃, h₃.trans (h₂.trans h₁), ?_⟩` and prove the remaining obligations. Use `injective_of_mem_range (he'.basis (h₃.trans h₂)) (he.basis h₃) (GlobalTheory.QCoh.appLinear π U₃) (t := t) (by` as an intermediate fact. Rewrite using `[GlobalTheory.QCoh.appLinear_apply, ht, IsFrame.basis_apply])`. Conclude with `this`. Conclude with `isIso_of_mono_of_epi π`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_of_epi {X : Scheme.{0}} {Q' Q : X.Modules} (π : Q' ⟶ Q) [Epi π]
     (hQ' : IsVB Q' 1) (hQ : IsVB Q 1) : IsIso π := by
@@ -63,15 +63,15 @@ theorem isIso_of_epi {X : Scheme.{0}} {Q' Q : X.Modules} (π : Q' ⟶ Q) [Epi π
 end GlobalTheory.SameLine
 
 /- English proof (translation)
-Introduce `X V L Q L' Q' l m w l' m' w' hS hS' hQ hQ' h`. Establish `hmono : Mono l` using `hS.mono_f`. Establish `hmono' : Mono l'` using `hS'.mono_f`. Establish `hepi : Epi m` using `hS.epi_g`. Take `⟨π, hπ⟩` from `CokernelCofork.IsColimit.desc' hS'.gIsCokernel m h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Q' ⟶ Q at π`. Express the relevant statement in the definitionally equal form `m' ≫ π = m at hπ`. Establish `: Epi π` using `epi_of_epi_fac hπ`. Establish `: IsIso π` using `GlobalTheory.SameLine.isIso_of_epi π hQ' hQ`. Establish `h₂ : l ≫ m' = 0`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono π, Category.assoc]`. Rewrite using `[hπ, w, zero_comp]`. Take `⟨f, hf⟩` from `KernelFork.IsLimit.lift' hS.fIsKernel l' h`. Take `⟨g, hg⟩` from `KernelFork.IsLimit.lift' hS'.fIsKernel l h₂`. Express the relevant statement in the definitionally equal form `L' ⟶ L at f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `L ⟶ L' at g`. Express the relevant statement in the definitionally equal form `f ≫ l = l' at hf`. Express the relevant statement in the definitionally equal form `g ≫ l' = l at hg`. Use `⟨⟨f, g, ?_, ?_⟩, hf⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono l', Category.assoc, hg, hf, Category.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono l, Category.assoc, hf, hg, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.SameLine.eq_line : ∀ (X : Scheme.{0}) (V L Q L' Q' : X.Modules) (l : L ⟶ V) (m : V ⟶ Q) (w : l ≫ m = 0) (l' : L' ⟶ V) (m' : V ⟶ Q') (w' : l' ≫ m' = 0), (ShortComplex.mk l m w).ShortExact → (ShortComplex.mk l' m' w').ShortExact → IsVB Q 1 → IsVB Q' 1 → l' ≫ m = 0 → ∃ e : L' ≅ L, e.hom ≫ l = l' := by
   intro X V L Q L' Q' l m w l' m' w' hS hS' hQ hQ' h

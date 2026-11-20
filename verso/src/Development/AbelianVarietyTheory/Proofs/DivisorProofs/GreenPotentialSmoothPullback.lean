@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.InterpChgCover
 
 /- English proof (translation)
-Establish `: Mono (spMap (algebraMap (𝓞 F) F))`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`. Use `infer_instance`. Establish `: Mono V.j` using `(MorphismProperty.monomorphisms _).of_isPullback V.pb.flip this`. Take `⟨w, h₁, h₂⟩` from `(hd σ).2 z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w', h₁', h₂'⟩` from `(hd σ').2 z'`. Establish `h₃ : w' = spMap (starRingEnd ℂ) ≫ w` using `by rw [← cancel_mono V.j, h₁', Category.assoc, h₁, h]`. Rewrite using `[← h₂, ← h₂', h₃, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem down_conj {F : Type} [Field F] [NumberField F] {Y : GlobalTheory.ProjVar.Var F} {V : Cover Y} {e : ℕ} {M : Man e}
     {I : ManIs M Y} {ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)} {π : ∀ σ, GlobalTheory.CxPts V.p σ → M.X (ε σ)} (hd : V.IsDown I ε π)
@@ -39,7 +39,7 @@ theorem down_conj {F : Type} [Field F] [NumberField F] {Y : GlobalTheory.ProjVar
   rw [← h₂, ← h₂', h₃, Category.assoc]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `h₁ : y ∈ GlobalTheory.ProjVar.Var.eqnSet σ Δ (eqn Δ (under y))` using `Base.isEqn_eqn _ _`. Conclude with `congrArg₂ (fun a b => Real.log a / 2 - Real.log b / 2) (GlobalTheory.ProjVar.Var.pn_frame h₁) (GlobalTheory.ProjVar.Var.pn_frame h₁)`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lnRatio_eq_h {F : Type} [Field F] [NumberField F] {Y : GlobalTheory.ProjVar.Var F} {σ : F →+* ℂ} {Δ : Y.Dv}
     (m m' : Y.Met σ Δ) (y : Pts Y σ) {x : Y.X} (hx : under y = x) :
@@ -49,9 +49,9 @@ theorem lnRatio_eq_h {F : Type} [Field F] [NumberField F] {Y : GlobalTheory.Proj
   exact congrArg₂ (fun a b => Real.log a / 2 - Real.log b / 2) (GlobalTheory.ProjVar.Var.pn_frame h₁) (GlobalTheory.ProjVar.Var.pn_frame h₁)
 
 /- English proof (translation)
-Take `⟨x, P, hc⟩` from `hO`. Establish `hu : under p' = under p`. Rewrite using `[under, e]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg p.1 (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _))`. Use `Finset.sum_congr rfl fun r _ => congrArg _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₁ : p ∈ GlobalTheory.ProjVar.Var.eqnSet σ (divOf (O.Φ.C c) (O.ex r)) (eqn _ (under p))` using `Base.isEqn_eqn _ _`. Take `⟨k₁, k₂, -⟩` from `GlobalTheory.ShFam.mets_conj _ _ _ _ _ _ _ x O.Φ c σ σ' (O.ex r) p p' _ e h₁`. Rewrite using `[hc.hm_eq, hc.h0_eq]`. Use `(lnRatio_eq_h _ _ p' hu).trans (Eq.trans ?_ (lnRatio_eq_h _ _ p rfl).symm)` and prove the remaining obligations. Conclude with `congrArg₂ (fun a b => Real.log a / 2 - Real.log b / 2) (k₁ R) k₂`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chg_conj {D : D7} {O : Setup D} (hO : O.Core) (c : O.s.Comp) (R : Option ℝ) (u : D.what₂.Tau → Fin O.N → ℝ)
     {σ σ' : D.what₂.LL →+* ℂ} {p : Pts (O.var c) σ} {p' : Pts (O.var c) σ'} (e : p'.1 = spMap (starRingEnd ℂ) ≫ p.1) :
@@ -68,13 +68,11 @@ theorem chg_conj {D : D7} {O : Setup D} (hO : O.Core) (c : O.s.Comp) (R : Option
   exact congrArg₂ (fun a b => Real.log a / 2 - Real.log b / 2) (k₁ R) k₂
 
 /- English proof (translation)
-Introduce `a`. Take `⟨x, P, hc⟩` from `hO`. Set `I` to `h.man c`. Establish `hm : ∀ n, (O.met.hm c (some R) (I.ε a) n).SmoothOn Set.univ` using `fun n => by`. Rewrite using `[hc.hm_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.metsOf_smooth _ _ _ _ _ _ _ x O.Φ c (I.ε a) n).1 R hR`. Establish `h0 : ∀ n, (O.met.h0 c (I.ε a) n).SmoothOn Set.univ` using `fun n => by`. Rewrite using `[hc.h0_eq]`. Conclude with `(GlobalTheory.metsOf_smooth _ _ _ _ _ _ _ x O.Φ c (I.ε a) n).2.1`. Establish `hg : ((O.var c).an (I.ε a)).SmoothOn Set.univ (O.chg c (some R) u (I.ε a))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `(ContDiffOn.sum (s := Finset.univ) fun r _ => (contDiffOn_const (c := u r.1 r.2)).mul (GlobalTheory.HodgeChgSmooth.smoothOn_lnRatio (hm (O.ex r)) (h0 (O.ex r)) i)).congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[Setup.chg]`. Establish `key` using `GlobalTheory.HodgeChgSmooth.smoothOn_of_manIs I (O.dim_eq c) a isOpen_univ hg (f := (T.F c).phR R u a) fun z _ => (h.an c).phR R hR u a z`. Introduce `j`.
-
-Simplify using `using key j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem smooth_phR {D : D7} {O : Setup D} (hO : O.Core) {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y} (h : O.Reads A T H)
     (c : O.s.Comp) {R : ℝ} (hR : 2 ≤ R) (u : D.what₂.Tau → Fin O.N → ℝ) : (T.M c).Smooth ((T.F c).phR R u) := by
@@ -98,7 +96,7 @@ theorem smooth_phR {D : D7} {O : Setup D} (hO : O.Core) {A : SlopeTestRemainingC
   simpa using key j
 
 /- English proof (translation)
-Introduce `_ _ D O hO A T H h c R hR u V ε π hd`. Establish `hs` using `smooth_phR hO h c hR u`. Use `⟨hs, GlobalTheory.Mean4O.OnModelCInf.cInfAt_pull _ _ _ _ _ (h.man c) ε π hd _ fun σ j => (hs σ j).const_smul (2 : ℝ), fun σ σ' _ y y' e _ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(2 : ℝ) * (T.F c).phR R u (ε σ') (π σ' y') = (2 : ℝ) * (T.F c).phR R u (ε σ) (π σ y)`. Conclude with `congrArg _ (((h.an c).phR R hR u _ _).trans ((chg_conj hO c _ u (down_conj hd e)).trans ((h.an c).phR R hR u _ _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem smooth_cInf_conj : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (c : O.s.Comp) (R : ℝ), 2 ≤ R → ∀ (u : D.what₂.Tau → Fin O.N → ℝ) (V : Cover (O.var c)) (ε : (𝓞 D.what₂.LL →+* ℂ) → Fin ((T.M c).n + 1)) (π : ∀ σ, GlobalTheory.CxPts V.p σ → (T.M c).X (ε σ)), V.IsDown (h.man c) ε π → (T.M c).Smooth ((T.F c).phR R u) ∧ (∀ σ y, GlobalTheory.CxPts.CInfAt ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u) σ) y) ∧ ∀ σ σ', (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u) σ)).IsConj (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u) σ')) := by
   intro _ _ D O hO A T H h c R hR u V ε π hd

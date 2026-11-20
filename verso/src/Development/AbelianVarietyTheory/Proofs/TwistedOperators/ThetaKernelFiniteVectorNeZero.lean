@@ -18,15 +18,15 @@ namespace GlobalTheory.ThPVecNe
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D S T C hn B hB ΛT hΛT βS βT hβS hβT Pg Q ξ f₀ f hf`. Take `⟨hv, e, he, hth⟩` from `hf`. Establish `hS` using `GlobalTheory.Ker.Base.selfDualC_stdL (S := S) C.m.gS`. Establish `hinf` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)`. Establish `hidem : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, GlobalTheory.PlaceVec.idemSum_mul_self he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hce : cA D e * cA D (cA D e) = 0` using `by rw [← RingHom.map_mul, he.2, map_zero]`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hth`. Establish `hf0 : f₀ ≠ 0`. Introduce `h0`. Take `⟨⟨p, hp⟩, hn1⟩` from `hv.2.norm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hn1 p hp`. Rewrite `h1` using `[h0]`. Simplify using `[nrm2] at h1`. Establish `hSB` using `GlobalTheory.PlaceVec.isSBHalf_of_red hS.1 hΛT.1 hinf (frMapAdj S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_add S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_up S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_down S T βS βT) (Pg ∪ Q) (fun y => omegaK Pg y * omegaQ Q T.rank ξ (-1) y) fun y …`. Rewrite using `[GlobalTheory.PlaceVec.omegaK_congr Pg fun PP hPP => h PP (Finset.mem_union_left _ hPP), GlobalTheory.PlaceVec.omegaQ_congr Q _ ξ _ fun PP hPP => h PP (Finset.mem_union_right _ hPP)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx1, hx2, hx3⟩` from `GlobalTheory.AdjDatumNe.exists_datum_ne_zero D S T βS βT Pg Q (Pg ∪ Q) ξ e hn he (fun PP hPP => Finset.mem_union_left _ hPP) (fun PP hPP => Finset.mem_union_right _ hPP)`. Rewrite using `[hall Tm hTm]`. Use `GlobalTheory.PlaceModelInj.placeModel_ne_zero D C.ψ S T (stdL D.host.E S.rank) ΛT (cA D e) f₀ _ Tm hv.1 hS hΛT hidem hce hinf hTm hf0 hSB ?_` and prove the remaining obligations. Introduce `h0`. Use `congrFun h0 x` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Pi.zero_apply] at this`. Rewrite `this` using `[if_pos ⟨hx1, hx2⟩]`. Conclude with `hx3 this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thPVec_ne_zero : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), T.rank ≤ S.rank → ∀ (B : C.Bas), C.IsB B → ∀ ΛT : Lt D.host.E T.rank, IsSelfDualC T ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (f₀ f : WO S T → ℂ), IsThPVecOf C.ψ C.θ S T (fun _ => 1) (C.sB B) (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) βS βT Pg Q ξ f₀ f → f ≠ 0 := by
   intro D S T C hn B hB ΛT hΛT βS βT hβS hβT Pg Q ξ f₀ f hf

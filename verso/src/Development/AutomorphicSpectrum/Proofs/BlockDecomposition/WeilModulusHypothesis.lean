@@ -12,9 +12,9 @@ section One
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Rewrite using `[Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation K)]`. Simplify using the standard rewrite rules. Establish `hb' : ValuativeRel.valuation K b ≠ 0` using `by simpa using hb`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : a ≤ᵥ b ↔ a / b ∈ 𝒪[K]`. Rewrite using `[Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation K), Valuation.mem_integer_iff, map_div₀, div_le_one₀ (zero_lt_iff.2 hb')]`. Rewrite using `[h1, ← modulus_le_one_iff, div_eq_mul_inv, modulus_mul, modulus_inv, ← div_eq_mul_inv, div_le_one₀ (modulus_pos hb)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem vle_iff_modulus_le (a b : K) : a ≤ᵥ b ↔ modulus a ≤ modulus b := by
   by_cases hb : b = 0
@@ -29,7 +29,7 @@ theorem vle_iff_modulus_le (a b : K) : a ≤ᵥ b ↔ modulus a ≤ modulus b :=
     ← div_eq_mul_inv, div_le_one₀ (modulus_pos hb)]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, modulus_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem modulus_pow_nat (a : K) (n : ℕ) : modulus (a ^ n) = modulus a ^ n := by
   induction n with
@@ -37,11 +37,9 @@ theorem modulus_pow_nat (a : K) (n : ℕ) : modulus (a ^ n) = modulus a ^ n := b
   | succ n ih => rw [pow_succ, pow_succ, modulus_mul, ih]
 
 /- English proof (translation)
-Use `(hasBasis_nhds_zero_valBall (K := K)).tendsto_right_iff.2 fun n _ => ?_` and prove the remaining obligations. Establish `hlim : Filter.Tendsto (fun k : ℕ => modulus a ^ k) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one zero_le ha`. Establish `hq : (0 : ℝ≥0) < (residueCard K : ℝ≥0) ^ (-(n - 1))` using `zpow_pos (zero_lt_one.trans one_lt_residueCard_nnreal) _`. Use `filter_upwards [hlim.eventually (gt_mem_nhds hq)] with k hk`. Distinguish the cases in `h0 : a ^ k = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `zero_mem _`. Rewrite using `[SetLike.mem_coe, mem_valBall_iff_le_ord h0]`. Rewrite `hk` using `[← modulus_pow_nat, modulus_of_ne_zero h0]`. Use `(zpow_lt_zpow_iff_right₀ one_lt_residueCard_nnreal).1 hk` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem tendsto_pow_zero_of_modulus_lt_one {a : K} (ha : modulus a < 1) :
     Filter.Tendsto (fun n : ℕ => a ^ n) Filter.atTop (nhds 0) := by
@@ -65,11 +63,9 @@ variable {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarch
   [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [Algebra F E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hcomp : IsCompact (𝒪[F] : Set F)`. Establish `h` using `isCompact_valBall (K := F) 0`. Rewrite `h` using `[coe_valBall_zero]`. Then use the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `(hcomp.image (continuous_modulus.comp hc)).bddAbove`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C hlt`. Establish `hmem : a ^ n ∈ 𝒪[F]` using `pow_mem (modulus_le_one_iff.1 ha) n`. Establish `h` using `hC ⟨a ^ n, hmem, rfl⟩`. Simplify using `only [Function.comp_apply, map_pow, modulus_pow_nat] at h`.
-
-Conclude with `absurd h (not_le.2 hn)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modulus_map_le_one (hc : Continuous (algebraMap F E)) {a : F} (ha : modulus a ≤ 1) :
     modulus (algebraMap F E a) ≤ 1 := by
@@ -86,9 +82,9 @@ theorem modulus_map_le_one (hc : Continuous (algebraMap F E)) {a : F} (ha : modu
   exact absurd h (not_le.2 hn)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hge`. Use `push Not at hge`. Establish `h` using `((continuous_modulus.comp hc).tendsto 0).comp (tendsto_pow_zero_of_modulus_lt_one ha)`. Establish `h1 : (1 : ℝ≥0) ≤ modulus (algebraMap F E 0)`. Use `ge_of_tendsto' h fun n => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, map_pow, modulus_pow_nat]`. Conclude with `one_le_pow₀ hge`. Simplify using `at h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modulus_map_lt_one (hc : Continuous (algebraMap F E)) {a : F} (ha : modulus a < 1) :
     modulus (algebraMap F E a) < 1 := by
@@ -102,15 +98,13 @@ theorem modulus_map_lt_one (hc : Continuous (algebraMap F E)) {a : F} (ha : modu
   simp at h1
 
 /- English proof (translation)
-Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[vle_iff_modulus_le, vle_iff_modulus_le]`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hb' : algebraMap F E b ≠ 0` using `by simpa using hb`. Establish `key : modulus (algebraMap F E (a / b)) ≤ 1 ↔ modulus (a / b) ≤ 1`. Use `⟨fun h => ?_, modulus_map_le_one hc⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : a / b ≠ 0`. Introduce `h0`. Simplify using `[h0] at hlt`. Establish `hinv : modulus (a / b)⁻¹ < 1`. Rewrite using `[modulus_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_lt_one_of_one_lt₀ hlt`. Establish `h2` using `modulus_map_lt_one (E := E) hc hinv`. Rewrite `h2` using `[map_inv₀, modulus_inv]`. Establish `h3 : 0 < modulus (algebraMap F E (a / b))` using `modulus_pos (by simpa using h0)`. Establish `h4` using `(inv_lt_one₀ h3).1 h2`.
-
-Conclude with `absurd h (not_le.2 h4)`. Rewrite `key` using `[map_div₀, div_eq_mul_inv, modulus_mul, modulus_inv, ← div_eq_mul_inv, div_le_one₀ (modulus_pos hb'), div_eq_mul_inv, modulus_mul, modulus_inv, ← div_eq_mul_inv, div_le_one₀ (modulus_pos hb)]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuativeExtension_of_continuous (hc : Continuous (algebraMap F E)) : ValuativeExtension F E := by
   refine ⟨fun a b => ?_⟩
@@ -142,9 +136,7 @@ theorem valuativeExtension_of_continuous (hc : Continuous (algebraMap F E)) : Va
 end Two
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ _ _ E _ _ _ _ _ _ _ hd hc σ _ η _ x`. Use `haveI : ValuativeExtension F E := valuativeExtension_of_continuous hc`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hd`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨hd⟩`. Use `haveI : Algebra.IsSeparable F E := inferInstance`.
-
-Conclude with `(GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.modulus_norm (K := F) x).symm` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wMod : Ad3.K.GL2LocalData.WMod := by
   intro F _ _ _ _ _ _ _ χ _ _ E _ _ _ _ _ _ _ hd hc σ _ η _ x

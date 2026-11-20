@@ -23,7 +23,7 @@ def levC (i : ZMod n) (ζ : LL) : PowerSeries O →ₐ[O] PowerSeries LL :=
   (W.lev i ζ).comp (Pi.constAlgHom O (ZMod n) (PowerSeries O))
 
 /- English proof (translation)
-Establish `h` using `W.lev_letter i ζ (a - Pi.constAlgHom O (ZMod n) (PowerSeries O) (a i)) (by simp)`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_eq_levC (i : ZMod n) (ζ : LL) (a : LetA O n) : W.lev i ζ a = levC W i ζ (a i) := by
   have h := W.lev_letter i ζ (a - Pi.constAlgHom O (ZMod n) (PowerSeries O) (a i)) (by simp)
@@ -31,9 +31,9 @@ theorem lev_eq_levC (i : ZMod n) (ζ : LL) (a : LetA O n) : W.lev i ζ a = levC 
   exact h
 
 /- English proof (translation)
-Take `⟨E, h0, h1, h2⟩` from `W.lev_π i ζ ⟨1, by rwa [pow_one]⟩`. Use `⟨E, h0, h1, ?_⟩` and prove the remaining obligations. Establish `h3 : levC W i ζ PowerSeries.X = W.lev i ζ letπ` using `by first`. Consider the case `rfl`. Consider the case `exact (lev_eq_levC W i ζ letπ).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Rewrite using `[h3]`. Take the linear combination `h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem levC_X (i : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) :
     ∃ E : PowerSeries LL, PowerSeries.constantCoeff E = 1 ∧ PowerSeries.derivative LL E = E ∧
@@ -48,7 +48,7 @@ theorem levC_X (i : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) :
   linear_combination h2
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [show PowerSeries.derivative R f = f.derivativeFun from rfl, PowerSeries.coeff_derivativeFun]; simp)`. Consider the case `simp [PowerSeries.coeff_derivativeFun]`. Consider the case `simp [PowerSeries.derivative, PowerSeries.coeff_derivativeFun]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem coeff_zero_derivative_eq_coeff_one {R : Type} [CommRing R] (f : PowerSeries R) :
     PowerSeries.coeff 0 (PowerSeries.derivative R f) = PowerSeries.coeff 1 f := by
@@ -58,9 +58,9 @@ private theorem coeff_zero_derivative_eq_coeff_one {R : Type} [CommRing R] (f : 
   | simp [PowerSeries.derivative, PowerSeries.coeff_derivativeFun]
 
 /- English proof (translation)
-Take `⟨E, hE0, _, hX⟩` from `levC_X W i ζ hζ`. Establish `h` using `congrArg (levC W i ζ) W.q₀_def`. Simplify using `only [map_mul, map_sub, map_pow, map_add, map_one, hX] at h`. Establish `h2` using `congrArg PowerSeries.constantCoeff h`. Simplify using `only [map_mul, map_sub, map_pow, map_add, map_one, PowerSeries.constantCoeff_C, hE0] at h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[PowerSeries.X_dvd_iff]`. Establish `h3 : (ζ - 1) * PowerSeries.constantCoeff (levC W i ζ W.q₀) = 0`. Take the linear combination `h2 + hζ.pow_eq_one`. Establish `hne : ζ - 1 ≠ 0` using `sub_ne_zero.mpr (hζ.ne_one (by omega))`. Conclude with `(mul_eq_zero.mp h3).resolve_left hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem X_dvd_levC_q (i : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) (hp : 2 ≤ PD.p) :
     PowerSeries.X ∣ levC W i ζ W.q₀ := by
@@ -89,11 +89,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Establish `hk : ((PD.p : ℕ) : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O)]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).mpr hpm`. Establish `hK : ((PD.p : ℕ) : PowerSeries (IsLocalRing.ResidueField O)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← map_natCast (PowerSeries.C (R := IsLocalRing.ResidueField O)), hk, map_zero]`. Use `haveI : CharP (PowerSeries (IsLocalRing.ResidueField O)) PD.p := by first`. Consider the case `exact (CharP.charP_iff_prime_eq_zero hp).mpr hK`. Consider the case `exact (charP_iff_prime_eq_zero hp).mpr hK`. Establish `h` using `congrArg (PowerSeries.map (IsLocalRing.residue O)) W.q₀_def`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_sub, map_pow, map_add, map_one, PowerSeries.map_X] at h`. Rewrite `h` using `[add_pow_char, one_pow, add_sub_cancel_left]`. Establish `h2 : PowerSeries.X * PowerSeries.map (IsLocalRing.residue O) W.q₀ = PowerSeries.X * PowerSeries.X ^ (PD.p - 1)`. Rewrite using `[h, ← pow_succ', Nat.sub_add_cancel hp.one_le]`. Conclude with `mul_left_cancel₀ PowerSeries.X_ne_zero h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_q₀ [IsLocalRing O] (hp : PD.p.Prime) (hpm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O) :
     PowerSeries.map (IsLocalRing.residue O) W.q₀ = PowerSeries.X ^ (PD.p - 1) := by
@@ -116,19 +116,17 @@ theorem residue_q₀ [IsLocalRing O] (hp : PD.p.Prime) (hpm : ((PD.p : ℕ) : O)
   exact mul_left_cancel₀ PowerSeries.X_ne_zero h2
 
 /- English proof (translation)
-Take `⟨E, hE0, hE1, hX⟩` from `levC_X W i ζ hζ`. Take `⟨w, hw⟩` from `X_dvd_levC_q W i ζ hζ hp`. Establish `h1` using `congrArg (levC W i ζ) W.q₀_def`. Simplify using `only [map_mul, map_sub, map_pow, map_add, map_one, hX, hw] at h1`. Establish `e : (PowerSeries.C ζ * E) ^ PD.p = E ^ PD.p` using `by first`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `rw [mul_pow, ← map_pow, hζ.pow_eq_one, map_one, one_mul]`. Consider the case `simp [mul_pow, ← map_pow, hζ.pow_eq_one]`. Establish `h1' : (PowerSeries.C ζ * E - 1) * w * PowerSeries.X = E ^ PD.p - 1`. Rewrite using `[← e]`. Take the linear combination `h1`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hc : PowerSeries.coeff 0 ((PowerSeries.C ζ * E - 1) * w) = PowerSeries.coeff 1 (E ^ PD.p - 1)`. Rewrite using `[← h1', PowerSeries.coeff_succ_mul_X]`. Establish `hD : PowerSeries.coeff 1 (E ^ PD.p) = ((PD.p : ℕ) : LL)`. Rewrite using `[← coeff_zero_derivative_eq_coeff_one, Derivation.leibniz_pow, hE1]`. Simplify using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, hE0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcw : PowerSeries.constantCoeff w ≠ 0`. Introduce `h0`. Apply `hpL` to reduce the goal to its premises. Establish `e2 : PowerSeries.coeff 1 (E ^ PD.p - 1) = PowerSeries.coeff 1 (E ^ PD.p)` using `by first`. Consider the case `simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `simp [PowerSeries.coeff_one]`. Rewrite using `[← hD, ← e2, ← hc, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul, h0, mul_zero]`. Establish `hwU : IsUnit w`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`. Conclude with `isUnit_iff_ne_zero.mpr hcw`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_mul, hw, pow_succ', mul_assoc]`. Establish `h2` using `(mul_dvd_mul_iff_left PowerSeries.X_ne_zero).mp h`. Use `first`. Consider the case `exact hwU.dvd_mul_left.mp h2`. Consider the case `exact (IsUnit.dvd_mul_left hwU).mp h2`.
-
-Consider the case `exact (Units.dvd_mul_left (u := hwU.unit)).mp h2`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem eq_of_mul_mul_eq_of_det_ne_zero (i : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) (hp : 2 ≤ PD.p)
     (hpL : ((PD.p : ℕ) : LL) ≠ 0) (b : ℕ) (c : PowerSeries O)
@@ -169,29 +167,27 @@ private theorem eq_of_mul_mul_eq_of_det_ne_zero (i : ZMod n) (ζ : LL) (hζ : Is
   | exact (Units.dvd_mul_left (u := hwU.unit)).mp h2
 
 /- English proof (translation)
-Establish `hres` using `residue_q₀ W hp hpm`. Establish `hne : PowerSeries.map (IsLocalRing.residue O) W.q₀ ≠ 0`. Rewrite using `[hres]`. Conclude with `pow_ne_zero _ PowerSeries.X_ne_zero`. Take `⟨q, r, hdeg0, heq⟩ : ∃ (q : PowerSeries O) (r : Polynomial O), r.degree < ((PowerSeries.map (IsLocalRing.residue O) W.q₀).order.toNat : WithBot ℕ) ∧ a = W.q₀ * q + (r : PowerSeries O)` from `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `(obtain ⟨q, r, hr⟩ := PowerSeries.exists_isWeierstrassDivision (f := a) hne`. Conclude with `⟨q, r, hr.degree_lt, hr.eq_mul_add⟩)`. Consider the case `(obtain ⟨q, r, hr⟩ := PowerSeries.exists_isWeierstrassDivision a hne`. Conclude with `⟨q, r, hr.degree_lt, hr.eq_mul_add⟩)`. Consider the case `exact ⟨_, _, (PowerSeries.isWeierstrassDivision_weierstrassDiv_weierstrassMod a hne).degree_lt, (PowerSeries.isWeierstrassDivision_weierstrassDiv_weierstrassMod a hne).eq_mul_add⟩`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdeg0` using `[hres, PowerSeries.order_X_pow]`. Establish `hdeg : r.degree < ((PD.p - 1 : ℕ) : WithBot ℕ)` using `by first`. Consider the case `(rw [ENat.toNat_coe] at hdeg0; exact hdeg0)`. Consider the case `exact hdeg0`. Consider the case `simpa only [ENat.toNat_coe] using hdeg0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hroots : ∀ ζ ∈ primitiveRoots PD.p LL, (r.map (algebraMap O LL)).eval (ζ - 1) = 0`. Introduce `ζ hζm`. Establish `hζ : IsPrimitiveRoot ζ PD.p` using `(mem_primitiveRoots hp.pos).mp hζm`. Take `⟨E, hE0, _, hX⟩` from `levC_X W i ζ hζ`. Establish `hC : ∀ c : O, levC W i ζ (PowerSeries.C c) = PowerSeries.C (algebraMap O LL c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Establish `hc` using `(levC W i ζ).commutes c`. Use `first`. Consider the case `simpa [PowerSeries.algebraMap_apply] using hc`. Consider the case `simpa [PowerSeries.algebraMap_apply'] using hc`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ s : Polynomial O, PowerSeries.constantCoeff (levC W i ζ (s : PowerSeries O)) = (s.map (algebraMap O LL)).eval (ζ - 1)`. Introduce `s`. Use `Polynomial.induction_on s ?_ ?_ ?_` and prove the remaining obligations. Introduce `c`. Simplify using `[hC]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p1 p2 h1 h2`. Simplify using `[h1, h2]`. Introduce `k c _`. Simplify using `[hC, hX, hE0]`. Establish `h1` using `hv ζ hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[heq, map_add, map_mul]`. Establish `h3` using `dvd_mul_of_dvd_left (X_dvd_levC_q W i ζ hζ hp.two_le) (levC W i ζ q)`. Establish `h2` using `(dvd_add_right h3).mp h1`. Rewrite `h2` using `[PowerSeries.X_dvd_iff, key]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hR0 : r.map (algebraMap O LL) = 0`. Assume the negation of the conclusion as `hR`. Establish `hRdeg : (r.map (algebraMap O LL)).degree < ((PD.p - 1 : ℕ) : WithBot ℕ)` using `by first`. Consider the case `exact lt_of_le_of_lt Polynomial.degree_map_le hdeg`. Consider the case `exact lt_of_le_of_lt (Polynomial.degree_map_le _ _) hdeg`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hnd : (r.map (algebraMap O LL)).natDegree < PD.p - 1` using `(Polynomial.natDegree_lt_iff_degree_lt hR).mpr hRdeg`. Apply `hR` to reduce the goal to its premises. Apply `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero' _ ((primitiveRoots PD.p LL).image (fun z => z - 1))` to reduce the goal to its premises. Introduce `x hx`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.mp hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hroots z hz`. Rewrite using `[Finset.card_image_of_injective _ (sub_left_injective), hζ₀.card_primitiveRoots, Nat.totient_prime hp]`. Conclude with `hnd`. Establish `hr0 : r = 0`. Apply `Polynomial.map_injective (algebraMap O LL) hinj` to reduce the goal to its premises.
-
-Rewrite using `[hR0, Polynomial.map_zero]`. Conclude with `⟨q, by rw [heq, hr0, Polynomial.coe_zero, add_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem q0_dvd_of_X_dvd_levC_primitive_roots [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hp : PD.p.Prime) (hpm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O)
@@ -268,11 +264,11 @@ private theorem q0_dvd_of_X_dvd_levC_primitive_roots [IsLocalRing O] [IsAdicComp
   exact ⟨q, by rw [heq, hr0, Polynomial.coe_zero, add_zero]⟩
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ PD.p` using `hp.two_le`. Establish `hpL : ((PD.p : ℕ) : LL) ≠ 0`. Introduce `h0`. Establish `h1` using `W.v_l`. Rewrite `h1` using `[h0, AddValuation.map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `first`. Consider the case `exact WithTop.top_ne_one h1`. Consider the case `exact absurd h1 (by simp)`. Consider the case `simp at h1`. Proceed by induction on `b generalizing a with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨a, by simp⟩`. Consider the case `succ b ih`. Take `⟨c, rfl⟩` from `q0_dvd_of_X_dvd_levC_primitive_roots W hp hpm hinj hζ₀ i a (fun ζ hζ => dvd_trans (dvd_pow_self _ (Nat.succ_ne_zero b)) (hv ζ hζ))`. Take `⟨h, hh⟩` from `ih c (fun ζ hζ => eq_of_mul_mul_eq_of_det_ne_zero W i ζ hζ hp2 hpL b c (hv ζ hζ))`. Conclude with `⟨h, by rw [hh]; ring⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem q_pow_dvd [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hp : PD.p.Prime) (hpm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O)

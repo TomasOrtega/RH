@@ -36,19 +36,19 @@ theorem ptEquiv_apply (D : ℕ) (w : Fin (D + 1) → ℂ) (t : Fin (D + 1)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `funext (ptEquiv_apply D w)`.
+A detailed English derivation is pending.
 -/
 theorem comp_ptEquiv (D : ℕ) (w : Fin (D + 1) → ℂ) : ptEquiv D w ∘ blockEquiv D = w :=
   funext (ptEquiv_apply D w)
 
 /- English proof (translation)
-Simplify using `[Ix, GlobalTheory, Fintype.card_sigma]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_ix (D : ℕ) : Fintype.card (Ix (Fin (D + 1))) = D + 1 := by
   simp [Ix, GlobalTheory, Fintype.card_sigma]
 
 /- English proof (translation)
-Rewrite using `[← (blockEquiv D).sum_comp]`. Simplify using `only [ptEquiv_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sum_ix_norm (D : ℕ) (w : Fin (D + 1) → ℂ) : ∑ j, ‖ptEquiv D w j‖ ^ 2 = sqN w := by
   rw [← (blockEquiv D).sum_comp]
@@ -56,7 +56,7 @@ theorem sum_ix_norm (D : ℕ) (w : Fin (D + 1) → ℂ) : ∑ j, ‖ptEquiv D w 
   rfl
 
 /- English proof (translation)
-Establish `hmp : MeasurePreserving (ptEquiv D) volume volume` using `volume_measurePreserving_piCongrLeft (fun _ : Ix (Fin (D + 1)) => ℂ) (blockEquiv D)`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (ptEquiv D).measurable hs, gaussMeasure, gaussC, withDensity_apply _ hs, withDensity_apply _ ((ptEquiv D).measurable hs), ← hmp.map_eq, setLIntegral_map hs (by fun_prop) (ptEquiv D).measurable]`. Use `lintegral_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[sum_ix_norm, card_ix, zpow_neg, zpow_natCast]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussMeasure_eq (D : ℕ) :
     gaussMeasure (Ix (Fin (D + 1))) = (gaussC (D + 1)).map (ptEquiv D) := by
@@ -70,7 +70,7 @@ theorem gaussMeasure_eq (D : ℕ) :
   rw [sum_ix_norm, card_ix, zpow_neg, zpow_natCast]
 
 /- English proof (translation)
-Rewrite using `[monoForm, secFun_map_intQ, eval_map_int, aeval_rename, aeval_monoZ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secFun_monoForm (D n : ℕ) (i : Fin (Finset.Nat.antidiagonalTuple (D + 1) n).card)
     (z : Ix (Fin (D + 1)) → ℂ) : secFun (monoForm D n i) z = monoC (adtEnum D n i) (z ∘ blockEquiv D) := by
@@ -78,7 +78,7 @@ theorem secFun_monoForm (D n : ℕ) (i : Fin (Finset.Nat.antidiagonalTuple (D + 
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖WithLp.toLp 2 (ptEquiv D w)‖ = _`. Rewrite using `[EuclideanSpace.norm_eq]`. Rewrite using `[← sum_ix_norm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fs_rho_ptEquiv (D : ℕ) (w : Fin (D + 1) → ℂ) :
     (fsMetric (Ix (Fin (D + 1)))).ρ (ptEquiv D w) = Real.sqrt (sqN w) := by
@@ -87,9 +87,9 @@ theorem fs_rho_ptEquiv (D : ℕ) (w : Fin (D + 1) → ℂ) :
   rw [← sum_ix_norm]
 
 /- English proof (translation)
-Rewrite using `[sphMonom_integral_sphProb _ (sphMonom_continuous_f a b)]`. Unfold `gaussC`. Simplify using `only [ENNReal.ofReal]`. Establish `hm : Measurable fun z : Fin (D + 1) → ℂ => Real.toNNReal ((Real.pi ^ (D + 1))⁻¹ * Real.exp (-sqN z))` using `(measurable_const.mul (Real.measurable_exp.comp sphMonom_continuous_sqN.measurable.neg)).real_toNNReal`. Rewrite using `[integral_withDensity_eq_integral_smul hm, ← integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[sphMonom_f_smul, ha, hb, NNReal.smul_def, Real.coe_toNNReal _ (by positivity), Complex.real_smul]`. Use `push_cast`. Rewrite using `[inv_pow, two_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -114,15 +114,15 @@ theorem integral_gaussC_mono (D n : ℕ) {a b : Fin (D + 1) → ℕ} (ha : ∑ i
   ring
 
 /- English proof (translation)
-Rewrite using `[gaussMeasure_eq, integrable_map_equiv]`. Establish `hfun : (fun z => starRingEnd ℂ (secFun (monoForm D n i) z) * secFun (monoForm D n j) z * (wgt (fsMetric (Ix (Fin (D + 1)))) n z : ℂ)) ∘ ptEquiv D = fun w => starRingEnd ℂ (monoC (adtEnum D n i) w) * monoC (adtEnum D n j) w * ((((Real.sqrt (sqN w)) ^ (2 * n))⁻¹ : ℝ) : ℂ)`. Use function extensionality and compare the values at `w`. Simplify using `only [Function.comp, secFun_monoForm, comp_ptEquiv, wgt, fs_rho_ptEquiv]`. Rewrite using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(integrable_const (1 : ℝ)).mono' ?_ (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Conclude with `((sphMonom_continuous_f _ _).measurable.mul (Complex.measurable_ofReal.comp ((sphMonom_continuous_sqN.measurable.sqrt.pow_const _).inv))).aestronglyMeasurable`. Establish `ha` using `norm_monoC_sq_le (adtEnum D n i) w`. Establish `hb` using `norm_monoC_sq_le (adtEnum D n j) w`. Rewrite `ha`, `hb` using `[adtEnum_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : 0 ≤ sqN w` using `sphMonom_sqN_nonneg w`. Establish `hS : Real.sqrt (sqN w) ^ (2 * n) = sqN w ^ n` using `by rw [pow_mul, Real.sq_sqrt hs]`. Rewrite using `[norm_mul, norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_eq_abs, hS, abs_of_nonneg (inv_nonneg.mpr (pow_nonneg hs n))]`. Establish `h0 : 0 ≤ ‖monoC (adtEnum D n i) w‖ * ‖monoC (adtEnum D n j) w‖` using `by positivity`. Establish `hq : 0 ≤ sqN w ^ n` using `pow_nonneg hs n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (‖monoC (adtEnum D n i) w‖ * ‖monoC (adtEnum D n j) w‖) ^ 2 ≤ (sqN w ^ n) ^ 2`. Rewrite using `[mul_pow, sq (sqN w ^ n)]`. Conclude with `mul_le_mul ha hb (by positivity) hq`. Establish `hP : ‖monoC (adtEnum D n i) w‖ * ‖monoC (adtEnum D n j) w‖ ≤ sqN w ^ n` using `by nlinarith`. Break down `hq.eq_or_lt with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[← h, inv_zero, mul_zero]`. Evaluate the numerical expressions. Rewrite using `[← div_eq_mul_inv]`. Conclude with `div_le_one_of_le₀ hP h.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_monoForm (D n : ℕ) (i j : Fin (Finset.Nat.antidiagonalTuple (D + 1) n).card) :
     Integrable (fun z => starRingEnd ℂ (secFun (monoForm D n i) z) * secFun (monoForm D n j) z *
@@ -158,9 +158,9 @@ theorem integrable_monoForm (D n : ℕ) (i j : Fin (Finset.Nat.antidiagonalTuple
       exact div_le_one_of_le₀ hP h.le
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[bGram, Matrix.of_apply, gaussMeasure_eq, integral_map_equiv]`. Simplify using `only [secFun_monoForm, comp_ptEquiv, wgt, fs_rho_ptEquiv]`. Rewrite using `[integral_gaussC_mono D n (adtEnum_sum D n i) (adtEnum_sum D n j), supSt_gram, Matrix.diagonal_apply]`. Distinguish the cases in `hij : i = j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, (adtEnum_injective D n).ne hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bGram_monoForm (D n : ℕ) :
     bGram (gaussMeasure (Ix (Fin (D + 1)))) (fun k => secFun (monoForm D n k))
@@ -178,9 +178,9 @@ theorem bGram_monoForm (D n : ℕ) :
 variable {Ω : Type} [Field Ω] {D : ℕ}
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Establish `h1 : rename (blockEquiv D) f ∈ coordIdeal ℤ x`. Rewrite `hf`, the goal using `[coordIdeal, RingHom.mem_ker]`. Rewrite using `[← hf]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coneMap, aeval_rename]`. Both sides reduce to the same expression. Rewrite `h1` using `[hx, Ideal.mem_bot]`. Rewrite using `[Ideal.mem_bot]`. Conclude with `rename_injective _ (blockEquiv D).injective (by rw [h1, map_zero])`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordIdeal_comp_eq_bot {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal ℤ x = ⊥) :
     coordIdeal ℤ (x ∘ blockEquiv D) = ⊥ := by
@@ -196,7 +196,7 @@ theorem coordIdeal_comp_eq_bot {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal �
   exact rename_injective _ (blockEquiv D).injective (by rw [h1, map_zero])
 
 /- English proof (translation)
-Use `mem_coordIdeal_of_isHomogeneous ℤ x (hf.sub hg) (by rw [map_sub, h, sub_self])` as an intermediate fact. Rewrite `this` using `[hx, Ideal.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_of_aeval_eq {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal ℤ x = ⊥) {n : ℕ}
     {f g : MvPolynomial (Ix (Fin (D + 1))) ℤ} (hf : f.IsHomogeneous n) (hg : g.IsHomogeneous n)
@@ -207,7 +207,7 @@ theorem eq_of_aeval_eq {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal ℤ x = �
 variable [CharZero Ω]
 
 /- English proof (translation)
-Rewrite using `[monoForm, aeval_map_intQ, aeval_rename, aeval_monoZ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_monoForm (x : Ix (Fin (D + 1)) → Ω) (n : ℕ)
     (i : Fin (Finset.Nat.antidiagonalTuple (D + 1) n).card) :
@@ -215,15 +215,13 @@ theorem aeval_monoForm (x : Ix (Fin (D + 1)) → Ω) (n : ℕ)
   rw [monoForm, aeval_map_intQ, aeval_rename, aeval_monoZ]
 
 /- English proof (translation)
-Use `⟨fun i => ⟨_, (monoZ_isHomogeneous (adtEnum_sum D n i)).rename_isHomogeneous, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `u hu i`. Establish `h0` using `eq_zero_of_sum_mono (coordIdeal_comp_eq_bot hx) u (by simpa only [aeval_monoForm, zsmul_eq_mul] using hu)`. Conclude with `congrFun h0 i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.mem_map.mpr ⟨rename (blockEquiv D) (monoZ (adtEnum D n i)), (mem_homogeneousSubmodule _ _).mpr (monoZ_isHomogeneous (adtEnum_sum D n i)).rename_isHomogeneous, by simp only [AlgHom.toLinearMap_apply, monoForm, aeval_map_intQ]⟩`. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : f.IsHomogeneous n` using `(mem_homogeneousSubmodule _ _).mp hf`. Establish `hg : (rename (blockEquiv D).symm f).IsHomogeneous n` using `hf'.rename_isHomogeneous`. Establish `hfx : (aeval x : MvPolynomial (Ix (Fin (D + 1))) ℤ →ₐ[ℤ] Ω).toLinearMap f = aeval (x ∘ blockEquiv D) (rename (blockEquiv D).symm f)`. Rewrite using `[AlgHom.toLinearMap_apply, aeval_rename]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hfx, aeval_eq_sum_adt _ hg]`. Use `Submodule.sum_mem _ fun a ha => ?_` and prove the remaining obligations. Establish `hai : adtEnum D n ((Finset.Nat.antidiagonalTuple (D + 1) n).equivFin ⟨a, ha⟩) = a`. Simplify using `[adtEnum]`. Rewrite using `[← zsmul_eq_mul, ← hai, ← aeval_monoForm]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSecBasis_monoForm {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal ℤ x = ⊥) (n : ℕ) :
     IsSecBasis x n (monoForm D n) := by
@@ -254,17 +252,15 @@ theorem isSecBasis_monoForm {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal ℤ x
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Establish `hM` using `isSecBasis_monoForm hx n`. Establish `hA : ∀ k, ∃ c : Fin (Finset.Nat.antidiagonalTuple (D + 1) n).card → ℤ, ∑ l, c l • aeval x (monoForm D n l) = aeval x (b' k)` using `fun k => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (by rw [hM.2.2, ← hb'.2.2]; exact Submodule.subset_span ⟨k, rfl⟩)`. Establish `hB : ∀ l, ∃ c : Fin (Finset.Nat.antidiagonalTuple (D + 1) n).card → ℤ, ∑ m, c m • aeval x (b' m) = aeval x (monoForm D n l)` using `fun l => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (by rw [hb'.2.2, ← hM.2.2]; exact Submodule.subset_span ⟨l, rfl⟩)`. Use `choose A hA using hA`. Use `choose B hB using hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Matrix.of A, fun k z => ?_, ?_⟩` and prove the remaining obligations. Take `⟨f', hf', hbf'⟩` from `hb'.1 k`. Establish `heq : f' = ∑ l, C (A k l) * rename (blockEquiv D) (monoZ (adtEnum D n l))`. Use `eq_of_aeval_eq hx hf' (IsHomogeneous.sum _ _ _ fun l _ => ?_) ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_C _ (A k l)).mul (monoZ_isHomogeneous (adtEnum_sum D n l)).rename_isHomogeneous`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, map_mul, map_intCast, eq_intCast, zsmul_eq_mul, monoForm, aeval_map_intQ]`. Rewrite using `[hbf', secFun_map_intQ, heq]`. Simplify using `only [monoForm, secFun_map_intQ, Matrix.of_apply, map_sum, map_mul, map_intCast, eq_intCast]`. Establish `hAB : Matrix.of A * Matrix.of B = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `k m`. Establish `h1 : ∑ m, (Matrix.of A * Matrix.of B) k m • aeval x (b' m) = aeval x (b' k)`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.smul_sum, hB]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hA k`. Establish `h2 : ∑ m, (1 : Matrix (Fin (Finset.Nat.antidiagonalTuple (D + 1) n).card) (Fin (Finset.Nat.antidiagonalTuple (D + 1) n).card) ℤ) k m • aeval x (b' m) = aeval x (b' k)`. Simplify using `[Matrix.one_apply]`. Establish `hli` using `Fintype.linearIndependent_iff.mp hb'.2.1 (fun m => (Matrix.of A * Matrix.of B) k m - (1 : Matrix _ _ ℤ) k m) (by simp only [sub_smul, Finset.sum_sub_distrib, h1, h2, sub_self]) m`. Conclude with `sub_eq_zero.mp hli`.
-
-Establish `hd` using `congrArg Matrix.det hAB`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `Int.isUnit_sq (isUnit_iff_exists_inv.mpr ⟨_, hd⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_change {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal ℤ x = ⊥) {n : ℕ}
     {b' : Fin (Finset.Nat.antidiagonalTuple (D + 1) n).card → MvPolynomial (Ix (Fin (D + 1))) ℚ}
@@ -312,19 +308,19 @@ theorem exists_change {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal ℤ x = ⊥
     exact Int.isUnit_sq (isUnit_iff_exists_inv.mpr ⟨_, hd⟩)
 
 /- English proof (translation)
-Establish `hM` using `isSecBasis_monoForm hx n`. Establish `h : ∃ p : (Σ r : ℕ, Fin r → MvPolynomial (Ix (Fin (D + 1))) ℚ), IsSecBasis x n p.2` using `⟨⟨_, monoForm D n⟩, hM⟩`. Unfold `chi`. Rewrite using `[dif_pos h]`. Establish `hp` using `h.choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Generalize the expression as in `h.choose = p at hp ⊢`. Take `⟨r', b'⟩` from `p`. Establish `hp' : IsSecBasis x n b'` using `hp`. Establish `hr : r' = (Finset.Nat.antidiagonalTuple (D + 1) n).card` using `hp'.card_eq.trans hM.card_eq.symm`. Substitute `hr` using the available equality.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨A, hA, hdet⟩` from `exists_change hx hp'`. Establish `hG` using `bGram_change (μ := gaussMeasure (Ix (Fin (D + 1)))) (fun k => secFun (monoForm D n k)) (fun k => secFun (b' k)) (wgt (fsMetric (Ix (Fin (D + 1)))) n) A (integrable_monoForm D n) (fun k => Filter.Eventually.of_forall (hA k))`. Rewrite `hG` using `[bGram_monoForm]`. Establish `hw : (Height.totalWeight ℚ : ℝ) = 1`. Rewrite using `[NumberField.totalWeight_eq_finrank, Module.finrank_self, Nat.cast_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcast : A.map (Int.cast : ℤ → ℂ) = (A.map (Int.cast : ℤ → ℝ)).map Complex.ofRealHom`. Rewrite using `[Matrix.map_map]`. Use `congr 1`. Establish `hR : realGram (K` using `ℚ) (fun _ => fsMetric (Ix (Fin (D + 1)))) (fun _ => gaussMeasure (Ix (Fin (D + 1)))) n b' = A.map (Int.cast : ℤ → ℝ) * Matrix.diagonal (fun k => monoNormSq (adtEnum D n k)) * (A.map (Int.cast : ℤ → ℝ)).transpose := by`. Establish `hC : A.map (Int.cast : ℤ → ℂ) * Matrix.diagonal (fun k => ((monoNormSq (adtEnum D n k) : ℝ) : ℂ)) * (A.map (Int.cast : ℤ → ℂ)).transpose = (A.map (Int.cast : ℤ → ℝ) * Matrix.diagonal (fun k => monoNormSq (adtEnum D n k)) * (A.map (Int.cast : ℤ → ℝ)).transpose).map Complex.ofRealH …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hcast, Matrix.diagonal_map (map_zero _)]`. Both sides reduce to the same expression. Use extensionality with `k l`. Rewrite using `[realGram_eq, hG, hC, Matrix.map_apply, Complex.ofRealHom_eq_coe, Complex.ofReal_re]`. Establish `hdA : (A.map (Int.cast : ℤ → ℝ)).det = (A.det : ℝ)` using `((Int.castRingHom ℝ).map_det A).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet' : (A.det : ℝ) ^ 2 = 1` using `by exact_mod_cast hdet`. Simplify using `only [l2Degree, hw, div_one]`. Rewrite using `[hR, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal, hdA]`. Establish `hprod : (A.det : ℝ) * (∏ k, monoNormSq (adtEnum D n k)) * (A.det : ℝ) = ∏ k, monoNormSq (adtEnum D n k)`. Take the linear combination `(∏ k, monoNormSq (adtEnum D n k)) * hdet'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hprod, Real.log_prod (fun k _ => (monoNormSq_pos (adtEnum D n k)).ne'), chiP, sum_adtEnum D n (fun a => Real.log (monoNormSq a))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chi_coord {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal ℤ x = ⊥) (n : ℕ) :
     chi x (fsMetric (Ix (Fin (D + 1)))) (gaussMeasure (Ix (Fin (D + 1)))) n = chiP D n := by
@@ -374,9 +370,7 @@ theorem chi_coord {x : Ix (Fin (D + 1)) → Ω} (hx : coordIdeal ℤ x = ⊥) (n
   ring
 
 /- English proof (translation)
-Take `⟨C₁, h₁⟩` from `exists_chiP_le D`. Take `⟨C₂, h₂⟩` from `exists_chiP_succ_sub_le D`. Use `⟨max C₁ C₂, fun n => ⟨chiP_nonneg D n, (h₁ n).trans ?_, chiP_succ_sub_nonneg D n, fun hn => (h₂ n hn).trans ?_⟩⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`. Establish `hl : 0 ≤ Real.log ((n : ℝ) + 1)` using `Real.log_nonneg (by linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)])`.
-
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_right _ _) (by positivity)) hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bounds (D : ℕ) : ∃ C : ℝ, ∀ n : ℕ, 0 ≤ chiP D n ∧ chiP D n ≤ C * (n : ℝ) ^ (D + 1) ∧
     0 ≤ chiP D (n + 1) - chiP D n ∧
@@ -394,7 +388,7 @@ theorem bounds (D : ℕ) : ∃ C : ℝ, ∀ n : ℕ, 0 ≤ chiP D n ∧ chiP D n
 end MonomialDegree
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ hx n => MonomialDegree.chi_coord hx n, MonomialDegree.bounds⟩`.
+Supply the required witnesses or components.
 -/
 theorem MonomialDegree.proof : MonomialDegree.Statement :=
   ⟨fun _ _ _ _ _ hx n => MonomialDegree.chi_coord hx n, MonomialDegree.bounds⟩

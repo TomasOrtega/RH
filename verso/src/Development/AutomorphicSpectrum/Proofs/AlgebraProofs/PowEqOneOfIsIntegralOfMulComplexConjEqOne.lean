@@ -4,11 +4,11 @@ open NumberField
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `E _ _ _ u hu h`. Establish `hn : ∀ s : E →+* ℂ, ‖s u‖ = 1`. Introduce `s`. Establish `h1 : s u * (starRingEnd ℂ) (s u) = 1`. Rewrite using `[← IsCMField.complexEmbedding_complexConj, ← map_mul, h, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖s u‖ ^ 2 = 1`. Use `congrArg norm h1` as an intermediate fact. Rewrite `this` using `[norm_mul, Complex.norm_conj, norm_one]`. Rewrite using `[sq, this]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn0, hn1⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one E ℂ hu hn`. Conclude with `⟨n, hn0, hn1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_isIntegral_of_mul_complexConj_eq_one :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (u : E), IsIntegral ℤ u →

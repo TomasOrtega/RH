@@ -43,9 +43,9 @@ abbrev chr {L : FinExt l} (m : ↥Gw →* GL (Fin 1) ↥L.1) : ↥Gw →* (↥L.
   Matrix.GeneralLinearGroup.det.comp m
 
 /- English proof (translation)
-Use `⟨h₁.1, ?_⟩` and prove the remaining obligations. Use extensionality with `g i j`. Establish `e1` using `congrArg (fun f : ↥Gw →* GL (Fin a) (Om l) => ((f g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j) h₁.2`. Establish `e2` using `congrArg (fun f : ↥Gw →* GL (Fin 1) (Om l) => ((f g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) 0 0) h₂.2`. Simplify using `only [mapRep, rk1] at e1 e2 ⊢`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at e1 e2 ⊢`. Rewrite using `[hr']`. Simplify using `[← e1, ← e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isModel_twGL {L : FinExt l} {r r' : ↥Gw →* GL (Fin a) (Om l)} {μ : ↥Gw →* (Om l)ˣ}
     (hr' : ∀ g, ((r' g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) =
@@ -69,7 +69,7 @@ section Common
 variable {L : FinExt l} (r₁ : ↥Gw →* GL (Fin a) ↥L.1) (m : ↥Gw →* GL (Fin 1) ↥L.1)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Matrix.toLin' ((twGL (chr m) r₁ (Bw.e.symm g) : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1) x = ((chr m (Bw.e.symm g) : (↥L.1)ˣ) : ↥L.1) • Matrix.toLin' ((r₁ (Bw.e.symm g) : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1) x`. Rewrite using `[twGL_val, Matrix.toLin'_apply, Matrix.toLin'_apply]`. Conclude with `Matrix.smul_mulVec _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repE_twGL (g : ↥(GK Bw.Kw)) (x : Fin a → ↥L.1) :
     Bw.repE L (twGL (chr m) r₁) g x = ((chr m (Bw.e.symm g) : (↥L.1)ˣ) : ↥L.1) • Bw.repE L r₁ g x := by
@@ -80,7 +80,7 @@ theorem repE_twGL (g : ↥(GK Bw.Kw)) (x : Fin a → ↥L.1) :
   exact Matrix.smul_mulVec _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `[LocBridge.repE, Matrix.mulVec, dotProduct, Matrix.det_unique]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repE_rank_one (g : ↥(GK Bw.Kw)) (x : Fin 1 → ↥L.1) :
     Bw.repE L m g x = ((chr m (Bw.e.symm g) : (↥L.1)ˣ) : ↥L.1) • x := by
@@ -89,20 +89,20 @@ theorem repE_rank_one (g : ↥(GK Bw.Kw)) (x : Fin 1 → ↥L.1) :
   simp [LocBridge.repE, Matrix.mulVec, dotProduct, Matrix.det_unique]
 
 /- English proof (translation)
-Rewrite using `[IsDR, LocBridge.IsdRE, Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isDR_iff (P : LocPrime l) {n : ℕ} (s : ↥Gw →* GL (Fin n) ↥L.1) :
     IsDR (P.PD Bw.Kw) (Bw.repE L s) ↔ Bw.IsdRE P L s := by
   rw [IsDR, LocBridge.IsdRE, Module.finrank_fin_fun]
 
 /- English proof (translation)
-Establish `hν` using `repE_rank_one Bw m`. Establish `hρ` using `repE_twGL Bw r₁ m`. Use `⟨fun h1 h2 => ?_, fun h1 h2 => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `h1`, `h2`, the goal using `[← isDR_iff]`. Conclude with `(GlobalTheory.TwistDR.isDR_twist_iff l P AI T Bw.Kw L (Fin a → ↥L.1) _ _ _ _ hν hρ h2).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(GlobalTheory.TwistCrys.isCrys_iff_of_twist GlobalTheory.MemLoc.fontaineBcris l P AI T Bw.Kw L (Fin a → ↥L.1) _ _ _ _ hν hρ h2).1 h1`. Introduce and unpack `⟨K₁, k₁, c₁⟩ ⟨K₂, k₂, c₂⟩`. Establish `l₁ : K₁.1 ≤ (supExt K₁ K₂).1` using `le_sup_left`. Establish `l₂ : K₂.1 ≤ (supExt K₁ K₂).1` using `le_sup_right`. Establish `k₃ : Bw.Kw.1 ≤ (supExt K₁ K₂).1` using `k₁.trans l₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d₁` using `GlobalTheory.Per.TiedRestrict.isCrys_restrict l₁ _ T c₁`. Establish `d₂` using `GlobalTheory.Per.TiedRestrict.isCrys_restrict l₂ _ T c₂`. Establish `e₁ : ((Bw.repE L r₁).comp (Subgroup.inclusion (GK_le k₁))).comp (Subgroup.inclusion (GK_le l₁)) = (Bw.repE L r₁).comp (Subgroup.inclusion (GK_le k₃))` using `MonoidHom.ext fun _ => rfl`. Establish `e₂ : ((Bw.repE L m).comp (Subgroup.inclusion (GK_le k₂))).comp (Subgroup.inclusion (GK_le l₂)) = (Bw.repE L m).comp (Subgroup.inclusion (GK_le k₃))` using `MonoidHom.ext fun _ => rfl`. Rewrite `d₁` using `[e₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `d₂` using `[e₂]`. Conclude with `⟨supExt K₁ K₂, k₃, (GlobalTheory.TwistCrys.isCrys_iff_of_twist GlobalTheory.MemLoc.fontaineBcris l P AI T (supExt K₁ K₂) L (Fin a → ↥L.1) ((Bw.repE L r₁).comp (Subgroup.inclusion (GK_le k₃))) _ ((Bw.repE L m).comp (Subgroup.inclusion (GK_le k₃))) _ (fun g x => hν _ x) (fun g x => …`. Introduce `τ' b hm hmult n`. Conclude with `GlobalTheory.TwistJump.multV_twist_char l P AI T Bw.Kw L (Fin a → ↥L.1) _ _ _ _ hν hρ ((isDR_iff Bw P m).2 hm) τ' b hmult n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem twist_common {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) :
     (Bw.IsdRE P L r₁ → Bw.IsdRE P L m → Bw.IsdRE P L (twGL (chr m) r₁)) ∧
@@ -140,21 +140,21 @@ theorem twist_common {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) :
 end Common
 
 /- English proof (translation)
-Introduce `l _ P AI hT E Ω _ _ _ _ Gw O _ _ _ Bw a r r' μ hr'`. Take `⟨T⟩` from `hT`. Use `⟨fun h1 h2 => ?_, fun h1 h2 => ?_, fun h1 h2 => ?_, fun τ J c h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨L₁, r₁, m₁, d₁⟩` from `h1`. Take `⟨L₂, r₂, m₂, d₂⟩` from `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Conclude with `⟨_, _, isModel_twGL Bw hr' (m₁.enlarge l₁) (m₂.enlarge l₂), (twist_common Bw _ _ T).1 ((local_ext P Bw l₁ r₁).2.1.2 d₁) ((local_ext P Bw l₂ r₂).2.1.2 d₂)⟩`. Take `⟨L₁, r₁, m₁, d₁⟩` from `h1`. Take `⟨L₂, r₂, m₂, d₂⟩` from `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Conclude with `⟨_, _, isModel_twGL Bw hr' (m₁.enlarge l₁) (m₂.enlarge l₂), (twist_common Bw _ _ T).2.1 ((local_ext P Bw l₁ r₁).1.2 d₁) ((local_ext P Bw l₂ r₂).1.2 d₂)⟩`. Take `⟨L₁, r₁, m₁, d₁⟩` from `h1`. Take `⟨L₂, r₂, m₂, d₂⟩` from `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Conclude with `⟨_, _, isModel_twGL Bw hr' (m₁.enlarge l₁) (m₂.enlarge l₂), (twist_common Bw _ _ T).2.2.1 ((local_ext P Bw l₁ r₁).2.2.1.2 d₁) ((local_ext P Bw l₂ r₂).2.2.1.2 d₂)⟩`. Take `⟨L₁, r₁, m₁, d₁, τ₁, i₁, c₁⟩` from `h1`. Take `⟨L₂, r₂, m₂, d₂, τ₂, i₂, c₂⟩` from `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `j₁ : IsInduced Bw τ ((IntermediateField.inclusion l₁).comp τ₁)` using `fun x => i₁ x`. Establish `j₂ : IsInduced Bw τ ((IntermediateField.inclusion l₂).comp τ₂)` using `fun x => i₂ x`. Establish `eτ` using `IsInduced.unique j₁ j₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd₂` using `(local_ext P Bw l₂ r₂).2.1.2 d₂`. Establish `hc` using `twist_common Bw (mapRep (IntermediateField.inclusion l₁).toRingHom r₁) (mapRep (IntermediateField.inclusion l₂).toRingHom r₂) T`. Establish `hm : ∀ n, Bw.multE P (supExt L₁ L₂) (mapRep (IntermediateField.inclusion l₂).toRingHom r₂) ((IntermediateField.inclusion l₁).comp τ₁) n = if n = c then 1 else 0`. Introduce `n`. Rewrite using `[eτ, (local_ext P Bw l₂ r₂).2.2.2 τ₂ n, ← c₂ n, Multiset.count_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Use `⟨_, _, isModel_twGL Bw hr' (m₁.enlarge l₁) (m₂.enlarge l₂), hc.1 ((local_ext P Bw l₁ r₁).2.1.2 d₁) hd₂, _, j₁, fun n => ?_⟩` and prove the remaining obligations. Establish `e1` using `Multiset.count_map_eq_count' (fun x : ℤ => x + c) J (add_left_injective c) (n - c)`. Simplify using `only [sub_add_cancel] at e1`. Establish `e2` using `hc.2.2.2 _ c hd₂ hm (n - c)`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e2` using `[sub_add_cancel]`. Rewrite using `[e1, e2, (local_ext P Bw l₁ r₁).2.2.2 τ₁ (n - c), c₁]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_above : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (Gw : Subgroup (Ω ≃ₐ[E] Ω)) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) (a : ℕ), ∀ (r r' : ↥Gw →* GL (Fin a) (Loc.Om l)) (μ : ↥Gw →* (Loc.Om l)ˣ), (∀ g, ((r' g : GL (Fin a) (Loc.Om l)) : Matrix (Fin a) (Fin a) (Loc.Om l)) = ((μ g : (Loc.Om l)ˣ) : Loc.Om l) • ((r g : GL (Fin a) (Loc.Om l)) : Matrix (Fin a) (Fin a) (Loc.Om l))) → (IsdRAt P Bw r → IsdRAt P Bw (rk1 μ) → IsdRAt P Bw r') ∧ (IsCrysAt P Bw r → IsCrysAt P Bw (rk1 μ) → IsCrysAt P Bw r') ∧ (IsPotCrysAt P Bw r → IsPotCrysAt P Bw (rk1 μ) → IsPotCrysAt P Bw r') ∧ ∀ (τ : E →+* Loc.Om l) (J : Multiset ℤ) (c : ℤ), IsJumpsAt P Bw r τ J → IsJumpsAt P Bw (rk1 μ) τ {c} → IsJumpsAt P Bw r' τ (J.map (· + c)) := by
   intro l _ P AI hT E Ω _ _ _ _ Gw O _ _ _ Bw a r r' μ hr'

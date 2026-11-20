@@ -20,7 +20,7 @@ section nf
 variable {k r : ℕ}
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Unfold `C3.Zb`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (exfalso; omega)`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zb_last_row (i0 s : ℕ) (hh : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (hs : 2 ≤ s) (a b : ℕ) (ha : a ≠ i0)
     (ha' : a + 1 < i0 + s) (hb : b = i0) : C3.Zb i0 s hh t a b = 0 := by
@@ -29,7 +29,7 @@ theorem zb_last_row (i0 s : ℕ) (hh : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (
   split_ifs <;> first | rfl | omega | (exfalso; omega)
 
 /- English proof (translation)
-Unfold `C3.Zb`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (exfalso; omega)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zb_col_last (i0 s : ℕ) (hh : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (hs : 2 ≤ s) (a : ℕ) (ha : a ≠ i0)
     (ha' : a + 1 < i0 + s) : C3.Zb i0 s hh t a (i0 + s - 1) = 0 := by
@@ -37,7 +37,7 @@ theorem zb_col_last (i0 s : ℕ) (hh : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (
   split_ifs <;> first | rfl | omega | (exfalso; omega)
 
 /- English proof (translation)
-Unfold `C3.Zb`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (exfalso; omega)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem corner_matrix_last_entry (i0 s : ℕ) (hh : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (hs : 2 ≤ s) :
     C3.Zb i0 s hh t i0 (i0 + s - 1) = t := by
@@ -45,7 +45,7 @@ theorem corner_matrix_last_entry (i0 s : ℕ) (hh : Matrix (Fin i0) (Fin i0) ℂ
   split_ifs <;> first | rfl | omega | (exfalso; omega)
 
 /- English proof (translation)
-Unfold `C3.Zb`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (exfalso; omega)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem corner_matrix_first_line_zero (i0 s : ℕ) (hh : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (hs : 2 ≤ s) (b : ℕ) (hb : b + 1 < i0 + s) :
     C3.Zb i0 s hh t i0 b = 0 := by
@@ -53,9 +53,9 @@ theorem corner_matrix_first_line_zero (i0 s : ℕ) (hh : Matrix (Fin i0) (Fin i0
   split_ifs <;> first | rfl | omega | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hs : star (Pi.single p (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = Pi.single p 1`. Use extensionality with `q`. Distinguish the cases in `h : q = p`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, h]`. Unfold `herm bvec`. Rewrite using `[hs, single_dotProduct, one_mul, SignAntidiagonal.mulVec_hpk]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_bvec_right (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 1)) :
     herm (Hpk k r) v (bvec p) = WeylGroupFacts.sgn k r p * v (WeylGroupFacts.tau k r p) := by
@@ -69,47 +69,43 @@ theorem herm_bvec_right (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 
   rw [hs, single_dotProduct, one_mul, SignAntidiagonal.mulVec_hpk]
 
 /- English proof (translation)
-Take `⟨s'', rfl⟩ : ∃ s'', s = s'' + 2` from `⟨s - 2, by omega⟩`. Take `rfl : r = i0 + s'' + 1` from `by omega`. Establish `hγi : γ⁻¹ ∈ UH (Hpk k (i0 + s'' + 1))` using `WeylGroupFacts.uh_inv hγ`. Establish `hγu` using `WeylGroupFacts.isUnit_of_uh hγ`. Use `set y : Fin (i0 + s'' + 1) → Fin (2 * (i0 + s'' + 1) + k + 1) → ℂ := fun a => γ⁻¹ *ᵥ bvec (eI k _ a) with hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set i : Fin (i0 + s'' + 1) := ⟨i0, by omega⟩ with hi`. Establish `hyS : ∀ (a b : Fin (i0 + s'' + 1)), y a (esI k _ b) = star (C3.Zb i0 (s'' + 2) hh t a.val b.val)`. Introduce `a b`. Simplify using `only [hy]`. Rewrite using `[(xi_Y_zhat_identity k _ z z' γ a b hγ).2, hZ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hfz' : fvec k (i0 + s'' + 1) z' (Fin.last _) = z'` using `by unfold fvec; rw [dif_neg (by simp)]`. Establish `hfa : ∀ a : Fin (i0 + s'' + 1), fvec k _ z a.castSucc = bvec (eI k _ a)`. Introduce `a; unfold fvec; rw [dif_pos (by have := a.isLt; simp; omega)]; rfl`. Establish `hyz : ∀ a : Fin (i0 + s'' + 1), herm (Hpk k _) z' (y a) = C3.Zb i0 (s'' + 2) hh t a.val (i0 + s'' + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `h1 : herm (Hpk k _) z' (y a) = herm (Hpk k _) (γ *ᵥ z') (γ *ᵥ y a)` using `(herm_unitary γ hγ _ _).symm`. Establish `h2 : γ *ᵥ y a = bvec (eI k _ a)`. Rewrite using `[hy]`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hγu, Matrix.one_mulVec]`. Rewrite using `[h1, h2]`. Use `hZ a.castSucc (Fin.last _)` as an intermediate fact. Simplify using `only [Zhat, hfz', hfa] at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨n0, hn0, y', hy'⟩` from `isotropicNormalFormFull_statement k (i0 + s'') z' i y t hz' hT' ht (by`. Introduce `a ha`. Rewrite using `[hyS]`. Establish `: C3.Zb i0 (s'' + 2) hh t a.val i0 = 0` using `zb_last_row i0 _ hh t (by omega) a.val i0 (fun h => ha (Fin.ext h)) (by omega) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show star (C3.Zb i0 (s'' + 2) hh t a.val i0) = 0`. Rewrite using `[this, star_zero])`. Use the proof step `(by`. Introduce `p hp`. Establish `hb : 2 * (i0 + s'' + 1) + k - p.val < i0 + s'' + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpe : p = esI k _ ⟨2 * (i0 + s'' + 1) + k - p.val, hb⟩` using `by ext; simp [esI]; omega`. Rewrite using `[hpe, hyS]`. Establish `: C3.Zb i0 (s'' + 2) hh t i0 (2 * (i0 + s'' + 1) + k - p.val) = 0` using `corner_matrix_first_line_zero i0 _ hh t (by omega) _ (by omega)`. Simplify using `[hi, this])`. Use the proof step `(by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hP` using `third_polynomial_expansion i0 s'' hh t`. Establish `hS` using `(sign_permutation_identity s'').2`. Establish `hsg : C3.sgnW s'' ≠ 0`. Introduce `h0; rw [h0, zero_mul] at hS; exact (by norm_num : (0 : ℂ) ≠ -1) hS`. Establish `hne : (Matrix.of fun a b : Fin (i0 + s'') => C3.Zb i0 (s'' + 2) hh t ((⟨i0, by omega⟩ : Fin (i0 + s'' + 1)).succAbove a).val ((⟨i0, by omega⟩ : Fin (i0 + s'' + 1)).succAbove b).val).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Conclude with `mul_ne_zero (mul_ne_zero hdet (pow_ne_zero _ ht)) hsg`. Establish `e : (Matrix.of fun a b : Fin (i0 + s'') => y (i.succAbove a) (esI k (i0 + s'' + 1) (i.succAbove b))) = (Matrix.of fun a b : Fin (i0 + s'') => C3.Zb i0 (s'' + 2) hh t ((⟨i0, by omega⟩ : Fin (i0 + s'' + 1)).succAbove a).val ((⟨i0, by omega⟩ : Fin (i0 + s'' + 1)).succAbove b).val).m …`. Use extensionality with `a b`. Simplify using `[hyS, hi]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `((starRingEnd ℂ).mapMatrix _).det ≠ 0`. Rewrite using `[← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hne)`. Use the proof step `(by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite using `[hyz]`. Use `zb_col_last i0 (s'' + 2) hh t (by omega) a.val (fun h => ha (Fin.ext h)) (by omega)` as an intermediate fact. Rewrite using `[show i0 + (s'' + 2) - 1 = i0 + s'' + 1 by omega] at this)` and apply the resulting hypothesis. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hyz]`. Apply the tactic sequence `have := corner_matrix_last_entry i0 (s'' + 2) hh t (by omega)`. Rewrite using `[show i0 + (s'' + 2) - 1 = i0 + s'' + 1 by omega] at this)` and apply the resulting hypothesis. Use the proof step `(by`. Introduce `a a'`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hy]`. Simplify using `only`. Rewrite using `[herm_unitary _ hγi, herm_bvec_bvec]`. Use `a.isLt` as an intermediate fact. Use `a'.isLt` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `Hpk`. Rewrite using `[if_neg (fun h => by simp only [eI] at h; omega), if_neg (fun h => by simp only [eI] at h; omega), if_neg (fun h => by simp only [eI] at h; omega)])`. Establish `hn0u : n0 ∈ UH (Hpk k (i0 + s'' + 1))` using `hn0.1`. Establish `hxi : ∀ (a : Fin (i0 + s'' + 1)) (p : Fin (2 * (i0 + s'' + 1) + k + 1)), PBG.xi0 (γ * n0) a p = herm (Hpk k _) (bvec p) (y' a)`. Introduce `a p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `PBG.xi0`. Establish `h2 : bvec (eI k _ a) = γ *ᵥ y a`. Rewrite using `[hy]`. Simplify using `only`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hγu, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← Matrix.mulVec_mulVec, herm_unitary γ hγ, ← (hy' a).1, herm_unitary n0 hn0u]`. Use `⟨n0, hn0, y' i, ((hy' i).2.2 rfl).1, ((hy' i).2.2 rfl).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `a p ha`. Establish `hai : a ≠ i` using `fun h => ha (by rw [h])`. Take `⟨hz0, hsame⟩` from `(hy' a).2.1 hai`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hxi, herm_swap, herm_bvec_right]`. Distinguish the cases in `hp : p.val < i0 + s'' + 1`. Establish `htau : WeylGroupFacts.tau k _ p = esI k _ ⟨p.val, hp⟩` using `by ext; rw [tau_val, if_pos (Or.inl hp)]; simp [esI]`. Establish `hsg : WeylGroupFacts.sgn k _ p = 1` using `sgn_one _ (by omega)`. Rewrite using `[htau, hsg, one_mul, hsame _ (by simp [esI]; omega), hyS, star_star]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hpi : p.val = i0`. Rewrite using `[if_neg (by omega)]`. Conclude with `zb_last_row i0 _ hh t (by omega) a.val p.val ha (by omega) hpi`. Rewrite using `[if_pos ⟨hp, hpi⟩]`. Rewrite using `[if_neg (by omega)]`.
-
-Establish `hle : (WeylGroupFacts.tau k _ p).val ≤ i0 + s'' + 1 + k`. Apply the tactic sequence `rw [tau_val]; split_ifs <;> omega`. Rewrite using `[hz0 _ hle]`. Simplify using the standard rewrite rules. Introduce `a p ha`.
-
-Establish `hai : a = i` using `Fin.ext ha`. Substitute `hai` using the available equality. Rewrite using `[hxi]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nf_top (z z' : Fin (2 * r + k + 1) → ℂ) (hz' : inWb k r z') (hT' : herm (Hpk k r) z' z' ≠ 0)
     (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hγ : γ ∈ UH (Hpk k r)) (i0 s : ℕ) (hs : 2 ≤ s)

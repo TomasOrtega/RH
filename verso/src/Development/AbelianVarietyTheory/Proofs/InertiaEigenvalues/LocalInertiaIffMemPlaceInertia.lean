@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.DecInertia
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', hj, hj, map_inv₀, norm_inv]`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `h0 : 0 < ‖j x‖` using `norm_pos_iff.mpr ((_root_.map_ne_zero _).mpr hx)`. Simplify using `only [hx, false_or, not_le, one_lt_inv₀ h0]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨h.le, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem valuation_lt_one_iff_norm {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
     {j : Ω →+* PadicAlgCl p} (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) (x : Ω) :
@@ -25,21 +25,19 @@ theorem valuation_lt_one_iff_norm {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω
     exact ⟨fun h => h.2, fun h => ⟨h.le, h⟩⟩
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Establish `hn : ∀ (σ : PadicAlgCl p ≃ₐ[↥K] PadicAlgCl p) (z : PadicAlgCl p), ‖σ z‖ = ‖z‖` using `fun σ z => GlobalTheory.PlaceBridge.norm_algEquiv (σ.restrictScalars ℚ_[p]) z`. Establish `hadd : ∀ a b : PadicAlgCl p, ‖a + b‖ ≤ max ‖a‖ ‖b‖` using `IsUltrametricDist.norm_add_le_max`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `H : Subgroup (PadicAlgCl p ≃ₐ[↥K] PadicAlgCl p)` to `((Ine (F := F) A).subgroupOf (A.decompositionSubgroup F)).map i.toMonoidHom`. Establish `hsub : Formalism.GaloisCohomology.inertiaSet p K ⊆ H`. Introduce `σ hσ`. Use `⟨i.symm σ, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Subgroup.mem_subgroupOf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(i.symm σ).2, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[valuation_lt_one_iff_norm hj, map_sub, ← hi, MulEquiv.apply_symm_apply]`. Conclude with `hσ (j x) ((hj x).1 ((A.valuation_le_one_iff x).1 hx))`. Establish `hle : Formalism.GaloisCohomology.inertiaK p K ≤ H` using `(Subgroup.closure_le _).2 hsub`. Take `⟨g', hg', e⟩` from `hle h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `: g' = g` using `i.injective e`. Substitute `this` using the available equality. Conclude with `Subgroup.mem_subgroupOf.1 hg'`. Introduce `h`. Apply `Subgroup.subset_closure` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Take `⟨y, hy⟩` from `(GlobalTheory.PlaceBridge.denseRange_embedding j).exists_dist_lt x one_pos`. Rewrite `hy` using `[dist_eq_norm]`. Establish `hjy : ‖j y‖ ≤ 1`. Establish `e : j y = x + -(x - j y)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(hadd _ _).trans (max_le hx (by rw [norm_neg]; exact hy.le))`. Establish `hgy : ‖(i g) (j y) - j y‖ < 1`. Rewrite using `[hi, ← map_sub, ← valuation_lt_one_iff_norm hj]`. Conclude with `h.2 y ((A.valuation_le_one_iff y).2 ((hj y).2 hjy))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (i g) x - x = (i g) (x - j y) + (((i g) (j y) - j y) + -(x - j y))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(hadd _ _).trans_lt (max_lt (by rw [hn]; exact hy) ((hadd _ _).trans_lt (max_lt hgy ?_)))` and prove the remaining obligations.
-
-Rewrite using `[norm_neg]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertiaK_iff_mem_Ine (p : ℕ) [Fact p.Prime] (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (A : ValuationSubring Ω) (j : Ω →+* PadicAlgCl p) (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1)

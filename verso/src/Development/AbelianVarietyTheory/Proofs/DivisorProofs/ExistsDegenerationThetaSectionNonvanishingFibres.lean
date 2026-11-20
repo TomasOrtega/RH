@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.DegTheta
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resG_resG {X : Scheme.{0}} {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U) (z : Γ(X, U)) :
     resG X h (resG X h' z) = resG X (h.trans h') z := by
@@ -26,7 +26,7 @@ theorem resG_resG {X : Scheme.{0}} {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op).hom z = z`. Rewrite using `[show (homOfLE h).op = 𝟙 (Opposite.op U) from Subsingleton.elim _ _, X.presheaf.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resG_self {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (z : Γ(X, U)) : resG X h z = z := by
   change (X.presheaf.map (homOfLE h).op).hom z = z
@@ -34,7 +34,7 @@ theorem resG_self {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (z : Γ(X, U)) : 
   rfl
 
 /- English proof (translation)
-The claim follows from `Scheme.basicOpen_res X z (homOfLE h).op`.
+A detailed English derivation is pending.
 -/
 theorem basicOpen_resG {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (z : Γ(X, U)) :
     X.basicOpen (resG X h z) = V ⊓ X.basicOpen z :=
@@ -54,15 +54,13 @@ end GlobalTheory.DegTheta
 namespace GlobalTheory.DegTheta
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D F _ _ N ν`. Take `⟨V, θ, hxV, hθ, H⟩` from `GlobalTheory.SecFamily.exists_secOn_nonvanishing GlobalTheory.abelianSchemeLaws_all.1 (Sp R) D.P (IsLocalRing.closedPoint R)`. Establish `hVtop : V = ⊤` using `(IsLocalRing.closedPoint_mem_iff V).1 hxV`. Establish `hV : ∀ a : D.P.A.left, a ∈ D.P.A.hom ⁻¹ᵁ V` using `fun a => by rw [hVtop]; trivial`. Set `θ' : D.P.L.Sec` to `secOfSecOn hV θ hθ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨r, hr⟩` from `ν.th_gen (DVR.toH0 θ')`. Use `⟨DVR.secOfH0 ν.th, fun s => ?_, fun i h => ?_⟩` and prove the remaining obligations. Take `⟨a, i, has, ha⟩` from `H s (by rw [hVtop]; trivial)`. Use `⟨a, has, ?_⟩` and prove the remaining obligations. Establish `haU : a ∈ D.P.L.U i` using `(D.P.A.left.basicOpen_le (θ i) ha).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `hr (fun _ => i)`. Establish `h1 : a ∈ D.P.A.left.basicOpen ((DVR.toH0 θ').f (fun _ => i))`. Establish `eq1 : (DVR.toH0 θ').f (fun _ => i) = resG _ ((DVR.h0_le (fun _ => i)).trans (le_inf (fun x _ => hV x) le_rfl)) (θ i)` using `resG_resG _ _ _`. Rewrite using `[eq1]`. Conclude with `(basicOpen_resG _ (θ i)).ge ⟨DVR.chart_le_weighted_chart_single i haU, ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e, Scheme.basicOpen_mul]`. Establish `h2 : a ∈ D.P.A.left.basicOpen ((DVR.secOfH0 ν.th).f i)`. Establish `eq2 : (DVR.secOfH0 ν.th).f i = resG _ (DVR.chart_le_weighted_chart_single i) (ν.th.f (fun _ => i))` using `rfl`. Rewrite using `[eq2]`. Conclude with `(basicOpen_resG (DVR.chart_le_weighted_chart_single i) _).ge ⟨haU, h1.2⟩`.
-
-Conclude with `(le_iSup (fun k => D.P.A.left.basicOpen ((DVR.secOfH0 ν.th).f k)) i) h2`. Conclude with `((resG_resG h (DVR.chart_le_weighted_chart_single i) _).trans (resG_self _ _)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_nonvanishing : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsLocalRing R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (N : NumD F) (ν : NumOf D F N), ∃ th : D.P.L.Sec, (∀ s : Sp R, ∃ x : D.P.A.left, D.P.A.hom x = s ∧ x ∈ Out.nonzeroLocus th) ∧ ∀ i : D.P.L.ι, ∀ h : LB.wchart D.P.L (fun _ : Fin 1 => 𝟙 D.P.A.left) (fun _ => i) ≤ D.P.L.U i, ν.th.f (fun _ => i) = resG _ h (th.f i) := by
   intro R _ _ _ _ D F _ _ N ν

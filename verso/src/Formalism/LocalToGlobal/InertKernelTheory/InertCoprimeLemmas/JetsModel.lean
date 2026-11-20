@@ -12,9 +12,9 @@ namespace JetsModel
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric
 
 /- English proof (translation)
-Establish `hδ0` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.brcc_delta_ne D cc hcc δ hδ`. Take `⟨⟨L, hL⟩, -⟩` from `Formalism.L2.Th1.F2.lamOfLat D cc δ hcc.1 hδ0`. Take `⟨hg2, hg3⟩` from `Formalism.L2.KerInert.Sigma.invAlg' D cc δ hcc hδ L hL`. Take `⟨e2, e3⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.g2_g3_eq_periodPair _ L (congrArg (fun A : AddSubgroup ℂ => (A : Set ℂ)) hL)`. Rewrite using `[e2, e3]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hg2, hg3⟩`.
+Supply the required witnesses or components.
 -/
 theorem eisenstein_invariants_algebraic (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : IsCurveIdeal D cc) (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     g2 (lamOf D cc δ) ∈ Qbar ∧ g3 (lamOf D cc δ) ∈ Qbar := by
@@ -27,13 +27,13 @@ theorem eisenstein_invariants_algebraic (D : D7) (cc : Ideal (𝓞 D.host.K)) (�
   exact ⟨hg2, hg3⟩
 
 /- English proof (translation)
-Take `⟨h2, h3⟩` from `eisenstein_invariants_algebraic D cc δ hcc hδ`. Use `set a2 : Qbar := ⟨g2 (lamOf D cc δ), h2⟩ with ha2`. Use `set a3 : Qbar := ⟨g3 (lamOf D cc δ), h3⟩ with ha3`. Establish `ea4 : lamC lam (-(g2 (lamOf D cc δ)) / 4) = lam (-a2 / 4)`. Establish `: -(g2 (lamOf D cc δ)) / 4 = ((-a2 / 4 : Qbar) : ℂ)` using `by push_cast; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Formalism.L2.KerInert.Sigma.lamC_coe]`. Establish `ea6 : lamC lam (-(g3 (lamOf D cc δ)) / 4) = lam (-a3 / 4)`. Establish `: -(g3 (lamOf D cc δ)) / 4 = ((-a3 / 4 : Qbar) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Formalism.L2.KerInert.Sigma.lamC_coe]`. Establish `hd : a2 ^ 3 - 27 * a3 ^ 2 = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.br_discr_lamOf D cc hcc δ hδ` as an intermediate fact. Use `push_cast`. Conclude with `this`. Establish `hw : wModel lam (lamOf D cc δ) = ⟨0, 0, 0, lam (-a2 / 4), lam (-a3 / 4)⟩`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [wModel, ea4, ea6]`. Establish `key : lam (a2 ^ 3 - 27 * a3 ^ 2) = 1` using `by rw [hd, map_one]`. Rewrite using `[hw, ← key]`. Simplify using `only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈, map_sub, map_mul, map_pow, map_div₀, map_neg, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wModel_Δ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : IsCurveIdeal D cc) (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ)
     {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) : (wModel lam (lamOf D cc δ)).Δ = 1 := by
@@ -60,9 +60,9 @@ theorem wModel_Δ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : IsCurv
   ring
 
 /- English proof (translation)
-Introduce `D cc δ hcc hδ p _ h5 hIn lam C hC`. Take `⟨-, -, -, -, -, hΔ⟩` from `hC`. Establish `e : (C • wModel lam (lamOf D cc δ)).Δ = 1` using `hΔ`. Rewrite `e` using `[WeierstrassCurve.variableChange_Δ, wModel_Δ D cc δ hcc hδ lam, mul_one]`. Establish `hn : ‖((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])‖ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg norm e` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).mp this`. Unfold `IsIntP`. Rewrite using `[show ((C.u : ℂ_[p]ˣ) : ℂ_[p]) = (((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]))⁻¹ by simp, norm_inv, hn, inv_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsilon_unit : VariableChangeUnitIntegralAtInertPrimes := by
   intro D cc δ hcc hδ p _ h5 hIn lam C hC
@@ -79,23 +79,19 @@ theorem epsilon_unit : VariableChangeUnitIntegralAtInertPrimes := by
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 
 /- English proof (translation)
-Introduce `D cc δ hcc hδ p _ h5 hIn lam`. Take `⟨cc', δ', g, -, -, hlat, hgl, hAt, -, -⟩` from `Formalism.L2.KerInert.GenusOneDatumExistence.genus_one_datum_exists_lattice Formalism.L2.KerInert.Sigma.invAlg' D cc δ hcc hδ p h5 hIn lam`. Take `⟨-, -, -, hgL, hU, -⟩` from `hAt`. Establish `hU' : Formalism.MainNotions.GL3Theta.IsModelU lam (lamOf D cc δ) g.C`. Rewrite using `[← hgl, ← hlat, ← hgL]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU`. Take `⟨h1, h2, h3, h4, h6, hΔ⟩` from `hU'`. Use `set W' := g.C • wModel lam (lamOf D cc δ) with hW'`. Establish `hΔ' : ‖W'.Δ‖ = 1` using `hΔ`. Take `⟨ν, hν⟩` from `IsAlgClosed.exists_pow_nat_eq W'.Δ (show 0 < 12 by norm_num)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν1 : ‖ν‖ = 1`. Use `congrArg norm hν` as an intermediate fact. Rewrite `this` using `[norm_pow, hΔ']`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).mp this`. Establish `hν0 : ν ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `h`. Rewrite `hν1` using `[h, norm_zero]`. Conclude with `zero_ne_one hν1`. Set `S : WeierstrassCurve.VariableChange ℂ_[p]` to `⟨Units.mk0 ν hν0, 0, 0, 0⟩`. Use `⟨S * g.C, Formalism.L2.Th1.A.wU ((S * g.C) • wModel lam (lamOf D cc δ)), ?_, Formalism.L2.KerInert.GenusOneDatumExistence.isWq_wU _⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSW : (S * g.C) • wModel lam (lamOf D cc δ) = S • W'` using `mul_smul _ _ _`. Establish `hSu : ((S.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) = ν⁻¹` using `by simp [S]`. Establish `hn : ‖ν⁻¹‖ = 1` using `by rw [norm_inv, hν1, inv_one]`. Use `show IsIntP ((S * g.C) • wModel lam (lamOf D cc δ)).a₁ ∧ IsIntP ((S * g.C) • wModel lam (lamOf D cc δ)).a₂ ∧ IsIntP ((S * g.C) • wModel lam (lamOf D cc δ)).a₃ ∧ IsIntP ((S * g.C) • wModel lam (lamOf D cc δ)).a₄ ∧ IsIntP ((S * g.C) • wModel lam (lamOf D cc δ)).a₆ ∧ ((S * g.C) • wM …`. Rewrite using `[hSW]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsIntP at h1 h2 h3 h4 h6 ⊢`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.variableChange_a₁, hSu]`. Simplify using `only [S, mul_zero, add_zero, norm_mul, hn, one_mul]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[WeierstrassCurve.variableChange_a₂, hSu]`. Simplify using `only [S, zero_mul, mul_zero, sub_zero, add_zero, zero_pow two_ne_zero, norm_mul, norm_pow, hn, one_pow, one_mul]`. Conclude with `h2`. Rewrite using `[WeierstrassCurve.variableChange_a₃, hSu]`. Simplify using `only [S, zero_mul, mul_zero, add_zero, norm_mul, norm_pow, hn, one_pow, one_mul]`.
-
-Conclude with `h3`. Rewrite using `[WeierstrassCurve.variableChange_a₄, hSu]`. Simplify using `only [S, zero_mul, mul_zero, sub_zero, add_zero, zero_add, zero_pow two_ne_zero, norm_mul, norm_pow, hn, one_pow, one_mul]`. Conclude with `h4`. Rewrite using `[WeierstrassCurve.variableChange_a₆, hSu]`.
-
-Simplify using `only [S, zero_mul, mul_zero, sub_zero, add_zero, zero_add, zero_pow two_ne_zero, zero_pow three_ne_zero, norm_mul, norm_pow, hn, one_pow, one_mul]`. Conclude with `h6`. Rewrite using `[WeierstrassCurve.variableChange_Δ, hSu, ← hν, inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hν0)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_model_exists : ModelExists := by
   intro D cc δ hcc hδ p _ h5 hIn lam
@@ -146,7 +142,7 @@ end JetsModel
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 
 /- English proof (translation)
-Introduce `hInt hOB hPJ` and use `jetsInert_of hInt hOB JetsModel.integral_model_exists JetIntegrality.log_derivative_integral JetsModel.epsilon_unit hPJ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jetsInert_of_int : IntInert → OrthBasisExists → PhiJetInt → JetsInert :=
   fun hInt hOB hPJ => jetsInert_of hInt hOB JetsModel.integral_model_exists JetIntegrality.log_derivative_integral

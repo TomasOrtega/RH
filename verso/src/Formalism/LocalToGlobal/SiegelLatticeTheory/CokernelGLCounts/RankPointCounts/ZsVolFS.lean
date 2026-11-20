@@ -13,32 +13,32 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-The claim follows from `(FractionalIdeal.mem_coeIdeal _).2 ⟨_, Ideal.mem_span_singleton_self _, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem g_mem_qq : ((Lat.gS D : ℕ) : D.host.E) ∈
     ((Formalism.L2.SG.Pf.StabIntSh.qq D : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) :=
   (FractionalIdeal.mem_coeIdeal _).2 ⟨_, Ideal.mem_span_singleton_self _, by simp⟩
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.mul_mem_mul g_mem_qq hx`.
+A detailed English derivation is pending.
 -/
 theorem g_mul_mem {k : ℕ} {x : D.host.E} (hx : x ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D k) :
     ((Lat.gS D : ℕ) : D.host.E) * x ∈ Formalism.L2.SG.Pf.StabIntSh.qdPow D k :=
   FractionalIdeal.mul_mem_mul g_mem_qq hx
 
 /- English proof (translation)
-Establish `h` using `(FractionalIdeal.mem_coe).1 (Submodule.smul_mem _ o ((FractionalIdeal.mem_coe).2 (one_mem_ddPow (D := D) k)))`. Rewrite `h` using `[Algebra.smul_def, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem o_mem_ddPow (k : ℕ) (o : 𝓞 D.host.E) : (o : D.host.E) ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D k := by
   have h := (FractionalIdeal.mem_coe).1 (Submodule.smul_mem _ o ((FractionalIdeal.mem_coe).2 (one_mem_ddPow (D := D) k)))
   rwa [Algebra.smul_def, mul_one] at h
 
 /- English proof (translation)
-Apply the tactic sequence `have h1 : uu j i ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D ((i : ℕ) - (j : ℕ)) := frame_entry F Λ hX hz s hs uu huu hfr j i hji`. Apply the tactic sequence `have h2 : uu' j i ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D ((i : ℕ) - (j : ℕ)) := frame_entry F' Λ hX' hz' s hs uu' huu' hfr' j i hji`. Establish `hd : uu j i - uu' j i ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D ((i : ℕ) - (j : ℕ))` using `(FractionalIdeal.mem_coe).1 (Submodule.sub_mem _ ((FractionalIdeal.mem_coe).2 h1) ((FractionalIdeal.mem_coe).2 h2))`. Use `(FractionalIdeal.mem_coe).1 (mem_of_loc _ _ fun P => ?_)` and prove the remaining obligations. Distinguish the cases in `hgP : ((Lat.gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨t, ht, o, ho⟩` from `cong_at F F' Λ hc hc' hz' hadm s hs uu uu' huu huu' hfr hfr' P hgP j i hji`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[ho]`. Conclude with `(FractionalIdeal.mem_coe).2 (g_mul_mem (o_mem_ddPow _ o))`. Use `⟨((Lat.gS D : ℕ) : 𝓞 D.host.E), hgP, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (((Lat.gS D : ℕ) : 𝓞 D.host.E) : D.host.E) = ((Lat.gS D : ℕ) : D.host.E)` using `by simp`. Rewrite using `[e]`. Conclude with `(FractionalIdeal.mem_coe).2 (g_mul_mem hd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_glob {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hc : IsFixedConv Λ (Lat.gS D) F) (hc' : IsFixedConv Λ (Lat.gS D) F')

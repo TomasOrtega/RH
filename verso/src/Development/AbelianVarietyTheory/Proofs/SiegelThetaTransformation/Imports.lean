@@ -6,19 +6,19 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.F
 namespace GlobalTheory.CommonDenominatorExistence
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hL`. Use `choose z hz using fun p : (Fin r → E) × Fin r => IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers E)) (p.1 p.2)`. Set `d : NumberField.RingOfIntegers E` to `∏ p ∈ s ×ˢ (Finset.univ : Finset (Fin r)), ((z p).2 : _)`. Use `⟨d, Finset.prod_ne_zero_iff.mpr fun p _ => nonZeroDivisors.ne_zero (z p).2.2, ?_⟩` and prove the remaining obligations. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem g hg`. Introduce `a`. Take `⟨e, he⟩` from `Finset.dvd_prod_of_mem (fun p => ((z p).2 : NumberField.RingOfIntegers E)) (show (g, a) ∈ s ×ˢ (Finset.univ : Finset (Fin r)) from Finset.mem_product.mpr ⟨hg, Finset.mem_univ a⟩)`. Use `⟨e * (z (g, a)).1, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hz (g, a)`. Simplify using `only [← NumberField.RingOfIntegers.coe_eq_algebraMap] at h`. Rewrite using `[show d = ((z (g, a)).2 : NumberField.RingOfIntegers E) * e from he]`. Use `push_cast`. Take the linear combination `(-(e : E)) * h`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Consider the case `zero`. Introduce `a`. Conclude with `⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, h1⟩` from `hx a`. Take `⟨c2, h2⟩` from `hy a`. Use `⟨c1 + c2, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, mul_add, ← h1, ← h2]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `smul t x _ hx`. Introduce `a`. Take `⟨c1, h1⟩` from `hx a`. Use `⟨t * c1, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def, ← NumberField.RingOfIntegers.coe_eq_algebraMap]`. Use `push_cast`. Take the linear combination `(t : E) * h1`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_common_denominator {E : Type} [Field E] [NumberField E] {r : ℕ}
     {L : GlobalTheory.SW.Lt E r} (hL : Submodule.FG L) :

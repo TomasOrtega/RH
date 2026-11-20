@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l}
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun z => by ext <;> simp [epsMul, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem epsMul_comp_epsMul {R : Type} [CommRing R] (a b : R) :
     (epsMul a).comp (epsMul b) = epsMul (a * b) :=
@@ -23,16 +23,16 @@ theorem epsMul_comp_epsMul {R : Type} [CommRing R] (a b : R) :
     ext <;> simp [epsMul, mul_smul]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun z => by ext <;> simp [epsMul]`.
+A detailed English derivation is pending.
 -/
 theorem epsMul_one' {R : Type} [CommRing R] : epsMul (1 : R) = RingHom.id _ :=
   RingHom.ext fun z => by
     ext <;> simp [epsMul]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hu`. Establish `e : spMap (epsMul ((u⁻¹ : Rˣ) : R)) ≫ spMap (epsMul (u : R)) = 𝟙 _`. Rewrite using `[GlobalTheory.Frames.ChgBC.spMap_comp_ring, epsMul_comp_epsMul, Units.inv_mul, epsMul_one', GlobalTheory.Frames.ChgBC.spMap_id]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, e, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = g := by rw [h, ← Category.assoc, e, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem spMap_epsMul_cancel {R : Type} [CommRing R] {u : R} (hu : IsUnit u) {Z : Scheme.{0}}
     {f g : Sp (DualNumber R) ⟶ Z} (h : spMap (epsMul u) ≫ f = spMap (epsMul u) ≫ g) : f = g := by
@@ -51,11 +51,11 @@ namespace GlobalTheory.HeckeLieBC
 open GlobalTheory.HeckeFrCompare (toFib_fst toFib_snd)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo T Ω _ _ χ x x' x₁ x₁' Ψ Ψ₁ p v w w₁ hp hF hL hL₁`. Take `⟨pm, pm', hc, hc', hcomm, -⟩` from `hF`. Take `⟨-, -, a, ha, hw⟩` from `hL`. Take `⟨-, -, a₁, ha₁, hw₁⟩` from `hL₁`. Establish `hfib : GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori.toFib x₁ (spMap (algebraMap Ω (DualNumber Ω))) a₁ ≫ pm = spMap (dualMap χ) ≫ GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori.toFib x (spMap (algebraMap T (DualNumber T))) a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `GlobalTheory.Frames.ChgBC.gx_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hc.2.1, toFib_snd, Category.assoc, toFib_snd, ha₁, ha]`. Rewrite using `[Category.assoc, hc.2.2, GlobalTheory.HeckeFrCompare.toFib_fst_assoc, Category.assoc, toFib_fst, GlobalTheory.Frames.ChgBC.spMap_comp_ring, GlobalTheory.Frames.ChgBC.spMap_comp_ring, GlobalTheory.Frames.ChgBC.dualMap_alg]`. Establish `hpush : GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori.push Ψ₁ (spMap (algebraMap Ω (DualNumber Ω))) a₁ = spMap (dualMap χ) ≫ GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori.push Ψ (spMap (algebraMap T (DualNumber T))) a`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori.push`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hc'.2.1, reassoc_of% hcomm, reassoc_of% hfib]`. Apply `spMap_epsMul_cancel hp` to reduce the goal to its premises. Rewrite using `[hw₁, hpush, ← hw, ← Category.assoc, ← Category.assoc, GlobalTheory.Frames.ChgBC.spMap_comp_ring, GlobalTheory.Frames.ChgBC.spMap_comp_ring, GlobalTheory.Frames.ChgBC.dualMap_eps, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieImg_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (T Ω : Type) [CommRing T] [CommRing Ω] (χ : T →+* Ω) (x x' : Sp T ⟶ Xo.X)

@@ -19,11 +19,11 @@ namespace GlobalTheory.CuspGeo
 open Formalism.IndefR.Eqv
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, ← Finset.sum_mul]`. Use `mul_le_mul_of_nonneg_right ((norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)) (norm_nonneg _)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hA k l) (norm_nonneg _)`. Use `_ = (∑ k, ∑ l, ‖P i k‖ * ‖Q l j‖) * c := by`. Rewrite using `[Finset.sum_comm, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_mul_mul_apply_le {n : ℕ} (P A Q : Matrix (Fin n) (Fin n) ℂ) (c : ℝ) (hA : ∀ k l, ‖A k l‖ ≤ c)
     (i j : Fin n) : ‖(P * A * Q) i j‖ ≤ (∑ k, ∑ l, ‖P i k‖ * ‖Q l j‖) * c := by
@@ -42,9 +42,9 @@ theorem norm_mul_mul_apply_le {n : ℕ} (P A Q : Matrix (Fin n) (Fin n) ℂ) (c 
         ring
 
 /- English proof (translation)
-Establish `hy : (uMat y)ᴴ * Formalism.REAL.Jm ε * uMat y = Formalism.REAL.Jm ε` using `y.2`. Establish `h1 : uMat y⁻¹ = Formalism.REAL.Jm ε * (uMat y)ᴴ * Formalism.REAL.Jm ε` using `by show (((y : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _`. Use `Units.inv_eq_of_mul_eq_one_left ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases hi : ε i <;> by_cases hj : ε j <;>`. Simplify using `[Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, hi, hj]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem norm_uMat_inv_apply {n : ℕ} {ε : Fin n → Bool} (y : Formalism.REAL.UJ ε) (i j : Fin n) :
     ‖uMat y⁻¹ i j‖ = ‖uMat y j i‖ := by
@@ -65,7 +65,7 @@ def frameBound (fr : UI.Frames D V) (τ : D.what₂.Tau) (i j : Fin V.rank) : �
   ∑ k, ∑ l, ‖fr.P (Formalism.L2.Host.tauPl D τ) i k‖ * ‖(fr.P (Formalism.L2.Host.tauPl D τ))⁻¹ l j‖
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem frameBound_nonneg (fr : UI.Frames D V) (τ : D.what₂.Tau) (i j : Fin V.rank) : 0 ≤ frameBound fr τ i j :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)
@@ -79,19 +79,19 @@ Both sides reduce to the same expression.
 theorem brgFin_apply (fr : UI.Frames D V) (k : (UI.instV fr).Gf) : brgFin fr k = UI.brg fr (1, k) := rfl
 
 /- English proof (translation)
-The claim follows from `(UI.brg fr).continuous.comp (continuous_const.prodMk continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_brgFin (fr : UI.Frames D V) : Continuous (brgFin fr) :=
   (UI.brg fr).continuous.comp (continuous_const.prodMk continuous_id)
 
 /- English proof (translation)
-Establish `hle : ∀ τ i j, frameBound fr τ i j ≤ ∑ τ, ∑ i, ∑ j, 2 * frameBound fr τ i j` using `fun τ i j => by`. Establish `h0` using `frameBound_nonneg fr`. Combine the equalities or inequalities in the displayed calculation. Use `⟨∑ τ, ∑ i, ∑ j, 2 * frameBound fr τ i j, Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => mul_nonneg zero_le_two (frameBound_nonneg fr τ i j), fun y c => ⟨fun hc => ?_, fun hc τ i j => ?_⟩⟩` and prove the remaining obligations. Unfold `normInf`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Simplify using `only [Finset.sum_mul]`. Use `Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `e1` using `norm_mul_mul_apply_le (fr.P (Formalism.L2.Host.tauPl D τ)) (uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ) (fr.P (Formalism.L2.Host.tauPl D τ))⁻¹ c (fun k l => hc (Formalism.L2.Host.tauPl D τ) k l) i j`. Establish `e2` using `norm_mul_mul_apply_le (fr.P (Formalism.L2.Host.tauPl D τ)) (uMat ((y (Formalism.L2.Host.tauPl D τ))⁻¹) : Matrix (Fin V.rank) (Fin V.rank) ℂ) (fr.P (Formalism.L2.Host.tauPl D τ))⁻¹ c (fun k l => (norm_uMat_inv_apply _ k l).trans_le (hc _ l k)) i j`. Rewrite using `[← map_inv, h2 _ τ (uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ) rfl, h2 _ τ (uMat ((y (Formalism.L2.Host.tauPl D τ))⁻¹) : Matrix (Fin V.rank) (Fin V.rank) ℂ) rfl]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `frameBound`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc0 : 0 ≤ c` using `(norm_nonneg _).trans (hc (Formalism.L2.Host.tauPl D τ) i j)`. Establish `hdet : IsUnit (fr.P (Formalism.L2.Host.tauPl D τ)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (fr.unit (Formalism.L2.Host.tauPl D τ))`. Rewrite using `[h2 _ τ (uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ) rfl]`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : fr.P (Formalism.L2.Host.tauPl D τ) * (uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ) * (fr.P (Formalism.L2.Host.tauPl D τ))⁻¹ - 1 = fr.P (Formalism.L2.Host.tauPl D τ) * ((uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ …`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_nonsing_inv _ hdet]`. Rewrite using `[e]`. Conclude with `(norm_mul_mul_apply_le _ _ _ c (hc _) i j).trans (mul_le_mul_of_nonneg_right (hle τ i j) hc0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brg_entry_bounds (fr : UI.Frames D V)
     (h2 : ∀ (x : (UI.instV fr).GA) (τ : D.what₂.Tau) (A : Matrix (Fin V.rank) (Fin V.rank) ℂ),
@@ -143,25 +143,23 @@ theorem brg_entry_bounds (fr : UI.Frames D V)
     exact (norm_mul_mul_apply_le _ _ _ c (hc _) i j).trans (mul_le_mul_of_nonneg_right (hle τ i j) hc0)
 
 /- English proof (translation)
-Introduce `U hU`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.unitaryGroup_twoModels_rationalReal_unipotent_dictionary D θ hθ V (UI.framesV D V)`. Take `⟨S, hS0, hS⟩` from `brg_entry_bounds (θ := θ) (UI.framesV D V) h2`. Take `⟨d, hd⟩` from `GlobalTheory.Grow.height_le_normInf_pow (θ := θ) V hθ`. Establish `hKp : IsOpen ((U.comap (brgFin (UI.framesV D V)) : Subgroup _) : Set (UI.instV (UI.framesV D V)).Gf)` using `hU.preimage (continuous_brgFin _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, C, δ₀, K, hδ₀, hK, hx⟩` from `GlobalTheory.T.adelicPoint_nearCusp_scale (UI.instV (UI.framesV D V)) _ hKp`. Take `⟨Ck, hCk⟩` from `GlobalTheory.Grow.exists_height_le_of_isCompact V (hK.image (continuous_brgFin (UI.framesV D V)))`. Use `⟨b * d, max (Ck * (S * C) ^ d) (S * C), δ₀, hδ₀, fun g => ?_⟩` and prove the remaining obligations. Use `set fr := UI.framesV D V with hfr`. Use `set x := (UI.brg fr).symm g with hxdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgx : UI.brg fr x = g` using `(UI.brg fr).apply_symm_apply g`. Take `⟨δ, hδ, hδ1, ⟨γ, hγ, hγK, hγb⟩, halt⟩` from `hx x`. Use `⟨δ, hδ, hδ1, ?_, ?_⟩` and prove the remaining obligations. Establish `hsplit : γ * x = ((γ * x).1, 1) * (1, (γ * x).2)` using `Prod.ext (by simp) (by simp)`. Establish `e : UI.brg fr γ * g = UI.brg fr ((γ * x).1, 1) * brgFin fr (γ * x).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hkb` using `hCk _ ⟨_, hγK, rfl⟩`. Establish `hq : GlobalTheory.Grow.quotHeight V g ≤ GlobalTheory.Grow.height V (UI.brg fr ((γ * x).1, 1)) * Ck`. Use `GlobalTheory.Grow.quotHeight_le V g ((h1 γ).2 hγ)` as an intermediate fact. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.trans ((GlobalTheory.Grow.height_mul_le V _ _).trans (mul_le_mul_of_nonneg_left hkb (GlobalTheory.Grow.height_pos V _).le))`. Establish `hy : ∀ v i j, ‖uMat ((γ * x).1 v) i j‖ ≤ C / δ ^ b` using `fun v i j => (le_div_iff₀ (pow_pos hδ b)).2 (hγb v i j)`. Establish `hN` using `(hS (γ * x).1 (C / δ ^ b)).1 hy`. Establish `hN0 : 0 ≤ normInf θ V (UI.brg fr ((γ * x).1, 1))` using `by unfold normInf; positivity`. Establish `hNb : normInf θ V (UI.brg fr ((γ * x).1, 1)) * δ ^ b ≤ S * C`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hH` using `hd _ ((brg_mem_GinfC fr ((γ * x).1, 1)).2 rfl)`. Establish `hHb : GlobalTheory.Grow.height V (UI.brg fr ((γ * x).1, 1)) * δ ^ (b * d) ≤ (S * C) ^ d`. Rewrite using `[pow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hCk0 : 0 ≤ Ck` using `zero_le_one.trans ((GlobalTheory.Grow.one_le_height V _).trans hkb)`. Combine the equalities or inequalities in the displayed calculation. Break down `halt with h | ⟨W, hW, hWm⟩` into its components or cases. Conclude with `Or.inl h`. Take `⟨r, C₀, hC₀, hNI⟩` from `h3 W hW`.
+Prove the first alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Or.inr ⟨r, C₀, hC₀, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hm' : (UI.brg fr).symm m ∈ (UI.instV fr).NA W` using `hNI _ (by rwa [(UI.brg fr).apply_symm_apply])`. Take `⟨γ', hγ', u, k, hk, he, hu⟩` from `hWm _ hm'`. Use `⟨UI.brg fr γ', (h1 γ').2 hγ', UI.brg fr (u, 1), brgFin fr k, ⟨(brg_mem_GinfC fr (u, 1)).2 rfl, fun τ i j => ?_⟩, hk, (brg_mem_GfC fr (1, k)).2 rfl, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) hδ.le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he]; exact congrArg (fun z => UI.brg fr (γ' * x * z)) (Prod.ext (by simp) (by simp))`. Use `_ = UI.brg fr γ' * g * UI.brg fr (u, 1) * brgFin fr k := by`.
-
-Rewrite using `[map_mul, map_mul, map_mul, hgx, ← mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem near (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ) (V : HSp D) :
     Near θ V := by

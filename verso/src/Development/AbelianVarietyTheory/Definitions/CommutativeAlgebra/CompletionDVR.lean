@@ -6,7 +6,7 @@ namespace ReciprocityTheory.CA.Pt
 open IsLocalRing
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨inferInstance, inferInstance⟩, inferInstance, GlobalTheory.algebraMap_adicCompletion_injective_of_dvr W, inferInstance, AdicCompletion.maximalIdeal_eq_map⟩`.
+Supply the required witnesses or components.
 -/
 theorem completionDVR (W : Type*) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] :
     (∃ _ : IsDomain (AdicCompletion (maximalIdeal W) W),
@@ -20,7 +20,7 @@ theorem completionDVR (W : Type*) [CommRing W] [IsDomain W] [IsDiscreteValuation
     AdicCompletion.maximalIdeal_eq_map⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(completionDVR ℤ_[2]).2.1, (completionDVR ℤ_[2]).2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 example : IsAdicComplete (maximalIdeal (AdicCompletion (maximalIdeal ℤ_[2]) ℤ_[2]))
       (AdicCompletion (maximalIdeal ℤ_[2]) ℤ_[2]) ∧
@@ -28,7 +28,7 @@ example : IsAdicComplete (maximalIdeal (AdicCompletion (maximalIdeal ℤ_[2]) �
   ⟨(completionDVR ℤ_[2]).2.1, (completionDVR ℤ_[2]).2.2.1⟩
 
 /- English proof (translation)
-Introduce `h` and use `PowerSeries.X_irreducible.not_isUnit ((completionDVR (PowerSeries ℚ)).2.2.2.1.map_nonunit _ h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ IsUnit (algebraMap (PowerSeries ℚ)
     (AdicCompletion (maximalIdeal (PowerSeries ℚ)) (PowerSeries ℚ)) PowerSeries.X) := fun h =>

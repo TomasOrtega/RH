@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Pub
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CMModel.stable_kerReps_add_sub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStableKerRepsAddSub.lean&line=36#L36)
 -/

@@ -10,9 +10,9 @@ open Formalism.L2.SG.Pf.StabilizerIndexVolumes Matrix
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ} {T T' : E}
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_smul, hs, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul]`. Establish `h1 : ∀ d, ∑ c, P⁻¹ c b * P d c = (P * P⁻¹) d b` using `fun d => by`. Rewrite using `[Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Simplify using `only [h1, hP, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_inv (f : Fin (r + 1) → S.V) (s : S.V ≃ₗ[E] S.V) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hP : P * P⁻¹ = 1) (hs : ∀ b, s (f b) = ∑ c, P c b • f c) (b : Fin (r + 1)) :
@@ -27,7 +27,7 @@ theorem act_inv (f : Fin (r + 1) → S.V) (s : S.V ≃ₗ[E] S.V) (P : Matrix (F
     Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `htri : P.BlockTriangular id` using `fun i j hij => (hP i j).1 hij`. Establish `hdet : P.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular htri]`. Conclude with `Finset.prod_eq_one fun i _ => (hP i i).2 rfl`. Conclude with `Matrix.mul_nonsing_inv P (by rw [hdet]; exact isUnit_one)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_inv_mul {P : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hP : Formalism.MainNotions.S.IsUpUni P) : P * P⁻¹ = 1 := by
   have htri : P.BlockTriangular id := fun i j hij => (hP i j).1 hij
@@ -37,33 +37,31 @@ theorem up_inv_mul {P : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hP : Formalism.Ma
   exact Matrix.mul_nonsing_inv P (by rw [hdet]; exact isUnit_one)
 
 /- English proof (translation)
-Establish `hframe : ∀ m, s (gg F F' m) = sL (gg F F') (UU P Q) (gg F F' m)`. Introduce `m`. Consider the cases of `m with`. Consider the case `inl b => show s (F.fvec b) = sL (gg F F') (UU P Q) (F.fvec b)`. Rewrite using `[hsf, sL_frame (F := F) (F' := F') hG P Q b]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `inr b => show s (F'.fvec b) = sL (gg F F') (UU P Q) (F'.fvec b)`. Rewrite using `[hsf', sL_frame' (F := F) (F' := F') hG P Q b]`. Establish `hy : ∀ l, S.hT (gg F F' l) (x - ∑ m, cOf (gg F F') x m • gg F F' m) = 0`. Introduce `l`. Establish `h1` using `congrFun (gram_cOf (gg F F') hG x) l`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_sum, ← h1]`. Simplify using `only [map_smul, smul_eq_mul, Matrix.mulVec, dotProduct, gramOf]`. Rewrite using `[sub_eq_zero]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_comm _ _`. Establish `hspan0 : ∀ w ∈ Submodule.span E (Set.range (gg F F')), S.hT w (x - ∑ m, cOf (gg F F') x m • gg F F' m) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨l, rfl⟩` from `hv`. Conclude with `hy l`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]`. Consider the case `smul a v _ hv => rw [map_smulₛₗ, LinearMap.smul_apply, hv, smul_zero]`. Establish `hpre : ∀ l, ∃ w ∈ Submodule.span E (Set.range (gg F F')), s w = gg F F' l`. Introduce `l`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `l with`. Consider the case `inl b`. Use `⟨∑ c, P⁻¹ c b • F.fvec c, Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inl c, rfl⟩), ?_⟩` and prove the remaining obligations. Conclude with `act_inv F.fvec s P (up_inv_mul hP) hsf b`. Consider the case `inr b`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨∑ c, Q⁻¹ c b • F'.fvec c, Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr c, rfl⟩), ?_⟩` and prove the remaining obligations. Conclude with `act_inv F'.fvec s Q (up_inv_mul hQ) hsf' b`. Establish `hsy : s (x - ∑ m, cOf (gg F F') x m • gg F F' m) = x - ∑ m, cOf (gg F F') x m • gg F F' m`. Establish `hy' : ∀ i, S.hT (F.e i) (x - ∑ m, cOf (gg F F') x m • gg F F' m) = 0`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hy (Sum.inl i.castSucc)`. Simplify `h2` using `[gg, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`. Establish `hmem` using `hsX _ hy'`. Establish `hdspan : s (x - ∑ m, cOf (gg F F') x m • gg F F' m) - (x - ∑ m, cOf (gg F F') x m • gg F F' m) ∈ Submodule.span E (Set.range (gg F F'))`. Use `Submodule.span_mono ?_ hmem` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨Sum.inl i.castSucc, by simp [gg, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]⟩`. Establish `hdperp : ∀ l, S.hT (gg F F' l) (s (x - ∑ m, cOf (gg F F') x m • gg F F' m) - (x - ∑ m, cOf (gg F F') x m • gg F F' m)) = 0`. Introduce `l`. Take `⟨w, hw, hwl⟩` from `hpre l`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hy l, sub_zero, ← hwl, hs, hspan0 w hw]`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hdspan`. Establish `hc0 : cOf (gg F F') (s (x - ∑ m, cOf (gg F F') x m • gg F F' m) - (x - ∑ m, cOf (gg F F') x m • gg F F' m)) = 0`. Rewrite using `[cOf_eq]`. Establish `hz : (fun l => S.hT (gg F F' l) (s (x - ∑ m, cOf (gg F F') x m • gg F F' m) - (x - ∑ m, cOf (gg F F') x m • gg F F' m))) = 0` using `funext hdperp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hz, Matrix.mulVec_zero]`. Establish `hca : cOf (gg F F') (∑ m, a m • gg F F' m) = a`. Establish `h3` using `cOf_comb (gg F F') hG 0 a`. Rewrite `h3` using `[zero_add]`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `cOf_smul (gg F F') 0 0`. Rewrite `h4` using `[zero_smul, zero_smul]`. Rewrite using `[h4, zero_add]`. Rewrite `hca` using `[ha]`. Rewrite `hca` using `[hc0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← ha, ← hca]`. Simplify using the standard rewrite rules. Establish `hx : x = (x - ∑ m, cOf (gg F F') x m • gg F F' m) + ∑ m, cOf (gg F F') x m • gg F F' m`. Rewrite using `[sub_add_cancel]`. Rewrite using `[hx, map_add, map_add, map_sum, map_sum, hsy, sL_perp (F := F) (F' := F') hG _ hy]`.
-
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [map_smul, map_smul, hframe m]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eq_sL (F : Formalism.MainNotions.S.FlagG S r T) (F' : Formalism.MainNotions.S.FlagG S r T') (hG : IsUnit (gramOf (gg F F')).det)
     (s : S.V ≃ₗ[E] S.V) (hs : ∀ x y, S.hT (s x) (s y) = S.hT x y)
@@ -150,19 +148,17 @@ theorem eq_sL (F : Formalism.MainNotions.S.FlagG S r T) (F' : Formalism.MainNoti
   exact Finset.sum_congr rfl fun m _ => by rw [map_smul, map_smul, hframe m]
 
 /- English proof (translation)
-Establish `hQd : Q.det = 1`. Establish `htri : Q.BlockTriangular id` using `fun i j hij => (hQ i j).1 hij`. Rewrite using `[Matrix.det_of_upperTriangular htri]`. Conclude with `Finset.prod_eq_one fun i _ => (hQ i i).2 rfl`. Establish `hmat : P.conjTranspose * Formalism.MainNotions.S.Zhat F F' * Q = Formalism.MainNotions.S.Zhat F F'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Establish `h` using `hs (F.fvec a) (F'.fvec b)`. Rewrite `h` using `[hsf, hsf']`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, Finset.mul_sum] at h`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Formalism.MainNotions.S.Zhat, Formalism.MainNotions.S.brS]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, Finset.sum_comm]`. Simplify using `only [Finset.sum_mul, RingHom.id_apply, starRingEnd_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => by ring`. Establish `hZH : IsUnit (Formalism.MainNotions.S.Zhat F F').conjTranspose.det`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `hZu.star`. Establish `hQH : IsUnit Q.conjTranspose.det`. Rewrite using `[Matrix.det_conjTranspose, hQd, star_one]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : Q.conjTranspose * (Formalism.MainNotions.S.Zhat F F').conjTranspose * P = (Formalism.MainNotions.S.Zhat F F').conjTranspose`. Establish `h3` using `congrArg Matrix.conjTranspose hmat`. Rewrite `h3` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `e1 : (Formalism.MainNotions.S.Zhat F F').conjTranspose * P = (Q.conjTranspose)⁻¹ * (Formalism.MainNotions.S.Zhat F F').conjTranspose` using `by conv_rhs => rw [← h2]`. Rewrite using `[Matrix.mul_assoc Q.conjTranspose, ← Matrix.mul_assoc (Q.conjTranspose)⁻¹, Matrix.nonsing_inv_mul _ hQH, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrel : P = ((Formalism.MainNotions.S.Zhat F F').conjTranspose)⁻¹ * (Q.conjTranspose)⁻¹ * (Formalism.MainNotions.S.Zhat F F').conjTranspose`. Rewrite using `[Matrix.mul_assoc, ← e1, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hZH, Matrix.one_mul]`. Establish `hQl : Formalism.MainNotions.S.IsLoUni Q.conjTranspose` using `fun i j => ⟨fun h => by simp [Matrix.conjTranspose_apply, (hQ j i).1 h], fun h => by subst h; simp [Matrix.conjTranspose_apply, (hQ i i).2 rfl]⟩`. Use `⟨fun j x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sL F F' hG s hs P Q hP hQ hsf hsf' hsX x]`.
-
-Conclude with `sL_Xa' (F := F) (F' := F') hG hQ j x hx`. Rewrite using `[eq_sL F F' hG s hs P Q hP hQ hsf hsf' hsX x]`. Conclude with `sL_orth' (F := F) (F' := F') hG hQ hZH hrel (loUni_inv hQl) x hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nlam_of_frames (F : Formalism.MainNotions.S.FlagG S r T) (F' : Formalism.MainNotions.S.FlagG S r T') (hG : IsUnit (gramOf (gg F F')).det)
     (hZu : IsUnit (Formalism.MainNotions.S.Zhat F F').det)

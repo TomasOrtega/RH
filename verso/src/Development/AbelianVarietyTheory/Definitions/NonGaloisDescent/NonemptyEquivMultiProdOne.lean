@@ -34,7 +34,7 @@ def multiProdEquiv (e : (Σ a, m a) ≃ n) {X Y : α → Type} [∀ a, AddCommGr
     (multiProd e π).Equiv (multiProd e σ) :=
   parIndEquiv e (piTensorEquiv φ)
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Use `Submodule.subset_span ⟨u, f v, ?_⟩` and prove the remaining obligations. Simplify using `[Representation.IntertwiningMap.isIntertwining _ _ f]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem twKer_le_comap_intertwining {G : Type} [Group G] {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y]
     [Module ℂ Y] {ρ : Representation ℂ G X} {τ : Representation ℂ G Y} (f : ρ.IntertwiningMap τ) (N : Subgroup G) :
@@ -46,13 +46,13 @@ private theorem twKer_le_comap_intertwining {G : Type} [Group G] {X Y : Type} [A
   simp [Representation.IntertwiningMap.isIntertwining _ _ f]
 
 /- English proof (translation)
-Use `⟨fun w => ?_, fun s d e hne => ?_⟩` and prove the remaining obligations. Establish `key : ∀ g, φ.symm (σ g w) = π g (φ.symm w)` using `fun g => Representation.IntertwiningMap.isIntertwining _ _ φ.symm.toIntertwiningMap g w`. Establish `hset : {g : GL n k | σ g w = w} = {g | π g (φ.symm w) = φ.symm w}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Rewrite using `[← key, hg]`. Introduce `hg`. Apply `EquivLike.injective φ.symm` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[key, hg]`. Rewrite using `[hset]`. Conclude with `h.1 _`. Establish `h2 : twKer π (unipRad k e) 1 = ⊤` using `Submodule.Quotient.subsingleton_iff.1 (h.2 s d e hne)`. Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 fun w _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw` using `twKer_le_comap_intertwining φ.toIntertwiningMap (unipRad k e) (h2 ▸ Submodule.mem_top : φ.symm w ∈ twKer π (unipRad k e) 1)`. Rewrite `hw` using `[Submodule.mem_comap]`. Simplify using `using hw`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCuspidal_of_equiv {π : Representation ℂ (GL n k) V} {σ : Representation ℂ (GL n k) W} (φ : π.Equiv σ)
     (h : IsCuspidal π) : IsCuspidal σ := by
@@ -77,9 +77,9 @@ theorem isCuspidal_of_equiv {π : Representation ℂ (GL n k) V} {σ : Represent
     simpa using hw
 
 /- English proof (translation)
-Use `⟨isSmooth_twist h.1 hχ.detChar, fun s d e hne => ?_⟩` and prove the remaining obligations. Establish `h2 : twKer π (unipRad k e) 1 = ⊤` using `Submodule.Quotient.subsingleton_iff.1 (h.2 s d e hne)`. Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 ?_)` and prove the remaining obligations. Rewrite using `[← h2]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨u, v, rfl⟩`. Use `Submodule.subset_span ⟨u, v, ?_⟩` and prove the remaining obligations. Simplify using `[twist_apply, detChar_apply, det_eq_one_of_mem_unipRad k u.2]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isCuspidal_twist {π : Representation ℂ (GL n k) V} (h : IsCuspidal π) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsCuspidal (twist π (detChar n χ)) := by
@@ -93,16 +93,16 @@ theorem isCuspidal_twist {π : Representation ℂ (GL n k) V} (h : IsCuspidal π
   simp [twist_apply, detChar_apply, det_eq_one_of_mem_unipRad k u.2]
 
 /- English proof (translation)
-The claim follows from `isSmoothChar_of_isUnram (isUnram_absPow k s)`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothChar_absPow (s : ℂ) : IsSmoothChar (absPow k s) := isSmoothChar_of_isUnram (isUnram_absPow k s)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨ϖ, hϖ⟩` from `exists_uniformizer k`. Establish `h1 : ((absPow k (s : ℂ) ϖ : ℂˣ) : ℂ) = 1` using `by rw [h]; rfl`. Rewrite `h1` using `[val_absPow_ofReal, Complex.ofReal_eq_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < nabs k ϖ` using `nabs_pos' k ϖ`. Establish `hne : nabs k ϖ ≠ 1`. Rewrite using `[Ne, nabs_eq_one_iff, hϖ]`. Conclude with `ne_of_lt uniformizer_lt_one`. Rewrite `h1` using `[Real.rpow_def_of_pos hpos, Real.exp_eq_one_iff, mul_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h1.resolve_left (Real.log_ne_zero_of_pos_of_ne_one hpos hne)`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absPow_ofReal_eq_one {s : ℝ} : absPow k s = 1 ↔ s = 0 := by
   constructor
@@ -119,22 +119,22 @@ theorem absPow_ofReal_eq_one {s : ℝ} : absPow k s = 1 ↔ s = 0 := by
   · rintro rfl
     simp
 /- English proof (translation)
-Rewrite using `[mem_parab]`. Introduce `i j hij`. Conclude with `absurd hij (by rw [Subsingleton.elim (blk e j) (blk e i)]; exact lt_irrefl _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem ofChar_cl_congr (e : (Σ _ : Fin 1, n) ≃ n) (g : GL n k) : g ∈ parab k e := by
   rw [mem_parab]
   intro i j hij
   exact absurd hij (by rw [Subsingleton.elim (blk e j) (blk e i)]; exact lt_irrefl _)
 /- English proof (translation)
-The claim follows from `Matrix.GeneralLinearGroup.ext fun i j => by rw [leviProj_apply, he, he]`.
+A detailed English derivation is pending.
 -/
 private theorem leviProj_fin_one (e : (Σ _ : Fin 1, n) ≃ n) (he : ∀ a i, e ⟨a, i⟩ = i) (p : parab k e) (a : Fin 1) :
     leviProj k e p a = (p : GL n k) :=
   Matrix.GeneralLinearGroup.ext fun i j => by rw [leviProj_apply, he, he]
 /- English proof (translation)
-Establish `h0 : ∀ a : Fin 1, modExp (fun _ : Fin 1 => n) a = 0`. Introduce `a`. Rewrite using `[Subsingleton.elim a 0]`. Simplify using `[modExp]`. Use `ext`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[deltaHalf_apply, h0]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem deltaHalf_fin_one_eq_one (g : Levi k fun _ : Fin 1 => n) : deltaHalf k (fun _ : Fin 1 => n) g = 1 := by
   have h0 : ∀ a : Fin 1, modExp (fun _ : Fin 1 => n) a = 0 := by
@@ -145,29 +145,27 @@ private theorem deltaHalf_fin_one_eq_one (g : Levi k fun _ : Fin 1 => n) : delta
   simp [deltaHalf_apply, h0]
 
 /- English proof (translation)
-Set `ι : V ≃ₗ[ℂ] PiTensorProduct ℂ (fun _ : Fin 1 => V)` to `(PiTensorProduct.subsingletonEquiv (R := ℂ) (s := fun _ : Fin 1 => V) 0).symm`. Establish `hι : ∀ v, ι v = PiTensorProduct.tprod ℂ (fun _ => v)` using `fun v => PiTensorProduct.subsingletonEquiv_symm_apply' 0 v`. Set `σ'` to `(twist (piTensor fun _ : Fin 1 => π) (deltaHalf k fun _ : Fin 1 => n)).comp (leviProj k e)`. Establish `hact : ∀ (p : parab k e) (v : V), σ' p (ι v) = ι (π p v)`. Introduce `p v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [σ', MonoidHom.comp_apply, twist_apply, deltaHalf_fin_one_eq_one, hι, piTensor_tprod, leviProj_fin_one e he]`. Simplify using the standard rewrite rules. Set `G0 : V → indSpace (parab k e) σ'` to `fun v => ⟨fun g => ι (π g v), fun p g => by show ι (π (↑p * g) v) = σ' p (ι (π g v))`. Rewrite using `[map_mul, Module.End.mul_apply, hact]⟩`. Establish `hopen : ∀ v, G0 v ∈ smoothPart (ind (parab k e) σ')`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Use `show IsOpen {g | ind (parab k e) σ' g (G0 v) = G0 v}`. Use `hπ v using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg (fun f : indSpace (parab k e) σ' => f.1 1) h`. Establish `h2 : ι (π (1 * g) v) = ι (π 1 v)` using `h1`. Rewrite `h2` using `[one_mul, map_one, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ι.injective h2`. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show ι (π (y * g) v) = ι (π y v)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, Module.End.mul_apply, h]`. Set `F : V →ₗ[ℂ] IndSp e (piTensor fun _ : Fin 1 => π)` to `{ toFun := fun v => ⟨G0 v, hopen v⟩ map_add' := fun v w => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[G0]`. Use the proof step `map_smul' := fun c v => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[G0] }`. Set `Φ : π.IntertwiningMap (multiProd e fun _ : Fin 1 => π)` to `⟨F, fun g => LinearMap.ext fun v => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ι (π y (π g v)) = ι (π (y * g) v)`. Rewrite using `[map_mul, Module.End.mul_apply]⟩`. Establish `hinj : Function.Injective Φ` using `fun v w h => by`. Establish `h1` using `congrArg (fun f : IndSp e (piTensor fun _ : Fin 1 => π) => f.1.1 1) h`. Establish `h2 : ι (π 1 v) = ι (π 1 w)` using `h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using h2`. Establish `hsurj : Function.Surjective Φ` using `fun f => by`. Use `⟨ι.symm (f.1.1 1), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Establish `hl` using `f.1.2 ⟨y, ofChar_cl_congr e y⟩ 1`. Rewrite `hl` using `[mul_one]`. Establish `h3` using `hact ⟨y, ofChar_cl_congr e y⟩ (ι.symm (f.1.1 1))`. Rewrite `h3` using `[LinearEquiv.apply_symm_apply]`.
-
-Conclude with `h3.symm.trans hl.symm`. Conclude with `⟨equivOfBijective Φ ⟨hinj, hsurj⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_multiProd_one {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) (e : (Σ _ : Fin 1, n) ≃ n)
     (he : ∀ a i, e ⟨a, i⟩ = i) : Nonempty (π.Equiv (multiProd e fun _ : Fin 1 => π)) := by
@@ -251,7 +249,7 @@ def of {N : ℕ} (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Simplify using `only [IrrGL.of, Sigma.mk.inj_iff, heq_eq_eq, true_and]`. Conclude with `IrrRep.cl_eq_iff`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem of_eq_of {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {hs : IsSmooth π} {hi : π.IsIrreducible}
     {σ : Representation ℂ (GL (Fin N) k) W} {hs' : IsSmooth σ} {hi' : σ.IsIrreducible} :
@@ -262,7 +260,7 @@ theorem of_eq_of {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {hs : IsSm
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-The claim follows from `Sigma.ext rfl (heq_of_eq (IrrCl.cl_rep _))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem of_rep (x : IrrGL k) : of x.rep x.2.rep.smooth x.2.rep.irr = x := Sigma.ext rfl (heq_of_eq (IrrCl.cl_rep _))
 
@@ -296,20 +294,20 @@ def twEquiv (x : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (twist x.rep (detChar _ χ)).Equiv (x.tw χ hχ).rep := equivRep (irrTwist x.2.rep _ hχ.detChar)
 
 /- English proof (translation)
-The claim follows from `Sigma.ext rfl (heq_of_eq (clTwist_cl _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem tw_of {N : ℕ} (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible)
     (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (of π hs hi).tw χ hχ =
       of (twist π (detChar _ χ)) (isSmooth_twist hs hχ.detChar) (isIrreducible_twist hi _) := Sigma.ext rfl (heq_of_eq (clTwist_cl _ _ _))
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem clTwist_congr {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (c : IrrCl G)
     {χ ψ : G →* ℂˣ} (h : χ = ψ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) : clTwist c χ hχ = clTwist c ψ hψ := by
   subst h
   rfl
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[detChar_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem detChar_mul' (m : Type) [Fintype m] [DecidableEq m] (χ ψ : kˣ →* ℂˣ) :
     detChar m (χ * ψ) = detChar m χ * detChar m ψ := by
@@ -317,7 +315,7 @@ private theorem detChar_mul' (m : Type) [Fintype m] [DecidableEq m] (χ ψ : kˣ
   simp [detChar_apply]
 
 /- English proof (translation)
-Take `⟨N, c⟩` from `x`. Use `Sigma.ext rfl (heq_of_eq ?_)` and prove the remaining obligations. Conclude with `(clTwist_clTwist _ _ _ _ _).trans (clTwist_congr _ (detChar_mul' _ χ ψ).symm _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tw_tw (x : IrrGL k) (χ ψ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) :
     (x.tw χ hχ).tw ψ hψ = x.tw (χ * ψ) (hχ.mul hψ) := by
@@ -326,9 +324,7 @@ theorem tw_tw (x : IrrGL k) (χ ψ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (h�
   exact (clTwist_clTwist _ _ _ _ _).trans (clTwist_congr _ (detChar_mul' _ χ ψ).symm _ _)
 
 /- English proof (translation)
-Use `Sigma.ext rfl (heq_of_eq ?_)` and prove the remaining obligations. Use `show clTwist x.2 _ _ = x.2`. Establish `h1 : detChar (Fin x.1) (1 : kˣ →* ℂˣ) = 1`. Use extensionality with `g`. Simplify using `[detChar_apply]`.
-
-Conclude with `(clTwist_congr _ h1 _ isSmoothChar_one).trans (clTwist_one _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tw_one (x : IrrGL k) (h : IsSmoothChar (1 : kˣ →* ℂˣ)) : x.tw 1 h = x := by
   refine Sigma.ext rfl (heq_of_eq ?_)
@@ -338,7 +334,7 @@ theorem tw_one (x : IrrGL k) (h : IsSmoothChar (1 : kˣ →* ℂˣ)) : x.tw 1 h 
     simp [detChar_apply]
   exact (clTwist_congr _ h1 _ isSmoothChar_one).trans (clTwist_one _ _)
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem tw_congr' (x : IrrGL k) {χ ψ : kˣ →* ℂˣ} (h : χ = ψ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) :
     x.tw χ hχ = x.tw ψ hψ := by
@@ -346,7 +342,7 @@ private theorem tw_congr' (x : IrrGL k) {χ ψ : kˣ →* ℂˣ} (h : χ = ψ) (
   rfl
 
 /- English proof (translation)
-Use `show (x.tw _ _).tw _ _ = x.tw _ _`. Rewrite using `[tw_tw]`. Conclude with `tw_congr' _ (absPow_add k s t).symm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem nu_nu (x : IrrGL k) (s t : ℂ) : (x.nu s).nu t = x.nu (s + t) := by
   show (x.tw _ _).tw _ _ = x.tw _ _
@@ -354,11 +350,11 @@ Use `show (x.tw _ _).tw _ _ = x.tw _ _`. Rewrite using `[tw_tw]`. Conclude with 
   exact tw_congr' _ (absPow_add k s t).symm _ _
 
 /- English proof (translation)
-The claim follows from `(tw_congr' x (absPow_zero k) _ isSmoothChar_one).trans (tw_one x _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem nu_zero (x : IrrGL k) : x.nu 0 = x := (tw_congr' x (absPow_zero k) _ isSmoothChar_one).trans (tw_one x _)
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem mem_parab_fin_one {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {χ ψ : G →* ℂˣ}
     (h : χ = ψ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) : (IrrRep.ofChar χ hχ).cl = (IrrRep.ofChar ψ hψ).cl := by
@@ -366,23 +362,23 @@ private theorem mem_parab_fin_one {G : Type} [Group G] [TopologicalSpace G] [IsT
   rfl
 
 /- English proof (translation)
-Use `Sigma.ext rfl (heq_of_eq ?_)` and prove the remaining obligations. Conclude with `(clTwist_ofChar _ _ _ _).trans (mem_parab_fin_one (detChar_mul' _ χ ψ).symm _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tw_ofChar (χ ψ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) :
     (ofChar χ hχ).tw ψ hψ = ofChar (χ * ψ) (hχ.mul hψ) := by
   refine Sigma.ext rfl (heq_of_eq ?_)
   exact (clTwist_ofChar _ _ _ _).trans (mem_parab_fin_one (detChar_mul' _ χ ψ).symm _ _)
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem det_scalar_fin_one' (x : kˣ) : GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin 1) x) = x := by
   ext
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [IrrGL.ofChar, Sigma.mk.inj_iff, heq_eq_eq, true_and] at h`. Establish `h2` using `(IrrRep.cl_ofChar_inj _ _).1 h`. Use extensionality with `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h3` using `DFunLike.congr_fun h2 (GeneralLinearGroup.scalar (Fin 1) x)`. Simplify using `only [detChar_apply] at h3`. Rewrite `h3` using `[det_scalar_fin_one']`. Rewrite using `[h3]`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
 Both sides reduce to the same expression.
 -/
@@ -401,9 +397,9 @@ theorem ofChar_inj {χ ψ : kˣ →* ℂˣ} {hχ : IsSmoothChar χ} {hψ : IsSmo
     rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [IrrGL.nu, tw_ofChar, ofChar_inj] at h`. Establish `h2 : absPow k (((s - t : ℝ)) : ℂ) = 1`. Rewrite using `[Complex.ofReal_sub, sub_eq_add_neg, absPow_add, absPow_neg, mul_left_cancel h, mul_inv_cancel]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 (absPow_ofReal_eq_one.1 h2)`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nu_ofChar_inj (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) {s t : ℝ} :
     (ofChar χ hχ).nu s = (ofChar χ hχ).nu t ↔ s = t := by
@@ -417,7 +413,7 @@ theorem nu_ofChar_inj (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) {s t : ℝ} 
     rfl
 
 /- English proof (translation)
-Use `show 0 < N ∧ IsCuspidal (of π hs hi).rep ↔ _`. Conclude with `and_congr Iff.rfl ⟨fun h => isCuspidal_of_equiv (equivOf π hs hi).symm h, fun h => isCuspidal_of_equiv (equivOf π hs hi) h⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCusp_of {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {hs : IsSmooth π} {hi : π.IsIrreducible} :
     (of π hs hi).IsCusp ↔ 0 < N ∧ IsCuspidal π := by
@@ -426,23 +422,23 @@ theorem isCusp_of {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {hs : IsS
     fun h => isCuspidal_of_equiv (equivOf π hs hi) h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, isCuspidal_of_equiv (x.twEquiv χ hχ) (isCuspidal_twist h.2 hχ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCusp.tw {x : IrrGL k} (h : x.IsCusp) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (x.tw χ hχ).IsCusp := ⟨h.1, isCuspidal_of_equiv (x.twEquiv χ hχ) (isCuspidal_twist h.2 hχ)⟩
 
 /- English proof (translation)
-The claim follows from `h.tw _ _`.
+A detailed English derivation is pending.
 -/
 theorem IsCusp.nu {x : IrrGL k} (h : x.IsCusp) (s : ℂ) : (x.nu s).IsCusp := h.tw _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_pos, isCuspidal_of_equiv (IrrRep.nonempty_equiv_rep (IrrRep.det (Fin 1) χ hχ)).some.symm (isCuspidal_detRep_one hχ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCusp_ofChar (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (ofChar χ hχ).IsCusp := ⟨one_pos, isCuspidal_of_equiv (IrrRep.nonempty_equiv_rep (IrrRep.det (Fin 1) χ hχ)).some.symm
   (isCuspidal_detRep_one hχ)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ _ => rfl, (tw_one x _).symm⟩ symm := by rintro x y ⟨μ, hμ, rfl⟩ refine ⟨μ⁻¹, isUnram_inv hμ, ?_⟩ rw [tw_tw] exact ((tw_congr' x (mul_inv_cancel μ) _ isSmoothChar_one).trans (tw_one x _)).symm trans := by rintro x y z ⟨μ, hμ, rfl⟩ ⟨μ', hμ', rfl⟩ exact ⟨μ * μ', isUnram_mu …`.
+Supply the required witnesses or components.
 -/
 theorem inert_equivalence : Equivalence (Inert (k := k)) where
   refl x := ⟨1, fun _ _ => rfl, (tw_one x _).symm⟩
@@ -456,14 +452,14 @@ theorem inert_equivalence : Equivalence (Inert (k := k)) where
     exact ⟨μ * μ', isUnram_mul hμ hμ', tw_tw _ _ _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨absPow k s, isUnram_absPow k s, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem inert_nu (x : IrrGL k) (s : ℂ) : Inert x (x.nu s) := ⟨absPow k s, isUnram_absPow k s, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨μ, hμ, h⟩`. Rewrite `h` using `[tw_of, of_eq_of]`. Conclude with `⟨μ, hμ, h⟩`. Introduce and unpack `⟨μ, hμ, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨μ, hμ, by rw [tw_of, of_eq_of]; exact h⟩`.
+Supply the required witnesses or components.
 -/
 theorem inert_of {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {hs : IsSmooth π} {hi : π.IsIrreducible}
     {σ : Representation ℂ (GL (Fin N) k) W} {hs' : IsSmooth σ} {hi' : σ.IsIrreducible} :
@@ -482,7 +478,7 @@ def prodIrr {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) :
   multiProd (stdBlocks (fun a => (x a).1) hd) fun a => (x a).rep
 
 /- English proof (translation)
-The claim follows from `isSmooth_parInd _ _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_prodIrr {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) : IsSmooth (prodIrr x hd) := isSmooth_parInd _ _
 
@@ -493,7 +489,7 @@ def prodIrrEquiv {h N : ℕ} {d : Fin h → ℕ} (hd : ∑ a, d a = N) {X : Fin 
   multiProdEquiv _ fun a => IrrGL.equivOf (π a) (hs a) (hi a)
 
 /- English proof (translation)
-The claim follows from `nonempty_equiv_multiProd_one x.2.rep.smooth _ fun a i => by apply Fin.ext rw [stdBlocks_val, Finset.sum_eq_zero fun b _ => absurd b.2 (by simp), zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_prodIrr_one (x : IrrGL k) (hd : ∑ _ : Fin 1, x.1 = x.1) :
     Nonempty (x.rep.Equiv (prodIrr (fun _ : Fin 1 => x) hd)) := nonempty_equiv_multiProd_one x.2.rep.smooth _ fun a i => by
@@ -508,21 +504,21 @@ section Support
 variable {n : Type} [Fintype n] [DecidableEq n] {π : Representation ℂ (GL n k) V} {s : Multiset (IrrGL k)}
 
 /- English proof (translation)
-Take `⟨_, _, _, hc⟩` from `h`. Conclude with `hc.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasSupport.isIrreducible (h : HasSupport π s) : π.IsIrreducible := by
   obtain ⟨_, _, _, hc⟩ := h
   exact hc.1
 
 /- English proof (translation)
-Take `⟨_, _, _, -, -, e, hs⟩` from `h`. Conclude with `hs.isSmooth (isSmooth_parInd _ _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasSupport.isSmooth (h : HasSupport π s) : IsSmooth π := by
   obtain ⟨_, _, _, -, -, e, hs⟩ := h
   exact hs.isSmooth (isSmooth_parInd _ _)
 
 /- English proof (translation)
-Take `⟨_, x, rfl, hc⟩` from `h`. Take `⟨a, -, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `⟨(hc.2.1 a).1, (hc.2.1 a).2.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasSupport.isCusp (h : HasSupport π s) {y : IrrGL k} (hy : y ∈ s) : y.IsCusp := by
   obtain ⟨_, x, rfl, hc⟩ := h
@@ -530,7 +526,7 @@ theorem HasSupport.isCusp (h : HasSupport π s) {y : IrrGL k} (hy : y ∈ s) : y
   exact ⟨(hc.2.1 a).1, (hc.2.1 a).2.2⟩
 
 /- English proof (translation)
-Take `⟨_, x, rfl, -, -, e, -⟩` from `h`. Rewrite using `[Multiset.map_map, ← Fintype.card_congr e, Fintype.card_sigma]`. Simplify using `[Finset.sum_eq_multiset_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem HasSupport.sum_fst (h : HasSupport π s) : (s.map Sigma.fst).sum = Fintype.card n := by
   obtain ⟨_, x, rfl, -, -, e, -⟩ := h
@@ -538,7 +534,7 @@ theorem HasSupport.sum_fst (h : HasSupport π s) : (s.map Sigma.fst).sum = Finty
   simp [Finset.sum_eq_multiset_sum]
 
 /- English proof (translation)
-Take `⟨h', x, hx, hi, hc, e, hs⟩` from `h`. Conclude with `⟨h', x, hx, isIrreducible_of_equiv φ hi, hc, e, (IsSubquotient.of_surjective φ.toIntertwiningMap (EquivLike.surjective φ)).trans hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasSupport.of_equiv (h : HasSupport π s) {σ : Representation ℂ (GL n k) W} (φ : π.Equiv σ) : HasSupport σ s := by
   obtain ⟨h', x, hx, hi, hc, e, hs⟩ := h
@@ -546,7 +542,7 @@ theorem HasSupport.of_equiv (h : HasSupport π s) {σ : Representation ℂ (GL n
     (IsSubquotient.of_surjective φ.toIntertwiningMap (EquivLike.surjective φ)).trans hs⟩
 
 /- English proof (translation)
-Take `⟨e, hs⟩` from `H.2.2`. Set `x : Fin h → IrrGL k` to `fun a => IrrGL.of (σ a) (H.2.1 a).2.2.1 (H.2.1 a).2.1`. Establish `φ : ∀ a, (σ a).Equiv (x a).rep` using `fun a => IrrGL.equivOf (σ a) (H.2.1 a).2.2.1 (H.2.1 a).2.1`. Use `⟨h, x, rfl, H.1, fun a => ⟨(H.2.1 a).1, isIrreducible_of_equiv (φ a) (H.2.1 a).2.1, isCuspidal_of_equiv (φ a) (H.2.1 a).2.2⟩, e, hs.trans ?_⟩` and prove the remaining obligations. Conclude with `IsSubquotient.of_surjective (multiProdEquiv e φ).symm.toIntertwiningMap (EquivLike.surjective (multiProdEquiv e φ).symm)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasSupport_of_isCuspSupport {h : ℕ} {d : Fin h → ℕ} {X : Fin h → Type} [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] {σ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)} (H : IsCuspSupport π d σ) :
@@ -559,14 +555,14 @@ theorem hasSupport_of_isCuspSupport {h : ℕ} {d : Fin h → ℕ} {X : Fin h →
   exact IsSubquotient.of_surjective (multiProdEquiv e φ).symm.toIntertwiningMap (EquivLike.surjective (multiProdEquiv e φ).symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, x, rfl, hi, fun a => ⟨(hc a).1, (x a).2.rep.irr, (hc a).2⟩, stdBlocks _ hd, hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasSupport_of_isSubquotient {h N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} (hi : π.IsIrreducible)
     {x : Fin h → IrrGL k} (hc : ∀ a, (x a).IsCusp) {hd : ∑ a, (x a).1 = N} (hs : IsSubquotient π (prodIrr x hd)) :
     HasSupport π (Finset.univ.val.map x) := ⟨h, x, rfl, hi, fun a => ⟨(hc a).1, (x a).2.rep.irr, (hc a).2⟩, stdBlocks _ hd, hs⟩
 
 /- English proof (translation)
-Establish `hd : ∑ _ : Fin 1, x.1 = x.1` using `by simp`. Take `⟨φ⟩` from `nonempty_equiv_prodIrr_one x hd`. Conclude with `⟨1, fun _ => x, by simp, x.2.rep.irr, fun _ => ⟨hx.1, x.2.rep.irr, hx.2⟩, stdBlocks _ hd, IsSubquotient.of_injective φ.toIntertwiningMap (EquivLike.injective φ)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasSupport_self {x : IrrGL k} (hx : x.IsCusp) : HasSupport x.rep {x} := by
   have hd : ∑ _ : Fin 1, x.1 = x.1 := by simp
@@ -587,7 +583,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def first (Δ : Segment k) : IrrGL k := ⟨Δ.d, Δ.start⟩
 
 /- English proof (translation)
-Take `⟨σ, hσ, hc⟩` from `Δ.cusp`. Conclude with `⟨Δ.d_pos, isCuspidal_of_equiv (cl_eq_iff_rep.1 hσ).some hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCusp_first (Δ : Segment k) : Δ.first.IsCusp := by
   obtain ⟨σ, hσ, hc⟩ := Δ.cusp
@@ -607,9 +603,9 @@ Both sides reduce to the same expression.
 @[simp] theorem len_ofFirst (ρ : IrrGL k) (hρ : ρ.IsCusp) (l : ℕ) (hl : 0 < l) : (ofFirst ρ hρ l hl).len = l := rfl
 
 /- English proof (translation)
-Take `⟨d, hd, s, hs, l, hl⟩` from `Δ`. Take `⟨d', hd', s', hs', l', hl'⟩` from `Δ'`. Simplify using `only [Segment.first, Sigma.mk.inj_iff] at h`. Take `⟨rfl, h2⟩` from `h`. Take `rfl` from `eq_of_heq h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at h'`. Substitute `h'` using the available equality. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ext_first {Δ Δ' : Segment k} (h : Δ.first = Δ'.first) (h' : Δ.len = Δ'.len) : Δ = Δ' := by
   obtain ⟨d, hd, s, hs, l, hl⟩ := Δ
@@ -645,19 +641,19 @@ def Linked (Δ Δ' : Segment k) : Prop :=
 def Precedes (Δ Δ' : Segment k) : Prop := Linked Δ Δ' ∧ ∃ j : ℕ, 0 < j ∧ Δ'.first = Δ.first.nu j
 
 /- English proof (translation)
-The claim follows from `Δ.isCusp_first.nu _`.
+A detailed English derivation is pending.
 -/
 theorem isCusp_term (Δ : Segment k) (a : Fin Δ.len) : (Δ.term a).IsCusp := Δ.isCusp_first.nu _
 
 /- English proof (translation)
-Use `show ∑ _a : Fin Δ.len, Δ.d = Δ.len * Δ.d`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_term_fst (Δ : Segment k) : ∑ a, (Δ.term a).1 = Δ.deg := by
   show ∑ _a : Fin Δ.len, Δ.d = Δ.len * Δ.d
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, a.2, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨⟨a, ha⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_carrier {Δ : Segment k} {x : IrrGL k} : x ∈ Δ.carrier ↔ ∃ a : ℕ, a < Δ.len ∧ Δ.first.nu a = x := by
   constructor
@@ -667,25 +663,25 @@ theorem mem_carrier {Δ : Segment k} {x : IrrGL k} : x ∈ Δ.carrier ↔ ∃ a 
     exact ⟨⟨a, ha⟩, rfl⟩
 
 /- English proof (translation)
-Simplify using `[Segment.ms, Segment.carrier]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ms {Δ : Segment k} {x : IrrGL k} : x ∈ Δ.ms ↔ x ∈ Δ.carrier := by
   simp [Segment.ms, Segment.carrier]
 
 /- English proof (translation)
-Simplify using `[Segment.ms]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem card_ms (Δ : Segment k) : Δ.ms.card = Δ.len := by
   simp [Segment.ms]
 
 /- English proof (translation)
-Rewrite using `[mem_carrier]`. Use `show (∃ a : ℕ, a < (d - c + 1).toNat ∧ (ρ.nu c).nu a = x) ↔ _`. Simplify using `only [IrrGL.nu_nu]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[Int.lt_toNat]`. Use `⟨c + a, by omega, by omega, ?_⟩` and prove the remaining obligations. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, h1, h2, rfl⟩`. Establish `h3 : ((a - c).toNat : ℤ) = a - c` using `Int.toNat_of_nonneg (by omega)`. Use `⟨(a - c).toNat, by omega, ?_⟩` and prove the remaining obligations. Use `congr 1`. Establish `h4 : (((a - c).toNat : ℕ) : ℂ) = (a : ℂ) - c` using `by exact_mod_cast h3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_icc {ρ : IrrGL k} {hρ : ρ.IsCusp} {c d : ℤ} {h : c ≤ d} {x : IrrGL k} :
     x ∈ (icc ρ hρ c d h).carrier ↔ ∃ a : ℤ, c ≤ a ∧ a ≤ d ∧ ρ.nu a = x := by
@@ -708,7 +704,7 @@ theorem mem_icc {ρ : IrrGL k} {hρ : ρ.IsCusp} {c d : ℤ} {h : c ≤ d} {x : 
     ring
 
 /- English proof (translation)
-Use `show Set.range (fun a : Fin 1 => ρ.nu ((a : ℕ) : ℂ)) = {ρ}`. Rewrite using `[Set.range_unique]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem carrier_single (ρ : IrrGL k) (hρ : ρ.IsCusp) : (single ρ hρ).carrier = {ρ} := by
   show Set.range (fun a : Fin 1 => ρ.nu ((a : ℕ) : ℂ)) = {ρ}
@@ -716,38 +712,38 @@ Use `show Set.range (fun a : Fin 1 => ρ.nu ((a : ℕ) : ℂ)) = {ρ}`. Rewrite 
   simp
 
 /- English proof (translation)
-Use `show Finset.univ.val.map (fun a : Fin 1 => ρ.nu ((a : ℕ) : ℂ)) = {ρ}`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem ms_single (ρ : IrrGL k) (hρ : ρ.IsCusp) : (single ρ hρ).ms = {ρ} := by
   show Finset.univ.val.map (fun a : Fin 1 => ρ.nu ((a : ℕ) : ℂ)) = {ρ}
   simp
 
 /- English proof (translation)
-Take `⟨⟨Γ, hΓ⟩, h1, h2⟩` from `h`. Conclude with `⟨⟨Γ, hΓ.trans (Set.union_comm _ _)⟩, h2, h1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Linked.symm {Δ Δ' : Segment k} (h : Linked Δ Δ') : Linked Δ' Δ := by
   obtain ⟨⟨Γ, hΓ⟩, h1, h2⟩ := h
   exact ⟨⟨Γ, hΓ.trans (Set.union_comm _ _)⟩, h2, h1⟩
 
 /- English proof (translation)
-Introduce `h` and use `h.2.1 (Set.Subset.refl _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_linked_self (Δ : Segment k) : ¬ Linked Δ Δ := fun h => h.2.1 (Set.Subset.refl _)
 
 /- English proof (translation)
-Take `⟨a, -, rfl⟩` from `mem_carrier.1 h`. Conclude with `IrrGL.inert_nu _ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inert_of_mem {Δ : Segment k} {x : IrrGL k} (h : x ∈ Δ.carrier) : IrrGL.Inert Δ.first x := by
   obtain ⟨a, -, rfl⟩ := mem_carrier.1 h
   exact IrrGL.inert_nu _ _
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨0, Δ.len_pos⟩, by simp [Segment.term]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem first_mem_carrier' (Δ : Segment k) : Δ.first ∈ Δ.carrier :=
   ⟨⟨0, Δ.len_pos⟩, by simp [Segment.term]⟩
 
 /- English proof (translation)
-Take `⟨⟨Γ, hΓ⟩, -, -⟩` from `h`. Establish `h1 : Δ.first ∈ Γ.carrier` using `hΓ ▸ Or.inl (first_mem_carrier' Δ)`. Establish `h2 : Δ'.first ∈ Γ.carrier` using `hΓ ▸ Or.inr (first_mem_carrier' Δ')`. Conclude with `IrrGL.inert_equivalence.trans (IrrGL.inert_equivalence.symm (inert_of_mem h1)) (inert_of_mem h2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Linked.inert {Δ Δ' : Segment k} (h : Linked Δ Δ') : IrrGL.Inert Δ.first Δ'.first := by
   obtain ⟨⟨Γ, hΓ⟩, -, -⟩ := h
@@ -797,13 +793,13 @@ def IsSpeh (x : IrrGL k) (d : ℕ) (π : Representation ℂ (GL (Fin N) k) V) : 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Establish `hu` using `mem_unipRad.1 u.2`. Establish `hv` using `mem_unipRad.1 v.2`. Establish `lo : ∀ g : GL (Fin N) k, g ∈ parab k (points (Fin N)) → ∀ p q : Fin N, q < p → (g : Matrix (Fin N) (Fin N) k) p q = 0` using `fun g hg p q hpq => mem_parab.1 hg p q (by simpa [blk, points] using hpq)`. Establish `di : ∀ g : GL (Fin N) k, (∀ (a : Fin N) (i j : Unit), (g : Matrix (Fin N) (Fin N) k) (points (Fin N) ⟨a, i⟩) (points (Fin N) ⟨a, j⟩) = (1 : Matrix Unit Unit k) i j) → ∀ p, (g : Matrix (Fin N) (Fin N) k) p p = 1` using `fun g hg p => by simpa using hg p () ()`. Establish `hij' : i ≠ j` using `fun h => by rw [h] at hij; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.coe_mul, Units.val_mul, Matrix.mul_apply, Fintype.sum_eq_add i j hij' fun l hl => ?_]`. Rewrite using `[di _ hu.2 i, di _ hv.2 j]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h1 : l < i`. Rewrite using `[lo _ hu.1 i l h1, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (j : ℕ) < l`. Use `Fin.val_ne_of_ne hl.1` as an intermediate fact. Use `Fin.val_ne_of_ne hl.2` as an intermediate fact. Rewrite `h1` using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[lo _ hv.1 l j (Fin.lt_def.2 h2), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unipB_mul_apply (u v : unipB k (Fin N)) {i j : Fin N} (hij : (j : ℕ) = i + 1) :
     ((u * v : unipB k (Fin N)) : GL (Fin N) k).val i j = (u : GL (Fin N) k).val i j + (v : GL (Fin N) k).val i j := by
@@ -845,13 +841,13 @@ def IsGeneric (π : Representation ℂ (GL (Fin N) k) V) : Prop :=
   ∃ ψ : AddChar k Circle, Continuous ψ ∧ ψ ≠ 1 ∧ IsGenericFor ψ π
 
 /- English proof (translation)
-Simplify using `[msupp]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem msupp_add (𝔪 𝔫 : Multiset (Segment k)) : msupp (𝔪 + 𝔫) = msupp 𝔪 + msupp 𝔫 := by
   simp [msupp]
 
 /- English proof (translation)
-Simplify using `[msupp]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem msupp_singleton (Δ : Segment k) : msupp {Δ} = Δ.ms := by
   simp [msupp]
@@ -862,35 +858,35 @@ variable {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL
   {𝔪 : Multiset (Segment k)}
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Conclude with `⟨hd, hs.of_equiv φ (Representation.Equiv.refl _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsZSeg.of_equiv (h : IsZSeg Δ π) (φ : π.Equiv σ) : IsZSeg Δ σ := by
   obtain ⟨hd, hs⟩ := h
   exact ⟨hd, hs.of_equiv φ (Representation.Equiv.refl _)⟩
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Conclude with `⟨hd, hs.of_equiv φ (Representation.Equiv.refl _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsLSeg.of_equiv (h : IsLSeg Δ π) (φ : π.Equiv σ) : IsLSeg Δ σ := by
   obtain ⟨hd, hs⟩ := h
   exact ⟨hd, hs.of_equiv φ (Representation.Equiv.refl _)⟩
 
 /- English proof (translation)
-Take `⟨h, x, hd, hz, hs⟩` from `h`. Conclude with `⟨h, x, hd, hz, hs.of_equiv φ (Representation.Equiv.refl _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsZ.of_equiv (h : IsZ 𝔪 π) (φ : π.Equiv σ) : IsZ 𝔪 σ := by
   obtain ⟨h, x, hd, hz, hs⟩ := h
   exact ⟨h, x, hd, hz, hs.of_equiv φ (Representation.Equiv.refl _)⟩
 
 /- English proof (translation)
-Take `⟨h, x, hd, hz, hs⟩` from `h`. Conclude with `⟨h, x, hd, hz, hs.of_equiv φ (Representation.Equiv.refl _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsL.of_equiv (h : IsL 𝔪 π) (φ : π.Equiv σ) : IsL 𝔪 σ := by
   obtain ⟨h, x, hd, hz, hs⟩ := h
   exact ⟨h, x, hd, hz, hs.of_equiv φ (Representation.Equiv.refl _)⟩
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Take `⟨hd', hs'⟩` from `h'`. Conclude with `IsSocle.unique hs hs'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsZSeg.unique (h : IsZSeg Δ π) (h' : IsZSeg Δ σ) : Nonempty (σ.Equiv π) := by
   obtain ⟨hd, hs⟩ := h
@@ -898,7 +894,7 @@ theorem IsZSeg.unique (h : IsZSeg Δ π) (h' : IsZSeg Δ σ) : Nonempty (σ.Equi
   exact IsSocle.unique hs hs'
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Take `⟨hd', hs'⟩` from `h'`. Conclude with `IsCosocle.unique hs hs'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsLSeg.unique (h : IsLSeg Δ π) (h' : IsLSeg Δ σ) : Nonempty (σ.Equiv π) := by
   obtain ⟨hd, hs⟩ := h
@@ -906,7 +902,7 @@ theorem IsLSeg.unique (h : IsLSeg Δ π) (h' : IsLSeg Δ σ) : Nonempty (σ.Equi
   exact IsCosocle.unique hs hs'
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Conclude with `⟨Δ.len, Δ.term, rfl, hs.1, fun a => ⟨(Δ.isCusp_term a).1, (Δ.term a).2.rep.irr, (Δ.isCusp_term a).2⟩, stdBlocks _ hd, hs.isSubquotient⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsZSeg.hasSupport (h : IsZSeg Δ π) : HasSupport π Δ.ms := by
   obtain ⟨hd, hs⟩ := h
@@ -914,7 +910,7 @@ theorem IsZSeg.hasSupport (h : IsZSeg Δ π) : HasSupport π Δ.ms := by
     stdBlocks _ hd, hs.isSubquotient⟩
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Conclude with `⟨Δ.len, Δ.term, rfl, hs.1, fun a => ⟨(Δ.isCusp_term a).1, (Δ.term a).2.rep.irr, (Δ.isCusp_term a).2⟩, stdBlocks _ hd, hs.isSubquotient⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsLSeg.hasSupport (h : IsLSeg Δ π) : HasSupport π Δ.ms := by
   obtain ⟨hd, hs⟩ := h
@@ -922,43 +918,43 @@ theorem IsLSeg.hasSupport (h : IsLSeg Δ π) : HasSupport π Δ.ms := by
     stdBlocks _ hd, hs.isSubquotient⟩
 
 /- English proof (translation)
-Take `⟨hd, -⟩` from `h`. Conclude with `Δ.sum_term_fst.symm.trans hd`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsZSeg.deg_eq (h : IsZSeg Δ π) : Δ.deg = N := by
   obtain ⟨hd, -⟩ := h
   exact Δ.sum_term_fst.symm.trans hd
 
 /- English proof (translation)
-Take `⟨hd, -⟩` from `h`. Conclude with `Δ.sum_term_fst.symm.trans hd`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsLSeg.deg_eq (h : IsLSeg Δ π) : Δ.deg = N := by
   obtain ⟨hd, -⟩ := h
   exact Δ.sum_term_fst.symm.trans hd
 
 /- English proof (translation)
-Take `⟨h, x, hd, -, hs⟩` from `h`. Conclude with `⟨hs.1, hs.isSubquotient.isSmooth (isSmooth_prodIrr x hd)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsZ.irr_smooth (h : IsZ 𝔪 π) : π.IsIrreducible ∧ IsSmooth π := by
   obtain ⟨h, x, hd, -, hs⟩ := h
   exact ⟨hs.1, hs.isSubquotient.isSmooth (isSmooth_prodIrr x hd)⟩
 
 /- English proof (translation)
-Take `⟨h, x, hd, -, hs⟩` from `h`. Conclude with `⟨hs.1, hs.isSubquotient.isSmooth (isSmooth_prodIrr x hd)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsL.irr_smooth (h : IsL 𝔪 π) : π.IsIrreducible ∧ IsSmooth π := by
   obtain ⟨h, x, hd, -, hs⟩ := h
   exact ⟨hs.1, hs.isSubquotient.isSmooth (isSmooth_prodIrr x hd)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, fun i j hij => absurd hij (by rw [Subsingleton.elim i j]; exact lt_irrefl j)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isOrderedForm_one (Δ : Segment k) :
     IsOrderedForm (fun _ : Fin 1 => Δ) {Δ} := ⟨by simp, fun i j hij => absurd hij (by rw [Subsingleton.elim i j]; exact lt_irrefl j)⟩
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Establish `hsm : IsSmooth π` using `hs.isSubquotient.isSmooth (isSmooth_prodIrr _ hd)`. Set `y : IrrGL k` to `IrrGL.of π hsm hs.1`. Establish `hd1 : ∑ _a : Fin 1, y.1 = y.1` using `by simp`. Take `⟨e⟩` from `nonempty_equiv_prodIrr_one y hd1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e' : π.Equiv (prodIrr (fun _ : Fin 1 => y) hd1)` using `(IrrGL.equivOf π hsm hs.1).trans e`. Establish `hS : IsSocle π (prodIrr (fun _ : Fin 1 => y) hd1)` using `(isSocle_self hs.1).of_equiv (Representation.Equiv.refl π) e'`. Establish `hZ : IsZSeg Δ y.rep` using `⟨hd, hs.of_equiv (IrrGL.equivOf π hsm hs.1) (Representation.Equiv.refl _)⟩`. Conclude with `⟨1, fun _ => y, hd1, ⟨fun _ => Δ, isOrderedForm_one Δ, fun _ => hZ⟩, hS⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsZSeg.isZ (h : IsZSeg Δ π) : IsZ {Δ} π := by
   obtain ⟨hd, hs⟩ := h
@@ -972,9 +968,9 @@ theorem IsZSeg.isZ (h : IsZSeg Δ π) : IsZ {Δ} π := by
   exact ⟨1, fun _ => y, hd1, ⟨fun _ => Δ, isOrderedForm_one Δ, fun _ => hZ⟩, hS⟩
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Establish `hsm : IsSmooth π` using `hs.isSubquotient.isSmooth (isSmooth_prodIrr _ hd)`. Set `y : IrrGL k` to `IrrGL.of π hsm hs.1`. Establish `hd1 : ∑ _a : Fin 1, y.1 = y.1` using `by simp`. Take `⟨e⟩` from `nonempty_equiv_prodIrr_one y hd1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e' : π.Equiv (prodIrr (fun _ : Fin 1 => y) hd1)` using `(IrrGL.equivOf π hsm hs.1).trans e`. Establish `hS : IsCosocle π (prodIrr (fun _ : Fin 1 => y) hd1)` using `(isCosocle_self hs.1).of_equiv (Representation.Equiv.refl π) e'`. Establish `hZ : IsLSeg Δ y.rep` using `⟨hd, hs.of_equiv (IrrGL.equivOf π hsm hs.1) (Representation.Equiv.refl _)⟩`. Conclude with `⟨1, fun _ => y, hd1, ⟨fun _ => Δ, isOrderedForm_one Δ, fun _ => hZ⟩, hS⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsLSeg.isL (h : IsLSeg Δ π) : IsL {Δ} π := by
   obtain ⟨hd, hs⟩ := h
@@ -994,7 +990,7 @@ def segProdEquiv (Δ : Segment k) (hd : ∑ a, (Δ.term a).1 = N) :
   multiProdEquiv _ fun _ => Δ.first.twEquiv _ (isSmoothChar_absPow _)
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Take `⟨f, hf, -⟩` from `hs.2`. Use `((hZ Δ Δ.start.rep (IrrCl.cl_rep _) (stdBlocks (fun _ => Δ.d) hd) π).1).2 ⟨(segProdEquiv Δ hd).symm.toIntertwiningMap.comp f, fun a b hab => hf ?_⟩` and prove the remaining obligations. Conclude with `EquivLike.injective (segProdEquiv Δ hd).symm hab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsZSeg.cl_eq {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)} (hZ : IsSegmentClass k Z) {Δ : Segment k}
     {π : IrrRep (GL (Fin (Δ.len * Δ.d)) k)} (h : IsZSeg Δ π.ρ) : π.cl = Z Δ := by
@@ -1004,7 +1000,7 @@ theorem IsZSeg.cl_eq {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)
     ⟨(segProdEquiv Δ hd).symm.toIntertwiningMap.comp f, fun a b hab => hf ?_⟩
   exact EquivLike.injective (segProdEquiv Δ hd).symm hab
 /- English proof (translation)
-Take `rfl : x = fun _ => y` from `funext fun a => by rw [Subsingleton.elim a 0, hx]`. Conclude with `nonempty_equiv_prodIrr_one y hd`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem nonempty_equiv_prodIrr_fin_one (x : Fin 1 → IrrGL k) (y : IrrGL k) (hx : x 0 = y)
     (hd : ∑ a, (x a).1 = y.1) : Nonempty (y.rep.Equiv (prodIrr x hd)) := by
@@ -1012,9 +1008,9 @@ private theorem nonempty_equiv_prodIrr_fin_one (x : Fin 1 → IrrGL k) (y : IrrG
   exact nonempty_equiv_prodIrr_one y hd
 
 /- English proof (translation)
-Establish `h0 : (Segment.single ρ hρ).term (0 : Fin 1) = ρ` using `by show ρ.nu ((((0 : Fin 1) : ℕ)) : ℂ) = ρ`. Simplify using the standard rewrite rules. Establish `hd : ∑ a : Fin 1, ((Segment.single ρ hρ).term a).1 = ρ.1` using `by show ∑ _a : Fin 1, ρ.1 = ρ.1`. Simplify using the standard rewrite rules. Take `⟨e⟩` from `nonempty_equiv_prodIrr_fin_one (Segment.single ρ hρ).term ρ h0 hd`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hZ : IsZSeg (.single ρ hρ) ρ.rep` using `⟨hd, (isSocle_self ρ.2.rep.irr).of_equiv (.refl _) e⟩`. Establish `hL : IsLSeg (.single ρ hρ) ρ.rep` using `⟨hd, (isCosocle_self ρ.2.rep.irr).of_equiv (.refl _) e⟩`. Conclude with `⟨hZ, hL, hZ.isZ, hL.isL⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem single_spec {ρ : IrrGL k} (hρ : ρ.IsCusp) :
     IsZSeg (.single ρ hρ) ρ.rep ∧ IsLSeg (.single ρ hρ) ρ.rep ∧ IsZ {.single ρ hρ} ρ.rep ∧ IsL {.single ρ hρ} ρ.rep := by
@@ -1029,9 +1025,9 @@ theorem single_spec {ρ : IrrGL k} (hρ : ρ.IsCusp) :
   have hL : IsLSeg (.single ρ hρ) ρ.rep := ⟨hd, (isCosocle_self ρ.2.rep.irr).of_equiv (.refl _) e⟩
   exact ⟨hZ, hL, hZ.isZ, hL.isL⟩
 /- English proof (translation)
-Substitute `hy` using the available equality. Take `⟨φ⟩` from `IrrRep.nonempty_equiv_rep (IrrRep.det (Fin 1) ψ hψ)`. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap g w`. Establish `h2 : φ ((ψ (GeneralLinearGroup.det g) : ℂ) • w) = ((ψ (GeneralLinearGroup.det g) : ℂ)) • φ w` using `map_smul φ _ w`. Apply `EquivLike.injective φ` to reduce the goal to its premises.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `h1.trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Conclude with `(ofChar_apply (detChar (Fin 1) ψ) g (φ w)).trans rfl`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem rep_apply_eq_det_smul_of_eq_ofChar {ψ : kˣ →* ℂˣ} (hψ : IsSmoothChar ψ) (y : IrrGL k) (hy : y = IrrGL.ofChar ψ hψ)
     (g : GL (Fin y.1) k) (w : y.2.rep.V) : y.rep g w = (ψ (GeneralLinearGroup.det g) : ℂ) • w := by
@@ -1044,35 +1040,29 @@ private theorem rep_apply_eq_det_smul_of_eq_ofChar {ψ : kˣ →* ℂˣ} (hψ : 
   exact (ofChar_apply (detChar (Fin 1) ψ) g (φ w)).trans rfl
 
 /- English proof (translation)
-Set `x` to `(Segment.ofChar χ hχ l hl).term`. Set `e` to `stdBlocks (fun a => (x a).1) hd`. Establish `hxa : ∀ a, x a = IrrGL.ofChar (χ * absPow k ((a : ℕ) : ℂ)) (hχ.mul (isSmoothChar_absPow _))` using `fun a => IrrGL.tw_ofChar χ _ hχ (isSmoothChar_absPow _)`. Establish `hact : ∀ a (g : GL (Fin (x a).1) k) (w : (x a).2.rep.V), (x a).rep g w = ((χ * absPow k ((a : ℕ) : ℂ)) (GeneralLinearGroup.det g) : ℂ) • w` using `fun a g w => rep_apply_eq_det_smul_of_eq_ofChar _ (x a) (hxa a) g w`. Establish `hw : ∀ a, ∃ w : (x a).2.rep.V, w ≠ 0` using `fun a => by haveI := nontrivial_of_irreducible (x a).2.rep.irr`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `exists_ne 0`. Use `choose w hw using hw`. Establish `ht0ne : PiTensorProduct.tprod ℂ w ≠ 0`. Establish `hφ : ∀ a, ∃ φ : Module.Dual ℂ (x a).2.rep.V, φ (w a) ≠ 0` using `fun a => by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_neg at h`. Conclude with `hw a ((Module.forall_dual_apply_eq_zero_iff ℂ (w a)).1 h)`. Use `choose φ hφ using hφ`. Introduce `h0`. Establish `h1` using `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ (Fin (Segment.ofChar χ hχ l hl).len) ℂ).compLinearMap φ)) h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[PiTensorProduct.lift.tprod, map_zero, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun a _ => hφ a) h1`. Establish `hρ : ∀ M : Levi k (fun a => Fin (x a).1), piTensor (fun a => (x a).rep) M (PiTensorProduct.tprod ℂ w) = (∏ a : Fin (Segment.ofChar χ hχ l hl).len, ((χ * absPow k ((a : ℕ) : ℂ)) (GeneralLinearGroup.det (M a)) : ℂ)) • PiTensorProduct.tprod ℂ w`. Introduce `M`. Rewrite using `[piTensor_tprod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hact]`. Conclude with `(PiTensorProduct.tprod ℂ).map_smul_univ _ _`. Establish `hscal : ∀ p : parab k e, (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det (p : GL (Fin N) k)) : ℂˣ) : ℂ) = (deltaHalf k (fun a => Fin (x a).1) (leviProj k e p) : ℂ) * ∏ a : Fin (Segment.ofChar χ hχ l hl).len, ((χ * absPow k ((a : ℕ) : ℂ)) (GeneralLinearGroup.det (levi …`. Introduce `p`. Rewrite using `[det_parab k e p, map_prod, Units.coe_prod, deltaHalf_apply, Units.coe_prod, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hme : ((modExp (fun b => Fin (x b).1) a : ℤ) : ℂ) / 2 + ((a : ℕ) : ℂ) = ((l : ℂ) - 1) / 2`. Rewrite using `[modExp_fin (fun b => Fin (x b).1) (fun i => Fintype.card_fin 1) a]`. Establish `hlen : (((Segment.ofChar χ hχ l hl).len : ℕ) : ℂ) = (l : ℂ)` using `rfl`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hlen]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hme, absPow_add]`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `σ'` to `(twist (piTensor fun a => (x a).rep) (deltaHalf k fun a => Fin (x a).1)).comp (leviProj k e)`. Set `F0 : indSpace (parab k e) σ'` to `⟨fun g => (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • PiTensorProduct.tprod ℂ w, fun p g => by`. Simplify using `only [σ', MonoidHom.comp_apply, twist_apply, map_smul, hρ, smul_smul]`. Rewrite using `[map_mul, map_mul, Units.val_mul, hscal p]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `ring⟩`. Establish `hind : ∀ g : GL (Fin N) k, ind (parab k e) σ' g F0 = (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • F0`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `show (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det (y * g)) : ℂˣ) : ℂ) • PiTensorProduct.tprod ℂ w = (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • ((((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det y) : ℂˣ) : ℂ) • PiTensorP …`. Rewrite using `[map_mul, map_mul, Units.val_mul, smul_smul, mul_comm]`. Establish `hF0ne : F0 ≠ 0` using `fun h => ht0ne (by`. Establish `h1` using `congrArg (fun f : indSpace (parab k e) σ' => f.1 1) h`. Simplify `h1)` using `[F0]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : F0 ∈ smoothPart (ind (parab k e) σ')` using `by show IsOpen {g | ind (parab k e) σ' g F0 = F0}`. Establish `hset : {g | ind (parab k e) σ' g F0 = F0} = ((detChar (Fin N) (χ * absPow k (((l : ℂ) - 1) / 2))).ker : Set (GL (Fin N) k))`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, MonoidHom.mem_ker, hind, detChar_apply]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `Units.val_eq_one.1 (smul_left_injective ℂ hF0ne (h.trans (one_smul ℂ F0).symm))`. Introduce `h`. Rewrite using `[h, Units.val_one, one_smul]`. Rewrite using `[hset]`.
-
-Conclude with `(hχ.mul (isSmoothChar_absPow _)).detChar`. Set `F0' : IndSp e (piTensor fun a => (x a).rep)` to `⟨F0, hsm⟩`. Set `Φ : (detRep (Fin N) (χ * absPow k (((l : ℂ) - 1) / 2))).IntertwiningMap (prodIrr x hd)` to `⟨LinearMap.toSpanSingleton ℂ _ F0', fun g => LinearMap.ext fun z => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(detRep (Fin N) (χ * absPow k (((l : ℂ) - 1) / 2)) g z) • F0 = ind (parab k e) σ' g (z • F0)`.
-
-Rewrite using `[map_smul, hind, smul_smul]`. Use `congr 1`. Simplify using `only [detRep, ofChar_apply, detChar_apply]`. Use the proof step `ring⟩`. Use `⟨Φ, fun z z' h => ?_⟩` and prove the remaining obligations.
-
-Establish `h2 : z • F0 = z' • F0` using `congrArg Subtype.val (show z • F0' = z' • F0' from h)`. Conclude with `smul_left_injective ℂ hF0ne h2`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem embeds_detRep_segment {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) {l : ℕ} (hl : 0 < l)
     (hd : ∑ a, ((Segment.ofChar χ hχ l hl).term a).1 = N) :
@@ -1169,7 +1159,7 @@ theorem embeds_detRep_segment {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) {l :
   exact smul_left_injective ℂ hF0ne h2
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Conclude with `hs.equiv_of_embeds (isIrreducible_ofChar _) (embeds_detRep_segment hχ hl hd)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsZSeg.equiv_detRep {χ : kˣ →* ℂˣ} {hχ : IsSmoothChar χ} {l : ℕ} {hl : 0 < l}
     {π : Representation ℂ (GL (Fin N) k) V} (h : IsZSeg (Segment.ofChar χ hχ l hl) π) :
@@ -1178,7 +1168,7 @@ theorem IsZSeg.equiv_detRep {χ : kˣ →* ℂˣ} {hχ : IsSmoothChar χ} {l : �
   exact hs.equiv_of_embeds (isIrreducible_ofChar _) (embeds_detRep_segment hχ hl hd)
 
 /- English proof (translation)
-Establish `hd : ∑ a, ((Segment.ofChar χ hχ l hl).term a).1 = l` using `(Segment.sum_term_fst _).trans (mul_one l)`. Take `⟨f, hf⟩` from `embeds_detRep_segment hχ hl hd`. Conclude with `⟨l, (Segment.ofChar χ hχ l hl).term, rfl, isIrreducible_ofChar _, fun a => ⟨((Segment.ofChar χ hχ l hl).isCusp_term a).1, (((Segment.ofChar χ hχ l hl).term a)).2.rep.irr, ((Segment.ofChar χ hχ l hl).isCusp_term a).2⟩, stdBlocks _ hd, IsSubquotient.of_injective f hf⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasSupport_detRep {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) {l : ℕ} (hl : 0 < l) :
     HasSupport (detRep (Fin l) (χ * absPow k (((l : ℂ) - 1) / 2))) (Segment.ofChar χ hχ l hl).ms := by
@@ -1189,17 +1179,17 @@ theorem hasSupport_detRep {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) {l : ℕ
       ((Segment.ofChar χ hχ l hl).isCusp_term a).2⟩, stdBlocks _ hd, IsSubquotient.of_injective f hf⟩
 
 /- English proof (translation)
-Establish `hc` using `IrrGL.isCusp_ofChar χ hχ`. Establish `hne : IrrGL.ofChar χ hχ ≠ (IrrGL.ofChar χ hχ).nu 1`. Introduce `h`. Establish `h0` using `(IrrGL.nu_ofChar_inj χ hχ (s := 0) (t := 1)).1 (by simpa using h)`. Evaluate the numerical expressions using `at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Use `⟨⟨⟨⟨Segment.ofFirst (IrrGL.ofChar χ hχ) hc 2 (by norm_num), ?_⟩, ?_, ?_⟩, 1, one_pos, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[Segment.mem_carrier, Segment.carrier_single, Segment.carrier_single]`. Simplify using `only [Segment.first_ofFirst, Segment.len_ofFirst, Set.mem_union, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, rfl⟩ interval_cases a`. Use `left`. Simplify using the standard rewrite rules. Use `right`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `(rfl | rfl)`. Conclude with `⟨0, by norm_num, by simp⟩`. Conclude with `⟨1, by norm_num, by simp⟩`. Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_singleton]`. Conclude with `hne`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 
-Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_singleton]`. Conclude with `fun h => hne h.symm`. Use `show (IrrGL.ofChar χ hχ).nu 1 = (IrrGL.ofChar χ hχ).nu ((1 : ℕ) : ℂ)`. Simplify using the standard rewrite rules. Introduce and unpack `⟨-, j, hj, h⟩`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `IrrGL.ofChar χ hχ = ((IrrGL.ofChar χ hχ).nu 1).nu ((j : ℕ) : ℂ) at h`. Rewrite `h` using `[IrrGL.nu_nu]`. Establish `h0` using `(IrrGL.nu_ofChar_inj χ hχ (s := 0) (t := 1 + j)).1 (by push_cast; simpa using h)`. Establish `: (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem single_precedes (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (Segment.single _ (IrrGL.isCusp_ofChar χ hχ)).Precedes (.single _ ((IrrGL.isCusp_ofChar χ hχ).nu 1)) ∧
@@ -1237,7 +1227,7 @@ theorem single_precedes (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     linarith
 
 /- English proof (translation)
-Establish `h0 : spehFactor x 1 (0 : Fin 1) = x` using `by simp [spehFactor]`. Establish `hd : ∑ a : Fin 1, (spehFactor x 1 a).1 = x.1` using `by simp [spehFactor]`. Take `⟨e⟩` from `nonempty_equiv_prodIrr_fin_one (spehFactor x 1) x h0 hd`. Conclude with `⟨hd, (isCosocle_self x.2.rep.irr).of_equiv (.refl _) e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSpeh_one (x : IrrGL k) : IsSpeh x 1 x.rep := by
   have h0 : spehFactor x 1 (0 : Fin 1) = x := by simp [spehFactor]
@@ -1248,11 +1238,11 @@ theorem isSpeh_one (x : IrrGL k) : IsSpeh x 1 x.rep := by
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Establish `hu : ∀ u : unipB k (Fin 1), u = 1`. Introduce `u`. Establish `hd` using `(mem_unipRad.1 u.2).2`. Use `Subtype.ext (Matrix.GeneralLinearGroup.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hd 0 () ()`. Establish `hbot : twKer (detRep (Fin 1) χ) (unipB k (Fin 1)) (whitChar ψ 1) = ⊥`. Use `le_bot_iff.1 (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Rewrite using `[hu u]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `(Submodule.quotEquivOfEqBot _ hbot).toEquiv.nontrivial`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGenericFor_one (ψ : AddChar k Circle) (χ : kˣ →* ℂˣ) : IsGenericFor ψ (detRep (Fin 1) χ) := by
   have hu : ∀ u : unipB k (Fin 1), u = 1 := by

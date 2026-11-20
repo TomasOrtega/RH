@@ -9,7 +9,7 @@ namespace Formalism.UG.P
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `using congrFun (congrFun h1 i) j`. Simplify using `using congrFun (congrFun h2 i) j`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem split_mat_ext {M N : Matrix n n (R × R)} (h1 : M.map Prod.fst = N.map Prod.fst)
     (h2 : M.map Prod.snd = N.map Prod.snd) : M = N := by
@@ -18,7 +18,7 @@ theorem split_mat_ext {M N : Matrix n n (R × R)} (h1 : M.map Prod.fst = N.map P
   · simpa using congrFun (congrFun h2 i) j
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Prod.fst_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem split_map_fst_mul (M N : Matrix n n (R × R)) :
     (M * N).map Prod.fst = M.map Prod.fst * N.map Prod.fst := by
@@ -26,7 +26,7 @@ theorem split_map_fst_mul (M N : Matrix n n (R × R)) :
   simp [Matrix.mul_apply, Prod.fst_sum]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Prod.snd_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem split_map_snd_mul (M N : Matrix n n (R × R)) :
     (M * N).map Prod.snd = M.map Prod.snd * N.map Prod.snd := by
@@ -34,7 +34,7 @@ theorem split_map_snd_mul (M N : Matrix n n (R × R)) :
   simp [Matrix.mul_apply, Prod.snd_sum]
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem split_cT_fst (g : Matrix n n (R × R)) :
     (cT (swapR R) g).map Prod.fst = (g.map Prod.snd)ᵀ := by
@@ -42,7 +42,7 @@ theorem split_cT_fst (g : Matrix n n (R × R)) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem split_cT_snd (g : Matrix n n (R × R)) :
     (cT (swapR R) g).map Prod.snd = (g.map Prod.fst)ᵀ := by
@@ -50,25 +50,25 @@ theorem split_cT_snd (g : Matrix n n (R × R)) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem splitJ_fst (J₁ : Matrix n n R) : (splitJ J₁).map Prod.fst = J₁ := by
   ext i j
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem splitJ_snd (J₁ : Matrix n n R) : (splitJ J₁).map Prod.snd = J₁ᵀ := by
   ext i j
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `congrArg (fun M : Matrix n n (R × R) => M.map Prod.fst) (show cT (swapR R) (g : Matrix n n (R × R)) * splitJ J₁ * (g : Matrix n n (R × R)) = splitJ J₁ from h)`. Simplify `h'` using `only [split_map_fst_mul, split_cT_fst, splitJ_fst]`. Introduce `h show cT (swapR R) (g : Matrix n n (R × R)) * splitJ J₁ * (g : Matrix n n (R × R)) = splitJ J₁`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `split_mat_ext` to reduce the goal to its premises. Rewrite using `[split_map_fst_mul, split_map_fst_mul, split_cT_fst, splitJ_fst, h]`. Rewrite using `[split_map_snd_mul, split_map_snd_mul, split_cT_snd, splitJ_snd]`. Establish `h'` using `congrArg Matrix.transpose h`. Rewrite `h'` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[← Matrix.mul_assoc]`. Conclude with `h'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_mem_iff (J₁ : Matrix n n R) (g : GL n (R × R)) :
     g ∈ UJ (swapR R) (splitJ J₁) ↔
@@ -90,7 +90,7 @@ theorem split_mem_iff (J₁ : Matrix n n R) (g : GL n (R × R)) :
       exact h'
 
 /- English proof (translation)
-Establish `h1 : J₁⁻¹ * J₁ = 1` using `Matrix.nonsing_inv_mul _ hJ`. Establish `h2 : J₁ * J₁⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hJ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, Matrix.mul_one, hPQ, Matrix.mul_one, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem split_conj_mul (J₁ : Matrix n n R) (hJ : IsUnit J₁.det) {P Q : Matrix n n R}
     (hPQ : P * Q = 1) : (J₁ * P * J₁⁻¹) * (J₁ * Q * J₁⁻¹) = 1 := by
@@ -103,21 +103,21 @@ theorem split_conj_mul (J₁ : Matrix n n R) (hJ : IsUnit J₁.det) {P Q : Matri
 def pairMat (X Y : Matrix n n R) : Matrix n n (R × R) := fun i j => (X i j, Y i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem pairMat_fst (X Y : Matrix n n R) : (pairMat X Y).map Prod.fst = X := by
   ext i j
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem pairMat_snd (X Y : Matrix n n R) : (pairMat X Y).map Prod.snd = Y := by
   ext i j
   rfl
 
 /- English proof (translation)
-Apply `split_mat_ext` to reduce the goal to its premises. Rewrite using `[split_map_fst_mul, pairMat_fst, pairMat_fst, h1]`. Conclude with `(Matrix.map_one _ rfl rfl).symm`. Rewrite using `[split_map_snd_mul, pairMat_snd, pairMat_snd, h2]`. Conclude with `(Matrix.map_one _ rfl rfl).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairMat_mul_eq_one {X Y X' Y' : Matrix n n R} (h1 : X * X' = 1) (h2 : Y * Y' = 1) :
     pairMat X Y * pairMat X' Y' = 1 := by
@@ -128,13 +128,11 @@ theorem pairMat_mul_eq_one {X Y X' Y' : Matrix n n R} (h1 : X * X' = 1) (h2 : Y 
     exact (Matrix.map_one _ rfl rfl).symm
 
 /- English proof (translation)
-Establish `hF : (g : Matrix n n (R × R)).map Prod.fst * ((g⁻¹ : GL n (R × R)) : Matrix n n (R × R)).map Prod.fst = 1`. Rewrite using `[← split_map_fst_mul, Units.mul_inv]`. Conclude with `Matrix.map_one _ rfl rfl`. Establish `e1` using `(split_mem_iff J₁ g).mp hg`. Establish `e2` using `(split_mem_iff J₁ g').mp hg'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[← h]`. Establish `k1 : ((g : Matrix n n (R × R)).map Prod.snd)ᵀ * J₁ = J₁ * ((g⁻¹ : GL n (R × R)) : Matrix n n (R × R)).map Prod.fst`. Combine the equalities or inequalities in the displayed calculation. Establish `k2 : ((g' : Matrix n n (R × R)).map Prod.snd)ᵀ * J₁ = J₁ * ((g⁻¹ : GL n (R × R)) : Matrix n n (R × R)).map Prod.fst`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `k3 : ((g : Matrix n n (R × R)).map Prod.snd)ᵀ = ((g' : Matrix n n (R × R)).map Prod.snd)ᵀ`. Establish `h3` using `congrArg (fun M : Matrix n n R => M * J₁⁻¹) (k1.trans k2.symm)`. Simplify `h3` using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hJ, Matrix.mul_one]`. Establish `k4` using `congrArg Matrix.transpose k3`. Rewrite `k4` using `[Matrix.transpose_transpose, Matrix.transpose_transpose]`.
-
-Conclude with `Units.ext (split_mat_ext h k4)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_injective (J₁ : Matrix n n R) (hJ : IsUnit J₁.det) (g g' : GL n (R × R))
     (hg : g ∈ UJ (swapR R) (splitJ J₁)) (hg' : g' ∈ UJ (swapR R) (splitJ J₁))
@@ -166,11 +164,11 @@ theorem split_injective (J₁ : Matrix n n R) (hJ : IsUnit J₁.det) (g g' : GL 
   exact Units.ext (split_mat_ext h k4)
 
 /- English proof (translation)
-Establish `hS : (J₁ * ((h⁻¹ : GL n R) : Matrix n n R) * J₁⁻¹)ᵀ * (J₁ * (h : Matrix n n R) * J₁⁻¹)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, split_conj_mul J₁ hJ (Units.mul_inv h), Matrix.transpose_one]`. Establish `hSi : (J₁ * (h : Matrix n n R) * J₁⁻¹)ᵀ * (J₁ * ((h⁻¹ : GL n R) : Matrix n n R) * J₁⁻¹)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, split_conj_mul J₁ hJ (Units.inv_mul h), Matrix.transpose_one]`. Use `⟨⟨pairMat (h : Matrix n n R) (J₁ * ((h⁻¹ : GL n R) : Matrix n n R) * J₁⁻¹)ᵀ, pairMat ((h⁻¹ : GL n R) : Matrix n n R) (J₁ * (h : Matrix n n R) * J₁⁻¹)ᵀ, pairMat_mul_eq_one (Units.mul_inv h) hS, pairMat_mul_eq_one (Units.inv_mul h) hSi⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(split_mem_iff J₁ _).mpr show ((pairMat (h : Matrix n n R) (J₁ * ((h⁻¹ : GL n R) : Matrix n n R) * J₁⁻¹)ᵀ).map Prod.snd)ᵀ * J₁ * (pairMat (h : Matrix n n R) (J₁ * ((h⁻¹ : GL n R) : Matrix n n R) * J₁⁻¹)ᵀ).map Prod.fst = J₁` to reduce the goal to its premises. Rewrite using `[pairMat_snd, pairMat_fst, Matrix.transpose_transpose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J₁ := by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.nonsing_inv_mul _ hJ, Matrix.mul_one, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Conclude with `Units.ext (pairMat_fst (h : Matrix n n R) (J₁ * ((h⁻¹ : GL n R) : Matrix n n R) * J₁⁻¹)ᵀ)`.
+A detailed English derivation is pending.
 -/
 theorem split_surjective (J₁ : Matrix n n R) (hJ : IsUnit J₁.det) (h : GL n R) :
     ∃ g : GL n (R × R), g ∈ UJ (swapR R) (splitJ J₁) ∧ bc (RingHom.fst R R) g = h := by
@@ -193,9 +191,9 @@ theorem split_surjective (J₁ : Matrix n n R) (hJ : IsUnit J₁.det) (h : GL n 
   · exact Units.ext (pairMat_fst (h : Matrix n n R) (J₁ * ((h⁻¹ : GL n R) : Matrix n n R) * J₁⁻¹)ᵀ)
 
 /- English proof (translation)
-Introduce `R _ n _ _ J₁ hJ`. Use `⟨MulEquiv.ofBijective ((bc (RingHom.fst R R)).comp (UJ (swapR R) (splitJ J₁)).subtype) ⟨?_, ?_⟩, fun g => rfl⟩` and prove the remaining obligations. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `split_injective J₁ hJ a b a.2 b.2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun u : GL n R => (u : Matrix n n R)) hab`. Introduce `h`. Take `⟨g, hg, he⟩` from `split_surjective J₁ hJ h`. Conclude with `⟨⟨g, hg⟩, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem split_unitary_group_iso : Formalism.UG.SplitIso := by
   intro R _ n _ _ J₁ hJ

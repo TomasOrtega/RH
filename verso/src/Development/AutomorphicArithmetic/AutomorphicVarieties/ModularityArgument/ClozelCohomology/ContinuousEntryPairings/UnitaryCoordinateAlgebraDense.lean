@@ -8,9 +8,7 @@ namespace GlobalTheory.PolyRealU
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h1 : Continuous (coord (E` using `E) τ) := by`. Unfold `coord`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `Complex.continuous_conj.comp (continuous_apply _)`.
-
-Establish `h2 : Continuous (pInf E)` using `continuous_pi fun w => ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)).comp continuous_fst`. Establish `h3 : Continuous fun x : infU E n => (x.1.1.val : Matrix (Fin n) (Fin n) (Ad E)) i j` using `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_elem i j`. Conclude with `h1.comp (h2.comp h3)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_entry (τ : E →+* ℂ) (i j : Fin n) :
     Continuous fun x : infU E n => (cEmb τ x.1).val i j := by
@@ -29,16 +27,16 @@ theorem continuous_entry (τ : E →+* ℂ) (i j : Fin n) :
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Unfold `coord`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coord_star' (τ : E →+* ℂ) (z : Cinf E) : coord τ (star z) = star (coord τ z) := by
   unfold coord
   split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `hne : ComplexEmbedding.conjugate τ ≠ τ` using `fun h => (InfinitePlace.isComplex_mk_iff.1 (IsTotallyComplex.isComplex (InfinitePlace.mk τ))) (ComplexEmbedding.isReal_iff.2 h)`. Unfold `coord`. Rewrite using `[InfinitePlace.mk_conjugate_eq]`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (by rw [h]; exact hne.symm)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_pos h, if_neg (by rw [h]; exact hne)]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_conj (τ : E →+* ℂ) (z : Cinf E) : coord (ComplexEmbedding.conjugate τ) z = star (coord τ z) := by
   have hne : ComplexEmbedding.conjugate τ ≠ τ := fun h =>
@@ -53,9 +51,9 @@ theorem coord_conj (τ : E →+* ℂ) (z : Cinf E) : coord (ComplexEmbedding.con
     simp
 
 /- English proof (translation)
-Establish `hx : Formalism.UG.cT (conjAd E) x.1.val * 1 * x.1.val = 1` using `x.2`. Rewrite `hx` using `[Matrix.mul_one]`. Establish `h1 : (x.1⁻¹).val = Formalism.UG.cT (conjAd E) x.1.val` using `Units.inv_eq_of_mul_eq_one_left hx`. Establish `h2 : ∀ y, pInf E (conjAd E y) = star (pInf E y)` using `fun y => by`. Express the relevant statement in the definitionally equal form `(infEq E).symm (infEq E _) = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `coord τ (pInf E ((x.1⁻¹).val i j)) = star (coord τ (pInf E (x.1.val j i)))`. Rewrite using `[h1, ← coord_star', ← h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem entry_inv (τ : E →+* ℂ) (x : UA E n) (i j : Fin n) :
     (cEmb τ x⁻¹).val i j = star ((cEmb τ x).val j i) := by
@@ -71,9 +69,9 @@ theorem entry_inv (τ : E →+* ℂ) (x : UA E n) (i j : Fin n) :
   rfl
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext (ga_ext ?_ ?_))` and prove the remaining obligations. Use extensionality with `i j w`. Establish `h1 : coord w.embedding (pInf E (x.1.1.val i j)) = coord w.embedding (pInf E (y.1.1.val i j))` using `h w.embedding i j`. Unfold `coord at h1`. Rewrite `h1` using `[InfinitePlace.mk_embedding, if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Conclude with `(MonoidHom.mem_ker.1 x.2).trans (MonoidHom.mem_ker.1 y.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_entry {x y : infU E n} (h : ∀ τ i j, (cEmb τ x.1).val i j = (cEmb τ y.1).val i j) : x = y := by
   refine Subtype.ext (Subtype.ext (ga_ext ?_ ?_))
@@ -86,7 +84,7 @@ theorem eq_of_entry {x y : infU E n} (h : ∀ τ i j, (cEmb τ x.1).val i j = (c
   · exact (MonoidHom.mem_ker.1 x.2).trans (MonoidHom.mem_ker.1 y.2).symm
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CoproductAdjoin.coprod_adjoin S hS`.
+A detailed English derivation is pending.
 -/
 theorem coprod_adjoin {G : Type} [Mul G] (S : Set (G → ℂ))
     (hS : ∀ p ∈ S, ∃ (m : ℕ) (a b : Fin m → G → ℂ), (∀ i, a i ∈ Algebra.adjoin ℂ S ∧ b i ∈ Algebra.adjoin ℂ S) ∧
@@ -96,19 +94,17 @@ theorem coprod_adjoin {G : Type} [Mul G] (S : Set (G → ℂ))
   _root_.UpperTheory.Reformulated.B.CoproductAdjoin.coprod_adjoin S hS
 
 /- English proof (translation)
-Introduce `E _ _ _ n`. Establish `hstar : ∀ (τ : E →+* ℂ) (i j : Fin n), (fun x : infU E n => star ((cEmb τ x.1).val i j)) ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}` using `fun τ i j => Algebra.subset_adjoin ⟨ComplexEmbedding.conjugate τ, i, j, funext fun x => (coord_conj τ _).symm⟩`. Use `⟨fun p hp => ?_, fun p hp => ?_, fun x y hxy => ?_, fun p hp => ?_, coprod_adjoin _ ?_⟩` and prove the remaining obligations. Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Take `⟨τ, i, j, rfl⟩` from `hp`. Apply the tactic sequence `exact continuous_entry τ i j`. Consider the case `algebraMap c => exact continuous_const`. Consider the case `add p q _ _ hp hq => exact hp.add hq`. Consider the case `mul p q _ _ hp hq => exact hp.mul hq`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp`. Take `⟨τ, i, j, rfl⟩` from `hp`. Conclude with `hstar τ i j`. Consider the case `algebraMap c => exact Subalgebra.algebraMap_mem _ (star c)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q _ _ hp hq => rw [star_add]`. Conclude with `add_mem hp hq`. Consider the case `mul p q _ _ hp hq => rw [star_mul]`. Conclude with `mul_mem hq hp`. Assume the negation of the conclusion as `h push Not at h`.
+Assume the negation of the conclusion and derive a contradiction. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply the tactic sequence `exact hxy (eq_of_entry fun τ i j => h _ (Algebra.subset_adjoin ⟨τ, i, j, rfl⟩))`. Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp`. Take `⟨τ, i, j, rfl⟩` from `hp`. Use `hstar τ j i using 2 with x` and compare the differences between its conclusion and the goal.
+Treat this case separately. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `entry_inv τ x.1 i j`. Consider the case `algebraMap c => exact Subalgebra.algebraMap_mem _ c`. Consider the case `add p q _ _ hp hq => exact add_mem hp hq`. Consider the case `mul p q _ _ hp hq => exact mul_mem hp hq`. Introduce and unpack `_ ⟨τ, i, j, rfl⟩`.
-
-Use `⟨n, fun l x => (cEmb τ x.1).val i l, fun l x => (cEmb τ x.1).val l j, fun l => ⟨Algebra.subset_adjoin ⟨τ, i, l, rfl⟩, Algebra.subset_adjoin ⟨τ, l, j, rfl⟩⟩, fun x k => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(cEmb τ (x.1 * k.1)).val i j = _`. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poly_infU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), (∀ p ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}, Continuous p) ∧ (∀ p ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}, star p ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}) ∧ (∀ x y : infU E n, x ≠ y → ∃ p ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}, p x ≠ p y) ∧ (∀ p ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}, (fun x => p x⁻¹) ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}) ∧ ∀ p ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}, ∃ (m : ℕ) (a b : Fin m → infU E n → ℂ), (∀ i, a i ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j} ∧ b i ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}) ∧ ∀ x k, p (x * k) = ∑ i, a i x * b i k := by
   intro E _ _ _ n

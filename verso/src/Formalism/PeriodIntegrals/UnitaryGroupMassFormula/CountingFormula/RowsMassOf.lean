@@ -8,7 +8,7 @@ namespace PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-The claim follows from `rowsMass_of_lamGlue hH hG lamGlue`.
+A detailed English derivation is pending.
 -/
 theorem rowsMass_of (hH : HostDict) (hG : RowsGenus) : RowsMass :=
   rowsMass_of_lamGlue hH hG lamGlue

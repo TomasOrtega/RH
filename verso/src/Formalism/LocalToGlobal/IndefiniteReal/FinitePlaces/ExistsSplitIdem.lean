@@ -15,30 +15,30 @@ section Sq
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `h' : ‖x‖ ≠ ‖-y‖` using `by rwa [norm_neg]`. Rewrite using `[sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h', norm_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sub_eq_max {x y : v.adicCompletion F} (h : ‖x‖ ≠ ‖y‖) : ‖x - y‖ = max ‖x‖ ‖y‖ := by
   have h' : ‖x‖ ≠ ‖-y‖ := by rwa [norm_neg]
   rw [sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h', norm_neg]
 
 /- English proof (translation)
-Establish `hn : ‖a * a - Δ * (b * b)‖ = 1` using `by rw [hab, norm_one]`. Establish `heq : ‖a‖ = ‖b‖`. Assume the negation of the conclusion as `hne`. Establish `hne2 : ‖a * a‖ ≠ ‖Δ * (b * b)‖`. Rewrite using `[norm_mul, norm_mul, norm_mul, hΔ, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Establish `ha` using `norm_nonneg a`. Establish `hb` using `norm_nonneg b`. Use polynomial arithmetic with `[sq_nonneg (‖a‖ - ‖b‖), sq_nonneg (‖a‖ + ‖b‖)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `hn` using `[norm_sub_eq_max v hne2, norm_mul, norm_mul, norm_mul, hΔ, one_mul]`. Break down `hni with h | h` into its components or cases. Establish `: ‖a‖ * ‖a‖ ≤ 1` using `hn ▸ le_max_left _ _`. Use the polynomial consequences of the given equalities and inequalities. Establish `: ‖b‖ * ‖b‖ ≤ 1` using `hn ▸ le_max_right _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Apply the tactic sequence `have hb1 : 1 < ‖b‖ := by rcases hni with h | h <;> linarith`. Establish `hb0 : b ≠ 0` using `by intro h; rw [h, norm_zero] at hb1; linarith`. Use `set t := a / b with ht`. Establish `htn : ‖t‖ = 1` using `by rw [ht, norm_div, heq, div_self (by linarith)]`.
+Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : t ≠ 0` using `by intro h; rw [h, norm_zero] at htn; linarith`. Establish `htt : t * t - Δ = 1 / (b * b)`. Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `set u := Δ / (t * t) with hu`. Establish `hu1 : ‖u - 1‖ < 1`. Establish `: u - 1 = -(1 / (b * b)) / (t * t)`. Rewrite using `[hu, ← htt]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_div, norm_neg, norm_div, norm_one, norm_mul, norm_mul, htn, mul_one, div_one]`. Establish `: 1 < ‖b‖ * ‖b‖` using `by nlinarith`. Rewrite using `[div_lt_one (by linarith)]; exact this`. Establish `hv2 : Valued.v (((2 : ℕ) : v.adicCompletion F)) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2' : ‖((2 : ℕ) : v.adicCompletion F)‖ = 1` using `by exact_mod_cast h2`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Valued.toNormedField.norm_le_one_iff.mp h2'.le`. Assume the negation of the conclusion as `hlt push Not at hlt`. Use `Valued.toNormedField.norm_lt_one_iff.mpr hlt` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z, hz⟩` from `PI.LocalEndW.henselRoot F v 2 u hv2 (Valued.toNormedField.norm_lt_one_iff.mp hu1)`. Use `⟨t * z, ?_⟩` and prove the remaining obligations. Establish `: z * z = u` using `by rw [← hz]; ring`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sq_of_nonint (Δ a b : v.adicCompletion F) (h2 : ‖(2 : v.adicCompletion F)‖ = 1) (hΔ : ‖Δ‖ = 1)
     (hab : a * a - Δ * (b * b) = 1) (hni : 1 < ‖a‖ ∨ 1 < ‖b‖) : ∃ s, s * s = Δ := by
@@ -101,14 +101,14 @@ def single (v : HeightOneSpectrum (𝓞 F)) (t : v.adicCompletion F) : FiniteAde
     exact zero_mem _)
 
 /- English proof (translation)
-Use `show Pi.single v t v = t`. Conclude with `Pi.single_eq_same v t`.
+A detailed English derivation is pending.
 -/
 theorem single_self (v : HeightOneSpectrum (𝓞 F)) (t : v.adicCompletion F) : single v t v = t := by
   show Pi.single v t v = t
   exact Pi.single_eq_same v t
 
 /- English proof (translation)
-Use `show Pi.single v t w = 0`. Conclude with `Pi.single_eq_of_ne h t`.
+A detailed English derivation is pending.
 -/
 theorem single_ne {v w : HeightOneSpectrum (𝓞 F)} (t : v.adicCompletion F) (h : w ≠ v) : single v t w = 0 := by
   show Pi.single v t w = 0
@@ -132,7 +132,7 @@ Both sides reduce to the same expression.
 theorem algebraMap_AF (c : F) :
     algebraMap F (AF F) c = pairA F (algebraMap F (Ainf F) c) (algebraMap F (Af F) c) := rfl
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨congrArg Prod.fst h, congrArg Prod.snd h⟩`. Introduce and unpack `⟨rfl, rfl⟩`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 theorem pairA_eq_iff (x y : Ainf F) (α β : Af F) : pairA F x α = pairA F y β ↔ x = y ∧ α = β := by
   constructor
@@ -141,7 +141,7 @@ theorem pairA_eq_iff (x y : Ainf F) (α β : Af F) : pairA F x α = pairA F y β
   · rintro ⟨rfl, rfl⟩
     rfl
 /- English proof (translation)
-Use `first`. Consider the case `exact RestrictedProduct.ext h`. Consider the case `exact Subtype.ext (funext h)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fa_ext {x y : Af F} (h : ∀ w, x w = y w) : x = y := by
   first
@@ -179,33 +179,31 @@ variable {D : D7} (δ : D.host.E) (hδ : D.sp.cm.sig δ = -δ) (hδ0 : δ ≠ 0)
 include hΔ hδ0 in
 
 /- English proof (translation)
-Establish `hΔ0 : Δ ≠ 0`. Introduce `h`. Rewrite `hΔ` using `[h, map_zero]`. Conclude with `hδ0 (mul_self_eq_zero.mp hΔ.symm)`. Establish `hs0 : s ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hs` using `[h, mul_zero]`. Conclude with `hΔ0 ((map_eq_zero_iff _ (algebraMap D.host.F (v.adicCompletion D.host.F)).injective).mp hs.symm)`. Use `set a : AF D.host.F := pairA D.host.F 0 (single v (1 / 2)) with ha`. Use `set b : AF D.host.F := pairA D.host.F 0 (single v (1 / (2 * s))) with hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e1 : a * a + DA Δ * (b * b) = a`. Rewrite using `[ha, hb, DA, algebraMap_AF, pairA_mul, pairA_mul, pairA_mul, pairA_add, pairA_eq_iff]`. Use `⟨by ring, fa_ext fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [fa_mul, fa_add, af_apply]`. Distinguish the cases in `hw : w = v`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Substitute `hw` using the available equality. Establish `h2 : (2 : w.adicCompletion D.host.F) ≠ 0`. Use `(algebraMap D.host.F (w.adicCompletion D.host.F)).injective.ne (two_ne_zero (α := D.host.F))` as an intermediate fact. Rewrite `this` using `[map_ofNat, map_zero]`. Then use the resulting hypothesis. Rewrite using `[single_self, single_self, ← hs]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[single_ne _ hw, single_ne _ hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (2 : v.adicCompletion D.host.F) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(algebraMap D.host.F (v.adicCompletion D.host.F)).injective.ne (two_ne_zero (α := D.host.F))` as an intermediate fact. Rewrite `this` using `[map_ofNat, map_zero]`. Then use the resulting hypothesis. Establish `e2 : a * b + b * a = b`. Rewrite using `[ha, hb, pairA_mul, pairA_mul, pairA_add, pairA_eq_iff]`. Use `⟨by ring, fa_ext fun w => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fa_mul, fa_add]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[single_self, single_self]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[single_ne _ hw, single_ne _ hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : a * a + DA Δ * (b * -b) = 0`. Rewrite using `[ha, hb, DA, algebraMap_AF, pairA_neg, pairA_mul, pairA_mul, pairA_mul, pairA_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `show pairA D.host.F _ _ = pairA D.host.F 0 0`. Rewrite using `[pairA_eq_iff]`. Use `⟨by ring, fa_ext fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [fa_mul, fa_add, fa_neg, af_apply, fa_zero]`. Distinguish the cases in `hw : w = v`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Substitute `hw` using the available equality. Rewrite using `[single_self, single_self, ← hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[single_ne _ hw, single_ne _ hw]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e4 : a * -b + b * a = 0` using `by ring`. Establish `e5 : a + a = pairA D.host.F 0 (single v 1)`. Rewrite using `[ha, pairA_add, pairA_eq_iff]`. Use `⟨by ring, fa_ext fun w => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [fa_add]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[single_self, single_self]`. Clear the denominators using the available nonvanishing facts.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[single_ne _ hw, single_ne _ hw, add_zero]`. Use `⟨pt δ a b, ?_, ?_, v, pairA D.host.F 0 (single v 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pt_mul δ Δ hΔ, e1, e2]`. Rewrite using `[hcA, pt_mul δ Δ hΔ, e3, e4]`.
-
-Conclude with `mkE_zero δ (AF D.host.F)`. Use `⟨single v 1, rfl, ?_, fun v' hv' => ?_⟩` and prove the remaining obligations. Conclude with `single_self v 1`. Conclude with `single_ne 1 hv'`. Rewrite using `[hcA, pt, pt, mkE_add, add_neg_cancel, e5, algebraMap_eq_mkE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_splitIdem (v : HeightOneSpectrum (𝓞 D.host.F)) (s : v.adicCompletion D.host.F)
     (hs : s * s = algebraMap D.host.F (v.adicCompletion D.host.F) Δ) (hcA : ∀ a b, cA D (pt δ a b) = pt δ a (-b)) :

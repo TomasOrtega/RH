@@ -6,9 +6,9 @@ open scoped BigOperators
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Introduce `l d _ hl D hD`. Establish `hl1 : 1 ≤ l` using `by omega`. Take `⟨x, hx, hmax⟩` from `FlowLoadBounds.exists_opt_flow hl1 D hD`. Take `⟨σ, hσ, hsum⟩` from `FlowLoadBounds.strong hl1 D hD`. Use `⟨⟨x, hx, (FlowLoadBounds.maxFlow_eq hx hmax).symm⟩, σ, hσ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fnum, ← hsum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_maxFlow_attained_and_isOptDual :
     ∀ (l d : ℕ) [NeZero d], 3 ≤ l → ∀ D : ZMod d → ℝ, 0 ≤ D →

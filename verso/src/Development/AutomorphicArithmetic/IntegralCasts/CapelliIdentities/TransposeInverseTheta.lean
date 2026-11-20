@@ -5,7 +5,7 @@ noncomputable def UpperTheory.Reformulated.B.TransposeInverseTheta.Jmat.{u_1} :
     fun (R : Type u_1) [CommRing R] (m : ℕ) (i j : Fin m) ↦ if j = i.rev then (1 : R) else (0 : R)
 
 /- English proof (translation)
-Introduce `R _ m`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, UpperTheory.Reformulated.B.TransposeInverseTheta.Jmat, Matrix.one_apply]`. Simplify using `only [ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Fin.rev_rev]`. Simplify using `only [eq_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux2.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] (m : ℕ),
@@ -23,7 +23,7 @@ noncomputable def UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl.{u_1} :
         inv_val := UpperTheory.Reformulated.B.TransposeInverseTheta.aux2 m : (Matrix (Fin m) (Fin m) R)ˣ }
 
 /- English proof (translation)
-Introduce `n _ _ R _ g`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux4.{u_1} :
     ∀ {n : Type} [inst : Fintype n] [inst_1 : DecidableEq n] {R : Type u_1} [inst_2 : CommRing R] (g : GL n R),
@@ -32,7 +32,7 @@ theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux4.{u_1} :
   rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]
 
 /- English proof (translation)
-Introduce `n _ _ R _ g`. Rewrite using `[← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux5.{u_1} :
     ∀ {n : Type} [inst : Fintype n] [inst_1 : DecidableEq n] {R : Type u_1} [inst_2 : CommRing R] (g : GL n R),
@@ -52,7 +52,7 @@ noncomputable def UpperTheory.Reformulated.B.TransposeInverseTheta.theta.{u_1} :
       UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl R m * UpperTheory.Reformulated.B.TransposeInverseTheta.trInv g * UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl R m
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(↑(g * h)⁻¹ : Matrix n n R).transpose = (↑g⁻¹ : Matrix n n R).transpose * (↑h⁻¹ : Matrix n n R).transpose`. Rewrite using `[mul_inv_rev, Units.val_mul, Matrix.transpose_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_mul {n : Type} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
     (g h : GL n R) :
@@ -62,7 +62,7 @@ private theorem UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_mul {n : 
   rw [mul_inv_rev, Units.val_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(↑g : Matrix n n R).transpose.transpose = ↑g`. Rewrite using `[Matrix.transpose_transpose]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_trInv {n : Type} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
     (g : GL n R) : UpperTheory.Reformulated.B.TransposeInverseTheta.trInv (UpperTheory.Reformulated.B.TransposeInverseTheta.trInv g) = g := by
@@ -71,16 +71,16 @@ private theorem UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_trInv {n 
   rw [Matrix.transpose_transpose]
 
 /- English proof (translation)
-The claim follows from `Units.ext (UpperTheory.Reformulated.B.TransposeInverseTheta.aux2 m)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl_mul_self {m : ℕ} {R : Type*} [CommRing R] :
     UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl R m * UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl R m = 1 :=
   Units.ext (UpperTheory.Reformulated.B.TransposeInverseTheta.aux2 m)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(UpperTheory.Reformulated.B.TransposeInverseTheta.Jmat R m).transpose = UpperTheory.Reformulated.B.TransposeInverseTheta.Jmat R m`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, UpperTheory.Reformulated.B.TransposeInverseTheta.Jmat]`. Distinguish the cases in `h : j = i.rev`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `h' : i = j.rev` using `by rw [h, Fin.rev_rev]`. Simplify using `[h, ← h']`. Establish `h' : ¬ i = j.rev` using `fun e => h (by rw [e, Fin.rev_rev])`. Simplify using `[h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_Jgl {m : ℕ} {R : Type*} [CommRing R] :
     UpperTheory.Reformulated.B.TransposeInverseTheta.trInv (UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl R m) = UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl R m := by
@@ -95,7 +95,7 @@ private theorem UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_Jgl {m : 
     simp [h, h']
 
 /- English proof (translation)
-Introduce `m R _ g`. Establish `hJ` using `UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl_mul_self (m := m) (R := R)`. Simplify using `only [UpperTheory.Reformulated.B.TransposeInverseTheta.theta, UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_mul, UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_trInv, UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_Jgl]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux8.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (g : GL (Fin m) R), UpperTheory.Reformulated.B.TransposeInverseTheta.theta (UpperTheory.Reformulated.B.TransposeInverseTheta.theta g) = g := by
@@ -108,7 +108,7 @@ theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux8.{u_1} :
     _ = g := by rw [hJ, one_mul, mul_one]
 
 /- English proof (translation)
-Introduce `m R _ g h`. Establish `hJ` using `UpperTheory.Reformulated.B.TransposeInverseTheta.Jgl_mul_self (m := m) (R := R)`. Simplify using `only [UpperTheory.Reformulated.B.TransposeInverseTheta.theta, UpperTheory.Reformulated.B.TransposeInverseTheta.trInv_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux9.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (g h : GL (Fin m) R),
@@ -127,7 +127,7 @@ noncomputable def UpperTheory.Reformulated.B.TransposeInverseTheta.thetaAut.{u_1
         right_inv := UpperTheory.Reformulated.B.TransposeInverseTheta.aux8, map_mul' := UpperTheory.Reformulated.B.TransposeInverseTheta.aux9 : GL (Fin m) R ≃* GL (Fin m) R }
 
 /- English proof (translation)
-Introduce `m R _`. Conclude with `if_pos rfl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux11.{u_1} :
     ∀ (m : ℕ) (R : Type u_1) [inst : CommRing R],
@@ -137,7 +137,7 @@ theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux11.{u_1} :
   exact if_pos rfl
 
 /- English proof (translation)
-Use `ext1 g`. Conclude with `UpperTheory.Reformulated.B.TransposeInverseTheta.aux8 g`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.TransposeInverseTheta.thetaAut_mul_self (m : ℕ) (R : Type*) [CommRing R] :
     UpperTheory.Reformulated.B.TransposeInverseTheta.thetaAut m R * UpperTheory.Reformulated.B.TransposeInverseTheta.thetaAut m R = 1 := by
@@ -145,9 +145,9 @@ private theorem UpperTheory.Reformulated.B.TransposeInverseTheta.thetaAut_mul_se
   exact UpperTheory.Reformulated.B.TransposeInverseTheta.aux8 g
 
 /- English proof (translation)
-Introduce `m R _ s t`. Establish `hne : (-1 : ℤˣ) ≠ 1` using `by decide`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or t with rfl | rfl`. Simplify using the standard rewrite rules. Simplify using `[hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hne]`. Simplify using `[hne, UpperTheory.Reformulated.B.TransposeInverseTheta.thetaAut_mul_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.TransposeInverseTheta.aux12.{u_1} :
     ∀ (m : ℕ) (R : Type u_1) [inst : CommRing R] (s t : ℤˣ),
@@ -188,7 +188,7 @@ noncomputable def UpperTheory.Reformulated.B.TransposeInverseTheta.conjBy.{u_1, 
         r
 
 /- English proof (translation)
-Introduce `G R _ _ m h r g`. Establish `e : (UpperTheory.Reformulated.B.TransposeInverseTheta.conjBy h r) g = SemidirectProduct.inl h * r g * (SemidirectProduct.inl h)⁻¹` using `rfl`. Rewrite using `[e, ← map_inv, SemidirectProduct.mul_left, SemidirectProduct.mul_left]`. Simplify using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.TransposeInverseTheta.conj_left :
     ∀ {G R : Type} [inst : Group G] [inst_1 : CommRing R] {m : ℕ} (h : GL (Fin m) R) (r : G →* UpperTheory.Reformulated.B.TransposeInverseTheta.GG m R)

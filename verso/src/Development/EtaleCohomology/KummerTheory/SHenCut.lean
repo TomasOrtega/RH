@@ -58,11 +58,11 @@ def Nb.ring {R Ω : CommRingCat.{0}} (s : R ⟶ Ω) : Nb s ⥤ CommRingCat.{0} :
   CostructuredArrow.proj _ _ ⋙ MorphismProperty.Under.forget Et ⊤ R ⋙ Under.forget R
 
 /- English proof (translation)
-Set `E` to `equivSmallModel.{0} (Nb s)`. Use `⟨SmallModel.{0} (Nb s), inferInstance, IsFiltered.of_equivalence E, E.inverse ⋙ Nb.ring s, { app := fun j => (E.inverse.obj j).left.hom, naturality := fun j k f => ?_ }, { app := fun j => (E.inverse.obj j).hom.right, naturality := fun j k f => ?_ }, ?_, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(Category.id_comp _).trans (Under.w ((MorphismProperty.Under.forget Et ⊤ R).map (E.inverse.map f).left)).symm`. Conclude with `(congrArg (fun t => t.right) (CostructuredArrow.w (E.inverse.map f))).trans (Category.comp_id _).symm`. Introduce `j B φ β hφ hβ`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hw : (E.inverse.obj j).left.hom ≫ (E.inverse.obj j).hom.right = s` using `Under.w (E.inverse.obj j).hom`. Set `A : MorphismProperty.Under Et ⊤ R` to `MorphismProperty.Under.mk ⊤ ((E.inverse.obj j).left.hom ≫ φ) (Et.comp_mem _ _ (E.inverse.obj j).left.prop hφ)`. Set `N : Nb s` to `CostructuredArrow.mk (Y := A) (Under.homMk β ((Category.assoc _ _ _).trans ((congrArg (fun t => (E.inverse.obj j).left.hom ≫ t) hβ).trans hw)))`. Set `m : E.inverse.obj j ⟶ N` to `CostructuredArrow.homMk (MorphismProperty.Under.homMk φ rfl trivial) (Under.UnderMorphism.ext hβ)`. Use `⟨E.functor.obj N, E.inverse.preimage (m ≫ E.unit.app N), (Nb.ring s).map (E.unit.app N), ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(Nb.ring s).map m ≫ _ = (Nb.ring s).map (E.inverse.map _)`. Rewrite using `[Functor.map_preimage, Functor.map_comp]`. Conclude with `congrArg (fun t => t.right) (CostructuredArrow.w (E.unit.app N))`. Conclude with `(E.inverse.obj j).left.prop`. Conclude with `Under.w (E.inverse.obj j).hom`.
+A detailed English derivation is pending.
 -/
 theorem exists_sat {R Ω : CommRingCat.{0}} (s : R ⟶ Ω) : ∃ (J : Type) (_ : SmallCategory J) (_ : IsFiltered J)
     (D : J ⥤ CommRingCat.{0}) (u : (Functor.const J).obj R ⟶ D) (e : D ⟶ (Functor.const J).obj Ω),
@@ -89,11 +89,11 @@ theorem exists_sat {R Ω : CommRingCat.{0}} (s : R ⟶ Ω) : ∃ (J : Type) (_ :
   · exact Under.w (E.inverse.obj j).hom
 
 /- English proof (translation)
-Introduce `R 𝔭`. Set `Ω` to `AlgebraicClosure 𝔭.asIdeal.ResidueField`. Set `s : R →+* Ω` to `(algebraMap 𝔭.asIdeal.ResidueField Ω).comp (algebraMap R 𝔭.asIdeal.ResidueField)`. Establish `hs : RingHom.ker s = 𝔭.asIdeal`. Rewrite using `[RingHom.ker_comp_of_injective _ (algebraMap 𝔭.asIdeal.ResidueField Ω).injective, Ideal.ker_algebraMap_residueField]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨J, _, _, D, u, e, hsat, hu⟩` from `exists_sat (Ω := CommRingCat.of Ω) (CommRingCat.ofHom s)`. Establish `hF : IsField (Cocone.mk (F` using `D) (CommRingCat.of Ω) e).pt := Field.toIsField Ω`. Use `⟨J, inferInstance, inferInstance, D, colimit.cocone D, colimit.isColimit D, u, h3 _ Ω _ (h1 D _ (colimit.isColimit D) _ hF hsat) (h2 D _ (colimit.isColimit D) _ hF hsat), fun j => ⟨(hu j).1, ?_⟩⟩` and prove the remaining obligations. Set `ej : D.obj j →+* Ω` to `(e.app j).hom`. Use `⟨⟨RingHom.ker ej, RingHom.ker_isPrime ej⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ej.comp (u.app j).hom = s` using `congrArg CommRingCat.Hom.hom (hu j).2`. Conclude with `(congrArg RingHom.ker this).trans hs`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goal_of (h1 : SatUnit) (h2 : SatRoot) (h3 : SHOfLift) : LateralTheory.KummerTheory.StrictHenselization := by
   intro R 𝔭

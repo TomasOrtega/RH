@@ -13,7 +13,7 @@ namespace GlobalTheory.CMVal.Euler.SplitPair
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `le_antisymm h (not_lt.1 fun h1 => h' ?_)` and prove the remaining obligations. Rewrite using `[← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add, sub_add_cancel]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_exp_of_le {x : WithZero (Multiplicative ℤ)} {m : ℤ} (h : x ≤ WithZero.exp m) (h' : ¬ x ≤ WithZero.exp (m - 1)) :
     x = WithZero.exp m := by
@@ -22,11 +22,11 @@ theorem eq_exp_of_le {x : WithZero (Multiplicative ℤ)} {m : ℤ} (h : x ≤ Wi
   exact h1
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(HeightOneSpectrum.denseRange_algebraMap E P).mem_nhds (OrderUnits.ball_mem_nhds P 1 z)`. Establish `hk' : Valued.v (algebraMap E (P.adicCompletion E) k - z) ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `hk`. Establish `hval : ∀ x : E, Valued.v (algebraMap E (P.adicCompletion E) x) = P.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P x`. Establish `h1 : P.valuation E k ≤ 1`. Establish `h2 : WithZero.exp (-((1 : ℕ) : ℤ)) ≤ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Use `Valuation.map_add_le _ (hk'.trans h2) hz` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hval]`. Then use the resulting hypothesis. Take `⟨b, hb⟩` from `P.exists_valuation_sub_lt_of_integer h1 (Units.mk0 (WithZero.exp (-((1 : ℕ) : ℤ))) WithZero.exp_ne_zero)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[← hval, map_sub]`. Use `Valuation.map_add_le _ hb.le hk'` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_cong (P : HeightOneSpectrum (𝓞 E)) (z : P.adicCompletion E) (hz : Valued.v z ≤ 1) :
     ∃ b : 𝓞 E, Valued.v (algebraMap E (Af E) (algebraMap (𝓞 E) E b) P - z) ≤ WithZero.exp (-((1 : ℕ) : ℤ)) := by
@@ -58,11 +58,9 @@ Both sides reduce to the same expression.
 theorem coe_locF (P : HeightOneSpectrum (𝓞 E)) (a : OF E) (ha : a ≠ 0) : (locF P a ha : P.adicCompletion E) = iota a P := rfl
 
 /- English proof (translation)
-Establish `hS : Formalism.L2.Host.aboveF (L` using `E) (maximalRealSubfield E) v = {P, P'} := by`. Use extensionality with `R`. Rewrite using `[mem_aboveF, Finset.mem_insert, Finset.mem_singleton]`. Use `⟨h2 R, ?_⟩` and prove the remaining obligations. Introduce and unpack `(rfl | rfl)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hP`. Conclude with `hP'`. Establish `h` using `hF.1 v (unitF a ha)`. Unfold `Formalism.L2.Host.HChar.resFin at h`. Rewrite `h` using `[MonoidHom.finsetProd_apply, hS, Finset.prod_pair hne]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_mul_loc {χ : HChar E} (hF : TrivOnF χ) {v : HeightOneSpectrum (OF E)} {P P' : HeightOneSpectrum (𝓞 E)}
     (hP : Over P v) (hP' : Over P' v) (hne : P ≠ P') (h2 : ∀ R, Over R v → R = P ∨ R = P') (a : OF E) (ha : a ≠ 0) :
@@ -81,25 +79,23 @@ theorem loc_mul_loc {χ : HChar E} (hF : TrivOnF χ) {v : HeightOneSpectrum (OF 
   exact h
 
 /- English proof (translation)
-Introduce `E _ _ _ χ v P P' hF hs hP hP' hne hlev hun`. Take `⟨h2, hef⟩` from `GlobalTheory.CMVal.Euler.SplitPlace.split_place E v hs`. Establish `hmul` using `loc_mul_loc hF hP hP' hne (h2 P P' hP hP' hne)`. Establish `hval : ∀ R, Over R v → ∀ (n : ℕ) (a : OF E), a ∈ v.asIdeal ^ n → a ∉ v.asIdeal ^ (n + 1) → Valued.v (iota a R) = WithZero.exp (-(n : ℤ))` using `fun R hR n a h h' => by`. Use `eq_exp_of_le (val_iota_le_of_mem hR n h) fun h3 => h' ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (hef R hR).2.1, ← val_iota_le_iff]`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hun' : UnrAt χ P'`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hu1 : Valued.v (u : P'.adicCompletion E) = 1` using `hu`. Take `⟨b, hb⟩` from `exists_int_cong P' u hu1.le`. Take `⟨a, ha⟩` from `(hef P' hP').2.2 b`. Establish `h3` using `OrderUnits.val_int_le P' 1 _ (by simpa using ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4 : Valued.v (iota a P' - u) ≤ WithZero.exp (-((1 : ℕ) : ℤ))`. Rewrite `h3` using `[map_sub (algebraMap (𝓞 E) E), map_sub (algebraMap E (Af E)), sub_coord]`. Use `Valuation.map_sub_le _ hb h3` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : WithZero.exp (-((1 : ℕ) : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h5 : Valued.v (iota a P') = 1`. Rewrite using `[Valuation.map_eq_of_sub_lt _ (hu1 ▸ h4.trans_lt hlt), hu1]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hav : a ∉ v.asIdeal ^ (0 + 1)` using `fun h => (h5 ▸ val_iota_le_of_mem hP' 1 h).not_gt hlt`. Establish `ha0 : a ≠ 0` using `fun h => hav (h ▸ zero_mem _)`. Establish `h6 : χ.loc P (locF P a ha0) = 1` using `hun _ (by show Valued.v (iota a P) = 1`. Simplify using `using hval P hP 0 a (by simp) hav)`. Establish `h7` using `hmul a ha0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h7` using `[h6, one_mul]`. Establish `h8 : χ.loc P' (locF P' a ha0 / u) = 1`. Use `hlev _ ?_ ?_` and prove the remaining obligations. Use `show Valued.v ((locF P' a ha0 / u : (P'.adicCompletion E)ˣ) : P'.adicCompletion E) = 1`. Rewrite using `[Units.val_div_eq_div_val, map_div₀, coe_locF, h5, hu1, div_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Units.val_div_eq_div_val, div_sub_one u.ne_zero, map_div₀, hu1, div_one, coe_locF]`. Conclude with `h4`. Rewrite `h8` using `[map_div, div_eq_one, h7]`. Conclude with `h8.symm`. Use `⟨hun', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, ha'⟩` from `Ideal.exists_mem_pow_notMem_pow_succ v.asIdeal v.ne_bot v.isPrime.ne_top 1`. Establish `ha0 : a ≠ 0` using `fun h => ha' (h ▸ zero_mem _)`. Establish `h7` using `hmul a ha0`. Establish `hunif : ∀ R, Over R v → Formalism.L2.Host.IsUnifAt R (locF R a ha0)` using `fun R hR => by show Valued.v (iota a R) = WithZero.exp (-1 : ℤ)`. Simplify using `using hval R hR 1 a ha ha'`.
-
-Rewrite `h7` using `[χ.val_eq hun _ (hunif P hP), χ.val_eq hun' _ (hunif P' hP')]`. Conclude with `eq_inv_of_mul_eq_one_right h7`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unrAt_and_val : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (χ : HChar E) (v : HeightOneSpectrum (OF E))
     (P P' : HeightOneSpectrum (𝓞 E)), TrivOnF χ → Splits v → Over P v → Over P' v → P ≠ P' → LevelLe χ P' 1 → UnrAt χ P →

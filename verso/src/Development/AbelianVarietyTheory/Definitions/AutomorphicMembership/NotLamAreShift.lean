@@ -17,12 +17,12 @@ def setLam {D : D7} (X : DivX D) (l : ℕ → D.what₂.FT → (D.what₂.LL →
     logLam_base := fun _ _ => if_pos rfl }
 
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem setLam_off {D : D7} (X : DivX D) (l) (j σ) {e} (h : e ≠ D.what₂.embLL) : (setLam X l).logLam j σ e = l j σ e := if_neg h
 
 /- English proof (translation)
-Take `⟨T, hT, Φ, X₀, iM, hiM, e1, rfl, h3, h4⟩` from `h`. Conclude with `⟨T, hT, Φ, t.put (setLam X₀ l), iM, hiM, e1, rfl, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isGeoOf_set {D : D7} {Q : GlobalTheory.ShFam.KitClass D} {J c} {X : DivX D} (h : GlobalTheory.ShFam.IsGeoOf Q J c X) (l)
     (t : GlobalTheory.ShFam.Pad.SurfSt) : GlobalTheory.ShFam.IsGeoOf Q J c (t.put (setLam X l)) := by
@@ -30,14 +30,14 @@ theorem isGeoOf_set {D : D7} {Q : GlobalTheory.ShFam.KitClass D} {J c} {X : DivX
   exact ⟨T, hT, Φ, t.put (setLam X₀ l), iM, hiM, e1, rfl, h3, h4⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨c, hc, isGeoOf_set h l _⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem geoOf_set {Q : ∀ D : D7, GlobalTheory.ShFam.KitClass D} {D : D7} {J} {c : ℕ} (hc : 0 < c) {X : DivX D}
     (h : GlobalTheory.ShFam.IsGeoOf (Q D) J c X) (l) : geoOf Q D J (GlobalTheory.ShFam.Pad.surfSt.put (setLam X l)) :=
   ⟨⟨c, hc, isGeoOf_set h l _⟩, rfl⟩
 
 /- English proof (translation)
-Establish `e` using `h.2`. Establish `e1 : X.Surf = GlobalTheory.ShFam.Pad.Surf` using `congrArg GlobalTheory.ShFam.Pad.SurfSt.Surf e`. Establish `e2 : X.SurfFp = GlobalTheory.ShFam.Pad.SurfFp` using `congrArg GlobalTheory.ShFam.Pad.SurfSt.SurfFp e`. Rewrite using `[e1, e2]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem geoOf_surf {Q : ∀ D : D7, GlobalTheory.ShFam.KitClass D} {D : D7} {J} {X : DivX D} (h : geoOf Q D J X) :
     Nonempty X.Surf ∧ Nonempty X.SurfFp := by
@@ -63,7 +63,7 @@ def lamOf (_Z : R3.ReadL R F X0 Y) (lab : D.what₂.FT → A3.fam3.base3.Ix) (j 
   else 0
 
 /- English proof (translation)
-Use `⟨lab, hl, fun i σ e he => ?_⟩` and prove the remaining obligations. Establish `h : (i : ℕ) + 1 - 1 < D.R.m` using `i.2`. Establish `e1 : (t.put (setLam X (lamOf Z lab))).logLam ((i : ℕ) + 1) σ e = lamOf Z lab ((i : ℕ) + 1) σ e` using `setLam_off X _ _ _ he`. Rewrite using `[e1, lamOf, dif_pos h]`. Conclude with `⟨fun h0 => if_neg h0, fun h0 => if_pos h0⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lamAre_set (Z : R3.ReadL R F X0 Y) (lab : D.what₂.FT → A3.fam3.base3.Ix)
     (hl : ∀ σ, (∃ c, OverIx Z σ c) → OverIx Z σ (lab σ)) (X : DivX D) (t : GlobalTheory.ShFam.Pad.SurfSt) :
@@ -75,7 +75,7 @@ theorem lamAre_set (Z : R3.ReadL R F X0 Y) (lab : D.what₂.FT → A3.fam3.base3
   exact ⟨fun h0 => if_neg h0, fun h0 => if_pos h0⟩
 
 /- English proof (translation)
-Establish `: ∀ σ, ∃ c, (∃ c, OverIx Z σ c) → OverIx Z σ c` using `fun σ => by`. Distinguish the cases in `h : ∃ c, OverIx Z σ c`. Conclude with `⟨h.choose, fun _ => h.choose_spec⟩`. Conclude with `⟨(hne ⟨σ⟩).some, fun h' => (h h').elim⟩`. Conclude with `⟨fun σ => (this σ).choose, fun σ => (this σ).choose_spec⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_lab (Z : R3.ReadL R F X0 Y) (hne : Nonempty D.what₂.FT → Nonempty A3.fam3.base3.Ix) :
     ∃ lab : D.what₂.FT → A3.fam3.base3.Ix, ∀ σ, (∃ c, OverIx Z σ c) → OverIx Z σ (lab σ) := by
@@ -86,7 +86,7 @@ theorem exists_lab (Z : R3.ReadL R F X0 Y) (hne : Nonempty D.what₂.FT → None
   exact ⟨fun σ => (this σ).choose, fun σ => (this σ).choose_spec⟩
 
 /- English proof (translation)
-Introduce `⟨σ⟩` and use `⟨h.choose σ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem nonempty_ix {Z : R3.ReadL R F X0 Y} {X : DivX D} (h : LamAre Z X) : Nonempty D.what₂.FT → Nonempty A3.fam3.base3.Ix :=
   fun ⟨σ⟩ => ⟨h.choose σ⟩
@@ -96,14 +96,14 @@ def LamVia (Z : R3.ReadL R F X0 Y) (cOf : D.what₂.FT → A3.fam3.base3.Ix) : P
     Submodule.span ℂ ((Z.jW i) '' ((R3.s0Of R F).Wp i c : Set (Fin ((R3.s0Of R F).dW i) → D.what₂.LL)))
 
 /- English proof (translation)
-Introduce `i` and use `by rw [← h i] exact le_iSup (fun τ : {τ : D.what₂.FT // cOf τ = cOf σ} => D.what₂.isot ((i : ℕ) + 1) τ.1) ⟨σ, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem overIx_of_via {Z : R3.ReadL R F X0 Y} {cOf} (h : LamVia Z cOf) (σ) : OverIx Z σ (cOf σ) := fun i => by
   rw [← h i]
   exact le_iSup (fun τ : {τ : D.what₂.FT // cOf τ = cOf σ} => D.what₂.isot ((i : ℕ) + 1) τ.1) ⟨σ, rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1` using `hc i`. Rewrite `h1` using `[← h i]`. Use `h0 ((hi σ).eq_bot_of_le (h1.trans (iSup_le fun τ => ?_)))` and prove the remaining obligations. Conclude with `le_iSup₂_of_le (f := fun j (_ : j ≠ σ) => D.what₂.isot ((i : ℕ) + 1) j) τ.1 (fun e => hne (τ.2.symm.trans (congrArg cOf e))) le_rfl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_of_overIx {Z : R3.ReadL R F X0 Y} {cOf} (h : LamVia Z cOf) {i : Fin D.R.m}
     (hi : iSupIndep (D.what₂.isot ((i : ℕ) + 1))) {σ c} (h0 : D.what₂.isot ((i : ℕ) + 1) σ ≠ ⊥) (hc : OverIx Z σ c) : c = cOf σ := by
@@ -114,7 +114,7 @@ theorem eq_of_overIx {Z : R3.ReadL R F X0 Y} {cOf} (h : LamVia Z cOf) {i : Fin D
   exact le_iSup₂_of_le (f := fun j (_ : j ≠ σ) => D.what₂.isot ((i : ℕ) + 1) j) τ.1 (fun e => hne (τ.2.symm.trans (congrArg cOf e))) le_rfl
 
 /- English proof (translation)
-Take `⟨lab, hl, hv⟩` from `hX`. Rewrite using `[(hv i σ e he).1 h0, eq_of_overIx h hi h0 (hl σ ⟨_, overIx_of_via h σ⟩)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem logLam_eq {Z : R3.ReadL R F X0 Y} {X : DivX D} (hX : LamAre Z X) {cOf} (h : LamVia Z cOf) {i : Fin D.R.m}
     (hi : iSupIndep (D.what₂.isot ((i : ℕ) + 1))) {σ} (h0 : D.what₂.isot ((i : ℕ) + 1) σ ≠ ⊥) {e} (he : e ≠ D.what₂.embLL) :
@@ -123,9 +123,9 @@ theorem logLam_eq {Z : R3.ReadL R F X0 Y} {X : DivX D} (hX : LamAre Z X) {cOf} (
   rw [(hv i σ e he).1 h0, eq_of_overIx h hi h0 (hl σ ⟨_, overIx_of_via h σ⟩)]
 
 /- English proof (translation)
-Take `⟨cOf, h1, h2, -⟩` from `h`. Use `⟨cOf, fun i σ h0 e => ?_⟩` and prove the remaining obligations. Distinguish the cases in `he : e = D.what₂.embLL`. Substitute `he` using the available equality. Use `h2 i A3.A.μ0 σ (Or.inl Y.tup0) h0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `this` using `[Y.tup0]`. Rewrite using `[X.logLam_base, this, hv]`. Both sides reduce to the same expression. Conclude with `logLam_eq hX (fun i c => (h1 i c).2) (hi i) h0 he`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem logLam_all {Z : R3.ReadL R F X0 Y} {X : DivX D} (hX : LamAre Z X) (h : R3.Lam3 Z)
     (hi : ∀ i : Fin D.R.m, iSupIndep (D.what₂.isot ((i : ℕ) + 1))) (hv : InfinitePlace.mk D.what₂.embLL = A3.A.v0) :
@@ -142,7 +142,7 @@ theorem logLam_all {Z : R3.ReadL R F X0 Y} {X : DivX D} (hX : LamAre Z X) (h : R
   · exact logLam_eq hX (fun i c => (h1 i c).2) (hi i) h0 he
 
 /- English proof (translation)
-Take `⟨cOf, hc⟩` from `logLam_all hX h hi hv`. Rewrite using `[hc i σ h0, hc i σ h0, InfinitePlace.mk_conjugate_eq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem logLam_conj {Z : R3.ReadL R F X0 Y} {X : DivX D} (hX : LamAre Z X) (h : R3.Lam3 Z)
     (hi : ∀ i : Fin D.R.m, iSupIndep (D.what₂.isot ((i : ℕ) + 1))) (hv : InfinitePlace.mk D.what₂.embLL = A3.A.v0)
@@ -152,7 +152,7 @@ theorem logLam_conj {Z : R3.ReadL R F X0 Y} {X : DivX D} (hX : LamAre Z X) (h : 
   rw [hc i σ h0, hc i σ h0, InfinitePlace.mk_conjugate_eq]
 
 /- English proof (translation)
-Introduce `hX'` and use `by have e1 := setLam_off X (fun j σ e => X.logLam j σ e + 1) ((i : ℕ) + 1) σ he by_cases h0 : D.what₂.isot ((i : ℕ) + 1) σ = ⊥ · have a := (hX.choose_spec.2 i σ e he).2 h0 have b := (hX'.choose_spec.2 i σ e he).2 h0 rw [e1, a] at b norm_num at b · have a := logLam_eq hX h hi h0 h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_lamAre_shift {Z : R3.ReadL R F X0 Y} {X : DivX D} (hX : LamAre Z X) {cOf} (h : LamVia Z cOf) (i : Fin D.R.m)
     (hi : iSupIndep (D.what₂.isot ((i : ℕ) + 1))) (σ : D.what₂.FT) {e} (he : e ≠ D.what₂.embLL) :
@@ -169,9 +169,9 @@ theorem not_lamAre_shift {Z : R3.ReadL R F X0 Y} {X : DivX D} (hX : LamAre Z X) 
     norm_num at b
 
 /- English proof (translation)
-Establish `h` using `R.toRealDat.emb0`. Rewrite using `[← InfinitePlace.mk_embedding A3.A.v0]`. Consider the cases of `hb : twAt D.what₂.embLL A3.A.v0`. Rewrite `h` using `[hb]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `RingHom.ext fun a => (h a).symm`. Rewrite `h` using `[hb]`. Rewrite using `[← InfinitePlace.mk_conjugate_eq]`. Use `congr 1`. Conclude with `RingHom.ext fun a => (h a).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mk_emb (R : RealDat3 D A3 Ks) : InfinitePlace.mk D.what₂.embLL = A3.A.v0 := by
   have h := R.toRealDat.emb0
@@ -186,7 +186,7 @@ theorem mk_emb (R : RealDat3 D A3 Ks) : InfinitePlace.mk D.what₂.embLL = A3.A.
     exact RingHom.ext fun a => (h a).symm
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `h`. Conclude with `⟨⟨J.eW⟩, ⟨hJ.1, hJ.2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mjAre_set {Z : R3.ReadL R F X0 Y} {X : DivX D} (h : MjAre Z X) (l) (t : GlobalTheory.ShFam.Pad.SurfSt) :
     MjAre Z (t.put (setLam X l)) := by
@@ -199,7 +199,7 @@ variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z
   {p0 : BaseLevelRowSide (w.D Z)}
 
 /- English proof (translation)
-Take `⟨cOf, h1, -⟩` from `h`. Conclude with `⟨_, ⟨trivial, lamAre_set t.r.Z cOf (fun σ _ => overIx_of_via (fun i c => (h1 i c).2) σ) X _⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem oAt_any (t : RowsT K w Z Wt p0) (h : R3.Lam3 t.r.Z) (X : DivX (w.D Z)) :
     ∃ l, Nonempty (OAt anyGeometry t ((GlobalTheory.ShFam.Pad.SurfSt.of X).put (setLam X l))) := by
@@ -207,7 +207,7 @@ theorem oAt_any (t : RowsT K w Z Wt p0) (h : R3.Lam3 t.r.Z) (X : DivX (w.D Z)) :
   exact ⟨_, ⟨trivial, lamAre_set t.r.Z cOf (fun σ _ => overIx_of_via (fun i c => (h1 i c).2) σ) X _⟩⟩
 
 /- English proof (translation)
-Take `⟨cOf, h1, -⟩` from `h`. Conclude with `⟨_, ⟨geoOf_set hc hX _, lamAre_set t.r.Z cOf (fun σ _ => overIx_of_via (fun i c => (h1 i c).2) σ) X _⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem oAt_geoOf (Q) (t : RowsT K w Z Wt p0) (h : R3.Lam3 t.r.Z) {c : ℕ} (hc : 0 < c) (X : DivX (w.st Z).toD7)
     (hX : GlobalTheory.ShFam.IsGeoOf (Q _) t.r.z.core.toCore c X) :

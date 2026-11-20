@@ -18,22 +18,22 @@ def oneExc (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) : FiniteAde
   afsplitI w a + (1 - afsplitI w 1)
 
 /- English proof (translation)
-Rewrite using `[oneExc, afsplit_add_apply, afsplit_sub_apply, afsplitI_self, afsplitI_self, afsplit_one_apply, sub_self, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem oneExc_self (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) : oneExc w a w = a := by
   rw [oneExc, afsplit_add_apply, afsplit_sub_apply, afsplitI_self, afsplitI_self, afsplit_one_apply, sub_self, add_zero]
 
 /- English proof (translation)
-Rewrite using `[oneExc, afsplit_add_apply, afsplit_sub_apply, afsplitI_ne w w' h, afsplitI_ne w w' h, afsplit_one_apply, sub_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem oneExc_ne (w w' : HeightOneSpectrum (𝓞 F)) (h : w' ≠ w) (a : w.adicCompletion F) : oneExc w a w' = 1 := by
   rw [oneExc, afsplit_add_apply, afsplit_sub_apply, afsplitI_ne w w' h, afsplitI_ne w w' h, afsplit_one_apply, sub_zero,
     zero_add]
 
 /- English proof (translation)
-Introduce `w'`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Rewrite using `[oneExc_self]`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[oneExc_ne w w' h]`. Conclude with `one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem oneExc_mem (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) (ha : a ∈ w.adicCompletionIntegers F) :
     oneExc w a ∈ intAd F := by
@@ -43,15 +43,13 @@ theorem oneExc_mem (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) (ha
   · rw [oneExc_ne w w' h]; exact one_mem _
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `GlobalTheory.TwU.exists_isAdIso F E`. Establish `hca : ((1 : E) ⊗ₜ[F] oneExc w a : AfE F E) ∈ RInt F E` using `Subring.subset_closure (Or.inr ⟨⟨_, oneExc_mem w a ha⟩, rfl⟩)`. Establish `hcb : ((1 : E) ⊗ₜ[F] oneExc w b : AfE F E) ∈ RInt F E` using `Subring.subset_closure (Or.inr ⟨⟨_, oneExc_mem w b hb⟩, rfl⟩)`. Establish `hq : (z - (1 : E) ⊗ₜ[F] oneExc w a) * (z - (1 : E) ⊗ₜ[F] oneExc w b) = 0`. Use `afsplit_inj _ fun w' => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_sub, map_sub, afsplit_prV_tmul, afsplit_prV_tmul]`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Rewrite using `[oneExc_self, oneExc_self]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[oneExc_ne w w' h, oneExc_ne w w' h, hoff w' h, ← Algebra.TensorProduct.one_def, sub_self, zero_mul]`. Rewrite using `[hι.2]`. Introduce `P`. Establish `h1` using `congrArg (fun x => ι x P) hq`. Simplify using `only [map_mul, map_sub, map_zero] at h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (ι z P - ι ((1 : E) ⊗ₜ[F] oneExc w a) P) * (ι z P - ι ((1 : E) ⊗ₜ[F] oneExc w b) P) = 0` using `h1`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Rewrite using `[sub_eq_zero.1 h]`. Conclude with `(hι.2 _).1 hca P`. Rewrite using `[sub_eq_zero.1 h]`.
-
-Conclude with `(hι.2 _).1 hcb P`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_RInt_of_quad (z : AfE F E) (w : HeightOneSpectrum (𝓞 F)) (a b : w.adicCompletion F)
     (ha : a ∈ w.adicCompletionIntegers F) (hb : b ∈ w.adicCompletionIntegers F)
@@ -85,37 +83,29 @@ end SlopeTestRemainingChoices
 section Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n p G A J _ hG hI hS v y hy hoff hord`. Use `set w := (A.pl v).1 with hw`. Use `set s := A.spl v (prV (E := E) w (y : AfE F E)) with hs_def`. Establish `hy1 : (y : AfE F E) * sigR σ (FiniteAdeleRing (𝓞 F) F) (y : AfE F E) = 1`. Establish `h` using `congrArg Units.val (MonoidHom.mem_ker.1 hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hprod : prV (E` using `E) w (y : AfE F E) * sigR σ (w.adicCompletion F) (prV (E := E) w (y : AfE F E)) = 1 := by`. Establish `h` using `congrArg (prV (E := E) w) hy1`. Rewrite `h` using `[map_mul, map_one]`. Rewrite using `[← h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `(DFunLike.congr_fun (afsplit_prV_comp_sigR σ w) _).symm`. Establish `hss : s.1 * s.2 = 1`. Establish `h` using `congrArg (A.spl v) hprod`. Rewrite `h` using `[map_mul, hG.sig v, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Prod.fst h`. Establish `hss' : s.2 * s.1 = 1` using `by rw [mul_comm]; exact hss`. Establish `hset` using `G.P.setting v`. Use `haveI := hset.frac_alt`. Establish `hp` using `hset.p_unif`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set x : G.P.Qq v := (A.eQ v).symm s.1 with hx_def`. Establish `hxe : A.eQ v x = s.1` using `RingEquiv.apply_symm_apply _ _`. Establish `hx0 : x ≠ 0`. Introduce `h0`. Rewrite `hxe` using `[h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hss` using `[← hxe, zero_mul]`. Conclude with `zero_ne_one hss`. Take `⟨k, u, hu⟩` from `exists_eq_unit_mul_zpow₂ hp hx0`. Establish `hk : k = 0`. Establish `h1 : ordA A v y = ordP (G.P.W v) p x` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hord` using `[h1, hu, ordP_eq hp]`. Conclude with `hord`. Substitute `hk` using the available equality. Rewrite `hu` using `[zpow_zero, mul_one]`. Establish `ha : s.1 ∈ w.adicCompletionIntegers F`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hxe]`. Conclude with `(hI v x).1 ⟨u, hu.symm⟩`. Establish `hb : s.2 ∈ w.adicCompletionIntegers F`. Establish `h2 : s.2 = A.eQ v x⁻¹`. Rewrite using `[map_inv₀, hxe]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_inv_of_mul_eq_one_right hss`. Rewrite using `[h2]`. Use `(hI v x⁻¹).1 ⟨(u⁻¹ : (G.P.W v)ˣ), ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `map_units_inv (algebraMap (G.P.W v) (G.P.Qq v) : G.P.W v →* G.P.Qq v) u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ t : E ⊗[F] w.adicCompletion F, ((A.spl v t).1 - s.1) * ((A.spl v t).1 - s.2) = 0 → ((A.spl v t).2 - s.1) * ((A.spl v t).2 - s.2) = 0 → (t - (1 : E) ⊗ₜ[F] s.1) * (t - (1 : E) ⊗ₜ[F] s.2) = 0`. Introduce `t h1 h2`. Apply `(A.spl v).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_sub, map_sub, hS v, hS v, map_zero]`. Conclude with `Prod.ext h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyR : (y : AfE F E) ∈ RInt F E`. Use `mem_RInt_of_quad _ w s.1 s.2 ha hb hoff (key _ ?_ ?_)` and prove the remaining obligations. Use `show (s.1 - s.1) * (s.1 - s.2) = 0`. Rewrite using `[sub_self, zero_mul]`. Use `show (s.2 - s.1) * (s.2 - s.2) = 0`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[sub_self, mul_zero]`. Establish `hinv : ∀ w' : HeightOneSpectrum (𝓞 F), prV (E` using `E) w' ((y⁻¹ : (AfE F E)ˣ) : AfE F E) * prV (E := E) w' (y : AfE F E) = 1 := by`. Introduce `w'`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Use `set t := A.spl v (prV (E := E) w ((y⁻¹ : (AfE F E)ˣ) : AfE F E)) with ht_def`.
-
-Establish `hts : t * s = 1` using `by rw [ht_def, hs_def, ← map_mul, hinv w, map_one]`. Establish `ht1 : t.1 = s.2`. Establish `h : t.1 * s.1 = 1` using `congrArg Prod.fst hts`. Combine the equalities or inequalities in the displayed calculation. Establish `ht2 : t.2 = s.1`.
-
-Establish `h : t.2 * s.2 = 1` using `congrArg Prod.snd hts`. Combine the equalities or inequalities in the displayed calculation. Establish `hyR' : ((y⁻¹ : (AfE F E)ˣ) : AfE F E) ∈ RInt F E`. Use `mem_RInt_of_quad _ w s.1 s.2 ha hb (fun w' h => ?_) (key _ ?_ ?_)` and prove the remaining obligations. Establish `h3` using `hinv w'`.
-
-Rewrite `h3` using `[hoff w' h, mul_one]`. Then use the resulting hypothesis. Use `show (t.1 - s.1) * (t.1 - s.2) = 0`. Rewrite using `[ht1, sub_self, mul_zero]`. Use `show (t.2 - s.1) * (t.2 - s.2) = 0`. Rewrite using `[ht2, sub_self, zero_mul]`.
-
-Conclude with `(Submonoid.mem_units_iff _ _).2 ⟨hyR, hyR'⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intU_of_oneOff_ordA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n p : ℕ) (G : GAtP p) (A : LocAt F E n G) (J : Matrix (Fin n) (Fin n) E) [Fact p.Prime], LocGood σ J A → LocInt A →

@@ -6,7 +6,7 @@ namespace GroundTheory.Global
 open Complex
 
 /- English proof (translation)
-Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hr.ne'), ← Complex.ofReal_log hr.le, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_cpow_eq_exp {r : ℝ} (hr : 0 < r) (u : ℂ) :
     (r : ℂ) ^ u = Complex.exp (u * (Real.log r : ℝ)) := by
@@ -14,9 +14,9 @@ theorem ofReal_cpow_eq_exp {r : ℝ} (hr : 0 < r) (u : ℂ) :
     mul_comm]
 
 /- English proof (translation)
-Set `e : ℝ → {x : ℝ // 0 < x}` to `fun t => ⟨Real.exp t, Real.exp_pos t⟩`. Establish `econt : Continuous e` using `Real.continuous_exp.subtype_mk _`. Establish `hlog : ∀ x : {x : ℝ // 0 < x}, e (Real.log x) = x` using `fun x => Subtype.ext (Real.exp_log x.2)`. Take `⟨s, hs, -⟩` from `existsUnique_exp_of_continuous (fun t => χ (e t)) (χ.continuous.comp econt) (fun a b => by rw [← map_mul]; congr 1; exact Subtype.ext (Real.exp_add a b))`. Establish `hs' : ∀ t : ℝ, (χ (e t) : ℂ) = Complex.exp (s * t)` using `hs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨s, fun x => ?_, fun s' h' => eq_of_forall_exp_mul_eq fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[ofReal_cpow_eq_exp x.2, ← hs', hlog]`. Establish `h1` using `h' (e t)`. Rewrite `h1` using `[ofReal_cpow_eq_exp (Real.exp_pos t), Real.log_exp]`. Rewrite using `[← h1, hs']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_cpow_of_pos (χ : {x : ℝ // 0 < x} →ₜ* ℂˣ) :
     ∃! s : ℂ, ∀ x : {x : ℝ // 0 < x}, (χ x : ℂ) = ((x : ℝ) : ℂ) ^ s := by
@@ -35,25 +35,25 @@ theorem existsUnique_cpow_of_pos (χ : {x : ℝ // 0 < x} →ₜ* ℂˣ) :
     rw [← h1, hs']
 
 /- English proof (translation)
-Set `e : ℝ → ℝˣ` to `fun t => Units.mk0 (Real.exp t) (Real.exp_pos t).ne'`. Establish `econt : Continuous e` using `Units.isEmbedding_val₀.continuous_iff.mpr Real.continuous_exp`. Take `⟨s, hs, -⟩` from `existsUnique_exp_of_continuous (fun t => χ (e t)) (χ.continuous.comp econt) (fun a b => by rw [← map_mul]; congr 1; exact Units.ext (Real.exp_add a b))`. Establish `hs' : ∀ t : ℝ, (χ (e t) : ℂ) = Complex.exp (s * t)` using `hs`. Establish `hpos : ∀ (r : ℝ) (hr : 0 < r), (χ (Units.mk0 r hr.ne') : ℂ) = (r : ℂ) ^ s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr`. Establish `: Units.mk0 r hr.ne' = e (Real.log r)` using `Units.ext (Real.exp_log hr).symm`. Rewrite using `[this, hs', ofReal_cpow_eq_exp hr]`. Use `set c : ℂ := (χ (-1) : ℂ) with hc`. Establish `hcc : c * c = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← Units.val_mul, ← map_mul]`. Simplify using the standard rewrite rules. Set `a : Fin 2` to `if c = 1 then 0 else 1`. Establish `ha : c = (-1 : ℂ) ^ (a : ℕ)`. Break down `mul_self_eq_one_iff.mp hcc with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[a, h]`. Establish `hne : (-1 : ℂ) ≠ 1` using `by norm_num`. Simplify using `[a, h, hne]`. Establish `hneg1 : ∀ x : ℝˣ, x = -1 * Units.mk0 (-(x : ℝ)) (neg_ne_zero.mpr x.ne_zero)`. Introduce `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using the standard rewrite rules. Use `⟨(a, s), fun x => ?_, ?_⟩` and prove the remaining obligations. Break down `lt_or_gt_of_ne x.ne_zero with hx | hx` into its components or cases. Use `conv_lhs => rw [hneg1 x]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_mul, Units.val_mul, ← hc, hpos _ (neg_pos.mpr hx), ha, Real.sign_of_neg hx, abs_of_neg hx]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: x = Units.mk0 (x : ℝ) hx.ne'` using `by ext; simp conv_lhs => rw [this]`. Rewrite using `[hpos _ hx, Real.sign_of_pos hx, abs_of_pos hx]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨a', s'⟩ h'`. Establish `hs's : s' = s` using `eq_of_forall_exp_mul_eq fun t => by`. Establish `h1` using `h' (e t)`. Establish `he : ((e t : ℝˣ) : ℝ) = Real.exp t` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[he, Real.sign_of_pos (Real.exp_pos t), abs_of_pos (Real.exp_pos t), ofReal_cpow_eq_exp (Real.exp_pos t), Real.log_exp]`. Simplify using `only [Complex.ofReal_one, one_pow, one_mul] at h1`. Rewrite using `[← h1, hs']`. Establish `ha' : (-1 : ℂ) ^ (a' : ℕ) = (-1 : ℂ) ^ (a : ℕ)`. Establish `h1` using `h' (-1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_neg, Units.val_one, abs_neg, abs_one, Complex.ofReal_one, Complex.one_cpow, mul_one, Real.sign_of_neg (show (-1 : ℝ) < 0 by norm_num)] at h1`. Rewrite using `[← ha, hc, h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `haa : a' = a` using `by revert ha'`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Generalize the expression as in `a = b`. Apply the tactic sequence `fin_cases a' <;> fin_cases b <;> norm_num`. Simplify using `[haa, hs's]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_realUnits (χ : ℝˣ →ₜ* ℂˣ) :
     ∃! p : Fin 2 × ℂ, ∀ x : ℝˣ,
@@ -115,15 +115,15 @@ theorem existsUnique_realUnits (χ : ℝˣ →ₜ* ℂˣ) :
     simp [haa, hs's]
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `existsUnique_exp_of_continuous (fun t => χ (Circle.exp t)) (χ.continuous.comp Circle.exp.continuous) (fun a b => by simp only [Circle.exp_add, map_mul])`. Establish `hs' : ∀ t : ℝ, (χ (Circle.exp t) : ℂ) = Complex.exp (s * t)` using `hs`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℤ, s = n * I := by`. Establish `h1 : Complex.exp (s * (2 * Real.pi : ℝ)) = 1`. Rewrite using `[← hs', Circle.exp_two_pi, map_one, Units.val_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp h1`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hpi : (2 * (Real.pi : ℂ)) ≠ 0` using `by simp [Real.pi_ne_zero]`. Apply `mul_right_cancel₀ hpi` to reduce the goal to its premises. Move the coercions through the operations in `at hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `hn`. Establish `hval : ∀ t : ℝ, (χ (Circle.exp t) : ℂ) = (Circle.exp t : ℂ) ^ n`. Introduce `t`. Rewrite using `[hs', Circle.coe_exp, ← Complex.exp_int_mul, hn]`. Use `congr 1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨n, fun z => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[← Circle.exp_arg z, hval]`. Establish `hmn : (m : ℂ) * I = n * I` using `eq_of_forall_exp_mul_eq fun t => by`. Establish `h1` using `hm (Circle.exp t)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hval, Circle.coe_exp, ← Complex.exp_int_mul, ← Complex.exp_int_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_right_cancel₀ I_ne_zero hmn` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem existsUnique_circle_zpow (χ : Circle →ₜ* ℂˣ) :
     ∃! m : ℤ, ∀ z : Circle, (χ z : ℂ) = (z : ℂ) ^ m := by
@@ -167,17 +167,17 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_circleToUnits (z : Circle) : ((circleToUnits z : ℂˣ) : ℂ) = z := rfl
 
 /- English proof (translation)
-Set `e : ℝ → ℂˣ` to `fun t => Units.mk0 (Real.exp t : ℂ) (by exact_mod_cast (Real.exp_pos t).ne')`. Establish `econt : Continuous e` using `Units.isEmbedding_val₀.continuous_iff.mpr (Complex.continuous_ofReal.comp Real.continuous_exp)`. Take `⟨s, hs, -⟩` from `existsUnique_exp_of_continuous (fun t => χ (e t)) (χ.continuous.comp econt) (fun a b => by rw [← map_mul]; congr 1; exact Units.ext (by simp [e, Complex.exp_add]))`. Establish `hs' : ∀ t : ℝ, (χ (e t) : ℂ) = Complex.exp (s * t)` using `hs`. Take `⟨n, hn, hnu⟩` from `existsUnique_circle_zpow (χ.comp circleToUnits)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hn' : ∀ w : Circle, (χ (circleToUnits w) : ℂ) = (w : ℂ) ^ n` using `hn`. Establish `hnorm : ∀ z : ℂˣ, 0 < ‖(z : ℂ)‖` using `fun z => norm_pos_iff.mpr z.ne_zero`. Use `⟨(n, s), fun z => ?_, ?_⟩` and prove the remaining obligations. Establish `hz : z = e (Real.log ‖(z : ℂ)‖) * circleToUnits (Circle.exp (Complex.arg z))`. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Units.val_mul, coe_circleToUnits, Circle.coe_exp]`. Use `show (z : ℂ) = (Real.exp (Real.log ‖(z : ℂ)‖) : ℂ) * _`. Rewrite using `[Real.exp_log (hnorm z), Complex.norm_mul_exp_arg_mul_I]`. Establish `hw : (Circle.exp (Complex.arg z) : ℂ) = (z : ℂ) / (‖(z : ℂ)‖ : ℂ)`. Rewrite using `[Circle.coe_exp, eq_div_iff (by exact_mod_cast (hnorm z).ne'), mul_comm, Complex.norm_mul_exp_arg_mul_I]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hz]`. Rewrite using `[map_mul, Units.val_mul, hs', hn', hw, ofReal_cpow_eq_exp (hnorm z), mul_comm]`. Introduce and unpack `⟨m, s'⟩ h'`. Establish `hs's : s' = s` using `eq_of_forall_exp_mul_eq fun t => by`. Establish `h1` using `h' (e t)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he : ((e t : ℂˣ) : ℂ) = (Real.exp t : ℂ)` using `rfl`. Rewrite `h1` using `[he, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos t), div_self (by exact_mod_cast (Real.exp_pos t).ne'), one_zpow, one_mul, ofReal_cpow_eq_exp (Real.exp_pos t), Real.log_exp]`. Rewrite using `[← h1, hs']`. Establish `hmn : m = n` using `hnu m fun w => by`. Establish `h1` using `h' (circleToUnits w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[coe_circleToUnits, Circle.norm_coe]`. Simplify using `using h1`. Simplify using `[hmn, hs's]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_complexUnits (χ : ℂˣ →ₜ* ℂˣ) :
     ∃! p : ℤ × ℂ, ∀ z : ℂˣ,

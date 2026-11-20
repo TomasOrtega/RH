@@ -4,15 +4,13 @@ open IsLocalRing NumberField IsDedekindDomain GlobalTheory.ValCount
 open scoped Classical
 
 /- English proof (translation)
-Establish `hmem : ∀ x : 𝓞 F, (x : F) ∈ W` using `fun x => by`. Establish `hx : IsIntegral W (x : F)` using `(RingOfIntegers.isIntegral_coe x).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hx`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsLocalization v.asIdeal.primeCompl (v.valuationSubringAtPrime F) := Localization.subalgebra.isLocalization_ofField F v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsDiscreteValuationRing (v.valuationSubringAtPrime F) := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 F) v.ne_bot _`. Use `ValuationSubring.eq_of_le_of_ne_top _ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj v.asIdeal.primeCompl (⟨x, hx⟩ : v.valuationSubringAtPrime F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ((s : 𝓞 F) : F) ∉ W.nonunits` using `fun h' => s.2 ((hW _).1 h')`. Rewrite `hs` using `[ValuationSubring.mem_nonunits_iff_or, not_or, not_not]`. Establish `h1 : x * ((s : 𝓞 F) : F) = (a : F)` using `congrArg Subtype.val h`. Establish `: x = (a : F) * ((s : 𝓞 F) : F)⁻¹`. Rewrite using `[← h1, mul_assoc, mul_inv_cancel₀ hs.1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `W.mul_mem _ _ (hmem a) hs.2`. Introduce `h`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Use `(hW x).2 hx` as an intermediate fact.
-
-Rewrite `this` using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `this with h0 | h0` into its components or cases. Conclude with `hx0 (by exact_mod_cast h0)`. Conclude with `h0 (h ▸ ValuationSubring.mem_top _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem valuationSubringAtPrime_eq (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (W : ValuationSubring F) (hW : ∀ x : 𝓞 F, (x : F) ∈ W.nonunits ↔ x ∈ v.asIdeal) :
@@ -43,7 +41,7 @@ private theorem valuationSubringAtPrime_eq (F : Type) [Field F] [NumberField F] 
     · exact h0 (h ▸ ValuationSubring.mem_top _)
 
 /- English proof (translation)
-Introduce `F _ _ v W W' h h'`. Conclude with `(valuationSubringAtPrime_eq F v W h).symm.trans (valuationSubringAtPrime_eq F v W' h')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.valuationSubring_unique_of_prime :
     ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (W W' : ValuationSubring F), (∀ x : 𝓞 F, (x : F) ∈ W.nonunits ↔ x ∈ v.asIdeal) → (∀ x : 𝓞 F, (x : F) ∈ W'.nonunits ↔ x ∈ v.asIdeal) → W = W' := by

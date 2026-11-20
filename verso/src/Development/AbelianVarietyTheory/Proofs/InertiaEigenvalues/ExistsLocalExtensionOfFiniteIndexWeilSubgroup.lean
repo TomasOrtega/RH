@@ -30,25 +30,25 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocalExtField
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h H hH hO`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_finset_fixing_le_finiteIndex_weilSubgroup E Ω A w h (GlobalTheory.T.exists_pos_pow_galois_fixing_finset E Ω) (GlobalTheory.T.exists_rootOfUnity_fixed_dvd_weilGroupDegree E Ω A w h) (GlobalTheory.T.exists_finset_fixing_subset_open_inertia_subgroup E Ω A) H hH …`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_primitive_element_stabilizer_finset E Ω s`. Establish `hyH : ∀ σ : Weil h, (σ : G E Ω) y = y → σ ∈ H` using `fun σ hσ => hs σ ((hy σ).1 hσ)`. Take `⟨s', hs'⟩` from `GlobalTheory.T.exists_finset_fixing_iff_preserves_subgroup_orbit E Ω (H.map (Weil h).subtype) y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩` from `GlobalTheory.T.exists_primitive_element_stabilizer_finset E Ω s'`. Establish `hβH : ∀ σ : Weil h, (σ : G E Ω) β = β ↔ σ ∈ H`. Introduce `σ`. Rewrite using `[hβ, hs']`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hσ`. Take `⟨τ', hτ', e⟩` from `hσ 1 (one_mem _)`. Take `⟨τ₀, hτ₀, rfl⟩` from `Subgroup.mem_map.mp hτ'`. Establish `e1 : (σ : G E Ω) y = (τ₀ : G E Ω) y` using `by simpa using e`. Establish `h2 : (τ₀⁻¹ * σ : Weil h) ∈ H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hyH` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, AlgEquiv.mul_apply, e1, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Simplify using `using H.mul_mem hτ₀ h2`. Introduce `hσ τ hτ`. Use `⟨(σ : G E Ω) * τ, Subgroup.mul_mem _ (Subgroup.mem_map_of_mem _ hσ) hτ, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Take `⟨S, hS, f, hfm, hfdeg, hfinv, hfβ⟩` from `GlobalTheory.LocalExtField.dorbit E Ω A β`. Take `⟨r, hr0, hr⟩ : ∃ r : Ω, r ≠ 0 ∧ ∀ d ∈ Dec (F` from `E) A, d β ≠ β → A.valuation r ≤ A.valuation (d β - β) := by`. Distinguish the cases in `hne : (S.erase β).Nonempty`. Take `⟨x, hx, hmin⟩` from `(S.erase β).exists_min_image (fun x => A.valuation (x - β)) hne`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x - β, sub_ne_zero.mpr (Finset.ne_of_mem_erase hx), fun d hd hdβ => hmin _ (Finset.mem_erase.mpr ⟨hdβ, (hS _).mpr ⟨d, hd, rfl⟩⟩)⟩`. Conclude with `⟨1, one_ne_zero, fun d hd hdβ => absurd ⟨d β, Finset.mem_erase.mpr ⟨hdβ, (hS _).mpr ⟨d, hd, rfl⟩⟩⟩ hne⟩`. Take `⟨g, hgm, hgdeg, β', hβ'g, hβ'⟩` from `GlobalTheory.T.exists_monic_base_polynomial_root_near_decomposition E Ω A (GlobalTheory.T.exists_base_near_of_decomposition_fixed E Ω A w h) f hfm hfinv β hfβ r hr0`. Establish `hkr` using `GlobalTheory.T.krasnerLemma_decompositionGroup_stabilizer_version E Ω A β β' (fun d hd hdβ => lt_of_lt_of_le hβ' (hr d hd hdβ))`. Take `⟨hall, hback⟩` from `GlobalTheory.T.decompositionGroup_orbit_root_same_stabilizer E Ω A β β' S hS g hgm (hgdeg.trans hfdeg) hβ'g hkr`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hint : IsIntegral E β'` using `Algebra.IsIntegral.isIntegral β'`. Establish `agree : ∀ σ τ : G E Ω, σ β' = τ β' → ∀ x ∈ IntermediateField.adjoin E {β'}, σ x = τ x`. Introduce `σ τ e x hx`. Rewrite `hx` using `[← IntermediateField.mem_toSubalgebra, IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]`. Conclude with `(AlgHom.eqOn_adjoin_iff (φ := (σ : Ω →ₐ[E] Ω)) (ψ := (τ : Ω →ₐ[E] Ω))).2 (by intro z hz; rw [Set.mem_singleton_iff.mp hz]; exact e) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IntermediateField.adjoin E {β'}, IntermediateField.adjoin.finiteDimensional hint, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ`. Take `⟨d, hd, hσd⟩` from `hall σ`. Take `⟨τ, hτ, hτd⟩` from `GlobalTheory.T.weilGroupAtPlace_dense_in_decompositionGroup E Ω A w h d hd β'`. Conclude with `⟨⟨τ, hτ⟩, fun x => agree τ σ (hτd.trans hσd.symm) x x.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ`. Rewrite using `[← hβH σ]`. Prove the components needed by the constructor for the conclusion. Introduce `hσβ x`. Establish `hσβ'` using `hback σ (Weil_le_Dec h σ.2) hσβ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `agree σ 1 (by simpa using hσβ') x x.2`. Introduce `hfix`. Conclude with `hkr σ (Weil_le_Dec h σ.2) (hfix ⟨β', IntermediateField.mem_adjoin_simple_self E β'⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_localExt_of_finiteIndex : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (H : Subgroup (Weil h)), H.FiniteIndex → IsOpen {σ : Ine (F := E) A | ineIncl h σ ∈ H} → ∃ (L : IntermediateField E Ω), FiniteDimensional E L ∧ IsLocalExt L h ∧ ∀ σ : Weil h, σ ∈ H ↔ ∀ x : L, (σ : G E Ω) (x : Ω) = x := by
   intro E Ω _ _ _ _ _ A w h H hH hO

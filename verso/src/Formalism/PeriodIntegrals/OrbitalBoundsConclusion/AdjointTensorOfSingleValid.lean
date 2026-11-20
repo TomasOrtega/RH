@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TensorOperator.NotMemVa
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TensorOperator.StepMonoFactor
 
 /- English proof (translation)
-The claim follows from `PI.TOW.tenOp_of_steps PI.TOW.DegW.stepDeg (PI.TOW.stepPure_of PI.TOW.LiftW.stepLift PI.TOW.MonoW.stepMonoFactor) PI.TOW.stepSpan`.
+A detailed English derivation is pending.
 -/
 theorem adjointTensorOfSingle_valid : PI.TenOp :=
   PI.TOW.tenOp_of_steps PI.TOW.DegW.stepDeg

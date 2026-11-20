@@ -12,7 +12,7 @@ namespace GlobalTheory.CuspGL.MassMult
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_fintype, ← Fintype.sum_subtype_add_sum_subtype p]`. Establish `h1 : ∑ i : {x // ¬ p x}, (if h : p i.1 then f ⟨i.1, h⟩ else 0) = 0` using `Finset.sum_eq_zero fun i _ => dif_neg i.2`. Rewrite using `[h1, add_zero]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [dif_pos i.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_subtype_dite {α : Type} [Fintype α] (p : α → Prop) (f : {x // p x} → ℂ) :
     ∑ᶠ x, f x = ∑ x, if h : p x then f ⟨x, h⟩ else 0 := by
@@ -25,7 +25,7 @@ theorem finsum_subtype_dite {α : Type} [Fintype α] (p : α → Prop) (f : {x /
 open Classical in
 
 /- English proof (translation)
-Unfold `mass`. Use `finsum_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_if]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mass_eq {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V] [FiniteDimensional F V]
     (φ : Module.End F V → ℂ) (P : F[X]) :
@@ -36,9 +36,9 @@ theorem mass_eq {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V] [F
   rfl
 
 /- English proof (translation)
-Establish `h : {g : F[X] | g.Monic ∧ g ∣ P}.Finite`. Use `Polynomial.fintypeSubtypeMonicDvd P hP.ne_zero` as an intermediate fact. Conclude with `Set.finite_coe_iff.mp (Finite.of_fintype {g : F[X] // g.Monic ∧ g ∣ P})`. Use `(h.prod h).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨h1, h2, h3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨h1, h3 ▸ dvd_mul_right _ _⟩, ⟨h2, h3 ▸ dvd_mul_left _ _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_pairs {F : Type} [Field F] (P : F[X]) (hP : P.Monic) :
     {x : F[X] × F[X] | x.1.Monic ∧ x.2.Monic ∧ x.1 * x.2 = P}.Finite := by
@@ -50,14 +50,14 @@ theorem finite_pairs {F : Type} [Field F] (P : F[X]) (hP : P.Monic) :
   exact ⟨⟨h1, h3 ▸ dvd_mul_right _ _⟩, ⟨h2, h3 ▸ dvd_mul_left _ _⟩⟩
 
 /- English proof (translation)
-The claim follows from `Module.finite_of_finite F`.
+A detailed English derivation is pending.
 -/
 theorem finite_end (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] : Finite (Module.End F V) :=
   Module.finite_of_finite F
 
 /- English proof (translation)
-Rewrite using `[mass_eq]`. Use `finsum_eq_zero_of_forall_eq_zero fun g => if_neg ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `h (LinearMap.charpoly_natDegree g).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mass_eq_zero {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V] [FiniteDimensional F V]
     (φ : Module.End F V → ℂ) (P : F[X]) (h : Module.finrank F V ≠ P.natDegree) : mass φ P = 0 := by
@@ -69,15 +69,13 @@ theorem mass_eq_zero {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F 
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hg : c = P`. Rewrite using `[if_pos hg, Finset.sum_eq_single (a, b)]`. Rewrite using `[if_pos rfl, if_pos rfl, mul_one]`. Introduce and unpack `⟨b1, b2⟩ _ hb`. Distinguish the cases in `h1 : a = b1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : b = b2`. Conclude with `absurd (by rw [h1, h2]) hb`. Rewrite using `[if_neg h2, mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`. Introduce `hn`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hn ((hT (a, b)).2 ⟨ha, hb, hc.symm.trans hg⟩)).elim`. Rewrite using `[if_neg hg]`. Use `(Finset.sum_eq_zero ?_).symm` and prove the remaining obligations. Introduce and unpack `⟨b1, b2⟩ hb`. Distinguish the cases in `h1 : a = b1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h2 : b = b2`. Use `absurd ?_ hg` and prove the remaining obligations. Rewrite using `[hc, h1, h2]`. Conclude with `((hT (b1, b2)).1 hb).2.2`. Rewrite using `[if_neg h2, mul_zero]`.
-
-Rewrite using `[if_neg h1, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_split {F : Type} [Field F] (P : F[X])
     (T : Finset (F[X] × F[X])) (hT : ∀ x, x ∈ T ↔ x.1.Monic ∧ x.2.Monic ∧ x.1 * x.2 = P)
@@ -109,9 +107,9 @@ theorem indicator_split {F : Type} [Field F] (P : F[X])
 open Classical in
 
 /- English proof (translation)
-Use `finite_end F V` as an intermediate fact. Use `Fintype.ofFinite {g : Module.End F V // ∀ x ∈ W, g x ∈ W}` as an intermediate fact. Establish `key : ∀ g : {g : Module.End F V // ∀ x ∈ W, g x ∈ W}, (if LinearMap.charpoly g.1 = P then φ (g.1.restrict g.2) else 0) = ∑ x ∈ T, (if LinearMap.charpoly (g.1.restrict g.2) = x.1 then φ (g.1.restrict g.2) else 0) * (if LinearMap.charpoly (W.mapQ W g.1 (fun x hx => g.2 x hx)) = x.2 …`. Introduce `g`. Establish `hc` using `(GlobalTheory.T.charpoly_block_and_invariant_under_stabilizerNilradical F V W g.1 g.2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `indicator_split P T hT (LinearMap.charpoly_monic _) (LinearMap.charpoly_monic _) hc _`. Rewrite using `[finsum_congr key, finsum_eq_sum_of_fintype, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mass_eq, mass_eq, ← finsum_eq_sum_of_fintype]`. Conclude with `GlobalTheory.T.finsum_subspaceStabilizer_mul_block_functions F V W (fun a => if LinearMap.charpoly a = x.1 then φ a else 0) (fun b => if LinearMap.charpoly b = x.2 then (1 : ℂ) else 0)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_sum (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (W : Submodule F V) (φ : Module.End F W → ℂ) (P : F[X])
@@ -136,30 +134,30 @@ theorem stab_sum (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Mo
     (fun b => if LinearMap.charpoly b = x.2 then (1 : ℂ) else 0)
 
 /- English proof (translation)
-Unfold `glCard`. Conclude with `(Nat.card_pos (α := GL (Fin n) F)).ne'` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem glCard_ne_zero (F : Type) [Field F] [Finite F] (n : ℕ) : glCard F n ≠ 0 := by
   unfold glCard
   exact_mod_cast (Nat.card_pos (α := GL (Fin n) F)).ne'
 
 /- English proof (translation)
-Introduce `F _ _ V _ _ _ Φ hΦ P hP hdeg`. Use `finite_end F V` as an intermediate fact. Establish `: Finite V` using `Module.finite_of_finite F`. Use `Fintype.ofFinite (Module.End F V)` as an intermediate fact. Use `Fintype.ofFinite (Submodule F V)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `finite_pairs P hP`. Establish `hT : ∀ x, x ∈ hfin.toFinset ↔ x.1.Monic ∧ x.2.Monic ∧ x.1 * x.2 = P` using `fun x => by`. Rewrite using `[Set.Finite.mem_toFinset]`. Both sides reduce to the same expression. Establish `h1 : mass (fun g : Module.End F V => ∑ᶠ W : {W : Submodule F V // ∀ x ∈ W, g x ∈ W}, Φ W.1 (g.restrict W.2)) P = ∑ W : Submodule F V, ∑ᶠ g : {g : Module.End F V // ∀ x ∈ W, g x ∈ W}, (if LinearMap.charpoly g.1 = P then Φ W (g.1.restrict g.2) else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[mass_eq, finsum_eq_sum_of_fintype]`. Simplify using `only [finsum_subtype_dite]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Distinguish the cases in `hg : LinearMap.charpoly g = P`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos hg]`. Simplify using `only [if_neg hg, dite_eq_ite, ite_self, Finset.sum_const_zero]`. Rewrite using `[h1, conv, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Simplify using `only [fun W : Submodule F V => stab_sum F V W (Φ W) P _ hT]`. Rewrite using `[Finset.sum_comm, Finset.sum_div]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨D, E⟩ hx`. Take `⟨hD, hE, hDE⟩` from `(hT _).1 hx`. Simplify using `only at hD hE hDE ⊢`. Establish `hsum : D.natDegree + E.natDegree = Module.finrank F V`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hdeg, ← hDE, hD.natDegree_mul hE]`. Establish `h2 : ∀ W : Submodule F V, (Nat.card F : ℂ) ^ (Module.finrank F W * Module.finrank F (V ⧸ W)) * (mass (Φ W) D * mass (fun _ : Module.End F (V ⧸ W) => (1 : ℂ)) E) = if Module.finrank F W = D.natDegree then (Nat.card F : ℂ) ^ (D.natDegree * E.natDegree) * (mass (Φ (Fin D.natDegree → …`. Introduce `W`. Distinguish the cases in `hW : Module.finrank F W = D.natDegree`. Establish `hq : Module.finrank F (V ⧸ W) = E.natDegree`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `Submodule.finrank_quotient_add_finrank W` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hW, GlobalTheory.T.endomorphismMass_eq_of_linearEquiv_invariant F W Φ hΦ D hW.symm, GlobalTheory.T.endomorphismMass_eq_of_linearEquiv_invariant F (V ⧸ W) (fun _ _ _ _ _ => (1 : ℂ)) (fun _ _ _ _ _ _ _ _ _ _ => rfl) E hq.symm, hW, hq]`. Rewrite using `[if_neg hW, mass_eq_zero _ _ hW, zero_mul, mul_zero]`. Establish `h3` using `GlobalTheory.T.card_subspaces_mul_generalLinearGroupCard F V D.natDegree (by omega)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : Module.finrank F V - D.natDegree = E.natDegree` using `by omega`. Rewrite `h3` using `[h4, Nat.card_eq_fintype_card (α := {W : Submodule F V // Module.finrank F W = D.natDegree}), Fintype.card_subtype]`. Rewrite using `[Finset.sum_congr rfl fun W _ => h2 W, ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, hdeg, mu]`. Establish `g1` using `glCard_ne_zero F D.natDegree`. Establish `g2` using `glCard_ne_zero F E.natDegree`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g3` using `glCard_ne_zero F (Module.finrank F V)`. Rewrite using `[div_mul_div_comm, div_eq_div_iff g3 (mul_ne_zero g1 g2), ← h3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mass_mult : ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] (Φ : ∀ (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V], Module.End F V → ℂ), (∀ (V V' : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] [AddCommGroup V'] [Module F V'] [FiniteDimensional F V'] (e : V ≃ₗ[F] V') (g : Module.End F V), Φ V' (e.conj g) = Φ V g) → ∀ P : F[X], P.Monic → P.natDegree = Module.finrank F V → mass (fun g : Module.End F V => ∑ᶠ W : {W : Submodule F V // ∀ x ∈ W, g x ∈ W}, Φ W.1 (g.restrict W.2)) P / glCard F P.natDegree = conv (fun D => mass (Φ (Fin D.natDegree → F)) D / glCard F D.natDegree) mu P := by
   classical

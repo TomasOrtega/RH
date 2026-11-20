@@ -7,7 +7,7 @@ namespace GlobalTheory.CompanionTheory.SW.QuadricUnit
 open GlobalTheory.CompanionTheory.SW.QuadricCount
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem char_sum {k α : Type} [AddCommGroup k] (ψ : AddChar k ℂ) (s : Finset α) (f : α → k) :
     ψ (∑ i ∈ s, f i) = ∏ i ∈ s, ψ (f i) := by
@@ -21,15 +21,15 @@ section OneVar
 variable {k : Type} [Field k] [Fintype k] [DecidableEq k]
 
 /- English proof (translation)
-Establish `h1 : ∑ y : k, ψ (c * (y * y)) = ∑ z : k, ((quadraticChar k z : ℂ) + 1) * ψ (c * z)`. Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := fun y : k => y ^ 2)]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Establish `h2 : ∀ y ∈ Finset.univ.filter (fun y : k => y ^ 2 = z), ψ (c * (y * y)) = ψ (c * z)`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← (Finset.mem_filter.1 hy).2, pow_two]`. Rewrite using `[Finset.sum_congr rfl h2, Finset.sum_const, nsmul_eq_mul]`. Use `congr 1`. Establish `h3` using `quadraticChar_card_sqrts hchar z`. Establish `h4 : ((Finset.univ.filter (fun y : k => y ^ 2 = z)).card : ℤ) = quadraticChar k z + 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h3]`. Use `congr 2`. Use extensionality with `y`. Simplify using the standard rewrite rules. Conclude with `congrArg (Int.cast : ℤ → ℂ) h4` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Repeatedly rewrite using `[add_mul, one_mul]`. Rewrite using `[Finset.sum_add_distrib]`. Establish `h5 : ∑ z : k, ψ (c * z) = 0`. Repeatedly rewrite using `[mul_comm c]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddChar.sum_mulShift c (AddChar.IsPrimitive.of_ne_one hψ)]`. Simplify using `[hc]`. Rewrite using `[h5, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sq_eq (hchar : ringChar k ≠ 2) (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) {c : k} (hc : c ≠ 0) :
     ∑ y : k, ψ (c * (y * y)) = ∑ z : k, (quadraticChar k z : ℂ) * ψ (c * z) := by
@@ -58,9 +58,9 @@ theorem sum_sq_eq (hchar : ringChar k ≠ 2) (ψ : AddChar k ℂ) (hψ : ψ ≠ 
   rw [h5, add_zero]
 
 /- English proof (translation)
-Rewrite using `[sum_sq_eq hchar ψ hψ (mul_ne_zero ht hc), sum_sq_eq hchar ψ hψ hc, Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft₀ t ht) _ _ fun z => ?_` and prove the remaining obligations. Establish `h1 : (quadraticChar k t : ℂ) * (quadraticChar k t : ℂ) = 1`. Use `quadraticChar_sq_one ht` as an intermediate fact. Establish `h2 : (quadraticChar k t) * (quadraticChar k t) = 1` using `by rw [← pow_two]; exact this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (Int.cast : ℤ → ℂ) h2` after adjusting the coercions. Establish `e : (Equiv.mulLeft₀ t ht) z = t * z` using `rfl`. Rewrite using `[e, map_mul (quadraticChar k) t z, Int.cast_mul, show t * c * z = c * (t * z) by ring]`. Take the linear combination `(-(quadraticChar k z : ℂ) * ψ (c * (t * z))) * h1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_sq_scale (hchar : ringChar k ≠ 2) (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) {c t : k}
     (hc : c ≠ 0) (ht : t ≠ 0) :
@@ -82,29 +82,27 @@ section Form
 variable {k : Type} [Field k] [Fintype k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h2 : (2 : k) ≠ 0` using `Ring.two_ne_zero hchar`. Use `haveI : Invertible (2 : k) := invertibleOfNonzero h2`. Set `Q : QuadraticForm k (ι → k)` to `(2 : k)⁻¹ • Matrix.toQuadraticForm' B`. Establish `hQ : ∀ x, Q x = quadForm B x`. Introduce `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Q, quadForm, Matrix.toQuadraticForm', Matrix.toLinearMap₂'_apply']`. Establish `hsep : (QuadraticMap.associated (R` using `k) Q).SeparatingLeft := by`. Introduce `x hx`. Establish `hass : ∀ y, x ⬝ᵥ (B *ᵥ y) = 0`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxy : QuadraticMap.associatedHom k Q x y = 0` using `hx y`. Establish `hyx : QuadraticMap.associatedHom k Q y x = 0`. Rewrite using `[← QuadraticMap.associated_isSymm k Q x y]`. Conclude with `hxy`. Establish `e1` using `QuadraticMap.associated_eq_self_apply k Q (x + y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `QuadraticMap.associated_eq_self_apply k Q x`. Establish `e3` using `QuadraticMap.associated_eq_self_apply k Q y`. Simplify using `only [map_add, LinearMap.add_apply] at e1`. Rewrite `e1` using `[hQ, quadForm_add h2 hB]`. Rewrite `e2`, `e3` using `[hQ]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `e2 + e3 - e1 + hxy + hyx`. Establish `hz : B *ᵥ x = 0`. Use function extensionality and compare the values at `i`. Establish `h3` using `hass (Pi.single i 1)`. Establish `hs : x ⬝ᵥ (B *ᵥ (Pi.single i 1)) = (Pi.single i 1 : ι → k) ⬝ᵥ (B *ᵥ x)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hB.eq, dotProduct_comm]`. Rewrite `h3` using `[hs, single_dotProduct, one_mul]`. Conclude with `h3`. Conclude with `Matrix.eq_zero_of_mulVec_eq_zero hdet hz`. Take `⟨w, ⟨e⟩⟩` from `Q.equivalent_weightedSumSquares_units_of_nondegenerate' hsep`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∀ u : k, ∑ x, ψ (u * quadForm B x) = ∏ i, ∑ y : k, ψ ((u * (w i : k)) * (y * y))`. Introduce `u`. Combine the equalities or inequalities in the displayed calculation. Use `Fintype.sum_equiv e.toLinearEquiv.toEquiv _ _ fun x => ?_` and prove the remaining obligations. Establish `h3` using `e.map_app x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h3` using `[hQ, QuadraticMap.weightedSumSquares_apply]`. Simplify using `only [Units.smul_def, smul_eq_mul] at h3`. Rewrite using `[← h3]`. Both sides reduce to the same expression. Use `_ = ∑ y : Fin (Module.finrank k (ι → k)) → k, ∏ i, ψ ((u * (w i : k)) * (y i * y i)) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, char_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `_ = ∏ i, ∑ y : k, ψ ((u * (w i : k)) * (y * y)) := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Establish `h1` using `hsum 1`. Simplify using `only [one_mul] at h1`. Rewrite using `[hsum t, h1]`. Establish `hsc : ∀ i, ∑ y : k, ψ ((t * (w i : k)) * (y * y)) = (quadraticChar k t : ℂ) * ∑ y : k, ψ ((w i : k) * (y * y))` using `fun i => sum_sq_scale hchar ψ hψ (w i).ne_zero ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hsc]`. Establish `hfr : Fintype.card (Fin (Module.finrank k (ι → k))) = 2 * M`. Rewrite using `[Fintype.card_fin, Module.finrank_fintype_fun_eq_card, hM]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hfr, pow_mul]`. Establish `h3 : (quadraticChar k t : ℂ) ^ 2 = 1`.
-
-Conclude with `congrArg (Int.cast : ℤ → ℂ) (quadraticChar_sq_one ht)` after adjusting the coercions. Rewrite using `[h3, one_pow, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem gauss_scale (hchar : ringChar k ≠ 2) (ψ : AddChar k ℂ) (hψ : ψ ≠ 1)
     {B : Matrix ι ι k} (hB : B.IsSymm) (hdet : B.det ≠ 0) {M : ℕ}
@@ -174,7 +172,7 @@ theorem gauss_scale (hchar : ringChar k ≠ 2) (ψ : AddChar k ℂ) (hψ : ψ �
   rw [h3, one_pow, one_mul]
 
 /- English proof (translation)
-The claim follows from `|(Nat.card {x : ι → k // (2 : k)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) = s} : ℝ) - (Fintype.card k : ℝ) ^ (2 * M - 1)| ≤ (Fintype.card k : ℝ) ^ (M - 1) := by classical have h2 : (2 : k) ≠ 0 := Ring.two_ne_zero hchar obtain ⟨ψ, hψ⟩ : ∃ ψ : AddChar k ℂ, ψ 1 ≠ 1 := AddChar.exists_apply_ne_zero.mpr on …`.
+A detailed English derivation is pending.
 -/
 theorem card_quadric_unit (hchar : ringChar k ≠ 2) (M : ℕ) (hM : Fintype.card ι = 2 * M)
     (hM1 : 1 ≤ M) (B : Matrix ι ι k) (hB : B.IsSymm) (hdet : B.det ≠ 0) {s : k} (hs : s ≠ 0) :

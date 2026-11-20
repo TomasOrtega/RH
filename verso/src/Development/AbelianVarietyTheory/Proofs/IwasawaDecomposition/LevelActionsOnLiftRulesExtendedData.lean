@@ -35,11 +35,11 @@ def LevB (D : D7) (i : Fin D.R.m) (Pg : Finset (Pl D.host.E)) (β : ∀ i, GL (F
         (finHom (Wc D i) κ).1.mulVec (finVec (Wc D i) ((LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast (Formalism.IndefR.FWT.rank_Wc i)) ∘ₗ io) a)) = M • w
 
 /- English proof (translation)
-Take `rfl` from `eq_of_heq hH`. Take `rfl` from `eq_of_heq hl`. Take `rfl` from `eq_of_heq hc`. Take `rfl` from `eq_of_heq hD`. Take `rfl` from `eq_of_heq hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq hi`. Take `rfl` from `eq_of_heq hP`. Take `rfl` from `eq_of_heq hβ`. Take `rfl` from `eq_of_heq he`. Take `rfl` from `eq_of_heq hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq hr`. Rewrite using `[GlobalTheory.OneMapAllCompare.actLev_congr (lev := fun g => (lev' g, LinearMap.id)) (lev' := fun g => (lev g, LinearMap.id)) c' hA (hU lev' lev h' h)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_heq (D : D7) (i : Fin D.R.m) (n : ℕ) {H H' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {l : Level H} {l' : Level H'}
     {c : Coeff l} {c' : Coeff l'} {Dw : ℕ → Datum H} {Dw' : ℕ → Datum H'} {Xo : ∀ j, Moduli (Dw j) l} {Xo' : ∀ j, Moduli (Dw' j) l'}

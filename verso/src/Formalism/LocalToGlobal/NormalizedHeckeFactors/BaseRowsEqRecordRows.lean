@@ -18,7 +18,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
   {cX : ExtraC} {ex : Extra D L hT Gi Gl K Y cX}
 
 /- English proof (translation)
-Establish `th` using `P.tied.div.th`. Use `Module.finrank_eq_card_basis (Module.Basis.mk (th.li i) (th.span i).ge)` as an intermediate fact. Rewrite using `[this, Fintype.card_fin]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finrank_Mj_eq_dW (P : RowSideFamily ex) (i : Fin D.R.m) :
     finrank ℂ (D.what₂.Mj ((i : ℕ) + 1)) = P.S0.dW i := by
@@ -34,7 +34,7 @@ variable (T : TiedDataSK ex) (P : RowSideFamily ex) (hp : RowSideDetermined T P)
 include h in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h.famOk`. Conclude with `P.A3.side_well_formed hs _ _ _ h.zsSt h.zsBl h.famSep`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wf0 : (P.A3.side3 P.P0 P.ψ0 P.Zs).WF := by
   obtain ⟨s, hs⟩ := h.famOk
@@ -42,7 +42,7 @@ theorem wf0 : (P.A3.side3 P.P0 P.ψ0 P.Zs).WF := by
 
 include h in
 /- English proof (translation)
-Take `⟨R0, hR0⟩` from `h.rows0`. Conclude with `hR0 ▸ R0.dW_eq (wf0 P h) i`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dW_eq_D (i : Fin D.R.m) : P.S0.dW i = P.S0.D := by
   obtain ⟨R0, hR0⟩ := h.rows0
@@ -50,7 +50,7 @@ theorem dW_eq_D (i : Fin D.R.m) : P.S0.dW i = P.S0.D := by
 
 include h in
 /- English proof (translation)
-Take `⟨R0, hR0⟩` from `h.rows0`. Conclude with `hR0 ▸ R0.Ep_decomp (wf0 P h)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Ep_decomp : iSupIndep P.S0.Ep ∧ (⨆ p, P.S0.Ep p) = ⊤ := by
   obtain ⟨R0, hR0⟩ := h.rows0
@@ -60,9 +60,9 @@ include hp hL h in
 open Classical in
 
 /- English proof (translation)
-Take `⟨cOf, -, -, h3⟩` from `hL`. Establish `e1` using `sum_finrank P.S0.Ep (Ep_decomp P h).1 (Ep_decomp P h).2`. Rewrite `e1` using `[Module.finrank_fin_fun]`. Establish `e2 : ∑ c, ∑ σ ∈ Finset.univ.filter (fun σ => cOf σ = c), D.what₂.nRows0 σ = ∑ σ, D.what₂.nRows0 σ` using `Finset.sum_fiberwise _ _ _`. Establish `e3 : ∑ σ, D.what₂.nRows0 σ = D.what₂.D0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Rows.Data.nRows0`. Rewrite using `[← Fintype.card_sigma, Fintype.card_congr (Equiv.sigmaFiberEquiv D.what₂.ft0), Fintype.card_fin]`. Rewrite using `[← e1, ← e3, ← e2]`. Conclude with `Finset.sum_congr rfl fun c _ => (h3 c).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_rows_eq_record_rows : P.S0.D = D.what₂.D0 := by
   obtain ⟨cOf, -, -, h3⟩ := hL
@@ -79,9 +79,9 @@ theorem base_rows_eq_record_rows : P.S0.D = D.what₂.D0 := by
 include hp hL h in
 
 /- English proof (translation)
-Introduce `j h1 h2`. Establish `hM` using `finrank_Mj_eq_dW P ⟨j - 1, by omega⟩`. Establish `hj : ((⟨j - 1, by omega⟩ : Fin D.R.m) : ℕ) + 1 = j` using `by show j - 1 + 1 = j`. Use linear arithmetic over natural numbers and integers. Rewrite `hM` using `[hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hM, dW_eq_D P h, base_rows_eq_record_rows T P hp hL h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_Mj_of_pin : ∀ j, 1 ≤ j → j ≤ D.R.m → finrank ℂ (D.what₂.Mj j) = D.what₂.D0 := by
   intro j h1 h2
@@ -95,9 +95,9 @@ theorem finrank_Mj_of_pin : ∀ j, 1 ≤ j → j ≤ D.R.m → finrank ℂ (D.wh
 end Pin
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← P.tied.div.th.span i, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Take `⟨R0, hR0⟩` from `h.rows0`. Establish `hb : Function.Bijective (P.S0.θ i t).mulVec` using `hR0 ▸ R0.l1c.2.1 i t`. Take `⟨z, hz⟩` from `hb.2 (Pi.single k 1)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hl z`. Use `⟨_, (hR.thTheta i t x).trans ?_⟩` and prove the remaining obligations. Use `congrArg (P.I.jW i) ?_` and prove the remaining obligations. Conclude with `(congrArg _ hx).trans hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thetaP_surj (P : RowSideFamily ex) (h : RowsHold0_3 P)
     (hR : Formalism.L2.DIV.DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I) (i : Fin D.R.m) (t : P.T)
@@ -114,7 +114,7 @@ theorem thetaP_surj (P : RowSideFamily ex) (h : RowsHold0_3 P)
   exact (congrArg _ hx).trans hz
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero (LinearMap.adjoint A)).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `hA z`. Establish `h1` using `LinearMap.adjoint_inner_left A v z`. Rewrite `h1` using `[hz, inner_zero_left, hv]`. Conclude with `inner_self_eq_zero.mp h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_injective {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] (A : V →ₗ[ℂ] W) (hA : Function.Surjective A) :
@@ -126,7 +126,7 @@ theorem adjoint_injective {V W : Type} [NormedAddCommGroup V] [InnerProductSpace
   exact inner_self_eq_zero.mp h1.symm
 
 /- English proof (translation)
-Establish `hi : Function.Injective (D.what₂.thetaT (P.I.tup t) ((i : ℕ) + 1))` using `adjoint_injective _ (thetaP_surj P h hR i t hl)`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Unfold `Rows.Data.Zj`. Rewrite using `[LinearMap.finrank_range_of_inj hi]`. Conclude with `finrank_Mj_of_pin T P hp hL h _ (Nat.succ_le_succ (Nat.zero_le _)) i.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_Zj_of_pin (T : TiedDataSK ex) (P : RowSideFamily ex) (hp : RowSideDetermined T P) (hL : RowsHoldLam3 P) (h : RowsHold0_3 P)
     (hR : Formalism.L2.DIV.DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I) (i : Fin D.R.m) (t : P.T)

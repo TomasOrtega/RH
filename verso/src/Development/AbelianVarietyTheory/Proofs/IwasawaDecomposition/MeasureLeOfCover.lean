@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.BesselIntegrable
 
 /- English proof (translation)
-Rewrite using `[h.measure_eq_tsum K]`. Use `(measure_mono fun n hn => ?_).trans (measure_iUnion_le _)` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `hK n`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨k, hk, rfl⟩, hn⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem measure_le_of_cover {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ : Subgroup G) [Countable Γ]
     (μ : Measure G) [μ.IsMulLeftInvariant] {𝓕 K : Set G} (h : IsFundamentalDomain Γ 𝓕 μ)
@@ -27,9 +27,7 @@ theorem measure_le_of_cover {G : Type} [Group G] [MeasurableSpace G] [Measurable
   exact Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨k, hk, rfl⟩, hn⟩
 
 /- English proof (translation)
-Unfold `besChar`. Use `split_ifs with h`. Take `⟨a, b, -, -, e⟩` from `h.choose_spec`. Rewrite using `[e]`. Conclude with `hψ _`.
-
-Conclude with `norm_one`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_besChar {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ x, ‖ψ x‖ = 1) {A B : HSp D}
     {ι : A.V →ₗ[D.host.E] B.V} (d : BesDat A B ι) (n : GA D B) : ‖besChar ψ d n‖ = 1 := by
@@ -41,15 +39,15 @@ theorem norm_besChar {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ x, ‖
   · exact norm_one
 
 /- English proof (translation)
-Introduce `hP D θ hθ ψ hψ A B ι hι d μ 𝓕 hq μN 𝓕N hμN h𝓕N s hs φ F hφ hF hA`. Take `⟨-, a2, a3, a4, a5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`. Take `⟨-, b2, b3, b4, b5, -, b7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Establish `: Countable (NFlagQ B d.e)` using `Function.Injective.countable (f := fun x : NFlagQ B d.e => (⟨x.1.1, x.2⟩ : GQ B)) fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : GQ B => z.1) h))`. Establish `: SecondCountableTopology (NFlag B d.e)` using `TopologicalSpace.Subtype.secondCountableTopology _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨K, hK, hcov⟩, -⟩` from `GlobalTheory.T.isotropic_unipotentRadicals_rational_cocompact D B d.ρ d.e d.e_iso`. Establish `hfin : μN 𝓕N < ⊤` using `(measure_le_of_cover _ μN h𝓕N hcov).trans_lt hK.measure_lt_top`. Take `⟨C, hC⟩` from `GlobalTheory.CuspDecay.bounded_of_cuspForm hP hθ hF.1 hF.2`. Take `⟨s', hs', hs'', -⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hι`. Establish `hsc : Continuous s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[show s = s' from funext fun h => (hs'' h _).1 (hs h)]`. Conclude with `hs'`. Establish `hχ` using `(GlobalTheory.T.besselCharacter_generic_character_laws D ψ hψ A B ι hι d).2.2.1`. Establish `hb : ∀ (h : GA D A) (n : NFlag B d.e), ‖star (φ h) * F ((n : GA D B) * s h * (d.y : GA D B)) * star (besChar ψ d (n : GA D B))‖ ≤ ‖φ h‖ * C` using `fun h n => by`. Rewrite using `[norm_mul, norm_mul, norm_star, norm_star, norm_besChar hψ.1.2.1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)`. Establish `hc : Continuous fun p : GA D A × NFlag B d.e => star (φ p.1) * F ((p.2 : GA D B) * s p.1 * (d.y : GA D B)) * star (besChar ψ d (p.2 : GA D B))` using `((hφ.cont.comp continuous_fst).star.mul (hF.1.cont.comp (((continuous_subtype_val.comp continuous_snd).mul (hsc.comp continuous_fst)).mul continuous_const))).mul (hχ.comp continuous_snd).star`. Use `⟨fun h => Measure.integrableOn_of_bounded (M := ‖φ h‖ * C) hfin.ne (hc.comp (Continuous.prodMk_right h)).measurable.aestronglyMeasurable (.of_forall (hb h)), ?_⟩` and prove the remaining obligations. Establish `hcusp : IsCuspForm θ A φ` using `⟨hφ, hA.elim (fun h r C hC => absurd hC (h r C)) id⟩`. Establish `hint` using `GlobalTheory.Mem.Th.petInt_of_cuspRapidDecay hP D θ hθ A μ 𝓕 hq (fun _ => 1) φ (isAutFunSm_const θ A 1) hcusp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [star_one, one_mul] at hint`. Establish `: IsFiniteMeasure (μN.restrict 𝓕N)` using `isFiniteMeasure_restrict.2 hfin.ne`. Use `Integrable.mono' ((hint.norm.mul_const C).mul_const (μN.real 𝓕N)) (hc.stronglyMeasurable.integral_prod_right' (ν := μN.restrict 𝓕N)).aestronglyMeasurable (.of_forall fun h => ?_)` and prove the remaining obligations. Conclude with `norm_setIntegral_le_of_norm_le_const hfin fun n _ => hb h n`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem besInt : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, BesInt D := by
   intro hP D θ hθ ψ hψ A B ι hι d μ 𝓕 hq μN 𝓕N hμN h𝓕N s hs φ F hφ hF hA

@@ -10,13 +10,11 @@ open scoped WithZero Pointwise
 namespace GroundTheory.Global
 
 /- English proof (translation)
-Establish `key : ∀ a b : ℤᵐ⁰, b ≤ 1 → (∀ n : ℕ, b ≤ WithZero.exp (-(n : ℤ)) → a ≤ WithZero.exp (-(n : ℤ))) → a ≤ b`. Introduce `a b hb h`. Distinguish the cases in `hb0 : b = 0`. Assume the negation of the conclusion as `hab`. Establish `ha0 : a ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hab zero_le`. Take `⟨n, hn⟩` from `WithZero.exists_exp_neg_natCast_lt ha0`. Conclude with `absurd (h n (by rw [hb0]; exact zero_le)) (not_le.2 hn)`. Establish `hlog : WithZero.log b ≤ 0`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[WithZero.log_le_iff_le_exp hb0, WithZero.exp_zero]`. Conclude with `hb`. Establish `hn : (((-(WithZero.log b)).toNat : ℕ) : ℤ) = -WithZero.log b` using `Int.toNat_of_nonneg (by omega)`. Establish `hb' : WithZero.exp (-(((-(WithZero.log b)).toNat : ℕ) : ℤ)) = b`. Rewrite using `[hn, neg_neg, WithZero.exp_log hb0]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `le_antisymm (key a b hb fun n hn ↦ (h n).2 hn) (key b a ha fun n hn ↦ (h n).1 hn)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eq_of_forall_le_exp_neg_iff {a b : ℤᵐ⁰} (ha : a ≤ 1) (hb : b ≤ 1)
     (h : ∀ n : ℕ, a ≤ WithZero.exp (-(n : ℤ)) ↔ b ≤ WithZero.exp (-(n : ℤ))) : a = b := by
@@ -42,9 +40,9 @@ theorem eq_of_forall_le_exp_neg_iff {a b : ℤᵐ⁰} (ha : a ≤ 1) (hb : b ≤
   exact le_antisymm (key a b hb fun n hn ↦ (h n).2 hn) (key b a ha fun n hn ↦ (h n).1 hn)
 
 /- English proof (translation)
-Use `uniformContinuous_of_continuousAt_zero f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Introduce `s hs`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hs`. Use `Valued.mem_nhds_zero.2 ⟨γ, fun x hx ↦ Set.mem_preimage.2 (hγ ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_lt_iff_lt_embedding] at hx ⊢`. Rewrite using `[hf]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem uniformContinuous_of_valued_eq {R Γ₀ : Type*} [Ring R] [LinearOrderedCommGroupWithZero Γ₀]
     [Valued R Γ₀] (f : R →+* R) (hf : ∀ x, Valued.v (f x) = Valued.v x) : UniformContinuous f := by
@@ -62,7 +60,7 @@ variable {K L : Type*} [Field K] [Field L] [NumberField L] [Algebra K L]
   (w : HeightOneSpectrum (𝓞 L))
 
 /- English proof (translation)
-Establish `h : σ • (w.asIdeal ^ n) = w.asIdeal ^ n`. Rewrite using `[Ideal.pointwise_smul_def, Ideal.map_pow, ← Ideal.pointwise_smul_def, hσ]`. Use `conv_lhs => rw [← h]`. Conclude with `Ideal.smul_mem_pointwise_smul_iff`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_asIdeal_pow_iff {σ : L ≃ₐ[K] L} (hσ : σ • w.asIdeal = w.asIdeal) (r : 𝓞 L)
     (n : ℕ) : σ • r ∈ w.asIdeal ^ n ↔ r ∈ w.asIdeal ^ n := by
@@ -72,7 +70,7 @@ theorem smul_mem_asIdeal_pow_iff {σ : L ≃ₐ[K] L} (hσ : σ • w.asIdeal = 
   exact Ideal.smul_mem_pointwise_smul_iff
 
 /- English proof (translation)
-The claim follows from `eq_of_forall_le_exp_neg_iff (w.intValuation_le_one _) (w.intValuation_le_one _) fun n ↦ by rw [intValuation_le_pow_iff_mem, intValuation_le_pow_iff_mem, smul_mem_asIdeal_pow_iff w hσ]`.
+A detailed English derivation is pending.
 -/
 theorem intValuation_smul {σ : L ≃ₐ[K] L} (hσ : σ • w.asIdeal = w.asIdeal) (r : 𝓞 L) :
     w.intValuation (σ • r) = w.intValuation r :=
@@ -80,7 +78,7 @@ theorem intValuation_smul {σ : L ≃ₐ[K] L} (hσ : σ • w.asIdeal = w.asIde
     rw [intValuation_le_pow_iff_mem, intValuation_le_pow_iff_mem, smul_mem_asIdeal_pow_iff w hσ]
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 L) x`. Establish `hs : ∀ c : 𝓞 L, σ (algebraMap (𝓞 L) L c) = algebraMap (𝓞 L) L (σ • c)` using `fun c ↦ rfl`. Rewrite using `[map_div₀, map_div₀, map_div₀, hs, hs, valuation_of_algebraMap, valuation_of_algebraMap, valuation_of_algebraMap, valuation_of_algebraMap, intValuation_smul w hσ, intValuation_smul w hσ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_algEquiv_apply_of_smul_eq {σ : L ≃ₐ[K] L} (hσ : σ • w.asIdeal = w.asIdeal)
     (x : L) : w.valuation L (σ x) = w.valuation L x := by
@@ -109,7 +107,7 @@ def adicCompletionRingHomOf (σ : L ≃ₐ[K] L) (hσ : σ • w.asIdeal = w.asI
 variable {w}
 
 /- English proof (translation)
-The claim follows from `(adicCompletion.continuous_ofCompletion L w).comp <| UniformSpace.Completion.continuous_map.comp (adicCompletion.continuous_toCompletion L w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adicCompletionRingHomOf (σ : L ≃ₐ[K] L) (hσ : σ • w.asIdeal = w.asIdeal) :
     Continuous (adicCompletionRingHomOf w σ hσ) :=
@@ -117,7 +115,7 @@ theorem continuous_adicCompletionRingHomOf (σ : L ≃ₐ[K] L) (hσ : σ • w.
     UniformSpace.Completion.continuous_map.comp (adicCompletion.continuous_toCompletion L w)
 
 /- English proof (translation)
-Apply `adicCompletion.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `UniformSpace.Completion.mapRingHom _ (uniformContinuous_of_valued_eq _ fun x ↦ valuation_algEquiv_apply_of_smul_eq w hσ (WithVal.equiv _ x)).continuous ((algebraMap L (WithVal (w.valuation L)) x : WithVal (w.valuation L)) : UniformSpace.Completion (WithVal (w.valuation L))) = _`. Rewrite using `[UniformSpace.Completion.mapRingHom_coe]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adicCompletionRingHomOf_algebraMap (σ : L ≃ₐ[K] L) (hσ : σ • w.asIdeal = w.asIdeal)
     (x : L) : adicCompletionRingHomOf w σ hσ (algebraMap L (w.adicCompletion L) x) =
@@ -134,7 +132,7 @@ theorem adicCompletionRingHomOf_algebraMap (σ : L ≃ₐ[K] L) (hσ : σ • w.
 variable (w) in
 
 /- English proof (translation)
-The claim follows from `RingHom.ext (congrFun ((denseRange_algebraMap (R := 𝓞 L) (K := L) w).equalizer hf hg (funext h)))`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_adicCompletion {f g : w.adicCompletion L →+* w.adicCompletion L}
     (hf : Continuous f) (hg : Continuous g)
@@ -143,11 +141,9 @@ theorem ringHom_ext_adicCompletion {f g : w.adicCompletion L →+* w.adicComplet
     (funext h)))
 
 /- English proof (translation)
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `hy' : Valued.v y ≠ 0` using `by simpa using hy`. Establish `hz : Valued.v (adicCompletionRingHomOf w σ hσ y) ≠ 0` using `by simpa using hy`. Establish `h1` using `Valued.locally_const hy'`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(continuous_adicCompletionRingHomOf σ hσ).continuousAt.preimage_mem_nhds (Valued.locally_const hz)`. Take `⟨k, hk1, hk2⟩` from `(denseRange_algebraMap (R := 𝓞 L) (K := L) w).mem_nhds (Filter.inter_mem h1 h2)`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq] at hk1 hk2`. Rewrite using `[← hk1, ← hk2, adicCompletionRingHomOf_algebraMap]`. Use `erw [valuedAdicCompletion_eq_valuation' w, valuedAdicCompletion_eq_valuation' w]`.
-
-Conclude with `valuation_algEquiv_apply_of_smul_eq w hσ k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_adicCompletionRingHomOf (σ : L ≃ₐ[K] L) (hσ : σ • w.asIdeal = w.asIdeal)
     (y : w.adicCompletion L) : Valued.v (adicCompletionRingHomOf w σ hσ y) = Valued.v y := by
@@ -178,7 +174,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 omit [w.asIdeal.LiesOver v.asIdeal] in
 
 /- English proof (translation)
-Establish `h` using `(denseRange_algebraMap (R := 𝓞 K) (K := K) v).equalizer ((continuous_adicCompletionRingHomOf σ hσ).comp (continuous_algebraMap (v.adicCompletion K) (w.adicCompletion L))) (continuous_algebraMap (v.adicCompletion K) (w.adicCompletion L)) (funext fun k ↦ ?_)`. Conclude with `congrFun h c`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply K L (w.adicCompletion L), adicCompletionRingHomOf_algebraMap, AlgEquiv.commutes]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adicCompletionRingHomOf_algebraMap_adicCompletion (σ : L ≃ₐ[K] L)
     (hσ : σ • w.asIdeal = w.asIdeal) (c : v.adicCompletion K) :
@@ -196,7 +192,7 @@ theorem adicCompletionRingHomOf_algebraMap_adicCompletion (σ : L ≃ₐ[K] L)
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `MulAction.mem_stabilizer_iff.1 σ.2`.
+A detailed English derivation is pending.
 -/
 theorem smul_asIdeal_of_mem_stabilizer (σ : MulAction.stabilizer Gal(L/K) w.asIdeal) :
     (σ : Gal(L/K)) • w.asIdeal = w.asIdeal :=
@@ -225,7 +221,7 @@ def decompositionAlgEquiv (σ : MulAction.stabilizer Gal(L/K) w.asIdeal) :
 omit [w.asIdeal.LiesOver v.asIdeal] in
 @[simp]
 /- English proof (translation)
-The claim follows from `adicCompletionRingHomOf_algebraMap σ.1 (smul_asIdeal_of_mem_stabilizer w σ) x`.
+A detailed English derivation is pending.
 -/
 theorem decompositionAlgEquiv_algebraMap (σ : MulAction.stabilizer Gal(L/K) w.asIdeal) (x : L) :
     decompositionAlgEquiv v w σ (algebraMap L (w.adicCompletion L) x) =
@@ -234,7 +230,7 @@ theorem decompositionAlgEquiv_algebraMap (σ : MulAction.stabilizer Gal(L/K) w.a
 
 omit [w.asIdeal.LiesOver v.asIdeal] in
 /- English proof (translation)
-The claim follows from `continuous_adicCompletionRingHomOf σ.1 (smul_asIdeal_of_mem_stabilizer w σ)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_decompositionAlgEquiv (σ : MulAction.stabilizer Gal(L/K) w.asIdeal) :
     Continuous (decompositionAlgEquiv v w σ) :=
@@ -243,7 +239,7 @@ theorem continuous_decompositionAlgEquiv (σ : MulAction.stabilizer Gal(L/K) w.a
 omit [w.asIdeal.LiesOver v.asIdeal] in
 
 /- English proof (translation)
-The claim follows from `valued_adicCompletionRingHomOf σ.1 (smul_asIdeal_of_mem_stabilizer w σ) y`.
+A detailed English derivation is pending.
 -/
 theorem valued_decompositionAlgEquiv (σ : MulAction.stabilizer Gal(L/K) w.asIdeal)
     (y : w.adicCompletion L) : Valued.v (decompositionAlgEquiv v w σ y) = Valued.v y :=
@@ -252,7 +248,7 @@ theorem valued_decompositionAlgEquiv (σ : MulAction.stabilizer Gal(L/K) w.asIde
 omit [w.asIdeal.LiesOver v.asIdeal] in
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun y ↦ congrFun (congrArg DFunLike.coe (ringHom_ext_adicCompletion w (f := (f : w.adicCompletion L →+* w.adicCompletion L)) (g := (g : w.adicCompletion L →+* w.adicCompletion L)) hf hg h)) y`.
+A detailed English derivation is pending.
 -/
 theorem algEquiv_ext_adicCompletion {f g : w.adicCompletion L ≃ₐ[v.adicCompletion K]
     w.adicCompletion L} (hf : Continuous f) (hg : Continuous g)
@@ -273,7 +269,7 @@ def decompositionToLocal :
 omit [w.asIdeal.LiesOver v.asIdeal] in
 @[simp]
 /- English proof (translation)
-The claim follows from `decompositionAlgEquiv_algebraMap v w σ x`.
+A detailed English derivation is pending.
 -/
 theorem decompositionToLocal_algebraMap (σ : MulAction.stabilizer Gal(L/K) w.asIdeal) (x : L) :
     decompositionToLocal v w σ (algebraMap L (w.adicCompletion L) x) =
@@ -283,9 +279,9 @@ theorem decompositionToLocal_algebraMap (σ : MulAction.stabilizer Gal(L/K) w.as
 omit [w.asIdeal.LiesOver v.asIdeal] in
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun f : Gal(w.adicCompletion L/v.adicCompletion K) ↦ f (algebraMap L (w.adicCompletion L) x)) hσ` as an intermediate fact. Simplify using `only [decompositionToLocal_algebraMap, AlgEquiv.one_apply] at this`. Conclude with `(algebraMap L (w.adicCompletion L)).injective this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decompositionToLocal_injective : Function.Injective (decompositionToLocal v w) := by
   rw [injective_iff_map_eq_one]
@@ -315,7 +311,7 @@ omit [Algebra (v.adicCompletion K) (w.adicCompletion L)]
 include v in
 
 /- English proof (translation)
-Rewrite using `[Ideal.card_stabilizer_eq v.asIdeal w.asIdeal, Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal w.asIdeal Gal(L/K), Ideal.inertiaDegIn_eq_inertiaDeg v.asIdeal w.asIdeal Gal(L/K)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_decompositionGroup :
     Nat.card (MulAction.stabilizer Gal(L/K) w.asIdeal) =
@@ -325,7 +321,7 @@ theorem card_decompositionGroup :
     Ideal.inertiaDegIn_eq_inertiaDeg v.asIdeal w.asIdeal Gal(L/K)]
 
 /- English proof (translation)
-Use `(decompositionToLocal_injective v w).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[card_decompositionGroup v w, ← finrank_adicCompletion v w, Nat.card_eq_fintype_card]`. Conclude with `AlgEquiv.card_le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decompositionToLocal_bijective : Function.Bijective (decompositionToLocal v w) := by
   refine (decompositionToLocal_injective v w).bijective_of_nat_card_le ?_

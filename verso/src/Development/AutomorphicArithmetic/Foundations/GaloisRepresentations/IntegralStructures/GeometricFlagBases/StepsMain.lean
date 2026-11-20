@@ -15,7 +15,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 namespace UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨repEx_holds, Mod.esStep_holds, hC, hJ, hP, cutStep_holds, twES, twCrys, twJ, twPhi, phiOf, satCard, jumpsOf, richOf, TP.Sub.charEx, TP.Sub.sSLeft_holds, TP.Sub.contLeft_holds⟩`.
+Supply the required witnesses or components.
 -/
 theorem steps_of (hC : CrysStep) (hJ : JumpStep) (hP : PhiStep) : Steps :=
   ⟨repEx_holds, Mod.esStep_holds, hC, hJ, hP, cutStep_holds, twES, twCrys, twJ, twPhi, phiOf, satCard, jumpsOf, richOf,

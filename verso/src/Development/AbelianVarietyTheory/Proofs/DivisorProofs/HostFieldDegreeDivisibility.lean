@@ -36,13 +36,13 @@ noncomputable section
 namespace GlobalTheory.HalfCover
 
 /- English proof (translation)
-Introduce `_ h2 _ _`. Unfold `Covers Lifts`. Use `Formalism.MainNotions.Closed.imp h2 ?_` and prove the remaining obligations. Introduce `eps Fm CH _ _`. Use `⟨0, le_rfl, 0, fun x hx _ ι p _ i hi Y hY => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := p.T.Q.H.starRing`. Establish `hL` using `p.fw.laws`. Take `⟨⟨α, hα1, hα2⟩, -⟩` from `GlobalTheory.HalfGen.half_principal_and_split (Fm.D x ι) p.T.toCore hL.toLawsM (Fm.ex x hx ι).errX`. Establish `hM : p.T.Q.l.M = (Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1` using `hL.pins.2.1.1`. Establish `hlev` using `hY.1.lev.1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `(hL.pins.2.2.2 ((i : ℕ) + 1) ⟨by omega, by omega⟩).2.1`. Use `⟨α, by rw [hα1, hM], ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlev.2.1, ← hM]`. Conclude with `dvd_mul_right _ _`. Rewrite using `[hlev.2.2.2.1, ← hα2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_le_left`. Use `show Module.finrank ℚ (Fm.D x ι).host.E * (p.T.Q.Dw ((i : ℕ) + 1)).q ≤ _`. Rewrite using `[GlobalTheory.DepthLink.finrank_host, hq]`. Conclude with `Nat.mul_le_mul_left _ (Nat.sub_le _ _)`.
+A detailed English derivation is pending.
 -/
 theorem half_gen_on_cover : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => letI := p.T.Q.H.starRing; ∃ α : 𝓞 (Fm.D x ι).host.E, α * star α = ((((Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1 : ℕ) : ℕ) : 𝓞 (Fm.D x ι).host.E) ∧ ((Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1) ∣ Y.d.l₂.M ∧ Y.d.l₂.Mb ≤ Ideal.span {star α} ∧ Module.finrank ℚ (Fm.D x ι).host.E * (dat p i).q ≤ 2 * (Fm.D x ι).R.f * (Fm.D x ι).R.m := by
   intro _ h2 _ _

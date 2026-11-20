@@ -6,41 +6,39 @@ open GlobalTheory.Pst.StLat
 namespace GlobalTheory.Pst.StLat
 
 /- English proof (translation)
-Take `⟨q, hPq⟩ : ∃ q : R, ((p : ℕ) : R) * q = 1` from `⟨((hpu.unit⁻¹ : Rˣ) : R), hpu.mul_val_inv⟩`. Establish `hSC : ∀ s ∈ S, s ∈ Clos S π` using `fun s hs n => ⟨s, hs, by simp⟩`. Establish `hPC : ((p : ℕ) : R) ∈ Clos S π` using `natCast_mem _ _`. Establish `stepD : ∀ b ∈ Clos S π, ∀ r' : ℕ, ((p : ℕ) : R) ^ r' * b * u ∈ Clos S π → ∃ b' ∈ Clos S π, ((p : ℕ) : R) * b' = b`. Introduce `b hb r' hbu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨q * b, ?_, by rw [← mul_assoc, hPq, one_mul]⟩` and prove the remaining obligations. Introduce `n`. Take `⟨s, hs, e, he, w, hw⟩` from `hlog (r' + n + 1) (by omega)`. Establish `hm : r' + n + 1 - 1 = r' + n` using `by omega`. Rewrite `hw` using `[hm]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set M := p ^ (r' + n + 1) with hMdef`. Establish `hnM : n ≤ M`. Establish `h1 : r' + n + 1 < p ^ (r' + n + 1)` using `Nat.lt_pow_self hp.one_lt`. Use linear arithmetic over natural numbers and integers. Establish `h2M : π ^ (2 * M) = π ^ M * π ^ M` using `by rw [two_mul, pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[h2M]`. Establish `hx : b * (((p : ℕ) : R) ^ (r' + n) * u - s) ∈ Clos S π`. Establish `: b * (((p : ℕ) : R) ^ (r' + n) * u - s) = ((p : ℕ) : R) ^ n * (((p : ℕ) : R) ^ r' * b * u) - b * s` using `by ring`. Rewrite using `[this]`. Conclude with `sub_mem (mul_mem (pow_mem hPC _) hbu) (mul_mem hb (hSC s hs))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s₁, hs₁, c, hc⟩` from `hx (2 * M)`. Rewrite `hc` using `[h2M]`. Establish `hs1eq : s₁ = π ^ M * (q * b * e + π ^ M * (q * b * w - c))`. Take the linear combination `(-1 : R) * hc + (q * b) * hw - (b * (((p : ℕ) : R) ^ (r' + n) * u - s)) * hPq`. Take `⟨s₂, hs₂S, hs₂⟩` from `hdiv s₁ hs₁ M ⟨_, hs1eq⟩`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcan : q * b * e - s₂ = π ^ M * (c - q * b * w)`. Apply `mul_left_cancel₀ (pow_ne_zero M hπ)` to reduce the goal to its premises. Take the linear combination `hs₂ - hs1eq`. Apply the tactic sequence `have he2 : e * e = 1 := by rcases he with rfl | rfl <;> ring`. Establish `heS : e * s₂ ∈ S`.
+Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `he with rfl | rfl` into its components or cases. Simplify using `using hs₂S`. Simplify using `using neg_mem hs₂S`. Use `⟨e * s₂, heS, dvd_trans (pow_dvd_pow π hnM) ⟨e * (c - q * b * w), ?_⟩⟩` and prove the remaining obligations. Take the linear combination `e * hcan - (q * b) * he2`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `iter : ∀ k : ℕ, ∃ b ∈ Clos S π, ((p : ℕ) : R) ^ k * b = a ∧ ((p : ℕ) : R) ^ (r + k) * b * u ∈ Clos S π`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨a, ha, by simp, by simpa using hau⟩`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbk, hbu⟩` from `ih`. Take `⟨b', hb', hPb'⟩` from `stepD b hb (r + k) hbu`. Use `⟨b', hb', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_assoc, hPb', hbk]`. Establish `: ((p : ℕ) : R) ^ (r + (k + 1)) * b' * u = ((p : ℕ) : R) ^ (r + k) * (((p : ℕ) : R) * b') * u` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[this, hPb']`. Conclude with `hbu`. Assume the negation of the conclusion as `ha0`. Establish `hex : ∃ n : ℕ, ¬ π ^ n ∣ a`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_neg at h`. Conclude with `ha0 (hsep a h)`. Establish `hn0 : Nat.find hex ≠ 0`. Introduce `h0`. Use `Nat.find_spec hex` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[h0, pow_zero]`. Conclude with `this (one_dvd a)`. Use `set i := Nat.find hex - 1 with hidef`. Establish `hi1 : i + 1 = Nat.find hex` using `by omega`. Establish `hia : π ^ i ∣ a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Nat.find_min hex (show i < Nat.find hex by omega)` as an intermediate fact. Simplify using `using this`. Take `⟨a₁, ha₁⟩` from `hia`. Establish `hna₁ : ¬ π ∣ a₁`. Introduce and unpack `⟨t, ht⟩`.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `Nat.find_spec hex` to reduce the goal to its premises. Rewrite using `[← hi1]`. Conclude with `⟨t, by rw [ha₁, ht, pow_succ]; ring⟩`. Apply `hna₁` to reduce the goal to its premises. Apply `hres a₁` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Take `⟨b, hb, hbk, -⟩` from `iter k`. Take `⟨s, hs, hbs⟩` from `hb (i + 1)`. Establish `hib : π ^ i ∣ b` using `⟨q ^ k * a₁, by`. Establish `: b = q ^ k * (((p : ℕ) : R) ^ k * b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← mul_assoc, ← mul_pow, mul_comm q, hPq, one_pow, one_mul]`. Rewrite using `[this, hbk, ha₁]`. Use the proof step `ring⟩`. Establish `his : π ^ i ∣ s`. Establish `h1 : π ^ i ∣ b - s` using `dvd_trans (pow_dvd_pow π (Nat.le_succ i)) hbs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `dvd_sub hib h1` as an intermediate fact. Simplify using `using this`. Take `⟨s', hs'S, hs'⟩` from `hdiv s hs i his`. Use `⟨s', hs'S, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_dvd_mul_iff_left (pow_ne_zero i hπ), ← pow_succ]`.
-
-Establish `: π ^ i * (a₁ - ((p : ℕ) : R) ^ k * s') = ((p : ℕ) : R) ^ k * (b - s)`. Rewrite using `[mul_sub, ← ha₁, ← hbk, hs']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `dvd_mul_of_dvd_right hbs _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clos_eq_zero_of_mul_mem {R : Type} [CommRing R] [IsDomain R] (p : ℕ) (hp : p.Prime)
     (hpu : IsUnit ((p : ℕ) : R)) (π : R) (hπ : π ≠ 0)

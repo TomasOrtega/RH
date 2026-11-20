@@ -10,13 +10,13 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Introduce `p _ O E _ _ _ hF G d c l`. Take `⟨b, z, hbz, hl⟩` from `GlobalTheory.T.dual_lie_exists_additive_eval_mod_prime_pow p O G l 1`. Rewrite `hbz` using `[pow_one]`. Take `⟨f, s, y, hf, hs, hy⟩` from `GlobalTheory.T.additive_mod_prime_eq_quasiLogarithm_defect p O E hF G d c b z hbz`. Take `⟨l', hl', -⟩` from `GlobalTheory.T.existsUnique_isLie_of_isFrame_of_QL p O E hF G d c f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdiv : ∀ w : G.dual.omega, (p : O) ∣ (l - l') w`. Introduce `w`. Take `⟨φ, hφ⟩` from `AugCot.d_surjective _ (w.1 1)`. Establish `h1` using `hl w φ hφ`. Establish `h2` using `hl'.2 1 w φ s hφ (by rw [pow_one]; exact hs)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[pow_one]`. Rewrite `h2` using `[hy, map_add, map_smul, smul_eq_mul]`. Establish `h3 : (p : O) ∣ l' w - φ b`. Use `dvd_add h2 (dvd_mul_right (p : O) (φ y))` as an intermediate fact. Rewrite `this` using `[show l' w - (φ b + (p : O) * φ y) + (p : O) * φ y = l' w - φ b by ring]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `dvd_sub h1 h3` as an intermediate fact. Rewrite `this` using `[show l w - φ b - (l' w - φ b) = (l - l') w by simp]`. Then use the resulting hypothesis. Take `⟨l'', hl''⟩` from `GlobalTheory.T.dual_eq_smul_of_forall_dvd' O G.dual.omega (p : O) (fun x hx => hF.sat x hx) (l - l') hdiv`. Conclude with `⟨f, l', l'', hf, hl', by rw [← hl'']; abel⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lie_surj_mod_p : ∀ (p : ℕ) [Fact p.Prime] (O E : Type) [CommRing O] [CommRing E] [Algebra O E],
     IsFrame p E (RingHom.id O) → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d),

@@ -14,13 +14,13 @@ open scoped ComplexOrder
 namespace GlobalTheory.FrameLog
 
 /- English proof (translation)
-Use `hs.contractibleSpace hne` as an intermediate fact. Establish `hsc : IsSimplyConnected S` using `(inferInstance : SimplyConnectedSpace S)`. Take `⟨L, hLc, hL⟩` from `Complex.exists_continuousOn_eqOn_exp_comp hsc ho hF.continuousOn (by rintro ⟨w, hw, h⟩; exact h0 w hw h)`. Use `⟨L, fun w hw => ?_, fun w hw => hL hw⟩` and prove the remaining obligations. Establish `hn` using `ho.mem_nhds hw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt (fun z => (L z - L w).im) w` using `Complex.continuous_im.continuousAt.comp ((hLc.continuousAt hn).sub continuousAt_const)`. Establish `h1 : ∀ᶠ z in 𝓝 w, (L z - L w).im ∈ Set.Ioo (-Real.pi) Real.pi` using `hc.eventually (isOpen_Ioo.mem_nhds (by simp [Real.pi_pos]))`. Establish `h2 : L =ᶠ[𝓝 w] fun z => L w + Complex.log (F z / F w)` using `by filter_upwards [h1, hn] with z hz hzS`. Rewrite using `[← hL hzS, ← hL hw, Function.comp, Function.comp, ← Complex.exp_sub, Complex.log_exp hz.1 hz.2.le]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(DifferentiableAt.congr_of_eventuallyEq ?_ h2).differentiableWithinAt` and prove the remaining obligations. Establish `h3 : DifferentiableAt ℂ (fun z => F z / F w) w`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(hF.differentiableAt hn).mul_const _`. Use `DifferentiableAt.const_add _ (DifferentiableAt.comp (g := Complex.log) w (Complex.differentiableAt_log ?_) h3)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[div_self (h0 w hw)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_log {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V] {S : Set V} (ho : IsOpen S)
     (hs : StarConvex ℝ 0 S) (hne : S.Nonempty) {F : V → ℂ} (hF : DifferentiableOn ℂ F S) (h0 : ∀ w ∈ S, F w ≠ 0) :
@@ -47,15 +47,15 @@ theorem exists_log {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [Normed
   simp [div_self (h0 w hw)]
 
 /- English proof (translation)
-Establish `h1 : K (fromBlocks A 0 0 1)`. Use `diagonal_transvection_induction_of_det_ne_zero (fun A => K (fromBlocks A 0 0 1)) A hA (fun d hd' => ?_) (fun t => ?_) fun A B _ _ kA kB => ?_` and prove the remaining obligations. Rewrite `hd'` using `[det_diagonal]`. Rewrite using `[← diagonal_one, fromBlocks_diagonal]`. Use `hd _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(i | i)`. Conclude with `Finset.prod_ne_zero_iff.1 hd' i (Finset.mem_univ i)`. Simplify using the standard rewrite rules. Use `hl t.i t.j t.c t.hij using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [TransvectionStruct.toMatrix, transvection, one_apply, single_apply]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hmul _ _ kA kB` using `[fromBlocks_multiply]`. Establish `h2 : K (fromBlocks 1 0 0 D)`. Use `diagonal_transvection_induction_of_det_ne_zero (fun D => K (fromBlocks 1 0 0 D)) D hD (fun d hd' => ?_) (fun t => ?_) fun A B _ _ kA kB => ?_` and prove the remaining obligations. Rewrite `hd'` using `[det_diagonal]`. Rewrite using `[← diagonal_one, fromBlocks_diagonal]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hd _ ?_` and prove the remaining obligations. Introduce and unpack `(i | i)`. Simplify using the standard rewrite rules. Conclude with `Finset.prod_ne_zero_iff.1 hd' i (Finset.mem_univ i)`. Use `hr t.i t.j t.c t.hij using 1` and compare the differences between its conclusion and the goal.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `ext (a | a) (b | b) <;> simp [TransvectionStruct.toMatrix, transvection, one_apply, single_apply]`. Simplify `hmul _ _ kA kB` using `[fromBlocks_multiply]`. Establish `h3` using `hmul _ _ h2 (hmul _ _ (hu B) h1)`. Simplify `h3` using `[fromBlocks_multiply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem block_induction {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β]
     (K : Matrix (α ⊕ β) (α ⊕ β) ℂ → Prop) (hmul : ∀ g h, K g → K h → K (g * h))
@@ -97,9 +97,9 @@ def Par (p : ℕ) (g : Matrix (Fin N) (Fin N) ℂ) : Prop :=
   g.det ≠ 0 ∧ ∀ a c : Fin N, (c : ℕ) < p → ¬ (a : ℕ) < p → g a c = 0
 
 /- English proof (translation)
-Use `⟨by rw [det_mul]; exact mul_ne_zero hg.1 hh.1, fun a c hc ha => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < p`. Rewrite using `[hg.2 a k hk ha, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh.2 k c hc hk, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Par.mul {p : ℕ} {g h : Matrix (Fin N) (Fin N) ℂ} (hg : Par p g) (hh : Par p h) : Par p (g * h) := by
   refine ⟨by rw [det_mul]; exact mul_ne_zero hg.1 hh.1, fun a c hc ha => ?_⟩
@@ -110,13 +110,13 @@ theorem Par.mul {p : ℕ} {g h : Matrix (Fin N) (Fin N) ℂ} (hg : Par p g) (hh 
   · rw [hh.2 k c hc hk, mul_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hd, fun a c hc ha => hb a c (by rw [Fin.lt_def]; omega)⟩`.
+Supply the required witnesses or components.
 -/
 theorem par_of_upper {p : ℕ} {b : Matrix (Fin N) (Fin N) ℂ} (hd : b.det ≠ 0) (hb : ∀ a c, c < a → b a c = 0) :
     Par p b := ⟨hd, fun a c hc ha => hb a c (by rw [Fin.lt_def]; omega)⟩
 
 /- English proof (translation)
-Use `⟨by rw [det_transvection_of_ne _ _ hij]; exact one_ne_zero, fun a c hc ha => ?_⟩` and prove the remaining obligations. Establish `: a ≠ c` using `by rintro rfl; exact ha hc`. Rewrite using `[transvection, Matrix.add_apply, one_apply_ne this, single_apply_of_ne, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `ha (h hc)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem par_transvection {p : ℕ} {i j : Fin N} (hij : i ≠ j) (h : (j : ℕ) < p → (i : ℕ) < p) (t : ℂ) :
     Par p (transvection i j t) := by
@@ -127,7 +127,7 @@ theorem par_transvection {p : ℕ} {i j : Fin N} (hij : i ≠ j) (h : (j : ℕ) 
   exact ha (h hc)
 
 /- English proof (translation)
-Rewrite using `[transvection, Matrix.add_apply, one_apply_ne h.ne', single_apply_of_ne, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd h (not_lt.2 hij.le)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem transvection_upper {i j : Fin N} (hij : i < j) (t : ℂ) (a c : Fin N) (h : c < a) :
     transvection i j t a c = 0 := by
@@ -136,7 +136,7 @@ theorem transvection_upper {i j : Fin N} (hij : i < j) (t : ℂ) (a c : Fin N) (
   exact absurd h (not_lt.2 hij.le)
 
 /- English proof (translation)
-Establish `hji` using `hij.symm`. Simplify using `only [transvection, mul_add, add_mul, Matrix.mul_one, Matrix.one_mul, single_mul_single_same, single_mul_single_of_ne _ _ _ _ hij, single_mul_single_of_ne _ _ _ _ hji, Matrix.zero_mul, add_zero]`. Use extensionality with `a c`. Simplify using `only [Matrix.add_apply, single_apply]`. Apply the tactic sequence `split_ifs <;> simp_all <;> field_simp <;> ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transvection_factor {i j : Fin N} (hij : i ≠ j) {t : ℂ} (ht : t ≠ 0) :
     transvection i j t * transvection j i (-t⁻¹) * (1 + single j j (t⁻¹ - 1) + single i i (t - 1)) =
@@ -155,21 +155,19 @@ open scoped Matrix.Norms.Elementwise
 variable {p : ℕ} {Ω : Set (Matrix (Fin N) (Fin N) ℂ)} {f : Matrix (Fin N) (Fin N) ℂ → ℂ}
 
 /- English proof (translation)
-Establish `hij : i ≠ j` using `hji.ne'`. Establish `hL : ∀ s, Par p (transvection i j s)` using `par_transvection hij h`. Establish `hU : ∀ s, Par p (transvection j i s)` using `par_transvection hij.symm fun h' => lt_trans hji h'`. Establish `hdiff : ∀ m ∈ Ω, Differentiable ℂ fun s : ℂ => f (m * transvection i j s)` using `fun m hm => by`. Establish `h1 : Differentiable ℂ fun s : ℂ => m * transvection i j s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (fun s : ℂ => m * transvection i j s) = fun s => m + s • (m * single i j 1)`. Use function extensionality and compare the values at `s`. Rewrite using `[transvection, mul_add, Matrix.mul_one, ← Matrix.mul_smul, smul_single, smul_eq_mul, mul_one]`. Rewrite using `[this]`. Use `fun_prop`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← differentiableOn_univ]`. Conclude with `hf.comp h1.differentiableOn fun s _ => hΩ m hm _ (hL s)`. Use `set w := transvection j i (-1 : ℂ) * transvection i j 1 * transvection j i (-1) with hw`. Establish `hmw : m * w ∈ Ω` using `hΩ m hm _ (((hU _).mul (hL _)).mul (hU _))`. Establish `key : ∀ s : ℂ, s ≠ 0 → f (m * transvection i j s) = f (m * w * transvection i j (-s⁻¹))` using `fun s hs => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `transvection_factor hij hs`. Establish `h1` using `hΩ m hm _ (hL s)`. Establish `h2` using `hΩ _ h1 _ (hU (-s⁻¹))`. Rewrite using `[Matrix.mul_assoc m w, hw, ← e, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hB _ h2, hB _ h1 _ (hU _).1 (transvection_upper hji _)]`. Establish `e'` using `congrArg det e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [det_mul, det_transvection_of_ne _ _ hij, det_transvection_of_ne _ _ hij.symm, one_mul] at e'`. Rewrite using `[e']`. Conclude with `one_ne_zero`. Introduce `a c hca`. Simplify using `only [Matrix.add_apply, one_apply_ne hca.ne']`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [single_apply_of_ne, single_apply_of_ne, add_zero, add_zero] <;>`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hca.ne (h2.symm.trans h1)`. Establish `hlim : Tendsto (fun s : ℂ => f (m * transvection i j s)) (cocompact ℂ) (𝓝 (f (m * w * transvection i j (-0))))`. Establish `h1 : Tendsto (fun s : ℂ => -s⁻¹) (cocompact ℂ) (𝓝 (-0))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Metric.cobounded_eq_cocompact]`. Conclude with `tendsto_inv₀_cobounded.neg`. Use `(((hdiff _ hmw).continuous.tendsto _).comp h1).congr' ?_` and prove the remaining obligations. Use `filter_upwards [(isCompact_singleton (x := (0 : ℂ))).compl_mem_cocompact] with s hs`. Conclude with `(key s hs).symm`.
-
-Establish `h1` using `(hdiff m hm).apply_eq_of_tendsto_cocompact t hlim`. Establish `h2` using `(hdiff m hm).apply_eq_of_tendsto_cocompact 0 hlim`. Rewrite using `[h1, ← h2, transvection_zero, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem keeps_lower (hf : DifferentiableOn ℂ f Ω) (hΩ : ∀ m ∈ Ω, ∀ g, Par p g → m * g ∈ Ω)
     (hB : ∀ m ∈ Ω, ∀ b : Matrix (Fin N) (Fin N) ℂ, b.det ≠ 0 → (∀ a c, c < a → b a c = 0) → f (m * b) = f m)
@@ -217,23 +215,19 @@ theorem keeps_lower (hf : DifferentiableOn ℂ f Ω) (hΩ : ∀ m ∈ Ω, ∀ g,
   rw [h1, ← h2, transvection_zero, Matrix.mul_one]
 
 /- English proof (translation)
-Set `σ` to `Equiv.sumCompl fun a : Fin N => (a : ℕ) < p`. Set `K : Matrix (Fin N) (Fin N) ℂ → Prop` to `fun g => Par p g ∧ ∀ m ∈ Ω, f (m * g) = f m`. Establish `Kup : ∀ b : Matrix (Fin N) (Fin N) ℂ, b.det ≠ 0 → (∀ a c, c < a → b a c = 0) → K b` using `fun b h1 h2 => ⟨par_of_upper h1 h2, fun m hm => hB m hm b h1 h2⟩`. Establish `Ktr : ∀ (i j : Fin N) (t : ℂ), i ≠ j → ((j : ℕ) < p → (i : ℕ) < p) → K (transvection i j t)` using `fun i j t hij h => by`. Break down `lt_or_gt_of_ne hij with h' | h'` into its components or cases.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Kup _ (par_transvection hij h t).1 (transvection_upper h' t)`. Conclude with `⟨par_transvection hij h t, fun m hm => keeps_lower hf hΩ hB h' h t hm⟩`. Establish `htr : ∀ i j t, (transvection i j (t : ℂ)).submatrix σ.symm σ.symm = transvection (σ i) (σ j) t`. Introduce `i j t`. Use extensionality with `a c`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[transvection, one_apply, single_apply, Equiv.eq_symm_apply]`. Establish `h21 : (g.submatrix σ σ).toBlocks₂₁ = 0`. Use extensionality with `a c`. Conclude with `hg.2 _ _ c.2 a.2`. Establish `hblk : g.submatrix σ σ = fromBlocks (g.submatrix σ σ).toBlocks₁₁ (g.submatrix σ σ).toBlocks₁₂ 0 (g.submatrix σ σ).toBlocks₂₂`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h21, fromBlocks_toBlocks]`. Establish `hdet` using `hg.1`. Rewrite `hdet` using `[← det_submatrix_equiv_self σ, hblk, det_fromBlocks_zero₂₁]`. Establish `key` using `block_induction (fun M => K (M.submatrix σ.symm σ.symm)) (fun g h kg kh => ?_) (fun d hd => ?_) (fun i j c hij => ?_) (fun i j c hij => ?_) (fun B => ?_) _ (g.submatrix σ σ).toBlocks₁₂ _ (left_ne_zero_of_mul hdet) (right_ne_zero_of_mul hdet)`. Rewrite `key` using `[← hblk, submatrix_submatrix, Equiv.self_comp_symm, submatrix_id_id]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `key.2`. Rewrite using `[← submatrix_mul_equiv g h σ.symm σ.symm σ.symm]`. Conclude with `⟨kg.1.mul kh.1, fun m hm => by rw [← Matrix.mul_assoc, kh.2 _ (hΩ m hm _ kg.1), kg.2 m hm]⟩`. Use `Kup _ ?_ fun a c hca => ?_` and prove the remaining obligations. Rewrite using `[det_submatrix_equiv_self, det_diagonal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hd i`. Conclude with `diagonal_apply_ne _ fun h => hca.ne' (σ.symm.injective h)`. Rewrite using `[htr]`. Conclude with `Ktr _ _ _ (fun h => hij (Sum.inl_injective (σ.injective h))) fun _ => i.2`. Rewrite using `[htr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ktr _ _ _ (fun h => hij (Sum.inr_injective (σ.injective h))) fun h => absurd h j.2`. Use `Kup _ ?_ fun a c hca => ?_` and prove the remaining obligations. Rewrite using `[det_submatrix_equiv_self, det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules. Take `⟨a, rfl⟩` from `σ.surjective a`.
-
-Take `⟨c, rfl⟩` from `σ.surjective c`. Rewrite using `[submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c`. Conclude with `one_apply_ne fun h => hca.ne' (by rw [h])`. Conclude with `absurd (lt_trans (show ((c : Fin N) : ℕ) < (a : Fin N) from hca) a.2) c.2`.
-
-Both sides reduce to the same expression. Conclude with `one_apply_ne fun h => hca.ne' (by rw [h])`.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem keeps_par (hf : DifferentiableOn ℂ f Ω) (hΩ : ∀ m ∈ Ω, ∀ g, Par p g → m * g ∈ Ω)
     (hB : ∀ m ∈ Ω, ∀ b : Matrix (Fin N) (Fin N) ℂ, b.det ≠ 0 → (∀ a c, c < a → b a c = 0) → f (m * b) = f m)
@@ -293,7 +287,7 @@ section Ring
 variable {A : Type} [Ring A] {e y m b m' : A}
 
 /- English proof (translation)
-Establish `h : (e * y * e + (1 - e)) * e = e * (e * y * e + (1 - e))`. Simplify using `only [add_mul, mul_add, sub_mul, mul_sub, one_mul, mul_one, mul_assoc, he]`. Rewrite using `[← mul_assoc e e, he]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem comm_inv (he : e * e = e) (h1 : (e * y * e + (1 - e)) * m = 1) (h2 : m * (e * y * e + (1 - e)) = 1) :
     e * m = m * e := by
@@ -304,7 +298,7 @@ theorem comm_inv (he : e * e = e) (h1 : (e * y * e + (1 - e)) * m = 1) (h2 : m *
     _ = m * e := by rw [h, mul_assoc, mul_assoc, h1, mul_one]
 
 /- English proof (translation)
-Establish `h : e * (e * y * e + (1 - e)) = e * y * e`. Simplify using `only [mul_add, mul_sub, mul_one, he, ← mul_assoc, sub_self, add_zero]`. Rewrite using `[← h, mul_assoc, h1, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_mul_inv (he : e * e = e) (h1 : (e * y * e + (1 - e)) * m = 1) : e * y * e * m = e := by
   have h : e * (e * y * e + (1 - e)) = e * y * e := by
@@ -312,9 +306,9 @@ theorem proj_mul_inv (he : e * e = e) (h1 : (e * y * e + (1 - e)) * m = 1) : e *
   rw [← h, mul_assoc, h1, mul_one]
 
 /- English proof (translation)
-Establish `h3` using `proj_mul_inv he h1`. Establish `h4` using `comm_inv he h1 h2`. Establish `h5 : (1 - e) * (1 - e) = 1 - e` using `by simp only [mul_sub, sub_mul, one_mul, mul_one, he, sub_self, sub_zero]`. Establish `h6 : e * y * m * e = e` using `by rw [mul_assoc, ← h4, ← mul_assoc, h3]`. Rewrite using `[h4, add_mul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← mul_assoc, h5]`. Rewrite using `[mul_assoc _ e e, he, mul_assoc _ e e, he]`. Simplify using `only [sub_mul, one_mul, h6]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem graph_eq (he : e * e = e) (h1 : (e * y * e + (1 - e)) * m = 1) (h2 : m * (e * y * e + (1 - e)) = 1) :
     (1 + (1 - e) * ((1 - e) * y * m * e) * e) * e = y * (e * m) := by
@@ -329,11 +323,11 @@ theorem graph_eq (he : e * e = e) (h1 : (e * y * e + (1 - e)) * m = 1) (h2 : m *
   abel
 
 /- English proof (translation)
-Establish `hb' : b * e = e * (b * e)`. Rewrite `hb` using `[sub_mul, sub_mul, one_mul, sub_eq_zero]`. Rewrite using `[← mul_assoc, ← hb]`. Establish `h3` using `proj_mul_inv he h1'`. Establish `h4` using `comm_inv he h1' h2'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (e * y * e + (1 - e)) * e = e * y * e`. Simplify using `only [add_mul, sub_mul, one_mul, mul_assoc, he, sub_self, add_zero]`. Establish `h5 : b * (m' * e) = m * e`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc m, h2, one_mul, ← hb', ← h4, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = m * (e * (y * b) * e * m') := by`. Rewrite using `[h, mul_assoc m, mul_assoc _ e (b * e), ← hb']`. Simplify using `only [mul_assoc]`. Use `_ = m * e := by rw [h3]`. Simplify using `only [mul_assoc, h5]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem graph_inv (he : e * e = e) (h1 : (e * y * e + (1 - e)) * m = 1) (h2 : m * (e * y * e + (1 - e)) = 1)
     (h1' : (e * (y * b) * e + (1 - e)) * m' = 1) (h2' : m' * (e * (y * b) * e + (1 - e)) = 1)
@@ -359,7 +353,7 @@ end Ring
 def pr (N p : ℕ) : Matrix (Fin N) (Fin N) ℂ := diagonal fun a => if (a : ℕ) < p then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[pr, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr_mul_pr (p : ℕ) : pr N p * pr N p = pr N p := by
   rw [pr, diagonal_mul_diagonal]
@@ -368,7 +362,7 @@ theorem pr_mul_pr (p : ℕ) : pr N p * pr N p = pr N p := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[pr, ← diagonal_one, diagonal_sub]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_sub_pr (p : ℕ) : 1 - pr N p = diagonal fun a : Fin N => if (a : ℕ) < p then 0 else 1 := by
   rw [pr, ← diagonal_one, diagonal_sub]
@@ -377,7 +371,7 @@ theorem one_sub_pr (p : ℕ) : 1 - pr N p = diagonal fun a : Fin N => if (a : �
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[one_sub_pr, pr, mul_diagonal, diagonal_mul]`. Apply the tactic sequence `by_cases ha : (a : ℕ) < p <;> by_cases hc : (c : ℕ) < p <;> simp [ha, hc]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cut_apply (p : ℕ) (g : Matrix (Fin N) (Fin N) ℂ) (a c : Fin N) :
     ((1 - pr N p) * g * pr N p) a c = if (c : ℕ) < p ∧ ¬ (a : ℕ) < p then g a c else 0 := by
@@ -385,9 +379,9 @@ theorem cut_apply (p : ℕ) (g : Matrix (Fin N) (Fin N) ℂ) (a c : Fin N) :
   by_cases ha : (a : ℕ) < p <;> by_cases hc : (c : ℕ) < p <;> simp [ha, hc]
 
 /- English proof (translation)
-Use `and_congr_right fun _ => ⟨fun h => ?_, fun h a c hc ha => ?_⟩` and prove the remaining obligations. Use extensionality with `a c`. Rewrite using `[cut_apply]`. Use `split_ifs with h'`. Conclude with `h a c h'.1 h'.2`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `congrFun (congrFun h a) c` as an intermediate fact. Rewrite `this` using `[cut_apply, if_pos ⟨hc, ha⟩]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem par_iff {p : ℕ} {g : Matrix (Fin N) (Fin N) ℂ} :
     Par p g ↔ g.det ≠ 0 ∧ (1 - pr N p) * g * pr N p = 0 := by
@@ -401,9 +395,9 @@ theorem par_iff {p : ℕ} {g : Matrix (Fin N) (Fin N) ℂ} :
     rwa [cut_apply, if_pos ⟨hc, ha⟩] at this
 
 /- English proof (translation)
-Establish `h : pr N p * (1 - pr N p) = 0` using `by rw [mul_sub, pr_mul_pr, Matrix.mul_one, sub_self]`. Establish `h1 : (1 - pr N p) * W * pr N p * ((1 - pr N p) * W * pr N p) = 0`. Rewrite using `[Matrix.mul_assoc _ (pr N p), ← Matrix.mul_assoc (pr N p), ← Matrix.mul_assoc (pr N p), h]`. Simplify using the standard rewrite rules. Establish `h2 : (1 + (1 - pr N p) * W * pr N p) * (1 - (1 - pr N p) * W * pr N p) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[add_mul, mul_sub ((1 - pr N p) * W * pr N p), h1]`. Simplify using the standard rewrite rules. Conclude with `(isUnit_det_of_right_inverse h2).ne_zero`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_one_add_cut (p : ℕ) (W : Matrix (Fin N) (Fin N) ℂ) : (1 + (1 - pr N p) * W * pr N p).det ≠ 0 := by
   have h : pr N p * (1 - pr N p) = 0 := by rw [mul_sub, pr_mul_pr, Matrix.mul_one, sub_self]
@@ -422,9 +416,9 @@ def Good (τ : X.Ψ) (m : Matrix (Fin N) (Fin N) ℂ) : Prop :=
     0 < (hermC τ.1 X.Gm (m *ᵥ v) (m *ᵥ v)).re
 
 /- English proof (translation)
-Rewrite using `[Data.mulVec_eq_sum_col]`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE X.p0_le) (Fin.castLE_injective _).injOn (fun _ _ => Finset.mem_univ _) (fun a _ ha => ?_) fun _ _ => rfl` and prove the remaining obligations. Rewrite using `[hv a, zero_smul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ha ⟨⟨a, h⟩, by simp, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_eq_sum_colP (x : Frame X.Ψ N) (τ : X.Ψ) (v : Fin N → ℂ)
     (hv : ∀ a : Fin N, ¬ (a : ℕ) < X.p0 → v a = 0) :
@@ -438,13 +432,11 @@ theorem mulVec_eq_sum_colP (x : Frame X.Ψ N) (τ : X.Ψ) (v : Fin N → ℂ)
   exact ha ⟨⟨a, h⟩, by simp, rfl⟩
 
 /- English proof (translation)
-Use `⟨fun hx τ => ⟨(hx τ).1, fun v hv0 hv => ?_⟩, fun h => ReciprocityTheory.ChartRestriction.G.AR.Up.ExF.mem_dom_of_gramPos X fun τ => ⟨(h τ).1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mulVec_eq_sum_colP X x τ v hv, ReciprocityTheory.ChartRestriction.G.FD.hermC_quad]`. Use `ReciprocityTheory.ChartRestriction.G.FD.quad_re_pos (X.gramPos_posDef hx τ) fun h0 => hv0 (funext fun a => ?_)` and prove the remaining obligations. Distinguish the cases in `ha : (a : ℕ) < X.p0`. Conclude with `congrFun h0 ⟨a, ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hv a ha`. Use `PosDef.of_dotProduct_mulVec_pos (X.gramPos_isHermitian x τ) fun c hc => ?_` and prove the remaining obligations. Set `v : Fin N → ℂ` to `fun a => if ha : (a : ℕ) < X.p0 then star (c ⟨a, ha⟩) else 0`. Establish `hv : ∀ a : Fin N, ¬ (a : ℕ) < X.p0 → v a = 0` using `fun a ha => dif_neg ha`. Establish `hvc : ∀ a : Fin X.p0, v (Fin.castLE X.p0_le a) = star (c a)` using `fun a => dif_pos a.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv0 : v ≠ 0` using `fun h0 => hc (funext fun a => by simpa [h0] using (hvc a).symm)`. Establish `e : star c ⬝ᵥ X.gramPos x τ *ᵥ c = hermC τ.1 X.Gm (mat x τ *ᵥ v) (mat x τ *ᵥ v)`. Rewrite using `[mulVec_eq_sum_colP X x τ v hv, ReciprocityTheory.ChartRestriction.G.FD.hermC_quad]`. Simplify using `[hvc, dotProduct, mulVec, Finset.mul_sum, mul_assoc, Data.gramPos_apply]`. Rewrite using `[e, Complex.pos_iff]`.
-
-Conclude with `⟨(h τ).2 v hv0 hv, (Complex.conj_eq_iff_im.1 (FD.hermC_conj τ.1 X.Gm_herm _ _)).symm⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_dom_iff_good {x : Frame X.Ψ N} : x ∈ X.dom ↔ ∀ τ, Good X τ (mat x τ) := by
   refine ⟨fun hx τ => ⟨(hx τ).1, fun v hv0 hv => ?_⟩, fun h =>
@@ -466,9 +458,9 @@ theorem mem_dom_iff_good {x : Frame X.Ψ N} : x ∈ X.dom ↔ ∀ τ, Good X τ 
     exact ⟨(h τ).2 v hv0 hv, (Complex.conj_eq_iff_im.1 (FD.hermC_conj τ.1 X.Gm_herm _ _)).symm⟩
 
 /- English proof (translation)
-Use `⟨by rw [det_mul]; exact mul_ne_zero hm.1 hg.1, fun v hv0 hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec]`. Use `hm.2 _ (fun h => hg.1 (exists_mulVec_eq_zero_iff.1 ⟨v, hv0, h⟩)) fun a ha => ?_` and prove the remaining obligations. Rewrite using `[mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc : (c : ℕ) < X.p0`. Simplify using `[hg.2 a c hc ha]`. Simplify using `[hv c hc]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Good.mul_par {τ : X.Ψ} {m g : Matrix (Fin N) (Fin N) ℂ} (hm : Good X τ m) (hg : Par X.p0 g) :
     Good X τ (m * g) := by
@@ -484,9 +476,9 @@ theorem Good.mul_par {τ : X.Ψ} {m g : Matrix (Fin N) (Fin N) ℂ} (hm : Good X
 variable {X}
 
 /- English proof (translation)
-Establish `hPij : ∀ i j, hermC τ.1 X.Gm (FD.col P i) (FD.col P j) = if i = j then ((sgn X.p0 i : ℝ) : ℂ) else 0`. Introduce `i j`. Use `congrFun (congrFun hP i) j` as an intermediate fact. Simplify `this` using `only [FD.gram, of_apply, diagonal_apply]`. Rewrite using `[Data.mulVec_eq_sum_col, ReciprocityTheory.ChartRestriction.G.FD.hermC_quad, Complex.re_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[hPij]`. Simplify using `only [mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[mul_right_comm, Complex.mul_conj, ← Complex.ofReal_mul, Complex.ofReal_re, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_eq {τ : X.Ψ} {P : Matrix (Fin N) (Fin N) ℂ}
     (hP : FD.gram τ.1 X.Gm P = diagonal fun a : Fin N => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (c : Fin N → ℂ) :
@@ -502,9 +494,9 @@ theorem quad_eq {τ : X.Ψ} {P : Matrix (Fin N) (Fin N) ℂ}
   rw [mul_right_comm, Complex.mul_conj, ← Complex.ofReal_mul, Complex.ofReal_re, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← mulVec_mulVec, quad_eq hP, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, add_mulVec, one_mulVec, smul_mulVec, Pi.add_apply, Pi.smul_apply]`. Distinguish the cases in `hi : (i : ℕ) < X.p0`. Establish `: (((1 - pr N X.p0) * W * pr N X.p0) *ᵥ v) i = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[mulVec, dotProduct]`. Conclude with `Finset.sum_eq_zero fun c _ => by simp [cut_apply, hi]`. Simplify using `[this, sgn, hi]`. Simplify using `[hv i hi, sgn, hi, sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quad_cut {τ : X.Ψ} {P : Matrix (Fin N) (Fin N) ℂ}
     (hP : FD.gram τ.1 X.Gm P = diagonal fun a : Fin N => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (W : Matrix (Fin N) (Fin N) ℂ)
@@ -523,11 +515,11 @@ theorem quad_cut {τ : X.Ψ} {P : Matrix (Fin N) (Fin N) ℂ}
   · simp [hv i hi, sgn, hi, sq]
 
 /- English proof (translation)
-Use `⟨?_, fun v hv0 hv => ?_⟩` and prove the remaining obligations. Use `h.1` as an intermediate fact. Rewrite `this`, the goal using `[det_mul]`. Conclude with `mul_ne_zero (left_ne_zero_of_mul this) (det_one_add_cut _ _)`. Establish `h2` using `h.2 v hv0 hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `quad_cut hP W 1 hv`. Rewrite `h3` using `[one_smul]`. Rewrite `h2` using `[h3]`. Rewrite using `[quad_cut hP W t hv]`. Establish `h4 : 0 ≤ ∑ i, Complex.normSq ((((1 - pr N X.p0) * W * pr N X.p0) *ᵥ v) i)` using `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : t ^ 2 ≤ 1` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem good_smul {τ : X.Ψ} {P : Matrix (Fin N) (Fin N) ℂ}
     (hP : FD.gram τ.1 X.Gm P = diagonal fun a : Fin N => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) {W : Matrix (Fin N) (Fin N) ℂ}
@@ -548,15 +540,15 @@ theorem good_smul {τ : X.Ψ} {P : Matrix (Fin N) (Fin N) ℂ}
     nlinarith
 
 /- English proof (translation)
-Introduce `hd`. Take `⟨v, hv0, hv⟩` from `exists_mulVec_eq_zero_iff.2 hd`. Rewrite `hv` using `[add_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, one_sub_pr]`. Establish `h1 : ∀ a : Fin N, ¬ (a : ℕ) < X.p0 → v a = 0` using `fun a ha => by`. Use `congrFun hv a` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Pi.add_apply, mulVec_diagonal, pr, mulVec_diagonal]`. Simplify `this` using `[ha]`. Establish `h2 : pr N X.p0 *ᵥ v = v`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : (a : ℕ) < X.p0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `[pr, mulVec_diagonal, ha]`. Simplify using `[pr, mulVec_diagonal, ha, h1 a ha]`. Rewrite `hv` using `[h2]`. Establish `h3 : ∀ a : Fin N, (a : ℕ) < X.p0 → (y *ᵥ v) a = 0` using `fun a ha => by`. Use `congrFun hv a` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Pi.add_apply, mulVec_diagonal, pr, mulVec_diagonal]`. Simplify `this` using `[ha]`. Establish `h4` using `h.2 v hv0 h1`. Rewrite `h4` using `[← mulVec_mulVec, quad_eq hP]`. Use `absurd h4 (not_lt.2 (Finset.sum_nonpos fun i _ => ?_))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : (i : ℕ) < X.p0`. Simplify using `[h3 i hi]`. Simplify using `[sgn, hi, Complex.normSq_nonneg]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_block_ne_zero {τ : X.Ψ} {P : Matrix (Fin N) (Fin N) ℂ}
     (hP : FD.gram τ.1 X.Gm P = diagonal fun a : Fin N => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) {y : Matrix (Fin N) (Fin N) ℂ}
@@ -589,9 +581,9 @@ def graph (p : ℕ) (y : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin N) (Fin N) �
   (1 - pr N p) * y * (pr N p * y * pr N p + (1 - pr N p))⁻¹ * pr N p
 
 /- English proof (translation)
-Establish `h1` using `mul_nonsing_inv _ h.isUnit`. Establish `h2` using `nonsing_inv_mul _ h.isUnit`. Use `⟨y⁻¹ * (1 + (1 - pr N p) * graph p y * pr N p), par_iff.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul, det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (inv_ne_zero hy) (det_one_add_cut _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, graph, graph_eq (pr_mul_pr p) h1 h2, ← Matrix.mul_assoc y⁻¹, nonsing_inv_mul _ hy.isUnit, Matrix.one_mul, ← Matrix.mul_assoc, sub_mul, pr_mul_pr]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.mul_assoc, mul_nonsing_inv _ hy.isUnit, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_par_graph {p : ℕ} {y : Matrix (Fin N) (Fin N) ℂ} (hy : y.det ≠ 0)
     (h : (pr N p * y * pr N p + (1 - pr N p)).det ≠ 0) :
@@ -607,7 +599,7 @@ theorem exists_par_graph {p : ℕ} {y : Matrix (Fin N) (Fin N) ℂ} (hy : y.det 
   · rw [← Matrix.mul_assoc, mul_nonsing_inv _ hy.isUnit, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `graph_inv (pr_mul_pr p) (mul_nonsing_inv _ h.isUnit) (nonsing_inv_mul _ h.isUnit) (mul_nonsing_inv _ h'.isUnit) (nonsing_inv_mul _ h'.isUnit) (par_iff.1 hb).2`.
+A detailed English derivation is pending.
 -/
 theorem graph_mul_par {p : ℕ} {y b : Matrix (Fin N) (Fin N) ℂ} (hb : Par p b)
     (h : (pr N p * y * pr N p + (1 - pr N p)).det ≠ 0) (h' : (pr N p * (y * b) * pr N p + (1 - pr N p)).det ≠ 0) :
@@ -622,24 +614,24 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {U : Set V} {M M'
 def HolOn (M : V → Matrix (Fin N) (Fin N) ℂ) (U : Set V) : Prop := ∀ i j, DifferentiableOn ℂ (fun x => M x i j) U
 
 /- English proof (translation)
-Introduce `_ _` and use `differentiableOn_const _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HolOn.const (A : Matrix (Fin N) (Fin N) ℂ) : HolOn (fun _ => A) U := fun _ _ => differentiableOn_const _
 
 /- English proof (translation)
-Introduce `i j` and use `(h i j).add (h' i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HolOn.add (h : HolOn M U) (h' : HolOn M' U) : HolOn (fun x => M x + M' x) U := fun i j => (h i j).add (h' i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [mul_apply] exact DifferentiableOn.fun_sum fun k _ => (h i k).mul (h' k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HolOn.mul (h : HolOn M U) (h' : HolOn M' U) : HolOn (fun x => M x * M' x) U := fun i j => by
   simp only [mul_apply]
   exact DifferentiableOn.fun_sum fun k _ => (h i k).mul (h' k j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, adjugate_apply] refine ((ReciprocityTheory.MultiplicativeHeights.differentiableOn_det_of hM).inv hu).mul (ReciprocityTheory.MultiplicativeHeights.differentiableOn_det_of (F := fun k l x => (M x).u …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HolOn.inv (hM : HolOn M U) (hu : ∀ x ∈ U, (M x).det ≠ 0) : HolOn (fun x => (M x)⁻¹) U := fun i j => by
   simp only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, adjugate_apply]
@@ -654,14 +646,14 @@ theorem HolOn.inv (hM : HolOn M U) (hu : ∀ x ∈ U, (M x).det ≠ 0) : HolOn (
 end Hol
 
 /- English proof (translation)
-Introduce `i j` and use `by have : Differentiable ℂ fun x : Frame X.Ψ N => x τ i j := by fun_prop exact this.differentiableOn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holOn_mat (τ : X.Ψ) (U : Set (Frame X.Ψ N)) : HolOn (fun x : Frame X.Ψ N => mat x τ) U := fun i j => by
   have : Differentiable ℂ fun x : Frame X.Ψ N => x τ i j := by fun_prop
   exact this.differentiableOn
 
 /- English proof (translation)
-The claim follows from `(mem_dom_iff_good X).2 fun τ => ((mem_dom_iff_good X).1 hx τ).mul_par X (hg τ)`.
+A detailed English derivation is pending.
 -/
 theorem rmul_mem {x g : Frame X.Ψ N} (hx : x ∈ X.dom) (hg : ∀ τ, Par X.p0 (mat g τ)) : rmul x g ∈ X.dom :=
   (mem_dom_iff_good X).2 fun τ => ((mem_dom_iff_good X).1 hx τ).mul_par X (hg τ)
@@ -679,23 +671,21 @@ Both sides reduce to the same expression.
 theorem mat_rmul (x b : Frame X.Ψ N) (τ : X.Ψ) : mat (rmul x b) τ = mat x τ * mat b τ := rfl
 
 /- English proof (translation)
-The claim follows from `funext h`.
+A detailed English derivation is pending.
 -/
 theorem frame_ext {x y : Frame X.Ψ N} (h : ∀ τ, mat x τ = mat y τ) : x = y := funext h
 
 open scoped Matrix.Norms.Elementwise in
 /- English proof (translation)
-Establish `hgood : ∀ m : Matrix (Fin N) (Fin N) ℂ, Good X τ m → (ofMat fun ρ => if ρ = τ then m else mat x ρ) ∈ X.dom` using `fun m hm => (mem_dom_iff_good X).2 fun ρ => by`. Rewrite using `[mat_ofMat]`. Use `split_ifs with h`. Rewrite using `[h]` and apply the resulting hypothesis. Conclude with `(mem_dom_iff_good X).1 hx ρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : Differentiable ℂ fun m : Matrix (Fin N) (Fin N) ℂ => (ofMat fun ρ => if ρ = τ then m else mat x ρ)`. Use `differentiable_pi.2 fun ρ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Differentiable ℂ fun m : Matrix (Fin N) (Fin N) ℂ => if ρ = τ then m else mat x ρ`. Distinguish the cases in `h : ρ = τ`. Simplify using `only [if_pos h]`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `differentiable_id`. Simplify using `only [if_neg h]`. Conclude with `differentiable_const _`. Establish `key` using `keeps_par (p := X.p0) (Ω := {m | Good X τ m}) (f := fun m => R (ofMat fun ρ => if ρ = τ then m else mat x ρ)) (hR.comp hd.differentiableOn fun m hm => hgood m hm) (fun m hm g hg => Good.mul_par X hm hg) (fun m hm b hd hb => ?_) hg _ ((mem_dom_iff_good X).1 hx τ)`. Use `key.trans (congrArg R (frame_ext fun ρ => ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat_ofMat]`. Use `split_ifs with h`. Rewrite using `[h]`. Both sides reduce to the same expression. Rewrite using `[← hB _ (hgood m hm) (ofMat fun ρ => if ρ = τ then b else 1) fun ρ => ?_]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `congrArg R (frame_ext fun ρ => ?_)` and prove the remaining obligations. Simplify using `only [mat_rmul, mat_ofMat]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[mat_ofMat]`. Distinguish the cases in `h : ρ = τ`.
-
-Simplify using `only [ofMat, if_pos h]`. Conclude with `⟨hd, hb⟩`. Simplify using `only [ofMat, if_neg h]`. Conclude with `⟨by simp, fun a c hca => one_apply_ne hca.ne'⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem update_par {R : Frame X.Ψ N → ℂ} (hR : DifferentiableOn ℂ R X.dom)
     (hB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ N, R (rmul x b) = R x) [DecidableEq X.Ψ] {x : Frame X.Ψ N} (hx : x ∈ X.dom)
@@ -738,13 +728,11 @@ theorem update_par {R : Frame X.Ψ N → ℂ} (hR : DifferentiableOn ℂ R X.dom
         exact ⟨by simp, fun a c hca => one_apply_ne hca.ne'⟩
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset X.Ψ, R (ofMat fun ρ => if ρ ∈ s then mat x ρ * mat g ρ else mat x ρ) = R x` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact congrArg R (frame_ext fun ρ => by simp [mat_ofMat])`. Consider the case `insert τ s hτ ih`. Establish `hs : (ofMat fun ρ => if ρ ∈ s then mat x ρ * mat g ρ else mat x ρ) ∈ X.dom` using `(mem_dom_iff_good X).2 fun ρ => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[mat_ofMat]`. Use `split_ifs with h`. Conclude with `(mem_dom_iff_good X).1 (rmul_mem hx hg) ρ`. Conclude with `(mem_dom_iff_good X).1 hx ρ`. Rewrite using `[← ih, ← update_par hR hB hs τ (hg τ)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `congrArg R (frame_ext fun ρ => ?_)` and prove the remaining obligations. Simplify using `only [mat_ofMat]`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Simplify using `[hτ]`.
-
-Simplify using `[h]`. Rewrite using `[← key Finset.univ]`. Conclude with `congrArg R (frame_ext fun ρ => by simp [mat_ofMat, mat_rmul])`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rmul_par {R : Frame X.Ψ N → ℂ} (hR : DifferentiableOn ℂ R X.dom)
     (hB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ N, R (rmul x b) = R x) {x g : Frame X.Ψ N} (hx : x ∈ X.dom)
@@ -771,21 +759,19 @@ theorem rmul_par {R : Frame X.Ψ N → ℂ} (hR : DifferentiableOn ℂ R X.dom)
   exact congrArg R (frame_ext fun ρ => by simp [mat_ofMat, mat_rmul])
 
 /- English proof (translation)
-Introduce `E _ _ _ N X R hR h0 hB`. Break down `X.dom.eq_empty_or_nonempty with he | ⟨x₀, hx₀⟩` into its components or cases. Conclude with `⟨0, differentiableOn_const _, by simp [he], by simp⟩`. Use `choose P hPd hP using X.signature`. Set `n : Frame X.Ψ N → Frame X.Ψ N` to `fun W τ => (P τ * (1 + (1 - pr N X.p0) * mat W τ * pr N X.p0) : Matrix (Fin N) (Fin N) ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Z : Frame X.Ψ N → Frame X.Ψ N` to `fun x τ => graph X.p0 ((P τ)⁻¹ * mat x τ)`. Establish `hn : Differentiable ℂ n`. Rewrite using `[← differentiableOn_univ]`. Conclude with `differentiableOn_pi.2 fun τ => differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun j => (HolOn.const _).mul ((HolOn.const _).add (((HolOn.const _).mul (holOn_mat τ _)).mul (HolOn.const _))) i j`. Establish `hPP : ∀ τ (m : Matrix (Fin N) (Fin N) ℂ), P τ * ((P τ)⁻¹ * m) = m` using `fun τ m => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, mul_nonsing_inv _ (hPd τ).isUnit, Matrix.one_mul]`. Establish `hblk : ∀ x ∈ X.dom, ∀ τ, (pr N X.p0 * ((P τ)⁻¹ * mat x τ) * pr N X.p0 + (1 - pr N X.p0)).det ≠ 0` using `fun x hx τ => det_block_ne_zero (hP τ) (by rw [hPP]; exact (mem_dom_iff_good X).1 hx τ)`. Establish `hZ : DifferentiableOn ℂ Z X.dom` using `differentiableOn_pi.2 fun τ => differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun j => (((HolOn.const _).mul ((HolOn.const _).mul (holOn_mat τ _))).mul (((((HolOn.const _).mul ((HolOn.const _).mul (holOn_mat τ _))).mul (HolOn.const _)).add (HolOn.const _)).inv fun x hx => h …`. Establish `hnZ : ∀ x ∈ X.dom, ∃ g : Frame X.Ψ N, (∀ τ, Par X.p0 (mat g τ)) ∧ n (Z x) = rmul x g` using `fun x hx => by`. Use `fun τ => exists_par_graph (p := X.p0) (y := (P τ)⁻¹ * mat x τ) (by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[det_mul, det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (inv_ne_zero (hPd τ)) (hx τ).1) (hblk x hx τ)`. Use `choose g hg hg' using this`. Use `⟨g, hg, funext fun τ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P τ * (1 + (1 - pr N X.p0) * graph X.p0 ((P τ)⁻¹ * mat x τ) * pr N X.p0) = mat x τ * g τ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg', Matrix.mul_assoc, hPP]`. Establish `hZS : ∀ x ∈ X.dom, Z x ∈ n ⁻¹' X.dom` using `fun x hx => by`. Take `⟨g, hg, e⟩` from `hnZ x hx`. Rewrite using `[Set.mem_preimage, e]`. Conclude with `rmul_mem hx hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hstar : StarConvex ℝ 0 (n ⁻¹' X.dom)`. Rewrite using `[starConvex_zero_iff]`. Introduce `W hW t h0 h1`. Conclude with `(mem_dom_iff_good X).2 fun τ => good_smul (hP τ) ((mem_dom_iff_good X).1 hW τ) h0 h1`. Take `⟨L, hL, hLe⟩` from `exists_log ((AR.Up.SchubertCoordinates.isOpen_dom X).preimage hn.continuous) hstar ⟨_, hZS x₀ hx₀⟩ (F := R ∘ n) (hR.comp hn.differentiableOn fun _ h => h) fun W hW => h0 _ hW`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L ∘ Z, hL.comp hZ hZS, fun x hx => ?_, fun x hx b hb => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `hnZ x hx`. Rewrite using `[Function.comp, hLe _ (hZS x hx), Function.comp, e, rmul_par hR hB hx hg]`. Establish `hb' : ∀ τ, Par X.p0 (mat b τ)` using `fun τ => par_of_upper (hb τ).1 (hb τ).2`. Use `congrArg L (funext fun τ => ?_)` and prove the remaining obligations.
-
-Establish `h1` using `hblk _ (rmul_mem hx hb') τ`. Express the relevant statement in the definitionally equal form `graph X.p0 ((P τ)⁻¹ * (mat x τ * mat b τ)) = graph X.p0 ((P τ)⁻¹ * mat x τ)`. Express the relevant statement in the definitionally equal form `(pr N X.p0 * ((P τ)⁻¹ * (mat x τ * mat b τ)) * pr N X.p0 + (1 - pr N X.p0)).det ≠ 0 at h1`. Rewrite `h1`, the goal using `[← Matrix.mul_assoc (P τ)⁻¹]`. Conclude with `graph_mul_par (hb' τ) (hblk x hx τ) h1`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_log : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (X : Data E N)
     (R : Frame X.Ψ N → ℂ), DifferentiableOn ℂ R X.dom → (∀ x ∈ X.dom, R x ≠ 0) →

@@ -78,7 +78,7 @@ def Mem.fn {N : Lv p} (g : Mem L N) (y : G.GAf) : ℂ :=
   (Nat.card {k : g.K ⧸ (L.KN g.M.1).subgroupOf g.K // g.h * (k.out : G.GAf) * y ∈ L.KN N.1} : ℕ)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Establish `: ∀ g, L.CongOne (N * c) g → L.CongOne N g` using `fun g hg v hv => by`. Take `⟨w, hw, e⟩` from `hg v hv`. Conclude with `⟨c • w, nsmul_mem hw c, by rw [e, mul_smul]⟩`. Conclude with `fun g hg => ⟨this _ hg.1, this _ hg.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem KN_anti {N M : ℕ} (h : N ∣ M) : L.KN M ≤ L.KN N := by
   obtain ⟨c, rfl⟩ := h
@@ -88,14 +88,14 @@ theorem KN_anti {N M : ℕ} (h : N ∣ M) : L.KN M ≤ L.KN N := by
   exact fun g hg => ⟨this _ hg.1, this _ hg.2⟩
 
 /- English proof (translation)
-Introduce `v hv` and use `by obtain ⟨w, hw, e⟩ := h.1 v hv rw [e]; exact add_mem hv (nsmul_mem hw 1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integ_of_mem {g : G.GAf} (h : g ∈ L.KN 1) : Integ L g := fun v hv => by
   obtain ⟨w, hw, e⟩ := h.1 v hv
   rw [e]; exact add_mem hv (nsmul_mem hw 1)
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [map_mul, Module.End.mul_apply]; exact hg _ (hh v hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Integ.mul {g h : G.GAf} (hg : Integ L g) (hh : Integ L h) : Integ L (g * h) := fun v hv => by
   rw [map_mul, Module.End.mul_apply]; exact hg _ (hh v hv)

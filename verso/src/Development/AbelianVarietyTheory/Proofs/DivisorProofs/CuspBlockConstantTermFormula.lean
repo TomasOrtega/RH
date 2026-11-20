@@ -31,9 +31,7 @@ open MeasureTheory
 namespace GlobalTheory.BlockForms.CuspConst
 
 /- English proof (translation)
-Establish `hn : Continuous fun x : GlobalTheory.CuspRep.BlockIx d r' → GlobalTheory.CuspRep.Ad E => (GlobalTheory.CuspRep.nilM x : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Ad E))`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CuspRep.nilM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`.
-
-Conclude with `continuous_const`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.add hn`. Conclude with `continuous_const.sub hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_unip (E : Type) [Field E] [NumberField E] (d r' : ℕ) :
     Continuous fun x : GlobalTheory.CuspRep.BlockIx d r' → GlobalTheory.CuspRep.Ad E => GlobalTheory.CuspRep.unip x := by
@@ -50,27 +48,25 @@ theorem continuous_unip (E : Type) [Field E] [NumberField E] (d r' : ℕ) :
 open GlobalTheory.Cusp GlobalTheory.AutomorphicL2Unitary in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ n J hJ r X Y hW K _ S l d h ι hι _ hS hk hl ψ hψ g₀ _`. Introduce `r' hr0 hr1 _ _ μ 𝓕 hμ h𝓕 g`. Set `k : Fin r` to `⟨l + r' - 1, by omega⟩`. Establish `hkv : k.val + 1 = l + r'` using `by simp only [k]; omega`. Establish `hkS : k ∉ S` using `hS k (by simp only [k]; omega) (by simp only [k]; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSS : S ⊂ insert k S` using `Finset.ssubset_insert hkS`. Use `set U := GlobalTheory.StdPar.unip σ J X (insert k S) with hU`. Use `set U₀ := GlobalTheory.StdPar.unip σ J X S with hU₀`. Establish `hle : U₀ ≤ U` using `GlobalTheory.T.standardParabolicUnipotent_mono F E σ hσ n J hJ r X Y hW _ S (Finset.subset_insert _ _)`. Use `haveI : LocallyCompactSpace U₀ := (GlobalTheory.StdPar.isClosed_unip S hσ hJ hW).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace U := (GlobalTheory.StdPar.isClosed_unip _ hσ hJ hW).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `cS` using `GlobalTheory.T.cocompact_standardParabolicUnipotentRadical_wittFrame F E σ hσ n J hJ r X Y hW S`. Establish `cS'` using `GlobalTheory.T.cocompact_standardParabolicUnipotentRadical_wittFrame F E σ hσ n J hJ r X Y hW (insert k S)`. Establish `esub : ∀ {N : Subgroup (GAd σ J)}, N ≤ U → (ratPts σ J ⊓ U).subgroupOf N = (ratPts σ J).subgroupOf N`. Introduce `N hN`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, hN x.2⟩⟩`. Establish `cinf : ∀ {N : Subgroup (GAd σ J)}, N ≤ U → Cocompact (ratPts σ J) N → Cocompact (ratPts σ J ⊓ U) N`. Introduce `N hN hc`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `Cocompact`. Rewrite using `[esub hN]`. Conclude with `hc`. Establish `hfΓ : LeftInv (ratPts σ J ⊓ U) ψ` using `fun γ hγ g => by`. Take `⟨m, hm, hmL, ν, hν, e⟩` from `GlobalTheory.T.rational_unipotentRadical_eq_levi_mul_unipotent F E σ hσ n J hJ r X Y hW S (insert k S) (Finset.subset_insert _ _) γ hγ.1 hγ.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[e, mul_assoc, hψ.1.leftM m hm hmL, hψ.1.leftN ν hν]`. Establish `hnorm : ∀ p ∈ U, ∀ u ∈ U₀, p * u * p⁻¹ ∈ U₀`. Introduce `p hp u hu`. Distinguish the cases in `hS0 : S = ∅`. Substitute `hS0` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu`, the goal using `[hU₀, GlobalTheory.StdPar.unip_empty, Subgroup.mem_bot]`. Simplify using `[hu]`. Take `⟨mS, hmS, hmS'⟩ : ∃ m ∈ S, ∀ k ∈ S, k ≤ m` from `⟨S.max' (Finset.nonempty_iff_ne_empty.2 hS0), S.max'_mem _, fun k hk => S.le_max' k hk⟩`. Establish `hσσ` using `sigma_sigma hσ`. Establish `eS` using `GlobalTheory.ConstTrans.unip_eq_unipFlag F E σ hσ n J hJ r X Y hW S mS hmS hmS'`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCS : IsIsoCols σ J (GlobalTheory.StdPar.initCols X mS)` using `isIsoCols_of_isWittFrame hW hσσ hJ mS.2`. Rewrite `hu`, the goal using `[hU₀, eS]`. Conclude with `conj_mem_unipFlag hJ hσσ hCS _ (GlobalTheory.ConstTrans.unip_le_parFlag F E σ hσ n J hJ r X Y hW (insert k S) S mS (Finset.subset_insert _ _) hmS hmS' hp) hu`. Take `⟨π, hπc, hπm, hπs, hπk, hπr⟩` from `GlobalTheory.T.exists_blockProjection_flagUnipotentRadical F E σ hσ n J hJ r X Y hW S l d h ι hι hS hk hl r' hr0 hr1 k hkv`. Establish `hrat` using `GlobalTheory.T.blockEmbedding_rationalGL_mem_rationalPoints F E σ hσ n J hJ r X Y hW l d h ι hι`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hιc` using `GlobalTheory.T.continuous_unitaryGLBlockEmbedding_polynomial_entries F E σ hσ n J hJ r X Y hW l d h ι hι`. Establish `hsN` using `GlobalTheory.T.blockEmbedding_unipotent_mem_flagUnipotentRadical F E σ hσ n J hJ r X Y hW S l d h ι hι hS hk hl r' hr0 hr1 k hkv`. Establish `h0 : constTermOn (ratPts σ J ⊓ U) U ψ (ι g * g₀) = 0`. Take `⟨μN, 𝓕N, h1, h2, h3⟩` from `exists_mass_one cS'`. Rewrite using `[constTermOn_eq_of_measure_eq_one ((esub le_rfl).symm ▸ h2) h3 hfΓ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(hψ.2 _ hSS μN 𝓕N h1 h2 h3 (ι g * g₀)).symm`. Establish `key` using `GlobalTheory.T.cocompact_normal_subgroup_descent_invariants (GAd σ J) (ratPts σ J ⊓ U) U U₀ hle hnorm (cinf le_rfl cS') (cinf hle cS) (GlobalTheory.CuspRep.BlockIx d r' → GlobalTheory.CuspRep.Ad E) (GlobalTheory.CuspRep.ratN E d r') (fun x => ι (GlobalTheory.CuspRep.unip x)) π (h …`. Take `⟨x, rfl⟩` from `hv`. Use `⟨?_, hsN _⟩` and prove the remaining obligations. Use `GlobalTheory.CuspRep.unip_algebraMap (a := d) (r := r') x` as an intermediate fact.
-
-Conclude with `this ▸ hrat _)`. Use the proof step `(fun a ha => hπr a ha.1) ψ hfΓ hψ.1.cont (fun m hm g => hψ.1.leftN m hm g) μ 𝓕 hμ h𝓕 (ι g * g₀)`. Rewrite `key` using `[h0, smul_zero]`. Simplify `key` using `only [map_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem isCuspidal_comp_blockEmb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

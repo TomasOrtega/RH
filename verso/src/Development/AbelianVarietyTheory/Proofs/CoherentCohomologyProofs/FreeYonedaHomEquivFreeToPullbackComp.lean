@@ -32,14 +32,14 @@ lemma extMap_apply {Z F : A} {Z' G : B} (a : Z' ⟶ Φ.obj Z) (b : Φ.obj F ⟶ 
       ((x.mapExactFunctor Φ).comp (Ext.mk₀ b) (add_zero n)) (zero_add n) := rfl
 
 /- English proof (translation)
-Rewrite using `[extMap_apply, Ext.mapExactFunctor_mk₀, Ext.mk₀_comp_mk₀, Ext.mk₀_comp_mk₀]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma extMap_mk₀ {Z F : A} {Z' G : B} (a : Z' ⟶ Φ.obj Z) (b : Φ.obj F ⟶ G) (g : Z ⟶ F) :
     extMap.{w, w'} Φ a b 0 (Ext.mk₀ g) = Ext.mk₀ (a ≫ Φ.map g ≫ b) := by
   rw [extMap_apply, Ext.mapExactFunctor_mk₀, Ext.mk₀_comp_mk₀, Ext.mk₀_comp_mk₀]
 
 /- English proof (translation)
-Simplify using `only [extMap_apply, Ext.mapExactFunctor_comp, Ext.mapExactFunctor_mk₀, Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀]`.
+Simplify using the standard rewrite rules.
 -/
 lemma extMap_comp_right {Z F F' : A} {Z' G : B} (a : Z' ⟶ Φ.obj Z) (b : Φ.obj F' ⟶ G)
     (s : F ⟶ F') (n : ℕ) (x : Ext.{w} Z F n) :
@@ -49,7 +49,7 @@ lemma extMap_comp_right {Z F F' : A} {Z' G : B} (a : Z' ⟶ Φ.obj Z) (b : Φ.ob
     Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀]
 
 /- English proof (translation)
-Simplify using `only [extMap_apply, Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀]`.
+Simplify using the standard rewrite rules.
 -/
 lemma comp_extMap_right {Z F : A} {Z' G G' : B} (a : Z' ⟶ Φ.obj Z) (b : Φ.obj F ⟶ G)
     (t : G ⟶ G') (n : ℕ) (x : Ext.{w} Z F n) :
@@ -58,7 +58,7 @@ lemma comp_extMap_right {Z F : A} {Z' G G' : B} (a : Z' ⟶ Φ.obj Z) (b : Φ.ob
   simp only [extMap_apply, Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀]
 
 /- English proof (translation)
-Simplify using `only [extMap_apply, Ext.mapExactFunctor_comp, Ext.mapExactFunctor_mk₀, Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma extMap_comp_left {Z Z₁ F : A} {Z' G : B} (a : Z' ⟶ Φ.obj Z₁) (b : Φ.obj F ⟶ G)
     (s : Z₁ ⟶ Z) (n : ℕ) (x : Ext.{w} Z F n) :
@@ -68,7 +68,7 @@ lemma extMap_comp_left {Z Z₁ F : A} {Z' G : B} (a : Z' ⟶ Φ.obj Z₁) (b : �
     Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀_assoc]
 
 /- English proof (translation)
-Simplify using `only [extMap_apply, Ext.mk₀_comp_mk₀_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma comp_extMap_left {Z F : A} {Z' Z₁ G : B} (a : Z' ⟶ Φ.obj Z) (b : Φ.obj F ⟶ G)
     (t : Z₁ ⟶ Z') (n : ℕ) (x : Ext.{w} Z F n) :
@@ -77,7 +77,7 @@ lemma comp_extMap_left {Z F : A} {Z' Z₁ G : B} (a : Z' ⟶ Φ.obj Z) (b : Φ.o
   simp only [extMap_apply, Ext.mk₀_comp_mk₀_assoc]
 
 /- English proof (translation)
-Rewrite using `[Ext.comp_assoc_of_third_deg_zero, h, ← Ext.comp_assoc_of_second_deg_zero]`. Conclude with `(Ext.comp_assoc _ _ _ (zero_add n) rfl (by omega)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma comp_comp_mk0_eq_comp_comp_of_square {X₀ X₁ X₂ X₃ Y₂ Y₃ : B} {n : ℕ} (a : Ext.{w'} X₀ X₁ 0)
     (y : Ext.{w'} X₁ X₂ n) (e : Ext.{w'} X₂ X₃ 1) (t₃ : X₃ ⟶ Y₃) (t₂ : X₂ ⟶ Y₂)
@@ -89,7 +89,7 @@ private lemma comp_comp_mk0_eq_comp_comp_of_square {X₀ X₁ X₂ X₃ Y₂ Y�
   exact (Ext.comp_assoc _ _ _ (zero_add n) rfl (by omega)).symm
 
 /- English proof (translation)
-Use `erw [extMap_apply, extMap_apply]`. Rewrite using `[Ext.mapExactFunctor_comp, Ext.mapExactFunctor_extClass]`. Conclude with `comp_comp_mk0_eq_comp_comp_of_square _ _ _ _ _ _ ((hS.map_of_exact Φ).extClass_naturality hT φ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma extMap_extClass {Z : A} {Z' : B} (a : Z' ⟶ Φ.obj Z) {S : ShortComplex A}
     {T : ShortComplex B} (hS : S.ShortExact) (hT : T.ShortExact) (φ : S.map Φ ⟶ T) (n : ℕ)
@@ -137,7 +137,7 @@ def freeToPullback {V : C} {W : D} (i : W ⟶ p.obj V) :
         (tautSection V)))
 
 /- English proof (translation)
-Rewrite using `[freeYonedaHomEquiv_comp, freeToPullback, Equiv.apply_symm_apply, Adjunction.homEquiv_unit, freeYonedaHomEquiv_apply]`. Conclude with `NatTrans.naturality_apply b.hom i.op _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma freeYonedaHomEquiv_freeToPullback_comp {V : C} {W : D} (i : W ⟶ p.obj V)
     {G : Sheaf K AddCommGrpCat.{v}}
@@ -150,7 +150,7 @@ lemma freeYonedaHomEquiv_freeToPullback_comp {V : C} {W : D} (i : W ⟶ p.obj V)
   exact NatTrans.naturality_apply b.hom i.op _
 
 /- English proof (translation)
-Apply `(freeYonedaHomEquiv W' _).injective` to reduce the goal to its premises. Rewrite using `[freeYonedaHomEquiv_map_comp, freeToPullback, freeToPullback, Equiv.apply_symm_apply, Equiv.apply_symm_apply, op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma map_comp_freeToPullback {V : C} {W W' : D} (i : W ⟶ p.obj V) (k : W' ⟶ W) :
     (freeYoneda K).map k ≫ freeToPullback J K p i = freeToPullback J K p (k ≫ i) := by
@@ -160,11 +160,11 @@ lemma map_comp_freeToPullback {V : C} {W W' : D} (i : W ⟶ p.obj V) (k : W' ⟶
   rfl
 
 /- English proof (translation)
-Apply `(freeYonedaHomEquiv W _).injective` to reduce the goal to its premises. Rewrite using `[freeYonedaHomEquiv_comp, freeToPullback, freeToPullback, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Establish `hu : ((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).unit.app ((freeYoneda J).obj V)).hom.app (op V') (((freeYoneda J).map k).hom.app (op V') (tautSection V')) = ((p.sheafPullback AddCommGrpCat.{v} J K).map ((freeYoneda J).map k)).hom.app (op (p.obj V')) (((p.sheafAdjunction …` using `congrArg (fun f => f.hom.app (op V') (tautSection V')) ((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).unit.naturality ((freeYoneda J).map k))`. Establish `ht : ((freeYoneda J).map k).hom.app (op V') (tautSection V') = ((freeYoneda J).obj V).obj.map k.op (tautSection V)`. Rewrite using `[← freeYonedaHomEquiv_apply, ← Category.comp_id ((freeYoneda J).map k), freeYonedaHomEquiv_map_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2` using `NatTrans.naturality_apply ((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).unit.app ((freeYoneda J).obj V)).hom k.op (tautSection V)`. Establish `e3` using `hu.symm.trans ((congrArg (fun z => ((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).unit.app ((freeYoneda J).obj V)).hom.app (op V') z) ht).trans e2)`. Use `(NatTrans.naturality_apply _ i.op _).trans ?_` and prove the remaining obligations. Use `(congrArg (fun z => (((p.sheafPullback AddCommGrpCat.{v} J K).obj ((freeYoneda J).obj V)).obj.map i.op) z) e3).trans ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma freeToPullback_comp_map {V V' : C} {W : D} (i : W ⟶ p.obj V') (k : V' ⟶ V) :
     freeToPullback J K p i ≫ (p.sheafPullback AddCommGrpCat.{v} J K).map ((freeYoneda J).map k) =
@@ -205,7 +205,7 @@ def sitePull (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J K).ob
     (((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ) n
 
 /- English proof (translation)
-Take `⟨g, rfl⟩ : ∃ g, Ext.mk₀ g = x` from `⟨Ext.addEquiv₀ x, Ext.mk₀_addEquiv₀_apply x⟩`. Unfold `sitePull`. Use `erw [extMap_mk₀]`. Rewrite using `[equivZero_mk₀, equivZero_mk₀, freeYonedaHomEquiv_freeToPullback_comp, Adjunction.homEquiv_naturality_left, Equiv.apply_symm_apply, freeYonedaHomEquiv_comp]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma equivZero_sitePull (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J K).obj G)
     {V : C} {W : D} (i : W ⟶ p.obj V) (x : Sheaf.H'.{w} F 0 V) :
@@ -218,7 +218,7 @@ lemma equivZero_sitePull (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat
     Adjunction.homEquiv_naturality_left, Equiv.apply_symm_apply, freeYonedaHomEquiv_comp]
 
 /- English proof (translation)
-Establish `h1` using `extMap_comp_right (p.sheafPullback AddCommGrpCat.{v} J K) (freeToPullback J K p i) (((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ) s n x`. Rewrite `h1` using `[← Adjunction.homEquiv_naturality_left_symm]`. Conclude with `(congrArg (fun y => sitePull.{w, w'} p φ n i y) (map_apply s n V x)).trans h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sitePull_map (φ : F' ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J K).obj G)
     (s : F ⟶ F') (n : ℕ) {V : C} {W : D} (i : W ⟶ p.obj V) (x : Sheaf.H'.{w} F n V) :
@@ -229,7 +229,7 @@ lemma sitePull_map (φ : F' ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} 
   exact (congrArg (fun y => sitePull.{w, w'} p φ n i y) (map_apply s n V x)).trans h1
 
 /- English proof (translation)
-Establish `h1` using `comp_extMap_right (p.sheafPullback AddCommGrpCat.{v} J K) (freeToPullback J K p i) (((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ) t n x`. Rewrite `h1` using `[← Adjunction.homEquiv_naturality_right_symm]`. Conclude with `(map_apply t n W _).trans h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma map_sitePull (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J K).obj G)
     (t : G ⟶ G') (n : ℕ) {V : C} {W : D} (i : W ⟶ p.obj V) (x : Sheaf.H'.{w} F n V) :
@@ -241,7 +241,7 @@ lemma map_sitePull (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J
   exact (map_apply t n W _).trans h1
 
 /- English proof (translation)
-Establish `h1` using `extMap_comp_left (p.sheafPullback AddCommGrpCat.{v} J K) (freeToPullback J K p i) (((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ) ((freeYoneda J).map k) n x`. Rewrite `h1` using `[freeToPullback_comp_map]`. Conclude with `(congrArg (fun y => sitePull.{w, w'} p φ n i y) (res_apply n k x)).trans h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sitePull_res (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J K).obj G)
     (n : ℕ) {V V' : C} {W : D} (i : W ⟶ p.obj V') (k : V' ⟶ V) (x : Sheaf.H'.{w} F n V) :
@@ -252,7 +252,7 @@ lemma sitePull_res (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J
   exact (congrArg (fun y => sitePull.{w, w'} p φ n i y) (res_apply n k x)).trans h1
 
 /- English proof (translation)
-Establish `h1` using `comp_extMap_left (p.sheafPullback AddCommGrpCat.{v} J K) (freeToPullback J K p i) (((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ) ((freeYoneda K).map k) n x`. Rewrite `h1` using `[map_comp_freeToPullback]`. Conclude with `(res_apply n k _).trans h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma res_sitePull (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J K).obj G)
     (n : ℕ) {V : C} {W W' : D} (i : W ⟶ p.obj V) (k : W' ⟶ W) (x : Sheaf.H'.{w} F n V) :
@@ -263,9 +263,7 @@ lemma res_sitePull (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J
   exact (res_apply n k _).trans h1
 
 /- English proof (translation)
-Establish `h1` using `extMap_extClass (p.sheafPullback AddCommGrpCat.{v} J K) (freeToPullback J K p i) hS hT { τ₁ := ((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ.τ₁ τ₂ := ((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ.τ₂ τ₃ := ((p.sheafAdjunction …`. Establish `h` using `congrArg ((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ.comm₁₂`. Conclude with `(Adjunction.homEquiv_naturality_right_symm _ _ _).symm.trans (h.trans (Adjunction.homEquiv_naturality_left_symm _ _ _))`. Use `comm₂₃ := by`. Establish `h` using `congrArg ((p.sheafAdjunctionContinuous AddCommGrpCat.{v} J K).homEquiv _ _).symm φ.comm₂₃`.
-
-Conclude with `(Adjunction.homEquiv_naturality_right_symm _ _ _).symm.trans (h.trans (Adjunction.homEquiv_naturality_left_symm _ _ _)) } n x`. Conclude with `(congrArg (fun y => sitePull.{w, w'} p (G := T.X₁) φ.τ₁ (n + 1) i y) (δ_apply hS n V x)).trans (h1.trans (δ_apply hT n W _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sitePull_δ {S : ShortComplex (Sheaf J AddCommGrpCat.{v})}
     {T : ShortComplex (Sheaf K AddCommGrpCat.{v})} (hS : S.ShortExact) (hT : T.ShortExact)
@@ -291,13 +289,13 @@ lemma sitePull_δ {S : ShortComplex (Sheaf J AddCommGrpCat.{v})}
     (h1.trans (δ_apply hT n W _).symm)
 
 /- English proof (translation)
-Establish `hδS` using `δ_surjective_of_subsingleton hS n V hV`. Establish `hδT` using `δ_surjective_of_subsingleton hT n W hW`. Establish `hg : ∀ y, sitePull.{w, w'} p (G` using `T.X₃) φ.τ₃ n i (map S.g n V y) = map T.g n W (sitePull.{w, w'} p (G := T.X₂) φ.τ₂ n i y) := by`. Introduce `y`. Use `(sitePull_map p _ S.g n i y).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (map_sitePull p _ T.g n i y).symm` and prove the remaining obligations. Conclude with `congrArg (fun f => sitePull.{w, w'} p f n i y) φ.comm₂₃.symm`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hδS a`. Establish `ha'` using `(sitePull_δ p hS hT φ n i z).symm.trans ha`. Take `⟨y, hy⟩` from `((exact₃ hT n W) _).1 ha'`. Take `⟨y', rfl⟩` from `h₂ y`. Establish `hz : z = map S.g n V y'` using `h₃.1 ((hg y').trans hy).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, δ_map]`. Introduce `b`. Take `⟨z, rfl⟩` from `hδT b`. Take `⟨z', rfl⟩` from `h₃.2 z`. Conclude with `⟨δ hS n V z', sitePull_δ p hS hT φ n i z'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma sitePull_bijective_succ {S : ShortComplex (Sheaf J AddCommGrpCat.{v})}
     {T : ShortComplex (Sheaf K AddCommGrpCat.{v})} (hS : S.ShortExact) (hT : T.ShortExact)
@@ -331,7 +329,7 @@ lemma sitePull_bijective_succ {S : ShortComplex (Sheaf J AddCommGrpCat.{v})}
     exact ⟨δ hS n V z', sitePull_δ p hS hT φ n i z'⟩
 
 /- English proof (translation)
-Establish `key : ⇑(equivZero G W) ∘ ⇑(sitePull.{w, w'} p φ 0 i) = (fun s : F.obj.obj (op V) ↦ G.obj.map i.op (φ.hom.app (op V) s)) ∘ ⇑(equivZero F V)`. Use function extensionality and compare the values at `(equivZero_sitePull p φ i)`. Establish `hb` using `h.comp (equivZero F V).bijective`. Rewrite `hb` using `[← key]`. Conclude with `(EquivLike.comp_bijective _ (equivZero G W)).1 hb`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sitePull_bijective_zero (φ : F ⟶ (p.sheafPushforwardContinuous AddCommGrpCat.{v} J K).obj G)
     {V : C} {W : D} (i : W ⟶ p.obj V)

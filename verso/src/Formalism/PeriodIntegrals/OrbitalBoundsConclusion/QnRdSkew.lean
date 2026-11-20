@@ -2,7 +2,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SkewAnalyticGroup.SkewR
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SkewAnalyticGroup.Analytic
 
 /- English proof (translation)
-The claim follows from `QnRdSkewW.rdSkew_of QnRdSkewW.skew_reduction_group QnRdSkewW.skew_reduction_analytic`.
+A detailed English derivation is pending.
 -/
 theorem qnRdSkew : Formalism.FourierDecayAlt.Q.RdSkew :=
   QnRdSkewW.rdSkew_of QnRdSkewW.skew_reduction_group QnRdSkewW.skew_reduction_analytic

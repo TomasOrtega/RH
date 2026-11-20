@@ -15,7 +15,7 @@ section Neg
 variable {M : Type*} [AddCommGroup M]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Involution.dualInv_neg (σ : M →+ M) (f : M →+ QZ) : dualInv (-σ) f = -dualInv σ f := by
   ext x
@@ -36,11 +36,11 @@ variable {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [FiniteDimensional F 
 include hG hc in
 
 /- English proof (translation)
-Take `⟨b, hb, rfl⟩` from `(mem_normClasses_iff _ y).1 hy`. Take `⟨z, rfl⟩` from `cohomologyπ_surjective M 2 x`. Take `⟨a, ha, e⟩` from `exists_cohomologyπ_eq_cocycleTwo M hG hc z`. Rewrite using `[e, realDualityPairing_apply]`. Take `⟨ht, hcup⟩` from `cupPairing_cocycleTwo_H0 M hG hc a ha ⟨_, hb⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hcup]`. Use `map_zero (realInv F Ω h2 hN)` and compare the differences between its conclusion and the goal. Rewrite using `[cohomologyπ_cocycleTwo_eq_zero_iff]`. Use `⟨(b : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((((cartierDual F Ω M).ρ.norm b) : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) a) = _`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[norm_apply _ hG hc, LinearMap.add_apply, cartierDual_ρ_apply, inv_eq_self hG hc, ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem realDualityPairing_two_zero_eq_zero (x : cohomology M 2)
     (y : cohomology (cartierDual F Ω M) 0) (hy : y ∈ normClasses (cartierDual F Ω M)) :
@@ -60,11 +60,11 @@ theorem realDualityPairing_two_zero_eq_zero (x : cohomology M 2)
 include hG hc in
 
 /- English proof (translation)
-Take `⟨b, hb, rfl⟩` from `(mem_normClasses_iff _ x).1 hx`. Take `⟨z, rfl⟩` from `cohomologyπ_surjective _ 2 y`. Take `⟨φ, hφ, e⟩` from `exists_cohomologyπ_eq_cocycleTwo _ hG hc z`. Rewrite using `[e, realDualityPairing_apply]`. Take `⟨ht, hcup⟩` from `cupPairing_H0_cocycleTwo M hG hc ⟨_, hb⟩ φ hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hcup]`. Use `map_zero (realInv F Ω h2 hN)` and compare the differences between its conclusion and the goal. Rewrite using `[cohomologyπ_cocycleTwo_eq_zero_iff]`. Use `⟨(φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) b, ?_⟩` and prove the remaining obligations. Establish `hφb : (φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) (M.ρ c b) = (galUnits.{0} F Ω).ρ c ((φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) b)` using `by conv_lhs => rw [← hφ]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[cartierDual_ρ_apply, inv_eq_self hG hc, ← Module.End.mul_apply, ← map_mul, mul_self_eq_one hG hc, map_one, Module.End.one_apply]`. Express the relevant statement in the definitionally equal form `(φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) (M.ρ.norm b) = _`. Rewrite using `[norm_apply _ hG hc, map_add, hφb]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem realDualityPairing_zero_two_eq_zero (x : cohomology M 0) (hx : x ∈ normClasses M)
     (y : cohomology (cartierDual F Ω M) 2) :
@@ -155,11 +155,11 @@ omit [IsDiscreteRep M] [Finite M] in
 include hneg in
 
 /- English proof (translation)
-Establish `h2φ : 2 • (φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) m = 0`. Rewrite using `[← map_nsmul, ← cartierDualToQZ_apply_eq_zero_iff M hMn e, map_nsmul]`. Conclude with `hq`. Establish `ht0 : t = 0 ↔ (φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) m = 0`. Break down `htφ with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `neg_eq_zero`. Use `realInv_cocycleTwo h2 hN hG hc hneg t ht ?_ _ hq ?_` and prove the remaining obligations. Break down `htφ with rfl | rfl` into its components or cases. Conclude with `h2φ`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2φ`, the goal using `[two_nsmul]`. Rewrite using `[← neg_add, h2φ, neg_zero]`. Rewrite using `[ht0]`. Conclude with `cartierDualToQZ_apply_eq_zero_iff M hMn e φ m`.
+A detailed English derivation is pending.
 -/
 theorem realInv_cocycleTwo_eq_cartierDualToQZ {n : ℕ} [NeZero n] (hMn : ∀ m : M, n • m = 0)
     (e : galRootsOfUnity.{0} F Ω n ≃+ ZMod n) (φ : cartierDual F Ω M) (m : M)
@@ -187,15 +187,15 @@ theorem realInv_cocycleTwo_eq_cartierDualToQZ {n : ℕ} [NeZero n] (hMn : ∀ m 
 include hneg hconj hroots in
 
 /- English proof (translation)
-Establish `: NeZero (Nat.card M)` using `⟨Nat.card_pos.ne'⟩`. Establish `hMn : ∀ m : M, Nat.card M • m = 0` using `fun m => card_nsmul_eq_zero'`. Take `⟨e⟩` from `hroots (Nat.card M) Nat.card_pos`. Use `set T := cartierDualEquivQZ M hMn e with hT`. Establish `hact : ∀ φ, T ((cartierDual F Ω M).ρ c φ) = dualInv (act M c) (T φ)` using `fun φ => cartierDualToQZ_act M hMn e (OrderTwo.inv_eq_self hG hc) (fun ζ hζ => hconj ζ ⟨_, Nat.card_pos, hζ⟩) φ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : ∀ f, T.symm (dualInv (act M c) f) = act (cartierDual F Ω M) c (T.symm f)` using `fun f => by`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[T.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `_ = T ((cartierDual F Ω M).ρ c (T.symm f))`. Rewrite using `[hact, T.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h2EquivOfOrderTwo M hG hc, (tateQuotCongr T.symm he0).trans (cohomZeroEquivContinuous (cartierDual F Ω M) hG hc), fun x y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨f, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Rewrite using `[AddEquiv.trans_apply, tateQuotCongr_mk, h2Equiv_mk, h0Equiv_mk, realDualityPairingTwoZero_mk, realDualityPairing_apply, tatePair_mk]`. Take `⟨ht, hcup⟩` from `cupPairing_cocycleTwo_H0 M hG hc (a : M) ((mem_fixedSub_act M).1 a.2) ⟨_, mem_invariants_of_fixed (cartierDual F Ω M) hG ((mem_fixedSub_act _).1 (fixedSubCongr T.symm he0 f).2)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcup]`. Establish `hTf : cartierDualToQZ M hMn e (T.symm f) = f` using `T.apply_symm_apply f`. Establish `hq : 2 • cartierDualToQZ M hMn e (T.symm f) a = 0`. Rewrite using `[hTf]`. Conclude with `two_nsmul_fixedPair (act M c) a f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(realInv_cocycleTwo_eq_cartierDualToQZ h2 hN hG hc hneg M hMn e (T.symm f) a hq _ (Or.inl rfl) ht).trans ?_` and prove the remaining obligations. Rewrite using `[hTf]`.
+A detailed English derivation is pending.
 -/
 theorem realDualityPairingTwoZero_eq_tatePair :
     ∃ (e : tateQuot (act M c) ≃+ cohomology M 2)
@@ -233,15 +233,15 @@ theorem realDualityPairingTwoZero_eq_tatePair :
 include hneg hconj hroots in
 
 /- English proof (translation)
-Establish `: NeZero (Nat.card M)` using `⟨Nat.card_pos.ne'⟩`. Establish `hMn : ∀ m : M, Nat.card M • m = 0` using `fun m => card_nsmul_eq_zero'`. Take `⟨e⟩` from `hroots (Nat.card M) Nat.card_pos`. Use `set T := cartierDualEquivQZ M hMn e with hT`. Establish `hact : ∀ φ, T ((cartierDual F Ω M).ρ c φ) = dualInv (act M c) (T φ)` using `fun φ => cartierDualToQZ_act M hMn e (OrderTwo.inv_eq_self hG hc) (fun ζ hζ => hconj ζ ⟨_, Nat.card_pos, hζ⟩) φ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : ∀ f, T.symm (dualInv (act M c) f) = act (cartierDual F Ω M) c (T.symm f)` using `fun f => by`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[T.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `_ = T ((cartierDual F Ω M).ρ c (T.symm f))`. Rewrite using `[hact, T.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨cohomZeroEquivContinuous M hG hc, (tateQuotCongr T.symm he0).trans (h2EquivOfOrderTwo (cartierDual F Ω M) hG hc), fun x y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨f, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Rewrite using `[AddEquiv.trans_apply, tateQuotCongr_mk, h2Equiv_mk, h0Equiv_mk, realDualityPairingZeroTwo_mk, realDualityPairing_apply, tatePair_mk]`. Take `⟨ht, hcup⟩` from `cupPairing_H0_cocycleTwo M hG hc ⟨_, mem_invariants_of_fixed M hG ((mem_fixedSub_act M).1 a.2)⟩ ((fixedSubCongr T.symm he0 f : fixedSub _) : cartierDual F Ω M) ((mem_fixedSub_act _).1 (fixedSubCongr T.symm he0 f).2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcup]`. Establish `hTf : cartierDualToQZ M hMn e ((fixedSubCongr T.symm he0 f : fixedSub _) : cartierDual F Ω M) = f` using `T.apply_symm_apply f`. Establish `hq : 2 • cartierDualToQZ M hMn e ((fixedSubCongr T.symm he0 f : fixedSub _) : cartierDual F Ω M) a = 0`. Rewrite using `[hTf]`. Conclude with `two_nsmul_fixedPair (act M c) a f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(realInv_cocycleTwo_eq_cartierDualToQZ h2 hN hG hc hneg M hMn e _ a hq _ (Or.inl rfl) ht).trans ?_` and prove the remaining obligations. Rewrite using `[hTf]`.
+A detailed English derivation is pending.
 -/
 theorem realDualityPairingZeroTwo_eq_tatePair :
     ∃ (e : tateQuot (act M c) ≃+ cohomologyTateZero M)
@@ -282,15 +282,15 @@ theorem realDualityPairingZeroTwo_eq_tatePair :
 include hG hc hneg hconj hroots in
 
 /- English proof (translation)
-Establish `: NeZero (Nat.card M)` using `⟨Nat.card_pos.ne'⟩`. Establish `hMn : ∀ m : M, Nat.card M • m = 0` using `fun m => card_nsmul_eq_zero'`. Take `⟨e⟩` from `hroots (Nat.card M) Nat.card_pos`. Use `set T := cartierDualEquivQZ M hMn e with hT`. Establish `hact : ∀ φ, T ((cartierDual F Ω M).ρ c φ) = dualInv (act M c) (T φ)` using `fun φ => cartierDualToQZ_act M hMn e (OrderTwo.inv_eq_self hG hc) (fun ζ hζ => hconj ζ ⟨_, Nat.card_pos, hζ⟩) φ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : ∀ f, T.symm (dualInv (-act M c) f) = (-act (cartierDual F Ω M) c) (T.symm f)` using `fun f => by`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[T.apply_symm_apply, AddMonoidHom.neg_apply, map_neg, dualInv_neg]`. Express the relevant statement in the definitionally equal form `_ = -T ((cartierDual F Ω M).ρ c (T.symm f))`. Rewrite using `[hact, T.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1EquivOfOrderTwo M hG hc, (tateQuotCongr T.symm he1).trans (h1EquivOfOrderTwo (cartierDual F Ω M) hG hc), fun x y => ?_⟩` and prove the remaining obligations. Take `⟨α, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨f, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Rewrite using `[AddEquiv.trans_apply, tateQuotCongr_mk, h1Equiv_mk, h1Equiv_mk, realDualityPairing_apply, tatePair_mk]`. Use `set β : cartierDual F Ω M := ((fixedSubCongr T.symm he1 f : fixedSub _) : cartierDual F Ω M) with hβdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ht, hcup⟩` from `cupPairing_cocycleOne M hG hc (α : M) ((mem_fixedSub_neg_act M).1 α.2) β ((mem_fixedSub_neg_act _).1 (fixedSubCongr T.symm he1 f).2)`. Rewrite using `[hcup]`. Establish `hTf : cartierDualToQZ M hMn e β = f` using `T.apply_symm_apply f`. Establish `hq : 2 • cartierDualToQZ M hMn e β α = 0`. Rewrite using `[hTf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `two_nsmul_fixedPair (-act M c) α f`. Establish `hβ : (cartierDual F Ω M).ρ c β = -β` using `eq_neg_of_add_eq_zero_right ((mem_fixedSub_neg_act _).1 (fixedSubCongr T.symm he1 f).2)`. Use `(realInv_cocycleTwo_eq_cartierDualToQZ h2 hN hG hc hneg M hMn e β α hq _ (Or.inr (by rw [hβ]; rfl)) ht).trans ?_` and prove the remaining obligations. Rewrite using `[hTf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realDualityPairing_one_eq_tatePair :
     ∃ (e : tateQuot (-act M c) ≃+ cohomology M 1)
@@ -333,7 +333,7 @@ theorem realDualityPairing_one_eq_tatePair :
 include hG hc hneg hconj hroots in
 
 /- English proof (translation)
-Take `⟨e, e', h⟩` from `realDualityPairing_one_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_of_pairing_eq _ _ e e' h tatePair_bijective`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem realDualityPairing_one_bijective :
     Function.Bijective (realDualityPairing F Ω h2 hN M (show 1 + 1 = 2 from rfl)) := by
@@ -343,7 +343,7 @@ theorem realDualityPairing_one_bijective :
 include hG hc hneg hconj hroots in
 
 /- English proof (translation)
-Take `⟨e, e', h⟩` from `realDualityPairing_one_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_flip_of_pairing_eq _ _ e e' h tatePair_flip_bijective`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem realDualityPairing_one_flip_bijective :
     Function.Bijective (realDualityPairing F Ω h2 hN M (show 1 + 1 = 2 from rfl)).flip := by
@@ -353,7 +353,7 @@ theorem realDualityPairing_one_flip_bijective :
 include hneg hconj hroots in
 
 /- English proof (translation)
-Take `⟨e, e', h⟩` from `realDualityPairingTwoZero_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_of_pairing_eq _ _ e e' h tatePair_bijective`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem realDualityPairingTwoZero_bijective :
     Function.Bijective (realDualityPairingTwoZero h2 hN hG hc M) := by
@@ -363,7 +363,7 @@ theorem realDualityPairingTwoZero_bijective :
 include hneg hconj hroots in
 
 /- English proof (translation)
-Take `⟨e, e', h⟩` from `realDualityPairingTwoZero_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_flip_of_pairing_eq _ _ e e' h tatePair_flip_bijective`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem realDualityPairingTwoZero_flip_bijective :
     Function.Bijective (realDualityPairingTwoZero h2 hN hG hc M).flip := by
@@ -373,7 +373,7 @@ theorem realDualityPairingTwoZero_flip_bijective :
 include hneg hconj hroots in
 
 /- English proof (translation)
-Take `⟨e, e', h⟩` from `realDualityPairingZeroTwo_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_of_pairing_eq _ _ e e' h tatePair_bijective`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem realDualityPairingZeroTwo_bijective :
     Function.Bijective (realDualityPairingZeroTwo h2 hN hG hc M) := by
@@ -383,7 +383,7 @@ theorem realDualityPairingZeroTwo_bijective :
 include hneg hconj hroots in
 
 /- English proof (translation)
-Take `⟨e, e', h⟩` from `realDualityPairingZeroTwo_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_flip_of_pairing_eq _ _ e e' h tatePair_flip_bijective`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem realDualityPairingZeroTwo_flip_bijective :
     Function.Bijective (realDualityPairingZeroTwo h2 hN hG hc M).flip := by
@@ -423,7 +423,7 @@ variable {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [FiniteDimensional F 
 include hneg hconj hroots in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨realDualityPairingZeroTwo_bijective h2 hN hG hc hneg hconj hroots M, realDualityPairingZeroTwo_flip_bijective h2 hN hG hc hneg hconj hroots M⟩, ⟨realDualityPairing_one_bijective h2 hN hG hc hneg hconj hroots M, realDualityPairing_one_flip_bijective h2 hN hG hc hneg hconj hroots …`.
+Supply the required witnesses or components.
 -/
 theorem real_local_duality_of_orderTwo :
     (Function.Bijective (realDualityPairingZeroTwo h2 hN hG hc M) ∧

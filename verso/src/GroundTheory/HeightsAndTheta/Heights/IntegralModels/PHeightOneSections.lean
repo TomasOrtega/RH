@@ -12,13 +12,13 @@ namespace GroundTheory.Heights₂.Heights.Model
 open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite
 
 /- English proof (translation)
-Introduce `X _ _ hN E hE U hU v hv`. Establish `inj` using `h₁ X E hE`. Establish `loc : ∀ x : U, ∃ (V : X.Opens) (_ : V ≤ U) (_ : (x : X) ∈ V) (σ : Γ(E, V)), ∀ hη : genericPoint X ∈ V, E.presheaf.germ V _ hη σ = v`. Introduce and unpack `⟨x, hx⟩`. Take `⟨W, -, hxW, n, s, hs⟩` from `hE x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hVa, hxV, hVle⟩` from `Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens (show x ∈ W ⊓ U from ⟨hxW, hx⟩)`. Establish `hη` using `HeightOneSections.genericPoint_mem hxV`. Take `⟨σ, hσ⟩` from `HeightOneSections.exists_section_of_isBasisOn HeightOneIntersection.proof hN E hVa hη (hs.restrict (hVle.trans inf_le_left)) v (fun y hy hy1 => hv y (hVle hy).2 hy1)`. Conclude with `⟨V, hVle.trans inf_le_right, hxV, σ, fun _ => hσ⟩`. Use `choose V hVU hxV σ hσ using loc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hcomp : TopCat.Presheaf.IsCompatible E.presheaf V σ`. Introduce `i j`. Use `BundlesAgree.section_ext E inj fun hη => ?_` and prove the remaining obligations. Rewrite using `[TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, hσ, hσ]`. Take `⟨t, ht, -⟩` from `TopCat.Sheaf.existsUnique_gluing' ⟨E.presheaf, E.isSheaf⟩ V U (fun x => homOfLE (hVU x)) (fun x hx => Opens.mem_iSup.mpr ⟨⟨x, hx⟩, hxV ⟨x, hx⟩⟩) σ hcomp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Set `x : U` to `⟨genericPoint X, hU⟩`. Establish `hη` using `HeightOneSections.genericPoint_mem (hxV x)`. Establish `hx : E.presheaf.map (homOfLE (hVU x)).op t = σ x` using `ht x`. Rewrite using `[← hσ x hη, ← hx, TopCat.Presheaf.germ_res_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HeightOneSections.proof (h₁ : GenericGermInjective.Statement) :
     HeightOneSections.Statement := by

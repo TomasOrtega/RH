@@ -21,7 +21,7 @@ section Fam
 variable {S : Arrow T → Type} {X Y : Node}
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, _, _, _, h => ⟨h, rfl⟩ | _, .snoc _ q, d, d', e, e', h => by have h' : (Path.Fam.append (q := q) d e.1, e.2) = (Path.Fam.append (q := q) d' e'.1, e'.2) := h obtain ⟨h1, h2⟩ := Prod.mk.inj h' obtain ⟨r1, r2⟩ := append_inj p q d d' e.1 e'.1 h1 exact ⟨r1, Prod.ext r2 h …`.
+A detailed English derivation is pending.
 -/
 theorem append_inj (p : Path T X Y) : ∀ {Z : Node} (q : Path T Y Z) (d d' : p.Fam S) (e e' : q.Fam S),
     Path.Fam.append (q := q) d e = Path.Fam.append (q := q) d' e' → d = d' ∧ e = e'
@@ -33,7 +33,7 @@ theorem append_inj (p : Path T X Y) : ∀ {Z : Node} (q : Path T Y Z) (d d' : p.
       exact ⟨r1, Prod.ext r2 h2⟩
 
 /- English proof (translation)
-The claim follows from `| _, .nil, f => ⟨f, (), rfl⟩ | _, .snoc a q, f => by obtain ⟨d, e, h⟩ := append_surj p q f.1 refine ⟨d, ((e, f.2) : (Path.snoc a q).Fam S), ?_⟩ show (Path.Fam.append (q := q) d e, f.2) = f rw [h] rfl`.
+A detailed English derivation is pending.
 -/
 theorem append_surj (p : Path T X Y) : ∀ {Z : Node} (q : Path T Y Z) (f : (p.comp q).Fam S),
     ∃ d e, Path.Fam.append (q := q) d e = f
@@ -46,7 +46,7 @@ theorem append_surj (p : Path T X Y) : ∀ {Z : Node} (q : Path T Y Z) (f : (p.c
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => funext fun i => i.elim0 | n + 1, f, g, h => by have h' : (rowFam j n (fun i => f i.castSucc), f (Fin.last n)) = (rowFam j n (fun i => g i.castSucc), g (Fin.last n)) := h obtain ⟨h1, h2⟩ := Prod.mk.inj h' have h3 := rowFam_inj j n _ _ h1 funext i induction i using …`.
+A detailed English derivation is pending.
 -/
 theorem rowFam_inj (j : ℕ) : ∀ n (f g : ∀ i : Fin n, S (.right i j)), rowFam j n f = rowFam j n g → f = g
   | 0, _, _, _ => funext fun i => i.elim0
@@ -60,7 +60,7 @@ theorem rowFam_inj (j : ℕ) : ∀ n (f g : ∀ i : Fin n, S (.right i j)), rowF
       | cast i => exact congrFun h3 i
 
 /- English proof (translation)
-The claim follows from `| 0, _ => ⟨fun i => i.elim0, rfl⟩ | n + 1, d => by obtain ⟨f, hf⟩ := rowFam_surj j n d.1 refine ⟨Fin.lastCases (motive := fun i : Fin (n + 1) => S (.right i j)) d.2 f, ?_⟩ show (rowFam j n (fun i => Fin.lastCases (motive := fun i : Fin (n + 1) => S (.right i j)) d.2 f i.castSucc) …`.
+A detailed English derivation is pending.
 -/
 theorem rowFam_surj (j : ℕ) : ∀ n (d : (rowPath T j n).Fam S), ∃ f, rowFam j n f = d
   | 0, _ => ⟨fun i => i.elim0, rfl⟩
@@ -73,7 +73,7 @@ theorem rowFam_surj (j : ℕ) : ∀ n (d : (rowPath T j n).Fam S), ∃ f, rowFam
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => funext fun j => j.elim0 | n + 1, f, g, h => by obtain ⟨h1, h2⟩ := append_inj (Path.one (.down t i n)) (downPath t i n) _ _ _ _ h have h3 := downFam_inj t i n _ _ h2 have h4 : f (Fin.last n) = g (Fin.last n) := congrArg Prod.snd h1 funext j induction j using Fin.la …`.
+A detailed English derivation is pending.
 -/
 theorem downFam_inj (t : T) (i : ℕ) : ∀ n (f g : ∀ j : Fin n, S (.down t i j)), downFam t i n f = downFam t i n g → f = g
   | 0, _, _, _ => funext fun j => j.elim0
@@ -87,7 +87,7 @@ theorem downFam_inj (t : T) (i : ℕ) : ∀ n (f g : ∀ j : Fin n, S (.down t i
       | cast j => exact congrFun h3 j
 
 /- English proof (translation)
-The claim follows from `| 0, _ => ⟨fun j => j.elim0, rfl⟩ | n + 1, d => by obtain ⟨d0, e, he⟩ := append_surj (Path.one (.down t i n)) (downPath t i n) d obtain ⟨f, hf⟩ := downFam_surj t i n e refine ⟨Fin.lastCases (motive := fun j : Fin (n + 1) => S (.down t i j)) d0.2 f, ?_⟩ rw [← he] show Path.Fam.app …`.
+A detailed English derivation is pending.
 -/
 theorem downFam_surj (t : T) (i : ℕ) : ∀ n (d : (downPath t i n).Fam S), ∃ f, downFam t i n f = d
   | 0, _ => ⟨fun j => j.elim0, rfl⟩
@@ -108,13 +108,13 @@ section Grid
 variable {L : LevCh D T} {sc : Consts} {G : GridData L sc} {X Y : Node}
 
 /- English proof (translation)
-Simplify using `only [edges, Path.arrows, List.map_append, List.map_cons, List.map_nil]`.
+Simplify using the standard rewrite rules.
 -/
 theorem edges_snoc (a : Arrow T) (p : Path T X a.src) : edges (Path.snoc a p) = edges p ++ [edgeOf a] := by
   simp only [edges, Path.arrows, List.map_append, List.map_cons, List.map_nil]
 
 /- English proof (translation)
-The claim follows from `| _, .nil => by simp only [edges, Path.arrows, List.map_nil, List.append_nil]; rfl | _, .snoc a q => by rw [show p.comp (.snoc a q) = .snoc a (p.comp q) from rfl, edges_snoc, edges_snoc, edges_comp p q, List.append_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem edges_comp (p : Path T X Y) : ∀ {Z : Node} (q : Path T Y Z), edges (p.comp q) = edges p ++ edges q
   | _, .nil => by simp only [edges, Path.arrows, List.map_nil, List.append_nil]; rfl
@@ -122,7 +122,7 @@ theorem edges_comp (p : Path T X Y) : ∀ {Z : Node} (q : Path T Y Z), edges (p.
       rw [show p.comp (.snoc a q) = .snoc a (p.comp q) from rfl, edges_snoc, edges_snoc, edges_comp p q, List.append_assoc]
 
 /- English proof (translation)
-The claim follows from `| 0, e => by simp [edges, Path.arrows, rowPath] | n + 1, e => by rw [show rowPath T j (n + 1) = .snoc (.right n j) (rowPath T j n) from rfl, edges_snoc, List.mem_append, mem_edges_row j n e, List.mem_singleton] constructor · rintro (⟨i, hi, rfl⟩ | rfl) · exact ⟨i, by omega, rfl⟩ …`.
+A detailed English derivation is pending.
 -/
 theorem mem_edges_row (j : ℕ) : ∀ (n : ℕ) (e : GlobalTheory.SplitFlip.Edge), e ∈ edges (rowPath T j n) ↔ ∃ i < n, e = .ex i j
   | 0, e => by simp [edges, Path.arrows, rowPath]
@@ -139,7 +139,7 @@ theorem mem_edges_row (j : ℕ) : ∀ (n : ℕ) (e : GlobalTheory.SplitFlip.Edge
         · exact Or.inr rfl
 
 /- English proof (translation)
-The claim follows from `| 0, e => by simp [edges, Path.arrows, downPath] | n + 1, e => by rw [show downPath t i (n + 1) = (Path.one (.down t i n)).comp (downPath t i n) from rfl, edges_comp, List.mem_append, mem_edges_down t i n e, edges_snoc] simp only [edges, Path.arrows, List.map_nil, List.nil_append …`.
+A detailed English derivation is pending.
 -/
 theorem mem_edges_down (t : T) (i : ℕ) : ∀ (n : ℕ) (e : GlobalTheory.SplitFlip.Edge), e ∈ edges (downPath t i n) ↔ ∃ j < n, e = .theta i j
   | 0, e => by simp [edges, Path.arrows, downPath]
@@ -161,7 +161,7 @@ section Args
 variable (B : Frames G) (t : T) (w : Pl D.host.E)
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, _, _ => rfl | _, .snoc a p, x, e, he => by rw [edges_snoc, List.mem_append, List.mem_singleton, not_or] at he show argAt B t w a x.2 e (pathArgs B t w p x.1 e) = 0 rw [argAt, dif_neg (Ne.symm he.2)] exact pathArgs_zero p x.1 e he.1`.
+A detailed English derivation is pending.
 -/
 theorem pathArgs_zero : ∀ {Y : Node} (p : Path T X Y) (x : ArgT G p) (e : GlobalTheory.SplitFlip.Edge), e ∉ edges p →
     pathArgs B t w p x e = 0
@@ -173,7 +173,7 @@ theorem pathArgs_zero : ∀ {Y : Node} (p : Path T X Y) (x : ArgT G p) (e : Glob
       exact pathArgs_zero p x.1 e he.1
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _ => ⟨fun h => absurd h (by simp [edges, Path.arrows]), fun _ => rfl⟩ | _, .snoc a q, y => by have ih := pathArgs_comp p x e q y.1 have hl : pathArgs B t w (p.comp (.snoc a q)) (Path.Fam.append (q := .snoc a q) x y) e = argAt B t w a y.2 e (pathArgs B t w (p.comp q) (P …`.
+A detailed English derivation is pending.
 -/
 theorem pathArgs_comp (p : Path T X Y) (x : ArgT G p) (e : GlobalTheory.SplitFlip.Edge) : ∀ {Z : Node} (q : Path T Y Z) (y : ArgT G q),
     (e ∈ edges q → pathArgs B t w (p.comp q) (Path.Fam.append (q := q) x y) e = pathArgs B t w q y e) ∧
@@ -196,7 +196,7 @@ theorem pathArgs_comp (p : Path T X Y) (x : ArgT G p) (e : GlobalTheory.SplitFli
         · exact fun h'' => h' (List.mem_append_left _ h'')
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, h => absurd h (Nat.not_lt_zero _) | n + 1, x, i, h => by show argAt B t w (.right n j) (x (Fin.last n)) (.ex i j) (pathArgs B t w (rowPath T j n) (rowFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) j n fun i => x i.castSucc) (.ex i j)) = _ by_cases hi : i = n · subs …`.
+A detailed English derivation is pending.
 -/
 theorem pathArgs_row (j : ℕ) : ∀ (n : ℕ) (x : ∀ i : Fin n, WO (G.pS (Arrow.right (T := T) i j).pair) (G.pT (Arrow.right (T := T) i j).pair))
     (i : ℕ) (h : i < n), pathArgs B t w (rowPath T j n) (rowFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) j n x) (.ex i j) =
@@ -213,7 +213,7 @@ theorem pathArgs_row (j : ℕ) : ∀ (n : ℕ) (x : ∀ i : Fin n, WO (G.pS (Arr
         exact pathArgs_row j n (fun i => x i.castSucc) i (by omega)
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, h => absurd h (Nat.not_lt_zero _) | n + 1, y, j, h => by have hc := pathArgs_comp B t w (Path.one (.down t i n)) ((), y (Fin.last n)) (.theta i j) (downPath t i n) (downFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) t i n fun j => y j.castSucc) by_cases hj : j < n …`.
+A detailed English derivation is pending.
 -/
 theorem pathArgs_down (i : ℕ) : ∀ (n : ℕ) (y : ∀ j : Fin n, WO (G.pS (Arrow.down t i j).pair) (G.pT (Arrow.down t i j).pair))
     (j : ℕ) (h : j < n), pathArgs B t w (downPath t i n) (downFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) t i n y) (.theta i j) =
@@ -237,7 +237,7 @@ end Args
 section Prods
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, _ => (mul_one _).symm | _, .snoc _ q, d', x' => by show famProd (p.comp q) (Path.Fam.append (q := q) d d'.1) (Path.Fam.append (q := q) x x'.1) * d'.2 x'.2 = famProd p d x * (famProd q d'.1 x'.1 * d'.2 x'.2) rw [famProd_append p d x q, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem famProd_append (p : Path T X Y) (d : PureT G p) (x : ArgT G p) : ∀ {Z : Node} (q : Path T Y Z) (d' : PureT G q)
     (x' : ArgT G q), famProd (p.comp q) (Path.Fam.append (q := q) d d') (Path.Fam.append (q := q) x x') = famProd p d x * famProd q d' x'
@@ -248,7 +248,7 @@ theorem famProd_append (p : Path T X Y) (d : PureT G p) (x : ArgT G p) : ∀ {Z 
       rw [famProd_append p d x q, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _ => ⟨fun h => ⟨h, trivial⟩, fun h => h.1⟩ | _, .snoc _ q, x' => by show HalfAll (G := G) e (p.comp q) (Path.Fam.append (q := q) x x'.1) ∧ IsHalf e x'.2 ↔ HalfAll (G := G) e p x ∧ (HalfAll (G := G) e q x'.1 ∧ IsHalf e x'.2) rw [halfAll_append e p x q, and_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem halfAll_append (e : AE D) (p : Path T X Y) (x : ArgT G p) : ∀ {Z : Node} (q : Path T Y Z) (x' : ArgT G q),
     HalfAll (G := G) e (p.comp q) (Path.Fam.append (q := q) x x') ↔ HalfAll (G := G) e p x ∧ HalfAll (G := G) e q x'
@@ -259,7 +259,7 @@ theorem halfAll_append (e : AE D) (p : Path T X Y) (x : ArgT G p) : ∀ {Z : Nod
       rw [halfAll_append e p x q, and_assoc]
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, _ => ⟨fun h => ⟨h, trivial⟩, fun h => h.1⟩ | _, .snoc a q, φ', d' => by show VecAll ρ e (p.comp q) (Path.Fam.append (q := q) φ φ'.1) (Path.Fam.append (q := q) d d'.1) ∧ IsLocVec W a.pair e (vacOf ρ a) φ'.2 d'.2 ↔ VecAll ρ e p φ d ∧ (VecAll ρ e q φ'.1 d'.1 ∧ IsLocVec …`.
+A detailed English derivation is pending.
 -/
 theorem vecAll_append {W : G.Weil} (ρ : RealMatch W) (e : AE D) (p : Path T X Y) (φ d : PureT G p) : ∀ {Z : Node} (q : Path T Y Z)
     (φ' d' : PureT G q), VecAll ρ e (p.comp q) (Path.Fam.append (q := q) φ φ') (Path.Fam.append (q := q) d d') ↔
@@ -272,7 +272,7 @@ theorem vecAll_append {W : G.Weil} (ρ : RealMatch W) (e : AE D) (p : Path T X Y
       rw [vecAll_append ρ e p φ d q, and_assoc]
 
 /- English proof (translation)
-The claim follows from `| _, .nil => rfl | _, .snoc a q => by show (restrictPol P (p.comp q), polOf P a) = (Path.Fam.append (q := q) (restrictPol P p) (restrictPol P q), polOf P a) rw [restrictPol_append P p q]`.
+A detailed English derivation is pending.
 -/
 theorem restrictPol_append (P : PolE G) (p : Path T X Y) : ∀ {Z : Node} (q : Path T Y Z),
     restrictPol P (p.comp q) = Path.Fam.append (q := q) (restrictPol P p) (restrictPol P q)
@@ -282,7 +282,7 @@ theorem restrictPol_append (P : PolE G) (p : Path T X Y) : ∀ {Z : Node} (q : P
       rw [restrictPol_append P p q]
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, _ => rfl | _, .snoc a q, e, e' => by show (Path.Fam.zip f (Path.Fam.append (q := q) d e.1) (Path.Fam.append (q := q) d' e'.1), f a e.2 e'.2) = (Path.Fam.append (q := q) (Path.Fam.zip f d d') (Path.Fam.zip f e.1 e'.1), f a e.2 e'.2) rw [zip_append f p d d' q]`.
+A detailed English derivation is pending.
 -/
 theorem zip_append {S S' S'' : Arrow T → Type} (f : ∀ a, S a → S' a → S'' a) (p : Path T X Y) (d : p.Fam S) (d' : p.Fam S') :
     ∀ {Z : Node} (q : Path T Y Z) (e : q.Fam S) (e' : q.Fam S'),
@@ -295,7 +295,7 @@ theorem zip_append {S S' S'' : Arrow T → Type} (f : ∀ a, S a → S' a → S'
       rw [zip_append f p d d' q]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | n + 1, d, d' => by show (Path.Fam.zip f (rowFam j n fun i => d i.castSucc) (rowFam j n fun i => d' i.castSucc), f _ (d (Fin.last n)) (d' (Fin.last n))) = _ rw [zip_row f j n] rfl`.
+A detailed English derivation is pending.
 -/
 theorem zip_row {S S' S'' : Arrow T → Type} (f : ∀ a, S a → S' a → S'' a) (j : ℕ) : ∀ (n : ℕ) (d : ∀ i : Fin n, S (.right i j))
     (d' : ∀ i : Fin n, S' (.right i j)), Path.Fam.zip f (rowFam j n d) (rowFam j n d') = rowFam j n fun i => f _ (d i) (d' i)
@@ -306,7 +306,7 @@ theorem zip_row {S S' S'' : Arrow T → Type} (f : ∀ a, S a → S' a → S'' a
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | n + 1, d, d' => by show Path.Fam.zip f (Path.Fam.append (p := Path.one (.down t i n)) ((), d (Fin.last n)) (downFam t i n fun j => d j.castSucc)) (Path.Fam.append (p := Path.one (.down t i n)) ((), d' (Fin.last n)) (downFam t i n fun j => d' j.castSucc)) = _ re …`.
+A detailed English derivation is pending.
 -/
 theorem zip_down {S S' S'' : Arrow T → Type} (f : ∀ a, S a → S' a → S'' a) (t : T) (i : ℕ) : ∀ (n : ℕ) (d : ∀ j : Fin n, S (.down t i j))
     (d' : ∀ j : Fin n, S' (.down t i j)), Path.Fam.zip f (downFam t i n d) (downFam t i n d') = downFam t i n fun j => f _ (d j) (d' j)
@@ -319,7 +319,7 @@ theorem zip_down {S S' S'' : Arrow T → Type} (f : ∀ a, S a → S' a → S'' 
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0 => rfl | n + 1 => by show (restrictPol P (rowPath T j n), polOf P (.right n j)) = _ rw [restrictPol_row P j n] rfl`.
+A detailed English derivation is pending.
 -/
 theorem restrictPol_row (P : PolE G) (j : ℕ) : ∀ n, restrictPol P (rowPath T j n) =
     rowFam (S := fun a => PolF D (G.pT a.pair).rank (G.pS a.pair).rank) j n fun i => polOf P (.right i j)
@@ -330,7 +330,7 @@ theorem restrictPol_row (P : PolE G) (j : ℕ) : ∀ n, restrictPol P (rowPath T
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0 => rfl | n + 1 => by show restrictPol P ((Path.one (.down t i n)).comp (downPath t i n)) = _ rw [restrictPol_append, restrictPol_down P t i n] rfl`.
+A detailed English derivation is pending.
 -/
 theorem restrictPol_down (P : PolE G) (t : T) (i : ℕ) : ∀ n, restrictPol P (downPath t i n) =
     downFam (S := fun a => PolF D (G.pT a.pair).rank (G.pS a.pair).rank) t i n fun j => polOf P (.down t i j)
@@ -341,7 +341,7 @@ theorem restrictPol_down (P : PolE G) (t : T) (i : ℕ) : ∀ n, restrictPol P (
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => Fin.prod_univ_zero _ |>.symm | n + 1, f, x => by show famProd (rowPath T j n) (rowFam j n fun i => f i.castSucc) (rowFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) j n fun i => x i.castSucc) * f (Fin.last n) (x (Fin.last n)) = _ rw [famProd_row j n, Fin.prod_univ …`.
+A detailed English derivation is pending.
 -/
 theorem famProd_row (j : ℕ) : ∀ (n : ℕ) (f : ∀ i : Fin n, Sch G (.right i j))
     (x : ∀ i : Fin n, WO (G.pS (Arrow.right (T := T) i j).pair) (G.pT (Arrow.right (T := T) i j).pair)),
@@ -353,7 +353,7 @@ theorem famProd_row (j : ℕ) : ∀ (n : ℕ) (f : ∀ i : Fin n, Sch G (.right 
       rw [famProd_row j n, Fin.prod_univ_castSucc]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => Fin.prod_univ_zero _ |>.symm | n + 1, f, y => by show famProd ((Path.one (.down t i n)).comp (downPath t i n)) (Path.Fam.append (p := Path.one (.down t i n)) ((), f (Fin.last n)) (downFam t i n fun j => f j.castSucc)) (Path.Fam.append (p := Path.one (.down t i n)) (( …`.
+A detailed English derivation is pending.
 -/
 theorem famProd_down (t : T) (i : ℕ) : ∀ (n : ℕ) (f : ∀ j : Fin n, Sch G (.down t i j))
     (y : ∀ j : Fin n, WO (G.pS (Arrow.down t i j).pair) (G.pT (Arrow.down t i j).pair)),
@@ -370,7 +370,7 @@ theorem famProd_down (t : T) (i : ℕ) : ∀ (n : ℕ) (f : ∀ j : Fin n, Sch G
       rw [one_mul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => ⟨fun _ i => i.elim0, fun _ => trivial⟩ | n + 1, x => by show HalfAll (G := G) e (rowPath T j n) (rowFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) j n fun i => x i.castSucc) ∧ IsHalf e (x (Fin.last n)) ↔ _ rw [halfAll_row e j n, Fin.forall_fin_succ']`.
+A detailed English derivation is pending.
 -/
 theorem halfAll_row (e : AE D) (j : ℕ) : ∀ (n : ℕ)
     (x : ∀ i : Fin n, WO (G.pS (Arrow.right (T := T) i j).pair) (G.pT (Arrow.right (T := T) i j).pair)),
@@ -382,7 +382,7 @@ theorem halfAll_row (e : AE D) (j : ℕ) : ∀ (n : ℕ)
       rw [halfAll_row e j n, Fin.forall_fin_succ']
 
 /- English proof (translation)
-The claim follows from `| 0, _ => ⟨fun _ j => j.elim0, fun _ => trivial⟩ | n + 1, y => by show HalfAll (G := G) e ((Path.one (.down t i n)).comp (downPath t i n)) (Path.Fam.append (p := Path.one (.down t i n)) ((), y (Fin.last n)) (downFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) t i n fun j => y …`.
+A detailed English derivation is pending.
 -/
 theorem halfAll_down (e : AE D) (t : T) (i : ℕ) : ∀ (n : ℕ)
     (y : ∀ j : Fin n, WO (G.pS (Arrow.down t i j).pair) (G.pT (Arrow.down t i j).pair)),
@@ -398,7 +398,7 @@ theorem halfAll_down (e : AE D) (t : T) (i : ℕ) : ∀ (n : ℕ)
       rw [true_and, and_comm]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => ⟨fun _ i => i.elim0, fun _ => trivial⟩ | n + 1, φ, f => by show VecAll ρ e (rowPath T j n) (rowFam j n fun i => φ i.castSucc) (rowFam j n fun i => f i.castSucc) ∧ IsLocVec W (.chi n j) e (ρ.vX n j) (φ (Fin.last n)) (f (Fin.last n)) ↔ _ rw [vecAll_row ρ e j n, Fin.for …`.
+A detailed English derivation is pending.
 -/
 theorem vecAll_row {W : G.Weil} (ρ : RealMatch W) (e : AE D) (j : ℕ) : ∀ (n : ℕ) (φ f : ∀ i : Fin n, Sch G (.right i j)),
     VecAll ρ e (rowPath T j n) (rowFam j n φ) (rowFam j n f) ↔ ∀ i : Fin n, IsLocVec W (.chi i j) e (ρ.vX i j) (φ i) (f i)
@@ -410,7 +410,7 @@ theorem vecAll_row {W : G.Weil} (ρ : RealMatch W) (e : AE D) (j : ℕ) : ∀ (n
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => ⟨fun _ j => j.elim0, fun _ => trivial⟩ | n + 1, φ, f => by show VecAll ρ e ((Path.one (.down t i n)).comp (downPath t i n)) (Path.Fam.append (p := Path.one (.down t i n)) ((), φ (Fin.last n)) (downFam t i n fun j => φ j.castSucc)) (Path.Fam.append (p := Path.one (.do …`.
+A detailed English derivation is pending.
 -/
 theorem vecAll_down {W : G.Weil} (ρ : RealMatch W) (e : AE D) (t : T) (i : ℕ) : ∀ (n : ℕ) (φ f : ∀ j : Fin n, Sch G (.down t i j)),
     VecAll ρ e (downPath t i n) (downFam t i n φ) (downFam t i n f) ↔ ∀ j : Fin n, IsLocVec W (.mu t i j) e (ρ.vT i j) (φ j) (f j)
@@ -440,9 +440,9 @@ def oppArg (x : ∀ i : Fin D.R.m, Mx D (G.V (.grid i D.R.m)).rank (G.V (.grid (
     (downFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) t D.R.m D.R.m y)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, s⟩ ⟨r', s'⟩ h`. Take `⟨h1, h2⟩` from `append_inj _ _ _ _ _ _ h`. Conclude with `Prod.ext (rowFam_inj _ _ _ _ h1) (downFam_inj _ _ _ _ _ h2)`. Introduce `f`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, e, h⟩` from `append_surj (rowPath T D.R.m D.R.m) (downPath t D.R.m D.R.m) f`. Take `⟨r, hr⟩` from `rowFam_surj _ _ d`. Take `⟨s, hs⟩` from `downFam_surj _ _ _ e`. Conclude with `⟨(r, s), by rw [← h, ← hr, ← hs]; rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem oppFam_bijective : Function.Bijective (oppFam (G := G) t) := by
   constructor
@@ -458,7 +458,7 @@ theorem oppFam_bijective : Function.Bijective (oppFam (G := G) t) := by
 def oppEquiv : SchRow G × SchDown G t ≃ PureT G (oppPath t D.R.m) := Equiv.ofBijective _ (oppFam_bijective t)
 
 /- English proof (translation)
-Use `(famProd_append _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[famProd_row, famProd_down]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem famProd_opp (d : SchRow G × SchDown G t) (x y) :
     famProd (oppPath t D.R.m) (oppFam t d) (oppArg t x y) = (∏ i, d.1 i (x i)) * ∏ j, d.2 j (y j) := by
@@ -466,7 +466,7 @@ theorem famProd_opp (d : SchRow G × SchDown G t) (x y) :
   rw [famProd_row, famProd_down]
 
 /- English proof (translation)
-Use `(halfAll_append _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[halfAll_row, halfAll_down]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem halfAll_opp (e : AE D) (x y) :
     HalfAll (G := G) e (oppPath t D.R.m) (oppArg t x y) ↔ (∀ i, IsHalf e (x i)) ∧ ∀ j, IsHalf e (y j) := by
@@ -474,7 +474,7 @@ theorem halfAll_opp (e : AE D) (x y) :
   rw [halfAll_row, halfAll_down]
 
 /- English proof (translation)
-Use `(vecAll_append _ _ _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[vecAll_row, vecAll_down]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecAll_opp {W : G.Weil} (ρ : RealMatch W) (e : AE D) (φ d : SchRow G × SchDown G t) :
     VecAll ρ e (oppPath t D.R.m) (oppFam t φ) (oppFam t d) ↔
@@ -484,21 +484,21 @@ theorem vecAll_opp {W : G.Weil} (ρ : RealMatch W) (e : AE D) (φ d : SchRow G �
   rw [vecAll_row, vecAll_down]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `e`. Establish `hc` using `pathArgs_comp B t w (rowPath T D.R.m D.R.m) (rowFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) D.R.m D.R.m x) e (downPath t D.R.m D.R.m) (downFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) t D.R.m D.R.m y)`. Consider the cases of `e with`. Consider the case `theta i j`. Distinguish the cases in `h : j < D.R.m ∧ i = D.R.m`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Take `⟨hj, rfl⟩` from `h`. Use `(hc.1 ((mem_edges_down t _ _ _).2 ⟨j, hj, rfl⟩)).trans ?_` and prove the remaining obligations. Rewrite using `[pathArgs_down B t w _ _ y j hj]`. Simplify using `only [oppArgs, locArg, hj, le_refl, and_self, and_true, true_and, ↓reduceDIte]`. Conclude with `Matrix.ext fun a b => rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : GlobalTheory.SplitFlip.Edge.theta i j ∉ edges (downPath t D.R.m D.R.m)`. Rewrite using `[mem_edges_down]`. Introduce and unpack `⟨k, hk, hk'⟩`. Simplify using `only [GlobalTheory.SplitFlip.Edge.theta.injEq] at hk'`. Conclude with `h ⟨hk'.2 ▸ hk, hk'.1⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : GlobalTheory.SplitFlip.Edge.theta i j ∉ edges (rowPath T D.R.m D.R.m)`. Rewrite using `[mem_edges_row]`. Introduce and unpack `⟨k, _, hk'⟩`. Consider the cases of `hk'`. Use `(hc.2 h1).trans ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pathArgs_zero B t w _ _ _ h2]`. Simplify using `only [oppArgs, dif_neg h]`. Consider the case `ex i j`. Establish `h1 : GlobalTheory.SplitFlip.Edge.ex i j ∉ edges (downPath t D.R.m D.R.m)`. Rewrite using `[mem_edges_down]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Introduce and unpack `⟨k, _, hk'⟩`. Consider the cases of `hk'`. Use `(hc.2 h1).trans ?_` and prove the remaining obligations. Distinguish the cases in `h : i < D.R.m ∧ j = D.R.m`. Take `⟨hi, rfl⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pathArgs_row B t w _ _ x i hi]`. Simplify using `only [oppArgs, locArg, hi, le_refl, and_self, and_true, true_and, ↓reduceDIte]`. Conclude with `Matrix.ext fun a b => rfl`. Establish `h2 : GlobalTheory.SplitFlip.Edge.ex i j ∉ edges (rowPath T D.R.m D.R.m)`. Rewrite using `[mem_edges_row]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨k, hk, hk'⟩`. Simplify using `only [GlobalTheory.SplitFlip.Edge.ex.injEq] at hk'`. Conclude with `h ⟨hk'.1 ▸ hk, hk'.2⟩`. Rewrite using `[pathArgs_zero B t w _ _ _ h2]`. Simplify using `only [oppArgs, dif_neg h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pathArgs_opp (B : Frames G) (w : Pl D.host.E) (x y) :
     pathArgs B t w (oppPath t D.R.m) (oppArg t x y) = oppArgs t B w x y := by
@@ -545,7 +545,7 @@ theorem pathArgs_opp (B : Frames G) (w : Pl D.host.E) (x y) :
       simp only [oppArgs, dif_neg h]
 
 /- English proof (translation)
-Unfold `oppPath oppFam oppPure`. Rewrite using `[restrictPol_append, zip_append, restrictPol_row, restrictPol_down, zip_row, zip_down]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zip_opp (W : G.Weil) (P : PolE G) (d : SchRow G × SchDown G t) :
     Path.Fam.zip (fun a (f : Sch G a) Q => W.fock a.pair f Q) (oppFam t d) (restrictPol P (oppPath t D.R.m)) =
@@ -559,15 +559,15 @@ end Opp
 end Grid
 
 /- English proof (translation)
-Take `⟨e, he, φ, hφ, hs⟩` from `h`. Set `E` to `oppEquiv (G := G) t`. Establish `hE : ∀ d, E d = oppFam t d` using `fun _ => rfl`. Use `⟨Finsupp.equivMapDomain E.symm τ, ⟨e, he, fun d => E.symm (φ (E d)), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `d hd`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hd` using `[Finsupp.mem_support_iff, Finsupp.equivMapDomain_apply, Equiv.symm_symm]`. Establish `h1` using `hφ (E d) (Finsupp.mem_support_iff.2 hd)`. Rewrite `h1` using `[← E.apply_symm_apply (φ (E d)), hE, hE]`. Conclude with `(vecAll_opp t ρ e _ _).1 h1`. Introduce `x y hx hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hs (oppArg t x y) ((halfAll_opp t e x y).2 ⟨hx, hy⟩)`. Simplify using `only [pathArgs_opp] at h1`. Rewrite using `[← h1, Finsupp.sum_equivMapDomain]`. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations. Use `beta_reduce`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[E.apply_symm_apply, mul_assoc]`. Use `conv_rhs => rw [← E.apply_symm_apply (φ d), hE, famProd_opp]`. Unfold `tensE tensT oppTens`. Rewrite using `[Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by simp [add_mul, Finsupp.single_add, Finsupp.sum_add]), Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by simp [add_mul, Finsupp.single_add, Finsupp.sum_add])]`. Use `Finsupp.sum_congr fun P _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finsupp.sum_equivMapDomain]`. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `conv_lhs => rw [← E.apply_symm_apply d]`. Conclude with `zip_opp t W P (E.symm d)`.
+A detailed English derivation is pending.
 -/
 theorem flipFin_of_repFin {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (Φ : G.Datum) (Q : GlobalTheory.FlipRun.PolE G →₀ ℂ) (τ : TotT G (oppPath t D.R.m))

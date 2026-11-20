@@ -32,13 +32,13 @@ def FrobPow {l : ℕ} [Fact l.Prime] (g : GQ l) (k : ℕ) : Prop :=
   ∀ c : ↥(MaximalUnramifiedExtension l), g (c : Om l) = (((frobUr l ^ k) c : ↥(MaximalUnramifiedExtension l)) : Om l)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Pi.basisFun ℚ _, fun _ => ⟨fun i j h => by simp [Matrix.one_apply, h.ne'], fun i => by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 example : IsTri (fun _ : Unit => (1 : End ℚ (Fin 2 → ℚ))) (fun _ (_ : Fin 2) => 1) :=
   ⟨Pi.basisFun ℚ _, fun _ => ⟨fun i j h => by simp [Matrix.one_apply, h.ne'], fun i => by simp⟩⟩
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example {l : ℕ} [Fact l.Prime] : FrobPow (1 : GQ l) 0 := fun _ => rfl
 

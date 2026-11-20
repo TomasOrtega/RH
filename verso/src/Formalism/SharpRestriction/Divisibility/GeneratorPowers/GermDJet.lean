@@ -26,14 +26,14 @@ theorem jetTrunc_mk (p : MvPolynomial ι R) :
     (jetTrunc : Jet R ι (m + 1) →ₐ[R] Jet R ι m) (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ p := rfl
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.algHom_ext R (MvPolynomial.algHom_ext fun i => h i)`.
+A detailed English derivation is pending.
 -/
 theorem jet_hom_ext {B : Type} [CommRing B] [Algebra R B] {f g : Jet R ι m →ₐ[R] B}
     (h : ∀ i, f (Ideal.Quotient.mk _ (X i)) = g (Ideal.Quotient.mk _ (X i))) : f = g :=
   Ideal.Quotient.algHom_ext R (MvPolynomial.algHom_ext fun i => h i)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [Finsupp.degree]`. Consider the case `exact Finsupp.degree_apply e`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem deg_sum_lemma {κ : Type} (e : κ →₀ ℕ) : e.degree = ∑ i ∈ e.support, e i := by
   first
@@ -42,7 +42,7 @@ private theorem deg_sum_lemma {κ : Type} (e : κ →₀ ℕ) : e.degree = ∑ i
   | exact Finsupp.degree_apply e
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.monomial_eq, Finsupp.prod]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Rewrite using `[deg_sum_lemma e, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (X_mem_orig i) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomial_mem_orig_pow (e : ι →₀ ℕ) (c : R) : monomial e c ∈ orig R ι ^ e.degree := by
   classical
@@ -52,7 +52,7 @@ theorem monomial_mem_orig_pow (e : ι →₀ ℕ) (c : R) : monomial e c ∈ ori
   exact Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (X_mem_orig i) _
 
 /- English proof (translation)
-Rewrite using `[p.as_sum]`. Conclude with `Ideal.sum_mem _ fun e he => Ideal.pow_le_pow_right (h e he) (monomial_mem_orig_pow e _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_orig_pow_of {n : ℕ} {p : MvPolynomial ι R} (h : ∀ e ∈ p.support, n ≤ e.degree) :
     p ∈ orig R ι ^ n := by
@@ -60,13 +60,11 @@ theorem mem_orig_pow_of {n : ℕ} {p : MvPolynomial ι R} (h : ∀ e ∈ p.suppo
   exact Ideal.sum_mem _ fun e he => Ideal.pow_le_pow_right (h e he) (monomial_mem_orig_pow e _)
 
 /- English proof (translation)
-Unfold `degLE`. Rewrite using `[Finset.mem_filter, deg_sum_lemma]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨Finset.mem_image.2 ⟨fun i => ⟨e i, ?_⟩, Finset.mem_univ _, ?_⟩, h⟩` and prove the remaining obligations. Establish `hle : e i ≤ ∑ j ∈ e.support, e j`. Distinguish the cases in `hi : i ∈ e.support`. Conclude with `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : e i = 0` using `by simpa [Finsupp.mem_support_iff] using hi`. Rewrite using `[h0]`. Conclude with `Nat.zero_le _`. Use linear arithmetic over natural numbers and integers. Use extensionality with `i`.
-
-Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_degLE_lemma [Fintype ι] [DecidableEq ι] (k : ℕ) (e : ι →₀ ℕ) :
     e ∈ degLE k ↔ e.degree ≤ k := by
@@ -88,9 +86,9 @@ private theorem mem_degLE_lemma [Fintype ι] [DecidableEq ι] (k : ℕ) (e : ι 
       simp
 
 /- English proof (translation)
-Unfold `psTrunc`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Distinguish the cases in `h : e.degree ≤ k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos ((mem_degLE_lemma k e).2 h), if_pos h]`. Rewrite using `[if_neg (mt (mem_degLE_lemma k e).1 h), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coeff_psTrunc_lemma_2 [Fintype ι] [DecidableEq ι] (k : ℕ) (g : MvPowerSeries ι R)
     (e : ι →₀ ℕ) :
@@ -104,9 +102,9 @@ private theorem coeff_psTrunc_lemma_2 [Fintype ι] [DecidableEq ι] (k : ℕ) (g
   · rw [if_neg (mt (mem_degLE_lemma k e).1 h), if_neg h]
 
 /- English proof (translation)
-Apply `mem_orig_pow_of` to reduce the goal to its premises. Introduce `e he`. Rewrite `he` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_sub, coeff_psTrunc_lemma_2, coeff_psTrunc_lemma_2]`. Assume the negation of the conclusion as `hlt`. Establish `h1 : e.degree ≤ m` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `he` using `[if_pos h1, if_pos (by omega : e.degree ≤ m + 1), sub_self]`. Conclude with `he rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psTrunc_succ_sub [Fintype ι] [DecidableEq ι] (g : MvPowerSeries ι R) :
     psTrunc (m + 1) g - psTrunc m g ∈ orig R ι ^ (m + 1) := by
@@ -119,17 +117,17 @@ theorem psTrunc_succ_sub [Fintype ι] [DecidableEq ι] (g : MvPowerSeries ι R) 
   exact he rfl
 
 /- English proof (translation)
-Use `choose p hp using fun k => Ideal.Quotient.mk_surjective (a k)`. Establish `hc : ∀ k l, k ≤ l → p l - p k ∈ orig R ι ^ (k + 1)`. Introduce `k l hkl`. Proceed by induction on `l, hkl using Nat.le_induction with`. Consider the case `base => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ l hkl ih`. Establish `h1 : p (l + 1) - p l ∈ orig R ι ^ (l + 1)`. Rewrite using `[← Ideal.Quotient.eq]`. Establish `h` using `ha l`. Rewrite `h` using `[← hp (l + 1), ← hp l, jetTrunc_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h2 : orig R ι ^ (l + 1) ≤ orig R ι ^ (k + 1)` using `Ideal.pow_le_pow_right (by omega)`. Establish `h3` using `Ideal.add_mem _ (h2 h1) ih`. Rewrite `h3` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨f, hf⟩ : ∃ f : MvPowerSeries ι R, ∀ e, MvPowerSeries.coeff e f = MvPolynomial.coeff e (p e.degree)` from `⟨fun e => MvPolynomial.coeff e (p e.degree), fun e => rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← hp k]`. Unfold `psJet`. Rewrite using `[Ideal.Quotient.eq]`. Apply `mem_orig_pow_of` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `e he`. Rewrite `he` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_sub, coeff_psTrunc_lemma_2]`. Assume the negation of the conclusion as `hlt`. Establish `h1 : e.degree ≤ k` using `by omega`. Rewrite `he` using `[if_pos h1]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `he` to reduce the goal to its premises. Establish `h3` using `coeff_eq_zero_of_mem (hc e.degree k h1) (by omega : e.degree < e.degree + 1)`. Rewrite `h3` using `[MvPolynomial.coeff_sub, sub_eq_zero]`. Rewrite using `[hf, sub_eq_zero]`. Conclude with `h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ps_of_jets [Fintype ι] [DecidableEq ι] (a : ∀ m, Jet R ι m)
     (ha : ∀ m, (jetTrunc : Jet R ι (m + 1) →ₐ[R] Jet R ι m) (a (m + 1)) = a m) :
@@ -178,9 +176,9 @@ abbrev sL (m : ℕ) (g : Fin d → MvPowerSeries (Fin 1 × Fin d) R) :
     (![fun j => X ((0 : Fin 1), j), fun j => psIn d m ![0] (g j)] : Fin 2 → Fin d → MvPolynomial (Fin 1 × Fin d) R) p.1 p.2
 
 /- English proof (translation)
-Unfold `psIn`. Establish `h : (fun p : Fin 1 × Fin d => ((![0] : Fin 1 → Fin 1) p.1, p.2)) = id`. Use function extensionality and compare the values at `p`. Conclude with `Prod.ext (Subsingleton.elim _ _) rfl`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem power_series_in_fin_one (m : ℕ) (g : MvPowerSeries (Fin 1 × Fin d) R) : psIn d m ![0] g = psTrunc m g := by
   unfold psIn
@@ -191,7 +189,7 @@ theorem power_series_in_fin_one (m : ℕ) (g : MvPowerSeries (Fin 1 × Fin d) R)
   simp
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i1, j⟩`. Take `rfl : i1 = 0` from `Subsingleton.elim _ _`. Simplify using `[sL, jetSubstP, jetCopy, jetMap_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem sL_copy0 (m : ℕ) (g : Fin d → MvPowerSeries (Fin 1 × Fin d) R) :
     (sL m g).comp (jetCopy d m (0 : Fin 2)) = AlgHom.id R _ := by
@@ -201,7 +199,7 @@ theorem sL_copy0 (m : ℕ) (g : Fin d → MvPowerSeries (Fin 1 × Fin d) R) :
   simp [sL, jetSubstP, jetCopy, jetMap_mk]
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i1, j⟩`. Take `rfl : i1 = 0` from `Subsingleton.elim _ _`. Simplify using `[sL, jetSubstP, jetCopy, jetMap_mk, power_series_in_fin_one]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem sL_copy1 (m : ℕ) (g : Fin d → MvPowerSeries (Fin 1 × Fin d) R) :
     (sL m g).comp (jetCopy d m (1 : Fin 2)) = jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (g p.2) := by
@@ -211,7 +209,7 @@ theorem sL_copy1 (m : ℕ) (g : Fin d → MvPowerSeries (Fin 1 × Fin d) R) :
   simp [sL, jetSubstP, jetCopy, jetMap_mk, power_series_in_fin_one]
 
 /- English proof (translation)
-Rewrite using `[show MvPolynomial.constantCoeff (psTrunc k g) = MvPolynomial.coeff 0 (psTrunc k g) from rfl, coeff_psTrunc_lemma_2, if_pos (by simp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem const_psTrunc_lemma_3 {κ : Type} [Fintype κ] [DecidableEq κ] (k : ℕ) (g : MvPowerSeries κ R) :
     MvPolynomial.constantCoeff (psTrunc k g) = MvPowerSeries.coeff 0 g := by
@@ -219,9 +217,9 @@ private theorem const_psTrunc_lemma_3 {κ : Type} [Fintype κ] [DecidableEq κ] 
     coeff_psTrunc_lemma_2, if_pos (by simp)]
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨k, j⟩`. Simplify using `only [AlgHom.comp_apply, jetTrunc_mk, sL, jetSubstP, jetMap_mk, MvPolynomial.aeval_X]`. Rewrite using `[Ideal.Quotient.eq]`. Use `fin_cases k`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [power_series_in_fin_one, Matrix.cons_val_one, Matrix.head_cons]`. Express the relevant statement in the definitionally equal form `psTrunc (m + 1) (g j) - C (MvPolynomial.constantCoeff (psTrunc (m + 1) (g j))) - (psTrunc m (g j) - C (MvPolynomial.constantCoeff (psTrunc m (g j)))) ∈ _`. Rewrite using `[const_psTrunc_lemma_3, const_psTrunc_lemma_3, sub_sub_sub_cancel_right]`. Conclude with `psTrunc_succ_sub (g j)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sL_trunc (m : ℕ) (g : Fin d → MvPowerSeries (Fin 1 × Fin d) R) :
     (jetTrunc : Jet R (Fin 1 × Fin d) (m + 1) →ₐ[R] _).comp (sL (m + 1) g) =
@@ -239,7 +237,7 @@ theorem sL_trunc (m : ℕ) (g : Fin d → MvPowerSeries (Fin 1 × Fin d) R) :
     exact psTrunc_succ_sub (g j)
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[jetCopy, jetMap_mk, jetTrunc_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem copy_trunc (m : ℕ) (i : Fin 2) :
     (jetTrunc : Jet R (Fin 2 × Fin d) (m + 1) →ₐ[R] _).comp (jetCopy d (m + 1) i) =
@@ -255,7 +253,7 @@ section Over
 variable {X : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[homAt, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] [CommRing C] [Algebra S C]
     (f : A →ₐ[S] B) (g : B →ₐ[S] C) : homAt x0 g ≫ homAt x0 f = homAt x0 (g.comp f) := by
@@ -264,7 +262,7 @@ theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algeb
   rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[homAt, spMap]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem homAt_id {A : Type} [CommRing A] [Algebra S A] : homAt x0 (AlgHom.id S A) = 𝟙 _ := by
   apply Over.OverMorphism.ext

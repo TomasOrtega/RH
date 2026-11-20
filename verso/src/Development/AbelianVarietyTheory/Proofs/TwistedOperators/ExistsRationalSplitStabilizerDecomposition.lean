@@ -22,17 +22,17 @@ open Matrix
 namespace GlobalTheory.RatSplitLat
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _)`.
+A detailed English derivation is pending.
 -/
 theorem colLat_fg {K : Type} [Field K] [NumberField K] {n : ℕ} (B : GL (Fin n) K) : (colLat B).FG :=
   Submodule.fg_span (Set.finite_range _)
 
 /- English proof (translation)
-Unfold `colLat`. Rewrite using `[Submodule.span_span_of_tower]`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x = ∑ j, (((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) j • (fun a : Fin n => (B : Matrix (Fin n) (Fin n) K) a j)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Use `congrFun (show (B : Matrix (Fin n) (Fin n) K) *ᵥ (((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) = x by` as an intermediate fact. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]) a`. Use `conv_lhs => rw [← this]`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem colLat_span {K : Type} [Field K] [NumberField K] {n : ℕ} (B : GL (Fin n) K) :
     Submodule.span K ((colLat B : Submodule (𝓞 K) (Fin n → K)) : Set (Fin n → K)) = ⊤ := by
@@ -51,9 +51,9 @@ theorem colLat_span {K : Type} [Field K] [NumberField K] {n : ℕ} (B : GL (Fin 
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨w, hw, e⟩` from `h1 y hy`. Rewrite using `[show k.1 *ᵥ y = (k.1 *ᵥ y - y) + y by abel, e]`. Conclude with `H.add_mem (H.nsmul_mem hw N) hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Use `h2 _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stab_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (H : AddSubgroup (Fin n → GlobalTheory.AdLat.RA F E)) (k : GL (Fin n) (GlobalTheory.AdLat.RA F E)) (N : ℕ)
@@ -71,15 +71,15 @@ theorem stab_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V B N hN g`. Take `⟨-, -, -, -, c2, -, c1, gh, gd, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Take `⟨γ', h', k', u1, u2, u3, hg, hs, hk, hki⟩` from `GlobalTheory.T.exists_unitary_adelic_decomposition_split_support D.host.F D.host.E (GlobalTheory.Member.cF D) V.rank V.gramᵀ ⟨c2, c1, gh, gd⟩ (GlobalTheory.UnRep.Space.finrank_two D) (colLat B) (colLat_fg B) (colLat_span B) (finHom V g.1) N (GlobalTheory.UnRep.Space.isUnA_finHom …`. Take `⟨-, -, -, lift, -⟩` from `GlobalTheory.UnitarySplit.real_finite_split D V`. Take `⟨r1, -, r3, -⟩` from `GlobalTheory.Member.RatElt.rational_elements D V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, eh⟩` from `lift h' u2`. Take `⟨k, hk', ek⟩` from `lift k' u3`. Take `⟨γ, hγ⟩` from `r3 γ' fun u v => by rw [GlobalTheory.UnRep.Space.herm_neg_eq, GlobalTheory.UnRep.Space.herm_neg_eq, u1]`. Establish `eγ : (finHom V γ).1 = GlobalTheory.UnRep.fm D.host.F γ'.1` using `GlobalTheory.Member.RatElt.fin_eq hγ`. Establish `e : finHom V g.1 = finHom V γ * finHom V h * finHom V k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg, Units.val_mul, Units.val_mul, eγ, eh, ek]`. Use `⟨g * ⟨k, hk'⟩⁻¹ * ⟨h, hh⟩⁻¹, ⟨h, hh⟩, ⟨k, hk'⟩, ⟨γ, (r1 γ).2 ⟨γ', hγ⟩, ?_⟩, ?_, ?_, by rw [inv_mul_cancel_right, inv_mul_cancel_right]⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_inv, map_mul, map_mul, map_inv, map_inv, e]`. Rewrite using `[mul_inv_cancel_right, mul_inv_cancel_right]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.UnRep.SuppSplit _ N (finHom V h).1`. Rewrite using `[eh]`. Conclude with `hs`. Introduce `v`. Establish `key` using `GlobalTheory.StdFrames.hatL_of_hat (F := D.host.F) (colLat B) (colLat B) k'.1 (stab_iff _ k' N hk hki) v`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (Formalism.IndefR.Lev.finE V k).1 = k'.1.map (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E)`. Rewrite using `[← ek]`. Both sides reduce to the same expression. Use `key.trans (iff_of_eq ?_)` and prove the remaining obligations. Conclude with `congrArg (fun M => M *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat B)) hm.symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_rat_split_lat : ∀ {D : D7} (V : HSp D) (B : GL (Fin V.rank) D.host.E) (N : ℕ), 0 < N → ∀ g : GfC V,
     ∃ r s k : GfC V, GlobalTheory.MovedKappaEx.RatFin V r ∧ GlobalTheory.UnRep.SuppSplit (GlobalTheory.Member.cF D) N (finHom V s.1).1 ∧

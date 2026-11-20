@@ -10,7 +10,7 @@ section Rat
 variable (l : ℕ) [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `h : Prime ((l : ℕ) : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Establish `e : ((l : ℕ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm ((l : ℕ) : ℤ)` using `by simp`. Rewrite using `[e]`. Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).mpr h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prime_l : Prime ((l : ℕ) : 𝓞 ℚ) := by
   have h : Prime ((l : ℕ) : ℤ) := Nat.prime_iff_prime_int.mp hl.out
@@ -24,9 +24,9 @@ private noncomputable def vQ : HeightOneSpectrum (𝓞 ℚ) where
   ne_bot := by rw [Ne, Ideal.span_singleton_eq_bot]; exact (prime_l l).ne_zero
 
 /- English proof (translation)
-Establish `h : normV (vQ l) = Ideal.absNorm (vQ l).asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Rewrite using `[h]`. Use `show Ideal.absNorm (Ideal.span {((l : ℕ) : 𝓞 ℚ)}) = l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.absNorm_span_natCast, NumberField.RingOfIntegers.rank]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem normV_vQ : normV (vQ l) = l := by
   have h : normV (vQ l) = Ideal.absNorm (vQ l).asIdeal := by
@@ -37,16 +37,14 @@ private theorem normV_vQ : normV (vQ l) = l := by
   simp
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_span_singleton_self _`.
+A detailed English derivation is pending.
 -/
 private theorem mem_vQ : ((l : ℕ) : 𝓞 ℚ) ∈ (vQ l).asIdeal := Ideal.mem_span_singleton_self _
 
 variable {l} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Use `show ((n : ℤ) : 𝓞 ℚ) ∈ Ideal.span {((l : ℕ) : 𝓞 ℚ)} ↔ _`. Rewrite using `[Ideal.mem_span_singleton]`. Establish `e1 : ((l : ℕ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm ((l : ℕ) : ℤ)` using `by simp`. Establish `e2 : ((n : ℤ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm n` using `by simp`. Rewrite using `[e1, e2]`.
-
-Conclude with `map_dvd_iff Rat.ringOfIntegersEquiv.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intCast_mem_vQ (n : ℤ) : ((n : ℤ) : 𝓞 ℚ) ∈ (vQ l).asIdeal ↔ ((l : ℕ) : ℤ) ∣ n := by
   show ((n : ℤ) : 𝓞 ℚ) ∈ Ideal.span {((l : ℕ) : 𝓞 ℚ)} ↔ _
@@ -57,17 +55,15 @@ private theorem intCast_mem_vQ (n : ℤ) : ((n : ℤ) : 𝓞 ℚ) ∈ (vQ l).asI
   exact map_dvd_iff Rat.ringOfIntegersEquiv.symm
 
 /- English proof (translation)
-The claim follows from `(A.valuation_le_one_iff _).mpr (intCast_mem A n)`.
+A detailed English derivation is pending.
 -/
 private theorem val_intCast_le_one (A : ValuationSubring Ω) (n : ℤ) : A.valuation (n : Ω) ≤ 1 :=
   (A.valuation_le_one_iff _).mpr (intCast_mem A n)
 
 /- English proof (translation)
-Introduce `h`. Take `⟨a, b, hab⟩` from `hc`. Establish `h1 : A.valuation ((a : Ω) * (m : Ω) + (b : Ω) * (n : Ω)) < 1`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (val_intCast_le_one A a)) hm`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (val_intCast_le_one A b)) h`. Establish `h2 : (a : Ω) * (m : Ω) + (b : Ω) * (n : Ω) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) hab`. Rewrite `h1` using `[h2, map_one]`.
-
-Conclude with `lt_irrefl _ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_of_coprime (A : ValuationSubring Ω) {m n : ℤ} (hc : IsCoprime m n)
     (hm : A.valuation (m : Ω) < 1) : ¬ A.valuation (n : Ω) < 1 := by
@@ -82,9 +78,9 @@ private theorem not_of_coprime (A : ValuationSubring Ω) {m n : ℤ} (hc : IsCop
   exact lt_irrefl _ h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hnd`. Conclude with `not_of_coprime A (((Nat.prime_iff_prime_int.mp hl.out).coprime_iff_not_dvd).mpr hnd) (by rwa [Int.cast_natCast]) h`. Introduce and unpack `⟨k, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (val_intCast_le_one A k)) hA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_intCast_lt_one_iff (A : ValuationSubring Ω) (hA : A.valuation ((l : ℕ) : Ω) < 1) (n : ℤ) :
     A.valuation (n : Ω) < 1 ↔ ((l : ℕ) : ℤ) ∣ n := by
@@ -99,9 +95,9 @@ private theorem val_intCast_lt_one_iff (A : ValuationSubring Ω) (hA : A.valuati
     exact lt_of_le_of_lt (mul_le_of_le_one_right' (val_intCast_le_one A k)) hA
 
 /- English proof (translation)
-Introduce `x`. Take `⟨n, rfl⟩ : ∃ n : ℤ, x = ((n : ℤ) : 𝓞 ℚ)` from `⟨Rat.ringOfIntegersEquiv x, by`. Use `Rat.ringOfIntegersEquiv.symm_apply_apply x` as an intermediate fact. Rewrite using `[← this]`. Use the proof step `simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[intCast_mem_vQ, ← val_intCast_lt_one_iff A hA]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isPlaceOver_vQ [Algebra ℚ Ω] (A : ValuationSubring Ω) (hA : A.valuation ((l : ℕ) : Ω) < 1) :
     IsPlaceOver (F := ℚ) A (vQ l) := by
@@ -120,7 +116,7 @@ section Roots
 variable {Ω : Type} [Field Ω] (A : ValuationSubring Ω)
 
 /- English proof (translation)
-Establish `hm : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv (by simp)`. Establish `h1 : A.valuation ζ ^ m = 1` using `by rw [← map_pow, h, map_one]`. Conclude with `(pow_eq_one_iff_left hm).1 h1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem val_root {m : ℕ} (hv : ¬ A.valuation (m : Ω) < 1) {ζ : Ω} (h : ζ ^ m = 1) : A.valuation ζ = 1 := by
   have hm : m ≠ 0 := by
@@ -130,9 +126,9 @@ private theorem val_root {m : ℕ} (hv : ¬ A.valuation (m : Ω) < 1) {ζ : Ω} 
   exact (pow_eq_one_iff_left hm).1 h1
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : 1 - η ^ (i + 1) = η * (1 - η ^ i) - (η - 1)` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `A.valuation.map_sub_lt ?_ h` and prove the remaining obligations. Rewrite using `[map_mul, h1, one_mul]`. Conclude with `ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_sub_pow {η : Ω} (h1 : A.valuation η = 1) (h : A.valuation (η - 1) < 1) (i : ℕ) :
     A.valuation (1 - η ^ i) < 1 := by
@@ -145,11 +141,9 @@ private theorem one_sub_pow {η : Ω} (h1 : A.valuation η = 1) (h : A.valuation
     rw [map_mul, h1, one_mul]; exact ih
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Apply `hv` to reduce the goal to its premises. Establish `hs : ∑ i ∈ Finset.range m, η ^ i = 0`. Use `mul_geom_sum η m` as an intermediate fact. Rewrite `this` using `[hη, sub_self]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Establish `e : (m : Ω) = ∑ i ∈ Finset.range m, (1 - η ^ i)`. Rewrite using `[Finset.sum_sub_distrib, hs]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
-
-Conclude with `A.valuation.map_sum_lt one_ne_zero fun i _ => one_sub_pow A (val_root A hv hη) h i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem root_eq_one {m : ℕ} (hv : ¬ A.valuation (m : Ω) < 1) {η : Ω} (hη : η ^ m = 1)
     (h : A.valuation (η - 1) < 1) : η = 1 := by
@@ -165,9 +159,9 @@ private theorem root_eq_one {m : ℕ} (hv : ¬ A.valuation (m : Ω) < 1) {η : �
   exact A.valuation.map_sum_lt one_ne_zero fun i _ => one_sub_pow A (val_root A hv hη) h i
 
 /- English proof (translation)
-Establish `h1` using `val_root A hv hζ`. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h1`. Establish `e : ξ / ζ - 1 = (ξ - ζ) / ζ` using `by field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ξ / ζ = 1`. Use `root_eq_one A hv (by rw [div_pow, hξ, hζ, div_one]) ?_` and prove the remaining obligations. Rewrite using `[e, map_div₀, h1, div_one]`. Conclude with `h`. Conclude with `(div_eq_one_iff_eq h0).1 this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem root_eq {m : ℕ} (hv : ¬ A.valuation (m : Ω) < 1) {ξ ζ : Ω} (hξ : ξ ^ m = 1) (hζ : ζ ^ m = 1)
     (h : A.valuation (ξ - ζ) < 1) : ξ = ζ := by
@@ -188,38 +182,38 @@ section Conj
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) (g : G ℚ Ω)
 
 /- English proof (translation)
-Rewrite using `[← AlgEquiv.smul_def]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smul_mem (y : Ω) : g y ∈ g • A ↔ y ∈ A := by
   rw [← AlgEquiv.smul_def]
   exact ValuationSubring.smul_mem_pointwise_smul_iff
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.valuation_le_one_iff, ValuationSubring.valuation_le_one_iff, smul_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem smul_le (y : Ω) : (g • A).valuation (g y) ≤ 1 ↔ A.valuation y ≤ 1 := by
   rw [ValuationSubring.valuation_le_one_iff, ValuationSubring.valuation_le_one_iff, smul_mem]
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', smul_mem, ← map_inv₀, smul_mem, map_eq_zero_iff _ g.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem smul_lt (y : Ω) : (g • A).valuation (g y) < 1 ↔ A.valuation y < 1 := by
   rw [valuation_lt_one_iff', valuation_lt_one_iff', smul_mem, ← map_inv₀, smul_mem, map_eq_zero_iff _ g.injective]
 
 /- English proof (translation)
-Rewrite using `[eq_iff_le_not_lt, eq_iff_le_not_lt, smul_le, smul_lt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem smul_eq (y : Ω) : (g • A).valuation (g y) = 1 ↔ A.valuation y = 1 := by
   rw [eq_iff_le_not_lt, eq_iff_le_not_lt, smul_le, smul_lt]
 
 /- English proof (translation)
-Rewrite using `[mem_Dec, mem_Dec, mul_smul, mul_smul, inv_smul_eq_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem dec_iff (x : G ℚ Ω) : x ∈ Dec (F := ℚ) (g • A) ↔ g⁻¹ * x * g ∈ Dec (F := ℚ) A := by
   rw [mem_Dec, mem_Dec, mul_smul, mul_smul, inv_smul_eq_iff]
 
 /- English proof (translation)
-Rewrite using `[g.surjective.forall]`. Use `forall_congr' fun y => ?_` and prove the remaining obligations. Establish `e : x (g y) - g y ^ q = g ((g⁻¹ * x * g) y - y ^ q)`. Rewrite using `[map_sub, map_pow, ← AlgEquiv.mul_apply g, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, AlgEquiv.mul_apply]`. Rewrite using `[e, smul_le, smul_lt]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pow_iff (x : G ℚ Ω) (q : ℕ) :
     (∀ y : Ω, (g • A).valuation y ≤ 1 → (g • A).valuation (x y - y ^ q) < 1) ↔
@@ -237,17 +231,15 @@ end UpperTheory.V.ML.PlaceBasics
 
 open UpperTheory.V.ML.PlaceBasics in
 /- English proof (translation)
-Introduce `Ω _ _ _`. Use `⟨fun q hq => ?_, fun A q hq hA => ?_, fun A m n => ?_, fun A m n hc hm => ?_, fun A k hk g hg x hx => ?_, fun A k ζ hk hζ h => root_eq_one A hk hζ h, fun A q k φ hφ hk x hx => ?_, fun A A' q hq hA hA' => ?_, fun A q hq hA => ?_, fun A g => ⟨dec_iff A g, fun x => ?_, fun q x => an …` and prove the remaining obligations. Use `haveI := Fact.mk hq`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω (vQ q)`. Use `⟨A, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hA ((q : ℕ) : 𝓞 ℚ)).2 (mem_vQ q)`. Use `haveI := Fact.mk hq`. Take `⟨g, hg⟩` from `exists_isFrob (isPlaceOver_vQ A hA)`. Rewrite `hg` using `[normV_vQ]`. Conclude with `⟨g, hg⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : A.valuation (m : Ω) ≤ 1` using `by simpa using val_intCast_le_one A m`. Establish `hn : A.valuation (n : Ω) ≤ 1` using `by simpa using val_intCast_le_one A n`. Simplify using `only [Over, Nat.cast_mul, map_mul]`. Use `⟨fun h => ?_, fun h => h.elim (lt_of_le_of_lt (mul_le_of_le_one_right' hn)) (lt_of_le_of_lt (mul_le_of_le_one_left' hm))⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[not_or]`. Rewrite `h` using `[hm.eq_of_not_lt h'.1, hn.eq_of_not_lt h'.2, one_mul]`. Conclude with `lt_irrefl _ h`. Use `not_of_coprime A (Nat.isCoprime_iff_coprime.2 hc) (by rwa [Int.cast_natCast])` as an intermediate fact. Rewrite `this` using `[Int.cast_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `root_eq A hk (by rw [← map_pow, hx, map_one]) hx (hg.2 x (val_root A hk hx).le)`. Conclude with `root_eq A hk (by rw [← map_pow, hx, map_one]) (by rw [← pow_mul, mul_comm, pow_mul, hx, one_pow]) (hφ.2 x (val_root A hk hx).le)`. Use `haveI := Fact.mk hq`. Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := ℚ) (isPlaceOver_vQ A hA) (isPlaceOver_vQ A' hA')`. Conclude with `⟨g, hg.symm⟩`.
-
-Use `haveI := Fact.mk hq`. Conclude with `⟨vQ q, isPlaceOver_vQ A hA, normV_vQ q, mem_vQ q⟩`. Establish `h` using `pow_iff A g x 1`. Simplify using `only [pow_one] at h`. Conclude with `and_congr (dec_iff A g x) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.placeBasic :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω],

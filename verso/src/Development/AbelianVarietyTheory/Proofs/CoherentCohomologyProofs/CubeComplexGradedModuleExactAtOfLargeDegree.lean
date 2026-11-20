@@ -7,7 +7,7 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite `h₁`, `h₂`, the goal using `[HomologicalComplex.exactAt_iff_isZero_homology]`. Conclude with `(hS.homology_exact₃ p (p + 1) rfl).isZero_X₂ (h₂.eq_of_src _ _) (h₁.eq_of_tgt _ _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exactAt_quot_of_shortExact {R : Type} [CommRing R]
     {S : ShortComplex (CochainComplex (ModuleCat.{0} R) ℕ)} (hS : S.ShortExact) (p : ℕ)
@@ -16,11 +16,11 @@ theorem exactAt_quot_of_shortExact {R : Type} [CommRing R]
   exact (hS.homology_exact₃ p (p + 1) rfl).isZero_X₂ (h₂.eq_of_src _ _) (h₁.eq_of_tgt _ _)
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero`. Introduce `M _ _ _ _ ℳ _ _ _`. Conclude with `⟨0, fun n _ p hp => (HomologicalComplex.exactAt_iff_isZero_homology _ _).2 (isZero_cubeComplex_homology _ hp)⟩`. Consider the case `succ q ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `M _ _ _ _ ℳ _ _ _`. Take `⟨r, d, f, hf, hs⟩` from `exists_graded_surjection (ι := ι) ℳ`. Use `letI : Decomposition (grSub (grFree ι R d) (LinearMap.ker f)) := grSubDecomposition _ hf.isHomogeneous_ker`. Take `⟨a, ha⟩` from `ih (LinearMap.ker f) (grSub (grFree ι R d) (LinearMap.ker f)) inferInstance`. Take `⟨b, hb⟩` from `(cubeComplex_grFree_finite_and_exactAt ι R r d).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max a b, fun n hn p hp => ?_⟩` and prove the remaining obligations. Conclude with `exactAt_quot_of_shortExact ((hf.shortExact_ker hs).cubeComplex_shortExact n) p (hb n (le_of_max_le_right hn) p) (ha n (le_of_max_le_left hn) (p + 1) (by omega))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cubeComplex_grCube_exactAt_of_card_lt (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type)
     [CommRing R] [IsNoetherianRing R] (q : ℕ) :
@@ -46,7 +46,7 @@ theorem cubeComplex_grCube_exactAt_of_card_lt (ι : Type) [LinearOrder ι] [Fint
       (hb n (le_of_max_le_right hn) p) (ha n (le_of_max_le_left hn) (p + 1) (by omega))
 
 /- English proof (translation)
-Introduce `ι _ _ R _ _ M _ _ _ _ ℳ _ _ hM`. Take `⟨n₀, h⟩` from `cubeComplex_grCube_exactAt_of_card_lt ι R (Fintype.card ι + 1) M ℳ hM`. Conclude with `⟨n₀, fun n hn p => h n hn p (by omega)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cubeComplex_grCube_exactAt_of_finite :
     ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] [IsNoetherianRing R]

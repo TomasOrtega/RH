@@ -9,7 +9,7 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Establish `: β * β - β = β * (α + β - 1) - β * α` using `by ring`. Rewrite using `[this]`. Conclude with `J.sub_mem (J.mul_mem_left _ (hJ h2)) (hJ h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idem_mod {A : Type} [CommRing A] {P α β : A} {J : Ideal A}
     (h1 : β * α ∈ Ideal.span {P}) (h2 : α + β - 1 ∈ Ideal.span {P}) (hJ : Ideal.span {P} ≤ J) :
@@ -19,9 +19,9 @@ private theorem idem_mod {A : Type} [CommRing A] {P α β : A} {J : Ideal A}
   exact J.sub_mem (J.mul_mem_left _ (hJ h2)) (hJ h1)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `: β ^ (k + 1 + 1) - β = β * (β ^ (k + 1) - β) + (β * β - β)` using `by ring`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.add_mem (J.mul_mem_left _ ih) h`.
+A detailed English derivation is pending.
 -/
 private theorem pow_succ_sub_mem {A : Type} [CommRing A] {β : A} {J : Ideal A} (h : β * β - β ∈ J) (k : ℕ) :
     β ^ (k + 1) - β ∈ J := by
@@ -33,9 +33,9 @@ private theorem pow_succ_sub_mem {A : Type} [CommRing A] {β : A} {J : Ideal A} 
     exact J.add_mem (J.mul_mem_left _ ih) h
 
 /- English proof (translation)
-Establish `hp` using `pow_succ_sub_mem (idem_mod h1 h2 hJ) k`. Establish `hm : β ^ (k + 1) ∈ u ^ k`. Establish `h4 : β ^ (k + 1) ∈ (u ^ n) ^ (k + 1)` using `Ideal.pow_mem_pow h3 _`. Rewrite `h4` using `[← pow_mul]`. Use `Ideal.pow_le_pow_right ?_ h4` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: 1 ≤ n` using `Nat.one_le_iff_ne_zero.2 hn`. Use the polynomial consequences of the given equalities and inequalities. Establish `: β = β ^ (k + 1) - (β ^ (k + 1) - β)` using `by ring`. Rewrite using `[this]`. Conclude with `J.sub_mem (hk hm) hp`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_pow_le {A : Type} [CommRing A] {P α β : A} {u J : Ideal A} {n k : ℕ} (hn : n ≠ 0)
     (h1 : β * α ∈ Ideal.span {P}) (h2 : α + β - 1 ∈ Ideal.span {P}) (h3 : β ∈ u ^ n)
@@ -52,7 +52,7 @@ private theorem mem_of_pow_le {A : Type} [CommRing A] {P α β : A} {u J : Ideal
   exact J.sub_mem (hk hm) hp
 
 /- English proof (translation)
-Introduce `x hx` and use `by have : x = x * α - x * (α + β - 1) + x * β := by ring rw [this] exact J.add_mem (J.sub_mem (hJ (h1 x hx)) (J.mul_mem_left _ (hJ h2))) (J.mul_mem_left _ hβ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem pow_le_of_mem {A : Type} [CommRing A] {P α β : A} {u J : Ideal A} {n : ℕ}
     (h1 : ∀ a ∈ u ^ n, a * α ∈ Ideal.span {P}) (h2 : α + β - 1 ∈ Ideal.span {P})
@@ -62,29 +62,25 @@ private theorem pow_le_of_mem {A : Type} [CommRing A] {P α β : A} {u J : Ideal
   exact J.add_mem (J.sub_mem (hJ (h1 x hx)) (J.mul_mem_left _ (hJ h2))) (J.mul_mem_left _ hβ)
 
 /- English proof (translation)
-Introduce `hU p _ D R _ b N r w hw hu S _ s o o' ψ ψ' e hm hm' hlin h1 h2`. Take `⟨α, hα1, hα2, hα3⟩` from `hU p D r w hw hu e`. Establish `hc0 : p ^ e ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Take `⟨hfin, hflat⟩` from `GlobalTheory.T.isFinite_flat_abelianSchemeHom_of_quasiInverse S o.A o'.A o.ab o'.ab ψ ψ' (p ^ e) hc0 hm hm' h1 h2`. Set `ρ : 𝓞 D.F → (o.A ⟶ o.A)` to `fun a => o.act.act (algebraMap (𝓞 D.F) D.O a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `ρhom : ∀ a, IsMonHom (ρ a)` using `fun a => o.act.hom _`. Establish `ρmul : ∀ a a', ρ (a * a') = ρ a ≫ ρ a'` using `fun a a' => by`. Simplify using `only [ρ]`. Rewrite using `[mul_comm, map_mul, o.act.mul]`. Establish `ρadd : ∀ a a', ρ (a + a') = ρ a * ρ a'` using `fun a a' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [ρ]`. Rewrite using `[map_add, o.act.add]`. Establish `ρ0 : ρ 0 = 1`. Use `ρadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_mul.1 this`. Establish `ρc : ρ ((p : 𝓞 D.F) ^ e) = 𝟙 o.A ^ (p ^ e)`. Establish `: ((p : 𝓞 D.F) ^ e) = ((p ^ e : ℕ) : 𝓞 D.F)` using `by push_cast; rfl`. Simplify using `only [ρ]`. Rewrite using `[this, map_natCast, GlobalTheory.IwLevel.HTTorsionFF.oActN_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `I : ∀ {T : Over S}, (T ⟶ o.A) → Ideal (𝓞 D.F)` to `fun {T} z => { carrier := {a | z ≫ ρ a = 1} add_mem' := fun {a a'} ha ha' => by haveI := ρhom a show z ≫ ρ (a + a') = 1`. Rewrite using `[ρadd, MonObj.comp_mul, show z ≫ ρ a = 1 from ha, show z ≫ ρ a' = 1 from ha', _root_.mul_one]`. Use the proof step `zero_mem' := by show z ≫ ρ 0 = 1`. Rewrite using `[ρ0, MonObj.comp_one]`. Use the proof step `smul_mem' := fun c a ha => by haveI := ρhom c show z ≫ ρ (c * a) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, ρmul, ← Category.assoc, show z ≫ ρ a = 1 from ha, MonObj.one_comp] }`. Establish `memI : ∀ {T : Over S} (z : T ⟶ o.A) (a), a ∈ I z ↔ z ≫ ρ a = 1` using `fun _ _ => Iff.rfl`. Establish `kerP : ∀ {T : Over S} (z : T ⟶ o.A), z ≫ ψ = 1 → z ^ p ^ e = 1` using `fun {T} z hz => by`. Establish `: z ≫ ψ ≫ ψ' = 1` using `by rw [← Category.assoc, hz, MonObj.one_comp]`. Rewrite `this` using `[h1, MonObj.comp_pow, Category.comp_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `spanI : ∀ {T : Over S} (z : T ⟶ o.A), z ≫ ψ = 1 → Ideal.span {(p : 𝓞 D.F) ^ e} ≤ I z` using `fun z hz => by`. Rewrite using `[Ideal.span_singleton_le_iff_mem, memI, ρc, MonObj.comp_pow, Category.comp_id]`. Conclude with `kerP z hz`. Establish `cong : ∀ {T : Over S} (z : T ⟶ o.A) (a a'), a - a' ∈ I z → z ≫ ρ a = z ≫ ρ a'` using `fun z a a' h => by haveI := ρhom a' haveI := ρhom (a - a')`. Establish `: a = a' + (a - a')` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ρadd, MonObj.comp_mul, show z ≫ ρ (a - a') = 1 from h, _root_.mul_one]`. Use `set β := D.bar α with hβ`. Establish `hβα : β * α ∈ Ideal.span {(p : 𝓞 D.F) ^ e}` using `hα1 β hα3`. Take `⟨K, gK, i, -, hmono, hKfin, hKflat, hK⟩` from `GlobalTheory.UPel.HT.ES.OrdCount.exists_idem_kernel S o.A o'.A ψ (ρ β) hm (ρhom β) hfin hflat (fun T z hz => ⟨by haveI := o'.act.hom (algebraMap (𝓞 D.F) D.O β)`. Rewrite using `[Category.assoc, hlin, ← Category.assoc, hz, MonObj.one_comp], by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, ← ρmul]`. Conclude with `cong z _ _ (idem_mod hβα hα2 (spanI z hz))⟩)`. Establish `key : ∀ (T : Over S) (g : T ⟶ o.A), (g ≫ ψ = 1 ∧ g ≫ ρ β = 1) ↔ UKer r o ψ T g` using `fun T g => by`. Use `⟨fun ⟨ha, hb⟩ => ⟨ha, e, fun a haI => pow_le_of_mem hα1 hα2 (spanI g ha) hb haI⟩, fun ⟨ha, k, hk⟩ => ⟨ha, ?_⟩⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos e with rfl | he` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 : 𝓞 D.F) ∈ I g` using `spanI g ha (by simp)`. Conclude with `Ideal.mem_of_one_mem this β`. Conclude with `mem_of_pow_le he.ne' hβα hα2 hα3 (spanI g ha) (fun a haI => hk a haI)`. Use `⟨⟨K, i, hmono, hKfin, hKflat, fun T g => (hK T g).trans (key T g)⟩, fun T => ⟨?_, fun g h hg hh => ?_⟩, fun T g hg => kerP g hg.1⟩` and prove the remaining obligations. Conclude with `(key T 1).1 ⟨by rw [MonObj.one_comp], by haveI := ρhom β; rw [MonObj.one_comp]⟩`.
-
-Take `⟨g1, g2⟩` from `(key T g).2 hg`. Take `⟨h1', h2'⟩` from `(key T h).2 hh`. Use `haveI := ρhom β`. Use `(key T _).1 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, GrpObj.div_comp, g1, h1', div_one]`.
-
-Rewrite using `[← div_eq_mul_inv, GrpObj.div_comp, g2, h2', div_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.kerU_of :
     UElt → KerU := by

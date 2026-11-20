@@ -13,7 +13,7 @@ def sgnAd (w : InfinitePlace F) : AF F :=
   ((fun v => if v = w then -1 else 1 : InfiniteAdeleRing F), 1)
 
 /- English proof (translation)
-Use `Prod.ext (funext fun v => ?_) (mul_one _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if v = w then (-1 : v.Completion) else 1) * (if v = w then (-1 : v.Completion) else 1) = 1`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgnAd_mul_self (w : InfinitePlace F) : sgnAd w * sgnAd w = 1 := by
   refine Prod.ext (funext fun v => ?_) (mul_one _)
@@ -23,9 +23,9 @@ theorem sgnAd_mul_self (w : InfinitePlace F) : sgnAd w * sgnAd w = 1 := by
 def sgnId (w : InfinitePlace F) : (AF F)ˣ := ⟨sgnAd w, sgnAd w, sgnAd_mul_self w, sgnAd_mul_self w⟩
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1 : u.1 = 0` using `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).1 hu`. Establish `h2 : u * (sgnAd w - 1) = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * (1 - 1) = 0`. Rewrite using `[sub_self, mul_zero]`. Rewrite using `[← map_one (algebraMap (AF F) (AE F E)), ← map_sub, Algebra.smul_def, ← map_mul, h2, map_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_sgn (w : InfinitePlace F) : At (evI F) (algebraMap (AF F) (AE F E) (sgnAd w) - 1) := by
   intro u hu
@@ -39,7 +39,7 @@ theorem at_sgn (w : InfinitePlace F) : At (evI F) (algebraMap (AF F) (AE F E) (s
   rw [← map_one (algebraMap (AF F) (AE F E)), ← map_sub, Algebra.smul_def, ← map_mul, h2, map_zero]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `infEmb τ ((if v = w then (-1 : v.Completion) else 1) ⊗ₜ[F] (1 : E)) = _`. Rewrite using `[infEmb_tmul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem piInf_sgn (w v : InfinitePlace F) (τ : EmbOver E v) :
     piInf τ (algebraMap (AF F) (AE F E) (sgnAd w)) = if v = w then -1 else 1 := by
@@ -48,9 +48,9 @@ theorem piInf_sgn (w v : InfinitePlace F) (τ : EmbOver E v) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[h _ (at_sgn w)]`. Express the relevant statement in the definitionally equal form `∏ v, (piInf (τ v) (algebraMap (AF F) (AE F E) (sgnAd w)) / ‖piInf (τ v) (algebraMap (AF F) (AE F E) (sgnAd w))‖) ^ m v = _`. Simplify using `only [piInf_sgn]`. Rewrite using `[Finset.prod_eq_single w]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `v _ hv`. Simplify using `[hv]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hasExp_sgn {τ : ∀ w : InfinitePlace F, EmbOver E w} {χ : Chr F E} {m : InfinitePlace F → ℤ}
     (h : HasExp τ χ m) (w : InfinitePlace F) :
@@ -66,13 +66,13 @@ theorem hasExp_sgn {τ : ∀ w : InfinitePlace F, EmbOver E w} {χ : Chr F E} {m
   · simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' h w`. Establish `hα` using `h.chars.resα (sgnId w)`. Establish `hβ` using `h.chars.resβ (sgnId w)`. Rewrite `hα` using `[hasExp_sgn h.chars.expα]`. Rewrite `hβ` using `[hasExp_sgn h.chars.expβ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he : ((-1 : ℂ)) ^ a' = (-1) ^ a`. Break down `Nat.even_or_odd a with ha | ha` into its components or cases. Rewrite using `[ha.neg_one_pow, ((Nat.even_add.1 h.geo.even).1 ha).neg_one_pow]`. Establish `: Odd a'`. Rewrite `ha`, the goal using `[← Nat.not_even_iff_odd]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `fun e => ha ((Nat.even_add.1 h.geo.even).2 e)`. Rewrite using `[ha.neg_one_pow, this.neg_one_pow]`. Establish `h1 : ((-1 : ℂ)) ^ (B.mα w - B.mβ w) = 1`. Rewrite using `[zpow_sub₀ (by norm_num), hα, hβ, he]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[Int.not_even_iff_odd]`. Rewrite `h1` using `[hn.neg_one_zpow]`. Evaluate the numerical expressions using `at h1`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem even_im_hermitian_sub : GlobalTheory.RealLift.Parity := by
   intro F E _ _ _ _ _ σ B a a' G X om om' h w

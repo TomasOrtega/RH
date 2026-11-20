@@ -6,13 +6,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (PSpace)
 namespace GlobalTheory.CompanionTheory.GE.PbKer
 
 /- English proof (translation)
-Establish `hle : ∀ {W : Scheme.{0}} (u : W ⟶ A) (v : W ⟶ B), u ≫ a = v ≫ b → Scheme.Hom.ker (f ≫ a) ≤ Scheme.Hom.ker (u ≫ a)`. Introduce `W u v huv`. Rewrite using `[hk]`. Use `sup_le (Scheme.Hom.le_ker_comp u a) ?_` and prove the remaining obligations. Rewrite using `[huv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.Hom.le_ker_comp v b`. Use `IsPullback.of_isLimit' ⟨h⟩ ?_` and prove the remaining obligations. Use `PullbackCone.IsLimit.mk h (fun s => IsClosedImmersion.lift (f ≫ a) (s.fst ≫ a) (hle s.fst s.snd s.condition)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `s`. Rewrite using `[← cancel_mono a, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `IsClosedImmersion.lift_fac _ _ _`. Introduce `s`. Rewrite using `[← cancel_mono b, Category.assoc, ← h, ← s.condition]`. Conclude with `IsClosedImmersion.lift_fac _ _ _`. Introduce `s m hm1 _`.
-
-Rewrite using `[← cancel_mono (f ≫ a), IsClosedImmersion.lift_fac, ← Category.assoc, hm1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_of_ker_eq_sup {X A B Z : Scheme.{0}} (a : A ⟶ X) (b : B ⟶ X) (f : Z ⟶ A)
     (g : Z ⟶ B) [IsClosedImmersion a] [IsClosedImmersion b] [IsClosedImmersion (f ≫ a)]

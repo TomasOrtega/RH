@@ -12,11 +12,11 @@ open PowerSeries
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf j hj`. Take `⟨u, w, huw⟩` from `Ideal.mem_span_pair.mp hf`. Rewrite using `[← huw, map_add, PowerSeries.coeff_mul_C, PowerSeries.coeff_mul_X_pow', if_neg (by omega), add_zero]`. Conclude with `dvd_mul_left _ _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h choose c hc using h set g : O⟦X⟧ := PowerSeries.mk fun j => if hj : j < B then c j hj else 0 with hg`. Establish `hdvd : (X : O⟦X⟧) ^ B ∣ f - C a * g`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Rewrite using `[map_sub, PowerSeries.coeff_C_mul, hg, PowerSeries.coeff_mk, dif_pos hm, ← hc m hm, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hdvd`. Rewrite using `[Ideal.mem_span_pair]`. Conclude with `⟨g, w, by linear_combination (-1 : O⟦X⟧) * hw⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_pair_X_iff (a : O) (f : O⟦X⟧) (B : ℕ) :
     f ∈ Ideal.span {C a, (X : O⟦X⟧) ^ B} ↔ ∀ j < B, a ∣ coeff j f := by
@@ -37,9 +37,9 @@ theorem mem_pair_X_iff (a : O) (f : O⟦X⟧) (B : ℕ) :
     exact ⟨g, w, by linear_combination (-1 : O⟦X⟧) * hw⟩
 
 /- English proof (translation)
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hl0 hϖ`. Establish `hl' : (l : O) = ↑u⁻¹ * ϖ ^ n`. Rewrite using `[← hu, mul_comm (l : O), ← mul_assoc, Units.inv_mul, one_mul]`. Establish `he : eO (O` using `O) l = n := by`. Unfold `eO`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[IsDiscreteValuationRing.addVal_def (l : O) u⁻¹ hϖ n hl']`. Simplify using the standard rewrite rules. Conclude with `⟨u⁻¹, by rw [he]; exact hl'⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem exists_unit_natCast_eq_mul_uniformizer_pow_eO {l : ℕ} {ϖ : O} (hϖ : Irreducible ϖ) (hl0 : (l : O) ≠ 0) :
     ∃ u : Oˣ, (l : O) = ↑u * ϖ ^ eO (O := O) l := by
@@ -53,7 +53,7 @@ private theorem exists_unit_natCast_eq_mul_uniformizer_pow_eO {l : ℕ} {ϖ : O}
   exact ⟨u⁻¹, by rw [he]; exact hl'⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_unit_natCast_eq_mul_uniformizer_pow_eO hϖ hl0`. Establish `hC : (C (l : O) : O⟦X⟧) ^ s = C ϖ ^ (eO (O` using `O) l * s) * C ((u : O) ^ s) := by`. Rewrite using `[hu, map_mul, map_pow, map_pow, mul_pow, ← pow_mul, mul_comm]`. Rewrite using `[Ideal.span_insert, Ideal.span_insert, hC, Ideal.span_singleton_mul_right_unit (((Units.isUnit u).pow s).map C)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_l_eq {l : ℕ} [Fact l.Prime] {ϖ : O} (hϖ : Irreducible ϖ) (hl0 : (l : O) ≠ 0) (s : ℕ)
     (g : O⟦X⟧) :
@@ -65,9 +65,9 @@ theorem pair_l_eq {l : ℕ} [Fact l.Prime] {ϖ : O} (hϖ : Irreducible ϖ) (hl0 
     Ideal.span_singleton_mul_right_unit (((Units.isUnit u).pow s).map C)]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_unit_natCast_eq_mul_uniformizer_pow_eO hϖ hl0`. Assume the negation of the conclusion as `h0`. Establish `h0' : eO (O` using `O) l = 0 := by omega`. Rewrite `hu` using `[h0', pow_zero, mul_one]`. Establish `hn` using `(IsLocalRing.mem_maximalIdeal _).mp hl`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn` using `[hu]`. Conclude with `hn (Units.isUnit u)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eO_pos {l : ℕ} [Fact l.Prime] {ϖ : O} (hϖ : Irreducible ϖ) (hl0 : (l : O) ≠ 0)
     (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) : 1 ≤ eO (O := O) l := by
@@ -80,11 +80,11 @@ theorem eO_pos {l : ℕ} [Fact l.Prime] {ϖ : O} (hϖ : Irreducible ϖ) (hl0 : (
   exact hn (Units.isUnit u)
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_unit_natCast_eq_mul_uniformizer_pow_eO hϖ hl0`. Rewrite `h`, the goal using `[← map_pow]`. Rewrite `h`, the goal using `[mem_pair_X_iff]`. Introduce `j hj`. Establish `hj'` using `h j hj`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hj'` using `[← map_pow, PowerSeries.coeff_C_mul, hu]`. Establish `hpow : ϖ ^ (eO (O` using `O) l * s) = ϖ ^ (eO (O := O) l * (s - k)) * ϖ ^ (eO (O := O) l * k) := by`. Rewrite using `[← pow_add, ← mul_add, Nat.sub_add_cancel hks]`. Establish `hrw : ((u : O) * ϖ ^ eO (O` using `O) l) ^ k * coeff j f = (((u ^ k : Oˣ) : O) * coeff j f) * ϖ ^ (eO (O := O) l * k) := by`. Rewrite using `[Units.val_pow_eq_pow_val, mul_pow, ← pow_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hj'` using `[hpow, hrw]`. Establish `hne : ϖ ^ (eO (O` using `O) l * k) ≠ 0 := pow_ne_zero _ hϖ.ne_zero`. Conclude with `Units.dvd_mul_left.mp ((mul_dvd_mul_iff_right hne).mp hj')`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cancel_l {l : ℕ} [Fact l.Prime] {ϖ : O} (hϖ : Irreducible ϖ) (hl0 : (l : O) ≠ 0) (k s B : ℕ)
     (hks : k ≤ s) (f : O⟦X⟧)
@@ -107,25 +107,25 @@ theorem cancel_l {l : ℕ} [Fact l.Prime] {ϖ : O} (hϖ : Irreducible ϖ) (hl0 :
   exact Units.dvd_mul_left.mp ((mul_dvd_mul_iff_right hne).mp hj')
 
 /- English proof (translation)
-Introduce `hmem`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hs1 : 1 ≤ s₁` using `by omega`. Use `set t := s₁ - 2 * σ with ht`. Establish `ht1 : 1 ≤ t` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := b₁ - η - (A + s₁ - 1) with hBdef`. Establish `hB : 1 ≤ B` using `by omega`. Establish `hre : C (l : O) ^ (2 * σ) * (X - C (l : O)) ^ A * X ^ S * P.p 1 ^ y = C (l : O) ^ (2 * σ) * ((X - C (l : O)) ^ A * X ^ S * P.p 1 ^ y)` using `by ring`. Rewrite `hmem` using `[hre, pair_l_eq hϖ P.hl0 s₁]`. Establish `hG` using `cancel_l hϖ P.hl0 (2 * σ) s₁ (b₁ + S - η) (by omega) _ hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hG` using `[← ht, ← pair_l_eq hϖ P.hl0 t]`. Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.mp (PhiData.X_pow_mem_span_q_pow_l_pow (l := l) hϖ A t ht1)`. Establish `hK : (X : O⟦X⟧) ^ (A + t - 1 + S) * P.p 1 ^ y ∈ Ideal.span {(C (l : O) : O⟦X⟧) ^ t, (X : O⟦X⟧) ^ (b₁ + S - η)}`. Establish `hexp : (X : O⟦X⟧) ^ (A + t - 1 + S) * P.p 1 ^ y = a * ((X - C (l : O)) ^ A * X ^ S * P.p 1 ^ y) + (b * X ^ S * P.p 1 ^ y) * C (l : O) ^ t`. Rewrite using `[pow_add, ← hab]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp]`. Use `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hG) (Ideal.mul_mem_left _ _ ?_)` and prove the remaining obligations. Conclude with `Ideal.subset_span (Set.mem_insert _ _)`. Rewrite `hK` using `[← map_pow, mem_pair_X_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : P.p 1 ^ y ∈ Ideal.span {(C (l : O) : O⟦X⟧) ^ t, (X : O⟦X⟧) ^ B}`. Rewrite using `[← map_pow, mem_pair_X_iff]`. Introduce `j hj`. Establish `h2` using `hK (j + (A + t - 1 + S)) (by omega)`. Rewrite `h2` using `[PowerSeries.coeff_X_pow_mul', if_pos (by omega), Nat.add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hP` using `[pair_l_eq hϖ P.hl0 t]`. Establish `hdX : IsDist ((X : O⟦X⟧) ^ B)`. Unfold `IsDist`. Rewrite using `[map_pow, PowerSeries.map_X]`. Conclude with `pow_ne_zero _ PowerSeries.X_ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle` using `(mem_iff_le_cont hϖ hdX _ _).mp hP`. Take `⟨hne, hbd⟩` from `PhiData.constant_le_rpow_of_three_le P hϖ B y hB hy1`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hne`. Rewrite `hle`, `hbd` using `[← hn]`. Establish `hle' : eO (O` using `O) l * t ≤ n := by exact_mod_cast hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `he` using `eO_pos hϖ P.hl0 P.hl`. Establish `hle'' : ((eO (O` using `O) l : ℝ) * t) ≤ (eO (O := O) l : ℝ) * max 0 ((y : ℝ) - B / l + 2 + Real.logb l y) := by`. Establish `: ((eO (O` using `O) l * t : ℕ) : ℝ) ≤ (n : ℝ) := by exact_mod_cast hle'`. Simplify using `only [ENat.toNat_coe] at hbd`. Move the coercions through the operations in `at this`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hepos : (0 : ℝ) < eO (O` using `O) l := by exact_mod_cast he`. Establish `htle` using `le_of_mul_le_mul_left hle'' hepos`. Apply `hc2` to reduce the goal to its premises. Establish `: ((t : ℕ) : ℝ) = (s₁ : ℝ) - 2 * σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht]`. Move the coercions through the operations in `[show 2 * σ ≤ s₁ by omega]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← this]`. Conclude with `htle`.
+A detailed English derivation is pending.
 -/
 theorem content_notMem {l : ℕ} [Fact l.Prime] (P : PhiData O l) (σ A S y b₁ η s₁ : ℕ)
     (hs : 2 * σ < s₁) (hk : A + s₁ - 1 < b₁ - η) (hy1 : 1 ≤ y)

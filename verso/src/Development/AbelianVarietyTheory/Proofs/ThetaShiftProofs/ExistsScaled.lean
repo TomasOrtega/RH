@@ -21,15 +21,15 @@ noncomputable section
 namespace GlobalTheory.ArcCM.Letters
 
 /- English proof (translation)
-Set `sc : epsR R ⟶ epsR R` to `Over.homMk (spMap (epsScaleR r)) (by show spMap (epsScaleR r) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R (DualNumber R))`. Rewrite using `[spMap_comp_spMap]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl])`. Set `z : Over.mk (𝟙 (Sp R)) ⟶ epsR R` to `Over.homMk (spMap (TrivSqZeroExt.fstHom R R R).toRingHom) (by show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Rewrite using `[spMap_comp_spMap]`. Establish `: (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R`. Use extensionality with `a`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_id (CommRingCat.of R))`. Establish `hz : z ≫ sc ≫ w = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `e : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (epsScaleR r) = spMap (TrivSqZeroExt.fstHom R R R).toRingHom`. Rewrite using `[spMap_comp_spMap]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `ext a <;> simp [epsScaleR]`. Use `show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (epsScaleR r) ≫ w.left = _`. Rewrite using `[← Category.assoc, e, hw]`. Conclude with `(Category.id_comp _).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨sB _ (sc ≫ w), ⟨sB _ 1, TanPart.isZero_of_isAdd (by simpa using h.2.1 _ 1 1), ?_⟩, h.2.2 _ _ sc w⟩` and prove the remaining obligations. Use `h.2.2 _ _ z (sc ≫ w)` as an intermediate fact. Rewrite `this` using `[hz]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_scaled {R : Type} [CommRing R] [IsDomain R] {D₀ : Out.DegPre R} {n : ℕ}
     {sB : ∀ T : Over (Sp R), (T ⟶ D₀.P.A) → Out.GtPt D₀ T} (h : IsSplit D₀ n sB) (r : R) {w : epsR R ⟶ D₀.P.A}
@@ -61,9 +61,9 @@ theorem exists_scaled {R : Type} [CommRing R] [IsDomain R] {D₀ : Out.DegPre R}
   rwa [hz] at this
 
 /- English proof (translation)
-Set `u : ∀ τ, Fin (N τ) ≃ Option (Fin (m τ))` to `fun τ => (finCongr (h τ)).trans (finSuccEquiv _)`. Use `⟨fun τ k => (u τ k).map fun i => e ⟨τ, i⟩, fun τ => ⟨?_, ⟨(u τ).symm none, by simp⟩, fun j => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `(Option.map_injective (e.injective.comp sigma_mk_injective)).comp (u τ).injective`. Introduce and unpack `⟨k, hk⟩`. Take `⟨i, -, rfl⟩` from `Option.map_eq_some_iff.1 hk`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Conclude with `⟨(u _).symm (some (e.symm j).2), by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_kind {I J : Type} (N m : I → ℕ) (h : ∀ τ, N τ = m τ + 1) (e : (Σ b, Fin (m b)) ≃ J) :
     ∃ kind : ∀ τ, Fin (N τ) → Option J, ∀ τ, Function.Injective (kind τ) ∧ (∃ k, kind τ k = none) ∧
@@ -78,9 +78,7 @@ theorem exists_kind {I J : Type} (N m : I → ℕ) (h : ∀ τ, N τ = m τ + 1)
     exact ⟨(u _).symm (some (e.symm j).2), by simp⟩
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `principalPolarisation_exists_unique_section hT P`. Take `⟨a, -, hu⟩` from `hb b`. Use `⟨b, KeyPow.exists_mem_nonzeroLocus _ b ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
-
-Conclude with `zero_ne_one ((hu 0 fun i => by rw [hn i, mul_zero]).trans (hu 1 fun i => by rw [hn i, mul_zero]).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_section (hT : Out.SecTwistSt) {K : Type} [Field K] (P : Out.PolAV (Sp K)) :
     ∃ th : P.L.Sec, ∀ s : Sp K, ∃ x : P.A.left, P.A.hom x = s ∧ x ∈ Out.nonzeroLocus th := by
@@ -92,23 +90,21 @@ theorem exists_section (hT : Out.SecTwistSt) {K : Type} [Field K] (P : Out.PolAV
   exact zero_ne_one ((hu 0 fun i => by rw [hn i, mul_zero]).trans (hu 1 fun i => by rw [hn i, mul_zero]).symm)
 
 /- English proof (translation)
-Introduce `hK E _ _ _ H Dw l c K₁ _ _ _ a ρ σ₁ X ψ n' La c₁ ξ ν₀ jj hp hq hpq hσ hρ hLa hψ hact hn hτ hrk hξ hβ htr`. Use `letI := H.starRing`. Take `⟨th, hth⟩` from `exists_section hK.laws2.secTwist a.D₀.P`. Take `⟨v, hv⟩` from `KeyPow.exists_isLieBasis a.D₀.P.A a.D₀.P.smoothDim`. Establish `hf : 0 < Module.finrank ℚ E / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `e` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Establish `: 0 < Module.finrank ℚ (maximalRealSubfield E)` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers. Establish `gB : X.B.g = Module.finrank ℚ E / 2 * (Dw.p - 1 + (Dw.q - 1))` using `(GlobalTheory.T.lieAlgebra_eigenDecomposition_CM_signature E H K₁ ρ X.B ⟨a.D₀.P, ψ, hψ, v, hv⟩ _ _ X.split X.typeB X.ρ_sq).2.2.2.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hg : 1 ≤ a.D₀.P.g`. Rewrite using `[hψ.1]`. Use `show 1 ≤ X.B.g`. Rewrite using `[gB]`. Conclude with `Nat.mul_pos hf (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlab : ∀ τ, τ ∈ psiSet H ↔ labK c K₁ τ (H.rt : E) = (ρ : K₁)` using `fun τ => by`. Establish `e : σ₁ (labK c K₁ τ (H.rt : E)) = τ (H.rt : E)` using `RingHom.congr_fun hσ (embF c τ (H.rt : E))`. Rewrite using `[← σ₁.injective.eq_iff, e, hρ]`. Both sides reduce to the same expression. Set `xB : KeyIn K₁` to `⟨a.D₀.P, hg, a.D₀.rig, a.D₀.rig_gen, th, hth, v, hv⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨oa, oaΨ, oa', xΨ, x', φΨ, φ', τΨ, τ', ℓΨ, ℓ', Tl, LamL, hoa, -, -, hgood⟩` from `exists_lamObjGood_of_cmObj hK.laws2.secTwist hK.theta hK.laws hK.hom E H l c (fun _ => rfl) K₁ ρ σ₁ _ _ X La hlab hLa xB ψ ((isFibreOf_iff_isPolFibre _ _ (algebraMap (𝓞 K₁) K₁) X.B.pol xB ψ).2 hψ)`. Take `⟨L, hL, hm⟩` from `exists_lamLetters_isGood E H l c _ _ _ _ La hgood`. Take `⟨kind, hkind⟩` from `exists_kind Dw.mult L.m (fun τ => by`. Unfold `Datum.mult`. Use `split_ifs with h`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hm τ).1 h]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[(hm τ).2 h]`. Use the proof step `omega) L.e`. Take `⟨sB, hsB⟩` from `GlobalTheory.ArcCM.exists_isSplit hK K₁ a.D₀ n' hn hτ.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `tor : ∀ τ : E →+* ℂ, ∃ ν : Out.GtPt a.D₀ (epsR K₁), GtTanR ν ∧ ν.b = Out.DegPre.zeroT a.D₀ (epsR K₁) ∧ ∀ x, DlogTan ν x (labK c K₁ τ (cc (pairE ξ x)))` using `fun τ => ((GlobalTheory.TorusTangent.main hK.laws.globalFns K₁ a.D₀).1 (AddMonoidHom.mk' (fun x => labK c K₁ τ (cc (pairE ξ x))) fun x y => by rw [(pairE_properties E a.D₀.X ξ).2.1, cc, map_add, map_add]; rfl)).exists`. Establish `ab : ∀ m : Fin a.D₀.P.g, ∃ ν : Out.GtPt a.D₀ (epsR K₁), GtTanR ν ∧ ∃ w : epsR K₁ ⟶ a.D₀.P.A, L.IsLetter m w ∧ Out.GtPt.IsPull (spMap (epsScaleR ((n' : K₁)⁻¹))) (sB (epsR K₁) w) ν` using `fun m => by`. Take `⟨w, hw, hc⟩` from `hL.2.2.1 m`. Take `⟨ν, h₁, h₂⟩` from `exists_scaled hsB ((n' : K₁)⁻¹) (w := w) (GlobalTheory.Reg.isTangent_of_isLieComb hv.1 hc)`. Conclude with `⟨ν, h₁, w, hw, h₂⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Use `choose et het using tor`. Use `choose ea hea using ab`. Use `⟨fun τ k => (kind τ k).elim (et τ) ea, th, { B := X.B.pol, oa := oa, AΨ := (X.A true).pol, oaΨ := oaΨ, A' := (X.A false).pol, oa' := oa' φΨ := fun i => X.φ (Sum.inl i), φ' := fun i => X.φ (Sum.inr i) hΨ := fun i => X.hh (Sum.inl i), h' := fun i => X.hh (Sum.inr i) g_pos := hg, th …` and prove the remaining obligations. Consider the cases of `kind τ k with`. Consider the case `none => exact (het τ).1`.
-
-Consider the case `some m => exact (hea m).1`. Rewrite using `[h]`. Conclude with `(het τ).2`. Rewrite using `[h]`. Conclude with `(hea m).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cmIn : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (a : ArcIn Dw l (RingHom.id c.F) K₁ (algebraMap c.F K₁)) (ρ : 𝓞 K₁) (σ₁ : K₁ →+* ℂ) (X : GlobalTheory.CM.CMObj H K₁ ρ σ₁ (Dw.p - 1) (Dw.q - 1)) (ψ : a.D₀.P.A.left ⟶ X.B.pol.A.left) (n' : ℕ) (La c₁ : ℝ) (ξ : Module.Dual ℤ a.D₀.X) (ν₀ : E) (jj : ℤ), letI := H.starRing; 1 ≤ Dw.p → 1 ≤ Dw.q → 3 ≤ Dw.p + Dw.q → σ₁.comp (algebraMap c.F K₁) = c.F.val.toRingHom → σ₁ (ρ : K₁) = H.rt0 → (∀ j (τ : E →+* ℂ), ‖τ (X.hh j : E)‖ ≤ La ^ 2) → IsPolFibre (algebraMap (𝓞 K₁) K₁) X.B.pol a.D₀.P ψ → (∀ x, (a.oa.onB.act x).left ≫ ψ = ψ ≫ (X.B.t.act.act x).left) → 0 < n' → TauCan a.D₀ n' → Module.finrank (𝓞 E) a.D₀.X = 1 → ξ ≠ 0 → BetaAt ξ l.M' a.be ν₀ jj → ((Algebra.trace ℚ E ν₀ : ℚ) : ℝ) / 2 ≤ c₁ → ∃ (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K₁)) (th : a.D₀.P.L.Sec) (s : CMIn a e th jj n' La c₁), s.ξ = ξ ∧ s.ν₀ = ν₀ := by
   intro hK E _ _ _ H Dw l c K₁ _ _ _ a ρ σ₁ X ψ n' La c₁ ξ ν₀ jj hp hq hpq hσ hρ hLa hψ hact hn hτ hrk hξ hβ htr

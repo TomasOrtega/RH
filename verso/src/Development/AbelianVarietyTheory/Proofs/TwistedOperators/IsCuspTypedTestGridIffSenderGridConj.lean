@@ -22,7 +22,7 @@ open Matrix GlobalTheory.ConjDS GlobalTheory.ConjMult Formalism.IndefR.Mult
 variable {D : D7}
 
 /- English proof (translation)
-Use `isUnit_iff_ne_zero.2 ?_` and prove the remaining obligations. Rewrite using `[gramAt, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 (Formalism.L2.Theta.gram_det_ne V)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_gramAt (V : HSp D) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ).det := by
   refine isUnit_iff_ne_zero.2 ?_
@@ -30,21 +30,19 @@ theorem isUnit_det_gramAt (V : HSp D) (τ : D.what₂.Tau) : IsUnit (gramAt D V 
   exact (map_ne_zero _).2 (Formalism.L2.Theta.gram_det_ne V)
 
 /- English proof (translation)
-Take `⟨H, i1, i2, σ, lam, ε, P, hE, hD, hP, hG, hx⟩` from `h`. Establish `hJ` using `isUnit_det_gramAt V τ`. Establish `key : ∀ g, rv (P.submatrix Fin.revPerm (Equiv.refl _) * g * (P.submatrix Fin.revPerm (Equiv.refl _))⁻¹) = P * g * P⁻¹` using `fun g => by`. Rewrite using `[inv_submatrix_equiv]`. Establish `: P.submatrix Fin.revPerm (Equiv.refl _) * g * P⁻¹.submatrix (Equiv.refl _) Fin.revPerm = rv (P * g * P⁻¹)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[rv, Matrix.mul_apply]`. Rewrite using `[this, rv_rv]`. Use `⟨Cj H, inferInstance, inferInstance, fun g => cjOp (σ (rv g)), nr lam, fun a => ε a.rev, P.submatrix Fin.revPerm (Equiv.refl _), isEnum_dual hE, isDS_transfer (fun _ => rfl) (cj H) (fun _ _ => rfl) hD, (Matrix.isUnit_submatrix_equiv _ _).2 hP, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hG, ← rv_Jm (ε := fun a => ε a.rev) (ε' := ε) (fun a => by simp), rv, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [key]`. Introduce `x`. Take `⟨v, hv, ℓ, hℓ, ⟨S0, C, hS0, hC, hsum, B, hB, hBb⟩, hhas⟩` from `hx x`. Establish `hc1 : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, (cj H) (cjOp (σ (P * g * P⁻¹)) w) = σ (P * g * P⁻¹) ((cj H) w)` using `fun _ _ _ => rfl`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc2 : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, (cj H).symm (σ (P * g * P⁻¹) w) = cjOp (σ (P * g * P⁻¹)) ((cj H).symm w)` using `fun _ _ _ => rfl`. Establish `hfold : ∀ l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ X ∈ l, X ∈ lieAt V τ) → ∀ w, l.foldr (dRep fun g => σ (P * g * P⁻¹)) (cj H w) = cj H (l.foldr (dRep fun g => cjOp (σ (P * g * P⁻¹))) w)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `cons X l ih`. Introduce `hl w`. Rewrite using `[List.foldr_cons, ih (fun Y hY => hl Y (List.mem_cons_of_mem _ hY)), dRep_conj hJ (cj H) hc1 (hl X List.mem_cons_self), List.foldr_cons]`. Establish `hnorm : ∀ l : List (List (Matrix (Fin V.rank) (Fin V.rank) ℂ)), (∀ m ∈ l, ∀ X ∈ m, X ∈ lieAt V τ) → ∀ w, (l.map fun m => ‖m.foldr (dRep fun g => cjOp (σ (P * g * P⁻¹))) w‖) = l.map fun m => ‖m.foldr (dRep fun g => σ (P * g * P⁻¹)) (cj H w)‖` using `fun l hl w => List.map_congr_left fun m hm => by rw [hfold m (hl m hm), (cj H).norm_map]`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose ℓ' hℓ' hℓv using fun i => sobCont_conj hJ (cj H) hc1 (hℓ i)`. Use `⟨fun i => (cj H).symm (v i), fun i => smoothVec_conj hJ (cj H).symm hc2 (hv i), ℓ', hℓ', ⟨S0, C, hS0, fun i w hw => ?_, fun S' hS' => ?_, B, hB, fun g hg w hw => ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hℓv, norm_star, hnorm S0 hS0]`. Conclude with `hC i _ (smoothVec_conj hJ (cj H) hc1 hw)`. Use `hsum S' hS' using 3 with i` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hnorm S' hS']`. Both sides reduce to the same expression. Rewrite using `[hnorm S0 hS0, hnorm S0 hS0]`. Conclude with `hBb g hg _ (smoothVec_conj hJ (cj H) hc1 hw)`. Simplify using `only [hℓv]`.
-
-Conclude with `(hhas g hg).star`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isTypeAt_star {θ : InfFam D} {V : HSp D} {τ : D.what₂.Tau} {S : SPar} {φ : GA D V → ℂ}
     (h : IsTypeAt θ V τ S φ) : IsTypeAt θ V τ (dualPar S) fun g => star (φ g) := by
@@ -107,7 +105,7 @@ open Matrix Formalism.IndefR.Mult
 variable {D : D7}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using isTypeAt_star h`. Introduce `h`. Simplify `isTypeAt_star h` using `[dualPar_dualPar]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isTypeAt_star_iff {θ : InfFam D} {V : HSp D} {τ : D.what₂.Tau} {S : SPar} {φ : GA D V → ℂ} :
     IsTypeAt θ V τ S (fun g => star (φ g)) ↔ IsTypeAt θ V τ (dualPar S) φ := by
@@ -118,7 +116,7 @@ theorem isTypeAt_star_iff {θ : InfFam D} {V : HSp D} {τ : D.what₂.Tau} {S : 
     simpa [dualPar_dualPar] using isTypeAt_star h
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Establish `hφ : (fun g => φ (cast e g)) = φ` using `funext fun g => rfl`. Rewrite using `[hφ]`. Simplify using `only [isTypeAt_star_iff]`. Use `and_congr ⟨fun h => ⟨⟨h.left, h.level, h.cont⟩, h.smooth, h.zfin, h.growth⟩, fun h => ⟨⟨h.left, h.level, h.cont⟩, h.smooth, h.zfin, h.growth⟩⟩ (and_congr Iff.rfl Iff.rfl)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem listed_iff_of_sameSp {θ : InfFam D} {V V' : HSp D} (h : GlobalTheory.GridJoin.SameSp V V') (e : GA D V' = GA D V)
     (P : D.what₂.Tau → SPar) (φ : GA D V → ℂ) :
@@ -133,9 +131,9 @@ theorem listed_iff_of_sameSp {θ : InfFam D} {V V' : HSp D} (h : GlobalTheory.Gr
     fun h => ⟨⟨h.left, h.level, h.cont⟩, h.smooth, h.zfin, h.growth⟩⟩ (and_congr Iff.rfl Iff.rfl)
 
 /- English proof (translation)
-Establish `hg` using `GlobalTheory.GridJoin.gap_eq_chiGap D`. Establish `hc : GlobalTheory.Grid.cen D τ = GlobalTheory.ChiGrid.cen D 1 τ`. Use function extensionality and compare the values at `i`. Unfold `GlobalTheory.Grid.cen GlobalTheory.ChiGrid.cen GlobalTheory.Grid.gridOf`. Rewrite using `[hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `GlobalTheory.Grid.grid GlobalTheory.Grid.gridOf GlobalTheory.ChiGrid.num`. Rewrite using `[hc, hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem grid_eq_num (D : D7) (τ : D.what₂.Tau) : GlobalTheory.Grid.grid D τ = GlobalTheory.ChiGrid.num D 1 τ := by
   have hg := GlobalTheory.GridJoin.gap_eq_chiGap D
@@ -149,7 +147,7 @@ theorem grid_eq_num (D : D7) (τ : D.what₂.Tau) : GlobalTheory.Grid.grid D τ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Grid.parV, GlobalTheory.ChiGrid.parV, grid_eq_num]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem parV_eq (D : D7) (i j : ℕ) (τ : D.what₂.Tau) :
     GlobalTheory.Grid.parV D i j τ = dualPar (GlobalTheory.ChiGrid.parV D 1 i j τ) := by
@@ -159,11 +157,11 @@ variable {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Rewrite using `[GlobalTheory.Grid.parV_zero D hj]`. Consider the cases of `j with`. Consider the case `zero => simp [GlobalTheory.Grid.GridPre.V, GlobalTheory.Grid.row0, GlobalTheory.Grid.nodeY]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ j`. Distinguish the cases in `h : j + 1 < D.R.m`. Simplify using `[GlobalTheory.Grid.GridPre.V, GlobalTheory.Grid.row0, GlobalTheory.Grid.nodeY, h, min_eq_left h.le]`. Establish `e : j + 1 = D.R.m` using `by omega`. Simplify using `only [GlobalTheory.Grid.GridPre.V, GlobalTheory.Grid.GridSp.vert, GlobalTheory.Grid.row0, if_neg h]`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Consider the case `succ i => exact (hG.spaces.vert i j (by omega) hj).par`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem nodeS_eq {R : RealDat D A Ks} {G : GlobalTheory.Grid.GridPre R} (hG : G.Is) {i j : ℕ} (hi : i ≤ D.R.m) (hj : j ≤ D.R.m) :
     (G.V i j).S = GlobalTheory.Grid.parV D i j := by
@@ -187,11 +185,11 @@ namespace GlobalTheory.ListedTypeConj
 open Formalism.IndefR.Mult
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc large₂ F _ hc G' W hW G hG hM i j hi hj e φ`. Establish `hθ : W.θ = R.θ` using `hW.θ`. Establish `hS : (G.V i j).S = fun τ => dualPar (GlobalTheory.ChiGrid.Node.par D sc.cGap (.grid i j) τ)`. Rewrite using `[nodeS_eq hG hi hj, hc]`. Use function extensionality and compare the values at `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `parV_eq D i j τ`. Establish `hsp` using `(hM.1.vert i j hi hj).sp`. Unfold `IsCuspListed GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType`. Simplify using `only [GridData.IsListed]`. Rewrite using `[hθ, hS]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `revert e`. Generalize the expression as in `(G.V i j).V = V' at hsp ⊢`. Introduce `e`. Conclude with `listed_iff_of_sameSp hsp e _ φ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCuspListed_grid_iff : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : Consts} {large₂ : SizeData₂ D}

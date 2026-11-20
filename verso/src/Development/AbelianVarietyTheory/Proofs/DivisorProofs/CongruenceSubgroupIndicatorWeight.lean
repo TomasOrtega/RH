@@ -17,13 +17,13 @@ open scoped Classical
 namespace GlobalTheory.CongMatch
 
 /- English proof (translation)
-Establish `hq0 : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Establish `h1 : Real.sqrt (((q ^ 2 : ℕ)) : ℝ) = q` using `by push_cast; exact Real.sqrt_sq hq0`. Establish `h2 : Real.sqrt ((((q ^ 2 : ℕ)) : ℝ) ^ (-v)) = (q : ℝ) ^ (-v)`. Use `push_cast`. Rewrite using `[← zpow_natCast, ← _root_.zpow_mul, mul_comm, _root_.zpow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.sqrt_sq (by positivity)`. Rewrite using `[h1, h2]`. Establish `hqc : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Establish `hm : (-(q : ℂ)) ≠ 0` using `neg_ne_zero.2 hqc`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `e1 : (-(q : ℂ)) ^ (-(v - (N : ℤ))) = (-(q : ℂ)) ^ (N : ℤ) * (-(q : ℂ)) ^ (-v)`. Rewrite using `[← zpow_add₀ hm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (-(q : ℂ)) ^ (-v) = (-1 : ℂ) ^ v * (q : ℂ) ^ (-v)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_eq_neg_one_mul, mul_zpow]`. Use `congr 1`. Rewrite using `[_root_.zpow_neg, ← _root_.inv_zpow, inv_neg, inv_one]`. Rewrite using `[e1, e2, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma unit_product_rescale_disjoint_finsets (q : ℕ) (hq : q ≠ 0) (v : ℤ) (N : ℕ) (X : ℚ) :
     ((-((Real.sqrt (((q ^ 2 : ℕ)) : ℝ) : ℝ) : ℂ)) ^ N)⁻¹ * ((((-(q : ℚ)) ^ (-(v - ((N : ℕ) : ℤ))) * X : ℚ)) : ℂ) =
@@ -48,15 +48,15 @@ lemma unit_product_rescale_disjoint_finsets (q : ℕ) (hq : q ≠ 0) (v : ℤ) (
   field_simp
 
 /- English proof (translation)
-Introduce `E _ _ _ hU w hw n a b k hab hk`. Take `⟨K, e, he1, he2, he3, hq⟩` from `GlobalTheory.InertUQ.exists_uq E hU w hw`. Take `⟨t, ht, htv⟩` from `GlobalTheory.T.exists_small_conjFixed_of_valuation K k hk`. Introduce `Q₁ Q₂ hm₁ hm₂ hd₁ hd₂ hsep hc₁ hc₂`. Take `⟨B₁, h11, h12, h13, h14⟩` from `GlobalTheory.T.exists_involutiveAlgebra_adjoinRoot_selfReciprocal E w hw K e he1 t ht.1 Q₁ hm₁ hc₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨B₂, h21, h22, h23, h24⟩` from `GlobalTheory.T.exists_involutiveAlgebra_adjoinRoot_selfReciprocal E w hw K e he1 t ht.1 Q₂ hm₂ hc₂`. Take `⟨hsB, hres⟩` from `GlobalTheory.T.val_resultant_charpoly_shifted_unit_adjoinRoot E w K e he3 k t ht.1 htv a b Q₁ Q₂ B₁ B₂ hm₁ hm₂ hd₁ hd₂ hsep h11 h12 h13 h21 h22 h23`. Establish `hid` using `GlobalTheory.T.invAlg_identity_of_principal_congruence (GlobalTheory.T.unitLemma_lieAlgebra_unitaryGroup_of_jacquetRallis GlobalTheory.T.jacquetRallisUnitMatch_all_ranks).1 K t ht B₁ B₂ h14 h24 hsB`. Rewrite using `[GlobalTheory.T.stableTwistedOrbitalIntegral_integralNormCongruence_product E w hw a b k Q₁ Q₂ _ hm₁ hm₂ hd₁ hd₂ hsep, GlobalTheory.T.twistedOrbitalIntegral_levelFunction_inert_eq_latticeCount E hU w hw K e he1 he2 he3 hq k t ht htv a Q₁ B₁ hm₁ hd₁ hsep.of_mul_left hc₁ h11 h12 h1 …`. Unfold `GlobalTheory.UnitLemma.InvAlg.Identity at hid`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Rat.cast_mul, ← hid, hres]`. Establish `hq0 : K.q ≠ 0`. Introduce `h0`. Establish `hc` using `K.card_res`. Rewrite `hc` using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Nonempty (IsLocalRing.ResidueField K.O) := ⟨0⟩`. Use `Nat.card_pos (α := IsLocalRing.ResidueField K.O)` as an intermediate fact. Simplify using `at hc`. Use linear arithmetic over natural numbers and integers. Unfold `delta absHalf`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hw, hq]`. Conclude with `unit_product_rescale_disjoint_finsets K.q hq0 _ (k * a * b) _`.
+A detailed English derivation is pending.
 -/
 theorem match_principal_congruence_inert : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (n a b k : ℕ), a + b = n → 1 ≤ k → Match n a b w 1 ((({γ : UL n w | γ.1 ∈ {g : GLw n w | g ∈ GlobalTheory.LFun.KGL w n ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))}} : Set (UL n w))).indicator 1) (fun y : GLw a w × GLw b w => ((-((Real.sqrt (qV E w : ℝ) : ℝ) : ℂ)) ^ (k * a * b))⁻¹ * (if y.1 ∈ GlobalTheory.LFun.KGL w a ∧ nrmL a w y.1 ∈ {g : GLw a w | g ∈ GlobalTheory.LFun.KGL w a ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))} ∧ y.2 ∈ GlobalTheory.LFun.KGL w b ∧ nrmL b w y.2 ∈ {g : GLw b w | g ∈ GlobalTheory.LFun.KGL w b ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin b) (Fin b) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))} then 1 else 0)) := by
   intro E _ _ _ hU w hw n a b k hab hk

@@ -31,9 +31,9 @@ def LeafRepVec : Prop := ∀ (d : ℕ) (R : Type) [CommRing R],
         e₁.hom ≫ yoneda.map ((Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A))).resLE _ _ h)
 
 /- English proof (translation)
-Introduce `d R _`. Take `⟨A, _, I, φ, hI, h, f₁, f₂, w⟩` from `hV d R`. Set `E` to `(evaluation SimplexCategoryᵒᵖ PSh).obj (op (SimplexCategory.mk 0))`. Set `sq : E.obj (sp R) ≅ yoneda.obj (Spec (CommRingCat.of R))` to `Iso.refl _`. Use `⟨A, inferInstance, I, φ, hI, h, PreservesLimitPair.iso E _ _ ≪≫ prod.mapIso (nerve0 (d + 1) 1) sq ≪≫ f₁, PreservesLimitPair.iso E _ _ ≪≫ prod.mapIso (nerve0 d 0) sq ≪≫ f₂, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Iso.trans_hom, PreservesLimitPair.iso_hom, prod.mapIso_hom, Category.assoc]`. Express the relevant statement in the definitionally equal form `E.map (prod.map _ _) ≫ _ = _`. Rewrite using `[prodComparison_natural_assoc, prod.map_map_assoc, ← w, prod.map_map_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LeafTailRep0_of_vec (hV : LeafRepVec) : LeafTailRep0 := by
   intro d R _
@@ -69,11 +69,11 @@ def isoOfPt {F G : PSh} {X : Scheme.{0}} (E : ∀ U : Scheme.{0}, F.obj (op U) �
       exact hE f.unop a b)
 
 /- English proof (translation)
-Introduce `d R _`. Take `⟨A, _, I, φ, hI, h, E₁, E₂, n₁, n₂, sq⟩` from `hP d R`. Use `⟨A, inferInstance, I, φ, hI, h, isoOfPt (F := Vo (d + 1) 1) E₁ (fun f a b => n₁ f a b), isoOfPt (F := Vo d 0) E₂ (fun f a b => n₂ f a b), ?_⟩` and prove the remaining obligations. Establish `key : prod.map (voTail d) (𝟙 (yoneda.obj (Spec (CommRingCat.of R)))) ≫ (FunctorToTypes.binaryProductIso _ _).hom = (FunctorToTypes.binaryProductIso _ _).hom ≫ FunctorToTypes.prod.lift (FunctorToTypes.prod.fst ≫ voTail d) FunctorToTypes.prod.snd`. Apply `(cancel_mono (FunctorToTypes.binaryProductIso _ _).inv).1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `apply Limits.prod.hom_ext <;> simp <;> rw [← Category.assoc, FunctorToTypes.binaryProductIso_hom_comp_fst]`. Simplify using `only [isoOfPt, Iso.trans_hom]`. Rewrite using `[reassoc_of% key, Category.assoc]`. Use `congr 1`. Use extensionality with `U ⟨v, g⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `sq U.unop v g`.
+A detailed English derivation is pending.
 -/
 theorem LeafRepVec_of (hP : LeafRepPt) : LeafRepVec := by
   intro d R _
@@ -92,7 +92,7 @@ theorem LeafRepVec_of (hP : LeafRepPt) : LeafRepVec := by
   exact sq U.unop v g
 
 /- English proof (translation)
-The claim follows from `LeafTailRep0_of_vec (LeafRepVec_of hP)`.
+A detailed English derivation is pending.
 -/
 theorem LeafTailRep0_of (hP : LeafRepPt) : LeafTailRep0 := LeafTailRep0_of_vec (LeafRepVec_of hP)
 

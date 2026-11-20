@@ -25,7 +25,7 @@ variable (F ι) in
 def boxes : Set (Set (ι → Af F)) := {s | ∃ D, IsBoxD D ∧ s = boxS D}
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `[boxS]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem boxS_eq (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) :
     boxS D = Set.pi univ fun c => {x : Af F | ∀ v, x v ∈ D c v} := by
@@ -33,7 +33,7 @@ theorem boxS_eq (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) :
   simp [boxS]
 
 /- English proof (translation)
-Rewrite using `[boxS_eq]`. Conclude with `isCompact_univ_pi fun c => isCompact_finite_adele_box (fun v => (hD.1 c v).2) (by filter_upwards [hD.2] with v hv using hv c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_boxS {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)} (hD : IsBoxD D) :
     IsCompact (boxS D) := by
@@ -42,7 +42,7 @@ theorem isCompact_boxS {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F
     (by filter_upwards [hD.2] with v hv using hv c)
 
 /- English proof (translation)
-Rewrite using `[boxS_eq]`. Conclude with `isOpen_set_pi finite_univ fun c _ => isOpen_finite_adele_box (fun v => (hD.1 c v).1.isOpen) (by filter_upwards [hD.2] with v hv using hv c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_boxS {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)} (hD : IsBoxD D) :
     IsOpen (boxS D) := by
@@ -51,11 +51,11 @@ theorem isOpen_boxS {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)
     (by filter_upwards [hD.2] with v hv using hv c)
 
 /- English proof (translation)
-Take `⟨D, hD, rfl⟩` from `hs`. Take `⟨D', hD', rfl⟩` from `ht`. Use `⟨fun c v => D c v ∩ D' c v, ⟨fun c v => ⟨(hD.1 c v).1.inter (hD'.1 c v).1, (hD.1 c v).2.inter_right (hD'.1 c v).1.isClosed⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hD.2, hD'.2] with v h1 h2 c`. Rewrite using `[h1 c, h2 c, inter_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `only [boxS, mem_inter_iff, mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ c v`. Conclude with `⟨h1 c v, h2 c v⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨fun c v => (h c v).1, fun c v => (h c v).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem boxes_inter {s t : Set (ι → Af F)} (hs : s ∈ boxes F ι) (ht : t ∈ boxes F ι) :
     s ∩ t ∈ boxes F ι := by
@@ -74,11 +74,11 @@ theorem boxes_inter {s t : Set (ι → Af F)} (hs : s ∈ boxes F ι) (ht : t �
       exact ⟨fun c v => (h c v).1, fun c v => (h c v).2⟩
 
 /- English proof (translation)
-Set `D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)` to `fun c v => if y c v ∈ v.adicCompletionIntegers F then (v.adicCompletionIntegers F : Set (Fv F v)) else (Homeomorph.subRight (y c v)) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))`. Use `⟨D, ⟨fun c v => ?_, ?_⟩, fun c v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : y c v ∈ v.adicCompletionIntegers F`. Rewrite using `[show D c v = _ from if_pos h]`. Conclude with `⟨isClopen_intV v, isCompact_intV v⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[show D c v = _ from if_neg h]`. Conclude with `⟨isClopen_translate v _, isCompact_translate v _⟩`. Use `filter_upwards [eventually_all.2 fun c => (y c).eventually] with v hv c`. Conclude with `if_pos (hv c)`. Distinguish the cases in `h : y c v ∈ v.adicCompletionIntegers F`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show D c v = _ from if_pos h]`. Conclude with `h`. Rewrite using `[show D c v = _ from if_neg h]`. Conclude with `mem_translate v _`.
+A detailed English derivation is pending.
 -/
 theorem exists_box_mem (y : ι → Af F) : ∃ D, IsBoxD D ∧ y ∈ boxS D := by
   classical
@@ -100,13 +100,13 @@ theorem exists_box_mem (y : ι → Af F) : ∃ D, IsBoxD D ∧ y ∈ boxS D := b
       exact mem_translate v _
 
 /- English proof (translation)
-Take `⟨T, hT, he⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun s : {s // s ∈ boxes F ι} => (s.1 : Set (ι → Af F))) (fun s => by obtain ⟨D, hD, e⟩ := s.2; rw [e]; exact isOpen_boxS hD)`. Establish `hU : ⋃ s ∈ T, (s.1 : Set (ι → Af F)) = univ`. Rewrite using `[he]`. Use `eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Take `⟨D, hD, hy⟩` from `exists_box_mem y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_iUnion.2 ⟨⟨boxS D, D, hD, rfl⟩, hy⟩`. Establish `hne : T.Nonempty`. Establish `h0 : (0 : ι → Af F) ∈ ⋃ s ∈ T, (s.1 : Set (ι → Af F))`. Rewrite using `[hU]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `mem_iUnion₂.1 h0`. Conclude with `⟨s, hs⟩`. Take `⟨g, hg⟩` from `hT.exists_eq_range hne`. Use `⟨fun n => (g n).1, fun n => (g n).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hU, hg]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem boxes_seq : ∃ bs : ℕ → Set (ι → Af F), (∀ n, bs n ∈ boxes F ι) ∧ ⋃ n, bs n = univ := by
   obtain ⟨T, hT, he⟩ := TopologicalSpace.isOpen_iUnion_countable
@@ -137,7 +137,7 @@ def upd (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (c : ι)
 
 open Classical in
 /- English proof (translation)
-The claim follows from `if_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem upd_self (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (c : ι)
     (v : HeightOneSpectrum (𝓞 F)) (C : Set (Fv F v)) :
@@ -145,7 +145,7 @@ theorem upd_self (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (
 
 open Classical in
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem upd_ne (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (c : ι)
     (v : HeightOneSpectrum (𝓞 F)) (C : Set (Fv F v)) {c' : ι} (h : c' ≠ c) :
@@ -153,17 +153,15 @@ theorem upd_ne (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (c 
 
 open Classical in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨fun c' w => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hy c' w`. Distinguish the cases in `hc : c' = c`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hc` using the available equality. Rewrite `h` using `[upd_self]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite `h` using `[Function.update_self]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.1`. Rewrite `h` using `[Function.update_of_ne hw]`. Conclude with `h`. Rewrite `h` using `[upd_ne D c v C hc]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h` using `hy c v`. Rewrite `h` using `[upd_self, Function.update_self]`. Conclude with `h.2`. Introduce and unpack `⟨hy, hC⟩ c' w`. Distinguish the cases in `hc : c' = c`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hc` using the available equality. Rewrite using `[upd_self]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
-
-Conclude with `⟨hy _ _, hC⟩`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hy _ _`. Rewrite using `[upd_ne D c v C hc]`. Conclude with `hy _ _`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_upd (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (c : ι)
     (v : HeightOneSpectrum (𝓞 F)) (C : Set (Fv F v)) (y : ι → Af F) :
@@ -202,13 +200,11 @@ theorem mem_upd (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (c
 
 open Classical in
 /- English proof (translation)
-Use `⟨fun c' w => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Rewrite using `[upd_self]`. Distinguish the cases in `hw : w = v`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `⟨(hD.1 _ _).1.inter hC.1, (hD.1 _ _).2.inter_right hC.1.isClosed⟩`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hD.1 _ _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[upd_ne D c v C hc]`. Conclude with `hD.1 _ _`. Use `filter_upwards [hD.2, eventually_cofinite_ne v] with w hw hwv c'`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality.
-
-Rewrite using `[upd_self, Function.update_of_ne hwv]`. Conclude with `hw _`. Rewrite using `[upd_ne D c v C hc]`. Conclude with `hw c'`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBoxD_upd {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
     (hD : IsBoxD D) (c : ι) (v : HeightOneSpectrum (𝓞 F)) {C : Set (Fv F v)}
@@ -236,13 +232,13 @@ theorem isBoxD_upd {D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
 
 open Classical in
 /- English proof (translation)
-Set `m' : MeasurableSpace (ι → Af F)` to `generateFrom (boxes F ι)`. Take `⟨T, hT, hTc, rfl⟩` from `open_eq_sUnion v hW`. Take `⟨bs, hbs, hbU⟩` from `boxes_seq (F := F) (ι := ι)`. Use `choose Db hDb hbe using hbs`. Establish `e : (fun y : ι → Af F => y c v) ⁻¹' ⋃₀ T = ⋃ C ∈ T, ⋃ n, boxS (upd (Db n) c v C)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `only [mem_preimage, mem_sUnion, mem_iUnion, mem_upd, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, hC, hy⟩`. Establish `hy' : y ∈ ⋃ n, bs n`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbU]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨n, hn⟩` from `mem_iUnion.1 hy'`. Conclude with `⟨C, hC, n, by rw [← hbe n]; exact hn, hy⟩`. Introduce and unpack `⟨C, hC, n, -, hy⟩`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨C, hC, hy⟩`. Rewrite using `[e]`. Conclude with `MeasurableSet.biUnion hT fun C hC => MeasurableSet.iUnion fun n => measurableSet_generateFrom ⟨_, isBoxD_upd (hDb n) c v (hTc C hC), rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_mem (c : ι) (v : HeightOneSpectrum (𝓞 F)) (W : Set (Fv F v)) (hW : IsOpen W) :
     MeasurableSet[generateFrom (boxes F ι)] ((fun y : ι → Af F => y c v) ⁻¹' W) := by
@@ -268,15 +264,13 @@ theorem pre_mem (c : ι) (v : HeightOneSpectrum (𝓞 F)) (W : Set (Fv F v)) (hW
     measurableSet_generateFrom ⟨_, isBoxD_upd (hDb n) c v (hTc C hC), rfl⟩
 
 /- English proof (translation)
-Use `le_antisymm (generateFrom_le ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨D, hD, rfl⟩`. Conclude with `(isCompact_boxS hD).isClosed.measurableSet`. Introduce `s hs`. Set `Ev : (ι → Af F) → (ι → ∀ v : HeightOneSpectrum (𝓞 F), Fv F v)` to `fun y c v => y c v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcont : Continuous Ev` using `continuous_pi fun c => continuous_pi fun v => (RestrictedProduct.continuous_eval v).comp (continuous_apply c)`. Establish `hinj : Function.Injective Ev` using `fun y y' h =>`. Use function extensionality and compare the values at `fun c => Subtype.ext (funext fun v => congrFun (congrFun h c) v)`. Use `haveI : PolishSpace (ι → Af F) := TopoPolish.polish_of_lcsc _`. Establish `hE` using `hcont.measurableEmbedding hinj`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ c v, (borel (Fv F v)).comap (fun y : ι → Af F => y c v) ≤ generateFrom (boxes F ι)`. Introduce `c v`. Rewrite using `[borel, MeasurableSpace.comap_generateFrom]`. Use `generateFrom_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨W, hW, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `pre_mem c v W hW`. Establish `hEv : (MeasurableSpace.pi : MeasurableSpace (ι → ∀ v : HeightOneSpectrum (𝓞 F), Fv F v)).comap Ev ≤ generateFrom (boxes F ι)`. Simplify using `only [MeasurableSpace.pi, MeasurableSpace.comap_iSup, MeasurableSpace.comap_comp]`. Conclude with `iSup_le fun c => iSup_le fun v => hc c v`. Rewrite using `[← hinj.preimage_image s]`.
-
-Conclude with `hEv _ ⟨_, hE.measurableSet_image.2 hs, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generateFrom_boxes : generateFrom (boxes F ι) = (MeasurableSpace.pi : MeasurableSpace (ι → Af F)) := by
   classical

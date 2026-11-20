@@ -18,11 +18,9 @@ namespace GlobalTheory.CoordsOrigin
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Establish `hy' : y = Spec.map (Scheme.stalkClosedPointTo x ≫ g) ≫ X.fromSpecStalk _`. Rewrite using `[hy, Spec.map_comp, Category.assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Use `clear hy`. Substitute `hy'` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsLocalHom (Scheme.stalkClosedPointTo x ≫ g).hom := by`. Rewrite using `[CommRingCat.hom_comp]`. Use `infer_instance`. Use `TopCat.Presheaf.stalk_hom_ext _ fun U hU => ?_` and prove the remaining obligations. Simplify using `only [TopCat.Presheaf.stalkCongr_hom, Category.assoc, TopCat.Presheaf.germ_stalkSpecializes_assoc]`.
-
-Conclude with `Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk (Scheme.stalkClosedPointTo x ≫ g) U _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stalkClosedPointTo_localMap_comp {X : Scheme.{0}} {A B : CommRingCat.{0}} [IsLocalRing A] [IsLocalRing B]
     (x : Spec A ⟶ X) (g : A ⟶ B) [IsLocalHom g.hom] (y : Spec B ⟶ X) (hy : y = Spec.map g ≫ x) (x₀ : X)
@@ -41,9 +39,9 @@ theorem stalkClosedPointTo_localMap_comp {X : Scheme.{0}} {A B : CommRingCat.{0}
   exact Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk (Scheme.stalkClosedPointTo x ≫ g) U _
 
 /- English proof (translation)
-Introduce `R _ _ G _ _ r v f`. Establish `hl : IsLocalHom (CommRingCat.ofHom (epsMul r)).hom` using `⟨fun a ha => (TrivSqZeroExt.isUnit_iff_isUnit_fst).2 (by`. Simplify `(TrivSqZeroExt.isUnit_iff_isUnit_fst).1 ha)⟩` using `[epsMul]`. Establish `hy : (tv (r • v)).left = Spec.map (CommRingCat.ofHom (epsMul r)) ≫ (tv v).left`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_smul, smT_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `stalkClosedPointTo_localMap_comp (A := CommRingCat.of (DualNumber R)) (B := CommRingCat.of (DualNumber R)) (tv v).left (CommRingCat.ofHom (epsMul r)) (tv (r • v)).left hy (origin G) (tv_closedPoint G v) (tv_closedPoint G (r • v))`. Rewrite using `[tanDer_eq, tanDer_eq]`. Use `(congrArg (fun φ => (φ.hom f).snd) key).trans ?_` and prove the remaining obligations. Establish `hs : ∀ a : DualNumber R, (epsMul r a).snd = r * a.snd` using `fun a => by simp [epsMul]`. Conclude with `hs _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tanDer_smul : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (r : R) (v : TanM (𝟙 (Sp R)) G) (f : G.left.presheaf.stalk (origin G)), tanDer G (r • v) f = r * tanDer G v f := by
   intro R _ _ G _ _ r v f

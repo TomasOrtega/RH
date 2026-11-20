@@ -15,9 +15,9 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   {H : HermSpace K V} {k r : ℕ} {σ : K →+* ℂ} {Φ : V → Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Establish `ha` using `a.2`. Establish `ht : WeylGroupFacts.tau k r (eI k r a) = esI k r a`. Apply `Fin.ext` to reduce the goal to its premises. Conclude with `if_pos (Or.inl ha)`. Establish `hs : WeylGroupFacts.sgn k r (eI k r a) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `if_neg (by show ¬ a.val = r + k; omega)`. Unfold `herm bvec`. Rewrite using `[← Pi.single_star, star_one, single_one_dotProduct]`. Simplify using `only [mulVec, dotProduct, WeylGroupFacts.hpk_row, ht, hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_eI (u : Fin (2 * r + k + 1) → ℂ) (a : Fin r) : herm (Hpk k r) u (bvec (eI k r a)) = u (esI k r a) := by
   have ha := a.2
@@ -31,39 +31,39 @@ theorem herm_eI (u : Fin (2 * r + k + 1) → ℂ) (a : Fin r) : herm (Hpk k r) u
   simp
 
 /- English proof (translation)
-Simplify using `[herm, mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_left (M : Mat k r) (u v w : Fin (2 * r + k + 1) → ℂ) : herm M (u + v) w = herm M u w + herm M v w := by
   simp [herm, mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[herm, mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_left (M : Mat k r) (c : ℂ) (u w : Fin (2 * r + k + 1) → ℂ) : herm M (c • u) w = c * herm M u w := by
   simp [herm, mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `[herm, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_right (M : Mat k r) (u v w : Fin (2 * r + k + 1) → ℂ) : herm M u (v + w) = herm M u v + herm M u w := by
   simp [herm, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[herm, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_right (M : Mat k r) (c : ℂ) (u w : Fin (2 * r + k + 1) → ℂ) :
     herm M u (c • w) = star c * herm M u w := by
   simp [herm, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [herm, star_mulVec, ← mulVec_mulVec, dotProduct_mulVec _ mᴴ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_mulVec (M m : Mat k r) (u w : Fin (2 * r + k + 1) → ℂ) :
     herm M (m *ᵥ u) (m *ᵥ w) = herm (mᴴ * M * m) u w := by
   simp only [herm, star_mulVec, ← mulVec_mulVec, dotProduct_mulVec _ mᴴ]
 
 /- English proof (translation)
-Unfold `herm bvec`. Rewrite using `[← Pi.single_star, star_one, single_one_dotProduct, mulVec_single_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem herm_bvec (M : Mat k r) (i j : Fin (2 * r + k + 1)) : herm M (bvec j) (bvec i) = M i j := by
   unfold herm bvec
@@ -71,14 +71,14 @@ theorem herm_bvec (M : Mat k r) (i j : Fin (2 * r + k + 1)) : herm M (bvec j) (b
   rfl
 
 /- English proof (translation)
-Use `h.2.1 0 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem phi_zero (h : IsReal H k r σ Φ) : Φ 0 = 0 := by
   have := h.2.1 0 0
   simpa using this
 
 /- English proof (translation)
-Use `h.1 (x - y) y` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem phi_sub (h : IsReal H k r σ Φ) (x y : V) : Φ (x - y) = Φ x - Φ y := by
   have := h.1 (x - y) y
@@ -86,7 +86,7 @@ theorem phi_sub (h : IsReal H k r σ Φ) (x y : V) : Φ (x - y) = Φ x - Φ y :=
   rw [this]; abel
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using phi_zero h`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.1, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem phi_sum (h : IsReal H k r σ Φ) {α : Type} (s : Finset α) (f : α → V) :
     Φ (∑ i ∈ s, f i) = ∑ i ∈ s, Φ (f i) := by
@@ -95,7 +95,7 @@ theorem phi_sum (h : IsReal H k r σ Φ) {α : Type} (s : Finset α) (f : α →
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.1, ih]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `H.nondeg _ fun w => σ.injective ?_` and prove the remaining obligations. Rewrite using `[← h.2.2.1, phi_sub h, e, sub_self]`. Simplify using `[herm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phi_inj (h : IsReal H k r σ Φ) {x y : V} (e : Φ x = Φ y) : x = y := by
   rw [← sub_eq_zero]
@@ -104,9 +104,9 @@ theorem phi_inj (h : IsReal H k r σ Φ) {x y : V} (e : Φ x = Φ y) : x = y := 
   simp [herm]
 
 /- English proof (translation)
-Establish `hu : u ∈ Submodule.span ℂ (Set.range Φ)` using `by rw [h.2.2.2]; trivial`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨y, rfl⟩ := hx`. Conclude with `h0 y`. Consider the case `zero => rw [← phi_zero h]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `h0 0`. Consider the case `add x y _ _ hx hy => exact ha _ _ hx hy`. Consider the case `smul c x _ hx => exact hs _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_ind (h : IsReal H k r σ Φ) (P : (Fin (2 * r + k + 1) → ℂ) → Prop) (h0 : ∀ x, P (Φ x))
     (ha : ∀ u v, P u → P v → P (u + v)) (hs : ∀ (c : ℂ) u, P u → P (c • u)) (u : Fin (2 * r + k + 1) → ℂ) : P u := by
@@ -118,7 +118,7 @@ theorem span_ind (h : IsReal H k r σ Φ) (P : (Fin (2 * r + k + 1) → ℂ) →
   | smul c x _ hx => exact hs _ _ hx
 
 /- English proof (translation)
-Establish `: ∀ u, m *ᵥ u = m' *ᵥ u` using `span_ind h _ e (fun u v hu hv => by rw [mulVec_add, mulVec_add, hu, hv]) (fun c u hu => by rw [mulVec_smul, mulVec_smul, hu])`. Conclude with `Matrix.toLin'.injective (LinearMap.ext this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mat_unique (h : IsReal H k r σ Φ) {m m' : Mat k r} (e : ∀ x, m *ᵥ Φ x = m' *ᵥ Φ x) : m = m' := by
   have : ∀ u, m *ᵥ u = m' *ᵥ u := span_ind h _ e (fun u v hu hv => by rw [mulVec_add, mulVec_add, hu, hv])
@@ -126,13 +126,11 @@ theorem mat_unique (h : IsReal H k r σ Φ) {m m' : Mat k r} (e : ∀ x, m *ᵥ 
   exact Matrix.toLin'.injective (LinearMap.ext this)
 
 /- English proof (translation)
-Set `b` to `Module.finBasisOfFinrankEq K V hd`. Establish `hx : ∀ x, Φ x = ∑ i, σ (b.repr x i) • Φ (b i)` using `fun x => by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[phi_sum h]`. Conclude with `Finset.sum_congr rfl fun i _ => h.2.1 _ _`. Establish `hsp : ⊤ ≤ Submodule.span ℂ (Set.range fun i => Φ (b i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h.2.2.2, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `c` to `basisOfTopLeSpanOfCardEqFinrank (fun i => Φ (b i)) hsp (by simp)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ i, c i = Φ (b i)` using `fun i => by simp [c]`. Use `⟨LinearMap.toMatrix' (c.constr ℂ fun i => Φ (s (b i))), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec, hx x, map_sum]`. Use `conv_rhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum, phi_sum h]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, h.2.1, ← hc, Module.Basis.constr_basis]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_exists [FiniteDimensional K V] (h : IsReal H k r σ Φ) (hd : Module.finrank K V = 2 * r + k + 1)
     (s : V →ₗ[K] V) : ∃ m : Mat k r, ∀ x, m *ᵥ Φ x = Φ (s x) := by
@@ -156,9 +154,7 @@ theorem mat_exists [FiniteDimensional K V] (h : IsReal H k r σ Φ) (hd : Module
   rw [map_smul, map_smul, h.2.1, ← hc, Module.Basis.constr_basis]
 
 /- English proof (translation)
-Establish `h1 : ∀ u w, herm (Hpk k r) (m *ᵥ u) (m *ᵥ w) = herm (Hpk k r) u w`. Introduce `u`. Use `span_ind h (fun u => ∀ w, herm (Hpk k r) (m *ᵥ u) (m *ᵥ w) = herm (Hpk k r) u w) (fun x => ?_) (fun u v hu hv w => by rw [mulVec_add, herm_add_left, herm_add_left, hu, hv]) (fun c u hu w => by rw [mulVec_smul, herm_smul_left, herm_smul_left, hu]) u` and prove the remaining obligations. Conclude with `span_ind h _ (e x) (fun u v hu hv => by rw [mulVec_add, herm_add_right, herm_add_right, hu, hv]) (fun c u hu => by rw [mulVec_smul, herm_smul_right, herm_smul_right, hu])`. Use extensionality with `i j`.
-
-Conclude with `(herm_bvec _ i j).symm.trans (by rw [← herm_mulVec, h1, herm_bvec])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mem_UH (h : IsReal H k r σ Φ) {m : Mat k r}
     (e : ∀ x y, herm (Hpk k r) (m *ᵥ Φ x) (m *ᵥ Φ y) = herm (Hpk k r) (Φ x) (Φ y)) : m ∈ UH (Hpk k r) := by
@@ -173,9 +169,9 @@ theorem mem_UH (h : IsReal H k r σ Φ) {m : Mat k r}
   exact (herm_bvec _ i j).symm.trans (by rw [← herm_mulVec, h1, herm_bvec])
 
 /- English proof (translation)
-Use `⟨fun x y => by simp only [h.1, mulVec_add], fun c x => by simp only [h.2.1, mulVec_smul], fun x y => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[herm_mulVec, show gᴴ * Hpk k r * g = Hpk k r from hg, h.2.2.1]`. Rewrite using `[eq_top_iff]`. Introduce `u _`. Establish `: ∀ w, g *ᵥ w ∈ Submodule.span ℂ (Set.range fun x => g *ᵥ Φ x)` using `span_ind h _ (fun x => Submodule.subset_span ⟨x, rfl⟩) (fun u v hu hv => by rw [mulVec_add]; exact Submodule.add_mem _ hu hv) (fun c u hu => by rw [mulVec_smul]; exact Submodule.smul_mem _ _ hu)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `this (g⁻¹ *ᵥ u)`. Rewrite `h2` using `[mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isReal_mul (h : IsReal H k r σ Φ) {g : Mat k r} (hg : g ∈ UH (Hpk k r)) (hu : IsUnit g.det) :
     IsReal H k r σ fun x => g *ᵥ Φ x := by
@@ -192,17 +188,17 @@ theorem isReal_mul (h : IsReal H k r σ Φ) {g : Mat k r} (hg : g ∈ UH (Hpk k 
 
 omit [NumberField K] in
 /- English proof (translation)
-Set `L : V →ₗ[K] (Fin r → K)` to `LinearMap.pi fun b => H.B.flip (F.e b.castSucc)`. Establish `hL : LinearMap.range L = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Establish `hφ' : ∀ v : Fin r → K, φ v = ∑ b, v b * φ (Pi.single b 1)` using `fun v => by conv_lhs => rw [pi_eq_sum_univ' v]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[map_sum]`. Establish `h0 : ∑ b, star (φ (Pi.single b 1)) • F.e b.castSucc = 0`. Use `H.nondeg _ fun y => ?_` and prove the remaining obligations. Rewrite using `[← H.herm, star_eq_zero]`. Use `hle (LinearMap.mem_range_self L y)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.mem_ker, hφ']`. Rewrite using `[← this, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[L, mul_comm, starRingEnd_apply]`. Use `Fintype.linearIndependent_iff.1 F.indep _ h0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `hφ` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[hφ']`. Simplify using `only [star_eq_zero] at this`. Simplify using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `choose f hf using fun a : Fin r => (LinearMap.range_eq_top.1 hL) (Pi.single a 1)`. Use `⟨f, fun a b => ?_⟩` and prove the remaining obligations. Use `congrFun (hf a) b` as an intermediate fact. Simplify using `only [L, LinearMap.pi_apply, LinearMap.flip_apply] at this`. Rewrite using `[this, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual (F : FlagD H r) : ∃ f : Fin r → V, ∀ a b, H.B (f a) (F.e b.castSucc) = if a = b then 1 else 0 := by
   let L : V →ₗ[K] (Fin r → K) := LinearMap.pi fun b => H.B.flip (F.e b.castSucc)
@@ -236,11 +232,11 @@ section Flag
 variable {F : FlagD H r} {t : Fin r → ℂ}
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Establish `hb' : b.val < a` using `hb`. Establish `: i ≠ eI k r b` using `fun e => by`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [eI] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[he, bvec, this]`. Consider the case `zero => rw [phi_zero h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy => rw [h.1, Pi.add_apply, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [h.2.1, Pi.smul_apply, hx, smul_zero]`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 -/
 theorem coord_of_mem_Xa (h : IsReal H k r σ Φ) (he : ∀ a, Φ (F.e a.castSucc) = t a • bvec (eI k r a)) {a : ℕ} {y : V}
     (hy : y ∈ F.Xa a) (i : Fin (2 * r + k + 1)) (hi : a ≤ i.val) : Φ y i = 0 := by
@@ -257,26 +253,26 @@ theorem coord_of_mem_Xa (h : IsReal H k r σ Φ) (he : ∀ a, Φ (F.e a.castSucc
   | smul c x _ hx => rw [h.2.1, Pi.smul_apply, hx, smul_zero]
 
 /- English proof (translation)
-Simplify using `[herm, mulVec_sum, dotProduct_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_sum_left (M : Mat k r) {α : Type} (s : Finset α) (f : α → Fin (2 * r + k + 1) → ℂ) (w) :
     herm M (∑ i ∈ s, f i) w = ∑ i ∈ s, herm M (f i) w := by
   simp [herm, mulVec_sum, dotProduct_sum]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_dual F`. Establish `hf' : ∀ a b, H.B (F.e b.castSucc) (f a) = if a = b then 1 else 0` using `fun a b => by`. Apply the tactic sequence `rw [← H.herm, hf]; split_ifs <;> simp`. Establish `h1 : Φ y = ∑ b : Fin r, (Φ y (eI k r b) / t b) • Φ (F.e b.castSucc)`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [he, smul_smul, div_mul_cancel₀ _ (ht _), Finset.sum_apply, Pi.smul_apply, bvec, smul_eq_mul]`. Distinguish the cases in `hi : i.val < r`. Establish `e : eI k r ⟨i.val, hi⟩ = i` using `Fin.ext rfl`. Rewrite using `[Finset.sum_eq_single ⟨i.val, hi⟩]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Establish `: i ≠ eI k r b` using `fun e' => hb (Fin.ext (congrArg Fin.val e').symm)`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy i (by omega)]`. Use `(Finset.sum_eq_zero fun b _ => ?_).symm` and prove the remaining obligations. Establish `: i ≠ eI k r b` using `fun e' => hi (by rw [e']; exact b.2)`. Simplify using `[this]`. Establish `h2 : ∀ b, σ (H.B y (f b)) = Φ y (eI k r b) / t b` using `fun b => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h.2.2.1]`. Use `conv_lhs => rw [h1]`. Rewrite using `[herm_sum_left]`. Simplify using `[herm_smul_left, h.2.2.1, hf', apply_ite σ]`. Establish `h3 : y = ∑ b : Fin r, H.B y (f b) • F.e b.castSucc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `phi_inj h` to reduce the goal to its premises. Rewrite using `[phi_sum h, h1]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [h.2.1, h2]`. Rewrite using `[h3]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hb : b.val < a`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`. Establish `: H.B y (f b) = 0` using `σ.injective (by rw [h2, hy _ (by simp only [eI]; omega)]; simp)`. Rewrite using `[this, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Xa_of_coord (h : IsReal H k r σ Φ) (ht : ∀ a, t a ≠ 0)
     (he : ∀ a, Φ (F.e a.castSucc) = t a • bvec (eI k r a)) {a : ℕ} (har : a ≤ r) {y : V}
@@ -316,21 +312,21 @@ theorem mem_Xa_of_coord (h : IsReal H k r σ Φ) (ht : ∀ a, t a ≠ 0)
     rw [this, zero_smul]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Take `⟨h1, -, h2, h3⟩` from `hs`. Use `⟨mem_UH h fun x y => by rw [hm, hm, h.2.2.1, h.2.2.1, h1], fun a i hi => ?_, fun i j hj hj' hi => ?_⟩` and prove the remaining obligations. Use `coord_of_mem_Xa h he (h2 a) i hi` as an intermediate fact. Rewrite `this` using `[phi_sub h, ← hm, he, mulVec_smul, ← smul_sub, Pi.smul_apply, smul_eq_zero, or_iff_right (ht a), Pi.sub_apply, sub_eq_zero]`. Simplify `this` using `[bvec, Pi.single_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨f, hf⟩` from `exists_dual F`. Set `P : (Fin (2 * r + k + 1) → ℂ) → Fin (2 * r + k + 1) → ℂ` to `fun u => u - ∑ a : Fin r, herm (Hpk k r) u (Φ (F.e a.castSucc)) • Φ (f a)`. Establish `hP : ∀ u, (m *ᵥ P u - P u) i = 0`. Use `span_ind h _ (fun x => ?_) (fun u v hu hv => ?_) (fun c u hu => ?_)` and prove the remaining obligations. Establish `e : P (Φ x) = Φ (x - ∑ a : Fin r, H.B x (F.e a.castSucc) • f a)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [P, phi_sub h, phi_sum h, h.2.1, h.2.2.1]`. Rewrite using `[e, hm, ← phi_sub h]`. Use `coord_of_mem_Xa h he (h3 _ fun b => ?_) i hi` and prove the remaining obligations. Rewrite using `[← H.herm, star_eq_zero]`. Simplify using `[hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : P (u + v) = P u + P v`. Simplify using `only [P, herm_add_left, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, mulVec_add, add_sub_add_comm, Pi.add_apply, hu, hv, add_zero]`. Establish `e : P (c • u) = c • P u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [P, herm_smul_left, smul_sub, Finset.smul_sum, smul_smul]`. Rewrite using `[e, mulVec_smul, ← smul_sub, Pi.smul_apply, hu, smul_zero]`. Establish `e : P (bvec j) = bvec j`. Simplify using `only [P]`. Rewrite using `[Finset.sum_eq_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a _`. Establish `: esI k r a ≠ j` using `fun e' => by`. Use `congrArg Fin.val e'` as an intermediate fact. Use `a.2` as an intermediate fact. Simplify using `only [esI] at *`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[he, herm_smul_right, herm_eI]`. Simplify using `[bvec, this]`. Use `hP (bvec j)` as an intermediate fact. Rewrite `this` using `[e, Pi.sub_apply, sub_eq_zero]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[bvec, Pi.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nset_of_inN (h : IsReal H k r σ Φ) (ht : ∀ a, t a ≠ 0)
     (he : ∀ a, Φ (F.e a.castSucc) = t a • bvec (eI k r a)) {s : V →ₗ[K] V} {m : Mat k r}
@@ -373,15 +369,15 @@ theorem nset_of_inN (h : IsReal H k r σ Φ) (ht : ∀ a, t a ≠ 0)
     simpa [bvec, Pi.single_apply] using this
 
 /- English proof (translation)
-Establish `hc` using `((WeylGroupFacts.nset_iff m).1 hN).2`. Use `⟨fun x y => σ.injective ?_, s.bijective, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← h.2.2.1, ← h.2.2.1, LinearEquiv.coe_coe, ← hm, ← hm, herm_mulVec, show mᴴ * Hpk k r * m = Hpk k r from hN.1]`. Use `mem_Xa_of_coord h ht he a.2.le fun i hi => ?_` and prove the remaining obligations. Rewrite using `[phi_sub h, LinearEquiv.coe_coe, ← hm, he, mulVec_smul, ← smul_sub, Pi.smul_apply, Pi.sub_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hN.2.1 a i hi` as an intermediate fact. Simplify using `[bvec, Pi.single_apply, this]`. Use `mem_Xa_of_coord h ht he le_rfl fun i hi => ?_` and prove the remaining obligations. Establish `hz : ∀ j : Fin (2 * r + k + 1), r + k < j.val → Φ y j = 0` using `fun j hj => by`. Establish `hj2` using `j.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : Fin r` to `⟨2 * r + k - j.val, by omega⟩`. Establish `e : esI k r a = j` using `Fin.ext (by simp only [esI, a]; omega)`. Establish `h0 : H.B y (F.e a.castSucc) = 0` using `by rw [← H.herm, hy, star_zero]`. Use `h.2.2.1 y (F.e a.castSucc)` as an intermediate fact. Rewrite `this` using `[h0, map_zero, he, herm_smul_right, herm_eI, e, mul_eq_zero, star_eq_zero, or_iff_right (ht a)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite using `[phi_sub h, LinearEquiv.coe_coe, ← hm, Pi.sub_apply, sub_eq_zero, mulVec, dotProduct, Finset.sum_eq_single i]`. Distinguish the cases in `hi2 : i.val ≤ r + k`. Rewrite using `[hc i i hi2 (Or.inr hi), if_pos rfl, one_mul]`. Rewrite using `[hz i (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Distinguish the cases in `hj2 : j.val ≤ r + k`. Rewrite using `[hc i j hj2 (Or.inr hi), if_neg hj.symm, zero_mul]`. Rewrite using `[hz j (by omega), mul_zero]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inN_of_nset (h : IsReal H k r σ Φ) (ht : ∀ a, t a ≠ 0)
     (he : ∀ a, Φ (F.e a.castSucc) = t a • bvec (eI k r a)) {s : V ≃ₗ[K] V} {m : Mat k r}
@@ -415,7 +411,7 @@ theorem inN_of_nset (h : IsReal H k r σ Φ) (ht : ∀ a, t a ≠ 0)
 end Flag
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[WeylGroupFacts.hpk_mul_apply, WeylGroupFacts.hpk_row, WeylGroupFacts.tau_tau, Matrix.one_apply]`. Unfold `WeylGroupFacts.sgn WeylGroupFacts.tau`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -425,7 +421,7 @@ theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   split_ifs <;> first | (exfalso; omega) | simp
 
 /- English proof (translation)
-Establish `: (Hpk k r * gᴴ * Hpk k r) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, show gᴴ * Hpk k r * g = Hpk k r from hg, hpk_sq]`. Conclude with `Matrix.isUnit_det_of_left_inverse this`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
   have : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by
@@ -433,7 +429,7 @@ theorem isUnit_det {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
   exact Matrix.isUnit_det_of_left_inverse this
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.vInv`. Establish `: (0 : ℝ) < |(discr E : ℝ)|` using `abs_pos.mpr (by exact_mod_cast discr_ne_zero E)`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem vInv_pos (E : Type) [Field E] [NumberField E] : 0 < Formalism.HermitianLatticesTheory.vInv E := by
   unfold Formalism.HermitianLatticesTheory.vInv
@@ -441,13 +437,13 @@ theorem vInv_pos (E : Type) [Field E] [NumberField E] : 0 < Formalism.HermitianL
   positivity
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r N k ι _ σ β Φ z z' g _ hd hF`. Establish `hR : ∀ s : V ≃ₗ[K] V, s ∈ N.R ↔ N.F.InN (s : V →ₗ[K] V) ∧ N.F'.InN (s : V →ₗ[K] V)` using `(GlobalTheory.UnipStab.common_unipotent_stabiliser K V H hK r N).1`. Establish `hr : ∀ v, IsReal H k r (σ v) (Φ v)` using `fun v => (hF v).1`. Establish `hg : ∀ v, g v ∈ UH (Hpk k r)` using `fun v => (hF v).2.2.2.2.1.choose_spec.1`. Establish `hu : ∀ v, IsUnit (g v).det` using `fun v => isUnit_det (hg v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : ∀ v, IsReal H k r (σ v) fun x => g v *ᵥ Φ v x` using `fun v => isReal_mul (hr v) (hg v) (hu v)`. Establish `ht : ∀ a : Fin r, ((((2 * Formalism.HermitianLatticesTheory.vInv K) ^ (r - a.val) : ℝ)) : ℂ) ≠ 0` using `fun a => by`. Use `vInv_pos K` as an intermediate fact. Conclude with `(by positivity : (2 * Formalism.HermitianLatticesTheory.vInv K) ^ (r - a.val) ≠ 0)` after adjusting the coercions. Establish `hconj : ∀ (v) (s : V ≃ₗ[K] V) (m : Mat k r), (∀ x, m *ᵥ Φ v x = Φ v (s x)) → ∀ x, (g v * m * (g v)⁻¹) *ᵥ (g v *ᵥ Φ v x) = g v *ᵥ Φ v (s x)` using `fun v s m hm x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_mulVec, Matrix.mul_assoc, nonsing_inv_mul _ (hu v), Matrix.mul_one, ← mulVec_mulVec, hm]`. Use `⟨fun s => ?_, fun s t ⟨v⟩ e => LinearEquiv.ext fun x => phi_inj (hr v) (e v x), ?_, fun s m hm ⟨v⟩ hP => ?_⟩` and prove the remaining obligations. Use `choose m hm using fun v => mat_exists (hr v) hd (s : V →ₗ[K] V)`. Use `⟨fun v => Matrix.of.symm (m v), fun v x => hm v x, fun m' hm' => funext fun v => ?_⟩` and prove the remaining obligations. Conclude with `mat_unique (hr v) (m := Matrix.of (m' v)) (m' := m v) fun x => (hm' v x).trans (hm v x).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `m ⟨s, hs, hm⟩ v`. Take `⟨h1, h2⟩` from `(hR s).1 hs`. Conclude with `⟨nset_of_inN (hr v) ht (fun a => ((hF v).2.2.2.2.2.1 a).1) (hm v) h1, nset_of_inN (hr' v) ht (fun a => ((hF v).2.2.2.2.2.1 a).2) (hconj v s _ (hm v)) h2⟩`. Conclude with `(hR s).2 ⟨inN_of_nset (hr v) ht (fun a => ((hF v).2.2.2.2.2.1 a).1) (hm v) (hP v).1, inN_of_nset (hr' v) ht (fun a => ((hF v).2.2.2.2.2.1 a).2) (hconj v s _ (hm v)) (hP v).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem real_points : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (N : NF H r) (k : ℕ) (ι : Type) [Fintype ι] (σ : ι → (K →+* ℂ)) (β : Fin r → ℕ) (Φ : ι → V → Fin (2 * r + k + 1) → ℂ) (z z' : ι → Fin (2 * r + k + 1) → ℂ) (g : ι → Mat k r), IsPlaces σ → Module.finrank K V = 2 * r + k + 1 → (∀ v, IsFrameOf N k (σ v) (2 * Formalism.HermitianLatticesTheory.vInv K) β (Φ v) (z v) (z' v) (g v)) → (∀ s : V ≃ₗ[K] V, ∃! m : ι → Mt k r, ∀ v x, Matrix.of (m v) *ᵥ Φ v x = Φ v (s x)) ∧ (∀ s t : V ≃ₗ[K] V, Nonempty ι → (∀ v x, Φ v (s x) = Φ v (t x)) → s = t) ∧ realPts Φ (N.R : Set (V ≃ₗ[K] V)) ⊆ RP k r g ∧ ∀ (s : V ≃ₗ[K] V) (m : ι → Mt k r), (∀ v x, Matrix.of (m v) *ᵥ Φ v x = Φ v (s x)) → Nonempty ι → m ∈ RP k r g → s ∈ N.R := by
   intro K V _ _ _ _ _ _ _ _ H hK r N k ι _ σ β Φ z z' g _ hd hF

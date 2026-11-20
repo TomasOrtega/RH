@@ -7,7 +7,7 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Simplify using `only [sm, iSup_image, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sm_image_congr {S S' E ι : Type} [CommRing S] [CommRing S'] [Algebra ℂ S] [Algebra ℂ S']
     [AddCommGroup E] [Module ℂ E] (act : S →ₐ[ℂ] Module.End ℂ E) (act' : S' →ₐ[ℂ] Module.End ℂ E)
@@ -16,7 +16,7 @@ private theorem sm_image_congr {S S' E ι : Type} [CommRing S] [CommRing S'] [Al
   simp only [sm, iSup_image, h]
 
 /- English proof (translation)
-Rewrite using `[← Set.image_univ, ← Set.image_univ]`. Conclude with `sm_image_congr act act' M f g h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sm_range_congr {S S' E ι : Type} [CommRing S] [CommRing S'] [Algebra ℂ S] [Algebra ℂ S']
     [AddCommGroup E] [Module ℂ E] (act : S →ₐ[ℂ] Module.End ℂ E) (act' : S' →ₐ[ℂ] Module.End ℂ E)
@@ -26,7 +26,7 @@ private theorem sm_range_congr {S S' E ι : Type} [CommRing S] [CommRing S'] [Al
   exact sm_image_congr act act' M f g h _
 
 /- English proof (translation)
-Introduce `k m hm hk`. Rewrite `hk` using `[← sm_image_congr act act' M f g h, ← h k]`. Rewrite using `[← sm_image_congr act act' M f g h]`. Conclude with `hr k m hm hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reg_congr {S S' E : Type} [CommRing S] [CommRing S'] [Algebra ℂ S] [Algebra ℂ S']
     [AddCommGroup E] [Module ℂ E] (act : S →ₐ[ℂ] Module.End ℂ E) (act' : S' →ₐ[ℂ] Module.End ℂ E)
@@ -41,7 +41,7 @@ section SysLem
 variable {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E] (T : Sys d S E)
 
 /- English proof (translation)
-Establish `hY : (T.Y j : S) * ((T.Y j)⁻¹ : Sˣ) = 1` using `Units.mul_inv _`. Establish `hd : T.mu (dj j l) = (T.X (j.succAbove l) : S) * T.Y j - T.X j * T.Y (j.succAbove l)` using `rfl`. Simplify using `only [Sys.r, Sys.u, n11, hd, pow_one, mul_inv, Units.val_mul]`. Take the linear combination `((T.X (j.succAbove l) : S) * ((T.X i)⁻¹ : Sˣ)) * hY`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem r_eq (i j : Fin (d + 1)) (l : Fin d) :
     T.r n11 T.mu i j (dj j l) = ((T.X (j.succAbove l) * (T.X i)⁻¹ : Sˣ) : S)
@@ -52,7 +52,7 @@ private theorem r_eq (i j : Fin (d + 1)) (l : Fin d) :
   linear_combination ((T.X (j.succAbove l) : S) * ((T.X i)⁻¹ : Sˣ)) * hY
 
 /- English proof (translation)
-Establish `hX : (T.X i : S) * ((T.X i)⁻¹ : Sˣ) = 1` using `Units.mul_inv _`. Simplify using `only [Sys.r, Sys.u, n11, pow_one, mul_inv, Units.val_mul]`. Take the linear combination `(T.mu (dj j l) * ((T.Y j)⁻¹ : Sˣ) * ((T.X j)⁻¹ : Sˣ)) * hX`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem r_mul (i j : Fin (d + 1)) (l : Fin d) :
     T.r n11 T.mu i j (dj j l) * ((T.X i * (T.X j)⁻¹ : Sˣ) : S) = T.r n11 T.mu j j (dj j l) := by
@@ -61,7 +61,7 @@ private theorem r_mul (i j : Fin (d + 1)) (l : Fin d) :
   linear_combination (T.mu (dj j l) * ((T.Y j)⁻¹ : Sˣ) * ((T.X j)⁻¹ : Sˣ)) * hX
 
 /- English proof (translation)
-Rewrite using `[r_eq]`. Conclude with `sub_mem (hG.memX I J ⟨j, hj⟩ i hi _) (mul_mem (hG.memX I J ⟨j, hj⟩ i hi _) (hG.memY I J ⟨i, hi⟩ j hj _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem r_mem (hG : T.Good) {I J : Finset (Fin (d + 1))} {i j : Fin (d + 1)} (hi : i ∈ I) (hj : j ∈ J)
     (l : Fin d) : T.r n11 T.mu i j (dj j l) ∈ T.R I J := by
@@ -75,9 +75,9 @@ section Forms
 variable {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨b, -, v, -, rfl⟩` from `hz`. Conclude with `Submodule.smul_mem _ _ (ExteriorAlgebra.ιMulti_range K q ⟨_, rfl⟩)`. Consider the case `zero => exact Submodule.zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a c _ _ ha hc => exact Submodule.add_mem _ ha hc`. Consider the case `smul r a _ ha`. Rewrite using `[← algebraMap_smul K r a]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem omB_le_fixed (B : Subalgebra ℂ K) (q : ℕ) {y : DR ℂ K} (hy : y ∈ omB ℂ K B q) :
     y ∈ ⋀[K]^q Ω[K⁄ℂ] := by
@@ -92,7 +92,7 @@ private theorem omB_le_fixed (B : Subalgebra ℂ K) (q : ℕ) {y : DR ℂ K} (hy
     exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Simplify using `only [actZ, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem actZ_tmul (u v : K) (y y' : DR ℂ K) :
     actZ K (u ⊗ₜ v) (y ⊗ₜ y') = (u • y) ⊗ₜ[ℂ] (v • y') := by
@@ -100,7 +100,7 @@ private theorem actZ_tmul (u v : K) (y y' : DR ℂ K) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [actF, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem actF_tmul (u v : F) (y y' : DR ℂ K) :
     actF F (DR ℂ K) (DR ℂ K) (u ⊗ₜ v) (y ⊗ₜ y') = (u • y) ⊗ₜ[ℂ] (v • y') := by
@@ -108,7 +108,7 @@ private theorem actF_tmul (u v : F) (y y' : DR ℂ K) :
   rfl
 
 /- English proof (translation)
-Establish `key : Submodule.map₂ (TensorProduct.mk ℂ (DR ℂ K) (DR ℂ K)) A B ≤ LinearMap.eqLocus (ctrF (DR ℂ K) ψ) (mulP F K ∘ₗ (muP F K τ).flip w)`. Use `Submodule.map₂_le.2 fun y hy y' _ => ?_` and prove the remaining obligations. Simplify using `[ctrF, muP, mulP, h y hy, algebraMap_smul]`. Conclude with `key hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ctrF_eq (τ : DR ℂ K →ₗ[K] K) (ψ : DR ℂ K →ₗ[F] F) (A B : Submodule ℂ (DR ℂ K)) (w : DR ℂ K)
     (h : ∀ y ∈ A, ψ y = Algebra.trace F K (τ (y * w))) {m : DR ℂ K ⊗[ℂ] DR ℂ K}
@@ -124,7 +124,7 @@ section Sz
 variable {d : ℕ} (x : Fin (d + 1) → Fˣ)
 
 /- English proof (translation)
-Establish `h : (sysZ K x a).X p * ((sysZ K x a).X j)⁻¹ = Units.map ((Algebra.TensorProduct.includeLeftRingHom.comp (algebraMap F K) : F →+* K ⊗[ℂ] K) : F →* K ⊗[ℂ] K) (x p * (x j)⁻¹)`. Simplify using `only [map_mul, map_inv]`. Both sides reduce to the same expression. Rewrite using `[h, div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem xe (K : Type) [Field K] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K] (a : ℕ) (p j : Fin (d + 1)) :
     (((sysZ K x a).X p * ((sysZ K x a).X j)⁻¹ : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) =
@@ -138,7 +138,7 @@ private theorem xe (K : Type) [Field K] [Algebra ℂ K] [Algebra F K] [IsScalarT
   rfl
 
 /- English proof (translation)
-Establish `h : (sysZ K x a).Y p * ((sysZ K x a).Y j)⁻¹ = Units.map (((Algebra.TensorProduct.includeRight : K →ₐ[ℂ] K ⊗[ℂ] K).toRingHom.comp (algebraMap F K) : F →+* K ⊗[ℂ] K) : F →* K ⊗[ℂ] K) (x p * (x j)⁻¹)`. Simplify using `only [map_mul, map_inv]`. Both sides reduce to the same expression. Rewrite using `[h, div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ye (K : Type) [Field K] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K] (a : ℕ) (p j : Fin (d + 1)) :
     (((sysZ K x a).Y p * ((sysZ K x a).Y j)⁻¹ : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) =
@@ -152,7 +152,7 @@ private theorem ye (K : Type) [Field K] [Algebra ℂ K] [Algebra F K] [IsScalarT
   rfl
 
 /- English proof (translation)
-Rewrite using `[r_eq, mul_inv_cancel, Units.val_one, one_mul, xe, ye]`. Use `TensorProduct.ext' fun y y' => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `actZ K _ _ = _`. Simplify using `only [f0, map_sub, LinearMap.sub_apply, actZ_tmul, actF_tmul, one_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem act_r_diag (a : ℕ) (j : Fin (d + 1)) (l : Fin d) :
     (sysZ K x a).act ((sysZ K x a).r n11 (sysZ K x a).mu j j (dj j l)) = actF F (DR ℂ K) (DR ℂ K) (f0 x j l) := by
@@ -162,11 +162,11 @@ private theorem act_r_diag (a : ℕ) (j : Fin (d + 1)) (l : Fin d) :
   simp only [f0, map_sub, LinearMap.sub_apply, actZ_tmul, actF_tmul, one_smul, algebraMap_smul]
 
 /- English proof (translation)
-Establish `hG` using `(hGood F K d x hc a).1`. Take `⟨hR, hS⟩` from `hReg F d x hc.pd (DR ℂ K) (DR ℂ K) I J _ _ (hLat F K d x hc (d - a) I ⟨j, hI⟩).1 (hLat F K d x hc a J ⟨j, hJ⟩).1 j hI hJ`. Establish `hact : ∀ l, actF F (DR ℂ K) (DR ℂ K) (f0 x j l) = (sysZ K x a).act ((sysZ K x a).r n11 (sysZ K x a).mu j j (dj j l))` using `fun l => (act_r_diag x a j l).symm`. Establish `hrm` using `fun l => r_mem (sysZ K x a) hG hI hJ l`. Use `⟨hK1 _ _ (sysZ K x a).act (Fin d) ((sysZ K x a).R I J) _ _ d _ (hG.stab I J ⟨j, hI⟩ ⟨j, hJ⟩) hrm (reg_congr _ _ _ _ _ hact hR) fun k => ⟨Pi.single k 1, fun l => ?_, ?_⟩, fun m hm h0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.single_apply] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Simplify using `[Pi.single_apply]`. Rewrite using `[← sm_range_congr _ _ _ _ _ hact]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hS m hm fun ψ => ?_` and prove the remaining obligations. Take `⟨⟨w, hw, hψ⟩, -⟩` from `hDual F K d x hc τ hτ a ha ψ`. Rewrite using `[ctrF_eq τ ψ _ _ w (fun y hy => hψ y (omB_le_fixed _ _ hy)) hm, h0 w hw, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem diag_case (hReg : RegLat) (hLat : LatOm) (hDual : DualForm) (hK1 : K1) (hGood : GoodZ)
     (hc : IsFinCover ℂ K (xv x)) (τ : DR ℂ K →ₗ[K] K) (hτ : IsTop ℂ K (xv x) τ) (a : ℕ) (ha : a ≤ d)
@@ -194,9 +194,9 @@ private theorem diag_case (hReg : RegLat) (hLat : LatOm) (hDual : DualForm) (hK1
     rw [ctrF_eq τ ψ _ _ w (fun y hy => hψ y (omB_le_fixed _ _ hy)) hm, h0 w hw, zero_smul]
 
 /- English proof (translation)
-Distinguish the cases in `hj : j ∈ I`. Rewrite `hy` using `[Finset.insert_eq_of_mem hj]`. Conclude with `⟨0, by simpa using hy⟩`. Take `⟨N, hN⟩` from `(GlobalTheory.T.kahlerFormsOverSubalgebra_standardOpen_iff_pow_smul ℂ F K d (xv x) hc (insert j I) i (Finset.mem_insert_of_mem hi) q y).1 hy`. Use `⟨N, (GlobalTheory.T.kahlerFormsOverSubalgebra_standardOpen_iff_pow_smul ℂ F K d (xv x) hc I i hi q _).2 ⟨N, ?_⟩⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hN` using `[Finset.prod_insert hj, map_mul, mul_pow]`. Rewrite using `[smul_smul, mul_comm]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem loc_om (hc : IsFinCover ℂ K (xv x)) {I : Finset (Fin (d + 1))} {i : Fin (d + 1)} (hi : i ∈ I)
     (j : Fin (d + 1)) (q : ℕ) {y : DR ℂ K} (hy : y ∈ omB ℂ K (rB ℂ K (xv x) (insert j I)) q) :
@@ -210,19 +210,17 @@ private theorem loc_om (hc : IsFinCover ℂ K (xv x)) {I : Finset (Fin (d + 1))}
     rwa [smul_smul, mul_comm]
 
 /- English proof (translation)
-Establish `hst : ∀ N : ℕ, ∀ m ∈ (sysZ K x a).M I J, (sysZ K x a).act ((((sysZ K x a).X j * ((sysZ K x a).X i)⁻¹ : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) ^ N) m ∈ (sysZ K x a).M I J` using `fun N m hm => hG.stab I J ⟨i, hi⟩ ⟨j, hj⟩ _ (pow_mem (hG.memX I J ⟨j, hj⟩ i hi j) N) m hm`. Introduce `m hm`. Establish `hm' : m ∈ Submodule.span ℂ (Set.image2 (fun y y' => TensorProduct.mk ℂ (DR ℂ K) (DR ℂ K) y y') (omB ℂ K (rB ℂ K (xv x) (insert j I)) (d - a) : Set (DR ℂ K)) (omB ℂ K (rB ℂ K (xv x) J) a : Set (DR ℂ K)))`. Rewrite using `[← Submodule.map₂_eq_span_image2]`. Conclude with `hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Use `clear hm`. Proceed by induction on `hm' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y, hy, y', hy', rfl⟩` from `hz`. Take `⟨N, hN⟩` from `loc_om x hc hi j (d - a) hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[xe, Algebra.TensorProduct.tmul_pow, one_pow]`. Express the relevant statement in the definitionally equal form `actZ K _ (y ⊗ₜ y') ∈ _`. Rewrite using `[actZ_tmul, one_smul]`. Conclude with `Submodule.apply_mem_map₂ _ hN hy'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add m₁ m₂ _ _ h₁ h₂`. Take `⟨N₁, h₁⟩` from `h₁`. Take `⟨N₂, h₂⟩` from `h₂`. Use `⟨N₁ + N₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm, pow_add, map_mul]`. Conclude with `hst N₂ _ h₁`. Rewrite using `[pow_add, map_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hst N₁ _ h₂`. Consider the case `smul c m _ h`. Take `⟨N, h⟩` from `h`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c h`.
+A detailed English derivation is pending.
 -/
 private theorem loc_M (a : ℕ) (hc : IsFinCover ℂ K (xv x)) (hG : (sysZ K x a).Good) {I J : Finset (Fin (d + 1))}
     {i j : Fin (d + 1)} (hi : i ∈ I) (hj : j ∈ J) :
@@ -270,15 +268,13 @@ end Forms
 end UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Introduce `hReg hLat hDual hK1 hLoc hGood F K _ _ _ _ _ _ d x hc τ hτ a ha I J i hi j hj`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `diag_case x hReg hLat hDual hK1 hGood hc τ hτ a ha I J i hi hj`. Take `⟨l0, hl0⟩` from `Fin.exists_succAbove_eq hij`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG` using `(hGood F K d x hc a).1`. Establish `hD` using `diag_case x hReg hLat hDual hK1 hGood hc τ hτ a ha (insert j I) J j (Finset.mem_insert_self j I) hj`. Establish `hIi : i ∈ insert j I` using `Finset.mem_insert_of_mem hi`. Establish `hJn : J.Nonempty` using `⟨j, hj⟩`. Establish `hIn : I.Nonempty` using `⟨i, hi⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `hLoc _ _ (sysZ K x a).act (Fin d) ((sysZ K x a).R I J) ((sysZ K x a).M I J) ((sysZ K x a).M (insert j I) J) (fun l => (sysZ K x a).r n11 (sysZ K x a).mu i j (dj j l)) ((sysZ K x a).X i * ((sysZ K x a).X j)⁻¹) (((sysZ K x a).X j * ((sysZ K x a).X i)⁻¹ : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) (( …`. Use `r_eq (sysZ K x a) i j l0` as an intermediate fact. Rewrite `this` using `[hl0, mul_inv_cancel, Units.val_one]`. Conclude with `this)`. Use the proof step `(hG.monoM I _ J J hIn hJn (Finset.subset_insert j I) subset_rfl) (loc_M x a hc hG hi hj)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun m hm => ⟨hG.stab _ J ⟨i, hIi⟩ hJn _ (hG.memX _ J hJn j (Finset.mem_insert_self j I) i) m hm, by`. Rewrite using `[mul_inv, inv_inv, mul_comm]`. Conclude with `hG.stab _ J ⟨i, hIi⟩ hJn _ (hG.memX _ J hJn i hIi j) m hm⟩)`. Establish `hfun : (fun l => (sysZ K x a).r n11 (sysZ K x a).mu i j (dj j l) * (((sysZ K x a).X i * ((sysZ K x a).X j)⁻¹ : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K)) = fun l => (sysZ K x a).r n11 (sysZ K x a).mu j j (dj j l)` using `funext fun l => r_mul _ i j l`. Rewrite `hL` using `[hfun]`.
-
-Use `⟨hL.1 hD.1, fun m hm h0 => hL.2 m hm (hD.2 m ?_ h0)⟩` and prove the remaining obligations. Conclude with `hG.monoM I _ J J hIn hJn (Finset.subset_insert j I) subset_rfl hm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.colZ_of :
     RegLat → LatOm → DualForm → K1 → LocD → GoodZ → ColZ := by

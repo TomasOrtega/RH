@@ -11,13 +11,13 @@ section SlopeTestRemainingChoices
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Conclude with `Complex.conj_eq_iff_re.1 (hH z z).symm`.
+A detailed English derivation is pending.
 -/
 theorem herm_self_real (H : Sesq V) (hH : IsHerm H) (z : V) : (((H z z).re : ℝ) : ℂ) = H z z := by
   exact Complex.conj_eq_iff_re.1 (hH z z).symm
 
 /- English proof (translation)
-Rewrite using `[wt, Complex.ofReal_exp]`. Use `push_cast`. Rewrite using `[herm_self_real H hH z]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_eq_cexp (H : Sesq V) (hH : IsHerm H) (z : V) :
     (wt H z : ℂ) = Complex.exp (-(Real.pi : ℂ) * H z z) := by
@@ -28,9 +28,9 @@ theorem wt_eq_cexp (H : Sesq V) (hH : IsHerm H) (z : V) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `V _ _ H hH v z`. Rewrite using `[opU, kerK, wt_eq_cexp H hH, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Establish `hc : H z v = conj (H v z)` using `hH v z`. Establish `hw : conj (H v z) = H v z - 2 * Complex.I * ((H v z).im : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `apply Complex.ext <;> simp`. Apply the tactic sequence `all_goals ring`. Simplify using `only [map_add, LinearMap.add_apply, hc, hw, altE]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem diagonalTerm : DiagTerm := by
   intro V _ _ H hH v z
@@ -44,11 +44,11 @@ theorem diagonalTerm : DiagTerm := by
   ring
 
 /- English proof (translation)
-Introduce `V _ _ H hH α δ Ae hI hA`. Establish `hi : ∀ a b, H (δ a) (δ b) = H a b` using `fun a b => hI a b`. Use `⟨fun x z => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩ : ∃ v, x = Ae (δ v)` from `⟨δ.symm (Ae.symm x), by simp⟩`. Take `⟨y, rfl⟩ : ∃ y, z = δ y` from `⟨δ.symm z, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [termT, phiC, gq, opU, kerK, cayC, wt_eq_cexp H hH, LinearEquiv.symm_apply_apply]`. Simplify using `only [← Complex.exp_add, mul_assoc]`. Use `congr 2`. Simplify using `only [hA, LinearEquiv.symm_apply_apply, map_sub, map_add, map_smul, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.smul_apply, hi, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨y, rfl⟩ : ∃ y, z = δ y` from `⟨δ.symm z, by simp⟩`. Rewrite using `[gq, Complex.norm_exp]`. Use `congr 1`. Establish `hc : H (δ y) y = conj (H y (δ y))` using `hH y (δ y)`. Simplify using `only [hA, LinearEquiv.symm_apply_apply, map_sub, LinearMap.sub_apply, hi, hc, neg_mul, Complex.neg_re, Complex.re_ofReal_mul, Complex.sub_re, Complex.conj_re]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -73,25 +73,23 @@ theorem kernelTermShift : TermShift := by
     ring
 
 /- English proof (translation)
-Introduce `V _ _ _ H hH hpos`. Use `haveI : ProperSpace V := FiniteDimensional.proper ℂ V`. Establish `hhom : ∀ (r : ℝ) (z : V), (H ((r : ℂ) • z) ((r : ℂ) • z)).re = r ^ 2 * (H z z).re`. Introduce `r z`. Simplify using `only [map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Complex.conj_ofReal]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `b` to `Module.finBasis ℂ V`. Establish `hexp : ∀ z, H z z = ∑ i, ∑ j, conj (b.repr z i) * (b.repr z j * H (b j) (b i))`. Introduce `z`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← b.sum_repr z]`. Simplify using `only [map_sum, map_smul, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`. Establish `hcont : Continuous fun z : V => (H z z).re`. Establish `hc : ∀ i, Continuous fun z : V => b.repr z i` using `fun i => (b.coord i).continuous_of_finiteDimensional`. Establish `e : (fun z : V => (H z z).re) = fun z => (∑ i, ∑ j, conj (b.repr z i) * (b.repr z j * H (b j) (b i))).re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[hexp z]`. Rewrite using `[e]`. Conclude with `Complex.continuous_re.comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (Complex.continuous_conj.comp (hc i)).mul ((hc j).mul continuous_const))`. Establish `hunit : ∀ w : V, w ≠ 0 → ((‖w‖⁻¹ : ℝ) : ℂ) • w ∈ Metric.sphere (0 : V) 1` using `fun w hw => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, Complex.norm_real, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 hw)]`. Distinguish the cases in `hV : ∃ v : V, v ≠ 0`. Use `swap`. Use `push_neg at hV`. Use `⟨1, 1, one_pos, one_pos, fun z => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hV z]`. Simplify using the standard rewrite rules. Take `⟨v, hv⟩` from `hV`. Establish `hsph : IsCompact (Metric.sphere (0 : V) 1)` using `isCompact_sphere 0 1`. Establish `hne : (Metric.sphere (0 : V) 1).Nonempty` using `⟨_, hunit v hv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, hamin⟩` from `hsph.exists_isMinOn hne hcont.continuousOn`. Take `⟨m, hm, hmmax⟩` from `hsph.exists_isMaxOn hne hcont.continuousOn`. Establish `ha0 : a ≠ 0`. Introduce `h`. Rewrite `ha` using `[h, mem_sphere_zero_iff_norm, norm_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `zero_ne_one ha`. Establish `hcpos : 0 < (H a a).re` using `hpos a ha0`. Use `⟨(H a a).re, (H m m).re, hcpos, lt_of_lt_of_le hcpos (isMaxOn_iff.1 hmmax a ha), fun z => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hr : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Establish `h1` using `isMinOn_iff.1 hamin _ (hunit z hz)`. Establish `h2` using `isMaxOn_iff.1 hmmax _ (hunit z hz)`. Rewrite `h1`, `h2` using `[hhom]`.
-
-Establish `e : (‖z‖⁻¹) ^ 2 * (H z z).re * ‖z‖ ^ 2 = (H z z).re` using `by field_simp`. Establish `hr2 : 0 ≤ ‖z‖ ^ 2` using `by positivity`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem formNormEquiv : FormNorm := by
   intro V _ _ _ H hH hpos

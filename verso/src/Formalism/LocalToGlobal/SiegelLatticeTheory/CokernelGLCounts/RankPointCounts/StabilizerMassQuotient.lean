@@ -14,9 +14,7 @@ def mass (A : Type*) [MulAction Γ A] : ℝ≥0∞ :=
 variable {Γ}
 
 /- English proof (translation)
-Use `Nat.card_congr { toFun := fun s => ⟨g⁻¹ * (s : Γ) * g, by` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, MulAction.mem_stabilizer_iff.1 s.2, inv_smul_smul]⟩`. Use `invFun := fun t => ⟨g * (t : Γ) * g⁻¹, by`. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, inv_smul_smul, MulAction.mem_stabilizer_iff.1 t.2]⟩`. Apply the tactic sequence `left_inv := fun s => Subtype.ext (by first | simp [mul_assoc] | group)`.
-
-Apply the tactic sequence `right_inv := fun t => Subtype.ext (by first | simp [mul_assoc] | group) }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stab_smul {A : Type*} [MulAction Γ A] (g : Γ) (a : A) :
     Nat.card (MulAction.stabilizer Γ (g • a)) = Nat.card (MulAction.stabilizer Γ a) := by
@@ -31,7 +29,7 @@ theorem card_stab_smul {A : Type*} [MulAction Γ A] (g : Γ) (a : A) :
       right_inv := fun t => Subtype.ext (by first | simp [mul_assoc] | group) }
 
 /- English proof (translation)
-Use `first`. Consider the case `(obtain ⟨g, rfl⟩ := h; exact card_stab_smul g a)`. Consider the case `(obtain ⟨g, rfl⟩ := MulAction.mem_orbit_iff.1 (MulAction.orbitRel_apply.1 h);`. Conclude with `card_stab_smul g a)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem card_stab_of_orbitRel {A : Type*} [MulAction Γ A] {a a' : A} (h : MulAction.orbitRel Γ A a' a) :
     Nat.card (MulAction.stabilizer Γ a') = Nat.card (MulAction.stabilizer Γ a) := by

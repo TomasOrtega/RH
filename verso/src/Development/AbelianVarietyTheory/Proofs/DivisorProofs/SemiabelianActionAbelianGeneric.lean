@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DieuCover
 
 /- English proof (translation)
-Introduce `hX hP hH` and use `GlobalTheory.T.frobenius_pullback_abelian_generic (GlobalTheory.T.abelian_generic_isogeny_extension hX hX.btd hP) hX hP hH`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_cover_hasDieu_of_hypotheses : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
   (q : ℕ) [Fact q.Prime], q ≠ 2 → ¬ q ∣ (discr E).natAbs →

@@ -34,9 +34,9 @@ variable {K Ω : Type} [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algeb
   {l : ℕ} [Fact l.Prime] {n : ℕ} {ι : Qbar l ≃+* ℂ} {R : G K Ω →* GL (Fin n) (Qbar l)} {π : CuspSub K n}
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace (maximalRealSubfield K))` from `inferInstance`. Establish `h2 : χ.locInf v (-1) ^ 2 = 1` using `by rw [← map_pow, neg_one_sq, map_one]`. Establish `h3 : ((χ.locInf v (-1) : ℂˣ) : ℂ) ^ 2 = 1` using `by rw [← Units.val_pow_eq_pow_val, h2, Units.val_one]`. Break down `sq_eq_one_iff.1 h3 with e | e` into its components or cases. Conclude with `⟨0, fun u => (h u v).trans (Units.ext (by simpa using e))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun u => (h u v).trans (Units.ext (by simpa using e))⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_sign (χ : HChar (maximalRealSubfield K))
     (h : ∀ v v' : InfinitePlace (maximalRealSubfield K), χ.locInf v (-1) = χ.locInf v' (-1)) :

@@ -5,15 +5,15 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-Introduce `R _ _ I hI P _`. Set `φ : PrimeSpectrum (R ⧸ I) → PrimeSpectrum R` to `PrimeSpectrum.comap (Ideal.Quotient.mk I)`. Establish `hφ : StrictMono φ` using `RingHom.strictMono_comap_of_surjective Ideal.Quotient.mk_surjective`. Set `z : PrimeSpectrum R` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hz : ∀ q : PrimeSpectrum (R ⧸ I), z < φ q`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `q`. Use `lt_of_le_of_ne (show z.asIdeal ≤ (φ q).asIdeal from bot_le) fun h => hI ?_` and prove the remaining obligations. Establish `hle : I ≤ (φ q).asIdeal`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I x ∈ q.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Conclude with `q.asIdeal.zero_mem`. Rewrite `hle` using `[← h]`. Conclude with `le_bot_iff.mp hle`. Set `p : PrimeSpectrum (R ⧸ I)` to `⟨P, ‹_›⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : P.height = Order.height p` using `PrimeSpectrum.height_eq_orderHeight p`. Establish `h2 : (P.comap (Ideal.Quotient.mk I)).height = Order.height (φ p)` using `PrimeSpectrum.height_eq_orderHeight (φ p)`. Establish `hne : Nonempty { l : LTSeries (PrimeSpectrum (R ⧸ I)) // l.last = p }` using `⟨⟨RelSeries.singleton _ p, rfl⟩⟩`. Rewrite using `[h1, h2, Order.height_eq_iSup_last_eq p, iSup_subtype', ENat.iSup_add, iSup_le_iff]`. Introduce and unpack `⟨l, hl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `l' : LTSeries (PrimeSpectrum R)` to `(l.map φ hφ).cons z (by simpa using hz l.head)`. Establish `hlast : l'.last = φ p` using `by simp [l', hl]`. Use `Order.length_le_height (p := l') hlast.le` as an intermediate fact. Simplify `this` using `[l']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem QuotientHeightAddOne.proof : QuotientHeightAddOne.Statement := by
   intro R _ _ I hI P _

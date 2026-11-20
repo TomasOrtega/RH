@@ -4,13 +4,13 @@ open IsLocalRing NumberField IsDedekindDomain GlobalTheory.ValCount
 open scoped Classical
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis R K`. Take `⟨t, ht⟩` from `exists_isTranscendenceBasis R ℂ`. Establish `hC : Cardinal.aleph0 < Cardinal.mk ℂ`. Rewrite using `[Cardinal.mk_complex]`. Conclude with `Cardinal.aleph0_lt_continuum`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hct` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ ht Cardinal.mk_le_aleph0 hC`. Establish `hle : Cardinal.mk s ≤ Cardinal.mk t` using `le_trans Cardinal.mk_le_aleph0 (hct ▸ hC.le)`. Take `⟨e⟩` from `(Cardinal.le_def _ _).1 hle`. Establish `hw : AlgebraicIndependent R (((↑) : t → ℂ) ∘ e)` using `ht.1.comp e e.injective`. Set `S` to `Algebra.adjoin R (Set.range ((↑) : s → K))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : S →ₐ[R] ℂ` to `(MvPolynomial.aeval (((↑) : t → ℂ) ∘ e)).comp hs.1.aevalEquiv.symm.toAlgHom`. Establish `hφ : Function.Injective φ` using `(algebraicIndependent_iff_injective_aeval.1 hw).comp hs.1.aevalEquiv.symm.injective`. Set `: Algebra S ℂ` to `φ.toRingHom.toAlgebra`. Establish `: IsScalarTower R S ℂ` using `IsScalarTower.of_algebraMap_eq fun x => (φ.commutes x).symm`. Establish `: FaithfulSMul S ℂ` using `(faithfulSMul_iff_algebraMap_injective S ℂ).2 hφ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic S K` using `hs.isAlgebraic`. Conclude with `⟨(IsAlgClosed.lift : K →ₐ[S] ℂ).restrictScalars R⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.nonempty_algHom_complex_countable (R K : Type) [CommRing R] [IsDomain R] [Countable R]
     [Field K] [Countable K] [Algebra R K] [Algebra R ℂ] [FaithfulSMul R K] [FaithfulSMul R ℂ] :
@@ -37,9 +37,9 @@ private theorem UpperTheory.nonempty_algHom_complex_countable (R K : Type) [Comm
   exact ⟨(IsAlgClosed.lift : K →ₐ[S] ℂ).restrictScalars R⟩
 
 /- English proof (translation)
-Introduce `K L _ _ _ φ ι`. Establish `hc : Countable K` using `φ.injective.countable`. Set `: Algebra K L` to `φ.toAlgebra`. Set `: Algebra K ℂ` to `ι.toAlgebra`. Take `⟨j⟩` from `UpperTheory.nonempty_algHom_complex_countable K L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨j.toRingHom, j.comp_algebraMap⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.exists_complex_extension_countable :
     ∀ (K L : Type) [Field K] [Field L] [Countable L] (φ : K →+* L) (ι : K →+* ℂ), ∃ q : L →+* ℂ, q.comp φ = ι := by

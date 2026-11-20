@@ -12,13 +12,13 @@ section
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
 /- English proof (translation)
-The claim follows from `(u.ker 0).2 (zero_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem holUnif_ex_zero_eq_one : u.ex 0 = 1 :=
   (u.ker 0).2 (zero_mem _)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `(u.ker 0).2 (zero_mem _)`. Consider the case `succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem holUnif_ex_nsmul_eq_pow (z : Fin g → ℂ) (k : ℕ) : u.ex (k • z) = u.ex z ^ k := by
   induction k with
@@ -26,7 +26,7 @@ theorem holUnif_ex_nsmul_eq_pow (z : Fin g → ℂ) (k : ℕ) : u.ex (k • z) =
   | succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]
 
 /- English proof (translation)
-The claim follows from `u.discrete; IsZLattice ℝ u.Λ := by have := u.discrete exact ⟨u.full⟩`.
+A detailed English derivation is pending.
 -/
 theorem holUnif_isZLattice : haveI := u.discrete; IsZLattice ℝ u.Λ := by
   have := u.discrete
@@ -35,19 +35,17 @@ theorem holUnif_isZLattice : haveI := u.discrete; IsZLattice ℝ u.Λ := by
 end
 
 /- English proof (translation)
-Introduce `hW hB hE P u Hm χ Ef hc`. Use `u.discrete` as an intermediate fact. Use `holUnif_isZLattice u` as an intermediate fact. Apply `hB u.Λ Ef` to reduce the goal to its premises. Introduce `k a hk hdiv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk0 : (k : ℂ) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `hpow : ∀ w : Fin P.g → ℂ, u.ex w ^ k = u.ex ((k : ℂ) • w)`. Introduce `w`. Rewrite using `[← holUnif_ex_nsmul_eq_pow, Nat.cast_smul_eq_nsmul]`. Establish `hx : u.ex ((k : ℂ)⁻¹ • (a : Fin P.g → ℂ)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hW ℂ P k hk0 _ ?_ ?_` and prove the remaining obligations. Rewrite using `[hpow, smul_smul, mul_inv_cancel₀ hk0, one_smul]`. Conclude with `(u.ker _).2 a.2`. Introduce `y hy`. Take `⟨w, rfl⟩` from `u.ex_onto y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : (k : ℂ) • w ∈ u.Λ` using `(u.ker _).1 (by rw [← hpow]; exact hy)`. Use `set b : u.Λ := ⟨(k : ℂ) • w, hw⟩`. Establish `hwb : w = (k : ℂ)⁻¹ • (b : Fin P.g → ℂ)`. Simplify using `only [b, smul_smul, inv_mul_cancel₀ hk0, one_smul]`. Take `⟨m, hm⟩` from `hdiv b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hE P u Hm χ Ef hc k a b 1 hk (by`. Rewrite using `[hm, Units.val_one]`. Use `push_cast`. Rewrite using `[show -(2 * (Real.pi : ℂ) * Complex.I) * ((k : ℂ) * (m : ℂ)) / (k : ℂ) = (-m : ℤ) * (2 * Real.pi * Complex.I) by push_cast; field_simp]`. Conclude with `(Complex.exp_int_mul_two_pi_mul_I (-m)).symm)`.
+Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : unitOn (1 : ℂˣ) = 1` using `map_one _`. Rewrite `h1` using `[hu, ← hwb]`. Conclude with `h1`. Use `⟨⟨(k : ℂ)⁻¹ • (a : Fin P.g → ℂ), (u.ker _).1 hx⟩, ?_⟩` and prove the remaining obligations. Use `ext1`.
-
-Simplify using `only [Submodule.coe_smul, ← Int.cast_smul_eq_zsmul ℂ, Int.cast_natCast, smul_smul, mul_inv_cancel₀ hk0, one_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem riemannForm_bijective_of_weilNondeg :
     Out.WeilNondegSt → (∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (E : LinearMap.BilinForm ℤ X), (∀ (k : ℕ) (a : X), 0 < k → (∀ b, (k : ℤ) ∣ E a b) → ∃ a', a = (k : ℤ) • a') → Function.Bijective E) → (∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Ef : LinearMap.BilinForm ℤ u.Λ), (Hm.IsHermitian ∧ (∀ l, ‖χ l‖ = 1) ∧ (∀ l m : u.Λ, (Ef l m : ℝ) = ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin P.g → ℂ))).im) ∧ ∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U i → u.fr i z = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))) + Real.pi / 2 * ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))))) * u.fr i (z + l)) → ∀ (k : ℕ) (a b : u.Λ) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (Ef a b : ℂ) / k) → Out.WeilIs P.A P.L k (u.ex ((k : ℂ)⁻¹ • (a : Fin P.g → ℂ))) (u.ex ((k : ℂ)⁻¹ • (b : Fin P.g → ℂ))) (unitOn c)) → (∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Ef : LinearMap.BilinForm ℤ u.Λ), (Hm.IsHermitian ∧ (∀ l, ‖χ l‖ = 1) ∧ (∀ l m : u.Λ, (Ef l m : ℝ) = ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin P.g → ℂ))).im) ∧ ∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U i → u.fr i z = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))) + Real.pi / 2 * ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))))) * u.fr i (z + l)) → Function.Bijective Ef) := by

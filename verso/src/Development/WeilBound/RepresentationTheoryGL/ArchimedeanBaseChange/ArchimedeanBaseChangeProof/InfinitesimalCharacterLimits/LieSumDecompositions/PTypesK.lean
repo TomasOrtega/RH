@@ -18,7 +18,7 @@ def k_castGL {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (g : GL (Fin a) R) 
 
 omit [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem k_castGL_apply {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (g : GL (Fin a) R) (i j : Fin b) :
     (k_castGL h g : Matrix (Fin b) (Fin b) R) i j = (g : Matrix (Fin a) (Fin a) R) (Fin.cast h.symm i) (Fin.cast h.symm j) := by
@@ -26,7 +26,7 @@ theorem k_castGL_apply {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (g : GL (
 
 omit [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem k_castGL_castGL {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (g : GL (Fin a) R) :
     k_castGL h.symm (k_castGL h g) = g := by
@@ -34,7 +34,7 @@ theorem k_castGL_castGL {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (g : GL 
 
 omit [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Conclude with `InducedTensorMap.B.lev_cc (s := 0) (g, 1) i j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem levi_embed_left_zero {R : Type} [CommRing R] {r : ℕ} (g : GL (Fin r) R) : lev R r 0 (g, 1) = g := by
   refine Matrix.GeneralLinearGroup.ext fun i j => ?_
@@ -42,9 +42,9 @@ theorem levi_embed_left_zero {R : Type} [CommRing R] {r : ℕ} (g : GL (Fin r) R
 
 omit [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Take `⟨i', rfl⟩ : ∃ i' : Fin s, i = Fin.natAdd 0 i'` from `⟨Fin.cast (Nat.zero_add s) i, Fin.ext (by simp)⟩`. Take `⟨j', rfl⟩ : ∃ j' : Fin s, j = Fin.natAdd 0 j'` from `⟨Fin.cast (Nat.zero_add s) j, Fin.ext (by simp)⟩`. Rewrite using `[InducedTensorMap.B.lev_nn (r := 0) (1, u) i' j', k_castGL_apply]`. Establish `e : ∀ x : Fin s, Fin.cast (Nat.zero_add s).symm.symm (Fin.natAdd 0 x) = x` using `fun x => Fin.ext (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem k_lev_0s {R : Type} [CommRing R] {s : ℕ} (u : GL (Fin s) R) :
     lev R 0 s (1, u) = k_castGL (Nat.zero_add s).symm u := by
@@ -57,7 +57,7 @@ theorem k_lev_0s {R : Type} [CommRing R] {s : ℕ} (u : GL (Fin s) R) :
 
 omit [IsCMField E] in
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hu`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem k_mem_cast {F : ∀ n : ℕ, Subgroup (GL (Fin n) (Af E))} {a b : ℕ} (h : a = b) {u : GL (Fin a) (Af E)}
     (hu : u ∈ F a) : k_castGL h u ∈ F b := by
@@ -65,7 +65,7 @@ theorem k_mem_cast {F : ∀ n : ℕ, Subgroup (GL (Fin n) (Af E))} {a b : ℕ} (
 
 omit [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_inf]`. Conclude with `h.inter h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem k_isOpen_inf {G : Type} [Group G] [TopologicalSpace G] {H H' : Subgroup G} (h : IsOpen (H : Set G))
     (h' : IsOpen (H' : Set G)) : IsOpen ((H ⊓ H' : Subgroup G) : Set G) := by
@@ -73,7 +73,7 @@ theorem k_isOpen_inf {G : Type} [Group G] [TopologicalSpace G] {H H' : Subgroup 
 
 omit [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem k_isOpen_iInf {G : Type} [Group G] [TopologicalSpace G] {ι : Sort*} [Finite ι] {H : ι → Subgroup G}
     (h : ∀ i, IsOpen (H i : Set G)) : IsOpen ((⨅ i, H i : Subgroup G) : Set G) := by
@@ -88,11 +88,11 @@ def Tset (r s : ℕ) (L : Subgroup (GL (Fin (r + s)) (Af E))) : Finset (GL (Fin 
     Classical.choose (IwaAd.iwasawa_finite_cosets E r s L h) else ∅
 
 /- English proof (translation)
-Distinguish the cases in `hr : r = 0 ∨ s = 0`. Establish `hT : Tset r s L = {1}` using `by rw [Tset, if_pos hr]`. Break down `hr with rfl | rfl` into its components or cases. Use `⟨0, (1, k_castGL (Nat.zero_add s) g), 1, 1, 1, by rw [hT]; exact Finset.mem_singleton_self _, L.one_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[InducedTensorMap.unip_zero, k_lev_0s, k_castGL_castGL, map_one, map_one, map_one]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨0, (g, 1), 1, 1, 1, by rw [hT]; exact Finset.mem_singleton_self _, L.one_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[InducedTensorMap.unip_zero, levi_embed_left_zero, map_one, map_one, map_one]`. Simplify using the standard rewrite rules. Establish `hT : Tset r s L = Classical.choose (IwaAd.iwasawa_finite_cosets E r s L hL)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Tset, if_neg hr, dif_pos hL]`. Rewrite using `[hT]`. Conclude with `Classical.choose_spec (IwaAd.iwasawa_finite_cosets E r s L hL) g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tset_spec {r s : ℕ} {L : Subgroup (GL (Fin (r + s)) (Af E))} (hL : IsOpen (L : Set (GL (Fin (r + s)) (Af E))))
     (g : GA E (r + s)) : ∃ (x : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (t : GL (Fin (r + s)) (Af E))
@@ -127,11 +127,9 @@ decreasing_by all_goals omega
 variable {N : ℕ} {K : Subgroup (GL (Fin N) (Af E))}
 
 /- English proof (translation)
-Use the proof step `induction' hd : N - n using Nat.strong_induction_on with d ih generalizing n`. Rewrite using `[Kf]`. Use `k_isOpen_inf (k_isOpen_inf (k_isOpen_inf ?_ (isOpen_detKer n)) ?_) ?_` and prove the remaining obligations. Unfold `topK split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK`. Rewrite using `[Subgroup.coe_top]`. Conclude with `isOpen_univ`. Use `k_isOpen_iInf fun s' => k_isOpen_iInf fun hs => k_isOpen_iInf fun t => ?_` and prove the remaining obligations. Conclude with `Slice1.isOpen_levelOne (ih _ (by omega) _ rfl) _`.
-
-Use `k_isOpen_iInf fun s' => k_isOpen_iInf fun hs => k_isOpen_iInf fun t => ?_` and prove the remaining obligations. Conclude with `Slice2.isOpen_L₂ (ih _ (by omega) _ rfl) _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_Kf (hK : IsOpen (K : Set (GL (Fin N) (Af E)))) (n : ℕ) :
     IsOpen (Kf N K n : Set (GL (Fin n) (Af E))) := by
@@ -148,16 +146,16 @@ theorem isOpen_Kf (hK : IsOpen (K : Set (GL (Fin N) (Af E)))) (n : ℕ) :
     exact Slice2.isOpen_L₂ (ih _ (by omega) _ rfl) _
 
 /- English proof (translation)
-Rewrite using `[Kf]`. Conclude with `inf_le_left.trans (inf_le_left.trans inf_le_right)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Kf_le_det (n : ℕ) : Kf N K n ≤ detKer n := by
   rw [Kf]
   exact inf_le_left.trans (inf_le_left.trans inf_le_right)
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite `hu` using `[Kf]`. Establish `h` using `hu.1.1.1`. Unfold `topK at h`. Rewrite `h` using `[dif_pos rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem Kf_top : Kf N K N ≤ K := by
   intro u hu
@@ -168,11 +166,11 @@ theorem Kf_top : Kf N K N ≤ K := by
   exact h
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos s with rfl | hs` into its components or cases. Establish `hT : Tset r 0 (Kf N K (r + 0)) = {1}` using `by rw [Tset, if_pos (Or.inr rfl)]`. Rewrite `ht` using `[hT, Finset.mem_singleton]`. Substitute `ht` using the available equality. Rewrite using `[inv_one, one_mul, mul_one, levi_embed_left_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu`. Rewrite `hu` using `[Kf]`. Establish `h` using `(Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hu).1).2`. Rewrite `h` using `[Subgroup.mem_iInf]`. Establish `h2` using `h ⟨s, by omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Subgroup.mem_iInf]`. Establish `h3` using `h2 ⟨hs, hN⟩`. Rewrite `h3` using `[Subgroup.mem_iInf]`. Conclude with `Slice1.mem_levelOne.1 (h3 ⟨t, ht⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Kf_left {r s : ℕ} (hN : r + s ≤ N) {t : GL (Fin (r + s)) (Af E)} (ht : t ∈ Tset r s (Kf N K (r + s)))
     {u : GL (Fin r) (Af E)} (hu : u ∈ Kf N K r) : t⁻¹ * lev (Af E) r s (u, 1) * t ∈ Kf N K (r + s) := by
@@ -192,11 +190,11 @@ theorem Kf_left {r s : ℕ} (hN : r + s ≤ N) {t : GL (Fin (r + s)) (Af E)} (ht
     exact Slice1.mem_levelOne.1 (h3 ⟨t, ht⟩)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `hT : Tset 0 s (Kf N K (0 + s)) = {1}` using `by rw [Tset, if_pos (Or.inl rfl)]`. Rewrite `ht` using `[hT, Finset.mem_singleton]`. Substitute `ht` using the available equality. Rewrite using `[inv_one, one_mul, mul_one, k_lev_0s]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `k_mem_cast (F := Kf N K) (Nat.zero_add s).symm hu`. Rewrite `hu` using `[Kf]`. Establish `h` using `(Subgroup.mem_inf.1 hu).2`. Rewrite `h` using `[Subgroup.mem_iInf]`. Establish `h2` using `h ⟨r, by omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Subgroup.mem_iInf]`. Establish `h3` using `h2 ⟨hr, hN⟩`. Rewrite `h3` using `[Subgroup.mem_iInf]`. Establish `h4` using `h3 ⟨t, ht⟩`. Simplify `h4` using `[Slice2.L₂, Slice2.lev2, MulAut.conj_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Kf_right {r s : ℕ} (hN : r + s ≤ N) {t : GL (Fin (r + s)) (Af E)} (ht : t ∈ Tset r s (Kf N K (r + s)))
     {u : GL (Fin s) (Af E)} (hu : u ∈ Kf N K s) : t⁻¹ * lev (Af E) r s (1, u) * t ∈ Kf N K (r + s) := by

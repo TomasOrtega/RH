@@ -90,7 +90,7 @@ def HalfCoreSt (D : D7) : Prop :=
 def VdSt (D : D7) : Prop := ∀ p : ℕ, p.Prime → vdOf D p = vdDiff D p
 
 /- English proof (translation)
-Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Conclude with `Q.H.bar_eq a`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem bar_eq_barE (Q : Par D) (a : 𝓞 D.host.E) : Q.H.bar a = barE D a := by
   apply IsFractionRing.injective (𝓞 D.host.E) D.host.E

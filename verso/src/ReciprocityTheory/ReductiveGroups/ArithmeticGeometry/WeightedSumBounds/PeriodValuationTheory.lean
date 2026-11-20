@@ -14,7 +14,7 @@ def TypicalCurveTheory : Prop :=
 def PeriodValuationTheory : Prop := OmStatement
 
 /- English proof (translation)
-The claim follows from `om`.
+A detailed English derivation is pending.
 -/
 theorem a9 : PeriodValuationTheory := om
 

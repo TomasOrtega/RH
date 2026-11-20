@@ -40,11 +40,11 @@ def chartPullTwJ {X₁ X₂ : Scheme.{0}} (M₁ : LB X₁) (M₂ : LB X₂) (f :
     rw [hg]
 
 /- English proof (translation)
-Use `h.compactSpace` as an intermediate fact. Use `h.quasiSeparatedSpace` as an intermediate fact. Establish `hL` using `h.isLB`. Establish `hN` using `join_isLB hL h₂`. Take `⟨m, hm, s, hs, -, ha⟩` from `h.exists_affine_le (x := y) (U := ⊤) trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨V, N, hV, H⟩` from `TwistGen.exists_nhds (M := LB.LinComb (join M₁ M₂) (fun _ : PUnit => f ≫ coprod.inr) (fun _ => e)) (LB.isLB_linComb hN _ _) (isLB_lbPow hL m) s ha y hs`. Take `⟨d, hd⟩ : ∃ d, k * (N + 1) = N + d` from `Nat.exists_eq_add_of_le (by nlinarith)`. Take `⟨u, hu⟩` from `H d`. Use `⟨m * (N + 1), Nat.mul_pos hm (Nat.succ_pos N), ?_⟩` and prove the remaining obligations. Rewrite using `[show k * (m * (N + 1)) = m * (N + d) by rw [← hd]; ring]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨chartSec (chartPullTwJ M₁ M₂ f e m (N + d)) u, ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_chartSec_id _ u fun x _ _ => exists_chart (LB.isLB_linComb hN _ _) x]`. Conclude with `hu hV`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_twist_join {X₁ X₂ : Scheme.{0}} {M₁ : LB X₁} {M₂ : LB X₂} (h : IsAmpleLB M₁) (h₂ : M₂.IsLB)
     [Nonempty X₁] [Nonempty X₂] (f : X₁ ⟶ X₂) (e : ℤ) (k : ℕ) (hk : 1 ≤ k) (y : X₁) :
@@ -67,21 +67,21 @@ theorem exists_sec_twist_join {X₁ X₂ : Scheme.{0}} {M₁ : LB X₁} {M₂ : 
   exact hu hV
 
 /- English proof (translation)
-Introduce `R _ _ A₁ A₂ F _ _ c hc j k hk`. Establish `hL₁` using `A₁.isLB`. Establish `hL₂` using `A₂.isLB`. Set `T : Over (Sp (FractionRing R))` to `TFK (R := R) F`. Establish `hsub : Subsingleton T.left` using `inferInstanceAs (Subsingleton (PrimeSpectrum F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `z₀ : T.left` to `(⊥ : PrimeSpectrum F)`. Establish `P₁` using `isPart_inl A₁.L A₂.L`. Establish `P₂` using `isPart_inr A₁.L A₂.L`. Establish `hN` using `join_isLB hL₁ hL₂`. Take `⟨n, hn, u, hu⟩` from `exists_sec_twist_join (isAmpleLB_of_relAmple_of_isAffine A₁.A hL₁ A₁.ample) hL₂ c.left (-(j : ℤ)) k hk (((ptSecT A₁.A (1 : T ⟶ A₁.A)).left ≫ (snd T A₁.A).left) z₀)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ t : SecA A₂ F j, ∃ t' : SecA A₁ F (k * n), ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A₁.A).left) (z : Z) (J), Good (join A₁.L A₂.L) z J → sA t' r z (rl J) = sA t (r ≫ (T ◁ c).left) z (rr J) * sval u (r ≫ (snd T A₁.A).left) z J`. Introduce `t`. Establish `e : (T ◁ c).left ≫ (snd T A₂.A).left ≫ (coprod.inr : A₂.A.left ⟶ A₁.A.left ⨿ A₂.A.left) = (snd T A₁.A).left ≫ c.left ≫ (coprod.inr : A₂.A.left ⟶ A₁.A.left ⨿ A₂.A.left)`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]`. Set `tN` to `P₂.sec (φ := fun _ : Fin 1 => (snd T A₂.A).left) (ε := fun _ => (j : ℤ)) t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨s, hs⟩` from `exists_sec hN (φ' := fun _ : Fin 1 => (snd T A₁.A).left ≫ coprod.inl) (ε' := fun _ => ((k * n : ℕ) : ℤ)) (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Fin.prod_univ_one, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, e, zpow_neg, mul_inv_cancel_left])`. Use the proof step `(H1.SectionArithmetic.mulSec (H1.SectionArithmetic.pullSec tN (T ◁ c).left) (H1.SectionArithmetic.pullSec u (snd T A₁.A).left))`. Take `⟨t', ht'⟩` from `P₁.exists_sec (φ := fun _ : Fin 1 => (snd T A₁.A).left) (ε := fun _ => ((k * n : ℕ) : ℤ)) hL₁ (fst_surjective hL₂) s`. Use `⟨t', fun Z r z J hJ => (ht' Z r z J hJ).trans ((hs Z r z J hJ).trans ?_)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(H1.SectionArithmetic.sval_mulSec _ _ r z hJ).trans (congrArg₂ (· * ·) ?_ (H1.SectionArithmetic.sval_pullSec _ _ r z hJ))` and prove the remaining obligations. Conclude with `(H1.SectionArithmetic.sval_pullSec _ _ r z hJ).trans (P₂.sval_sec _ _ z hJ)`. Use `⟨n, hn, fun t₁ t₂ => ?_⟩` and prove the remaining obligations. Take `⟨t₁', h₁⟩` from `key t₁`. Take `⟨t₂', h₂⟩` from `key t₂`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨t₁', t₂', fun z J₁ J₂ g₁ g₂ => ?_, fun h z J₁ g₁ => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ, rfl, rfl⟩` from `exists_good_join hL₁ hL₂ g₁ g₂`. Rewrite using `[h₁ _ _ z J hJ, h₂ _ _ z J hJ, Category.id_comp]`. Expand and normalize the polynomial expressions, which then agree. Use `choose d hd using fun ψ : T.left ⟶ A₂.A.left => exists_chart hL₂ (ψ z)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨J, hJ, rfl, hr⟩` from `exists_good_join hL₁ hL₂ g₁ (J₂ := d) hd`. Establish `e : (ptSecT A₁.A (1 : T ⟶ A₁.A)).left ≫ (T ◁ c).left = (ptSecT A₂.A (1 : T ⟶ A₂.A)).left`. Rewrite using `[← Over.comp_left, ptSecT, ptSecT, lift_whiskerLeft, MonObj.one_comp]`. Rewrite using `[h₂ _ _ z J hJ, e]`. Take `rfl : z₀ = z` from `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hU : IsUnit (sval u ((ptSecT A₁.A (1 : T ⟶ A₁.A)).left ≫ (snd T A₁.A).left) z₀ J)` using `(mem_nonzeroLocus_iff_pull u _ z₀ (hJ.mem _ _)).1 hu`. Establish `g₂ : Good A₂.L z₀ (rr J)` using `hr ▸ hd`. Conclude with `fun h0 => h z₀ (rr J) g₂ (hU.mul_left_eq_zero.1 h0)`.
+A detailed English derivation is pending.
 -/
 theorem exists_crossH : ∀ (R : Type) [CommRing R] [IsDomain R] (A₁ A₂ : PolAV (Sp (FractionRing R))) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (c : A₁.A ⟶ A₂.A), IsMonHom c → ∀ (j k : ℕ), 1 ≤ k → ∃ n, 1 ≤ n ∧

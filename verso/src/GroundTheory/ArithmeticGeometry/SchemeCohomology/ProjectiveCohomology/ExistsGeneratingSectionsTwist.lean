@@ -23,7 +23,7 @@ variable {A : Type u} [CommRing A] [IsNoetherianRing A] {n : ℕ} {X : Scheme.{u
 omit [IsNoetherianRing A] [X.Over (Spec (.of A))] [i.IsOver (Spec (.of A))] in
 
 /- English proof (translation)
-Use `hF.1` as an intermediate fact. Take `⟨q₀, hq₀⟩` from `ProjSpace.exists_generatingSections_twist _ (isCoherent_pushforward i hF)`. Use `⟨q₀, fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `hq₀ q hq`. Conclude with `exists_generatingSections_of_pushforward i (twist i F q) (exists_generatingSections_of_iso (pushforwardTwistIso i F q) ⟨σ, hσ⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_generatingSections_twist (F : X.Modules) (hF : IsCoherent F) :
     ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∃ σ : (twist i F q).GeneratingSections, σ.IsFiniteType := by
@@ -42,7 +42,7 @@ attribute [local instance] algebraOfOver
 include i in
 
 /- English proof (translation)
-Use `hF.1` as an intermediate fact. Use `ProjSpace.finite_H.{w'} _ (isCoherent_pushforward i hF) p` as an intermediate fact. Conclude with `Module.Finite.equiv (HLinearEquivPushforward.{w'} i F p).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_H (F : X.Modules) (hF : IsCoherent F) (p : ℕ) :
     Module.Finite A (Sheaf.H.{w'} (modulesAb F) p) := by
@@ -51,9 +51,9 @@ theorem finite_H (F : X.Modules) (hF : IsCoherent F) (p : ℕ) :
   exact Module.Finite.equiv (HLinearEquivPushforward.{w'} i F p).symm
 
 /- English proof (translation)
-Use `hF.1` as an intermediate fact. Take `⟨q₀, hq₀⟩` from `ProjSpace.exists_subsingleton_H_twist.{w'} _ (isCoherent_pushforward i hF)`. Use `⟨q₀, fun q hq p hp => ?_⟩` and prove the remaining obligations. Establish `h₁` using `hq₀ q hq p hp`. Establish `e₁` using `HLinearEquivPushforward.{w'} i (twist i F q) p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : Sheaf.H.{w'} (modulesAb (ProjSpace.twist ((Scheme.Modules.pushforward i).obj F) q)) p ≃+ Sheaf.H.{w'} (modulesAb ((Scheme.Modules.pushforward i).obj (twist i F q))) p` using `((H.moduleFunctor.{w'} A p).mapIso (pushforwardTwistIso i F q)).toLinearEquiv.toAddEquiv`. Conclude with `e₁.toEquiv.subsingleton_congr.2 (e₂.toEquiv.subsingleton_congr.1 h₁)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_subsingleton_H_twist (F : X.Modules) (hF : IsCoherent F) :
     ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ p : ℕ, 0 < p →

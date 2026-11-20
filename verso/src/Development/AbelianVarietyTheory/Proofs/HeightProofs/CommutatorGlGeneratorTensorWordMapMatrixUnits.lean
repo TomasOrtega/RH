@@ -6,7 +6,7 @@ open scoped ContDiff Topology
 namespace GlobalTheory.SmoothForms
 
 /- English proof (translation)
-The claim follows from `| 0, f => by simp | d + 1, f => by have ih := commutator_prod_ofFn x d (fun i => f i.succ) have h : ∀ (p : Fin d) (y : A), (fun i : Fin d => Function.update f p.succ y i.succ) = Function.update (fun i => f i.succ) p y := fun p y => by funext i by_cases h : i = p · subst h; simp · …`.
+A detailed English derivation is pending.
 -/
 theorem commutator_prod_ofFn {A : Type} [Ring A] (x : A) :
     ∀ (d : ℕ) (f : Fin d → A), x * (List.ofFn f).prod - (List.ofFn f).prod * x =
@@ -27,11 +27,11 @@ theorem commutator_prod_ofFn {A : Type} [Ring A] (x : A) :
     noncomm_ring
 
 /- English proof (translation)
-Simplify using `only [polar, Matrix.of_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `h : ∀ J : Fin d → Fin n, (J p = a ∧ I p = b ∧ ∀ q, q ≠ p → J q = I q) ↔ (b = I p ∧ J = Function.update I p a)` using `fun J => by`. Rewrite using `[Function.eq_update_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h2.symm, h1, h3⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h2, h1.symm, h3⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [h]`. Apply the tactic sequence `by_cases hb : b = I p <;> simp [hb]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_polar_left {A : Type} [AddCommGroup A] [Module ℂ A] {n d : ℕ} (a b : Fin n) (I : Fin d → Fin n)
     (g : (Fin d → Fin n) → A) :
@@ -49,11 +49,11 @@ theorem sum_polar_left {A : Type} [AddCommGroup A] [Module ℂ A] {n d : ℕ} (a
   by_cases hb : b = I p <;> simp [hb]
 
 /- English proof (translation)
-Simplify using `only [polar, Matrix.of_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `h : ∀ J : Fin d → Fin n, (K p = a ∧ J p = b ∧ ∀ q, q ≠ p → K q = J q) ↔ (K p = a ∧ J = Function.update K p b)` using `fun J => by`. Rewrite using `[Function.eq_update_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h1, h2, fun q hq => (h3 q hq).symm⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h1, h2, fun q hq => (h3 q hq).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [h]`. Apply the tactic sequence `by_cases hb : K p = a <;> simp [hb]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_polar_right {A : Type} [AddCommGroup A] [Module ℂ A] {n d : ℕ} (a b : Fin n) (K : Fin d → Fin n)
     (g : (Fin d → Fin n) → A) :
@@ -71,13 +71,13 @@ theorem sum_polar_right {A : Type} [AddCommGroup A] [Module ℂ A] {n d : ℕ} (
   by_cases hb : K p = a <;> simp [hb]
 
 /- English proof (translation)
-Rewrite using `[commutator_prod_ofFn, sum_polar_left, sum_polar_right, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `h1 : (fun q => E (Function.update I p a q) (K q)) = Function.update (fun q => E (I q) (K q)) p (E a (K p))`. Use function extensionality and compare the values at `q`. Distinguish the cases in `h : q = p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`. Establish `h2 : (fun q => E (I q) (Function.update K p b q)) = Function.update (fun q => E (I q) (K q)) p (E (I p) b)`. Use function extensionality and compare the values at `q`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : q = p`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`. Rewrite using `[h1, h2, hE a b (I p) (K p)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← MultilinearMap.mkPiAlgebraFin_apply (R := ℂ), MultilinearMap.map_update_sub]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> simp only [MultilinearMap.map_update_zero]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem commutator_word {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E)
     {d : ℕ} (a b : Fin n) (I K : Fin d → Fin n) :
@@ -103,13 +103,13 @@ theorem commutator_word {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {E : Fin n
   congr 1 <;> split_ifs <;> simp only [MultilinearMap.map_update_zero]
 
 /- English proof (translation)
-Introduce `A _ _ n E hE d a b M`. Establish `hw : ∀ N, wordMap E d N = ∑ I, ∑ K, N I K • (List.ofFn fun q : Fin d => E (I q) (K q)).prod` using `fun _ => rfl`. Establish `hl : wordMap E d (polar n d a b * M) = ∑ I, ∑ K, M I K • ∑ J, polar n d a b J I • (List.ofFn fun q => E (J q) (K q)).prod`. Simplify using `only [hw, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun K _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Establish `hr : wordMap E d (M * polar n d a b) = ∑ I, ∑ K, M I K • ∑ J, polar n d a b K J • (List.ofFn fun q => E (I q) (J q)).prod`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hw, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Rewrite using `[map_sub, hl, hr, hw, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun K _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub, ← commutator_word hE, smul_sub, mul_smul_comm, smul_mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commutator_wordMap : ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (E : Fin n → Fin n → A),
     Formalism.REAL.GlRel E → ∀ (d : ℕ) (a b : Fin n) (M : Matrix (Fin d → Fin n) (Fin d → Fin n) ℂ),

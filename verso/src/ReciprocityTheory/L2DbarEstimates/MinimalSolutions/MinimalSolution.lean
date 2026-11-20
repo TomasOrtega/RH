@@ -5,23 +5,21 @@ namespace ReciprocityTheory.L2DbarEstimates
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `θ ℓ A hA hbd`. Establish `hker : LinearMap.ker θ ≤ LinearMap.ker ℓ`. Introduce `e he`. Rewrite `he`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `hbd e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[he, norm_zero]`. Establish `: ‖ℓ e‖ ^ 2 ≤ 0` using `by simpa using h`. Establish `h0 : ‖ℓ e‖ = 0` using `by nlinarith [norm_nonneg (ℓ e)]`. Conclude with `norm_eq_zero.mp h0`. Use `set R := LinearMap.range θ with hR`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : R →ₗ[ℂ] ℂ` to `(LinearMap.ker θ).liftQ ℓ hker ∘ₗ θ.quotKerEquivRange.symm.toLinearMap`. Establish `hφ : ∀ e : E, φ ⟨θ e, LinearMap.mem_range_self θ e⟩ = ℓ e`. Introduce `e`. Establish `hmk : (⟨θ e, LinearMap.mem_range_self θ e⟩ : R) = θ.quotKerEquivRange (Submodule.Quotient.mk e)` using `rfl`. Simplify using `only [φ, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmk, LinearEquiv.symm_apply_apply, Submodule.liftQ_apply]`. Establish `hsq : ∀ e : E, ‖ℓ e‖ ≤ Real.sqrt A * ‖θ e‖`. Introduce `e`. Establish `h1` using `Real.sqrt_le_sqrt (hbd e)`. Rewrite `h1` using `[Real.sqrt_sq (norm_nonneg _), Real.sqrt_mul hA, Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hφb : ∀ y : R, ‖φ y‖ ≤ Real.sqrt A * ‖y‖`. Introduce and unpack `⟨y, e, rfl⟩`. Rewrite using `[hφ e]`. Conclude with `hsq e`. Set `φc : R →L[ℂ] ℂ` to `φ.mkContinuous (Real.sqrt A) hφb`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, hfn⟩` from `exists_extension_norm_eq R φc`. Use `set v := (InnerProductSpace.toDual ℂ H).symm f with hv`. Establish `hvnorm : ‖v‖ ≤ Real.sqrt A`. Rewrite using `[hv, LinearIsometryEquiv.norm_map, hfn]`. Conclude with `LinearMap.mkContinuous_norm_le _ (Real.sqrt_nonneg A) _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hvin : ∀ e : E, ⟪v, θ e⟫_ℂ = ℓ e`. Introduce `e`. Rewrite using `[hv, InnerProductSpace.toDual_symm_apply]`. Use `hf ⟨θ e, LinearMap.mem_range_self θ e⟩` as an intermediate fact. Simplify `this` using `[φc, hφ e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set K := R.topologicalClosure with hK`. Use `haveI : CompleteSpace K := R.isClosed_topologicalClosure.completeSpace_coe`. Use `⟨K.starProjection v, K.starProjection_apply_mem v, ?_, ?_⟩` and prove the remaining obligations. Establish `h3 : ‖K.starProjection v‖ ≤ Real.sqrt A` using `(K.norm_starProjection_apply_le v).trans hvnorm`. Combine the equalities or inequalities in the displayed calculation.
-
-Introduce `e`. Establish `hmem : θ e ∈ K` using `R.le_topologicalClosure (LinearMap.mem_range_self θ e)`. Rewrite using `[K.inner_starProjection_left_eq_right, Submodule.starProjection_eq_self_iff.mpr hmem]`. Conclude with `hvin e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rieszOnRange (E H : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] :
@@ -75,17 +73,15 @@ theorem rieszOnRange (E H : Type*) [AddCommGroup E] [Module ℂ E]
     exact hvin e
 
 /- English proof (translation)
-Introduce `θ ℓ u u' hu h h'`. Use `set R := LinearMap.range θ with hR`. Establish `hw : u' - u ∈ Rᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce and unpack `y ⟨e, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_sub_right, ← inner_conj_symm, h', ← inner_conj_symm, h, sub_self]`. Establish `hcl : R.topologicalClosure ≤ Rᗮᗮ` using `R.topologicalClosure_minimal R.le_orthogonal_orthogonal Rᗮ.isClosed_orthogonal`. Establish `hperp : ∀ z ∈ R.topologicalClosure, ⟪u' - u, z⟫_ℂ = 0`. Introduce `z hz`. Conclude with `(Submodule.mem_orthogonal _ _).mp (hcl hz) _ hw`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hw, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : ⟪u, u' - u⟫_ℂ = 0`. Rewrite using `[← inner_conj_symm, hperp u hu, map_zero]`. Establish `hsq : ‖u'‖ ^ 2 = ‖u‖ ^ 2 + ‖u' - u‖ ^ 2`. Use `@norm_add_sq ℂ H _ _ _ u (u' - u)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this, h0]`. Simplify using the standard rewrite rules. Establish `: ‖u‖ ^ 2 ≤ ‖u'‖ ^ 2`. Rewrite using `[hsq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use polynomial arithmetic with `[sq_nonneg ‖u' - u‖]`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp this`. Introduce `hu'`. Establish `hz : u' - u ∈ R.topologicalClosure` using `Submodule.sub_mem _ hu' hu`. Use `hperp _ hz` as an intermediate fact.
-
-Rewrite `this` using `[inner_self_eq_zero, sub_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minimalSolution (E H : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] : MinimalSolutionStatement E H := by

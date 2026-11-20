@@ -7,13 +7,13 @@ open scoped Formalism.Per
 namespace GlobalTheory.AxLemma
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨c, hc, hax⟩` from `ax_lemma_complete l`. Use `⟨c, hc, fun n _ _ K H Y r hr hY => ?_⟩` and prove the remaining obligations. Establish `hent : ∀ i j, ∃ z : Om l, (∀ g ∈ H.map (GK K).subtype, g z = z) ∧ ‖Y i j - (z : ℂ_[l])‖ ≤ c * r`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hax (H.map (GK K).subtype) (Y i j) r hr ?_` and prove the remaining obligations. Introduce and unpack `g' ⟨g, hg, rfl⟩`. Use `hY g hg i j` as an intermediate fact. Simplify `this` using `[Matrix.sub_apply, Matrix.map_apply]`. Use `choose z hz hzY using hent`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.of fun i j => (z i j : ℂ_[l]), ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[GlobalTheory.RingBasics.σC_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `hz i j _ ⟨g, hg, rfl⟩`. Introduce `i j`. Simplify `hzY i j` using `[Matrix.sub_apply, Matrix.of_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ax_lemma_matrix : ∀ (l : ℕ) [Fact l.Prime] , ∃ c : ℝ, 0 < c ∧ ∀ (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (H : Subgroup ↥(GK K)) (Y : Matrix n n ℂ_[l]) (r : ℝ), 0 < r → (∀ g ∈ H, ∀ i j, ‖(Y.map (Formalism.Per.σC (g : GQ l)) - Y) i j‖ ≤ r) → ∃ Z : Matrix n n ℂ_[l], (∀ g ∈ H, Z.map (Formalism.Per.σC (g : GQ l)) = Z) ∧ ∀ i j, ‖(Y - Z) i j‖ ≤ c * r := by
   intro l _

@@ -10,33 +10,29 @@ open scoped Formalism.Per NNReal
 namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Introduce `hU l _ K bk N`. Take `⟨n₀, hn₀⟩` from `GlobalTheory.AcrisPow.main l K bk (2 * N + 1) 1`. Use `⟨n₀ + 2 * N * n₀, fun d A A' hA => ?_⟩` and prove the remaining obligations. Use `set ψ : bk.S →+* Per.Acris l := (algebraMap (Ainf l) (Per.Acris l)).comp bk.ev with hψ`. Take `⟨htor, hcomp, ⟨v, hv⟩, hφ, -⟩` from `GlobalTheory.AcrisFrobE.main l K bk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφψ : ∀ s, phiA l (ψ s) = ψ (frobS l bk.a s)` using `fun s => by`. Simplify using `only [hψ, RingHom.comp_apply, hφ, bk.ev_frob]`. Establish `hu : phiA l (ψ X) = ψ X ^ l` using `by rw [hφψ, frobS_X, map_pow]`. Establish `hdiff : ∀ s : bk.S, ∃ t : Per.Acris l, ψ (frobS l bk.a s) - ψ (frobS l bk.a (PowerSeries.C (PowerSeries.constantCoeff s))) = ψ X ^ l * t`. Introduce `s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `(PowerSeries.X_dvd_iff (φ := s - PowerSeries.C (PowerSeries.constantCoeff s))).2 (by simp)`. Use `⟨ψ (frobS l bk.a t), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sub, ← map_sub, ht, map_mul, frobS_X, map_mul, map_pow]`. Take `⟨w, hw⟩` from `bk.coeff_zero`. Establish `hE0 : PowerSeries.constantCoeff bk.E = bk.Ep.coeff 0` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w0 : Per.Acris l := ψ (frobS l bk.a (PowerSeries.C (w : Wq l bk.a))) with hw0def`. Establish `hw0u : IsUnit w0` using `((w.isUnit.map PowerSeries.C).map (frobS l bk.a)).map ψ`. Establish `hP0 : ψ (frobS l bk.a (PowerSeries.C (PowerSeries.constantCoeff bk.E))) = (l : Per.Acris l) * w0`. Rewrite using `[hE0, hw, map_mul, map_natCast, map_mul, map_natCast, map_mul, map_natCast]`. Use `set u : Per.Acris l := ψ X with hudef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P : Per.Acris l := ψ (frobS l bk.a bk.E) with hPdef`. Use `set a : Per.Acris l := ((v⁻¹ : (Per.Acris l)ˣ) : Per.Acris l) with hadef`. Use `set b : Per.Acris l := ((hw0u.unit⁻¹ : (Per.Acris l)ˣ) : Per.Acris l) with hbdef`. Establish `hav : a * v = 1` using `Units.inv_mul v`. Establish `hbw : b * w0 = 1` using `by rw [hbdef]; exact hw0u.val_inv_mul`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `set fB : bk.S →+* Per.Acris l := ψ.comp (frobS l bk.a) with hfB`. Use `set fB0 : bk.S →+* Per.Acris l := fB.comp (PowerSeries.C.comp PowerSeries.constantCoeff) with hfB0`. Establish `hmap : ∀ f : bk.S →+* Per.Acris l, (A.map f) * (A'.map f) = (f bk.E) ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))`. Introduce `f`. Rewrite using `[← Matrix.map_mul, hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `hfE : fB bk.E = (l : Per.Acris l) * v` using `hv`. Establish `hfE0 : fB0 bk.E = (l : Per.Acris l) * w0` using `hP0`. Establish `hcoef : ∀ (c y : Per.Acris l), c * y = 1 → c ^ N * c ^ N * ((l : Per.Acris l) * y) ^ (2 * N) = (l : Per.Acris l) ^ (2 * N)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `c y h`. Combine the equalities or inequalities in the displayed calculation. Establish `hα : (a ^ N • A.map fB) * (a ^ N • A'.map fB) = ((l : Per.Acris l) ^ (2 * N)) • 1`. Rewrite using `[smul_mul_assoc, mul_smul_comm, hmap, hfE, smul_smul, smul_smul, hcoef a v hav]`. Establish `hβ : (b ^ N • A.map fB0) * (b ^ N • A'.map fB0) = ((l : Per.Acris l) ^ (2 * N)) • 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_mul_assoc, mul_smul_comm, hmap, hfE0, smul_smul, smul_smul, hcoef b w0 hbw]`. Use `choose G hG using fun i j => hdiff (A i j)`. Take `⟨z, hz⟩` from `hdiff bk.E`. Take `⟨t, ht⟩` from `sub_dvd_pow_sub_pow w0 v N`. Establish `hΓ : (l : Per.Acris l) • (a ^ N • A.map fB - b ^ N • A.map fB0) = u ^ l • ((((l : Per.Acris l) * a ^ N) • Matrix.of G) + (-(a ^ N * b ^ N * z * t)) • A.map fB0)`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Establish `h1 : fB (A i j) - fB0 (A i j) = u ^ l * G i j` using `hG i j`. Establish `h2 : (l : Per.Acris l) * v - (l : Per.Acris l) * w0 = u ^ l * z` using `by rw [← hfE, ← hfE0]; exact hz`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.map_apply, Matrix.of_apply, smul_eq_mul]`. Establish `h4 : (a * v) ^ N = 1` using `by rw [hav, one_pow]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h5 : (b * w0) ^ N = 1` using `by rw [hbw, one_pow]`. Take the linear combination `((l : Per.Acris l) * a ^ N) * h1 + (-(a ^ N * b ^ N * t * fB0 (A i j))) * h2 + ((l : Per.Acris l) * a ^ N * b ^ N * fB0 (A i j)) * ht + ((l : Per.Acris l) * fB0 (A i j) * b ^ N) * h4 + (-((l : Per.Acris l) * fB0 (A i j) * a ^ N)) * h5`. Take `⟨Q, Q', hQQ, ⟨Y, hY⟩, ⟨Y', hY'⟩, hQ⟩` from `hU (Per.Acris l) d l l N htor hcomp (phiA l) u hu (Fact.out : l.Prime).pos _ _ _ _ _ hα hβ hΓ n₀ (fun n hn => hn₀ (n + 1) (by omega))`. Use `⟨Q, Q', ⟨hQQ, fun i j => ⟨Y i j, ?_⟩, fun i j => ⟨Y' i j, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hY]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hY']`. Both sides reduce to the same expression. Establish `key : b ^ N • (Q * A.map fB0) = a ^ N • (A.map fB * Q.map (phiA l))`. Rewrite using `[← mul_smul_comm, hQ, smul_mul_assoc]`.
-
-Establish `e1 : P ^ N = (P ^ N * w0 ^ N) * b ^ N`. Rewrite using `[mul_assoc, ← mul_pow, mul_comm w0 b, hbw, one_pow, mul_one]`. Establish `e2 : (P ^ N * w0 ^ N) * a ^ N = ((l : Per.Acris l) * w0) ^ N`. Rewrite using `[hv]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `show P ^ N • (Q * A.map fB0) = ψ (frobS l bk.a (PowerSeries.C (PowerSeries.constantCoeff bk.E))) ^ N • (A.map fB * Q.map (phiA l))`. Rewrite using `[hP0, e1, ← smul_smul, key, smul_smul, e2]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secU_holds : CoreU → SecU := by
   intro hU l _ K bk N

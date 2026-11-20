@@ -20,7 +20,7 @@ section Orders
 variable {K : Type} {ι : K → Type}
 
 /- English proof (translation)
-Use `hW` as an intermediate fact. Unfold `multAt`. Rewrite using `[dif_pos hW, Module.length_eq_zero_iff.mpr (NumbersDVR.localizedQuot_subsingleton_of_not_le _ W h)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem multAt_eq_zero_of_not_le {J W : Ideal (MRing ι)} (hW : W.IsPrime) (h : ¬ J ≤ W) : multAt J W = 0 := by
   have := hW
@@ -29,13 +29,11 @@ theorem multAt_eq_zero_of_not_le {J W : Ideal (MRing ι)} (hW : W.IsPrime) (h : 
   rfl
 
 /- English proof (translation)
-Use `hW` as an intermediate fact. Establish `hlen : ∀ {s w : MRing ι}, w ∉ W → Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (MRing ι ⧸ (P ⊔ Ideal.span {w * s}))) = Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (MRing ι ⧸ (P ⊔ Ideal.span {s})))`. Introduce `s w hw`. Rewrite using `[NumbersDVR.length_localizedQuot_sup_span_mul P W s (fun h' => hw (hPW h')), Module.length_eq_zero_iff.mpr (NumbersDVR.localizedQuot_subsingleton_of_not_le _ W (fun hle => hw (hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self w))))), add_zero]`. Establish `heq : P ⊔ Ideal.span {u * g} = P ⊔ Ideal.span {v * h}`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr ?_)` and prove the remaining obligations. Establish `e : u * g = (u * g - v * h) + v * h` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left hm) (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr ?_)` and prove the remaining obligations. Establish `e : v * h = u * g - (u * g - v * h)` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (Ideal.mem_sup_left hm)`. Unfold `multAt`.
-
-Rewrite using `[dif_pos hW, dif_pos hW, ← hlen (s := g) hu, heq, hlen hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multAt_sup_span_eq {P W : Ideal (MRing ι)} [P.IsPrime] (hW : W.IsPrime) (hPW : P ≤ W)
     {g h u v : MRing ι} (hu : u ∉ W) (hv : v ∉ W) (hm : u * g - v * h ∈ P) :
@@ -82,7 +80,7 @@ def polyConeMap (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E)
 omit [Fintype ι] [Fintype ν] [Fintype κ] in
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[T.multiConeMap, polyConeMap]`. Apply the tactic sequence `rcases p with ⟨_ | _ | _ | _, i⟩ <;>`. Simplify using `[T.multiConeMap, polyConeMap, polyCoord, T.wwCoord, T.lineVal, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem multiConeMap_eq (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω)
     (b : Fin 2 → Φ) :
@@ -96,7 +94,7 @@ theorem multiConeMap_eq (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 
 omit [Fintype ι] [Fintype ν] [Fintype κ] in
 
 /- English proof (translation)
-Introduce `s hs`. Rewrite `hs` using `[T.wwIdeal, RingHom.mem_ker, multiConeMap_eq x δ e φ a, RingHom.comp_apply]`. Establish `hinj : Function.Injective (aeval a : MvPolynomial (Fin 2) Ω →ₐ[Ω] Φ).toRingHom` using `algebraicIndependent_iff_injective_aeval.mp ha`. Establish `hz : polyConeMap x δ e φ s = 0` using `MvPolynomial.map_injective _ hinj (hs.trans (map_zero _).symm)`. Rewrite using `[T.wwIdeal, RingHom.mem_ker, multiConeMap_eq x δ e φ (fun _ => a 0), RingHom.comp_apply, hz, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wwIdeal_le_diag (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω)
     (a : Fin 2 → Φ) (ha : AlgebraicIndependent Ω a) :
@@ -109,11 +107,11 @@ theorem wwIdeal_le_diag (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 
   rw [T.wwIdeal, RingHom.mem_ker, multiConeMap_eq x δ e φ (fun _ => a 0), RingHom.comp_apply, hz, map_zero]
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def]`. Apply `eval₂_congr` to reduce the goal to its premises. Introduce `p c hp hc`. Break down `p with ⟨_ | _ | _ | _, i⟩` into its components or cases. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. It suffices to derive a contradiction. Establish `hs` using `hh c (mem_support_iff.mpr hc) .line1`. Simplify using `only [T.wwDeg] at hs`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Finsupp.mem_support_iff.mp hp) ((Finset.sum_eq_zero_iff.mp hs) i (Finset.mem_univ _))`.
+A detailed English derivation is pending.
 -/
 theorem aeval_diag_eq (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω)
     (a₀ a₁ : Φ) {m : ℕ} {h : MRing (T.wwIdx ι ν κ)} (hh : IsMultiHomog h (T.wwDeg m 0)) :
@@ -137,27 +135,25 @@ end DiagonalOrder
 open DiagonalOrder in
 
 /- English proof (translation)
-Introduce `Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ hS hG hD hx a ha n g h hg hh hP hq`. Establish `hrel` using `hR Ω ι ν κ E Φ x B e φ δ hS hG hD hx a ha`. Establish `hone` using `hO Ω ι ν κ E Φ x B e φ δ hS hG hD hx a ha n g h hg hh hP hq`. Establish `hunit` using `hU Ω ι ν κ E Φ x B e φ δ hS hG hD hx a ha`. Use `set P := T.wwIdeal x δ e φ (a 0) (a 1) with hPdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Δ := T.wwIdeal x δ e φ (a 0) (a 0) with hΔdef`. Establish `hPp : P.IsPrime` using `RingHom.ker_isPrime _`. Establish `hΔp : Δ.IsPrime` using `RingHom.ker_isPrime _`. Establish `hPΔ : P ≤ Δ` using `wwIdeal_le_diag x δ e φ a ha`. Establish `hhΔ : h ∉ Δ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(DiagRAux.not_mem_ker_iff_aeval_ne _ h _ hh).2 ?_` and prove the remaining obligations. Rewrite using `[aeval_diag_eq x δ e φ (a 0) (a 1) hh]`. Conclude with `(DiagRAux.not_mem_ker_iff_aeval_ne _ h _ hh).1 hP`. Establish `hgΔ : g ∈ Δ`. Assume the negation of the conclusion as `hgn`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hone` using `[multAt_eq_zero_of_not_le hΔp (fun hle => hgn (hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self g))))]`. Conclude with `zero_ne_one hone`. Establish `hJΔ : P ⊔ Ideal.span {g * h} ≤ Δ` using `sup_le hPΔ ((Ideal.span_singleton_le_iff_mem _).mpr (Δ.mul_mem_right h hgΔ))`. Establish `key : ∀ W : Ideal (MRing (T.wwIdx ι ν κ)), W.IsPrime → IsRelevant W → P ≤ W → ¬ Δ ≤ W → ∃ u v, u ∉ W ∧ v ∉ W ∧ u * g - v * h ∈ P`. Introduce `W hW hWr hPW hΔW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨α, β, u, v, hu, hv, hdeg, huW, hvW, huv⟩` from `hunit W hW hWr hPW hΔW`. Use `⟨u, v, huW, hvW, ?_⟩` and prove the remaining obligations. Establish `hβ : β + T.wwDeg (n + 3) 0 = α + T.wwDeg n 1`. Use function extensionality and compare the values at `k`. Use `hdeg k` as an intermediate fact.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `cases k <;> simp only [T.wwDeg, Pi.add_apply] at this ⊢ <;> omega`. Establish `hd : IsMultiHomog (u * g - v * h) (α + T.wwDeg n 1)` using `exHomog_sub (exHomog_mul hu hg) (hβ ▸ exHomog_mul hv hh)`. Assume the negation of the conclusion as `hn`. Apply `(DiagRAux.not_mem_ker_iff_aeval_ne _ _ _ hd).1 hn` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, map_mul, hq, ← huv]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨⟨⟨hΔp, hJΔ⟩, fun Q hQ hQΔ => ?_⟩, hrel⟩, fun W hW => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hΔQ`. Establish `hPQ : P ≤ Q` using `le_sup_left.trans hQ.2`. Take `⟨u, v, huQ, hvQ, hm⟩` from `key Q hQ.1 (fun k => (hrel k).imp fun _ hi hq' => hi (hQΔ hq')) hPQ hΔQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhQ : h ∉ Q` using `fun hh' => hhΔ (hQΔ hh')`. Establish `hgQ : g ∈ Q` using `(hQ.1.mem_or_mem (hQ.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))).resolve_right hhQ`. Establish `hvh : v * h ∈ Q`. Establish `e : v * h = u * g - (u * g - v * h)` using `by ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Q.sub_mem (Q.mul_mem_left u hgQ) (hPQ hm)`. Break down `hQ.1.mem_or_mem hvh with h1 | h1` into its components or cases. Use `exacts [hvQ h1, hhQ h1]`. Establish `hWp : W.IsPrime` using `hW.1.1.1`. Distinguish the cases in `hWΔ : W = Δ`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos hWΔ, hWΔ, hone, multAt_eq_zero_of_not_le hΔp (fun hle => hhΔ (hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self h))))]`. Evaluate the numerical expressions. Rewrite using `[if_neg hWΔ]`. Establish `hPW : P ≤ W` using `le_sup_left.trans hW.1.1.2`. Establish `hΔW : ¬ Δ ≤ W` using `fun hle => hWΔ (le_antisymm (hW.1.2 ⟨hΔp, hJΔ⟩ hle) hle)`.
-
-Take `⟨u, v, hu, hv, hm⟩` from `key W hWp hW.2 hPW hΔW`. Rewrite using `[multAt_sup_span_eq hWp hPW hu hv hm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem DiagOrd.proof (hU : DiagOffUnit.Statement) (hO : DiagOrdOne.Statement) (hR : DiagRelevant.Statement) :
     DiagOrd.Statement := by

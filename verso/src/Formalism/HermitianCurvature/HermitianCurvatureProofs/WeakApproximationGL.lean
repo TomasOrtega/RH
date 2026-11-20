@@ -9,21 +9,21 @@ namespace Formalism.FourierDecayAlt.P.WeakApproximationGL
 open Formalism.FourierDecayAlt.G Formalism.FourierDecayAlt.P.G5
 
 /- English proof (translation)
-Simplify using `[triXY, strictUpper]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tri_diag {m : ℕ} (x : Fin (m + 1) → ℂ) (y : UT (m + 2) → ℂ) (i : Fin (m + 1)) :
     triXY x y i.succ i.succ = x i := by
   simp [triXY, strictUpper]
 
 /- English proof (translation)
-Simplify using `[triXY, strictUpper, h, Matrix.diagonal_apply_ne _ h.ne]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tri_lt {m : ℕ} (x : Fin (m + 1) → ℂ) (y : UT (m + 2) → ℂ) {i j : Fin (m + 2)} (h : i < j) :
     triXY x y i j = y ⟨(i, j), h⟩ := by
   simp [triXY, strictUpper, h, Matrix.diagonal_apply_ne _ h.ne]
 
 /- English proof (translation)
-Simplify using `[triXY, strictUpper, not_lt.mpr h.le, Matrix.diagonal_apply_ne _ h.ne']`.
+Simplify using the standard rewrite rules.
 -/
 theorem tri_gt {m : ℕ} (x : Fin (m + 1) → ℂ) (y : UT (m + 2) → ℂ) {i j : Fin (m + 2)} (h : j < i) :
     triXY x y i j = 0 := by
@@ -37,7 +37,7 @@ def cls {m : ℕ} (i : Fin (m + 1)) (j : Fin (m + 2)) (h : i.succ ≤ j) : Final
   if h' : i.succ = j then Sum.inl i else Sum.inr ⟨(i.succ, j), lt_of_le_of_ne h h'⟩
 
 /- English proof (translation)
-Unfold `cls`. Use `split_ifs with h'`. Substitute `h'` using the available equality. Conclude with `(tri_diag x y i).symm`. Conclude with `(tri_lt x y _).symm`.
+Replace the relevant objects with their definitions. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem elim_cls {m : ℕ} (x : Fin (m + 1) → ℂ) (y : UT (m + 2) → ℂ) (i : Fin (m + 1)) (j : Fin (m + 2))
     (h : i.succ ≤ j) : Sum.elim x y (cls i j h) = triXY x y i.succ j := by
@@ -48,7 +48,7 @@ theorem elim_cls {m : ℕ} (x : Fin (m + 1) → ℂ) (y : UT (m + 2) → ℂ) (i
   · exact (tri_lt x y _).symm
 
 /- English proof (translation)
-Rewrite using `[Fin.le_iff_val_le_val, Fin.val_succ, Fin.val_castSucc]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem succ_le_castSucc {m : ℕ} {i j : Fin (m + 1)} (h : i < j) : i.succ ≤ j.castSucc := by
   rw [Fin.le_iff_val_le_val, Fin.val_succ, Fin.val_castSucc]
@@ -62,13 +62,13 @@ def idx (m : ℕ) : Tgt m → FinalTheorems m
   | Sum.inr (Sum.inr (Sum.inr i)) => cls i (Fin.last (m + 1)) (Fin.le_last _)
 
 /- English proof (translation)
-Introduce and unpack `(i | ⟨⟨a, b⟩, hab⟩)`. Break down `Fin.eq_castSucc_or_eq_last i with ⟨k, rfl⟩ | rfl` into its components or cases. Use `⟨Sum.inr (Sum.inr (Sum.inl ⟨(k.castSucc, k.succ), Fin.castSucc_lt_succ⟩)), ?_⟩ show cls k.castSucc k.succ.castSucc (succ_le_castSucc Fin.castSucc_lt_succ) = Sum.inl k.castSucc` and prove the remaining obligations. Unfold `cls`. Conclude with `dif_pos rfl`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Conclude with `⟨Sum.inr (Sum.inr (Sum.inr (Fin.last m))), by simp [idx, cls]⟩`. Break down `Fin.eq_zero_or_eq_succ a with rfl | ⟨i, rfl⟩` into its components or cases. Break down `Fin.eq_castSucc_or_eq_last b with ⟨c, rfl⟩ | rfl` into its components or cases. Break down `Fin.eq_zero_or_eq_succ c with rfl | ⟨k, rfl⟩` into its components or cases. Simplify using `at hab`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨Sum.inr (Sum.inl k), rfl⟩`. Conclude with `⟨Sum.inl (), rfl⟩`. Break down `Fin.eq_castSucc_or_eq_last b with ⟨c, rfl⟩ | rfl` into its components or cases. Establish `hic : i < c`. Rewrite `hab`, the goal using `[Fin.lt_def]`.
+Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_succ, Fin.val_castSucc] at hab`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨Sum.inr (Sum.inr (Sum.inl ⟨(i, c), hic⟩)), by simp [idx, cls, ne_of_lt hab]⟩`. Conclude with `⟨Sum.inr (Sum.inr (Sum.inr i)), by simp [idx, cls, ne_of_lt hab]⟩`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem idx_surjective (m : ℕ) : Function.Surjective (idx m) := by
   rintro (i | ⟨⟨a, b⟩, hab⟩)
@@ -93,7 +93,7 @@ theorem idx_surjective (m : ℕ) : Function.Surjective (idx m) := by
       · exact ⟨Sum.inr (Sum.inr (Sum.inr i)), by simp [idx, cls, ne_of_lt hab]⟩
 
 /- English proof (translation)
-Simplify using `only [Tgt, FinalTheorems, Fintype.card_sum, Fintype.card_unit, Fintype.card_fin, Formalism.FourierDecayAlt.P.G5.card_UT, Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_eq (m : ℕ) : Fintype.card (Tgt m) = Fintype.card (FinalTheorems m) := by
   simp only [Tgt, FinalTheorems, Fintype.card_sum, Fintype.card_unit, Fintype.card_fin,
@@ -101,7 +101,7 @@ theorem card_eq (m : ℕ) : Fintype.card (Tgt m) = Fintype.card (FinalTheorems m
   ring
 
 /- English proof (translation)
-The claim follows from `(Fintype.bijective_iff_surjective_and_card _).mpr ⟨idx_surjective m, card_eq m⟩`.
+A detailed English derivation is pending.
 -/
 theorem idx_bijective (m : ℕ) : Function.Bijective (idx m) :=
   (Fintype.bijective_iff_surjective_and_card _).mpr ⟨idx_surjective m, card_eq m⟩
@@ -113,9 +113,7 @@ def split (m : ℕ) (v : Tgt m → ℂ) : RedCoord m :=
     fun i => v (Sum.inr (Sum.inr (Sum.inr i))))
 
 /- English proof (translation)
-Use `Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ ?_))` and prove the remaining obligations. Conclude with `tri_lt p.1 p.2 Fin.last_pos`. Use function extensionality and compare the values at `k`. Conclude with `tri_lt p.1 p.2 _`. Use function extensionality and compare the values at `q`.
-
-Conclude with `(elim_cls p.1 p.2 _ _ (succ_le_castSucc q.2)).symm`. Use function extensionality and compare the values at `i`. Conclude with `(elim_cls p.1 p.2 _ _ (Fin.le_last _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem redOf_eq (m : ℕ) (p : XY m) : redOf m p = split m (Sum.elim p.1 p.2 ∘ idx m) := by
   refine Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ ?_))
@@ -128,9 +126,9 @@ theorem redOf_eq (m : ℕ) (p : XY m) : redOf m p = split m (Sum.elim p.1 p.2 �
     exact (elim_cls p.1 p.2 _ _ (Fin.le_last _)).symm
 
 /- English proof (translation)
-Use `⟨fun v w h => ?_, fun q => ⟨Sum.elim (fun _ => q.1) (Sum.elim q.2.1 (Sum.elim q.2.2.1 q.2.2.2)), rfl⟩⟩` and prove the remaining obligations. Simplify using `only [split, Prod.mk.injEq] at h`. Take `⟨h1, h2, h3, h4⟩` from `h`. Use function extensionality and compare the values at `s`. Break down `s with ⟨⟩ | k | q | i` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1`. Conclude with `congrFun h2 k`. Conclude with `congrFun h3 q`. Conclude with `congrFun h4 i`.
+A detailed English derivation is pending.
 -/
 theorem split_bijective (m : ℕ) : Function.Bijective (split m) := by
   refine ⟨fun v w h => ?_, fun q => ⟨Sum.elim (fun _ => q.1) (Sum.elim q.2.1 (Sum.elim q.2.2.1 q.2.2.2)), rfl⟩⟩
@@ -144,16 +142,14 @@ theorem split_bijective (m : ℕ) : Function.Bijective (split m) := by
   · exact congrFun h4 i
 
 /- English proof (translation)
-The claim follows from `(Equiv.sumArrowEquivProdArrow _ _ ℂ).symm.bijective`.
+A detailed English derivation is pending.
 -/
 theorem elim_bijective (m : ℕ) :
     Function.Bijective (fun p : XY m => (Sum.elim p.1 p.2 : FinalTheorems m → ℂ)) :=
   (Equiv.sumArrowEquivProdArrow _ _ ℂ).symm.bijective
 
 /- English proof (translation)
-Use `⟨fun v w h => funext fun s => ?_, fun u => ⟨u ∘ (idxE m).symm, funext fun t => ?_⟩⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `idx_surjective m s`. Conclude with `congrFun h t`. Simplify using `only [Function.comp_apply]`. Use `congr 1`.
-
-Conclude with `(idxE m).symm_apply_apply t`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem comp_bijective (m : ℕ) : Function.Bijective (fun v : FinalTheorems m → ℂ => v ∘ idx m) := by
   refine ⟨fun v w h => funext fun s => ?_, fun u => ⟨u ∘ (idxE m).symm, funext fun t => ?_⟩⟩
@@ -164,7 +160,7 @@ theorem comp_bijective (m : ℕ) : Function.Bijective (fun v : FinalTheorems m �
     exact (idxE m).symm_apply_apply t
 
 /- English proof (translation)
-Establish `h : redOf m = split m ∘ (fun v : FinalTheorems m → ℂ => v ∘ idx m) ∘ (fun p : XY m => (Sum.elim p.1 p.2 : FinalTheorems m → ℂ))` using `funext (redOf_eq m)`. Rewrite using `[h]`. Conclude with `(split_bijective m).comp ((comp_bijective m).comp (elim_bijective m))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redOf_bijective (m : ℕ) : Function.Bijective (redOf m) := by
   have h : redOf m = split m ∘ (fun v : FinalTheorems m → ℂ => v ∘ idx m) ∘
@@ -173,9 +169,9 @@ theorem redOf_bijective (m : ℕ) : Function.Bijective (redOf m) := by
   exact (split_bijective m).comp ((comp_bijective m).comp (elim_bijective m))
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.G5.sigmaFinite_mu β` as an intermediate fact. Establish `h` using `measurePreserving_sumPiEquivProdPi_symm (X := fun _ : FinalTheorems m => ℂ) (fun _ => mu β)`. Establish `e : (fun p : XY m => (Sum.elim p.1 p.2 : FinalTheorems m → ℂ)) = (MeasurableEquiv.sumPiEquivProdPi (fun _ : FinalTheorems m => ℂ)).symm`. Use function extensionality and compare the values at `p i`. Apply the tactic sequence `cases i <;> rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_elim (β : ℂ) (m : ℕ) :
     MeasurePreserving (fun p : XY m => (Sum.elim p.1 p.2 : FinalTheorems m → ℂ)) (muXY β m) (muPi β (FinalTheorems m)) := by
@@ -189,9 +185,9 @@ theorem mp_elim (β : ℂ) (m : ℕ) :
   exact h
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.G5.sigmaFinite_mu β` as an intermediate fact. Establish `h3` using `measurePreserving_sumPiEquivProdPi (X := fun _ : UT (m + 1) ⊕ Fin (m + 1) => ℂ) (fun _ => mu β)`. Establish `h2` using `measurePreserving_sumPiEquivProdPi (X := fun _ : Fin m ⊕ (UT (m + 1) ⊕ Fin (m + 1)) => ℂ) (fun _ => mu β)`. Establish `h1` using `measurePreserving_sumPiEquivProdPi (X := fun _ : Tgt m => ℂ) (fun _ => mu β)`. Establish `hu` using `measurePreserving_funUnique (mu β) Unit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `(hu.prod ((MeasurePreserving.id _).prod h3 |>.comp h2)).comp h1`. Apply the tactic sequence `convert key using 1 <;> rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mp_split (β : ℂ) (m : ℕ) : MeasurePreserving (split m) (muPi β (Tgt m)) (muRed β m) := by
   have := Formalism.FourierDecayAlt.P.G5.sigmaFinite_mu β
@@ -205,7 +201,7 @@ theorem mp_split (β : ℂ) (m : ℕ) : MeasurePreserving (split m) (muPi β (Tg
   convert key using 1 <;> rfl
 
 /- English proof (translation)
-Simplify using `[triXY, subShift, Matrix.diagonal_apply_ne _ h.ne]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rhs_zero {m : ℕ} (t ρ₁ : ℂ) (x : Fin (m + 1) → ℂ) (y : UT (m + 2) → ℂ) {j : Fin (m + 2)} (h : 0 < j) :
     (t • subShift (m + 2) + Matrix.diagonal (Fin.cons ρ₁ x : Fin (m + 2) → ℂ) + strictUpper y) 0 j =
@@ -213,9 +209,9 @@ theorem rhs_zero {m : ℕ} (t ρ₁ : ℂ) (x : Fin (m + 1) → ℂ) (y : UT (m 
   simp [triXY, subShift, Matrix.diagonal_apply_ne _ h.ne]
 
 /- English proof (translation)
-Simplify using `only [triXY, subShift, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, Matrix.diagonal_apply, Fin.val_succ, smul_eq_mul, Fin.cons_succ]`. Establish `hiff : ((j : ℕ) + 1 = (i : ℕ) + 1) ↔ ((j : ℕ) = i)` using `by omega`. Distinguish the cases in `hj : (j : ℕ) = i`. Rewrite using `[if_pos (hiff.mpr hj), if_pos hj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg (fun h => hj (hiff.mp h)), if_neg hj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhs_succ {m : ℕ} (t ρ₁ : ℂ) (x : Fin (m + 1) → ℂ) (y : UT (m + 2) → ℂ) (i : Fin (m + 1))
     (j : Fin (m + 2)) :
@@ -231,15 +227,15 @@ theorem rhs_succ {m : ℕ} (t ρ₁ : ℂ) (x : Fin (m + 1) → ℂ) (y : UT (m 
     ring
 
 /- English proof (translation)
-Simplify using `[wMat, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wMat_mulVec_apply {n : ℕ} (B : Fin n → ℂ) (i : Fin n) : (wMat n *ᵥ B) i = B i.rev := by
   simp [wMat, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Proceed by induction on `k using Fin.lastCases with`. Consider the case `last`. Simplify using `only [xOf, Fin.succ_last, blk_cl]`. Conclude with `tri_diag p.1 p.2 (Fin.last m)`. Consider the case `cast c`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [xOf, Fin.succ_castSucc, blk_cc, strictUpper, Matrix.of_apply, dif_pos (Fin.castSucc_lt_succ (i := c))]`. Conclude with `tri_diag p.1 p.2 c.castSucc`.
+A detailed English derivation is pending.
 -/
 theorem xOf_redOf (m : ℕ) (p : XY m) (k : Fin (m + 1)) :
     xOf (strictUpper (redOf m p).2.2.1) (redOf m p).2.2.2 k = p.1 k := by
@@ -253,21 +249,21 @@ theorem xOf_redOf (m : ℕ) (p : XY m) (k : Fin (m + 1)) :
     exact tri_diag p.1 p.2 c.castSucc
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[wMat_mul_apply]`. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨r, rfl⟩` into its components or cases. Rewrite using `[Fin.rev_zero]`. Break down `Fin.eq_castSucc_or_eq_last j with ⟨c, rfl⟩ | rfl` into its components or cases.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Mcoord, blk_lc]`. Break down `Fin.eq_zero_or_eq_succ c with rfl | ⟨k, rfl⟩` into its components or cases. Simplify using `[subShift, strictUpper]`. Rewrite using `[Fin.cons_succ, rhs_zero _ _ _ _ (by simp [Fin.lt_def])]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Mcoord, blk_ll, rhs_zero _ _ _ _ Fin.last_pos]`. Both sides reduce to the same expression. Rewrite using `[Fin.rev_succ, rhs_succ]`. Break down `Fin.eq_castSucc_or_eq_last j with ⟨c, rfl⟩ | rfl` into its components or cases. Rewrite using `[Mcoord, blk_cc, wMat_mul_apply, Fin.rev_rev]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, strictUpper, Matrix.of_apply, Fin.val_castSucc, smul_eq_mul]`. Distinguish the cases in `hrc : r < c`. Establish `h1 : r ≠ c` using `ne_of_lt hrc`. Establish `h2 : (c : ℕ) ≠ r` using `fun h => h1 (Fin.ext h.symm)`. Rewrite using `[dif_pos hrc, if_neg h1, if_neg h2]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_zero, zero_add]`. Both sides reduce to the same expression. Establish `hcr : c.castSucc < r.succ`. Rewrite using `[Fin.lt_def, Fin.val_castSucc, Fin.val_succ]`. Rewrite `hrc` using `[not_lt, Fin.le_iff_val_le_val]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hrc, tri_gt _ _ hcr]`. Distinguish the cases in `hrc' : r = c`. Substitute `hrc'` using the available equality. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h2 : (c : ℕ) ≠ r` using `fun h => hrc' (Fin.ext h.symm)`. Simplify using `[hrc', h2]`. Rewrite using `[Mcoord, blk_cl, wMat_mulVec_apply, Fin.rev_rev]`. Establish `hne : ((Fin.last (m + 1) : Fin (m + 2)) : ℕ) ≠ r`. Simplify using `only [Fin.val_last]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `r.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne, zero_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem matrix_redOf (m : ℕ) (t ρ₁ : ℂ) (p : XY m) :
     wMat (m + 2) * Mcoord t (strictUpper (redOf m p).2.2.1) (redOf m p).2.2.2
@@ -317,7 +313,7 @@ theorem matrix_redOf (m : ℕ) (t ρ₁ : ℂ) (p : XY m) :
       rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨⟨i, j⟩, hij⟩` from `q`. Establish `h'` using `congrArg (fun M : Matrix (Fin d) (Fin d) ℂ => M i j) h`. Simplify `h'` using `[strictUpper, hij, Matrix.diagonal_apply_ne _ hij.ne]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem strictUpper_injective {d : ℕ} {y y' : UT d → ℂ} {a b : Fin d → ℂ}
     (h : Matrix.diagonal a + strictUpper y = Matrix.diagonal b + strictUpper y') : y = y' := by
@@ -327,7 +323,7 @@ theorem strictUpper_injective {d : ℕ} {y y' : UT d → ℂ} {a b : Fin d → �
   simpa [strictUpper, hij, Matrix.diagonal_apply_ne _ hij.ne] using h'
 
 /- English proof (translation)
-Establish `hc : (Fin.cons z (fun _ : Fin (m + 1) => z) : Fin (m + 2) → ℂ) = fun _ => z`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨k, rfl⟩ <;> simp`. Rewrite using `[hc, Matrix.smul_one_eq_diagonal]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_const (m : ℕ) (z : ℂ) :
     Matrix.diagonal (Fin.cons z (fun _ : Fin (m + 1) => z) : Fin (m + 2) → ℂ) =
@@ -344,7 +340,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.G Formalism.FourierDecayAlt.P.WeakApproximationGL
 
 /- English proof (translation)
-Introduce `m β`. Use `⟨redOf_bijective m, ?_⟩` and prove the remaining obligations. Establish `h : redOf m = split m ∘ (fun v : FinalTheorems m → ℂ => v ∘ idx m) ∘ (fun p : XY m => (Sum.elim p.1 p.2 : FinalTheorems m → ℂ))` using `funext (redOf_eq m)`. Rewrite using `[h]`. Conclude with `(mp_split β m).comp ((Formalism.FourierDecayAlt.P.G5.mp_comp_equiv β (idxE m)).comp (mp_elim β m))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_xy_coordinates : Formalism.FourierDecayAlt.G.SplitXY := by
   intro m β
@@ -355,15 +351,17 @@ theorem split_xy_coordinates : Formalism.FourierDecayAlt.G.SplitXY := by
   exact (mp_split β m).comp ((Formalism.FourierDecayAlt.P.G5.mp_comp_equiv β (idxE m)).comp (mp_elim β m))
 
 /- English proof (translation)
-Introduce `m t ρ₁ p` and use `⟨xOf_redOf m p, matrix_redOf m t ρ₁ p⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem split_xy_matrix : Formalism.FourierDecayAlt.G.SplitXYMatrix :=
   fun m t ρ₁ p => ⟨xOf_redOf m p, matrix_redOf m t ρ₁ p⟩
 
 /- English proof (translation)
-Introduce `m z y`. Use `⟨redOf m (fun _ => z, y), ⟨fun k => xOf_redOf m _ k, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[matrix_redOf, zero_smul, zero_add] dsimp only`. Rewrite using `[diag_const]`. Introduce and unpack `q ⟨hx, hM⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p', rfl⟩` from `(redOf_bijective m).2 q`. Establish `h1 : p'.1 = fun _ => z` using `funext fun k => (xOf_redOf m p' k).symm.trans (hx k)`. Rewrite `hM` using `[matrix_redOf, zero_smul, zero_add, ← diag_const]`. Establish `h2 : p'.2 = y` using `strictUpper_injective hM`. Rewrite using `[show p' = (fun _ => z, y) from Prod.ext h1 h2]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
+
+Rewrite the conclusion using the stated equalities.
 -/
 theorem limit_coordinates : Formalism.FourierDecayAlt.G.LimitCoords := by
   intro m z y

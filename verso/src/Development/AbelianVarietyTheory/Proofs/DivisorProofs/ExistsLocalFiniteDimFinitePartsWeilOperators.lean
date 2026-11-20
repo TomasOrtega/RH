@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.WeilCont
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[adeleJoin]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem adeleJoin_zero_zero (F : Type) [Field F] [NumberField F] (κ : Type) :
     adeleJoin F (0 : κ → mixedEmbedding.mixedSpace F) 0 = 0 := by
@@ -30,14 +30,14 @@ theorem adeleJoin_zero_zero (F : Type) [Field F] [NumberField F] (κ : Type) :
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [Prod.fst_sum, Prod.snd_sum]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_mul_zero_prod {κ : Type} [Fintype κ] {A B : Type} [CommRing A] [CommRing B] (z : κ → A × B)
     (y : κ → B) : (∑ i, z i * ((0 : A), y i)) = ((0 : A), ∑ i, (z i).2 * y i) := by
   ext <;> simp [Prod.fst_sum, Prod.snd_sum]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, adeleJoin, pairA, Pi.zero_apply, map_zero]`. Conclude with `sum_mul_zero_prod (A := InfiniteAdeleRing F) (B := FiniteAdeleRing (𝓞 F) F) z y`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dotProduct_adeleJoin_zero (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (z : κ → AdeleRing (𝓞 F) F) (y : κ → FiniteAdeleRing (𝓞 F) F) :
@@ -46,15 +46,15 @@ theorem dotProduct_adeleJoin_zero (F : Type) [Field F] [NumberField F] (κ : Typ
   exact sum_mul_zero_prod (A := InfiniteAdeleRing F) (B := FiniteAdeleRing (𝓞 F) F) z y
 
 /- English proof (translation)
-Introduce `D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hJA hJB κ _ co hco ω hω om hom Φ hΦ p0`. Take `⟨pres, impl⟩` from `GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hJA hJB κ co hco ω hω om hom`. Take `⟨L₁, L₂, hL₁, hL₂, hinv⟩` from `GlobalTheory.T.exists_openSubgroups_schroedinger_fix_standardChar D ψ hψ κ Φ hΦ`. Take `⟨N, hN, L₁', L₂', hL₁', hL₁c, hL₂', hNL⟩` from `GlobalTheory.T.exists_nhds_transportedAction_finite_openSubgroups D T.rank S.rank JA JB ξ κ co L₁ L₂ hL₁ hL₂ p0`. Establish `hK` using `GlobalTheory.T.isCompact_finiteAdeleAnnihilator_stdChar D ψ hψ κ L₂' hL₂'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA` using `GlobalTheory.T.periodic_adelicSchwartz_finite_coset_decomposition D.host.F κ L₁' hL₁' hL₁c _ hK`. Take `⟨m, g, y, hg, hgy, hrep⟩` from `hA`. Use `⟨N, hN, m, g, y, hg, hgy, fun p hp => ?_⟩` and prove the remaining obligations. Establish `fix : ∀ x ∈ L₁', ∀ y₁ ∈ L₂', GlobalTheory.WeilM.schr ψ (adeleJoin D.host.F 0 x, adeleJoin D.host.F 0 y₁) (om p Φ) = om p Φ`. Introduce `x hx y₁ hy₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxy` using `hNL p hp x hx y₁ hy₁`. Take `⟨x', hx', y', hy', he⟩` from `hxy`. Use `impl p (co.e.symm (adeleJoin D.host.F 0 x', adeleJoin D.host.F 0 y')) Φ hΦ` as an intermediate fact. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, LinearEquiv.apply_symm_apply, hinv x' hx' y' hy', he] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hrep (om p Φ) (pres p Φ hΦ) ?_ ?_` and prove the remaining obligations. Introduce `x hx z`. Use `congrFun (fix x hx 0 (zero_mem _)) z` as an intermediate fact. Simplify using `only [GlobalTheory.WeilM.schr, adeleJoin_zero_zero, dotProduct_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz y₁ hy₁`. Use `congrFun (fix 0 (zero_mem _) y₁ hy₁) z` as an intermediate fact. Simplify using `only [GlobalTheory.WeilM.schr, adeleJoin_zero_zero, zero_dotProduct, mul_zero, add_zero, dotProduct_adeleJoin_zero] at this`. Conclude with `(mul_eq_right₀ hz).mp this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_local_finite_parts : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

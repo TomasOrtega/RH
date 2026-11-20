@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `GlobalTheory.ParRay.nfOf hf GlobalTheory.Mem.Fld.IsRayField D.host.K M (GlobalTheory.Mem.RaySplit.condIdeal D.host) → ∀ p, IsRayPrime (KQbar D jE) (D.host.QS * D.host.q * D.host.d) p → SplitsIn M p := by first | exact @GlobalTheory.ParRay.rayField_splitsIn_of_isRayPrime | exact G …`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.rayClassField_splitsIn_of_isRayPrime : ∀ (D : D7) (jE : D.host.E →+* Qb) (M : Fld) (h : KQbar D jE ≤ M) (hf : FiniteDimensional ℚ M),
     letI := GlobalTheory.ParRay.algK D jE h

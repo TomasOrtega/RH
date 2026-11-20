@@ -6,7 +6,7 @@ namespace CoverDenseAlt
 open GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `have hM : OrbitChartMax.Statement := OrbitChartMax.proof have hQ : OrbitChartQuot.Statement := OrbitChartQuot.proof have hIff : OrbitCenterMemIff.Statement := OrbitCenterMemIff.proof HeightRecR.proof OrbitDivVertical.proof (OrbitFiniteSum.proof OrbitDegreeRatio.proof (OrbitLocalS …`.
+A detailed English derivation is pending.
 -/
 theorem heightRecR_full : HeightRecR.Statement :=
   have hM : OrbitChartMax.Statement := OrbitChartMax.proof
@@ -25,7 +25,7 @@ theorem heightRecR_full : HeightRecR.Statement :=
     (OrbitArchSum.of_conjSum OrbitConjSum.proof)
 
 /- English proof (translation)
-The claim follows from `OrbitChartDehom.proof OrbitChartMax.proof OrbitChartQuot.proof`.
+A detailed English derivation is pending.
 -/
 theorem chartDehom_full : OrbitChartDehom.Statement :=
   OrbitChartDehom.proof OrbitChartMax.proof OrbitChartQuot.proof

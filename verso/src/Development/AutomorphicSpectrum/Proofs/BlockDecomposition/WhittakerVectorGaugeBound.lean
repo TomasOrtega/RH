@@ -9,17 +9,15 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.WhIwasawa
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ ω G V' hω H W hW`. Use `⟨?_, fun ε hε => ?_⟩` and prove the remaining obligations. Take `⟨U, hU⟩` from `H.smooth W hW`. Conclude with `GlobalTheory.CompanionTheory.GJMeas.continuous_of_rightInvariant W U hU`. Take `⟨C, B, hC, hCB⟩` from `GlobalTheory.CompanionTheory.GJTwo.WhB.whittaker_bound_det_one F ψ hψ ω G V' hω H W hW ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, hC, fun h => ?_⟩` and prove the remaining obligations. Establish `hy : ((GeneralLinearGroup.det h : Fˣ) : F) = (h.val).det` using `rfl`. Establish `hy0 : (h.val).det ≠ 0`. Rewrite using `[← hy]`. Conclude with `Units.ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ((dg2 (GeneralLinearGroup.det h)⁻¹ 1 * h : GL (Fin 2) F).val).det = 1`. Establish `hd : ((dg2 (GeneralLinearGroup.det h)⁻¹ 1 : GL (Fin 2) F).val).det = ((h.val).det)⁻¹`. Simplify using `[dg2, Matrix.det_fin_two, hy]`. Rewrite using `[Units.val_mul, Matrix.det_mul, hd, inv_mul_cancel₀ hy0]`. Establish `hrow : (fun j => (dg2 (GeneralLinearGroup.det h)⁻¹ 1 * h : GL (Fin 2) F).val 1 j) = e2r h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [dg2, e2r, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hyg : dg2 (GeneralLinearGroup.det h) 1 * (dg2 (GeneralLinearGroup.det h)⁻¹ 1 * h) = h`. Rewrite using `[← mul_assoc]`. Establish `: (dg2 (GeneralLinearGroup.det h) 1 * dg2 (GeneralLinearGroup.det h)⁻¹ 1 : GL (Fin 2) F) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two, hy, hy0]`. Rewrite using `[this, one_mul]`. Establish `key` using `(hCB (GeneralLinearGroup.det h) _ hg).1`.
-
-Rewrite `key` using `[hyg, hrow, hy]`. Conclude with `key`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_and_iwasawa_bound : ForT fun F _ _ _ _ _ _ ψ ω G V' => ∀ W ∈ V', Continuous W ∧ ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 ≤ C ∧ ∀ h : GL (Fin 2) F,
   ‖W h‖ ≤ C * ((modulus (h.val).det : ℝ) / mx (e2r h) ^ 2) ^ (1 / 2 - ε) := by

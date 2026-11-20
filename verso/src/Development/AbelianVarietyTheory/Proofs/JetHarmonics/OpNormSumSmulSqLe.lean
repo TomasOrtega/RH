@@ -11,7 +11,7 @@ open Formalism.REAL (qdet GlRel IsHW)
 namespace GlobalTheory.WigSh.ContrPlus
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.mulVec_sum, dotProduct_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sum_smul_left {ι κ : Type} [Fintype ι] [Fintype κ] (H : Matrix ι ι ℂ) (l : κ → ℂ) (B : κ → ι → ℂ)
     (w : ι → ℂ) : herm H (∑ c, l c • B c) w = ∑ c, l c * herm H (B c) w := by
@@ -21,7 +21,7 @@ theorem herm_sum_smul_left {ι κ : Type} [Fintype ι] [Fintype κ] (H : Matrix 
   rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[← star_dotProduct_star, star_star, Matrix.star_mulVec, hH, Matrix.dotProduct_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_conj {ι : Type} [Fintype ι] (H : Matrix ι ι ℂ) (hH : Hᴴ = H) (v w : ι → ℂ) :
     herm H w v = star (herm H v w) := by
@@ -29,7 +29,7 @@ theorem herm_conj {ι : Type} [Fintype ι] (H : Matrix ι ι ℂ) (hH : Hᴴ = H
   rw [← star_dotProduct_star, star_star, Matrix.star_mulVec, hH, Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_real_smul_right {ι : Type} [Fintype ι] (H : Matrix ι ι ℂ) (t : ℝ) (v w : ι → ℂ) :
     herm H v ((t : ℂ) • w) = (t : ℂ) * herm H v w := by
@@ -38,11 +38,11 @@ theorem herm_real_smul_right {ι : Type} [Fintype ι] (H : Matrix ι ι ℂ) (t 
   simp
 
 /- English proof (translation)
-Establish `hS : 0 ≤ ∑ c, ‖l c‖ ^ 2` using `Finset.sum_nonneg fun c _ => sq_nonneg _`. Establish `h1 : ‖∑ c, l c • a c‖ ≤ Real.sqrt (∑ c, ‖l c‖ ^ 2)`. Use `ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg _) fun y => ?_` and prove the remaining obligations. Establish `h2 : ‖(∑ c, l c • a c) y‖ ≤ ∑ c, ‖l c‖ * ‖a c y‖`. Rewrite using `[ContinuousLinearMap.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun c _ => ?_))` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, norm_smul]`. Establish `h3` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun c => ‖l c‖) (fun c => ‖a c y‖)`. Rewrite `h3` using `[ha y]`. Use `h2.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `Real.le_sqrt_of_sq_le h3`. Rewrite `h4` using `[Real.sqrt_mul hS, Real.sqrt_sq (norm_nonneg y)]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 -/
 theorem opNorm_sum_smul_sq_le {V V₂ κ : Type} [Fintype κ] [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V₂] [InnerProductSpace ℂ V₂] (a : κ → (V₂ →L[ℂ] V)) (l : κ → ℂ)
@@ -63,21 +63,21 @@ theorem opNorm_sum_smul_sq_le {V V₂ κ : Type} [Fintype κ] [NormedAddCommGrou
     _ = _ := Real.sq_sqrt hS
 
 /- English proof (translation)
-Introduce `V _ _ _ k r z π B V₂ _ _ _ π₂ a hz hT hB ha hequi`. Take `⟨hcomp, hU⟩` from `GlobalTheory.FrameExpansion.frame_expansion_uw_group k r z B hz hT hB`. Establish `hH : (Hpk k r)ᴴ = Hpk k r` using `(hermitian_pos_facts_hold k r).1`. Use `⟨⟨⟨k, fun c => ∑ j, MvPolynomial.C ((Hpk k r *ᵥ B c) j) * MvPolynomial.X (Sum.inr j), a, ?_, ?_⟩, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun j _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_C, MvPolynomial.totalDegree_X]`. Introduce `ω`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using `[herm, dotProduct, mul_comm]`. Introduce `h hh ω`. Take `⟨hW, hiso, -⟩` from `hU h hh`. Use extensionality with `y`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Establish `key : ∀ d, ∑ c, herm (Hpk k r) (h *ᵥ B d) (B c) * herm (Hpk k r) (B c) (h *ᵥ ω) = herm (Hpk k r) (B d) ω`. Introduce `d`. Take `⟨h1, h2⟩` from `hW (B d) (hB.1 d) (hB.2.2 d z (by simp))`. Rewrite using `[← herm_sum_smul_left, ← hcomp _ h1 h2, hiso]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul, hequi h hh, Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← key d]`. Simplify using `only [mul_comm]`. Introduce `t ω`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [herm_real_smul_right, pow_one, Finset.smul_sum, smul_smul]`. Introduce `ω h1 h2`. Rewrite using `[pow_one]`. Use `(opNorm_sum_smul_sq_le a _ ha).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `h3 : herm (Hpk k r) ω ω = ∑ c, herm (Hpk k r) ω (B c) * herm (Hpk k r) (B c) ω`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← herm_sum_smul_left, ← hcomp _ h1 h2]`. Rewrite using `[h3, Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[herm_conj _ hH (B c) ω, Complex.star_def, Complex.conj_mul']`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Introduce `c₀`. Simplify using `[hB.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem contraction_wigMap :
     ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)) (π : Mx k r → (V →L[ℂ] V)) (B : Fin k → (Fin (2 * r + k + 1) → ℂ)) (V₂ : Type) [NormedAddCommGroup V₂] [InnerProductSpace ℂ V₂] [FiniteDimensional ℂ V₂] (π₂ : Mx k r → (V₂ →L[ℂ] V₂)) (a : Fin k → (V₂ →L[ℂ] V)), inWb k r z → 0 < Tz k r z → IsFrameOf k r [z] B → (∀ y, ∑ c, ‖a c y‖ ^ 2 = ‖y‖ ^ 2) → (∀ h ∈ UWset k r z, ∀ y c, a c (π₂ h y) = ∑ d, herm (Hpk k r) (h *ᵥ B d) (B c) • π h (a d y)) → GlobalTheory.WigSh.WigMap k r z π₂ π 1 (fun ω => ∑ c, herm (Hpk k r) (B c) ω • a c) ∧ ∀ c₀, (∑ c, herm (Hpk k r) (B c) (B c₀) • a c) = a c₀ := by

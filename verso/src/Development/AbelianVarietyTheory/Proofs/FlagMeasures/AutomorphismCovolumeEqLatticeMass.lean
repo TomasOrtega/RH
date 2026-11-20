@@ -25,7 +25,7 @@ noncomputable def realPt (γ : Formalism.HermitianLatticesTheory.isom (VS D).hT)
   (Classical.choose ((GlobalTheory.RatIsomPoint.ratLink_points D X).1 γ.1 γ.2)).1
 
 /- English proof (translation)
-Establish `hs` using `Classical.choose_spec ((GlobalTheory.RatIsomPoint.ratLink_points D X).1 γ.1 γ.2)`. Unfold `realPt`. Rewrite using `[hs.2 x h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem realPt_spec {γ : Formalism.HermitianLatticesTheory.isom (VS D).hT} {x : X.B.I.GA} (h : RatLink X x γ.1) : realPt X γ = x.1 := by
   have hs := Classical.choose_spec ((GlobalTheory.RatIsomPoint.ratLink_points D X).1 γ.1 γ.2)
@@ -33,7 +33,7 @@ theorem realPt_spec {γ : Formalism.HermitianLatticesTheory.isom (VS D).hT} {x :
   rw [hs.2 x h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, (Classical.choose_spec ((GlobalTheory.RatIsomPoint.ratLink_points D X).1 γ.1 γ.2)).1, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem realPt_link (γ : Formalism.HermitianLatticesTheory.isom (VS D).hT) : ∃ x : X.B.I.GA, RatLink X x γ.1 ∧ realPt X γ = x.1 :=
   ⟨_, (Classical.choose_spec ((GlobalTheory.RatIsomPoint.ratLink_points D X).1 γ.1 γ.2)).1, rfl⟩
@@ -54,7 +54,7 @@ noncomputable def realPtHom : Formalism.HermitianLatticesTheory.isom (VS D).hT �
     rw [realPt_spec X (γ := γ * δ) h, ex, ey]; rfl
 
 /- English proof (translation)
-Introduce `γ δ h`. Take `⟨x, hx, ex⟩` from `realPt_link X γ`. Take `⟨y, hy, ey⟩` from `realPt_link X δ`. Establish `h' : x.1 = y.1` using `by rw [← ex, ← ey]; exact h`. Conclude with `Subtype.ext (((GlobalTheory.RatIsomPoint.ratLink_points D X).2.1 x y _ _ hx hy).2.2 h')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem realPtHom_injective : Function.Injective (realPtHom X) := by
   intro γ δ h
@@ -64,9 +64,9 @@ theorem realPtHom_injective : Function.Injective (realPtHom X) := by
   exact Subtype.ext (((GlobalTheory.RatIsomPoint.ratLink_points D X).2.1 x y _ _ hx hy).2.2 h')
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, hx, rfl, hn⟩`. Conclude with `⟨⟨n, hH hn⟩, hn, realPt_spec X (γ := ⟨n, hH hn⟩) hx⟩`. Introduce and unpack `⟨γ, hγ, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨x, hx, ex⟩` from `realPt_link X γ`. Conclude with `⟨x, γ.1, hx, ex, hγ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem realPts_eq_map (H : Subgroup ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (hH : H ≤ Formalism.HermitianLatticesTheory.isom (VS D).hT) :
     realPts X (H : Set ((VS D).V ≃ₗ[D.host.E] (VS D).V)) = ((H.subgroupOf (Formalism.HermitianLatticesTheory.isom (VS D).hT)).map (realPtHom X) : Set X.B.I.Ginf) := by
@@ -79,9 +79,9 @@ theorem realPts_eq_map (H : Subgroup ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (hH :
     exact ⟨x, γ.1, hx, ex, hγ⟩
 
 /- English proof (translation)
-Use `Formalism.L2.SG.TermOp.Vanish.countable_nf X.B.I.E` as an intermediate fact. Establish `hsub : realPts X S ⊆ ⋃ M : Fin X.B.I.n → Fin X.B.I.n → X.B.I.E, {y : X.B.I.Ginf | ∀ v, uMat (y v) = (X.B.I.P v)⁻¹ * (Matrix.of M).map (X.B.I.φ v) * X.B.I.P v}`. Introduce and unpack `_ ⟨x, n, ⟨M, -, h1, -⟩, rfl, -⟩`. Conclude with `Set.mem_iUnion.2 ⟨fun i j => (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) i j, h1⟩`. Use `Set.Countable.mono hsub (Set.countable_iUnion fun M => Set.Subsingleton.countable ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy y' hy'`. Use function extensionality and compare the values at `v`. Conclude with `Subtype.ext (Units.ext ((hy v).trans (hy' v).symm))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem realPts_countable (S : Set ((VS D).V ≃ₗ[D.host.E] (VS D).V)) : (realPts X S).Countable := by
   have := Formalism.L2.SG.TermOp.Vanish.countable_nf X.B.I.E
@@ -97,41 +97,37 @@ theorem realPts_countable (S : Set ((VS D).V ≃ₗ[D.host.E] (VS D).V)) : (real
 end GlobalTheory.CovMass
 
 /- English proof (translation)
-Introduce `D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv hrel μR hPin K hK`. Take `⟨hKm, hKu⟩` from `hK`. Establish `hlink` using `GlobalTheory.RatIsomPoint.ratLink_points D X`. Establish `hgrp` using `GlobalTheory.T.rational_unipotent_groups_lattices_global_coordinates D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv`. Establish `hterm` using `(GlobalTheory.T.movedTermLattice_isGlobalTerm_phase D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨KA, ⟨hKAm, hKAu⟩, hKA⟩` from `GlobalTheory.T.covolume_integralStabiliser_normalisedHaar D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv hrel μR hPin`. Establish `hRO` using `GlobalTheory.T.realPoints_termAutomorphisms_eq_movedStabilizer D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv`. Take `⟨hfin1, hfin2⟩` from `GlobalTheory.T.latticeStabiliser_commensurable_integralPoints (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) _ _ G hk (c.lat ρ t₀.lam) hterm.1`. Set `cj : ((VS D).V ≃ₗ[D.host.E] (VS D).V) →* G.GLV` to `{ toFun := c.grp ρ map_one' := by ext x; simp [GlobalTheory.HL.GCoord.grp] map_mul' := by intro m n; ext x; simp [GlobalTheory.HL.GCoord.grp] }`. Establish `hcj : ∀ n, cj n = c.grp ρ n` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcjs : Function.Surjective cj` using `fun x => hgrp.2.2.2.1 ρ x`. Establish `hconj : ∀ n, c.grp (ρ * t₀.lin) (t₀.lin⁻¹ * n * t₀.lin) = c.grp ρ n`. Introduce `n`. Establish `h1 : ∀ y, t₀.lin (t₀.lin⁻¹ y) = y` using `fun y => by show (t₀.lin * t₀.lin⁻¹) y = y`. Rewrite using `[mul_inv_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ z, t₀.lin ((ρ * t₀.lin).symm z) = ρ.symm z` using `fun z => by`. Rewrite using `[LinearEquiv.eq_symm_apply]`. Conclude with `(ρ * t₀.lin).apply_symm_apply z`. Use extensionality with `x`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.HL.GCoord.grp, LinearEquiv.trans_apply, LinearEquiv.mul_apply, LinearEquiv.symm_trans_apply, h1, h2]`. Establish `hStN : ∀ g, g ∈ G.St → g ∈ G.N` using `fun g hg p => by`. Take `⟨g', hg', he⟩` from `hg p`. Conclude with `⟨g', (Subgroup.mem_inf.1 hg').1, he⟩`. Establish `hStN' : ∀ g, g ∈ G.St → g ∈ G.N'` using `fun g hg p => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg', he⟩` from `hg p`. Conclude with `⟨g', (Subgroup.mem_inf.1 hg').2, he⟩`. Establish `hK0St : G.K0 ≤ G.St` using `fun g hg p => by`. Take `⟨g', hg', he⟩` from `hg p`. Conclude with `⟨g', hg'.1.1, he⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hLSt : G.stabL (c.lat ρ t₀.lam) ≤ G.St` using `fun g hg p => by`. Take `⟨g', hg', he⟩` from `hg p`. Conclude with `⟨g', hg'.1, he⟩`. Establish `hStI : G.St.comap cj ≤ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `fun n hn => ((hgrp.1 n).2 (hStN _ hn)).1`. Use `set P := G.K0.comap cj with hP`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q := (G.stabL (c.lat ρ t₀.lam)).comap cj with hQ`. Establish `hPI : P ≤ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `fun n hn => hStI (hK0St hn)`. Establish `hQI : Q ≤ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `fun n hn => hStI (hLSt hn)`. Use `set A := (P.subgroupOf (Formalism.HermitianLatticesTheory.isom (VS D).hT)).map (GlobalTheory.CovMass.realPtHom X) with hA`. Use `set B := (Q.subgroupOf (Formalism.HermitianLatticesTheory.isom (VS D).hT)).map (GlobalTheory.CovMass.realPtHom X) with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAset : (A : Set X.B.I.Ginf) = realPts X {σ | c.grp ρ σ ∈ G.K0}` using `(GlobalTheory.CovMass.realPts_eq_map X P hPI).symm`. Establish `hBset : (B : Set X.B.I.Ginf) = Formalism.L2.SG.TermOp.ROinf t₀`. Rewrite using `[hRO]`. Conclude with `(GlobalTheory.CovMass.realPts_eq_map X Q hQI).symm`. Establish `hAmem : ∀ y, y ∈ A ↔ y ∈ realPts X {σ | c.grp ρ σ ∈ G.K0}` using `fun y => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hAset]`. Both sides reduce to the same expression. Establish `hBmem : ∀ y, y ∈ B ↔ y ∈ Formalism.L2.SG.TermOp.ROinf t₀` using `fun y => by`. Rewrite using `[← hBset]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γw, s, s', μw, hγw, hs, hs', hdec, hμwH, hμwS, hμR⟩` from `hPin`. Establish `hH` using `Formalism.L2.SG.Pf.VolPinAsm.pinned_haar t₀ w γw s s' μw hs hs' hdec hμwH`. Rewrite `hH` using `[← hμR]`. Establish `hAR : ∀ y ∈ A, y ∈ Formalism.L2.SG.TermOp.Vanish.Rset t₀`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, n, hx, rfl, hn⟩` from `(hAmem y).1 hy`. Establish `hnS : c.grp ρ n ∈ G.St` using `hK0St hn`. Use `⟨((hlink.2.2 u x n hx).1).1 ((hgrp.1 n).2 (hStN _ hnS)), ?_⟩` and prove the remaining obligations. Establish `hm : t₀.lin⁻¹ * n * t₀.lin ∈ NRat (lf D (X.Fu u'))` using `(hgrp.2.1 _).2 (by rw [hconj]; exact hStN' _ hnS)`. Establish `hl : RatLink X (t₀.pt⁻¹ * x * t₀.pt) (t₀.lin⁻¹ * n * t₀.lin)` using `(hlink.2.1 _ _ _ _ (hlink.2.1 _ _ _ _ (hlink.2.1 _ _ _ _ t₀.rep.2.1 t₀.rep.2.1).2.1 hx).1 t₀.rep.2.1).1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `((hlink.2.2 u' _ _ hl).1).1 hm`. Simplify `h2` using `[Prod.fst_mul, Prod.fst_inv]`. Establish `hBR : ∀ y ∈ B, y ∈ Formalism.L2.SG.TermOp.Vanish.Rset t₀` using `fun y hy => Formalism.L2.SG.Pf.LoopBPin.roinf_sub_rset t₀ ((hBmem y).1 hy)`. Use `haveI hCA : Countable A := by`. Use `(GlobalTheory.CovMass.realPts_countable X {σ | c.grp ρ σ ∈ G.K0}).to_subtype` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hAset]`. Conclude with `this`. Use `haveI hCB : Countable B := by`. Use `(GlobalTheory.CovMass.realPts_countable X {σ | c.grp ρ σ ∈ G.stabL (c.lat ρ t₀.lam)}).to_subtype` as an intermediate fact. Rewrite `this` using `[← hRO, ← hBset]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hiA : B.relIndex A = (G.stabL (c.lat ρ t₀.lam)).relIndex G.K0`. Rewrite using `[hA, hB, Subgroup.relIndex_map_map_of_injective _ _ (GlobalTheory.CovMass.realPtHom_injective X), Subgroup.relIndex_subgroupOf hPI, hQ, hP, Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective hcjs]`. Establish `hiB : A.relIndex B = G.K0.relIndex (G.stabL (c.lat ρ t₀.lam))`. Rewrite using `[hA, hB, Subgroup.relIndex_map_map_of_injective _ _ (GlobalTheory.CovMass.realPtHom_injective X), Subgroup.relIndex_subgroupOf hQI, hQ, hP, Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective hcjs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hcov` using `Formalism.L2.SG.Pf.CovolIdx.covol_commens μR (Formalism.L2.SG.TermOp.Vanish.Rset t₀) hH.2.2.1 A B (fun x hx => hH.2.2.2 x (hAR x hx)) (fun x hx => hH.2.2.2 x (hBR x hx)) (fun x hx y hy => Formalism.L2.SG.Pf.VolPinAsm.rset_mul t₀ (hAR x hx) hy) (fun x hx y hy => Formalism.L2.SG.Pf …`. Rewrite `hcov` using `[hiA, hiB, hKA]`. Use `set a := (G.stabL (c.lat ρ t₀.lam)).relIndex G.K0 with ha`. Use `set b := G.K0.relIndex (G.stabL (c.lat ρ t₀.lam)) with hb`. Use `set gi : ℝ := ((X.B.g : ℝ) ^ (D.R.f * Fintype.card (Formalism.L2.SG.RealObj.FreeE w)))⁻¹ with hgi`.
-
-Establish `hgi0 : 0 ≤ gi` using `by rw [hgi]; positivity`. Establish `hbne : (b : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hfin2`. Establish `hKeq : μR K = ENNReal.ofReal gi * (a : ℝ≥0∞) / (b : ℝ≥0∞)`. Rewrite using `[hcov, ENNReal.mul_div_cancel_right hbne (by simp)]`. Rewrite using `[hKeq, ENNReal.toReal_div, ENNReal.toReal_mul, ENNReal.toReal_ofReal hgi0]`.
-
-Simplify using `only [ENNReal.toReal_natCast]`. Unfold `GlobalTheory.HL.GFrames.mu GlobalTheory.HL.invVol`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CovMass.covol_eq_mass : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → t₀.relevant → ∀ μR, Formalism.L2.SG.VolPin.IsPinnedR t₀ w μR → ∀ K : Set X.B.I.Ginf, (MeasurableSet K ∧ ∀ y ∈ Formalism.L2.SG.TermOp.Vanish.Rset t₀, ∃! s, s ∈ ROinf t₀ ∧ s * y ∈ K) → (μR K).toReal = (((X.B.g : ℝ) ^ (D.R.f * Fintype.card (Formalism.L2.SG.RealObj.FreeE w)))⁻¹) * G.mu (c.lat ρ t₀.lam) := by
   intro D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv hrel μR hPin K hK

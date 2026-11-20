@@ -22,7 +22,7 @@ variable {H : Type} [AddCommGroup H] [TopologicalSpace H] [IsTopologicalAddGroup
   [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H]
 
 /- English proof (translation)
-Use `haveI : (ν.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map ν`. Conclude with `⟨Measure.addHaarScalarFactor (ν.map e) ν, (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', Measure.isAddLeftInvariant_eq_smul _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scale (ν : Measure H) [ν.IsAddHaarMeasure] (e : H ≃ₜ+ H) :
     ∃ c : ℝ≥0, c ≠ 0 ∧ ν.map e = c • ν := by
@@ -32,19 +32,19 @@ theorem exists_scale (ν : Measure H) [ν.IsAddHaarMeasure] (e : H ≃ₜ+ H) :
     Measure.isAddLeftInvariant_eq_smul _ _⟩
 
 /- English proof (translation)
-Take `⟨c, hc0, hc⟩` from `exists_scale ν A`. Take `⟨d, hd0, hd⟩` from `exists_scale ν D`. Take `⟨b, -, hb⟩` from `exists_scale ν B`. Establish `mA : Measurable A` using `A.continuous.measurable`. Establish `mB : Measurable B` using `B.continuous.measurable`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mD : Measurable D` using `D.continuous.measurable`. Establish `e1 : b • ν = (c * c) • ν`. Rewrite using `[← hb]`. Establish `: (B : H → H) = A ∘ A` using `funext h1`. Rewrite using `[this, ← Measure.map_map mA mA, hc, Measure.map_smul, hc, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (d * b) • ν = (c * d) • ν`. Establish `h3 : (B : H → H) ∘ D = D ∘ A` using `funext h2`. Establish `l : (ν.map D).map B = (d * b) • ν`. Rewrite using `[hd, Measure.map_smul, hb, smul_smul]`. Establish `r : (ν.map A).map D = (c * d) • ν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc, Measure.map_smul, hd, smul_smul]`. Rewrite using `[← l, ← r, Measure.map_map mB mD, Measure.map_map mD mA, h3]`. Take `⟨Kc, hK, hKn⟩` from `exists_compact_mem_nhds (0 : H)`. Establish `hpos : ν Kc ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hKn).ne'`. Establish `htop : ν Kc ≠ ⊤` using `hK.measure_lt_top.ne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cancel : ∀ u v : ℝ≥0, u • ν = v • ν → u = v`. Introduce `u v h`. Use `congrArg (fun m : Measure H => m Kc) h` as an intermediate fact. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at this`. Conclude with `(ENNReal.mul_left_inj hpos htop).1 this` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb'` using `cancel _ _ e1`. Establish `hcd` using `cancel _ _ e2`. Establish `hc1 : c = 1`. Rewrite `hcd` using `[hb']`. Establish `: (c * d) * c = (c * d) * 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_left_cancel₀ (mul_ne_zero hc0 hd0) this`. Rewrite using `[hc, hc1, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_of_sq_conj (ν : Measure H) [ν.IsAddHaarMeasure] (A B D : H ≃ₜ+ H)
     (h1 : ∀ x, B x = A (A x)) (h2 : ∀ x, B (D x) = D (A x)) : ν.map A = ν := by
@@ -93,14 +93,14 @@ local notation "cTr" => HeckeCharacterZeroLocus.SiegelWeilU.cT
 variable {K : Type} [CommRing K] (s : K →+* K) {n : ℕ}
 
 /- English proof (translation)
-Unfold `HeckeCharacterZeroLocus.SiegelWeilU.cT`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_one : cTr s (1 : Matrix (Fin n) (Fin n) K) = 1 := by
   unfold HeckeCharacterZeroLocus.SiegelWeilU.cT
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[HeckeCharacterZeroLocus.SiegelWeilU.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj (g h S : Matrix (Fin n) (Fin n) K) :
     cTr s h * (cTr s g * S * g) * h = cTr s (g * h) * S * (g * h) := by
@@ -108,18 +108,18 @@ theorem conj_conj (g h S : Matrix (Fin n) (Fin n) K) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[shearM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem shearM_zero (a : Fin n) : shearM a (0 : Fin n → K) = 1 := by
   ext i j
   simp [shearM]
 
 /- English proof (translation)
-Establish `hN : (Matrix.of (fun b c => if c = a then x b else 0) * Matrix.of (fun b c => if c = a then y b else 0) : Matrix (Fin n) (Fin n) K) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Apply the tactic sequence `by_cases hj : j = k <;> simp [hj, hy]`. Simplify using `[hk]`. Rewrite using `[shearM, shearM, shearM, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, hN, Matrix.one_mul, Matrix.one_mul, Matrix.mul_one, add_zero]`. Use extensionality with `i j`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hj : j = a`. Simplify using `[hj]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hj]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem shearM_mul (a : Fin n) (x y : Fin n → K) (hy : y a = 0) :
     shearM a x * shearM a y = shearM a (x + y) := by
@@ -144,7 +144,7 @@ def diagAt (a : Fin n) (t : K) : Matrix (Fin n) (Fin n) K :=
   Matrix.diagonal fun i => if i = a then t else 1
 
 /- English proof (translation)
-Rewrite using `[diagAt, diagAt, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i = a <;> simp [hi, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagAt_mul (a : Fin n) (t u : K) (h : t * u = 1) : diagAt a t * diagAt a u = 1 := by
   rw [diagAt, diagAt, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -153,11 +153,11 @@ theorem diagAt_mul (a : Fin n) (t u : K) (h : t * u = 1) : diagAt a t * diagAt a
   by_cases hi : i = a <;> simp [hi, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[diagAt, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Simplify using `only [shearM, Matrix.add_apply, Matrix.of_apply, Pi.add_apply]`. Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using `[hx]`. Apply the tactic sequence `simp [Matrix.one_apply, hi] <;> ring`. Distinguish the cases in `hij : i = j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[hj]`. Rewrite using `[Matrix.one_apply_ne hij]`. Simplify using `[hj]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagAt_shearM (a : Fin n) (x : Fin n → K) (hx : x a = 0) :
     diagAt a 2 * shearM a (x + x) = shearM a x * diagAt a 2 := by
@@ -206,13 +206,13 @@ theorem conjEq_val (H : AddSubgroup (Matrix (Fin n) (Fin n) K))
     (conjEq s H hH g g' h1 h2 S : Matrix (Fin n) (Fin n) K) = cTr s g * S * g := rfl
 
 /- English proof (translation)
-Establish `inv : ∀ y : Fin n → K, y a = 0 → shearM a y * shearM a (-y) = 1 ∧ shearM a (-y) * shearM a y = 1`. Introduce `y hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[shearM_mul a _ _ (by simp [hy]), add_neg_cancel, shearM_zero]`. Rewrite using `[shearM_mul a _ _ hy, neg_add_cancel, shearM_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hxx : (x + x) a = 0` using `by simp [hx]`. Take `⟨i1, i2⟩` from `inv x hx`. Take `⟨j1, j2⟩` from `inv (x + x) hxx`. Establish `d1 : diagAt a (2 : K) * diagAt a ((h2.unit⁻¹ : Kˣ) : K) = 1` using `diagAt_mul a _ _ (h2.mul_val_inv)`. Establish `d2 : diagAt a ((h2.unit⁻¹ : Kˣ) : K) * diagAt a (2 : K) = 1` using `diagAt_mul a _ _ (h2.val_inv_mul)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτe : τ = conjEq s H hH _ _ i1 i2` using `funext fun S => Subtype.ext (hτ S)`. Rewrite using `[hτe]`. Use `map_eq_of_sq_conj ν _ (conjEq s H hH _ _ j1 j2) (conjEq s H hH _ _ d1 d2) ?_ ?_` and prove the remaining obligations. Introduce `S`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[conjEq_val, conjEq_val, conjEq_val, conj_conj, shearM_mul a _ _ hx]`. Introduce `S`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[conjEq_val, conjEq_val, conjEq_val, conjEq_val, conj_conj, conj_conj, diagAt_shearM a x hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_shear (H : AddSubgroup (Matrix (Fin n) (Fin n) K))
     (hH : ∀ S ∈ H, ∀ g : Matrix (Fin n) (Fin n) K, cTr s g * S * g ∈ H)
@@ -249,15 +249,13 @@ end GlobalTheory.CompanionTheory.WhitFree.AvgInf.ShearHaar
 namespace GlobalTheory.CompanionTheory.WhitFree.AvgInf.ShearHaar
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n d b lam hlam a s hs τ _ hτ`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)`. Use `haveI : BorelSpace (Ainf F ⊗[F] E) := ⟨rfl⟩`. Take `⟨-, -, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hσ (Ainf F) d b lam hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hH n`. Take `⟨hLH, hSH, hT2H, hBH, -⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ (Ainf F) n`. Use `haveI := hLH`. Use `haveI := hSH`. Use `haveI := hT2H`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `haveI := hBH`. Establish `hinv : ∀ x : Ainf F ⊗[F] E, HeckeCharacterZeroLocus.SiegelWeilU.sigR (Ainf F) σ (HeckeCharacterZeroLocus.SiegelWeilU.sigR (Ainf F) σ x) = x` using `GlobalTheory.CompanionTheory.SW.GramAlg.sigR_invol (Ainf F) (GlobalTheory.CompanionTheory.SW.GramAlg.sigma_invol hσ)`. Establish `hmem : ∀ S ∈ HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n, ∀ g : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E), HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR (Ainf F) σ) g * S * g ∈ HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n`. Introduce `S hS g`. Establish `hS' : HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR (Ainf F) σ) S = S`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use extensionality with `i j`. Conclude with `hS i j`. Establish `key : HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR (Ainf F) σ) (HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR (Ainf F) σ) g * S * g) = HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeil …`. Rewrite using `[HeckeCharacterZeroLocus.SiegelWeilU.cT_mul, HeckeCharacterZeroLocus.SiegelWeilU.cT_mul, GlobalTheory.CompanionTheory.SW.GramAlg.cT_cT _ hinv, hS', Matrix.mul_assoc]`. Introduce `i j`.
-
-Conclude with `congrFun (congrFun key i) j`. Establish `h2 : IsUnit (2 : Ainf F ⊗[F] E)`. Establish `: IsUnit (algebraMap F (Ainf F ⊗[F] E) 2)` using `(IsUnit.mk0 (2 : F) two_ne_zero).map _`. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Conclude with `map_shear (HeckeCharacterZeroLocus.SiegelWeilU.sigR (Ainf F) σ) (HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n) hmem (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b lam n) h2 a s hs τ hτ`.
+A detailed English derivation is pending.
 -/
 theorem coordHerm_map_shear : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ (a : Fin n) (s : Fin n → Ainf F ⊗[F] E), s a = 0 → ∀ τ : HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n → HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n, Measurable τ → (∀ S, (τ S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) = HeckeCharacterZeroLocus.SiegelWeilU.cT (sigR (Ainf F) σ) (GlobalTheory.CompanionTheory.WhitFree.AvgInf.shearM a s) * S * GlobalTheory.CompanionTheory.WhitFree.AvgInf.shearM a s) → (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b lam n).map τ = GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b lam n := by
   intro F E _ _ _ _ _ σ hσ n d b lam hlam a s hs τ _ hτ

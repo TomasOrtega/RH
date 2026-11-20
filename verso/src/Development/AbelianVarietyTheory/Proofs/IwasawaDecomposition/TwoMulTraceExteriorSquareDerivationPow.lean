@@ -13,7 +13,7 @@ namespace GlobalTheory.GoodMetric.ChernSpan.TraceWedgeSq
 variable {R : Type} [CommRing R] {M : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.diag]`. Conclude with `e.symm.sum_comp (fun x => A x x)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_reindex_self {m n : Type} [Fintype m] [Fintype n] (e : m ≃ n) (A : Matrix m m R) :
     (Matrix.reindex e e A).trace = A.trace := by
@@ -21,7 +21,7 @@ theorem trace_reindex_self {m n : Type} [Fintype m] [Fintype n] (e : m ≃ n) (A
   exact e.symm.sum_comp (fun x => A x x)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [Matrix.submatrix_one_equiv]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ, ih]`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem reindex_pow_self {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (e : m ≃ n) (A : Matrix m m R) (k : ℕ) :
@@ -40,16 +40,16 @@ def emb (R : Type) [CommRing R] (M : ℕ) : Matrix (Fin M × Fin M) (Pair M) R :
   Matrix.of fun x r => embF x r.1.1 r.1.2
 
 /- English proof (translation)
-Simplify using `[embF, Fintype.sum_prod_type, Matrix.one_apply, mul_sub, Finset.sum_sub_distrib, mul_ite]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_mul_embF (A : Fin M × Fin M → R) (a b : Fin M) :
     ∑ y, A y * embF y a b = A (a, b) - A (b, a) := by
   simp [embF, Fintype.sum_prod_type, Matrix.one_apply, mul_sub, Finset.sum_sub_distrib, mul_ite]
 
 /- English proof (translation)
-Establish `h` using `sum_sum_eq_sum_pair (fun a b => (1 : Matrix (Fin M) (Fin M) R) x.1 a * (1 : Matrix (Fin M) (Fin M) R) x.2 b * G a b)`. Establish `hl : ∑ a, ∑ b, (1 : Matrix (Fin M) (Fin M) R) x.1 a * (1 : Matrix (Fin M) (Fin M) R) x.2 b * G a b = G x.1 x.2`. Simplify using `[Matrix.one_apply]`. Establish `hd : ∑ a, (1 : Matrix (Fin M) (Fin M) R) x.1 a * (1 : Matrix (Fin M) (Fin M) R) x.2 a * G a a = 0` using `Finset.sum_eq_zero fun a _ => by rw [hG0, mul_zero]`. Rewrite `h` using `[hl, hd, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [emb, embF, Matrix.of_apply, hG q.1.1 q.1.2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_emb_mul (x : Fin M × Fin M) (G : Fin M → Fin M → R) (hG : ∀ a b, G b a = - G a b)
     (hG0 : ∀ a, G a a = 0) :
@@ -68,7 +68,7 @@ theorem sum_emb_mul (x : Fin M × Fin M) (G : Fin M → Fin M → R) (hG : ∀ a
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mul_embF (fun y => A x y) r.1.1 r.1.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_emb_apply {n : Type} (A : Matrix n (Fin M × Fin M) R) (x : n) (r : Pair M) :
     (A * emb R M) x r = A x (r.1.1, r.1.2) - A x (r.1.2, r.1.1) := by
@@ -83,7 +83,7 @@ def tensorLie (L : Matrix (Fin M) (Fin M) R) : Matrix (Fin M × Fin M) (Fin M ×
   Matrix.kroneckerMap (· * ·) L 1 + Matrix.kroneckerMap (· * ·) 1 L
 
 /- English proof (translation)
-Use extensionality with `x r`. Rewrite using `[mul_emb_apply, Matrix.mul_apply]`. Establish `h` using `sum_emb_mul x (fun a b => wedgeLieExt L a b r) (fun a b => by simp only [wedgeLieExt]; ring) (fun a => by simp only [wedgeLieExt]; ring)`. Rewrite using `[show (∑ q : Pair M, emb R M x q * wedgeLieRaw L q r) = ∑ q : Pair M, emb R M x q * wedgeLieExt L q.1.1 q.1.2 r from rfl, h]`. Simplify using `only [tensorLie, wedgeLieExt, Matrix.add_apply, Matrix.kroneckerMap_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -99,7 +99,7 @@ theorem tensorLie_mul_emb (L : Matrix (Fin M) (Fin M) R) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, Matrix.one_mul, Matrix.mul_one]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, Matrix.mul_assoc, tensorLie_mul_emb, ← Matrix.mul_assoc, ih, Matrix.mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorLie_pow_mul_emb (L : Matrix (Fin M) (Fin M) R) (n : ℕ) :
     tensorLie L ^ n * emb R M = emb R M * wedgeLieRaw L ^ n := by
@@ -109,13 +109,13 @@ theorem tensorLie_pow_mul_emb (L : Matrix (Fin M) (Fin M) R) (n : ℕ) :
     rw [pow_succ, pow_succ, Matrix.mul_assoc, tensorLie_mul_emb, ← Matrix.mul_assoc, ih, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `⟨⟨i, j⟩, hij⟩ ⟨⟨k, l⟩, hkl⟩`. Rewrite using `[mul_emb_apply]`. Simplify using `only [Matrix.transpose_apply, emb, embF, Matrix.of_apply, Matrix.smul_apply, Matrix.one_apply, Subtype.mk.injEq, Prod.mk.injEq, smul_eq_mul]`. Simplify using `only at hij hkl`. Establish `h0 : ¬ (k = j ∧ l = i)` using `fun h => by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `h with ⟨rfl, rfl⟩` into its components or cases. Conclude with `absurd (hij.trans hkl) (lt_irrefl _)`. Apply the tactic sequence `by_cases h1 : k = i <;> by_cases h2 : l = j`. Substitute `h1` using the available equality. Substitute `h2` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hkl.ne, hkl.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `: ¬ (i = k ∧ j = l)` using `fun h => h2 h.2.symm`. Apply the tactic sequence `by_cases h3 : k = j <;> by_cases h4 : l = i <;> simp_all`. Establish `: ¬ (i = k ∧ j = l)` using `fun h => h1 h.1.symm`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h3 : k = j <;> by_cases h4 : l = i <;> simp_all`. Establish `: ¬ (i = k ∧ j = l)` using `fun h => h1 h.1.symm`. Apply the tactic sequence `by_cases h3 : k = j <;> by_cases h4 : l = i <;> simp_all`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem emb_transpose_mul_emb :
     (emb R M)ᵀ * emb R M = (2 : R) • (1 : Matrix (Pair M) (Pair M) R) := by
@@ -136,7 +136,7 @@ theorem emb_transpose_mul_emb :
     by_cases h3 : k = j <;> by_cases h4 : l = i <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply]`. Simplify using `only [mul_comm (emb R M x _)]`. Conclude with `sum_emb_mul y (fun a b => embF x a b) (fun a b => by simp only [embF]; ring) (fun a => by simp only [embF]; ring)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_mul_transpose_apply (x y : Fin M × Fin M) :
     (emb R M * (emb R M)ᵀ) x y = embF x y.1 y.2 := by
@@ -147,9 +147,9 @@ theorem emb_mul_transpose_apply (x y : Fin M × Fin M) :
     (fun a => by simp only [embF]; ring)
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [emb_mul_transpose_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `sum_mul_embF (fun y => A x y) x.1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem trace_mul_emb_mul_transpose (A : Matrix (Fin M × Fin M) (Fin M × Fin M) R) :
     (A * (emb R M * (emb R M)ᵀ)).trace = A.trace - ∑ x : Fin M × Fin M, A x (x.2, x.1) := by
@@ -161,14 +161,14 @@ theorem trace_mul_emb_mul_transpose (A : Matrix (Fin M × Fin M) (Fin M × Fin M
   exact sum_mul_embF (fun y => A x y) x.1 x.2
 
 /- English proof (translation)
-Simplify using `[Fintype.sum_prod_type, Matrix.trace, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_kron_swap (P Q : Matrix (Fin M) (Fin M) R) :
     ∑ x : Fin M × Fin M, Matrix.kroneckerMap (· * ·) P Q x (x.2, x.1) = (P * Q).trace := by
   simp [Fintype.sum_prod_type, Matrix.trace, Matrix.mul_apply]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [Matrix.one_kronecker_one]`. Consider the case `succ m ih => rw [pow_succ, ih, ← Matrix.mul_kronecker_mul, Matrix.mul_one, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem kron_left_pow (L : Matrix (Fin M) (Fin M) R) (m : ℕ) :
     (Matrix.kroneckerMap (· * ·) L (1 : Matrix (Fin M) (Fin M) R)) ^ m =
@@ -178,7 +178,7 @@ theorem kron_left_pow (L : Matrix (Fin M) (Fin M) R) (m : ℕ) :
   | succ m ih => rw [pow_succ, ih, ← Matrix.mul_kronecker_mul, Matrix.mul_one, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [Matrix.one_kronecker_one]`. Consider the case `succ m ih => rw [pow_succ, ih, ← Matrix.mul_kronecker_mul, Matrix.mul_one, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem kron_right_pow (L : Matrix (Fin M) (Fin M) R) (m : ℕ) :
     (Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin M) (Fin M) R) L) ^ m =
@@ -188,11 +188,11 @@ theorem kron_right_pow (L : Matrix (Fin M) (Fin M) R) (m : ℕ) :
   | succ m ih => rw [pow_succ, ih, ← Matrix.mul_kronecker_mul, Matrix.mul_one, pow_succ]
 
 /- English proof (translation)
-Establish `hc : Commute (Matrix.kroneckerMap (· * ·) L (1 : Matrix (Fin M) (Fin M) R)) (Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin M) (Fin M) R) L)` using `by show _ * _ = _ * _`. Rewrite using `[← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, Matrix.mul_one, Matrix.one_mul]`. Establish `hterm : ∀ m ∈ Finset.range (n + 1), ∀ x : Fin M × Fin M, (Matrix.kroneckerMap (· * ·) L (1 : Matrix (Fin M) (Fin M) R) ^ m * Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin M) (Fin M) R) L ^ (n - m) * ((n.choose m : ℕ) : Matrix (Fin M × Fin M) (Fin M × Fin M) R)) x (x.2, x.1) = (n.c …`. Introduce `m _ x`. Rewrite using `[kron_left_pow, kron_right_pow, ← Matrix.mul_kronecker_mul, Matrix.mul_one, Matrix.one_mul, ← nsmul_eq_mul', Matrix.smul_apply, nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `htr : ∀ m ∈ Finset.range (n + 1), (L ^ m * L ^ (n - m)).trace = (L ^ n).trace`. Introduce `m hm`. Rewrite using `[← pow_add, Nat.add_sub_cancel' (Nat.lt_succ_iff.mp (Finset.mem_range.mp hm))]`. Rewrite using `[tensorLie, hc.add_pow]`. Simplify using `only [Matrix.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_congr rfl fun m hm => (Finset.sum_congr rfl fun x _ => hterm m hm x)]`. Simplify using `only [← Finset.mul_sum, sum_kron_swap]`. Rewrite using `[Finset.sum_congr rfl fun m hm => by rw [htr m hm], ← Finset.sum_mul]`. Rewrite using `[← Nat.cast_sum, Nat.sum_range_choose, Nat.cast_pow, Nat.cast_ofNat]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_tensorLie_pow_swap (L : Matrix (Fin M) (Fin M) R) (n : ℕ) :
     ∑ x : Fin M × Fin M, (tensorLie L ^ n) x (x.2, x.1) = 2 ^ n * (L ^ n).trace := by
@@ -226,11 +226,11 @@ namespace GlobalTheory.GoodMetric.ChernSpan
 open TraceWedgeSq
 
 /- English proof (translation)
-Establish `hW : ((wedge2Lie L) ^ i).trace = ((wedgeLieRaw L) ^ i).trace`. Rewrite using `[wedge2Lie, reindex_pow_self, trace_reindex_self]`. Establish `hK : kron L 1 + kron 1 L = Matrix.reindex finProdFinEquiv finProdFinEquiv (tensorLie L)`. Use extensionality with `a b`. Simplify using `[kron, tensorLie]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hW, hK, reindex_pow_self, trace_reindex_self]`. Establish `key : (2 : R) • (wedgeLieRaw L ^ i) = (emb R M)ᵀ * (tensorLie L ^ i * emb R M)`. Rewrite using `[tensorLie_pow_mul_emb, ← Matrix.mul_assoc, emb_transpose_mul_emb, Matrix.smul_mul, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.trace_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (tensorLie L ^ i * emb R M * (emb R M)ᵀ).trace := by rw [key, Matrix.trace_mul_comm]`. Use `_ = _ := by rw [Matrix.mul_assoc, trace_mul_emb_mul_transpose, sum_tensorLie_pow_swap]`.
+A detailed English derivation is pending.
 -/
 theorem two_mul_trace_wedge2Lie_pow {R : Type} [CommRing R] {M : ℕ} (L : Matrix (Fin M) (Fin M) R) (i : ℕ) :
     2 * ((wedge2Lie L) ^ i).trace = ((kron L 1 + kron 1 L) ^ i).trace - 2 ^ i * (L ^ i).trace := by

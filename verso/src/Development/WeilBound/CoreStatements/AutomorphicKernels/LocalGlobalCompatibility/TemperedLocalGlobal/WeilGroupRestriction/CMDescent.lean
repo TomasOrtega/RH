@@ -24,13 +24,13 @@ def liftE (τ : Ω ≃ₐ[F] Ω) (h : ∀ e : E, τ (algebraMap E Ω e) = algebr
   { τ.toRingEquiv with commutes' := h }
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun _ ↦ rfl`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem res_liftE (τ : Ω ≃ₐ[F] Ω) (h : ∀ e : E, τ (algebraMap E Ω e) = algebraMap E Ω e) :
     res F (liftE F τ h) = τ := AlgEquiv.ext fun _ ↦ rfl
 
 /- English proof (translation)
-Establish `h1 : (N : Set (L ≃ₐ[K] L)) ∈ nhds 1` using `hN.mem_nhds N.one_mem`. Take `⟨M, hM, hle⟩` from `(krullTopology_mem_nhds_one_iff K L _).1 h1`. Conclude with `⟨M, hM, hle⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_finiteDimensional_fixingSubgroup_le {K L : Type*} [Field K] [Field L] [Algebra K L]
     (N : Subgroup (L ≃ₐ[K] L)) (hN : IsOpen (N : Set (L ≃ₐ[K] L))) :
@@ -47,7 +47,7 @@ variable (F : Type*) {E Ω : Type*} [Field F] [Field E] [Field Ω] [Algebra F E]
   [IsScalarTower F E Ω]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_smul (σ : Ω ≃ₐ[E] Ω) (A : ValuationSubring Ω) : res F σ • A = σ • A := by
   ext x
@@ -56,7 +56,7 @@ theorem res_smul (σ : Ω ≃ₐ[E] Ω) (A : ValuationSubring Ω) : res F σ •
   rfl
 
 /- English proof (translation)
-Establish `h1 : σ • A = A` using `h`. Use `show res F σ • A = A`. Rewrite using `[res_smul, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_mem_decompositionSubgroup {σ : Ω ≃ₐ[E] Ω} {A : ValuationSubring Ω}
     (h : σ ∈ A.decompositionSubgroup E) : res F σ ∈ A.decompositionSubgroup F := by
@@ -65,11 +65,11 @@ theorem res_mem_decompositionSubgroup {σ : Ω ≃ₐ[E] Ω} {A : ValuationSubri
   rw [res_smul, h1]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F M`. Set `S : Set Ω` to `Set.range fun i ↦ ((b i : M) : Ω)`. Establish `hSf : Finite S` using `Set.finite_range _ |>.to_subtype`. Use `⟨IntermediateField.adjoin E S, ?_, ?_⟩` and prove the remaining obligations. Use `IntermediateField.finiteDimensional_adjoin ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hint _ ((IsIntegral.of_finite F (b i)).map M.val)`. Introduce `σ hσ`. Rewrite `hσ`, the goal using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb : ∀ i, res F σ ((b i : M) : Ω) = ((b i : M) : Ω)` using `fun i ↦ hσ _ (IntermediateField.subset_adjoin E S ⟨i, rfl⟩)`. Establish `key : ((res F σ).toLinearMap).comp M.val.toLinearMap = M.val.toLinearMap` using `b.ext fun i ↦ by simpa using hb i`. Use `LinearMap.congr_fun key ⟨y, hy⟩` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_finiteDimensional_res_le [FiniteDimensional F E] (M : IntermediateField F Ω) [FiniteDimensional F M]
     (hint : ∀ x : Ω, IsIntegral F x → IsIntegral E x) :
@@ -94,9 +94,9 @@ theorem exists_finiteDimensional_res_le [FiniteDimensional F E] (M : Intermediat
     simpa using this
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one (res F) ?_` and prove the remaining obligations. Introduce `s hs`. Rewrite `hs` using `[map_one, krullTopology_mem_nhds_one_iff]`. Take `⟨M, hM, hMs⟩` from `hs`. Take `⟨M', hM', hM'le⟩` from `exists_finiteDimensional_res_le F M hint`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`. Conclude with `⟨M', hM', fun σ hσ ↦ hMs (hM'le σ hσ)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem continuous_res [FiniteDimensional F E] (hint : ∀ x : Ω, IsIntegral F x → IsIntegral E x) :
     Continuous (res F (E := E) (Ω := Ω)) := by
@@ -116,13 +116,13 @@ variable (F : Type*) {E Ω : Type*} [Field F] [Field E] [Field Ω] [Algebra F E]
   [IsScalarTower F E Ω]
 
 /- English proof (translation)
-Use `⟨hHo.preimage (continuous_res F hint), ?_, ?_⟩` and prove the remaining obligations. Set `φ : (Ω ≃ₐ[E] Ω) →* (Ω ≃ₐ[F] Ω) ⧸ Hp` to `(QuotientGroup.mk' Hp).comp (res F)`. Establish `hker : φ.ker = Hp.comap (res F (E` using `E) (Ω := Ω)) := by`. Use extensionality with `σ`. Simplify using `[φ, MonoidHom.mem_ker, QuotientGroup.eq_one_iff]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Group.isSolvable_of_isSolvable_injective (f := (QuotientGroup.kerLift φ).comp (QuotientGroup.quotientMulEquivOfEq hker.symm).toMonoidHom) ((QuotientGroup.kerLift_injective φ).comp (QuotientGroup.quotientMulEquivOfEq hker.symm).injective)`. Rewrite using `[eq_top_iff]`. Introduce `g _`. Establish `hg : res F g ∈ Hp ⊔ Y.fixingSubgroup` using `hsup ▸ Subgroup.mem_top _`. Take `⟨h, hh, n, hn, hhn⟩` from `Subgroup.mem_sup_of_normal_left.1 hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnE : ∀ e : E, n (algebraMap E Ω e) = algebraMap E Ω e` using `fun e ↦ (IntermediateField.mem_fixingSubgroup_iff _ _).1 hn _ (hYE e)`. Set `n'` to `liftE F n hnE`. Establish `hn' : n' ∈ N` using `hN n' (by rw [res_liftE]; exact hn)`. Establish `hgn : g * n'⁻¹ ∈ Hp.comap (res F (E` using `E) (Ω := Ω)) := by`. Rewrite using `[Subgroup.mem_comap, map_mul, map_inv, res_liftE, ← hhn, mul_inv_cancel_right]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hh`. Use `Subgroup.mul_mem_sup hgn hn'` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem descend [FiniteDimensional F E] (hint : ∀ x : Ω, IsIntegral F x → IsIntegral E x)
     (Y : IntermediateField F Ω) (hYE : ∀ e : E, algebraMap E Ω e ∈ Y)
@@ -160,15 +160,15 @@ section Conj
 open ComplexConjugate Polynomial
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `hx : IsIntegral F x` using `Algebra.IsIntegral.isIntegral x`. Use `set p := minpoly F x with hp`. Use `set p' : Polynomial Ω := p.map (algebraMap F Ω) with hp'`. Establish `hp'0 : p' ≠ 0` using `(minpoly.monic hx).map _ |>.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : p'.roots.card = p'.natDegree` using `IsAlgClosed.card_roots_eq_natDegree`. Establish `hroots` using `roots_map_of_injective_of_card_eq_natDegree j.injective hcard`. Establish `hq0 : p'.map j ≠ 0` using `((minpoly.monic hx).map _ |>.map j).ne_zero`. Establish `hcoef : (p'.map j).map (starRingEnd ℂ) = p'.map j`. Simplify using `only [hp', Polynomial.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `congrArg (fun f : F →+* ℂ => Polynomial.map f p) ?_` and prove the remaining obligations. Use extensionality with `r`. Simplify using `using hj r`. Establish `hroot : (p'.map j).IsRoot (conj (j x))`. Establish `h0 : (p'.map j).eval (j x) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_at_apply, hp', Polynomial.eval_map_algebraMap, hp, minpoly.aeval, map_zero]`. Use `congrArg (starRingEnd ℂ) h0` as an intermediate fact. Rewrite `this` using `[map_zero, ← Polynomial.eval_map_apply, hcoef]`. Conclude with `this`. Establish `hmem : conj (j x) ∈ (p'.map j).roots` using `(Polynomial.mem_roots hq0).2 hroot`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hmem` using `[← hroots, Multiset.mem_map]`. Take `⟨y, -, hy⟩` from `hmem`. Conclude with `⟨y, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_range {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (j : Ω →+* ℂ)
     (hj : ∀ x : F, conj (j (algebraMap F Ω x)) = j (algebraMap F Ω x)) (x : Ω) :
@@ -199,7 +199,7 @@ theorem conj_mem_range {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] [IsAlg
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Use `choose g hg using conj_mem_range j hj`. Set `f : Ω →ₐ[F] Ω` to `{ toFun := g map_one' := j.injective (by simp [hg]) map_mul' := fun x y ↦ j.injective (by rw [hg, map_mul, map_mul, map_mul, hg, hg]) map_zero' := j.injective (by simp [hg]) map_add' := fun x y ↦ j.injective (by rw [hg, map_add, map_add, map_add, hg, hg]) commutes' := fun r ↦ j.i …`. Establish `: Algebra.IsAlgebraic F Ω` using `IsAlgClosure.isAlgebraic`. Conclude with `⟨AlgEquiv.ofBijective f (Algebra.IsAlgebraic.algHom_bijective f), fun x ↦ hg x⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conj {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (j : Ω →+* ℂ)
     (hj : ∀ x : F, conj (j (algebraMap F Ω x)) = j (algebraMap F Ω x)) :
@@ -222,15 +222,15 @@ section CM
 open ComplexConjugate
 
 /- English proof (translation)
-Set `K` to `IntermediateField.fixedField Hp`. Prove the components needed by the constructor for the conclusion. Introduce `v`. Set `φ : K →+* ℂ` to `v.embedding`. Set `_ : Algebra K ℂ` to `φ.toAlgebra`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: Algebra.IsAlgebraic F Ω` using `IsAlgClosure.isAlgebraic`. Establish `: Algebra.IsAlgebraic K Ω` using `Algebra.IsAlgebraic.tower_top (K := F) K`. Set `j : Ω →+* ℂ` to `(IsAlgClosed.lift : Ω →ₐ[K] ℂ).toRingHom`. Establish `hjK : ∀ y : K, j (y : Ω) = φ y` using `fun y ↦ (IsAlgClosed.lift : Ω →ₐ[K] ℂ).commutes y`. Establish `hjF : ∀ x : F, conj (j (algebraMap F Ω x)) = j (algebraMap F Ω x)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Establish `hr` using `IsTotallyReal.isReal (InfinitePlace.mk (j.comp (algebraMap F Ω)))`. Rewrite `hr` using `[InfinitePlace.isReal_mk_iff, ComplexEmbedding.isReal_iff]`. Use `RingHom.congr_fun hr x` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨c, hcj⟩` from `exists_conj j hjF`. Establish `hcH : c ∈ Hp` using `hc c j hcj`. Rewrite using `[← v.mk_embedding, InfinitePlace.isReal_mk_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `y`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show conj (φ y) = φ y`. Rewrite using `[← hjK, ← hcj]`. Use `congr 1`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 y.2 c hcH`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isTotallyReal_fixedField {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [IsTotallyReal F]
     (Hp : Subgroup (Ω ≃ₐ[F] Ω)) (hc : ∀ (c : Ω ≃ₐ[F] Ω) (j : Ω →+* ℂ), (∀ x, j (c x) = conj (j x)) → c ∈ Hp) :
@@ -261,53 +261,47 @@ theorem isTotallyReal_fixedField {F Ω : Type*} [Field F] [Field Ω] [Algebra F 
   exact (IntermediateField.mem_fixedField_iff _ _).1 y.2 c hcH
 
 /- English proof (translation)
-Establish `: IsGalois F Ω` using `inferInstance`. Establish `: IsGalois E Ω` using `inferInstance`. Establish `: Algebra.IsAlgebraic F Ω` using `IsAlgClosure.isAlgebraic`. Establish `hint : ∀ x : Ω, IsIntegral F x → IsIntegral E x` using `fun x hx ↦ hx.tower_top`. Use `set H := Hp.comap (res F (E := E) (Ω := Ω)) with hH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHo' : IsOpen (H : Set (Ω ≃ₐ[E] Ω))` using `hHo.preimage (continuous_res F hint)`. Set `Hc : ClosedSubgroup (Ω ≃ₐ[E] Ω)` to `⟨H, Subgroup.isClosed_of_isOpen H hHo'⟩`. Establish `hfixH : (IntermediateField.fixedField H).fixingSubgroup = H` using `InfiniteGalois.fixingSubgroup_fixedField Hc`. Establish `hfin : FiniteDimensional E (IntermediateField.fixedField H)` using `(InfiniteGalois.isOpen_iff_finite _).1 (by rw [hfixH]; exact hHo')`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `Hpc : ClosedSubgroup (Ω ≃ₐ[F] Ω)` to `⟨Hp, Subgroup.isClosed_of_isOpen Hp hHo⟩`. Establish `hfixHp : (IntermediateField.fixedField Hp).fixingSubgroup = Hp` using `InfiniteGalois.fixingSubgroup_fixedField Hpc`. Use `set Ep := IntermediateField.fixedField Hp with hEp`. Use `set E' := IntermediateField.fixedField H with hE'`. Establish `h2 : Module.finrank F E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two F E`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨α, hα⟩ : ∃ α : E, α ∉ Set.range (algebraMap F E)` from `by by_contra! h`. Establish `hbt : (⊥ : IntermediateField F E) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[IntermediateField.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Conclude with `h x`. Rewrite `hbt` using `[IntermediateField.bot_eq_top_iff_finrank_eq_one, h2]`. Evaluate the numerical expressions using `at hbt`. Establish `htop : IntermediateField.adjoin F {α} = ⊤`. Use `(IntermediateField.isSimpleOrder_of_finrank_prime F E (h2 ▸ Nat.prime_two)).eq_bot_or_eq_top (IntermediateField.adjoin F {α})` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `this.resolve_left fun h ↦ hα ?_` and prove the remaining obligations. Establish `hm : α ∈ IntermediateField.adjoin F {α}` using `IntermediateField.mem_adjoin_simple_self F α`. Rewrite `hm` using `[h, IntermediateField.mem_bot]`. Conclude with `hm`. Establish `hαint : IsIntegral F α` using `Algebra.IsIntegral.isIntegral α`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfixE : ∀ σ : Ω ≃ₐ[F] Ω, σ (algebraMap E Ω α) = algebraMap E Ω α → ∀ e : E, σ (algebraMap E Ω e) = algebraMap E Ω e`. Introduce `σ hσ e`. Establish `hadj : Algebra.adjoin F {α} = ⊤`. Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun x hx ↦ ?_), htop, IntermediateField.top_toSubalgebra]`. Rewrite using `[Set.mem_singleton_iff.1 hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hαint.isAlgebraic`. Use `AlgHom.ext_of_adjoin_eq_top hadj (φ₁ := (σ : Ω →ₐ[F] Ω).comp (IsScalarTower.toAlgHom F E Ω)) (φ₂ := IsScalarTower.toAlgHom F E Ω) (by` as an intermediate fact. Introduce `x hx`. Rewrite using `[Set.mem_singleton_iff.1 hx]`. Simplify using `using hσ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using congrArg (fun f ↦ f e) this`. Use `set a := algebraMap E Ω α with ha`. Establish `haEp : a ∉ Ep`. Introduce `haE`. Establish `hle : Hp ⊔ Y.fixingSubgroup ≤ MulAction.stabilizer (Ω ≃ₐ[F] Ω) a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `sup_le (fun σ hσ ↦ ?_) (fun σ hσ ↦ ?_)` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 haE σ hσ`. Rewrite using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ a (hYE α)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hall : ∀ σ : Ω ≃ₐ[F] Ω, σ a = a`. Introduce `σ`. Use `hle (hsup ▸ Subgroup.mem_top σ)` as an intermediate fact. Rewrite `this` using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed a).2 hall`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hα` to reduce the goal to its premises. Use `⟨y, (algebraMap E Ω).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply, hy]`. Establish `haF : IsIntegral F a` using `(Algebra.IsAlgebraic.isAlgebraic a).isIntegral`. Establish `haint : IsIntegral Ep a` using `haF.tower_top`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdegF : (minpoly F a).natDegree = 2`. Rewrite using `[ha, ← IsScalarTower.toAlgHom_apply F E Ω, minpoly.algHom_eq _ (algebraMap E Ω).injective, ← IntermediateField.adjoin.finrank hαint, htop, IntermediateField.finrank_top', h2]`. Establish `hdeg : (minpoly Ep a).natDegree = 2`. Establish `hdvd` using `minpoly.dvd_map_of_isScalarTower F Ep a`. Establish `hle : (minpoly Ep a).natDegree ≤ 2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Polynomial.natDegree_le_of_dvd hdvd ((minpoly.monic haF).map (algebraMap F Ep)).ne_zero` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_map, hdegF]`. Then use the resulting hypothesis. Establish `hne1 : (minpoly Ep a).natDegree ≠ 1`. Rewrite using `[Ne, minpoly.natDegree_eq_one_iff]`. Introduce and unpack `⟨y, hy⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `haEp (by rw [← hy]; exact y.2)`. Establish `hpos` using `minpoly.natDegree_pos haint`. Use linear arithmetic over natural numbers and integers. Establish `hfinrank : Module.finrank Ep (IntermediateField.adjoin Ep {a}) = 2`. Rewrite using `[IntermediateField.adjoin.finrank haint, hdeg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hEpE' : ∀ y ∈ Ep, y ∈ E'`. Introduce `y hy`. Rewrite `hy`, the goal using `[IntermediateField.mem_fixedField_iff]`. Introduce `σ hσ`. Conclude with `hy (res F σ) hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `haE' : a ∈ E'`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `σ _`. Conclude with `σ.commutes α`. Establish `hset : ∀ x : Ω, x ∈ E' ↔ x ∈ IntermediateField.adjoin Ep {a}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Set `L₁` to `(IntermediateField.adjoin Ep {a}).restrictScalars F`. Establish `hx' : x ∈ IntermediateField.fixedField L₁.fixingSubgroup`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `σ hσ`. Establish `hσEp : σ ∈ Hp`. Rewrite using `[← hfixHp, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ y (IntermediateField.algebraMap_mem (IntermediateField.adjoin Ep {a}) (⟨y, hy⟩ : Ep))`. Establish `hσa : σ a = a` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ a (IntermediateField.mem_adjoin_simple_self Ep a)`. Establish `hσE` using `hfixE σ hσa`. Establish `hmem : liftE F σ hσE ∈ H`. Rewrite using `[hH, Subgroup.mem_comap, res_liftE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hσEp`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 hx _ hmem`. Rewrite `hx'` using `[InfiniteGalois.fixedField_fixingSubgroup]`. Then use the resulting hypothesis. Introduce `hx`. Set `K' : IntermediateField Ep Ω` to `E'.toSubfield.toIntermediateField (fun y ↦ hEpE' y.1 y.2)`.
-
-Establish `hle : IntermediateField.adjoin Ep {a} ≤ K'` using `IntermediateField.adjoin_simple_le_iff.2 haE'`. Conclude with `hle hx`. Set `ι : Ep →+* E'` to `{ toFun := fun y ↦ ⟨y, hEpE' y y.2⟩, map_one' := rfl, map_mul' := fun _ _ ↦ rfl, map_zero' := rfl, map_add' := fun _ _ ↦ rfl }`. Set `_ : Algebra Ep E'` to `ι.toAlgebra`. Set `jeq : IntermediateField.adjoin Ep {a} ≃+* E'` to `{ toFun := fun y ↦ ⟨y, (hset y).2 y.2⟩, invFun := fun y ↦ ⟨y, (hset y).1 y.2⟩, left_inv := fun _ ↦ rfl, right_inv := fun _ ↦ rfl, map_mul' := fun _ _ ↦ rfl, map_add' := fun _ _ ↦ rfl }`.
-
-Establish `hq : Module.finrank Ep E' = 2`. Rewrite using `[← hfinrank]`. Conclude with `(Algebra.finrank_eq_of_equiv_equiv (RingEquiv.refl Ep) jeq (by ext; rfl)).symm`. Establish `: IsTotallyReal Ep` using `isTotallyReal_fixedField Hp hc`. Establish `: FiniteDimensional ℚ E'` using `Module.Finite.trans E E'`.
-
-Establish `: Algebra.IsIntegral ℚ E'` using `Algebra.IsIntegral.of_finite ℚ E'`. Establish `: IsTotallyComplex E'` using `isTotallyComplex_of_algebra E E'`. Establish `: Algebra.IsQuadraticExtension Ep E'` using `{ toFree := Module.Free.of_divisionRing Ep E', finrank_eq_two' := hq }`. Conclude with `IsCMField.ofCMExtension Ep E'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cm_of_descend (F : Type*) {E Ω : Type*} [Field F] [NumberField F] [Field E] [NumberField E] [Field Ω]
     [CharZero Ω] [Algebra F E] [Algebra E Ω] [Algebra F Ω] [IsScalarTower F E Ω] [IsTotallyReal F] [IsTotallyComplex E]
@@ -449,7 +443,7 @@ end CM
 section Gen
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _ => ⟨Fin.elim0, fun i => Fin.elim0 i, fun i => Fin.elim0 i⟩ | n + 1, P, h, S₀, hS₀ => by obtain ⟨f, hf, hfP⟩ := exists_injective_fin n (fun i => P i.succ) (fun i => h i.succ) S₀ hS₀ obtain ⟨a, ha, haP⟩ := h 0 (S₀ ∪ Set.range f) (hS₀.union (Set.finite_range f)) refi …`.
+A detailed English derivation is pending.
 -/
 theorem exists_injective_fin {α : Type*} : ∀ (n : ℕ) (P : Fin n → α → Prop),
     (∀ i (S : Set α), S.Finite → ∃ a ∉ S, P i a) → ∀ S₀ : Set α, S₀.Finite →
@@ -464,7 +458,7 @@ theorem exists_injective_fin {α : Type*} : ∀ (n : ℕ) (P : Fin n → α → 
     · simpa only [Fin.cons_succ] using hfP j
 
 /- English proof (translation)
-Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin ι`. Take `⟨f, hf, hP⟩` from `exists_injective_fin n (fun k => P (e.symm k)) (fun k => h _) S₀ hS₀`. Use `⟨f ∘ e, hf.comp e.injective, fun i => ?_⟩` and prove the remaining obligations. Simplify using `using hP (e i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_injective_avoid {α ι : Type*} [Finite ι] (P : ι → α → Prop)
     (h : ∀ i (S : Set α), S.Finite → ∃ a ∉ S, P i a) (S₀ : Set α) (hS₀ : S₀.Finite) :
@@ -481,9 +475,9 @@ section Sgn
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hg : g ∈ Subgroup.zpowers (IsCMField.complexConj E)`. Rewrite using `[IsCMField.zpowers_complexConj_eq_top]`. Conclude with `Subgroup.mem_top g`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hg`. Rewrite using `[← zpow_mod_orderOf, IsCMField.orderOf_complexConj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Apply the tactic sequence `rcases Int.emod_two_eq_zero_or_one k with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem aut_eq_one_or (g : E ≃ₐ[maximalRealSubfield E] E) : g = 1 ∨ g = IsCMField.complexConj E := by
   have hg : g ∈ Subgroup.zpowers (IsCMField.complexConj E) := by
@@ -494,7 +488,7 @@ theorem aut_eq_one_or (g : E ≃ₐ[maximalRealSubfield E] E) : g = 1 ∨ g = Is
   rcases Int.emod_two_eq_zero_or_one k with h | h <;> simp [h]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem complexConj_mul_self : IsCMField.complexConj E * IsCMField.complexConj E = 1 := by
   ext x; simp
@@ -510,9 +504,9 @@ def sgn : (E ≃ₐ[maximalRealSubfield E] E) →* ℂˣ where
       simp [hc, complexConj_mul_self]
 
 /- English proof (translation)
-Simplify using `only [sgn, MonoidHom.coe_mk, OneHom.coe_mk]`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `only [h, iff_false]`. Introduce `h'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Units.val h'` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem sgn_eq_one_iff (g : E ≃ₐ[maximalRealSubfield E] E) : sgn E g = 1 ↔ g = 1 := by
   classical
@@ -535,7 +529,7 @@ namespace PositivityTheory.Pf1.CLGD.K.CMDescent
 open ComplexConjugate
 
 /- English proof (translation)
-Establish `hr` using `IsTotallyReal.isReal (InfinitePlace.mk (j.comp (algebraMap F Ω)))`. Rewrite `hr` using `[InfinitePlace.isReal_mk_iff, ComplexEmbedding.isReal_iff]`. Use `RingHom.congr_fun hr x` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem real_on {F Ω : Type} [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] (j : Ω →+* ℂ)
     (x : F) : conj (j (algebraMap F Ω x)) = j (algebraMap F Ω x) := by
@@ -548,49 +542,43 @@ variable {F E Ω : Type} [Field F] [NumberField F] [IsTotallyReal F] [Field E] [
   [Algebra F E] [Algebra E Ω] [Algebra F Ω] [IsScalarTower F E Ω] [IsAlgClosure E Ω] [IsAlgClosure F Ω] [CharZero Ω]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hns`. Set `M` to `X.M`. Set `P` to `maximalRealSubfield M`. Set `c` to `IsCMField.complexConj M`. Set `cO` to `IsCMField.ringOfIntegersComplexConj M`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcc : ∀ m : M, c (c m) = m` using `IsCMField.complexConj_apply_apply M`. Establish `hcO : ∀ x : 𝓞 M, ((cO x : 𝓞 M) : M) = c x` using `IsCMField.coe_ringOfIntegersComplexConj M`. Establish `hcOO : ∀ x : 𝓞 M, cO (cO x) = x` using `fun x => RingOfIntegers.ext (by rw [hcO, hcO, hcc])`. Set `u : HeightOneSpectrum (𝓞 M)` to `{ asIdeal := w'.asIdeal.comap cO isPrime := Ideal.IsPrime.comap cO ne_bot := by`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `w'.ne_bot` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `hx' : cO x ∈ w'.asIdeal.comap cO` using `by rw [Ideal.mem_comap, hcOO]; exact hx`. Rewrite `hx'` using `[h, Ideal.mem_bot]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.mem_bot, ← hcOO x, hx', map_zero] }`. Establish `hu : u = w'`. Assume the negation of the conclusion as `hne`. Use `hns ⟨u, hne, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `show cO (algebraMap (𝓞 P) (𝓞 M) x) ∈ w'.asIdeal ↔ algebraMap (𝓞 P) (𝓞 M) x ∈ w'.asIdeal`. Rewrite using `[cO.commutes]`. Establish `hmem : ∀ x : 𝓞 M, cO x ∈ w'.asIdeal ↔ x ∈ w'.asIdeal` using `fun x => Eq.to_iff (congrArg (fun v : HeightOneSpectrum (𝓞 M) => x ∈ v.asIdeal) hu)`. Use `haveI : IsScalarTower P M Ω := inferInstance`. Use `haveI : IsAlgClosure P Ω := IsAlgClosure.ofAlgebraic P M Ω`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Normal P Ω := IsAlgClosure.normal P Ω`. Set `τ : Ω ≃ₐ[P] Ω` to `c.liftNormal Ω`. Establish `hτ : ∀ m : M, τ (algebraMap M Ω m) = algebraMap M Ω (c m)` using `fun m => AlgEquiv.liftNormal_commutes c Ω m`. Establish `hA' : IsPlaceOver (τ • A) w'`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ReciprocityTheory.Gal.smul_valuation_lt_one_iff]`. Establish `: (τ⁻¹ : Ω ≃ₐ[P] Ω) (algebraMap M Ω x) = algebraMap M Ω ((cO x : 𝓞 M) : M)`. Rewrite using `[hcO, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq, hτ, hcc]`. Rewrite using `[this, hw' (cO x), hmem]`. Take `⟨ρ, hρ⟩` from `ReciprocityTheory.Gal.exists_smul_eq_of_isPlaceOver (F := M) hw' hA'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρP : Ω ≃ₐ[P] Ω` to `ρ.restrictScalars P`. Set `σ : Ω ≃ₐ[P] Ω` to `ρP⁻¹ * τ`. Establish `hσA : σ • A = A`. Establish `h1 : ρP • A = ρ • A`. Use extensionality with `y`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression. Rewrite using `[mul_smul, ← hρ, ← h1, inv_smul_smul]`. Establish `hσM : ∀ m : M, σ (algebraMap M Ω m) = algebraMap M Ω (c m)`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ρP⁻¹ (τ (algebraMap M Ω m)) = _`. Rewrite using `[hτ, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`. Conclude with `(ρ.commutes (c m)).symm`. Establish `hPF : ∀ f : F, ∃ p : P, algebraMap F Ω f = algebraMap P Ω p`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨algebraMap E M (algebraMap F E f), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_maximalRealSubfield_iff]`. Introduce `φ`. Establish `h` using `hFE f`. Rewrite `h` using `[mem_maximalRealSubfield_iff]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h (φ.comp (algebraMap E M))`. Use `show algebraMap F Ω f = algebraMap M Ω (algebraMap E M (algebraMap F E f))`. Rewrite using `[← IsScalarTower.algebraMap_apply E M Ω, ← IsScalarTower.algebraMap_apply F E Ω]`. Set `σF : G F Ω` to `{ σ.toRingEquiv with commutes' := fun f => by`. Take `⟨p, hp⟩` from `hPF f`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show σ (algebraMap F Ω f) = algebraMap F Ω f`. Rewrite using `[hp]`. Conclude with `σ.commutes p }`. Establish `hσFD : σF ∈ Dec (F` using `F) A := by`. Establish `h1 : σF • A = σ • A`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression. Conclude with `ReciprocityTheory.Gal.mem_Dec.2 (h1.trans hσA)`. Establish `hfix : ∀ x ∈ IntermediateField.fixedField ψ.ker, σF x = x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Introduce `x hx`. Rewrite `hx` using `[IntermediateField.mem_fixedField_iff]`. Establish `hM' : ∀ ρ' : G M Ω, ρ' x = x`. Introduce `ρ'`. Establish `h1 : resG E ρ' ∈ (resG E (E'` using `M) (Ω := Ω)).range := ⟨ρ', rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hX, Subgroup.mem_comap]`. Conclude with `hx _ h1`. Take `⟨y, rfl⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := M) x).2 hM'`. Establish `hy : y ∈ P`. Rewrite using `[mem_maximalRealSubfield_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `φ`. Use `letI : Algebra M ℂ := φ.toAlgebra`. Use `haveI : Algebra.IsAlgebraic M Ω := IsAlgClosure.isAlgebraic`. Set `j : Ω →+* ℂ` to `(IsAlgClosed.lift : Ω →ₐ[M] ℂ).toRingHom`. Establish `hj : j (algebraMap M Ω y) = φ y` using `(IsAlgClosed.lift : Ω →ₐ[M] ℂ).commutes y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨c', hc'⟩` from `exists_conj (F := F) j (real_on j)`. Establish `h1 : c' ∈ ψ.ker` using `hψc c' j hc'`. Establish `h2` using `hc' (algebraMap M Ω y)`. Rewrite `h2` using `[hx c' h1, hj]`. Conclude with `h2.symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show σ (algebraMap M Ω y) = algebraMap M Ω y`. Conclude with `σ.commutes (⟨y, hy⟩ : P)`. Establish `hker : σF ∈ ψ.ker`. Establish `hcl : IsClosed (ψ.ker : Set (G F Ω))` using `Subgroup.isClosed_of_isOpen _ hψo`. Establish `hfs` using `InfiniteGalois.fixingSubgroup_fixedField (⟨ψ.ker, hcl⟩ : ClosedSubgroup (G F Ω))`.
-
-Conclude with `hfs.le ((IntermediateField.mem_fixingSubgroup_iff _ _).2 hfix)`. Establish `hE` using `hψA σF hσFD hker`. Set `σE : G E Ω` to `liftE F σF hE`. Establish `hσE : σE ∈ (resG E (E'` using `M) (Ω := Ω)).range := by`. Rewrite using `[hX, Subgroup.mem_comap, res_liftE]`.
-
-Conclude with `hker`. Take `⟨ρ', hρ'⟩` from `hσE`. Apply `IsCMField.complexConj_ne_one M` to reduce the goal to its premises. Use extensionality with `m`. Establish `h1` using `hσM m`.
-
-Establish `h2 : σ (algebraMap M Ω m) = algebraMap M Ω m`. Establish `e` using `congrArg (fun g : G E Ω => g (algebraMap M Ω m)) hρ'`. Conclude with `e.symm.trans (ρ'.commutes m)`. Rewrite using `[AlgEquiv.one_apply]`. Conclude with `(algebraMap M Ω).injective (h1.symm.trans h2)`.
+A detailed English derivation is pending.
 -/
 theorem split_of (hFE : ∀ f : F, algebraMap F E f ∈ maximalRealSubfield E)
     (ψ : G F Ω →* ℂˣ) (hψo : IsOpen (ψ.ker : Set (G F Ω)))
@@ -726,59 +714,47 @@ namespace PositivityTheory.Pf1.CLGD.K
 open ComplexConjugate CMDescent
 
 /- English proof (translation)
-Unfold `SimplePoleRescaling FieldSplit`. Introduce `hK1 E Ω _ _ _ _ _ _ A w hA N hNn hNo`. Set `F` to `maximalRealSubfield E`. Use `haveI : IsAlgClosure F Ω := IsAlgClosure.ofAlgebraic F E Ω`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hint : ∀ x : Ω, IsIntegral F x → IsIntegral E x` using `fun x hx ↦ hx.tower_top`. Take `⟨K₁, hK₁, hK₁N⟩` from `CMDescent.exists_finiteDimensional_fixingSubgroup_le N hNo`. Set `Y₀ : IntermediateField F Ω` to `K₁.restrictScalars F`. Use `haveI : IsScalarTower F E K₁ := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hK₁F : Module.Finite F K₁` using `Module.Finite.trans E K₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional F Y₀ := hK₁F`. Set `Y` to `IntermediateField.normalClosure F Y₀ Ω`. Use `haveI : FiniteDimensional F Y := normalClosure.is_finiteDimensional F Y₀ Ω`. Use `haveI : IsGalois F Y := IsGalois.normalClosure F Y₀ Ω`. Establish `hY₀Y : Y₀ ≤ Y` using `IntermediateField.le_normalClosure Y₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hYE : ∀ e : E, algebraMap E Ω e ∈ Y` using `fun e ↦ hY₀Y (K₁.algebraMap_mem e)`. Establish `hNY : ∀ σ : Ω ≃ₐ[E] Ω, CMDescent.res F σ ∈ Y.fixingSubgroup → σ ∈ N`. Introduce `σ hσ`. Use `hK₁N ((IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx ↦ ?_)` and prove the remaining obligations. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ x (hY₀Y hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ε : G F Ω →* ℂˣ` to `(sgn E).comp (AlgEquiv.restrictNormalHom E)`. Establish `hε : ∀ σ : G F Ω, ε σ = 1 ↔ ∀ e : E, σ (algebraMap E Ω e) = algebraMap E Ω e`. Introduce `σ`. Establish `key : ∀ e, algebraMap E Ω (AlgEquiv.restrictNormalHom E σ e) = σ (algebraMap E Ω e)` using `fun e => AlgEquiv.restrictNormal_commutes σ E e`. Rewrite using `[MonoidHom.comp_apply, sgn_eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h e`. Rewrite using `[← key, h, AlgEquiv.one_apply]`. Introduce `h`. Conclude with `AlgEquiv.ext fun e => (algebraMap E Ω).injective (by rw [key, h e, AlgEquiv.one_apply])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hεo : IsOpen (ε.ker : Set (G F Ω))` using `Subgroup.isOpen_mono (fun σ hσ => MonoidHom.mem_ker.2 ((hε σ).2 fun e => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ _ (hYE e))) (IntermediateField.fixingSubgroup_isOpen Y)`. Set `v : HeightOneSpectrum (𝓞 F)` to `w.under (𝓞 F)`. Establish `hAv : IsPlaceOver A v` using `fun x => hA (algebraMap (𝓞 F) (𝓞 E) x)`. Establish `hcheb : ∀ (g : Y ≃ₐ[F] Y) (S : Set (HeightOneSpectrum (𝓞 F))), S.Finite → ∃ p ∉ S, ∃ B : ValuationSubring Ω, IsPlaceOver B p ∧ ∃ σ ∈ Dec (F` using `F) B, AlgEquiv.restrictNormalHom Y σ = g := by`. Introduce `g S hS`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨p, hp, -, B, hB, -, σ, hσ, hg⟩` from `GlobalTheory.Published.chebotarevDegreeOne' F Ω Y g S hS`. Conclude with `⟨p, hp, B, hB, σ, hσ.1, hg⟩`. Take `⟨f, hfi, hf⟩` from `exists_injective_avoid (fun (g : Y ≃ₐ[F] Y) p => ∃ B : ValuationSubring Ω, IsPlaceOver B p ∧ ∃ σ ∈ Dec (F := F) B, AlgEquiv.restrictNormalHom Y σ = g) (fun g S hS => hcheb g S hS) {v} (Set.finite_singleton v)`. Use `choose B hB σg hσgD hσg using fun g => (hf g).2`. Set `S` to `Option (Y ≃ₐ[F] Y)`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Set `vS : S → HeightOneSpectrum (𝓞 F)` to `fun s => s.elim v f`. Set `AS : S → ValuationSubring Ω` to `fun s => s.elim A B`. Establish `hvS : Function.Injective vS`. Introduce and unpack `(_ | g) (_ | g') h`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `v = f g' at h`. Conclude with `((hf g').1 (Set.mem_singleton_iff.2 h.symm)).elim`. Express the relevant statement in the definitionally equal form `f g = v at h`. Conclude with `((hf g).1 (Set.mem_singleton_iff.2 h)).elim`. Express the relevant statement in the definitionally equal form `f g = f g' at h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg some (hfi h)`. Establish `hAS : ∀ s, IsPlaceOver (AS s) (vS s)`. Introduce and unpack `(_ | g)`. Conclude with `hAv`. Conclude with `hB g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `χ : ∀ s, Dec (F` to `F) (AS s) →* ℂˣ := fun s => Option.rec (motive := fun s => Dec (F := F) (AS s) →* ℂˣ) (ε.comp (Dec (F := F) A).subtype) (fun _ => 1) s`. Establish `hχ : ∀ s, IsOpen ((χ s).ker : Set (Dec (F` using `F) (AS s))) := by`. Introduce and unpack `(_ | g)`. Establish `e : (((ε.comp (Dec (F` using `F) A).subtype).ker : Subgroup (Dec (F := F) A)) : Set (Dec (F := F) A)) = Subtype.val ⁻¹' (ε.ker : Set (G F Ω)) := by`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[MonoidHom.mem_ker]`. Use `show IsOpen (((ε.comp (Dec (F := F) A).subtype).ker : Subgroup (Dec (F := F) A)) : Set (Dec (F := F) A))`. Rewrite using `[e]`. Conclude with `hεo.preimage continuous_subtype_val`. Use `show IsOpen (((1 : Dec (F := F) (B g) →* ℂˣ).ker : Subgroup _) : Set (Dec (F := F) (B g)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MonoidHom.ker_one, Subgroup.coe_top]`. Conclude with `isOpen_univ`. Take `⟨ψ, hψo, hψχ, hψR⟩` from `hK1 F Ω S vS AS hvS hAS χ hχ`. Establish `hψc : ∀ (c : G F Ω) (j : Ω →+* ℂ), (∀ x, j (c x) = conj (j x)) → ψ c = 1` using `fun c j hj => hψR _ (IsTotallyReal.isReal _) c ⟨j, hj, rfl⟩`. Establish `hψA : ∀ σ ∈ Dec (F` using `F) A, ψ σ = 1 → ∀ e : E, σ (algebraMap E Ω e) = algebraMap E Ω e := by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `σ hσ h1`. Establish `h2 : ψ σ = ε σ` using `hψχ none ⟨σ, hσ⟩`. Rewrite `h2` using `[h1]`. Conclude with `(hε σ).1 h2.symm`. Establish `hsup : ψ.ker ⊔ Y.fixingSubgroup = ⊤`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1 : ψ (σg (AlgEquiv.restrictNormalHom Y x)) = 1` using `hψχ (some (AlgEquiv.restrictNormalHom Y x)) ⟨_, hσgD _⟩`. Establish `h2 : (σg (AlgEquiv.restrictNormalHom Y x))⁻¹ * x ∈ Y.fixingSubgroup`. Rewrite using `[← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker, map_mul, map_inv, hσg, inv_mul_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Subgroup.mul_mem_sup (MonoidHom.mem_ker.2 h1) h2` as an intermediate fact. Simplify using `using this`. Establish `hsolv : Group.IsSolvable (G F Ω ⧸ ψ.ker)` using `isSolvable_of_comm fun a b => QuotientGroup.kerLift_injective ψ (by rw [map_mul, map_mul, mul_comm])`. Take `⟨hHo, -, hHsup⟩` from `descend F hint Y hYE ψ.ker hψo hsolv hsup N hNY`. Use `⟨ψ.ker.comap (CMDescent.res F), ⟨inferInstance, hHo, ?_, ?_⟩, hHsup, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `φ : G E Ω →* ℂˣ` to `ψ.comp (CMDescent.res F)`. Establish `hφ : ∀ x, x ∈ ψ.ker.comap (CMDescent.res F) ↔ φ x = 1` using `fun x => by`. Simplify using `[φ, MonoidHom.mem_ker]`. Establish `hfinq : Finite (G E Ω ⧸ φ.ker)`. Rewrite using `[← MonoidHom.comap_ker]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subgroup.quotient_finite_of_isOpen _ hHo`. Use `haveI : Finite φ.range := Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange φ).toEquiv`. Use `haveI : IsCyclic φ.range := isCyclic_subgroup_units φ.range`. Take `⟨⟨z, g, rfl⟩, hgen⟩` from `IsCyclic.exists_generator (α := φ.range)`. Use `⟨g, eq_top_iff.2 fun x _ => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 (hgen ⟨φ x, x, rfl⟩)`. Establish `hk' : φ g ^ k = φ x` using `by simpa using congrArg Subtype.val hk`. Establish `hmem : x * (g ^ k)⁻¹ ∈ ψ.ker.comap (CMDescent.res F)`. Rewrite using `[hφ, map_mul, map_inv, map_zpow, hk', mul_inv_cancel]`. Use `Subgroup.mul_mem_sup hmem (Subgroup.zpow_mem_zpowers g k)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `L hL`. Set `Hp : Subgroup (G F Ω)` to `ψ.ker ⊔ L.fixingSubgroup.map (CMDescent.res F)`. Establish `hHp : Hp.comap (CMDescent.res F) = L.fixingSubgroup`. Apply `le_antisymm` to reduce the goal to its premises.
-
-Introduce `x hx`. Rewrite `hx` using `[Subgroup.mem_comap]`. Take `⟨k, hk, m, hm, hkm⟩` from `Subgroup.mem_sup_of_normal_left.1 hx`. Take `⟨l, hl, rfl⟩` from `Subgroup.mem_map.1 hm`. Establish `h1 : x * l⁻¹ ∈ ψ.ker.comap (CMDescent.res F)`.
-
-Rewrite using `[Subgroup.mem_comap, map_mul, map_inv, ← hkm, mul_inv_cancel_right]`. Conclude with `hk`. Use `L.fixingSubgroup.mul_mem (hL h1) hl` as an intermediate fact. Simplify using `using this`. Introduce `x hx`.
-
-Conclude with `Subgroup.mem_comap.2 (Subgroup.mem_sup_right (Subgroup.mem_map_of_mem _ hx))`. Establish `hsupp : Hp ⊔ Y.fixingSubgroup = ⊤`. Rewrite using `[eq_top_iff, ← hsup]`. Conclude with `sup_le_sup_right le_sup_left _`. Establish `hcm` using `(cm_of_descend F Hp (Subgroup.isOpen_mono le_sup_left hψo) (fun c j hj => Subgroup.mem_sup_left (MonoidHom.mem_ker.2 (hψc c j hj))) Y hYE hsupp).2`.
-
-Rewrite `hcm` using `[hHp, InfiniteGalois.fixedField_fixingSubgroup]`. Conclude with `hcm`. Introduce `σ hσ`. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_ker]`. Establish `h1 : CMDescent.res F σ ∈ Dec (F` using `F) A := res_mem_decompositionSubgroup F hσ`.
-
-Establish `h2 : ψ (CMDescent.res F σ) = ε (CMDescent.res F σ)` using `hψχ none ⟨CMDescent.res F σ, h1⟩`. Rewrite using `[h2, hε]`. Introduce `e`. Conclude with `σ.commutes e`. Introduce `X hX w' hw'`.
-
-Conclude with `split_of (F := F) (fun f => f.2) ψ hψo hψc A hψA X hX w' hw'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cm_descent_avoiding_field : SimplePoleRescaling := by
   unfold SimplePoleRescaling FieldSplit

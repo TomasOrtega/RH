@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
 def Ef (u v : Fin r → E) : ℚ := Algebra.trace ℚ E (X.ξ0 * herm X.Gm u v)
 
 /- English proof (translation)
-The claim follows from `X.ξ0_im`.
+A detailed English derivation is pending.
 -/
 theorem flagDomainConj_hostXi_eq_neg : cc X.ξ0 = -X.ξ0 := X.ξ0_im
 

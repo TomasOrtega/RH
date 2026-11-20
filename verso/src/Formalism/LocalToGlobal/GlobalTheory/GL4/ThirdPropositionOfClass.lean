@@ -11,7 +11,7 @@ namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.HN Formalism.MainNotions.flipTwoThree Formalism.L2.DIV Formalism.L2.GlobalTheoryTheory.HLatOps
 
 /- English proof (translation)
-The claim follows from `translate_span_eq D.what₂.LL D.what₂.Tau (D.R.N 0) ((D.fm u).lam 0)`.
+A detailed English derivation is pending.
 -/
 theorem hTV0 (D : D7) (u : D.what₂.Word) : TSpan D.what₂.LL ((D.fm u).lam 0) = VV D.what₂.LL ((D.fm u).lam 0) :=
   translate_span_eq D.what₂.LL D.what₂.Tau (D.R.N 0) ((D.fm u).lam 0)
@@ -29,9 +29,9 @@ def prjC (c : (D.mem u).C.cls 0) : ((D.fm u).lat 0).V →ₗ[D.what₂.LL] ((D.f
 
 open Classical in
 /- English proof (translation)
-Establish `hE : ∀ (y : ((D.fm u).lat 0).V) (c'' : (D.mem u).C.cls 0), CV.co y c'' = ((coE CV (hTV0 D u) y c'' : VV D.what₂.LL ((D.fm u).lam 0)) : _)` using `fun _ _ => rfl`. Establish `hP : coE CV (hTV0 D u) (prjC CV c x) = Pi.single c (coE CV (hTV0 D u) x c)`. Simplify using `[prjC]`. Rewrite using `[hE, hP, hE x c]`. Distinguish the cases in `h : c' = c`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem co_prjC (c c' : (D.mem u).C.cls 0) (x : ((D.fm u).lat 0).V) :
     CV.co (prjC CV c x) c' = if c' = c then CV.co x c else 0 := by
@@ -46,7 +46,7 @@ theorem co_prjC (c c' : (D.mem u).C.cls 0) (x : ((D.fm u).lat 0).V) :
   · simp [h]
 
 /- English proof (translation)
-Simplify using `[prjC]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coE_prjC_self (c : (D.mem u).C.cls 0) (x : ((D.fm u).lat 0).V) :
     coE CV (hTV0 D u) (prjC CV c x) c = coE CV (hTV0 D u) x c := by
@@ -54,7 +54,7 @@ private theorem coE_prjC_self (c : (D.mem u).C.cls 0) (x : ((D.fm u).lat 0).V) :
   simp [prjC]
 
 /- English proof (translation)
-Simplify using `[prjC, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coE_prjC_of_ne_eq_zero (c c' : (D.mem u).C.cls 0) (x : ((D.fm u).lat 0).V) (h : c' ≠ c) :
     coE CV (hTV0 D u) (prjC CV c x) c' = 0 := by
@@ -62,9 +62,9 @@ private theorem coE_prjC_of_ne_eq_zero (c c' : (D.mem u).C.cls 0) (x : ((D.fm u)
   simp [prjC, h]
 
 /- English proof (translation)
-Apply `(coE CV (hTV0 D u)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `c'`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_eq_single c']`. Conclude with `coE_prjC_self CV c' x`. Introduce `b _ hb`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `coE_prjC_of_ne_eq_zero CV b c' x (Ne.symm hb)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem prjC_sum (x : ((D.fm u).lat 0).V) : ∑ c, prjC CV c x = x := by
   apply (coE CV (hTV0 D u)).injective
@@ -80,13 +80,11 @@ def NC (c : (D.mem u).C.cls 0) : Submodule (𝓞 D.what₂.LL) ((D.fm u).lat 0).
   ((D.fm u).lat 0).L.map ((prjC CV c).restrictScalars (𝓞 D.what₂.LL))
 
 /- English proof (translation)
-Use `Formalism.L2.Ker.mem_of_forall_locP _ fun Q => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩ : ∃ w, D.plEq w = Q` from `⟨D.plEq.symm Q, D.plEq.apply_symm_apply Q⟩`. Rewrite using `[mem_localization_iff_localizationAtPlace]`. Establish `hγ : ∀ c τ, ∃ γ, LocBasis D w (CV.Q c τ) (CV.eQ c τ) γ` using `fun c τ => exists_locBasis w (CV.Q c τ) (CV.Q_good c τ) (CV.eQ c τ)`. Use `choose γ hγ using hγ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxw : x ∈ locW D.what₂.places w ((D.fm u).lat 0).L` using `Submodule.subset_span hx`. Rewrite `hxw` using `[CV.fin w γ hγ]`. Rewrite using `[CV.fin w γ hγ]`. Introduce `c'`. Rewrite using `[co_prjC]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hxw c'`. Establish `e : actAll ((D.fm u).lam 0) (fun τ => (γ c' τ)⁻¹) (0 : MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) D.what₂.LL) = 0`. Simplify using `[actAll]`.
-
-Rewrite using `[e]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prjC_mem (c : (D.mem u).C.cls 0) {x : ((D.fm u).lat 0).V} (hx : x ∈ ((D.fm u).lat 0).L) :
     prjC CV c x ∈ ((D.fm u).lat 0).L := by
@@ -110,9 +108,9 @@ theorem prjC_mem (c : (D.mem u).C.cls 0) {x : ((D.fm u).lat 0).V} (hx : x ∈ ((
     exact zero_mem _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun c => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `prjC_mem CV c hx`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← prjC_sum CV x]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.mem_iSup_of_mem c ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem iSup_NC : (⨆ c, NC CV c) = ((D.fm u).lat 0).L := by
   apply le_antisymm
@@ -124,16 +122,16 @@ theorem iSup_NC : (⨆ c, NC CV c) = ((D.fm u).lat 0).L := by
     exact Submodule.sum_mem _ fun c _ => Submodule.mem_iSup_of_mem c ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Simplify using `[tcAt, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tcAt_eq_zero {v : InfinitePlace D.what₂.LL} {c : (D.mem u).C.cls 0} {x : ((D.fm u).lat 0).V} (h : CV.co x c = 0) :
     tcAt CV v c x = 0 := by
   simp [tcAt, h]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, -, rfl⟩ _ ⟨y, -, rfl⟩ v`. Simplify using `only [LinearMap.restrictScalars_apply]`. Rewrite using `[majorant_lattice_eq_sum CV]`. Use `Finset.sum_eq_zero fun c'' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : c'' = c`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Establish `: tcAt CV v c'' (prjC CV c' y) = 0` using `tcAt_eq_zero CV (by rw [co_prjC, if_neg hcc])`. Rewrite using `[this, nfAll_zero_left]`. Establish `: tcAt CV v c'' (prjC CV c x) = 0` using `tcAt_eq_zero CV (by rw [co_prjC, if_neg h])`. Rewrite using `[this, nfAll_zero_right]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem NC_orth (c c' : (D.mem u).C.cls 0) (hcc : c ≠ c') :
     ∀ x ∈ NC CV c, ∀ y ∈ NC CV c', ∀ v, majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x y = 0 := by
@@ -149,9 +147,9 @@ theorem NC_orth (c c' : (D.mem u).C.cls 0) (hcc : c ≠ c') :
     rw [this, nfAll_zero_right]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, -, rfl⟩ _ ⟨y, -, rfl⟩ hxy`. Establish `h` using `hψ hxy`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, LinearMap.coe_proj, Function.eval] at h ⊢`. Apply `(coE CV (hTV0 D u)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `c'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Conclude with `h`. Rewrite using `[coE_prjC_of_ne_eq_zero CV c c' x hc, coE_prjC_of_ne_eq_zero CV c c' y hc]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injOn_NC (c : (D.mem u).C.cls 0) {W : Type} [AddCommGroup W] [Module D.what₂.LL W]
     (ψ : VV D.what₂.LL ((D.fm u).lam 0) →ₗ[D.what₂.LL] W) (hψ : Function.Injective ψ) :
@@ -181,7 +179,7 @@ section Rank
 variable {D : D7} {u : D.what₂.Word} (CV : ColVal D u)
 
 /- English proof (translation)
-Take `⟨Z, -, hne, -, -⟩` from `standard_basis_z D.what₂.Tau (D.R.N 0) ((D.fm u).lam 0)`. Use `Z.fin` as an intermediate fact. Conclude with `⟨Module.Finite.of_basis (Z.basis D.what₂.LL), by rw [Module.finrank_eq_card_basis (Z.basis D.what₂.LL)]; exact Fintype.card_pos⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem vv_finite_pos (D : D7) (u : D.what₂.Word) :
     Module.Finite D.what₂.LL (VV D.what₂.LL ((D.fm u).lam 0)) ∧ 0 < finrank D.what₂.LL (VV D.what₂.LL ((D.fm u).lam 0)) := by
@@ -190,9 +188,9 @@ theorem vv_finite_pos (D : D7) (u : D.what₂.Word) :
   exact ⟨Module.Finite.of_basis (Z.basis D.what₂.LL), by rw [Module.finrank_eq_card_basis (Z.basis D.what₂.LL)]; exact Fintype.card_pos⟩
 
 /- English proof (translation)
-Establish `hsurj : LinearMap.range (LinearMap.proj c ∘ₗ (coE CV (hTV0 D u) : ((D.fm u).lat 0).V →ₗ[D.what₂.LL] ((D.mem u).C.cls 0 → VV D.what₂.LL ((D.fm u).lam 0)))) = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce `z`. Use `⟨(coE CV (hTV0 D u)).symm (Pi.single c z), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Unfold `prjC`. Rewrite using `[← LinearMap.comp_assoc, LinearMap.range_comp_of_range_eq_top _ hsurj]`. Apply `LinearMap.finrank_range_of_inj` to reduce the goal to its premises. Rewrite using `[LinearMap.coe_comp]`. Conclude with `(coE CV (hTV0 D u)).symm.injective.comp (by simpa using Pi.single_injective c)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_prjC (c : (D.mem u).C.cls 0) :
     finrank D.what₂.LL (LinearMap.range (prjC CV c)) = finrank D.what₂.LL (VV D.what₂.LL ((D.fm u).lam 0)) := by
@@ -210,7 +208,7 @@ theorem range_prjC (c : (D.mem u).C.cls 0) :
   exact (coE CV (hTV0 D u)).symm.injective.comp (by simpa using Pi.single_injective c)
 
 /- English proof (translation)
-Unfold `Formalism.HN.rkK NC`. Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, ((D.fm u).lat_good 0).2.2, Submodule.map_top]`. Conclude with `range_prjC CV c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_NC (c : (D.mem u).C.cls 0) : rkK (NC CV c) = finrank D.what₂.LL (VV D.what₂.LL ((D.fm u).lam 0)) := by
   unfold Formalism.HN.rkK NC
@@ -218,7 +216,7 @@ theorem rk_NC (c : (D.mem u).C.cls 0) : rkK (NC CV c) = finrank D.what₂.LL (VV
   exact range_prjC CV c
 
 /- English proof (translation)
-Take `⟨hfin, -⟩` from `vv_finite_pos D u`. Unfold `Formalism.HN.rkK`. Rewrite using `[((D.fm u).lat_good 0).2.2, finrank_top, LinearEquiv.finrank_eq (coE CV (hTV0 D u)), Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_lattice_level_zero (CV : ColVal D u) : rkK ((D.fm u).lat 0).L =
     Fintype.card ((D.mem u).C.cls 0) * finrank D.what₂.LL (VV D.what₂.LL ((D.fm u).lam 0)) := by
@@ -228,9 +226,9 @@ theorem rank_lattice_level_zero (CV : ColVal D u) : rkK ((D.fm u).lat 0).L =
     Finset.sum_const, Finset.card_univ, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `rk_NC CV c`. Rewrite `h1` using `[h0]`. Establish `h2 : Formalism.HN.rkK (⊥ : Submodule (𝓞 D.what₂.LL) ((D.fm u).lat 0).V) = 0`. Unfold `Formalism.HN.rkK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Submodule.bot_coe, Submodule.span_zero_singleton, finrank_bot]`. Use `(vv_finite_pos D u).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem NC_ne_bot (c : (D.mem u).C.cls 0) : NC CV c ≠ ⊥ := by
   intro h0
@@ -243,7 +241,7 @@ theorem NC_ne_bot (c : (D.mem u).C.cls 0) : NC CV c ≠ ⊥ := by
   omega
 
 /- English proof (translation)
-Establish `: Nonempty ((D.mem u).C.cls 0)` using `CV.ne`. Establish `key` using `Formalism.L2.Col.hlat_orth_sum (A := (D.fm u).lat 0) (NC CV) ((D.fm u).lat_good 0).1 (fun c => ((D.fm u).lat_good 0).2.1.map _) (NC_ne_bot CV) (NC_orth CV) (finrank D.what₂.LL (VV D.what₂.LL ((D.fm u).lam 0))) (vv_finite_pos D u).2 (rk_NC CV) (by rw [iSup_NC CV]; exact rank_latti …`. Take `⟨c, hc⟩` from `key.2`. Rewrite `hc` using `[iSup_NC CV]`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem muMax_le_class : ∃ c, ((D.fm u).lat 0).muMax ≤ (withL ((D.fm u).lat 0) (NC CV c)).muMax := by
   classical
@@ -267,7 +265,7 @@ def SlopeMaxClass (D : D7) : Prop :=
         Real.log (cNu ((D.fm u).lam 0 τ).natW) - (lamCol D u τ (D.R.k - 1) : ℝ) * Real.log (Tu D u))
 
 /- English proof (translation)
-Introduce `u CV hs`. Take `⟨c, hc⟩` from `muMax_le_class CV`. Conclude with `hc.trans (h u CV c (hs c))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem slopeMaxGiven_of_class (D : D7) (h : SlopeMaxClass D) : SlopeMaxGiven D := by
   intro u CV hs
@@ -275,19 +273,19 @@ theorem slopeMaxGiven_of_class (D : D7) (h : SlopeMaxClass D) : SlopeMaxGiven D 
   exact hc.trans (h u CV c (hs c))
 
 /- English proof (translation)
-The claim follows from `family_third_bound_of_max_slope Fm ⟨0, fun x _ _ i => slopeMaxGiven_of_class _ (h _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem third_proposition_of_class (h : ∀ D, SlopeMaxClass D) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : ConclusionF6 Fm :=
   family_third_bound_of_max_slope Fm ⟨0, fun x _ _ i => slopeMaxGiven_of_class _ (h _)⟩
 
 /- English proof (translation)
-Introduce `_ Fm _ _ _` and use `third_proposition_of_class h Fm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Link6F_of_class (h : ∀ D, SlopeMaxClass D) : Link6F :=
   fun _ Fm _ _ _ => third_proposition_of_class h Fm
 
 /- English proof (translation)
-The claim follows from `packet_of_third_proposition (Link6F_of_class h)`.
+A detailed English derivation is pending.
 -/
 theorem packet_of_slope_max_class (h : ∀ D, SlopeMaxClass D) : KudlaFamilyOfMinkowskiTransference :=
   packet_of_third_proposition (Link6F_of_class h)

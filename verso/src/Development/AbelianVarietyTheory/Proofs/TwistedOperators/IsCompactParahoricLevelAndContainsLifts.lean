@@ -13,19 +13,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ParahoricCompact
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) _`. Take `⟨-, C0, hC0, hC0m⟩` from `GlobalTheory.Mass.intTens_open_compact F E`. Set `s` to `GlobalTheory.Mass.swapTens F E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)`. Set `b : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)` to `(β : Matrix (Fin n) (Fin n) _).map s.symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)` to `((β⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _).map s.symm`. Set `f : Fin n → Fin n → (Fin n → Fin n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E` to `fun i j a => ∑ l, (∑ k, b i k * a k l) * c l j`. Establish `hf : ∀ i j, Continuous (f i j)` using `fun i j => continuous_finsetSum _ fun l _ => (continuous_finsetSum _ fun k _ => continuous_const.mul ((continuous_apply l).comp (continuous_apply k))).mul continuous_const`. Establish `hS : IsCompact (Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin n => C0)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hC0`. Use `⟨⋃ i, ⋃ j, f i j '' Set.univ.pi (fun _ : Fin n => Set.univ.pi fun _ : Fin n => C0), isCompact_iUnion fun i => isCompact_iUnion fun j => hS.image (hf i j), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx i j`. Take `⟨y, hy⟩` from `hx`. Use `Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨j, ⟨fun k l => s.symm ((y : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) k l), ?_, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `k _ l _`. Apply `hC0m` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(s : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E →+* E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) (s.symm _) ∈ Formalism.L2.Herm.intAf F E`. Rewrite using `[RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]`. Conclude with `((y : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) k l).2`. Establish `hx' : (x : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)) i j = s.symm (((Formalism.UG.bc (s : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E →+* E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolum …`. Rewrite using `[Formalism.UG.P.bc_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hy' : Formalism.UG.bc (s : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E →+* E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) x = β * Formalism.L2.DIV.intGL F E n y * β⁻¹`. Rewrite using `[← hy]`. Both sides reduce to the same expression. Rewrite using `[hx', hy', Units.val_mul, Units.val_mul, Matrix.mul_apply, map_sum]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Matrix.mul_apply, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Formalism.L2.DIV.intGL, Formalism.UG.P.bc_coe]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_compact_entries {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)) :
@@ -81,9 +79,9 @@ theorem exists_compact_entries {F E : Type} [Field F] [NumberField F] [Field E] 
 variable {D : D7}
 
 /- English proof (translation)
-Use `haveI := (GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V).1`. Apply `Subgroup.isOpen_of_mem_nhds _ (g := 1)` to reduce the goal to its premises. Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ V β (L.Pg ∪ L.Q)] with κ hκ`. Take `⟨hU, hS, hR⟩` from `hκ`. Use `show finE V κ ∈ lev D.sp.cm V.gram β L`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `Formalism.L2.DIV.Kg_le_lev (T := L.Pg ∪ L.Q) Finset.subset_union_left Finset.subset_union_right ?_` and prove the remaining obligations. Simplify using `only [Formalism.L2.DIV.Kg, Subgroup.mem_inf, Subgroup.mem_iInf]`. Conclude with `⟨⟨hU, hS⟩, fun PP hPP => Formalism.L2.DIV.mem_princAt.2 ⟨hS, hR PP hPP⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_comap_lev (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     IsOpen (((lev D.sp.cm V.gram β L).comap (finE V) : Subgroup (GA D V)) : Set (GA D V)) := by
@@ -98,17 +96,15 @@ theorem isOpen_comap_lev (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Lev
   exact ⟨⟨hU, hS⟩, fun PP hPP => Formalism.L2.DIV.mem_princAt.2 ⟨hS, hR PP hPP⟩⟩
 
 /- English proof (translation)
-Take `⟨C1, hC1, hC1m⟩` from `exists_compact_entries (F := D.host.F) (E := D.host.E) β`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨K, hK, hKm⟩` from `GlobalTheory.StabCompact.exists_compact_adele D θ hθ 1 C1 hC1`. Use `haveI : T2Space (InfiniteAdeleRing D.host.F) := inferInstanceAs (T2Space ((v : InfinitePlace D.host.F) → v.Completion))`. Use `haveI : T2Space (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := inferInstanceAs (T2Space (RestrictedProduct (fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F) => v.adicCompletion D.host.F) (fun v => (v.adicCompletionIntegers D.host.F : Set (v.adicCompletion D.host.F))) Filter.co …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : T2Space (AF D.host.F) := inferInstanceAs (T2Space (InfiniteAdeleRing D.host.F × FiniteAdeleRing (𝓞 D.host.F) D.host.F))`. Take `⟨K', hK', hK'm⟩` from `GlobalTheory.StabCompact.exists_compact_of_entries (AF D.host.F) D.sp.cm.sig V.gram (GlobalTheory.StabCompact.det_gram_ne_zero V) K hK`. Use `⟨K', hK', fun k hk hst => hK'm k fun i j => hKm _ ?_ ?_⟩` and prove the remaining obligations. Establish `hsw : (GlobalTheory.Mass.swapTens D.host.F D.host.E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) : _ →+* _) = swapAE D` using `RingHom.ext fun _ => rfl`. Establish `hst' : Formalism.UG.bc (GlobalTheory.Mass.swapTens D.host.F D.host.E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) : _ →+* _) (finHom V k) ∈ St β`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hsw]`. Conclude with `hst`. Establish `h` using `hC1m (finHom V k) hst' i j`. Rewrite `h` using `[finHom, MonoidHom.comp_apply, Formalism.UG.P.bc_coe]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `ρ`. Establish `h1 : infHom V k = 1` using `hk`. Establish `h2 : infPart D ((HA.mat (AF D.host.F) D.sp.cm.sig V.gram k : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E)) i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E)) i j`. Establish `h3` using `congrArg (fun g : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => (g : Matrix (Fin V.rank) (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E)) i j) h1`. Simplify using `only [infHom, MonoidHom.comp_apply, Formalism.UG.P.bc_coe, Units.val_one] at h3`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h3`. Rewrite using `[h2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one, norm_one, le_refl]`.
-
-Simplify using `only [Matrix.one_apply_ne hij, map_zero, norm_zero, zero_le_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) :
     ∃ C : Set (GA D V), IsCompact C ∧ ∀ k : GA D V, k ∈ GfC V → finE V k ∈ St β → k ∈ C := by
@@ -153,9 +149,9 @@ theorem exists_compact (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) :
     · simp only [Matrix.one_apply_ne hij, map_zero, norm_zero, zero_le_one]
 
 /- English proof (translation)
-Use `haveI := (GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V).1`. Take `⟨C, hC, hCm⟩` from `exists_compact V β`. Use `hC.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Rewrite using `[levG, levA, Subgroup.coe_inf]`. Conclude with `(GlobalTheory.Ker.CongTop.isClosed_GfC V).inter (Subgroup.isClosed_of_isOpen _ (isOpen_comap_lev V β L))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k hk`. Rewrite `hk` using `[SetLike.mem_coe, levG, levA, Subgroup.mem_inf]`. Conclude with `hCm k hk.1 (Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hk.2))`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_levG (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     IsCompact ((levG V β L : Subgroup (GA D V)) : Set (GA D V)) := by
@@ -170,9 +166,9 @@ theorem isCompact_levG (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDa
     exact hCm k hk.1 (Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hk.2))
 
 /- English proof (translation)
-Introduce `D V β L`. Use `⟨isCompact_levG V β (flagL L), fun g0 κ hκ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, -⟩` from `hκ`. Rewrite using `[levG, levA, Subgroup.mem_inf]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show finE V κ ∈ lev D.sp.cm V.gram β (flagL L)`. Rewrite using `[Formalism.L2.DIV.mem_lev]`. Conclude with `⟨h2, Subgroup.mem_top _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_flag_and_lift : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank), IsCompact ((levG V β (flagL L) : Subgroup (GA D V)) : Set (GA D V)) ∧ ∀ g0 κ, IsLevelLift V β L g0 κ → κ ∈ levG V β (flagL L) := by
   intro D V β L

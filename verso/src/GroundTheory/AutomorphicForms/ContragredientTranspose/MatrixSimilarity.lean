@@ -13,18 +13,18 @@ variable {F : Type*} [Field F]
 def monicAssoc (q : F[X]) : F[X] := q * C q.leadingCoeff⁻¹
 
 /- English proof (translation)
-The claim follows from `monic_mul_leadingCoeff_inv hq`.
+A detailed English derivation is pending.
 -/
 theorem monicAssoc_monic {q : F[X]} (hq : q ≠ 0) : (monicAssoc q).Monic :=
   monic_mul_leadingCoeff_inv hq
 
 /- English proof (translation)
-The claim follows from `Dvd.intro _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem dvd_monicAssoc (q : F[X]) : q ∣ monicAssoc q := Dvd.intro _ rfl
 
 /- English proof (translation)
-Distinguish the cases in `hq : q = 0`. Simplify using `[hq, monicAssoc]`. Use `⟨C q.leadingCoeff, ?_⟩` and prove the remaining obligations. Rewrite using `[monicAssoc, mul_assoc, ← C_mul, inv_mul_cancel₀ (leadingCoeff_ne_zero.2 hq), C_1, mul_one]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem monicAssoc_dvd (q : F[X]) : monicAssoc q ∣ q := by
   by_cases hq : q = 0
@@ -33,13 +33,13 @@ theorem monicAssoc_dvd (q : F[X]) : monicAssoc q ∣ q := by
     rw [monicAssoc, mul_assoc, ← C_mul, inv_mul_cancel₀ (leadingCoeff_ne_zero.2 hq), C_1, mul_one]
 
 /- English proof (translation)
-The claim follows from `associated_mul_unit_right _ _ (isUnit_C.2 (inv_ne_zero (leadingCoeff_ne_zero.2 hq)).isUnit)`.
+A detailed English derivation is pending.
 -/
 theorem associated_monicAssoc {q : F[X]} (hq : q ≠ 0) : Associated q (monicAssoc q) :=
   associated_mul_unit_right _ _ (isUnit_C.2 (inv_ne_zero (leadingCoeff_ne_zero.2 hq)).isUnit)
 
 /- English proof (translation)
-The claim follows from `natDegree_mul_C (inv_ne_zero (leadingCoeff_ne_zero.2 hq))`.
+A detailed English derivation is pending.
 -/
 theorem natDegree_monicAssoc {q : F[X]} (hq : q ≠ 0) : (monicAssoc q).natDegree = q.natDegree :=
   natDegree_mul_C (inv_ne_zero (leadingCoeff_ne_zero.2 hq))
@@ -47,20 +47,20 @@ theorem natDegree_monicAssoc {q : F[X]} (hq : q ≠ 0) : (monicAssoc q).natDegre
 def lcoeffMod (q f : F[X]) : F := (f %ₘ monicAssoc q).coeff (q.natDegree - 1)
 
 /- English proof (translation)
-Simplify using `[lcoeffMod, add_modByMonic]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lcoeffMod_add (q f g : F[X]) : lcoeffMod q (f + g) = lcoeffMod q f + lcoeffMod q g := by
   simp [lcoeffMod, add_modByMonic]
 
 /- English proof (translation)
-Simplify using `[lcoeffMod, ← smul_eq_C_mul, smul_modByMonic]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lcoeffMod_C_mul (q : F[X]) (c : F) (f : F[X]) :
     lcoeffMod q (C c * f) = c * lcoeffMod q f := by
   simp [lcoeffMod, ← smul_eq_C_mul, smul_modByMonic]
 
 /- English proof (translation)
-Establish `: f %ₘ monicAssoc q = 0` using `(modByMonic_eq_zero_iff_dvd (monicAssoc_monic hq)).2 ((monicAssoc_dvd q).trans h)`. Simplify using `[lcoeffMod, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lcoeffMod_of_dvd {q f : F[X]} (hq : q ≠ 0) (h : q ∣ f) : lcoeffMod q f = 0 := by
   have : f %ₘ monicAssoc q = 0 :=
@@ -68,7 +68,7 @@ theorem lcoeffMod_of_dvd {q f : F[X]} (hq : q ≠ 0) (h : q ∣ f) : lcoeffMod q
   simp [lcoeffMod, this]
 
 /- English proof (translation)
-Establish `e : f = (f - g) + g` using `by ring`. Rewrite using `[e, lcoeffMod_add, lcoeffMod_of_dvd hq h, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lcoeffMod_eq_of_dvd_sub {q f g : F[X]} (hq : q ≠ 0) (h : q ∣ f - g) :
     lcoeffMod q f = lcoeffMod q g := by
@@ -76,15 +76,15 @@ theorem lcoeffMod_eq_of_dvd_sub {q f g : F[X]} (hq : q ≠ 0) (h : q ∣ f - g) 
   rw [e, lcoeffMod_add, lcoeffMod_of_dvd hq h, zero_add]
 
 /- English proof (translation)
-Use `set q' := monicAssoc q with hq'`. Establish `hm : q'.Monic` using `monicAssoc_monic hq`. Use `set r := f %ₘ q' with hr`. Establish `hr0 : r ≠ 0` using `fun h => hf ((dvd_monicAssoc q).trans ((modByMonic_eq_zero_iff_dvd hm).1 h))`. Establish `hdeg : r.natDegree < q.natDegree`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← natDegree_monicAssoc hq]`. Conclude with `natDegree_lt_natDegree hr0 (degree_modByMonic_lt f hm)`. Use `set j := q.natDegree - 1 - r.natDegree`. Use `⟨X ^ j, ?_⟩` and prove the remaining obligations. Establish `e1 : (f * X ^ j) %ₘ q' = (r * X ^ j) %ₘ q'`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: f * X ^ j = r * X ^ j + q' * ((f /ₘ q') * X ^ j)` using `by conv_lhs => rw [← modByMonic_add_div f q']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, add_modByMonic, ((modByMonic_eq_zero_iff_dvd hm).2 (dvd_mul_right _ _)), add_zero]`. Establish `hdeg2 : (r * X ^ j).natDegree = q.natDegree - 1`. Rewrite using `[natDegree_mul_X_pow _ hr0]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use linear arithmetic over natural numbers and integers. Establish `e2 : (r * X ^ j) %ₘ q' = r * X ^ j`. Rewrite using `[modByMonic_eq_self_iff hm]`. Apply `degree_lt_degree` to reduce the goal to its premises. Rewrite using `[hdeg2, natDegree_monicAssoc hq]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[lcoeffMod, e1, e2]`. Establish `e3 : q.natDegree - 1 = r.natDegree + j` using `by omega`. Rewrite using `[e3, coeff_mul_X_pow]`. Conclude with `leadingCoeff_ne_zero.2 hr0`.
+A detailed English derivation is pending.
 -/
 theorem exists_lcoeffMod_mul_ne_zero {q f : F[X]} (hq : q ≠ 0) (hf : ¬ q ∣ f) :
     ∃ g, lcoeffMod q (f * g) ≠ 0 := by
@@ -139,7 +139,7 @@ theorem mk_mul_mk (f g : F[X]) :
 
 omit hq in
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Rewrite using `[← Submodule.Quotient.mk_smul, smul_eq_mul, mk_mul_mk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_eq_mk_mul (r : F[X]) (a : F[X] ⧸ F[X] ∙ q) :
     r • a = Submodule.Quotient.mk r * a := by
@@ -147,7 +147,7 @@ theorem smul_eq_mk_mul (r : F[X]) (a : F[X] ⧸ F[X] ∙ q) :
   rw [← Submodule.Quotient.mk_smul, smul_eq_mul, mk_mul_mk]
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨g, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Rewrite using `[← Submodule.Quotient.mk_add, ellQ_mk, ellQ_mk, ellQ_mk, lcoeffMod_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ellQ_add (a b : F[X] ⧸ F[X] ∙ q) : ellQ q hq (a + b) = ellQ q hq a + ellQ q hq b := by
   obtain ⟨f, rfl⟩ := Submodule.Quotient.mk_surjective _ a
@@ -155,7 +155,7 @@ theorem ellQ_add (a b : F[X] ⧸ F[X] ∙ q) : ellQ q hq (a + b) = ellQ q hq a +
   rw [← Submodule.Quotient.mk_add, ellQ_mk, ellQ_mk, ellQ_mk, lcoeffMod_add]
 
 /- English proof (translation)
-Use `ellQ_add hq 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ellQ_zero : ellQ q hq 0 = 0 := by
   have := ellQ_add hq 0 0
@@ -163,16 +163,16 @@ theorem ellQ_zero : ellQ q hq 0 = 0 := by
   simpa using this
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Rewrite using `[← Submodule.Quotient.mk_smul, smul_eq_mul, ellQ_mk, ellQ_mk, lcoeffMod_C_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ellQ_C_smul (c : F) (a : F[X] ⧸ F[X] ∙ q) : ellQ q hq (C c • a) = c * ellQ q hq a := by
   obtain ⟨f, rfl⟩ := Submodule.Quotient.mk_surjective _ a
   rw [← Submodule.Quotient.mk_smul, smul_eq_mul, ellQ_mk, ellQ_mk, lcoeffMod_C_mul]
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Establish `hf : ¬ q ∣ f`. Introduce and unpack `⟨c, rfl⟩`. Apply `ha` to reduce the goal to its premises. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨c, by rw [smul_eq_mul, mul_comm]⟩`. Take `⟨g, hg⟩` from `exists_lcoeffMod_mul_ne_zero hq hf`. Conclude with `⟨Submodule.Quotient.mk g, by rwa [mk_mul_mk, ellQ_mk, mul_comm]⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ellQ_mul_ne_zero {a : F[X] ⧸ F[X] ∙ q} (ha : a ≠ 0) :
     ∃ b, ellQ q hq (b * a) ≠ 0 := by
@@ -197,7 +197,7 @@ def ContCoeff {α : Type*} [TopologicalSpace α] (P : α → F[X]) : Prop :=
 variable {α : Type*} [TopologicalSpace α]
 
 /- English proof (translation)
-Introduce `k` and use `by simp only [coeff_add] exact (hP k).add (hQ k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ContCoeff.add {P Q : α → F[X]} (hP : ContCoeff P) (hQ : ContCoeff Q) :
     ContCoeff fun a => P a + Q a := fun k => by
@@ -205,7 +205,7 @@ theorem ContCoeff.add {P Q : α → F[X]} (hP : ContCoeff P) (hQ : ContCoeff Q) 
   exact (hP k).add (hQ k)
 
 /- English proof (translation)
-Introduce `k` and use `by simp only [coeff_mul] exact continuous_finsetSum _ fun x _ => (hP x.1).mul (hQ x.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ContCoeff.mul {P Q : α → F[X]} (hP : ContCoeff P) (hQ : ContCoeff Q) :
     ContCoeff fun a => P a * Q a := fun k => by
@@ -214,13 +214,13 @@ theorem ContCoeff.mul {P Q : α → F[X]} (hP : ContCoeff P) (hQ : ContCoeff Q) 
 
 omit [IsTopologicalRing F] in
 /- English proof (translation)
-Introduce `_` and use `continuous_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ContCoeff.const (p : F[X]) : ContCoeff fun _ : α => p := fun _ => continuous_const
 
 omit [IsTopologicalRing F] in
 /- English proof (translation)
-Introduce `k` and use `by simp only [coeff_C] split_ifs · exact hf · exact continuous_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ContCoeff.C {f : α → F} (hf : Continuous f) : ContCoeff fun a => Polynomial.C (f a) :=
   fun k => by
@@ -230,7 +230,7 @@ theorem ContCoeff.C {f : α → F} (hf : Continuous f) : ContCoeff fun a => Poly
     · exact continuous_const
 
 /- English proof (translation)
-Introduce `k` and use `by have e : ∀ a, (z • P a).coeff k = (z : F) * (P a).coeff k := fun a => by rw [zsmul_eq_mul, ← C_eq_intCast, coeff_C_mul] simp only [e] exact continuous_const.mul (hP k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ContCoeff.zsmul {P : α → F[X]} (hP : ContCoeff P) (z : ℤ) :
     ContCoeff fun a => z • P a := fun k => by
@@ -240,7 +240,7 @@ theorem ContCoeff.zsmul {P : α → F[X]} (hP : ContCoeff P) (z : ℤ) :
   exact continuous_const.mul (hP k)
 
 /- English proof (translation)
-Introduce `k` and use `by simp only [finsetSum_coeff] exact continuous_finsetSum _ fun i hi => hP i hi k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ContCoeff.sum {ι : Type*} (s : Finset ι) {P : ι → α → F[X]}
     (hP : ∀ i ∈ s, ContCoeff (P i)) : ContCoeff fun a => ∑ i ∈ s, P i a := fun k => by
@@ -248,7 +248,7 @@ theorem ContCoeff.sum {ι : Type*} (s : Finset ι) {P : ι → α → F[X]}
   exact continuous_finsetSum _ fun i hi => hP i hi k
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ContCoeff.const (α := α) (1 : F[X])`. Consider the case `insert j s hj ih`. Simplify using `only [Finset.prod_insert hj]`. Conclude with `(hP j (Finset.mem_insert_self _ _)).mul (ih fun i hi => hP i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ContCoeff.prod {ι : Type*} (s : Finset ι) {P : ι → α → F[X]}
     (hP : ∀ i ∈ s, ContCoeff (P i)) : ContCoeff fun a => ∏ i ∈ s, P i a := by
@@ -263,11 +263,11 @@ theorem ContCoeff.prod {ι : Type*} (s : Finset ι) {P : ι → α → F[X]}
 variable {m : Type*} [Fintype m] [DecidableEq m]
 
 /- English proof (translation)
-Apply the tactic sequence `have hentry : ∀ i j : m, ContCoeff fun A : Matrix m m F => A.charmatrix i j := by`. Introduce `i j`. Simplify using `only [Matrix.charmatrix_apply]`. Use `(ContCoeff.const _).add ?_` and prove the remaining obligations. Establish `hc : Continuous fun A : Matrix m m F => A i j` using `continuous_id.matrix_elem i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ContCoeff.C (α := Matrix m m F) (f := fun A => -A i j) hc.neg` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`. Establish `: ContCoeff fun A : Matrix m m F => A.charpoly`. Simplify using `only [Matrix.charpoly, Matrix.det_apply]`. Use `ContCoeff.sum _ fun σ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `have hp := ContCoeff.prod Finset.univ fun i _ => hentry (σ i) i`. Use `hp.zsmul (Equiv.Perm.sign σ : ℤ)` as an intermediate fact. Simplify `this` using `only [Units.smul_def]`. Conclude with `this k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_charpoly_coeff_of_fintype (k : ℕ) :
     Continuous fun A : Matrix m m F => A.charpoly.coeff k := by
@@ -287,7 +287,7 @@ theorem continuous_charpoly_coeff_of_fintype (k : ℕ) :
   exact this k
 
 /- English proof (translation)
-The claim follows from `continuous_charpoly_coeff_of_fintype k`.
+A detailed English derivation is pending.
 -/
 theorem continuous_charpoly_coeff {n : ℕ} (k : ℕ) :
     Continuous fun A : Matrix (Fin n) (Fin n) F => A.charpoly.coeff k :=
@@ -302,7 +302,7 @@ universe u
 variable {F : Type u} [Field F] {n : ℕ}
 
 /- English proof (translation)
-Establish `h : aeval (Matrix.toLin' A) A.charpoly = 0`. Rewrite using `[← Matrix.charpoly_toLin']`. Conclude with `LinearMap.aeval_self_charpoly _`. Take `⟨v, rfl⟩` from `(Module.AEval'.of (Matrix.toLin' A)).surjective m`. Rewrite using `[← Module.AEval.of_aeval_smul, h, zero_smul, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_smul_eq_zero (A : Matrix (Fin n) (Fin n) F)
     (m : Module.AEval' (Matrix.toLin' A)) : A.charpoly • m = 0 := by
@@ -313,11 +313,11 @@ theorem charpoly_smul_eq_zero (A : Matrix (Fin n) (Fin n) F)
   rw [← Module.AEval.of_aeval_smul, h, zero_smul, map_zero]
 
 /- English proof (translation)
-Establish `htors : Module.IsTorsion F[X] (Module.AEval' (Matrix.toLin' A))` using `Module.AEval.isTorsion_of_finiteDimensional F (Fin n → F) (Matrix.toLin' A)`. Take `⟨ι, hι, p, hp, e, ⟨E⟩⟩` from `Module.equiv_directSum_of_isTorsion htors`. Use `⟨ι, hι, fun i => p i ^ e i, fun i => pow_ne_zero _ (hp i).ne_zero, fun i => ?_, ⟨E⟩⟩` and prove the remaining obligations. Use `set x : DirectSum ι fun i => F[X] ⧸ F[X] ∙ p i ^ e i := DirectSum.of (fun i => F[X] ⧸ F[X] ∙ p i ^ e i) i (Submodule.Quotient.mk 1)`. Establish `h0 : A.charpoly • x = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `charpoly_smul_eq_zero A (E.symm x)` as an intermediate fact. Rewrite `this` using `[← map_smul, LinearEquiv.map_eq_zero_iff]`. Then use the resulting hypothesis. Rewrite `h0` using `[← DirectSum.of_smul, ← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one]`. Establish `h1` using `DirectSum.of_injective (β := fun i => F[X] ⧸ F[X] ∙ p i ^ e i) i (h0.trans (map_zero _).symm)`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 ((Submodule.Quotient.mk_eq_zero _).1 h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, by rw [← hc, smul_eq_mul, mul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_cyclic_decomposition (A : Matrix (Fin n) (Fin n) F) :
     ∃ (ι : Type u) (_ : Fintype ι) (q : ι → F[X]), (∀ i, q i ≠ 0) ∧ (∀ i, q i ∣ A.charpoly) ∧
@@ -351,7 +351,7 @@ def sumForm (x y : CycSum q) : F := ∑ i, ellQ (q i) (hq i) (x i * y i)
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `sumForm`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sumForm_comm (x y : CycSum q) : sumForm q hq x y = sumForm q hq y x := by
   unfold sumForm
@@ -360,7 +360,7 @@ theorem sumForm_comm (x y : CycSum q) : sumForm q hq x y = sumForm q hq y x := b
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `sumForm`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[DirectSum.add_apply, add_mul, ellQ_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sumForm_add_left (x x' y : CycSum q) :
     sumForm q hq (x + x') y = sumForm q hq x y + sumForm q hq x' y := by
@@ -371,7 +371,7 @@ theorem sumForm_add_left (x x' y : CycSum q) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `sumForm`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[DirectSum.smul_apply, smul_mul_assoc, ellQ_C_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sumForm_C_smul_left (c : F) (x y : CycSum q) :
     sumForm q hq (C c • x) y = c * sumForm q hq x y := by
@@ -382,7 +382,7 @@ theorem sumForm_C_smul_left (c : F) (x y : CycSum q) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `sumForm`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[DirectSum.smul_apply, DirectSum.smul_apply, smul_eq_mk_mul, smul_eq_mk_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sumForm_X_smul (x y : CycSum q) :
     sumForm q hq ((X : F[X]) • x) y = sumForm q hq x ((X : F[X]) • y) := by
@@ -393,7 +393,7 @@ theorem sumForm_X_smul (x y : CycSum q) :
   ring
 
 /- English proof (translation)
-Unfold `sumForm`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[DirectSum.of_eq_same]`. Introduce `j _ hj`. Rewrite using `[DirectSum.of_eq_of_ne _ _ _ hj, zero_mul, ellQ_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -407,9 +407,7 @@ theorem sumForm_of_left (i : ι) (b : F[X] ⧸ F[X] ∙ q i) (y : CycSum q) :
   · simp
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, y i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hy (DFinsupp.ext h)`. Take `⟨b, hb⟩` from `exists_ellQ_mul_ne_zero (hq i) hi`.
-
-Conclude with `⟨_, by rwa [sumForm_of_left]⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sumForm_ne_zero {y : CycSum q} (hy : y ≠ 0) : ∃ x, sumForm q hq x y ≠ 0 := by
   obtain ⟨i, hi⟩ : ∃ i, y i ≠ 0 := by
@@ -430,27 +428,27 @@ open scoped Matrix
 variable {F : Type u} [Field F] {n : ℕ}
 
 /- English proof (translation)
-Establish `hBaddr : ∀ v w w', B v (w + w') = B v w + B v w'` using `fun v w w' => by`. Rewrite using `[hBsymm, hBaddl, hBsymm w, hBsymm w']`. Establish `hBsmulr : ∀ (c : F) v w, B v (c • w) = c * B v w` using `fun c v w => by`. Rewrite using `[hBsymm, hBsmull, hBsymm]`. Establish `hexp : ∀ v w, B v w = ∑ l, w l * B v (Pi.single l 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v w`. Establish `hsum : ∀ s : Finset (Fin n), B v (∑ l ∈ s, w l • Pi.single l (1 : F)) = ∑ l ∈ s, w l * B v (Pi.single l 1)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `only [Finset.sum_empty]`. Use `hBsmulr 0 v 0` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hBaddr, ih, hBsmulr]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∑ l, w l • Pi.single l (1 : F) = w`. Use `(Pi.basisFun F (Fin n)).sum_repr w` as an intermediate fact. Simplify using `using this`. Rewrite using `[← hsum Finset.univ, hw]`. Establish `hexpl : ∀ v w, B v w = ∑ l, v l * B (Pi.single l 1) w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v w`. Rewrite using `[hBsymm, hexp]`. Simplify using `only [hBsymm w]`. Establish `hcol : ∀ k, A.mulVec (Pi.single k 1) = fun l => A l k`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Set `S : Matrix (Fin n) (Fin n) F` to `Matrix.of fun j k => B (Pi.single j 1) (Pi.single k 1)`. Establish `hS : ∀ j k, S j k = B (Pi.single j 1) (Pi.single k 1)` using `fun _ _ => rfl`. Establish `hdet : S.det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Take `⟨w, hw0, hw⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hw0` to reduce the goal to its premises. Apply `hBnd` to reduce the goal to its premises. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hexpl]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `hj` using `congrFun hw j`. Simplify using `only [Matrix.mulVec, dotProduct, hS, Pi.zero_apply] at hj`. Rewrite using `[hexp, Finset.sum_congr rfl fun l _ => mul_comm _ _, hj, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero S hdet, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.IsSymm.ext fun j k => ?_ show S k j = S j k` and prove the remaining obligations. Rewrite using `[hS, hS, hBsymm]`. Use `show S * A = Aᵀ * S`. Use extensionality with `j k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply]`. Establish `h1 : ∑ l, S j l * A l k = B (Pi.single j 1) (A.mulVec (Pi.single k 1))`. Rewrite using `[hexp, hcol]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [hS, mul_comm]`. Establish `h2 : ∑ l, A l j * S l k = B (A.mulVec (Pi.single j 1)) (Pi.single k 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexpl, hcol]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [hS]`. Rewrite using `[h1, h2, hBA]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isSymm_of_form (A : Matrix (Fin n) (Fin n) F) (B : (Fin n → F) → (Fin n → F) → F)
     (hBsymm : ∀ v w, B v w = B w v) (hBaddl : ∀ v v' w, B (v + v') w = B v w + B v' w)
@@ -517,15 +515,13 @@ theorem exists_isSymm_of_form (A : Matrix (Fin n) (Fin n) F) (B : (Fin n → F) 
     rw [h1, h2, hBA]
 
 /- English proof (translation)
-Take `⟨ι, hι, q, hq0, -, ⟨e⟩⟩` from `exists_cyclic_decomposition A`. Use `set φ := Matrix.toLin' A`. Set `E : (Fin n → F) → CycSum q` to `fun v => e (Module.AEval'.of φ v)`. Establish `hEadd : ∀ v w, E (v + w) = E v + E w` using `fun v w => by simp [E]`. Establish `hEsmul : ∀ (c : F) v, E (c • v) = C c • E v` using `fun c v => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [E, map_smul]`. Rewrite using `[← Module.AEval.C_smul, map_smul]`. Establish `hEA : ∀ v, E (A.mulVec v) = (X : F[X]) • E v` using `fun v => by`. Simplify using `only [E]`. Rewrite using `[← Matrix.toLin'_apply, ← Module.AEval'.X_smul_of, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hEinj : ∀ w, E w = 0 → w = 0` using `fun w h => by`. Establish `: Module.AEval'.of φ w = 0`. Rewrite using `[← e.map_eq_zero_iff]`. Conclude with `h`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hEsurj : ∀ x, ∃ v, E v = x` using `fun x => ⟨(Module.AEval'.of φ).symm (e.symm x), by simp [E]⟩`. Use `exists_isSymm_of_form A (fun v w => sumForm q hq0 (E v) (E w)) (fun v w => sumForm_comm q hq0 _ _) (fun v v' w => by simp only [hEadd, sumForm_add_left]) (fun c v w => by simp only [hEsmul, sumForm_C_smul_left]) (fun v w => by simp only [hEA, sumForm_X_smul]) (fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hw0`. Take `⟨x, hx⟩` from `exists_sumForm_ne_zero q hq0 (fun h => hw0 (hEinj w h))`. Take `⟨v, rfl⟩` from `hEsurj x`.
-
-Conclude with `hx (hw v)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isSymm_mul_eq_transpose_mul (A : Matrix (Fin n) (Fin n) F) :
     ∃ S : GL (Fin n) F, (S : Matrix (Fin n) (Fin n) F).IsSymm ∧
@@ -568,19 +564,17 @@ universe u
 variable {F : Type u} [Field F] {n : ℕ}
 
 /- English proof (translation)
-Use `set φx := Matrix.toLin' (x : Matrix (Fin n) (Fin n) F) with hφx`. Use `set φy := Matrix.toLin' (y : Matrix (Fin n) (Fin n) F) with hφy`. Set `L : (Fin n → F) →ₗ[F] (Fin n → F)` to `(Module.AEval'.of φy).symm.toLinearMap ∘ₗ (E.restrictScalars F).toLinearMap ∘ₗ (Module.AEval'.of φx).toLinearMap`. Set `L' : (Fin n → F) →ₗ[F] (Fin n → F)` to `(Module.AEval'.of φx).symm.toLinearMap ∘ₗ (E.symm.restrictScalars F).toLinearMap ∘ₗ (Module.AEval'.of φy).toLinearMap`. Establish `hLL' : L ∘ₗ L' = LinearMap.id`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[L, L']`. Establish `hL'L : L' ∘ₗ L = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using `[L, L']`. Establish `hint : L ∘ₗ φx = φy ∘ₗ L`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [L, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.restrictScalars_apply]`. Rewrite using `[← Module.AEval'.X_smul_of, map_smul, Module.AEval'.of_symm_X_smul]`. Use `set P := LinearMap.toMatrix' L`. Use `set Q := LinearMap.toMatrix' L'`. Establish `hPQ : P * Q = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.toMatrix'_comp, hLL', LinearMap.toMatrix'_id]`. Establish `hQP : Q * P = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, hL'L, LinearMap.toMatrix'_id]`. Establish `hPx : P * (x : Matrix (Fin n) (Fin n) F) = y * P`. Establish `h1 : P * (x : Matrix (Fin n) (Fin n) F) = LinearMap.toMatrix' (L ∘ₗ φx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.toMatrix'_comp, hφx, LinearMap.toMatrix'_toLin']`. Establish `h2 : (y : Matrix (Fin n) (Fin n) F) * P = LinearMap.toMatrix' (φy ∘ₗ L)`. Rewrite using `[LinearMap.toMatrix'_comp, hφy, LinearMap.toMatrix'_toLin']`. Rewrite using `[h1, h2, hint]`. Set `g : GL (Fin n) F` to `⟨Q, P, hQP, hPQ⟩`.
-
-Use `⟨g, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul]`. Use `show (x : Matrix (Fin n) (Fin n) F) = Q * y * P`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_conj_of_equiv {x y : GL (Fin n) F}
     (E : Module.AEval' (Matrix.toLin' (x : Matrix (Fin n) (Fin n) F)) ≃ₗ[F[X]]
@@ -630,11 +624,9 @@ theorem exists_conj_of_equiv {x y : GL (Fin n) F}
     _ = Q * y * P := (Matrix.mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Use `Set.Finite.of_finite_image (f := UniqueFactorizationMonoid.normalizedFactors) ?_ ?_` and prove the remaining obligations. Use `(UniqueFactorizationMonoid.normalizedFactors f).powerset.toFinset.finite_toSet.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, ⟨hgm, hgf⟩, rfl⟩`. Rewrite using `[Finset.mem_coe, Multiset.mem_toFinset, Multiset.mem_powerset]`. Conclude with `(UniqueFactorizationMonoid.dvd_iff_normalizedFactors_le_normalizedFactors hgm.ne_zero hf).1 hgf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g₁ ⟨hg₁, -⟩ g₂ ⟨hg₂, -⟩ h`. Use `eq_of_monic_of_associated hg₁ hg₂ ?_` and prove the remaining obligations. Establish `a₁` using `UniqueFactorizationMonoid.prod_normalizedFactors hg₁.ne_zero`. Establish `a₂` using `UniqueFactorizationMonoid.prod_normalizedFactors hg₂.ne_zero`. Rewrite `a₁` using `[h]`.
-
-Conclude with `a₁.symm.trans a₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_monic_dvd {f : F[X]} (hf : f ≠ 0) : {g : F[X] | g.Monic ∧ g ∣ f}.Finite := by
   classical
@@ -652,13 +644,13 @@ theorem finite_monic_dvd {f : F[X]} (hf : f ≠ 0) : {g : F[X] | g.Monic ∧ g �
     exact a₁.symm.trans a₂
 
 /- English proof (translation)
-Distinguish the cases in `hf : f = 0`. Use `⟨∅, Set.countable_empty, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `absurd (hx.trans hf) (Matrix.charpoly_monic _).ne_zero`. Set `D` to `{g : F[X] // g.Monic ∧ g ∣ f}`. Establish `: Finite D` using `(finite_monic_dvd hf).to_subtype`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `N : (Σ k : ℕ, Fin k → D) → Type u` to `fun t => DirectSum (Fin t.1) fun j => F[X] ⧸ F[X] ∙ (t.2 j).1`. Set `R : (Σ k : ℕ, Fin k → D) → Prop` to `fun t => ∃ y : GL (Fin n) F, Nonempty (Module.AEval' (Matrix.toLin' (y : Matrix (Fin n) (Fin n) F)) ≃ₗ[F[X]] N t)`. Set `rep : (Σ k : ℕ, Fin k → D) → GL (Fin n) F` to `fun t => if h : R t then h.choose else 1`. Use `⟨Set.range rep, Set.countable_range rep, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨ι, hι, q, hq0, hqd, ⟨e⟩⟩` from `exists_cyclic_decomposition (x : Matrix (Fin n) (Fin n) F)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `σ` to `Fintype.equivFin ι`. Set `t : Σ k : ℕ, Fin k → D` to `⟨Fintype.card ι, fun j => ⟨monicAssoc (q (σ.symm j)), monicAssoc_monic (hq0 _), (monicAssoc_dvd _).trans (hx ▸ hqd _)⟩⟩`. Establish `hspan : ∀ j : Fin (Fintype.card ι), (F[X] ∙ q (σ.symm j)) = (F[X] ∙ (t.2 j).1)` using `fun j => Ideal.span_singleton_eq_span_singleton.2 (associated_monicAssoc (hq0 _))`. Set `e' : Module.AEval' (Matrix.toLin' (x : Matrix (Fin n) (Fin n) F)) ≃ₗ[F[X]] N t` to `e.trans ((DirectSum.lequivCongrLeft F[X] σ).trans (DFinsupp.mapRange.linearEquiv fun j => Submodule.quotEquivOfEq _ _ (hspan j)))`. Establish `hR : R t` using `⟨x, ⟨e'⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e''⟩` from `hR.choose_spec`. Use `⟨rep t, ⟨t, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hrep : rep t = hR.choose` using `dif_pos hR`. Rewrite using `[hrep]`. Conclude with `exists_conj_of_equiv (e'.trans e''.symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_countable_conj_charpoly (f : F[X]) :
     ∃ s : Set (GL (Fin n) F), s.Countable ∧ ∀ x : GL (Fin n) F,

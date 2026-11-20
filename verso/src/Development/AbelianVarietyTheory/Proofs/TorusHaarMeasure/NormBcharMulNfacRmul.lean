@@ -15,7 +15,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.nfac _root_.ReciprocityTheory.ChartRestriction.G.FD.dmin`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 private lemma nfac_eq_prod_norm_dmin_ratio_rpow {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) :
     X.nfac la x = ∏ τ, ∏ i : Fin r,
@@ -27,7 +27,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Bor at hb`. Introduce `a c hca`. Conclude with `(hb τ).2 a c hca`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma blockTriangular_id_of_mem_bor {r : ℕ} {Ψ : Finset (E →+* ℂ)} {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r} (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r)
     (τ : Ψ) : (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ).BlockTriangular id := by
@@ -39,7 +39,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hdet` using `(show (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ).det ≠ 0 by unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor at hb; exact (hb τ).1)`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular (blockTriangular_id_of_mem_bor hb τ)]`. Conclude with `Finset.prod_ne_zero_iff.1 hdet j (Finset.mem_univ j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mat_diag_ne_zero_of_mem_bor {r : ℕ} {Ψ : Finset (E →+* ℂ)} {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r}
     (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r) (τ : Ψ) (j : Fin r) : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ j j ≠ 0 := by
@@ -51,7 +51,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun j _ => mat_diag_ne_zero_of_mem_bor hb τ _`.
+A detailed English derivation is pending.
 -/
 private lemma diag_prod_ne_zero_of_mem_bor {r : ℕ} {Ψ : Finset (E →+* ℂ)} {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r}
     (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r) (τ : Ψ) (i : Fin (r + 1)) :
@@ -62,7 +62,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hmul : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) τ = _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul`. Use `conv_lhs => unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.mat`. Both sides reduce to the same expression. Rewrite using `[hmul, _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gram_rmul_eq_transpose_mul_gram {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) (τ : X.Ψ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.gram (↑τ) X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) τ) =
@@ -77,7 +77,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin`. Rewrite using `[gram_rmul_eq_transpose_mul_gram]`. Conclude with `_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.lminor_conj (blockTriangular_id_of_mem_bor hb τ) i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma dmin_rmul_eq_diag_prod_mul_conj {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r)
     (τ : X.Ψ) (i : Fin (r + 1)) :
@@ -91,7 +91,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use `show ∏ j : Fin ((i : ℕ) + 1), M (Fin.castLE (by omega) j) (Fin.castLE (by omega) j) = _`. Rewrite using `[Fin.prod_univ_castSucc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma diag_prod_succ {r : ℕ} (M : Matrix (Fin r) (Fin r) ℂ) (i : Fin r) :
     ∏ j : Fin (i.succ : ℕ), M (Fin.castLE (by omega) j) (Fin.castLE (by omega) j) =
@@ -104,9 +104,9 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hp` using `diag_prod_ne_zero_of_mem_bor hb τ i.castSucc`. Rewrite using `[dmin_rmul_eq_diag_prod_mul_conj X x b hb τ i.succ, dmin_rmul_eq_diag_prod_mul_conj X x b hb τ i.castSucc, diag_prod_succ]`. Simplify using `only [norm_div, norm_mul, map_mul, RCLike.norm_conj]`. Establish `hp' : ‖∏ j : Fin (i.castSucc : ℕ), _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ (Fin.castLE (by omega) j) (Fin.castLE (by omega) j)‖ ≠ 0` using `norm_ne_zero_iff.2 hp`. Distinguish the cases in `hm : ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm x τ i.castSucc‖ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hm]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 private lemma norm_ratio_rmul_lemma_2 {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r)
     (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r) (τ : X.Ψ) (i : Fin r) :
@@ -125,7 +125,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[Real.mul_rpow (by positivity) ht, ← Real.rpow_natCast, ← Real.rpow_mul hd]`. Use `congr 1`. Rewrite using `[show ((2 : ℕ) : ℝ) * (-(l : ℝ) / 2) = -(l : ℝ) by push_cast; ring, Real.rpow_neg hd, Real.rpow_intCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private lemma rpow_sq_mul_eq_inv_zpow_mul_rpow {d t : ℝ} (hd : 0 ≤ d) (ht : 0 ≤ t) (l : ℤ) :
     (d ^ 2 * t) ^ (-(l : ℝ) / 2) = (d ^ l)⁻¹ * t ^ (-(l : ℝ) / 2) := by
@@ -139,9 +139,9 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[nfac_eq_prod_norm_dmin_ratio_rpow, nfac_eq_prod_norm_dmin_ratio_rpow]`. Repeatedly rewrite using `[norm_ratio_rmul_lemma_2 X x b hb, rpow_sq_mul_eq_inv_zpow_mul_rpow (norm_nonneg _) (norm_nonneg _), Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Establish `hbc : ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la b‖ = ∏ τ, ∏ i : Fin r, ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ i i‖ ^ la τ i`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.bchar _root_.ReciprocityTheory.ChartRestriction.G.FD.mat`. Simplify using `[norm_prod, norm_zpow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hne : ∏ τ, ∏ i : Fin r, ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ i i‖ ^ la τ i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (mat_diag_ne_zero_of_mem_bor hb τ i))`. Rewrite using `[hbc, ← mul_assoc, mul_inv_cancel₀ hne, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.NormFactor.norm_bchar_mul_nfac_rmul {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r)
     {x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r) :
@@ -162,7 +162,7 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacRmulStatement`. Introduce `r X la x hx b hb`. Establish `hne : ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.bchar la b‖ ≠ 0` using `norm_ne_zero_iff.2 (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoE.bchar_ne X la hb)`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hne]`. Conclude with `_root_.GlobalTheory.NormFactor.norm_bchar_mul_nfac_rmul X la hx hb`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NormFactor.nfacRmul_holds : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacRmulStatement (E := E) := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacRmulStatement
@@ -176,7 +176,7 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.gram_lact X hγ x τ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.NormFactor.dmin_lact {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) {γ : GL (Fin r) E}
     (hγ : γ ∈ X.Γ) (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
@@ -189,7 +189,7 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacLactStatement`. Introduce `r X la γ hγ x _`. Rewrite using `[nfac_eq_prod_norm_dmin_ratio_rpow, nfac_eq_prod_norm_dmin_ratio_rpow]`. Simplify using `only [_root_.GlobalTheory.NormFactor.dmin_lact X hγ]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.NormFactor.nfacLact_holds : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacLactStatement (E := E) := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacLactStatement
@@ -202,11 +202,11 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.PnormInvStatement`. Introduce `r X la P hP γ hγ x hx b hb`. Establish `hpn : ∀ y, X.pnorm la P y = ‖P y‖ * X.nfac la y`. Introduce `y`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[nfac_eq_prod_norm_dmin_ratio_rpow]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.IsSec at hP`. Take `⟨-, hPb, hPγ⟩` from `hP`. Establish `hxb` using `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_rmul X hx hb`. Establish `hlact` using `_root_.GlobalTheory.NormFactor.nfacLact_holds (E := E)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacLactStatement at hlact`. Rewrite using `[hpn, hpn, hPγ γ hγ _ hxb, norm_mul, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoE.chi_norm X la hγ, one_mul, hlact r X la γ hγ _ hxb, hPb x hx b hb, norm_mul, ← _root_.GlobalTheory.NormFactor.norm_bchar_mul_nfac_rmul X la hx hb]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.NormFactor.pnormInv_holds : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.PnormInvStatement (E := E) := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.PnormInvStatement
@@ -229,7 +229,7 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_root_.GlobalTheory.NormFactor.nfacRmul_holds, _root_.GlobalTheory.NormFactor.nfacLact_holds, _root_.GlobalTheory.NormFactor.pnormInv_holds⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.NormFactor.nfac_transform :
     _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacRmulStatement (E := E) ∧ _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacLactStatement (E := E) ∧ _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.PnormInvStatement (E := E) :=

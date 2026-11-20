@@ -6,21 +6,19 @@ open TensorProduct CrystallineSemistableComparison.Pb.Psi
 namespace GlobalTheory.CompanionTheory.FrobFac
 
 /- English proof (translation)
-Introduce `W A C₀ _ _ _ _ K₀ _ _ L _ _ c k hk B _ ι i hi h hh m b`. Set `E : K₀ ⊗[W] L →+ B` to `TensorProduct.liftAddHom { toFun := fun x => { toFun := fun y => ι (k x) * h y map_zero' := by simp map_add' := fun y y' => by simp [mul_add] } map_zero' := by`. Use extensionality with `y`. Simplify using the standard rewrite rules. Use the proof step `map_add' := fun x x' => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `[add_mul] }`. Use the proof step `(fun r x y => by show ι (k (r • x)) * h y = ι (k x) * h (r • y)`. Rewrite using `[hh, Algebra.smul_def, map_mul, hk, map_mul, hi]`. Use the proof step `ring)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Establish `hE : ∀ x y, E (x ⊗ₜ y) = ι (k x) * h y`. Introduce `x y`. Use `first`. Consider the case `rfl`. Consider the case `simp [E, TensorProduct.liftAddHom_tmul]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hEs : ∀ (x : K₀) (t : K₀ ⊗[W] L), E (x • t) = ι (k x) * E t`. Introduce `x t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x' y`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.smul_tmul', hE, hE, smul_eq_mul, map_mul, map_mul, mul_assoc]`. Consider the case `add t t' ht ht'`. Rewrite using `[smul_add, map_add, map_add, ht, ht', mul_add]`. Use `⟨E, hE, fun G hG z => ?_⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `tmul a y`. Establish `hsum : ∑ s, ι (T c k hk (b.coord s) (a ⊗ₜ y)) * E (b s) = ι (c a) * E ((1 : K₀) ⊗ₜ y)` using `by conv_rhs => rw [← b.sum_repr ((1 : K₀) ⊗ₜ y)]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun s _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : T c k hk (b.coord s) (a ⊗ₜ y) = c a * k (b.repr ((1 : K₀) ⊗ₜ y) s)` using `by first`. Consider the case `rfl`. Consider the case `simp [T, TensorProduct.liftAddHom_tmul, Module.Basis.coord_apply]`. Rewrite using `[hEs, hT, map_mul, mul_assoc]`. Rewrite using `[hG, hsum, hE, map_one, map_one, one_mul, hi]`.
-
-Consider the case `add x y hx hy`. Simplify using `only [map_add, hx, hy, add_mul, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem T_fac : ∀ {W A C₀ : Type} [CommRing W] [CommRing A] [CommRing C₀] [Algebra W A] {K₀ : Type} [Field K₀] [Algebra W K₀] {L : Type 1} [AddCommGroup L] [Module W L] (c : A →+* C₀) (k : K₀ →+* C₀) (hk : ∀ w : W, k (algebraMap W K₀ w) = c (algebraMap W A w)), ∀ {B : Type} [Field B] (ι : C₀ →+* B) (i : A →+* B), (∀ a, ι (c a) = i a) → ∀ (h : L →+ B), (∀ (w : W) y, h (w • y) = i (algebraMap W A w) * h y) → ∀ {m : ℕ} (b : Module.Basis (Fin m) K₀ (K₀ ⊗[W] L)), ∃ E : K₀ ⊗[W] L →+ B, (∀ x y, E (x ⊗ₜ y) = ι (k x) * h y) ∧ ∀ G : A ⊗[W] L →+ B, (∀ a y, G (a ⊗ₜ y) = i a * h y) → ∀ z, G z = ∑ s, ι (T c k hk (b.coord s) z) * E (b s) := by
   intro W A C₀ _ _ _ _ K₀ _ _ L _ _ c k hk B _ ι i hi h hh m b

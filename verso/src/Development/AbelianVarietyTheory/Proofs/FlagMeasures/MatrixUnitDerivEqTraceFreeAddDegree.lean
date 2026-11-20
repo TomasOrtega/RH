@@ -12,7 +12,7 @@ namespace GlobalTheory.CentralLetter
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_one_eq_diagonal, Matrix.smul_one_eq_diagonal, Matrix.exp_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.coe_exp, Complex.exp_eq_exp_ℂ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_smul_one (c : ℂ) :
     NormedSpace.exp (c • (1 : Matrix (Fin n) (Fin n) ℂ)) = Complex.exp c • (1 : Matrix (Fin n) (Fin n) ℂ) := by
@@ -22,7 +22,7 @@ theorem exp_smul_one (c : ℂ) :
   rw [Pi.coe_exp, Complex.exp_eq_exp_ℂ]
 
 /- English proof (translation)
-Unfold `inG`. Simplify using `[Matrix.conjTranspose_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem inG_imag (ε : Fin n → Bool) (s : ℝ) :
     inG ε (((s : ℂ) * Complex.I) • (1 : Matrix (Fin n) (Fin n) ℂ)) := by
@@ -30,11 +30,11 @@ theorem inG_imag (ε : Fin n → Bool) (s : ℝ) :
   simp [Matrix.conjTranspose_smul]
 
 /- English proof (translation)
-Unfold `Rd`. Establish `h1 : (fun t : ℝ => G (x * NormedSpace.exp ((t : ℂ) • (((s : ℂ) * Complex.I) • (1 : Matrix (Fin n) (Fin n) ℂ))))) = fun t : ℝ => Complex.exp ((t : ℂ) * ((m : ℂ) * (s * Complex.I))) * G x`. Use function extensionality and compare the values at `t`. Rewrite using `[smul_smul, exp_smul_one, Matrix.mul_smul, Matrix.mul_one, hG _ _ x hx, ← Complex.exp_int_mul]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, Complex.norm_exp_ofReal_mul_I]`. Rewrite using `[h1]`. Establish `h2 : HasDerivAt (fun t : ℂ => Complex.exp (t * ((m : ℂ) * (s * Complex.I))) * G x) ((m : ℂ) * (s * Complex.I) * G x) ((0 : ℝ) : ℂ)`. Use `(((hasDerivAt_id ((0 : ℝ) : ℂ)).mul_const ((m : ℂ) * (s * Complex.I))).cexp).mul_const (G x)` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `h2.comp_ofReal.deriv`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Rd_central (ε : Fin n → Bool) (m : ℤ) (G : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hG : ∀ z : ℂ, ‖z‖ = 1 → ∀ x : Matrix (Fin n) (Fin n) ℂ, inUJ ε x → G (z • x) = z ^ m * G x)
@@ -55,7 +55,7 @@ theorem Rd_central (ε : Fin n → Bool) (m : ℤ) (G : Matrix (Fin n) (Fin n) �
   exact h2.comp_ofReal.deriv
 
 /- English proof (translation)
-Unfold `cpart1`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Jm_mul_self, Complex.star_def, Complex.conj_ofReal]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem cpart1_add_real (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) (r : ℝ) :
     cpart1 ε (Z + (r : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) = cpart1 ε Z := by
@@ -66,9 +66,9 @@ theorem cpart1_add_real (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) (
   abel
 
 /- English proof (translation)
-Unfold `cpart2`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Jm_mul_self, Complex.star_def, Complex.conj_ofReal, add_add_add_comm, smul_add, ← add_smul, smul_smul]`. Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cpart2_add_real (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) (r : ℝ) :
     cpart2 ε (Z + (r : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) =
@@ -84,11 +84,11 @@ theorem cpart2_add_real (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) (
   ring
 
 /- English proof (translation)
-Introduce `n _ ε m G hs hG a b x hx`. Apply the tactic sequence `obtain ⟨r, hr⟩ : ∃ r : ℝ, (r : ℂ) = (if a = b then (n : ℂ)⁻¹ else 0) := ⟨if a = b then (n : ℝ)⁻¹ else 0, by split_ifs <;> simp⟩`. Establish `e : (Matrix.single a b 1 : Matrix (Fin n) (Fin n) ℂ) = E0 a b + (r : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[hr, E0, sub_add_cancel]`. Establish `hm : (if a = b then (m : ℂ) / n else 0) = m * r`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [hr]; split_ifs <;> simp [div_eq_mul_inv]`. Unfold `Eab`. Rewrite using `[e, hm]`. Unfold `Ec`. Rewrite using `[cpart1_add_real, cpart2_add_real, (right_derivative_linear n ε G G _ _ 0 0 x hs hs (complex_parts_mem_lie_algebra_holds n ε (E0 a b)).2.1 (inG_imag ε (-r)) hx).1, Rd_central ε m G hG (-r) x hx]`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `(-(m : ℂ) * r * G x) * Complex.I_sq`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem main : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool) (m : ℤ) (G : Matrix (Fin n) (Fin n) ℂ → ℂ), SmoothOnG ε G → (∀ z : ℂ, ‖z‖ = 1 → ∀ x : Matrix (Fin n) (Fin n) ℂ, inUJ ε x → G (z • x) = z ^ m * G x) → ∀ (a b : Fin n) (x : Matrix (Fin n) (Fin n) ℂ), inUJ ε x → Eab ε a b G x = Ec ε (E0 a b) G x + (if a = b then (m : ℂ) / n else 0) * G x := by
   intro n _ ε m G hs hG a b x hx

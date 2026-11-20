@@ -8,7 +8,7 @@ open NumberField IsLocalRing
 namespace ValuationResidueLemmas
 
 /- English proof (translation)
-Unfold `ratio`. Establish `h : ∃ a : Ω, f = a • g` using `⟨a, hf⟩`. Rewrite using `[dif_pos h]`. Conclude with `smul_left_injective Ω hg (h.choose_spec.symm.trans hf)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_eq {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f g : V} {a : Ω}
     (hg : g ≠ 0) (hf : f = a • g) : ratio f g = a := by
@@ -18,7 +18,7 @@ theorem ratio_eq {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f g :
   exact smul_left_injective Ω hg (h.choose_spec.symm.trans hf)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact WithTop.add_right_cancel hb h`. Consider the case `(lift b to ℤ using hb`. Apply the tactic sequence `induction a <;> induction c <;> simp_all <;> norm_cast at h <;> omega)`.
+Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem wt_cancel {a b c : WithTop ℤ} (hb : b ≠ ⊤) (h : a + b = c + b) : a = c := by
   first
@@ -42,83 +42,75 @@ variable (d : Data K ι Ω WT A)
 open ValuationResidueLemmas in
 
 /- English proof (translation)
-Take `⟨hNZ, hpl⟩` from `hw`. Establish `hex : ∀ j, ∃ a : Ω c, d.w j c = a • d.w (d.jc c) c`. Introduce `j`. Establish `hb` using `hd.w_base c`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨d.w (d.jc c) c, hd.w_mem _ c⟩ : 𝒜 c d.wL) (fun h0 => hb (congrArg Subtype.val h0))).mp (hd.finrank_one c d.wL) ⟨d.w j c, hd.w_mem j c⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, (congrArg Subtype.val ha).symm⟩`. Set `a : Fin (d.N + 1) → Ω c` to `fun j => ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c)`. Establish `ha : ∀ j, d.w j c = a j • d.w (d.jc c) c` using `fun j => by`. Take `⟨b, hb⟩` from `hex j`. Rewrite using `[show a j = b from ratio_eq (hd.w_base c) hb]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`. Establish `ha_jc : a (d.jc c) = 1` using `ratio_eq (hd.w_base c) (one_smul _ _).symm`. Set `f` to `algebraMap (Ω c) (OmS (Ω c) d.D d.N)`. Take `⟨j0, -, hj0⟩` from `Finset.univ.exists_min_image (fun j => w (f (a j))) Finset.univ_nonempty`. Establish `hj0' : ∀ j, w (f (a j0)) ≤ w (f (a j))` using `fun j => hj0 j (Finset.mem_univ _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : a j0 ≠ 0`. Introduce `h0`. Use `hj0' (d.jc c)` as an intermediate fact. Rewrite `this` using `[h0, ha_jc, map_zero, map_one, AddValuation.map_zero, AddValuation.map_one]`. Conclude with `absurd (top_le_iff.mp this) WithTop.zero_ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf0 : f (a j0) ≠ 0` using `(map_ne_zero f).mpr ha0`. Establish `hw0 : d.w j0 c ≠ 0` using `by rw [ha j0]; exact smul_ne_zero ha0 (hd.w_base c)`. Set `r : Fin (d.N + 1) → Ω c` to `fun j => ratio (Ω := Ω c) (d.w j c) (d.w j0 c)`. Establish `hr : ∀ j, r j * a j0 = a j` using `fun j => by`. Establish `: r j = a j / a j0` using `ratio_eq hw0 (by rw [ha j, ha j0, smul_smul, div_mul_cancel₀ _ ha0])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, div_mul_cancel₀ _ ha0]`. Establish `hr0 : r j0 = 1` using `ratio_eq hw0 (one_smul _ _).symm`. Establish `hrint : ∀ j, 0 ≤ w (f (r j))` using `fun j => by`. Establish `e : w (f (r j)) + w (f (a j0)) = w (f (a j))`. Rewrite using `[← AddValuation.map_mul, ← map_mul, hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `wt_nonneg_of_add (hNZ.1 _ hf0) e (hj0' j)`. Set `s : TVar d.D d.N → OmS (Ω c) d.D d.N` to `sImg (D := d.D) (d.jc c) (d.x c)`. Establish `hOT : ∀ p, d.OTtoS c (MvPolynomial.X p) = s p`. Introduce `p`. Simplify using `[Data.OTtoS, OTtoKT, Data.sH, sHom, s]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0 : ∀ p, 0 ≤ w (s p)` using `fun p => by rw [← hOT]; exact (hpl _).1`. Establish `hC : ∀ y : Ω c, algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) (MvPolynomial.C y) = f y` using `fun y => (IsScalarTower.algebraMap_apply (Ω c) (MvPolynomial (SVar d.D d.N) (Ω c)) _ y).symm`. Establish `hrel : ∀ i : Fin (d.D + 1), i ≠ 0 → ∑ j, s (i, j) * f (a j) = 0`. Introduce `i hi`. Rewrite using `[Fin.sum_univ_succAbove _ (d.jc c)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [s, sImg, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove, hi, ↓reduceIte, ha_jc, map_one, mul_one, map_neg, map_sum, map_mul, hC]`. Rewrite using `[neg_add_eq_zero]`. Both sides reduce to the same expression. Establish `hrel0 : ∀ i : Fin (d.D + 1), i ≠ 0 → s (i, j0) = -∑ k, s (i, j0.succAbove k) * f (r (j0.succAbove k))`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hrel i hi`. Establish `e : ∀ j, s (i, j) * f (a j) = (s (i, j) * f (r j)) * f (a j0)` using `fun j => by`. Rewrite using `[← hr j, map_mul, mul_assoc]`. Simplify using `only [e, ← Finset.sum_mul] at h1`. Establish `h2` using `(mul_eq_zero.mp h1).resolve_right hf0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `h2` using `[Fin.sum_univ_succAbove _ j0, hr0, map_one, mul_one]`. Conclude with `eq_neg_of_add_eq_zero_left h2`. Set `q0 : SVar d.D d.N → TVar d.D d.N` to `Sum.elim (fun _ => ((0 : Fin (d.D + 1)), j0)) (fun ik => (ik.1, j0.succAbove ik.2))`. Set `t : SVar d.D d.N → OmS (Ω c) d.D d.N` to `fun x => s (q0 x)`. Establish `ht : ∀ x, t x ∈ vRing w` using `fun x => hX0 _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `p : TVar d.D d.N → MvPolynomial (SVar d.D d.N) (Ω c)` to `fun ij => Fin.succAboveCases (α := fun _ => MvPolynomial (SVar d.D d.N) (Ω c)) j0 (if ij.1 = 0 then MvPolynomial.X (Sum.inl ()) else -∑ k, MvPolynomial.X (Sum.inr (ij.1, k)) * MvPolynomial.C (r (j0.succAbove k))) (fun k => MvPolynomial.X (Sum.inr (ij.1, k))) ij.2`. Establish `hpj0 : ∀ i, p (i, j0) = if i = 0 then MvPolynomial.X (Sum.inl ()) else -∑ k, MvPolynomial.X (Sum.inr (i, k)) * MvPolynomial.C (r (j0.succAbove k))`. Introduce `i`. Simplify using `only [p, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_same]`. Establish `hpk : ∀ i k, p (i, j0.succAbove k) = MvPolynomial.X (Sum.inr (i, k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce `i k`. Simplify using `only [p, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_succAbove]`. Establish `hpu : ∀ ij, MvPolynomial.aeval t (p ij) = s ij`. Introduce and unpack `⟨i, j⟩`. Break down `Fin.eq_self_or_eq_succAbove j0 j with rfl | ⟨k, rfl⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpj0] split_ifs with hi`. Substitute `hi` using the available equality. Simplify using `[t, q0]`. Rewrite using `[hrel0 i hi]`. Simplify using `[t, q0]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure.
 
-Both sides reduce to the same expression. Rewrite using `[hpk]`. Simplify using `[t, q0]`. Use `letI _iW := ReciprocityTheory.MultiplicativeHeights.residueAlgebra (vRing w) f`. Use `letI _io := ReciprocityTheory.MultiplicativeHeights.residueAlgebra ((vRing w).comap f) (algebraMap K (Ω c))`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `k₁ : IntermediateField (ResidueField (((vRing w).comap f).comap (algebraMap K (Ω c)))) (ResidueField ((vRing w).comap f))` to `IntermediateField.adjoin _ {z | ∃ j, ∃ h : r j ∈ (vRing w).comap f, z = residue ((vRing w).comap f) ⟨r j, h⟩}`. Set `R3 : Subring (MvPolynomial (SVar d.D d.N) (Ω c))` to `((MvPolynomial.map (algebraMap k₁ (ResidueField ((vRing w).comap f)))).range.comap (MvPolynomial.map (residue ((vRing w).comap f)))).map (MvPolynomial.map ((vRing w).comap f).subtype)`. Establish `hR3X : ∀ x, (MvPolynomial.X x : MvPolynomial (SVar d.D d.N) (Ω c)) ∈ R3` using `fun x => ⟨MvPolynomial.X x, ⟨MvPolynomial.X x, by simp⟩, by simp⟩`. Establish `hR3C : ∀ j, MvPolynomial.C (r j) ∈ R3` using `fun j => ⟨MvPolynomial.C ⟨r j, hrint j⟩, ⟨MvPolynomial.C ⟨_, IntermediateField.subset_adjoin _ _ ⟨j, hrint j, rfl⟩⟩, by simp⟩, by simp⟩`. Establish `hpR3 : ∀ ij, p ij ∈ R3`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨i, j⟩`. Break down `Fin.eq_self_or_eq_succAbove j0 j with rfl | ⟨k, rfl⟩` into its components or cases. Rewrite using `[hpj0] split_ifs`. Conclude with `hR3X _`. Conclude with `R3.neg_mem (R3.sum_mem fun k _ => R3.mul_mem (hR3X _) (hR3C _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hpk]`. Conclude with `hR3X _`. Establish `hcoefW : ∀ P ∈ R3, ∀ α, P.coeff α ∈ (vRing w).comap f`. Introduce `P hP α`. Take `⟨Q, -, rfl⟩` from `hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coeff_map]`. Conclude with `(Q.coeff α).2`. Establish `hcoefk : ∀ P ∈ R3, ∀ α (hα : P.coeff α ∈ (vRing w).comap f), residue ((vRing w).comap f) ⟨_, hα⟩ ∈ k₁`. Introduce `P hP α hα`. Take `⟨Q, ⟨Z, hZ⟩, rfl⟩` from `hP`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : (⟨_, hα⟩ : (vRing w).comap f) = Q.coeff α` using `Subtype.ext (MvPolynomial.coeff_map _ _ _)`. Rewrite using `[e]`. Use `congrArg (MvPolynomial.coeff α) hZ` as an intermediate fact. Simplify using `only [MvPolynomial.coeff_map] at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(Z.coeff α).2`. Establish `hp : ∀ ij α, (p ij).coeff α ∈ (vRing w).comap f` using `fun ij α => hcoefW _ (hpR3 ij) α`. Set `u : TVar d.D d.N → vRing w` to `fun ij => ⟨s ij, hX0 ij⟩`. Establish `hKU : algebraMap K (OmS (Ω c) d.D d.N) = f.comp (algebraMap K (Ω c))` using `RingHom.ext fun x => IsScalarTower.algebraMap_apply K (Ω c) _ x`. Establish `hOT' : ∀ P, d.OTtoS c P = MvPolynomial.eval₂ (f.comp ((algebraMap K (Ω c)).comp (algebraMap (𝓞 K) K))) s P`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `P`. Simplify using `only [Data.OTtoS, OTtoKT, Data.sH, sHom, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, MvPolynomial.aeval_def, MvPolynomial.eval₂_map, hKU]`. Both sides reduce to the same expression. Establish `hCla : ∀ x : 𝓞 K, (∀ m, (MvPolynomial.C x : OT K d.D d.N).coeff m ∈ la.asIdeal) ↔ x ∈ la.asIdeal`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Simplify using `using h0 0`. Apply the tactic sequence `intro h0 m; rw [MvPolynomial.coeff_C]; split_ifs <;> simp [h0]`. Establish `h0 : ∀ P : MvPolynomial (TVar d.D d.N) (𝓞 K), 0 < w (MvPolynomial.eval₂ (f.comp ((algebraMap K (Ω c)).comp (algebraMap (𝓞 K) K))) (fun j => (u j : OmS (Ω c) d.D d.N)) P) ↔ ∀ α, P.coeff α ∈ la.asIdeal`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `P`. Use `show 0 < w (MvPolynomial.eval₂ _ s P) ↔ _`. Rewrite using `[← hOT' P, (hpl P).2, laT, MvPolynomial.mem_map_C_iff]`. Establish `h1 : ∀ x : 𝓞 K, 0 ≤ w ((f.comp ((algebraMap K (Ω c)).comp (algebraMap (𝓞 K) K))) x)`. Introduce `x`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `(hpl (MvPolynomial.C x)).1` as an intermediate fact. Rewrite `this` using `[hOT', MvPolynomial.eval₂_C]`. Then use the resulting hypothesis. Establish `hind_u` using `indep_u (Ω := Ω c) w la u h0 h1`. Establish `hcard : Fintype.card (TVar d.D d.N) = Fintype.card (SVar d.D d.N) + d.D`. Simplify using `[Fintype.card_sum, Fintype.card_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `RT` using `ReciprocityTheory.MultiplicativeHeights.Closed.residueTrdeg K (Ω c) (OmS (Ω c) d.D d.N) d.D (hd.trdeg c) (SVar d.D d.N) t (vRing w) ht (TVar d.D d.N) u p hp hcard hpu hind_u`. Establish `htrk : Algebra.trdeg _ k₁ = d.D` using `RT.1 k₁ (fun j α => hcoefk _ (hpR3 j) α (hp j α))`. Establish `hG` using `RT.2.2`. Set `q1 : SVar d.D d.N → TVar d.D d.N` to `Sum.elim (fun _ => ((0 : Fin (d.D + 1)), d.jc c)) (fun ik => (ik.1, (d.jc c).succAbove ik.2))`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hψ : ∀ P : MvPolynomial (SVar d.D d.N) (Ω c), MvPolynomial.aeval t (MvPolynomial.aeval (fun x => p (q1 x)) P) = algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) P`. Establish `e : (MvPolynomial.aeval t).comp (MvPolynomial.aeval (fun x => p (q1 x))) = IsScalarTower.toAlgHom (Ω c) (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [AlgHom.comp_apply, MvPolynomial.aeval_X, IsScalarTower.coe_toAlgHom', hpu]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `x with _ | ⟨i, k⟩` into its components or cases. Simplify using `[q1, s, sImg, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_same]`. Simplify using `[q1, s, sImg, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_succAbove]`. Introduce `P`. Conclude with `DFunLike.congr_fun e P`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hNorm : IsNormDiscrete (d.Wres c w)`. Use `⟨fun x hx => hNZ.1 _ ((map_ne_zero f).mpr hx), ?_⟩` and prove the remaining obligations. Take `⟨π', hπ'⟩` from `hNZ.2`. Take `⟨P, Q, hQ, hPQ⟩` from `IsFractionRing.div_surjective (A := MvPolynomial (SVar d.D d.N) (Ω c)) π'`. Establish `hQ0 : Q ≠ 0` using `nonZeroDivisors.ne_zero hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hinj` using `IsFractionRing.injective (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N)`. Establish `hP0 : P ≠ 0`. Introduce and unpack `rfl`. Rewrite `hPQ` using `[map_zero, zero_div]`. Rewrite `hπ'` using `[← hPQ, AddValuation.map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd hπ' (by simp)`. Establish `hne : ∀ R : MvPolynomial (SVar d.D d.N) (Ω c), R ≠ 0 → MvPolynomial.aeval (fun x => p (q1 x)) R ≠ 0`. Introduce `R hR h0'`. Apply `hR` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hψ, h0', map_zero, map_zero]`. Take `⟨c1, -, e1⟩` from `exists_val_coeff w t ht hG _ (hne P hP0)`. Take `⟨c2, hc2, e2⟩` from `exists_val_coeff w t ht hG _ (hne Q hQ0)`. Rewrite `e1`, `e2` using `[hψ]`. Use `⟨c1 / c2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQU : algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) Q ≠ 0` using `fun h0' => hQ0 (hinj (h0'.trans (map_zero _).symm))`. Establish `k1 : w π' + w (algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) Q) = w (algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) P)`. Rewrite using `[← AddValuation.map_mul, ← hPQ, div_mul_cancel₀ _ hQU]`. Establish `k2 : w (f (c1 / c2)) + w (f c2) = w (f c1)`. Rewrite using `[← AddValuation.map_mul, ← map_mul, div_mul_cancel₀ _ hc2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k1` using `[hπ', e1, e2]`. Use `show w (f (c1 / c2)) = 1`. Conclude with `wt_cancel (hNZ.1 _ ((map_ne_zero f).mpr hc2)) (k2.trans k1.symm)`. Establish `hOver : IsOver (K` using `K) (d.Wres c w) la := by`. Introduce `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hpl (MvPolynomial.C x)` as an intermediate fact. Rewrite `this` using `[hOT', MvPolynomial.eval₂_C]`. Use `show 0 < w ((f.comp ((algebraMap K (Ω c)).comp (algebraMap (𝓞 K) K))) x) ↔ _`. Rewrite using `[this.2, laT, MvPolynomial.mem_map_C_iff]`. Conclude with `hCla x`.
-
-Use `⟨⟨hNorm, Or.inl ⟨la, hOver, RT.2.1, j0, hw0, hrint, htrk⟩⟩, hOver, j0, hw0, hrint, ?_⟩` and prove the remaining obligations. Establish `hsH : ∀ q, d.sH c (MvPolynomial.X q) = s q` using `fun q => by simp [Data.sH, sHom, s]`. Establish `hsum : (∑ j, d.sH c (MvPolynomial.X (0, j)) * f (r j)) = MvPolynomial.aeval t (∑ j, p (0, j) * MvPolynomial.C (r j))`. Simplify using `only [map_sum, map_mul, hpu, MvPolynomial.aeval_C, hsH]`. Both sides reduce to the same expression.
-
-Use `show w (∑ j, d.sH c (MvPolynomial.X (0, j)) * f (r j)) = 0`. Rewrite using `[hsum]`. Establish `hL : (∑ j, p (0, j) * MvPolynomial.C (r j)) ∈ R3` using `R3.sum_mem fun j _ => R3.mul_mem (hpR3 _) (hR3C _)`. Use `val_eval_eq_zero w t ht hG _ (fun β => hcoefW _ hL β) (Finsupp.single (Sum.inl ()) 1) ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_sum, Fin.sum_univ_succAbove _ j0]`.
-
-Simplify using `only [hpj0, hpk, ↓reduceIte, hr0, map_one, mul_one]`. Rewrite using `[MvPolynomial.coeff_X', if_pos rfl, Finset.sum_eq_zero, add_zero]`. Introduce `x _`. Rewrite using `[mul_comm, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X', if_neg, mul_zero]`. Rewrite using `[Finsupp.single_left_inj one_ne_zero]`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem admissible_over_prime (hd : d.AxH 𝒜) (h : d.S1) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (c : ι)
     (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (hw : w ∈ d.PlOver la c) :

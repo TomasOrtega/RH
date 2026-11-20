@@ -8,13 +8,13 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hH k r lam u b bv ga h q0 R0 hN hR0`. Establish `hex : DSExist` using `hH.2.2.2.1`. Establish `hC : ∃ P, PI.UpqRep.IsCayleyU k r (PI.BesselPeriodGGP.eps48 k r) P`. Take `⟨P, hP, -⟩` from `hR0.2`. Conclude with `⟨P, hP⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hfam` using `(GlobalTheory.T.numericalFamily_shape_gaps k r lam u b bv ga h q0 hN).2`. Establish `key : ∀ ν : Fin (2 * r + k + 1) → ℤ, ∃ R : Rep k r, (∑ a, (ν a).natAbs ≤ q0 → R.IsDS (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ))) ∧ (ν = 0 → R = R0)`. Introduce `ν`. Distinguish the cases in `h0 : ν = 0`. Use `⟨R0, fun _ => ?_, fun _ => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `h0` using the available equality. Simplify using `using hR0`. Distinguish the cases in `hq : ∑ a, (ν a).natAbs ≤ q0`. Take `⟨R, hR⟩` from `hex k r _ _ (hfam ν hq).1 hC`. Conclude with `⟨R, fun _ => hR, fun h => absurd h h0⟩`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨R0, fun h => absurd h hq, fun _ => rfl⟩`. Use `choose R hR using key`. Conclude with `⟨R, fun ν hν => (hR ν).1 hν, (hR 0).2 rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem family_through_discreteSeries : Hyps → ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ)
     (b bv ga h : ℝ) (q0 : ℕ) (R0 : Rep k r), Num k r lam u b bv ga h q0 →

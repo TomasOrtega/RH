@@ -17,35 +17,35 @@ variable (R S) in
 def lowInc : Matrix (Ix (R + 1) (S + 1)) (Ix R S) ℂ := Matrix.of fun a b => if a = upIx b then 1 else 0
 
 /- English proof (translation)
-The claim follows from `Sum.map_injective.2 ⟨Fin.succ_injective _, Fin.succ_injective _⟩`.
+A detailed English derivation is pending.
 -/
 theorem upIx_injective : Function.Injective (upIx (R := R) (S := S)) :=
   Sum.map_injective.2 ⟨Fin.succ_injective _, Fin.succ_injective _⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rcases b with b | b <;> simp [upIx]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem upIx_ne_inl (b : Ix R S) : upIx b ≠ .inl 0 := by
   rcases b with b | b <;> simp [upIx]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases b with b | b <;> simp [upIx]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem upIx_ne_inr (b : Ix R S) : upIx b ≠ .inr 0 := by
   rcases b with b | b <;> simp [upIx]
 
 /- English proof (translation)
-The claim follows from `(upIx_ne_inl b).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem inl_ne_upIx (b : Ix R S) : Sum.inl 0 ≠ upIx b := (upIx_ne_inl b).symm
 
 /- English proof (translation)
-The claim follows from `(upIx_ne_inr b).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem inr_ne_upIx (b : Ix R S) : Sum.inr 0 ≠ upIx b := (upIx_ne_inr b).symm
 
 /- English proof (translation)
-The claim follows from `upIx_injective.eq_iff`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem upIx_inj {a b : Ix R S} : upIx a = upIx b ↔ a = b := upIx_injective.eq_iff
 

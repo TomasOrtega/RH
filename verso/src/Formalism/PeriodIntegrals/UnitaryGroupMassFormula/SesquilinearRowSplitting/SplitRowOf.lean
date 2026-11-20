@@ -9,7 +9,7 @@ namespace PI.SRW
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D u F0 Λ hΛ`. Take `⟨hg, hF, hX⟩` from `hΛ`. Conclude with `hc _ _ _ _ _ F0 Λ ⟨hg.1, hF.2.1, hF.2.2.1.1, hF.2.2.2.2, hX.trans (Formalism.L2.SG.Saturated.latSpan_aaS D F0).symm, fun a => (ha D a).1, fun a => (ha D a).2, ht D⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem splitRow_of (hc : CoreStep) (ha : AaStep) (ht : TrStep) : PI.SplitRow.SplitRow := by
   intro D u F0 Λ hΛ

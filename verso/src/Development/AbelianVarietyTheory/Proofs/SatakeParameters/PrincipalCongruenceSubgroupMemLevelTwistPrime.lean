@@ -21,7 +21,7 @@ section Lat
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[CongLevel.mem_sclLat, mem_stdAt]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sclLat_zero (q N : ℕ) : LocE.sclLat P q N (fun _ => 0) = stdAt E N P := by
   ext x
@@ -29,9 +29,9 @@ theorem sclLat_zero (q N : ℕ) : LocE.sclLat P q N (fun _ => 0) = stdAt E N P :
   simp
 
 /- English proof (translation)
-Establish `e : LocE.scE n 0 = fun _ => (0 : ℤ)`. Use function extensionality and compare the values at `l`. Unfold `LocE.scE`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `LocE.lamY`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, sclLat_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lamY_zero (q n c : ℕ) : LocE.lamY P q n c 0 = stdAt E (n + c) P := by
   have e : LocE.scE n 0 = fun _ => (0 : ℤ) := by
@@ -42,7 +42,7 @@ theorem lamY_zero (q n c : ℕ) : LocE.lamY P q n c 0 = stdAt E (n + c) P := by
   rw [e, sclLat_zero]
 
 /- English proof (translation)
-Use `mem_stdAt.2 fun l => ?_` and prove the remaining obligations. Rewrite using `[CongLevel.inX_apply]`. Use `split_ifs`. Conclude with `mem_stdAt.1 hx _`. Conclude with `intAt_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inX_mem_std {n : ℕ} (c : ℕ) {x : Sp E n} (hx : x ∈ stdAt E n P) : Loc.inX E n c x ∈ stdAt E (n + c) P := by
   refine mem_stdAt.2 fun l => ?_
@@ -52,18 +52,18 @@ theorem inX_mem_std {n : ℕ} (c : ℕ) {x : Sp E n} (hx : x ∈ stdAt E n P) : 
   · exact intAt_zero
 
 /- English proof (translation)
-The claim follows from `mem_stdAt.2 fun i => mem_stdAt.1 hv (Fin.castAdd c i)`.
+A detailed English derivation is pending.
 -/
 theorem resX_mem_std {n : ℕ} (c : ℕ) {v : Sp E (n + c)} (hv : v ∈ stdAt E (n + c) P) :
     CongLevel.resX c v ∈ stdAt E n P :=
   mem_stdAt.2 fun i => mem_stdAt.1 hv (Fin.castAdd c i)
 
 /- English proof (translation)
-Establish `hq` using `qOf_ne_zero (P := P)`. Establish `maps : ∀ f : Sp E N ≃ₗ[E] Sp E N, (∀ x ∈ stdAt E N P, ((qOf P : ℕ) : E)⁻¹ • (f x - x) ∈ stdAt E N P) → ∀ x ∈ stdAt E N P, f x ∈ stdAt E N P`. Introduce `f hf x hx`. Establish `e : f x = x + ((qOf P : ℕ) : E) • (((qOf P : ℕ) : E)⁻¹ • (f x - x))`. Rewrite using `[smul_smul, mul_inv_cancel₀ hq, one_smul, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `add_mem hx (smul_mem_locP (intAt_nat _) (hf x hx))`. Introduce `x`. Use `⟨fun hx => ?_, maps g hg x⟩` and prove the remaining obligations. Use `maps g⁻¹ hg' _ hx` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show g⁻¹ (g x) = x from LinearEquiv.symm_apply_apply _ x]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem stab_of_cong {N : ℕ} (g : Sp E N ≃ₗ[E] Sp E N)
     (hg : ∀ x ∈ stdAt E N P, ((qOf P : ℕ) : E)⁻¹ • (g x - x) ∈ stdAt E N P)
@@ -82,15 +82,15 @@ theorem stab_of_cong {N : ℕ} (g : Sp E N ≃ₗ[E] Sp E N)
   rwa [show g⁻¹ (g x) = x from LinearEquiv.symm_apply_apply _ x] at this
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hq` using `qOf_ne_zero (P := P)`. Use `set q : E := ((qOf P : ℕ) : E) with hqdef`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hjD`. Establish `hy` using `(hb x hx).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y := q ^ j • h x with hydef`. Establish `hhx : h x = (q ^ j)⁻¹ • y`. Rewrite using `[hydef, smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hq), one_smul]`. Establish `hres` using `resX_mem_std c hy`. Establish `hk` using `hκ _ hres`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (h⁻¹ * CongLevel.extE c κ * h) x - x = h⁻¹ (CongLevel.extE c κ (h x) - h x)`. Rewrite using `[map_sub]`. Use `show h.symm (CongLevel.extE c κ (h x)) - x = h.symm (CongLevel.extE c κ (h x)) - h.symm (h x)`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Establish `e2 : CongLevel.extE c κ (h x) - h x = Loc.inX E n c ((q ^ j)⁻¹ • (κ (CongLevel.resX c y) - CongLevel.resX c y))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CongLevel.extE_apply, add_sub_cancel_left, hhx, map_smul, map_smul, smul_sub]`. Establish `e3 : q⁻¹ • (q ^ j)⁻¹ • (κ (CongLevel.resX c y) - CongLevel.resX c y) = q ^ d • ((q ^ (j + 1 + d))⁻¹ • (κ (CongLevel.resX c y) - CongLevel.resX c y))`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, ← map_smul, ← map_smul, e3]`. Use `(hb _ (inX_mem_std c ?_)).1` and prove the remaining obligations. Conclude with `smul_mem_locP (intAt_pow (intAt_nat _) d) hk`.
+A detailed English derivation is pending.
 -/
 theorem conj_extE_cong {n c : ℕ} (j D : ℕ) (hjD : j + 1 ≤ D) (h : Sp E (n + c) ≃ₗ[E] Sp E (n + c))
     (hb : ∀ x ∈ stdAt E (n + c) P, h⁻¹ x ∈ stdAt E (n + c) P ∧ (((qOf P : ℕ) : E) ^ j) • h x ∈ stdAt E (n + c) P)
@@ -124,15 +124,13 @@ theorem conj_extE_cong {n c : ℕ} (j D : ℕ) (hjD : j + 1 ≤ D) (h : Sp E (n 
   exact smul_mem_locP (intAt_pow (intAt_nat _) d) hk
 
 /- English proof (translation)
-Establish `hq` using `qOf_ne_zero (P := P)`. Establish `he : Loc.eN E N l ∈ stdAt E N P` using `mem_stdAt.2 fun m => by`. Unfold `Loc.eN`. Use `split_ifs`. Conclude with `intAt_one`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `intAt_zero`. Establish `hy` using `mem_stdAt.1 (hg _ he) ⟨i, hi⟩`. Establish `e : g (Loc.eN E N l) = Loc.eN E N l + ((qOf P : ℕ) : E) • (((qOf P : ℕ) : E)⁻¹ • (g (Loc.eN E N l) - Loc.eN E N l))`. Rewrite using `[smul_smul, mul_inv_cancel₀ hq, one_smul, add_sub_cancel]`. Establish `ee : Loc.atN (g (Loc.eN E N l)) i = (if i = l then (1 : E) else 0) + ((qOf P : ℕ) : E) * (((qOf P : ℕ) : E)⁻¹ • (g (Loc.eN E N l) - Loc.eN E N l)) ⟨i, hi⟩` using `by conv_lhs => rw [e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Loc.atN`. Rewrite using `[dif_pos hi]`. Simplify using `[Loc.eN]`. Establish `h1 : IntAt P (if i = l then (1 : E) else 0)` using `by split_ifs`. Conclude with `intAt_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intAt_zero`. Establish `h2` using `(intAt_nat (P := P) (qOf P)).mul hy`. Rewrite using `[ee]`. Use `⟨h1.add h2, ?_⟩` and prove the remaining obligations. Rewrite using `[reduction_add h1 h2, reduction_mul (intAt_nat _) hy, reduction_absNorm_eq_zero, zero_mul, add_zero]`.
-
-Use `split_ifs`. Conclude with `reduction_one₂`. Conclude with `reduction_zero`.
+A detailed English derivation is pending.
 -/
 theorem entry_cong {N : ℕ} (g : Sp E N ≃ₗ[E] Sp E N)
     (hg : ∀ x ∈ stdAt E N P, ((qOf P : ℕ) : E)⁻¹ • (g x - x) ∈ stdAt E N P) (l i : ℕ) (hl : l < N) (hi : i < N) :
@@ -169,37 +167,33 @@ end Lat
 open GlobalTheory.TopStep in
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst L G m2 hX hPr hL j hj b P hP C hC`. Establish `hq` using `qOf_ne_zero (P := P.1)`. Establish `hstd : lamYat (Pr` using `Pr) (R := R) j P.1 = stdAt X.E (R.N j + cOf R j) P.1 := by`. Unfold `lamYat`. Rewrite using `[if_neg hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lamY_zero _ _ _`. Establish `hD : j + 1 ≤ cst.D P`. Establish `h1` using `hL.depthQ' P hP`. Establish `h2` using `hL.hm`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hb : ∀ x ∈ stdAt X.E (R.N j + cOf R j) P.1, (L.h j b P)⁻¹ x ∈ stdAt X.E (R.N j + cOf R j) P.1 ∧ (((qOf P.1 : ℕ) : X.E) ^ j) • (L.h j b P) x ∈ stdAt X.E (R.N j + cOf R j) P.1`. Introduce `x hx`. Rewrite `hx`, the goal using `[← hstd]`. Conclude with `hL.boundQ j b P hP x hx`. Establish `hκ : ∀ y ∈ stdAt X.E (R.N j) P.1, (((qOf P.1 : ℕ) : X.E) ^ cst.D P)⁻¹ • (C.1 y - y) ∈ stdAt X.E (R.N j) P.1` using `mem_prinCong.1 hC`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκ' : ∀ y ∈ stdAt X.E (R.N j) P.1, (((qOf P.1 : ℕ) : X.E) ^ cst.D P)⁻¹ • (C.1⁻¹ y - y) ∈ stdAt X.E (R.N j) P.1`. Use `by`. Introduce `y hy`. Establish `h0` using `mem_prinCong.1 (inv_mem hC) y hy`. Rewrite `h0` using `[Subgroup.coe_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `conj_extE_cong j (cst.D P) hD (L.h j b P) hb C.1 hκ`. Establish `hg' : ∀ x ∈ stdAt X.E (R.N j + cOf R j) P.1, ((qOf P.1 : ℕ) : X.E)⁻¹ • (((L.h j b P)⁻¹ * CongLevel.extE (cOf R j) C.1 * L.h j b P)⁻¹ x - x) ∈ stdAt X.E (R.N j + cOf R j) P.1`. Establish `e : ((L.h j b P)⁻¹ * CongLevel.extE (cOf R j) C.1 * L.h j b P)⁻¹ = (L.h j b P)⁻¹ * CongLevel.extE (cOf R j) C.1⁻¹ * L.h j b P`. Rewrite using `[← CongLevel.extE_inv]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `conj_extE_cong j (cst.D P) hD (L.h j b P) hb C.1⁻¹ hκ'`. Establish `hs` using `stab_of_cong _ hg hg'`. Use `⟨CongLevel.extE (cOf R j) C.1, ⟨CongLevel.extendByIdOnLastCoordsLinearEquiv_mem_firstRowGroup _ C.1, ?_⟩, CongLevel.extE_inX _ C.1, ?_⟩` and prove the remaining obligations. Establish `e : (MulAut.conj (L.h j b P)⁻¹).toMonoidHom (CongLevel.extE (cOf R j) C.1) = (L.h j b P)⁻¹ * CongLevel.extE (cOf R j) C.1 * L.h j b P` using `by simp show (MulAut.conj (L.h j b P)⁻¹).toMonoidHom (CongLevel.extE (cOf R j) C.1) ∈ Jat (Pr := Pr) cst.sharp j P.1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Unfold `Jat`. Rewrite using `[if_neg hP]`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Establish `ep : LocE.parL P.1 (qOf P.1) (R.k + j) (R.N j) (cOf R j) = LocE.sclLat P.1 (qOf P.1) (R.N j + cOf R j) (fun l => (fun _ => (0 : ℤ)) l + if R.k + j ≤ l ∧ l < R.N j then 1 else 0)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `LocE.parL`. Use `congr 1`. Use function extensionality and compare the values at `l`. Simplify using the standard rewrite rules. Establish `hM : ∀ _s : ℕ, LocE.parL P.1 (qOf P.1) (R.k + j) (R.N j) (cOf R j) ≤ stdAt X.E (R.N j + cOf R j) P.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `_`. Rewrite using `[ep, ← sclLat_zero (P := P.1) (qOf P.1)]`. Conclude with `CongLevel.sclLat_le P.1 (qOf P.1) hq _ (fun _ => 0) (fun l => R.k + j ≤ l ∧ l < R.N j)`. Establish `hM' : ∀ (_s : ℕ) (x : Sp X.E (R.N j + cOf R j)), ((qOf P.1 : ℕ) : X.E)⁻¹ • x ∈ stdAt X.E (R.N j + cOf R j) P.1 → x ∈ LocE.parL P.1 (qOf P.1) (R.k + j) (R.N j) (cOf R j)`. Introduce `_ x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ep]`. Rewrite `hx` using `[← sclLat_zero (P := P.1) (qOf P.1)]`. Conclude with `CongLevel.smul_mem_sclLat P.1 (qOf P.1) hq _ (fun _ => 0) (fun l => R.k + j ≤ l ∧ l < R.N j) x hx`. Conclude with `(CongLevel.mem_flagU (qOf P.1) (stdAt X.E (R.N j + cOf R j) P.1) (fun _ => LocE.parL P.1 (qOf P.1) (R.k + j) (R.N j) (cOf R j)) (fun _ => 0) 0 Set.univ hM hM' (fun _ => zero_mem _) _ hs hg).1 0 trivial`. Unfold `chiInv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hn : Loc.n1Arg (CongLevel.extE (cOf R j) C.1) = 0`. Unfold `Loc.n1Arg`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `e : CongLevel.extE (cOf R j) C.1 (Loc.eN X.E (R.N j + cOf R j) (R.N j + i + 1)) = Loc.eN X.E (R.N j + cOf R j) (R.N j + i + 1)`. Rewrite using `[show R.N j + i + 1 = R.N j + (i + 1) by ring, CongLevel.extE_apply, CongLevel.resX_eN]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Unfold `Loc.atN`. Use `split_ifs with h1`. Simplify using `[Loc.eN]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[hn, hL.cst_ok.psi_int P 0 intAt_zero, inv_one, one_mul]`. Unfold `lamRow`. Rewrite using `[if_neg hP]`. Unfold `LocE.lamQB`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LamRowCong.unitV_det_eq_one, inv_one]`. Introduce `s t`. Use `s.2` as an intermediate fact. Use `t.2` as an intermediate fact. Conclude with `(entry_cong _ hg (R.k + j + t.1) (R.k + j + s.1) (by omega) (by omega)).1`.
-
-Use extensionality with `s t`. Use `s.2` as an intermediate fact. Use `t.2` as an intermediate fact. Rewrite using `[Matrix.map_apply, Matrix.one_apply]`. Use `show redP P.1 (Loc.atN (((L.h j b P)⁻¹ * CongLevel.extE (cOf R j) C.1 * L.h j b P) (Loc.eN X.E (R.N j + cOf R j) (R.k + j + t.1))) (R.k + j + s.1)) = _`.
-
-Rewrite using `[(entry_cong _ hg (R.k + j + t.1) (R.k + j + s.1) (by omega) (by omega)).2]`. Distinguish the cases in `hst : s = t`. Substitute `hst` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun e => hst (Fin.ext (by omega))), if_neg hst]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_mem_prCat_twist : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
     {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}

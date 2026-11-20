@@ -10,25 +10,23 @@ namespace PositivityTheory.KB.MomentRationality.Cz.Pk
 variable {ι : Type} {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[GaussianInt.toComplex_def₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gauss_re (z : GaussianInt) : (z : ℂ).re = z.re := by rw [GaussianInt.toComplex_def₂]
 
 /- English proof (translation)
-Rewrite using `[GaussianInt.toComplex_def₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gauss_im (z : GaussianInt) : (z : ℂ).im = z.im := by rw [GaussianInt.toComplex_def₂]
 
 /- English proof (translation)
-Establish `hfin : (Set.Icc (-⌈R0⌉) ⌈R0⌉ ×ˢ Set.Icc (-⌈R0⌉) ⌈R0⌉ : Set (ℤ × ℤ)).Finite` using `(Set.finite_Icc _ _).prod (Set.finite_Icc _ _)`. Establish `hinj : Set.InjOn (fun z : GaussianInt => (z.re, z.im)) ((fun z : GaussianInt => (z.re, z.im)) ⁻¹' (Set.Icc (-⌈R0⌉) ⌈R0⌉ ×ˢ Set.Icc (-⌈R0⌉) ⌈R0⌉))`. Introduce `z _ w _ h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Zsqrtd.ext_iff.mpr ⟨h.1, h.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Set.Finite.preimage hinj hfin).subset ?_` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Set.mem_setOf_eq] at hz`. Establish `key : ∀ n : ℤ, |(n : ℝ)| ≤ R0 → -⌈R0⌉ ≤ n ∧ n ≤ ⌈R0⌉`. Introduce `n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `abs_le.mp hn`. Establish `h2` using `Int.le_ceil R0`. Prove the components needed by the constructor for the conclusion. Establish `: ((-⌈R0⌉ : ℤ) : ℝ) ≤ n` using `by push_cast; linarith [h1.1]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (n : ℝ) ≤ ((⌈R0⌉ : ℤ) : ℝ)` using `by linarith [h1.2]`. Conclude with `this` after adjusting the coercions. Establish `hre : |(z.re : ℝ)| ≤ R0` using `by rw [← gauss_re]; exact (Complex.abs_re_le_norm _).trans hz`. Establish `him : |(z.im : ℝ)| ≤ R0` using `by rw [← gauss_im]; exact (Complex.abs_im_le_norm _).trans hz`. Simplify using `only [Set.mem_preimage, Set.mem_prod, Set.mem_Icc]`.
-
-Conclude with `⟨key _ hre, key _ him⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gauss_fin (R0 : ℝ) : {z : GaussianInt | ‖(z : ℂ)‖ ≤ R0}.Finite := by
   have hfin : (Set.Icc (-⌈R0⌉) ⌈R0⌉ ×ˢ Set.Icc (-⌈R0⌉) ⌈R0⌉ : Set (ℤ × ℤ)).Finite :=
@@ -56,11 +54,11 @@ theorem gauss_fin (R0 : ℝ) : {z : GaussianInt | ‖(z : ℂ)‖ ≤ R0}.Finite
   exact ⟨key _ hre, key _ him⟩
 
 /- English proof (translation)
-Establish `h1 : (Set.univ.pi fun _ : Fin N => Set.univ.pi fun _ : Fin N => {z : GaussianInt | ‖(z : ℂ)‖ ≤ R0}).Finite` using `Set.Finite.pi fun _ => Set.Finite.pi fun _ => gauss_fin R0`. Use `⟨h1.toFinset.card, fun F hF => ?_⟩` and prove the remaining obligations. Break down `F.eq_empty_or_nonempty with rfl | ⟨c0, hc0⟩` into its components or cases. Simplify using the standard rewrite rules. Use `Finset.card_le_card_of_injOn (fun c : SpecialLinearGroup (Fin N) GaussianInt => (((c0⁻¹ * c : SpecialLinearGroup (Fin N) GaussianInt) : Matrix (Fin N) (Fin N) GaussianInt) : Fin N → Fin N → GaussianInt)) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c hc`. Use `Finset.mem_coe.mpr (h1.mem_toFinset.mpr ?_)` and prove the remaining obligations. Introduce `i _ j _`. Conclude with `hF c0 hc0 c hc i j`. Introduce `c _ c' _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : c0⁻¹ * c = c0⁻¹ * c'` using `Subtype.ext h`. Conclude with `mul_left_cancel h'`.
+A detailed English derivation is pending.
 -/
 theorem fin_bdd (R0 : ℝ) : ∃ R : ℕ, ∀ F : Finset (SpecialLinearGroup (Fin N) GaussianInt),
     (∀ c ∈ F, ∀ c' ∈ F, ∀ i j,
@@ -89,7 +87,7 @@ def umat (x : Fin N → Fin N → ℕ × ℕ) : Matrix (Fin N) (Fin N) GaussianI
   fun i j => if i = j then 1 else if i < j then ⟨(x i j).1, (x i j).2⟩ else 0
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Establish `h1 : i ≠ j` using `(ne_of_lt hij').symm`. Establish `h2 : ¬ i < j` using `not_lt.mpr hij'.le`. Simplify using `[umat, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem umat_upper (x : Fin N → Fin N → ℕ × ℕ) : (umat x).BlockTriangular id := by
   intro i j hij
@@ -99,7 +97,7 @@ theorem umat_upper (x : Fin N → Fin N → ℕ × ℕ) : (umat x).BlockTriangul
   simp [umat, h1, h2]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (umat_upper x)]`. Simplify using `[umat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem umat_det (x : Fin N → Fin N → ℕ × ℕ) : (umat x).det = 1 := by
   rw [Matrix.det_of_upperTriangular (umat_upper x)]
@@ -115,31 +113,29 @@ private theorem coe_uel_eq_umat (x : Fin N → Fin N → ℕ × ℕ) :
   rfl
 
 /- English proof (translation)
-Use `set K : Fin N → Fin N → ℕ := fun i j => ⌈Real.exp (s0 i - s0 j)⌉₊ with hK`. Use `set S : Finset (Fin N → Fin N → ℕ × ℕ) := Fintype.piFinset fun i => Fintype.piFinset fun j => if i < j then Finset.range (K i j) ×ˢ Finset.range (K i j) else {((0 : ℕ), (0 : ℕ))} with hS`. Establish `hmem : ∀ x ∈ S, ∀ i j, x i j ∈ (if i < j then Finset.range (K i j) ×ˢ Finset.range (K i j) else {((0 : ℕ), (0 : ℕ))})`. Introduce `x hx i j`. Conclude with `Fintype.mem_piFinset.mp (Fintype.mem_piFinset.mp hx i) j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsmall : ∀ i j (n : ℕ), n < K i j → (n : ℝ) ≤ Real.exp (s0 i - s0 j)`. Introduce `i j n hn`. Establish `h1 : (n : ℝ) + 1 ≤ (K i j : ℝ)` using `by exact_mod_cast hn`. Establish `h2 : (K i j : ℝ) < Real.exp (s0 i - s0 j) + 1` using `Nat.ceil_lt_add_one (Real.exp_pos _).le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨S.image uel, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hc`. Rewrite using `[coe_uel_eq_umat]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Simplify using `[Matrix.map_apply, umat_upper x hij]`. Introduce `i j hij`. Break down `hij.lt_or_eq with h | rfl` into its components or cases. Establish `hx'` using `hmem x hx i j`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx'` using `[if_pos h, Finset.mem_product, Finset.mem_range, Finset.mem_range]`. Establish `e : umat x i j = ⟨((x i j).1 : ℤ), ((x i j).2 : ℤ)⟩` using `by simp [umat, h.ne, h]`. Rewrite using `[e]`. Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations. Rewrite using `[gauss_re, gauss_im]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a1` using `hsmall i j _ hx'.1`. Establish `a2` using `hsmall i j _ hx'.2`. Use `show |((((x i j).1 : ℤ)) : ℝ)| + |(((x i j).2 : ℤ) : ℝ)| ≤ _`. Rewrite using `[Int.cast_natCast, Int.cast_natCast, abs_of_nonneg (Nat.cast_nonneg _), abs_of_nonneg (Nat.cast_nonneg _)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Evaluate the numerical expressions using `[umat]`. Rewrite using `[Finset.card_image_of_injOn]`. Rewrite using `[← ENNReal.ofReal_natCast]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[hS]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.card_piFinset, apply_ite Finset.card, Finset.card_product, Finset.card_range, Finset.card_singleton]`. Use `push_cast`. Unfold `Phi`. Rewrite using `[Finset.mul_sum, Real.exp_sum]`. Apply `Finset.prod_le_prod (fun i _ => (Real.exp_pos _).le)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Rewrite using `[Finset.mul_sum, Real.exp_sum]`. Apply `Finset.prod_le_prod (fun j _ => (Real.exp_pos _).le)` to reduce the goal to its premises. Introduce `j _`. Use `split_ifs with h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[show 2 * (s0 i - s0 j) = (s0 i - s0 j) + (s0 i - s0 j) by ring, Real.exp_add]`. Establish `hc` using `Nat.le_ceil (Real.exp (s0 i - s0 j))`. Conclude with `mul_le_mul hc hc (Real.exp_pos _).le (Nat.cast_nonneg _)`. Simplify using the standard rewrite rules. Introduce `x hx y hy hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i j`. Establish `hx'` using `hmem x hx i j`. Establish `hy'` using `hmem y hy i j`. Distinguish the cases in `h : i < j`. Establish `e` using `congrArg (fun g : SpecialLinearGroup (Fin N) GaussianInt => (g : Matrix (Fin N) (Fin N) GaussianInt) i j) hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coe_uel_eq_umat, umat, h.ne, h, if_false, if_true] at e`. Establish `e1` using `congrArg Zsqrtd.re e`. Establish `e2` using `congrArg Zsqrtd.im e`. Simplify using `only [Nat.cast_inj] at e1 e2`. Conclude with `Prod.ext e1 e2`.
-
-Rewrite `hx'`, `hy'` using `[if_neg h, Finset.mem_singleton]`. Rewrite using `[hx', hy']`.
+A detailed English derivation is pending.
 -/
 theorem count (s0 : Fin N → ℝ) : ∃ F : Finset (SpecialLinearGroup (Fin N) GaussianInt),
     (∀ c ∈ F, ((c : Matrix (Fin N) (Fin N) GaussianInt).map GaussianInt.toComplex).BlockTriangular id ∧

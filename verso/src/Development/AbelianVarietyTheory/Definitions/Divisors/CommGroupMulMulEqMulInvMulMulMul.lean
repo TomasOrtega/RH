@@ -24,25 +24,25 @@ abbrev ger {U : Y.Opens} (y : Y) (hy : y ∈ U) : Γ(Y, U) →+* Y.presheaf.stal
   (Y.presheaf.germ U y hy).hom
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, h'⟩`.
+Supply the required witnesses or components.
 -/
 theorem memInf {U V : Y.Opens} {y : Y} (h : y ∈ U) (h' : y ∈ V) : y ∈ U ⊓ V := ⟨h, h'⟩
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.germ_res_apply Y.presheaf _ y hy a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ger_resG {U V : Y.Opens} (h : V ≤ U) (y : Y) (hy : y ∈ V) (a : Γ(Y, U)) :
     ger y hy (resG Y h a) = ger y (h hy) a :=
   TopCat.Presheaf.germ_res_apply Y.presheaf _ y hy a
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.section_ext Y.sheaf U a b h`.
+A detailed English derivation is pending.
 -/
 theorem fun_ext_ger {U : Y.Opens} {a b : Γ(Y, U)} (h : ∀ y hy, ger y hy a = ger y hy b) : a = b :=
   TopCat.Presheaf.section_ext Y.sheaf U a b h
 
 /- English proof (translation)
-Rewrite using `[← resG_app, ger_resG]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r U z (h hz) a).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ger_appLE (r : T ⟶ Y) {U : Y.Opens} {W : T.Opens} (h : W ≤ r ⁻¹ᵁ U) (z : T) (hz : z ∈ W)
     (a : Γ(Y, U)) : ger z hz ((r.appLE U W h).hom a) = (r.stalkMap z).hom (ger (r z) (h hz) a) := by
@@ -53,27 +53,27 @@ abbrev tr (B : LB Y) (y : Y) (i j : B.ι) : (Y.presheaf.stalk y)ˣ :=
   gm (𝟙 Y) y (B.U i ⊓ B.U j) (B.g i j)
 
 /- English proof (translation)
-The claim follows from `gm_val (𝟙 Y) y _ h _`.
+A detailed English derivation is pending.
 -/
 theorem val_tr (B : LB Y) (y : Y) {i j : B.ι} (h : y ∈ B.U i ⊓ B.U j) :
     (tr B y i j).val = ger y h (B.g i j).val := gm_val (𝟙 Y) y _ h _
 
 /- English proof (translation)
-The claim follows from `gm_tens A B (𝟙 Y) y a b ha hb`.
+A detailed English derivation is pending.
 -/
 theorem tr_tens (A B : LB Y) (y : Y) {a b : (tens A B).ι} (ha : y ∈ (tens A B).U a)
     (hb : y ∈ (tens A B).U b) : tr (tens A B) y a b = tr A y a.1 b.1 * tr B y a.2 b.2 :=
   gm_tens A B (𝟙 Y) y a b ha hb
 
 /- English proof (translation)
-The claim follows from `gm_div' A B (𝟙 Y) y a b ha hb`.
+A detailed English derivation is pending.
 -/
 theorem tr_div (A B : LB Y) (y : Y) {a b : (LB.div A B).ι} (ha : y ∈ (LB.div A B).U a)
     (hb : y ∈ (LB.div A B).U b) : tr (LB.div A B) y a b = tr A y a.1 b.1 * (tr B y a.2 b.2)⁻¹ :=
   gm_div' A B (𝟙 Y) y a b ha hb
 
 /- English proof (translation)
-The claim follows from `(gm_linComb L _ _ (𝟙 Y) y a b ha hb).trans (by rw [Fintype.prod_unique, Category.id_comp])`.
+A detailed English derivation is pending.
 -/
 theorem tr_zpow (L : LB Y) (n : ℤ) (y : Y) {a b : (lbZPow L n).ι} (ha : y ∈ (lbZPow L n).U a)
     (hb : y ∈ (lbZPow L n).U b) :
@@ -81,7 +81,7 @@ theorem tr_zpow (L : LB Y) (n : ℤ) (y : Y) {a b : (lbZPow L n).ι} (ha : y ∈
   (gm_linComb L _ _ (𝟙 Y) y a b ha hb).trans (by rw [Fintype.prod_unique, Category.id_comp])
 
 /- English proof (translation)
-Establish `h : r z ∈ B.U (a PUnit.unit) ⊓ B.U (b PUnit.unit)` using `⟨mem_pull.1 ha, mem_pull.1 hb⟩`. Use `Units.ext ((val_tr _ z (memInf ha hb)).trans ?_)` and prove the remaining obligations. Establish `e` using `congrArg (ger z (memInf ha hb)) (resG_pull_g r a b le_rfl)`. Rewrite `e` using `[resG_self, ger_appLE]`. Conclude with `e.trans (congrArg (r.stalkMap z).hom (val_tr B _ h).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_pull (B : LB Y) (r : T ⟶ Y) (z : T) {a b : (B.pull r).ι} (ha : z ∈ (B.pull r).U a)
     (hb : z ∈ (B.pull r).U b) : tr (B.pull r) z a b =
@@ -123,7 +123,7 @@ theorem germ_apply (i : B.ι) (y : Y) (hy : y ∈ O) (hi : y ∈ B.U i) (f : H0 
     germ i y hy hi f = ger y (memInf hy hi) (f.loc i) := rfl
 
 /- English proof (translation)
-The claim follows from `(map_mul (ger y (memInf hy hi)) (resG Y inf_le_left a) (f.loc i)).trans (congrArg (· * _) (ger_resG _ _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem germ_fun_smul (i : B.ι) (y : Y) (hy : y ∈ O) (hi : y ∈ B.U i) (a : Γ(Y, O))
     (f : H0 p B O) : germ i y hy hi (a • f) = ger y hy a * germ i y hy hi f :=
@@ -135,21 +135,21 @@ variable (p) in
 def const (y : Y) : k →+* Y.presheaf.stalk y := (ger (U := ⊤) y trivial).comp (algX p ⊤)
 
 /- English proof (translation)
-Rewrite using `[← TopForm.resG_comp_algX p (le_top : O ≤ ⊤), RingHom.comp_apply, ger_resG]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ger_algX (y : Y) (hy : y ∈ O) (c : k) : ger y hy (algX p O c) = const p y c := by
   rw [← TopForm.resG_comp_algX p (le_top : O ≤ ⊤), RingHom.comp_apply, ger_resG]
   rfl
 
 /- English proof (translation)
-Rewrite using `[base_smul, germ_fun_smul, ger_algX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem germ_smul (i : B.ι) (y : Y) (hy : y ∈ O) (hi : y ∈ B.U i) (c : k) (f : H0 p B O) :
     germ i y hy hi (c • f) = const p y c * germ i y hy hi f := by
   rw [base_smul, germ_fun_smul, ger_algX]
 
 /- English proof (translation)
-Establish `e` using `congrArg (ger y (memInf (memInf hy hi) hj)) (coord_rel (L := B) f i j inf_le_left (inf_le_inf_right _ inf_le_left) (inf_le_inf_right _ inf_le_right))`. Rewrite `e` using `[map_mul, ger_resG, ger_resG, ger_resG]`. Rewrite using `[val_tr B y (memInf hi hj)]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_change (i j : B.ι) (y : Y) (hy : y ∈ O) (hi : y ∈ B.U i) (hj : y ∈ B.U j)
     (f : H0 p B O) : germ i y hy hi f = tr B y i j * germ j y hy hj f := by
@@ -160,7 +160,7 @@ theorem germ_change (i j : B.ι) (y : Y) (hy : y ∈ O) (hi : y ∈ B.U i) (hj :
   exact e
 
 /- English proof (translation)
-The claim follows from `sec_ext fun j => fun_ext_ger fun y hy => by obtain ⟨i, hi, e⟩ := h y hy.1 change germ j y hy.1 hy.2 f = germ j y hy.1 hy.2 f' rw [germ_change j i y _ _ hi, germ_change j i y _ _ hi f', e]`.
+A detailed English derivation is pending.
 -/
 theorem ext_germ {f f' : H0 p B O}
     (h : ∀ y (hy : y ∈ O), ∃ i hi, germ i y hy hi f = germ i y hy hi f') : f = f' :=
@@ -176,7 +176,7 @@ def restr (h : O' ≤ O) : H0 p B O →ₗ[k] H0 p B O' where
     (congrArg (· • _) (DFunLike.congr_fun (TopForm.resG_comp_algX p h) c))
 
 /- English proof (translation)
-The claim follows from `ger_resG (inf_le_inf_right _ h) y _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem germ_restr (h : O' ≤ O) (i : B.ι) (y : Y) (hy : y ∈ O') (hi : y ∈ B.U i)
     (f : H0 p B O) : germ i y hy hi (restr h f) = germ i y (h hy) hi f :=
@@ -190,20 +190,20 @@ def ofSec (O : Y.Opens) : LB.Sec B →+ H0 p B O where
   map_add' _ _ := sec_ext fun _ => map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `ger_resG inf_le_right y _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem germ_ofSec (i : B.ι) (y : Y) (hy : y ∈ O) (hi : y ∈ B.U i) (σ : LB.Sec B) :
     germ i y hy hi (ofSec p O σ) = ger y hi (σ.f i) :=
   ger_resG inf_le_right y _ _
 
 /- English proof (translation)
-The claim follows from `map_ofSec σ h`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem restr_ofSec (h : O' ≤ O) (σ : LB.Sec B) : restr h (ofSec p O σ) = ofSec p O' σ :=
   map_ofSec σ h
 
 /- English proof (translation)
-The claim follows from `sec_ext fun i => fun_ext_ger fun y hy => by change germ i y hy.1 hy.2 _ = germ i y hy.1 hy.2 _ rw [germ_smul, germ_ofSec, germ_ofSec, smul_f, map_mul, ger_resG, ger_algX]`.
+A detailed English derivation is pending.
 -/
 theorem ofSec_smul (c : k) (σ : LB.Sec B) : ofSec p O (algX p ⊤ c • σ) = c • ofSec p O σ :=
   sec_ext fun i => fun_ext_ger fun y hy => by
@@ -211,15 +211,15 @@ theorem ofSec_smul (c : k) (σ : LB.Sec B) : ofSec p O (algX p ⊤ c • σ) = c
     rw [germ_smul, germ_ofSec, germ_ofSec, smul_f, map_mul, ger_resG, ger_algX]
 
 /- English proof (translation)
-The claim follows from `(globalEquiv B).symm.bijective`.
+A detailed English derivation is pending.
 -/
 theorem bijective_ofSec_top : Function.Bijective (ofSec p (B := B) ⊤) :=
   (globalEquiv B).symm.bijective
 
 /- English proof (translation)
-Use `letI := algebraΓOfHom p`. Use `letI : Module E B.Sec := Module.compHom _ (algebraMap E Γ(Y, ⊤))`. Use `haveI : IsScalarTower E Γ(Y, ⊤) B.Sec := IsScalarTower.of_compHom _ _ _`. Establish `e (c : E) : algebraMap E Γ(Y, ⊤) c = algX p ⊤ c`. Express the relevant statement in the definitionally equal form `p.appTop _ = _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[lineBundleGlobalSectionsDim_eq_finrank]`. Conclude with `(LinearEquiv.ofBijective { ofSec p ⊤ with map_smul' := fun c σ => (e c ▸ ofSec_smul c σ :) } bijective_ofSec_top).finrank_eq.symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_top {E : Type} [Field E] (p : Y ⟶ Sp E) (B : LB Y) :
     letI := algebraΓOfHom p
@@ -236,9 +236,9 @@ theorem finrank_top {E : Type} [Field E] (p : Y ⟶ Sp E) (B : LB Y) :
     { ofSec p ⊤ with map_smul' := fun c σ => (e c ▸ ofSec_smul c σ :) } bijective_ofSec_top).finrank_eq.symm
 
 /- English proof (translation)
-Set `s (t : τ) : H0 p B (V t)` to `(chartEquiv hB (c t) (hc t)).symm (u t)`. Establish `hs (t y) (h : y ∈ V t) : germ (c t) y h (hc t h) (s t) = ger y h (u t)` using `by conv_rhs => rw [← (chartEquiv hB (c t) (hc t)).apply_symm_apply (u t), chartEquiv_apply, ger_resG]`. Both sides reduce to the same expression. Take `⟨f, hf⟩` from `exists_mod_of_cover (F := toMod B) V hO (fun y hy => Opens.mem_iSup.2 (cover y hy)) s fun t t' => ext_germ (p := p) fun y hy => ⟨c t, hc t hy.1, (germ_restr inf_le_left _ _ _ _ (s t)).trans <| Eq.symm <| (germ_restr inf_le_right _ _ _ _ (s t')).trans <| by`. Rewrite using `[germ_change _ (c t') y _ _ (hc t' hy.2), hs, hs, rule y t t' hy.1 hy.2]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨f, fun t y h => by rw [← hs t y h, ← hf t]; exact (germ_restr (hO t) _ _ _ _ f).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_of_germs (hB : B.IsLB) {τ : Type*} (V : τ → Y.Opens) (c : τ → B.ι)
     (hO : ∀ t, V t ≤ O) (hc : ∀ t, V t ≤ B.U (c t)) (cover : ∀ y ∈ O, ∃ t, y ∈ V t)
@@ -276,7 +276,7 @@ def pullSL (r : T ⟶ Y) {q : T ⟶ Sp k'} {φ : k →+* k'} (hq : r ≫ p = q �
       (congrArg (· • _) ((resG_app r h _).trans e))
 
 /- English proof (translation)
-The claim follows from `(germ_restr h _ _ _ _ _).trans (ger_appLE r (pull_inf_le r O j) z _ _)`.
+A detailed English derivation is pending.
 -/
 theorem germ_pullSL (r : T ⟶ Y) {q : T ⟶ Sp k'} {φ : k →+* k'} (hq : r ≫ p = q ≫ spMap φ)
     {W : T.Opens} (h : W ≤ r ⁻¹ᵁ O) (j : (B.pull r).ι) (z : T) (hz : z ∈ W)
@@ -289,7 +289,7 @@ def pull (r : T ⟶ Y) {W : T.Opens} (h : W ≤ r ⁻¹ᵁ O) :
   pullSL r (φ := RingHom.id k) (by rw [spMap, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id]) h
 
 /- English proof (translation)
-The claim follows from `germ_pullSL r _ h j z hz hj f`.
+A detailed English derivation is pending.
 -/
 theorem germ_pull (r : T ⟶ Y) {W : T.Opens} (h : W ≤ r ⁻¹ᵁ O) (j : (B.pull r).ι) (z : T)
     (hz : z ∈ W) (hj : z ∈ (B.pull r).U j) (f : H0 p B O) : germ j z hz hj (pull r h f) =
@@ -297,7 +297,7 @@ theorem germ_pull (r : T ⟶ Y) {W : T.Opens} (h : W ≤ r ⁻¹ᵁ O) (j : (B.p
   germ_pullSL r _ h j z hz hj f
 
 /- English proof (translation)
-The claim follows from `sec_ext fun i => fun_ext_ger fun y hy => by change germ i y hy.1 hy.2 _ = germ i y hy.1 hy.2 _ rw [germ_pull, germ_pull] exact congrArg _ (germ_restr _ _ _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem pull_restr (r : T ⟶ Y) {W : T.Opens} (h' : O' ≤ O) (h : W ≤ r ⁻¹ᵁ O')
     (f : H0 p B O) : pull r h (restr h' f) = pull r (h.trans (r.preimage_mono h')) f :=
@@ -307,7 +307,7 @@ The claim follows from `sec_ext fun i => fun_ext_ger fun y hy => by change germ 
     exact congrArg _ (germ_restr _ _ _ _ _ _)
 
 /- English proof (translation)
-Use `(ger_appLE r (U := ⊤) (W := ⊤) le_top z trivial _).symm.trans (congrArg (ger z _) ?_)` and prove the remaining obligations. Conclude with `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c)) (Scheme.Hom.appLE_comp_appLE r p ⊤ ⊤ ⊤ le_top le_top)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stalkMap_const (r : T ⟶ Y) (z : T) (c : k) :
     (r.stalkMap z).hom (const p (r z) c) = const (r ≫ p) z c := by
@@ -331,7 +331,7 @@ theorem val_apply (x : Sp R ⟶ Y) (i : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi : 
     (f : H0 p B O) : val x i hO hi f = evalPt x (O ⊓ B.U i) (le_preimage_inf hO hi) (f.loc i) := rfl
 
 /- English proof (translation)
-Establish `e` using `congrArg (evalPt x (O ⊓ B.U i ⊓ B.U j) (le_preimage_inf (le_preimage_inf hO hi) hj)) (coord_rel (L := B) f i j inf_le_left (inf_le_inf_right _ inf_le_left) (inf_le_inf_right _ inf_le_right))`. Rewrite `e` using `[map_mul, evalPt_res x _ (le_preimage_inf hO hi), evalPt_res x _ (le_preimage_inf hi hj), evalPt_res x _ (le_preimage_inf hO hj)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_change (x : Sp R ⟶ Y) (i j : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi : ⊤ ≤ x ⁻¹ᵁ B.U i)
     (hj : ⊤ ≤ x ⁻¹ᵁ B.U j) (f : H0 p B O) : val x i hO hi f =
@@ -342,7 +342,7 @@ theorem val_change (x : Sp R ⟶ Y) (i j : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi
     evalPt_res x _ (le_preimage_inf hO hj)] at e
 
 /- English proof (translation)
-The claim follows from `(map_mul (evalPt x _ (le_preimage_inf hO hi)) (resG Y inf_le_left a) (f.loc i)).trans (congrArg (· * _) (evalPt_res x _ hO _ a))`.
+A detailed English derivation is pending.
 -/
 theorem val_fun_smul (x : Sp R ⟶ Y) (i : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi : ⊤ ≤ x ⁻¹ᵁ B.U i)
     (a : Γ(Y, O)) (f : H0 p B O) : val x i hO hi (a • f) = evalPt x O hO a * val x i hO hi f :=
@@ -350,14 +350,14 @@ theorem val_fun_smul (x : Sp R ⟶ Y) (i : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi
     (congrArg (· * _) (evalPt_res x _ hO _ a))
 
 /- English proof (translation)
-The claim follows from `evalPt_res x inf_le_right hi _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_ofSec (x : Sp R ⟶ Y) (i : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi : ⊤ ≤ x ⁻¹ᵁ B.U i)
     (σ : LB.Sec B) : val x i hO hi (ofSec p O σ) = evalPt x _ hi (σ.f i) :=
   evalPt_res x inf_le_right hi _ _
 
 /- English proof (translation)
-Establish `e` using `Scheme.Hom.appLE_comp_appLE x r (O ⊓ B.U (j PUnit.unit)) (W ⊓ (B.pull r).U j) ⊤ ((inf_le_inf_right _ h).trans (pull_inf_le r O j)) (le_preimage_inf hW hj)`. Use `(congrArg (evalPt x _ (le_preimage_inf hW hj)) (resG_appLE r (pull_inf_le r O j) (inf_le_inf_right _ h) (f.loc _))).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun g => (g ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom (f.loc _)) e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_pull (r : T ⟶ Y) {W : T.Opens} (h : W ≤ r ⁻¹ᵁ O) (x : Sp R ⟶ T) (j : (B.pull r).ι)
     (hW : ⊤ ≤ x ⁻¹ᵁ W) (hj : ⊤ ≤ x ⁻¹ᵁ (B.pull r).U j) (hO : ⊤ ≤ (x ≫ r) ⁻¹ᵁ O)
@@ -379,7 +379,7 @@ def NowhereZero {p : Y ⟶ Sp k} {B : LB Y} {O : Y.Opens} (f : H0 p B O) : Prop 
   ∀ y hy i hi, IsUnit (germ i y hy hi f)
 
 /- English proof (translation)
-Introduce `y hy j hj` and use `by obtain ⟨i, hi, e⟩ := h y hy rw [germ_change j i y hy hj hi] exact (Units.isUnit _).mul e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nowhereZero_of_exists {p : Y ⟶ Sp k} {B : LB Y} {O : Y.Opens} {f : H0 p B O}
     (h : ∀ y (hy : y ∈ O), ∃ i hi, IsUnit (germ i y hy hi f)) : NowhereZero f := fun y hy j hj => by
@@ -388,14 +388,14 @@ theorem nowhereZero_of_exists {p : Y ⟶ Sp k} {B : LB Y} {O : Y.Opens} {f : H0 
   exact (Units.isUnit _).mul e
 
 /- English proof (translation)
-The claim follows from `(Y.mem_basicOpen _ y hi).symm.trans (mem_nonzeroLocus_iff_basicOpen σ hi).symm`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_ger_iff {B : LB Y} (σ : LB.Sec B) {y : Y} {i : B.ι} (hi : y ∈ B.U i) :
     IsUnit (ger y hi (σ.f i)) ↔ y ∈ nonzeroLocus σ :=
   (Y.mem_basicOpen _ y hi).symm.trans (mem_nonzeroLocus_iff_basicOpen σ hi).symm
 
 /- English proof (translation)
-Introduce `z hz i hi` and use `by rw [germ_pull] exact IsUnit.map _ ((germ_ofSec (p := p) _ _ (h hz) _ σ).symm ▸ (isUnit_ger_iff σ _).2 (hσ hz))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nowhereZero_pull_ofSec {p : Y ⟶ Sp k} {B : LB Y} {O : Y.Opens} (σ : LB.Sec B) (r : T ⟶ Y)
     {W : T.Opens} (h : W ≤ r ⁻¹ᵁ O) (hσ : W ≤ r ⁻¹ᵁ nonzeroLocus σ) :
@@ -430,9 +430,9 @@ namespace ProdChart
 variable {p : Y ⟶ Sp k} {P B N : LB Y} {O O' : Y.Opens} (C : ProdChart P B N)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_of_germs (p := p) (O := O) C.isLB₃ (fun t => ((O ⊓ P.U (C.a t)) ⊓ (O ⊓ B.U (C.b t))) ⊓ N.U (C.c t)) C.c (fun _ => inf_le_left.trans (inf_le_left.trans inf_le_left)) (fun _ => inf_le_right) (fun y hy => (C.cover y).imp fun _ h => ⟨⟨⟨hy, h.1⟩, hy, h.2.1⟩, h.2.2⟩) (fun t => r …`. Simplify using `only [map_mul, ger_resG]`. Rewrite using `[C.rule y t t' ⟨h.1.1.2, h.1.2.2, h.2⟩ ⟨h'.1.1.2, h'.1.2.2, h'.2⟩, Units.val_mul, mul_mul_mul_comm]`. Conclude with `congrArg₂ (· * ·) (germ_change _ _ y h.1.1.1 h.1.1.2 h'.1.1.2 σ) (germ_change _ _ y h.1.1.1 h.1.2.2 h'.1.2.2 f)`. Use `⟨g, fun t y hy ha hb hc => (hg t y (memInf (memInf (memInf hy ha) (memInf hy hb)) hc)).trans ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ger_resG, ger_resG]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_mul (σ : H0 p P O) (f : H0 p B O) : ∃ g : H0 p N O, ∀ t y hy ha hb hc,
     germ (C.c t) y hy hc g = germ (C.a t) y hy ha σ * germ (C.b t) y hy hb f := by
@@ -453,7 +453,7 @@ theorem exists_mul (σ : H0 p P O) (f : H0 p B O) : ∃ g : H0 p N O, ∀ t y hy
   rfl
 
 /- English proof (translation)
-The claim follows from `ext_germ fun y hy => let ⟨t, ht⟩ := C.cover y; ⟨C.c t, ht.2.2, h t y hy ht.1 ht.2.1 ht.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext {g g' : H0 p N O} (h : ∀ t y hy, y ∈ P.U (C.a t) → y ∈ B.U (C.b t) → ∀ hc,
     germ (C.c t) y hy hc g = germ (C.c t) y hy hc g') : g = g' :=
@@ -462,7 +462,7 @@ theorem sec_ext {g g' : H0 p N O} (h : ∀ t y hy, y ∈ P.U (C.a t) → y ∈ B
 def mulFun (σ : H0 p P O) (f : H0 p B O) : H0 p N O := (C.exists_mul σ f).choose
 
 /- English proof (translation)
-The claim follows from `(C.exists_mul σ f).choose_spec t y hy ha hb hc`.
+A detailed English derivation is pending.
 -/
 theorem germ_mulFun (σ : H0 p P O) (f : H0 p B O) (t : C.τ) (y : Y) (hy : y ∈ O)
     (ha : y ∈ P.U (C.a t)) (hb : y ∈ B.U (C.b t)) (hc : y ∈ N.U (C.c t)) :
@@ -481,7 +481,7 @@ def mul : H0 p P O →ₗ[k] H0 p B O →ₗ[k] H0 p N O :=
       simp only [germ_smul, C.germ_mulFun _ _ t y hy ha hb hc, mul_left_comm])
 
 /- English proof (translation)
-The claim follows from `C.germ_mulFun σ f t y hy ha hb hc`.
+A detailed English derivation is pending.
 -/
 theorem germ_mul (σ : H0 p P O) (f : H0 p B O) (t : C.τ) (y : Y) (hy : y ∈ O)
     (ha : y ∈ P.U (C.a t)) (hb : y ∈ B.U (C.b t)) (hc : y ∈ N.U (C.c t)) :
@@ -489,7 +489,7 @@ theorem germ_mul (σ : H0 p P O) (f : H0 p B O) (t : C.τ) (y : Y) (hy : y ∈ O
   C.germ_mulFun σ f t y hy ha hb hc
 
 /- English proof (translation)
-The claim follows from `fun_ext_ger fun y hy => by rw [map_mul, ger_resG, ger_resG, ger_resG] exact C.germ_mul σ f t y (ha hy).1 (ha hy).2 (hb hy).2 (hc hy).2`.
+A detailed English derivation is pending.
 -/
 theorem resG_loc_mul (σ : H0 p P O) (f : H0 p B O) (t : C.τ) {W : Y.Opens}
     (ha : W ≤ O ⊓ P.U (C.a t)) (hb : W ≤ O ⊓ B.U (C.b t)) (hc : W ≤ O ⊓ N.U (C.c t)) :
@@ -499,7 +499,7 @@ theorem resG_loc_mul (σ : H0 p P O) (f : H0 p B O) (t : C.τ) {W : Y.Opens}
     exact C.germ_mul σ f t y (ha hy).1 (ha hy).2 (hb hy).2 (hc hy).2
 
 /- English proof (translation)
-Establish `e` using `congrArg (evalPt x _ (le_preimage_inf (le_preimage_inf (le_preimage_inf hO ha) (le_preimage_inf hO hb)) (le_preimage_inf hO hc))) (C.resG_loc_mul σ f t (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) inf_le_right)`. Rewrite `e` using `[map_mul, evalPt_res x _ (le_preimage_inf hO hc), evalPt_res x _ (le_preimage_inf hO ha), evalPt_res x _ (le_preimage_inf hO hb)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_mul {R : Type} [CommRing R] (σ : H0 p P O) (f : H0 p B O) (t : C.τ) (x : Sp R ⟶ Y)
     (hO : ⊤ ≤ x ⁻¹ᵁ O) (ha : ⊤ ≤ x ⁻¹ᵁ P.U (C.a t)) (hb : ⊤ ≤ x ⁻¹ᵁ B.U (C.b t))
@@ -512,7 +512,7 @@ theorem val_mul {R : Type} [CommRing R] (σ : H0 p P O) (f : H0 p B O) (t : C.τ
     evalPt_res x _ (le_preimage_inf hO hb)] at e
 
 /- English proof (translation)
-The claim follows from `C.sec_ext fun t y hy ha hb hc => by rw [germ_restr, C.germ_mul _ _ t y _ ha hb, C.germ_mul _ _ t y _ ha hb, germ_restr, germ_restr]`.
+A detailed English derivation is pending.
 -/
 theorem restr_mul (h : O' ≤ O) (σ : H0 p P O) (f : H0 p B O) :
     restr h (C.mul σ f) = C.mul (restr h σ) (restr h f) :=
@@ -520,13 +520,13 @@ theorem restr_mul (h : O' ≤ O) (σ : H0 p P O) (f : H0 p B O) :
     rw [germ_restr, C.germ_mul _ _ t y _ ha hb, C.germ_mul _ _ t y _ ha hb, germ_restr, germ_restr]
 
 /- English proof (translation)
-Use `⟨fun f f' e => ext_germ fun y hy => ?_, fun g => ?_⟩` and prove the remaining obligations. Take `⟨t, ha, hb, hc⟩` from `C.cover y`. Use `⟨C.b t, hb, (hσ y hy _ ha).mul_left_cancel ?_⟩` and prove the remaining obligations. Rewrite using `[← C.germ_mul _ _ t y hy ha hb hc, ← C.germ_mul _ _ t y hy ha hb hc, e]`. Establish `hu (t : C.τ) : IsUnit (σ.loc (C.a t))` using `Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => hσ y hy.1 _ hy.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv (t y) (h : y ∈ O ⊓ P.U (C.a t)) : germ (C.a t) y h.1 h.2 σ * ger y h (hu t).unit⁻¹.val = 1` using `(map_mul (ger y h) _ _).symm.trans (by rw [IsUnit.mul_val_inv, map_one])`. Take `⟨f, hf⟩` from `exists_of_germs (p := p) (O := O) C.isLB₂ (fun t => ((O ⊓ P.U (C.a t)) ⊓ (O ⊓ N.U (C.c t))) ⊓ B.U (C.b t)) C.b (fun _ => inf_le_left.trans (inf_le_left.trans inf_le_left)) (fun _ => inf_le_right) (fun y hy => (C.cover y).imp fun _ h => ⟨⟨⟨hy, h.1⟩, hy, h.2.2⟩, h.2.1⟩) (fun t => r …`. Simplify using `only [map_mul, ger_resG]`. Establish `e₁` using `germ_change _ _ y h.1.1.1 h.1.2.2 h'.1.2.2 g`. Rewrite `e₁` using `[C.rule y t t' ⟨h.1.1.2, h.2, h.1.2.2⟩ ⟨h'.1.1.2, h'.2, h'.1.2.2⟩, Units.val_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂` using `germ_change _ _ y h.1.1.1 h.1.1.2 h'.1.1.2 σ`. Establish `e₃` using `hv t y h.1.1`. Establish `e₄` using `hv t' y h'.1.1`. Express the relevant statement in the definitionally equal form `_ * germ (C.c t) y h.1.1.1 h.1.2.2 g = _ * (_ * germ (C.c t') y h.1.1.1 h'.1.2.2 g)`. Rewrite using `[e₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e₃` using `[e₂]`. Take the linear combination `(exp := 1) (tr B y (C.b t) (C.b t')).val * germ (C.c t') y h.1.1.1 h'.1.2.2 g * (ger y h'.1.1 (hu t').unit⁻¹.val * e₃ - (tr P y (C.a t) (C.a t')).val * ger y h.1.1 (hu t).unit⁻¹.val * e₄)`. Use `⟨f, C.sec_ext fun t y hy ha hb hc => ?_⟩` and prove the remaining obligations. Rewrite using `[C.germ_mul _ _ t y hy ha hb hc, hf t y (memInf (memInf (memInf hy ha) (memInf hy hc)) hb), map_mul, ger_resG, ger_resG, ← mul_assoc, hv t y (memInf hy ha), one_mul]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bijective_mul {σ : H0 p P O} (hσ : NowhereZero σ) : Function.Bijective (C.mul σ) := by
   refine ⟨fun f f' e => ext_germ fun y hy => ?_, fun g => ?_⟩
@@ -587,7 +587,7 @@ abbrev pull (r : T ⟶ Y) : ProdChart (P.pull r) (B.pull r) (N.pull r) where
       ⟨mem_pull.1 h'.1, mem_pull.1 h'.2.1, mem_pull.1 h'.2.2⟩)
 
 /- English proof (translation)
-The claim follows from `(C.pull r).sec_ext fun t z hz ha hb hc => by rw [(C.pull r).germ_mul _ _ t z hz ha hb hc, germ_pullSL, germ_pullSL, germ_pullSL, ← map_mul] exact congrArg _ (C.germ_mul σ f t _ _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem pullSL_mul (r : T ⟶ Y) {q : T ⟶ Sp k'} {φ : k →+* k'} (hq : r ≫ p = q ≫ spMap φ)
     {W : T.Opens} (h : W ≤ r ⁻¹ᵁ O) (σ : H0 p P O) (f : H0 p B O) :
@@ -597,7 +597,7 @@ theorem pullSL_mul (r : T ⟶ Y) {q : T ⟶ Sp k'} {φ : k →+* k'} (hq : r ≫
     exact congrArg _ (C.germ_mul σ f t _ _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `C.pullSL_mul r _ h σ f`.
+A detailed English derivation is pending.
 -/
 theorem pull_mul (r : T ⟶ Y) {W : T.Opens} (h : W ≤ r ⁻¹ᵁ O) (σ : H0 p P O) (f : H0 p B O) :
     H0.pull r h (C.mul σ f) = (C.pull r).mul (H0.pull r h σ) (H0.pull r h f) :=
@@ -624,7 +624,7 @@ abbrev tensChart (hA : A.IsLB) (hB : B.IsLB) : ProdChart A B (tens A B) where
 abbrev tw (M L : LB Y) (n : ℤ) : LB Y := tens M (lbZPow L n)
 
 /- English proof (translation)
-The claim follows from `isLB_tens hM (Twist.isLB_lbZPow hL n)`.
+A detailed English derivation is pending.
 -/
 theorem isLB_tw (hM : M.IsLB) (hL : L.IsLB) (n : ℤ) : (tw M L n).IsLB :=
   isLB_tens hM (Twist.isLB_lbZPow hL n)
@@ -632,19 +632,19 @@ theorem isLB_tw (hM : M.IsLB) (hL : L.IsLB) (n : ℤ) : (tw M L n).IsLB :=
 abbrev twIdx (n : ℤ) (i : M.ι) (j : L.ι) : (tw M L n).ι := (i, fun _ => j)
 
 /- English proof (translation)
-The claim follows from `mem_powChart`.
+A detailed English derivation is pending.
 -/
 theorem mem_zpow_U {y : Y} {j : L.ι} : y ∈ (lbZPow L n).U (fun _ => j) ↔ y ∈ L.U j := mem_powChart
 
 /- English proof (translation)
-The claim follows from `and_congr_right' mem_powChart`.
+A detailed English derivation is pending.
 -/
 theorem mem_tw_U {y : Y} {i : M.ι} {j : L.ι} :
     y ∈ (tw M L n).U (twIdx n i j) ↔ y ∈ M.U i ∧ y ∈ L.U j :=
   and_congr_right' mem_powChart
 
 /- English proof (translation)
-The claim follows from `(tr_tens M _ y h h').trans (congrArg (_ * ·) (tr_zpow L n y h.2 h'.2))`.
+A detailed English derivation is pending.
 -/
 theorem tr_tw (y : Y) {i i' : M.ι} {j j' : L.ι} (h : y ∈ (tw M L n).U (twIdx n i j))
     (h' : y ∈ (tw M L n).U (twIdx n i' j')) :
@@ -708,7 +708,7 @@ abbrev adjChart (hM : M.IsLB) (hB : B.IsLB) (hL : L.IsLB) (h : n + d = l) :
       tr_tens M B y e.2.2.1 e'.2.2.1, ← h, add_comm, zpow_add, mul_mul_mul_comm]
 
 /- English proof (translation)
-Rewrite using `[show m * b * (x * y) = b * y * (m * x) by ac_rfl, mul_assoc a, inv_mul_cancel_left]`. The two sides agree by associativity and commutativity.
+Rewrite the hypotheses and the conclusion using the stated equalities. The two sides agree by associativity and commutativity.
 -/
 theorem commGroup_mul_mul_eq_mul_inv_mul_mul_mul {G : Type*} [CommGroup G] (m a b x y : G) :
     m * a * x = a * (b * y)⁻¹ * (m * b * (x * y)) := by

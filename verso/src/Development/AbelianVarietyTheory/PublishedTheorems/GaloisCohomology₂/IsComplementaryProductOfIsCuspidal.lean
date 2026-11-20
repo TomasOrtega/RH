@@ -39,9 +39,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] {N : ℕ}
 
 /- English proof (translation)
-Break down `List.mem_append.1 hy with hy | hy` into its components or cases. Conclude with `⟨y, 0, hδ y hy, by norm_num, by simp⟩`. Take `⟨p, hp, hy⟩` from `List.mem_flatMap.1 hy`. Take `⟨h1, h2, h3⟩` from `hτ p hp`. Break down `List.mem_pair.1 hy with rfl | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨p.1, p.2, h1, by rwa [abs_of_pos h2], rfl⟩`. Conclude with `⟨p.1, -p.2, h1, by rwa [abs_neg, abs_of_pos h2], rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_of_mem_factors {δ : List (IrrGL k)} {τ : List (IrrGL k × ℝ)} (hδ : ∀ x ∈ δ, IsUnitaryLSeg x)
     (hτ : ∀ p ∈ τ, IsUnitaryLSeg p.1 ∧ 0 < p.2 ∧ p.2 < 1 / 2) {y : IrrGL k} (hy : y ∈ factors δ τ) :
@@ -55,7 +55,7 @@ theorem exists_of_mem_factors {δ : List (IrrGL k)} {τ : List (IrrGL k × ℝ)}
     · exact ⟨p.1, -p.2, h1, by rwa [abs_neg, abs_of_pos h2], rfl⟩
 
 /- English proof (translation)
-Take `⟨δ, τ, hδ, hτ, h, x, hd, hx, φ⟩` from `H`. Use `choose y s hy hs e using fun j => exists_of_mem_factors hδ hτ (y := x j) (hx ▸ List.mem_ofFn.2 ⟨j, rfl⟩)`. Use `choose Δ hΔ using fun j => (hy j).1`. Take `rfl : x = fun j => (y j).nu (s j)` from `funext e`. Conclude with `⟨h, y, Δ, s, hΔ, fun j => (hy j).2, hs, hd, φ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsComplementaryProduct.exists_prod {π : Representation ℂ (GL (Fin N) k) V} (H : IsComplementaryProduct π) :
     ∃ (h : ℕ) (δ : Fin h → IrrGL k) (Δ : Fin h → Segment k) (s : Fin h → ℝ),
@@ -68,9 +68,9 @@ theorem IsComplementaryProduct.exists_prod {π : Representation ℂ (GL (Fin N) 
   exact ⟨h, y, Δ, s, hΔ, fun j => (hy j).2, hs, hd, φ⟩
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3⟩` from `h`. Use `⟨(B ∘ₗ φ.symm.toLinearEquiv.toLinearMap).compl₂ φ.symm.toLinearEquiv.toLinearMap, fun v w => h1 _ _, fun v hv => h2 _ (φ.symm.toLinearEquiv.map_ne_zero_iff.2 hv), fun g v w => ?_⟩` and prove the remaining obligations. Establish `e : ∀ v, φ.symm.toLinearEquiv (σ g v) = π g (φ.symm.toLinearEquiv v)` using `fun v => φ.symm.toIntertwiningMap.isIntertwining _ _ g v`. Use `show B (φ.symm.toLinearEquiv (σ g v)) (φ.symm.toLinearEquiv (σ g w)) = _`. Rewrite using `[e, e, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isUnitarisable_of_equiv {G : Type} [Group G] {π : Representation ℂ G V} {σ : Representation ℂ G W}
     (φ : π.Equiv σ) (h : IsUnitarisable π) : IsUnitarisable σ := by
@@ -84,19 +84,19 @@ theorem isUnitarisable_of_equiv {G : Type} [Group G] {π : Representation ℂ G 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨_, (single_spec hρ).2.1⟩, hu⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnitaryLSeg_of_isCusp {ρ : IrrGL k} (hρ : ρ.IsCusp) (hu : IsUnitarisable ρ.rep) : IsUnitaryLSeg ρ :=
   ⟨⟨_, (single_spec hρ).2.1⟩, hu⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[δ], [], by simpa using h, by simp, 1, fun _ => δ, by simp, rfl, nonempty_equiv_prodIrr_one δ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsUnitaryLSeg.isComplementaryProduct {δ : IrrGL k} (h : IsUnitaryLSeg δ) : IsComplementaryProduct δ.rep :=
   ⟨[δ], [], by simpa using h, by simp, 1, fun _ => δ, by simp, rfl, nonempty_equiv_prodIrr_one δ _⟩
 
 /- English proof (translation)
-Take `⟨δ, τ, hδ, hτ, h, x, hd, hx, ⟨ψ⟩⟩` from `H`. Conclude with `⟨δ, τ, hδ, hτ, h, x, hd, hx, ⟨φ.symm.trans ψ⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsComplementaryProduct.of_equiv {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W}
     (H : IsComplementaryProduct π) (φ : π.Equiv σ) : IsComplementaryProduct σ := by
@@ -104,7 +104,7 @@ theorem IsComplementaryProduct.of_equiv {π : Representation ℂ (GL (Fin N) k) 
   exact ⟨δ, τ, hδ, hτ, h, x, hd, hx, ⟨φ.symm.trans ψ⟩⟩
 
 /- English proof (translation)
-The claim follows from `(isUnitaryLSeg_of_isCusp (IrrGL.isCusp_of.2 ⟨hN, hc⟩) (isUnitarisable_of_equiv (IrrGL.equivOf π hc.1 hi) hu)).isComplementaryProduct.of_equiv (IrrGL.equivOf π hc.1 hi).symm`.
+A detailed English derivation is pending.
 -/
 theorem isComplementaryProduct_of_isCuspidal {π : Representation ℂ (GL (Fin N) k) V} (hN : 0 < N)
     (hi : π.IsIrreducible) (hc : IsCuspidal π) (hu : IsUnitarisable π) : IsComplementaryProduct π :=
@@ -113,7 +113,7 @@ theorem isComplementaryProduct_of_isCuspidal {π : Representation ℂ (GL (Fin N
     (IrrGL.equivOf π hc.1 hi).symm
 
 /- English proof (translation)
-The claim follows from `have h : IsUnitarisable (detRep (Fin 1) χ) := (isUnitarisable_ofChar_iff _).2 fun _ => hu _ ⟨(isCuspidal_detRep_one hs).1, isIrreducible_ofChar _, h, isGeneric_detRep_one χ, isComplementaryProduct_of_isCuspidal one_pos (isIrreducible_ofChar _) (isCuspidal_detRep_one hs) h⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitaryChar_spec {χ : kˣ →* ℂˣ} (hs : IsSmoothChar χ) (hu : IsUnitaryChar χ) :
     IsSmooth (detRep (Fin 1) χ) ∧ (detRep (Fin 1) χ).IsIrreducible ∧ IsUnitarisable (detRep (Fin 1) χ) ∧
@@ -127,7 +127,7 @@ end GlobalTheory.GenericUnitary
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-The claim follows from `(H k N V π hs hi hu hg).exists_prod`.
+A detailed English derivation is pending.
 -/
 theorem GenericUnitaryDualGL.exists_prod (H : GenericUnitaryDualGL) {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]

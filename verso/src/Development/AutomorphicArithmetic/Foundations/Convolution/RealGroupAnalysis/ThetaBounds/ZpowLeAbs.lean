@@ -10,9 +10,9 @@ open scoped Classical ENNReal
 section SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[← (Fin.consEquiv (fun _ : Fin (r + 1) => ℤ)).tsum_eq, ENNReal.tsum_prod', pow_succ, mul_comm, ← ih, ← ENNReal.tsum_mul_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_succ, Fin.consEquiv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem tsum_fin (g : ℤ → ℝ≥0∞) : ∀ r : ℕ, ∑' k : Fin r → ℤ, ∏ i, g (k i) = (∑' z, g z) ^ r := by
   intro r
@@ -26,9 +26,7 @@ private theorem tsum_fin (g : ℤ → ℝ≥0∞) : ∀ r : ℕ, ∑' k : Fin r 
     simp [Fin.prod_univ_succ, Fin.consEquiv]
 
 /- English proof (translation)
-Establish `e` using `Fintype.equivFin ι`. Rewrite using `[← (Equiv.arrowCongr e.symm (Equiv.refl ℤ)).tsum_eq]`. Establish `: ∀ k : Fin (Fintype.card ι) → ℤ, ∏ i, g ((Equiv.arrowCongr e.symm (Equiv.refl ℤ)) k i) = ∏ i, g (k i)` using `fun k => by`. Conclude with `Fintype.prod_equiv e (fun i => g (k (e i))) (fun i => g (k i)) (fun _ => rfl)`. Simplify using `only [this, tsum_fin]`.
-
-Conclude with `ENNReal.pow_ne_top hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tsum_pi {ι : Type} [Fintype ι] (g : ℤ → ℝ≥0∞) (hg : ∑' z, g z ≠ ⊤) : ∑' k : ι → ℤ, ∏ i, g (k i) ≠ ⊤ := by
   have e := Fintype.equivFin ι
@@ -39,9 +37,9 @@ private theorem tsum_pi {ι : Type} [Fintype ι] (g : ℤ → ℝ≥0∞) (hg : 
   exact ENNReal.pow_ne_top hg
 
 /- English proof (translation)
-Establish `hs : Summable fun z : ℤ => c * ((1 : ℝ) / 2) ^ z.natAbs`. Use `Summable.mul_left _ (Summable.of_nat_of_neg ?_ ?_)` and prove the remaining obligations. Simplify using `using summable_geometric_two`. Simplify using `using summable_geometric_two`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun z => by positivity) hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_ne_top`.
+A detailed English derivation is pending.
 -/
 private theorem half_sum (c : ℝ) (hc : 0 ≤ c) : ∑' z : ℤ, ENNReal.ofReal (c * (1 / 2) ^ z.natAbs) ≠ ⊤ := by
   have hs : Summable fun z : ℤ => c * ((1 : ℝ) / 2) ^ z.natAbs := by
@@ -52,7 +50,7 @@ private theorem half_sum (c : ℝ) (hc : 0 ≤ c) : ∑' z : ℤ, ENNReal.ofReal
   exact ENNReal.ofReal_ne_top
 
 /- English proof (translation)
-Establish `hi : ∀ x, φ x⁻¹ = (φ x)⁻¹` using `fun x => eq_inv_of_mul_eq_one_left (by rw [← map_mul]; simp)`. Rewrite using `[map_mul, map_prod]`. Simplify using `only [map_zpow' φ hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hom_tau {G ι : Type} [CommGroup G] [Fintype ι] (φ : G →* ℝ) (ρ : ι → G) (k : ι → ℤ) (c : G) :
     φ ((∏ i, ρ i ^ k i) * c) = (∏ i, φ (ρ i) ^ k i) * φ c := by
@@ -61,15 +59,13 @@ private theorem hom_tau {G ι : Type} [CommGroup G] [Fintype ι] (φ : G →* �
   simp only [map_zpow' φ hi]
 
 /- English proof (translation)
-Use `set T : (ι → ℤ) → Set G := fun k => ((∏ i, ρ i ^ k i) * ·) '' C with hT`. Establish `hTm : ∀ k, MeasurableSet (T k)` using `fun k => (hC.image (continuous_mul_left _)).measurableSet`. Establish `hμ : ∀ k, μ (T k) = μ C` using `fun k => by`. Simplify using `only [hT]`. Rewrite using `[Set.image_mul_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `measure_preimage_mul _ _ _`. Establish `hle : ∀ a, f a ≤ ∑' k, (T k).indicator (fun _ => A * ∏ i, g (k i)) a`. Introduce `a`. Distinguish the cases in `h0 : f a = 0`. Rewrite using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_le`. Take `⟨k, c, hc, rfl⟩` from `hs a h0`. Use `le_trans ?_ (ENNReal.le_tsum k)` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (show _ ∈ T k from ⟨c, hc, rfl⟩)]`. Conclude with `hb k c hc`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator (hTm k), setLIntegral_const, hμ]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (A * μ C) * ∑' k : ι → ℤ, ∏ i, g (k i) := ENNReal.tsum_mul_left`.
-
-Use `_ < ⊤ := ENNReal.mul_lt_top (ENNReal.mul_lt_top hA.lt_top hC.measure_lt_top) (tsum_pi g hg).lt_top`.
+A detailed English derivation is pending.
 -/
 private theorem lint_cover {G ι : Type} [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ] [Fintype ι] (ρ : ι → G) {C : Set G} (hC : IsCompact C)
@@ -100,7 +96,7 @@ private theorem lint_cover {G ι : Type} [CommGroup G] [TopologicalSpace G] [IsT
     _ < ⊤ := ENNReal.mul_lt_top (ENNReal.mul_lt_top hA.lt_top hC.measure_lt_top) (tsum_pi g hg).lt_top
 
 /- English proof (translation)
-Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg z`. Simplify using `using pow_le_pow_left₀ hx.le h1 m`. Simplify using `using pow_le_pow_left₀ (inv_pos.2 hx).le h2 m`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem zpow_le_abs {x B : ℝ} (hx : 0 < x) (h1 : x ≤ B) (h2 : x⁻¹ ≤ B) (z : ℤ) : x ^ z ≤ B ^ z.natAbs := by
   obtain ⟨m, rfl | rfl⟩ := Int.eq_nat_or_neg z
@@ -108,9 +104,9 @@ private theorem zpow_le_abs {x B : ℝ} (hx : 0 < x) (h1 : x ≤ B) (h2 : x⁻¹
   · simpa using pow_le_pow_left₀ (inv_pos.2 hx).le h2 m
 
 /- English proof (translation)
-Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg z`. Establish `: (0 : ℝ) < 2 ^ m` using `by positivity`. Simplify using `only [zpow_natCast] at hx`. Simplify using `only [Int.natAbs_natCast]`. Use the polynomial consequences of the given equalities and inequalities.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: (0 : ℝ) < 2 ^ m` using `by positivity`. Simplify using `only [_root_.zpow_neg, zpow_natCast, inv_inv] at hy`. Simplify using `only [Int.natAbs_neg, Int.natAbs_natCast]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem two_abs {x y c d M : ℝ} (z : ℤ) (hx : x = 2 ^ z * c) (hy : y = (2 ^ z)⁻¹ * d) (hc : 1 ≤ c) (hd : 1 ≤ 2 * d)
     (hxM : x ≤ M) (hyM : y ≤ M) (hM : 0 ≤ M) : (2 : ℝ) ^ z.natAbs ≤ 2 * M := by
@@ -125,9 +121,9 @@ private theorem two_abs {x y c d M : ℝ} (z : ℤ) (hx : x = 2 ^ z * c) (hy : y
     nlinarith
 
 /- English proof (translation)
-Establish `h3 : ((2 : ℝ) ^ m) ^ n ≤ 2 ^ n * M ^ n`. Rewrite using `[← mul_pow]; exact pow_le_pow_left₀ (by positivity) h1 n`. Establish `h4 : (2 * B) ^ m ≤ (2 ^ n) ^ m` using `pow_le_pow_left₀ (by positivity) h2 m`. Establish `hMn : 0 < M ^ n` using `pow_pos hM n`. Rewrite using `[mul_inv_le_iff₀ hMn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[mul_pow, ← pow_mul, mul_comm n m, pow_mul]`. Establish `h5 : (2 : ℝ) ^ m * B ^ m ≤ 2 ^ n * M ^ n` using `h4.trans h3`. Establish `h6 : (2 : ℝ) ^ m * (1 / 2) ^ m = 1` using `by rw [← mul_pow]; norm_num`. Establish `h7 : (0:ℝ) < (1 / 2) ^ m` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem term_le {B M : ℝ} {m n : ℕ} (hB : 0 ≤ B) (hM : 0 < M) (h1 : (2 : ℝ) ^ m ≤ 2 * M) (h2 : 2 * B ≤ 2 ^ n) :
     B ^ m * (M ^ n)⁻¹ ≤ 2 ^ n * (1 / 2) ^ m := by
@@ -162,7 +158,7 @@ private noncomputable def abH : IdeleGroup F →* ℝ where
   map_mul' := M.ab_mul
 
 /- English proof (translation)
-Use `(InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _) (2 : v.Completion)` as an intermediate fact. Rewrite using `[← this, map_ofNat]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem norm_two (v : InfinitePlace F) : ‖(2 : v.Completion)‖ = 2 := by
   have := (InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _) (2 : v.Completion)
@@ -170,7 +166,7 @@ private theorem norm_two (v : InfinitePlace F) : ‖(2 : v.Completion)‖ = 2 :=
   simp
 
 /- English proof (translation)
-Introduce `h` and use `by have := norm_two v rw [h, norm_zero] at this norm_num at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem two_ne (v : InfinitePlace F) : (2 : v.Completion) ≠ 0 := fun h => by
   have := norm_two v
@@ -181,17 +177,17 @@ private noncomputable def rho (w : InfinitePlace F) : IdeleGroup F :=
   (IdeleGroup.prodEquiv F).symm ((infiniteUnitsEquiv F).symm (Pi.mulSingle w (Units.mk0 2 (two_ne w))), 1)
 
 /- English proof (translation)
-The claim follows from `congrArg Prod.snd ((IdeleGroup.prodEquiv F).apply_symm_apply _)`.
+A detailed English derivation is pending.
 -/
 private theorem rho_fin (w : InfinitePlace F) : IdeleGroup.toFinite F (rho w) = 1 :=
   congrArg Prod.snd ((IdeleGroup.prodEquiv F).apply_symm_apply _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖((infiniteUnitsEquiv F).symm (Pi.mulSingle w (Units.mk0 2 (two_ne w))) : (InfiniteAdeleRing F)ˣ).val v‖ = _`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Express the relevant statement in the definitionally equal form `‖((Pi.mulSingle v (Units.mk0 (2 : v.Completion) (two_ne v)) : ∀ w : InfinitePlace F, w.Completionˣ) v).val‖ = 2`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `norm_two v`. Rewrite using `[if_neg h]`. Express the relevant statement in the definitionally equal form `‖((Pi.mulSingle w (Units.mk0 (2 : w.Completion) (two_ne w)) : ∀ w : InfinitePlace F, w.Completionˣ) v).val‖ = 1`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem rho_nu (v w : InfinitePlace F) : nuH v (rho w) = if v = w then 2 else 1 := by
   change ‖((infiniteUnitsEquiv F).symm (Pi.mulSingle w (Units.mk0 2 (two_ne w))) : (InfiniteAdeleRing F)ˣ).val v‖ = _
@@ -207,15 +203,15 @@ private theorem rho_nu (v w : InfinitePlace F) : nuH v (rho w) = if v = w then 2
     simp
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← map_mul]; simp)`.
+A detailed English derivation is pending.
 -/
 private theorem nu_inv (v : InfinitePlace F) (x : IdeleGroup F) : nuH v x⁻¹ = (nuH v x)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← map_mul]; simp)
 
 /- English proof (translation)
-Establish `h : nuH v x * nuH v x⁻¹ = 1` using `by rw [← map_mul]; simp`. Establish `h0 : 0 ≤ nuH v x` using `(norm_nonneg _ : 0 ≤ ‖(x : A F).1 v‖)`. Break down `h0.lt_or_eq with h1 | h1` into its components or cases. Conclude with `h1`. Rewrite `h` using `[← h1, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at h`.
+A detailed English derivation is pending.
 -/
 private theorem nu_pos (v : InfinitePlace F) (x : IdeleGroup F) : 0 < nuH v x := by
   have h : nuH v x * nuH v x⁻¹ = 1 := by rw [← map_mul]; simp
@@ -226,7 +222,7 @@ private theorem nu_pos (v : InfinitePlace F) (x : IdeleGroup F) : 0 < nuH v x :=
     norm_num at h
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_single v]`. Rewrite using `[rho_nu, if_pos rfl]`. Introduce `b _ hb`. Rewrite using `[rho_nu, if_neg (Ne.symm hb), _root_.one_zpow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tau_nu (v : InfinitePlace F) (k : InfinitePlace F → ℤ) :
     ∏ i, nuH v (rho i) ^ k i = 2 ^ k v := by
@@ -237,7 +233,7 @@ private theorem tau_nu (v : InfinitePlace F) (k : InfinitePlace F → ℤ) :
   · simp
 
 /- English proof (translation)
-Establish `h2` using `norm_le_pi_norm (infPartPi (![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] : V4 F)) 2`. Establish `h1` using `norm_le_pi_norm (infPartPi (![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] : V4 F)) 1`. Establish `e2` using `GroundTheory.Automorphic.GJGlobal.norm_apply_le_norm_homeomorphMixedSpace (a : A F).1 v`. Establish `e1` using `GroundTheory.Automorphic.GJGlobal.norm_apply_le_norm_homeomorphMixedSpace ((a⁻¹ : (A F)ˣ) : A F).1 v`. Conclude with `⟨by change ‖(a : A F).1 v‖ ≤ _; have : ‖homeomorphMixedSpace F (a : A F).1‖ ≤ _ := h2; linarith, by change ‖((a⁻¹ : (A F)ˣ) : A F).1 v‖ ≤ _; have : ‖homeomorphMixedSpace F ((a⁻¹ : (A F)ˣ) : A F).1‖ ≤ _ := h1; linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem nu_le (a : IdeleGroup F) (v : InfinitePlace F) :
     nuH v a ≤ 1 + ‖infPartPi (![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] : V4 F)‖ ∧
@@ -253,17 +249,17 @@ private def Cset (K₁ K₂ : Set (FiniteAdeleRing (𝓞 F) F)) : Set (IdeleGrou
   {c | (∀ v, nuH v c ≤ 2) ∧ (c : A F).2 ∈ K₂ ∧ (∀ v, nuH v c⁻¹ ≤ 1) ∧ ((c⁻¹ : (A F)ˣ) : A F).2 ∈ K₁}
 
 /- English proof (translation)
-The claim follows from `isCompact_univ_pi fun _ => isCompact_closedBall _ _`.
+A detailed English derivation is pending.
 -/
 private theorem box_cpt (R : ℝ) : IsCompact (Set.univ.pi fun v : InfinitePlace F => Metric.closedBall (0 : v.Completion) R : Set (InfiniteAdeleRing F)) :=
   isCompact_univ_pi fun _ => isCompact_closedBall _ _
 
 /- English proof (translation)
-Establish `hQ : IsCompact (((Set.univ.pi fun v : InfinitePlace F => Metric.closedBall (0 : v.Completion) 2 : Set (InfiniteAdeleRing F)) ×ˢ K₂ : Set (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)) : Set (A F))` using `(box_cpt 2).prod h₂`. Establish `hQ' : IsCompact (((Set.univ.pi fun v : InfinitePlace F => Metric.closedBall (0 : v.Completion) 1 : Set (InfiniteAdeleRing F)) ×ˢ K₁ : Set (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)) : Set (A F))` using `(box_cpt 1).prod h₁`. Use `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hQ.prod (hQ'.image MulOpposite.continuous_op))` as an intermediate fact. Use `Eq.mpr (congrArg IsCompact (Set.ext fun c => ?_)) this` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a1, a2, a3, a4⟩`. Use `⟨⟨fun v _ => ?_, a2⟩, _, ⟨fun v _ => ?_, a4⟩, rfl⟩` and prove the remaining obligations. Conclude with `mem_closedBall_zero_iff.2 (a1 v)`. Conclude with `mem_closedBall_zero_iff.2 (a3 v)`. Introduce and unpack `⟨⟨b1, b2⟩, x, ⟨b3, b4⟩, hx⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hx' : x = ((c⁻¹ : (A F)ˣ) : A F)` using `MulOpposite.op_injective hx`. Substitute `hx'` using the available equality. Conclude with `⟨fun v => mem_closedBall_zero_iff.1 (b1 v trivial), b2, fun v => mem_closedBall_zero_iff.1 (b3 v trivial), b4⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cset_cpt {K₁ K₂ : Set (FiniteAdeleRing (𝓞 F) F)} (h₁ : IsCompact K₁) (h₂ : IsCompact K₂) : IsCompact (Cset K₁ K₂) := by
   have hQ : IsCompact (((Set.univ.pi fun v : InfinitePlace F => Metric.closedBall (0 : v.Completion) 2 : Set (InfiniteAdeleRing F)) ×ˢ K₂ : Set (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)) : Set (A F)) :=
@@ -283,21 +279,19 @@ private theorem cset_cpt {K₁ K₂ : Set (FiniteAdeleRing (𝓞 F) F)} (h₁ : 
     exact ⟨fun v => mem_closedBall_zero_iff.1 (b1 v trivial), b2, fun v => mem_closedBall_zero_iff.1 (b3 v trivial), b4⟩
 
 /- English proof (translation)
-Use `set k : InfinitePlace F → ℤ := fun v => Int.log 2 (nuH v a) with hk`. Use `set τ : IdeleGroup F := ∏ i, rho i ^ k i with hτ`. Establish `hf : IdeleGroup.toFinite F τ = 1`. Rewrite using `[hτ, map_prod]`. Simplify using `[map_zpow, rho_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : a = τ * (τ⁻¹ * a)` using `by rw [mul_inv_cancel_left]`. Use `⟨k, τ⁻¹ * a, ?_, e⟩` and prove the remaining obligations. Establish `hn : ∀ v, nuH v a = 2 ^ k v * nuH v (τ⁻¹ * a)` using `fun v => by`. Use `hom_tau (nuH v) rho k (τ⁻¹ * a)` as an intermediate fact. Rewrite `this` using `[← hτ, ← e, tau_nu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hlo : ∀ v, (1 : ℝ) ≤ nuH v (τ⁻¹ * a)` using `fun v => by`. Establish `h1 : (2 : ℝ) ^ k v ≤ nuH v a`. Simplify using `using Int.zpow_log_le_self (b := 2) (R := ℝ) (by norm_num) (nu_pos v a)`. Establish `hp : (0 : ℝ) < 2 ^ k v` using `by positivity`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hn v]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hhi : ∀ v, nuH v (τ⁻¹ * a) ≤ 2` using `fun v => by`. Establish `h1 : nuH v a < (2 : ℝ) ^ (k v + 1)`. Simplify using `using Int.lt_zpow_succ_log_self (b := 2) (R := ℝ) (by norm_num) (nuH v a)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hp : (0 : ℝ) < 2 ^ k v` using `by positivity`. Rewrite `h1` using `[zpow_add_one₀ (by norm_num), hn v]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hfa : ((IdeleGroup.toFinite F (τ⁻¹ * a) : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) = (a : A F).2`. Rewrite using `[map_mul, map_inv, hf, inv_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hfi : ((IdeleGroup.toFinite F (τ⁻¹ * a)⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) = ((a⁻¹ : (A F)ˣ) : A F).2`. Rewrite using `[map_inv, map_mul, map_inv, hf, inv_one, one_mul, ← map_inv]`. Both sides reduce to the same expression. Use `⟨hhi, ?_, fun v => ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((IdeleGroup.toFinite F (τ⁻¹ * a) : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) ∈ K₂`. Rewrite using `[hfa]`. Conclude with `h₂`. Rewrite using `[nu_inv]`. Conclude with `inv_le_one_of_one_le₀ (hlo v)`.
-
-Express the relevant statement in the definitionally equal form `((IdeleGroup.toFinite F (τ⁻¹ * a)⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) ∈ K₁`. Rewrite using `[hfi]`. Conclude with `h₁`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem decomp {K₁ K₂ : Set (FiniteAdeleRing (𝓞 F) F)} (a : IdeleGroup F) (h₂ : (a : A F).2 ∈ K₂) (h₁ : ((a⁻¹ : (A F)ˣ) : A F).2 ∈ K₁) :
     ∃ k : InfinitePlace F → ℤ, ∃ c ∈ Cset K₁ K₂, a = (∏ i, rho i ^ k i) * c := by
@@ -345,11 +339,9 @@ section Main
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hv : Continuous fun a : IdeleGroup F => (![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] : V4 F)`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `continuous_const`. Conclude with `Units.continuous_coe_inv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Units.continuous_val`. Conclude with `continuous_const`. Establish `hf : Continuous (finPartPi : V4 F → _)` using `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`. Establish `hi : Continuous (infPartPi : V4 F → _)` using `continuous_pi fun i => (homeomorphMixedSpace F).continuous.comp (continuous_fst.comp (continuous_apply i))`. Use `(M.continuous_ab.measurable.inv).mul ?_` and prove the remaining obligations.
-
-Unfold `wt`. Use `Measurable.ite (hK.preimage (hf.comp hv)).measurableSet ?_ measurable_const` and prove the remaining obligations. Conclude with `(Continuous.inv₀ (((continuous_const.add (continuous_norm.comp (hi.comp hv))).pow N)) fun a => pow_ne_zero _ (add_pos_of_pos_of_nonneg one_pos (norm_nonneg _)).ne').measurable`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem meas_h {K : Set (Fin 4 → FiniteAdeleRing (𝓞 F) F)} (hK : IsClosed K) (N : ℕ) :
     Measurable fun a : IdeleGroup F => (ab a)⁻¹ * wt K N ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] := by
@@ -369,17 +361,17 @@ private theorem meas_h {K : Set (Fin 4 → FiniteAdeleRing (𝓞 F) F)} (hK : Is
   exact (Continuous.inv₀ (((continuous_const.add (continuous_norm.comp (hi.comp hv))).pow N)) fun a => pow_ne_zero _ (add_pos_of_pos_of_nonneg one_pos (norm_nonneg _)).ne').measurable
 
 /- English proof (translation)
-Introduce `Mx hM hM1`. Establish `hM0 : 0 < Mx` using `by linarith`. Establish `hc0 : 0 < ab c` using `M.ab_pos c`. Establish `e1 : ab ((∏ i, rho i ^ k i) * c) = (∏ i, ab (rho i) ^ k i) * ab c` using `hom_tau abH rho k c`. Establish `hp : ∀ i : InfinitePlace F, 0 < ab (rho i)` using `fun i => M.ab_pos _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (Mx ^ (n * Fintype.card (InfinitePlace F)))⁻¹ = ∏ _i : InfinitePlace F, (Mx ^ n)⁻¹`. Rewrite using `[Finset.prod_const, Finset.card_univ, pow_mul, inv_pow]`. Establish `e3 : (∏ i, ab (rho i) ^ k i)⁻¹ = ∏ i, (ab (rho i))⁻¹ ^ k i`. Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => (_root_.inv_zpow _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, mul_inv, e2, e3, mul_comm (∏ i, (ab (rho i))⁻¹ ^ k i), mul_assoc, ← Finset.prod_mul_distrib]`. Use `mul_le_mul_of_nonneg_left ?_ (inv_pos.2 hc0).le` and prove the remaining obligations. Use `Finset.prod_le_prod (fun i _ => by have := hp i; positivity) fun v _ => ?_` and prove the remaining obligations. Establish `hx` using `hom_tau (nuH v) rho k c`. Rewrite `hx` using `[tau_nu]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcp` using `nu_pos v c`. Establish `hone : 1 ≤ nuH v c`. Use `h1 v` as an intermediate fact. Rewrite `this` using `[nu_inv]`. Conclude with `(inv_le_one₀ hcp).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : nuH v ((∏ i, rho i ^ k i) * c)⁻¹ = (2 ^ k v)⁻¹ * nuH v c⁻¹`. Rewrite using `[nu_inv, hx, nu_inv, mul_inv]`. Establish `hd : 1 ≤ 2 * nuH v c⁻¹`. Rewrite using `[nu_inv]`. Use `h2 v` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← div_eq_mul_inv, one_le_div hcp]`. Conclude with `this`. Establish `h3` using `two_abs (k v) hx hy hone hd (hM v).1 (hM v).2 hM0.le`. Establish `h4 : (ab (rho v))⁻¹ ^ k v ≤ B ^ (k v).natAbs` using `zpow_le_abs (inv_pos.2 (hp v)) (hb v).2 (by rw [inv_inv]; exact (hb v).1) _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem h_bound {B : ℝ} {n : ℕ} (hB1 : 1 ≤ B) (hb : ∀ i : InfinitePlace F, ab (rho i) ≤ B ∧ (ab (rho i))⁻¹ ≤ B) (hn : 2 * B ≤ 2 ^ n)
     (k : InfinitePlace F → ℤ) (c : IdeleGroup F) (h2 : ∀ v, nuH v c ≤ 2) (h1 : ∀ v, nuH v c⁻¹ ≤ 1) :
@@ -422,23 +414,21 @@ private theorem h_bound {B : ℝ} {n : ℕ} (hB1 : 1 ≤ B) (hb : ∀ i : Infini
 end Main
 
 /- English proof (translation)
-Introduce `F _ _`. Use `set B : ℝ := 1 + ∑ i : InfinitePlace F, (ab (rho i) + (ab (rho i))⁻¹) with hB`. Establish `hp : ∀ i : InfinitePlace F, 0 < ab (rho i)` using `fun i => M.ab_pos _`. Establish `hs0 : 0 ≤ ∑ i : InfinitePlace F, (ab (rho i) + (ab (rho i))⁻¹)` using `Finset.sum_nonneg fun i _ => by have := hp i; positivity`. Establish `hB1 : 1 ≤ B` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsi : ∀ i : InfinitePlace F, ab (rho i) + (ab (rho i))⁻¹ ≤ ∑ i : InfinitePlace F, (ab (rho i) + (ab (rho i))⁻¹)` using `fun i => Finset.single_le_sum (f := fun i : InfinitePlace F => ab (rho i) + (ab (rho i))⁻¹) (fun i _ => by have := hp i; positivity) (Finset.mem_univ i)`. Establish `hb : ∀ i : InfinitePlace F, ab (rho i) ≤ B ∧ (ab (rho i))⁻¹ ≤ B` using `fun i => by`. Establish `h1` using `hsi i`. Establish `h2` using `hp i`. Establish `h3 : 0 < (ab (rho i))⁻¹` using `inv_pos.2 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (2 * B) (one_lt_two (α := ℝ))`. Use `⟨n * Fintype.card (InfinitePlace F), fun K hK => ?_⟩` and prove the remaining obligations. Use `set K₁ : Set (FiniteAdeleRing (𝓞 F) F) := (fun x => x 1) '' K`. Use `set K₂ : Set (FiniteAdeleRing (𝓞 F) F) := (fun x => x 2) '' K`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC : IsCompact (Cset K₁ K₂)` using `cset_cpt (hK.image (continuous_apply 1)) (hK.image (continuous_apply 2))`. Take `⟨A0, hA0⟩` from `hC.bddAbove_image (M.continuous_ab.inv₀ fun a => (M.ab_pos a).ne').continuousOn`. Establish `hA : ∀ c ∈ Cset K₁ K₂, (ab c)⁻¹ ≤ |A0|` using `fun c hc => (hA0 ⟨c, hc, rfl⟩).trans (le_abs_self _)`. Use `⟨(meas_h hK.isClosed _).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `lint_cover (ideleMeasure F) rho hC _ (fun z => ENNReal.ofReal (2 ^ n * (1 / 2) ^ z.natAbs)) (half_sum _ (by positivity)) (ENNReal.ofReal |A0|) ENNReal.ofReal_ne_top ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Establish `hmem : finPartPi (![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] : V4 F) ∈ K`. Assume the negation of the conclusion as `hn'`. Conclude with `ha (by simp [wt, hn'])`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `decomp a ⟨_, hmem, rfl⟩ ⟨_, hmem, rfl⟩`. Introduce `k c hc set a := (∏ i, rho i ^ k i) * c with ha set Mx := 1 + ‖infPartPi (![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] : V4 F)‖ with hMx`. Establish `hM1 : 1 ≤ Mx` using `by have := norm_nonneg (infPartPi (![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] : V4 F)); linarith`. Establish `hbd` using `h_bound hB1 hb hn.le k c hc.1 hc.2.2.1 Mx (fun v => nu_le a v) hM1`. Establish `hw0 : ∀ N, 0 ≤ wt K N (![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] : V4 F)` using `fun N => by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `unfold wt; split_ifs <;> positivity`. Establish `hw : wt K (n * Fintype.card (InfinitePlace F)) (![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] : V4 F) ≤ (Mx ^ (n * Fintype.card (InfinitePlace F)))⁻¹`. Unfold `wt`. Use `split_ifs`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Check the signs of the components of the expression. Establish `hap` using `M.ab_pos a`. Rewrite using `[Real.enorm_of_nonneg (mul_nonneg (inv_pos.2 hap).le (hw0 _))]`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun i _ => by positivity), ← ENNReal.ofReal_mul (abs_nonneg _)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right (hA c hc) (Finset.prod_nonneg fun i _ => by positivity)` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.wtId :
     ∀ (F : Type) [Field F] [NumberField F], WtId F := by

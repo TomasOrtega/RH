@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.CuspGeneric
 
 /- English proof (translation)
-Introduce `E _ _ m ψ f hc hl hv`. Use `⟨hc, fun γ _ g => hl γ g, ?_, hv⟩` and prove the remaining obligations. Introduce `k hk y g`. Establish `he : IsEmpty (UnipotentBlockColumnIndex (m + 1) k k)` using `⟨fun t => by have := t.1.2.isLt; have := t.2; omega⟩`. Establish `hy : y = 0` using `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hy` using the available equality. Establish `hd : dot (eLast (m + 1) k) (0 : UnipotentBlockColumnIndex (m + 1) k k → Ad E) = 0` using `by simp [dot]`. Rewrite using `[hd, AddChar.map_zero_eq_one, one_mul]`. Unfold `blkU`. Rewrite using `[posU_zero, one_mul]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_top : ∀ (E : Type) [Field E] [NumberField E] (m : ℕ) (ψ : AddChar (Ad E) ℂ) (f : GA E (m + 1) → ℂ),
     Continuous f → (∀ γ g, f (ratGL E (m + 1) γ * g) = f g) →

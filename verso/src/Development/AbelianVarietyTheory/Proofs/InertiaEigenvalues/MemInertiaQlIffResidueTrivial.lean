@@ -12,23 +12,21 @@ noncomputable section
 namespace GlobalTheory.IKRes
 
 /- English proof (translation)
-The claim follows from `(spectralNorm_eq_of_equiv g x).symm`.
+A detailed English derivation is pending.
 -/
 theorem norm_gal_ql {l : ℕ} [Fact l.Prime] (g : GQ l) (x : Om l) : ‖g x‖ = ‖x‖ :=
   (spectralNorm_eq_of_equiv g x).symm
 
 /- English proof (translation)
-Introduce `l _ g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem σ hσ => exact hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `one => intro x _`. Simplify using the standard rewrite rules. Consider the case `mul σ τ _ _ hσ hτ`. Introduce `x hx`. Establish `h1 : ‖(σ : GQ l) ((τ : GQ l) x) - (τ : GQ l) x‖ < 1` using `hσ _ (by rwa [norm_gal_ql])`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hτ x hx`. Establish `he : ((σ * τ : Gl l) : GQ l) x - x = ((σ : GQ l) ((τ : GQ l) x) - (τ : GQ l) x) + ((τ : GQ l) x - x)`. Rewrite using `[Subgroup.coe_mul, AlgEquiv.mul_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h1 h2)`. Consider the case `inv σ _ hσ`. Introduce `x hx`. Establish `hy : ‖((σ : GQ l)⁻¹) x‖ ≤ 1` using `by rwa [norm_gal_ql]`. Establish `h` using `hσ _ hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : (σ : GQ l) (((σ : GQ l)⁻¹) x) = x`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Rewrite `h` using `[hx', norm_sub_rev]`. Simplify `h` using `[Subgroup.coe_inv]`. Introduce `h`.
-
-Conclude with `Subgroup.subset_closure h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_IK_ql_iff : ∀ (l : ℕ) [Fact l.Prime] (g : Gl l), g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) ↔ ∀ x : Om l, ‖x‖ ≤ 1 → ‖(g : GQ l) x - x‖ < 1 := by
   intro l _ g

@@ -12,13 +12,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.SiegelTor GlobalTheory.EndLoc
 
 /- English proof (translation)
-Introduce `h M d hh hM hodd hd hcop`. Take `⟨O, _, bar, r, eO, W, d₀, e, jl, n, o, κ, hbar, hspan, hW, hd₀, hsum, hee, hex, huniq⟩` from `GlobalTheory.T.exists_zarhinTrick_family_siegel_kernelKilled h M d hh hM hodd hd hcop`. Take `⟨H, sH, zH, actH, hpr, hra, hadj, hq, hln, hrep⟩` from `GlobalTheory.T.exists_rep_principalSiegel_adjoint_orderAction (8 * h) M (by omega) hM hodd O bar r eO W d₀ hbar hspan hW hd₀ hsum`. Take `⟨Y, j, c, hj, hjq, hker, hunit, hpull, huniv⟩` from `GlobalTheory.T.siegel_family_idempotent_image_open_locus h (8 * h) M d O bar e jl n o κ H sH zH actH hh hM hodd hd hcop hpr hra hadj hee`. Use `⟨Y, j ≫ sH, c, hker, hunit, isQProjOver_comp_immersion j sH hj hjq hq, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S t c' hdu hc'`. Take `⟨z', act', hz'p, hz'r, hz'a, hz'rel⟩` from `hex S t c' hdu hc'`. Take `⟨g, ⟨hg, hgpb⟩, -⟩` from `hrep S t z' act' hz'p hz'r hz'a`. Take `⟨y, ⟨hy, hyc⟩, -⟩` from `huniv S t g c' hg hdu hc' ⟨z', act', hgpb, hz'rel⟩`. Use `⟨y, ⟨by rw [← Category.assoc, hy, hg], hyc⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `f ⟨hf, hfc⟩`. Take `⟨w, actw, hwp, hwr, hwa, hwpb, hwrel⟩` from `hpull S t f c' hf hfc`. Establish `hiso` using `huniq S t c' w z' actw act' hdu hc' hwp hz'p hwr hz'r hwa hz'a hwrel hz'rel`. Establish `h2 : ActPB w actw zH actH (𝟙 S ≫ g)` using `hiso.trans hgpb`. Rewrite `h2` using `[Category.id_comp]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfj : f ≫ j = g` using `(hrep S t w actw hwp hwr hwa).unique ⟨by rw [Category.assoc]; exact hf, hwpb⟩ ⟨hg, h2⟩`. Conclude with `(huniv S t g c' hg hdu hc' ⟨z', act', hgpb, hz'rel⟩).unique ⟨hfj, hfc⟩ ⟨hy, hyc⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sdRep_of_coprime : ∀ (h M d : ℕ), 1 ≤ h → 3 ≤ M → Odd M → 0 < d → M.Coprime d → SDRep h M d := by
   intro h M d hh hM hodd hd hcop

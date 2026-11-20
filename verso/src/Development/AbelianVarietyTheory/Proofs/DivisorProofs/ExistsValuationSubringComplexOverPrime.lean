@@ -4,15 +4,13 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `F _ w`. Use `set R := w.valuationSubringAtPrime F with hR`. Take `⟨V, hV, hloc⟩` from `IsLocalRing.exists_factor_valuationRing ((algebraMap F ℂ).comp R.subtype)`. Use `⟨V, fun x => ⟨fun hx => ?_, fun hx => hV ⟨x, hx⟩⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hxR R.zero_mem`. Establish `hinv : x⁻¹ ∈ R` using `(R.mem_or_inv_mem x).resolve_left hxR`. Establish `hx0' : (x : ℂ) ≠ 0` using `by exact_mod_cast hx0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : IsUnit ((((algebraMap F ℂ).comp R.subtype).codRestrict V.toSubring hV) ⟨x⁻¹, hinv⟩)`. Use `IsUnit.of_mul_eq_one ⟨(x : ℂ), hx⟩ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((x⁻¹ : F) : ℂ) * (x : ℂ) = 1`. Rewrite using `[IntermediateField.coe_inv, inv_mul_cancel₀ hx0']`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu' : IsUnit (⟨x⁻¹, hinv⟩ : R)` using `hloc.map_nonunit _ hu`. Take `⟨y, hy⟩` from `hu'.exists_right_inv`. Establish `hy' : x⁻¹ * (y : F) = 1` using `congrArg Subtype.val hy`. Establish `: x = (y : F)`. Establish `h` using `congrArg (x * ·) hy'`.
-
-Simplify using `only [← mul_assoc, mul_inv_cancel₀ hx0, one_mul, mul_one] at h`. Conclude with `h.symm`. Conclude with `hxR (this ▸ y.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_complex_over_prime :
     ∀ (F : IntermediateField ℚ ℂ) [NumberField F] (w : HeightOneSpectrum (𝓞 F)),

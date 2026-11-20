@@ -12,21 +12,19 @@ namespace UpperTheory.OrbitRadiiBounds
 
 open Formalism.IncomingBounds in
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.lpF Fnum maxFlow Formalism.IncomingBounds.gam`. Use `congr 2`. Use extensionality with `y`. Simplify using `only [Formalism.BasicNotions.lpFeasible, Set.mem_ofPred_eq, IsFlow, flowVal, oddLevels]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨xs, h0, hz, hD, rfl⟩`. Establish `hf : ∀ (f : ℕ → ℝ), (∀ i, ¬ Odd i → f i = 0) → ∑ i ∈ (Finset.range d).filter Odd, f i = ∑ i ∈ Finset.range d, f i`. Introduce `f hf0`. Conclude with `Finset.sum_filter_of_ne (fun i _ h => by by_contra ho; exact h (hf0 i ho))`. Use `⟨xs, ⟨h0, fun s => ?_⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf _ (fun i ho => by rw [hz s i (Or.inl ho), mul_zero]), hf _ (fun i ho => hz _ i (Or.inl ho))]`. Conclude with `hD s`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s _`. Conclude with `hf _ (fun i ho => hz s i (Or.inl ho))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨x, ⟨h0, hD⟩, rfl⟩`. Establish `e1 : ∀ (f : ℕ → ℝ), ∑ i ∈ Finset.range d, (if Odd i ∧ i < d then f i else 0) = ∑ i ∈ (Finset.range d).filter Odd, f i`. Introduce `f`. Rewrite using `[Finset.sum_filter]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Apply the tactic sequence `rw [Finset.mem_range] at hi; by_cases ho : Odd i <;> simp [ho, hi]`. Use `⟨fun s i => if Odd i ∧ i < d then x s i else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro s i; dsimp only; split_ifs <;> simp [h0]`. Introduce `s i h`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Break down `h with h | h` into its components or cases. Conclude with `h h1`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `s`. Apply the tactic sequence `have h2 : ∀ i, (l : ℝ) ^ i * (if Odd i ∧ i < d then x s i else 0) = (if Odd i ∧ i < d then (l : ℝ) ^ i * x s i else 0) := by intro i; split_ifs <;> simp`. Simplify using `only [h2]`. Rewrite using `[e1 (fun i => (l : ℝ) ^ i * x s i), e1 (fun i => x (s - (i : ZMod d)) i)]`.
-
-Conclude with `hD s`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s _`. Conclude with `(e1 (fun i => x s i)).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem lpF_eq (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) : Formalism.BasicNotions.lpF l d D = Fnum l d D := by
   unfold Formalism.BasicNotions.lpF Fnum maxFlow Formalism.IncomingBounds.gam
@@ -63,21 +61,19 @@ private theorem lpF_eq (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) : Formalism.B
       exact (e1 (fun i => x s i)).symm
 
 /- English proof (translation)
-Establish `hs : ¬ IsSg D p`. Introduce `h4`. Establish `h3 : D.host.cls p = _` using `hc`. Establish `h4' : D.host.cls p = _` using `h4`. Rewrite `h3` using `[h4']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h3`. Establish `hp5 : (5 : ℝ) ≤ p` using `by exact_mod_cast h5`. Use `split_ifs with hr`. Use `⟨fun _ => 1 / ((p : ℝ) + 1), fun _ => by positivity, ?_, ?_⟩` and prove the remaining obligations. Introduce `s e he`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (p : ℝ) ≤ (p : ℝ) ^ e` using `le_self_pow₀ (by linarith) he.pos.ne'`. Establish `h2 : (p : ℝ) * (1 / ((p : ℝ) + 1)) + 1 / ((p : ℝ) + 1) = 1` using `by field_simp`. Establish `h3 : (p : ℝ) * (1 / ((p : ℝ) + 1)) ≤ (p : ℝ) ^ e * (1 / ((p : ℝ) + 1))` using `mul_le_mul_of_nonneg_right h1 (by positivity)`. Use `show 1 ≤ (p : ℝ) ^ e * (1 / ((p : ℝ) + 1)) + 1 / ((p : ℝ) + 1)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_nonneg fun s _ => mul_nonneg (Nat.cast_nonneg _) ?_` and prove the remaining obligations. Unfold `Formalism.IncomingBounds.gam`. Rewrite using `[sub_nonneg, div_le_div_iff₀ (by linarith) (by nlinarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hn : nP D p = addOrderOf (hP D p)` using `if_neg hs`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 2 ≤ nP D p`. Establish `h0 : nP D p ≠ 0` using `NeZero.ne _`. Establish `h1 : nP D p ≠ 1` using `by rw [hn]; exact fun h => hh (AddMonoid.addOrderOf_eq_one_iff.1 h)`. Use linear arithmetic over natural numbers and integers. Establish `hk : (0 : ℝ) < (D.R.k : ℝ) - 1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hS.rankA`. Establish `h2 : 0 ≤ Real.logb 5 (L.sc.a ^ 2)` using `Real.logb_nonneg (by norm_num) (by nlinarith [hS.xa.2])`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnt : ∀ s, ¬ IsTopPl D (OrbitPlaces.orbMap D p r s)`. Introduce `s ht`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hr` to reduce the goal to its premises. Rewrite using `[← OrbitPlaces.memA_orb p r s]`. Unfold `kindA`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, hs, ht.1⟩`. Apply the tactic sequence `obtain ⟨sig, h0, hd, hb⟩ := UpperTheory.exists_nonneg_dual_fnum_sub_le_of_demand_near_mul p (nP D p) h5 h2 ((D.R.k : ℝ) - 1) (fun s => wPl D (i + 1) (OrbitPlaces.orbMap D p r s)) (fun s => E.size u i (OrbitPlaces.orbMap D p r s)) hk (fun s => (hS.wpos i hi _).le) (fun s => by obt …`.
-
-Use `⟨sig, h0, hd, ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[← lpF_eq]`. Conclude with `hb`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orbit (D : D7) (L : SizeData₂ D) (X : Inst D L) (E : OrbitPlaces.Ent D) (hS : OrbitPlaces.Shape D L X E)
     (p : ℕ) (h5 : 5 ≤ p) (hc : IsResidueClassZero D p) (hh : hP D p ≠ 0) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) (r : OrbitPlaces.Pl D) :
@@ -129,19 +125,17 @@ private theorem orbit (D : D7) (L : SizeData₂ D) (X : Inst D L) (E : OrbitPlac
     exact hb
 
 /- English proof (translation)
-Use `choose σ h0 hd hb using orbit D L X E hS p h5 hc hh u i hi`. Establish `hR` using `OrbitPlaces.isReps_repsPl X p`. Use `set R := OrbitPlaces.repsPl X p`. Establish `hpos : 0 < nP D p` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Establish `hex : ∀ z, ∃ r ∈ R, ∃ s, OrbitPlaces.orbMap D p r s = z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Take `⟨r, ⟨hr, e, he⟩, -⟩` from `hR z`. Conclude with `⟨r, hr, (e : ZMod (nP D p)), by unfold OrbitPlaces.orbMap; rw [ZMod.val_natCast, posPl_mod, he]⟩`. Use `choose rr hrr ss hss using hex`. Establish `key : ∀ r ∈ R, ∀ s, σ (rr (OrbitPlaces.orbMap D p r s)) (ss (OrbitPlaces.orbMap D p r s)) = σ r s`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr s`. Establish `h` using `hss (OrbitPlaces.orbMap D p r s)`. Establish `h1 : rr (OrbitPlaces.orbMap D p r s) = r` using `(hR (OrbitPlaces.orbMap D p r s)).unique ⟨hrr _, _, h⟩ ⟨hr, s.val, rfl⟩`. Rewrite `h`, the goal using `[h1]`. Rewrite using `[ZMod.val_injective _ (posPl_inj D p r _ _ (ZMod.val_lt _) (ZMod.val_lt _) h)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨fun z => σ (rr z) (ss z), ⟨fun z => h0 _ _, fun z e he => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : posPl D p z e = OrbitPlaces.orbMap D p (rr z) (ss z + (e : ZMod (nP D p)))` using `by conv_lhs => rw [← hss z]`. Unfold `OrbitPlaces.orbMap`. Rewrite using `[posPl_add, ZMod.val_add, ZMod.val_natCast, posPl_mod, ← posPl_add D p _ _ (e % nP D p), posPl_mod, posPl_add]`. Use `show 1 ≤ (p : ℝ) ^ e * σ (rr z) (ss z) + σ (rr (posPl D p z e)) (ss (posPl D p z e))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, key _ (hrr z)]`. Conclude with `hd _ _ e he`. Establish `hn : (nP D p : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne _)`. Establish `eF : (∑ z ∈ kindBC D p, FOrb D (i + 1) p z) / (nP D p : ℝ) = ∑ r ∈ R.filter (fun r => r ∉ kindA D p), FOrb D (i + 1) p r`. Rewrite using `[← OrbitPlaces.sum_orbBC p _ R hR, Finset.sum_div]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Establish `hc : ∀ s : ZMod (nP D p), FOrb D (i + 1) p (OrbitPlaces.orbMap D p r s) = FOrb D (i + 1) p r` using `fun s => FOrb_step D (i + 1) p r s.val`. Rewrite using `[Finset.sum_congr rfl (fun s _ => hc s), Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, mul_div_cancel_left₀ _ hn]`. Establish `hsum` using `Finset.sum_le_sum (fun r (_ : r ∈ R) => hb r)`. Rewrite `hsum` using `[← Finset.sum_filter]`.
-
-Rewrite using `[eF, ← OrbitPlaces.sum_orbBC p (wPl D (i + 1)) R hR, ← OrbitPlaces.sum_orb p _ R hR]`. Use `le_trans (le_of_eq ?_) (le_trans hsum (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← Finset.sum_div, ← Finset.sum_div, ← Finset.mul_sum, ← Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun r hr => Finset.sum_congr rfl fun s _ => by simp only [key r hr s]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem radii (D : D7) (L : SizeData₂ D) (X : Inst D L) (E : OrbitPlaces.Ent D) (hS : OrbitPlaces.Shape D L X E)
     (p : ℕ) (h5 : 5 ≤ p) (hc : IsResidueClassZero D p) (hh : hP D p ≠ 0) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) :
@@ -191,9 +185,9 @@ private theorem radii (D : D7) (L : SizeData₂ D) (X : Inst D L) (E : OrbitPlac
     · exact Finset.sum_congr rfl fun r hr => Finset.sum_congr rfl fun s _ => by simp only [key r hr s]
 
 /- English proof (translation)
-Establish `h1 : D.R.N i ≤ D.R.N D.R.m` using `Nat.add_le_add_left (Nat.mul_le_mul_right _ hi.le) _`. Establish `h2 : D.R.N (i + 1) ≤ D.R.N D.R.m` using `Nat.add_le_add_left (Nat.mul_le_mul_right _ hi) _`. Establish `h1' : (D.R.N i : ℝ) ≤ Nm D` using `by unfold Nm; exact_mod_cast h1`. Establish `h2' : (D.R.N (i + 1) : ℝ) ≤ Nm D` using `by unfold Nm; exact_mod_cast h2`. Rewrite using `[sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul h1' h2' (by positivity) (le_trans (by positivity) h1')`.
+A detailed English derivation is pending.
 -/
 private theorem NN_le (D : D7) (i : ℕ) (hi : i < D.R.m) : (D.R.N i : ℝ) * (D.R.N (i + 1) : ℝ) ≤ Nm D ^ 2 := by
   have h1 : D.R.N i ≤ D.R.N D.R.m := Nat.add_le_add_left (Nat.mul_le_mul_right _ hi.le) _
@@ -207,21 +201,21 @@ end UpperTheory.OrbitRadiiBounds
 
 open UpperTheory.OrbitRadiiBounds in
 /- English proof (translation)
-Introduce `D L X E hS p hp h5 hc hh _ hpX u i hi Th hTh`. Take `⟨sig, hsig, hb⟩` from `radii D L X E hS p h5 hc hh u i hi`. Use `UpperTheory.kvalGe_of_norm_mfact_mul_coeff_le p _ _ _ _ _ _ fun κ hκ => ?_` and prove the remaining obligations. Establish `hp5 : (5 : ℝ) ≤ p` using `by exact_mod_cast h5`. Establish `hp1 : (1 : ℝ) < p` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hnorm : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]) p, norm_algebraMap', Padic.norm_p]`. Establish `hodd : Odd p` using `hp.out.odd_of_ne_two (by omega)`. Establish `hA : ∀ v, (κ v : ℝ) ≤ L.sc.a ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨t, ab⟩`. Use `le_trans ?_ (hS.sizeA u i hi t)` and prove the remaining obligations. Unfold `OrbitPlaces.Ent.size`. Rewrite using `[← hκ t]`. Conclude with `Finset.single_le_sum (f := fun ab => κ (t, ab)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ab)` after adjusting the coercions.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `UpperTheory.norm_mfact_mul_coeff_le_of_B0S ℂ_[p] p (nP D p) hp.out hodd (by rw [hnorm]; exact inv_lt_one_of_one_lt₀ hp1) _ _ (posPl D p) ⟨posPl_zero D p, posPl_add D p, posPl_period D p⟩ Th hTh sig hsig κ (L.sc.a ^ 2) (by nlinarith [hS.xa.2]) hA`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[hnorm, Real.inv_rpow hp0.le, ← Real.rpow_neg hp0.le]`. Use `Real.rpow_le_rpow_of_exponent_le hp1.le (neg_le_neg ?_)` and prove the remaining obligations. Establish `e1 : (∑ v : OrbitPlaces.Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1)), (κ v : ℝ) * (Formalism.IncomingBounds.gam p - sig v.1)) = ∑ z, E.size u i z * (Formalism.IncomingBounds.gam p - sig z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Unfold `OrbitPlaces.Ent.size`. Rewrite using `[← hκ z, Nat.cast_sum, Finset.sum_mul]`. Establish `e2 : (Fintype.card (OrbitPlaces.Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1))) : ℝ) = (D.R.f : ℝ) * ((D.R.N i : ℝ) * (D.R.N (i + 1) : ℝ))`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.card_prod, Fintype.card_prod (Fin _), Fintype.card_fin, Fintype.card_fin, Nat.cast_mul, Nat.cast_mul, OrbitPlaces.card_Pl]`. Establish `hpa : (p : ℝ) ≤ L.sc.a` using `le_trans hpX hS.xa.1`. Establish `hLg : 1 ≤ Real.logb p L.sc.a`. Rewrite using `[Real.le_logb_iff_rpow_le hp1 (by linarith), Real.rpow_one]; exact hpa`. Establish `hlog2 : Real.logb p (L.sc.a ^ 2) = 2 * Real.logb p L.sc.a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Real.logb`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hf : (0 : ℝ) ≤ D.R.f` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (D.R.f : ℝ) * ((D.R.N i : ℝ) * (D.R.N (i + 1) : ℝ)) * (2 * Real.logb p L.sc.a + 1) ≤ ((D.R.f : ℝ) * Nm D ^ 2) * (3 * Real.logb p L.sc.a)` using `mul_le_mul (mul_le_mul_of_nonneg_left (NN_le D i hi) hf) (by linarith) (by linarith) (by positivity)`. Rewrite using `[e1, e2, hlog2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.kvalGe_theta_of_shape :
     ∀ (D : D7) (L : SizeData₂ D) (X : Inst D L) (E : OrbitPlaces.Ent D), OrbitPlaces.Shape D L X E →

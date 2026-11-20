@@ -27,7 +27,7 @@ def CenLoc (D : D7) (M : MtFam D) : Prop :=
           GlobalTheory.PendOf.actSum D L (z : MonoidAlgebra ℂ (G0g D.nd)) ((M.loc i).real x)
 
 /- English proof (translation)
-Introduce `i` and use `h (D.nd.mu i) (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cenLoc_of_cenReal {D : D7} {M : MtFam D} (h : GlobalTheory.PendOf.CenReal D M) : CenLoc D M :=
   fun i => h (D.nd.mu i) (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2

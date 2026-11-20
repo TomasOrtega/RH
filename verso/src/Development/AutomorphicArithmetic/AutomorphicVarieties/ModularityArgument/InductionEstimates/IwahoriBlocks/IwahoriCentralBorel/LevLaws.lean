@@ -23,41 +23,37 @@ private def cj {G : Type} [Group G] (c : G) (U : Subgroup G) : Subgroup G where
     simpa only [Set.mem_setOf_eq, e] using h
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_cj {G : Type} [Group G] {c x : G} {U : Subgroup G} : x ∈ cj c U ↔ c⁻¹ * x * c ∈ U := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `hU.preimage (f := fun x => c⁻¹ * x * c) ((continuous_const.mul continuous_id).mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 private theorem isOpen_cj {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (c : G) {U : Subgroup G}
     (hU : IsOpen (U : Set G)) : IsOpen (cj c U : Set G) :=
   hU.preimage (f := fun x => c⁻¹ * x * c) ((continuous_const.mul continuous_id).mul continuous_const)
 
 /- English proof (translation)
-Introduce `K _ _ n S`. Establish `hmem : ∀ (U : ∀ v : Pl K, Subgroup (Gw n v)) (u : FA K n), u ∈ levOn S U ↔ ∀ v, finAt v (finEmb K n u) ∈ (if v ∈ S then U v else GLnLocal.integralGL (v.adicCompletion K) n)` using `fun _ _ => Iff.rfl`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U hU`. Take `⟨ho, hc, hi, -⟩` from `UpperTheory.levF_isOpen_isCompact_le_integral K n (fun v => if v ∈ S then U v else GLnLocal.integralGL (v.adicCompletion K) n) S (fun v hv => by simpa only [if_pos hv] using And.intro (hU v).1.2 (hU v).2) (fun v hv => if_neg hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨hc, ho⟩, hi⟩`. Introduce `U U' hU hU'`. Use `⟨fun v => ⟨⟨(hU v).1.1.inter_right (Subgroup.isClosed_of_isOpen _ (hU' v).1.2), (hU v).1.2.inter (hU' v).1.2⟩, inf_le_left.trans (hU v).2⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `u`. Rewrite using `[Subgroup.mem_inf, hmem, hmem, hmem]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `h'` using `h v`. Distinguish the cases in `hv : v ∈ S`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite `h'`, the goal using `[if_pos hv]`. Conclude with `(Subgroup.mem_inf.1 h').1`. Rewrite `h'`, the goal using `[if_neg hv]`. Conclude with `h'`. Establish `h'` using `h v`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : v ∈ S`. Rewrite `h'`, the goal using `[if_pos hv]`. Conclude with `(Subgroup.mem_inf.1 h').2`. Rewrite `h'`, the goal using `[if_neg hv]`. Conclude with `h'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `⟨h₁, h₂⟩ v`. Establish `a` using `h₁ v`. Establish `b` using `h₂ v`. Distinguish the cases in `hv : v ∈ S`. Rewrite `a`, `b`, the goal using `[if_pos hv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subgroup.mem_inf.2 ⟨a, b⟩`. Rewrite `a`, `b`, the goal using `[if_neg hv]`. Conclude with `a`. Introduce `k h`. Conclude with `(MultiplicityOne.finProj_mul_archProj_comm h _).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `continuous_archP.comp continuous_subtype_val`. Establish `hcl : IsClosed (archCompact K n : Set (archGroup K n))` using `(isCompact_maxCompact (K := K) (n := n)).isClosed.preimage continuous_infEmb`. Establish `hg : Continuous fun z : AdelicGLn.AdelicGL K n => archEquiv K n (AdelicGLn.prodEquiv K n z).1` using `(archEquiv K n).continuous.comp (continuous_fst.comp (AdelicGLn.prodEquiv K n).continuous)`. Use `isCompact_iff_compactSpace.1 (((isCompact_maxCompact (K := K) (n := n)).image hg).of_isClosed_subset hcl ?_)` and prove the remaining obligations. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨infEmb K n x, hx, by simp [prodEquiv_infEmb]⟩`. Introduce `r w ι hinj hι hS U hU g`. Take `⟨-, -, hout, -⟩` from `(embEx n w hinj).2 ι hι`. Use `⟨fun v => U v ⊓ cj (GM.cf v (ι g)) (U v), fun v => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Establish `ho` using `isOpen_cj (GM.cf v (ι g)) (hU v).1.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `⟨⟨(hU v).1.1.inter_right (Subgroup.isClosed_of_isOpen _ ho), (hU v).1.2.inter ho⟩, inf_le_left.trans (hU v).2⟩`. Use `(hmem _ _).2 fun v => ?_` and prove the remaining obligations. Establish `hcf : finAt v (finEmb K n ((ι g)⁻¹ * u * ι g)) = (GM.cf v (ι g))⁻¹ * finAt v (finEmb K n u) * GM.cf v (ι g)`. Simplify using `only [map_mul, map_inv, finAt_mul, finAt_inv, GM.cf]`. Establish `hu'` using `(hmem _ _).1 hu v`.
-
-Rewrite using `[hcf]`. Distinguish the cases in `hv : v ∈ S`. Rewrite `hu'`, the goal using `[if_pos hv]`. Conclude with `mem_cj.1 (Subgroup.mem_inf.1 hu').2`. Rewrite `hu'`, the goal using `[if_neg hv]`.
-
-Rewrite using `[hout g v (hS ▸ hv)]`. Simplify using `using hu'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.levLaws :
     ∀ {K : Type} [Field K] [NumberField K] (n : ℕ) (S : Finset (Pl K)), (∀ U, Lev U → CO (levOn (n := n) S U) ∧ levOn S U ≤ AdelicGLn.integralFiniteGL K n) ∧

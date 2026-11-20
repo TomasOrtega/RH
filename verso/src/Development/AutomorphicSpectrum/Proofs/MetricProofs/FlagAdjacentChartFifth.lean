@@ -16,49 +16,43 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WMan.Onto
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hctx z hz`. Establish `hctx'` using `hctx`. Take `⟨hb, hab, hk, hca, hcb, hy, hF, hBC, hr, hrc, hh⟩` from `hctx'`. Take `⟨hmem, hsrc, hV, hden, hden2⟩` from `hz`. Take `⟨hzb, hG, horb, h', t', hh', Hf, Hs⟩` from `GlobalTheory.T.flag_adjacent_chart_tenth K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h hctx z ⟨hmem, hsrc, hV, hden, hden2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hS` using `Pts.same_summand hb hab hca hcb`. Establish `hj` using `M.j_le`. Use `set zb := baseOf M k₀ z with hzbdef`. Use `set w := wRho M Rb τ k₀ ca cb F kb r h ε z with hw`. Establish `hwB : wB ε w = Rb.A.chart kb (r zb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[wB, hw, wRho, zb]`. Establish `hwL : ∀ q, wL ε w q = lowRead M F zb h (fstPt k₀ z) q.1.1 q.1.2.1 q.1.2.2` using `fun q => by`. Simplify using `[wL, hw, wRho, zb]`. Establish `hwT : wT ε w = lowRead M F zb h (sndPt k₀ z) τ cb ca - lowRead M F zb h (fstPt k₀ z) τ cb ca`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[wT, hw, wRho, zb]`. Use `⟨show wB ε w ∈ V by rw [hwB]; exact hV, ?_⟩` and prove the remaining obligations. Establish `hdu : ∀ τ', IsUnit (h τ').det` using `fun τ' => (hh τ').2.isUnit`. Set `G : Ψ → Matrix (Fin N) (Fin N) ℂ` to `fun τ' => (h τ')⁻¹ * h' τ'`. Establish `hGb : ∀ τ', IsBlockDiag j (G τ')` using `fun τ' => ((hh τ').1.inv (hdu τ')).mul (hh' τ').1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinvd : ∀ τ', ((h τ')⁻¹).det ≠ 0` using `fun τ' h0 => by`. Establish `h1` using `Matrix.det_nonsing_inv_mul_det (h τ') (hdu τ')`. Rewrite `h1` using `[h0, zero_mul]`. Conclude with `zero_ne_one h1`. Establish `hGd : ∀ τ', (G τ').det ≠ 0` using `fun τ' => by show ((h τ')⁻¹ * h' τ').det ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (hinvd τ') (hh' τ').2`. Establish `hmin : ∀ τ' i, IsProperStep N j i → minorIJ (G τ') (stepCols N j i) (stepCols N j i) ≠ 0`. Introduce `τ' i hi h0`. Take `⟨k, hp⟩ : ∃ k, M.blk (τ', i) = some k` from `Option.ne_none_iff_exists'.1 fun e => (M.blk_none _).1 e hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨α, hα, hz₁⟩` from `Hf (τ', i) k hp`. Use `hden (τ', i) k hp ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.frame_minor_value_formula K ι Φ y Ψ N j M F zb (τ', i) k (h' τ') (h τ')⁻¹ (fstPt k₀ z) α _ hF hzb hG hp (hh' τ').1 hz₁]`. Use `show α * minorIJ (G τ') _ _ = 0`. Rewrite using `[h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `choose L U hLb hLu hUb hUt hUd hLU using fun τ' => GlobalTheory.T.block_LU_factorization N j (G τ') hj (hGb τ') (hGd τ') (hmin τ')`. Establish `hhL : ∀ τ', h τ' * (L τ' * U τ') = h' τ'` using `fun τ' => by`. Rewrite using `[← hLU]`. Conclude with `Matrix.mul_nonsing_inv_cancel_left _ _ (hdu τ')`. Establish `hlow : ∀ τ' (a' b' : Fin N), b' < a' → ((a' : ℕ) < N - j ↔ (b' : ℕ) < N - j) → lowRead M F zb h (fstPt k₀ z) τ' a' b' = L τ' a' b'` using `fun τ' a' b' e e' => GlobalTheory.T.frame_LU_minor_value K ι Φ y Ψ N j M F zb h τ' a' b' (fstPt k₀ z) (h' τ') (L τ') (U τ') hF hzb hG (hh' τ').1 (hLU τ') (hLb τ') (hLu τ') (hUb τ') (hUt τ') (fun c _ => hUd τ' c) e e' (fun k hp => Hf (τ', stepOf N j b') k hp)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `hlm : ∀ τ', lowMat (wL ε w) τ' = L τ'` using `fun τ' => by`. Use extensionality with `a' b'`. Unfold `lowMat`. Use `split_ifs with e e'`. Rewrite using `[hwL]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hlow τ' a' b' e.1 e.2`. Rewrite using `[e', (hLu τ').1]`. Break down `lt_or_gt_of_ne e' with e' | e'` into its components or cases. Conclude with `((hLu τ').2 _ _ e').symm`. Conclude with `((hLb τ') _ _ fun e'' => e ⟨e', e''⟩).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨α₂, hα₂, hz₂⟩` from `Hs`. Establish `hne2 : minorIJ (L τ * U τ * (1 + Matrix.single cb ca t')) (stepCols N j a) (stepCols N j a) ≠ 0`. Introduce `h0`. Use `hden2 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.frame_minor_value_formula K ι Φ y Ψ N j M F zb (τ, a) k₀ (h' τ * (1 + Matrix.single cb ca t')) (h τ)⁻¹ (sndPt k₀ z) α₂ _ hF hzb hG hk ((hh' τ).1.mul (Pts.transv_block hS t')) hz₂, ← Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show α₂ * minorIJ (G τ * _) _ _ = 0`. Rewrite using `[hLU, h0, mul_zero]`. Take `⟨t, Vm, hVb, hVt, hVd, hUV⟩` from `GlobalTheory.T.LU_twist_refactorization N j a ca cb (L τ) (U τ) t' hj hca hcb hS (hLb τ) (hLu τ) (hUb τ) (hUt τ) (hUd τ) hne2`. Establish `hlt : ca < cb` using `by rw [Fin.lt_def]; omega`. Establish `hstep : stepOf N j ca = a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `a.2` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [stepOf, hca, lastCol]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hcc : ∀ c, c ∈ stepCols N j (stepOf N j ca) → Vm c c ≠ 0` using `fun c hc => hVd c (hstep ▸ hc)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hLe : ∀ r c, (L τ * (1 + Matrix.single cb ca t)) r c = L τ r c + if c = ca then L τ r cb * t else 0`. Introduce `r c`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.add_apply]`. Use `congr 1`. Distinguish the cases in `e : c = ca`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Simplify using `[Matrix.mul_single_apply_same]`. Rewrite using `[if_neg e, Matrix.mul_single_apply_of_ne _ _ _ _ _ e]`. Establish `hL2 : IsLowerUni (L τ * (1 + Matrix.single cb ca t))`. Use `⟨fun r => ?_, fun r c e => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hLe, (hLu τ).1] split_ifs with e`. Rewrite using `[e, (hLu τ).2 _ _ hlt, zero_mul, add_zero]`. Rewrite using `[add_zero]`. Rewrite using `[hLe, (hLu τ).2 _ _ e] split_ifs with e'`. Rewrite using `[(hLu τ).2 r cb (e.trans (e' ▸ hlt)), zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[add_zero]`. Establish `hL2c : (L τ * (1 + Matrix.single cb ca t)) cb ca = L τ cb ca + t`. Rewrite using `[hLe, if_pos rfl, (hLu τ).1, one_mul]`. Establish `hsnd : lowRead M F zb h (sndPt k₀ z) τ cb ca = L τ cb ca + t`. Rewrite using `[← hL2c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.frame_LU_minor_value K ι Φ y Ψ N j M F zb h τ cb ca (sndPt k₀ z) (h' τ * (1 + Matrix.single cb ca t')) _ Vm hF hzb hG ((hh' τ).1.mul (Pts.transv_block hS t')) ?_ ((hLb τ).mul (Pts.transv_block hS t)) hL2 hVb hVt hcc hlt hS.symm ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc] show G τ * _ = _`. Rewrite using `[hLU, Matrix.mul_assoc, hUV, Matrix.mul_assoc]`. Introduce `k hp`. Rewrite `hp` using `[hstep, hk]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `rfl` from `Option.some.inj hp`. Conclude with `⟨α₂, hα₂, by rw [hstep]; exact hz₂⟩`. Establish `hwt : wT ε w = t`. Rewrite using `[hwT, hsnd, hlow τ cb ca hlt hS.symm]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hHU : ∀ τ', (fun τ' => wH h ε τ' w) τ' * U τ' = h' τ'` using `fun τ' => by show h τ' * lowMat (wL ε w) τ' * U τ' = _`. Rewrite using `[hlm, Matrix.mul_assoc, hhL]`. Use `show SameOrbit (sqZ M F (bl (wB ε w)) (fun τ' => wH h ε τ' w) k₀ τ ca cb (wT ε w)) z`. Rewrite using `[hwB, hwt]`. Use `GlobalTheory.T.twisted_frame_value_formula K ι Φ y Ψ N j M τ a k₀ ca cb F _ z _ U Vm t hk hzb hG horb (fun τ' => ⟨hUb τ', hUt τ', hUd τ'⟩) hVb hVt hVd (fun p k hp => ?_) ⟨α₂, hα₂, fun m => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hHU]`. Conclude with `Hf p k hp`. Establish `e : (fun τ' => wH h ε τ' w) τ * (1 + Matrix.single cb ca t) * Vm = h' τ * (1 + Matrix.single cb ca t')`. Rewrite using `[← hHU τ, Matrix.mul_assoc, Matrix.mul_assoc, hUV]`. Rewrite using `[e]`.
-
-Conclude with `hz₂ m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin (d + 2)), IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h → ∀ z ∈ wO M Rb τ a k₀ ca cb F kb V r h, wRho M Rb τ k₀ ca cb F kb r h ε z ∈ wD ε V ∧ SameOrbit (wPhi M F bl h ε k₀ τ ca cb (wRho M Rb τ k₀ ca cb F kb r h ε z)) z := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hctx z hz

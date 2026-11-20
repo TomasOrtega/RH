@@ -14,9 +14,9 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
   (k : Type) [CommRing k] [Algebra R k]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [dAct, FB.actK, coeff_map, Matrix.mul_apply]`. Rewrite using `[B.A.mul_act]`. Unfold `comp1 ev`. Rewrite using `[coeff_single_subst, Fintype.sum_prod_type, Fin.sum_univ_one, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Introduce and unpack `⟨s, l⟩ fin_cases s`. Conclude with `B.A.const b l`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem dAct_mul (B : FB R d O) (a b : O) : dAct k B (a * b) = dAct k B a * dAct k B b := by
   ext i j
@@ -32,14 +32,14 @@ theorem dAct_mul (B : FB R d O) (a b : O) : dAct k B (a * b) = dAct k B a * dAct
     exact B.A.const b l
 
 /- English proof (translation)
-Simplify using `[betaH, dotProduct, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem betaH_eq_dotProduct (ξ η : (Fin d → k) × (Fin d → k)) :
     betaH k ξ η = η.2 ⬝ᵥ ξ.1 - ξ.2 ⬝ᵥ η.1 := by
   simp [betaH, dotProduct, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [betaH_eq_dotProduct, OactH, star_star, Matrix.mulVec_transpose, Matrix.dotProduct_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem betaH_OactH (B : FB R d O) (a : O) (ξ η : (Fin d → k) × (Fin d → k)) :
     betaH k (OactH k B a ξ) η = betaH k ξ (OactH k B (star a) η) := by
@@ -47,14 +47,14 @@ theorem betaH_OactH (B : FB R d O) (a : O) (ξ η : (Fin d → k) × (Fin d → 
     Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Simplify using `only [OactH, star_mul, dAct_mul, Matrix.transpose_mul, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem OactH_mul (B : FB R d O) (a b : O) (ξ : (Fin d → k) × (Fin d → k)) :
     OactH k B (a * b) ξ = OactH k B a (OactH k B b ξ) := by
   simp only [OactH, star_mul, dAct_mul, Matrix.transpose_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Simplify using `only [betaH_eq_dotProduct, Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, dotProduct_sum, sum_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem betaH_sum_smul_left {ι : Type} (s : Finset ι) (c : ι → k)
     (v : ι → (Fin d → k) × (Fin d → k)) (η : (Fin d → k) × (Fin d → k)) :
@@ -64,7 +64,7 @@ theorem betaH_sum_smul_left {ι : Type} (s : Finset ι) (c : ι → k)
     Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [betaH_eq_dotProduct, Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, dotProduct_sum, sum_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem betaH_sum_smul_right {ι : Type} (s : Finset ι) (c : ι → k)
     (ξ : (Fin d → k) × (Fin d → k)) (v : ι → (Fin d → k) × (Fin d → k)) :
@@ -74,7 +74,7 @@ theorem betaH_sum_smul_right {ι : Type} (s : Finset ι) (c : ι → k)
     Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `using betaH_sum_smul_right k s (fun _ => 1) ξ v`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem betaH_sum_right {ι : Type} (s : Finset ι)
     (ξ : (Fin d → k) × (Fin d → k)) (v : ι → (Fin d → k) × (Fin d → k)) :
@@ -82,7 +82,7 @@ theorem betaH_sum_right {ι : Type} (s : Finset ι)
   simpa using betaH_sum_smul_right k s (fun _ => 1) ξ v
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext ?_ ?_ <;>`. Simplify using `only [OactH, Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, Matrix.mulVec_sum, Matrix.mulVec_smul]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem OactH_sum_smul (B : FB R d O) (a : O) {ι : Type} (s : Finset ι) (c : ι → k)
     (v : ι → (Fin d → k) × (Fin d → k)) :
@@ -94,13 +94,13 @@ theorem OactH_sum_smul (B : FB R d O) (a : O) {ι : Type} (s : Finset ι) (c : �
 end
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B`. Take `⟨hadd, hone⟩` from `dAct_add_and_one R d O k B`. Use `⟨betaH_OactH k B, OactH_mul k B, fun a b ξ => ?_, fun ξ => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [OactH, star_add, hadd, Matrix.transpose_add, Matrix.add_mulVec, Prod.mk_add_mk]`. Simplify using `[OactH, hone]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `n n' c a c' a' ξ η hξ hη h0`. Establish `h1 : betaH k ξ η = ∑ i, c i * betaH k ξ (OactH k B (star (a i)) η)` using `by conv_lhs => rw [← hξ]`. Rewrite using `[betaH_sum_smul_left]`. Simplify using `only [betaH_OactH]`. Establish `h2 : ∀ i, OactH k B (star (a i)) η = ∑ i', c' i' • OactH k B (star (a i) * a' i') η` using `fun i => by conv_lhs => rw [← hη]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[OactH_sum_smul]`. Simplify using `only [OactH_mul]`. Establish `h3 : betaH k ξ (∑ i, ∑ i', (c i * c' i') • OactH k B (star (a i) * a' i') η) = 0`. Rewrite using `[h0]`. Simplify using `[betaH]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, ← h3, betaH_sum_right]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h2, betaH_sum_smul_right, betaH_sum_smul_right, Finset.mul_sum]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem betaH_sesquilinear : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O]
     [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O),

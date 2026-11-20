@@ -12,20 +12,20 @@ section U2
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fin_one_update_eq_const (α : Fin 1 → Fin n × Fin n) (x : Fin n × Fin n) :
     Function.update α 0 x = fun _ => x := by
   funext i; rw [Fin.fin_one_eq_zero i]; simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_one_fun_eq_const_apply_zero (α : Fin 1 → Fin n × Fin n) : α = fun _ => α 0 := by
   funext i; rw [Fin.fin_one_eq_zero i]
 
 /- English proof (translation)
-Simplify using `only [factorAction, arrTo, arrOf, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Apply the tactic sequence `by_cases h1 : (α i).1 = c <;> by_cases h2 : (α i).2 = d <;> simp [h1, h2]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem factorAction_apply_general {j : ℕ} (i : Fin j) (c d : Fin n) (F : Arr V n j) (α : Fin j → Fin n × Fin n) :
     factorAction i c d F α = (if (α i).1 = c then F (Function.update α i (d, (α i).2)) else 0) -
@@ -34,14 +34,14 @@ theorem factorAction_apply_general {j : ℕ} (i : Fin j) (c d : Fin n) (F : Arr 
   by_cases h1 : (α i).1 = c <;> by_cases h2 : (α i).2 = d <;> simp [h1, h2]
 
 /- English proof (translation)
-Simplify using `[ptE, arrTo, arrOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pointwise_operator_apply_general {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) (F : Arr V n j)
     (α : Fin j → Fin n × Fin n) : ptE E c d F α = E c d (F α) := by
   simp [ptE, arrTo, arrOf]
 
 /- English proof (translation)
-Simplify using `only [arrE, LinearMap.add_apply, Fin.sum_univ_one, PiLp.add_apply, factorAction_apply_general, pointwise_operator_apply_general, fin_one_update_eq_const]`.
+Simplify using the standard rewrite rules.
 -/
 theorem arr_operator_one_apply (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) (F : Arr V n 1)
     (a b : Fin n) :
@@ -52,7 +52,7 @@ theorem arr_operator_one_apply (E : Fin n → Fin n → Module.End ℂ V) (c d :
     pointwise_operator_apply_general, fin_one_update_eq_const]
 
 /- English proof (translation)
-Simplify using `[arrV0, arrOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_noncompact_arr_iff_general {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {u : V} {j : ℕ}
     (F : Arr V n j) :
@@ -60,9 +60,9 @@ theorem mem_noncompact_arr_iff_general {ε : Fin n → Bool} {E : Fin n → Fin 
   simp [arrV0, arrOf]
 
 /- English proof (translation)
-Establish `h` using `(mem_noncompact_arr_iff_general F).mp hF (fun _ => (a, b))`. Prove the components needed by the constructor for the conclusion. Introduce `hne`. Rewrite `h` using `[if_pos (fun _ => hne)]`. Then use the resulting hypothesis. Introduce `he`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[if_neg (fun h' => h' 0 he), Submodule.mem_bot]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noncompact_arr_one_values {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {u : V} {F : Arr V n 1}
     (hF : F ∈ arrV0 ε E u 1) (a b : Fin n) :
@@ -76,9 +76,9 @@ theorem noncompact_arr_one_values {ε : Fin n → Bool} {E : Fin n → Fin n →
     exact h
 
 /- English proof (translation)
-Rewrite using `[mem_noncompact_arr_iff_general]`. Introduce `α`. Rewrite using `[fin_one_fun_eq_const_apply_zero α]`. Distinguish the cases in `h : ε (α 0).1 = ε (α 0).2`. Rewrite using `[if_neg (fun h' => h' 0 h), Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 _ _ h`. Rewrite using `[if_pos (fun _ => h)]`. Conclude with `h1 _ _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_noncompact_arr_one {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {u : V} {F : Arr V n 1}
     (h1 : ∀ a b, ε a ≠ ε b → F (fun _ => (a, b)) ∈ kSpan ε E u)
@@ -91,13 +91,13 @@ theorem mem_noncompact_arr_one {ε : Fin n → Bool} {E : Fin n → Fin n → Mo
   · rw [if_pos (fun _ => h)]; exact h1 _ _ h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hk` using `isUnitary_kUnit ε E hu`. Take `⟨hspan, -⟩` from `hl V n ε E Λ u (glRel_kRel ε E hg) hΛ`. Rewrite `hy` using `[hspan]`. Establish `key : ∀ z ∈ lowSpan ε E u, ⟪z, y⟫_ℂ = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, hw', rfl⟩` from `hx`. Consider the cases of `w with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `nil => simpa [ew] using hw V n ε E Λ ν u y hk hΛ.1 hyh.1 (Ne.symm hne)`. Consider the case `cons p w`. Establish `hp` using `hw' p (List.mem_cons_self ..)`. Simplify using `only [ew, Module.End.mul_apply]`. Rewrite using `[hk p.1 p.2 hp.1, hyh.2 p.2 p.1 hp.2 hp.1.symm, inner_zero_right]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [inner_add_left, hx, hz, add_zero]`. Consider the case `smul c x _ hx => rw [inner_smul_left, hx, mul_zero]`. Conclude with `hy0 (inner_self_eq_zero.mp (key y hy))`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem compact_highest_weight_unique (hl : KLow) (hw : KWtOrth) {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ V} {Λ ν : Fin n → ℝ} {u y : V}
@@ -127,33 +127,31 @@ end U2
 
 section U2b
 /- English proof (translation)
-Introduce `V _ _ n ε E Λ μ u F hg hu hΛ hF hFh hF0`. Use `set f : Fin n × Fin n → V := fun p => F (fun _ => p) with hf`. Establish `hnz : ∃ p, f p ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hF0` to reduce the goal to its premises. Apply `PiLp.ext` to reduce the goal to its premises. Introduce `α`. Rewrite using `[fin_one_fun_eq_const_apply_zero α]`. Simplify `h (α 0)` using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨a, b⟩, hpP, hmax⟩` from `(univ.filter (fun p => f p ≠ 0)).exists_max_image (fun p : Fin n × Fin n => ((p.1 : ℕ) : ℤ) - ((p.2 : ℕ) : ℤ)) (by obtain ⟨p, hp⟩ := hnz; exact ⟨p, by simp [hp]⟩)`. Establish `hzero : ∀ q : Fin n × Fin n, ((a : ℕ) : ℤ) - ((b : ℕ) : ℤ) < ((q.1 : ℕ) : ℤ) - ((q.2 : ℕ) : ℤ) → f q = 0`. Introduce `q hq`. Assume the negation of the conclusion as `h`. Use `hmax q (by simp [h])` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Establish `hab0 : f (a, b) ≠ 0` using `by simpa using hpP`. Establish `hval` using `noncompact_arr_one_values hF`. Establish `hne : ε a ≠ ε b` using `fun h => hab0 ((hval a b).2 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hab : a ≠ b` using `fun h => hne (h ▸ rfl)`. Use `⟨a, b, hne, ?_⟩` and prove the remaining obligations. Establish `hwt : IsWeight E (μ - root a b) (f (a, b))`. Introduce `c`. Establish `h1` using `congrArg (fun G : Arr V n 1 => G (fun _ => (a, b))) (hFh.1 c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at h1`. Rewrite `h1` using `[arr_operator_one_apply, PiLp.smul_apply]`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Establish `hbc : b ≠ a` using `Ne.symm hab`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [if_true, if_neg hbc, sub_zero] at h1`. Establish `: ((μ - root a b) a : ℝ) = μ a - 1`. Simplify using `[root, Pi.single_apply, hbc]`. Rewrite using `[this]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_smul, one_smul, ← h1]`. Simplify using `[hf]`. Distinguish the cases in `hbc : b = c`. Substitute `hbc` using the available equality. Simplify using `only [if_neg hac, if_true, zero_sub] at h1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ((μ - root a b) b : ℝ) = μ b + 1`. Simplify using `[root, Pi.single_apply, hab]`. Rewrite using `[this]`. Use `push_cast`. Rewrite using `[add_smul, one_smul, ← h1]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hf]`. Simplify using `only [if_neg hac, if_neg hbc, sub_zero, zero_add] at h1`. Establish `: ((μ - root a b) c : ℝ) = μ c`. Simplify using `[root, Pi.single_apply, Ne.symm hac, Ne.symm hbc]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Establish `hhi : ∀ c d, c < d → ε c = ε d → E c d (f (a, b)) = 0`. Introduce `c d hcd hcomp`. Establish `hcd'` using `Fin.lt_iff_val_lt_val.mp hcd`. Establish `h1` using `congrArg (fun G : Arr V n 1 => G (fun _ => (a, b))) (hFh.2 c d hcd hcomp)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only at h1`. Rewrite `h1` using `[arr_operator_one_apply, PiLp.zero_apply]`. Establish `e1 : (if a = c then F (fun _ => (d, b)) else 0) = 0` using `by split_ifs with h`. Substitute `h` using the available equality. Conclude with `hzero (d, b) (by simp only; omega)`.
+Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : (if b = d then F (fun _ => (a, c)) else 0) = 0` using `by split_ifs with h`. Substitute `h` using the available equality. Conclude with `hzero (a, c) (by simp only; omega)`. Both sides reduce to the same expression.
-
-Rewrite `h1` using `[e1, e2, sub_zero, zero_add]`. Conclude with `h1`. Establish `hν` using `compact_highest_weight_unique hl hw hg hu hΛ ((hval a b).1 hne) ⟨hwt, hhi⟩ hab0`. Rewrite using `[← hν]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hVCoeff_of (hl : KLow) (hw : KWtOrth) (ha : ArrModule) : HVCoeff := by
   intro V _ _ n ε E Λ μ u F hg hu hΛ hF hFh hF0
@@ -238,14 +236,14 @@ section U2c
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.mpr fun _ hS => hS.1`.
+A detailed English derivation is pending.
 -/
 theorem mem_compact_span_self_general {W : Type} [AddCommGroup W] [Module ℂ W] {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} (x : W) : x ∈ kSpan ε F x :=
   Submodule.mem_sInf.mpr fun _ hS => hS.1
 
 /- English proof (translation)
-Introduce `a b hab y hy`. Rewrite `hy`, the goal using `[kSpan, Submodule.mem_sInf]`. Introduce `S hS`. Conclude with `hS.2 a b hab y (hy S hS)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem compact_span_stable_general {W : Type} [AddCommGroup W] [Module ℂ W] {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} (x : W) : KStable ε F (kSpan ε F x) := by
@@ -255,7 +253,7 @@ theorem compact_span_stable_general {W : Type} [AddCommGroup W] [Module ℂ W] {
   exact hS.2 a b hab y (hy S hS)
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨hx, hS⟩`.
+A detailed English derivation is pending.
 -/
 theorem compact_span_le_of_stable {W : Type} [AddCommGroup W] [Module ℂ W] {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} {S : Submodule ℂ W} {x : W} (hS : KStable ε F S)
@@ -263,7 +261,7 @@ theorem compact_span_le_of_stable {W : Type} [AddCommGroup W] [Module ℂ W] {ε
   sInf_le ⟨hx, hS⟩
 
 /- English proof (translation)
-Use `le_trans (compact_span_le_of_stable (S := ⊥) ?_ (Submodule.zero_mem _)) bot_le` and prove the remaining obligations. Introduce `a b _ x hx`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hx, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem compact_span_zero_le {W : Type} [AddCommGroup W] [Module ℂ W] {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} (M : Submodule ℂ W) : kSpan ε F 0 ≤ M := by
@@ -273,7 +271,7 @@ theorem compact_span_zero_le {W : Type} [AddCommGroup W] [Module ℂ W] {ε : Fi
   rw [hx, map_zero]
 
 /- English proof (translation)
-The claim follows from `iSup₂_le fun y hy => h y hy.1 hy.2.choose hy.2.choose_spec.1 hy.2.choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem isotypic_part_le_of_forall {W : Type} [AddCommGroup W] [Module ℂ W] {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} {T : Set (Fin n → ℝ)} {S M : Submodule ℂ W}
@@ -281,7 +279,7 @@ theorem isotypic_part_le_of_forall {W : Type} [AddCommGroup W] [Module ℂ W] {�
   iSup₂_le fun y hy => h y hy.1 hy.2.choose hy.2.choose_spec.1 hy.2.choose_spec.2
 
 /- English proof (translation)
-The claim follows from `le_iSup₂_of_le (f := fun y (_ : y ∈ S ∧ ∃ μ ∈ T, KHighest ε F μ y) => kSpan ε F y) y ⟨hy, μ, hμ, hyh⟩ le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem compact_span_le_isotypic_part {W : Type} [AddCommGroup W] [Module ℂ W] {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} {T : Set (Fin n → ℝ)} {S : Submodule ℂ W} {y : W}
@@ -291,18 +289,18 @@ theorem compact_span_le_isotypic_part {W : Type} [AddCommGroup W] [Module ℂ W]
     ⟨hy, μ, hμ, hyh⟩ le_rfl
 
 /- English proof (translation)
-Simplify using `[thetaA, arrOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_map_word_sum_apply {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (F : Arr V n j) :
     thetaA E j F = ∑ α : Fin j → Fin n × Fin n, ew E (List.ofFn α).reverse (F α) := by
   simp [thetaA, arrOf]
 
 /- English proof (translation)
-Establish `hba : b ≠ a` using `Ne.symm hab`. Establish `h1` using `congrFun h a`. Establish `h2` using `congrFun h b`. Simplify using `only [root, Pi.sub_apply, Pi.single_apply, if_pos rfl, if_neg hab, if_neg hba] at h1 h2`. Establish `e1 : a = a'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `e1`. Rewrite `h1` using `[if_neg e1]`. Apply the tactic sequence `split_ifs at h1 <;> norm_num at h1`. Substitute `e1` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `e4`. Rewrite `h2` using `[if_neg hba, if_neg e4]`. Evaluate the numerical expressions using `at h2`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem root_injective_of_ne {a b a' b' : Fin n} (hab : a ≠ b) (h : root a b = root a' b') :
     a = a' ∧ b = b' := by
@@ -321,15 +319,13 @@ theorem root_injective_of_ne {a b a' b' : Fin n} (hab : a ≠ b) (h : root a b =
   norm_num at h2
 
 /- English proof (translation)
-Introduce `c d hcd F hF`. Establish `hval` using `noncompact_arr_one_values hF`. Establish `hks` using `compact_span_stable_general (ε := ε) (F := E) u`. Apply `mem_noncompact_arr_one` to reduce the goal to its premises. Introduce `a b hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[arr_operator_one_apply]`. Use `Submodule.add_mem _ (Submodule.sub_mem _ ?_ ?_) (hks c d hcd _ ((hval a b).1 hne))` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h; exact (hval d b).1 (by rw [← hcd]; exact hne)` using the available equality. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Substitute `h; exact (hval a c).1 (by rw [hcd]; exact hne)` using the available equality. Conclude with `Submodule.zero_mem _`. Introduce `a b he`. Rewrite using `[arr_operator_one_apply, (hval a b).2 he, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e1 : (if a = c then F (fun _ => (d, b)) else 0) = 0` using `by split_ifs with h`. Substitute `h; exact (hval d b).2 (by rw [← hcd]; exact he)` using the available equality. Both sides reduce to the same expression. Establish `e2 : (if b = d then F (fun _ => (a, c)) else 0) = 0` using `by split_ifs with h`. Substitute `h; exact (hval a c).2 (by rw [hcd]; exact he)` using the available equality.
-
-Both sides reduce to the same expression. Rewrite using `[e1, e2, sub_zero]`.
+Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noncompact_arr_one_compact_stable {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {u : V} :
     KStable ε (arrE E 1) (arrV0 ε E u 1) := by
@@ -359,13 +355,11 @@ theorem noncompact_arr_one_compact_stable {ε : Fin n → Bool} {E : Fin n → F
     rw [e1, e2, sub_zero]
 
 /- English proof (translation)
-Establish `hmem : ∀ (F : arrV0 ε E u j) (α : Fin j → Fin n × Fin n), ((LinearMap.proj (R` using `ℂ) (φ := fun _ : Fin j → Fin n × Fin n => V) α ∘ₗ arrOf V n j) ∘ₗ (arrV0 ε E u j).subtype) F ∈ kSpan ε E u := by`. Introduce `F α`. Establish `h` using `(mem_noncompact_arr_iff_general (F : Arr V n j)).mp F.2 α`. Express the relevant statement in the definitionally equal form `((F : Arr V n j) α) ∈ _`. Use `split_ifs at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Rewrite `h` using `[Submodule.mem_bot]`. Rewrite using `[h]`. Conclude with `Submodule.zero_mem _`. Set `φ : arrV0 ε E u j →ₗ[ℂ] ((Fin j → Fin n × Fin n) → kSpan ε E u)` to `LinearMap.pi fun α => LinearMap.codRestrict (kSpan ε E u) ((LinearMap.proj (R := ℂ) (φ := fun _ : Fin j → Fin n × Fin n => V) α ∘ₗ arrOf V n j) ∘ₗ (arrV0 ε E u j).subtype) (fun F => hmem F α)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hinj : Function.Injective φ`. Introduce `F G hFG`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `PiLp.ext` to reduce the goal to its premises. Introduce `α`.
-
-Use `congrArg (fun h => ((h α : kSpan ε E u) : V)) hFG` as an intermediate fact. Simplify `this` using `[φ, arrOf]`. Conclude with `Module.Finite.of_injective φ hinj`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem noncompact_arr_finite_dimensional {j : ℕ} {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {u : V}
     (hfd : FiniteDimensional ℂ (kSpan ε E u)) : FiniteDimensional ℂ (arrV0 ε E u j) := by
@@ -397,19 +391,17 @@ end U2c
 section U2d
 
 /- English proof (translation)
-Introduce `V _ _ n ε E Λ u hg hu hΛ hfd`. Establish `hA` using `(ha V n ε E 1).1 hg`. Establish `hKU` using `(ha V n ε E 1).2 hu`. Establish `hKR` using `glRel_kRel ε _ hA.1`. Use `noncompact_arr_finite_dimensional (j := 1) hfd` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hi (Arr V n 1) n ε (arrE E 1) (arrV0 ε E u 1) {μ | ∃ a b, a < b ∧ ε a ≠ ε b ∧ μ = Λ + root a b} inferInstance hKR hKU noncompact_arr_one_compact_stable`. Establish `heq : isoPart ε (arrE E 1) {μ | ∃ a b, a < b ∧ ε a ≠ ε b ∧ μ = Λ + root a b}ᶜ (arrV0 ε E u 1) = Vminus ε E Λ u`. Apply `le_antisymm` to reduce the goal to its premises. Apply `isotypic_part_le_of_forall` to reduce the goal to its premises. Introduce `y hy μ hμ hyh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy0 : y = 0`. Substitute `hy0` using the available equality. Conclude with `compact_span_zero_le _`. Take `⟨a, b, hne, rfl⟩` from `hv V n ε E Λ μ u y hg hu hΛ hy hyh hy0`. Apply `compact_span_le_isotypic_part hy _ hyh` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hab : a ≠ b` using `fun h => hne (h ▸ rfl)`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Conclude with `absurd ⟨a, b, h, hne, rfl⟩ hμ`. Conclude with `⟨a, b, h, hne, rfl⟩`. Apply `isotypic_part_le_of_forall` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy μ hμ hyh`. Apply `compact_span_le_isotypic_part hy _ hyh` to reduce the goal to its premises. Introduce and unpack `⟨a', b', h', hne', heq'⟩`. Take `⟨a, b, h, hne, rfl⟩` from `hμ`. Take `⟨e1, e2⟩` from `root_injective_of_ne (ne_of_gt h) (add_left_cancel heq')`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `e1` using the available equality. Substitute `e2` using the available equality. Conclude with `absurd h (not_lt.mpr h'.le)`. Use `⟨fun F hF G hG => h1 F hF G (heq ▸ hG), ?_⟩` and prove the remaining obligations. Rewrite using `[← heq]`.
-
-Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typesSplit_of (hv : HVCoeff) (hi : KIsoSplit) (ha : ArrModule) : TypesSplit := by
   intro V _ _ n ε E Λ u hg hu hΛ hfd
@@ -445,7 +437,7 @@ theorem typesSplit_of (hv : HVCoeff) (hi : KIsoSplit) (ha : ArrModule) : TypesSp
   exact h2
 
 /- English proof (translation)
-Unfold `root`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws.
 -/
 theorem root_swap' {n : ℕ} (a b : Fin n) : root a b = -root b a := by
   unfold root; abel
@@ -456,7 +448,7 @@ section U2e
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [positionsE, Fin.sum_univ_one, factorAction_apply_general, fin_one_update_eq_const]`.
+Simplify using the standard rewrite rules.
 -/
 theorem positions_one_apply (c d : Fin n) (G : Arr V n 1) (a b : Fin n) :
     positionsE V n 1 c d G (fun _ => (a, b)) =
@@ -465,7 +457,7 @@ theorem positions_one_apply (c d : Fin n) (G : Arr V n 1) (a b : Fin n) :
     fin_one_update_eq_const]
 
 /- English proof (translation)
-Simplify using `only [CasK, LinearMap.sum_apply, WithLp.ofLp_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem CasK_apply {j : ℕ} {ε : Fin n → Bool} (X : Fin n → Fin n → Module.End ℂ (Arr V n j))
     (G : Arr V n j) (α : Fin j → Fin n × Fin n) :
@@ -480,29 +472,29 @@ Evaluate the decidable proposition.
 theorem bool_trichotomy_of_ne : ∀ x y z : Bool, x ≠ y → (z = x ∧ z ≠ y) ∨ (z = y ∧ z ≠ x) := by decide
 
 /- English proof (translation)
-Apply `PiLp.ext` to reduce the goal to its premises. Introduce `α`. Rewrite using `[fin_one_fun_eq_const_apply_zero α, PiLp.smul_apply]`. Take `⟨a, b⟩` from `α 0`. Rewrite using `[CasK_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[hz a b hab, smul_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `d _`. Use `split_ifs with hcd`. Simplify using `only [positions_one_apply]`. Establish `hd : ∀ x, F (fun _ => (x, x)) = 0` using `fun x => hz x x rfl`. Apply the tactic sequence `by_cases h1 : a = c <;> by_cases h2 : b = d`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `[hz _ _ hab, hd]`. Substitute `h1` using the available equality. Simplify using `[hz _ _ hab, hd, h2]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Simplify using `[hz _ _ hab, hd, h1]`. Simplify using `[h1, h2]`. Both sides reduce to the same expression. Establish `key : ∀ c d, (if ε c = ε d then positionsE V n 1 c d (positionsE V n 1 d c F) (fun _ => (a, b)) else 0) = (if c = a then (if ε d = ε a then F (fun _ => (a, b)) else 0) else 0) + (if d = b then (if ε c = ε b then F (fun _ => (a, b)) else 0) else 0)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c d`. Establish `hab' : a ≠ b` using `fun h => hab (h ▸ rfl)`. Distinguish the cases in `hcd : ε c = ε d`. Rewrite using `[if_pos hcd]`. Simplify using `only [positions_one_apply]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : c = a`. Substitute `h1` using the available equality. Establish `hbd : b ≠ d` using `by rintro rfl; exact hab hcd`. Simplify using `[hbd, Ne.symm hbd, Ne.symm hab', hcd.symm]`. Distinguish the cases in `h2 : d = b`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Simplify using `[h1, Ne.symm h1, hab', hcd]`. Simplify using `[h1, Ne.symm h1, h2, Ne.symm h2]`. Rewrite using `[if_neg hcd]`. Establish `e1 : (if c = a then (if ε d = ε a then F (fun _ => (a, b)) else 0) else 0) = 0` using `by split_ifs with h1 h2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `h1` using the available equality. Conclude with `absurd h2.symm hcd`. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish `e2 : (if d = b then (if ε c = ε b then F (fun _ => (a, b)) else 0) else 0) = 0` using `by split_ifs with h1 h2`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Substitute `h1` using the available equality. Conclude with `absurd h2 hcd`. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite using `[e1, e2, add_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [key, Finset.sum_add_distrib, Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_add_distrib]`. Establish `: ∀ d : Fin n, ((if ε d = ε a then F (fun _ => (a, b)) else 0) + (if ε d = ε b then F (fun _ => (a, b)) else 0)) = F (fun _ => (a, b))`. Introduce `d`. Break down `bool_trichotomy_of_ne (ε a) (ε b) (ε d) hab with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos h1, if_neg h2, add_zero]`. Rewrite using `[if_neg h2, if_pos h1, zero_add]`. Simplify using `only [this, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compact_casimir_positions_one {ε : Fin n → Bool} (F : Arr V n 1)
     (hz : ∀ a b, ε a = ε b → F (fun _ => (a, b)) = 0) :
@@ -573,7 +565,7 @@ section U2f
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
 
 /- English proof (translation)
-Use `@norm_sq_eq_re_inner ℂ _ _ _ _ x` as an intermediate fact. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_inner_self_eq_norm_sq {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (x : W) :
     (⟪x, x⟫_ℂ).re = ‖x‖ ^ 2 := by
@@ -582,13 +574,13 @@ theorem re_inner_self_eq_norm_sq {W : Type} [NormedAddCommGroup W] [InnerProduct
   simp
 
 /- English proof (translation)
-Establish `hKR` using `glRel_kRel ε _ ((ha V n ε E 1).1 hg).1`. Establish `hGS : G ∈ arrV0 ε E u 1` using `compact_span_le_of_stable noncompact_arr_one_compact_stable hy hG`. Establish `h1` using `(hca V n ε E Λ u 1).1 hg hΛ G hGS`. Establish `h2` using `hk (Arr V n 1) n ε (arrE E 1) μ y hKR hyh G hG`. Establish `h3` using `compact_casimir_positions_one G (fun a b h => (noncompact_arr_one_values hGS a b).2 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, h3, Fin.sum_univ_one]`. Establish `h4 : (2 : ℂ) • OmS ε E (0 : Fin 1) G = ((ckv ε μ : ℂ) - n - ckv ε Λ) • G`. Rewrite using `[sub_smul, sub_smul, h1]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[smul_smul]`. Evaluate the numerical expressions. Use `_ = (((ckv ε μ - n - ckv ε Λ) / 2 : ℝ) : ℂ) • G := by`. Rewrite using `[h4, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem omega_eigenvalue_on_span (hk : KCasSpan) (hca : CasArr) (ha : ArrModule) {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ V} {Λ μ : Fin n → ℝ} {u : V} {y : Arr V n 1}
@@ -609,43 +601,39 @@ theorem omega_eigenvalue_on_span (hk : KCasSpan) (hca : CasArr) (ha : ArrModule)
         rw [h4, smul_smul]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Introduce `V _ _ n ε E lam g u hg hu hΛ hfd hgap F hF`. Establish `hA` using `(ha V n ε E 1).1 hg`. Establish `hKU` using `(ha V n ε E 1).2 hu`. Establish `hKR` using `glRel_kRel ε _ hA.1`. Set `ι` to `{p : Fin n × Fin n // p.1 < p.2 ∧ ε p.1 ≠ ε p.2}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `W : ι → Submodule ℂ (Arr V n 1)` to `fun p => isoPart ε (arrE E 1) {LamOf ε lam + root p.1.1 p.1.2} (arrV0 ε E u 1)`. Set `c : ι → ℝ` to `fun p => (ckv ε (LamOf ε lam + root p.1.1 p.1.2) - n - ckv ε (LamOf ε lam)) / 2`. Establish `hcge : ∀ p : ι, g - 2 * n ≤ c p`. Introduce `p`. Establish `h1` using `omEigen n ε lam p.1.1 p.1.2 (ne_of_lt p.2.1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `uGap n ε lam g p.1.1 p.1.2 p.2.1 p.2.2 (hgap _ _ p.2.1 p.2.2)`. Simplify using `only [c, ckv, LamOf]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hWeig : ∀ p : ι, ∀ G ∈ W p, OmS ε E (0 : Fin 1) G = (c p : ℂ) • G`. Introduce `p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : W p ≤ LinearMap.ker (OmS ε E (0 : Fin 1) - (c p : ℂ) • LinearMap.id)`. Apply `isotypic_part_le_of_forall` to reduce the goal to its premises. Introduce `y hy μ hμ hyh G hG`. Rewrite `hμ` using `[Set.mem_singleton_iff]`. Substitute `hμ` using the available equality.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `omega_eigenvalue_on_span hk hca ha hg hΛ hy hyh hG`. Introduce `G hG`. Use `hle hG` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hWorth : ∀ p q : ι, p ≠ q → ∀ G ∈ W p, ∀ H ∈ W q, ⟪G, H⟫_ℂ = 0`. Introduce `p q hpq`. Establish `hμ : LamOf ε lam + root p.1.1 p.1.2 ≠ LamOf ε lam + root q.1.1 q.1.2`. Introduce `h`. Take `⟨e1, e2⟩` from `root_injective_of_ne (ne_of_lt p.2.1) (add_left_cancel h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hpq (Subtype.ext (Prod.ext e1 e2))`. Establish `step : W p ≤ (W q)ᗮ`. Apply `isotypic_part_le_of_forall` to reduce the goal to its premises. Introduce `y hy μ hμ' hyh`. Rewrite `hμ'` using `[Set.mem_singleton_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hμ'` using the available equality. Establish `hq : W q ≤ (kSpan ε (arrE E 1) y)ᗮ`. Apply `isotypic_part_le_of_forall` to reduce the goal to its premises. Introduce `y' hy' μ' hμ'' hyh' H hH`. Rewrite `hμ''` using `[Set.mem_singleton_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hμ''` using the available equality. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `G hG`. Conclude with `ho (Arr V n 1) n ε (arrE E 1) _ _ y y' hKR hKU hyh hyh' hμ G hG H hH`. Introduce `G hG`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_orthogonal]`. Introduce `H hH`. Use `hq hH` as an intermediate fact. Rewrite `this` using `[Submodule.mem_orthogonal]`. Conclude with `inner_eq_zero_symm.mp (this G hG)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `G hG H hH`. Use `step hG` as an intermediate fact. Rewrite `this` using `[Submodule.mem_orthogonal]`. Conclude with `inner_eq_zero_symm.mp (this H hH)`. Establish `hsup : Vplus ε E (LamOf ε lam) u ≤ ⨆ p : ι, W p`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `isotypic_part_le_of_forall` to reduce the goal to its premises. Introduce `y hy μ hμ hyh`. Take `⟨a, b, hab, hne, rfl⟩` from `hμ`. Conclude with `le_trans (compact_span_le_isotypic_part hy (Set.mem_singleton _) hyh) (le_iSup W ⟨(a, b), hab, hne⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hfW, hfs⟩ : ∃ f : ι → Arr V n 1, (∀ p, f p ∈ W p) ∧ F = ∑ p, f p := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Submodule.iSup_induction W (motive := fun x => ∃ f : ι → Arr V n 1, (∀ p, f p ∈ W p) ∧ x = ∑ p, f p) (hsup hF) ?_ ?_ ?_` and prove the remaining obligations. Introduce `p x hx`. Use `⟨Pi.single p x, fun q => ?_, by simp⟩` and prove the remaining obligations. Distinguish the cases in `h : q = p`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `using hx`. Simplify using `[h]`. Conclude with `⟨0, fun _ => Submodule.zero_mem _, by simp⟩`. Introduce and unpack `x y ⟨f1, h1, e1⟩ ⟨f2, h2, e2⟩`. Conclude with `⟨f1 + f2, fun p => Submodule.add_mem _ (h1 p) (h2 p), by rw [e1, e2, ← Finset.sum_add_distrib]; rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hort : ∀ p q : ι, p ≠ q → ⟪f p, f q⟫_ℂ = 0` using `fun p q h => hWorth p q h _ (hfW p) _ (hfW q)`. Establish `hOm : OmS ε E (0 : Fin 1) F = ∑ q, (c q : ℂ) • f q`. Rewrite using `[hfs, map_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => hWeig q _ (hfW q)`. Establish `e1 : ⟪F, OmS ε E (0 : Fin 1) F⟫_ℂ = ∑ p, (c p : ℂ) * ⟪f p, f p⟫_ℂ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hOm, hfs, sum_inner]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[inner_sum]`. Rewrite using `[Finset.sum_eq_single p (fun q _ hq => by rw [inner_smul_right, hort p q (Ne.symm hq), mul_zero]) (by simp), inner_smul_right]`. Establish `e2 : ⟪F, F⟫_ℂ = ∑ p, ⟪f p, f p⟫_ℂ` using `by conv_lhs => rw [hfs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_inner]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[inner_sum, Finset.sum_eq_single p (fun q _ hq => hort p q (Ne.symm hq)) (by simp)]`. Establish `hn : ‖F‖ ^ 2 = ∑ p, ‖f p‖ ^ 2`. Rewrite using `[← re_inner_self_eq_norm_sq, e2, Complex.re_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun p _ => re_inner_self_eq_norm_sq (f p)`. Establish `hre : (⟪F, OmS ε E (0 : Fin 1) F⟫_ℂ).re = ∑ p, c p * ‖f p‖ ^ 2`. Rewrite using `[e1, Complex.re_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_ofReal_mul, re_inner_self_eq_norm_sq]`.
-
-Rewrite using `[hre, hn, Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun p _ => mul_le_mul_of_nonneg_right (hcge p) (sq_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omPlus_of (hd : KDecomp) (ho : KOrth) (hk : KCasSpan) (hca : CasArr) (ha : ArrModule) :
     OmPlus := by

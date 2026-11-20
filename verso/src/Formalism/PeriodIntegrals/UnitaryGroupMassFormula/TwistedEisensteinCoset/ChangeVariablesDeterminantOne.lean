@@ -11,7 +11,7 @@ open Loc LocE Function Matrix
 variable {E K : Type} [Field E] [NumberField E] [Field K]
 
 /- English proof (translation)
-Introduce `a b` and use `⟨a, b, fun _ h => ⟨h, (one_mul _).symm⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem qt_id {P : HeightOneSpectrum (𝓞 E)} {ι : Type} [Fintype ι] [DecidableEq ι] :
     QT P (fun t : ι → E => t) (1 : K) :=
@@ -26,9 +26,9 @@ include hN hp hq hK
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hmv : ∀ v : ι → E, t.toMatrix *ᵥ v = em t.i t.j 1 t.c 0 v`. Introduce `v`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = t.i`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply the tactic sequence `simp [TransvectionStruct.toMatrix, Matrix.transvection, Matrix.add_mulVec, Matrix.single_mulVec, em] <;> ring`. Simplify using `[TransvectionStruct.toMatrix, Matrix.transvection, Matrix.add_mulVec, Matrix.single_mulVec, em, h]`. Conclude with `qt_congr (qt_em hN hp hq hK t.i t.j one_ne_zero t.c 0 (Or.inl t.hij.symm)) hmv (by rw [t.det])`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qt_transvec (t : TransvectionStruct ι E) :
     QT P (fun v => t.toMatrix *ᵥ v) ((qOf P : K) ^ vq P t.toMatrix.det) := by
@@ -44,11 +44,11 @@ theorem qt_transvec (t : TransvectionStruct ι E) :
   exact qt_congr (qt_em hN hp hq hK t.i t.j one_ne_zero t.c 0 (Or.inl t.hij.symm)) hmv (by rw [t.det])
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, QT P (fun v : ι → E => fun k => if k ∈ s then D k * v k else v k) ((qOf P : K) ^ (∑ k ∈ s, vq P (D k)))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact qt_congr qt_id (fun v => by funext k; simp) (by simp)`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `qt_congr (qt_comp (qt_em hN hp hq hK a a (hD a) 0 0 (Or.inr rfl)) ih) (fun v => ?_) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using `[em, ha]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[em, hk, Function.update_apply]`. Rewrite using `[Finset.sum_insert ha, zpow_add₀ hK, mul_comm]`. Use `qt_congr (key Finset.univ) (fun v => by funext k; simp [Matrix.mulVec_diagonal]) ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_diagonal, vq_prod (s := Finset.univ) (f := D) (hf := fun i _ => hD i)]`. Apply the tactic sequence `all_goals assumption`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qt_diag (D : ι → E) (hD : ∀ i, D i ≠ 0) :
     QT P (fun v => diagonal D *ᵥ v) ((qOf P : K) ^ vq P (diagonal D).det) := by
@@ -71,15 +71,15 @@ theorem qt_diag (D : ι → E) (hD : ∀ i, D i ≠ 0) :
   all_goals assumption
 
 /- English proof (translation)
-Take `⟨L, L', D, hMLD⟩` from `Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec M`. Establish `hlist : ∀ l : List (TransvectionStruct ι E), QT P (fun v => (l.map TransvectionStruct.toMatrix).prod *ᵥ v) (1 : K)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact qt_congr qt_id (fun v => by simp) rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cons t l ih`. Use `qt_congr (qt_comp (qt_transvec hN hp hq hK t) ih) (fun v => by simp [Matrix.mulVec_mulVec]) ?_` and prove the remaining obligations. Rewrite using `[t.det, vq_one, zpow_zero, one_mul]`. Apply the tactic sequence `all_goals assumption`. Establish `hl1 : ∀ l : List (TransvectionStruct ι E), ((l.map TransvectionStruct.toMatrix).prod).det = 1`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons t l ih => simp [Matrix.det_mul, t.det, ih]`. Establish `hdetM : M.det = (diagonal D).det`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMLD, Matrix.det_mul, Matrix.det_mul, hl1, hl1, one_mul, mul_one]`. Establish `hD : ∀ i, D i ≠ 0`. Introduce `i hi`. Apply `hM` to reduce the goal to its premises. Rewrite using `[hdetM, Matrix.det_diagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) hi`. Use `qt_congr (qt_comp (hlist L) (qt_comp (qt_diag hN hp hq hK D hD) (hlist L'))) (fun v => by rw [hMLD]; simp [Matrix.mulVec_mulVec, Matrix.mul_assoc]) ?_` and prove the remaining obligations. Rewrite using `[hdetM, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qt_matrix (M : Matrix ι ι E) (hM : M.det ≠ 0) :
     QT P (fun v => M *ᵥ v) ((qOf P : K) ^ vq P M.det) := by
@@ -111,11 +111,11 @@ theorem qt_matrix (M : Matrix ι ι E) (hM : M.det ≠ 0) :
   rw [hdetM, one_mul, mul_one]
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, QT P (fun v : ι → E => fun k => if k ∈ s then v k + τ k else v k) (1 : K)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact qt_congr qt_id (fun v => by funext k; simp) rfl`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `qt_congr (qt_comp (qt_em hN hp hq hK a a one_ne_zero 0 (τ a) (Or.inr rfl)) ih) (fun v => ?_) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using `[em, ha]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[em, hk, Function.update_apply]`. Apply the tactic sequence `rw [vq_one, zpow_zero, one_mul] all_goals assumption`. Conclude with `qt_congr (key Finset.univ) (fun v => by funext k; simp) rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qt_transl (τ : ι → E) : QT P (fun v : ι → E => v + τ) (1 : K) := by
   classical
@@ -135,9 +135,9 @@ theorem qt_transl (τ : ι → E) : QT P (fun v : ι → E => v + τ) (1 : K) :=
   exact qt_congr (key Finset.univ) (fun v => by funext k; simp) rfl
 
 /- English proof (translation)
-Establish `hL : ∀ t, L t = LinearMap.toMatrix' (L : (ι → E) →ₗ[E] (ι → E)) *ᵥ t` using `fun t => (LinearMap.toMatrix'_mulVec _ t).symm`. Establish `hdet : (LinearMap.toMatrix' (L : (ι → E) →ₗ[E] (ι → E))).det ≠ 0`. Rewrite using `[LinearMap.det_toMatrix']`. Conclude with `(LinearEquiv.isUnit_det' L).ne_zero`. Use `qt_congr (qt_comp (qt_transl hN hp hq hK τ) (qt_matrix hN hp hq hK _ hdet)) (fun t => by simp only [hL]) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.det_toMatrix', mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem qt_aff (L : (ι → E) ≃ₗ[E] (ι → E)) (τ : ι → E) :
     QT P (fun t => L t + τ) ((qOf P : K) ^ vq P (LinearMap.det (L : (ι → E) →ₗ[E] (ι → E)))) := by
@@ -162,7 +162,7 @@ def ChangeVariablesDeterminantOne : Prop :=
         Good P a' b' (fun t => H (L t + τ)) ∧ RS P a' b' (fun t => H (L t + τ)) = RS P a b H
 
 /- English proof (translation)
-Introduce `E K _ _ _ P hp hq hK ι _ _ L τ`. Conclude with `⟨(qOf P : K) ^ vq P (LinearMap.det (L : (ι → E) →ₗ[E] (ι → E))), zpow_ne_zero _ hK, qt_aff hN hp hq hK L τ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem cov_of (hN : NTAll) : CoVP := by
   intro E K _ _ _ P hp hq hK ι _ _ L τ
@@ -170,9 +170,9 @@ theorem cov_of (hN : NTAll) : CoVP := by
     qt_aff hN hp hq hK L τ⟩
 
 /- English proof (translation)
-Introduce `E K _ _ _ P hp hq hK ι _ _ L τ h1 a b`. Take `⟨a', b', h⟩` from `qt_aff hN hp hq hK L τ a b`. Use `⟨a', b', fun H hH => ?_⟩` and prove the remaining obligations. Take `⟨g, e⟩` from `h H hH`. Use `⟨g, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, h1, vq_one, zpow_zero, one_mul]`. Apply the tactic sequence `all_goals assumption`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem change_variables_determinant_one (hN : NTAll) : ChangeVariablesDeterminantOne := by
   intro E K _ _ _ P hp hq hK ι _ _ L τ h1 a b

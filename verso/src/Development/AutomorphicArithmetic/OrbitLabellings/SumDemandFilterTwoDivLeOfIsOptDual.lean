@@ -7,21 +7,19 @@ open scoped BigOperators
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Introduce `l d _ hl D sig hD hopt`. Take `⟨⟨x, hx, hxv⟩, -⟩` from `UpperTheory.exists_maxFlow_attained_and_isOptDual l d hl D hD`. Establish `hl0 : (0 : ℝ) < l`. Establish `: (3 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hl1 : (1 : ℝ) ≤ l`. Establish `: (3 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hin_nn : ∀ s : ZMod d, 0 ≤ ∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i` using `fun s => Finset.sum_nonneg fun i _ => hx.1 _ _`. Establish `hF : ∑ s ∈ Finset.univ.filter (fun s : ZMod d => 2 / (l : ℝ) ≤ sig s), D s ≤ flowVal d x`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Conclude with `(FlowDualityReindexing.fd_part1 hl D sig hopt s (Finset.mem_filter.mp hs).2 x hx hxv).2`. Use `_ ≤ ∑ s, ∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i := Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun s _ _ => hin_nn s`. Use `_ = flowVal d x := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `flowVal`. Conclude with `FlowDualityReindexing.in_reindex x`. Establish `hout : ∀ s : ZMod d, (l : ℝ) * ∑ i ∈ oddLevels d, x s i ≤ ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x s i`. Introduce `s`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hodd : Odd i` using `(Finset.mem_filter.mp hi).2`. Establish `hi1 : 1 ≤ i` using `hodd.pos`. Establish `hpow : (l : ℝ) ≤ (l : ℝ) ^ i`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right hpow (hx.1 s i)`. Establish `htot : (l : ℝ) * flowVal d x + flowVal d x ≤ ∑ s, D s`. Establish `h` using `Finset.sum_le_sum fun s (_ : s ∈ (Finset.univ : Finset (ZMod d))) => hx.2 s`. Rewrite `h` using `[Finset.sum_add_distrib, FlowDualityReindexing.in_reindex x]`. Establish `h2 : (l : ℝ) * flowVal d x ≤ ∑ s, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x s i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `flowVal`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun s _ => hout s`. Unfold `flowVal at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hFnn : 0 ≤ flowVal d x` using `Finset.sum_nonneg fun s _ => Finset.sum_nonneg fun i _ => hx.1 _ _`. Rewrite using `[le_div_iff₀ hl0]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.sum_demand_filter_two_div_le_of_isOptDual :
     ∀ (l d : ℕ) [NeZero d], 3 ≤ l → ∀ D sig : ZMod d → ℝ, 0 ≤ D → IsOptDual l d D sig →

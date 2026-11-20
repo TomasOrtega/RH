@@ -20,13 +20,13 @@ open scoped Pointwise
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hW : GlobalTheory.SiegelSet.IsWittFrame σ (c • J.map σ) (0 : Matrix (Fin n) (Fin 0) E) 0` using `⟨Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, fun z _ _ hz => han z (by`. Establish `e : hE σ (c • J.map σ) z z = c * hE σ (J.map σ) z z`. Simplify using `only [hE, Formalism.UG.hform, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hz` using `[e]`. Rewrite using `[GlobalTheory.ThK.AnConv.form_eq hσ, (mul_eq_zero.1 hz).resolve_left hc, map_zero])⟩`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.SiegelSet.Model.compact_quotient hP hcm hJ hW`. Set `e : UA σ J ≃* GAd σ (c • J.map σ)` to `MulEquiv.subgroupCongr (GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := J) hσ hc)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Use `⟨e.symm '' C, hC.image he', fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, hgs⟩` from `hcov (e g)`. Take `⟨u, -, hu⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hγ)`. Use `⟨e.symm γ, Subgroup.mem_subgroupOf.2 ⟨u, hu⟩, e.symm s, ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, ← hgs, MulEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cocompact_of_aniso (hP : GlobalTheory.Published.SiegelSetUnitary) (hcm : IsCMExt F E σ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     {c : E} (hc : c ≠ 0) (hJ : IsHermND σ (c • J.map σ)) (han : ∀ x, form σ J x x = 0 → x = 0) :

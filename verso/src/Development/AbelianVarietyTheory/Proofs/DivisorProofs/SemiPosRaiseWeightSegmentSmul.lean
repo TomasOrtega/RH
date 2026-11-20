@@ -9,13 +9,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `k _ X p D L u t h0 h1 hL hLu σ i c y hy ξ`. Use `set f : ReciprocityTheory.L2DbarEstimates.V D → ℝ := fun v => (L.φ σ).φ i (c.e.symm v) with hfdef`. Use `set g : ReciprocityTheory.L2DbarEstimates.V D → ℝ := fun v => u.u σ (c.e.symm v) with hgdef`. Establish `hf : ContDiffAt ℝ 2 f (c.e y)` using `(L.cInf σ).contDiffAt c hy.1 hy.2`. Establish `hfg : ContDiffAt ℝ 2 (fun v => f v + g v) (c.e y)` using `((up L u).cInf σ).contDiffAt c hy.1 hy.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : 0 ≤ (ReciprocityTheory.L2DbarEstimates.leviV D (fun v => (f v : ℂ)) (c.e y) ξ).re` using `hL σ i c y hy ξ`. Establish `b : 0 ≤ (ReciprocityTheory.L2DbarEstimates.leviV D (fun v => ((f v + g v : ℝ) : ℂ)) (c.e y) ξ).re` using `hLu σ i c y hy ξ`. Establish `e : (fun v => (((up L (u.smul t)).φ σ).φ i (c.e.symm v) : ℂ)) = fun v => ((((1 - t) * f v + 0) + (t * (f v + g v) + 0) : ℝ) : ℂ)`. Use function extensionality and compare the values at `v`. Use `show ((((L.φ σ).φ i (c.e.symm v) + t * u.u σ (c.e.symm v)) : ℝ) : ℂ) = _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Simplify using `only [hfdef, hgdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ReciprocityTheory.L2DbarEstimates.Y.flA_leviV_add, ReciprocityTheory.L2DbarEstimates.Y.leviV_const_mul hf, ReciprocityTheory.L2DbarEstimates.Y.leviV_const_mul (f := fun v => f v + g v) hfg]`. Rewrite using `[Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`.
-
-Establish `: 0 ≤ 1 - t` using `by linarith`. Check the signs of the components of the expression. Conclude with `(hf.const_smul (1 - t)).add contDiffAt_const`. Conclude with `(hfg.const_smul t).add contDiffAt_const`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem semiPos_up_smul : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (L : HermLB p) (u : SmFn p)
     (t : ℝ), 0 ≤ t → t ≤ 1 → L.SemiPos D → (up L u).SemiPos D → (up L (u.smul t)).SemiPos D := by

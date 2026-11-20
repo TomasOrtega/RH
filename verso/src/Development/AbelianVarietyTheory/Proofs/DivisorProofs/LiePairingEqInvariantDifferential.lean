@@ -17,7 +17,7 @@ open GlobalTheory.OpenOmega
 namespace GlobalTheory.OpenOmega
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ _` and use `GlobalTheory.SqZeroPt.kappa_eq_epsIso R _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phi_tangent_eq_toOmega : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [QuasiSeparated G.hom] (x : Pdiv.LieG G) (h : zeroSec R R ≫ x.1 = η[G]) (w : Wmod G), Phi x.1 h w = (GlobalTheory.LieVB.toOmega G w).1 x :=
   fun R _ _ _ _ _ _ _ => GlobalTheory.SqZeroPt.kappa_eq_epsIso R _

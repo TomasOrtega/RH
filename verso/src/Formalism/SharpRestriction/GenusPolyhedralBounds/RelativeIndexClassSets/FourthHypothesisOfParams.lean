@@ -16,9 +16,9 @@ variable (T : ParamsT D L P) (S : SizesAt L) (hZ : 10 ^ 60 ≤ zBase L)
 def h0R (T : ParamsT D L P) : ℝ := 4 * (T.TO : ℝ) ^ 2 + D.R.t + 1
 
 /- English proof (translation)
-Establish `hR` using `rn_of T S hZ`. Establish `h1` using `hR.sq_mul_sq_le`. Establish `h4` using `hR.forty_eight_le_constant`. Establish `h5 : 2 * (T.TO : ℝ) ^ 2 ≤ ((D.R.f : ℝ) * D.R.r) ^ 2 * (T.TO : ℝ) ^ 2`. Establish `: (2 : ℝ) ≤ ((D.R.f : ℝ) * D.R.r) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right this (sq_nonneg _)`. Combine the linear relations using `[b_le_kl T S hZ]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem two_mul_order_sq_le_length : 2 * (T.TO : ℝ) ^ 2 ≤ ((runOf T S hZ).kl : ℝ) := by
   have hR := rn_of T S hZ
@@ -29,9 +29,9 @@ theorem two_mul_order_sq_le_length : 2 * (T.TO : ℝ) ^ 2 ≤ ((runOf T S hZ).kl
   linarith [b_le_kl T S hZ]
 
 /- English proof (translation)
-Establish `h1 : D.R.r ≤ 2 * D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (D.R.r : ℝ) ≤ 2 * (D.R.k : ℝ)` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h3 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `h4` using `mul_le_mul_of_nonneg_left h2 h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem A_le_kf : (D.R.f : ℝ) * D.R.r ≤ 2 * ((D.R.k : ℝ) * D.R.f) := by
   have h1 : D.R.r ≤ 2 * D.R.k := by
@@ -44,21 +44,19 @@ theorem A_le_kf : (D.R.f : ℝ) * D.R.r ≤ 2 * ((D.R.k : ℝ) * D.R.f) := by
   linarith
 
 /- English proof (translation)
-Establish `hR` using `rn_of T S hZ`. Establish `hkl` using `two_mul_order_sq_le_length T S hZ`. Establish `ht0 : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hb` using `hR.b_pos`. Establish `hAk` using `A_le_kf (D := D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTO1` using `hR.one_le_order_alt`. Establish `hAkb : ((D.R.f : ℝ) * D.R.r) * L.sc.b ≤ 2 * ((D.R.k : ℝ) * D.R.f) * L.sc.b` using `mul_le_mul_of_nonneg_right hAk hb.le`. Establish `hkfb : 0 ≤ (D.R.k : ℝ) * D.R.f * L.sc.b` using `by positivity`. Use `⟨rfl, (runOf T S hZ).gapP, (runOf T S hZ).gapM, le_rfl, fun τ => ?_, fun τ i h => ?_, fun τ i h => (runOf T S hZ).lastM _ τ i h, ?_, T.even_nP₂, T.nP_ge, T.nW_lo.2.2, ?_, T.nW_lo.1, T.split, (runOf T S hZ).isL, (runOf T S hZ).isF, ?_, (runOf T S hZ).T_pos, ?_, ?_, ?_, T.nW_40, ?_ …` and prove the remaining obligations. Rewrite using `[RunN.ncAt_ka]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Unfold `h0R`. Use polynomial arithmetic with `[sq_nonneg (T.TO : ℝ)]`. Rewrite using `[RunN.ka_last _ τ i h]`. Unfold `h0R`.
+Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `ka_le T S hZ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `sizeConstantAtParamsWeight`. Conclude with `le_max_of_le_right (le_max_of_le_right (le_max_of_le_right (le_max_left _ _)))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ (by linarith)]`. Use `wL_le T S hZ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[dm_eq T]`. Use `T.TO_40` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[dm_eq T]`. Conclude with `T.TO_40`. Rewrite using `[dm_eq T]`. Conclude with `T.TO_nW`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[baseDegree_at_lift_index]`. Establish `h` using `T.order_ge_rank_bound`. Establish `e : g0 D = 2 * 5 ^ 4 * D.R.r` using `rfl`. Rewrite using `[e]`. Establish `: 2 * (2 * 5 ^ 4 * D.R.r) * 1 ≤ 2 * (2 * 5 ^ 4 * D.R.r) * (T.Dp + 1)` using `Nat.mul_le_mul_left _ (by omega)`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite using `[dm_eq T]`. Conclude with `T.TO_11D2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setCn_of (B : WeightFamilies.Prov D) (hO : OPO L B) (hDom : DomAt D L D.R.m T.nWn 1000) :
     Inh.SetCn L B 10 1000 (runOf T S hZ).ka (runOf T S hZ).wL (runOf T S hZ).wF T.TO T.nP T.nWn (h0R T) := by
@@ -100,19 +98,17 @@ theorem setCn_of (B : WeightFamilies.Prov D) (hO : OPO L B) (hDom : DomAt D L D.
   · rw [dm_eq T]; exact T.TO_11D2
 
 /- English proof (translation)
-Establish `hR` using `rn_of T S hZ`. Establish `hbk` using `b_le_ka T S hZ`. Establish `hTb : (T.TO : ℝ) ≤ L.sc.b` using `hR.toBs.TO_le_sb.trans hR.toBs.sb_le_b`. Use `⟨hbk, ?_, ?_, ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Use `(runOf T S hZ).T_wL_le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ((runOf T S hZ).T : ℝ) = (T.TO : ℝ)` using `rfl`. Rewrite `this` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `(runOf T S hZ).wF_size_le`. Establish `e : ((runOf T S hZ).nP : ℝ) = (T.nP : ℝ)` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Establish `hf : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast f_ge D`. Establish `hr` using `hR.r6`. Establish `hT` using `hR.one_le_order_alt`. Establish `hn` using `hR.nPW`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn2` using `hR.nW_le`. Establish `a0 : (0 : ℝ) ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2` using `by positivity`. Establish `a1 : (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * 1 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * T.TO` using `mul_le_mul_of_nonneg_left hT a0`. Establish `a2 : (D.R.f : ℝ) * D.R.r * T.nP ≤ (D.R.f : ℝ) * D.R.r * T.TO` using `mul_le_mul_of_nonneg_left (hn.trans hn2) (by positivity)`. Establish `a3 : (D.R.f : ℝ) * D.R.r * T.TO ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * T.TO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (D.R.f : ℝ) * D.R.r ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2` using `by nlinarith`. Conclude with `mul_le_mul_of_nonneg_right this (by linarith)`. Establish `a4 : (1 : ℝ) ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2` using `by nlinarith`. Establish `e2 : ((Dm D : ℕ) : ℝ) = (WeightFamilies.dimY D D.R.m : ℝ)` using `rfl`. Rewrite `h` using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[WeightFamilies.PPv_rec T]`. Conclude with `hR.h32.trans hR.toBs.sb_le_b`. Rewrite using `[WeightFamilies.PPv_rec T, eRR, ← hR.sb_sq]`. Conclude with `mul_le_mul (hR.toBs.rd_pow_le (by norm_num)) hR.toBs.PP_le_sb hR.PP_pos.le hR.sb_pos.le`.
-
-Establish `h1 : (DF (runOf T S hZ).ka : ℝ) ≤ 4 * ((D.R.f : ℝ) * D.R.r) * L.sc.b` using `(DF_le_size _).trans (ka_le T S hZ)`. Establish `h2` using `hR.g_gt h1 (g_ge P i)`. Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fourth_hypothesis_of_params : L.sc.b ≤ (runOf T S hZ).ka.size ∧ (T.TO : ℝ) * (runOf T S hZ).wL.size ≤ 2 * (runOf T S hZ).ka.size ∧
     (runOf T S hZ).wF.size ≤ ((WeightFamilies.dimY D D.R.m : ℝ) + 2) * (runOf T S hZ).wL.size + 5 * D.R.f * (D.R.r : ℝ) ^ 2 * T.TO ∧
@@ -152,13 +148,13 @@ theorem fourth_hypothesis_of_params : L.sc.b ≤ (runOf T S hZ).ka.size ∧ (T.T
     exact_mod_cast h2
 
 /- English proof (translation)
-Establish `hR` using `rn_of T S hZ`. Establish `h1` using `WeightFamilies.Wt.one_le_size (runOf T S hZ).ka`. Establish `h2` using `ka_le T S hZ`. Establish `hA` using `hR.forty_eight_le_constant`. Establish `hb` using `hR.b_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `Real.log_nonneg h1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a1 : Real.log (runOf T S hZ).ka.size ≤ Real.log (4 * ((D.R.f : ℝ) * D.R.r) * L.sc.b)` using `Real.log_le_log (by linarith) h2`. Establish `a2 : Real.log (4 * ((D.R.f : ℝ) * D.R.r) * L.sc.b) = Real.log (4 * ((D.R.f : ℝ) * D.R.r)) + L.sc.L`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_mul (by positivity) hb.ne']`. Use `congr 1`. Conclude with `Real.log_exp _`. Establish `a3 : Real.log (4 * ((D.R.f : ℝ) * D.R.r)) ≤ 4 * ((D.R.f : ℝ) * D.R.r) - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Establish `a4` using `A_le_Z L`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a5 : L.sc.L ≤ zBase L`. Unfold `zBase`. Use `one_le_L L` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lk_bounds : 1 ≤ 1 + Real.log (runOf T S hZ).ka.size ∧ 1 + Real.log (runOf T S hZ).ka.size ≤ 6 * zBase L := by
   have hR := rn_of T S hZ
@@ -184,17 +180,17 @@ theorem lk_bounds : 1 ≤ 1 + Real.log (runOf T S hZ).ka.size ∧ 1 + Real.log (
     linarith
 
 /- English proof (translation)
-Establish `hR` using `rn_of T S hZ`. Establish `hZ1 : (1 : ℝ) ≤ zBase L` using `le_trans (by norm_num) hZ`. Establish `hPP` using `hR.toBs.PP_ge`. Establish `hPP60 : (100 : ℝ) ≤ T.PP` using `le_trans (by norm_num) hPP`. Establish `hf : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast f_ge D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDp : (1 : ℝ) ≤ (T.Dp : ℝ)`. Use `Inh.dimY_pos' D (Inh.h1m D)` as an intermediate fact. Rewrite `this` using `[dm_eq T]`. Conclude with `this` after adjusting the coercions. Take `⟨l1, l2⟩` from `lk_bounds T S hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p1, p2⟩` from `polyA hZ (zBase_pow_twelve_le T hZ1) (growthZero_le_thirty_zBase P) (PO_le L) l1 l2 hDp`. Establish `hPP2 : T.PP ≤ T.PP ^ 2` using `by nlinarith`. Use `⟨le_rfl, by norm_num, le_rfl, by norm_num, growthZero_nonneg L, hOb, le_rfl, ?_, ?_, ?_, ?_, ?_, ?_, ?_, le_rfl, le_rfl, le_rfl, ?_⟩` and prove the remaining obligations. Use `show WeightFamilies.RRv D 2 * D.host.rdE ^ 2 ≤ WeightFamilies.RRv D 2 ^ 2`. Rewrite using `[eRR]; exact le_of_eq (by ring)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[WeightFamilies.PPv_rec T]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[WeightFamilies.PPv_rec T] show 4 * (10 : ℝ) ≤ _`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[WeightFamilies.PPv_rec T]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[WeightFamilies.PPv_rec T]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[WeightFamilies.PPv_rec T, growth_at_one_eq_zBase]`. Conclude with `p1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[WeightFamilies.PPv_rec T, growth_at_one_eq_zBase, dm_eq T]`. Conclude with `p2`. Rewrite using `[WeightFamilies.PPv_rec T]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem poly_of (B : WeightFamilies.Prov D) (hOb : WeightFamilies.Obound B L 1 2) :
     PolyDom (j := D.R.m) D B L Kc0 (NonvanishingSectionCondition T) T.CP T.eP 2 1 2 1 1 0 (1 / 2) (1 / 2) 0
@@ -228,7 +224,7 @@ theorem poly_of (B : WeightFamilies.Prov D) (hOb : WeightFamilies.Obound B L 1 2
   · rw [WeightFamilies.PPv_rec T]; linarith
 
 /- English proof (translation)
-The claim follows from `parA_of P S hg hx setC := setCn_of T S hZ _ (opo_of P e Sg) (domAt_of P T S hCnW hg hx) h3 := third_hypothesis_of_params T S hZ h4 := fourth_hypothesis_of_params T S hZ g2 := ⟨(runOf T S hZ).w2, (runOf T S hZ).run_isSecondWeight⟩ Tx := T.TO_poly poly := poly_of T S hZ _ (obound_o …`.
+A detailed English derivation is pending.
 -/
 theorem numRun_of (hCnW : P.CnW = 10) (hg : ∀ i, Real.log (D.host.g i) ≤ 9 * L.sc.L + 1) (hx : (10 : ℝ) ^ 60 ≤ L.sc.x)
     (e : 𝓞 D.host.E ≃+* D.what₂.O) (Sg : ∀ j, WeightFamilies.Wt D j → Prop) (τ0 : D.what₂.Tau) :

@@ -19,28 +19,28 @@ namespace PositivityTheory.Rg.Rsw.L.LFixW
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_apply_inl_inl_alt {R : Type} (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j)) = a i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_apply_inl_inr_alt {R : Type} (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j)) = b i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂]
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_apply_inr_inr_alt {R : Type} (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inr j)) = d i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]
 
 /- English proof (translation)
-Rewrite using `[blk4, blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem block_matrix_mul_comm_ring {R : Type} [CommRing R] (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 a' b' c' d' =
@@ -49,7 +49,7 @@ theorem block_matrix_mul_comm_ring {R : Type} [CommRing R] (a b c d a' b' c' d' 
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne (fun h' => h (Sum.inl_injective (finSumFinEquiv.injective h'))), Matrix.one_apply_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_ll {R : Type} [Zero R] [One R] (i j : Fin n) :
     (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j)) =
@@ -59,7 +59,7 @@ theorem one_ll {R : Type} [Zero R] [One R] (i j : Fin n) :
   · rw [Matrix.one_apply_ne (fun h' => h (Sum.inl_injective (finSumFinEquiv.injective h'))), Matrix.one_apply_ne h]
 
 /- English proof (translation)
-The claim follows from `Matrix.one_apply_ne fun h => Sum.inl_ne_inr (finSumFinEquiv.injective h)`.
+A detailed English derivation is pending.
 -/
 theorem one_lr {R : Type} [Zero R] [One R] (i j : Fin n) :
     (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j)) = 0 :=
@@ -68,9 +68,9 @@ theorem one_lr {R : Type} [Zero R] [One R] (i j : Fin n) :
 variable {S : Finset (Pl D)}
 
 /- English proof (translation)
-Introduce `i j`. Establish `e : b i j = mat g (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j))` using `by rw [hb, block_matrix_apply_inl_inr_alt]`. Use `⟨fun w => ?_, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[e, LFixTh.kOff_inf hg, one_lr]`. Rewrite using `[e, LFixTh.kOff_at hg hv, one_lr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(LFixTh.kOff_int hg hv _ _).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offM_of_N {g : G D n} (hg : g ∈ KOff D n S) {b : Mx D n n} (hb : mat g = blk4 1 b 0 1) : OffM S b := by
   intro i j
@@ -81,18 +81,18 @@ theorem offM_of_N {g : G D n} (hg : g ∈ KOff D n S) {b : Mx D n n} (hb : mat g
   · rw [e]; exact (LFixTh.kOff_int hg hv _ _).1
 
 /- English proof (translation)
-The claim follows from `intS_mul (adj_intS ((intOff_iff x).1 hx)) (intS_mul hQ ((intOff_iff x).1 hx)) i j`.
+A detailed English derivation is pending.
 -/
 theorem intS_inner (V : HSp D) {S : Finset (Pl D)} (hQ : ∀ i j, IntS S (rat V.gram i j)) {x : Mx D V.rank n}
     (hx : IntOff S x) (i j : Fin n) : IntS S (inner V x x i j) :=
   intS_mul (adj_intS ((intOff_iff x).1 hx)) (intS_mul hQ ((intOff_iff x).1 hx)) i j
 
 /- English proof (translation)
-Take `⟨S₁, hS₁⟩` from `psi_off hψ`. Take `⟨S₂, hS₂⟩` from `exists_rat_int V.gram`. Use `⟨S₁ ∪ S₂, fun S hS n θ μ ω χ hω g hg hN Ψ hΨ => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hN`. Establish `hQ` using `hS₂ S (fun v h => hS (Finset.mem_union_right _ h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[hω.unip g b hb Ψ x]`. Distinguish the cases in `hx : IntOff S x`. Establish `h` using `(hS₁ S (fun v h => hS (Finset.mem_union_left _ h)) _ (offS_trace (offS_mul_right (offM_of_N hg hb) (intS_inner V hQ hx)))).2`. Rewrite using `[h, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΨ x hx, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fixN (V : HSp D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) :
     ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → ∀ (n : ℕ) (θ : InfFam D) (μ : Measure (Mx D V.rank n))

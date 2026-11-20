@@ -14,7 +14,7 @@ namespace PositivityTheory.jumpWindows
 namespace AdelicCharacterCondition
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 E)`. Establish `hb : M ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField E)`. Take `⟨y, hy⟩` from `hψ.loc ⟨M, hM.isPrime, hb⟩`. Conclude with `⟨hψ.cont, hψ.norm, hψ.rat, _, hy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCharAF_of {E : Type} [Field E] [NumberField E] {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCharAF E ψ := by
@@ -24,7 +24,7 @@ theorem isCharAF_of {E : Type} [Field E] [NumberField E] {ψ : AddChar (Ad E) �
   exact ⟨hψ.cont, hψ.norm, hψ.rat, _, hy⟩
 
 /- English proof (translation)
-Establish `h` using `_root_.PI.VolStabSW.VolAAW.condAA_of (_root_.PI.VolStabSW.VolAAW.condExact_of _root_.PI.VolStabSW.sAf_holds (_root_.PI.VolStabSW.chInf_of_lift _root_.PI.VolStabSW.chLift_holds)) E ψ (isCharAF_of hψ)`. Use `filter_upwards [h] with v hv t`. Simplify using `only [sFin_sLoc_eq]`. Conclude with `hv t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem condAA {E : Type} [Field E] [NumberField E] {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) :
     ∀ᶠ v in (cofinite : Filter (HeightOneSpectrum (𝓞 E))), ∀ t : v.adicCompletion E,
@@ -38,15 +38,13 @@ theorem condAA {E : Type} [Field E] [NumberField E] {ψ : AddChar (Ad E) ℂ} (h
 end AdelicCharacterCondition
 
 /- English proof (translation)
-Introduce `E _ _ _`. Take `⟨ψ, hψ⟩` from `exists_stdPsi E`. Use `⟨ψ, hψ, ?_⟩` and prove the remaining obligations. Use `filter_upwards [AdelicCharacterCondition.condAA hψ] with w hw`. Establish `hint : ∀ y ∈ Ov E w, ψ (sFin E (sLoc E w y)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Use `(hw 1).2 (one_mem _) y hy` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Use `⟨hint, ?_⟩` and prove the remaining obligations. Use `set ϖ := _root_.PI.VolStabSW.unifV w with hϖ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ0 : ϖ ≠ 0` using `(_root_.PI.VolStabSW.unifV_spec w).1`. Establish `hu : IsUnifV E w ϖ` using `_root_.PI.VolStabSW.unifV_val w`. Establish `hnot : ϖ⁻¹ ∉ w.adicCompletionIntegers E`. Introduce `h`. Rewrite `h` using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `_root_.PI.VolStabSW.unifV_val w`. Rewrite `h` using `[hv]`. Conclude with `absurd h (by decide)`. Establish `hex : ¬ ∀ s ∈ w.adicCompletionIntegers E, ψ (sFin E (sLoc E w (s * ϖ⁻¹))) = 1` using `fun h => hnot ((hw _).1 h)`. Use `push Not at hex`.
-
-Take `⟨s, hs, hne⟩` from `hex`. Use `⟨ϖ, s * ϖ⁻¹, hu, ?_, hne⟩` and prove the remaining obligations. Rewrite using `[mul_comm s, ← mul_assoc, mul_inv_cancel₀ hϖ0, one_mul]`. Conclude with `hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelic_character_holds : StandardCharacterExists := by
   intro E _ _ _

@@ -6,11 +6,11 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Use `⟨{ carrier := {x | ∃ k : ℤ, k ≠ 0 ∧ k • x ∈ W} add_mem' := ?_, zero_mem' := ⟨1, one_ne_zero, by simp⟩, smul_mem' := ?_ }, fun x => Iff.rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b ⟨k, hk, ha⟩ ⟨l, hl, hb⟩`. Use `⟨k * l, mul_ne_zero hk hl, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `W.add_mem ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `W.smul_mem _ ha`. Rewrite using `[mul_smul]`. Conclude with `W.smul_mem _ hb`. Introduce and unpack `c a ⟨k, hk, ha⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨k, hk, by rw [smul_comm]; exact W.smul_mem _ ha⟩`. Rewrite using `[GlobalTheory.isTorsionFree_quotient_iff]`. Introduce and unpack `r x hr ⟨k, hk, hx⟩`. Conclude with `⟨k * r, mul_ne_zero hk hr, by rw [mul_smul]; exact hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_saturation_torsionFree {Λ : Type*} [AddCommGroup Λ] (W : Submodule ℤ Λ) :
     ∃ S : Submodule ℤ Λ, (∀ x, x ∈ S ↔ ∃ k : ℤ, k ≠ 0 ∧ k • x ∈ W) ∧
@@ -31,21 +31,21 @@ theorem exists_saturation_torsionFree {Λ : Type*} [AddCommGroup Λ] (W : Submod
     exact ⟨k * r, mul_ne_zero hk hr, by rw [mul_smul]; exact hx⟩
 
 /- English proof (translation)
-Introduce `g Λ _ _ _ B hB hp hg W hW`. Establish `hA : B.IsAlt` using `hB`. Take `⟨S, hS, hSt⟩` from `exists_saturation_torsionFree W`. Establish `hmem : ∀ x, x ∈ B.orthogonal S ↔ ∀ y ∈ W, B x y = 0`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.BilinForm.mem_orthogonal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `hA.isRefl _ _ (h y ((hS y).2 ⟨1, one_ne_zero, by simpa using hy⟩))`. Introduce `h y hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hy⟩` from `(hS y).1 hy`. Use `h _ hy` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul]`. Conclude with `hA.isRefl _ _ ((mul_eq_zero.1 this).resolve_left hk)`. Establish `hoo : B.orthogonal (B.orthogonal S) = S` using `GlobalTheory.orthogonal_orthogonal_of_isTorsionFree_quotient hA hp.2 hSt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hiso : B.orthogonal S ≤ B.orthogonal (B.orthogonal S)`. Rewrite using `[hoo]`. Introduce `x hx`. Conclude with `(hS x).2 (hW x ((hmem x).1 hx))`. Set `v` to `Module.finBasis ℤ (B.orthogonal S)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, b, hb, hv⟩` from `GlobalTheory.exists_isSymplecticBasis_extend hA hp (GlobalTheory.isTorsionFree_quotient_orthogonal B S) hiso v`. Establish `hc` using `GlobalTheory.IsSymplecticBasisOfType.finrank_eq b`. Establish `hc' : Fintype.card (Fin (Module.finrank ℤ (B.orthogonal S)) ⊕ Fin m) = g` using `by omega`. Set `σ` to `Fintype.equivFinOfCardEq hc'`. Establish `hb'` using `hb.reindex σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hl : ∀ i, (b.reindex (σ.sumCongr σ)) (.inl i) = b (.inl (σ.symm i))`. Introduce `i`. Simplify using the standard rewrite rules. Use `⟨b.reindex (σ.sumCongr σ), fun i j => ⟨hb'.left_left i j, hb'.right_right i j, hb'.left_right i j⟩, fun i => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `(hS _).1 (hoo.le ((hb.orthogonal_eq_span hv).ge ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hl]`. Conclude with `Submodule.subset_span (Or.inl ⟨_, rfl⟩)`. Establish `hx'` using `(hmem x).2 hx`. Establish `h1 : x = ∑ i, v.repr ⟨x, hx'⟩ i • (v i : Λ)`. Use `congrArg Subtype.val (v.sum_repr ⟨x, hx'⟩)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Rewrite using `[h1]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨σ (.inl i), ?_⟩)` and prove the remaining obligations. Simplify using `only [hl, Equiv.symm_apply_apply, hv]`.
+A detailed English derivation is pending.
 -/
 theorem exists_symplecticBasis_lagrangian_between : ∀ (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ] (B : LinearMap.BilinForm ℤ Λ), (∀ x, B x x = 0) → Function.Bijective B → Module.finrank ℤ Λ = 2 * g → ∀ W : Submodule ℤ Λ, (∀ x, (∀ y ∈ W, B x y = 0) → ∃ k : ℤ, k ≠ 0 ∧ k • x ∈ W) → ∃ bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ, (∀ i j, B (bas (.inl i)) (bas (.inl j)) = 0 ∧ B (bas (.inr i)) (bas (.inr j)) = 0 ∧ B (bas (.inl i)) (bas (.inr j)) = if i = j then 1 else 0) ∧ (∀ i, ∃ k : ℤ, k ≠ 0 ∧ k • bas (.inl i) ∈ W) ∧ ∀ x, (∀ y ∈ W, B x y = 0) → x ∈ Submodule.span ℤ (Set.range fun i => bas (.inl i)) := by
   intro g Λ _ _ _ B hB hp hg W hW

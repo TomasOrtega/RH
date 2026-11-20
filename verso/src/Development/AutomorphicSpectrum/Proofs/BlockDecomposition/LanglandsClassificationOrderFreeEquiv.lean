@@ -10,7 +10,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.LUniq
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hLO 𝔭 N V W _ _ _ _ π σ hπ hσ`. Take `⟨h, x, hd, hx, hπc⟩` from `hπ`. Establish `hσc : IsCosocle σ (prodIrr x hd)` using `hLO 𝔭 h N x hd hx σ hσ`. Conclude with `hσc.unique hπc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isL_unique : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     LOrderFree k → ∀ (𝔭 : Multiset (Segment k)) {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]

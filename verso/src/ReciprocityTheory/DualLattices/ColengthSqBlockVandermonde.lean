@@ -17,7 +17,7 @@ def sumLat {n s : ℕ} (Mτ : Fin n → Lat v (Fin s)) : Lat v (Fin n × Fin s) 
     exact Finset.prod_ne_zero_iff.2 fun τ _ => (Mτ τ).det_ne⟩
 
 /- English proof (translation)
-Simplify using `only [sumLat, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.prodComm_symm, Equiv.prodComm_apply, Prod.fst_swap, Prod.snd_swap, Matrix.blockDiagonal_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sumLat_apply {n s : ℕ} (Mτ : Fin n → Lat v (Fin s)) (x y : Fin n × Fin s) :
     (sumLat Mτ).B x y = if x.1 = y.1 then (Mτ x.1).B x.2 y.2 else 0 := by
@@ -25,7 +25,7 @@ lemma sumLat_apply {n s : ℕ} (Mτ : Fin n → Lat v (Fin s)) (x y : Fin n × F
     Equiv.prodComm_apply, Prod.fst_swap, Prod.snd_swap, Matrix.blockDiagonal_apply]
 
 /- English proof (translation)
-Use `show (Matrix.reindex (Equiv.prodComm (Fin s) (Fin n)) (Equiv.prodComm (Fin s) (Fin n)) (Matrix.blockDiagonal fun τ => (Mτ τ).B)).det = _`. Rewrite using `[Matrix.det_reindex_self, Matrix.det_blockDiagonal]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sumLat_det {n s : ℕ} (Mτ : Fin n → Lat v (Fin s)) :
     (sumLat Mτ).B.det = ∏ τ, (Mτ τ).B.det := by
@@ -34,9 +34,9 @@ lemma sumLat_det {n s : ℕ} (Mτ : Fin n → Lat v (Fin s)) :
   rw [Matrix.det_reindex_self, Matrix.det_blockDiagonal]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, sumLat_apply, Fintype.sum_prod_type, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_eq_single τ]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Conclude with `Finset.sum_eq_zero fun j _ => if_neg (Ne.symm hb)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`.
+A detailed English derivation is pending.
 -/
 lemma sumLat_mulVec {n s : ℕ} (Mτ : Fin n → Lat v (Fin s)) (c : Fin n × Fin s → C) (τ : Fin n)
     (i : Fin s) : ((sumLat Mτ).B *ᵥ c) (τ, i) = ((Mτ τ).B *ᵥ fun j => c (τ, j)) i := by
@@ -48,11 +48,9 @@ lemma sumLat_mulVec {n s : ℕ} (Mτ : Fin n → Lat v (Fin s)) (c : Fin n × Fi
   · intro h; exact absurd (Finset.mem_univ τ) h
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩ τ`. Use `⟨fun j => c (τ, j), fun j => hc (τ, j), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `sumLat_mulVec Mτ c τ i`. Introduce `hw choose c hc hwc using hw`. Use `⟨fun y => c y.1 y.2, fun y => hc y.1 y.2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨τ, i⟩`. Rewrite using `[sumLat_mulVec]`.
-
-Conclude with `congrFun (hwc τ) i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sumLat_pts {n s : ℕ} (Mτ : Fin n → Lat v (Fin s)) : (sumLat Mτ).pts = sumPts Mτ := by
   ext w
@@ -69,7 +67,7 @@ lemma sumLat_pts {n s : ℕ} (Mτ : Fin n → Lat v (Fin s)) : (sumLat Mτ).pts 
     exact congrFun (hwc τ) i
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, k'⟩`. Simplify using `only [freeMat, Matrix.of_apply, Matrix.blockDiagonal_apply, Matrix.vandermonde_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma freeMat_eq {n : ℕ} (a : Fin n → C) (s : ℕ) :
     freeMat a s = Matrix.blockDiagonal fun _ : Fin s => Matrix.vandermonde a := by
@@ -77,22 +75,22 @@ lemma freeMat_eq {n : ℕ} (a : Fin n → C) (s : ℕ) :
   simp only [freeMat, Matrix.of_apply, Matrix.blockDiagonal_apply, Matrix.vandermonde_apply]
 
 /- English proof (translation)
-Rewrite using `[freeMat_eq, Matrix.det_blockDiagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma det_freeMat {n : ℕ} (a : Fin n → C) (s : ℕ) :
     (freeMat a s).det = (Matrix.vandermonde a).det ^ s := by
   rw [freeMat_eq, Matrix.det_blockDiagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hsplit : ∀ τ : Fin n, Finset.univ.erase τ = Finset.Ioi τ ∪ Finset.Iio τ`. Introduce `τ`. Use extensionality with `x`. Simplify using `only [Finset.mem_erase, Finset.mem_univ, and_true, Finset.mem_union, Finset.mem_Ioi, Finset.mem_Iio]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Conclude with `Or.inr h`. Conclude with `Or.inl h`. Introduce and unpack `(h | h)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Assume the hypotheses and unpack their components.
 
-Conclude with `h.ne'`. Conclude with `h.ne`. Establish `hdisj : ∀ τ : Fin n, Disjoint (Finset.Ioi τ) (Finset.Iio τ)`. Introduce `τ`. Rewrite using `[Finset.disjoint_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x h1 h2`. Conclude with `lt_asymm (Finset.mem_Ioi.1 h1) (Finset.mem_Iio.1 h2)`. Rewrite using `[Matrix.det_vandermonde, discr]`. Simplify using `only [map_prod]`. Establish `h1 : ∏ τ : Fin n, ∏ τ' ∈ Finset.univ.erase τ, v (a τ - a τ') = (∏ τ : Fin n, ∏ τ' ∈ Finset.Ioi τ, v (a τ - a τ')) * ∏ τ : Fin n, ∏ τ' ∈ Finset.Iio τ, v (a τ - a τ')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [hsplit τ, Finset.prod_union (hdisj τ)]`. Establish `h2 : ∏ τ : Fin n, ∏ τ' ∈ Finset.Iio τ, v (a τ - a τ') = ∏ τ' : Fin n, ∏ τ ∈ Finset.Ioi τ', v (a τ - a τ')` using `Finset.prod_comm' (by intro x y; simp [Finset.mem_Iio, Finset.mem_Ioi])`. Establish `h3 : ∏ τ : Fin n, ∏ τ' ∈ Finset.Ioi τ, v (a τ - a τ') = ∏ τ : Fin n, ∏ τ' ∈ Finset.Ioi τ, v (a τ' - a τ)` using `Finset.prod_congr rfl fun _ _ => Finset.prod_congr rfl fun _ _ => Valuation.map_sub_swap v _ _`. Rewrite using `[h1, h2, h3, sq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma v_det_vandermonde_sq {n : ℕ} (a : Fin n → C) :
     v (Matrix.vandermonde a).det ^ 2 = v (discr a) := by
@@ -130,14 +128,14 @@ lemma v_det_vandermonde_sq {n : ℕ} (a : Fin n → C) :
   rw [h1, h2, h3, sq]
 
 /- English proof (translation)
-Rewrite using `[det_freeMat, map_pow, pow_right_comm, v_det_vandermonde_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma v_det_freeMat_sq {n : ℕ} (a : Fin n → C) (s : ℕ) :
     v (freeMat a s).det ^ 2 = v (discr a) ^ s := by
   rw [det_freeMat, map_pow, pow_right_comm, v_det_vandermonde_sq]
 
 /- English proof (translation)
-Rewrite using `[colen_congr (L₂' := F) (L₂ := sumLat fun _ => Lat.std v (Fin s)) rfl (hS.trans (sumLat_pts _).symm)]`. Rewrite using `[colen, sumLat_det]`. Simplify using `only [Lat.std, Matrix.det_one, map_one, Finset.prod_const_one, div_one, hF]`. Conclude with `v_det_freeMat_sq a s`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colength_sq_blockVandermonde {n : ℕ} (a : Fin n → C) (s : ℕ) (F S : Lat v (Fin n × Fin s))
     (hF : F.B = freeMat a s) (hS : S.pts = sumPts (fun _ => Lat.std v (Fin s))) :

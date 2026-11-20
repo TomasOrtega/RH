@@ -29,7 +29,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `E _ _ _ H`. Establish `h` using `(GlobalTheory.T.cm_host_rank_bounds E H).2.2`. Establish `h2 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Assume the negation of the conclusion as `h0`. Establish `h3 : Fintype.card (CMType H) = 0` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
 Simplify the hypotheses and the goal together.
 -/
@@ -42,7 +42,7 @@ theorem card_cmType_pos : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   simp_all
 
 /- English proof (translation)
-Introduce `E _ _ _ H D Xo l c Y S K _ ι _ Φ _ y M 𝔐 n Rb x`. Take `⟨z, -, hz⟩` from `(GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x 𝔐.tie _).1 (Rb.mem x x (Rb.mem_U x))`. Conclude with `⟨z, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coordsAt_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (M : FlagModel y (CMType H) (D.p + D.q) D.p) (𝔐 : HodgeCpt Y S M.x) (n : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (x : Rb.X), ∃ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ M.x z (Rb.lift x x) := by
   intro E _ _ _ H D Xo l c Y S K _ ι _ Φ _ y M 𝔐 n Rb x
@@ -50,15 +50,15 @@ theorem exists_coordsAt_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   exact ⟨z, hz⟩
 
 /- English proof (translation)
-Introduce `K _ J _ Ω _ x₀ n bd Rb s hb htor hconj p p' ho`. Take `⟨c, hc, e⟩` from `ho`. Establish `hm : ∀ p, Rb.lift p p ∈ mcPts (mCoordIdeal x₀)` using `fun p => Rb.mem p p (Rb.mem_U p)`. Rewrite using `[hb p', hb p]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h1` using `hconj _ ⟨hm p', h⟩`. Establish `h2` using `htor _ h1 (fun k => (starRingEnd ℂ (c k))⁻¹) (fun k => inv_ne_zero ((map_ne_zero _).2 (hc k)))`. Establish `e2 : GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul (fun k => (starRingEnd ℂ (c k))⁻¹) (GroundTheory.Heights₂.Heights.LowerBoundFree.conjVec (Rb.lift p' p')) = Rb.lift p p`. Use function extensionality and compare the values at `q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul, GroundTheory.Heights₂.Heights.LowerBoundFree.conjVec]`. Rewrite using `[e]`. Simplify using `[inv_mul_cancel_left₀, (map_ne_zero (starRingEnd ℂ)).2 (hc q.1)]`. Rewrite `h2` using `[e2]`. Conclude with `h2.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1` using `hconj _ ⟨hm p, h⟩`. Establish `h2` using `htor _ h1 c hc`. Establish `e2 : GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul c (GroundTheory.Heights₂.Heights.LowerBoundFree.conjVec (Rb.lift p p)) = Rb.lift p' p'`. Use function extensionality and compare the values at `q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul, GroundTheory.Heights₂.Heights.LowerBoundFree.conjVec]`. Rewrite using `[e]`. Rewrite `h2` using `[e2]`. Conclude with `h2.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_bdry_conj_iff : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] (x₀ : (Σ k, J k) → Ω) (n : ℕ) (bd : Ideal (MRing J)) (Rb : AnLogRes (mCoordIdeal x₀) ⊤ n) (s : Rb.X → Rb.X → ℂ), (∀ p, p ∈ bdry s ↔ Rb.lift p p ∈ mcPts bd) → (∀ z ∈ mcPts (mCoordIdeal x₀) ∩ mcPts bd, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul c z ∈ mcPts (mCoordIdeal x₀) ∩ mcPts bd) → (∀ z ∈ mcPts (mCoordIdeal x₀) ∩ mcPts bd, GroundTheory.Heights₂.Heights.LowerBoundFree.conjVec z ∈ mcPts (mCoordIdeal x₀) ∩ mcPts bd) → ∀ p p', SameOrbit (Rb.lift p' p') (fun q => starRingEnd ℂ (Rb.lift p p q)) → (p' ∈ bdry s ↔ p ∈ bdry s) := by
   intro K _ J _ Ω _ x₀ n bd Rb s hb htor hconj p p' ho
@@ -89,7 +89,7 @@ theorem mem_bdry_conj_iff : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, 
     exact h2.2
 
 /- English proof (translation)
-Take `⟨v, hv, h'⟩` from `h`. Conclude with `⟨fun i => v (e i), fun i => hv _, fun p q => h' _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gramAt_sub {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {Li : Type} [AddCommGroup Li] [Module Ω Li] {M : LieModel G ξ Li} {L : LB G.left}
@@ -104,21 +104,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {M : FlagModel y (CMType H) (D.p + D.q) D.p} {𝔐 : HodgeCpt Y S M.x}
 
 /- English proof (translation)
-Simplify using `only [gb, gbS, ← blockEquiv_inr, Equiv.symm_apply_apply, Sum.elim_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gb_wEmb (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk) (τ : CMType H) (a : Fin D.p) :
     gb tie F τ (wEmb D.p D.q a) = tie.wFrame F τ a := by
   simp only [gb, gbS, ← blockEquiv_inr, Equiv.symm_apply_apply, Sum.elim_inr]
 
 /- English proof (translation)
-Simplify using `only [gb, gbS, ← blockEquiv_inl, Equiv.symm_apply_apply, Sum.elim_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gb_omEmb (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk) (τ : CMType H) (a : Fin D.q) :
     gb tie F τ (omEmb D.p D.q a) = (dualFam tie F τ a : 𝔐.Li) := by
   simp only [gb, gbS, ← blockEquiv_inl, Equiv.symm_apply_apply, Sum.elim_inl]
 
 /- English proof (translation)
-Rewrite using `[wBlock_blockG]`. Use `gramAt_sub h (wEmb D.p D.q)` as an intermediate fact. Simplify using `only [gb_wEmb] at this`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramAt_wFrame (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk) (τ : CMType H)
     {z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X} {Γ : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) ℂ}
@@ -130,9 +130,9 @@ theorem gramAt_wFrame (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p +
   exact this
 
 /- English proof (translation)
-Use `⟨dualFam tie F τ, omBlock Γ, hd, ?_, ?_⟩` and prove the remaining obligations. Use `gramAt_sub h (omEmb D.p D.q)` as an intermediate fact. Simplify using `only [gb_omEmb] at this`. Conclude with `this`. Establish `hpos : (omBlock Γ).PosDef` using `hp.submatrix (omEmb_strictMono D.p D.q).injective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (omBlock Γ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hpos.isUnit`. Rewrite using `[omBlock_blockG, Matrix.transpose_nonsing_inv, Matrix.transpose_transpose]`. Conclude with `Matrix.nonsing_inv_mul _ hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualGramAt_omFrame (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk) (τ : CMType H)
     {z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X} {Γ : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) ℂ}
@@ -149,23 +149,21 @@ theorem dualGramAt_omFrame (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (
     exact Matrix.nonsing_inv_mul _ hu
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H D l Xo₀ c Y S K _ ι _ Φ _ y M 𝔐 tie d hp hq hcov hsnc`. Take `⟨Xo, rfl⟩ : ∃ Xo : ∀ l' : Level H, Moduli D l', Xo l = Xo₀` from `⟨Function.update (fun l' => (hG.1.2.1 E H D l' (by omega)).some) l Xo₀, Function.update_self ..⟩`. Use `set n := Fintype.card (CMType H) * D.p * D.q with hn`. Establish `hn1 : 1 ≤ n`. Establish `: 0 < Fintype.card (CMType H)` using `card_cmType_pos E H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Nat.mul_pos (Nat.mul_pos this hp) hq`. Take `⟨bd, hbd, hint⟩` from `hsnc`. Establish `harith` using `GlobalTheory.T.isArithVar_of_snc_model 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x n bd hn1 𝔐.tie hbd`. Take `⟨hcl, htor, hconj⟩` from `GlobalTheory.T.boundary_points_closed 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x (abLocus 𝔐.t.G) bd 𝔐.tie hint`. Take `⟨Rb, L, s, nb, m, W, potL, sec, snc, norm_le, hbdry, hrconj⟩` from `GlobalTheory.T.lowerBound_height_on_boundary (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.Ω M.x n bd hbd harith hcl htor hconj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Bat, adapted⟩` from `GlobalTheory.T.adapted_atlas_snc_section Rb.A L s m W potL sec snc norm_le`. Establish `hInt : ∀ (x : Rb.X) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X), CoordsAt 𝔐.ξ M.x z (Rb.lift x x) → (x ∉ bdry s ↔ 𝔐.Interior z)` using `fun x z hz => by`. Rewrite using `[hbdry x, hint z _ hz, not_not]`. Establish `hZ : IsClosed (bdry s)` using `GlobalTheory.T.isClosed_section_boundary n Rb.X Rb.A L s sec`. Take `⟨q, O, F, hO, hOc, hF, hgood⟩` from `GlobalTheory.T.exists_finite_frame_cover K ι Φ y (CMType H) (D.p + D.q) D.p n M Rb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgood' : ∀ l, ∀ x ∈ O l, M.GoodAt (F l) (mCoordIdeal (Rb.lift x x))` using `fun l x hx => hgood l x (subset_closure hx)`. Establish `hr : ∀ x, x ∉ bdry s → Real.exp 1 ≤ rW L s x` using `fun x _ => by`. Use `norm_le x` as an intermediate fact. Unfold `rW`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `fun (i : Fin q) (τ : CMType H) => GlobalTheory.T.cutoff_function_on_compatible_atlas n D.p D.q Rb.X Rb.A Bat (bdry s) (closure (O i)) (O i) (rW L s) (baseGram tie (F i) τ Rb) adapted.1 adapted.2.1 adapted.2.2.1 hZ isClosed_closure (hO i) subset_closure hr (fun k w₀ hw₀ hc => Glob …`. Use `choose C₀ hC₀ using fun i τ => (hb i τ).2`. Choose the witnesses or unpack the hypotheses as in `⟨Cst, hCst⟩ : ∃ Cst : ℝ, ∀ i τ, C₀ i τ ≤ Cst := by`. Use `⟨∑ i, ∑ τ, |C₀ i τ|, fun i τ => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcoords : ∀ x : Rb.X, ∃ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ M.x z (Rb.lift x x)` using `exists_coordsAt_lift E H D Xo l c Y S K ι Φ y M 𝔐 n Rb`. Establish `hgr` using `fun (i : Fin q) (τ : CMType H) (x : Rb.X) (hx : x ∈ O i \ bdry s) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (hz : CoordsAt 𝔐.ξ M.x z (Rb.lift x x)) => GlobalTheory.T.flagModel_frame_height_comparison E H D Xo l c Y S K ι Φ y M 𝔐 tie (F i) (hF i) τ (Rb.lift x x) z hz ((hInt x z hz).1 hx …`. Take `⟨hom, hdeg, hind, hconjH⟩` from `GlobalTheory.T.flagModel_resolution_integrability E H D Xo l c Y S K ι Φ y M 𝔐 tie n Rb s hInt q O F hOc hF hgood'`. Establish `hper : ∀ i, ∀ x ∈ O i \ bdry s, ∃ V Pi, x ∈ V ∧ IsPeriodOn Rb.A D.p V Pi (fun τ x' => blockG (baseGram tie (F i) τ Rb x'))`. Introduce `i x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fun τ => GlobalTheory.T.exists_local_holo_isPeriodGram_blockG_baseGram hG E H D Xo l c Y S K ι Φ y M 𝔐 tie hp hq n Rb s hInt hZ (F i) (hF i) τ x hx.2 (hgood' i x hx.1)` as an intermediate fact. Use `choose V P hV hxV hP hPG using this`. Use `⟨⋂ τ, V τ, P, Set.mem_iInter.2 hxV, isOpen_iInter_of_finite hV, fun τ a b => ?_, fun τ x' hx' => hPG τ x' (Set.mem_iInter.1 hx' τ)⟩` and prove the remaining obligations. Introduce `k`. Conclude with `(hP τ a b k).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (Set.iInter_subset _ τ)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨lI, xI, hxI, VI, PiI, hxV, hPer, himm⟩` from `GlobalTheory.T.flagModel_height_lower_estimate hG E H D Xo l c Y S K ι Φ y M 𝔐 tie hp hq d hcov Rb s hInt hZ q O F hO hOc hF hgood'`. Use `⟨{ Rb := Rb, L := L, s := s, nb := nb, m := m, W := W, potL := potL, sec := sec, snc := snc, norm_le := norm_le, Bat := Bat, adapted := adapted, q := q, O := O, O_open := hO, O_cover := hOc, F := F, isFrame := hF, good := hgood' G := fun i τ x => blockG (baseGram tie (F i) τ Rb x …` and prove the remaining obligations. Introduce `i τ x hx`. Take `⟨z, hz⟩` from `hcoords x`. Conclude with `GlobalTheory.T.blockG_blockDiag_posDef D.p D.q _ (hgr i τ x hx z hz).2.1`.
-
-Use `⟨hInt, fun i τ x hx z hz => ?_, fun i τ x hx z hz => ?_⟩` and prove the remaining obligations. Conclude with `gramAt_wFrame tie (F i) τ (hgr i τ x hx z hz).1`. Conclude with `dualGramAt_omFrame tie (F i) τ (hgr i τ x hx z hz).1 (hgr i τ x hx z hz).2.1 (hgr i τ x hx z hz).2.2`. Use `⟨fun x x' ho => ?_, fun p z hz x hx ho => hconjH p z hz x hx ho⟩` and prove the remaining obligations. Conclude with `⟨mem_bdry_conj_iff (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.Ω M.x n bd Rb s hbdry htor hconj x x' ho, hrconj x x' ho⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem baseMetricExists_of_given : Given → PB.BaseMetricExists := by
   intro hG E _ _ _ H D l Xo₀ c Y S K _ ι _ Φ _ y M 𝔐 tie d hp hq hcov hsnc

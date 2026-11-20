@@ -9,23 +9,23 @@ open PowerSeries
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Establish `hs : Subsingleton (O ⧸ Ideal.span {ℓ ^ 0})` using `Ideal.Quotient.subsingleton_iff.mpr (by rw [pow_zero, Ideal.span_singleton_one])`. Rewrite using `[Module.length_eq_zero, Nat.cast_zero, zero_mul]`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hle : Ideal.span {ℓ} ≤ Submodule.comap (LinearMap.mulLeft O (ℓ ^ k)) (Ideal.span {ℓ ^ (k + 1)})`. Introduce `x hx`. Rewrite using `[Submodule.mem_comap, LinearMap.mulLeft_apply]`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Conclude with `Ideal.mem_span_singleton.mpr ⟨y, by ring⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hge : Ideal.span {ℓ ^ (k + 1)} ≤ Ideal.span {ℓ ^ k}` using `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow ℓ k.le_succ)`. Establish `hk : ℓ ^ k ≠ 0` using `pow_ne_zero k hℓ`. Establish `hf : Function.Injective (Submodule.mapQ _ _ (LinearMap.mulLeft O (ℓ ^ k)) hle)`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[LinearMap.mem_ker, Submodule.mapQ_apply, LinearMap.mulLeft_apply, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton]`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hx`. Use `⟨c, mul_left_cancel₀ hk ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hg : Function.Surjective (Submodule.factor hge)`. Introduce `y`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Submodule.Quotient.mk a, rfl⟩`. Establish `hex : Function.Exact (Submodule.mapQ _ _ (LinearMap.mulLeft O (ℓ ^ k)) hle) (Submodule.factor hge)`. Introduce `y`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h' : a ∈ Ideal.span {ℓ ^ k}`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Conclude with `h`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.mp h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Submodule.Quotient.mk c, by rw [Submodule.mapQ_apply, LinearMap.mulLeft_apply, hc]⟩`. Introduce and unpack `⟨x, hx⟩`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← hx, Submodule.mapQ_apply, LinearMap.mulLeft_apply]`. Use `show (Submodule.Quotient.mk (ℓ ^ k * c) : O ⧸ Ideal.span {ℓ ^ k}) = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `Ideal.mem_span_singleton.mpr (dvd_mul_right _ _)`. Rewrite using `[Module.length_eq_add_of_exact _ _ hf hg hex, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem len_pow [IsDomain O] (ℓ : O) (hℓ : ℓ ≠ 0) (k : ℕ) :
     Module.length O (O ⧸ Ideal.span {ℓ ^ k}) = (k : ℕ∞) * Module.length O (O ⧸ Ideal.span {ℓ}) := by
@@ -83,7 +83,7 @@ abbrev J (ℓ : O) (n k : ℕ) : Ideal (PowerSeries O) :=
   Ideal.span {(X : PowerSeries O) ^ n, C (ℓ ^ k)}
 
 /- English proof (translation)
-Introduce `i hi`. Take `⟨a, c, rfl⟩` from `Ideal.mem_span_pair.mp hr`. Rewrite using `[map_add, coeff_mul_X_pow', if_neg (by omega), zero_add, coeff_mul_C]`. Conclude with `dvd_mul_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_dvd_of_mem (ℓ : O) (n k : ℕ) {r : PowerSeries O} (hr : r ∈ J ℓ n k) :
     ∀ i < n, ℓ ^ k ∣ coeff i r := by
@@ -93,11 +93,11 @@ theorem coeff_dvd_of_mem (ℓ : O) (n k : ℕ) {r : PowerSeries O} (hr : r ∈ J
   exact dvd_mul_left _ _
 
 /- English proof (translation)
-Establish `hp' : ∀ i < n, ∃ c, coeff i p = ℓ ^ k * c` using `fun i hi => hp i hi`. Use `choose! c hc using hp'`. Use `Ideal.mem_span_pair.mpr ⟨PowerSeries.mk fun j => coeff (j + n) p, PowerSeries.mk fun i => if i < n then c i else 0, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Rewrite using `[map_add, coeff_mul_X_pow', coeff_mul_C, coeff_mk, coeff_mk]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `split_ifs with h1 h2 h2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.sub_add_cancel h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc i h2]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
 
-Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem mem_of_coeff_dvd (ℓ : O) (n k : ℕ) (p : PowerSeries O)
     (hp : ∀ i < n, ℓ ^ k ∣ coeff i p) : p ∈ J ℓ n k := by
@@ -116,7 +116,7 @@ theorem mem_of_coeff_dvd (ℓ : O) (n k : ℕ) (p : PowerSeries O)
   · omega
 
 /- English proof (translation)
-Rewrite using `[sub_mul, map_sub, coeff_succ_X_mul, coeff_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeff_step (ℓ : O) (p : PowerSeries O) (i : ℕ) :
     coeff i p = coeff (i + 1) ((X - C ℓ) * p) + ℓ * coeff (i + 1) p := by
@@ -124,11 +124,11 @@ theorem coeff_step (ℓ : O) (p : PowerSeries O) (i : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `key : ∀ j i, i + j = n - 1 → i < n → ℓ ^ k ∣ coeff i p`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `i hij _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show i = n - 1 by omega]`. Conclude with `htop`. Consider the case `succ j ih`. Introduce `i hij hi`. Rewrite using `[Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.coeff_step ℓ p i]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `dvd_add (Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.coeff_dvd_of_mem ℓ n k hp (i + 1) (by omega)) (dvd_mul_of_dvd_right (ih (i + 1) (by omega) (by omega)) _)`. Introduce `i hi`. Conclude with `key (n - 1 - i) i (by omega) hi`.
+A detailed English derivation is pending.
 -/
 theorem all_coeff_dvd (ℓ : O) (n k : ℕ) (p : PowerSeries O) (hp : (X - C ℓ) * p ∈ J ℓ n k)
     (htop : ℓ ^ k ∣ coeff (n - 1) p) : ∀ i < n, ℓ ^ k ∣ coeff i p := by
@@ -152,7 +152,7 @@ def lift (ℓ : O) (n k : ℕ) : (PowerSeries O ⧸ J ℓ n k) → PowerSeries O
   Function.surjInv Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq Ideal.Quotient.mk_surjective b`.
+A detailed English derivation is pending.
 -/
 theorem mk_lift (ℓ : O) (n k : ℕ) (b : PowerSeries O ⧸ J ℓ n k) :
     Ideal.Quotient.mk (J ℓ n k) (lift ℓ n k b) = b := Function.surjInv_eq Ideal.Quotient.mk_surjective b
@@ -161,9 +161,9 @@ def topFun (ℓ : O) (n k : ℕ) (b : PowerSeries O ⧸ J ℓ n k) : O ⧸ Ideal
   Ideal.Quotient.mk _ (coeff (n - 1) (lift ℓ n k b))
 
 /- English proof (translation)
-Unfold `Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.topFun`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Establish `h` using `Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.mk_lift ℓ n k (Ideal.Quotient.mk _ p)`. Rewrite `h` using `[Ideal.Quotient.eq]`. Establish `h2` using `Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.coeff_dvd_of_mem ℓ n k h (n - 1) (by omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_sub]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem topFun_mk (ℓ : O) (n k : ℕ) (hn : 0 < n) (p : PowerSeries O) :
     topFun ℓ n k (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ (coeff (n - 1) p) := by
@@ -189,13 +189,13 @@ def topMap (ℓ : O) (n k : ℕ) (hn : 0 < n) :
     rw [Algebra.smul_def, Ideal.Quotient.algebraMap_eq, map_mul]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Establish `h1 : (X : PowerSeries O) ^ 0 ∈ J ℓ 0 k` using `Ideal.subset_span (Set.mem_insert _ _)`. Rewrite `h1` using `[pow_zero]`. Establish `hs : Subsingleton (PowerSeries O ⧸ J ℓ 0 k)` using `Ideal.Quotient.subsingleton_iff.mpr ((Ideal.eq_top_iff_one _).mpr h1)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Module.length_eq_zero]`. Conclude with `zero_le`. Establish `hinj : Function.Injective ((topMap ℓ n k hn).comp (LinearMap.ker (LinearMap.mulLeft O (Ideal.Quotient.mk (J ℓ n k) ((X : PowerSeries O) - C ℓ)))).subtype)`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce and unpack `⟨b, hb⟩ hT`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `hb'` using `hb`. Rewrite `hb'` using `[LinearMap.mem_ker, LinearMap.mulLeft_apply, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `hT` using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.subtype_apply]`. Establish `hT' : topFun ℓ n k (Ideal.Quotient.mk _ p) = 0` using `hT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hT'` using `[Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.topFun_mk ℓ n k hn, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Establish `hpJ` using `Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.mem_of_coeff_dvd ℓ n k p (Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.all_coeff_dvd ℓ n k p hb' hT')`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hpJ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem single (ℓ : O) (n k : ℕ) [IsDomain O] (hℓ : ℓ ≠ 0) :
     Module.length O (LinearMap.ker (LinearMap.mulLeft O
@@ -229,11 +229,11 @@ theorem single (ℓ : O) (n k : ℕ) [IsDomain O] (hℓ : ℓ ≠ 0) :
       _ = _ := Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.len_pow ℓ hℓ k
 
 /- English proof (translation)
-Set `Φ : LinearMap.ker (LinearMap.pi fun i => (f i).comp (LinearMap.proj (R` to `R) (φ := M) i)) →ₗ[R] (∀ i, LinearMap.ker (f i)) := LinearMap.pi fun i => LinearMap.codRestrict (LinearMap.ker (f i)) ((LinearMap.proj (R := R) (φ := M) i).comp (Submodule.subtype _)) (fun x => by`. Establish `hx` using `x.2`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Establish `h2` using `congrFun hx i`. Simplify using `using h2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hΦ : Function.Injective Φ`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (fun z => (z i : M i)) hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `h2` using `[Φ]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 -/
 theorem ker_pi_le {ι : Type} [Fintype ι] {R : Type} [CommRing R] (M : ι → Type)
     [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)] (f : ∀ i, M i →ₗ[R] M i) :
@@ -260,7 +260,7 @@ end Formalism.KernelCokernelLengths.TorsionKernelSumLemmas
 
 open Formalism.KernelCokernelLengths.TorsionKernelSumLemmas in
 /- English proof (translation)
-Unfold `Formalism.KernelCokernelLengths.TorsKerSum`. Introduce `O _ _ _ ℓ hℓ m k n`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

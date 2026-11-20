@@ -5,19 +5,17 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Use `set ι := Module.Free.ChooseBasisIndex ℤ La`. Set `b : Module.Basis ι ℤ La` to `Module.Free.chooseBasis ℤ La`. Set `A : Matrix ι ι ℤ` to `fun i j => EF (b i) (b j)`. Establish `key : ∀ (c : ι → ℤ) (j : ι), EF (∑ i, c i • b i) (b j) = (c ᵥ* A) j`. Introduce `c j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sum, map_smul, LinearMap.sum_apply, vecMul, dotProduct, A, smul_eq_mul]`. Establish `hdet : A.det ≠ 0`. Introduce `h0`. Take `⟨v, hv, hvA⟩` from `(Matrix.exists_vecMul_eq_zero_iff (M := A)).2 h0`. Establish `hx : EF (∑ i, v i • b i) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `b.ext fun j => ?_` and prove the remaining obligations. Rewrite using `[key, hvA]`. Simplify using the standard rewrite rules. Establish `: (∑ i, v i • b i) = 0` using `hEF (by rw [hx, map_zero])`. Apply `hv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent v this i`. Use `set d := A.det`. Use `⟨d.natAbs * d.natAbs, ?_, ?_⟩` and prove the remaining obligations. Establish `: 0 < d.natAbs` using `Int.natAbs_pos.2 hdet`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Check the signs of the components of the expression. Introduce `f`. Set `w : ι → ℤ` to `fun j => f (b j)`. Use `⟨∑ i, ((d • w) ᵥ* adjugate A) i • b i, ?_⟩` and prove the remaining obligations. Use `b.ext fun j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, vecMul_vecMul, adjugate_mul, vecMul_smul, vecMul_one]`. Establish `hc : ((d.natAbs * d.natAbs : ℕ) : ℤ) = d * d`. Rewrite using `[Nat.cast_mul]`. Conclude with `Int.natAbs_mul_self' d`. Simplify using `only [LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, w]`.
-
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ, hc, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bilinForm_injective_exists_mul_mem_range (La : Type) [AddCommGroup La]
     [Module.Free ℤ La] [Module.Finite ℤ La] (EF : LinearMap.BilinForm ℤ La)

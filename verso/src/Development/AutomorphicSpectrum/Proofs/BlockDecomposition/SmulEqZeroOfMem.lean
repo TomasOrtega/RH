@@ -36,14 +36,14 @@ def Ks (e : ℕ) (t : ℤ) (S : Finset ι) : Submodule R (T (e + 1) t S) :=
 variable {ρ res p mm}
 
 /- English proof (translation)
-Simplify using `[Ks, hS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Ks {e : ℕ} {t : ℤ} {S : Finset ι} (hS : S.Nonempty) {a : T (e + 1) t S} :
     a ∈ Ks p e t S ↔ p e t S a = 0 := by
   simp [Ks, hS]
 
 /- English proof (translation)
-Simplify using `only [Ks, if_neg hS, Submodule.mem_bot] at ha`. Conclude with `ha`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_Ks {e : ℕ} {t : ℤ} {S : Finset ι} (hS : ¬S.Nonempty) {a : T (e + 1) t S}
     (ha : a ∈ Ks p e t S) : a = 0 := by
@@ -51,7 +51,7 @@ theorem eq_zero_of_mem_Ks {e : ℕ} {t : ℤ} {S : Finset ι} (hS : ¬S.Nonempty
   exact ha
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨l, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem rho_mem (l : Fin g) : ρ l ∈ Ideal.span (Set.range ρ) := Ideal.subset_span ⟨l, rfl⟩
 
@@ -61,43 +61,43 @@ variable (H : TowerAx ρ res p mm)
 include H
 
 /- English proof (translation)
-The claim follows from `H.1 e t S S' h a hS`.
+A detailed English derivation is pending.
 -/
 theorem p_res (e t S S') (h : S ⊆ S') (a) (hS : S.Nonempty) :
     p e t S' (res (e + 1) t S S' h a) = res e t S S' h (p e t S a) := H.1 e t S S' h a hS
 
 /- English proof (translation)
-The claim follows from `H.2.1 j e t S a hS`.
+A detailed English derivation is pending.
 -/
 theorem p_mm (j e t S a) (hS : S.Nonempty) :
     p e (t + 1) S (mm j (e + 1) t S a) = mm j e t S (p e t S a) := H.2.1 j e t S a hS
 
 /- English proof (translation)
-The claim follows from `H.2.2.1 j e t S S' h a hS`.
+A detailed English derivation is pending.
 -/
 theorem res_mm (j e t S S') (h : S ⊆ S') (a) (hS : S.Nonempty) :
     res e (t + 1) S S' h (mm j e t S a) - mm j e t S' (res e t S S' h a) ∈
       Ideal.span (Set.range ρ) • (⊤ : Submodule R (T e (t + 1) S')) := H.2.2.1 j e t S S' h a hS
 
 /- English proof (translation)
-The claim follows from `H.2.2.2.1 e t S hS`.
+A detailed English derivation is pending.
 -/
 theorem surj (e t S) (hS : S.Nonempty) : Function.Surjective (p e t S) := H.2.2.2.1 e t S hS
 
 /- English proof (translation)
-The claim follows from `H.2.2.2.2.1 e t S hS`.
+A detailed English derivation is pending.
 -/
 theorem ker_eq (e t S) (hS : S.Nonempty) :
     LinearMap.ker (p e t S) = Ideal.span (Set.range ρ) ^ (e + 1) • ⊤ := H.2.2.2.2.1 e t S hS
 
 /- English proof (translation)
-The claim follows from `H.2.2.2.2.2 e t S hS`.
+A detailed English derivation is pending.
 -/
 theorem kill (e t S) (hS : S.Nonempty) :
     Ideal.span (Set.range ρ) ^ (e + 1) • (⊤ : Submodule R (T e t S)) = ⊥ := H.2.2.2.2.2 e t S hS
 
 /- English proof (translation)
-Establish `hrw : r • w ∈ (Ideal.span (Set.range ρ) ^ m * Ideal.span (Set.range ρ) ^ n) • (⊤ : Submodule R (T e t S))`. Rewrite using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hr hw`. Rewrite `hrw` using `[← pow_add, hmn, H.kill e t S hS]`. Conclude with `(Submodule.mem_bot R).1 hrw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_mem {e : ℕ} {t : ℤ} {S : Finset ι} (hS : S.Nonempty) {m n : ℕ}
     (hmn : m + n = e + 1) {r : R} (hr : r ∈ Ideal.span (Set.range ρ) ^ m) {w : T e t S}
@@ -110,7 +110,7 @@ theorem smul_eq_zero_of_mem {e : ℕ} {t : ℤ} {S : Finset ι} (hS : S.Nonempty
   exact (Submodule.mem_bot R).1 hrw
 
 /- English proof (translation)
-Establish `hw : a ∈ Ideal.span (Set.range ρ) ^ (e + 1) • (⊤ : Submodule R (T (e + 1) t S))`. Rewrite using `[← H.ker_eq e t S hS]`. Conclude with `LinearMap.mem_ker.mpr ha`. Conclude with `H.smul_eq_zero_of_mem hS (m := 1) (n := e + 1) (by omega) (by rwa [pow_one]) hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_p {e : ℕ} {t : ℤ} {S : Finset ι} (hS : S.Nonempty) {r : R}
     (hr : r ∈ Ideal.span (Set.range ρ)) {a : T (e + 1) t S} (ha : p e t S a = 0) : r • a = 0 := by
@@ -120,7 +120,7 @@ theorem smul_eq_zero_of_p {e : ℕ} {t : ℤ} {S : Finset ι} (hS : S.Nonempty) 
   exact H.smul_eq_zero_of_mem hS (m := 1) (n := e + 1) (by omega) (by rwa [pow_one]) hw
 
 /- English proof (translation)
-Establish `h : p (e + 1) t S (Function.surjInv (H.surj (e + 1) t S hS) (p (e + 1) t S b) - b) = 0`. Rewrite using `[map_sub, Function.surjInv_eq (H.surj (e + 1) t S hS), sub_self]`. Use `H.smul_eq_zero_of_p hS (rho_mem l) h` as an intermediate fact. Rewrite `this` using `[smul_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rho_smul_surjInv (l : Fin g) {e : ℕ} {t : ℤ} {S : Finset ι} (hS : S.Nonempty)
     (b : T (e + 1 + 1) t S) :
@@ -146,7 +146,7 @@ def lam (H : TowerAx ρ res p mm) (l : Fin g) (e : ℕ) (t : ℤ) (S : Finset ι
 
 omit H in
 /- English proof (translation)
-The claim follows from `H.rho_smul_surjInv l hS b`.
+A detailed English derivation is pending.
 -/
 theorem lam_p (H : TowerAx ρ res p mm) (l : Fin g) {e : ℕ} {t : ℤ} {S : Finset ι}
     (hS : S.Nonempty) (b : T (e + 1 + 1) t S) :
@@ -166,7 +166,7 @@ def yK (H : TowerAx ρ res p mm) (l : Fin g) (e : ℕ) (t : ℤ) (S : Finset ι)
 omit H in
 
 /- English proof (translation)
-Simplify using `only [yK, dif_pos hS, LinearMap.restrict_coe_apply]`. Rewrite using `[← hb, H.lam_p]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_yK (H : TowerAx ρ res p mm) (l : Fin g) {e : ℕ} {t : ℤ} {S : Finset ι}
     (hS : S.Nonempty) (a : Ks p e t S) (b : T (e + 1 + 1) t S) (hb : p (e + 1) t S b = a) :
@@ -241,13 +241,13 @@ def ops (H : TowerAx ρ res p mm)
 omit H in
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [coe_resK, coe_xK]`. Distinguish the cases in `hS : S.Nonempty`. Establish `hS' : S'.Nonempty` using `hS.mono h`. Establish `ha : (a : T (e + 1) t S) ∈ Ideal.span (Set.range ρ) ^ (e + 1) • (⊤ : Submodule R (T (e + 1) t S))`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← H.ker_eq e t S hS]`. Conclude with `LinearMap.mem_ker.mpr ((mem_Ks hS).1 a.2)`. Establish `key : Ideal.span (Set.range ρ) ^ (e + 1) • (⊤ : Submodule R (T (e + 1) t S)) ≤ LinearMap.ker (res (e + 1) (t + 1) S S' h ∘ₗ mm j (e + 1) t S - mm j (e + 1) t S' ∘ₗ res (e + 1) t S S' h)`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr x _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, map_smul]`. Use `H.smul_eq_zero_of_mem hS' (m := e + 1) (n := 1) rfl hr ?_` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `H.res_mm j (e + 1) t S S' h x hS`. Establish `hk` using `key ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hk` using `[LinearMap.mem_ker]`. Simplify `hk` using `[sub_eq_zero]`. Rewrite using `[eq_zero_of_mem_Ks hS a.2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resK_xK (H : TowerAx ρ res p mm) (j : ι) (e : ℕ) (t : ℤ) {S S' : Finset ι} (h : S ⊆ S')
     (a : Ks p e t S) :
@@ -278,9 +278,9 @@ theorem resK_xK (H : TowerAx ρ res p mm) (j : ι) (e : ℕ) (t : ℤ) {S S' : F
 omit H in
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Distinguish the cases in `hS : S.Nonempty`. Take `⟨b, hb⟩` from `H.surj (e + 1) t S hS a`. Establish `h1 : p (e + 1) t S' (res (e + 1 + 1) t S S' h b) = H.resK e t h a`. Rewrite using `[H.p_res (e + 1) t S S' h b hS, hb, coe_resK]`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H.coe_yK l (hS.mono h) _ _ h1, coe_resK, H.coe_yK l hS a b hb, map_smul]`. Take `rfl : a = 0` from `Subtype.ext (eq_zero_of_mem_Ks hS a.2)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem resK_yK (H : TowerAx ρ res p mm) (l : Fin g) (e : ℕ) (t : ℤ) {S S' : Finset ι}
     (h : S ⊆ S') (a : Ks p e t S) :
@@ -314,7 +314,7 @@ def resTot (H : TowerAx ρ res p mm) (hc : ∀ e S, OperatorsCommute (ι := ι) 
 omit H in
 @[simp]
 /- English proof (translation)
-The claim follows from `BiOps.map_of (H.ops hc S) (H.ops hc S') (fun e t => H.resK e t h) (fun j e t a => H.resK_xK j e t h a) (fun l e t a => H.resK_yK l e t h a) e t a`.
+A detailed English derivation is pending.
 -/
 theorem resTot_of (H : TowerAx ρ res p mm) (hc : ∀ e S, OperatorsCommute (ι := ι) (R := R)
     (A := fun t => T e t S) fun j t => mm j e t S) {S S' : Finset ι} (h : S ⊆ S') (e : ℕ) (t : ℤ)
@@ -326,7 +326,7 @@ theorem resTot_of (H : TowerAx ρ res p mm) (hc : ∀ e S, OperatorsCommute (ι 
 omit H in
 
 /- English proof (translation)
-The claim follows from `BiOps.comp_map (H.ops hc S) (H.ops hc S') (fun e t => H.resK e t h) (fun j e t a => H.resK_xK j e t h a) (fun l e t a => H.resK_yK l e t h a) e t m`.
+A detailed English derivation is pending.
 -/
 theorem comp_resTot (H : TowerAx ρ res p mm) (hc : ∀ e S, OperatorsCommute (ι := ι) (R := R)
     (A := fun t => T e t S) fun j t => mm j e t S) {S S' : Finset ι} (h : S ⊆ S') (e : ℕ) (t : ℤ)
@@ -337,7 +337,7 @@ theorem comp_resTot (H : TowerAx ρ res p mm) (hc : ∀ e S, OperatorsCommute (�
 
 omit H in
 /- English proof (translation)
-The claim follows from `BiOps.isGradedMap_map (H.ops hc S) (H.ops hc S') (fun e t => H.resK e t h) (fun j e t a => H.resK_xK j e t h a) (fun l e t a => H.resK_yK l e t h a)`.
+A detailed English derivation is pending.
 -/
 theorem isGradedMap_resTot (H : TowerAx ρ res p mm) (hc : ∀ e S, OperatorsCommute (ι := ι)
     (R := R) (A := fun t => T e t S) fun j t => mm j e t S) {S S' : Finset ι} (h : S ⊆ S') :

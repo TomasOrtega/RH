@@ -16,7 +16,7 @@ namespace GlobalTheory.PtHtComb
 variable {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp k}
 
 /- English proof (translation)
-Introduce `(c c' : A.ι × B.ι) h` and use `by have h₁ : genericPoint Z ∈ A.U c.1 ⊓ A.U c'.1 := ⟨h.1.1, h.2.1⟩ have h₂ : genericPoint Z ∈ B.U c.2 ⊓ B.U c'.2 := ⟨h.1.2, h.2.2⟩ have e : fnOf _ h ((CechPic.tens A B).g c c' : Γ(Z, _)) = fnOf _ h₁ (A.g c.1 c'.1 : Γ(Z, _)) * fnOf _ h₂ (B.g c.2 c'.2 : Γ(Z, _)) := by change fnOf _ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRatSec_tens {A B : LB Z} {r : A.ι → Z.functionFieldˣ} {s : B.ι → Z.functionFieldˣ}
     (hr : IsRatSec A r) (hs : IsRatSec B s) :
@@ -31,7 +31,7 @@ theorem isRatSec_tens {A B : LB Z} {r : A.ι → Z.functionFieldˣ} {s : B.ι �
   ring
 
 /- English proof (translation)
-The claim follows from `CartierDiv.ext_of_isEqn fun z => by obtain ⟨a, ha⟩ := exists_chart M.isLB z obtain ⟨b, hb⟩ := exists_chart N.isLB z exact ⟨_, (presents_divOfRatSec (M.tens N).isLB (isRatSec_tens hr hs)).isEqn (a, b) z ⟨ha, hb⟩, ((presents_divOfRatSec M.isLB hr).isEqn a z ha).add ((presents_divOf …`.
+A detailed English derivation is pending.
 -/
 theorem div_tens (M N : HermLB q) {r : M.B.ι → Z.functionFieldˣ} {s : N.B.ι → Z.functionFieldˣ}
     (hr : IsRatSec M.B r) (hs : IsRatSec N.B s) :
@@ -49,15 +49,15 @@ namespace GlobalTheory.PtHtComb
 variable {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp k}
 
 /- English proof (translation)
-Use `hZ.isNoetherian` as an intermediate fact. Establish `hfin (D : CartierDiv Z) : (Function.support fun z => (D.mult z : ℝ) * Real.log (Nat.card (Z.residueField z))).Finite` using `D.finite_support_mult.subset fun z hz h0 => hz (by simp [h0])`. Establish `h₂ (σ) (y : CxPts q σ) : logNorm ((M.tens N).φ σ) (fun c : M.B.ι × N.B.ι => r c.1 * s c.2) y = logNorm (M.φ σ) r y + logNorm (N.φ σ) s y`. Establish `hy : under y = genericPoint Z` using `hZ.under_eq_genericPoint y`. Establish `ho (D : CartierDiv Z) : y ∈ offSupp q σ D` using `mem_offSupp.2 (hy ▸ D.genericPoint_notMem_supp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `mem_pick (M.φ σ).isLB y`. Establish `hb` using `mem_pick (N.φ σ).isLB y`. Establish `hu (g : Z.functionFieldˣ) : ‖ratVal (g : Z.functionField) y‖ ≠ 0` using `norm_ne_zero_iff.2 (ratVal_ne_zero (hy ▸ unitAt_genericPoint g.ne_zero))`. Use `(logNorm_eq ((M.tens N).φ σ) (isRatSec_tens hr hs) (ho _) (i := (pick (M.φ σ).isLB y, pick (N.φ σ).isLB y)) (mem_ptsIn_inf.2 ⟨ha, hb⟩)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Real.log ‖ratVal ((r (pick (M.φ σ).isLB y) * s (pick (N.φ σ).isLB y) : Z.functionFieldˣ) : Z.functionField) y‖ - ((M.φ σ).φ (pick (M.φ σ).isLB y) y + (N.φ σ).φ (pick (N.φ σ).isLB y) y) / 2 = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[logNorm, logNorm, Units.val_mul, ratVal_mul (hy ▸ regAt_genericPoint _) (hy ▸ regAt_genericPoint _), norm_mul, Real.log_mul (hu _) (hu _)]`. Expand and normalize the polynomial expressions, which then agree. Use `SmallSecHeight.numberField hZ hc` as an intermediate fact. Establish `: Finite (Σ σ : k →+* ℂ, CxPts q σ)` using `.of_equiv _ (SmallSecHeight.ptsEquiv hZ).symm`. Establish `(σ : k →+* ℂ) : Finite (CxPts q σ)` using `.of_injective _ (sigma_mk_injective (i := σ))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hZ.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Establish `(σ : k →+* ℂ)` using `Fintype.ofFinite (CxPts q σ)`. Unfold `HermLB.curveDeg`. Rewrite using `[div_tens M N hr hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [CartierDiv.mult_add, Int.cast_add, add_mul]`. Rewrite using `[finsum_add_distrib (hfin _) (hfin _)]`. Simplify using `only [finsum_eq_sum_of_fintype, h₂, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem curveDeg_tens [IsLocallyNoetherian Z] (hZ : IsArithVar q 0)
     (hc : CharZero (Z.residueField (genericPoint Z))) (M N : HermLB q) {r : M.B.ι → Z.functionFieldˣ}
@@ -102,15 +102,15 @@ namespace GlobalTheory.PtHtComb
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
 
 /- English proof (translation)
-Take `⟨hc, hd⟩` from `hx`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint x`. Use `hX.isNoetherian_sub i` as an intermediate fact. Establish `hr : range i = closure {i (genericPoint Z)}`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₁` using `[image_univ, i.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `h₁.def.symm`. Rewrite `hd` using `[topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hr]`. Establish `hbij : Function.Bijective (i.residueFieldMap (genericPoint Z)).hom`. Use `⟨RingHom.injective _, fun u => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `Z.residue_surjective _ u`. Take `⟨u, rfl⟩` from `i.stalkMap_surjective _ u`. Conclude with `⟨X.residue _ u, ConcreteCategory.congr_hom (Scheme.residue_residueFieldMap i _) u⟩`. Establish `hc' : CharZero (Z.residueField (genericPoint Z))` using `(RingHom.charZero_iff hbij.1).1 hc`. Establish `hcΓ : CharZero Γ(Z, ⊤)` using `(Z.Γevaluation (genericPoint Z)).hom.charZero`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : IsArithVar (i ≫ p) 0` using `hX.of_isClosedImmersion i hcΓ hd`. Take `⟨r, hr⟩` from `exists_isRatSec (L.restr i).isLB`. Take `⟨s, hs⟩` from `exists_isRatSec (M.restr i).isLB`. Take `⟨t, ht, h₁, h₂⟩` from `(HermLB.isometric_pull_tens (L := L) (M := M) i rfl).symm.exists_isRatSec (isRatSec_tens hr hs)`. Rewrite using `[H''.point Z i hcΓ hd t ht, H.point Z i hcΓ hd r hr, H'.point Z i hcΓ hd s hs, ← curveDeg_tens hZ hc' (L.restr i) (M.restr i) hr hs, HermLB.curveDeg, h₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg _ (finsum_congr fun σ => finsum_congr fun y => h₂ σ (mem_offSupp.2 ?_))` and prove the remaining obligations. Rewrite using `[hZ.under_eq_genericPoint]`. Conclude with `CartierDiv.genericPoint_notMem_supp _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_tens (hX : IsArithVar p D) {L M : HermLB p} {h h' h'' : X → ℝ} (H : L.IsArithHeight h)
     (H' : M.IsArithHeight h') (H'' : (L.tens M).IsArithHeight h'') {x : X} (hx : IsAlgPt x) :
@@ -142,13 +142,13 @@ theorem height_tens (hX : IsArithVar p D) {L M : HermLB p} {h h' h'' : X → ℝ
   exact CartierDiv.genericPoint_notMem_supp _
 
 /- English proof (translation)
-Introduce `HE k _ X _ p D hX x hx`. Establish `hex (L : HermLB p) : ∃ h, L.IsArithHeight h` using `(HE k X p D hX).1 L`. Set `ht (L : HermLB p) : ℝ` to `(hex L).choose x`. Establish `hht {L : HermLB p} {h : X → ℝ} (H : L.IsArithHeight h) : ht L = h x` using `congrFun ((hex L).choose_spec.unique hX H) x`. Establish `hiso {L M : HermLB p} (e : L.Isometric M) : ht L = ht M` using `(hht (e.isArithHeight hX (hex L).choose_spec)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd (L M : HermLB p) : ht (L.tens M) = ht L + ht M` using `height_tens hX (hex L).choose_spec (hex M).choose_spec (hex _).choose_spec hx`. Set `F₀ : HermLB.IsomClass p → ℝ` to `Quotient.lift (s := HermLB.isometrySetoid p) ht fun L M e => hiso e`. Set `F : HermLB.IsomClass p →+ ℝ` to `AddMonoidHom.mk' F₀ (by`. Introduce and unpack `⟨L⟩ ⟨M⟩`. Conclude with `hadd L M)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hF (L : HermLB p) : F L.icls = ht L` using `rfl`. Establish `hpt (L : HermLB p) (a : ℝ) : IsPtHt L x a ↔ F L.icls = a * Nat.card (X.residueField x →+* ℂ)` using `⟨fun ⟨h, H, e⟩ => (hht H).trans e, fun e => ⟨_, (hex L).choose_spec, e⟩⟩`. Use `⟨fun L a h => ?_, fun ι _ L a h n => ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[hpt]`. Rewrite using `[HermLB.icls_dual, map_neg, h, neg_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hpt] at h ⊢`. Rewrite using `[ArInt.icls_comb, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, h, zsmul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPtHt_dual_comb : GlobalTheory.Published.ArExists → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ x : X, IsAlgPt x →

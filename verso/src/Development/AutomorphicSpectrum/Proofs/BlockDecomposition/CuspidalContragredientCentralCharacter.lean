@@ -11,11 +11,11 @@ open Matrix MeasureTheory GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir
 namespace GlobalTheory.CompanionTheory.ContraCusp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m σ hc`. Establish `hadm : IsAdmissible σ.ρ` using `PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top k (m + 1) _ σ.ρ σ.smooth σ.irr`. Establish `hG` using `GlobalTheory.SqIntUnit.compactOpen_basis k (m + 1)`. Use `⟨GlobalTheory.ContraRefl.contra_isIrreducible hG hadm σ.irr, GlobalTheory.SuperCusp.isCuspidal_of_isSupercuspidal k (m + 1) _ _ (GlobalTheory.CompanionTheory.DualCusp.isSupercuspidal_contra hG hadm (GlobalTheory.CuspCoef.isSupercuspidal_of_isCuspidal k (m + 1) _ _ hc)), ?_⟩` and prove the remaining obligations. Take `⟨ϖ, -, hϖ0, hϖ, -⟩` from `GlobalTheory.CompanionTheory.LocalField.exists_uniformiser k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, -, hχ⟩` from `GlobalTheory.LocGL.exists_smooth_hasCentralChar σ.smooth σ.irr`. Set `t : kˣ` to `Units.mk0 ϖ hϖ0`. Use `⟨Matrix.GeneralLinearGroup.scalar (Fin (m + 1)) t, ϖ, (χ t : ℂ), ?_, hϖ, hϖ0, (χ t).ne_zero, fun a => hχ t a, fun l => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Matrix.GeneralLinearGroup.scalar, t, Matrix.scalar_apply, Matrix.diagonal_apply, Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Subtype.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `h1 : (Matrix.GeneralLinearGroup.scalar (Fin (m + 1)) t)⁻¹ = Matrix.GeneralLinearGroup.scalar (Fin (m + 1)) t⁻¹` using `(map_inv _ t).symm`. Establish `h2 : ((χ t⁻¹ : ℂˣ) : ℂ) = ((χ t : ℂˣ) : ℂ)⁻¹`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`. Rewrite using `[contra_apply, h1, hχ t⁻¹ v, map_smul, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

@@ -8,15 +8,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.WaveSpd.GronwallZero
 
 /- English proof (translation)
-Introduce `e e' K t ht hd hle hnn h0`. Establish `hg : ∀ s, HasDerivAt (fun s => e s * Real.exp (-K * s)) ((e' s - K * e s) * Real.exp (-K * s)) s`. Introduce `s`. Establish `h1 : HasDerivAt (fun s : ℝ => Real.exp (-K * s)) (Real.exp (-K * s) * (-K)) s`. Establish `h2 : HasDerivAt (fun s : ℝ => -K * s) (-K) s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (hasDerivAt_id s).const_mul (-K)`. Conclude with `h2.exp`. Establish `h5 : HasDerivAt (fun s => e s * Real.exp (-K * s)) (e' s * Real.exp (-K * s) + e s * (Real.exp (-K * s) * (-K))) s` using `(hd s).mul h1`. Conclude with `h5.congr_deriv (by ring)`. Establish `hanti : Antitone (fun s => e s * Real.exp (-K * s))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Apply `antitone_of_deriv_nonpos` to reduce the goal to its premises. Conclude with `fun s => (hg s).differentiableAt`. Introduce `s`. Rewrite using `[(hg s).deriv]`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (by linarith [hle s]) (Real.exp_pos _).le`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : e t * Real.exp (-K * t) ≤ e 0 * Real.exp (-K * 0)` using `hanti ht`. Rewrite `h3` using `[h0, zero_mul]`. Establish `h4 : e t ≤ 0`. Assume the negation of the conclusion as `hc`. Conclude with `absurd h3 (not_le.mpr (mul_pos (not_le.mp hc) (Real.exp_pos _)))`.
-
-Conclude with `le_antisymm h4 (hnn t)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_deriv_le_mul :
     ∀ (e e' : ℝ → ℝ) (K t : ℝ), 0 ≤ t → (∀ s, HasDerivAt e (e' s) s) →

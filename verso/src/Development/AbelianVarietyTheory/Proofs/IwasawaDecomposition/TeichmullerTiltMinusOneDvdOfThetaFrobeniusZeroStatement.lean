@@ -6,7 +6,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Me
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MemLoc.mu_dvd_of_theta_frob` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTeichmullerTiltMinusOneDvdOfThetaFrobeniusZero.lean&line=259#L259)
 -/

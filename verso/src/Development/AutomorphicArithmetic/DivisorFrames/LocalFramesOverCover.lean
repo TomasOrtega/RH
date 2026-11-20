@@ -10,14 +10,14 @@ open GlobalTheory.RootFrame
 section SlopeTestRemainingChoices
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sp_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     spMap (ψ.comp φ) = spMap ψ ≫ spMap φ := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Rewrite using `[← sp_comp]`. Use `congr 1`. Apply the tactic sequence `exact RingHom.ext fun x => by ext <;> simp [dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sp_dual_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     spMap (dualMap (ψ.comp φ)) = spMap (dualMap ψ) ≫ spMap (dualMap φ) := by
@@ -26,20 +26,20 @@ private theorem sp_dual_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing 
   exact RingHom.ext fun x => by ext <;> simp [dualMap]
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 private theorem sp_inj {S T : Type} [CommRing S] [CommRing T] {φ ψ : S →+* T} (h : spMap φ = spMap ψ) : φ = ψ :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-The claim follows from `Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec G).specializes trivial)`.
+A detailed English derivation is pending.
 -/
 private theorem sp_stalk {G : Scheme.{0}} [IsIntegral G] (z : G) :
     spMap (algebraMap (G.presheaf.stalk z) G.functionField) ≫ G.fromSpecStalk z = G.fromSpecStalk (genericPoint G) :=
   Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec G).specializes trivial)
 
 /- English proof (translation)
-Use `⟨(j.stalkMap z).hom.comp (Z.presheaf.germ U (j z) hz).hom, ?_⟩` and prove the remaining obligations. Rewrite using `[sp_comp, Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk, ← hU.fromSpecStalk_eq_fromSpecStalk hz]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem exists_germ {G Z : Scheme.{0}} (j : G ⟶ Z) {U : Z.Opens} (hU : IsAffineOpen U) (z : G) (hz : j z ∈ U) :
     ∃ α : Γ(Z, U) →+* G.presheaf.stalk z, spMap α ≫ hU.fromSpec = G.fromSpecStalk z ≫ j := by
@@ -50,7 +50,7 @@ private theorem exists_germ {G Z : Scheme.{0}} (j : G ⟶ Z) {U : Z.Opens} (hU :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Establish `h'` using `(GlobalTheory.LieMet.isComb_iff (fun l => GlobalTheory.LieMet.tanOf (hu l)) cf _).2 rfl`. Establish `e` using `((isCombAtG_iff t _ (fun j => ovT (hu j)) _ _).1 h).symm.trans ((isCombAtG_iff t _ (fun j => ovT (hu j)) _ _).1 h')`. Rewrite using `[e]`. Conclude with `GlobalTheory.LieMet.isTan_tv _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isTan_of_comb {X : Scheme.{0}} {t : SAB H X} {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ}
     {u : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hu : ∀ l, IsTanAtG t x (u l)) {cf : Fin m → S}
@@ -62,11 +62,9 @@ private theorem isTan_of_comb {X : Scheme.{0}} {t : SAB H X} {S : Type} [CommRin
   exact GlobalTheory.LieMet.isTan_tv _
 
 /- English proof (translation)
-Use `choose a ha using fun i => (he.2 S α _ (GlobalTheory.LieMet.isTan_map s hy (hf i))).exists`. Use `⟨a, ha, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `fun l => GlobalTheory.LatDRFree.comb_map t io (ha l)`. Establish `h2` using `GlobalTheory.LatDRFree.comb_map t φ (hu i)`. Establish `e1 : spMap φ ≫ spMap κ ≫ y = spMap (io.comp α) ≫ x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← sp_comp, ← hc, sp_comp, sp_comp, Category.assoc, Category.assoc, hy]`. Simplify using `only [← Category.assoc, ← sp_dual_comp] at h1`. Rewrite `h1` using `[← sp_comp]`. Rewrite `h2` using `[e1]`. Simplify using `only [← Category.assoc, ← sp_dual_comp, ← hc] at h2`.
-
-Conclude with `tanLinG _ (fun k => GlobalTheory.LieMet.isTan_map (io.comp α) rfl (he.1 k)) _ (Matrix.of fun k l => io (a l k)) (fun l => φ (T l i)) _ h1 h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem core {X : Scheme.{0}} {t : SAB H X} {R S K B L : Type} [CommRing R] [CommRing S] [CommRing K]
     [CommRing B] [CommRing L] {x : Sp R ⟶ X} {y : Sp B ⟶ X} (α : R →+* S) (io : S →+* K) (s : B →+* S) (κ : B →+* L)
@@ -95,23 +93,23 @@ private theorem core {X : Scheme.{0}} {t : SAB H X} {R S K B L : Type} [CommRing
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t F _ _ Y V ρ' ρ hρ m u₀ f d T hf hT U hU g e he n h`. Distinguish the cases in `h0 : ∃ z : V.G, V.j z ∈ U`. Use `swap`. Conclude with `⟨0, fun z hz => absurd ⟨z, hz⟩ h0⟩`. Take `⟨z₀, hz₀⟩` from `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α₁, hα₁⟩` from `exists_germ V.j hU z₀ hz₀`. Take `⟨α₀, hα₀⟩ : ∃ α₀ : Γ(V.X, U) →+* V.G.functionField, spMap α₀ ≫ hU.fromSpec = V.G.fromSpecStalk (genericPoint V.G) ≫ V.j` from `⟨(algebraMap (V.G.presheaf.stalk z₀) V.G.functionField).comp α₁, by`. Rewrite using `[sp_comp, Category.assoc, hα₁, ← Category.assoc, sp_stalk]⟩`. Establish `key : ∀ z : V.G, V.j z ∈ U → ∃ (α : Γ(V.X, U) →+* V.G.presheaf.stalk z) (a : Fin m → Fin g → V.G.presheaf.stalk z), spMap α ≫ hU.fromSpec = V.G.fromSpecStalk z ≫ V.j ∧ (algebraMap (V.G.presheaf.stalk z) V.G.functionField).comp α = α₀ ∧ (∀ i, IsCombAtG t (spMap α ≫ hU.fromSpec ≫ ρ …`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `exists_germ V.j hU z hz`. Establish `e0 : (algebraMap (V.G.presheaf.stalk z) V.G.functionField).comp α = α₀`. Apply `sp_inj` to reduce the goal to its premises. Rewrite using `[← cancel_mono hU.fromSpec, sp_comp, Category.assoc, hα, ← Category.assoc, sp_stalk, hα₀]`. Establish `hs : spMap (V.π.stalkMap z).hom ≫ Y.X.fromSpecStalk (V.π z) = V.G.fromSpecStalk z ≫ V.π` using `Scheme.SpecMap_stalkMap_fromSpecStalk V.π`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (algebraMap (V.G.presheaf.stalk z) V.G.functionField).comp (V.π.stalkMap z).hom = V.φ.comp (algebraMap (Y.X.presheaf.stalk (V.π z)) Y.X.functionField)`. Apply `sp_inj` to reduce the goal to its premises. Rewrite using `[← cancel_mono (Y.X.fromSpecStalk (V.π z)), sp_comp, sp_comp, Category.assoc, Category.assoc, hs, sp_stalk, ← Category.assoc, sp_stalk, V.φ_spec]`. Establish `hy : spMap (V.π.stalkMap z).hom ≫ stalkPt Y (V.π z) ≫ ρ = spMap α ≫ hU.fromSpec ≫ ρ'`. Rewrite using `[stalkPt, ← Category.assoc, hs, ← Category.assoc, hα, Category.assoc, Category.assoc, hρ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : spMap (algebraMap (Y.X.presheaf.stalk (V.π z)) Y.X.functionField) ≫ stalkPt Y (V.π z) ≫ ρ = genericPt Y ≫ ρ`. Rewrite using `[stalkPt, genericPt, ← Category.assoc, sp_stalk]`. Take `⟨a, ha, hb⟩` from `core α (algebraMap (V.G.presheaf.stalk z) V.G.functionField) (V.π.stalkMap z).hom (algebraMap (Y.X.presheaf.stalk (V.π z)) Y.X.functionField) V.φ hc hy he (hf (V.π z)) (u := u₀) (T (V.π z)) (fun i => by rw [hg]; exact ((hT (V.π z)).2 i).2)`. Rewrite `hb` using `[e0]`. Conclude with `⟨α, a, hα, e0, ha, hb⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨A₀, hA₀⟩ : ∃ A₀ : Fin m → Fin g → V.G.functionField, ∀ i, IsCombAtG t (spMap α₀ ≫ hU.fromSpec ≫ ρ') (fun k => spMap (dualMap α₀) ≫ e k) (A₀ i) (spMap (dualMap V.φ) ≫ u₀ i) := by`. Take `⟨α, a, -, -, -, hb⟩` from `key z₀ hz₀`. Conclude with `⟨_, hb⟩`. Use `⟨Matrix.of fun j i => ∑ k, α₀ (h j k) * A₀ i k, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨α, a, hα, e0, ha, hb⟩` from `key z hz`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨α, a, hα, ha, ?_⟩` and prove the remaining obligations. Establish `hA : ∀ i, A₀ i = fun k => ∑ l, algebraMap (V.G.presheaf.stalk z) V.G.functionField (a l k) * V.φ (T (V.π z) l i)` using `fun i => (he.2 _ α₀ _ (isTan_of_comb (fun k => GlobalTheory.LieMet.isTan_map α₀ rfl (he.1 k)) (hA₀ i))).unique (hA₀ i) (hb i)`. Establish `hdet : IsUnit ((T (V.π z)).map V.φ).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, Matrix.det_of_upperTriangular (hT (V.π z)).1]`. Use `IsUnit.map _ (IsUnit.prod_iff.2 fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[((hT (V.π z)).2 i).1]`. Conclude with `Units.isUnit _`. Establish `hP : (Matrix.of fun j i => ∑ k, α₀ (h j k) * A₀ i k : Matrix (Fin n) (Fin m) V.G.functionField) = (Matrix.of fun j i => algebraMap (V.G.presheaf.stalk z) V.G.functionField (∑ k, α (h j k) * a i k)) * (T (V.π z)).map V.φ`. Use extensionality with `j i`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply, hA, map_sum, map_mul, ← e0, RingHom.comp_apply, Finset.mul_sum, Finset.sum_mul, _root_.mul_assoc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_comm`. Introduce `j i`. Rewrite using `[RootFrame.locM, hP, Matrix.mul_nonsing_inv_cancel_right _ _ hdet, Matrix.of_apply]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.local_frames_over_cover :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (ρ' : V.X ⟶ X) (ρ : Y.X ⟶ X), V.j ≫ ρ' = V.π ≫ ρ → ∀ (m : ℕ) (u₀ : Fin m → (Sp (DualNumber Y.Fn) ⟶ t.G.left)) (f : (∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left))) (d : Y.X → Fin m → Y.Fnˣ) (T : Y.X → Matrix (Fin m) (Fin m) Y.Fn), (∀ y i, IsTanAtG t (stalkPt Y y ≫ ρ) (f y i)) → TriOf t ρ u₀ f d T → ∀ (U : V.X.Opens) (hU : IsAffineOpen U) (g : ℕ) (e : Fin g → (Sp (DualNumber Γ(V.X, U)) ⟶ t.G.left)), IsTanBasis t (R := Γ(V.X, U)) (hU.fromSpec ≫ ρ') e → ∀ (n : ℕ) (h : Fin n → Fin g → Γ(V.X, U)), ∃ P : Matrix (Fin n) (Fin m) V.G.functionField, ChartCo t V ρ' hU e h f T P := by

@@ -27,31 +27,27 @@ namespace GlobalTheory.CompanionTheory.UnifAlpha
 open AutomorphicForm GlobalTheory.CompanionTheory.ArchSmooth GlobalTheory.CompanionTheory.HCRep
 
 /- English proof (translation)
-Set `N : Submodule ℂ M` to `LinearMap.ker (Polynomial.aeval A q) ⊓ LinearMap.ker (Polynomial.aeval B r)`. Establish `hcAB : ∀ m, A (B m) = B (A m)` using `fun m => LinearMap.congr_fun hc.eq m`. Establish `hA : ∀ m ∈ N, A m ∈ N`. Introduce `m hm`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `AutomorphicForm.map_aeval_apply_of_intertwine A (A := A) (B := A) (fun _ => rfl) q m` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.1 hm.1, map_zero]`. Conclude with `LinearMap.mem_ker.2 this.symm`. Use `AutomorphicForm.map_aeval_apply_of_intertwine A (A := B) (B := B) hcAB r m` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.1 hm.2, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `LinearMap.mem_ker.2 this.symm`. Establish `hB : ∀ m ∈ N, B m ∈ N`. Introduce `m hm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `AutomorphicForm.map_aeval_apply_of_intertwine B (A := A) (B := A) (fun m => (hcAB m).symm) q m` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.mem_ker.1 hm.1, map_zero]`. Conclude with `LinearMap.mem_ker.2 this.symm`. Use `AutomorphicForm.map_aeval_apply_of_intertwine B (A := B) (B := B) (fun _ => rfl) r m` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.1 hm.2, map_zero]`. Conclude with `LinearMap.mem_ker.2 this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `A' : Module.End ℂ N` to `A.restrict hA`. Set `B' : Module.End ℂ N` to `B.restrict hB`. Establish `hq0 : Polynomial.aeval A' q = 0`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Use `AutomorphicForm.map_aeval_apply_of_intertwine N.subtype (A := A') (B := A) (fun _ => rfl) q x` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.trans (LinearMap.mem_ker.1 x.2.1)`. Establish `hr0 : Polynomial.aeval B' r = 0`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Use `AutomorphicForm.map_aeval_apply_of_intertwine N.subtype (A := B') (B := B) (fun _ => rfl) r x` as an intermediate fact. Conclude with `this.trans (LinearMap.mem_ker.1 x.2.2)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Both sides reduce to the same expression. Equip the data with the indicated structure.
 
-Establish `hc' : A' * B' = B' * A'` using `LinearMap.ext fun x => Subtype.ext (hcAB x.1)`. Establish `hcomm : ∀ x ∈ ({A', B'} : Set (Module.End ℂ N)), ∀ y ∈ ({A', B'} : Set (Module.End ℂ N)), x * y = y * x`. Introduce and unpack `x (rfl | rfl) y (rfl | rfl)`. Both sides reduce to the same expression. Conclude with `hc'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hc'.symm`. Both sides reduce to the same expression. Use `letI : CommRing (Algebra.adjoin ℂ ({A', B'} : Set (Module.End ℂ N))) := Algebra.adjoinCommRingOfComm ℂ hcomm`. Set `a' : Algebra.adjoin ℂ ({A', B'} : Set (Module.End ℂ N))` to `⟨A', Algebra.subset_adjoin (Set.mem_insert _ _)⟩`. Set `b' : Algebra.adjoin ℂ ({A', B'} : Set (Module.End ℂ N))` to `⟨B', Algebra.subset_adjoin (Set.mem_insert_of_mem _ rfl)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `ha : IsIntegral ℂ a'` using `⟨q, hq, by`. Rewrite using `[← Polynomial.aeval_def]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Polynomial.aeval_algHom_apply (Algebra.adjoin ℂ ({A', B'} : Set (Module.End ℂ N))).val a' q` as an intermediate fact. Conclude with `this.symm.trans hq0⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : IsIntegral ℂ b'` using `⟨r, hr, by`. Rewrite using `[← Polynomial.aeval_def]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Polynomial.aeval_algHom_apply (Algebra.adjoin ℂ ({A', B'} : Set (Module.End ℂ N))).val b' r` as an intermediate fact. Conclude with `this.symm.trans hr0⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, hPm, hP⟩` from `ha.add hb`. Establish `hP0 : Polynomial.aeval (A' + B') P = 0`. Rewrite `hP` using `[← Polynomial.aeval_def]`. Use `Polynomial.aeval_algHom_apply (Algebra.adjoin ℂ ({A', B'} : Set (Module.End ℂ N))).val (a' + b') P` as an intermediate fact. Rewrite `this` using `[hP, map_zero]`.
-
-Conclude with `this`. Use `⟨P * Polynomial.X, hPm.mul Polynomial.monic_X, ?_, fun m h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[hPm.natDegree_mul Polynomial.monic_X, Polynomial.natDegree_X]`. Use linear arithmetic over natural numbers and integers. Establish `hm : m ∈ N` using `⟨LinearMap.mem_ker.2 h1, LinearMap.mem_ker.2 h2⟩`.
-
-Establish `hAB : ∀ x : N, N.subtype ((A' + B') x) = (A + B) (N.subtype x)` using `fun _ => rfl`. Establish `h3` using `AutomorphicForm.map_aeval_apply_of_intertwine N.subtype hAB P ⟨(A + B) m, N.add_mem (hA m hm) (hB m hm)⟩`. Rewrite `h3` using `[hP0]`. Rewrite using `[map_mul, Module.End.mul_apply, Polynomial.aeval_X]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monic_aeval_add_of_kill {M : Type*} [AddCommGroup M] [Module ℂ M]
     (A B : Module.End ℂ M) (hc : Commute A B) (q r : Polynomial ℂ) (hq : q.Monic) (hr : r.Monic) :
@@ -139,7 +135,7 @@ def evK (g : GA E a) : Sm E a →ₗ[ℂ] (Kinf E a → ℂ) where
   map_smul' c φ := by funext k; simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(cptRep E a 1 φ).1 g = φ.1 g`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evK_one (g : GA E a) (φ : Sm E a) : evK g φ 1 = φ.1 g := by
   change (cptRep E a 1 φ).1 g = φ.1 g
@@ -147,13 +143,11 @@ theorem evK_one (g : GA E a) (φ : Sm E a) : evK g φ 1 = φ.1 g := by
   rfl
 
 /- English proof (translation)
-Set `S : Matrix (Fin a) (Fin a) (Cinf E)` to `Matrix.of (mMap E a (Z : ArchMatrix E a))`. Establish `hS : S.conjTranspose = -S`. Use extensionality with `i j w`. Establish `h` using `congrFun (congrFun (mem_archSkew.1 hZ) i) j`. Establish `h2` using `congrFun (congrArg Prod.snd h) ⟨w, IsTotallyComplex.isComplex w⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2`. Take `⟨c, h0, hc, hu⟩` from `exists_skew_curve S`. Use `⟨fun t => ⟨(c t).val, hu hS t⟩, fun φ g k => ?_⟩` and prove the remaining obligations. Establish `hd` using `hasDerivAt_curve φ (g * infGL E a (Unitary.toUnits k)) c (toL S) h0 hc`. Establish `e : ∀ t, evK g φ (k * ⟨(c t).val, hu hS t⟩) = φ.1 (g * infGL E a (Unitary.toUnits k) * infGL E a (c t))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `e1 : Unitary.toUnits (⟨(c t).val, hu hS t⟩ : Kinf E a) = c t` using `Units.ext rfl`. Express the relevant statement in the definitionally equal form `φ.1 (g * infGL E a (Unitary.toUnits (k * ⟨(c t).val, hu hS t⟩))) = _`. Rewrite using `[map_mul, e1, map_mul, mul_assoc]`. Repeatedly rewrite using `[e]`.
-
-Conclude with `hd`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_K_curve (Z : (isExpLieAlgebra E a).lieSubalgebra) (hZ : Z ∈ archSkew E a) :
     ∃ κ : ℝ → Kinf E a, ∀ (φ : Sm E a) (g : GA E a) (k : Kinf E a),
@@ -184,7 +178,7 @@ def typeSub {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ 
   smul_mem' c _ hx g := by rw [map_smul]; exact Submodule.smul_mem _ c (hx g)
 
 /- English proof (translation)
-Introduce `g`. Take `⟨κ, hκ⟩` from `exists_K_curve Z hZ`. Use `haveI := GlobalTheory.AvgCoeff.coeffSpan_finiteDimensional ρ`. Conclude with `AutomorphicForm.mem_of_hasDerivAt (GlobalTheory.Published.AutFin.coeffSpan ρ) (c := fun t k => evK g φ (k * κ t)) (fun t => GlobalTheory.AvgCoeff.coeffSpan_mulRight ρ (κ t) (hφ g)) (fun k => hκ φ g k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem liB_mem_typeSub {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ (Kinf E a) W) (Z : (isExpLieAlgebra E a).lieSubalgebra)
@@ -201,20 +195,20 @@ def evSpan {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (
   Submodule.span ℂ {c | ∃ g : GA E a, ∃ φ ∈ typeSub ρ, c = evK g φ}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨g, φ, hφ, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem evK_mem_evSpan {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Kinf E a) W)
     (g : GA E a) {φ : Sm E a} (hφ : φ ∈ typeSub ρ) : evK g φ ∈ evSpan ρ :=
   Submodule.subset_span ⟨g, φ, hφ, rfl⟩
 
 /- English proof (translation)
-Take `⟨κ, hκ⟩` from `exists_K_curve Z hZ`. Establish `key : ∀ c ∈ evSpan ρ, ∃ c' ∈ evSpan ρ, ∀ k, HasDerivAt (fun t => c (k * κ t)) (c' k) 0`. Introduce `c hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨g, φ, hφ, rfl⟩` from `hc`. Conclude with `⟨_, evK_mem_evSpan ρ g (liB_mem_typeSub ρ Z hZ hφ), fun k => hκ φ g k⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, fun k => by simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', hx', hdx⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', hdy⟩` from `hy`. Conclude with `⟨x' + y', Submodule.add_mem _ hx' hy', fun k => (hdx k).add (hdy k)⟩`. Consider the case `smul r x _ hx`. Take `⟨x', hx', hdx⟩` from `hx`. Conclude with `⟨r • x', Submodule.smul_mem _ r hx', fun k => (hdx k).const_mul r⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose f hf hfd using key`. Use `⟨{ toFun := fun c => ⟨f c.1 c.2, hf c.1 c.2⟩ map_add' := fun x y => Subtype.ext (funext fun k => (hfd _ (x + y).2 k).unique ((hfd _ x.2 k).add (hfd _ y.2 k))) map_smul' := fun r x => Subtype.ext (funext fun k => (hfd _ (r • x).2 k).unique ((hfd _ x.2 k).const_mul r)) }, fun g φ h …` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Conclude with `(hfd _ (evK_mem_evSpan ρ g hφ) k).unique (hκ φ g k)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_evSpan_deriv {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ (Kinf E a) W) (Z : (isExpLieAlgebra E a).lieSubalgebra)
@@ -248,27 +242,25 @@ theorem exists_evSpan_deriv {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDi
   exact (hfd _ (evK_mem_evSpan ρ g hφ) k).unique (hκ φ g k)
 
 /- English proof (translation)
-Use `set T := lapOp (E := E) (a := a) (⇑b) - omegaOp (⇑b) ε with hT`. Establish `hTe : ∀ w : Sm E a, T w = ∑ i, ((1 : ℂ) - (ε i : ℂ)) • liB (b i) (liB (b i) w)`. Introduce `w`. Simplify using `only [hT, lapOp, omegaOp, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `module`. Establish `hfd : FiniteDimensional ℂ (evSpan ρ)` using `by haveI := GlobalTheory.AvgCoeff.coeffSpan_finiteDimensional ρ`. Use `Submodule.finiteDimensional_of_le (S₂ := GlobalTheory.Published.AutFin.coeffSpan ρ) ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g, φ, hφ, rfl⟩`. Conclude with `hφ g`. Establish `hD : ∀ i, ∃ D : Module.End ℂ (evSpan ρ), ε i = -1 → ∀ (g : GA E a) (φ : Sm E a) (hφ : φ ∈ typeSub ρ), ((D ⟨evK g φ, evK_mem_evSpan ρ g hφ⟩ : evSpan ρ) : Kinf E a → ℂ) = evK g (liB (b i) φ)`. Introduce `i`. Distinguish the cases in `h : ε i = -1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨D, hD⟩` from `exists_evSpan_deriv ρ (b i) (hskew i h)`. Conclude with `⟨D, fun _ => hD⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose D hDe using hD`. Set `T' : Module.End ℂ (evSpan ρ)` to `∑ i, ((1 : ℂ) - (ε i : ℂ)) • (D i * D i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTS : ∀ w ∈ typeSub ρ, T w ∈ typeSub ρ`. Introduce `w hw`. Rewrite using `[hTe]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Break down `hε i with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h]`. Conclude with `Submodule.smul_mem _ _ (liB_mem_typeSub ρ _ (hskew i h) (liB_mem_typeSub ρ _ (hskew i h) hw))`. Set `TS : Module.End ℂ (typeSub ρ)` to `T.restrict hTS`. Establish `hint : ∀ (g : GA E a) (m : typeSub ρ), (⟨evK g (TS m).1, evK_mem_evSpan ρ g (TS m).2⟩ : evSpan ρ) = T' ⟨evK g m.1, evK_mem_evSpan ρ g m.2⟩`. Introduce `g m`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `evK g (T m.1) = _`. Rewrite using `[hTe, map_sum]`. Simplify using `only [T', LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, Submodule.coe_sum, Submodule.coe_smul_of_tower, map_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `hε i with h | h` into its components or cases. Simplify using `[h]`. Use `congr 1`. Establish `h1 : D i ⟨evK g m.1, evK_mem_evSpan ρ g m.2⟩ = ⟨evK g (liB (b i) m.1), evK_mem_evSpan ρ g (liB_mem_typeSub ρ _ (hskew i h) m.2)⟩` using `Subtype.ext (hDe i h g m.1 m.2)`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hDe i h g _ (liB_mem_typeSub ρ _ (hskew i h) m.2)).symm`. Use `⟨LinearMap.charpoly T', LinearMap.charpoly_monic T', fun φ hφ => ?_⟩` and prove the remaining obligations. Set `m : typeSub ρ` to `⟨φ, hφ⟩`. Establish `e1` using `AutomorphicForm.map_aeval_apply_of_intertwine (typeSub ρ).subtype (A := TS) (B := T) (fun _ => rfl) (LinearMap.charpoly T') m`. Express the relevant statement in the definitionally equal form `_ = Polynomial.aeval T (LinearMap.charpoly T') φ at e1`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e1]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Set `Ev : typeSub ρ →ₗ[ℂ] evSpan ρ` to `{ toFun := fun m => ⟨evK g m.1, evK_mem_evSpan ρ g m.2⟩ map_add' := fun x y => Subtype.ext (map_add (evK g) x.1 y.1) map_smul' := fun c x => Subtype.ext (map_smul (evK g) c x.1) }`. Establish `e2` using `AutomorphicForm.map_aeval_apply_of_intertwine Ev (A := TS) (B := T') (hint g) (LinearMap.charpoly T') m`.
-
-Rewrite `e2` using `[LinearMap.aeval_self_charpoly, LinearMap.zero_apply]`. Establish `e3` using `congrFun (congrArg Subtype.val e2) 1`. Establish `e4 : evK g ((typeSub ρ).subtype (Polynomial.aeval TS (LinearMap.charpoly T') m)) 1 = 0` using `e3`. Rewrite `e4` using `[evK_one]`. Conclude with `e4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monic_compact_part {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ (Kinf E a) W) {d : ℕ}
@@ -374,23 +366,21 @@ def archHomeo : archGroup E a ≃ₜ* GL (Fin a) (Cinf E) where
     exact (archEquiv E a).continuous.comp c1
 
 /- English proof (translation)
-Introduce `E _ _ _ a W _ _ _ ρ _ J hJ _ _ μ hμ`. Take `⟨d, b, ε, hε, horth, hskew⟩` from `exists_archCartanBasis (K := E) (n := a)`. Use `set Ω := omegaOp (E := E) (a := a) (⇑b) ε with hΩ`. Establish `hZ : Ω ∈ Zalg E a`. Rewrite using `[hΩ, GlobalTheory.CompanionTheory.HCRep.TraceCas.omegaOp_eq_two_cas E a d b ε hε horth]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subalgebra.smul_mem _ (Subalgebra.sum_mem _ fun w _ => Subalgebra.add_mem _ ?_ ?_) _` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.Inh.CapelliCasimir.cas_mem_Zalg E a _`. Conclude with `GlobalTheory.CompanionTheory.Inh.CapelliCasimir.cas_mem_Zalg E a _`. Take `⟨q, hq, hqJ⟩` from `GlobalTheory.CompanionTheory.Affgl.exists_monic_aeval_apply_eq_zero E a J hJ Ω hZ`. Take `⟨r, hr, hrT⟩` from `exists_monic_compact_part ρ b ε hε hskew`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hlap : Commute Ω (lapOp (⇑b))`. Simplify using `only [lapOp, Commute, SemiconjBy]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : Ω * liB (b i) = liB (b i) * Ω` using `omegaOp_comm_liB b ε hε horth (b i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, h1, mul_assoc, h1, mul_assoc]`. Establish `hc : Commute Ω (lapOp (⇑b) - Ω)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h2` using `LinearMap.congr_fun hlap.eq x`. Simplify using `only [Module.End.mul_apply] at h2 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, map_sub, h2]`. Take `⟨P, hPm, hPd, hP⟩` from `exists_monic_aeval_add_of_kill Ω (lapOp (⇑b) - Ω) hc q r hq hr`. Establish `hsum : Ω + (lapOp (⇑b) - Ω) = lapOp (⇑b)` using `LinearMap.ext fun x => by simp`. Rewrite `hP` using `[hsum]`. Use `letI : MeasurableSpace (archGroup E a) := borel _`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : BorelSpace (archGroup E a) := ⟨rfl⟩`. Use `haveI := hμ`. Set `e` to `archHomeo E a`. Set `em : GL (Fin a) (Cinf E) ≃ᵐ archGroup E a` to `e.symm.toHomeomorph.toMeasurableEquiv`. Set `ν : Measure (archGroup E a)` to `μ.map em`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : ν.IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map μ e.symm`. Take `⟨κ, hκs, hκc, -, hκ⟩` from `(isExpLieAlgebra E a).exists_kernel_eq_conv_of_aeval_laplacian ν b P hPm hPd Filter.univ_mem`. Use `⟨fun y => κ (e.symm y), (IsExpLieAlgebra.continuous_of_isSmoothFun hκs).comp e.symm.continuous, hκc.comp_homeomorph e.symm.toHomeomorph, fun L φ hφ g => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hK, hJφ⟩` from `hφ`. Establish `hl : Polynomial.aeval (lapOp (⇑b)) P φ = 0` using `hP φ (hqJ φ hJφ) (hrT φ hK)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hκ (sliceL g (smL E a φ)) (by rw [← sliceL_aeval_lapOp, hl, map_zero, map_zero]) 1`. Establish `h2 : φ.1 g = ∫ y, φ.1 (g * infEmb E a y) * κ y ∂ν`. Simplify `h1` using `[archSlice_apply, smL]`. Rewrite using `[h2, integral_map_equiv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
-
-Establish `e1 : infEmb E a (em y) = infGL E a y`. Rewrite using `[infEmb_eq]`. Conclude with `congrArg (infGL E a) (e.apply_symm_apply y)`. Simplify using `only [e1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unifAlpha : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), UnifAlpha E a := by
   intro E _ _ _ a W _ _ _ ρ _ J hJ _ _ μ hμ

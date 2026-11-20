@@ -20,13 +20,13 @@ noncomputable section
 namespace GlobalTheory.RatInvTheta
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`.
+A detailed English derivation is pending.
 -/
 theorem inclR_inj (D : D7) : Function.Injective (inclR (F := D.host.F) (E := D.host.E) (AF D.host.F)) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (D : D7) (e : D.host.E) :
     sigR (AF D.host.F) D.sp.cm.sig (inclR (F := D.host.F) (AF D.host.F) e) =
@@ -34,11 +34,9 @@ theorem sigR_inclR (D : D7) (e : D.host.E) :
   simp [sigR, inclR]
 
 /- English proof (translation)
-Use `⟨z, ?_, Units.ext ?_⟩` and prove the remaining obligations. Establish `hm : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (mt V g) * JR (AF D.host.F) V.gram * mt V g = JR (AF D.host.F) V.gram` using `g.2`. Establish `hcT : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) ((z : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (F` using `D.host.F) (AF D.host.F))) = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (z : Matrix (Fin V.rank) (Fin V.rank) D.host.E)).map (inclR (F := D.host.F) (AF D.host.F)) := by`. Use extensionality with `i j`. Conclude with `sigR_inclR D _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[hz, hcT]`. Use `show Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (z : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * (z : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = V.gram`. Apply `Matrix.map_injective (inclR_inj D)` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
-
-Conclude with `hm`. Conclude with `hz.symm`.
+Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_GQ_of {D : D7} (V : HSp D) (g : GA D V) (z : GL (Fin V.rank) D.host.E)
     (hz : mt V g = (z : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (F := D.host.F) (AF D.host.F))) :
@@ -61,29 +59,27 @@ theorem mem_GQ_of {D : D7} (V : HSp D) (g : GA D V) (z : GL (Fin V.rank) D.host.
   · exact hz.symm
 
 /- English proof (translation)
-Introduce `D a a' Bs Γ X om om' hT γ hγ γ' hγ' Φ hΦ`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.hermitianSelfDualLatticeSpace_form_hermitian_nondeg_unimodular D Bs hT.base a Γ.V _ _ hT.geo.hV`. Take `⟨hJ, L, hL, h4, h5, h6⟩` from `GlobalTheory.T.skewHermitian_neg_traceZero_inv_hermitian_unimodular D Bs hT.base (a + a') Γ.W _ _ hT.geo.hW`. Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Set `T` to `GlobalTheory.WeilSchrodinger.hspOf D Γ.V.Jᵀ h1 h2 Γ.V.L hT.geo.hV.lat h3 (fun _ => (a - Γ.p, Γ.p))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S` to `GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 L hL h6 (fun _ => (Γ.p + Γ.q, a + a' - (Γ.p + Γ.q)))`. Establish `eA : Γ.V.J = T.gramᵀ` using `by rw [GlobalTheory.WeilSchrodinger.gram_hspOf]; rfl`. Establish `eB : (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • S.gram⁻¹)`. Rewrite using `[GlobalTheory.WeilSchrodinger.gram_hspOf]`. Establish `e1 : (-D.host.xi0 • Γ.W.J⁻¹)⁻¹ = (-D.host.xi0)⁻¹ • Γ.W.J` using `Matrix.inv_eq_left_inv (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hJ, inv_mul_cancel₀ (neg_ne_zero.2 hξ), one_smul])`. Establish `e2 : D.host.xi0 • (-D.host.xi0)⁻¹ • Γ.W.J = -Γ.W.J`. Rewrite using `[smul_smul, inv_neg, mul_neg, mul_inv_cancel₀ hξ, neg_one_smul]`. Use `show (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • (-D.host.xi0 • Γ.W.J⁻¹)⁻¹)`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`. Establish `hcW : GlobalTheory.LFun.IsHecke D.host.F D.host.E (X.β / X.α)` using `⟨hT.chars.heckeβ.1.div' hT.chars.heckeα.1, fun x => by`. Rewrite using `[MonoidHom.div_apply, hT.chars.heckeβ.2 x, hT.chars.heckeα.2 x, div_one]⟩`. Establish `rW : GlobalTheory.WeilM.ResEtaPow (Units.map (algebraMap D.host.F (AF D.host.F)).toMonoidHom).range (X.β / X.α) (a + a')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `e₁` using `hT.chars.resβ x`. Establish `e₂` using `hT.chars.resα x`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e₁, e₂, hT.geo.even.neg_one_pow]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Break down `Nat.even_or_odd a with h | h` into its components or cases. Establish `h' : Even a'` using `(Nat.even_add.mp hT.geo.even).mp h`. Rewrite using `[h.neg_one_pow, h'.neg_one_pow]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h' : Odd a'`. Break down `Nat.even_or_odd a' with h'' | h''` into its components or cases. Conclude with `absurd ((Nat.even_add.mp hT.geo.even).mpr h'') (Nat.not_even_iff_odd.mpr h)`. Conclude with `h''`. Rewrite using `[h.neg_one_pow, h'.neg_one_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨ω, hω, -, hth⟩` from `GlobalTheory.WeilBridge.exists_theta_eq D Bs hT.base S T Γ.V Γ.W _ _ _ _ hT.geo.hV hT.geo.hW eA eB Γ.M hT.geo.hM X.β (X.β / X.α) hT.chars.heckeβ hcW hT.chars.resβ rW om hT.weil`. Take `⟨g, h, hh, hg⟩` from `GlobalTheory.WeilSchrodinger.match_pair D S T Γ.V.J Γ.W.J (-1) eA eB γ γ'`. Take `⟨z, hz⟩` from `hγ`. Take `⟨z', hz'⟩` from `hγ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hhQ : h ∈ GQ T`. Use `mem_GQ_of T h z ?_` and prove the remaining obligations. Rewrite using `[hh]`. Conclude with `(congrArg Units.val hz).symm`. Establish `hgQ : g ∈ GQ S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `m1` using `congrArg Matrix.transpose (Units.mul_inv z')`. Establish `m2` using `congrArg Matrix.transpose (Units.inv_mul z')`. Rewrite `m1`, `m2` using `[Matrix.transpose_mul, Matrix.transpose_one]`. Set `Z : GL (Fin (a + a')) D.host.E` to `⟨((z'⁻¹ : GL (Fin (a + a')) D.host.E) : Matrix (Fin (a + a')) (Fin (a + a')) D.host.E)ᵀ, ((z' : GL (Fin (a + a')) D.host.E) : Matrix (Fin (a + a')) (Fin (a + a')) D.host.E)ᵀ, m1, m2⟩`. Use `mem_GQ_of S g Z ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Establish `h0 : γ'.1 = Matrix.GeneralLinearGroup.map (inclR (F` using `D.host.F) (E := D.host.E) (AF D.host.F)) z' := hz'.symm`. Use `show ((γ'.1)⁻¹ : GL (Fin (a + a')) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E)).1ᵀ = _`. Rewrite using `[h0, ← map_inv]`. Both sides reduce to the same expression.
-
-Establish `hf` using `GlobalTheory.T.isThetaFunction_thetaTransform_rationalDarboux D Bs.ψ (GlobalTheory.T.isStdChar_neg_one_of_standardTraceAdelicAddChar D Bs.ψ hT.base.std) S T Γ.V.J Γ.W.J (-1) eA eB (Fin T.rank × Fin S.rank) Γ.M.co hT.geo.hM.rat Φ hΦ`. Establish `key` using `hth γ γ' g h hh hg Φ hΦ`. Establish `e0` using `GlobalTheory.WeilBridge.thetaTr_zero D Γ.M.co Bs.ψ Φ`. Establish `e1` using `hω.om_aut g hgQ h hhQ _ hf`. Conclude with `key.trans (e1.trans e0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thetaSum_rat_inv : ∀ {D : D7} {a a' : ℕ} (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a') (X : Chars D.host.F D.host.E)
     (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W), IsTriple Bs Γ X om om' →

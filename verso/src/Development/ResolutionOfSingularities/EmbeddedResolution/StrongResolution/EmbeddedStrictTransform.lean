@@ -83,7 +83,7 @@ abbrev strictTransform (i : ℕ) : Scheme.{u} := (S.strictTransformIdeal i).subs
 abbrev strictTransformι (i : ℕ) : S.strictTransform i ⟶ S.ambientLevel i := (S.strictTransformIdeal i).subschemeι
 
 /- English proof (translation)
-The claim follows from `Blowup.noetherianSpace_subscheme (S.strictTransformIdeal i)`.
+A detailed English derivation is pending.
 -/
 theorem noetherianSpace_strictTransform (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(S.ambientLevel i)] :
@@ -91,7 +91,7 @@ theorem noetherianSpace_strictTransform (i : ℕ)
   Blowup.noetherianSpace_subscheme (S.strictTransformIdeal i)
 
 /- English proof (translation)
-Establish `hle : S.strictTransformIdeal i ≤ (S.strictTransformIdeal (i + 1)).map (S.ambientBlowupMorphism i)`. Use `le_trans (Scheme.IdealSheafData.le_map_comap (S.strictTransformIdeal i) (S.ambientBlowupMorphism i)) ?_` and prove the remaining obligations. Conclude with `Scheme.IdealSheafData.map_mono (S.ambientBlowupMorphism i) (Blowup.comap_le_strictTransform (S.ambientBlowupMorphism i) (S.ambientCenter i) (S.strictTransformIdeal i))`. Conclude with `⟨(S.strictTransformIdeal (i + 1)).subschemeMap (S.strictTransformIdeal i) (S.ambientBlowupMorphism i) hle, Scheme.IdealSheafData.subschemeMap_subschemeι _ _ _ hle⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_strictTransformMap (i : ℕ) :
     ∃ f : S.strictTransform (i + 1) ⟶ S.strictTransform i,
@@ -106,7 +106,7 @@ theorem exists_strictTransformMap (i : ℕ) :
 def strictTransformMap (i : ℕ) : S.strictTransform (i + 1) ⟶ S.strictTransform i := (S.exists_strictTransformMap i).choose
 
 /- English proof (translation)
-The claim follows from `(S.exists_strictTransformMap i).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem strictTransformMap_comp_strictTransformι (i : ℕ) :
     S.strictTransformMap i ≫ S.strictTransformι i = S.strictTransformι (i + 1) ≫ S.ambientBlowupMorphism i :=
@@ -117,7 +117,7 @@ def discardedComponents (i : ℕ) : Set (Set ↥(S.strictTransform i)) :=
     (S.strictTransformι i).base '' C ⊆ ((S.ambientCenter i).support : Set ↥(S.ambientLevel i))}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_discardedComponents_iff (i : ℕ) (C : Set ↥(S.strictTransform i)) :
     C ∈ S.discardedComponents i ↔
@@ -132,9 +132,7 @@ Both sides reduce to the same expression.
 theorem discardedLocus_eq_sUnion_discardedComponents (i : ℕ) : S.discardedLocus i = ⋃₀ (S.discardedComponents i) := rfl
 
 /- English proof (translation)
-Establish `hfin : (irreducibleComponents ↥(S.strictTransform i)).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`. Establish `hsub : S.discardedComponents i ⊆ irreducibleComponents ↥(S.strictTransform i)` using `fun C hC => ((S.mem_discardedComponents_iff i C).mp hC).1`. Establish `hfin' : (S.discardedComponents i).Finite` using `Set.Finite.subset hfin hsub`. Use `show IsClosed (⋃₀ (S.discardedComponents i))`. Rewrite using `[Set.sUnion_eq_biUnion]`.
-
-Conclude with `Set.Finite.isClosed_biUnion hfin' (fun C hC => isClosed_of_mem_irreducibleComponents C (hsub hC))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_discardedLocus (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(S.strictTransform i)] :
@@ -153,7 +151,7 @@ def discardedLocusClosure (i : ℕ) : TopologicalSpace.Closeds ↥(S.strictTrans
   ⟨closure (S.discardedLocus i), isClosed_closure⟩
 
 /- English proof (translation)
-Use `show closure (S.discardedLocus i) = S.discardedLocus i`. Conclude with `(S.isClosed_discardedLocus i).closure_eq`.
+A detailed English derivation is pending.
 -/
 theorem coe_discardedLocusClosure (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(S.strictTransform i)] :
@@ -229,7 +227,7 @@ def transitionMap (i : ℕ) : S.totalSpace (i + 1) ⟶ S.totalSpace i :=
       S.discardedUnion i ⨿ S.discardedSubscheme i ⟶ S.totalSpace i)
 
 /- English proof (translation)
-Conclude with `coprod.inl_desc _ _`.
+A detailed English derivation is pending.
 -/
 theorem inl_comp_transitionMap (i : ℕ) :
     (coprod.inl : S.strictTransform (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.transitionMap i =
@@ -250,7 +248,7 @@ theorem centerOnTotalSpace_eq_ker (i : ℕ) :
           (coprod.inl : S.strictTransform i ⟶ S.totalSpace i)) := rfl
 
 /- English proof (translation)
-Use `⟨(coprod.rightUnitor I.subscheme).trans e0.symm, ?_⟩` and prove the remaining obligations. Establish `hunit : (coprod.inl : I.subscheme ⟶ I.subscheme ⨿ (⊥_ Scheme.{u})) ≫ (coprod.rightUnitor I.subscheme).hom = 𝟙 I.subscheme` using `coprod.inl_desc _ _`. Establish `h1 : (coprod.inl : I.subscheme ⟶ I.subscheme ⨿ (⊥_ Scheme.{u})) ≫ ((coprod.rightUnitor I.subscheme).trans e0.symm).hom = e0.inv`. Rewrite using `[Iso.trans_hom, ← Category.assoc, hunit, Category.id_comp, Iso.symm_hom]`. Rewrite using `[← Category.assoc, h1, ← he0, ← Category.assoc, e0.inv_hom_id, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_coprodInitialIso_inl_comp_eq_subschemeι {Z W : Scheme.{u}} (I : Z.IdealSheafData)
     (g : W ⟶ Z) (e0 : W ≅ I.subscheme) (he0 : e0.hom ≫ I.subschemeι = g) :
@@ -266,9 +264,9 @@ private theorem exists_coprodInitialIso_inl_comp_eq_subschemeι {Z W : Scheme.{u
   rw [← Category.assoc, h1, ← he0, ← Category.assoc, e0.inv_hom_id, Category.id_comp]
 
 /- English proof (translation)
-Establish `hci2 : AlgebraicGeometry.IsClosedImmersion (Scheme.Hom.ker f).subschemeι` using `inferInstance`. Establish `hk : Scheme.Hom.ker (Scheme.Hom.ker f).subschemeι = Scheme.Hom.ker f` using `Scheme.IdealSheafData.ker_subschemeι _`. Establish `hα : AlgebraicGeometry.IsClosedImmersion.lift (Scheme.Hom.ker f).subschemeι f (le_of_eq hk) ≫ (Scheme.Hom.ker f).subschemeι = f` using `AlgebraicGeometry.IsClosedImmersion.lift_fac _ _ _`. Establish `hβ : AlgebraicGeometry.IsClosedImmersion.lift f (Scheme.Hom.ker f).subschemeι (le_of_eq hk.symm) ≫ f = (Scheme.Hom.ker f).subschemeι` using `AlgebraicGeometry.IsClosedImmersion.lift_fac _ _ _`. Establish `hm1 : CategoryTheory.Mono f` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : CategoryTheory.Mono (Scheme.Hom.ker f).subschemeι` using `inferInstance`. Use `⟨⟨AlgebraicGeometry.IsClosedImmersion.lift (Scheme.Hom.ker f).subschemeι f (le_of_eq hk), AlgebraicGeometry.IsClosedImmersion.lift f (Scheme.Hom.ker f).subschemeι (le_of_eq hk.symm), ?_, ?_⟩, hα⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono f, Category.assoc, hβ, hα, Category.id_comp]`. Rewrite using `[← cancel_mono (Scheme.Hom.ker f).subschemeι, Category.assoc, hα, hβ, Category.id_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_iso_ker_subscheme {W V : Scheme.{u}} (f : W ⟶ V)
     [AlgebraicGeometry.IsClosedImmersion f] :
@@ -292,7 +290,7 @@ private theorem exists_iso_ker_subscheme {W V : Scheme.{u}} (f : W ⟶ V)
   · rw [← cancel_mono (Scheme.Hom.ker f).subschemeι, Category.assoc, hα, hβ, Category.id_comp]
 
 /- English proof (translation)
-Use `S.emb_closedImmersion` as an intermediate fact. Establish `hci : AlgebraicGeometry.IsClosedImmersion (S.emb ≫ S.ambientBlowups.isoZero.inv)` using `inferInstance`. Take `⟨e0, he0⟩` from `exists_iso_ker_subscheme (S.emb ≫ S.ambientBlowups.isoZero.inv)`. Conclude with `exists_coprodInitialIso_inl_comp_eq_subschemeι (Scheme.Hom.ker (S.emb ≫ S.ambientBlowups.isoZero.inv)) (S.emb ≫ S.ambientBlowups.isoZero.inv) e0 he0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_totalSpaceZeroIso :
     ∃ e : S.totalSpace 0 ≅ Y,
@@ -308,7 +306,7 @@ theorem exists_totalSpaceZeroIso :
 def totalSpaceZeroIso : S.totalSpace 0 ≅ Y := S.exists_totalSpaceZeroIso.choose
 
 /- English proof (translation)
-The claim follows from `S.exists_totalSpaceZeroIso.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem totalSpaceZeroIso_spec :
     (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom ≫
@@ -324,7 +322,7 @@ Both sides reduce to the same expression.
 theorem tower_obj (i : ℕ) : S.tower.obj (Opposite.op i) = S.totalSpace i := rfl
 
 /- English proof (translation)
-Use `show ((Functor.ofSequence fun j => (S.transitionMap j).op).map (homOfLE (Nat.le_succ i))).unop = S.transitionMap i`. Rewrite using `[Functor.ofSequence_map_homOfLE_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tower_map_succ (i : ℕ) :
     S.tower.map (homOfLE (Nat.le_succ i)).op = S.transitionMap i := by

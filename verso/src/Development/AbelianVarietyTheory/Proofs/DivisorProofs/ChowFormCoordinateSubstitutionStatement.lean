@@ -25,7 +25,7 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChowIncl.isChowFormInt_incl | exact GlobalTheory.ChowIncl.isChowFormInt_incl | (intros; apply GlobalTheory.ChowIncl.isChowFormInt_incl <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.chow_form_coordinate_substitution : ∀ (K : Type) [Field K] (N n D δ : ℕ) (I : Ideal (MvPolynomial (Fin N) K)) (I' : Ideal (MvPolynomial (Fin n) K)) (f : MvPolynomial (Fin (D + 1) × Fin N) K), N ≤ n →
     (∀ q, q ∈ I' ↔ GlobalTheory.CompHt.coordSubst (Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0) q ∈ I) → GlobalTheory.ChowHt.IsChowFormInt I D δ f →

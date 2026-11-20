@@ -14,11 +14,11 @@ noncomputable section
 namespace SecPointSeparable
 
 /- English proof (translation)
-Rewrite using `[← Algebra.FormallyUnramified.iff_isSeparable]`. Use `⟨⟨fun a b => ?_⟩⟩` and prove the remaining obligations. Establish `key : ∀ ω : Ω[L⁄K], ω = 0`. Introduce `ω`. Use `(Module.forall_dual_apply_eq_zero_iff L ω).1 fun φ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: φ = 0`. Apply `(KaehlerDifferential.linearMapEquivDerivation K L).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h _`. Rewrite using `[this, LinearMap.zero_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key a, key b]`.
+A detailed English derivation is pending.
 -/
 theorem isSeparable_of_derivation_eq_zero {K L : Type} [Field K] [Field L] [Algebra K L]
     [Module.Finite K L] (h : ∀ D : Derivation K L L, D = 0) : Algebra.IsSeparable K L := by
@@ -38,25 +38,23 @@ end SecPointSeparable
 
 open SecPointSeparable in
 /- English proof (translation)
-Introduce `k _ _ n e L _ _ _ _ _ x hx hU hT htr`. Take `⟨j₀, hj₀⟩ : ∃ j₀, x j₀ ≠ 0` from `by by_contra! h`. Simplify using `[h] at hT`. Use `set z : Fin n → L := fun m => x m * (x j₀)⁻¹ with hz`. Take `⟨r, hre, b, hb⟩` from `h₂ k L (Fin n) z e (htr j₀ hj₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hind` using `h₃ k n e L x hx hU hT j₀ hj₀ (htr j₀ hj₀)`. Apply `isSeparable_of_derivation_eq_zero` to reduce the goal to its premises. Introduce `D`. Take `⟨c, hc⟩` from `hb (D.restrictScalars k)`. Establish `hc' : ∀ j, D (z j) = ∑ m, c m * (b m j : L)` using `hc`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDK : ∀ a : GenParField k e n, D (algebraMap (GenParField k e n) L a) = 0` using `fun a => D.map_algebraMap a`. Establish `hlin : ∀ (a : GenParField k e n) (y : L), D (algebraMap (GenParField k e n) L a * y) = algebraMap (GenParField k e n) L a * D y`. Introduce `a y`. Rewrite using `[D.leibniz, hDK, smul_zero, add_zero, smul_eq_mul]`. Establish `hDz₀ : D (z j₀) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [z, mul_inv_cancel₀ hj₀, Derivation.map_one_eq_zero]`. Establish `hUDz : ∀ i : Fin e, ∑ j, algebraMap (GenParField k e n) L (genPar k e n (.inl (i, j))) * D (z j) = 0`. Introduce `i`. Establish `h0 : ∑ j, algebraMap (GenParField k e n) L (genPar k e n (.inl (i, j))) * z j = 0`. Simplify using `only [z, ← mul_assoc, ← Finset.sum_mul, hU i, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg D h0` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => (hlin _ _).symm`. Establish `hDz : ∀ j, D (z j) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `h₁ (IntermediateField.adjoin k (Set.range z)) L {j : Fin n // j ≠ j₀} e r hre (fun p => algebraMap (GenParField k e n) L (genPar k e n (.inl (p.1, p.2.1)))) hind (fun m j => b m j.1) c (fun i => ?_)`. Introduce `j`. Distinguish the cases in `hj : j = j₀`. Rewrite using `[hj, hDz₀]`. Rewrite using `[hc' j]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key ⟨j, hj⟩`. Use `hUDz i` as an intermediate fact. Rewrite `this` using `[Fintype.sum_eq_add_sum_subtype_ne _ j₀, hDz₀, mul_zero, zero_add]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hc' j.1]`. Both sides reduce to the same expression. Establish `hx₀ : D (x j₀) = 0`. Establish `hs : ∑ j, algebraMap (GenParField k e n) L (genPar k e n (.inr j)) * z j = (x j₀)⁻¹`. Simplify using `only [z, ← mul_assoc, ← Finset.sum_mul, hT, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg D hs`. Rewrite `h1` using `[map_sum, Finset.sum_eq_zero fun j _ => by rw [hlin, hDz, mul_zero], Derivation.leibniz_inv, eq_comm, smul_eq_mul, neg_mul, neg_eq_zero, mul_eq_zero]`. Conclude with `h1.resolve_left (pow_ne_zero _ (inv_ne_zero hj₀))`. Establish `hxj : ∀ j, D (x j) = 0`. Introduce `j`.
-
-Establish `hxz : x j = z j * x j₀` using `by simp only [z, mul_assoc, inv_mul_cancel₀ hj₀, mul_one]`. Rewrite using `[hxz, D.leibniz, hx₀, hDz, smul_zero, smul_zero, add_zero]`. Conclude with `Derivation.ext_of_adjoin_eq_top (Set.range x) hx (by rintro _ ⟨j, rfl⟩; simpa using hxj j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecPointSeparable.proof (h₁ : GenericFormsKer.Statement) (h₂ : DerivSpanTrdeg.Statement)
     (h₃ : FreeParAlgIndep.Statement) : SecPointSeparable.Statement := by

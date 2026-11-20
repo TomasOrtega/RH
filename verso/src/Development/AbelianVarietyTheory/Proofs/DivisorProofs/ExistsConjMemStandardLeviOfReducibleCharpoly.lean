@@ -25,11 +25,11 @@ open GlobalTheory.TruncKer GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeV
 namespace GlobalTheory.ConjLevi
 
 /- English proof (translation)
-Introduce `D V hr hRS Φ γ hss hirr hnf`. Establish `hreg` using `GlobalTheory.T.isRegularSemisimpleUnitaryData_of_regular γ hss`. Take `⟨hA, hP, -, hR, -⟩` from `hRS.1 D.host.F D.host.E (Fin V.rank) D.sp.cm.sig V.gram γ.1 hreg`. Take `⟨k, K, hK1, hK2, he, i, hi⟩` from `GlobalTheory.T.exists_split_factor_regularSemisimple_reducible D.sp.cm.sig V.gram γ.1 hr hss hA hR hirr hnf`. Take `⟨ε, hεL, hεε, hε0, hεi⟩` from `@GlobalTheory.T.exists_isotropic_idempotent_of_split_factor _ _ _ _ _ _ _ D.sp.cm.sig V.gram γ.1 hreg hA hP k K hK1 hK2 he i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨X, X', hX0, hXi, hX'i, hXs, hX's, hn1, hn2⟩` from `GlobalTheory.T.isotropicIdempotent_gives_dual_stable_subspaces γ ε hεL hεε hε0 hεi`. Take `⟨a, x, x', ha0, ha, hx, hx', hli, hee, hff, hef⟩` from `GlobalTheory.T.exists_dual_bases_isotropic_subspaces_duality X X' hX0 hXi hX'i hn1 hn2`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_unitary_carry_hyperbolicFamily_wittFrame Φ ha x x' hli hee hff hef`. Use `⟨g, {stdVec ⟨a - 1, by omega⟩}, ?_, Finset.singleton_nonempty _, ?_⟩` and prove the remaining obligations. Use `isPar_stdPar ({⟨a - 1, by omega⟩} : Finset (Fin (wittIndex V)))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[stdPar]`. Conclude with `GlobalTheory.T.conj_mem_standardLevi_wittFrame Φ γ g ha ⟨a - 1, by omega⟩ (by simp only; omega) x x' (fun i => (hg i).1) (fun i => (hg i).2) (by rw [hx]; exact hXs) (by rw [hx']; exact hX's)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_conj_mem_levi : ∀ {D : D7} {V : HSp D}, 0 < V.rank → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple → ∀ (Φ : WittFrame V) (γ : GF V), IsRegSS γ.1.1 → ¬ Irreducible γ.1.1.charpoly → ¬ IsNonFieldAniso D.sp.cm.sig V.gram γ.1.1 → ∃ (g : GF V) (P : Finset (SV (wittIndex V))), IsPar P ∧ P.Nonempty ∧ rat V (g * γ * g⁻¹) ∈ Φ.levi D.sp.cm (AF D.host.F) P := by
   intro D V hr hRS Φ γ hss hirr hnf

@@ -7,12 +7,12 @@ open PositivityTheory.RgBcC
 namespace PositivityTheory.Rg.BcB.CG
 
 /- English proof (translation)
-The claim follows from `gelOf hW compatFub tensTest`.
+A detailed English derivation is pending.
 -/
 theorem gelOf_of (hW : WaveEx) : GelOf := gelOf hW compatFub tensTest
 
 /- English proof (translation)
-The claim follows from `pack_of_gel PositivityTheory.Rg.BcB.D1.sizeBasic hB (gelOf_of hW)`.
+A detailed English derivation is pending.
 -/
 theorem pack_of_C (hW : WaveEx) (hB : Bridge.BridgeSt) : Pack :=
   pack_of_gel PositivityTheory.Rg.BcB.D1.sizeBasic hB (gelOf_of hW)

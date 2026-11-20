@@ -11,9 +11,9 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `(isCompact_sphere (0 : Fin n → ℂ) 1).exists_bound_of_continuousOn (ha.mono fun x hx h0 => by simp [h0] at hx)`. Use `⟨M, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : ‖x‖ ≠ 0` using `norm_ne_zero_iff.mpr hx`. Establish `hn : ((‖x‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hx'`. Rewrite using `[← hdeg (((‖x‖ : ℝ) : ℂ))⁻¹ x (inv_ne_zero hn), ← Real.norm_eq_abs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hM _ ?_` and prove the remaining obligations. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hx']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem SliceWeightMassFinite.exists_bound {n : ℕ} (a : (Fin n → ℂ) → ℝ)
     (hdeg : ∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → a (t • x) = a x) (ha : ContinuousOn a {x | x ≠ 0}) :
@@ -28,15 +28,13 @@ theorem SliceWeightMassFinite.exists_bound {n : ℕ} (a : (Fin n → ℂ) → �
   rw [mem_sphere_zero_iff_norm, norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hx']
 
 /- English proof (translation)
-Introduce `n d h I ℓ A a hI hℓ hdim hA hdeg ha`. Use `set φ : Fin d → (Fin n → ℂ) → ℝ := fun _ x => Real.log (h.dualNorm x) with hφ`. Establish `h0 : ∀ x ∈ zeroSet I, x ≠ 0`. Introduce and unpack `x hx rfl`. Use `hx _ hℓ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[linForm] at this`. Take `⟨M, hM⟩` from `SliceWeightMassFinite.exists_bound a hdeg ha`. Use `set g : (Fin n → ℂ) → ℝ := (zeroSet I).piecewise a 0 with hgdef`. Establish `hg : Measurable g` using `(ha.mono fun x hx => h0 x hx).measurable_piecewise continuousOn_const (SheetSumMeasurable.isClosed_zeroSet I).measurableSet`. Establish `heq : chartAbsDens I A a φ = chartAbsDens I A g φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `y`. Unfold `chartAbsDens sheetSum`. Use `finsum_congr fun x => finsum_congr fun hx => ?_` and prove the remaining obligations. Simplify using `only [hgdef, Set.piecewise_eq_of_mem _ _ _ hx.1]`. Establish `hmeas : Measurable (chartAbsDens I A a φ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heq]`. Conclude with `SheetSumMeasurable.measurable_sheetSum hA (fun u v => |u * v|) (continuous_fst.mul continuous_snd).abs.measurable hg φ`. Use `((h₁ n d h I ℓ A hI hℓ hdim hA).const_mul M).mono' hmeas.aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Apply the tactic sequence `have hnn : 0 ≤ chartAbsDens I A a φ y := finsum_nonneg fun _ => finsum_nonneg fun _ => by split_ifs <;> positivity`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg hnn]`.
-
-Use `sheetSum_le_mul (IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y) M _ _ fun x hx s _ => ?_` and prove the remaining obligations. Rewrite using `[abs_mul, one_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hM x (h0 x hx.1)) (abs_nonneg _)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SliceWeightMassFinite.proof (h₁ : SliceMassFinite.Statement) : SliceWeightMassFinite.Statement := by
   classical

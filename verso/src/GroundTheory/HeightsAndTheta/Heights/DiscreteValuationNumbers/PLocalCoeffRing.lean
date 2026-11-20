@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Conclude with `h (by unfold locCycle; rw [dif_neg hc])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem mem_minimalPrimes_of_locCycle_ne_zero {S : Type*} [CommRing S] {J W : Ideal S}
     (h : locCycle J W ≠ 0) : W ∈ J.minimalPrimes := by
@@ -15,29 +15,27 @@ private theorem mem_minimalPrimes_of_locCycle_ne_zero {S : Type*} [CommRing S] {
   exact h (by unfold locCycle; rw [dif_neg hc])
 
 /- English proof (translation)
-Introduce `R _ _ P U hP hU hPU hchain f g s u v hf hg hs hu huv hno`. Use `hU` as an intermediate fact. Take `⟨hdom, hloc, hunit, hker⟩` from `h₁ R P U hP hPU`. Use `hdom` as an intermediate fact. Use `hloc` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hup, hdown⟩` from `h₂ R P U hPU`. Establish `hmin` using `fun {J W : Ideal R} (h : locCycle J W ≠ 0) => mem_minimalPrimes_of_locCycle_ne_zero h`. Establish `hmin'` using `fun {J W : Ideal (localQuot P U)} (h : locCycle J W ≠ 0) => mem_minimalPrimes_of_locCycle_ne_zero h`. Establish `hm : IsLocalRing.maximalIdeal (localQuot P U) = U.map (localQuotMap P U)`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hunit, not_not]`. Establish `hUc : (U.map (localQuotMap P U)).comap (localQuotMap P U) = U` using `(hup U hU hPU le_rfl).2`. Establish `hPbot : P.map (localQuotMap P U) = ⊥` using `(Ideal.map_eq_bot_iff_le_ker _).mpr fun y hy => RingHom.mem_ker.mpr ((hker y).2 hy)`. Establish `hmapx : ∀ x : R, (P ⊔ Ideal.span {x}).map (localQuotMap P U) = Ideal.span {localQuotMap P U x}`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, hPbot, bot_sup_eq]`. Establish `hchain' : ∀ Q₁ Q₂ : Ideal (localQuot P U), Q₁.IsPrime → Q₂.IsPrime → ⊥ < Q₁ → Q₁ < Q₂ → Q₂ < IsLocalRing.maximalIdeal (localQuot P U) → False`. Introduce `Q₁ Q₂ hQ₁ hQ₂ h0 h12 h2m`. Take `⟨hP1, -, he1⟩` from `hdown Q₁ hQ₁`. Take `⟨-, hU2, he2⟩` from `hdown Q₂ hQ₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hchain _ _ (Ideal.comap_isPrime _ _) (Ideal.comap_isPrime _ _) (lt_of_le_of_ne hP1 fun h => h0.ne (by rw [← he1, ← h, hPbot])) (lt_of_le_of_ne (Ideal.comap_mono h12.le) fun h => h12.ne (by rw [← he1, ← he2, h])) (lt_of_le_of_ne hU2 fun h => h2m.ne (by rw [← he2, h, hm]))`. Establish `hne : ∀ x : R, x ∉ P → localQuotMap P U x ≠ 0` using `fun x hx h => hx ((hker x).1 h)`. Establish `hloc'` using `h₆ (localQuot P U) hchain' (localQuotMap P U f) (localQuotMap P U g) (localQuotMap P U s) (localQuotMap P U u) (localQuotMap P U v) (hne f hf) (hne g hg) (hne s hs) ((hunit _).2 fun h => hu (hUc ▸ Ideal.mem_comap.mpr h)) (by rw [← sub_eq_zero, ← map_mul, ← map_mul, ← map_sub]; ex …`. Use `swap`. Introduce `W hW`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWm` using `hmin' hW`. Use `hWm.1.1` as an intermediate fact. Take `⟨hPW, hWU, hWe⟩` from `hdown W hWm.1.1`. Establish `h` using `hno (W.comap (localQuotMap P U)) hWU`. Rewrite `h` using `[h₃ R P U _ _ le_sup_left inferInstance hPW hWU, h₃ R P U (P ⊔ Ideal.span {f}) _ le_sup_left inferInstance hPW hWU, h₃ R P U (P ⊔ Ideal.span {g}) _ le_sup_left inferInstance hPW hWU, hmapx, hmapx, hmapx, hWe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `h hW`. Rewrite `hloc'` using `[hm]`. Use `hloc' using 1` and compare the differences between its conclusion and the goal. Apply `h₅ R P U hPU` to reduce the goal to its premises. Introduce `G hG`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hGU : G ≤ U` using `le_sup_left.trans (hmin (right_ne_zero_of_mul hG)).1.2`. Establish `h2` using `left_ne_zero_of_mul hG`. Distinguish the cases in `h : locCycle (P ⊔ Ideal.span {f}) G = 0`. Rewrite `h2` using `[h, zero_sub, neg_ne_zero]`. Conclude with `⟨(hmin h2).1.1, le_sup_left.trans (hmin h2).1.2, hGU⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨(hmin h).1.1, le_sup_left.trans (hmin h).1.2, hGU⟩`. Introduce `p hp`. Establish `h2` using `left_ne_zero_of_mul hp`. Distinguish the cases in `h : locCycle (Ideal.span {localQuotMap P U f}) p = 0`. Rewrite `h2` using `[h, zero_sub, neg_ne_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hmin' h2).1.1`. Conclude with `(hmin' h).1.1`. Introduce `G hG hPG hGU`. Rewrite using `[h₃ R P U _ G le_sup_left hG hPG hGU, h₃ R P U (P ⊔ Ideal.span {g}) G le_sup_left hG hPG hGU, h₃ R P U (G ⊔ Ideal.span {s}) U (le_sup_of_le_left hPG) hU hPU le_rfl, hmapx, hmapx, Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Apply `h₅ R P U hPU` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W hW`. Establish `h1` using `hmin (left_ne_zero_of_mul hW)`. Establish `h2` using `hmin (right_ne_zero_of_mul hW)`. Conclude with `⟨h1.1.1, le_sup_left.trans h1.1.2, le_sup_left.trans h2.1.2⟩`. Introduce `p hp`.
-
-Conclude with `(hmin' (left_ne_zero_of_mul hp)).1.1`. Introduce `W hW hPW hWU`. Rewrite using `[h₃ R P U _ W le_sup_left hW hPW hWU, h₃ R P U (W ⊔ _) U (le_sup_of_le_left hPW) hU hPU le_rfl, hmapx, Ideal.map_sup, h₄ R P U f g]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalCoeffRing.proof (h₁ : LocalQuotRing.Statement.{u}) (h₂ : LocalQuotPrimes.Statement.{u})
     (h₃ : LocCycleLocalQuot.Statement.{u}) (h₄ : LocalQuotColon.Statement.{u})

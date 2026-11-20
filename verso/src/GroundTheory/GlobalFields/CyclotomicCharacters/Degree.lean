@@ -15,7 +15,7 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 section UnitsDegree
 
 /- English proof (translation)
-Repeatedly rewrite using `[unitsPadicEquiv_apply]`. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨(continuous_toPadicInt q).comp Units.continuous_val, (continuous_toPadicInt q).comp Units.continuous_coe_inv⟩`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem continuous_unitsPadicEquiv_apply (q : Nat.Primes) :
     Continuous fun u : ℤ̂ˣ => unitsPadicEquiv u q := by
@@ -37,7 +37,7 @@ noncomputable def unitsDegree : ℤ̂ˣ →* Multiplicative ℤ̂ where
     simp
 
 /- English proof (translation)
-The claim follows from `congrFun (toPadics_ofPadics _) q`.
+A detailed English derivation is pending.
 -/
 theorem toPadicInt_unitsDegree (u : ℤ̂ˣ) (q : Nat.Primes) :
     toPadicInt q (Multiplicative.toAdd (unitsDegree u)) =
@@ -45,7 +45,7 @@ theorem toPadicInt_unitsDegree (u : ℤ̂ˣ) (q : Nat.Primes) :
   congrFun (toPadics_ofPadics _) q
 
 /- English proof (translation)
-The claim follows from `continuous_ofAdd.comp (continuous_ofPadics.comp (continuous_pi fun q => continuous_toAdd.comp ((continuous_padicUnitsLog q).comp (continuous_unitsPadicEquiv_apply q))))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_unitsDegree : Continuous unitsDegree :=
   continuous_ofAdd.comp (continuous_ofPadics.comp (continuous_pi fun q =>
@@ -53,7 +53,7 @@ theorem continuous_unitsDegree : Continuous unitsDegree :=
       (continuous_unitsPadicEquiv_apply q))))
 
 /- English proof (translation)
-Introduce `y`. Use `choose g hg using fun q : Nat.Primes => padicUnitsLog_surjective q (Multiplicative.ofAdd (toPadicInt q (Multiplicative.toAdd y)))`. Use `⟨unitsPadicEquiv.symm g, Multiplicative.toAdd.injective (ext_toPadicInt fun q => ?_)⟩` and prove the remaining obligations. Rewrite using `[toPadicInt_unitsDegree, MulEquiv.apply_symm_apply, hg, toAdd_ofAdd]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsDegree_surjective : Function.Surjective unitsDegree := by
   intro y
@@ -63,9 +63,9 @@ theorem unitsDegree_surjective : Function.Surjective unitsDegree := by
   rw [toPadicInt_unitsDegree, MulEquiv.apply_symm_apply, hg, toAdd_ofAdd]
 
 /- English proof (translation)
-Repeatedly rewrite using `[← ker_padicUnitsLog, MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h q`. Use `toPadicInt_unitsDegree u q` as an intermediate fact. Rewrite `this` using `[h, toAdd_one, map_zero]`.
+Rewrite the conclusion repeatedly using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg Multiplicative.ofAdd this.symm`. Introduce `h`. Use `Multiplicative.toAdd.injective (ext_toPadicInt fun q => ?_)` and prove the remaining obligations. Rewrite using `[toPadicInt_unitsDegree, h q, toAdd_one, toAdd_one, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsDegree_eq_one_iff (u : ℤ̂ˣ) :
     unitsDegree u = 1 ↔ ∀ q : Nat.Primes, unitsPadicEquiv u q ∈ CommGroup.torsion ℤ_[q]ˣ := by
@@ -80,7 +80,7 @@ theorem unitsDegree_eq_one_iff (u : ℤ̂ˣ) :
     rw [toPadicInt_unitsDegree, h q, toAdd_one, toAdd_one, map_zero]
 
 /- English proof (translation)
-Rewrite using `[unitsDegree_eq_one_iff]`. Introduce `q`. Rewrite using `[CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← Pi.pow_apply, ← map_pow, h, map_one, Pi.one_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitsDegree_eq_one_of_pow_eq_one {u : ℤ̂ˣ} {k : ℕ} (hk : 0 < k) (h : u ^ k = 1) :
     unitsDegree u = 1 := by
@@ -91,7 +91,7 @@ theorem unitsDegree_eq_one_of_pow_eq_one {u : ℤ̂ˣ} {k : ℕ} (hk : 0 < k) (h
   rw [← Pi.pow_apply, ← map_pow, h, map_one, Pi.one_apply]
 
 /- English proof (translation)
-The claim follows from `unitsDegree_eq_one_of_pow_eq_one two_pos (by rw [neg_one_sq])`.
+A detailed English derivation is pending.
 -/
 theorem unitsDegree_neg_one : unitsDegree (-1) = 1 :=
   unitsDegree_eq_one_of_pow_eq_one two_pos (by rw [neg_one_sq])
@@ -110,19 +110,19 @@ theorem degree_apply (σ : Gal(ℚ̄/ℚ)) : degree σ = unitsDegree (character 
   rfl
 
 /- English proof (translation)
-The claim follows from `continuous_unitsDegree.comp continuous_character`.
+A detailed English derivation is pending.
 -/
 theorem continuous_degree : Continuous degree :=
   continuous_unitsDegree.comp continuous_character
 
 /- English proof (translation)
-The claim follows from `unitsDegree_surjective.comp character_surjective`.
+A detailed English derivation is pending.
 -/
 theorem degree_surjective : Function.Surjective degree :=
   unitsDegree_surjective.comp character_surjective
 
 /- English proof (translation)
-Introduce `σ h` and use `by rw [MonoidHom.mem_ker, degree_apply, MonoidHom.mem_ker.1 h, map_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ker_character_le_ker_degree : character.ker ≤ degree.ker := fun σ h => by
   rw [MonoidHom.mem_ker, degree_apply, MonoidHom.mem_ker.1 h, map_one]
@@ -138,7 +138,7 @@ theorem degreeComponent_apply (q : Nat.Primes) (σ : Gal(ℚ̄/ℚ)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[degree_apply, toPadicInt_unitsDegree, unitsPadicEquiv_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toPadicInt_degree (q : Nat.Primes) (σ : Gal(ℚ̄/ℚ)) :
     toPadicInt q (Multiplicative.toAdd (degree σ)) = Multiplicative.toAdd (degreeComponent q σ) := by
@@ -146,7 +146,7 @@ theorem toPadicInt_degree (q : Nat.Primes) (σ : Gal(ℚ̄/ℚ)) :
   rfl
 
 /- English proof (translation)
-Establish `h : Continuous fun σ : Gal(ℚ̄/ℚ) => Multiplicative.toAdd (degreeComponent q σ)` using `((continuous_toPadicInt q).comp (continuous_toAdd.comp continuous_degree)).congr (toPadicInt_degree q)`. Conclude with `continuous_ofAdd.comp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_degreeComponent (q : Nat.Primes) : Continuous (degreeComponent q) := by
   have h : Continuous fun σ : Gal(ℚ̄/ℚ) => Multiplicative.toAdd (degreeComponent q σ) :=
@@ -162,7 +162,7 @@ def IsComplexConjugation (σ : Gal(ℚ̄/ℚ)) : Prop :=
   ∃ ι : ℚ̄ →+* ℂ, ∀ x, ι (σ x) = conj (ι x)
 
 /- English proof (translation)
-Set `_ : Algebra ℚ̄ ℂ` to `ι.toAlgebra`. Establish `: IsScalarTower ℚ ℚ̄ ℂ` using `IsScalarTower.of_algebraMap_eq fun x => (eq_ratCast _ x).trans (eq_ratCast (ι.comp (algebraMap ℚ ℚ̄)) x).symm`. Set `c : ℂ →ₐ[ℚ] ℂ` to `(starRingEnd ℂ).toRatAlgHom`. Conclude with `⟨c.restrictNormal' ℚ̄, fun x => c.restrictNormal_commutes ℚ̄ x⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_algEquiv_conj (ι : ℚ̄ →+* ℂ) :
     ∃ σ : Gal(ℚ̄/ℚ), ∀ x, ι (σ x) = conj (ι x) := by
@@ -173,7 +173,7 @@ theorem exists_algEquiv_conj (ι : ℚ̄ →+* ℂ) :
   exact ⟨c.restrictNormal' ℚ̄, fun x => c.restrictNormal_commutes ℚ̄ x⟩
 
 /- English proof (translation)
-Set `ι : ℚ̄ →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Take `⟨σ, hσ⟩` from `exists_algEquiv_conj ι.toRingHom`. Conclude with `⟨σ, ι.toRingHom, hσ⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isComplexConjugation : ∃ σ : Gal(ℚ̄/ℚ), IsComplexConjugation σ := by
   let ι : ℚ̄ →ₐ[ℚ] ℂ := IsAlgClosed.lift
@@ -181,13 +181,13 @@ theorem exists_isComplexConjugation : ∃ σ : Gal(ℚ̄/ℚ), IsComplexConjugat
   exact ⟨σ, ι.toRingHom, hσ⟩
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `h`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_neg, Units.val_one]`. Use `(eq_character σ (-1) fun n t ht => ?_).symm` and prove the remaining obligations. Establish `ht0 : t ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `ht` using `[zero_pow n.ne_zero]`. Conclude with `zero_ne_one ht`. Establish `hσ : σ t = t⁻¹`. Apply `ι.injective` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hι, map_inv₀]`. Establish `hn : ‖ι t‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, ht, map_one]) n.ne_zero`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hn]`. Simplify using the standard rewrite rules. Establish `hcast : (-1 : ZMod n) = (((n : ℕ) - 1 : ℕ) : ZMod n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_sub (n.pos : 1 ≤ (n : ℕ)), ZMod.natCast_self, Nat.cast_one, zero_sub]`. Rewrite using `[hσ, map_neg, map_one, hcast, pow_val_natCast ht]`. Use `(eq_inv_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Rewrite using `[← pow_succ, Nat.sub_add_cancel (n.pos : 1 ≤ (n : ℕ)), ht]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_of_isComplexConjugation {σ : Gal(ℚ̄/ℚ)} (h : IsComplexConjugation σ) :
     character σ = -1 := by
@@ -213,7 +213,7 @@ theorem character_of_isComplexConjugation {σ : Gal(ℚ̄/ℚ)} (h : IsComplexCo
   rw [← pow_succ, Nat.sub_add_cancel (n.pos : 1 ≤ (n : ℕ)), ht]
 
 /- English proof (translation)
-Rewrite using `[degree_apply, character_of_isComplexConjugation h, unitsDegree_neg_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem degree_of_isComplexConjugation {σ : Gal(ℚ̄/ℚ)} (h : IsComplexConjugation σ) :
     degree σ = 1 := by
@@ -227,19 +227,19 @@ noncomputable def zhatField : IntermediateField ℚ ℚ̄ :=
   fixedField degree.ker
 
 /- English proof (translation)
-The claim follows from `isClosed_singleton.preimage continuous_degree`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_ker_degree : IsClosed (degree.ker : Set Gal(ℚ̄/ℚ)) :=
   isClosed_singleton.preimage continuous_degree
 
 /- English proof (translation)
-The claim follows from `InfiniteGalois.fixingSubgroup_fixedField ⟨degree.ker, isClosed_ker_degree⟩`.
+A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_zhatField : zhatField.fixingSubgroup = degree.ker :=
   InfiniteGalois.fixingSubgroup_fixedField ⟨degree.ker, isClosed_ker_degree⟩
 
 /- English proof (translation)
-Rewrite using `[← fixedField_ker_character]`. Introduce `x hx`. Rewrite `hx` using `[zhatField, mem_fixedField_iff]`. Rewrite using `[mem_fixedField_iff]`. Conclude with `fun f hf => hx f (ker_character_le_ker_degree hf)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zhatField_le_maxCyclotomic : zhatField ≤ maxCyclotomic := by
   rw [← fixedField_ker_character]
@@ -249,11 +249,11 @@ theorem zhatField_le_maxCyclotomic : zhatField ≤ maxCyclotomic := by
   exact fun f hf => hx f (ker_character_le_ker_degree hf)
 
 /- English proof (translation)
-Set `_ : Algebra zhatField ℂ` to `φ.toAlgebra`. Establish `: Algebra.IsAlgebraic zhatField ℚ̄` using `Algebra.IsAlgebraic.tower_top (K := ℚ) zhatField`. Set `ι : ℚ̄ →ₐ[zhatField] ℂ` to `IsAlgClosed.lift`. Take `⟨σ, hσ⟩` from `exists_algEquiv_conj ι.toRingHom`. Establish `hdeg : σ ∈ degree.ker` using `degree_of_isComplexConjugation ⟨_, hσ⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hx : σ (x : ℚ̄) = x` using `(mem_fixedField_iff _ _).1 x.2 σ hdeg`. Establish `h1 : ι (x : ℚ̄) = φ x` using `ι.commutes x`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hσ (x : ℚ̄)`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hx, h1] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isReal_zhatField (φ : zhatField →+* ℂ) : ComplexEmbedding.IsReal φ := by
   let _ : Algebra zhatField ℂ := φ.toAlgebra

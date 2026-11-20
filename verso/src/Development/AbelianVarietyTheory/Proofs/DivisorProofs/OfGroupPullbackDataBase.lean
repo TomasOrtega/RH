@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.EndLoc.HomGlue
 
 /- English proof (translation)
-Establish `h1 : LBIso ((M.pull b).pull c) (M.pull (c ≫ b))` using `LBIso.chartPull (chartPullLinComb M b (fun _ : PUnit => c) (fun _ => c ≫ b) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm) (chartPullId _) (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hM _))`. Establish `h2 : LBIso (L.pull a) (M.pull (c ≫ b))` using `LBIso.trans (pull_isLB hL _) (pull_isLB (pull_isLB hM _) _) (pull_isLB hM _) H h1`. Conclude with `LBIso.chartPull (chartPullSame L (fun _ : PUnit => a') (fun _ => a) (fun _ => 1) e fun _ => ha) (chartPullLinComb M b' (fun _ : PUnit => c') (fun _ => c ≫ b) (fun _ => 1) e fun _ => hc) h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_pull {P Q Xa Xb Xa' Xb' : Scheme.{0}} {L : LB P} {M : LB Q} (hL : L.IsLB) (hM : M.IsLB)
     {a : Xa ⟶ P} {b : Xb ⟶ Q} {c : Xa ⟶ Xb} {a' : Xa' ⟶ P} {b' : Xb' ⟶ Q} {c' : Xa' ⟶ Xb'} (e : Xa' ⟶ Xa)
@@ -45,11 +45,11 @@ abbrev pmap {Z Z' : Scheme.{0}} (t : Z ⟶ S) (g : Z' ⟶ Z) : pullback A.hom (g
 variable {A B L M}
 
 /- English proof (translation)
-Take `⟨A', B', _, _, φA, φB, Φ, hA, hB, hΦ, hI, e, e1, e2, e3⟩` from `h`. Use `⟨(Over.pullback g).obj A', (Over.pullback g).obj B', inferInstance, inferInstance, pullback.fst _ _ ≫ φA, pullback.fst _ _ ≫ φB, (Over.pullback g).map Φ, (isGrpPullback_pullback A' g).comp hA, (isGrpPullback_pullback B' g).comp hB, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Use `lbIso_pull hL hM (pullback.fst _ _) rfl ?_ hI` and prove the remaining obligations. Rewrite using `[← Category.assoc, show ((Over.pullback g).map Φ).left ≫ pullback.fst B'.hom g = pullback.fst A'.hom g ≫ Φ.left from pullback.lift_fst _ _ _, Category.assoc]`. Establish `hw : (pullback.fst A'.hom g ≫ φA) ≫ A.hom = pullback.snd A'.hom g ≫ g ≫ t`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hA.1.w, ← Category.assoc, pullback.condition, Category.assoc]`. Establish `key : pullback.lift (pullback.fst A'.hom g ≫ φA) (pullback.snd A'.hom g) hw ≫ pmap A t g = pullback.fst A'.hom g ≫ e`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst, Category.assoc, e1]`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.assoc, e2, pullback.condition]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨pullback.lift (pullback.fst _ _ ≫ φA) (pullback.snd _ _) hw, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, key, Category.assoc, e3, ← Category.assoc, ← Category.assoc, show ((Over.pullback g).map Φ).left ≫ pullback.fst B'.hom g = pullback.fst A'.hom g ≫ Φ.left from pullback.lift_fst _ _ _]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wit_pull (hL : L.IsLB) (hM : M.IsLB) {Z Z' : Scheme.{0}} {t : Z ⟶ S} {f : pullback A.hom t ⟶ B.left}
     (h : Wit A B L M t f) (g : Z' ⟶ Z) : Wit A B L M (g ≫ t) (pmap A t g ≫ f) := by
@@ -83,9 +83,9 @@ structure Pt (Z : Scheme.{0}) where
   wit : Wit A B L M t f
 
 /- English proof (translation)
-Take `⟨t, f, w⟩` from `x`. Take `⟨t', f', w'⟩` from `y`. Simplify using `only at e h`. Use `revert h`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `h` using `[pullback.lift_fst_snd, Category.id_comp]`. Consider the cases of `h`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Pt.ext' {Z : Scheme.{0}} {x y : Pt A B L M Z} (e : x.t = y.t)
     (h : pullback.lift (pullback.fst _ _) (pullback.snd _ _) (by rw [pullback.condition, e]) ≫ x.f = y.f) :
@@ -101,7 +101,7 @@ theorem Pt.ext' {Z : Scheme.{0}} {x y : Pt A B L M Z} (e : x.t = y.t)
   rfl
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst, Category.id_comp]`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.id_comp, Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_pmap_id {Z : Scheme.{0}} (t : Z ⟶ S) (h : pullback.fst A.hom t ≫ A.hom = pullback.snd A.hom t ≫ 𝟙 Z ≫ t) :
     pullback.lift (pullback.fst A.hom t) (pullback.snd A.hom t) h ≫ pmap A t (𝟙 Z) = 𝟙 _ := by
@@ -110,7 +110,7 @@ theorem lift_pmap_id {Z : Scheme.{0}} (t : Z ⟶ S) (h : pullback.fst A.hom t �
   · rw [Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst, Category.assoc, pullback.lift_fst, pullback.lift_fst]`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_pmap_comp {Z Z' Z'' : Scheme.{0}} (t : Z ⟶ S) (g : Z' ⟶ Z) (g' : Z'' ⟶ Z')
     (h : pullback.fst A.hom (g' ≫ g ≫ t) ≫ A.hom = pullback.snd A.hom (g' ≫ g ≫ t) ≫ (g' ≫ g) ≫ t) :
@@ -125,7 +125,7 @@ def Pt.map (hL : L.IsLB) (hM : M.IsLB) {Z Z' : Scheme.{0}} (g : Z' ⟶ Z) (x : P
   ⟨g ≫ x.t, pmap A x.t g ≫ x.f, wit_pull hL hM x.wit g⟩
 
 /- English proof (translation)
-Use `Pt.ext' (Category.id_comp _) ?_` and prove the remaining obligations. Use `show _ ≫ pmap A x.t (𝟙 Z) ≫ x.f = x.f`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x.f) (lift_pmap_id x.t _)).trans (Category.id_comp _))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Pt.map_id (hL : L.IsLB) (hM : M.IsLB) {Z : Scheme.{0}} (x : Pt A B L M Z) : x.map hL hM (𝟙 Z) = x := by
   refine Pt.ext' (Category.id_comp _) ?_
@@ -133,7 +133,7 @@ theorem Pt.map_id (hL : L.IsLB) (hM : M.IsLB) {Z : Scheme.{0}} (x : Pt A B L M Z
   refine (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x.f) (lift_pmap_id x.t _)).trans (Category.id_comp _))
 
 /- English proof (translation)
-Use `Pt.ext' (Category.assoc _ _ _) ?_` and prove the remaining obligations. Use `show _ ≫ pmap A x.t (g' ≫ g) ≫ x.f = pmap A (g ≫ x.t) g' ≫ pmap A x.t g ≫ x.f`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x.f) (lift_pmap_comp x.t g g' _)).trans (Category.assoc _ _ _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Pt.map_comp (hL : L.IsLB) (hM : M.IsLB) {Z Z' Z'' : Scheme.{0}} (g : Z' ⟶ Z) (g' : Z'' ⟶ Z')
     (x : Pt A B L M Z) : x.map hL hM (g' ≫ g) = (x.map hL hM g).map hL hM g' := by

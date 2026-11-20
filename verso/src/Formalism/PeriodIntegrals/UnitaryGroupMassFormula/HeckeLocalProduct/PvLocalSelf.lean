@@ -21,14 +21,14 @@ def pw (w : InfinitePlace L) : Ideles L →* w.Completion where
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul, ← h, ← map_mul, inv_mul_cancel, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem f_inv_mul {M : Type*} [Monoid M] (f : Ideles L →* M) (A D : Ideles L) (h : f A = f D) :
     f (A⁻¹ * D) = 1 := by
   rw [map_mul, ← h, ← map_mul, inv_mul_cancel, map_one]
 
 /- English proof (translation)
-Establish `h1 : f A⁻¹ = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, h1, one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem f_inv_mul' {M : Type*} [Monoid M] (f : Ideles L →* M) (A D : Ideles L) (h : f A = 1) :
     f (A⁻¹ * D) = f D := by
@@ -38,9 +38,9 @@ theorem f_inv_mul' {M : Type*} [Monoid M] (f : Ideles L →* M) (A D : Ideles L)
   rw [map_mul, h1, one_mul]
 
 /- English proof (translation)
-Use `Units.ext (Prod.ext rfl (Subtype.ext (funext fun v' => ?_)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((Pi.mulSingle v w : Pu L) v' : v'.adicCompletionIntegers L) : v'.adicCompletion L) = pv v' (localIdele L v (Units.map (v.adicCompletionIntegers L).subtype.toMonoidHom w))`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(localIdele_snd_self L v' (Units.map (v'.adicCompletionIntegers L).subtype.toMonoidHom w)).symm`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `((localIdele_isSupportedAt L v _).2 v' h).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Phi_single [DecidableEq (HeightOneSpectrum (𝓞 L))] (v : HeightOneSpectrum (𝓞 L))
     (w : (v.adicCompletionIntegers L)ˣ) :
@@ -55,15 +55,13 @@ theorem Phi_single [DecidableEq (HeightOneSpectrum (𝓞 L))] (v : HeightOneSpec
     exact ((localIdele_isSupportedAt L v _).2 v' h).symm
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `exists_strictHenselian_absolutely_closed_local_ring χ`. Establish `hmemO : ∀ v : HeightOneSpectrum (𝓞 L), (u : AdeleRing (𝓞 L) L).2 v ∈ v.adicCompletionIntegers L` using `fun v => by`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `(h2 v).le`. Establish `hunit : ∀ v : HeightOneSpectrum (𝓞 L), IsUnit (⟨_, hmemO v⟩ : v.adicCompletionIntegers L)` using `fun v => HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one.2 (h2 v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `y : Pu L` to `fun v => (hunit v).unit`. Establish `hu : u = Phi L y` using `Units.ext (Prod.ext (h1.trans rfl) (Subtype.ext (funext fun v => rfl)))`. Use `set p : Pu L := ∏ v ∈ T, Pi.mulSingle v (y v) with hp`. Establish `hpv : ∀ v ∈ T, p v = y v` using `fun v hv => by`. Rewrite using `[hp, Finset.prod_apply, Finset.prod_pi_mulSingle, if_pos hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : y = p * (p⁻¹ * y)` using `by rw [mul_inv_cancel_left]`. Establish `hrest : χ.1 (Phi L (p⁻¹ * y)) = 1` using `hT _ fun v hv => by rw [Pi.mul_apply, Pi.inv_apply, hpv v hv, inv_mul_cancel]`. Rewrite using `[hu, hsplit, map_mul, map_mul, hrest, mul_one, hp, map_prod, map_prod]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Phi_single]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hv : χ.UnrAt v`. Conclude with `hv _ (h2 v)`. Establish `hv1 : (u : AdeleRing (𝓞 L) L).2 v = 1`. Assume the negation of the conclusion as `h`. Conclude with `hv (h3 v h)`.
-
-Establish `hx : Units.map (v.adicCompletionIntegers L).subtype.toMonoidHom (y v) = 1` using `Units.ext hv1`. Rewrite using `[hx, map_one, map_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_unit (χ : HChar L) (u : Ideles L) (h1 : (u : AdeleRing (𝓞 L) L).1 = 1)
     (h2 : ∀ v, Valued.v ((u : AdeleRing (𝓞 L) L).2 v) = 1)
@@ -94,14 +92,14 @@ theorem chi_unit (χ : HChar L) (u : Ideles L) (h1 : (u : AdeleRing (𝓞 L) L).
     rw [hx, map_one, map_one]
 
 /- English proof (translation)
-The claim follows from `(localIdele_isSupportedAt L v x).1 w`.
+A detailed English derivation is pending.
 -/
 theorem pw_local (w : InfinitePlace L) (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     pw w (localIdele L v x) = 1 :=
   (localIdele_isSupportedAt L v x).1 w
 
 /- English proof (translation)
-Use `show (RestrictedProduct.mulSingle (fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletionIntegers L) v (x : v.adicCompletion L)) v = x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pv_local_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     pv v (localIdele L v x) = x := by
@@ -111,7 +109,7 @@ theorem pv_local_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)
   simp
 
 /- English proof (translation)
-Use `show (RestrictedProduct.mulSingle (fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletionIntegers L) v (x : v.adicCompletion L)) v' = 1`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pv_local_ne (v v' : HeightOneSpectrum (𝓞 L)) (h : v' ≠ v) (x : (v.adicCompletion L)ˣ) :
     pv v' (localIdele L v x) = 1 := by
@@ -121,16 +119,14 @@ theorem pv_local_ne (v v' : HeightOneSpectrum (𝓞 L)) (h : v' ≠ v) (x : (v.a
   simp [h]
 
 /- English proof (translation)
-Rewrite using `[infDiag, MonoidHom.finsetProd_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infDiag_eq (k : Lˣ) : (infDiag k : Ideles L) = ∏ w : InfinitePlace L, infIdele L w (atInf w k) := by
   rw [infDiag, MonoidHom.finsetProd_apply]
   rfl
 
 /- English proof (translation)
-Rewrite using `[infDiag_eq, map_prod, Finset.prod_eq_single w]`. Conclude with `infIdele_fst_self L w _`. Introduce `b _ hb`. Conclude with `infIdele_fst_ne L b w (Ne.symm hb) _`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ w) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pw_infDiag (w : InfinitePlace L) (k : Lˣ) : pw w (infDiag k) = (atInf w k : w.Completion) := by
   rw [infDiag_eq, map_prod, Finset.prod_eq_single w]
@@ -141,7 +137,7 @@ theorem pw_infDiag (w : InfinitePlace L) (k : Lˣ) : pw w (infDiag k) = (atInf w
     exact absurd (Finset.mem_univ w) h
 
 /- English proof (translation)
-Rewrite using `[infDiag_eq, map_prod]`. Conclude with `Finset.prod_eq_one fun w _ => infIdele_snd L w (atInf w k) v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pv_infDiag (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) : pv v (infDiag k) = 1 := by
   rw [infDiag_eq, map_prod]
@@ -158,18 +154,18 @@ Both sides reduce to the same expression.
 theorem pv_diag (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) : pv v (diagUnits L k) = (atFin v k : v.adicCompletion L) := rfl
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (k : L)`.
+A detailed English derivation is pending.
 -/
 theorem valued_atFin (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
     Valued.v ((atFin v k : (v.adicCompletion L)ˣ) : v.adicCompletion L) = v.valuation L (k : L) :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (k : L)
 
 /- English proof (translation)
-Establish `hx : IsUnitAt v (atFin v k * (atFin v (unif v)) ^ (-ordF v k))`. Establish `hu` using `unif_spec v`. Unfold `IsUnifAt at hu`. Unfold `IsUnitAt`. Establish `h0 : v.valuation L (k : L) ≠ 0` using `(map_ne_zero _).2 k.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hu, valued_atFin, ← WithZero.exp_log h0, ← WithZero.exp_zsmul, ← WithZero.exp_add, ← WithZero.exp_zero]`. Use `congr 1`. Simplify using `only [ordF, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : atFin v k = (atFin v k * (atFin v (unif v)) ^ (-ordF v k)) * (atFin v (unif v)) ^ ordF v k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← zpow_add, neg_add_cancel, zpow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul (χ.loc v), map_zpow (χ.loc v)]`. Use `_ = χ.val v ^ ordF v k := by rw [h _ hx, one_mul]; rfl`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_eq (χ : HChar L) {v : HeightOneSpectrum (𝓞 L)} (h : χ.UnrAt v) (k : Lˣ) :
     χ.locK v k = χ.val v ^ ordF v k := by
@@ -192,29 +188,23 @@ theorem locK_eq (χ : HChar L) {v : HeightOneSpectrum (𝓞 L)} (h : χ.UnrAt v)
     _ = χ.val v ^ ordF v k := by rw [h _ hx, one_mul]; rfl
 
 /- English proof (translation)
-Introduce `S hS k`. Establish `hfin : {v : HeightOneSpectrum (𝓞 L) | ¬ Valued.v ((diagUnits L k : AdeleRing (𝓞 L) L).2 v) = 1}.Finite` using `Filter.eventually_cofinite.1 (valued_comp_eventually L (diagUnits L k))`. Use `set T0 : Finset (HeightOneSpectrum (𝓞 L)) := S ∪ hfin.toFinset with hT0`. Use `set A : Ideles L := infDiag k * ∏ v ∈ T0, localIdele L v (atFin v k) with hA`. Use `set u : Ideles L := A⁻¹ * diagUnits L k with hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hAw : ∀ w, pw w A = pw w (diagUnits L k)`. Introduce `w`. Rewrite using `[hA, map_mul, map_prod, Finset.prod_eq_one (fun v _ => pw_local w v _), mul_one, pw_infDiag, pw_diag]`. Establish `hAv_in : ∀ v ∈ T0, pv v A = pv v (diagUnits L k)`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hA, map_mul, map_prod, pv_infDiag, one_mul, Finset.prod_eq_single v (fun b _ hb => pv_local_ne b v (Ne.symm hb) _) (fun h => absurd hv h), pv_local_self, pv_diag]`. Establish `hAv_out : ∀ v ∉ T0, pv v A = 1`. Introduce `v hv`. Rewrite using `[hA, map_mul, map_prod, pv_infDiag, one_mul]`. Conclude with `Finset.prod_eq_one fun b hb => pv_local_ne b v (fun h => hv (h ▸ hb)) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu1 : χ.1 u = 1`. Apply `chi_unit χ u` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Conclude with `f_inv_mul (pw w) A _ (hAw w)`. Introduce `v`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hv : v ∈ T0`. Use `show Valued.v (pv v u) = 1`. Rewrite using `[hu, f_inv_mul (pv v) A _ (hAv_in v hv)]`. Conclude with `map_one _`. Use `show Valued.v (pv v u) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hu, f_inv_mul' (pv v) A _ (hAv_out v hv)]`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 h))`. Introduce `v hne`. Establish `hv : v ∉ T0` using `fun hv => hne (by show pv v u = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hu, f_inv_mul (pv v) A _ (hAv_in v hv)])`. Conclude with `hS v (fun h => hv (Finset.mem_union_left _ h))`. Establish `hD : diagUnits L k = A * u` using `by rw [hu, mul_inv_cancel_left]`. Establish `hmain : χ.inf k * ∏ v ∈ T0, χ.locK v k = 1`. Establish `h` using `χ.2.2 k`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hD, map_mul, hu1, mul_one, hA, map_mul, map_prod]`. Conclude with `h`. Establish `hord : ∀ v ∉ T0, ordF v k = 0`. Introduce `v hv`. Establish `h1 : Valued.v ((diagUnits L k : AdeleRing (𝓞 L) L).2 v) = 1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 h))`. Rewrite `h1` using `[diag_comp]`. Simplify using `[ordF, h1]`. Establish `hfp : (∏ᶠ (v : HeightOneSpectrum (𝓞 L)) (_ : v ∉ S), χ.val v ^ ordF v k) = ∏ v ∈ T0 \ S, χ.locK v k`.
-
-Express the relevant statement in the definitionally equal form `(∏ᶠ v ∈ ((S : Set (HeightOneSpectrum (𝓞 L)))ᶜ), χ.val v ^ ordF v k) = _`. Rewrite using `[finprod_mem_eq_prod_of_subset _ (t := T0 \ S)]`. Conclude with `Finset.prod_congr rfl fun v hv => (locK_eq χ (hS v (Finset.mem_sdiff.1 hv).2) k).symm`. Introduce and unpack `v ⟨hvS, hvf⟩`. Rewrite using `[Finset.coe_sdiff, Set.mem_sdiff, Finset.mem_coe]`.
-
-Use `⟨?_, hvS⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Conclude with `hvf (by show χ.val v ^ ordF v k = 1; rw [hord v hv, zpow_zero])`. Introduce `v hv`. Rewrite `hv` using `[Finset.coe_sdiff]`.
-
-Conclude with `hv.2`. Rewrite using `[hfp, mul_assoc, mul_comm (∏ v ∈ S, χ.locK v k), Finset.prod_sdiff Finset.subset_union_left]`. Conclude with `hmain`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem productRule (χ : HChar L) : χ.ProductRule := by
   classical

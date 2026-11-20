@@ -13,17 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
 
 /- English proof (translation)
-Establish `mi` using `fun {x : WO S T} {H K : AddSubgroup (WO S T)} (h : x ∈ H ⊓ K) => AddSubgroup.mem_inf.1 h`. Set `N : Submodule ℂ (WO S T → ℂ)` to `Submodule.span ℂ {v | ∃ u ∈ halfSub S T (cA D e₁), ∃ G ∈ {f : WO S T → ℂ | IsThetaFunO ψ S T f}, v = heisL ψ S T u G - G}`. Establish `hwN : w ∉ N`. Introduce `hmem`. Use `hw0 (Four.vac_eq_zero_of_mem_span (ρ := heisL ψ S T) (χ := fun t y => ψ (symplO S T t y)) (L := Λ) (X := halfSub S T e₁) (Y := halfSub S T (cA D e₁)) (fun y hy y' hy' => heisL_add_half ψ S T (cA_half_orth he) hy hy') (fun x _ y _ => heisL_comm ψ S T x y) (fun t t' y => by simp on …` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨R, hR⟩` from `hfX k hk`. Conclude with `finite_qt_of S T R fun u hu => by`. Take `⟨r, hr, v, hv, hve, huv⟩` from `hR u (mi hu).1 (mi hu).2`. Conclude with `⟨r, hr, v, AddSubgroup.mem_inf.2 ⟨hv, hve⟩, huv⟩)`. Use the proof step `(fun k hk => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩` from `hfY k hk`. Conclude with `finite_qt_of S T R fun u hu => by`. Take `⟨r, hr, v, hv, hve, huv⟩` from `hR u (mi hu).1 (mi hu).2`. Conclude with `⟨r, hr, v, AddSubgroup.mem_inf.2 ⟨hv, hve⟩, huv⟩)`. Use the proof step `(fun k hk t h => nsmul_eq_zero_WO S T hk h)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun y hy => hoY y hy) {f | IsThetaFunO ψ S T f}`. Use the proof step `(fun G hG => by`. Take `⟨k, hk, hGk⟩` from `hlev G hG`. Conclude with `⟨k, hk, fun u hu => hGk u (mi hu).1 (Or.inl (mi hu).2), fun u hu => hGk u (mi hu).1 (Or.inr (mi hu).2)⟩)`. Use the proof step `(fun u hu => hwX u (mi hu).1 (mi hu).2) (fun u hu => hwY u (mi hu).1 (mi hu).2) hmem)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ℓ, hℓw, hℓN⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hwN inferInstance`. Use `⟨ℓ, fun u hu f hf => ?_, hℓw⟩` and prove the remaining obligations. Establish `hmem : heisL ψ S T u f - f ∈ N` using `Submodule.subset_span ⟨u, hu, f, hf, rfl⟩`. Establish `h0 : ℓ (heisL ψ S T u f - f) = 0`. Establish `: ℓ (heisL ψ S T u f - f) ∈ N.map ℓ` using `Submodule.mem_map_of_mem hmem`.
-
-Rewrite `this` using `[hℓN]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem exists_invForm (e₁ : AE D) (he : e₁ * cA D e₁ = 0) (Λ : AddSubgroup (WO S T))
     (hLL : ∀ x ∈ Λ, IsHalf e₁ x → ∀ y ∈ Λ, IsHalf (cA D e₁) y → ψ (symplO S T x y) = 1)

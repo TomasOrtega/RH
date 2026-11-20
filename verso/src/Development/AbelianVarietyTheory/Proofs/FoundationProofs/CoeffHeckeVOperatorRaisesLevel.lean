@@ -12,39 +12,39 @@ def scaleH (l : ℕ) (hl : 0 < l) (τ : ℍ) : ℍ :=
   UpperHalfPlane.mk ((l : ℂ) * τ) (by simp; positivity)
 
 /- English proof (translation)
-Rewrite using `[UpperHalfPlane.coe_specialLinearGroup_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma coe_sl_apply (g : SL(2, ℤ)) (z : ℍ) :
     ((g • z : ℍ) : ℂ) = (((g 0 0 : ℤ) : ℂ) * z + ((g 0 1 : ℤ) : ℂ)) / (((g 1 0 : ℤ) : ℂ) * z + ((g 1 1 : ℤ) : ℂ)) := by
   rw [UpperHalfPlane.coe_specialLinearGroup_apply]; simp
 
 /- English proof (translation)
-Establish `h2` using `UpperHalfPlane.denom_ne_zero g z`. Simplify `h2` using `[UpperHalfPlane.denom]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma denom_sl_ne (g : SL(2, ℤ)) (z : ℍ) : ((g 1 0 : ℤ) : ℂ) * z + ((g 1 1 : ℤ) : ℂ) ≠ 0 := by
   have h2 := UpperHalfPlane.denom_ne_zero g z
   simpa [UpperHalfPlane.denom] using h2
 
 /- English proof (translation)
-Introduce `k L l χ a hl`. Establish `key : MF k L χ a → MF k (L * l) χ (Vo l a)`. Introduce and unpack `⟨hP, hI⟩`. Take `⟨hP', hq⟩` from `GlobalTheory.T.coeffHeckeVOperator_polynomialGrowth_qExpansion l a hl hP`. Use `⟨hP', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ hγ τ`. Take `⟨m, hm⟩` from `hγ`. Establish `hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Set `γ' : SL(2, ℤ)` to `⟨!![γ 0 0, (l : ℤ) * γ 0 1; (L : ℤ) * m, γ 1 1], by`. Rewrite using `[Matrix.det_fin_two_of]`. Rewrite `hdet` using `[hm]`. Move the coercions through the operations in `at hdet`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hdet⟩`. Establish `h1 : ((L : ℕ) : ℤ) ∣ γ' 1 0` using `⟨m, by simp [γ']⟩`. Establish `hl' : (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne'`. Establish `hc : ((γ 1 0 : ℤ) : ℂ) = (L : ℂ) * l * m` using `by rw [hm]; push_cast; ring`. Establish `e1 : γ' • scaleH l hl τ = scaleH l hl (γ • τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Rewrite using `[coe_sl_apply]`. Simplify using `only [scaleH, UpperHalfPlane.coe_mk, coe_sl_apply]`. Establish `hd` using `denom_sl_ne γ τ`. Rewrite `hd`, the goal using `[hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [γ', Matrix.SpecialLinearGroup.coe_mk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]`. Use `push_cast`. Establish `hd2 : (L : ℂ) * m * (l * (τ : ℂ)) + ((γ 1 1 : ℤ) : ℂ) ≠ 0`. Use `hd using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hq (γ • τ) (scaleH l hl (γ • τ)) rfl, hq τ (scaleH l hl τ) rfl, ← e1, hI γ' h1]`. Simplify using `only [γ', Matrix.SpecialLinearGroup.coe_mk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, scaleH, UpperHalfPlane.coe_mk]`. Rewrite using `[hc]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Use `⟨key, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨hM, C, hC⟩`. Use `⟨key hM, C, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨_, hq⟩` from `GlobalTheory.T.coeffHeckeVOperator_polynomialGrowth_qExpansion l a hl hM.1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq τ (scaleH l hl τ) rfl]`. Establish `him : (scaleH l hl τ).im = l * τ.im`. Express the relevant statement in the definitionally equal form `((l:ℂ) * (τ:ℂ)).im = (l:ℝ) * (τ:ℂ).im`. Simplify using the standard rewrite rules. Establish `hle : τ.im ≤ (scaleH l hl τ).im`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[him]; have : (1 : ℝ) ≤ l := by exact_mod_cast hl`. Use polynomial arithmetic with `[τ.im_pos]`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem Vo_level : ∀ (k L l : ℕ) (χ : ℤ → ℂ) (a : ℕ → ℂ), 0 < l →
     (MF k L χ a → MF k (L * l) χ (Vo l a)) ∧ (CF k L χ a → CF k (L * l) χ (Vo l a)) := by

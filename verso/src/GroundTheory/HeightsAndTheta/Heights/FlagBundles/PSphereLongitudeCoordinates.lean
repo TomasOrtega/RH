@@ -11,7 +11,7 @@ open scoped ENNReal Pointwise
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, Fin.sum_univ_three]`. Simplify using `[sq_abs, add_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma SphereLongitudeCoordinates.norm_vector_three_eq_sqrt (u v w : ℝ) :
     ‖(!₂[u, v, w] : E3)‖ = Real.sqrt (u ^ 2 + v ^ 2 + w ^ 2) := by
@@ -19,11 +19,11 @@ lemma SphereLongitudeCoordinates.norm_vector_three_eq_sqrt (u v w : ℝ) :
   simp [sq_abs, add_assoc]
 
 /- English proof (translation)
-Establish `hn : (ρ * Real.cos φ) ^ 2 + (ρ * Real.sin φ) ^ 2 + z ^ 2 = ρ ^ 2 + z ^ 2`. Use `Real.cos_sq_add_sin_sq φ` as an intermediate fact. Take the linear combination `ρ ^ 2 * this`. Use `⟨by rw [SphereLongitudeCoordinates.norm_vector_three_eq_sqrt, hn], ?_⟩` and prove the remaining obligations. Use `set r := Real.sqrt (ρ ^ 2 + z ^ 2) with hr`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr0 : 0 < r` using `Real.sqrt_pos.2 (by positivity)`. Establish `hr2 : r ^ 2 = ρ ^ 2 + z ^ 2` using `Real.sq_sqrt (by positivity)`. Establish `hs : Real.sqrt (1 - (z / r) ^ 2) = ρ / r`. Rewrite using `[show 1 - (z / r) ^ 2 = (ρ / r) ^ 2 by field_simp; linarith]`. Conclude with `Real.sqrt_sq (div_pos hρ hr0).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [spherePoint, hs] <;> field_simp`.
+A detailed English derivation is pending.
 -/
 lemma SphereLongitudeCoordinates.cyl_point {ρ : ℝ} (hρ : 0 < ρ) (φ z : ℝ) :
     ‖(!₂[ρ * Real.cos φ, ρ * Real.sin φ, z] : E3)‖ = Real.sqrt (ρ ^ 2 + z ^ 2) ∧
@@ -43,31 +43,31 @@ lemma SphereLongitudeCoordinates.cyl_point {ρ : ℝ} (hρ : 0 < ρ) (φ z : ℝ
   fin_cases i <;> simp [spherePoint, hs] <;> field_simp
 
 /- English proof (translation)
-Use `set f : ℝ → ℝ := fun c => ρ * c / Real.sqrt (1 - c ^ 2) with hf`. Establish `hpos : ∀ c ∈ Ioo (-1 : ℝ) 1, 0 < 1 - c ^ 2` using `fun c hc => by`. Establish `: c ^ 2 < 1` using `by nlinarith [hc.1, hc.2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ c ∈ Ioo (-1 : ℝ) 1, Real.sqrt (ρ ^ 2 + f c ^ 2) = ρ / Real.sqrt (1 - c ^ 2) ∧ f c / Real.sqrt (ρ ^ 2 + f c ^ 2) = c`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Establish `hw : 0 < Real.sqrt (1 - c ^ 2)` using `Real.sqrt_pos.2 (hpos c hc)`. Establish `hw2 : Real.sqrt (1 - c ^ 2) ^ 2 = 1 - c ^ 2` using `Real.sq_sqrt (hpos c hc).le`. Establish `e1 : ρ ^ 2 + f c ^ 2 = (ρ / Real.sqrt (1 - c ^ 2)) ^ 2`. Simplify using `only [hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `hw2`. Establish `e2 : Real.sqrt (ρ ^ 2 + f c ^ 2) = ρ / Real.sqrt (1 - c ^ 2)`. Rewrite using `[e1]`. Conclude with `Real.sqrt_sq (div_pos hρ hw).le`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e2, ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`. Simplify using `only [hf]`. Clear the denominators using the available nonvanishing facts. Establish `himg : f '' Ioo (-1 : ℝ) 1 = univ`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_univ_of_forall fun z => ?_` and prove the remaining obligations. Use `set r := Real.sqrt (ρ ^ 2 + z ^ 2)`. Establish `hr0 : 0 < r` using `Real.sqrt_pos.2 (by positivity)`. Establish `hr2 : r ^ 2 = ρ ^ 2 + z ^ 2` using `Real.sq_sqrt (by positivity)`. Establish `hc2 : (z / r) ^ 2 < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_pow, div_lt_one (by positivity)]; nlinarith`. Establish `hc : z / r ∈ Ioo (-1 : ℝ) 1`. Use `abs_lt.mp ((sq_lt_one_iff_abs_lt_one _).mp hc2)` as an intermediate fact. Conclude with `⟨this.1, this.2⟩`. Use `⟨z / r, hc, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs : Real.sqrt (1 - (z / r) ^ 2) = ρ / r`. Rewrite using `[show 1 - (z / r) ^ 2 = (ρ / r) ^ 2 by field_simp; linarith]`. Conclude with `Real.sqrt_sq (div_pos hρ hr0).le`. Simplify using `only [hf, hs]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : InjOn f (Ioo (-1 : ℝ) 1)` using `fun a ha b hb hab => by`. Rewrite using `[← (key a ha).2, ← (key b hb).2, hab]`. Establish `hderiv : ∀ c ∈ Ioo (-1 : ℝ) 1, HasDerivWithinAt f (ρ / Real.sqrt (1 - c ^ 2) ^ 3) (Ioo (-1 : ℝ) 1) c`. Introduce `c hc`. Establish `hw : 0 < Real.sqrt (1 - c ^ 2)` using `Real.sqrt_pos.2 (hpos c hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hw2 : Real.sqrt (1 - c ^ 2) ^ 2 = 1 - c ^ 2` using `Real.sq_sqrt (hpos c hc).le`. Establish `h1 : HasDerivAt (fun c : ℝ => 1 - c ^ 2) (-(2 * c)) c`. Simplify using `using (hasDerivAt_pow 2 c).const_sub 1`. Establish `h2` using `h1.sqrt (hpos c hc).ne'`. Establish `h3` using `((hasDerivAt_id c).const_mul ρ).div h2 hw.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `h4 : HasDerivAt f ((ρ * 1 * Real.sqrt (1 - c ^ 2) - ρ * id c * (-(2 * c) / (2 * Real.sqrt (1 - c ^ 2)))) / Real.sqrt (1 - c ^ 2) ^ 2) c` using `h3`. Use `(h4.congr_deriv ?_).hasDerivWithinAt` and prove the remaining obligations. Simplify using `only [id, mul_one]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hw2`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← setLIntegral_univ, ← himg, lintegral_image_eq_lintegral_abs_deriv_mul measurableSet_Ioo hderiv hinj]`. Use `setLIntegral_congr_fun measurableSet_Ioo fun c hc => ?_` and prove the remaining obligations. Establish `hw : 0 < Real.sqrt (1 - c ^ 2)` using `Real.sqrt_pos.2 (hpos c hc)`. Establish `hw2 : Real.sqrt (1 - c ^ 2) ^ 2 = 1 - c ^ 2` using `Real.sq_sqrt (hpos c hc).le`. Rewrite using `[abs_of_pos (by positivity), (key c hc).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Establish `e : ρ ^ 2 + f c ^ 2 < 1 ↔ ρ ^ 2 < 1 - c ^ 2`. Establish `h1c` using `(hpos c hc).ne'`. Establish `e1 : ρ ^ 2 + f c ^ 2 = ρ ^ 2 / (1 - c ^ 2)`. Simplify using `only [hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_pow, hw2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, div_lt_one (hpos c hc)]`. Simplify using `only [e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma SphereLongitudeCoordinates.height_subst {ρ : ℝ} (hρ : 0 < ρ) (g : ℝ → ℝ≥0∞) :
     ∫⁻ z, (if ρ ^ 2 + z ^ 2 < 1 then g (z / Real.sqrt (ρ ^ 2 + z ^ 2)) else 0) =
@@ -139,7 +139,7 @@ lemma SphereLongitudeCoordinates.height_subst {ρ : ℝ} (hρ : 0 < ρ) (g : ℝ
   simp only [e]
 
 /- English proof (translation)
-Establish `hint : IntegrableOn (fun ρ : ℝ => ρ ^ 2 / w ^ 3) (Ioo 0 w)` using `((continuous_pow 2).div_const _).integrableOn_Icc.mono_set Ioo_subset_Icc_self`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun ρ => by positivity), ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hw.le, intervalIntegral.integral_div, integral_pow]`. Establish `: ((w ^ (2 + 1) - 0 ^ (2 + 1)) / (((2 : ℕ) : ℝ) + 1) / w ^ 3 : ℝ) = 3⁻¹` using `by push_cast; field_simp; ring`. Rewrite using `[this, ENNReal.ofReal_inv_of_pos (by norm_num)]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 lemma SphereLongitudeCoordinates.radial_pow {w : ℝ} (hw : 0 < w) :
     ∫⁻ ρ in Ioo 0 w, ENNReal.ofReal (ρ ^ 2 / w ^ 3) = 3⁻¹ := by
@@ -154,15 +154,13 @@ lemma SphereLongitudeCoordinates.radial_pow {w : ℝ} (hw : 0 < w) :
   norm_num
 
 /- English proof (translation)
-Establish `hm : Measurable (fun p : ℝ × ℝ => ENNReal.ofReal p.1 * (ENNReal.ofReal (p.1 / Real.sqrt (1 - p.2 ^ 2) ^ 3) * (if p.1 ^ 2 < 1 - p.2 ^ 2 then g p.2 else 0)))`. Use `(by fun_prop : Measurable fun p : ℝ × ℝ => ENNReal.ofReal p.1).mul ((by fun_prop : Measurable fun p : ℝ × ℝ => ENNReal.ofReal (p.1 / Real.sqrt (1 - p.2 ^ 2) ^ 3)).mul (Measurable.ite (measurableSet_lt (by fun_prop) (by fun_prop)) (hg.comp measurable_snd) measurable_const))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun measurableSet_Ioi fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[SphereLongitudeCoordinates.height_subst hρ, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ c in Ioo (-1 : ℝ) 1, ∫⁻ ρ in Ioi (0 : ℝ), ENNReal.ofReal ρ * (ENNReal.ofReal (ρ / Real.sqrt (1 - c ^ 2) ^ 3) * (if ρ ^ 2 < 1 - c ^ 2 then g c else 0)) := lintegral_lintegral_swap hm.aemeasurable`. Use `_ = ∫⁻ c in Ioo (-1 : ℝ) 1, 3⁻¹ * g c := by`. Use `setLIntegral_congr_fun measurableSet_Ioo fun c hc => ?_` and prove the remaining obligations. Establish `hpos : 0 < 1 - c ^ 2` using `by nlinarith [hc.1, hc.2]`. Use `set w := Real.sqrt (1 - c ^ 2) with hwdef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : 0 < w` using `Real.sqrt_pos.2 hpos`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun measurableSet_Ioi fun ρ hρ => ?_` and prove the remaining obligations. Establish `e : ρ ^ 2 < 1 - c ^ 2 ↔ ρ ∈ Iio w`. Rewrite using `[mem_Iio, hwdef, Real.lt_sqrt (le_of_lt hρ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `h : ρ ^ 2 < 1 - c ^ 2`. Rewrite using `[if_pos h, indicator_of_mem (e.1 h), ← mul_assoc, ← ENNReal.ofReal_mul (le_of_lt hρ)]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, indicator_of_notMem (fun h' => h (e.2 h'))]`.
-
-Simplify using the standard rewrite rules. Use `_ = (∫⁻ ρ in Ioi (0 : ℝ), (Iio w).indicator (fun ρ => ENNReal.ofReal (ρ ^ 2 / w ^ 3)) ρ) * g c := lintegral_mul_const _ ((by fun_prop : Measurable fun ρ : ℝ => ENNReal.ofReal (ρ ^ 2 / w ^ 3)).indicator measurableSet_Iio)`. Use `_ = 3⁻¹ * g c := by`. Rewrite using `[setLIntegral_indicator measurableSet_Iio, inter_comm, Ioi_inter_Iio, SphereLongitudeCoordinates.radial_pow hw]`. Use `_ = 3⁻¹ * ∫⁻ c in Ioo (-1 : ℝ) 1, g c := lintegral_const_mul _ hg`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma SphereLongitudeCoordinates.radial (g : ℝ → ℝ≥0∞) (hg : Measurable g) :
     ∫⁻ ρ in Ioi (0 : ℝ), ENNReal.ofReal ρ *
@@ -213,7 +211,7 @@ lemma SphereLongitudeCoordinates.radial (g : ℝ → ℝ≥0∞) (hg : Measurabl
     _ = 3⁻¹ * ∫⁻ c in Ioo (-1 : ℝ) 1, g c := lintegral_const_mul _ hg
 
 /- English proof (translation)
-Unfold `spherePoint`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma SphereLongitudeCoordinates.continuous_spherePoint :
     Continuous fun p : ℝ × ℝ => spherePoint p.1 p.2 := by
@@ -221,7 +219,7 @@ lemma SphereLongitudeCoordinates.continuous_spherePoint :
   fun_prop
 
 /- English proof (translation)
-Establish `h` using `(PiLp.volume_preserving_toLp (Fin 3)).comp ((volume_preserving_piFinSuccAbove (fun _ : Fin 3 => ℝ) 2).symm.comp ((MeasurePreserving.id (volume : Measure ℝ)).prod (volume_preserving_finTwoArrow ℝ).symm))`. Use `h using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `exact Measure.volume_eq_prod _ _`. Consider the case `(funext y; ext i; fin_cases i <;> rfl)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma SphereLongitudeCoordinates.measurePreserving_coords :
     MeasurePreserving (fun y : ℝ × (ℝ × ℝ) => (!₂[y.2.1, y.2.2, y.1] : E3)) := by
@@ -234,23 +232,19 @@ lemma SphereLongitudeCoordinates.measurePreserving_coords :
     | (funext y; ext i; fin_cases i <;> rfl)
 
 /- English proof (translation)
-Use `set C := {x : E3 | 0 < ‖x‖ ∧ ‖x‖ < 1 ∧ ‖x‖⁻¹ • x ∈ s} with hCdef`. Establish `hC : MeasurableSet C` using `(measurableSet_lt measurable_const measurable_norm).inter ((measurableSet_lt measurable_norm measurable_const).inter ((by fun_prop : Measurable fun x : E3 => ‖x‖⁻¹ • x) hs))`. Use `set G : ℝ × ℝ → ℝ≥0∞ := fun p => s.indicator 1 (spherePoint p.1 p.2) with hGdef`. Establish `hG : Measurable G` using `(measurable_one.indicator hs).comp SphereLongitudeCoordinates.continuous_spherePoint.measurable`. Use `set H : (ℝ × ℝ) × ℝ → ℝ≥0∞ := fun w => if w.1.1 ^ 2 + w.2 ^ 2 < 1 then G (w.2 / Real.sqrt (w.1.1 ^ 2 + w.2 ^ 2), w.1.2) else 0 with hHdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH : Measurable H` using `Measurable.ite (measurableSet_lt (by fun_prop) measurable_const) (hG.comp (by fun_prop)) measurable_const`. Establish `hpt : ∀ p ∈ polarCoord.target, ∀ z : ℝ, C.indicator 1 (!₂[p.1 * Real.cos p.2, p.1 * Real.sin p.2, z] : E3) = H (p, z)`. Introduce `p hp z`. Establish `hρ : 0 < p.1` using `hp.1`. Take `⟨hn, hd⟩` from `SphereLongitudeCoordinates.cyl_point hρ p.2 z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : 0 < Real.sqrt (p.1 ^ 2 + z ^ 2)` using `Real.sqrt_pos.2 (by positivity)`. Establish `hlt : Real.sqrt (p.1 ^ 2 + z ^ 2) < 1 ↔ p.1 ^ 2 + z ^ 2 < 1`. Rewrite using `[Real.sqrt_lt' one_pos, one_pow]`. Establish `hmem : (!₂[p.1 * Real.cos p.2, p.1 * Real.sin p.2, z] : E3) ∈ C ↔ p.1 ^ 2 + z ^ 2 < 1 ∧ spherePoint (z / Real.sqrt (p.1 ^ 2 + z ^ 2)) p.2 ∈ s` using `by show 0 < ‖_‖ ∧ ‖_‖ < 1 ∧ ‖_‖⁻¹ • _ ∈ s ↔ _`. Rewrite using `[hn, hd, hlt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨hr, h⟩⟩`. Express the relevant statement in the definitionally equal form `C.indicator 1 _ = if p.1 ^ 2 + z ^ 2 < 1 then s.indicator 1 (spherePoint (z / Real.sqrt (p.1 ^ 2 + z ^ 2)) p.2) else 0`. Apply the tactic sequence `by_cases h1 : p.1 ^ 2 + z ^ 2 < 1 <;>`. Distinguish the cases in `h2 : spherePoint (z / Real.sqrt (p.1 ^ 2 + z ^ 2)) p.2 ∈ s`. Rewrite using `[if_pos h1, indicator_of_mem (hmem.2 ⟨h1, h2⟩), indicator_of_mem h2]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_pos h1, indicator_of_notMem (fun h => h2 (hmem.1 h).2), indicator_of_notMem h2]`. Rewrite using `[if_neg h1, indicator_of_notMem (fun h => h1 (hmem.1 h).1)]`. Rewrite using `[if_neg h1, indicator_of_notMem (fun h => h1 (hmem.1 h).1)]`. Establish `hK : Measurable fun p : ℝ × ℝ => ENNReal.ofReal p.1 * ∫⁻ z, H (p, z)` using `(by fun_prop : Measurable fun p : ℝ × ℝ => ENNReal.ofReal p.1).mul hH.lintegral_prod_right'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `step : volume C = ∫⁻ φ in Ioo (-Real.pi) Real.pi, 3⁻¹ * ∫⁻ c in Ioo (-1 : ℝ) 1, G (c, φ)`. Combine the equalities or inequalities in the displayed calculation. Use `_ = ∫⁻ y : ℝ × (ℝ × ℝ), C.indicator 1 (!₂[y.2.1, y.2.2, y.1] : E3) := (SphereLongitudeCoordinates.measurePreserving_coords.lintegral_comp (measurable_one.indicator hC)).symm`. Use `_ = ∫⁻ q : ℝ × ℝ, ∫⁻ z, C.indicator 1 (!₂[q.1, q.2, z] : E3) := by`. Rewrite using `[Measure.volume_eq_prod, lintegral_prod_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((measurable_one.indicator hC).comp SphereLongitudeCoordinates.measurePreserving_coords.measurable).aemeasurable`. Use `_ = ∫⁻ p in polarCoord.target, ENNReal.ofReal p.1 * ∫⁻ z, H (p, z) := by`. Rewrite using `[← lintegral_comp_polarCoord_symm (fun q : ℝ × ℝ => ∫⁻ z, C.indicator 1 (!₂[q.1, q.2, z] : E3))]`. Use `setLIntegral_congr_fun polarCoord.open_target.measurableSet fun p hp => ?_` and prove the remaining obligations. Simplify using `only [polarCoord_symm_apply, smul_eq_mul]`.
-
-Use `congr 1`. Conclude with `lintegral_congr fun z => hpt p hp z`. Use `_ = ∫⁻ ρ in Ioi (0 : ℝ), ∫⁻ φ in Ioo (-Real.pi) Real.pi, ENNReal.ofReal ρ * ∫⁻ z, H ((ρ, φ), z) := by`. Rewrite using `[polarCoord_target, Measure.volume_eq_prod, ← Measure.prod_restrict, lintegral_prod _ hK.aemeasurable]`. Use `_ = ∫⁻ φ in Ioo (-Real.pi) Real.pi, ∫⁻ ρ in Ioi (0 : ℝ), ENNReal.ofReal ρ * ∫⁻ z, H ((ρ, φ), z) := lintegral_lintegral_swap hK.aemeasurable`.
-
-Use `_ = _ := by`. Use `setLIntegral_congr_fun measurableSet_Ioo fun φ _ => ?_` and prove the remaining obligations. Conclude with `SphereLongitudeCoordinates.radial (fun c => G (c, φ)) (hG.comp (by fun_prop))`. Rewrite using `[step, lintegral_const_mul' _ _ (by simp), ← mul_assoc, ENNReal.mul_inv_cancel (by norm_num) (by norm_num), one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma SphereLongitudeCoordinates.cone_volume {s : Set E3} (hs : MeasurableSet s) :
     3 * volume {x : E3 | 0 < ‖x‖ ∧ ‖x‖ < 1 ∧ ‖x‖⁻¹ • x ∈ s} =
@@ -324,11 +318,11 @@ lemma SphereLongitudeCoordinates.cone_volume {s : Set E3} (hs : MeasurableSet s)
     ENNReal.mul_inv_cancel (by norm_num) (by norm_num), one_mul]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, _, ⟨n, hn, rfl⟩, rfl⟩`. Establish `h1 : ‖(n : E3)‖ = 1` using `by simp`. Establish `hna : ‖a • (n : E3)‖ = a` using `by rw [norm_smul, h1, mul_one, Real.norm_of_nonneg ha.1.le]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨by rw [hna]; exact ha.1, by rw [hna]; exact ha.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hna, smul_smul, inv_mul_cancel₀ ha.1.ne', one_smul]`. Conclude with `hn`. Introduce and unpack `⟨h0, h1, h2⟩`. Establish `hu : ‖x‖⁻¹ • x ∈ Metric.sphere (0 : E3) 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ h0.ne']`. Conclude with `⟨‖x‖, ⟨h0, h1⟩, ‖x‖⁻¹ • x, ⟨⟨_, hu⟩, h2, rfl⟩, smul_inv_smul₀ h0.ne' x⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma SphereLongitudeCoordinates.cone_eq (s : Set E3) :
     Ioo (0 : ℝ) 1 • ((↑) '' ((↑) ⁻¹' s : Set Sphere2) : Set E3) =
@@ -347,20 +341,20 @@ lemma SphereLongitudeCoordinates.cone_eq (s : Set E3) :
     exact ⟨‖x‖, ⟨h0, h1⟩, ‖x‖⁻¹ • x, ⟨⟨_, hu⟩, h2, rfl⟩, smul_inv_smul₀ h0.ne' x⟩
 
 /- English proof (translation)
-Simplify using `[spherePoint, Real.cos_add_two_pi, Real.sin_add_two_pi]`.
+Simplify using the standard rewrite rules.
 -/
 lemma SphereLongitudeCoordinates.spherePoint_add_two_pi (c φ : ℝ) :
     spherePoint c (φ + 2 * Real.pi) = spherePoint c φ := by
   simp [spherePoint, Real.cos_add_two_pi, Real.sin_add_two_pi]
 
 /- English proof (translation)
-Rewrite using `[Measure.toSphere_apply' _ (measurable_subtype_coe hs), finrank_euclideanSpace_fin, SphereLongitudeCoordinates.cone_eq]`. Use `push_cast`. Rewrite using `[SphereLongitudeCoordinates.cone_volume hs]`. Use `set h : ℝ → ℝ≥0∞ := fun φ => ∫⁻ c in Icc (-1 : ℝ) 1, s.indicator 1 (spherePoint c φ) with hh`. Establish `hper : Function.Periodic h (2 * Real.pi)` using `fun φ => by`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hh, SphereLongitudeCoordinates.spherePoint_add_two_pi]`. Establish `: Fact (0 < 2 * Real.pi)` using `⟨by positivity⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show -Real.pi + 2 * Real.pi = Real.pi by ring]`. Rewrite using `[Measure.restrict_congr_set Ioo_ae_eq_Ioc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun φ => ?_` and prove the remaining obligations. Simplify using `only [hh]`. Rewrite using `[Measure.restrict_congr_set Ioo_ae_eq_Icc]`. Use `_ = ∫⁻ b : AddCircle (2 * Real.pi), hper.lift b := by`. Rewrite using `[← AddCircle.lintegral_preimage (2 * Real.pi) (-Real.pi)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `_ = ∫⁻ φ in Ioc 0 (0 + 2 * Real.pi), h φ := by`. Rewrite using `[← AddCircle.lintegral_preimage (2 * Real.pi) 0]`. Both sides reduce to the same expression. Use `_ = _ := by rw [zero_add]`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma SphereLongitudeCoordinates.toSphere_preimage {s : Set E3} (hs : MeasurableSet s) :
     (volume : Measure E3).toSphere ((↑) ⁻¹' s) =
@@ -389,9 +383,9 @@ lemma SphereLongitudeCoordinates.toSphere_preimage {s : Set E3} (hs : Measurable
     _ = _ := by rw [zero_add]
 
 /- English proof (translation)
-Establish `hc` using `SphereLongitudeCoordinates.continuous_spherePoint`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply measurable_subtype_coe hs, SphereLongitudeCoordinates.toSphere_preimage hs, ← lintegral_indicator_one hs, lintegral_map (measurable_one.indicator hs) hc.measurable, Measure.volume_eq_prod, ← Measure.prod_restrict]`. Establish `hm : Measurable fun p : ℝ × ℝ => s.indicator (1 : E3 → ℝ≥0∞) (spherePoint p.1 p.2)` using `(measurable_one.indicator hs).comp hc.measurable`. Rewrite using `[lintegral_prod _ hm.aemeasurable]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(lintegral_lintegral_swap (f := fun c φ => s.indicator (1 : E3 → ℝ≥0∞) (spherePoint c φ)) hm.aemeasurable).symm`.
+A detailed English derivation is pending.
 -/
 lemma SphereLongitudeCoordinates.toSphere_map :
     ((volume : Measure E3).toSphere).map (fun n : Sphere2 => (n : E3)) =
@@ -410,11 +404,11 @@ lemma SphereLongitudeCoordinates.toSphere_map :
     hm.aemeasurable).symm
 
 /- English proof (translation)
-Establish `hc` using `SphereLongitudeCoordinates.continuous_spherePoint`. Establish `hM` using `SphereLongitudeCoordinates.toSphere_map`. Establish `huniv : (volume : Measure E3).toSphere univ = ENNReal.ofReal (4 * Real.pi)`. Use `congrArg (fun μ : Measure E3 => μ univ) hM` as an intermediate fact. Use `beta_reduce at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Measure.map_apply measurable_subtype_coe MeasurableSet.univ, preimage_univ, Measure.map_apply hc.measurable MeasurableSet.univ, preimage_univ, Measure.restrict_apply_univ]`. Rewrite using `[this, Measure.volume_eq_prod, Measure.prod_prod, Real.volume_Icc, Real.volume_Ioc, ← ENNReal.ofReal_mul (by norm_num)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Unfold `SphereLongitudeCoordinates.Statement sphereMeasure`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_smul, hM, huniv]`.
+A detailed English derivation is pending.
 -/
 theorem SphereLongitudeCoordinates.proof : SphereLongitudeCoordinates.Statement := by
   have hc := SphereLongitudeCoordinates.continuous_spherePoint

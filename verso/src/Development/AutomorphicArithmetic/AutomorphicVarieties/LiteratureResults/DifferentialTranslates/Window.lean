@@ -25,7 +25,7 @@ private def geoStab (G : Geo Γ V S d) (s : S) : Geo (stab G s) V Unit d where
   maps γ := G.maps γ.1
 
 /- English proof (translation)
-Introduce `K hK hKc u u'`. Use `((hG K hK hKc s s).preimage (f := fun γ : stab G s => γ.1) Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `γ ⟨-, h⟩`. Conclude with `⟨γ.2, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem geoStab_proper (G : Geo Γ V S d) (hG : G.Proper) (s : S) : (geoStab G s).Proper := by
   intro K hK hKc u u'
@@ -34,9 +34,9 @@ private theorem geoStab_proper (G : Geo Γ V S d) (hG : G.Proper) (s : S) : (geo
   exact ⟨γ.2, h⟩
 
 /- English proof (translation)
-Set `R : Setoid S` to `{ r := fun a b => ∃ γ : Γ, G.σ γ a = b iseqv := ⟨fun a => ⟨1, by simp⟩, fun ⟨γ, h⟩ => ⟨γ⁻¹, by rw [map_inv, Equiv.Perm.inv_eq_iff_eq, h]⟩, fun ⟨γ, h⟩ ⟨δ, h'⟩ => ⟨δ * γ, by rw [map_mul, Equiv.Perm.mul_apply, h, h']⟩⟩ }`. Use `⟨fun s => (Quotient.mk R s).out, fun s => ?_, fun γ s => ?_⟩` and prove the remaining obligations. Take `⟨γ, h⟩ : R.r (Quotient.mk R s).out s` from `Quotient.exact (Quotient.out_eq _)`. Conclude with `⟨γ, by rw [map_inv, Equiv.Perm.inv_eq_iff_eq, h]⟩`. Establish `h : Quotient.mk R s = Quotient.mk R (G.σ γ s)` using `Quotient.sound ⟨γ, rfl⟩ beta_reduce`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_rep (G : Geo Γ V S d) :
     ∃ r : S → S, (∀ s, ∃ δ : Γ, G.σ δ⁻¹ s = r s) ∧ ∀ (γ : Γ) s, r (G.σ γ s) = r s := by
@@ -54,19 +54,15 @@ private theorem exists_rep (G : Geo Γ V S d) :
     rw [← h]
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ _ d G hG`. Take `⟨r, hr, hrr⟩` from `exists_rep G`. Use `choose W hW using fun s => windowOne _ V Unit d (geoStab G s) inferInstance (geoStab_proper G hG s)`. Use `⟨fun s => if r s = s then W s () else ∅, fun s => ?_, fun s p hp => ?_, fun s p hp => ?_⟩` and prove the remaining obligations. Use `beta_reduce split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `(hW s).1 ()`. Conclude with `⟨isOpen_empty, Set.empty_subset _⟩`. Take `⟨δ, hδ⟩` from `hr s`. Take `⟨h, hh⟩` from `(hW (r s)).2.1 () _ (G.maps δ⁻¹ p hp)`. Establish `h1 : G.σ (δ * h.1)⁻¹ s = r s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_inv_rev, map_mul, Equiv.Perm.mul_apply, hδ]`. Conclude with `(h⁻¹).2`. Establish `h2 : r (r s) = r s` using `by conv_lhs => rw [← hδ]`. Conclude with `hrr _ _`. Use `⟨δ * h.1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `beta_reduce`. Rewrite using `[h1, if_pos h2, mul_inv_rev, map_mul]`. Conclude with `hh`. Take `⟨δ, hδ⟩` from `hr s`. Take `⟨N, hN, hfin⟩` from `(hW (r s)).2.2 () _ (G.maps δ⁻¹ p hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨G.ρ δ⁻¹ ⁻¹' N, (G.ρ δ⁻¹).continuous.continuousAt.preimage_mem_nhds hN, (hfin.image fun h => δ * h.1).subset ?_⟩` and prove the remaining obligations. Introduce and unpack `γ ⟨x, hx, hγ⟩`. Use `beta_reduce at hγ`. Use `split_ifs at hγ with h0`. Establish `h1 : G.σ γ⁻¹ s = r s` using `by rw [← h0, hrr]`.
-
-Establish `h2 : δ⁻¹ * γ ∈ stab G (r s)`. Express the relevant statement in the definitionally equal form `G.σ (δ⁻¹ * γ) (r s) = r s`. Establish `h3 : G.σ γ (r s) = s` using `by rw [← h1, map_inv]; simp`. Rewrite using `[map_mul, Equiv.Perm.mul_apply, h3, hδ]`. Use `⟨⟨_, h2⟩, ⟨_, hx, ?_⟩, by simp⟩` and prove the remaining obligations.
-
-Rewrite `hγ` using `[h1]`. Express the relevant statement in the definitionally equal form `G.ρ (δ⁻¹ * γ)⁻¹ (G.ρ δ⁻¹ x) ∈ W (r s) ()`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_rev, inv_inv, mul_inv_cancel_right]`. Conclude with `hγ`. Conclude with `hγ.elim`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem window : Window := by
   intro Γ V S _ _ _ _ d G hG

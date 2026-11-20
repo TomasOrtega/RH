@@ -11,7 +11,7 @@ section Steps
 variable {n' r : ℕ} [NeZero n'] {X : Dat n' r} {p K : ℕ}
 
 /- English proof (translation)
-Unfold `Dat.sumhT`. Use `sum_one_le_prod _ _ fun j _ => sum_one_le_prod _ _ fun x _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `sum_one_le_bin _ _ _`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_one_le_hT (t : Fin n') (v : Fin (r + K) → ℕ) : 1 ≤ X.sumhT p K t v := by
   unfold Dat.sumhT
@@ -21,9 +21,9 @@ theorem sum_one_le_hT (t : Fin n') (v : Fin (r + K) → ℕ) : 1 ≤ X.sumhT p K
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `Dat.laSet`. Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`. Use `⟨fun c => ?_, h2, fun j x hx hpos => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_range]`. Establish `: v c ≤ ∑ c, v c` using `Finset.single_le_sum (f := v) (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[F.uniqP j j0 x x0 hx hx0 hpos]`. Conclude with `⟨h1, h3⟩`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sum_mem_laSet (F : SumFacts X p K) {j0 x0 : ℤ} (hx0 : x0 ∈ X.toLate j0) (v : Fin (r + K) → ℕ)
     (h1 : ∀ c, v c < X.Pz p K j0 x0) (h2 : ∑ c, v c ≤ X.a' p K (posOf n' x0))
@@ -40,9 +40,9 @@ theorem sum_mem_laSet (F : SumFacts X p K) {j0 x0 : ℤ} (hx0 : x0 ∈ X.toLate 
     exact ⟨h1, h3⟩
 
 /- English proof (translation)
-Establish `h0 : (0 : Fin (r + K) → ℕ) ∈ X.laSet p K t`. Unfold `Dat.laSet`. Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`. Use `⟨fun c => by simp, by simp, fun j x hx hpos => ?_⟩` and prove the remaining obligations. Conclude with `absurd (hpos ▸ (sum_late_mem hx).2.2.2) ht`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `Dat.sumSt`. Conclude with `(sum_one_le_hT t 0).trans (Finset.single_le_sum (f := fun v => X.sumhT p K t v) (fun v _ => zero_le_one.trans (sum_one_le_hT t v)) h0)`.
+A detailed English derivation is pending.
 -/
 theorem sum_St_nontop (t : Fin n') (ht : t ∉ X.F.TT) : 1 ≤ X.sumSt p K t := by
   classical
@@ -56,24 +56,22 @@ theorem sum_St_nontop (t : Fin n') (ht : t ∉ X.F.TT) : 1 ≤ X.sumSt p K t := 
     (Finset.single_le_sum (f := fun v => X.sumhT p K t v) (fun v _ => zero_le_one.trans (sum_one_le_hT t v)) h0)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun v _ => zero_le_one.trans (sum_one_le_hT t v)`.
+A detailed English derivation is pending.
 -/
 theorem sum_St_nonneg (t : Fin n') : 0 ≤ X.sumSt p K t :=
   Finset.sum_nonneg fun v _ => zero_le_one.trans (sum_one_le_hT t v)
 
 /- English proof (translation)
-Unfold `Dat.Pz`. Conclude with `pow_pos hp _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Pz_pos (hp : 0 < p) (j x : ℤ) : 0 < X.Pz p K j x := by unfold Dat.Pz; exact pow_pos hp _
 
 /- English proof (translation)
-Establish `hl` using `(F.LLsub _ _ hx0).1`. Establish `hd` using `sum_digit_count (r + K) (X.a' p K (posOf n' x0)) (X.Pz p K (j0.val : ℤ) x0) (by omega) (Pz_pos hp _ _) (X.laSet p K (posOf n' x0)) (fun v h1 h2 h3 => sum_mem_laSet F hl v h1 h2 h3)`. Establish `hd' : sumBin r K (X.a' p K (posOf n' x0)) ≤ ∑ v ∈ X.laSet p K (posOf n' x0), sumBin r K ((X.a' p K (posOf n' x0) - ∑ c, v c) / X.Pz p K (j0.val : ℤ) x0)`. Unfold `sumBin`. Conclude with `hd` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `hd'.trans (Finset.sum_le_sum fun v _ => ?_)` and prove the remaining obligations. Unfold `Dat.sumhT`. Establish `hin : ∀ j : Fin X.F.J, ∀ x ∈ X.F.LLset (j.val : ℤ), (1 : ℝ) ≤ (if posOf n' x = posOf n' x0 then sumBin r K ((X.a' p K (posOf n' x0) - ∑ c, v c) / X.Pz p K (j.val : ℤ) x) else 1)`. Introduce `j x _`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sum_one_le_bin _ _ _`. Conclude with `le_rfl`. Establish `s1` using `sum_single_le_prod (X.F.LLset (j0.val : ℤ)) (fun x => if posOf n' x = posOf n' x0 then sumBin r K ((X.a' p K (posOf n' x0) - ∑ c, v c) / X.Pz p K (j0.val : ℤ) x) else 1) (hin j0) hx0`. Establish `s2` using `sum_single_le_prod (Finset.univ : Finset (Fin X.F.J)) (fun j => ∏ x ∈ X.F.LLset (j.val : ℤ), if posOf n' x = posOf n' x0 then sumBin r K ((X.a' p K (posOf n' x0) - ∑ c, v c) / X.Pz p K (j.val : ℤ) x) else 1) (fun j _ => sum_one_le_prod _ _ (hin j)) (Finset.mem_univ j0)`. Simplify using `only [if_true] at s1`.
-
-Conclude with `s1.trans s2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_St_LL (F : SumFacts X p K) (hr : 0 < r) (hp : 0 < p) (j0 : Fin X.F.J) {x0 : ℤ}
     (hx0 : x0 ∈ X.F.LLset (j0.val : ℤ)) :
@@ -105,9 +103,9 @@ theorem sum_St_LL (F : SumFacts X p K) (hr : 0 < r) (hp : 0 < p) (j0 : Fin X.F.J
   exact s1.trans s2
 
 /- English proof (translation)
-Establish `hl` using `F.frlate j0 i`. Establish `hd` using `sum_label_count (r + K) (X.a' p K (posOf n' (X.F.fr j0 i.val))) (X.Pz p K j0 (X.F.fr j0 i.val)) (by omega) (Pz_pos hp _ _) (F.kP _ _ hl) (X.laSet p K (posOf n' (X.F.fr j0 i.val))) (fun v h1 h2 h3 => sum_mem_laSet F hl v h1 h2 h3)`. Establish `hd' : ((X.Pz p K j0 (X.F.fr j0 i.val) : ℕ) : ℝ) ^ (r + K - 1) ≤ ((X.laSet p K (posOf n' (X.F.fr j0 i.val))).card : ℝ)` using `by exact_mod_cast hd`. Use `hd'.trans ?_` and prove the remaining obligations. Unfold `Dat.sumSt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_St_fr (F : SumFacts X p K) (hr : 0 < r) (hp : 0 < p) (j0 : ℤ) (i : Fin r) :
     ((X.Pz p K j0 (X.F.fr j0 i.val) : ℕ) : ℝ) ^ (r + K - 1) ≤ X.sumSt p K (posOf n' (X.F.fr j0 i.val)) := by
@@ -125,9 +123,9 @@ theorem sum_St_fr (F : SumFacts X p K) (hr : 0 < r) (hp : 0 < p) (j0 : ℤ) (i :
     _ ≤ _ := Finset.sum_le_sum fun v _ => sum_one_le_hT _ v
 
 /- English proof (translation)
-Unfold `Dat.sumSt`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun la _ => ?_` and prove the remaining obligations. Unfold `Dat.sumhT`. Rewrite using `[Finset.prod_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ite_eq]`. Simplify using `[Dat.nz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_LA :
     ∑ la ∈ X.LA p K, ∏ j : Fin X.F.J, ∏ x ∈ X.F.LLset (j.val : ℤ), sumBin r K (X.nz p K la (j.val : ℤ) x) =
@@ -145,7 +143,7 @@ theorem sum_LA :
   simp [Dat.nz]
 
 /- English proof (translation)
-Use `⟨by nlinarith, mul_nonneg hP0 (by linarith), by nlinarith⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sub_le_mul_one_sub_and_mem_unit_interval {P c s : ℝ} (hP0 : 0 ≤ P) (hP1 : P ≤ 1) (hc0 : 0 ≤ c) (hc1 : c ≤ 1) (hs : s ≤ P) :
     s - c ≤ P * (1 - c) ∧ 0 ≤ P * (1 - c) ∧ P * (1 - c) ≤ 1 := by

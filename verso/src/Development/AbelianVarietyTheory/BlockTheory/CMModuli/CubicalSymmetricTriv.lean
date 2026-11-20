@@ -79,7 +79,7 @@ structure IsCubSymIso (m : CubeMap G' G) (L' : CubSym G') (L : CubSym G)
         isoV w z J' J (ψ ≫ (ι[G']).left) * val (L := L'.L.L) L'.sym ψ z J'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨w, h.gen, h.rig, h.cub⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCubSymIso.isPullCubical {m : CubeMap G' G} {L' : CubSym G'} {L : CubSym G}
     {w : LB.Iso L'.L.L (L.L.L.pull m.F)} (h : IsCubSymIso m L' L w) :
@@ -111,9 +111,9 @@ structure IsBiextTriv {L : RigLB G} (c : CubicalStr G L) (i : H ⟶ G) [IsMonHom
       cubV c z J (t ≫ i) x x' * lamV s z J t x * lamV s z J t x'
 
 /- English proof (translation)
-Establish `a` using `h.law₁ T z J hJ 1 1 x`. Establish `b` using `h.law₂ T z J hJ t 1 1`. Establish `e : (1 : T ⟶ H) ≫ i = 1` using `by simp [Hom.one_def]`. Rewrite `a` using `[e, (isCub_cubV c hJ).face, _root_.mul_one, _root_.one_mul]`. Rewrite `b` using `[(isCub_cubV c hJ).face₃, _root_.mul_one, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨left_eq_mul.1 a, left_eq_mul.1 b⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsBiextTriv.axes {L : RigLB G} {c : CubicalStr G L} {i : H ⟶ G} [IsMonHom i]
     {s : LB.Gen (lamOn i L.L)} (h : IsBiextTriv c i s) {T : Over S} {z : T.left}
@@ -183,15 +183,13 @@ def IsPairing (N : ℕ) {T : Over S} (x x' : T ⟶ G) (e : Γ(T.left, ⊤)ˣ) : 
       cubN (cubV c z J) N 1 (ρ ≫ x') (ρ ≫ x)
 
 /- English proof (translation)
-Take `⟨u, hu, hv⟩` from `exists_cubN c 1 x' x N`. Take `⟨u', hu', hv'⟩` from `exists_cubN c 1 x x' N`. Take `⟨t, -, ht⟩` from `exists_gen L.isLB (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Rewrite using `[hx, hx', mul_comm x' x]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[Fin.prod_univ_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use the proof step `module)`. Use the proof step `(LB.mulGen L.L _ _ _ _ u (LB.invGen L.L _ _ u'))`. Use the proof step `(ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ _ hu (ReciprocityTheory.ChartRestriction.G.DVR.invGen_isGen _ _ _ _ hu'))`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `le : (⊤ : T.left.Opens) ≤ LB.wchart L.L (PEmpty.elim : PEmpty → (T.left ⟶ G.left)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨res le (t.s PEmpty.elim), ⟨hx, hx', fun T' ρ z J hJ => ?_⟩, fun e ⟨_, _, he⟩ => ?_⟩` and prove the remaining obligations. Establish `e1 : ρ ≫ (1 : T ⟶ G) = 1` using `map_one (preHom ρ)`. Establish `a` using `ht _ ρ.left z J hJ`. Rewrite `a` using `[val_mul hJ, val_inv, hv T' ρ z J hJ, hv' T' ρ z J hJ, e1, val_of t ρ.left z J PEmpty.elim (fun k => k.elim)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg (· * _) ((gm_res ρ.left z le trivial _).trans a)).trans (inv_mul_cancel_right _ _)`. Use `unit_ext fun y _ => ?_ choose J hJ using fun χ : T.left ⟶ G.left => exists_chart L.isLB (χ y)` and prove the remaining obligations. Establish `e1 : 𝟙 T ≫ (1 : T ⟶ G) = 1` using `Category.id_comp _`. Establish `a` using `ht _ (𝟙 T : T ⟶ T).left y J hJ`. Rewrite `a` using `[val_mul hJ, val_inv, hv T (𝟙 T) y J hJ, hv' T (𝟙 T) y J hJ, e1, val_of t _ y J PEmpty.elim (fun k => k.elim), ← he T (𝟙 T) y J hJ, mul_inv_cancel_right]`.
-
-Conclude with `a.symm.trans (gm_res _ y le trivial _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_isPairing (N : ℕ) {T : Over S} (x x' : T ⟶ G) (hx : x ^ N = 1)
     (hx' : x' ^ N = 1) : ∃! e, IsPairing c N x x' e := by
@@ -226,7 +224,7 @@ def pairing (N : ℕ) {T : Over S} (x x' : T ⟶ G) (hx : x ^ N = 1) (hx' : x' ^
     Γ(T.left, ⊤)ˣ := (existsUnique_isPairing c N x x' hx hx').exists.choose
 
 /- English proof (translation)
-The claim follows from `(existsUnique_isPairing c N x x' hx hx').exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isPairing_pairing (N : ℕ) {T : Over S} (x x' : T ⟶ G) (hx : x ^ N = 1) (hx' : x' ^ N = 1) :
     IsPairing c N x x' (pairing c N x x' hx hx') :=
@@ -281,9 +279,9 @@ def IsWeightBundle (i : splitTorus S X ⟶ G) (q : G ⟶ B) (χ : X) (N : LB B.l
   N.IsLB ∧ ∃ u, IsWeightGen i χ N (K := PUnit) (fun _ => q.left) (fun _ => -1) u
 
 /- English proof (translation)
-Introduce `T z t x hx`. Use `h.q_hom` as an intermediate fact. Establish `e : ((t ≫ i) * x) ≫ q = x ≫ q`. Rewrite using `[MonObj.mul_comp, Category.assoc, h.isKernel.w, ← Category.assoc, comp_toUnit, ← Hom.one_def, _root_.one_mul]`. Establish `e' : (((t ≫ i) * x) ≫ q).left z ∈ V` using `by rw [e]; exact hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e'`.
+A detailed English derivation is pending.
 -/
 theorem IsTorusExt.isStable {i : splitTorus S X ⟶ G} {q : G ⟶ B} (h : IsTorusExt i q)
     (V : B.left.Opens) : IsStable i (q.left ⁻¹ᵁ V) := by
@@ -307,7 +305,7 @@ def trivGen {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Z ⟶ Y)) (ε
     LB.Gen (LB.LinComb (trivLB Y) φ ε) := ⟨fun _ => 1⟩
 
 /- English proof (translation)
-Introduce `_ _` and use `(map_one _).trans ((congrArg₂ (· * ·) (Finset.prod_eq_one fun _ _ => (congrArg (· ^ _) ((congrArg _ (map_one _)).trans (map_one _))).trans (one_zpow _)) (map_one _)).trans (_root_.mul_one _)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivGen_isGen {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Z ⟶ Y)) (ε : K → ℤ) :
     (trivGen φ ε).IsGen := fun _ _ =>
@@ -316,7 +314,7 @@ theorem trivGen_isGen {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Z �
     (map_one _)).trans (_root_.mul_one _)).symm
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem val_trivGen {Y Z W : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Z ⟶ Y)) (ε : K → ℤ)
     (r : W ⟶ Z) (z : W) (J) : val (trivGen φ ε) r z J = 1 := map_one _
@@ -354,9 +352,9 @@ def trivCubSym : CubSym G where
     exact (val_trivGen _ _ _ _ _).trans (val_trivGen _ _ _ _ _).symm
 
 /- English proof (translation)
-Establish `a : ∀ (T : Over S) z J (x y w : T ⟶ G), cubV (trivCubSym G).cub z J x y w = 1` using `fun _ _ _ _ _ _ => val_trivGen _ _ _ _ _`. Establish `b : ∀ (T : Over S) z J t (x : T ⟶ G), lamV (i` using `i) (L := (trivCubSym G).L.L) (trivGen _ _) z J t x = 1 := fun _ _ _ _ _ => val_trivGen _ _ _ _ _`. Establish `c : ∀ (T : Over S) z J (t : T ⟶ H), trivV (i` using `i) (L := (trivCubSym G).L.L) (trivGen _ _) z J t = 1 := fun _ _ _ _ => val_trivGen _ _ _ _ _`. Use `⟨⟨trivGen_isGen _ _, fun T z J _ t t' x => by simp only [a, b, _root_.mul_one], fun T z J _ t x x' => by simp only [a, b, _root_.mul_one]⟩, ⟨trivGen_isGen _ _, fun T z J _ => (c _ _ _ _).trans (val_trivGen _ _ _ _ _).symm, fun T z J _ t t' t'' => by simp only [thirdDiff, a, c, in …` and prove the remaining obligations. Rewrite using `[c, c, _root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(val_trivGen _ _ _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 example {H : Over S} [GrpObj H] [IsCommMonObj H] (i : H ⟶ G) [IsMonHom i] :
     IsBiextTriv (trivCubSym G).cub i (trivGen _ _) ∧ IsCubTriv (trivCubSym G).cub i (trivGen _ _) ∧
@@ -378,7 +376,7 @@ example {H : Over S} [GrpObj H] [IsCommMonObj H] (i : H ⟶ G) [IsMonHom i] :
   exact (val_trivGen _ _ _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `inferInstance finite := inferInstance comm := have := hB.comm; inferInstance abelian := hB i_hom := by simp only [Hom.one_def]; infer_instance q_hom := inferInstance isKernel := ⟨⟨by simp [Hom.one_def]⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => s.fst ≫ fst _ _) (fun s => by have := s …`.
+A detailed English derivation is pending.
 -/
 example (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     [IsCommMonObj (splitTorus S X)] (B : Over S) [GrpObj B] [hB : IsAbelianScheme B] :

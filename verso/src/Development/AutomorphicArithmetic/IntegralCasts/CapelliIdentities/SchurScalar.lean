@@ -17,19 +17,17 @@ noncomputable def UpperTheory.Reformulated.B.Qi17.IsIrr :
     fun {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) ↦ UpperTheory.Reformulated.B.Qi17.IsIrrSub r ⊤
 
 /- English proof (translation)
-Introduce `Γ k _ _ _ n r hr g hg`. Take `⟨hne, -, hmin⟩` from `hr`. Use `haveI : Nontrivial (Fin n → k) := by`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (Subsingleton.elim _ _)`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' (g : Matrix (Fin n) (Fin n) k))`. Establish `hinv : UpperTheory.Reformulated.B.Qi17.IsInv r (Module.End.eigenspace (Matrix.toLin' (g : Matrix (Fin n) (Fin n) k)) c)`. Introduce `s v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (g : Matrix (Fin n) (Fin n) k) * (r s : Matrix (Fin n) (Fin n) k) = (r s : Matrix (Fin n) (Fin n) k) * (g : Matrix (Fin n) (Fin n) k)`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hg s]`. Rewrite using `[Matrix.mulVec_mulVec, h, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_smul]`. Establish `htop` using `(hmin _ le_top hinv).resolve_left hc`. Establish `hgc : (g : Matrix (Fin n) (Fin n) k) = c • (1 : Matrix (Fin n) (Fin n) k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv : v ∈ Module.End.eigenspace (Matrix.toLin' (g : Matrix (Fin n) (Fin n) k)) c`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hv` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hv, Matrix.toLin'_apply, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hgc` using `[zero_smul]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `exists_ne (0 : Fin n → k)`. Apply `hv` to reduce the goal to its premises. Establish `h1 : (1 : Matrix (Fin n) (Fin n) k) = 0`. Rewrite using `[← g.mul_inv, hgc, zero_mul]`. Rewrite using `[← Matrix.one_mulVec v, h1, Matrix.zero_mulVec]`.
-
-Conclude with `⟨Units.mk0 c hc0, hgc⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi17.schur_scalar :
     ∀ {Γ k : Type} [inst : Group Γ] [inst_1 : Field k] [IsAlgClosed k] {n : ℕ} (r : Γ →* GL (Fin n) k),

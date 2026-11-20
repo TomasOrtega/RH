@@ -30,9 +30,9 @@ noncomputable section
 namespace GlobalTheory.SiegelWeilMean
 
 /- English proof (translation)
-Distinguish the cases in `h0 : μ S = 0`. Rewrite using `[h0, zero_mul, setLIntegral_measure_zero _ _ h0]`. Establish `h1 : (μ S).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨h0, hS.ne⟩`. Unfold `meanC at h`. Use `beta_reduce at h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[integral_complex_ofReal, integral_toReal hG.aemeasurable (ae_lt_top hG hfin.ne), Complex.real_smul]`. Establish `h2 : (μ S).toReal⁻¹ * (∫⁻ a in S, G a ∂μ).toReal = c` using `by exact_mod_cast h`. Rewrite using `[← h2, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_toReal hfin.ne, ← mul_assoc, ENNReal.ofReal_inv_of_pos (by positivity), ENNReal.ofReal_toReal hS.ne, ENNReal.mul_inv_cancel h0 hS.ne, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_eq_of_meanC {α : Type} [MeasurableSpace α] (μ : Measure α) (S : Set α) (hS : μ S < ⊤)
     (G : α → ENNReal) (hG : Measurable G) (hfin : ∫⁻ a in S, G a ∂μ < ⊤) (c : ℝ)
@@ -49,13 +49,11 @@ theorem lintegral_eq_of_meanC {α : Type} [MeasurableSpace α] (μ : Measure α)
     ENNReal.ofReal_inv_of_pos (by positivity), ENNReal.ofReal_toReal hS.ne, ENNReal.mul_inv_cancel h0 hS.ne, one_mul]
 
 /- English proof (translation)
-Take `⟨_, _, _, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Use `haveI : ∀ v, (Formalism.REAL.muG (I.ε v)).IsHaarMeasure := fun v => by unfold Formalism.REAL.muG; infer_instance`. Use `haveI : (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure := Measure.pi.isHaarMeasure _`. Use `haveI : (I.muA μf).IsHaarMeasure := Measure.prod.instIsHaarMeasure _ _`. Use `haveI : BorelSpace I.GA := inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (HA (AF I.F) I.cm.sig I.J) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (HA (AF I.F) I.cm.sig I.J) := inferInstance`. Take `⟨Γ, hΓ, -, -, hF⟩` from `GlobalTheory.RatDiscrete.rational_points I`. Set `e : HA (AF I.F) I.cm.sig I.J ≃ᵐ I.GA` to `T.toHomeomorph.toMeasurableEquiv`. Establish `hp : MeasurePreserving e ((I.muA μf).map e.symm) (I.muA μf)` using `(MeasurePreserving.symm e.symm ⟨e.symm.measurable, rfl⟩ :)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Establish `hmem : ∀ g : Γ, (show HR (AF I.F) I.cm.sig I.J from T.symm g) ∈ HFinIn (AF I.F) I.cm.sig I.J` using `fun g => by`. Use `(hT (T.symm g)).2 ?_` and prove the remaining obligations. Establish `: T (T.symm g) = g` using `T.apply_symm_apply _`. Conclude with `this.symm ▸ (hΓ ▸ g.2 : g.1 ∈ I.GFset)`. Use `⟨(I.muA μf).map e.symm, e ⁻¹' fund, T.symm.isHaarMeasure_map _, ?_, e.measurable, hp.measure_preimage_equiv _, fun f => hp.setLIntegral_comp_preimage_emb e.measurableEmbedding f _⟩` and prove the remaining obligations.
-
-Use `(hF μf fund hfund).preimage_of_equiv hp.quasiMeasurePreserving (e := fun g => ⟨T.symm g, hmem g⟩) ⟨fun a b hab => ?_, fun b => ?_⟩ fun g x => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (T.symm.injective (congrArg Subtype.val hab))`. Conclude with `⟨⟨T b.1, by rw [← SetLike.mem_coe, hΓ]; exact (hT _).1 b.2⟩, Subtype.ext (T.symm_apply_apply _)⟩`. Express the relevant statement in the definitionally equal form `T (T.symm g * x) = g * T x`. Rewrite using `[map_mul, T.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transport (I : AutInst) (T : HA (AF I.F) I.cm.sig I.J ≃ₜ* I.GA)
     (hT : ∀ h, (show HR (AF I.F) I.cm.sig I.J from h) ∈ HFinIn (AF I.F) I.cm.sig I.J ↔ T h ∈ I.GFset)
@@ -88,17 +86,17 @@ theorem exists_transport (I : AutInst) (T : HA (AF I.F) I.cm.sig I.J ≃ₜ* I.G
     rw [map_mul, T.apply_symm_apply]
 
 /- English proof (translation)
-Establish `hout : ∀ u ∉ hm.toFinset, m u = 0` using `fun u hu => by simpa using hu`. Establish `h1 : HasProd (fun u => (q u ^ m u) ^ ((1 / 2 : ℝ) - (n : ℝ))) (∏ u ∈ hm.toFinset, (q u ^ m u) ^ ((1 / 2 : ℝ) - (n : ℝ)))` using `hasProd_prod_of_ne_finset_one fun u hu => by simp [hout u hu]`. Establish `h2 : ∏ u ∈ hm.toFinset, (q u ^ m u) ^ ((1 / 2 : ℝ) - (n : ℝ)) = ((2 * w) ^ f * ∏ v, |lam v|) ^ ((1 / 2 : ℝ) - (n : ℝ))`. Rewrite using `[Real.finset_prod_rpow _ _ fun u _ => (zpow_pos (hq u) _).le, ← hp, finprod_eq_prod_of_mulSupport_subset _ (s := hm.toFinset)]`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `hu (by simp [hout u h])`. Establish `h3` using `(h1.mul ha).map Complex.ofRealHom Complex.continuous_ofReal`. Establish `h4 : ∏' u, (((q u ^ m u) ^ ((1 / 2 : ℝ) - (n : ℝ)) * a u : ℝ) : ℂ) = _` using `h3.tprod_eq`. Rewrite using `[h4, h2, Complex.ofRealHom_eq_coe, ← Complex.ofReal_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hl : 0 < ∏ v, |lam v|` using `Finset.prod_pos fun v _ => abs_pos.2 (hlam v)`. Establish `h5 : (∏ v, |lam v|) ^ ((n : ℝ) - 1 / 2) * (∏ v, |lam v|) ^ ((1 / 2 : ℝ) - (n : ℝ)) = 1`. Rewrite using `[← Real.rpow_add hl]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h6 : ((2 * w) ^ f) ^ ((1 / 2 : ℝ) - (n : ℝ)) = (2 * w) ^ ((f : ℝ) / 2) * ((2 * w) ^ (n * f))⁻¹`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by positivity), ← Real.rpow_natCast (2 * w) (n * f), ← Real.rpow_neg (by positivity), ← Real.rpow_add (by positivity)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hf, Real.finset_prod_rpow _ _ fun v _ => abs_nonneg _, Real.mul_rpow (by positivity) hl.le, h6, mul_pow, pow_mul 2]`. Establish `: (2 ^ n : ℝ) ^ f ≠ 0` using `by positivity`. Establish `h7 : (∏ v, |lam v|) ^ ((1 / 2 : ℝ) - (n : ℝ)) = ((∏ v, |lam v|) ^ ((n : ℝ) - 1 / 2))⁻¹` using `eq_inv_of_mul_eq_one_right h5`. Establish `: (∏ v, |lam v|) ^ ((n : ℝ) - 1 / 2) ≠ 0` using `by positivity`. Rewrite using `[h7]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem const_eq {ι κ : Type} [Fintype κ] (q : ι → ℝ) (hq : ∀ u, 0 < q u) (m : ι → ℤ)
     (hm : (Function.support m).Finite) (a : ι → ℝ) (Lv : ℝ) (ha : HasProd a Lv⁻¹) (lam g : κ → ℝ)
@@ -144,7 +142,7 @@ def term (I : AutInst) (x : I.GA) (y : Fin I.n → I.E) : ℝ :=
   if y ∈ lamX I x then ∏ v, gauss (((uMat (x.1 v))⁻¹ * (I.P v)⁻¹) *ᵥ fun i => I.φ v (y i)) else 0
 
 /- English proof (translation)
-Unfold `term`. Use `split_ifs`. Conclude with `Finset.prod_nonneg fun v _ => (gauss_pos _).le`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem term_nonneg (I : AutInst) (x : I.GA) (y : Fin I.n → I.E) : 0 ≤ term I x y := by
   unfold term
@@ -153,9 +151,9 @@ theorem term_nonneg (I : AutInst) (x : I.GA) (y : Fin I.n → I.E) : 0 ≤ term 
   · exact le_rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `GlobalTheory.StabUnfold.gaussAt_meas_inv I y`. Establish `e : (fun x : I.GA => ENNReal.ofReal (term I x y)) = fun x => if x.2 ∈ {h : I.Gf | y ∈ lamX I (1, h)} then ∏ v, ENNReal.ofReal (gauss ((uMat (x.1 v))⁻¹ *ᵥ GlobalTheory.StabUnfold.infVec I v y)) else 0`. Use function extensionality and compare the values at `x`. Unfold `term`. Distinguish the cases in `h : y ∈ lamX I x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos (show x.2 ∈ {h : I.Gf | y ∈ lamX I (1, h)} from h), ENNReal.ofReal_prod_of_nonneg fun v _ => (gauss_pos _).le]`. Simplify using `only [GlobalTheory.StabUnfold.infVec, Matrix.mulVec_mulVec]`. Rewrite using `[if_neg h, if_neg (show ¬ x.2 ∈ {h : I.Gf | y ∈ lamX I (1, h)} from h), ENNReal.ofReal_zero]`. Rewrite using `[e]`. Conclude with `Measurable.ite (measurable_snd h1.measurableSet) (Finset.measurable_prod _ fun v _ => (h2 v).comp ((measurable_pi_apply v).comp measurable_fst)) measurable_const`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_term (I : AutInst) (y : Fin I.n → I.E) :
     Measurable fun x : I.GA => ENNReal.ofReal (term I x y) := by
@@ -175,13 +173,13 @@ theorem measurable_term (I : AutInst) (y : Fin I.n → I.E) :
     (Finset.measurable_prod _ fun v _ => (h2 v).comp ((measurable_pi_apply v).comp measurable_fst)) measurable_const
 
 /- English proof (translation)
-Establish `e0 : ∀ i, (h⁻¹ • ratTup (F` using `I.F) (AF I.F) X) 0 i = ∑ j, (HA.mat (AF I.F) I.cm.sig I.J h⁻¹).1 i j * ((1 : AF I.F) ⊗ₜ[I.F] X 0 j) := fun i => rfl`. Establish `e1 : projFin (h⁻¹ • ratTup (F` using `I.F) (AF I.F) X) 0 ∈ Formalism.MainNotions.StandardLattice.latHat I.F I.E (I.L : Set (Fin I.n → I.E)) ↔ X 0 ∈ lamX I (T h) := by`. Rewrite using `[GlobalTheory.T.mem_adelicLatticeClosure_iff_swap_mem_span, (GlobalTheory.PointLattice.lamX_selfDual I (T h)).1, show (T h).2⁻¹ = (T h⁻¹).2 by rw [map_inv]; rfl, hf]`. Use `iff_of_eq (congrArg (· ∈ I.Lf) (funext fun i => ?_))` and prove the remaining obligations. Simplify using `only [projFin, e0, map_sum, map_mul, Algebra.TensorProduct.map_tmul, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `e2 : ∀ v, ((I.P v)⁻¹ *ᵥ fun i => θ v (projInf (h⁻¹ • ratTup (F` using `I.F) (AF I.F) X) 0 i)) = ((uMat ((T h).1 v))⁻¹ * (I.P v)⁻¹) *ᵥ fun i => I.φ v (X 0 i) := fun v => by`. Rewrite using `[GlobalTheory.StabUnfold.uMat_inv_eq, show ((T h).1 v)⁻¹ = (T h⁻¹).1 v by rw [map_inv]; rfl, hi, Matrix.mul_nonsing_inv_cancel_right _ _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)), ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [projInf, e0, map_sum, map_mul, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply, (hθ v).1]`. Both sides reduce to the same expression. Unfold `term`. Distinguish the cases in `hx : X 0 ∈ lamX I (T h)`. Rewrite using `[if_pos hx, Set.indicator_of_mem (by exact e1.2 hx), Pi.one_apply, mul_one]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e2]`. Rewrite using `[if_neg hx, Set.indicator_of_notMem (by exact fun h' => hx (e1.1 h')), mul_zero, Complex.ofReal_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem test_eq_term (I : AutInst) (θ : InfinitePlace I.F → (Ainf I.F ⊗[I.F] I.E →+* ℂ))
     (hθ : ∀ v, Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) (θ v)) (T : HA (AF I.F) I.cm.sig I.J ≃ₜ* I.GA)

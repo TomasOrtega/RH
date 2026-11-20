@@ -19,23 +19,23 @@ noncomputable def euclideanLineIsometry : EuclideanSpace ℂ (Fin 1) ≃ₗᵢ[�
     simp
 
 /- English proof (translation)
-Use `⟨Real.pi⁻¹, inv_pos.mpr Real.pi_pos, fun f ρ r hf hr => ?_⟩` and prove the remaining obligations. Use `set S : Set ℂ := Set.Ioc (ρ.re - r) (ρ.re + r) ×ℂ Set.Ioc (ρ.im - r) (ρ.im + r) with hS`. Establish `hcont : Continuous fun z => ‖f z‖ ^ 2` using `hf.continuous.norm.pow 2`. Establish `hSsub : S ⊆ Metric.closedBall ρ (2 * r)`. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hS, Complex.mem_reProdIm, Set.mem_Ioc] at hz`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm]`. Establish `h` using `Complex.norm_le_abs_re_add_abs_im (z - ρ)`. Simplify using `only [Complex.sub_re, Complex.sub_im] at h`. Establish `h1 : |z.re - ρ.re| ≤ r` using `abs_le.mpr ⟨by linarith, by linarith⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : |z.im - ρ.im| ≤ r` using `abs_le.mpr ⟨by linarith, by linarith⟩`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : IntegrableOn (fun z => ‖f z‖ ^ 2) S` using `(hcont.continuousOn.integrableOn_compact (isCompact_closedBall ρ (2 * r))).mono_set hSsub`. Establish `hball : Metric.ball ρ r ⊆ S`. Introduce `z hz`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[Metric.mem_ball, dist_eq_norm]`. Establish `h1` using `Complex.abs_re_le_norm (z - ρ)`. Establish `h2` using `Complex.abs_im_le_norm (z - ρ)`. Simplify using `only [Complex.sub_re, Complex.sub_im] at h1 h2`. Establish `a1` using `abs_lt.mp (lt_of_le_of_lt h1 hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `abs_lt.mp (lt_of_le_of_lt h2 hz)`. Simplify using `only [hS, Complex.mem_reProdIm, Set.mem_Ioc]`. Conclude with `⟨⟨by linarith, by linarith⟩, by linarith, by linarith⟩`. Establish `hv` using `volume_ball_complex ρ hr`. Simplify using `only [Module.finrank_self, pow_one, mul_one, Nat.factorial_one, Nat.cast_one, div_one] at hv`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hvr : volume.real (Metric.ball ρ r) = Real.pi * r ^ 2`. Rewrite using `[measureReal_def, hv, ENNReal.toReal_ofReal (by positivity)]`. Establish `key` using `norm_pow_le_inv_measure_mul_integral_ball volume (a := ρ) hr hf.differentiableOn 2 (integrableOn_norm_pow_ball volume (a := ρ) hf.continuous.continuousOn 2)`. Rewrite `key` using `[hvr]`. Establish `hmono : ∫ z in Metric.ball ρ r, ‖f z‖ ^ 2 ≤ ∫ z in S, ‖f z‖ ^ 2` using `setIntegral_mono_set hint (Filter.Eventually.of_forall fun z => by positivity) hball.eventuallyLE`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `Complex.volume_preserving_equiv_real_prod.symm`. Establish `he` using `Complex.measurableEquivRealProd.symm.measurableEmbedding`. Establish `hpre : Complex.measurableEquivRealProd.symm ⁻¹' S = Set.Ioc (ρ.re - r) (ρ.re + r) ×ˢ Set.Ioc (ρ.im - r) (ρ.im + r)`. Use extensionality with `p`. Simplify using `[hS, Complex.measurableEquivRealProd_symm_apply, Complex.mem_reProdIm]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint'` using `(hp.integrableOn_comp_preimage he).mpr hint`. Rewrite `hint'` using `[hpre, Measure.volume_eq_prod]`. Establish `hiter : ∫ z in S, ‖f z‖ ^ 2 = ∫ σ in (ρ.re - r)..(ρ.re + r), ∫ t in (ρ.im - r)..(ρ.im + r), ‖f (σ + t * I)‖ ^ 2`. Rewrite using `[← hp.setIntegral_preimage_emb he (fun z => ‖f z‖ ^ 2) S, hpre, Measure.volume_eq_prod, setIntegral_prod (fun x => ‖f (Complex.measurableEquivRealProd.symm x)‖ ^ 2) hint', intervalIntegral.integral_of_le (by linarith)]`. Use `setIntegral_congr_fun measurableSet_Ioc fun σ _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[intervalIntegral.integral_of_le (by linarith)]`. Simplify using `[Complex.measurableEquivRealProd_symm_apply, Complex.mk_eq_add_mul_I]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_sq_le_integral_square :
     ∃ C : ℝ, 0 < C ∧ ∀ (f : ℂ → ℂ) (ρ : ℂ) (r : ℝ), Differentiable ℂ f → 0 < r →

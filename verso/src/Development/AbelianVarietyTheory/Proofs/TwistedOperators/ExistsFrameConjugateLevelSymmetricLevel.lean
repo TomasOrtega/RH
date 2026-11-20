@@ -17,21 +17,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SeeConjRead
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h hIs hGrp ψ0 hψ0`. Take `⟨β, hβ, hred⟩` from `GlobalTheory.T.exists_frame_reduction_eq_flagBasis_otherInstance R F X h hIs hGrp`. Take `⟨ψ', a, hψ', hchi⟩` from `GlobalTheory.T.conjCharacter_eq_prod_symmetricEdge_characters_alt R F X h hIs hGrp β hβ hred`. Establish `hsc : ∀ PP ∈ R.Pg, ∃ d : Fin D.R.r → (kP PP)ˣ, ∀ u : GL (Fin D.R.r) (kP PP), u ∈ unipSym (kP PP) D.R.r D.R.rS D.R.k → ψ' PP (∑ i, ∑ j, if symEdge D.R.rS D.R.k i j then (a PP i j : kP PP) * u.val i j else 0) = ψ0 PP (edgeSum (symEdge D.R.rS D.R.k) ((diagGL d)⁻¹ * u * diagGL d))` using `fun PP hP => GlobalTheory.T.exists_diagonal_conj_edgeSum_addChar_finiteField (κf := kP PP) ((Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 PP.isMaximal) D.R.rS D.R.k (ψ' PP) (ψ0 PP) (hψ' PP hP) (hψ0 PP hP) (a PP)`. Use `choose! dd hdd using hsc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β₃, hβ₃, hSt, hconj⟩` from `GlobalTheory.T.exists_frame_rescale_conj_reductions_diagonal (r_le_Y (D := D) 0) β _ hβ R.Pg dd`. Use `⟨β₃, hβ₃, fun κ => ?_⟩` and prove the remaining obligations. Take `⟨hR1, hR2, hUA⟩` from `GlobalTheory.T.instanceIota_readout_realTrivial_stabilizer_unitary X h β hβ κ`. Take `⟨hL1, hL2⟩` from `GlobalTheory.T.mem_symmetricPositionLevel_firstSpace_iff R.toLevCh β₃ ψ0 κ`. Establish `hgrp` using `GlobalTheory.T.mem_K2_iff_upperLeftBlock_reductions R F X h hIs hGrp β hβ hred κ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : κ ∈ (iotaX X h).toMulEquiv ⁻¹' {x : X.B.I.GA | x.1 = 1 ∧ x.2 ∈ X.K2} ↔ κ ∈ levS (Yc D 0) β₃ (R.dat0 (PsharpSym R.Pg D.R.r D.R.rS D.R.k ψ0))`. Use `Iff.trans ?_ hL1.symm` and prove the remaining obligations. Use `show ((iotaX X h).toMulEquiv κ).1 = 1 ∧ ((iotaX X h).toMulEquiv κ).2 ∈ X.K2 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ((iotaX X h).toMulEquiv κ).2 ∈ X.B.I.Kset` using `(Formalism.L2.SG.Closed.level_subgroup_properties X).2.1 _ h2`. Establish `hS` using `hR2.1 hK`. Establish `hG'` using `(hgrp hK hS).1 h2`. Use `⟨hR1.1 h1, hUA, (hSt _).2 hS, fun PP hP => ?_⟩` and prove the remaining obligations. Rewrite using `[hconj PP hP _ hS]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(unipSym_conj_iff _ _ _ _).1 (hG' PP hP)`. Introduce and unpack `⟨h1, _, h3, h4⟩`. Establish `hS : finE (Yc D 0) κ ∈ St β` using `(hSt _).1 h3`. Establish `hK` using `hR2.2 hS`. Use `⟨hR1.2 h1, (hgrp hK hS).2 fun PP hP => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5` using `h4 PP hP`. Rewrite `h5` using `[hconj PP hP _ hS]`. Conclude with `(unipSym_conj_iff _ _ _ _).2 h5`. Use `⟨key, fun hk => ?_⟩` and prove the remaining obligations. Take `⟨h1, _, h3, h4⟩` from `hL1.1 hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : finE (Yc D 0) κ ∈ St β` using `(hSt _).1 h3`. Establish `hK` using `hR2.2 hS`. Establish `hK2 : ((iotaX X h).toMulEquiv κ).2 ∈ X.K2` using `(key.2 hk).2`. Rewrite using `[hL2 hk, hchi κ hS hK2]`. Use `Finset.prod_congr rfl fun PP hP => ?_` and prove the remaining obligations.
-
-Rewrite using `[hconj PP hP _ hS]`. Conclude with `hdd PP hP _ ((hgrp hK hS).1 hK2 PP hP)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeeConj.exists_frame_symLevel : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → ∀ ψ0 : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ, IsGenericPsi R.Pg ψ0 → ∃ β₃ : GL (Fin (Yc D 0).rank) (EAf D), IsFrame β₃ (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) ∧ ∀ κ : GA D (Yc D 0), (κ ∈ (iotaX X h).toMulEquiv ⁻¹' {x : X.B.I.GA | x.1 = 1 ∧ x.2 ∈ X.K2} ↔ κ ∈ levS (Yc D 0) β₃ (R.dat0 (PsharpSym R.Pg D.R.r D.R.rS D.R.k ψ0))) ∧ (κ ∈ levS (Yc D 0) β₃ (R.dat0 (PsharpSym R.Pg D.R.r D.R.rS D.R.k ψ0)) → star (X.chi2 ((iotaX X h).toMulEquiv κ).2) = levChi (Yc D 0) β₃ (R.dat0 (PsharpSym R.Pg D.R.r D.R.rS D.R.k ψ0)) κ) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h hIs hGrp ψ0 hψ0

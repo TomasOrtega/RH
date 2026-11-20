@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
 open MeasureTheory NumberField Matrix Formalism.MainNotions.S GlobalTheory.Count Formalism.REAL Formalism.HN
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LineBound.least_pow_mul_sqrt_absNorm_le_prod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLeastSizePowMulSqrtAbsNormLeProdNorms.lean&line=51#L51)
 -/

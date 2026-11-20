@@ -14,14 +14,14 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `(nabs_le_iff t 1).1 (by rw [nabs_one]; exact ht.le)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_le_one_of_nabs_lt {t : kˣ} (ht : nabs k t < 1) : valuation k (t : k) ≤ 1 := by
   have h := (nabs_le_iff t 1).1 (by rw [nabs_one]; exact ht.le)
   simpa using h
 
 /- English proof (translation)
-Introduce `x hx`. Use `(AddSubgroup.mem_smul_pointwise_iff_exists x _ L).2 ⟨(t : k) • x, hL.int _ (val_le_one_of_nabs_lt ht) x hx, ?_⟩` and prove the remaining obligations. Simplify using `[smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lat_le_inv {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {L : AddSubgroup (Matrix (Fin n) (Fin n) k)}
     (hL : IsLat Z L) {t : kˣ} (ht : nabs k t < 1) : L ≤ ((t⁻¹ : kˣ) : k) • L := by
@@ -30,7 +30,7 @@ theorem lat_le_inv {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {L : AddSubgrou
   simp [smul_smul]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(AddSubgroup.mem_smul_pointwise_iff_exists x _ L).1 hx`. Use `hL.int _ ?_ y hy` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_le_one' (val_le_one_of_nabs_lt ht) j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_smul_le {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {L : AddSubgroup (Matrix (Fin n) (Fin n) k)}
     (hL : IsLat Z L) {t : kˣ} (ht : nabs k t < 1) (j : ℕ) : ((t ^ j : kˣ) : k) • L ≤ L := by

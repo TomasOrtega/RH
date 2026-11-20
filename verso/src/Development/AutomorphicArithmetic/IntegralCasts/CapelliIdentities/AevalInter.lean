@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `M N _ _ _ _ f T T' h p`. Establish `hpow : ∀ (n : ℕ) (x : M), f ((T ^ n) x) = (T' ^ n) (f x)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]`. Proceed by induction on `p using Polynomial.induction_on' with`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `add p q hp hq`. Introduce `x`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, map_add, hp, hq]`. Consider the case `monomial n a`. Introduce `x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, hpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qe22.aeval_inter :
     ∀ {M N : Type} [inst : AddCommGroup M] [inst_1 : _root_.Module ℂ M]

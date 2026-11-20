@@ -10,11 +10,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR M G' _ _ hG E`. Establish `: IsNoetherianRing R` using `hR.1`. Establish `: Smooth G'.hom` using `hG.smooth`. Establish `: IsSeparated G'.hom` using `hG.separated`. Establish `: QuasiCompact G'.hom` using `hG.quasiCompact`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper M.π` using `M.proper`. Establish `: IsLocallyNoetherian M.S` using `LocallyOfFiniteType.isLocallyNoetherian M.π`. Establish `: IsLocallyNoetherian G'.left` using `LocallyOfFiniteType.isLocallyNoetherian G'.hom`. Establish `: IsProper (PSpace.str R E.N)` using `isProper_str R E.N`. Use `set φ := pullback.lift E.f (E.H.ι ≫ G'.hom) E.f_over`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : φ ≫ pullback.snd (PSpace.str R E.N) M.π = E.H.ι ≫ G'.hom` using `pullback.lift_snd _ _ _`. Establish `h1 : IsSeparated (φ ≫ pullback.snd (PSpace.str R E.N) M.π)` using `by rw [hφ]; infer_instance`. Establish `h2 : LocallyOfFiniteType (φ ≫ pullback.snd (PSpace.str R E.N) M.π)` using `by rw [hφ]; infer_instance`. Establish `h3 : QuasiCompact (φ ≫ pullback.snd (PSpace.str R E.N) M.π)` using `by rw [hφ]; infer_instance`. Conclude with `⟨IsSeparated.of_comp φ (pullback.snd _ _), locallyOfFiniteType_of_comp φ (pullback.snd _ _), QuasiCompact.of_comp φ (pullback.snd _ _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem emb_lift_sep_loft_qc : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) →
     ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ E : Emb M.π G',

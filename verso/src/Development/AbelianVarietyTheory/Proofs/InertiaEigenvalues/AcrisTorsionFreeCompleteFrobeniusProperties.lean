@@ -22,7 +22,7 @@ namespace GlobalTheory.AcrisFrobE
 open scoped Nat
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | n + 1 => by have ih := pow_mul_factorial_dvd l hl n have e : l * (n + 1) = (l * n + (l - 1)) + 1 := by rw [Nat.mul_succ]; omega have h2 : (l * n)! ∣ (l * n + (l - 1))! := Nat.factorial_dvd_factorial (by omega) have e2 : l ^ (n + 1) * (n + 1)! = (l * n + (l - 1) + …`.
+A detailed English derivation is pending.
 -/
 theorem pow_mul_factorial_dvd (l : ℕ) (hl : 0 < l) : ∀ n : ℕ, l ^ n * n ! ∣ (l * n)!
   | 0 => by simp
@@ -36,7 +36,7 @@ theorem pow_mul_factorial_dvd (l : ℕ) (hl : 0 < l) : ∀ n : ℕ, l ^ n * n ! 
     exact Nat.mul_dvd_mul_left _ (ih.trans h2)
 
 /- English proof (translation)
-Use `dvd_trans ?_ (pow_mul_factorial_dvd l hl l)` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Nat.mul_dvd_mul_left _ (Nat.dvd_factorial hl le_rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_succ_dvd_factorial (l : ℕ) (hl : 0 < l) : l ^ (l + 1) ∣ (l * l)! := by
   refine dvd_trans ?_ (pow_mul_factorial_dvd l hl l)
@@ -46,7 +46,7 @@ theorem pow_succ_dvd_factorial (l : ℕ) (hl : 0 < l) : l ^ (l + 1) ∣ (l * l)!
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AcrisDiscExt.isUnit_natCast_of (l := l) ((algebraMap (Formalism.Per.Ainf l) (Formalism.Per.AinfP l)).comp (Formalism.Per.zA l)) (by have := IsLocalization.Away.algebraMap_isUnit (S := Formalism.Per.AinfP l) (l : Formalism.Per.Ainf l) simpa using this) n hn`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_ainfP (n : ℕ) (hn : n ≠ 0) : IsUnit (n : Formalism.Per.AinfP l) :=
   GlobalTheory.AcrisDiscExt.isUnit_natCast_of (l := l) ((algebraMap (Formalism.Per.Ainf l) (Formalism.Per.AinfP l)).comp (Formalism.Per.zA l))
@@ -61,13 +61,13 @@ open scoped Nat
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `map_natCast (Formalism.Per.Acris0 l).val k`.
+A detailed English derivation is pending.
 -/
 theorem coe_natCast0 (k : ℕ) : ((k : Formalism.Per.Acris0 l) : Formalism.Per.AinfP l) = k :=
   map_natCast (Formalism.Per.Acris0 l).val k
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `isUnit_natCast_ainfP l (n !) (Nat.factorial_ne_zero n)`. Establish `key : ((n ! : ℕ) : Formalism.Per.AinfP l) * (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.AinfP l) x ^ n * ((u⁻¹ : (Formalism.Per.AinfP l)ˣ) : Formalism.Per.AinfP l)) = algebraMap (Formalism.Per.Ainf l) (Formalism.Per.AinfP l) x ^ n`. Rewrite using `[← hu, mul_comm, mul_assoc, Units.inv_mul, mul_one]`. Conclude with `⟨⟨_, GlobalTheory.RingIface.dividedPower_mem_Acris0 l x n _ hx key⟩, key⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_dpow (x : Formalism.Per.Ainf l) (hx : Formalism.Per.θ l x = 0) (n : ℕ) :
     ∃ d : Formalism.Per.Acris0 l, ((n ! : ℕ) : Formalism.Per.AinfP l) * (d : Formalism.Per.AinfP l) =
@@ -80,13 +80,13 @@ theorem exists_dpow (x : Formalism.Per.Ainf l) (hx : Formalism.Per.θ l x = 0) (
   exact ⟨⟨_, GlobalTheory.RingIface.dividedPower_mem_Acris0 l x n _ hx key⟩, key⟩
 
 /- English proof (translation)
-Establish `hl0 : 0 < l` using `(Fact.out : l.Prime).pos`. Use `set X := algebraMap (Formalism.Per.Ainf l) (Formalism.Per.AinfP l) x with hX`. Take `⟨g, hg⟩` from `exists_dpow l x hx l`. Take `⟨d, hd⟩` from `exists_dpow l x hx (l * l)`. Take `⟨m, hm⟩` from `pow_succ_dvd_factorial l hl0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : l * (l - 1)! = l !` using `Nat.mul_factorial_pred hl0.ne'`. Use `⟨(((l - 1)! : ℕ) : Formalism.Per.Acris0 l) * g, (m : Formalism.Per.Acris0 l) * d, ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_mul, Subalgebra.coe_pow, Subalgebra.coe_algebraMap, coe_natCast0, coe_natCast0, ← hX, ← hg, ← mul_assoc, ← Nat.cast_mul, e]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_mul, Subalgebra.coe_pow, Subalgebra.coe_mul, coe_natCast0, coe_natCast0, coe_natCast0]`. Use `((isUnit_natCast_ainfP l (l ^ l) (pow_ne_zero _ hl0.ne')).mul_right_inj).1 ?_` and prove the remaining obligations. Establish `h1 : ((l ^ l : ℕ) : Formalism.Per.AinfP l) * ((((l - 1)! : ℕ) : Formalism.Per.AinfP l) * (g : Formalism.Per.AinfP l)) ^ l = X ^ (l * l)`. Rewrite using `[pow_mul, ← hg, ← e, Nat.cast_mul, Nat.cast_pow, ← mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← hd, hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_div_l (x : Formalism.Per.Ainf l) (hx : Formalism.Per.θ l x = 0) :
     ∃ y w : Formalism.Per.Acris0 l, (l : Formalism.Per.Acris0 l) * y = algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris0 l) x ^ l ∧
@@ -116,25 +116,21 @@ end GlobalTheory.AcrisFrobE
 namespace GlobalTheory.AcrisFrobE
 
 /- English proof (translation)
-Introduce `l _ K bk`. Take `⟨htor, hcomp, -, -⟩` from `GlobalTheory.Per.acris_basic l`. Use `haveI := hcomp`. Use `⟨htor, hcomp, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `bk.isUnit_δ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ : frobS l bk.a bk.E = bk.E ^ l + (l : bk.S) * (u : bk.S)`. Rewrite using `[hu]`. Conclude with `(deltaS l bk.a).φ_eq bk.E`. Establish `hx : Formalism.Per.θ l (bk.ev bk.E) = 0`. Establish `h : bk.ev bk.E ∈ RingHom.ker (Formalism.Per.θ l)` using `bk.span_ev ▸ Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h`. Take `⟨y, w, hy, hw⟩` from `exists_div_l l _ hx`. Use `set j := algebraMap (Formalism.Per.Acris0 l) (Formalism.Per.Acris l) with hj`. Use `set a := algebraMap (Ainf l) (Formalism.Per.Acris l) with ha_def`. Establish `ha : ∀ t, a t = j (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris0 l) t)` using `fun t => GlobalTheory.RingIface.tower l t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set A : Formalism.Per.Acris l := a (bk.ev (u : bk.S)) with hA`. Establish `hAu : IsUnit A` using `(u.isUnit.map bk.ev).map a`. Take `⟨U, hU⟩` from `hAu`. Use `set Y := j y with hY`. Use `set z := ((U⁻¹ : (Formalism.Per.Acris l)ˣ) : Formalism.Per.Acris l) * Y with hz_def`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hz : z ^ l ∈ Ideal.span {(l : Formalism.Per.Acris l)}`. Rewrite using `[hz_def, mul_pow, show Y ^ l = (l : Formalism.Per.Acris l) * j w by rw [hY, ← map_pow, hw, map_mul, map_natCast]]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Establish `hJ : (-z) ^ l ∈ (⊥ : Ideal (Formalism.Per.Acris l)).jacobson`. Use `IsAdicComplete.le_jacobson_bot (Ideal.span {(l : Formalism.Per.Acris l)}) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[neg_pow]`. Conclude with `Ideal.mul_mem_left _ _ hz`. Establish `h1 : IsUnit (1 - (-z) ^ l)`. Use `Ideal.mem_jacobson_bot.1 hJ (-1)` as an intermediate fact. Rewrite `this` using `[mul_neg_one, neg_add_eq_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : IsUnit (1 + z)`. Rewrite `h1` using `[← mul_neg_geom_sum, sub_neg_eq_add]`. Conclude with `isUnit_of_mul_isUnit_left h1`. Take `⟨V, hV⟩` from `h2`. Use `⟨U * V, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hUU : (U : Formalism.Per.Acris l) * ((U⁻¹ : (Formalism.Per.Acris l)ˣ) : Formalism.Per.Acris l) = 1` using `U.mul_inv`. Establish `hxl : a (bk.ev bk.E) ^ l = (l : Formalism.Per.Acris l) * Y`. Rewrite using `[ha, ← map_pow, ← hy, map_mul, map_natCast]`. Rewrite using `[RingHom.comp_apply, hφ, map_add, map_mul, map_pow, map_natCast, map_add, map_pow, map_mul, map_natCast, hxl, Units.val_mul, hV, hU, hz_def]`. Rewrite using `[← hA]`.
-
-Rewrite `hUU` using `[hU]`. Take the linear combination `(-(l : Formalism.Per.Acris l) * Y) * hUU`. Introduce `a`. Rewrite using `[(GlobalTheory.CrisMaps.phiA_extends l).alg]`. Use `congr 1`.
-
-Use extensionality with `n`. Rewrite using `[GlobalTheory.RingIface.phiA_coeff l a n, WittVector.coeff_frobenius_charP]`. Introduce `g a`. Rewrite using `[(GlobalTheory.CrisMaps.sigA_extends g).alg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), (∀ x : Per.Acris l, (l : Per.Acris l) * x = 0 → x = 0) ∧ IsAdicComplete (Ideal.span {(l : Per.Acris l)}) (Per.Acris l) ∧ (∃ v : (Per.Acris l)ˣ, ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev) (frobS l bk.a bk.E) = (l : Per.Acris l) * v) ∧ (∀ a : Ainf l, phiA l ((algebraMap (Ainf l) (Per.Acris l)) a) = (algebraMap (Ainf l) (Per.Acris l)) (WittVector.frobenius a)) ∧ ∀ (g : GQ l) (a : Ainf l), sigA g ((algebraMap (Ainf l) (Per.Acris l)) a) = (algebraMap (Ainf l) (Per.Acris l)) (Per.σA g a) := by
   intro l _ K bk

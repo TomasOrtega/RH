@@ -13,7 +13,7 @@ namespace GlobalTheory.ExtTensorIrr
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 /- English proof (translation)
-Introduce `hBZ k _ _ _ _ β _ c _ _ s`. Take `⟨hAdm, -, -, -⟩` from `hBZ k`. Conclude with `GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur (fun j => (s j).ρ) (fun j => (s j).irr) fun j φ hφ => GlobalTheory.SchurAdm.schur_admissible (GL (c j) k) (KO k (c j)) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO (s j).V (s j).ρ (s j).irr (hAd …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem piTensor_isIrreducible : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (β : Type) [Fintype β]

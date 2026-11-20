@@ -11,19 +11,19 @@ open scoped SchwartzMap LineDeriv ContDiff
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Set `l : ℝ →L[ℝ] V` to `ContinuousLinearMap.toSpanSingleton ℝ a`. Set `M : ℝ × V →L[ℝ] V` to `ContinuousLinearMap.snd ℝ ℝ V + l ∘L ContinuousLinearMap.fst ℝ ℝ V`. Establish `hM : ∀ q : ℝ × V, M q = q.2 + q.1 • a` using `fun q => rfl`. Establish `hF : ContDiff ℝ ∞ (fun q : ℝ × V => (1 : ℂ) * g (q.2 + l q.1))` using `contDiff_const.mul ((g.smooth ⊤).comp M.contDiff)`. Establish `hb` using `bound_mul_translate (A := fun _ : ℝ × V => (1 : ℂ)) (Function.HasTemperateGrowth.const _) g l 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrem` using `seminorm_remainder hF 0 hb (fun t => SchwartzMap.compSubConstCLM ℂ (-(t • a)) g) (fun t => t • ∂_{a} g) (fun p => by`. Use function extensionality and compare the values at `x`. Rewrite using `[SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, one_mul]`. Use the proof step `rfl)`. Use the proof step `(fun v => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Establish `e : (fun q : ℝ × V => (1 : ℂ) * g (q.2 + l q.1)) = ⇑g ∘ M`. Use function extensionality and compare the values at `q`. Rewrite using `[one_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ((g.hasFDerivAt (M (0, x))).comp (0, x) M.hasFDerivAt).fderiv]`. Simplify using `[hM, SchwartzMap.lineDerivOp_apply_eq_fderiv])`. Rewrite using `[(schwartz_withSeminorms ℂ V ℂ).tendsto_nhds]`. Introduce and unpack `⟨k, n⟩ ε hε`. Take `⟨C, hC⟩` from `hrem k n`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : Tendsto (fun t : ℝ => C * ‖t‖) (𝓝 0) (𝓝 0)`. Simplify using `using (continuous_norm.tendsto (0 : ℝ)).const_mul C`. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (h1.eventually (gt_mem_nhds hε)), nhdsWithin_le_nhds (Metric.closedBall_mem_nhds (0 : ℝ) one_pos)] with t ht h2 h3`. Establish `ht0 : t ≠ 0` using `ht`. Establish `h4` using `hC t (mem_closedBall_zero_iff.1 h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e : t⁻¹ • (SchwartzMap.compSubConstCLM ℂ (-(t • a)) g - g) - ∂_{a} g = ((t⁻¹ : ℝ) : ℂ) • (SchwartzMap.compSubConstCLM ℂ (-((0 + t) • a)) g - SchwartzMap.compSubConstCLM ℂ (-((0 : ℝ) • a)) g - t • ∂_{a} g)`. Use extensionality with `x`. Establish `: (t : ℂ) ≠ 0` using `by exact_mod_cast ht0`. Simplify using `only [SchwartzMap.sub_apply, SchwartzMap.smul_apply, SchwartzMap.compSubConstCLM_apply, zero_add, zero_smul, neg_zero, sub_zero, Complex.real_smul, smul_eq_mul, Complex.ofReal_inv]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[SchwartzMap.schwartzSeminormFamily_apply, e, map_smul_eq_mul, Complex.norm_real, norm_inv]`. Use `lt_of_le_of_lt ?_ h2` and prove the remaining obligations. Establish `hn : 0 < ‖t‖` using `norm_pos_iff.2 ht0`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem schwartz_dq_tendsto (g : 𝓢(V, ℂ)) (a : V) :
     Tendsto (fun t : ℝ => t⁻¹ • (SchwartzMap.compSubConstCLM ℂ (-(t • a)) g - g)) (𝓝[≠] 0) (𝓝 (∂_{a} g)) := by

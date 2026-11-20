@@ -30,7 +30,7 @@ def gen (J : JD h L 𝔭 b a) (i : Fin m) : DiscMod h ⊤ L 𝔭 :=
   Submodule.Quotient.mk ⟨phi (K := K) b a (Pi.single i 1), J.u_mem i⟩
 
 /- English proof (translation)
-The claim follows from `J.max.isPrime; jK z / jK (ι (a k)) ∈ HU.SP K 𝔭 := by have := J.max.isPrime rw [div_mem_SP_iff J.max (J.ne k), hk, pow_zero, Ideal.one_eq_top] trivial`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_of_zero (J : JD h L 𝔭 b a) {k : Fin m} (hk : vF 𝔭 (a k) = 0) (z : 𝓞 K) :
     haveI := J.max.isPrime; jK z / jK (ι (a k)) ∈ HU.SP K 𝔭 := by
@@ -39,7 +39,7 @@ theorem div_mem_of_zero (J : JD h L 𝔭 b a) {k : Fin m} (hk : vF 𝔭 (a k) = 
   trivial
 
 /- English proof (translation)
-The claim follows from `J.max.isPrime; jK z / jK (ι (a i)) ∈ HU.SP K 𝔭 ↔ z ∈ extP K 𝔭 ^ 1 := by have := J.max.isPrime rw [div_mem_SP_iff J.max (J.ne i), hi]`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_iff_one (J : JD h L 𝔭 b a) {i : Fin m} (hi : vF 𝔭 (a i) = 1) (z : 𝓞 K) :
     haveI := J.max.isPrime; jK z / jK (ι (a i)) ∈ HU.SP K 𝔭 ↔ z ∈ extP K 𝔭 ^ 1 := by
@@ -47,11 +47,11 @@ theorem div_mem_iff_one (J : JD h L 𝔭 b a) {i : Fin m} (hi : vF 𝔭 (a i) = 
   rw [div_mem_SP_iff J.max (J.ne i), hi]
 
 /- English proof (translation)
-Use `J.max.isPrime` as an intermediate fact. Rewrite using `[gen, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul, J.memB]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `H i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[crd_smul, J.crd_u, if_pos rfl, mul_one_div]`. Conclude with `(div_mem_iff_one J hi c).1 this`. Introduce `hc k`. Rewrite using `[crd_smul, J.crd_u]`. Use `split_ifs with hk`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hk` using the available equality. Rewrite using `[mul_one_div]`. Conclude with `(div_mem_iff_one J hi c).2 hc`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_gen_eq_zero_iff (J : JD h L 𝔭 b a) {i : Fin m} (hi : vF 𝔭 (a i) = 1) (c : 𝓞 K) :
     c • gen J i = 0 ↔ c ∈ extP K 𝔭 ^ 1 := by
@@ -70,15 +70,13 @@ theorem smul_gen_eq_zero_iff (J : JD h L 𝔭 b a) {i : Fin m} (hi : vF 𝔭 (a 
     · rw [mul_zero]; exact zero_mem _
 
 /- English proof (translation)
-Use `J.max.isPrime` as an intermediate fact. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hx` using `(J.memA x).1 x.2`. Take `⟨z, hz⟩` from `exists_sub_div_mem_SP J.max (J.ne i) (hx i)`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gen, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_smul, J.memB]`. Introduce `k`. Rewrite using `[crd_sub, crd_smul, J.crd_u]`. Use `split_ifs with hk`. Substitute `hk` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e : crd h b a (x : V) k - jK z * (1 / jK (ι (a k))) = (jK (ι (a k)) * crd h b a (x : V) k - jK z) / jK (ι (a k))`. Rewrite using `[sub_div, mul_div_cancel_left₀ _ (jK_ι_ne_zero (J.ne k))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_zero, sub_zero]`. Establish `e : crd h b a (x : V) k = (jK (ι (a k)) * crd h b a (x : V) k) * (jK 1 / jK (ι (a k)))`. Rewrite using `[map_one]`. Clear denominators, using `[jK_ι_ne_zero (J.ne k)]` for the nonvanishing conditions. Rewrite using `[e]`.
-
-Conclude with `mul_mem (hx k) (div_mem_of_zero J (hj k hk) 1)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_gen (J : JD h L 𝔭 b a) {i : Fin m} (hj : ∀ j, j ≠ i → vF 𝔭 (a j) = 0)
     (q : DiscMod h ⊤ L 𝔭) : ∃ c : 𝓞 K, q = c • gen J i := by
@@ -104,7 +102,7 @@ theorem exists_smul_gen (J : JD h L 𝔭 b a) {i : Fin m} (hj : ∀ j, j ≠ i �
     exact mul_mem (hx k) (div_mem_of_zero J (hj k hk) 1)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_smul_gen J hj (P (gen J i))`. Use `⟨c, LinearMap.ext fun q => ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `exists_smul_gen J hj q`. Rewrite using `[Module.algebraMap_end_apply, map_smul, hc, smul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem end_eq_algebraMap (J : JD h L 𝔭 b a) {i : Fin m} (hj : ∀ j, j ≠ i → vF 𝔭 (a j) = 0)
     (P : Module.End (𝓞 K) (DiscMod h ⊤ L 𝔭)) :
@@ -115,9 +113,9 @@ theorem end_eq_algebraMap (J : JD h L 𝔭 b a) {i : Fin m} (hj : ∀ j, j ≠ i
   rw [Module.algebraMap_end_apply, map_smul, hc, smul_comm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `LinearMap.congr_fun H (gen J i)` as an intermediate fact. Rewrite `this` using `[Module.algebraMap_end_apply, LinearMap.zero_apply]`. Conclude with `(smul_gen_eq_zero_iff J hi c).1 this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨d, rfl⟩` from `exists_smul_gen J hj q`. Rewrite using `[Module.algebraMap_end_apply, LinearMap.zero_apply, smul_comm, (smul_gen_eq_zero_iff J hi c).2 hc, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_eq_zero_iff (J : JD h L 𝔭 b a) {i : Fin m} (hi : vF 𝔭 (a i) = 1)
     (hj : ∀ j, j ≠ i → vF 𝔭 (a j) = 0) (c : 𝓞 K) :
@@ -149,25 +147,23 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {𝔭 : I
   {b : Fin m → V} {a : Fin m → 𝓞 F}
 
 /- English proof (translation)
-Use `J.max.isPrime` as an intermediate fact. Establish `hjc : jK (conjO K c * c - 1) = star (jK c) * jK c - 1`. Rewrite using `[map_sub, map_mul, map_one, jK_conjO]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `u : ↥(locF 𝔭 (dualIn h ⊤ L))` to `⟨_, J.u_mem i⟩`. Establish `e1 : (Submodule.Quotient.mk (c • u) : DiscMod h ⊤ L 𝔭) = algebraMap (𝓞 K) (Module.End (𝓞 K) (DiscMod h ⊤ L 𝔭)) c (Submodule.Quotient.mk u)`. Rewrite using `[Module.algebraMap_end_apply, Submodule.Quotient.mk_smul]`. Establish `H1` using `H u u (c • u) (c • u) e1 e1`. Rewrite `H1` using `[← HU.mem_SP_iff_locF]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `huu : h (u : V) (u : V) = 1 / jK (ι (a i))`. Rewrite using `[h_expand J.orth J.diag J.ne J.bX J.loc J.max.isPrime J.lat, Finset.sum_eq_single i]`. Simplify using `only [u]`. Rewrite using `[J.crd_u, if_pos rfl, star_div₀, star_one, star_jK_ι J.fix]`. Clear denominators, using `[jK_ι_ne_zero (J.ne i)]` for the nonvanishing conditions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Introduce `k _ hk`. Simplify using `only [u]`. Rewrite using `[J.crd_u, if_neg hk, star_zero, zero_mul, zero_mul]`. Introduce `hi'`. Conclude with `absurd (Finset.mem_univ i) hi'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2 : h ((c • u : ↥(locF 𝔭 (dualIn h ⊤ L))) : V) ((c • u : ↥(locF 𝔭 (dualIn h ⊤ L))) : V) - h (u : V) (u : V) = jK (conjO K c * c - 1) / jK (ι (a i))`. Rewrite using `[Submodule.coe_smul, smul_eq_jK c, LinearMap.map_smulₛₗ₂, LinearMap.map_smul, smul_eq_mul, smul_eq_mul, starRingEnd_apply, huu, hjc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `H1` using `[e2]`. Conclude with `(div_mem_iff_one J hi _).1 H1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hc x y x' y' hx hy`. Rewrite `hx`, `hy` using `[Module.algebraMap_end_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_smul]`. Rewrite using `[← HU.mem_SP_iff_locF]`. Establish `e : h (x' : V) (y' : V) - h (x : V) (y : V) = (h (x' : V) (y' : V) - h (c • (x : V)) (c • (y : V))) + (h (c • (x : V)) (c • (y : V)) - h (x : V) (y : V))` using `by ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `add_mem (J.h_sub_mem _ _ _ _ (Submodule.smul_mem _ c x.2) (Submodule.smul_mem _ c y.2) hx hy) ?_` and prove the remaining obligations. Establish `e3 : h (c • (x : V)) (c • (y : V)) - h (x : V) (y : V) = (star (jK c) * jK c - 1) * h (x : V) (y : V)`. Rewrite using `[smul_eq_jK c, smul_eq_jK c, LinearMap.map_smulₛₗ₂, LinearMap.map_smul, smul_eq_mul, smul_eq_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, h_expand J.orth J.diag J.ne J.bX J.loc J.max.isPrime J.lat, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Establish `hxA` using `(J.memA x).1 x.2 k`. Establish `hyA` using `(J.memA y).1 y.2 k`. Establish `hW : jK (conjO K c * c - 1) / jK (ι (a k)) ∈ HU.SP K 𝔭`. Distinguish the cases in `hk : k = i`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hk` using the available equality. Conclude with `(div_mem_iff_one J hi _).2 hc`. Conclude with `div_mem_of_zero J (hj k hk) _`. Establish `hne` using `jK_ι_ne_zero (K := K) (J.ne k)`. Establish `e4 : (star (jK c) * jK c - 1) * (star (crd h b a (x : V) k) * jK (ι (a k)) * crd h b a (y : V) k) = star (jK (ι (a k)) * crd h b a (x : V) k) * (jK (conjO K c * c - 1) / jK (ι (a k))) * (jK (ι (a k)) * crd h b a (y : V) k)`.
-
-Rewrite using `[star_mul', star_jK_ι J.fix, hjc]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e4]`. Conclude with `mul_mem (mul_mem (star_mem_SP J.fix hxA) hW) hyA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cond_iff (J : JD h L 𝔭 b a) {i : Fin m} (hi : vF 𝔭 (a i) = 1)
     (hj : ∀ j, j ≠ i → vF 𝔭 (a j) = 0) (c : 𝓞 K) :
@@ -238,13 +234,11 @@ theorem cond_iff (J : JD h L 𝔭 b a) {i : Fin m} (hi : vF 𝔭 (a i) = 1)
     exact mul_mem (mul_mem (star_mem_SP J.fix hxA) hW) hyA
 
 /- English proof (translation)
-Set `Φ : (𝓞 K ⧸ extP K 𝔭 ^ 1) →+* Module.End (𝓞 K) (DiscMod h ⊤ L 𝔭)` to `Ideal.Quotient.lift _ (algebraMap _ _) fun c hc => (algebraMap_eq_zero_iff J hi hj c).2 hc`. Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ((algebraMap_eq_zero_iff J hi hj c).1 hz)`. Introduce `P`. Take `⟨c, hc⟩` from `end_eq_algebraMap J hj P`. Conclude with `⟨Ideal.Quotient.mk _ c, hc⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[discAut, ← NormOneGroup.card_normOne]`. Use `symm`. Use `Nat.card_congr (Equiv.subtypeEquiv (Equiv.ofBijective Φ hΦ) fun z => ?_)` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Rewrite using `[NormOneGroup.normOne_mk_iff J.fix 𝔭 1 c, Equiv.ofBijective_apply]`.
-
-Conclude with `(cond_iff J hi hj c).symm`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discAut_eq (J : JD h L 𝔭 b a) {i : Fin m} (hi : vF 𝔭 (a i) = 1)
     (hj : ∀ j, j ≠ i → vF 𝔭 (a j) = 0) :
@@ -272,7 +266,7 @@ end GlobalTheory.DiscAutLenOne
 open GlobalTheory.DiscAutLenOne in
 
 /- English proof (translation)
-Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ _ hF h _ L hL 𝔭 h𝔭 b a hJ i hi hj`. Take `⟨-, hloc, horth, hdiag, hne⟩` from `hJ`. Conclude with `discAut_eq ⟨horth, hdiag, hne, hloc, hF, h𝔭, hL.fg, hL.span_eq_top⟩ hi hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DiscAutLenOne.discAut_eq_normRepCount : ∀ (K F V : Type) [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V], IsCMUnram K → IsFixF K F → ∀ h : V →ₗ⋆[K] V →ₗ[K] K, h.IsSymm → ∀ L : Submodule (𝓞 K) V, Submodule.IsLattice K L → ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → ∀ (b : Fin (Module.finrank K (⊤ : Submodule K V)) → V) (a : Fin (Module.finrank K (⊤ : Submodule K V)) → 𝓞 F), IsJordanIn h ⊤ L 𝔭 b a → ∀ i, vF 𝔭 (a i) = 1 → (∀ j, j ≠ i → vF 𝔭 (a j) = 0) → discAut h ⊤ L 𝔭 = normRepCount K (extP K 𝔭 ^ 1) 1 1 := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ _ hF h _ L hL 𝔭 h𝔭 b a hJ i hi hj

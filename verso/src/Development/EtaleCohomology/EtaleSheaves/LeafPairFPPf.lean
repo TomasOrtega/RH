@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 namespace LateralTheory.E.LeafPairFPPf
 
 /- English proof (translation)
-Simplify using `only [toR, incl, ← Spec.map_comp]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem toR_incl {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebra k Ω} (h : R ≤ R') :
     toR R' ≫ incl h = toR R := by
@@ -15,14 +15,14 @@ theorem toR_incl {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subal
   congr 1
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hf`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fp_snd {X Y Z : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (hf : FP f) : FP (pullback.snd f g) := by
   obtain ⟨h1, h2, h3⟩ := hf
   exact ⟨inferInstance, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Use `⟨pullback q (incl h), pullback.snd _ _, pullback.lift v (c ≫ toR R') ?_, fp_snd _ _ hq, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, toR_incl, hs.w]`. Use `IsPullback.of_right (h₁₂ := pullback.fst q (incl h)) (h₂₂ := incl h) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, toR_incl]`. Conclude with `hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem raise {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebra k Ω} (h : R ≤ R')
     {C D : Scheme.{0}} (c : C ⟶ Sp Ω) (q : D ⟶ Sp R) (v : C ⟶ D) (hq : FP q)
@@ -44,7 +44,7 @@ def LeafMapFP : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [Algebra
       IsPullback w1 (γ1 ≫ c0) (e1 ≫ q') (toR R') ∧ γ1 ≫ w0 = w1 ≫ e1
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR C0 C1 c0 γ1 h1 D0 q v0 hq hsq`. Take `⟨R1, hR1, D1, q1, v1, hq1, hs1⟩` from `hO k Ω (γ1 ≫ c0) h1`. Take `⟨E0, q0', w0, hq0', hs0'⟩` from `raise (le_sup_left : R ≤ R ⊔ R1) c0 q v0 hq hsq`. Take `⟨E1, q1', w1, hq1', hs1'⟩` from `raise (le_sup_right : R1 ≤ R ⊔ R1) (γ1 ≫ c0) q1 v1 hq1 hs1`. Conclude with `hM k Ω (R ⊔ R1) (hR.sup hR1) c0 γ1 q0' q1' w0 w1 hq0' hq1' hs0' hs1'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pairDescent_of_objects_morphisms (hO : LeafObjFP) (hM : LeafMapFP) : LeafPairFP := by
   intro k _ Ω _ _ R hR C0 C1 c0 γ1 h1 D0 q v0 hq hsq

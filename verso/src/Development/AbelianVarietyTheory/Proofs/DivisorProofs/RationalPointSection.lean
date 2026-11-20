@@ -13,21 +13,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ A _ _ _ _ hsep k _ _ φ`. Use `letI := Fintype.ofFinite (A →ₐ[R] K)`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψ⟩ : ∃ ψ : A →ₐ[R] K, ∀ a, ψ a = 0 → φ a = 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `choose f hf using h`. Establish `h0 : (∏ ψ, f ψ) = 0`. Apply `hsep` to reduce the goal to its premises. Introduce `ψ`. Rewrite using `[map_prod]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ ψ) (hf ψ).1`. Establish `hne : φ (∏ ψ, f ψ) ≠ 0`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun ψ _ => (hf ψ).2)`. Conclude with `hne (by rw [h0, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `hrange : ∀ a : A, ψ a ∈ (⊥ : Subalgebra R K)`. Introduce `a`. Establish `hint : IsIntegral R (ψ a)` using `(Algebra.IsIntegral.isIntegral (R := R) a).map ψ`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.mem_bot.2 ⟨y, hy⟩`. Set `e` to `Algebra.botEquivOfInjective hinj`. Establish `he : ∀ x : (⊥ : Subalgebra R K), algebraMap R K (e x) = (x : K)`. Introduce `x`. Take `⟨r, rfl⟩` from `e.symm.surjective x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[e.apply_symm_apply]`. Conclude with `(congrArg Subtype.val (e.symm.commutes r)).symm`. Set `s : A →ₐ[R] R` to `e.toAlgHom.comp (ψ.codRestrict ⊥ hrange)`. Establish `hs : ∀ a, algebraMap R K (s a) = ψ a` using `fun a => he _`. Use `⟨s, ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `a`. Establish `h1 : ψ (a - algebraMap R A (s a)) = 0`. Rewrite using `[map_sub, AlgHom.commutes, hs, sub_self]`. Establish `h2` using `hψ _ h1`. Rewrite `h2` using `[map_sub, AlgHom.commutes, sub_eq_zero]`.
-
-Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finiteAlg_fieldPoint_factors_through_base : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (A : Type) [CommRing A] [Algebra R A] [Module.Finite R A] [Finite (A →ₐ[R] K)], (∀ a : A, (∀ ψ : A →ₐ[R] K, ψ a = 0) → a = 0) → ∀ (k : Type) [Field k] [Algebra R k] (φ : A →ₐ[R] k), ∃ s : A →ₐ[R] R, φ = (Algebra.ofId R k).comp s := by
   intro R K _ _ _ _ _ _ _ _ A _ _ _ _ hsep k _ _ φ

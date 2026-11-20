@@ -16,7 +16,7 @@ open Formalism.QuantumDeterminants Formalism.L2.SG.Pf
 abbrev dG (k r : ℕ) : ℕ := Module.finrank ℝ (Formalism.MainNotions.S.lieE (UH (Hpk k r)))
 
 /- English proof (translation)
-Unfold `gVol`. Rewrite using `[Measure.addHaar_ball_mul_of_pos volume _ ha, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gVol_mul (k r : ℕ) {a : ℝ} (ha : 0 < a) (s : ℝ) :
     gVol k r (a * s) = a ^ dG k r * gVol k r s := by
@@ -24,22 +24,22 @@ theorem gVol_mul (k r : ℕ) {a : ℝ} (ha : 0 < a) (s : ℝ) :
   rw [Measure.addHaar_ball_mul_of_pos volume _ ha, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]
 
 /- English proof (translation)
-Unfold `gVol`. Conclude with `ENNReal.toReal_pos (Metric.measure_ball_pos _ _ hs).ne' measure_ball_lt_top.ne`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gVol_pos (k r : ℕ) {s : ℝ} (hs : 0 < s) : 0 < gVol k r s := by
   unfold gVol
   exact ENNReal.toReal_pos (Metric.measure_ball_pos _ _ hs).ne' measure_ball_lt_top.ne
 
 /- English proof (translation)
-Take `⟨δ, hδ, hW'⟩` from `hW k r ε hε0 hε1`. Use `⟨δ, hδ, fun ρ hρ hρδ => ?_⟩` and prove the remaining obligations. Establish `hN : ∀ᵐ x ∂(Formalism.MainNotions.S.haarLie (Nset k r) 1), Matrix.of x ∈ Nset k r` using `ae_iff.2 (Formalism.MainNotions.BridgeCSB.haarLieN k r 1 one_ne_zero ENNReal.one_ne_top).2.2.1`. Establish `hB : ∀ᵐ x ∂μb, Matrix.of x ∈ Formalism.FourierDecayAlt.B2.UWb k r` using `ae_iff.2 hμb.1.2.2.1`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Unfold `Vol rhs`. Use `lintegral_mono fun c => mul_le_mul_of_nonneg_left ?_ (zero_le)` and prove the remaining obligations. Use `lintegral_mono_ae (hN.mono fun n hn => ?_)` and prove the remaining obligations. Use `lintegral_mono_ae (hB.mono fun m hm => ?_)` and prove the remaining obligations. Use `lintegral_mono_ae (hN.mono fun n' hn' => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hQ`. Establish `hx : (fun i j => (Matrix.of n * bigCell k r c 1 * Matrix.of m * (Matrix.of n')⁻¹) i j : Mt k r) ∈ wBall k r ρ` using `(hW' ρ hρ hρδ n c m n' hn hm hn').2 hQ`. Rewrite using `[Set.indicator_apply, if_pos hx, Pi.one_apply]`. Conclude with `zero_le`. Unfold `Vol rhs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_mono fun c => mul_le_mul_of_nonneg_left ?_ (zero_le)` and prove the remaining obligations. Use `lintegral_mono_ae (hN.mono fun n hn => ?_)` and prove the remaining obligations. Use `lintegral_mono_ae (hB.mono fun m hm => ?_)` and prove the remaining obligations. Use `lintegral_mono_ae (hN.mono fun n' hn' => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : (fun i j => (Matrix.of n * bigCell k r c 1 * Matrix.of m * (Matrix.of n')⁻¹) i j : Mt k r) ∈ wBall k r ρ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ` using `(hW' ρ hρ hρδ n c m n' hn hm hn').1 hx`. Rewrite using `[Set.indicator_apply, if_pos hx, Pi.one_apply, if_pos hQ]`. Rewrite using `[Set.indicator_apply, if_neg hx]`. Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhs_bounds (hW : Sandwich) (k r : ℕ) (μb : Measure (Mt k r))
     (hμb : IsGaugeOn (Formalism.FourierDecayAlt.B2.UWb k r) μb) {ε : ℝ} (hε0 : 0 < ε) (hε1 : ε < 1) :
@@ -75,11 +75,11 @@ theorem rhs_bounds (hW : Sandwich) (k r : ℕ) (μb : Measure (Mt k r))
       exact zero_le
 
 /- English proof (translation)
-Establish `hsc : Tendsto (fun ρ : ℝ => a * ρ) (𝓝[>] 0) (𝓝[>] 0)`. Apply `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within` to reduce the goal to its premises. Establish `h` using `((continuous_const_mul a).tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))`. Simplify using `using h`. Use `filter_upwards [self_mem_nhdsWithin] with ρ hρ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `mul_pos ha hρ`. Establish `h1` using `((hV k r μb hμb).comp hsc).mul_const (a ^ dG k r)`. Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ρ hρ`. Establish `hg` using `gVol_pos k r (s := ρ) hρ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : a ^ dG k r ≠ 0` using `pow_ne_zero _ ha.ne'`. Simplify using `only [Function.comp]`. Rewrite using `[gVol_mul k r ha ρ]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem scale_lim (hV : VolLim) (k r : ℕ) (μb : Measure (Mt k r))
     (hμb : IsGaugeOn (Formalism.FourierDecayAlt.B2.UWb k r) μb) {a : ℝ} (ha : 0 < a) :
@@ -101,25 +101,21 @@ theorem scale_lim (hV : VolLim) (k r : ℕ) (μb : Measure (Mt k r))
   field_simp
 
 /- English proof (translation)
-Introduce `k r μb hμb`. Use `set L : ℝ := ((2 : ℝ) ^ r)⁻¹ with hLdef`. Establish `hL : 0 < L` using `by positivity`. Establish `hfin : ∀ᶠ ρ in 𝓝[>] (0 : ℝ), rhs k r μb ((wBall k r ρ).indicator 1) ≠ ∞`. Take `⟨δ, hδ, hb⟩` from `rhs_bounds hW k r μb hμb (ε := 1 / 2) (by norm_num) (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `scale_lim hV k r μb hμb (a := 1 + 1 / 2) (by norm_num)`. Establish `hpos` using `(tendsto_order.1 h).1 0 (by positivity)`. Use `filter_upwards [hpos, self_mem_nhdsWithin, (eventually_lt_nhds hδ).filter_mono nhdsWithin_le_nhds] with ρ h1 h2 h3`. Establish `hg` using `gVol_pos k r (s := ρ) h2`. Establish `h4 : 0 < (Vol k r μb ((1 + 1 / 2) * ρ)).toReal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `replace hc := not_lt.1 hc`. Establish `: (Vol k r μb ((1 + 1 / 2) * ρ)).toReal / gVol k r ρ ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hc hg.le`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `ne_top_of_le_ne_top (ENNReal.toReal_pos_iff.1 h4).2.ne (hb ρ h2 h3).2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[tendsto_order]`. Prove the components needed by the constructor for the conclusion. Introduce `a haL`. Establish `hc : Tendsto (fun ε : ℝ => L * (1 - ε) ^ dG k r) (𝓝[>] 0) (𝓝 L)`. Establish `: Continuous (fun ε : ℝ => L * (1 - ε) ^ dG k r)` using `by fun_prop`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using (this.tendsto 0).mono_left nhdsWithin_le_nhds`. Take `⟨ε, ⟨h1, h2⟩, h0⟩` from `(((tendsto_order.1 hc).1 a haL).and ((eventually_lt_nhds one_pos).filter_mono nhdsWithin_le_nhds) |>.and self_mem_nhdsWithin).exists`. Take `⟨δ, hδ, hb⟩` from `rhs_bounds hW k r μb hμb (ε := ε) h0 h2`. Establish `h` using `scale_lim hV k r μb hμb (a := 1 - ε) (by linarith)`. Establish `hlo` using `(tendsto_order.1 h).1 a (by simpa [mul_comm] using h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `filter_upwards [hlo, hfin, self_mem_nhdsWithin, (eventually_lt_nhds hδ).filter_mono nhdsWithin_le_nhds] with ρ h3 h4 h5 h6`. Establish `hg` using `gVol_pos k r (s := ρ) h5`. Use `lt_of_lt_of_le h3 (div_le_div_of_nonneg_right ?_ hg.le)` and prove the remaining obligations. Conclude with `ENNReal.toReal_mono h4 (hb ρ h5 h6).1`. Introduce `b hbL`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : Tendsto (fun ε : ℝ => L * (1 + ε) ^ dG k r) (𝓝[>] 0) (𝓝 L)`. Establish `: Continuous (fun ε : ℝ => L * (1 + ε) ^ dG k r)` using `by fun_prop`. Simplify using `using (this.tendsto 0).mono_left nhdsWithin_le_nhds`. Take `⟨ε, ⟨h1, h2⟩, h0⟩` from `(((tendsto_order.1 hc).2 b hbL).and ((eventually_lt_nhds one_pos).filter_mono nhdsWithin_le_nhds) |>.and self_mem_nhdsWithin).exists`. Take `⟨δ, hδ, hb⟩` from `rhs_bounds hW k r μb hμb (ε := ε) h0 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h` using `scale_lim hV k r μb hμb (a := 1 + ε) (by linarith)`. Establish `hup` using `(tendsto_order.1 h).2 b (by simpa [mul_comm] using h1)`. Establish `hpos` using `(tendsto_order.1 h).1 0 (by positivity)`. Use `filter_upwards [hup, hpos, self_mem_nhdsWithin, (eventually_lt_nhds hδ).filter_mono nhdsWithin_le_nhds] with ρ h3 h3' h5 h6`. Establish `hg` using `gVol_pos k r (s := ρ) h5`.
-
-Establish `h4 : 0 < (Vol k r μb ((1 + ε) * ρ)).toReal`. Assume the negation of the conclusion as `hc`. Use `replace hc := not_lt.1 hc`. Establish `: (Vol k r μb ((1 + ε) * ρ)).toReal / gVol k r ρ ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hc hg.le`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `lt_of_le_of_lt (div_le_div_of_nonneg_right ?_ hg.le) h3` and prove the remaining obligations. Conclude with `ENNReal.toReal_mono (ENNReal.toReal_pos_iff.1 h4).2.ne (hb ρ h5 h6).2`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rhsLim_of (hW : Sandwich) (hV : VolLim) : RhsLim := by
   intro k r μb hμb

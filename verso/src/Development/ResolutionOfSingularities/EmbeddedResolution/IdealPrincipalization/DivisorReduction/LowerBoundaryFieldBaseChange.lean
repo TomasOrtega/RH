@@ -23,7 +23,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace DivisorReduction
 
 /- English proof (translation)
-Establish `hE : List.take (E'.length - 1) (E'.eraseIdx j) = E'.eraseIdx j` using `List.take_of_length_le (le_of_eq (List.length_eraseIdx_of_lt hjE))`. Establish `hB : List.take (B.length - 1) (B.eraseIdx j) = B.eraseIdx j` using `List.take_of_length_le (le_of_eq (List.length_eraseIdx_of_lt hj))`. Rewrite using `[hE, hB, ← List.eraseIdx_map]`. Conclude with `hBE.symm.eraseIdx j htake`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sameNontrivialBoundary_take_eraseIdx_comap {X Y : Scheme.{u}} (p : Y ⟶ X)
     (B : List X.IdealSheafData) (E' : List Y.IdealSheafData) (j : ℕ)
@@ -40,9 +40,9 @@ private theorem sameNontrivialBoundary_take_eraseIdx_comap {X Y : Scheme.{u}} (p
   exact hBE.symm.eraseIdx j htake
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `x hx`. Use `⟨connectedComponent x, ?_, hop x, mem_connectedComponent⟩` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Set.mem_compl_iff, Set.mem_ofPred_eq] at hx ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `hsub`. Apply `hx` to reduce the goal to its premises. Rewrite using `[connectedComponent_eq hy]`. Conclude with `hsub`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isClosed_setOf_connectedComponent_subset {X : Type u} [TopologicalSpace X]
     (hop : ∀ x : X, IsOpen (connectedComponent x)) (P : Set X) :
@@ -58,7 +58,7 @@ private theorem isClosed_setOf_connectedComponent_subset {X : Type u} [Topologic
   exact hsub
 
 /- English proof (translation)
-Rewrite using `[lowerBoundaryWithoutBlowup_eq ((T.baseChange K f).withBoundary E'), lowerBoundaryWithoutBlowup_eq T]`. Conclude with `sameNontrivialBoundary_take_eraseIdx_comap (fieldBaseChangeProjection T K f) T.boundary E' j hBE htake hj hjE`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerBoundaryWithoutBlowup_baseChange_sameNontrivialBoundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (K : Type u) [Field K] [CharZero K] (f : T.base →+* K)
@@ -75,15 +75,13 @@ theorem lowerBoundaryWithoutBlowup_baseChange_sameNontrivialBoundary (T : Marked
   exact sameNontrivialBoundary_take_eraseIdx_comap (fieldBaseChangeProjection T K f) T.boundary E' j hBE htake hj hjE
 
 /- English proof (translation)
-Introduce `h`. Use `hV.isNoetherian` as an intermediate fact. Use `FunctorialResolution.Blowup.noetherianSpace_subscheme (T.boundary.get ⟨j, hj⟩)` as an intermediate fact. Establish `hnsU : TopologicalSpace.NoetherianSpace ↥((boundaryComponentsInOrderLocusOpens T j hj h).toScheme)` using `inferInstanceAs (TopologicalSpace.NoetherianSpace ↥(boundaryComponentsInOrderLocus T j hj))`. Establish `hqc : AlgebraicGeometry.QuasiCompact ((boundaryComponentsInOrderLocusOpens T j hj h).ι ≫ (T.boundary.get ⟨j, hj⟩).subschemeι)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `V _ _`. Conclude with `TopologicalSpace.NoetherianSpace.isCompact _`. Establish `hclosed : IsClosed (boundaryComponentsInOrderLocus T j hj)` using `isClosed_setOf_connectedComponent_subset (fun x => Blowup.isOpen_connectedComponent_of_noetherianSpace _ x) _`. Establish `hinj : Function.Injective ⇑(T.boundary.get ⟨j, hj⟩).subschemeι` using `(Scheme.Hom.isClosedEmbedding (T.boundary.get ⟨j, hj⟩).subschemeι).injective`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `himg : IsClosed (⇑(T.boundary.get ⟨j, hj⟩).subschemeι '' boundaryComponentsInOrderLocus T j hj)` using `(Scheme.Hom.isClosedEmbedding (T.boundary.get ⟨j, hj⟩).subschemeι).isClosedMap _ hclosed`. Establish `hU : Set.range ⇑(boundaryComponentsInOrderLocusOpens T j hj h).ι = boundaryComponentsInOrderLocus T j hj` using `Scheme.Opens.range_ι _`. Establish `hcomp : ⇑((boundaryComponentsInOrderLocusOpens T j hj h).ι ≫ (T.boundary.get ⟨j, hj⟩).subschemeι) = ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ∘ ⇑(boundaryComponentsInOrderLocusOpens T j hj h).ι`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrange : Set.range ⇑((boundaryComponentsInOrderLocusOpens T j hj h).ι ≫ (T.boundary.get ⟨j, hj⟩).subschemeι) = ⇑(T.boundary.get ⟨j, hj⟩).subschemeι '' boundaryComponentsInOrderLocus T j hj`. Rewrite using `[hcomp, Set.range_comp, hU]`. Establish `hsupp : ((AlgebraicGeometry.Scheme.Hom.ker ((boundaryComponentsInOrderLocusOpens T j hj h).ι ≫ (T.boundary.get ⟨j, hj⟩).subschemeι)).support : Set ↥T.scheme) = closure (Set.range ⇑((boundaryComponentsInOrderLocusOpens T j hj h).ι ≫ (T.boundary.get ⟨j, hj⟩).subschemeι))`. Rewrite using `[AlgebraicGeometry.Scheme.Hom.support_ker]`. Rewrite using `[hsupp, hrange, himg.closure_eq]`.
-
-Conclude with `Set.preimage_image_eq _ hinj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimageSupportEqComponentsInOrderLocus_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) : PreimageSupportEqComponentsInOrderLocus T j hj := by

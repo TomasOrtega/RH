@@ -14,9 +14,9 @@ namespace GlobalTheory.RealApprox
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Use `Module.Free.of_basis b` as an intermediate fact. Use `Module.Finite.of_basis b` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (hx.map (Algebra.leftMulMatrix b))`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hd`. Rewrite `hd` using `[Algebra.leftMulMatrix_apply, LinearMap.det_toMatrix, ← LinearMap.isUnit_iff_isUnit_det]`. Take `⟨y, hy⟩ : ∃ y, Algebra.lmul A R x y = 1` from `((Module.End.isUnit_iff _).1 hd).2 1`. Establish `hxy : x * y = 1` using `by simpa using hy`. Conclude with `⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma isUnit_iff_isUnit_det_leftMulMatrix {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {ι : Type}
     [Fintype ι] [DecidableEq ι] (b : Module.Basis ι A R) (x : R) :
@@ -33,7 +33,7 @@ private lemma isUnit_iff_isUnit_det_leftMulMatrix {A R : Type} [CommRing A] [Com
     exact ⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Algebra.leftMulMatrix_mulVec_repr, mul_one]`. Conclude with `b.sum_repr y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_leftMulMatrix_mulVec_repr_one_smul_eq {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {ι : Type}
     [Fintype ι] [DecidableEq ι] (b : Module.Basis ι A R) (y : R) :
@@ -42,21 +42,17 @@ private lemma sum_leftMulMatrix_mulVec_repr_one_smul_eq {A R : Type} [CommRing A
   exact b.sum_repr y
 
 /- English proof (translation)
-Use `set M := Algebra.leftMulMatrix b with hM`. Establish `hMc : Continuous M` using `IsModuleTopology.continuous_of_linearMap M.toLinearMap`. Establish `hdet : Continuous (fun x : R => (M x).det)` using `hMc.matrix_det`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hset : {x : R | IsUnit x} = (fun x => (M x).det) ⁻¹' {a : A | IsUnit a}`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `isUnit_iff_isUnit_det_leftMulMatrix b x`. Rewrite using `[hset]`. Conclude with `h1.preimage hdet`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `IsModuleTopology.toContinuousSMul A R` as an intermediate fact. Use `IsModuleTopology.toContinuousAdd A R` as an intermediate fact. Set `L : Matrix ι ι A → R` to `fun N => ∑ i, (N *ᵥ ⇑(b.repr 1)) i • b i`. Establish `hL : Continuous L`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Conclude with `((continuous_apply i).comp (continuous_id.matrix_mulVec continuous_const)).smul continuous_const`. Establish `heq : (Ring.inverse : R → R) = fun y => L ((M y)⁻¹)`. Use function extensionality and compare the values at `y`. Use `show Ring.inverse y = L ((M y)⁻¹)`. Distinguish the cases in `hy : IsUnit y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (M y)⁻¹ = M (Ring.inverse y)`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← map_mul, Ring.inverse_mul_cancel y hy, map_one]`. Rewrite using `[hinv]`. Conclude with `(sum_leftMulMatrix_mulVec_repr_one_smul_eq b _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ¬ IsUnit (M y).det` using `fun h => hy ((isUnit_iff_isUnit_det_leftMulMatrix b y).2 h)`. Rewrite using `[Ring.inverse_non_unit y hy, Matrix.nonsing_inv_apply_not_isUnit _ hd]`. Simplify using `[L]`. Establish `hu : IsUnit (M x).det` using `(isUnit_iff_isUnit_det_leftMulMatrix b x).1 hx`. Establish `hinvc : ContinuousAt (fun N : Matrix ι ι A => N⁻¹) (M x)`.
-
-Establish `hform : (fun N : Matrix ι ι A => N⁻¹) = fun N => Ring.inverse N.det • N.adjugate`. Use function extensionality and compare the values at `N`. Conclude with `Matrix.inv_def N`. Rewrite using `[hform]`. Conclude with `((h2 _ hu).comp (continuous_id.matrix_det.continuousAt)).smul continuous_id.matrix_adjugate.continuousAt`.
-
-Rewrite using `[heq]`. Conclude with `hL.continuousAt.comp (hinvc.comp hMc.continuousAt)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_of_free {A R : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [CommRing R]
     [Algebra A R] [TopologicalSpace R] [IsModuleTopology A R] {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -103,13 +99,11 @@ theorem units_of_free {A R : Type} [CommRing A] [TopologicalSpace A] [IsTopologi
     exact hL.continuousAt.comp (hinvc.comp hMc.continuousAt)
 
 /- English proof (translation)
-Use `set φ : Matrix (Fin n) (Fin n) A →+* Matrix (Fin n) (Fin n) A := σ.mapMatrix with hφdef`. Establish `hφ : ∀ M : Matrix (Fin n) (Fin n) A, M.map σ = φ M` using `fun _ => rfl`. Simplify using `only [hφ] at hS ⊢`. Establish `hS' : Sᵀ * G = -(G * φ S)` using `eq_neg_of_add_eq_zero_left hS`. Establish `e1 : (1 - S)ᵀ * G = G * φ (1 + S)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_sub, Matrix.transpose_one, sub_mul, hS', map_add, map_one]`. Use `noncomm_ring`. Establish `e2 : (1 + S)ᵀ * G = G * φ (1 - S)`. Rewrite using `[Matrix.transpose_add, Matrix.transpose_one, add_mul, hS', map_sub, map_one]`. Use `noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `e3 : (1 + S) * ((1 - S) * V) = 1 - S`. Rewrite using `[← mul_assoc, show (1 + S) * (1 - S) = (1 - S) * (1 + S) by noncomm_ring, mul_assoc, hV', mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [mul_assoc]`.
-
-Use `_ = Vᵀ * G * φ ((1 + S) * ((1 - S) * V)) := by rw [e1, map_mul φ (1 + S)]; simp only [mul_assoc]`. Use `_ = Vᵀ * G * φ (1 - S) := by rw [e3]`. Use `_ = Vᵀ * ((1 + S)ᵀ * G) := by rw [e2]; simp only [mul_assoc]`. Use `_ = ((1 + S) * V)ᵀ * G := by rw [Matrix.transpose_mul]; simp only [mul_assoc]`. Use `_ = G := by rw [hV', Matrix.transpose_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cayley_preserves_form_of_skew {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ} (G S V : Matrix (Fin n) (Fin n) A)
     (hS : Sᵀ * G + G * S.map σ = 0) (hV' : (1 + S) * V = 1) :
@@ -133,17 +127,15 @@ private theorem cayley_preserves_form_of_skew {A : Type} [CommRing A] (σ : A �
     _ = G := by rw [hV', Matrix.transpose_one, one_mul]
 
 /- English proof (translation)
-Use `set φ : Matrix (Fin n) (Fin n) A →+* Matrix (Fin n) (Fin n) A := σ.mapMatrix with hφdef`. Establish `hφ : ∀ M : Matrix (Fin n) (Fin n) A, M.map σ = φ M` using `fun _ => rfl`. Simplify using `only [hφ] at hh ⊢`. Take `⟨S, hSdef⟩ : ∃ S, S = (1 - h) * V` from `⟨_, rfl⟩`. Rewrite using `[← hSdef]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS1 : S * (1 + h) = 1 - h` using `by rw [hSdef, mul_assoc, hV, mul_one]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hX : (1 + h)ᵀ * (Sᵀ * G + G * φ S) * φ (1 + h) = 0`. Establish `e0 : (1 + h)ᵀ * (Sᵀ * G + G * φ S) * φ (1 + h) = (S * (1 + h))ᵀ * G * φ (1 + h) + (1 + h)ᵀ * G * φ (S * (1 + h))`. Rewrite using `[Matrix.transpose_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Rewrite using `[e0, hS1, Matrix.transpose_sub, Matrix.transpose_add, Matrix.transpose_one, map_add, map_sub, map_one]`. Establish `e : (1 - hᵀ) * G * (1 + φ h) + (1 + hᵀ) * G * (1 - φ h) = G + G - (hᵀ * G * φ h + hᵀ * G * φ h)` using `by noncomm_ring`. Rewrite using `[e, hh, sub_self]`. Establish `a : Vᵀ * (1 + h)ᵀ = 1` using `by rw [← Matrix.transpose_mul, hV', Matrix.transpose_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `b : φ (1 + h) * φ V = 1` using `by rw [← map_mul, hV', map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a, b, one_mul, mul_one]`. Use `_ = Vᵀ * ((1 + h)ᵀ * (Sᵀ * G + G * φ S) * φ (1 + h)) * φ V := by simp only [mul_assoc]`. Use `_ = 0 := by rw [hX, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_smul]`. Establish `e : (1 + S) * (1 + h) = 1 + 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, smul_add, ← add_smul, ← two_mul, ht, one_smul]`. Rewrite using `[Matrix.mul_smul]`.
-
-Establish `e : (1 - S) * (1 + h) = h + h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, smul_add, ← add_smul, ← two_mul, ht, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cayley_skew_and_inverse_of_preserves_form {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ} (G h V : Matrix (Fin n) (Fin n) A)
     (t : A) (ht : 2 * t = 1) (hh : hᵀ * G * h.map σ = G) (hV : V * (1 + h) = 1) (hV' : (1 + h) * V = 1) :
@@ -183,13 +175,11 @@ private theorem cayley_skew_and_inverse_of_preserves_form {A : Type} [CommRing A
     rw [e, smul_add, ← add_smul, ← two_mul, ht, one_smul]
 
 /- English proof (translation)
-Establish `hP : GlobalTheory.UnRep.WeakApprox.skewPart σ G X = X - (G * X.map σ * G⁻¹)ᵀ` using `rfl`. Establish `hinv : G⁻¹.map σ = (G.map σ)⁻¹` using `(GlobalTheory.UnRep.WeakApprox.map_inv' σ G hGu).symm`. Establish `hinvol : (X.map σ).map σ = X` using `by ext i j; simp [hσ]`. Establish `hGG : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G hGu`. Establish `hGG' : G * G⁻¹ = 1` using `Matrix.mul_nonsing_inv G hGu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ : Matrix (Fin n) (Fin n) A →+* Matrix (Fin n) (Fin n) A := σ.mapMatrix with hφdef`. Establish `hφ : ∀ M : Matrix (Fin n) (Fin n) A, M.map σ = φ M` using `fun _ => rfl`. Establish `hT : ∀ M : Matrix (Fin n) (Fin n) A, φ Mᵀ = (φ M)ᵀ` using `fun M => by`. Simplify using `only [← hφ]`. Conclude with `Matrix.transpose_map`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hP]`. Simplify using `only [hφ] at hinv hinvol hG ⊢`. Establish `hGinvT : (φ G⁻¹)ᵀ = G⁻¹` using `by rw [hinv, Matrix.transpose_nonsing_inv, hG]`. Rewrite using `[Matrix.transpose_sub, Matrix.transpose_transpose, map_sub, hT, map_mul, map_mul, hinvol, Matrix.transpose_mul, Matrix.transpose_mul, hG, hGinvT]`. Establish `e1 : (Xᵀ - G * φ X * G⁻¹) * G + G * (φ X - G⁻¹ * (Xᵀ * G)) = Xᵀ * G - G * φ X * (G⁻¹ * G) + G * φ X - (G * G⁻¹) * (Xᵀ * G)` using `by noncomm_ring`.
-
-Rewrite using `[e1, hGG, hGG']`. Use `noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem skew_component_is_skew {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) {n : ℕ}
     (G : Matrix (Fin n) (Fin n) A) (hG : (G.map σ)ᵀ = G) (hGu : IsUnit G.det) (X : Matrix (Fin n) (Fin n) A) :
@@ -213,7 +203,7 @@ private theorem skew_component_is_skew {A : Type} [CommRing A] (σ : A →+* A) 
   rw [e1, hGG, hGG']; noncomm_ring
 
 /- English proof (translation)
-Establish `h1 : G * S.map σ = -(Sᵀ * G)` using `eq_neg_of_add_eq_zero_right hS`. Use `show S - (G * S.map σ * G⁻¹)ᵀ = S + S`. Rewrite using `[h1, neg_mul, mul_assoc, Matrix.mul_nonsing_inv _ hGu, mul_one, Matrix.transpose_neg, Matrix.transpose_transpose, sub_neg_eq_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem skew_component_eq_add_self_of_skew {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ} (G S : Matrix (Fin n) (Fin n) A)
     (hS : Sᵀ * G + G * S.map σ = 0) (hGu : IsUnit G.det) :
@@ -224,7 +214,7 @@ private theorem skew_component_eq_add_self_of_skew {A : Type} [CommRing A] (σ :
     Matrix.transpose_transpose, sub_neg_eq_add]
 
 /- English proof (translation)
-Rewrite using `[Matrix.transpose_smul, GlobalTheory.UnRep.WeakApprox.map_smul'' σ μ X, smul_mul_assoc, smul_mul_assoc, mul_smul_comm, smul_smul, hX, hμ, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem smul_preserves_form_of_mul_conj_eq_one {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ} (G : Matrix (Fin n) (Fin n) A)
     (μ : A) (hμ : μ * σ μ = 1) (X : Matrix (Fin n) (Fin n) A) (hX : Xᵀ * G * X.map σ = G) :
@@ -233,29 +223,25 @@ private theorem smul_preserves_form_of_mul_conj_eq_one {A : Type} [CommRing A] (
     mul_smul_comm, smul_smul, hX, hμ, one_smul]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hne`. Establish `hw : ∀ k : ℕ, (k : K) + z ≠ 0`. Introduce `k h`. Apply `hz` to reduce the goal to its premises. Establish `hz' : z = -(k : K)` using `by linear_combination h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hz', map_neg, map_natCast]`. Establish `hcw : ∀ k : ℕ, c ((k : K) + z) ≠ 0`. Introduce `k h`. Apply `hw k` to reduce the goal to its premises. Use `congrArg c h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[hc, map_zero]`. Then use the resulting hypothesis. Use `set lam : ℕ → K := fun k => ((k : K) + z) / c ((k : K) + z) with hlamdef`. Establish `hlam : ∀ k, lam k * c (lam k) = 1`. Introduce `k`. Simplify using `only [hlamdef, map_div₀, hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_div_comm, div_eq_one_iff_eq (mul_ne_zero (hcw k) (hw k)), mul_comm]`. Establish `hinj : Function.Injective lam`. Introduce `a b hab`. Simplify using `only [hlamdef] at hab`. Rewrite `hab` using `[div_eq_div_iff (hcw a) (hcw b)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_natCast] at hab`. Establish `h0 : ((a : K) - b) * (c z - z) = 0` using `by linear_combination hab`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h` after adjusting the coercions. Conclude with `absurd (sub_eq_zero.1 h) hz`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfin` using `IsArtinianRing.setOfPred_isMaximal_finite R`. Establish `hbad : ∀ I ∈ {I : Ideal R | I.IsMaximal}, {k : ℕ | (1 + ι (lam k) • g).det ∈ I}.Finite`. Introduce `I hI`. Use `haveI : I.IsMaximal := hI`. Use `letI := Ideal.Quotient.field I`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `set π := Ideal.Quotient.mk I with hπ`. Use `set p : Polynomial (R ⧸ I) := (1 + (Polynomial.X : Polynomial (R ⧸ I)) • (g.map π).map Polynomial.C).det with hpdef`. Establish `hev : ∀ r : R, p.eval (π r) = π (1 + r • g).det`. Introduce `r`. Rewrite using `[hpdef, ← Polynomial.coe_evalRingHom, RingHom.map_det, RingHom.map_det]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij] <;> ring`. Establish `hp : p ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hev 0` as an intermediate fact. Rewrite `this` using `[h0, Polynomial.eval_zero, zero_smul, add_zero, Matrix.det_one, map_one]`. Conclude with `zero_ne_one this`. Establish `hroots` using `Polynomial.finite_setOfPred_isRoot hp`. Establish `hinj' : Function.Injective (fun k => π (ι (lam k)))` using `(RingHom.injective (π.comp ι)).comp hinj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Set.Finite.preimage hinj'.injOn hroots).subset ?_` and prove the remaining obligations. Introduce `k hk`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage] at hk ⊢`. Use `show p.eval (π (ι (lam k))) = 0`. Rewrite using `[hev]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hk`. Establish `hB` using `hfin.biUnion hbad`. Take `⟨N, hN⟩` from `hB.bddAbove`. Use `⟨lam (N + 1), hlam _, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`.
-
-Take `⟨I, hI, hmem⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hu)`. Establish `hm : N + 1 ∈ ⋃ I ∈ {I : Ideal R | I.IsMaximal}, {k : ℕ | (1 + ι (lam k) • g).det ∈ I}` using `Set.mem_biUnion hI hmem`. Conclude with `Nat.not_succ_le_self N (hN hm)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_norm_one_isUnit_det_one_add_smul {K R : Type} [Field K] [CharZero K] [CommRing R] [IsArtinianRing R]
     (ι : K →+* R) (c : K →+* K) (hc : ∀ x, c (c x) = x) (hne : ∃ z, c z ≠ z) {n : ℕ}
@@ -324,31 +310,27 @@ private theorem exists_norm_one_isUnit_det_one_add_smul {K R : Type} [Field K] [
 open GlobalTheory.UnRep.WeakApprox in
 
 /- English proof (translation)
-Establish `hGu : IsUnit G.det` using `isUnit_iff_ne_zero.2 hdet`. Establish `hdetmap : ∀ M : Matrix (Fin n) (Fin n) K, (M.map ι).det = ι M.det` using `fun M => (RingHom.map_det ι M).symm`. Establish `hG'u : IsUnit (G.map ι).det` using `by rw [hdetmap]; exact hGu.map ι`. Establish `hmapc : ∀ M : Matrix (Fin n) (Fin n) K, (M.map ι).map σ = (M.map c).map ι`. Introduce `M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using `[hσι]`. Take `⟨lam, hlam, hu⟩` from `exists_norm_one_isUnit_det_one_add_smul ι c hc hne g`. Establish `hlam' : ι lam * σ (ι lam) = 1` using `by rw [hσι, ← map_mul, hlam, map_one]`. Establish `hh : (ι lam • g)ᵀ * G.map ι * (ι lam • g).map σ = G.map ι` using `smul_preserves_form_of_mul_conj_eq_one σ (G.map ι) (ι lam) hlam' g hg`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : (1 + ι lam • g)⁻¹ * (1 + ι lam • g) = 1` using `Matrix.nonsing_inv_mul _ hu`. Establish `hV' : (1 + ι lam • g) * (1 + ι lam • g)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `h2K : (2 : K) ≠ 0` using `two_ne_zero`. Establish `ht : 2 * ι (2⁻¹ : K) = 1` using `by rw [← map_ofNat ι 2, ← map_mul, mul_inv_cancel₀ h2K, map_one]`. Establish `hσt : σ (ι (2⁻¹ : K)) = ι (2⁻¹ : K)` using `by rw [hσι, map_inv₀, map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hskew, hinvS, hcay⟩` from `cayley_skew_and_inverse_of_preserves_form σ (G.map ι) (ι lam • g) _ (ι (2⁻¹ : K)) ht hh hV hV'`. Use `set S := (1 - ι lam • g) * (1 + ι lam • g)⁻¹ with hSdef`. Use `set t : R := ι (2⁻¹ : K) with htdef`. Establish `hSu : IsUnit (1 + S).det` using `Matrix.isUnit_det_of_right_inverse hinvS`. Establish `hSinv : (1 + S)⁻¹ = t • (1 + ι lam • g)` using `Matrix.inv_eq_right_inv hinvS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPS : skewPart σ (G.map ι) (t • S) = S`. Rewrite using `[skewPart_smul σ (G.map ι) t hσt S, skew_component_eq_add_self_of_skew σ (G.map ι) S hskew hG'u, smul_add, ← add_smul, ← two_mul, ht, one_smul]`. Use `set Ψ : Matrix (Fin n) (Fin n) R → Matrix (Fin n) (Fin n) R := fun A => ι (c lam) • ((1 - skewPart σ (G.map ι) A) * (1 + skewPart σ (G.map ι) A)⁻¹) with hΨ`. Establish `hΨA : Ψ (t • S) = g` using `by show ι (c lam) • ((1 - skewPart σ (G.map ι) (t • S)) * (1 + skewPart σ (G.map ι) (t • S))⁻¹) = g`. Rewrite using `[hPS, hSinv, hcay, smul_smul, ← map_mul, mul_comm, hlam, map_one, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPc : Continuous (fun A : Matrix (Fin n) (Fin n) R => skewPart σ (G.map ι) A)` using `by show Continuous (fun A : Matrix (Fin n) (Fin n) R => A - (G.map ι * A.map σ * (G.map ι)⁻¹)ᵀ)`. Conclude with `continuous_id.sub (((continuous_const.matrix_mul (continuous_id.matrix_map hσc)).matrix_mul continuous_const).matrix_transpose)`. Establish `hdetc : Continuous (fun A : Matrix (Fin n) (Fin n) R => (1 + skewPart σ (G.map ι) A).det)` using `(continuous_const.add hPc).matrix_det`. Use `set U := {A : Matrix (Fin n) (Fin n) R | IsUnit (1 + skewPart σ (G.map ι) A).det} with hUdef`. Establish `hU : IsOpen U` using `hdetc.isOpen_preimage _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAU : t • S ∈ U` using `by show IsUnit (1 + skewPart σ (G.map ι) (t • S)).det`. Rewrite using `[hPS]`. Conclude with `hSu`. Establish `hdense : DenseRange (fun A : Matrix (Fin n) (Fin n) K => A.map ι)` using `DenseRange.piMap (fun _ => DenseRange.piMap (fun _ => hd))`. Establish `hcl : t • S ∈ closure (U ∩ Set.range (fun A : Matrix (Fin n) (Fin n) K => A.map ι))` using `Dense.open_subset_closure_inter hdense hU hAU`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hΨc : ContinuousAt Ψ (t • S)`. Establish `hinvc : ContinuousAt (fun A : Matrix (Fin n) (Fin n) R => Ring.inverse (1 + skewPart σ (G.map ι) A).det) (t • S)` using `ContinuousAt.comp (f := fun A : Matrix (Fin n) (Fin n) R => (1 + skewPart σ (G.map ι) A).det) (h2 _ hAU) hdetc.continuousAt`. Establish `hic : ContinuousAt (fun A : Matrix (Fin n) (Fin n) R => (1 + skewPart σ (G.map ι) A)⁻¹) (t • S)`. Simplify using `only [Matrix.inv_def]`. Conclude with `hinvc.smul ((continuous_const.add hPc).matrix_adjugate.continuousAt)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `ContinuousAt.const_smul ((continuous_const.sub hPc).continuousAt.mul hic) (ι (c lam))`. Establish `hmem` using `mem_closure_image hΨc hcl`. Rewrite `hmem` using `[hΨA]`. Use `closure_mono ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨A, ⟨hAU', A₀, rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPmap : skewPart σ (G.map ι) (A₀.map ι) = (skewPart c G A₀).map ι` using `by show A₀.map ι - (G.map ι * (A₀.map ι).map σ * (G.map ι)⁻¹)ᵀ = (A₀ - (G * A₀.map c * G⁻¹)ᵀ).map ι`. Rewrite using `[hmapc, map_inv' ι G hGu, ← Matrix.map_mul, ← Matrix.map_mul]`. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.transpose_apply, map_sub]`. Establish `eadd : ∀ M : Matrix (Fin n) (Fin n) K, (1 + M).map ι = 1 + M.map ι` using `fun M => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_add ι (map_add ι), Matrix.map_one ι (map_zero ι) (map_one ι)]`. Establish `esub : ∀ M : Matrix (Fin n) (Fin n) K, (1 - M).map ι = 1 - M.map ι` using `fun M => by`. Rewrite using `[Matrix.map_sub ι (map_sub ι), Matrix.map_one ι (map_zero ι) (map_one ι)]`. Establish `hS₀u : IsUnit (1 + skewPart c G A₀).det`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations.
-
-Establish `hU0 : IsUnit (1 + skewPart σ (G.map ι) (A₀.map ι)).det` using `hAU'`. Rewrite `hU0` using `[hPmap, ← eadd, hdetmap, h0, map_zero]`. Conclude with `not_isUnit_zero hU0`. Use `⟨c lam • ((1 - skewPart c G A₀) * (1 + skewPart c G A₀)⁻¹), ?_, ?_⟩` and prove the remaining obligations. Use `smul_preserves_form_of_mul_conj_eq_one c G (c lam) (by rw [hc, mul_comm, hlam]) _ ?_` and prove the remaining obligations.
-
-Conclude with `cayley_preserves_form_of_skew c G (skewPart c G A₀) _ (skew_component_is_skew c hc G hG hGu A₀) (Matrix.mul_nonsing_inv _ hS₀u)`. Use `show ι (c lam) • ((1 - skewPart σ (G.map ι) (A₀.map ι)) * (1 + skewPart σ (G.map ι) (A₀.map ι))⁻¹) = (c lam • ((1 - skewPart c G A₀) * (1 + skewPart c G A₀)⁻¹)).map ι`. Rewrite using `[hPmap, map_smul'' ι (c lam), Matrix.map_mul, ← map_inv' ι _ hS₀u, esub, eadd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closure_unitary {K R : Type} [Field K] [CharZero K] [CommRing R] [TopologicalSpace R]
     [IsTopologicalRing R] [IsArtinianRing R] [Nontrivial R] (ι : K →+* R) (c : K →+* K) (σ : R →+* R)
@@ -436,29 +418,27 @@ theorem mem_closure_unitary {K R : Type} [Field K] [CharZero K] [CommRing R] [To
 open Formalism.UG in
 
 /- English proof (translation)
-Establish `hJu : IsUnit J.det` using `isUnit_iff_ne_zero.2 hdet`. Establish `hcT : ∀ {A : Type} [CommRing A] (τ : A →+* A) (M : Matrix (Fin n) (Fin n) A), cT τ M = (M.map τ)ᵀ` using `fun _ _ => rfl`. Establish `hJ2 : (J.map c)ᵀ = J` using `by rw [← hcT]; exact hJ`. Establish `hJ'u : IsUnit (J.map ι).det`. Establish `e : (J.map ι).det = ι J.det` using `(RingHom.map_det ι J).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hJu.map ι`. Establish `hmapc : ∀ M : Matrix (Fin n) (Fin n) K, (M.map ι).map σ = (M.map c).map ι`. Introduce `M`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hσι]`. Establish `hinv : ∀ u : GL (Fin n) R, cT σ (u : Matrix (Fin n) (Fin n) R) * J.map ι * u = J.map ι → ((u⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = (J.map ι)⁻¹ * ((u : Matrix (Fin n) (Fin n) R).map σ)ᵀ * J.map ι`. Introduce `u hu`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← hcT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Set `F : Matrix (Fin n) (Fin n) R → Matrix (Fin n) (Fin n) R × (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ` to `fun M => (M, MulOpposite.op ((J.map ι)⁻¹ * (M.map σ)ᵀ * J.map ι))`. Establish `hFc : Continuous F` using `continuous_id.prodMk (MulOpposite.continuous_op.comp ((continuous_const.matrix_mul (continuous_id.matrix_map hσc).matrix_transpose).matrix_mul continuous_const))`. Set `ψ : UJ σ (J.map ι) → Matrix (Fin n) (Fin n) R × (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ` to `fun x => Units.embedProduct _ x.1`. Establish `hψ : Topology.IsInducing ψ` using `Units.isEmbedding_embedProduct.isInducing.comp Topology.IsInducing.subtypeVal`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψF : ∀ x : UJ σ (J.map ι), ψ x = F ((x.1 : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)`. Introduce `x`. Establish `hx : cT σ ((x.1 : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * J.map ι * x.1 = J.map ι` using `x.2`. Use `show ((x.1 : Matrix (Fin n) (Fin n) R), MulOpposite.op ((x.1⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)) = ((x.1 : Matrix (Fin n) (Fin n) R), MulOpposite.op ((J.map ι)⁻¹ * ((x.1 : Matrix (Fin n) (Fin n) R).map σ)ᵀ * J.map ι))`. Rewrite using `[hinv x.1 hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hψ.dense_iff]`. Introduce `x`. Rewrite using `[hψF]`. Establish `hx : cT σ ((x.1 : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * J.map ι * x.1 = J.map ι` using `x.2`. Rewrite `hx` using `[hcT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eT : (Jᵀ).map ι = (J.map ι)ᵀ` using `Matrix.transpose_map`. Establish `hg : ((x.1 : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)ᵀ * (Jᵀ).map ι * ((x.1 : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).map σ = (Jᵀ).map ι`. Use `congrArg Matrix.transpose hx` as an intermediate fact. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose] at this`. Rewrite using `[eT]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [mul_assoc]`. Establish `hG : ((Jᵀ).map c)ᵀ = Jᵀ` using `by rw [Matrix.transpose_map, hJ2]`. Establish `hdetT : (Jᵀ).det ≠ 0` using `by rwa [Matrix.det_transpose]`. Establish `hcl` using `mem_closure_unitary ι c σ hσι hc hne hσ hσc hd h1 h2 Jᵀ hG hdetT _ hg`. Use `closure_mono ?_ (mem_closure_image hFc.continuousAt hcl)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨m, ⟨γ, hγ, rfl⟩, rfl⟩`. Establish `hγ' : cT c γ * J * γ = J`. Rewrite using `[hcT]`. Use `congrArg Matrix.transpose hγ` as an intermediate fact. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [mul_assoc]`. Establish `hγl : (J⁻¹ * cT c γ * J) * γ = 1`. Combine the equalities or inequalities in the displayed calculation. Set `γu : GL (Fin n) K` to `⟨γ, J⁻¹ * cT c γ * J, mul_eq_one_comm.1 hγl, hγl⟩`. Establish `hγmem : γu ∈ UJ c J` using `hγ'`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ((bc ι γu : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = γ.map ι` using `rfl`. Establish `hbmem : bc ι γu ∈ UJ σ (J.map ι)` using `by show cT σ ((bc ι γu : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * J.map ι * (bc ι γu : GL (Fin n) R) = J.map ι`. Rewrite using `[hv, hcT, hmapc, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, ← hcT, hγ']`. Use `⟨⟨bc ι γu, hbmem⟩, Subgroup.mem_map_of_mem _ hγmem, ?_⟩` and prove the remaining obligations. Rewrite using `[hψF]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dense_unitary {K R : Type} [Field K] [CharZero K] [CommRing R] [TopologicalSpace R]
     [IsTopologicalRing R] [IsArtinianRing R] [Nontrivial R] (ι : K →+* R) (c : K →+* K) (σ : R →+* R)
@@ -535,31 +515,29 @@ theorem dense_unitary {K R : Type} [Field K] [CharZero K] [CommRing R] [Topologi
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 
 /- English proof (translation)
-Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsModuleTopology (Ainf F) (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (Ainf F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (Ainf F) _`. Establish `: IsArtinianRing (Ainf F)` using `inferInstanceAs (IsArtinianRing ((v : InfinitePlace F) → v.Completion))`. Establish `: IsArtinianRing (Ainf F ⊗[F] E)` using `IsArtinianRing.of_finite (Ainf F) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis F E`. Set `bb` to `Algebra.TensorProduct.basis (Ainf F) b`. Establish `: Nonempty (Fin (Module.finrank F E))` using `⟨⟨0, Module.finrank_pos⟩⟩`. Establish `: Nontrivial (Ainf F ⊗[F] E)` using `bb.repr.toEquiv.nontrivial`. Establish `hunit : ∀ x : (v : InfinitePlace F) → v.Completion, IsUnit x ↔ ∀ v, x v ≠ 0` using `fun x => Pi.isUnit_iff.trans (forall_congr' fun v => isUnit_iff_ne_zero)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1P : IsOpen {x : (v : InfinitePlace F) → v.Completion | IsUnit x}`. Establish `: {x : (v : InfinitePlace F) → v.Completion | IsUnit x} = ⋂ v, (fun x : (w : InfinitePlace F) → w.Completion => x v) ⁻¹' {0}ᶜ`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff, hunit]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_iInter_of_finite fun v => isOpen_compl_singleton.preimage (continuous_apply v)`. Establish `h2P : ∀ x : (v : InfinitePlace F) → v.Completion, IsUnit x → ContinuousAt Ring.inverse x`. Introduce `x hx`. Establish `hx'` using `(hunit x).1 hx`. Establish `heq : (fun y : (v : InfinitePlace F) → v.Completion => fun v => (y v)⁻¹) =ᶠ[nhds x] Ring.inverse` using `by filter_upwards [h1P.mem_nhds hx] with y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'` using `(hunit y).1 hy`. Establish `hm : y * (fun v => (y v)⁻¹) = 1`. Use function extensionality and compare the values at `v`. Conclude with `mul_inv_cancel₀ (hy' v)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ring.inverse_mul_cancel y hy, one_mul]`. Use `_ = Ring.inverse y := by rw [mul_assoc, hm, mul_one]`. Use `ContinuousAt.congr ?_ heq` and prove the remaining obligations. Conclude with `continuousAt_pi.2 fun v => ((continuous_apply v).continuousAt).inv₀ (hx' v)`. Establish `h1A : IsOpen {x : Ainf F | IsUnit x}` using `h1P`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2A : ∀ x : Ainf F, IsUnit x → ContinuousAt Ring.inverse x` using `h2P`. Take `⟨h1, h2⟩` from `units_of_free (A := Ainf F) (R := Ainf F ⊗[F] E) bb h1A h2A`. Establish `hσι : ∀ x, sigR (Ainf F) σ (inclR (Ainf F) x) = inclR (Ainf F) ((σ : E →+* E) x)`. Introduce `x`. Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hσσ : ∀ x : Ainf F ⊗[F] E, sigR (Ainf F) σ (sigR (Ainf F) σ x) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, hc]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hσc : Continuous (sigR (Ainf F) σ)`. Establish `hL` using `IsModuleTopology.continuous_of_linearMap (R := Ainf F) (TensorProduct.AlgebraTensorModule.map (LinearMap.id : Ainf F →ₗ[Ainf F] Ainf F) σ.toLinearMap : Ainf F ⊗[F] E →ₗ[Ainf F] Ainf F ⊗[F] E)`. Use `hL using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hd : DenseRange (inclR (F` using `F) (E := E) (Ainf F)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg : DenseRange (fun c : Fin (Module.finrank F E) → F => fun i => algebraMap F (Ainf F) (c i))` using `DenseRange.piMap fun _ => InfiniteAdeleRing.denseRange_algebraMap F`. Establish `hf : DenseRange (fun c : Fin (Module.finrank F E) → Ainf F => ∑ i, c i • bb i)`. Use `Function.Surjective.denseRange fun y => ⟨bb.equivFun y, ?_⟩` and prove the remaining obligations. Conclude with `bb.sum_equivFun y`. Establish `hfc : Continuous (fun c : Fin (Module.finrank F E) → Ainf F => ∑ i, c i • bb i)` using `continuous_finsetSum _ fun i _ => (continuous_apply i).smul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hf.comp hg hfc).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Use `⟨∑ i, c i • b i, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_sum, algebraMap_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Simplify using `[inclR, bb, Algebra.TensorProduct.basis_apply]`. Conclude with `dense_unitary (K := E) (R := Ainf F ⊗[F] E) (inclR (Ainf F)) (σ : E →+* E) (sigR (Ainf F) σ) hσι (fun x => hc x) hne hσσ hσc hd h1 h2 J hJ hdet`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dense_inf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hc : ∀ x, σ (σ x) = x) (hne : ∃ z, σ z ≠ z) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
@@ -641,9 +619,9 @@ theorem dense_inf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField 
     hσι (fun x => hc x) hne hσσ hσc hd h1 h2 J hJ hdet
 
 /- English proof (translation)
-Use `⟨(Algebra.TensorProduct.comm F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) E).trans ((Algebra.TensorProduct.prodRight F F E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)).tr …` and prove the remaining obligations. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `tmul a e`. Simplify using `only [Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Prod.mk_add_mk]`.
+Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately.
 -/
 private theorem exists_tensor_fst_snd_decomposition (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     ∃ Φ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E ≃ₐ[F] (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E) × (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E),
@@ -661,14 +639,14 @@ private theorem exists_tensor_fst_snd_decomposition (F E : Type) [Field F] [Numb
   | add x y hx hy => simp only [map_add, hx, hy, Prod.mk_add_mk]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem weak_approx_real_lemma_2 (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E) :
     (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)) (a • z) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F a • (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)) z ∧ (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA F) (AlgHom.id F E)) (a • z) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA F a • (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA F) (AlgHom.id F E)) z := by
   constructor <;> simp [Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_tensor_fst_snd_decomposition F E`. Use extensionality with `i j`. Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[hΦ, hΦ]`. Conclude with `Prod.ext (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_map_fstA_eq_of_map_sndA_eq (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (M N : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E)) (h1 : M.map (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)) = N.map (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)))
@@ -680,15 +658,15 @@ private theorem eq_of_map_fstA_eq_of_map_sndA_eq (F E : Type) [Field F] [NumberF
   exact Prod.ext (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)
 
 /- English proof (translation)
-Establish `hfin : Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `IsModuleTopology.toContinuousSMul (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E)` as an intermediate fact. Use `IsModuleTopology.toContinuousAdd (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E)` as an intermediate fact. Set `bQ` to `Algebra.TensorProduct.basis (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) (Module.finBasis F E)`. Set `emb : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F` to `fun y => (y, 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hemb : Continuous emb` using `continuous_id.prodMk continuous_const`. Establish `key : ∀ x, Φ.symm (x, c) = (∑ i, emb (bQ.equivFun x i) • Φ.symm (bQ i, 0)) + Φ.symm (0, c)`. Introduce `x`. Apply `Φ.injective` to reduce the goal to its premises. Establish `hw : ∀ i, Φ (emb (bQ.equivFun x i) • Φ.symm (bQ i, 0)) = (bQ.equivFun x i • bQ i, 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i`. Establish `h0` using `hΦ (Φ.symm (bQ i, 0))`. Rewrite `h0` using `[AlgEquiv.apply_symm_apply]`. Rewrite using `[hΦ, (weak_approx_real_lemma_2 F E _ _).1, (weak_approx_real_lemma_2 F E _ _).2, ← (Prod.mk.inj h0).1, ← (Prod.mk.inj h0).2]`. Conclude with `Prod.ext rfl (smul_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgEquiv.apply_symm_apply, map_add, map_sum, AlgEquiv.apply_symm_apply]`. Simplify using `only [hw]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Prod.fst_sum]`. Simplify using `[Prod.snd_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fun x => Φ.symm (x, c)) = fun x => (∑ i, emb (bQ.equivFun x i) • Φ.symm (bQ i, 0)) + Φ.symm (0, c) from funext key]`. Establish `hcoord : Continuous fun x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E => bQ.equivFun x` using `IsModuleTopology.continuous_of_linearMap bQ.equivFun.toLinearMap`. Use `Continuous.add (continuous_finsetSum _ fun i _ => ?_) continuous_const` and prove the remaining obligations. Conclude with `Continuous.smul (f := fun x => emb (bQ.equivFun x i)) (g := fun _ => Φ.symm (bQ i, 0)) (hemb.comp ((continuous_apply i).comp hcoord)) continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem weak_approx_real_lemma_3 (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [TopologicalSpace (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E)] [IsModuleTopology (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E)]
@@ -726,7 +704,7 @@ private theorem weak_approx_real_lemma_3 (F E : Type) [Field F] [NumberField F] 
     (hemb.comp ((continuous_apply i).comp hcoord)) continuous_const
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem sigR_transpose_mul_JR_mul_eq_JR (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (x : GL (Fin n) (R ⊗[F] E)) :
@@ -735,15 +713,15 @@ private theorem sigR_transpose_mul_JR_mul_eq_JR (F E : Type) [Field F] [NumberFi
         (x : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR R J := Iff.rfl
 
 /- English proof (translation)
-Establish `hsI : ∀ z, (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ z) = Formalism.MainNotions. …`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hsF : ∀ z, (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA F) (AlgHom.id F E)) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ z) = Formalism.MainNotions. …`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a e => simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hsI]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hsF]`. Use extensionality with `i j`. Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem weak_approx_real_lemma_7 (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (M : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E)) :
@@ -769,9 +747,9 @@ private theorem weak_approx_real_lemma_7 (F E : Type) [Field F] [NumberField F] 
   · ext i j; simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]
 
 /- English proof (translation)
-Establish `hg : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF …` using `(sigR_transpose_mul_JR_mul_eq_JR F E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ J _).1 (show (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ J) from g).2`. Take `⟨h1, -, h3, -⟩` from `weak_approx_real_lemma_7 F E σ J (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ J g : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E))`. Establish `hmem : Units.map ((Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)).toRingHom).mapMatrix.toMonoidHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassV …`. Rewrite using `[sigR_transpose_mul_JR_mul_eq_JR]`. Use `show Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ) (((Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)).toRingHom).m …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← h3, ← map_mul, ← map_mul, hg]`. Conclude with `⟨(⟨_, hmem⟩ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ J), rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem weak_approx_real_lemma_8 (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (g : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ J) :
@@ -787,27 +765,25 @@ private theorem weak_approx_real_lemma_8 (F E : Type) [Field F] [NumberField F] 
   exact ⟨(⟨_, hmem⟩ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ J), rfl⟩
 
 /- English proof (translation)
-Use `letI tQ : TopologicalSpace (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E) := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.topTens (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F)`. Use `letI tP : TopologicalSpace (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E) := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.topTens (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)`. Establish `iA : IsModuleTopology (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `iF : IsModuleTopology (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E)` using `⟨rfl⟩`. Take `⟨Φ, hΦ⟩` from `exists_tensor_fst_snd_decomposition F E`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ∀ c, Continuous fun x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E => Φ.symm (x, c)` using `fun c => weak_approx_real_lemma_3 F E Φ hΦ c`. Establish `hΦs : ∀ x y, ((Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)).toRingHom) (Φ.symm (x, y)) = x ∧ ((Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA F) (AlgHom.id F E)).toRingHom) …`. Introduce `x y`. Establish `h` using `hΦ (Φ.symm (x, y))`. Rewrite `h` using `[AlgEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨(congrArg Prod.fst h).symm, (congrArg Prod.snd h).symm⟩`. Establish `hinj : ∀ M N : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E), ((Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)).toRingHom).mapMatrix M = ((Algebra.TensorProduct.map (For …` using `fun M N h1 h2 => eq_of_map_fstA_eq_of_map_sndA_eq F E M N h1 h2`. Establish `hcTI` using `fun M => (weak_approx_real_lemma_7 F E σ J M).1`. Establish `hcTF` using `fun M => (weak_approx_real_lemma_7 F E σ J M).2.1`. Establish `hJI` using `(weak_approx_real_lemma_7 F E σ J 0).2.2.1`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJF` using `(weak_approx_real_lemma_7 F E σ J 0).2.2.2`. Set `sec : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E) → Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) → Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolu …` to `fun X Y i j => Φ.symm (X i j, Y i j)`. Establish `hsecI : ∀ X Y, ((Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)).toRingHom).mapMatrix (sec X Y) = X`. Introduce `X Y`. Use extensionality with `i j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `(hΦs _ _).1`. Establish `hsecF : ∀ X Y, ((Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA F) (AlgHom.id F E)).toRingHom).mapMatrix (sec X Y) = Y`. Introduce `X Y`. Use extensionality with `i j`. Conclude with `(hΦs _ _).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsecmul : ∀ X Y X' Y', sec X Y * sec X' Y' = sec (X * X') (Y * Y')`. Introduce `X Y X' Y'`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, hsecI, hsecI, hsecI]`. Rewrite using `[map_mul, hsecF, hsecF, hsecF]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsec1 : sec 1 1 = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_one, hsecI]`. Rewrite using `[map_one, hsecF]`. Establish `hone : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ) (1 : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)) * Formalism.MainNotions. …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Formalism.UG.cT]`. Establish `hsecmem : ∀ X : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E), Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ) X * Formalism.Ma …`. Introduce `X hX`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, (hcTI _), hJI, hsecI]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hX`. Rewrite using `[map_mul, map_mul, (hcTF _), hJF, hsecF]`. Conclude with `hone`. Establish `hmemI : ∀ x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ J, Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo …` using `fun x => (sigR_transpose_mul_JR_mul_eq_JR F E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ J _).1 (show (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ J) from x).2`. Set `S : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ J → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ J` to `fun x => (⟨⟨sec (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ J x : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F ⊗[F] E)) 1, sec (↑(Formalism.MainN …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmatc : Continuous fun x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ J => (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassV …` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hmatc' : Continuous fun x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) σ J => (↑(Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMa …` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Establish `hS : Continuous S`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => (hcont _).comp ((continuous_apply j).comp ((continuous_apply i).comp hmatc))`.
-
-Conclude with `continuous_pi fun i => continuous_pi fun j => (hcont _).comp ((continuous_apply j).comp ((continuous_apply i).comp hmatc'))`. Conclude with `⟨S, hS, fun x => ⟨hsecI _ _, hsecF _ _⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem weak_approx_real_lemma_9 (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) :
@@ -876,11 +852,9 @@ private theorem weak_approx_real_lemma_9 (F E : Type) [Field F] [NumberField F] 
   exact ⟨S, hS, fun x => ⟨hsecI _ _, hsecF _ _⟩⟩
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Use `⟨fun x => star_star x, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `htop : (⊥ : Subalgebra D.host.F D.host.E) = ⊤`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_top_iff.2 fun a _ => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `(D.sp.cm.fixed a).1 (hcon a)`. Conclude with `hb ▸ Subalgebra.algebraMap_mem _ b`. Establish `h1` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 htop`. Rewrite `h1` using `[D.sp.cm.deg2]`.
-
-Conclude with `absurd h1 (by norm_num)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sig_involutive_and_nontrivial (D : Formalism.BasicNotions.D7) :
     (∀ x, D.sp.cm.sig (D.sp.cm.sig x) = x) ∧ ∃ z, D.sp.cm.sig z ≠ z := by
@@ -897,11 +871,11 @@ private theorem sig_involutive_and_nontrivial (D : Formalism.BasicNotions.D7) :
   exact absurd h1 (by norm_num)
 
 /- English proof (translation)
-Establish `h0 : Formalism.UG.cT (σ : E →+* E) (γ0 : Matrix (Fin n) (Fin n) E) * J * (γ0 : Matrix (Fin n) (Fin n) E) = J` using `hγ0`. Establish `hc : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)).mapMatrix (Formalism.UG.cT (σ : E →+* E) (γ0 : Matrix (Fin n) (Fin n) E)) = Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolu …`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`. Establish `hmem : Formalism.UG.bc (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)) γ0 ∈ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.A …`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[sigR_transpose_mul_JR_mul_eq_JR]`. Use `show Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ) ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassV …`. Rewrite using `[← hc, ← map_mul, ← map_mul, h0]`. Use `⟨(⟨_, hmem⟩ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ J), ?_, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.bc (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)) γ0 ∈ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HFin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.A …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Subgroup.mem_map.2 ⟨γ0, hγ0, rfl⟩`. Use extensionality with `i j show (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E)) ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) ⊗ₜ[F] (γ0 : Matrix (Fin n) (Fin n) E) i j) = _`. Simplify using `[Formalism.UG.bc, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_adelic_point_of_mem_unitaryGroup (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (γ0 : GL (Fin n) E) (hγ0 : γ0 ∈ Formalism.UG.UJ (σ : E →+* E) J) :
@@ -929,15 +903,15 @@ open scoped ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D V u hu U hU huU`. Take `⟨hinv, hne⟩` from `sig_involutive_and_nontrivial D`. Take `⟨S, hS, hSI⟩` from `weak_approx_real_lemma_9 D.host.F D.host.E D.sp.cm.sig V.gram`. Take `⟨p, hp⟩` from `weak_approx_real_lemma_8 D.host.F D.host.E D.sp.cm.sig V.gram u`. Establish `huF : ((Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom).mapMatrix (HA.mat (AF D.host.F) D.sp.cm.sig V.gram u : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun y : GL (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) => (y : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E))) (MonoidHom.mem_ke …`. Conclude with `h`. Establish `hSp : S p = u` using `GlobalTheory.AutFunCounterexample.GA_ext V (eq_of_map_fstA_eq_of_map_sndA_eq _ _ _ _ ((hSI p).1.trans hp) ((hSI p).2.trans huF.symm))`. Establish `hdense` using `dense_inf D.host.F D.host.E D.sp.cm.sig hinv hne V.gram (GlobalTheory.AutFunCounterexample.gram_herm V) (GlobalTheory.AutFunCounterexample.gram_det_ne V)`. Take `⟨h, hhD, hhO⟩` from `hdense.exists_mem_open (hU.preimage hS) ⟨p, show S p ∈ U by rw [hSp]; exact huU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ0, hγ0, hγ0h⟩` from `Subgroup.mem_map.1 hhD`. Take `⟨γ, hγQ, hγI⟩` from `exists_adelic_point_of_mem_unitaryGroup D.host.F D.host.E D.sp.cm.sig V.gram γ0 hγ0`. Use `⟨γ, hγQ, γ⁻¹ * S h, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `MonoidHom.mem_ker.2` to reduce the goal to its premises. Rewrite using `[map_mul, map_inv, inv_mul_eq_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show ((Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom).mapMatrix (HA.mat (AF D.host.F) D.sp.cm.sig V.gram γ : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E)) = ((Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F …`. Rewrite using `[hγI, hγ0h, (hSI h).1]`. Rewrite using `[mul_inv_cancel_left]`. Conclude with `hhO`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_inv_cancel_left]`. Apply `MonoidHom.mem_ker.2` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(hSI h).2`.
+A detailed English derivation is pending.
 -/
 theorem weak_approx_real : ∀ {D : D7} (V : HSp D) (u : GA D V), u ∈ GinfC V → ∀ U : Set (GA D V), IsOpen U → u ∈ U → ∃ γ ∈ GQ V, ∃ k ∈ GfC V, γ * k ∈ U ∧ γ * k ∈ GinfC V := by
   intro D V u hu U hU huU

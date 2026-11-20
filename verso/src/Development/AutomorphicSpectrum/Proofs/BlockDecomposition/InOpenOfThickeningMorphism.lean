@@ -8,9 +8,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistable
 namespace GlobalTheory.CompanionTheory.ThickPt
 
 /- English proof (translation)
-Introduce `h`. Unfold `CrystallineSemistableComparison.Pb.InU at h ⊢`. Take `⟨ψ, _, _, _, hle, hpt, _, _, _⟩` from `φ`. Establish `key : CrystallineSemistableComparison.Pb.pt T' = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J ψ hle)) ≫ CrystallineSemistableComparison.Pb.pt T`. Unfold `CrystallineSemistableComparison.Pb.pt`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hpt]`. Both sides reduce to the same expression. Rewrite using `[key]`. Introduce `x _`. Conclude with `@h ((Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J ψ hle))).base x) trivial`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inU_map {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (V : X.Opens)

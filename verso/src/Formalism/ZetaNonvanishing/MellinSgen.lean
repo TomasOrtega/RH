@@ -11,11 +11,9 @@ section
 variable (a : ℕ → ℝ)
 
 /- English proof (translation)
-Establish `hk : ∀ k : ℕ, Measurable fun x : ℝ => ∑ n ∈ Finset.Icc 1 k, a n * (x / n - 1)` using `fun k => Finset.measurable_sum _ fun n _ => by fun_prop`. Unfold `Sa`. Use `first`. Consider the case `(have hg : Measurable (fun p : ℝ × ℕ => ∑ n ∈ Finset.Icc 1 p.2, a n * (p.1 / n - 1)) := by first`. Consider the case `exact measurable_from_prod_countable_right hk`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact measurable_from_prod_countable_left hk`. Consider the case `exact measurable_from_prod_countable hk`. Conclude with `hg.comp (measurable_id.prodMk Nat.measurable_floor))`. Consider the case `(have hg : Measurable (fun p : ℕ × ℝ => ∑ n ∈ Finset.Icc 1 p.1, a n * (p.2 / n - 1)) := by first`. Consider the case `exact measurable_from_prod_countable_left hk`.
-
-Consider the case `exact measurable_from_prod_countable_right hk`. Conclude with `hg.comp (Nat.measurable_floor.prodMk measurable_id))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma Sa_measurable : Measurable (Sa a) := by
   have hk : ∀ k : ℕ, Measurable fun x : ℝ => ∑ n ∈ Finset.Icc 1 k, a n * (x / n - 1) :=
@@ -35,11 +33,11 @@ lemma Sa_measurable : Measurable (Sa a) := by
        exact hg.comp (Nat.measurable_floor.prodMk measurable_id))
 
 /- English proof (translation)
-Unfold `mxS`. Rewrite `hn` using `[Finset.mem_Icc, not_and_or, not_le, not_le]`. Break down `hn with hn | hn` into its components or cases. Establish `h0 : n = 0` using `by omega`. Substitute `h0` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `[ha0]`. Establish `hx : x < n` using `Nat.lt_of_floor_lt hn`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast (by omega : 0 < n)`. Establish `hle : x / n - 1 ≤ 0`. Rewrite using `[sub_nonpos, div_le_one hn0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx.le`. Rewrite using `[max_eq_right hle, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma a_mxS_eq_zero (ha0 : a 0 = 0) (x : ℝ) (n : ℕ) (hn : n ∉ Finset.Icc 1 ⌊x⌋₊) :
     a n * mxS n x = 0 := by
@@ -57,13 +55,13 @@ lemma a_mxS_eq_zero (ha0 : a 0 = 0) (x : ℝ) (n : ℕ) (hn : n ∉ Finset.Icc 1
     rw [max_eq_right hle, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[tsum_eq_sum (s := Finset.Icc 1 ⌊x⌋₊) (fun n hn => a_mxS_eq_zero a ha0 x n hn)]`. Unfold `Sa`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite `hn` using `[Finset.mem_Icc]`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast (by omega : 0 < n)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : (n : ℝ) ≤ x`. Establish `hx0 : 0 ≤ x`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Rewrite `hn` using `[Nat.floor_eq_zero.mpr (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `(Nat.le_floor_iff hx0).mp hn.2`. Establish `hnn : 0 ≤ x / n - 1`. Rewrite using `[sub_nonneg, le_div_iff₀ hn0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `mxS`. Rewrite using `[max_eq_left hnn]`.
+A detailed English derivation is pending.
 -/
 lemma Sa_eq_tsum (ha0 : a 0 = 0) (x : ℝ) : Sa a x = ∑' n, a n * mxS n x := by
   rw [tsum_eq_sum (s := Finset.Icc 1 ⌊x⌋₊) (fun n hn => a_mxS_eq_zero a ha0 x n hn)]
@@ -85,15 +83,15 @@ lemma Sa_eq_tsum (ha0 : a 0 = 0) (x : ℝ) : Sa a x = ∑' n, a n * mxS n x := b
   rw [max_eq_left hnn]
 
 /- English proof (translation)
-The claim follows from `summable_of_ne_finset_zero (s := Finset.Icc 1 ⌊x⌋₊) (fun n hn => a_mxS_eq_zero a ha0 x n hn)`.
+A detailed English derivation is pending.
 -/
 lemma summable_a_mxS (ha0 : a 0 = 0) (x : ℝ) : Summable (fun n => a n * mxS n x) :=
   summable_of_ne_finset_zero (s := Finset.Icc 1 ⌊x⌋₊) (fun n hn => a_mxS_eq_zero a ha0 x n hn)
 
 /- English proof (translation)
-Establish `hm : ∀ n, 0 ≤ mxS n x` using `fun n => by`. Unfold `mxS`. Conclude with `le_max_right _ _`. Rewrite using `[Sa_eq_tsum a ha0 x, tsum_eq_sum (s := Finset.Icc 1 ⌊x⌋₊) (fun n hn => a_mxS_eq_zero a ha0 x n hn), tsum_eq_sum (s := Finset.Icc 1 ⌊x⌋₊) (fun n hn => by`. Establish `h` using `a_mxS_eq_zero a ha0 x n hn`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases mul_eq_zero.mp h with h | h <;> simp [h])]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (le_of_eq (Finset.sum_congr rfl fun n _ => ?_))` and prove the remaining obligations. Rewrite using `[abs_mul, abs_of_nonneg (hm n)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma abs_Sa_le (ha0 : a 0 = 0) (x : ℝ) : |Sa a x| ≤ ∑' n, |a n| * mxS n x := by
   have hm : ∀ n, 0 ≤ mxS n x := fun n => by
@@ -107,11 +105,11 @@ lemma abs_Sa_le (ha0 : a 0 = 0) (x : ℝ) : |Sa a x| ≤ ∑' n, |a n| * mxS n x
   rw [abs_mul, abs_of_nonneg (hm n)]
 
 /- English proof (translation)
-Establish `hs : LSeriesSummable (fun n => (ArithmeticFunction.vonMangoldt n : ℂ)) (σ : ℂ)` using `ArithmeticFunction.LSeriesSummable_vonMangoldt (by simpa using hσ)`. Use `Summable.of_nonneg_of_le (fun n => mul_nonneg (abs_nonneg _) (Real.rpow_nonneg (Nat.cast_nonneg _) _)) (fun n => ?_) (hs.norm.mul_left |K|)` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with h0 | hn` into its components or cases. Substitute `h0` using the available equality. Simplify using `[Real.zero_rpow (by linarith : -σ ≠ 0)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hΛ : 0 ≤ ArithmeticFunction.vonMangoldt n` using `ArithmeticFunction.vonMangoldt_nonneg`. Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn`. Rewrite using `[LSeries.norm_term_eq, if_neg hn.ne']`. Simplify using `only [Complex.ofReal_re, Complex.norm_real, Real.norm_of_nonneg hΛ]`. Rewrite using `[div_eq_mul_inv, ← Real.rpow_neg hnpos.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hK' : |a n| ≤ |K| * ArithmeticFunction.vonMangoldt n` using `(hK n).trans (mul_le_mul_of_nonneg_right (le_abs_self K) hΛ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma summable_abs_a (K : ℝ) (hK : ∀ n : ℕ, |a n| ≤ K * vonMangoldt n) {σ : ℝ} (hσ : 1 < σ) :
     Summable (fun n : ℕ => |a n| * (n : ℝ) ^ (-σ)) := by
@@ -137,35 +135,31 @@ lemma summable_abs_a (K : ℝ) (hK : ∀ n : ℕ, |a n| ≤ K * vonMangoldt n) {
 end
 
 /- English proof (translation)
-Introduce `a K hK`. Establish `ha0 : a 0 = 0`. Establish `h` using `hK 0`. Rewrite `h` using `[ArithmeticFunction.map_zero, mul_zero]`. Conclude with `abs_nonpos_iff.mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Sa_measurable a, fun σ hσ => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Establish `key` using `integrable_tsum_of_nonneg (μ := volume.restrict (Ioi (1 : ℝ))) (φ := fun n x => |a n| * (mxS n x * x ^ (-σ - 1))) (fun n => ?_) (fun n => ?_) (fun x => ?_) ?_`. Establish `hmeas : Measurable (fun x : ℝ => |Sa a x| * x ^ (-σ - 1))`. Use `Sa_measurable a` as an intermediate fact. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `key.mono' hmeas.aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_mem measurableSet_Ioi).mono fun x hx => ?_` and prove the remaining obligations. Establish `hx0 : (0 : ℝ) < x` using `lt_trans zero_lt_one hx`. Establish `hxp : 0 ≤ x ^ (-σ - 1)` using `Real.rpow_nonneg hx0.le _`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg (abs_nonneg _) hxp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← tsum_mul_right]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[ha0]`. Conclude with `((mxS_mellin_real hn hσ).1).const_mul _`. Use `(ae_restrict_mem measurableSet_Ioi).mono fun x hx => ?_` and prove the remaining obligations. Conclude with `mul_nonneg (abs_nonneg _) (mul_nonneg (mxS_nonneg n x) (Real.rpow_nonneg (le_of_lt (lt_trans zero_lt_one hx)) _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `ha0' : |a 0| = 0` using `by simp [ha0]`. Simplify `(summable_a_mxS (fun n => |a n|) ha0' x).mul_right (x ^ (-σ - 1))` using `only [mul_assoc]`. Establish `: (fun n => ∫ x in Ioi (1 : ℝ), |a n| * (mxS n x * x ^ (-σ - 1))) = fun n : ℕ => |a n| * (n : ℝ) ^ (-σ) / (σ * (σ - 1))`. Use function extensionality and compare the values at `n`. Rewrite using `[integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[ha0]`. Rewrite using `[(mxS_mellin_real hn hσ).2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `(summable_abs_a a K hK hσ).div_const _`. Use `set F : ℕ → ℝ → ℂ := fun n x => (a n : ℂ) * ((mxS n x : ℂ) * (x : ℂ) ^ (-s - 1)) with hFdef`. Establish `hint : ∀ n, Integrable (F n) (volume.restrict (Ioi (1 : ℝ)))`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[F, ha0]`. Conclude with `((mxS_mellin hn hs).1).const_mul _`. Establish `hnorm : ∀ n, ∫ x in Ioi (1 : ℝ), ‖F n x‖ = |a n| * (n : ℝ) ^ (-s.re) / (s.re * (s.re - 1))`. Introduce `n`. Rewrite using `[setIntegral_congr_fun measurableSet_Ioi (g := fun x => |a n| * (mxS n x * x ^ (-s.re - 1))) (fun x hx => ?_)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_const_mul]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[ha0]`. Rewrite using `[(mxS_mellin_real hn hs).2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx0 : (0 : ℝ) < x` using `lt_trans zero_lt_one hx`. Simplify using `only [F, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (mxS_nonneg n x), norm_cpow_eq_rpow_re_of_pos hx0]`. Use `congr 3`. Establish `hsum : Summable (fun n => ∫ x in Ioi (1 : ℝ), ‖F n x‖)`. Repeatedly rewrite using `[hnorm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Conclude with `(summable_abs_a a K hK hs).div_const _`. Establish `hpt : ∀ x ∈ Ioi (1 : ℝ), (Sa a x : ℂ) * (x : ℂ) ^ (-s - 1) = ∑' n, F n x`. Introduce `x hx`. Rewrite using `[Sa_eq_tsum a ha0, ofReal_tsum, ← tsum_mul_right]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Use function extensionality and compare the values at `n`. Simplify using `only [F]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[setIntegral_congr_fun measurableSet_Ioi hpt, ← integral_tsum_of_summable_integral_norm hint hsum, LSeries, ← tsum_div_const]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[F, ha0]`. Simplify using `only [F]`.
-
-Rewrite using `[integral_const_mul, (mxS_mellin hn hs).2, LSeries.term_of_ne_zero (by omega), cpow_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mellinSgen : MellinSgen := by
   intro a K hK

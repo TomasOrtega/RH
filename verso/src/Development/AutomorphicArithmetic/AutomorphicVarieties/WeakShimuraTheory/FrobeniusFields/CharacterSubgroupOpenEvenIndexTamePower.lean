@@ -5,13 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `hc : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).mpr hpq`. Establish `hz : ((Nat.gcd p q : ℕ) : ℤ) = p * Nat.gcdA p q + q * Nat.gcdB p q` using `Nat.gcd_eq_gcd_ab p q`. Rewrite `hz` using `[hc.gcd_eq_one]`. Establish `hΩ : (1 : Ω) = (p : Ω) * ((Nat.gcdA p q : ℤ) : Ω) + (q : Ω) * ((Nat.gcdB p q : ℤ) : Ω)`. Use `congrArg (fun z : ℤ => (z : Ω)) hz` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `ha : A.valuation ((Nat.gcdA p q : ℤ) : Ω) ≤ 1` using `A.valuation_le_one_iff _ |>.2 (intCast_mem A _)`. Establish `hb : A.valuation ((Nat.gcdB p q : ℤ) : Ω) ≤ 1` using `A.valuation_le_one_iff _ |>.2 (intCast_mem A _)`. Establish `e1 : A.valuation ((p : Ω) * ((Nat.gcdA p q : ℤ) : Ω)) < 1`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ha) h1`. Establish `e2 : A.valuation ((q : Ω) * ((Nat.gcdB p q : ℤ) : Ω)) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hb) h2`.
-
-Establish `e3` using `Valuation.map_add_lt _ e1 e2`. Rewrite `e3` using `[← hΩ, map_one]`. Conclude with `lt_irrefl _ e3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem false_of_two_primes_valuation_lt_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {p q : ℕ} (hp : p.Prime)
     (hq : q.Prime) (hpq : p ≠ q) (h1 : A.valuation (p : Ω) < 1) (h2 : A.valuation (q : Ω) < 1) : False := by
@@ -35,37 +33,35 @@ private theorem false_of_two_primes_valuation_lt_one {Ω : Type} [Field Ω] (A :
   exact lt_irrefl _ e3
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD X`. Take `⟨_, _, _, _, _, _, _, ⟨m, hm, hpow⟩, hopen⟩` from `barFacts D hD`. Establish `hbarpow : ∀ (a : G ℚ Ω) (n : ℕ), Raw.bar D.Psi (a ^ n) = Raw.bar D.Psi a ^ n`. Introduce `a n`. Simplify using `[Raw.bar]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsub : ∀ g : G ℚ Ω, X.φ g = 1 → X.η g = 1 → X.η' g = 1 → X.κ g = 1 → Raw.bar D.Psi g = 1 → g ∈ X.H`. Introduce `g h1 h2 h3 h4 h5`. Rewrite using `[Set2.mem_H]`. Use `⟨?_, by rw [h2, h3], h4⟩` and prove the remaining obligations. Rewrite using `[h5, h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hl : l.Prime` using `Fact.out`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hU : IsOpen ((X.φ.ker : Set (G ℚ Ω)) ∩ X.η.ker ∩ X.η'.ker ∩ X.κ.ker ∩ {g | Raw.bar D.Psi g = 1})` using `(((X.hφ.opn.inter X.hη.opn).inter X.hη'.opn).inter X.kap.opn).inter hopen`. Establish `h1 : (1 : G ℚ Ω) ∈ (X.φ.ker : Set (G ℚ Ω)) ∩ X.η.ker ∩ X.η'.ker ∩ X.κ.ker ∩ {g | Raw.bar D.Psi g = 1}`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Raw.bar]`. Establish `hmem : (X.H : Set (G ℚ Ω)) ∈ nhds (1 : G ℚ Ω)`. Use `Filter.mem_of_superset (hU.mem_nhds h1) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩`. Conclude with `hsub g h1 h2 h3 h4 h5`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.isOpen_of_mem_nhds _ hmem`. Rewrite using `[commutator, Subgroup.commutator_le]`. Introduce `a _ b _`. Apply the tactic sequence `refine hsub _ ?_ ?_ ?_ ?_ ?_ <;>`. Simplify using `[map_commutatorElement, commutatorElement_eq_one_iff_mul_comm, mul_comm, Raw.bar]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `all_goals`. Rewrite using `[commutatorElement_eq_one_iff_mul_comm.2 (mul_comm _ _)]`. Simplify using the standard rewrite rules. Introduce `σ hσ`. Establish `hsq : σ ^ 2 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨j, hj⟩` from `hσ`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[pow_two, AlgEquiv.mul_apply, hj, hj, Complex.conj_conj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hκ : X.κ σ = 1`. Take `⟨k, hk⟩` from `X.kap.pow`. Establish `e1 : X.κ σ ^ (l ^ k) = 1`. Use `congrArg (fun f => f σ) hk` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : X.κ σ ^ 2 = 1`. Rewrite using `[← map_pow, hsq, map_one]`. Establish `hcop : Nat.Coprime 2 (l ^ k)` using `Nat.Coprime.pow_right k ((Nat.coprime_primes Nat.prime_two hl).mpr (Ne.symm hD.l_odd))`. Use `pow_gcd_eq_one.2 ⟨e2, e1⟩` as an intermediate fact. Rewrite `this` using `[hcop.gcd_eq_one, pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hψ` using `X.psi_cc σ hσ`. Rewrite using `[Set2.mem_H]`. Use `⟨?_, by rw [X.hη.cc σ hσ, X.hη'.cc σ hσ], hκ⟩` and prove the remaining obligations. Simplify using `[Raw.bar, hψ, X.hφ.cc σ hσ]`. Set `f : G ℚ Ω →* ℤˣ` to `X.η * X.η'⁻¹`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : X.H ≤ f.ker`. Introduce `g hg`. Rewrite `hg` using `[Set2.mem_H]`. Simplify using `[f, hg.2.1]`. Establish `hsurj : Function.Surjective f`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `s`. Take `⟨g', -, h2, h3, -⟩` from `adj2 D hD X 1 1 s 1`. Conclude with `⟨g', by simp [f, h2, h3]⟩`. Establish `hidx : f.ker.index = 2`. Rewrite using `[Subgroup.index_ker, MonoidHom.range_eq_top.2 hsurj, Subgroup.card_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[even_iff_two_dvd, ← hidx]`. Conclude with `Subgroup.index_dvd_of_le hle`. Introduce `A hA g hg`. Establish `hne : ∀ q : ℕ, q.Prime → q ∉ D.S → ¬ A.valuation (q : Ω) < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q hq hqS hv`. Conclude with `false_of_two_primes_valuation_lt_one A hq hl (fun e => hqS (e ▸ hD.l_mem)) hv hA`. Establish `hφg : X.φ g = 1` using `(MonoidHom.mem_ker).1 (X.hφ.unr A (hne _ X.hφ.prime X.hφ.nm) hg)`. Establish `hηg : X.η g = 1` using `(MonoidHom.mem_ker).1 (X.hη.unr A (hne _ X.hη.prime (fun h => X.hη.nm (Finset.mem_insert_of_mem h))) hg)`. Establish `hη'g : X.η' g = 1` using `(MonoidHom.mem_ker).1 (X.hη'.unr A (hne _ X.hη'.prime (fun h => X.hη'.nm (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem h)))) hg)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hκg : X.κ g = 1` using `(MonoidHom.mem_ker).1 (X.kap.unrL A hA hg)`. Use `⟨m, hm, hsub _ ?_ ?_ ?_ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hφg, one_pow]`. Rewrite using `[map_pow, hηg, one_pow]`. Rewrite using `[map_pow, hη'g, one_pow]`.
-
-Rewrite using `[map_pow, hκg, one_pow]`. Rewrite using `[hbarpow, hpow g]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.characterSubgroup_open_even_index_tame_power :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ X : Set2 D, IsOpen (X.H : Set (G ℚ Ω)) ∧ commutator (G ℚ Ω) ≤ X.H ∧ (∀ σ : G ℚ Ω, IsCC σ → σ ∈ X.H) ∧ Even X.H.index ∧ ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∀ g ∈ Ine (F := ℚ) A, ∃ m : ℕ, l.Coprime m ∧ g ^ m ∈ X.H := by

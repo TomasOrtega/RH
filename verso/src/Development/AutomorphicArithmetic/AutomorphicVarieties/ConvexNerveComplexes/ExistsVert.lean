@@ -5,19 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConvexNerveComplex
 open Set UpperTheory.V.ConeExtensionAcyclic
 
 /- English proof (translation)
-Introduce `E Y _ _ _ q T hG x hx`. Take `⟨h0, hh0⟩` from `hG.nonempty`. Establish `hK` using `sublevel hG x hx (x h0)`. Take `⟨hm, hmK, hmin⟩` from `hK.exists_isMinOn ⟨h0, hh0, le_rfl⟩ x.continuous.continuousOn`. Establish `hglob : ∀ h' ∈ poly q, x hm ≤ x h'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h' hh'`. Distinguish the cases in `hle : x h' ≤ x h0`. Conclude with `hmin ⟨hh', hle⟩`. Establish `: x hm ≤ x h0` using `hmK.2`. Combine the linear relations using `[not_le.mp hle]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hF` using `sublevel hG x hx (x hm)`. Take `⟨e, he⟩` from `hF.extremePoints_nonempty ⟨hm, hmK.1, le_rfl⟩`. Rewrite `he` using `[mem_extremePoints]`. Take `⟨⟨hep, hex⟩, hext⟩` from `he`. Use `⟨⟨e, hep, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Take `⟨ε, hε, hs⟩` from `perturb hG.locFin e hep k hk`. Establish `ha` using `hs ε (by rw [abs_of_pos hε])`. Establish `hb` using `hs (-ε) (by rw [abs_neg, abs_of_pos hε])`. Establish `hxa` using `hglob _ ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxb` using `hglob _ hb`. Simplify using `only [map_add, map_smul, smul_eq_mul] at hxa hxb`. Establish `hmem1 : e + ε • k ∈ {h | h ∈ poly q ∧ x h ≤ x hm}` using `⟨ha, by simp only [map_add, map_smul, smul_eq_mul]; linarith⟩`. Establish `hmem2 : e + (-ε) • k ∈ {h | h ∈ poly q ∧ x h ≤ x hm}` using `⟨hb, by simp only [map_add, map_smul, smul_eq_mul]; linarith⟩`. Establish `hseg : e ∈ openSegment ℝ (e + ε • k) (e + (-ε) • k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1 / 2, 1 / 2, by norm_num, by norm_num, by norm_num, ?_⟩` and prove the remaining obligations. Use `module`. Establish `heq` using `(hext _ hmem1 _ hmem2 hseg).1`. Establish `hzero : ε • k = 0`. Use `congrArg (fun w => w - e) heq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using this`. Conclude with `(smul_eq_zero.mp hzero).resolve_left hε.ne'`. Simplify using `only [normalCone, Set.mem_setOf_eq]`. Introduce `h' hh'`. Conclude with `le_trans hex (hglob h' hh')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ConeExtensionAcyclic.exists_vert :
     ∀ {E Y : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {q : Y → E →L[ℝ] ℝ} {T : Set E}, Good q T → ∀ x ∈ posDual T, ∃ v : Vert q, x ∈ normalCone q v.1 := by

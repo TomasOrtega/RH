@@ -16,9 +16,9 @@ namespace PointSliceMass
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `IsMultiHomog`. Use `IsWeightedHomogeneous.sum _ _ _ fun j _ => ?_` and prove the remaining obligations. Establish `hX` using `isWeightedHomogeneous_X (R := ℂ) (groupWeight 1 n) ((0 : Fin 1), j)`. Establish `hw : groupWeight 1 n ((0 : Fin 1), j) = fun _ => 1`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `[groupWeight]`. Rewrite `hX` using `[hw]`. Simplify using `using (isWeightedHomogeneous_C (groupWeight 1 n) (y j)).mul hX`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isMultiHomog_pairing (y : Fin n → ℂ) :
     IsMultiHomog 1 (∑ j, C (y j) * X ((0 : Fin 1), j) : MvPolynomial (Fin 1 × Fin n) ℂ) := by
@@ -33,21 +33,19 @@ theorem isMultiHomog_pairing (y : Fin n → ℂ) :
   simpa using (isWeightedHomogeneous_C (groupWeight 1 n) (y j)).mul hX
 
 /- English proof (translation)
-Use `set c := ∑ a, ℓ a * y a with hc`. Use `set I := J ⊔ Ideal.span {linForm ℓ - 1} with hI`. Establish `hsmul : ∀ t : ℂ, eval (t • y) (linForm ℓ) = t * c`. Introduce `t`. Simplify using `only [hc, linForm, map_sum, map_mul, eval_C, eval_X, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le (fun q hq => (hJ q).mp hq _) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker, map_sub, map_one, hsmul, inv_mul_cancel₀ hc0, sub_self]`. Establish `hX : ∀ b, X b - C ((c⁻¹ • y) b) ∈ I`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `b`. Establish `h1 : ∀ a, C (y a) * X b - C (y b) * X a ∈ J` using `fun a => (hJ _).mpr fun t => by`. Simplify using `only [map_sub, map_mul, eval_C, eval_X, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ∑ a, C (ℓ a) * (C (y a) * X b - C (y b) * X a) = C c * X b - C (y b) * linForm ℓ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, map_sum, Finset.sum_mul, linForm, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcc : C c⁻¹ * C c = (1 : MvPolynomial (Fin n) ℂ)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← C_mul, inv_mul_cancel₀ hc0, C_1]`. Establish `key : X b - C ((c⁻¹ • y) b) = C c⁻¹ * (∑ a, C (ℓ a) * (C (y a) * X b - C (y b) * X a) + C (y b) * (linForm ℓ - 1))`. Rewrite using `[hs, Pi.smul_apply, smul_eq_mul, C_mul]`. Take the linear combination `(-X b) * hcc`. Rewrite using `[key]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.add_mem _ (Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (Ideal.mem_sup_left (h1 a))) (Ideal.mul_mem_left _ _ (Ideal.mem_sup_right (Ideal.subset_span rfl))))`. Establish `hext : Ideal.Quotient.mkₐ ℂ I = (Algebra.ofId ℂ (MvPolynomial (Fin n) ℂ ⧸ I)).comp (aeval (c⁻¹ • y))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `b`. Rewrite using `[AlgHom.comp_apply, aeval_X, Algebra.ofId_apply, Ideal.Quotient.mkₐ_eq_mk, ← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq, MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hX b`. Introduce `q hq`. Rewrite `hq` using `[RingHom.mem_ker]`. Establish `h` using `congrArg (fun φ => φ q) hext`. Simplify using `only [Ideal.Quotient.mkₐ_eq_mk, AlgHom.comp_apply, Algebra.ofId_apply] at h`.
-
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, h]`. Rewrite using `[show aeval (c⁻¹ • y) q = eval (c⁻¹ • y) q from rfl, hq, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_sup_eq_ker (y ℓ : Fin n → ℂ) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (hJ : ∀ q, q ∈ J ↔ ∀ t : ℂ, eval (t • y) q = 0) (hc0 : ∑ a, ℓ a * y a ≠ 0) :
@@ -104,13 +102,13 @@ end PointSliceMass
 open PointSliceMass in
 
 /- English proof (translation)
-Introduce `n δ h J f ℓ hJ hf hδ hℓ`. Take `⟨y, hy0, hV, hline⟩` from `PointLine.proof n J f hJ hf`. Take `⟨c, hc0, hfc⟩` from `PointChowForm.proof n J f y hf hy0 hV`. Establish `hδ1 : δ = 1`. Establish `h1 : IsMultiHomog 1 f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfc]`. Unfold `IsMultiHomog`. Simplify using `using (isWeightedHomogeneous_C (groupWeight 1 n) c).mul (isMultiHomog_pairing y)`. Conclude with `congrFun (IsWeightedHomogeneous.inj_right hf.1 hδ h1) 0`. Establish `hly : ∑ a, ℓ a * y a ≠ 0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hℓ` to reduce the goal to its premises. Rewrite using `[hline]`. Introduce `t`. Simplify using `only [linForm, map_sum, map_mul, eval_C, eval_X, Pi.smul_apply, smul_eq_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_zero t, ← h0, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[line_sup_eq_ker y ℓ J hline hly, PointIntegral.proof, hδ1, Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PointSliceMass.proof : PointSliceMass.Statement := by
   intro n δ h J f ℓ hJ hf hδ hℓ

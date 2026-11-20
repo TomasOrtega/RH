@@ -12,15 +12,15 @@ section Algebra
 variable {k : Type*} [Field k]
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `mul_ne_zero (mul_ne_zero hα hβ) hγ (by simpa using hs.symm)`. Take `⟨u, hu⟩ : ∃ u, u = t * s / (α * β)` from `⟨_, rfl⟩`. Establish `hu2 : α * β * u ^ 2 = γ * t ^ 2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, div_pow, mul_pow, hs]`. Clear the denominators using the available nonvanishing facts. Establish `h1 : x ^ 2 - α * y ^ 2 = β * (z ^ 2 - α * u ^ 2)` using `by linear_combination h + hu2`. Distinguish the cases in `hD : z ^ 2 - α * u ^ 2 = 0`. Use `GlobalTheory.Published.HasseNormSt.of_isSquare hα ?_ β` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hu0 : u = 0`. Establish `hz : z = 0` using `by simpa [hu0] using hD`. Establish `ht : t = 0`. Establish `: γ * t ^ 2 = 0` using `by rw [← hu2, hu0]; ring`. Simplify `this` using `[hγ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hxy : x ^ 2 = α * y ^ 2` using `by linear_combination h1 + β * hD`. Establish `hy : y ≠ 0`. Introduce and unpack `rfl`. Establish `hx : x = 0` using `by simpa using hxy`. Simplify using `[hx, hz, ht] at h0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨x / y, by field_simp; linear_combination -hxy⟩`. Conclude with `⟨z / u, by field_simp; linear_combination -hD⟩`. Use `⟨(x * z + α * y * u) / (z ^ 2 - α * u ^ 2), (x * u + y * z) / (z ^ 2 - α * u ^ 2), ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(z ^ 2 - α * u ^ 2)) * h1`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_norm_of_quaternary [CharZero k] {α β γ s : k} (hα : α ≠ 0) (hβ : β ≠ 0) (hγ : γ ≠ 0)
     (hs : s ^ 2 = α * β * γ) {x y z t : k} (h0 : x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0 ∨ t ≠ 0)
@@ -51,7 +51,7 @@ theorem exists_norm_of_quaternary [CharZero k] {α β γ s : k} (hα : α ≠ 0)
     linear_combination (-(z ^ 2 - α * u ^ 2)) * h1
 
 /- English proof (translation)
-Distinguish the cases in `hw : X₁ ^ 2 - α * Y₁ ^ 2 = 0`. Conclude with `⟨X₀, Y₀, 1, 0, by simp, by linear_combination -h1 - α * β * γ * hw⟩`. Use `⟨-Y₁ * (α * β), -X₁ * β, -(X₀ * Y₁ - Y₀ * X₁) * α, (X₁ ^ 2 - α * Y₁ ^ 2) * (α * β), Or.inr (Or.inr (Or.inr (mul_ne_zero hw (mul_ne_zero hα hβ)))), ?_⟩` and prove the remaining obligations. Take the linear combination `(-(α * β * (X₁ ^ 2 - α * Y₁ ^ 2))) * h1 - α * β * (X₀ * X₁ - α * (Y₀ * Y₁)) * h2`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_quaternary_of_coordinates {α β γ : k} (hα : α ≠ 0) (hβ : β ≠ 0)
     {X₀ X₁ Y₀ Y₁ : k}
@@ -66,17 +66,15 @@ theorem exists_quaternary_of_coordinates {α β γ : k} (hα : α ≠ 0) (hβ : 
     linear_combination (-(α * β * (X₁ ^ 2 - α * Y₁ ^ 2))) * h1 - α * β * (X₀ * X₁ - α * (Y₀ * Y₁)) * h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, h⟩`. Rewrite `h` using `[Fin.sum_univ_four]`. Use `⟨a 0 * x 0, x 1, x 2, x 3, ?_, by linear_combination a 0 * h⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hc`. Take `⟨h0, h1, h2, h3⟩` from `hc`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify `h0` using `[ha]`. Conclude with `h1`. Conclude with `h2`. Conclude with `h3`. Introduce and unpack `⟨x, y, z, t, hx, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨![x / a 0, y, z, t], ?_, ?_⟩` and prove the remaining obligations. Introduce `hc`. Establish `h0` using `congrFun hc 0`. Establish `h1` using `congrFun hc 1`. Establish `h2` using `congrFun hc 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrFun hc 3`. Simplify using `[ha] at h0 h1 h2 h3`. Simplify using `[h0, h1, h2, h3] at hx`. Rewrite using `[Fin.sum_univ_four]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isotropic_four_iff {a : Fin 4 → k} (ha : a 0 ≠ 0) :
     (∃ x : Fin 4 → k, x ≠ 0 ∧ ∑ i, a i * x i ^ 2 = 0) ↔
@@ -111,11 +109,11 @@ theorem isotropic_four_iff {a : Fin 4 → k} (ha : a 0 ≠ 0) :
       linear_combination h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, h⟩`. Rewrite `h` using `[Fin.sum_univ_succ]`. Use `⟨x 0, fun i => x i.succ, ?_, h⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hc`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `Fin.cases hc.1 (fun j => congrFun hc.2 j) i` and prove the remaining obligations. Introduce and unpack `⟨t, z, hx, h⟩`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Fin.cons t z, ?_, by simpa [Fin.sum_univ_succ] using h⟩` and prove the remaining obligations. Introduce `hc`. Break down `hx with hx | hx` into its components or cases. Conclude with `hx (by simpa using congrFun hc 0)`. Conclude with `hx (funext fun i => by simpa using congrFun hc i.succ)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isotropic_succ_iff {n : ℕ} {a : Fin (n + 1) → k} :
     (∃ x : Fin (n + 1) → k, x ≠ 0 ∧ ∑ i, a i * x i ^ 2 = 0) ↔
@@ -137,15 +135,15 @@ theorem isotropic_succ_iff {n : ℕ} {a : Fin (n + 1) → k} :
     · exact hx (funext fun i => by simpa using congrFun hc i.succ)
 
 /- English proof (translation)
-Establish `key : ∀ ν : k, ν ≠ 0 → ∀ z : Fin (n + 1) → k, ν + ∑ i, b i * z i ^ 2 = 0 → ∀ μ : k, IsSquare (μ / ν) → ∃ (t : k) (z : Fin (n + 1) → k), (t ≠ 0 ∨ z ≠ 0) ∧ μ * t ^ 2 + ∑ i, b i * z i ^ 2 = 0`. Introduce and unpack `ν hν z hz μ ⟨s, hs⟩`. Use `⟨1, fun i => s * z i, Or.inl one_ne_zero, ?_⟩` and prove the remaining obligations. Establish `: ∑ i, b i * (s * z i) ^ 2 = s ^ 2 * ∑ i, b i * z i ^ 2`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[div_eq_iff hν]`. Rewrite using `[this, hs]`. Take the linear combination `s ^ 2 * hz`. Distinguish the cases in `hμ : a * x ^ 2 + a' * y ^ 2 = 0`. Distinguish the cases in `hz : z = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Establish `hy : y ≠ 0`. Introduce and unpack `rfl`. Establish `hx : x = 0` using `by simpa [ha] using hμ`. Simplify using `[hx, hz] at h0`. Take `⟨X, Y, hXY⟩` from `GlobalTheory.Published.HasseNormSt.of_isSquare (δ := -a' / a) (by simp [ha, ha']) ⟨x / y, by field_simp; linear_combination -hμ⟩ (-b 0 / a)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `e : a * X ^ 2 + a' * Y ^ 2 = -b 0`. Clear denominators, using `at hXY` for the nonvanishing conditions. Take the linear combination `-hXY`. Use `⟨X, Y, by rw [e]; exact neg_ne_zero.2 hb, key _ (by rw [e]; exact neg_ne_zero.2 hb) (Pi.single 0 1) ?_⟩` and prove the remaining obligations. Rewrite using `[e, Fin.sum_univ_succ]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨1, 0, by simpa using ha, fun μ _ => ⟨0, z, Or.inr hz, ?_⟩⟩` and prove the remaining obligations. Take the linear combination `h - hμ`. Conclude with `⟨x, y, hμ, key _ hμ z (by linear_combination h)⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem exists_value_isotropic [CharZero k] {n : ℕ} {a a' : k} (ha : a ≠ 0) (ha' : a' ≠ 0)
     {b : Fin (n + 1) → k} (hb : b 0 ≠ 0) {x y : k} {z : Fin (n + 1) → k}
@@ -182,11 +180,11 @@ theorem exists_value_isotropic [CharZero k] {n : ℕ} {a a' : k} (ha : a ≠ 0) 
   · exact ⟨x, y, hμ, key _ hμ z (by linear_combination h)⟩
 
 /- English proof (translation)
-Take `⟨x, hx, h⟩` from `h`. Use `⟨Function.extend e x 0, fun hc => hx (funext fun j => ?_), ?_⟩` and prove the remaining obligations. Simplify `congrFun hc (e j)` using `[he.extend_apply]`. Rewrite using `[← h]`. Use `symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `Finset.sum_of_injOn e he.injOn (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) ?_ ?_` and prove the remaining obligations. Introduce `i _ hi`. Rewrite using `[Function.extend_apply' _ _ _ (by simpa using hi)]`. Simplify using the standard rewrite rules. Introduce `j _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he.extend_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isotropic_of_injective {ι κ : Type*} [Fintype ι] [Fintype κ] (e : κ → ι)
     (he : Function.Injective e) {a : ι → k}
@@ -206,11 +204,11 @@ theorem isotropic_of_injective {ι κ : Type*} [Fintype ι] [Fintype κ] (e : κ
       rw [he.extend_apply]
 
 /- English proof (translation)
-Establish `hij : i ≠ j` using `by rintro rfl; linarith`. Use `isotropic_of_injective ![i, j] ?_ ⟨![√(a j), √(-a i)], ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro p q h fin_cases p <;> fin_cases q <;> simp_all [eq_comm]`. Introduce `hc`. Use `congrFun hc 0` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Matrix.cons_val_zero, Pi.zero_apply] at this`. Conclude with `(Real.sqrt_pos.2 hj).ne' this`. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[Real.sq_sqrt hj.le, Real.sq_sqrt (by linarith)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem isotropic_real {ι : Type*} [Fintype ι] {a : ι → ℝ} {i j : ι} (hi : a i < 0) (hj : 0 < a j) :
     ∃ x : ι → ℝ, x ≠ 0 ∧ ∑ i, a i * x i ^ 2 = 0 := by

@@ -11,13 +11,13 @@ section Chain
 variable {R : Type*} [CommRing R] {σ : Type*}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro e he`. Conclude with `absurd he (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Introduce `e he`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h2 : x.2 = 0`. Establish `h0 : MvPowerSeries.coeff 0 a = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ha]`. Rewrite using `[h2, h0, mul_zero]`. Establish `hd : x.2.degree ≠ 0` using `fun h => h2 ((Finsupp.degree_eq_zero_iff _).1 h)`. Establish `hsum : x.1.degree + x.2.degree = e.degree` using `by rw [← map_add, hx]`. Establish `h1 : x.1.degree < n` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih x.1 h1, zero_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_subst_congr_lemma {R : Type*} [CommRing R] {σ : Type*}
     {a : MvPowerSeries σ R} (ha : MvPowerSeries.constantCoeff a = 0) (n : ℕ) :
@@ -40,9 +40,9 @@ private theorem coeff_subst_congr_lemma {R : Type*} [CommRing R] {σ : Type*}
       rw [ih x.1 h1, zero_mul]
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Rewrite using `[PowerSeries.coeff_subst hs, PowerSeries.coeff_subst hs]`. Use `finsum_congr fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k ≤ e.degree`. Rewrite using `[hgh k hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_subst_congr_lemma ha k e (by omega), smul_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_subst_congr {g h : PowerSeries R} {a : MvPowerSeries σ R}
     (ha : MvPowerSeries.constantCoeff a = 0) (e : σ →₀ ℕ)
@@ -57,11 +57,11 @@ theorem coeff_subst_congr {g h : PowerSeries R} {a : MvPowerSeries σ R}
   · rw [coeff_subst_congr_lemma ha k e (by omega), smul_zero, smul_zero]
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. It suffices to establish `H : ∀ P : Polynomial R, MvPowerSeries.pderiv R i (PowerSeries.substAlgHom hs (P : PowerSeries R)) = PowerSeries.substAlgHom hs (derivative R (P : PowerSeries R)) * MvPowerSeries.pderiv R i a by`. Simplify `H p` using `only [PowerSeries.coe_substAlgHom]`. Introduce `P`. Proceed by induction on `P using Polynomial.induction_on'`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `next P Q hP hQ =>`. Rewrite using `[Polynomial.coe_add, map_add, map_add, hP, hQ, map_add, map_add, add_mul]`. Use `next n c =>`. Establish `hX : PowerSeries.substAlgHom hs (PowerSeries.X : PowerSeries R) = a`. Rewrite using `[PowerSeries.coe_substAlgHom, PowerSeries.subst_X hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Polynomial.smul_X_eq_monomial]`. Simplify using `only [Polynomial.coe_smul, Polynomial.coe_pow, Polynomial.coe_X, map_smul, map_pow, hX, Derivation.map_smul, Derivation.leibniz_pow, PowerSeries.derivative_X, map_nsmul, smul_eq_mul, mul_one, map_mul, map_one, nsmul_eq_mul, map_natCast, smul_mul_assoc, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem pderiv_subst_coe (p : Polynomial R) {a : MvPowerSeries σ R}
     (ha : MvPowerSeries.constantCoeff a = 0) (i : σ) :
@@ -84,7 +84,7 @@ theorem pderiv_subst_coe (p : Polynomial R) {a : MvPowerSeries σ R}
       mul_one, map_mul, map_one, nsmul_eq_mul, map_natCast, smul_mul_assoc, mul_assoc]
 
 /- English proof (translation)
-Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← hx, map_add]`. Conclude with `Nat.le_add_right _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_le_of_mem_antidiagonal [DecidableEq σ] {d : σ →₀ ℕ} {x : (σ →₀ ℕ) × (σ →₀ ℕ)}
     (hx : x ∈ Finset.HasAntidiagonal.antidiagonal d) : x.1.degree ≤ d.degree := by
@@ -93,11 +93,11 @@ theorem degree_le_of_mem_antidiagonal [DecidableEq σ] {d : σ →₀ ℕ} {x : 
   exact Nat.le_add_right _ _
 
 /- English proof (translation)
-Use extensionality with `e`. Establish `hP : ∀ k ≤ e.degree + 1, coeff k ((PowerSeries.trunc (e.degree + 2) g : Polynomial R) : PowerSeries R) = coeff k g`. Introduce `k hk`. Rewrite using `[Polynomial.coeff_coe, PowerSeries.coeff_trunc, if_pos (by omega)]`. Establish `hdeg : (e + Finsupp.single i 1).degree = e.degree + 1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, Finsupp.degree_single]`. Establish `h1 : MvPowerSeries.coeff e (MvPowerSeries.pderiv R i (g.subst a)) = MvPowerSeries.coeff e (MvPowerSeries.pderiv R i (((PowerSeries.trunc (e.degree + 2) g : Polynomial R) : PowerSeries R).subst a))`. Rewrite using `[MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_pderiv, coeff_subst_congr ha _ (fun k hk => (hP k (by omega)).symm)]`. Rewrite using `[h1, pderiv_subst_coe _ ha i, MvPowerSeries.coeff_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxd` using `degree_le_of_mem_antidiagonal hx`. Rewrite using `[coeff_subst_congr ha x.1 (fun k hk => ?_)]`. Rewrite using `[PowerSeries.coeff_derivative, PowerSeries.coeff_derivative, hP (k + 1) (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_subst (g : PowerSeries R) {a : MvPowerSeries σ R}
     (ha : MvPowerSeries.constantCoeff a = 0) (i : σ) :
@@ -129,12 +129,12 @@ section Integral
 variable {K : Type*} [NormedField K] [IsUltrametricDist K] {σ : Type*}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unitBall {x : K} : x ∈ Formalism.G.unitBall K ↔ ‖x‖ ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integral_one : Formalism.G.IntegralMv (1 : MvPowerSeries σ K) := by
   classical
@@ -143,7 +143,7 @@ theorem integral_one : Formalism.G.IntegralMv (1 : MvPowerSeries σ K) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[← mem_unitBall, MvPowerSeries.coeff_mul]`. Conclude with `Subring.sum_mem _ fun x _ => Subring.mul_mem _ (mem_unitBall.2 (hF _)) (mem_unitBall.2 (hG _))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul {F G : MvPowerSeries σ K} (hF : Formalism.G.IntegralMv F)
     (hG : Formalism.G.IntegralMv G) : Formalism.G.IntegralMv (F * G) := by
@@ -154,7 +154,7 @@ theorem integral_mul {F G : MvPowerSeries σ K} (hF : Formalism.G.IntegralMv F)
     Subring.mul_mem _ (mem_unitBall.2 (hF _)) (mem_unitBall.2 (hG _))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `integral_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `integral_mul ih hF`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem integral_pow {F : MvPowerSeries σ K} (hF : Formalism.G.IntegralMv F) (n : ℕ) :
     Formalism.G.IntegralMv (F ^ n) := by
@@ -163,7 +163,7 @@ theorem integral_pow {F : MvPowerSeries σ K} (hF : Formalism.G.IntegralMv F) (n
   | succ n ih => rw [pow_succ]; exact integral_mul ih hF
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[← mem_unitBall, MvPowerSeries.coeff_pderiv]`. Use `Subring.mul_mem _ (mem_unitBall.2 (hF _)) ?_` and prove the remaining obligations. Conclude with `Subring.add_mem _ (natCast_mem _ _) (Subring.one_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_pderiv {F : MvPowerSeries σ K} (hF : Formalism.G.IntegralMv F) (i : σ) :
     Formalism.G.IntegralMv (MvPowerSeries.pderiv K i F) := by
@@ -173,11 +173,9 @@ theorem integral_pderiv {F : MvPowerSeries σ K} (hF : Formalism.G.IntegralMv F)
   exact Subring.add_mem _ (natCast_mem _ _) (Subring.one_mem _)
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst f` using `PowerSeries.HasSubst.of_constantCoeff_zero hf0`. Introduce `e`. Rewrite using `[← mem_unitBall, PowerSeries.coeff_subst hs, finsum_eq_sum_of_support_subset _ (s := Finset.range (e.degree + 1)) ?_]`. Conclude with `Subring.sum_mem _ fun d _ => by`. Rewrite using `[smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subring.mul_mem _ (mem_unitBall.2 (hc d)) (mem_unitBall.2 (integral_pow hf d e))`. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hlt`.
-
-Conclude with `hd (by rw [coeff_subst_congr_lemma hf0 d e (by omega), smul_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem integral_subst {c : PowerSeries K} (hc : ∀ n, ‖coeff n c‖ ≤ 1)
     {f : MvPowerSeries σ K} (hf0 : MvPowerSeries.constantCoeff f = 0)
@@ -203,11 +201,11 @@ end Formalism.ELL.SubstitutionCoefficientCongruence
 namespace Formalism.ELL
 
 /- English proof (translation)
-Introduce `K _ _ _ σ G hG i`. Take `⟨f, hf0, hf, rfl⟩` from `hG`. Unfold `logOnePlus`. Rewrite using `[SubstitutionCoefficientCongruence.pderiv_subst _ hf0]`. Use `SubstitutionCoefficientCongruence.integral_mul ?_ (SubstitutionCoefficientCongruence.integral_pderiv hf i)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `SubstitutionCoefficientCongruence.integral_subst ?_ hf0 hf` and prove the remaining obligations. Introduce `n`. Unfold `PowerSeries.log`. Rewrite using `[PowerSeries.coeff_derivative, PowerSeries.coeff_mk, if_neg (Nat.succ_ne_zero n)]`. Establish `hn : ((n : K) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_div₀, map_pow, map_neg, map_one, map_natCast, Nat.cast_succ, div_mul_cancel₀ _ hn, norm_pow, norm_neg, norm_one, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem N_partial_derivative : NPderiv := by
   intro K _ _ _ σ G hG i

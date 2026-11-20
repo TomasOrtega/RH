@@ -29,7 +29,7 @@ def NearModerate : Prop :=
       ∫⁻ x in moderate B q b, nearAbs B d x ∂(B.I.muA B.μf) ≤ ENNReal.ofReal (nearBound B d)
 
 /- English proof (translation)
-Use `haveI : IsEmpty (nearNe B d x) := ⟨fun γ => γ.2.2 (h γ.1 γ.2.1)⟩`. Simplify using `[nearAbs]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nearAbs_eq_zero (d : InfinitePlace B.I.F → ℝ) (x : B.I.GA)
     (h : ∀ γ, IsNear B d (epN B) x γ → γ = 1) : nearAbs B d x = 0 := by

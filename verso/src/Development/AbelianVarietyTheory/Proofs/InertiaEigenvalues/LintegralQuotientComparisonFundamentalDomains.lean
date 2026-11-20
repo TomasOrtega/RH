@@ -7,9 +7,9 @@ open scoped ENNReal
 namespace GlobalTheory.CellCompare
 
 /- English proof (translation)
-Set `E` to `Subgroup.equivMapOfInjective Γ H.subtype H.subtype_injective`. Use `h.preimage_of_equiv (f := id) (e := E.symm) (Measure.QuasiMeasurePreserving.id μ) E.symm.bijective (fun g x => ?_)` and prove the remaining obligations. Use `show (((E.symm g : Γ) : H) : G) * x = (g : G) * x`. Use `congr 1`. Establish `h1 : ((E (E.symm g) : Γ.map H.subtype) : G) = (g : G)` using `by rw [E.apply_symm_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, Subgroup.coe_equivMapOfInjective_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_of_map {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G)
     (H : Subgroup G) (Γ : Subgroup H) (𝓕 : Set G)
@@ -26,9 +26,7 @@ theorem isFundamentalDomain_of_map {G : Type} [Group G] [MeasurableSpace G] (μ 
 end GlobalTheory.CellCompare
 
 /- English proof (translation)
-Introduce `G _ _ _ _ μ _ _ H ν _ _ _ Γ Γ' _ _ D D' hD hD' 𝓕 𝓕' h𝓕 h𝓕' f hf hinv`. Use `haveI : MeasurableSMul₂ H G := ⟨(measurable_subtype_coe.comp measurable_fst).mul measurable_snd⟩`. Use `haveI : SMulInvariantMeasure H G μ := inferInstance`. Use `haveI : MeasurableInv H := ⟨by`. Establish `: Measurable fun x : H => (((x : G)⁻¹ : G))` using `measurable_subtype_coe.inv`.
-
-Conclude with `Measurable.subtype_mk (f := fun x : H => ((x : G))⁻¹) (h := fun x => H.inv_mem x.2) this⟩`. Use `haveI : MeasurableMul₂ H := ⟨by`. Establish `: Measurable fun p : H × H => ((p.1 : G) * (p.2 : G))` using `(measurable_subtype_coe.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd)`. Conclude with `Measurable.subtype_mk (f := fun p : H × H => ((p.1 : G) * (p.2 : G))) (h := fun p => H.mul_mem p.1.2 p.2.2) this⟩`. Conclude with `GlobalTheory.CovolIndep.lintegral_mul_eq ν μ Γ Γ' 𝓕 𝓕' D D' (GlobalTheory.CellCompare.isFundamentalDomain_of_map μ H Γ 𝓕 h𝓕) (GlobalTheory.CellCompare.isFundamentalDomain_of_map μ H Γ' 𝓕' h𝓕') hD hD' f hf (fun s x => hinv s x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CellCompare.lintegral_comparison : ∀ {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G] (μ : Measure G) [SFinite μ]
     [μ.IsMulLeftInvariant] (H : Subgroup G) (ν : Measure H) [SFinite ν] [ν.IsMulLeftInvariant] [ν.IsInvInvariant]

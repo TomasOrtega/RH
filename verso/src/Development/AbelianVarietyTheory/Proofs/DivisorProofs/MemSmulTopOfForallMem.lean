@@ -30,11 +30,11 @@ open GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.AbDual
 namespace GlobalTheory.BirigLift
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' R P`. Take `⟨s, hs⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Establish `e : x = ∑ i, x (f (Pi.single i 1)) • ((LinearMap.proj i : (Fin n → R) →ₗ[R] R) ∘ₗ s)`. Use extensionality with `c`. Establish `hc : c = f (s c)` using `(LinearMap.congr_fun hs c).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply, smul_eq_mul]`. Use `conv_lhs => rw [hc, pi_eq_sum_univ (s c), map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, smul_eq_mul, mul_comm]`. Use `congr 3`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ ↦ Submodule.smul_mem_smul (hx _) trivial`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_of_forall_mem {R : Type} [CommRing R] (I : Ideal R) {P : Type*} [AddCommGroup P] [Module R P]
     [Module.Finite R P] [Module.Projective R P] (x : Module.Dual R P) (hx : ∀ c, x c ∈ I) :
@@ -56,7 +56,7 @@ theorem mem_smul_top_of_forall_mem {R : Type} [CommRing R] (I : Ideal R) {P : Ty
   exact Submodule.sum_mem _ fun i _ ↦ Submodule.smul_mem_smul (hx _) trivial
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on (p := fun y : Module.Dual R P ↦ y c ∈ I) hx (fun r hr y _ ↦ ?_) fun y z hy hz ↦ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Conclude with `I.mul_mem_right _ hr`. Rewrite using `[LinearMap.add_apply]`. Conclude with `I.add_mem hy hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem_of_mem_smul_top {R : Type} [CommRing R] (I : Ideal R) {P : Type*} [AddCommGroup P] [Module R P]
     {x : Module.Dual R P} (hx : x ∈ I • (⊤ : Submodule R (Module.Dual R P))) (c : P) : x c ∈ I := by
@@ -65,15 +65,15 @@ theorem apply_mem_of_mem_smul_top {R : Type} [CommRing R] (I : Ideal R) {P : Typ
   · rw [LinearMap.add_apply]; exact I.add_mem hy hz
 
 /- English proof (translation)
-Establish `hl : ∀ x, x ∈ (RingHom.ker π) • (⊤ : Submodule R D) → π (l x) = 0`. Introduce `x hx`. Use `Submodule.smul_induction_on (p := fun y : D ↦ π (l y) = 0) hx (fun r hr y _ ↦ ?_) fun y z hy hz ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul, RingHom.mem_ker.1 hr, zero_mul]`. Rewrite using `[map_add, map_add, hy, hz, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `s` to `Function.surjInv hred`. Establish `hs : ∀ h, red (s h) = h` using `Function.surjInv_eq hred`. Establish `key : ∀ x x', red x = red x' → π (l x) = π (l x')` using `fun x x' e ↦ by`. Use `hl (x - x') (hker _ (by rw [map_sub, e, sub_self]))` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `l₀ : H →ₗ[R₀] R₀` to `{ toFun h := π (l (s h)) map_add' a b := by`. Rewrite using `[key (s (a + b)) (s a + s b) (by rw [map_add, hs, hs, hs]), map_add, map_add]`. Use the proof step `map_smul' r h := by`. Take `⟨r', rfl⟩` from `hπ r`. Rewrite using `[key (s (π r' • h)) (r' • s h) (by rw [map_smulₛₗ, hs, hs]), map_smul, smul_eq_mul, map_mul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `rfl }`. Take `⟨w, hw⟩` from `hψ l₀`. Take `⟨z, rfl⟩` from `hred w`. Use `⟨z, fun x ↦ RingHom.mem_ker.2 ?_⟩` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun hw (red x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[LinearMap.flip_apply, hrel]`. Rewrite using `[map_sub, e, sub_eq_zero]`. Conclude with `key _ _ (hs _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_perfect_mod {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀) {D H : Type*}
     [AddCommGroup D] [Module R D] [AddCommGroup H] [Module R₀ H] (red : D →ₛₗ[π] H)
@@ -113,13 +113,13 @@ end GlobalTheory.BirigLift
 namespace GlobalTheory.BirigLift
 
 /- English proof (translation)
-Use `haveI : Module.Free R D := Module.free_of_flat_of_isLocalRing`. Set `ε` to `(Module.finBasis R D).equivFun`. Set `ψ : (Fin (Module.finrank R D) → R) →ₗ[R] (Fin (Module.finrank R D) → R) →ₗ[R] R` to `φ.compl₁₂ ε.symm.toLinearMap ε.symm.toLinearMap`. Establish `hψ : ∀ x y, ψ x y = φ (ε.symm x) (ε.symm y)` using `fun _ _ ↦ rfl`. Take `⟨E, N', hEN, hE, hEF⟩` from `GlobalTheory.T.maximal_isotropic_lift_mod_ideal R I _ ψ hI h2 (fun x y ↦ by simp only [hψ]; exact anti _ _) (fun l ↦ by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `perf (l ∘ₗ ε.toLinearMap)`. Use `⟨ε z, fun x ↦ ?_⟩` and prove the remaining obligations. Use `hz (ε.symm x)` as an intermediate fact. Simplify `this)` using `[hψ]`. Use the proof step `(F.map ε.toLinearMap) (N.map ε.toLinearMap) ((Submodule.orderIsoMapComap ε).isCompl hFN)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun x hx y hy ↦ by`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Simplify `iso a ha b hb)` using `[hψ]`. Use `⟨E.map ε.symm.toLinearMap, N'.map ε.symm.toLinearMap, (Submodule.orderIsoMapComap ε.symm).isCompl hEN, ?_, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩`. Simplify `hE a ha b hb` using `[hψ]`. Use `congrArg (Submodule.map ε.symm.toLinearMap) hEF` as an intermediate fact. Rewrite `this` using `[Submodule.map_sup, Submodule.map_sup, Submodule.map_smul'', Submodule.map_top, LinearEquiv.range, ← Submodule.map_comp, LinearEquiv.symm_comp, Submodule.map_id]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagr_univ {R : Type} [CommRing R] [IsLocalRing R] (I : Ideal R) {D : Type*} [AddCommGroup D] [Module R D]
     [Module.Finite R D] [Module.Projective R D] (φ : D →ₗ[R] D →ₗ[R] R) (hI : I ^ 2 = ⊥) (h2 : IsUnit (2 : R))
@@ -159,41 +159,35 @@ namespace GlobalTheory.BirigLift
 open GlobalTheory.Published.GrothendieckMessing in
 
 /- English proof (translation)
-Introduce `R R₀ _ _ _ _ _ π hπ hI2 h2 P₀`. Establish `hI0 : RingHom.ker π ^ 2 = 0` using `hI2`. Set `κ` to `divided₂ hI0`. Establish `hκ : IsNilDP κ` using `isDPNilpotent_squareZero hI0`. Establish `ADD : GlobalTheory.Published.DualAbelianScheme` using `GlobalTheory.T.dualAbelianScheme_exists_biduality`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ADR : GlobalTheory.Published.AbelianDeRham` using `GlobalTheory.T.abelianScheme_firstDeRham_structure`. Establish `ADC : GlobalTheory.Published.AbelianDualCrystal` using `GlobalTheory.abelianDualCrystal_of_dualAbelianScheme ADD`. Establish `GD : GlobalTheory.Published.GrothendieckDeformation` using `GlobalTheory.Published.grothendieckDeformation₂ GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations GlobalTheory.T.abelianScheme_deRham_locallyFree_hodgeDegenerates ADD GlobalTheory.T.poincareDeRhamDuality_abelianScheme GlobalTheory.T.print_abelianLifting`. Use `haveI := P₀.isAb.comm`. Take `⟨A', _, i', h', hA'⟩` from `GlobalTheory.T.abelianScheme_unobstructed_squareZero_affine R (RingHom.ker π) hI0 R₀ π hπ rfl P₀.A P₀.isAb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim R A' hA'`. Establish `C` using `GlobalTheory.Published.AbelianDualCrystal.cupSquare_crys_prod ADR.1 ADC.2 hκ hπ rfl hA' hg hA' hg h' h'`. Establish `hΛ` using `isPerfect_lam P₀.isLB P₀.ktriv`. Take `⟨φ₀, hφ₀⟩` from `exists_isCorrForm C hΛ.isLB hΛ.zero_left hΛ.zero_right`. Establish `anti` using `GlobalTheory.JetIsotropic.corrForm_antisymm C hΛ.isLB (GlobalTheory.FullSiegel.lam_symm P₀.isLB) hφ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `HC` using `(GD R (RingHom.ker π) κ hκ R₀ π hπ rfl).1`. Take `⟨bij, ⟨N0, hN0⟩, hAdm⟩` from `HC g P₀.A A' i' h' hA' hg`. Set `e` to `LinearEquiv.ofBijective (crysToDR κ h') (HC.crysToDR_bijective h' hA' hg)`. Establish `ee : ∀ xA, crysToDR κ h' (e.symm xA) = xA` using `e.apply_symm_apply`. Use `letI : Algebra R R₀ := π.toAlgebra`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hBC` using `(ADR.2.2.1 R A' g hA' hg R₀ P₀.A i' h').1`. Take `⟨hfinA, hprojA, -⟩` from `ADR.1.prim hA' hg`. Use `haveI := hfinA`. Use `haveI := hprojA`. Use `haveI : Module.Finite R (Crys κ (spMap π) P₀.A) := Module.Finite.equiv e.symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.Projective R (Crys κ (spMap π) P₀.A) := Module.Projective.of_equiv e.symm`. Set `red : Crys κ (spMap π) P₀.A →ₛₗ[π] HdR P₀.A` to `hBC.bcMap.comp (crysToDR κ h')`. Establish `hm : ∀ x, (crysRedMor κ rfl P₀.A).Corr x (red x)` using `fun x ↦ (corr_crysToDR_iff rfl h' bij.2 x (red x)).1 (by exact hBC.corr_iff.2 rfl)`. Establish `iso : LBIso ((abelian₂ P₀.A P₀.L).pull (Over.Hom.left (𝟙 (P₀.A ⊗ P₀.A)))) (abelian₂ P₀.A P₀.L)` using `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB hΛ.isLB _) hΛ.isLB).1 (by rw [GlobalTheory.CechPic.cls_pull hΛ.isLB, Over.id_left, GlobalTheory.CechPic.pull_id])`. Take `⟨φ', hφ', e'⟩` from `hφ₀.pull hΛ.isLB (crysRedMor κ rfl P₀.A) (crysRedMor κ rfl P₀.A) (h := Over.Hom.left (𝟙 (P₀.A ⊗ P₀.A))) (by simp) (by simp) hΛ.isLB iso`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Take `⟨perf, filL, -⟩` from `(GlobalTheory.Published.AbelianDualCrystal.duality ADR P₀.isAb P₀.smoothDim P₀.isAb P₀.smoothDim hΛ).2 φ' hφ'`. Establish `hrel : ∀ x y, φ' (red x) (red y) = π (φ₀ x y)` using `fun x y ↦ e' x (red x) y (red y) (hm x) (hm y)`. Establish `hred : Function.Surjective red`. Introduce `y`. Set `l : primDR A' →ₗ[R] R₀` to `{ toFun c := y ((redMor h').pull c) map_add' := by simp map_smul' r c := by rw [LinearMap.map_smulₛₗ, map_smul]; rfl }`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨xA, hx⟩` from `Module.projective_lifting_property (Algebra.linearMap R R₀) l hπ`. Use `⟨e.symm xA, ?_⟩` and prove the remaining obligations. Use `show hBC.bcMap (crysToDR κ h' (e.symm xA)) = y`. Rewrite using `[ee]`. Conclude with `hBC.corr_iff.1 fun c ↦ (LinearMap.congr_fun hx c).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hker : ∀ x, red x = 0 → x ∈ (RingHom.ker π) • (⊤ : Submodule R (Crys κ (spMap π) P₀.A))`. Introduce `x hx`. Establish `hc` using `hBC.corr_iff.2 hx`. Establish `hmem` using `mem_smul_top_of_forall_mem (RingHom.ker π) (crysToDR κ h' x) fun c ↦ RingHom.mem_ker.2 ((hc c).symm.trans (LinearMap.zero_apply _))`. Use `Submodule.mem_map_of_mem (f := e.symm.toLinearMap) hmem` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.map_smul'']`. Establish `ex : e.symm.toLinearMap (crysToDR κ h' x) = x` using `e.symm_apply_apply x`. Rewrite `this` using `[ex]`. Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `hperf` using `exists_perfect_mod π red φ₀ φ' hπ perf.bijective_right.2 hred hker hrel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFN : IsCompl (liftFil κ h') (N0.comap (crysToDR κ h'))` using `(Submodule.orderIsoMapComap e).symm.isCompl hN0`. Establish `hredFil : ∀ x ∈ liftFil κ h', red x ∈ Fil P₀.A` using `fun x hx ↦ (hAdm (red x)).2 ⟨crysToDR κ h' x, hx, by exact hBC.corr_iff.2 rfl⟩`. Establish `hFiso : ∀ x ∈ liftFil κ h', ∀ y ∈ liftFil κ h', φ₀ x y ∈ RingHom.ker π` using `fun x hx y hy ↦ RingHom.mem_ker.2 ((hrel x y).symm.trans (((filL _).1 (hredFil x hx)) _ (hredFil y hy)))`. Take `⟨E, N', hEN, hEiso, hEF⟩` from `lagr_univ (RingHom.ker π) φ₀ hI2 h2 (fun x y ↦ anti x y) hperf (liftFil κ h') _ hFN hFiso`. Establish `shift : ∀ d d' (y : HdR P₀.A), d - d' ∈ (RingHom.ker π) • (⊤ : Submodule R (Crys κ (spMap π) P₀.A)) → (crysRedMor κ rfl P₀.A).Corr d y → (crysRedMor κ rfl P₀.A).Corr d' y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d d' y hd H c`. Rewrite using `[H c]`. Use `RingHom.mem_ker.1 (apply_mem_of_mem_smul_top (RingHom.ker π) hd c)` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, map_sub, sub_eq_zero]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFE : ∀ y : HdR P₀.A, y ∈ Fil P₀.A ↔ ∃ d ∈ E, (crysRedMor κ rfl P₀.A).Corr d y`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨xA, hxA, hc⟩` from `(hAdm y).1 hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `d0F : e.symm xA ∈ liftFil κ h'` using `by show crysToDR κ h' (e.symm xA) ∈ Fil A'`. Rewrite using `[ee]`. Conclude with `hxA`. Establish `hc0 : (crysRedMor κ rfl P₀.A).Corr (e.symm xA) y` using `(corr_crysToDR_iff rfl h' bij.2 _ y).1 (by rw [ee]; exact hc)`. Establish `hmem : e.symm xA ∈ E ⊔ (RingHom.ker π) • (⊤ : Submodule R (Crys κ (spMap π) P₀.A))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hEF]`. Conclude with `Submodule.mem_sup_left d0F`. Take `⟨d, hd, j, hj, hdj⟩` from `Submodule.mem_sup.1 hmem`. Use `⟨d, hd, shift _ _ y ?_ hc0⟩` and prove the remaining obligations. Rewrite using `[← hdj, add_sub_cancel_left]`.
-
-Conclude with `hj`. Introduce and unpack `⟨d, hd, hc⟩`. Establish `hmem : d ∈ liftFil κ h' ⊔ (RingHom.ker π) • (⊤ : Submodule R (Crys κ (spMap π) P₀.A))`. Rewrite using `[← hEF]`. Conclude with `Submodule.mem_sup_left hd`.
-
-Take `⟨f, hf, j, hj, hfj⟩` from `Submodule.mem_sup.1 hmem`. Establish `hcf : (crysRedMor κ rfl P₀.A).Corr f y` using `shift d f y (by rw [← hfj, add_sub_cancel_left]; exact hj) hc`. Conclude with `(hAdm y).2 ⟨crysToDR κ h' f, hf, (corr_crysToDR_iff rfl h' bij.2 f y).2 hcf⟩`. Take `⟨A, _, i, h, hA, hgA, hEq⟩` from `GlobalTheory.RMDeform.exists_lift_abelian GD ADR κ hκ π hπ rfl h' hA' hg E ⟨N', hEN⟩ hFE`. Take `⟨l, l₁, l₂⟩` from `exists_prod_pullback h h`.
-
-Take `⟨Q, hQ, -, -, a₁, a₂, eQ⟩` from `GlobalTheory.BirigidLift.exists_lift GD ADR ADC hκ hπ rfl hA hgA hA hgA h h l₁ l₂ P₀.isLB P₀.ample P₀.isLB P₀.ample hΛ.isLB hΛ.zero_left hΛ.zero_right hφ₀ (by rw [hEq]; exact hEiso)`. Conclude with `⟨A, _, i, l, Q, hA, h, ⟨l₁, l₂⟩, hQ, a₁, a₂, eQ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_lam : ∀ (R R₀ : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [CommRing R₀] [IsLocalRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → IsUnit (2 : R) → ∀ P₀ : PolAV (Sp R₀), ∃ (A : Over (Sp R)) (_ : GrpObj A) (i : P₀.A.left ⟶ A.left) (l : (P₀.A ⊗ P₀.A).left ⟶ (A ⊗ A).left) (Q : LB (A ⊗ A).left), IsAbelianScheme A ∧ IsGrpPullback P₀.A A (spMap π) i ∧ IsSquare i l ∧ Q.IsLB ∧ GlobalTheory.AbDual.IsAdditive Q ∧ GlobalTheory.AbDual.IsAdditive (GlobalTheory.AbDual.swap Q) ∧ LBIso (Q.pull l) (abelian₂ P₀.A P₀.L) := by
   intro R R₀ _ _ _ _ _ π hπ hI2 h2 P₀

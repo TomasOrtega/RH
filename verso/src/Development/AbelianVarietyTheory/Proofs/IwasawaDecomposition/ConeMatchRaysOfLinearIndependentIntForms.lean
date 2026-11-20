@@ -13,7 +13,7 @@ namespace ConeMatch
 variable {V : Type} [AddCommGroup V] [Module ℝ V]
 
 /- English proof (translation)
-Use `Fintype.linearIndependent_iff.1 hP (a - b) (by` as an intermediate fact. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self])`. Use function extensionality and compare the values at `i`. Conclude with `sub_eq_zero.1 (this i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coef_eq {n : ℕ} {P : Fin n → V} (hP : LinearIndependent ℝ P) {a b : Fin n → ℝ}
     (h : ∑ i, a i • P i = ∑ i, b i • P i) : a = b := by
@@ -22,7 +22,7 @@ theorem coef_eq {n : ℕ} {P : Fin n → V} (hP : LinearIndependent ℝ P) {a b 
   funext i; exact sub_eq_zero.1 (this i)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: ∑ i, f i ≤ 0` using `Finset.sum_nonpos fun i _ => hc i`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pos_of_sum_eq_one {n : ℕ} (f : Fin n → ℝ) (h : ∑ i, f i = 1) : ∃ i, 0 < f i := by
   by_contra hc
@@ -31,33 +31,27 @@ theorem exists_pos_of_sum_eq_one {n : ℕ} (f : Fin n → ℝ) (h : ∑ i, f i =
   linarith
 
 /- English proof (translation)
-Use `choose D hD0 hD using hPQ`. Establish `hQP' : ∀ j, ∃ b : Fin k → ℝ, (∀ l, 0 ≤ b l) ∧ (0 < c j → Q j = ∑ l, b l • P l)` using `fun j => by`. Distinguish the cases in `h : 0 < c j`. Take `⟨b, hb, e⟩` from `hQP j h`. Conclude with `⟨b, hb, fun _ => e⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun _ => le_rfl, fun h' => absurd h' h⟩`. Use `choose E hE0 hE using hQP'`. Establish `hcD : ∀ j, c j = ∑ i, t i * D i j`. Establish `h1 : ∑ j, c j • Q j = ∑ j, (∑ i, t i * D i j) • Q j`. Rewrite using `[← hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hD, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Conclude with `congrFun (coef_eq hQ h1)`. Establish `hDz : ∀ i j, ¬ 0 < c j → D i j = 0` using `fun i j h => by`. Establish `h0 : c j = 0` using `le_antisymm (not_lt.1 h) (hc j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite `h0` using `[hcD j]`. Use `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => mul_nonneg (ht i).le (hD0 i j)).1 h0 i (Finset.mem_univ _)` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_left (ht i).ne'`. Establish `hDQ : ∀ i j, D i j • Q j = D i j • ∑ l, E j l • P l` using `fun i j => by`. Distinguish the cases in `h : 0 < c j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hE j h]`. Simplify using `[hDz i j h]`. Establish `hDE : ∀ i l, ∑ j, D i j * E j l = if i = l then 1 else 0`. Introduce `i l`. Establish `h1 : ∑ l, (if i = l then (1 : ℝ) else 0) • P l = ∑ l, (∑ j, D i j * E j l) • P l`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[show ∑ l, (if i = l then (1 : ℝ) else 0) • P l = P i by simp [ite_smul]]`. Use `conv_lhs => rw [hD i]`. Simplify using `only [hDQ, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Conclude with `(congrFun (coef_eq hP h1) l).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hED : ∀ j, 0 < c j → ∀ j', ∑ l, E j l * D l j' = if j = j' then 1 else 0`. Introduce `j hj j'`. Establish `h1 : ∑ j', (if j = j' then (1 : ℝ) else 0) • Q j' = ∑ j', (∑ l, E j l * D l j') • Q j'`. Rewrite using `[show ∑ j', (if j = j' then (1 : ℝ) else 0) • Q j' = Q j by simp [ite_smul]]`. Use `conv_lhs => rw [hE j hj]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hD, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Conclude with `(congrFun (coef_eq hQ h1) j').symm`. Establish `single : ∀ i j, 0 < D i j * E j i → 0 < c j ∧ 0 < D i j ∧ P i = D i j • Q j`. Introduce `i j hpos`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcj : 0 < c j`. Assume the negation of the conclusion as `h`. Rewrite `hpos` using `[hDz i j h, zero_mul]`. Conclude with `lt_irrefl _ hpos`. Establish `hEne : E j i ≠ 0` using `fun h => by rw [h, mul_zero] at hpos; exact lt_irrefl _ hpos`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hDpos : 0 < D i j` using `lt_of_le_of_ne (hD0 i j) fun h => by rw [← h, zero_mul] at hpos; exact lt_irrefl _ hpos`. Establish `hoff : ∀ j', j' ≠ j → D i j' = 0` using `fun j' hj' => by`. Establish `hle : E j i * D i j' ≤ ∑ l, E j l * D l j'` using `Finset.single_le_sum (f := fun l => E j l * D l j') (fun l _ => mul_nonneg (hE0 j l) (hD0 l j')) (Finset.mem_univ i)`. Rewrite `hle` using `[hED j hcj j', if_neg (Ne.symm hj')]`. Establish `h0 : E j i * D i j' = 0` using `le_antisymm hle (mul_nonneg (hE0 j i) (hD0 i j'))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 h0).resolve_left hEne`. Use `⟨hcj, hDpos, ?_⟩` and prove the remaining obligations. Rewrite using `[hD i, Finset.sum_eq_single j (fun j' _ hj' => by rw [hoff j' hj', zero_smul]) (fun h => absurd (Finset.mem_univ j) h)]`. Use `⟨fun i => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_pos_of_sum_eq_one _ ((hDE i i).trans (if_pos rfl))`.
-
-Take `⟨hcj, hd, e⟩` from `single i j hj`. Conclude with `⟨j, hcj, D i j, hd, e⟩`. Take `⟨l, hl⟩` from `exists_pos_of_sum_eq_one _ ((hED j hj j).trans (if_pos rfl))`. Establish `hl' : 0 < D l j * E j l` using `by rw [mul_comm]; exact hl`. Take `⟨-, hd, e⟩` from `single l j hl'`.
-
-Establish `hEne : E j l ≠ 0` using `fun h => by rw [h, zero_mul] at hl; exact lt_irrefl _ hl`. Establish `hoff : ∀ i, i ≠ l → D i j = 0` using `fun i hi => by`. Establish `hle : D i j * E j l ≤ ∑ j'', D i j'' * E j'' l` using `Finset.single_le_sum (f := fun j'' => D i j'' * E j'' l) (fun j'' _ => mul_nonneg (hD0 i j'') (hE0 j'' l)) (Finset.mem_univ j)`. Rewrite `hle` using `[hDE i l, if_neg hi]`. Establish `h0 : D i j * E j l = 0` using `le_antisymm hle (mul_nonneg (hD0 i j) (hE0 j l))`.
-
-Conclude with `(mul_eq_zero.1 h0).resolve_right hEne`. Use `⟨l, D l j, hd, e, ?_⟩` and prove the remaining obligations. Rewrite using `[hcD j, Finset.sum_eq_single l (fun i _ hi => by rw [hoff i hi, mul_zero]) (fun h => absurd (Finset.mem_univ l) h)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem match_vec {k m : ℕ} (P : Fin k → V) (Q : Fin m → V) (hP : LinearIndependent ℝ P)
     (hQ : LinearIndependent ℝ Q) (t : Fin k → ℝ) (c : Fin m → ℝ) (ht : ∀ i, 0 < t i) (hc : ∀ j, 0 ≤ c j)
@@ -150,9 +144,9 @@ section Forms
 variable {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Use `Fintype.linearIndependent_iff.2 fun g hg => ?_` and prove the remaining obligations. Establish `hind : ∀ (d : Fin 0 → ℤ) (c : Fin n → ℤ), ∑ j, c j • p j = ∑ k, d k • (Fin.elim0 k : LinearMap.BilinForm ℤ X) → c = 0` using `fun d c h => by`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hp c (by simpa using h) i`. Use `eq_zero_of_toReal_rel (u := p) (v := (Fin.elim0 : Fin 0 → LinearMap.BilinForm ℤ X)) hind (r := g) (s := 0) (by simpa using hg)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun i => congrFun this i`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_toReal {n : ℕ} {p : Fin n → LinearMap.BilinForm ℤ X} (hp : LinearIndependent ℤ p) :
     LinearIndependent ℝ fun i => toReal (p i) := by
@@ -166,7 +160,7 @@ theorem linearIndependent_toReal {n : ℕ} {p : Fin n → LinearMap.BilinForm �
   exact fun i => congrFun this i
 
 /- English proof (translation)
-Introduce `hp hδ t c ht hc hsum hpδ hδp` and use `ConeMatch.match_vec (fun i => toReal (p i)) (fun j => toReal (δ j)) (linearIndependent_toReal hp) (linearIndependent_toReal hδ) t c ht hc hsum hpδ hδp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cone_match_rays {X : Type} [AddCommGroup X] {k m : ℕ} (p : Fin k → LinearMap.BilinForm ℤ X)
     (δ : Fin m → LinearMap.BilinForm ℤ X) :

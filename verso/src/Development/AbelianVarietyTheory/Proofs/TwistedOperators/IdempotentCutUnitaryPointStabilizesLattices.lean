@@ -20,29 +20,29 @@ namespace GlobalTheory.IdemCut
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [phi, smul_add, smul_smul, mul_sub, mul_one, h, sub_zero, zero_smul, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_phi_of_mul_eq_zero {a e : AF F} (h : a * e = 0) (M : Matrix (Fin n) (Fin n) (AE F E)) :
     a • phi e M = a • (1 : Matrix (Fin n) (Fin n) (AE F E)) := by
   simp only [phi, smul_add, smul_smul, mul_sub, mul_one, h, sub_zero, zero_smul, add_zero]
 
 /- English proof (translation)
-Simplify using `only [phi, smul_add, smul_smul, mul_sub, mul_one, h, sub_self, zero_smul, zero_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_phi_of_mul_eq_self {a e : AF F} (h : a * e = a) (M : Matrix (Fin n) (Fin n) (AE F E)) :
     a • phi e M = a • M := by
   simp only [phi, smul_add, smul_smul, mul_sub, mul_one, h, sub_self, zero_smul, zero_add]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G hG h`. Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.exists_finset_integral_adele_mulVec_mem_lattice_closure F E _ (mat h) G.W.L hG.hW.lat`. Take `⟨S₂, hS₂⟩` from `GlobalTheory.T.exists_finset_integral_adele_mulVec_mem_lattice_closure F E _ (mat h⁻¹) G.W.L hG.hW.lat`. Use `⟨S₁ ∪ S₂, fun S e he hS hcut => ?_⟩` and prove the remaining obligations. Establish `key : ∀ w ∉ S, ∀ (X : ℕ) (Xs : Spc F E X), ∀ γ, γ * (mat (loc e he h))ᵀ ∈ latAtV Xs G.W w ↔ γ ∈ latAtV Xs G.W w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `w hw X Xs γ`. Establish `hw1 : w ∉ S₁` using `fun h' => hw (hS (Finset.mem_union_left _ h'))`. Establish `hw2 : w ∉ S₂` using `fun h' => hw (hS (Finset.mem_union_right _ h'))`. Use `GlobalTheory.T.tensorLattice_mul_transpose_stable_iff F E X _ Xs G.W w _ _ (mat_inv_mul (loc e he h)) ?_ ?_ γ` and prove the remaining obligations. Introduce `u hu hint y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.smul_mulVec, mat_loc]`. Break down `hcut w hw u hu with h0 | h1` into its components or cases. Rewrite using `[smul_phi_of_mul_eq_zero h0, Matrix.smul_mulVec, Matrix.one_mulVec]`. Conclude with `AddSubgroup.subset_closure ⟨u, hu, hint, y, hy, rfl⟩`. Rewrite using `[smul_phi_of_mul_eq_self h1, Matrix.smul_mulVec]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hS₁ w hw1 u hu hint y hy`. Introduce `u hu hint y hy`. Rewrite using `[← Matrix.smul_mulVec, mat_loc_inv]`. Break down `hcut w hw u hu with h0 | h1` into its components or cases. Rewrite using `[smul_phi_of_mul_eq_zero h0, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `AddSubgroup.subset_closure ⟨u, hu, hint, y, hy, rfl⟩`. Rewrite using `[smul_phi_of_mul_eq_self h1, Matrix.smul_mulVec]`. Conclude with `hS₂ w hw2 u hu hint y hy`. Conclude with `⟨fun w hw => key w hw _ G.V, fun w hw => key w hw _ G.V'⟩`.
+A detailed English derivation is pending.
 -/
 theorem idempotentCut_latticeStabilizer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a'), G.IsGood B →

@@ -35,7 +35,7 @@ namespace DualPair
 variable {R : LAlg R₀} (Dp : DualPair R)
 
 /- English proof (translation)
-Rewrite using `[LHom.ker, Submodule.restrictScalars_mem, Dp.ker_eq]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ση_mem (r : (R : Type u)) : Dp.σ.1 r * Dp.η ∈ Dp.π.ker := by
   rw [LHom.ker, Submodule.restrictScalars_mem, Dp.ker_eq]

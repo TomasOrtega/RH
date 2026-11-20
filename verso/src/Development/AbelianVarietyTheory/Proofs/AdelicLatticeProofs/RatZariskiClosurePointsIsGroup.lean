@@ -11,7 +11,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptsGroup_map_ev {A B : Type} [CommRing A] [Algebra ℚ A] [CommRing B] [Algebra ℚ B]
     (φ : A →ₐ[ℚ] B) (f : MvPolynomial (ι × ι) ℚ) (g : Matrix ι ι A) :
@@ -22,7 +22,7 @@ theorem ptsGroup_map_ev {A B : Type} [CommRing A] [Algebra ℚ A] [CommRing B] [
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mvPolynomialX]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ptsGroup_generic_map {R : Type} [CommRing R] [Algebra ℚ R] (g : Matrix ι ι R) :
     (Matrix.mvPolynomialX ι ι ℚ).map (MvPolynomial.aeval (R := ℚ) (fun ij : ι × ι => g ij.1 ij.2)) = g := by
@@ -30,7 +30,7 @@ theorem ptsGroup_generic_map {R : Type} [CommRing R] [Algebra ℚ R] (g : Matrix
   simp [Matrix.mvPolynomialX]
 
 /- English proof (translation)
-Establish `h` using `ptsGroup_map_ev (MvPolynomial.aeval (R := ℚ) (fun ij : ι × ι => g ij.1 ij.2)) f (Matrix.mvPolynomialX ι ι ℚ).adjugate`. Establish `h2` using `AlgHom.map_adjugate (MvPolynomial.aeval (R := ℚ) (fun ij : ι × ι => g ij.1 ij.2)) (Matrix.mvPolynomialX ι ι ℚ)`. Simplify using `only [AlgHom.mapMatrix_apply] at h2`. Rewrite `h` using `[h2, ptsGroup_generic_map]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptsGroup_ev_adjugate {R : Type} [CommRing R] [Algebra ℚ R] (f : MvPolynomial (ι × ι) ℚ)
     (g : Matrix ι ι R) : ev (ev f (Matrix.mvPolynomialX ι ι ℚ).adjugate) g = ev f g.adjugate := by
@@ -43,7 +43,7 @@ theorem ptsGroup_ev_adjugate {R : Type} [CommRing R] [Algebra ℚ R] (f : MvPoly
   exact h
 
 /- English proof (translation)
-Establish `h2` using `AlgHom.map_det (MvPolynomial.aeval (R := ℚ) (fun ij : ι × ι => g ij.1 ij.2)) (Matrix.mvPolynomialX ι ι ℚ)`. Simplify using `only [AlgHom.mapMatrix_apply] at h2`. Rewrite `h2` using `[ptsGroup_generic_map]`. Unfold `ev`. Rewrite using `[map_sub, map_one, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptsGroup_ev_det {R : Type} [CommRing R] [Algebra ℚ R]
     (g : Matrix ι ι R) : ev ((Matrix.mvPolynomialX ι ι ℚ).det - 1) g = g.det - 1 := by
@@ -55,7 +55,7 @@ theorem ptsGroup_ev_det {R : Type} [CommRing R] [Algebra ℚ R]
   rw [map_sub, map_one, h2]
 
 /- English proof (translation)
-Establish `h` using `ptsGroup_map_ev (Algebra.ofId ℚ R) f (1 : Matrix ι ι ℚ)`. Rewrite `h` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptsGroup_ev_one (R : Type) [CommRing R] [Algebra ℚ R] (f : MvPolynomial (ι × ι) ℚ) :
     ev f (1 : Matrix ι ι R) = algebraMap ℚ R (ev f (1 : Matrix ι ι ℚ)) := by
@@ -64,7 +64,7 @@ theorem ptsGroup_ev_one (R : Type) [CommRing R] [Algebra ℚ R] (f : MvPolynomia
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[ptsGroup_map_ev]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ptsGroup_ev_mul {R : Type} [CommRing R] [Algebra ℚ R] (f : MvPolynomial (ι × ι) ℚ)
     (x y : Matrix ι ι R) :
@@ -78,15 +78,15 @@ theorem ptsGroup_ev_mul {R : Type} [CommRing R] [Algebra ℚ R] (f : MvPolynomia
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `ι _ _ Γ hΓ R _ _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Establish `h1` using `hf 1 hΓ.one_mem`. Rewrite `h1`, the goal using `[ptsGroup_ev_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[(map_eq_zero_iff _ (algebraMap ℚ ℂ).injective).1 h1, map_zero]`. Introduce `x hx y hy f hf`. Rewrite using `[← ptsGroup_ev_mul]`. Use `GlobalTheory.T.aeval_sum_elim_eq_zero_of_mem_pts' ι Γ hΓ.aut_mem _ ?_ R x hx y hy` and prove the remaining obligations. Introduce `g hg h hh`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ptsGroup_ev_mul]`. Conclude with `hf _ (hΓ.mul_mem g hg h hh)`. Introduce `x hx f hf`. Rewrite using `[← ptsGroup_ev_adjugate]`. Use `hx _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite using `[ptsGroup_ev_adjugate]`. Conclude with `hf _ (hΓ.adj_mem g hg)`. Introduce `x hx`. Rewrite using `[← sub_eq_zero, ← ptsGroup_ev_det]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hx _ ?_` and prove the remaining obligations. Introduce `g hg`. Rewrite using `[ptsGroup_ev_det, hΓ.det_eq g hg, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pts_group : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → ∀ (R : Type) [CommRing R] [Algebra ℚ R], (1 : Matrix ι ι R) ∈ pts Γ R ∧ (∀ x ∈ pts Γ R, ∀ y ∈ pts Γ R, x * y ∈ pts Γ R) ∧ (∀ x ∈ pts Γ R, x.adjugate ∈ pts Γ R) ∧ ∀ x ∈ pts Γ R, x.det = 1 := by
   intro ι _ _ Γ hΓ R _ _

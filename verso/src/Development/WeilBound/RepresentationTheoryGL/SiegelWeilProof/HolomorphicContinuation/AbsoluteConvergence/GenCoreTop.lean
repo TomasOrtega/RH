@@ -17,7 +17,7 @@ namespace PositivityTheory.Rg.Sw.AbsSt
 open PositivityTheory.Rg.Sw
 
 /- English proof (translation)
-Establish `hZ` using `secZero hN`. Establish `hS` using `sph iwa mult`. Establish `hT` using `thSph_of kAK mult derivative_vacuum_section hS hZ holParam hLC hN`. Establish `hV` using `vacOut_of' detU1 (locOp hLV iwa mult holParam) holParam hT`. Conclude with `absThm_of' hV iwa detU1 kAK mult hZ derivative_vacuum_section (cycSec_of hC hZ secDer) hS holParam glue hLC hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absThm_of (hLV : LV) (hC : Cyc) (hLC : LC) (hN : NullIff) : AbsThm := by
   have hZ := secZero hN
@@ -27,7 +27,7 @@ theorem absThm_of (hLV : LV) (hC : Cyc) (hLC : LC) (hN : NullIff) : AbsThm := by
   exact absThm_of' hV iwa detU1 kAK mult hZ derivative_vacuum_section (cycSec_of hC hZ secDer) hS holParam glue hLC hN
 
 /- English proof (translation)
-Establish `hZ` using `secZero hN`. Conclude with `genCore iwa detU1 kAK mult hZ derivative_vacuum_section (cycSec_of hC hZ secDer) holParam glue hLC`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genCore_top (hC : Cyc) (hLC : LC) (hN : NullIff) : GenCore := by
   have hZ := secZero hN

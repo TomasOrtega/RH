@@ -9,7 +9,7 @@ open scoped TensorProduct NNReal
 namespace GlobalTheory.RatCount.CoefHt
 
 /- English proof (translation)
-Apply the tactic sequence `unfold InfinitePlace.mult; split_ifs <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mult_le_two (F : Type) [Field F] [NumberField F] (w : InfinitePlace F) : w.mult ≤ 2 := by
   unfold InfinitePlace.mult; split_ifs <;> norm_num
@@ -18,27 +18,25 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 open Classical in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Use `⟨4 ^ (Module.finrank F E * Fintype.card (InfinitePlace F)), 2 * Module.finrank F E, fun x j => ?_⟩` and prove the remaining obligations. Use `set m := Module.finrank F E with hm`. Use `set c := (minpoly F x).coeff j with hc`. Set `A : InfinitePlace F → ℝ` to `fun w => ((max 1 (Finset.univ.sup fun τ : EmbOver E w => ‖τ.1 x‖₊) : ℝ≥0) : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B0 : HeightOneSpectrum (𝓞 F) → ℝ≥0` to `fun v => max 1 (absFin F v ((1 : v.adicCompletion F) ⊗ₜ[F] x))`. Set `B : HeightOneSpectrum (𝓞 F) → ℝ` to `fun v => (B0 v : ℝ)`. Establish `hA : ∀ w, 1 ≤ A w` using `fun w => by simp only [A]; exact_mod_cast le_max_left _ _`. Establish `hB : ∀ v, 1 ≤ B v` using `fun v => by simp only [B, B0]; exact_mod_cast le_max_left _ _`. Establish `hB0fin : Function.HasFiniteMulSupport B0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `eventually_absFin_le_one (E := E) F ((1 : AF F) ⊗ₜ[F] x)`. Use `(Filter.eventually_cofinite.1 h).subset fun v hv hv' => hv ?_` and prove the remaining obligations. Establish `e : compFin F E v ((1 : AF F) ⊗ₜ[F] x) = (1 : v.adicCompletion F) ⊗ₜ[F] x`. Simplify using `[compFin, map_one]`. Rewrite `hv'` using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `max_eq_left hv'`. Establish `hBfin : Function.HasFiniteMulSupport B`. Use `hB0fin.subset fun v hv hv' => hv ?_` and prove the remaining obligations. Simplify using `only [B, hv', NNReal.coe_one]`. Establish `hht : (htE F x : ℝ) = (∏ w, A w) * ∏ᶠ v, B v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[htE, NNReal.coe_mul, NNReal.coe_prod]`. Use `congr 1`. Conclude with `(MonoidHom.map_finprod NNReal.toRealHom.toMonoidHom hB0fin)`. Establish `hB1 : ∀ v, 1 ≤ B v ^ m` using `fun v => one_le_pow₀ (hB v)`. Establish `hinf : (∏ w : InfinitePlace F, max (w c) 1 ^ w.mult) ≤ 4 ^ (m * Fintype.card (InfinitePlace F)) * (∏ w, A w) ^ (2 * m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : ∀ w : InfinitePlace F, max (w c) 1 ^ w.mult ≤ 4 ^ m * A w ^ (2 * m)` using `fun w => by`. Establish `hb : 1 ≤ 2 ^ m * A w ^ m` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ (by norm_num)) (one_le_pow₀ (hA w))`. Establish `h2 : max (w c) 1 ≤ 2 ^ m * A w ^ m` using `max_le (GlobalTheory.T.infinitePlace_minpoly_coeff_le_pow_max_embeddings F E x w j) hb`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, mul_comm m 2, pow_mul, mul_comm 2 m, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← pow_mul, Finset.prod_pow]`. Establish `hfin : (∏ᶠ v : FinitePlace F, max (v c) 1) ≤ (∏ᶠ v, B v) ^ (2 * m)`. Establish `e : (∏ᶠ v : FinitePlace F, max (v c) 1) = ∏ᶠ v : HeightOneSpectrum (𝓞 F), max (FinitePlace.mk v c) 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`. Both sides reduce to the same expression. Establish `hle : ∀ v : HeightOneSpectrum (𝓞 F), max (FinitePlace.mk v c) 1 ≤ B v ^ m` using `fun v => by`. Use `max_le ?_ (hB1 v)` and prove the remaining obligations. Rewrite using `[FinitePlace.mk_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.nnnorm_minpoly_coeff_finitePlace_le_pow F E x v j` as an intermediate fact. Simplify using `only [B, B0]`. Conclude with `this` after adjusting the coercions. Establish `hBm : Function.HasFiniteMulSupport fun v => B v ^ m`. Use `hBfin.subset fun v hv hv' => hv ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [hv', one_pow]`. Establish `hf : Function.HasFiniteMulSupport fun v : HeightOneSpectrum (𝓞 F) => max (FinitePlace.mk v c) 1`. Use `hBfin.subset fun v hv hv' => hv ?_` and prove the remaining obligations. Conclude with `le_antisymm ((hle v).trans (by rw [hv', one_pow])) (le_max_right _ _)`. Rewrite using `[e]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[NumberField.mulHeight₁_eq, hht, mul_pow, ← mul_assoc]`. Conclude with `mul_le_mul hinf hfin (finprod_nonneg fun v => le_trans zero_le_one (le_max_right _ _)) (mul_nonneg (by positivity) (pow_nonneg (Finset.prod_nonneg fun w _ => le_trans zero_le_one (hA w)) _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mulHeight_coeff_minpoly_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], ∃ (c : ℝ) (a : ℕ),
     ∀ (x : E) (j : ℕ), Height.mulHeight₁ ((minpoly F x).coeff j) ≤ c * (GlobalTheory.RatCount.htE F x : ℝ) ^ a := by

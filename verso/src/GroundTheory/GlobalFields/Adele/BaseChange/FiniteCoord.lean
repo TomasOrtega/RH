@@ -15,7 +15,7 @@ open SemiLocal
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Use `open ValuativeRel in`. Establish `hint : IsIntegral 𝒪[v.adicCompletion K] y` using `isIntegral_of_mem_integer v w ((mem_valuationInteger_iff w y).2 hy)`. Establish `htr : IsIntegral 𝒪[v.adicCompletion K] (Algebra.trace (v.adicCompletion K) (w.adicCompletion L) y)` using `Algebra.isIntegral_trace hint`. Conclude with `(mem_valuationInteger_iff v _).1 ((Valuation.integer.integers (ValuativeRel.valuation (v.adicCompletion K))).mem_of_integral htr)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trace_mem_adicCompletionIntegers (v : HeightOneSpectrum (𝓞 K))
     (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal] {y : w.adicCompletion L}
@@ -36,7 +36,7 @@ abbrev traceDual : Basis ι K L :=
   (Algebra.traceForm K L).dualBasis (traceForm_nondegenerate K L) b
 
 /- English proof (translation)
-Rewrite using `[mul_comm, ← Algebra.traceForm_apply]`. Conclude with `LinearMap.BilinForm.apply_dualBasis_left _ _ i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_mul_traceDual (i j : ι) :
     Algebra.trace K L (b j * traceDual b i) = if j = i then 1 else 0 := by
@@ -51,9 +51,9 @@ def localCoord (v : HeightOneSpectrum (𝓞 K)) (i : ι) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `h` using `(Algebra.TensorProduct.basis (v.adicCompletion K) b).sum_repr ((tensorEquiv L v).symm z)`. Establish `h2` using `congrArg (tensorEquiv L v) h`. Rewrite `h2` using `[AlgEquiv.apply_symm_apply, map_sum]`. Use `conv_rhs => rw [← h2]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.basis_apply, map_smul, tensorEquiv_one_tmul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_localCoord (v : HeightOneSpectrum (𝓞 K)) (z : CompletionsOver L v) :
     ∑ i, algebraMap (v.adicCompletion K) (CompletionsOver L v) (localCoord b v i z) *
@@ -70,7 +70,7 @@ theorem sum_localCoord (v : HeightOneSpectrum (𝓞 K)) (z : CompletionsOver L v
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `: (tensorEquiv L v).symm (algebraMap L (CompletionsOver L v) l) = 1 ⊗ₜ l`. Rewrite using `[AlgEquiv.symm_apply_eq, tensorEquiv_one_tmul]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis (v.adicCompletion K) b).coord i ((tensorEquiv L v).symm (algebraMap L (CompletionsOver L v) l)) = _`. Rewrite using `[this, Basis.coord_apply, Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem localCoord_algebraMap (v : HeightOneSpectrum (𝓞 K)) (i : ι) (l : L) :
     localCoord b v i (algebraMap L (CompletionsOver L v) l) =
@@ -83,9 +83,9 @@ theorem localCoord_algebraMap (v : HeightOneSpectrum (𝓞 K)) (i : ι) (l : L) 
     Finsupp.mapRange_apply]
 
 /- English proof (translation)
-Establish `key : (Algebra.TensorProduct.basis (v.adicCompletion K) b).coord i = (Algebra.trace (v.adicCompletion K) (v.adicCompletion K ⊗[K] L)).comp (LinearMap.mulRight (v.adicCompletion K) (1 ⊗ₜ traceDual b i))`. Use `(Algebra.TensorProduct.basis (v.adicCompletion K) b).ext fun j ↦ ?_` and prove the remaining obligations. Rewrite using `[Basis.coord_apply, Basis.repr_self, LinearMap.comp_apply, LinearMap.mulRight_apply, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_one_tmul, trace_mul_traceDual, Finsupp.single_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis (v.adicCompletion K) b).coord i ((tensorEquiv L v).symm z) = _`. Rewrite using `[key, LinearMap.comp_apply, LinearMap.mulRight_apply, ← Algebra.trace_eq_of_algEquiv (tensorEquiv L v), map_mul, AlgEquiv.apply_symm_apply, tensorEquiv_one_tmul, trace_pi]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem localCoord_eq_sum_trace (v : HeightOneSpectrum (𝓞 K)) (i : ι) (z : CompletionsOver L v) :
     localCoord b v i z = ∑ w : PlacesOver L v, Algebra.trace (v.adicCompletion K)
@@ -109,7 +109,7 @@ theorem localCoord_eq_sum_trace (v : HeightOneSpectrum (𝓞 K)) (i : ι) (z : C
   rfl
 
 /- English proof (translation)
-Rewrite using `[localCoord_eq_sum_trace]`. Conclude with `sum_mem fun w _ ↦ trace_mem_adicCompletionIntegers v w.1 (hz w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localCoord_mem (v : HeightOneSpectrum (𝓞 K)) (i : ι) (z : CompletionsOver L v)
     (hz : ∀ w : PlacesOver L v,
@@ -121,7 +121,7 @@ theorem localCoord_mem (v : HeightOneSpectrum (𝓞 K)) (i : ι) (z : Completion
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (localCoord b v i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_localCoord (v : HeightOneSpectrum (𝓞 K)) (i : ι) :
     Continuous (localCoord b v i) :=

@@ -6,13 +6,13 @@ noncomputable def UpperTheory.Reformulated.B.Qk18.PolyIn :
       ∃ (a : ℕ → R), ∀ (s : ℂ), f s = ∑ k ∈ Finset.range (d + (1 : ℕ)), s ^ k • a k
 
 /- English proof (translation)
-Introduce `R _ _ f g d₁ d₂ hf hg`. Take `⟨a, ha⟩` from `hf`. Take `⟨b, hb⟩` from `hg`. Use `⟨fun n => ∑ i ∈ Finset.range (d₁ + 1), ∑ j ∈ Finset.range (d₂ + 1), if i + j = n then a i * b j else 0, fun s => ?_⟩` and prove the remaining obligations. Use `show f s * g s = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha s, hb s, Finset.sum_mul_sum]`. Simplify using `only [Finset.smul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hmem : i + j ∈ Finset.range (d₁ + d₂ + 1)`. Rewrite `hi`, `hj`, the goal using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single_of_mem (i + j) hmem]`. Rewrite using `[if_pos rfl, smul_mul_smul_comm, pow_add]`. Introduce `k _ hk`. Rewrite using `[if_neg (Ne.symm hk), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk18.polyIn_mul :
     ∀ {R : Type} [inst : Ring R] [inst_1 : Algebra ℂ R] {f g : ℂ → R} {d₁ d₂ : ℕ},

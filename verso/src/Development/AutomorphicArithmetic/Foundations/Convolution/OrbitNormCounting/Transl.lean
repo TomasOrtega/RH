@@ -6,7 +6,7 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical TensorProduct
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, GlobalTheory.Tw.Phi, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem phi_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (a : ℕ) :
     (GlobalTheory.Tw.Phi a R).map f = GlobalTheory.Tw.Phi a S := by
@@ -15,11 +15,11 @@ private theorem phi_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, GlobalTheory.Tw.Phi, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single i.rev]`. Establish `h1 : (i : ℕ) + (i.rev : ℕ) + 1 = a` using `by rw [Fin.val_rev]; omega`. Rewrite using `[if_pos h1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Rewrite using `[if_pos h1, if_pos rfl, ← mul_pow]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h2 => h (Fin.ext (by rw [Fin.val_rev] at h2; omega))), if_neg h, mul_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `j _ hj`. Rewrite using `[if_neg (fun h => hj (Fin.ext (by rw [Fin.val_rev]; omega))), zero_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem phi_mul_transpose {R : Type} [CommRing R] (a : ℕ) :
     GlobalTheory.Tw.Phi a R * (GlobalTheory.Tw.Phi a R)ᵀ = 1 := by
@@ -38,9 +38,9 @@ private theorem phi_mul_transpose {R : Type} [CommRing R] (a : ℕ) :
   · simp
 
 /- English proof (translation)
-Break down `Nat.even_or_odd (n - 1) with h | h` into its components or cases. Conclude with `⟨1, one_ne_zero, by simp [h.neg_one_pow]⟩`. Establish `hx : ∃ x : E, IsCMField.complexConj E x ≠ x`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext hc)`. Take `⟨x, hx⟩` from `hx`. Use `⟨x - IsCMField.complexConj E x, sub_ne_zero.mpr hx.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[h.neg_one_pow, map_sub, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem exists_scalar (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) :
     ∃ z : E, z ≠ 0 ∧ z = (-1) ^ (n - 1) * IsCMField.complexConj E z := by
@@ -65,21 +65,21 @@ private def uMat {E : Type} [Field E] (n : ℕ) (z : E) (hz : z ≠ 0) : GL (Fin
       inv_mul_cancel₀ hz, one_smul]
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n`. Take `⟨z, hz0, hz⟩` from `exists_scalar E n`. Establish `hΦΦ : GlobalTheory.Tw.Phi n E * GlobalTheory.Tw.Phi n E = ((-1 : E) ^ (n - 1)) • (1 : Matrix (Fin n) (Fin n) E)` using `GlobalTheory.LocTwist.Phi_mul_self n`. Use `⟨uMat n z hz0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `hL : (thE E n g).val = GlobalTheory.Tw.Phi n E * ((g⁻¹ : GL (Fin n) E).val.map (IsCMField.complexConj E))ᵀ * (GlobalTheory.Tw.Phi n E)ᵀ` using `GlobalTheory.LocTwist.thetaGL_val n _ g`. Establish `hR : ((uMat n z hz0) * UpperTheory.ConvolutionTheory.D.th (IsCMField.complexConj E) g * (uMat n z hz0)⁻¹).val = (z • GlobalTheory.Tw.Phi n E) * ((g⁻¹ : GL (Fin n) E).val.map (IsCMField.complexConj E))ᵀ * (z⁻¹ • (GlobalTheory.Tw.Phi n E)ᵀ)` using `rfl`. Rewrite using `[hL, hR, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, inv_mul_cancel₀ hz0, one_smul]`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : (IsCMField.complexConj E z)⁻¹ * z * (-1) ^ (n - 1) = 1`. Establish `hcz : IsCMField.complexConj E z ≠ 0` using `(_root_.map_ne_zero _).mpr hz0`. Establish `hs : ((-1 : E) ^ (n - 1)) * (-1) ^ (n - 1) = 1` using `by rw [← mul_pow]; simp`. Establish `e : (IsCMField.complexConj E z)⁻¹ * z * (-1) ^ (n - 1) = ((IsCMField.complexConj E z)⁻¹ * IsCMField.complexConj E z) * (((-1 : E) ^ (n - 1)) * (-1) ^ (n - 1))`. Rewrite using `[show (IsCMField.complexConj E z)⁻¹ * z * (-1) ^ (n - 1) = (IsCMField.complexConj E z)⁻¹ * ((-1) ^ (n - 1) * IsCMField.complexConj E z) * (-1) ^ (n - 1) by rw [← hz]]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, inv_mul_cancel₀ hcz, hs, one_mul]`. Establish `hm : ((GlobalTheory.Tw.Phi n E)ᵀ.map (IsCMField.complexConj E))ᵀ = GlobalTheory.Tw.Phi n E`. Rewrite using `[Matrix.transpose_map, Matrix.transpose_transpose]`. Conclude with `phi_map ((IsCMField.complexConj E : E →+* E)) n`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : ((uMat n z hz0) * UpperTheory.ConvolutionTheory.D.th (IsCMField.complexConj E) (uMat n z hz0)).val = (z • GlobalTheory.Tw.Phi n E) * (((z⁻¹ • (GlobalTheory.Tw.Phi n E)ᵀ)).map (IsCMField.complexConj E))ᵀ` using `rfl`. Establish `hs : ((z⁻¹ • (GlobalTheory.Tw.Phi n E)ᵀ)).map (IsCMField.complexConj E) = (IsCMField.complexConj E z)⁻¹ • ((GlobalTheory.Tw.Phi n E)ᵀ.map (IsCMField.complexConj E))`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hL, hs, Matrix.transpose_smul, hm, Matrix.smul_mul, Matrix.mul_smul, hΦΦ, smul_smul, smul_smul, Units.val_one, mul_comm z, hc, one_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw g`. Establish `ht : thL n w = thetaGL n (cj w)` using `by rw [thL, if_neg hw]`. Establish `hf : algebraMap E (w.adicCompletion E) z ≠ 0` using `(_root_.map_ne_zero _).mpr hz0`. Establish `h1 : (uMat n z hz0).val.map (algebraMap E (w.adicCompletion E)) = algebraMap E (w.adicCompletion E) z • GlobalTheory.Tw.Phi n (w.adicCompletion E)`. Rewrite using `[← phi_map (algebraMap E (w.adicCompletion E)) n]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[uMat]`. Establish `h2 : ((uMat n z hz0)⁻¹ : GL (Fin n) E).val.map (algebraMap E (w.adicCompletion E)) = (algebraMap E (w.adicCompletion E) z)⁻¹ • (GlobalTheory.Tw.Phi n (w.adicCompletion E))ᵀ`. Rewrite using `[← phi_map (algebraMap E (w.adicCompletion E)) n]`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[uMat]`. Rewrite using `[ht, GlobalTheory.LocTwist.thetaGL_val, h1, h2, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, inv_mul_cancel₀ hf, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G3.transl :
     UpperTheory.ConvolutionTheory.G3.Transl := by

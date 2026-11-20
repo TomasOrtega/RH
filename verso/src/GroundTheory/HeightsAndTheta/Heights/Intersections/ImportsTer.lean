@@ -12,11 +12,11 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v p _ W' n hv hp hW hV G'`. Use `⟨⟨RingHom.ker_isPrime _, h₁ K ι K' ι' κ v p W' hv hp hW.1.2.1 G', fun k => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hW.1.2.2 k.1`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Rewrite `h` using `[fibreIdeal, RingHom.mem_ker, aeval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hX : (X ⟨k.1, i⟩ : MRing ι') ∈ W'`. Rewrite using `[← G'.genericFibre_ker_target, RingHom.mem_ker, aeval_X]`. Conclude with `h`. Simplify using `using Ideal.mem_map_of_mem (MvPolynomial.map (Int.castRingHom (ZMod p))) hX`. Rewrite using `[fibreIdeal, h₂ (FibreBlock κ) (fibreIdx ι' κ) G'.Φ G'.Φ', h₃ K ι K' ι' κ v p W' n hv hp hW hV G']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem FibreDimensionZero.proof (h₁ : ArithmeticIntersectionFibreMultiHomogeneous.Statement) (h₂ : EvalKerKrullDim.Statement)
     (h₃ : FibreTranscendenceDegreeAlt.Statement) : FibreDimensionZero.Statement := by

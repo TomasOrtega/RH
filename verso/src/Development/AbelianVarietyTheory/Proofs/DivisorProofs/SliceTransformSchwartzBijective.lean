@@ -19,7 +19,7 @@ namespace GlobalTheory.SwapSliceBij
 open GlobalTheory.SwapSlice
 
 /- English proof (translation)
-Use `haveI : T2Space k := inferInstance`. Use `haveI : NonarchimedeanAddGroup k := ⟨fun V hV => by`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset hV`. Conclude with `⟨⟨⟨⟨⟨GlobalTheory.SplitWeil.cball s, GlobalTheory.SplitWeil.add_mem_cball⟩, by simp [GlobalTheory.SplitWeil.cball]⟩, GlobalTheory.SplitWeil.neg_mem_cball⟩, GlobalTheory.SplitWeil.isOpen_cball s⟩, hs⟩⟩`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem totDisc_localField (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : TotallyDisconnectedSpace k := by
@@ -31,18 +31,18 @@ theorem totDisc_localField (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
   infer_instance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp (starRingEnd ℂ), hf.2.comp_left (map_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem conj_mem_SB {X : Type} [TopologicalSpace X] {f : X → ℂ} (hf : f ∈ SB X) :
     (fun x => starRingEnd ℂ (f x)) ∈ SB X :=
   ⟨hf.1.comp (starRingEnd ℂ), hf.2.comp_left (map_zero _)⟩
 
 /- English proof (translation)
-Use `⟨fun φ hφ => conj_mem_SB (h.mapsTo (conj_mem_SB hφ)), fun φ hφ ψ hψ e => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e' : ι (fun x => starRingEnd ℂ (φ x)) = ι (fun x => starRingEnd ℂ (ψ x))`. Use function extensionality and compare the values at `y`. Use `congrFun e y` as an intermediate fact. Simplify using `only [barL_apply] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using congrArg (starRingEnd ℂ) this`. Establish `e''` using `h.injOn (conj_mem_SB hφ) (conj_mem_SB hψ) e'`. Use function extensionality and compare the values at `x`. Simplify using `using congrArg (starRingEnd ℂ) (congrFun e'' x)`. Take `⟨φ', hφ', e⟩` from `h.surjOn (conj_mem_SB hg)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨fun x => starRingEnd ℂ (φ' x), conj_mem_SB hφ', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `[barL_apply, e]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem barL_bijOn {k Y : Type} [TopologicalSpace k] [TopologicalSpace Y] {κ : Type}
     (ι : ((κ → k) → ℂ) →ₗ[ℂ] (Y → ℂ)) (h : Set.BijOn ι (SB (κ → k) : Set ((κ → k) → ℂ)) (SB Y : Set (Y → ℂ))) :
@@ -62,11 +62,11 @@ theorem barL_bijOn {k Y : Type} [TopologicalSpace k] [TopologicalSpace Y] {κ : 
     simp [barL_apply, e]
 
 /- English proof (translation)
-Establish `cl : Continuous fun x : κ ⊕ κ' → k => x ∘ Sum.inl` using `continuous_pi fun i => continuous_apply _`. Establish `cr : Continuous fun x : κ ⊕ κ' → k => x ∘ Sum.inr` using `continuous_pi fun i => continuous_apply _`. Use `⟨(h₁.1.comp_continuous cl).mul (h₂.1.comp_continuous cr), ?_⟩` and prove the remaining obligations. Set `e` to `(Homeomorph.sumArrowHomeomorphProdArrow (X := k) (ι := κ) (ι' := κ'))`. Use `HasCompactSupport.intro ((h₁.2.prod h₂.2).image e.symm.continuous) fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : e x ∉ tsupport φ₁ ×ˢ tsupport φ₂` using `fun h => hx ⟨e x, h, e.symm_apply_apply x⟩`. Rewrite `hx'` using `[Homeomorph.sumArrowHomeomorphProdArrow_apply, Set.mem_prod, not_and_or]`. Simplify using `only [boxFun]`. Break down `hx' with h | h` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport h, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem boxFun_mem {k : Type} [CommRing k] [TopologicalSpace k] [T2Space k] {κ κ' : Type}
     {φ₁ : (κ → k) → ℂ} {φ₂ : (κ' → k) → ℂ} (h₁ : φ₁ ∈ SB (κ → k)) (h₂ : φ₂ ∈ SB (κ' → k)) :
@@ -87,11 +87,11 @@ variable {k : Type} [CommRing k] [TopologicalSpace k] [T2Space k] [LocallyCompac
   {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Set `e` to `Homeomorph.sumArrowHomeomorphProdArrow (X := k) (ι := κ) (ι' := κ)`. Establish `hspan` using `GlobalTheory.LocFlat.CFac.Span.span_prodSB_eq_top (κ → k) (κ → k)`. Set `T : GlobalTheory.SplitWeil.SB ((κ → k) × (κ → k)) →ₗ[ℂ] ((κ ⊕ κ → k) → ℂ)` to `(LinearMap.funLeft ℂ ℂ e) ∘ₗ (GlobalTheory.SplitWeil.SB _).subtype`. Establish `hΦ' : Φ ∘ e.symm ∈ GlobalTheory.SplitWeil.SB ((κ → k) × (κ → k))` using `⟨hΦ.1.comp_continuous e.symm.continuous, hΦ.2.comp_homeomorph e.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : Φ ∈ Submodule.map T ⊤` using `⟨⟨Φ ∘ e.symm, hΦ'⟩, trivial, by`. Use function extensionality and compare the values at `x`. Simplify using `[T, LinearMap.funLeft]⟩`. Rewrite `key` using `[← hspan, Submodule.map_span, ← Set.range_comp]`. Use `Submodule.span_mono ?_ key` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨q.1.1, q.1.2, q.2.1, q.2.2, by funext x; rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem SB_le_span_boxFun :
     SB (κ ⊕ κ → k) ≤ Submodule.span ℂ {f | ∃ φ₁ ∈ SB (κ → k), ∃ φ₂ ∈ SB (κ → k), f = boxFun φ₁ φ₂} := by
@@ -110,7 +110,7 @@ theorem SB_le_span_boxFun :
   exact ⟨q.1.1, q.1.2, q.2.1, q.2.2, by funext x; rfl⟩
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Establish `hle : Submodule.span ℂ {f | ∃ φ₁ ∈ SB (κ → k), ∃ φ₂ ∈ SB (κ → k), f = boxFun φ₁ φ₂} ≤ P.comap L` using `Submodule.span_le.2 (by rintro _ ⟨φ₁, h₁, φ₂, h₂, rfl⟩; exact h φ₁ h₁ φ₂ h₂)`. Conclude with `hle (SB_le_span_boxFun hΦ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_boxFun {M : Type} [AddCommGroup M] [Module ℂ M] (L : ((κ ⊕ κ → k) → ℂ) →ₗ[ℂ] M) (P : Submodule ℂ M)
     (h : ∀ φ₁ ∈ SB (κ → k), ∀ φ₂ ∈ SB (κ → k), L (boxFun φ₁ φ₂) ∈ P) : ∀ Φ ∈ SB (κ ⊕ κ → k), L Φ ∈ P := by
@@ -124,35 +124,31 @@ end GlobalTheory.SwapSliceBij
 open GlobalTheory.SwapSlice GlobalTheory.SwapSliceBij in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ κ _ n d ι hι`. Use `haveI : T2Space k := inferInstance`. Use `haveI := totDisc_localField k`. Use `haveI : LocallyCompactSpace k := inferInstance`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin d) k) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin d → k))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin d) k) := inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin d → k))`. Use `haveI : T2Space (Matrix (Fin n) (Fin d) k) := inferInstanceAs (T2Space (Fin n → Fin d → k))`. Establish `hbar` using `barL_bijOn ι hι`. Establish `hslice : ∀ x₂ : κ → k, ∀ Φ ∈ SB (κ ⊕ κ → k), (fun x₁ => Φ (Sum.elim x₁ x₂)) ∈ SB (κ → k)`. Introduce `x₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `mem_of_boxFun (LinearMap.funLeft ℂ ℂ (fun x₁ : κ → k => Sum.elim x₁ x₂)) (SB (κ → k)) ?_` and prove the remaining obligations. Introduce `φ₁ h₁ φ₂ h₂`. Establish `e : LinearMap.funLeft ℂ ℂ (fun x₁ : κ → k => Sum.elim x₁ x₂) (boxFun φ₁ φ₂) = φ₂ x₂ • φ₁`. Use function extensionality and compare the values at `x₁`. Simplify using `[LinearMap.funLeft, boxFun, Function.comp_def, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ h₁`. Establish `hcol : ∀ Z₁ : Matrix (Fin n) (Fin d) k, ∀ Φ ∈ SB (κ ⊕ κ → k), (fun x₂ => ι (fun x₁ => Φ (Sum.elim x₁ x₂)) Z₁) ∈ SB (κ → k)`. Introduce `Z₁`. Use `mem_of_boxFun (LinearMap.pi fun x₂ : κ → k => (LinearMap.proj Z₁) ∘ₗ ι ∘ₗ LinearMap.funLeft ℂ ℂ (fun x₁ : κ → k => Sum.elim x₁ x₂)) (SB (κ → k)) ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `φ₁ h₁ φ₂ h₂`. Establish `e : (LinearMap.pi fun x₂ : κ → k => (LinearMap.proj Z₁) ∘ₗ ι ∘ₗ LinearMap.funLeft ℂ ℂ (fun x₁ : κ → k => Sum.elim x₁ x₂)) (boxFun φ₁ φ₂) = ι φ₁ Z₁ • φ₂`. Use function extensionality and compare the values at `x₂`. Establish `e' : LinearMap.funLeft ℂ ℂ (fun x₁ : κ → k => Sum.elim x₁ x₂) (boxFun φ₁ φ₂) = φ₂ x₂ • φ₁`. Use function extensionality and compare the values at `x₁`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[LinearMap.funLeft, boxFun, Function.comp_def, mul_comm]`. Simplify using `only [LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, e', map_smul, LinearMap.coe_proj, Function.eval, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hz : ∀ Φ ∈ SB (κ ⊕ κ → k), sliceT ι Φ = 0 → Φ = 0`. Introduce `Φ hΦ h0`. Establish `h1 : ∀ Z₁, (fun x₂ => ι (fun x₁ => Φ (Sum.elim x₁ x₂)) Z₁) = 0`. Introduce `Z₁`. Use `hbar.injOn (hcol Z₁ Φ hΦ) (zero_mem _) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_zero]`. Use function extensionality and compare the values at `Z₂`. Conclude with `congrFun h0 (Z₁, Z₂)`. Establish `h2 : ∀ x₂, (fun x₁ => Φ (Sum.elim x₁ x₂)) = 0`. Introduce `x₂`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hι.injOn (hslice x₂ Φ hΦ) (zero_mem _) ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `Z₁`. Conclude with `congrFun (h1 Z₁) x₂`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congrFun (h2 (x ∘ Sum.inr)) (x ∘ Sum.inl)` as an intermediate fact. Simplify `this` using `[Sum.elim_comp_inl_inr]`. Use `⟨?_, fun Φ hΦ Ψ hΨ e => sub_eq_zero.1 (hz (Φ - Ψ) (sub_mem hΦ hΨ) (by rw [map_sub, e, sub_self])), ?_⟩` and prove the remaining obligations. Introduce `Φ hΦ`. Use `mem_of_boxFun (sliceT ι) _ ?_ Φ hΦ` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `φ₁ h₁ φ₂ h₂`. Establish `e : sliceT ι (boxFun φ₁ φ₂) = GlobalTheory.LocFlat.CFac.prodFn (ι φ₁) (barL ι φ₂)`. Use function extensionality and compare the values at `Z`. Rewrite using `[sliceT_boxFun]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.LocFlat.CFac.prodFn_mem_SB (hι.mapsTo h₁) (hbar.mapsTo h₂)`. Introduce `g hg`. Establish `hspan` using `GlobalTheory.LocFlat.CFac.Span.span_prodSB_eq_top (Matrix (Fin n) (Fin d) k) (Matrix (Fin n) (Fin d) k)`. Establish `key : g ∈ Submodule.map (GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin d) k × Matrix (Fin n) (Fin d) k)).subtype ⊤` using `⟨⟨g, hg⟩, trivial, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite `key` using `[← hspan, Submodule.map_span, ← Set.range_comp]`. Establish `hle : Submodule.span ℂ (Set.range ((GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin d) k × Matrix (Fin n) (Fin d) k)).subtype ∘ fun q : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin d) k) × GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin d) k) => GlobalTheory.LocFlat.CFac.prodSB q …`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Take `⟨φ₁, h₁, e₁⟩` from `hι.surjOn q.1.2`.
-
-Take `⟨φ₂, h₂, e₂⟩` from `hbar.surjOn q.2.2`. Use `⟨boxFun φ₁ φ₂, boxFun_mem h₁ h₂, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z`. Rewrite using `[sliceT_boxFun, e₁, e₂]`. Both sides reduce to the same expression.
-
-Take `⟨Φ, hΦ, e⟩` from `Submodule.mem_map.1 (hle key)`. Conclude with `⟨Φ, hΦ, e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SwapSliceBij.sliceT_bijOn : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {κ : Type} [Fintype κ] {n d : ℕ}
     (ι : ((κ → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)),

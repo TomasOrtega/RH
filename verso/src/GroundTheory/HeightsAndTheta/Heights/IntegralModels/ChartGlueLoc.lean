@@ -11,14 +11,14 @@ section ChartLoc
 variable {Ω : Type*} [Field Ω] {τ : Type*} (x : τ → Ω) (i : τ)
 
 /- English proof (translation)
-The claim follows from `intCast_mem _ z`.
+A detailed English derivation is pending.
 -/
 theorem intCast_mem_chartRing (R : Type*) [CommRing R] [Algebra R Ω] (z : ℤ) :
     (z : Ω) ∈ chartRing R x i :=
   intCast_mem _ z
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact Algebra.subset_adjoin hy`. Consider the case `algebraMap z => simp [intCast_mem_chartRing x i R z]`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `mul y z _ _ hy hz => exact mul_mem hy hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mem_chartRing_of_int (R : Type*) [CommRing R] [Algebra R Ω] {y : Ω}
     (hy : y ∈ chartRing ℤ x i) : y ∈ chartRing R x i := by
@@ -32,17 +32,17 @@ variable (R : Type*) [CommRing R] [Algebra ℤ R] (T : Submonoid ℤ) [IsLocaliz
 
 omit [IsLocalization T R] in
 /- English proof (translation)
-Rewrite using `[eq_intCast (algebraMap ℤ R), map_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_algebraMap_int (z : ℤ) : algebraMap R Ω (algebraMap ℤ R z) = z := by
   rw [eq_intCast (algebraMap ℤ R), map_intCast]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `IsLocalization.map_units R (⟨t, ht⟩ : T)`. Establish `h1 : algebraMap R Ω (↑u⁻¹ : R) * (t : Ω) = 1`. Rewrite using `[← algebraMap_algebraMap_int R t]`. Establish `: algebraMap ℤ R t = (u : R)` using `hu.symm`. Rewrite using `[this, ← map_mul, Units.inv_mul, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht0 : (t : Ω) ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, mul_zero]`. Conclude with `zero_ne_one h1`. Use `⟨ht0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← eq_inv_of_mul_eq_one_left h1]`. Conclude with `Subalgebra.algebraMap_mem _ _`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_chartRing_loc {t : ℤ} (ht : t ∈ T) :
     (t : Ω) ≠ 0 ∧ (t : Ω)⁻¹ ∈ chartRing R x i := by
@@ -58,15 +58,15 @@ theorem inv_mem_chartRing_loc {t : ℤ} (ht : t ∈ T) :
   exact Subalgebra.algebraMap_mem _ _
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact ⟨1, one_mem T, by rw [Int.cast_one, one_mul]; exact Algebra.subset_adjoin hy⟩`. Consider the case `algebraMap r`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective T r`. Use `⟨s, s.2, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg (algebraMap R Ω) (IsLocalization.mk'_spec R a s)`. Rewrite `h` using `[map_mul, algebraMap_algebraMap_int, algebraMap_algebraMap_int]`. Rewrite using `[mul_comm, h]`. Conclude with `intCast_mem_chartRing x i ℤ a`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hty⟩` from `hy`. Take `⟨t', ht', htz⟩` from `hz`. Use `⟨t * t', mul_mem ht ht', ?_⟩` and prove the remaining obligations. Establish `: ((t * t' : ℤ) : Ω) * (y + z) = (t' : Ω) * ((t : Ω) * y) + (t : Ω) * ((t' : Ω) * z)` using `by push_cast; ring`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `add_mem (mul_mem (intCast_mem_chartRing x i ℤ _) hty) (mul_mem (intCast_mem_chartRing x i ℤ _) htz)`. Consider the case `mul y z _ _ hy hz`. Take `⟨t, ht, hty⟩` from `hy`. Take `⟨t', ht', htz⟩` from `hz`. Use `⟨t * t', mul_mem ht ht', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((t * t' : ℤ) : Ω) * (y * z) = ((t : Ω) * y) * ((t' : Ω) * z)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `mul_mem hty htz`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_chartRing_int {y : Ω} (hy : y ∈ chartRing R x i) :
     ∃ t ∈ T, (t : Ω) * y ∈ chartRing ℤ x i := by
@@ -98,7 +98,7 @@ theorem exists_mul_mem_chartRing_int {y : Ω} (hy : y ∈ chartRing R x i) :
     exact mul_mem hty htz
 
 /- English proof (translation)
-Use `choose t ht hty using fun l => exists_mul_mem_chartRing_int x i R T (hy l)`. Use `⟨∏ l, t l, prod_mem fun l _ => ht l, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ t (Finset.mem_univ l), Int.cast_mul, mul_comm (t l : Ω), mul_assoc]`. Conclude with `mul_mem (intCast_mem_chartRing x i ℤ _) (hty l)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_chartRing_int_fin {ι : Type*} [Fintype ι] (y : ι → Ω)
     (hy : ∀ l, y l ∈ chartRing R x i) :
@@ -113,11 +113,11 @@ theorem exists_mul_mem_chartRing_int_fin {ι : Type*} [Fintype ι] (y : ι → �
 end ChartLoc
 
 /- English proof (translation)
-Introduce `hsQ`. Establish `hcop : IsCoprime (p : ℤ) s`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Establish `: ¬ p ∣ s.natAbs` using `fun h => hs (Int.natCast_dvd.mpr h)`. Simplify `(Nat.Prime.coprime_iff_not_dvd hp).mpr this` using `[Int.gcd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨u, v, huv⟩` from `hcop`. Establish `h1` using `congrArg (Int.cast : ℤ → A) huv`. Move the coercions through the operations in `at h1`. Apply `hQ` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Q.mul_mem_left _ hpQ) (Q.mul_mem_left _ hsQ)`.
+A detailed English derivation is pending.
 -/
 theorem intCast_not_mem_of_not_dvd {A : Type*} [CommRing A] {Q : Ideal A} (hQ : Q ≠ ⊤) {p : ℕ}
     (hp : p.Prime) (hpQ : (p : A) ∈ Q) {s : ℤ} (hs : ¬ (p : ℤ) ∣ s) : (s : A) ∉ Q := by

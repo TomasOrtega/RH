@@ -17,7 +17,7 @@ variable {H V W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 
 omit [FiniteDimensional ℂ V] [CompleteSpace V] [FiniteDimensional ℂ W] [CompleteSpace W] in
 /- English proof (translation)
-Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [(S ∘L c ∘L S').coeFn_compLpL (sh W t x), sh_ae W t x, S.coeFn_compLpL (c.compLpL 2 volume (sh V t (S'.compLpL 2 volume x))), c.coeFn_compLpL (sh V t (S'.compLpL 2 volume x)), sh_ae V t (S'.compLpL 2 volume x), (measurePreserving_add_right volume t).quasiMeasurePre …`. Rewrite using `[h1, h2, h3, h4, h5, h6]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem lift_sh (S : V →L[ℂ] W) (S' : W →L[ℂ] V) (c : V →L[ℂ] V) (t : ℝ) (x : L W) :
     (S ∘L c ∘L S').compLpL 2 volume (sh W t x) =
@@ -30,15 +30,15 @@ private theorem lift_sh (S : V →L[ℂ] W) (S' : W →L[ℂ] V) (c : V →L[ℂ
   rw [h1, h2, h3, h4, h5, h6]; rfl
 
 /- English proof (translation)
-Take `⟨u, κ, hk, h1, h2⟩` from `h`. Establish `hk' : Ker fun t => S ∘L κ t ∘L S'`. Use `⟨continuous_const.clm_comp (hk.1.clm_comp continuous_const), hk.2.mono fun t ht h0 => ht ?_⟩` and prove the remaining obligations. Simplify using `[h0]`. Use `⟨u.mapRange (fun c => S ∘L c ∘L S') (by simp), fun t => S ∘L κ t ∘L S', hk', fun x => ?_, fun z => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.sum_mapRange_index fun a => Lp.ext (by filter_upwards [(0 : W →L[ℂ] W).coeFn_compLpL (sh W a x), Lp.coeFn_zero W 2 (volume : Measure ℝ)] with y a b`. Rewrite using `[a, b]`. Use the proof step `rfl)]`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hT', h1, hT, map_add, Finsupp.sum, Finsupp.sum, map_sum, (convSpec _ hk' x).2.2, (convSpec _ hk _).2.2, ← ContinuousLinearMap.integral_comp_comm _ (convSpec _ hk _).2.1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [lift_sh]`. Use `beta_reduce`. Rewrite using `[Finsupp.sum_mapRange_index (by simp), h2]`. Establish `hi : Integrable fun t : ℝ => Complex.exp (z * t) • κ t`. Establish `c0 : Continuous fun t : ℝ => Complex.exp (z * t)` using `by fun_prop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Continuous.integrable_of_hasCompactSupport (c0.smul hk.1) (hk.2.mono fun t ht h0 => ht ?_)` and prove the remaining obligations. Use `show Complex.exp (z * t) • κ t = 0`. Rewrite using `[h0, smul_zero]`. Set `Φ : (V →L[ℂ] V) →L[ℂ] (W →L[ℂ] W)` to `(ContinuousLinearMap.compL ℂ W V W S) ∘L ((ContinuousLinearMap.compL ℂ W V V).flip S')`. Establish `hΦ : ∀ c, Φ c = S ∘L c ∘L S'` using `fun c => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← hΦ, symb, Finsupp.sum, map_add, map_sum, map_smul]`. Rewrite using `[← Φ.integral_comp_comm hi]`. Simplify using `only [map_smul]`.
+A detailed English derivation is pending.
 -/
 private theorem act_transp (J : L V →ₗᵢ[ℂ] H) (J' : L W →ₗᵢ[ℂ] H) (S : V →L[ℂ] W) (S' : W →L[ℂ] V) (T T' Y : H →L[ℂ] H)
     (hT : ∀ u, T (J u) = J' (S.compLpL 2 volume u)) (hT' : ∀ w, T' (J' w) = J (S'.compLpL 2 volume w))
@@ -71,7 +71,7 @@ private theorem act_transp (J : L V →ₗᵢ[ℂ] H) (J' : L W →ₗᵢ[ℂ] H
 
 omit [FiniteDimensional ℂ V] [CompleteSpace V] [CompleteSpace H] in
 /- English proof (translation)
-Take `⟨u, κ, hk, h1, h2⟩` from `h`. Conclude with `⟨u, κ, hk, fun x => (e x).trans (h1 x), h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem act_congr (J : L V →ₗᵢ[ℂ] H) (Y Y' : H →L[ℂ] H) (σ : ℂ → V →L[ℂ] V) (e : ∀ u, Y' (J u) = Y (J u))
     (h : Act J Y σ) : Act J Y' σ := by
@@ -79,7 +79,7 @@ private theorem act_congr (J : L V →ₗᵢ[ℂ] H) (Y Y' : H →L[ℂ] H) (σ 
   exact ⟨u, κ, hk, fun x => (e x).trans (h1 x), h2⟩
 
 /- English proof (translation)
-Establish `a` using `((actLaws J).2.2.2.1 _ _ _ _ h h').2`. Establish `b` using `((actLaws J).2.2.2.1 _ _ _ _ h' h).2`. Establish `e' : Y ∘L Y' = Y' ∘L Y` using `e`. Rewrite `a` using `[e']`. Conclude with `congrFun (actUniq J _ _ _ a b) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_comm (J : L V →ₗᵢ[ℂ] H) (Y Y' : H →L[ℂ] H) (σ σ' : ℂ → V →L[ℂ] V) (e : Commute Y Y')
     (h : Act J Y σ) (h' : Act J Y' σ') : Commute (σ 0) (σ' 0) := by
@@ -90,11 +90,11 @@ private theorem act_comm (J : L V →ₗᵢ[ℂ] H) (Y Y' : H →L[ℂ] H) (σ �
   exact congrFun (actUniq J _ _ _ a b) 0
 
 /- English proof (translation)
-Establish `key : ∀ w : Eu d →L[ℂ] Eu d, Commute w a → ∀ v ∈ Module.End.eigenspace (a : Eu d →ₗ[ℂ] Eu d) (x : ℂ), w v ∈ Module.End.eigenspace (a : Eu d →ₗ[ℂ] Eu d) (x : ℂ)`. Introduce `w hw v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `h1 : w (a v) = a (w v)` using `DFunLike.congr_fun hw.eq v`. Establish `h2 : a v = (x : ℂ) • v` using `hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show a (w v) = _`. Rewrite using `[← h1, h2, map_smul]`. Establish `h' : Commute (star u) a`. Use `h.star_star` as an intermediate fact. Rewrite `this` using `[ha.star_eq]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show eigP a x (u v) = u (eigP a x v)`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (key u h _ (Submodule.starProjection_apply_mem _ v)) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, ← ContinuousLinearMap.adjoint_inner_right]`. Conclude with `Submodule.starProjection_inner_eq_zero v _ (key _ h' w hw)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eigP_comm {d : ℕ} (a u : Eu d →L[ℂ] Eu d) (ha : IsSelfAdjoint a) (h : Commute u a) (x : ℝ) :
     Commute (eigP a x) u := by
@@ -118,31 +118,27 @@ private theorem eigP_comm {d : ℕ} (a u : Eu d →L[ℂ] Eu d) (ha : IsSelfAdjo
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ μ _ θ 𝔢 𝔵 N C₀ hF h0 h1`. Establish `ha : Conv 𝔵.A'.J 𝔵.A'.J 𝔢.toAmp.A 𝔵.βa` using `𝔢.a_op ▸ 𝔵.a_acts.2.1`. Take `⟨p0, p1⟩ : 0 ≤ 𝔵.a₀ ∧ ‖𝔵.a₀‖ ≤ 1` from `posSymb 𝔵.A'.J _ _ 𝔵.a_acts.1 ha h0 h1`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `fin : {x : ℝ | 0 < x ∧ Module.End.eigenspace (𝔵.a₀ : Eu 𝔵.d' →ₗ[ℂ] Eu 𝔵.d') (x : ℂ) ≠ ⊥}.Finite` using `((Module.End.finite_hasEigenvalue (𝔵.a₀ : Eu 𝔵.d' →ₗ[ℂ] Eu 𝔵.d')).preimage Complex.ofReal_injective.injOn).subset fun x hx => hx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fin.toFinset, fun x => fin.mem_toFinset, fun x hx => ?_, fun x hx hx' j => ?_⟩` and prove the remaining obligations. Take `⟨hx0, hx⟩` from `fin.mem_toFinset.1 hx`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hx`. Establish `e : 𝔵.a₀ v = (x : ℂ) • v` using `Module.End.mem_eigenspace_iff.1 hv`. Use `(𝔵.a₀.le_opNorm v).trans (mul_le_mul_of_nonneg_right p1 (norm_nonneg v))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e, norm_smul, Complex.norm_real, Real.norm_of_nonneg hx0.le]`. Conclude with `le_of_mul_le_mul_right this (norm_pos_iff.2 hv0)`. Establish `hb : Module.End.eigenspace (𝔵.a₀ : Eu 𝔵.d' →ₗ[ℂ] Eu 𝔵.d') (x : ℂ) = ⊥`. Assume the negation of the conclusion as `hb`. Conclude with `hx' (fin.mem_toFinset.2 ⟨hx, hb⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: eigP 𝔵.a₀ x = 0`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Use `Submodule.starProjection_apply_mem (Module.End.eigenspace (𝔵.a₀ : Eu 𝔵.d' →ₗ[ℂ] Eu 𝔵.d') (x : ℂ)) v` as an intermediate fact. Conclude with `(Submodule.eq_bot_iff _).1 hb _ this`. Simplify using `[Fam.tr, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sa : IsSelfAdjoint 𝔵.a₀` using `IsSelfAdjoint.of_nonneg p0`. Establish `aA : Act 𝔵.A'.J 𝔢.toAmp.A (symb 𝔵.βa)` using `(actLaws _).2.1 _ _ 𝔵.a_acts.1 ha`. Establish `aG : Act 𝔵.A'.J (Rop μ 𝔢.g) (symb 𝔵.βg)` using `(actLaws _).2.1 _ _ 𝔵.g_acts.1 𝔵.g_acts.2.1`. Establish `cP : ∀ i, Commute (eigP 𝔵.a₀ x) (𝔵.u i 0)` using `fun i => eigP_comm _ _ sa (act_comm _ _ _ _ _ (𝔢.Uq_amp i) (𝔵.u_act i) aA) x`. Set `S : Eu 𝔵.d →L[ℂ] Eu 𝔵.d'` to `𝔵.s.toContinuousLinearEquiv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S' : Eu 𝔵.d' →L[ℂ] Eu 𝔵.d` to `𝔵.s.symm.toContinuousLinearEquiv`. Set `T' : L2 μ →L[ℂ] L2 μ` to `𝔵.A.J.toContinuousLinearMap ∘L S'.compLpL 2 volume ∘L ContinuousLinearMap.adjoint 𝔵.A'.J.toContinuousLinearMap`. Establish `hT : ∀ u, θ.U (𝔵.A.J u) = 𝔵.A'.J (S.compLpL 2 volume u)` using `fun u => 𝔵.s_op u _ (S.coeFn_compLpL u)`. Establish `hT' : ∀ w, T' (𝔵.A'.J w) = 𝔵.A.J (S'.compLpL 2 volume w)` using `fun w => by`. Establish `: ContinuousLinearMap.adjoint 𝔵.A'.J.toContinuousLinearMap (𝔵.A'.J w) = w`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`. Conclude with `𝔵.A'.J.inner_map_map y w`. Use `show 𝔵.A.J (S'.compLpL 2 volume (ContinuousLinearMap.adjoint 𝔵.A'.J.toContinuousLinearMap (𝔵.A'.J w))) = _`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTT : ∀ w, θ.U (T' (𝔵.A'.J w)) = 𝔵.A'.J w` using `fun w => by`. Rewrite using `[hT']`. Use `𝔵.s_op _ _ ?_` and prove the remaining obligations. Use `filter_upwards [S'.coeFn_compLpL w] with y hy`. Rewrite using `[hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(𝔵.s.apply_symm_apply _).symm`. Establish `perm : ∀ i w, symb 𝔵.βg 0 (𝔵.s (𝔵.v i 0 w)) = 𝔵.u (i + 1) 0 (symb 𝔵.βg 0 (𝔵.s w))` using `fun i w => by`. Establish `a` using `((actLaws _).2.2.2.1 _ _ _ _ aG (act_transp _ _ S S' _ _ _ hT hT' _ (𝔵.v_act i))).2`. Establish `b` using `((actLaws _).2.2.2.1 _ _ _ _ (𝔵.u_act (i + 1)) aG).2`. Establish `c` using `actUniq _ _ _ _ a (act_congr _ _ _ _ (fun y => ?_) b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `DFunLike.congr_fun (congrFun c 0) (𝔵.s w)` as an intermediate fact. Simplify `this` using `[S, S']`. Use `DFunLike.congr_fun (𝔢.Uq_perm i) (T' (𝔵.A'.J y))` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply] at this ⊢`. Rewrite using `[this, hTT]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Set `B : Module.End ℂ (Eu 𝔵.d')` to `((eigP 𝔵.a₀ x ∘L symb 𝔵.βg 0 : Eu 𝔵.d' →L[ℂ] Eu 𝔵.d') : Eu 𝔵.d' →ₗ[ℂ] Eu 𝔵.d') ∘ₗ (𝔵.s.toLinearEquiv : Eu 𝔵.d →ₗ[ℂ] Eu 𝔵.d') ∘ₗ (N.toLinearEquiv : Eu 𝔵.d' →ₗ[ℂ] Eu 𝔵.d)`. Establish `hB : ∀ w, B w = eigP 𝔵.a₀ x (symb 𝔵.βg 0 (𝔵.s (N w)))` using `fun w => rfl`. Take `⟨s, c, hs, h⟩` from `expForm (Eu 𝔵.d') 2 two_pos (fun i => (𝔵.u i 0 : Eu 𝔵.d' →ₗ[ℂ] Eu 𝔵.d')) B (fun i k => LinearMap.ext fun w => DFunLike.congr_fun (act_comm _ _ _ _ _ (𝔢.Uq_comm i k) (𝔵.u_act i) (𝔵.u_act k)).eq w) (fun i => LinearMap.ext fun w => by show B (𝔵.u i 0 w) = 𝔵.u (i + 1) 0 (B w)`. Rewrite using `[hB, hB, hF.2 _ _ _ (𝔵.v_act i) (𝔵.u_act i), perm]`. Conclude with `DFunLike.congr_fun (cP (i + 1)).eq _)`.
-
-Use `⟨s, c, hs, (eventually_ge_atTop (Module.finrank ℂ (Eu 𝔵.d'))).mono fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[← h j hj, Fam.tr, LinearMap.trace_comp_comm']`. Use `congr 1`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `e : ((𝔵.u 0 0 ^ j : Eu 𝔵.d' →L[ℂ] Eu 𝔵.d') : Eu 𝔵.d' →ₗ[ℂ] Eu 𝔵.d') = (𝔵.u 0 0 : Eu 𝔵.d' →ₗ[ℂ] Eu 𝔵.d') ^ j` using `map_pow (ContinuousLinearMap.toLinearMapRingHom (R₁ := ℂ) (M₁ := Eu 𝔵.d')) _ j`.
-
-Rewrite using `[Module.End.mul_apply, hB, ← e]`. Conclude with `DFunLike.congr_fun ((cP 0).pow_right j).eq _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.famExp :
     ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {μ : Measure (normOneGL E (2 + 2))} [μ.IsHaarMeasure] {θ : Twist μ} {𝔢 : Side θ 2} (𝔵 : Fam 𝔢) (N : Eu 𝔵.d' ≃ₗᵢ[ℂ] Eu 𝔵.d) (C₀ : ℝ), Family2 μ 𝔵.A 𝔵.A' 𝔵.P N C₀ → 0 ≤ 𝔢.toAmp.A → ‖𝔢.toAmp.A‖ ≤ 1 →

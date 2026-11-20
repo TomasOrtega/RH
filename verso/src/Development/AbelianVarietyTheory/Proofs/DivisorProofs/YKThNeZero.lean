@@ -15,11 +15,11 @@ open GlobalTheory.Poinc.Sep
 namespace GlobalTheory.GSep
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 x₀ hd h0`. Take `⟨c, -, h⟩` from `GlobalTheory.ZH.GoodOut.exists_th_notMem GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 X₁.ρ ⟨RingHom.ker 𝔪.yK, RingHom.ker_isPrime 𝔪.yK⟩ 0`. Use `h (RingHom.mem_ker.2 ?_)` and prove the remaining obligations. Establish `sp : ∀ w, X₁.M.Z.fromSpecStalk z₁ w ⤳ z₁` using `fun w => by`. Establish `: X₁.M.Z.fromSpecStalk z₁ w ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨w, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hd'` using `hd.of_specializes (ξ := (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint (FractionRing V))) (sp _)`. Establish `hs : ∀ w, (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) w ⤳ (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint (FractionRing V))` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ _)`. Establish `e` using `RatModel.val_mul hs (hd'.2 (0 + c)) (𝔪.reg _ (X₁.S.th_mem x₀))`. Rewrite `e` using `[div_mul_cancel₀ _ hd.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0`, the goal using `[𝔪.yK_eq]`. Conclude with `e.trans ((congrArg (_ * ·) h0).trans (mul_zero _))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GMem.yK_th_ne_zero : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩ ≠ 0 := by
   intro I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 x₀ hd h0

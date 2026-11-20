@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechKS.LiftDiff
 
 /- English proof (translation)
-Introduce `q`. Use `⟨spMap (algebraMap B (DualNumber B)) q, ?_⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (Ideal.ext fun c ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap B (DualNumber B) (f c) ∈ q.asIdeal ↔ c ∈ q.asIdeal`. Rewrite using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : c - algebraMap B (DualNumber B) c.fst ∈ q.asIdeal`. Use `q.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: (c - algebraMap B (DualNumber B) c.fst) ^ 2 = 0`. Apply the tactic sequence `ext <;> simp [pow_two, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Conclude with `⟨fun hc ↦ by simpa using add_mem hn hc, fun hc ↦ by simpa using sub_mem hc hn⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spMap_fst_surjective {B : Type} [CommRing B] (f : DualNumber B →+* B) (hf : ∀ c, f c = c.fst) :
     Function.Surjective (spMap f) := by
@@ -34,7 +34,7 @@ theorem spMap_fst_surjective {B : Type} [CommRing B] (f : DualNumber B →+* B) 
   exact ⟨fun hc ↦ by simpa using add_mem hn hc, fun hc ↦ by simpa using sub_mem hc hn⟩
 
 /- English proof (translation)
-Introduce `p _`. Take `⟨q, rfl⟩` from `spMap_fst_surjective f hf p`. Use `h (Set.mem_univ q)` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_preimage_of_red {B : Type} [CommRing B] {X : Scheme.{0}} (f : DualNumber B →+* B)
     (hf : ∀ c, f c = c.fst) {y : Sp (DualNumber B) ⟶ X} {x : Sp B ⟶ X} (e : spMap f ≫ y = x) {U : X.Opens}
@@ -46,7 +46,7 @@ theorem le_preimage_of_red {B : Type} [CommRing B] {X : Scheme.{0}} (f : DualNum
   exact this
 
 /- English proof (translation)
-Rewrite using `[← e, ev_comp, show ev ω.1 a = 0 from ω.2 a h₁ h₂, map_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_eq_of_triv {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R} (ω : Form s)
     {T₁ T₂ T : Thick (dp0 R) s} (a : T₁ ⟶ T₂) (ψ : T₂ ⟶ T) (φ : T₁ ⟶ T) (h₁ : T₁.J = ⊥) (h₂ : T₂.J = ⊥)
@@ -57,15 +57,13 @@ variable {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {A' : Over (Sp (DualN
   {i : A.left ⟶ A'.left}
 
 /- English proof (translation)
-Set `g : DualNumber K →+* P.B` to `(algebraMap K P.B).comp (TrivSqZeroExt.fstHom K K K).toRingHom`. Establish `w : (P.x ≫ i) ≫ A'.hom ≫ 𝟙 _ = spMap g` using `((fibMor h).isMor.obj P.triv).w`. Establish `hc : (spMap (algebraMap P.B (DualNumber P.B)) ≫ P.x ≫ i) ≫ A'.hom ≫ 𝟙 _ = spMap (algebraMap (DualNumber K) ((fibMor h).isMor.obj P.ext).B)`. Rewrite using `[Category.assoc, w]`. Conclude with `(Cris.spMap_comp g (algebraMap P.B (DualNumber P.B))).symm.trans (congrArg spMap (RingHom.ext fun _ ↦ rfl))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ec : spMap ((fibMor h).isMor.obj P.ext).π ≫ spMap (algebraMap P.B (DualNumber P.B)) ≫ P.x ≫ i = ((fibMor h).isMor.obj P.ext).x`. Set `π' : DualNumber P.B →+* P.B` to `TrivSqZeroExt.fstHom K P.B P.B`. Establish `e : π'.comp (algebraMap P.B (DualNumber P.B)) = RingHom.id _` using `RingHom.ext fun _ ↦ rfl`. Use `show spMap π' ≫ spMap (algebraMap P.B (DualNumber P.B)) ≫ P.x ≫ i = P.x ≫ i`. Rewrite using `[← Category.assoc, ← Cris.spMap_comp, e, Cris.spMap_id, Category.id_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : (P.trx v ≫ i) ≫ A'.hom ≫ 𝟙 _ = spMap (algebraMap (DualNumber K) ((fibMor h).isMor.obj P.ext).B)` using `((fibMor h).isMor.obj (P.tr v).triv).w`. Establish `et : spMap ((fibMor h).isMor.obj P.ext).π ≫ P.trx v ≫ i = ((fibMor h).isMor.obj P.ext).x` using `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ i) ((P.isTransl_trx v).red hv))`. Use `⟨hc, ec, ht, et, ?_⟩` and prove the remaining obligations. Use `congrArg₂ (· - ·) (ev_eq_of_triv ω ?a (idLift _ _ hc ec) ((fibMor h).isMor.functor.map P.sec) rfl rfl ?ea) (ev_eq_of_triv ω ?b (idLift _ _ ht et) ((fibMor h).isMor.functor.map (P.tan hv)) rfl rfl ?eb)` and prove the remaining obligations. Use `case a =>`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `{ φ := { algebraMap P.B (DualNumber P.B) with commutes' := fun _ ↦ rfl } φ₀ := algebraMap P.B (DualNumber P.B) comm := fun _ ↦ rfl dp := isDPMorphism_of_eq_bot _ rfl _ _ pt := rfl }`. Use `case b =>`. Conclude with `{ φ := { RingHom.id (DualNumber P.B) with commutes' := fun _ ↦ rfl } φ₀ := RingHom.id _ comm := fun _ ↦ rfl dp := isDPMorphism_of_eq_bot _ rfl _ _ pt := by show spMap (RingHom.id (DualNumber P.B)) ≫ P.trx v ≫ i = P.trx v ≫ i`. Rewrite using `[Cris.spMap_id, Category.id_comp] }`. Use `case ea => exact Thick.hom_ext fun _ ↦ rfl`.
-
-Use `case eb => exact Thick.hom_ext fun _ ↦ rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ev_sec_sub_ev_tan (h : IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K) i)
     (ω : Form (A'.hom ≫ 𝟙 (Sp (DualNumber K)))) (P : GPt A) {v : epsR K ⟶ A} (hv : IsTangent v) :
@@ -115,21 +113,19 @@ theorem ev_sec_sub_ev_tan (h : IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K)
   case eb => exact Thick.hom_ext fun _ ↦ rfl
 
 /- English proof (translation)
-Introduce `K _ A _ A' _ i h hA ω U hU P hP y₁ y₂ h₁ h₂ n u c hu hdiff`. Take `⟨m, r, t, H⟩` from `GlobalTheory.T.exists_crystallineForm_lift_difference_eq_sum (DualNumber K) A'.left (A'.hom ≫ 𝟙 _) ω U hU`. Establish `hPU : ⊤ ≤ (P.x ≫ i) ⁻¹ᵁ U` using `hP`. Establish `red : ∀ c : DualNumber P.B, (TrivSqZeroExt.fstHom K P.B P.B : DualNumber P.B →+* P.B) c = c.fst` using `fun _ ↦ rfl`. Establish `hU₁ : ⊤ ≤ y₁ ⁻¹ᵁ U` using `le_preimage_of_red _ red h₁.2 hPU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU₂ : ⊤ ≤ y₂ ⁻¹ᵁ U` using `le_preimage_of_red _ red h₂.2 hPU`. Establish `k1` using `H ((liftMor (epsDP K) h).isMor.obj P.eps) (SqExt.ofModule K P.B P.B).sq rfl y₁ y₂ h₁.1 h₂.1 h₁.2 h₂.2 hU₁ hU₂`. Establish `e1 : liftVal h ω.1 h₁ - liftVal h ω.1 h₂ = -∑ k, valR y₂ U (r k) * (valR y₁ U (t k) - valR y₂ U (t k))`. Rewrite using `[← neg_sub]`. Conclude with `congrArg Neg.neg k1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `f2 : ∀ f, (valR y₂ U f).fst = valR P.x (i ⁻¹ᵁ U) ((i.app U).hom f)` using `fun f ↦ by`. Rewrite using `[← GlobalTheory.Points.valR_comp, ← h₂.2, GlobalTheory.Points.valR_spMap_comp _ _ _ hU₂]`. Conclude with `(red _).symm`. Establish `step2 : ∀ a, ∑ k, valR P.x (i ⁻¹ᵁ U) ((i.app U).hom (r k)) * (valR (P.trx (u a)) (i ⁻¹ᵁ U) ((i.app U).hom (t k))).snd = algebraMap K P.B (tanVal (u a) ((fibMor h).isMor.pullForm ω))`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `X` using `ev_sec_sub_ev_tan (K := K) (A := A) (A' := A') (i := i) h ω P (hu a)`. Take `⟨hc, ec, ht, et, E⟩` from `X`. Establish `F` using `GlobalTheory.T.invariantForm_abelianVariety_translate_value K A hA (u a) (hu a) ((fibMor h).isMor.pullForm ω) P`. Establish `hUt : ⊤ ≤ (P.trx (u a) ≫ i) ⁻¹ᵁ U` using `fun p hp ↦ hP.tr (hu a) hp`. Establish `hUc : ⊤ ≤ (spMap (algebraMap P.B (DualNumber P.B)) ≫ P.x ≫ i) ⁻¹ᵁ U` using `fun _ _ ↦ hPU (Set.mem_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `H ((fibMor h).isMor.obj P.ext) (SqExt.ofModule K P.B P.B).sq rfl _ _ ht hc et ec hUt hUc`. Establish `F3 : (∑ k, valR (spMap (algebraMap P.B (DualNumber P.B)) ≫ P.x ≫ i) U (r k) * (valR (P.trx (u a) ≫ i) U (t k) - valR (spMap (algebraMap P.B (DualNumber P.B)) ≫ P.x ≫ i) U (t k))) = TrivSqZeroExt.inr (algebraMap K P.B (tanVal (u a) ((fibMor h).isMor.pullForm ω)))` using `k2.symm.trans (E.symm.trans F)`. Establish `F'` using `congrArg (fun z : DualNumber P.B ↦ z.snd) F3`. Simplify using `only [TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_sum] at F'`. Rewrite using `[← F']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Points.valR_spMap_comp _ _ _ hPU, GlobalTheory.Points.valR_spMap_comp _ _ _ hPU, GlobalTheory.Points.valR_comp, GlobalTheory.Points.valR_comp, GlobalTheory.Points.valR_comp]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Establish `D : ∀ k, valR y₁ U (t k) - valR y₂ U (t k) = TrivSqZeroExt.inr (∑ a, c a * (valR (P.trx (u a)) (i ⁻¹ᵁ U) ((i.app U).hom (t k))).snd)` using `fun k ↦ hdiff (t k)`. Use `(congrArg (fun z : DualNumber P.B ↦ z.snd) e1).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `G` using `Finset.sum_congr rfl fun k (_ : k ∈ Finset.univ) ↦ congrArg (valR y₂ U (r k) * ·) (D k)`. Use `(congrArg (fun z : DualNumber P.B ↦ (-z).snd) G).trans ?_` and prove the remaining obligations. Simplify using `only [TrivSqZeroExt.snd_neg, TrivSqZeroExt.snd_sum, TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, f2, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.op_zero, MulOpposite.unop_zero, mul_zero, zero_smul, add_zero, neg_inj]`. Simplify using `only [← step2, Finset.mul_sum]`. Use `clear H k1 e1 hdiff D G step2 f2 red`.
-
-Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ ↦ Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem liftVal_sub_snd : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp (DualNumber K))) [GrpObj A'] (i : A.left ⟶ A'.left) (h : IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K) i), IsAbelianScheme A → ∀ (ω : Form (A'.hom ≫ 𝟙 (Sp (DualNumber K)))) (U : A'.left.Opens), IsAffineOpen U → ∀ (P : GPt A), P.In (i ⁻¹ᵁ U) → ∀ (y₁ y₂ : Sp (DualNumber P.B) ⟶ A'.left) (h₁ : IsLift i P y₁) (h₂ : IsLift i P y₂) (n : ℕ) (u : Fin n → (epsR K ⟶ A)) (c : Fin n → P.B), (∀ a, IsTangent (u a)) → (∀ f : Γ(A'.left, U), valR y₁ U f - valR y₂ U f = (TrivSqZeroExt.inr (∑ a, c a * (valR (P.trx (u a)) (i ⁻¹ᵁ U) ((i.app U).hom f)).snd) : DualNumber P.B)) → (liftVal h ω.1 h₁ - liftVal h ω.1 h₂).snd = -∑ a, c a * algebraMap K P.B (tanVal (u a) ((fibMor h).isMor.pullForm ω)) := by
   intro K _ A _ A' _ i h hA ω U hU P hP y₁ y₂ h₁ h₂ n u c hu hdiff

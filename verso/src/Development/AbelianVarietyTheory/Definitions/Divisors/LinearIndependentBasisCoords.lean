@@ -18,7 +18,7 @@ def biadd (h : HermFam K V) (σ : K →+* ℂ) : V →+ V →+ ℂ :=
     fun x x' => AddMonoidHom.ext fun y => h.form_add_left σ x x' y
 
 /- English proof (translation)
-Take `⟨f, _⟩` from `h`. Take `⟨f', _⟩` from `h'`. Take `rfl : f = f'` from `funext fun σ => funext₂ (e σ)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem ext_form {h h' : HermFam K V} (e : ∀ σ x y, h.form σ x y = h'.form σ x y) : h = h' := by
   obtain ⟨f, _⟩ := h
@@ -35,7 +35,7 @@ def csq (c : ι → ℂ) (v : ι → V) : ℝ := (∑ i, ∑ k, conj (c i) * c k
 def cnrm (c : ι → ℂ) (v : ι → V) : ℝ := Real.sqrt (csq h σ c v)
 
 /- English proof (translation)
-Rewrite using `[csq, h.form_sum_left]`. Use `congrArg _ (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[h.form_sum_right]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [h.form_smul_left, h.smul_right, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csq_map (a : ι → K) (v : ι → V) :
     csq h σ (fun i => σ (a i)) v = (h.form σ (∑ i, a i • v i) (∑ i, a i • v i)).re := by
@@ -45,19 +45,19 @@ theorem csq_map (a : ι → K) (v : ι → V) :
   exact Finset.sum_congr rfl fun k _ => by rw [h.form_smul_left, h.smul_right, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `congrArg Real.sqrt (csq_map h σ a v)`.
+A detailed English derivation is pending.
 -/
 theorem cnrm_map (a : ι → K) (v : ι → V) : cnrm h σ (fun i => σ (a i)) v = h.nrm σ (∑ i, a i • v i) :=
   congrArg Real.sqrt (csq_map h σ a v)
 
 /- English proof (translation)
-Simplify using `[cnrm, csq, HermFam.nrm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cnrm_one (x : V) : cnrm h σ (fun _ : Unit => 1) (fun _ => x) = h.nrm σ x := by
   simp [cnrm, csq, HermFam.nrm]
 
 /- English proof (translation)
-Simplify using `only [csq, h.form_sum_left, h.form_sum_right, h.form_smul_left, h.smul_right, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `congrArg _ ?_` and prove the remaining obligations. Simplify using `only [← Fintype.sum_prod_type']`. Conclude with `Fintype.sum_equiv ⟨fun t => (t.2.2.1, t.2.2.2, t.2.1, t.1), fun t => (t.2.2.2, t.2.2.1, t.1, t.2.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun t => by simp only [Equiv.coe_fn_mk]; ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem csq_comb {κ : Type*} [Fintype κ] (c : ι → ℂ) (a : ι → κ → K) (b : κ → V) :
     csq h σ c (fun i => ∑ k, a i k • b k) = csq h σ (fun k => ∑ i, c i * σ (a i k)) b := by
@@ -69,9 +69,9 @@ theorem csq_comb {κ : Type*} [Fintype κ] (c : ι → ℂ) (a : ι → κ → K
     fun _ => rfl, fun _ => rfl⟩ _ _ fun t => by simp only [Equiv.coe_fn_mk]; ring
 
 /- English proof (translation)
-Set `S` to `Submodule.span K (Set.range v)`. Establish `: FiniteDimensional K S` using `FiniteDimensional.span_of_finite K (Set.finite_range v)`. Set `b` to `Module.finBasis K S`. Establish `e : v = fun i => ∑ k, b.repr ⟨v i, Submodule.subset_span ⟨i, rfl⟩⟩ k • (b k : V)` using `funext fun i => by`. Conclude with `(congrArg S.subtype (b.sum_repr ⟨v i, Submodule.subset_span ⟨i, rfl⟩⟩).symm).trans (map_sum _ _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, csq_comb]`. Generalize the expression as in `(fun k => ∑ i, c i * σ _) = x`. Use `(h.posDef σ _ _ (b.linearIndependent.map' S.subtype S.ker_subtype)).posSemidef.dotProduct_mulVec_nonneg x` as an intermediate fact. Use `(Complex.nonneg_iff.1 this).1.trans_eq (congrArg _ ?_)` and prove the remaining obligations. Simplify using `[dotProduct, mulVec, Finset.mul_sum, mul_assoc, mul_comm, mul_left_comm]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem csq_nonneg (c : ι → ℂ) (v : ι → V) : 0 ≤ csq h σ c v := by
   let S := Submodule.span K (Set.range v)
@@ -86,12 +86,12 @@ theorem csq_nonneg (c : ι → ℂ) (v : ι → V) : 0 ≤ csq h σ c v := by
   simp [dotProduct, mulVec, Finset.mul_sum, mul_assoc, mul_comm, mul_left_comm]
 
 /- English proof (translation)
-The claim follows from `Real.sq_sqrt (csq_nonneg h σ c v)`.
+A detailed English derivation is pending.
 -/
 theorem cnrm_sq (c : ι → ℂ) (v : ι → V) : cnrm h σ c v ^ 2 = csq h σ c v := Real.sq_sqrt (csq_nonneg h σ c v)
 
 /- English proof (translation)
-Use `(h.posDef σ 1 ![x] (by simpa using hx)).diag_pos (i := 0)` as an intermediate fact. Conclude with `Real.sqrt_pos.2 (Complex.pos_iff.1 this).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nrm_pos {x : V} (hx : x ≠ 0) : 0 < h.nrm σ x := by
   have := (h.posDef σ 1 ![x] (by simpa using hx)).diag_pos (i := 0)
@@ -132,7 +132,7 @@ Both sides reduce to the same expression.
     (hf : Function.Injective f) (σ : K →+* ℂ) (x : V') : (comap h f hf).nrm σ x = h.nrm σ (f x) := rfl
 
 /- English proof (translation)
-Introduce `σ _ _` and use `hh σ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isConjInv_comap [AddCommGroup V'] [Module K V'] {h : HermFam K V} (hh : h.IsConjInv) (f : V' →ₗ[K] V)
     (hf : Function.Injective f) : (comap h f hf).IsConjInv := fun σ _ _ => hh σ _ _
@@ -146,7 +146,7 @@ def scale (h : HermFam K V) (c : (K →+* ℂ) → ℝ) (hc : ∀ σ, 0 < c σ) 
     (Complex.zero_lt_real.2 (pow_pos (hc σ) 2))
 
 /- English proof (translation)
-Rewrite using `[HermFam.nrm, scale, Complex.re_ofReal_mul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (hc σ).le, HermFam.nrm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem nrm_scale (h : HermFam K V) (c : (K →+* ℂ) → ℝ) (hc : ∀ σ, 0 < c σ) (σ : K →+* ℂ) (x : V) :
     (scale h c hc).nrm σ x = c σ * h.nrm σ x := by
@@ -158,7 +158,7 @@ def basisCoords {n : Type*} [Finite n] (b : Module.Basis n K V) (σ : K →+* �
   map_smul' a x := funext fun i => by simp
 
 /- English proof (translation)
-The claim follows from `letI := σ.toAlgebra linearIndependent_algebraMap_comp_iff.2 (hv.map' b.equivFun.toLinearMap b.equivFun.ker)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_basisCoords {n ι : Type*} [Finite n] (b : Module.Basis n K V) (σ : K →+* ℂ) {v : ι → V}
     (hv : LinearIndependent K v) : LinearIndependent ℂ fun i => basisCoords b σ (v i) :=
@@ -170,7 +170,7 @@ def ofGram {n : Type*} [Fintype n] (b : Module.Basis n K V) (G : (K →+* ℂ) �
   ofCoords (P := fun _ => n) (basisCoords b) G hG fun σ _ _ => linearIndependent_basisCoords b σ
 
 /- English proof (translation)
-Simplify using `[ofGram, ofCoords, basisCoords, dotProduct, mulVec, Finsupp.single_apply, apply_ite]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_ofGram {n : Type*} [Fintype n] (b : Module.Basis n K V) (G : (K →+* ℂ) → Matrix n n ℂ)
     (hG : ∀ σ, (G σ).PosDef) (σ : K →+* ℂ) (i j : n) : (ofGram b G hG).form σ (b i) (b j) = G σ i j := by
@@ -178,7 +178,7 @@ theorem form_ofGram {n : Type*} [Fintype n] (b : Module.Basis n K V) (G : (K →
   simp [ofGram, ofCoords, basisCoords, dotProduct, mulVec, Finsupp.single_apply, apply_ite]
 
 /- English proof (translation)
-Introduce `σ x y` and use `by simp [ofGram, ofCoords, basisCoords, dotProduct, mulVec, hc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isConjInv_ofGram {n : Type*} [Fintype n] (b : Module.Basis n K V) {G : (K →+* ℂ) → Matrix n n ℂ}
     (hG : ∀ σ, (G σ).PosDef) (hc : ∀ σ i j, G (ComplexEmbedding.conjugate σ) i j = conj (G σ i j)) :
@@ -189,14 +189,14 @@ def ofBasis {n : Type*} [Fintype n] [DecidableEq n] (b : Module.Basis n K V) : H
   ofGram b (fun _ => 1) fun _ => PosDef.one
 
 /- English proof (translation)
-Simplify using `[HermFam.nrm, ofBasis, form_ofGram]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_ofBasis {n : Type*} [Fintype n] [DecidableEq n] (b : Module.Basis n K V) (σ : K →+* ℂ) (i : n) :
     (ofBasis b).nrm σ (b i) = 1 := by
   simp [HermFam.nrm, ofBasis, form_ofGram]
 
 /- English proof (translation)
-The claim follows from `isConjInv_ofGram b _ fun _ i j => by simp [Matrix.one_apply, apply_ite]`.
+A detailed English derivation is pending.
 -/
 theorem isConjInv_ofBasis {n : Type*} [Fintype n] [DecidableEq n] (b : Module.Basis n K V) :
     (ofBasis b).IsConjInv := isConjInv_ofGram b _ fun _ i j => by simp [Matrix.one_apply, apply_ite]
@@ -221,7 +221,7 @@ def IsExtension.basis {n : ℕ} (b : Module.Basis (Fin n) K V) : Module.Basis (F
       rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))))
 
 /- English proof (translation)
-The claim follows from `Module.Basis.mk_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem IsExtension.basis_apply {n : ℕ} (b : Module.Basis (Fin n) K V) (i : Fin n) :
     hι.basis b i = ι (b i) := Module.Basis.mk_apply _ _ _
@@ -231,7 +231,7 @@ variable [FiniteDimensional K V]
 include hι in
 
 /- English proof (translation)
-The claim follows from `(Module.finrank_eq_card_basis (hι.basis (Module.finBasis K V))).trans (Fintype.card_fin _)`.
+A detailed English derivation is pending.
 -/
 theorem IsExtension.finrank_eq : Module.finrank E V' = Module.finrank K V :=
   (Module.finrank_eq_card_basis (hι.basis (Module.finBasis K V))).trans (Fintype.card_fin _)
@@ -241,9 +241,9 @@ def extend (h : HermFam K V) : HermFam E V' :=
     fun _ => h.posDef _ _ _ (Module.finBasis K V).linearIndependent
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K V`. Establish `e (i k) : (extend hι h).form τ (ι (b i)) (ι (b k)) = h.form (τ.comp j) (b i) (b k)`. Rewrite using `[← hι.basis_apply, ← hι.basis_apply]`. Conclude with `form_ofGram _ _ _ τ i k`. Rewrite using `[← b.sum_repr x, ← b.sum_repr y]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smulₛₗ, HermFam.form_sum_left, HermFam.form_sum_right, HermFam.form_smul_left, HermFam.smul_right, e, RingHom.comp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem form_extend (h : HermFam K V) (τ : E →+* ℂ) (x y : V) :
     (extend hι h).form τ (ι x) (ι y) = h.form (τ.comp j) x y := by
@@ -256,13 +256,13 @@ theorem form_extend (h : HermFam K V) (τ : E →+* ℂ) (x y : V) :
     HermFam.smul_right, e, RingHom.comp_apply]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z : ℂ => Real.sqrt z.re) (form_extend hι h τ x x)`.
+A detailed English derivation is pending.
 -/
 theorem nrm_extend (h : HermFam K V) (τ : E →+* ℂ) (x : V) : (extend hι h).nrm τ (ι x) = h.nrm (τ.comp j) x :=
   congrArg (fun z : ℂ => Real.sqrt z.re) (form_extend hι h τ x x)
 
 /- English proof (translation)
-The claim follows from `isConjInv_ofGram _ _ fun τ _ _ => hh (τ.comp j) _ _`.
+A detailed English derivation is pending.
 -/
 theorem isConjInv_extend {h : HermFam K V} (hh : h.IsConjInv) : (extend hι h).IsConjInv :=
   isConjInv_ofGram _ _ fun τ _ _ => hh (τ.comp j) _ _
@@ -270,7 +270,7 @@ theorem isConjInv_extend {h : HermFam K V} (hh : h.IsConjInv) : (extend hι h).I
 end Extend
 
 /- English proof (translation)
-Simplify using `only [csq, ofBasis, form_ofGram, Fin.sum_univ_two]`. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example (σ : ℚ →+* ℂ) : csq (ofBasis (Pi.basisFun ℚ (Fin 2))) σ ![Complex.I, 2] (Pi.basisFun ℚ (Fin 2)) = 5 := by
   simp only [csq, ofBasis, form_ofGram, Fin.sum_univ_two]

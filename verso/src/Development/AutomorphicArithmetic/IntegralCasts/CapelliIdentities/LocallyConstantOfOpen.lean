@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Γ A _ _ _ _ ψ h`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' (ψ.ker : Set Γ), h.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x⁻¹ * x ∈ ψ.ker`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[MonoidHom.mem_ker]`. Introduce `y hy`. Establish `hy' : ψ (x⁻¹ * y) = 1` using `hy`. Rewrite `hy'` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `hy'.symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LocallyConstantOfOpen.ho_locConst :
     ∀ {Γ A : Type} [inst : Group Γ] [inst_1 : TopologicalSpace Γ]

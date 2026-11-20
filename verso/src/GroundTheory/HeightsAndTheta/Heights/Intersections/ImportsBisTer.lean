@@ -11,13 +11,11 @@ noncomputable section
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `K _ ι _ P W hP hW hPW`. Use `hP.1` as an intermediate fact. Use `hW.1` as an intermediate fact. Use `choose v hv using hW.2.2`. Establish `hA` using `regularityLocalFlat_holds.isLocalRing hPW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc` using `regularityLocalFlat_holds.isLocalization_coneVarMap hPW hP.2.1 hW.2.1 v hv`. Set `_` to `(regularityLocalFlat_holds.coneVarMap P W hPW v).toRingHom.toAlgebra`. Use `regularityLocalFlat_holds.isPrime_map_C K (maximalIdeal (locRing P W))` as an intermediate fact. Establish `: IsScalarTower (locRing P W) (MvPolynomial K (locRing P W)) (coneLocRing P W hPW)` using `IsScalarTower.of_algebraMap_eq fun x => ((regularityLocalFlat_holds.coneVarMap P W hPW v).commutes x).symm`. Establish `hR : IsLocalRing (coneLocRing P W hPW)` using `IsLocalization.AtPrime.isLocalRing (coneLocRing P W hPW) ((maximalIdeal (locRing P W)).map (C : locRing P W →+* MvPolynomial K _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hA, hR, ?_, ?_⟩` and prove the remaining obligations. Use `IsLocalization.flat (coneLocRing P W hPW) ((maximalIdeal (locRing P W)).map (C : locRing P W →+* MvPolynomial K _)).primeCompl` as an intermediate fact. Establish `: Module.Free (locRing P W) (MvPolynomial K (locRing P W))` using `Module.Free.of_basis (MvPolynomial.basisMonomials K (locRing P W))`. Establish `: Module.Flat (locRing P W) (MvPolynomial K (locRing P W))` using `Module.Flat.of_free`. Conclude with `Module.Flat.trans _ (MvPolynomial K (locRing P W)) _`.
-
-Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal ((maximalIdeal (locRing P W)).map (C : locRing P W →+* MvPolynomial K _)) (coneLocRing P W hPW), Ideal.map_map, ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularityLocalFlat_holds.proof : regularityLocalFlat_holds.Statement := by
   intro K _ ι _ P W hP hW hPW

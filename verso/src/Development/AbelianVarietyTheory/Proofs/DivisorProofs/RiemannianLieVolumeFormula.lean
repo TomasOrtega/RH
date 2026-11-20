@@ -11,11 +11,11 @@ open scoped ENNReal
 namespace GlobalTheory.LieCovol
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Λ x e hr hU hΛ hx he hli`. Rewrite using `[GlobalTheory.T.riemannian_volume_lie_basis E r X x e hr hx (fun i => ⟨(he i).1, (he i).2.1⟩) hli]`. Use `congr 1`. Use `congr 1`. Establish `h1` using `GlobalTheory.T.norm_cm_type_product_sq E X.Ψ X.cmType (Matrix.of fun i j => Matrix.trace (e i * e j)).det`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.norm_trace_form_det_index E r X.Gm Λ e hr hΛ he hli`. Establish `h3` using `GlobalTheory.T.lie_lattice_dual_index E r X.Gm Λ hr hU hΛ`. Rewrite `h2` using `[h3]`. Rewrite `h1` using `[h2]`. Move the coercions through the operations in `at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hn : ‖∏ τ : X.Ψ, τ.1 (Matrix.of fun i j => Matrix.trace (e i * e j)).det‖ = (r : ℝ) ^ fdeg E * ((Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range e)).toAddSubgroup.relIndex (lieLat X.Gm Λ) : ℝ) ^ 2` using `(sq_eq_sq₀ (norm_nonneg _) (by positivity)).1 h1`. Establish `hs : Real.sqrt ((r : ℝ) ^ fdeg E) = Real.sqrt r ^ fdeg E`. Rewrite using `[Real.sqrt_eq_iff_mul_self_eq (by positivity) (by positivity), ← mul_pow, Real.mul_self_sqrt (by positivity)]`. Rewrite using `[hn, Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity), hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem riemLie_eq_sqrt_index_smul_formLie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Λ : Submodule (𝓞 E) (Fin r → E)) (x : Frame X.Ψ r) (e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E), 2 ≤ r → Unr E → SelfDualLat X.Gm Λ → IsOrth X x → (∀ i, e i ∈ lieLat X.Gm Λ) → LinearIndependent (maximalRealSubfield E) e → riemLie X.Ψ X.Gm x = ENNReal.ofReal (Real.sqrt r ^ fdeg E * ((Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range e)).toAddSubgroup.relIndex (lieLat X.Gm Λ) : ℝ)) • formLie X.Ψ e := by
   intro E _ _ _ r X Λ x e hr hU hΛ hx he hli

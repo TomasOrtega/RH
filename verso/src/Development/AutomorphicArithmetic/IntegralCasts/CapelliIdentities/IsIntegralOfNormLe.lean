@@ -3,11 +3,11 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.S4
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] z` using `Algebra.IsIntegral.isIntegral z`. Establish `hm : (minpoly ℚ_[l] z).Monic` using `minpoly.monic hi`. Establish `hv : spectralValue (minpoly ℚ_[l] z) ≤ 1` using `hz`. Establish `hc : ∀ n, ‖(minpoly ℚ_[l] z).coeff n‖ ≤ 1` using `(spectralValue_le_one_iff hm).1 hv`. Establish `hl : minpoly ℚ_[l] z ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Conclude with `⟨⟨_, hc n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hm`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : Polynomial.aeval z (q.map (algebraMap ℤ_[l] ℚ_[l])) = 0`. Rewrite using `[hq]`. Conclude with `minpoly.aeval _ _`. Rewrite `h0` using `[Polynomial.aeval_map_algebraMap]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_norm_le {l : ℕ} [Fact l.Prime] {z : PadicAlgCl l} (hz : ‖z‖ ≤ 1) : IsIntegral ℤ_[l] z := by
   have hi : IsIntegral ℚ_[l] z := Algebra.IsIntegral.isIntegral z

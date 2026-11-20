@@ -10,7 +10,7 @@ section calculus
 variable {M Q : Type} [AddCommGroup M] [AddCommGroup Q] {φ : M → Q}
 
 /- English proof (translation)
-Simplify using `only [cob]`. Rewrite using `[add_comm a b]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cob_symm' (a b : M) : cob φ a b = cob φ b a := by
   simp only [cob]
@@ -18,21 +18,21 @@ theorem cob_symm' (a b : M) : cob φ a b = cob φ b a := by
   abel
 
 /- English proof (translation)
-Simplify using `only [cob]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem phi_add' (a b : M) : φ (a + b) = φ a + φ b + cob φ a b := by
   simp only [cob]
   abel
 
 /- English proof (translation)
-Rewrite using `[cob_symm', h1, cob_symm' b, cob_symm' b']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cob_add_right' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b) (a b b' : M) :
     cob φ a (b + b') = cob φ a b + cob φ a b' := by
   rw [cob_symm', h1, cob_symm' b, cob_symm' b']
 
 /- English proof (translation)
-Establish `h` using `h1 0 0 b`. Rewrite `h` using `[add_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cob_zero_left' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b) (b : M) :
     cob φ 0 b = 0 := by
@@ -43,14 +43,14 @@ theorem cob_zero_left' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ
     _ = 0 := sub_self _
 
 /- English proof (translation)
-Rewrite using `[cob_symm', cob_zero_left' h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cob_zero_right' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b) (a : M) :
     cob φ a 0 = 0 := by
   rw [cob_symm', cob_zero_left' h1]
 
 /- English proof (translation)
-Establish `h` using `cob_zero_left' h1 (0 : M)`. Simplify using `only [cob, add_zero, sub_self, zero_sub, neg_eq_zero] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_zero' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b) : φ 0 = 0 := by
   have h := cob_zero_left' h1 (0 : M)
@@ -58,7 +58,7 @@ theorem phi_zero' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b
   exact h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, cob_zero_right' h1]`. Consider the case `cons j s hj ih => rw [Finset.sum_cons, Finset.sum_cons, cob_add_right' h1, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cob_sum_right' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b)
     {J : Type} (a : M) (s : Finset J) (x : J → M) :
@@ -68,7 +68,7 @@ theorem cob_sum_right' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ
   | cons j s hj ih => rw [Finset.sum_cons, Finset.sum_cons, cob_add_right' h1, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, cob_zero_left' h1]`. Consider the case `cons j s hj ih => rw [Finset.sum_cons, Finset.sum_cons, h1, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cob_sum_left' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b)
     {J : Type} (b : M) (s : Finset J) (x : J → M) :
@@ -80,7 +80,7 @@ theorem cob_sum_left' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ 
 variable {O : Type} [CommRing O] [StarRing O] [Module O M]
 
 /- English proof (translation)
-Repeatedly rewrite using `[h2, Finset.smul_sum, smul_smul, cob_sum_right' h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul, cob_sum_right' h1]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cross' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b)
     (h2 : ∀ (α : O) a b, cob φ (α • a) b = cob φ a (star α • b))
@@ -95,11 +95,11 @@ theorem cross' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b)
 variable {Z : Type} [CommRing Z] [Module Z Q] {nm : O → Z}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp [phi_zero' h1]`. Consider the case `cons k s hk ih`. Establish `hcross : ∑ i, cob φ (c i k • u k) (∑ j ∈ s, c i j • u j) = 0`. Rewrite using `[cross' h1 h2 (fun i => c i k) c (u k) s u]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Establish `hne : k ≠ j`. Introduce and unpack `rfl`. Conclude with `hk hj`. Rewrite using `[hG k j hne, zero_smul, cob_zero_right' h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_cons]`. Simplify using `only [phi_add', Finset.sum_add_distrib, h3]`. Rewrite using `[hcross, ih, ← Finset.sum_smul, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag' (h1 : ∀ a a' b, cob φ (a + a') b = cob φ a b + cob φ a' b)
     (h2 : ∀ (α : O) a b, cob φ (α • a) b = cob φ a (star α • b))
@@ -130,11 +130,11 @@ namespace Formalism.HermitianLattices.IntegralLatticeDensity
 open Finset PD
 
 /- English proof (translation)
-Introduce `Z O M Q _ _ _ _ _ _ _ _ φ nm hinj hnm h1 h2 h3 n _ _ δ hδ u`. Establish `hG : ∀ a j, a ≠ j → ∑ i, star (δ i a) * δ i j = 0`. Introduce `a j hne`. Use `congrFun (congrFun hδ a) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply_ne hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hN : ∀ j, ∑ i, nm (δ i j) = 1`. Introduce `j`. Apply `hinj` to reduce the goal to its premises. Use `congrFun (congrFun hδ j) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply_eq] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum, map_one]`. Simplify `this` using `[hnm]`. Rewrite using `[diag' h1 h2 h3 δ hG u Finset.univ]`. Simplify using `[hN]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitary_invariance : UnitaryInvariance := by
   intro Z O M Q _ _ _ _ _ _ _ _ φ nm hinj hnm h1 h2 h3 n _ _ δ hδ u
@@ -153,15 +153,15 @@ theorem unitary_invariance : UnitaryInvariance := by
   simp [hN]
 
 /- English proof (translation)
-Introduce `Z O M Q _ _ _ _ _ _ _ _ φ nm hinj hnm h1 h2 h3 n ι _ _ _ f f' hff hf'f' hff' t t'`. Establish `hiso : ∀ (g : ι → n → O) (w : ι → M), (∀ e e', ∑ i, star (g e i) * g e' i = 0) → ∑ i, φ (∑ e, g e i • w e) = 0`. Introduce `g w hg`. Establish `hz : ∀ e, ∑ i, nm (g e i) = 0`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sum, map_zero]`. Simplify `hg e e` using `[hnm]`. Rewrite using `[diag' h1 h2 h3 (fun i e => g e i) (fun a j _ => hg a j) w Finset.univ]`. Simplify using `[hz]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcross : ∑ i, cob φ (∑ e, f e i • t e) (∑ e, f' e i • t' e) = ∑ e, cob φ (t e) (t' e)`. Repeatedly rewrite using `[cob_sum_left' h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[cross' h1 h2 (fun i => f e i) (fun i e' => f' e' i) (t e) Finset.univ t', Finset.sum_eq_single e]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hff' e e, if_pos rfl, one_smul]`. Introduce `e' _ hne`. Rewrite using `[hff' e e', if_neg (fun h => hne h.symm), zero_smul, cob_zero_right' h1]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ e) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, phi_add' (φ := φ)]`. Use `_ = ∑ e, cob φ (t e) (t' e) := by`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, hiso f t hff, hiso f' t' hf'f', hcross, zero_add, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hyperbolic_plane_split : HyperbolicSplit := by
   intro Z O M Q _ _ _ _ _ _ _ _ φ nm hinj hnm h1 h2 h3 n ι _ _ _ f f' hff hf'f' hff' t t'

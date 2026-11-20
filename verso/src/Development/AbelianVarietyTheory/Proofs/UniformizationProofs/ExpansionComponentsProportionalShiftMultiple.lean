@@ -31,27 +31,25 @@ namespace GlobalTheory.UU.SchurComp
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hL hL2 V _ _ _ hV D A G _ _ U N hN α mu u hu hS`. Use `hV.1` as an intermediate fact. Use `hV.2.2` as an intermediate fact. Establish `hN0 : N ≠ 0` using `by omega`. Establish `hNF : (N : Kbar V) ≠ 0` using `Nat.cast_ne_zero.2 hN0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Φ, e, hfr, hθ, hmul, hcomm, hnd⟩` from `GlobalTheory.ThetaRep.exists_projective_rep hL hL2 _ A (Kbar V) (jFK (R := V) (Kbar V)) N hNF`. Take `⟨m, hm, hact, -⟩` from `GlobalTheory.UU.Eqv.main hL hL2 V hV D A G U N hN`. Take `⟨hw1, hw2, hw3⟩` from `GlobalTheory.T.lineBundleSections_torusTorsion_weightSpaces hL hL2 V hV D A G U N hN`. Establish `huniq` using `GlobalTheory.UU.ExpFUniq.main V hV D A G U (Kbar V) N`. Use `choose xp hxp using GlobalTheory.UU.ExpTotal.expF_total hL hL2 V hV D A G U (Kbar V) N hN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA` using `(hL.mulN _ A N hN).2.2.2.2 (Kbar V) (jFK (R := V) (Kbar V)) hNF`. Establish `hcH` using `(GlobalTheory.GtCount.card_gtTors hL hL2 V D (Kbar V) N hNF).1`. Establish `hg : A.g = D.P.g + D.rank` using `GlobalTheory.UU.PreU.dim_eq V hV D A G U`. Establish `hlinF` using `ExpLin.expF_linear V hV D A G U (Kbar V) N`. Establish `hbas` using `exists_basis_twist_field hL hL2 V D (Kbar V) N hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `clear * - hL hN0 hu hS Φ e hfr hθ hmul hcomm hnd m hm hact hw1 hw2 hw3 huniq xp hxp hcA hcH hg hlinF hbas`. Use `A.isAb.comm` as an intermediate fact. Set `iso` to `(Scheme.ΓSpecIso (CommRingCat.of (Kbar V))).commRingCatIsoToRingEquiv`. Set `S : Subgroup (TFK (R` to `V) (Kbar V) ⟶ A.A) := (powMonoidHom N).ker`. Establish `hcS : Nat.card S = N ^ (2 * A.g)` using `hcA`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Finite S` using `Nat.finite_of_card_ne_zero (hcS ▸ pow_ne_zero _ hN0)`. Take `⟨x, hx⟩ : ∃ x : SecM A.A A.L N (TFK (R` from `V) (Kbar V)) → Raw D (Kbar V) N, ∀ v, U.ExpF (Kbar V) N (SecM.toSec A.A v) (x v) := ⟨_, fun v => hxp _⟩`. Establish `hxe : ∀ t s, U.ExpF (Kbar V) N t s → x (SecM.ofSec A.A t) = s` using `fun t s h => (huniq _ _ _ _ (hx _) h).1 rfl`. Establish `hsupp : ∀ β, U.Supp (Kbar V) N β ↔ ∃ v j, (x v β).f j ≠ 0` using `fun β => ⟨fun ⟨t, s, h, hj⟩ => ⟨SecM.ofSec A.A t, by rwa [hxe t s h]⟩, fun ⟨v, hv⟩ => ⟨_, _, hx v, hv⟩⟩`. Use `(proportional_raw (D := D) (k := Γ((TFK (R := V) (Kbar V)).left, ⊤)) (A := S) (E := SecM A.A A.L N (TFK (R := V) (Kbar V))) hL.globalFns iso e Φ ?_ ?_ ?_ ?_ hN0 (fun g => ⟨m g, (hact g).1⟩) ?_ ?_ (n := N ^ D.P.g) ?_ x ?_ ?_ ?_ ?_ ?_ ?_ ?_ α mu u hu ((hsupp _).1 hS)).elim fun a ha …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hcS, mul_comm, pow_mul]`. Conclude with `congrArg (· ^ 2) hfr`. Conclude with `fun a b => hmul a b (a * b : S) rfl`. Conclude with `fun a b => (hcomm a b).2`. Conclude with `fun a h => Subtype.ext (hnd a h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun g g' h => hm (congrArg Subtype.val h)`. Rewrite using `[hcS, hcH, hg, ← pow_add]; exact le_of_eq (congrArg _ (by ring))`. Rewrite using `[← pow_add, add_comm, ← hg]`. Conclude with `hfr.ge`. Introduce `c v v' β`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take `⟨c, rfl⟩` from `iso.symm.surjective c`. Use `choose s hs using fun β => exists_comb ((fst (TF (R := V) (Kbar V)) D.P.A).left.appTop.hom (iso.symm c)) (x v β) (x v' β)`. Use `hlinF _ _ (SecM.toSec A.A (iso.symm c • v + v' :)) _ _ s c (hx v) (hx v') (fun _ => rfl) hs` as an intermediate fact. Rewrite using `[(huniq _ _ _ _ (hx _) this).1 rfl, iso.apply_symm_apply]`. Conclude with `hs β`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun v v' h => congrArg (SecM.ofSec A.A) ((huniq _ _ _ _ (hx v) (hx v')).2 h)`. Introduce `χ v`. Take `⟨t', s', h, H⟩` from `hw1 χ _ _ (hx v)`. Conclude with `⟨SecM.ofSec A.A t', by rwa [hxe _ _ h]⟩`. Conclude with `fun χ => (hw2 χ).imp fun ν h => (hsupp _).1 h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `fun χ hχ v h h' => Subtype.ext (funext (hw3 χ ((hsupp _).2 hχ) _ _ (hx v) h h'))`. Conclude with `fun β => (hbas β).imp fun b hb s => (hb s).exists`. Introduce `g`. Take `⟨θ, hθ₁, hθ₂⟩` from `hθ ⟨m g, (hact g).1⟩`. Take `⟨w, hw, H⟩` from `(hact g).2 θ hθ₁`.
-
-Conclude with `⟨w, hw, fun v => H _ _ _ _ (hx _) (hx _) (hθ₂ v)⟩`. Use `⟨a, fun t s h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hxe t s h]`. Conclude with `ha _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem components_proportional : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {_} {_} _ _ U => ∀ N : ℕ, 1 ≤ N → ∀ (α mu : D.X) (u : LB.Gen (LB.LinComb D.P.L (DegPre.deltaφ D (Kbar V) N α mu) (DegPre.deltaε N))), u.IsGen → U.Supp (Kbar V) N α → ∃ a : Kbar V, ∀ t s, U.ExpF (Kbar V) N t s → ∀ z J, Good D.P.L z J → sval (s (α + N • mu)) (𝟙 _) z J = gs (𝟙 _) z ⊤ (DegPre.constBF D (Kbar V) a ⊤) * (sval (s α) (DegPre.trF D (Kbar V) mu).left z J * (val u (𝟙 _) z J).val)) := by
   intro hL hL2 V _ _ _ hV D A G _ _ U N hN α mu u hu hS

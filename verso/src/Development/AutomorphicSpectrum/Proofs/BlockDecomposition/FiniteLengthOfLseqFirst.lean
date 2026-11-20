@@ -6,9 +6,9 @@ open TensorProduct CrystallineSemistableComparison CrystallineSemistableComparis
 namespace GlobalTheory.CompanionTheory.TowerLen
 
 /- English proof (translation)
-Rewrite `hA`, `hC`, the goal using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Take `⟨_, _⟩` from `hA`. Take `⟨_, _⟩` from `hC`. Establish `n1 : IsNoetherian W (LinearMap.range v)` using `isNoetherian_of_surjective v.rangeRestrict (LinearMap.range_rangeRestrict v)`. Establish `a1 : IsArtinian W (LinearMap.range v)` using `isArtinian_of_surjective A v.rangeRestrict v.surjective_rangeRestrict`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2 : IsNoetherian W (LinearMap.ker f)` using `isNoetherian_of_injective (Submodule.inclusion h) (Submodule.inclusion_injective h)`. Establish `a2 : IsArtinian W (LinearMap.ker f)` using `isArtinian_of_injective (Submodule.inclusion h) (Submodule.inclusion_injective h)`. Establish `hr : LinearMap.range (LinearMap.ker f).subtype = LinearMap.ker f.rangeRestrict`. Rewrite using `[Submodule.range_subtype, LinearMap.ker_rangeRestrict]`. Conclude with `⟨isNoetherian_of_range_eq_ker _ _ hr, isArtinian_of_range_eq_ker _ _ hr⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isFiniteLength_of_ker_le_range {W : Type} [CommRing W] {A B C : Type 1}
     [AddCommGroup A] [Module W A] [AddCommGroup B] [Module W B] [AddCommGroup C] [Module W C]
@@ -30,11 +30,11 @@ theorem isFiniteLength_of_ker_le_range {W : Type} [CommRing W] {A B C : Type 1}
   exact ⟨isNoetherian_of_range_eq_ker _ _ hr, isArtinian_of_range_eq_ker _ _ hr⟩
 
 /- English proof (translation)
-Introduce `W _ l S S' L h1 n`. Proceed by induction on `n with`. Consider the case `zero`. Establish `: Subsingleton (S.M 0)` using `⟨fun x y => by`. Establish `hx` using `L.kill 0 x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `L.kill 0 y`. Simplify using `only [pow_zero, one_smul] at hx hy`. Rewrite using `[hx, hy]⟩`. Conclude with `IsFiniteLength.of_subsingleton`. Consider the case `succ n ih`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `isFiniteLength_of_ker_le_range (L.ν 1 (n + 1)) (L.ρ (n + 1) n) ?_ h1 ih` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy⟩` from `L.ex₁ 1 n (n + 1) (by omega) x hx`. Conclude with `⟨y, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFiniteLength_level : ∀ (W : Type) [CommRing W] (l : ℕ) (S S' : Sys.{1} W) (_ : LSeq l S S'),
     IsFiniteLength W (S.M 1) → ∀ n, IsFiniteLength W (S.M n) := by

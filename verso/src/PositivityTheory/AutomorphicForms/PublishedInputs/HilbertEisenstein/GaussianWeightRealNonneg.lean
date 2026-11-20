@@ -16,7 +16,7 @@ open L5
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Unfold `wpoly`. Use `hasTemperateGrowth_finsetProd _ fun v _ => ?_` and prove the remaining obligations. Establish `hL` using `((Complex.ofRealCLM.comp ((ContinuousLinearMap.proj (⟨v, IsTotallyReal.isReal v⟩ : {w : InfinitePlace F // IsReal w}) : ({w : InfinitePlace F // IsReal w} → ℝ) →L[ℝ] ℝ).comp (ContinuousLinearMap.fst ℝ ({w : InfinitePlace F // IsReal w} → ℝ) ({w : InfinitePlace F // IsComplex w} → …`. Establish `h1 : (fun _ : mixedSpace F => (1 : ℂ)).HasTemperateGrowth` using `by fun_prop`. Conclude with `h1.add (hL.pow 2)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_wpoly : (wpoly F).HasTemperateGrowth := by
   unfold wpoly
@@ -35,9 +35,9 @@ instance isEmpty_complex : IsEmpty {w : InfinitePlace F // IsComplex w} :=
 def rp (v : InfinitePlace F) : {w : InfinitePlace F // IsReal w} := ⟨v, IsTotallyReal.isReal v⟩
 
 /- English proof (translation)
-Rewrite using `[phi1, SchwartzMap.smulLeftCLM_apply_apply hasTemperateGrowth_wpoly, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, gaussianSchwartz_apply, norm_mixedToEuclidean_sq, smul_eq_mul]`. Establish `hc : ∑ w : {w : InfinitePlace F // IsComplex w}, ‖x.2 w‖ ^ 2 = 0` using `Finset.sum_of_isEmpty _`. Establish `hs : ∑ w : {w : InfinitePlace F // IsReal w}, x.1 w ^ 2 = ∑ v : InfinitePlace F, x.1 (rp v) ^ 2`. Use `Fintype.sum_equiv (Equiv.subtypeUnivEquiv fun v => IsTotallyReal.isReal v) _ _ fun w => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Rewrite using `[hc, mul_zero, add_zero, hs, Finset.mul_sum, Real.exp_sum, Finset.prod_mul_distrib, Complex.ofReal_mul, Complex.ofReal_prod, Complex.ofReal_prod, wpoly]`. Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem gaussian_weight_apply (x : mixedSpace F) :
     phi1 F x = ((∏ v : InfinitePlace F, ((1 + (x.1 (rp v)) ^ 2) * Real.exp (-Real.pi * (x.1 (rp v)) ^ 2)) : ℝ) : ℂ) := by
@@ -56,26 +56,26 @@ theorem gaussian_weight_apply (x : mixedSpace F) :
     rfl
 
 /- English proof (translation)
-The claim follows from `mul_pos (by positivity) (Real.exp_pos _)`.
+A detailed English derivation is pending.
 -/
 theorem pos_factor (a : ℝ) : 0 < (1 + a ^ 2) * Real.exp (-Real.pi * a ^ 2) :=
   mul_pos (by positivity) (Real.exp_pos _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, (Finset.prod_pos fun v _ => pos_factor _).le, gaussian_weight_apply x⟩`.
+Supply the required witnesses or components.
 -/
 theorem gaussian_weight_real_nonneg (x : mixedSpace F) : ∃ r : ℝ, 0 ≤ r ∧ phi1 F x = (r : ℂ) :=
   ⟨_, (Finset.prod_pos fun v _ => pos_factor _).le, gaussian_weight_apply x⟩
 
 /- English proof (translation)
-Rewrite using `[gaussian_weight_apply, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Finset.prod_pos fun v _ => pos_factor _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_real_test_matrix (x : mixedSpace F) :
     ‖phi1 F x‖ = ∏ v : InfinitePlace F, ((1 + (x.1 (rp v)) ^ 2) * Real.exp (-Real.pi * (x.1 (rp v)) ^ 2)) := by
   rw [gaussian_weight_apply, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Finset.prod_pos fun v _ => pos_factor _)]
 
 /- English proof (translation)
-Rewrite using `[homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbeddingOfIsReal _ (x v) = (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)).symm.symm (x v)`. Rewrite using `[RingEquiv.symm_symm, InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem hms_fst (x : InfiniteAdeleRing F) (v : InfinitePlace F) :
     (homeomorphMixedSpace F x).1 (rp v) = (UpperTheory.V.TR.infEq F).symm x v := by
@@ -85,7 +85,7 @@ theorem hms_fst (x : InfiniteAdeleRing F) (v : InfinitePlace F) :
   rw [RingEquiv.symm_symm, InfinitePlace.Completion.ringEquivRealOfIsReal_apply]
 
 /- English proof (translation)
-The claim follows from `|a + z| * Real.exp (-Real.pi * (a ^ 2 + z ^ 2)) ≤ ((1 + a ^ 2) * Real.exp (-Real.pi * a ^ 2)) * ((1 + z ^ 2) * Real.exp (-Real.pi * z ^ 2)) := by have he : Real.exp (-Real.pi * (a ^ 2 + z ^ 2)) = Real.exp (-Real.pi * a ^ 2) * Real.exp (-Real.pi * z ^ 2) := by rw [← Real.exp_add]; …`.
+A detailed English derivation is pending.
 -/
 theorem place_bound (a z : ℝ) :
     |a + z| * Real.exp (-Real.pi * (a ^ 2 + z ^ 2)) ≤
@@ -109,7 +109,7 @@ theorem place_bound (a z : ℝ) :
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `|a + z| * Real.exp (-Real.pi * (a ^ 2 + z ^ 2)) := by have h : -(Real.pi : ℂ) * ((a : ℂ) ^ 2 + (z : ℂ) ^ 2) = ((-Real.pi * (a ^ 2 + z ^ 2) : ℝ) : ℂ) := by push_cast; ring rw [h, norm_mul, Complex.norm_exp_ofReal, ← Complex.ofReal_add, Complex.norm_real, Real.norm_eq_abs]`.
+A detailed English derivation is pending.
 -/
 theorem norm_place (a z : ℝ) :
     ‖((a : ℂ) + (z : ℂ)) * Complex.exp (-(Real.pi : ℂ) * ((a : ℂ) ^ 2 + (z : ℂ) ^ 2))‖ =
@@ -118,7 +118,7 @@ theorem norm_place (a z : ℝ) :
   rw [h, norm_mul, Complex.norm_exp_ofReal, ← Complex.ofReal_add, Complex.norm_real, Real.norm_eq_abs]
 
 /- English proof (translation)
-Rewrite using `[mem_idealFiniteAdeles]`. Introduce `v`. Rewrite using `[Units.val_one, FractionalIdeal.count_one, neg_zero]`. Conclude with `(h v).trans (WithZero.exp_le_exp.2 (by omega))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_one_of_condA {c : HeightOneSpectrum (𝓞 F) → ℕ} {A : Ad F}
     (h : ∀ w, Valued.v (pLoc F w (pFin F A)) ≤ WithZero.exp (-(c w : ℤ))) :
@@ -134,14 +134,14 @@ Both sides reduce to the same expression.
 theorem standard_hermitian_apply (x : Ad F) : H1 F x = phi1 F (homeomorphMixedSpace F x.1) * cosetIndicator 1 0 x.2 := rfl
 
 /- English proof (translation)
-Rewrite using `[cosetIndicator_apply, sub_zero, if_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetIndicator_one_of_mem {z : Af F} (h : z ∈ idealFiniteAdeles (1 : (FractionalIdeal (𝓞 F)⁰ F)ˣ)) :
     cosetIndicator 1 0 z = 1 := by
   rw [cosetIndicator_apply, sub_zero, if_pos h]
 
 /- English proof (translation)
-Rewrite using `[cosetIndicator_apply]`. Use `split_ifs`. Conclude with `⟨1, zero_le_one, by simp⟩`. Conclude with `⟨0, le_rfl, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cosetIndicator_real (z : Af F) : ∃ r : ℝ, 0 ≤ r ∧ cosetIndicator (1 : (FractionalIdeal (𝓞 F)⁰ F)ˣ) 0 z = (r : ℂ) := by
   rw [cosetIndicator_apply]
@@ -150,7 +150,7 @@ theorem cosetIndicator_real (z : Af F) : ∃ r : ℝ, 0 ≤ r ∧ cosetIndicator
   · exact ⟨0, le_rfl, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[norm_prod, norm_real_test_matrix, norm_real_test_matrix, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun v _ => norm_nonneg _) fun v _ => ?_` and prove the remaining obligations. Rewrite using `[norm_place, hms_fst, hms_fst]`. Conclude with `place_bound _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch_norm (A Z : Ad F) :
     ‖∏ v, (((UpperTheory.V.TR.pInf F A v : ℂ) + (UpperTheory.V.TR.pInf F Z v : ℂ)) *
@@ -168,11 +168,11 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 open L5 CharpolyCoeffsInSubalgebra
 
 /- English proof (translation)
-Introduce `F _ _ _`. Use `⟨schwartzBruhatTensor_mem _ (cosetIndicator_mem_finiteSchwartzBruhat _ _), ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨r, hr, hr'⟩` from `gaussian_weight_real_nonneg (homeomorphMixedSpace F x.1)`. Take `⟨s, hs, hs'⟩` from `cosetIndicator_real (F := F) x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[standard_hermitian_apply, hr', hs', ← Complex.ofReal_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (mul_nonneg hr hs)]`. Introduce `c A Z Z' h1 h2`. Unfold `kernF`. Use `split_ifs with h`. Rewrite using `[norm_mul, Circle.norm_coe, mul_one, standard_hermitian_apply, standard_hermitian_apply, norm_mul, norm_mul, cosetIndicator_one_of_mem (mem_one_of_condA h.1), cosetIndicator_one_of_mem (h2 h.2), norm_one, mul_one, mul_one, h1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `arch_norm A Z`. Rewrite using `[mul_zero, norm_zero]`. Conclude with `mul_nonneg (norm_nonneg _) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem dominating_function_holds : P5dom := by
   intro F _ _ _

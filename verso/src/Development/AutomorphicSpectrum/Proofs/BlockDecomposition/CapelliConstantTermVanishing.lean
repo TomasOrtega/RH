@@ -7,9 +7,7 @@ open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl Globa
 namespace GlobalTheory.CompanionTheory.CTFin.CapStable
 
 /- English proof (translation)
-Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `S.add_mem ?_ (h _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.algebraMap_mem _`.
-
-Conclude with `S.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qdet_mem {a : ℕ} {A : Type} [Ring A] [Algebra ℂ A] (S : Subalgebra ℂ A) (X : Fin a → Fin a → A)
     (h : ∀ i j, X i j ∈ S) (u : ℂ) : Formalism.REAL.qdet X u ∈ S := by
@@ -26,14 +24,14 @@ def blockM {R : Type} [CommRing R] {r s : ℕ} (A : Matrix (Fin r) (Fin r) R) (B
     (fromBlocks A 0 0 B)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmGL.val_emb₂ R _ g`.
+A detailed English derivation is pending.
 -/
 theorem val_lev {R : Type} [CommRing R] {r s : ℕ} (g : GL (Fin r) R × GL (Fin s) R) :
     (lev R r s g).val = blockM g.1.val g.2.val :=
   GlobalTheory.SmGL.val_emb₂ R _ g
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blockM, Matrix.map_apply, reindex_apply, submatrix_apply]`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i = i'`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j = j'`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockM_map {R S : Type} [CommRing R] [CommRing S] {r s : ℕ} (p : R →+* S)
     (A : Matrix (Fin r) (Fin r) R) (B : Matrix (Fin s) (Fin s) R) :
@@ -45,7 +43,7 @@ theorem blockM_map {R S : Type} [CommRing R] [CommRing S] {r s : ℕ} (p : R →
   rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(lev R r s g).val.map p = (lev S r s _).val`. Rewrite using `[val_lev, val_lev, blockM_map]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_lev {R S : Type} [CommRing R] [CommRing S] {r s : ℕ} (p : R →+* S)
     (g : GL (Fin r) R × GL (Fin s) R) :
@@ -59,9 +57,9 @@ theorem map_lev {R S : Type} [CommRing R] [CommRing S] {r s : ℕ} (p : R →+* 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 
 /- English proof (translation)
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_lev]`. Simplify using the standard rewrite rules. Rewrite using `[map_lev]`. Simplify using `only [pFin_infGL, pFin_infGL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(map_one _).symm`.
+A detailed English derivation is pending.
 -/
 theorem infGL_lev (y : GL (Fin r) (Cinf E) × GL (Fin s) (Cinf E)) :
     infGL E (r + s) (lev (Cinf E) r s y) = lev (Ad E) r s (infGL E r y.1, infGL E s y.2) := by
@@ -70,7 +68,7 @@ theorem infGL_lev (y : GL (Fin r) (Cinf E) × GL (Fin s) (Cinf E)) :
   · rw [map_lev]; simp only [pFin_infGL, pFin_infGL]; exact (map_one _).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blockM, Matrix.add_apply, reindex_apply, submatrix_apply]`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i = i'`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j = j'`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockM_add {R : Type} [CommRing R] {r s : ℕ} (A A' : Matrix (Fin r) (Fin r) R)
     (B B' : Matrix (Fin s) (Fin s) R) : blockM A B + blockM A' B' = blockM (A + A') (B + B') := by
@@ -81,7 +79,7 @@ theorem blockM_add {R : Type} [CommRing R] {r s : ℕ} (A A' : Matrix (Fin r) (F
   rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blockM, Matrix.smul_apply, reindex_apply, submatrix_apply]`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i = i'`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j = j'`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockM_smul {R : Type} [CommRing R] {r s : ℕ} (t : ℝ) [Module ℝ R] (A : Matrix (Fin r) (Fin r) R)
     (B : Matrix (Fin s) (Fin s) R) : t • blockM A B = blockM (t • A) (t • B) := by
@@ -92,7 +90,7 @@ theorem blockM_smul {R : Type} [CommRing R] {r s : ℕ} (t : ℝ) [Module ℝ R]
   rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)) = blockM 1 1`. Simplify using `[blockM, fromBlocks_one]`. Rewrite using `[h1, blockM_smul, blockM_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_add_smul_blockM (t : ℝ) (X₁ : Matrix (Fin r) (Fin r) (Cinf E)) (X₂ : Matrix (Fin s) (Fin s) (Cinf E)) :
     1 + t • blockM X₁ X₂ = blockM (1 + t • X₁) (1 + t • X₂) := by
@@ -101,17 +99,15 @@ theorem one_add_smul_blockM (t : ℝ) (X₁ : Matrix (Fin r) (Fin r) (Cinf E)) (
   rw [h1, blockM_smul, blockM_add]
 
 /- English proof (translation)
-Use `set g := lev (Ad E) r s m with hg`. Use `set X : Lie E (r + s) := toL (blockM X₁ X₂) with hX`. Set `c : ℝ → Lie E (r + s)` to `fun t => oneL E (r + s) + t • X`. Establish `hc : HasDerivAt c X 0` using `(((hasDerivAt_id' (0 : ℝ)).smul_const X).const_add (oneL E (r + s))).congr_deriv (one_smul ℝ X)`. Establish `h0 : c 0 = oneL E (r + s)` using `by simp [c]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : HasFDerivAt (chart F.1 g) (fderiv ℝ (chart F.1 g) (oneL E (r + s))) (c 0)`. Rewrite using `[h0]`. Conclude with `(differentiableAt_chart F.2 g).hasFDerivAt`. Establish `h2` using `hd.comp_hasDerivAt (0 : ℝ) hc`. Establish `ev : ∀ (n : ℕ) (Y : Lie E n), ∀ᶠ t : ℝ in 𝓝 0, oneL E n + t • Y ∈ invSet E n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n Y`. Establish `hcont : Continuous fun t : ℝ => oneL E n + t • Y` using `by fun_prop`. Use `hcont.continuousAt.eventually_mem (isOpen_invSet.mem_nhds ?_)` and prove the remaining obligations. Simplify using `only [zero_smul, add_zero]`. Express the relevant statement in the definitionally equal form `IsUnit (Matrix.of (Matrix.of.symm (1 : Matrix (Fin n) (Fin n) (Cinf E))))`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `isUnit_one`. Establish `hz : (chart F.1 g ∘ c) =ᶠ[𝓝 0] fun _ => 0` using `by filter_upwards [ev r (toL X₁), ev s (toL X₂)] with t h1 h2`. Take `⟨u₁, hu₁⟩` from `h1`. Take `⟨u₂, hu₂⟩` from `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e : c t = toL (lev (Cinf E) r s (u₁, u₂)).val`. Rewrite using `[val_lev]`. Express the relevant statement in the definitionally equal form `c t = toL (blockM u₁.val u₂.val)`. Rewrite using `[hu₁, hu₂]`. Conclude with `one_add_smul_blockM t X₁ X₂`.
-
-Rewrite using `[Function.comp_apply, e, chart_val, infGL_lev, hg, ← map_mul]`. Conclude with `hF _`. Conclude with `h2.unique ((hasDerivAt_const (0 : ℝ) (0 : ℂ)).congr_of_eventuallyEq hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieD_block {F : Sm E (r + s)} (hF : ∀ m : GA E r × GA E s, F.1 (lev (Ad E) r s m) = 0)
     (X₁ : Matrix (Fin r) (Fin r) (Cinf E)) (X₂ : Matrix (Fin s) (Fin s) (Cinf E)) (m : GA E r × GA E s) :
@@ -159,23 +155,23 @@ def vanAlg : Subalgebra ℂ (Module.End ℂ (Sm E (r + s))) where
     simp only [Module.algebraMap_end_apply, Submodule.coe_smul, Pi.smul_apply, hF m, smul_zero]
 
 /- English proof (translation)
-The claim follows from `S.smul_mem (S.sub_mem (h _) (S.smul_mem (h _) _)) _`.
+A detailed English derivation is pending.
 -/
 theorem Eop_mem_of {a : ℕ} (S : Subalgebra ℂ (Module.End ℂ (Sm E a))) (τ : E →+* ℂ) (p q : Fin a)
     (h : ∀ x, lieS E a p q x ∈ S) : Eop τ p q ∈ S :=
   S.smul_mem (S.sub_mem (h _) (S.smul_mem (h _) _)) _
 
 /- English proof (translation)
-Introduce `_ hF m` and use `lieD_block hF X₁ X₂ m`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lie_block_mem (X₁ : Matrix (Fin r) (Fin r) (Cinf E)) (X₂ : Matrix (Fin s) (Fin s) (Cinf E)) :
     lie E (r + s) (toL (blockM X₁ X₂)) ∈ vanAlg E r s :=
   fun _ hF m => lieD_block hF X₁ X₂ m
 
 /- English proof (translation)
-Establish `hc : ∀ k : Fin r, Fin.castAdd s k = GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl k)` using `fun k => Fin.ext (by simp)`. Establish `hn : ∀ k : Fin s, Fin.natAdd r k = GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr k)` using `fun k => Fin.ext (by simp)`. Rewrite using `[hc, hc]`. Use extensionality with `a b`. Take `⟨a, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective b`. Simplify using `only [blockM, reindex_apply, submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Matrix.single_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_castAdd (i j : Fin r) (x : Cinf E) :
     Matrix.single (Fin.castAdd s i) (Fin.castAdd s j) x = blockM (Matrix.single i j x) (0 : Matrix (Fin s) (Fin s) (Cinf E)) := by
@@ -189,9 +185,9 @@ theorem single_castAdd (i j : Fin r) (x : Cinf E) :
   rcases a with a | a <;> rcases b with b | b <;> simp [Matrix.single_apply]
 
 /- English proof (translation)
-Establish `hc : ∀ k : Fin r, Fin.castAdd s k = GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl k)` using `fun k => Fin.ext (by simp)`. Establish `hn : ∀ k : Fin s, Fin.natAdd r k = GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr k)` using `fun k => Fin.ext (by simp)`. Rewrite using `[hn, hn]`. Use extensionality with `a b`. Take `⟨a, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective b`. Simplify using `only [blockM, reindex_apply, submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Matrix.single_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_natAdd (i j : Fin s) (x : Cinf E) :
     Matrix.single (Fin.natAdd r i) (Fin.natAdd r j) x = blockM (0 : Matrix (Fin r) (Fin r) (Cinf E)) (Matrix.single i j x) := by
@@ -205,14 +201,14 @@ theorem single_natAdd (i j : Fin s) (x : Cinf E) :
   rcases a with a | a <;> rcases b with b | b <;> simp [Matrix.single_apply]
 
 /- English proof (translation)
-The claim follows from `qdet_mem _ _ (fun i j => Eop_mem_of _ τ _ _ fun x => by rw [lieS_apply, single_castAdd]; exact lie_block_mem _ _) _`.
+A detailed English derivation is pending.
 -/
 theorem capR_mem (τ : E →+* ℂ) (u : ℂ) : capR r s τ u ∈ vanAlg E r s :=
   qdet_mem _ _ (fun i j => Eop_mem_of _ τ _ _ fun x => by
     rw [lieS_apply, single_castAdd]; exact lie_block_mem _ _) _
 
 /- English proof (translation)
-The claim follows from `qdet_mem _ _ (fun i j => Eop_mem_of _ τ _ _ fun x => by rw [lieS_apply, single_natAdd]; exact lie_block_mem _ _) _`.
+A detailed English derivation is pending.
 -/
 theorem capS_mem (τ : E →+* ℂ) (u : ℂ) : capS r s τ u ∈ vanAlg E r s :=
   qdet_mem _ _ (fun i j => Eop_mem_of _ τ _ _ fun x => by
@@ -231,9 +227,9 @@ def nInvAlg (a r : ℕ) : Subalgebra ℂ (Module.End ℂ (Sm E a)) where
     simp only [Module.algebraMap_end_apply, Submodule.coe_smul, Pi.smul_apply, hψ v g]
 
 /- English proof (translation)
-Introduce `ψ hψ v g`. Establish `e : chart ψ.1 (unip v * g) = chart ψ.1 g`. Use function extensionality and compare the values at `x`. Unfold `chart`. Use `split_ifs with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hψ v]`. Both sides reduce to the same expression. Simplify using `only [GlobalTheory.CuspRep.lie_apply, lieD, e]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_mem_nInvAlg (a r : ℕ) (X : Lie E a) : lie E a X ∈ nInvAlg E a r := by
   intro ψ hψ v g
@@ -246,13 +242,13 @@ theorem lie_mem_nInvAlg (a r : ℕ) (X : Lie E a) : lie E a X ∈ nInvAlg E a r 
   simp only [GlobalTheory.CuspRep.lie_apply, lieD, e]
 
 /- English proof (translation)
-The claim follows from `qdet_mem _ _ (fun i j => Eop_mem_of _ τ _ _ fun x => lie_mem_nInvAlg a r _) _`.
+A detailed English derivation is pending.
 -/
 theorem cap_mem_nInvAlg (a r : ℕ) (τ : E →+* ℂ) (u : ℂ) : cap (a := a) τ u ∈ nInvAlg E a r :=
   qdet_mem _ _ (fun i j => Eop_mem_of _ τ _ _ fun x => lie_mem_nInvAlg a r _) _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hF => ⟨capR_mem τ u F hF, capS_mem τ u F hF⟩, fun hF => cap_mem_nInvAlg (r + s) r τ u F hF⟩`.
+Supply the required witnesses or components.
 -/
 theorem capStable (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ) (τ : E →+* ℂ) (u : ℂ)
     (F : Sm E (r + s)) :

@@ -14,7 +14,7 @@ namespace Formalism.L2.SG.Pf.FrameGlobalPatching.FStar
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `_ δ M hA _ u u' hc hP F0 what₂ hR`. Use `⟨fun γ w F' L U hE p => ⟨Formalism.L2.SG.Pf.CountAt.countAt_holds (M := M) (δ := δ) (γ := γ) (w := w) (F' := F') (L := L) (U := U) (hE := hE) (p := p) .., by intros; apply Formalism.L2.SG.Pf.ProdEP2Uni.unimodAt_holds⟩, Formalism.L2.SG.Pf.TupGlobApprox.stabApprox _ u u', ?_⟩` and prove the remaining obligations. Conclude with `fStarC_of_int ⟨δ, M, hA⟩ ⟨hc, hR, hP⟩ (hB δ M hA u u' F0 what₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cutLeavesDeep_of_betaInt (D : Formalism.BasicNotions.D7)
     (hB : ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)

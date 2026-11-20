@@ -19,21 +19,21 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by rw [GlobalTheory.CompanionTheory.BZMir.GpExists.blockIndex_false_val]; simp)`.
+A detailed English derivation is pending.
 -/
 theorem blockIndex_false_eq_castAdd₂ (i t : ℕ) (a : Fin (i + 1)) :
     eGP (i + 1) t ⟨false, a⟩ = (Fin.castAdd (t + 1) a : Fin ((i + 1) + (t + 1))) :=
   Fin.ext (by rw [GlobalTheory.CompanionTheory.BZMir.GpExists.blockIndex_false_val]; simp)
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by rw [GlobalTheory.CompanionTheory.BZMir.GpExists.blockIndex_true_val]; simp)`.
+A detailed English derivation is pending.
 -/
 theorem blockIndex_true_eq_natAdd₂ (i t : ℕ) (b : Fin (t + 1)) :
     eGP (i + 1) t ⟨true, b⟩ = (Fin.natAdd (i + 1) b : Fin ((i + 1) + (t + 1))) :=
   Fin.ext (by rw [GlobalTheory.CompanionTheory.BZMir.GpExists.blockIndex_true_val]; simp)
 
 /- English proof (translation)
-Use `show (leviProj k (eGP m j) (hgpIncl k m j g) true).val a b = _`. Rewrite using `[leviProj_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gpProj_snd_apply (m j : ℕ) (g : MirabolicParabolic k m j) (a b : Fin (j + 1)) :
     (((gpProj k m j g).2 : Mir k j) : GL (Fin (j + 1)) k).val a b =
@@ -43,11 +43,11 @@ theorem gpProj_snd_apply (m j : ℕ) (g : MirabolicParabolic k m j) (a b : Fin (
   rfl
 
 /- English proof (translation)
-Establish `hinv : ((((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)⁻¹ : GL (Fin (t + 1)) k) = (((gpProj k (i + 1) t h⁻¹).2 : Mir k t) : GL (Fin (t + 1)) k)`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Establish `hcoe : (((h : Mir k ((i + 1) + t)) : GL (Fin ((i + 1) + t + 1)) k)⁻¹ : GL (Fin ((i + 1) + t + 1)) k) = (((h⁻¹ : MirabolicParabolic k (i + 1) t) : Mir k ((i + 1) + t)) : GL (Fin ((i + 1) + t + 1)) k)` using `rfl`. Rewrite using `[hinv, hcoe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ a : Fin (i + 1), ((((h⁻¹ : MirabolicParabolic k (i + 1) t) : Mir k ((i + 1) + t)) : GL (Fin ((i + 1) + t + 1)) k)).val (Fin.natAdd (i + 1) x) (Fin.castAdd (t + 1) a) = 0`. Introduce `a`. Use `(mem_mirabolicParabolic_iff k _ _ _).1 (h⁻¹ : MirabolicParabolic k (i + 1) t).2 x a` as an intermediate fact. Rewrite `this` using `[blockIndex_true_eq_natAdd₂, blockIndex_false_eq_castAdd₂]`. Then use the resulting hypothesis. Use `show ∑ y : Fin ((i + 1) + (t + 1)), _ = ∑ y : Fin (t + 1), _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, Pi.zero_apply, mul_zero, Finset.sum_const_zero, zero_add]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[gpProj_snd_apply, blockIndex_true_eq_natAdd₂, blockIndex_true_eq_natAdd₂]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mulVec_natAdd (i t : ℕ) (h : MirabolicParabolic k (i + 1) t) (d : Fin (t + 1) → k) (x : Fin (t + 1)) :
     ((((h : Mir k ((i + 1) + t)) : GL (Fin ((i + 1) + t + 1)) k)⁻¹ : GL (Fin ((i + 1) + t + 1)) k).val *ᵥ
@@ -72,7 +72,7 @@ theorem inv_mulVec_natAdd (i t : ℕ) (h : MirabolicParabolic k (i + 1) t) (d : 
   rw [gpProj_snd_apply, blockIndex_true_eq_natAdd₂, blockIndex_true_eq_natAdd₂]
 
 /- English proof (translation)
-Use `show (leviProj k (ePG I T) (hpgIncl k I T g) false).val a b = _`. Rewrite using `[leviProj_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pgProj_fst_apply (I T : ℕ) (g : HPG k I T) (a b : Fin (I + 1)) :
     (((pgProj k I T g).1 : Mir k I) : GL (Fin (I + 1)) k).val a b =
@@ -82,7 +82,7 @@ theorem pgProj_fst_apply (I T : ℕ) (g : HPG k I T) (a b : Fin (I + 1)) :
   rfl
 
 /- English proof (translation)
-Use `show (leviProj k (ePG I T) (hpgIncl k I T g) true).val a b = _`. Rewrite using `[leviProj_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pgProj_snd_apply (I T : ℕ) (g : HPG k I T) (a b : Fin T) :
     ((pgProj k I T g).2 : GL (Fin T) k).val a b =
@@ -92,9 +92,9 @@ theorem pgProj_snd_apply (I T : ℕ) (g : HPG k I T) (a b : Fin T) :
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne]`. Introduce `e`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hab (by simpa using (ePG I T).injective e)`.
+A detailed English derivation is pending.
 -/
 theorem one_ePG (I T : ℕ) (x : Bool) (a b : Two (Fin (I + 1)) (Fin T) x) :
     (1 : Matrix (Fin (I + T + 1)) (Fin (I + T + 1)) k) (ePG I T ⟨x, a⟩) (ePG I T ⟨x, b⟩) =
@@ -111,11 +111,11 @@ def uEl (i t : ℕ) (c : Fin (i + 1) → k) : Mir k ((i + 1) + t + 1) :=
   ⟨unip k ((i + 1) + (t + 1)) (Multiplicative.ofAdd (Fin.append c (0 : Fin (t + 1) → k))), MirU_le_Mir k _ ⟨_, rfl⟩⟩
 
 /- English proof (translation)
-Use `mem_HPG_of (I := i + 1) (T := t + 1) (uEl k i t c) ?_ ?_` and prove the remaining obligations. Introduce `x y`. Use `unip_castSucc_castSucc _ _ _ _ ?_` and prove the remaining obligations. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Introduce `x`. Use `(unip_apply_castSucc_last k _ _ _).trans ?_` and prove the remaining obligations. Use `show (Fin.append c (0 : Fin (t + 1) → k)) (Fin.natAdd (i + 1) x) = 0`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem uEl_mem (i t : ℕ) (c : Fin (i + 1) → k) : uEl k i t c ∈ HPG k (i + 1) (t + 1) := by
   refine mem_HPG_of (I := i + 1) (T := t + 1) (uEl k i t c) ?_ ?_
@@ -131,13 +131,13 @@ theorem uEl_mem (i t : ℕ) (c : Fin (i + 1) → k) : uEl k i t c ∈ HPG k (i +
     simp
 
 /- English proof (translation)
-Use `⟨Multiplicative.ofAdd c, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (unip k (i + 1) (Multiplicative.ofAdd c)).val a b = (((pgProj k (i + 1) (t + 1) ⟨uEl k i t c, uEl_mem i t c⟩).1 : Mir k (i + 1)) : GL (Fin (i + 1 + 1)) k).val a b`. Rewrite using `[pgProj_fst_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Use `show _ = (unip k ((i + 1) + (t + 1)) (Multiplicative.ofAdd (Fin.append c (0 : Fin (t + 1) → k)))).val _ _`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[ePG_false_last]`. Proceed by induction on `a using Fin.lastCases with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `last => rw [ePG_false_last, unip_apply_last_last, unip_apply_last_last]`. Consider the case `cast a`. Establish `e : ePG (i + 1) (t + 1) ⟨false, Fin.castSucc a⟩ = Fin.castSucc (Fin.castAdd (t + 1) a)` using `Fin.ext (by rw [ePG_false_val]; simp)`. Rewrite using `[e, unip_apply_castSucc_last, unip_apply_castSucc_last]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `cast b`. Establish `hq : ePG (i + 1) (t + 1) ⟨false, Fin.castSucc b⟩ ≠ Fin.last ((i + 1) + (t + 1))` using `fun h => Fin.castSucc_ne_last b ((ePG_false_eq_last_iff _ _ _).1 h)`. Rewrite using `[unip_apply_of_ne_last _ _ _ _ hq, unip_apply_of_ne_last _ _ _ _ (Fin.castSucc_ne_last b), one_ePG]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uEl_fst (i t : ℕ) (c : Fin (i + 1) → k) :
     (pgProj k (i + 1) (t + 1) ⟨uEl k i t c, uEl_mem i t c⟩).1 ∈ MirUin k (i + 1) := by
@@ -164,11 +164,11 @@ theorem uEl_fst (i t : ℕ) (c : Fin (i + 1) → k) :
     rw [unip_apply_of_ne_last _ _ _ _ hq, unip_apply_of_ne_last _ _ _ _ (Fin.castSucc_ne_last b), one_ePG]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[pgProj_snd_apply]`. Use `show (unip k ((i + 1) + (t + 1)) (Multiplicative.ofAdd (Fin.append c (0 : Fin (t + 1) → k)))).val _ _ = _`. Establish `hq : ePG (i + 1) (t + 1) ⟨true, b⟩ ≠ Fin.last ((i + 1) + (t + 1))`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[ePG_true_val]`. Establish `hb` using `b.2`. Simplify using `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[unip_apply_of_ne_last _ _ _ _ hq, one_ePG]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem uEl_snd (i t : ℕ) (c : Fin (i + 1) → k) :
     (pgProj k (i + 1) (t + 1) ⟨uEl k i t c, uEl_mem i t c⟩).2 = 1 := by
@@ -189,17 +189,17 @@ theorem uEl_snd (i t : ℕ) (c : Fin (i + 1) → k) :
 end
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t h d`. Set `A : GL (Fin ((i + 1) + t + 1)) k` to `((h : Mir k ((i + 1) + t)) : GL (Fin ((i + 1) + t + 1)) k)`. Set `v : Fin ((i + 1) + (t + 1)) → k` to `Fin.append (0 : Fin (i + 1) → k) d`. Set `w : Fin ((i + 1) + (t + 1)) → k` to `(A⁻¹ : GL (Fin ((i + 1) + t + 1)) k).val *ᵥ v`. Set `c : Fin (i + 1) → k` to `fun x => w (Fin.castAdd (t + 1) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : Fin (t + 1) → k` to `((((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)⁻¹ : GL (Fin (t + 1)) k).val *ᵥ d`. Set `a : Fin ((i + 1) + (t + 1)) → k` to `Fin.append c (0 : Fin (t + 1) → k)`. Set `b : Fin ((i + 1) + (t + 1)) → k` to `Fin.append (0 : Fin (i + 1) → k) e`. Establish `hsum : a + b = w`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Proceed by induction on `x using Fin.addCases with`. Consider the case `left x => simp [a, b, c]`. Consider the case `right x`. Simplify using `only [a, b, Pi.add_apply, Fin.append_right, Pi.zero_apply, zero_add]`. Conclude with `(inv_mulVec_natAdd i t h d x).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨uEl k i t c, uEl_mem i t c⟩, uEl_fst i t c, uEl_snd i t c, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e1 : unip k ((i + 1) + t + 1) (Multiplicative.ofAdd a) * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd b) = unip k ((i + 1) + t + 1) (Multiplicative.ofAdd w)`. Rewrite using `[← map_mul, ← ofAdd_add, hsum]`. Establish `e3 : A.val *ᵥ w = v` using `by show A.val *ᵥ ((A⁻¹ : GL (Fin ((i + 1) + t + 1)) k).val *ᵥ v) = v`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules. Establish `e2 : glEmb k _ A * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd w) = unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v) * glEmb k _ A`. Use `glEmb_mul_unip' k _ A (Multiplicative.ofAdd w)` as an intermediate fact. Rewrite `this` using `[toAdd_ofAdd, e3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `show unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v) * glEmb k _ A = glEmb k _ A * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd a) * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd b)`. Rewrite using `[mul_assoc, e1, e2]`.
+A detailed English derivation is pending.
 -/
 theorem dEmb_mul_sEmb : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (h : MirabolicParabolic k (i + 1) t) (d : Fin (t + 1) → k), ∃ u : HPG k (i + 1) (t + 1), (pgProj k (i + 1) (t + 1) u).1 ∈ MirUin k (i + 1) ∧ (pgProj k (i + 1) (t + 1) u).2 = 1 ∧ dEmb k i t d * sEmb k ((i + 1) + t) (h : Mir k ((i + 1) + t)) = sEmb k ((i + 1) + t) (h : Mir k ((i + 1) + t)) * (u : Mir k ((i + 1) + t + 1)) * dEmb k i t (((((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)⁻¹ : GL (Fin (t + 1)) k).val *ᵥ d) := by
   intro k _ _ _ _ i t h d

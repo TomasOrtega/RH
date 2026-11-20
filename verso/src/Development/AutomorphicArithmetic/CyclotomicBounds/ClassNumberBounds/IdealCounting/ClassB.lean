@@ -5,9 +5,9 @@ namespace KStar.IdealCounting
 open Finset NumberField
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Establish `h : ∀ i, (((a ::ₘ s).filter (fun x => idx x = i)).map q).prod = (if idx a = i then q a else 1) * ((s.filter (fun x => idx x = i)).map q).prod`. Introduce `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : idx a = i`. Simplify using `[Multiset.filter_cons_of_pos, h]`. Simplify using `[Multiset.filter_cons_of_neg, h]`. Simplify using `only [h, Finset.prod_mul_distrib, ih, Finset.prod_ite_eq, Finset.mem_univ, if_true, Multiset.map_cons, Multiset.prod_cons]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem classB_prod {ι : Type*} {n : ℕ} (q : ι → ℕ) (idx : ι → Fin n) (s : Multiset ι) :
     ∏ i, ((s.filter (fun x => idx x = i)).map q).prod = (s.map q).prod := by
@@ -24,17 +24,15 @@ private theorem classB_prod {ι : Type*} {n : ℕ} (q : ι → ℕ) (idx : ι �
       Multiset.map_cons, Multiset.prod_cons]
 
 /- English proof (translation)
-Establish `h1 : ∀ (u : Multiset ι), UniqueFactorizationMonoid.normalizedFactors (u.map q).prod = u.map q`. Introduce `u`. Apply `UniqueFactorizationMonoid.normalizedFactors_prod_of_prime` to reduce the goal to its premises. Introduce `p hp`. Take `⟨x, -, rfl⟩` from `Multiset.mem_map.mp hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hq x).prime`. Establish `h2 : ∀ i, (s.filter (fun x => idx x = i)).map q = (t.filter (fun x => idx x = i)).map q`. Introduce `i`. Rewrite using `[← h1, h i, h1]`. Establish `hg : Function.Injective (fun x => (idx x, q x))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Simplify using `only [Prod.mk.injEq] at hxy`. Conclude with `hinj x y hxy.2 hxy.1`. Establish `h3 : ∀ (u : Multiset ι) i, (u.filter (fun x => idx x = i)).map (fun x => (idx x, q x)) = ((u.filter (fun x => idx x = i)).map q).map (fun r => (i, r))`. Introduce `u i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Multiset.map_map]`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `x hx`. Simplify using `[(Multiset.mem_filter.mp hx).2]`. Establish `h4 : ∀ i, s.filter (fun x => idx x = i) = t.filter (fun x => idx x = i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Apply `Multiset.map_injective hg` to reduce the goal to its premises. Rewrite using `[h3, h3, h2]`. Use extensionality with `x`. Use `congrArg (Multiset.count x) (h4 (idx x))` as an intermediate fact.
-
-Rewrite `this` using `[Multiset.count_filter_of_pos (by rfl), Multiset.count_filter_of_pos (by rfl)]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem classB_inj {ι : Type*} {n : ℕ} (q : ι → ℕ) (idx : ι → Fin n)
     (hq : ∀ x, (q x).Prime) (hinj : ∀ x y, q x = q y → idx x = idx y → x = y)
@@ -72,11 +70,11 @@ private theorem classB_inj {ι : Type*} {n : ℕ} (q : ι → ℕ) (idx : ι →
   rwa [Multiset.count_filter_of_pos (by rfl), Multiset.count_filter_of_pos (by rfl)] at this
 
 /- English proof (translation)
-Use `choose S hS hS' using h`. Establish `: ∀ p, ∃ f : S p → Fin n, Function.Injective f`. Introduce `p`. Take `⟨f⟩` from `Function.Embedding.nonempty_of_card_le (α := S p) (β := Fin n) (by simpa using hS p)`. Conclude with `⟨f, f.injective⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose f hf using this`. Use `⟨fun x => f (q x) ⟨x, hS' _ x rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `x y hxy hi`. Establish `key : ∀ p (hp : q y = p), f (q y) ⟨y, hS' _ y rfl⟩ = f p ⟨y, hS' _ y hp⟩`. Introduce and unpack `p rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only at hi`. Rewrite `hi` using `[key (q x) hxy.symm]`. Conclude with `congrArg Subtype.val (hf _ hi)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem classB_idx {ι : Type*} {n : ℕ} (q : ι → ℕ)
     (h : ∀ p, ∃ S : Finset ι, S.card ≤ n ∧ ∀ x, q x = p → x ∈ S) :
@@ -98,9 +96,9 @@ private theorem classB_idx {ι : Type*} {n : ℕ} (q : ι → ℕ)
 
 open IsDedekindDomain in
 /- English proof (translation)
-Proceed by induction on `I using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl hI`. Consider the case `h₂ x hx => exact ⟨0, by simpa using (isUnit_iff_eq_one.mp hx).symm⟩`. Consider the case `h₃ a p ha hp ih`. Take `⟨s, hs⟩` from `ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨p, Ideal.isPrime_of_prime hp, hp.ne_zero⟩ ::ₘ s, by simp [hs]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem classB_fact (K : Type*) [Field K] [NumberField K] (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) :
     ∃ s : Multiset (HeightOneSpectrum (𝓞 K)), (s.map (fun v => v.asIdeal)).prod = I := by
@@ -112,25 +110,21 @@ private theorem classB_fact (K : Type*) [Field K] [NumberField K] (I : Ideal (�
     exact ⟨⟨p, Ideal.isPrime_of_prime hp, hp.ne_zero⟩ ::ₘ s, by simp [hs]⟩
 
 /- English proof (translation)
-Set `q : IsDedekindDomain.HeightOneSpectrum (𝓞 K) → ℕ` to `fun v => Ideal.absNorm (v.asIdeal.under ℤ)`. Establish `hq : ∀ v, (q v).Prime`. Introduce `v`. Use `v.isPrime` as an intermediate fact. Establish `: NeZero v.asIdeal` using `⟨v.ne_bot⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.absNorm_under_prime v.asIdeal`. Establish `hle : ∀ v, q v ≤ Ideal.absNorm v.asIdeal`. Introduce `v`. Use `Nat.le_of_dvd (Nat.pos_of_ne_zero ?_) (Int.absNorm_under_dvd_absNorm v.asIdeal)` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `v.ne_bot`. Take `⟨idx, hidx⟩` from `classB_idx (n := Module.finrank ℚ K) q (by`. Introduce `p`. Distinguish the cases in `hp : p.Prime`. Establish `: Fact p.Prime` using `⟨hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : Ideal.span {(p : ℤ)} ≠ ⊥` using `by simpa using hp.ne_zero`. Use `⟨(IsDedekindDomain.primesOverFinset (Ideal.span {(p : ℤ)}) (𝓞 K)).preimage (fun v => v.asIdeal) (fun a _ b _ h => IsDedekindDomain.HeightOneSpectrum.ext h), ?_, ?_⟩` and prove the remaining obligations. Use `le_trans ?_ (Ideal.card_primesOverFinset_le_finrank (𝓞 K) ℚ K h0)` and prove the remaining obligations. Apply `Finset.card_le_card_of_injOn (fun v => v.asIdeal)` to reduce the goal to its premises. Introduce `v hv`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.mem_coe.mpr (Finset.mem_preimage.mp (Finset.mem_coe.mp hv))`. Conclude with `fun a _ b _ h => IsDedekindDomain.HeightOneSpectrum.ext h`. Introduce and unpack `v rfl`. Use `Finset.mem_preimage.mpr ((IsDedekindDomain.mem_primesOverFinset_iff h0 _).mpr ?_)` and prove the remaining obligations. Conclude with `⟨v.isPrime, Int.liesOver_span_absNorm v.asIdeal⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨∅, by simp, fun x hx => absurd (hx ▸ hq x) hp⟩)`. Use `choose s hs using classB_fact K`. Rewrite using `[← Nat.card_eq_finsetCard]`. Establish `hprod : ∀ (I : Ideal (𝓞 K)) (hI : I ≠ ⊥), ((s I hI).map q).prod ≤ Ideal.absNorm I`. Introduce `I hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_rhs => rw [← hs I hI, map_multiset_prod, Multiset.map_map]`. Conclude with `Multiset.prod_map_le_prod_map _ _ (fun v _ => hle v)`. Establish `hpos : ∀ u : Multiset (IsDedekindDomain.HeightOneSpectrum (𝓞 K)), 0 < (u.map q).prod`. Introduce `u`. Apply `Multiset.prod_pos` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Take `⟨x, -, rfl⟩` from `Multiset.mem_map.mp ha`. Conclude with `(hq x).pos`. Use `Nat.card_le_card_of_injective (fun I => ⟨fun i => (((s I.1 I.2.1).filter (fun x => idx x = i)).map q).prod, ?_⟩) ?_` and prove the remaining obligations. Establish `h1` using `(classB_prod q idx (s I.1 I.2.1)).trans_le ((hprod I.1 I.2.1).trans I.2.2)`.
-
-Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`. Use `⟨fun i => Finset.mem_Icc.mpr ⟨hpos _, le_trans ?_ h1⟩, h1⟩` and prove the remaining obligations. Conclude with `Finset.single_le_prod' (f := fun i => (((s I.1 I.2.1).filter (fun x => idx x = i)).map q).prod) (fun j _ => hpos _) (Finset.mem_univ i)`. Introduce `I J hIJ`. Establish `h` using `classB_inj q idx hq hidx _ _ (congrFun (congrArg Subtype.val hIJ))`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hs I.1 I.2.1, ← hs J.1 J.2.1, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_ideals_le_tuples (K : Type*) [Field K] [NumberField K] (M : ℕ) :
     Nat.card {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ Ideal.absNorm I ≤ M} ≤

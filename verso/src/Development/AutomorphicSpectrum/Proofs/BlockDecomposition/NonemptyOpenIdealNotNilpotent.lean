@@ -8,19 +8,19 @@ set_option autoImplicit false
 namespace GlobalTheory.CompanionTheory.GE.NonIso
 
 /- English proof (translation)
-Establish `hC : IsClosed (J.subschemeι '' (W : Set J.subscheme)ᶜ)` using `J.subschemeι.isClosedEmbedding.isClosedMap _ W.isOpen.isClosed_compl`. Set `C : TopologicalSpace.Closeds X` to `⟨_, hC⟩`. Establish `hsupp : ∀ x : X, x ∈ (Scheme.IdealSheafData.vanishingIdeal C).support ↔ x ∈ J.subschemeι '' (W : Set J.subscheme)ᶜ`. Introduce `x`. Rewrite using `[← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨Scheme.IdealSheafData.vanishingIdeal C, ?_, ?_⟩` and prove the remaining obligations. Introduce `V f hf y hy`. Establish `hyV : J.subschemeι y ∈ (V : X.Opens)` using `X.basicOpen_le f hy`. Assume the negation of the conclusion as `hyW`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1 : J.subschemeι y ∈ (Scheme.IdealSheafData.vanishingIdeal C).support` using `(hsupp _).2 ⟨y, hyW, rfl⟩`. Rewrite `h1` using `[Scheme.IdealSheafData.mem_support_iff_of_mem hyV, Scheme.mem_zeroLocus_iff]`. Conclude with `h1 f hf hy`. Introduce `m hm`. Take `⟨w, hw⟩` from `hW`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hxV, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) (show J.subschemeι w ∈ (⊤ : X.Opens) from trivial)`. Set `V' : X.affineOpens` to `⟨V, hV⟩`. Establish `hxV' : J.subschemeι w ∈ (V' : X.Opens)` using `hxV`. Establish `hnC : J.subschemeι w ∉ (Scheme.IdealSheafData.vanishingIdeal C).support`. Rewrite using `[hsupp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w', hw', he⟩`. Conclude with `hw' (J.subschemeι.isClosedEmbedding.injective he ▸ hw)`. Rewrite `hnC` using `[Scheme.IdealSheafData.mem_support_iff_of_mem hxV', Scheme.mem_zeroLocus_iff]`. Use `push_neg at hnC`. Take `⟨f, hf, hxf⟩` from `hnC`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfm : f ^ m ∈ J.ideal V'` using `Scheme.IdealSheafData.le_def.1 hm V' (Ideal.pow_mem_pow hf m)`. Establish `hxJ : J.subschemeι w ∈ J.support`. Rewrite using `[← SetLike.mem_coe, ← J.range_subschemeι]`. Conclude with `⟨w, rfl⟩`. Rewrite `hxJ` using `[Scheme.IdealSheafData.mem_support_iff_of_mem hxV', Scheme.mem_zeroLocus_iff]`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `hxJ (f ^ m) hfm ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos m with rfl | hm0` into its components or cases. Rewrite using `[pow_zero, Scheme.basicOpen_of_isUnit _ isUnit_one]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[Scheme.basicOpen_pow _ _ hm0]` and apply the resulting hypothesis.
+Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_ideal_not_pow_le {X : Scheme.{0}} (J : X.IdealSheafData) (W : J.subscheme.Opens)
     (hW : (W : Set J.subscheme).Nonempty) :

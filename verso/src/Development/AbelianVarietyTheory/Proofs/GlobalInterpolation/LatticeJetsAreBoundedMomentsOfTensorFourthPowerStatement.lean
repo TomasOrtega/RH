@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.IsSemi
 open GlobalTheory.MomN Formalism.L2.Th1.H
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MomRoot.jets_root` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FLatticeJetsAreBoundedMomentsOfTensorFourthPower.lean&line=58#L58)
 -/

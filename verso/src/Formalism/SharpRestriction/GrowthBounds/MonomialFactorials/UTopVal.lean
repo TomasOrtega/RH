@@ -14,21 +14,19 @@ variable (hS : SegFacts C0 CE1 CE2 X)
 include hS
 
 /- English proof (translation)
-Establish `hF` using `hS.hF`. Establish `h1` using `lLL_deg_le_chain hS a b x q`. Take `⟨-, hK1, hK2, -⟩` from `hK`. Use `set v := topOf q hq with hv`. Use `set P := SegData.P X.p (X.S C0 CE1 CE2) v with hPdef`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (segChain X.p (X.S C0 CE1 CE2) a b).deg q ≤ (X.S C0 CE1 CE2).bTop v / P ∨ (segChain X.p (X.S C0 CE1 CE2) a b).deg q ≤ a v / P`. Establish `hA : coarseA X.p (X.S C0 CE1 CE2) b v ≤ (X.S C0 CE1 CE2).bTop v / P` using `Nat.div_le_div_right (Nat.sub_le _ _)`. Establish `hC : coarseC X.p (X.S C0 CE1 CE2) a b v ≤ a v / P` using `Nat.div_le_div_right (Nat.sub_le _ _)`. Simplify using `only [segChain, dif_neg hq]`. Rewrite using `[← hv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the first alternative. Prove the first alternative.
 
-Use `split_ifs with h2 h3 h3`. Conclude with `Or.inl ((hK2 v h3).2.1.trans hA)`. Conclude with `Or.inl (((hK1 v (not_lt.mp h3)).1).trans hA)`. Conclude with `Or.inr ((Nat.sub_le _ _).trans hC)`. Conclude with `Or.inr hC`.
+Prove the second alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbT : ((X.S C0 CE1 CE2).bTop v : ℝ) ≤ 2 * X.L.a`. Establish `h5` using `hS.bTop v`. Establish `hb0` using `hF.b0`. Establish `hlt` using `hF.b_lt`. Establish `hpm` using `hF.p_ge`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `hF.m4`. Establish `hm' : (4 : ℝ) ≤ X.L.m` using `by exact_mod_cast hm`. Establish `hp25 : (25 : ℝ) ≤ X.L.p` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `haT : (a v : ℝ) ≤ 2 * X.L.a`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmem` using `Fintype.mem_piFinset.mp hT v`. Simplify using `only [flipOneThree.Inst.winA, Finset.mem_Icc] at hmem`. Establish `h2` using `Nat.floor_le hF.win0`. Establish `h3 : (a v : ℝ) ≤ (⌊(X.L.a : ℝ) + X.L.a / (X.L.k * X.L.Y) + X.xa⌋₊ : ℕ)` using `by exact_mod_cast hmem.2`. Combine the linear relations using `[hF.win_le]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin : ∀ N : ℕ, (N : ℝ) ≤ 2 * X.L.a → (segChain X.p (X.S C0 CE1 CE2) a b).deg q ≤ N / P → ((lLL C0 CE1 CE2 X a b x).deg q : ℝ) * (P : ℝ) ≤ 2 * X.L.a`. Introduce `N hN hd`. Establish `h4 : (lLL C0 CE1 CE2 X a b x).deg q * P ≤ N` using `(Nat.mul_le_mul_right P (h1.trans hd)).trans (Nat.div_mul_le_self N P)`. Establish `h5 : (((lLL C0 CE1 CE2 X a b x).deg q * P : ℕ) : ℝ) ≤ N` using `by exact_mod_cast h4`. Move the coercions through the operations in `at h5`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Break down `hc with hc | hc` into its components or cases. Conclude with `hfin _ hbT hc`. Conclude with `hfin _ haT hc`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem lLL_deg_mul_segP_le_two_mul_a_of_kept (a : Fin X.s → ℕ) (hT : a ∈ Fintype.piFinset (fun _ : Fin X.s => X.winA))
     (b : SegBlock X.s X.r) (hK : Kept X.p X.r (X.S C0 CE1 CE2) a b) (x : Lv C0 CE1 CE2 X)
@@ -80,27 +78,25 @@ private theorem lLL_deg_mul_segP_le_two_mul_a_of_kept (a : Fin X.s → ℕ) (hT 
   · exact hfin _ haT hc
 
 /- English proof (translation)
-Establish `hF` using `hS.hF`. Establish `hK'` using `hK`. Take `⟨-, hK1, -, -⟩` from `hK'`. Use `set u := uTop (X.S C0 CE1 CE2) i with hu`. Establish `hus : (u : ℕ) < X.s` using `u.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσu : (X.S C0 CE1 CE2).sigma ≤ (u : ℕ)`. Simplify using `[hu, uTop]`. Establish `hSdef : (gT C0 CE1 CE2 X b).S (lLL C0 CE1 CE2 X a b x) i = ∑ q : Fin (2 * X.s + 1), if (q : ℕ) ≤ 2 * (u : ℕ) then (lLL C0 CE1 CE2 X a b x).deg q else 0` using `rfl`. Rewrite using `[hSdef]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Establish `hm' : (4 : ℝ) ≤ X.L.m` using `by exact_mod_cast hF.m4`. Establish `hpm` using `hF.p_ge`. Establish `hp : (0 : ℝ) < X.p` using `by show (0 : ℝ) < X.L.p`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hb0` using `hF.b0`. Establish `hB : (0 : ℝ) ≤ 2 * X.L.a / X.p` using `by positivity`. Establish `key : ∀ q : Fin (2 * X.s + 1), (if (q : ℕ) ≤ 2 * (u : ℕ) then ((lLL C0 CE1 CE2 X a b x).deg q : ℝ) else 0) * (SegData.P X.p (X.S C0 CE1 CE2) u : ℝ) ≤ (if (q : ℕ) = 2 * (u : ℕ) then 5 / 2 * X.L.b' else 0) + 2 * X.L.a / X.p`. Introduce `q`. Distinguish the cases in `h : (q : ℕ) ≤ 2 * (u : ℕ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h]`. Distinguish the cases in `he : (q : ℕ) = 2 * (u : ℕ)`. Rewrite using `[if_pos he]`. Establish `h1` using `lLL_deg_le_chain hS a b x q`. Rewrite `h1` using `[segChain_deg_even (X.S C0 CE1 CE2) a b q u he hσu]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : coarseA X.p (X.S C0 CE1 CE2) b u ≤ (X.S C0 CE1 CE2).bTop u / SegData.P X.p (X.S C0 CE1 CE2) u` using `Nat.div_le_div_right (Nat.sub_le _ _)`. Establish `h4 : (lLL C0 CE1 CE2 X a b x).deg q * SegData.P X.p (X.S C0 CE1 CE2) u ≤ (X.S C0 CE1 CE2).bTop u` using `(Nat.mul_le_mul_right _ ((h1.trans (hK1 u hσu).1).trans hA)).trans (Nat.div_mul_le_self _ _)`. Establish `h5 : (((lLL C0 CE1 CE2 X a b x).deg q * SegData.P X.p (X.S C0 CE1 CE2) u : ℕ) : ℝ) ≤ (X.S C0 CE1 CE2).bTop u` using `by exact_mod_cast h4`. Move the coercions through the operations in `at h5`. Combine the linear relations using `[hS.bTop u]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg he, zero_add]`. Establish `hq : (q : ℕ) ≠ 2 * X.s` using `by omega`. Establish `h2` using `lLL_deg_mul_segP_le_two_mul_a_of_kept hS a hT b hK x q hq`. Establish `hvu : topOf q hq < u`. Rewrite using `[Fin.lt_iff_val_lt_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [topOf]`. Use linear arithmetic over natural numbers and integers. Establish `h3` using `P_step (C0 := C0) (CE1 := CE1) (CE2 := CE2) (X := X) _ _ hvu`. Establish `h3' : ((X.p : ℕ) : ℝ) * (SegData.P X.p (X.S C0 CE1 CE2) u : ℝ) ≤ (SegData.P X.p (X.S C0 CE1 CE2) (topOf q hq) : ℝ)` using `by exact_mod_cast h3`. Rewrite using `[le_div_iff₀ hp]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd0 : (0 : ℝ) ≤ ((lLL C0 CE1 CE2 X a b x).deg q : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Apply the tactic sequence `rw [if_neg h, zero_mul] split_ifs <;> positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Finset.sum_eq_single (⟨2 * (u : ℕ), by omega⟩ : Fin (2 * X.s + 1))]`.
+Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `c _ hc`. Rewrite using `[if_neg]`. Introduce `hc'`. Conclude with `hc (Fin.ext hc')`.
-
-Introduce `hc`. Conclude with `absurd (Finset.mem_univ _) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem S_bound (a : Fin X.s → ℕ) (hT : a ∈ Fintype.piFinset (fun _ : Fin X.s => X.winA)) (b : SegBlock X.s X.r)
     (hK : Kept X.p X.r (X.S C0 CE1 CE2) a b) (x : Lv C0 CE1 CE2 X) (i : Fin (X.S C0 CE1 CE2).t) :

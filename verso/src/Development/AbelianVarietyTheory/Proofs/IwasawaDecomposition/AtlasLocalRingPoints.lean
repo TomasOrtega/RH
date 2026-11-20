@@ -18,7 +18,7 @@ section Flags
 variable {X : Scheme.{0}} {t : SAB H X} {R S : Type} [CommRing R] [CommRing S] {ty : (E →+* ℂ) → Finset ℕ}
 
 /- English proof (translation)
-Introduce `σ j hj i hi` and use `by obtain ⟨cf, h1, h2⟩ := h σ j hj i hi exact ⟨fun l => φ (cf l), fun l hl => by simp [h1 l hl], comb_bc φ h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameFlag_bc (φ : R →+* S) {x : Sp R ⟶ X} {u u' : Vecs Dw t R} (h : SameFlag ty t x u u') :
     SameFlag ty t (spMap φ ≫ x) (u.bc φ) (u'.bc φ) := fun σ j hj i hi => by
@@ -26,7 +26,7 @@ theorem sameFlag_bc (φ : R →+* S) {x : Sp R ⟶ X} {u u' : Vecs Dw t R} (h : 
   exact ⟨fun l => φ (cf l), fun l hl => by simp [h1 l hl], comb_bc φ h2⟩
 
 /- English proof (translation)
-Introduce `σ j hj i hi` and use `by obtain ⟨cf, hcf, -⟩ := hu.exists_comb hu' σ i obtain ⟨cf', h1, h2⟩ := h σ j hj i hi have e := ((GlobalTheory.LocM.isFrame_bc E H Dw l c _ t _ _ _ φ _ _ hu).exists_comb (GlobalTheory.LocM.isFrame_bc E H Dw l c _ t _ _ _ φ _ _ hu') σ i).unique (comb_bc φ hcf) h2 exact ⟨cf, fun m …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameFlag_of_bc {l : Level H} {c : Coeff l} {g : c.F →+* R} {φ : R →+* S} (hφ : Function.Injective φ)
     {x : Sp R ⟶ X} {u u' : Vecs Dw t R} (hu : LocM.IsFrame t g x u) (hu' : LocM.IsFrame t g x u')
@@ -45,7 +45,7 @@ variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {V : ValuationSubring c.
   {X : Scheme.{0}} {π : X ⟶ M.X} {ty : (E →+* ℂ) → Finset ℕ} {A : Atlas M π ty} {K : Type} [Field K]
 
 /- English proof (translation)
-Take `⟨U, rfl⟩` from `h.exists_up`. Take `⟨U', rfl⟩` from `h'.exists_up`. Conclude with `(sameFlag_up_iff U U').2 fun σ j hj => (h'.initSpan_eq h σ hj).le`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sameFlag_of_flagAt {w : Sp K ⟶ X} {u u' : Vecs Dw M.t K} (h : A.FlagAt w u) (h' : A.FlagAt w u') :
     SameFlag ty M.t (w ≫ π) u u' := by
@@ -54,7 +54,7 @@ theorem sameFlag_of_flagAt {w : Sp K ⟶ X} {u u' : Vecs Dw M.t K} (h : A.FlagAt
   exact (sameFlag_up_iff U U').2 fun σ j hj => (h'.initSpan_eq h σ hj).le
 
 /- English proof (translation)
-Take `⟨a', φ', e', hf, -⟩` from `h`. Rewrite using `[A.alg_eq e e']` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem isFrame_of_flagAt {w : Sp K ⟶ X} {u : Vecs Dw M.t K} (h : A.FlagAt w u) {a : A.ch.ι} {φ : A.ch.R a →+* K}
     (e : spMap φ ≫ A.ch.χ a = w) : LocM.IsFrame M.t (φ.comp (A.alg a)) (w ≫ π) u := by
@@ -64,7 +64,7 @@ theorem isFrame_of_flagAt {w : Sp K ⟶ X} {u : Vecs Dw M.t K} (h : A.FlagAt w u
 end Atl
 
 /- English proof (translation)
-Establish `: IsDomain R` using `hφ.isDomain φ`. Establish `: IsDominant (spMap φ)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical φ).2 (by rw [(RingHom.injective_iff_ker_eq_bot φ).1 hφ]; exact bot_le)⟩`. Conclude with `ext_of_isDominant (spMap φ) h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_of_field {Y : Scheme.{0}} [Y.IsSeparated] {R K : Type} [CommRing R] [Field K] {φ : R →+* K}
     (hφ : Function.Injective φ) {x x' : Sp R ⟶ Y} (h : spMap φ ≫ x = spMap φ ≫ x') : x = x' := by
@@ -74,15 +74,15 @@ theorem ext_of_field {Y : Scheme.{0}} [Y.IsSeparated] {R K : Type} [CommRing R] 
   exact ext_of_isDominant (spMap φ) h
 
 /- English proof (translation)
-Establish `f₁` using `(A'.isFrame_bc e₁).push hc mu`. Rewrite `f₁` using `[← hg, ← hR]`. Establish `f₂` using `A.isFrame_bc e₂`. Establish `bc : ∀ {S : Type} [CommRing S] (χ : R →+* S), Vecs.bc (Dw` using `Dw) (t := M.t) χ (fun σ j => (A'.fr a₁).bc ρ₁ σ j ≫ mu.φ) = fun σ j => (A'.fr a₁).bc (χ.comp ρ₁) σ j ≫ mu.φ := fun χ => by`. Rewrite using `[← Vecs.bc_bc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `σ j`. Conclude with `(Category.assoc _ _ _).symm`. Establish `c₁ : ∀ {S : Type} [CommRing S] (χ : R →+* S), spMap (χ.comp ρ₁) ≫ A'.ch.χ a₁ = spMap χ ≫ z₁` using `fun χ => by rw [← spMap_comp', Category.assoc, e₁]`. Establish `c₂ : ∀ {S : Type} [CommRing S] (χ : R →+* S), spMap (χ.comp ρ₂) ≫ A.ch.χ a₂ = spMap χ ≫ z₂` using `fun χ => by rw [← spMap_comp', Category.assoc, e₂]`. Establish `key : SameFlag ty M.t (z₂ ≫ π) ((A.fr a₂).bc ρ₂) fun σ j => (A'.fr a₁).bc ρ₁ σ j ≫ mu.φ`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sameFlag_of_bc hφ f₂ f₁ ?_` and prove the remaining obligations. Rewrite using `[Vecs.bc_bc, bc, ← Category.assoc]`. Establish `g₁` using `A'.isFrame_bc (c₁ φ)`. Establish `g₂` using `A.isFrame_bc (c₂ φ)`. Establish `s₁` using `((sameFlag_of_flagAt h₁ (A'.flagAt_fr (c₁ φ))).push mu (fun σ j => ((isFrame_of_flagAt h₁ (c₁ φ)).1 σ j).1) fun σ j => (g₁.1 σ j).1).mono hty`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ((spMap φ ≫ z₁) ≫ π') ≫ τ = (spMap φ ≫ z₂) ≫ π` using `by simp only [Category.assoc, hR]`. Rewrite `s₁` using `[hK]`. Conclude with `SameFlag.trans (fun σ j => (g₂.1 σ j).1) (fun σ j => (g₂.exists_comb (isFrame_of_flagAt h₂ (c₂ φ)) σ j).exists) (sameFlag_of_flagAt (A.flagAt_fr (c₂ φ)) h₂) s₁`. Establish `r₁` using `GlobalTheory.LocM.isFrame_bc E H Dw l c _ M.t _ _ _ ψ _ _ f₁`. Establish `r₂` using `sameFlag_bc ψ key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `r₁`, `r₂` using `[bc, ← Category.assoc]`. Rewrite `r₂` using `[Vecs.bc_bc]`. Conclude with `⟨A'.flagAt_fr (c₁ ψ), a₂, ψ.comp ρ₂, c₂ ψ, r₁, r₂⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flagAt_specialise {l l' : Level H} {Xo : Moduli Dw l} {Xo' : Moduli Dw l'} {c : Coeff l} {c' : Coeff l'}
     {V : ValuationSubring c.F} {V' : ValuationSubring c'.F} {M : Model Xo c V.subtype} {M' : Model Xo' c' V'.subtype}
@@ -128,15 +128,15 @@ theorem flagAt_specialise {l l' : Level H} {Xo : Moduli Dw l} {Xo' : Moduli Dw l
   exact ⟨A'.flagAt_fr (c₁ ψ), a₂, ψ.comp ρ₂, c₂ ψ, r₁, r₂⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ i X π ty A Z R K k _ _ _ _ φ ψ z z' hc hty hφ hz ⟨τ, mu, u, htr, hK, h₁, h₂⟩`. Take `⟨b, π', r, hb, hπ₁, hπ₂, -, hj, -⟩` from `id htr`. Use `projProper _ _ _ (Y i).proj` as an intermediate fact. Establish `: (Y i).X.IsSeparated` using `⟨by rw [← terminal.comp_from (Y i).s]; infer_instance⟩`. Establish `hR : z' ≫ π = (z ≫ Z.π) ≫ τ` using `ext_of_field hφ (by simpa only [Category.assoc] using hK)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a₁, ρ₁, e₁⟩` from `(atlasOf Z).ch.exists_fac z (by rw [(atlasOf Z).cover]; exact hz)`. Take `⟨a₂, ρ₂, e₂⟩` from `A.ch.exists_fac z' (by`. Take `⟨q, hq⟩` from `hz`. Rewrite using `[A.cover]`. Conclude with `⟨r q, ((Scheme.Hom.comp_apply r _ q).symm.trans (congrArg (fun f => f q) hj.symm)).trans ((congrArg τ hq).trans (congrArg (fun f => f (IsLocalRing.closedPoint R)) hR.symm))⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hs : τ ≫ (Y i).s = (Y Z.i).s ≫ spMap b`. Rewrite using `[← hπ₁, ← hπ₂, Category.assoc, Category.assoc, pullback.condition]`. Establish `hg : ρ₂.comp (A.alg a₂) = (ρ₁.comp ((atlasOf Z).alg a₁)).comp (IntermediateField.inclusion hc).toRingHom`. Apply `coeff_ext (W := W)` to reduce the goal to its premises. Establish `e : z' ≫ π ≫ (Y i).s = (z ≫ Z.π ≫ (Y Z.i).s) ≫ spMap b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hR, Category.assoc, hs]`. Simplify using `only [Category.assoc]`. Rewrite using `[← A.affineOpenChart_comp_structure_eq_spMap e₂, e, (atlasOf Z).affineOpenChart_comp_structure_eq_spMap e₁, spMap_comp']`. Conclude with `congrArg spMap (RingHom.ext fun x => congrArg (ρ₁.comp ((atlasOf Z).alg a₁)) (Subtype.ext (hb x)))`. Take `⟨k₁, k₂⟩` from `flagAt_specialise (A' := atlasOf Z) mu hc hty hφ ψ hR e₁ e₂ hg h₁ h₂`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨τ, mu, _, htr, by simp only [Category.assoc, hR], k₁, k₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem natTo_specialise : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (i : Idx H p) (X : Scheme.{0}) (π : X ⟶ (Y i).X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas (Y i) π ty) (Z : Mdl Y i₀) (R K k : Type) [CommRing R] [IsLocalRing R] [Field K] [Field k] (φ : R →+* K) (ψ : R →+* k) (z : Sp R ⟶ Z.X) (z' : Sp R ⟶ X), i.c.F ≤ Z.i.c.F → (∀ σ, ty σ ⊆ Z.ty σ) → Function.Injective φ → z (IsLocalRing.closedPoint R) ∈ Z.opn → NatTo Z A (spMap φ ≫ z) (spMap φ ≫ z') → NatTo Z A (spMap ψ ≫ z) (spMap ψ ≫ z') := by
   intro E _ _ _ H Dw Xo p W Y i₀ i X π ty A Z R K k _ _ _ _ φ ψ z z' hc hty hφ hz ⟨τ, mu, u, htr, hK, h₁, h₂⟩

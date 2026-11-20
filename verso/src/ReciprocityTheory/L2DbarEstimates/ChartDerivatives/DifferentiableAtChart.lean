@@ -10,7 +10,7 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Unfold `d`. Conclude with `dif_neg h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem d_of_not_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (x : M)
@@ -20,7 +20,7 @@ theorem d_of_not_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n
   exact dif_neg h
 
 /- English proof (translation)
-Unfold `db`. Conclude with `dif_neg h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem db_of_not_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (x : M)
@@ -30,7 +30,7 @@ theorem db_of_not_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V 
   exact dif_neg h
 
 /- English proof (translation)
-Rewrite using `[he hx]`. Conclude with `e.map_source hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_mem_target {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (x : M) (hx : x ∈ e.source) :
@@ -39,7 +39,7 @@ theorem chart_mem_target {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V
   exact e.map_source hx
 
 /- English proof (translation)
-Rewrite using `[he hx]`. Conclude with `e.left_inv hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_symm_apply {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (x : M) (hx : x ∈ e.source) :
@@ -48,7 +48,7 @@ theorem chart_symm_apply {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V
   exact e.left_inv hx
 
 /- English proof (translation)
-The claim follows from `((hf e he).contDiffAt (e.open_target.mem_nhds (chart_mem_target n z e he x hx))).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem Ck.differentiableAt_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (f : M → ℂ) (hf : Ck n z 1 f) (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e)
@@ -58,7 +58,7 @@ theorem Ck.differentiableAt_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z 
     (by simp)
 
 /- English proof (translation)
-Simplify using `only [wd, fderiv_fun_add hg hh, ContinuousLinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_add' (n : ℕ) (j : Fin n) (g h : V n → ℂ) (y : V n) (hg : DifferentiableAt ℝ g y)
     (hh : DifferentiableAt ℝ h y) : wd n j (fun w => g w + h w) y = wd n j g y + wd n j h y := by
@@ -66,7 +66,7 @@ theorem wd_add' (n : ℕ) (j : Fin n) (g h : V n → ℂ) (y : V n) (hg : Differ
   ring
 
 /- English proof (translation)
-Simplify using `only [wdb, fderiv_fun_add hg hh, ContinuousLinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wdb_add' (n : ℕ) (j : Fin n) (g h : V n → ℂ) (y : V n) (hg : DifferentiableAt ℝ g y)
     (hh : DifferentiableAt ℝ h y) : wdb n j (fun w => g w + h w) y = wdb n j g y + wdb n j h y := by
@@ -74,7 +74,7 @@ theorem wdb_add' (n : ℕ) (j : Fin n) (g h : V n → ℂ) (y : V n) (hg : Diffe
   ring
 
 /- English proof (translation)
-Simplify using `only [wd, fderiv_const_mul hg c, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_const_mul' (n : ℕ) (j : Fin n) (c : ℂ) (g : V n → ℂ) (y : V n)
     (hg : DifferentiableAt ℝ g y) : wd n j (fun w => c * g w) y = c * wd n j g y := by
@@ -82,7 +82,7 @@ theorem wd_const_mul' (n : ℕ) (j : Fin n) (c : ℂ) (g : V n → ℂ) (y : V n
   ring
 
 /- English proof (translation)
-Simplify using `only [wdb, fderiv_const_mul hg c, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wdb_const_mul' (n : ℕ) (j : Fin n) (c : ℂ) (g : V n → ℂ) (y : V n)
     (hg : DifferentiableAt ℝ g y) : wdb n j (fun w => c * g w) y = c * wdb n j g y := by
@@ -90,7 +90,7 @@ theorem wdb_const_mul' (n : ℕ) (j : Fin n) (c : ℂ) (g : V n → ℂ) (y : V 
   ring
 
 /- English proof (translation)
-Simplify using `only [wd, fderiv_fun_mul hg hh, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_mul' (n : ℕ) (j : Fin n) (g h : V n → ℂ) (y : V n) (hg : DifferentiableAt ℝ g y)
     (hh : DifferentiableAt ℝ h y) :
@@ -100,7 +100,7 @@ theorem wd_mul' (n : ℕ) (j : Fin n) (g h : V n → ℂ) (y : V n) (hg : Differ
   ring
 
 /- English proof (translation)
-Simplify using `only [wdb, fderiv_fun_mul hg hh, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wdb_mul' (n : ℕ) (j : Fin n) (g h : V n → ℂ) (y : V n) (hg : DifferentiableAt ℝ g y)
     (hh : DifferentiableAt ℝ h y) :
@@ -110,7 +110,7 @@ theorem wdb_mul' (n : ℕ) (j : Fin n) (g h : V n → ℂ) (y : V n) (hg : Diffe
   ring
 
 /- English proof (translation)
-Simplify using `only [wd, hg.hasFDerivAt.cexp.fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_cexp' (n : ℕ) (j : Fin n) (g : V n → ℂ) (y : V n) (hg : DifferentiableAt ℝ g y) :
     wd n j (fun w => Complex.exp (g w)) y = Complex.exp (g y) * wd n j g y := by
@@ -118,7 +118,7 @@ theorem wd_cexp' (n : ℕ) (j : Fin n) (g : V n → ℂ) (y : V n) (hg : Differe
   ring
 
 /- English proof (translation)
-Simplify using `only [wdb, hg.hasFDerivAt.cexp.fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wdb_cexp' (n : ℕ) (j : Fin n) (g : V n → ℂ) (y : V n) (hg : DifferentiableAt ℝ g y) :
     wdb n j (fun w => Complex.exp (g w)) y = Complex.exp (g y) * wdb n j g y := by
@@ -126,7 +126,7 @@ theorem wdb_cexp' (n : ℕ) (j : Fin n) (g : V n → ℂ) (y : V n) (hg : Differ
   ring
 
 /- English proof (translation)
-Establish `h : (fun w => (starRingEnd ℂ) (g w)) = Complex.conjLIE ∘ g`. Use function extensionality and compare the values at `w`. Simplify using `[Complex.conjLIE_apply]`. Rewrite using `[h, LinearIsometryEquiv.comp_fderiv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_conj' (n : ℕ) (g : V n → ℂ) (y : V n) (v : V n) :
     fderiv ℝ (fun w => (starRingEnd ℂ) (g w)) y v = (starRingEnd ℂ) (fderiv ℝ g y v) := by
@@ -137,7 +137,7 @@ theorem fderiv_conj' (n : ℕ) (g : V n → ℂ) (y : V n) (v : V n) :
   simp
 
 /- English proof (translation)
-Simplify using `only [wdb, wd, fderiv_conj', map_div₀, map_sub, map_mul, Complex.conj_I, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wdb_conj' (n : ℕ) (j : Fin n) (g : V n → ℂ) (y : V n) :
     wdb n j (fun w => (starRingEnd ℂ) (g w)) y = (starRingEnd ℂ) (wd n j g y) := by
@@ -145,7 +145,7 @@ theorem wdb_conj' (n : ℕ) (j : Fin n) (g : V n → ℂ) (y : V n) :
   ring
 
 /- English proof (translation)
-Simplify using `only [wdb, wd, fderiv_conj', map_div₀, map_add, map_mul, Complex.conj_I, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_conj' (n : ℕ) (j : Fin n) (g : V n → ℂ) (y : V n) :
     wd n j (fun w => (starRingEnd ℂ) (g w)) y = (starRingEnd ℂ) (wdb n j g y) := by
@@ -153,11 +153,11 @@ theorem wd_conj' (n : ℕ) (j : Fin n) (g : V n → ℂ) (y : V n) :
   ring
 
 /- English proof (translation)
-Establish `h1` using `Complex.ofRealCLM.hasFDerivAt.comp y (hk.hasDerivAt.comp_hasFDerivAt y hp.hasFDerivAt)`. Establish `h2` using `Complex.ofRealCLM.hasFDerivAt.comp y hp.hasFDerivAt`. Establish `e1 : (fun w => ((k (p w) : ℝ) : ℂ)) = ⇑Complex.ofRealCLM ∘ (k ∘ p)`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e2 : (fun w => ((p w : ℝ) : ℂ)) = ⇑Complex.ofRealCLM ∘ p`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Simplify using `only [wd]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1.fderiv, h2.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, Complex.ofRealCLM_apply, smul_eq_mul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_comp_real' (n : ℕ) (j : Fin n) (k : ℝ → ℝ) (p : V n → ℝ) (y : V n)
     (hk : DifferentiableAt ℝ k (p y)) (hp : DifferentiableAt ℝ p y) :
@@ -176,11 +176,11 @@ theorem wd_comp_real' (n : ℕ) (j : Fin n) (k : ℝ → ℝ) (p : V n → ℝ) 
   ring
 
 /- English proof (translation)
-Establish `h1` using `Complex.ofRealCLM.hasFDerivAt.comp y (hk.hasDerivAt.comp_hasFDerivAt y hp.hasFDerivAt)`. Establish `h2` using `Complex.ofRealCLM.hasFDerivAt.comp y hp.hasFDerivAt`. Establish `e1 : (fun w => ((k (p w) : ℝ) : ℂ)) = ⇑Complex.ofRealCLM ∘ (k ∘ p)`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e2 : (fun w => ((p w : ℝ) : ℂ)) = ⇑Complex.ofRealCLM ∘ p`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Simplify using `only [wdb]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1.fderiv, h2.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, Complex.ofRealCLM_apply, smul_eq_mul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wdb_comp_real' (n : ℕ) (j : Fin n) (k : ℝ → ℝ) (p : V n → ℝ) (y : V n)
     (hk : DifferentiableAt ℝ k (p y)) (hp : DifferentiableAt ℝ p y) :
@@ -199,9 +199,9 @@ theorem wdb_comp_real' (n : ℕ) (j : Fin n) (k : ℝ → ℝ) (p : V n → ℝ)
   ring
 
 /- English proof (translation)
-Establish `h` using `(Complex.reCLM.differentiable.differentiableAt).comp (z x) (Ck.differentiableAt_chart n z _ hph e he x hx)`. Establish `e1 : (fun w => ph (e.symm w)) = ⇑Complex.reCLM ∘ (fun x => (ph x : ℂ)) ∘ e.symm`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem CkR.differentiableAt_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (ph : M → ℝ) (hph : CkR n z 1 ph) (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e)
@@ -215,11 +215,11 @@ theorem CkR.differentiableAt_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z
   exact h
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨e, he, hxe⟩` from `h`. Rewrite using `[d_eq_wd n z e he j f x hxe]`. Establish `h0 : f =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.mp hx`. Establish `ht` using `(e.continuousAt_symm (chart_mem_target n z e he x hxe)).tendsto`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ht` using `[chart_symm_apply n z e he x hxe]`. Establish `h1 : (f ∘ e.symm) =ᶠ[𝓝 (z x)] (fun _ => (0 : ℂ))` using `by filter_upwards [h0.comp_tendsto ht] with w hw`. Simplify using `using hw`. Rewrite using `[wd_congr n j _ _ _ h1]`. Simplify using `[wd]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `d_of_not_chart n z j f x h`.
+A detailed English derivation is pending.
 -/
 theorem d_eq_zero_of_notMem {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (x : M) (hx : x ∉ tsupport f) : d n z j f x = 0 := by
@@ -237,11 +237,11 @@ theorem d_eq_zero_of_notMem {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M �
   · exact d_of_not_chart n z j f x h
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨e, he, hxe⟩` from `h`. Rewrite using `[db_eq_wdb n z e he j f x hxe]`. Establish `h0 : f =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.mp hx`. Establish `ht` using `(e.continuousAt_symm (chart_mem_target n z e he x hxe)).tendsto`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ht` using `[chart_symm_apply n z e he x hxe]`. Establish `h1 : (f ∘ e.symm) =ᶠ[𝓝 (z x)] (fun _ => (0 : ℂ))` using `by filter_upwards [h0.comp_tendsto ht] with w hw`. Simplify using `using hw`. Rewrite using `[wdb_congr n j _ _ _ h1]`. Simplify using `[wdb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `db_of_not_chart n z j f x h`.
+A detailed English derivation is pending.
 -/
 theorem db_eq_zero_of_notMem {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (x : M) (hx : x ∉ tsupport f) : db n z j f x = 0 := by

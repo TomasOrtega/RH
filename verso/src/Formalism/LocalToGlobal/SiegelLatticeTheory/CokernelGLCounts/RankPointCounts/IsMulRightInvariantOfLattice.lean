@@ -17,9 +17,9 @@ def lcount (Γ : Subgroup H) (K : Set H) (x : H) : ℝ≥0∞ := ∑' γ : Γ, K
 def lwt (Γ : Subgroup H) (K : Set H) (x : H) : ℝ≥0∞ := K.indicator 1 x * (lcount Γ K x)⁻¹
 
 /- English proof (translation)
-Establish `hK' : IsCompact ((fun y => y * x⁻¹) '' K)` using `hK.image (continuous_mul_const x⁻¹)`. Establish `h1` using `(Γ.tendsto_coe_cofinite_of_discrete (isDiscrete_iff_discreteTopology.mpr inferInstance)) hK'.compl_mem_cocompact`. Use `(Filter.mem_cofinite.1 h1).subset ?_` and prove the remaining obligations. Introduce `γ hγ`. Simplify using `only [Set.mem_compl_iff, Set.mem_preimage, not_not]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨(γ : H) * x, hγ, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_hits (Γ : Subgroup H) [DiscreteTopology Γ] {K : Set H} (hK : IsCompact K) (x : H) :
     {γ : Γ | (γ : H) * x ∈ K}.Finite := by
@@ -32,9 +32,9 @@ theorem finite_hits (Γ : Subgroup H) [DiscreteTopology Γ] {K : Set H} (hK : Is
   exact ⟨(γ : H) * x, hγ, by simp⟩
 
 /- English proof (translation)
-Establish `hs` using `finite_hits Γ hK x`. Unfold `lcount`. Rewrite using `[tsum_eq_sum (s := hs.toFinset) ?_]`. Conclude with `ENNReal.sum_ne_top.2 fun γ _ => by`. Apply the tactic sequence `by_cases h : (γ : H) * x ∈ K <;> simp [Set.indicator, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hγ`. Simplify using `[Set.indicator, hγ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lcount_ne_top (Γ : Subgroup H) [DiscreteTopology Γ] {K : Set H} (hK : IsCompact K) (x : H) :
     lcount Γ K x ≠ ∞ := by
@@ -48,7 +48,7 @@ theorem lcount_ne_top (Γ : Subgroup H) [DiscreteTopology Γ] {K : Set H} (hK : 
     simp [Set.indicator, hγ]
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `hcov x`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 theorem one_le_lcount (Γ : Subgroup H) {K : Set H} (hcov : ∀ x : H, ∃ s ∈ Γ, s * x ∈ K) (x : H) :
     1 ≤ lcount Γ K x := by
@@ -57,7 +57,7 @@ theorem one_le_lcount (Γ : Subgroup H) {K : Set H} (hcov : ∀ x : H, ∃ s ∈
     _ ≤ lcount Γ K x := ENNReal.le_tsum (f := fun γ : Γ => K.indicator 1 ((γ : H) * x)) _
 
 /- English proof (translation)
-Unfold `lcount`. Use `(Equiv.mulRight δ).tsum_eq (fun γ : Γ => K.indicator (1 : H → ℝ≥0∞) ((γ : H) * x))` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lcount_mul (Γ : Subgroup H) (K : Set H) (δ : Γ) (x : H) :
     lcount Γ K ((δ : H) * x) = lcount Γ K x := by
@@ -66,7 +66,7 @@ theorem lcount_mul (Γ : Subgroup H) (K : Set H) (δ : Γ) (x : H) :
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-The claim follows from `Measurable.ennreal_tsum fun _ => ((measurable_one : Measurable (1 : H → ℝ≥0∞)).indicator hK.measurableSet).comp (measurable_const_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_lcount (Γ : Subgroup H) [Countable Γ] {K : Set H} (hK : IsCompact K) :
     Measurable (lcount Γ K) :=
@@ -74,14 +74,14 @@ theorem measurable_lcount (Γ : Subgroup H) [Countable Γ] {K : Set H} (hK : IsC
     ((measurable_one : Measurable (1 : H → ℝ≥0∞)).indicator hK.measurableSet).comp (measurable_const_mul _)
 
 /- English proof (translation)
-The claim follows from `((measurable_one : Measurable (1 : H → ℝ≥0∞)).indicator hK.measurableSet).mul (measurable_lcount Γ hK).inv`.
+A detailed English derivation is pending.
 -/
 theorem measurable_lwt (Γ : Subgroup H) [Countable Γ] {K : Set H} (hK : IsCompact K) :
     Measurable (lwt Γ K) :=
   ((measurable_one : Measurable (1 : H → ℝ≥0∞)).indicator hK.measurableSet).mul (measurable_lcount Γ hK).inv
 
 /- English proof (translation)
-Unfold `lwt`. Repeatedly rewrite using `[lcount_mul]`. Rewrite using `[ENNReal.tsum_mul_right]`. Conclude with `ENNReal.mul_inv_cancel (zero_lt_one.trans_le (one_le_lcount Γ hcov x)).ne' (lcount_ne_top Γ hK x)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_lwt (Γ : Subgroup H) [DiscreteTopology Γ] {K : Set H} (hK : IsCompact K)
     (hcov : ∀ x : H, ∃ s ∈ Γ, s * x ∈ K) (x : H) : ∑' γ : Γ, lwt Γ K ((γ : H) * x) = 1 := by
@@ -91,20 +91,18 @@ theorem tsum_lwt (Γ : Subgroup H) [DiscreteTopology Γ] {K : Set H} (hK : IsCom
   exact ENNReal.mul_inv_cancel (zero_lt_one.trans_le (one_le_lcount Γ hcov x)).ne' (lcount_ne_top Γ hK x)
 
 /- English proof (translation)
-The claim follows from `mul_le_of_le_one_right (by positivity) (ENNReal.inv_le_one.2 (one_le_lcount Γ hcov x))`.
+A detailed English derivation is pending.
 -/
 theorem lwt_le (Γ : Subgroup H) {K : Set H} (hcov : ∀ x : H, ∃ s ∈ Γ, s * x ∈ K) (x : H) :
     lwt Γ K x ≤ K.indicator 1 x :=
   mul_le_of_le_one_right (by positivity) (ENNReal.inv_le_one.2 (one_le_lcount Γ hcov x))
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[ENNReal.tsum_mul_left, hg1, mul_one]`. Use `_ = ∑' γ : Γ, ∫⁻ x, f x * g ((γ : H) * x) ∂μ := lintegral_tsum fun γ => (hf.mul (hg.comp (measurable_const_mul _))).aemeasurable`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `_ = ∑' γ : Γ, ∫⁻ y, f ((γ : H)⁻¹ * y) * g y ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `γ`. Use `lintegral_mul_left_eq_self (μ := μ) (fun y => f ((γ : H)⁻¹ * y) * g y) (γ : H)` as an intermediate fact. Simplify `this` using `only [inv_mul_cancel_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `_ = ∫⁻ y, ∑' γ : Γ, f ((γ : H)⁻¹ * y) * g y ∂μ := (lintegral_tsum fun γ => ((hf.comp (measurable_const_mul _)).mul hg).aemeasurable).symm`. Use `_ = ∫⁻ y, g y ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[ENNReal.tsum_mul_right]`.
-
-Use `(Equiv.inv Γ).tsum_eq (fun γ : Γ => f ((γ : H) * y))` as an intermediate fact. Simplify using `only [Equiv.inv_apply, Subgroup.coe_inv] at this`. Rewrite using `[this, hf1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_eq_of_tsum (μ : Measure H) [μ.IsMulLeftInvariant] (Γ : Subgroup H) [Countable Γ]
     {f g : H → ℝ≥0∞} (hf : Measurable f) (hg : Measurable g)
@@ -128,7 +126,7 @@ theorem lintegral_eq_of_tsum (μ : Measure H) [μ.IsMulLeftInvariant] (Γ : Subg
         rw [this, hf1, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← ENNReal.smul_def, modularCharacterFun_eq_haarScalarFactor μ g]`. Conclude with `isMulLeftInvariant_eq_smul (μ.map (· * g)) μ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_right_eq_modular (μ : Measure H) [IsHaarMeasure μ] (g : H) :
     μ.map (· * g) = ((modularCharacterFun g : ℝ≥0) : ℝ≥0∞) • μ := by
@@ -136,15 +134,13 @@ theorem map_mul_right_eq_modular (μ : Measure H) [IsHaarMeasure μ] (g : H) :
   exact isMulLeftInvariant_eq_smul (μ.map (· * g)) μ
 
 /- English proof (translation)
-Use `set I := ∫⁻ x, lwt Γ K x ∂μ with hI`. Establish `hw` using `measurable_lwt Γ hK`. Establish `hItop : I ≠ ∞`. Use `ne_top_of_le_ne_top (hK.measure_lt_top (μ := μ)).ne ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hI0 : I ≠ 0`. Introduce `h0`. Establish `huniv : μ univ = ∑' γ : Γ, I`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[tsum_lwt Γ hK hcov x]`. Use `_ = ∑' γ : Γ, ∫⁻ x, lwt Γ K ((γ : H) * x) ∂μ := lintegral_tsum fun γ => (hw.comp (measurable_const_mul _)).aemeasurable`. Use `_ = ∑' γ : Γ, I := by`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `γ`. Conclude with `lintegral_mul_left_eq_self _ _`. Rewrite `huniv` using `[h0, tsum_zero, Measure.measure_univ_eq_zero]`. Conclude with `NeZero.ne μ huniv`. Establish `hshift : ∫⁻ x, lwt Γ K (x * δ) ∂μ = I` using `(lintegral_eq_of_tsum μ Γ (hw.comp (measurable_mul_const δ)) hw (fun x => by simpa [mul_assoc] using tsum_lwt Γ hK hcov (x * δ)) (tsum_lwt Γ hK hcov)).trans rfl`.
-
-Establish `hmap : ∫⁻ x, lwt Γ K (x * δ) ∂μ = (modularCharacterFun δ : ℝ≥0∞) * I`. Rewrite using `[← lintegral_map hw (measurable_mul_const δ), map_mul_right_eq_modular μ δ, lintegral_smul_measure]`. Apply the tactic sequence `all_goals first | rfl | simp [hI]`. Establish `: (modularCharacterFun δ : ℝ≥0∞) * I = 1 * I` using `by rw [← hmap, hshift, one_mul]`. Conclude with `ENNReal.coe_eq_one.1 ((ENNReal.mul_left_inj hI0 hItop).1 this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modular_eq_one_of_mem (μ : Measure H) [IsHaarMeasure μ] (Γ : Subgroup H) [Countable Γ]
     [DiscreteTopology Γ] {K : Set H} (hK : IsCompact K) (hcov : ∀ x : H, ∃ s ∈ Γ, s * x ∈ K)
@@ -177,21 +173,19 @@ theorem modular_eq_one_of_mem (μ : Measure H) [IsHaarMeasure μ] (Γ : Subgroup
   exact ENNReal.coe_eq_one.1 ((ENNReal.mul_left_inj hI0 hItop).1 this)
 
 /- English proof (translation)
-Take `⟨V, hV, hV1⟩` from `exists_compact_mem_nhds (1 : H)`. Establish `hVpos : 0 < μ V` using `measure_pos_of_mem_nhds μ hV1`. Establish `hB : μ (V * K⁻¹) ≠ ∞` using `(hV.mul hK.inv).measure_lt_top.ne`. Use `set b : ℝ≥0 := (μ (V * K⁻¹) / μ V).toNNReal`. Establish `hbd : ∀ r : H, modularCharacterFun r ≤ b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Take `⟨s, hs, hsr⟩` from `hcov r`. Establish `hmul : modularCharacterFun r = modularCharacterFun (s * r)`. Rewrite using `[modularCharacterFun_map_mul, modular_eq_one_of_mem μ Γ hK hcov hs, one_mul]`. Rewrite using `[hmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (modularCharacterFun (s * r) : ℝ≥0∞) * μ V ≤ μ (V * K⁻¹)`. Establish `e` using `congrArg (fun m : Measure H => m V) (map_mul_right_eq_modular μ (s * r))`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at e`. Rewrite using `[← e, Measure.map_apply (measurable_mul_const _) hV.measurableSet]`. Use `measure_mono fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx' : x * (s * r) ∈ V` using `hx`. Establish `: x = (x * (s * r)) * (s * r)⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `Set.mul_mem_mul hx' (Set.inv_mem_inv.2 hsr)`. Establish `h2 : (modularCharacterFun (s * r) : ℝ≥0∞) ≤ μ (V * K⁻¹) / μ V` using `(ENNReal.le_div_iff_mul_le (Or.inl hVpos.ne') (Or.inr hB)).2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : μ (V * K⁻¹) / μ V ≠ ∞` using `ENNReal.div_ne_top hB hVpos.ne'`. Conclude with `ENNReal.coe_le_coe.1 (h2.trans_eq (ENNReal.coe_toNNReal hne).symm)`. Establish `hle : ∀ r : H, modularCharacterFun r ≤ 1`. Introduce `r`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at h`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt b h`. Use `hbd (r ^ n)` as an intermediate fact. Establish `e : modularCharacterFun (r ^ n) = modularCharacterFun r ^ n` using `map_pow (modularCharacter (G := H)) r n`. Rewrite `this` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd this (not_le.2 hn)`. Establish `hone : modularCharacterFun g = 1`. Use `le_antisymm (hle g) ?_` and prove the remaining obligations. Establish `e : modularCharacterFun g * modularCharacterFun g⁻¹ = 1`. Rewrite using `[← modularCharacterFun_map_mul, mul_inv_cancel, modularCharacterFun_map_one]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul_right_eq_modular μ g, hone, ENNReal.coe_one, one_smul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_map_mul_right_of_lattice (μ : Measure H) [IsHaarMeasure μ] (Γ : Subgroup H) [Countable Γ]
     [DiscreteTopology Γ] {K : Set H} (hK : IsCompact K) (hcov : ∀ x : H, ∃ s ∈ Γ, s * x ∈ K) (g : H) :
@@ -241,7 +235,7 @@ theorem haar_map_mul_right_of_lattice (μ : Measure H) [IsHaarMeasure μ] (Γ : 
   rw [map_mul_right_eq_modular μ g, hone, ENNReal.coe_one, one_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g => haar_map_mul_right_of_lattice μ Γ hK hcov g⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMulRightInvariant_of_lattice (μ : Measure H) [IsHaarMeasure μ] (Γ : Subgroup H) [Countable Γ]
     [DiscreteTopology Γ] {K : Set H} (hK : IsCompact K) (hcov : ∀ x : H, ∃ s ∈ Γ, s * x ∈ K) :
@@ -249,13 +243,13 @@ theorem isMulRightInvariant_of_lattice (μ : Measure H) [IsHaarMeasure μ] (Γ :
   ⟨fun g => haar_map_mul_right_of_lattice μ Γ hK hcov g⟩
 
 /- English proof (translation)
-Use `haveI := isMulRightInvariant_of_lattice μ Γ hK hcov`. Set `c : ℝ≥0∞` to `haarScalarFactor μ.inv μ`. Establish `hc : μ.inv = c • μ` using `isMulLeftInvariant_eq_smul μ.inv μ`. Establish `h2 : map Inv.inv (map Inv.inv μ) = c ^ 2 • μ`. Rewrite using `[← inv_def μ, hc, Measure.map_smul, ← inv_def μ, hc, smul_smul, pow_two]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `μeq : μ = c ^ 2 • μ`. Rewrite `h2` using `[map_map continuous_inv.measurable continuous_inv.measurable]`. Simplify `h2` using `only [inv_involutive, Function.Involutive.comp_self, Measure.map_id]`. Take `⟨V, hV, hV1⟩` from `exists_compact_mem_nhds (1 : H)`. Establish `hVpos : 0 < μ V` using `measure_pos_of_mem_nhds μ hV1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : c ^ 2 * μ V = 1 ^ 2 * μ V` using `by conv_rhs => rw [μeq]`. Simplify using the standard rewrite rules. Establish `e2 : c ^ 2 = 1 ^ 2` using `(ENNReal.mul_left_inj hVpos.ne' hV.measure_lt_top.ne).1 e`. Establish `e3 : c = 1` using `(ENNReal.pow_right_strictMono two_ne_zero).injective e2`. Express the relevant statement in the definitionally equal form `μ.inv = μ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, e3, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem haar_map_inv_of_lattice (μ : Measure H) [IsHaarMeasure μ] (Γ : Subgroup H) [Countable Γ]
     [DiscreteTopology Γ] {K : Set H} (hK : IsCompact K) (hcov : ∀ x : H, ∃ s ∈ Γ, s * x ∈ K) :
@@ -279,7 +273,7 @@ theorem haar_map_inv_of_lattice (μ : Measure H) [IsHaarMeasure μ] (Γ : Subgro
   rw [hc, e3, one_smul]
 
 /- English proof (translation)
-Establish `e : (fun x => n⁻¹ * x * n) = (· * n) ∘ (n⁻¹ * ·)` using `rfl`. Rewrite using `[e, ← map_map (measurable_mul_const n) (measurable_const_mul n⁻¹), map_mul_left_eq_self μ n⁻¹, haar_map_mul_right_of_lattice μ Γ hK hcov n]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem haar_map_conj_of_lattice (μ : Measure H) [IsHaarMeasure μ] (Γ : Subgroup H) [Countable Γ]
     [DiscreteTopology Γ] {K : Set H} (hK : IsCompact K) (hcov : ∀ x : H, ∃ s ∈ Γ, s * x ∈ K) (n : H) :
@@ -296,15 +290,13 @@ variable {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Sp
   [LocallyCompactSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
 /- English proof (translation)
-Establish `hpow : ∀ n : ℕ, μ.map (f^[n]) = c ^ n • μ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ, ← map_map (hf.iterate n).measurable hf.measurable, hc, Measure.map_smul, ih, smul_smul, pow_succ']`. Establish `hVpos : 0 < μ V` using `measure_pos_of_mem_nhds μ hV1`. Establish `hLtop : μ L ≠ ∞` using `hL.measure_lt_top.ne`. Establish `hle : ∀ n : ℕ, μ V ≤ c ^ n * μ L`. Introduce `n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcpt : IsCompact (f^[n] '' V)` using `hV.image (hf.iterate n)`. Establish `e` using `congrArg (fun m : Measure H => m (f^[n] '' V)) (hpow n)`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at e`. Rewrite `e` using `[Measure.map_apply (hf.iterate n).measurable hcpt.measurableSet, Set.preimage_image_eq _ (hinj.iterate n)]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Conclude with `hb n`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `ht : Tendsto (fun n : ℕ => c ^ n * μ L) atTop (𝓝 0)`.
-
-Simplify using `using ENNReal.Tendsto.mul_const (ENNReal.tendsto_pow_atTop_nhds_zero_of_lt_one h) (Or.inr hLtop)`. Take `⟨n, hn⟩` from `(ht.eventually (gt_mem_nhds hVpos)).exists`. Conclude with `absurd (hle n) (not_le.2 hn)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem one_le_of_iterate_bounded (μ : Measure H) [IsHaarMeasure μ] {f : H → H} (hf : Continuous f)
     (hinj : Function.Injective f) {c : ℝ≥0∞} (hc : μ.map f = c • μ) {V L : Set H} (hV : IsCompact V)
@@ -336,15 +328,13 @@ theorem one_le_of_iterate_bounded (μ : Measure H) [IsHaarMeasure μ] {f : H →
   exact absurd (hle n) (not_le.2 hn)
 
 /- English proof (translation)
-Establish `hc : μ.map α = (haarScalarFactor (μ.map α) μ : ℝ≥0∞) • μ`. Rewrite using `[← ENNReal.smul_def]`. Conclude with `isMulLeftInvariant_eq_smul _ μ`. Establish `hc' : μ.map α.symm = (haarScalarFactor (μ.map α.symm) μ : ℝ≥0∞) • μ`. Rewrite using `[← ENNReal.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isMulLeftInvariant_eq_smul _ μ`. Use `set c : ℝ≥0∞ := (haarScalarFactor (μ.map α) μ : ℝ≥0∞)`. Use `set c' : ℝ≥0∞ := (haarScalarFactor (μ.map α.symm) μ : ℝ≥0∞)`. Establish `h1 : 1 ≤ c` using `one_le_of_iterate_bounded μ α.continuous α.injective hc hV hV1 hL fun n => (hb n).1`. Establish `h2 : 1 ≤ c'` using `one_le_of_iterate_bounded μ α.symm.continuous α.symm.injective hc' hV hV1 hL fun n => (hb n).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hid : μ = (c * c') • μ`. Establish `e : μ.map (⇑α.symm ∘ ⇑α) = μ`. Establish `: (⇑α.symm ∘ ⇑α) = id` using `funext fun x => α.symm_apply_apply x`. Rewrite using `[this, Measure.map_id]`. Rewrite `e` using `[← map_map (show Measurable (⇑α.symm) from α.symm.continuous.measurable) (show Measurable (⇑α) from α.continuous.measurable), hc, Measure.map_smul, hc', smul_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e.symm`. Take `⟨W, hW, hW1⟩` from `exists_compact_mem_nhds (1 : H)`. Establish `hWpos : 0 < μ W` using `measure_pos_of_mem_nhds μ hW1`. Establish `e : c * c' * μ W = 1 * μ W` using `by conv_rhs => rw [hid]`. Simplify using the standard rewrite rules.
-
-Establish `hcc : c * c' = 1` using `(ENNReal.mul_left_inj hWpos.ne' hW.measure_lt_top.ne).1 e`. Establish `hc1 : c = 1` using `le_antisymm (by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, hc1, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_map_equiv_of_bounded (μ : Measure H) [IsHaarMeasure μ] (α : H ≃ₜ* H) {V L : Set H}
     (hV : IsCompact V) (hV1 : V ∈ 𝓝 (1 : H)) (hL : IsCompact L)

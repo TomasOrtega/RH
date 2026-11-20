@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O D.X]
 
 /- English proof (translation)
-Unfold `val`. Conclude with `map_pow _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem val_pow {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (n : ℕ) (r : Z ⟶ Y) (z : Z) (J) :
@@ -20,11 +20,11 @@ theorem val_pow {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K �
   exact map_pow _ _ _
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Nat.cast_zero, zero_mul, pow_zero]`. Establish `h` using `oa.onB.map_add 0 0`. Rewrite `h` using `[add_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : oa.onB.act 0 * oa.onB.act 0 = oa.onB.act 0 * 1`. Rewrite using `[_root_.mul_one]`. Conclude with `h.symm`. Conclude with `_root_.mul_left_cancel h2`. Consider the case `succ n ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Nat.cast_succ, add_mul, _root_.one_mul, oa.onB.map_add, ih, pow_succ]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem act_nsmul (oa : D.OAct O) (w : O) (n : ℕ) : oa.onB.act ((n : O) * w) = oa.onB.act w ^ n := by
   induction n with
@@ -40,7 +40,7 @@ theorem act_nsmul (oa : D.OAct O) (w : O) (n : ℕ) : oa.onB.act ((n : O) * w) =
     rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_mul', zpow_natCast]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ppow {K U : Type} [Fintype K] [CommGroup U] (q : K → U) (e : K → ℤ) (n : ℕ) {c : U} (h : ∏ i, q i ^ e i = c) :
     ∏ i, q i ^ ((n : ℤ) * e i) = c ^ n := by
@@ -50,7 +50,7 @@ theorem ppow {K U : Type} [Fintype K] [CommGroup U] (q : K → U) (e : K → ℤ
   rw [zpow_mul', zpow_natCast]
 
 /- English proof (translation)
-Establish `C : IsCub (cubV D.cub z J)` using `isCub_cubV D.cub hJ`. Establish `e` using `(ros_add D.cub hG D.P.isAb _ _ u hu n hJ 1 1 (1 ≫ p)).2`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp g, C.face₃, C.face₃, _root_.mul_one, _root_.one_mul]`. Rewrite using `[val_pull hJ, ← Over.comp_left, comp_lift, hq]`. Conclude with `mul_eq_left.1 e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ros_right_one (hG : GlobalFnsSt) {f g : D.P.A ⟶ D.P.A} [IsMonHom f] [IsMonHom g]
     (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A f g) rosatiε)) (hu : u.IsGen)
@@ -66,25 +66,23 @@ theorem ros_right_one (hG : GlobalFnsSt) {f g : D.P.A ⟶ D.P.A} [IsMonHom f] [I
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Use `oa.onB.hom w0` as an intermediate fact. Take `⟨u₂, hu₂, n₂⟩` from `exists_ros hG D.P.isAb D.P.isLB _ _ (oa.onB.rosati a)`. Take `⟨u₀, hu₀, n₀, -⟩` from `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `g` to `oa.onB.act a`. Set `f` to `oa.onB.act (star a)`. Set `w` to `oa.onB.act w0`. Set `x : D.P.A ⟶ D.P.A` to `𝟙 _`. Take `⟨t, ht, vt⟩` from `exists_cubN D.cub (1 : D.P.A ⟶ D.P.A) w x (N + 1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hz : (g ≫ w) ≫ f = w ^ (N + 1)`. Rewrite using `[← oa.onB.map_mul, ← oa.onB.map_mul, ← act_nsmul, ← haa]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `pW : ∀ (y : D.P.A ⟶ D.P.A) {U : Type} [CommGroup U] (h : (D.P.A.left ⟶ D.P.A.left) → U), ∏ i : Fin 4, h (y.left ≫ (![(padd D.P.A (𝟙 _) w).left, 𝟙 D.P.A.left, w.left, (toUnit D.P.A ≫ η[D.P.A]).left] : Fin 4 → _) i) ^ (![1, -2, -1, 2] : Fin 4 → ℤ) i = h (y * (y ≫ w)).left * h y.lef …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `y U _ h`. Establish `e₀ : y ≫ padd D.P.A (𝟙 _) w = y * (y ≫ w)` using `(MonObj.comp_mul _ _ _).trans (by rw [Category.comp_id])`. Establish `e₃ : y ≫ toUnit D.P.A ≫ η[D.P.A] = 1` using `MonObj.comp_one (M := D.P.A) y`. Rewrite using `[Fin.prod_univ_four]`. Use `show h (y ≫ padd D.P.A (𝟙 _) w).left ^ (1 : ℤ) * h (y.left ≫ 𝟙 _) ^ (-2 : ℤ) * h (y ≫ w).left ^ (-1 : ℤ) * h (y ≫ toUnit D.P.A ≫ η[D.P.A]).left ^ (2 : ℤ) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₀, e₃, Category.comp_id, zpow_one, zpow_neg_one]`. Take `⟨s, hs, vs⟩` from `exists_gen D.P.isLB (K' := Fin 3) (φ' := ![x.left, g.left, (1 : D.P.A ⟶ D.P.A).left]) (ε' := ![(N + 1 : ℕ), -1, -(N : ℤ)]) (fun U _ h => by`. Use `(prod_sum₂ (K := Fin 4 ⊕ Fin 4) (K' := Fin 6 ⊕ Fin 8) (U := U) _ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (pW g h) (prod_neg _ _ (ppow _ _ (N + 1) (pW x h)))) (prod_sum₂ (K := Fin 6) (K' := Fin 8) (U := U) _ (prod_neg _ _ (prod_ros g f x (g ≫ w) h)) (prod_neg _ _ (Fin.pro …` and prove the remaining obligations. Establish `a₁ : x ≫ w = w` using `Category.id_comp _`. Establish `a₂ : x ≫ g = g` using `Category.id_comp _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, a₁, a₂, Fin.prod_univ_three]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Matrix.cons_val]`. Rewrite using `[_root_.one_mul (w ^ (N + 1)), _root_.one_mul x, mul_comm (w ^ (N + 1)) x, mul_comm w x]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use the proof step `module)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u₀ g.left) (LB.invGen D.P.L _ _ (GeneratorPullback.powGen D.P.L _ _ (LB.pullGen D.P.L _ _ u₀ x.left) (N + 1)))) (LB.mulGen D.P.L _ _ _ _ (LB.invGen D.P.L _ _ (LB.pullGen D.P.L _ _ u₂ (lift x (g ≫ w)).left)) ( …`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ hu₀ _) (invGen_isGen _ _ _ _ (powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ hu₀ _) _))) (mulGen_isGen _ _ _ _ _ _ _ (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ hu₂ _)) (invGen_isGen _ _ _ _ ht)))`. Use `⟨s, hs, fun T z J hJ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C : IsCub (cubV D.cub z J)` using `isCub_cubV D.cub hJ`. Establish `w₀ : val u₀ (1 : T ⟶ D.P.A).left z J = 1` using `(val_pull hJ u₀ (eSec D.P.A) T.hom).symm.trans ((val_corr hJ n₀ _).trans (val_one _))`. Establish `g₁ : (1 : T ⟶ D.P.A).left ≫ g.left = (1 : T ⟶ D.P.A).left` using `congrArg (fun q => q.left) (MonObj.one_comp (X := T) g)`. Establish `x₁ : (1 : T ⟶ D.P.A) ≫ x = 1` using `Category.comp_id _`. Establish `b₁ : val (LB.pullGen D.P.L _ _ u₀ g.left) (1 : T ⟶ D.P.A).left z J = 1` using `by rw [val_pull hJ, g₁, w₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₂ : val (LB.pullGen D.P.L _ _ u₀ x.left) (1 : T ⟶ D.P.A).left z J = 1`. Rewrite using `[val_pull hJ, ← Over.comp_left, x₁, w₀]`. Establish `b₃` using `ros_right_one hG u₂ hu₂ n₂ hJ x (g ≫ w) (MonObj.one_comp (g ≫ w))`. Establish `b₄ : val t (1 : T ⟶ D.P.A).left z J = 1` using `by rw [vt T 1 z J hJ, x₁, C.N_one]`. Rewrite using `[vs _ _ z J hJ, val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, val_inv, val_pow, b₁, b₂, b₃, b₄]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sq (hG : GlobalFnsSt) (oa : D.OAct O) (w0 : O) (hw : TraceFormTwistIso D oa w0) (a : O) (N : ℕ)
     (haa : star a * a = ((N + 1 : ℕ) : O)) :
@@ -153,19 +151,19 @@ theorem exists_sq (hG : GlobalFnsSt) (oa : D.OAct O) (w0 : O) (hw : TraceFormTwi
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨N, rfl⟩ : ∃ n, N = n + 1` from `⟨N - 1, by omega⟩`. Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Establish `hr` using `oa.onB.rosati (star a)`. Rewrite `hr` using `[star_star]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u₁, hu₁, n₁⟩` from `exists_ros hG D.P.isAb D.P.isLB _ _ hr`. Take `⟨s, hs, s₁⟩` from `exists_sq hG oa w0 hw a N haa`. Set `g` to `oa.onB.act a`. Set `f` to `oa.onB.act (star a)`. Set `x : D.P.A ⟶ D.P.A` to `𝟙 _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `cf : cP D D.P.A (star a • χ) = cP D D.P.A χ ≫ f` using `by rw [cP, oa.c_lin, ← Category.assoc]; rfl`. Take `⟨e, he, ve⟩` from `exists_gen D.P.isLB (K' := Fin 8) (φ' := ![D.famφB (star a • χ) 0, D.famφB (star a • χ) 1, D.famφB (star a • χ) 2, D.famφB (star a • χ) 3, g.left ≫ D.famφB χ 0, g.left ≫ D.famφB χ 1, g.left ≫ D.famφB χ 2, g.left ≫ D.famφB χ 3]) (ε' := ![((k * (N + 1) : ℕ) : ℤ) - 1, 1, -1, 1, -((k …`. Use `(prod_sum₂ (K := Fin 3 ⊕ Fin 6) (K' := PUnit) (U := U) _ (prod_sum₂ (K := Fin 3) (K' := Fin 6) (U := U) _ (ppow _ _ k rfl) (prod_ros f g (cP D _ χ) x h)) (ppow _ _ (k * N) (c := h (1 : D.P.A ⟶ D.P.A).left) ((Fintype.prod_unique _).trans (zpow_one _)))).trans ?_` and prove the remaining obligations. Establish `a₁ : D.famφB (star a • χ) 1 = ((cP D D.P.A χ ≫ f) * x).left` using `congrArg (fun q => q.left) ((mul_comm x (cP D D.P.A (star a • χ))).trans (by rw [cf]))`. Establish `a₂ : D.famφB (star a • χ) 2 = (cP D D.P.A χ ≫ f).left` using `congrArg (fun q => q.left) cf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₃ : g.left ≫ D.famφB χ 1 = (cP D D.P.A χ * (x ≫ g)).left` using `congrArg (fun q => q.left) ((MonObj.comp_mul g x (cP D D.P.A χ)).trans (by rw [comp_cP, mul_comm, Category.comp_id, Category.id_comp]))`. Establish `a₄ : g.left ≫ D.famφB χ 2 = (cP D D.P.A χ).left` using `congrArg (fun q => q.left) (comp_cP D g χ)`. Establish `a₅ : g.left ≫ D.famφB χ 3 = (1 : D.P.A ⟶ D.P.A).left` using `congrArg (fun q : D.P.A ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) g)`. Establish `a₆ : g.left ≫ D.famφB χ 0 = g.left` using `Category.comp_id _`. Establish `a₇ : D.famφB (star a • χ) 0 = x.left` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₈ : D.famφB (star a • χ) 3 = (1 : D.P.A ⟶ D.P.A).left` using `rfl`. Establish `a₉ : x ≫ g = g` using `Category.id_comp _`. Rewrite using `[a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈, a₉, Fin.prod_univ_eight, Fin.prod_univ_three]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Use the proof step `module)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (GeneratorPullback.powGen D.P.L _ _ s k) (LB.pullGen D.P.L _ _ u₁ (lift (cP D _ χ) x).left)) (GeneratorPullback.powGen D.P.L _ _ (LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) D.rig D.P.A.hom) (k * N)))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ hs _) (pullGen_isGen _ _ _ _ hu₁ _)) (powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.rig_gen _) _))`. Use `⟨e, he, fun T z J hJ => ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `b₁` using `ros_right_one hG u₁ hu₁ n₁ hJ (cP D _ χ) x (Category.comp_id _)`. Rewrite using `[ve _ _ z J hJ, val_mul hJ, val_mul hJ, val_pow, val_pow, s₁ T z J hJ, b₁, val_pull hJ, Over.w (1 : T ⟶ D.P.A), one_pow, _root_.one_mul, _root_.one_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_pullGenB (hG : GlobalFnsSt) (oa : D.OAct O) (w0 : O) (hw : TraceFormTwistIso D oa w0) (a : O) (N : ℕ) (hN : 1 ≤ N)
     (haa : star a * a = (N : O)) (k : ℕ) (χ : D.X) :
@@ -222,17 +220,13 @@ theorem exists_pullGenB (hG : GlobalFnsSt) (oa : D.OAct O) (w0 : O) (hw : TraceF
   rfl
 
 /- English proof (translation)
-Take `⟨e, he, ve⟩` from `exists_pullGenB hG oa w0 hw a N hN haa k χ`. Use `⟨8, _, _, e, he, fun U _ h => ?_, fun Z r y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, Fin.prod_univ_eight, Fin.prod_univ_four, Fin.prod_univ_four]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, Sum.elim_inl, Sum.elim_inr, DegPre.famε, Matrix.cons_val]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `module`. Establish `z₁ : DegPre.zF D.toPre F ≫ fst _ _ = 𝟙 _` using `lift_fst _ _`. Establish `z₂ : DegPre.zF D.toPre F ≫ DegPre.prB D.toPre F = 1` using `lift_snd _ _`. Establish `fb : ∀ α i, (DegPre.prB D.toPre F).left ≫ D.toPre.famφB α i = DegPre.famφ D.toPre F α i` using `fun α i => by fin_cases i`. Conclude with `Category.comp_id _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun q => q.left) ((MonObj.comp_mul (DegPre.prB D.toPre F) (𝟙 _) (cP D.toPre _ α)).trans (congrArg₂ (· * ·) (Category.comp_id _) (comp_cP D.toPre _ α)))`. Conclude with `congrArg (fun q => q.left) (comp_cP D.toPre (DegPre.prB D.toPre F) α)`. Conclude with `congrArg (fun q : DegPre.BF D.toPre F ⟶ D.toPre.P.A => q.left) (MonObj.comp_one (M := D.toPre.P.A) (DegPre.prB D.toPre F))`. Establish `fa : ∀ i, (DegPre.prB D.toPre F).left ≫ (oa.onB.act a).left ≫ D.toPre.famφB χ i = (aF D F oa a).left ≫ DegPre.famφ D.toPre F χ i` using `fun i => by`. Establish `: (aF D F oa a).left ≫ (DegPre.prB D.toPre F).left = (DegPre.prB D.toPre F).left ≫ (oa.onB.act a).left` using `congrArg (fun q => q.left) (lift_snd (fst _ _) (DegPre.prB D.toPre F ≫ oa.onB.act a))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← fb, ← Category.assoc, ← this, Category.assoc]`. Establish `key` using `gen_unique' D.toPre.P.isLB (fun U _ h => by`. Rewrite using `[pullφ, pullε, Fintype.prod_sum_type, Fin.prod_univ_eight, Fin.prod_univ_four, Fin.prod_univ_four]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Matrix.cons_val, fb, fa, DegPre.famε, neg_neg, _root_.mul_assoc])`. Use the proof step `(fst (TF (R := V) F) D.toPre.P.A).left (DegPre.zF D.toPre F).left (congrArg (fun q => q.left) z₁)`.
-
-Use the proof step `(surj_appTop D.toPre F hG) hu (pullGen_isGen _ _ _ _ he (DegPre.prB D.toPre F).left) (fun y I hI => by`. Establish `a` using `val_corr hI hc (𝟙 _)`. Rewrite `a` using `[val_pull hI, Category.id_comp]`. Rewrite using `[a, val_pull hI, val_pull hI, ← Over.comp_left, z₂, ve _ y I hI, Category.id_comp]`. Conclude with `(val_pow _ _ _ _ _).trans (congrArg (· ^ (k * (N - 1))) (val_pull hI _ _ _))) _ r y J hJ`.
-
-Rewrite using `[key, val_pull hJ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullGen_one (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F]
@@ -280,9 +274,9 @@ theorem pullGen_one (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsDomain V] [IsD
     rw [key, val_pull hJ]
 
 /- English proof (translation)
-Take `⟨m, ψ, δ, eB, hgen, hform, hval⟩` from `pullGen_one hG D F oa w0 hw a N hN haa k χ u hu hc`. Use `⟨m, ψ, δ, eB, hgen, hform, 1, ?_, fun y J hJ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h1` using `hval _ (𝟙 _) y J hJ`. Rewrite `h1` using `[Category.id_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg : gs (𝟙 _) y ⊤ (gF D.toPre F (1 : F)) = 1`. Unfold `gs`. Rewrite using `[dif_pos (by simp)]`. Simplify using `only [map_one]`. Rewrite using `[h1, hg, _root_.one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullback_generator_of_psi_weight (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ))
@@ -310,7 +304,7 @@ theorem pullback_generator_of_psi_weight (hG : GlobalFnsSt) {V : Type} [CommRing
     rw [h1, hg, _root_.one_mul]
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ D F _ _ v hv O _ _ _ oa w0 hw a N hN _ haa k _ χ u hu hc`. Conclude with `pullback_generator_of_psi_weight hG D F v oa w0 hw a N hN haa k χ u hu hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pullGen_of (hG : GlobalFnsSt) : PullGenStatement := by
   intro V _ _ _ ϖ hϖ D F _ _ v hv O _ _ _ oa w0 hw a N hN _ haa k _ χ u hu hc

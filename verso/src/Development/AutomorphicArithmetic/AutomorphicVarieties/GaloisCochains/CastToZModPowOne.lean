@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.Cha
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
 /- English proof (translation)
-Establish `hx : x - (PadicInt.zmodRepr x : ℤ_[l]) ∈ IsLocalRing.maximalIdeal ℤ_[l]` using `PadicInt.sub_zmodRepr_mem x`. Establish `h1 : PadicInt.toZMod (x - (PadicInt.zmodRepr x : ℤ_[l])) = 0`. Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod]`. Conclude with `hx`. Establish `h2 : PadicInt.toZModPow 1 (x - (PadicInt.zmodRepr x : ℤ_[l])) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZModPow, pow_one, ← PadicInt.maximalIdeal_eq_span_p]`. Conclude with `hx`. Rewrite `h1`, `h2` using `[map_sub, sub_eq_zero]`. Rewrite using `[h1, h2]`. Simplify using `only [map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cast_toZModPow_one (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] (x : ℤ_[l]) :
     ZMod.castHom (dvd_pow_self l one_ne_zero) k (PadicInt.toZModPow 1 x) =
@@ -21,17 +21,15 @@ private theorem cast_toZModPow_one (l : ℕ) [Fact l.Prime] (k : Type) [Field k]
   simp only [map_natCast]
 
 /- English proof (translation)
-Introduce `hP F Ω _ _ _ _ _ l _ k _ _ Φ S K π ι A pl e c hL hk hom C₀ hC`. Establish `hS : ∀ v : S, ∃ u, pl u = v.1` using `fun v => (hL.loc.mem v.1).2 (hL.only v.1 v.2)`. Use `choose u hu using hS`. Establish `hA : ∀ v : S, IsPlaceOver (A (u v)) v.1` using `fun v => hu v ▸ hL.loc.isOver (u v)`. Establish `hc : ∀ w : InfinitePlace F, IsCCAt w (c (e.symm w))` using `fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hL.cc (e.symm w)`. Establish `h` using `character_H1_galois_quotient hP F Ω l hL.real S K Φ.Γ π hL.g k 1 (fun _ _ => rfl) (fun w => c (e.symm w)) hc (fun v => A (u v)) hA C₀ hC Φ.V Φ.Gv Φ.loc`. Establish `hcyc : ∀ g, Φ.om k (π g) = cycF F Ω l k g` using `fun g => by`. Apply `Units.ext` to reduce the goal to its premises. Use `cast_toZModPow_one l k (cycZ F Ω l g : ℤ_[l])` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Frame.om, cycF, cycMod, MonoidHom.comp_apply, hL.eps, Units.coe_map]`. Conclude with `this.symm`. Establish `hE : IsEmpty {v : S // ∀ g ∈ Dec (F` using `F) (A (u v)), (1 : Φ.Γ →* kˣ) (π g) = cycF F Ω l k g} := by`. Use `⟨fun ⟨v, hv⟩ => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hom (u v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hs` to reduce the goal to its premises. Rewrite using `[hL.loc_eq, hcyc, ← hv _ (by rw [← hL.loc.range]; exact ⟨s, rfl⟩)]`. Both sides reduce to the same expression. Establish `e1 : Nat.card {w : InfinitePlace F // (1 : Φ.Γ →* kˣ) (π (c (e.symm w))) = 1} = finrank ℚ F` using `by haveI := hL.real`. Rewrite using `[Nat.card_congr (Equiv.subtypeUnivEquiv fun _ => MonoidHom.one_apply _), Nat.card_eq_fintype_card, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, IsTotallyReal.finrank, add_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Nat.card {_u : Unit // (1 : Φ.Γ →* kˣ) = 1} = 1`. Rewrite using `[Nat.card_congr (Equiv.subtypeUnivEquiv fun _ => rfl)]`. Simplify using the standard rewrite rules. Rewrite `h` using `[e1, e2, Nat.card_of_isEmpty, add_zero]`. Move the coercions through the operations in `at h`.
-
-Conclude with `(Cardinal.add_nat_le_add_nat_iff _).1 h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GC.h1 :
     Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] (Φ : Fr.Frame l k) (S : Finset (HeightOneSpectrum (𝓞 F))) (K : Subgroup (G F Ω)) (π : G F Ω →* Φ.Γ) (ι : ∀ v, Φ.Gv v →* G F Ω) (A : Φ.V → ValuationSubring Ω) (pl : Φ.V → HeightOneSpectrum (𝓞 F)) (e : Φ.Inf ≃ InfinitePlace F) (c : Φ.Inf → G F Ω), FLink l Φ S K π ι A pl e c → Finite k → (∀ v, ∃ s, Φ.om k (Φ.loc v s) ≠ 1) → ∀ C₀ : ℕ, clRk l (K ⊓ (cycMod F Ω l 1).ker) ≤ C₀ → Module.rank k (H1C (k := k) (W := k) Φ.loc (chRep (1 : Φ.Γ →* kˣ)) fun _ => ⊤) ≤ 1 + C₀ := by

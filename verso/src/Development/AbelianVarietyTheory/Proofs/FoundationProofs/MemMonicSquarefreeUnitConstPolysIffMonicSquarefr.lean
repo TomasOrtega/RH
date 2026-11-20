@@ -6,11 +6,11 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Unfold `sqSet`. Rewrite using `[Finset.mem_filter, Finset.mem_image, ← and_assoc (a := f.Monic)]`. Use `and_congr_left fun _ => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, -, rfl⟩`. Establish `hd : (∑ i : Fin N, C (c i) * X ^ (i : ℕ) : (ZMod g)[X]).degree < N` using `degree_sum_fin_lt c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨monic_X_pow_add hd, ?_⟩` and prove the remaining obligations. Apply `natDegree_eq_of_degree_eq_some` to reduce the goal to its premises. Rewrite using `[degree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), degree_X_pow]`. Introduce and unpack `⟨hm, rfl⟩`. Use `⟨fun i => f.coeff i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => C (f.coeff i) * X ^ i)]`. Conclude with `hm.as_sum.symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sqSet_iff (g : ℕ) [Fact g.Prime] (N : ℕ) (f : (ZMod g)[X]) :
     f ∈ sqSet g N ↔ f.Monic ∧ f.natDegree = N ∧ Squarefree f ∧ f.coeff 0 ≠ 0 := by

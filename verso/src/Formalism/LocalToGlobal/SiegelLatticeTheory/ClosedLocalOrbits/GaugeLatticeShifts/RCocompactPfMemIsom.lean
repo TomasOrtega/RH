@@ -11,7 +11,7 @@ open Formalism.L2.SG.Pf.UnipB Formalism.L2.SG.Pf.Unip
 namespace Formalism.L2.SG.TermOp.Vanish
 
 /- English proof (translation)
-Establish `h` using `LinearMap.toMatrix_mulVec_repr X.bas X.bas (Matrix.toLin X.bas X.bas (M.map X.ιE)) y`. Rewrite `h` using `[LinearMap.toMatrix_toLin]`. Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, ← h, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, RingEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem crd_toLin_map_eq_mulVec_crd {D : D7} (X : HidaSetting D) (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)
     (y : (VS D).V) : X.crd (Matrix.toLin X.bas X.bas (M.map X.ιE) y) = M *ᵥ X.crd y := by
@@ -22,13 +22,13 @@ private theorem crd_toLin_map_eq_mulVec_crd {D : D7} (X : HidaSetting D) (M : Ma
     Matrix.map_apply, map_sum, map_mul, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `D X g hg`. Set `A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E` to `(g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)`. Set `B : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E` to `((g⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)`. Establish `hinj : ∀ y y' : (VS D).V, X.crd y = X.crd y' → y = y'`. Introduce `y y' h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `X.bas.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Use `congrFun h i` as an intermediate fact. Simplify `this` using `[Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf]`. Set `n : (VS D).V ≃ₗ[D.host.E] (VS D).V` to `LinearEquiv.ofLinear (Matrix.toLin X.bas X.bas (A.map X.ιE)) (Matrix.toLin X.bas X.bas (B.map X.ιE)) (LinearMap.ext fun y => hinj _ _ (by`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Rewrite using `[LinearMap.comp_apply, crd_toLin_map_eq_mulVec_crd, crd_toLin_map_eq_mulVec_crd, Matrix.mulVec_mulVec]`. Simplify using `[A, B]))`. Use the proof step `(LinearMap.ext fun y => hinj _ _ (by`. Rewrite using `[LinearMap.comp_apply, crd_toLin_map_eq_mulVec_crd, crd_toLin_map_eq_mulVec_crd, Matrix.mulVec_mulVec]`. Simplify using `[A, B]))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hn : ∀ y, X.crd (n y) = A *ᵥ X.crd y` using `fun y => crd_toLin_map_eq_mulVec_crd X A y`. Use `⟨n, ?_, hn⟩` and prove the remaining obligations. Introduce `x y`. Rewrite using `[← Formalism.L2.SG.PoincareInHH.Cut.hform_crd X (n x) (n y), ← Formalism.L2.SG.PoincareInHH.Cut.hform_crd X x y, hn, hn, Formalism.L2.SG.PoincareInHH.Cut.hform_mulVec _ _ _ hg]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memIsomOf_holds : MemIsomOf := by
   intro D X g hg

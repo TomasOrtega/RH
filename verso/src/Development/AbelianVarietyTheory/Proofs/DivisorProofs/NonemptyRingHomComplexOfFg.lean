@@ -7,11 +7,11 @@ namespace GlobalTheory.FGFieldEmb
 open Cardinal
 
 /- English proof (translation)
-Set `F` to `FractionRing (MvPolynomial ℝ K)`. Set `L` to `AlgebraicClosure F`. Establish `hF : #F = 𝔠`. Rewrite using `[Cardinal.mk_fractionRing, MvPolynomial.cardinalMk_eq_max, Cardinal.mk_real, max_eq_right hK, max_eq_left Cardinal.aleph0_le_continuum]`. Establish `hL : #L = 𝔠`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_antisymm ?_ (hF ▸ Cardinal.mk_le_of_injective (algebraMap F L).injective)` and prove the remaining obligations. Use `Algebra.IsAlgebraic.cardinalMk_le_max F L` as an intermediate fact. Rewrite `this` using `[hF, max_eq_left Cardinal.aleph0_le_continuum]`. Then use the resulting hypothesis. Set `j : K →+* L` to `(algebraMap F L).comp ((algebraMap (MvPolynomial ℝ K) F).comp MvPolynomial.C)`. Establish `: CharZero L` using `(RingHom.charZero_iff j.injective).1 inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨e⟩` from `IsAlgClosed.ringEquiv_of_equiv_of_charZero (K := L) (L := ℂ) (hL ▸ Cardinal.aleph0_lt_continuum) (Cardinal.eq.1 (hL.trans Cardinal.mk_complex.symm))`. Conclude with `⟨e.toRingHom.comp j⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_ringHom_complex_of_mk_le (K : Type) [Field K] [CharZero K] (hK : #K ≤ 𝔠) :
     Nonempty (K →+* ℂ) := by
@@ -31,9 +31,9 @@ theorem nonempty_ringHom_complex_of_mk_le (K : Type) [Field K] [CharZero K] (hK 
   exact ⟨e.toRingHom.comp j⟩
 
 /- English proof (translation)
-Introduce `K _ _ k hk`. Take `⟨t, rfl⟩` from `hk`. Use `nonempty_ringHom_complex_of_mk_le _ ?_` and prove the remaining obligations. Use `le_trans ?_ Cardinal.aleph0_le_continuum` and prove the remaining obligations. Use `(IntermediateField.cardinalMk_adjoin_le ℚ (t : Set K)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `max_le (max_le ?_ ?_) le_rfl` and prove the remaining obligations. Simplify using `[Cardinal.mkRat]`. Conclude with `(Cardinal.lt_aleph0_of_finite _).le`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nonempty_ringHom_complex_of_fg :
     ∀ (K : Type) [Field K] [CharZero K] (k : IntermediateField ℚ K), k.FG → Nonempty (k →+* ℂ) := by

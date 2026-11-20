@@ -14,15 +14,13 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G))
 
 /- English proof (translation)
-Use `⟨cohomologyInfl_one_injective A N, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_cohomologyResInv_apply, ZeroMemClass.coe_zero]`. Use `congrArg (fun φ => ModuleCat.Hom.hom φ y) (cohomologyInfl_comp_cohomologyRes A N 0)` as an intermediate fact. Simplify using `using this`. Introduce `hh`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `exists_cohomologyInfl_one_eq A N h (congrArg Subtype.val hh)`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `transgression_cohomologyResInv A N hN g`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `hh`. Conclude with `exists_cohomologyResInv_eq A N hN h hh`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`.
-
-Conclude with `cohomologyInfl_transgression A N hN h`. Introduce `ht`. Conclude with `exists_transgression_eq A N hN t ht`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fiveTerm_exact :
     Function.Injective (cohomologyInfl A N 1).hom ∧
@@ -56,7 +54,7 @@ theorem fiveTerm_exact :
 include hN in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cohomologyInfl_injective hN hq hA, range_cohomologyInfl_eq_ker_cohomologyRes hN hq hA⟩`.
+Supply the required witnesses or components.
 -/
 theorem infRes_exact {q : ℕ} (hq : q ≠ 0)
     (hA : ∀ i, 0 < i → i < q → IsZero (cohomology (Rep.res N.subtype A) i)) :

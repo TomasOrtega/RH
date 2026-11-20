@@ -7,25 +7,23 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `e n K H₀ hK hc hp'`. Take `⟨f, hfdef⟩ : ∃ f : (Fin e → ℂ) × (Fin n → ℂ) → ℝ, f = fun p => (HermFrame.form (H₀ p.1) p.2 p.2).re` from `⟨_, rfl⟩`. Establish `hS : IsCompact (K ×ˢ Metric.sphere (0 : Fin n → ℂ) 1)` using `hK.prod (isCompact_sphere _ _)`. Establish `hform : Continuous fun q : Matrix (Fin n) (Fin n) ℂ × (Fin n → ℂ) => HermFrame.form q.1 q.2 q.2`. Unfold `HermFrame.form`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fun_prop`. Establish `hf : ContinuousOn f (K ×ˢ Metric.sphere (0 : Fin n → ℂ) 1)`. Establish `h1 : ContinuousOn (fun p : (Fin e → ℂ) × (Fin n → ℂ) => (H₀ p.1, p.2)) (K ×ˢ Metric.sphere (0 : Fin n → ℂ) 1)`. Apply `ContinuousOn.prodMk` to reduce the goal to its premises. Conclude with `hc.comp continuousOn_fst (fun p hp => hp.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuousOn_snd`. Establish `h3` using `Complex.continuous_re.comp_continuousOn (hform.comp_continuousOn h1)`. Rewrite using `[hfdef]`. Conclude with `h3`. Establish `hfpos : ∀ p ∈ K ×ˢ Metric.sphere (0 : Fin n → ℂ) 1, 0 < f p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp`. Establish `hne : p.2 ≠ 0`. Introduce `h`. Establish `h2` using `hp.2`. Rewrite `h2` using `[h, mem_sphere_zero_iff_norm, norm_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `zero_ne_one h2`. Rewrite using `[hfdef]`. Conclude with `(Complex.lt_def.1 ((HermFrame.posDef_iff.1 (hp' p.1 hp.1)).2 p.2 hne)).1`. Choose the witnesses or unpack the hypotheses as in `⟨c2, C2, hc2, hC2, hb⟩ : ∃ a b : ℝ, 0 < a ∧ 0 < b ∧ ∀ p ∈ K ×ˢ Metric.sphere (0 : Fin n → ℂ) 1, a ≤ f p ∧ f p ≤ b := by`. Break down `(K ×ˢ Metric.sphere (0 : Fin n → ℂ) 1).eq_empty_or_nonempty with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨1, 1, one_pos, one_pos, by simp [h]⟩`. Take `⟨p0, hp0, hmin⟩` from `hS.exists_isMinOn h hf`. Take `⟨B, hB⟩` from `hS.exists_bound_of_continuousOn hf`. Use `⟨f p0, max B 1, hfpos p0 hp0, lt_of_lt_of_le one_pos (le_max_right _ _), fun p hp => ⟨hmin hp, ?_⟩⟩` and prove the remaining obligations. Conclude with `(Real.le_norm_self _).trans ((hB p hp).trans (le_max_left _ _))`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨Real.sqrt c2, Real.sqrt C2, Real.sqrt_pos.2 hc2, Real.sqrt_pos.2 hC2, fun z hz v => ?_⟩` and prove the remaining obligations. Establish `hH` using `(hp' z hz).posSemidef`. Break down `eq_or_ne v 0 with rfl | hv` into its components or cases. Simplify using the standard rewrite rules. Establish `hnv : 0 < ‖v‖` using `norm_pos_iff.2 hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩ : ∃ u : Fin n → ℂ, u = ((‖v‖⁻¹ : ℝ) : ℂ) • v` from `⟨_, rfl⟩`. Establish `hu1 : u ∈ Metric.sphere (0 : Fin n → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, hu, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hnv.ne']`. Establish `hvu : v = ((‖v‖ : ℝ) : ℂ) • u`. Rewrite using `[hu, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hnv.ne', Complex.ofReal_one, one_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : HermFrame.gnorm (H₀ z) v = ‖v‖ * HermFrame.gnorm (H₀ z) u` using `by conv_lhs => rw [hvu]`. Rewrite using `[HermFrame.gnorm_smul hH, Complex.norm_real, Real.norm_eq_abs, abs_norm]`. Establish `hgu : HermFrame.gnorm (H₀ z) u = Real.sqrt (f (z, u))` using `by rw [hfdef]; rfl`. Take `⟨h1, h2⟩` from `hb (z, u) ⟨hz, hu1⟩`. Rewrite using `[hg, hgu]`.
-
-Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_comm (Real.sqrt c2)]`. Conclude with `mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt h1) hnv.le`. Rewrite using `[mul_comm (Real.sqrt C2)]`. Conclude with `mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt h2) hnv.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_family_gnorm_comparable : ∀ (e n : ℕ) (K : Set (Fin e → ℂ)) (H₀ : (Fin e → ℂ) → Matrix (Fin n) (Fin n) ℂ), IsCompact K → ContinuousOn H₀ K → (∀ z ∈ K, (H₀ z).PosDef) → ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ z ∈ K, ∀ v : Fin n → ℂ, c * ‖v‖ ≤ GlobalTheory.HermFrame.gnorm (H₀ z) v ∧ GlobalTheory.HermFrame.gnorm (H₀ z) v ≤ C * ‖v‖ := by
   intro e n K H₀ hK hc hp'

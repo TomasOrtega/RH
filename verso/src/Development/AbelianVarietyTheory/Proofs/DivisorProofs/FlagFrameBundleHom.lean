@@ -18,11 +18,11 @@ def trGL {K : Type} [Field K] (B : Mat (fun _ : ι => N) K) (hB : ∀ τ, (B τ)
   Matrix.GeneralLinearGroup.mk'' (B τ).transpose (by rw [Matrix.det_transpose]; exact Ne.isUnit (hB τ))
 
 /- English proof (translation)
-Establish `e (τ : ι) : ((G τ)⁻¹ * H τ).1 = ((C * B⁻¹) τ).transpose`. Rewrite using `[Units.val_mul, Matrix.coe_units_inv, hG, hH, Pi.mul_apply, Pi.inv_apply, Matrix.transpose_mul, Matrix.transpose_nonsing_inv]`. Rewrite using `[flagPt_eq_iff_below]`. Prove the components needed by the constructor for the conclusion. Introduce `h τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun _ _ => trivial, ?_, trivial, fun i j _ hij => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.det_transpose, ← e]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 ((G τ)⁻¹ * H τ).isUnit).ne_zero`. Use `h τ j i ⟨(τ, i.succ), rfl, Nat.lt_succ_self _, hij⟩` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h _ i j ⟨k, rfl, h₁, h₂⟩`. Rewrite using `[e]`. Conclude with `(h k.1).2.2.2 j i j.2 (h₁.trans_le h₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagPt_eq_iff_par {K : Type} [Field K] (G H : ι → GL (Fin N) K) (B C : Mat (fun _ : ι => N) K)
     (hG : ∀ τ, (G τ).1 = (B τ).transpose) (hH : ∀ τ, (H τ).1 = (C τ).transpose) :
@@ -46,30 +46,28 @@ theorem flagPt_eq_iff_par {K : Type} [Field K] (G H : ι → GL (Fin N) K) (B C 
 variable {Y : Var ℚ}
 
 /- English proof (translation)
-The claim follows from `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_algebraMap_fromSpecStalk (y : Y.X) :
     spMap (algebraMap (Y.X.presheaf.stalk y) Y.X.functionField) ≫ Y.X.fromSpecStalk y = (ratOf Y).pt :=
   Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)
 
 /- English proof (translation)
-Establish `hp` using `spMap_stalkClosedPointTo p`. Generalize the expression as in `(Scheme.stalkClosedPointTo (R := .of K) p).hom = ψ at hp`. Generalize the expression as in `p (IsLocalRing.closedPoint K) = y at hA ψ hp`. Substitute `hp` using the available equality. Set `θ` to `algebraMap (Y.X.presheaf.stalk y) Y.X.functionField`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Introduce a local definition for the expression.
 
-Establish `hθ : Function.Injective θ` using `IsFractionRing.injective _ _`. Establish `hs (x : Y.Fn) (hx : x ∈ (ratOf Y).O y) : ∃ a, θ a = x` using `mem_O_ratOf.1 hx`. Use `choose a ha using fun τ i k => hs _ ((hA.1 τ).1 i k)`. Establish `ea (τ : ι) : (Matrix.of (a τ)).map θ = A τ`. Use extensionality with `i k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `ha τ i k`. Establish `hu (τ : ι) : IsUnit (Matrix.of (a τ)).transpose.det`. Take `⟨b, hb⟩` from `hs _ (hA.1 τ).2.2.1`. Use `IsUnit.of_mul_eq_one b (hθ ?_)` and prove the remaining obligations. Rewrite using `[Matrix.det_transpose, map_mul, map_one, hb, RingHom.map_det, RingHom.mapMatrix_apply, ea]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `mul_inv_cancel₀ (hA.1.det_ne τ)`. Set `g : ι → GL (Fin N) (Y.X.presheaf.stalk y)` to `fun τ => Matrix.GeneralLinearGroup.mk'' _ (hu τ)`. Establish `hl : IsLocalRing (Y.X.presheaf.stalk y)` using `inferInstance`. Take `⟨g', hg'⟩` from `@exists_eq_flagPt_of_isLocalRing ι (ι × Fin (N + 1)) _ _ N Prod.fst Prod.snd (Y.X.presheaf.stalk y) _ hl (Y.X.fromSpecStalk y ≫ j)`. Establish `h₁ : flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (fun τ => Matrix.GeneralLinearGroup.map θ (g' τ)) = flagPt Prod.fst Prod.snd (genMat j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← spMap_flagPt, ← hg', ← Category.assoc, spMap_algebraMap_fromSpecStalk]`. Conclude with `flagPt_genMat j`. Establish `h₂ : flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (genMat j) = flagPt Prod.fst Prod.snd (fun τ => Matrix.GeneralLinearGroup.map θ (g τ))`. Use `(flagPt_eq_iff_par _ _ (genFrame j) A (fun τ => rfl) fun τ => ?_).2 hA.2` and prove the remaining obligations. Use extensionality with `i k`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `ha τ k i`. Establish `h₃ : flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g' = flagPt Prod.fst Prod.snd g`. Rewrite using `[flagPt_eq_iff_below]`. Introduce `τ i k hik`. Use `(flagPt_eq_iff_below _ _ _ _ _ _ _ _).1 (h₁.trans h₂) τ i k hik` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `this` using `[← map_inv, ← map_mul, Matrix.GeneralLinearGroup.map_apply]`. Conclude with `hθ (this.trans (map_zero θ).symm)`. Rewrite using `[Category.assoc]`. Use `(congrArg (spMap ψ ≫ ·) (hg'.trans h₃)).trans ?_` and prove the remaining obligations. Rewrite using `[spMap_flagPt]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ`. Use extensionality with `i k`. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, hG]`. Express the relevant statement in the definitionally equal form `ψ (a τ k i) = (ratOf Y).val _ (A τ k i)`.
-
-Rewrite using `[← ha]`. Conclude with `(val_ratOf ψ (a τ k i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem comp_eq_flagPt (j : Y.X ⟶ Fl ι N) {K : Type} [Field K] (p : Sp K ⟶ Y.X) {A : Mat (fun _ : ι => N) Y.Fn}
     (hA : IsFrame j (p (IsLocalRing.closedPoint K)) A) (G : ι → GL (Fin N) K)
@@ -122,9 +120,9 @@ theorem comp_eq_flagPt (j : Y.X ⟶ Fl ι N) {K : Type} [Field K] (p : Sp K ⟶ 
   exact (val_ratOf ψ (a τ k i)).symm
 
 /- English proof (translation)
-Establish `h₁` using `GlobalTheory.ProjSpace.Model.isIso_str_zero (R := ℚ)`. Establish `h₂` using `isIso_proj_ι ℚ 0`. Establish `: IsIso (proj ℚ 0).str` using `@IsIso.comp_isIso _ _ _ _ _ _ _ h₂ h₁`. Rewrite using `[← cancel_mono (proj ℚ 0).str, ← Spec.map_preimage (x ≫ _), ← Spec.map_preimage (x' ≫ _)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `CommRingCat.hom_ext (Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem hom_pt_ext {K : Type} [Field K] (x x' : Sp K ⟶ (proj ℚ 0).X) : x = x' := by
   have h₁ := GlobalTheory.ProjSpace.Model.isIso_str_zero (R := ℚ)
@@ -135,15 +133,15 @@ theorem hom_pt_ext {K : Type} [Field K] (x x' : Sp K ⟶ (proj ℚ 0).X) : x = x
   exact CommRingCat.hom_ext (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Set `ψ` to `RatModel.valLoc (M := ratOf Y) p (p (IsLocalRing.closedPoint K)) specializes_rfl`. Establish `hψ (x : ((ratOf Y).O (p (IsLocalRing.closedPoint K))).toSubring) : (ratOf Y).val p x = ψ x` using `(RatModel.valLoc_eq_val (M := ratOf Y) p _ x).symm`. Establish `hB : Par 0 ((ratOf Y).O (p (IsLocalRing.closedPoint K))).toSubring (A.map φ)` using `hA.map (φ : (proj ℚ 0).Fn →+* Y.Fn) fun x hx => hφ.map_mem_O hx`. Establish `ec : A.map ((ratOf (proj ℚ 0)).val (p ≫ toPt Y)) = (A.map φ).map ((ratOf Y).val p)`. Use function extensionality and compare the values at `τ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use extensionality with `i k`. Conclude with `hφ.val_comp p _ ((hA τ).1 i k)`. Establish `hc` using `hB.map_of _ ψ hψ`. Establish `einv : (A.map φ)⁻¹.map ((ratOf Y).val p) = ((A.map φ).map ((ratOf Y).val p))⁻¹`. Establish `e` using `hB.inv.map_mul_of hB _ ψ hψ`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[Mat.inv_mul hB.det_ne]`. Use function extensionality and compare the values at `τ`. Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations. Use `(congrFun e τ).symm.trans (Matrix.map_one _ ?_ ?_)` and prove the remaining obligations. Conclude with `(hψ 0).trans (map_zero ψ)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hψ 1).trans (map_one ψ)`. Establish `key (A' : Mat (fun _ : ι => N) Y.Fn) (hA' : IsFrame j (p (IsLocalRing.closedPoint K)) A') : Par (fun _ => N) ⊤ (h * ((A' * (A.map φ)⁻¹).map ((ratOf Y).val p))⁻¹) ↔ p ≫ j = flagPt Prod.fst Prod.snd H`. Establish `hd` using `(hA'.1.map_of _ ψ hψ).det_ne`. Rewrite using `[comp_eq_flagPt j p hA' (trGL _ hd) fun _ => rfl, flagPt_eq_iff_par (trGL _ hd) H (A'.map ((ratOf Y).val p)) _ (fun _ => rfl) hH, hA'.1.map_mul_of hB.inv _ ψ hψ, einv, Mat.mul_inv_rev, Mat.inv_inv hc.det_ne, ec, mul_assoc]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨A', hA', hP⟩`. Conclude with `(key A' ((hE _ _).1 hA')).1 hP`. Introduce `e`. Take `⟨A', hA'⟩` from `E'.nonempty (p (IsLocalRing.closedPoint K))`. Conclude with `⟨A', hA', (key A' ((hE _ _).1 hA')).2 e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bears_iff (j : Y.X ⟶ Fl ι N) (E' : Fr (ratOf Y) (fun _ : ι => N) (fun _ => N))
     (hE : ∀ y A', A' ∈ E'.S y ↔ IsFrame j y A') (φ : (proj ℚ 0).Fn →ₐ[ℚ] Y.Fn)
@@ -185,13 +183,11 @@ theorem bears_iff (j : Y.X ⟶ Fl ι N) (E' : Fr (ratOf Y) (fun _ : ι => N) (fu
     exact ⟨A', hA', (key A' ((hE _ _).1 hA')).2 e⟩
 
 /- English proof (translation)
-Establish `hA₀ : Par 0 ((ratOf (proj ℚ 0)).O (x (IsLocalRing.closedPoint K))).toSubring A`. Establish `e : A * (1 : Mat (fun _ : ι => N) (proj ℚ 0).Fn)⁻¹ = A`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `A τ * (1 : Matrix _ _ _)⁻¹ = A τ`. Rewrite using `[inv_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e ▸ hA`. Establish `hc : Par 0 ⊤ (h * A.map ((ratOf (proj ℚ 0)).val x))` using `hh.mul (hA₀.map_of _ (RatModel.valLoc (M := ratOf (proj ℚ 0)) x _ specializes_rfl) fun z => (RatModel.valLoc_eq_val (M := ratOf (proj ℚ 0)) x _ z).symm)`. Establish `key (p : Sp K ⟶ Y.X) : Bears E' φ A h p ↔ p ≫ j = flagPt Prod.fst Prod.snd (trGL _ hc.det_ne)`. Take `rfl : x = p ≫ toPt Y` from `hom_pt_ext _ _`. Conclude with `bears_iff j E' hE φ hφ p hA₀ h _ fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `p : Sp K ⟶ Y.X` to `hj.lift (flagPt Prod.fst Prod.snd (trGL _ hc.det_ne)) (x ≫ (proj ℚ 0).str) (toZ_ext _ _)`. Use `⟨p, ⟨hom_pt_ext _ _, (key p).2 (hj.lift_fst _ _ _)⟩, fun q hq => hj.hom_ext ?_ ?_⟩` and prove the remaining obligations. Conclude with `((key q).1 hq.2).trans (hj.lift_fst _ _ _).symm`. Rewrite using `[← Spec.map_preimage (q ≫ _), ← Spec.map_preimage (p ≫ _)]`. Use `congr 1`.
-
-Conclude with `CommRingCat.hom_ext (Subsingleton.elim _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem existsUnique_bears (ι : Type) [Fintype ι] (N : ℕ) (Y : Var ℚ) (j : Y.X ⟶ Fl ι N)
     (hj : IsPullback j Y.str (flStr ι N) (spMap (algebraMap ℤ ℚ)))

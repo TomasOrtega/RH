@@ -6,7 +6,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (PSpace)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.GE.PbKer.isPullback_of_ker_eq_sup` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FIsPullbackOfKernelSup.lean&line=8#L8)
 -/

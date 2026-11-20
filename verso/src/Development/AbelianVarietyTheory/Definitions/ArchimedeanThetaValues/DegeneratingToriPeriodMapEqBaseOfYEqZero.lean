@@ -81,41 +81,41 @@ attribute [instance] AnArc.acg AnArc.free AnArc.fin AnArc.mod AnArc.discrete
 namespace AnArc
 
 /- English proof (translation)
-Simplify using `only [eTwoPi, mul_add, Complex.exp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem e_add (x y : ℂ) : eTwoPi (x + y) = eTwoPi x * eTwoPi y := by
   simp only [eTwoPi, mul_add, Complex.exp_add]
 
 /- English proof (translation)
-Simplify using `[eTwoPi]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem e_zero : eTwoPi 0 = 1 := by simp [eTwoPi]
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem e_ne_zero (x : ℂ) : eTwoPi x ≠ 0 := Complex.exp_ne_zero _
 
 /- English proof (translation)
-Rewrite using `[eTwoPi, mul_comm]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem e_intCast (n : ℤ) : eTwoPi n = 1 := by
   rw [eTwoPi, mul_comm]; exact Complex.exp_int_mul_two_pi_mul_I n
 
 /- English proof (translation)
-Rewrite using `[eTwoPi, eTwoPi, ← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem e_nat_mul (n : ℕ) (x : ℂ) : eTwoPi (n * x) = eTwoPi x ^ n := by
   rw [eTwoPi, eTwoPi, ← Complex.exp_nat_mul]; congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[eTwoPi, eTwoPi, ← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem e_mul_intCast (x : ℂ) (n : ℤ) : eTwoPi (x * n) = eTwoPi x ^ n := by
   rw [eTwoPi, eTwoPi, ← Complex.exp_int_mul]; congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[eTwoPi]`. Use `congr 1`. Use `Complex.I_ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem e_neg_div (x : ℂ) : eTwoPi (-(x / (2 * Complex.I))) = Complex.exp (-(Real.pi * x)) := by
   rw [eTwoPi]; congr 1
@@ -132,52 +132,52 @@ Both sides reduce to the same expression.
 theorem H_def (z w : Fin A.gB → ℂ) : A.H z w = hermForm A.Hm z w := rfl
 
 /- English proof (translation)
-Simplify using `[H, hermForm, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem H_add_left (z z' w : Fin A.gB → ℂ) : A.H (z + z') w = A.H z w + A.H z' w := by
   simp [H, hermForm, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[H, hermForm, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem H_add_right (z w w' : Fin A.gB → ℂ) : A.H z (w + w') = A.H z w + A.H z w' := by
   simp [H, hermForm, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[H, hermForm, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem H_smul_left (c : ℂ) (z w : Fin A.gB → ℂ) : A.H (c • z) w = c * A.H z w := by
   simp [H, hermForm, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `[H, hermForm, Matrix.mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem H_smul_right (c : ℂ) (z w : Fin A.gB → ℂ) : A.H z (c • w) = starRingEnd ℂ c * A.H z w := by
   simp [H, hermForm, Matrix.mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `[H, hermForm]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem H_zero_left (w : Fin A.gB → ℂ) : A.H 0 w = 0 := by simp [H, hermForm]
 
 /- English proof (translation)
-Simplify using `[H, hermForm]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem H_zero_right (z : Fin A.gB → ℂ) : A.H z 0 = 0 := by simp [H, hermForm]
 
 /- English proof (translation)
-Simplify using `[H, hermForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem H_neg_left (z w : Fin A.gB → ℂ) : A.H (-z) w = -A.H z w := by simp [H, hermForm]
 
 /- English proof (translation)
-Simplify using `[H, hermForm, Matrix.mulVec_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem H_neg_right (z w : Fin A.gB → ℂ) : A.H z (-w) = -A.H z w := by
   simp [H, hermForm, Matrix.mulVec_neg]
 
 /- English proof (translation)
-Establish `h : ∀ i k, starRingEnd ℂ (A.Hm i k) = A.Hm k i` using `fun i k => A.Hm_herm.apply k i`. Simplify using `only [H, hermForm, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, h, Pi.star_apply, RCLike.star_def, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem H_conj (z w : Fin A.gB → ℂ) : starRingEnd ℂ (A.H z w) = A.H w z := by
   have h : ∀ i k, starRingEnd ℂ (A.Hm i k) = A.Hm k i := fun i k => A.Hm_herm.apply k i
@@ -187,7 +187,7 @@ theorem H_conj (z w : Fin A.gB → ℂ) : starRingEnd ℂ (A.H z w) = A.H w z :=
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Use `congrArg Complex.im (A.H_conj z z)` as an intermediate fact. Rewrite `this` using `[Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem H_self_im (z : Fin A.gB → ℂ) : (A.H z z).im = 0 := by
   have := congrArg Complex.im (A.H_conj z z)
@@ -195,22 +195,22 @@ theorem H_self_im (z : Fin A.gB → ℂ) : (A.H z z).im = 0 := by
   linarith
 
 /- English proof (translation)
-The claim follows from `A.Hm_pos z hz`.
+A detailed English derivation is pending.
 -/
 theorem H_pos {z : Fin A.gB → ℂ} (hz : z ≠ 0) : 0 < (A.H z z).re := A.Hm_pos z hz
 
 /- English proof (translation)
-The claim follows from `A.F_adj a z w`.
+A detailed English derivation is pending.
 -/
 theorem H_F (a : O) (z w : Fin A.gB → ℂ) : A.H (A.F a z) w = A.H z (A.F (star a) w) := A.F_adj a z w
 
 /- English proof (translation)
-The claim follows from `A.Ef_eq l m`.
+A detailed English derivation is pending.
 -/
 theorem Ef_eq_im (l m : A.abelian₂) : (A.Ef l m : ℝ) = (A.H l m).im := A.Ef_eq l m
 
 /- English proof (translation)
-Use `A.Ef_eq_im l l` as an intermediate fact. Rewrite `this` using `[H_self_im]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem Ef_self (l : A.abelian₂) : A.Ef l l = 0 := by
   have := A.Ef_eq_im l l
@@ -218,9 +218,9 @@ Use `A.Ef_eq_im l l` as an intermediate fact. Rewrite `this` using `[H_self_im]`
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `h` using `A.chi_add 0 0`. Establish `h0 : A.chi 0 ≠ 0`. Introduce `h0`. Use `A.chi_norm 0` as an intermediate fact. Simplify using `[h0] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz : hermForm A.Hm ((0 : A.abelian₂) : Fin A.gB → ℂ) (0 : A.abelian₂) = 0` using `A.H_zero_left _`. Rewrite `h` using `[add_zero, hz]`. Simplify using `only [Complex.zero_im, Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one] at h`. Conclude with `(mul_eq_left₀ h0).1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem chi_zero : A.chi 0 = 1 := by
   have h := A.chi_add 0 0
@@ -234,7 +234,7 @@ Establish `hz : hermForm A.Hm ((0 : A.abelian₂) : Fin A.gB → ℂ) (0 : A.abe
   exact (mul_eq_left₀ h0).1 h.symm
 
 /- English proof (translation)
-Establish `h` using `A.psi_add 0 0`. Simplify using `only [add_zero, map_zero, e_zero, mul_one] at h`. Conclude with `Units.ext ((mul_eq_left₀ (A.psi 0).ne_zero).1 h.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem psi_zero : A.psi 0 = 1 := by
   have h := A.psi_add 0 0
@@ -249,7 +249,7 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_FLam (a : O) (l : A.abelian₂) : (A.FLam a l : Fin A.gB → ℂ) = A.F a l := rfl
 
 /- English proof (translation)
-Establish `h : (A.Ef (A.FLam a l) m : ℝ) = A.Ef l (A.FLam (star a) m)`. Rewrite using `[Ef_eq_im, Ef_eq_im, coe_FLam, coe_FLam, H_F]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ef_FLam (a : O) (l m : A.abelian₂) : A.Ef (A.FLam a l) m = A.Ef l (A.FLam (star a) m) := by
   have h : (A.Ef (A.FLam a l) m : ℝ) = A.Ef l (A.FLam (star a) m) := by
@@ -295,7 +295,7 @@ Both sides reduce to the same expression.
 theorem norm_eq_coord (l : A.X →+ ℂ) : ‖l‖ = ‖A.coord l‖ := rfl
 
 /- English proof (translation)
-Rewrite using `[A.coord.finrank_eq, Module.finrank_fintype_fun_eq_card, Module.finrank_eq_card_chooseBasisIndex]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_hom : Module.finrank ℂ (A.X →+ ℂ) = Module.finrank ℤ A.X := by
   rw [A.coord.finrank_eq, Module.finrank_fintype_fun_eq_card, Module.finrank_eq_card_chooseBasisIndex]
@@ -312,7 +312,7 @@ Both sides reduce to the same expression.
 abbrev V : Type := (A.X →+ ℂ) × (Fin A.gB → ℂ)
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_prod, finrank_hom, Module.finrank_fintype_fun_eq_card, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_V : Module.finrank ℂ A.V = Module.finrank ℤ A.X + A.gB := by
   rw [Module.finrank_prod, finrank_hom, Module.finrank_fintype_fun_eq_card, Fintype.card_fin]
@@ -383,7 +383,7 @@ Both sides reduce to the same expression.
 @[simp] theorem mk_eta (v : A.La) : mk v.y v.n v.l = v := rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext hy (Prod.ext hn hl)`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem ext {v v' : A.La} (hy : v.y = v'.y) (hn : v.n = v'.n) (hl : v.l = v'.l) : v = v' :=
   Prod.ext hy (Prod.ext hn hl)
@@ -479,7 +479,7 @@ Both sides reduce to the same expression.
 @[simp] theorem nsmul_l (k : ℕ) (v : A.La) : (k • v).l = k • v.l := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eq_add_parts (v : A.La) : v = mk v.y 0 0 + mk 0 v.n 0 + mk 0 0 v.l := by ext <;> simp
 
@@ -549,7 +549,7 @@ Both sides reduce to the same expression.
 @[simp] theorem yLin_apply (v : A.La) : A.yLin v = v.y := rfl
 
 /- English proof (translation)
-Introduce `y` and use `⟨La.mk y 0 0, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem yLin_surjective : Function.Surjective A.yLin := fun y => ⟨La.mk y 0 0, rfl⟩
 
@@ -608,19 +608,19 @@ Both sides reduce to the same expression.
     (A.Pw w v).1 x = A.T v.y x + v.n x - A.H (A.ct x) v.l / (2 * Complex.I) + w * A.be v.y x := rfl
 
 /- English proof (translation)
-Simplify using `[Pw_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Pw_snd (w : ℂ) (v : A.La) : (A.Pw w v).2 = A.ct v.y + v.l := by
   simp [Pw_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [hv]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem degeneratingTori_periodMap_eq_base_of_y_eq_zero (w : ℂ) {v : A.La} (hv : v.y = 0) : A.Pw w v = A.P0 v := by
   ext <;> simp [hv]
 
 /- English proof (translation)
-Use `Prod.ext (AddMonoidHom.ext fun x => ?_) ?_` and prove the remaining obligations. Simplify using `[A.T_adj, A.ct_smul, H_F]`. Simplify using `[A.ct_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem degeneratingTori_basePeriodMap_smul (a : O) (v : A.La) : A.P0 (a • v) = A.actV a (A.P0 v) := by
   refine Prod.ext (AddMonoidHom.ext fun x => ?_) ?_
@@ -628,7 +628,7 @@ theorem degeneratingTori_basePeriodMap_smul (a : O) (v : A.La) : A.P0 (a • v) 
   · simp [A.ct_smul]
 
 /- English proof (translation)
-Use `Prod.ext (AddMonoidHom.ext fun x => ?_) ?_` and prove the remaining obligations. Simplify using `[A.be_adj]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem N_smul (a : O) (v : A.La) : A.N (a • v) = A.actV a (A.N v) := by
   refine Prod.ext (AddMonoidHom.ext fun x => ?_) ?_
@@ -636,7 +636,7 @@ theorem N_smul (a : O) (v : A.La) : A.N (a • v) = A.actV a (A.N v) := by
   · simp
 
 /- English proof (translation)
-Rewrite using `[Pw_apply, Pw_apply, degeneratingTori_basePeriodMap_smul, N_smul, map_add, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Pw_smul (w : ℂ) (a : O) (v : A.La) : A.Pw w (a • v) = A.actV a (A.Pw w v) := by
   rw [Pw_apply, Pw_apply, degeneratingTori_basePeriodMap_smul, N_smul, map_add, map_smul]
@@ -652,12 +652,12 @@ Both sides reduce to the same expression.
 theorem nn_apply (v : A.La) : A.nn v = La.mk 0 (A.be v.y).toAddMonoidHom 0 := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [nn_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nn_nn (v : A.La) : A.nn (A.nn v) = 0 := by ext <;> simp [nn_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [nn_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem degeneratingTori_basePeriodMap_nilpotentMap (v : A.La) : A.P0 (A.nn v) = A.N v := by ext <;> simp [nn_apply]
 
@@ -672,32 +672,32 @@ Both sides reduce to the same expression.
 theorem EF_apply (v v' : A.La) : A.EF v v' = v'.n v.y - v.n v'.y + A.Ef v.l v'.l := rfl
 
 /- English proof (translation)
-Simplify using `[EF_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem EF_n_y (n : A.X →+ ℤ) (y : A.X) : A.EF (La.mk 0 n 0) (La.mk y 0 0) = -n y := by
   simp [EF_apply]
 
 /- English proof (translation)
-Simplify using `[EF_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem EF_n_left (n : A.X →+ ℤ) (v : A.La) : A.EF (La.mk 0 n 0) v = -n v.y := by
   simp [EF_apply]
 
 /- English proof (translation)
-Simplify using `[EF_apply, Ef_eq_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem EF_l_l (l m : A.abelian₂) : (A.EF (La.mk 0 0 l) (La.mk 0 0 m) : ℝ) = (A.H l m).im := by
   simp [EF_apply, Ef_eq_im]
 
 /- English proof (translation)
-Introduce `v` and use `by show A.EF v v = 0 simp [EF_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EF_isAlt : A.EF.IsAlt := fun v => by
   show A.EF v v = 0
   simp [EF_apply]
 
 /- English proof (translation)
-Simplify using `[EF_apply, Ef_FLam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem EF_smul (a : O) (v v' : A.La) : A.EF (a • v) v' = A.EF v (star a • v') := by
   simp [EF_apply, Ef_FLam]
@@ -706,7 +706,7 @@ def ah (l : A.abelian₂) (z : Fin A.gB → ℂ) : ℂ :=
   A.chi l * Complex.exp (Real.pi * A.H z l + Real.pi / 2 * A.H l l)
 
 /- English proof (translation)
-Use `mul_ne_zero (fun h => ?_) (Complex.exp_ne_zero _)` and prove the remaining obligations. Use `A.chi_norm l` as an intermediate fact. Simplify using `[h] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ah_ne_zero (l : A.abelian₂) (z : Fin A.gB → ℂ) : A.ah l z ≠ 0 := by
   refine mul_ne_zero (fun h => ?_) (Complex.exp_ne_zero _)
@@ -714,7 +714,7 @@ theorem ah_ne_zero (l : A.abelian₂) (z : Fin A.gB → ℂ) : A.ah l z ≠ 0 :=
   simp [h] at this
 
 /- English proof (translation)
-Rewrite using `[ah, ah, H_add_left, mul_assoc (A.chi l), ← Complex.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ah_add (l : A.abelian₂) (z c : Fin A.gB → ℂ) :
     A.ah l (z + c) = A.ah l z * Complex.exp (Real.pi * A.H c l) := by
@@ -731,7 +731,7 @@ def Theta (j : ℕ) (α : A.X) : Submodule ℂ ((Fin A.gB → ℂ) → ℂ) wher
     simp only [Pi.smul_apply, smul_eq_mul, ha.2 l z]; ring⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Theta {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} : th ∈ A.Theta j α ↔
     Differentiable ℂ th ∧ ∀ (l : A.abelian₂) z, th (z + l) =
@@ -739,7 +739,7 @@ theorem mem_Theta {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} : th �
         Complex.exp (Real.pi * A.H (A.ct α) l) * th z := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.mul h'.1, fun l z => by simp only [Pi.mul_apply, h.2 l z, h'.2 l z, map_add, H_add_left, mul_add, Complex.exp_add]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_mem_Theta {j j' : ℕ} {α α' : A.X} {th th' : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α)
     (h' : th' ∈ A.Theta j' α') : th * th' ∈ A.Theta (j + j') (α + α') :=
@@ -747,7 +747,7 @@ theorem mul_mem_Theta {j j' : ℕ} {α α' : A.X} {th th' : (Fin A.gB → ℂ) �
     simp only [Pi.mul_apply, h.2 l z, h'.2 l z, map_add, H_add_left, mul_add, Complex.exp_add]; ring⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp (differentiable_id.add_const _), fun l z => by have h1 : A.H (A.ct (α + j • μ)) l = A.H (A.ct α) l + j * A.H (A.ct μ) l := by rw [map_add, map_nsmul, H_add_left, ← Nat.cast_smul_eq_nsmul ℂ, H_smul_left] show th (z + l + A.ct μ) = _ * _ * th (z + A.ct μ) rw [add_right_co …`.
+Supply the required witnesses or components.
 -/
 theorem translate_mem_Theta {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) (μ : A.X) :
     (fun z => th (z + A.ct μ)) ∈ A.Theta j (α + j • μ) :=
@@ -763,7 +763,7 @@ def term (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (μ : A.X) (v : 
   (A.psi μ : ℂ) ^ j * eTwoPi (A.T μ α) * eTwoPi (v.1 (α + j • μ)) * th (v.2 + A.ct μ)
 
 /- English proof (translation)
-Establish `h1 : Differentiable ℂ fun v : A.V => v.1 (α + j • μ)` using `(A.evalCLM (α + j • μ)).differentiable.comp differentiable_fst`. Unfold `term eTwoPi`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_term (j : ℕ) (α : A.X) {th : (Fin A.gB → ℂ) → ℂ} (h : Differentiable ℂ th) (μ : A.X) :
     Differentiable ℂ (A.term j α th μ) := by
@@ -775,22 +775,22 @@ theorem differentiable_term (j : ℕ) (α : A.X) {th : (Fin A.gB → ℂ) → �
 def q (μ : A.X) : ℤ := A.be μ μ / 2
 
 /- English proof (translation)
-The claim follows from `Int.mul_ediv_cancel' (A.be_even μ)`.
+A detailed English derivation is pending.
 -/
 theorem two_mul_q (μ : A.X) : 2 * A.q μ = A.be μ μ := Int.mul_ediv_cancel' (A.be_even μ)
 
 /- English proof (translation)
-Simplify using `[q]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem q_zero : A.q 0 = 0 := by simp [q]
 
 /- English proof (translation)
-Simplify using `[q]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem q_neg (μ : A.X) : A.q (-μ) = A.q μ := by simp [q]
 
 /- English proof (translation)
-Establish `h1` using `A.two_mul_q (μ + ν)`. Establish `h2` using `A.two_mul_q μ`. Establish `h3` using `A.two_mul_q ν`. Simplify using `only [map_add, LinearMap.add_apply, A.be_symm ν μ] at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem q_add (μ ν : A.X) : A.q (μ + ν) = A.q μ + A.q ν + A.be μ ν := by
   have h1 := A.two_mul_q (μ + ν)
@@ -800,7 +800,7 @@ theorem q_add (μ ν : A.X) : A.q (μ + ν) = A.q μ + A.q ν + A.be μ ν := by
   omega
 
 /- English proof (translation)
-Distinguish the cases in `h : μ = 0`. Simplify using `[h]`. Conclude with `(A.be_pos μ h).le`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem be_self_nonneg (μ : A.X) : 0 ≤ A.be μ μ := by
   by_cases h : μ = 0
@@ -810,7 +810,7 @@ theorem be_self_nonneg (μ : A.X) : 0 ≤ A.be μ μ := by
 def exponent (j : ℕ) (α μ : A.X) : ℤ := j * A.q μ + A.be μ α
 
 /- English proof (translation)
-Rewrite using `[exponent, ← two_mul_q]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_mul_exponent (j : ℕ) (α μ : A.X) :
     2 * A.exponent j α μ = j * A.be μ μ + 2 * A.be μ α := by
@@ -820,15 +820,15 @@ def Sum (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (w : ℂ) (v : A.
   ∑' μ : A.X, A.term j α th μ v * eTwoPi (w * A.exponent j α μ)
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ A.X`. Set `f : A.X → (Module.Free.ChooseBasisIndex ℤ A.X → ℤ)` to `fun μ i => A.be μ (b i)`. Establish `hf : Function.Injective f`. Introduce `μ ν h`. Establish `h0 : A.be (μ - ν) = 0` using `b.ext fun i => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun h i` as an intermediate fact. Simplify using `only [f] at this`. Simplify using `[this]`. Assume the negation of the conclusion as `hne`. Use `A.be_pos _ (sub_ne_zero.2 hne)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Simplify using `at this`. Use `Set.Finite.of_finite_image ?_ hf.injOn` and prove the remaining obligations. Use `(Set.finite_Icc (fun i => -(R + A.be (b i) (b i))) (fun i => R + A.be (b i) (b i))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨μ, hμ, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hμ' : A.be μ μ ≤ R` using `hμ`. Establish `h0` using `A.be_self_nonneg μ`. Establish `key : ∀ i, -(R + A.be (b i) (b i)) ≤ A.be μ (b i) ∧ A.be μ (b i) ≤ R + A.be (b i) (b i)` using `fun i => by`. Establish `h1` using `A.be_self_nonneg (μ + b i)`. Establish `h2` using `A.be_self_nonneg (μ - b i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `A.be_self_nonneg (b i)`. Simplify using `only [map_add, map_sub, LinearMap.add_apply, LinearMap.sub_apply, A.be_symm (b i) μ] at h1 h2`. Apply the tactic sequence `constructor <;> omega`. Conclude with `⟨fun i => (key i).1, fun i => (key i).2⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem finite_be_le (R : ℤ) : {μ : A.X | A.be μ μ ≤ R}.Finite := by
   classical
@@ -858,9 +858,9 @@ theorem finite_be_le (R : ℤ) : {μ : A.X | A.be μ μ ≤ R}.Finite := by
   exact ⟨fun i => (key i).1, fun i => (key i).2⟩
 
 /- English proof (translation)
-Establish `h1` using `A.two_mul_exponent j α μ`. Establish `h2` using `A.be_self_nonneg (μ + (α + α))`. Establish `h0` using `A.be_self_nonneg μ`. Simplify using `only [map_add, LinearMap.add_apply, A.be_symm α μ] at h2`. Establish `hj' : (1 : ℤ) ≤ j` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hj' h0]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem be_le_exponent {j : ℕ} (hj : j ≠ 0) (α μ : A.X) :
     A.be μ μ ≤ 4 * (A.exponent j α μ + A.be α α) := by
@@ -872,7 +872,7 @@ theorem be_le_exponent {j : ℕ} (hj : j ≠ 0) (α μ : A.X) :
   nlinarith [mul_le_mul_of_nonneg_right hj' h0]
 
 /- English proof (translation)
-Establish `h1` using `A.be_le_exponent hj α μ`. Establish `h0` using `A.be_self_nonneg μ`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem neg_be_le_exponent {j : ℕ} (hj : j ≠ 0) (α μ : A.X) : -A.be α α ≤ A.exponent j α μ := by
   have h1 := A.be_le_exponent hj α μ
@@ -880,7 +880,7 @@ theorem neg_be_le_exponent {j : ℕ} (hj : j ≠ 0) (α μ : A.X) : -A.be α α 
   omega
 
 /- English proof (translation)
-The claim follows from `(A.finite_be_le (4 * (n + A.be α α))).subset fun μ hμ => by have h1 := A.be_le_exponent hj α μ have h2 : A.exponent j α μ ≤ n := hμ show A.be μ μ ≤ _ omega`.
+A detailed English derivation is pending.
 -/
 theorem finite_exponent_le {j : ℕ} (hj : j ≠ 0) (α : A.X) (n : ℤ) : {μ | A.exponent j α μ ≤ n}.Finite :=
   (A.finite_be_le (4 * (n + A.be α α))).subset fun μ hμ => by
@@ -890,7 +890,7 @@ theorem finite_exponent_le {j : ℕ} (hj : j ≠ 0) (α : A.X) (n : ℤ) : {μ |
     omega
 
 /- English proof (translation)
-The claim follows from `(A.finite_exponent_le hj α n).subset fun _ hμ => le_of_eq hμ`.
+A detailed English derivation is pending.
 -/
 theorem finite_exponent_eq {j : ℕ} (hj : j ≠ 0) (α : A.X) (n : ℤ) : {μ | A.exponent j α μ = n}.Finite :=
   (A.finite_exponent_le hj α n).subset fun _ hμ => le_of_eq hμ
@@ -898,13 +898,13 @@ theorem finite_exponent_eq {j : ℕ} (hj : j ≠ 0) (α : A.X) (n : ℤ) : {μ |
 def level (j : ℕ) [NeZero j] (α : A.X) (n : ℤ) : Finset A.X := (A.finite_exponent_eq (NeZero.ne j) α n).toFinset
 
 /- English proof (translation)
-Simplify using `[level]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mem_level {j : ℕ} [NeZero j] {α : A.X} {n : ℤ} {μ : A.X} :
     μ ∈ A.level j α n ↔ A.exponent j α μ = n := by simp [level]
 
 /- English proof (translation)
-The claim follows from `Finset.eq_empty_of_forall_notMem fun μ hμ => by have h1 := A.neg_be_le_exponent (NeZero.ne j) α μ rw [mem_level] at hμ omega`.
+A detailed English derivation is pending.
 -/
 theorem level_eq_empty {j : ℕ} [NeZero j] {α : A.X} {n : ℤ} (hn : n < -A.be α α) : A.level j α n = ∅ :=
   Finset.eq_empty_of_forall_notMem fun μ hμ => by
@@ -925,18 +925,18 @@ theorem coeff_FSum (j : ℕ) [NeZero j] (α : A.X) (th : (Fin A.gB → ℂ) → 
     (A.FSum j α th v).coeff n = ∑ μ ∈ A.level j α n, A.term j α th μ v := rfl
 
 /- English proof (translation)
-Rewrite using `[coeff_FSum, A.level_eq_empty hn, Finset.sum_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_FSum_eq_zero (j : ℕ) [NeZero j] (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) {n : ℤ}
     (hn : n < -A.be α α) : (A.FSum j α th v).coeff n = 0 := by
   rw [coeff_FSum, A.level_eq_empty hn, Finset.sum_empty]
 
 /- English proof (translation)
-Establish `h1 : (v + A.P0 (La.mk 0 0 l)).1 (α + j • μ) = v.1 (α + j • μ) + -(A.H (A.ct (α + j • μ)) l / (2 * Complex.I))`. Rewrite using `[Prod.fst_add, AddMonoidHom.add_apply, degeneratingTori_basePeriodMap_fst_apply]`. Simplify using the standard rewrite rules. Establish `h2 : (v + A.P0 (La.mk 0 0 l)).2 + A.ct μ = v.2 + l + A.ct μ` using `by simp`. Establish `h3` using `(A.translate_mem_Theta h μ).2 l v.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce at h3`. Establish `h4 : Complex.exp (-(Real.pi * A.H (A.ct (α + j • μ)) l)) * Complex.exp (Real.pi * A.H (A.ct (α + j • μ)) l) = 1`. Rewrite using `[← Complex.exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[term, term, h1, h2, h3, e_add, e_neg_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = A.ah l v.2 ^ j * _`. Take the linear combination `((A.psi μ : ℂ) ^ j * eTwoPi (A.T μ α) * eTwoPi (v.1 (α + j • μ)) * A.ah l v.2 ^ j * th (v.2 + A.ct μ)) * h4`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem term_add_P0_l {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) (μ : A.X) (l : A.abelian₂)
     (v : A.V) : A.term j α th μ (v + A.P0 (La.mk 0 0 l)) =
@@ -956,7 +956,7 @@ theorem term_add_P0_l {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h 
     th (v.2 + A.ct μ)) * h4
 
 /- English proof (translation)
-Establish `h1 : (v + A.P0 (La.mk 0 n 0)).1 (α + j • μ) = v.1 (α + j • μ) + (n (α + j • μ) : ℤ)`. Rewrite using `[Prod.fst_add, AddMonoidHom.add_apply, degeneratingTori_basePeriodMap_fst_apply]`. Simplify using the standard rewrite rules. Establish `h2 : (v + A.P0 (La.mk 0 n 0)).2 = v.2` using `by simp`. Rewrite using `[term, term, h1, h2, e_add, e_intCast, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_add_P0_n (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (μ : A.X) (n : A.X →+ ℤ) (v : A.V) :
     A.term j α th μ (v + A.P0 (La.mk 0 n 0)) = A.term j α th μ v := by
@@ -966,11 +966,11 @@ theorem term_add_P0_n (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (μ
   rw [term, term, h1, h2, e_add, e_intCast, mul_one]
 
 /- English proof (translation)
-Establish `h1 : (v + A.Pw w (La.mk y 0 0)).1 (α + j • μ) = v.1 (α + j • μ) + A.T y α + j * A.T μ y + w * A.be y α + j * (w * A.be μ y)`. Rewrite using `[Prod.fst_add, AddMonoidHom.add_apply, Pw_fst_apply, A.T_symm μ y, A.be_symm μ y]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (v + A.Pw w (La.mk y 0 0)).2 + A.ct μ = v.2 + A.ct (μ + y)` using `by simp; abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h3 : v.1 (α + j • (μ + y)) = v.1 (α + j • μ) + j * v.1 y` using `by simp; ring`. Establish `h4 : w * A.exponent j α (μ + y) = w * A.exponent j α μ + j * (w * A.q y) + j * (w * A.be μ y) + w * A.be y α`. Simplify using `[exponent, q_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[term, term, h1, h2, h3, h4, psi_add, map_add A.T, AddMonoidHom.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e_add, e_nat_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_add_Pw_y (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (w : ℂ) (μ y : A.X) (v : A.V) :
     (A.psi y * eTwoPi (v.1 y) * eTwoPi (w * A.q y)) ^ j *
@@ -1017,12 +1017,12 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_psiInt (τ₀ : ℂ) (x : ℤ) : (psiInt τ₀ x : ℂ) = eTwoPi (τ₀ * x ^ 2 / 2) := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem psiInt_neg (τ₀ : ℂ) (x : ℤ) : psiInt τ₀ (-x) = psiInt τ₀ x := Units.ext (by simp)
 
 /- English proof (translation)
-Simplify using `only [coe_psiInt, TInt_apply, ← e_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psiInt_add (τ₀ : ℂ) (x y : ℤ) :
     (psiInt τ₀ (x + y) : ℂ) = psiInt τ₀ x * psiInt τ₀ y * eTwoPi (TInt τ₀ x y) := by
@@ -1063,7 +1063,7 @@ def tate (τ₀ : ℂ) : AnArc ℤ where
   be_even x := ⟨x * x, by simp only [beInt_apply]; ring⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `TInt τ₀ y 1 + (n 1 : ℤ) - hermForm (0 : Matrix (Fin 0) (Fin 0) ℂ) 0 0 / (2 * Complex.I) + w * (beInt y 1 : ℤ) = _`. Simplify using `[hermForm]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tate_Pw (τ₀ w : ℂ) (y : ℤ) (n : ℤ →+ ℤ) :
     ((tate τ₀).Pw w (La.mk (A := tate τ₀) y n 0)).1 (1 : ℤ) = n 1 + y * (τ₀ + 2 * w) := by
@@ -1072,13 +1072,13 @@ theorem tate_Pw (τ₀ w : ℂ) (y : ℤ) (n : ℤ →+ ℤ) :
   simp [hermForm]; ring
 
 /- English proof (translation)
-The claim follows from `(tate τ₀).EF_n_y _ _`.
+A detailed English derivation is pending.
 -/
 theorem tate_EF (τ₀ : ℂ) : (tate τ₀).EF (La.mk (A := tate τ₀) 0 (AddMonoidHom.id ℤ) 0)
     (La.mk (A := tate τ₀) (1 : ℤ) 0 0) = -1 := (tate τ₀).EF_n_y _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨differentiable_const 1, fun l z => by have hl : l = 0 := Subsingleton.elim (α := (⊥ : Submodule ℤ (Fin 0 → ℂ))) _ _ simp [hl, ah]⟩`.
+Supply the required witnesses or components.
 -/
 theorem tate_one_mem_Theta (τ₀ : ℂ) (j : ℕ) (α : (tate τ₀).X) :
     (1 : (Fin (tate τ₀).gB → ℂ) → ℂ) ∈ (tate τ₀).Theta j α :=
@@ -1087,16 +1087,16 @@ theorem tate_one_mem_Theta (τ₀ : ℂ) (j : ℕ) (α : (tate τ₀).X) :
     simp [hl, ah]⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((1 : ℕ) : ℤ) * (beInt μ μ / 2) + beInt μ 0 = _`. Simplify using `[mul_assoc, sq]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem tate_exponent (τ₀ : ℂ) (μ : ℤ) : (tate τ₀).exponent 1 (0 : ℤ) μ = μ ^ 2 := by
   change ((1 : ℕ) : ℤ) * (beInt μ μ / 2) + beInt μ 0 = _
   simp [mul_assoc, sq]
 
 /- English proof (translation)
-Use `tsum_congr fun μ : ℤ => ?_` and prove the remaining obligations. Take `⟨l, z⟩ : (ℤ →+ ℂ) × (Fin 0 → ℂ)` from `v`. Establish `h1 : l (@HAdd.hAdd ℤ ℤ ℤ _ 0 ((1 : ℕ) • μ)) = μ * l 1` using `by simpa using map_zsmul l μ 1`. Rewrite using `[tate_exponent]`. Express the relevant statement in the definitionally equal form `(psiInt τ₀ μ : ℂ) ^ 1 * eTwoPi (TInt τ₀ μ 0) * eTwoPi (l (@HAdd.hAdd ℤ ℤ ℤ _ 0 ((1 : ℕ) • μ))) * 1 * eTwoPi (w * ((μ ^ 2 : ℤ) : ℂ)) = eTwoPi (μ ^ 2 * (τ₀ + 2 * w) / 2 + μ * l 1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1]`. Simplify using `only [coe_psiInt, pow_one, mul_one, TInt_apply, ← e_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tate_Sum (τ₀ w : ℂ) (v : (tate τ₀).V) : (tate τ₀).Sum 1 (0 : ℤ) 1 w v =
     ∑' μ : ℤ, eTwoPi (μ ^ 2 * (τ₀ + 2 * w) / 2 + μ * v.1 (1 : ℤ)) := by
@@ -1112,9 +1112,9 @@ theorem tate_Sum (τ₀ w : ℂ) (v : (tate τ₀).V) : (tate τ₀).Sum 1 (0 : 
   congr 1; push_cast; ring
 
 /- English proof (translation)
-Establish `h : (tate τ₀).level 1 0 0 = {0}`. Use extensionality with `μ`. Rewrite using `[mem_level, Finset.mem_singleton]`. Conclude with `(Eq.congr_left (tate_exponent τ₀ μ)).trans (pow_eq_zero_iff (M₀ := ℤ) two_ne_zero)`. Rewrite using `[coeff_FSum, h, Finset.sum_singleton]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[term]`.
+A detailed English derivation is pending.
 -/
 theorem tate_FSum_coeff_zero (τ₀ : ℂ) (v : (tate τ₀).V) : ((tate τ₀).FSum 1 0 1 v).coeff 0 = 1 := by
   have h : (tate τ₀).level 1 0 0 = {0} := by
@@ -1145,7 +1145,7 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_gaussEquiv (a : GaussianInt) : (gaussEquiv a : Fin 1 → ℂ) = gaussEmb a := rfl
 
 /- English proof (translation)
-Simplify using `[hermForm, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_one (z w : Fin 1 → ℂ) : hermForm 1 z w = z 0 * starRingEnd ℂ (w 0) := by
   simp [hermForm, dotProduct]
@@ -1162,13 +1162,13 @@ Both sides reduce to the same expression.
 def gaussEf : LinearMap.BilinForm ℤ gaussLam := LinearMap.BilinForm.congr gaussEquiv gaussForm
 
 /- English proof (translation)
-Simplify using `[gaussEf]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem gaussEf_apply (a b : GaussianInt) :
     gaussEf (gaussEquiv a) (gaussEquiv b) = a.im * b.re - a.re * b.im := by simp [gaussEf]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `gaussEquiv.surjective l`. Take `⟨b, rfl⟩` from `gaussEquiv.surjective m`. Rewrite using `[gaussEf_apply, hermForm_one]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaussEf_eq (l m : gaussLam) : (gaussEf l m : ℝ) = (hermForm 1 (l : Fin 1 → ℂ) m).im := by
   obtain ⟨a, rfl⟩ := gaussEquiv.surjective l
@@ -1177,13 +1177,13 @@ theorem gaussEf_eq (l m : gaussLam) : (gaussEf l m : ℝ) = (hermForm 1 (l : Fin
   simp; ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `l hl`. Take `⟨a, rfl⟩` from `gaussEquiv.surjective l`. Establish `h1` using `gaussEf_apply a 1`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `gaussEf_apply a ⟨0, 1⟩`. Rewrite `h1`, `h2` using `[hl]`. Apply the tactic sequence `have : a = 0 := by ext <;> simp at h1 h2 ⊢ <;> omega`. Simplify using `[this]`. Introduce `φ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨gaussEquiv ⟨-φ (gaussEquiv ⟨0, 1⟩), φ (gaussEquiv 1)⟩, LinearMap.ext fun m => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `gaussEquiv.surjective m`. Apply the tactic sequence `have hb : b = b.re • (1 : GaussianInt) + b.im • (⟨0, 1⟩ : GaussianInt) := by ext <;> simp`. Rewrite using `[gaussEf_apply]`. Use `conv_rhs => rw [hb, map_add, map_add, map_zsmul, map_zsmul, map_zsmul, map_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gaussEf_bij : Function.Bijective gaussEf := by
   constructor
@@ -1204,9 +1204,9 @@ theorem gaussEf_bij : Function.Bijective gaussEf := by
     simp; ring
 
 /- English proof (translation)
-Use `DiscreteTopology.of_forall_le_norm one_pos fun l hl => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `gaussEquiv.surjective l`. Establish `ha : a ≠ 0` using `by rintro rfl; simp at hl`. Establish `h1 : (1 : ℝ) ≤ Complex.normSq a`. Rewrite using `[← GaussianInt.intCast_real_norm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GaussianInt.norm_pos.2 ha` after adjusting the coercions. Establish `h2 : (1 : ℝ) ≤ ‖(a : ℂ)‖`. Rewrite `h1` using `[Complex.normSq_eq_norm_sq]`. Use polynomial arithmetic with `[norm_nonneg (a : ℂ)]`. Conclude with `h2.trans (norm_le_pi_norm (gaussEmb a) 0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gaussLam_discrete : DiscreteTopology gaussLam := by
   refine DiscreteTopology.of_forall_le_norm one_pos fun l hl => ?_
@@ -1221,9 +1221,9 @@ theorem gaussLam_discrete : DiscreteTopology gaussLam := by
   exact h2.trans (norm_le_pi_norm (gaussEmb a) 0)
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Establish `hz : z = (z 0).re • gaussEmb 1 + (z 0).im • gaussEmb ⟨0, 1⟩`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[GaussianInt.toComplex_def']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussLam_full : Submodule.span ℝ (gaussLam : Set (Fin 1 → ℂ)) = ⊤ := by
   refine eq_top_iff.2 fun z _ => ?_
@@ -1239,16 +1239,16 @@ def gaussChi (l : gaussLam) : ℂ :=
   Complex.exp (Real.pi * Complex.I * ((l.1 0).re * (l.1 0).im : ℝ))
 
 /- English proof (translation)
-Rewrite using `[gaussChi, mul_right_comm, ← Complex.ofReal_mul]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussChi_norm (l : gaussLam) : ‖gaussChi l‖ = 1 := by
   rw [gaussChi, mul_right_comm, ← Complex.ofReal_mul]
   exact Complex.norm_exp_ofReal_mul_I _
 
 /- English proof (translation)
-Rewrite using `[← gaussEf_eq]`. Take `⟨a, rfl⟩` from `gaussEquiv.surjective l`. Take `⟨b, rfl⟩` from `gaussEquiv.surjective m`. Rewrite using `[gaussEf_apply, gaussChi, gaussChi, gaussChi, ← Complex.exp_add, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨a.re * b.im, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[← GaussianInt.intCast_re, ← GaussianInt.intCast_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaussChi_add (l m : gaussLam) : gaussChi (l + m) =
     gaussChi l * gaussChi m * Complex.exp (Real.pi * Complex.I * ((hermForm 1 (l : Fin 1 → ℂ) m).im : ℂ)) := by
@@ -1261,12 +1261,12 @@ theorem gaussChi_add (l m : gaussLam) : gaussChi (l + m) =
   simp [← GaussianInt.intCast_re, ← GaussianInt.intCast_im]; ring
 
 /- English proof (translation)
-Simplify using `[gaussChi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gaussChi_neg (l : gaussLam) : gaussChi (-l) = gaussChi l := by simp [gaussChi]
 
 /- English proof (translation)
-Establish `h : z 0 ≠ 0` using `fun h => hz (funext fun i => by rw [Subsingleton.elim i 0]; exact h)`. Rewrite using `[hermForm_one, Complex.mul_conj, Complex.ofReal_re]`. Conclude with `Complex.normSq_pos.2 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermForm_one_pos (z : Fin 1 → ℂ) (hz : z ≠ 0) : 0 < (hermForm 1 z z).re := by
   have h : z 0 ≠ 0 := fun h => hz (funext fun i => by rw [Subsingleton.elim i 0]; exact h)
@@ -1307,14 +1307,14 @@ def gaussInt (c τ₀ : ℂ) : AnArc ℤ where
   be_even x := ⟨x * x, by simp only [beInt_apply]; ring⟩
 
 /- English proof (translation)
-Use `AddMonoidHom.ext fun x => funext fun i => ?_` and prove the remaining obligations. Conclude with `mul_zero _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gaussInt_ct_zero (τ₀ : ℂ) : (gaussInt 0 τ₀).ct = 0 := by
   refine AddMonoidHom.ext fun x => funext fun i => ?_
   exact mul_zero _
 
 /- English proof (translation)
-Rewrite using `[EF_apply]`. Express the relevant statement in the definitionally equal form `(0 : ℤ) - 0 + gaussEf (gaussEquiv 1) (gaussEquiv ⟨0, 1⟩) = -1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem gaussInt_EF (c τ₀ : ℂ) : (gaussInt c τ₀).EF (La.mk (A := gaussInt c τ₀) 0 0 (gaussEquiv 1))
     (La.mk (A := gaussInt c τ₀) 0 0 (gaussEquiv ⟨0, 1⟩)) = -1 := by
@@ -1323,7 +1323,7 @@ theorem gaussInt_EF (c τ₀ : ℂ) : (gaussInt c τ₀).EF (La.mk (A := gaussIn
   simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `TInt τ₀ 0 1 + ((0 : ℤ) : ℂ) - hermForm 1 (fun _ : Fin 1 => ((1 : ℤ) : ℂ) * c) (gaussEmb 1) / (2 * Complex.I) = _`. Simplify using `[hermForm_one]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem gaussian_integers_period_component (c τ₀ : ℂ) :
     ((gaussInt c τ₀).P0 (La.mk (A := gaussInt c τ₀) 0 0 (gaussEquiv 1))).1 (1 : ℤ) = -(c / (2 * Complex.I)) := by
@@ -1397,7 +1397,7 @@ def gaussCM (c τ₀ : ℂ) : AnArc GaussianInt where
   be_even x := ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `congrArg v.n ?_` and prove the remaining obligations. Use `show star (⟨0, 1⟩ : GaussianInt) * 1 = ⟨0, -1⟩`. Apply the tactic sequence `ext <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 example (c τ₀ : ℂ) (v : (gaussCM c τ₀).La) :
     ((⟨0, 1⟩ : GaussianInt) • v).n (1 : GaussianInt) = v.n (⟨0, -1⟩ : GaussianInt) := by
@@ -1406,21 +1406,21 @@ example (c τ₀ : ℂ) (v : (gaussCM c τ₀).La) :
   ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[finrank_V]`. Conclude with `congrArg (· + 0) (Module.finrank_self ℤ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (τ₀ : ℂ) : Module.finrank ℂ (tate τ₀).V = 1 := by
   rw [finrank_V]
   exact congrArg (· + 0) (Module.finrank_self ℤ)
 
 /- English proof (translation)
-Use `with_reducible_and_instances rfl`.
+A detailed English derivation is pending.
 -/
 example : (NormedSpace.toModule : Module ℝ A.V) =
     @Prod.instModule ℝ _ _ _ _ _ AddMonoidHom.instModule (Pi.Function.module _ _ _) := by
   with_reducible_and_instances rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 example : CompleteSpace A.V ∧ FiniteDimensional ℂ A.V ∧ FiniteDimensional ℝ A.V ∧ IsScalarTower ℝ ℂ A.V :=
   ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩

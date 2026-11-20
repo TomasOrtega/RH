@@ -28,9 +28,9 @@ def KfLow (τ : D.what₂.Tau) : Submodule ℂ (M.sm τ) :=
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact hT.equiv τ g hg v w hw`. Consider the case `zero => rfl`. Consider the case `add T T' _ _ h1 h2`. Simplify using `only [_root_.add_apply, h1, h2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `smul c T _ h`. Simplify using `only [_root_.smul_apply, h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mult_equiv {T : MMap M} (hT : T ∈ Mult θ M J χ) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (v : M.Vec) (w : M.sm τ) (hw : (w : M.H τ) = M.rep τ g (v τ)) :
@@ -48,7 +48,7 @@ theorem mult_equiv {T : MMap M} (hT : T ∈ Mult θ M J χ) (τ : D.what₂.Tau)
 open Classical in
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.LowTypeThetaMapVanishing.vanish_KfLow <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vanish_KfLow {T : MMap M} (hT : T ∈ Mult θ M J χ)
     (hlow : ∀ v : ∀ ρ, lowT M ρ, T (fun ρ => v ρ) = 0) :
@@ -70,17 +70,17 @@ def DensLow : Prop :=
 
 open Classical in
 /- English proof (translation)
-Introduce `i F hS hlow`. Set `M` to `R.MW i (sg0 D A)`. Set `Kf : ∀ τ, Submodule ℂ (M.sm τ)` to `fun τ => KfLow M τ`. Set `Tm : ℂ →ₗ[ℂ] (⨂[ℂ] τ, Kf τ) →ₗ[ℂ] (⨂[ℂ] τ, M.sm τ)` to `LinearMap.smulRight (LinearMap.id : ℂ →ₗ[ℂ] ℂ) (PiTensorProduct.map fun τ => (Kf τ).subtype)`. Establish `hS' : F ∈ Mult R.θ M (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv))` using `hS`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : PiTensorProduct.lift F ∈ MultT R.θ M (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv))`. Rewrite using `[mem_multT, LinearEquiv.symm_apply_apply]`. Conclude with `hS'`. Establish `hvan0 : ∀ v : ∀ τ, Kf τ, F (fun τ => (v τ : M.sm τ)) = 0` using `fun v => vanish_KfLow R.θ M _ _ hS' hlow Finset.univ _ (fun τ _ => (v τ).2) (fun τ h => absurd (Finset.mem_univ τ) h)`. Establish `hvan : ∀ (φ : ℂ) (w : ⨂[ℂ] τ, Kf τ), PiTensorProduct.lift F (Tm φ w) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ w`. Simplify using `only [Tm, LinearMap.smulRight_apply, LinearMap.id_apply, LinearMap.smul_apply, map_smul]`. Rewrite using `[smul_eq_zero]`. Use `right`. Proceed by induction on `w using PiTensorProduct.induction_on with`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul_tprod r v`. Rewrite using `[map_smul, PiTensorProduct.map_tprod, map_smul, PiTensorProduct.lift.tprod]`. Simplify using `only [Submodule.subtype_apply]`. Rewrite using `[hvan0 v, smul_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspan : ∀ v : ∀ τ, M.sm τ, (∀ τ, v τ ∈ Kf τ) → PiTensorProduct.tprod ℂ v ∈ Submodule.span ℂ {x | ∃ φ w, Tm φ w = x}`. Introduce `v hv`. Use `Submodule.subset_span ⟨1, PiTensorProduct.tprod ℂ (fun τ => (⟨v τ, hv τ⟩ : Kf τ)), ?_⟩` and prove the remaining obligations. Simplify using `only [Tm, LinearMap.smulRight_apply, LinearMap.id_apply, LinearMap.smul_apply, one_smul, PiTensorProduct.map_tprod]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `Formalism.IndefR.Eqv.ioUniqueAt_holds D _ _ M R.θ _ _ Kf ℂ (⨂[ℂ] τ, Kf τ) Tm (fun τ ℓ hℓ hK => h i τ ℓ hℓ hK) hspan _ hu hvan`. Establish `: F = PiTensorProduct.lift.symm (PiTensorProduct.lift F)` using `by simp`. Rewrite using `[this, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanP_of (h : DensLow R) : Formalism.IndefR.Eqv.Act.SpanP R := by
   intro i F hS hlow

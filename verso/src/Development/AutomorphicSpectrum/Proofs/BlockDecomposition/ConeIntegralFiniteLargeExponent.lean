@@ -27,7 +27,7 @@ open GlobalTheory.SiegelSet GlobalTheory.CompanionTheory.RegInt
 namespace GlobalTheory.CompanionTheory.ConeInt
 
 /- English proof (translation)
-Establish `h : IntegrableOn (fun x : ℝ => x ^ a) (Ici b)` using `(integrableOn_Ici_iff_integrableOn_Ioi enorm_ne_top).2 (integrableOn_Ioi_rpow_of_lt ha hb)`. Conclude with `h.lintegral_lt_top`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem setLIntegral_Ici_rpow_lt_top {a b : ℝ} (ha : a < -1) (hb : 0 < b) :
     ∫⁻ x in Ici b, ENNReal.ofReal (x ^ a) < ⊤ := by
@@ -36,13 +36,13 @@ theorem setLIntegral_Ici_rpow_lt_top {a b : ℝ} (ha : a < -1) (hb : 0 < b) :
   exact h.lintegral_lt_top
 
 /- English proof (translation)
-Take `⟨hpos, hstep, hlast⟩` from `ht`. Establish `hb0 : 0 < min c 1` using `lt_min hc one_pos`. Establish `hb1 : min c 1 ≤ 1` using `min_le_right _ _`. Establish `key : ∀ (k : ℕ) (i : Fin r), i.val + k + 1 = r → min c 1 ^ (k + 1) ≤ t i`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `i hi`. Simplify using `using (min_le_left c 1).trans (hlast i (by omega))`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `i hi`. Establish `hj : i.val + 1 < r` using `by omega`. Establish `h1` using `ih ⟨i.val + 1, hj⟩ (by simp only; omega)`. Establish `h2` using `hstep i ⟨i.val + 1, hj⟩ rfl`. Establish `h3 : min c 1 * t ⟨i.val + 1, hj⟩ ≤ c * t ⟨i.val + 1, hj⟩` using `mul_le_mul_of_nonneg_right (min_le_left _ _) (hpos _).le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hk : i.val + (r - i.val - 1) + 1 = r` using `by omega`. Use `le_trans ?_ (key (r - i.val - 1) i hk)` and prove the remaining obligations. Conclude with `pow_le_pow_of_le_one hb0.le hb1 (by omega)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem le_of_mem_cone {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → ℝ} (ht : t ∈ cone r c) (i : Fin r) :
     min c 1 ^ r ≤ t i := by
@@ -70,9 +70,9 @@ theorem le_of_mem_cone {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → ℝ} (ht 
   exact pow_le_pow_of_le_one hb0.le hb1 (by omega)
 
 /- English proof (translation)
-Establish `hnn : (0 : ℝ) ≤ ∏ i, (t i)⁻¹ ^ m` using `Finset.prod_nonneg fun i _ => pow_nonneg (inv_pos.2 (ht i)).le _`. Rewrite using `[← ENNReal.ofReal_mul hnn, ← ENNReal.ofReal_prod_of_nonneg fun i _ => Real.rpow_nonneg (ht i).le _]`. Use `congr 1`. Unfold `modulus`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h` using `ht i`. Rewrite using `[Real.rpow_sub h, Real.rpow_sub h, Real.rpow_neg h.le, Real.rpow_natCast, Real.rpow_intCast, Real.rpow_one, inv_pow, mul_inv]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem integrand_eq (F : Type) [Field F] [NumberField F] (n : ℕ) {r : ℕ} (m : ℕ) {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) :
     ENNReal.ofReal (∏ i, (t i)⁻¹ ^ m) * ENNReal.ofReal ((modulus F n t * ∏ i, t i)⁻¹) =
@@ -96,17 +96,15 @@ namespace GlobalTheory.CompanionTheory.ConeInt
 open GlobalTheory.SiegelSet in
 
 /- English proof (translation)
-Introduce `F _ _ n r c hc`. Use `⟨2 * Module.finrank ℚ F * (2 * r + 1) + 1, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hb : 0 < min c 1 ^ r` using `pow_pos (lt_min hc one_pos) _`. Set `a : Fin r → ℝ` to `fun i => -(m : ℝ) - ((2 * (Module.finrank ℚ F : ℤ) * ((n : ℤ) - 2 * (i.val : ℤ) - 1) : ℤ) : ℝ) - 1`. Establish `ha : ∀ i, a i < -1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Establish `hz : (-(m : ℤ)) - 2 * (Module.finrank ℚ F : ℤ) * ((n : ℤ) - 2 * (i.val : ℤ) - 1) < 0`. Establish `hi : (i.val : ℤ) + 1 ≤ r` using `by exact_mod_cast i.isLt`. Establish `hm' : 2 * (Module.finrank ℚ F : ℤ) * (2 * r + 1) + 1 ≤ m` using `by exact_mod_cast hm`. Establish `hd : (0 : ℤ) ≤ 2 * (Module.finrank ℚ F : ℤ)` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : (0 : ℤ) ≤ n` using `by positivity`. Establish `: 2 * (Module.finrank ℚ F : ℤ) * (-(n : ℤ) + 2 * (i.val : ℤ) + 1) ≤ 2 * (Module.finrank ℚ F : ℤ) * (2 * r + 1)` using `mul_le_mul_of_nonneg_left (by omega) hd`. Use the polynomial consequences of the given equalities and inequalities. Establish `hz' : ((-(m : ℤ) - 2 * (Module.finrank ℚ F : ℤ) * ((n : ℤ) - 2 * (i.val : ℤ) - 1) : ℤ) : ℝ) < 0`. Conclude with `hz` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a i = ((-(m : ℤ) - 2 * (Module.finrank ℚ F : ℤ) * ((n : ℤ) - 2 * (i.val : ℤ) - 1) : ℤ) : ℝ) - 1`. Simplify using `only [a]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : cone r c ⊆ Set.pi univ fun _ : Fin r => Ici (min c 1 ^ r)` using `fun t ht i _ => le_of_mem_cone hc ht i`. Establish `hmeas : MeasurableSet (Set.pi univ fun _ : Fin r => Ici (min c 1 ^ r))` using `MeasurableSet.univ_pi fun _ => measurableSet_Ici`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[volume_pi, Measure.restrict_pi_pi]`.
-
-Conclude with `GlobalTheory.RestrMeas.lintegral_fin_prod_eq_prod (E := fun _ => ℝ) (f := fun i x => ENNReal.ofReal (x ^ a i)) fun i => ((measurable_id.pow_const (a i)).ennreal_ofReal).aemeasurable`. Use `_ < ⊤ := ENNReal.prod_lt_top fun i _ => setLIntegral_Ici_rpow_lt_top (ha i) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_cone_lt_top : ∀ (F : Type) [Field F] [NumberField F] (n r : ℕ) (c : ℝ), 0 < c → ∃ m₀ : ℕ, ∀ m : ℕ, m₀ ≤ m →
     ∫⁻ t in cone r c, ENNReal.ofReal (∏ i, (t i)⁻¹ ^ m) * ENNReal.ofReal ((modulus F n t * ∏ i, t i)⁻¹) < ⊤ := by

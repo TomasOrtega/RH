@@ -15,11 +15,11 @@ set_option maxHeartbeats 1600000
 namespace GlobalTheory.WeakClosed.SmallW
 
 /- English proof (translation)
-Introduce `l _ P AI s`. Introduce `U hU`. Take `⟨hnu, hdiv⟩` from `tilt AI s`. Take `⟨N, m, hN⟩` from `nbhd (AI.εroot s - 1) hnu hdiv U hU`. Take `⟨k, hk⟩` from `witt (WittVector.teichmuller l (AI.εroot s) - 1) N m`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k, fun z => hN _ fun n hn => ?_⟩` and prove the remaining obligations. Establish `h0 : (WittVector.teichmuller l (AI.εroot s) - 1 : WittVector l (OCb l)).coeff 0 = AI.εroot s - 1`. Establish `h` using `WittVector.add_coeff_zero (WittVector.teichmuller l (AI.εroot s) - 1 : WittVector l (OCb l)) 1`. Rewrite `h` using `[sub_add_cancel, WittVector.teichmuller_coeff_zero, WittVector.one_coeff_zero]`. Conclude with `eq_sub_of_add_eq h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hk z n hn` using `[h0]`.
+A detailed English derivation is pending.
 -/
 theorem glue
   (tilt : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ), ¬ IsUnit (AI.εroot s - 1) ∧ ∀ a : OCb l, a ≠ 0 → ∃ m : ℕ, a ∣ (AI.εroot s - 1) ^ m)
@@ -44,7 +44,7 @@ theorem glue
   simpa [h0] using hk z n hn
 
 /- English proof (translation)
-The claim follows from `glue GlobalTheory.T.epsilonRoot_sub_one_isPseudoUniformizer_tilt GlobalTheory.T.weakly_small_of_not_isUnit_of_dvd_pow GlobalTheory.T.exists_pow_mul_coeff_mem_span_coeff_zero_pow`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ), letI := wTop l; ∀ U ∈ 𝓝 (0 : WCb l), ∃ k : ℕ, ∀ z : Ainf l, inclW l ((WittVector.teichmuller l (AI.εroot s) - 1) ^ k * z) ∈ U :=
   glue GlobalTheory.T.epsilonRoot_sub_one_isPseudoUniformizer_tilt GlobalTheory.T.weakly_small_of_not_isUnit_of_dvd_pow GlobalTheory.T.exists_pow_mul_coeff_mem_span_coeff_zero_pow

@@ -9,7 +9,7 @@ open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FlagCell2.cell_points_existsUnique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagCellPointsExistsUniqueUnitriangular.lean&line=59#L59)
 -/

@@ -15,7 +15,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact hf.differentiable (by simp)`. Consider the case `exact hf.differentiable le_top`. Consider the case `exact hf.differentiable (by norm_num)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma dif {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {f : E → F} (hf : ContDiff ℝ ∞ f) : Differentiable ℝ f := by
@@ -25,7 +25,7 @@ lemma dif {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCom
   | exact hf.differentiable (by norm_num)
 
 /- English proof (translation)
-Rewrite using `[Dx_eq]`. Conclude with `((hf _).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (crv_hasDerivAt x g)).differentiableAt.hasDerivAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hd_Dx (x : Bool × Mat k r) {f : Mat k r → ℂ} (hf : Differentiable ℝ f) (g : Mat k r) :
     HasDerivAt (fun t : ℝ => f (crv x g t)) (Dx x f g) 0 := by
@@ -33,7 +33,7 @@ lemma hd_Dx (x : Bool × Mat k r) {f : Mat k r → ℂ} (hf : Differentiable ℝ
   exact ((hf _).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (crv_hasDerivAt x g)).differentiableAt.hasDerivAt
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `h` using `(hf (crv x g 0)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (crv_hasDerivAt x g)`. Rewrite `h` using `[crv_zero]`. Rewrite using `[dirL_apply]`. Conclude with `(hd_Dx x hf g).unique h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Dx_fd (x : Bool × Mat k r) {f : Mat k r → ℂ} (hf : Differentiable ℝ f) :
     Dx x f = fun g => fderiv ℝ f g (dirL x g) := by
@@ -44,7 +44,7 @@ lemma Dx_fd (x : Bool × Mat k r) {f : Mat k r → ℂ} (hf : Differentiable ℝ
   exact (hd_Dx x hf g).unique h
 
 /- English proof (translation)
-Rewrite using `[Dx_fd x (dif hf)]`. Use `first`. Consider the case `exact (hf.fderiv_right (m := ∞) le_rfl).clm_apply (dirL x).contDiff`. Consider the case `exact (hf.fderiv_right (m := ∞) (by simp)).clm_apply (dirL x).contDiff`. Consider the case `exact (hf.fderiv_right (m := ∞) (by norm_num)).clm_apply (dirL x).contDiff`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma cd_Dx (x : Bool × Mat k r) {f : Mat k r → ℂ} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (Dx x f) := by
   rw [Dx_fd x (dif hf)]
@@ -54,7 +54,7 @@ lemma cd_Dx (x : Bool × Mat k r) {f : Mat k r → ℂ} (hf : ContDiff ℝ ∞ f
   | exact (hf.fderiv_right (m := ∞) (by norm_num)).clm_apply (dirL x).contDiff
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons x w ih => exact cd_Dx x ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma cd_Dw (w : List (Bool × Mat k r)) {f : Mat k r → ℂ} (hf : ContDiff ℝ ∞ f) :
     ContDiff ℝ ∞ (Dw w f) := by
@@ -63,7 +63,7 @@ lemma cd_Dw (w : List (Bool × Mat k r)) {f : Mat k r → ℂ} (hf : ContDiff �
   | cons x w ih => exact cd_Dx x ih
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Conclude with `(hd_Dx x (ha.add hb) g).unique ((hd_Dx x ha g).add (hd_Dx x hb g))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma Dx_add' (x : Bool × Mat k r) {a b : Mat k r → ℂ} (ha : Differentiable ℝ a) (hb : Differentiable ℝ b) :
     Dx x (fun g => a g + b g) = fun g => Dx x a g + Dx x b g := by
@@ -71,7 +71,7 @@ lemma Dx_add' (x : Bool × Mat k r) {a b : Mat k r → ℂ} (ha : Differentiable
   exact (hd_Dx x (ha.add hb) g).unique ((hd_Dx x ha g).add (hd_Dx x hb g))
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => show Dx x (Dw w fun g => a g + b g) = _`. Rewrite using `[ih]`. Conclude with `Dx_add' x (dif (cd_Dw w ha)) (dif (cd_Dw w hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Dw_add' (w : List (Bool × Mat k r)) {a b : Mat k r → ℂ} (ha : ContDiff ℝ ∞ a) (hb : ContDiff ℝ ∞ b) :
     Dw w (fun g => a g + b g) = fun g => Dw w a g + Dw w b g := by
@@ -83,7 +83,7 @@ lemma Dw_add' (w : List (Bool × Mat k r)) {a b : Mat k r → ℂ} (ha : ContDif
     exact Dx_add' x (dif (cd_Dw w ha)) (dif (cd_Dw w hb))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `h0 : crv x g 0 = g` using `by simp [crv]`. Establish `h` using `(hd_Dx x ha g).mul (hd_Dx x hb g)`. Rewrite `h` using `[h0]`. Conclude with `(hd_Dx x (ha.mul hb) g).unique h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Dx_mul' (x : Bool × Mat k r) {a b : Mat k r → ℂ} (ha : Differentiable ℝ a) (hb : Differentiable ℝ b) :
     Dx x (fun g => a g * b g) = fun g => Dx x a g * b g + a g * Dx x b g := by
@@ -96,7 +96,7 @@ lemma Dx_mul' (x : Bool × Mat k r) {a b : Mat k r → ℂ} (ha : Differentiable
 def Spl (w w₁ w₂ : List (Bool × Mat k r)) : Prop := w₁.Sublist w ∧ w₂.Sublist w ∧ (w₁ ++ w₂).Perm w
 
 /- English proof (translation)
-Unfold `Dw`. Rewrite using `[List.foldr_append]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma Dw_append_singleton (w : List (Bool × Mat k r)) (x : Bool × Mat k r) (f : Mat k r → ℂ) :
     Dw (w ++ [x]) f = Dw w (Dx x f) := by
@@ -105,17 +105,17 @@ private lemma Dw_append_singleton (w : List (Bool × Mat k r)) (x : Bool × Mat 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `w using List.reverseRecOn with`. Consider the case `nil`. Introduce `a b ha hb hM`. Simplify `hM [] [] (by unfold Spl; simp)` using `[Dw, norm_mul]`. Consider the case `append_singleton w x ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `a b ha hb hM`. Rewrite using `[Dw_append_singleton, Dx_mul' x (dif ha) (dif hb), Dw_add' w ((cd_Dx x ha).mul hb) (ha.mul (cd_Dx x hb))]`. Establish `h1` using `ih (Dx x a) b (cd_Dx x ha) hb (fun w₁ w₂ hs => by`. Take `⟨s1, s2, p⟩` from `hs`. Establish `e : w₁ ++ [x] ++ w₂ = w₁ ++ x :: w₂` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : (w₁ ++ [x] ++ w₂).Perm (w ++ [x])`. Rewrite using `[e]`. Conclude with `List.perm_middle.trans ((p.cons x).trans (List.perm_append_singleton x w).symm)`. Use `hM (w₁ ++ [x]) w₂ (by` as an intermediate fact. Unfold `Spl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Conclude with `⟨s1.append (List.Sublist.refl _), s2.trans (List.sublist_append_left _ _), hp⟩)`. Rewrite using `[Dw_append_singleton] at this)` and apply the resulting hypothesis. Establish `h2` using `ih a (Dx x b) ha (cd_Dx x hb) (fun w₁ w₂ hs => by`. Take `⟨s1, s2, p⟩` from `hs`. Establish `hp : (w₁ ++ (w₂ ++ [x])).Perm (w ++ [x])`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← List.append_assoc]`. Conclude with `p.append_right [x]`. Use `hM w₁ (w₂ ++ [x]) (by` as an intermediate fact. Unfold `Spl`. Conclude with `⟨s1.trans (List.sublist_append_left _ _), s2.append (List.Sublist.refl _), hp⟩)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Dw_append_singleton] at this)` and apply the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[List.length_append, List.length_singleton, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma leibB (g : Mat k r) (M : ℝ) (w : List (Bool × Mat k r)) :
     ∀ a b : Mat k r → ℂ, ContDiff ℝ ∞ a → ContDiff ℝ ∞ b →

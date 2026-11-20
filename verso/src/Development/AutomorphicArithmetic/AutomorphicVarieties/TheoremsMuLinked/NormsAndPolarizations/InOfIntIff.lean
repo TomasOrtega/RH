@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])` using `(Polynomial.lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, hqm, by rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem inOf_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -25,7 +25,7 @@ private theorem inOf_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsInte
     exact ⟨q, hqm, by rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-Use `(coefSup l).2.2.2 c _ ((inOf_intIff _).2 ?_) ⟨a, b, hb, div_mul_cancel₀ _ hb⟩` and prove the remaining obligations. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inOf_div {l : ℕ} [Fact l.Prime] (c : Coef l) (a b : c.O) (hb : (b : PadicAlgCl l) ≠ 0)
     (h : ‖(a : PadicAlgCl l)‖ ≤ ‖(b : PadicAlgCl l)‖) : (a : PadicAlgCl l) / b ∈ c.O := by
@@ -34,9 +34,9 @@ private theorem inOf_div {l : ℕ} [Fact l.Prime] (c : Coef l) (a b : c.O) (hb :
   exact div_le_one_of_le₀ h (norm_nonneg _)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨c, le_rfl, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨d, hd, hd'⟩` from `ih fun x hx => hs x (Finset.mem_insert_of_mem hx)`. Take `⟨e, he, he'⟩` from `(coefSup l).2.2.1 d a ((inOf_intIff _).2 (hs a (Finset.mem_insert_self _ _)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨e, hd.trans he, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `he'`. Conclude with `he (hd' x hx)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem inOf_fin {l : ℕ} [Fact l.Prime] (c : Coef l) (s : Finset (PadicAlgCl l)) (hs : ∀ x ∈ s, ‖x‖ ≤ 1) :
     ∃ c' : Coef l, c.O ≤ c'.O ∧ ∀ x ∈ s, x ∈ c'.O := by
@@ -52,31 +52,25 @@ private theorem inOf_fin {l : ℕ} [Fact l.Prime] (c : Coef l) (s : Finset (Padi
     · exact he (hd' x hx)
 
 /- English proof (translation)
-Introduce `l _ c`. Establish `hle : ∀ x ∈ c.O, ‖x‖ ≤ 1`. Introduce `x hx`. Use `haveI := c.fin`. Establish `hi : IsIntegral ℤ_[l] (⟨x, hx⟩ : c.O)` using `Algebra.IsIntegral.isIntegral _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(inOf_intIff x).mp (hi.map c.O.val)`. Establish `hl1 : ‖((l : ℕ) : PadicAlgCl l)‖ < 1`. Establish `e` using `PadicAlgCl.norm_extends l (l : ℚ_[l])`. Rewrite `e` using `[map_natCast]`. Rewrite using `[e, Padic.norm_p]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Establish `hlO : ((l : ℕ) : c.O) ∈ maximalIdeal c.O` using `by haveI := c.dvr`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`. Establish `h1 : ((u : c.O) : PadicAlgCl l) * ((u⁻¹ : c.Oˣ) : c.O) = 1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Subalgebra.coe_mul, Units.mul_inv, Subalgebra.coe_one]`. Establish `hb` using `hle _ ((u⁻¹ : c.Oˣ) : c.O).2`. Rewrite `h1` using `[hu]`. Use `congrArg norm h1` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_one, SubringClass.coe_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm` using `mul_le_mul_of_nonneg_left hb (norm_nonneg ((l : ℕ) : PadicAlgCl l))`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, hle, ?_, ?_⟩` and prove the remaining obligations. Introduce `ι _ x hx classical haveI := Fintype.ofFinite ι`. Take `⟨c', hc', hs⟩` from `inOf_fin c (Finset.univ.image x) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y hy`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.mp hy`. Conclude with `hx i)`. Conclude with `⟨c', hc', fun i => hs _ (Finset.mem_image_of_mem x (Finset.mem_univ i))⟩`. Introduce `x _ hn h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0 : (x : PadicAlgCl l) ≠ 0`. Introduce `h0`. Rewrite `hn` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn`. Establish `hinv` using `inOf_div c 1 ⟨x, h⟩ hx0 (by simp [hn])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `isUnit_iff_exists_inv.mpr ⟨⟨_, hinv⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hx0]`. Introduce `Γ _ f hf N haveI := c.dvr`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `g0`. Establish `hr : 0 < ‖((l : ℕ) : PadicAlgCl l)‖ ^ N`. Apply `pow_pos` to reduce the goal to its premises. Rewrite using `[norm_pos_iff]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hf.continuousAt.eventually (Metric.ball_mem_nhds _ hr)] with g hg`. Rewrite `hg` using `[dist_eq_norm]`. Rewrite using `[Ideal.Quotient.eq]`. Use `set t : c.O := ((l : ℕ) : c.O) ^ N`. Establish `ht0 : (t : PadicAlgCl l) ≠ 0`.
-
-Simplify using `only [t, SubmonoidClass.coe_pow, SubringClass.coe_natCast]`. Conclude with `pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `hq` using `inOf_div c (f g - f g0) t ht0 (by`. Simplify using `only [t, SubmonoidClass.coe_pow, SubringClass.coe_natCast, AddSubgroupClass.coe_sub, norm_pow]`. Conclude with `hg.le)`.
-
-Establish `he : f g - f g0 = (⟨_, hq⟩ : c.O) * t`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul]`. Conclude with `(div_mul_cancel₀ _ ht0).symm`. Rewrite using `[he]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hlO N)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Nm.inOf :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l), (∀ (ι : Type) [Finite ι] (x : ι → Qbar l), (∀ i, ‖x i‖ ≤ 1) → ∃ c' : Coef l, c.O ≤ c'.O ∧ ∀ i, x i ∈ c'.O) ∧ (∀ x ∈ c.O, ‖x‖ ≤ 1) ∧ (∀ x ∈ c.O, ‖x‖ = 1 → ∀ h : x ∈ c.O, IsUnit (⟨x, h⟩ : c.O)) ∧ ∀ (Γ : Type) [TopologicalSpace Γ] (f : Γ → c.O), (Continuous fun g => (f g : Qbar l)) → AdicCont (maximalIdeal c.O) f := by

@@ -20,11 +20,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Establish `h1 : evR Xo c f y' = φ (evC h Z f)`. Take `⟨q, χ, y₀, hy₀⟩` from `hL.test (Om Z) (genFr h Z)`. Unfold `evC`. Rewrite using `[GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q χ y₀ _ hy₀, GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q (φ.comp χ) y₀ y' (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans χ φ hy₀ hm)]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : evR Xo c f y' = wchar (ex Dw u n) t * evR Xo c f (U.un k x)` using `hL.wt u n f hf (CAt σ) t _ _ (hL.test _ _) (hL.test _ _) hb`. Establish `h3 : wchar (ex Dw u n) t ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (t i).ne_zero`. Establish `h4 : rdU U f k x = toC (evR Xo c f (U.un k x))`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos x.2]`. Establish `h5 : φ (evC h Z f) = 0 ↔ evC h Z f = 0` using `map_eq_zero_iff φ φ.toRingHom.injective`. Rewrite using `[h4, ← h5, ← h1, h2, mul_eq_zero, or_iff_right h3]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rdU_eq_zero_iff (hL : GlobalTheory.Reg.EvLaws Xo c) (U : Unf Xo c σ r) (h : GenFrEx Xo c) (k : U.Comp)
     (Z : Comp Xo c) (x : (U.X k).dom) (φ : Om Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ)
@@ -49,9 +49,9 @@ theorem rdU_eq_zero_iff (hL : GlobalTheory.Reg.EvLaws Xo c) (U : Unf Xo c σ r) 
   rfl
 
 /- English proof (translation)
-Establish `hd : Dense (⋂ n, (S n)ᶜ)` using `dense_iInter_of_isOpen (fun n => (hS n).1.isOpen_compl) fun n => interior_eq_empty_iff_dense_compl.1 (hS n).2`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `ho : IsOpen (D ∩ g ⁻¹' {0}ᶜ)` using `hg.isOpen_inter_preimage hD isOpen_compl_singleton`. Take `⟨y, hy, hy'⟩` from `hd.inter_open_nonempty _ ho ⟨x, hx, hne⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hy.2 (h0 y hy.1 (Set.mem_iInter.1 hy'))`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_off_meagre {V : Type} [TopologicalSpace V] [BaireSpace V] {D : Set V} (hD : IsOpen D)
     {S : ℕ → Set V} (hS : ∀ n, IsClosed (S n) ∧ interior (S n) = ∅) {g : V → ℂ} (hg : ContinuousOn g D)
@@ -69,13 +69,13 @@ end GlobalTheory.GenericDetect
 open GlobalTheory.GenericDetect in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU h k Z x₀ ⟨φ, y', t, hm, hb⟩ u n hd f hf`. Take `⟨hL, -, -, hA⟩` from `GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c`. Use `⟨fun h0 => ?_, fun h0 => (rdU_eq_zero_iff hL U h k Z x₀ φ y' t hm hb hf).1 (h0 _ x₀.2)⟩` and prove the remaining obligations. Take `⟨Z', S, hS, hg⟩` from `GlobalTheory.T.exists_genericComponentPoints_off_meagre E H Dw l Xo c σ r U hσ hU h k`. Establish `hO : IsOpen (U.X k).dom` using `FourierCoefficientDomain.isOpen_dom _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ), Dom a m → ∀ g ∈ sec Xo c a m, evC h Z' g = 0 → ∀ x ∈ (U.X k).dom, rdU U g k x = 0`. Introduce `a m ha g hgs hg0`. Use `eq_zero_of_off_meagre hO hS (hU.2.2.2.2.1 a m ha g hgs k).1.continuousOn fun x hx hxS => ?_` and prove the remaining obligations. Take `⟨ψ, z, s, hm', hb'⟩` from `hg ⟨x, hx⟩ hxS`. Conclude with `(rdU_eq_zero_iff hL U h k Z' ⟨x, hx⟩ ψ z s hm' hb' hgs).2 hg0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZ : Z' = Z`. Assume the negation of the conclusion as `hne`. Take `⟨χ, hχ, -, h1, hz⟩` from `GlobalTheory.T.exists_idempotent_weightZero_section_of_component E H Dw l Xo c hL h (hA h) Z`. Establish `hD : Dom (E` using `E) 0 0 := ⟨fun τ _ _ _ => le_rfl, Even.zero⟩`. Use `(rdU_eq_zero_iff hL U h k Z x₀ φ y' t hm hb hχ).1 (key 0 0 hD χ hχ (hz Z' hne) _ x₀.2)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h1]`. Conclude with `one_ne_zero this`. Substitute `hZ` using the available equality. Conclude with `key u n hd f hf h0`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.evC_eq_zero_iff_rdU_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → ∀ (h : GenFrEx Xo c) (k : U.Comp) (Z : Comp Xo c) (x₀ : (U.X k).dom), (∃ (φ : Om Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMap φ (genFr h Z) y' ∧ FrBor t (U.un k x₀) y') → (∀ (u : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom u n → ∀ f ∈ sec Xo c u n, evC h Z f = 0 ↔ ∀ x ∈ (U.X k).dom, rdU U f k x = 0) := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU h k Z x₀ ⟨φ, y', t, hm, hb⟩ u n hd f hf

@@ -8,7 +8,7 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.CovCmp
 
 /- English proof (translation)
-Establish `hex` using `lTensor_exact B' (LinearMap.exact_map_mkQ_range d) (Submodule.mkQ_surjective (LinearMap.range d))`. Use `hex ((1 : B') ⊗ₜ[A] z)` as an intermediate fact. Rewrite `this` using `[LinearMap.lTensor_tmul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_tmul_mem_range_iff {A : Type} [CommRing A] (B' : Type) [CommRing B'] [Algebra A B']
     {K₁ K₀ : Type} [AddCommGroup K₁] [Module A K₁] [AddCommGroup K₀] [Module A K₀]
@@ -22,9 +22,9 @@ theorem one_tmul_mem_range_iff {A : Type} [CommRing A] (B' : Type) [CommRing B']
   exact this.symm
 
 /- English proof (translation)
-Introduce `p _ A _ B _ _ r h K₁ K₀ _ _ _ _ h₁ h₀ d hd z hz k`. Establish `hB` using `(one_tmul_mem_range_iff B d z).mp hz`. Take `⟨m, n, a, c, hs, hall⟩` from `GlobalTheory.CompanionTheory.EqCrit.exists_system B ((LinearMap.range d).mkQ z) hB`. Take `⟨B₁, i₁, i₂, hc, hs₁⟩` from `h m n a c hs`. Establish `h0` using `hall B₁ hs₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hc K₁ K₀ h₁ h₀ d hd z ((one_tmul_mem_range_iff B₁ d z).mpr h0) k`.
+A detailed English derivation is pending.
 -/
 theorem cov_of_solv : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](B : Type) [CommRing B] [Algebra A B] (r : ℕ → A), (∀ (m n : ℕ) (a : Fin m → Fin n → A) (c : Fin m → A), Solv B a c → ∃ (B₁ : Type) (_ : CommRing B₁) (_ : Algebra A B₁), Cov p r B₁ ∧ Solv B₁ a c) → Cov p r B := by
   intro p _ A _ B _ _ r h K₁ K₀ _ _ _ _ h₁ h₀ d hd z hz k

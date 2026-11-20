@@ -30,13 +30,11 @@ variable {K X E W : Type} [Field K] [AddCommGroup X] [Module K X] [NormedAddComm
   {σ : K →+* ℂ} {j : X →ₛₗ[σ] E} (θ : E →ₗ[ℂ] W)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Establish `h1 : LinearIndependent K fun k : Fin n => f (Pi.single k 1)`. Use `(Pi.basisFun K (Fin n)).linearIndependent.map' f (LinearMap.ker_eq_bot.2 hf)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `hj.linInd h1`. Use `set u : E := ∑ k, c k • j (f (Pi.single k 1)) with hu`. Establish `h3 : u ∈ LinearMap.ker θ`. Rewrite `hc` using `[Formalism.IndefR.Cx.lin_apply]`. Rewrite using `[LinearMap.mem_ker, hu, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hc` using `only [map_smul]`. Establish `h4 : u ∈ (LinearMap.ker θ)ᗮ`. Rewrite using `[LinearMap.orthogonal_ker]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hZ _)`. Establish `h5 : u = 0` using `inner_self_eq_zero.1 (h4 u h3)`.
-
-Use function extensionality and compare the values at `k`. Conclude with `Fintype.linearIndependent_iff.1 h2 c h5 k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lin_injective (hj : IsForm j) {n : ℕ} (f : (Fin n → K) →ₗ[K] X) (hf : Function.Injective f)
     (hZ : ∀ y, j (f y) ∈ LinearMap.range (LinearMap.adjoint θ)) :
@@ -74,7 +72,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   (ρ : G → W →ₗ[ℂ] W)
 
 /- English proof (translation)
-The claim follows from `(B.mem_goodPart_iff ℓ Z _).1 (B.zE_mem ℓ Z y)`.
+A detailed English derivation is pending.
 -/
 theorem toF_mem (Z : Submodule K B.S.Forms) (y : Fin (B.dZ ℓ Z) → K) : B.toF ℓ Z y ∈ Z :=
   (B.mem_goodPart_iff ℓ Z _).1 (B.zE_mem ℓ Z y)
@@ -96,9 +94,9 @@ open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.Inde
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨⟨n, b, h1, h2⟩, h3⟩` from `hj`. Use `⟨⟨n, b, (Tw.linInd (E := E) s h1 :), ?_⟩, fun x y => ?_⟩` and prove the remaining obligations. Establish `e : Set.range (Tw.semi s h j) = Tw.mk s '' Set.range j` using `by rw [← Set.range_comp]; rfl`. Rewrite using `[e, tw_span, h2]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨a, ha⟩` from `h3 x y`. Conclude with `⟨a, (congrArg (cj s) ha).trans (h a).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isForm_tw {K X E : Type} [Field K] [AddCommGroup X] [Module K X] [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     {σ σ' : K →+* ℂ} (s : Bool) (h : ∀ a, σ' a = cj s (σ a)) {j : X →ₛₗ[σ] E} (hj : IsForm j) :

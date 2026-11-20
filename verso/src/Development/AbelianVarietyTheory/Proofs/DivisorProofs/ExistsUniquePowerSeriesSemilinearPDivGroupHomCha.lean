@@ -8,7 +8,7 @@ namespace GlobalTheory
 namespace Katz
 
 /- English proof (translation)
-Establish `h` using `fun j : Fin d => existsUnique_evA_eq_of_presents k' (Fin e) G'.A c'.x c'.nil (fun n => (G'.res n : G'.A (n + 1) →ₐ[k'] G'.A n)) c'.res c'.presents (fun n => s.app n (c.x n j)) (fun n => by`. Express the relevant statement in the definitionally equal form `G'.res n (s.app (n + 1) (c.x (n + 1) j)) = _`. Rewrite using `[s.res_app, c.res])`. Use `choose φ hφ hu using h`. Use `⟨φ, fun n j => hφ j n, fun ψ hψ => funext fun j => hu j (ψ j) fun n => hψ n j⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_semiHom_ev (p : ℕ) (k k' : Type) [CommRing k] [CommRing k'] (σ : k →+* k')
     (d e : ℕ) (G : PDivGroup p k) (G' : PDivGroup p k') (c : Chart G d) (c' : Chart G' e)

@@ -7,17 +7,17 @@ universe u v
 namespace Formalism.DworkPowerSeriesWeights
 
 /- English proof (translation)
-The claim follows from `theorem_A_one_monomial_log_loss`.
+A detailed English derivation is pending.
 -/
 theorem thmAJetA : ThmAJetA.{u} := theorem_A_one_monomial_log_loss
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `d h`. Use `⟨fun _ => 0, fun i hi => by simp at hi, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Finset.prod_empty, MvPolynomial.coeff_one]`. Rewrite using `[Finset.sum_empty]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hd`. Conclude with `h (if_neg (Ne.symm hd))`. Introduce `a t ha ih d h`. Rewrite `h` using `[Finset.prod_insert ha, MvPolynomial.coeff_mul]`. Take `⟨x, hx, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hgd⟩` from `ih x.2 (right_ne_zero_of_mul hne)`. Use `⟨fun i => if i = a then x.1 else g i, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Break down `Finset.mem_insert.1 hi with rfl | hi'` into its components or cases. Simplify using `using left_ne_zero_of_mul hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hia : i ≠ a` using `fun h => ha (h ▸ hi')`. Simplify `hg i hi'` using `[hia]`. Establish `h2 : ∑ i ∈ t, (if i = a then x.1 else g i) = ∑ i ∈ t, g i` using `Finset.sum_congr rfl fun i hi => if_neg (show i ≠ a from fun h => ha (h ▸ hi))`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma exists_coeff_ne_zero_of_coeff_prod_ne_zero {ι σ R : Type*} [CommRing R] (s : Finset ι) (f : ι → MvPolynomial σ R) :
     ∀ d : σ →₀ ℕ, MvPolynomial.coeff d (∏ i ∈ s, f i) ≠ 0 →
@@ -47,17 +47,15 @@ private lemma exists_coeff_ne_zero_of_coeff_prod_ne_zero {ι σ R : Type*} [Comm
         _ = _ := by rw [Finset.sum_insert ha, h2]; simp
 
 /- English proof (translation)
-Establish `key : (Matrix.of fun (r r' : Fin n) => ∑ j, MvPolynomial.C (a r j) * (MvPolynomial.X (j, I r') : MvPolynomial (J × Fin N1) R)).det = ∑ κ : Fin n → J, MvPolynomial.C (Matrix.of fun (r i : Fin n) => a r (κ i)).det * ∏ i, (MvPolynomial.X (κ i, I i) : MvPolynomial (J × Fin N1) R)`. Rewrite using `[Matrix.det_apply]`. Simplify using `only [Matrix.of_apply, Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_apply, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, Finset.prod_mul_distrib, map_prod, Units.smul_def, map_zsmul, smul_mul_assoc]`. Rewrite `h` using `[key, MvPolynomial.coeff_sum]`. Take `⟨κ, -, hκ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hX : ∏ i, (MvPolynomial.X (κ i, I i) : MvPolynomial (J × Fin N1) R) = MvPolynomial.monomial (∑ i, Finsupp.single (κ i, I i) 1) 1`. Rewrite using `[MvPolynomial.monomial_sum_one]`. Both sides reduce to the same expression. Rewrite `hκ` using `[hX, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_monomial]`. Distinguish the cases in `hd : (∑ i, Finsupp.single (κ i, I i) 1 : J × Fin N1 →₀ ℕ) = d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `hκ` using `[if_pos hd, mul_one]`. Use `⟨κ, ?_, ?_, hd.symm⟩` and prove the remaining obligations. Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Conclude with `hκ (Matrix.det_zero_of_column_eq hne fun r => by simp [hij])`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hκ` using `[Matrix.det_apply]`. Take `⟨σ, -, hσ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hκ`. Use `⟨σ, fun i hi => hσ ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simpa using hi), smul_zero]`. Rewrite `hκ` using `[if_neg hd, mul_zero]`.
-
-Conclude with `absurd rfl hκ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_injective_perm_of_coeff_det_ne_zero {R J : Type*} [CommRing R] [Fintype J] [DecidableEq J] {N1 n : ℕ}
     (a : Fin n → J → R) (I : Fin n → Fin N1) (d : J × Fin N1 →₀ ℕ)
@@ -98,7 +96,7 @@ private lemma exists_injective_perm_of_coeff_det_ne_zero {R J : Type*} [CommRing
     exact absurd rfl hκ
 
 /- English proof (translation)
-Rewrite using `[Finset.card_filter]`. Simplify using `only [Finsupp.finset_sum_apply, Finsupp.single_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : κ i = j <;> simp [h, Prod.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma sum_single_pair_apply_eq_card_filter {J : Type*} [DecidableEq J] {N1 n : ℕ} (κ : Fin n → J) (I : Fin n → Fin N1)
     (j : J) :
@@ -111,15 +109,15 @@ private lemma sum_single_pair_apply_eq_card_filter {J : Type*} [DecidableEq J] {
   by_cases h : κ i = j <;> simp [h, Prod.ext_iff]
 
 /- English proof (translation)
-Unfold `MonoShapeLow`. Introduce `R _ N0 N1 m C T p hp I mono hmono`. Rewrite `hmono` using `[MvPolynomial.mem_support_iff]`. Unfold `minorProd at hmono`. Take `⟨g, hg, hmg⟩` from `exists_coeff_ne_zero_of_coeff_prod_ne_zero Finset.univ _ mono hmono`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ c, (∑ k : Fin m, ∑ b : Fin N1, g c (k, b)) = p c ∧ ∀ k, ∑ b : Fin N1, g c (k, b) ≤ 1`. Introduce `c`. Take `⟨κ, hκ, -, hd⟩` from `exists_injective_perm_of_coeff_det_ne_zero (fun (r : Fin (p c)) (k : Fin m) => T ⟨r.val, lt_of_lt_of_le r.isLt (hp c)⟩ k) (I c) (g c) (hg c (Finset.mem_univ c))`. Rewrite using `[hd]`. Simplify using `only [sum_single_pair_apply_eq_card_filter]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.card_eq_sum_card_fiberwise (fun _ _ => Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]`. Conclude with `Finset.card_le_one.2 fun i hi j hj => hκ ((Finset.mem_filter.1 hi).2.trans (Finset.mem_filter.1 hj).2.symm)`. Establish `hsum : ∀ k, ∑ b : Fin N1, mono (k, b) = ∑ c, ∑ b : Fin N1, g c (k, b)`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmg]`. Simplify using `only [Finsupp.finset_sum_apply]`. Conclude with `Finset.sum_comm`. Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [hsum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => (hc c).1`. Rewrite using `[hsum]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem monoShapeLow : MonoShapeLow.{u} := by
   unfold MonoShapeLow

@@ -15,9 +15,9 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hΓ : Nat.Coprime (Nat.card (L.1 ≃ₐ[K.1] L.1)) ℓ)
 
 /- English proof (translation)
-Use `haveI : Fintype S := Fintype.ofFinite S`. Establish `ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)` using `fun v => IsAlgClosed.lift`. Establish `h1` using `poitou_tate_H2_int hL hζ M hM hΓ hℓS hcop hK ιs`. Establish `h2` using `local_dual_invariants_sum hL hζ M hM hΓ hℓS ιs`. Establish `h3` using `global_dual_invariants_finrank hL hζ M hM hΓ hℓS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem finrank_H2_euler_formula [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hcop : Nat.Coprime (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index ℓ)

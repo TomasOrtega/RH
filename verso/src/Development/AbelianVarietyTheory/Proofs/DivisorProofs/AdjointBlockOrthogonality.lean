@@ -7,9 +7,9 @@ namespace GlobalTheory.SteepMult.AdPCasimir
 variable {R S : ℕ}
 
 /- English proof (translation)
-Take `⟨⟨y1, y2⟩, hy⟩` from `y`. Take `⟨⟨z1, z2⟩, hz⟩` from `z`. Simplify using `only [adP, Formalism.BasicNotions.TH.Eab, Matrix.single_apply, Prod.mk.injEq]`. Use `congr 1`. Apply the tactic sequence `by_cases h1 : y1 = b <;> by_cases h2 : y2 = z2 <;> by_cases h3 : a = z1 <;> simp [h1, h2, h3, eq_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `fun h => h1 h.symm`. Apply the tactic sequence `by_cases h1 : y1 = z1 <;> by_cases h2 : y2 = a <;> by_cases h3 : b = z2 <;> simp [h1, h2, h3, eq_comm]`. Conclude with `fun h => h2 h.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma adP_Eab_eq (a b : Ix R S) (y z : NC R S) :
     adP (Eab b a) y z = (if y.1 = (b, z.1.2) then (if a = z.1.1 then 1 else 0) else 0)
@@ -24,11 +24,11 @@ lemma adP_Eab_eq (a b : Ix R S) (y z : NC R S) :
     exact fun h => h2 h.symm
 
 /- English proof (translation)
-Distinguish the cases in `hp : sameBlock p.1 p.2`. Rewrite using `[if_neg (by simp [hp])]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, zero_mul]`. Introduce and unpack `rfl`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `y.2 hp`. Rewrite using `[Finset.sum_eq_single (⟨p, hp⟩ : NC R S)]`. Apply the tactic sequence `by_cases h : p = q <;> simp [h, hp]`. Substitute `h` using the available equality. Simplify using `[hp]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _ hy`. Rewrite using `[if_neg, zero_mul]`. Introduce `h`. Conclude with `hy (Subtype.ext h)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sum_point (p q : Ix R S × Ix R S) (c d : ℂ) :
     ∑ y : NC R S, (if y.1 = p then c else 0) * (if y.1 = q then d else 0)
@@ -50,7 +50,7 @@ lemma sum_point (p q : Ix R S × Ix R S) (c d : ℂ) :
     · simp
 
 /- English proof (translation)
-Rewrite using `[adP_Eab_eq]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma star_adP (a b : Ix R S) (y z : NC R S) :
     (starRingEnd ℂ) (adP (Eab b a) y z) = adP (Eab b a) y z := by
@@ -58,11 +58,11 @@ lemma star_adP (a b : Ix R S) (y z : NC R S) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [star_adP]`. Simplify using `only [adP_Eab_eq, sub_mul, mul_sub, Finset.sum_sub_distrib, sum_point]`. Take `⟨⟨z1, z2⟩, hz⟩` from `z`. Take `⟨⟨w1, w2⟩, hw⟩` from `w`. Simplify using `only [Subtype.mk.injEq, Prod.mk.injEq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases z1 with z1 | z1 <;> rcases z2 with z2 | z2 <;> rcases w1 with w1 | w1 <;> rcases w2 with w2 | w2 <;> first`. Consider the case `exact absurd trivial hz`. Consider the case `exact absurd trivial hw`. Consider the case `skip`. Use `all_goals`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[Fintype.sum_sum_type, Formalism.BasicNotions.TH.sameBlock, Finset.sum_add_distrib]`. Use `all_goals`. Apply the tactic sequence `by_cases h1 : z1 = w1 <;> by_cases h2 : z2 = w2 <;> simp [h1, h2, eq_comm, add_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sum_adP_mul_adP (R S : ℕ) (z w : NC R S) :
     ∑ a : Ix R S, ∑ b : Ix R S, (if sameBlock a b then

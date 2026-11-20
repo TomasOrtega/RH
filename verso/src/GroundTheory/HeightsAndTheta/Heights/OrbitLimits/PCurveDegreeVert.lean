@@ -19,9 +19,9 @@ def fsLine (b : K → ℕ) : HermLine ι :=
   HermLine.ofMetrics (fun k => fsMetric (ι k)) (fun k => (b k : ℤ))
 
 /- English proof (translation)
-Establish `hfun : (fsLine b : HermLine ι).h = fun z => ∏ k, Real.sqrt (∑ i : ι k, ‖z ⟨k, i⟩‖ ^ 2) ^ b k`. Use function extensionality and compare the values at `z`. Simplify using `only [fsLine, HermLine.ofMetrics, fsMetric, zpow_natCast, EuclideanSpace.norm_eq]`. Unfold `IsSmoothHerm`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `contDiffOn_prod fun k _ => (ContDiffOn.sqrt ?_ fun z hz => ?_).pow (b k)` and prove the remaining obligations. Conclude with `(ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ (⟨k, i⟩ : Σ k, ι k))).contDiffOn`. Take `⟨i, hi⟩` from `hz k`. Conclude with `(Finset.sum_pos' (fun j _ => sq_nonneg ‖z ⟨k, j⟩‖) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩).ne'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_fsLine (b : K → ℕ) : IsSmoothHerm (fsLine b : HermLine ι) := by
   have hfun : (fsLine b : HermLine ι).h =
@@ -39,14 +39,14 @@ theorem isSmoothHerm_fsLine (b : K → ℕ) : IsSmoothHerm (fsLine b : HermLine 
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 1, fun _ => one_ne_zero, by funext p; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameOrbit_refl (z : (Σ k, ι k) → ℂ) : SameOrbit z z :=
   ⟨fun _ => 1, fun _ => one_ne_zero, by funext p; simp⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[← mul_assoc, inv_mul_cancel₀ (hc p.1)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sameOrbit_symm {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : SameOrbit z' z := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -56,7 +56,7 @@ theorem sameOrbit_symm {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : Same
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Take `⟨d, hd, rfl⟩` from `h'`. Conclude with `⟨fun k => c k * d k, fun k => mul_ne_zero (hc k) (hd k), by funext p; simp [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameOrbit_trans {z z' z'' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (h' : SameOrbit z' z'') :
     SameOrbit z z'' := by
@@ -67,11 +67,9 @@ theorem sameOrbit_trans {z z' z'' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `Finset.sum_bij (fun t ht => (hR'u t (hRP t ht)).exists.choose) (fun t ht => (hR'u t (hRP t ht)).exists.choose_spec.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `t₁ h₁ t₂ h₂ he`. Establish `e1` using `(hR'u t₁ (hRP t₁ h₁)).exists.choose_spec.2`. Establish `e2` using `(hR'u t₂ (hRP t₂ h₂)).exists.choose_spec.2`. Rewrite `e1` using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hRu t₂ (hRP t₂ h₂)).unique ⟨h₁, sameOrbit_trans e2 (sameOrbit_symm e1)⟩ ⟨h₂, sameOrbit_refl t₂⟩`. Introduce `t' ht'`. Take `⟨t, ⟨htR, hto⟩, -⟩` from `hRu t' (hR'P t' ht')`. Conclude with `⟨t, htR, (hR'u t (hRP t htR)).unique (hR'u t (hRP t htR)).exists.choose_spec ⟨ht', sameOrbit_symm hto⟩⟩`. Introduce `t ht`.
-
-Conclude with `hh _ _ (hRP t ht) (hR'u t (hRP t ht)).exists.choose_spec.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_eq_of_transversal {P : Ideal (MRing ι)} {R R' : Finset ((Σ k, ι k) → ℂ)}
     (hRP : ∀ t ∈ R, t ∈ mcPts P) (hRu : ∀ z ∈ mcPts P, ∃! t, t ∈ R ∧ SameOrbit z t)
@@ -93,9 +91,9 @@ theorem sum_eq_of_transversal {P : Ideal (MRing ι)} {R R' : Finset ((Σ k, ι k
     exact hh _ _ (hRP t ht) (hR'u t (hRP t ht)).exists.choose_spec.2
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Unfold `logNorm`. Establish `hn : ∏ k, ‖c k‖ ^ A.a k = ‖∏ k, c k ^ a k‖`. Simplify using `[ha, norm_prod, norm_pow]`. Establish `h0 : ‖∏ k, c k ^ a k‖ ≠ 0` using `norm_ne_zero_iff.mpr (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k))`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[eval_smul_homog s a hs c z', A.smul c z' hc, norm_mul, hn, mul_div_mul_left _ _ h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem logNorm_sameOrbit {A : HermLine ι} {s : MRing ι} {a : K → ℕ} (ha : ∀ k, A.a k = a k)
     (hs : IsMultiHomog s a) {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
@@ -110,36 +108,36 @@ theorem logNorm_sameOrbit {A : HermLine ι} {s : MRing ι} {a : K → ℕ} (ha :
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `[curveChartMono, map_prod, norm_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_eval_curveChartMono (c : ∀ k, ι k) (e : K → ℕ) (z : (Σ k, ι k) → ℂ) :
     ‖eval z (map (Int.castRingHom ℂ) (curveChartMono c e))‖ = ∏ k, ‖z ⟨k, c k⟩‖ ^ e k := by
   simp [curveChartMono, map_prod, norm_prod]
 
 /- English proof (translation)
-Introduce `K _ ι _ P A II c R b d hII hP hA hc hRP hRu hd`. Establish `hI` using `hII K ι`. Establish `hpr : P.IsPrime` using `hP.2.1.1`. Establish `hL : ∀ j, IsSmoothHerm ((Fin.elim0 : Fin 0 → HermLine ι) j)` using `fun j => j.elim0`. Establish `hsnoc : ∀ C : HermLine ι, (Fin.snoc (Fin.elim0 : Fin 0 → HermLine ι) C : Fin (0 + 1) → HermLine ι) = fun _ => C` using `fun C => funext fun i => by rw [Fin.fin_one_eq_zero i]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : ∀ e : K → ℕ, curveChartMono c e ∉ P`. Introduce `e h`. Rewrite `h` using `[curveChartMono, hpr.prod_mem_iff]`. Take `⟨k, _, hk⟩` from `h`. Conclude with `hc k (hpr.mem_of_pow_mem _ hk)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set B : HermLine ι := fsLine b with hBdef`. Establish `hB : IsSmoothHerm B` using `isSmoothHerm_fsLine b`. Establish `hBa : ∀ k, B.a k = b k` using `fun k => rfl`. Establish `hABa : ∀ k, (A.tensor B).a k = d k` using `fun k => by show A.a k + B.a k = d k`. Rewrite using `[hBa, hd k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsd : IsSectionOn P (A.tensor B) (curveChartMono c d)` using `⟨d, hABa, isMultiHomog_curveChartMono c d, hmono d⟩`. Establish `hsb : IsSectionOn P B (curveChartMono c b)` using `⟨b, hBa, isMultiHomog_curveChartMono c b, hmono b⟩`. Establish `hnz : ∀ z ∈ mcPts P, ∀ k, z ⟨k, c k⟩ ≠ 0`. Introduce `z hz k`. Establish `hs1 : IsSectionOn P (fsLine (fun _ => 1) : HermLine ι) (curveChartMono c fun _ => 1)` using `⟨fun _ => 1, fun _ => rfl, isMultiHomog_curveChartMono c _, hmono _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `norm_ne_zero_iff.mpr (eval_ne_zero_of_dimOne arithVarZero hP hs1 hz)`. Rewrite `h1` using `[norm_eval_curveChartMono]`. Establish `h2` using `Finset.prod_ne_zero_iff.mp h1 k (Finset.mem_univ k)`. Simplify using `using h2`. Establish `hadd` using `hI.2.1 P 0 Fin.elim0 A B hP hL hA hB`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRd` using `hI.2.2 P 0 Fin.elim0 (A.tensor B) (curveChartMono c d) d hP hL (hA.mul hB) hABa (isMultiHomog_curveChartMono c d) (hmono d)`. Establish `hRb` using `hI.2.2 P 0 Fin.elim0 B (curveChartMono c b) b hP hL hB hBa (isMultiHomog_curveChartMono c b) (hmono b)`. Rewrite `hadd` using `[hsnoc, hsnoc, hsnoc]`. Rewrite `hRd`, `hRb` using `[hsnoc]`. Rewrite `hRd` using `[recR_eq, cycR_eq_vertR_of_dimOne arithVarZero _ hP hsd]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hRb` using `[recR_eq, cycR_eq_vertR_of_dimOne arithVarZero _ hP hsb]`. Take `⟨R', hR'P, hR'u, hsum⟩` from `regularityPointsSum_holds.proof K ι P hP`. Establish `hφ : (fun (j : Fin 0) (z : (Σ k, ι k) → ℂ) => Real.log (((Fin.elim0 : Fin 0 → HermLine ι) j).h z)) = (Fin.elim0 : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ)` using `funext fun j => j.elim0`. Establish `hint : ∀ (C : HermLine ι) (s : MRing ι) (e : K → ℕ), (∀ k, C.a k = e k) → IsMultiHomog s e → arInt P s C (Fin.elim0 : Fin 0 → HermLine ι) = ∑ t ∈ R, logNorm C s t`. Introduce `C s e hCe hse`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ z z', z ∈ mcPts P → SameOrbit z z' → logNorm C s z = logNorm C s z'` using `fun z z' _ h => logNorm_sameOrbit hCe hse h`. Rewrite using `[arInt, hφ, hsum _ hinv]`. Conclude with `(sum_eq_of_transversal hRP hRu hR'P hR'u _ hinv).symm`. Rewrite `hRd` using `[hint _ _ d hABa (isMultiHomog_curveChartMono c d)]`. Rewrite `hRb` using `[hint _ _ b hBa (isMultiHomog_curveChartMono c b)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpt : ∀ t ∈ R, logNorm B (curveChartMono c b) t - logNorm (A.tensor B) (curveChartMono c d) t = Real.log (chartRadius A c t)`. Introduce `t ht`. Establish `hz` using `hRP t ht`. Establish `hk` using `hnz t hz`. Establish `hApos` using `A.pos t hz.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBpos` using `B.pos t hz.1`. Establish `hpos : ∀ e : K → ℕ, 0 < ∏ k, ‖t ⟨k, c k⟩‖ ^ e k` using `fun e => Finset.prod_pos fun k _ => pow_pos (norm_pos_iff.mpr (hk k)) _`. Establish `hsplit : ∏ k, ‖t ⟨k, c k⟩‖ ^ d k = (∏ k, ‖t ⟨k, c k⟩‖ ^ b k) * ∏ k, ‖t ⟨k, c k⟩‖ ^ A.a k`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (norm_ne_zero_iff.mpr (hk k)), hd k, add_comm]`. Unfold `logNorm chartRadius`. Rewrite using `[norm_eval_curveChartMono, norm_eval_curveChartMono, show (A.tensor B).h t = A.h t * B.h t from rfl, ← Real.log_div (div_pos (hpos b) hBpos).ne' (div_pos (hpos d) (mul_pos hApos hBpos)).ne', hsplit]`. Use `congr 1`. Use `hpos b` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : 0 < ∏ k, ‖t ⟨k, c k⟩‖ ^ A.a k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.mpr (hk k)) _`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← Finset.sum_congr rfl hpt, Finset.sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem proof : CurveDegreeVert.Statement := by
   intro K _ ι _ P A II c R b d hII hP hA hc hRP hRu hd

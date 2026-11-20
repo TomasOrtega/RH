@@ -16,7 +16,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   {B : BlockDat K G Pl0} {ℓ : Lvl K G} {v0 : InfinitePlace K} {s : ℕ} {Z : Submodule K B.S.Forms}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `P0`. Distinguish the cases in `hP : P0 ∈ Set.range B.pl`. Take `⟨P, rfl⟩` from `hP`. Conclude with `mul_right_cancel₀ (B.blockProd_ne_zero P) ((hx P).symm.trans (hx' P))`. Rewrite using `[h.1 P0 hP, h'.1 P0 hP]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_eq {Xg : Finset (G → K)} {Sg Sg' : Pl0 → K[X]} (h : Sg ∈ B.resSet Xg) (h' : Sg' ∈ B.resSet Xg)
     {x : B.Pl × ℕ → K} (hx : B.HasRes Sg x) (hx' : B.HasRes Sg' x) : Sg = Sg' := by
@@ -27,14 +27,14 @@ theorem res_eq {Xg : Finset (G → K)} {Sg Sg' : Pl0 → K[X]} (h : Sg ∈ B.res
   · rw [h.1 P0 hP, h'.1 P0 hP]
 
 /- English proof (translation)
-The claim follows from `map_conjTranspose' σ E fun i a => ConjugateWeightGram.isCMSub_cmMax σ _ (hE i a)`.
+A detailed English derivation is pending.
 -/
 theorem map_conjTranspose_of_mem_cmMax {n d : ℕ} (σ : K →+* ℂ) (E : Matrix (Fin n) (Fin d) K) (hE : ∀ i a, E i a ∈ cmMax K) :
     (Eᴴ).map σ = (E.map σ)ᴴ :=
   map_conjTranspose' σ E fun i a => ConjugateWeightGram.isCMSub_cmMax σ _ (hE i a)
 
 /- English proof (translation)
-Establish `e : B.HV ℓ = (Nat.card ℓ.P : K)⁻¹ • ((B.vE ℓ)ᴴ * B.S.H * B.vE ℓ)` using `rfl`. Rewrite using `[e, ← map_conjTranspose_of_mem_cmMax σ _ (hv_spec h).1, ← Matrix.map_mul, ← Matrix.map_mul]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem HV_map (h : BlockHyp B ℓ v0 s) (σ : K →+* ℂ) :
     (B.HV ℓ).map σ = σ (Nat.card ℓ.P : K)⁻¹ • (((B.vE ℓ).map σ)ᴴ * B.S.H.map σ * (B.vE ℓ).map σ) := by
@@ -44,11 +44,11 @@ theorem HV_map (h : BlockHyp B ℓ v0 s) (σ : K →+* ℂ) :
   simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Take `⟨i', hi'⟩` from `opMat_adj hH i`. Establish `hHh : B.S.Hᴴ = B.S.H` using `FinitelyNonzeroLinear.herm_of_pos h.conj (h.ok.hpos v0)`. Establish `h2 : B.S.H * B.opMat i = (B.opMat i')ᴴ * B.S.H`. Use `congrArg Matrix.conjTranspose hi'` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hHh]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h2' : B.S.H.map σ * (B.opMat i).map σ = ((B.opMat i').map σ)ᴴ * B.S.H.map σ`. Rewrite using `[← Matrix.map_mul, h2, Matrix.map_mul, map_conjTranspose_of_mem_cmMax σ _ (hH.rat i')]`. Establish `hT : ∀ k, (B.vE ℓ).map σ * (tV B ℓ k).map σ = (B.opMat k).map σ * (B.vE ℓ).map σ`. Introduce `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, vE_tV h]`. Use `⟨i', ?_⟩` and prove the remaining obligations. Rewrite using `[HV_map h σ]`. Conclude with `adj_transfer _ _ _ _ _ _ _ (hT i) (hT i') h2'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjC (h : BlockHyp B ℓ v0 s) (hH : B.OkH) (σ : K →+* ℂ) (i : B.Pl × ℕ) :
     ∃ i', (B.HV ℓ).map σ * (tV B ℓ i).map σ = ((tV B ℓ i').map σ)ᴴ * (B.HV ℓ).map σ := by
@@ -68,23 +68,21 @@ theorem adjC (h : BlockHyp B ℓ v0 s) (hH : B.OkH) (σ : K →+* ℂ) (i : B.Pl
   exact adj_transfer _ _ _ _ _ _ _ (hT i) (hT i') h2'
 
 /- English proof (translation)
-Establish `hpq` using `(pq_orth (Z := Z) h).1`. Establish `hsurj : Function.Surjective (B.Pq ℓ Z).mulVec` using `fun w => ⟨(B.zE ℓ Z) *ᵥ w, by rw [Matrix.mulVec_mulVec, hpq, Matrix.one_mulVec]⟩`. Establish `hA : ((B.HV ℓ).map v.embedding).PosDef` using `(hv_spec h).2.2 v`. Establish `hQ : (quotMetC ((B.Pq ℓ Z).map v.embedding) ((B.HV ℓ).map v.embedding)).PosDef` using `(quotRestrPosDef _ _ _ hA).1 _ (map_surj v.embedding _ hsurj)`. Establish `hmet : metOf (B.XQ ℓ Z v) = quotMetC ((B.Pq ℓ Z).map v.embedding) ((B.HV ℓ).map v.embedding)` using `(frameOfSpec _ _ hQ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : IsUnit (((B.Pq ℓ Z).map v.embedding) * ((B.HV ℓ).map v.embedding)⁻¹ * ((B.Pq ℓ Z).map v.embedding)ᴴ).det`. Establish `: IsUnit (quotMetC ((B.Pq ℓ Z).map v.embedding) ((B.HV ℓ).map v.embedding)).det` using `isUnit_iff_ne_zero.2 hQ.det_pos.ne'`. Rewrite `this` using `[quotMetC, Matrix.isUnit_nonsing_inv_det_iff]`. Then use the resulting hypothesis. Establish `hc : Col.PairComm (linF fun i => (tV B ℓ i).map v.embedding)` using `fun i j => linF_commute (by rw [← Matrix.map_mul, ← Matrix.map_mul, tV_comm h])`. Establish `hs : Col.SplitOver (linF fun i => (tV B ℓ i).map v.embedding)` using `fun i => Module.End.iSup_maxGenEigenspace_eq_top _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcf : Col.PairComm (linF fun i => (B.opMat i).map v.embedding)` using `fun i j => linF_commute (by rw [← Matrix.map_mul, ← Matrix.map_mul, opMat_comm h.ok.comm])`. Establish `hvv : B.vPr ℓ * B.vE ℓ = 1` using `(BlockDat.lf_v_proj h).1.1`. Establish `hΨ : (B.vPr ℓ).map v.embedding * (B.vE ℓ).map v.embedding = 1`. Rewrite using `[← Matrix.map_mul, hvv, map_one']`. Establish `hΦ : ∀ i, (B.vE ℓ).map v.embedding * (tV B ℓ i).map v.embedding = (B.opMat i).map v.embedding * (B.vE ℓ).map v.embedding` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, vE_tV h]`. Establish `hmem : ∀ {S : Pl0 → K[X]} {z : Fin (B.dZ ℓ Z) → K}, z ∈ B.part ℓ Z S → (fun a => v.embedding ((B.zE ℓ Z *ᵥ z) a)) ∈ Col.eigSum (linF fun i => (tV B ℓ i).map v.embedding) (fun w => ∃ x, B.HasRes S x ∧ w = fun i => v.embedding (x i))`. Introduce `S z hz`. Establish `h0 : B.S.basis.equivFun.symm (B.vE ℓ *ᵥ (B.zE ℓ Z *ᵥ z)) ∈ Col.eigSum B.op (B.HasRes S)`. Use `hz` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[BlockDat.part, Submodule.mem_comap, BlockDat.mem_goodPart_iff]`. Conclude with `this`. Establish `h1 : B.vE ℓ *ᵥ (B.zE ℓ Z *ᵥ z) ∈ Col.eigSum (fun i => Matrix.toLin' (B.opMat i)) (B.HasRes S)`. Use `eigSum_le_comap_of (B.S.basis.equivFun : B.S.Forms →ₗ[K] (Fin B.S.dim → K)) B.op (fun i => Matrix.toLin' (B.opMat i)) (fun i f => by rw [Matrix.toLin'_apply]; exact equivFun_op i f) _ h0` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2` using `emb_mem_eigSum v.embedding B.opMat (B.HasRes S) h1`. Use `mem_eigSum_of_emb _ _ ((B.vE ℓ).map v.embedding) ((B.vPr ℓ).map v.embedding) hΨ hΦ hc hs hcf _ ?_` and prove the remaining obligations. Rewrite using `[← emb_mulVec]`. Conclude with `h2`. Establish `hPN : ∀ i, (B.Pq ℓ Z).map v.embedding * (tV B ℓ i).map v.embedding = (B.Pq ℓ Z * tV B ℓ i * B.zE ℓ Z).map v.embedding * (B.Pq ℓ Z).map v.embedding` using `fun i => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `congrArg (fun M => M.map v.embedding) (Pq_tV h hH hZ i)`. Establish `hCC : ∀ w, (fun w => ∃ x, B.HasRes Sg' x ∧ w = fun i => v.embedding (x i)) w → ¬ (fun w => ∃ x, B.HasRes Sg x ∧ w = fun i => v.embedding (x i)) w`. Introduce and unpack `w ⟨x', hx', rfl⟩ ⟨x, hx, e⟩`. Establish `: x' = x` using `funext fun i => v.embedding.injective (by simpa using congrFun e i)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `hSS x' hx' hx`. Establish `key` using `cx_quot_orth (fun i => (tV B ℓ i).map v.embedding) ((B.HV ℓ).map v.embedding) hA (adjC h hH v.embedding) ((B.Pq ℓ Z).map v.embedding) _ hPN hR hc hs hCC (hmem hx) (hmem hy)`. Establish `ex : ∀ z : Fin (B.dZ ℓ Z) → K, (B.Pq ℓ Z).map v.embedding *ᵥ (fun a => v.embedding ((B.zE ℓ Z *ᵥ z) a)) = fun a => v.embedding (z a)`. Introduce `z`.
-
-Rewrite using `[← emb_mulVec, Matrix.mulVec_mulVec, hpq, Matrix.one_mulVec]`. Rewrite `key` using `[ex, ex]`. Rewrite using `[Formalism.L2.DIV.majAt_eq, hmet]`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part_orth (h : BlockHyp B ℓ v0 s) (hH : B.OkH) (hZ : ∀ i, Z ≤ Z.comap (B.op i)) (v : InfinitePlace K)
     {Sg Sg' : Pl0 → K[X]} (hSS : ∀ x, B.HasRes Sg' x → ¬ B.HasRes Sg x)
@@ -164,9 +162,9 @@ variable (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* 
   (Zsc : DefSub A.fam.amb → IndefScale A.fam.base)
 
 /- English proof (translation)
-Establish `hok` using `hOk.what₂ A.fam.μ0`. Establish `hZ : ∀ i, X.Z A.fam.μ0 ≤ (X.Z A.fam.μ0).comap ((A.fam.R A.fam.μ0).op i)` using `fun i => Submodule.map_le_iff_le_comap.1 (hst.1 A.fam.μ0 (Sum.inl i))`. Establish `hmemR : ∀ r : A.fam.base.Ix, r.1 ∈ (A.fam.R A.fam.μ0).resSet A.fam.X` using `fun r => ((A.fam.R A.fam.μ0).mem_ixFin hok.comm _ _).1 r.2`. Establish `hSS : ∀ z, (A.fam.R A.fam.μ0).HasRes q.1 z → ¬ (A.fam.R A.fam.μ0).HasRes p.1 z`. Introduce `z hq hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpq (Subtype.ext (OrthogonalPartDecomposition.res_eq (hmemR p) (hmemR q) hp hq))`. Conclude with `OrthogonalPartDecomposition.part_orth (B := A.fam.R A.fam.μ0) (ℓ := A.fam.lvl P ψ) (Z := X.Z A.fam.μ0) ⟨hOk.conj, hOk.irr, hok⟩ hH hZ v hSS hx hy`.
+A detailed English derivation is pending.
 -/
 theorem partsOrth_at {s : ℕ} (hOk : A.fam.Ok s) (hH : HeckeRatR A) (hst : X.zs.Stable) (P : Subgroup G)
     (ψ : P →* Kˣ) (v : InfinitePlace K) (p q : A.fam.base.Ix) (hpq : p ≠ q)
@@ -185,7 +183,7 @@ theorem partsOrth_at {s : ℕ} (hOk : A.fam.Ok s) (hH : HeckeRatR A) (hst : X.zs
     ⟨hOk.conj, hOk.irr, hok⟩ hH hZ v hSS hx hy
 
 /- English proof (translation)
-Introduce `s hOk hH hst b`. Consider the cases of `b`. Conclude with `fun v _ p q hpq x hx y hy => partsOrth_at A X hOk hH hst P0 ψ0 v p q hpq x hx y hy`. Conclude with `fun v _ p q hpq x hx y hy => partsOrth_at A X hOk hH hst P1 ψ1 v p q hpq x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cutPartsOrth : CutPartsOrth A X P0 ψ0 P1 ψ1 Dc Sp Zsc := by
   intro s hOk hH hst b

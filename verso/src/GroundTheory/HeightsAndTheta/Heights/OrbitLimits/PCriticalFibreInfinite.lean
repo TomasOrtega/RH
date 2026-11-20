@@ -10,59 +10,55 @@ open Topology Metric
 noncomputable section
 
 /- English proof (translation)
-Introduce `k d U f hU hUne hf hninj`. Establish `hfa : AnalyticOnNhd ℂ f U` using `GroundTheory.Heights₂.Heights.ImplicitCurve.analyticOnNhd_of_differentiableOn hU hf`. Set `Q : ℕ → Prop` to `fun m => ∃ t ∈ U, ∃ v : Fin m → Fin k → ℂ, LinearIndependent ℂ (fun j => fderiv ℂ f t (v j))`. Establish `hQ0 : Q 0`. Take `⟨t, ht⟩` from `hUne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht, Fin.elim0, linearIndependent_empty_type⟩`. Establish `hspec : Q (Nat.findGreatest Q d)` using `Nat.findGreatest_spec (Nat.zero_le d) hQ0`. Establish `hle : ∀ m, m ≤ d → Q m → m ≤ Nat.findGreatest Q d` using `fun m hmd hm => Nat.le_findGreatest hmd hm`. Establish `hrd : Nat.findGreatest Q d ≤ d` using `Nat.findGreatest_le d`. Generalize the expression as in `Nat.findGreatest Q d = r at hspec hle hrd`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨s, hs, v, hv⟩` from `hspec`. Establish `hmax : ∀ t ∈ U, ∀ u : Fin (r + 1) → Fin k → ℂ, ¬ LinearIndependent ℂ (fun j => fderiv ℂ f t (u j))`. Introduce `t ht u hu`. Establish `hcard : r + 1 ≤ d` using `by simpa using hu.fintype_card_le_finrank`. Use `hle (r + 1) hcard ⟨t, ht, u, hu⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Set `T : (Fin r → ℂ) →ₗ[ℂ] (Fin d → ℂ)` to `Fintype.linearCombination ℂ (fun j => fderiv ℂ f s (v j))`. Establish `hT : LinearMap.ker T = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 hv c (by simpa [T, Fintype.linearCombination_apply] using hc) j`. Take `⟨Λ, hΛ⟩` from `T.exists_leftInverse_of_injective hT`. Establish `hΛv : ∀ j, Λ (fderiv ℂ f s (v j)) = Pi.single j 1`. Introduce `j`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun g => g (Pi.single j (1 : ℂ))) hΛ` as an intermediate fact. Simplify `this` using `[T, Fintype.linearCombination_apply_single]`. Set `Λc : (Fin d → ℂ) →L[ℂ] (Fin r → ℂ)` to `LinearMap.toContinuousLinearMap Λ`. Establish `hΛc : ∀ y, Λc y = Λ y` using `fun y => rfl`. Establish `hev : ∀ᶠ t in 𝓝 s, t ∈ U ∧ LinearIndependent ℂ (fun j => Λ (fderiv ℂ f t (v j)))`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUev : ∀ᶠ t in 𝓝 s, t ∈ U` using `hU.mem_nhds hs`. Use `hUev.and ?_` and prove the remaining obligations. Establish `hDcont : ContinuousAt (fderiv ℂ f) s` using `(hfa.fderiv s hs).continuousAt`. Establish `hc : ContinuousAt (fun t => fun j => Λc (fderiv ℂ f t (v j))) s`. Use `continuousAt_pi.2 fun j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Λc.continuous.continuousAt.comp ((ContinuousLinearMap.apply ℂ (Fin d → ℂ) (v j)).continuous.continuousAt.comp hDcont)`. Establish `h0 : LinearIndependent ℂ (fun j => Λc (fderiv ℂ f s (v j)))`. Establish `: (fun j => Λc (fderiv ℂ f s (v j))) = ⇑(Pi.basisFun ℂ (Fin r))`. Use function extensionality and compare the values at `j`. Simplify using `[hΛc, hΛv]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `(Pi.basisFun ℂ (Fin r)).linearIndependent`. Conclude with `hc.eventually h0.eventually`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw, hw0⟩ : ∃ w ∈ LinearMap.ker (Λ ∘ₗ (fderiv ℂ f s : (Fin k → ℂ) →ₗ[ℂ] (Fin d → ℂ))), w ≠ 0 := by`. Take `⟨x, y, hxy, hne⟩` from `Function.not_injective_iff.1 (hninj s hs)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨x - y, ?_, sub_ne_zero.2 hne⟩` and prove the remaining obligations. Simplify using `[map_sub, hxy]`. Establish `hw' : Λ (fderiv ℂ f s w) = 0` using `by simpa using hw`. Set `A' : ℂ × (Fin r → ℂ) →L[ℂ] (Fin k → ℂ)` to `(ContinuousLinearMap.fst ℂ ℂ (Fin r → ℂ)).smulRight w + ∑ j, ((ContinuousLinearMap.proj j).comp (ContinuousLinearMap.snd ℂ ℂ (Fin r → ℂ))).smulRight (v j)`. Establish `hA' : ∀ p : ℂ × (Fin r → ℂ), A' p = p.1 • w + ∑ j, p.2 j • v j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Simplify using `[A']`. Establish `hLA : ∀ p : ℂ × (Fin r → ℂ), Λ (fderiv ℂ f s (A' p)) = p.2`. Introduce `p`. Rewrite using `[hA', map_add, map_add, map_smul, map_smul, hw', smul_zero, zero_add, map_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [map_smul, hΛv]`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Set `H : ℂ × (Fin r → ℂ) → Fin r → ℂ` to `fun p => Λc (f (s + A' p))`. Establish `hfs : AnalyticAt ℂ f s` using `hfa s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hHd : HasFDerivAt H (Λc.comp ((fderiv ℂ f s).comp A')) 0`. Establish `h1 : HasFDerivAt (fun p => s + A' p) A' (0 : ℂ × (Fin r → ℂ))` using `A'.hasFDerivAt.const_add s`. Establish `h2 : HasFDerivAt f (fderiv ℂ f s) (s + A' 0)`. Simplify using `using hfs.differentiableAt.hasFDerivAt`. Conclude with `Λc.hasFDerivAt.comp _ (HasFDerivAt.comp (f := fun p => s + A' p) (0 : ℂ × (Fin r → ℂ)) h2 h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hHc : ContDiffAt ℂ 1 H 0`. Establish `hf1 : ContDiffAt ℂ 1 f (s + A' 0)` using `by simpa using hfs.contDiffAt`. Conclude with `Λc.contDiff.contDiffAt.comp _ (ContDiffAt.comp (f := fun p => s + A' p) (0 : ℂ × (Fin r → ℂ)) hf1 (contDiff_const.add A'.contDiff).contDiffAt)`. Establish `hinv : (fderiv ℂ H 0 ∘L ContinuousLinearMap.inr ℂ ℂ (Fin r → ℂ)).IsInvertible`. Establish `: fderiv ℂ H 0 ∘L ContinuousLinearMap.inr ℂ ℂ (Fin r → ℂ) = ContinuousLinearMap.id ℂ (Fin r → ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hHd.fderiv]`. Use `ContinuousLinearMap.ext fun c => ?_` and prove the remaining obligations. Simplify `hLA (0, c)` using `[hΛc]`. Rewrite using `[this]`. Conclude with `⟨ContinuousLinearEquiv.refl ℂ _, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψc` using `hHc.contDiffAt_implicitFunction one_ne_zero hinv`. Use `set ψ := hHc.implicitFunction one_ne_zero hinv with hψ`. Establish `hψ0 : ψ 0 = 0` using `hHc.implicitFunction_apply_self one_ne_zero hinv`. Establish `hψeq : ∀ᶠ z in 𝓝 (0 : ℂ), H (z, ψ z) = H 0` using `hHc.eventually_apply_implicitFunction one_ne_zero hinv`. Establish `hψd : ∀ᶠ z in 𝓝 (0 : ℂ), DifferentiableAt ℂ ψ z` using `(hψc.eventually (by simp)).mono fun z hz => hz.differentiableAt one_ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P : ℂ → Fin k → ℂ` to `fun z => s + A' (z, ψ z)`. Establish `hP0 : P 0 = s` using `by simp [P, hψ0, hA']`. Establish `hPcont : ContinuousAt P 0` using `continuousAt_const.add (A'.continuous.continuousAt.comp (continuousAt_id.prodMk hψc.continuousAt))`. Rewrite `hev` using `[← hP0]`. Take `⟨δ, hδ, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (((hPcont.eventually hev).and hψeq).and hψd)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hPd : ∀ z ∈ ball (0 : ℂ) δ, DifferentiableAt ℂ P z` using `fun z hz => (differentiableAt_const _).add (A'.differentiableAt.comp z (differentiableAt_id.prodMk (hball z hz).2))`. Establish `hPU : ∀ z ∈ ball (0 : ℂ) δ, P z ∈ U` using `fun z hz => (hball z hz).1.1.1`. Establish `hfd : ∀ z ∈ ball (0 : ℂ) δ, DifferentiableAt ℂ f (P z)` using `fun z hz => (hf _ (hPU z hz)).differentiableAt (hU.mem_nhds (hPU z hz))`. Establish `hgP : ∀ z ∈ ball (0 : ℂ) δ, Λc (f (P z)) = Λc (f s)`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hball z hz).1.2` as an intermediate fact. Simplify `this` using `[H, P]`. Establish `hzero : Set.EqOn (fderiv ℂ (fun z => f (P z))) 0 (ball (0 : ℂ) δ)`. Introduce `z hz`. Establish `hcomp : fderiv ℂ (fun z => f (P z)) z = (fderiv ℂ f (P z)).comp (fderiv ℂ P z)` using `fderiv_comp z (hfd z hz) (hPd z hz)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hloc : (fun z => Λc (f (P z))) =ᶠ[𝓝 z] fun _ => Λc (f s)` using `Filter.eventually_of_mem (isOpen_ball.mem_nhds hz) hgP`. Establish `hg0 : fderiv ℂ (fun z => Λc (f (P z))) z = 0`. Rewrite using `[hloc.fderiv_eq]`. Conclude with `fderiv_const_apply _`. Establish `hgc : fderiv ℂ (fun z => Λc (f (P z))) z = Λc.comp ((fderiv ℂ f (P z)).comp (fderiv ℂ P z))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcomp]`. Establish `h` using `fderiv_comp z Λc.differentiableAt ((hfd z hz).comp z (hPd z hz))`. Rewrite `h` using `[ContinuousLinearMap.fderiv]`. Conclude with `h`. Establish `hx : Λ (fderiv ℂ f (P z) (fderiv ℂ P z 1)) = 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun L => L 1) (hgc.symm.trans hg0)` as an intermediate fact. Simplify `this` using `[hΛc]`. Use `IndefiniteRowSideFullHecke.ComplexSets.HolomorphicFibreInfinite.kernel_eq_of_maximal (fderiv ℂ f (P z)) v Λ (hmax _ (hPU z hz)) (hball z hz).1.1.2 hx` as an intermediate fact. Rewrite using `[hcomp]`. Use `ContinuousLinearMap.ext_ring ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hconst : ∀ z ∈ ball (0 : ℂ) δ, f (P z) = f s`. Introduce `z hz`. Use `isOpen_ball.is_const_of_fderiv_eq_zero (convex_ball (0 : ℂ) δ).isPreconnected (fun z hz => ((hfd z hz).comp z (hPd z hz)).differentiableWithinAt) hzero hz (mem_ball_self hδ)` as an intermediate fact. Simplify `this` using `[hP0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPinj : Function.Injective P`. Introduce `z z' hzz`. Establish `hψz : ψ z = ψ z'`. Establish `h1` using `hLA (z, ψ z)`. Establish `h2` using `hLA (z', ψ z')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `: A' (z, ψ z) = A' (z', ψ z')` using `add_left_cancel hzz`. Rewrite `h1` using `[this]`. Conclude with `h1.symm.trans h2`. Establish `: A' (z, ψ z) = A' (z', ψ z')` using `add_left_cancel hzz`. Rewrite `this` using `[hA', hA', hψz]`.
-
-Establish `h3 : z • w = z' • w` using `add_right_cancel this`. Conclude with `smul_left_injective ℂ hw0 h3`. Use `⟨f s, ?_⟩` and prove the remaining obligations. Establish `hinf : (ball (0 : ℂ) δ).Infinite` using `infinite_of_mem_nhds (0 : ℂ) (ball_mem_nhds 0 hδ)`. Use `(hinf.image hPinj.injOn).mono ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨hPU z hz, hconst z hz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem CriticalFibreInfinite.proof : CriticalFibreInfinite.Statement := by
   intro k d U f hU hUne hf hninj

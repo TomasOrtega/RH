@@ -41,7 +41,7 @@ def hext {K L : ChainComplex (Shv R) ℕ} (h : HomotopyEquiv K L) :
 def sIso (A : Shv R) := HomologicalComplex.extendSingleIso ComplexShape.embeddingDownNat A 0 (0 : ℤ) (by simp)
 
 /- English proof (translation)
-Apply `HomologicalComplex.to_single_hom_ext` to reduce the goal to its premises. Simplify using `[sIso, HomologicalComplex.extendSingleIso_hom_f, HomologicalComplex.extendMap_f _ ComplexShape.embeddingDownNat (i := 0) (i' := (0 : ℤ)) (by simp), HomologicalComplex.single_map_f_self]`. Use `erw [Iso.inv_hom_id_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sIso_nat {A B : Shv R} (φ : A ⟶ B) :
     HomologicalComplex.extendMap ((ChainComplex.single₀ (Shv R)).map φ) ComplexShape.embeddingDownNat ≫ (sIso B).hom =
@@ -53,11 +53,11 @@ theorem sIso_nat {A B : Shv R} (φ : A ⟶ B) :
   erw [Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Introduce `R _ X Y f`. Use `⟨HomotopyCategory.isoOfHomotopyEquiv (hext (ed R X).homotopyEquiv) ≪≫ (Qt R).mapIso (sIso _), HomotopyCategory.isoOfHomotopyEquiv (hext (ed R Y).homotopyEquiv) ≪≫ (Qt R).mapIso (sIso _), ?_⟩` and prove the remaining obligations. Establish `hn` using `(AlgebraicTopology.AlternatingFaceMapComplex.ε (C := Shv R)).naturality (augMap R f)`. Establish `key : (chains R).map (disc.map f) ≫ HomologicalComplex.extendMap (AlgebraicTopology.AlternatingFaceMapComplex.ε.app (aug R Y)) ComplexShape.embeddingDownNat ≫ (sIso ((free R).obj Y)).hom = HomologicalComplex.extendMap (AlgebraicTopology.AlternatingFaceMapComplex.ε.app (aug R X)) …`. Establish `h2` using `congrArg (fun φ => HomologicalComplex.extendMap φ ComplexShape.embeddingDownNat) hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [HomologicalComplex.extendMap_comp] at h2`. Establish `h1 : HomologicalComplex.extendMap ((point ⋙ ChainComplex.single₀ (Shv R)).map (augMap R f)) ComplexShape.embeddingDownNat ≫ (sIso ((free R).obj Y)).hom = (sIso ((free R).obj X)).hom ≫ (HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).map ((free R).map f)` using `sIso_nat ((free R).map f)`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (sIso ((free R).obj Y)).hom) h2).trans ((Category.assoc _ _ _).trans (congrArg (HomologicalComplex.extendMap (AlgebraicTopology.AlternatingFaceMapComplex.ε.app (aug R X)) ComplexShape.embeddingDownNat ≫ ·) h1)))`. Use `congrArg (Qt R).map key` as an intermediate fact. Simplify using `only [Functor.map_comp] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Iso.trans_hom, Category.assoc]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem disc0 : Disc0 := by
   intro R _ X Y f
@@ -80,7 +80,7 @@ theorem disc0 : Disc0 := by
   exact this
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.SimplicialPieceRelations.piece_of disc0`.
+A detailed English derivation is pending.
 -/
 theorem Piece_of : LateralTheory.E.TruncationPieces.Piece := LateralTheory.E.SimplicialPieceRelations.piece_of disc0
 

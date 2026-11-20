@@ -51,7 +51,7 @@ def flagUnip {m : ℕ} (Q : Matrix (Fin n) (Fin m) A) : Subgroup (GL (Fin n) A) 
   ⨅ a : Fin m, unip (colSpan Q ((a : ℕ) + 1)) (colSpan Q a)
 
 /- English proof (translation)
-Use extensionality with `g`. Conclude with `⟨fun h => h.1, fun h => ⟨h, h, fun v hv => M.sub_mem ((h v).1 hv) hv⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 example (M : AddSubgroup (Fin n → A)) : unip M M = stabAdd M := by
   ext g
@@ -246,7 +246,7 @@ def ColumnDimension : Prop :=
           d * volMul μNf μHf (KSpp σ J P f L SG ε (g₁ * g₂) : Set (HA (Af F) σ J))
 
 /- English proof (translation)
-Simplify using `[gammaOne]`.
+Simplify using the standard rewrite rules.
 -/
 example (E : Type) [Field E] [NumberField E] (k : ℕ) :
     gammaOne (∅ : Finset (HeightOneSpectrum (𝓞 E))) k = 1 := by simp [gammaOne]

@@ -18,7 +18,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 open GlobalTheory.FieldBaseChange
 
 /- English proof (translation)
-Introduce `s t h`. Use `SecOver.ext _ _ fun i => p.app_injective _ (fn_ext fun y hy => ?_)` and prove the remaining obligations. Establish `e` using `congrArg (fun q : SecOver π' (LB.LinComb L φ' ε) => gs (𝟙 _) y _ (LB.Sec.f q i)) h`. Establish `hy' : (𝟙 Y' : _ ⟶ _) y ∈ LB.wchart L φ' i` using `(wchart_eq hφ i).ge hy`. Conclude with `(gs_pull _ _ y _ hy _).trans ((gs_pullFn _ _ _ _ y hy').symm.trans (e.trans ((gs_pullFn _ _ _ _ y hy').trans (gs_pull _ _ y _ hy _).symm)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pullOver_injective_of_dominant {R R' : Type} [CommRing R] [CommRing R'] {X Y Y' : Scheme.{0}}
     {π : Y ⟶ Spec (CommRingCat.of R)} (L : LB X) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} (ε : K → ℤ)
@@ -39,7 +39,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   [IsCommMonObj G] (U : UnifPre I D A G) {j n : ℕ}
 
 /- English proof (translation)
-The claim follows from `expandsAt_secIsMul R I D A G U n j a σ _ f _ (fun _ => rfl) (fun _ _ => rfl) h`.
+A detailed English derivation is pending.
 -/
 theorem expandsAt_smul (a : R)
     {σ : SecOver G.hom (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (j : ℤ)))}
@@ -48,7 +48,7 @@ theorem expandsAt_smul (a : R)
   expandsAt_secIsMul R I D A G U n j a σ _ f _ (fun _ => rfl) (fun _ _ => rfl) h
 
 /- English proof (translation)
-Establish `e₁ : (0 : R) • σ = 0` using `zero_smul R σ`. Establish `e₂ : (0 : R) • f = 0` using `zero_smul R f`. Conclude with `e₁ ▸ e₂ ▸ expandsAt_smul U (0 : R) h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expandsAt_zero
     {σ : SecOver G.hom (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (j : ℤ)))}
@@ -59,7 +59,7 @@ theorem expandsAt_zero
   exact e₁ ▸ e₂ ▸ expandsAt_smul U (0 : R) h
 
 /- English proof (translation)
-Use `expandsAt_sub R I D A G U n j σ ((-1 : R) • τ : SecOver G.hom _) _ f ((-1 : R) • g : ∀ χ, SecBMod D.toPre j χ) _ (fun i => ?_) (fun α i => ?_) h (expandsAt_smul U (-1) h')` and prove the remaining obligations. Use `show chartLin G.hom _ i (σ + τ) = chartLin G.hom _ i σ - chartLin G.hom _ i ((-1 : R) • τ)`. Rewrite using `[← map_sub, neg_one_smul, sub_neg_eq_add]`. Use `show chartLin D.toPre.P.A.hom _ i (f α + g α) = chartLin D.toPre.P.A.hom _ i (f α) - chartLin D.toPre.P.A.hom _ i ((-1 : R) • g α)`. Rewrite using `[← map_sub, neg_one_smul, sub_neg_eq_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAt_add
     {σ τ : SecOver G.hom (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (j : ℤ)))}
@@ -76,23 +76,23 @@ theorem expandsAt_add
 end
 
 /- English proof (translation)
-Establish `hsm` using `U.smooth`. Establish `hinj : Function.Injective (algebraMap R (FractionRing R))` using `IsFractionRing.injective R _`. Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Rewrite using `[CommRingCat.hom_ofHom, (RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Conclude with `bot_le)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (pullback.fst G.hom (jK R))` using `.of_isPullback (IsPullback.of_hasPullback G.hom (jK R)).flip`. Establish `hp : pullback.fst G.hom (jK R) ≫ G.hom = pullback.snd G.hom (jK R) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))` using `pullback.condition`. Establish `hφ : ∀ k : Fin 1, (fun _ : Fin 1 => pullback.fst G.hom (jK R)) k = pullback.fst G.hom (jK R) ≫ (fun _ : Fin 1 => 𝟙 G.left) k` using `fun _ => (Category.comp_id _).symm`. Establish `hρ` using `pullOver_injective_of_dominant U.LG.L (fun _ : Fin 1 => (j : ℤ)) hp hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ρ := pullOver U.LG.L (fun _ : Fin 1 => (j : ℤ)) hp hφ with hρdef`. Establish `hS` using `fun s₁ s₂ c => secScal_iff hp hφ (ε := fun _ : Fin 1 => (j : ℤ)) U.LG.isLB s₁ s₂ (pullback.snd G.hom (jK R) ≫ jK R) (algebraMap R (FractionRing R)) rfl c`. Establish `toF_eq : ∀ x : R, toF (R` using `R) (FractionRing R) x = algebraMap R (FractionRing R) x := fun _ => rfl`. Take `⟨Φ₀, hΦ₀, -⟩` from `(U.expand j hj).1 (ρ s)`. Take `⟨-, -, σ₀, f₀, -, -, h₀⟩` from `id hΦ₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ Ψ ∈ Submodule.span (FractionRing R) (Set.range Φ), ∃ t : R, t ≠ 0 ∧ ∃ σ' ∈ Submodule.span R (Set.range σ), ∃ f' : ∀ χ, SecBMod D.toPre j χ, (∀ χ, resF D.toPre (FractionRing R) j χ (f' χ) = toF (R` using `R) (FractionRing R) t • famComp D.toPre (FractionRing R) j χ Ψ) ∧ ∀ n, U.toUnifPre.ExpandsAt n j σ' f' := by`. Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨r i, hr i, σ i, Submodule.subset_span ⟨i, rfl⟩, f i, hf i, hE i⟩`. Consider the case `zero`. Use `⟨1, one_ne_zero, 0, zero_mem _, 0, fun χ => by simp, fun n => ?_⟩` and prove the remaining obligations. Conclude with `expandsAt_zero U.toUnifPre (σ := σ₀) (f := f₀) (h₀ n)`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t₁, ht₁, σ₁, m₁, f₁, e₁, E₁⟩` from `hx`. Take `⟨t₂, ht₂, σ₂, m₂, f₂, e₂, E₂⟩` from `hy`. Use `⟨t₁ * t₂, mul_ne_zero ht₁ ht₂, t₂ • σ₁ + t₁ • σ₂, add_mem (Submodule.smul_mem _ _ m₁) (Submodule.smul_mem _ _ m₂), t₂ • f₁ + t₁ • f₂, fun χ => ?_, fun n => expandsAt_add _ (expandsAt_smul _ _ (E₁ n)) (expandsAt_smul _ _ (E₂ n))⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Pi.smul_apply, Pi.smul_apply, map_add, map_smulₛₗ, map_smulₛₗ, e₁, e₂, map_add, map_mul, smul_add, smul_smul, smul_smul, mul_comm]`. Consider the case `smul a x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht, σ₁, m₁, f₁, e₁, E₁⟩` from `hx`. Take `⟨u, v, hv, rfl⟩` from `IsFractionRing.div_surjective (A := R) a`. Establish `hv0 : v ≠ 0` using `nonZeroDivisors.ne_zero hv`. Establish `hv' : algebraMap R (FractionRing R) v ≠ 0` using `fun h => hv0 (hinj (h.trans (map_zero _).symm))`. Use `⟨t * v, mul_ne_zero ht hv0, u • σ₁, Submodule.smul_mem _ _ m₁, u • f₁, fun χ => ?_, fun n => expandsAt_smul _ _ (E₁ n)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[Pi.smul_apply, map_smulₛₗ, e₁, map_smul, smul_smul, smul_smul, map_mul, toF_eq, toF_eq, toF_eq]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take `⟨t, ht, σ', m, f', e, E⟩` from `key Φ₀ (hΦ ▸ Submodule.mem_top)`. Establish `ht' : algebraMap R (FractionRing R) t ≠ 0` using `fun h => ht (hinj (h.trans (map_zero _).symm))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX : U.toUnifPre.Expands j ((algebraMap R (FractionRing R) t)⁻¹ • ρ σ' : SecOver _ _) Φ₀` using `⟨t, ht, σ', f', (hS _ _ _).2 (by rw [smul_inv_smul₀ ht']), fun χ => (secScal_iff_resF D.toPre (FractionRing R) _ _ _).2 (e χ), E⟩`. Establish `hu : ((algebraMap R (FractionRing R) t)⁻¹ • ρ σ' : SecOver _ _) = ρ s` using `((U.expand j hj).2 Φ₀).unique hX hΦ₀`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `: t • s = σ'` using `hρ (by rw [map_smulₛₗ, ← hu, smul_inv_smul₀ ht'])`. Rewrite using `[this]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_span_of_expandsAt {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]

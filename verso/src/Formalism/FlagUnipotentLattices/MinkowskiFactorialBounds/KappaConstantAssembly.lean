@@ -6,7 +6,7 @@ import Formalism.LatticeRigidity.RecursionUnrestrictedFalse
 namespace Formalism.HermitianLatticeCounting.P
 
 /- English proof (translation)
-The claim follows from `kappaAssembly_of volume_ratio`.
+A detailed English derivation is pending.
 -/
 theorem kappa_constant_assembly : Formalism.HermitianLatticeCounting.S7.KappaAssembly := kappaAssembly_of volume_ratio
 

@@ -22,7 +22,7 @@ def IsRamExt (V V' : CDVR) (i : V.Fr →+* V'.Fr) (r : ℕ) : Prop :=
   0 < r ∧ ∀ a : V.Fr, a ≠ 0 → vV V'.V (i a) = (r : ℤ) * vV V.V a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_pos, fun a _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (V : CDVR) : IsRamExt V V (RingHom.id _) 1 := ⟨one_pos, fun a _ => by simp⟩
 
@@ -70,7 +70,7 @@ def harmComb {V : CDVR} {io : c.F →+* V.Fr} {y : IntFr Xo c V io} (C : Integra
     ∏ b, C.ch.B.nabVal V.Fr C.ch.h H.w0 (l.M ^ 2) (g b) C.ch.uvec (MvPolynomial.monomial (colOf m b) 1)
 
 /- English proof (translation)
-Simplify using `[harmComb]`.
+Simplify using the standard rewrite rules.
 -/
 example {V : CDVR} {io : c.F →+* V.Fr} {y : IntFr Xo c V io} (C : IntegralChartA3 Xo c V io y) {n : ℕ}
     (g : Fin n → Germ.PS V.Fr 1 (chD C.ch)) : harmComb C (0 : MvPolynomial (LtN Dw n) c.F) g = 0 := by

@@ -14,11 +14,11 @@ section Real
 variable {S V : Type} [TopologicalSpace S] [CompactSpace S] [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `isCompact_univ.exists_bound_of_continuousOn hL.continuousOn`. Take `⟨B, hB⟩` from `isCompact_univ.exists_bound_of_continuousOn hLi.continuousOn`. Use `⟨|B| ^ k * |A| ^ n * SchwartzMap.seminorm ℝ k n f, by positivity, fun s x => ?_⟩` and prove the remaining obligations. Establish `hA' : ‖L s‖ ≤ |A|` using `(hA s (Set.mem_univ _)).trans (le_abs_self A)`. Establish `hB' : ‖Li s‖ ≤ |B|` using `(hB s (Set.mem_univ _)).trans (le_abs_self B)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ‖x‖ ≤ |B| * ‖L s x‖`. Combine the equalities or inequalities in the displayed calculation. Establish `e : iteratedFDeriv ℝ n (fun y => f (L s y)) x = (iteratedFDeriv ℝ n f (L s x)).compContinuousLinearMap fun _ => L s` using `(L s).iteratedFDeriv_comp_right f.smooth' x (mod_cast le_top)`. Establish `hD : ‖iteratedFDeriv ℝ n (fun y => f (L s y)) x‖ ≤ ‖iteratedFDeriv ℝ n f (L s x)‖ * |A| ^ n`. Rewrite using `[e]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `gcongr`. Establish `hS` using `SchwartzMap.le_seminorm ℝ k n f (L s x)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_bound (L Li : S → V →L[ℝ] V) (hL : Continuous L) (hLi : Continuous Li) (h : ∀ s x, Li s (L s x) = x)
     (f : SchwartzMap V ℂ) (k n : ℕ) :
@@ -47,7 +47,7 @@ theorem exists_bound (L Li : S → V →L[ℝ] V) (hL : Continuous L) (hLi : Con
     _ ≤ |B| ^ k * |A| ^ n * SchwartzMap.seminorm ℝ k n f := by gcongr
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hφ.continuousOn`. Conclude with `Integrable.mono' (integrable_const C) hφ.aestronglyMeasurable_of_compactSpace (ae_of_all _ fun s => hC s (Set.mem_univ _))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem integrable_of_continuous_isFiniteMeasure {E : Type} [NormedAddCommGroup E] [MeasurableSpace S] [OpensMeasurableSpace S]
     (ν : Measure S) [IsFiniteMeasure ν] {φ : S → E} (hφ : Continuous φ) : Integrable φ ν := by
@@ -56,7 +56,7 @@ private theorem integrable_of_continuous_isFiniteMeasure {E : Type} [NormedAddCo
     (ae_of_all _ fun s => hC s (Set.mem_univ _))
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(isCompact_univ.prod (isCompact_closedBall x₀ 1)).exists_bound_of_continuousOn hd.continuousOn`. Establish `hcs : ∀ x, Continuous fun s => G s x` using `fun x => hc.comp (continuous_id.prodMk continuous_const)`. Establish `hds : Continuous fun s => fderiv ℝ (G s) x₀` using `hd.comp (continuous_id.prodMk continuous_const)`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun x s => G s x) (F' := fun x s => fderiv ℝ (G s) x) (bound := fun _ => C) (Metric.closedBall_mem_nhds x₀ one_pos) (Filter.Eventually.of_forall fun x => (hcs x).aestronglyMeasurable_of_compactSpace) (integrable_of_continuous_i …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem hasFDerivAt_integral_of_continuous_fderiv {E : Type} [FiniteDimensional ℝ V] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [MeasurableSpace S] [OpensMeasurableSpace S] (ν : Measure S)
@@ -75,9 +75,9 @@ private theorem hasFDerivAt_integral_of_continuous_fderiv {E : Type} [FiniteDime
     (ae_of_all _ fun s x _ => (hG s x).hasFDerivAt)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [iteratedFDeriv_zero_eq_comp, Function.comp_apply]`. Conclude with `(continuousMultilinearCurryFin0 ℝ V ℂ).symm.contDiff.comp (f.smooth'.comp isBoundedBilinearMap_apply.contDiff)`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [iteratedFDeriv_succ_eq_comp_left, Function.comp_apply]`. Establish `hf : ContDiff ℝ ∞ (Function.uncurry fun (p : (V →L[ℝ] V) × V) (y : V) => iteratedFDeriv ℝ m (fun z => f (p.1 z)) y)` using `ih.comp (contDiff_fst.fst.prodMk contDiff_snd)`. Conclude with `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => V) ℂ).symm.contDiff.comp (hf.fderiv contDiff_snd (by simp))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem contDiff_iteratedFDeriv_schwartz_comp (f : SchwartzMap V ℂ) (m : ℕ) :
     ContDiff ℝ ∞ (fun p : (V →L[ℝ] V) × V => iteratedFDeriv ℝ m (fun y => f (p.1 y)) p.2) := by
@@ -95,21 +95,19 @@ private theorem contDiff_iteratedFDeriv_schwartz_comp (f : SchwartzMap V ℂ) (m
       (hf.fderiv contDiff_snd (by simp))
 
 /- English proof (translation)
-Establish `hpair : Continuous fun p : S × V => (L p.1, p.2)` using `(hL.comp continuous_fst).prodMk continuous_snd`. Establish `hA : ∀ (m : ℕ) (x : V), HasFDerivAt (fun x => ∫ s, iteratedFDeriv ℝ m (fun y => f (L s y)) x ∂ν) (∫ s, fderiv ℝ (iteratedFDeriv ℝ m (fun y => f (L s y))) x ∂ν) x`. Introduce `m x`. Use `hasFDerivAt_integral_of_continuous_fderiv ν (fun s => iteratedFDeriv ℝ m (fun y => f (L s y))) (fun s => ?_) ((contDiff_iteratedFDeriv_schwartz_comp f m).continuous.comp hpair) ?_ x` and prove the remaining obligations. Conclude with `((contDiff_iteratedFDeriv_schwartz_comp f m).comp (contDiff_const.prodMk contDiff_id)).differentiable (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (fun p : S × V => fderiv ℝ (iteratedFDeriv ℝ m (fun y => f (L p.1 y))) p.2) = fun p => continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => V) ℂ (iteratedFDeriv ℝ (m + 1) (fun y => f (L p.1 y)) p.2)`. Use function extensionality and compare the values at `p`. Rewrite using `[fderiv_iteratedFDeriv]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => V) ℂ).continuous.comp ((contDiff_iteratedFDeriv_schwartz_comp f (m + 1)).continuous.comp hpair)`. Establish `key : ∀ (m : ℕ) (x : V), iteratedFDeriv ℝ m (fun x => ∫ s, f (L s x) ∂ν) x = ∫ s, iteratedFDeriv ℝ m (fun y => f (L s y)) x ∂ν`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x`. Simplify using `only [iteratedFDeriv_zero_eq_comp, Function.comp_apply]`. Conclude with `(ContinuousLinearEquiv.integral_comp_comm (continuousMultilinearCurryFin0 ℝ V ℂ).symm.toContinuousLinearEquiv _).symm`. Consider the case `succ m ih`. Introduce `x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfun : iteratedFDeriv ℝ m (fun x => ∫ s, f (L s x) ∂ν) = fun x => ∫ s, iteratedFDeriv ℝ m (fun y => f (L s y)) x ∂ν` using `funext ih`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left, Function.comp_apply, hfun, (hA m x).fderiv]`. Simplify using `only [iteratedFDeriv_succ_eq_comp_left, Function.comp_apply]`. Conclude with `(ContinuousLinearEquiv.integral_comp_comm (continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => V) ℂ).symm.toContinuousLinearEquiv _).symm`. Establish `hsmooth : ContDiff ℝ ∞ (fun x => ∫ s, f (L s x) ∂ν)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Use `contDiff_of_differentiable_iteratedFDeriv fun m _ => ?_` and prove the remaining obligations. Rewrite using `[funext (key m)]`. Conclude with `fun x => (hA m x).differentiableAt`. Use `⟨⟨fun x => ∫ s, f (L s x) ∂ν, hsmooth, fun k n => ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Take `⟨M, -, hM⟩` from `exists_bound L Li hL hLi h f k n`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `⟨M * ν.real Set.univ, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[key n x]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_smul, norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Use `_ ≤ M * ν.real Set.univ := norm_integral_le_of_norm_le_const (ae_of_all _ fun s => by`.
-
-Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Conclude with `hM s x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_schwartz_integral [FiniteDimensional ℝ V] [MeasurableSpace S] [OpensMeasurableSpace S] (ν : Measure S)
     [IsFiniteMeasure ν] (L Li : S → V →L[ℝ] V) (hL : Continuous L) (hLi : Continuous Li) (h : ∀ s x, Li s (L s x) = x)
@@ -168,11 +166,9 @@ section Fin
 variable {S Y : Type} [TopologicalSpace S] [TopologicalSpace Y] {a b : S → Y → Y} {g : Y → ℂ}
 
 /- English proof (translation)
-Establish `hg' : IsLocallyConstant g ∧ HasCompactSupport g` using `hg`. Establish `hcl : ∀ {u : Y → ℂ}, IsLocallyConstant u → IsClosed (Function.support u)` using `fun hu => by`. Conclude with `(hu.isOpen_fiber 0).isClosed_compl`. Establish `hc1 : IsClosed (Function.support fun y => g (a y))` using `hcl (hg'.1.comp_continuous ha)`. Establish `hc0 : IsCompact (Function.support g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : tsupport g = Function.support g` using `(hcl hg'.1).closure_eq`. Rewrite using `[← e]`. Conclude with `hg'.2`. Establish `hsub : (Function.support fun y => g (a y)) ⊆ b '' Function.support g` using `fun y hy => ⟨a y, hy, h y⟩`. Use `show IsLocallyConstant (fun y => g (a y)) ∧ HasCompactSupport (fun y => g (a y))`.
-
-Use `⟨hg'.1.comp_continuous ha, ?_⟩` and prove the remaining obligations. Rewrite using `[HasCompactSupport, tsupport, hc1.closure_eq]`. Conclude with `(hc0.image hb).of_isClosed_subset hc1 hsub`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mem_SB {a b : Y → Y} (ha : Continuous a) (hb : Continuous b) (h : ∀ y, b (a y) = y)
     (hg : g ∈ WeilM.SB Y) : (fun y => g (a y)) ∈ WeilM.SB Y := by
@@ -192,19 +188,15 @@ theorem comp_mem_SB {a b : Y → Y} (ha : Continuous a) (hb : Continuous b) (h :
   exact (hc0.image hb).of_isClosed_subset hc1 hsub
 
 /- English proof (translation)
-Establish `hg' : IsLocallyConstant g ∧ HasCompactSupport g` using `hg`. Establish `hcl : IsClosed (Function.support g)`. Conclude with `(hg'.1.isOpen_fiber 0).isClosed_compl`. Establish `hKc : IsCompact (Function.support g)`. Establish `e : tsupport g = Function.support g` using `hcl.closure_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `hg'.2`. Choose the witnesses or unpack the hypotheses as in `⟨C, hCc, hzero⟩ : ∃ C : Set Y, IsCompact C ∧ ∀ s y, y ∉ C → g (a s y) = 0 := by`. Use `⟨_, (isCompact_univ.prod hKc).image hb, fun s y hy => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy ⟨(s, a s y), ⟨Set.mem_univ _, hne⟩, h s y⟩`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `s₀`. Establish `h1 : IsLocallyConstant fun p : S × Y => g (a p.1 p.2)` using `hg'.1.comp_continuous ha`. Establish `h2 : IsLocallyConstant fun p : S × Y => g (a s₀ p.2)` using `hg'.1.comp_continuous (ha.comp (continuous_const.prodMk continuous_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : IsOpen {p : S × Y | g (a p.1 p.2) = g (a s₀ p.2)}`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `p hp`. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).1 h1 p, (IsLocallyConstant.iff_eventually_eq _).1 h2 p] with q hq1 hq2`. Conclude with `hq1.trans (hp.trans hq2.symm)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsub : ({s₀} : Set S) ×ˢ C ⊆ {p : S × Y | g (a p.1 p.2) = g (a s₀ p.2)}`. Introduce and unpack `⟨s, y⟩ ⟨hs, -⟩`. Establish `e : s = s₀` using `hs`. Use `show g (a s y) = g (a s₀ y)`. Rewrite using `[e]`.
-
-Take `⟨u, v, hu, -, hsu, hCv, huv⟩` from `generalized_tube_lemma isCompact_singleton hCc hW hsub`. Use `filter_upwards [hu.mem_nhds (hsu (Set.mem_singleton s₀))] with s hs`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ C`. Conclude with `huv (Set.mk_mem_prod hs (hCv hy))`.
-
-Rewrite using `[hzero s y hy, hzero s₀ y hy]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_comp [CompactSpace S] (ha : Continuous fun p : S × Y => a p.1 p.2)
     (hb : Continuous fun p : S × Y => b p.1 p.2) (h : ∀ s y, b s (a s y) = y) (hg : g ∈ WeilM.SB Y) :
@@ -246,15 +238,15 @@ theorem isLocallyConstant_comp [CompactSpace S] (ha : Continuous fun p : S × Y 
 end Fin
 
 /- English proof (translation)
-Establish `hg' : IsLocallyConstant g ∧ HasCompactSupport g` using `hg`. Establish `hLx : ∀ x, Continuous fun s => f (L s x)` using `fun x => f.continuous.comp (hL.clm_apply continuous_const)`. Establish `hay : ∀ y, Continuous fun s => a s y` using `fun y => ha.comp (continuous_id.prodMk continuous_const)`. Use `⟨fun x y => integrable_of_continuous_isFiniteMeasure ν ((hLx x).mul (hg'.1.continuous.comp (hay y))), ?_⟩` and prove the remaining obligations. Establish `hφ : IsLocallyConstant fun s y => g (a s y)` using `isLocallyConstant_comp ha hb hab hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfin` using `hφ.range_finite`. Establish `hmeas : ∀ g₁ : Y → ℂ, MeasurableSet ((fun s y => g (a s y)) ⁻¹' {g₁})` using `fun g₁ => (hφ.isOpen_fiber g₁).measurableSet`. Use `choose F hF using fun g₁ : Y → ℂ => exists_schwartz_integral (ν.restrict ((fun s y => g (a s y)) ⁻¹' {g₁})) L Li hL hLi h f`. Use `⟨hfin.toFinset, F, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₁ hg₁`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg₁` using `[Set.Finite.mem_toFinset]`. Take `⟨s, rfl⟩` from `hg₁`. Conclude with `comp_mem_SB (a := a s) (b := b s) (ha.comp (continuous_const.prodMk continuous_id)) (hb.comp (continuous_const.prodMk continuous_id)) (hab s) hg`. Introduce `x y`. Establish `hsplit : ∀ s, f (L s x) * g (a s y) = ∑ g₁ ∈ hfin.toFinset, Set.indicator ((fun s y => g (a s y)) ⁻¹' {g₁}) (fun s => f (L s x) * g₁ y) s`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Rewrite using `[Finset.sum_eq_single (fun y => g (a s y))]`. Rewrite using `[Set.indicator_of_mem (show s ∈ (fun s y => g (a s y)) ⁻¹' {fun y => g (a s y)} from rfl)]`. Introduce `g₁ _ hne`. Conclude with `Set.indicator_of_notMem (fun hs => hne hs.symm) _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hn`. Conclude with `absurd (hfin.mem_toFinset.2 ⟨s, rfl⟩) hn`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun g₁ _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator (hmeas g₁), integral_mul_const, hF g₁ x]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_tensor {S V Y : Type} [TopologicalSpace S] [CompactSpace S] [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace S] [OpensMeasurableSpace S] [TopologicalSpace Y] (ν : Measure S)
@@ -320,7 +312,7 @@ theorem lmul_apply {ι : Type} [Fintype ι] {m : ℕ} (n : ℕ) (A : ι → Matr
     lmul n A X = fun τ i j => ∑ c, A τ i c * X τ c j := rfl
 
 /- English proof (translation)
-Establish `hM : B * (A * Matrix.of y) = Matrix.of y` using `by rw [← Matrix.mul_assoc, h, Matrix.one_mul]`. Use function extensionality and compare the values at `i j`. Use `congrFun (congrFun hM i) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_mul_cancel {R : Type} [Ring R] {m n : ℕ} {A B : Matrix (Fin m) (Fin m) R} (h : B * A = 1)
     (y : Fin m → Fin n → R) : (fun i j => ∑ c, B i c * ∑ d, A c d * y d j) = y := by
@@ -330,13 +322,11 @@ theorem sum_mul_cancel {R : Type} [Ring R] {m n : ℕ} {A B : Matrix (Fin m) (Fi
   simpa [Matrix.mul_apply] using this
 
 /- English proof (translation)
-Establish `hLc : ∀ A' : S → ι → Matrix (Fin m) (Fin m) ℂ, (∀ τ, Continuous fun s => A' s τ) → Continuous fun s => lmul n (A' s)`. Introduce `A' hA'`. Use `continuous_clm_apply.2 fun X => ?_` and prove the remaining obligations. Simplify using `only [lmul_apply]`. Use `continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => continuous_finsetSum _ fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hA' τ).matrix_elem i c).mul continuous_const`. Establish `haC : ∀ B' : S → Matrix (Fin m) (Fin m) R, Continuous B' → Continuous fun p : S × (Fin m → Fin n → R) => fun i j => ∑ c, B' p.1 i c * p.2 c j`. Introduce `B' hB'`. Use `continuous_pi fun i => continuous_pi fun j => continuous_finsetSum _ fun c _ => ?_` and prove the remaining obligations. Conclude with `((hB'.comp continuous_fst).matrix_elem i c).mul ((continuous_apply j).comp ((continuous_apply c).comp continuous_snd))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨h1, t, F, ht, hF⟩` from `integral_tensor ν (fun s => lmul n (A s)) (fun s => lmul n (Ai s)) (hLc A hA) (hLc Ai hAi) (fun s x => by show lmul n (Ai s) (lmul n (A s) x) = x`. Simplify using `only [lmul_apply]`. Use function extensionality and compare the values at `τ`. Conclude with `sum_mul_cancel (h s τ) (x τ))`. Use the proof step `(fun s y i j => ∑ c, B s i c * y c j) (fun s y i j => ∑ c, Bi s i c * y c j) (haC B hB) (haC Bi hBi)`.
-
-Use the proof step `(fun s y => sum_mul_cancel (h' s) y) f hg`. Conclude with `⟨fun x y => by simpa only [lmul_apply] using h1 x y, t, F, ht, fun x y => by simpa only [lmul_apply] using hF x y⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integral_tensor_matrix {S R ι : Type} [TopologicalSpace S] [CompactSpace S] [MeasurableSpace S]
     [OpensMeasurableSpace S] [Ring R] [TopologicalSpace R] [IsTopologicalRing R] [Fintype ι] {m n : ℕ} (ν : Measure S)

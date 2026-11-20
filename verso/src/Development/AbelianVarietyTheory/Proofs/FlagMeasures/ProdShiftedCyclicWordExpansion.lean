@@ -8,11 +8,11 @@ namespace GlobalTheory.TraceBinom
 variable {R : Type} [Ring R] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `m generalizing i with`. Consider the case `zero => simp`. Both sides reduce to the same expression. Consider the case `succ m ih`. Rewrite using `[pow_succ', Matrix.mul_apply]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (Fin.consEquiv (fun _ : Fin (m + 1) => Fin n)).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[ih x, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [List.ofFn_succ, List.prod_cons]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Simplify using `only [Fin.consEquiv, Equiv.coe_fn_mk]`. Simplify using `only [← Fin.cons_snoc_eq_snoc_cons, ← Fin.succ_castSucc, Fin.cons_succ, Fin.castSucc_zero, Fin.cons_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_succ_apply_path (M : Matrix (Fin n) (Fin n) R) (m : ℕ) (i j : Fin n) :
     (M ^ (m + 1)) i j = ∑ a : Fin m → Fin n,
@@ -33,13 +33,13 @@ theorem pow_succ_apply_path (M : Matrix (Fin n) (Fin n) R) (m : ℕ) (i j : Fin 
       Fin.castSucc_zero, Fin.cons_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace]`. Rewrite using `[← (Fin.consEquiv (fun _ : Fin (k + 1) => Fin n)).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, pow_succ_apply_path]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.consEquiv, Equiv.coe_fn_mk]`. Rewrite using `[cycWord, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `l`. Simplify using `only [Function.comp_apply]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.cons_snoc_eq_snoc_cons, Fin.snoc_castSucc, ← Fin.cons_snoc_eq_snoc_cons, Fin.cons_succ]`. Use `congr 1`. Use `Fin.lastCases ?_ (fun l => ?_) l` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `e : finRotate (k + 1) l.castSucc = l.succ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[Fin.val_add_one_of_lt (Fin.castSucc_lt_last l)]`. Rewrite using `[e, Fin.cons_succ, Fin.snoc_castSucc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_cycWord_eq_trace (M : Matrix (Fin n) (Fin n) R) (k : ℕ) :
     ∑ a : Fin (k + 1) → Fin n, ((cycWord a).map fun p => M p.1 p.2).prod = trace (M ^ (k + 1)) := by
@@ -63,9 +63,9 @@ theorem sum_cycWord_eq_trace (M : Matrix (Fin n) (Fin n) R) (k : ℕ) :
     rw [e, Fin.cons_succ, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Rewrite using `[Commute.add_pow (Algebra.commute_algebraMap_right c M), Finset.sum_range_succ', trace_add, trace_sum, add_comm]`. Use `congr 1`. Rewrite using `[pow_zero, one_mul, Nat.choose_zero_right, Nat.cast_one, mul_one, Nat.sub_zero, ← map_pow, Matrix.trace]`. Simplify using `only [Matrix.diag_apply, Matrix.algebraMap_matrix_apply, if_true]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, map_mul, map_natCast, Nat.cast_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hjk : k + 1 - (j + 1) = k - j` using `by omega`. Establish `e : M ^ (j + 1) * algebraMap ℂ (Matrix (Fin n) (Fin n) R) c ^ (k + 1 - (j + 1)) * (((k + 1).choose (j + 1) : ℕ) : Matrix (Fin n) (Fin n) R) = (((k + 1).choose (j + 1) : ℂ) * c ^ (k - j)) • M ^ (j + 1)`. Rewrite using `[hjk, ← map_pow, ← map_natCast (algebraMap ℂ (Matrix (Fin n) (Fin n) R)), mul_assoc, ← map_mul, ← Algebra.commutes, ← Algebra.smul_def, mul_comm (c ^ (k - j))]`. Rewrite using `[e, trace_smul, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_add_algebraMap_pow [Algebra ℂ R] (M : Matrix (Fin n) (Fin n) R) (c : ℂ) (k : ℕ) :
     trace ((M + algebraMap ℂ (Matrix (Fin n) (Fin n) R) c) ^ (k + 1)) =
@@ -87,9 +87,9 @@ theorem trace_add_algebraMap_pow [Algebra ℂ R] (M : Matrix (Fin n) (Fin n) R) 
     rw [e, trace_smul, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `R _ _ n T c k`. Establish `hA : (fun p : Fin n × Fin n => T p.1 p.2 + if p.1 = p.2 then algebraMap ℂ R c else 0) = fun p => (Matrix.of T + algebraMap ℂ (Matrix (Fin n) (Fin n) R) c) p.1 p.2`. Use function extensionality and compare the values at `p`. Simplify using `[Matrix.algebraMap_matrix_apply]`. Establish `hT : ∀ j : ℕ, ∑ a : Fin (j + 1) → Fin n, ((cycWord a).map (fun p => T p.1 p.2)).prod = trace (Matrix.of T ^ (j + 1))` using `fun j => sum_cycWord_eq_trace (Matrix.of T) j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hA, sum_cycWord_eq_trace, trace_add_algebraMap_pow]`. Repeatedly rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem trace_binomial : ∀ (R : Type) [Ring R] [Algebra ℂ R] (n : ℕ) (T : Fin n → Fin n → R) (c : ℂ) (k : ℕ), ∑ a : Fin (k + 1) → Fin n, ((cycWord a).map (fun p => T p.1 p.2 + if p.1 = p.2 then algebraMap ℂ R c else 0)).prod = algebraMap ℂ R (c ^ (k + 1) * n) + ∑ j ∈ range (k + 1), algebraMap ℂ R (((k + 1).choose (j + 1) : ℂ) * c ^ (k - j)) * ∑ a : Fin (j + 1) → Fin n, ((cycWord a).map (fun p => T p.1 p.2)).prod := by
   intro R _ _ n T c k

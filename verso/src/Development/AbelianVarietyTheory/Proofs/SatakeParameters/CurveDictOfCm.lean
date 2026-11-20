@@ -15,7 +15,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InverseSeriesFor
 namespace GlobalTheory.CurveDictionary
 
 /- English proof (translation)
-Introduce `hGood _ hTor` and use `curveDict_of_inputs hGood hTor GlobalTheory.T.curveLattice_sigmaTwo_algebraic_of_invariants_algebraic GlobalTheory.T.unramifiedWeierstrassCurve_transform_coefficients_wellFormed GlobalTheory.T.beta_model_coefficients_invert_l GlobalTheory.T.log_coordinates_exponent_is_coboundary …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem curveDict_of_cm : Formalism.L2.Th1.CM.CM2 → Formalism.L2.Th1.CM.CM3 → Formalism.L2.Th1.CM.CM4 →
     Formalism.L2.KerInert.Rep.CurveDict := fun hGood _ hTor =>

@@ -13,27 +13,23 @@ noncomputable section
 namespace GlobalTheory.CoverNorm
 
 /- English proof (translation)
-Introduce `F _ _ C Y A M hM L k hpos hN`. Take `⟨r, hr, hu, hc, hf⟩` from `hN`. Establish `hE (x : Y.X) : ((k : ℕ) • A.D).IsEqn x (eqn A.D x ^ (k : ℕ))` using `(Base.isEqn_eqn A.D x).nsmul k`. Establish `hgk (x : Y.X) : ((eqn A.D x ^ (k : ℕ) : Y.Fnˣ) : Y.Fn) * genAt A.D x ^ (k : ℕ) = 1`. Rewrite using `[genAt, Units.val_pow_eq_pow_val, ← mul_pow, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by simp, r, ⟨LB.isLB_pull L.isLB M.j, hr, fun i x hx => ?_⟩, fun σ y y' i f e₂ hi hreg => ?_, fun v e y yt i e₂ hi => ?_⟩` and prove the remaining obligations. Use `(hE x).iff_unitAt.2 ?_` and prove the remaining obligations. Establish `h` using `hu i x hx`. Establish `e : ((show Y.Fnˣ from r i) : Y.Fn) / ((eqn A.D x ^ (k : ℕ) : Y.Fnˣ) : Y.Fn) = genAt A.D x ^ (k : ℕ) * ((show Y.Fnˣ from r i) : Y.Fn)`. Rewrite using `[div_eq_mul_inv, mul_comm, ← eq_inv_of_mul_eq_one_right (hgk x)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h`. Set `z : CxPts ((Cover.ofModel M hM).π ≫ Y.str) σ` to `⟨y.1, by show y.1 ≫ (𝟙 _ ≫ Y.str) = _`. Rewrite using `[Category.id_comp]`. Conclude with `y.2⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H` using `hc σ z y y' i (Category.comp_id _).symm e₂ hi`. Use `set g := genAt A.D (under y) with hg`. Use `set u : Y.Fn := g ^ (k : ℕ) * ((show Y.Fnˣ from r i) : Y.Fn) with hu'`. Establish `hU : UnitAt (under y) u` using `hu i (under y) hi`. Express the relevant statement in the definitionally equal form `(k : ℕ) * lnAdl A σ y = Real.log ‖ratVal u z‖ - (L.φ _).φ (i PUnit.unit) y' / 2 at H`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `H` using `[show ratVal u z = ratVal u y from rfl]`. Establish `hP` using `hpos σ y`. Use `set P := C.pn Y σ A.D (A.m σ) (C.cx Y σ g) y with hPdef`. Establish `hl : lnAdl A σ y = Real.log P / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk σ)` using `rfl`. Use `set a : Y.Fn := f * ((eqn A.D (under y) ^ (k : ℕ) : Y.Fnˣ) : Y.Fn) with ha'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha : RegAt (under y) a` using `(hE _).regularAt_iff.1 hreg`. Establish `hfa : f = a * g ^ (k : ℕ)`. Rewrite using `[ha', mul_assoc, hgk, mul_one]`. Establish `hgreg : ((k : ℕ) • A.D).RegularAt (under y) (g ^ (k : ℕ))`. Use `CartierDiv.isEqn_iff_generatesAt_inv.1 (hE (under y))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Units.val_pow_eq_pow_val, ← inv_pow, ← Units.val_inv_eq_inv_val]`. Conclude with `this.regularAt`. Establish `e1 : C.pn Y σ ((k : ℕ) • A.D) (C.mPow Y σ A.D k (A.m σ)) (C.cx Y σ f) y = ‖ratVal a y‖ ^ 2 * P ^ (k : ℕ)`. Rewrite using `[hfa, C.pn_mul Y σ _ _ a _ y ha hgreg, C.pn_mPow Y σ A.D k _ _ y (generatesAt_genAt _ _)]`. Establish `e2 : ratVal (f * ((show Y.Fnˣ from r i) : Y.Fn)) y = ratVal a y * ratVal u y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← ratVal_mul ha hU.regAt, hfa, hu', mul_assoc]`. Establish `hu0 : 0 < ‖ratVal u y‖` using `norm_pos_iff.2 (ratVal_ne_zero hU)`. Establish `key : ‖ratVal u y‖ ^ 2 * Real.exp (-(L.φ _).φ (i PUnit.unit) y') = P ^ (k : ℕ) * Real.exp (-(2 * ((k : ℕ) : ℝ) * (((A.n : ℕ) : ℝ) * A.ci (InfinitePlace.mk σ))))`. Establish `h1 : ‖ratVal u y‖ ^ 2 = Real.exp (Real.log (‖ratVal u y‖ ^ 2))` using `(Real.exp_log (pow_pos hu0 2)).symm`. Establish `h2 : P ^ (k : ℕ) = Real.exp (Real.log (P ^ (k : ℕ)))` using `(Real.exp_log (pow_pos hP _)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, ← Real.exp_add, ← Real.exp_add, Real.log_pow, Real.log_pow]`. Use `congr 1`. Rewrite `H` using `[hl]`. Use `push_cast`. Take the linear combination `(-2 : ℝ) * H`.
-
-Express the relevant statement in the definitionally equal form `Real.exp _ * _ = ‖ratVal (f * ((show Y.Fnˣ from r i) : Y.Fn)) y‖ ^ 2 * _`. Rewrite using `[e1, e2, norm_mul, mul_pow, mul_assoc (‖ratVal a y‖ ^ 2), key]`. Put the polynomial expressions in normal form. Establish `h` using `hf v e y y.1 yt i (Category.comp_id _) e₂ hi`. Rewrite using `[Pi.zero_apply, mul_zero, sub_zero]`.
-
-Conclude with `h`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem induced_of_norms : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : TrueGeo.Model Y) (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) (L : HermLB M.p) (k : ℕ+), (∀ σ z, PosAt (A.m σ) z) → Norms (Cover.ofModel M hM) L (fun x => genAt A.D x ^ (k : ℕ)) (fun σ y => (k : ℕ) * lnAdl A σ y) (fun v e y => (k : ℕ) * A.lg v e y) → A.Induced M L k 0 := by
   intro F _ _ C Y A M hM L k hpos hN

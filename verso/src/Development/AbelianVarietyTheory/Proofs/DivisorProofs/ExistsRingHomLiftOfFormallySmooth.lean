@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use `letI := ψ.toAlgebra`. Use `haveI : Algebra.FormallySmooth R A := hφ`. Set `g' : A →ₐ[R] C ⧸ I` to `{ g with commutes' := fun r => by`. Use `congrArg (· r) hg` as an intermediate fact.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this }`. Use `⟨(Algebra.FormallySmooth.lift I hI g').toRingHom, fun x => ?_, fun r => ?_⟩` and prove the remaining obligations. Conclude with `Algebra.FormallySmooth.mk_lift I hI g' x`. Use `(Algebra.FormallySmooth.lift I hI g').commutes r` as an intermediate fact. Simplify `this` using `[RingHom.algebraMap_toAlgebra]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_lift_of_formallySmooth {R A C : Type} [CommRing R] [CommRing A] [CommRing C]
     (φ : R →+* A) (hφ : φ.FormallySmooth) (ψ : R →+* C) (I : Ideal C) (hI : IsNilpotent I)
@@ -44,21 +44,17 @@ def powModP (p : ℕ) (hp : p.Prime) (B : Type) [CommRing B] :
     rw [this, add_zero]
 
 /- English proof (translation)
-Introduce `p hpf n B _ φ hφ`. Establish `hp : p.Prime` using `hpf.out`. Use `set I : Ideal B := Ideal.span {(p : B)} with hIdef`. Establish `hp2 : ((p : B)) ^ 2 = 0`. Establish `: ((p ^ 2 : ℕ) : MvPolynomial (Fin n) (ZMod (p ^ 2))) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (MvPolynomial.C (σ := Fin n)), ZMod.natCast_self, map_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_natCast]`. Use `push_cast`. Both sides reduce to the same expression.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `_ = 0 := by rw [this, map_zero]`. Establish `hI : IsNilpotent I`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[hIdef, Ideal.span_singleton_pow, hp2, Ideal.span_singleton_eq_bot.mpr rfl, Ideal.zero_eq_bot]`. Establish `hsm : φ.FormallySmooth`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI := φ.toAlgebra`. Use `haveI : Algebra.Etale _ B := hφ`. Use `show Algebra.FormallySmooth _ B`. Use `infer_instance`. Set `ψ : MvPolynomial (Fin n) (ZMod (p ^ 2)) →+* B` to `φ.comp (MvPolynomial.expand p).toRingHom`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hg : (powModP p hp B).comp φ = (Ideal.Quotient.mk I).comp ψ`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `congrArg (· r) (Subsingleton.elim ((((powModP p hp B).comp φ)).comp MvPolynomial.C) (((Ideal.Quotient.mk I).comp ψ).comp MvPolynomial.C))`. Introduce `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ψ, powModP, I]`. Take `⟨F, hF1, hF2⟩` from `exists_ringHom_lift_of_formallySmooth φ hsm ψ I hI (powModP p hp B) hg`. Use `⟨F, fun z => ?_, fun l => ?_⟩` and prove the remaining obligations. Establish `h1` using `hF1 z`. Establish `: F z - z ^ p ∈ I`.
-
-Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `h1`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.mp this`. Conclude with `⟨w, by rw [mul_comm]; linear_combination -hw⟩`. Rewrite using `[hF2]`.
-
-Simplify using `[ψ]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frob_lift_etale_chart :
     ∀ (p : ℕ) [Fact p.Prime] {n : ℕ} {B : Type} [CommRing B]

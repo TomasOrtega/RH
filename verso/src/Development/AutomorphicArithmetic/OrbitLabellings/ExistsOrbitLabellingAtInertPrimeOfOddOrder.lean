@@ -10,13 +10,13 @@ open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryB
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 /- English proof (translation)
-Introduce `E _ _ _ H lv c N pl hP la T io C _ _ _ V ι hι hc hl h2 hla hC ho j Z hZ n j₁ j₂`. Establish `hunr : ¬ (V.l : ℤ) ∣ NumberField.discr E`. Establish `h` using `hC`. Unfold `NumDatum.cls primeClass at h`. Use `hP.unr _ V.l_prime (fun h2 => ?_) (fun hq => ?_) (fun hd => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[if_pos h2]`. Consider the cases of `h`. Rewrite `h` using `[if_pos hq] at h split_ifs`. Rewrite `h` using `[if_pos hd] at h split_ifs`. Establish `hf : ∀ (w : RPl N.R) (x : 𝓞 E), V.MM (emA3 io ι (ComplexEmbedding.conjugate (pl (N.pos V.l w 1))) x - emA3 io ι (pl w) x ^ V.l)`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `w x`. Take `⟨y, hy, e⟩` from `hP.frob la (Or.inl (hl ▸ hC)) w x`. Use `hla y hy` as an intermediate fact. Rewrite `this` using `[e, ← hl, map_sub, map_sub, map_pow, map_pow]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨lab, h1, h3, h4, h5, h6, h7, h8, h9⟩` from `UpperTheory.G2.RowLab.exists_lab c N pl hP.inj hP.psi T io C V ι hι hc h2 hunr hf ho Z hZ n j₁ j₂`. Conclude with `⟨lab, h1, h3, h4, h5, h6, h7, h8, h9, hunr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_orbit_labelling_at_inert_prime_of_odd_order :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (lv : Level H) (c : Coeff lv)

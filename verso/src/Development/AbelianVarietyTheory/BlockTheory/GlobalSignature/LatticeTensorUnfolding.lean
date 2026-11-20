@@ -17,13 +17,13 @@ def IsQuotMeasure {G G' : Type} [Group G] [Group G'] [MeasurableSpace G] [Measur
     ∫⁻ g, f g ∂μ = ∫⁻ c : RCosets j, ∫⁻ h, f (j h * c.out) ∂μ' ∂ν
 
 /- English proof (translation)
-Introduce `f hf`. Establish `hout : ∀ g : G, (Quotient.mk (QuotientGroup.rightRel (1 : PUnit →* G).range) g).out = g`. Introduce `g`. Establish `h` using `Quotient.mk_out (s := QuotientGroup.rightRel (1 : PUnit →* G).range) g`. Rewrite `h` using `[QuotientGroup.rightRel_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu⟩` from `h`. Establish `h1 : (1 : G) = g * (Quotient.mk (QuotientGroup.rightRel (1 : PUnit →* G).range) g).out⁻¹`. Simplify using `using hu`. Conclude with `(mul_inv_eq_one.1 h1.symm).symm`. Establish `hm : Measurable fun c : RCosets (1 : PUnit →* G) => f c.out`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[measurable_from_quotient]`. Establish `: ((fun c : RCosets (1 : PUnit →* G) => f c.out) ∘ Quotient.mk'') = f`. Use function extensionality and compare the values at `g`. Conclude with `congrArg f (hout g)`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`. Simplify using `only [MonoidHom.one_apply, one_mul, lintegral_const, measure_univ, mul_one]`. Rewrite using `[lintegral_map hm measurable_quotient_mk'']`. Conclude with `lintegral_congr fun g => (congrArg f (hout g)).symm`.
+A detailed English derivation is pending.
 -/
 example {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) :
     IsQuotMeasure (1 : PUnit →* G) μ (Measure.dirac PUnit.unit)

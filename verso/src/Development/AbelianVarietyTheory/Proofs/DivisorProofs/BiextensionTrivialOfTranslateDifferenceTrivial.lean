@@ -20,9 +20,9 @@ namespace GlobalTheory.PicBilin
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `e` using `hadd 1 1 t`. Rewrite `e` using `[_root_.mul_one]`. Rewrite using `[pow_zero, zero_smul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `left_eq_add.1 e`. Consider the case `succ n ih => rw [pow_succ, hadd, ih, succ_nsmul]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem evc_pow_left {A B Y : Over S} [GrpObj A] {P : LB (A ⊗ B).left} (hP : P.IsLB)
     (hadd : ∀ (a a' : Y ⟶ A) (t : Y ⟶ B), evc hP (a * a') t = evc hP a t + evc hP a' t)
@@ -36,7 +36,7 @@ theorem evc_pow_left {A B Y : Over S} [GrpObj A] {P : LB (A ⊗ B).left} (hP : P
   | succ n ih => rw [pow_succ, hadd, ih, succ_nsmul]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_pow_pt {A T Y : Over S} [GrpObj A] (f : Y ⟶ T) (g : T ⟶ A) (n : ℕ) :
     f ≫ g ^ n = (f ≫ g) ^ n := by
@@ -45,7 +45,7 @@ theorem comp_pow_pt {A T Y : Over S} [GrpObj A] (f : Y ⟶ T) (g : T ⟶ A) (n :
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Use `(cls_linComb hL (K := Fin m) (fun _ => 𝟙 X) (fun _ => 1) h).trans ?_` and prove the remaining obligations. Simplify using `[pull_id]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cls_heckePow {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (m : ℕ)
     (h : (GlobalTheory.UPel.HT.Hecke.lbPow L m).IsLB) : cls _ h = m • cls L hL := by
@@ -57,23 +57,23 @@ end GlobalTheory.PicBilin
 namespace GlobalTheory.PicBilin
 
 /- English proof (translation)
-Introduce `S A _ _ hA P hP rig₁ rig₂ hsym T hT h₀ h' m hsq htd`. Establish `hs : (swap P).IsLB` using `pull_isLB hP _`. Take `⟨hadd₁, hadd₂⟩` from `additive_of_cube GlobalTheory.CubeTop.cubeTheorem hA hA hP rig₁ rig₂`. Establish `eL : ∀ {Y : Over S} (a a' t : Y ⟶ A), evc hP (a * a') t = evc hP a t + evc hP a' t` using `fun a a' t => (isAdditive_iff hP).1 hadd₁ _ a a' t`. Establish `eR : ∀ {Y : Over S} (a t t' : Y ⟶ A), evc hP a (t * t') = evc hP a t + evc hP a t'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y a t t'`. Establish `e` using `(isAdditive_iff hs).1 hadd₂ _ t t' a`. Rewrite `e` using `[evc_swap hP hs, evc_swap hP hs, evc_swap hP hs]`. Then use the resulting hypothesis. Establish `hsymc : cls P hP = cls _ hs` using `(cls_eq_iff hP hs).2 hsym`. Establish `eS : ∀ {Y : Over S} (a b : Y ⟶ A), evc hP a b = evc hP b a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y a b`. Rewrite using `[← evc_swap hP hs a b]`. Simplify using `only [evc, hsymc]`. Establish `hL₁ : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hD : (Out.translDiff A (P.pull (lift (𝟙 A) (𝟙 A)).left) (h' ^ m)).IsLB` using `LB.isLB_linComb hL₁ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0` using `pull_translDiff hL₁ (h' ^ m) hD (snd A T) (fst A T)`. Rewrite `e0` using `[(cls_eq_zero_iff hD).2 htd, map_zero]`. Establish `hu : ∀ u : A ⊗ T ⟶ A, CechPic.pull u.left (cls _ hL₁) = evc hP u u` using `fun u => by`. Rewrite using `[cls_ev hP, pull_evc, Category.comp_id]`. Rewrite `e0` using `[hu, hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hXX : evc hP (snd A T ≫ h' ^ m) (snd A T ≫ h' ^ m) = 0`. Rewrite using `[← pull_evc, hT (evc hP (h' ^ m) (h' ^ m)), map_zero]`. Establish `key : evc hP (snd A T ≫ h' ^ m) (snd A T ≫ h' ^ m) + evc hP (snd A T ≫ h' ^ m) (fst A T) + (evc hP (fst A T) (snd A T ≫ h' ^ m) + evc hP (fst A T) (fst A T)) - evc hP (fst A T) (fst A T) = 0`. Rewrite using `[← eR, ← eR, ← eL]`. Conclude with `e0.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hXX, eS (fst A T) (snd A T ≫ h' ^ m)]`. Establish `h2 : 2 • evc hP (snd A T ≫ h' ^ m) (fst A T) = 0`. Rewrite using `[two_nsmul, ← key]`. Normalize the expressions using the abelian group laws. Rewrite `h2` using `[comp_pow_pt, evc_pow_left hP (fun a a' t => eL a a' t)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsq' : toUnit (A ⊗ T) ≫ h₀ = (snd A T ≫ h') ^ 2`. Rewrite using `[← comp_pow_pt, hsq, ← Category.assoc, toUnit_unique (snd A T ≫ toUnit T) (toUnit _)]`. Establish `hQ : (GlobalTheory.UPel.HT.Hecke.lbPow P m).IsLB` using `LB.isLB_linComb hP _ _`. Establish `eQ : ∀ {Y : Over S} (a b : Y ⟶ A), evc hQ a b = m • evc hP a b`. Introduce `Y a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evc, cls_heckePow hP m hQ, map_nsmul]`. Both sides reduce to the same expression. Use `(cls_eq_zero_iff (pull_isLB (pull_isLB hQ _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB hQ _)]`. Express the relevant statement in the definitionally equal form `CechPic.pull (fst A T).left (evc hQ (toUnit A ≫ h₀) (𝟙 A)) = 0`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pull_evc, eQ, Category.comp_id, ← Category.assoc, toUnit_unique (fst A T ≫ toUnit A) (toUnit _), hsq', evc_pow_left hP (fun a a' t => eL a a' t), smul_comm]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem triv_pow_of_translDiff : ∀ {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A →
     ∀ (P : LB (A ⊗ A).left), P.IsLB →

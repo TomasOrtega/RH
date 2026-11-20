@@ -60,14 +60,14 @@ def OrdersInvertible (k : Type) [CommRing k] (Γ K : Subgroup G) : Prop :=
   ∀ x : G, Finite (GamAt Γ K x) ∧ IsUnit ((Nat.card (GamAt Γ K x) : ℕ) : k)
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isIntertw_subtype {K : Subgroup G} {W : Type} [AddCommGroup W] [Module k W]
     (ρ : Representation k K W) (U : Submodule k W) (hU : IsStable ρ U) :
     IsIntertw (resRep ρ U hU) ρ U.subtype := fun _ _ => rfl
 
 /- English proof (translation)
-Introduce `κ w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [hφ κ a]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem isIntertw_rTensor {H : Type} [Monoid H] {W₁ W₂ Θ : Type} [AddCommGroup W₁] [Module k W₁]
     [AddCommGroup W₂] [Module k W₂] [AddCommGroup Θ] [Module k Θ]
@@ -84,7 +84,7 @@ def powSub {W : Type} [AddCommGroup W] [Module k W] (l : k) (c : ℕ) : Submodul
   LinearMap.range ((l ^ c) • (LinearMap.id : W →ₗ[k] W))
 
 /- English proof (translation)
-Introduce and unpack `κ _ ⟨w, rfl⟩`. Conclude with `⟨ρ κ w, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isStable_powSub {K : Subgroup G} {W : Type} [AddCommGroup W] [Module k W]
     (ρ : Representation k K W) (l : k) (c : ℕ) : IsStable ρ (powSub (W := W) l c) := by

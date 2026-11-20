@@ -12,7 +12,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.padicMonodromyMatrixForm_of_induction_cases GlobalTheory.T.deRham_iff_framed_galois_representation GlobalTheory.T.lubinTateTwistTotalWeightZero_proof GlobalTheory.T.weightZero_potentiallySemistable_of_sen_theorem GlobalTheory.T.potentially_semistable_reducible_unra …`.
+A detailed English derivation is pending.
 -/
 theorem matThm_holds : MatThm :=
   GlobalTheory.T.padicMonodromyMatrixForm_of_induction_cases GlobalTheory.T.deRham_iff_framed_galois_representation GlobalTheory.T.lubinTateTwistTotalWeightZero_proof GlobalTheory.T.weightZero_potentiallySemistable_of_sen_theorem GlobalTheory.T.potentially_semistable_reducible_unramified_split GlobalTheory.T.monodromy_irreducible_elementary_weightModification

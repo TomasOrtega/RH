@@ -16,7 +16,7 @@ def logSub {k A : Type} [CommRing k] [CommRing A] (φ : k →+* A) (J : Ideal A)
     ⟨fun a => by simp [h.1 a], fun g hg => Ideal.mul_mem_left _ r (h.2 g hg)⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_logSub {k A : Type} [CommRing k] [CommRing A] (φ : k →+* A) (J : Ideal A) (D : Derivation ℤ A A) :
     D ∈ logSub φ J ↔ (∀ a, D (φ a) = 0) ∧ ∀ g ∈ J, D g ∈ J := Iff.rfl
@@ -28,16 +28,16 @@ def ext (D : Derivation ℤ R R) : Derivation ℤ S S :=
   Classical.choose (GlobalTheory.LogDerLoc.exists_extension (B := S) f D)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (GlobalTheory.LogDerLoc.exists_extension (B := S) f D) r`.
+A detailed English derivation is pending.
 -/
 theorem ext_algebraMap (D : Derivation ℤ R R) (r : R) :
     ext (S := S) f D (algebraMap R S r) = algebraMap R S (D r) :=
   Classical.choose_spec (GlobalTheory.LogDerLoc.exists_extension (B := S) f D) r
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨⟨r, t⟩, e⟩` from `IsLocalization.surj (Submonoid.powers f) y`. Establish `hu : IsUnit (algebraMap R S t)` using `IsLocalization.map_units S t`. Establish `e' : y * algebraMap R S t = algebraMap R S r` using `e`. Establish `h1` using `congrArg D₁ e'`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg D₂ e'`. Rewrite `h1`, `h2` using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Rewrite `h1` using `[h r, h t]`. Establish `: algebraMap R S t * D₁ y = algebraMap R S t * D₂ y` using `by linear_combination h1 - h2`. Conclude with `hu.mul_left_cancel this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem der_ext (D₁ D₂ : Derivation ℤ S S) (h : ∀ r, D₁ (algebraMap R S r) = D₂ (algebraMap R S r)) :
     D₁ = D₂ := by
@@ -61,7 +61,7 @@ def extL : Derivation ℤ R R →ₗ[R] Derivation ℤ S S where
       smul_eq_mul, map_mul, Algebra.smul_def]
 
 /- English proof (translation)
-The claim follows from `ext_algebraMap f D r`.
+A detailed English derivation is pending.
 -/
 theorem extL_algebraMap (D : Derivation ℤ R R) (r : R) :
     extL (S := S) f D (algebraMap R S r) = algebraMap R S (D r) :=
@@ -78,7 +78,7 @@ def res (φ : k →+* R) (J : Ideal R) :
   map_smul' c D := Subtype.ext (map_smul (extL (S := S) f) c D.1)
 
 /- English proof (translation)
-The claim follows from `ext_algebraMap f D.1 r`.
+A detailed English derivation is pending.
 -/
 theorem res_apply (φ : k →+* R) (J : Ideal R) (D : logSub φ J) (r : R) :
     (res (S := S) f φ J D).1 (algebraMap R S r) = algebraMap R S (D.1 r) :=

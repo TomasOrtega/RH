@@ -24,7 +24,7 @@ def phi (R : Type) [CommRing R] (P : PSh) (F : Shv R)
   ObjectProperty.homMk (sheafifyLift Scheme.etaleTopology (eta₃ R P F a ha) F.property)
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun t => (t.app (op U)).hom (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up.{1} x))) (toSheafify_sheafifyLift Scheme.etaleTopology (eta₃ R P F a ha) F.property)`. Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp, LinearMap.comp_apply] at e`. Use `e.trans ?_` and prove the remaining obligations. Use `erw [ModuleCat.freeDesc_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phi_gen (R : Type) [CommRing R] (P : PSh) (F : Shv R)
     (a : ∀ U : Scheme.{0}, P.obj (op U) → Sec F U)
@@ -39,7 +39,7 @@ theorem phi_gen (R : Type) [CommRing R] (P : PSh) (F : Shv R)
   rfl
 
 /- English proof (translation)
-Substitute `hpq` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem aux (R : Type) [CommRing R] {E : Spc} {I : Cx R} (n j : ℤ)
     (φ : ∀ p : ℕ, -(p : ℤ) + n = j → ((free R).obj (E.obj (op (SimplexCategory.mk p))) ⟶ I.X j)) (p q : ℕ) (hpq : q = p)
@@ -52,9 +52,9 @@ end LateralTheory.KummerTheory.NrmMkPf
 namespace LateralTheory.KummerTheory
 open NrmMkPf in
 /- English proof (translation)
-Introduce `R _ E I n a ha`. Set `φ : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ((free R).obj (E.obj (op (SimplexCategory.mk p))) ⟶ I.X s)` to `fun p s h => phi R _ (I.X s) (fun U x => a p s h U x) (fun V U g x => ha p s h V U g x)`. Use `⟨Cochain.mk (fun i j hij => if hi : i ≤ 0 then (((chains R).obj E).XIsoOfEq (show i = -(((-i).toNat : ℕ) : ℤ) by omega)).hom ≫ (chainsXIso R E (-i).toNat).hom ≫ φ ((-i).toNat) j (by omega) else 0), ?_⟩` and prove the remaining obligations. Introduce `p s h U x`. Unfold `ev`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Cochain.mk_v, dif_pos (by omega)]`. Rewrite using `[aux R n s (fun q hq => φ q s hq) p (-(-(p : ℤ))).toNat (by omega) _ h]`. Simplify using `only [Iso.inv_hom_id_assoc]`. Conclude with `phi_gen R _ (I.X s) _ _ U x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem NrmMk_of : NrmMk := by
   intro R _ E I n a ha

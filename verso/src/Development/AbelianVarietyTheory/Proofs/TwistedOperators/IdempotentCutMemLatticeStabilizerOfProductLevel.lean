@@ -13,21 +13,19 @@ open Matrix
 namespace GlobalTheory.CutProdLev
 
 /- English proof (translation)
-Introduce `D n β P n' h K x hx b hb hb0`. Apply `StabilizerBasis.GlobalTheory.CompanionTheory.StabBasis.mem_St_of_inBasis_mem_KO` to reduce the goal to its premises. Introduce `w`. Establish `hc : GlobalTheory.StdFrames.cpt (D` using `D) w b * GlobalTheory.StdFrames.cpt (D := D) w b = GlobalTheory.StdFrames.cpt (D := D) w b := (map_mul (GlobalTheory.StdFrames.cpt (D := D) w) b b).symm.trans (congrArg _ hb)`. Establish `h01 : GlobalTheory.StdFrames.cpt (D` using `D) w b = 0 ∨ GlobalTheory.StdFrames.cpt (D := D) w b = 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : GlobalTheory.StdFrames.cpt (D` using `D) w b * (GlobalTheory.StdFrames.cpt (D := D) w b - 1) = 0 := by`. Rewrite using `[mul_sub, hc, mul_one, sub_self]`. Break down `mul_eq_zero.mp h' with h0 | h1` into its components or cases. Conclude with `Or.inl h0`. Conclude with `Or.inr (sub_eq_zero.mp h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Establish `hconj : (MulAut.conj β⁻¹).toMonoidHom (GlobalTheory.UnitaryIdemCut.cutGL b hb x) = GlobalTheory.UnitaryIdemCut.cutGL b hb ((MulAut.conj β⁻¹).toMonoidHom x)` using `(GlobalTheory.UnitaryIdemCut.cutGL_conj b hb β⁻¹ x).symm`. Establish `hloc : ∀ y : GL (Fin n) (Lev.EAf D), GlobalTheory.StdFrames.loc w (GlobalTheory.UnitaryIdemCut.cutGL b hb y) = GlobalTheory.UnitaryIdemCut.cutGL _ hc (GlobalTheory.StdFrames.loc w y)` using `fun y => GlobalTheory.UnitaryIdemCut.bc_cutGL (GlobalTheory.StdFrames.cpt w) b hb _ hc rfl y`. Break down `h01 with h0 | h1` into its components or cases. Establish `e1 : ∀ g : GL (Fin n) (IsDedekindDomain.HeightOneSpectrum.adicCompletion D.host.E w), GlobalTheory.UnitaryIdemCut.cutGL _ hc g = 1` using `fun g => Units.ext (by`. Rewrite using `[GlobalTheory.UnitaryIdemCut.cutGL_val, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Establish `e : GlobalTheory.FunObj.inBasis rfl β w (GlobalTheory.UnitaryIdemCut.cutGL b hb x) = 1`. Simplify using `only [GlobalTheory.FunObj.inBasis, MonoidHom.comp_apply]`. Rewrite using `[hconj, hloc, e1, map_one]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `one_mem _`. Unfold `GlobalTheory.FunObj.prodLev at hx`. Establish `hx2` using `(Subgroup.mem_inf.mp hx).2`. Rewrite `hx2` using `[Subgroup.mem_iInf]`. Establish `hx3` using `hx2 w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx3` using `[Subgroup.mem_iInf]`. Establish `hxw` using `Subgroup.mem_comap.mp (hx3 fun PP hPP e => by`. Establish `h2` using `hb0 w ⟨PP, hPP, e⟩`. Rewrite `h2` using `[h1]`. Conclude with `one_ne_zero h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∀ g : GL (Fin n) (IsDedekindDomain.HeightOneSpectrum.adicCompletion D.host.E w), GlobalTheory.UnitaryIdemCut.cutGL _ hc g = g` using `fun g => Units.ext (by`. Rewrite using `[GlobalTheory.UnitaryIdemCut.cutGL_val, h1]`. Use the proof step `simp)`. Establish `e : GlobalTheory.FunObj.inBasis rfl β w (GlobalTheory.UnitaryIdemCut.cutGL b hb x) = GlobalTheory.FunObj.inBasis rfl β w x`. Simplify using `only [GlobalTheory.FunObj.inBasis, MonoidHom.comp_apply]`.
-
-Rewrite using `[hconj, hloc, e1]`. Rewrite using `[e]`. Conclude with `hxw`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutGL_mem_St_of_mem_prodLev : ∀ {D : D7} {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (P : Finset (Pl D.host.E))
     {n' : P → ℕ} (h : ∀ w, n' w = n) (K : ∀ w : P, Subgroup (GL (Fin (n' w)) (Kw w.1))) (x : GL (Fin n) (Lev.EAf D)),

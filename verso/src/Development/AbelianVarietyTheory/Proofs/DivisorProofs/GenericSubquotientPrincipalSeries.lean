@@ -14,19 +14,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.CuspRep GlobalTheory.Whitt
 open GlobalTheory.CuspGeneric GlobalTheory.CuspRep.Generic in
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_standardAdelicAddChar E`. Establish `hg : ∀ v : P.V, Good ψ (a - 1) v.1.1` using `fun v => GlobalTheory.T.isMirabolicWhittakerStage_of_isCuspForm E a ψ v.1 (P.cusp _ v.2)`. Establish `h0 : a - 1 < a ∨ a - 1 = 0` using `by omega`. Take `⟨v₀, hv₀S, hv₀⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS`. Establish `hv1 : v₀.1.1 ≠ 0` using `fun h => hv₀ (Subtype.ext (Subtype.ext h))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g₀, hg₀⟩` from `Function.ne_iff.1 ((whit_good hψ (a - 1) h0 (hg v₀)).2 hv1)`. Take `⟨h, gw, e, hc⟩` from `GlobalTheory.T.exists_split_adelicMatrix_localComponent E a w g₀`. Establish `hrt : ∀ u (v : P.V) x, whit ψ (a - 1) (P.locRep w u v).1.1 x = whit ψ (a - 1) v.1.1 (x * finGL E a (locGL E a w u))` using `fun u v x => whit_rt _ _ _ _`. Set `l : P.V →ₗ[ℂ] ℂ` to `{ toFun := fun v => whit ψ (a - 1) v.1.1 h map_add' := fun v v' => congrFun (whit_add hψ (a - 1) h0 (hg v) (hg v')) h map_smul' := fun c v => congrFun (whit_smul (a - 1) c v.1.1) h }`. Establish `hl : ∀ v, l v = whit ψ (a - 1) v.1.1 h` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hne : l (P.locRep w gw v₀) ≠ 0`. Rewrite using `[hl, hrt, ← e]`. Conclude with `hg₀`. Establish `hlaw : ∀ u ∈ unipB (w.adicCompletion E) (Fin a), ∀ v : P.V, l (P.locRep w u v) = (locPsi hψ w (superDiag u) : ℂ) * l v` using `fun u hu v => by`. Take `⟨u1, u2⟩` from `(GlobalTheory.SmGL.mem_unipB _).1 hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t1, t2, t3⟩` from `GlobalTheory.T.localUpperUnipotent_adelic_upperUnipotent E a w u u1 u2`. Establish `hlw` using `(whit_good hψ (a - 1) h0 (hg v)).1.law`. Use `GlobalTheory.T.whittakerLaw_upperTriangularUnipotent_adelic E a ψ _ (fun k hk => hlw k hk) _ t1 t2 h` as an intermediate fact. Rewrite using `[hl, hrt, hc, this, t3, superDiag_eq_sum_pairs]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hcont : Continuous (locPsi hψ w)`. Use `Continuous.subtype_mk (hψ.cont.comp ?_) _` and prove the remaining obligations. Conclude with `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E)).comp (CuspSub.continuous_sLoc w)`. Establish `hne1 : locPsi hψ w ≠ 1` using `fun h1 => by`. Take `⟨y, hy⟩` from `hψ.loc w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hy` to reduce the goal to its premises. Use `congrArg (fun c : Circle => (c : ℂ)) (DFunLike.congr_fun h1 y)` as an intermediate fact. Simplify `this` using `[coe_locPsi]`. Use `⟨locPsi hψ w, hcont, hne1, l ∘ₗ S.toSubmodule.subtype, fun e' => hne ?_, fun u hu v => ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun e' ⟨_, S.apply_mem_toSubmodule gw hv₀S⟩`.
-
-Conclude with `hlaw u hu v.1`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isGeneric_subrep {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (P : CuspSub E a)
     (w : HeightOneSpectrum (𝓞 E)) (S : Subrepresentation (P.locRep w)) (hS : S.toSubmodule ≠ ⊥) :
@@ -76,11 +74,11 @@ namespace GlobalTheory.CuspDetBlocks
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.CuspRep GlobalTheory.Whittaker
 
 /- English proof (translation)
-Establish `hdet : ∀ b, Matrix.GeneralLinearGroup.det ((Pi.mulSingle a u : ∀ b, GL (Fin (d b)) k) b) = 1` using `fun b => by`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Take `⟨h1, h2⟩` from `(mem_unipB k).1 hu`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_upperTriangular (fun i j hij => h1 i j hij)]`. Simplify using `[h2]`. Rewrite using `[Pi.mulSingle_eq_of_ne hb, map_one]`. Establish `: piTensor (fun b => detRep (Fin (d b)) (χ b)) (Pi.mulSingle a u) = LinearMap.id`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `[piTensor_tprod, detRep, ofChar_apply, hdet]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem piTensor_detRep_mulSingle {k : Type} [Field k] {c : ℕ} (d : Fin c → ℕ) (χ : Fin c → kˣ →* ℂˣ) (a : Fin c)
     (u : GL (Fin (d a)) k) (hu : u ∈ unipB k (Fin (d a))) (v : PiTensorProduct ℂ fun _ : Fin c => ℂ) :
@@ -100,13 +98,13 @@ theorem piTensor_detRep_mulSingle {k : Type} [Field k] {c : ℕ} (d : Fin c → 
   rw [this]; rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ x x' τ w χ₁ χ₂ H h₁ h₂ V _ _ Q hQ f hf`. Set `S : Subrepresentation (τ.locRep w)` to `⟨LinearMap.range f.toLinearMap, by`. Introduce and unpack `g _ ⟨v, rfl⟩`. Conclude with `⟨Q g v, f.isIntertwining _ _ g v⟩⟩`. Establish `hS : S.toSubmodule ≠ ⊥` using `fun h => hf (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h'` using `LinearMap.range_eq_bot.1 h`. Use `ext1`. Apply the tactic sequence `first | exact h' | exact LinearMap.congr_fun h' _)`. Take `⟨ψ, hc, h1, hg⟩` from `exists_isGeneric_subrep τ w S hS`. Establish `hSQ : IsSubquotient S.toRepresentation Q` using `.of_surjective ⟨f.toLinearMap.rangeRestrict, fun g => LinearMap.ext fun v => Subtype.ext (f.isIntertwining _ _ g v)⟩ (LinearMap.surjective_rangeRestrict _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `d : Fin 2 → ℕ` to `![x, x']`. Set `χ : Fin 2 → (w.adicCompletion E)ˣ →* ℂˣ` to `![χ₁, χ₂]`. Set `π : ∀ a : Fin 2, Representation ℂ (GL (Fin (d a)) (w.adicCompletion E)) ℂ` to `fun a => detRep (Fin (d a)) (χ a)`. Establish `hd : ∑ a, d a = d 0 + d 1` using `Fin.sum_univ_two d`. Take `⟨φ⟩` from `GlobalTheory.LocGL.nonempty_prod₂_equiv_multiProd hd π`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : IsSubquotient S.toRepresentation (parInd (stdBlocks d hd) (piTensor π))` using `(hSQ.trans hQ).trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`. Establish `hχ : ∀ a, IsSmoothChar (χ a)` using `fun a => by fin_cases a exacts [h₁, h₂]`. Establish `hρ : IsSmooth (piTensor π)` using `isSmooth_piTensor fun a => (isSmooth_ofChar_iff _).2 (hχ a).detChar`. Establish `hb` using `fun a => H.block_le_one hc h1 (stdBlocks d hd) hρ hs hg a (fun u hu v => piTensor_detRep_mulSingle d χ a u hu v)`. Conclude with `⟨hb 0, hb 1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem le_one_of_intertwining : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (x x' : ℕ) (τ : GlobalTheory.CuspRep.CuspSub E (x + x'))
     (w : HeightOneSpectrum (𝓞 E)) (χ₁ χ₂ : (w.adicCompletion E)ˣ →* ℂˣ), GlobalTheory.Published.GenericityGL →

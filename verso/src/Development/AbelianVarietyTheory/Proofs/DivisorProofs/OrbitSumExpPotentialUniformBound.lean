@@ -16,11 +16,11 @@ namespace GlobalTheory.OrbitSum
 open GlobalTheory.MinorRatioNear
 
 /- English proof (translation)
-Establish `hinv : g⁻¹ = sgnMat r p * gᴴ * sgnMat r p`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h, sgnMat_mul_self]`. Establish `hsub : (sgnMat r p * gᴴ * sgnMat r p).submatrix (Fin.castLE hp) (Fin.castLE hp) = (g.submatrix (Fin.castLE hp) (Fin.castLE hp))ᴴ`. Use extensionality with `a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `ha : ((Fin.castLE hp a : Fin r) : ℕ) < p` using `a.isLt`. Establish `hb : ((Fin.castLE hp b : Fin r) : ℕ) < p` using `b.isLt`. Simplify using `only [Matrix.submatrix_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, sgnMat, Matrix.conjTranspose_apply, sgn, if_pos ha, if_pos hb]`. Simplify using the standard rewrite rules. Unfold `lminor`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hinv]`. Conclude with `(congrArg (fun M => ‖M.det‖) hsub).trans (by rw [Matrix.det_conjTranspose, norm_star])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_lminor_inv {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (h : g * sgnMat r p * gᴴ = sgnMat r p) :
@@ -43,9 +43,9 @@ theorem norm_lminor_inv {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) �
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Unfold `GlobalTheory.Up.rhX`. Use `congr 2`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hux : IsUnit (mat x τ).det` using `(ExF.det_ne_of_orth X hx τ).isUnit`. Establish `e : (mat y τ)⁻¹ * mat x τ = ((mat x τ)⁻¹ * mat y τ)⁻¹`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hux]`. Rewrite using `[IC.norm_dmin_orth X hx, IC.norm_dmin_orth X hy, e, norm_lminor_inv X.p0_le (isometry_of_orth X hx hy τ)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rhX_symm (X : Data E r) {x y : Frame X.Ψ r} (hx : IsOrth X x) (hy : IsOrth X y) :
     GlobalTheory.Up.rhX X x y = GlobalTheory.Up.rhX X y x := by
@@ -59,11 +59,11 @@ theorem rhX_symm (X : Data E r) {x y : Frame X.Ψ r} (hx : IsOrth X x) (hy : IsO
     norm_lminor_inv X.p0_le (isometry_of_orth X hx hy τ)]
 
 /- English proof (translation)
-Establish `hc : Continuous fun N : Fin p → Fin p → ℂ => ‖(Matrix.of N).det‖` using `(Continuous.matrix_det (A := fun N : Fin p → Fin p → ℂ => Matrix.of N) continuous_id).norm`. Take `⟨δ, hδ, H⟩` from `Metric.continuousAt_iff.1 (hc.continuousAt (x := fun i j => (1 : Matrix (Fin p) (Fin p) ℂ) i j)) 1 (by norm_num)`. Use `⟨δ, hδ, fun N hN => ?_⟩` and prove the remaining obligations. Use `@H (fun i j => N i j) (by` as an intermediate fact. Rewrite using `[dist_pi_lt_iff hδ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[dist_pi_lt_iff hδ]`. Introduce `j`. Rewrite using `[dist_eq_norm]`. Conclude with `hN i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (Matrix.of fun i j => (1 : Matrix (Fin p) (Fin p) ℂ) i j).det = 1` using `Matrix.det_one`. Rewrite `this` using `[e, norm_one, Real.dist_eq, abs_lt]`. Establish `e' : (Matrix.of fun i j => N i j) = N` using `rfl`. Rewrite `this` using `[e']`. Combine the linear relations using `[this.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_det_le_two (p : ℕ) : ∃ δ : ℝ, 0 < δ ∧ ∀ N : Matrix (Fin p) (Fin p) ℂ,
     (∀ i j, ‖(N - 1) i j‖ < δ) → ‖N.det‖ ≤ 2 := by
@@ -83,15 +83,15 @@ theorem exists_det_le_two (p : ℕ) : ∃ δ : ℝ, 0 < δ ∧ ∀ N : Matrix (F
   linarith [this.2]
 
 /- English proof (translation)
-Take `⟨δ, hδ, H⟩` from `exists_det_le_two p`. Use `⟨δ / (r + 1), by positivity, fun g n h hn => ?_⟩` and prove the remaining obligations. Use `set A := g.submatrix (Fin.castLE hp) (Fin.castLE hp) with hA`. Use `set R := g.submatrix (Fin.castLE hp) (id : Fin r → Fin r) with hR`. Establish `hu : IsUnit A.det` using `(det_block_ne_zero hp h).isUnit`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (g * n).submatrix (Fin.castLE hp) (Fin.castLE hp) = A * (A⁻¹ * R * n.submatrix id (Fin.castLE hp))`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Both sides reduce to the same expression. Establish `e2 : R * (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp) = A`. Establish `: R * (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp) = (g * 1).submatrix (Fin.castLE hp) (Fin.castLE hp)` using `rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.mul_one]`. Establish `e3 : A⁻¹ * R * n.submatrix id (Fin.castLE hp) - 1 = A⁻¹ * R * (n - 1).submatrix id (Fin.castLE hp)`. Establish `: (n - 1).submatrix id (Fin.castLE hp) = n.submatrix id (Fin.castLE hp) - (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp)` using `rfl`. Rewrite using `[this, Matrix.mul_sub, Matrix.mul_assoc A⁻¹ R (Matrix.submatrix 1 _ _), e2, Matrix.nonsing_inv_mul _ hu]`. Establish `h1` using `H (A⁻¹ * R * n.submatrix id (Fin.castLE hp)) fun i j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e3, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ < δ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← mul_div_assoc, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e1, Matrix.det_mul, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg A.det]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_block_det_le {r p : ℕ} (hp : p ≤ r) : ∃ δ : ℝ, 0 < δ ∧
     ∀ g n : Matrix (Fin r) (Fin r) ℂ, g * sgnMat r p * gᴴ = sgnMat r p →
@@ -134,29 +134,25 @@ theorem exists_block_det_le {r p : ℕ} (hp : p ≤ r) : ∃ δ : ℝ, 0 < δ �
   nlinarith [norm_nonneg A.det]
 
 /- English proof (translation)
-Use `set i0 : Fin (r + 1) := ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ with hi0`. Take `⟨δ, hδ, H⟩` from `exists_block_det_le (r := r) X.p0_le`. Establish `hc : Continuous fun z : V (nd X) => fun τ : X.Ψ => dmin X.Gm (cpt X x0 z) τ i0` using `continuous_pi fun τ => (ExtFPf.cont_dmin X τ i0).comp (FundSetPf.cont_cpt (X := X) (x0 := x0))`. Take `⟨ρ1, hρ1, H1⟩` from `Metric.continuousAt_iff.1 (hc.continuousAt (x := 0)) (1 / 2) (by norm_num)`. Establish `h00 : (0 : V (nd X)) ∈ OmF X x0` using `by show cpt X x0 0 ∈ X.dom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IW.cpt_zero]`. Conclude with `IW.orth_mem_dom X x0 h0`. Take `⟨ρ2, hρ2, H2⟩` from `Metric.isOpen_iff.1 (OntoB.isOpen_OmF X x0) 0 h00`. Use `⟨min δ (min ρ1 ρ2), lt_min hδ (lt_min hρ1 hρ2), X.Ψ.card * Real.log 8, fun x x1 hx hx1 z hz => ?_⟩` and prove the remaining obligations. Establish `hzδ : ‖z‖ ≤ δ` using `hz.le.trans (min_le_left _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz1 : ‖z‖ < ρ1` using `hz.trans_le ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hz2 : ‖z‖ < ρ2` using `hz.trans_le ((min_le_right _ _).trans (min_le_right _ _))`. Establish `hzO : z ∈ OmF X x1`. Rewrite using `[GlobalTheory.Up.PoleValue.OmF_eq h0 hx1]`. Conclude with `H2 (mem_ball_zero_iff.2 hz2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hzO, ?_⟩` and prove the remaining obligations. Establish `hd : ∀ τ : X.Ψ, 1 / 2 ≤ ‖dmin X.Gm (cpt X x1 z) τ i0‖`. Introduce `τ`. Establish `hdist` using `H1 (by rwa [dist_zero_right])`. Rewrite `hdist` using `[dist_pi_lt_iff (by norm_num)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `hdist τ`. Rewrite `h'` using `[dist_eq_norm]`. Establish `h0' : ‖dmin X.Gm (cpt X x0 0) τ i0‖ = 1`. Rewrite using `[IW.cpt_zero]`. Conclude with `IC.norm_dmin_orth X h0 τ i0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[dmin_cpt_eq X h0 hx1]`. Use `norm_sub_norm_le (dmin X.Gm (cpt X x0 0) τ i0) (dmin X.Gm (cpt X x0 z) τ i0)` as an intermediate fact. Rewrite `h'` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set a : X.Ψ → ℝ := fun τ => ‖dmin X.Gm x1 τ i0‖ / ‖lminor ((mat x τ)⁻¹ * mat x1 τ) i0‖ ^ 2 with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `set b : X.Ψ → ℝ := fun τ => ‖dmin X.Gm (cpt X x1 z) τ i0‖ / ‖lminor ((mat x τ)⁻¹ * mat (cpt X x1 z) τ) i0‖ ^ 2 with hb`. Establish `hapos : ∀ τ, 0 < a τ` using `fun τ => by`. Use `norm_pos_iff.2 (det_block_ne_zero X.p0_le (isometry_of_orth X hx hx1 τ))` as an intermediate fact. Simplify using `only [ha, IC.norm_dmin_orth X hx1]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : ∀ τ, 1 / 8 * a τ ≤ b τ` using `fun τ => by`. Establish `hiso` using `isometry_of_orth X hx hx1 τ`. Establish `hL : 0 < ‖lminor ((mat x τ)⁻¹ * mat x1 τ) i0‖` using `norm_pos_iff.2 (det_block_ne_zero X.p0_le hiso)`. Establish `hU : ‖lminor ((mat x τ)⁻¹ * mat (cpt X x1 z) τ) i0‖ ≤ 2 * ‖lminor ((mat x τ)⁻¹ * mat x1 τ) i0‖`. Rewrite using `[ExF.mat_cpt, ← Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `H _ _ hiso fun a b => (norm_nmat_sub_one_le X z τ a b).trans hzδ`. Establish `hU0 : 0 < ‖lminor ((mat x τ)⁻¹ * mat (cpt X x1 z) τ) i0‖`. Establish `hzd : cpt X x1 z ∈ X.dom` using `hzO`. Conclude with `norm_pos_iff.2 (GlobalTheory.Up.lminor_inv_mul_ne_zero hx hzd τ)`. Simplify using `only [ha, hb, IC.norm_dmin_orth X hx1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd'` using `hd τ`. Combine the equalities or inequalities in the displayed calculation. Establish `hprod : (1 / 8 : ℝ) ^ X.Ψ.card * ∏ τ, a τ ≤ ∏ τ, b τ`. Establish `hc8 : (∏ _τ : X.Ψ, (1 / 8 : ℝ)) = (1 / 8) ^ X.Ψ.card`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_coe]`.
-
-Rewrite using `[← hc8, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod (fun τ _ => by have := hapos τ; positivity) fun τ _ => hab τ`. Establish `hA : 0 < ∏ τ, a τ` using `Finset.prod_pos fun τ _ => hapos τ`. Establish `hl` using `Real.log_le_log (by positivity) hprod`. Rewrite `hl` using `[Real.log_mul (by positivity) hA.ne', Real.log_pow]`.
-
-Establish `h8 : Real.log (1 / 8 : ℝ) = -Real.log 8` using `by rw [one_div, Real.log_inv]`. Rewrite `hl` using `[h8]`. Use `show -Real.log (∏ τ, b τ) ≤ -Real.log (∏ τ, a τ) + X.Ψ.card * Real.log 8`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem harnack (X : Data E r) {x0 : Frame X.Ψ r} (h0 : IsOrth X x0) :
     ∃ ρ : ℝ, 0 < ρ ∧ ∃ K : ℝ, ∀ x x1 : Frame X.Ψ r, IsOrth X x → IsOrth X x1 → ∀ z : V (nd X),
@@ -241,9 +237,9 @@ namespace GlobalTheory.OrbitSum
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hd` using `IW.orth_mem_dom X x0 h0`. Take `⟨U, hU, U', hU', hfin⟩` from `hPD x0 hd x0 hd`. Establish `hc` using `(FundSetPf.cont_cpt X x0).continuousAt (x := 0)`. Rewrite `hc` using `[ContinuousAt, IW.cpt_zero]`. Take `⟨ρ, hρ, hball⟩` from `Metric.mem_nhds_iff.1 (hc (Filter.inter_mem hU hU'))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨ρ, hρ, hfin.subset ?_⟩` and prove the remaining obligations. Introduce and unpack `γ ⟨hγ, z, hz, z', hz', b, hb, e⟩`. Conclude with `⟨hγ, _, (hball hz).1, _, (hball hz').2, b, hb, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_mult (X : Data E r) {x0 : Frame X.Ψ r} (h0 : IsOrth X x0) (hPD : PropDisc X) :
     ∃ ρ : ℝ, 0 < ρ ∧ {γ : GL (Fin r) E | γ ∈ X.Γ ∧ ∃ z ∈ Metric.ball (0 : V (nd X)) ρ,
@@ -259,11 +255,11 @@ theorem finite_mult (X : Data E r) {x0 : Frame X.Ψ r} (h0 : IsOrth X x0) (hPD :
   exact ⟨hγ, _, (hball hz).1, _, (hball hz').2, b, hb, e⟩
 
 /- English proof (translation)
-Establish `hO` using `OntoB.isOpen_OmF X x0`. Establish `h00 : (0 : V (nd X)) ∈ OmF X x0` using `by show cpt X x0 0 ∈ X.dom`. Rewrite using `[IW.cpt_zero]`. Conclude with `IW.orth_mem_dom X x0 h0`. Unfold `muF`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, withDensity_apply_eq_zero' (OntoC.measurable_densF X x0).aemeasurable, Measure.restrict_apply' hO.measurableSet]`. Establish `hsub : Metric.ball (0 : V (nd X)) ρ ∩ OmF X x0 ⊆ {z | ENNReal.ofReal (densF X x0 z) ≠ 0} ∩ Metric.ball 0 ρ ∩ OmF X x0`. Introduce and unpack `z ⟨h1, h2⟩`. Conclude with `⟨⟨by simpa using OntoB.densF_pos h2, h1⟩, h2⟩`. Introduce `h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `measure_mono_null hsub h`. Establish `h4 : (volume (Metric.ball (0 : V (nd X)) ρ ∩ OmF X x0)) ≠ 0` using `((Metric.isOpen_ball.inter hO).measure_pos volume ⟨0, Metric.mem_ball_self hρ, h00⟩).ne'`. Conclude with `h4 h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem muF_ball_ne_zero (X : Data E r) {x0 : Frame X.Ψ r} (h0 : IsOrth X x0) {ρ : ℝ} (hρ : 0 < ρ) :
     muF X x0 (Metric.ball 0 ρ) ≠ 0 := by
@@ -285,33 +281,27 @@ theorem muF_ball_ne_zero (X : Data E r) {x0 : Frame X.Ψ r} (h0 : IsOrth X x0) {
   exact h4 h3
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x0 h0 hPD s hs ⟨I, hI, hIb⟩`. Use `haveI := FundSetPf.countable_GL (E := E) (r := r)`. Take `⟨ρ1, hρ1, K, hH⟩` from `harnack X h0`. Take `⟨ρ2, hρ2, hfin⟩` from `finite_mult X h0 hPD`. Take `⟨FF, hFF⟩` from `fundSet_holds r X x0 h0 hPD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set ρ := min ρ1 ρ2 with hρdef`. Establish `hρ : 0 < ρ` using `lt_min hρ1 hρ2`. Use `set A : Set (V (nd X)) := Metric.ball 0 ρ with hAdef`. Establish `hAO : A ⊆ OmF X x0` using `fun z hz => (hH x0 x0 h0 h0 z (lt_of_lt_of_le (mem_ball_zero_iff.1 hz) (min_le_left _ _))).1`. Use `set S : Set (GL (Fin r) E) := {γ : GL (Fin r) E | γ ∈ X.Γ ∧ ∃ z ∈ A, ∃ z' ∈ A, ∃ b ∈ Bor X.Ψ r, lact γ (cpt X x0 z) = rmul (cpt X x0 z') b} with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hSfin : S.Finite`. Use `hfin.subset ?_` and prove the remaining obligations. Establish `hb : A ⊆ Metric.ball 0 ρ2` using `Metric.ball_subset_ball (min_le_right _ _)`. Introduce and unpack `γ ⟨hγ, z, hz, z', hz', b, hb', e⟩`. Conclude with `⟨hγ, z, hb hz, z', hb hz', b, hb', e⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set m : ℝ≥0∞ := (S.encard : ℝ≥0∞) with hmdef`. Establish `hm : m ≠ ⊤`. Rewrite using `[hmdef]`. Conclude with `ENat.toENNReal_ne_top.2 hSfin.encard_lt_top.ne`. Use `set v : ℝ≥0∞ := muF X x0 A with hvdef`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : v ≠ 0` using `muF_ball_ne_zero X h0 hρ`. Use `set k : ℝ≥0∞ := ENNReal.ofReal (Real.exp (s * K)) with hkdef`. Use `⟨k * m * I / v, ENNReal.div_lt_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hm) hI.ne) hv, fun x hx => ?_⟩` and prove the remaining obligations. Use `set φ : Frame X.Ψ r → ℝ≥0∞ := fun y => ENNReal.ofReal (Real.exp (-(s * GlobalTheory.Up.rhX X x y))) with hφdef`. Establish `hφm : Measurable φ` using `ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp ((GlobalTheory.Up.measurable_rhX hx).const_mul s).neg)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφB : ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, φ (rmul y b) = φ y` using `fun y _ b hb => by`. Simplify using `only [hφdef, GlobalTheory.Up.rhX_rmul x y hb]`. Use `set G : Frame X.Ψ r → ℝ≥0∞ := fun y => ∑' δ : X.Γ, φ (lact δ.1 y) with hGdef`. Establish `hGm : Measurable G` using `Measurable.ennreal_tsum fun δ => hφm.comp (GlobalTheory.Unfold.continuous_lact X δ.1).measurable`. Establish `hGB : ∀ b ∈ Bor X.Ψ r, ∀ y ∈ X.dom, G (rmul y b) = G y` using `fun b hb y _ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hGdef, hφdef, FundSetPf.lact_rmul, GlobalTheory.Up.rhX_rmul x _ hb]`. Establish `hGΓ : ∀ γ ∈ X.Γ, ∀ y ∈ X.dom, G (lact γ y) = G y` using `fun γ hγ y _ => by`. Simplify using `only [hGdef]`. Rewrite using `[← (Equiv.mulRight (⟨γ, hγ⟩ : X.Γ)).tsum_eq (fun δ : X.Γ => φ (lact δ.1 y))]`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show φ (lact δ.1 (lact γ y)) = φ (lact ((δ * ⟨γ, hγ⟩ : X.Γ) : GL (Fin r) E) y)`. Rewrite using `[Subgroup.coe_mul, FundSetPf.lact_mul]`. Establish `hsum : ∑' γ : X.Γ, ENNReal.ofReal (Real.exp (-(s * GlobalTheory.Up.rhX X x0 (lact γ.1 x)))) = G x0`. Simplify using `only [hGdef]`. Rewrite using `[← (Equiv.inv X.Γ).tsum_eq (fun γ : X.Γ => ENNReal.ofReal (Real.exp (-(s * GlobalTheory.Up.rhX X x0 (lact γ.1 x)))))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Use `show ENNReal.ofReal (Real.exp (-(s * GlobalTheory.Up.rhX X x0 (lact (δ.1)⁻¹ x)))) = ENNReal.ofReal (Real.exp (-(s * GlobalTheory.Up.rhX X x (lact δ.1 x0))))`. Rewrite using `[GlobalTheory.Up.rhX_lact (X.Γ_stab _ (X.Γ.inv_mem δ.2)), inv_inv, rhX_symm X (GlobalTheory.Unfold.isOrth_lact X h0 δ.2) hx]`. Establish `hHar : ∀ z ∈ A, G x0 ≤ k * G (cpt X x0 z)`. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz' : ‖z‖ < ρ1` using `lt_of_lt_of_le (mem_ball_zero_iff.1 hz) (min_le_left _ _)`. Simplify using `only [hGdef]`. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun δ => ?_` and prove the remaining obligations. Establish `ho` using `GlobalTheory.Unfold.isOrth_lact X h0 δ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(hH x _ hx ho z hz').2`. Rewrite using `[← GlobalTheory.Unfold.cpt_lact, hkdef, hφdef, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]`. Use `ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : G x0 * v ≤ k * ∫⁻ z in A, G (cpt X x0 z) ∂muF X x0`.
-
-Rewrite using `[hvdef, ← setLIntegral_const, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `setLIntegral_mono' measurableSet_ball fun z hz => hHar z hz` and prove the remaining obligations. Establish `h2 : ∫⁻ z in A, G (cpt X x0 z) ∂muF X x0 ≤ m * ∫⁻ z in FF, G (cpt X x0 z) ∂muF X x0` using `GlobalTheory.Unfold.lintegral_chart_le_mul_fundSet E r X x0 x0 FF A m G h0 h0 hFF measurableSet_ball hAO hGm hGΓ hGB le_rfl`. Establish `h3 : ∫⁻ z in FF, G (cpt X x0 z) ∂muF X x0 = ∫⁻ z, φ (cpt X x0 z) ∂muF X x0` using `(GlobalTheory.Unfold.lintegral_unfold measInv_holds r X x0 h0 FF hFF φ hφm hφB).symm`. Establish `h4 : ∫⁻ z, φ (cpt X x0 z) ∂muF X x0 ≤ I`.
-
-Rewrite using `[measInv_holds r X x0 x h0 hx φ hφm hφB]`. Use `le_trans (le_of_eq (lintegral_congr_ae ?_)) (hIb x hx)` and prove the remaining obligations. Use `filter_upwards [ExtFPf.ae_OmF (x0 := x)] with z hz`. Simplify using `only [hφdef, GlobalTheory.Up.rhX_cpt hx hz]`. Rewrite using `[hsum, ENNReal.le_div_iff_mul_le (Or.inl hv) (Or.inr (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hm) hI.ne))]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite `h4` using `[← h3]`. Conclude with `h2.trans (by gcongr)`. Use `_ = k * m * I := by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitSum_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → PropDisc X → ∀ s : ℝ, 0 < s → (∃ I : ℝ≥0∞, I < ⊤ ∧ ∀ x1 : Frame X.Ψ r, IsOrth X x1 → ∫⁻ z, ENNReal.ofReal (Real.exp (-(s * rhF X x1 z))) ∂muF X x1 ≤ I) → ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x, IsOrth X x → ∑' γ : X.Γ, ENNReal.ofReal (Real.exp (-(s * GlobalTheory.Up.rhX X x0 (lact γ.1 x)))) ≤ C := by
   intro E _ _ _ r X x0 h0 hPD s hs ⟨I, hI, hIb⟩

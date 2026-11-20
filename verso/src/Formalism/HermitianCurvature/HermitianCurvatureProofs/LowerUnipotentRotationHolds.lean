@@ -16,7 +16,7 @@ section cWLemmas
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `cW`. Rewrite using `[← emb_mul, smul_mul_smul_comm, mul_one, ← Complex.exp_add]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cW_mul (θ θ' : ℝ) : cW k r θ * cW k r θ' = cW k r (θ + θ') := by
   unfold cW
@@ -26,21 +26,21 @@ theorem cW_mul (θ θ' : ℝ) : cW k r θ * cW k r θ' = cW k r (θ + θ') := by
   ring
 
 /- English proof (translation)
-Unfold `cW`. Simplify using `[emb_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cW_zero : cW k r 0 = 1 := by
   unfold cW
   simp [emb_one]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[cW_mul, add_neg_cancel, cW_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cW_inv (θ : ℝ) : (cW k r θ)⁻¹ = cW k r (-θ) := by
   apply Matrix.inv_eq_right_inv
   rw [cW_mul, add_neg_cancel, cW_zero]
 
 /- English proof (translation)
-Unfold `cW`. Rewrite using `[DC.emb_mulVec_of _ hv, Matrix.smul_mulVec, Matrix.one_mulVec, DC.jV_smul, jV_wbPart hv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cW_mulVec (θ : ℝ) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) :
     cW k r θ *ᵥ v = Complex.exp ((θ : ℂ) * Complex.I) • v := by
@@ -48,7 +48,7 @@ theorem cW_mulVec (θ : ℝ) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v)
   rw [DC.emb_mulVec_of _ hv, Matrix.smul_mulVec, Matrix.one_mulVec, DC.jV_smul, jV_wbPart hv]
 
 /- English proof (translation)
-Unfold `fvec`. Rewrite using `[dif_neg (by simp)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fvec_last (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = z := by
   unfold fvec
@@ -57,11 +57,11 @@ theorem fvec_last (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = 
 end cWLemmas
 
 /- English proof (translation)
-Introduce `k r z z' hz E _ _ θ Y f g _`. Establish `hy : ∀ j, Q.yv k r z (Fin.last r) (cW k r θ * g) j = Complex.exp (-((θ : ℂ) * Complex.I)) * Q.yv k r z (Fin.last r) g j`. Introduce `j`. Unfold `Q.yv`. Rewrite using `[fvec_last, Matrix.mul_inv_rev, cW_inv, ← Matrix.mulVec_mulVec, cW_mulVec _ hz, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : ∀ (t : ℕ) (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ), qminorOp (Q.EH k r) a b u (fun x => f (cW k r θ * x)) g = qminorOp (Q.EH k r) a b u f (cW k r θ * g)` using `fun t a b u => congrFun (Formalism.FourierDecayAlt.P.quantum_minor_left_hermitian E _ t (Hpk k r) f a b u (cW k r θ)) g`. Express the relevant statement in the definitionally equal form `(-(Q.chatL (Q.EH k r) (Q.posL k r (Fin.last r)) (Q.uC k r (Fin.last r) Y) (Q.yv k r z (Fin.last r)) (fun _ => Q.xbv k r z' (Fin.last r)) f)) (cW k r θ * g) = Complex.exp (-((θ : ℂ) * Complex.I)) • (-(Q.chatL (Q.EH k r) (Q.posL k r (Fin.last r)) (Q.uC k r (Fin.last r) Y) (Q.yv k r …`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Pi.neg_apply, Q.chatL, smul_neg, Finset.smul_sum, neg_inj]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hy, hq, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lower_unipotent_rotation_holds : LowerUnipotentRotation := by
   intro k r z z' hz E _ _ θ Y f g _

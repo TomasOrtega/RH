@@ -4,15 +4,15 @@ import Mathlib.RingTheory.PowerSeries.Expand
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `K _`. Use `⟨(PowerSeries.expand 2 two_ne_zero (R := K)).toRingHom, ?_, ?_, ?_, by simp⟩` and prove the remaining obligations. Introduce `f g h`. Use extensionality with `m`. Establish `h1` using `congrArg (PowerSeries.coeff (2 * m)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using h1`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[PowerSeries.isUnit_iff_constantCoeff]`. Simplify using `using hf`. Use `letI inst : Module (PowerSeries K) (PowerSeries K) := (PowerSeries.expand 2 two_ne_zero (R := K)).toRingHom.toAlgebra.toModule`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure.
 
-Establish `hs : Submodule.span (PowerSeries K) ({1, PowerSeries.X} : Set (PowerSeries K)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `f _`. Rewrite using `[Submodule.mem_span_pair]`. Use `⟨PowerSeries.mk fun m => PowerSeries.coeff (2 * m) f, PowerSeries.mk fun m => PowerSeries.coeff (2 * m + 1) f, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `PowerSeries.expand 2 two_ne_zero (PowerSeries.mk fun m => PowerSeries.coeff (2 * m) f) * 1 + PowerSeries.expand 2 two_ne_zero (PowerSeries.mk fun m => PowerSeries.coeff (2 * m + 1) f) * PowerSeries.X = f`. Use extensionality with `n`. Rewrite using `[mul_one, map_add, ← pow_one (PowerSeries.X (R := K)), PowerSeries.coeff_mul_X_pow', PowerSeries.coeff_expand, PowerSeries.coeff_expand]`. Simplify using `only [PowerSeries.coeff_mk]`. Apply the tactic sequence `split_ifs <;> first | omega | (simp only [add_zero, zero_add]; congr; omega)`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `⟨⟨{1, PowerSeries.X}, by rw [Finset.coe_insert, Finset.coe_singleton]; exact hs⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Pa.Det.sqExt :
     ∀ {K : Type} [Field K], ∃ j : PowerSeries K →+* PowerSeries K, Function.Injective j ∧ IsLocalHom j ∧ j.Finite ∧ j PowerSeries.X = PowerSeries.X ^ 2 := by

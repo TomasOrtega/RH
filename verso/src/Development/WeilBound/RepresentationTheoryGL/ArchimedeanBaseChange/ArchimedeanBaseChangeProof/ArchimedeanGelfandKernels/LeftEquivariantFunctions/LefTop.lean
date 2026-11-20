@@ -13,7 +13,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceMulConjTra
 namespace PositivityTheory.RgBcC
 
 /- English proof (translation)
-Establish `hKer : VC.VCKer` using `VC.vcKer_of (VC.kerComm_of GlobalTheory.CompanionTheory.WaveInv.waveN GlobalTheory.CompanionTheory.WaveField.waveA) (VC.kerNId_of GlobalTheory.CompanionTheory.LgBound.lgCpt GlobalTheory.CompanionTheory.ParamInt.intSmooth) (VC.nAvg_of GlobalTheory.CompanionTheory.ParamInt.intSmoot …`. Establish `hV : VCSt` using `VC.vcOf_of GlobalTheory.CompanionTheory.ParamInt.intSmooth hKer hE hS hM GlobalTheory.CompanionTheory.GelC.gelComm GlobalTheory.CompanionTheory.GelFlagPf.gelFlag_holds GlobalTheory.CompanionTheory.FlagHerm.flagField_holds GlobalTheory.CompanionTheory.NilUnimod.nilUni GlobalTheory …`. Establish `hCh : Chain` using `LfSt.chainOf'_holds hE hS GlobalTheory.CompanionTheory.GelC.gelComm GlobalTheory.CompanionTheory.KerZeroPf.main`. Establish `hL : LSt` using `LfSt.lOf_of_kChain hC hE hS hK hM hCh GlobalTheory.T.positive_cone_structure GlobalTheory.T.positive_cone_homotopy GlobalTheory.CompanionTheory.SuppBound.suppSt`. Conclude with `lef_of cxEx_model hV hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lef_top (hE : WaveEx) (hS : WaveSpeed) (hK : KerEx) (hM : MultAlg) (hC : LfSt.KChain) : Lef := by
   have hKer : VC.VCKer := VC.vcKer_of

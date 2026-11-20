@@ -18,22 +18,22 @@ open ReciprocityTheory.ChartRestriction.G.I2
 namespace GlobalTheory.ThetaTorus
 
 /- English proof (translation)
-The claim follows from `gSup GlobalTheory.packingCount`.
+A detailed English derivation is pending.
 -/
 theorem gSup_holds : GSupStatement := gSup GlobalTheory.packingCount
 
 /- English proof (translation)
-The claim follows from `propA GlobalTheory.packingCount GlobalTheory.gaussTail_of_card_le`.
+A detailed English derivation is pending.
 -/
 theorem propA_holds : PropAStatement := propA GlobalTheory.packingCount GlobalTheory.gaussTail_of_card_le
 
 /- English proof (translation)
-The claim follows from `dim`.
+A detailed English derivation is pending.
 -/
 theorem dim_holds : DimStatement := dim
 
 /- English proof (translation)
-The claim follows from `jOf GlobalTheory.ext_all_inputs GlobalTheory.T.greedy_splitting_principal_torus_exists GlobalTheory.charStatement_holds (colTorus GlobalTheory.ext_all_inputs propA_holds gSup_holds) (colAbel GlobalTheory.ext_all_inputs propA_holds gSup_holds) (colEmpty GlobalTheory.ext_all_inputs …`.
+A detailed English derivation is pending.
 -/
 theorem J_holds : JStatement :=
   jOf GlobalTheory.ext_all_inputs GlobalTheory.T.greedy_splitting_principal_torus_exists GlobalTheory.charStatement_holds
@@ -42,12 +42,12 @@ theorem J_holds : JStatement :=
     (colEmpty GlobalTheory.ext_all_inputs propA_holds gSup_holds)
 
 /- English proof (translation)
-The claim follows from `lemmaN dim_holds`.
+A detailed English derivation is pending.
 -/
 theorem N_holds : NStatement := lemmaN dim_holds
 
 /- English proof (translation)
-The claim follows from `iOf J_holds N_holds`.
+A detailed English derivation is pending.
 -/
 theorem I_holds : IStatement := iOf J_holds N_holds
 

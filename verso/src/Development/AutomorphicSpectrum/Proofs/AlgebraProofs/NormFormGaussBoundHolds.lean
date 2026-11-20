@@ -10,23 +10,21 @@ open MvPolynomial GroundTheory.Heights₂.Heights.HilbertSamuel
 noncomputable section
 
 /- English proof (translation)
-Take `⟨Q, hQm, hQ⟩` from `hu`. Take `⟨r0, hr0⟩` from `hw`. Establish `hcommon : ∃ e : ℕ, ∀ k, ∃ r : A, algebraMap A Ω r = w ^ e * (Q.coeff k : Ω)` using `by choose ef rf hf using fun k => hR _ (Q.coeff k).2`. Use `⟨(Finset.range (Q.natDegree + 1)).sup ef, fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ Finset.range (Q.natDegree + 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hle` using `Finset.le_sup (f := ef) hk`. Use `⟨r0 ^ ((Finset.range (Q.natDegree + 1)).sup ef - ef k) * rf k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hr0, hf, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`. Establish `: Q.coeff k = 0` using `Polynomial.coeff_eq_zero_of_natDegree_lt (by`. Simplify `hk)` using `[Nat.lt_succ_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨0, by simp [this]⟩`. Take `⟨e, he⟩` from `hcommon`. Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `hQ'm : (Q.map (algebraMap R Ω)).Monic` using `hQm.map _`. Establish `hl : (Q.map (algebraMap R Ω)).scaleRoots (w ^ e) ∈ Polynomial.lifts (algebraMap A Ω)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `k`. Rewrite using `[Polynomial.coeff_scaleRoots, Polynomial.coeff_map]`. Break down `lt_trichotomy k (Q.map (algebraMap R Ω)).natDegree with h | h | h` into its components or cases. Take `⟨r, hr⟩` from `he k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨r0 ^ (e * ((Q.map (algebraMap R Ω)).natDegree - k - 1)) * r, ?_⟩` and prove the remaining obligations. Establish `h1 : (Q.map (algebraMap R Ω)).natDegree - k = ((Q.map (algebraMap R Ω)).natDegree - k - 1) + 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_mul, map_pow, hr0, hr]`. Use `conv_rhs => rw [h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, ← pow_mul]`. Use `show _ = (Q.coeff k : Ω) * _`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : algebraMap R Ω (Q.coeff k) = 1`. Rewrite using `[← Polynomial.coeff_map, h]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hQ'm.coeff_natDegree`. Conclude with `⟨1, by rw [h2, h]; simp⟩`. Establish `h2 : algebraMap R Ω (Q.coeff k) = 0`. Rewrite using `[← Polynomial.coeff_map]`. Conclude with `Polynomial.coeff_eq_zero_of_natDegree_lt h`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, by rw [h2]; simp⟩`. Take `⟨Q', hQ', -, hQ'mon⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (Polynomial.monic_scaleRoots_iff _ |>.mpr hQ'm)`. Use `⟨Q', hQ'mon, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval_map, hQ']`. Establish `h3 : Polynomial.eval₂ (RingHom.id Ω) u (Q.map (algebraMap R Ω)) = 0`.
-
-Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hQ`. Use `Polynomial.scaleRoots_eval₂_eq_zero (RingHom.id Ω) (s := w ^ e) h3` as an intermediate fact. Simplify `this` using `[Polynomial.eval₂_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIntegral_pow_mul_of_subring {A Ω : Type*} [CommRing A] [CommRing Ω] [Algebra A Ω] (R : Subring Ω)
     (w : Ω) (hw : ∃ r, algebraMap A Ω r = w)
@@ -81,69 +79,63 @@ theorem isIntegral_pow_mul_of_subring {A Ω : Type*} [CommRing A] [CommRing Ω] 
   simpa [Polynomial.eval₂_id] using this
 
 /- English proof (translation)
-Introduce `Ω _ _ D l P _ hP hgen p hp j K d x c hchom hcp hint μ`. Use `Fact.mk hp` as an intermediate fact. Establish `hl` using `DehomCharpolyForms.ne_zero_of_generic hgen`. Use `set n := Module.finrank P Ω with hn`. Use `set f := LinearMap.charpoly (Algebra.lmul P Ω x) with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : algebraMap P Ω (f.coeff 0) = aeval (fun i => l i / l j) (c n)`. Use `congrArg (fun g => Polynomial.coeff g 0) hcp` as an intermediate fact. Simplify using `only [Polynomial.coeff_map, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow] at this`. Rewrite using `[this, Finset.sum_eq_single n]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b hb hbn`. Establish `: b < n` using `lt_of_le_of_ne (Nat.lt_succ_iff.mp (Finset.mem_range.mp hb)) hbn`. Rewrite using `[if_neg (by omega)]`. Introduce `h`. Simplify using `at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdet` using `LinearMap.det_eq_sign_charpoly_coeff (Algebra.lmul P Ω x)`. Rewrite `hdet` using `[← Algebra.norm_apply, ← hf]`. Establish `hc0 : f.coeff 0 = (-1) ^ n * Algebra.norm P x`. Rewrite using `[hdet, ← mul_assoc, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`. Set `V` to `(Rat.padicValuation p).valuationSubring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `σ` to `{i // i ≠ j}`. Establish `hmemP : ∀ i, l i / l j ∈ P` using `fun i => hP ▸ IntermediateField.subset_adjoin ℚ _ ⟨i, j, hl j, rfl⟩`. Set `tP : σ → P` to `fun i => ⟨l i / l j, hmemP i⟩`. Set `ω : σ → Ω` to `fun i => l i / l j`. Set `_ : Algebra (MvPolynomial σ V) (MvPolynomial σ ℚ)` to `MvPolynomial.algebraMvPolynomial`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψP : MvPolynomial σ V →+* P` to `(aeval tP : MvPolynomial σ ℚ →ₐ[ℚ] P).toRingHom.comp (algebraMap (MvPolynomial σ V) (MvPolynomial σ ℚ))`. Set `_ : Algebra (MvPolynomial σ V) P` to `ψP.toAlgebra`. Set `_ : Algebra (MvPolynomial σ V) Ω` to `(P.val.toRingHom.comp ψP).toAlgebra`. Establish `_ : IsScalarTower (MvPolynomial σ V) P Ω` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `fA : MvPolynomial σ ℚ →ₐ[MvPolynomial σ V] Ω` to `{ (aeval ω : MvPolynomial σ ℚ →ₐ[ℚ] Ω).toRingHom with commutes' := fun r => by show aeval ω _ = P.val (aeval tP _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(DFunLike.congr_fun (comp_aeval (f := tP) P.val) _).symm }`. Establish `hfA : ∀ G, fA G = aeval ω G` using `fun _ => rfl`. Establish `hinj : Function.Injective fA`. Introduce `a b hab`. Conclude with `DehomCharpolyForms.injective_chart hgen j (by rw [← hfA, ← hfA]; exact hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `halg : ∀ r, algebraMap (MvPolynomial σ V) Ω r = aeval ω (map (algebraMap V ℚ) r)` using `fun r => ((fA.commutes r).symm.trans (hfA _)).trans rfl`. Set `ν₀ : σ →₀ ℕ` to `Finsupp.equivFunOnFinite.symm fun _ => 1`. Set `W : MvPolynomial σ V` to `monomial ν₀ 1`. Set `w : Ω` to `algebraMap (MvPolynomial σ V) Ω W`. Establish `hwq : aeval ω (monomial ν₀ (1 : ℚ)) = w` using `by show _ = algebraMap (MvPolynomial σ V) Ω W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[halg]`. Simplify using `[W, map_monomial]`. Establish `hX : ∀ i : σ, algebraMap (MvPolynomial σ V) Ω (X i) = l i / l j`. Introduce `i`. Rewrite using `[halg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ω]`. Establish `hcut : ∀ k : σ, ∃ r, algebraMap (MvPolynomial σ V) Ω r * (l k / l j) = w`. Introduce `k`. Use `⟨monomial (ν₀ - Finsupp.single k 1) 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hX k, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show _ = algebraMap (MvPolynomial σ V) Ω W`. Use `congr 1`. Establish `hν : (ν₀ - Finsupp.single k 1) + Finsupp.single k 1 = ν₀` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr (by simp [ν₀]))`. Use `show monomial (ν₀ - Finsupp.single k 1) 1 * monomial (Finsupp.single k 1) 1 = monomial ν₀ 1`. Rewrite using `[monomial_mul, hν, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hratio : ∀ i, ∃ r, algebraMap (MvPolynomial σ V) Ω r = l i / l j`. Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `⟨1, by rw [map_one, div_self (hl i)]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨X ⟨i, h⟩, hX ⟨i, h⟩⟩`. Establish `hinv : ∀ k, ∃ r, algebraMap (MvPolynomial σ V) Ω r = w * (l j / l k)`. Introduce `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨W, by rw [div_self (hl k), mul_one]⟩`. Take `⟨r, hr⟩` from `hcut ⟨k, h⟩`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`. Establish `h1` using `hl k`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h2` using `hl j`. Use `show _ = algebraMap (MvPolynomial σ V) Ω r * (l k / l j) * (l j / l k)`. Clear the denominators using the available nonvanishing facts. Establish `hR : ∀ a ∈ Subring.closure ({z | ∃ i k, z = l i / l k} ∪ {z | ∃ r : ℕ, ¬ p ∣ r ∧ z = (r : Ω)⁻¹}), ∃ e : ℕ, ∃ r : MvPolynomial σ V, algebraMap (MvPolynomial σ V) Ω r = w ^ e * a`. Introduce `a ha`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `ha using Subring.closure_induction with`. Consider the case `mem z hz`. Break down `hz with ⟨i, k, rfl⟩ | ⟨r, hr, rfl⟩` into its components or cases. Take `⟨r1, h1⟩` from `hratio i`. Take `⟨r2, h2⟩` from `hinv k`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, r1 * r2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h1, h2, pow_one]`. Establish `h3` using `hl k`. Establish `h4` using `hl j`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨0, C ⟨(r : ℚ)⁻¹, DehomNormPIntegral.inv_natCast_mem hr⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[halg]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `one => exact ⟨0, 1, by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨e1, r1, h1⟩` from `ha`. Take `⟨e2, r2, h2⟩` from `hb`. Use `⟨e1 + e2, W ^ e2 * r1 + W ^ e1 * r2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, h1, h2]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show w ^ e2 * _ + w ^ e1 * _ = _`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg a _ ha`. Take `⟨e1, r1, h1⟩` from `ha`. Conclude with `⟨e1, -r1, by rw [map_neg, h1]; ring⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `mul a b _ _ ha hb`. Take `⟨e1, r1, h1⟩` from `ha`. Take `⟨e2, r2, h2⟩` from `hb`. Conclude with `⟨e1 + e2, r1 * r2, by rw [map_mul, h1, h2]; ring⟩`. Take `⟨e, hu'⟩` from `isIntegral_pow_mul_of_subring (A := MvPolynomial σ V) _ w ⟨W, rfl⟩ hR ((mem_integralClosure_iff _ _).mp hint)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : IsIntegral (MvPolynomial σ V) (algebraMap P Ω (Algebra.norm P (w ^ e * ((p : Ω) ^ K * x))))` using `(Algebra.isIntegral_norm P hu').algebraMap`. Set `sP : P` to `(algebraMap (MvPolynomial σ V) P W) ^ e * (p : P) ^ K`. Establish `hsP : algebraMap P Ω sP = w ^ e * (p : Ω) ^ K`. Simplify using `only [sP, map_mul, map_pow, map_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hnorm : algebraMap P Ω (Algebra.norm P (w ^ e * ((p : Ω) ^ K * x))) = (w ^ e * (p : Ω) ^ K) ^ n * algebraMap P Ω (Algebra.norm P x)`. Rewrite using `[← mul_assoc, ← hsP, map_mul, Algebra.norm_algebraMap, map_mul, map_pow]`. Use `set G := PullFormsGeneric.dehom j (c n) with hGdef`. Establish `hdeh : aeval ω G = aeval (fun i => l i / l j) (c n)`. Rewrite using `[hGdef, PullFormsGeneric.aeval_dehom]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun g => aeval g (c n)) (funext fun i => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `(div_self (hl _)).symm`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `E : MvPolynomial σ ℚ` to `monomial ((e * n) • ν₀) ((p : ℚ) ^ (n * K)) * G`. Establish `hEval : fA E = (-1) ^ n * algebraMap P Ω (Algebra.norm P (w ^ e * ((p : Ω) ^ K * x)))`. Establish `hmon : (monomial ((e * n) • ν₀) ((p : ℚ) ^ (n * K)) : MvPolynomial σ ℚ) = C ((p : ℚ) ^ (n * K)) * (monomial ν₀ (1 : ℚ)) ^ (e * n)`. Rewrite using `[monomial_pow, one_pow, C_mul_monomial, mul_one]`. Rewrite using `[hfA, map_mul, hmon, map_mul, aeval_C, map_pow (aeval ω), hwq, hdeh, ← h0, hc0, hnorm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [map_mul, map_pow, map_neg, map_one, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hEint : IsIntegral (MvPolynomial σ V) E`. Use `(isIntegral_algHom_iff fA hinj).mp ?_` and prove the remaining obligations. Rewrite using `[hEval]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(isIntegral_one.neg.pow n).mul hN`. Establish `hEc : ∀ ν, E.coeff ν ∈ V.toSubring`. Introduce `ν`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp (MvPolynomial.isIntegral_iff_isIntegral_coeff.mp hEint ν)`. Rewrite using `[← hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `y.2`. Establish `hF : (C ((p : ℚ) ^ (n * K)) * c n).IsHomogeneous d`. Simplify using `using (isHomogeneous_C (Fin (D + 1)) ((p : ℚ) ^ (n * K))).mul hchom`. Establish `hG : ∀ ν, (PullFormsGeneric.dehom j (C ((p : ℚ) ^ (n * K)) * c n)).coeff ν ∈ V.toSubring`. Introduce `ν`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : PullFormsGeneric.dehom j (C ((p : ℚ) ^ (n * K)) * c n) = C ((p : ℚ) ^ (n * K)) * G`. Simplify using `[PullFormsGeneric.dehom, hGdef]`. Establish `h2` using `hEc ((e * n) • ν₀ + ν)`. Rewrite `h2` using `[coeff_monomial_mul]`. Rewrite using `[h1, coeff_C_mul]`.
-
-Conclude with `h2`. Establish `hm` using `DehomNormPIntegral.coeff_mem_of_dehom_coeff_mem hgen j hF V.toSubring hG μ`. Rewrite `hm` using `[coeff_C_mul]`. Establish `hv` using `DehomNormPIntegral.padicValRat_nonneg_of_mem hm`. Distinguish the cases in `hc : (c n).coeff μ = 0`.
-
-Rewrite using `[hc, padicValRat.zero]`. Conclude with `neg_nonpos.mpr (Int.natCast_nonneg _)`. Establish `hp0 : (p : ℚ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Rewrite `hv` using `[padicValRat.mul (pow_ne_zero _ hp0) hc, padicValRat.pow _, padicValRat.self hp.one_lt]`. Move the coercions through the operations in `at hv ⊢`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem normFormGaussBound : NormFormGaussBound.Statement := by
   intro Ω _ _ D l P _ hP hgen p hp j K d x c hchom hcp hint μ

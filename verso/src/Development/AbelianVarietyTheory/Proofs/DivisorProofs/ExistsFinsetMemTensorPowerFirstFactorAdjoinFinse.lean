@@ -6,9 +6,9 @@ open scoped TensorProduct
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Unfold `firstAndFinite`. Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Apply `Set.union_subset_union_right` to reduce the goal to its premises. Apply `Set.iUnion_mono` to reduce the goal to its premises. Introduce `i`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Set.image_mono (by exact_mod_cast h)`.
+A detailed English derivation is pending.
 -/
 theorem firstAndFinite_mono (R A : Type) [CommRing R] [CommRing A] [Algebra R A] (k : ℕ)
     {F G : Finset A} (h : F ⊆ G) : firstAndFinite R A k F ≤ firstAndFinite R A k G := by
@@ -20,7 +20,7 @@ theorem firstAndFinite_mono (R A : Type) [CommRing R] [CommRing A] [Algebra R A]
   exact Set.image_mono (by exact_mod_cast h)
 
 /- English proof (translation)
-Simplify using `only [PiTensorProduct.singleAlgHom_apply]`. Use `map_prod (PiTensorProduct.tprodMonoidHom R (A := fun _ : Fin (k + 1) => A)) (fun u => MonoidHom.mulSingle (fun _ : Fin (k + 1) => A) u (f u)) Finset.univ` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Simplify using `only [MonoidHom.mulSingle_apply]`. Rewrite using `[Finset.univ_prod_mulSingle]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -37,11 +37,11 @@ theorem tprod_eq_prod_singleAlgHom (R A : Type) [CommRing R] [CommRing A] [Algeb
   rfl
 
 /- English proof (translation)
-Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Use `⟨Finset.univ.image f, ?_⟩` and prove the remaining obligations. Use `Subalgebra.smul_mem _ ?_ r` and prove the remaining obligations. Rewrite using `[tprod_eq_prod_singleAlgHom]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.prod_mem _ fun i _ => ?_` and prove the remaining obligations. Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Use `Or.inr (Set.mem_iUnion.2 ⟨i, f i, by simp, rfl⟩)` and prove the remaining obligations. Consider the case `add x y hx hy`. Take `⟨F, hF⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG⟩` from `hy`. Conclude with `⟨F ∪ G, Subalgebra.add_mem _ (firstAndFinite_mono R A k Finset.subset_union_left hF) (firstAndFinite_mono R A k Finset.subset_union_right hG)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_finset_mem_firstAndFinite (R A : Type) [CommRing R] [CommRing A] [Algebra R A] (k : ℕ)
     (x : PiTensorProduct R (fun _ : Fin (k + 1) => A)) : ∃ F : Finset A, x ∈ firstAndFinite R A k F := by

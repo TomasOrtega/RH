@@ -18,11 +18,11 @@ section Cong
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
 
 /- English proof (translation)
-Introduce `a b`. Establish `hq : ((qOf P : ℕ) : E) ≠ 0`. Establish `: qOf P ≠ 0` using `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `this` after adjusting the coercions. Establish `e0 : (((qOf P : ℕ) : E) ^ m)⁻¹ = algebraMap (𝓞 E) E (((qOf P : ℕ) : 𝓞 E) ^ (n - m)) * (((qOf P : ℕ) : E) ^ n)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_natCast]`. Establish `hn : ((qOf P : ℕ) : E) ^ n = ((qOf P : ℕ) : E) ^ m * ((qOf P : ℕ) : E) ^ (n - m)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hmn]`. Rewrite using `[hn]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `e : iA F E (((qOf P : ℕ) : E) ^ m)⁻¹ * ((k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) a b = iA F E (algebraMap (𝓞 E) E (((qOf P : ℕ) : 𝓞 E) ^ (n - m))) * (iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ * ((k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) a …`. Rewrite using `[← mul_assoc, ← map_mul, e0]`. Rewrite using `[e]`. Conclude with `GlobalTheory.CplPt.intAtA_mul (GlobalTheory.CplPt.intAtA_int _) (h a b)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congAt_mono {P : HeightOneSpectrum (𝓞 E)} {m n : ℕ} (hmn : m ≤ n) {k : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)}
     (h : CongAt (F := F) P n k) : CongAt (F := F) P m k := by
@@ -46,9 +46,9 @@ theorem congAt_mono {P : HeightOneSpectrum (𝓞 E)} {m n : ℕ} (hmn : m ≤ n)
 end Cong
 
 /- English proof (translation)
-Establish `hq : qOf P ≠ 0` using `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `hc : ((qOf P ^ d : ℕ) : E) ≠ 0` using `by exact_mod_cast pow_ne_zero d hq`. Establish `e : k x = x + (qOf P ^ d) • (((qOf P ^ d : ℕ) : E)⁻¹ • (k x - x))`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ hc, one_smul, add_sub_cancel]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hx (nsmul_mem (hk x hx) _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_local {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (d : ℕ)
     (k : Sp E n ≃ₗ[E] Sp E n) (hk : ∀ x ∈ stdAt E n P, ((qOf P ^ d : ℕ) : E)⁻¹ • (k x - x) ∈ stdAt E n P)
@@ -65,19 +65,17 @@ end GlobalTheory.FrameMove
 namespace GlobalTheory.FrameMove
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _ _ j hj β x x₁ κ p p₁ hxκ hp hp₁ P dep g hd1 hdD hg hIn`. Establish `hD1 : 1 ≤ (t.cst μ).D P` using `hd1.trans hdD`. Establish `hu` using `hp.frame P`. Establish `hu₁` using `hp₁.frame P`. Unfold `NearAt at hu hu₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `InFrame NearAt at hIn`. Rewrite `hu₁` using `[hxκ]`. Use `set h := (frsF t.sel (t.tup μ) p₁ P).trans ((frsF t.sel (t.tup μ) p P).symm.trans g.symm) with hh`. Establish `hs : h = g⁻¹ * ((frsF t.sel (t.tup μ) p P)⁻¹ * frsF t.sel (t.tup μ) p₁ P)`. Use extensionality with `w`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `key : ratA D.host.F (seamGL t.seam h) = ((ratA D.host.F (seamGL t.seam g))⁻¹ * ((ratA D.host.F (A.crd j hj) * x.1 * ratA D.host.F (A.fb j hj β P))⁻¹ * ratA D.host.F (seamGL t.seam (frsF t.sel (t.tup μ) p P)))⁻¹ * ratA D.host.F (seamGL t.seam g)) * (((ratA D.host.F (A.fb j hj β P) …`. Rewrite using `[hs]`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `GlobalTheory.CplPt.congAt_conj (dep P) (congAt_mono hdD (GlobalTheory.LevFrame.congAt_inv _ _ _ _ _ _ hD1 hu)) (fun a b => GlobalTheory.CplPt.seamGL_int t.seam ⟨g, hg⟩ a b)`. Establish `c2` using `GlobalTheory.LevFrame.congAt_inv _ _ _ _ _ _ hd1 hIn`. Establish `c3` using `congAt_mono hdD hu₁`. Establish `hC : CongAt (F` using `D.host.F) (seamP t.seam P.1) (dep P) (ratA D.host.F (seamGL t.seam h)) := by`. Rewrite using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.CplPt.congAt_mul _ (GlobalTheory.CplPt.congAt_mul _ c1 c2) c3`. Establish `hCi : CongAt (F` using `D.host.F) (seamP t.seam P.1) (dep P) (ratA D.host.F (seamGL t.seam h⁻¹)) := by`. Rewrite using `[map_inv, map_inv]`. Conclude with `GlobalTheory.LevFrame.congAt_inv _ _ _ _ _ _ hd1 hC`. Establish `l1` using `GlobalTheory.TwU.MidIndep.congAt_local t.seam P.1 (dep P) (D.R.N j) h hC`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `l2` using `GlobalTheory.TwU.MidIndep.congAt_local t.seam P.1 (dep P) (D.R.N j) h⁻¹ hCi`. Use `⟨fun w => ⟨fun hw => ?_, fun hw => mem_of_local P.1 (dep P) h l1 w hw⟩, fun w hw => ?_⟩` and prove the remaining obligations. Use `mem_of_local P.1 (dep P) h⁻¹ l2 _ hw` as an intermediate fact. Rewrite `this` using `[show (h⁻¹ : Sp t.X.E (D.R.N j) ≃ₗ[t.X.E] Sp t.X.E (D.R.N j)) (h w) = w from h.symm_apply_apply w]`. Then use the resulting hypothesis. Use `l1 w hw` as an intermediate fact.
-
-Rewrite `this` using `[Nat.cast_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem frames_mul : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   ∀ (j : ℕ) (hj : j ≤ D.R.m) (β : (St j hj).Ch) (x x₁ : UA D j hj)

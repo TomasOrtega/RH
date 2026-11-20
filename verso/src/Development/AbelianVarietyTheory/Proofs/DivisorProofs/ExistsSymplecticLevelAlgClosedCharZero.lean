@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.MBLow
 
 /- English proof (translation)
-Introduce `C _ _ _ P k hk`. Establish `hL : Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hk0 : (k : C) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `: NeZero (k : C)` using `⟨hk0⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `ze : Cˣ` to `(hζ.isUnit (by omega)).unit`. Establish `hze : IsPrimitiveRoot ze k` using `IsPrimitiveRoot.coe_units_iff.1 (by simpa [ze] using hζ)`. Take `⟨pt, hpt, hw⟩` from `EllipticLevel.exists_symplectic_system hL P k hk0 ze hze`. Establish `prim : ∀ {R : Type} [CommRing R] [Nontrivial R] (φ : C →+* R), IsPrimitiveRoot (Units.map φ.toMonoidHom ze) k` using `fun φ => hze.map_of_injective (f := Units.map φ.toMonoidHom) (Units.map_injective φ.injective)`. Establish `nt : ∀ (F : Type) [Field F], Nontrivial Γ(Spec (CommRingCat.of F), ⊤)` using `fun F _ => (Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨lev, -⟩` from `exists_level_of_pairing hL.globalFns hL.weil hL.mulN (Sp C) P k (unitOn ze) (by have := nt C; exact prim (Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom) (fun F _ s => by`. Use `nt F` as an intermediate fact. Use `⟨?_, prim (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom)⟩` and prove the remaining obligations. Establish `: CharZero F` using `charZero_of_injective_ringHom (Spec.preimage s).hom.injective`. Conclude with `Nat.cast_ne_zero.2 (by omega))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `pt hpt hw`. Conclude with `⟨ze, ⟨lev⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_level_algClosed_charZero :
     ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (P : PolAV (Sp C)) (k : ℕ), 1 ≤ k → ∃ ζ : Cˣ, Nonempty (Out.Level P k (unitOn ζ)) := by

@@ -15,36 +15,36 @@ import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.DiscreteSeriesC
 namespace CompanionTheory.D.LK
 
 /- English proof (translation)
-The claim follows from `genCO_of koszul_differential_sq_zero (cover2_of (acycAbs_of koszul_differential_sq_zero))`.
+A detailed English derivation is pending.
 -/
 theorem hGenCO : GenCO := genCO_of koszul_differential_sq_zero (cover2_of (acycAbs_of koszul_differential_sq_zero))
 
 /- English proof (translation)
-The claim follows from `inj_of (vanK_of (cok_of hGenCO) GlobalTheory.CompanionTheory.LKWtProj.wtProj (GlobalTheory.CompanionTheory.KWeightMajor.wtMajor_of DSIC.hLowSpan)) GlobalTheory.CompanionTheory.LKWtProj.wtProj koszul_differential_sq_zero`.
+A detailed English derivation is pending.
 -/
 theorem hInj : Inj :=
   inj_of (vanK_of (cok_of hGenCO) GlobalTheory.CompanionTheory.LKWtProj.wtProj (GlobalTheory.CompanionTheory.KWeightMajor.wtMajor_of DSIC.hLowSpan)) GlobalTheory.CompanionTheory.LKWtProj.wtProj koszul_differential_sq_zero
 
 /- English proof (translation)
-The claim follows from `multAlg_of DSIC.hLowSpan DSIC.hHWMap GlobalTheory.CompanionTheory.LKDens.dens GlobalTheory.CompanionTheory.LKInvLift.invLift GlobalTheory.CompanionTheory.HCdecomp.hcdec hGenCO top_degree_cycle hInj`.
+A detailed English derivation is pending.
 -/
 theorem hMultAlg : MultAlg :=
   multAlg_of DSIC.hLowSpan DSIC.hHWMap GlobalTheory.CompanionTheory.LKDens.dens GlobalTheory.CompanionTheory.LKInvLift.invLift GlobalTheory.CompanionTheory.HCdecomp.hcdec hGenCO top_degree_cycle hInj
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KModExists.kModExists DSIC.hSmMod CompanionTheory.D.gk.admitted.kFin_mem_smoothVecs DSIC.hKFinStab DSIC.hStabLink DSIC.hHWofType DSIC.hTypeOfHW`.
+A detailed English derivation is pending.
 -/
 theorem hKModExists : KModExists :=
   GlobalTheory.CompanionTheory.KModExists.kModExists DSIC.hSmMod CompanionTheory.D.gk.admitted.kFin_mem_smoothVecs DSIC.hKFinStab DSIC.hStabLink DSIC.hHWofType
     DSIC.hTypeOfHW
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LowKType.orthCyc`.
+A detailed English derivation is pending.
 -/
 theorem hOrthCyc : OrthCyc := GlobalTheory.CompanionTheory.LowKType.orthCyc
 
 /- English proof (translation)
-The claim follows from `lowKMultOneP_of hMultAlg hKModExists cyclic_vectors_dense hOrthCyc`.
+A detailed English derivation is pending.
 -/
 theorem low_K_type_multiplicity_one_unconditional : LowKMultOneP := lowKMultOneP_of hMultAlg hKModExists cyclic_vectors_dense hOrthCyc
 

@@ -13,7 +13,7 @@ namespace UnitChart
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Introduce `m hm k`. Establish `h1 : m = 0`. Rewrite `hm` using `[← C_1, C_apply]`. Conclude with `Finset.mem_singleton.mp (support_monomial_subset hm)`. Simplify using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homog_zero_deg_one : IsMultiHomog (1 : MRing ι) (0 : K → ℕ) := by
   intro m hm k
@@ -23,7 +23,7 @@ theorem homog_zero_deg_one : IsMultiHomog (1 : MRing ι) (0 : K → ℕ) := by
   simp [h1]
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨x, hx, z, hz, rfl⟩` from `Finset.mem_add.mp (support_mul a b hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, ha x hx k, hb z hz k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem homog_mul {a b : MRing ι} {da db : K → ℕ} (ha : IsMultiHomog a da) (hb : IsMultiHomog b db) :
     IsMultiHomog (a * b) (da + db) := by
@@ -33,7 +33,7 @@ theorem homog_mul {a b : MRing ι} {da db : K → ℕ} (ha : IsMultiHomog a da) 
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, ha x hx k, hb z hz k]
 
 /- English proof (translation)
-Introduce `m hm k`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `ha m h k`. Conclude with `hb m h k`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem homog_add {a b : MRing ι} {d : K → ℕ} (ha : IsMultiHomog a d) (hb : IsMultiHomog b d) :
     IsMultiHomog (a + b) d := by
@@ -44,7 +44,7 @@ theorem homog_add {a b : MRing ι} {d : K → ℕ} (ha : IsMultiHomog a d) (hb :
   · exact hb m h k
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `homog_add ha (fun m hm => hb m (by rwa [support_neg] at hm))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homog_sub {a b : MRing ι} {d : K → ℕ} (ha : IsMultiHomog a d) (hb : IsMultiHomog b d) :
     IsMultiHomog (a - b) d := by
@@ -52,7 +52,7 @@ theorem homog_sub {a b : MRing ι} {d : K → ℕ} (ha : IsMultiHomog a d) (hb :
   exact homog_add ha (fun m hm => hb m (by rwa [support_neg] at hm))
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[C_apply]`. Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset hm)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem homog_C (n : ℤ) : IsMultiHomog (C n : MRing ι) (0 : K → ℕ) := by
   intro m hm k
@@ -61,13 +61,13 @@ theorem homog_C (n : ℤ) : IsMultiHomog (C n : MRing ι) (0 : K → ℕ) := by
   simp
 
 /- English proof (translation)
-Break down `p with ⟨k0, i0⟩` into its components or cases. Introduce `m hm k`. Rewrite `hm` using `[X]`. Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset hm)]`. Distinguish the cases in `hk : k = k0`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Rewrite using `[Finset.sum_eq_single i0]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hi (sigma_mk_injective h).symm`. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hk]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hk (congrArg Sigma.fst h).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem homog_X [DecidableEq K] (p : Σ k, ι k) : IsMultiHomog (X p : MRing ι) (Pi.single p.1 1) := by
   classical
@@ -94,7 +94,7 @@ theorem homog_X [DecidableEq K] (p : Σ k, ι k) : IsMultiHomog (X p : MRing ι)
 def cMon (c : ∀ k, ι k) (m : K → ℕ) : MRing ι := ∏ k, X ⟨k, c k⟩ ^ m k
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using (homog_zero_deg_one : IsMultiHomog (1 : MRing ι) (0 : K → ℕ))`. Consider the case `succ n ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `homog_mul ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem homog_pow_lemma {a : MRing ι} {d : K → ℕ} (ha : IsMultiHomog a d) (n : ℕ) :
     IsMultiHomog (a ^ n) (n • d) := by
@@ -105,7 +105,7 @@ private theorem homog_pow_lemma {a : MRing ι} {d : K → ℕ} (ha : IsMultiHomo
     exact homog_mul ih ha
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (homog_zero_deg_one : IsMultiHomog (1 : MRing ι) (0 : K → ℕ))`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk]`. Conclude with `homog_mul (homog_pow_lemma (homog_X ⟨k, c k⟩) (m k)) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem homog_prod_lemma_2 [DecidableEq K] (c : ∀ k, ι k) (m : K → ℕ) (s : Finset K) :
     IsMultiHomog (∏ k ∈ s, (X ⟨k, c k⟩ : MRing ι) ^ m k) (∑ k ∈ s, m k • Pi.single k 1) := by
@@ -116,9 +116,9 @@ private theorem homog_prod_lemma_2 [DecidableEq K] (c : ∀ k, ι k) (m : K → 
     exact homog_mul (homog_pow_lemma (homog_X ⟨k, c k⟩) (m k)) ih
 
 /- English proof (translation)
-Establish `h` using `homog_prod_lemma_2 c m Finset.univ`. Establish `e : (∑ k ∈ Finset.univ, m k • Pi.single k 1 : K → ℕ) = m`. Use extensionality with `k'`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem homog_cMon (c : ∀ k, ι k) (m : K → ℕ) : IsMultiHomog (cMon c m) m := by
   classical
@@ -130,14 +130,14 @@ theorem homog_cMon (c : ∀ k, ι k) (m : K → ℕ) : IsMultiHomog (cMon c m) m
   exact h
 
 /- English proof (translation)
-Simplify using `only [cMon, map_prod, map_pow, aeval_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_cMon (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (m : K → ℕ) :
     aeval y (cMon c m) = ∏ k, y ⟨k, c k⟩ ^ m k := by
   simp only [cMon, map_prod, map_pow, aeval_X]
 
 /- English proof (translation)
-Introduce `hm`. Establish `hmem : cMon c m ∈ W.primeCompl` using `prod_mem fun k _ => pow_mem (Ideal.mem_primeCompl_iff.mpr (hc k)) _`. Conclude with `Ideal.mem_primeCompl_iff.mp hmem hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cMon_notMem {W : Ideal (MRing ι)} [hW : W.IsPrime] {c : ∀ k, ι k}
     (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ W) (m : K → ℕ) : cMon c m ∉ W := by
@@ -147,7 +147,7 @@ theorem cMon_notMem {W : Ideal (MRing ι)} [hW : W.IsPrime] {c : ∀ k, ι k}
   exact Ideal.mem_primeCompl_iff.mp hmem hm
 
 /- English proof (translation)
-Rewrite using `[Finsupp.prod_fintype _ _ (fun p => pow_zero _), Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hm k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_X_fst_lemma_3 {m : (Σ k, ι k) →₀ ℕ} {d : K → ℕ} (hm : ∀ k, ∑ i, m ⟨k, i⟩ = d k) :
     (m.prod fun p e => (X p.1 : MvPolynomial K Ω) ^ e) = ∏ k, (X k : MvPolynomial K Ω) ^ d k := by
@@ -157,9 +157,9 @@ private theorem prod_X_fst_lemma_3 {m : (Σ k, ι k) →₀ ℕ} {d : K → ℕ}
   rw [Finset.prod_pow_eq_pow_sum, hm k]
 
 /- English proof (translation)
-Use `conv_lhs => rw [h.as_sum]`. Use `conv_rhs => rw [h.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[mConeMap, aeval_monomial, aeval_monomial, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← prod_X_fst_lemma_3 (Ω := Ω) (fun k => hh m hm k)]`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, map_pow]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mConeMap_homog (y : (Σ k, ι k) → Ω) {h : MRing ι} {d : K → ℕ} (hh : IsMultiHomog h d) :
     mConeMap y h = MvPolynomial.C (aeval y h) * ∏ k, (X k : MvPolynomial K Ω) ^ d k := by
@@ -174,9 +174,9 @@ theorem mConeMap_homog (y : (Σ k, ι k) → Ω) {h : MRing ι} {d : K → ℕ} 
   simp only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, map_pow]
 
 /- English proof (translation)
-Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mConeMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_scaled (y : (Σ k, ι k) → Ω) (τ : K → Ω) (h : MRing ι) :
     aeval (fun p : Σ k, ι k => y p * τ p.1) h = aeval τ (mConeMap y h) := by
@@ -188,7 +188,7 @@ theorem aeval_scaled (y : (Σ k, ι k) → Ω) (τ : K → Ω) (h : MRing ι) :
     simp [mConeMap]
 
 /- English proof (translation)
-Rewrite using `[aeval_scaled, mConeMap_homog y hh, map_mul, aeval_C, map_prod]`. Simplify using `only [map_pow, aeval_X, Algebra.algebraMap_self, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_scaled_homog (y : (Σ k, ι k) → Ω) (τ : K → Ω) {h : MRing ι} {d : K → ℕ}
     (hh : IsMultiHomog h d) :
@@ -197,7 +197,7 @@ theorem aeval_scaled_homog (y : (Σ k, ι k) → Ω) (τ : K → Ω) {h : MRing 
   simp only [map_pow, aeval_X, Algebra.algebraMap_self, RingHom.id_apply]
 
 /- English proof (translation)
-Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap_homog y hh, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_of_aeval_eq_zero {y : (Σ k, ι k) → Ω} {h : MRing ι} {d : K → ℕ} (hh : IsMultiHomog h d)
     (h0 : aeval y h = 0) : h ∈ mCoordIdeal y := by
@@ -205,20 +205,20 @@ theorem mem_of_aeval_eq_zero {y : (Σ k, ι k) → Ω} {h : MRing ι} {d : K →
   simp
 
 /- English proof (translation)
-Conclude with `fun h0 => hn (mem_of_aeval_eq_zero hh h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem aeval_ne_zero {y : (Σ k, ι k) → Ω} {h : MRing ι} {d : K → ℕ} (hh : IsMultiHomog h d)
     (hn : h ∉ mCoordIdeal y) : aeval y h ≠ 0 := by
   exact fun h0 => hn (mem_of_aeval_eq_zero hh h0)
 
 /- English proof (translation)
-Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Use `⟨Pi.single p.1 1, X p, homog_X p, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_X, Finset.prod_eq_single p.1 (fun k _ hk => by rw [Pi.single_eq_of_ne hk, pow_zero]) (by simp), Pi.single_eq_same, pow_one, div_mul_cancel₀ _ (hc p.1)]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `algebraMap z`. Conclude with `⟨0, C z, homog_C z, by simp⟩`. Consider the case `add x1 x2 _ _ ih1 ih2`. Take `⟨m1, G1, hG1, e1⟩` from `ih1`. Take `⟨m2, G2, hG2, e2⟩` from `ih2`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m1 + m2, G1 * cMon c m2 + G2 * cMon c m1, homog_add (homog_mul hG1 (homog_cMon c m2)) (by rw [add_comm m1 m2]; exact homog_mul hG2 (homog_cMon c m1)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, aeval_cMon, aeval_cMon, ← e1, ← e2]`. Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x1 x2 _ _ ih1 ih2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨m1, G1, hG1, e1⟩` from `ih1`. Take `⟨m2, G2, hG2, e2⟩` from `ih2`. Use `⟨m1 + m2, G1 * G2, homog_mul hG1 hG2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← e1, ← e2]`. Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -252,13 +252,13 @@ theorem chart_form {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y �
     ring
 
 /- English proof (translation)
-Set `J : Ideal R` to `{ carrier := {a | (a : Ω) * w ∈ R} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Use `push_cast`. Rewrite using `[add_mul]`. Conclude with `add_mem ha hb`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c a ha => by`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul] at ha ⊢`. Use `push_cast`. Rewrite using `[mul_assoc]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_mem c.2 ha }`. Assume the negation of the conclusion as `hw`. Establish `hJ : J ≠ ⊤`. Introduce `hJ`. Establish `h1 : (1 : R) ∈ J` using `hJ ▸ Submodule.mem_top`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `hw` to reduce the goal to its premises. Simplify `h1` using `[J]`. Take `⟨q, hq, hJq⟩` from `Ideal.exists_le_maximal J hJ`. Take `⟨a, ha, haw⟩` from `h q hq.isPrime`. Conclude with `ha (hJq (show a ∈ J from haw))`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_local (R : Subalgebra ℤ Ω) (w : Ω)
     (h : ∀ q : Ideal R, q.IsPrime → ∃ a : R, a ∉ q ∧ (a : Ω) * w ∈ R) : w ∈ R := by
@@ -286,7 +286,7 @@ theorem mem_of_local (R : Subalgebra ℤ Ω) (w : Ω)
   exact ha (hJq (show a ∈ J from haw))
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast (Y k) (b k), ← zpow_add₀ (hY k)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zpow_factor {a b : K → ℕ} (Y : K → Ω) (hY : ∀ k, Y k ≠ 0) :
     (∏ k, Y k ^ (-((a k : ℤ) - b k))) * ∏ k, Y k ^ a k = ∏ k, Y k ^ b k := by
@@ -297,7 +297,7 @@ theorem zpow_factor {a b : K → ℕ} (Y : K → Ω) (hY : ∀ k, Y k ≠ 0) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast (Y k)⁻¹ (a k), inv_zpow', inv_zpow', ← zpow_add₀ (hY k)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zpow_factor_inv {a b : K → ℕ} (Y : K → Ω) (hY : ∀ k, Y k ≠ 0) :
     (∏ k, Y k ^ (-((a k : ℤ) - b k))) * ∏ k, (Y k)⁻¹ ^ b k = ∏ k, (Y k)⁻¹ ^ a k := by
@@ -312,39 +312,35 @@ end UnitChart
 open UnitChart in
 
 /- English proof (translation)
-Establish `hA : aeval y f ≠ 0` using `aeval_ne_zero hf hfn`. Establish `hB : aeval y g ≠ 0` using `aeval_ne_zero hg hgn`. Prove the components needed by the constructor for the conclusion. Introduce `hU c hc`. Establish `hE0 : ∏ k, y ⟨k, c k⟩ ^ (-((df k : ℤ) - dg k)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hρ0 : aeval y f / aeval y g * ∏ k, y ⟨k, c k⟩ ^ (-((df k : ℤ) - dg k)) ≠ 0` using `mul_ne_zero (div_ne_zero hA hB) hE0`. Set `gens : (Σ k, ι k) → chartRingZ y c` to `fun p => ⟨y p / y ⟨p.1, c p.1⟩, Algebra.subset_adjoin ⟨p, rfl⟩⟩`. Establish `hD : ∀ x : MRing ι, ((aeval gens x : chartRingZ y c) : Ω) = aeval (fun p : Σ k, ι k => y p * (y ⟨p.1, c p.1⟩)⁻¹) x`. Introduce `x`. Conclude with `(comp_aeval_apply (R := ℤ) (S₁ := chartRingZ y c) (f := gens) (chartRingZ y c).val x).trans (congrArg (aeval · x) (funext fun p => by simp [gens, div_eq_mul_inv]))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hZ : ∀ x ∈ mCoordIdeal y, aeval (fun p : Σ k, ι k => y p * (y ⟨p.1, c p.1⟩)⁻¹) x = 0`. Introduce `x hx`. Rewrite `hx` using `[mCoordIdeal, RingHom.mem_ker]`. Establish `hx' : mConeMap y x = 0` using `hx`. Conclude with `(aeval_scaled y (fun k => (y ⟨k, c k⟩)⁻¹) x).trans (by rw [hx', map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : ∀ q : Ideal (chartRingZ y c), q.IsPrime → ∃ u v : MRing ι, aeval gens u ∉ q ∧ aeval gens v ∉ q ∧ u * f - v * g ∈ mCoordIdeal y`. Introduce `q hq`. Establish `hWp : (Ideal.comap (aeval gens : MRing ι →ₐ[ℤ] chartRingZ y c) q).IsPrime` using `inferInstance`. Establish `hPW : mCoordIdeal y ≤ Ideal.comap (aeval gens : MRing ι →ₐ[ℤ] chartRingZ y c) q`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap]`. Establish `h0 : aeval gens x = 0` using `Subtype.ext ((hD x).trans (hZ x hx))`. Rewrite using `[h0]`. Conclude with `q.zero_mem`. Establish `hrel : IsRelevant (Ideal.comap (aeval gens : MRing ι →ₐ[ℤ] chartRingZ y c) q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k`. Use `⟨c k, fun hX => hq.ne_top ((Ideal.eq_top_iff_one q).mpr ?_)⟩` and prove the remaining obligations. Rewrite `hX` using `[Ideal.mem_comap, aeval_X]`. Establish `h1 : gens ⟨k, c k⟩ = 1` using `Subtype.ext (div_self (hc k))`. Rewrite `hX` using `[h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hU _ hWp hPW hrel`. Establish `hkey : ∀ u v : MRing ι, u * f - v * g ∈ mCoordIdeal y → aeval (fun p : Σ k, ι k => y p * (y ⟨p.1, c p.1⟩)⁻¹) u * (aeval y f / aeval y g * ∏ k, y ⟨k, c k⟩ ^ (-((df k : ℤ) - dg k))) = aeval (fun p : Σ k, ι k => y p * (y ⟨p.1, c p.1⟩)⁻¹) v`. Introduce `u v huv`. Establish `h0` using `hZ _ huv`. Rewrite `h0` using `[map_sub, map_mul, map_mul, aeval_scaled_homog y (fun k => (y ⟨k, c k⟩)⁻¹) hf, aeval_scaled_homog y (fun k => (y ⟨k, c k⟩)⁻¹) hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h18` using `zpow_factor_inv (a := df) (b := dg) (fun k => y ⟨k, c k⟩) hc`. Establish `hTg : ∏ k, (y ⟨k, c k⟩)⁻¹ ^ dg k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (inv_ne_zero (hc k))`. Establish `hBB : aeval y g / aeval y g = 1` using `div_self hB`. Apply `mul_right_cancel₀ (mul_ne_zero hTg hB)` to reduce the goal to its premises. Take the linear combination `h0 + (aeval (fun p : Σ k, ι k => y p * (y ⟨p.1, c p.1⟩)⁻¹) u * aeval y f) * h18 + (aeval (fun p : Σ k, ι k => y p * (y ⟨p.1, c p.1⟩)⁻¹) u * aeval y f * (∏ k, y ⟨k, c k⟩ ^ (-((df k : ℤ) - dg k))) * ∏ k, (y ⟨k, c k⟩)⁻¹ ^ dg k) * hBB`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mem_of_local _ _ fun q hq => ?_, mem_of_local _ _ fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨u, v, hu, hv, huv⟩` from `hW q hq`. Use `⟨aeval gens u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hD u, hkey u v huv, ← hD v]`. Conclude with `(aeval gens v).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨u, v, hu, hv, huv⟩` from `hW q hq`. Use `⟨aeval gens v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[hD v, (mul_inv_eq_iff_eq_mul₀ hρ0).mpr (hkey u v huv).symm, ← hD u]`. Conclude with `(aeval gens u).2`. Introduce `hC W hWp hPW hrel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrel' : ∀ k, ∃ i, (X ⟨k, i⟩ : MRing ι) ∉ W` using `hrel`. Use `choose c hcW using hrel'`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 => hcW k (hPW (mem_of_aeval_eq_zero (homog_X ⟨k, c k⟩) (by rw [aeval_X]; exact h0)))`. Establish `hE0 : ∏ k, y ⟨k, c k⟩ ^ (-((df k : ℤ) - dg k)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`. Establish `hρ0 : aeval y f / aeval y g * ∏ k, y ⟨k, c k⟩ ^ (-((df k : ℤ) - dg k)) ≠ 0` using `mul_ne_zero (div_ne_zero hA hB) hE0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hC c hc`. Take `⟨m, G, hG, eG⟩` from `chart_form hc h1`. Take `⟨m', G', hG', eG'⟩` from `chart_form hc h2`. Establish `hGW : G ∉ W`. Introduce `hGmem`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `cMon_notMem (W := W) hcW (m + m')` to reduce the goal to its premises. Establish `hmem : G * G' - cMon c (m + m') ∈ mCoordIdeal y`. Apply `mem_of_aeval_eq_zero (homog_sub (homog_mul hG hG') (homog_cMon c (m + m')))` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, aeval_cMon, ← eG, ← eG']`. Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hρρ` using `mul_inv_cancel₀ hρ0`. Take the linear combination `((∏ k, y ⟨k, c k⟩ ^ m k) * ∏ k, y ⟨k, c k⟩ ^ m' k) * hρρ`. Establish `h3` using `W.sub_mem (W.mul_mem_right G' hGmem) (hPW hmem)`. Rewrite `h3` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Use `⟨cMon c (dg + m), G * cMon c df, cMon_notMem hcW _, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hv`. Break down `hWp.mem_or_mem hv with h | h` into its components or cases. Conclude with `hGW h`. Conclude with `cMon_notMem hcW df h`. Establish `hd : (dg + m) + df = (m + df) + dg` using `by abel`.
-
-Apply `mem_of_aeval_eq_zero (homog_sub (homog_mul (homog_cMon c (dg + m)) hf) (by rw [hd]; exact homog_mul (homog_mul hG (homog_cMon c df)) hg))` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, map_mul, map_mul, aeval_cMon, aeval_cMon, ← eG]`. Establish `h17` using `zpow_factor (a := df) (b := dg) (fun k => y ⟨k, c k⟩) hc`. Establish `hBB : aeval y g / aeval y g = 1` using `div_self hB`. Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`.
-
-Take the linear combination `(-((∏ k, y ⟨k, c k⟩ ^ m k) * aeval y f)) * h17 - (aeval y f * (∏ k, y ⟨k, c k⟩ ^ (-((df k : ℤ) - dg k))) * (∏ k, y ⟨k, c k⟩ ^ m k) * ∏ k, y ⟨k, c k⟩ ^ df k) * hBB`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isUnitSec_iff_chart (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
     (y : (Σ k, ι k) → Ω) (f g : MRing ι) (df dg : K → ℕ) (_hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0)

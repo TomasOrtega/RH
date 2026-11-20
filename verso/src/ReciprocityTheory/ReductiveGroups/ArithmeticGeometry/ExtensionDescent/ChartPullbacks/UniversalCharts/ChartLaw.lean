@@ -48,13 +48,11 @@ theorem algOverHom_eq {A B : Type} [CommRing A] [Algebra R A] [CommRing B] [Alge
 variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg CommaMorphism.left h` as an intermediate fact. Simplify using `only [Over.comp_left, spMap_left] at this`. Use `show Spec.map _ ≫ w.left = _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `show (sp R).hom ≫ η[G].left = η[G].left`. Simplify using `only [Over.mk_hom]`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `Category.id_comp _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, spMap_left]`. Use `h.trans ?_` and prove the remaining obligations. Use `show η[G].left = (sp R).hom ≫ η[G].left`.
-
-Simplify using `only [Over.mk_hom]`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `(Category.id_comp _).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTan_iff (w : sp (R₀ := R) (DualNumber R) ⟶ G) : IsTan w ↔ IsTangent w := by
   constructor
@@ -81,11 +79,11 @@ def prodPts {d : ℕ} (c : Fin d → R) (v : Fin d → (sp (R₀ := R) (DualNumb
   (List.ofFn fun i => spMap (scaleD (c i)) ≫ v i).prod
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: u = fun i => spMap (scaleD (c i)) ≫ v i`. Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hu i]`. Both sides reduce to the same expression. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fun i => spMap (scaleD (c i)) ≫ v i, fun i => rfl, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLieComb_iff {d : ℕ} (c : Fin d → R) (v : Fin d → (epsR R ⟶ G)) (w : epsR R ⟶ G) :
     IsLieComb c v w ↔ w = prodPts c v := by
@@ -104,14 +102,14 @@ theorem isLieComb_iff {d : ℕ} (c : Fin d → R) (v : Fin d → (epsR R ⟶ G))
 variable {n : ℕ} {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ G} (hx : IsUnivChart G n x)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem tcoord_congr {w w' : sp (R₀ := R) (DualNumber R) ⟶ G} (e : w = w') (h : IsTan w)
     (h' : IsTan w') : tcoord hx w h = tcoord hx w' h' := by
   subst e; rfl
 
 /- English proof (translation)
-The claim follows from `| 0, u, hu => by have e0 : (List.ofFn u).prod = 1 := by simp refine ⟨e0 ▸ isTan_one, ?_⟩ rw [tcoord_congr hx e0 _ isTan_one, tcoord_one] simp | k + 1, u, hu => by obtain ⟨h, e⟩ := list_prod_tan (fun i => u i.succ) (fun i => hu i.succ) have e0 : (List.ofFn u).prod = u 0 * (List.of …`.
+A detailed English derivation is pending.
 -/
 theorem list_prod_tan : ∀ {k : ℕ} (u : Fin k → (sp (R₀ := R) (DualNumber R) ⟶ G))
     (hu : ∀ i, IsTan (u i)), ∃ h : IsTan (List.ofFn u).prod, tcoord hx _ h = ∑ i, tcoord hx (u i) (hu i)
@@ -128,7 +126,7 @@ theorem list_prod_tan : ∀ {k : ℕ} (u : Fin k → (sp (R₀ := R) (DualNumber
     rw [tcoord_congr hx e0 _ (isTan_mul (hu 0) h), tcoord_mul hx (hu 0) h, e, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Take `⟨h, e⟩` from `list_prod_tan hx (fun i => spMap (scaleD (c i)) ≫ v i) (fun i => isTan_scale (c i) (hv i))`. Use `⟨h, e.trans ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => tcoord_scale hx (c i) (hv i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prodPts_tan {d : ℕ} (c : Fin d → R) (v : Fin d → (sp (R₀ := R) (DualNumber R) ⟶ G))
     (hv : ∀ i, IsTan (v i)) :
@@ -138,7 +136,7 @@ theorem prodPts_tan {d : ℕ} (c : Fin d → R) (v : Fin d → (sp (R₀ := R) (
   exact Finset.sum_congr rfl fun i _ => tcoord_scale hx (c i) (hv i)
 
 /- English proof (translation)
-Rewrite using `[tcoord_spec hx w h, tcoord_spec hx w' h', e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tan_ext {w w' : sp (R₀ := R) (DualNumber R) ⟶ G} (h : IsTan w) (h' : IsTan w')
     (e : tcoord hx w h = tcoord hx w' h') : w = w' := by

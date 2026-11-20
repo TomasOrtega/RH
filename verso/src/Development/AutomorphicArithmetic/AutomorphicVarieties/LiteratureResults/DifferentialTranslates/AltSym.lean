@@ -5,29 +5,25 @@ noncomputable section
 namespace UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `V F _ _ _ _ q w p L γ u D hw hL hγ hu hD`. Establish `hA : HasFDerivAt w (fderiv ℝ w p) p` using `hw.hasFDerivAt`. Establish `hDi : ∀ i, D i = fderiv ℝ w p (L i p) (fun j => L (i.succAbove j) p) + ∑ j : Fin q, w p (Function.update (fun j' => L (i.succAbove j') p) j (L (i.succAbove j) (L i p)))`. Introduce `i`. Establish `hg : ∀ j : Fin q, HasFDerivAt (fun t => u i (i.succAbove j) t) (ContinuousLinearMap.smulRight (1 : ℝ →L[ℝ] ℝ) (L (i.succAbove j) (L i p))) 0` using `fun j => ((hu i (i.succAbove j)).2).hasFDerivAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hA' : HasFDerivAt w (fderiv ℝ w p) (γ i 0)`. Rewrite using `[(hγ i).1]`. Conclude with `hA`. Establish `hf : HasFDerivAt (fun t => w (γ i t)) ((fderiv ℝ w p).comp (ContinuousLinearMap.smulRight (1 : ℝ →L[ℝ] ℝ) (L i p))) 0` using `hA'.comp 0 (hγ i).2.hasFDerivAt`. Establish `H` using `(hf.continuousAlternatingMap_apply hg).hasDerivAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hD i).unique H]`. Establish `hu0 : ∀ j, u i j 0 = L j p` using `fun j => (hu i j).1`. Simplify using `[hu0, (hγ i).1]`. Establish `hrm : ∀ i : Fin (q + 1), Fin.removeNth i (fun k => L k p) = fun j => L (i.succAbove j) p` using `fun i => rfl`. Rewrite using `[extDeriv, ContinuousAlternatingMap.alternatizeUncurryFin_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hDi, smul_add, Finset.sum_add_distrib, hrm]`. It suffices to establish `hS : ∑ i : Fin (q + 1), (-1 : ℤ) ^ (i : ℕ) • ∑ j : Fin q, w p (Function.update (fun j' => L (i.succAbove j') p) j (L (i.succAbove j) (L i p))) = 0 by`. Rewrite using `[hS, add_zero]`. Use `set M : Fin (q + 1) → Fin (q + 1) → V := fun i k => L k (L i p) with hM`. Establish `hMs : ∀ i k, M i k = M k i` using `fun i k => hL k i`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Y : Fin (q + 1) → Fin (q + 1) → Fin (q + 1) → V := fun i k m => if m = i ∨ m = k then M i k else L m p with hYdef`. Use `set c : Fin (q + 1) → Fin (q + 1) → F := fun i k => if i = k then 0 else (-1 : ℤ) ^ (i : ℕ) • w p (Fin.removeNth i (Y i k)) with hcdef`. Establish `hc : ∀ i k, c i k + c k i = 0`. Introduce `i k`. Distinguish the cases in `hik : i = k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Substitute `hik` using the available equality. Simplify using `[c]`. Establish `hY : Y k i = Y i k`. Use function extensionality and compare the values at `m`. Simplify using `only [Y, hMs k i, or_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [c, hik, Ne.symm hik, if_false, hY]`. Conclude with `(w p).neg_one_pow_smul_map_removeNth_add_eq_zero_of_eq (v := Y i k) (by simp [Y]) hik`. Establish `hsum : ∑ i, ∑ k, c i k = 0`. Establish `h1 : ∑ i, ∑ k, c i k = -∑ i, ∑ k, c i k` using `by conv_lhs => rw [Finset.sum_comm]`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `eq_neg_iff_add_eq_zero.mpr (hc k i)`. Establish `h2 : (2 : ℝ) • ∑ i, ∑ k, c i k = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[two_smul]`. Use `nth_rewrite 2 [h1]`. Conclude with `add_neg_cancel _`. Conclude with `(smul_eq_zero.mp h2).resolve_left two_ne_zero`. Establish `hne : ∀ (i : Fin (q + 1)) (j : Fin q), i ≠ i.succAbove j` using `fun i j => (Fin.succAbove_ne i j).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hrow : ∀ i : Fin (q + 1), (-1 : ℤ) ^ (i : ℕ) • ∑ j : Fin q, w p (Function.update (fun j' => L (i.succAbove j') p) j (L (i.succAbove j) (L i p))) = ∑ k, c i k`. Introduce `i`. Rewrite using `[Fin.sum_univ_succAbove _ i, Finset.smul_sum]`. Simplify using `only [c, if_pos rfl, zero_add, hne, if_false]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Use `congr 2`. Use function extensionality and compare the values at `j'`. Distinguish the cases in `hj : j' = j`. Substitute `hj` using the available equality. Simplify using `[Fin.removeNth_apply, Y, M]`.
-
-Simplify using `[Fin.removeNth_apply, Y, M, Function.update_of_ne hj, Fin.succAbove_ne i j', hj]`. Rewrite using `[← hsum]`. Conclude with `Finset.sum_congr rfl fun i _ => hrow i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem altSym : AltSym := by
   intro V F _ _ _ _ q w p L γ u D hw hL hγ hu hD

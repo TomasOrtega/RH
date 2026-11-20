@@ -12,11 +12,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SqLift
 
 /- English proof (translation)
-Introduce `R R₁ R₀ _ _ _ ρ π₁ g A₀ _ A _ i h hA hg`. Establish `e : spMap (π₁.comp ρ) = spMap π₁ ≫ spMap ρ`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `h₂` using `isGrpPullback_pullback A (spMap ρ)`. Establish `hw : i ≫ A.hom = (A₀.hom ≫ spMap π₁) ≫ spMap ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h.1.w, e, Category.assoc]`. Set `i₁ : A₀.left ⟶ ((Over.pullback (spMap ρ)).obj A).left` to `h₂.1.lift i (A₀.hom ≫ spMap π₁) hw`. Establish `c₁ : i₁ ≫ Limits.pullback.fst A.hom (spMap ρ) = i` using `h₂.1.lift_fst _ _ _`. Establish `c₂ : i₁ ≫ ((Over.pullback (spMap ρ)).obj A).hom = A₀.hom ≫ spMap π₁` using `h₂.1.lift_snd _ _ _`. Establish `h₁ : IsGrpPullback A₀ ((Over.pullback (spMap ρ)).obj A) (spMap π₁) i₁` using `h₂.cancel (h.congr e c₁.symm) c₂`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(Over.pullback (spMap ρ)).obj A, Functor.grpObjObj, i₁, Limits.pullback.fst A.hom (spMap ρ), h₁, h₂, c₁, isAbelianScheme_pullback_obj (spMap ρ) A hA, ?_⟩` and prove the remaining obligations. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hg`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_intermediate_grpPullback : ∀ (R R₁ R₀ : Type) [CommRing R] [CommRing R₁] [CommRing R₀] (ρ : R →+* R₁) (π₁ : R₁ →+* R₀) (g : ℕ)
     (A₀ : Over (Sp R₀)) [GrpObj A₀] (A : Over (Sp R)) [GrpObj A] (i : A₀.left ⟶ A.left),

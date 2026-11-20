@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
 theorem coefL_apply (x w : R.H) (X : V) : coefL R x X w = ⟪x, w⟫_ℂ • X := rfl
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `nil => exact hy`. Consider the case `cons Y b ih`. Conclude with `dsig_smooth hR.2 (hb Y (by simp)) (ih fun Z hZ => hb Z (by simp [hZ]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dsigW_smooth (hR : R.IsDG ε mu) {y : R.H} (hy : y ∈ R.sm) (b : List (Mx k r))
     (hb : ∀ Y ∈ b, B.inLie k r Y) : PI.UpqRep.dsigW (k := k) (r := r) R.σ b y ∈ R.sm := by
@@ -42,9 +42,9 @@ theorem dsigW_smooth (hR : R.IsDG ε mu) {y : R.H} (hy : y ∈ R.sm) (b : List (
     exact dsig_smooth hR.2 (hb Y (by simp)) (ih fun Z hZ => hb Z (by simp [hZ]))
 
 /- English proof (translation)
-Take `⟨hmul, -⟩` from `rep_basic_of_isDS hK k r ε mu R hR`. Establish `h` using `(coefL R x X).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_apply (σ := R.σ) hY hy (R.σ g))`. Rewrite using `[← coefL_apply, ← h.deriv]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `he : NormedSpace.exp ((t : ℂ) • Y) ∈ GG k r` using `exp_mem hY t`. Rewrite using `[hF _ (Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul hg he), hmul g hg _ he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem right_step (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) (X : V) (F : Mx k r → V) (x : R.H) {y : R.H}
     (hy : y ∈ R.sm) (hF : ∀ g ∈ GG k r, F g = ⟪x, R.σ g y⟫_ℂ • X) {Y : Mx k r} (hY : B.inLie k r Y)
@@ -61,11 +61,11 @@ theorem right_step (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) (X : V) (F : Mx k r 
   rfl
 
 /- English proof (translation)
-Take `⟨hmul, hone, hinner, -⟩` from `rep_basic_of_isDS hK k r ε mu R hR`. Establish `h1` using `(hasDerivAt_dsig (σ := R.σ) hY hx).inner ℂ (hasDerivAt_const (0 : ℝ) (R.σ g y))`. Simplify using `only [inner_zero_right, zero_add] at h1`. Establish `h` using `h1.smul_const X`. Unfold `B.LdV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← h.deriv]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `he : NormedSpace.exp ((t : ℂ) • Y) ∈ GG k r` using `exp_mem hY t`. Establish `he' : NormedSpace.exp (-((t : ℂ) • Y)) ∈ GG k r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `exp_mem hY (-t)` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_neg, neg_smul]`. Then use the resulting hypothesis. Establish `hee : NormedSpace.exp ((t : ℂ) • Y) * NormedSpace.exp (-((t : ℂ) • Y)) = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.refl ((t : ℂ) • Y)).neg_right, add_neg_cancel, NormedSpace.exp_zero]`. Rewrite using `[hF _ (Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul he' hg), hmul _ he' g hg, ← hinner _ he, ← hmul _ he _ he', hee, hone]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem left_step (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) (X : V) (F : Mx k r → V) {x : R.H} (y : R.H)
     (hx : x ∈ R.sm) (hF : ∀ g ∈ GG k r, F g = ⟪x, R.σ g y⟫_ℂ • X) {Y : Mx k r} (hY : B.inLie k r Y)
@@ -88,15 +88,13 @@ theorem left_step (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) (X : V) (F : Mx k r �
   rw [hF _ (Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul he' hg), hmul _ he' g hg, ← hinner _ he, ← hmul _ he _ he', hee, hone]
 
 /- English proof (translation)
-Introduce `hK k r ε mu R V _ _ X F hR x hx y hy hF`. Use `⟨fun g₀ hg₀ => ?_, fun a b ha hb => ?_⟩` and prove the remaining obligations. Take `⟨U, G, hU, hgU, hG, hfG⟩` from `hy g₀ hg₀`. Use `⟨U, fun g => coefL R x X (G g), hU, hgU, (coefL R x X).contDiff.comp_contDiffOn hG, ?_⟩` and prove the remaining obligations. Introduce `g hg hgG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : R.σ g y = G g` using `hfG g hg hgG`. Rewrite using `[hF g hgG, e]`. Both sides reduce to the same expression. Establish `hRw : ∀ g ∈ GG k r, B.Rw b F g = ⟪x, R.σ g (PI.UpqRep.dsigW (k` using `k) (r := r) R.σ b y)⟫_ℂ • X := by`. Proceed by induction on `b with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `nil => exact hF`. Consider the case `cons Y b ih`. Establish `hb' : ∀ Z ∈ b, B.inLie k r Z` using `fun Z hZ => hb Z (by simp [hZ])`. Introduce `g hg`. Conclude with `right_step hK hR X _ x (dsigW_smooth hR hy b hb') (ih hb') (hb Y (by simp)) g hg`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `a with`. Consider the case `nil => exact hRw`. Consider the case `cons Y a ih`. Establish `ha' : ∀ Z ∈ a, B.inLie k r Z` using `fun Z hZ => ha Z (by simp [hZ])`. Introduce `g hg`.
-
-Conclude with `left_step hK hR X _ _ (dsigW_smooth hR hx a ha') (ih ha') (ha Y (by simp)) g hg`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_dLR : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (X : V) (F : Mx k r → V), R.IsDG ε mu → ∀ x ∈ R.sm, ∀ y ∈ R.sm, (∀ g ∈ GG k r, F g = ⟪x, R.σ g y⟫_ℂ • X) → B.CkOn ⊤ (B.GV k r) F ∧ ∀ a b : List (Mx k r), (∀ Y ∈ a, B.inLie k r Y) → (∀ Y ∈ b, B.inLie k r Y) → ∀ g ∈ GG k r, B.dLR a b F g = ⟪PI.UpqRep.dsigW (k := k) (r := r) R.σ a x, R.σ g (PI.UpqRep.dsigW (k := k) (r := r) R.σ b y)⟫_ℂ • X := by
   intro hK k r ε mu R V _ _ X F hR x hx y hy hF

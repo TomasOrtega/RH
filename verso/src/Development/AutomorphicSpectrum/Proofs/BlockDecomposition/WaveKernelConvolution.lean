@@ -21,16 +21,16 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.WaveMult
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : Mat n => g.det` using `Continuous.matrix_det continuous_id`. Conclude with `isOpen_ne.preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_GLs_kerconv (n : ℕ) : IsOpen (GLs n) := by
   have hc : Continuous fun g : Mat n => g.det := Continuous.matrix_det continuous_id
   exact isOpen_ne.preimage hc
 
 /- English proof (translation)
-Establish `h1 : y.det ≠ 0` using `hy`. Establish `h2 : (k₂.1 : Mat n).det ≠ 0`. Establish `h3 : (star k₂.1 * k₂.1 : Mat n) = 1` using `Unitary.star_mul_self_of_mem k₂.2`. Introduce `h0`. Establish `h4` using `congrArg Matrix.det h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h4` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one h4`. Express the relevant statement in the definitionally equal form `(y * k₂.1).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_unitary_mem_GLs_kerconv {n : ℕ} {y : Mat n} (hy : y ∈ GLs n)
     (k₂ : Matrix.unitaryGroup (Fin n) ℂ) : y * k₂.1 ∈ GLs n := by
@@ -46,9 +46,9 @@ theorem mul_unitary_mem_GLs_kerconv {n : ℕ} {y : Mat n} (hy : y ∈ GLs n)
   exact mul_ne_zero h1 h2
 
 /- English proof (translation)
-Unfold `act`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hy : (y.val).det ≠ 0`. Use `y.isUnit` as an intermediate fact. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy : x * y.val ∈ GLs n`. Express the relevant statement in the definitionally equal form `(x * y.val).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hx hy`. Simplify using `only [h _ hxy]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_congr_kerconv {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n)
     (k : Mat n → (E.V →L[ℂ] E.V)) {f f' : Mat n → E.V} (h : ∀ x ∈ GLs n, f x = f' x)
@@ -65,26 +65,24 @@ theorem act_congr_kerconv {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n))
   simp only [h _ hxy]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 : Mat n).det ≠ 0`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_GLs_kerconv (n : ℕ) : (1 : Mat n) ∈ GLs n := by
   change (1 : Mat n).det ≠ 0
   simp
 
 /- English proof (translation)
-Introduce `hLg _ hRC hWS hWE hKU n _ _ μ _ E w w' g g' T T' k k' K hg hg' hk hk' hK y hy`. Establish `rk : KReg k` using `⟨hk.1.continuousOn, hk.2.1⟩`. Establish `rk' : KReg k'` using `⟨hk'.1.continuousOn, hk'.2.1⟩`. Establish `rK : KReg K` using `⟨hK.1.continuousOn, hK.2.1⟩`. Establish `rc : KReg (conv μ E k k')` using `kReg_conv hLg n μ E k k' rk rk'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk'eq : ∀ y ∈ GLs n, ∀ k₂ : Matrix.unitaryGroup (Fin n) ℂ, k' (y * k₂.1) = k' y * E.ρ k₂`. Introduce `y hy k₂`. Use `hk'.2.2.1 y hy 1 k₂` as an intermediate fact. Simplify using `using this`. Establish `hKeq : ∀ y ∈ GLs n, ∀ k₂ : Matrix.unitaryGroup (Fin n) ℂ, K (y * k₂.1) = K y * E.ρ k₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `y hy k₂`. Use `hK.2.2.1 y hy 1 k₂` as an intermediate fact. Simplify using `using this`. Establish `hceq` using `conv_right_equivariant hLg n μ E k k' rk rk' hk'eq`. Establish `key` using `hKU n μ E (fun y => conv μ E k k' y - K y) (GLs n) (isOpen_GLs_kerconv n) subset_rfl (fun y hy k₂ => mul_unitary_mem_GLs_kerconv hy k₂) (rc.1.sub rK.1) (fun y hy k₂ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hceq y hy k₂, hKeq y hy k₂]`. Conclude with `(sub_mul _ _ _).symm)`. Use the proof step `(fun f hf hc _ => by`. Take `⟨u, hu, hu0⟩` from `hWE n E f hf`. Take `⟨v, hv, hv0, hvc⟩` from `GlobalTheory.T.wave_kernel_composition hRC hWS n E u w w' g g' T T' hu hg hg'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `one_mem_GLs_kerconv n`. Establish `hfc : ContinuousOn f (GLs n)` using `hf.1.continuousOn`. Apply the tactic sequence `have hlin := act_eq_sum_of_kernel hLg n μ E (ι := Bool) (fun b => if b then 1 else -1) (fun b => if b then conv μ E k k' else K) (fun y => conv μ E k k' y - K y) f (fun b => by cases b <;> simp [rc, rK]) (fun y _ => by simp [Fintype.sum_bool, sub_eq_add_neg]) hfc 1 h1`. Establish `hc1 : act μ E (conv μ E k k') f 1 = act μ E k (act μ E k' f) 1` using `act_conv hLg n μ E k k' f rk rk' hfc 1 h1`. Establish `hact' : ∀ x ∈ GLs n, act μ E k' f x = v 0 x`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[act_congr_kerconv μ E k' (fun z hz => (hu0 z hz).symm) hx, hk'.2.2.2 u hu x hx, hv0 x hx]`. Establish `hc2 : act μ E k (act μ E k' f) 1 = act μ E K f 1`. Rewrite using `[act_congr_kerconv μ E k hact' h1, hk.2.2.2 v hv 1 h1, hvc 1 h1, ← hK.2.2.2 u hu 1 h1]`. Conclude with `act_congr_kerconv μ E K hu0 h1`.
-
-Rewrite using `[hlin]`. Simplify using `[Fintype.sum_bool, hc1, hc2]) y hy`. Conclude with `sub_eq_zero.1 key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conv_eq_of_isKer : LgFacts → Unimod → RCalc → WaveSpeed → WaveEx → KerUniq → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (w w' : List (Bool × ℕ)) (g g' : ℝ → ℝ) (T T' : ℝ) (k k' K : Mat n → (E.V →L[ℂ] E.V)), IsBump g T → IsBump g' T' → IsKer μ E w g k → IsKer μ E w' g' k' → IsKer μ E (w ++ w') (gconv g g') K → ∀ y ∈ GLs n, conv μ E k k' y = K y := by
   intro hLg _ hRC hWS hWE hKU n _ _ μ _ E w w' g g' T T' k k' K hg hg' hk hk' hK y hy

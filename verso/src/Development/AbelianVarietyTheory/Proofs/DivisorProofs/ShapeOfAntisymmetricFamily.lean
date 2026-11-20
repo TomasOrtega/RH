@@ -10,19 +10,19 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 namespace GlobalTheory.Mean4
 
 /- English proof (translation)
-Take `⟨C, B₁, hC⟩` from `hw`. Take `⟨C', hC', hB⟩` from `GlobalTheory.T.approximation_by_discriminant_multiple D.what₂.Tau Y.N Y.j Y.j_pos Y.j_lt`. Take `⟨h, hh1, hh2⟩` from `GlobalTheory.FlagPoly.exists_form_of_functional D.what₂.Tau Y.N (dimFl D.what₂.Tau Y.N + 1) hh`. Use `⟨C' * max C 0, max B₁ 2, fun B hBB => ?_⟩` and prove the remaining obligations. Establish `hB1 : B₁ ≤ B` using `le_trans (le_max_left _ _) hBB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hB2 : (2 : ℝ) ≤ B` using `by exact_mod_cast le_trans (le_max_right _ _) hBB`. Take `⟨P, hP1, hP2⟩` from `GlobalTheory.FlagPoly.exists_form_of_functional D.what₂.Tau Y.N (dimFl D.what₂.Tau Y.N + 1) (Φ B)`. Establish `hlog : 0 ≤ Real.log B / B` using `div_nonneg (Real.log_nonneg (by linarith)) (by linarith)`. Establish `hev : ∀ u : Wt Y, ev u (P - MvPolynomial.C Y.vol * h) = atWt Y (Φ B) u - Y.vol * atWt Y hh u`. Introduce `u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hP2 u`. Establish `h2` using `hh2 u`. Simplify using `only [ev] at h1 h2 ⊢`. Rewrite using `[map_sub, map_mul, eval_C, h1, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hA : AntiL Y.j (P - MvPolynomial.C Y.vol * h)`. Introduce `τ a b hab hbj`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `h1` using `hanti B hB2 τ a b hab hbj (fun σ i => x (σ, i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hev, ← hev]`. Rewrite using `[eval_rename, map_neg]`. Conclude with `h1`. Take `⟨al, be, E, hE1, hE2, hE3⟩` from `hB P h Y.vol (max C 0 * (Real.log B / B)) hvol (mul_nonneg (le_max_right _ _) hlog) hP1 hh1 hA (fun τ lam hd hg => by rw [hh2]; exact hfl.1 Y.j τ lam Y.j_pos Y.j_lt hd hg) (fun τ lam hl => by`. Rewrite using `[hP2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hC B hB1 τ lam hl).trans ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) hlog)`. Use `⟨al, be, E, hE1, ?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_assoc, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hE2`. Use `hE3 u` as an intermediate fact. Rewrite `this` using `[hP2, hh2]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem shapeT_of_wallBd (D : D7) (Y : ShimX D.what₂.Tau) (Φ : ℝ → Fn Y) (hh : Fn Y) (hvol : 0 < Y.vol)
     (hanti : Antisym Φ hh) (hfl : FlagHt D.what₂.Tau Y.N hh) (hw : WallBd Φ) : ShapeT Φ hh := by

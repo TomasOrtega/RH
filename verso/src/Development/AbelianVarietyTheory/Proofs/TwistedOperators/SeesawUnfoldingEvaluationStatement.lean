@@ -18,7 +18,7 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SquareAgree.StabLieAdelic.stabLie_adelic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSeesawUnfoldingEvaluation.lean&line=55#L55)
 -/

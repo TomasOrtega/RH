@@ -5,29 +5,25 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigCoordApply
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `V C _ _ _ _ _ _ W _ _ _ _ _ Lie n w hfg _ hw hsat j`. Set `W' : Submodule C W` to `Submodule.span C (Set.range w)`. Take `⟨p, q, u, t, -, hu, ht, -, -, hspan⟩` from `exists_basis_split_of_exact_of_fg_valuationRing V C W' W (W ⧸ W') W'.subtype W'.mkQ W'.injective_subtype (LinearMap.exact_subtype_mkQ W') Lie hfg`. Establish `hwW : ∀ i, w i ∈ W'` using `fun i => Submodule.subset_span ⟨i, rfl⟩`. Establish `hli : LinearIndependent C (Sum.elim w t)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `f hf`. Rewrite `hf` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hf`. Establish `h1 : ∀ i, f (Sum.inr i) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `congrArg W'.mkQ hf`. Establish `hz : ∀ i, W'.mkQ (w i) = 0` using `fun i => by`. Simplify using `using hwW i`. Simplify using `only [map_add, map_sum, map_smul, hz, smul_zero, Finset.sum_const_zero, zero_add, map_zero] at h`. Conclude with `Fintype.linearIndependent_iff.mp ht _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∀ i, f (Sum.inl i) = 0`. Simplify using `only [h1, zero_smul, Finset.sum_const_zero, add_zero] at hf`. Conclude with `Fintype.linearIndependent_iff.mp hw _ hf`. Introduce and unpack `(i | i)`. Conclude with `h2 i`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1 i`. Take `⟨g, hg⟩` from `(Finsupp.linearCombination C (Sum.elim w t)).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.mpr hli)`. Establish `hgs : ∀ a, g (Sum.elim w t a) = Finsupp.single a 1` using `fun a => by`. Establish `h1` using `LinearMap.congr_fun hg (Finsupp.single a 1)`. Simplify `h1` using `[Finsupp.linearCombination_single]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `φ : Module.Dual C W` to `Finsupp.lapply (Sum.inl j) ∘ₗ g`. Establish `hφw : ∀ k, φ (w k) = if k = j then 1 else 0` using `fun k => by`. Establish `h` using `hgs (Sum.inl k)`. Simplify using `only [Sum.elim_inl] at h`. Simplify using `[φ, h, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hφt : ∀ i, φ (t i) = 0` using `fun i => by`. Establish `h` using `hgs (Sum.inr i)`. Simplify using `only [Sum.elim_inr] at h`. Simplify using `[φ, h, Finsupp.single_apply]`. Set `R : Submodule V C` to `LinearMap.range (Algebra.linearMap V C)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : (1 : C) ∈ R` using `⟨1, by simp⟩`. Establish `hzero : (0 : C) ∈ R` using `R.zero_mem`. Establish `hspw : Submodule.span V (Set.range w) ≤ R.comap (φ.restrictScalars V)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ (w k) ∈ R`. Rewrite using `[hφw]`. Use `split_ifs`. Conclude with `hone`. Conclude with `hzero`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hle : Lie ≤ R.comap (φ.restrictScalars V)`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨i | i, rfl⟩`. Apply `hspw` to reduce the goal to its premises. Establish `hmem : u i ∈ Lie.comap (W'.subtype.restrictScalars V)`.
-
-Rewrite using `[← hu]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `(hsat _).mpr ⟨hmem, (u i).2⟩`. Express the relevant statement in the definitionally equal form `φ (t i) ∈ R`. Rewrite using `[hφt]`.
-
-Conclude with `hzero`. Use `⟨φ, fun y hy => ?_, hφw⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hle hy`. Conclude with `⟨a, by simpa using ha⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dual_integral_of_saturated_free_part :
     ∀ (V C : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field C] [Algebra V C]

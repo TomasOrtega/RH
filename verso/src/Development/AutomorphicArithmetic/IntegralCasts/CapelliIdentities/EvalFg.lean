@@ -1,13 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R _ _ σ M₀ h₀ P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨Submodule.span R {a}, Submodule.fg_span_singleton a, fun v _ => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_span_singleton_self a`. Consider the case `add p q hp hq`. Take `⟨M, hM, hp⟩` from `hp`. Take `⟨N, hN, hq⟩` from `hq`. Use `⟨M ⊔ N, hM.sup hN, fun v hv => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hp v hv) (hq v hv)`. Consider the case `mul_X p i hp`. Take `⟨M, hM, hp⟩` from `hp`. Use `⟨M * M₀, hM.mul h₀, fun v hv => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, MvPolynomial.eval_X]`. Conclude with `Submodule.mul_mem_mul (hp v hv) (hv i)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qn15.eval_fg :
     ∀ {R : Type} [inst : CommRing R] [inst_1 : Algebra R ℂ] {σ : Type} {M₀ : Submodule R ℂ},

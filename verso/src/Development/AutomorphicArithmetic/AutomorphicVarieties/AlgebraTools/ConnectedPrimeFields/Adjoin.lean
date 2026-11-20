@@ -7,9 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ _ _ _ _ hA f`. Establish `hf : IsIntegral A f` using `Algebra.IsIntegral.isIntegral f`. Use `haveI : IsIntegrallyClosed A := hA.normal`. Use `haveI : Algebra.IsIntegral (Algebra.adjoin A {f}) R := Algebra.IsIntegral.tower_top A`. Use `haveI : IsLocalRing (Algebra.adjoin A {f}) := RingHom.domain_isLocalRing (algebraMap (Algebra.adjoin A {f}) R)`.
-
-Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Use `haveI : Module.Free A (Algebra.adjoin A {f}) := .of_basis (Algebra.adjoin.powerBasis' hf).basis`. Use `haveI : Module.Finite A (Algebra.adjoin A {f}) := .of_basis (Algebra.adjoin.powerBasis' hf).basis`. Conclude with `cmFree hA.cm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.adjoin :
     ∀ {A R : Type} [CommRing A] [IsLocalRing A] [IsDomain A] [CommRing R] [IsLocalRing R] [IsDomain R] [Algebra A R] [Module.Finite A R] [FaithfulSMul A R], IsBase A → ∀ f : R,

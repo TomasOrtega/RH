@@ -6,7 +6,7 @@ open MvPolynomial Formalism.DegreeFormula Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [linRoot, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_neg, neg_add, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linRoot_add_smul {ι : Type} [Fintype ι] {N : ℕ} (u w : ι → Fin N → ℝ) (t : ℝ) :
     linRoot (u + t • w) = linRoot u + C t * linRoot w := by
@@ -14,7 +14,7 @@ theorem linRoot_add_smul {ι : Type} [Fintype ι] {N : ℕ} (u w : ι → Fin N 
     Finset.sum_add_distrib, Finset.mul_sum, mul_neg, neg_add, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[linRoot_add_smul, add_comm, add_pow]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_pow, ← map_pow, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem linRoot_add_smul_pow {ι : Type} [Fintype ι] {N : ℕ} (u w : ι → Fin N → ℝ) (t : ℝ)
     (d : ℕ) :
@@ -26,17 +26,15 @@ theorem linRoot_add_smul_pow {ι : Type} [Fintype ι] {N : ℕ} (u w : ι → Fi
   ring
 
 /- English proof (translation)
-Take `⟨u₀, hu₀⟩` from `hne`. Set `T : Submodule ℝ (MvPolynomial (ι × Fin N) ℝ)` to `{ carrier := {P | Tendsto (fun a => Λ a P) l (𝓝 0)} add_mem' := fun {P Q} hP hQ => by`. Simplify `hP.add hQ` using `only [Set.mem_setOf_eq, map_add, add_zero]`. Use the proof step `zero_mem' := by simpa only [Set.mem_setOf_eq, map_zero] using tendsto_const_nhds`. Use the proof step `smul_mem' := fun c P hP => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify `hP.const_mul c }` using `only [Set.mem_setOf_eq, map_smul, smul_eq_mul, mul_zero]`. Use `show linRoot v ^ d ∈ T`. Assume the negation of the conclusion as `hv`. Take `⟨φ, hφv, hφT⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hv inferInstance`. Establish `hφ : ∀ P ∈ T, φ P = 0` using `fun P hP => (Submodule.mem_bot ℝ).mp (hφT ▸ Submodule.mem_map_of_mem hP)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set w := v - u₀ with hw`. Set `q : Polynomial ℝ` to `∑ k ∈ Finset.range (d + 1), Polynomial.monomial k ((d.choose k : ℝ) * φ (linRoot w ^ k * linRoot u₀ ^ (d - k)))`. Establish `hq : ∀ t : ℝ, q.eval t = φ (linRoot (u₀ + t • w) ^ d)`. Introduce `t`. Rewrite using `[linRoot_add_smul_pow, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [q, Polynomial.eval_finset_sum, Polynomial.eval_monomial, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hopen : {t : ℝ | u₀ + t • w ∈ U} ∈ 𝓝 (0 : ℝ)` using `(hU.preimage (by fun_prop)).mem_nhds (by simpa using hu₀)`. Establish `hq0 : q = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Polynomial.eq_zero_of_infinite_isRoot q ((infinite_of_mem_nhds (0 : ℝ) hopen).mono ?_)` and prove the remaining obligations. Introduce `t ht`. Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot.def, hq]`. Conclude with `hφ _ (hlim _ ht)`. Apply `hφv` to reduce the goal to its premises.
-
-Establish `h1` using `hq 1`. Rewrite `h1` using `[hq0, one_smul, hw, add_sub_cancel, Polynomial.eval_zero]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_zero_linRoot_pow_of_isOpen {α : Type} (l : Filter α) {ι : Type} [Fintype ι]
     {N : ℕ} (Λ : α → MvPolynomial (ι × Fin N) ℝ →ₗ[ℝ] ℝ) (d : ℕ) (U : Set (ι → Fin N → ℝ))

@@ -26,11 +26,11 @@ section Lemmas
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.Kleiman2.SameModel`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, p, hp, rfl⟩`. Take `⟨c', hc', heq⟩` from `h₁ c hc`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨c', hc', ?_⟩` and prove the remaining obligations. Rewrite using `[← heq]`. Conclude with `⟨p, hp, rfl⟩`. Introduce and unpack `⟨c', hc', p, hp, rfl⟩`. Take `⟨c, hc, heq⟩` from `h₂ c' hc'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `⟨p, hp, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sameModel_of_charts (R : Type) [CommRing R] [Algebra R Ω] {K K' : Type} {ι : K → Type}
     {ι' : K' → Type} (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω)
@@ -54,13 +54,13 @@ theorem sameModel_of_charts (R : Type) [CommRing R] [Algebra R Ω] {K K' : Type}
     exact ⟨p, hp, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ c : Unit → κ, chartRingOver R (IndefiniteRowSideFullHecke.Kleiman2.oneBlock v) c = chartRingOver R (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (v ∘ e.symm)) (fun u => e (c u))`. Introduce `c`. Unfold `chartRingOver`. Use `congr 1`. Use extensionality with `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨u, b⟩, rfl⟩`. Conclude with `⟨⟨u, e b⟩, by simp [IndefiniteRowSideFullHecke.Kleiman2.oneBlock]⟩`. Introduce and unpack `⟨⟨u, j⟩, rfl⟩`. Conclude with `⟨⟨u, e.symm j⟩, by simp [IndefiniteRowSideFullHecke.Kleiman2.oneBlock]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Apply `sameModel_of_charts` to reduce the goal to its premises. Introduce `c hc`. Conclude with `⟨fun u => e (c u), fun k => by simpa [IndefiniteRowSideFullHecke.Kleiman2.oneBlock] using hc k, key c⟩`. Introduce `c' hc'`. Use `⟨fun u => e.symm (c' u), fun k => by simpa [IndefiniteRowSideFullHecke.Kleiman2.oneBlock] using hc' k, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `key (fun u => e.symm (c' u))`. Simplify using `only [Equiv.apply_symm_apply] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sameModel_reindex (R : Type) [CommRing R] [Algebra R Ω] {κ : Type} {N : ℕ} (v : κ → Ω)
     (e : κ ≃ Fin (N + 1)) :

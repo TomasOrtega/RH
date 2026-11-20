@@ -14,9 +14,7 @@ open scoped ContDiff ComplexOrder Classical
 namespace GlobalTheory.MixDens
 
 /- English proof (translation)
-Use `haveI := CxPts.compactSpace σ hp`. Use `haveI := CxPts.t2Space_cxPts_of_isProjOver σ hp`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hp`. Take `⟨ν, w, hν, -, -, -, h1, h2⟩` from `GlobalTheory.MixDens.exists_refMeasure k X p σ D a`. Take `⟨g, hg, hgw⟩` from `h1 ρ h`.
-
-Rewrite using `[(h2 ρ g hg hgw).1, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]`. Establish `hi : Integrable g ν` using `hg.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace g)`. Conclude with `hi.lintegral_lt_top.ne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem part_univ_ne_top {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     {ρ : AlgChart p σ D → CxPts p σ → ℝ} (hp : IsProjOver p) (a : Nonempty (AnRead p σ D)) (h : IsDens ρ) :
@@ -31,13 +29,11 @@ theorem part_univ_ne_top {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp 
   exact hi.lintegral_lt_top.ne
 
 /- English proof (translation)
-Establish `hmem : ∀ y : CxPts p σ, y ∈ ptsIn p σ c.U ↔ y.1 (IsLocalRing.closedPoint ℂ) ∈ c.U`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `hy (Set.mem_univ (IsLocalRing.closedPoint ℂ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy x _`. Establish `: x = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Substitute `this` using the available equality. Conclude with `hy`. Take `⟨y, hy⟩` from `hc`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : (c.U : Set X).Nonempty` using `⟨_, (hmem y).1 (c.source_subset hy)⟩`. Establish `hgen : genericPoint X ∉ (c.U : Set X)ᶜ`. Introduce `h`. Conclude with `h (((genericPoint_spec X).mem_open_set_iff c.U.isOpen).2 (by simpa using hU))`. Use `GlobalTheory.MixDensNull.part_over_closed k X p D hp (c.U : Set X)ᶜ c.U.isOpen.isClosed_compl hgen σ ρ` as an intermediate fact.
-
-Use `measure_mono_null (fun x hx => ?_) this` and prove the remaining obligations. Conclude with `fun h => hx ((hmem x).2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem part_compl_ptsIn {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} [IsIntegral X] {σ : k →+* ℂ} {D : ℕ}
     (hp : IsArithVar p D) (ρ : AlgChart p σ D → CxPts p σ → ℝ) (c : AlgChart p σ D) (hc : c.e.source.Nonempty) :
@@ -61,9 +57,9 @@ theorem part_compl_ptsIn {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp 
   exact fun h => hx ((hmem x).2 h)
 
 /- English proof (translation)
-Use `⟨(MeasurableEquiv.piCurry _).symm.measurable, ?_⟩` and prove the remaining obligations. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Rewrite using `[Measure.map_apply (MeasurableEquiv.piCurry _).symm.measurable (MeasurableSet.univ_pi hs)]`. Establish `e : (MeasurableEquiv.piCurry fun a (_ : κ a) => ℂ).symm ⁻¹' Set.univ.pi s = Set.univ.pi fun a => Set.univ.pi fun j => s ⟨a, j⟩`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, Sigma.forall, MeasurableEquiv.coe_piCurry_symm]`. Both sides reduce to the same expression. Rewrite using `[e, volume_pi_pi, Fintype.prod_sigma]`. Conclude with `Finset.prod_congr rfl fun a _ => volume_pi_pi _`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_uncurry {ι : Type} [Fintype ι] {κ : ι → Type} [∀ a, Fintype (κ a)] :
     MeasurePreserving (MeasurableEquiv.piCurry fun a (_ : κ a) => ℂ).symm volume volume := by
@@ -79,11 +75,11 @@ theorem measurePreserving_uncurry {ι : Type} [Fintype ι] {κ : ι → Type} [�
   exact Finset.prod_congr rfl fun a _ => volume_pi_pi _
 
 /- English proof (translation)
-Establish `hm : Measurable (fun (x : ℂ × (τ → ℂ)) (j : Option τ) => j.elim x.1 x.2)`. Use `measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Consider the cases of `j with`. Consider the case `none => exact measurable_fst`. Consider the case `some j => exact (measurable_pi_apply j).comp measurable_snd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `e : (fun (x : ℂ × (τ → ℂ)) (j : Option τ) => j.elim x.1 x.2) ⁻¹' Set.univ.pi s = s none ×ˢ Set.univ.pi fun j => s (some j)`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Option.forall]`. Rewrite using `[e, Measure.volume_eq_prod, Measure.prod_prod, volume_pi_pi, Fintype.prod_option]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem measurePreserving_elim {τ : Type} [Fintype τ] :
     MeasurePreserving (fun (x : ℂ × (τ → ℂ)) (j : Option τ) => j.elim x.1 x.2) volume volume := by
@@ -102,9 +98,9 @@ theorem measurePreserving_elim {τ : Type} [Fintype τ] :
   rw [e, Measure.volume_eq_prod, Measure.prod_prod, volume_pi_pi, Fintype.prod_option]
 
 /- English proof (translation)
-Establish `h1 : MeasurePreserving (fun z : V 1 => z 0) volume volume` using `(volume_preserving_funUnique (Fin 1) ℂ).comp (volume_preserving_ofLp_complex (Fin 1))`. Establish `h2` using `h1.prod (measurePreserving_uncurry (κ := fun a => Low (r a)))`. Establish `h3` using `(measurePreserving_elim (τ := Σ a, Low (r a))).comp h2`. Establish `h4` using `(volume_preserving_arrowCongr' e.symm (MeasurableEquiv.refl ℂ) (MeasurePreserving.id volume)).comp h3`. Establish `h5 : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin (d + 1) → ℂ)) volume volume` using `MeasurePreserving.symm (MeasurableEquiv.toLp 2 (Fin (d + 1) → ℂ)).symm (volume_preserving_ofLp_complex (Fin (d + 1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `h5.comp h4`. Conclude with `h6`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurePreserving_pt {ι : Type} [Fintype ι] {r : ι → ℕ} {d : ℕ}
     (e : Fin (d + 1) ≃ Option (Σ a, Low (r a))) :
@@ -121,7 +117,7 @@ theorem measurePreserving_pt {ι : Type} [Fintype ι] {r : ι → ℕ} {d : ℕ}
   exact h6
 
 /- English proof (translation)
-Unfold `base`. Use `(PiLp.continuous_toLp 2 _).comp ?_` and prove the remaining obligations. Conclude with `(continuous_single (A := fun _ : Fin 1 => ℂ) 0).comp (by fun_prop)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_base {ι : Type} {r : ι → ℕ} {d : ℕ} (e : Fin (d + 1) ≃ Option (Σ a, Low (r a))) :
     Continuous (base e) := by
@@ -130,11 +126,11 @@ theorem continuous_base {ι : Type} {r : ι → ℕ} {d : ℕ} (e : Fin (d + 1) 
   exact (continuous_single (A := fun _ : Fin 1 => ℂ) 0).comp (by fun_prop)
 
 /- English proof (translation)
-Establish `hm` using `(measurePreserving_pt e).restrict_preimage ((continuous_base e).measurable hK)`. Establish `hs : (fun x : V 1 × (∀ a, Low (r a) → ℂ) => pt e x.1 x.2) ⁻¹' (base e ⁻¹' K) = K ×ˢ Set.univ`. Use extensionality with `x`. Simplify using `[base_pt]`. Rewrite `hm` using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi` using `hm.integrable_comp_of_integrable hF`. Rewrite using `[← hm.map_eq, integral_map hm.measurable.aemeasurable (by rw [hm.map_eq]; exact hF.aestronglyMeasurable)]`. Rewrite `hi`, the goal using `[Measure.volume_eq_prod]`. Rewrite using `[setIntegral_prod (fun x : V 1 × (∀ a, Low (r a) → ℂ) => F (pt e x.1 x.2)) hi]`. Use `setIntegral_congr_fun hK fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Measure.restrict_univ]`. Conclude with `hG z hz`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setIntegral_base {ι : Type} [Fintype ι] {r : ι → ℕ} {d : ℕ}
     (e : Fin (d + 1) ≃ Option (Σ a, Low (r a))) {F : V (d + 1) → ℝ} {G : V 1 → ℝ} {K : Set (V 1)}
@@ -155,9 +151,9 @@ theorem setIntegral_base {ι : Type} [Fintype ι] {r : ι → ℕ} {d : ℕ}
   exact hG z hz
 
 /- English proof (translation)
-Use `⟨hF, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_norm]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun v => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases abs_choice (F v) with h | h <;> rw [Real.norm_eq_abs, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `le_self_add`. Conclude with `le_add_self`. Use `_ = ∫⁻ v, ENNReal.ofReal (F v) ∂μ + ∫⁻ v, ENNReal.ofReal (-F v) ∂μ := lintegral_add_left' hF.aemeasurable.ennreal_ofReal _`. Use `_ < ⊤ := ENNReal.add_lt_top.2 ⟨h₁.lt_top, h₂.lt_top⟩`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_parts {α : Type} [MeasurableSpace α] {μ : Measure α} {F : α → ℝ}
     (hF : AEStronglyMeasurable F μ) (h₁ : ∫⁻ v, ENNReal.ofReal (F v) ∂μ ≠ ⊤)
@@ -182,13 +178,13 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ 
 omit [Fintype ι] in
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃⟩` from `h`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hy, hy'⟩, rfl⟩`. Conclude with `⟨_, hy, (h₃ y hy').symm⟩`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha, hv⟩`. Establish `hvt : v ∈ c'.e.target`. Rewrite using `[h₂]`. Express the relevant statement in the definitionally equal form `base e v ∈ c.e.target`. Rewrite using `[← hv]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `c.e.map_source (hA ha)`. Establish `hy` using `c'.e.map_target hvt`. Use `⟨c'.e.symm v, ⟨?_, hy⟩, c'.e.right_inv hvt⟩` and prove the remaining obligations. Establish `h₄` using `h₃ _ hy`. Rewrite `h₄` using `[c'.e.right_inv hvt, ← hv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₅ : PtsOver.map π w (spMap σ) (c'.e.symm v) ∈ c.e.source` using `(h₁ ▸ hy).1`. Use `c.e.injOn (hA ha) h₅ h₄` as an intermediate fact. Express the relevant statement in the definitionally equal form `PtsOver.map π w (spMap σ) (c'.e.symm v) ∈ A`. Rewrite using `[← this]`. Conclude with `ha`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCell.image_eq (h : IsCell e π w c c') {A : Set (CxPts q σ)} (hA : A ⊆ c.e.source) :
     c'.e '' (PtsOver.map π w (spMap σ) ⁻¹' A ∩ c'.e.source) = base e ⁻¹' (c.e '' A) := by
@@ -216,13 +212,13 @@ theorem IsCell.image_eq (h : IsCell e π w c c') {A : Set (CxPts q σ)} (hA : A 
 omit [Fintype ι] in
 
 /- English proof (translation)
-Break down `A.eq_empty_or_nonempty with rfl | ⟨a, ha⟩` into its components or cases. Simplify using the standard rewrite rules. Establish `hne : c'.e.source.Nonempty`. Use `⟨c'.e.symm (pt e (c.e a) 0), c'.e.map_target ?_⟩` and prove the remaining obligations. Rewrite using `[h.2.1]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `base e _ ∈ c.e.target`. Rewrite using `[base_pt]`. Conclude with `c.e.map_source (hA ha)`. Establish `hm : MeasurableSet (PtsOver.map π w (spMap σ) ⁻¹' A)` using `(PtsOver.continuous_map π w (spMap σ)).measurable hAm`. Rewrite using `[← h.image_eq hA, ← hρ.part_apply c' (hm.inter c'.e.open_source.measurableSet) Set.inter_subset_right, ← measure_inter_add_sdiff _ c'.e.open_source.measurableSet]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : part ρ (PtsOver.map π w (spMap σ) ⁻¹' A \ c'.e.source) = 0`. Use `measure_mono_null (fun y hy => ?_) (part_compl_ptsIn hp ρ c' hne)` and prove the remaining obligations. Introduce `hU`. Use `hy.2 ?_` and prove the remaining obligations. Rewrite using `[h.1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hA hy.1, hU⟩`. Rewrite using `[h0, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCell.part_preimage [IsIntegral Y] [SecondCountableTopology (CxPts p σ)] (h : IsCell e π w c c')
     (hp : IsArithVar p (d + 1)) {ρ : AlgChart p σ (d + 1) → CxPts p σ → ℝ} (hρ : IsDens ρ)
@@ -250,15 +246,15 @@ theorem IsCell.part_preimage [IsIntegral Y] [SecondCountableTopology (CxPts p σ
   rw [h0, add_zero]
 
 /- English proof (translation)
-Establish `hρ' : IsDens fun c y => -ρ c y` using `(isDens_zero.sub hρ).congr fun c y _ => by simp`. Establish `hg' : IsDens fun c y => -g c y` using `(isDens_zero.sub hg).congr fun c y _ => by simp`. Establish `g₁` using `ne_top_of_le_ne_top f₁ (measure_mono (Set.subset_univ (PtsOver.map π w (spMap σ) ⁻¹' A)))`. Establish `g₂` using `ne_top_of_le_ne_top f₂ (measure_mono (Set.subset_univ (PtsOver.map π w (spMap σ) ⁻¹' A)))`. Establish `g₃` using `ne_top_of_le_ne_top f₃ (measure_mono (Set.subset_univ A))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g₄` using `ne_top_of_le_ne_top f₄ (measure_mono (Set.subset_univ A))`. Rewrite `g₁`, the goal using `[h.part_preimage hp hρ hAm hA]`. Rewrite `g₂`, the goal using `[h.part_preimage hp hρ' hAm hA]`. Rewrite `g₃`, the goal using `[hg.part_apply c hAm hA]`. Rewrite `g₄`, the goal using `[hg'.part_apply c hAm hA]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hK : MeasurableSet (c.e '' A)` using `ChartGlue.measurableSet_image c.e hAm hA`. Establish `hKt : c.e '' A ⊆ c.e.target`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `c.e.map_source (hA ha)`. Establish `hT : base e ⁻¹' (c.e '' A) ⊆ c'.e.target`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.2.1]`. Conclude with `fun v hv => hKt hv`. Establish `i₁` using `integrable_of_parts (((hρ.2 c').mono hT).aestronglyMeasurable ((continuous_base e).measurable hK)) g₁ g₂`. Establish `i₂` using `integrable_of_parts (((hg.2 c).mono hKt).aestronglyMeasurable hK) g₃ g₄`. Establish `key` using `setIntegral_base e hK i₁ fun z hz => hfib z (hKt hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part i₁, integral_eq_lintegral_pos_part_sub_lintegral_neg_part i₂]`. Rewrite using `[← ENNReal.toReal_eq_toReal_iff' (ENNReal.add_ne_top.2 ⟨g₁, g₄⟩) (ENNReal.add_ne_top.2 ⟨g₂, g₃⟩), ENNReal.toReal_add g₁ g₄, ENNReal.toReal_add g₂ g₃]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem IsCell.part_add_part [IsIntegral Y] [SecondCountableTopology (CxPts q σ)] [SecondCountableTopology (CxPts p σ)]
     (h : IsCell e π w c c') (hp : IsArithVar p (d + 1)) {ρ : AlgChart p σ (d + 1) → CxPts p σ → ℝ}
@@ -299,15 +295,13 @@ theorem IsCell.part_add_part [IsIntegral Y] [SecondCountableTopology (CxPts q σ
 end Cell
 
 /- English proof (translation)
-Introduce `k _ B Y q p π w ι _ r d e σ _ hq hp aq ap ρ g hρ hg hcov`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hq.isProjOver`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hp.isProjOver`. Establish `hρ' : IsDens fun c y => -ρ c y` using `(isDens_zero.sub hρ).congr fun c y _ => by simp`. Establish `hg' : IsDens fun c y => -g c y` using `(isDens_zero.sub hg).congr fun c y _ => by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1` using `part_univ_ne_top hp.isProjOver ap hρ`. Establish `f2` using `part_univ_ne_top hp.isProjOver ap hρ'`. Establish `f3` using `part_univ_ne_top hq.isProjOver aq hg`. Establish `f4` using `part_univ_ne_top hq.isProjOver aq hg'`. Use `set Φ := PtsOver.map π w (spMap σ) with hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΦm : Measurable Φ` using `(PtsOver.continuous_map π w (spMap σ)).measurable`. Establish `key : (part ρ).map Φ + part (fun c y => -g c y) = (part (fun c y => -ρ c y)).map Φ + part g`. Use `ChartGlue.ext_of_cover (fun y => (hcov y).choose.e.source) (fun y => (hcov y).choose.e.open_source) (fun y => ⟨y, (hcov y).choose_spec.choose_spec.1⟩) fun y A hA hAy => ?_` and prove the remaining obligations. Take `⟨c', -, hcell, hfib⟩` from `(hcov y).choose_spec`. Rewrite using `[Measure.add_apply, Measure.add_apply, Measure.map_apply hΦm hA, Measure.map_apply hΦm hA]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hcell.part_add_part hp hρ hg f1 f2 f3 f4 hfib hA hAy`. Establish `hu` using `congrArg (fun μ => μ Set.univ) key`. Simplify using `only [Measure.add_apply, Measure.map_apply hΦm MeasurableSet.univ, Set.preimage_univ] at hu`. Use `congrArg ENNReal.toReal hu` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_add f1 f4, ENNReal.toReal_add f2 f3]`.
-
-Simplify using `only [total]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem total_eq_of_cells : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (r : ι → ℕ) (d : ℕ) (e : Fin (d + 1) ≃ Option (Σ a, Low (r a))) (σ : k →+* ℂ) [IsIntegral Y], IsArithVar q 1 → IsArithVar p (d + 1) → Nonempty (AnRead q σ 1) → Nonempty (AnRead p σ (d + 1)) → ∀ (ρ : AlgChart p σ (d + 1) → CxPts p σ → ℝ) (g : AlgChart q σ 1 → CxPts q σ → ℝ), IsDens ρ → IsDens g → (∀ y : CxPts q σ, ∃ (c : AlgChart q σ 1) (c' : AlgChart p σ (d + 1)), y ∈ c.e.source ∧ IsCell e π w c c' ∧ ∀ z ∈ c.e.target, ∫ n : ∀ a, Low (r a) → ℂ, ρ c' (c'.e.symm (pt e z n)) = g c (c.e.symm z)) → total ρ = total g := by
   intro k _ B Y q p π w ι _ r d e σ _ hq hp aq ap ρ g hρ hg hcov

@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.LargeAll
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `_ D T j Y e o hY _ a n hdom hn f hf`. Take `⟨s, hs, h⟩` from `GlobalTheory.LargeCover.exists_smul_nonneg_all D T j Y e o hY a n hdom hn f hf`. Establish `hsm : (algebraMap (𝓞 Y.d.c₂.F) Y.d.c₂.F s) • f = s • f` using `@algebraMap_smul (𝓞 Y.d.c₂.F) _ Y.d.c₂.F _ _ (Rul Y.d.Xo₂ Y.d.c₂) _ _ _ (Formalism.L2.Pj.rulesTower _) s f`. Use `⟨algebraMap (𝓞 Y.d.c₂.F) Y.d.c₂.F s, by simpa using hs, fun la v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hsm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h la v hv`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_nonneg_of_large : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ n → ∀ f ∈ cusp Y.d.Xo₂ Y.d.c₂ Y.U a n, ∃ s : Y.d.c₂.F, s ≠ 0 ∧ ∀ la, ∀ v ∈ valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂) la, 0 ≤ v (s • f) := by
   intro _ D T j Y e o hY _ a n hdom hn f hf
@@ -45,7 +45,7 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.LargeAll.exists_smul_nonneg_of_large | exact _root_.GlobalTheory.LargeAll.exists_smul_nonneg_of_large | (intros; apply _root_.GlobalTheory.LargeAll.exists_smul_nonneg_of_large <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.divisor_multiple_nonneg_eventually : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ n → ∀ f ∈ cusp Y.d.Xo₂ Y.d.c₂ Y.U a n, ∃ s : Y.d.c₂.F, s ≠ 0 ∧ ∀ la, ∀ v ∈ valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂) la, 0 ≤ v (s • f) := by
   first | exact @_root_.GlobalTheory.LargeAll.exists_smul_nonneg_of_large | exact _root_.GlobalTheory.LargeAll.exists_smul_nonneg_of_large | (intros; apply _root_.GlobalTheory.LargeAll.exists_smul_nonneg_of_large <;> assumption)

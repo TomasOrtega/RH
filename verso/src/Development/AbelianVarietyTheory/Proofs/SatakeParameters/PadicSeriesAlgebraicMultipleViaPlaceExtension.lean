@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.SerMap
 
 /- English proof (translation)
-Set `_ : Invertible c` to `invertibleOfNonzero hc`. Proceed by induction on `n with`. Consider the case `zero`. Use extensionality with `x m`. Simplify using `[iteratedFDeriv_zero_apply]`.
+Introduce a local definition for the expression. Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left, iteratedFDeriv_succ_eq_comp_left, ih]`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[fderiv_const_smul_of_invertible c, map_smul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -32,9 +32,9 @@ theorem iteratedFDeriv_smul_of_ne {E F : Type} [NormedAddCommGroup E] [NormedSpa
     rfl
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `only [zero_mul]`. Unfold `TaylorLogMetric.taylor`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `TaylorLogMetric.taylor`. Establish `h` using `iteratedFDeriv_smul_of_ne c hc G (Multiset.card α.toMultiset)`. Simplify using `only [smul_eq_mul] at h`. Rewrite using `[h, Pi.smul_apply, ContinuousMultilinearMap.smul_apply, smul_eq_mul, mul_div_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem taylor_mul (D : D7) {N N' : ℕ} (c : ℂ) (G : TaylorLogMetric.VC D N N' → ℂ) (α : TaylorLogMetric.Mono D N N') :
     TaylorLogMetric.taylor D (fun z => c * G z) α = c * TaylorLogMetric.taylor D G α := by
@@ -49,11 +49,11 @@ theorem taylor_mul (D : D7) {N N' : ℕ} (c : ℂ) (G : TaylorLogMetric.VC D N N
     rw [h, Pi.smul_apply, ContinuousMultilinearMap.smul_apply, smul_eq_mul, mul_div_assoc]
 
 /- English proof (translation)
-Introduce `D p _ lam ι hι a b K G s s' hs hK hKG`. Use extensionality with `α`. Establish `hKt : TaylorLogMetric.taylor D K α = s' * TaylorLogMetric.taylor D G α`. Establish `: K = fun z => s' * G z` using `funext hKG`. Rewrite using `[this, taylor_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : s * TaylorLogMetric.taylor D K α ∈ TaylorLogMetric.Qbar` using `TaylorLogMetric.Qbar.mul_mem hs (hK α)`. Use `show TaylorLogMetric.lamC lam (TaylorLogMetric.taylor D (fun z => s * K z) α) = _`. Rewrite using `[taylor_mul, MvPowerSeries.coeff_smul, MvPowerSeries.coeff_map]`. Unfold `TaylorLogMetric.lamC`. Rewrite using `[dif_pos hmem, ← hι ⟨_, hmem⟩]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ι (s * TaylorLogMetric.taylor D K α) = _`. Rewrite using `[hKt, ← mul_assoc, map_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem padicSeries_const_mul : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ι : ℂ →+* ℂ_[p]),
     (∀ z : TaylorLogMetric.Qbar, ι z = lam z) → ∀ {a b : ℕ} (K G : TaylorLogMetric.VC D a b → ℂ) (s s' : ℂ), s ∈ TaylorLogMetric.Qbar →

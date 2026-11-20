@@ -11,7 +11,7 @@ section Val
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ}
 
 /- English proof (translation)
-Establish `h` using `valuation_algebraMap_eq_alt (O := O) p 1 one_ne_zero`. Rewrite `h` using `[map_one]`. Rewrite using `[h, dvr_order_unit_eq_zero isUnit_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vK_one (p : ℕ) : vK p (1 : KK O) = 0 := by
   have h := valuation_algebraMap_eq_alt (O := O) p 1 one_ne_zero
@@ -20,9 +20,9 @@ theorem vK_one (p : ℕ) : vK p (1 : KK O) = 0 := by
   simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, vK_one]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[pow_succ, valuation_mul_alt, ih, hx, ← WithTop.coe_add]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vK_npow {x : KK O} {q : ℚ} (hx : vK p x = (q : WithTop ℚ)) (n : ℕ) :
     vK p (x ^ n) = (((n : ℚ) * q : ℚ) : WithTop ℚ) := by
@@ -35,9 +35,9 @@ theorem vK_npow {x : KK O} {q : ℚ} (hx : vK p x = (q : WithTop ℚ)) (n : ℕ)
     ring
 
 /- English proof (translation)
-Establish `h` using `valuation_mul_alt (O := O) p x x⁻¹`. Rewrite `h` using `[mul_inv_cancel₀ hx0, vK_one, hx]`. Consider the cases of `ht : vK p x⁻¹ with`. Consider the case `top => rw [ht] at h`. Simplify using `at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `coe t`. Rewrite `h` using `[ht, ← WithTop.coe_add]`. Establish `: q + t = 0` using `by exact_mod_cast h.symm`. Use `congr 1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem vK_inv' {x : KK O} (hx0 : x ≠ 0) {q : ℚ} (hx : vK p x = (q : WithTop ℚ)) :
     vK p x⁻¹ = ((-q : ℚ) : WithTop ℚ) := by
@@ -52,9 +52,9 @@ theorem vK_inv' {x : KK O} (hx0 : x ≠ 0) {q : ℚ} (hx : vK p x = (q : WithTop
     linarith
 
 /- English proof (translation)
-Consider the cases of `k with`. Consider the case `ofNat n => rw [Int.ofNat_eq_natCast, zpow_natCast, vK_npow hx]`. Use `push_cast`. Both sides reduce to the same expression. Consider the case `negSucc n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[zpow_negSucc, vK_inv' (pow_ne_zero _ hx0) (vK_npow hx (n + 1))]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vK_zpow {x : KK O} (hx0 : x ≠ 0) {q : ℚ} (hx : vK p x = (q : WithTop ℚ)) (k : ℤ) :
     vK p (x ^ k) = (((k : ℚ) * q : ℚ) : WithTop ℚ) := by
@@ -73,9 +73,9 @@ section FockMap
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `fock Formalism.GM.M.fockK`. Rewrite using `[support_map_of_injective _ ι.injective, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, coeff_map, map_mul, map_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `expFact`. Simplify using `only [Finsupp.prod, Nat.cast_prod, map_prod, map_natCast]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem fock_map (ι : ℚ_[p] →+* KK O) {σ : Type} (F G : MvPolynomial σ ℚ_[p]) :
     fock (map ι F) (map ι G) = ι (Formalism.GM.M.fockK F G) := by
@@ -89,7 +89,7 @@ theorem fock_map (ι : ℚ_[p] →+* KK O) {σ : Type} (F G : MvPolynomial σ �
   simp only [Finsupp.prod, Nat.cast_prod, map_prod, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[fock_form_smul_right, fock_form_symm, fock_form_smul_right, fock_form_symm B A, smul_eq_mul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_smul_both {σ : Type} (a : KK O) (A B : MvPolynomial σ (KK O)) :
     fock (a • A) (a • B) = a * (a * fock A B) := by
@@ -102,9 +102,7 @@ section Assemble
 variable (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst)
 
 /- English proof (translation)
-Unfold `specConst`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Use `split_ifs`. Conclude with `mul_ne_zero (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)`.
-
-Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem specConst_ne_zero {s r : ℕ} (p : ℕ) (S : SegData s) (b : SegBlock s r) : specConst p S b ≠ 0 := by
   unfold specConst
@@ -115,7 +113,7 @@ theorem specConst_ne_zero {s r : ℕ} (p : ℕ) (S : SegData s) (b : SegBlock s 
   · exact one_ne_zero
 
 /- English proof (translation)
-Establish `h2 : X.setting.w ^ 2 = (X.p : X.O)` using `Formalism.MainNotions.G.dvrOfStd_sq X.std`. Establish `: ramE X.p X.O = dvrOrderNat (X.p : X.O)` using `rfl`. Rewrite using `[this, ← h2, dvr_order_pow X.setting.w_irr.ne_zero, nv_irr' X.setting.w_irr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ramE_eq_two : ramE X.p X.O = 2 := by
   have h2 : X.setting.w ^ 2 = (X.p : X.O) := Formalism.MainNotions.G.dvrOfStd_sq X.std
@@ -123,21 +121,21 @@ theorem ramE_eq_two : ramE X.p X.O = 2 := by
   rw [this, ← h2, dvr_order_pow X.setting.w_irr.ne_zero, nv_irr' X.setting.w_irr]
 
 /- English proof (translation)
-Rewrite using `[valuation_algebraMap_eq_alt X.p _ X.setting.w_irr.ne_zero, nv_irr' X.setting.w_irr, ramE_eq_two]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vK_w : vK X.p (algebraMap X.O (KK X.O) X.setting.w) = (((1 : ℚ) / 2 : ℚ) : WithTop ℚ) := by
   rw [valuation_algebraMap_eq_alt X.p _ X.setting.w_irr.ne_zero, nv_irr' X.setting.w_irr, ramE_eq_two]
   simp
 
 /- English proof (translation)
-Rewrite using `[valuation_natCast_padicVal X.std.1.prime X.setting X.p X.std.1.prime.ne_zero, padicValNat_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vK_p : vK X.p ((X.p : ℕ) : KK X.O) = ((1 : ℚ) : WithTop ℚ) := by
   rw [valuation_natCast_padicVal X.std.1.prime X.setting X.p X.std.1.prime.ne_zero, padicValNat_self]
   simp
 
 /- English proof (translation)
-Take `⟨F0, rfl⟩` from `hF`. Use `⟨F0.coeff v, ?_⟩` and prove the remaining obligations. Simplify using `[MvPolynomial.coeff_map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coeff_of_int {p : ℕ} [Fact p.Prime] {σ : Type} (F : MvPolynomial σ ℚ_[p]) (hF : F ∈ Formalism.GM.M.IntPol p σ)
     (v : σ →₀ ℕ) : ∃ c : ℤ_[p], F.coeff v = (c : ℚ_[p]) := by
@@ -146,41 +144,35 @@ theorem coeff_of_int {p : ℕ} [Fact p.Prime] {σ : Type} (F : MvPolynomial σ �
   simp [MvPolynomial.coeff_map]
 
 /- English proof (translation)
-Establish `hint` using `iotaX_int X`. Use `set ι := iotaX X with hι`. Use `set sp := specConst X.p (X.S C0 CE1 CE2) b with hsp`. Use `set F : ℤ := ⌊(D : ℝ) + levelPassageLoss X⌋ with hF`. Use `set k : ℤ := F - e - (padicValNat X.p sp : ℤ) with hk'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set wK : KK X.O := algebraMap X.O (KK X.O) X.setting.w with hwK`. Establish `hw0 : wK ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective X.O (KK X.O))).2 X.setting.w_irr.ne_zero`. Use `set lam : KK X.O := wK ^ k with hlam`. Establish `hvlam : vK X.p lam = ((((k : ℚ) * (1 / 2)) : ℚ) : WithTop ℚ)` using `vK_zpow hw0 (vK_w X) k`. Establish `hmemL : ∀ z : MvPolynomial (BVar (2 * X.s + 1) X.r (X.S C0 CE1 CE2).t) ℚ_[X.p], z ∈ (gB C0 CE1 CE2 X aTop aPlus b).SSZ X.p (r` using `X.r) → lam • map ι z ∈ blockLat X.O X.p X.r (X.S C0 CE1 CE2) aTop aPlus X.m b := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `z hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show lam • map ι z ∈ Submodule.span (KK X.O) _`. Conclude with `Submodule.smul_mem _ _ (map_SSZ hint (blockData X.p (X.S C0 CE1 CE2) aTop aPlus X.m b) z hz)`. Establish `hzi : z ∈ Formalism.GM.M.IntPol X.p (Formalism.GM.M.BVar (2 * X.s + 1) X.r (gB C0 CE1 CE2 X aTop aPlus b).T.t)` using `SSZ_int (gB C0 CE1 CE2 X aTop aPlus b) z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.as_sum (lam • map ι z)]`. Use `Submodule.sum_mem _ fun v hv => Submodule.subset_span ⟨v, _, ?_, rfl⟩` and prove the remaining obligations. Establish `hcv : (lam • map ι z).coeff v = lam * ι (z.coeff v)`. Rewrite using `[coeff_smul, coeff_map, smul_eq_mul]`. Establish `hzv : z.coeff v ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hv` using `[MvPolynomial.mem_support_iff, hcv, h0, map_zero, mul_zero]`. Conclude with `hv rfl`. Establish `hvz : v ∈ z.support` using `MvPolynomial.mem_support_iff.2 hzv`. Establish `hm` using `hmon z hz v hvz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨c0, hc0⟩` from `coeff_of_int z hzi v`. Take `⟨o, ho⟩` from `hint c0`. Establish `hcz : ι (z.coeff v) = algebraMap X.O (KK X.O) o` using `by rw [hc0]; exact ho`. Establish `ho0 : (0 : WithTop ℚ) ≤ vK X.p (algebraMap X.O (KK X.O) o)` using `(valuation_nonneg_iff_integral X.setting _).2 ⟨o, rfl⟩`. Rewrite using `[hcv, valuation_mul_alt, hvlam, hcz]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hint2 : (0 : ℤ) ≤ k + (padicValNat X.p (expFact v) : ℤ) + (padicValNat X.p sp : ℤ)`. Establish `h1 : e - (padicValNat X.p (expFact v) : ℤ) ≤ F`. Rewrite using `[hF]`. Apply `Int.le_floor.2` to reduce the goal to its premises. Simplify using `only [Int.cast_sub, Int.cast_natCast]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (e : ℝ) ≤ (padicValNat X.p (expFact v) : ℝ) + D + levelPassageLoss X` using `hm`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hk']`. Use linear arithmetic over natural numbers and integers. Consider the cases of `hvo : vK X.p (algebraMap X.O (KK X.O) o) with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Consider the case `top => simp`. Consider the case `coe t`. Rewrite `ho0` using `[hvo]`. Establish `ht : (0 : ℚ) ≤ t` using `by exact_mod_cast ho0`. Rewrite using `[← WithTop.coe_add, ← WithTop.coe_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Establish `hq : (0 : ℚ) ≤ (k : ℚ) + (padicValNat X.p (expFact v) : ℚ) + (padicValNat X.p sp : ℚ)`. Establish `h5` using `(Int.cast_le (R := ℚ)).2 hint2`. Simplify `h5` using `only [Int.cast_add, Int.cast_zero, Int.cast_natCast]`. Conclude with `(show (0 : ℚ) ≤ (k : ℚ) * (1 / 2) + t + ((padicValNat X.p (expFact v) : ℚ) / 2 + (padicValNat X.p sp : ℚ) / 2) by linarith)` after adjusting the coercions. Use `set c : KK X.O := (sp : KK X.O) * (lam * (lam * ι ((X.p : ℚ_[X.p]) ^ e))) with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hform : ∀ i j, blockForm X.O X.p X.r (X.S C0 CE1 CE2) b (lam • map ι (x i)) (lam • map ι (y j)) = if i = j then c else 0`. Introduce `i j`. Unfold `blockForm`. Rewrite using `[fock_smul_both, fock_map, hxy]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `hvc : vLE X.p c ((D : ℝ) + levelPassageLoss X)`. Establish `hsp0 : sp ≠ 0` using `specConst_ne_zero X.p (X.S C0 CE1 CE2) b`. Establish `hpe : ι ((X.p : ℚ_[X.p]) ^ e) = ((X.p : ℕ) : KK X.O) ^ e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_zpow₀, map_natCast]`. Establish `hp0 : ((X.p : ℕ) : KK X.O) ≠ 0`. Use `(vK_p X)` as an intermediate fact. Introduce `h0`. Rewrite `this` using `[h0, valuation_zero_alt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `WithTop.top_ne_coe this`. Use `⟨(padicValNat X.p sp : ℚ) + ((k : ℚ) * (1 / 2) + ((k : ℚ) * (1 / 2) + (e : ℚ) * 1)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, valuation_mul_alt, valuation_mul_alt, valuation_mul_alt, hpe, vK_zpow hp0 (vK_p X) e, hvlam, valuation_natCast_padicVal X.std.1.prime X.setting sp hsp0]`. Simplify using `only [← WithTop.coe_add]`. Establish `h1 : (padicValNat X.p sp : ℚ) + ((k : ℚ) * (1 / 2) + ((k : ℚ) * (1 / 2) + (e : ℚ) * 1)) = (F : ℚ)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[hk']`. Simplify using `only [Int.cast_sub, Int.cast_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hF]`. Use `Int.floor_le ((D : ℝ) + levelPassageLoss X)` as an intermediate fact.
-
-Conclude with `this` after adjusting the coercions. Establish `hsm : ∀ (a : KK X.O) (u v : MvPolynomial (BVar (2 * X.s + 1) X.r (X.S C0 CE1 CE2).t) (KK X.O)), blockForm X.O X.p X.r (X.S C0 CE1 CE2) b (a • u) v = a * blockForm X.O X.p X.r (X.S C0 CE1 CE2) b u v`. Introduce `a u v`. Unfold `blockForm`. Rewrite using `[fock_form_symm, fock_form_smul_right, fock_form_symm v u, smul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hadd : ∀ (u u' v : MvPolynomial (BVar (2 * X.s + 1) X.r (X.S C0 CE1 CE2).t) (KK X.O)), blockForm X.O X.p X.r (X.S C0 CE1 CE2) b (u + u') v = blockForm X.O X.p X.r (X.S C0 CE1 CE2) b u v + blockForm X.O X.p X.r (X.S C0 CE1 CE2) b u' v`. Introduce `u u' v`. Unfold `blockForm`. Rewrite using `[fock_form_symm, fock_form_add_right, fock_form_symm v u, fock_form_symm v u']`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `goodSub_of_dual X.setting (blockForm X.O X.p X.r (X.S C0 CE1 CE2) b) hsm hadd (blockLat X.O X.p X.r (X.S C0 CE1 CE2) aTop aPlus X.m b) (fun i => lam • map ι (x i)) (fun i => lam • map ι (y i)) (fun i => hmemL _ (hx i)) (fun i => hmemL _ (hy i)) c hform _ hvc`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem block_dual_family_bound (aTop : Fin X.s → ℕ) (aPlus : ℕ) (b : SegBlock X.s X.r) (D : ℤ) (n : ℕ)
     (x y : Fin n → MvPolynomial (BVar (2 * X.s + 1) X.r (X.S C0 CE1 CE2).t) ℚ_[X.p]) (e : ℤ)
@@ -293,7 +285,7 @@ theorem block_dual_family_bound (aTop : Fin X.s → ℕ) (aPlus : ℕ) (b : SegB
     (fun i => hmemL _ (hx i)) (fun i => hmemL _ (hy i)) c hform _ hvc
 
 /- English proof (translation)
-Introduce `aTop hT aPlus hP b hk D hD`. Take `⟨n, x, y, e, hx, hy, hxy, hmon, hrk⟩` from `hZ aTop hT aPlus hP b hk D hD`. Take `⟨L₂, hg, hn⟩` from `block_dual_family_bound C0 CE1 CE2 X aTop aPlus b D n x y e hx hy hxy hmon`. Conclude with `⟨L₂, hg, (hdim aTop hT aPlus hP b hk).trans (hrk.trans (Nat.add_le_add_right hn _))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem block_bound_of_dual_families (hZ : BlockBoundIntegers C0 CE1 CE2 X) (hdim : RestBCdim C0 CE1 CE2 X) : BlockBoundUniformiser C0 CE1 CE2 X := by
   intro aTop hT aPlus hP b hk D hD

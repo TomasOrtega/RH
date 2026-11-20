@@ -21,9 +21,9 @@ namespace GlobalTheory.SerFinished
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hP hL`. Use `GlobalTheory.HeightCounting.Up.Model.AtMem.imp (GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.T.exists_local_langlands_place_datum hP hL) (GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.T.coefficient_duty_in_place hL) (GlobalTheory.T.central_local_sta …` and prove the remaining obligations. Introduce and unpack `K B f T w Z Wt p0 t nch n c ⟨⟨P, hPin⟩, hO, hC, -, -⟩`. Establish `hlab : GlobalTheory.SerSys.LabTie (w.D Z) fun k => @GlobalTheory.Mem.TypePl.labDat ((w.D Z).host.g k) ⟨(w.D Z).host.g_prime k⟩` using `(GlobalTheory.CoefDuty.OPinModel.labFixed_iff c.a).2 hO.lab`. Establish `htame : ∀ D', D' = withLoc c.a.nt.L → ∀ k (v : D'.nd.PlG k), ∃ κ : IsLocalRing.ResidueField (D'.nd.plOm.1 (D'.naut.plGw k v)) ≃+* Formalism.CyclotomicNorms.Fbar (D'.host.g k), TameCoupled (D'.nd.plOm.1 (D'.naut.plGw k v)) κ (D'.ntypes.tg k v) (@GlobalTheory.Mem.TypePl.labDat (D'. …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl k v`. Conclude with `⟨c.a.nt.A.grp.kv k v, GlobalTheory.CoefDuty.OPinModel.tame_of_pin hO k v⟩`. Use `GlobalTheory.T.serLoc_of_tameCoupled_of_cenLoc' hP.what₂ hP.green hP.zel hP.dz hL (w.D Z) P _ hlab (htame _ c.a.nt.eq) ?_` and prove the remaining obligations. Rewrite using `[hPin.M_eq]`. Conclude with `hC`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => GlobalTheory.TypeLeaf.SerLoc (w.D Z) := by
   intro hP hL

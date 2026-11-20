@@ -16,7 +16,7 @@ def Cmi (n : ℕ) : M2 n :=
   fromBlocks ((-Complex.I / 2) • 1) ((1 / 2 : ℂ) • 1) ((Complex.I / 2) • 1) ((1 / 2 : ℂ) • 1)
 
 /- English proof (translation)
-Rewrite using `[Cm, Cmi, fromBlocks_multiply, ← fromBlocks_one]`. Apply the tactic sequence `congr 1 <;> ext i j <;> by_cases h : i = j <;>`. Apply the tactic sequence `simp [Matrix.one_apply, h, Matrix.add_apply, Matrix.smul_apply] <;> ring_nf <;>`. Apply the tactic sequence `simp [Complex.I_sq] <;> ring_nf`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cm_mul_cmi : Cm n * Cmi n = 1 := by
   rw [Cm, Cmi, fromBlocks_multiply, ← fromBlocks_one]
@@ -25,12 +25,12 @@ theorem cm_mul_cmi : Cm n * Cmi n = 1 := by
     simp [Complex.I_sq] <;> ring_nf
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv cm_mul_cmi`.
+A detailed English derivation is pending.
 -/
 theorem cm_inv : (Cm n)⁻¹ = Cmi n := Matrix.inv_eq_right_inv cm_mul_cmi
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks A, ← fromBlocks_toBlocks B, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toBlocks₂₁_mul (A B : M2 n) :
     (A * B).toBlocks₂₁ = A.toBlocks₂₁ * B.toBlocks₁₁ + A.toBlocks₂₂ * B.toBlocks₂₁ := by
@@ -38,7 +38,7 @@ theorem toBlocks₂₁_mul (A B : M2 n) :
   simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks A, ← fromBlocks_toBlocks B, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toBlocks₂₂_mul (A B : M2 n) :
     (A * B).toBlocks₂₂ = A.toBlocks₂₁ * B.toBlocks₁₂ + A.toBlocks₂₂ * B.toBlocks₂₂ := by
@@ -46,23 +46,23 @@ theorem toBlocks₂₂_mul (A B : M2 n) :
   simp
 
 /- English proof (translation)
-Rewrite using `[toBlocks₂₁_mul, u1, Cm, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₂₁, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_cm₂₁ (x : M2 n) : (x * Cm n).toBlocks₂₁ = u1 x := by
   rw [toBlocks₂₁_mul, u1, Cm, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₂₁, Matrix.mul_smul,
     Matrix.mul_one, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[toBlocks₂₂_mul, u2, Cm, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₂, Matrix.mul_neg, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_cm₂₂ (x : M2 n) : (x * Cm n).toBlocks₂₂ = u2 x := by
   rw [toBlocks₂₂_mul, u2, Cm, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₂, Matrix.mul_neg,
     Matrix.mul_smul, Matrix.mul_one, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[u1, toBlocks₂₁_mul, toBlocks₂₂_mul, Cmi]`. Simplify using `only [toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, Matrix.mul_smul, Matrix.mul_one, smul_add, smul_smul]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Simplify using `[Complex.I_sq]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem first_cayley_block_mul_inverse_cayley (y : M2 n) : u1 (y * Cmi n) = y.toBlocks₂₁ := by
   rw [u1, toBlocks₂₁_mul, toBlocks₂₂_mul, Cmi]
@@ -75,9 +75,9 @@ theorem first_cayley_block_mul_inverse_cayley (y : M2 n) : u1 (y * Cmi n) = y.to
   ring_nf
 
 /- English proof (translation)
-Rewrite using `[u2, toBlocks₂₁_mul, toBlocks₂₂_mul, Cmi]`. Simplify using `only [toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, Matrix.mul_smul, Matrix.mul_one, smul_add, smul_smul]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Simplify using `[Complex.I_sq]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem second_cayley_block_mul_inverse_cayley (y : M2 n) : u2 (y * Cmi n) = y.toBlocks₂₂ := by
   rw [u2, toBlocks₂₁_mul, toBlocks₂₂_mul, Cmi]
@@ -90,7 +90,7 @@ theorem second_cayley_block_mul_inverse_cayley (y : M2 n) : u2 (y * Cmi n) = y.t
   ring_nf
 
 /- English proof (translation)
-Introduce `n x P Q R S`. Simplify using `only [mX, cm_inv, ← Matrix.mul_assoc]`. Rewrite using `[first_cayley_block_mul_inverse_cayley, second_cayley_block_mul_inverse_cayley, toBlocks₂₁_mul (x * Cm n) (fromBlocks P Q R S), toBlocks₂₂_mul (x * Cm n) (fromBlocks P Q R S), mul_cm₂₁, mul_cm₂₂]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uAct : UAct := by
   intro n x P Q R S
@@ -110,9 +110,9 @@ Both sides reduce to the same expression.
 theorem minorOn_eq (s : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) ℂ) : minorOn s M = (subOn s M).det := rfl
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨a, h⟩]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Establish `: a ≠ (i : Fin n)` using `fun e => hi (Subtype.ext e.symm)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: a ≠ (i : Fin n)` using `fun e => h (e ▸ i.2)`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_incl (s : Finset (Fin n)) (a : Fin n) (f : s → ℂ) :
     ∑ i : s, (if a = (i : Fin n) then (1 : ℂ) else 0) * f i = if h : a ∈ s then f ⟨a, h⟩ else 0 := by
@@ -128,9 +128,9 @@ theorem sum_incl (s : Finset (Fin n)) (a : Fin n) (f : s → ℂ) :
     simp [this]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, incl, Matrix.of_apply, Matrix.transpose_apply]`. Simplify using `only [sum_incl]`. Simplify using `only [mul_comm _ (ite (b = _) _ _)]`. Rewrite using `[sum_incl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases ha : a ∈ s <;> by_cases hb : b ∈ s <;> simp [embOn, ha, hb]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embOn_eq (s : Finset (Fin n)) (T : Matrix s s ℂ) : embOn s T = incl s * T * (incl s)ᵀ := by
   ext a b
@@ -141,14 +141,14 @@ theorem embOn_eq (s : Finset (Fin n)) (T : Matrix s s ℂ) : embOn s T = incl s 
   by_cases ha : a ∈ s <;> by_cases hb : b ∈ s <;> simp [embOn, ha, hb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, incl, subOn, Matrix.transpose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incl_mul (s : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) ℂ) : (incl s)ᵀ * M * incl s = subOn s M := by
   ext i j
   simp [Matrix.mul_apply, incl, subOn, Matrix.transpose_apply]
 
 /- English proof (translation)
-Rewrite using `[embOn_eq]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.det_one_add_mul_comm]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[incl_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_one_add_mul_embOn (s : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) ℂ) (T : Matrix s s ℂ) :
     (1 + M * embOn s T).det = (1 + subOn s M * T).det := by
@@ -159,11 +159,11 @@ theorem det_one_add_mul_embOn (s : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) �
   rw [incl_mul]
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `[detD]`. Set `g : ℂ ≃L[ℂ] ℂ` to `ContinuousLinearEquiv.unitsEquivAut ℂ (Units.mk0 c hc)`. Establish `hfun : (fun S => c * F S) = g ∘ F`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `S`. Simplify using `[g, mul_comm]`. Unfold `detD`. Rewrite using `[hfun, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousLinearEquiv.iteratedFDeriv_comp_left]`. Apply the tactic sequence `(simp [g]) <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem detD_const_mul {ι : Type} [Fintype ι] [DecidableEq ι] (c : ℂ) (F : Matrix ι ι ℂ → ℂ) :
     detD (fun S => c * F S) = c * detD F := by
@@ -181,21 +181,21 @@ theorem detD_const_mul {ι : Type} [Fintype ι] [DecidableEq ι] (c : ℂ) (F : 
     (simp [g]) <;> ring
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_coe, blkA, Fin.card_filter_val_lt, min_eq_right hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_blkA {j : ℕ} (hj : j ≤ n) : Fintype.card (blkA (n := n) j) = j := by
   rw [Fintype.card_coe, blkA, Fin.card_filter_val_lt, min_eq_right hj]
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_coe, blkB, Finset.card_compl, Fintype.card_fin, ← Fintype.card_coe, card_blkA hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_blkB {j : ℕ} (hj : j ≤ n) : Fintype.card (blkB (n := n) j) = n - j := by
   rw [Fintype.card_coe, blkB, Finset.card_compl, Fintype.card_fin, ← Fintype.card_coe, card_blkA hj]
 
 /- English proof (translation)
-Establish `hd1 : IsUnit (u1 x).det` using `isUnit_iff_ne_zero.2 h1`. Establish `hd2 : IsUnit (u2 x).det` using `isUnit_iff_ne_zero.2 h2`. Establish `k1 : u1 (x * mX 1 (embOn (blkA j) T) (embOn (blkB j) S) 1) = u1 x * (1 + (wM x)⁻¹ * embOn (blkB j) S)`. Rewrite using `[(uAct n x _ _ _ _).1, wM, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hd2]`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd1, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `k2 : u2 (x * mX 1 (embOn (blkA j) T) (embOn (blkB j) S) 1) = u2 x * (1 + wM x * embOn (blkA j) T)`. Rewrite using `[(uAct n x _ _ _ _).2, wM]`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd2, Matrix.one_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[f0, f0, k1, k2, Matrix.det_mul, Matrix.det_mul, det_one_add_mul_embOn, det_one_add_mul_embOn, mul_zpow, mul_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -222,11 +222,11 @@ theorem scalar_section_mul_block_unipotent {p q : ℤ} {j : ℕ} {x : M2 n} (h1 
   ring
 
 /- English proof (translation)
-Introduce `n j p q x hj h1 h2`. Establish `hin : ∀ T : Matrix (blkA (n` using `n) j) (blkA j) ℂ, (detD fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => f0 p q (x * mX 1 (embOn (blkA j) T) (embOn (blkB j) S) 1)) = (f0 p q x * (∏ i ∈ Finset.range (n - j), (-(p : ℂ) + i)) * minorOn (blkB j) (wM x)⁻¹) * (1 + subOn (blkA j) (wM x) * T).det ^ (-q) := by`. Introduce `T`. Repeatedly rewrite using `[scalar_section_mul_block_unipotent h1 h2 T]`. Rewrite using `[detD_const_mul, hC, card_blkB hj, minorOn_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hin]`. Rewrite using `[detD_const_mul, hC, card_blkA hj]`. Simplify using `only [minorOn_eq]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem djSec_of (hC : Cayley) : DjSec := by
   intro n j p q x hj h1 h2

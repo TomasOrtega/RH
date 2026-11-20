@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def xvY (v : HeightOneSpectrum (𝓞 F)) (b : 𝓞 E) : RInt F E := toRInt F E b * quE E v + (1 - quE E v)
 
 /- English proof (translation)
-Use `show ((algebraMap (𝓞 E) E b) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) * ((1 : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1) + (1 - (1 : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1) = (w : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1 + (1 : E) ⊗ₜ[F] (1 - Formalism.L2.G.sgl F v 1)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, hw, TensorProduct.tmul_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xv_coe (v : HeightOneSpectrum (𝓞 F)) (w : Eˣ) (b : 𝓞 E) (hw : (w : E) = (b : E)) :
     ((xvY v b : RInt F E) : AfE F E) = ((locId E v w : (AfE F E)ˣ) : AfE F E) := by
@@ -28,9 +28,9 @@ theorem xv_coe (v : HeightOneSpectrum (𝓞 F)) (w : Eˣ) (b : 𝓞 E) (hw : (w 
   rfl
 
 /- English proof (translation)
-Unfold `suppAt`. Rewrite using `[Subgroup.mem_iInf]`. Introduce `v'`. Rewrite using `[Subgroup.mem_iInf]`. Introduce `hne`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Use `show (Algebra.TensorProduct.map (AlgHom.id F E) (evalV F v')) ((w : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1 + (1 : E) ⊗ₜ[F] (1 - Formalism.L2.G.sgl F v 1)) = 1`. Rewrite using `[map_add, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, map_sub, Formalism.L2.G.sgl_apply_ne F v 1 hne, TensorProduct.tmul_zero, zero_add, sub_zero, map_one (evalV F v')]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xv_supp (v : HeightOneSpectrum (𝓞 F)) (w : Eˣ) : locId E v w ∈ suppAt E v := by
   unfold suppAt
@@ -46,11 +46,11 @@ theorem xv_supp (v : HeightOneSpectrum (𝓞 F)) (w : Eˣ) : locId E v w ∈ sup
   rfl
 
 /- English proof (translation)
-Establish `e : xvY v b - toRInt F E t = toRInt F E (b - t) * quE E v + toRInt F E (1 - t) * (1 - quE E v)`. Unfold `xvY`. Rewrite using `[map_sub, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.add_mem _ (Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ h)) (Ideal.mul_mem_left _ _ (qu_one_sub_mem v _ k ?_))` and prove the remaining obligations. Introduce `a ha`. Establish `h1 : algebraMap (𝓞 F) (𝓞 E) a ∈ (v.asIdeal ^ k).map (algebraMap (𝓞 F) (𝓞 E))` using `Ideal.mem_map_of_mem _ ha`. Rewrite `h1` using `[Ideal.map_pow]`. Use `Ideal.pow_right_mono ?_ k h1` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.map_le_iff_le_comap, ← hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xv_cong (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 E)) (hv : P.asIdeal.under (𝓞 F) = v.asIdeal) (b t : 𝓞 E) (k : ℕ)
     (h : b - t ∈ P.asIdeal ^ k) : xvY v b - toRInt F E t ∈ (P.asIdeal ^ k).map (toRInt F E) := by
@@ -66,13 +66,11 @@ theorem xv_cong (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 E)
   rw [Ideal.map_le_iff_le_comap, ← hv]
 
 /- English proof (translation)
-Establish `e : xvY v b - 1 = toRInt F E (b - 1) * quE E v`. Unfold `xvY`. Rewrite using `[map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hP' : P'.asIdeal.under (𝓞 F) = v.asIdeal`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (h hP'))`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Establish `hex : ∃ a : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) a ∈ P'.asIdeal ∧ a ∉ v.asIdeal`. Assume the negation of the conclusion as `hcon`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push Not at hcon`. Apply `hP'` to reduce the goal to its premises. Establish `hle : P'.asIdeal.under (𝓞 F) ≤ v.asIdeal` using `fun a ha => hcon a ha`. Establish `hbot : P'.asIdeal.under (𝓞 F) ≠ ⊥` using `Ideal.under_ne_bot (𝓞 F) P'.ne_bot`. Establish `hpr : (P'.asIdeal.under (𝓞 F)).IsPrime` using `inferInstance`.
-
-Conclude with `(hpr.isMaximal hbot).eq_of_le v.isPrime.ne_top hle`. Take `⟨a, ha1, ha2⟩` from `hex`. Conclude with `qu_eps_mem v _ a ha1 ha2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem xv_other (v : HeightOneSpectrum (𝓞 F)) (P' : HeightOneSpectrum (𝓞 E)) (b : 𝓞 E)
     (h : P'.asIdeal.under (𝓞 F) = v.asIdeal → b - 1 ∈ P'.asIdeal) : xvY v b - 1 ∈ P'.asIdeal.map (toRInt F E) := by
@@ -95,11 +93,9 @@ theorem xv_other (v : HeightOneSpectrum (𝓞 F)) (P' : HeightOneSpectrum (𝓞 
     exact qu_eps_mem v _ a ha1 ha2
 
 /- English proof (translation)
-Establish `hI : Ideal.span {algebraMap (𝓞 F) (𝓞 E) D} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Introduce `h`. Apply `adelstab_algebraMap_ne_zero (E := E) D hD0` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, h, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `qe_strip P K (fun P' _ => hK P') _ hI 0 (by`. Rewrite using `[pow_zero, one_mul, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem]`. Conclude with `hD)`. Establish `h1 : (P.asIdeal.map (toRInt F E)) ^ n ⊔ K = ⊤` using `Ideal.pow_sup_eq_top (hK P)`. Rewrite `h1` using `[← Ideal.map_pow, sup_eq_right.2 hn]`.
-
-Conclude with `h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xv_top (P : HeightOneSpectrum (𝓞 E)) (K : Ideal (RInt F E)) (hK : ∀ P' : HeightOneSpectrum (𝓞 E), P'.asIdeal.map (toRInt F E) ⊔ K = ⊤)
     (D : 𝓞 F) (hD0 : D ≠ 0) (hD : toRInt F E (algebraMap (𝓞 F) (𝓞 E) D) ∈ K) : K = ⊤ := by
@@ -117,19 +113,15 @@ theorem xv_top (P : HeightOneSpectrum (𝓞 E)) (K : Ideal (RInt F E)) (hK : ∀
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Establish `hle` using `qe_le P y y₀ hy q hq hq2 h1 h2`. Establish `hle'` using `qe_le P y' y₀' hy' q' hq' hq2' h1' h2'`. Establish `hmem : ∀ (z₀ : RInt F E) (c : 𝓞 E), c ∈ P.asIdeal → z₀ - toRInt F E c ∈ (P.asIdeal ^ 2).map (toRInt F E) → z₀ ∈ P.asIdeal.map (toRInt F E)`. Introduce `z₀ c hc hz`. Establish `e : z₀ = (z₀ - toRInt F E c) + toRInt F E c` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `add_mem (Ideal.map_mono (Ideal.pow_le_self two_ne_zero) hz) (Ideal.mem_map_of_mem _ hc)`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (hle' (hmem y₀ q hq h1))`. Take `⟨a', ha'⟩` from `Ideal.mem_span_singleton'.1 (hle (hmem y₀' q' hq' h1'))`. Establish `haa : a * a' = 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : a * a' * y₀ = y₀` using `by rw [mul_assoc, ha', ha]`. Establish `e1 : ((a * a' : RInt F E) : AfE F E) * (y : AfE F E) = 1 * (y : AfE F E)`. Rewrite using `[one_mul, ← hy]`. Conclude with `congrArg Subtype.val e0`. Conclude with `Subtype.ext (y.isUnit.mul_right_cancel e1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `u : (RInt F E)ˣ` to `⟨a, a', haa, by rw [mul_comm]; exact haa⟩`. Establish `hu : Units.map (RInt F E).subtype.toMonoidHom u = y * y'⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Use `show (a : AfE F E) = (y : AfE F E) * ((y'⁻¹ : (AfE F E)ˣ) : AfE F E)`. Establish `e2 : (a : AfE F E) * (y' : AfE F E) = (y : AfE F E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hy, ← hy']`. Conclude with `congrArg Subtype.val ha`. Rewrite using `[← e2, mul_assoc, Units.mul_inv, mul_one]`. Establish `hw : Units.map (RInt F E).subtype.toMonoidHom u ∈ inertAt E v`. Use `Subgroup.mem_inf.2 ⟨?_, by rw [hu]; exact mul_mem hs (inv_mem hs')⟩` and prove the remaining obligations.
-
-Use `show _ ∈ (RInt F E).toSubmonoid.units`. Rewrite using `[Submonoid.mem_units_iff]`. Conclude with `⟨a.2, a'.2⟩`. Establish `h3` using `hξ hw`. Rewrite `h3` using `[hu, MonoidHom.mem_ker, map_mul, map_inv, mul_inv_eq_one]`.
-
-Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xv_same (ξ : Chr F E L) (v : HeightOneSpectrum (𝓞 F)) (hξ : inertAt E v ≤ ξ.ker) (P : HeightOneSpectrum (𝓞 E)) (q q' : 𝓞 E)
     (hq : q ∈ P.asIdeal) (hq2 : q ∉ P.asIdeal ^ 2) (hq' : q' ∈ P.asIdeal) (hq2' : q' ∉ P.asIdeal ^ 2) (y y' : (AfE F E)ˣ) (y₀ y₀' : RInt F E)
@@ -172,14 +164,14 @@ theorem xv_same (ξ : Chr F E L) (v : HeightOneSpectrum (𝓞 F)) (hξ : inertAt
 end XV
 
 /- English proof (translation)
-The claim follows from `mem_kills.1 ((Subgroup.mem_iInf.1 ξ.2.1.2) v)`.
+A detailed English derivation is pending.
 -/
 theorem xv_tame {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L] {S : Set ℕ}
     (ξ : Tup F E L S) (v : HeightOneSpectrum (𝓞 F)) : wildAt E v ≤ (ξ : Chr F E L).ker :=
   mem_kills.1 ((Subgroup.mem_iInf.1 ξ.2.1.2) v)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ L _ S ξ v P hv hq w b hw hb1 hb2`. Conclude with `qVal_spec_tup ξ P hq v hv (locId E v w) (xvY v b) (xv_coe v w b hw) (xv_supp v w) (xv_cong v P hv b _ 2 hb1) (fun P' hne => xv_other v P' b (hb2 P' hne))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem twist_value_at_q : XiQ := by
   intro F E _ _ _ _ _ L _ S ξ v P hv hq w b hw hb1 hb2
@@ -187,19 +179,17 @@ theorem twist_value_at_q : XiQ := by
     (fun P' hne => xv_other v P' b (hb2 P' hne))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ L _ S ξ v P hv w b r hw hb hb2`. Establish `hbP : b ∉ P.asIdeal`. Introduce `h`. Rewrite `h` using `[← Ideal.Quotient.eq_zero_iff_mem, hb]`. Conclude with `r.ne_zero h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc1 : xvY (F` using `F) v b - toRInt F E b ∈ P.asIdeal.map (toRInt F E) := by`. Use `xv_cong v P hv b b 1 (by rw [sub_self]; exact zero_mem _)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `hoth : ∀ P' : HeightOneSpectrum (𝓞 E), P' ≠ P → xvY (F` using `F) v b - 1 ∈ P'.asIdeal.map (toRInt F E) := fun P' hne => xv_other v P' b (hb2 P' hne)`. Establish `hy0 : xvY (F` using `F) v b ∈ Ideal.span {xvY (F := F) v b} := Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ∀ P' : HeightOneSpectrum (𝓞 E), P'.asIdeal.map (toRInt F E) ⊔ Ideal.span {xvY (F` using `F) v b} = ⊤ := by`. Introduce `P'`. Rewrite using `[Ideal.eq_top_iff_one]`. Distinguish the cases in `hP' : P' = P`. Rewrite using `[hP']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b', i, hi, hbi⟩` from `P.isMaximal.exists_inv hbP`. Establish `e3` using `congrArg (toRInt F E) hbi`. Simplify using `only [map_add, map_mul, map_one] at e3`. Establish `e : (1 : RInt F E) = (toRInt F E i - (xvY (F` using `F) v b - toRInt F E b) * toRInt F E b') + xvY (F := F) v b * toRInt F E b' := by`. Take the linear combination `-e3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left (sub_mem (Ideal.mem_map_of_mem _ hi) (Ideal.mul_mem_right _ _ hc1))) (Ideal.mem_sup_right (Ideal.mul_mem_right _ _ hy0))`. Establish `e : (1 : RInt F E) = -(xvY (F` using `F) v b - 1) + xvY (F := F) v b := by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left (neg_mem (hoth P' hP'))) (Ideal.mem_sup_right hy0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD0, hD⟩` from `qe_denom (locId E v w) (xvY v b) (xv_coe v w b hw)`. Establish `htop` using `xv_top P _ hK D hD0 hD`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 ((Ideal.eq_top_iff_one _).1 htop)`. Set `u : (RInt F E)ˣ` to `⟨xvY v b, a, by rw [mul_comm]; exact ha, ha⟩`. Establish `hu : Units.map (RInt F E).subtype.toMonoidHom u = locId E v w` using `Units.ext (xv_coe v w b hw)`.
-
-Establish `h` using `b_resChar_spec (ξ : Chr F E L) (xv_tame ξ) P v hv u r b hb (by rw [hu]; exact xv_supp v w) hc1 hoth`. Rewrite `h` using `[hu]`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_residue_character : XiRes := by
   intro F E _ _ _ _ _ L _ S ξ v P hv w b r hw hb hb2
@@ -239,13 +229,11 @@ theorem twist_residue_character : XiRes := by
   exact h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ L _ S ξ v P hv hQ w b hw hb1 hb2 hb3`. Establish `hin : inertAt E v ≤ (ξ : Chr F E L).ker`. Assume the negation of the conclusion as `h`. Conclude with `hQ h`. Establish `hY1 : xvY (F` using `F) v b - toRInt F E b ∈ (P.asIdeal ^ 2).map (toRInt F E) := xv_cong v P hv b b 2 (by rw [sub_self]; exact zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY2 : ∀ P' : HeightOneSpectrum (𝓞 E), P' ≠ P → xvY (F` using `F) v b - 1 ∈ P'.asIdeal.map (toRInt F E) := fun P' hne => xv_other v P' b (hb3 P' hne)`. Establish `hex : ∃ k, IsUnifVal (ξ : Chr F E L) P k`. Use `⟨(ξ : Chr F E L) (locId E v w), fun v' hv' y y₀ b' hy hb1' hb2' hs h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hvv : v' = v` using `HeightOneSpectrum.ext (hv'.symm.trans hv)`. Substitute `hvv` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `xv_same (ξ : Chr F E L) v' hin P b' b hb1' hb2' hb1 hb2 y (locId E v' w) y₀ (xvY v' b) hy (xv_coe v' w b hw) hs (xv_supp v' w) h1 hY1 h2 hY2`. Establish `hsp : IsUnifVal (ξ : Chr F E L) P (unifVal (ξ : Chr F E L) P)`. Unfold `unifVal`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
-
-Conclude with `hsp v hv (locId E v w) (xvY v b) b (xv_coe v w b hw) hb1 hb2 (xv_supp v w) hY1 hY2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_value_at_uniformizer : XiUnif := by
   intro F E _ _ _ _ _ L _ S ξ v P hv hQ w b hw hb1 hb2 hb3

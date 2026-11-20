@@ -15,21 +15,19 @@ open GlobalTheory.AbLaw (rs)
 namespace GlobalTheory.CompanionTheory.FewEq
 
 /- English proof (translation)
-Introduce `hle`. Establish `htl : t l ∈ I` using `hI ▸ Ideal.subset_span ⟨l, rfl⟩`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 (hle htl)`. Take `⟨x, hx⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hq`. Simplify using `only [smul_eq_mul] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Set `S : R` to `∑ j, x j * e j`. Set `z : Fin r → R` to `fun i => -(x i * e l) + if i = l then 1 + S else 0`. Establish `hsum : ∑ i, z i * t i = p`. Establish `h1 : ∑ i, z i * t i = -(e l * ∑ i, x i * t i) + (1 + S) * t l`. Simplify using `only [z, add_mul, Finset.sum_add_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum, neg_mul, Finset.sum_neg_distrib]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `h2 : q = e l * ∑ i, x i * t i - S * t l`. Rewrite using `[← hx]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[h1]`. Take the linear combination `h2 - hpq`. Establish `hzm` using `hz z (hsum ▸ hp)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxm : ∀ i, i ≠ l → x i ∈ IsLocalRing.maximalIdeal R` using `fun i hi => by`. Use `hzm i` as an intermediate fact. Simplify using `only [z, if_neg hi, add_zero, neg_mem_iff] at this`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hl).1 (by rwa [mul_comm])`. Establish `hS : S - x l * e l ∈ IsLocalRing.maximalIdeal R`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: S - x l * e l = ∑ j ∈ Finset.univ.erase l, x j * e j`. Establish `h5 : S = x l * e l + ∑ j ∈ Finset.univ.erase l, x j * e j` using `(Finset.add_sum_erase _ (fun j => x j * e j) (Finset.mem_univ l)).symm`. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Ideal.sum_mem _ fun j hj => Ideal.mul_mem_right _ _ (hxm j (Finset.ne_of_mem_erase hj))`. Establish `h3` using `hzm l`. Simplify using `only [z, if_true] at h3`. Establish `h4 : (1 : R) ∈ IsLocalRing.maximalIdeal R`. Establish `: (1 : R) = (-(x l * e l) + (1 + S)) - (S - x l * e l)` using `by ring`.
-
-Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ h3 hS`. Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal R).ne_top h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_le_hyperplane {R : Type} [CommRing R] [IsLocalRing R] (I : Ideal R) (r : ℕ)
     (t e : Fin r → R) (l : Fin r) (hI : Ideal.span (Set.range t) = I)
@@ -80,15 +78,15 @@ theorem not_le_hyperplane {R : Type} [CommRing R] [IsLocalRing R] (I : Ideal R) 
   exact (Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal R).ne_top h4
 
 /- English proof (translation)
-Establish `hII : I * I ≤ J` using `(Ideal.mul_mono_left hIm).trans hmI`. Establish `hIm' : I * m ≤ J` using `by rwa [mul_comm]`. Establish `hE : c (a' * t l) ∈ I.map c` using `Ideal.mem_map_of_mem _ (I.mul_mem_left _ (ht l))`. Establish `hT : ∑ i, c (t i) * b i ∈ I.map c` using `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (ht i))`. Establish `hTE : (∑ i, c (t i) * b i) * c (a' * t l) ∈ J.map c` using `Ideal.map_mono hII (by rw [Ideal.map_mul]; exact Ideal.mul_mem_mul hT hE)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEQ : c (a' * t l) * (∑ i, c (e i) * b i - (βa - βc)) ∈ J.map c` using `Ideal.map_mono hIm' (by rw [Ideal.map_mul]; exact Ideal.mul_mem_mul hE hQ)`. Establish `hP : ∑ i, c (a' * (e l * t i - e i * t l)) * b i ∈ J.map c` using `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (J.mul_mem_left _ (hJ i)))`. Establish `hDJ` using `Ideal.map_mono hmI hD`. Establish `hT' : ∑ i, c (t i) * b i = ∑ i, c (a' * (e l * t i - e i * t l)) * b i + c (a' * t l) * ∑ i, c (e i) * b i`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : c a' * c (e l) = 1` using `by rw [← map_mul, ha, map_one]`. Simplify using `only [map_mul, map_sub]`. Take the linear combination `(-(c (t i) * b i)) * h1`. Generalize the expression as in `hTd : ∑ i, c (t i) * b i = T at *`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hPd : ∑ i, c (a' * (e l * t i - e i * t l)) * b i = P at *`. Generalize the expression as in `hSd : ∑ i, c (e i) * b i = Sg at *`. Generalize the expression as in `c (a' * t l) = E at *`. Establish `key : ua * (1 - E * βa) - g * (uc * (1 - E * βc)) = (ua - g * uc * (1 + T)) * (1 - E * βa) + g * uc * (P + E * (Sg - (βa - βc)) - T * E * βa)`. Rewrite using `[hT']`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hDJ) (Ideal.mul_mem_left _ _ (Ideal.sub_mem _ (Ideal.add_mem _ hP hEQ) (Ideal.mul_mem_right _ _ hTE)))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corrected_compat {R B : Type} [CommRing R] [CommRing B] (c : R →+* B) (I m J : Ideal R)
     (hIm : I ≤ m) (hmI : m * I ≤ J) (r : ℕ) (t e : Fin r → R) (l : Fin r) (a' : R)
@@ -130,13 +128,13 @@ theorem corrected_compat {R B : Type} [CommRing R] [CommRing B] (c : R →+* B) 
     (Ideal.sub_mem _ (Ideal.add_mem _ hP hEQ) (Ideal.mul_mem_right _ _ hTE)))
 
 /- English proof (translation)
-Introduce `R _ _ X s I r t hI hIm hz M A V j hj u w b e β l huw hD hl hQ`. Take `⟨a', ha'⟩` from `hl.exists_left_inv`. Establish `hrs : ∀ {U W : X.Opens} (h : W ≤ U) (x : R), rs X h (GlobalTheory.SmallExtLift.cst s U x) = GlobalTheory.SmallExtLift.cst s W x` using `fun {U W} h x => GlobalTheory.SmallExtLift.gr_ext fun y hy => by`. Rewrite using `[GlobalTheory.SmallExtLift.gr_res, GlobalTheory.SmallExtLift.gr_cst, GlobalTheory.SmallExtLift.gr_cst]`. Establish `hmJ : IsLocalRing.maximalIdeal R * I ≤ IsLocalRing.maximalIdeal R * I ⊔ Ideal.span (Set.range fun i => e l * t i - e i * t l)` using `le_sup_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨IsLocalRing.maximalIdeal R * I ⊔ Ideal.span (Set.range fun i => e l * t i - e i * t l), fun a => u a * (1 - GlobalTheory.SmallExtLift.cst s _ (a' * t l) * β a), fun a => w a * (1 + GlobalTheory.SmallExtLift.cst s _ (a' * t l) * β a), not_le_hyperplane I r t e l hI hz hl, fun a = …` and prove the remaining obligations. Establish `htl : t l ∈ I` using `hI ▸ Ideal.subset_span ⟨l, rfl⟩`. Establish `hE2 : GlobalTheory.SmallExtLift.cst s (V a) (a' * t l) * GlobalTheory.SmallExtLift.cst s (V a) (a' * t l) ∈`. Use extensionality with `s (IsLocalRing.maximalIdeal R * I ⊔ Ideal.span (Set.range fun i => e l * t i - e i * t l)) (V a) := by`. Rewrite using `[← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mem_map_of_mem _ (hmJ ?_)` and prove the remaining obligations. Conclude with `Ideal.mul_mem_mul (hIm (I.mul_mem_left _ htl)) (I.mul_mem_left _ htl)`. Establish `h1` using `Ideal.map_mono hmJ (huw a)`. Establish `key : u a * (1 - GlobalTheory.SmallExtLift.cst s _ (a' * t l) * β a) * (w a * (1 + GlobalTheory.SmallExtLift.cst s _ (a' * t l) * β a)) - 1 = (u a * w a - 1) - (u a * w a * β a * β a) * (GlobalTheory.SmallExtLift.cst s (V a) (a' * t l) * GlobalTheory.SmallExtLift.cst s (V a) (a' …` using `by ring`. Rewrite using `[key]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.sub_mem _ h1 (Ideal.mul_mem_left _ _ hE2)`. Use `corrected_compat (GlobalTheory.SmallExtLift.cst s (V a ⊓ V c)) I (IsLocalRing.maximalIdeal R) _ hIm hmJ r t e l a' ha' (fun i => hI ▸ Ideal.subset_span ⟨i, rfl⟩) (fun i => Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩)) (rs X inf_le_left (u a)) (rs X inf_le_right (u c)) (tr M V …` as an intermediate fact. Simplify `this` using `only [map_mul, map_sub, map_one, hrs]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_correction : ∀ (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (I : Ideal R) (r : ℕ) (t : Fin r → R),
     Ideal.span (Set.range t) = I → I ≤ IsLocalRing.maximalIdeal R →

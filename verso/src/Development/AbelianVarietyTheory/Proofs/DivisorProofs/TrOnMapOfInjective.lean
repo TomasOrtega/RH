@@ -4,15 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 namespace GlobalTheory.TraceOnInjectiveMap
 
 /- English proof (translation)
-Establish `hpres : (∀ v ∈ Submodule.map j M, L v ∈ Submodule.map j M) ↔ ∀ x ∈ M, L' x ∈ M`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Take `⟨y, hy, hyx⟩` from `h (j x) ⟨x, hx, rfl⟩`. Rewrite `hyx` using `[hL x hx]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hj hyx ▸ hy`. Introduce and unpack `h _ ⟨x, hx, rfl⟩`. Conclude with `⟨L' x, h x hx, (hL x hx).symm⟩`. Unfold `GlobalTheory.BCT.trOn`. Distinguish the cases in `h' : ∀ x ∈ M, L' x ∈ M`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (hpres.2 h'), dif_pos h']`. Set `e : M ≃ₗ[ℂ] Submodule.map j M` to `Submodule.equivMapOfInjective j hj M`. Establish `hc : L.restrict (hpres.2 h') = e.conj (L'.restrict h')`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `e.surjective w`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [LinearEquiv.conj_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.coe_restrict_apply, e, Submodule.coe_equivMapOfInjective_apply]`. Conclude with `hL x x.2`. Rewrite using `[hc, LinearMap.trace_conj']`.
-
-Rewrite using `[dif_neg (mt hpres.1 h'), dif_neg h']`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trOn_map_of_injective {X V : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V]
     (j : X →ₗ[ℂ] V) (hj : Function.Injective j) (M : Submodule ℂ X) (L' : X →ₗ[ℂ] X) (L : V →ₗ[ℂ] V)

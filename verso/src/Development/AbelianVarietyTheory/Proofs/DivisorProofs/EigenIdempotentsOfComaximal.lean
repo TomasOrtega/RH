@@ -4,25 +4,23 @@ universe u
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hcom`. Establish `hc : ∀ i j, ∃ c : A →₀ C, i ≠ j → (c.sum fun x r => r * (χ i x - χ j x)) = 1`. Introduce `i j`. Distinguish the cases in `h : i = j`. Conclude with `⟨0, fun h' => absurd h h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `h1 : (1 : C) ∈ Ideal.span (Set.range fun x => χ i x - χ j x)`. Rewrite using `[hcom i j h]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 h1`. Conclude with `⟨c, fun _ => by simpa [smul_eq_mul] using hc⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose c hc using hc`. Set `Z : Fin a → Fin a → Module.End C W` to `fun i j => (c i j).sum fun x r => r • (σ x - χ j x • (1 : Module.End C W))`. Establish `hZ : ∀ i j k (w : W), (∀ x, σ x w = χ k x • w) → Z i j w = ((c i j).sum fun x r => r * (χ k x - χ j x)) • w`. Introduce `i j k w hw`. Simplify using `only [Z, Finsupp.sum, LinearMap.sum_apply, Finset.sum_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[hw, sub_smul, mul_smul, smul_sub]`. Establish `hZc : ∀ i j (T : Module.End C W), (∀ c, T * σ c = σ c * T) → Commute T (Z i j)`. Introduce `i j T hT`. Simplify using `only [Z, Finsupp.sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Commute.sum_right _ _ _ fun x _ => ?_` and prove the remaining obligations. Conclude with `((show Commute T (σ x) from hT x).sub_right ((Commute.one_right T).smul_right _)).smul_right _`. Establish `hlist : ∀ (i : Fin a) (s : Fin a → C) (w : W) (L : List (Fin a)), (∀ j ∈ L, Z i j w = s j • w) → (L.map (Z i)).prod w = (L.map s).prod • w`. Introduce `i s w L hL`. Proceed by induction on `L with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `nil => simp`. Consider the case `cons j L ih`. Establish `ih'` using `ih (fun k hk => hL k (List.mem_cons_of_mem _ hk))`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, ih', map_smul, hL j List.mem_cons_self, smul_smul]`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i => (((List.finRange a).filter (· ≠ i)).map (Z i)).prod, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i T hT`. Conclude with `(Commute.list_prod_right _ _ fun y hy => by`. Take `⟨j, _, rfl⟩` from `List.mem_map.1 hy`. Conclude with `hZc i j T hT).eq`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i w hw`. Rewrite using `[hlist i (fun j => (c i j).sum fun x r => r * (χ i x - χ j x)) w _ (fun j _ => hZ i j i w hw)]`. Rewrite using `[List.prod_eq_one, one_smul]`. Introduce `y hy`. Take `⟨j, hj, rfl⟩` from `List.mem_map.1 hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hji : j ≠ i` using `by simpa using (List.mem_filter.1 hj).2`. Conclude with `hc i j (Ne.symm hji)`. Introduce `i j w hji hw`. Rewrite using `[hlist i (fun k => (c i k).sum fun x r => r * (χ j x - χ k x)) w _ (fun k _ => hZ i k j w hw)]`. Rewrite using `[List.prod_eq_zero, zero_smul]`.
-
-Use `List.mem_map.2 ⟨j, ?_, ?_⟩` and prove the remaining obligations. Conclude with `List.mem_filter.2 ⟨List.mem_finRange j, by simpa using hji⟩`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigenIdempotents_of_comaximal
     {C : Type} [CommRing C] {A : Type} [CommRing A] {W : Type u} [AddCommGroup W] [Module C W]

@@ -10,33 +10,33 @@ namespace GlobalTheory.UnramifiedGenerator
 open IsLocalRing
 
 /- English proof (translation)
-Use `set k := ResidueField R`. Establish `hsurj : ∀ x : k ⊗[R] O, ∃ y : O, (1 : k) ⊗ₜ[R] y = x` using `fun x => TensorProduct.mk_surjective R O k residue_surjective x`. Establish `hker : ∀ y : O, (1 : k) ⊗ₜ[R] y = 0 ↔ ∃ z, y = algebraMap R O ϖ * z`. Introduce `y`. Establish `h1 : (1 : k) ⊗ₜ[R] y = 0 ↔ y ∈ LinearMap.ker (TensorProduct.mk R (R ⧸ maximalIdeal R) O 1)` using `Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, LinearMap.ker_tensorProductMk, hϖ, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `only [Submodule.mem_top, true_and, Algebra.smul_def]`. Conclude with `⟨fun ⟨z, hz⟩ => ⟨z, hz.symm⟩, fun ⟨z, hz⟩ => ⟨z, hz.symm⟩⟩`. Set `t : Module.End k (k ⊗[R] O)` to `(LinearMap.mulLeft R π).baseChange k`. Set `T : Module.End k (k ⊗[R] O)` to `(LinearMap.mulLeft R a).baseChange k`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ht : ∀ y, t (1 ⊗ₜ y) = 1 ⊗ₜ (π * y)` using `fun y => by simp [t]`. Establish `hT : ∀ y, T (1 ⊗ₜ y) = 1 ⊗ₜ (a * y)` using `fun y => by simp [T]`. Establish `htp : ∀ (n : ℕ) y, (t ^ n) (1 ⊗ₜ y) = 1 ⊗ₜ (π ^ n * y)`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ n ih => intro y`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, ht, pow_succ', mul_assoc]`. Establish `hc : Commute t T`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hsurj x`. Simplify using `only [Module.End.mul_apply, ht, hT, mul_left_comm]`. Establish `hte : t ^ e = 0`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hsurj x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htp, LinearMap.zero_apply, hker]`. Conclude with `⟨(u⁻¹ : Oˣ) * y, by rw [hu, mul_assoc, Units.mul_inv_cancel_left]⟩`. Establish `hkt : ∀ x, t x = 0 → x ∈ LinearMap.range (t ^ (e - 1))`. Introduce `x hx`. Take `⟨y, rfl⟩` from `hsurj x`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[ht, hker]`. Take `⟨z, hz⟩` from `hx`. Take `⟨n, rfl⟩ : ∃ n, e = n + 1` from `⟨e - 1, by omega⟩`. Use `⟨1 ⊗ₜ (u * z), ?_⟩` and prove the remaining obligations. Rewrite using `[htp, Nat.add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `mul_left_cancel₀ hπ0` to reduce the goal to its premises. Rewrite using `[hz, hu]`. Expand and normalize the polynomial expressions, which then agree. Establish `hTt : LinearMap.range t ≤ (LinearMap.range t).comap T`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨T x, LinearMap.congr_fun hc.eq x⟩`. Establish `key` using `GlobalTheory.NilpFiltration.charpoly_eq_charpoly_mapQ_pow k (k ⊗[R] O) t T hc e he hte hkt hTt`. Establish `hbc : LinearMap.charpoly T = (LinearMap.charpoly (LinearMap.mulLeft R a)).map (residue R)` using `LinearMap.charpoly_baseChange _ k`. Rewrite using `[← hbc, key]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Set `φ : k ⊗[R] O →ₗ[k] ResidueField O` to `(Algebra.TensorProduct.lift (Algebra.ofId k (ResidueField O)) (IsScalarTower.toAlgHom R O (ResidueField O)) (fun _ _ => Commute.all _ _)).toLinearMap`. Establish `hφ : ∀ y, φ (1 ⊗ₜ y) = residue O y` using `fun y => by simp [φ]`. Establish `hφs : Function.Surjective φ` using `fun w => by`. Take `⟨y, rfl⟩` from `residue_surjective w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, hφ y⟩`. Establish `hφk : LinearMap.range t = LinearMap.ker φ`. Use extensionality with `x`. Take `⟨y, rfl⟩` from `hsurj x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x', hx'⟩`. Take `⟨z, rfl⟩` from `hsurj x'`. Rewrite using `[← hx', ht, LinearMap.mem_ker, hφ, residue_eq_zero_iff, hπ]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Introduce `hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[LinearMap.mem_ker, hφ, residue_eq_zero_iff, hπ, Ideal.mem_span_singleton]`. Take `⟨z, rfl⟩` from `hy`. Conclude with `⟨_, ht z⟩`. Use `GlobalTheory.NilpFiltration.charpoly_eq_of_intertwine ((Submodule.quotEquivOfEq _ _ hφk).trans (φ.quotKerEquivOfSurjective hφs)) _ _ ?_` and prove the remaining obligations. Introduce `x`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `hsurj x`. Express the relevant statement in the definitionally equal form `φ (T (1 ⊗ₜ y)) = residue O a * φ (1 ⊗ₜ y)`. Rewrite using `[hT, hφ, hφ, map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_map_residue {R O : Type} [CommRing R] [IsLocalRing R] [CommRing O] [IsDomain O]
     [IsLocalRing O] [Algebra R O] [Module.Free R O] [Module.Finite R O]
@@ -122,23 +122,21 @@ theorem charpoly_map_residue {R O : Type} [CommRing R] [IsLocalRing R] [CommRing
   rw [hT, hφ, hφ, map_mul]
 
 /- English proof (translation)
-Introduce `l hl O _ _ _ _ _ _`. Use `set k := ResidueField ℤ_[l]`. Use `haveI : Finite k := Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hl0 : (l : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlm : (l : ℤ_[l]) ∈ maximalIdeal ℤ_[l]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hl1 : algebraMap ℤ_[l] O l ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective ℤ_[l] O)).2 hl0`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl1 hπ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `he : 0 < e`. Use `Nat.pos_of_ne_zero ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `h1 : IsUnit (algebraMap ℤ_[l] O l)` using `by rw [hu]; simp`. Conclude with `hlm (isUnit_of_map_unit _ _ h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hu` using `[mul_comm]`. Set `pb : PowerBasis k (ResidueField O)` to `Field.powerBasisOfFiniteOfSeparable k (ResidueField O)`. Take `⟨a, ha⟩` from `residue_surjective pb.gen`. Establish `hm : (minpoly k pb.gen).Monic` using `minpoly.monic pb.isIntegral_gen`. Take `⟨h, hh, -, hhm⟩` from `lifts_and_natDegree_eq_and_monic (f := residue ℤ_[l]) ((mem_lifts _).2 (map_surjective _ residue_surjective _)) hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsep : (h.map (residue ℤ_[l])).Separable`. Rewrite using `[hh]`. Conclude with `Algebra.IsSeparable.isSeparable k pb.gen`. Establish `hch : (LinearMap.charpoly (LinearMap.mulLeft ℤ_[l] a)).map (residue ℤ_[l]) = (h.map (residue ℤ_[l])) ^ e`. Rewrite using `[charpoly_map_residue (l : ℤ_[l]) PadicInt.maximalIdeal_eq_span_p π hπ.ne_zero hπ.maximalIdeal_eq e he u hu a, hh, ha, ← charpoly_leftMulMatrix pb, ← LinearMap.charpoly_toMatrix _ pb.basis]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨e, π, a, u, h, he, by simpa using hu, hhm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hπ.maximalIdeal_eq, ← residue_eq_zero_iff]`. Establish `h1` using `minpoly.aeval k pb.gen`. Rewrite `h1` using `[← hh, ← ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Conclude with `((aeval_algebraMap_apply (ResidueField O) a h).symm).trans (aeval_map_algebraMap k _ h).symm`. Establish `h1` using `congrArg natDegree hch`. Rewrite `h1` using `[(LinearMap.charpoly_monic _).natDegree_map, LinearMap.charpoly_natDegree, natDegree_pow, hhm.natDegree_map]`. Conclude with `h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Introduce `κ _ _ ψ`. Establish `hψ : ∀ x ∈ maximalIdeal ℤ_[l], ψ x = 0`. Introduce `x hx`. Rewrite `hx` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Take `⟨y, rfl⟩` from `hx`.
-
-Simplify using the standard rewrite rules. Set `χ : k →+* κ` to `Ideal.Quotient.lift _ ψ hψ`. Establish `hχ : ψ = χ.comp (residue ℤ_[l])` using `RingHom.ext fun _ => rfl`. Rewrite using `[hχ, ← Polynomial.map_map, ← Polynomial.map_map, hch, Polynomial.map_pow]`. Conclude with `⟨hsep.map, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ramification_and_generator : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O],

@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hL p K q c b hw`. Take `⟨sP, sS, -, -, e⟩` from `hw.s`. Rewrite using `[e]`. Conclude with `⟨sP.pin, sP.lev⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem idE_levelMatch_of_bwit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b →

@@ -10,16 +10,16 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data E r} {x0 : Frame X.Ψ r}
 
 /- English proof (translation)
-Unfold `lminor`. Rewrite using `[Matrix.submatrix_one _ (Fin.castLE_injective _), Matrix.det_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lminor_one (k : Fin (r + 1)) : lminor (1 : Matrix (Fin r) (Fin r) ℂ) k = 1 := by
   unfold lminor
   rw [Matrix.submatrix_one _ (Fin.castLE_injective _), Matrix.det_one]
 
 /- English proof (translation)
-Unfold `DeltaF`. Use `Finset.prod_eq_one fun τ _ => Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Establish `h : Mx X x0 x0 τ = 1`. Unfold `Mx`. Conclude with `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (orthogonalFrame_det_ne_zero (X := X) (x0 := x0) hx0 τ))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, lminor_one]`.
+A detailed English derivation is pending.
 -/
 theorem orthogonalFrame_delta_eq_one (hx0 : IsOrth X x0) : DeltaF X x0 x0 = 1 := by
   unfold DeltaF
@@ -35,9 +35,9 @@ def linePoly (x v : Frame X.Ψ r) : ℂ[X] :=
       (Fin.castLE (Nat.le_of_lt_succ k.isLt)) (Fin.castLE (Nat.le_of_lt_succ k.isLt))).det
 
 /- English proof (translation)
-Unfold `linePoly DeltaF lminor`. Rewrite using `[Polynomial.eval_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Mx, mat, Matrix.mul_apply, Finset.mul_sum, mul_add, Finset.sum_add_distrib, mul_left_comm, Polynomial.eval_finset_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem linePoly_eval (x v : Frame X.Ψ r) (t : ℂ) :
     (linePoly (x0 := x0) x v).eval t = DeltaF X x0 (x + t • v) := by
@@ -53,15 +53,13 @@ theorem linePoly_eval (x v : Frame X.Ψ r) (t : ℂ) :
     Polynomial.eval_finset_sum]
 
 /- English proof (translation)
-Use `set w : Frame X.Ψ r := x0 - x`. Use `set P := linePoly (x0 := x0) x w`. Establish `hP1 : P.eval 1 = 1`. Rewrite using `[linePoly_eval, one_smul, add_sub_cancel, orthogonalFrame_delta_eq_one hx0]`. Establish `hP0 : P ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `h`. Rewrite `hP1` using `[h, Polynomial.eval_zero]`. Conclude with `zero_ne_one hP1`. Use `set δ : ℝ := ε / (‖w‖ + 1)`. Establish `hδ : 0 < δ` using `div_pos hε (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinf : ((fun s : ℝ => (s : ℂ)) '' Set.Ioo 0 δ).Infinite` using `(Set.Ioo_infinite hδ).image (fun a _ b _ h => Complex.ofReal_injective h)`. Take `⟨c, hc, hcP⟩` from `(hinf.diff (Polynomial.finite_setOf_isRoot hP0)).nonempty`. Take `⟨s, hs, rfl⟩` from `hc`. Use `⟨x + (s : ℂ) • w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hs.1]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: (‖w‖ + 1) ≠ 0` using `by positivity`. Simplify using `only [δ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← linePoly_eval]`.
-
-Conclude with `hcP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_delta (hx0 : IsOrth X x0) (x : Frame X.Ψ r) (ε : ℝ) (hε : 0 < ε) :
     ∃ y ∈ ball x ε, DeltaF X x0 y ≠ 0 := by
@@ -103,7 +101,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.AR.Up.LUPf ReciprocityTheo
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X x0 hx0`. Use `⟨DeltaF X x0, zF X x0, bF X x0, Delta_diff (X := X) (x0 := x0), fun x _ ε hε => dense_delta (X := X) (x0 := x0) hx0 x ε hε, zF_diffOn (X := X) (x0 := x0), bF_diffOn (X := X) (x0 := x0), fun x hx hΔ => ⟨zF_mem (X := X) (x0 := x0) hx0 hx hΔ, bF_mem (X := X) (x0 := x0) hx hΔ, split_ …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem lu_holds : LUStatement (E := E) := by
   intro r X x0 hx0

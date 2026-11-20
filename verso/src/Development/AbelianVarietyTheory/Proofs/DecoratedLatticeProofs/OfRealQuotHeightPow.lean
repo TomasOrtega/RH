@@ -23,11 +23,9 @@ noncomputable section
 namespace GlobalTheory.MixSumBound
 
 /- English proof (translation)
-Use `set φ : ℝ → ℝ≥0∞ := fun t => ENNReal.ofReal (max t 1 ^ A) with hφ`. Establish `hmono : Monotone φ` using `fun a b hab => ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (zero_le_one.trans (le_max_right _ _)) (max_le_max hab le_rfl) A)`. Establish `hcont : Continuous φ` using `ENNReal.continuous_ofReal.comp ((continuous_id.max continuous_const).pow A)`. Establish `hbdd : BddBelow (Set.range fun γ : GQ T => height T (γ * h))` using `⟨1, by rintro _ ⟨γ, rfl⟩; exact one_le_height T _⟩`. Establish `e` using `Monotone.map_ciInf_of_continuousAt hcont.continuousAt hmono hbdd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : φ (quotHeight T h) = ENNReal.ofReal (quotHeight T h ^ A)`. Simplify using `only [hφ, max_eq_left (one_le_quotHeight T h)]`. Establish `e2 : ∀ γ : GQ T, φ (height T (γ * h)) = ENNReal.ofReal (height T (γ * h) ^ A)` using `fun γ => by`. Simplify using `only [hφ, max_eq_left (one_le_height T _)]`. Rewrite using `[← e1, quotHeight, e]`.
-
-Conclude with `iInf_congr e2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofReal_quotHeight_pow {D : D7} (T : HSp D) (A : ℕ) (h : GA D T) :
     ENNReal.ofReal (quotHeight T h ^ A) = ⨅ γ : GQ T, ENNReal.ofReal (height T (γ * h) ^ A) := by

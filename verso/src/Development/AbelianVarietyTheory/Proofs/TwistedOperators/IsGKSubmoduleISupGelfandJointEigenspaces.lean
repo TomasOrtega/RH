@@ -30,23 +30,21 @@ noncomputable section
 namespace GlobalTheory.GKEigen
 
 /- English proof (translation)
-Introduce `D θ V S M hθ ψ hψ C`. Establish `hG` using `GlobalTheory.CuspGK.isGKSub_gkGen θ M ψ`. Establish `hsm : ∀ f ∈ GlobalTheory.CuspGK.gkGen θ M ψ, f ∈ GlobalTheory.Mem.AutSpace.SmFun θ V` using `fun f hf => (GlobalTheory.KTypeAdm.isAutFunSm_of_mem_gkGen θ M hθ hψ f hf).smooth`. Use `set T : Set (GA D V → ℂ) := ⋃ c ∈ C, {h | h ∈ GlobalTheory.CuspGK.gkGen θ M ψ ∧ ∀ i : D.what₂.Tau × ℕ, gelf θ V i.1 i.2 h = c i • h} with hTdef`. Establish `hspan : (⨆ c ∈ C, Submodule.span ℂ {h | h ∈ GlobalTheory.CuspGK.gkGen θ M ψ ∧ ∀ i : D.what₂.Tau × ℕ, gelf θ V i.1 i.2 h = c i • h}) = Submodule.span ℂ T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTdef, Submodule.span_iUnion₂]`. Rewrite using `[hspan]`. Establish `hTG : T ⊆ GlobalTheory.CuspGK.gkGen θ M ψ`. Introduce `h hh`. Rewrite `hh` using `[hTdef, Set.mem_iUnion₂]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, _, hh, _⟩` from `hh`. Conclude with `hh`. Establish `hSG : Submodule.span ℂ T ≤ GlobalTheory.CuspGK.gkGen θ M ψ` using `Submodule.span_le.2 hTG`. Establish `hTk : ∀ τ g, GlobalTheory.CuspGK.InK M τ g → ∀ h ∈ T, rTr V (atTau θ V τ g) h ∈ T`. Introduce `τ g hg h hh`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hh`, the goal using `[hTdef, Set.mem_iUnion₂]`. Take `⟨c, hc, hhG, he⟩` from `hh`. Use `⟨c, hc, hG.k τ g hg h hhG, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RegSch.CentreRight.gelf_rTr_all hθ _ i.1 i.2 (hsm h hhG), he i]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTl : ∀ τ, ∀ X ∈ lieAt V τ, ∀ h ∈ T, Rder θ V τ X h ∈ T`. Introduce `τ X hX h hh`. Rewrite `hh`, the goal using `[hTdef, Set.mem_iUnion₂]`. Take `⟨c, hc, hhG, he⟩` from `hh`. Use `⟨c, hc, hG.lie τ X hX h hhG, fun i => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.CuspLie.gelf_Rder hθ hX (hsm h hhG) i.1 i.2, he i, GlobalTheory.Mem.AutSpace.Rder_smul]`. Use `⟨fun τ g hg f hf => ?_, fun τ X hX f hf => ?_⟩` and prove the remaining obligations. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (hTk τ g hg x hx)`. Consider the case `zero => exact (Submodule.span ℂ T).zero_mem`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact (Submodule.span ℂ T).add_mem hx hy`. Consider the case `smul a x _ hx => exact (Submodule.span ℂ T).smul_mem a hx`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (hTl τ X hX x hx)`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Formalism.IndefR.Mult.rder_zero θ V τ X]`. Conclude with `(Submodule.span ℂ T).zero_mem`. Consider the case `add x y hx' hy' hx hy`. Rewrite using `[GlobalTheory.Mem.AutSpace.Rder_add (hsm x (hSG hx')) (hsm y (hSG hy')) hX]`. Conclude with `(Submodule.span ℂ T).add_mem hx hy`.
-
-Consider the case `smul a x _ hx`. Rewrite using `[GlobalTheory.Mem.AutSpace.Rder_smul]`. Conclude with `(Submodule.span ℂ T).smul_mem a hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGKSub_iSup_eigen : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) (S : D.what₂.Tau → SPar)
     (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ → ∀ ψ : GA D V → ℂ, IsAutFunSm θ V ψ →

@@ -18,7 +18,7 @@ def KBridge : Prop :=
         Function.Surjective p ∧ ∀ x, h x = 0 → (l : ℤ_[l]) ^ cOne (2 * e) • x = 0
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [cOne]`. Consider the case `succ m ih`. Unfold `cOne at ih ⊢`. Rewrite using `[Finset.sum_Icc_succ_top (by omega), mul_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -31,7 +31,7 @@ theorem two_mul_cOne (m : ℕ) : 2 * cOne m = m * (m + 5) := by
     ring
 
 /- English proof (translation)
-Use `two_mul_cOne m` as an intermediate fact. Use polynomial arithmetic with `[Nat.zero_le m, Nat.zero_le (m * m)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem cOne_le (m : ℕ) : cOne m ≤ m * (m + 3) := by
   have := two_mul_cOne m

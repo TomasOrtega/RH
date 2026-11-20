@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SameBlockOfPosC
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FockTensor.derived_adjoint_and_casimir` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDerivedActionsAdjointCasimirSymmetric.lean&line=9#L9)
 -/

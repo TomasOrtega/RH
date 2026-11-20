@@ -11,45 +11,43 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Global
 namespace GlobalTheory.Diag.PG
 
 /- English proof (translation)
-Introduce `eps CD he he52 hCD C' Cl Cg hCl hClD`. Take `⟨x1, h1⟩` from `GlobalTheory.T.eventually_rankNums_imp_parameter_lower_bounds eps CD he he52 hCD C'`. Take `⟨x2, h2⟩` from `GlobalTheory.T.eventually_rankNums_imp_parameter_lower_bounds eps CD he he52 hCD Cl`. Take `⟨x3, h3⟩` from `GlobalTheory.T.globalRankNumberBounds_rootDiscriminant_clauses eps CD he he52 hCD Cl hCl`. Take `⟨x4, h4⟩` from `GlobalTheory.T.globalRankNumberBounds_size_comparisons eps CD he he52 hCD Cl hCl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x5, h5⟩` from `GlobalTheory.T.globalRankNumberBounds_gaps_exceed eps CD he he52 hCD Cl hCl`. Use `⟨max x1 (max x2 (max x3 (max x4 x5))), fun x hx D large₂ cT CT hL h8 G N hT => ?_⟩` and prove the remaining obligations. Establish `hx1 : x1 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx2 : x2 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hx3 : x3 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_max_right _ _))) hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx4 : x4 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) hx`. Establish `hx5 : x5 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) hx`. Establish `R` using `G.nums`. Take `⟨a1, -, -, -, -, -, -, -⟩` from `h1 x hx1 _ _ _ _ _ R`. Take `⟨-, a2, a3, a4, a5, -, -, -⟩` from `h2 x hx2 _ _ _ _ _ R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, c2, c3⟩` from `h3 x hx3 _ _ _ _ _ R`. Take `⟨d1, d2, d3, d4, d5, d6, d7⟩` from `h4 x hx4 _ _ _ _ _ R`. Establish `e` using `h5 x hx5 _ _ _ _ _ R (D.R.r : ℝ) k_le_r r_le_two_k`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hb : large₂.sc.b = bx x eps` using `by show Real.exp large₂.sc.L = Real.exp (x ^ eps)`. Rewrite using `[hL]`. Establish `hrd` using `G.rd_lo`. Establish `hv : D.host.v = D.host.rdE / 2` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbj : ∀ τ j, 1 ≤ j → j ≤ D.R.m → Real.sqrt (bx x eps) ≤ bOne D τ j ∧ bOne D τ j ≤ bx x eps ^ 2`. Introduce `τ j h1 h2`. Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Rewrite using `[bOne_succ τ j (by omega)]`. Conclude with `N.b_win τ ⟨j, by omega⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrS : (D.R.rS : ℝ) = (D.R.m : ℝ) / 2 - 1`. Take `⟨a, ha⟩` from `D.R.m_even`. Establish `h' : D.R.rS + 1 = a` using `by unfold Ranks.rS; omega`. Establish `e1 : (D.R.rS : ℝ) + 1 = a` using `by exact_mod_cast h'`. Establish `e2 : (D.R.m : ℝ) = a + a` using `by exact_mod_cast ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hT` using `[hb]`. Unfold `StandingHypotheses`. Simplify using `only`. Rewrite using `[hb, hL]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h8, a1, by exact_mod_cast R.mf, by exact_mod_cast R.fk, by rw [hrS]; exact a2, a3, a4, ?_, ?_, c2, c3, (G.g_win 0).1, (G.g_win 0).2, (G.g_win 1).1, (G.g_win 1).2, ?_, ?_, ?_, ?_, d7 hClD, ?_, ?_, hT, a5, hCl⟩` and prove the remaining obligations. Introduce `τ j h1 h2`. Conclude with `le_trans d2 (hbj τ j h1 h2).1`. Rewrite using `[hv, Real.log_div (by linarith) (by norm_num)]`. Conclude with `c1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `τ j h1 h2`. Rewrite using `[Real.rpow_two]`. Conclude with `⟨le_trans d3 (hbj τ j h1 h2).1, (hbj τ j h1 h2).2⟩`. Introduce `τ`. Establish `a` using `N.bm τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e' : D.R.m = D.R.m - 1 + 1` using `by omega`. Establish `b` using `bOne_succ τ (D.R.m - 1) (by omega)`. Rewrite `b` using `[← e']`. Establish `b0 : bOne D τ 1 = (((D.hc τ).b ⟨0, by omega⟩ : ℚ) : ℝ)` using `bOne_succ τ 0 (by omega)`. Rewrite using `[b, b0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a`. Introduce `u τ`. Establish `e1 : uOne D u τ 1 = uFirst D τ`. Rewrite using `[show (1 : ℕ) = 0 + 1 from rfl, uOne_succ u τ 0 k_pos, D.hcW_first u τ k_pos]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Distinguish the cases in `ht : Top D τ`. Conclude with `le_trans (N.top τ ht).2.1 d6`. Establish `o` using `(G.off τ ht).2.1`. Establish `v0` using `(G.cloud τ ⟨0, by omega⟩).2`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `v0' : vFirst D τ ≤ 4 * (D.R.k : ℝ) * (D.s.Del : ℝ)` using `v0`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hv]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ j h1 h2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Rewrite using `[bOne_succ τ (j + 1) (by omega), bOne_succ τ j (by omega)]`. Establish `g` using `G.gap τ j (by omega)`. Move the coercions through the operations in `at g`. Combine the linear relations using `[e.2.2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `τ i h`. Distinguish the cases in `c1 : i.1 + 1 < D.R.k - 1`. Rewrite using `[lamS_lo τ i (by omega), lamS_lo τ ⟨i.1 + 1, h⟩ c1, vOne_succ τ i.1 (by omega), vOne_succ τ (i.1 + 1) c1]`. Establish `g` using `D.s.cloud_gap D.u₀ τ i.1 c1`. Simplify using `only [D.hcW_v] at g`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `g'` using `congrArg (fun q : ℚ => (q : ℝ)) g`. Move the coercions through the operations in `at g'`. Combine the linear relations using `[e.1]`. Distinguish the cases in `c2 : i.1 < D.R.k - 1`. Rewrite using `[lamS_lo τ i c2, lamS_hi τ ⟨i.1 + 1, h⟩ c1, vOne_succ τ i.1 c2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : i.1 + 1 - (D.R.k - 1) + 1 = 0 + 1` using `by omega`. Simplify using `only [e2]`. Rewrite using `[bOne_succ τ 0 (by omega)]`. Establish `v0` using `(G.cloud τ ⟨i.1, c2⟩).1`. Establish `b0` using `(N.b_win τ ⟨0, by omega⟩).1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[e.2.1]`. Establish `hi` using `i.isLt`. Rewrite using `[lamS_hi τ i c2, lamS_hi τ ⟨i.1 + 1, h⟩ c1]`. Establish `e2 : i.1 + 1 - (D.R.k - 1) + 1 = (i.1 - (D.R.k - 1) + 1) + 1` using `by omega`. Simplify using `only [e2]`.
-
-Rewrite using `[bOne_succ τ (i.1 - (D.R.k - 1)) (by omega), bOne_succ τ (i.1 - (D.R.k - 1) + 1) (by omega)]`. Establish `g` using `G.gap τ (i.1 - (D.R.k - 1)) (by omega)`. Move the coercions through the operations in `at g`. Combine the linear relations using `[e.2.2.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem standingHypotheses_of_glob0_nodes_Tr_bounds : ∀ eps CD : ℝ, 0 < eps → eps < 1 / 52 → 3 ≤ CD → ∀ C' Cl Cg : ℝ, 0 < Cl → Cl ≤ CD →
     ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (D : D7) (large₂ : SizeData₂ D) (cT CT : ℝ), large₂.sc.L = x ^ eps → 8 * large₂.CGam ≤ C' →

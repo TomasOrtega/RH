@@ -28,13 +28,13 @@ theorem adeleMap_apply (x : 𝔸[K]) :
   rfl
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Global.InfinitePlace.continuous_infiniteAdeleRingMap.prodMap continuous_finiteAdeleMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adeleMap : Continuous (adeleMap K L) :=
   GroundTheory.Global.InfinitePlace.continuous_infiniteAdeleRingMap.prodMap continuous_finiteAdeleMap
 
 /- English proof (translation)
-The claim follows from `Prod.ext (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_algebraMap k) (finiteAdeleMap_algebraMap k)`.
+A detailed English derivation is pending.
 -/
 theorem adeleMap_algebraMap (k : K) :
     adeleMap K L (algebraMap K 𝔸[K] k) = algebraMap L 𝔸[L] (algebraMap K L k) :=
@@ -49,7 +49,7 @@ def adeleTensorEquiv : L ⊗[K] 𝔸[K] ≃ₐ[L] 𝔸[L] :=
       (finiteTensorEquiv K L))
 
 /- English proof (translation)
-The claim follows from `Prod.ext (GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv_tmul' l a.1) (finiteTensorEquiv_tmul l a.2)`.
+A detailed English derivation is pending.
 -/
 theorem adeleTensorEquiv_tmul (l : L) (a : 𝔸[K]) :
     adeleTensorEquiv K L (l ⊗ₜ a) = algebraMap L 𝔸[L] l * adeleMap K L a :=
@@ -57,7 +57,7 @@ theorem adeleTensorEquiv_tmul (l : L) (a : 𝔸[K]) :
     (finiteTensorEquiv_tmul l a.2)
 
 /- English proof (translation)
-The claim follows from `finiteTensorEquiv_tmul_apply l a.2 w`.
+A detailed English derivation is pending.
 -/
 theorem adeleTensorEquiv_tmul_snd (l : L) (a : 𝔸[K]) (w : HeightOneSpectrum (𝓞 L)) :
     (adeleTensorEquiv K L (l ⊗ₜ a)).2 w =
@@ -70,7 +70,7 @@ def coord (i : ι) (y : 𝔸[L]) : 𝔸[K] :=
   (GroundTheory.Global.InfinitePlace.adeleCoord b i y.1, finiteCoord b i y.2)
 
 /- English proof (translation)
-The claim follows from `((GroundTheory.Global.InfinitePlace.continuous_adeleCoord b i).comp continuous_fst).prodMk ((continuous_finiteCoord b i).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coord (i : ι) : Continuous (coord b i) :=
   ((GroundTheory.Global.InfinitePlace.continuous_adeleCoord b i).comp continuous_fst).prodMk
@@ -87,11 +87,11 @@ def sndAddHom : 𝔸[L] →+ FiniteAdeleRing (𝓞 L) L where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Repeatedly rewrite using `[adeleTensorEquiv_tmul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fstAddHom (∑ i, algebraMap L 𝔸[L] (b i) * adeleMap K L (coord b i y)) = y.1`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv_sum_adeleCoord b y.1]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv_tmul']`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `sndAddHom (∑ i, algebraMap L 𝔸[L] (b i) * adeleMap K L (coord b i y)) = y.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `conv_rhs => rw [← finiteTensorMap_sum_finiteCoord b y.2]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[finiteTensorMap_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adeleTensorEquiv_sum_coord (y : 𝔸[L]) :
     adeleTensorEquiv K L (∑ i, b i ⊗ₜ coord b i y) = y := by
@@ -112,7 +112,7 @@ theorem adeleTensorEquiv_sum_coord (y : 𝔸[L]) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[AlgEquiv.symm_apply_eq]`. Conclude with `(adeleTensorEquiv_sum_coord b y).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adeleTensorEquiv_symm_apply (y : 𝔸[L]) :
     (adeleTensorEquiv K L).symm y = ∑ i, b i ⊗ₜ coord b i y := by

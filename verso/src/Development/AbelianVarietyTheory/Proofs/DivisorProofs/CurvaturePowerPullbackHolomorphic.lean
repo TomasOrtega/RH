@@ -19,11 +19,11 @@ noncomputable def subst {n n' : ℕ} (L : V n' →L[ℂ] V n) :
     (X (c, d) : MvPolynomial (Fin n' × Fin n') ℂ)
 
 /- English proof (translation)
-Establish `e (v : V n) : v = ∑ a, v a • coordVec a`. Use extensionality with `b`. Simplify using `[Pi.single_apply]`. Establish `h1 (s : Finset (Fin n)) (c : Fin n → ℂ) (y : V n) : F (∑ a ∈ s, c a • coordVec a) y = ∑ a ∈ s, c a • F (coordVec a) y`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `empty => simpa using h.smul_left 0 0 y`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.add_left, h.smul_left, ih]`. Establish `h2 (s : Finset (Fin n)) (c : Fin n → ℂ) (x : V n) : F x (∑ a ∈ s, c a • coordVec a) = ∑ a ∈ s, (starRingEnd ℂ) (c a) • F x (coordVec a)`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h.smul_right 0 x 0`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.add_right, h.smul_right, ih]`. Use `conv_lhs => rw [e ξ, e η, h1]`. Simplify using `only [h2, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sesq_expand {n : ℕ} {r : Type} {F : V n → V n → Matrix r r ℂ} (h : IsSesq F) (ξ η : V n) (i j : r) :
     F ξ η i j = ∑ a, ∑ b, ξ a * (starRingEnd ℂ) (η b) * F (coordVec a) (coordVec b) i j := by
@@ -45,9 +45,9 @@ theorem sesq_expand {n : ℕ} {r : Type} {F : V n → V n → Matrix r r ℂ} (h
 variable {n n' : ℕ} {r : Type} [Fintype r] [DecidableEq r] {G : V n → Matrix r r ℂ} {φ : V n' → V n} {w : V n'}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CurvatureSesquilinearExpansion.curvPoly_pullback`. Consider the case `exact _root_.GlobalTheory.CurvatureSesquilinearExpansion.curvPoly_pullback`. Consider the case `(apply _root_.GlobalTheory.CurvatureSesquilinearExpansion.curvPoly_pullback <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CurvatureSesquilinearExpansion.curvPoly_pullback <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CurvatureSesquilinearExpansion.curvPoly_pullback <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CurvatureSesquilinearExpansion.curvPoly_pullback ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem curvPoly_comp (hφ : ContDiffAt ℂ 2 φ w) (hG : MContDiffAt ∞ G (φ w)) (hu : IsUnit (G (φ w)).det) :
     curvPoly (fun x => G (φ x)) w = (subst (fderiv ℂ φ w)).mapMatrix (curvPoly G (φ w)) := by
@@ -66,7 +66,7 @@ theorem curvEv_eq (G : V n → Matrix r r ℂ) (v : V n) :
     curvEv G v = (aeval sym : MvPolynomial (Fin n × Fin n) ℂ →ₐ[ℂ] Ev n).mapMatrix (curvPoly G v) := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpolyRev, Matrix.charpolyRev, ← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use `ext1 i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem charpolyRev_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (M : Matrix r r R) :
     Matrix.charpolyRev (M.map f) = (Matrix.charpolyRev M).map f := by
@@ -82,11 +82,11 @@ namespace GlobalTheory.ChernCalc
 open HoloPull in
 
 /- English proof (translation)
-Introduce `n n' r _ _ G φ w hφ hG hu`. Establish `key : ∀ k l i j, ∀ G' : V n → Matrix r r ℂ, MContDiffAt ∞ G' (φ w) → IsUnit (G' (φ w)).det → ((curvEv (fun x => G (φ x)) w ^ k * curvEv (fun x => G' (φ x)) w ^ l) i j : Alt n') = pull (fderiv ℂ φ w) ((curvEv G (φ w) ^ k * curvEv G' (φ w) ^ l) i j : Alt n)`. Introduce `k l i j G' hG' hu'`. Simplify using `only [curvEv_eq, curvPoly_comp hφ hG hu, curvPoly_comp hφ hG' hu', ← map_pow, ← map_mul]`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(pull_aeval_sym _ _ _ _).symm`. Use `⟨key, fun k => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `fun i => key k 0 i i G hG hu` as an intermediate fact. Simplify using `only [pow_zero, mul_one] at this`. Simplify using `only [powAt, Matrix.trace, Matrix.diag_apply, AddSubmonoidClass.coe_finsetSum, map_sum, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : chernPoly (fun x => G (φ x)) w k = subst (fderiv ℂ φ w) (chernPoly G (φ w) k)`. Rewrite using `[chernPoly, chernPoly, curvPoly_comp hφ hG hu, ← map_neg]`. Conclude with `(congrArg (fun p => Polynomial.coeff p k) (charpolyRev_map (subst (fderiv ℂ φ w)).toRingHom _)).trans (Polynomial.coeff_map _ _)`. Rewrite using `[chernAt, chernAt, e, Subalgebra.coe_smul, Subalgebra.coe_smul, map_smul, pull_aeval_sym]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem curv_pow_chern_comp_holo : ∀ (n n' : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (φ : V n' → V n) (w : V n'), ContDiffAt ℂ 2 φ w → MContDiffAt ∞ G (φ w) → IsUnit (G (φ w)).det → (∀ k l i j, ∀ G' : V n → Matrix r r ℂ, MContDiffAt ∞ G' (φ w) → IsUnit (G' (φ w)).det → ((curvEv (fun x => G (φ x)) w ^ k * curvEv (fun x => G' (φ x)) w ^ l) i j : Alt n') = pull (fderiv ℂ φ w) ((curvEv G (φ w) ^ k * curvEv G' (φ w) ^ l) i j : Alt n)) ∧ ∀ k, (powAt (fun x => G (φ x)) w k : Alt n') = pull (fderiv ℂ φ w) (powAt G (φ w) k) ∧ (chernAt (fun x => G (φ x)) w k : Alt n') = pull (fderiv ℂ φ w) (chernAt G (φ w) k) := by
   intro n n' r _ _ G φ w hφ hG hu

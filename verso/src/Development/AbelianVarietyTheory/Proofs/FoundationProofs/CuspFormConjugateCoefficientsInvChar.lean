@@ -16,16 +16,16 @@ Both sides reduce to the same expression.
 @[simp] lemma coe_refl (τ : ℍ) : ((refl τ : ℍ) : ℂ) = -conj (τ : ℂ) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(-conj (τ : ℂ)).im = τ.im`. Simplify using `[UpperHalfPlane.coe_im]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 @[simp] lemma im_refl (τ : ℍ) : (refl τ).im = τ.im := by
   change (-conj (τ : ℂ)).im = τ.im
   simp [UpperHalfPlane.coe_im]
 
 /- English proof (translation)
-Unfold `qs`. Rewrite using `[Complex.conj_tsum]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Rewrite using `[map_mul, ← Complex.exp_conj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using `[coe_refl, map_mul, map_ofNat, Complex.conj_ofReal, Complex.conj_I, Complex.conj_natCast]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 lemma qs_conj (g : ℕ → ℂ) (τ : ℍ) : qs (fun n => conj (g n)) τ = conj (qs g (refl τ)) := by
   unfold qs
@@ -61,11 +61,11 @@ Both sides reduce to the same expression.
 @[simp] lemma twist_11 (γ : SL(2, ℤ)) : twist γ 1 1 = γ 1 1 := rfl
 
 /- English proof (translation)
-Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Establish `e` using `UpperHalfPlane.coe_specialLinearGroup_apply γ τ`. Establish `e2` using `UpperHalfPlane.coe_specialLinearGroup_apply (twist γ) (refl τ)`. Simplify using `only [algebraMap_int_eq, eq_intCast, Complex.ofReal_intCast] at e e2`. Establish `hd` using `UpperHalfPlane.denom_ne_zero γ τ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hd` using `[UpperHalfPlane.denom]`. Simplify using `at hd`. Rewrite using `[coe_refl, e, e2, coe_refl, map_div₀]`. Establish `hd' : conj (((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ)) ≠ 0` using `(map_ne_zero _).2 hd`. Establish `hd'' : ((twist γ 1 0 : ℤ) : ℂ) * (-conj (τ : ℂ)) + ((twist γ 1 1 : ℤ) : ℂ) = conj (((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[map_add, map_mul, map_intCast]`. Rewrite using `[hd'', neg_div', div_left_inj' hd']`. Simplify using `[map_add, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma refl_smul (γ : SL(2, ℤ)) (τ : ℍ) : refl (γ • τ) = twist γ • refl τ := by
   apply UpperHalfPlane.ext
@@ -85,7 +85,7 @@ lemma refl_smul (γ : SL(2, ℤ)) (τ : ℍ) : refl (γ • τ) = twist γ • r
   ring
 
 /- English proof (translation)
-Unfold `ch`. Conclude with `MulChar.star_apply' χ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma conj_ch {N : ℕ} (χ : DirichletCharacter ℂ N) (d : ℤ) : conj (ch χ d) = ch χ⁻¹ d := by
   unfold ch
@@ -96,14 +96,14 @@ end GlobalTheory.EisM.ConjForm
 namespace GlobalTheory.EisM.ConjForm
 
 /- English proof (translation)
-Take `⟨C, A, hC⟩` from `h`. Conclude with `⟨C, A, fun n => by simpa using hC n⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma polyB_conj {g : ℕ → ℂ} (h : PolyB g) : PolyB (fun n => conj (g n)) := by
   obtain ⟨C, A, hC⟩ := h
   exact ⟨C, A, fun n => by simpa using hC n⟩
 
 /- English proof (translation)
-Introduce `γ hc τ`. Establish `h1` using `h (twist γ) (by simpa using hc) (refl τ)`. Rewrite using `[qs_conj, qs_conj, refl_smul, h1, map_mul, map_mul, map_pow, conj_ch]`. Use `congr 2`. Simplify using `[map_add, map_mul, map_intCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 lemma inv_conj {k L : ℕ} {χ : DirichletCharacter ℂ L} {g : ℕ → ℂ} (h : Inv k L (ch χ) (qs g)) :
     Inv k L (ch χ⁻¹) (qs (fun n => conj (g n))) := by
@@ -114,7 +114,7 @@ lemma inv_conj {k L : ℕ} {χ : DirichletCharacter ℂ L} {g : ℕ → ℂ} (h 
   simp [map_add, map_mul, map_intCast]
 
 /- English proof (translation)
-Take `⟨⟨hp, hi⟩, C, hC⟩` from `h`. Use `⟨⟨polyB_conj hp, inv_conj hi⟩, C, fun τ => ?_⟩` and prove the remaining obligations. Use `hC (refl τ)` as an intermediate fact. Rewrite `this` using `[im_refl]`. Rewrite using `[qs_conj, Complex.norm_conj]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 lemma cf_conj {k N : ℕ} {χ : DirichletCharacter ℂ N} {g : ℕ → ℂ} (h : CF k N (ch χ) g) :
     CF k N (ch χ⁻¹) (fun n => conj (g n)) := by
@@ -125,11 +125,11 @@ lemma cf_conj {k N : ℕ} {χ : DirichletCharacter ℂ N} {g : ℕ → ℂ} (h :
   rwa [qs_conj, Complex.norm_conj]
 
 /- English proof (translation)
-Introduce `k N χ g`. Use `⟨cf_conj, fun h => ⟨cf_conj h.cf, by simp [h.one], fun n hn => by simp [h.zero n hn], ?_⟩⟩` and prove the remaining obligations. Introduce `q hq hqN`. Use function extensionality and compare the values at `n`. Establish `e` using `congrFun (h.eig q hq hqN) n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e'` using `congrArg conj e`. Simplify using `only [To, Vo, map_add, map_mul, map_pow, map_natCast, conj_ch] at e'`. Simplify using `only [To, Vo]`. Rewrite using `[← e']`. Use `congr 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_form : ∀ (k N : ℕ) (χ : DirichletCharacter ℂ N) (g : ℕ → ℂ),
     (CF k N (ch χ) g → CF k N (ch χ⁻¹) (fun n => conj (g n))) ∧

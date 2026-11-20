@@ -8,9 +8,9 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.InertScalarLeft
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w hin hT k hk c hc`. Assume the negation of the conclusion as `hne`. Establish `hSB` using `(hTr.geo.hM'.vac v).1`. Apply `GlobalTheory.T.weil_vacuum_not_mem_augmentation_inert_place F E σ B a a' G X om om' hTr v w hin hT` to reduce the goal to its premises. Establish `hmem : c • G.M'.vac v - G.M'.vac v ∈ augAt om' v` using `Submodule.subset_span ⟨k, hk.1, _, hSB, _, Submodule.smul_mem _ c hSB, hc, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : c - 1 ≠ 0` using `sub_ne_zero.mpr hne`. Establish `h2 : G.M'.vac v = (c - 1)⁻¹ • (c • G.M'.vac v - G.M'.vac v)`. Rewrite using `[show c • G.M'.vac v - G.M'.vac v = (c - 1) • G.M'.vac v by rw [sub_smul, one_smul], smul_smul, inv_mul_cancel₀ h1, one_smul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

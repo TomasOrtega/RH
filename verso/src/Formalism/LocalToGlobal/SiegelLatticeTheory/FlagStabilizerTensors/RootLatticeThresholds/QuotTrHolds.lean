@@ -13,9 +13,9 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {θ : ℝ} (C : Choice X θ)
 
 /- English proof (translation)
-Establish `hy : (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `C.y_mem τ`. Establish `hu` using `Formalism.L2.SG.Pf.LocJEq.unit_det_y C τ`. Use `show ((C.y τ)⁻¹)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (C.y τ)⁻¹ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS`. Use `conv_lhs => rw [← hy]`. Rewrite using `[Matrix.conjTranspose_nonsing_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[Matrix.nonsing_inv_mul _ (by rw [Matrix.det_conjTranspose]; exact hu.star), Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem y_inv_mem (τ : D.what₂.Tau) : (C.y τ)⁻¹ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) := by
   have hy : (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := C.y_mem τ
@@ -33,27 +33,23 @@ theorem y_inv_mem (τ : D.what₂.Tau) : (C.y τ)⁻¹ ∈ Formalism.QuantumDete
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `γ μRv ν hH hq`. Take `⟨hσ, -, -, -⟩` from `hH`. Take `⟨h1, h2, -, -⟩` from `C.isT τ`. Use `set F : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS := fun x => Matrix.of.symm (trG (C.Q τ) (C.Qi τ) x) with hF`. Establish `hemb : Topology.IsClosedEmbedding F` using `Formalism.L2.SG.Pf.WuBL.trG_closedEmb' n_eq _ h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFm : Measurable F` using `hemb.continuous.measurable`. Use `set cj : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS := fun x i j => ((gB C τ γ)⁻¹ * Matrix.of x * gB C τ γ) i j with hcjdef`. Establish `hcj : Measurable cj`. Establish `: Continuous cj` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Conclude with `this.measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hSm : Measurable (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ)` using `(Formalism.L2.SG.Pf.LocJEq.smap_cont C τ γ).measurable`. Use `set y' := Formalism.L2.SG.Pf.LocJEq.ujOf' (C.Q τ * (C.y τ)⁻¹ * C.Qi τ) (Formalism.L2.SG.Pf.LocJEq.transp_mem C τ (y_inv_mem C τ)) with hy'`. Establish `hty' : trG (C.Q τ) (C.Qi τ) y' = (C.y τ)⁻¹` using `by show C.Qi τ * (C.Q τ * (C.y τ)⁻¹ * C.Qi τ) * C.Q τ = _`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ σ z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)), (fun i j => (Matrix.of (cj (F σ)) * Matrix.of (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ z)) i j) = F (γ⁻¹ * (σ * z) * y')`. Introduce `σ z`. Establish `hs : Matrix.of (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ z) = trG (C.Q τ) (C.Qi τ) (γ⁻¹ * z) * (C.y τ)⁻¹`. Rewrite using `[Formalism.L2.SG.Pf.LocJEq.smap_val]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hgg : trG (C.Q τ) (C.Qi τ) γ * trG (C.Q τ) (C.Qi τ) γ⁻¹ = 1` using `trG_mul_inv C τ γ`. Establish `hM : (gB C τ γ)⁻¹ * trG (C.Q τ) (C.Qi τ) σ * gB C τ γ * Matrix.of (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ z) = trG (C.Q τ) (C.Qi τ) (γ⁻¹ * (σ * z) * y')`. Rewrite using `[hs, trG_inv, trG_mul, trG_mul, trG_mul, trG_mul, hty']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = _ := by rw [hgg, Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Use function extensionality and compare the values at `i j`. Conclude with `congrFun (congrFun hM i) j`. Introduce `f hf`. Use `show ∫⁻ x, f x ∂((Formalism.REAL.muG (X.B.I.ε (vOf X τ))).map F) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_map hf hFm]`. Use `haveI : SigmaFinite μRv := hσ`. Establish `hfm2 : Measurable fun p : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS × Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => f (fun i j => (Matrix.of p.2 * Matrix.of p.1) i j)`. Use `hf.comp ?_` and prove the remaining obligations. Establish `: Continuous fun p : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS × Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => ((fun i j => (Matrix.of p.2 * Matrix.of p.1) i j : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS))` using `continuous_snd.matrix_mul continuous_fst`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.measurable`. Establish `hinner : Measurable fun x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => ∫⁻ s, f (fun i j => (Matrix.of s * Matrix.of x) i j) ∂((μRv.map F).map cj)` using `hfm2.lintegral_prod_right'`. Rewrite using `[lintegral_map hinner hSm]`. Establish `hin : ∀ z, ∫⁻ s, f (fun i j => (Matrix.of s * Matrix.of (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ z)) i j) ∂((μRv.map F).map cj) = ∫⁻ σ, f (F (γ⁻¹ * (σ * z) * y')) ∂μRv`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Establish `hm3 : Measurable fun s : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => f (fun i j => (Matrix.of s * Matrix.of (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ z)) i j)` using `hfm2.comp (measurable_const.prodMk measurable_id)`. Rewrite using `[lintegral_map hm3 hcj]`. Rewrite using `[lintegral_map (f := fun a => f fun i j => (Matrix.of (cj a) * Matrix.of (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ z)) i j) (hm3.comp hcj) hFm]`. Use `lintegral_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[key]`.
-
-Simplify using `only [hin]`. Establish `hg : Measurable fun w : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => f (F (γ⁻¹ * w * y'))` using `hf.comp (hFm.comp ((continuous_mul_right y').measurable.comp (continuous_mul_left γ⁻¹).measurable))`. Rewrite using `[← hq _ hg]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [mul_assoc]`. Use `_ = ∫⁻ x, f (F (γ⁻¹ * x)) ∂(Formalism.REAL.muG (X.B.I.ε (vOf X τ))) := lintegral_mul_right_eq_self (fun w => f (F (γ⁻¹ * w))) y'`. Use `_ = ∫⁻ x, f (F x) ∂(Formalism.REAL.muG (X.B.I.ε (vOf X τ))) := lintegral_mul_left_eq_self (fun w => f (F w)) γ⁻¹`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotTr_holds (u u' : D.what₂.Word) (τ : D.what₂.Tau) : QuotTr C u u' τ := by
   intro γ μRv ν hH hq

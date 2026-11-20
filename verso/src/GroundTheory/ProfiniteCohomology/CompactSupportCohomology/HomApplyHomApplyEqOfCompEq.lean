@@ -9,7 +9,7 @@ open CategoryTheory
 universe u
 
 /- English proof (translation)
-Rewrite using `[← e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hom_apply_hom_apply_of_comp_eq {k : Type u} [CommRing k] {X Y Z : ModuleCat.{u} k}
     {f : X ⟶ Y} {g : Y ⟶ Z} {h : X ⟶ Z} (e : f ≫ g = h) (x : X) : g.hom (f.hom x) = h.hom x := by
@@ -17,7 +17,7 @@ theorem hom_apply_hom_apply_of_comp_eq {k : Type u} [CommRing k] {X Y Z : Module
   rfl
 
 /- English proof (translation)
-Rewrite using `[hom_apply_hom_apply_of_comp_eq e x]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hom_apply_hom_apply_eq_of_comp_eq {k : Type u} [CommRing k] {X Y Y' Z : ModuleCat.{u} k}
     {f : X ⟶ Y} {g : Y ⟶ Z} {f' : X ⟶ Y'} {g' : Y' ⟶ Z} (e : f ≫ g = f' ≫ g') (x : X) :
@@ -46,7 +46,7 @@ theorem shiftNegOneD_succ_apply (L : CochainComplex (ModuleCat.{u} k) ℕ) (n : 
   rfl
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => exact Limits.zero_comp`. Consider the case `succ n`. Conclude with `(Preadditive.neg_comp_neg _ _).trans (L.d_comp_d _ _ _)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem shiftNegOneD_comp (L : CochainComplex (ModuleCat.{u} k) ℕ) (n : ℕ) :
     shiftNegOneD L n ≫ shiftNegOneD L (n + 1) = 0 := by
@@ -56,7 +56,7 @@ theorem shiftNegOneD_comp (L : CochainComplex (ModuleCat.{u} k) ℕ) (n : ℕ) :
     exact (Preadditive.neg_comp_neg _ _).trans (L.d_comp_d _ _ _)
 
 /- English proof (translation)
-The claim follows from `hom_apply_hom_apply_of_comp_eq (shiftNegOneD_comp L n) y`.
+A detailed English derivation is pending.
 -/
 theorem shiftNegOneD_shiftNegOneD_apply (L : CochainComplex (ModuleCat.{u} k) ℕ) (n : ℕ)
     (y : shiftNegOneX L n) : (shiftNegOneD L (n + 1)).hom ((shiftNegOneD L n).hom y) = 0 :=
@@ -67,7 +67,7 @@ noncomputable def shiftNegOne (L : CochainComplex (ModuleCat.{u} k) ℕ) :
   CochainComplex.of (shiftNegOneX L) (shiftNegOneD L) (shiftNegOneD_comp L)
 
 /- English proof (translation)
-The claim follows from `CochainComplex.of_d _ _ n`.
+A detailed English derivation is pending.
 -/
 theorem shiftNegOne_d (L : CochainComplex (ModuleCat.{u} k) ℕ) (n : ℕ) :
     (shiftNegOne L).d n (n + 1) = shiftNegOneD L n :=
@@ -106,9 +106,9 @@ theorem mappingCoconeNatD_apply (n : ℕ) (x : K.X n) (y : shiftNegOneX L n) :
   rfl
 
 /- English proof (translation)
-Use `ModuleCat.hom_ext (LinearMap.ext fun p => ?_)` and prove the remaining obligations. Take `⟨x, y⟩` from `p`. Express the relevant statement in the definitionally equal form `(mappingCoconeNatD f (n + 1)).hom ((mappingCoconeNatD f n).hom (x, y)) = 0`. Rewrite using `[mappingCoconeNatD_apply, mappingCoconeNatD_apply]`. Use `Prod.ext (hom_apply_hom_apply_of_comp_eq (K.d_comp_d _ _ _) x) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `shiftNegOneSucc L (n + 1) ((f.f (n + 1)).hom ((K.d n (n + 1)).hom x)) + (shiftNegOneD L (n + 1)).hom (shiftNegOneSucc L n ((f.f n).hom x) + (shiftNegOneD L n).hom y) = 0`. Rewrite using `[map_add, shiftNegOneD_shiftNegOneD_apply, add_zero, shiftNegOneSucc_apply, shiftNegOneSucc_apply, shiftNegOneD_succ_apply]`. Express the relevant statement in the definitionally equal form `((f.f (n + 1)).hom ((K.d n (n + 1)).hom x) : L.X (n + 1)) + -(L.d n (n + 1)).hom ((f.f n).hom x) = 0`. Rewrite using `[← hom_apply_hom_apply_eq_of_comp_eq (f.comm n (n + 1)) x]`. Conclude with `add_neg_cancel _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mappingCoconeNatD_comp (n : ℕ) :
     mappingCoconeNatD f n ≫ mappingCoconeNatD f (n + 1) = 0 := by
@@ -131,7 +131,7 @@ noncomputable def mappingCoconeNat : CochainComplex (ModuleCat.{u} k) ℕ :=
   CochainComplex.of (mappingCoconeNatX K L) (mappingCoconeNatD f) (mappingCoconeNatD_comp f)
 
 /- English proof (translation)
-The claim follows from `CochainComplex.of_d _ _ n`.
+A detailed English derivation is pending.
 -/
 theorem mappingCoconeNat_d (n : ℕ) :
     (mappingCoconeNat f).d n (n + 1) = mappingCoconeNatD f n :=
@@ -167,7 +167,7 @@ noncomputable def piComplex (K : ι → CochainComplex (ModuleCat.{u} k) ℕ) :
       hom_apply_hom_apply_of_comp_eq ((K v).d_comp_d _ _ _) (x v))
 
 /- English proof (translation)
-Unfold `piComplex`. Conclude with `CochainComplex.of_d (V := ModuleCat.{u} k) (fun n => ModuleCat.of k (∀ v, (K v).X n)) (fun n => ModuleCat.ofHom (LinearMap.pi fun v => ((K v).d n (n + 1)).hom.comp (LinearMap.proj v))) n`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem piComplex_d (K : ι → CochainComplex (ModuleCat.{u} k) ℕ) (n : ℕ) :
     (piComplex K).d n (n + 1) = ModuleCat.ofHom
@@ -179,7 +179,7 @@ theorem piComplex_d (K : ι → CochainComplex (ModuleCat.{u} k) ℕ) (n : ℕ) 
     n
 
 /- English proof (translation)
-Rewrite using `[piComplex_d]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem piComplex_d_hom_apply (K : ι → CochainComplex (ModuleCat.{u} k) ℕ) (n : ℕ)
     (x : (piComplex K).X n) (v : ι) :
@@ -206,7 +206,7 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-The claim follows from `ψ.continuous_toFun`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toMonoidHom {H' : Type u} [Group H'] [TopologicalSpace H'] (ψ : H' →ₜ* G) :
     Continuous ψ.toMonoidHom :=

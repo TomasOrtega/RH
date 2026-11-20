@@ -33,9 +33,9 @@ def vanishingIdeal (X : Set (σ → ℂ)) (w : σ → ℂ) : Ideal (holGerms w) 
       simp [h1 hz]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hg0⟩`. Establish `he : g =ᶠ[𝓝 w] f` using `Germ.coe_eq.1 hg`. Use `filter_upwards [hg0, he] with z h1 h2 hz`. Rewrite using `[← h2]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1 hz`. Introduce `h`. Conclude with `⟨f, rfl, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_vanishingIdeal_iff {X : Set (σ → ℂ)} {w : σ → ℂ} {f : (σ → ℂ) → ℂ} (hf : AnalyticAt ℂ f w) :
     (⟨(f : Germ (𝓝 w) ℂ), f, hf, rfl⟩ : holGerms w) ∈ vanishingIdeal X w ↔ ∀ᶠ z in 𝓝 w, z ∈ X → f z = 0 := by
@@ -49,7 +49,7 @@ theorem mem_vanishingIdeal_iff {X : Set (σ → ℂ)} {w : σ → ℂ} {f : (σ 
     exact ⟨f, rfl, h⟩
 
 /- English proof (translation)
-Introduce and unpack `φ ⟨f, hf, hf0⟩`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hf0] with z h hz`. Conclude with `h (hXX' hz)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vanishingIdeal_anti {X X' : Set (σ → ℂ)} {w : σ → ℂ} (hXX' : X' ⊆ X) :
     vanishingIdeal X w ≤ vanishingIdeal X' w := by
@@ -59,13 +59,13 @@ theorem vanishingIdeal_anti {X X' : Set (σ → ℂ)} {w : σ → ℂ} (hXX' : X
   exact h (hXX' hz)
 
 /- English proof (translation)
-Take `⟨N, k, F, hN, hwN, hF, hXN⟩` from `hX`. Use `⟨N ∩ {z | AnalyticAt ℂ f z}, k + 1, Fin.cons f F, hN.inter (isOpen_analyticAt ℂ f), ⟨hwN, hf⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hz.2`. Introduce `z hz`. Simplify using `using hF j z hz.1`. Use extensionality with `z`. Establish `e` using `Set.ext_iff.1 hXN z`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq] at e ⊢`. Simplify using `only [Fin.forall_fin_succ, Fin.cons_zero, Fin.cons_succ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hzX, hfz⟩, hzN, hza⟩`. Conclude with `⟨⟨hzN, hza⟩, hfz, (e.1 ⟨hzX, hzN⟩).2⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨hzN, hza⟩, hfz, hFz⟩`. Conclude with `⟨⟨(e.2 ⟨hzN, hFz⟩).1, hfz⟩, hzN, hza⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isAnalyticNear_inter_zero {X : Set (σ → ℂ)} {w : σ → ℂ} {f : (σ → ℂ) → ℂ}
     (hX : IsAnalyticNear X w) (hf : AnalyticAt ℂ f w) : IsAnalyticNear (X ∩ {z | f z = 0}) w := by
@@ -88,7 +88,7 @@ theorem isAnalyticNear_inter_zero {X : Set (σ → ℂ)} {w : σ → ℂ} {f : (
       exact ⟨⟨(e.2 ⟨hzN, hFz⟩).1, hfz⟩, hzN, hza⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Apply `hng` to reduce the goal to its premises. Establish `hev : ∀ᶠ z in 𝓝 w, f z ≠ 0` using `hf.continuousAt.eventually_ne h0`. Use `filter_upwards [hfg, hev] with z h1 h2 hz`. Conclude with `(mul_eq_zero.1 (h1 hz)).resolve_left h2`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem apply_eq_zero_of_not {X : Set (σ → ℂ)} {w : σ → ℂ} {f g : (σ → ℂ) → ℂ} (hf : AnalyticAt ℂ f w)
     (hfg : ∀ᶠ z in 𝓝 w, z ∈ X → f z * g z = 0) (hng : ¬ ∀ᶠ z in 𝓝 w, z ∈ X → g z = 0) : f w = 0 := by
@@ -99,7 +99,7 @@ theorem apply_eq_zero_of_not {X : Set (σ → ℂ)} {w : σ → ℂ} {f g : (σ 
   exact (mul_eq_zero.1 (h1 hz)).resolve_left h2
 
 /- English proof (translation)
-Use `lt_of_le_of_ne (vanishingIdeal_anti Set.inter_subset_left) fun heq => hnf ?_` and prove the remaining obligations. Establish `hm : (⟨(f : Germ (𝓝 w) ℂ), f, hf, rfl⟩ : holGerms w) ∈ vanishingIdeal (X ∩ {z | f z = 0}) w` using `(mem_vanishingIdeal_iff hf).2 (Eventually.of_forall fun z hz => hz.2)`. Rewrite `hm` using `[← heq]`. Conclude with `(mem_vanishingIdeal_iff hf).1 hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanishingIdeal_lt {X : Set (σ → ℂ)} {w : σ → ℂ} {f : (σ → ℂ) → ℂ} (hf : AnalyticAt ℂ f w)
     (hnf : ¬ ∀ᶠ z in 𝓝 w, z ∈ X → f z = 0) :
@@ -111,25 +111,23 @@ theorem vanishingIdeal_lt {X : Set (σ → ℂ)} {w : σ → ℂ} {f : (σ → �
   exact (mem_vanishingIdeal_iff hf).1 hm
 
 /- English proof (translation)
-It suffices to establish `H : ∀ J : Ideal (holGerms w), ∀ X : Set (σ → ℂ), vanishingIdeal X w = J → IsAnalyticNear X w → w ∈ X → ∃ s : Finset (Set (σ → ℂ)), (∀ Y ∈ s, IsAnalyticNear Y w ∧ GermIrreducibleAt Y w) ∧ ∃ W ∈ 𝓝 w, X ∩ W = (⋃ Y ∈ s, Y) ∩ W from H _ X rfl hX hw`. Introduce `J`. Proceed by induction on `J using WellFoundedGT.induction with`. Consider the case `_ J ih`. Introduce `X hJ hX hw`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hirr : GermIrreducibleAt X w`. Use `⟨{X}, ?_, Set.univ, Filter.univ_mem, ?_⟩` and prove the remaining obligations. Introduce `Y hY`. Rewrite `hY` using `[Finset.mem_singleton]`. Conclude with `hY ▸ ⟨hX, hirr⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨f, g, hf, hg, hfg, hnf, hng⟩ : ∃ f g : (σ → ℂ) → ℂ, AnalyticAt ℂ f w ∧ AnalyticAt ℂ g w ∧ (∀ᶠ z in 𝓝 w, z ∈ X → f z * g z = 0) ∧ ¬ (∀ᶠ z in 𝓝 w, z ∈ X → f z = 0) ∧ ¬ (∀ᶠ z in 𝓝 w, z ∈ X → g z = 0) := by`. Assume the negation of the conclusion as `hcon`. Use `hirr ⟨hw, fun f g hf hg hfg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[not_or]`. Conclude with `hcon ⟨f, g, hf, hg, hfg, h.1, h.2⟩`. Establish `hgf : ∀ᶠ z in 𝓝 w, z ∈ X → g z * f z = 0` using `by filter_upwards [hfg] with z h hz`. Rewrite using `[mul_comm]`. Conclude with `h hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfw : f w = 0` using `apply_eq_zero_of_not hf hfg hng`. Establish `hgw : g w = 0` using `apply_eq_zero_of_not hg hgf hnf`. Take `⟨s₁, hs₁, W₁, hW₁, hX₁⟩` from `ih _ (hJ ▸ vanishingIdeal_lt hf hnf) _ rfl (isAnalyticNear_inter_zero hX hf) ⟨hw, hfw⟩`. Take `⟨s₂, hs₂, W₂, hW₂, hX₂⟩` from `ih _ (hJ ▸ vanishingIdeal_lt hg hng) _ rfl (isAnalyticNear_inter_zero hX hg) ⟨hw, hgw⟩`. Use `⟨s₁ ∪ s₂, ?_, W₁ ∩ W₂ ∩ {z | z ∈ X → f z * g z = 0}, inter_mem (inter_mem hW₁ hW₂) hfg, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components.
 
-Introduce `Y hY`. Break down `Finset.mem_union.1 hY with h | h` into its components or cases. Conclude with `hs₁ Y h`. Conclude with `hs₂ Y h`. Use extensionality with `z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `e₁` using `Set.ext_iff.1 hX₁ z`. Establish `e₂` using `Set.ext_iff.1 hX₂ z`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_iUnion, exists_prop] at e₁ e₂`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_iUnion, exists_prop, Finset.mem_union]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hzX, ⟨hz₁, hz₂⟩, hz0⟩`. Use `⟨?_, ⟨hz₁, hz₂⟩, hz0⟩` and prove the remaining obligations. Break down `mul_eq_zero.1 (hz0 hzX) with h | h` into its components or cases. Take `⟨Y, hY, hzY⟩` from `(e₁.1 ⟨⟨hzX, h⟩, hz₁⟩).1`. Conclude with `⟨Y, Or.inl hY, hzY⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨Y, hY, hzY⟩` from `(e₂.1 ⟨⟨hzX, h⟩, hz₂⟩).1`. Conclude with `⟨Y, Or.inr hY, hzY⟩`. Introduce and unpack `⟨⟨Y, hY, hzY⟩, ⟨hz₁, hz₂⟩, hz0⟩`. Use `⟨?_, ⟨hz₁, hz₂⟩, hz0⟩` and prove the remaining obligations. Break down `hY with hY | hY` into its components or cases.
-
-Conclude with `(e₁.2 ⟨⟨Y, hY, hzY⟩, hz₁⟩).1.1`. Conclude with `(e₂.2 ⟨⟨Y, hY, hzY⟩, hz₂⟩).1.1`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset {w : σ → ℂ} (hN : IsNoetherianRing (holGerms w)) (X : Set (σ → ℂ))
     (hX : IsAnalyticNear X w) (hw : w ∈ X) :
@@ -192,11 +190,11 @@ theorem exists_finset {w : σ → ℂ} (hN : IsNoetherianRing (holGerms w)) (X :
     · exact (e₂.2 ⟨⟨Y, hY, hzY⟩, hz₂⟩).1.1
 
 /- English proof (translation)
-Introduce `σ _ X w hX hw`. Take `⟨s, hs, W, hW, hXW⟩` from `exists_finset (hN σ w) X hX hw`. Use `⟨s.card, fun i => (s.equivFin.symm i : Set (σ → ℂ)), fun i => hs _ (s.equivFin.symm i).2, W, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[hXW]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `z`. Simplify using `only [Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Y, hY, hz⟩`. Conclude with `⟨s.equivFin ⟨Y, hY⟩, by simpa using hz⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨i, hz⟩`. Conclude with `⟨_, (s.equivFin.symm i).2, hz⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem proof (hN : AnalyticGermsNoetherian.Statement) : AnalyticGermComponents.Statement := by
   intro σ _ X w hX hw

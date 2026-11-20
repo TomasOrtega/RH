@@ -4,6 +4,6 @@ import Formalism.PeriodIntegrals.TransInvLat
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TranslationInvariantLattice.TransInvLatMain
 
 /- English proof (translation)
-The claim follows from `PI.TransInvLatW.transInvLat_main`.
+A detailed English derivation is pending.
 -/
 theorem translation_invariant_lattice : PI.TransInvLat := PI.TransInvLatW.transInvLat_main

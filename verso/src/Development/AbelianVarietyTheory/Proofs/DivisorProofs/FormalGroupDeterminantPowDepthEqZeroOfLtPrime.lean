@@ -10,7 +10,7 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FGDepth
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `push_cast`. Conclude with `(le_min ih (le_of_eq (AddValuation.map_one v).symm)).trans (AddValuation.map_add v _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem val_natCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℕ) :
     0 ≤ v (n : C) := by
@@ -21,7 +21,7 @@ theorem val_natCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ
     exact (le_min ih (le_of_eq (AddValuation.map_one v).symm)).trans (AddValuation.map_add v _ _)
 
 /- English proof (translation)
-Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg n`. Rewrite using `[Int.cast_natCast]`. Conclude with `val_natCast_nonneg v m`. Rewrite using `[Int.cast_neg, AddValuation.map_neg, Int.cast_natCast]`. Conclude with `val_natCast_nonneg v m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_intCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℤ) :
     0 ≤ v (n : C) := by
@@ -32,13 +32,13 @@ theorem val_intCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ
     exact val_natCast_nonneg v m
 
 /- English proof (translation)
-Establish `h0` using `val_natCast_nonneg v n`. Use `le_antisymm ?_ h0` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hb` using `Nat.gcd_eq_gcd_ab p n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hb` using `[((Nat.Prime.coprime_iff_not_dvd hp).2 hn).gcd_eq_one, Nat.cast_one]`. Establish `key : (1 : C) = (p : C) * (Nat.gcdA p n : C) + (n : C) * (Nat.gcdB p n : C)`. Use `congrArg (fun z : ℤ => (z : C)) hb` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `one_pos' : (0 : WithTop ℝ) < 1` using `by exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)`. Establish `h1 : 0 < v ((p : C) * (Nat.gcdA p n : C))`. Rewrite using `[AddValuation.map_mul, hv]`. Conclude with `add_pos_of_pos_of_nonneg one_pos' (val_intCast_nonneg v _)`. Establish `h2 : 0 < v ((n : C) * (Nat.gcdB p n : C))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AddValuation.map_mul]`. Conclude with `add_pos_of_pos_of_nonneg hlt (val_intCast_nonneg v _)`. Establish `hsum` using `AddValuation.map_add v ((p : C) * (Nat.gcdA p n : C)) ((n : C) * (Nat.gcdB p n : C))`. Rewrite `hsum` using `[← key, AddValuation.map_one]`. Conclude with `absurd hsum (not_le.2 (lt_min h1 h2))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_natCast_eq_zero {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (p : ℕ)
     (hp : p.Prime) (hv : v (p : C) = 1) (n : ℕ) (hn : ¬ p ∣ n) : v (n : C) = 0 := by
@@ -68,17 +68,15 @@ end GlobalTheory.FGDepth
 namespace GlobalTheory.FGDepth
 
 /- English proof (translation)
-Introduce `C _ _ v p hp hv i d c G u hu hc`. Take `⟨hlo, hcont, -⟩` from `GlobalTheory.T.formalGroupDeterminantPowDepth_bounds C v p hp hv i d c G u hu`. Take `⟨-, -, hone, hrow⟩` from `GlobalTheory.T.matrixVariablesDeterminantPow_monomial_shape C i c`. Use `set α₀ : (Σ _ : Fin i, Fin i) →₀ ℕ := ∑ a : Fin i, Finsupp.single ⟨a, a⟩ c with hα₀`. Establish `hmem : α₀ ∈ (detPow C i c).support`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.mem_support_iff, hone]`. Conclude with `one_ne_zero`. Establish `hfact : v (mfact α₀ : C) = 0`. Establish `hcast : (mfact α₀ : C) = ((α₀.prod fun _ n => n.factorial : ℕ) : C)`. Unfold `mfact`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_finsuppProd]`. Rewrite using `[hcast]`. Apply `val_natCast_eq_zero v p hp hv` to reduce the goal to its premises. Introduce `hdvd`. Rewrite `hdvd` using `[Finsupp.prod]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, -, hx⟩` from `(Prime.dvd_finsetProd_iff hp.prime _).1 hdvd`. Rewrite `hx` using `[hp.dvd_factorial]`. Take `⟨b, a⟩` from `x`. Establish `hle : α₀ ⟨b, a⟩ ≤ c`. Rewrite using `[← (hrow α₀ hmem).1 a]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `Finset.single_le_sum (f := fun b' => α₀ ⟨b', a⟩) (fun _ _ => Nat.zero_le _) (Finset.mem_univ b)`. Use linear arithmetic over natural numbers and integers. Establish `hle : content v (detPow C i c) ≤ 0`. Unfold `content`. Use `(iInf₂_le α₀ hmem).trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[hone, one_mul, hfact]`. Both sides reduce to the same expression. Conclude with `le_antisymm (hcont.trans hle) hlo`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem detDepth_eq_zero_of_lt : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (p : ℕ), p.Prime → v (p : C) = 1 → ∀ (i d c : ℕ) (G : LogFGL v d) (u : Fin i → Fin d → C), IsSatFrame v u → c < p → detDepth G u c = 0 := by
   intro C _ _ v p hp hv i d c G u hu hc

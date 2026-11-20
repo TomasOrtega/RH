@@ -21,19 +21,19 @@ instance isIso_pullback_hom {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [IsI
 instance isIso_unit_hom (S : Scheme.{0}) : IsIso (𝟙_ (Over S)).hom := (inferInstance : IsIso (𝟙 S))
 
 /- English proof (translation)
-The claim follows from `(isTerminalOfIsIso G).hom_ext f g`.
+A detailed English derivation is pending.
 -/
 theorem hom_unique {S : Scheme.{0}} {T G : Over S} [IsIso G.hom] (f g : T ⟶ G) : f = g :=
   (isTerminalOfIsIso G).hom_ext f g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hom_unique _ _, hom_unique _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMonHom_of_isIso {S : Scheme.{0}} {T G : Over S} [MonObj T] [MonObj G] [IsIso G.hom] (f : T ⟶ G) :
     IsMonHom f := ⟨hom_unique _ _, hom_unique _ _⟩
 
 /- English proof (translation)
-The claim follows from `IsIso.of_isIso_fac_right (Over.w f)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_left {S : Scheme.{0}} {T G : Over S} [IsIso T.hom] [IsIso G.hom] (f : T ⟶ G) : IsIso f.left :=
   IsIso.of_isIso_fac_right (Over.w f)
@@ -89,7 +89,7 @@ def trivGt (e : ℕ) : GtCoord I (zeroData R I).toPre e G where
       ((isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _))).of_eq (_root_.mul_one _))
 
 /- English proof (translation)
-The claim follows from `((Category.comp_id _).symm.trans (Over.w (trivGt R I G e).pG)).trans pullback.condition.symm`.
+A detailed English derivation is pending.
 -/
 theorem trivGt_pG (e : ℕ) : (trivGt R I G e).pG.left = pullback.fst G.hom (thick R I e) ≫ G.hom :=
   ((Category.comp_id _).symm.trans (Over.w (trivGt R I G e).pG)).trans pullback.condition.symm
@@ -130,19 +130,17 @@ def trivPre : UnifPre I (zeroData R I) (zeroPolAV (Spec (CommRingCat.of (Fractio
 variable {R I G}
 
 /- English proof (translation)
-Set `p` to `pullback.fst G.hom (thick R I e) ≫ G.hom`. Set `q` to `pullback.snd G.hom (thick R I e)`. Establish `hp : ∀ x : R, scal p x = scal q (Ideal.Quotient.mk _ x)` using `fun x => by`. Rewrite using `[← scal_specMap]`. Conclude with `congrArg (scal · x) pullback.condition`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG : ∀ x : R, (fstG I e G).left.appTop.hom (scal G.hom x) = scal p x` using `fun x => appTop_scal _ _ _`. Establish `hB : ∀ x : R, ((trivPre R I G).gt e).pG.left.appTop.hom (scal (𝟙 _) x) = scal p x` using `fun x => (appTop_scal _ _ _).trans (congrArg (scal · x) ((Category.comp_id _).trans (trivGt_pG R I G e)))`. Rewrite using `[← Ideal.Quotient.eq, ← (scal_bijective q).1.eq_iff, ← hp, ← hp]`. Establish `hpre : ∀ {Y Y' : Scheme.{0}} (g : Y' ⟶ Y) {U : Y.Opens}, U = ⊤ → ⊤ ≤ g ⁻¹ᵁ U`. Introduce and unpack `_ _ g _ rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `le_rfl`. Establish `key : ∀ S p' j₁ jf jt, (trivPre R I G).expW e p' j₁ S jf jt = ⊤` using `fun S p' j₁ jf jt => top_unique (le_inf (le_inf (le_inf (wchart_triv _ _).ge (wchart_triv _ _).ge) (hpre _ (wchart_triv _ _))) (Finset.le_inf fun α _ => le_inf (hpre _ (wchart_triv _ _)) (wchart_triv _ _).ge))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, h0, h⟩`. Establish `h1` using `h (fun _ => PUnit.unit, fun _ => PUnit.unit) (fun _ => PUnit.unit) (fun _ _ => PUnit.unit) (fun _ _ => PUnit.unit) rfl (fun _ _ _ => @Subsingleton.elim PUnit _ _ _)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `((unit_pow_mul_app _ _ _ rfl (ha _) k).symm.trans h1).trans (Finset.sum_congr rfl fun α _ => app_mul_unit _ _ _ (gv_one _) (hb _))`. Rewrite `h2` using `[hG, hB, Finset.sum_const, Finset.card_attach]`. Distinguish the cases in `hS : PUnit.unit ∈ S`. Take `rfl : S = {PUnit.unit}` from `Finset.eq_singleton_iff_unique_mem.2 ⟨hS, fun _ _ => rfl⟩`. Conclude with `resTop_inj (key _ _ _ _ _) (h2.trans (one_nsmul _))`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `rfl : S = ∅` from `Finset.eq_empty_of_forall_notMem fun _ => hS`. Rewrite `h2` using `[Finset.card_empty, zero_smul]`. Establish `h3` using `((app_resTop _ _ _).symm.trans (congrArg _ (hb (fun _ => PUnit.unit)).symm)).trans (h0 PUnit.unit hS _)`. Rewrite `h3` using `[hB]`. Conclude with `(resTop_inj (key _ _ _ _ _) (h2.trans (map_zero _).symm)).trans (resTop_inj (top_unique (hpre _ (wchart_triv _ _))) (h3.trans (map_zero _).symm)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `H`. Use `⟨{PUnit.unit}, fun α hα => (hα (Finset.mem_singleton_self _)).elim, ?_⟩` and prove the remaining obligations. Introduce `p' j₁ jf jt _ _`. Use `(unit_pow_mul_app _ _ _ rfl (ha _) k).trans (Eq.trans ?_ (Finset.sum_congr rfl fun α _ => app_mul_unit _ _ _ (gv_one _) (hb _)).symm)` and prove the remaining obligations. Rewrite using `[hG, hB, Finset.sum_const, Finset.card_attach, H]`.
-
-Conclude with `(one_nsmul _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAt_iff (e k : ℕ)
     {σ : LB.Sec (LB.LinComb (trivPre R I G).LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ)))}
@@ -191,17 +189,15 @@ theorem expandsAt_iff (e k : ℕ)
     exact (one_nsmul _).symm
 
 /- English proof (translation)
-Establish `e1 : ∀ a r : R, (pullback.fst G.hom (jK R)).appTop.hom (scal G.hom a) = scal (pullback.snd G.hom (jK R) ≫ jK R) r * scal (pullback.snd G.hom (jK R)) x ↔ algebraMap R _ a = algebraMap R _ r * x` using `fun a r => by`. Rewrite using `[← (scal_bijective (pullback.snd G.hom (jK R))).1.eq_iff, scal_mul, ← scal_specMap, ← scal_specMap]`. Conclude with `Eq.congr_left ((appTop_scal _ _ _).trans (congrArg (scal · a) pullback.condition))`. Establish `hB : ∀ a : R, scal (DegPre.BF (zeroData R I).toPre (FractionRing R)).hom a = scal pBK (algebraMap R (FractionRing R) a)` using `fun a => by`. Rewrite using `[← Over.w (fst (TF (R := R) (FractionRing R)) _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg (scal · a) (Category.assoc _ _ _).symm).trans ((scal_specMap _ _ _).trans (scal_specMap _ _ _))`. Establish `e2 : ∀ a r : R, (DegPre.prB (zeroData R I).toPre (FractionRing R)).left.appTop.hom (scal (𝟙 _) a) = scal (DegPre.BF (zeroData R I).toPre (FractionRing R)).hom r * scal pBK y ↔ algebraMap R _ a = algebraMap R _ r * y` using `fun a r => by`. Rewrite using `[← (scal_bijective (pBK (I := I))).1.eq_iff, scal_mul, ← hB, ← hB]`. Conclude with `Eq.congr_left ((appTop_scal _ _ _).trans (congrArg (scal · a) (Over.w (DegPre.prB (zeroData R I).toPre (FractionRing R)))))`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨r, hr, σ, f, h1, h2, h3⟩`. Take `⟨a', ha⟩` from `exists_secConst σ`. Take `⟨a, rfl⟩` from `(scal_bijective G.hom).2 a'`. Take `⟨b', hb⟩` from `exists_secConst (f PUnit.unit)`. Take `⟨b, rfl⟩` from `(scal_bijective (𝟙 (Spec (CommRingCat.of R)))).2 b'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hab : a = b`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := I) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ n) ((expandsAt_iff n k ha hb).1 (h3 n))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hx` using `(e1 a r).1 ((secScal_iff hs ha _ _).1 h1)`. Establish `hy` using `(e2 b r).1 ((secScal_iff hF hb _ _).1 (h2 PUnit.unit))`. Conclude with `mul_left_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hr) (hx.symm.trans (hab ▸ hy))`. Introduce and unpack `rfl`. Take `⟨⟨a, r⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors R) x`.
-
-Establish `h' : algebraMap R (FractionRing R) a = algebraMap R _ r * x` using `h.symm.trans (mul_comm _ _)`. Conclude with `⟨r, nonZeroDivisors.ne_zero r.2, cs _ _ (scal G.hom a), fun _ => cs _ _ (scal (𝟙 _) a), (secScal_iff hs (cs_const _ _ _) _ _).2 ((e1 a r).2 h'), fun _ => (secScal_iff hF (cs_const _ _ _) _ _).2 ((e2 a r).2 h'), fun e => (expandsAt_iff e k (cs_const _ _ _) (cs_const _ _ _)).2 (by …`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem expands_iff [IsHausdorff I R] (k : ℕ) {s : (trivPre R I G).SecK k}
     {F : Fam (zeroData R I).toPre (FractionRing R) k} {x y : FractionRing R}
@@ -247,15 +243,13 @@ theorem expands_iff [IsHausdorff I R] (k : ℕ) {s : (trivPre R I G).SecK k}
       fun e => (expandsAt_iff e k (cs_const _ _ _) (cs_const _ _ _)).2 (by rw [sub_self]; exact zero_mem _)⟩
 
 /- English proof (translation)
-Establish `hS : ∀ s : (trivPre R I G).SecK k, ∃ x, SecConst s (scal (pullback.snd G.hom (jK R)) x)` using `fun s => by`. Take `⟨a, ha⟩` from `exists_secConst s`. Take `⟨x, rfl⟩` from `(scal_bijective (pullback.snd G.hom (jK R))).2 a`. Conclude with `⟨x, ha⟩`. Establish `hF : ∀ F : Fam (zeroData R I).toPre (FractionRing R) k, ∃ y, SecConst (F.s PUnit.unit) (scal pBK y)` using `fun F => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `exists_secConst (F.s PUnit.unit)`. Take `⟨y, rfl⟩` from `(scal_bijective (pBK (R := R) (I := I))).2 a`. Conclude with `⟨y, ha⟩`. Prove the components needed by the constructor for the conclusion. Introduce `s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `hS s`. Use `⟨constFam k (scal pBK x), (expands_iff k hx (cs_const _ _ _)).2 rfl, fun F h => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hF F`. Take `rfl` from `(expands_iff k hx hy).1 h`. Conclude with `DVR.fam_ext fun _ j => hy j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F`. Take `⟨y, hy⟩` from `hF F`. Use `⟨cs _ _ (scal (pullback.snd G.hom (jK R)) y), (expands_iff k (cs_const _ _ _) hy).2 rfl, fun s h => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hS s`. Take `rfl` from `(expands_iff k hx hy).1 h`.
-
-Conclude with `sec_eq_of_secConst hx (cs_const _ _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem expBij [IsHausdorff I R] (k : ℕ) : (trivPre R I G).ExpBij k := by
   have hS : ∀ s : (trivPre R I G).SecK k, ∃ x, SecConst s (scal (pullback.snd G.hom (jK R)) x) := fun s => by

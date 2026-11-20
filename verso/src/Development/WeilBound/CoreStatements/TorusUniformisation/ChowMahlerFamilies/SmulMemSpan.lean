@@ -19,11 +19,9 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 variable {V W : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup W] [Module Ω W]
 
 /- English proof (translation)
-Proceed by induction on `he using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, w, hw, rfl⟩` from `hy`. Rewrite using `[smul_smul]`. Conclude with `AddSubgroup.subset_closure ⟨_, mul_mem ha hb, w, hw, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y w _ _ hy hw => rw [smul_add]`. Conclude with `add_mem hy hw`. Consider the case `neg y _ hy => rw [smul_neg]`.
-
-Conclude with `neg_mem hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_span (R : Subalgebra o Ω) (S : Set V) {a : Ω} (ha : a ∈ R) {e : V}
     (he : e ∈ spanOver R S) : a • e ∈ spanOver R S := by
@@ -37,11 +35,11 @@ theorem smul_mem_span (R : Subalgebra o Ω) (S : Set V) {a : Ω} (ha : a ∈ R) 
   | neg y _ hy => rw [smul_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, e, he, rfl⟩`. Conclude with `(Submodule.span R S).smul_mem ⟨a, ha⟩ (Submodule.subset_span he)`. Introduce `v hv`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `v ∈ Submodule.span R S at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy => exact AddSubgroup.subset_closure ⟨1, one_mem _, y, hy, (one_smul _ _).symm⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add y w _ _ hy hw => exact add_mem hy hw`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a y _ hy => exact smul_mem_span R S a.2 hy`.
+A detailed English derivation is pending.
 -/
 theorem spanOver_eq (R : Subalgebra o Ω) (S : Set V) :
     spanOver R S = (Submodule.span R S).toAddSubgroup := by
@@ -58,9 +56,9 @@ theorem spanOver_eq (R : Subalgebra o Ω) (S : Set V) :
     | smul a y _ hy => exact smul_mem_span R S a.2 hy
 
 /- English proof (translation)
-Rewrite using `[spanOver, spanOver, AddMonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, e, he, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, _, ⟨e, he, rfl⟩, f.map_smul a e⟩`. Introduce and unpack `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨a, ha, e, he, rfl⟩, f.map_smul a e⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_spanOver (R : Subalgebra o Ω) (S : Set V) (f : V →ₗ[Ω] W) :
     (spanOver R S).map f.toAddMonoidHom = spanOver R (f '' S) := by
@@ -74,26 +72,26 @@ theorem map_spanOver (R : Subalgebra o Ω) (S : Set V) (f : V →ₗ[Ω] W) :
     exact ⟨_, ⟨a, ha, e, he, rfl⟩, f.map_smul a e⟩
 
 /- English proof (translation)
-The claim follows from `Set.image_id S`.
+A detailed English derivation is pending.
 -/
 theorem bc_self {J : Type} (S : Set (J → Ω)) : bcMap Ω Ω J '' S = S := Set.image_id S
 
 /- English proof (translation)
-The claim follows from `Set.image_id S`.
+A detailed English derivation is pending.
 -/
 theorem bc_self_prod {J : Type} (S : Set (Ω × (J → Ω))) :
     Prod.map (algebraMap Ω Ω) (bcMap Ω Ω J) '' S = S := Set.image_id S
 
 /- English proof (translation)
-Set `L₀' : Submodule R V` to `{ L₀ with smul_mem' := fun a e he => h₀.1 a a.2 e he }`. Set `L' : Submodule R W` to `{ L with smul_mem' := fun a e he => hst a a.2 e he }`. Take `⟨k, φ, v, hφ, hv⟩` from `LocFreeProj.exists_dualBasis (L := L₀') (r := N) h₀`. Establish `hfg : (Submodule.span R (Set.range fun i => f (v i))).FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hL : L' ≤ Submodule.span R (Set.range fun i => f (v i))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨e, he, rfl⟩` from `hle y hy`. Rewrite using `[← hv e, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ (⟨φ i e, hφ i e he⟩ : R) (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨S, hS⟩ : L'.FG` from `hfg.of_le hL`. Use `⟨S, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[spanOver_eq, hS]`. Rewrite using `[eq_top_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _`. Take `⟨e, rfl⟩` from `hf y`. Rewrite using `[← hv e, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h1 : b • f (v i) ∈ L'` using `hge _ (v i).2`. Rewrite `h1` using `[← hS]`. Establish `h2` using `Submodule.smul_mem _ b⁻¹ (Submodule.span_le_restrictScalars R Ω _ h1 : b • f (v i) ∈ Submodule.span Ω (S : Set W))`. Rewrite `h2` using `[inv_smul_smul₀ hb]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gens (R : Subalgebra o Ω) (hR : IsNoetherianRing R) {N : ℕ} {L₀ : AddSubgroup V}
     (h₀ : LocFree R N L₀) (f : V →ₗ[Ω] W) (hf : Function.Surjective f) (L : AddSubgroup W)
@@ -130,7 +128,7 @@ theorem gens (R : Subalgebra o Ω) (hR : IsNoetherianRing R) {N : ℕ} {L₀ : A
     rwa [inv_smul_smul₀ hb] at h2
 
 /- English proof (translation)
-Unfold `annSub`. Use `congr 1`. Use extensionality with `j`. Use `j.2` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -143,9 +141,9 @@ theorem annSub_min (n i : ℕ) : annSub Ω n (min i n) = annSub Ω n i := by
   omega
 
 /- English proof (translation)
-Unfold `vanSub`. Use `congr 1`. Use extensionality with `x`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Use `j.2` as an intermediate fact.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: min i n ≤ (j : ℕ) ↔ i ≤ (j : ℕ)` using `by omega`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem vanSub_min (F : Type) [Zero F] (n i : ℕ) : vanSub Ω F n (min i n) = vanSub Ω F n i := by
   unfold vanSub
@@ -157,16 +155,16 @@ theorem vanSub_min (F : Type) [Zero F] (n i : ℕ) : vanSub Ω F n (min i n) = v
   rw [this]
 
 /- English proof (translation)
-Rewrite using `[LieLatticeData.kk, LieLatticeData.kk, vanSub_min]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kk_min {F : Type} [Zero F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (τ : Sg)
     (i : ℕ) : D.kk τ (min i n) = D.kk τ i := by
   rw [LieLatticeData.kk, LieLatticeData.kk, vanSub_min]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `h1 : a ∈ (mcIdeal O x).comap (C : O →+* _)`. Rewrite using `[Ideal.mem_comap, mcIdeal, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcMap O x (algebraMap O _ a) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[AlgHom.commutes, MvPolynomial.algebraMap_apply, ha, map_zero]`. Rewrite `h1` using `[h.2.2.1]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω]
     {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {x : (Σ k, ι k) → Ω} {d : ℕ}
@@ -182,9 +180,9 @@ theorem injective {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   exact h1
 
 /- English proof (translation)
-Take `⟨h0, ⟨u, hu, hw⟩, -, h01, hχ⟩` from `h`. Take `⟨u, rfl⟩` from `hu`. Use `⟨?_, R.algebraMap_mem _, ⟨algebraMap O Ω ((u⁻¹ : Oˣ) * w ^ (p - 2)), R.algebraMap_mem _, ?_⟩, h01, fun τ => ⟨?_, ?_, fun a => R.algebraMap_mem _⟩⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω)]`. Conclude with `(map_ne_zero_iff _ hinj).2 h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : p - 1 = p - 2 + 1` using `by have := hp.two_le; omega`. Rewrite using `[← map_mul, mul_assoc, ← pow_succ, ← h2, hw, Units.inv_mul_cancel_left, map_natCast]`. Simplify using `only [(hχ τ).1, map_zero]`. Simplify using `only [(hχ τ).2, map_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem charData {O : Type} [CommRing O] [Algebra O Ω]
     (hinj : Function.Injective (algebraMap O Ω)) {F : Type} [Zero F] [One F] {Sg : Type} (p : ℕ)
@@ -212,7 +210,7 @@ variable {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg
 include hR hχ hB
 
 /- English proof (translation)
-The claim follows from `gens R hR (PositivityTheory.Xgn.t_dotdual_bc R R (fun _ h => h) _ _ (hB.free τ).1).1 LinearMap.id Function.surjective_id L hst (fun m hm => ⟨m, ((hB.th τ).2.1 m).1 (hle m hm), rfl⟩) hχ.1 fun e he => hge _ (((hB.th τ).2.2 _).2 ⟨e, he, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem gens_dual (τ : Sg) (L : AddSubgroup (Fin (r τ) → Ω)) (hst : ∀ a ∈ R, ∀ v ∈ L, a • v ∈ L)
     (hle : ∀ m ∈ L, ∃ g, (g, m) ∈ D.Th τ) (hge : ∀ m, (0, m) ∈ D.Th τ → m ∈ L) :
@@ -222,7 +220,7 @@ theorem gens_dual (τ : Sg) (L : AddSubgroup (Fin (r τ) → Ω)) (hst : ∀ a �
     fun e he => hge _ (((hB.th τ).2.2 _).2 ⟨e, he, rfl⟩)
 
 /- English proof (translation)
-Use `gens_dual D R hR p w χ hχ hB τ _ hst ?_ fun m hm => ⟨(0, m), ⟨hm, zero_mem _, trivial⟩, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `⟨v.1, hv.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem gens_kk (τ : Sg) (i : ℕ) (hst : ∀ a ∈ R, ∀ v ∈ D.kk τ i, a • v ∈ D.kk τ i) :
     ∃ S : Finset (Fin (r τ) → Ω), D.kk τ i = spanOver R (S : Set (Fin (r τ) → Ω)) ∧ Submodule.span Ω (S : Set (Fin (r τ) → Ω)) = ⊤ := by
@@ -231,11 +229,11 @@ theorem gens_kk (τ : Sg) (i : ℕ) (hst : ∀ a ∈ R, ∀ v ∈ D.kk τ i, a �
   exact ⟨v.1, hv.1⟩
 
 /- English proof (translation)
-Use `gens_dual D R hR p w χ hχ hB τ _ hst ?_ fun m hm => ⟨(0, m), ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Take `⟨y, hy, z, hz, h⟩` from `AddSubgroup.mem_sup.1 (AddSubgroup.mem_comap.1 hv)`. Establish `h2 : y.2 + z.2 = v.2` using `congrArg Prod.snd h`. Establish `h3 : z.2 = 0` using `hz.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h3, add_zero]`. Use `⟨y.1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(y.1, v.2) ∈ _`. Rewrite using `[← h2]`. Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubgroup.mem_comap.2 (AddSubgroup.mem_sup_left ?_)` and prove the remaining obligations. Simplify using `using hm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gens_step (τ : Sg) (i : Fin n)
     (hst : ∀ a ∈ R, ∀ v ∈ (D.stepGraph τ (χ τ) i).map (AddMonoidHom.snd _ _),
@@ -256,9 +254,9 @@ theorem gens_step (τ : Sg) (i : Fin n)
     simpa using hm
 
 /- English proof (translation)
-Establish `hw : w ≠ 0`. Take `⟨hp, -, ⟨c, -, hc⟩, -⟩` from `hχ`. Introduce and unpack `rfl`. Conclude with `hp (by simpa using hc)`. Use `gens R hR (hB.free τ).2.2.2 (w⁻¹ • LinearMap.id) (fun v => ⟨w • v, inv_smul_smul₀ hw v⟩) _ hst ?_ hw fun e he => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `⟨w • v.2, ((hB.del τ).2.1 _).1 ⟨v.1, hv.1⟩, inv_smul_smul₀ hw _⟩`. Conclude with `⟨(0, e), ⟨((hB.del τ).2.2.1 e).2 he, zero_mem _, trivial⟩, (smul_inv_smul₀ hw e).symm⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gens_im (τ : Sg) (hst : ∀ a ∈ R, ∀ v ∈ D.imH R p τ (χ τ), a • v ∈ D.imH R p τ (χ τ)) :
     ∃ S : Finset (Fin (s τ) → Ω), D.imH R p τ (χ τ) = spanOver R (S : Set (Fin (s τ) → Ω)) ∧
@@ -279,29 +277,29 @@ end PositivityTheory.Xgn.A_fam_good2
 
 open PositivityTheory.Xgn.A_fam_good2 in
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d hx hfn F _ _ _ n Sg _ r s p hp w χ φ D hD hG haf`. Establish `hinj` using `injective hx`. Take `⟨hno, -, hch⟩` from `PositivityTheory.Xgn.t_chart_noeth_frac O Ω K ι x`. Establish `hχ` using `charData hinj p hp w χ hD.char`. Establish `hfam` using `(PositivityTheory.Xgn.t_fam_constr O Ω K ι x hinj p hp w χ φ D hD).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr` using `fun c hc τ => ((GlobalTheory.T.lattice_good_base_change (D c) _ p _ _ (hχ _) (hD.base c hc) (hG c hc)).1 τ).1`. Set `I : Type` to `Sg ⊕ (Sg × Fin (n + 1)) ⊕ (Sg × Fin (n + 1)) ⊕ (Sg × Fin n) ⊕ Sg`. Set `M : I → ModuleCat.{0} Ω` to `fun j => match j with`. Consider the case `.inl _ => ModuleCat.of Ω (Fin n → Ω)`. Consider the case `.inr (.inl q) => ModuleCat.of Ω ((Fin n → Ω) ⧸ annSub Ω n q.2)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Consider the case `.inr (.inr (.inl q)) => ModuleCat.of Ω (Fin (r q.1) → Ω)`. Consider the case `.inr (.inr (.inr (.inl q))) => ModuleCat.of Ω (Fin (r q.1) → Ω)`. Consider the case `.inr (.inr (.inr (.inr τ))) => ModuleCat.of Ω (Fin (s τ) → Ω)`. Set `Γ : ∀ j, (∀ k, ι k) → AddSubgroup (M j)` to `fun j => match j with`. Consider the case `.inl τ => fun c => (D c).af (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Treat this case separately.
 
-Consider the case `.inr (.inl q) => fun c => ((D c).af (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ q.1 a))).map (annSub Ω n q.2).mkQ.toAddMonoidHom`. Consider the case `.inr (.inr (.inl q)) => fun c => (D c).kk q.1 q.2`. Consider the case `.inr (.inr (.inr (.inl q))) => fun c => ((D c).stepGraph q.1 (fun a => algebraMap O Ω (χ q.1 a)) q.2).map (AddMonoidHom.snd _ _)`. Consider the case `.inr (.inr (.inr (.inr τ))) => fun c => (D c).imH (chartRing O (mseg x) c) p τ (fun a => algebraMap O Ω (χ τ a))`. Take `⟨K', hK, hK', ι', hι', z, hz, hfree⟩` from `GlobalTheory.T.lattice_family_model_bundles O Ω K ι x d hx hfn I (fun j => Module.finrank Ω (M j)) (fun j => M j) Γ (by`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `(τ | q | q | q | τ)`. Conclude with `⟨rfl, (hfam τ).1, fun c hc => gens _ (hno c) (hfr c hc τ) LinearMap.id Function.surjective_id _ (hfr c hc τ).1 (fun v hv => ⟨v, hv, rfl⟩) one_ne_zero fun e he => (one_smul Ω e).symm ▸ he⟩`. Establish `h` using `A_fam_constr.fam_map (hfam q.1).1 (annSub Ω n q.2).mkQ.toAddMonoidHom fun a v => (annSub Ω n q.2).mkQ.map_smul a v`. Conclude with `⟨rfl, h, fun c hc => gens _ (hno c) (hfr c hc q.1) (annSub Ω n q.2).mkQ (Submodule.mkQ_surjective _) _ (h.1 c hc) (fun v hv => hv) one_ne_zero fun e he => ⟨e, he, (one_smul Ω _).symm⟩⟩`. Establish `h` using `(hfam q.1).2.2.1 q.2`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨rfl, h, fun c hc => gens_kk (D c) _ (hno c) p _ _ (hχ _) (hD.base c hc) _ _ (h.1 c hc)⟩`. Establish `h` using `A_fam_constr.fam_map ((hfam q.1).2.1 q.2).2 (AddMonoidHom.snd _ _) fun a v => rfl`. Conclude with `⟨rfl, h, fun c hc => gens_step (D c) _ (hno c) p _ _ (hχ _) (hD.base c hc) _ _ (h.1 c hc)⟩`. Establish `h` using `((hfam τ).2.2.2.2 hG).2`. Conclude with `⟨rfl, h, fun c hc => gens_im (D c) _ (hno c) p _ _ (hχ _) (hD.base c hc) _ (h.1 c hc)⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨K', hK, hK', ι', hι', z, hz, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨hc1, hle⟩` from `(hch K' ι' z).2 c hc`. Establish `hB` using `hD.base _ hc1`. Establish `hG1` using `hG _ hc1`. Establish `e1` using `fun τ => (((GlobalTheory.T.lattice_good_base_change _ _ p _ _ (hχ _) hB hG1).2 Ω _ hle).2 τ).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `PositivityTheory.Xgn.kernel_lattice_base_change _ _ p _ _ (hχ _) hB hG1 Ω _ hle`. Establish `e3` using `PositivityTheory.Xgn.image_lattice_base_change _ _ p _ _ (hχ _) hB hG1 (haf _ hc1) Ω _ hle`. Simplify using `only [bc_self, bc_self_prod, Algebra.algebraMap_self_apply] at e1 e2 e3`. Unfold `pullFamily`. Use `⟨fun τ i => ?_, fun τ i => ?_, fun τ i => ?_, fun τ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, ← annSub_min]`. Use `(PositivityTheory.Xgn.summand_iff_locFree_quot _ _ _ (Module.finrank Ω ((Fin n → Ω) ⧸ annSub Ω n (min i n))) _ (hfree (.inl τ) c hc)).1 ?_` and prove the remaining obligations. Rewrite using `[map_spanOver]`. Conclude with `hfree (.inr (.inl (τ, ⟨min i n, by omega⟩))) c hc`. Establish `h` using `hfree (.inr (.inr (.inl (τ, ⟨min i n, by omega⟩)))) c hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `LocFree _ (Module.finrank Ω (Fin (r τ) → Ω)) _ at h`. Rewrite `h` using `[Module.finrank_fin_fun]`. Rewrite using `[← kk_min, (e2 τ).1]`. Conclude with `h`. Rewrite using `[(e2 τ).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hfree (.inr (.inr (.inr (.inl (τ, i))))) c hc`. Establish `e` using `map_spanOver (chartRing O (mseg (joinCoord x z)) c) ((D (restrictChart c)).stepGraph τ (fun a => algebraMap O Ω (χ τ a)) i : Set _) (LinearMap.snd Ω Ω (Fin (r τ) → Ω))`. Express the relevant statement in the definitionally equal form `LocFree _ (Module.finrank Ω (Fin (r τ) → Ω)) _ at h`. Rewrite `h` using `[Module.finrank_fin_fun]`. Conclude with `e.symm ▸ h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hfree (.inr (.inr (.inr (.inr τ)))) c hc`. Express the relevant statement in the definitionally equal form `LocFree _ (Module.finrank Ω (Fin (s τ) → Ω)) _ at h`. Rewrite `h` using `[Module.finrank_fin_fun]`. Rewrite using `[e3]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_fam_good2 : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → fnField O x = ⊤ → ∀ {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} [Fintype Sg] {r s : Sg → ℕ} (p : ℕ), p.Prime → ∀ (w : O) (χ : Sg → F → O) (φ : Equiv.Perm Sg) (D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s), IsLatticeFamily O x p w χ φ D → (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → (∀ c, mseg x c ≠ 0 → ∀ τ, mulLat (algebraMap O Ω w) (stdLat (chartRing O (mseg x) c) _) ≤ (D c).af (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a))) → ∃ (K' : Type) (_ : Fintype K') (_ : DecidableEq K') (ι' : K' → Type) (_ : ∀ k, Fintype (ι' k)) (z : (Σ k, ι' k) → Ω), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O (joinCoord x z)) d ∧ (∀ c, mseg (joinCoord x z) c ≠ 0 → (pullFamily O x z D c).Good₂ (chartRing O (mseg (joinCoord x z)) c) p (fun τ a => algebraMap O Ω (χ τ a))) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d hx hfn F _ _ _ n Sg _ r s p hp w χ φ D hD hG haf

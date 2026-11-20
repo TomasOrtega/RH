@@ -3,25 +3,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `t10 : T 1 0 = 0` using `hT _ _ (by decide)`. Establish `t20 : T 2 0 = 0` using `hT _ _ (by decide)`. Establish `t30 : T 3 0 = 0` using `hT _ _ (by decide)`. Establish `t21 : T 2 1 = 0` using `hT _ _ (by decide)`. Establish `t31 : T 3 1 = 0` using `hT _ _ (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c0 : ∀ i, (d i - T 0 0) * u i 0 = 0` using `fun i => by`. Use `congrFun (congrFun e i) 0` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_mul, Matrix.mul_apply, Fin.sum_univ_four, t10, t20, t30]`. Take the linear combination `this`. Establish `c1 : ∀ i, (d i - T 1 1) * u i 1 = u i 0 * T 0 1` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `congrFun (congrFun e i) 1` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_mul, Matrix.mul_apply, Fin.sum_univ_four, t21, t31]`. Take the linear combination `this`. Establish `h10 : u 1 0 = 0` using `(mul_eq_zero.1 (c0 1)).resolve_left (hd _ _ (by decide))`. Establish `h30 : u 3 0 = 0` using `(mul_eq_zero.1 (c0 3)).resolve_left (hd _ _ (by decide))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s` using `sp_adj_mul hu`. Establish `s00` using `congrFun (congrFun s 0) 0`. Establish `s10` using `congrFun (congrFun s 1) 0`. Establish `s11` using `congrFun (congrFun s 1) 1`. Establish `s31` using `congrFun (congrFun s 3) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `s00`, `s10`, `s11`, `s31` using `[Matrix.mul_apply, Fin.sum_univ_four]`. Rewrite `s00`, `s11` using `[Matrix.one_apply_eq]`. Rewrite `s10`, `s31` using `[Matrix.one_apply_ne (by decide)]`. Establish `a30 : adj u 3 0 = - u 3 0` using `by simp [adj_apply, sgn, Fin.rev]`. Establish `a31 : adj u 3 1 = - u 2 0` using `by simp [adj_apply, sgn, Fin.rev]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a32 : adj u 3 2 = u 1 0` using `by simp [adj_apply, sgn, Fin.rev]`. Establish `a33 : adj u 3 3 = u 0 0` using `by simp [adj_apply, sgn, Fin.rev]`. Rewrite `s31` using `[a30, a31, a32, a33]`. Use `⟨h10, h30, ?_, fun h00 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn push Not at hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `s00` using `[hn.1, hn.2, h10, h30]`. Simplify using `at s00`. Establish `hA : d 0 - T 1 1 ≠ 0` using `hd _ _ (by decide)`. Establish `hB : d 2 - T 1 1 ≠ 0` using `hd _ _ (by decide)`. Establish `key : u 0 0 * u 2 1 - u 0 1 * u 2 0 = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ (mul_ne_zero hA hB)` to reduce the goal to its premises. Take the linear combination `(d 0 - T 1 1) * u 0 0 * c1 2 - (d 2 - T 1 1) * u 2 0 * c1 0 + u 2 0 * T 0 1 * c0 0 - u 0 0 * T 0 1 * c0 2`. Use `⟨fun hn => ?_, key⟩` and prove the remaining obligations. Rewrite `hn` using `[h10, mul_zero, sub_zero]`. Establish `h11 : u 1 1 = 0` using `(mul_eq_zero.1 hn).resolve_left h00`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `s31` using `[h10, h30, h11]`. Establish `h31 : u 3 1 = 0`. Apply `mul_left_cancel₀ h00` to reduce the goal to its premises. Take the linear combination `s31`. Rewrite `s10` using `[h10, h30]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `s11` using `[h11, h31]`. Apply `h00` to reduce the goal to its premises. Take the linear combination `u 0 1 * s10 - u 0 0 * s11 + adj u 1 2 * key`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem resFlag_field {k : Type} [Field k] (u T : M4 k) (d : Fin 4 → k) (hu : IsGSp 1 u)
     (hT : IsUp T) (e : Matrix.diagonal d * u = u * T) (hd : ∀ i j, lamW i ≠ lamW j → d i - T j j ≠ 0) :
@@ -79,15 +79,15 @@ private theorem resFlag_field {k : Type} [Field k] (u T : M4 k) (d : Fin 4 → k
     linear_combination u 0 1 * s10 - u 0 0 * s11 + adj u 1 2 * key
 
 /- English proof (translation)
-Introduce `R _ _ X u d d' hX hu hUp hdi hsep`. Establish `hX' : X.map (residue R) = Matrix.diagonal fun i => residue R (d i)`. Use extensionality with `i j`. Use `(residue_eq_zero_iff _).2 (hX i j)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, this]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ e]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hu' : IsGSp 1 (u.map (residue R))` using `by simpa using gsp_map (residue R) hu`. Establish `e : X * u = u * (adj u * X * u)`. Rewrite using `[← mul_assoc, ← mul_assoc, sp_mul_adj hu, one_mul]`. Establish `e'` using `congrArg (fun M : M4 R => M.map (residue R)) e`. Use `beta_reduce at e'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[Matrix.map_mul, Matrix.map_mul (L := u), hX']`. Establish `H` using `resFlag_field (u.map (residue R)) ((adj u * X * u).map (residue R)) _ hu' (fun i j h => by rw [Matrix.map_apply, hUp i j h, map_zero]) e' (fun i j h => by`. Establish `h1` using `(residue_eq_zero_iff _).2 (hdi j)`. Rewrite `h1` using `[map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, h1, ← map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `((hsep i j h).map _).ne_zero)`. Simplify using `only [Matrix.map_apply, ← map_mul, ← map_sub, residue_eq_zero_iff, Ne] at H`. Simplify `H` using `only [notMem_maximalIdeal]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lab.resFlag :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (X u : M4 R) (d d' : Fin 4 → R), Cg (maximalIdeal R) X (Matrix.diagonal d) → IsGSp 1 u →

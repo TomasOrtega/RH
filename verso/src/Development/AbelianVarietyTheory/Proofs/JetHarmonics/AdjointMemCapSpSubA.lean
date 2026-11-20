@@ -9,15 +9,15 @@ open Formalism.REAL (qdet GlRel IsHW)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V₁ _ _ _ V₂ _ _ _ n r z π₁ π₂ B T μ h₁ h₂ hu₁ hu₂ hB hT v hv`. Establish `hB' : IsFrameOf (n + 1) r [z, B (Fin.last n)] (fun a : Fin n => B a.castSucc)`. Use `⟨fun a => hB.1 _, fun a b => ?_, fun a x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hB.2.1]`. Simplify using `only [Fin.castSucc_inj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hx`. Break down `hx with hx | hx` into its components or cases. Conclude with `hB.2.2 _ x (by simp [hx])`. Rewrite using `[hx, hB.2.1, if_neg (Fin.castSucc_lt_last a).ne]`. Establish `hlie` using `GlobalTheory.intertwiner_EB_of_stabiliser V₂ V₁ (n + 1) r n z (B (Fin.last n)) π₂ π₁ T (fun a : Fin n => B a.castSucc) h₂ h₁ hB' (fun h hh he w => by`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun S : V₂ →L[ℂ] V₁ => S w) (hT h hh he)` as an intermediate fact. Simplify using `using this)`. Establish `hlie' : ∀ (a b : Fin n) (w : V₂), T (EB π₂ B a.castSucc b.castSucc w) = EB π₁ B a.castSucc b.castSucc (T w)` using `hlie`. Establish `hadj : ∀ (a b : Fin n) (w : V₁), (ContinuousLinearMap.adjoint T).toLinearMap (subA (EB π₁ B) a b w) = subA (EB π₂ B) a b ((ContinuousLinearMap.adjoint T).toLinearMap w)`. Introduce `a b w`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `y`. Use `show inner ℂ (ContinuousLinearMap.adjoint T (EB π₁ B a.castSucc b.castSucc w)) y = inner ℂ (EB π₂ B a.castSucc b.castSucc (ContinuousLinearMap.adjoint T w)) y`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, Formalism.FourierDecayAlt.P5.Kfp.EB_adj h₁.1 h₁.2 hu₁ hB, Formalism.FourierDecayAlt.P5.Kfp.EB_adj h₂.1 h₂.2 hu₂ hB, ContinuousLinearMap.adjoint_inner_left, hlie']`. Rewrite `hv`, the goal using `[mem_CapSp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Establish `hq` using `qminor_intertwine V₂ V₁ n n (subA (EB π₂ B)) (subA (EB π₁ B)) (ContinuousLinearMap.adjoint T).toLinearMap hadj id id w v`. Establish `hq' : ContinuousLinearMap.adjoint T (qdet (subA (EB π₁ B)) w v) = qdet (subA (EB π₂ B)) w (ContinuousLinearMap.adjoint T v)` using `hq`. Rewrite using `[← hq', hv w, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_mem_CapSp_subA : ∀ (V₁ : Type) [NormedAddCommGroup V₁] [InnerProductSpace ℂ V₁] [FiniteDimensional ℂ V₁] (V₂ : Type) [NormedAddCommGroup V₂] [InnerProductSpace ℂ V₂] [FiniteDimensional ℂ V₂] (n r : ℕ) (z : (Fin (2 * r + (n + 1) + 1) → ℂ)) (π₁ : Mx (n + 1) r → (V₁ →L[ℂ] V₁)) (π₂ : Mx (n + 1) r → (V₂ →L[ℂ] V₂)) (B : Fin (n + 1) → (Fin (2 * r + (n + 1) + 1) → ℂ)) (T : V₂ →L[ℂ] V₁) (μ : Fin n → ℂ), IsRepW (n + 1) r z π₁ → IsRepW (n + 1) r z π₂ → (∀ h ∈ UWset (n + 1) r z, ∀ v, ‖π₁ h v‖ = ‖v‖) → (∀ h ∈ UWset (n + 1) r z, ∀ v, ‖π₂ h v‖ = ‖v‖) → IsFrameOf (n + 1) r [z] B → (∀ h ∈ UWset (n + 1) r z, h *ᵥ B (Fin.last n) = B (Fin.last n) → T.comp (π₂ h) = (π₁ h).comp T) → ∀ v ∈ CapSp (subA (EB π₁ B)) μ, ContinuousLinearMap.adjoint T v ∈ CapSp (subA (EB π₂ B)) μ := by
   intro V₁ _ _ _ V₂ _ _ _ n r z π₁ π₂ B T μ h₁ h₂ hu₁ hu₂ hB hT v hv

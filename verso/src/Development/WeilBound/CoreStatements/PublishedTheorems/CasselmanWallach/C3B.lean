@@ -5,9 +5,9 @@ open Matrix Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.SmoothGlob G
 namespace PositivityTheory.CW
 
 /- English proof (translation)
-Rewrite using `[← Matrix.diagonal_smul, Matrix.exp_diagonal, Pi.exp_def]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`. Simplify using `[h, ← Complex.exp_eq_exp_ℂ, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem exp_smul_diagonal_I_single_eq_diagonal_exp {n : ℕ} (a : Fin n) (t : ℝ) :
     NormedSpace.exp (t • (Matrix.diagonal fun j : Fin n => if j = a then Complex.I else 0)) =
@@ -21,55 +21,51 @@ private theorem exp_smul_diagonal_I_single_eq_diagonal_exp {n : ℕ} (a : Fin n)
 
 open DerivativeRepresentation in
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hU _ E hE v a x hv hx`. Use `set Y : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun j => if j = a then Complex.I else 0 with hY`. Establish `hYG : Y ∈ lieSet ε` using `by show Yᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * Y = 0`. Rewrite using `[hY, Formalism.REAL.Jm, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, ← Matrix.diagonal_zero]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Simplify using `only [if_true, Pi.star_apply, Pi.add_apply, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Establish `hact : ReciprocityTheory.ChartRestriction.DS.actM E Y = Complex.I • E a a`. Simplify using `[ReciprocityTheory.ChartRestriction.DS.actM, hY, Matrix.diagonal_apply, ite_smul]`. Establish `hv' : (v : H) ≠ 0` using `by simpa using hv`. Establish `hD : dRep σ Y (v : H) = (Complex.I * x) • (v : H)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hE Y hYG v, hact]`. Simplify using `only [hx, LinearMap.smul_apply, Submodule.coe_smul]`. Rewrite using `[mul_smul]`. Use `set u : ℝ → Matrix (Fin n) (Fin n) ℂ := fun t => Matrix.diagonal fun j => if j = a then Complex.exp (t * Complex.I) else 1 with hu`. Establish `hexp : ∀ t : ℝ, NormedSpace.exp (t • Y) = u t` using `fun t => exp_smul_diagonal_I_single_eq_diagonal_exp a t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huU : ∀ t, u t ∈ UJset ε`. Introduce `t`. Use `show (u t)ᴴ * Formalism.REAL.Jm ε * u t = Formalism.REAL.Jm ε`. Rewrite using `[hu, Formalism.REAL.Jm, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Simplify using `only [if_true, Pi.star_apply]`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I, mul_comm _ (if ε j = true then (1 : ℂ) else -1), mul_assoc, ← Complex.exp_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hmul : ∀ s t, u (s + t) = u s * u t`. Introduce `s t`. Simplify using `only [hu, Matrix.diagonal_mul_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`. Simplify using `[h, add_mul, Complex.exp_add]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu0 : u 0 = 1` using `by simp [hu]`. Establish `hu2 : u (2 * Real.pi) = 1`. Simplify using `only [hu]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`. Simplify using `[h, Complex.exp_two_pi_mul_I]`. Simplify using `[h]`. Use `set F : ℝ → H := fun t => σ (u t) (v : H) with hFdef`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF : ∀ s t, F (s + t) = σ (u s) (F t)`. Introduce `s t`. Simplify using `only [hFdef, hmul, hU.1.2 _ (huU s) _ (huU t), ContinuousLinearMap.comp_apply]`. Establish `hx0 : x ≠ 0 → HasDerivAt F ((Complex.I * x) • (v : H)) 0`. Introduce `hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1 : deriv F 0 = (Complex.I * x) • (v : H)`. Establish `: F = fun t : ℝ => σ (NormedSpace.exp (t • Y)) (v : H)`. Use function extensionality and compare the values at `t`. Simplify using `only [hFdef, hexp]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hD`. Establish `hne : deriv F 0 ≠ 0`. Rewrite using `[h1]`. Conclude with `smul_ne_zero (mul_ne_zero Complex.I_ne_zero (Complex.ofReal_ne_zero.2 hx0)) hv'`. Establish `hd : DifferentiableAt ℝ F 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hnd`. Conclude with `hne (deriv_zero_of_not_differentiableAt hnd)`. Rewrite using `[← h1]`. Conclude with `hd.hasDerivAt`. Distinguish the cases in `hx00 : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `⟨0, by simp [hx00]⟩`. Establish `hder0` using `hx0 hx00`. Use `set c : ℂ := Complex.I * x with hc`. Establish `hderF : ∀ s, HasDerivAt F (c • F s) s`. Introduce `s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun r => F (r - s)) (c • (v : H)) s`. Use `HasDerivAt.comp_sub_const (f := F) (f' := c • (v : H)) s s (by simpa using hder0)` as an intermediate fact. Simplify using `using this`. Establish `h3` using `((σ (u s)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h2`. Establish `heq : (fun r => σ (u s) (F (r - s))) = F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use function extensionality and compare the values at `r`. Use `hF s (r - s)` as an intermediate fact. Simplify using `only [add_sub_cancel] at this`. Conclude with `this.symm`. Establish `h4 : σ (u s) (c • (v : H)) = c • F s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_smul]`. Establish `h5 : HasDerivAt (fun r => σ (u s) (F (r - s))) (c • F s) s`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Conclude with `h4.symm`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Use symmetry to reverse the relation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h5` using `[heq]`. Then use the resulting hypothesis. Use `set G : ℝ → H := fun t => Complex.exp (-c * t) • F t with hG`. Establish `hGd : ∀ t, HasDerivAt G 0 t`. Introduce `t`. Establish `h1 : HasDerivAt (fun y : ℝ => Complex.exp (-c * y)) (Complex.exp (-c * t) * (-c)) t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(((hasDerivAt_id (t : ℂ)).const_mul (-c)).cexp).comp_ofReal` as an intermediate fact. Simplify using `using this`. Use `h1.smul (hderF t)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `symm`. Rewrite using `[smul_smul, ← add_smul, show Complex.exp (-c * t) * c + Complex.exp (-c * t) * -c = 0 by ring, zero_smul]`. Establish `hGc` using `is_const_of_deriv_eq_zero (fun t => (hGd t).differentiableAt) (fun t => (hGd t).deriv) (2 * Real.pi) 0`. Establish `hG0 : G 0 = (v : H)`. Simplify using `only [hG, hFdef, hu0, hU.1.1, ContinuousLinearMap.one_apply, Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hG2 : G (2 * Real.pi) = Complex.exp (-c * ((2 * Real.pi : ℝ) : ℂ)) • (v : H)`. Simplify using `only [hG, hFdef, hu2, hU.1.1, ContinuousLinearMap.one_apply]`. Rewrite `hGc` using `[hG2, hG0]`. Establish `hexp1 : Complex.exp (-c * ((2 * Real.pi : ℝ) : ℂ)) = 1`. Establish `: (Complex.exp (-c * ((2 * Real.pi : ℝ) : ℂ)) - 1) • (v : H) = 0`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[sub_smul, hGc, one_smul, sub_self]`. Break down `smul_eq_zero.1 this with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h hv'`. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.1 hexp1`.
-
-Use `⟨-m, ?_⟩` and prove the remaining obligations. Establish `h2 : ((x + m : ℝ) : ℂ) * (2 * Real.pi * Complex.I) = 0`. Rewrite `hm` using `[hc]`. Move the coercions through the operations in `at hm ⊢`. Take the linear combination `(-1 : ℂ) * hm`.
-
-Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Establish `: x + m = 0` using `by exact_mod_cast h`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h Complex.two_pi_I_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem c3b : HighestWeightIntegral := by
   intro n ε H _ _ _ σ hU _ E hE v a x hv hx

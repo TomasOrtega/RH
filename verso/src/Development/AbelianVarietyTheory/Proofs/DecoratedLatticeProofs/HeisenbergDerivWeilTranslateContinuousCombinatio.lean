@@ -20,7 +20,7 @@ open GlobalTheory.WeilVacMove GlobalTheory.FockCompare
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[inv_inv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = x := by rw [← GlobalTheory.WeilVacMove.mt_mul, ← GlobalTheory.WeilVacMove.mt_mul, mul_inv_cancel, mul_inv_cancel, GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.mt_one, Matrix.one_mul, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actO_actO_inv (g : GA D S) (h : GA D T) (x : WO S T) : actO S T g h (actO S T g⁻¹ h⁻¹ x) = x := by
   unfold actO
@@ -31,9 +31,9 @@ theorem actO_actO_inv (g : GA D S) (h : GA D T) (x : WO S T) : actO S T g h (act
     _ = x := by rw [← GlobalTheory.WeilVacMove.mt_mul, ← GlobalTheory.WeilVacMove.mt_mul, mul_inv_cancel, mul_inv_cancel, GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.mt_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hline` using `(smooth_iff_sm_and_real_lines D θ σ h T S).2.1 L ⟨hL, hL0⟩`. Establish `hfs` using `((smooth_iff_sm_and_real_lines D θ σ h T S).1 f).1 hf.smooth`. Establish `e : (fun t : ℝ => heisO ψ S T (L t) f w) = fun t : ℝ => Complex.exp (t * phase lam S T (L 1) w) * f (w + iotaW σ T S (t • piW θ T S (L 1)))`. Use function extensionality and compare the values at `t`. Rewrite using `[heisO, psi_sympl_line hl hlam hL hL0, ← hline t]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Unfold `dLine`. Rewrite using `[e]`. Conclude with `(hasDerivAt_exp_mul _ _ f hfs _ w).deriv`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dLine_apply {θ : GlobalTheory.IndefiniteRowSideFullHecke.FockOrthogonalDecomposition.InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : Chart θ σ)
     {lam : AF D.host.F →+ ℂ} (hl : Continuous lam) (hlam : ∀ a, sndA D.host.F a = 0 → ψ a = Complex.exp (lam a))
@@ -52,17 +52,15 @@ theorem dLine_apply {θ : GlobalTheory.IndefiniteRowSideFullHecke.FockOrthogonal
   exact (hasDerivAt_exp_mul _ _ f hfs _ w).deriv
 
 /- English proof (translation)
-Take `⟨lam, hl, hlam⟩` from `exists_log hψ`. Use function extensionality and compare the values at `w`. Set `A : RW T S →+ ℂ` to `AddMonoidHom.mk' (fun v => lam (symplOH S T w (iotaW σ T S v))) fun u v => by`. Rewrite using `[map_add, symplOH_add_right, map_add]`. Establish `hA : Continuous A` using `hl.comp (continuous_symplOH S T continuous_const (h.continuous_iota T S))`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `A' : RW T S →L[ℝ] ℂ` to `A.toRealLinearMap hA`. Set `B : RW T S →L[ℝ] ℂ` to `fderiv ℝ (fun x => f (w + iotaW σ T S x)) 0`. Set `Φ : RW T S →ₗ[ℝ] ℂ` to `(LinearMap.mulRight ℝ (f w)).comp A'.toLinearMap + B.toLinearMap`. Establish `key : ∀ (K : ℝ →+ WO S T), Continuous K → (∀ t, (K t).map (finPart D) = 0) → dLine ψ S T K f w = Φ (piW θ T S (K 1))`. Introduce `K hK hK0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dLine_apply h hl hlam hK hK0 hf]`. Establish `e1 : K 1 = iotaW σ T S (piW θ T S (K 1))`. Use `(smooth_iff_sm_and_real_lines D θ σ h T S).2.1 K ⟨hK, hK0⟩ 1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `e2 : lam (symplOH S T w (K 1)) = A (piW θ T S (K 1))` using `by show _ = lam (symplOH S T w (iotaW σ T S (piW θ T S (K 1))))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← e1]`. Use `show lam (symplOH S T w (K 1)) * f w + _ = _`. Rewrite using `[e2]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_apply, key L hL hL0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Simplify using `only [fun i => key (N i) (hN i) (hN0 i), hN1]`. Use `conv_lhs => rw [← b.sum_repr (piW θ T S (L 1))]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, Complex.real_smul, Module.Basis.coord_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dLine_eq_sum (hψ : IsStdChar D ψ (-1)) {θ : GlobalTheory.IndefiniteRowSideFullHecke.FockOrthogonalDecomposition.InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D}
     (h : Chart θ σ) {ι : Type} [Fintype ι] (b : Module.Basis ι ℝ (RW T S)) {L : ℝ →+ WO S T} (hL : Continuous L)
@@ -100,15 +98,15 @@ theorem dLine_eq_sum (hψ : IsStdChar D ψ (-1)) {θ : GlobalTheory.IndefiniteRo
   rw [map_smul, Complex.real_smul, Module.Basis.coord_apply]
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hW M hM hM0`. Establish `hψ` using `hW.std`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Set `b` to `Module.finBasis ℝ (RW T S)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `N : Fin (Module.finrank ℝ (RW T S)) → ℝ →+ WO S T` to `fun i => (iotaW σ T S).comp (ContinuousLinearMap.toSpanSingleton ℝ (b i)).toLinearMap.toAddMonoidHom`. Establish `hN : ∀ i, Continuous (N i)` using `fun i => (h.continuous_iota T S).comp (ContinuousLinearMap.toSpanSingleton ℝ (b i)).continuous`. Establish `hN0 : ∀ i t, (N i t).map (finPart D) = 0` using `fun i t => h.real_iota T S _`. Establish `hN1 : ∀ i, piW θ T S (N i 1) = b i` using `fun i => by show piW θ T S (iotaW σ T S ((1 : ℝ) • b i)) = b i`. Rewrite using `[h.pi_iota, one_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Mp : GA D S × GA D T → ℝ →+ WO S T` to `fun p => AddMonoidHom.mk' (fun s => actO S T p.1⁻¹ p.2⁻¹ (M s)) fun s t => by rw [map_add, actO_add]`. Establish `hMp : ∀ p, Continuous (Mp p)` using `fun p => (continuous_const.matrix_mul hM).matrix_mul continuous_const`. Establish `hMp0 : ∀ p t, (Mp p t).map (finPart D) = 0` using `fun p t => by show (actO S T p.1⁻¹ p.2⁻¹ (M t)).map (finPart D) = 0`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hM0 t, Matrix.mul_zero, Matrix.zero_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, N, fun i p => ((b.coord i (piW θ T S (Mp p 1)) : ℝ) : ℂ), hN, hN0, fun i => ?_, fun p f hf => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun p : GA D S × GA D T => actO S T p.1⁻¹ p.2⁻¹ (M 1)`. Unfold `actO`. Conclude with `(((GlobalTheory.MixModel.continuous_mt T).comp (continuous_snd.inv)).matrix_mul continuous_const).matrix_mul ((GlobalTheory.MixModel.continuous_mt S).comp continuous_fst.inv.inv)`. Conclude with `Complex.continuous_ofReal.comp ((LinearMap.continuous_of_finiteDimensional (b.coord i)).comp ((continuous_pi' hθ T S).comp hc))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, k⟩` from `p`. Establish `e` using `om_dLine hW g k (hMp (g, k)) (hMp0 (g, k)) hM hM0 (fun t => (actO_actO_inv g k (M t)).symm) hf`. Rewrite using `[← e, dLine_eq_sum hψ h b (hMp (g, k)) (hMp0 (g, k)) N hN hN0 hN1 hf, map_sum]`. Simplify using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dLine_om_comb : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ M : ℝ →+ WO S T, Continuous M → (∀ s, (M s).map (finPart D) = 0) → ∃ (m : ℕ) (N : Fin m → ℝ →+ WO S T) (c : Fin m → GA D S × GA D T → ℂ), (∀ i, Continuous (N i)) ∧ (∀ i s, (N i s).map (finPart D) = 0) ∧ (∀ i, Continuous (c i)) ∧ ∀ p f, IsThetaFunO ψ S T f → GlobalTheory.WeilVacMove.dLine ψ S T M (om p f) = ∑ i, c i p • om p (GlobalTheory.WeilVacMove.dLine ψ S T (N i) f) := by
   intro D ψ S T χS χT om hW M hM hM0

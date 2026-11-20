@@ -6,11 +6,9 @@ open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd UpperTheory.V.Ws UpperTheor
 
 open GroundTheory.Global.SemiLocal in
 /- English proof (translation)
-Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ v h w`. Use `haveI : Module.Finite K M := Module.Finite.of_restrictScalars_finite ℚ K M`. Use `haveI : Algebra.IsAlgebraic M Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed M, Algebra.IsAlgebraic.trans K M Ω⟩`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hv : IsPlaceOver A v` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply K M Ω, w.2.over]`. Conclude with `hA (algebraMap (𝓞 K) (𝓞 M) x)`. Take `⟨he, hf⟩` from `GlobalTheory.PlaceIsoDec.ramificationIdx_eq_one_and_inertiaDeg_eq_one (F := K) (K := M) (L := M) hv hA hA (fun s hs => ⟨{ s.toRingEquiv with commutes' := h A hv s hs }, AlgEquiv.ext fun _ => rfl⟩)`. Establish `hr` using `finrank_eq_ramificationIdx_mul_inertiaDeg M v w.1`.
-
-Rewrite `hr` using `[he, hf]`. Conclude with `(Algebra.finrank_eq_one_iff_bijective_algebraMap.1 hr).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.splitOfDec :
     UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.SplitOfDec := by

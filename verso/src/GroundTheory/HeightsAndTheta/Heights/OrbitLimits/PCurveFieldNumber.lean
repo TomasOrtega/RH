@@ -11,25 +11,23 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights�
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y hA hB`. Use `set P := mCoordIdeal y with hPdef`. Establish `: P.IsPrime` using `hA.2.1.1`. Take `⟨hF, hN⟩` from `hR1 K ι P hA`. Set `L` to `FractionRing (MvPolynomial K Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j : MRing ι ⧸ P →+* L` to `(algebraMap (MvPolynomial K Ω) L).comp (RingHom.kerLift (mConeMap y : MRing ι →+* MvPolynomial K Ω))`. Establish `hj : Function.Injective j` using `(IsFractionRing.injective (MvPolynomial K Ω) L).comp (RingHom.kerLift_injective _)`. Set `Φ : FractionRing (MRing ι ⧸ P) →+* L` to `IsFractionRing.lift hj`. Set `c : Ω →+* L` to `(algebraMap (MvPolynomial K Ω) L).comp MvPolynomial.C`. Establish `hΦ : ∀ f, Φ (algebraMap _ _ (Ideal.Quotient.mk P f)) = algebraMap _ L (mConeMap y f)` using `fun f => (IsFractionRing.lift_algebraMap hj _).trans (congrArg (algebraMap (MvPolynomial K Ω) L) (RingHom.kerLift_mk (mConeMap y : MRing ι →+* MvPolynomial K Ω) f))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform : ∀ {g : MRing ι} {a : K → ℕ}, IsMultiHomog g a → Φ (algebraMap _ _ (Ideal.Quotient.mk P g)) = c (aeval y g) * algebraMap _ L (∏ k, (X k : MvPolynomial K Ω) ^ a k)`. Introduce `g a hg`. Rewrite using `[hΦ, LowerBoundFree.mConeMap_of_isMultiHomog y hg, map_mul]`. Both sides reduce to the same expression. Establish `hT : ∀ a : K → ℕ, algebraMap (MvPolynomial K Ω) L (∏ k, (X k : MvPolynomial K Ω) ^ a k) ≠ 0` using `fun a => (map_ne_zero_iff _ (IsFractionRing.injective _ L)).2 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ {g : MRing ι} {a : K → ℕ}, IsMultiHomog g a → aeval y g = 0 → g ∈ P`. Introduce `g a hg h0`. Use `show mConeMap y g = 0`. Rewrite using `[LowerBoundFree.mConeMap_of_isMultiHomog y hg, h0, map_zero, zero_mul]`. Establish `heq : (funField P).map Φ = c.range`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Subring.map_le_iff_le_comap, funField, Subring.closure_le]`. Introduce and unpack `x ⟨u, v, a, hv, hu, hvf, rfl⟩`. Establish `hvP : v ∉ P` using `fun h => nonZeroDivisors.ne_zero hv ((Ideal.Quotient.eq_zero_iff_mem).2 h)`. Establish `hvy : aeval y v ≠ 0` using `fun h => hvP (hmem hvf h)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨aeval y u / aeval y v, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Φ (IsLocalization.mk'_spec (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P u) ⟨_, hv⟩)`. Rewrite `h1` using `[map_mul, hform hvf, hform hu]`. Establish `hcv : c (aeval y v) ≠ 0` using `(map_ne_zero_iff _ c.injective).2 hvy`. Rewrite using `[map_div₀, div_eq_iff hcv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_right_cancel₀ (hT a) (by rw [← h1]; ring)`. Introduce and unpack `_ ⟨s, rfl⟩`. Take `⟨d, g, h, hg, hh, hh0, hgs⟩` from `hB s`. Establish `hhP : h ∉ P` using `fun hP => by`. Establish `: mConeMap y h = 0` using `hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[LowerBoundFree.mConeMap_of_isMultiHomog y hh]`. Conclude with `mul_ne_zero ((map_ne_zero_iff _ (MvPolynomial.C_injective K Ω)).2 hh0) (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)) this`. Take `⟨x, hx⟩` from `exists_funField_mul_eq hg hh hhP`. Use `⟨x, x.2, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Φ hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[map_mul, hform hh, hform hg, hgs, map_mul]`. Establish `hch : c (aeval y h) ≠ 0` using `(map_ne_zero_iff _ c.injective).2 hh0`. Conclude with `mul_right_cancel₀ (mul_ne_zero hch (hT d)) (by rw [h1]; ring)`. Establish `hc : Function.Injective c.rangeRestrict` using `fun a b h => c.injective (congrArg Subtype.val h)`. Set `e : funField P ≃+* Ω` to `((Subring.equivMapOfInjective (funField P) Φ Φ.injective).trans (RingEquiv.subringCongr heq)).trans (RingEquiv.ofBijective c.rangeRestrict ⟨hc, c.rangeRestrict_surjective⟩).symm`.
-
-Conclude with `@NumberField.of_ringEquiv _ _ hF.toField _ e hN`.
+A detailed English derivation is pending.
 -/
 theorem CurveFieldNumber.proof (hR1 : RegularityFunctionFieldNumber.Statement) : CurveFieldNumber.Statement := by
   intro K _ ι _ Ω _ y hA hB

@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Proceed by induction on `y using WithZero.recZeroCoe with`. Consider the case `zero => exact absurd rfl hy`. Consider the case `coe a => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma unzero_toAdd_eq_log (y : WithZero (Multiplicative ℤ)) (hy : y ≠ 0) :
     (WithZero.unzero hy).toAdd = WithZero.log y := by
@@ -17,7 +17,7 @@ lemma unzero_toAdd_eq_log (y : WithZero (Multiplicative ℤ)) (hy : y ≠ 0) :
   | coe a => rfl
 
 /- English proof (translation)
-Establish `hv : v.valuation K x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Establish `h1 : Valued.v (FinitePlace.embedding v x) = v.valuation K x` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Rewrite using `[FinitePlace.norm_def, h1, WithZeroMulInt.toNNReal_neg_apply _ hv, ordAt, neg_neg, unzero_toAdd_eq_log _ hv]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 lemma norm_emb_eq (v : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
     ‖FinitePlace.embedding v x‖ = (Ideal.absNorm v.asIdeal : ℝ) ^ (-(ordAt v x)) := by
@@ -30,13 +30,13 @@ lemma norm_emb_eq (v : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
   rfl
 
 /- English proof (translation)
-Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm v` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 lemma one_lt_absNorm_real (v : HeightOneSpectrum (𝓞 K)) : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ) := by
   exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm v
 
 /- English proof (translation)
-Rewrite using `[norm_emb_eq v hx, Real.log_zpow, logN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma log_norm_emb (v : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
     Real.log ‖FinitePlace.embedding v x‖ = -((ordAt v x : ℝ) * logN v) := by
@@ -45,7 +45,7 @@ lemma log_norm_emb (v : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
   ring
 
 /- English proof (translation)
-Establish `h : (Function.mulSupport fun w : FinitePlace K => w x).Finite` using `FinitePlace.mulSupport_finite hx`. Use `(h.image FinitePlace.maximalIdeal).subset ?_` and prove the remaining obligations. Introduce `v hv`. Use `⟨FinitePlace.mk v, ?_, FinitePlace.maximalIdeal_mk v⟩` and prove the remaining obligations. Simplify `hv` using `[Function.mem_mulSupport, FinitePlace.mk_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma finite_mulSupport_emb {x : K} (hx : x ≠ 0) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) => ‖FinitePlace.embedding v x‖).Finite := by
@@ -57,9 +57,9 @@ lemma finite_mulSupport_emb {x : K} (hx : x ≠ 0) :
   simpa [Function.mem_mulSupport, FinitePlace.mk_apply] using hv
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv` using `[Function.mem_support]`. Rewrite using `[Function.mem_mulSupport]`. Introduce `h`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `log_norm_emb v hx`. Rewrite `h2` using `[h, Real.log_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma support_ordAt_sub {x : K} (hx : x ≠ 0) :
     (Function.support fun v : HeightOneSpectrum (𝓞 K) => (ordAt v x : ℝ) * logN v) ⊆
@@ -74,24 +74,24 @@ lemma support_ordAt_sub {x : K} (hx : x ≠ 0) :
   linarith
 
 /- English proof (translation)
-The claim follows from `(finite_mulSupport_emb hx).subset (support_ordAt_sub hx)`.
+A detailed English derivation is pending.
 -/
 lemma finite_ordAt {x : K} (hx : x ≠ 0) :
     (Function.support fun v : HeightOneSpectrum (𝓞 K) => (ordAt v x : ℝ) * logN v).Finite :=
   (finite_mulSupport_emb hx).subset (support_ordAt_sub hx)
 
 /- English proof (translation)
-Establish `hfin : (Function.mulSupport fun w : FinitePlace K => w x).Finite` using `FinitePlace.mulSupport_finite hx`. Establish `hprod` using `NumberField.prod_abs_eq_one hx`. Establish `hA : 0 < ∏ w : InfinitePlace K, w x ^ w.mult` using `Finset.prod_pos fun w _ => pow_pos (InfinitePlace.pos_iff.2 hx) _`. Use `set s := hfin.toFinset with hs`. Establish `hBs : ∏ᶠ w : FinitePlace K, w x = ∏ w ∈ s, w x` using `finprod_eq_prod_of_mulSupport_subset _ (by simp [s])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : 0 < ∏ w ∈ s, w x` using `Finset.prod_pos fun w _ => FinitePlace.pos_iff.2 hx`. Rewrite `hprod` using `[hBs]`. Establish `hlog` using `congrArg Real.log hprod`. Rewrite `hlog` using `[Real.log_mul hA.ne' hB.ne', Real.log_one, Real.log_prod (fun w _ => (pow_pos (InfinitePlace.pos_iff.2 hx) _).ne'), Real.log_prod (fun w _ => (FinitePlace.pos_iff.2 hx).ne')]`. Simplify using `only [Real.log_pow] at hlog`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfs : ∑ w ∈ s, Real.log (w x) = ∑ᶠ w : FinitePlace K, Real.log (w x)`. Rewrite using `[finsum_eq_sum_of_support_subset]`. Introduce `w hw`. Simplify using `only [Function.mem_support] at hw`. Simplify using `only [s, Set.Finite.coe_toFinset, Function.mem_mulSupport]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Apply `hw` to reduce the goal to its premises. Rewrite using `[h1, Real.log_one]`. Establish `heq : ∑ᶠ w : FinitePlace K, Real.log (w x) = -∑ᶠ v : HeightOneSpectrum (𝓞 K), (ordAt v x : ℝ) * logN v`. Rewrite using `[← finsum_neg_distrib, ← finsum_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun v => ?_` and prove the remaining obligations. Establish `h3 : (FinitePlace.equivHeightOneSpectrum.symm v) x = ‖FinitePlace.embedding v x‖`. Rewrite using `[← FinitePlace.mk_apply]`. Both sides reduce to the same expression. Rewrite using `[h3, log_norm_emb v hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma finsum_ordAt {x : K} (hx : x ≠ 0) :
     ∑ᶠ v : HeightOneSpectrum (𝓞 K), (ordAt v x : ℝ) * logN v =
@@ -130,21 +130,21 @@ lemma finsum_ordAt {x : K} (hx : x ≠ 0) :
   linarith
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos ρ with rfl | hρ` into its components or cases. Simplify using `[Matrix.det_fin_zero]`. Establish `hpos : 0 < σ m.det` using `InfinitePlace.pos_iff.2 hdet`. Set `A : Matrix (Fin ρ) (Fin ρ) ℂ` to `fun i j => (Real.exp (a i) : ℂ) * σ.embedding (m i j)`. Establish `hAdet : A.det = (∏ i, (Real.exp (a i) : ℂ)) * σ.embedding m.det`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h : A = Matrix.diagonal (fun i => (Real.exp (a i) : ℂ)) * (σ.embedding.mapMatrix m)`. Use extensionality with `i j`. Simplify using `[A, Matrix.diagonal_mul]`. Rewrite using `[h, Matrix.det_mul, Matrix.det_diagonal, ← RingHom.map_det]`. Establish `hnormA : ‖A.det‖ = Real.exp (∑ i, a i) * σ m.det`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hAdet, norm_mul, norm_prod, InfinitePlace.norm_embedding_eq, Real.exp_sum]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Apply the tactic sequence `have hentry : ∀ i j, ‖A i j‖ ≤ Real.exp (b j) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Distinguish the cases in `h : m i j = 0`. Simplify using `[A, h, (Real.exp_pos _).le]`. Establish `hp : 0 < σ (m i j)` using `InfinitePlace.pos_iff.2 h`. Establish `h2` using `harch i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [A, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), InfinitePlace.norm_embedding_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_add, Real.exp_log hp]`. Use `_ ≤ Real.exp (b j) := Real.exp_le_exp.2 (by linarith)`. Establish `hcol : ∀ j, Real.sqrt (∑ i, ‖A i j‖ ^ 2) ≤ Real.sqrt ρ * Real.exp (b j)`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[← Real.sqrt_sq (Real.exp_pos (b j)).le, ← Real.sqrt_mul (Nat.cast_nonneg _)]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hH` using `ReciprocityTheory.ChartRestriction.G.T0.hadamard_det_le A.transpose`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hH` using `[Matrix.det_transpose, hnormA]`. Simplify using `only [Matrix.transpose_apply] at hH`. Establish `hprod : ∏ j, Real.sqrt (∑ i, ‖A i j‖ ^ 2) ≤ ∏ j : Fin ρ, (Real.sqrt ρ * Real.exp (b j))` using `Finset.prod_le_prod (fun j _ => Real.sqrt_nonneg _) fun j _ => hcol j`. Establish `key : Real.exp (∑ i, a i) * σ m.det ≤ Real.sqrt ρ ^ ρ * Real.exp (∑ j, b j)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Real.exp_sum]`. Establish `hs : 0 < Real.sqrt ρ` using `Real.sqrt_pos.2 (by exact_mod_cast hρ)`. Establish `h1` using `Real.log_le_log (mul_pos (Real.exp_pos _) hpos) key`. Rewrite `h1` using `[Real.log_mul (Real.exp_pos _).ne' hpos.ne', Real.log_exp, Real.log_mul (pow_pos hs _).ne' (Real.exp_pos _).ne', Real.log_exp, Real.log_pow, Real.log_sqrt (Nat.cast_nonneg _)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma log_det_le {ρ : ℕ} (m : Matrix (Fin ρ) (Fin ρ) K) (hdet : m.det ≠ 0) (σ : InfinitePlace K)
     (a b : Fin ρ → ℝ) (harch : ∀ i j, m i j ≠ 0 → Real.log (σ (m i j)) + a i ≤ b j) :

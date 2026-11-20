@@ -3,27 +3,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l hl Q _ _ _ _ _ hfin G _ _ χ h hh hc hm H g`. Establish `hp : l.Prime` using `hl.out`. Establish `krull : ∀ x : Q, (∀ N : ℕ, Ideal.Quotient.mk (maximalIdeal Q ^ N) x = 1) → x = 1`. Introduce `x hx`. Establish `h0 : x - 1 ∈ (⨅ N : ℕ, maximalIdeal Q ^ N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_iInf]`. Introduce `N`. Rewrite using `[← Ideal.Quotient.eq, hx N, map_one]`. Rewrite `h0` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal Q).ne_top, Ideal.mem_bot]`. Conclude with `sub_eq_zero.mp h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `unip : ∀ (N : ℕ) (g : G), Ideal.Quotient.mk (maximalIdeal Q ^ N) (χ g) ^ (l ^ N) = 1`. Introduce `N g`. Rewrite using `[← map_pow, ← map_one (Ideal.Quotient.mk (maximalIdeal Q ^ N)), Ideal.Quotient.eq]`. Establish `: χ g ^ l ^ N - 1 = (χ g - 1) ^ l ^ N` using `by rw [sub_pow_char_pow, one_pow]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.pow_le_pow_right (Nat.lt_pow_self hp.one_lt).le (Ideal.pow_mem_pow (hm g) _)`. Establish `hpow : χ g ^ h = 1`. Apply `krull` to reduce the goal to its premises. Introduce `N`. Use `haveI : Finite (Q ⧸ maximalIdeal Q) := hfin`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Finite (Q ⧸ maximalIdeal Q ^ N) := Ideal.finite_quotient_pow (IsNoetherian.noetherian _) N`. Set `φ : G →* (Q ⧸ maximalIdeal Q ^ N)ˣ` to `((Ideal.Quotient.mk (maximalIdeal Q ^ N)).toMonoidHom.comp χ).toHomUnits`. Establish `hφ : ∀ g, (φ g : Q ⧸ maximalIdeal Q ^ N) = Ideal.Quotient.mk _ (χ g)` using `fun g => rfl`. Establish `hP : IsPGroup l φ.range`. Introduce and unpack `⟨_, g, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨N, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Simplify `unip N g` using `[hφ]`. Establish `hO : IsOpen (φ.rangeRestrict.ker : Set G)`. Use `(hc N).isOpen_fiber 1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_setOf_eq]`. Rewrite using `[← hφ, Units.val_eq_one, Subtype.ext_iff]`. Both sides reduce to the same expression. Use `H φ.range hP φ.rangeRestrict hO (fun g g' e => Subtype.ext (Units.ext (by` as an intermediate fact.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(φ g : Q ⧸ maximalIdeal Q ^ N) = φ g'`. Rewrite using `[hφ, hφ, e]))) g`. Establish `h2 : φ g ^ h = 1` using `congrArg Subtype.val this`. Rewrite using `[map_pow, ← hφ, ← Units.val_pow_eq_pow_val, h2, Units.val_one]`. Take `⟨a, h', hnd, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hh l hp.ne_one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3 : χ g ^ h' = 1`. Establish `: (χ g ^ h' - 1) ^ l ^ a = 0`. Rewrite using `[sub_pow_char_pow, one_pow, ← pow_mul, mul_comm, hpow, sub_self]`. Conclude with `sub_eq_zero.mp (pow_eq_zero_iff (pow_ne_zero _ hp.ne_zero) |>.mp this)`. Apply `krull` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `N`. Establish `h4 : Ideal.Quotient.mk (maximalIdeal Q ^ N) (χ g) ^ h' = 1`. Rewrite using `[← map_pow, h3, map_one]`. Establish `hcop : Nat.Coprime (l ^ N) h'` using `Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd hp).mpr hnd)`. Establish `h5 : orderOf (Ideal.Quotient.mk (maximalIdeal Q ^ N) (χ g)) ∣ 1`.
-
-Rewrite using `[← hcop.gcd_eq_one]`. Conclude with `Nat.dvd_gcd (orderOf_dvd_of_pow_eq_one (unip N g)) (orderOf_dvd_of_pow_eq_one h4)`. Conclude with `orderOf_eq_one_iff.mp (Nat.dvd_one.mp h5)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.adic_char_unipotent_pgroup_quotient :
     ∀ {l : ℕ} [Fact l.Prime] {Q : Type} [CommRing Q] [IsDomain Q] [IsLocalRing Q] [IsNoetherianRing Q] [CharP Q l] [Finite (ResidueField Q)] {G : Type} [Group G] [TopologicalSpace G] (χ : G →* Q) (h : ℕ), h ≠ 0 → AdicCont (maximalIdeal Q) χ → (∀ g, χ g - 1 ∈ maximalIdeal Q) → (∀ (A : Type) [CommGroup A] [Finite A], IsPGroup l A → ∀ ψ : G →* A, IsOpen (ψ.ker : Set G) → (∀ g g', χ g = χ g' → ψ g = ψ g') → ∀ g, ψ g ^ h = 1) → ∀ g, χ g = 1 := by

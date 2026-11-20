@@ -41,7 +41,7 @@ def mulVecHomeo (M : GL ι 𝔸ᶠ[k]) : (ι → 𝔸ᶠ[k]) ≃ₜ (ι → 𝔸
   continuous_invFun := Continuous.matrix_mulVec continuous_const continuous_id
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(mem_finiteSchwartzBruhatPi k).1 hg`. Conclude with `(mem_finiteSchwartzBruhatPi k).2 ⟨h1.comp_continuous (mulVecHomeo M).continuous, h2.comp_isClosedEmbedding (mulVecHomeo M).isClosedEmbedding⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comp_mulVec_mem_finiteSchwartzBruhatPi (M : GL ι 𝔸ᶠ[k]) {g : (ι → 𝔸ᶠ[k]) → ℂ}
     (hg : g ∈ finiteSchwartzBruhatPi k) :
@@ -52,7 +52,7 @@ theorem comp_mulVec_mem_finiteSchwartzBruhatPi (M : GL ι 𝔸ᶠ[k]) {g : (ι �
       h2.comp_isClosedEmbedding (mulVecHomeo M).isClosedEmbedding⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec infRingHom A x i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem infPartPi_mulVec (A : Matrix ι ι 𝔸[k]) (x : ι → 𝔸[k]) :
     infPartPi (A *ᵥ x) = A.map infRingHom *ᵥ infPartPi x := by
@@ -60,7 +60,7 @@ theorem infPartPi_mulVec (A : Matrix ι ι 𝔸[k]) (x : ι → 𝔸[k]) :
   exact RingHom.map_mulVec infRingHom A x i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec finRingHom A x i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem finPartPi_mulVec (A : Matrix ι ι 𝔸[k]) (x : ι → 𝔸[k]) :
     finPartPi (A *ᵥ x) = A.map finRingHom *ᵥ finPartPi x := by
@@ -68,9 +68,9 @@ theorem finPartPi_mulVec (A : Matrix ι ι 𝔸[k]) (x : ι → 𝔸[k]) :
   exact RingHom.map_mulVec finRingHom A x i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h1 : ((Matrix.GeneralLinearGroup.map infRingHom A : GL ι (mixedSpace k)) : Matrix ι ι (mixedSpace k)) = (A : Matrix ι ι 𝔸[k]).map infRingHom`. Use `Matrix.ext fun i j ↦ ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, Matrix.map_apply]`. Establish `h2 : ((Matrix.GeneralLinearGroup.map finRingHom A : GL ι 𝔸ᶠ[k]) : Matrix ι ι 𝔸ᶠ[k]) = (A : Matrix ι ι 𝔸[k]).map finRingHom`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Matrix.ext fun i j ↦ ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, Matrix.map_apply]`. Simplify using `only [ltr, schwartzBruhatTensorPi, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, mulVecCLE_apply, h1, h2, infPartPi_mulVec, finPartPi_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ltr_schwartzBruhatTensorPi (A : GL ι 𝔸[k]) (φ : 𝓢(ι → mixedSpace k, ℂ))
     (g : (ι → 𝔸ᶠ[k]) → ℂ) :
@@ -92,9 +92,9 @@ theorem ltr_schwartzBruhatTensorPi (A : GL ι 𝔸[k]) (φ : 𝓢(ι → mixedSp
     Function.comp_apply, mulVecCLE_apply, h1, h2, infPartPi_mulVec, finPartPi_mulVec]
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Rewrite using `[ltr_schwartzBruhatTensorPi]`. Conclude with `schwartzBruhatTensorPi_mem _ (comp_mulVec_mem_finiteSchwartzBruhatPi _ hg)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ ihG ihH => exact add_mem ihG ihH`. Consider the case `smul a G _ ih => exact Submodule.smul_mem _ a ih`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ltr_mem {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι) (A : GL ι 𝔸[k]) :
     ltr A F ∈ schwartzBruhatPi k ι := by

@@ -6,13 +6,13 @@ open scoped TensorProduct
 namespace GlobalTheory.HilbAff
 
 /- English proof (translation)
-Use `letI := (secAlg A g U).toAlgebra`. Use `letI := (secAlg A g V).toAlgebra`. Introduce `ρ hρ t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero, map_zero]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c b`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, kappa_tmul, kappa_tmul, map_mul]`. Establish `hc : ρ c = (T.presheaf.map (homOfLE h).op).hom c`. Rewrite using `[← hρ]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hc]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e` using `Scheme.Hom.appLE_map (I.subschemeι ≫ pullback.fst _ g) (U := ⊤) (V := (I.subschemeι ≫ pullback.snd _ g) ⁻¹ᵁ V) (by simp) (homOfLE (Scheme.Hom.preimage_mono (I.subschemeι ≫ pullback.snd _ g) h)).op`. Conclude with `(congrArg (fun F => F.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom b)) e).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kappa_res_apply (A B : Type) [CommRing A] [CommRing B] [Algebra A B] {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) (I : (pullback (str A B) g).IdealSheafData)
@@ -42,11 +42,11 @@ theorem kappa_res_apply (A B : Type) [CommRing A] [CommRing B] [Algebra A B] {T 
       exact (congrArg (fun F => F.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom b)) e).symm
 
 /- English proof (translation)
-Use `letI := (GlobalTheory.HilbAff.secAlg A g U).toAlgebra`. Use `letI := (GlobalTheory.HilbAff.secAlg A g V).toAlgebra`. Set `ρ : Γ(T, V) →ₐ[A] Γ(T, U)` to `{ toRingHom := (T.presheaf.map (homOfLE h).op).hom commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `_ = GlobalTheory.HilbAff.secAlg A g U a`. Rewrite using `[← GlobalTheory.HilbAff.secAlg_res A g h]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `rfl }`. Use `⟨ρ, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `t ht`. Rewrite `ht` using `[RingHom.mem_ker]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Use `erw [GlobalTheory.HilbAff.kappa_res_apply A B g I h ρ rfl t, ht, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappa_res (A B : Type) [CommRing A] [CommRing B] [Algebra A B] {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) (I : (pullback (GlobalTheory.HilbAff.str A B) g).IdealSheafData)

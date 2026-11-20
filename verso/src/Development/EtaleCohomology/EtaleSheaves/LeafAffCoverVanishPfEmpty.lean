@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.E.E8
 
 /- English proof (translation)
-Rewrite using `[IsZero.iff_id_eq_zero]`. Apply `(sheafificationAdjunction Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R))).homEquiv _ _ |>.injective` to reduce the goal to its premises. Use extensionality with `T : 2`. Distinguish the cases in `hT : IsEmpty T.unop`. Use `haveI := hT`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((Sheaf.isTerminalOfBotCover _ T.unop (AlgebraicGeometry.Scheme.bot_mem_grothendieckTopology T.unop)).isZero).eq_of_tgt _ _`. Rewrite `hT` using `[not_isEmpty_iff]`. Take `⟨t⟩` from `hT`. Establish `hP : IsEmpty ((yoneda.obj E).obj T)` using `⟨fun f => isEmptyElim (f.base t)⟩`. Apply `IsZero.eq_of_src` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsZero ((ModuleCat.free (ULift.{1} R)).obj (ULift.{1} ((yoneda.obj E).obj T)))`. Rewrite using `[ModuleCat.isZero_iff_subsingleton]`. Use `haveI : IsEmpty (ULift.{1} ((yoneda.obj E).obj T)) := inferInstance`. Express the relevant statement in the definitionally equal form `Subsingleton (ULift.{1} ((yoneda.obj E).obj T) →₀ ULift.{1} R)`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem etaleFreeSheafOfRepresentable_isZero_of_isEmpty_scheme (R : Type) [CommRing R] (E : Scheme.{0}) [IsEmpty E] :
     IsZero ((free R).obj (yoneda.obj E)) := by
@@ -32,15 +32,15 @@ theorem etaleFreeSheafOfRepresentable_isZero_of_isEmpty_scheme (R : Type) [CommR
     infer_instance
 
 /- English proof (translation)
-Introduce `R _ X F n`. Establish `hE : IsEmpty (((⊥ : X.Opens) : Scheme.{0}) : Type)`. Express the relevant statement in the definitionally equal form `IsEmpty ((⊥ : X.Opens) : Set X)`. Simplify using the standard rewrite rules. Establish `hfree` using `etaleFreeSheafOfRepresentable_isZero_of_isEmpty_scheme R ((⊥ : X.Opens) : Scheme.{0})`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hN : IsZero ((chainsN R).obj (sch.obj ((⊥ : X.Opens) : Scheme.{0})))`. Rewrite using `[IsZero.iff_id_eq_zero]`. Apply `HomologicalComplex.hom_ext` to reduce the goal to its premises. Introduce `j`. Use `IsZero.eq_of_src ?_ _ _` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hfree`. Establish `hC : IsZero ((chains R).obj (sch.obj ((⊥ : X.Opens) : Scheme.{0})))` using `Functor.map_isZero (ComplexShape.embeddingDownNat.extendFunctor (Shv R)) hN`. Establish `hX : ∀ p, IsZero (((chains R).obj (sch.obj ((⊥ : X.Opens) : Scheme.{0}))).X p)` using `fun p => Functor.map_isZero (HomologicalComplex.eval _ _ p) hC`. Establish `: Subsingleton (Cochain ((chains R).obj (sch.obj ((⊥ : X.Opens) : Scheme.{0}))) (res R F) n)` using `⟨fun a b => Cochain.ext _ _ fun p q hpq => (hX p).eq_of_src _ _⟩`. Establish `: Subsingleton (Cocycle ((chains R).obj (sch.obj ((⊥ : X.Opens) : Scheme.{0}))) (res R F) n)` using `⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Subsingleton (CohomologyClass _ _ n)`. Unfold `CohomologyClass`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective a`. Take `⟨b, rfl⟩` from `QuotientAddGroup.mk_surjective b`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim a b]`.
+A detailed English derivation is pending.
 -/
 theorem leafEmptyVanish : LeafEmptyVanish := by
   intro R _ X F n

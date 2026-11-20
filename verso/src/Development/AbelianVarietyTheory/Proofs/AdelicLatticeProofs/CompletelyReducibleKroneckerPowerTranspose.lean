@@ -11,23 +11,23 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `hm : ∀ g : G, LinearMap.toMatrix (Pi.basisFun ℂ (Fin 0 → ι)) (Pi.basisFun ℂ (Fin 0 → ι)) (Representation.trivial ℂ G ((Fin 0 → ι) → ℂ) g) = 1`. Introduce `g`. Establish `: Representation.trivial ℂ G ((Fin 0 → ι) → ℂ) g = LinearMap.id`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[this, LinearMap.toMatrix_id]`. Use `⟨(Fin 0 → ι) → ℂ, inferInstance, inferInstance, Representation.trivial ℂ G _, Pi.basisFun ℂ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.T.completelyReducible_toMatrix_iff_isSemisimpleRepresentation (Fin 0 → ι) G _ _ (Pi.basisFun ℂ _)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `W _`. Take `⟨W', hW'⟩` from `Submodule.exists_isCompl W`. Use `⟨W', ?_, hW'⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩ v hv`. Simplify `hv` using `only [hm, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g`. Rewrite using `[hm]`. Use extensionality with `a b`. Establish `: a = b` using `Subsingleton.elim _ _`. Substitute `this` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `[tpow]`. Consider the case `succ n ih`. Take `⟨V, _, _, r, b, hr, hb⟩` from `ih`. Set `r₁ : Representation ℂ G (ι → ℂ)` to `(Matrix.toLinAlgEquiv' (R := ℂ) (n := ι)).toAlgHom.toMonoidHom.comp ρ`. Establish `h₁ : ∀ g, LinearMap.toMatrix (Pi.basisFun ℂ ι) (Pi.basisFun ℂ ι) (r₁ g) = ρ g`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g`. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix (Pi.basisFun ℂ ι) (Pi.basisFun ℂ ι) (Matrix.toLin' (ρ g)) = ρ g`. Rewrite using `[LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']`. Establish `hs₁ : r₁.IsSemisimpleRepresentation`. Rewrite using `[← GlobalTheory.T.completelyReducible_toMatrix_iff_isSemisimpleRepresentation ι G _ _ (Pi.basisFun ℂ _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `only [h₁]`. Use `haveI : FiniteDimensional ℂ V := Module.Finite.of_basis b`. Set `e : ι × (Fin n → ι) ≃ (Fin (n + 1) → ι)` to `Fin.consEquiv fun _ => ι`. Use `⟨(ι → ℂ) ⊗[ℂ] V, inferInstance, inferInstance, r₁.tprod r, ((Pi.basisFun ℂ ι).tensorProduct b).reindex e, GlobalTheory.T.isSemisimpleRepresentation_tprod_chevalley G _ r₁ V r hs₁ hr, ?_⟩` and prove the remaining obligations. Introduce `g`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht : LinearMap.toMatrix ((Pi.basisFun ℂ ι).tensorProduct b) ((Pi.basisFun ℂ ι).tensorProduct b) ((r₁.tprod r) g) = ρ g ⊗ₖ tpow n (ρ g)`. Rewrite using `[Representation.tprod_apply, TensorProduct.toMatrix_map, h₁, hb]`. Use extensionality with `a c`. Use `congrFun (congrFun ht (e.symm a)) (e.symm c)` as an intermediate fact. Rewrite `this`, the goal using `[LinearMap.toMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.repr_reindex_apply, Module.Basis.reindex_apply, this]`. Simplify using `[e, tpow, Fin.prod_univ_succ, Fin.consEquiv, Fin.tail]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_semisimple_rep_tpow {ι : Type} [Fintype ι] [DecidableEq ι] {G : Type} [Group G]
     (ρ : G →* Matrix ι ι ℂ) (h : SS (Set.range ρ)) (n : ℕ) :
@@ -83,9 +83,9 @@ theorem exists_semisimple_rep_tpow {ι : Type} [Fintype ι] [DecidableEq ι] {G 
     simp [e, tpow, Fin.prod_univ_succ, Fin.consEquiv, Fin.tail]
 
 /- English proof (translation)
-Introduce `ι _ _ Γ hΓ hs n`. Take `⟨G, _, ρ, rfl⟩` from `GlobalTheory.T.exists_group_hom_range_eq_of_isPre ι Γ hΓ`. Take `⟨V, _, _, r, b, hr, hb⟩` from `exists_semisimple_rep_tpow ρ hs n`. Establish `h` using `GlobalTheory.T.isCompletelyReducibleMatrixSet_transpose_image _ _ ((GlobalTheory.T.completelyReducible_toMatrix_iff_isSemisimpleRepresentation _ G V r b).2 hr)`. Simplify using `only [hb] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h`, the goal using `[← Set.range_comp]`. Conclude with `h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ss_tpow_transpose : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)),
     IsPre Γ → SS Γ → ∀ n : ℕ, SS ((fun g => (tpow n g)ᵀ) '' Γ) := by

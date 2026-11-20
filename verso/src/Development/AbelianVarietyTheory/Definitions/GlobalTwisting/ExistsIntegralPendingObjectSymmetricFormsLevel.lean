@@ -23,9 +23,9 @@ def GSpan : AddSubgroup (MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ) :=
 variable {D lam}
 
 /- English proof (translation)
-Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem q hq`. Take `⟨r, f, hf, rfl⟩` from `hq`. Conclude with `AddSubgroup.subset_closure ⟨d * r, f, hf, by rw [smul_smul, ← map_mul]; rfl⟩`. Consider the case `zero => rw [smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [smul_neg]`. Conclude with `neg_mem ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gspan_smul (d : 𝓞 D.what₂.LL) {p} (hp : p ∈ GSpan D lam) : D.what₂.embLL (d : D.what₂.LL) • p ∈ GSpan D lam := by
   induction hp using AddSubgroup.closure_induction with
@@ -67,7 +67,7 @@ variable (K : Type) [Field K] [NumberField K] [StarRing K] (κ : Type) [Fintype 
 variable {K κ}
 
 /- English proof (translation)
-Use `⟨fun v => ?_, h1, h2⟩` and prove the remaining obligations. Use `show IsUnit (Matrix.det (((a : ℂ)⁻¹) • (1 : Matrix κ κ ℂ)))`. Establish `: (a : ℂ) ≠ 0` using `by exact_mod_cast ha`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sLat_good {a : ℝ} (ha : a ≠ 0) {L : Submodule (𝓞 K) (κ → K)} (h1 : L.FG)
     (h2 : Submodule.span K (L : Set (κ → K)) = ⊤) : (sLat K κ a L).Good := by
@@ -77,13 +77,13 @@ theorem sLat_good {a : ℝ} (ha : a ≠ 0) {L : Submodule (𝓞 K) (κ → K)} (
   simp [this]
 
 /- English proof (translation)
-Establish `ha' : (a : ℂ) ≠ 0` using `by exact_mod_cast ha`. Establish `hi : (((a : ℂ)⁻¹) • (1 : Matrix κ κ ℂ))⁻¹ = (a : ℂ) • (1 : Matrix κ κ ℂ)` using `Matrix.inv_eq_left_inv (by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ ha']; simp)`. Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[Complex.re_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ((sLat K κ a L).X (InfinitePlace.mk σ))⁻¹.mulVec (Formalism.HermitianLatticesTheory.vecAt (sLat K κ a L).b (InfinitePlace.mk σ) x) c = a * (InfinitePlace.mk σ).embedding (x c)` using `by show ((((a : ℂ)⁻¹) • (1 : Matrix κ κ ℂ))⁻¹.mulVec _) c = _`. Rewrite using `[hi, Matrix.smul_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Use `show (starRingEnd ℂ _ * _).re = (((a ^ 2 : ℝ) : ℂ) * (starRingEnd ℂ (σ _) * σ _)).re`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.conj_mul', Complex.conj_mul', norm_mul, InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`. Use `congr 1`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Use `push_cast`. Rewrite using `[mul_pow, ← Complex.ofReal_pow, sq_abs]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sLat_norm {a : ℝ} (ha : a ≠ 0) (L : Submodule (𝓞 K) (κ → K)) (σ : K →+* ℂ) (x : κ → K) :
     (Formalism.HermitianLatticesTheory.majAt (sLat K κ a L).b (sLat K κ a L).X (InfinitePlace.mk σ) x x).re =
@@ -159,9 +159,9 @@ def base (sg : D.what₂.Tau → DomWeight (D.R.N D.R.m - 1)) : Ch D u :=
 end Chain
 
 /- English proof (translation)
-Unfold `nfAll`. Simplify using `only [fockF_self_eq (extremal ℂ n _)]`. Rewrite using `[← Complex.ofReal_prod, Complex.div_ofReal_re]`. Use `div_pos (fockF_self_pos hp) (Finset.prod_pos fun τ _ => ?_)` and prove the remaining obligations. Use `fockF_self_pos (f := extremal ℂ n (l τ)) (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl (l τ).natW)` as an intermediate fact.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[fockF_self_eq, Complex.ofReal_re]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nfAll_pos {ι : Type} [Fintype ι] {n : ℕ} (l : ι → DomWeight n) {p : MvPolynomial (ι × Fin n × Fin n) ℂ}
     (hp : p ≠ 0) : 0 < (nfAll l p p).re := by

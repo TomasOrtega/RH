@@ -12,31 +12,29 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hWmin hWrel W' hW'p hW'h hW'r hW'le hW'c`. Use `hP.multiProj.isPrime` as an intermediate fact. Establish `hxW : x ∈ W` using `hWmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self x))`. Establish `hxW' : liftForm x ∈ W'`. Rewrite using `[← Ideal.mem_comap, hW'c]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxW`. Establish `hle : blowUpOf P u ⊔ Ideal.span {liftForm x} ≤ W'` using `sup_le hW'le ((Ideal.span_singleton_le_iff_mem _).mpr hxW')`. Use `⟨⟨hW'p, hle⟩, fun Q hQ hQW' => ?_⟩` and prove the remaining obligations. Use `hQ.1` as an intermediate fact. Take `⟨Q₀, hQ₀min, hQ₀Q⟩` from `Ideal.exists_minimalPrimes_le hQ.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ₀W' : Q₀ ≤ W'` using `hQ₀Q.trans hQW'`. Establish `hQ₀p : Q₀.IsPrime` using `hQ₀min.1.1`. Establish `hQ₀h : IsMultiHomogIdeal Q₀` using `MinimalPrimeMultiHomog.full O (Option K) (extIdx ι J) _ Q₀ (SupSpanMultiHomog.full O (Option K) (extIdx ι J) _ _ (liftMDeg c) (isMultiHomogIdeal_blowUpOf hP.multiProj.multiHomog N u hu) (isMultiHomog_liftForm hx)) hQ₀min`. Establish `hQ₀r : IsRelevant Q₀` using `fun k => by`. Take `⟨i, hi⟩` from `hW'r k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨i, fun h => hi (hQ₀W' h)⟩`. Establish `hQ₀le : blowUpOf P u ≤ Q₀` using `le_sup_left.trans hQ₀min.1.2`. Establish `hQ₀c : Q₀.comap (liftForm (ι` using `ι) (J := J) (R := O)) = W := by`. Take `⟨hcp, hPc, -, -⟩` from `comap_liftForm_facts hQ₀p hQ₀le hQ₀r`. Establish `hxc : x ∈ Q₀.comap (liftForm (ι` using `ι) (J := J) (R := O)) := hQ₀min.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcW : Q₀.comap (liftForm (ι` using `ι) (J := J) (R := O)) ≤ W := hW'c ▸ Ideal.comap_mono hQ₀W'`. Conclude with `le_antisymm hcW (hWmin.2 ⟨hcp, sup_le hPc ((Ideal.span_singleton_le_iff_mem _).mpr hxc)⟩ hcW)`. Take `⟨h, 𝔫, h𝔫, hl⟩` from `h₁ O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel W' hW'p hW'h hW'r hW'le hW'c`. Take `⟨h₀, 𝔮, h𝔮, hl₀⟩` from `h₁ O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel Q₀ hQ₀p hQ₀h hQ₀r hQ₀le hQ₀c`. Establish `hsub : blowUpLocRing P u W' ≤ blowUpLocRing P u Q₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Subring.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `z ⟨b, F, G, hF, hG, hGW', hz⟩`. Conclude with `⟨b, F, G, hF, hG, fun hGQ => hGW' (hQ₀W' hGQ), hz⟩`. Set `_` to `(Subring.inclusion h).toAlgebra`. Set `_` to `(Subring.inclusion h₀).toAlgebra`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h𝔫.isPrime` as an intermediate fact. Use `h𝔮.isPrime` as an intermediate fact. Establish `: IsLocalization.AtPrime (blowUpLocRing P u W') 𝔫` using `hl`. Establish `: IsLocalization.AtPrime (blowUpLocRing P u Q₀) 𝔮` using `hl₀`. Establish `: IsLocalRing (blowUpLocRing P u Q₀)` using `IsLocalization.AtPrime.isLocalRing _ 𝔮`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : 𝔮 ≤ 𝔫`. Introduce `s hs`. Assume the negation of the conclusion as `hsn`. Establish `hu1 : IsUnit (algebraMap (blowUpOverLoc P W u) (blowUpLocRing P u W') s)` using `IsLocalization.map_units (M := 𝔫.primeCompl) _ ⟨s, hsn⟩`. Establish `hu2 : IsUnit (algebraMap (blowUpOverLoc P W u) (blowUpLocRing P u Q₀) s)` using `hu1.map (Subring.inclusion hsub)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff (blowUpLocRing P u Q₀) 𝔮 s).mpr hs`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hmem hu2`. Establish `hqn : 𝔮 = 𝔫` using `h𝔮.eq_of_le h𝔫.ne_top hq`. Establish `hsup : blowUpLocRing P u Q₀ ≤ blowUpLocRing P u W'`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨b, s⟩, hbs⟩` from `IsLocalization.mk'_surjective 𝔮.primeCompl (⟨z, hz⟩ : blowUpLocRing P u Q₀)`. Use `replace hbs : IsLocalization.mk' (blowUpLocRing P u Q₀) b s = ⟨z, hz⟩ := hbs`. Establish `hs : (s : blowUpOverLoc P W u) ∈ 𝔫.primeCompl` using `hqn ▸ s.2`. Take `⟨v, hv⟩ : IsUnit (algebraMap (blowUpOverLoc P W u) (blowUpLocRing P u W') s)` from `IsLocalization.map_units (M := 𝔫.primeCompl) _ ⟨s, hs⟩`. Establish `e1 : z * ((s : blowUpOverLoc P W u) : FractionRing (MRing ι O ⧸ P)) = ((b : blowUpOverLoc P W u) : FractionRing (MRing ι O ⧸ P))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Subtype.val (IsLocalization.mk'_spec (blowUpLocRing P u Q₀) b s)` as an intermediate fact. Rewrite `this` using `[hbs]`. Conclude with `this`. Establish `e2 : ((s : blowUpOverLoc P W u) : FractionRing (MRing ι O ⧸ P)) * (((v⁻¹ : (blowUpLocRing P u W')ˣ) : blowUpLocRing P u W') : FractionRing (MRing ι O ⧸ P)) = 1`. Use `congrArg Subtype.val v.mul_inv` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hv]`. Conclude with `this`. Establish `e3 : z = ((algebraMap (blowUpOverLoc P W u) (blowUpLocRing P u W') b * ((v⁻¹ : (blowUpLocRing P u W')ˣ) : blowUpLocRing P u W') : blowUpLocRing P u W') : FractionRing (MRing ι O ⧸ P))`. Rewrite using `[Subring.coe_mul, ← mul_one z, ← e2, ← mul_assoc, e1]`. Both sides reduce to the same expression.
-
-Rewrite using `[e3]`. Conclude with `Subtype.property _`. Establish `heq : Q₀ = W'` using `h₂ O K ι J P u Q₀ W' hQ₀p hQ₀h hQ₀r hQ₀le hW'p hW'h hW'r hW'le (le_antisymm hsup hsub)`. Rewrite using `[← heq]`. Conclude with `hQ₀Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlowUpOverLocFibreMinimal.proof (h₁ : BlowUpOverLocPointLoc.Statement.{u})
     (h₂ : BlowUpLocRingInj.Statement.{u}) : BlowUpOverLocFibreMinimal.Statement.{u} := by

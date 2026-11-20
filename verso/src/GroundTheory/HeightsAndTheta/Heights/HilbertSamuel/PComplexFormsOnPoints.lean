@@ -9,21 +9,19 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `K _ ι _ P hP hrel F hF`. Establish `hrad` using `hR (Σ k, ι k) P hP`. Apply `hrad` to reduce the goal to its premises. Rewrite using `[← Ideal.sInf_minimalPrimes]`. Use `Ideal.mem_sInf.2 fun {Q} hQ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `hc` using `hM (Σ k, ι k) P hP Q hQ`. Use `choose i hi using hrel`. Set `h0 : MRing ι` to `∏ k, X ⟨k, i k⟩`. Establish `h0P : h0 ∉ P`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hmem`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hP)).1 hmem`. Conclude with `hi k hk`. Establish `hQh : map (Int.castRingHom ℂ) h0 ∉ Q`. Introduce `hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `h0P` to reduce the goal to its premises. Rewrite using `[← hc]`. Conclude with `Ideal.mem_comap.2 hmem`. Establish `hPQ : ∀ f ∈ P, map (Int.castRingHom ℂ) f ∈ Q`. Introduce `f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hf` using `[← hc]`. Conclude with `Ideal.mem_comap.1 hf`. Establish `hv : F * map (Int.castRingHom ℂ) h0 ∈ vanishingIdeal ℂ (zeroLocus ℂ Q)`. Rewrite using `[mem_vanishingIdeal_iff]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz : ∀ p ∈ Q, eval z p = 0` using `hz`. Express the relevant statement in the definitionally equal form `eval z _ = 0`. Establish `hzh : eval z (map (Int.castRingHom ℂ) h0) = ∏ k, z ⟨k, i k⟩`. Simplify using `[h0, map_prod]`. Distinguish the cases in `h0z : eval z (map (Int.castRingHom ℂ) h0) = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[map_mul, h0z, mul_zero]`. Establish `hne : ∀ k, z ⟨k, i k⟩ ≠ 0`. Rewrite `h0z` using `[hzh]`. Conclude with `fun k => Finset.prod_ne_zero_iff.1 h0z k (Finset.mem_univ k)`. Establish `hzP : z ∈ mcPts P` using `⟨fun k => ⟨i k, hne k⟩, fun f hf => hz _ (hPQ f hf)⟩`.
-
-Rewrite using `[map_mul, hF z hzP, zero_mul]`. Rewrite `hv` using `[vanishingIdeal_zeroLocus_eq_radical, hQp.radical]`. Conclude with `(hQp.mem_or_mem hv).resolve_right hQh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ComplexFormsOnPoints.proof (hR : PrimeComplexRadical.Statement)
     (hM : ComplexMinimalPrimesContract.Statement) : ComplexFormsOnPoints.Statement := by

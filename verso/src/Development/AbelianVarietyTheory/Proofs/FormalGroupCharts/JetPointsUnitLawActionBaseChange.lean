@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.JetPointBC
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'')
     (g : R →+* R') : spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -44,7 +44,7 @@ def jetPtMap (d m n : ℕ) : jOG (spMap ψ ≫ x0) d m n ⟶ jOG x0 d m n :=
     rw [← Category.assoc, ← Category.assoc, spMap_spMap, spMap_spMap, JetTr.jetCoef_alg])
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetCoef ψ _ m) = spMap ψ ≫ spMap _`. Rewrite using `[spMap_spMap, spMap_spMap]`. Conclude with `congrArg spMap (JetTr.jetCoef_aug ψ _ m)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_aug (d m : ℕ) :
     homAt (spMap ψ ≫ x0) (jetAug : Jet S' (Fin 1 × Fin d) m →ₐ[S'] S') ≫ jetPtMap ψ x0 d m 1 =
@@ -55,7 +55,7 @@ theorem sq_aug (d m : ℕ) :
   exact congrArg spMap (JetTr.jetCoef_aug ψ _ m)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetCoef ψ _ m) = spMap (jetCoef ψ _ m) ≫ spMap _`. Rewrite using `[spMap_spMap, spMap_spMap]`. Conclude with `congrArg spMap (JetTr.jetCoef_substP ψ m φ).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_subst {n n' d : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S) :
     homAt (spMap ψ ≫ x0) (jetSubstP m (fun i => MvPolynomial.map ψ (φ i)) :
@@ -68,7 +68,7 @@ theorem sq_subst {n n' d : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynomial 
   exact congrArg spMap (JetTr.jetCoef_substP ψ m φ).symm
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetCoef ψ _ m) = spMap (jetCoef ψ _ m) ≫ spMap _`. Rewrite using `[spMap_spMap, spMap_spMap]`. Conclude with `congrArg spMap (JetTr.jetCoef_copy ψ d m n i).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_copy (d m n : ℕ) (i : Fin n) :
     homAt (spMap ψ ≫ x0) (jetCopy d m i : Jet S' (Fin 1 × Fin d) m →ₐ[S'] Jet S' (Fin n × Fin d) m) ≫
@@ -83,11 +83,11 @@ theorem sq_copy (d m n : ℕ) (i : Fin n) :
 end Maps
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t S S' _ _ ψ x0 x1 hx1 d x x' hx'`. Substitute `hx1` using the available equality. Choose the witnesses or unpack the hypotheses as in `rfl : x' = fun m => jetPtMap ψ x0 d m 1 ≫ x m :=`. Use function extensionality and compare the values at `fun m => Over.OverMorphism.ext (hx' m)`. Use `⟨fun h m => ?_, fun F _ h m => ?_, fun act _ h m b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, sq_aug, Category.assoc, h m]`. Simplify using `[Hom.one_def]`. Simplify using `only [JetTr.psTrunc_map]`. Rewrite using `[← Category.assoc, sq_subst, Category.assoc, h m]`. Simplify using `only [jptG, Hom.mul_def, comp_lift_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc (homAt _ _) (jetPtMap _ _ _ _ _), ← Category.assoc (homAt _ _) (jetPtMap _ _ _ _ _), sq_copy, sq_copy, Category.assoc, Category.assoc]`. Simplify using `only [JetTr.psTrunc_map]`. Rewrite using `[← Category.assoc (homAt _ _), sq_subst, Category.assoc, Category.assoc, h m b]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_law_act_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S S' : Type) [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ X0) (x1 : Sp S' ⟶ X0), x1 = spMap ψ ≫ x0 → ∀ (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG x1 d m 1 ⟶ t.G), (∀ m, (x' m).left = spMap (jetCoef ψ (Fin 1 × Fin d) m) ≫ (x m).left) → ((∀ m, homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) ≫ x m = 1) → (∀ m, homAt x1 (jetAug : Jet S' (Fin 1 × Fin d) m →ₐ[S'] S') ≫ x' m = 1)) ∧ (∀ F : Fin d → PS S 2 d, (∀ j, MvPowerSeries.constantCoeff (F j) = 0) → (∀ m, homAt x0 (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (F p.2)) ≫ x m = jptG t x0 d x m (0 : Fin 2) * jptG t x0 d x m (1 : Fin 2)) → (∀ m, homAt x1 (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (MvPowerSeries.map ψ (F p.2))) ≫ x' m = jptG t x1 d x' m (0 : Fin 2) * jptG t x1 d x' m (1 : Fin 2))) ∧ ∀ act : 𝓞 E → Fin d → PS S 1 d, (∀ b j, MvPowerSeries.constantCoeff (act b j) = 0) → (∀ m (b : 𝓞 E), x m ≫ t.act.act b = homAt x0 (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (act b p.2)) ≫ x m) → (∀ m (b : 𝓞 E), x' m ≫ t.act.act b = homAt x1 (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (MvPowerSeries.map ψ (act b p.2))) ≫ x' m) := by
   intro E _ _ _ H X0 t S S' _ _ ψ x0 x1 hx1 d x x' hx'

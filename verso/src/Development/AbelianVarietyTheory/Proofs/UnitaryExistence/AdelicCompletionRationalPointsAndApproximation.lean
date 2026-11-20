@@ -16,7 +16,7 @@ variable (F : Type) {E : Type} [Field F] [NumberField F] [Field E] [NumberField 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[fv, TensorProduct.tmul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cap_fv_add (x y : Fin n → E) : fv F (x + y) = fv F x + fv F y := by
   funext i
@@ -24,7 +24,7 @@ theorem cap_fv_add (x y : Fin n → E) : fv F (x + y) = fv F x + fv F y := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[fv, TensorProduct.tmul_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cap_fv_neg (x : Fin n → E) : fv F (-x) = - fv F x := by
   funext i
@@ -32,7 +32,7 @@ theorem cap_fv_neg (x : Fin n → E) : fv F (-x) = - fv F x := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[fv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cap_fv_zero : fv F (0 : Fin n → E) = 0 := by
   funext i
@@ -40,7 +40,7 @@ theorem cap_fv_zero : fv F (0 : Fin n → E) = 0 := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp [cap_fv_zero]`. Consider the case `succ d ih => rw [succ_nsmul, succ_nsmul, cap_fv_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cap_fv_nsmul (d : ℕ) (x : Fin n → E) : fv F (d • x) = d • fv F x := by
   induction d with
@@ -49,7 +49,7 @@ theorem cap_fv_nsmul (d : ℕ) (x : Fin n → E) : fv F (d • x) = d • fv F x
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨a, ha, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem cap_gen_mem (L : Set (Fin n → E)) (a : FiniteAdeleRing (𝓞 F) F)
     (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) (x : Fin n → E) (hx : x ∈ L) :
@@ -58,14 +58,14 @@ theorem cap_gen_mem (L : Set (Fin n → E)) (a : FiniteAdeleRing (𝓞 F) F)
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `cap_gen_mem F L 1 (fun v => (v.adicCompletionIntegers F).one_mem) x hx`.
+A detailed English derivation is pending.
 -/
 theorem cap_fv_mem (L : Set (Fin n → E)) (x : Fin n → E) (hx : x ∈ L) : fv F x ∈ hat F L :=
   cap_gen_mem F L 1 (fun v => (v.adicCompletionIntegers F).one_mem) x hx
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [fv, Pi.add_apply, Pi.smul_apply, TensorProduct.add_tmul, algebraMap_smul]`. Use `congr 1`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem cap_split (r : F) (d : ℕ) (a : FiniteAdeleRing (𝓞 F) F) (x : Fin n → E) :
     (fun i => (algebraMap F (FiniteAdeleRing (𝓞 F) F) r + d • a) ⊗ₜ[F] x i : Fin n → RA F E)
@@ -77,7 +77,7 @@ theorem cap_split (r : F) (d : ℕ) (a : FiniteAdeleRing (𝓞 F) F) (x : Fin n 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply]`. Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih => rw [succ_nsmul, succ_nsmul, TensorProduct.tmul_add, ih]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cap_tmul_nsmul (d : ℕ) (a : FiniteAdeleRing (𝓞 F) F) (x : Fin n → E) :
     (fun i => a ⊗ₜ[F] (d • x) i : Fin n → RA F E)
@@ -89,9 +89,9 @@ theorem cap_tmul_nsmul (d : ℕ) (a : FiniteAdeleRing (𝓞 F) F) (x : Fin n →
   | succ d ih => rw [succ_nsmul, succ_nsmul, TensorProduct.tmul_add, ih]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NatMulMemUnitaryExistence.target`. Consider the case `exact _root_.GlobalTheory.NatMulMemUnitaryExistence.target`. Consider the case `(apply _root_.GlobalTheory.NatMulMemUnitaryExistence.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMulMemUnitaryExistence.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NatMulMemUnitaryExistence.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatMulMemUnitaryExistence.target ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cap_exists_denom (L : Submodule (𝓞 E) (Fin n → E))
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) (x : Fin n → E) :
@@ -107,35 +107,33 @@ theorem cap_exists_denom (L : Submodule (𝓞 E) (Fin n → E))
 end RationalPoints
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L hfg hsp`. Establish `h3 : ∀ z : Fin n → RA F E, ∃ x : Fin n → E, z - fv F x ∈ (hat F (L : Set (Fin n → E)))`. Establish `hadd : ∀ z w : Fin n → RA F E, (∃ x : Fin n → E, z - fv F x ∈ (hat F (L : Set (Fin n → E)))) → (∃ x : Fin n → E, w - fv F x ∈ (hat F (L : Set (Fin n → E)))) → (∃ x : Fin n → E, z + w - fv F x ∈ (hat F (L : Set (Fin n → E))))`. Introduce and unpack `z w ⟨x, hx⟩ ⟨y, hy⟩`. Use `⟨x + y, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem hx hy` as an intermediate fact. Rewrite using `[cap_fv_add]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hzero : ∃ x : Fin n → E, (0 : Fin n → RA F E) - fv F x ∈ (hat F (L : Set (Fin n → E)))` using `⟨0, by rw [cap_fv_zero, sub_zero]; exact zero_mem _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hgen : ∀ (a : FiniteAdeleRing (𝓞 F) F) (y : Fin n → E), ∃ x : Fin n → E, (fun i => a ⊗ₜ[F] y i : Fin n → RA F E) - fv F x ∈ (hat F (L : Set (Fin n → E)))`. Introduce `a y`. Take `⟨d, hd, hy⟩` from `cap_exists_denom L hsp y`. Take `⟨r, a', ha', rfl⟩` from `(GlobalTheory.T.finiteAdele_strong_approximation_mod_nat F d hd).1 a`. Use `⟨algebraMap F E r • y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cap_split, add_sub_cancel_left, ← cap_tmul_nsmul]`. Conclude with `cap_gen_mem F _ a' ha' _ hy`. Establish `hsingle : ∀ (i : Fin n) (t : RA F E), ∃ x : Fin n → E, (Pi.single i t : Fin n → RA F E) - fv F x ∈ (hat F (L : Set (Fin n → E)))`. Introduce `i t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using hzero`. Consider the case `tmul a y`. Use `hgen a (Pi.single i y)` as an intermediate fact. Use `this using 4` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Consider the case `add s t hs ht`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_add]`. Conclude with `hadd _ _ hs ht`. Introduce `z`. Rewrite using `[← Finset.univ_sum_single z]`. Conclude with `Finset.sum_induction _ (fun z => ∃ x : Fin n → E, z - fv F x ∈ (hat F (L : Set (Fin n → E)))) hadd hzero (fun i _ => hsingle i (z i))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, h3, ?_⟩` and prove the remaining obligations. Introduce `v`. Take `⟨s, e, c, -, hc, -⟩` from `GlobalTheory.exists_pseudoBasis_adapted E n L ⊤ hfg hsp`. Establish `hv : fv F v = ∑ a, ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (e.repr v a) : RA F E) • fv F (e a)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrFun (e.sum_repr v) i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Simplify using `only [fv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[← TensorProduct.tmul_sum, h]`. Rewrite using `[hv, GlobalTheory.T.mem_adelicCompletion_pseudoBasis_iff F E n L e c hc, hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `forall_congr' fun a => (GlobalTheory.T.adelicCompletion_fractionalIdeal_properties_alt F E).2.1 (c a) _`. Introduce `N hN z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Take `⟨r, a', ha', rfl⟩` from `(GlobalTheory.T.finiteAdele_strong_approximation_mod_nat F N hN).2 a ha`. Use `⟨algebraMap F E (r : F) • x, ?_, _, cap_gen_mem F _ a' ha' x hx, cap_split F _ _ _ _⟩` and prove the remaining obligations. Conclude with `L.smul_mem (algebraMap (𝓞 F) (𝓞 E) r) hx`. Consider the case `zero => exact ⟨0, L.zero_mem, 0, zero_mem _, by simp [cap_fv_zero]⟩`. Consider the case `add z z' _ _ hz hz'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take `⟨x, hx, w, hw, rfl⟩` from `hz`. Take `⟨x', hx', w', hw', rfl⟩` from `hz'`. Use `⟨x + x', L.add_mem hx hx', w + w', add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[cap_fv_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Consider the case `neg z _ hz`. Take `⟨x, hx, w, hw, rfl⟩` from `hz`. Use `⟨-x, L.neg_mem hx, -w, neg_mem hw, ?_⟩` and prove the remaining obligations. Rewrite using `[cap_fv_neg, smul_neg]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `z`. Take `⟨x, hx⟩` from `h3 z`. Take `⟨d, hd, hdx⟩` from `cap_exists_denom L hsp x`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Use `add_mem (nsmul_mem hx d) (cap_fv_mem F (L : Set (Fin n → E)) _ hdx)` as an intermediate fact.
-
-Rewrite `this` using `[cap_fv_nsmul, ← smul_add, sub_add_cancel]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hat_rational_points_and_approx :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → (∀ v, fv F v ∈ (hat F (L : Set (Fin n → E))) ↔ v ∈ L) ∧ (∀ N : ℕ, 0 < N → ∀ z ∈ (hat F (L : Set (Fin n → E))), ∃ x ∈ L, ∃ w ∈ (hat F (L : Set (Fin n → E))), z = fv F x + N • w) ∧ (∀ z : Fin n → RA F E, ∃ x : Fin n → E, z - fv F x ∈ (hat F (L : Set (Fin n → E)))) ∧ ∀ z : Fin n → RA F E, ∃ d : ℕ, 0 < d ∧ d • z ∈ (hat F (L : Set (Fin n → E))) := by

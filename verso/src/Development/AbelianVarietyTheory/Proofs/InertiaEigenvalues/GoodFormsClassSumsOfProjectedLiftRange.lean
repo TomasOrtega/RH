@@ -17,11 +17,11 @@ set_option maxHeartbeats 1000000
 namespace GlobalTheory.RankOnto
 
 /- English proof (translation)
-Introduce `D X E Y hG i hB j b x hx`. Take `⟨w, hw, hrd⟩` from `GlobalTheory.T.good_form_reading_eq_good_model_vector_evaluation D X E Y i j b x hx`. Establish `hν : Y.Z.ν i j b ≠ 0` using `(Y.Z.scalar i j b).ne`. Establish `hT` using `GlobalTheory.T.good_type_form_reading_right_translate_lift D X E Y i j b x hx`. Establish `hφ : (X.R.HW j (Formalism.IndefR.Links.sg0 D X.A3.A)).e w (X.geo.v₀ j _) = Y.Z.ν i j b • Y.Z.rd i j b x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hrd, smul_smul, mul_inv_cancel₀ hν, one_smul]`. Take `⟨F, hF, hsum⟩` from `GlobalTheory.T.goodModelVector_eq_classSum_baseLevel D X E Y hG i hB j b w hw (fun u hu κ hκ g => by`. Rewrite using `[hφ, Pi.smul_apply, Pi.smul_apply, hT u hu κ hκ g, smul_eq_mul, smul_eq_mul]`. Use the proof step `ring)`. Use `⟨(Y.Z.ν i j b)⁻¹ • F, Submodule.smul_mem _ _ hF, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, ← hsum, hrd]`.
+A detailed English derivation is pending.
 -/
 theorem sumOnto_of_goodRange : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), (∀ j t, GlobalTheory.IndefiniteRowSideFullHecke.ThetaTranslateSize.GoodRangeAt X.R.toRealDat j t) → ∀ i, BaseTup Y i → SumOnto Y.Z.rd i := by
   intro D X E Y hG i hB j b x hx

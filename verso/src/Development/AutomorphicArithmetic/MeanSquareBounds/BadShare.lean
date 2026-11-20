@@ -11,7 +11,7 @@ private noncomputable def bsD (Z v : ℝ) (q : ℕ) (κ : ℕ → ℂ) : ℂ :=
     if v < (m : ℝ) then ((Λ m : ℝ) : ℂ) * κ m * ((jacobiSym (m : ℤ) q : ℤ) : ℂ) / m else 0
 
 /- English proof (translation)
-Unfold `S cN`. Use `continuous_finsetSum _ (fun m _ => ?_)` and prove the remaining obligations. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem bs_continuous_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) : Continuous (fun y => S Z y q κ) := by
   unfold S cN
@@ -19,7 +19,7 @@ private theorem bs_continuous_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) : Continu
   fun_prop
 
 /- English proof (translation)
-Unfold `bsD`. Use `Finset.measurable_sum _ (fun m _ => ?_)` and prove the remaining obligations. Conclude with `Measurable.ite measurableSet_Iio measurable_const measurable_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem bs_measurable_D (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
     Measurable (fun v => bsD Z v q κ) := by
@@ -28,9 +28,7 @@ private theorem bs_measurable_D (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
   exact Measurable.ite measurableSet_Iio measurable_const measurable_const
 
 /- English proof (translation)
-Unfold `bsD`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum (fun m _ => ?_))` and prove the remaining obligations. Use `split_ifs`. Conclude with `le_rfl`. Simplify using `only [norm_zero]`.
-
-Conclude with `norm_nonneg _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bs_norm_D_le (Z v : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
     ‖bsD Z v q κ‖ ≤
@@ -42,9 +40,9 @@ private theorem bs_norm_D_le (Z v : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
   · simp only [norm_zero]; exact norm_nonneg _
 
 /- English proof (translation)
-Use `set C := ∑ m ∈ Icc 1 ⌊Z⌋₊, ‖((Λ m : ℝ) : ℂ) * κ m * ((jacobiSym (m : ℤ) q : ℤ) : ℂ) / m‖ with hC`. Prove the components needed by the constructor for the conclusion. Use `IntervalIntegrable.mono_fun' (g := fun _ => C) intervalIntegrable_const (bs_measurable_D Z q κ).aestronglyMeasurable ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall (fun v => bs_norm_D_le Z v q κ)`. Use `IntervalIntegrable.mono_fun' (g := fun _ => C ^ 2) intervalIntegrable_const ((bs_measurable_D Z q κ).norm.pow_const 2).aestronglyMeasurable ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Eventually.of_forall (fun v => ?_)` and prove the remaining obligations. Use `bs_norm_D_le Z v q κ` as an intermediate fact. Simplify using `only [norm_pow, norm_norm]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) this 2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bs_intervalIntegrable_D (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (a b : ℝ) :
     IntervalIntegrable (fun v => bsD Z v q κ) volume a b ∧
@@ -62,9 +60,7 @@ private theorem bs_intervalIntegrable_D (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (
     exact pow_le_pow_left₀ (norm_nonneg _) this 2
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `h1 : HasDerivAt (fun y : ℝ => y / m) (1 / m) x` using `(hasDerivAt_id x).div_const m`. Use `(h1.congr_of_eventuallyEq ?_).hasDerivWithinAt` and prove the remaining obligations. Use `filter_upwards [Iio_mem_nhds h] with y hy`. Conclude with `min_eq_right ((div_le_one hm).2 (le_of_lt hy))`.
-
-Use `push Not at h`. Establish `h1 : HasDerivWithinAt (fun _ : ℝ => (1 : ℝ)) 0 (Set.Ioi x) x` using `(hasDerivAt_const x 1).hasDerivWithinAt`. Use `h1.congr (fun y hy => ?_) ?_` and prove the remaining obligations. Conclude with `min_eq_left ((one_le_div hm).2 (h.trans (le_of_lt hy)))`. Conclude with `min_eq_left ((one_le_div hm).2 h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem bs_hasDeriv_min (m x : ℝ) (hm : 0 < m) :
     HasDerivWithinAt (fun y : ℝ => min 1 (y / m)) (if x < m then 1 / m else 0) (Set.Ioi x) x := by
@@ -81,11 +77,9 @@ private theorem bs_hasDeriv_min (m x : ℝ) (hm : 0 < m) :
     · exact min_eq_left ((one_le_div hm).2 h)
 
 /- English proof (translation)
-Unfold `bsD S cN`. Use `HasDerivWithinAt.fun_sum (fun m hm => ?_)` and prove the remaining obligations. Establish `hm0 : (0 : ℝ) < m`. Use `(Finset.mem_Icc.1 hm).1` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(((bs_hasDeriv_min m x hm0).const_mul (Λ m)).ofReal_comp.mul_const (κ m)).mul_const ((jacobiSym (m : ℤ) q : ℤ) : ℂ)`. Use `HasDerivWithinAt.congr_deriv h1 ?_` and prove the remaining obligations. Use `split_ifs`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bs_hasDeriv_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (x : ℝ) :
     HasDerivWithinAt (fun y => S Z y q κ) (bsD Z x q κ) (Set.Ioi x) x := by
@@ -102,7 +96,7 @@ private theorem bs_hasDeriv_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (x : ℝ) :
   · simp
 
 /- English proof (translation)
-Use `symm`. Conclude with `intervalIntegral.integral_eq_sub_of_hasDeriv_right (f := fun y => S Z y q κ) (bs_continuous_S Z q κ).continuousOn (fun x _ => bs_hasDeriv_S Z q κ x) (bs_intervalIntegrable_D Z q κ a b).1`.
+Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 private theorem bs_S_sub_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (a b : ℝ) :
     S Z b q κ - S Z a q κ = ∫ v in a..b, bsD Z v q κ := by
@@ -112,11 +106,11 @@ private theorem bs_S_sub_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (a b : ℝ) :
     (bs_intervalIntegrable_D Z q κ a b).1
 
 /- English proof (translation)
-Unfold `bsD S cN`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hm0 : (0 : ℝ) < m`. Use `(Finset.mem_Icc.1 hm).1` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Distinguish the cases in `h : y < (m : ℝ)`. Simplify using `only [h, if_true]`. Rewrite using `[min_eq_right ((div_le_one hm0).2 h.le)]`. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bs_mul_D_eq_S (Z : ℝ) (y : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
     (y : ℂ) * bsD Z y q κ = S Z y q (fun m => if y < (m : ℝ) then κ m else 0) := by
@@ -134,11 +128,9 @@ private theorem bs_mul_D_eq_S (Z : ℝ) (y : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
   · simp [h]
 
 /- English proof (translation)
-Break down `hab.eq_or_lt with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Use `set I := ∫ v in a..b, f v with hI`. Use `set A := ∫ v in a..b, f v ^ 2 with hA`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 < b - a` using `sub_pos.2 h`. Establish `h0 : 0 ≤ ∫ v in a..b, (((b - a) ^ 2 * f v ^ 2 - (2 * (b - a) * I) * f v) + I ^ 2)` using `intervalIntegral.integral_nonneg_of_forall hab (fun v => by`. Use polynomial arithmetic with `[sq_nonneg ((b - a) * f v - I)])`. Rewrite `h0` using `[intervalIntegral.integral_add ((h2.const_mul _).sub (h1.const_mul _)) intervalIntegrable_const, intervalIntegral.integral_sub (h2.const_mul _) (h1.const_mul _), intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, intervalIntegral.integral_const, ← hI, ← hA, …`. Establish `h3 : (b - a) * I ^ 2 ≤ (b - a) * ((b - a) * A)` using `by nlinarith`.
-
-Conclude with `le_of_mul_le_mul_left h3 hL`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem bs_sq_integral_le {f : ℝ → ℝ} {a b : ℝ} (hab : a ≤ b)
     (h1 : IntervalIntegrable f volume a b)
@@ -161,13 +153,13 @@ private theorem bs_sq_integral_le {f : ℝ → ℝ} {a b : ℝ} (hab : a ≤ b)
   exact le_of_mul_le_mul_left h3 hL
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hy`. Establish `hS : S Z y q κ = S Z Y q κ + ∫ v in Y..y, bsD Z v q κ`. Rewrite using `[← bs_S_sub_S]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ‖∫ v in Y..y, bsD Z v q κ‖ ≤ ∫ v in Y..y, ‖bsD Z v q κ‖` using `intervalIntegral.norm_integral_le_integral_norm h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hcs` using `bs_sq_integral_le (f := fun v => ‖bsD Z v q κ‖) h1 (bs_intervalIntegrable_D Z q κ Y y).1.norm (bs_intervalIntegrable_D Z q κ Y y).2`. Establish `hadd` using `intervalIntegral.integral_add_adjacent_intervals (bs_intervalIntegrable_D Z q κ Y y).2 (bs_intervalIntegrable_D Z q κ y W).2`. Establish `hA : 0 ≤ ∫ v in Y..y, ‖bsD Z v q κ‖ ^ 2` using `intervalIntegral.integral_nonneg_of_forall h1 (fun v => sq_nonneg _)`. Establish `hB : 0 ≤ ∫ v in y..W, ‖bsD Z v q κ‖ ^ 2` using `intervalIntegral.integral_nonneg_of_forall h2 (fun v => sq_nonneg _)`. Establish `htri : ‖S Z y q κ‖ ≤ ‖S Z Y q κ‖ + ∫ v in Y..y, ‖bsD Z v q κ‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hS]; exact (norm_add_le _ _).trans (by linarith)`. Rewrite using `[← hadd]`. Use `set I := ∫ v in Y..y, ‖bsD Z v q κ‖`. Use `set A := ∫ v in Y..y, ‖bsD Z v q κ‖ ^ 2`. Use `set B := ∫ v in y..W, ‖bsD Z v q κ‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ‖S Z y q κ‖ ^ 2 ≤ (‖S Z Y q κ‖ + I) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) htri 2`. Establish `h4 : (y - Y) * A ≤ Y * A` using `mul_le_mul_of_nonneg_right (by linarith) hA`. Establish `h5 : 0 ≤ Y * B` using `mul_nonneg hY hB`. Use polynomial arithmetic with `[sq_nonneg (‖S Z Y q κ‖ - I)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem bs_normSq_S_le (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) {Y W y : ℝ} (hW : W ≤ 2 * Y)
     (hY : 0 ≤ Y) (hy : y ∈ Set.Icc Y W) :
@@ -198,11 +190,11 @@ private theorem bs_normSq_S_le (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) {Y W y : �
   nlinarith [sq_nonneg (‖S Z Y q κ‖ - I)]
 
 /- English proof (translation)
-Establish `h1` using `h y hy (fun m => if y < (m : ℝ) then κ m else 0) (fun m => by`. Distinguish the cases in `hm : y < (m : ℝ)`. Simplify `hκ m` using `[hm]`. Simplify using `[hm])`. Establish `h2 : ∀ q, ‖S Z y q (fun m => if y < (m : ℝ) then κ m else 0)‖ ^ 2 = y ^ 2 * ‖bsD Z y q κ‖ ^ 2`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[← bs_mul_D_eq_S Z y q κ, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Simplify using `only [h2] at h1`. Rewrite `h1` using `[← Finset.mul_sum]`. Rewrite using `[le_div_iff₀ hy0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `le_of_mul_le_mul_left ?_ hy0` and prove the remaining obligations. Use polynomial arithmetic with `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem bs_sum_D_le {C Z : ℝ} {P : Finset ℕ} {A : Set ℝ} (h : MeanSq C Z P A) {y : ℝ}
     (hy : y ∈ A) (hy0 : 0 < y) {κ : ℕ → ℂ} (hκ : ∀ m, ‖κ m‖ ≤ 1) :
@@ -222,19 +214,19 @@ private theorem bs_sum_D_le {C Z : ℝ} {P : Finset ℕ} {A : Set ℝ} (h : Mean
   nlinarith [h1]
 
 /- English proof (translation)
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hP : (0 : ℝ) ≤ P.card` using `Nat.cast_nonneg _`. Establish `h1 : ∑ q ∈ P, ‖S Z (w q) q κ‖ ^ 2 ≤ ∑ q ∈ P, (2 * ‖S Z Y q κ‖ ^ 2 + (2 * Y) * ∫ v in Y..W, ‖bsD Z v q κ‖ ^ 2)` using `Finset.sum_le_sum fun q _ => bs_normSq_S_le Z q κ hW2 hY0.le (hw q)`. Rewrite `h1` using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Establish `h2` using `h Y ⟨le_rfl, hYW⟩ κ hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : 0 ≤ Real.log (2 * Y)` using `Real.log_nonneg (by linarith)`. Establish `hLY : Real.log Y ≤ Real.log (2 * Y)` using `Real.log_le_log hY0 (by linarith)`. Establish `hint : IntervalIntegrable (fun v => ∑ q ∈ P, ‖bsD Z v q κ‖ ^ 2) volume Y W`. Use `IntervalIntegrable.sum (μ := volume) (a := Y) (b := W) P (f := fun q v => ‖bsD Z v q κ‖ ^ 2) (fun q _ => (bs_intervalIntegrable_D Z q κ Y W).2)` as an intermediate fact. Establish `e : (fun v => ∑ q ∈ P, ‖bsD Z v q κ‖ ^ 2) = ∑ q ∈ P, fun v => ‖bsD Z v q κ‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Simplify using `[Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `this`. Rewrite `h1` using `[← intervalIntegral.integral_finsetSum (fun q _ => (bs_intervalIntegrable_D Z q κ Y W).2)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set K := C * Real.log (2 * Y) * P.card with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Establish `h4 : (∫ v in Y..W, ∑ q ∈ P, ‖bsD Z v q κ‖ ^ 2) ≤ ∫ _ in Y..W, K / Y`. Use `intervalIntegral.integral_mono_on hYW hint intervalIntegrable_const ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx0 : 0 < x` using `lt_of_lt_of_le hY0 hx.1`. Use `(bs_sum_D_le h hx hx0 hκ).trans ?_` and prove the remaining obligations. Establish `: Real.log x ≤ Real.log (2 * Y)` using `Real.log_le_log hx0 (hx.2.trans hW2)`. Use `div_le_div₀ hK0 ?_ hY0 hx.1` and prove the remaining obligations. Rewrite using `[hK]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `gcongr`. Rewrite `h4` using `[intervalIntegral.integral_const, smul_eq_mul]`. Establish `h5 : (W - Y) * (K / Y) ≤ K`. Combine the equalities or inequalities in the displayed calculation. Establish `h7` using `mul_le_mul_of_nonneg_left (h4.trans h5) (show 0 ≤ 2 * Y by positivity)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h8 : C * Y * Real.log Y * P.card ≤ C * Y * Real.log (2 * Y) * P.card` using `by gcongr`. Establish `h9 : 2 * Y * K = 2 * (C * Y * Real.log (2 * Y) * P.card)` using `by rw [hK]; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private theorem bs_block {C Z Y W : ℝ} {P : Finset ℕ} (hC : 0 ≤ C) (hY : 1 ≤ Y) (hYW : Y ≤ W)
     (hW2 : W ≤ 2 * Y) (h : MeanSq C Z P (Set.Icc Y W)) {κ : ℕ → ℂ} (hκ : ∀ m, ‖κ m‖ ≤ 1)
@@ -281,19 +273,19 @@ private theorem bs_block {C Z Y W : ℝ} {P : Finset ℕ} (hC : 0 ≤ C) (hY : 1
   linarith
 
 /- English proof (translation)
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hP : (0 : ℝ) ≤ P.card` using `Nat.cast_nonneg _`. Establish `hex : ∀ q, ∃ y ∈ Set.Icc Y W, q ∈ B → y ^ (1 / 2 + τ) / 2 < ‖S Z y q κ‖`. Introduce `q`. Distinguish the cases in `hq : q ∈ B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨y, hy, hy'⟩` from `hB q hq`. Conclude with `⟨y, hy, fun _ => hy'⟩`. Conclude with `⟨Y, ⟨le_rfl, hYW⟩, fun h => absurd h hq⟩`. Use `choose w hw hw' using hex`. Establish `h1` using `bs_block hC (by linarith) hYW hW2 h hκ w hw`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∑ q ∈ B, ‖S Z (w q) q κ‖ ^ 2 ≤ ∑ q ∈ P, ‖S Z (w q) q κ‖ ^ 2` using `Finset.sum_le_sum_of_subset_of_nonneg hBP (fun q _ _ => sq_nonneg _)`. Establish `ht : 0 < Y ^ τ` using `Real.rpow_pos_of_pos hY0 τ`. Establish `e : (Y ^ (1 / 2 + τ) / 2) ^ 2 = Y * Y ^ τ * Y ^ τ / 4`. Rewrite using `[div_pow, sq (Y ^ _), ← Real.rpow_add hY0, show 1 / 2 + τ + (1 / 2 + τ) = 1 + τ + τ by ring, Real.rpow_add hY0, Real.rpow_add hY0, Real.rpow_one]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `h3 : (B.card : ℝ) * (Y * Y ^ τ * Y ^ τ / 4) ≤ ∑ q ∈ B, ‖S Z (w q) q κ‖ ^ 2`. Rewrite using `[← nsmul_eq_mul]`. Use `Finset.card_nsmul_le_sum _ _ _ (fun q hq => ?_)` and prove the remaining obligations. Rewrite using `[← e]`. Use `pow_le_pow_left₀ (by positivity) (le_trans ?_ (hw' q hq).le) 2` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Y ^ (1 / 2 + τ) ≤ w q ^ (1 / 2 + τ)` using `Real.rpow_le_rpow hY0.le (hw q).1 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : Real.log (2 * Y) ≤ 2 * (Y ^ τ / τ)`. Establish `a1` using `Real.log_le_rpow_div hY0.le hτ`. Establish `a2 : Real.log 2 ≤ Real.log Y` using `Real.log_le_log (by norm_num) hY`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_mul (by norm_num) hY0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : 4 * C * Y * Real.log (2 * Y) * P.card ≤ 4 * C * Y * (2 * (Y ^ τ / τ)) * P.card` using `by gcongr`. Establish `hpos : 0 < Y * Y ^ τ * Y ^ τ / 4` using `by positivity`. Use `le_of_mul_le_mul_right (h3.trans (h2.trans (h1.trans (h5.trans (le_of_eq ?_))))) hpos` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_neg hY0.le]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem bs_markov {C τ Z Y W : ℝ} {P B : Finset ℕ} (hC : 0 ≤ C) (hτ : 0 < τ) (hY : 2 ≤ Y)
     (hYW : Y ≤ W) (hW2 : W ≤ 2 * Y) (h : MeanSq C Z P (Set.Icc Y W)) {κ : ℕ → ℂ}
@@ -340,27 +332,23 @@ private theorem bs_markov {C τ Z Y W : ℝ} {P B : Finset ℕ} (hC : 0 ≤ C) (
   ring
 
 /- English proof (translation)
-Introduce `C τ η hC hτ hη`. Use `set r : ℝ := (2 : ℝ) ^ (-τ) with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hr1 : r < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by linarith)`. Establish `hlim : Tendsto (fun Y : ℝ => 32 * C / τ * Y ^ (-τ) * (1 - r)⁻¹) atTop (nhds 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((tendsto_rpow_neg_atTop hτ).const_mul (32 * C / τ)).mul_const (1 - r)⁻¹` as an intermediate fact. Simplify using `using this`. Take `⟨Y₀, hY₀⟩` from `Filter.eventually_atTop.1 ((hlim.eventually (ge_mem_nhds hη)).and (eventually_ge_atTop (2 : ℝ)))`. Use `⟨Y₀, fun Y hY X Z P B κ hκ hM hBP hB => ?_⟩` and prove the remaining obligations. Take `⟨hη', hY2⟩` from `hY₀ Y hY`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hP : (0 : ℝ) ≤ P.card` using `Nat.cast_nonneg _`. Establish `hidx : ∀ q, ∃ i : ℕ, q ∈ B → 2 ^ i * Y ≤ X ∧ ∃ y ∈ Set.Icc (2 ^ i * Y) (min (2 * (2 ^ i * Y)) X), y ^ (1 / 2 + τ) / 2 < ‖S Z y q κ‖`. Introduce `q`. Distinguish the cases in `hq : q ∈ B`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨y, ⟨h1, h2⟩, hy'⟩` from `hB q hq`. Establish `h3 : 1 ≤ y / Y` using `by rw [le_div_iff₀ hY0]; linarith`. Take `⟨i, hi1, hi2⟩` from `exists_nat_pow_near h3 (by norm_num : (1 : ℝ) < 2)`. Rewrite `hi1` using `[le_div_iff₀ hY0]`. Rewrite `hi2` using `[div_lt_iff₀ hY0, pow_succ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, fun _ => ⟨hi1.trans h2, y, ⟨hi1, le_min ?_ h2⟩, hy'⟩⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Conclude with `⟨0, fun h => absurd h hq⟩`. Use `choose f hf using hidx`. Establish `hcard : (B.card : ℝ) = ∑ i ∈ B.image f, ((B.filter (fun q => f q = i)).card : ℝ)`.
+Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.card_eq_sum_card_image f B]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hblock : ∀ i ∈ B.image f, ((B.filter (fun q => f q = i)).card : ℝ) ≤ 32 * C / τ * Y ^ (-τ) * P.card * r ^ i`. Introduce `i hi`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q₀, hq₀, rfl⟩` from `Finset.mem_image.1 hi`. Establish `hX` using `(hf q₀ hq₀).1`. Establish `h1 : (1 : ℝ) ≤ 2 ^ f q₀` using `one_le_pow₀ (by norm_num)`. Establish `hYY : Y ≤ 2 ^ f q₀ * Y` using `by nlinarith`. Use `bs_markov (Y := 2 ^ f q₀ * Y) (W := min (2 * (2 ^ f q₀ * Y)) X) (P := P) (Z := Z) (B := B.filter (fun q => f q = f q₀)) hC hτ (by linarith) (le_min (by linarith) hX) (min_le_left _ _) (fun y hy => hM y ⟨hYY.trans hy.1, hy.2.trans (min_le_right _ _)⟩) hκ ((Finset.filter_subset _ _ …` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hq1, hq2⟩` from `Finset.mem_filter.1 hq`. Rewrite using `[← hq2]`. Conclude with `(hf q hq1).2)`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Establish `e : ((2 : ℝ) ^ f q₀ * Y) ^ (-τ) = Y ^ (-τ) * r ^ f q₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hr, Real.mul_rpow (by positivity) hY0.le, mul_comm, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), ← Real.rpow_mul (by norm_num), mul_comm (f q₀ : ℝ)]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Establish `hg : ∑ i ∈ B.image f, r ^ i ≤ (1 - r)⁻¹`. Rewrite using `[← tsum_geometric_of_lt_one hr0 hr1]`.
-
-Conclude with `(summable_geometric_of_lt_one hr0 hr1).sum_le_tsum _ (fun i _ => by positivity)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcard]`. Conclude with `Finset.sum_le_sum hblock`. Use `_ = 32 * C / τ * Y ^ (-τ) * P.card * ∑ i ∈ B.image f, r ^ i := by rw [Finset.mul_sum]`.
-
-Use `_ ≤ 32 * C / τ * Y ^ (-τ) * P.card * (1 - r)⁻¹ := mul_le_mul_of_nonneg_left hg (by positivity)`. Use `_ = 32 * C / τ * Y ^ (-τ) * (1 - r)⁻¹ * P.card := by ring`. Use `_ ≤ η * P.card := mul_le_mul_of_nonneg_right hη' hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bad_share :
     ∀ C τ η : ℝ, 0 ≤ C → 0 < τ → 0 < η → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀, ∀ (X Z : ℝ) (P B : Finset ℕ) (κ : ℕ → ℂ),

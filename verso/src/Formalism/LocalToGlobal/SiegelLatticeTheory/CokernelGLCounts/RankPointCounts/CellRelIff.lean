@@ -18,7 +18,7 @@ def πk (hD : Data W S N' K π) : K →* Ak S K where
   map_mul' x y := by ext; simp
 
 /- English proof (translation)
-Take `⟨⟨x, hxK⟩, hxS⟩` from `a`. Establish `hxS' : x ∈ S` using `by simpa [Ak, Subgroup.mem_subgroupOf] using hxS`. Use `ext`. Simplify using `[πk, hD.id x hxS']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem πk_id (hD : Data W S N' K π) (a : Ak S K) : πk W S N' K π hD a = a := by
   obtain ⟨⟨x, hxK⟩, hxS⟩ := a
@@ -29,23 +29,21 @@ theorem πk_id (hD : Data W S N' K π) (a : Ak S K) : πk W S N' K π hD a = a :
 def Hk : Subgroup K := (Hs W K g).subgroupOf K
 
 /- English proof (translation)
-Use `show cell π ((k₂ : G) * g) * (cell π ((k₁ : G) * g))⁻¹ ∈ K ⊓ N' ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hK, hN⟩ set x := cell π ((k₂ : G) * g) * (cell π ((k₁ : G) * g))⁻¹ with hx`. Use `⟨⟨x, hK⟩, ?_, k₁⁻¹ * ⟨x, hK⟩⁻¹ * k₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : π x = 1` using `(hD.ker x).1 hN`. Use `ext`. Simplify using `[πk, h1]`. Rewrite using `[Hk, Subgroup.mem_subgroupOf, Hs, Subgroup.mem_inf]`. Use `⟨(k₁⁻¹ * ⟨x, hK⟩⁻¹ * k₂).2, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MulAction.mem_stabilizer_iff]`. Establish `e2` using `cell_smul W S N' K π hD ((k₂ : G) * g)`. Establish `e1` using `cell_smul W S N' K π hD ((k₁ : G) * g)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_smul, ← mul_smul, ← mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[hx]`. Use `group`. Use `_ = ((k₁ : G)⁻¹ * cell π ((k₁ : G) * g)) • W := by rw [← e2, inv_smul_smul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Move the embeddings inside the algebraic operations. Assume the hypotheses and unpack their components.
 
-Use `_ = g • W := by rw [mul_smul, e1, ← mul_smul]; simp`. Use `ext`. Use `push_cast`. Use `group`. Introduce and unpack `⟨n, hn, h, hh, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hπn : π (n : G) = 1`. Rewrite `hn` using `[MonoidHom.mem_ker]`. Use `congrArg (fun a : Ak S K => ((a : K) : G)) hn` as an intermediate fact. Simplify `this` using `[πk]`. Establish `hh' : (h : G) • g • W = g • W`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hh` using `[Hk, Subgroup.mem_subgroupOf, Hs, Subgroup.mem_inf]`. Conclude with `hh.2`. Establish `hs : g⁻¹ * (h : G) * g ∈ S`. Rewrite using `[← hD.stab]`. Rewrite using `[mul_smul, mul_smul, hh', ← mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `key : cell π (((n * k₁ * h : K) : G) * g) = (n : G) * cell π ((k₁ : G) * g)`. Establish `e : ((n * k₁ * h : K) : G) * g = (n : G) * ((k₁ : G) * g) * (g⁻¹ * (h : G) * g)`. Use `push_cast`. Use `group`.
-
-Simplify using `only [cell]`. Rewrite using `[e, map_mul, map_mul, hπn, hD.id _ hs]`. Use `group`. Rewrite using `[key, mul_inv_cancel_right]`. Conclude with `⟨n.2, (hD.ker n).2 hπn⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cellRel_iff (hD : Data W S N' K π) (k₁ k₂ : K) :
     (cellRel W N' K g).r (toCell W S N' K π g hD k₁) (toCell W S N' K π g hD k₂) ↔

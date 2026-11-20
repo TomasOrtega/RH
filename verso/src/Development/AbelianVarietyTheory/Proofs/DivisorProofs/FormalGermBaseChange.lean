@@ -18,9 +18,7 @@ noncomputable section
 namespace GlobalTheory.Shin.DescentAll
 
 /- English proof (translation)
-Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Use `haveI : Fintype F := Fintype.ofFinite F`. Use `haveI : Fintype F' := Fintype.ofFinite F'`. Use `haveI : FiniteDimensional F F' := Module.Finite.of_finite`. Use `haveI : IsGalois F F' := inferInstance`.
-
-Use `haveI : Fact (Module.finrank F F').Prime := ⟨hl⟩`. Establish `hc : Nat.card (F' ≃ₐ[F] F') = Module.finrank F F'` using `IsGalois.card_aut_eq_finrank F F'`. Introduce `t`. Rewrite using `[zpowers_eq_top_of_prime_card hc hs]`. Conclude with `Subgroup.mem_top t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_zpowers_of_prime {F F' : Type} [Field F] [Field F'] [Algebra F F'] [Finite F']
     (s : F' ≃ₐ[F] F') (hl : (Module.finrank F F').Prime) (hs : s ≠ 1) :
@@ -37,7 +35,7 @@ theorem mem_zpowers_of_prime {F F' : Type} [Field F] [Field F'] [Algebra F F'] [
   exact Subgroup.mem_top t
 
 /- English proof (translation)
-Introduce `x y`. Establish `h` using `((GlobalTheory.T.twistedHarishChandraInductionGL_isTwistedClassFunction F (RingHom.id F) 0 0 m (fun _ => 1) (fun _ => 1)).2.2 (rootSum θ k)).1 x y`. Simplify using `only [cusp]`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCl_cusp (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (m k : ℕ) :
     IsCl (cusp θ m k) := by
@@ -51,31 +49,27 @@ end GlobalTheory.Shin.DescentAll
 namespace GlobalTheory.Shin.DescentAll
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ s hl hs ι θ hθ`. Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Use `haveI : Fintype F := Fintype.ofFinite F`. Use `haveI : Fintype F' := Fintype.ofFinite F'`. Use `haveI : FiniteDimensional F F' := Module.Finite.of_finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgen` using `mem_zpowers_of_prime s hl hs`. Use `set q := Nat.card F with hqdef`. Use `set l := Module.finrank F F' with hldef`. Establish `hq2 : 2 ≤ q`. Rewrite using `[hqdef, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `Fintype.one_lt_card`. Establish `hcard' : Nat.card F' = q ^ l`. Rewrite using `[hqdef, hldef, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Conclude with `Module.card_eq_pow_finrank`. Establish `hlist` using `GlobalTheory.T.harishChandraProductCuspidalGL_list_properties F' θ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `happ : ∀ (A B : List (ℕ × ℕ)) (a b : ℕ), deg A = a → deg B = b → J θ (A ++ B) (a + b) = hc a b (J θ A a) (J θ B b) (a + b)`. Introduce `A B a b ha hb`. Substitute `ha hb` using the available equality. Conclude with `hlist.2.1 A B _ rfl`. Introduce `L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Proceed by induction on `L with`. Consider the case `nil`. Introduce `_ n hn`. Take `rfl : n = 0` from `hn`. Establish `hlift : liftAll q l ([] : List (ℕ × ℕ)) = []` using `by simp [liftAll]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hlift]`. Establish `h1 : shLift s (J (pullθ ι θ) [] 0) = J θ [] 0`. Use function extensionality and compare the values at `δ`. Establish `hδ : δ = 1` using `by ext i j; exact i.elim0`. Unfold `shLift`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[dif_pos ⟨1, by rw [hδ]; exact isNorm_one s 0⟩]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `GlobalTheory.T.isInCharacterIsotypicPart_self _ _ (GlobalTheory.T.isCharacter_harishChandraProductCuspidalGL_of_regular F' θ hθ [] (by simp) 0 rfl)`. Consider the case `cons p L ih`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hL n hn`. Establish `hp` using `hL p List.mem_cons_self`. Establish `hLt : ∀ x ∈ L, 0 < x.1 ∧ Reg q x.1 x.2` using `fun x hx => hL x (List.mem_cons_of_mem _ hx)`. Establish `hdeg : deg (p :: L) = p.1 + deg L` using `by simp [deg]`. Take `rfl : n = p.1 + deg L` from `hn.trans hdeg`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set A : List (ℕ × ℕ) := (if l ∣ p.1 then liftL q l [p] else [(p.1, p.2 * ∑ i ∈ Finset.range l, q ^ (p.1 * i))]) with hAdef`. Establish `hsplit : liftAll q l (p :: L) = A ++ liftAll q l L` using `by simp [liftAll, hAdef]`. Establish `hA1 : liftAll q l [p] = A` using `by simp [liftAll, hAdef]`. Take `⟨hdA, hRA⟩` from `GlobalTheory.T.lift_all_preserves_degree_and_regularity q l [p] hq2 hl (by simpa using hp)`. Take `⟨hdB, hRB⟩` from `GlobalTheory.T.lift_all_preserves_degree_and_regularity q l L hq2 hl hLt`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hdA`, `hRA` using `[hA1]`. Establish `hdA' : deg A = p.1` using `by rw [hdA]; simp [deg]`. Establish `hKA : Kills (shLift s (cusp (pullθ ι θ) p.1 p.2)) (J θ A p.1)`. Distinguish the cases in `h : l ∣ p.1`. Use `GlobalTheory.T.shintani_lift_kills_cusp_divisible_degree F F' s hl hs ι θ hθ p.1 p.2 hp.1 h hp.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hAdef, if_pos h]`. Simplify `this` using `only [Prod.mk.eta]`. Rewrite using `[hAdef, if_neg h]`. Establish `hu` using `GlobalTheory.T.shintani_lift_kills_cusp_of_degree_not_dvd F F' s hl hs ι θ hθ p.1 p.2 hp.1 h hp.2`. Establish `hJ : J θ [(p.1, p.2 * ∑ i ∈ Finset.range l, q ^ (p.1 * i))] p.1 = cusp θ p.1 (p.2 * ∑ i ∈ Finset.range l, q ^ (p.1 * i))`.
-
-Rewrite using `[J_cons]`. Conclude with `(GlobalTheory.T.harishChandraInductionGL_one_left_right_unit F' p.1 _ (isCl_cusp F' θ _ _)).2`. Rewrite using `[hJ]`. Conclude with `hu`. Establish `hRA' : ∀ x ∈ A, 0 < x.1 ∧ Reg (Nat.card F') x.1 x.2` using `by rw [hcard']; exact hRA`.
-
-Establish `hRB' : ∀ x ∈ liftAll q l L, 0 < x.1 ∧ Reg (Nat.card F') x.1 x.2` using `by rw [hcard']; exact hRB`. Establish `hcharA` using `GlobalTheory.T.isCharacter_harishChandraProductCuspidalGL_of_regular F' θ hθ A hRA' p.1 hdA'.symm`. Establish `hcharB` using `GlobalTheory.T.isCharacter_harishChandraProductCuspidalGL_of_regular F' θ hθ (liftAll q l L) hRB' (deg L) hdB.symm`. Rewrite using `[J_cons, GlobalTheory.T.shintaniLift_harishChandraInduction_eq_twisted F F' s hgen p.1 (deg L) _ rfl _ _ (isCl_cusp F _ _ _) ((GlobalTheory.T.harishChandraProductCuspidalGL_list_properties F (pullθ ι θ)).1 L (deg L)), hsplit, happ A (liftAll q l L) p.1 (deg L) hdA' hdB]`. Conclude with `GlobalTheory.T.twistedHarishChandra_isotypic_part F' (s : F' →+* F') p.1 (deg L) _ rfl _ _ _ _ hcharA hcharB hKA (ih hLt (deg L) rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kills_liftAll : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'),
     (Module.finrank F F').Prime → s ≠ 1 → ∀ (ι : AlgebraicClosure F →ₐ[F] AlgebraicClosure F')

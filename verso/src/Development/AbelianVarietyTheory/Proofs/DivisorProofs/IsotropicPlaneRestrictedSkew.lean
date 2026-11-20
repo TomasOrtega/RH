@@ -17,25 +17,23 @@ section Abstract
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `set A : Matrix (Fin n₁) (Fin n₁) R := (g : Matrix (Fin n₁) (Fin n₁) R) - 1 with hA`. Use `set B : Matrix (Fin n₁) (Fin n₁) R := ((g⁻¹ : GL (Fin n₁) R) : Matrix (Fin n₁) (Fin n₁) R) - 1 with hB`. Establish `hAB : A + B + A * B = 0`. Establish `hgg : (g : Matrix (Fin n₁) (Fin n₁) R) * ((g⁻¹ : GL (Fin n₁) R) : Matrix (Fin n₁) (Fin n₁) R) = 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: A + B + A * B = (g : Matrix (Fin n₁) (Fin n₁) R) * ((g⁻¹ : GL (Fin n₁) R) : Matrix (Fin n₁) (Fin n₁) R) - 1`. Rewrite using `[hA, hB]`. Use `noncomm_ring`. Rewrite using `[this, hgg, sub_self]`. Use `set M := 1 + ι * A * Q with hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set M' := 1 + ι * B * Q with hM'`. Establish `hMM : M * M' = 1`. Establish `e : M * M' = 1 + ι * (A + B + A * B) * Q`. Establish `: ι * A * Q * (ι * B * Q) = ι * (A * B) * Q`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hM, hM', add_mul, mul_add, mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul, this, Matrix.mul_add, Matrix.mul_add, Matrix.add_mul, Matrix.add_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hAB, Matrix.mul_zero, Matrix.zero_mul, add_zero]`. Establish `hKey : Aᵀ * J₁ + J₁ * A.map s + Aᵀ * J₁ * A.map s = 0`. Establish `hgs : (g : Matrix (Fin n₁) (Fin n₁) R).map s = A.map s + 1`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hA, Matrix.map_sub _ (map_sub s), Matrix.map_one _ (map_zero s) (map_one s)]`. Normalize the expressions using the abelian group laws. Establish `hgt : (g : Matrix (Fin n₁) (Fin n₁) R)ᵀ = Aᵀ + 1`. Rewrite using `[hA, Matrix.transpose_sub, Matrix.transpose_one]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hg` using `[hgs, hgt]`. Establish `: Aᵀ * J₁ + J₁ * A.map s + Aᵀ * J₁ * A.map s = (Aᵀ + 1) * J₁ * (A.map s + 1) - J₁` using `by noncomm_ring`. Rewrite using `[this, hg, sub_self]`. Use `⟨⟨M, M', hMM, (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 hMM⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Mᵀ * J * M.map s = J`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMt : Mᵀ = 1 + Qᵀ * Aᵀ * ιᵀ`. Rewrite using `[hM, Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `hMs : M.map s = 1 + ι.map s * A.map s * Q.map s`. Rewrite using `[hM, Matrix.map_add _ (map_add s), Matrix.map_one _ (map_zero s) (map_one s), Matrix.map_mul, Matrix.map_mul]`. Rewrite using `[hMt, hMs]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (1 + Qᵀ * Aᵀ * ιᵀ) * J * (1 + ι.map s * A.map s * Q.map s) = J + Qᵀ * Aᵀ * (ιᵀ * J) + (J * ι.map s) * A.map s * Q.map s + Qᵀ * Aᵀ * (ιᵀ * J * ι.map s) * A.map s * Q.map s`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hg1, h2, h1]`. Establish `e2 : Qᵀ * Aᵀ * (J₁ * Q.map s) + Qᵀ * J₁ * A.map s * Q.map s + Qᵀ * Aᵀ * J₁ * A.map s * Q.map s = Qᵀ * (Aᵀ * J₁ + J₁ * A.map s + Aᵀ * J₁ * A.map s) * Q.map s`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Rewrite using `[add_assoc, add_assoc, ← add_assoc (Qᵀ * Aᵀ * (J₁ * Q.map s)), e2, hKey, Matrix.mul_zero, Matrix.zero_mul, add_zero]`. Use `show M * ι = ι * (g : Matrix (Fin n₁) (Fin n₁) R)`. Establish `: (g : Matrix (Fin n₁) (Fin n₁) R) = 1 + A` using `by rw [hA]; abel`. Rewrite using `[this, hM, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hQι, Matrix.mul_one, Matrix.mul_add, Matrix.mul_one]`.
-
-Introduce `v hv show M *ᵥ v = v`. Rewrite using `[hM, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem levi_core (s : R →+* R) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) R) (J₁ : Matrix (Fin n₁) (Fin n₁) R)
     (ι : Matrix (Fin n) (Fin n₁) R) (Q : Matrix (Fin n₁) (Fin n) R) (hQι : Q * ι = 1)
@@ -107,7 +105,7 @@ section Field
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `e : (A.map (inclR (F` using `F) (AF F))).map (cA σ).toRingHom = (A.map σ).map (inclR (F := F) (AF F)) := by`. Use extensionality with `i j`. Simplify using `[cA, inclR]`. Rewrite using `[e, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hA]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitary_map' (σ : E →ₐ[F] E) {n : ℕ} (A J : Matrix (Fin n) (Fin n) E) (hA : Aᵀ * J * A.map σ = J) :
     (A.map (inclR (F := F) (AF F)))ᵀ * J.map (inclR (F := F) (AF F)) *
@@ -117,9 +115,9 @@ theorem unitary_map' (σ : E →ₐ[F] E) {n : ℕ} (A J : Matrix (Fin n) (Fin n
   rw [e, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hA]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (R := 𝓞 F) (K := F))`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Establish `e : (A.map (inclR (F` using `F) (AF F))).map (cA σ).toRingHom = (A.map σ).map (inclR (F := F) (AF F)) := by`. Use extensionality with `i j`. Simplify using `[cA, inclR]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `hA` using `[e, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `hA`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_of_map' (σ : E →ₐ[F] E) {n : ℕ} (A J : Matrix (Fin n) (Fin n) E)
     (hA : (A.map (inclR (F := F) (AF F)))ᵀ * J.map (inclR (F := F) (AF F)) *
@@ -134,7 +132,7 @@ theorem unitary_of_map' (σ : E →ₐ[F] E) {n : ℕ} (A J : Matrix (Fin n) (Fi
   exact hA
 
 /- English proof (translation)
-Simplify using `only [form, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hσ]`. Simplify using `only [hskew, neg_mul, mul_neg, Finset.sum_neg_distrib, neg_neg, Finset.sum_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entry_eq (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin n₁) E)
     (hskew : ∀ i j, σ (J j i) = -J i j) (z : Fin n → E) (k : Fin n₁) :
@@ -146,31 +144,31 @@ theorem entry_eq (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n n₁ Y Y₁ H hskew hxx hyy hxy horth hgram hdet γ hγ`. Use `set s : E →+* E := σ.toRingHom with hs`. Establish `hJs : (Y.J.map s)ᵀ = -Y.J` using `by ext i j; simp [hs, hskew]`. Establish `hιss : (H.ι.map s).map s = H.ι` using `by ext i j; simp [hs, hσ]`. Establish `hgram' : H.ιᵀ * Y.J * H.ι.map s = Y₁.J` using `hgram`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ₁s : (Y₁.J.map s)ᵀ = -Y₁.J`. Rewrite using `[← hgram', Matrix.map_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_mul, hιss, hJs, Matrix.transpose_map, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Establish `hdetT : IsUnit Y₁.Jᵀ.det` using `by rw [Matrix.det_transpose]; exact isUnit_iff_ne_zero.2 hdet`. Establish `hdet' : IsUnit Y₁.J.det` using `isUnit_iff_ne_zero.2 hdet`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q : Matrix (Fin n₁) (Fin n) E := (Y₁.Jᵀ)⁻¹ * ((H.ι.map s)ᵀ * Y.Jᵀ) with hQ`. Establish `hQι : Q * H.ι = 1`. Establish `: (H.ι.map s)ᵀ * Y.Jᵀ * H.ι = Y₁.Jᵀ`. Rewrite using `[← hgram']`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQ, Matrix.mul_assoc, this, Matrix.nonsing_inv_mul _ hdetT]`. Establish `h1 : Y.J * H.ι.map s = Qᵀ * Y₁.J`. Rewrite using `[hQ, Matrix.transpose_mul, Matrix.transpose_nonsing_inv, Matrix.transpose_transpose, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet', Matrix.mul_one]`. Establish `h2 : H.ιᵀ * Y.J = Y₁.J * Q.map s`. Establish `e` using `congrArg (fun M => (M.map s)ᵀ) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_mul, Matrix.transpose_mul, hιss, hJs, hJ₁s, Matrix.transpose_map, Matrix.transpose_transpose, Matrix.mul_neg, Matrix.neg_mul, neg_inj] at e`. Conclude with `e`. Establish `hQv : ∀ z, (∀ u, form σ Y.J (H.ι *ᵥ u) z = 0) → Q *ᵥ z = 0`. Introduce `z hz`. Establish `e0 : ((H.ι.map s)ᵀ * Y.Jᵀ) *ᵥ z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `k`. Establish `e : (((H.ι.map s)ᵀ * Y.Jᵀ) *ᵥ z) k = -σ (form σ Y.J (H.ι *ᵥ Pi.single k 1) z)`. Establish `hcol : H.ι *ᵥ Pi.single k 1 = fun i => H.ι i k`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hcol]`. Conclude with `entry_eq σ hσ Y.J H.ι hskew z k`. Rewrite using `[e, hz, map_zero, neg_zero]`. Both sides reduce to the same expression. Rewrite using `[hQ, ← Matrix.mulVec_mulVec, e0, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQx : Q *ᵥ H.x = 0` using `hQv _ fun u => (horth u).1`. Establish `hQy : Q *ᵥ H.y = 0` using `hQv _ fun u => (horth u).2`. Use `set f : E →+* AE F E := inclR (F := F) (E := E) (AF F) with hf`. Take `⟨g, hg⟩` from `Subgroup.mem_subgroupOf.1 hγ`. Establish `hγm : mat γ = (g : Matrix (Fin n₁) (Fin n₁) E).map f`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mat]`. Rewrite using `[← hg]`. Both sides reduce to the same expression. Establish `hγu : (mat γ)ᵀ * incM F Y₁.J * (mat γ).map (cA σ).toRingHom = incM F Y₁.J` using `γ.2`. Rewrite `hγu` using `[hγm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgu : (g : Matrix (Fin n₁) (Fin n₁) E)ᵀ * Y₁.J * (g : Matrix (Fin n₁) (Fin n₁) E).map s = Y₁.J` using `unitary_of_map' σ _ _ hγu`. Take `⟨m₀, hu, hι, hfix⟩` from `levi_core s Y.J Y₁.J H.ι Q hQι h1 h2 hgram' g hgu`. Set `h : UA σ Y.J` to `⟨Matrix.GeneralLinearGroup.map f m₀, unitary_map' σ _ _ hu⟩`. Establish `hmv : ∀ v : Fin n → E, mat h *ᵥ incV F v = incV F ((m₀ : Matrix _ _ E) *ᵥ v)` using `fun v => funext fun i => (RingHom.map_mulVec f _ _ i).symm`. Use `⟨h, Subgroup.mem_subgroupOf.2 ⟨m₀, rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmv, hfix _ hQx]`. Simplify using the standard rewrite rules. Rewrite using `[hmv, hfix _ hQy]`. Simplify using the standard rewrite rules. Rewrite using `[hγm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : mat h = (m₀ : Matrix (Fin n) (Fin n) E).map f` using `rfl`. Establish `e2 : incM F H.ι = H.ι.map f` using `rfl`. Rewrite using `[e, e2]`. Use `congrArg (fun M => Matrix.map M f) hι` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[← this]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, map_sum, map_mul]`. Simplify using `only [← map_mul, ← map_sum]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_rat_isLevi_one_skew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     (∀ x, σ (σ x) = x) → ∀ (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁),

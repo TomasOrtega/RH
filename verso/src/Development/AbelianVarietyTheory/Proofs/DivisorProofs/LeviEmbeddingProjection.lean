@@ -21,9 +21,9 @@ open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 namespace GlobalTheory.LeviAt
 
 /- English proof (translation)
-Establish `h` using `mem_atPts.1 (embAt_mem hc.sig V.gram S (projAt hc.sig V.gram S t))`. Use `mem_parab_of_adelic (fun w => ?_) fun v => ?_` and prove the remaining obligations. Rewrite using `[mem_finPts_iff_forall.1 h.1 w]`. Conclude with `one_mem _`. Distinguish the cases in `hv : v ∈ S`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[proj_embAt hc.sig V.gram S _ ⟨v, hv⟩]`. Conclude with `mapH_mem_parab (evFin F v) ht`. Rewrite using `[h.2 v hv]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embAt_projAt_mem_parab {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (hc : CMData F E) (V : HSpace E) (W : Submodule E V.V) (S : Finset (HeightOneSpectrum (𝓞 F)))
@@ -38,7 +38,7 @@ theorem embAt_projAt_mem_parab {F E : Type} [Field F] [NumberField F] [Field E] 
     · rw [h.2 v hv]; exact one_mem _
 
 /- English proof (translation)
-Introduce `D V Φ P S t ht`. Simplify using `only [WittFrame.levi, Subgroup.mem_iInf, Subgroup.mem_inf] at ht ⊢`. Conclude with `fun u hu => ⟨embAt_projAt_mem_parab _ _ _ S t (ht u hu).1, embAt_projAt_mem_parab _ _ _ S t (ht u hu).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem embAt_projAt_mem_levi : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (P : Finset (SV (wittIndex V))) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (t : GAd D.sp.cm.sig V.gram), t ∈ Φ.levi D.sp.cm (AF D.host.F) P → embAt D.sp.cm.sig V.gram S (projAt D.sp.cm.sig V.gram S t) ∈ Φ.levi D.sp.cm (AF D.host.F) P := by
   intro D V Φ P S t ht

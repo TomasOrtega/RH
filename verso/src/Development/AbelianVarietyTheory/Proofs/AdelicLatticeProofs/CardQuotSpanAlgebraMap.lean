@@ -6,19 +6,17 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Introduce `R O _ _ _ _ _ _ t`. Set `b` to `Module.Free.chooseBasis R O`. Set `f : O →+ (Module.Free.ChooseBasisIndex R O → R ⧸ Ideal.span {t})` to `{ toFun := fun x i => Ideal.Quotient.mk _ (b.repr x i) map_zero' := by ext i; simp map_add' := by intro x y; ext i; simp }`. Establish `hsurj : Function.Surjective f`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose z hz using fun i => Ideal.Quotient.mk_surjective (y i)`. Use `⟨b.equivFun.symm z, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Use `show Ideal.Quotient.mk _ (b.equivFun (b.equivFun.symm z) i) = y i`. Rewrite using `[LinearEquiv.apply_symm_apply, hz]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hker : f.ker = (Ideal.span {algebraMap R O t}).toAddSubgroup`. Use extensionality with `x`. Simplify using `only [AddMonoidHom.mem_ker, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : ∀ i, ∃ a, a * t = b.repr x i` using `fun i => by`. Use `congrFun h i` as an intermediate fact. Conclude with `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 this)`. Use `choose a ha using h'`. Use `⟨b.equivFun.symm a, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[mul_comm, ← Algebra.smul_def, ← map_smul]`. Apply `b.equivFun.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use extensionality with `i`. Simplify using `[← ha i, mul_comm]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, rfl⟩`. Use extensionality with `i`. Use `show Ideal.Quotient.mk _ (b.repr _ i) = 0`. Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton'.2 ⟨b.repr a i, by simp [mul_comm]⟩`.
-
-Establish `e` using `Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective f hsurj).toEquiv`. Rewrite `e` using `[hker]`. Establish `h1 : Nat.card (O ⧸ Ideal.span {algebraMap R O t}) = Nat.card (Module.Free.ChooseBasisIndex R O → R ⧸ Ideal.span {t})` using `e`. Rewrite using `[h1, Nat.card_fun, Module.finrank_eq_card_chooseBasisIndex, Nat.card_eq_fintype_card (α := Module.Free.ChooseBasisIndex R O)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_span_algebraMap : ∀ (R O : Type) [CommRing R] [Nontrivial R] [CommRing O] [Algebra R O] [Module.Free R O] [Module.Finite R O] (t : R), Nat.card (O ⧸ Ideal.span {algebraMap R O t}) = Nat.card (R ⧸ Ideal.span {t}) ^ Module.finrank R O := by
   intro R O _ _ _ _ _ _ t

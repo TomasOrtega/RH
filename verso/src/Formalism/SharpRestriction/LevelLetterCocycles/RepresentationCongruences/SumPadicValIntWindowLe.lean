@@ -9,13 +9,13 @@ open Classical Finset
 namespace Formalism.MainNotions.N.Ln17
 
 /- English proof (translation)
-Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero hN`. Establish `key : ∀ i, l ^ i ∣ N ↔ i ≤ padicValNat l N`. Introduce `i`. Establish `hfin : FiniteMultiplicity l N` using `Nat.finiteMultiplicity_iff.2 ⟨by omega, hN0⟩`. Rewrite using `[padicValNat_def' (by omega) hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfin.pow_dvd_iff_le_multiplicity`. Establish `hv : padicValNat l N < b`. Establish `h1 : l ^ padicValNat l N ≤ N` using `Nat.le_of_dvd hN0 ((key _).2 le_rfl)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: l ^ b ≤ l ^ padicValNat l N` using `Nat.pow_le_pow_right (by omega) hc`. Use linear arithmetic over natural numbers and integers. Establish `hset : (Ico 1 b).filter (fun i => l ^ i ∣ N) = Icc 1 (padicValNat l N)`. Use extensionality with `i`. Simplify using `only [mem_filter, mem_Ico, mem_Icc, key]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hset, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem padicValNat_eq_card_dvd_pows (l : ℕ) (hl : 2 ≤ l) (N b : ℕ) (hN : N ≠ 0) (hb : N < l ^ b) :
     padicValNat l N = ((Ico 1 b).filter (fun i => l ^ i ∣ N)).card := by
@@ -39,11 +39,11 @@ theorem padicValNat_eq_card_dvd_pows (l : ℕ) (hl : 2 ≤ l) (N b : ℕ) (hN : 
   omega
 
 /- English proof (translation)
-Introduce `S`. Proceed by induction on `S with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ S ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hS`. Establish `ih'` using `ih (by omega)`. Rewrite using `[sum_range_succ]`. Establish `hv` using `padicValNat_eq_card_dvd_pows l hl (m + 1 + S) b (by omega) (by omega)`. Establish `hdiv : ∀ i, (m + (S + 1)) / l ^ i = (m + S) / l ^ i + if l ^ i ∣ m + 1 + S then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[show m + (S + 1) = m + S + 1 by omega, Nat.succ_div, show m + S + 1 = m + 1 + S by omega]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => hdiv i), sum_add_distrib, sum_boole, Nat.cast_id]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_padicVal_window_split (l : ℕ) (hl : 2 ≤ l) (m b : ℕ) :
     ∀ S : ℕ, m + S < l ^ b →
@@ -65,23 +65,21 @@ theorem sum_padicVal_window_split (l : ℕ) (hl : 2 ≤ l) (m b : ℕ) :
     omega
 
 /- English proof (translation)
-Establish `hl1 : (1:ℝ) < l` using `by exact_mod_cast (show 1 < l by omega)`. Establish `hlpos : (0:ℝ) < (l:ℝ) - 1` using `by linarith`. Break down `Nat.eq_zero_or_pos S with hS | hS` into its components or cases. Substitute `hS` using the available equality. Simplify using `only [Finset.range_zero, Finset.sum_empty, Nat.cast_zero, zero_div, zero_add, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Simplify using `[h0]`. Conclude with `Real.logb_nonneg hl1 (by exact_mod_cast h0)`. Take `⟨b, hb⟩ : ∃ b, b = Nat.log l (m + S) + 1` from `⟨_, rfl⟩`. Establish `hlt : m + S < l ^ b` using `by rw [hb]; exact Nat.lt_pow_succ_log_self (by omega) _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E` using `sum_padicVal_window_split l hl m b S hlt`. Establish `hT : ∑ i ∈ Ico 1 b, (m + S) / l ^ i ≤ ∑ i ∈ Ico 1 b, (m / l ^ i + (S / l ^ i + 1))`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Establish `hq : 0 < l ^ i` using `by positivity`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.add_div hq]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Nat.card_Ico, smul_eq_mul, mul_one] at hT`. Establish `hN : ∑ j ∈ range S, padicValNat l (m + 1 + j) ≤ ∑ i ∈ Ico 1 b, S / l ^ i + (b - 1)` using `by omega`. Establish `hgeo : ((∑ i ∈ Ico 1 b, S / l ^ i : ℕ) : ℝ) ≤ S / ((l:ℝ) - 1)`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_sum]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[one_div, inv_pow, ← div_eq_mul_inv]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = S * ∑ i ∈ Ico 1 b, (1 / (l:ℝ)) ^ i := by rw [Finset.mul_sum]`. Use `_ ≤ S * ((1 / (l:ℝ)) ^ 1 / (1 - 1 / (l:ℝ))) := by`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Apply `geom_sum_Ico_le_of_lt_one (by positivity)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_lt_one (by linarith)]`. Conclude with `hl1`. Use `_ = S / ((l:ℝ) - 1) := by`. Establish `hl0 : (l:ℝ) ≠ 0` using `by positivity`. Establish `hl1' : (l:ℝ) - 1 ≠ 0` using `hlpos.ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[pow_one, one_sub_div hl0, div_div_div_cancel_right₀ hl0, one_div, div_eq_mul_inv]`. Establish `hlog : ((b - 1 : ℕ) : ℝ) ≤ Real.logb l ((m + S : ℕ) : ℝ)`. Establish `e : b - 1 = Nat.log l (m + S)` using `by omega`. Rewrite using `[e, Real.le_logb_iff_rpow_le hl1 (by exact_mod_cast (show 0 < m + S by omega)), Real.rpow_natCast]`. Conclude with `Nat.pow_log_le_self l (show m + S ≠ 0 by omega)` after adjusting the coercions.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem sum_padicVal_window_le (l : ℕ) (hl : 2 ≤ l) (m S : ℕ) :
     ((∑ j ∈ range S, padicValNat l (m + 1 + j) : ℕ) : ℝ) ≤
@@ -133,7 +131,7 @@ theorem sum_padicVal_window_le (l : ℕ) (hl : 2 ≤ l) (m S : ℕ) :
     _ ≤ S / ((l:ℝ) - 1) + Real.logb l ((m + S : ℕ) : ℝ) := add_le_add hgeo hlog
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos N with h0 | h0` into its components or cases. Simplify using `[h0]`. Conclude with `Real.logb_nonneg hl (by exact_mod_cast h0)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem logb_natCast_nonneg (l : ℕ) (hl : (1 : ℝ) < l) (N : ℕ) : 0 ≤ Real.logb l (N : ℝ) := by
   rcases Nat.eq_zero_or_pos N with h0 | h0
@@ -141,23 +139,23 @@ theorem logb_natCast_nonneg (l : ℕ) (hl : (1 : ℝ) < l) (N : ℕ) : 0 ≤ Rea
   · exact Real.logb_nonneg hl (by exact_mod_cast h0)
 
 /- English proof (translation)
-Establish `hl1 : (1:ℝ) < l` using `by exact_mod_cast (show 1 < l by omega)`. Establish `hLN : 0 ≤ Real.logb l (N:ℝ)` using `logb_natCast_nonneg l hl1 N`. Establish `hre : ∑ i ∈ Finset.Ico a (a + S), padicValInt l i = ∑ k ∈ range S, padicValInt l (a + (k:ℤ))`. Establish `himg : (range S).image (fun k : ℕ => a + (k:ℤ)) = Finset.Ico a (a + S)`. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_image, Finset.mem_range, Finset.mem_Ico]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(i - a).toNat, by omega, by omega⟩`. Rewrite using `[← himg, Finset.sum_image]`. Introduce `x _ y _ h`. Simplify using `using h`. Rewrite using `[hre]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos S with hS | hS` into its components or cases. Substitute `hS` using the available equality. Simplify using `[hLN]`. Establish `hfirst` using `ha a (by simp only [Finset.mem_Ico]; omega)`. Establish `hlast` using `ha (a + S - 1) (by simp only [Finset.mem_Ico]; omega)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hfirst`, `hlast` using `[abs_le]`. Distinguish the cases in `hpos : 0 < a`. Take `⟨m, hm⟩ : ∃ m : ℕ, (m : ℤ) = a - 1` from `⟨(a - 1).toNat, by omega⟩`. Establish `hr : ∑ k ∈ range S, padicValInt l (a + (k:ℤ)) = ∑ k ∈ range S, padicValNat l (m + 1 + k)`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : a + (k:ℤ) = ((m + 1 + k : ℕ) : ℤ)` using `by push_cast; omega`. Rewrite using `[show padicValInt l (a + (k:ℤ)) = padicValNat l (a + (k:ℤ)).natAbs from rfl, e, Int.natAbs_cast]`. Rewrite using `[hr]`. Use `(sum_padicVal_window_le l hl2 m S).trans (add_le_add le_rfl ?_)` and prove the remaining obligations. Conclude with `Real.logb_le_logb_of_le hl1 (by exact_mod_cast (show 0 < m + S by omega)) (by exact_mod_cast (show m + S ≤ N by omega))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hneg : a + S ≤ 0`. Assume the negation of the conclusion as `hc`. Use `ha 0 (by simp only [Finset.mem_Ico]; omega)` as an intermediate fact. Conclude with `this.1 rfl`. Take `⟨m, hm⟩ : ∃ m : ℕ, (m : ℤ) = -a - S` from `⟨(-a - S).toNat, by omega⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : ∑ k ∈ range S, padicValInt l (a + (k:ℤ)) = ∑ k ∈ range S, padicValNat l (m + 1 + k)`. Use `(Finset.sum_range_reflect (fun k : ℕ => padicValInt l (a + (k:ℤ))) S).symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl (fun k hk => ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hk`. Establish `e : a + (((S - 1 - k : ℕ)) : ℤ) = -((m + 1 + k : ℕ) : ℤ)` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show padicValInt l (a + ((S - 1 - k : ℕ) : ℤ)) = _`. Rewrite using `[e, show padicValInt l (-((m + 1 + k : ℕ) : ℤ)) = padicValNat l (-((m + 1 + k : ℕ) : ℤ)).natAbs from rfl, Int.natAbs_neg, Int.natAbs_cast]`. Rewrite using `[hr]`. Use `(sum_padicVal_window_le l hl2 m S).trans (add_le_add le_rfl ?_)` and prove the remaining obligations. Conclude with `Real.logb_le_logb_of_le hl1 (by exact_mod_cast (show 0 < m + S by omega)) (by exact_mod_cast (show m + S ≤ N by omega))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_padicValInt_Ico_le_div_sub_one_add_logb (l : ℕ) (hl2 : 2 ≤ l) (a : ℤ) (S N : ℕ)
     (ha : ∀ i ∈ Finset.Ico a (a + S), i ≠ 0 ∧ |i| ≤ (N : ℤ)) :
@@ -213,7 +211,7 @@ theorem sum_padicValInt_Ico_le_div_sub_one_add_logb (l : ℕ) (hl2 : 2 ≤ l) (a
       (by exact_mod_cast (show m + S ≤ N by omega))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.biUnion_insert, Finset.sum_insert hj]`. Establish `h2` using `Finset.sum_union_inter (s₁ := t j) (s₂ := s.biUnion t) (f := f)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -228,23 +226,23 @@ private theorem sum_biUnion_le_sum_sum' {ι : Type*} [DecidableEq ι] (s : Finse
     omega
 
 /- English proof (translation)
-Establish `hl1 : (1:ℝ) < l` using `by exact_mod_cast (show 1 < l by omega)`. Establish `hl11 : (11:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hlm : (10:ℝ) ≤ (l:ℝ) - 1` using `by linarith`. Establish `hL0 : 0 ≤ Real.logb l (h:ℝ)` using `logb_natCast_nonneg l hl1 h`. Establish `hL2 : Real.logb l (h:ℝ) ≤ Real.logb l (2 * (h:ℝ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos h with h0 | h0` into its components or cases. Simplify using `[h0]`. Establish `: (0:ℝ) < h` using `by exact_mod_cast h0`. Conclude with `Real.logb_le_logb_of_le hl1 this (by linarith)`. Establish `hsub : JS.erase 0 ⊆ Finset.univ.biUnion fun k => Finset.Ico (a k) (a k + S)` using `(Finset.erase_subset _ _).trans hJS`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : (JS.erase 0).card ≤ ell * S`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : ∑ i ∈ JS.erase 0, padicValInt l i ≤ ∑ k, ∑ i ∈ Finset.Ico (a k) (a k + S), padicValInt l i` using `(Finset.sum_le_sum_of_subset hsub).trans (sum_biUnion_le_sum_sum' _ _ _)`. Establish `hV : ((∑ i ∈ JS.erase 0, padicValInt l i : ℕ) : ℝ) ≤ ell * (S / ((l:ℝ) - 1) + Real.logb l (h:ℝ))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hQ : (((ell + ∑ i ∈ JS.erase 0, (ell + 1 + padicValInt l i)) : ℕ) : ℝ) = ell + (ell + 1) * ((JS.erase 0).card : ℝ) + ((∑ i ∈ JS.erase 0, padicValInt l i : ℕ) : ℝ)`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hCr : ((JS.erase 0).card : ℝ) ≤ ell * S` using `by exact_mod_cast hC`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : (0:ℝ) ≤ S` using `by positivity`. Establish `hX0 : 0 ≤ S / ((l:ℝ) - 1)` using `by positivity`. Establish `hX : S / ((l:ℝ) - 1) ≤ S / 10` using `div_le_div_of_nonneg_left hS0 (by norm_num) hlm`. Establish `he0 : (0:ℝ) ≤ ell` using `by positivity`. Establish `hC0 : (0:ℝ) ≤ ((JS.erase 0).card : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1 : ((ell:ℝ) + 1) * ((JS.erase 0).card : ℝ) ≤ ((ell:ℝ) + 1) * (ell * S)` using `mul_le_mul_of_nonneg_left hCr (by positivity)`. Rewrite using `[hQ]`. Use `⟨fun h3 => ?_, fun R hR hR' => ?_⟩` and prove the remaining obligations. Establish `he3 : (ell:ℝ) ≤ 3` using `by exact_mod_cast h3`. Establish `g2 : ((ell:ℝ) + 1) * (ell * S) ≤ 12 * S`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((ell:ℝ) + 1) * ell ≤ 12` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `g3 : (ell:ℝ) * (S / ((l:ℝ) - 1) + Real.logb l (h:ℝ)) ≤ 3 * (S / ((l:ℝ) - 1) + Real.logb l (h:ℝ))` using `mul_le_mul_of_nonneg_right he3 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr1 : (1:ℝ) ≤ R` using `by exact_mod_cast hR`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `her : (ell:ℝ) ≤ R` using `by exact_mod_cast hR'`. Establish `g2 : ((ell:ℝ) + 1) * (ell * S) ≤ 2 * (R:ℝ) ^ 2 * S`. Establish `: ((ell:ℝ) + 1) * ell ≤ 2 * (R:ℝ) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `her2 : (ell:ℝ) ≤ (R:ℝ) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g3 : (ell:ℝ) * (S / ((l:ℝ) - 1) + Real.logb l (h:ℝ)) ≤ (R:ℝ) ^ 2 * (S + Real.logb l (2 * (h:ℝ)))` using `mul_le_mul her2 (by linarith) (by positivity) (by positivity)`. Establish `g4 : 0 ≤ (R:ℝ) ^ 2 * Real.logb l (2 * (h:ℝ))` using `mul_nonneg (by positivity) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem kappa_bound_window_sum (l : ℕ) (hl : 11 ≤ l) (ell S h : ℕ) (a : Fin ell → ℤ)
     (ha : ∀ k, ∀ i ∈ Finset.Ico (a k) (a k + S), i ≠ 0 ∧ |i| ≤ (h : ℤ))
@@ -312,9 +310,9 @@ theorem kappa_bound_window_sum (l : ℕ) (hl : 11 ≤ l) (ell S h : ℕ) (a : Fi
     nlinarith
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.TruncatedSeriesCountingBounds.hB`. Use `split_ifs with hT`. Distinguish the cases in `hx : Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size x`. Unfold `Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick at hx`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `hnt x hx` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hx : ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size x` using `fun hh => hT ⟨x, hh⟩`. Use `hnt x hx` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem letter_size_add_le_height {n : ℕ} (b w S η : ℕ) (size : ZMod n → ℕ) (h20w : 20 * w ≤ b)
     (hnt : ∀ i, ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size i → size i ≤ w) (x : ZMod n) :
@@ -331,17 +329,15 @@ theorem letter_size_add_le_height {n : ℕ} (b w S η : ℕ) (size : ZMod n → 
     omega
 
 /- English proof (translation)
-Set `a : Fin ((arcOf b w S η up size).len c) → ℤ` to `fun k => if up (c - ((k : ℕ) : ZMod n)) then -((size (c - ((k : ℕ) : ZMod n)) : ℕ) : ℤ) - S else ((size (c - ((k : ℕ) : ZMod n)) : ℕ) : ℤ)`. Establish `hwin : ∀ k, ∀ i ∈ Finset.Ico (a k) (a k + S), i ≠ 0 ∧ |i| ≤ ((Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℕ) : ℤ)`. Introduce `k i hi`. Establish `h1` using `letter_size_add_le_height b w S η size h20w hnt (c - ((k : ℕ) : ZMod n))`. Establish `h2` using `hsz (c - ((k : ℕ) : ZMod n))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_Ico, a] at hi`. Apply the tactic sequence `split_ifs at hi <;> exact ⟨by omega, abs_le.2 ⟨by omega, by omega⟩⟩`. Establish `hty : ∀ x, (arcOf b w S η up size).ty x = if up x then Formalism.MainNotions.LocalTheoryWindows.LT.up (size x) else Formalism.MainNotions.LocalTheoryWindows.LT.down (size x)` using `fun _ => rfl`. Establish `hSS : (arcOf b w S η up size).S = S` using `rfl`. Establish `hJS : (arcOf b w S η up size).JS c ⊆ Finset.univ.biUnion fun k => Finset.Ico (a k) (a k + S)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Simplify using `only [Formalism.MainNotions.ArcLiftingSetup.ArcP.JS, Finset.mem_union] at hi`. Break down `hi with hi | hi` into its components or cases. Rewrite `hi` using `[if_neg]`. Simplify using `at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨s, -, hs⟩`. Rewrite `hs` using `[hty]`. Use `split_ifs at hs`. Rewrite `hi` using `[Finset.mem_biUnion]`. Take `⟨s, hs, hi⟩` from `hi`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[Finset.mem_range]`. Rewrite using `[Finset.mem_biUnion]`. Use `⟨⟨s, hs⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[hty, hSS]`. Apply the tactic sequence `by_cases hu : up (c - (s : ZMod n)) <;> simp [a, hu] at hi ⊢ <;> omega`.
-
-Conclude with `kappa_bound_window_sum l hl ((arcOf b w S η up size).len c) S (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size) a hwin ((arcOf b w S η up size).JS c) hJS`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem kappa_bound_of_length {n : ℕ} [NeZero n] (l : ℕ) (hl : 11 ≤ l) (b w S η : ℕ) (up : ZMod n → Bool)
     (size : ZMod n → ℕ) (h20w : 20 * w ≤ b)
@@ -384,7 +380,7 @@ theorem kappa_bound_of_length {n : ℕ} [NeZero n] (l : ℕ) (hl : 11 ≤ l) (b 
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.N.Ln17 in
 /- English proof (translation)
-Introduce `n _ l hl b w S η up size h20 h20w hnt hAlt hsz c hc hlen`. Conclude with `(kappa_bound_of_length l hl b w S η up size h20w hnt hsz c).1 hlen`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kappa_le_of_alternating : ∀ {n : ℕ} [NeZero n] (l : ℕ) (hl : 11 ≤ l) (b w S η : ℕ) (up : ZMod n → Bool)
     (size : ZMod n → ℕ) (h20 : 20 * S ≤ b) (h20w : 20 * w ≤ b)
@@ -398,7 +394,7 @@ theorem kappa_le_of_alternating : ∀ {n : ℕ} [NeZero n] (l : ℕ) (hl : 11 �
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.N.Ln17 in
 /- English proof (translation)
-Introduce `n _ l hl b w S η up size h20 h20w hnt R hR hOne hsz c hc hlen`. Conclude with `(kappa_bound_of_length l hl b w S η up size h20w hnt hsz c).2 R hR hlen`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kappa_le_of_single_thick : ∀ {n : ℕ} [NeZero n] (l : ℕ) (hl : 11 ≤ l) (b w S η : ℕ) (up : ZMod n → Bool)
     (size : ZMod n → ℕ) (h20 : 20 * S ≤ b) (h20w : 20 * w ≤ b)

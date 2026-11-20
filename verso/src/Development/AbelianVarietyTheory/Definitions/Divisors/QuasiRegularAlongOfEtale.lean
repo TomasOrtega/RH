@@ -30,7 +30,7 @@ def VanishesTo (f : H0 p B O) : Prop :=
   ∀ y ∈ I.support, ∀ hy i hi, germ i y hy hi f ∈ stalkId I y ^ a
 
 /- English proof (translation)
-Use `⟨fun h y hy i hi => ?_, fun h y _ => h y⟩` and prove the remaining obligations. Distinguish the cases in `hs : y ∈ I.support`. Conclude with `h y hs hy i hi`. Rewrite using `[stalkId_eq_top I hs, Ideal.top_pow]`. Discharge the goal by the elementary cases of `trivial`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem vanishesTo_iff_forall {f : H0 p B O} :
     VanishesTo I a f ↔ ∀ y hy i hi, germ i y hy hi f ∈ stalkId I y ^ a := by
@@ -41,7 +41,7 @@ theorem vanishesTo_iff_forall {f : H0 p B O} :
     trivial
 
 /- English proof (translation)
-Introduce `y hs hy j hj` and use `by obtain ⟨i, hi, e⟩ := h y hs hy rw [germ_change j i y hy hj hi] exact Ideal.mul_mem_left _ _ e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vanishesTo_of_exists {f : H0 p B O} (h : ∀ y ∈ I.support, ∀ hy : y ∈ O,
     ∃ i hi, germ i y hy hi f ∈ stalkId I y ^ a) : VanishesTo I a f := fun y hs hy j hj => by
@@ -50,9 +50,9 @@ theorem vanishesTo_of_exists {f : H0 p B O} (h : ∀ y ∈ I.support, ∀ hy : y
   exact Ideal.mul_mem_left _ _ e
 
 /- English proof (translation)
-Use `⟨fun hf W i h => (mem_ideal_iff_ger (I ^ a) W _).2 fun y hy => ?_, fun hf y _ hy i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[stalkId_pow, ger_resG]`. Conclude with `vanishesTo_iff_forall.1 hf y (h hy).1 i (h hy).2`. Take `⟨W, hW, h⟩` from `exists_affine (memInf hy hi)`. Use `(mem_ideal_iff_ger (I ^ a) W _).1 (hf W i h) y hW` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[stalkId_pow, ger_resG]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem vanishesTo_iff_affine {f : H0 p B O} : VanishesTo I a f ↔
     ∀ (W : Y.affineOpens) (i : B.ι) (h : W.1 ≤ O ⊓ B.U i), resG Y h (f.loc i) ∈ I.ideal W ^ a := by
@@ -65,18 +65,18 @@ theorem vanishesTo_iff_affine {f : H0 p B O} : VanishesTo I a f ↔
     rwa [stalkId_pow, ger_resG] at this
 
 /- English proof (translation)
-Introduce `_ _ _ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vanishesTo_zero (f : H0 p B O) : VanishesTo I 0 f := fun _ _ _ _ _ => by simp
 
 /- English proof (translation)
-Introduce `y hs hy i hi` and use `Ideal.pow_le_pow_right e (h y hs hy i hi)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem VanishesTo.mono {f : H0 p B O} (h : VanishesTo I b f) (e : a ≤ b) : VanishesTo I a f :=
   fun y hs hy i hi => Ideal.pow_le_pow_right e (h y hs hy i hi)
 
 /- English proof (translation)
-Introduce `y hs hy i hi` and use `by rw [germ_restr] exact h y hs _ i hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem VanishesTo.restr {f : H0 p B O} (h : VanishesTo I a f) (e : O' ≤ O) :
     VanishesTo I a (restr e f) := fun y hs hy i hi => by
@@ -84,7 +84,7 @@ theorem VanishesTo.restr {f : H0 p B O} (h : VanishesTo I a f) (e : O' ≤ O) :
   exact h y hs _ i hi
 
 /- English proof (translation)
-The claim follows from `vanishesTo_of_exists fun y hs hy => by obtain ⟨t, ha, hb, hc⟩ := C.cover y refine ⟨_, hc, ?_⟩ rw [C.germ_mul σ f t y hy ha hb hc, pow_add] exact Ideal.mul_mem_mul (hσ y hs hy _ ha) (hf y hs hy _ hb)`.
+A detailed English derivation is pending.
 -/
 theorem VanishesTo.mul {P N : LB Y} (C : ProdChart P B N) {σ : H0 p P O} {f : H0 p B O}
     (hσ : VanishesTo I a σ) (hf : VanishesTo I b f) : VanishesTo I (a + b) (C.mul σ f) :=
@@ -99,17 +99,17 @@ variable (I O) in
 def SuppIn : Prop := ∀ y ∈ I.support, y ∈ O
 
 /- English proof (translation)
-Introduce `_ _` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppIn_top : SuppIn ⊤ I := fun _ _ => trivial
 
 /- English proof (translation)
-Introduce `z _` and use `h _ (ι_mem_support I z)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SuppIn.le (h : SuppIn O I) : ⊤ ≤ I.subschemeι ⁻¹ᵁ O := fun z _ => h _ (ι_mem_support I z)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hf y hs _ i hi => germ_restr e i y (h y hs) hi f ▸ hf y hs (h y hs) i hi, (·.restr e)⟩`.
+Supply the required witnesses or components.
 -/
 theorem vanishesTo_restr_iff (h : SuppIn O' I) (e : O' ≤ O) {f : H0 p B O} :
     VanishesTo I a (restr e f) ↔ VanishesTo I a f :=
@@ -126,7 +126,7 @@ def filTop : Submodule k (H0 p B O) where
     rw [germ_smul]; exact Ideal.mul_mem_left _ _ (hf y hs hy i hi)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_filTop {f : H0 p B O} : f ∈ filTop p B O I a ↔ VanishesTo I a f := Iff.rfl
 
@@ -137,32 +137,32 @@ def Fil (V : Submodule k (H0 p B O)) : Submodule k (H0 p B O) := V ⊓ filTop p 
 variable {V V' : Submodule k (H0 p B O)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_Fil {f : H0 p B O} : f ∈ Fil I a V ↔ f ∈ V ∧ VanishesTo I a f := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem Fil_le : Fil I a V ≤ V := inf_le_left
 
 /- English proof (translation)
-The claim follows from `inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem Fil_le_filTop : Fil I a V ≤ filTop p B O I a := inf_le_right
 
 /- English proof (translation)
-The claim follows from `top_inf_eq _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem Fil_top : Fil I a (⊤ : Submodule k (H0 p B O)) = filTop p B O I a := top_inf_eq _
 
 /- English proof (translation)
-The claim follows from `inf_eq_left.2 fun f _ => vanishesTo_zero f`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem Fil_zero : Fil I 0 V = V := inf_eq_left.2 fun f _ => vanishesTo_zero f
 
 /- English proof (translation)
-Introduce `_ h` and use `⟨h.1, VanishesTo.mono h.2 e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Fil_anti (e : a ≤ b) : Fil I b V ≤ Fil I a V := fun _ h => ⟨h.1, VanishesTo.mono h.2 e⟩
 
@@ -177,7 +177,7 @@ abbrev sectionsOnClosedSubscheme : Type := H0 (I.subschemeι ≫ p) (B.pull I.su
 def resTo (h : SuppIn O I) : H0 p B O →ₗ[k] sectionsOnClosedSubscheme p B I := H0.pull I.subschemeι h.le
 
 /- English proof (translation)
-The claim follows from `germ_pull _ _ j z _ hj f`.
+A detailed English derivation is pending.
 -/
 theorem germ_resTo (h : SuppIn O I) (j : (B.pull I.subschemeι).ι) (z : I.subscheme)
     (hj : z ∈ (B.pull I.subschemeι).U j) (f : H0 p B O) : germ j z (Opens.mem_top z) hj (resTo h f) =
@@ -186,22 +186,22 @@ theorem germ_resTo (h : SuppIn O I) (j : (B.pull I.subschemeι).ι) (z : I.subsc
   germ_pull _ _ j z _ hj f
 
 /- English proof (translation)
-The claim follows from `pull_restr _ e _ f`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem resTo_restr (h : SuppIn O' I) (e : O' ≤ O) (f : H0 p B O) :
     resTo h (restr e f) = resTo (fun y hy => e (h y hy)) f := pull_restr _ e _ f
 
 /- English proof (translation)
-The claim follows from `C.pull_mul _ _ σ f`.
+A detailed English derivation is pending.
 -/
 theorem resTo_mul {P N : LB Y} (C : ProdChart P B N) (h : SuppIn O I) (σ : H0 p P O)
     (f : H0 p B O) : resTo h (C.mul σ f) = (C.pull I.subschemeι).mul (resTo h σ) (resTo h f) :=
   C.pull_mul _ _ σ f
 
 /- English proof (translation)
-Use `⟨fun e y hs hy i hi => ?_, fun hf => LB.sec_ext fun j => fun_ext_ger fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `exists_ι_eq hs`. Rewrite using `[pow_one, ← ker_stalkMap]`. Conclude with `(germ_resTo h (fun _ => i) z (mem_pull.2 hi) f).symm.trans (by rw [e, map_zero])`. Use `hf _ (ι_mem_support I z) (h _ (ι_mem_support I z)) _ (mem_pull.1 hz.2)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[pow_one, ← ker_stalkMap]`. Conclude with `((germ_resTo h j z hz.2 f).trans this).trans (map_zero (germ j z (Opens.mem_top z) hz.2)).symm`.
+A detailed English derivation is pending.
 -/
 theorem resTo_eq_zero_iff (h : SuppIn O I) {f : H0 p B O} : resTo h f = 0 ↔ VanishesTo I 1 f := by
   refine ⟨fun e y hs hy i hi => ?_, fun hf => LB.sec_ext fun j => fun_ext_ger fun z hz => ?_⟩
@@ -217,14 +217,14 @@ variable (p I) in
 def secOn (σ : LB.Sec B) : sectionsOnClosedSubscheme p B I := resTo suppIn_top (H0.ofSec p ⊤ σ)
 
 /- English proof (translation)
-Rewrite using `[← restr_ofSec (le_top : O ≤ ⊤), resTo_restr, secOn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem resTo_ofSec (h : SuppIn O I) (σ : LB.Sec B) :
     resTo h (H0.ofSec p O σ) = secOn p I σ := by
   rw [← restr_ofSec (le_top : O ≤ ⊤), resTo_restr, secOn]
 
 /- English proof (translation)
-The claim follows from `(germ_resTo _ j z hj _).trans (congrArg _ (germ_ofSec _ _ _ _ σ))`.
+A detailed English derivation is pending.
 -/
 theorem germ_secOn (j : (B.pull I.subschemeι).ι) (z : I.subscheme)
     (hj : z ∈ (B.pull I.subschemeι).U j) (σ : LB.Sec B) : germ j z (Opens.mem_top z) hj (secOn p I σ) =
@@ -232,7 +232,7 @@ theorem germ_secOn (j : (B.pull I.subschemeι).ι) (z : I.subscheme)
   (germ_resTo _ j z hj _).trans (congrArg _ (germ_ofSec _ _ _ _ σ))
 
 /- English proof (translation)
-The claim follows from `nowhereZero_pull_ofSec σ _ _ h.le`.
+A detailed English derivation is pending.
 -/
 theorem nowhereZero_secOn {σ : LB.Sec B} (h : SuppIn (nonzeroLocus σ) I) :
     NowhereZero (secOn p I σ) := nowhereZero_pull_ofSec σ _ _ h.le
@@ -246,7 +246,7 @@ def valOn (x : Sp R ⟶ I.subscheme) (i : B.ι) (hi : ⊤ ≤ (x ≫ I.subscheme
   val x (fun _ => i) le_top fun z hz => mem_pull.2 (hi hz)
 
 /- English proof (translation)
-The claim follows from `val_pull _ _ x _ _ _ hO hi f`.
+A detailed English derivation is pending.
 -/
 theorem valOn_resTo (h : SuppIn O I) (x : Sp R ⟶ I.subscheme) (i : B.ι)
     (hi : ⊤ ≤ (x ≫ I.subschemeι) ⁻¹ᵁ B.U i) (hO : ⊤ ≤ (x ≫ I.subschemeι) ⁻¹ᵁ O) (f : H0 p B O) :
@@ -254,7 +254,7 @@ theorem valOn_resTo (h : SuppIn O I) (x : Sp R ⟶ I.subscheme) (i : B.ι)
   val_pull _ _ x _ _ _ hO hi f
 
 /- English proof (translation)
-The claim follows from `(valOn_resTo _ x i hi le_top _).trans (val_ofSec _ _ _ _ σ)`.
+A detailed English derivation is pending.
 -/
 theorem valOn_secOn (x : Sp R ⟶ I.subscheme) (i : B.ι)
     (hi : ⊤ ≤ (x ≫ I.subschemeι) ⁻¹ᵁ B.U i) (σ : LB.Sec B) :
@@ -262,7 +262,7 @@ theorem valOn_secOn (x : Sp R ⟶ I.subscheme) (i : B.ι)
   (valOn_resTo _ x i hi le_top _).trans (val_ofSec _ _ _ _ σ)
 
 /- English proof (translation)
-The claim follows from `(C.pull I.subschemeι).val_mul σ f t x _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem valOn_mul {P N : LB Y} (C : ProdChart P B N) (σ : sectionsOnClosedSubscheme p P I) (f : sectionsOnClosedSubscheme p B I) (t : C.τ)
     (x : Sp R ⟶ I.subscheme) (ha : ⊤ ≤ (x ≫ I.subschemeι) ⁻¹ᵁ P.U (C.a t))
@@ -287,7 +287,7 @@ def mulSecOn (w : L.Sec) (h : n + 1 = l) : sectionsOnClosedSubscheme p (tw M L n
   ((oneChart hM hL h).pull I.subschemeι).mul (secOn p I w)
 
 /- English proof (translation)
-The claim follows from `((oneChart hM hL h).germ_mul _ f (i, j) y hy hj _ _).trans (congrArg (· * _) (germ_ofSec _ _ _ _ w))`.
+A detailed English derivation is pending.
 -/
 theorem germ_mulSec (w : L.Sec) (h : n + 1 = l) (f : H0 p (tw M L n) O) (i : M.ι) (j : L.ι) (y : Y)
     (hy : y ∈ O) (hi : y ∈ M.U i) (hj : y ∈ L.U j) :
@@ -297,14 +297,14 @@ theorem germ_mulSec (w : L.Sec) (h : n + 1 = l) (f : H0 p (tw M L n) O) (i : M.�
     (congrArg (· * _) (germ_ofSec _ _ _ _ w))
 
 /- English proof (translation)
-Rewrite using `[mulSec, resTo_mul, resTo_ofSec, mulSecOn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resTo_mulSec (hO : SuppIn O I) (w : L.Sec) (h : n + 1 = l) (f : H0 p (tw M L n) O) :
     resTo hO (mulSec hM hL w h f) = mulSecOn hM hL w h (resTo hO f) := by
   rw [mulSec, resTo_mul, resTo_ofSec, mulSecOn]
 
 /- English proof (translation)
-The claim follows from `(valOn_mul (oneChart hM hL h) _ g (i, j) x hj h₁ h₂).trans (congrArg (· * _) (valOn_secOn x j hj w))`.
+A detailed English derivation is pending.
 -/
 theorem valOn_mulSecOn {R : Type} [CommRing R] (w : L.Sec) (h : n + 1 = l) (g : sectionsOnClosedSubscheme p (tw M L n) I)
     (x : Sp R ⟶ I.subscheme) (i : M.ι) (j : L.ι) (hj : ⊤ ≤ (x ≫ I.subschemeι) ⁻¹ᵁ L.U j)
@@ -316,7 +316,7 @@ theorem valOn_mulSecOn {R : Type} [CommRing R] (w : L.Sec) (h : n + 1 = l) (g : 
     (congrArg (· * _) (valOn_secOn x j hj w))
 
 /- English proof (translation)
-The claim follows from `(Finset.prod_pow_eq_pow_sum _ _ _).trans (congrArg (c ^ ·) α.2)`.
+A detailed English derivation is pending.
 -/
 theorem monoVal_const {R : Type*} [CommMonoid R] (c : R) (α : MonoDeg ι a) :
     monoVal (fun _ => c) α.1 = c ^ a :=
@@ -329,7 +329,7 @@ def monoSec (s : ι → L.Sec) (α : MonoDeg ι a) : (lbZPow L a).Sec :=
     exact congrArg (monoVal · α.1) (funext fun i => (s i).compat j j')
 
 /- English proof (translation)
-The claim follows from `Twist.zfun_zmkGlobal _ _ j`.
+A detailed English derivation is pending.
 -/
 theorem zfun_monoSec (s : ι → L.Sec) (α : MonoDeg ι a) (j : L.ι) :
     Twist.zfun (monoSec s α) j = monoVal (fun i => (s i).f j) α.1 := Twist.zfun_zmkGlobal _ _ j
@@ -339,7 +339,7 @@ def mulMono (s : ι → L.Sec) (α : MonoDeg ι a) (h : n + a = l) :
   (powChart hM hL h).mul (H0.ofSec p O (monoSec s α))
 
 /- English proof (translation)
-Use `((powChart hM hL h).germ_mul _ m (i, j) y hy (mem_zpow_U.2 hj) _ _).trans (congrArg (· * _) ((germ_ofSec _ _ _ _ _).trans ?_))` and prove the remaining obligations. Use `(congrArg _ (Twist.f_eq_zfun (monoSec s α) fun _ => j)).trans ((ger_resG _ _ _ _).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg _ (zfun_monoSec s α j)).trans (map_monoVal _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem germ_mulMono (s : ι → L.Sec) (α : MonoDeg ι a) (h : n + a = l) (m : H0 p (tw M L n) O)
     (i : M.ι) (j : L.ι) (y : Y) (hy : y ∈ O) (hi : y ∈ M.U i) (hj : y ∈ L.U j) :
@@ -351,7 +351,7 @@ theorem germ_mulMono (s : ι → L.Sec) (α : MonoDeg ι a) (h : n + a = l) (m :
   exact (congrArg _ (zfun_monoSec s α j)).trans (map_monoVal _ _ _)
 
 /- English proof (translation)
-The claim follows from `ext_germ fun y hy => let ⟨i, hi⟩ := exists_chart hM y; let ⟨j, hj⟩ := exists_chart hL y ⟨_, _, h i j y hy hi hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem tw_ext (hM : M.IsLB) (hL : L.IsLB) {f g : H0 p (tw M L n) O}
     (h : ∀ i j y hy (hi : y ∈ M.U i) (hj : y ∈ L.U j),
@@ -361,7 +361,7 @@ theorem tw_ext (hM : M.IsLB) (hL : L.IsLB) {f g : H0 p (tw M L n) O}
     ⟨_, _, h i j y hy hi hj⟩
 
 /- English proof (translation)
-The claim follows from `tw_ext hM hL fun c j y hy hc hj => by rw [germ_mulMono _ _ _ _ _ _ _ _ _ _ hc hj, germ_mulSec _ _ _ _ _ _ _ _ _ hc hj, germ_mulMono _ _ _ _ _ _ _ _ _ _ hc hj, e, monoVal_add, monoVal_single, pow_one] ring`.
+A detailed English derivation is pending.
 -/
 theorem mulMono_succ (s : ι → L.Sec) (α : MonoDeg ι a) (β : MonoDeg ι (a + 1)) (i : ι)
     (e : β.1 = α.1 + Finsupp.single i 1) {l' : ℤ} (h : n + a = l) (h' : l + 1 = l')
@@ -373,7 +373,7 @@ theorem mulMono_succ (s : ι → L.Sec) (α : MonoDeg ι a) (β : MonoDeg ι (a 
     ring
 
 /- English proof (translation)
-The claim follows from `tw_ext hM hL fun c j y hy hc hj => by rw [germ_mulMono _ _ _ _ _ _ _ _ _ _ hc hj, (Finsupp.degree_eq_zero_iff _).1 α.2, monoVal_zero, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem mulMono_zero (s : ι → L.Sec) (α : MonoDeg ι 0) (h : n + (0 : ℕ) = n)
     (m : H0 p (tw M L n) O) : mulMono hM hL s α h m = m :=
@@ -382,7 +382,7 @@ theorem mulMono_zero (s : ι → L.Sec) (α : MonoDeg ι 0) (h : n + (0 : ℕ) =
       one_mul]
 
 /- English proof (translation)
-The claim follows from `vanishesTo_of_exists fun y hs hy => by obtain ⟨i, hi⟩ := exists_chart hM y obtain ⟨j, hj⟩ := exists_chart hL y refine ⟨twIdx l i j, mem_tw_U.2 ⟨hi, hj⟩, ?_⟩ rw [germ_mulMono _ _ _ _ _ _ _ _ _ _ hi hj, pow_add] exact Ideal.mul_mem_mul (stalkId_cutIdeal hL s j y hj ▸ monoVal_mem_po …`.
+A detailed English derivation is pending.
 -/
 theorem VanishesTo.mulMono (s : ι → L.Sec) (α : MonoDeg ι a) (h : n + a = l) {m : H0 p (tw M L n) O}
     (hm : VanishesTo (cutIdeal hL s) b m) :
@@ -395,20 +395,20 @@ theorem VanishesTo.mulMono (s : ι → L.Sec) (α : MonoDeg ι a) (h : n + a = l
     exact Ideal.mul_mem_mul (stalkId_cutIdeal hL s j y hj ▸ monoVal_mem_pow _ α) (hm y hs hy _ _)
 
 /- English proof (translation)
-The claim follows from `(vanishesTo_zero m).mulMono hM hL s α h`.
+A detailed English derivation is pending.
 -/
 theorem vanishesTo_mulMono (s : ι → L.Sec) (α : MonoDeg ι a) (h : n + a = l)
     (m : H0 p (tw M L n) O) : VanishesTo (cutIdeal hL s) a (mulMono hM hL s α h m) :=
   (vanishesTo_zero m).mulMono hM hL s α h
 
 /- English proof (translation)
-Rewrite using `[Twist.f_eq_zfun, Twist.zfun_zone, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zone_f (j : (lbZPow L 0).ι) : (Twist.zone L).f j = 1 := by
   rw [Twist.f_eq_zfun, Twist.zfun_zone, map_one]
 
 /- English proof (translation)
-Use `le_antisymm (fun y hy => ?_) (iSup_le fun j y hj => ?_)` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Conclude with `Opens.mem_iSup.2 ⟨_, Twist.zpow_U_le j hj⟩`. Conclude with `(isUnit_ger_iff (i := fun _ => j) _ (mem_zpow_U.2 hj)).1 (zone_f (L := L) _ ▸ isUnit_one.map _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_zone : nonzeroLocus (Twist.zone L) = ⨆ j, L.U j := by
   refine le_antisymm (fun y hy => ?_) (iSup_le fun j y hj => ?_)
@@ -439,13 +439,13 @@ def LeadAt : Prop := ∃ m : MonoDeg ι a → R, (∀ α, φ (m α) = γ α) ∧
   f - ∑ α, monoVal x α.1 * m α ∈ Ideal.span (Set.range x) ^ (a + 1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨m, fun _ => rfl, by rw [sub_self]; exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem leadAt_sum (m : MonoDeg ι a → R) : LeadAt φ x (∑ α, monoVal x α.1 * m α) fun α => φ (m α) :=
   ⟨m, fun _ => rfl, by rw [sub_self]; exact zero_mem _⟩
 
 /- English proof (translation)
-Take `⟨m, e, hm⟩` from `h`. Take `⟨m', e', hm'⟩` from `h'`. Use `⟨m + m', fun α => by simp [e, e'], ?_⟩` and prove the remaining obligations. Simplify `add_mem hm hm'` using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib, add_sub_add_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem LeadAt.add (h : LeadAt φ x f γ) (h' : LeadAt φ x f' γ') : LeadAt φ x (f + f') (γ + γ') := by
   obtain ⟨m, e, hm⟩ := h
@@ -454,7 +454,7 @@ theorem LeadAt.add (h : LeadAt φ x f γ) (h' : LeadAt φ x f' γ') : LeadAt φ 
   simpa only [Pi.add_apply, mul_add, Finset.sum_add_distrib, add_sub_add_comm] using add_mem hm hm'
 
 /- English proof (translation)
-Take `⟨m, e, hm⟩` from `h`. Use `⟨fun α => r * m α, fun α => by simp [e], ?_⟩` and prove the remaining obligations. Simplify `Ideal.mul_mem_left _ r hm` using `only [mul_sub, Finset.mul_sum, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem LeadAt.mul (h : LeadAt φ x f γ) (r : R) : LeadAt φ x (r * f) fun α => φ r * γ α := by
   obtain ⟨m, e, hm⟩ := h
@@ -462,7 +462,7 @@ theorem LeadAt.mul (h : LeadAt φ x f γ) (r : R) : LeadAt φ x (r * f) fun α =
   simpa only [mul_sub, Finset.mul_sum, mul_left_comm] using Ideal.mul_mem_left _ r hm
 
 /- English proof (translation)
-Take `⟨m, e, hm⟩` from `h`. Establish `hI : Ideal.span (Set.range x) ≤ Ideal.span (Set.range fun i => u * x i)` using `Ideal.span_le.2 (Set.range_subset_iff.2 fun i => (Ideal.unit_mul_mem_iff_mem _ u.isUnit).1 (Ideal.subset_span ⟨i, rfl⟩))`. Use `⟨m, e, Ideal.pow_right_mono hI _ ?_⟩` and prove the remaining obligations. Simplify `Ideal.mul_mem_left _ (u.val ^ a) hm` using `only [monoVal_mul, monoVal_const, mul_sub, Finset.mul_sum, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem LeadAt.unit_mul (h : LeadAt φ x f γ) (u : Rˣ) :
     LeadAt φ (fun i => u * x i) (u ^ a * f) γ := by
@@ -475,7 +475,7 @@ theorem LeadAt.unit_mul (h : LeadAt φ x f γ) (u : Rˣ) :
     Ideal.mul_mem_left _ (u.val ^ a) hm
 
 /- English proof (translation)
-Use `⟨fun ⟨m, e, hm⟩ => (Submodule.sub_mem_iff_left _ (sum_mem fun α _ => ?_)).1 hm, fun h => ⟨0, fun _ => map_zero φ, by simpa using h⟩⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul (monoVal_mem_pow x α) (hφ (e α))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leadAt_zero_iff (hφ : RingHom.ker φ ≤ Ideal.span (Set.range x)) :
     LeadAt φ x f (0 : MonoDeg ι a → S) ↔ f ∈ Ideal.span (Set.range x) ^ (a + 1) := by
@@ -485,9 +485,9 @@ theorem leadAt_zero_iff (hφ : RingHom.ker φ ≤ Ideal.span (Set.range x)) :
   exact Ideal.mul_mem_mul (monoVal_mem_pow x α) (hφ (e α))
 
 /- English proof (translation)
-Take `⟨m, e, hm⟩` from `h`. Take `⟨m', e', hm'⟩` from `h'`. Use function extensionality and compare the values at `α`. Use `hq a (m - m') (by` as an intermediate fact. Simplify `sub_mem hm' hm) α` using `only [smul_eq_mul, Ideal.mul_top, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib, sub_sub_sub_cancel_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[smul_eq_mul, Ideal.mul_top]`. Rewrite using `[← e, ← e', ← sub_eq_zero, ← map_sub]`. Conclude with `hφ this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeadAt.unique (hq : IsQuasiRegularSeq R x) (hφ : Ideal.span (Set.range x) ≤ RingHom.ker φ)
     (h : LeadAt φ x f γ) (h' : LeadAt φ x f γ') : γ = γ' := by
@@ -524,9 +524,9 @@ variable {hL s hO h} {f f' : H0 p (tw M L l) O}
   {c c' : MonoDeg ι a → sectionsOnClosedSubscheme p (tw M L n) (cutIdeal hL s)}
 
 /- English proof (translation)
-Establish `e₁` using `(e.mul (tr (tw M L n) y (twIdx n i j) (twIdx n i' j')).val).unit_mul (tr L y j j')`. Rewrite `e₁` using `[← funext (secGer_change s j j' y hj hj')]`. Rewrite using `[germ_change _ (twIdx l i' j') y hy _ (mem_tw_U.2 ⟨hi', hj'⟩)]`. Use `e₁ using 1` and compare the differences between its conclusion and the goal. Rewrite using `[tr_tw y (mem_tw_U.2 ⟨hi, hj⟩) (mem_tw_U.2 ⟨hi', hj'⟩), tr_tw y (mem_tw_U.2 ⟨hi, hj⟩) (mem_tw_U.2 ⟨hi', hj'⟩), show tr L y j j' ^ l = tr L y j j' ^ n * tr L y j j' ^ a by rw [← h, zpow_add, zpow_natCast]]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem leadAt_change (h : n + a = l) {S : Type*} [CommRing S] {y : Y}
     {φ : Y.presheaf.stalk y →+* S} (hy : y ∈ O) {i i' : M.ι} {j j' : L.ι} (hi : y ∈ M.U i)
@@ -545,7 +545,7 @@ theorem leadAt_change (h : n + a = l) {S : Type*} [CommRing S] {y : Y}
   ring
 
 /- English proof (translation)
-Introduce `z i j hi hj` and use `by obtain ⟨i', j', hi', hj', e⟩ := e z refine (congrArg (LeadAt _ _ _) (funext fun α => ?_)).mp (leadAt_change h _ hi hj hi' hj' e) have e₁ := mem_pull (J := fun _ => twIdx n i j).2 (mem_tw_U.2 ⟨hi, hj⟩) have e₂ := mem_pull (J := fun _ => twIdx n i' j').2 (mem_tw_U.2 ⟨hi', hj'⟩) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasLead_of_exists (e : ∀ z, ∃ i j hi hj, LeadIn hL s hO f c z i j hi hj) :
     HasLead hL s hO h f c := fun z i j hi hj => by
@@ -556,7 +556,7 @@ theorem hasLead_of_exists (e : ∀ z, ∃ i j hi hj, LeadIn hL s hO f c z i j hi
   exact ((germ_change _ _ z _ e₁ e₂ (c α)).trans (by rw [tr_pull _ _ z e₁ e₂]; rfl)).symm
 
 /- English proof (translation)
-Introduce `z i j hi hj` and use `(congrArg₂ (LeadAt _ _) (map_add _ _ _).symm (funext fun _ => (map_add _ _ _).symm)).mp ((e z i j hi hj).add (e' z i j hi hj))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasLead.add (e : HasLead hL s hO h f c) (e' : HasLead hL s hO h f' c') :
     HasLead hL s hO h (f + f') (c + c') := fun z i j hi hj =>
@@ -564,7 +564,7 @@ theorem HasLead.add (e : HasLead hL s hO h f c) (e' : HasLead hL s hO h f' c') :
     ((e z i j hi hj).add (e' z i j hi hj))
 
 /- English proof (translation)
-Introduce `z i j hi hj` and use `(congrArg₂ (LeadAt _ _) (germ_smul _ _ _ _ _ _).symm (funext fun _ => (congrArg (· * _) (stalkMap_const _ z r)).trans (germ_smul _ _ _ _ _ _).symm)).mp ((e z i j hi hj).mul (const p _ r))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasLead.smul (e : HasLead hL s hO h f c) (r : k) : HasLead hL s hO h (r • f) (r • c) :=
   fun z i j hi hj => (congrArg₂ (LeadAt _ _) (germ_smul _ _ _ _ _ _).symm (funext fun _ =>
@@ -572,9 +572,9 @@ theorem HasLead.smul (e : HasLead hL s hO h f c) (r : k) : HasLead hL s hO h (r 
       ((e z i j hi hj).mul (const p _ r))
 
 /- English proof (translation)
-Establish `key (z i j hi hj) : LeadIn hL s hO f (0 : MonoDeg ι a → sectionsOnClosedSubscheme p (tw M L n) _) z i j hi hj ↔ germ (twIdx l i j) _ (hO _ (ι_mem_support _ z)) (mem_tw_U.2 ⟨hi, hj⟩) f ∈ stalkId (cutIdeal hL s) _ ^ (a + 1)`. Rewrite using `[stalkId_cutIdeal hL s j _ hj, ← leadAt_zero_iff ((ker_stalkMap _ z).trans (stalkId_cutIdeal hL s j _ hj)).le]`. Conclude with `iff_of_eq (congrArg (LeadAt _ _ _) (funext fun _ => map_zero _))`. Use `⟨fun e => vanishesTo_of_exists fun y hs _ => ?_, fun e z i j hi hj => (key z i j hi hj).2 (e _ (ι_mem_support _ z) _ _ _)⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `exists_ι_eq hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart hM ((cutIdeal hL s).subschemeι z)`. Take `⟨j, hj⟩` from `exists_chart hL ((cutIdeal hL s).subschemeι z)`. Conclude with `⟨twIdx l i j, _, (key z i j hi hj).1 (e z i j hi hj)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasLead_zero_iff (hM : M.IsLB) :
     HasLead hL s hO h f 0 ↔ VanishesTo (cutIdeal hL s) (a + 1) f := by
@@ -594,7 +594,7 @@ theorem hasLead_zero_iff (hM : M.IsLB) :
 variable (hL s hO h) in
 
 /- English proof (translation)
-Introduce `z i j hi hj` and use `by simp only [LeadIn, map_sum, germ_mulMono hM hL s _ h _ i j _ _ hi hj] exact (congrArg (LeadAt _ _ _) (funext fun α => (germ_resTo hO (fun _ => twIdx n i j) z _ (m α)).symm)).mp (leadAt_sum _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasLead_sum (hM : M.IsLB) (m : MonoDeg ι a → H0 p (tw M L n) O) :
     HasLead hL s hO h (∑ α, mulMono hM hL s α h (m α)) fun α => resTo hO (m α) :=
@@ -609,7 +609,7 @@ def QuasiRegularAlong : Prop :=
   ∀ y ∈ (cutIdeal hL s).support, ∀ j hj, IsQuasiRegularSeq (Y.presheaf.stalk y) (secGer s j y hj)
 
 /- English proof (translation)
-The claim follows from `funext fun α => ext_germ fun z _ => by obtain ⟨i, hi⟩ := exists_chart hM ((cutIdeal hL s).subschemeι z) obtain ⟨j, hj⟩ := exists_chart hL ((cutIdeal hL s).subschemeι z) exact ⟨fun _ => twIdx n i j, _, congrFun (LeadAt.unique (hq _ (ι_mem_support _ z) j hj) ((ker_stalkMap _ z).tra …`.
+A detailed English derivation is pending.
 -/
 theorem HasLead.unique (hM : M.IsLB) (hq : QuasiRegularAlong hL s) (e : HasLead hL s hO h f c)
     (e' : HasLead hL s hO h f c') : c = c' := funext fun α => ext_germ fun z _ => by
@@ -621,15 +621,13 @@ theorem HasLead.unique (hM : M.IsLB) (hq : QuasiRegularAlong hL s) (e : HasLead 
 variable (hO h) in
 
 /- English proof (translation)
-Set `τ` to `{t : Y.affineOpens × M.ι × L.ι // t.1.1 ≤ O ⊓ (tw M L l).U (twIdx l t.2.1 t.2.2)}`. Establish `hi (t : τ) : t.1.1.1 ≤ M.U t.1.2.1` using `fun y hy => (mem_tw_U.1 (t.2 hy).2).1`. Establish `hj (t : τ) : t.1.1.1 ≤ L.U t.1.2.2` using `fun y hy => (mem_tw_U.1 (t.2 hy).2).2`. Establish `ex (t : τ) : ∃ μ : MonoDeg ι a → Γ(Y, t.1.1.1), ∑ α, monoVal (fun i => resG Y (hj t) ((s i).f _)) α.1 • μ α = resG Y t.2 (f.loc _)`. Rewrite using `[← mem_pow_smul_top_iff, ← ideal_cutIdeal hL s, smul_eq_mul, Ideal.mul_top]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `vanishesTo_iff_affine.1 hf _ _ t.2`. Use `choose μ hμ using ex`. Establish `key (t : τ) (z) (hz : (cutIdeal hL s).subschemeι z ∈ t.1.1.1) : LeadAt ((cutIdeal hL s).subschemeι.stalkMap z).hom (secGer s _ _ (hj t hz)) (germ (twIdx l _ _) _ (t.2 hz).1 (mem_tw_U.2 ⟨hi t hz, hj t hz⟩) f) fun α => ((cutIdeal hL s).subschemeι.stalkMap z).hom (ger _ hz (μ t α))`. Establish `e` using `congrArg (ger _ hz) (hμ t)`. Simplify using `only [map_sum, smul_eq_mul, map_mul, map_monoVal, ger_resG] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(congrArg (LeadAt _ _ · _) e).mp (leadAt_sum _)`. Establish `cover (z : (cutIdeal hL s).subscheme) : ∃ t : τ, (cutIdeal hL s).subschemeι z ∈ t.1.1.1`. Take `⟨i, hi⟩` from `exists_chart hM ((cutIdeal hL s).subschemeι z)`. Take `⟨j, hj⟩` from `exists_chart hL ((cutIdeal hL s).subschemeι z)`. Take `⟨W, hW, e⟩` from `exists_affine (memInf (hO _ (ι_mem_support _ z)) ((mem_tw_U (n := l)).2 ⟨hi, hj⟩))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨(W, i, j), e⟩, hW⟩`. Establish `hc (t : τ) : (cutIdeal hL s).subschemeι ⁻¹ᵁ t.1.1.1 ≤ ((tw M L n).pull (cutIdeal hL s).subschemeι).U fun _ => twIdx n t.1.2.1 t.1.2.2` using `fun z hz => mem_pull.2 (mem_tw_U.2 ⟨hi t hz, hj t hz⟩)`. Use `choose c hc' using fun α => exists_of_germs (p := (cutIdeal hL s).subschemeι ≫ p) (O := ⊤) (LB.isLB_pull (isLB_tw hM hL n) _) (fun t : τ => (cutIdeal hL s).subschemeι ⁻¹ᵁ t.1.1.1) (fun t _ => twIdx n t.1.2.1 t.1.2.2) (fun _ => le_top) hc (fun z _ => cover z) (fun t => ((cutIdeal …`. Rewrite using `[ger_appLE, ger_appLE, tr_pull _ _ z (hc t hz) (hc t' hz')]`. Conclude with `congrFun (LeadAt.unique (hq _ (ι_mem_support _ z) _ (hj t hz)) ((ker_stalkMap _ z).trans (stalkId_cutIdeal hL s _ _ (hj t hz))).ge (key t z hz) (leadAt_change h _ (hi t hz) (hj t hz) (hi t' hz') (hj t' hz') (key t' z hz'))) α`.
-
-Use `⟨c, hasLead_of_exists fun z => ?_⟩` and prove the remaining obligations. Take `⟨t, hz⟩` from `cover z`. Conclude with `⟨_, _, hi t hz, hj t hz, (congrArg (LeadAt _ _ _) (funext fun α => ((hc' α t z hz).trans (ger_appLE _ _ _ _ _)).symm)).mp (key t z hz)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hasLead (hM : M.IsLB) (hq : QuasiRegularAlong hL s)
     (hf : VanishesTo (cutIdeal hL s) a f) : ∃ c, HasLead hL s hO h f c := by
@@ -681,7 +679,7 @@ def lead (hM : M.IsLB) (hq : QuasiRegularAlong hL s) : filTop p (tw M L l) O (cu
     ((exists_hasLead hO h hM hq f.2).choose_spec.smul r)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => e ▸ (exists_hasLead hO h hM hq f.2).choose_spec, (exists_hasLead hO h hM hq f.2).choose_spec.unique hM hq⟩`.
+Supply the required witnesses or components.
 -/
 theorem lead_eq_iff (hM : M.IsLB) (hq : QuasiRegularAlong hL s)
     (f : filTop p (tw M L l) O (cutIdeal hL s) a) :
@@ -700,7 +698,7 @@ def dsOn : sectionsOnClosedSubscheme p (tw K.bundle L D) (cutIdeal hL s) :=
   H0.ofSec _ ⊤ (K.dSec s (cutIdeal hL s).subschemeι (vanishesAlong_cutIdeal hL s))
 
 /- English proof (translation)
-The claim follows from `(germ_ofSec _ _ _ _ _).trans (ger_appLE _ _ z _ _)`.
+A detailed English derivation is pending.
 -/
 theorem germ_dsOn (z : (cutIdeal hL s).subscheme) (i : K.bundle.ι) (j : L.ι)
     (hi : (cutIdeal hL s).subschemeι z ∈ K.bundle.U i) (hj : (cutIdeal hL s).subschemeι z ∈ L.U j) :
@@ -709,7 +707,7 @@ theorem germ_dsOn (z : (cutIdeal hL s).subscheme) (i : K.bundle.ι) (j : L.ι)
   (germ_ofSec _ _ _ _ _).trans (ger_appLE _ _ z _ _)
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ x ⁻¹ᵁ ((tw K.bundle L D).pull (cutIdeal hL s).subschemeι).U fun _ => twIdx D i j` using `fun z hz => mem_pull.2 (h hz)`. Use `(val_ofSec x _ _ h' _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun g => (g ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom (K.jacFun s i j)) (Scheme.Hom.appLE_comp_appLE x _ _ _ ⊤ _ h')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valOn_dsOn {R : Type} [CommRing R] (x : Sp R ⟶ (cutIdeal hL s).subscheme) (i : K.bundle.ι)
     (j : L.ι) (hi : ⊤ ≤ (x ≫ (cutIdeal hL s).subschemeι) ⁻¹ᵁ K.bundle.U i)
@@ -728,7 +726,7 @@ variable (hS : Etale ((cutIdeal hL s).subschemeι ≫ p))
 include hS in
 
 /- English proof (translation)
-The claim follows from `nowhereZero_of_exists fun z _ => by obtain ⟨i, hi⟩ := exists_chart K.isLB ((cutIdeal hL s).subschemeι z) obtain ⟨j, hj⟩ := exists_chart hL ((cutIdeal hL s).subschemeι z) exact ⟨fun _ => twIdx D i j, _, (congrArg IsUnit (germ_dsOn K hL s z i j hi hj)).mpr ((isUnit_ger_jacFun hL K …`.
+A detailed English derivation is pending.
 -/
 theorem nowhereZero_dsOn : NowhereZero (dsOn K hL s) := nowhereZero_of_exists fun z _ => by
   obtain ⟨i, hi⟩ := exists_chart K.isLB ((cutIdeal hL s).subschemeι z)
@@ -740,7 +738,7 @@ omit K in
 include hS in
 
 /- English proof (translation)
-Introduce `_ hy j hj` and use `isQuasiRegularSeq_secGer hL s (p := p) inferInstance hy j hj`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem quasiRegularAlong_of_etale : QuasiRegularAlong hL s := fun _ hy j hj =>
   isQuasiRegularSeq_secGer hL s (p := p) inferInstance hy j hj
@@ -756,7 +754,7 @@ def resDs (hO : SuppIn O (cutIdeal hL s)) (h : n + D = l) :
   (mulDs K hL hB s hS h).symm.toLinearMap ∘ₗ resTo hO
 
 /- English proof (translation)
-The claim follows from `(mulDs K hL hB s hS h).symm_apply_eq`.
+A detailed English derivation is pending.
 -/
 theorem resDs_eq_iff (hO : SuppIn O (cutIdeal hL s)) (h : n + D = l)
     (f : H0 p (tw (tens K.bundle B) L l) O) (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s)) :
@@ -776,7 +774,7 @@ def mulEOn (h : n + D = l) : sectionsOnClosedSubscheme p (tw (tens K.bundle B) L
   ((quotChart K.isLB hA hB hL h).pull _).mulEquiv (nowhereZero_secOn he)
 
 /- English proof (translation)
-Rewrite using `[mulE, resTo_mul, resTo_ofSec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resTo_mulE (hO : SuppIn O (cutIdeal hL s)) (h : n + D = l)
     (f : H0 p (tw (tens K.bundle B) L l) O) :
@@ -791,7 +789,7 @@ def mulEDs : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s) ≃ₗ[k]
   (mulDs K hL hB s hS rfl).trans (mulEOn K hL hA hB s e he rfl)
 
 /- English proof (translation)
-Rewrite using `[map_mul, mul_assoc]`. Conclude with `(((quotChart K.isLB hA hB hL rfl).pull _).germ_mul _ _ (i, a, b, j) z _ (mem_pull.2 (memInf ha (mem_tw_U.2 ⟨hb, hj⟩))) (mem_pull.2 ((mem_tw_U (M := tens K.bundle B)).2 ⟨⟨hi, hb⟩, hj⟩)) _).trans (congrArg₂ (· * ·) (germ_secOn _ z _ e) ((((adjChart K.isLB hB hL rfl).pull _).germ_mu …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_mulEDs (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s)) (z : (cutIdeal hL s).subscheme)
     (i : K.bundle.ι) (a : A.ι) (b : B.ι) (j : L.ι)
@@ -814,7 +812,7 @@ theorem germ_mulEDs (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s))
           (congrArg (· * _) (germ_dsOn K hL s z i j hi hj))))
 
 /- English proof (translation)
-Rewrite using `[mul_assoc]`. Conclude with `(valOn_mul (quotChart K.isLB hA hB hL rfl) _ _ (i, a, b, j) x h₂ (fun z hz => mem_tw_U.2 ⟨⟨hi hz, (h₃ hz).1⟩, hj hz⟩) h₁).trans (congrArg₂ (· * ·) (valOn_secOn x _ _ e) ((valOn_mul (adjChart K.isLB hB hL rfl) _ g (i, b, j) x (fun z hz => mem_tw_U.2 ⟨hi hz, hj hz⟩) h₃ _).trans (co …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valOn_mulEDs {R : Type} [CommRing R] (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s))
     (x : Sp R ⟶ (cutIdeal hL s).subscheme) (i : K.bundle.ι) (a : A.ι) (b : B.ι) (j : L.ι)
@@ -835,7 +833,7 @@ theorem valOn_mulEDs {R : Type} [CommRing R] (g : sectionsOnClosedSubscheme p (t
         (congrArg (· * _) (valOn_dsOn K hL s x i j hi hj _))))
 
 /- English proof (translation)
-The claim follows from `ext_germ fun z _ => by obtain ⟨⟨i, a, b, j⟩, ⟨ha, -⟩, h', -⟩ := (quotChart K.isLB hA hB hL (n := n) (d := 0) rfl).cover ((cutIdeal hL s).subschemeι z) obtain ⟨⟨hi, hb⟩, hj⟩ := mem_tw_U.1 h' refine ⟨_, _, (germ_mulEDs K hL hA hB s hS e he _ z i a b j hi ha hb hj).trans ?_⟩ refine …`.
+A detailed English derivation is pending.
 -/
 theorem mulEDs_mulSecOn (w : L.Sec) (h : n + 1 = l) (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s)) :
     mulEDs K hL hA hB s hS l e he (mulSecOn hB hL w h g) =
@@ -859,21 +857,21 @@ def Res : H0 p (tw (tens K.bundle A) L n) O →ₗ[k] sectionsOnClosedSubscheme 
   (mulEDs K hL hA hB s hS n e he).symm.toLinearMap ∘ₗ resTo hO
 
 /- English proof (translation)
-The claim follows from `(mulEDs K hL hA hB s hS n e he).symm_apply_eq`.
+A detailed English derivation is pending.
 -/
 theorem Res_eq_iff (m : H0 p (tw (tens K.bundle A) L n) O) (g : sectionsOnClosedSubscheme p (tw B L n) (cutIdeal hL s)) :
     Res K hL hA hB s hS n e he hO m = g ↔ resTo hO m = mulEDs K hL hA hB s hS n e he g :=
   (mulEDs K hL hA hB s hS n e he).symm_apply_eq
 
 /- English proof (translation)
-The claim follows from `((Res_eq_iff K hL hA hB s hS e he hO m _).1 rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem mulEDs_Res (m : H0 p (tw (tens K.bundle A) L n) O) :
     mulEDs K hL hA hB s hS n e he (Res K hL hA hB s hS n e he hO m) = resTo hO m :=
   ((Res_eq_iff K hL hA hB s hS e he hO m _).1 rfl).symm
 
 /- English proof (translation)
-Rewrite using `[Res_eq_iff, mulEDs_mulSecOn, mulEDs_Res, resTo_mulSec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Res_mulSec (w : L.Sec) (h : n + 1 = l) (m : H0 p (tw (tens K.bundle A) L n) O) :
     Res K hL hA hB s hS l e he hO (mulSec (isLB_tens K.isLB hA) hL w h m) =
@@ -881,7 +879,7 @@ theorem Res_mulSec (w : L.Sec) (h : n + 1 = l) (m : H0 p (tw (tens K.bundle A) L
   rw [Res_eq_iff, mulEDs_mulSecOn, mulEDs_Res, resTo_mulSec]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Res_eq_iff, resTo_mulE K hL hA hB s e he]`. Conclude with `congrArg _ ((resDs_eq_iff K hL hB s hS hO rfl f _).1 rfl)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Res_mulE (h : n + D = l) (f : H0 p (tw (tens K.bundle B) L l) O) :
     Res K hL hA hB s hS n e he hO (mulE K hL hA hB e h f) = resDs K hL hB s hS hO h f := by
@@ -890,7 +888,7 @@ theorem Res_mulE (h : n + D = l) (f : H0 p (tw (tens K.bundle B) L l) O) :
   exact congrArg _ ((resDs_eq_iff K hL hB s hS hO rfl f _).1 rfl)
 
 /- English proof (translation)
-The claim follows from `congrArg (mulEDs K hL hA hB s hS n e he).symm (resTo_restr hO' h m)`.
+A detailed English derivation is pending.
 -/
 theorem Res_restr {O' : Y.Opens} (hO' : SuppIn O' (cutIdeal hL s)) (h : O' ≤ O)
     (m : H0 p (tw (tens K.bundle A) L n) O) :
@@ -898,7 +896,7 @@ theorem Res_restr {O' : Y.Opens} (hO' : SuppIn O' (cutIdeal hL s)) (h : O' ≤ O
   congrArg (mulEDs K hL hA hB s hS n e he).symm (resTo_restr hO' h m)
 
 /- English proof (translation)
-Rewrite using `[Res_eq_iff, map_zero, resTo_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Res_eq_zero_iff (m : H0 p (tw (tens K.bundle A) L n) O) :
     Res K hL hA hB s hS n e he hO m = 0 ↔ VanishesTo (cutIdeal hL s) 1 m := by
@@ -923,7 +921,7 @@ def sym : Fil (cutIdeal hL s) a V →ₗ[k] SymTarget p B hL s a n :=
 variable {V}
 
 /- English proof (translation)
-The claim follows from `(funext_iff.trans ((forall_congr' fun _ => (mulEDs K hL hA hB s hS n e he).symm_apply_eq).trans funext_iff.symm)).trans (lead_eq_iff (isLB_tens K.isLB hA) (quasiRegularAlong_of_etale hL s hS) _)`.
+A detailed English derivation is pending.
 -/
 theorem sym_eq_iff (f : Fil (cutIdeal hL s) a V) (g : SymTarget p B hL s a n) :
     sym K hL hA hB s hS e he hO h V f = g ↔ HasSymbol K hL hA hB s hS e he hO h f.1 g :=
@@ -932,7 +930,7 @@ theorem sym_eq_iff (f : Fil (cutIdeal hL s) a V) (g : SymTarget p B hL s a n) :
       (lead_eq_iff (isLB_tens K.isLB hA) (quasiRegularAlong_of_etale hL s hS) _)
 
 /- English proof (translation)
-Rewrite using `[sym_eq_iff, mem_Fil, and_iff_right (Fil_le f.2), ← hasLead_zero_iff (hO := hO) (h := h) (isLB_tens K.isLB hA)]`. Conclude with `iff_of_eq (congrArg _ (funext fun _ => map_zero _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sym_eq_zero_iff (f : Fil (cutIdeal hL s) a V) :
     sym K hL hA hB s hS e he hO h V f = 0 ↔ f.1 ∈ Fil (cutIdeal hL s) (a + 1) V := by
@@ -943,14 +941,14 @@ theorem sym_eq_zero_iff (f : Fil (cutIdeal hL s) a V) :
 variable (V) in
 
 /- English proof (translation)
-The claim follows from `Submodule.ext (sym_eq_zero_iff K hL hA hB s hS e he hO h)`.
+A detailed English derivation is pending.
 -/
 theorem ker_sym : LinearMap.ker (sym K hL hA hB s hS e he hO h V) =
     (Fil (cutIdeal hL s) (a + 1) V).submoduleOf (Fil (cutIdeal hL s) a V) :=
   Submodule.ext (sym_eq_zero_iff K hL hA hB s hS e he hO h)
 
 /- English proof (translation)
-Rewrite using `[sym_eq_iff, hf, HasSymbol]`. Simplify using `only [mulEDs_Res]`. Conclude with `hasLead_sum hL s hO h _ m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sym_sum (m : MonoDeg (Fin D) a → H0 p (tw (tens K.bundle A) L n) O)
     (f : Fil (cutIdeal hL s) a V) (hf : f.1 = ∑ α, mulMono (isLB_tens K.isLB hA) hL s α h (m α)) :
@@ -960,7 +958,7 @@ theorem sym_sum (m : MonoDeg (Fin D) a → H0 p (tw (tens K.bundle A) L n) O)
   exact hasLead_sum hL s hO h _ m
 
 /- English proof (translation)
-Rewrite using `[sym_sum K hL hA hB s hS e he hO h (Pi.single α m) f]`. Conclude with `funext fun β => Pi.apply_single (fun _ => Res K hL hA hB s hS n e he hO) (fun _ => map_zero _) α m β`. Rewrite using `[hf, Finset.sum_eq_single α (fun β _ hβ => by rw [Pi.single_eq_of_ne hβ, map_zero]) (by simp), Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sym_mulMono (α : MonoDeg (Fin D) a) (m : H0 p (tw (tens K.bundle A) L n) O)
     (f : Fil (cutIdeal hL s) a V) (hf : f.1 = mulMono (isLB_tens K.isLB hA) hL s α h m) :
@@ -984,7 +982,7 @@ variable {k' : Type} [CommRing k'] {p : Y ⟶ Sp k} {q : T ⟶ Sp k'} {φ : k �
   {A B : LB Y} {A' B' : LB T} {O : Y.Opens} {W : T.Opens}
 
 /- English proof (translation)
-Establish `h` using `memInf (a.le i hi) (a.le j hj)`. Use `(a.g z i j hi hj).trans (Units.ext ((gm_val r z _ h _).trans ?_))` and prove the remaining obligations. Conclude with `(Scheme.Hom.germ_stalkMap_apply r _ z h _).symm.trans (congrArg (r.stalkMap z).hom (val_tr B _ h).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tr_chartPull (a : ChartPull B' B r) (z : T) {i j : B'.ι} (hi : z ∈ B'.U i)
     (hj : z ∈ B'.U j) : tr B' z i j =
@@ -1035,7 +1033,7 @@ def pullChartFun (a : ChartPull B' B r) (q : T ⟶ Sp k') (h : W ≤ r ⁻¹ᵁ 
             (inf_le_inf h (a.le j)) z (memInf hz.1.1 hz.2) (f.loc _)).symm))
 
 /- English proof (translation)
-The claim follows from `ger_appLE r _ z (memInf hz hi) _`.
+A detailed English derivation is pending.
 -/
 theorem germ_pullChartFun (a : ChartPull B' B r) (h : W ≤ r ⁻¹ᵁ O) (f : H0 p B O) (i : B'.ι) (z : T)
     (hz : z ∈ W) (hi : z ∈ B'.U i) : germ i z hz hi (pullChartFun a q h f) =
@@ -1043,9 +1041,9 @@ theorem germ_pullChartFun (a : ChartPull B' B r) (h : W ≤ r ⁻¹ᵁ O) (f : H
   ger_appLE r _ z (memInf hz hi) _
 
 /- English proof (translation)
-Rewrite using `[stalkMap_const, hq]`. Use `congrArg (ger (U := ⊤) z trivial) ?_` and prove the remaining obligations. Establish `e₂` using `Scheme.Hom.appLE_comp_appLE q (spMap φ) ⊤ ⊤ ⊤ le_top le_top`. Establish `e₃` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ)`. Rewrite `e₃` using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₅` using `((congrArg (· ≫ q.appLE ⊤ ⊤ le_top) e₃).trans (Category.assoc _ _ _)).trans (congrArg (_ ≫ ·) e₂)`. Conclude with `(congrArg (fun g => g.hom c) e₅).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalkMap_const_of_comm (hq : r ≫ p = q ≫ spMap φ) (z : T) (c : k) :
     (r.stalkMap z).hom (const p (r z) c) = const q z (φ c) := by
@@ -1068,7 +1066,7 @@ def pullChart (a : ChartPull B' B r) (hq : r ≫ p = q ≫ spMap φ) (h : W ≤ 
     exact congrArg _ (germ_smul _ _ _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `germ_pullChartFun a h f i z hz hi`.
+A detailed English derivation is pending.
 -/
 theorem germ_pullChart (a : ChartPull B' B r) (hq : r ≫ p = q ≫ spMap φ) (h : W ≤ r ⁻¹ᵁ O)
     (f : H0 p B O) (i : B'.ι) (z : T) (hz : z ∈ W) (hi : z ∈ B'.U i) :
@@ -1077,7 +1075,7 @@ theorem germ_pullChart (a : ChartPull B' B r) (hq : r ≫ p = q ≫ spMap φ) (h
   germ_pullChartFun a h f i z hz hi
 
 /- English proof (translation)
-Introduce `z _ hz i hi` and use `by rw [germ_pullChart] refine Ideal.pow_right_mono (hI z) n ?_ rw [← Ideal.map_pow] exact Ideal.mem_map_of_mem _ (vanishesTo_iff_forall.1 hf _ _ _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem VanishesTo.pullChart {I : Y.IdealSheafData} {J : T.IdealSheafData} {n : ℕ} {f : H0 p B O}
     (hf : VanishesTo I n f) (a : ChartPull B' B r) (hq : r ≫ p = q ≫ spMap φ) (h : W ≤ r ⁻¹ᵁ O)
@@ -1099,14 +1097,14 @@ variable {D : ℕ}
 abbrev triv (k : Type) [CommRing k] (D : ℕ) : LB (Sp (MvPolynomial (Fin D) k)) := Out.Inh.trivLB _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨iSup_const (ι := PUnit), fun _ => map_one _, fun _ _ _ => by exact (congrArg₂ (· * ·) (map_one _) (map_one _)).trans ((mul_one _).trans (map_one _).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLB_triv : (triv k D).IsLB :=
   ⟨iSup_const (ι := PUnit), fun _ => map_one _, fun _ _ _ => by
     exact (congrArg₂ (· * ·) (map_one _) (map_one _)).trans ((mul_one _).trans (map_one _).symm)⟩
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin D) k))).inv`.
+A detailed English derivation is pending.
 -/
 theorem bijective_polyFn : Function.Bijective (polyFn (k := k) (D := D)) :=
   ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin D) k))).inv
@@ -1115,7 +1113,7 @@ abbrev ideal (g : Fin D → MvPolynomial (Fin D) k) : (Sp (MvPolynomial (Fin D) 
   cutIdeal isLB_triv fun a => polySec (g a)
 
 /- English proof (translation)
-Rewrite using `[ideal_cutIdeal _ _ _ PUnit.unit le_rfl, Ideal.map_span, ← Set.range_comp]`. Conclude with `congrArg (fun f => Ideal.span (Set.range f)) (funext fun _ => resG_self _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_top (g : Fin D → MvPolynomial (Fin D) k) :
     (ideal g).ideal ⟨⊤, isAffineOpen_top _⟩ = (Ideal.span (Set.range g)).map polyFn := by
@@ -1123,7 +1121,7 @@ theorem ideal_top (g : Fin D → MvPolynomial (Fin D) k) :
   exact congrArg (fun f => Ideal.span (Set.range f)) (funext fun _ => resG_self _ _)
 
 /- English proof (translation)
-Rewrite using `[← Ideal.comap_map_of_bijective _ bijective_polyFn (I := _ ^ a), Ideal.mem_comap, Ideal.map_pow, ← ideal_top]`. Use `Iff.trans ?_ (mem_ideal_iff_ger (ideal g ^ a) ⟨⊤, isAffineOpen_top _⟩ _).symm` and prove the remaining obligations. Simplify using `only [vanishesTo_iff_forall, germ_ofSec, stalkId_pow]`. Conclude with `⟨fun h y hy => h y hy PUnit.unit hy, fun h y hy _ _ => h y hy⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem vanishesTo_iff (g : Fin D → MvPolynomial (Fin D) k) (a : ℕ) (f : MvPolynomial (Fin D) k) :
     VanishesTo (ideal g) a (H0.ofSec (affStr k D) ⊤ (polySec f)) ↔
@@ -1135,11 +1133,11 @@ theorem vanishesTo_iff (g : Fin D → MvPolynomial (Fin D) k) (a : ℕ) (f : MvP
   exact ⟨fun h y hy => h y hy PUnit.unit hy, fun h y hy _ _ => h y hy⟩
 
 /- English proof (translation)
-Establish `hk (f : MvPolynomial (Fin D) k) : ((ideal g).subschemeι.app ⊤).hom (polyFn f) = 0 ↔ constantCoeff f = 0`. Rewrite using `[← RingHom.mem_ker, (ideal g).ker_subschemeι_app ⟨⊤, isAffineOpen_top _⟩, ideal_top, hg, ← Ideal.mem_comap, Ideal.comap_map_of_bijective _ bijective_polyFn, ← pow_one (Ideal.span _)]`. Use `(mem_pow_idealOfVars_iff' 1 f).trans ?_` and prove the remaining obligations. Simplify using `[constantCoeff_eq, Finsupp.degree_eq_zero_iff]`. Establish `hk' (f f' : MvPolynomial (Fin D) k) : ((ideal g).subschemeι.app ⊤).hom (polyFn f) = ((ideal g).subschemeι.app ⊤).hom (polyFn f') ↔ constantCoeff f = constantCoeff f'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub, hk, map_sub, sub_eq_zero]`. Establish `he (c : k) : (((ideal g).subschemeι ≫ affStr k D).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c) = ((ideal g).subschemeι.app ⊤).hom (polyFn (C c))` using `congrArg ((ideal g).subschemeι.app ⊤).hom (congrArg (fun q => CommRingCat.Hom.hom q c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap k (MvPolynomial (Fin D) k))))).symm`. Establish `: IsAffine (ideal g).subscheme` using `isAffine_of_isAffineHom (ideal g).subschemeι`. It suffices to establish `IsIso ((ideal g).subschemeι ≫ affStr k D).appTop from (MorphismProperty.arrow_mk_iso_iff (MorphismProperty.isomorphisms _) (arrowIsoSpecΓOfIsAffine _)).mpr (inferInstanceAs (IsIso (Spec.map _)))`. Rewrite using `[ConcreteCategory.isIso_iff_bijective, ← Function.Bijective.of_comp_iff _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of k)).inv)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun c c' e => ?_, fun b => ?_⟩` and prove the remaining obligations. Simplify using `using (hk' _ _).1 ((he c).symm.trans (e.trans (he c')))`. Take `⟨b, rfl⟩` from `(ideal g).subschemeι_app_surjective ⟨⊤, isAffineOpen_top _⟩ b`. Take `⟨f, rfl⟩` from `bijective_polyFn.2 b`. Conclude with `⟨constantCoeff f, (he _).trans ((hk' _ _).2 (by simp))⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isIso_of_span {g : Fin D → MvPolynomial (Fin D) k}
     (hg : Ideal.span (Set.range g) = Ideal.span (Set.range X)) :
@@ -1172,7 +1170,7 @@ theorem isIso_of_span {g : Fin D → MvPolynomial (Fin D) k}
     exact ⟨constantCoeff f, (he _).trans ((hk' _ _).2 (by simp))⟩
 
 /- English proof (translation)
-The claim follows from `have := isIso_of_span hg inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem etale_of_span {g : Fin D → MvPolynomial (Fin D) k}
     (hg : Ideal.span (Set.range g) = Ideal.span (Set.range X)) :
@@ -1188,12 +1186,12 @@ def funSec {N : LB Y} (h : ∀ y i j, y ∈ N.U i → y ∈ N.U j → tr N y i j
       ger_resG]
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem tr_triv (y) (i j : (triv k D).ι) : tr (triv k D) y i j = 1 := map_one _
 
 /- English proof (translation)
-The claim follows from `mem_tw_U.2 ⟨trivial, trivial⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_tw_triv (n : ℤ) (y : Sp (MvPolynomial (Fin D) k)) :
     y ∈ (tw (triv k D) (triv k D) n).U (twIdx n PUnit.unit PUnit.unit) :=
@@ -1205,7 +1203,7 @@ def one : (LB.div (triv k D) (tw (triv k D) (triv k D) D)).Sec :=
     simp only [tr_triv, one_zpow, mul_one, inv_one]) 1
 
 /- English proof (translation)
-Introduce `y _` and use `(isUnit_ger_iff (i := (PUnit.unit, twIdx D PUnit.unit PUnit.unit)) _ (memInf (Opens.mem_top y) (mem_tw_triv D y))).1 ((isUnit_one.map _).map _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppIn_one (I) : SuppIn (nonzeroLocus (one (k := k) (D := D))) I := fun y _ =>
   (isUnit_ger_iff (i := (PUnit.unit, twIdx D PUnit.unit PUnit.unit)) _
@@ -1220,9 +1218,9 @@ def form (n : ℤ) (f : MvPolynomial (Fin D) k) :
     simp only [tr_triv, one_zpow, mul_one]) (polyFn f))
 
 /- English proof (translation)
-Establish `h₁ : ∀ y, y ∈ (tw (tens (affineSpace k D).bundle (triv k D)) (triv k D) n).U (twIdx (M` using `tens (affineSpace k D).bundle (triv k D)) n (PUnit.unit, PUnit.unit) PUnit.unit) := fun _ => mem_tw_U.2 ⟨⟨trivial, trivial⟩, trivial⟩`. Establish `e` using `valOn_mulEDs (affineSpace k D) isLB_triv isLB_triv isLB_triv _ hS one (suppIn_one _) (Res _ isLB_triv isLB_triv isLB_triv _ hS n one (suppIn_one _) suppIn_top (form n f)) x PUnit.unit PUnit.unit PUnit.unit PUnit.unit le_top le_top (fun _ _ => h₁ _) (fun _ _ => memInf (Opens.mem_t …`. Rewrite `e` using `[mulEDs_Res]`. Use `replace e := (valOn_resTo _ _ _ _ le_top _).symm.trans e`. Establish `key (y : Sp R ⟶ Sp (MvPolynomial (Fin D) k)) (hy : y = spMap φ) : (affineSpace k D).jacVal (fun a => polySec (g a)) y PUnit.unit PUnit.unit le_top le_top = φ (Matrix.of fun a b => pderiv b (g a)).det ∧ evalPt y ⊤ le_top (polyFn f) = φ f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hy` using the available equality. Conclude with `⟨jacVal_affineSpace k D φ g, evalPt_spMap φ f⟩`. Use `Eq.trans ?_ ((e.symm.trans ((val_ofSec _ _ _ _ _).trans (evalPt_res _ le_top le_top _ _))).trans (key _ hx).2)` and prove the remaining obligations. Conclude with `congrArg (· * _) ((key _ hx).1.symm.trans ((one_mul _).symm.trans (congrArg (· * _) ((congrArg _ (map_one _)).trans (map_one _)).symm)))`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem det_mul_valOn_Res {R : Type} [CommRing R] {g : Fin D → MvPolynomial (Fin D) k}
     (hS : Etale ((ideal g).subschemeι ≫ affStr k D)) (n : ℤ) (f : MvPolynomial (Fin D) k)
@@ -1253,9 +1251,9 @@ theorem det_mul_valOn_Res {R : Type} [CommRing R] {g : Fin D → MvPolynomial (F
     (congrArg (· * _) ((congrArg _ (map_one _)).trans (map_one _)).symm)))
 
 /- English proof (translation)
-Simplify using `only [vanishesTo_iff]`. Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul (Ideal.subset_span ⟨0, rfl⟩) (Ideal.subset_span ⟨1, rfl⟩)`. Use `(mem_pow_idealOfVars_iff' 3 _).1 h (Finsupp.single 0 1 + Finsupp.single 1 1) (by simp)` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[X, monomial_mul] at this`.
+A detailed English derivation is pending.
 -/
 example : VanishesTo (ideal X) 2 (H0.ofSec (affStr ℚ 2) ⊤ (polySec (X 0 * X 1))) ∧
     ¬ VanishesTo (ideal X) 3 (H0.ofSec (affStr ℚ 2) ⊤ (polySec (X 0 * X 1))) := by
@@ -1267,7 +1265,7 @@ example : VanishesTo (ideal X) 2 (H0.ofSec (affStr ℚ 2) ⊤ (polySec (X 0 * X 
   simp [X, monomial_mul] at this
 
 /- English proof (translation)
-Rewrite using `[← det_mul_valOn_Res hS 0 f x φ hx]`. Simplify using `[Matrix.det_fin_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {R : Type} [CommRing R] (hS : Etale ((ideal ![X 1, X 0]).subschemeι ≫ affStr k 2))
     (f : MvPolynomial (Fin 2) k) (x : Sp R ⟶ (ideal ![X 1, X 0]).subscheme)
@@ -1279,7 +1277,7 @@ example {R : Type} [CommRing R] (hS : Etale ((ideal ![X 1, X 0]).subschemeι ≫
   simp [Matrix.det_fin_two]
 
 /- English proof (translation)
-The claim follows from `etale_of_span (congrArg Ideal.span (by simp [Set.pair_comm, Set.ext_iff, Fin.exists_fin_two, eq_comm, or_comm]))`.
+A detailed English derivation is pending.
 -/
 example : Etale ((ideal ![X 1, X 0]).subschemeι ≫ affStr k 2) :=
   etale_of_span (congrArg Ideal.span (by simp [Set.pair_comm, Set.ext_iff, Fin.exists_fin_two, eq_comm, or_comm]))

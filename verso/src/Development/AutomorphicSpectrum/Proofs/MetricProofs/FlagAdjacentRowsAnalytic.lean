@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Pr
 
 /- English proof (translation)
-Use `⟨hf.1.comp hg.1, fun j k t ht => ?_⟩` and prove the remaining obligations. Take `⟨ht1, ht2⟩` from `ht`. Take `⟨m, hm⟩` from `B.cover (g ((C.chart j).symm t))`. Establish `h1 : AnalyticAt ℂ (B.chart m ∘ g ∘ (C.chart j).symm) t` using `hg.2 j m t ⟨ht1, hm⟩`. Establish `hu : (B.chart m).symm ((B.chart m ∘ g ∘ (C.chart j).symm) t) = g ((C.chart j).symm t)` using `(B.chart m).left_inv hm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : AnalyticAt ℂ (A.chart k ∘ f ∘ (B.chart m).symm) ((B.chart m ∘ g ∘ (C.chart j).symm) t)` using `hf.2 m k _ ⟨(B.chart m).map_source hm, by`. Rewrite using `[Set.mem_preimage, hu]`. Conclude with `ht2⟩`. Use `(h2.comp h1).congr ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (g ∘ (C.chart j).symm) t` using `hg.1.continuousAt.comp ((C.chart j).continuousAt_symm ht1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hc ((B.chart m).open_source.mem_nhds hm)] with t' ht'`. Establish `ht'' : g ((C.chart j).symm t') ∈ (B.chart m).source` using `ht'`. Simplify using `only [Function.comp]`. Rewrite using `[(B.chart m).left_inv ht'']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holoMap_comp' {e₁ e₂ e₃ : ℕ} {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y]
     [TopologicalSpace Z] {C : FinHolAtlas e₁ Z} {B : FinHolAtlas e₂ Y} {A : FinHolAtlas e₃ X}
@@ -39,9 +39,9 @@ theorem holoMap_comp' {e₁ e₂ e₃ : ℕ} {X Y Z : Type} [TopologicalSpace X]
   rw [(B.chart m).left_inv ht'']
 
 /- English proof (translation)
-Introduce `u w huw`. Take `⟨c, hc⟩` from `Set.ncard_eq_one.1 (hd.2.2.2.2.1 (π u) (Set.notMem_empty _))`. Establish `hu : u ∈ π ⁻¹' {π u}` using `rfl`. Establish `hw : w ∈ π ⁻¹' {π u}` using `huw.symm`. Rewrite `hu`, `hw` using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hu.trans hw.symm`.
+A detailed English derivation is pending.
 -/
 theorem injective_of_degree_one {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {A : FinHolAtlas e X} {B : FinHolAtlas e Y} {π : Y → X} (hd : IsDegreeOff A B π 1 ∅) :
@@ -56,7 +56,7 @@ theorem injective_of_degree_one {e : ℕ} {X Y : Type} [TopologicalSpace X] [Top
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Conclude with `Proj.holoMap_of_blockProj K ι K' ι' κ v P P' J' D D' R R' hb hP`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_holo_of_centre {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
     (κ : K → K') (v : (Σ k, ι k) → (Σ k, ι' k)) {P : Ideal (MRing ι)} {J : Ideal (MRing ι)}
@@ -67,9 +67,9 @@ theorem exists_holo_of_centre {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ 
   exact Proj.holoMap_of_blockProj K ι K' ι' κ v P P' J' D D' R R' hb hP
 
 /- English proof (translation)
-Use `⟨Option.some_injective _, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, m⟩ ⟨k', m'⟩ h`. Establish `h1 : k = k'` using `Option.some.inj (congrArg Sigma.fst h)`. Substitute `h1` using the available equality. Establish `h2 : m = m'` using `eq_of_heq (Sigma.mk.inj h).2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Introduce and unpack `⟨o, m⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, m⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isBlockMap_v₀ (k₀ : K) :
     IsBlockMap (some : K → Option K) (v₀ (ι := ι) k₀) := by
@@ -85,23 +85,23 @@ theorem isBlockMap_v₀ (k₀ : K) :
 def κ₁ (k₀ k : K) : Option K := if k = k₀ then none else some k
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u w h`. Apply the tactic sequence `by_cases hu : u = k₀ <;> by_cases hw : w = k₀ <;> simp_all [κ₁]`. Introduce and unpack `⟨k, m⟩ ⟨k', m'⟩ h`. Distinguish the cases in `hk : k = k₀`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Distinguish the cases in `hk' : k' = k`. Substitute `hk'` using the available equality. Rewrite `h` using `[v₁_self, v₁_self]`. Establish `h2 : m = m'` using `eq_of_heq (Sigma.mk.inj h).2`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Rewrite `h` using `[v₁_self, v₁_ne (p := ⟨k', m'⟩) hk']`. Conclude with `absurd (congrArg Sigma.fst h) (by simp)`. Distinguish the cases in `hk' : k' = k₀`. Substitute `hk'` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[v₁_self, v₁_ne (p := ⟨k, m⟩) hk]`. Conclude with `absurd (congrArg Sigma.fst h) (by simp)`. Rewrite `h` using `[v₁_ne (p := ⟨k, m⟩) hk, v₁_ne (p := ⟨k', m'⟩) hk']`. Establish `h1 : k = k'` using `Option.some.inj (congrArg Sigma.fst h)`. Substitute `h1` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : m = m'` using `eq_of_heq (Sigma.mk.inj h).2`. Rewrite using `[h2]`. Introduce and unpack `⟨k, m⟩`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[v₁_self]`. Simplify using `[κ₁]`. Rewrite using `[v₁_ne (p := ⟨k, m⟩) hk]`. Simplify using `[κ₁, hk]`. Introduce and unpack `⟨o, m⟩ ⟨k, hk⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `e : k = k₀`. Substitute `e` using the available equality. Establish `ho : o = none`. Establish `hk' : κ₁ k k = o` using `hk`. Rewrite using `[← hk']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[κ₁]`. Substitute `ho` using the available equality. Conclude with `⟨⟨k, m⟩, v₁_self k m⟩`. Establish `ho : o = some k`. Establish `hk' : κ₁ k₀ k = o` using `hk`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hk']`. Simplify using `[κ₁, e]`. Substitute `ho` using the available equality. Conclude with `⟨⟨k, m⟩, v₁_ne (p := ⟨k, m⟩) e⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isBlockMap_v₁ (k₀ : K) : IsBlockMap (κ₁ k₀) (v₁ (ι := ι) k₀) := by
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -148,7 +148,7 @@ theorem isBlockMap_v₁ (k₀ : K) : IsBlockMap (κ₁ k₀) (v₁ (ι := ι) k�
       exact ⟨⟨k, m⟩, v₁_ne (p := ⟨k, m⟩) e⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c k.1, fun k => hc _, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem basePart_orbit {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) → ℂ}
     (h : SameOrbit z z') : SameOrbit (basePart blk z) (basePart blk z') := by
@@ -156,7 +156,7 @@ theorem basePart_orbit {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) 
   exact ⟨fun k => c k.1, fun k => hc _, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨k, m⟩`. Establish `hk : k.1 ≠ k₀` using `fun e => k.2 s (by rw [hs, e])`. Express the relevant statement in the definitionally equal form `z (v₁ k₀ ⟨k.1, m⟩) = z (v₀ k₀ ⟨k.1, m⟩)`. Rewrite using `[v₁_ne (p := ⟨k.1, m⟩) hk]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem basePart_snd {σ : Type} {blk : σ → Option K} {k₀ : K} {s : σ} (hs : blk s = some k₀)
     (z : (Σ o : Option K, ι (o.getD k₀)) → ℂ) :
@@ -168,11 +168,11 @@ theorem basePart_snd {σ : Type} {blk : σ → Option K} {k₀ : K} {s : σ} (hs
   rfl
 
 /- English proof (translation)
-Take `⟨c₀, hc₀, e₀⟩` from `h₀`. Take `⟨c₁, hc₁, e₁⟩` from `h₁`. Use `⟨fun o => o.elim (c₁ k₀) c₀, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | k)`. Conclude with `hc₁ k₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hc₀ k`. Use function extensionality and compare the values at `⟨o, m⟩`. Consider the cases of `o with`. Consider the case `none`. Use `congrFun e₁ ⟨k₀, m⟩` as an intermediate fact.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify `this` using `[sndPt, v₁_self]`. Consider the case `some k`. Use `congrFun e₀ ⟨k, m⟩` as an intermediate fact. Simplify `this` using `[fstPt, v₀]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem orbit_of_two {k₀ : K} {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ}
     (h₀ : SameOrbit (fstPt k₀ z) (fstPt k₀ z')) (h₁ : SameOrbit (sndPt k₀ z) (sndPt k₀ z')) :
@@ -193,31 +193,27 @@ theorem orbit_of_two {k₀ : K} {z z' : (Σ o : Option K, ι (o.getD k₀)) → 
       simpa [fstPt, v₀] using this
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b k₀ ca cb hb hab hk ha hcb hy RW pr hpr hbase`. Take `⟨-, -, -, hi₀, hi₁⟩` from `GlobalTheory.T.flag_adjacent_swap_varieties_arithmetic K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hab hk ha hcb hy`. Establish `hi₁'` using `hi₁ (v₁ k₀) (fun p hp => v₁_ne hp) (fun m => v₁_self k₀ m)`. Take `⟨h₀, hh₀, ho₀⟩` from `exists_holo_of_centre some (v₀ k₀) FA.J_top FA.Re.R RW (isBlockMap_v₀ k₀) hi₀.ge`. Take `⟨h₁, hh₁, ho₁⟩` from `exists_holo_of_centre (κ₁ k₀) (v₁ k₀) FA.J_top FA.Re.R RW (isBlockMap_v₁ k₀) hi₁'.ge`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdeg` using `FA.Re.degree`. Rewrite `hdeg` using `[FA.deg_one, FA.br_empty]`. Establish `hπ : Function.Injective FA.Re.π` using `injective_of_degree_one hdeg`. Establish `hpr' : ∀ (x₁ : FA.Re.R.X) (w : RW.X) (zz : (Σ k, ι k) → ℂ), SameOrbit (FA.Re.R.lift x₁ x₁) zz → basePart M.blk zz = basePart M.blk (fstPt k₀ (RW.lift w w)) → FA.pr (FA.Re.π x₁) = pr w`. Introduce `x₁ w zz h1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `BM.Rb.inj _ _ (Proj.not_mem_mcPts_top _) ?_` and prove the remaining obligations. Establish `h3` using `basePart_orbit M.blk h1`. Rewrite `h3` using `[h2]`. Conclude with `orbit_trans (orbit_symm (FA.pr_eq x₁)) (orbit_trans h3 (orbit_symm (hbase w)))`. Establish `hb₀ : ∀ w, FA.pr (FA.Re.π (h₀ w)) = pr w` using `fun w => hpr' _ w _ (ho₀ w) rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb₁ : ∀ w, FA.pr (FA.Re.π (h₁ w)) = pr w` using `fun w => hpr' _ w _ (ho₁ w) (basePart_snd hk (RW.lift w w))`. Use `⟨![FA.Re.π ∘ h₀, FA.Re.π ∘ h₁], ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `c₀` using `holoMap_comp' hh₀ FA.Re.holo`. Establish `c₁` using `holoMap_comp' hh₁ FA.Re.holo`. Conclude with `Fin.forall_fin_two.2 ⟨c₀, c₁⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Fin.forall_fin_two.2 ⟨funext hb₀, funext hb₁⟩`. Introduce `x x₀ e`. Establish `: x₀ = h₀ x` using `hπ e`. Substitute `this` using the available equality. Conclude with `ho₀ x`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x₀ e`. Establish `: x₀ = h₁ x` using `hπ e`. Substitute `this` using the available equality. Conclude with `ho₁ x`. Introduce `w w' e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₀ : FA.Re.π (h₀ w) = FA.Re.π (h₀ w')` using `congrArg Prod.fst e`. Establish `e₁ : FA.Re.π (h₁ w) = FA.Re.π (h₁ w')` using `congrArg Prod.snd e`. Establish `f₀` using `hπ e₀`. Establish `f₁` using `hπ e₁`. Establish `g₀ : SameOrbit (fstPt k₀ (RW.lift w w)) (fstPt k₀ (RW.lift w' w'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ho₀ w'` as an intermediate fact. Rewrite `this` using `[← f₀]`. Conclude with `orbit_trans (orbit_symm (ho₀ w)) this`. Establish `g₁ : SameOrbit (sndPt k₀ (RW.lift w w)) (sndPt k₀ (RW.lift w' w'))`. Use `ho₁ w'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[← f₁]`. Conclude with `orbit_trans (orbit_symm (ho₁ w)) this`. Conclude with `RW.inj w w' (Proj.not_mem_mcPts_top _) (orbit_of_two g₀ g₁)`. Introduce `p hp`. Establish `key : ∀ w, FA.S.ph (some p) (FA.Re.π (h₀ w)) = FA.S.ph (some p) (FA.Re.π (h₁ w)) ∧ ∀ t, FA.S.phT (some p) t (FA.Re.π (h₀ w)) = FA.S.phT (some p) t (FA.Re.π (h₁ w))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `w`. Use `FA.step_ph p (h₀ w) (h₁ w) ((hb₀ w).trans (hb₁ w).symm) ?_` and prove the remaining obligations. Introduce `k hkp`. Establish `hne : k ≠ k₀` using `fun e => hp (M.blk_inj p (τ, a) k₀ (e ▸ hkp) hk)`. Take `⟨c₀, -, e₀⟩` from `ho₀ w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c₁, hc₁, e₁⟩` from `ho₁ w`. Use `⟨c₀ k / c₁ k, fun m => ?_⟩` and prove the remaining obligations. Establish `a₀` using `congrFun e₀ ⟨k, m⟩`. Establish `a₁` using `congrFun e₁ ⟨k, m⟩`. Simplify using `only [Function.comp] at a₀ a₁`.
-
-Rewrite `a₁` using `[v₁_ne (p := ⟨k, m⟩) hne]`. Rewrite using `[a₀, a₁]`. Use `hc₁ k` as an intermediate fact. Simplify using `only [v₀]`. Clear the denominators using the available nonvanishing facts.
-
-Conclude with `⟨funext fun w => (key w).1, fun t => funext fun w => (key w).2 t⟩`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem two_projections : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → IsArithVar (mCoordIdeal y) (d + 2) → ∀ (RW : AnLogRes (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) ⊤ (d + 2)) (pr : RW.X → BM.Rb.X), HoloMap RW.A BM.Rb.A pr → (∀ x, SameOrbit (BM.Rb.lift (pr x) (pr x)) (basePart M.blk (fstPt k₀ (RW.lift x x)))) → ∃ q : Fin 2 → RW.X → FA.S.X, (∀ i, HoloMap RW.A FA.S.A (q i)) ∧ (∀ i, FA.pr ∘ q i = pr) ∧ (∀ x x₀, FA.Re.π x₀ = q 0 x → SameOrbit (FA.Re.R.lift x₀ x₀) (fstPt k₀ (RW.lift x x))) ∧ (∀ x x₀, FA.Re.π x₀ = q 1 x → SameOrbit (FA.Re.R.lift x₀ x₀) (sndPt k₀ (RW.lift x x))) ∧ (Function.Injective fun w => (q 0 w, q 1 w)) ∧ ∀ p, p ≠ (τ, a) → FA.S.ph (some p) ∘ q 0 = FA.S.ph (some p) ∘ q 1 ∧ ∀ t, FA.S.phT (some p) t ∘ q 0 = FA.S.phT (some p) t ∘ q 1 := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b k₀ ca cb hb hab hk ha hcb hy RW pr hpr hbase

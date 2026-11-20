@@ -19,7 +19,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
   {v₀ v₁ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Rl.HW j (sg0 D A3.A)).e _ (v₁ j _) = (∏ τ, c τ) • (Rl.HW j (sg0 D A3.A)).e _ (v₀ j _)`. Rewrite using `[show v₁ j (sg0 D A3.A) = fun τ => c τ • v₀ j (sg0 D A3.A) τ from funext h]`. Conclude with `MultilinearMap.map_smul_univ _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evW_scale {j : Fin D.R.m} {c : D.what₂.Tau → ℂ}
     (h : ∀ τ, v₁ j (sg0 D A3.A) τ = c τ • v₀ j (sg0 D A3.A) τ) (x : S.WL ((j : ℕ) + 1)) :
@@ -29,9 +29,9 @@ theorem evW_scale {j : Fin D.R.m} {c : D.what₂.Tau → ℂ}
   exact MultilinearMap.map_smul_univ _ _ _
 
 /- English proof (translation)
-Establish `key : ∀ x, evK YS v₁ hρ i j b x = C • evK YS v₀ hρ i j b x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, smul_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`. Consider the case `tmul a f => rw [evK_tmul, evK_tmul, h, smul_comm]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(C * ν)⁻¹ • evK YS v₁ hρ i j b _ = ν⁻¹ • evK YS v₀ hρ i j b _`. Use `(congrArg _ (key _)).trans ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv, mul_right_comm, inv_mul_cancel₀ hC, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem realRd_scale {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) {j : Fin D.R.m} (b : Bool) {C : ℂ} (hC : C ≠ 0)
     (h : ∀ x, evW YS v₁ j x = C • evW YS v₀ j x) (ν : ℂ) :
@@ -47,9 +47,9 @@ theorem realRd_scale {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) {j : Fin 
   rw [smul_smul, mul_inv, mul_right_comm, inv_mul_cancel₀ hC, one_mul]
 
 /- English proof (translation)
-Take `⟨gramR, c0R, c0L, ht, u, hu, hF⟩` from `hs`. Use `⟨gramR, c0R, c0L, ht, fun τ => c τ • u τ, fun τ => ?_, fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[h, ← hu]`. Both sides reduce to the same expression. Rewrite using `[MultilinearMap.map_smul_univ, map_smul, mul_smul, ← hF]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_smul (GlobalTheory.ExportSeries.harmFn (Wc D j).rank B.w B.F.BS) _ _`.
+A detailed English derivation is pending.
 -/
 theorem isScale_scale {j : Fin D.R.m} {c : D.what₂.Tau → ℂ}
     (h : ∀ τ, v₁ j (sg0 D A3.A) τ = c τ • v₀ j (sg0 D A3.A) τ) (B : GlobalTheory.ExportSeries.Base (Vc D j) (Wc D j)) {s : ℂ}
@@ -61,7 +61,7 @@ theorem isScale_scale {j : Fin D.R.m} {c : D.what₂.Tau → ℂ}
     exact map_smul (GlobalTheory.ExportSeries.harmFn (Wc D j).rank B.w B.F.BS) _ _
 
 /- English proof (translation)
-Take `⟨h0, s, hs, n, hn, he⟩` from `hν`. Use `⟨mul_ne_zero (Finset.prod_ne_zero_iff.2 fun τ _ => hc τ) h0, _, isScale_scale h B hs, n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, he, ← mul_pow, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isNorm_scale {j : Fin D.R.m} {c : D.what₂.Tau → ℂ} (hc : ∀ τ, c τ ≠ 0)
     (h : ∀ τ, v₁ j (sg0 D A3.A) τ = c τ • v₀ j (sg0 D A3.A) τ) (B : GlobalTheory.ExportSeries.Base (Vc D j) (Wc D j)) {ν : ℂ}
@@ -71,7 +71,7 @@ theorem isNorm_scale {j : Fin D.R.m} {c : D.what₂.Tau → ℂ} (hc : ∀ τ, c
   rw [mul_pow, he, ← mul_pow, mul_left_comm]
 
 /- English proof (translation)
-Rewrite using `[h, smul_smul, inv_mul_cancel₀ (hc τ), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_symm {j : Fin D.R.m} {c : D.what₂.Tau → ℂ} (hc : ∀ τ, c τ ≠ 0)
     (h : ∀ τ, v₁ j (sg0 D A3.A) τ = c τ • v₀ j (sg0 D A3.A) τ) (τ : D.what₂.Tau) :
@@ -79,9 +79,9 @@ theorem scale_symm {j : Fin D.R.m} {c : D.what₂.Tau → ℂ} (hc : ∀ τ, c �
   rw [h, smul_smul, inv_mul_cancel₀ (hc τ), one_smul]
 
 /- English proof (translation)
-Establish `hC : (∏ τ, c τ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => hc τ`. Establish `hc' : ∀ τ, (c τ)⁻¹ ≠ 0` using `fun τ => inv_ne_zero (hc τ)`. Establish `h'` using `scale_symm hc h`. Use `⟨mul_ne_zero hC hν.ne, fun ⟨ν', h1⟩ => isNorm_scale hc h _ (hν.norm ⟨_, isNorm_scale hc' h' _ h1⟩), fun ⟨ν', h1, h2⟩ => ?_⟩` and prove the remaining obligations. Rewrite using `[realRd_scale YS hρ i b hC (evW_scale YS h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hν.rat ⟨_, isNorm_scale hc' h' _ h1, ?_⟩` and prove the remaining obligations. Rewrite using `[realRd_scale YS hρ i b (Finset.prod_ne_zero_iff.2 fun τ _ => hc' τ) (evW_scale YS h')]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isScalar_scale {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) {j : Fin D.R.m} (b : Bool) {c : D.what₂.Tau → ℂ}
     (hc : ∀ τ, c τ ≠ 0) (h : ∀ τ, v₁ j (sg0 D A3.A) τ = c τ • v₀ j (sg0 D A3.A) τ) {ν : ℂ}
@@ -96,7 +96,7 @@ theorem isScalar_scale {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) {j : Fi
   exact h2
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨t, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_cell {ρ : Setup D.ntw} {hρ : ρ.Good} {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} {rd rd' : Rd ρ D.nexp i j b}
     (e : rd' = rd) (t : CellTie hρ D.nexp rd) : ∃ t' : CellTie hρ D.nexp rd', t'.rdV = t.rdV := by
@@ -104,9 +104,9 @@ theorem exists_cell {ρ : Setup D.ntw} {hρ : ρ.Good} {i : D.ntw.Tw} {j : Fin D
   exact ⟨t, rfl⟩
 
 /- English proof (translation)
-Establish `e : ∀ i j b, realRd YS v₁ Z.ex.good i j b ((∏ τ, c j τ) * Z.ex.ν i j b) = realRd YS v₀ Z.ex.good i j b (Z.ex.ν i j b)` using `fun i j b => realRd_scale YS _ i b (Finset.prod_ne_zero_iff.2 fun τ _ => hc j τ) (evW_scale YS (h j)) _`. Use `choose t ht using fun i j b => exists_cell (e i j b) (Z.ex.tie i j b)`. Use `⟨{ ex := { ρ := Z.ex.ρ good := Z.ex.good pin := Z.ex.pin vec := hv ν := fun i j b => (∏ τ, c j τ) * Z.ex.ν i j b scalar := fun i j b => isScalar_scale YS _ i b (hc j) (h j) (Z.ex.scalar i j b) tie := t hecke := fun i j b => by rw [e]; exact Z.ex.hecke i j b univ := Z.ex.univ } ba …` and prove the remaining obligations. Take `⟨ω, h1, h2⟩` from `Z.join i j b k Q ψ hA hT`. Use `⟨ω, h1, fun f g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2 f g, ← ht i j b]`.
+A detailed English derivation is pending.
 -/
 theorem serAt_scale {c : Fin D.R.m → D.what₂.Tau → ℂ} (hc : ∀ j τ, c j τ ≠ 0)
     (h : ∀ j τ, v₁ j (sg0 D A3.A) τ = c j τ • v₀ j (sg0 D A3.A) τ)
@@ -143,7 +143,7 @@ theorem serAt_scale {c : Fin D.R.m → D.what₂.Tau → ℂ} (hc : ∀ j τ, c 
   rw [← h2 f g, ← ht i j b]
 
 /- English proof (translation)
-Introduce `D X g₀ g₁ S YS Xe PV cf Pq Z`. Establish `hL : ∀ j, FWT.ExtLine (X.R.MW j (sg0 D X.A3.A))` using `fun j => GlobalTheory.HolLowOnce.extLine_of_holShape D _ _ _ (GlobalTheory.DefLift.holShape_fixed D X.Γ X.Pl0 X.T X.A3.A _ X.R.toRealDat X.char.models.order j).1`. Use `choose c hc h using fun j τ => hL j _ _ (g₀.fw.hv₀ j _).1 (g₁.fw.hv₀ j _).1 τ`. Conclude with `serAt_scale YS (fun j τ h0 => by simpa [h0] using hc j τ) h (fun j => g₁.fw.hv₀ j _) Z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem serAt_vec : ∀ {D : D7} (X : RealSide D) (g₀ g₁ : GlobalTheory.RealGeo.GeoHalf X.core X.R.toRealDat fun _ => 1) {S : NX.RatDat D.ntw} (YS : NX.NExpRealS X.R X.cG S) (Xe : Formalism.L2.NExpTied D) (PV : ∀ i : Fin D.R.m, principalLevelFrame.RowPsi (Vc D i) D.R.nV) (cf : Formalism.L2.Host.CharFrame D) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host), SerAt YS g₀.v₀ Xe PV cf Pq → Nonempty (SerAt YS g₁.v₀ Xe PV cf Pq) := by
   intro D X g₀ g₁ S YS Xe PV cf Pq Z

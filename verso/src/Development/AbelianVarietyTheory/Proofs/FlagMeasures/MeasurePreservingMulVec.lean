@@ -9,21 +9,19 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp.GramVol
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro V W _ _ _ _ T _ a`. Simplify using the standard rewrite rules. Consider the case `succ r ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `V W _ _ _ _ T hT a`. Establish `dec : ∀ (U : Type) [NormedAddCommGroup U] [InnerProductSpace ℂ U] (v x : U), ∃ c : ℂ, x = c • v + (ℂ ∙ v)ᗮ.starProjection x`. Introduce `U _ _ v x`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 ((ℂ ∙ v).starProjection_apply_mem x)`. Conclude with `⟨c, by rw [hc]; exact ((ℂ ∙ v).starProjection_add_starProjection_orthogonal x).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `orth : ∀ (U : Type) [NormedAddCommGroup U] [InnerProductSpace ℂ U] (v x : U), inner ℂ v ((ℂ ∙ v)ᗮ.starProjection x) = 0`. Introduce `U _ _ v x`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.1 ((ℂ ∙ v)ᗮ.starProjection_apply_mem x)`. Use `choose c hc using fun b : Fin r => dec V (a 0) (a b.succ)`. Use `set w : Fin r → V := fun b => (ℂ ∙ a 0)ᗮ.starProjection (a b.succ) with hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose c' hc' using fun b : Fin r => dec W (T (a 0)) (T (w b))`. Set `T' : V →ₗ[ℂ] W` to `((ℂ ∙ T (a 0))ᗮ.starProjection : W →L[ℂ] W).toLinearMap ∘ₗ T`. Establish `hT' : ∀ x, ‖T' x‖ ≤ ‖x‖` using `fun x => le_trans ((ℂ ∙ T (a 0))ᗮ.norm_starProjection_apply_le (T x)) (hT x)`. Establish `e1 : a = Fin.cons (a 0) (fun b => c b • a 0 + w b)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Fin.cases rfl (fun b => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_succ]`. Conclude with `hc b`. Establish `e2 : (fun b => T (a b)) = Fin.cons (T (a 0)) (fun b => (c b + c' b) • T (a 0) + T' (w b))`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.cases rfl (fun b => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_succ]`. Establish `h1 : a b.succ = c b • a 0 + w b` using `hc b`. Establish `h2 : T (w b) = c' b • T (a 0) + T' (w b)` using `hc' b`. Rewrite using `[h1, map_add, map_smul, add_smul, add_assoc, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `g1` using `Formalism.HermitianLatticeCounting.P.s5b7_gram_cons r (a 0) c w (fun b => orth V _ _)`. Establish `g2` using `Formalism.HermitianLatticeCounting.P.s5b7_gram_cons r (T (a 0)) (fun b => c b + c' b) (fun b => T' (w b)) (fun b => orth W _ _)`. Rewrite `g1` using `[← e1]`. Rewrite `g2` using `[← e2]`. Rewrite using `[g1, g2, norm_mul, norm_mul, norm_pow, norm_pow, Complex.norm_real, Complex.norm_real, norm_norm, norm_norm]`.
-
-Use `ih V W T' hT' w` as an intermediate fact. Use `hT (a 0)` as an intermediate fact. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_gram_contraction_le : ∀ (r : ℕ) (V W : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] (T : V →ₗ[ℂ] W), (∀ x, ‖T x‖ ≤ ‖x‖) → ∀ a : Fin r → V,
@@ -71,9 +69,9 @@ theorem det_gram_contraction_le : ∀ (r : ℕ) (V W : Type) [NormedAddCommGroup
     gcongr
 
 /- English proof (translation)
-Establish `hdet : LinearMap.det ((Matrix.toLin' g).restrictScalars ℝ) = 1`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, h]`. Evaluate the numerical expressions. Establish `h1` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin n → ℂ)) (f := (Matrix.toLin' g).restrictScalars ℝ) (by rw [hdet]; exact one_ne_zero)`. Rewrite `h1` using `[hdet]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [inv_one, abs_one, ENNReal.ofReal_one, one_smul] at h1`. Use `⟨?_, h1⟩` and prove the remaining obligations. Conclude with `(LinearMap.continuous_of_finiteDimensional ((Matrix.toLin' g).restrictScalars ℝ)).measurable`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurePreserving_mulVec {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (h : ‖g.det‖ = 1) :
     MeasurePreserving (fun x : Fin n → ℂ => g *ᵥ x) volume volume := by
@@ -88,15 +86,15 @@ theorem measurePreserving_mulVec {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (h :
   exact (LinearMap.continuous_of_finiteDimensional ((Matrix.toLin' g).restrictScalars ℝ)).measurable
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_linearIndependent_of_le_finrank hP`. Establish `hu' : LinearIndependent ℂ (P.subtype ∘ u)` using `hu.map' _ (Submodule.ker_subtype P)`. Use `set K : Submodule ℂ (EuclideanSpace ℂ (Fin (d + c))) := Submodule.span ℂ (Set.range (P.subtype ∘ u)) with hK`. Establish `hKP : K ≤ P`. Rewrite using `[hK, Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(u i).2`. Establish `hKd : Module.finrank ℂ K = d`. Rewrite using `[hK, finrank_span_eq_card hu']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKc : Module.finrank ℂ Kᗮ = c`. Use `K.finrank_add_finrank_orthogonal` as an intermediate fact. Rewrite `this` using `[hKd, finrank_euclideanSpace, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Set `e1 : K ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin d)` to `((stdOrthonormalBasis ℂ K).reindex (finCongr hKd)).repr`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `e2 : Kᗮ ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin c)` to `((stdOrthonormalBasis ℂ Kᗮ).reindex (finCongr hKc)).repr`. Use `⟨K.orthogonalDecomposition.trans (LinearIsometryEquiv.withLpProdCongr 2 e1 e2), fun x => ?_⟩` and prove the remaining obligations. Establish `: ∀ y, ((K.orthogonalDecomposition.trans (LinearIsometryEquiv.withLpProdCongr 2 e1 e2)) y).ofLp.1 = e1 (K.orthogonalProjectionOnto y)`. Introduce `y`. Rewrite using `[← Submodule.fst_orthogonalDecomposition_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, this]`. Use `congr 1`. Conclude with `Submodule.orthogonalProjectionOnto_starProjection_of_le hKP x`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_iso (d c : ℕ) (P : Submodule ℂ (EuclideanSpace ℂ (Fin (d + c)))) (hP : d ≤ Module.finrank ℂ P) :
     ∃ Φ : EuclideanSpace ℂ (Fin (d + c)) ≃ₗᵢ[ℂ] WithLp 2 (EuclideanSpace ℂ (Fin d) × EuclideanSpace ℂ (Fin c)),
@@ -127,30 +125,26 @@ theorem exists_iso (d c : ℕ) (P : Submodule ℂ (EuclideanSpace ℂ (Fin (d + 
   exact Submodule.orthogonalProjectionOnto_starProjection_of_le hKP x
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, eucl]`. Simplify using `only [Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eucl_eq {n : ℕ} (v : Fin n → ℂ) : eucl v = ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))‖ := by
   rw [EuclideanSpace.norm_eq, eucl]
   simp only [Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_iso d c P hP`. Establish `h0 : MeasurePreserving (Φ : EuclideanSpace ℂ (Fin (d + c)) → WithLp 2 (EuclideanSpace ℂ (Fin d) × EuclideanSpace ℂ (Fin c)))` using `LinearIsometryEquiv.measurePreserving ({ (Φ.toLinearEquiv.restrictScalars ℝ) with norm_map' := Φ.norm_map } : EuclideanSpace ℂ (Fin (d + c)) ≃ₗᵢ[ℝ] WithLp 2 (EuclideanSpace ℂ (Fin d) × EuclideanSpace ℂ (Fin c)))`. Establish `hl : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin (d + c) → ℂ)).symm` using `GlobalTheory.volume_preserving_ofLp_complex (Fin (d + c))`. Establish `hl' : MeasurePreserving (WithLp.toLp 2 : (Fin (d + c) → ℂ) → EuclideanSpace ℂ (Fin (d + c)))` using `hl.symm`. Establish `h1` using `h0.comp (hl'.comp (measurePreserving_mulVec g hg))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : MeasurePreserving (Prod.map (id : EuclideanSpace ℂ (Fin d) → _) (@WithLp.ofLp 2 (Fin c → ℂ))) volume volume` using `(MeasurePreserving.id volume).prod (GlobalTheory.volume_preserving_ofLp_complex (Fin c))`. Establish `h3` using `h2.comp (WithLp.volume_preserving_ofLp (EuclideanSpace ℂ (Fin d)) (EuclideanSpace ℂ (Fin c)))`. Establish `h4` using `Formalism.HermitianLatticeCounting.P.measurePreserving_pi_comp_prod j _ _ h1 h3`. Use `set S : Set ((Fin j → EuclideanSpace ℂ (Fin d)) × (Fin j → Fin c → ℂ)) := Formalism.HermitianLatticeCounting.P.s5b7_A R d j t ×ˢ (Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) R) with hS`. Establish `hSm : MeasurableSet S` using `(Formalism.HermitianLatticeCounting.P.s5b7_A_closed _ _ _ _).measurableSet.prod (MeasurableSet.univ_pi fun _ => MeasurableSet.univ_pi fun _ => Metric.isClosed_closedBall.measurableSet)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hball : volume (Set.pi Set.univ fun _ : Fin j => Set.pi Set.univ fun _ : Fin c => Metric.closedBall (0 : ℂ) R) = ENNReal.ofReal ((Real.pi * R ^ 2) ^ (c * j))`. Rewrite using `[volume_pi_pi]`. Simplify using `only [volume_pi_pi, Complex.volume_closedBall, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← pow_mul, ENNReal.ofReal_pow (by positivity), mul_comm Real.pi, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow hR.le]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ENNReal.ofReal_coe_nnreal (p := NNReal.pi)).symm`. Use `le_trans (measure_mono ?_) (le_trans (h4.measure_preimage hSm.nullMeasurableSet).le ?_)` and prove the remaining obligations. Introduce and unpack `B ⟨hB1, hB2⟩`. Take `⟨v, hv⟩ : ∃ v : Fin j → EuclideanSpace ℂ (Fin (d + c)), v = fun b => WithLp.toLp 2 (g *ᵥ B b)` from `⟨_, rfl⟩`. Establish `hn : ∀ b, ‖Φ (v b)‖ ≤ R` using `fun b => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Φ.norm_map, hv, ← eucl_eq]`. Conclude with `hB1 b`. Establish `hB3 : Real.sqrt ‖(Matrix.gram ℂ fun b => P.starProjection (v b)).det‖ ≤ t`. Rewrite using `[hv]`. Conclude with `hB2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `goal : ((fun b => (Φ (v b)).ofLp.1, fun b => (Φ (v b)).ofLp.2.ofLp) : (Fin j → EuclideanSpace ℂ (Fin d)) × (Fin j → Fin c → ℂ)) ∈ S`. Use `⟨⟨fun b => ?_, ?_⟩, fun b _ i _ => ?_⟩` and prove the remaining obligations. Conclude with `le_trans (WithLp.norm_fst_le _ _) (hn b)`. Use `le_trans (Real.sqrt_le_sqrt ?_) hB3` and prove the remaining obligations. Take `⟨T, hT0⟩ : ∃ T : EuclideanSpace ℂ (Fin (d + c)) →ₗ[ℂ] EuclideanSpace ℂ (Fin d), ∀ x, T x = (Φ x).ofLp.1` from `⟨(WithLp.fstL 2 ℂ _ _).toLinearMap ∘ₗ Φ.toLinearEquiv.toLinearMap, fun _ => rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ∀ x, ‖T x‖ ≤ ‖x‖` using `fun x => by`. Rewrite using `[hT0]`. Conclude with `le_trans (WithLp.norm_fst_le _ (Φ x)) (Φ.norm_map x).le`. Use `det_gram_contraction_le j _ _ T hT (fun b => P.starProjection (v b))` as an intermediate fact. Simplify using `only [hT0, hΦ] at this`.
-
-Conclude with `this`. Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `le_trans (PiLp.norm_apply_le (Φ (v b)).ofLp.2 i) (le_trans (WithLp.norm_snd_le _ _) (hn b))`. Rewrite `goal` using `[hv]`. Conclude with `goal`.
-
-Rewrite using `[hS, Measure.volume_eq_prod, Measure.prod_prod, hball, ENNReal.ofReal_mul (by positivity)] gcongr`. Conclude with `Formalism.HermitianLatticeCounting.P.s5b7_vol R hR j d hj t ht`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_le (d c j : ℕ) (hj : j ≤ d) (g : Matrix (Fin (d + c)) (Fin (d + c)) ℂ) (hg : ‖g.det‖ = 1)
     (P : Submodule ℂ (EuclideanSpace ℂ (Fin (d + c)))) (hP : d ≤ Module.finrank ℂ P) (R t : ℝ) (hR : 0 < R)
@@ -217,11 +211,11 @@ theorem vol_le (d c j : ℕ) (hj : j ≤ d) (g : Matrix (Fin (d + c)) (Fin (d + 
     exact Formalism.HermitianLatticeCounting.P.s5b7_vol R hR j d hj t ht
 
 /- English proof (translation)
-Establish `h : mᴴ * Hb k * m = Hb k` using `hm`. Establish `hH : (Hb k).det ≠ 0`. Rewrite using `[Hb, det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `congrArg (fun A => ‖Matrix.det A‖) h`. Simplify using `only [det_mul, det_conjTranspose, norm_mul, norm_star] at h2`. Establish `hH' : 0 < ‖(Hb k).det‖` using `norm_pos_iff.2 hH`. Establish `h3 : ‖m.det‖ ^ 2 = 1`. Establish `: ‖(Hb k).det‖ * ‖m.det‖ ^ 2 = ‖(Hb k).det‖ * 1` using `by rw [mul_one]; linarith`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hH'.ne' this`. Establish `h4 : ‖m.det‖ = 1`. Use `norm_nonneg m.det` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[det_nonsing_inv, Ring.inverse_eq_inv', norm_inv, h4, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_inv_eq_one {k : ℕ} {m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hm : m ∈ UH (Hb k)) :
     ‖(m⁻¹).det‖ = 1 := by
@@ -242,7 +236,7 @@ theorem norm_det_inv_eq_one {k : ℕ} {m : Matrix (Fin (k + 1)) (Fin (k + 1)) �
   rw [det_nonsing_inv, Ring.inverse_eq_inv', norm_inv, h4, inv_one]
 
 /- English proof (translation)
-Establish `h` using `Real.pow_div_factorial_le_exp (s : ℝ) (Nat.cast_nonneg s) s`. Establish `hs' : (0 : ℝ) < s` using `by exact_mod_cast hs`. Rewrite using `[div_pow, ← Real.exp_nat_mul, mul_one, le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_factorial_le (s : ℕ) (hs : 1 ≤ s) : 1 / (s.factorial : ℝ) ≤ (Real.exp 1 / s) ^ s := by
   have h := Real.pow_div_factorial_le_exp (s : ℝ) (Nat.cast_nonneg s) s
@@ -252,19 +246,17 @@ theorem inv_factorial_le (s : ℕ) (hs : 1 ≤ s) : 1 / (s.factorial : ℝ) ≤ 
     _ ≤ _ := h
 
 /- English proof (translation)
-Introduce `k j _ hjk m hm P hP`. Take `⟨d, rfl⟩ : ∃ d, k = d + 1` from `⟨k - 1, by omega⟩`. Establish `hd : d + 1 - 1 = d` using `by omega`. Rewrite `hP`, the goal using `[hd]`. Establish `key` using `vol_le d 2 j (by omega) m⁻¹ (norm_det_inv_eq_one hm) P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨s, hs⟩ : ∃ s, d = j + s` from `⟨d - j, by omega⟩`. Establish `hs1 : 1 ≤ s` using `by omega`. Establish `hs2 : d - j = s` using `by omega`. Rewrite `key`, the goal using `[hs2]`. Use `⟨?_, fun M y hM hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : ∀ N : ℕ, volume {B : Fin j → Fin (d + 1 + 1) → ℂ | (∀ b, eucl (m⁻¹ *ᵥ B b) ≤ (N : ℝ) + 1) ∧ gramProj P (fun b => m⁻¹ *ᵥ B b) ≤ 0} = 0` using `fun N => by`. Use `key ((N : ℝ) + 1) 0 (by positivity) le_rfl` as an intermediate fact. Rewrite `this` using `[zero_pow (by omega)]`. Simplify using `using this`. Use `measure_mono_null ?_ (measure_iUnion_null hz)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `B hB`. Take `⟨N, hN⟩` from `exists_nat_ge (∑ b, eucl (m⁻¹ *ᵥ B b))`. Use `Set.mem_iUnion.2 ⟨N, fun b => ?_, le_of_eq hB⟩` and prove the remaining obligations. Establish `: eucl (m⁻¹ *ᵥ B b) ≤ ∑ b, eucl (m⁻¹ *ᵥ B b)` using `Finset.single_le_sum (f := fun b => eucl (m⁻¹ *ᵥ B b)) (fun _ _ => Real.sqrt_nonneg _) (Finset.mem_univ b)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `le_trans (key M (2 * y) (by positivity) (by positivity)) (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `hpi` using `Real.pi_pos`. Establish `h1 : (1 / (s.factorial : ℝ)) ^ j ≤ ((Real.exp 1 / s) ^ s) ^ j` using `pow_le_pow_left₀ (by positivity) (inv_factorial_le s hs1) j`. Establish `hX : 0 ≤ (Real.pi * M ^ 2) ^ (2 * j) * M ^ (2 * j ^ 2) * Real.pi ^ (j ^ 2) * (Real.pi * Real.exp 1 / (s : ℝ)) ^ (j * s) * (2 * y) ^ (2 * s)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hs, mul_add j j s, pow_add, ← sq j, one_div, inv_pow, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (Real.pi * M ^ 2) ^ (2 * j) * M ^ (2 * j ^ 2) * Real.pi ^ (j ^ 2) * (Real.pi ^ (j * s) * ((Real.exp 1 / s) ^ s) ^ j) * (2 * y) ^ (2 * s) := by gcongr`. Use `_ = (Real.pi * M ^ 2) ^ (2 * j) * M ^ (2 * j ^ 2) * Real.pi ^ (j ^ 2) * (Real.pi * Real.exp 1 / (s : ℝ)) ^ (j * s) * (2 * y) ^ (2 * s) := by`. Rewrite using `[← pow_mul, mul_comm s j, ← mul_pow, mul_div_assoc]`.
-
-Use `_ ≤ _ := by linarith`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_gram : ∀ (k j : ℕ), 1 ≤ j → j + 2 ≤ k → ∀ m ∈ UH (Hb k), ∀ P₀ : Submodule ℂ (EuclideanSpace ℂ (Fin (k + 1))), k - 1 ≤ Module.finrank ℂ P₀ → volume {B : Fin j → Fin (k + 1) → ℂ | gramProj P₀ (fun b => m⁻¹ *ᵥ B b) = 0} = 0 ∧ ∀ M y : ℝ, 1 ≤ M → 0 < y → volume {B : Fin j → Fin (k + 1) → ℂ | (∀ b, eucl (m⁻¹ *ᵥ B b) ≤ M) ∧ gramProj P₀ (fun b => m⁻¹ *ᵥ B b) ≤ 2 * y} ≤ ENNReal.ofReal (2 * (Real.pi * M ^ 2) ^ (2 * j) * M ^ (2 * j ^ 2) * Real.pi ^ (j ^ 2) * (Real.pi * Real.exp 1 / ((k - 1 - j : ℕ) : ℝ)) ^ (j * (k - 1 - j)) * (2 * y) ^ (2 * (k - 1 - j))) := by
   intro k j _ hjk m hm P hP

@@ -15,9 +15,9 @@ section Abstract
 variable {R : Type} [CommRing R] {m : Type} [Fintype m] [DecidableEq m]
 
 /- English proof (translation)
-Establish `e1 : x * y = x * P + Q * y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_add, Matrix.mul_assoc, Matrix.mul_assoc x y Q, hyQ, ← Matrix.mul_assoc x Q y]`. Use `_ = x * P + Q * y := by rw [hyP, hxQ]`. Establish `e2 : y * x = x * P + Q * y`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_add, Matrix.mul_assoc, Matrix.mul_assoc y x Q, hxP, hxQ, ← Matrix.mul_assoc]`. Use `_ = x * P + Q * y := by rw [hyP, hyQ, hxP]`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_of_proj {x y P Q : Matrix m m R} (hPQ : P + Q = 1) (hxP : x * P = P * x) (hxQ : x * Q = Q)
     (hyP : y * P = P) (hyQ : y * Q = Q * y) : x * y = y * x := by
@@ -34,9 +34,9 @@ theorem commute_of_proj {x y P Q : Matrix m m R} (hPQ : P + Q = 1) (hxP : x * P 
   rw [e1, e2]
 
 /- English proof (translation)
-Establish `h1 : Formalism.UG.cT s M * Formalism.UG.cT s g = Formalism.UG.cT s M` using `by rw [← Formalism.UG.cT_mul, h]`. Establish `h2 : J * (M * g) = J * M`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J * M := by rw [hg, hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem mul_eq_of_unitary {s : R →+* R} {g M J : Matrix m m R} (hJ : IsUnit J.det)
     (hg : Formalism.UG.cT s g * J * g = J) (hM : Formalism.UG.cT s M * J = J * M) (h : g * M = M) : M * g = M := by
@@ -51,14 +51,14 @@ theorem mul_eq_of_unitary {s : R →+* R} {g M J : Matrix m m R} (hJ : IsUnit J.
     _ = M := by rw [h2, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJ, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add {s : R →+* R} {a b : Type} (M N : Matrix a b R) :
     Formalism.UG.cT s (M + N) = Formalism.UG.cT s M + Formalism.UG.cT s N := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub {s : R →+* R} {a b : Type} (M N : Matrix a b R) :
     Formalism.UG.cT s (M - N) = Formalism.UG.cT s M - Formalism.UG.cT s N := by
@@ -72,7 +72,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {r : ℕ}
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2, hCM.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -82,7 +82,7 @@ theorem sig_sig (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
 def blockDiag (B : Set (Fin r)) : Matrix (Fin r) (Fin r) E := diagonal (B.indicator 1)
 
 /- English proof (translation)
-Simplify using `only [blockDiag, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : i ∈ B <;> simp [h]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockDiag_mul_self (B : Set (Fin r)) : blockDiag (E := E) B * blockDiag B = blockDiag B := by
   simp only [blockDiag, diagonal_mul_diagonal]
@@ -90,9 +90,9 @@ theorem blockDiag_mul_self (B : Set (Fin r)) : blockDiag (E := E) B * blockDiag 
   by_cases h : i ∈ B <;> simp [h]
 
 /- English proof (translation)
-Simplify using `only [blockDiag, diagonal_mul_diagonal]`. Rewrite using `[← diagonal_zero]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ B`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `: i ∉ B'` using `Set.disjoint_left.1 h hi`. Simplify using `[this]`. Simplify using `[hi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blockDiag_mul_disj {B B' : Set (Fin r)} (h : Disjoint B B') : blockDiag (E := E) B * blockDiag B' = 0 := by
   simp only [blockDiag, diagonal_mul_diagonal]
@@ -104,28 +104,28 @@ theorem blockDiag_mul_disj {B B' : Set (Fin r)} (h : Disjoint B B') : blockDiag 
   · simp [hi]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : j ∈ B <;> by_cases e : i = j <;> simp [Formalism.UG.cT, blockDiag, diagonal, h, e, eq_comm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_blockDiag (B : Set (Fin r)) : Formalism.UG.cT (σ : E →+* E) (blockDiag B) = blockDiag B := by
   ext i j
   by_cases h : j ∈ B <;> by_cases e : i = j <;> simp [Formalism.UG.cT, blockDiag, diagonal, h, e, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, blockDiag_mul_self, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockDiag_cancel {B : Set (Fin r)} (N : Matrix (Fin r) (Fin n) E) :
     blockDiag (E := E) B * (N - blockDiag (E := E) B * N) = 0 := by
   rw [Matrix.mul_sub, ← Matrix.mul_assoc, blockDiag_mul_self, sub_self]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, blockDiag_mul_disj h, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockDiag_disj_zero {B B' : Set (Fin r)} (h : Disjoint B' B) (N : Matrix (Fin r) (Fin n) E) :
     blockDiag (E := E) B' * (blockDiag (E := E) B * N) = 0 := by
   rw [← Matrix.mul_assoc, blockDiag_mul_disj h, Matrix.zero_mul]
 
 /- English proof (translation)
-Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify `this` using `[blockDiag, diagonal_mul, Set.indicator_of_mem hi]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem row_zero {B : Set (Fin r)} {M : Matrix (Fin r) (Fin n) E} (h : blockDiag (E := E) B * M = 0) {i : Fin r} (hi : i ∈ B)
     (j : Fin n) : M i j = 0 := by
@@ -140,9 +140,9 @@ def frameProj (B : Set (Fin r)) : Matrix (Fin n) (Fin n) E :=
 variable {σ J X Y}
 
 /- English proof (translation)
-Establish `hcJ : Formalism.UG.cT (σ : E →+* E) J = J` using `by ext i j; simp [Formalism.UG.cT, hJ.1 i j]`. Establish `hcc : Formalism.UG.cT (σ : E →+* E) (Formalism.UG.cT (σ : E →+* E) X) = X`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sig_sig σ hCM]`. Use `congrArg (Formalism.UG.cT (σ : E →+* E)) hW.xy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, hcJ, hcc, Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem yJx (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     Formalism.UG.cT (σ : E →+* E) Y * J * X = 1 := by
@@ -153,7 +153,7 @@ theorem yJx (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X
   rwa [Formalism.UG.cT_mul, Formalism.UG.cT_mul, hcJ, hcc, Formalism.UG.cT_one, ← Matrix.mul_assoc] at this
 
 /- English proof (translation)
-Simplify using `only [frameProj, Matrix.mul_add, ← Matrix.mul_assoc, hW.xx, hW.xy, Matrix.zero_mul, Matrix.one_mul, zero_add]`. Conclude with `Matrix.mul_assoc _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xJ_frameProj (hW : IsWittFrame σ J X Y) (B : Set (Fin r)) :
     Formalism.UG.cT (σ : E →+* E) X * J * frameProj σ J X Y B = blockDiag B * (Formalism.UG.cT (σ : E →+* E) X * J) := by
@@ -161,7 +161,7 @@ theorem xJ_frameProj (hW : IsWittFrame σ J X Y) (B : Set (Fin r)) :
   exact Matrix.mul_assoc _ _ _
 
 /- English proof (translation)
-Simplify using `only [frameProj, Matrix.mul_add, ← Matrix.mul_assoc, hW.yy, yJx hCM hJ hW, Matrix.zero_mul, Matrix.one_mul, add_zero]`. Conclude with `Matrix.mul_assoc _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem yJ_frameProj (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (B : Set (Fin r)) :
     Formalism.UG.cT (σ : E →+* E) Y * J * frameProj σ J X Y B = blockDiag B * (Formalism.UG.cT (σ : E →+* E) Y * J) := by
@@ -170,9 +170,9 @@ theorem yJ_frameProj (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFra
   exact Matrix.mul_assoc _ _ _
 
 /- English proof (translation)
-Establish `hcJ : Formalism.UG.cT (σ : E →+* E) J = J` using `by ext i j; simp [Formalism.UG.cT, hJ.1 i j]`. Establish `hcc : ∀ Z : Matrix (Fin n) (Fin r) E, Formalism.UG.cT (σ : E →+* E) (Formalism.UG.cT (σ : E →+* E) Z) = Z` using `fun Z => by`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sig_sig σ hCM]`. Simplify using `only [frameProj, GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.cT_add, Formalism.UG.cT_mul, hcJ, hcc, cT_blockDiag, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameProj_selfAdj (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (B : Set (Fin r)) :
     Formalism.UG.cT (σ : E →+* E) (frameProj σ J X Y B) * J = J * frameProj σ J X Y B := by
@@ -190,14 +190,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_incl (e : E) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sigR_incl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map {a b : Type} (M : Matrix a b E) :
     Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (M.map (inclR (F := F) (AF F))) =
@@ -205,7 +205,7 @@ theorem cT_map {a b : Type} (M : Matrix a b E) :
   ext i j; simp [Formalism.UG.cT, sigR_incl]
 
 /- English proof (translation)
-Simplify using `only [colPerp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.comp_apply, Matrix.mulVecLin_apply, LinearMap.proj_apply]`. Introduce `i hi`. Rewrite using `[mulVec_mulVec, ← Matrix.map_mul]`. Simplify using `[mulVec, dotProduct, row_zero h hi]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_colPerp (C : Matrix (Fin n) (Fin r) E) {B : Set (Fin r)} {M : Matrix (Fin n) (Fin n) E}
     (h : blockDiag (E := E) B * (Formalism.UG.cT (σ : E →+* E) C * J * M) = 0) (v : Fin n → AF F ⊗[F] E) :
@@ -217,7 +217,7 @@ theorem mem_colPerp (C : Matrix (Fin n) (Fin r) E) {B : Set (Fin r)} {M : Matrix
   simp [mulVec, dotProduct, row_zero h hi]
 
 /- English proof (translation)
-Establish `key : ∀ v, (GlobalTheory.AdelicU.matHom (AF F) σ J g).1 *ᵥ (M.map (inclR (F` using `F) (AF F)) *ᵥ v) = M.map (inclR (F := F) (AF F)) *ᵥ v := fun v => hg _ (Submodule.mem_inf.2 ⟨mem_colPerp X hX v, mem_colPerp Y hY v⟩)`. Use extensionality with `i j`. Use `congrFun (key (Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, mulVec_single_one, mulVec_single_one]`. Conclude with `this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_of_perp {B : Set (Fin r)} {g : GAd σ J} (hg : g ∈ ptStab σ J (colPerp σ J X B ⊓ colPerp σ J Y B))
     (M : Matrix (Fin n) (Fin n) E) (hX : blockDiag (E := E) B * (Formalism.UG.cT (σ : E →+* E) X * J * M) = 0)
@@ -232,11 +232,9 @@ theorem fix_of_perp {B : Set (Fin r)} {g : GAd σ J} (hg : g ∈ ptStab σ J (co
   exact this
 
 /- English proof (translation)
-Establish `e : ∀ u : Fin r → AF F ⊗[F] E, adMat F C *ᵥ u = ∑ i, u i • (adMat F C)ᵀ i` using `fun u => by`. Use extensionality with `j`. Simplify using `[mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : i ∈ B`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hB hi, rfl⟩)`. Establish `: ((blockDiag (E` using `E) B).map (inclR (F := F) (AF F)) *ᵥ w) i = 0 := by`. Simplify using `[blockDiag, diagonal_map, mulVec_diagonal, hi]`. Rewrite using `[this, zero_smul]`.
-
-Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_colSpan (C : Matrix (Fin n) (Fin r) E) {B I : Set (Fin r)} (hB : B ⊆ I) (w : Fin r → AF F ⊗[F] E) :
     adMat F C *ᵥ ((blockDiag (E := E) B).map (inclR (F := F) (AF F)) *ᵥ w) ∈ colSpan F C I := by
@@ -252,7 +250,7 @@ theorem mem_colSpan (C : Matrix (Fin n) (Fin r) E) {B I : Set (Fin r)} (hB : B �
     exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[frameProj, Matrix.map_add _ (map_add (inclR (F := F) (E := E) (AF F)))]`. Simplify using `only [Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frameProj_map (B : Set (Fin r)) :
     (frameProj σ J X Y B).map (inclR (F := F) (AF F)) =
@@ -262,9 +260,9 @@ theorem frameProj_map (B : Set (Fin r)) :
   simp only [Matrix.map_mul]
 
 /- English proof (translation)
-Establish `hB : block T k ⊆ upTo T` using `fun i hi => ⟨k, hk, hi.1⟩`. Establish `key : ∀ v, (GlobalTheory.AdelicU.matHom (AF F) σ J g).1 *ᵥ ((frameProj σ J X Y (block T k)).map (inclR (F` using `F) (AF F)) *ᵥ v) = (frameProj σ J X Y (block T k)).map (inclR (F := F) (AF F)) *ᵥ v := fun v => by`. Use `hg _ ?_` and prove the remaining obligations. Rewrite using `[frameProj_map, add_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec]`. Conclude with `Submodule.add_mem_sup (mem_colSpan X hB _) (mem_colSpan Y hB _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Use `congrFun (key (Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, mulVec_single_one, mulVec_single_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_of_span {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ uPart σ J X Y T) {k : Fin r} (hk : k ∈ T) :
     (GlobalTheory.AdelicU.matHom (AF F) σ J g).1 * (frameProj σ J X Y (block T k)).map (inclR (F := F) (AF F)) =
@@ -281,7 +279,7 @@ theorem fix_of_span {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ uPart σ J X
   exact this
 
 /- English proof (translation)
-Use `Set.disjoint_left.2 fun i hi hi' => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `absurd (hi'.2 k hk h) (not_lt.2 hi.1)`. Conclude with `absurd (hi.2 k' hk' h) (not_lt.2 hi'.1)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem block_disjoint {T : Finset (Fin r)} {k k' : Fin r} (hk : k ∈ T) (hk' : k' ∈ T) (hne : k ≠ k') :
     Disjoint (block T k) (block T k') := by
@@ -291,19 +289,17 @@ theorem block_disjoint {T : Finset (Fin r)} {k k' : Fin r} (hk : k ∈ T) (hk' :
   · exact absurd (hi.2 k' hk' h) (not_lt.2 hi'.1)
 
 /- English proof (translation)
-Use `set P := frameProj σ J X Y (block T k)`. Use `set P' := P.map (inclR (F := F) (AF F))`. Use `set gx := (GlobalTheory.AdelicU.matHom (AF F) σ J x).1`. Use `set gy := (GlobalTheory.AdelicU.matHom (AF F) σ J y).1`. Establish `hgx : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) gx * JR (F` using `F) (AF F) J * gx = JR (F := F) (AF F) J := (show HR (AF F) σ J from x).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgy : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) gy * JR (F` using `F) (AF F) J * gy = JR (F := F) (AF F) J := (show HR (AF F) σ J from y).2`. Establish `hJR : JR (F` using `F) (AF F) J = J.map (inclR (F := F) (AF F)) := rfl`. Establish `hJu : IsUnit (JR (F` using `F) (AF F) J).det := by`. Rewrite using `[hJR, show (J.map (inclR (F := F) (E := E) (AF F))).det = inclR (F := F) (E := E) (AF F) J.det from (RingHom.map_det (inclR (F := F) (E := E) (AF F)) J).symm]`. Conclude with `(isUnit_iff_ne_zero.2 hJ.2).map (inclR (F := F) (E := E) (AF F))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPs : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) P' * JR (F` using `F) (AF F) J = JR (F := F) (AF F) J * P' := by`. Rewrite using `[cT_map, hJR, ← Matrix.map_mul, ← Matrix.map_mul, frameProj_selfAdj hCM hJ]`. Establish `hQs : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (1 - P') * JR (F` using `F) (AF F) J = JR (F := F) (AF F) J * (1 - P') := by`. Rewrite using `[GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.cT_sub, Formalism.UG.cT_one, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, hPs]`. Establish `hQ : 1 - P' = (1 - P).map (inclR (F` using `F) (AF F)) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_sub _ (map_sub (inclR (F := F) (E := E) (AF F))), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hxQ : gx * (1 - P') = 1 - P'`. Rewrite using `[hQ]`. Use `fix_of_perp (Subgroup.mem_inf.1 hx).2 (1 - P) ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, xJ_frameProj hW]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `blockDiag_cancel _`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, yJ_frameProj hCM hJ hW]`. Conclude with `blockDiag_cancel _`. Establish `hQx : (1 - P') * gx = 1 - P'` using `mul_eq_of_unitary hJu hgx hQs hxQ`. Establish `hxP : gx * P' = P' * gx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hxQ.trans hQx.symm` as an intermediate fact. Rewrite `this` using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul]`. Conclude with `sub_right_injective this`. Establish `hyP' : P' * gy = P'` using `mul_eq_of_unitary hJu hgy hPs hy`. Establish `hyQ : gy * (1 - P') = (1 - P') * gy`.
-
-Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, hy, hyP']`. Establish `hc : gx * gy = gy * gx` using `commute_of_proj (add_sub_cancel P' 1) hxP hxQ hy hyQ`. Use `GlobalTheory.AdelicU.matHom_injective (AF F) σ J ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `Units.ext (by rw [Units.val_mul, Units.val_mul]; exact hc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_gl (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {T : Finset (Fin r)} {k : Fin r}
     {x y : GAd σ J} (hx : x ∈ glPart σ J X Y T k)
@@ -356,11 +352,9 @@ end GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ r X Y hW T i j hij x y hx hy`. Apply the tactic sequence `rcases i with _ | ⟨k, hk⟩ <;> rcases j with _ | ⟨k', hk'⟩`. Conclude with `absurd rfl hij`. Conclude with `(comm_gl hCM hJ hW hy (fix_of_span hx hk')).symm`. Conclude with `comm_gl hCM hJ hW hx (fix_of_span hy hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : k ≠ k'` using `fun e => hij (by subst e; rfl)`. Use `comm_gl hCM hJ hW hx (fix_of_perp (Subgroup.mem_inf.1 hy).2 _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[xJ_frameProj hW]`. Conclude with `blockDiag_disj_zero (block_disjoint hk' hk hne.symm) _`. Rewrite using `[yJ_frameProj hCM hJ hW]`.
-
-Conclude with `blockDiag_disj_zero (block_disjoint hk' hk hne.symm) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part_commute : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), GlobalTheory.SiegelSet.IsWittFrame σ J X Y → ∀ T : Finset (Fin r), Pairwise fun i j : Option {k // k ∈ T} => ∀ x y : GAd σ J, x ∈ part σ J X Y T i → y ∈ part σ J X Y T j → Commute x y := by
   intro F E _ _ _ _ _ σ hCM n J hJ r X Y hW T i j hij x y hx hy

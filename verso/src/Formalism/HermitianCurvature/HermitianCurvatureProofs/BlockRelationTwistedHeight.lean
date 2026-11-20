@@ -22,14 +22,14 @@ def BRel (T : V →ₗ[ℂ] V') (M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V
   ∀ i j, ARel T (M i j) (M' i j)
 
 /- English proof (translation)
-Introduce `x y`. Conclude with `rel_neg (hM x y)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem arel_neg {M : Wd.SlopeTestRemainingChoices S (Pr V)} {M' : Wd.SlopeTestRemainingChoices S (Pr V')} (hM : ARel T M M') : ARel T (-M) (-M') := by
   intro x y
   exact rel_neg (hM x y)
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, sub_eq_add_neg, sub_eq_add_neg]`. Conclude with `rel_add (hM x y) (rel_neg (hN x y))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arel_sub {M N : Wd.SlopeTestRemainingChoices S (Pr V)} {M' N' : Wd.SlopeTestRemainingChoices S (Pr V')} (hM : ARel T M M') (hN : ARel T N N') :
     ARel T (M - N) (M' - N') := by
@@ -38,14 +38,14 @@ theorem arel_sub {M N : Wd.SlopeTestRemainingChoices S (Pr V)} {M' N' : Wd.Slope
   exact rel_add (hM x y) (rel_neg (hN x y))
 
 /- English proof (translation)
-Introduce `x y`. Conclude with `rel_zero`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem arel_zero : ARel T (0 : Wd.SlopeTestRemainingChoices S (Pr V)) 0 := by
   intro x y
   exact rel_zero
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `rel_one`. Conclude with `rel_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arel_one : ARel T (1 : Wd.SlopeTestRemainingChoices S (Pr V)) 1 := by
   intro x y
@@ -55,7 +55,7 @@ theorem arel_one : ARel T (1 : Wd.SlopeTestRemainingChoices S (Pr V)) 1 := by
   · exact rel_zero
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `only [Matrix.mul_apply]`. Conclude with `rel_sum _ (fun c _ => rel_mul (hM x c) (hN c y))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem arel_mul {M N : Wd.SlopeTestRemainingChoices S (Pr V)} {M' N' : Wd.SlopeTestRemainingChoices S (Pr V')} (hM : ARel T M M') (hN : ARel T N N') :
     ARel T (M * N) (M' * N') := by
@@ -64,7 +64,7 @@ theorem arel_mul {M N : Wd.SlopeTestRemainingChoices S (Pr V)} {M' N' : Wd.Slope
   exact rel_sum _ (fun c _ => rel_mul (hM x c) (hN c y))
 
 /- English proof (translation)
-Introduce `x y`. Conclude with `rel_smul s (hM x y)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem arel_smul (s : ℂ) {M : Wd.SlopeTestRemainingChoices S (Pr V)} {M' : Wd.SlopeTestRemainingChoices S (Pr V')} (hM : ARel T M M') :
     ARel T (s • M) (s • M') := by
@@ -72,7 +72,7 @@ theorem arel_smul (s : ℂ) {M : Wd.SlopeTestRemainingChoices S (Pr V)} {M' : Wd
   exact rel_smul s (hM x y)
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `only [Matrix.sum_apply]`. Conclude with `rel_sum s (fun i hi => h i hi x y)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem arel_sum {ι : Type*} (s : Finset ι) {M : ι → Wd.SlopeTestRemainingChoices S (Pr V)} {M' : ι → Wd.SlopeTestRemainingChoices S (Pr V')}
     (h : ∀ i ∈ s, ARel T (M i) (M' i)) : ARel T (∑ i ∈ s, M i) (∑ i ∈ s, M' i) := by
@@ -81,7 +81,7 @@ theorem arel_sum {ι : Type*} (s : Finset ι) {M : ι → Wd.SlopeTestRemainingC
   exact rel_sum s (fun i hi => h i hi x y)
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `only [Wd.io, Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `h`. Conclude with `rel_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem arel_io {a : Pr V} {a' : Pr V'} (h : Rel T a a') : ARel T (Wd.io (S := S) a) (Wd.io a') := by
   intro x y
@@ -91,7 +91,7 @@ theorem arel_io {a : Pr V} {a' : Pr V'} (h : Rel T a a') : ARel T (Wd.io (S := S
   · exact rel_zero
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `only [Wd.eU, Matrix.of_apply]`. Use `split_ifs`. Conclude with `rel_one`. Conclude with `rel_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem arel_eU (a : S) (i j : Fin 2) : ARel T (Wd.eU (A := Pr V) a i j) (Wd.eU (A := Pr V') a i j) := by
   intro x y
@@ -101,7 +101,7 @@ theorem arel_eU (a : S) (i j : Fin 2) : ARel T (Wd.eU (A := Pr V) a i j) (Wd.eU 
   · exact rel_zero
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply]`. Conclude with `arel_sub (hM i j) (hN i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brel_sub {M N : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' N' : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V'))} (hM : BRel T M M')
     (hN : BRel T N N') : BRel T (M - N) (M' - N') := by
@@ -110,7 +110,7 @@ theorem brel_sub {M N : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' N' : 
   exact arel_sub (hM i j) (hN i j)
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `arel_smul s (hM i j)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem brel_smul (s : ℂ) {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V'))} (hM : BRel T M M') :
     BRel T (s • M) (s • M') := by
@@ -118,7 +118,7 @@ theorem brel_smul (s : ℂ) {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} 
   exact arel_smul s (hM i j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `arel_one`. Conclude with `arel_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brel_one : BRel T (1 : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))) 1 := by
   intro i j
@@ -128,7 +128,7 @@ theorem brel_one : BRel T (1 : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))) 1 
   · exact arel_zero
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `arel_sum _ (fun c _ => arel_mul (hM i c) (hN c j))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem brel_mul {M N : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' N' : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V'))} (hM : BRel T M M')
     (hN : BRel T N N') : BRel T (M * N) (M' * N') := by
@@ -137,7 +137,7 @@ theorem brel_mul {M N : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' N' : 
   exact arel_sum _ (fun c _ => arel_mul (hM i c) (hN c j))
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `hM j i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem brel_transpose {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V'))} (hM : BRel T M M') :
     BRel T Mᵀ M'ᵀ := by
@@ -145,13 +145,13 @@ theorem brel_transpose {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' :
   exact hM j i
 
 /- English proof (translation)
-Introduce `i j` and use `arel_io (hM i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem brel_lift0 {M : Wd.M2 (Pr V)} {M' : Wd.M2 (Pr V')} (hM : MRel T M M') :
     BRel T (Wd.lift0 (S := S) M) (Wd.lift0 M') := fun i j => arel_io (hM i j)
 
 /- English proof (translation)
-Unfold `Wd.ins`. Conclude with `arel_sum _ fun i _ => arel_sum _ fun j _ => arel_mul (arel_eU a i j) (hM i j)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem arel_ins (a : S) {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V'))} (hM : BRel T M M') :
     ARel T (Wd.ins a M) (Wd.ins a M') := by
@@ -159,33 +159,33 @@ theorem arel_ins (a : S) {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M'
   exact arel_sum _ fun i _ => arel_sum _ fun j _ => arel_mul (arel_eU a i j) (hM i j)
 
 /- English proof (translation)
-Introduce `i j` and use `arel_eU a j i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem block_relation_basisP (a : S) : BRel T (Wd.P0 (A := Pr V) a) (Wd.P0 (A := Pr V') a) :=
   fun i j => arel_eU a j i
 
 /- English proof (translation)
-Introduce `i j` and use `arel_eU a i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem block_relation_basisQ (a : S) : BRel T (Wd.Q0 (A := Pr V) a) (Wd.Q0 (A := Pr V') a) :=
   fun i j => arel_eU a i j
 
 /- English proof (translation)
-Unfold `Wd.Rh0`. Conclude with `brel_smul _ (brel_sub (brel_smul _ brel_one) (block_relation_basisP a))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem block_relation_height (a : S) (D : ℂ) : BRel T (Wd.Rh0 (A := Pr V) a D) (Wd.Rh0 (A := Pr V') a D) := by
   unfold Wd.Rh0
   exact brel_smul _ (brel_sub (brel_smul _ brel_one) (block_relation_basisP a))
 
 /- English proof (translation)
-Unfold `Wd.Rht0`. Conclude with `brel_smul _ (brel_sub (brel_smul _ brel_one) (block_relation_basisQ a))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem block_relation_twisted_height (a : S) (D : ℂ) : BRel T (Wd.Rht0 (A := Pr V) a D) (Wd.Rht0 (A := Pr V') a D) := by
   unfold Wd.Rht0
   exact brel_smul _ (brel_sub (brel_smul _ brel_one) (block_relation_basisQ a))
 
 /- English proof (translation)
-The claim follows from `| [], Y => by unfold Wd.TTw; exact brel_lift0 (hQ Y) | l :: w, Y => by unfold Wd.TTw split_ifs · exact brel_mul (brel_TTw hQ w Y) (block_relation_height _ _) · exact brel_mul (block_relation_twisted_height _ _) (brel_TTw hQ w Y)`.
+A detailed English derivation is pending.
 -/
 theorem brel_TTw {QQ : ℂ → Wd.M2 (Pr V)} {QQ' : ℂ → Wd.M2 (Pr V')} (hQ : ∀ Y, MRel T (QQ Y) (QQ' Y)) :
     ∀ (w : List (Wd.Letter ℂ S)) (Y : ℂ), BRel T (Wd.TTw QQ w Y) (Wd.TTw QQ' w Y)
@@ -198,7 +198,7 @@ theorem brel_TTw {QQ : ℂ → Wd.M2 (Pr V)} {QQ' : ℂ → Wd.M2 (Pr V')} (hQ :
     · exact brel_mul (block_relation_twisted_height _ _) (brel_TTw hQ w Y)
 
 /- English proof (translation)
-The claim follows from `| [] => by unfold Wd.RRw; exact arel_one | l :: w => by unfold Wd.RRw refine arel_mul (arel_RRw hQ w) (arel_ins _ ?_) split_ifs · exact brel_TTw hQ w _ · exact brel_transpose (brel_TTw hQ w _)`.
+A detailed English derivation is pending.
 -/
 theorem arel_RRw {QQ : ℂ → Wd.M2 (Pr V)} {QQ' : ℂ → Wd.M2 (Pr V')} (hQ : ∀ Y, MRel T (QQ Y) (QQ' Y)) :
     ∀ w : List (Wd.Letter ℂ S), ARel T (Wd.RRw QQ w) (Wd.RRw QQ' w)
@@ -220,7 +220,7 @@ variable {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
   {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (hM a b).1 (x b)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem act_tr {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] {T : V →ₗ[ℂ] V'}
     {M : Wd.SlopeTestRemainingChoices S (Pr V)} {M' : Wd.SlopeTestRemainingChoices S (Pr V')} (hM : ARel T M M') (x : Wd.Ix S → V) (a : Wd.Ix S) :
@@ -230,7 +230,7 @@ theorem act_tr {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [
   exact (LinearMap.congr_fun (hM a b).1 (x b)).symm
 
 /- English proof (translation)
-Rewrite using `[Fin.val_one']`. Conclude with `Nat.mod_eq_of_lt (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_val (ρ : ℕ) : ((1 : Fin (1 + ρ + 1)) : ℕ) = 1 := by
   rw [Fin.val_one']
@@ -245,13 +245,13 @@ def cfEquiv (ρ : ℕ) : {l : Fin ρ // (0 : Fin (ρ + 1)).val ≤ l.val} ≃ {l
     ext; simp [shS]; omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l.val = 0`. Establish `e : l = ⟨0, by omega⟩` using `Fin.ext hl`. Rewrite using `[e, consC_zero]`. Unfold `P5.glue`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Rewrite `h` using `[one_val]`. Simplify using `at h`. Both sides reduce to the same expression. Establish `e : l = shS ⟨l.val - 1, by omega⟩` using `Fin.ext (by simp [shS]; omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, consC_sh]`. Unfold `P5.glue`. Establish `h : ((1 : Fin (1 + ρ + 1)) : ℕ) ≤ (shS (⟨l.val - 1, by omega⟩ : Fin ρ)).val`. Rewrite using `[one_val]`. Simplify using `[shS]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h' : ((0 : Fin (ρ + 1)) : ℕ) ≤ (⟨l.val - 1, by omega⟩ : Fin ρ).val` using `Nat.zero_le _`. Rewrite using `[dif_pos h, dif_pos h']`. Establish `: (⟨shS ⟨l.val - 1, by omega⟩, h⟩ : {l : Fin (1 + ρ) // (1 : Fin (1 + ρ + 1)).val ≤ l.val}) = cfEquiv ρ ⟨⟨l.val - 1, by omega⟩, h'⟩` using `rfl`. Rewrite using `[this, MeasurableEquiv.piCongrLeft_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_cf (c : Fin (1 + ρ) → ℂ) (c'' : P5.Cf ρ 0) :
     P5.glue 1 c (MeasurableEquiv.piCongrLeft (fun _ => ℂ) (cfEquiv ρ) c'') =
@@ -276,7 +276,7 @@ theorem glue_cf (c : Fin (1 + ρ) → ℂ) (c'' : P5.Cf ρ 0) :
     rw [this, MeasurableEquiv.piCongrLeft_apply_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Unfold `P5.glue`. Establish `h : ((0 : Fin (ρ + 1)) : ℕ) ≤ l.val` using `Nat.zero_le _`. Rewrite using `[dif_pos h, dif_pos h]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem glue_zero (c c' : Fin ρ → ℂ) (c'' : P5.Cf ρ 0) : P5.glue 0 c c'' = P5.glue 0 c' c'' := by
   funext l
@@ -285,7 +285,7 @@ theorem glue_zero (c c' : Fin ρ → ℂ) (c'' : P5.Cf ρ 0) : P5.glue 0 c c'' =
   rw [dif_pos h, dif_pos h]
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv (cfEquiv ρ) _ _ fun l => ?_).symm` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.piCongrLeft_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_cf (c'' : P5.Cf ρ 0) :
     (∏ l, ‖MeasurableEquiv.piCongrLeft (fun _ => ℂ) (cfEquiv ρ) c'' l‖ ^ (-2 : ℤ)) = ∏ l, ‖c'' l‖ ^ (-2 : ℤ) := by
@@ -293,9 +293,9 @@ theorem prod_cf (c'' : P5.Cf ρ 0) :
   rw [MeasurableEquiv.piCongrLeft_apply_apply]
 
 /- English proof (translation)
-Unfold `P5.form`. Rewrite using `[← (volume_measurePreserving_piCongrLeft (fun _ => ℂ) (cfEquiv ρ)).integral_comp']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun c'' => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[prod_cf, glue_cf, hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[pairAt_tr ht hmap]`. Rewrite using `[glue_zero 0 c₀]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_tr {t : ℂ} (ht : t ≠ 0) {μ : Measure (Mt k (1 + ρ))} {μs : Measure (Mt k ρ)}
     (hmap : μs.map (B2.levM k ρ) = μ) (x y : Wd.Ix S → RadSp k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π')
@@ -329,7 +329,7 @@ variable {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
   {μ : Measure (Mt k (1 + ρ))} {μs : Measure (Mt k ρ)}
 
 /- English proof (translation)
-Unfold `P5.RRform`. Rewrite using `[form_tr ht hmap _ _ c hc c₀]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `act_tr (arel_RRw (fun Y => qqi_rel ht hz hz' hL hLs hst hsts Y) w) x a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rrform_tr {t : ℂ} (ht : t ≠ 0) (hz : inWb k ρ z) (hz' : inWb k ρ z')
     (hL : IsActualLevel X L) (hLs : IsActualLevel Xs Ls) (hst : ∀ Y, st.QQ Y = s • X.QQ Y)
@@ -345,7 +345,7 @@ theorem rrform_tr {t : ℂ} (ht : t ≠ 0) (hz : inWb k ρ z) (hz' : inWb k ρ z
   exact act_tr (arel_RRw (fun Y => qqi_rel ht hz hz' hL hLs hst hsts Y) w) x a
 
 /- English proof (translation)
-Unfold `P5.ph`. Establish `e : (⟨0, by omega⟩ : Fin (1 + ρ)).succ = (1 : Fin (1 + ρ + 1))` using `by ext; rw [one_val]; rfl`. Rewrite using `[e, rrform_tr ht hz hz' hL hLs hst hsts hmap w _ _ _ (by simp) c₀]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ph_tr {t : ℂ} (ht : t ≠ 0) (hz : inWb k ρ z) (hz' : inWb k ρ z')
     (hL : IsActualLevel X L) (hLs : IsActualLevel Xs Ls) (hst : ∀ Y, st.QQ Y = s • X.QQ Y)

@@ -15,11 +15,11 @@ namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `key : (d.A.J.map (d.B.emb w).1).det ≠ 0`. Break down `d.ok.sign with ⟨hA, -⟩ | ⟨hA, -⟩` into its components or cases. Conclude with `meas_det_of_hasSig (hA.sig w)`. Establish `h` using `meas_det_of_hasSig (hA.sig w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Matrix.det_smul]`. Introduce `h0; exact h (by rw [h0, mul_zero])`. Introduce `h0`. Apply `key` to reduce the goal to its premises. Establish `hm` using `RingHom.map_det (d.B.emb w).1 d.A.J`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[RingHom.mapMatrix_apply, h0, map_zero]`. Conclude with `hm.symm`.
+A detailed English derivation is pending.
 -/
 theorem meas_detA_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : d.A.J.det ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -35,7 +35,7 @@ theorem meas_detA_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : d.
   rw [RingHom.mapMatrix_apply, h0, map_zero] at hm
   exact hm.symm
 /- English proof (translation)
-Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `hh j i`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k, Matrix.det_transpose, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hη) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_detA_k d)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_hermND'_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {η : E} (hη : η ≠ 0) (hh : ∀ i j, σ (η * d.A.J j i) = η * d.A.J i j) :
     HeckeCharacterZeroLocus.SiegelWeilU.IsHermND σ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) := by

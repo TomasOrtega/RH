@@ -11,19 +11,19 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SocleOfMultipli
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas
 
 /- English proof (translation)
-Take `⟨B, hsym, hpos, hinv⟩` from `hun`. Use `⟨GlobalTheory.CompanionTheory.UnitSemisimple.orth ρ B hinv W, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv hv'`. Assume the negation of the conclusion as `hne`. Establish `h1 : B v v = 0` using `hv' v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2` using `hpos v hne`. Rewrite `h2` using `[h1]`. Simplify using `at h2`. Introduce `v`. Take `⟨K, hKo, hKc, hKU⟩` from `hbasis _ ((hs v).mem_nhds (by simp))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfd` using `hW.2 K hKo hKc`. Take `⟨t, ht⟩` from `(Module.Finite.iff_fg.mp hfd).map W.toSubmodule.subtype`. Establish `hM : ∀ s, s ∈ Submodule.span ℂ (t : Set V) ↔ s ∈ W.toSubmodule ∧ ∀ k ∈ K, ρ k s = s`. Introduce `s`. Rewrite using `[ht, Submodule.mem_map]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite `hx` using `[GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff]`. Conclude with `⟨x.2, fun k hk => congrArg Subtype.val (hx k hk)⟩`. Introduce and unpack `⟨hsW, hsK⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨s, hsW⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff]`. Introduce `k hk`. Conclude with `Subtype.ext (hsK k hk)`. Take `⟨w, hw, hperp⟩` from `GlobalTheory.CompanionTheory.UnitSemisimple.exists_proj_finset B hpos t v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, ((hM w).mp hw).1, ?_⟩` and prove the remaining obligations. Introduce `w' hw'`. Establish `hvK : ∀ k ∈ K, ρ k v = v` using `fun k hk => hKU hk`. Establish `huK : ∀ k ∈ K, ρ k (v - w) = v - w` using `fun k hk => by`. Rewrite using `[map_sub, hvK k hk, ((hM w).mp hw).2 k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.CompanionTheory.UnitSemisimple.orthogonal_of_fixed ρ B hinv K hKc W (v - w) huK (fun s hs' => hperp s ?_) w' hw' (hs w')` and prove the remaining obligations. Rewrite using `[hM]`. Conclude with `⟨hs'.1, (GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff ρ K s).mp hs'.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_compl_of_admissible {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
@@ -66,23 +66,19 @@ private theorem exists_compl_of_admissible {G V : Type} [Group G] [TopologicalSp
     exact ⟨hs'.1, (GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff ρ K s).mp hs'.2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hT`. Choose the witnesses or unpack the hypotheses as in `⟨s, hsS, hs0⟩ : ∃ s ∈ S.toSubmodule, s ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hS.1` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises. Use extensionality with `v`. Use `show v ∈ S.toSubmodule ↔ v ∈ (⊥ : Submodule ℂ V)`. Rewrite using `[Submodule.mem_bot]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨hcon v, fun h => h ▸ S.toSubmodule.zero_mem⟩`. Apply `hs0 (hST s hsS _)` to reduce the goal to its premises. Rewrite using `[hT]`. Use `show s ∈ (⊤ : Submodule ℂ V)`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `U hTU`. Take `⟨hle, u, huU, huT⟩` from `SetLike.lt_iff_le_and_exists.mp hTU`. Take `⟨w, hwS, hwT⟩` from `hsum u`. Establish `hwU : w ∈ U.toSubmodule`. Rewrite using `[← sub_sub_cancel u w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `U.toSubmodule.sub_mem huU (hle hwT)`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Apply `huT` to reduce the goal to its premises. Rewrite `hwT` using `[sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hwT`. Establish `hSU : S ≤ U`. Establish `hinf : S ⊓ U = S` using `(hS.le_iff.mp inf_le_left).resolve_left (by`. Introduce `h`. Apply `hw0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hm : w ∈ (S ⊓ U).toSubmodule` using `⟨hwS, hwU⟩`. Rewrite `hm` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).mp hm)`. Rewrite using `[← hinf]`. Conclude with `inf_le_right`.
-
-Apply `Subrepresentation.ext` to reduce the goal to its premises. Use extensionality with `v`. Use `show v ∈ U.toSubmodule ↔ v ∈ (⊤ : Submodule ℂ V)`. Use `⟨fun _ => trivial, fun _ => ?_⟩` and prove the remaining obligations. Take `⟨w', hw'S, hw'T⟩` from `hsum v`.
-
-Establish `hadd` using `U.toSubmodule.add_mem (hSU hw'S) (hle hw'T)`. Simplify using `using hadd`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isCoatom_of_compl {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     {S T : Subrepresentation ρ} (hS : IsAtom S) (hST : ∀ v, v ∈ S.toSubmodule → v ∈ T.toSubmodule → v = 0)
@@ -131,19 +127,17 @@ private theorem isCoatom_of_compl {G V : Type} [Group G] [AddCommGroup V] [Modul
     simpa using hadd
 
 /- English proof (translation)
-Take `⟨-, f, hfs, hker⟩` from `hc`. Establish `hinj : Function.Injective f`. Introduce `v w hvw`. Assume the negation of the conclusion as `hne`. Establish `hmem : v - w ∈ (Representation.IntertwiningMap.ker π σ f).toSubmodule` using `by show v - w ∈ LinearMap.ker f.toLinearMap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_ker, map_sub]`. Conclude with `sub_eq_zero.mpr hvw`. Establish `hK : Representation.IntertwiningMap.ker π σ f ≠ ⊥`. Introduce `hK0`. Rewrite `hmem` using `[hK0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (sub_eq_zero.mp ((Submodule.mem_bot ℂ).mp hmem))`. Use `haveI := ((hasFiniteLength_iff_wellFounded π).mp hfl).2`. Take `⟨S, hS, hSK⟩` from `(eq_bot_or_exists_atom_le _).resolve_left hK`. Set `ι : S.toRepresentation.IntertwiningMap π` to `(S.toSubmodule.subtype).intertwiningMap_of_isIntertwiningMap _ _ (fun g x => rfl)`. Establish `hSs : IsSmooth S.toRepresentation` using `IsSubquotient.isSmooth (IsSubquotient.of_injective ι Subtype.val_injective) hs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSadm : IsAdmissible S.toRepresentation` using `(hBZ k).1 (Fin N) _ S.toRepresentation hSs (GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom S hS)`. Take `⟨T, hST, hsum⟩` from `exists_compl_of_admissible π (GlobalTheory.CompanionTheory.SmGL.exists_compact_open_subgroup_subset k N) hs hun S hSadm`. Establish `hTK` using `hker T (isCoatom_of_compl hS hST hsum)`. Apply `hS.1` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `s`. Use `show s ∈ S.toSubmodule ↔ s ∈ (⊥ : Submodule ℂ V)`. Rewrite using `[Submodule.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `hs'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Apply `hST s hs'` to reduce the goal to its premises. Rewrite using `[hTK]`. Conclude with `hSK hs'`. Introduce and unpack `rfl`. Conclude with `S.toSubmodule.zero_mem`.
-
-Conclude with `⟨(equivOfBijective f ⟨hinj, hfs⟩).symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem equiv_of_isCosocle (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {k : Type} [Field k]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}
@@ -188,9 +182,9 @@ private theorem equiv_of_isCosocle (hBZ : GlobalTheory.Published.BernsteinZelevi
   exact ⟨(equivOfBijective f ⟨hinj, hfs⟩).symm⟩
 
 /- English proof (translation)
-Introduce `hBZ k _ _ _ _ h N x hd V _ _ π hun hc`. Establish `hIA : GlobalTheory.Published.IrreducibleAdmissibleGL` using `fun k' _ _ _ _ n W _ _ ρ hs hi => (hBZ k').1 (Fin n) W ρ hs hi`. Establish `hsm : IsSmooth (piTensor fun a => (x a).rep)` using `isSmooth_piTensor (fun a => (x a).snd.rep.smooth)`. Establish `hfl0 : HasFiniteLength (piTensor fun a => (x a).rep)` using `hasFiniteLength_of_isIrreducible (GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hIA x)`. Establish `hfl : HasFiniteLength (prodIrr x hd)` using `(hBZ k).2.2.1 (Fin h) (Fin N) (fun a => Fin (x a).1) (stdBlocks (fun a => (x a).1) hd) _ _ hsm hfl0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `equiv_of_isCosocle hBZ π (prodIrr x hd) (isSmooth_prodIrr x hd) hfl (UnitInd.isUnitarisable_multiProd _ hun) hc`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cas.cosocleUnit :
     GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (h N : ℕ) (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), (∀ a, IsUnitarisable (x a).rep) → IsCosocle π (prodIrr x hd) → Nonempty (π.Equiv (prodIrr x hd)) := by

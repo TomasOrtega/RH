@@ -12,9 +12,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.GenUniq
 
 /- English proof (translation)
-Take `⟨A, B, hBA, ⟨e₁⟩⟩` from `GlobalTheory.T.subquotient_realised_by_subreps ρ π hπρ`. Take `⟨C, D, hDC, ⟨e₂⟩⟩` from `GlobalTheory.T.subquotient_realised_by_subreps ρ σ hσρ`. Establish `hiAB : (subQuot A B).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv e₁ hπ`. Establish `hiCD : (subQuot C D).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv e₂ hσ`. Establish `hAB` using `(GlobalTheory.T.generic_subquotient_iff_whittaker_quotient k ψ hψ N ρ hρ A B hBA).1 (hgπ.of_equiv e₁)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCD` using `(GlobalTheory.T.generic_subquotient_iff_whittaker_quotient k ψ hψ N ρ hρ C D hDC).1 (hgσ.of_equiv e₂)`. Take `⟨e⟩` from `GlobalTheory.T.nonempty_equiv_subQuot_of_not_le_sup ρ (twKer ρ (unipB k (Fin N)) (whitChar ψ N)) hrank (GlobalTheory.T.twisted_kernel_sup_distributes_subreps k ψ hψ N ρ hρ) A B C D hBA hDC hiAB hiCD hAB hCD`. Conclude with `⟨(e₁.trans e).trans e₂.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_equiv_of_generic_subquotients (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (hψ : Continuous ψ)

@@ -8,15 +8,15 @@ open scoped TensorProduct ContDiff ComplexOrder
 namespace UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `E _ _ a`. Establish `hs : IsCone (cone E a)`. Introduce `t ht p hp`. Rewrite `hp`, the goal using `[conePos]`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(hp w).smul ht`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hadd : ∀ p ∈ cone E a, ∀ q ∈ cone E a, p + q ∈ cone E a`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `p hp q hq`. Rewrite `hp`, `hq`, the goal using `[conePos]`. Introduce `w`. Establish `h` using `(hp w).add (hq w)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Use `⟨?_, hs⟩` and prove the remaining obligations. Rewrite using `[convex_iff_forall_pos]`. Introduce `x hx y hy s t hs' ht _`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hadd _ (hs s hs' x hx) _ (hs t ht y hy)`.
+A detailed English derivation is pending.
 -/
 theorem coneConvex : ConeConvex := by
   intro E _ _ a

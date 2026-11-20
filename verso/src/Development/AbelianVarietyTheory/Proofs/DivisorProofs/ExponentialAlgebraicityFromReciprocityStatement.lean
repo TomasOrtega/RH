@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.N
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigOn.Exp.expAlg | exact GlobalTheory.BigOn.Exp.expAlg | (intros; apply GlobalTheory.BigOn.Exp.expAlg <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exponential_algebraicity_from_reciprocity : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → GlobalTheory.BigOn.Exp.ExpAlg := by
   first | exact @GlobalTheory.BigOn.Exp.expAlg | exact GlobalTheory.BigOn.Exp.expAlg | (intros; apply GlobalTheory.BigOn.Exp.expAlg <;> assumption)

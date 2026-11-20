@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CapelliOperatorOnUni
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.CapelliGelfand.etr_eq_gelfVal_of_capelli` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTraceElementsActByGelfandValues.lean&line=12#L12)
 -/

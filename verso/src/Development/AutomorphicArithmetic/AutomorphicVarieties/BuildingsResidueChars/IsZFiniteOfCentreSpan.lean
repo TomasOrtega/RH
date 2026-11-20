@@ -11,21 +11,17 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `K _ _ n φ hφ`. Take `⟨ι, hι, ⟨D⟩⟩` from `UpperTheory.exists_idempotent_decomposition_mixedSpace K`. Establish `key` using `fun τ => UpperTheory.exists_qdet_eq_pow_add_sum_coeff_mem_span (Module.End ℂ (archSmooth K n)) n (gen D (lam K n) τ)`. Use `choose c hc hq using key`. Set `s : Set (Module.End ℂ (archSmooth K n))` to `Set.range (fun p : ι × Fin n => c p.1 p.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcZ : ∀ τ k, c τ k ∈ Zc K n`. Introduce `τ k`. Establish `h1 : Submodule.span ℂ (Set.range (Formalism.REAL.qdet (gen D (lam K n) τ))) ≤ Subalgebra.toSubmodule (Zc K n)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨u, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `UpperTheory.qdet_generates_universalEnveloping_centre K n ι D τ u`. Conclude with `h1 (hc τ k)`. Establish `hsZ : ∀ x ∈ s, x ∈ Zc K n`. Introduce and unpack `x ⟨⟨τ, k⟩, rfl⟩`. Conclude with `hcZ τ k`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `hAlg : ∀ T ∈ Zc K n, AlgMod (Submodule.span ℂ {φ}) ⊥ T`. Introduce `T hT`. Apply `UpperTheory.algMod_bot_of_mem_adjoin_commuting _ _ (uAction '' (isExpLieAlgebra K n).centerU)` to reduce the goal to its premises. Introduce and unpack `x ⟨z, hz, rfl⟩ y ⟨w, hw, rfl⟩`. Conclude with `Zc_comm (uAction_mem_Zc hz) (uAction_mem_Zc hw)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨z, hz, rfl⟩`. Conclude with `hφ z hz`. Conclude with `hT`. Establish `hfd` using `UpperTheory.finiteDimensional_span_adjoin_orbit_of_commuting _ φ s (Set.finite_range _) (fun a ha b hb => Zc_comm (hsZ a ha) (hsZ b hb)) (fun T hT => hAlg T (hsZ T hT))`. Establish `hle : Algebra.adjoin ℂ {x | ∃ τ u, x = capOp D n τ u} ≤ Algebra.adjoin ℂ s`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `x ⟨τ, u, rfl⟩`. Use `show Formalism.REAL.qdet (gen D (lam K n) τ) u ∈ Algebra.adjoin ℂ s`. Rewrite using `[hq τ u]`. Use `Subalgebra.add_mem _ (Subalgebra.algebraMap_mem _ _) (Subalgebra.sum_mem _ fun k hk => Subalgebra.smul_mem _ ?_ _)` and prove the remaining obligations.
-
-Conclude with `Algebra.subset_adjoin ⟨(τ, ⟨k, Finset.mem_range.mp hk⟩), rfl⟩`. Establish `hsub : Submodule.span ℂ ((fun z => (uAction z) φ) '' ((isExpLieAlgebra K n).centerU : Set _)) ≤ Submodule.span ℂ ((fun T : Module.End ℂ (archSmooth K n) => T φ) '' (Algebra.adjoin ℂ s : Set _))`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨uAction z, hle (UpperTheory.centerU_action_mem_adjoin_capOp K n ι D z hz), rfl⟩`.
-
-Conclude with `Submodule.finiteDimensional_of_le hsub`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isZFinite_of_centre_span :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (φ : archSmooth K n), Centre (Submodule.span ℂ {φ}) → IsZFinite φ := by

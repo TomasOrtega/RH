@@ -111,11 +111,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Take `⟨n, b, rfl⟩` from `x.exists_rep`. Rewrite using `[WD.lpOfChar, WD.lpChar_mk, WD.lpTwist_mk]`. Use `WD.sound ⟨(TensorProduct.congr (.refl ℂ _) (LinearEquiv.funUnique (Fin 1) ℂ ℂ)).trans (TensorProduct.rid ℂ _), fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x y => simp [smul_smul, mul_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem lpChar_lpOfChar (x : WD h) (ξ : Weil h →* ℂˣ) (hξ : WeilDeligne.IsSmooth ξ) :
     x.lpChar (WD.lpOfChar h ξ hξ) = x.lpTwist ξ hξ := by
@@ -135,9 +135,9 @@ theorem lpChar_lpOfChar (x : WD h) (ξ : Weil h →* ℂˣ) (hξ : WeilDeligne.I
 variable (w) in
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Establish `hO : 𝒪[w.adicCompletion E] = (w.adicCompletionIntegers E).toSubring`. Use extensionality with `y`. Rewrite using `[Valuation.mem_integer_iff, he.le_one_iff_le_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`. Establish `hq : resCard (w.adicCompletion E) = Formalism.UG.qV E w`. Rewrite using `[← Formalism.UG.P.tjcosets_card_residue]`. Conclude with `Nat.card_congr (IsLocalRing.ResidueField.mapEquiv (RingEquiv.subringCongr hO)).toEquiv`. Conclude with `hq`.
+Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resCard_eq_normV : resCard (w.adicCompletion E) = normV w := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -156,7 +156,7 @@ theorem resCard_eq_normV : resCard (w.adicCompletion E) = normV w := by
 variable {a : Weil h →* (w.adicCompletion E)ˣ}
 
 /- English proof (translation)
-Use `MonoidHom.ext fun σ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, SmGL.unrChar_apply, ha.ord_eq, WeilDeligne.unrChar_apply, _root_.zpow_neg, _root_.inv_zpow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLocalArtin.unrChar_comp (ha : IsLocalArtin h a) (c : ℂˣ) :
     (SmGL.unrChar (w.adicCompletion E) c).comp a = WeilDeligne.unrChar h c⁻¹ := by
@@ -164,7 +164,7 @@ theorem IsLocalArtin.unrChar_comp (ha : IsLocalArtin h a) (c : ℂˣ) :
   rw [MonoidHom.comp_apply, SmGL.unrChar_apply, ha.ord_eq, WeilDeligne.unrChar_apply, _root_.zpow_neg, _root_.inv_zpow]
 
 /- English proof (translation)
-Use `MonoidHom.ext fun σ => Units.ext ?_` and prove the remaining obligations. Establish `hq : (0 : ℝ) ≤ ((normV w : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[MonoidHom.comp_apply, val_absPow_ofReal, GlobalTheory.LGrp.nabs_eq_zpow, ha.ord_eq, neg_neg, resCard_eq_normV, WeilDeligne.unrChar_apply, Units.val_zpow_eq_zpow_val, coe_qPow, ← Real.rpow_intCast, ← Real.rpow_mul hq, mul_comm, Real.rpow_mul hq, Real.rpow_intCast, Complex.ofReal_ …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLocalArtin.absPow_comp (ha : IsLocalArtin h a) (s : ℝ) :
     (absPow (w.adicCompletion E) s).comp a = WeilDeligne.unrChar h (qPow w s) := by
@@ -177,14 +177,14 @@ theorem IsLocalArtin.absPow_comp (ha : IsLocalArtin h a) (s : ℝ) :
 variable {ha : IsLocalArtin h a} {ε : EpsFamily A} {rc : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-Rewrite using `[H.twist, H.one, lpChar_lpOfChar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Laws.tw_eq (H : Laws a ha ε rc) (x : IrrGL (w.adicCompletion E)) (χ : (w.adicCompletion E)ˣ →* ℂˣ)
     (hχ : IsSmoothChar χ) : rc (x.tw χ hχ) = (rc x).lpTwist (χ.comp a) (ha.smooth hχ) := by
   rw [H.twist, H.one, lpChar_lpOfChar]
 
 /- English proof (translation)
-Rewrite using `[IrrGL.nu, H.tw_eq, WD.lpTw]`. Use `congr 1`. Conclude with `ha.absPow_comp s`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Laws.nu_eq (H : Laws a ha ε rc) (x : IrrGL (w.adicCompletion E)) (s : ℝ) : rc (x.nu s) = (rc x).lpTw s := by
   rw [IrrGL.nu, H.tw_eq, WD.lpTw]
@@ -192,7 +192,7 @@ theorem Laws.nu_eq (H : Laws a ha ε rc) (x : IrrGL (w.adicCompletion E)) (s : �
   exact ha.absPow_comp s
 
 /- English proof (translation)
-The claim follows from `H.bij.1.eq_iff.trans (IrrGL.of_eq_of (π := π.ρ) (σ := π'.ρ) (hs := π.smooth) (hi := π.irr) (hs' := π'.smooth) (hi' := π'.irr))`.
+A detailed English derivation is pending.
 -/
 theorem Laws.eq_iff (H : Laws a ha ε rc) {n : ℕ} (π π' : IrrRep (GL (Fin n) (w.adicCompletion E))) :
     rc (cls π) = rc (cls π') ↔ Nonempty (π.ρ.Equiv π'.ρ) :=
@@ -200,7 +200,7 @@ theorem Laws.eq_iff (H : Laws a ha ε rc) {n : ℕ} (π π' : IrrRep (GL (Fin n)
     (hi' := π'.irr))
 
 /- English proof (translation)
-Take `⟨⟨n, c⟩, rfl⟩` from `H.bij.2 y`. Establish `key : ∀ m, m = n → ∃ π : IrrRep (GL (Fin m) (w.adicCompletion E)), rc (cls π) = rc ⟨n, c⟩`. Introduce and unpack `_ rfl`. Conclude with `⟨c.rep, congrArg rc (congrArg (Sigma.mk _) c.cl_rep)⟩`. Conclude with `key _ (H.dim _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Laws.exists_rep (H : Laws a ha ε rc) (y : WD h) :
     ∃ π : IrrRep (GL (Fin y.lpDim) (w.adicCompletion E)), rc (cls π) = y := by

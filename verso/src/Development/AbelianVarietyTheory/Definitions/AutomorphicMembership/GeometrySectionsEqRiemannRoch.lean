@@ -30,20 +30,20 @@ variable (Y : Var F) (E : Type) [Field E] [NumberField E] [Algebra F E] {n : ℕ
 end Cut
 
 /- English proof (translation)
-The claim follows from `inter_zsmul_projHyp F n d`.
+A detailed English derivation is pending.
 -/
 example (n : ℕ) (d : Fin n → ℤ) : (geoTrue F).inter (proj F n) (fun i => d i • projHyp F n) = ∏ i, d i :=
   inter_zsmul_projHyp F n d
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨nef_zsmul_projHyp_line F m, big_zsmul_projHyp F 1 le_rfl m⟩`.
+Supply the required witnesses or components.
 -/
 example (m : ℤ) : ((geoTrue F).nef (proj F 1) (m • projHyp F 1) ↔ 0 ≤ m) ∧
     ((geoTrue F).big (proj F 1) (m • projHyp F 1) ↔ 0 < m) :=
   ⟨nef_zsmul_projHyp_line F m, big_zsmul_projHyp F 1 le_rfl m⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Var.nonempty_pts, mSmooth_projMet F σ n⟩`.
+Supply the required witnesses or components.
 -/
 example (Y : (geoTrue F).Var) (σ : F →+* ℂ) (n : ℕ) : Nonempty ((geoTrue F).pts Y σ) ∧
     (geoTrue F).mSmooth (proj F n) σ (projHyp F n) (projMet F σ n) :=

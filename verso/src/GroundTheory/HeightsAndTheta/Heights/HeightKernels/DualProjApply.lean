@@ -19,7 +19,7 @@ def dualProj (b : Module.Basis T ℤ (dualLattice F))
 
 omit [Fintype T] [DecidableEq T] in
 /- English proof (translation)
-Simplify using `[dualProj]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dualProj_apply (b : Module.Basis T ℤ (dualLattice F))
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)))
@@ -54,18 +54,18 @@ def DualStdMassAt.Statement : Prop :=
       (fun _ z => Real.log ((dualLine F b hb).h z)) (fun _ => 1) = Fintype.card (K →+* ℂ)
 
 /- English proof (translation)
-The claim follows from `dualProj dualBasisStandard dualEmbMatrix_standard_bijective`.
+A detailed English derivation is pending.
 -/
 example : (((k : Unit) → dualBlocks Unit k) → ℂ) →ₗ[ℂ] (Fin 1 → ℂ) :=
   dualProj dualBasisStandard dualEmbMatrix_standard_bijective
 
 /- English proof (translation)
-The claim follows from `dualPlanePt dualBasisStandard (Rat.castHom ℂ) fun _ => 1`.
+A detailed English derivation is pending.
 -/
 example : (Σ _ : Unit, Unit) → ℂ := dualPlanePt dualBasisStandard (Rat.castHom ℂ) fun _ => 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualBasisStandard, dualEmbMatrix_standard_bijective, Rat.castHom ℂ, fun _ => 1, fun h => one_ne_zero (congrFun h 0)⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)))
     (_ : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))) (_ : ℚ →+* ℂ) (v : Fin 1 → ℂ), v ≠ 0 :=
@@ -73,7 +73,7 @@ example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 
     fun h => one_ne_zero (congrFun h 0)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualBasisStandard, dualEmbMatrix_standard_bijective, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ (0 + 1))))
     (_ : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))),

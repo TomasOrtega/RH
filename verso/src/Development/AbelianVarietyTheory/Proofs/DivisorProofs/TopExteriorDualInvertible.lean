@@ -18,13 +18,13 @@ noncomputable section
 namespace GlobalTheory.InvertibleTopExteriorPower
 
 /- English proof (translation)
-Set `s : Set R` to `{a | Module.Free (Localization.Away a) (LocalizedModule.Away a M)}`. Establish `hs : Ideal.span s = ⊤`. Assume the negation of the conclusion as `h`. Take `⟨m, hm, hsm⟩` from `Ideal.exists_le_maximal _ h`. Take `⟨a, ha, hfree⟩` from `Module.Free.away_of_finite_of_flat_of_rankAtStalk_constant M m (fun m' _ => by rw [hn, hn])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `ha (hsm (Ideal.subset_span hfree))`. Establish `hloc : ∀ r : s, IsLocalizedModule.Away r.1 (exteriorPowerMapOver (Localization.Away r.1) n (LocalizedModule.mkLinearMap (Submonoid.powers r.1) M))` using `fun r => (isLocalizedModule_iff_isBaseChange (Submonoid.powers r.1) (Localization.Away r.1) _).2 (GlobalTheory.TopForm.isBaseChange_exteriorPower (LocalizedModule.isBaseChange (Submonoid.powers r.1) M) n)`. Use `GlobalTheory.invertible_of_isLocalizedModule_span s hs (fun r => Localization.Away r.1) (fun r => ⋀[Localization.Away r.1]^n (LocalizedModule.Away r.1 M)) (fun r => exteriorPowerMapOver (Localization.Away r.1) n (LocalizedModule.mkLinearMap (Submonoid.powers r.1) M)) fun r => ?_` and prove the remaining obligations. Establish `hfree : Module.Free (Localization.Away r.1) (LocalizedModule.Away r.1 M)` using `r.2`. Break down `subsingleton_or_nontrivial (Localization.Away r.1) with hB | hB` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `haveI : Subsingleton (⋀[Localization.Away r.1]^n (LocalizedModule.Away r.1 M)) := Module.subsingleton (Localization.Away r.1) _`. Conclude with `Module.Invertible.congr (LinearEquiv.ofSubsingleton (Localization.Away r.1) (⋀[Localization.Away r.1]^n (LocalizedModule.Away r.1 M)))`. Take `⟨q⟩ : Nonempty (PrimeSpectrum (Localization.Away r.1))` from `inferInstance`. Establish `hfr : Module.finrank (Localization.Away r.1) (LocalizedModule.Away r.1 M) = n`. Establish `h1` using `congrFun (Module.rankAtStalk_eq_finrank_of_free (R := Localization.Away r.1) (M := LocalizedModule.Away r.1 M)) q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[Module.rankAtStalk_isBaseChange (LocalizedModule.isBaseChange (Submonoid.powers r.1) M), hn]`. Conclude with `h1.symm`. Set `b` to `Module.finBasisOfFinrankEq (Localization.Away r.1) (LocalizedModule.Away r.1 M) hfr`. Establish `hb` using `GlobalTheory.TopForm.isFreeGen_ιMulti b`. Conclude with `Module.Invertible.congr (LinearEquiv.ofBijective (LinearMap.toSpanSingleton _ _ _) hb)`.
+A detailed English derivation is pending.
 -/
 theorem invertible_exteriorPower_top (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.Projective R M] (n : ℕ)
@@ -63,7 +63,7 @@ theorem invertible_exteriorPower_top (R : Type) [CommRing R] (M : Type) [AddComm
     exact Module.Invertible.congr (LinearEquiv.ofBijective (LinearMap.toSpanSingleton _ _ _) hb)
 
 /- English proof (translation)
-Introduce `R _ M _ _ _ _ n hn`. Use `haveI := invertible_exteriorPower_top R M n hn`. Conclude with `Module.Invertible.congr (exteriorPower.alternatingMapLinearEquiv (R := R) (M := M) (N := R) (n := n)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invertible_alternatingMap_top : ∀ (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.Projective R M] (n : ℕ),

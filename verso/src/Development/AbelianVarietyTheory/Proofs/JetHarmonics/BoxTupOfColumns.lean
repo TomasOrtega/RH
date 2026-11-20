@@ -24,19 +24,15 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL hL2 hL4 hT E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y C P ϖ hϖ Q hQ F _ _ _ _ v g g' π hg hg' hπ τ hτ hEL n D' A' G' _ _ pD pA pG U' PU _ oD' hx hact s s₂ t₀ t p w ζ x σ f h`. Establish `hG` using `hL.globalFns`. Establish `hk : 1 ≤ g' * g` using `Nat.mul_pos hg' hg`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : AdmBase T.V (maximalIdeal T.V)` using `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`. Take `⟨bx₁, hbx₁⟩` from `exists_boxFam_multilinear hG T.V n P.D.toPre D'.toPre pD F g'`. Take `⟨bx, hbx⟩` from `exists_boxFam_multilinear hG T.V n P.D.toPre D'.toPre pD F (g' * g)`. Take `⟨p', hp'⟩` from `BoxQk.exists_isBoxQk hG T.V n P.D.toPre D'.toPre pD F (g' * g) p`. Establish `hw : ∀ i, (w i).IsGen` using `fun i => (h i).2.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w', hw', hΦ⟩` from `BoxPhi.phiRel_box hG T.V n P.D.toPre D'.toPre pD F (g' * g) p' p hp' w hw`. Take `⟨σ', hσ', -⟩` from `(expandsG_bijective_of_dvr hL hL2 hL4 hT T.V D' A' G' U' F (g' * g) hk).2 (bx t)`. Set `x' : TFK (R` to `T.V) F ⟶ A'.A := pA.lim.lift (Fan.mk _ x)`. Establish `hx' : ∀ i, x' ≫ pA.pr i = x i` using `fun i => pA.lim.fac (Fan.mk _ x) ⟨i⟩`. Establish `hπ' : star π * star (star π) = (g : 𝓞 E)` using `by rw [star_star, _root_.mul_comm, hπ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨bx₁ s, bx s₂, p', w', ∏ i, ζ i, x', bx t₀, bx t, σ', ⟨?_, ?_, ⟨hw', ?_, ?_⟩, ?_, ?_, ?_, ?_, hσ', ?_⟩, hx'⟩` and prove the remaining obligations. Use `NuBox.main T.V ϖ hϖ n P.D D' pD Q hQ F v g' s (bx₁ s) ((hbx₁ _ _).2 rfl) (fun _ => 0) (fun i => (h i).1)` as an intermediate fact. Rewrite `this` using `[Finset.sum_const_zero]`. Conclude with `this`. Conclude with `BoxPull.main hL hL2 hL4 hT T.V n P.D D' pD F (𝓞 E) hx P.oD oD' hact (star π) g g' hg hg' hπ' s s₂ _ _ (fun i => (h i).2.1) ((hbx₁ _ _).2 rfl) ((hbx _ _).2 rfl)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => (h i).2.2.2.1`. Conclude with `finOrd_box hL hL2 hL4 hT T.V n P.D D' pD F (g' * g) hk p' p hp' w w' hw hw' hΦ ζ (fun i => (h i).2.2.2.2.1)`. Conclude with `ProdTorsion.qkToAk_box hL T.V _ n P.D D' P.A A' C.I.G.G G' pD pA pG U' P.U PU (expBijF_of_admissible_base hL hL2 T.V _ hA _ _ _ P.U) (expBijF_of_admissible_base hL hL2 T.V _ hA _ _ _ U') F (g' * g) hk p' p hp' x' x hx' (fun i => (h i).2.2.2.2.2.1)`. Introduce `i`. Rewrite using `[← Category.assoc, hx']`.
-
-Conclude with `(h i).2.2.2.2.2.2.1`. Conclude with `hΦ s₂ t₀ _ _ (fun i => (h i).2.2.2.2.2.2.2.1) ((hbx _ _).2 rfl) ((hbx _ _).2 rfl)`. Use `(isSmul_iff _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[← MultilinearMap.map_smul_univ]`. Conclude with `congrArg bx (funext fun i => (isSmul_iff _ _ _).1 (h i).2.2.2.2.2.2.2.2.1)`.
-
-Conclude with `GlobalTheory.T.germ_boxProduct_eq_prod_germs hL hL2 hL4 hT E H T.V C.I.G P (chD C.ch) C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.chartT C.frameT C.primT τ hτ hEL n D' A' G' pD pA pG U' PU F (g' * g) hk σ t f σ' (bx t) (fun i => (h i).2.2.2.2.2.2.2.2.2) ((hbx _ …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boxTup_of_columns : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → BoxTupSt := by
   intro hL hL2 hL4 hT E _ _ _ H Dw l Xo c

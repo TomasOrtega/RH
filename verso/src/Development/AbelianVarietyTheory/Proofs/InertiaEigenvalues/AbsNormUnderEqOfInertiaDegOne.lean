@@ -16,13 +16,13 @@ open GlobalTheory
 namespace GlobalTheory.NormDegOne
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ w h`. Use `set P := w.asIdeal with hP`. Use `set Q := (w.under (𝓞 K)).asIdeal with hQ`. Establish `hQP : Q = P.under (𝓞 K)` using `rfl`. Establish `: P.IsPrime` using `w.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Q.IsPrime` using `(w.under (𝓞 K)).isPrime`. Establish `hlo : P.LiesOver Q` using `⟨hQP⟩`. Establish `htow` using `Ideal.inertiaDeg_tower (R := ℤ) Q P`. Rewrite `htow` using `[h]`. Establish `hQ1 : Q.inertiaDeg ℤ = 1` using `Nat.eq_one_of_mul_eq_one_right htow.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunder : Q.under ℤ = P.under ℤ` using `by rw [hQP, Ideal.under_under]`. Establish `e1` using `Ideal.absNorm_pow_inertiaDeg (P.under ℤ) P`. Establish `: Q.LiesOver (P.under ℤ)` using `⟨hunder.symm⟩`. Establish `e2` using `Ideal.absNorm_pow_inertiaDeg (P.under ℤ) Q`. Rewrite `e1` using `[h, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `e2` using `[hQ1, pow_one]`. Express the relevant statement in the definitionally equal form `Nat.card (𝓞 K ⧸ Q) = Nat.card (𝓞 L ⧸ P)`. Express the relevant statement in the definitionally equal form `Ideal.absNorm Q = Ideal.absNorm P`. Rewrite using `[← e1, ← e2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normV_under_eq : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (w : HeightOneSpectrum (𝓞 L)), w.asIdeal.inertiaDeg ℤ = 1 → normV (w.under (𝓞 K)) = normV w := by

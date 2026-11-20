@@ -27,9 +27,9 @@ def locHom (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (v : HeightOneSpe
     exact map_mul _ _ _
 
 /- English proof (translation)
-Unfold `finMat`. Rewrite using `[Matrix.map_map]`. Express the relevant statement in the definitionally equal form `(compV (E := E) v).toRingHom.mapMatrix ((HA.mat (AF F) σ J h.1 : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) = _`. Rewrite using `[RingHom.mapMatrix_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `compV v x = (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)).comp (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)) x`. Rewrite using `[← Algebra.TensorProduct.map_comp]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locHom_val (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (v : HeightOneSpectrum (𝓞 F))
     (h : GlobalTheory.Published.SUAdelic σ J) :

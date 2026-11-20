@@ -14,7 +14,7 @@ namespace OrbitConjSum
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, hom_eval₂]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_aeval_int {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* B) {κ : Type*}
     (w : κ → A) (f : MvPolynomial κ ℤ) : φ (aeval w f) = aeval (fun p ↦ φ (w p)) f := by
@@ -23,7 +23,7 @@ theorem map_aeval_int {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* B) {
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Rewrite using `[eval_map, aeval_def, algebraMap_int_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_map_int {κ : Type*} (z : κ → ℂ) (f : MvPolynomial κ ℤ) :
     eval z (map (Int.castRingHom ℂ) f) = aeval z f := by
@@ -32,9 +32,9 @@ theorem eval_map_int {κ : Type*} (z : κ → ℂ) (f : MvPolynomial κ ℤ) :
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Rewrite `hmem` using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker]`. Establish `h : ∀ f : MvPolynomial (Coord n) ℤ, aeval (flatCone x) f = eval (fun _ : ι ↦ (1 : AlgebraicClosure ℚ)) (Geo.mConeMap (ι` using `blockIdx n) (flatCone x) f) := by`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [Geo.mConeMap]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f p hf => simp only [map_mul, hf, aeval_X, eval_X, Geo.mConeMap, eval_C, mul_one]`. Rewrite using `[h, hmem, map_zero]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_zero_of_mem (x : Cone n (AlgebraicClosure ℚ)) {f : MvPolynomial (Coord n) ℤ}
     (hmem : f ∈ orbitIdeal x) : aeval (flatCone x) f = 0 := by
@@ -50,11 +50,11 @@ theorem aeval_eq_zero_of_mem (x : Cone n (AlgebraicClosure ℚ)) {f : MvPolynomi
   rw [h, hmem, map_zero]
 
 /- English proof (translation)
-Establish `hf'` using `(geoMultiHomog_iff f d).mpr hf`. Establish `key : Geo.mConeMap (ι` using `blockIdx n) (flatCone x) f = C (aeval (flatCone x) f) * ∏ k, (X k : MvPolynomial ι (AlgebraicClosure ℚ)) ^ d k := by conv_lhs => rw [f.as_sum] conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hX : ∏ p : Coord n, (X p.1 : MvPolynomial ι (AlgebraicClosure ℚ)) ^ m p = ∏ k, (X k : MvPolynomial ι (AlgebraicClosure ℚ)) ^ d k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, (X k : MvPolynomial ι (AlgebraicClosure ℚ)) ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf' m hm k]`. Simplify using `only [Geo.mConeMap, aeval_monomial]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.prod_fintype _ _ (fun i => by simp), Finsupp.prod_fintype _ _ (fun i => by simp)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hX, map_mul, map_prod, map_pow, MvPolynomial.algebraMap_apply]`. The two sides agree by associativity and commutativity. Rewrite using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker, key, h0, map_zero, zero_mul]`.
+Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_orbitIdeal_of_homog (x : Cone n (AlgebraicClosure ℚ)) {f : MvPolynomial (Coord n) ℤ}
     {d : ι → ℕ} (hf : IsWeightedHomogeneous (coordDeg n) f d) (h0 : aeval (flatCone x) f = 0) :
@@ -82,9 +82,9 @@ theorem mem_orbitIdeal_of_homog (x : Cone n (AlgebraicClosure ℚ)) {f : MvPolyn
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Use `⟨fun k ↦ ?_, fun f hf ↦ ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `Function.ne_iff.mp (hx k)`. Conclude with `⟨i, (map_ne_zero σ).mpr fun h ↦ hi (congrArg Subtype.val h)⟩`. Establish `h0 : aeval (fun p : Coord n ↦ coordVec x p.1 p.2) f = 0`. Apply `Subtype.val_injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `map_aeval_int (coordField x).val.toRingHom (fun p : Coord n ↦ coordVec x p.1 p.2) f` as an intermediate fact. Conclude with `this.trans (aeval_eq_zero_of_mem x hf)`. Rewrite using `[eval_map_int, ← map_aeval_int σ]`. Conclude with `(congrArg σ h0).trans (map_zero σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x)
     (σ : coordField x →+* ℂ) :
@@ -100,9 +100,9 @@ theorem conj_mem (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x)
     exact (congrArg σ h0).trans (map_zero σ)
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨i, hi⟩` from `hz.1 k`. Take `⟨g, hg0, hg⟩` from `exists_int_relation (flatCone x ⟨k, i⟩ / flatCone x ⟨k, c k⟩)`. Use `hz.2 _ (homogForm_mem_orbitIdeal x g ⟨k, i⟩ ⟨k, c k⟩ rfl (hc k) hg)` as an intermediate fact. Rewrite `this` using `[eval_homogForm, h0, homog_sum_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero (Int.cast_ne_zero.mpr (Polynomial.leadingCoeff_ne_zero.mpr hg0)) (pow_ne_zero _ hi) this`.
+A detailed English derivation is pending.
 -/
 theorem chart_ne_zero (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin (n k + 1))
     (hc : ∀ k, x k (c k) ≠ 0) {z : Coord n → ℂ}
@@ -116,13 +116,13 @@ theorem chart_ne_zero (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin 
     (pow_ne_zero _ hi) this
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨a.den, C a.num, by exact_mod_cast a.den_nz, ?_⟩` and prove the remaining obligations. Rewrite using `[map_C, ← C_mul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[eq_intCast, Int.cast_natCast]`. Conclude with `(Rat.den_mul_eq_num a).symm`. Consider the case `add f g hf hg`. Take `⟨N₁, P₁, h₁, e₁⟩` from `hf`. Take `⟨N₂, P₂, h₂, e₂⟩` from `hg`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N₁ * N₂, C N₂ * P₁ + C N₁ * P₂, mul_ne_zero h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, MvPolynomial.map_C, MvPolynomial.map_C, e₁, e₂, Int.cast_mul, C_mul]`. Simplify using `only [eq_intCast]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X f p hf`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨N, P, h, e⟩` from `hf`. Conclude with `⟨N, P * X p, h, by rw [map_mul, e, map_X, mul_assoc]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_int_mul {κ : Type*} (F : MvPolynomial κ ℚ) :
     ∃ (N : ℤ) (P : MvPolynomial κ ℤ), N ≠ 0 ∧ map (Int.castRingHom ℚ) P = C (N : ℚ) * F := by
@@ -151,7 +151,7 @@ def chartHomog (c : (k : ι) → Fin (n k + 1)) (P : MvPolynomial (Coord n) ℤ)
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use `le_trans ?_ (le_totalDegree hm)` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ ↦ rfl), Fintype.sum_sigma]`. Conclude with `Finset.single_le_sum (f := fun k ↦ ∑ i, m ⟨k, i⟩) (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockDeg_le (P : MvPolynomial (Coord n) ℤ) {m : Coord n →₀ ℕ} (hm : m ∈ P.support)
     (k : ι) : ∑ i, m ⟨k, i⟩ ≤ P.totalDegree := by
@@ -161,9 +161,9 @@ theorem blockDeg_le (P : MvPolynomial (Coord n) ℤ) {m : Coord n →₀ ℕ} (h
     (Finset.mem_univ k)
 
 /- English proof (translation)
-Apply `(mem_weightedHomogeneousSubmodule _ _ _ _).mp` to reduce the goal to its premises. Use `Submodule.sum_mem _ fun m hm ↦ (mem_weightedHomogeneousSubmodule _ _ _ _).mpr ?_` and prove the remaining obligations. Establish `h` using `(isWeightedHomogeneous_monomial (coordDeg n) m (P.coeff m) rfl).mul (isWeightedHomogeneous_chartMonomial c (fun k ↦ P.totalDegree - ∑ i, m ⟨k, i⟩))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.add_apply, weight_coordDeg_apply, Nat.add_sub_cancel' (blockDeg_le P hm k)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isWeightedHomogeneous_chartHomog (c : (k : ι) → Fin (n k + 1))
     (P : MvPolynomial (Coord n) ℤ) :
@@ -179,13 +179,13 @@ theorem isWeightedHomogeneous_chartHomog (c : (k : ι) → Fin (n k + 1))
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `hP : aeval (fun p ↦ w p / w ⟨p.1, c p.1⟩) P = ∑ m ∈ P.support, aeval (fun p ↦ w p / w ⟨p.1, c p.1⟩) (monomial m (P.coeff m))` using `by conv_lhs => rw [P.as_sum]`. Conclude with `map_sum _ _ _`. Rewrite using `[hP, chartHomog, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Establish `hden : ∏ p : Coord n, w ⟨p.1, c p.1⟩ ^ m p = ∏ k, w ⟨k, c k⟩ ^ ∑ i, m ⟨k, i⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.prod_sigma]`. Conclude with `Finset.prod_congr rfl fun k _ ↦ by show ∏ i, w ⟨k, c k⟩ ^ m ⟨k, i⟩ = _`. Conclude with `Finset.prod_pow_eq_pow_sum _ _ _`. Establish `hE : ∏ k, w ⟨k, c k⟩ ^ P.totalDegree = (∏ k, w ⟨k, c k⟩ ^ ∑ i, m ⟨k, i⟩) * ∏ k, w ⟨k, c k⟩ ^ (P.totalDegree - ∑ i, m ⟨k, i⟩)`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_congr rfl fun k _ ↦ by`. Rewrite using `[← pow_add, Nat.add_sub_cancel' (blockDeg_le P hm k)]`. Establish `h0 : ∏ k, w ⟨k, c k⟩ ^ ∑ i, m ⟨k, i⟩ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hw k)`. Simplify using `only [map_mul, aeval_monomial, chartMonomial, map_prod, map_pow, aeval_X]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _), Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [div_pow, Finset.prod_div_distrib, hden]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hE]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem aeval_chartHomog {F : Type*} [Field F] (c : (k : ι) → Fin (n k + 1))
     (P : MvPolynomial (Coord n) ℤ) (w : Coord n → F) (hw : ∀ k, w ⟨k, c k⟩ ≠ 0) :
@@ -233,7 +233,7 @@ instance (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin (n k + 1)) :
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-The claim follows from `(map_ne_zero σ).mpr fun h ↦ hc k (congrArg Subtype.val h)`.
+A detailed English derivation is pending.
 -/
 theorem conj_chart_ne_zero (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin (n k + 1))
     (hc : ∀ k, x k (c k) ≠ 0) (σ : coordField x →+* ℂ) (k : ι) :
@@ -243,9 +243,9 @@ theorem conj_chart_ne_zero (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) →
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h p`. Conclude with `DFunLike.congr_fun h ⟨ratio x c p, IntermediateField.subset_adjoin ℚ _ ⟨p, rfl⟩⟩`. Introduce `h`. Establish `e : (σ.comp (algebraMap (ratioField x c) (coordField x))).toRatAlgHom = (σ'.comp (algebraMap (ratioField x c) (coordField x))).toRatAlgHom` using `IntermediateField.adjoin_algHom_ext ℚ fun y ⟨p, hp⟩ ↦ by`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hp` using the available equality. Conclude with `h p`. Use extensionality with `a`. Conclude with `DFunLike.congr_fun e a`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem restrict_eq_iff (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin (n k + 1))
     (σ σ' : coordField x →+* ℂ) :
@@ -271,13 +271,13 @@ def conjPt (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x) (σ : coord
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `hne` using `conj_chart_ne_zero x c hc`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Set `R : projPts (ι` to `blockIdx n) (orbitIdeal x) → Coord n → ℂ := Quot.lift (fun z ↦ fun p ↦ (z : Coord n → ℂ) p / (z : Coord n → ℂ) ⟨p.1, c p.1⟩) (by`. Introduce and unpack `z z' ⟨a, ha, e⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Use function extensionality and compare the values at `p`. Simplify using `only [e]`. Conclude with `(mul_div_mul_left _ _ (ha p.1)).symm)`. Use `congrFun (congrArg R h) p` as an intermediate fact. Rewrite using `[ratio, map_div₀, map_div₀]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Introduce `h`. Use `Quot.sound ⟨fun k ↦ σ' (coordVec x k (c k)) / σ (coordVec x k (c k)), fun k ↦ div_ne_zero (hne σ' k) (hne σ k), funext fun p ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `h p`. Rewrite `e` using `[ratio, map_div₀, map_div₀, div_eq_div_iff (hne σ p.1) (hne σ' p.1)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `show σ' (coordVec x p.1 p.2) = σ' (coordVec x p.1 (c p.1)) / σ (coordVec x p.1 (c p.1)) * σ (coordVec x p.1 p.2)`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hne σ p.1)]`. Take the linear combination `-e`.
+A detailed English derivation is pending.
 -/
 theorem conjPt_eq_iff (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x)
     (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, x k (c k) ≠ 0) (σ σ' : coordField x →+* ℂ) :
@@ -306,35 +306,31 @@ theorem conjPt_eq_iff (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x)
     linear_combination -e
 
 /- English proof (translation)
-Proceed by induction on `q using Quot.ind with`. Consider the case `mk z`. Take `⟨z, hz⟩` from `z`. Establish `hz0` using `chart_ne_zero x c hc hz`. Establish `hne` using `conj_chart_ne_zero x c hc`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `L` to `ratioField x c`. Set `gen : Coord n → L` to `fun p ↦ ⟨ratio x c p, IntermediateField.subset_adjoin ℚ _ ⟨p, rfl⟩⟩`. Set `φ : MvPolynomial (Coord n) ℚ →ₐ[ℚ] L` to `aeval gen`. Establish `hφ : ∀ F, ((φ F : L) : coordField x) = aeval (ratio x c) F` using `fun F ↦ DFunLike.congr_fun (comp_aeval (R := ℚ) (f := gen) L.val) F`. Establish `hsurj : Function.Surjective φ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, ha⟩`. Establish `ha' : a ∈ Algebra.adjoin ℚ (Set.range (ratio x c))`. Rewrite using `[← IntermediateField.adjoin_toSubalgebra]`. Conclude with `ha`. Rewrite `ha'` using `[← aeval_range]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩` from `ha'`. Conclude with `⟨F, Subtype.ext ((hφ F).trans hF)⟩`. Set `r : Coord n → ℂ` to `fun p ↦ z p / z ⟨p.1, c p.1⟩`. Establish `hint : ∀ P : MvPolynomial (Coord n) ℤ, aeval (ratio x c) P = 0 → aeval r P = 0`. Introduce `P hP`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx0 : aeval (flatCone x) (chartHomog c P) = 0`. Rewrite using `[show aeval (flatCone x) (chartHomog c P) = _ from aeval_chartHomog c P (flatCone x) hc]`. Establish `h1 : aeval (fun p ↦ (coordField x).val.toRingHom (ratio x c p)) P = 0` using `(map_aeval_int (coordField x).val.toRingHom (ratio x c) P).symm.trans (by exact (congrArg _ hP).trans (map_zero _))`. Establish `h2 : (fun p : Coord n ↦ flatCone x p / flatCone x ⟨p.1, c p.1⟩) = fun p ↦ (coordField x).val.toRingHom (ratio x c p)`. Use function extensionality and compare the values at `p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[ratio, flatCone, coordVec]`. Establish `h5 : aeval (fun p : Coord n ↦ flatCone x p / flatCone x ⟨p.1, c p.1⟩) P = 0`. Rewrite using `[h2]`. Conclude with `h1`. Conclude with `mul_eq_zero_of_right _ h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h3` using `hz.2 _ (mem_orbitIdeal_of_homog x (isWeightedHomogeneous_chartHomog c P) hx0)`. Rewrite `h3` using `[eval_map_int, aeval_chartHomog c P z hz0]`. Conclude with `(mul_eq_zero.mp h3).resolve_left (Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hz0 k))`. Set `ψ : MvPolynomial (Coord n) ℚ →ₐ[ℚ] ℂ` to `aeval r`. Set `φR : MvPolynomial (Coord n) ℚ →+* L` to `φ.toRingHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hsurjR : Function.Surjective φR` using `hsurj`. Establish `hker : RingHom.ker φR ≤ RingHom.ker ψ.toRingHom`. Introduce `F hF`. Rewrite `hF`, the goal using `[RingHom.mem_ker]`. Take `⟨N, P, hN, hP⟩` from `exists_int_mul F`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF' : aeval (ratio x c) F = 0`. Rewrite using `[← hφ]`. Conclude with `congrArg Subtype.val hF`. Establish `hyP : aeval (ratio x c) P = 0`. Use `congrArg (aeval (ratio x c)) hP` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `this` using `[← algebraMap_int_eq, aeval_map_algebraMap, map_mul, aeval_C, hF', mul_zero]`. Conclude with `this`. Use `congrArg (aeval r) hP` as an intermediate fact. Rewrite `this` using `[← algebraMap_int_eq, aeval_map_algebraMap, map_mul, aeval_C, hint P hyP]`. Establish `hN' : algebraMap ℚ ℂ (N : ℚ) ≠ 0` using `by simpa using hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.mp this.symm).resolve_left hN'`. Set `τ : L →+* ℂ` to `φR.liftOfSurjective hsurjR ⟨ψ.toRingHom, hker⟩`. Establish `hτ : ∀ p, τ (gen p) = r p` using `fun p ↦ by`. Use `φR.liftOfSurjective_comp_apply hsurjR ⟨ψ.toRingHom, hker⟩ (X p)` as an intermediate fact. Establish `e1 : φR (X p) = gen p` using `aeval_X gen p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e2 : ψ.toRingHom (X p) = r p` using `aeval_X r p`. Rewrite `this` using `[e1, e2]`. Conclude with `this`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ : coordField x →+* ℂ, σ.comp (algebraMap L (coordField x)) = τ := by`. Establish `h` using `card_embeddings_restrict (K := L) (L := coordField x) τ`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : 0 < (Finset.univ.filter fun σ : coordField x →+* ℂ ↦ σ.comp (algebraMap L (coordField x)) = τ).card`. Rewrite using `[h]`. Conclude with `Module.finrank_pos`. Take `⟨σ, hσ⟩` from `Finset.card_pos.mp hpos`. Conclude with `⟨σ, (Finset.mem_filter.mp hσ).2⟩`.
-
-Establish `hσr : ∀ p, σ (ratio x c p) = r p` using `fun p ↦ by`. Rewrite using `[← hτ p, ← hσ]`. Both sides reduce to the same expression. Use `⟨σ, (Quot.sound ⟨fun k ↦ σ (coordVec x k (c k)) / z ⟨k, c k⟩, fun k ↦ div_ne_zero (hne σ k) (hz0 k), funext fun p ↦ ?_⟩).symm⟩` and prove the remaining obligations. Establish `e` using `hσr p`.
-
-Rewrite `e` using `[ratio, map_div₀, div_eq_div_iff (hne σ p.1) (hz0 p.1)]`. Use `show σ (coordVec x p.1 p.2) = σ (coordVec x p.1 (c p.1)) / z ⟨p.1, c p.1⟩ * z p`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hz0 p.1)]`. Take the linear combination `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_conjPt_eq (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x)
     (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, x k (c k) ≠ 0)

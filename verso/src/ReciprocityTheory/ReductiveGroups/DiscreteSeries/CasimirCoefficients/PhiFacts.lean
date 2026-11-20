@@ -15,13 +15,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[Finset.prod_range_succ (fun i => (∏ l ∈ range (i + 1), D l) ^ (-(m i - m (i + 1)))) N, ih]`. Simplify using `only [Finset.prod_range_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hP : (∏ l ∈ range N, D l) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun l _ => hD l`. Establish `hPd : (∏ l ∈ range N, D l) * D N ≠ 0` using `mul_ne_zero hP (hD N)`. Establish `h1 : ((∏ l ∈ range N, D l) * D N) ^ (-(m N - m (N + 1))) = ((∏ l ∈ range N, D l) * D N) ^ (-m N) * ((∏ l ∈ range N, D l) * D N) ^ (m (N + 1))`. Rewrite using `[← zpow_add₀ hPd]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((∏ l ∈ range N, D l) * D N) ^ (-m N) = (∏ l ∈ range N, D l) ^ (-m N) * D N ^ (-m N)` using `mul_zpow _ _ _`. Establish `h3 : (∏ l ∈ range N, D l) ^ m N * (∏ l ∈ range N, D l) ^ (-m N) = 1`. Rewrite using `[← zpow_add₀ hP, add_neg_cancel, zpow_zero]`. Rewrite using `[h1, h2]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `((∏ l ∈ range N, D l ^ (-m l)) * D N ^ (-m N) * ((∏ l ∈ range N, D l) * D N) ^ m (N + 1)) * h3`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma tele_range (D : ℕ → ℂ) (hD : ∀ l, D l ≠ 0) (m : ℕ → ℤ) (N : ℕ) :
     ∏ i ∈ range N, (∏ l ∈ range (i + 1), D l) ^ (-(m i - m (i + 1))) =
@@ -47,9 +47,9 @@ private lemma tele_range (D : ℕ → ℂ) (hD : ∀ l, D l ≠ 0) (m : ℕ → 
       ((∏ l ∈ range N, D l) * D N) ^ m (N + 1)) * h3
 
 /- English proof (translation)
-Establish `hr : range k = (range n).filter (fun j => j < k)`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Apply the tactic sequence `constructor <;> intro h <;> omega`. Rewrite using `[hr]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.prod_filter]`. Rewrite using `[Finset.prod_range]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[l.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma filter_prod_eq_range (d : Fin n → ℂ) (k : ℕ) (hk : k ≤ n) :
     ∏ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < k), d l =
@@ -65,13 +65,11 @@ private lemma filter_prod_eq_range (d : Fin n → ℂ) (k : ℕ) (hk : k ≤ n) 
   simp [l.2]
 
 /- English proof (translation)
-Use `set D : ℕ → ℂ := fun j => if h : j < n then d ⟨j, h⟩ else 1 with hDdef`. Use `set m : ℕ → ℤ := fun j => if h : j < n then μ ⟨j, h⟩ else 0 with hmdef`. Establish `hD : ∀ l, D l ≠ 0`. Introduce `l`. Simplify using `only [hDdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Conclude with `hd _`. Conclude with `one_ne_zero`. Establish `h1 : ∀ i : Fin n, (∏ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < (i : ℕ) + 1), d l) ^ (-(μ i - muNext μ i)) = (∏ l ∈ range ((i : ℕ) + 1), D l) ^ (-(m i - m ((i : ℕ) + 1)))`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[filter_prod_eq_range d _ (by have := i.2; omega)]`. Use `congr 1`. Apply the tactic sequence `all_goals first | rfl | simp [hmdef, muNext, i.2]`. Rewrite using `[Finset.prod_congr rfl (fun i _ => h1 i), Fin.prod_univ_eq_prod_range (fun i => (∏ l ∈ range (i + 1), D l) ^ (-(m i - m (i + 1)))) n, tele_range D hD m n]`. Establish `hmn : m n = 0` using `by simp [hmdef]`.
-
-Rewrite using `[hmn, zpow_zero, mul_one, Finset.prod_range (fun l => D l ^ (-m l))]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[hDdef, hmdef, l.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma tele_fin (d : Fin n → ℂ) (hd : ∀ l, d l ≠ 0) (μ : Fin n → ℤ) :
     ∏ i : Fin n, (∏ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < (i : ℕ) + 1), d l) ^ (-(μ i - muNext μ i)) =
@@ -99,9 +97,9 @@ private lemma tele_fin (d : Fin n → ℂ) (hd : ∀ l, d l ≠ 0) (μ : Fin n �
   simp [hDdef, hmdef, l.2]
 
 /- English proof (translation)
-Establish `hent : ∀ a b : Fin n, Differentiable ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => z a b)`. Introduce `a b`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ` to `{ toFun := fun M => M a b, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Conclude with `(LinearMap.toContinuousLinearMap L).differentiable`. Unfold `lead`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Simplify using `only [Matrix.det_apply', Matrix.submatrix_apply] fun_prop`. Conclude with `differentiable_const _`.
+A detailed English derivation is pending.
 -/
 private lemma lead_differentiable_lemma (i : ℕ) :
     Differentiable ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => lead i z) := by
@@ -117,7 +115,7 @@ private lemma lead_differentiable_lemma (i : ℕ) :
   · exact differentiable_const _
 
 /- English proof (translation)
-Establish `: OmegaSet n = ⋂ i : Fin n, {z | lead ((i : ℕ) + 1) z ≠ 0}`. Use extensionality with `z`. Simplify using `[OmegaSet]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_ne_fun (lead_differentiable_lemma _).continuous continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_omega : IsOpen (OmegaSet n) := by
   have : OmegaSet n = ⋂ i : Fin n, {z | lead ((i : ℕ) + 1) z ≠ 0} := by
@@ -128,7 +126,7 @@ theorem isOpen_omega : IsOpen (OmegaSet n) := by
     isOpen_ne_fun (lead_differentiable_lemma _).continuous continuous_const
 
 /- English proof (translation)
-Introduce `x hx i h`. Use `(lead_posDef hx ((i : ℕ) + 1) (by have := i.2; omega)).1` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem posSet_subset_omega : posSet n ⊆ OmegaSet n := by
   intro x hx i h
@@ -137,9 +135,9 @@ theorem posSet_subset_omega : posSet n ⊆ OmegaSet n := by
   simp at this
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hz' : ∀ i : Fin n, lead ((i : ℕ) + 1) z ≠ 0` using `hz`. Establish `hL : ∀ i : ℕ, Differentiable ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => lead i z)` using `fun i => lead_differentiable_lemma i`. Establish `hq : DifferentiableAt ℂ (PhiM μ) z`. Unfold `PhiM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fun_prop (disch := exact Or.inl (hz' _))`. Conclude with `hq.differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem phiM_differentiableOn (μ : Fin n → ℤ) : DifferentiableOn ℂ (PhiM μ) (OmegaSet n) := by
   intro z hz
@@ -152,9 +150,9 @@ theorem phiM_differentiableOn (μ : Fin n → ℤ) : DifferentiableOn ℂ (PhiM 
   exact hq.differentiableWithinAt
 
 /- English proof (translation)
-Establish `hd : ∀ l, c l l * c' l l ≠ 0` using `fun l => mul_ne_zero (hcd l) (hcd' l)`. Establish `hlead : ∀ i : Fin n, lead ((i : ℕ) + 1) (c * z * c') = (∏ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < (i : ℕ) + 1), c l l * c' l l) * lead ((i : ℕ) + 1) z` using `fun i => lead_tri_mul hc hc' _ i.isLt`. Establish `hP : ∀ i : Fin n, (∏ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < (i : ℕ) + 1), c l l * c' l l) ≠ 0` using `fun i => prod_ne_zero_iff.mpr fun l _ => hd l`. Use `⟨fun i => by rw [hlead i]; exact mul_ne_zero (hP i) (hz i), ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ i : Fin n, lead ((i : ℕ) + 1) (c * z * c') ^ (-(μ i - muNext μ i)) = (∏ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < (i : ℕ) + 1), c l l * c' l l) ^ (-(μ i - muNext μ i)) * lead ((i : ℕ) + 1) z ^ (-(μ i - muNext μ i))` using `fun i => by rw [hlead i, mul_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `PhiM`. Rewrite using `[prod_congr rfl fun i _ => hterm i, prod_mul_distrib, tele_fin (fun l => c l l * c' l l) hd μ]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem phiM_tri_mul (μ : Fin n → ℤ) {c z c' : Matrix (Fin n) (Fin n) ℂ} (hc : IsLowerTri c) (hc' : IsUpperTri c')
     (hcd : ∀ l, c l l ≠ 0) (hcd' : ∀ l, c' l l ≠ 0) (hz : z ∈ OmegaSet n) :
@@ -176,11 +174,11 @@ theorem phiM_tri_mul (μ : Fin n → ℤ) {c z c' : Matrix (Fin n) (Fin n) ℂ} 
     tele_fin (fun l => c l l * c' l l) hd μ]
 
 /- English proof (translation)
-Establish `hpos : ∀ i : Fin n, 0 < (lead ((i : ℕ) + 1) x).re` using `fun i => (lead_posDef hx _ (by have := i.2; omega)).1`. Establish `hr : ∀ i : Fin n, lead ((i : ℕ) + 1) x = ((lead ((i : ℕ) + 1) x).re : ℂ)`. Introduce `i`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[(lead_posDef hx ((i : ℕ) + 1) (by have := i.2; omega)).2]`. Establish `hP : PhiM μ x = ((∏ i : Fin n, (lead ((i : ℕ) + 1) x).re ^ (-(μ i - muNext μ i)) : ℝ) : ℂ)`. Unfold `PhiM`. Use `push_cast`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [← hr i]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, Complex.ofReal_re, Complex.ofReal_im]`. Conclude with `⟨Finset.prod_pos fun i _ => zpow_pos (hpos i) _, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem phiM_posDef (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) :
     0 < (PhiM μ x).re ∧ (PhiM μ x).im = 0 := by
@@ -199,9 +197,9 @@ theorem phiM_posDef (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ} (hx : 
   exact ⟨Finset.prod_pos fun i _ => zpow_pos (hpos i) _, rfl⟩
 
 /- English proof (translation)
-Unfold `PhiM`. Establish `h1 : ∀ i : Fin n, lead ((i : ℕ) + 1) (1 : Matrix (Fin n) (Fin n) ℂ) = 1`. Introduce `i`. Unfold `lead`. Rewrite using `[dif_pos (by have := i.2; omega), Matrix.submatrix_one _ (Fin.castLE_injective _), Matrix.det_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiM_one (μ : Fin n → ℤ) : PhiM μ (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   unfold PhiM

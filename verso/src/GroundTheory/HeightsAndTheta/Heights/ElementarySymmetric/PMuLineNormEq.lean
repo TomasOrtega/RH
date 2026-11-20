@@ -21,7 +21,7 @@ namespace MuLineNormEq
 omit [Algebra ℚ Ω] in
 
 /- English proof (translation)
-Rewrite using `[LowerBoundFree.valAt_eq hw hv]`. Conclude with `LowerBoundFree.valAt_eq hsw (HermMetricEq.isValueAt_iff.2 ((HermMetricEq.isValueAt_iff.1 hv).smul s hs))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_torusSmul {y : (Σ k, ι k) → Ω} {w : (Σ k, ι k) → ℂ} (hw : w ∈ mcPts (mCoordIdeal y))
     {s : K → ℂ} (hs : ∀ k, s k ≠ 0) (hsw : torusSmul s w ∈ mcPts (mCoordIdeal y)) {a : Ω} {v : ℂ}
@@ -33,11 +33,11 @@ theorem valAt_torusSmul {y : (Σ k, ι k) → Ω} {w : (Σ k, ι k) → ℂ} (hw
 omit [Algebra ℚ Ω] in
 
 /- English proof (translation)
-Take `⟨hc, v, hv, hv0⟩` from `hdom`. Establish `hf0 : f ≠ 0` using `fun h0 => hv0 (isValueAt_zero hw (by rwa [h0] at hv))`. Establish `hfi` using `HermMetricEq.regularAt_inv hf0 ⟨v, hv, hv0⟩`. Establish `hreg : ∀ a : Ω, (∃ n : ℕ, f ^ n * a ∈ chartRing ℤ (segreCoord y) c) → IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a w`. Introduce and unpack `a ⟨n, hn⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `(HermMetricEq.regularAt_pow hfi n).mul (IndefiniteRowSideFullHecke.LowerBoundFree.regularAt_of_mem_chartRing hw hc hn)`. Rewrite `h1` using `[← mul_assoc, ← mul_pow, inv_mul_cancel₀ hf0, one_pow, one_mul]`. Then use the resulting hypothesis. Take `⟨hu0, hu1, hu2⟩` from `hu`. Take `⟨vu, hvu⟩` from `hreg _ hu1`. Take `⟨vi, hvi⟩` from `hreg _ hu2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : vu * vi = 1` using `IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt.unique hw (hvu.mul hvi) (by rw [mul_inv_cancel₀ hu0]; exact IndefiniteRowSideFullHecke.LowerBoundFree.isValueAt_one)`. Conclude with `⟨vu, hvu, left_ne_zero_of_mul_eq_one h1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_unit_value {y : (Σ k, ι k) → Ω} {w : (Σ k, ι k) → ℂ} (hw : w ∈ mcPts (mCoordIdeal y))
     {c : (k : K) → ι k} {f u : Ω} (hdom : InFrameDomain y c f w) (hu : IsUnitOn y c f u) :
@@ -59,15 +59,15 @@ theorem exists_unit_value {y : (Σ k, ι k) → Ω} {w : (Σ k, ι k) → ℂ} (
   exact ⟨vu, hvu, left_ne_zero_of_mul_eq_one h1⟩
 
 /- English proof (translation)
-Establish `hzX : z ∈ mcPts (mCoordIdeal D.y) \ D.Bd` using `hz`. Establish `hzP` using `hzX.1`. Establish `hex : ∃ l, InFrameDomain D.y ((D.h τ).chart l) ((D.h τ).fr l) z` using `⟨l, hd⟩`. Establish `hd0` using `hex.choose_spec`. Take `⟨T, hT, hTe⟩` from `HermMetricEq.exists_coeff ((D.h τ).isFrame hex.choose) hzP hd0 (HermMetricEq.isFrameAt_of_isFrameOver ((D.h τ).isFrame l) hzP hd).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTS : ∀ q, b q = ∑ p, (T * S) p q • (D.h τ).b hex.choose p`. Introduce `q`. Rewrite using `[hSe q]`. Simplify using `only [hTe, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `hS' : ∃ S' : Matrix (Fin D.N) (Fin D.N) Ω, ∀ q, b q = ∑ p, S' p q • (D.h τ).b hex.choose p` using `⟨T * S, hTS⟩`. Establish `hchoose : hS'.choose = T * S` using `HermMetricEq.coeff_unique ((D.h τ).isFrame hex.choose).2.2.2.1 fun q => (hS'.choose_spec q).symm.trans (hTS q)`. Establish `hTz : ∀ p q, IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt D.y (T p q) z (HermMetricEq.valM D.y T z p q)` using `fun p q => (hT p q).isValueAt hzP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTSz` using `HermMetricEq.isValueAt_mul hTz (fun p q => HermMetricEq.isValueAt_iff.1 (hSz p q))`. Establish `hvals : (Matrix.of fun p q => valAt D.y (hS'.choose p q) z) = HermMetricEq.valM D.y T z * Sz`. Use extensionality with `p q`. Rewrite using `[hchoose]`. Conclude with `LowerBoundFree.valAt_eq hzP (HermMetricEq.isValueAt_iff.2 (hTSz p q))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp` using `(D.h τ).compat hex.choose l z hzX hd0 hd T hTe (HermMetricEq.valM D.y T z) (fun p q => HermMetricEq.isValueAt_iff.2 (hTz p q))`. Rewrite using `[LowerBoundFree.gramAt, dif_pos hex, dif_pos hS', hvals, hcomp, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramAt_eq (D : ComponentData II Ψ K ι Ω E) (τ : Ψ) {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo)
     {b : Fin D.N → E τ} (l : Fin (D.h τ).m)
@@ -106,9 +106,9 @@ theorem gramAt_eq (D : ComponentData II Ψ K ι Ω E) (τ : Ψ) {z : (Σ k, ι k
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hwX : w ∈ mcPts (mCoordIdeal D.y) \ D.Bd` using `hw`. Take `⟨l, hl⟩` from `(D.h τ).cover w hwX`. Take `⟨S, hS, hSe⟩` from `HermMetricEq.exists_coeff ((D.h τ).isFrame l) hwX.1 hl (HermMetricEq.isFrameAt_of_isFrameOver hb hwX.1 hdom).1`. Establish `hSw : ∀ p q, IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt D.y (S p q) w (HermMetricEq.valM D.y S w p q)` using `fun p q => (hS p q).isValueAt hwX.1`. Establish `hl' : InFrameDomain D.y ((D.h τ).chart l) ((D.h τ).fr l) (torusSmul s w)` using `HermMetricEq.inFrameDomain_smul s hs hl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gramAt_eq D τ hsw l hl' hSe (fun p q => HermMetricEq.isValueAt_iff.2 ((hSw p q).smul s hs)), gramAt_eq D τ hw l hl hSe (fun p q => HermMetricEq.isValueAt_iff.2 (hSw p q)), (D.h τ).torus l w hwX hl s hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gramAt_torusSmul (D : ComponentData II Ψ K ι Ω E) (τ : Ψ) {w : (Σ k, ι k) → ℂ} (hw : w ∈ D.Xo)
     {s : K → ℂ} (hs : ∀ k, s k ≠ 0) (hsw : torusSmul s w ∈ D.Xo) {c : (k : K) → ι k} {f : Ω}
@@ -127,11 +127,11 @@ theorem gramAt_torusSmul (D : ComponentData II Ψ K ι Ω E) (τ : Ψ) {w : (Σ 
     (D.h τ).torus l w hwX hl s hs]
 
 /- English proof (translation)
-Establish `hwX : w ∈ mcPts (mCoordIdeal D.y) \ D.Bd` using `hw`. Take `⟨vu, hvu, hvu0⟩` from `exists_unit_value hwX.1 d.inDom d.unit`. Establish `hval : valAt D.y d.u w = vu` using `LowerBoundFree.valAt_eq hwX.1 (HermMetricEq.isValueAt_iff.2 hvu)`. Unfold `MuFrameAt.norm`. Use `mul_pos (mul_pos ?_ ?_) (Finset.prod_pos fun τ _ => Real.sqrt_pos.2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hval]`. Conclude with `norm_pos_iff.2 hvu0`. Conclude with `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (d.inDom.1 k)) _`. Establish `hP` using `GramAtPosDef.proof D τ w d.c d.f (d.b τ) hw (d.adapted τ).1 d.inDom`. Establish `h1` using `Complex.lt_def.1 hP.det_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2` using `Complex.lt_def.1 (hP.submatrix (e := headIdx D.j_le_N) (Fin.castLE_injective D.j_le_N)).det_pos`. Unfold `quotNormSq`. Conclude with `div_pos (by simpa using h1.1) (by simpa using h2.1)`.
+A detailed English derivation is pending.
 -/
 theorem datum_norm_pos (D : ComponentData II Ψ K ι Ω E) (H : HodgeData D) {w : (Σ k, ι k) → ℂ}
     (hw : w ∈ D.Xo) (d : MuFrameAt H w) : 0 < d.norm := by
@@ -152,13 +152,13 @@ theorem datum_norm_pos (D : ComponentData II Ψ K ι Ω E) (H : HodgeData D) {w 
     exact div_pos (by simpa using h1.1) (by simpa using h2.1)
 
 /- English proof (translation)
-Substitute `hzs` using the available equality. Establish `hwX : w ∈ mcPts (mCoordIdeal D.y) \ D.Bd` using `hw`. Establish `hzX : torusSmul s w ∈ mcPts (mCoordIdeal D.y) \ D.Bd` using `hz`. Establish `hdom : InFrameDomain D.y d.c d.f w`. Establish `h` using `HermMetricEq.inFrameDomain_smul (fun k => (s k)⁻¹) (fun k => inv_ne_zero (hs k)) d.inDom`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[torusSmul, inv_mul_cancel_left₀ (hs p.1)]`. Use `⟨⟨d.c, d.f, hdom, d.b, d.adapted, d.u, d.unit, d.eq⟩, ?_⟩` and prove the remaining obligations. Take `⟨vu, hvu, -⟩` from `exists_unit_value hwX.1 hdom d.unit`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hval : valAt D.y d.u (torusSmul s w) = valAt D.y d.u w` using `valAt_torusSmul hwX.1 hs hzX.1 (HermMetricEq.isValueAt_iff.2 hvu)`. Establish `hprod : (∏ k, ‖torusSmul s w ⟨k, d.c k⟩‖ ^ H.aMu k) = (∏ k, ‖s k‖ ^ H.aMu k) * ∏ k, ‖w ⟨k, d.c k⟩‖ ^ H.aMu k`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [torusSmul, norm_mul, mul_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hg : ∀ τ, LowerBoundFree.gramAt (D.h τ) (d.b τ) (torusSmul s w) = LowerBoundFree.gramAt (D.h τ) (d.b τ) w` using `fun τ => gramAt_torusSmul D τ hw hs hz (d.adapted τ).1 hdom`. Use `show ‖valAt D.y d.u (torusSmul s w)‖ * (∏ k, ‖torusSmul s w ⟨k, d.c k⟩‖ ^ H.aMu k) * ∏ τ, Real.sqrt (quotNormSq D.j_le_N (LowerBoundFree.gramAt (D.h τ) (d.b τ) (torusSmul s w))) = (∏ k, ‖s k‖ ^ H.aMu k) * (‖valAt D.y d.u w‖ * (∏ k, ‖w ⟨k, d.c k⟩‖ ^ H.aMu k) * ∏ τ, Real.sqrt (quot …`. Simplify using `only [hval, hprod, hg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_datum_smul (D : ComponentData II Ψ K ι Ω E) (H : HodgeData D) {w z : (Σ k, ι k) → ℂ}
     (hw : w ∈ D.Xo) {s : K → ℂ} (hs : ∀ k, s k ≠ 0) (hzs : z = torusSmul s w) (hz : z ∈ D.Xo)
@@ -190,15 +190,13 @@ theorem exists_datum_smul (D : ComponentData II Ψ K ι Ω E) (H : HodgeData D) 
   ring
 
 /- English proof (translation)
-Introduce `z hz d`. Take `⟨s, hs, hzs⟩` from `exists_eq_smul_orbitRep z`. Use `set w := orbitRep z with hwdef`. Establish `hzX : z ∈ mcPts (mCoordIdeal D.y) \ D.Bd` using `hz`. Establish `hwP : w ∈ mcPts (mCoordIdeal D.y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `mcPts_smul D.arith.2.1.2.1 (fun k => (s k)⁻¹) (fun k => inv_ne_zero (hs k)) hzX.1`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Rewrite using `[hzs]`. Simplify using `[torusSmul, inv_mul_cancel_left₀ (hs p.1)]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw : w ∈ D.Xo` using `⟨hwP, fun hB => hzX.2 (by rw [hzs]; exact D.bd_torus w hB s hs)⟩`. Take `⟨d', hdd'⟩` from `exists_datum_smul D H hw hs hzs hz d`. Establish `hpos` using `datum_norm_pos D H hw d'`. Establish `hM : muMetric H w = d'.norm`. Rewrite using `[muMetric, dif_pos ⟨d'⟩]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hI w hw _ d'`. Establish `hR` using `refNorm_pos H.aMu hwP.1`. Establish `hRz : refNorm H.aMu z = (∏ k, ‖s k‖ ^ H.aMu k) * refNorm H.aMu w`. Rewrite using `[hzs]`. Conclude with `refNorm_smul _ s w`.
-
-Use `show refNorm H.aMu z * Real.exp (Real.log (muMetric H w / refNorm H.aMu w)) = d.norm`. Rewrite using `[hM, Real.exp_log (div_pos hpos hR), hRz, hdd']`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem proof (D : ComponentData II Ψ K ι Ω E) (H : HodgeData D) (hI : MuFrameNormIndep.Statement D H) :
     MuLineNormEq.Statement D H := by

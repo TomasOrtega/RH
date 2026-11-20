@@ -16,7 +16,7 @@ end Alg
 variable (D : D7) (i : D.nd.Loc)
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨k, a, -, rfl⟩` from `mem_twList D i hp`. Conclude with `ss_twGL _ _ (hR k).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSSRep_of_mem_twList (Pa : List (Part D.naut.CG))
     (R : ∀ k : Fin Pa.length, G D.host.E D.nd.Om →* GL (Fin (Pa.get k).a) (Qbar (D.nd.l i)))
@@ -26,11 +26,11 @@ theorem isSSRep_of_mem_twList (Pa : List (Part D.naut.CG))
   exact ss_twGL _ _ (hR k).2.1
 
 /- English proof (translation)
-Establish `h3` using `GlobalTheory.HeckeCharacterEquality.heckeCharacterEqualityOfRealisation`. Break down `p with ⟨a, π, d⟩` into its components or cases. Simplify using `only at ha hd`. Substitute `ha hd` using the available equality. Establish `hu00 : u 0 ≠ 0` using `fun h => hu0 (funext fun j => by rw [Fin.fin_one_eq_zero j]; exact h)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h00 : ∀ g, ((Rk g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0 = iotaOQ D.nd D.naut i (chi1 D.nd i g)` using `fun g => by`. Use `congrFun (hu g) 0` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_one, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_right_cancel₀ hu00 this`. Establish `hπ` using `h3 D hA i π (D.naut.tw (D.naut.muC i) D.naut.etaTinv) _ Rk hR.2.2 (h4 D hA i hg Rk h00)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hπ` using the available equality. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem segment_eq_of_eigenvector_chi1 (_h3 : HeckeCharEqOfLAdicRealisation) (h4 : MuChar) (hA : Formalism.MainNotions.SumRepresentations.admitted D) (hg : HG D.nd D.naut i)
     (p : Part D.naut.CG) (Rk : G D.host.E D.nd.Om →* GL (Fin p.a) (Qbar (D.nd.l i)))

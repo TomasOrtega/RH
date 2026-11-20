@@ -39,7 +39,7 @@ def ConvDensStatement : Prop :=
           (locDens A (fun i => th i + LocPot.ofFun (ph i) + Θ) j) (nhdsWithin 0 (Set.Ioi 0)) K
 
 /- English proof (translation)
-Introduce `e X _ A Θ s th ph phT hB hΘ hth hph hT hC2 j K hK hKc`. Conclude with `conv_dens_of_closed A Θ s th ph phT hB hΘ hth hph hT hC2 j K hK hKc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem conv_dens : ConvDensStatement := by
   intro e X _ A Θ s th ph phT hB hΘ hth hph hT hC2 j K hK hKc

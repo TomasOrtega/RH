@@ -15,7 +15,7 @@ namespace GlobalTheory
 open IsDedekindDomain HeightOneSpectrum WithZero
 
 /- English proof (translation)
-Establish `h` using `valuedAdicCompletion_eq_valuation' (K := F) v (d : F)`. Rewrite using `[← valuation_of_algebraMap (K := F) v d]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locGen_val_eq (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (d : 𝓞 F) :
     Valued.v (algebraMap F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (d : F)) = v.intValuation d := by
@@ -24,15 +24,15 @@ theorem locGen_val_eq (F : Type) [Field F] [NumberField F] (v : HeightOneSpectru
   exact h
 
 /- English proof (translation)
-Introduce `F _ _ I v hI`. Distinguish the cases in `hv : I ≤ v.asIdeal`. Establish `hex : ∃ n : ℕ, ∃ d ∈ I, v.intValuation d = exp (-(n : ℤ))`. Take `⟨d, hdI, hd0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Conclude with `⟨_, d, hdI, v.intValuation_if_neg hd0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨d0, hd0I, hd0v⟩` from `Nat.find_spec hex`. Use `⟨algebraMap F _ (d0 : F), ?_, fun h => absurd hv h, ?_, d0, hd0I, rfl⟩` and prove the remaining obligations. Introduce `h`. Establish `h2` using `locGen_val_eq F v d0`. Rewrite `h2` using `[h, map_zero, hd0v]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `exp_ne_zero h2.symm`. Introduce `d hd`. Rewrite using `[locGen_val_eq, locGen_val_eq, hd0v]`. Distinguish the cases in `hd0 : d = 0`. Simplify using `[hd0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hk` using `v.intValuation_if_neg hd0`. Rewrite using `[hk, exp_le_exp, neg_le_neg_iff, Int.ofNat_le]`. Conclude with `Nat.find_min' hex ⟨d, hd, hk⟩`. Take `⟨d, hdI, hdv⟩` from `Set.not_subset.mp hv`. Use `⟨1, one_ne_zero, fun _ => rfl, ?_, d, hdI, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e _`. Rewrite using `[locGen_val_eq, map_one]`. Conclude with `v.intValuation_le_one e`. Rewrite using `[locGen_val_eq, map_one]`. Conclude with `intValuation_eq_one_iff.mpr hdv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_localGenerator : ∀ (F : Type) [Field F] [NumberField F] (I : Ideal (𝓞 F)) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)), I ≠ ⊥ → ∃ z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v, z ≠ 0 ∧ (¬ I ≤ v.asIdeal → z = 1) ∧ (∀ d ∈ I, Valued.v (algebraMap F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (d : F)) ≤ Valued.v z) ∧ ∃ d ∈ I, Valued.v (algebraMap F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (d : F)) = Valued.v z := by
   intro F _ _ I v hI

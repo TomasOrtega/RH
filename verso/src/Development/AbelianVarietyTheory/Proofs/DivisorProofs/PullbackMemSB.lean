@@ -14,13 +14,11 @@ open scoped Classical
 namespace GlobalTheory.FinPull
 
 /- English proof (translation)
-Introduce `F _ _ ι κ _ _ D hD g hg`. Use `haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `set A := algebraMap F (FiniteAdeleRing (𝓞 F) F)`. Establish `hinj : Function.Injective (Matrix.toLin' D)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Conclude with `hD z (by simpa using hz)`. Take `⟨G, hG⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' D) (LinearMap.ker_eq_bot.mpr hinj)`. Use `set L := LinearMap.toMatrix' G`. Establish `hLD : L * D = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LinearMap.toMatrix' (G ∘ₗ Matrix.toLin' D) = LinearMap.toMatrix' LinearMap.id` using `by rw [hG]`. Simplify `this` using `[L, LinearMap.toMatrix'_comp]`. Establish `hM : Continuous fun w : ι → FiniteAdeleRing (𝓞 F) F => D.map A *ᵥ w` using `continuous_const.matrix_mulVec continuous_id`. Establish `hN : Continuous fun w : κ → FiniteAdeleRing (𝓞 F) F => L.map A *ᵥ w` using `continuous_const.matrix_mulVec continuous_id`. Establish `hinv : Function.LeftInverse (fun w : κ → FiniteAdeleRing (𝓞 F) F => L.map A *ᵥ w) (fun w : ι → FiniteAdeleRing (𝓞 F) F => D.map A *ᵥ w)` using `fun w => by`.
-
-Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.map_mul, hLD, Matrix.map_one A (map_zero A) (map_one A), Matrix.one_mulVec]`. Conclude with `⟨hg.1.comp_continuous hM, hg.2.comp_isClosedEmbedding (hinv.isClosedEmbedding hN hM)⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pullback_mem_SB : ∀ (F : Type) [Field F] [NumberField F] (ι κ : Type) [Fintype ι] [Fintype κ] (D : Matrix κ ι F),
     (∀ z : ι → F, D *ᵥ z = 0 → z = 0) →

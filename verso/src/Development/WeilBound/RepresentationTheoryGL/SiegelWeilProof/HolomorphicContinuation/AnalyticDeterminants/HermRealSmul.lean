@@ -16,13 +16,13 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[JJ, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem JJ_sq : JJ n * JJ n = -1 := by
   simp [JJ, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]
 
 /- English proof (translation)
-Unfold `InG at *`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inG_mul {a b : M2 n} (ha : InG a) (hb : InG b) : InG (a * b) := by
   unfold InG at *
@@ -31,21 +31,21 @@ theorem inG_mul {a b : M2 n} (ha : InG a) (hb : InG b) : InG (a * b) := by
     _ = JJ n := by rw [ha, hb]
 
 /- English proof (translation)
-Unfold `InG JJ`. Simplify using `[fromBlocks_conjTranspose, fromBlocks_multiply, hb]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem inG_upper {b : Matrix (Fin n) (Fin n) ℂ} (hb : bᴴ = b) : InG (fromBlocks 1 b 0 1 : M2 n) := by
   unfold InG JJ
   simp [fromBlocks_conjTranspose, fromBlocks_multiply, hb]
 
 /- English proof (translation)
-Unfold `InG JJ`. Simplify using `[fromBlocks_conjTranspose, fromBlocks_multiply, hc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem inG_lower {c : Matrix (Fin n) (Fin n) ℂ} (hc : cᴴ = c) : InG (fromBlocks 1 0 c 1 : M2 n) := by
   unfold InG JJ
   simp [fromBlocks_conjTranspose, fromBlocks_multiply, hc]
 
 /- English proof (translation)
-Use `show (c • (1 : M2 n))ᴴ * JJ n * (c • (1 : M2 n)) = JJ n`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, mul_comm, hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_scalar {c : ℂ} (hc : star c * c = 1) : InG (c • (1 : M2 n)) := by
   show (c • (1 : M2 n))ᴴ * JJ n * (c • (1 : M2 n)) = JJ n
@@ -53,7 +53,7 @@ theorem inG_scalar {c : ℂ} (hc : star c * c = 1) : InG (c • (1 : M2 n)) := b
     Matrix.mul_smul, Matrix.mul_one, smul_smul, mul_comm, hc, one_smul]
 
 /- English proof (translation)
-Establish `e : (fromBlocks 1 (t • b) 0 1 : M2 n) = 1 + t • fromBlocks 0 b 0 0`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_add]`. Simplify using the standard rewrite rules. Rewrite using `[e, mul_add, mul_one, mul_smul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem upper_line (y : M2 n) (b : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) :
     y + t • (y * fromBlocks 0 b 0 0) = y * fromBlocks 1 (t • b) 0 1 := by
@@ -63,7 +63,7 @@ theorem upper_line (y : M2 n) (b : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) :
   rw [e, mul_add, mul_one, mul_smul_comm]
 
 /- English proof (translation)
-Establish `e : (fromBlocks 1 0 (t • c) 1 : M2 n) = 1 + t • fromBlocks 0 0 c 0`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_add]`. Simplify using the standard rewrite rules. Rewrite using `[e, mul_add, mul_one, mul_smul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lower_line (y : M2 n) (c : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) :
     y + t • (y * fromBlocks 0 0 c 0) = y * fromBlocks 1 0 (t • c) 1 := by
@@ -73,18 +73,18 @@ theorem lower_line (y : M2 n) (c : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) :
   rw [e, mul_add, mul_one, mul_smul_comm]
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_smul, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_real_smul {b : Matrix (Fin n) (Fin n) ℂ} (hb : bᴴ = b) (t : ℝ) : ((t : ℂ) • b)ᴴ = (t : ℂ) • b := by
   rw [conjTranspose_smul, hb]
   simp
 
 /- English proof (translation)
-Establish `hl : HasDerivAt (fun t : ℝ => y + (t : ℂ) • v) v 0`. Establish `h0` using `((Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).smul_const v).const_add y`. Use `h0 using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Rewrite using `[Complex.ofRealCLM_apply, Complex.ofReal_one, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : HasFDerivAt f ((fderiv ℂ f y).restrictScalars ℝ) (y + ((0 : ℝ) : ℂ) • v)`. Simplify using `using hf.hasFDerivAt.restrictScalars ℝ`. Establish `hc` using `h1.comp_hasDerivAt (0 : ℝ) hl`. Establish `hk : (f ∘ fun t : ℝ => y + (t : ℂ) • v) = fun _ => f y` using `funext h`. Rewrite `hc` using `[hk]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((hasDerivAt_const (0 : ℝ) (f y)).unique hc).symm`.
+A detailed English derivation is pending.
 -/
 private theorem fderiv_apply_eq_zero_of_const_on_real_line {E W : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup W] [NormedSpace ℂ W] {f : E → W} {y v : E}
@@ -102,7 +102,7 @@ private theorem fderiv_apply_eq_zero_of_const_on_real_line {E W : Type*} [Normed
   exact ((hasDerivAt_const (0 : ℝ) (f y)).unique hc).symm
 
 /- English proof (translation)
-Conclude with `fderiv_apply_eq_zero_of_const_on_real_line hf h`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_line {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] {f : M2 n → W} {y v : M2 n}
     (hf : DifferentiableAt ℂ f y) (h : ∀ t : ℝ, f (y + (t : ℂ) • v) = f y) : fderiv ℂ f y v = 0 := by

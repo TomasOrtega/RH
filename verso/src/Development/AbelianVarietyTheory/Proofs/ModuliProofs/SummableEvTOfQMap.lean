@@ -14,13 +14,13 @@ section Alg
 variable {O : Type} [CommRing O] {N : NumD O}
 
 /- English proof (translation)
-Establish `a` using `WpPairing.s_nsmul N P.1.2 m q.1.1.toAdd`. Establish `b` using `P.1.2.pow_s m q.1.1.toAdd`. Establish `c` using `CubeBalance.cubN_mul N.cub m k q.1.2.b P.1.2.b`. Establish `d` using `CubeBalance.cubN_mul N.cub k m P.1.2.b q.1.2.b`. Establish `e` using `CubeBalance.cubN_swap N.cub k m q.1.2.b P.1.2.b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `c`, `e` using `[N.QT_pow_b]`. Rewrite `c` using `[mul_comm m k, ← hL]`. Rewrite `d` using `[← hL]`. Rewrite using `[NumD.wp, NumD.wp, NumD.tk, NumD.tk, NumD.tk, NumD.tk, h₁, h₂, h₃, h₄, NumD.Gt.pow_b, c, d]`. Establish `E` using `fun {p q : Oˣ} (e : p = q) => congrArg Additive.ofMul e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a` using `E a`. Establish `b` using `E b`. Establish `e` using `E e`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div] at a b e ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) a - b - e`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wp_level {k m L : ℕ} (hL : L = k * m) (P Q : N.QT L) (p q : N.QT k) (h₁ : p.1.1 = P.1.1) (h₂ : p.1.2 = P.1.2 ^ m)
     (h₃ : Q.1.1.toAdd = m • q.1.1.toAdd) (h₄ : Q.1.2 = q.1.2) : N.wp P Q = N.wp p q := by
@@ -42,19 +42,19 @@ theorem wp_level {k m L : ℕ} (hL : L = k * m) (P Q : N.QT L) (p q : N.QT k) (h
 def cg (N : NumD O) : N.Gt →* N.Gt ⧸ N.ioHom.range := QuotientGroup.mk' _
 
 /- English proof (translation)
-The claim follows from `(QuotientGroup.eq_one_iff g).trans ⟨fun ⟨y, h⟩ => ⟨y.toAdd, h.symm⟩, fun ⟨y, h⟩ => ⟨Multiplicative.ofAdd y, h.symm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem cg_eq_one {g : N.Gt} : cg N g = 1 ↔ ∃ y, g = N.io y :=
   (QuotientGroup.eq_one_iff g).trans ⟨fun ⟨y, h⟩ => ⟨y.toAdd, h.symm⟩, fun ⟨y, h⟩ => ⟨Multiplicative.ofAdd y, h.symm⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← map_pow]`. Conclude with `cg_eq_one.2 ⟨_, N.mem_QT.1 p.2⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_pow {k : ℕ} (p : N.QT k) : cg N p.1.2 ^ k = 1 := by
   rw [← map_pow]; exact cg_eq_one.2 ⟨_, N.mem_QT.1 p.2⟩
 
 /- English proof (translation)
-Rewrite `h` using `[← map_pow]`. Take `⟨y, hy⟩` from `cg_eq_one.1 h`. Conclude with `⟨⟨(Multiplicative.ofAdd y, g), hy⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rep {g : N.Gt} {d : ℕ} (h : cg N g ^ d = 1) : ∃ p : N.QT d, p.1.2 = g := by
   rw [← map_pow] at h
@@ -62,14 +62,14 @@ theorem exists_rep {g : N.Gt} {d : ℕ} (h : cg N g ^ d = 1) : ∃ p : N.QT d, p
   exact ⟨⟨(Multiplicative.ofAdd y, g), hy⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨z, -, h⟩` from `h`. Rewrite using `[h, map_mul, cg_eq_one.2 ⟨z, rfl⟩, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cg_of_qEq {k : ℕ} {p p' : N.QT k} (h : N.QEq p p') : cg N p.1.2 = cg N p'.1.2 := by
   obtain ⟨z, -, h⟩ := h
   rw [h, map_mul, cg_eq_one.2 ⟨z, rfl⟩, mul_one]
 
 /- English proof (translation)
-Use `⟨cg_of_qEq, fun h => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `cg_eq_one.1 (show cg N (p.1.2⁻¹ * p'.1.2) = 1 by rw [map_mul, map_inv, h, inv_mul_cancel])`. Establish `e : p'.1.2 = p.1.2 * N.io z` using `by rw [← hz, mul_inv_cancel_left]`. Use `⟨z, hio ?_, e⟩` and prove the remaining obligations. Rewrite using `[N.io_add, N.io_nsmul, ← N.mem_QT.1 p.2, ← N.mem_QT.1 p'.2, e, mul_pow]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qEq_iff_cg (hio : Function.Injective N.io) {k : ℕ} {p p' : N.QT k} : N.QEq p p' ↔ cg N p.1.2 = cg N p'.1.2 := by
   refine ⟨cg_of_qEq, fun h => ?_⟩
@@ -79,7 +79,7 @@ theorem qEq_iff_cg (hio : Function.Injective N.io) {k : ℕ} {p p' : N.QT k} : N
   rw [N.io_add, N.io_nsmul, ← N.mem_QT.1 p.2, ← N.mem_QT.1 p'.2, e, mul_pow]
 
 /- English proof (translation)
-Rewrite using `[WpPairing.wp_congr_left N h, N.wp_swap q p', WpPairing.wp_congr_left N h', ← N.wp_swap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wp_congr {k : ℕ} {p p' q q' : N.QT k} (h : N.QEq p p') (h' : N.QEq q q') : N.wp p q = N.wp p' q' := by
   rw [WpPairing.wp_congr_left N h, N.wp_swap q p', WpPairing.wp_congr_left N h', ← N.wp_swap]
@@ -88,7 +88,7 @@ def up {k m L : ℕ} (hL : L = k * m) (p : N.QT k) : N.QT L :=
   ⟨(p.1.1 ^ m, p.1.2), by rw [NumD.mem_QT, hL, pow_mul, N.mem_QT.1 p.2, toAdd_pow, NumD.io_nsmul]⟩
 
 /- English proof (translation)
-Set `p₀ : N.QT k` to `⟨(P.1.1, P.1.2 ^ m), by rw [NumD.mem_QT, ← pow_mul, mul_comm m k, ← hL]; exact N.mem_QT.1 P.2⟩`. Rewrite using `[wp_congr ((N.qEq_equivalence _).refl P) ((qEq_iff_cg hio (p' := up hL q)).2 h₄), wp_congr ((qEq_iff_cg hio (p' := p₀)).2 (h₂.trans (map_pow _ _ _).symm)) ((N.qEq_equivalence _).refl q)]`. Conclude with `wp_level hL _ _ _ _ rfl rfl rfl rfl`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wp_level_cg (hio : Function.Injective N.io) {k m L : ℕ} (hL : L = k * m) (P Q : N.QT L) (p q : N.QT k)
     (h₂ : cg N p.1.2 = cg N P.1.2 ^ m) (h₄ : cg N Q.1.2 = cg N q.1.2) : N.wp P Q = N.wp p q := by
@@ -99,11 +99,11 @@ theorem wp_level_cg (hio : Function.Injective N.io) {k m L : ℕ} (hL : L = k * 
 end Alg
 
 /- English proof (translation)
-Use `fun a b hab => Multiplicative.ofAdd.injective ((injective_iff_map_eq_one N.ioHom).2 (fun y hy => ?_) hab)` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `e` using `h.norm_τ y.toAdd y.toAdd`. Establish `t : N.τ y.toAdd y.toAdd = 1` using `congrArg (fun g : N.Gt => g.s y.toAdd) hy`. Rewrite `e` using `[t, Units.val_one, norm_one, eq_comm, Real.exp_eq_one_iff, QuadraticMap.polar_self, neg_eq_zero, two_smul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `q0 : q y.toAdd = 0` using `by linarith`. Establish `inj : Function.Injective fun m : ℤ => m • y.toAdd` using `smul_left_injective ℤ (fun h => h0 h)`. Establish `t₁` using `h.pos.comp inj.tendsto_cofinite`. Establish `: (q : N.X → ℝ) ∘ (fun m : ℤ => m • y.toAdd) = fun _ => 0` using `funext fun m => by`. Simplify using `[QuadraticMap.map_smul, q0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `t₁` using `[this]`. Conclude with `(Filter.not_tendsto_const_atTop (0 : ℝ) Filter.cofinite) t₁`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_injective {C : Type} [NormedField C] {N : NumD C} {q : QuadraticMap ℤ N.X ℝ} (h : N.Int q) :
     Function.Injective N.io := by
@@ -127,9 +127,9 @@ def Gr (x : N.Gt ⧸ N.ioHom.range) (x' : N'.Gt ⧸ N'.ioHom.range) : Prop :=
   ∃ j a, cg N a.1.2 = x ∧ cg N' (w.io j a).1.2 = x'
 
 /- English proof (translation)
-Proceed by induction on `j', h using Nat.le_induction with`. Consider the case `base => exact ⟨a, rfl, rfl⟩`. Consider the case `succ i _ ih`. Take `⟨b, h₁, h₂⟩` from `ih`. Establish `e : (n ^ (i + 1)) ^ 2 = (n ^ i) ^ 2 * n ^ 2` using `by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨up e b, h₁, (cg_of_qEq (w.incl i b (up e b) (up e (w.io i b)) rfl rfl rfl rfl)).trans h₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem gr_up {j j' : ℕ} (h : j ≤ j') (a : N.QT ((n ^ j) ^ 2)) :
     ∃ a' : N.QT ((n ^ j') ^ 2), cg N a'.1.2 = cg N a.1.2 ∧ cg N' (w.io j' a').1.2 = cg N' (w.io j a).1.2 := by
@@ -142,7 +142,7 @@ theorem gr_up {j j' : ℕ} (h : j ≤ j') (a : N.QT ((n ^ j) ^ 2)) :
 
 variable {w}
 /- English proof (translation)
-Take `⟨i, a, rfl, rfl⟩` from `h`. Take `⟨j, b, rfl, rfl⟩` from `h'`. Take `⟨a', h₁, h₂⟩` from `gr_up w (le_max_left i j) a`. Take `⟨b', h₃, h₄⟩` from `gr_up w (le_max_right i j) b`. Conclude with `⟨_, a', b', h₁, h₂, h₃, h₄⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Gr.common {x y x' y'} (h : Gr w x x') (h' : Gr w y y') : ∃ j a b, cg N a.1.2 = x ∧ cg N' (w.io j a).1.2 = x' ∧
     cg N b.1.2 = y ∧ cg N' (w.io j b).1.2 = y' := by
@@ -153,14 +153,14 @@ theorem Gr.common {x y x' y'} (h : Gr w x x') (h' : Gr w y y') : ∃ j a b, cg N
   exact ⟨_, a', b', h₁, h₂, h₃, h₄⟩
 
 /- English proof (translation)
-Take `⟨j, a, b, rfl, rfl, rfl, rfl⟩` from `h.common h'`. Conclude with `⟨j, a * b, map_mul _ _ _, (cg_of_qEq (w.mul j a b)).trans (map_mul _ _ _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Gr.mul {x y x' y'} (h : Gr w x x') (h' : Gr w y y') : Gr w (x * y) (x' * y') := by
   obtain ⟨j, a, b, rfl, rfl, rfl, rfl⟩ := h.common h'
   exact ⟨j, a * b, map_mul _ _ _, (cg_of_qEq (w.mul j a b)).trans (map_mul _ _ _)⟩
 
 /- English proof (translation)
-Use `⟨0, 1, map_one _, ?_⟩` and prove the remaining obligations. Use `(cg_of_qEq (w.mul 0 1 1)).trans (map_mul _ _ _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_mul.1 this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gr_one : Gr w 1 1 := by
   refine ⟨0, 1, map_one _, ?_⟩
@@ -169,7 +169,7 @@ theorem gr_one : Gr w 1 1 := by
   exact left_eq_mul.1 this
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `gr_one`. Consider the case `succ m ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Gr.pow {x x'} (h : Gr w x x') (m : ℕ) : Gr w (x ^ m) (x' ^ m) := by
   induction m with
@@ -179,25 +179,25 @@ theorem Gr.pow {x x'} (h : Gr w x x') (m : ℕ) : Gr w (x ^ m) (x' ^ m) := by
 variable (hio : Function.Injective N.io) (hio' : Function.Injective N'.io)
 include hio hio'
 /- English proof (translation)
-Take `⟨j, a, b, rfl, rfl, rfl, rfl⟩` from `h.common h'`. Rewrite using `[← qEq_iff_cg hio, ← qEq_iff_cg hio', w.eqv]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Gr.eq_iff {x y x' y'} (h : Gr w x x') (h' : Gr w y y') : x = y ↔ x' = y' := by
   obtain ⟨j, a, b, rfl, rfl, rfl, rfl⟩ := h.common h'
   rw [← qEq_iff_cg hio, ← qEq_iff_cg hio', w.eqv]
 
 /- English proof (translation)
-The claim follows from `(h.pow m).eq_iff hio hio' gr_one`.
+A detailed English derivation is pending.
 -/
 theorem Gr.pow_eq_one_iff {x x'} (h : Gr w x x') (m : ℕ) : x ^ m = 1 ↔ x' ^ m = 1 := (h.pow m).eq_iff hio hio' gr_one
 
 /- English proof (translation)
-Take `⟨j, a, b, a₁, a₂, b₁, b₂⟩` from `h.common h'`. Take `⟨k₀, hk⟩` from `Nat.gcd_dvd_left k ((n ^ j) ^ 2)`. Take `⟨l₀, hl⟩` from `Nat.gcd_dvd_right k ((n ^ j) ^ 2)`. Generalize the expression as in `hdd : Nat.gcd k ((n ^ j) ^ 2) = d at hk hl`. Establish `t₁ : cg N p.1.2 ^ d = 1` using `hdd ▸ pow_gcd_eq_one.2 ⟨cg_pow p, a₁ ▸ cg_pow a⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `t₂ : cg N q.1.2 ^ d = 1` using `hdd ▸ pow_gcd_eq_one.2 ⟨cg_pow q, b₁ ▸ cg_pow b⟩`. Take `⟨p₁, hp₁⟩` from `exists_rep t₁`. Take `⟨q₁, hq₁⟩` from `exists_rep t₂`. Take `⟨p₁', hp₁'⟩` from `exists_rep ((h.pow_eq_one_iff hio hio' d).1 t₁)`. Take `⟨q₁', hq₁'⟩` from `exists_rep ((h'.pow_eq_one_iff hio hio' d).1 t₂)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[wp_level_cg hio hk p q (p₁ ^ k₀) q₁ (by rw [← hp₁, ← map_pow]; rfl) (by rw [hq₁]), wp_level_cg hio' hk p' q' (p₁' ^ k₀) q₁' (by rw [← hp₁', ← map_pow]; rfl) (by rw [hq₁']), WpPairing.wp_pow_left, WpPairing.wp_pow_left]`. Use `congr 1`. Take `⟨g, hg⟩` from `hd (j * 2) p.1.2`. Establish `hg' : cg N (g ^ d) ^ l₀ = cg N p.1.2` using `by rw [← map_pow, ← pow_mul, ← hl, ← pow_mul, hg]`. Take `⟨P, hP⟩` from `exists_rep (g := g ^ d) (d := (n ^ j) ^ 2) (by rw [hl, mul_comm, pow_mul, hg', t₁])`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `G : Gr w (cg N P.1.2 ^ l₀) (cg N' (w.io j P).1.2 ^ l₀)` using `Gr.pow ⟨j, P, rfl, rfl⟩ l₀`. Rewrite using `[← wp_level_cg hio hl P b p₁ q₁ (by rw [hp₁, hP, hg']) (by rw [hq₁, b₁]), ← wp_level_cg hio' hl (w.io j P) (w.io j b) p₁' q₁' (by rw [hp₁']; exact (h.eq_iff hio hio' G).1 (by rw [hP, hg'])) (by rw [hq₁', b₂]), w.wp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Gr.wp (hd : ∀ (j : ℕ) (g : N.Gt), ∃ g' : N.Gt, g' ^ n ^ j = g) {k : ℕ} {p q : N.QT k} {p' q' : N'.QT k}
     (h : Gr w (cg N p.1.2) (cg N' p'.1.2)) (h' : Gr w (cg N q.1.2) (cg N' q'.1.2)) : N'.wp p' q' = N.wp p q := by
@@ -231,17 +231,13 @@ def SameMatch (mt : Match N N' n) (w : TowerIso N N' n) : Prop :=
   ∀ j p p', mt.r ((n ^ j) ^ 2) p p' ↔ N'.QEq (w.io j p) p'
 
 /- English proof (translation)
-Establish `key : ∀ j (p : N.QT ((n ^ j) ^ 2)) (p' : N'.QT ((n ^ j) ^ 2)), Gr w (cg N p.1.2) (cg N' p'.1.2) ↔ N'.QEq (w.io j p) p'` using `fun j p p' => by`. Establish `G : Gr w (cg N p.1.2) (cg N' (w.io j p).1.2)` using `⟨j, p, rfl, rfl⟩`. Rewrite using `[qEq_iff_cg hio']`. Conclude with `⟨fun h => (G.eq_iff hio hio' h).1 rfl, fun h => h ▸ G⟩`. Use `⟨{ r := fun k p p' => k ≠ 0 ∧ Gr w (cg N p.1.2) (cg N' p'.1.2) tot := fun j p => ?_ cotot := fun j p' => ?_ mul := fun k p q p' q' h h' => ⟨h.1, by` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.2.mul h'.2` as an intermediate fact. Rewrite using `[← map_mul, ← map_mul] at this⟩` and apply the resulting hypothesis. Use `eqv := fun k p q p' q' h e => ?_`. Use `inj := fun k p q p' h h' => (qEq_iff_cg hio).2 ((h.2.eq_iff hio hio' h'.2).2 rfl)`. Use `incl := fun k k' p p' q q' hk _ b _ d => by rw [b, d, mul_ne_zero_iff, and_iff_left hk]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `wp := fun k p q p' q' h h' => Gr.wp hio hio' hd h.2 h'.2`. Use `c₀ := c₀`. Use `c₀_ne := h0`. Use `tx := fun j p p' h => ?_ }, rfl,`. Use `fun j p p' => (and_iff_right (pow_ne_zero _ (pow_ne_zero _ hn))).trans (key j p p')⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `G : Gr w (cg N p.1.2) _` using `⟨j, up (sq (n ^ j)) p, rfl, rfl⟩`. Take `⟨p', hp'⟩` from `exists_rep ((G.pow_eq_one_iff hio hio' _).1 (cg_pow p))`. Conclude with `⟨p', pow_ne_zero _ hn, hp' ▸ G⟩`. Take `⟨a, ha⟩` from `w.onto j (up (sq (n ^ j)) p')`. Establish `G : Gr w (cg N a.1.2) (cg N' p'.1.2)` using `⟨j, a, rfl, cg_of_qEq ha⟩`.
-
-Take `⟨p, hp⟩` from `exists_rep ((G.pow_eq_one_iff hio hio' _).2 (cg_pow p'))`. Conclude with `⟨p, pow_ne_zero _ hn, hp ▸ G⟩`. Rewrite using `[qEq_iff_cg hio', ← cg_of_qEq e]`. Conclude with `⟨fun h' => (h.2.eq_iff hio hio' h'.2).1 rfl, fun h' => ⟨h.1, h' ▸ h.2⟩⟩`. Take `⟨v, h₁, h₂⟩` from `hw j p`.
-
-Rewrite using `[hc j _ _ ((key j p p').1 h.2), NumD.tx, NumD.tx, h₁.tsum_eq, h₂.tsum_eq]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_match (hio : Function.Injective N.io) (hio' : Function.Injective N'.io) (hn : n ≠ 0)
     (hd : ∀ (j : ℕ) (g : N.Gt), ∃ g' : N.Gt, g' ^ n ^ j = g)
@@ -281,7 +277,7 @@ theorem exists_match (hio : Function.Injective N.io) (hio' : Function.Injective 
     rw [hc j _ _ ((key j p p').1 h.2), NumD.tx, NumD.tx, h₁.tsum_eq, h₂.tsum_eq]
 
 /- English proof (translation)
-Substitute `hL` using the available equality. Conclude with `mt.incl k m p p' q q' hm a b c d`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem r_incl (mt : Match N N' n) {k m L : ℕ} (hL : L = k * m) (hm : m ≠ 0) (p : N.QT k) (p' : N'.QT k) (q : N.QT L)
     (q' : N'.QT L) (a : q.1.1 = p.1.1 ^ m) (b : q.1.2 = p.1.2) (c : q'.1.1 = p'.1.1 ^ m) (d : q'.1.2 = p'.1.2) :
@@ -290,7 +286,7 @@ theorem r_incl (mt : Match N N' n) {k m L : ℕ} (hL : L = k * m) (hm : m ≠ 0)
   exact mt.incl k m p p' q q' hm a b c d
 
 /- English proof (translation)
-Establish `t : ∀ j (p : N.QT ((n ^ j) ^ 2)), ∃ p', mt.r _ p p'` using `fun j => by rw [← pow_mul]; exact mt.tot _`. Establish `t' : ∀ j (p' : N'.QT ((n ^ j) ^ 2)), ∃ p, mt.r _ p p'` using `fun j => by rw [← pow_mul]; exact mt.cotot _`. Use `choose f hf using t`. Establish `key : ∀ j p p', mt.r ((n ^ j) ^ 2) p p' ↔ N'.QEq (f j p) p'` using `fun j p p' => mt.eqv _ p p _ _ (hf j p) ((N.qEq_equivalence _).refl p)`. Conclude with `⟨{ io := f eqv := fun j p q => ⟨fun h => mt.inj _ _ _ _ ((key j _ _).2 h) (hf j q), fun h => (mt.eqv _ _ _ _ _ (hf j p) h).1 (hf j q)⟩ onto := fun j p' => (t' j p').imp fun p h => (key j _ _).1 h mul := fun j p q => (key j _ _).1 (mt.mul _ _ _ _ _ (hf j p) (hf j q)) incl := fun j …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tower (hn : n ≠ 0) (mt : Match N N' n) : ∃ w : TowerIso N N' n, SameMatch mt w := by
   have t : ∀ j (p : N.QT ((n ^ j) ^ 2)), ∃ p', mt.r _ p p' := fun j => by rw [← pow_mul]; exact mt.tot _
@@ -308,7 +304,7 @@ theorem exists_tower (hn : n ≠ 0) (mt : Match N N' n) : ∃ w : TowerIso N N' 
     wp := fun j p q => mt.wp _ _ _ _ _ (hf j p) (hf j q) }, key⟩
 
 /- English proof (translation)
-Introduce `j p` and use `⟨_, (hs j p).hasSum, by have := mt.tx j p _ ((h j p _).2 ((N'.qEq_equivalence _).refl _)) rw [NumD.tx, NumD.tx] at this exact this ▸ (hs' j _).hasSum⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SameMatch.proportional {mt : Match N N' n} {w : TowerIso N N' n} (h : SameMatch mt w)
     (hs : ∀ j p, Summable (N.txT (n ^ j) p)) (hs' : ∀ j p, Summable (N'.txT (n ^ j) p)) : w.Proportional mt.c₀ :=
@@ -322,7 +318,7 @@ section Sum
 variable {C : Type} [NormedField C] [IsUltrametricDist C] [CompleteSpace C] {N : NumD C} {q : QuadraticMap ℤ N.X ℝ}
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_rep (g := (r.1.2 * p.1.2) ^ m) (d := m * j) (by`. Rewrite using `[map_pow, ← pow_mul, ← mul_assoc, ← sq, map_mul, mul_pow, pow_mul (cg N p.1.2), cg_pow, mul_comm (m ^ 2) j, pow_mul, cg_pow, one_pow, one_pow, mul_one])`. Use `summable_vt_QT C N q h _ (mul_ne_zero hm hj) s` as an intermediate fact. Rewrite `this` using `[hs]`. Conclude with `this.mul_left _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_evT (h : N.Int q) {m j : ℕ} (hm : m ≠ 0) (hj : j ≠ 0) (p : N.QT (m ^ 2)) (r : N.QT j) :
     Summable (N.evT m p r.1.2) := by
@@ -334,7 +330,7 @@ theorem summable_evT (h : N.Int q) {m j : ℕ} (hm : m ≠ 0) (hj : j ≠ 0) (p 
   exact this.mul_left _
 
 /- English proof (translation)
-The claim follows from `(summable_evT h hm one_ne_zero p 1).congr (TateInh.evT_one N m p)`.
+A detailed English derivation is pending.
 -/
 theorem summable_txT (h : N.Int q) {m : ℕ} (hm : m ≠ 0) (p : N.QT (m ^ 2)) : Summable (N.txT m p) :=
   (summable_evT h hm one_ne_zero p 1).congr (TateInh.evT_one N m p)
@@ -349,14 +345,14 @@ def gMap : N.Gt →* N'.Gt :=
     (H.1 _).unique (H.1 _).choose_spec.1 (H.2.1 _ _ _ _ (H.1 g).choose_spec.1 (H.1 h).choose_spec.1)
 
 /- English proof (translation)
-The claim follows from `have H := (NumD.hom_transport O O _ N N' I).1 g ⟨fun h => H.unique h H.choose_spec.1, fun h => h ▸ H.choose_spec.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem rel_iff {g : N.Gt} {g' : N'.Gt} : I.Rel g g' ↔ g' = gMap I g :=
   have H := (NumD.hom_transport O O _ N N' I).1 g
   ⟨fun h => H.unique h H.choose_spec.1, fun h => h ▸ H.choose_spec.1⟩
 
 /- English proof (translation)
-The claim follows from `((rel_iff I).1 ((NumD.hom_transport O O _ N N' I).2.2.1 y)).symm`.
+A detailed English derivation is pending.
 -/
 theorem gMap_io (y : N.X) : gMap I (N.io y) = N'.io (I.e y) :=
   ((rel_iff I).1 ((NumD.hom_transport O O _ N N' I).2.2.1 y)).symm
@@ -367,20 +363,20 @@ def qMap (k : ℕ) : N.QT k →* N'.QT k :=
     fun p q => Subtype.ext (Prod.ext (map_add I.e _ _) (map_mul (gMap I) _ _))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Subtype.ext (Prod.ext h.1 ((rel_iff I).1 h.2)), fun h => h ▸ ⟨rfl, (rel_iff I).2 rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem qMap_iff {k : ℕ} {p : N.QT k} {p' : N'.QT k} :
     (p'.1.1.toAdd = I.e p.1.1.toAdd ∧ I.Rel p.1.2 p'.1.2) ↔ p' = qMap I k p :=
   ⟨fun h => Subtype.ext (Prod.ext h.1 ((rel_iff I).1 h.2)), fun h => h ▸ ⟨rfl, (rel_iff I).2 rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (map_nsmul I.e k z) (gMap_io I z))`.
+A detailed English derivation is pending.
 -/
 theorem qMap_qTriv (k : ℕ) (z : N.X) : qMap I k (N.qTriv k z) = N'.qTriv k (I.e z) :=
   Subtype.ext (Prod.ext (map_nsmul I.e k z) (gMap_io I z))
 
 /- English proof (translation)
-Rewrite using `[NumD.qEq_iff, NumD.qEq_iff, ← I.e.exists_congr_right]`. Conclude with `exists_congr fun z => by rw [← hi.eq_iff, map_mul, qMap_qTriv]; rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qEq_qMap {k : ℕ} (hi : Function.Injective (qMap I k)) {p q : N.QT k} :
     N'.QEq (qMap I k p) (qMap I k q) ↔ N.QEq p q := by
@@ -388,7 +384,7 @@ theorem qEq_qMap {k : ℕ} (hi : Function.Injective (qMap I k)) {p q : N.QT k} :
   exact exists_congr fun z => by rw [← hi.eq_iff, map_mul, qMap_qTriv]; rfl
 
 /- English proof (translation)
-The claim follows from `(NumD.hom_transport O O _ N N' I).2.2.2.1 k p q _ _ rfl ((rel_iff I).2 rfl) rfl ((rel_iff I).2 rfl)`.
+A detailed English derivation is pending.
 -/
 theorem wp_qMap {k : ℕ} (p q : N.QT k) : N'.wp (qMap I k p) (qMap I k q) = N.wp p q :=
   (NumD.hom_transport O O _ N N' I).2.2.2.1 k p q _ _ rfl ((rel_iff I).2 rfl) rfl ((rel_iff I).2 rfl)
@@ -399,7 +395,7 @@ variable {C : Type} [NormedField C] {N N' M M' : NumD C} {n : ℕ} (I : NumD.Hom
   (I' : NumD.Hom (RingHom.id C) N' M')
 
 /- English proof (translation)
-Rewrite using `[← I.e.toEquiv.hasSum_iff]`. Use `iff_of_eq (congrArg (HasSum · v) (funext fun χ => ?_))` and prove the remaining obligations. Use `((NumD.hom_transport C C _ N M I).2.2.2.2 m hm p (qMap I _ p) rfl ((rel_iff I).2 rfl) χ).1` as an intermediate fact. Rewrite `this` using `[hl, Units.val_one, one_mul]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_qMap (hl : I.lam = 1) {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (v : C) :
     HasSum (M.txT m (qMap I _ p)) v ↔ HasSum (N.txT m p) v := by
@@ -410,7 +406,7 @@ theorem hasSum_qMap (hl : I.lam = 1) {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (
   exact this
 
 /- English proof (translation)
-Use `((I.e.toEquiv.summable_iff.2 h).mul_left (((I.lam * I.h r.1.2.b ^ (m ^ 2))⁻¹ : Cˣ) : C)).congr fun χ => ?_` and prove the remaining obligations. Use `((NumD.hom_transport C C _ N M I).2.2.2.2 m hm p (qMap I _ p) rfl ((rel_iff I).2 rfl) χ).2 r.1.2 _ ((rel_iff I).2 rfl)` as an intermediate fact. Conclude with `(congrArg _ this).trans (Units.inv_mul_cancel_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem summable_evT_of_qMap {m j : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (r : N.QT j)
     (h : Summable (M.evT m (qMap I _ p) (qMap I _ r).1.2)) : Summable (N.evT m p r.1.2) := by
@@ -419,11 +415,11 @@ theorem summable_evT_of_qMap {m j : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (r : N.
   exact (congrArg _ this).trans (Units.inv_mul_cancel_left _ _)
 
 /- English proof (translation)
-Set `E` to `fun k => MulEquiv.ofBijective (qMap I k) (hI k)`. Establish `hE : ∀ k p, qMap I k ((E k).symm p) = p` using `fun k p => (E k).apply_symm_apply p`. Establish `g : ∀ {k l} (p : N.QT k) (q : N.QT l), (qMap I _ q).1.2 = (qMap I _ p).1.2 → q.1.2 = p.1.2` using `fun p q h => by`. Use `(hI 0).1 (a₁ := ⟨(1, q.1.2), by rw [NumD.mem_QT, pow_zero]; exact N.io_zero.symm⟩) (a₂ := ⟨(1, p.1.2), by rw [NumD.mem_QT, pow_zero]; exact N.io_zero.symm⟩) (Subtype.ext (Prod.ext rfl h))` as an intermediate fact. Conclude with `congrArg (fun x : N.QT 0 => x.1.2) this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ io := fun j p => qMap I' _ (w.io j ((E _).symm p)) eqv := fun j p q => by rw [qEq_qMap I' (hI' _).1, w.eqv, ← qEq_qMap I (hI _).1, hE, hE] onto := fun j p' => ?_ mul := fun j p q => by rw [← map_mul, map_mul (E _).symm, qEq_qMap I' (hI' _).1]; exact w.mul _ _ _ incl := fun j p …` and prove the remaining obligations. Take `⟨p', rfl⟩` from `(hI' _).2 p'`. Take `⟨p, hp⟩` from `w.onto j p'`. Conclude with `⟨E _ p, by rw [MulEquiv.symm_apply_apply, qEq_qMap I' (hI' _).1]; exact hp⟩`. Establish `e : (n ^ (j + 1)) ^ 2 = (n ^ j) ^ 2 * n ^ 2` using `by ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : q' = qMap I' _ (up e (w.io j ((E _).symm p)))` using `Subtype.ext (Prod.ext (Multiplicative.toAdd.injective (c.trans (map_nsmul I'.e _ _).symm)) d)`. Rewrite using `[h', qEq_qMap I' (hI' _).1]`. Use `w.incl j _ _ _ (I.e.injective ?_) (g _ _ (by rw [hE, hE, b])) rfl rfl` and prove the remaining obligations. Rewrite using `[map_nsmul]`. Conclude with `(congrArg (fun x : M.QT _ => x.1.1.toAdd) (hE _ q)).trans (a.trans (congrArg (fun x : M.QT _ => n ^ 2 • x.1.1.toAdd) (hE _ p)).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_move (hI : ∀ k, Function.Bijective (qMap I k)) (hI' : ∀ k, Function.Bijective (qMap I' k))
     (w : TowerIso N N' n) : ∃ w₀ : TowerIso M M' n, ∀ j p, w₀.io j (qMap I _ p) = qMap I' _ (w.io j p) := by

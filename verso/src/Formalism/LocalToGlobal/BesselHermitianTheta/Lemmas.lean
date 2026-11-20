@@ -16,7 +16,7 @@ section Const
 variable (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `Rder`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Rder_const (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (c : ℂ) :
     Rder θ V τ Z (fun _ => c) = fun _ => 0 := by
@@ -25,7 +25,7 @@ theorem Rder_const (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) �
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `RderC`. Simplify using `[Rder_const]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem RderC_const (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (c : ℂ) :
     RderC θ V τ Z (fun _ => c) = fun _ => 0 := by
@@ -34,9 +34,9 @@ theorem RderC_const (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) �
   simp [Rder_const]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨c, rfl⟩`. Consider the case `cons f l ih`. Take `⟨c1, h1⟩` from `ih (fun g hg => hl g (by simp [hg]))`. Take `⟨c2, h2⟩` from `hl f (by simp) c1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c2, by simp only [List.foldr_cons, h1, h2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem foldr_const (l : List ((GA D V → ℂ) → (GA D V → ℂ)))
     (hl : ∀ f ∈ l, ∀ c : ℂ, ∃ c' : ℂ, f (fun _ => c) = fun _ => c') (c : ℂ) :
@@ -49,11 +49,11 @@ theorem foldr_const (l : List ((GA D V → ℂ) → (GA D V → ℂ)))
     exact ⟨c2, by simp only [List.foldr_cons, h1, h2]⟩
 
 /- English proof (translation)
-Unfold `gelf`. Apply `Finset.sum_induction _ (fun F => ∃ c', F = fun _ => c')` to reduce the goal to its premises. Introduce and unpack `_ _ ⟨a, rfl⟩ ⟨b, rfl⟩`. Conclude with `⟨a + b, rfl⟩`. Conclude with `⟨0, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce `idx _`. Apply `foldr_const` to reduce the goal to its premises. Introduce `f hf c0`. Rewrite `hf` using `[List.mem_ofFn]`. Take `⟨a, rfl⟩` from `hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, RderC_const θ V τ _ c0⟩`.
+Supply the required witnesses or components.
 -/
 theorem gelf_const (τ : D.what₂.Tau) (k : ℕ) (c : ℂ) : ∃ c' : ℂ, gelf θ V τ k (fun _ => c) = fun _ => c' := by
   unfold gelf
@@ -69,7 +69,7 @@ theorem gelf_const (τ : D.what₂.Tau) (k : ℕ) (c : ℂ) : ∃ c' : ℂ, gelf
     exact ⟨0, RderC_const θ V τ _ c0⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨c, rfl⟩`. Consider the case `cons p l ih`. Take `⟨c1, h1⟩` from `ih`. Conclude with `⟨0, by simp only [List.foldr_cons, h1, Rder_const]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem foldrRder_const (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (c : ℂ) :
     ∃ c' : ℂ, l.foldr (fun p f => Rder θ V p.1 p.2 f) (fun _ => c) = fun _ => c' := by
@@ -80,7 +80,7 @@ theorem foldrRder_const (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.r
     exact ⟨0, by simp only [List.foldr_cons, h1, Rder_const]⟩
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl level := ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩ cont := continuous_const smooth := fun _ _ _ _ _ => contDiff_const zfin := by refine ⟨Submodule.span ℂ {fun _ => (1 : ℂ)}, FiniteDimensional.span_singleton ℂ _, ?_, ?_⟩ · exact Submodule.mem_span_singleton.2 ⟨c, by funext g; simp⟩ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAutFunSm_const (c : ℂ) : IsAutFunSm θ V (fun _ => c) where
   left := fun _ _ _ => rfl
@@ -104,9 +104,9 @@ theorem isAutFunSm_const (c : ℂ) : IsAutFunSm θ V (fun _ => c) where
 end Const
 
 /- English proof (translation)
-Take `⟨⟨θ, hθ⟩, h⟩` from `sm`. Establish `hr` using `h θ hθ V h1`. Establish `hc : (fun _ => c) ∈ Set.range ⇑(T.ev V)`. Rewrite using `[hr]`. Conclude with `isAutFunSm_const θ V c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩` from `hc`. Conclude with `⟨F, hF⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ThetaTied.exists_const {X : ThetaX D} (T : ThetaTied D X) (sm : ThetaSmoothnessCondition T) (V : HSp D) (h1 : V.SigOK)
     (c : ℂ) : ∃ F : X.AF V, T.ev V F = fun _ => c := by
@@ -119,7 +119,7 @@ theorem ThetaTied.exists_const {X : ThetaX D} (T : ThetaTied D X) (sm : ThetaSmo
   exact ⟨F, hF⟩
 
 /- English proof (translation)
-Take `⟨F1, hF1⟩` from `T.exists_const sm V h1 1`. Take `⟨F0, hF0⟩` from `T.exists_const sm V h1 0`. Use `⟨F1, F0, fun h => ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg (fun F => T.ev V F 1) h`. Simplify using `[hF1, hF0] at h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ThetaTied.nontrivial {X : ThetaX D} (T : ThetaTied D X) (sm : ThetaSmoothnessCondition T) (V : HSp D) (h1 : V.SigOK) :
     Nontrivial (X.AF V) := by
@@ -130,11 +130,11 @@ theorem ThetaTied.nontrivial {X : ThetaX D} (T : ThetaTied D X) (sm : ThetaSmoot
   simp [hF1, hF0] at h'
 
 /- English proof (translation)
-Unfold `VolTieG at h`. Unfold `Formalism.MainNotions.StandardLattice.VolTie`. Introduce `W P Q hW hsig`. Establish `e1 : (fun ρ => (W.sig (tauE D ρ)).1) = fun _ => P`. Use function extensionality and compare the values at `ρ`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hsig]`. Establish `e2 : (fun ρ => (W.sig (tauE D ρ)).2) = fun _ => Q`. Use function extensionality and compare the values at `ρ`. Rewrite using `[hsig]`. Establish `h'` using `h W hW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h'` using `[e1, e2]`. Conclude with `h'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VolTieG.volTie (h : VolTieG D) : Formalism.MainNotions.StandardLattice.VolTie D := by
   unfold VolTieG at h

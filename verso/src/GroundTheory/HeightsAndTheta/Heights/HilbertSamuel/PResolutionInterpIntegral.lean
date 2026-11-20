@@ -13,13 +13,13 @@ noncomputable section
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Set `x0` to `(d.R.A.chart j).symm y`. Set `γ : (Fin D → ℂ) → Ix κ → ℂ` to `fun y' => d.R.lift x0 ((d.R.A.chart j).symm y')`. Establish `hV : IsOpen ((d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U x0)` using `(d.R.A.chart j).isOpen_inter_preimage_symm (d.R.isOpen_U x0)`. Establish `hγ : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ γ y' ∧ γ y' ≠ 0` using `by filter_upwards [hV.mem_nhds ⟨hy, d.R.mem_U x0⟩] with y' hy'`. Conclude with `⟨differentiableAt_pi.2 fun p => (d.R.holo x0 p j y' hy').differentiableAt, gaamix_ne_zero_of_mcPts (d.R.mem x0 _ hy'.2)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hL : locDens d.R.A (fun _ => resPot d (interp d.m m₁ t)) j y = maDensity (fun k y' => purePot (interp d.m m₁ t) D k (γ y')) y` using `rfl`. Establish `hR : ∀ i, locDens d.R.A (fun k : Fin D => if k.val < i then resPot d m₁ else resPot d d.m) j y = maDensity (fun k y' => mixPot d.m m₁ D i k (γ y')) y`. Introduce `i`. Establish `e : (fun (k : Fin D) (y' : Fin D → ℂ) => (if k.val < i then resPot d m₁ else resPot d d.m).φ x0 ((d.R.A.chart j).symm y')) = fun k y' => mixPot d.m m₁ D i k (γ y')`. Use function extensionality and compare the values at `k y'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hk : k.val < i`. Simplify using `only [hk, if_true, mixPot]`. Both sides reduce to the same expression. Simplify using `only [hk, if_false, mixPot]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `show ReciprocityTheory.AnForm.maDens _ y = _`. Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[hL, gbamix_maDensity_interp d.smooth hm₁ t hγ]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hR i]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locDens_resPot_interp (d : HSMDatum D Ω κ) {m₁ : ConeMetric ℂ (Ix κ)} (hm₁ : IsSmoothMetric m₁)
     (t : ℝ) (j : Fin d.R.A.n) {y : Fin D → ℂ} (hy : y ∈ (d.R.A.chart j).target) :
@@ -55,15 +55,13 @@ theorem locDens_resPot_interp (d : HSMDatum D Ω κ) {m₁ : ConeMetric ℂ (Ix 
   exact Finset.sum_congr rfl fun i _ => by rw [hR i]
 
 /- English proof (translation)
-Establish `hg : Continuous (fun y => logRatio d.m m₁ (resPt d y))` using `continuous_logRatio_resPt d d.smooth hm₁`. Establish `hΦ : ∀ (i : ℕ) (k : Fin D), IsPotential d.R.A (if k.val < i then resPot d m₁ else resPot d d.m)`. Introduce `i k`. Use `split_ifs`. Conclude with `isPotential_resPot d hm₁`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Conclude with `isPotential_resPot d d.smooth`. Unfold `mInt`. Distinguish the cases in `hP : Nonempty (ChartPartition d.R.A)`. Simplify using `only [dif_pos hP]`. Unfold `integralWith`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hint : ∀ i ∈ Finset.range (D + 1), Integrable (fun y => (D.choose i : ℝ) * t ^ i * (1 - t) ^ (D - i) * (hP.some.χ j ((d.R.A.chart j).symm y) * logRatio d.m m₁ (resPt d ((d.R.A.chart j).symm y)) * locDens d.R.A (fun k : Fin D => if k.val < i then resPot d m₁ else resPot d d.m) j y …` using `fun i _ => (integrableOn_weight d.R.A hP.some _ _ (mIntegrableCont d.R.A _ (hΦ i) _ hg) j).const_mul _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `setIntegral_congr_fun (d.R.A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[locDens_resPot_interp d hm₁ t j hy, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `_ = _ := by`. Rewrite using `[integral_finsetSum _ hint]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`. Simplify using `only [dif_neg hP, mul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_resPot_interp (d : HSMDatum D Ω κ) {m₁ : ConeMetric ℂ (Ix κ)} (hm₁ : IsSmoothMetric m₁)
     (t : ℝ) :
@@ -108,9 +106,9 @@ theorem mInt_resPot_interp (d : HSMDatum D Ω κ) {m₁ : ConeMetric ℂ (Ix κ)
 namespace ResolutionInterpIntegral
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ d m₁ hm₁`. Unfold `resMetricInt`. Simplify using `only [mInt_resPot_interp d hm₁]`. Rewrite using `[intervalIntegral.integral_finsetSum fun i _ => (Continuous.intervalIntegrable (by fun_prop) _ _)]`. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[intervalIntegral.integral_mul_const, ReciprocityTheory.GeometryOfNumbersTheory.integral_bernstein D i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))]`. Establish `hD : (D : ℝ) + 1 ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem proof : ResolutionInterpIntegral.Statement := by
   intro D Ω _ _ κ _ d m₁ hm₁

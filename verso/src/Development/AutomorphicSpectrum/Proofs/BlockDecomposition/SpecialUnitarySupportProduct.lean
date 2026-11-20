@@ -17,9 +17,9 @@ section Ring
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `e : trunc c A * trunc d A = 1 + (c + d) • (A - 1) + (c * d) • ((A - 1) * (A - 1))`. Unfold `trunc`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, add_smul, smul_add]`. Rewrite using `[mul_comm d c]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e, h, zero_smul, add_zero, hA]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem trunc_mul_trunc {c d : R} (h : c * d = 0) {A : Matrix n n R} (hA : (c + d) • (A - 1) = A - 1) :
     trunc c A * trunc d A = A := by
@@ -39,9 +39,9 @@ section Idem
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `adele_ext (funext fun w => ?_) (finAdele_ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `fstA F a w * fstA F a w = fstA F a w`. Distinguish the cases in `h : w ∈ S₁`. Rewrite using `[ha.1 w h, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha.2.1 w h, zero_mul]`. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `h : v ∈ S₂`. Rewrite using `[ha.2.2.1 v h, one_mul]`. Rewrite using `[ha.2.2.2 v h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_self {S₁ : Finset (InfinitePlace F)} {S₂ : Finset (HeightOneSpectrum (𝓞 F))} {a : AF F}
     (ha : IsPlacesIdem S₁ S₂ a) : a * a = a := by
@@ -57,9 +57,9 @@ theorem idem_self {S₁ : Finset (InfinitePlace F)} {S₂ : Finset (HeightOneSpe
     · rw [ha.2.2.2 v h, zero_mul]
 
 /- English proof (translation)
-Use `adele_ext (funext fun w => ?_) (finAdele_ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`. Express the relevant statement in the definitionally equal form `fstA F a w * fstA F b w = 0`. Distinguish the cases in `h : w ∈ A₁`. Rewrite using `[hb.2.1 w (Finset.disjoint_left.1 h₁ h), mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha.2.1 w h, zero_mul]`. Rewrite using `[map_mul, map_mul, map_zero, map_zero]`. Distinguish the cases in `h : v ∈ A₂`. Rewrite using `[hb.2.2.2 v (Finset.disjoint_left.1 h₂ h), mul_zero]`. Rewrite using `[ha.2.2.2 v h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_orth {A₁ B₁ : Finset (InfinitePlace F)} {A₂ B₂ : Finset (HeightOneSpectrum (𝓞 F))} {a b : AF F}
     (ha : IsPlacesIdem A₁ A₂ a) (hb : IsPlacesIdem B₁ B₂ b) (h₁ : Disjoint A₁ B₁) (h₂ : Disjoint A₂ B₂) :
@@ -76,11 +76,11 @@ theorem idem_orth {A₁ B₁ : Finset (InfinitePlace F)} {A₂ B₂ : Finset (He
     · rw [ha.2.2.2 v h, zero_mul]
 
 /- English proof (translation)
-Use `adele_ext (funext fun w => ?_) (finAdele_ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_add]`. Express the relevant statement in the definitionally equal form `fstA F δ w = fstA F a w + fstA F b w`. Distinguish the cases in `h : w ∈ A₁`. Rewrite using `[hδ.1 w (Finset.mem_union_left _ h), ha.1 w h, hb.2.1 w (Finset.disjoint_left.1 h₁ h), add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h' : w ∈ B₁`. Rewrite using `[hδ.1 w (Finset.mem_union_right _ h'), ha.2.1 w h, hb.1 w h', zero_add]`. Rewrite using `[hδ.2.1 w (by simp [h, h']), ha.2.1 w h, hb.2.1 w h', add_zero]`. Rewrite using `[map_add, map_add]`. Distinguish the cases in `h : v ∈ A₂`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hδ.2.2.1 v (Finset.mem_union_left _ h), ha.2.2.1 v h, hb.2.2.2 v (Finset.disjoint_left.1 h₂ h), add_zero]`. Distinguish the cases in `h' : v ∈ B₂`. Rewrite using `[hδ.2.2.1 v (Finset.mem_union_right _ h'), ha.2.2.2 v h, hb.2.2.1 v h', zero_add]`. Rewrite using `[hδ.2.2.2 v (by simp [h, h']), ha.2.2.2 v h, hb.2.2.2 v h', add_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_eq_add [DecidableEq (InfinitePlace F)] [DecidableEq (HeightOneSpectrum (𝓞 F))]
     {A₁ B₁ : Finset (InfinitePlace F)} {A₂ B₂ : Finset (HeightOneSpectrum (𝓞 F))} {a b δ : AF F}
@@ -102,7 +102,7 @@ theorem idem_eq_add [DecidableEq (InfinitePlace F)] [DecidableEq (HeightOneSpect
       · rw [hδ.2.2.2 v (by simp [h, h']), ha.2.2.2 v h, hb.2.2.2 v h', add_zero]
 
 /- English proof (translation)
-Use `adele_ext (funext fun w => ?_) (finAdele_ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `ha.2.1 w (Finset.notMem_empty w)`. Rewrite using `[map_zero, map_zero]`. Conclude with `ha.2.2.2 v (Finset.notMem_empty v)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_empty {a : AF F} (ha : IsPlacesIdem (∅ : Finset (InfinitePlace F))
     (∅ : Finset (HeightOneSpectrum (𝓞 F))) a) : a = 0 := by
@@ -119,9 +119,9 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Establish `ha' : algebraMap (AF F) (AF F ⊗[F] E) a * algebraMap (AF F) (AF F ⊗[F] E) a = algebraMap (AF F) (AF F ⊗[F] E) a` using `by rw [← map_mul, ha]`. Establish `hb' : algebraMap (AF F) (AF F ⊗[F] E) b * algebraMap (AF F) (AF F ⊗[F] E) b = algebraMap (AF F) (AF F ⊗[F] E) b` using `by rw [← map_mul, hb]`. Use `⟨truncHA σ J ha' g, truncHA_mem σ J ha' hg.1, truncHA σ J hb' g, truncHA_mem σ J hb' hg.1, ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `(trunc_mul_trunc (c := algebraMap (AF F) (AF F ⊗[F] E) a) (d := algebraMap (AF F) (AF F ⊗[F] E) b) (by rw [← map_mul, hab, map_zero]) ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Use `hg.2 i j` as an intermediate fact. Rewrite `this` using `[map_add]`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_split (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) {a b : AF F}
     (ha : a * a = a) (hb : b * b = b) (hab : a * b = 0) {g : HA (AF F) σ J} (hg : g ∈ SUSupp σ J (a + b)) :
@@ -141,7 +141,7 @@ theorem supp_split (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
   exact this
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite `hg` using `[idem_eq_add ha hb h₁ h₂ hδ]`. Take `⟨x, hx, y, hy, rfl⟩` from `supp_split σ J (idem_self ha) (idem_self hb) (idem_orth ha hb h₁ h₂) hg`. Conclude with `N.mul_mem (hNa hx) (hNb hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem supp_le_of_disjoint [DecidableEq (InfinitePlace F)] [DecidableEq (HeightOneSpectrum (𝓞 F))]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (N : Subgroup (HA (AF F) σ J))
@@ -155,9 +155,9 @@ theorem supp_le_of_disjoint [DecidableEq (InfinitePlace F)] [DecidableEq (Height
   exact N.mul_mem (hNa hx) (hNb hy)
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h : g = 1`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use extensionality with `i j`. Use `hg.2 i j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[map_zero, zero_mul]`. Conclude with `(sub_eq_zero.1 this.symm)`. Rewrite using `[h]`. Conclude with `N.one_mem`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_zero_le (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (N : Subgroup (HA (AF F) σ J)) :
     SUSupp σ J (0 : AF F) ⊆ N := by
@@ -172,17 +172,15 @@ theorem supp_zero_le (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) 
   exact N.one_mem
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J N T₁ T₂ δ hδ h₁ h₂`. Establish `base : ∀ (S : Finset (HeightOneSpectrum (𝓞 F))), (∀ v ∈ S, ∀ e : AF F, IsPlacesIdem ∅ {v} e → SUSupp σ J e ⊆ N) → ∀ d : AF F, IsPlacesIdem ∅ S d → SUSupp σ J d ⊆ N`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_ d hd`. Rewrite using `[idem_empty hd]`. Conclude with `supp_zero_le σ J N`. Consider the case `insert v s hv ih`. Introduce `hS d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `StrongApprox.exists_isPlacesIdem (F := F) ∅ {v}`. Take `⟨d', hd'⟩` from `StrongApprox.exists_isPlacesIdem (F := F) ∅ s`. Use `supp_le_of_disjoint σ J N he hd' (Finset.disjoint_empty_left _) (Finset.disjoint_singleton_left.2 hv) ?_ (hS v (Finset.mem_insert_self v s) e he) (ih (fun u hu => hS u (Finset.mem_insert_of_mem hu)) d' hd')` and prove the remaining obligations. Rewrite using `[Finset.empty_union, ← Finset.insert_eq]` and apply the resulting hypothesis. Establish `main : ∀ (S : Finset (InfinitePlace F)), (∀ w ∈ S, ∀ e : AF F, IsPlacesIdem {w} ∅ e → SUSupp σ J e ⊆ N) → ∀ d : AF F, IsPlacesIdem S T₂ d → SUSupp σ J d ⊆ N`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `_ d hd`. Conclude with `base T₂ h₂ d hd`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `insert w s hw ih`. Introduce `hS d hd`. Take `⟨e, he⟩` from `StrongApprox.exists_isPlacesIdem (F := F) {w} ∅`. Take `⟨d', hd'⟩` from `StrongApprox.exists_isPlacesIdem (F := F) s T₂`. Use `supp_le_of_disjoint σ J N he hd' (Finset.disjoint_singleton_left.2 hw) (Finset.disjoint_empty_left _) ?_ (hS w (Finset.mem_insert_self w s) e he) (ih (fun u hu => hS u (Finset.mem_insert_of_mem hu)) d' hd')` and prove the remaining obligations.
-
-Rewrite using `[Finset.empty_union, ← Finset.insert_eq]` and apply the resulting hypothesis. Conclude with `main T₁ h₁ δ hδ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem supp_le_of_single : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (N : Subgroup (HA (AF F) σ J))

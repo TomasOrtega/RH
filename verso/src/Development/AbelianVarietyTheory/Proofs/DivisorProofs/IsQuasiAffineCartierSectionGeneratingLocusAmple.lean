@@ -14,14 +14,14 @@ open GlobalTheory.Cartier.CartierDiv
 variable {Y : Scheme.{0}} [IsIntegral Y] {y : Y}
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hf`. Conclude with `⟨a ^ n, map_pow _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem regAt_pow {f : Y.functionField} (hf : RegAt y f) (n : ℕ) : RegAt y (f ^ n) := by
   obtain ⟨a, rfl⟩ := hf
   exact ⟨a ^ n, map_pow _ _ _⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hf`. Use `⟨fun ⟨b, hb, e⟩ => ?_, fun ⟨b, hb, e⟩ => ⟨b ^ n, hb.pow n, by rw [map_pow, e]⟩⟩` and prove the remaining obligations. Rewrite `e` using `[← map_pow]`. Take `rfl` from `IsFractionRing.injective (Y.presheaf.stalk y) Y.functionField e`. Conclude with `⟨a, (isUnit_pow_iff hn).1 hb, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitAt_pow_iff {f : Y.functionField} (hf : RegAt y f) {n : ℕ} (hn : n ≠ 0) :
     UnitAt y (f ^ n) ↔ UnitAt y f := by
@@ -32,13 +32,13 @@ theorem unitAt_pow_iff {f : Y.functionField} (hf : RegAt y f) {n : ℕ} (hn : n 
   exact ⟨a, (isUnit_pow_iff hn).1 hb, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv]`. Conclude with `hf.mul hg.inv.regAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_div {f g : Y.functionField} (hf : RegAt y f) (hg : UnitAt y g) : RegAt y (f / g) := by
   rw [div_eq_mul_inv]; exact hf.mul hg.inv.regAt
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => by rw [div_eq_mul_inv]; exact h.mul hg.inv⟩` and prove the remaining obligations. Use `h.mul hg` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ hg.ne_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unitAt_div_iff {f g : Y.functionField} (hg : UnitAt y g) : UnitAt y (f / g) ↔ UnitAt y f := by
   refine ⟨fun h => ?_, fun h => by rw [div_eq_mul_inv]; exact h.mul hg.inv⟩
@@ -46,54 +46,50 @@ theorem unitAt_div_iff {f g : Y.functionField} (hg : UnitAt y g) : UnitAt y (f /
   rwa [div_mul_cancel₀ _ hg.ne_zero] at this
 
 /- English proof (translation)
-Rewrite using `[mul_pow, mul_pow, ← pow_mul, ← pow_mul, mul_comm m n, mul_div_mul_right _ _ (pow_ne_zero _ hc)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_div_pow_eqn {K : Type} [Field K] (a b c : K) (hc : c ≠ 0) (m n : ℕ) :
     (a * c ^ m) ^ n / (b * c ^ n) ^ m = a ^ n / b ^ m := by
   rw [mul_pow, mul_pow, ← pow_mul, ← pow_mul, mul_comm m n, mul_div_mul_right _ _ (pow_ne_zero _ hc)]
 
 /- English proof (translation)
-Introduce `Y _ _ _ D hD k hk s hs V hV`. Establish `memV : ∀ y, y ∈ V ↔ (k • D).GeneratesAt y s` using `fun y => by`. Rewrite using `[← SetLike.mem_coe, hV]`. Both sides reduce to the same expression. Establish `loc : ∀ (y : Y) (e : Y.functionFieldˣ), D.IsEqn y e → RegAt y (s * (e : Y.functionField) ^ k) ∧ (y ∈ V ↔ UnitAt y (s * (e : Y.functionField) ^ k))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `y e he`. Establish `h` using `he.nsmul k`. Establish `h1` using `h.regularAt_iff.1 (hs y)`. Establish `h2` using `(memV y).trans h.generatesAt_iff`. Rewrite `h1`, `h2` using `[Units.val_pow_eq_pow_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨h1, h2⟩`. Establish `stepC : ∀ k', 1 ≤ k' → ∀ u ∈ Sec D k', ∀ U : Y.Opens, IsAffineOpen U → (U : Set Y) = locus D k' u → IsAffineOpen (V ⊓ U)`. Introduce `k' hk' u hu U hUa hUl`. Establish `memU : ∀ y, y ∈ U ↔ (k' • D).GeneratesAt y u` using `fun y => by`. Rewrite using `[← SetLike.mem_coe, hUl]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `locU : ∀ (y : Y) (e : Y.functionFieldˣ), D.IsEqn y e → (y ∈ U ↔ UnitAt y (u * (e : Y.functionField) ^ k'))`. Introduce `y e he`. Establish `h` using `he.nsmul k'`. Establish `h2` using `(memU y).trans h.generatesAt_iff`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Units.val_pow_eq_pow_val]`. Conclude with `h2`. Distinguish the cases in `hg : genericPoint Y ∈ U`. Use `swap`. Establish `: U = ⊥` using `eq_bot_iff.2 fun y hy => (hg (gen_mem hy)).elim`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, inf_bot_eq]`. Conclude with `isAffineOpen_bot Y`. Establish `hreg : ∀ y ∈ U, RegAt y (s ^ k' / u ^ k)`. Introduce `y hy`. Take `⟨e, he⟩` from `D.exists_isEqn y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hB` using `(locU y e he).1 hy`. Rewrite using `[← pow_div_pow_eqn s u _ e.ne_zero k k']`. Conclude with `regAt_div (regAt_pow (loc y e he).1 _) ((unitAt_pow_iff hB.regAt (by omega)).2 hB)`. Take `⟨a, ha⟩` from `exists_fnOf_eq hg hreg`. Establish `e₁ : V ⊓ U = Y.basicOpen a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `y`. Use `⟨fun ⟨hyV, hyU⟩ => ?_, fun hy => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `D.exists_isEqn y`. Establish `hB` using `(locU y e he).1 hyU`. Use `(unitAt_fnOf_iff hyU hg a).1 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ha, ← pow_div_pow_eqn s u _ e.ne_zero k k', unitAt_div_iff ((unitAt_pow_iff hB.regAt (by omega)).2 hB), unitAt_pow_iff (loc y e he).1 (by omega)]`. Conclude with `(loc y e he).2.1 hyV`. Establish `hyU : y ∈ U` using `Y.basicOpen_le a hy`. Take `⟨e, he⟩` from `D.exists_isEqn y`. Establish `hB` using `(locU y e he).1 hyU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(unitAt_fnOf_iff hyU hg a).2 hy`. Rewrite `h` using `[ha, ← pow_div_pow_eqn s u _ e.ne_zero k k', unitAt_div_iff ((unitAt_pow_iff hB.regAt (by omega)).2 hB), unitAt_pow_iff (loc y e he).1 (by omega)]`. Conclude with `⟨(loc y e he).2.2 h, hyU⟩`. Rewrite using `[e₁]`. Conclude with `hUa.basicOpen a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: CompactSpace V` using `by choose kk hkk u hu U hUa hUl hxU using hD`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y => (U y : Set Y)) (fun y => (U y).isOpen) (fun y _ => Set.mem_iUnion.2 ⟨y, hxU y⟩)`. Establish `e : (V : Set Y) = ⋃ y ∈ t, ((V ⊓ U y : Y.Opens) : Set Y)`. Use `Set.Subset.antisymm (fun z hz => ?_) (Set.iUnion₂_subset fun y _ => fun z hz => hz.1)` and prove the remaining obligations. Take `⟨y, hy, hzy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ z))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mem_iUnion₂.2 ⟨y, hy, hz, hzy⟩`. Establish `hc : IsCompact (V : Set Y)` using `e ▸ t.isCompact_biUnion fun y _ => (stepC (kk y) (hkk y) (u y) (hu y) (U y) (hUa y) (hUl y)).isCompact`. Conclude with `isCompact_iff_compactSpace.mp hc`. Establish `: CompactSpace V.toScheme` using `inferInstanceAs (CompactSpace V)`. Use `Scheme.IsQuasiAffine.of_forall_exists_mem_basicOpen _ fun x => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k', hk', u, hu, U, hUa, hUl, hxU⟩` from `hD x.1`. Establish `memU : ∀ y, y ∈ U ↔ (k' • D).GeneratesAt y u` using `fun y => by`. Rewrite using `[← SetLike.mem_coe, hUl]`. Both sides reduce to the same expression. Establish `locU : ∀ (y : Y) (e : Y.functionFieldˣ), D.IsEqn y e → RegAt y (u * (e : Y.functionField) ^ k') ∧ (y ∈ U ↔ UnitAt y (u * (e : Y.functionField) ^ k'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y e he`. Establish `h` using `he.nsmul k'`. Establish `h1` using `h.regularAt_iff.1 (hu y)`. Establish `h2` using `(memU y).trans h.generatesAt_iff`. Rewrite `h1`, `h2` using `[Units.val_pow_eq_pow_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2⟩`. Establish `hg : genericPoint Y ∈ V` using `gen_mem x.2`. Establish `hreg : ∀ y ∈ V, RegAt y (u ^ k / s ^ k')`. Introduce `y hy`. Take `⟨e, he⟩` from `D.exists_isEqn y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `(loc y e he).2.1 hy`. Rewrite using `[← pow_div_pow_eqn u s _ e.ne_zero k' k]`. Conclude with `regAt_div (regAt_pow (locU y e he).1 _) ((unitAt_pow_iff hA.regAt (by omega)).2 hA)`. Take `⟨a, ha⟩` from `exists_fnOf_eq hg hreg`. Establish `e₁ : Y.basicOpen a = V ⊓ U`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `y`. Use `⟨fun hy => ?_, fun ⟨hyV, hyU⟩ => ?_⟩` and prove the remaining obligations. Establish `hyV : y ∈ V` using `Y.basicOpen_le a hy`. Take `⟨e, he⟩` from `D.exists_isEqn y`. Establish `hA` using `(loc y e he).2.1 hyV`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(unitAt_fnOf_iff hyV hg a).2 hy`. Rewrite `h` using `[ha, ← pow_div_pow_eqn u s _ e.ne_zero k' k, unitAt_div_iff ((unitAt_pow_iff hA.regAt (by omega)).2 hA), unitAt_pow_iff (locU y e he).1 (by omega)]`. Conclude with `⟨hyV, (locU y e he).2.2 h⟩`. Take `⟨e, he⟩` from `D.exists_isEqn y`. Establish `hA` using `(loc y e he).2.1 hyV`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `(unitAt_fnOf_iff hyV hg a).1 ?_` and prove the remaining obligations. Rewrite using `[ha, ← pow_div_pow_eqn u s _ e.ne_zero k' k, unitAt_div_iff ((unitAt_pow_iff hA.regAt (by omega)).2 hA), unitAt_pow_iff (locU y e he).1 (by omega)]`. Conclude with `(locU y e he).2.1 hyU`. Establish `him` using `Scheme.Opens.ι_image_basicOpen_topIso_inv (U := V) a`. Rewrite `him` using `[e₁]`.
-
-Use `⟨V.topIso.inv a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← V.ι.isAffineOpen_iff_of_isOpenImmersion, him]`. Conclude with `stepC k' hk' u hu U hUa hUl`. Establish `hm : V.ι x ∈ V.ι ''ᵁ V.toScheme.basicOpen (V.topIso.inv a)`. Rewrite using `[him]`.
-
-Conclude with `⟨x.2, hxU⟩`. Take `⟨z, hz, hzx⟩` from `hm`. Rewrite `hz` using `[V.ι.isOpenEmbedding.injective hzx]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isQuasiAffine_locus : ∀ (Y : Scheme.{0}) [IsIntegral Y] [CompactSpace Y] [QuasiSeparatedSpace Y]
     (D : CartierDiv Y), AmpleDiv D → ∀ (k : ℕ), 1 ≤ k → ∀ s ∈ Sec D k, ∀ V : Y.Opens,

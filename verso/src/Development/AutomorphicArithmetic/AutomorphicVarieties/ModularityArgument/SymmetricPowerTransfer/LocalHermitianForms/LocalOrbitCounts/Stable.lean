@@ -24,51 +24,47 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Unfold `Stable`. Introduce `O K _ _ _ _ _ Δ τ hL c d m hD hev j hj χ hχ a ha`. Establish `hreg` using `hD.reg`. Establish `hc` using `hD.c_ne`. Establish `h2K : (2 : K) ≠ 0`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hL.two.map (algebraMap O K)`. Rewrite `h` using `[map_ofNat]`. Conclude with `h.ne_zero`. Establish `hshift : ∀ (f : Kˣ → ℂ), (∀ t ∈ NE τ, ∀ x : Kˣ, f (t * x) = f x) → ∀ g : Kˣ, (∀ k : Kˣ, lcount O c d ((k : K) • m) = f (k * g)) → stabSum O c d m = ∑ᶠ t : Kˣ ⧸ NE τ, f (Quotient.out t)`. Introduce `f hf g hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `stabSum`. Rewrite using `[finsum_congr (fun t => hk _)]`. Conclude with `(sumShift O K Δ τ hL hreg f hf g).1`. Distinguish the cases in `hτ : τ ∈ (algebraMap O K).range`. Use `swap`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : ∀ t : Kˣ, lcount O c d ((t : K) • m) = 0`. Introduce `t`. Assume the negation of the conclusion as `hne`. Conclude with `hτ (vanish O K Δ τ hL c d _ (datSmul K Δ τ c d m hD t) hne).1`. Establish `hg : gOrb O j χ a = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hτ (gVanish O K Δ τ hL j hj χ a (Or.inl ha) hne)`. Rewrite using `[hg]`. Unfold `stabSum`. Simplify using `only [h0, finsum_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ₀, hτ₀⟩` from `hτ`. Take `⟨z, hz⟩` from `exists_unit_one_add_generator hreg`. Break down `tri hL τ₀ with ⟨hm, hu⟩ | ⟨hm, hu⟩ | ⟨hu1, hu2⟩` into its components or cases. Establish `hx : (2 + τ₀) - 2 ^ 2 ∈ IsLocalRing.maximalIdeal O`. Establish `e : (2 + τ₀) - 2 ^ 2 = τ₀ - 2` using `by ring`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hm`. Take `⟨r, hr2, hrm⟩` from `sqrtO O K Δ hL (2 + τ₀) 2 hL.two hx`. Establish `hrK : (algebraMap O K) r ^ 2 = 2 + τ`. Rewrite using `[← map_pow, hr2, map_add, map_ofNat, hτ₀]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlam : QuadraticAlgebra.norm ((algebraMap K (Lsq K Δ)) ((algebraMap O K) r)) = 2 + τ`. Rewrite using `[QuadraticAlgebra.norm_algebraMap, hrK]`. Establish `hD0` using `datLam K Δ τ c hreg hc _ hlam z hz`. Take `⟨m', hm', hmove⟩` from `dat_move hL hD hD0.d_norm`. Take `⟨t₁, rfl⟩` from `datForm O K Δ τ hL c _ hlam z hz m' hm'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hP` using `caseP O K Δ τ hL hreg r hrm hrK c hev j χ hj hχ a ha z hz`. Set `f : Kˣ → ℂ` to `fun y => lcount O c (dLam ((algebraMap K (Lsq K Δ)) ((algebraMap O K) r)) z) ((y : K) • 1)`. Establish `hf : ∀ t ∈ NE τ, ∀ x : Kˣ, f (t * x) = f x` using `fun t ht x => lcount_inv hL hD0 t ht x`. Establish `hk : ∀ k : Kˣ, lcount O c d ((k : K) • m) = f (k * t₁)`. Introduce `k`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hmove, smul_smul]`. Both sides reduce to the same expression. Rewrite using `[hshift f hf t₁ hk]`. Establish `hc2 : -2 * c ≠ 0` using `mul_ne_zero (neg_ne_zero.mpr h2K) hc`. Conclude with `((sumShift O K Δ τ hL hreg f hf 1).2.2 _ _ hP ⟨Units.mk0 _ hc2, by rw [Units.val_mk0]⟩).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hevc : EvenVal O c`. Apply `EvenVal.of_mul_unit hu` to reduce the goal to its premises. Rewrite using `[map_sub, map_ofNat, hτ₀]`. Conclude with `hev`. Establish `hm2 : τ₀ - 2 * (((-1 : ℤˣ) : ℤ) : O) ∈ IsLocalRing.maximalIdeal O`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `e : τ₀ - 2 * (((-1 : ℤˣ) : ℤ) : O) = τ₀ + 2` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `hm`. Take `⟨x, y, _, hsq, hn⟩` from `rootEx O K Δ τ hL τ₀ (-1) hτ₀ hm2`. Use `set u : Etau K τ := { re := (algebraMap O K) x, im := (algebraMap O K) y } with hu_def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu2' : u ^ 2 = -ω`. Rewrite using `[hsq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ν, hνI, hνN⟩` from `normEx O K Δ hL (-1)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hνN' : QuadraticAlgebra.norm ν = -1`. Rewrite using `[hνN]`. Simplify using the standard rewrite rules. Take `⟨ε, s, hs0, hΔ⟩` from `hL.even`. Establish `hΔ' : Δ * (s⁻¹) ^ 2 = (algebraMap O K) ↑ε`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΔ]`. Clear the denominators using the available nonvanishing facts. Take `⟨hdn, hform⟩` from `datFormM O K Δ τ hL c u hu2' hn ν hνN' s⁻¹ (inv_ne_zero hs0)`. Take `⟨m', hm'', hmove⟩` from `dat_move hL hD hdn`. Take `⟨t₁, rfl⟩` from `hform m' hm''`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hM` using `caseM O K Δ τ hL hreg τ₀ hτ₀ hm c hevc u hu2' hn ν hνI hνN' s⁻¹ ε hΔ'`. Set `g : Kˣ` to `t₁ * Units.mk0 _ hreg`. Set `f : Kˣ → ℂ` to `fun y => pcount O τ (y : K)`. Establish `hf : ∀ t ∈ NE τ, ∀ x : Kˣ, f (t * x) = f x`. Introduce `t ht x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [f, Units.val_mul]`. Conclude with `pNorm O K Δ τ hL t ht x`. Establish `hk : ∀ k : Kˣ, lcount O c d ((k : K) • m) = f (k * g)`. Introduce `k`. Rewrite using `[hmove, ← smul_assoc, smul_smul, ← Units.val_mul, hM]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f, g, Units.val_mul, Units.val_mk0, mul_assoc]`. Rewrite using `[hshift f hf g hk]`. Conclude with `pStable O K Δ τ hL hreg j χ hj hχ a ha`. Establish `hevc : EvenVal O c`. Apply `EvenVal.of_mul_unit hu2` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_ofNat, hτ₀]`. Conclude with `hev`. Establish `hU : (algebraMap O K) ↑(-(hu1.unit * hu2.unit)) = τ ^ 2 - 4`. Rewrite using `[Units.val_neg, Units.val_mul, IsUnit.unit_spec, IsUnit.unit_spec, map_neg, map_mul, map_add, map_sub, map_ofNat, hτ₀]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨lam, hlamI, hlamN⟩` from `normEx O K Δ hL hu1.unit`. Establish `hlam : QuadraticAlgebra.norm lam = 2 + τ`. Rewrite using `[hlamN, IsUnit.unit_spec, map_add, map_ofNat, hτ₀]`. Establish `hD0` using `datLam K Δ τ c hreg hc lam hlam z hz`. Take `⟨m', hm', hmove⟩` from `dat_move hL hD hD0.d_norm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `⟨t₁, rfl⟩` from `datForm O K Δ τ hL c lam hlam z hz m' hm'`. Establish `hG` using `caseG O K Δ τ hL ⟨_, hU⟩ c hevc lam hlamI hlam z hz`. Establish `hga` using `(gVals O K Δ τ hL hreg ⟨τ₀, hτ₀⟩ j χ hj hχ a ha z hz).2.1 ⟨_, hU⟩`. Set `f : Kˣ → ℂ` to `fun y => lcount O c (dLam lam z) ((y : K) • 1)`. Establish `hf : ∀ t ∈ NE τ, ∀ x : Kˣ, f (t * x) = f x` using `fun t ht x => lcount_inv hL hD0 t ht x`.
-
-Establish `hk : ∀ k : Kˣ, lcount O c d ((k : K) • m) = f (k * t₁)`. Introduce `k`. Rewrite using `[hmove, smul_smul]`. Both sides reduce to the same expression. Rewrite using `[hshift f hf t₁ hk, hga]`.
-
-Establish `h1 : hs (τ ^ 2 - 4) ((1 : Kˣ) : K) = 1`. Rewrite using `[Units.val_one]`. Unfold `hs`. Rewrite using `[if_pos ⟨1, 0, by ring⟩]`. Conclude with `((sumShift O K Δ τ hL hreg f hf 1).2.2 _ _ hG ⟨1, h1⟩).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.stable : UpperTheory.V.Z.Sym.Loc.Stable := by
   unfold Stable

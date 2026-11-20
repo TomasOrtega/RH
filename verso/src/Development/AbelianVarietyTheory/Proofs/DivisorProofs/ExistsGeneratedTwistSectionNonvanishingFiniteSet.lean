@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.TwistMove
 
 /- English proof (translation)
-Take `⟨t₀, ht⟩` from `GlobalTheory.TwistGen.twist_generated F X p H N s hH hs M hM`. Use `⟨t₀.toNat, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨n, u, hu⟩` from `ht m (by omega)`. Establish `hP : (lbPow H m).IsLB` using `DVR.linComb_isLB H hH _ _`. Establish `hT : (CechPic.tens M (lbPow H m)).IsLB` using `isLB_tens hM hP`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : cls (AbLaw.tw M H m) (AbLaw.isLB_tw hM hH _) = cls M hM - cls (AbLaw.pw H (-(m : ℤ))) (AbLaw.isLB_pw hH _)` using `cls_div hM (AbLaw.isLB_pw hH _) (AbLaw.isLB_tw hM hH _)`. Establish `e' : cls (AbLaw.tw M H m) (AbLaw.isLB_tw hM hH _) = cls _ hT`. Rewrite using `[e, GlobalTheory.AmpleStabFinite.cls_pw hH, cls_tens hM hP, cls_lbPow hH, neg_zsmul, natCast_zsmul, sub_neg_eq_add]`. Take `⟨v, hv⟩` from `exists_generating_secs_of_cls_eq _ _ _ _ hT e' _ u hu`. Conclude with `⟨_, v, hv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_generating_secs_tens_lbPow {F : Type} [Field F] {X : Scheme.{0}} (p : X ⟶ Sp F)
     (H : LB X) (N : ℕ) (s : Fin (N + 1) → H.Sec) (hH : H.IsLB) (hs : AbLaw.VeryAmpleBy p H s)
@@ -47,13 +47,13 @@ theorem exists_generating_secs_tens_lbPow {F : Type} [Field F] {X : Scheme.{0}} 
   exact ⟨_, v, hv⟩
 
 /- English proof (translation)
-Introduce `F _ _ X p hp B hB S hS`. Use `haveI : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hp`. Take `⟨N, ι, hι, e⟩` from `hp`. Use `haveI := hι`. Establish `hs` using `ProjSpace.veryAmpleBy_secPull_coord ι`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs` using `[e]`. Establish `hH : ((ProjSpace.O1 F N).pull ι).IsLB` using `pull_isLB (ProjSpace.O1_isLB F N) _`. Take `⟨H, hH, s, hs⟩ : ∃ H : LB X, H.IsLB ∧ ∃ s : Fin (N + 1) → H.Sec, AbLaw.VeryAmpleBy p H s` from `⟨_, hH, _, hs⟩`. Take `⟨m₁, h₁⟩` from `exists_generating_secs_tens_lbPow p H N s hH hs B hB`. Take `⟨m₂, h₂⟩` from `exists_generating_secs_tens_lbPow p H N s hH hs (LB.triv X) (LB.isLB_triv X)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n₁, u₁, hu₁⟩` from `h₁ (max m₁ m₂) (le_max_left _ _)`. Take `⟨n₂, u₂, hu₂⟩` from `h₂ (max m₁ m₂) (le_max_right _ _)`. Establish `hP : (lbPow H (max m₁ m₂)).IsLB` using `DVR.linComb_isLB H hH _ _`. Establish `hT : (CechPic.tens (LB.triv X) (lbPow H (max m₁ m₂))).IsLB` using `isLB_tens (LB.isLB_triv X) hP`. Establish `e₂ : cls _ hT = cls _ hP` using `by rw [cls_tens (LB.isLB_triv X) hP, cls_triv, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `exists_generating_secs_of_cls_eq _ _ _ _ hP e₂ _ u₂ hu₂`. Take `⟨a, ha⟩` from `exists_sec_nonzero_on_finite_of_generated F X p _ hP _ v hv S hS`. Conclude with `⟨_, hP, a, ⟨_, v, hv⟩, ⟨_, u₁, hu₁⟩, ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_twist_generated_sec_nonzero : ∀ (F : Type) [Field F] [Infinite F] (X : Scheme.{0}) (p : X ⟶ Sp F), IsProjOver p → ∀ (B : LB X), B.IsLB → ∀ S : Set X, S.Finite → ∃ (A : LB X) (_ : A.IsLB) (a : A.Sec), (∃ (n : ℕ) (u : Fin n → A.Sec), ⨆ i, nonzeroLocus (u i) = ⊤) ∧ (∃ (n : ℕ) (u : Fin n → (CechPic.tens B A).Sec), ⨆ i, nonzeroLocus (u i) = ⊤) ∧ ∀ z ∈ S, z ∈ nonzeroLocus a := by
   intro F _ _ X p hp B hB S hS

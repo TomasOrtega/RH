@@ -13,9 +13,9 @@ namespace GlobalTheory.ArchUniq.SchrTransport
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Set `C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)` to `ContinuousLinearEquiv.ofFinrankEq (hn.trans (finrank_euclideanSpace_fin).symm)`. Establish `hdim : Module.finrank ℝ (V × V) = Module.finrank ℝ (Fin n ⊕ Fin n → ℝ)`. Simplify using `[Module.finrank_prod, hn]`. Set `φ : (V × V) ≃ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)` to `LinearMap.linearEquivOfInjective (pairCoordsL C hP) (pairCoordsL_injective C hP) hdim`. Establish `hφ : ∀ v, φ v = pairCoordsL C hP v` using `fun v => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨C, φ, fun v => ?_, fun v y => ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[hφ, pPart, pairCoordsL]`. Rewrite using `[pair_expand C hP y v.2]`. Simplify using `[hφ, qPart, pairCoordsL, PiLp.inner_apply, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coords (P : V → V → ℝ) (hP : IsPairing P) [FiniteDimensional ℝ V] (n : ℕ) (hn : Module.finrank ℝ V = n) :
     ∃ (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)) (φ : (V × V) ≃ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)),
@@ -33,9 +33,9 @@ theorem coords (P : V → V → ℝ) (hP : IsPairing P) [FiniteDimensional ℝ V
     simp [hφ, qPart, pairCoordsL, PiLp.inner_apply, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `h2 : ⟪pPart (φ v), qPart (φ v)⟫ = -P v.1 v.2` using `by rw [hp, real_inner_comm, hq]`. Establish `h3 : ⟪C v.1, qPart (φ v)⟫ = -P v.1 v.2` using `by rw [real_inner_comm, hq]`. Simplify using `only [schrF, rhoFun, phase, Function.comp_apply, map_add, hp, hq, h3]`. Use `congr 2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_coords {n : ℕ} (P : V → V → ℝ) (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n))
     (φ : (V × V) ≃ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)) (hp : ∀ v, pPart (φ v) = C v.1)
@@ -50,7 +50,7 @@ theorem schr_coords {n : ℕ} (P : V → V → ℝ) (C : V ≃L[ℝ] EuclideanSp
   ring
 
 /- English proof (translation)
-Establish `hd : HasFDerivAt (⇑h ∘ ⇑C) ((fderiv ℝ (⇑h) (C y)).comp (C : V →L[ℝ] EuclideanSpace ℝ (Fin n))) y` using `(h.hasFDerivAt (C y)).comp y C.hasFDerivAt`. Rewrite using `[dRho_apply, hg, hd.fderiv, hp, hq]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dRho_coords {n : ℕ} (P : V → V → ℝ) (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n))
     (φ : (V × V) ≃ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)) (hp : ∀ v, pPart (φ v) = C v.1)
@@ -64,9 +64,9 @@ theorem dRho_coords {n : ℕ} (P : V → V → ℝ) (C : V ≃L[ℝ] EuclideanSp
   ring
 
 /- English proof (translation)
-Rewrite using `[quad, Fintype.sum_prod_type, Finset.smul_sum]`. Simplify using `only [smul_add, Finset.sum_add_distrib, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm (f := fun a b => (4 * Real.pi * Complex.I : ℂ)⁻¹ • (((X * Matrix.J l ℝ) a b / 2 : ℝ) : ℂ) • (dRho (Pi.single b 1) * dRho (Pi.single a 1))), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [smul_smul]`. Rewrite using `[← add_smul]`. Use `congr 1`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -88,9 +88,9 @@ theorem quad_eq_sum {l : Type} [Fintype l] [DecidableEq l] (X : Matrix (l ⊕ l)
   ring
 
 /- English proof (translation)
-Set `e : V ≃ᵐ EuclideanSpace ℝ (Fin n)` to `C.toHomeomorph.toMeasurableEquiv`. Establish `he : ∀ y, e y = C y` using `fun y => rfl`. Use `haveI : (μ.map e).IsAddHaarMeasure := C.isAddHaarMeasure_map μ`. Establish `hk` using `Measure.isAddLeftInvariant_eq_smul (μ.map e) (volume : Measure (EuclideanSpace ℝ (Fin n)))`. Use `⟨(Measure.addHaarScalarFactor (μ.map e) volume : ℝ), NNReal.coe_pos.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _), fun F => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ∫ y, F y ∂μ = ∫ x, F (C.symm x) ∂(μ.map e)`. Rewrite using `[integral_map_equiv]`. Simplify using `[he]`. Rewrite using `[h1, congrArg (fun m => ∫ x, F (C.symm x) ∂m) hk]`. Simplify using `only [integral_smul_nnreal_measure, NNReal.smul_def, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem haar_coords {n : ℕ} [MeasurableSpace V] [BorelSpace V] [FiniteDimensional ℝ V] (μ : Measure V) [μ.IsAddHaarMeasure]
     (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)) :
@@ -108,33 +108,31 @@ theorem haar_coords {n : ℕ} [MeasurableSpace V] [BorelSpace V] [FiniteDimensio
   simp only [integral_smul_nnreal_measure, NNReal.smul_def, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ hμ P hP n hn H A T hAc hTadd hT0 hTi hTl2 hTc`. Take `⟨C, φ, hp, hq⟩` from `coords P hP n hn`. Establish `hS` using `schr_coords P C φ hp hq`. Set `toE : 𝓢(V, ℂ) →L[ℂ] Sch (Fin n)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) C.symm`. Set `toV : Sch (Fin n) →L[ℂ] 𝓢(V, ℂ)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `htoE : ∀ g, ⇑(toE g) = ⇑g ∘ ⇑C.symm` using `fun g => rfl`. Establish `htoV : ∀ h, ⇑(toV h) = ⇑h ∘ ⇑C` using `fun h => rfl`. Establish `hVE : ∀ g, toV (toE g) = g` using `fun g => by ext x; simp [htoE, htoV]`. Establish `hEV : ∀ h, toE (toV h) = h` using `fun h => by ext x; simp [htoE, htoV]`. Set `T' : ℝ → Sch (Fin n) →ₗ[ℂ] Sch (Fin n)` to `fun t => toE.toLinearMap ∘ₗ T t ∘ₗ toV.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A' : ℝ → (Fin n ⊕ Fin n → ℝ) →ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)` to `fun t => φ.toLinearMap ∘ₗ A t ∘ₗ φ.symm.toLinearMap`. Establish `hT' : ∀ t h, T' t h = toE (T t (toV h))` using `fun t h => rfl`. Take `⟨k, hk, hint⟩` from `haar_coords μ C`. Establish `c1 : ∀ w, Continuous fun t => A' t w`. Introduce `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(φ.toLinearMap.continuous_of_finiteDimensional).comp (hAc (φ.symm w))`. Establish `c2 : ∀ s t f, T' (s + t) f = T' s (T' t f)`. Introduce `s t h`. Simplify using `only [hT', hVE, hTadd]`. Establish `c3 : ∀ f, T' 0 f = f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Simplify using `[hT', hT0, hEV]`. Establish `c4 : ∀ t w (f f₁ : Sch (Fin n)), ⇑f₁ = rhoFun w ⇑f → ⇑(T' t f₁) = rhoFun (A' t w) ⇑(T' t f)`. Introduce `t w f f₁ hf`. Establish `e1 : ⇑(toV f₁) = schrF P (φ.symm w) ⇑(toV f)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Use `congrFun (hS (φ.symm w) ⇑f) x` as an intermediate fact. Simplify using `only [Function.comp_apply, LinearEquiv.apply_symm_apply] at this`. Simplify using `only [htoV, Function.comp_apply, hf]`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `hTi t _ _ _ e1`. Rewrite using `[hT' t f₁, hT' t f, htoE, htoE, e2]`. Take `⟨G, hG⟩ : ∃ G : EuclideanSpace ℝ (Fin n) → ℂ, ⇑(T t (toV f)) = G ∘ ⇑C` from `⟨⇑(T t (toV f)) ∘ ⇑C.symm, by ext x; simp⟩`. Establish `hGC : (G ∘ ⇑C) ∘ ⇑C.symm = G` using `by funext x; simp`. Rewrite using `[hG, hS, hGC]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `[A']`. Establish `c5 : ∀ t f, ∫ x, ‖T' t f x‖ ^ 2 = ∫ x, ‖f x‖ ^ 2`. Introduce `t h`. Establish `e` using `hTl2 t (toV h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[hint, hint]`. Simplify using `only [htoV, Function.comp_apply, ContinuousLinearEquiv.apply_symm_apply] at e`. Conclude with `mul_left_cancel₀ hk.ne' e`. Establish `c6 : ∀ f y, Continuous fun t => T' t f y`. Introduce `h y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hTc (toV h) (C.symm y)`. Take `⟨X, c, hX⟩` from `H A' T' c1 c2 c3 c4 c5 c6`. Set `eq` to `(Fintype.equivFin ((Fin n ⊕ Fin n) × (Fin n ⊕ Fin n))).symm`. Set `S` to `X * Matrix.J (Fin n) ℝ`. Use `⟨Fintype.card ((Fin n ⊕ Fin n) × (Fin n ⊕ Fin n)), fun i => φ.symm (Pi.single (eq i).1 1), fun i => φ.symm (Pi.single (eq i).2 1), fun i => (4 * Real.pi * Complex.I : ℂ)⁻¹ * (((S (eq i).1 (eq i).2 + S (eq i).2 (eq i).1) / 2 : ℝ) : ℂ), c, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `f g₁ g₂ hg₁ hg₂ y`. Establish `hf : ⇑f = ⇑(toE f) ∘ ⇑C` using `by ext x; simp [htoE]`. Establish `h1 : ∀ i, ⇑(g₁ i) = ⇑(dRho (Pi.single (eq i).2 1) (toE f)) ∘ ⇑C` using `fun i => by`. Use extensionality with `x`. Rewrite using `[hg₁, dRho_coords P C φ hp hq _ f (toE f) hf, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ i, g₂ i y = dRho (Pi.single (eq i).1 1) (dRho (Pi.single (eq i).2 1) (toE f)) (C y)` using `fun i => by`. Rewrite using `[hg₂, dRho_coords P C φ hp hq _ (g₁ i) _ (h1 i), LinearEquiv.apply_symm_apply]`. Establish `hd` using `hX (toE f) (C y)`. Establish `e1 : (fun t => T' t (toE f) (C y)) = fun t => T t f y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `t`. Simplify using `[hT', htoE, hVE]`. Rewrite `hd` using `[e1]`. Use `hd using 1` and compare the differences between its conclusion and the goal. Establish `e2 : toE f (C y) = f y` using `by simp [htoE]`.
-
-Rewrite using `[e2, quad_eq_sum]`. Use `congr 1`. Simplify using `only [h2, ContinuousLinearMap.coe_sum', Finset.sum_apply, SchwartzMap.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, SchwartzMap.smul_apply, ContinuousLinearMap.mul_apply, smul_eq_mul]`. Conclude with `Equiv.sum_comp eq (fun p => (4 * Real.pi * Complex.I : ℂ)⁻¹ * (((S p.1 p.2 + S p.2 p.1) / 2 : ℝ) : ℂ) * dRho (Pi.single p.1 1) (dRho (Pi.single p.2 1) (toE f)) (C y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transport : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V), μ.IsAddHaarMeasure → ∀ (P : V → V → ℝ), IsPairing P → ∀ n : ℕ, Module.finrank ℝ V = n →
     (∀ (A' : ℝ → (Fin n ⊕ Fin n → ℝ) →ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)) (T' : ℝ → Sch (Fin n) →ₗ[ℂ] Sch (Fin n)),

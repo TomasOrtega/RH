@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.BottomIPData
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D _ _ _ _ T Lc _ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W i j A A' WW X hX t`. Conclude with `⟨_, GlobalTheory.BottomRallis.TrivParFun.isParamFun_one_trivPar (GlobalTheory.Grid.neg A) X.rA.Λ _ (GlobalTheory.RowTest.isSelfDualC_neg' hX.is.rigA.1) (fun v _ h2 => GlobalTheory.Core.Rk.IP.Model.isSplit_two v h2)⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isParamFun_one_bottom : GBig fun {D} T Lc _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),
   IsBottomTri W i j X → ∀ t : T, ∃ par : GlobalTheory.LFun.Fam D.host.E, GlobalTheory.LFun.IsParamFun D.sp.cm.sig (GlobalTheory.Grid.neg A).gram X.rA.Λ ((GlobalTheory.BottomIPData.sfB G t : Finset (FinPl D)) : Set (FinPl D)) (fun _ => (1 : ℂ)) par := by

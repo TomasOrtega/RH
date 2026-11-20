@@ -5,11 +5,9 @@ open NumberField IsDedekindDomain
 open scoped Pointwise
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `haveI : CharP (𝓞 L ⧸ v.asIdeal) p := (CharP.charP_iff_prime_eq_zero hp).2 (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Nat.card (𝓞 L ⧸ v.asIdeal) = p`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, hn]`. Use `haveI : Finite (𝓞 L ⧸ v.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hp.ne_zero)`. Establish `hinj : Function.Injective (ZMod.castHom (dvd_refl p) (𝓞 L ⧸ v.asIdeal))` using `(ZMod.castHom (dvd_refl p) _).injective`. Establish `hbij` using `hinj.bijective_of_nat_card_le (by rw [hcard, Nat.card_zmod])`.
-
-Take `⟨k, hk⟩` from `hbij.2 (Ideal.Quotient.mk v.asIdeal x)`. Use `⟨k.val, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, ZMod.castHom_apply, ZMod.natCast_val]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_nat_residue {L : Type} [Field L] [NumberField L] {p : ℕ} (hp : p.Prime)
     (v : HeightOneSpectrum (𝓞 L)) (hv : ((p : ℕ) : 𝓞 L) ∈ v.asIdeal) (hn : Ideal.absNorm v.asIdeal = p)
@@ -29,26 +27,24 @@ private theorem exists_nat_residue {L : Type} [Field L] [NumberField L] {p : ℕ
   rw [← hk, ZMod.castHom_apply, ZMod.natCast_val]
 
 /- English proof (translation)
-The claim follows from `map_natCast (MulSemiringAction.toRingHom (L ≃ₐ[K] L) (𝓞 L) σ) n`.
+A detailed English derivation is pending.
 -/
 private theorem smul_natCast_eq {K L : Type} [Field K] [Field L] [Algebra K L] (σ : L ≃ₐ[K] L) (n : ℕ) :
     σ • (n : 𝓞 L) = n :=
   map_natCast (MulSemiringAction.toRingHom (L ≃ₐ[K] L) (𝓞 L) σ) n
 
 /- English proof (translation)
-Establish `: IsGaloisGroup (L ≃ₐ[K] L) (𝓞 K) (𝓞 L)` using `IsGaloisGroup.of_isFractionRing _ _ _ K L`. Use `haveI := w.isPrime`. Set `Q` to `w.under (𝓞 K)`. Use `haveI := Q.isPrime`. Use `haveI := Q.isMaximal`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : w.asIdeal.LiesOver Q.asIdeal := ⟨rfl⟩`. Establish `hin : σ ∈ w.asIdeal.inertia (L ≃ₐ[K] L)`. Introduce `x`. Take `⟨a, ha⟩` from `exists_nat_residue hp w hv hn x`. Establish `h1 : x - (a : 𝓞 L) ∈ w.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq, ha, map_natCast]`. Establish `h3 : σ • (x - (a : 𝓞 L)) ∈ w.asIdeal`. Rewrite using `[← hσ]`. Conclude with `Ideal.smul_mem_pointwise_smul _ _ _ h1`. Rewrite `h3` using `[smul_sub, smul_natCast_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h4` using `w.asIdeal.sub_mem h3 h1`. Rewrite `h4` using `[sub_sub_sub_cancel_right]`. Conclude with `h4`. Establish `he : w.asIdeal.ramificationIdx (𝓞 K) = 1`. Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx Q.asIdeal w.asIdeal Q.ne_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Ideal.ramificationIdx'_spec` to reduce the goal to its premises. Rewrite using `[pow_one]`. Conclude with `Ideal.map_le_iff_le_comap.2 le_rfl`. Introduce `h`. Apply `h2` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ((p : ℕ) : 𝓞 K) ∈ Q.asIdeal` using `by show ((p : ℕ) : 𝓞 K) ∈ Ideal.under (𝓞 K) w.asIdeal`. Rewrite using `[Ideal.mem_under, map_natCast]`. Conclude with `hv`. Establish `h5` using `h (Ideal.mem_map_of_mem (algebraMap (𝓞 K) (𝓞 L)) h1)`. Rewrite `h5` using `[map_natCast]`. Then use the resulting hypothesis.
-
-Establish `hc : Nat.card (w.asIdeal.inertia (L ≃ₐ[K] L)) = 1`. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn Q.asIdeal w.asIdeal, Ideal.ramificationIdxIn_eq_ramificationIdx Q.asIdeal w.asIdeal (L ≃ₐ[K] L), he]`. Rewrite `hin` using `[Subgroup.card_eq_one.1 hc]`. Conclude with `Subgroup.mem_bot.1 hin`.
+A detailed English derivation is pending.
 -/
 private theorem stab_trivial {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L]
     {p : ℕ} (hp : p.Prime) (w : HeightOneSpectrum (𝓞 L)) (hv : ((p : ℕ) : 𝓞 L) ∈ w.asIdeal)
@@ -89,43 +85,37 @@ private theorem stab_trivial {K L : Type} [Field K] [NumberField K] [Field L] [N
   exact Subgroup.mem_bot.1 hin
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ p hp Q S memS hs ω θ hθ ζ hζ`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `: IsGaloisGroup (L ≃ₐ[K] L) (𝓞 K) (𝓞 L)` using `IsGaloisGroup.of_isFractionRing _ _ _ K L`. Establish `overp : ∀ w ∈ S, ((p : ℕ) : 𝓞 L) ∈ w.asIdeal`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hs w hw).1]`. Conclude with `Ideal.absNorm_mem _`. Break down `S.eq_empty_or_nonempty with hE | ⟨w₀, hw₀⟩` into its components or cases. Rewrite using `[hE, Finset.prod_empty]`. Establish `hres : ∀ w ∈ S, ∃ a : ℕ, Ideal.Quotient.mk w.asIdeal (ζ : 𝓞 L) = (a : 𝓞 L ⧸ w.asIdeal)` using `fun w hw => exists_nat_residue hp w (overp w hw) (hs w hw).1 _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose! a ha using hres`. Establish `hcop : ∀ w ∈ S, (a w).Coprime p`. Introduce `w hw`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp).2 fun hd => ?_)` and prove the remaining obligations. Establish `h0 : ((a w : ℕ) : 𝓞 L ⧸ w.asIdeal) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hd`. Rewrite using `[hc, Nat.cast_mul, ← map_natCast (Ideal.Quotient.mk w.asIdeal) p, Ideal.Quotient.eq_zero_iff_mem.2 (overp w hw), zero_mul]`. Establish `hu : IsUnit (Ideal.Quotient.mk w.asIdeal (ζ : 𝓞 L))` using `ζ.isUnit.map _`. Rewrite `hu` using `[ha w hw, h0]`. Use `haveI : w.asIdeal.IsMaximal := w.isMaximal`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `not_isUnit_zero hu`. Establish `hσ : ∀ w ∈ S, ∃ σ : L ≃ₐ[K] L, σ • w.asIdeal = w₀.asIdeal`. Introduce `w hw`. Use `haveI := w.isPrime`. Use `haveI := w₀.isPrime`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : w.asIdeal.LiesOver Q.asIdeal := ⟨congrArg HeightOneSpectrum.asIdeal ((memS w).1 hw).symm⟩`. Use `haveI : w₀.asIdeal.LiesOver Q.asIdeal := ⟨congrArg HeightOneSpectrum.asIdeal ((memS w₀).1 hw₀).symm⟩`. Conclude with `Ideal.exists_smul_eq_of_isGaloisGroup Q.asIdeal w.asIdeal w₀.asIdeal (L ≃ₐ[K] L)`. Use `choose! σ hσw using hσ`. Establish `hσres : ∀ w ∈ S, Ideal.Quotient.mk w₀.asIdeal (σ w • (ζ : 𝓞 L)) = (a w : 𝓞 L ⧸ w₀.asIdeal)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `h1 : (ζ : 𝓞 L) - (a w : 𝓞 L) ∈ w.asIdeal`. Rewrite using `[← Ideal.Quotient.eq, ha w hw, map_natCast]`. Establish `h2 : σ w • ((ζ : 𝓞 L) - (a w : 𝓞 L)) ∈ w₀.asIdeal`. Rewrite using `[← hσw w hw]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.smul_mem_pointwise_smul _ _ _ h1`. Rewrite `h2` using `[smul_sub, smul_natCast_eq]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk w₀.asIdeal)]`. Conclude with `Ideal.Quotient.eq.2 h2`. Establish `hprod : ∏ w ∈ S, σ w • (ζ : 𝓞 L) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hre : ∏ w ∈ S, σ w • (ζ : 𝓞 L) = ∏ τ : L ≃ₐ[K] L, τ • (ζ : 𝓞 L)`. Use `Finset.prod_bij (fun w _ => σ w) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce `w₁ h₁ w₂ h₂ h'`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[eq_inv_smul_iff.2 (hσw w₁ h₁), eq_inv_smul_iff.2 (hσw w₂ h₂), h']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `τ _ haveI := w₀.isPrime`. Establish `hne : τ⁻¹ • w₀.asIdeal ≠ ⊥`. Introduce `h`. Apply `w₀.ne_bot` to reduce the goal to its premises. Rewrite using `[← smul_inv_smul τ w₀.asIdeal, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Set `w : HeightOneSpectrum (𝓞 L)` to `⟨τ⁻¹ • w₀.asIdeal, inferInstance, hne⟩`. Establish `hw : w ∈ S`. Rewrite using `[memS, ← (memS w₀).1 hw₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Conclude with `Ideal.under_smul (𝓞 K) w₀.asIdeal τ⁻¹`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Establish `h1` using `stab_trivial hp w (overp w hw) (hs w hw).1 (hs w hw).2 (τ⁻¹ * σ w) (by rw [mul_smul, hσw w hw])`. Conclude with `(inv_mul_eq_one.1 h1).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `w hw`. Both sides reduce to the same expression. Rewrite using `[hre]`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h` using `Algebra.norm_eq_prod_automorphisms K ((ζ : 𝓞 L) : L)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hζ, map_one]`. Establish `h' : ∀ τ : L ≃ₐ[K] L, algebraMap (𝓞 L) L (τ • (ζ : 𝓞 L)) = τ ((ζ : 𝓞 L) : L)` using `fun τ => rfl`. Use `show algebraMap (𝓞 L) L (∏ τ : L ≃ₐ[K] L, τ • (ζ : 𝓞 L)) = algebraMap (𝓞 L) L 1`. Rewrite using `[map_prod, map_one]`. Conclude with `(Finset.prod_congr rfl fun τ _ => h' τ).trans h.symm`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : w₀.asIdeal.IsMaximal := w₀.isMaximal`. Use `haveI : CharP (𝓞 L ⧸ w₀.asIdeal) p := (CharP.charP_iff_prime_eq_zero hp).2 (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk w₀.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (overp w₀ hw₀))`. Establish `hmod : ∏ w ∈ S, ((a w : ℕ) : ZMod p) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `(ZMod.castHom (dvd_refl p) (𝓞 L ⧸ w₀.asIdeal)).injective` to reduce the goal to its premises. Rewrite using `[map_prod, map_one]`. Establish `: ∏ w ∈ S, (ZMod.castHom (dvd_refl p) (𝓞 L ⧸ w₀.asIdeal)) ((a w : ℕ) : ZMod p) = ∏ w ∈ S, Ideal.Quotient.mk w₀.asIdeal (σ w • (ζ : 𝓞 L))` using `Finset.prod_congr rfl fun w hw => by rw [map_natCast, hσres w hw]`. Rewrite using `[this, ← map_prod, hprod, map_one]`. Set `u : HeightOneSpectrum (𝓞 L) → (ZMod p)ˣ` to `fun w => if h : (a w).Coprime p then ZMod.unitOfCoprime (a w) h else 1`.
-
-Establish `hval : ∀ w ∈ S, θ w (Units.map (Ideal.Quotient.mk w.asIdeal).toMonoidHom ζ) = ω (u w)`. Introduce `w hw`. Simplify using `only [u, dif_pos (hcop w hw)]`. Take `⟨b, hb, hθb⟩` from `hθ w hw (a w) (hcop w hw)`. Rewrite using `[← hθb]`.
-
-Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hb, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, ha w hw, map_natCast]`. Rewrite using `[Finset.prod_congr rfl hval, ← map_prod]`. Establish `hu1 : ∏ w ∈ S, u w = 1`.
-
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_prod, Units.val_one, ← hmod]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Simplify using `only [u, dif_pos (hcop w hw), ZMod.coe_unitOfCoprime]`. Rewrite using `[hu1, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.prod_residue_char_norm_one_unit_eq_one :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L] (p : ℕ), p.Prime →

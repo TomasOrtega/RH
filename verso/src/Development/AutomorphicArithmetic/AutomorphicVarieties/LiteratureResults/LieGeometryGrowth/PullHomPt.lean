@@ -14,7 +14,7 @@ variable {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommG
 private def tot (W : V → V) (z : V × ℝ) : V := flow W z.2 z.1
 
 /- English proof (translation)
-Establish `h : DifferentiableAt ℝ (fun z : V × ℝ => W z.1) (x, r)` using `DifferentiableAt.comp (x, r) (g := W) (f := Prod.fst) hW differentiableAt_fst`. Conclude with `differentiableAt_fst.add (differentiableAt_snd.smul h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem tot_diff {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (r : ℝ) :
     DifferentiableAt ℝ (tot W) (x, r) := by
@@ -23,7 +23,7 @@ private theorem tot_diff {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (
   exact differentiableAt_fst.add (differentiableAt_snd.smul h)
 
 /- English proof (translation)
-Unfold `tot flow`. Conclude with `contDiffAt_fst.add (contDiffAt_snd.smul (hW.comp (x, r) contDiffAt_fst))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem tot_smooth {W : V → V} {x : V} (hW : ContDiffAt ℝ ∞ W x) (r : ℝ) :
     ContDiffAt ℝ ∞ (tot W) (x, r) := by
@@ -31,7 +31,7 @@ private theorem tot_smooth {W : V → V} {x : V} (hW : ContDiffAt ℝ ∞ W x) (
   exact contDiffAt_fst.add (contDiffAt_snd.smul (hW.comp (x, r) contDiffAt_fst))
 
 /- English proof (translation)
-Establish `h1` using `(tot_diff hW r).hasFDerivAt.comp x (hasFDerivAt_prodMk_left (𝕜 := ℝ) x r)`. Establish `h2 : flow W r = tot W ∘ fun y => (y, r)` using `rfl`. Rewrite using `[h2, h1.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem tot_inl {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (r : ℝ) (v : V) :
     fderiv ℝ (tot W) (x, r) (v, 0) = fderiv ℝ (flow W r) x v := by
@@ -41,7 +41,7 @@ private theorem tot_inl {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (r
   rfl
 
 /- English proof (translation)
-Establish `h1` using `(tot_diff hW r).hasFDerivAt.comp_hasDerivAt r ((hasDerivAt_const r x).prodMk (hasDerivAt_id r))`. Establish `h2 : HasDerivAt (tot W ∘ fun s => (x, s)) ((1 : ℝ) • W x) r` using `((hasDerivAt_id r).smul_const (W x)).const_add x`. Simplify using `using h1.unique h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem tot_inr {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (r : ℝ) :
     fderiv ℝ (tot W) (x, r) (0, 1) = W x := by
@@ -51,7 +51,7 @@ private theorem tot_inr {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (r
   simpa using h1.unique h2
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply, pb_apply, Function.comp_apply, ContinuousLinearMap.inl_apply, tot_inl hW]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem pb_tot {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (r : ℝ) {q : ℕ}
     (w : V → V [⋀^Fin q]→L[ℝ] F) :
@@ -62,9 +62,9 @@ private theorem pb_tot {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (r 
   rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply, ContinuousAlternatingMap.curryLeft_apply_apply, pb_apply, hk_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[tot_inr hW]`. Simplify using `[tot_inl hW]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem hk_tot {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (r : ℝ) {q : ℕ}
     (w : V → V [⋀^Fin (q + 1)]→L[ℝ] F) :
@@ -81,13 +81,11 @@ private theorem hk_tot {W : V → V} {x : V} (hW : DifferentiableAt ℝ W x) (r 
 end
 
 /- English proof (translation)
-Introduce `V F _ _ _ _ _ _ W p t hW`. Establish `hd : DifferentiableAt ℝ W p` using `hW.differentiableAt (by simp)`. Establish `hfl : ∀ (q : ℕ) (w : V → V [⋀^Fin q]→L[ℝ] F), (fun r => pb (flow W r) w p) = fun r => (pb (tot W) w (p, r)).compContinuousLinearMap (ContinuousLinearMap.inl ℝ V ℝ)` using `fun q w => funext fun r => (pb_tot hd r w).symm`. Establish `key : ∀ (q : ℕ) (w : V → V [⋀^Fin q]→L[ℝ] F), ContDiffAt ℝ ∞ w (flow W t p) → DifferentiableAt ℝ (pb (tot W) w) (p, t) ∧ extDeriv (pb (tot W) w) (p, t) = pb (tot W) (extDeriv w) (p, t)`. Introduce `q w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `pbD (V × ℝ) V F q (tot W) w (p, t) (tot_smooth hW t) hw`. Conclude with `⟨h1.differentiableAt (by simp), h2⟩`. Use `⟨fun w hw => ?_, fun q w hw => ?_⟩` and prove the remaining obligations. Take `⟨hD, hE⟩` from `key 0 w hw`. Rewrite using `[hfl, ← hk_tot hd t (extDeriv w), ← hE]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(prodDer V F p t).1 _ hD`. Take `⟨hD, hE⟩` from `key (q + 1) w hw`. Establish `hev : (fun y => ((pb (tot W) w (y, t)).curryLeft (0, 1)).compContinuousLinearMap (ContinuousLinearMap.inl ℝ V ℝ)) =ᶠ[𝓝 p] hk W t w`. Establish `h1 : ∀ᶠ y in 𝓝 p, ContDiffAt ℝ 1 W y` using `(hW.of_le (by simp)).eventually (by simp)`. Use `filter_upwards [h1] with y hy`.
-
-Conclude with `hk_tot (hy.differentiableAt (by simp)) t w`. Rewrite using `[hfl, ← hk_tot hd t (extDeriv w), ← hE, ← hev.extDeriv_eq]`. Conclude with `(prodDer V F p t).2 q _ hD`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homPt : HomPt := by
   intro V F _ _ _ _ _ _ W p t hW

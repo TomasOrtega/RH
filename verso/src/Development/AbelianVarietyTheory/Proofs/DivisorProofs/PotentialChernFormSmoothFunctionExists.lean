@@ -15,21 +15,21 @@ set_option autoImplicit false
 noncomputable section
 
 /- English proof (translation)
-Introduce `_ _ D O x P hC A T H R c σ m L hL hLp`. Take `⟨Qx, hQx, hlx⟩` from `(R.an c).th A.dir σ`. Take `⟨Qa, hQa, hla⟩` from `(R.an c).a σ`. Take `⟨d, kb, ka, kx, hd, hkb, hka, hkx, hrel⟩` from `GlobalTheory.T.divisor_relation_integral_scaling P c`. Establish `hdir : A.dir = P.dir` using `R.aux.dir.trans hC.dir_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hab : O.met.ab = P.ab` using `hC.ab_eq`. Set `Δ : Option (Option (DV.Rt D.what₂.Tau O.N)) → (O.var c).Dv` to `fun o => o.elim (P.bd c) fun o' => o'.elim (O.met.ab c).D fun x => divOf (O.Φ.C c) (O.ex x)`. Set `mm : ∀ o, (cxSt D.what₂.LL).Met (O.var c) ((R.man c).ε σ) (Δ o)` to `fun o => match o with`. Consider the case `none => m`. Consider the case `some none => (O.met.ab c).m _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Consider the case `some (some x) => O.met.h0 c _ (O.ex x)`. Set `QQ : Option (Option (DV.Rt D.what₂.Tau O.N)) → LocPot ((T.M c).X σ)` to `fun o => o.elim L fun o' => o'.elim (Qa ()) Qx`. Set `kk : Option (Option (DV.Rt D.what₂.Tau O.N)) → ℤ` to `fun o => o.elim kb fun o' => o'.elim ka kx`. Establish `hrel' : ∑ o, kk o • Δ o = 0`. Simplify using `only [Fintype.sum_option, kk, Δ, Option.elim]`.
+Treat this case separately. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hab, ← add_assoc]`. Conclude with `hrel`. Establish `hpot : ∀ o, IsPot ((R.man c).pt σ) (mm o) (QQ o)`. Introduce `o`. Break down `o with _ | _ | x` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `exacts [hL, (hQa ()).1, (hQx x).1]`. Establish `hpot' : ∀ o, IsPotential ((T.M c).A σ) (QQ o)`. Introduce `o`. Break down `o with _ | _ | x` into its components or cases. Use `exacts [hLp, (hQa ()).2, (hQx x).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g0, hg0, hlev⟩` from `GlobalTheory.T.levi_form_potential_sum_smooth (R.man c) σ Δ mm QQ kk hpot hpot' hrel'`. Establish `hd' : (d : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hd.ne'`. Use `⟨fun z => (d : ℝ)⁻¹ * g0 z, fun j => ?_, fun j y hy w => ?_⟩` and prove the remaining obligations. Conclude with `contDiffOn_const.mul (hg0 j)`. Establish `hcd : ContDiffAt ℝ 2 (g0 ∘ ((T.M c).A σ |>.chart j).symm) y` using `GlobalTheory.ShellMass.smoothOn_contDiffAt isOpen_univ hg0 j hy trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hlev j y hy w`. Simplify using `only [Fintype.sum_option, kk, QQ, Option.elim] at key`. Establish `hpa : IsPotential ((T.M c).A σ) (((T.F c).a σ).rsmul (-1))` using `isPotentialRsmul _ _ _ (T.a_pot c σ)`. Establish `hpth` using `T.th_pot c A.dir σ`. Rewrite using `[GlobalTheory.ShellMass.leviAt_add_ofFun (isPotentialAdd _ _ _ hpth hpa) j hy (by simpa [Function.comp_def] using hcd.const_smul ((d : ℝ)⁻¹)) w, GlobalTheory.ShellMass.leviAt_add hpth hpa j hy w, GlobalTheory.ShellMass.leviAt_rsmul, hlx j y hy w, hla j y hy w]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `e1 : levi ((fun z => (d : ℝ)⁻¹ * g0 z) ∘ (((T.M c).A σ).chart j).symm) y w = (d : ℝ)⁻¹ * levi (g0 ∘ (((T.M c).A σ).chart j).symm) y w` using `ReciprocityTheory.AnForm.P.TailChernBound.levi_smul' _ hcd w`. Rewrite using `[e1, ← key, hkb, hka]`. Simplify using `only [hkx, hdir, Finset.univ_unique, Finset.sum_singleton, neg_mul, Finset.sum_neg_distrib, mul_assoc, ← Finset.mul_sum, hab]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BdClass.bd_form_eq : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D) (x : GlobalTheory.ShFam.ToroidalCompactificationData O.s) (P : PolOf x O.Φ),
     O.CoreWith x P → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (R : O.Reads A T H) (c : O.s.Comp)

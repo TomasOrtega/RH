@@ -20,7 +20,7 @@ namespace GlobalTheory.WigSh.OmLeftN
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[mulVec, dotProduct, _root_.GlobalTheory.LeadingMinorInv.flagMat, Finset.sum_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma flagMat_mulVec_eq_sum_fvec (z : Fin (2 * r + k + 1) → ℂ) (c : Fin (r + 1) → ℂ) :
     _root_.GlobalTheory.LeadingMinorInv.flagMat k r z *ᵥ c = ∑ a, c a • _root_.Formalism.QuantumDeterminants.fvec k r z a := by
@@ -30,7 +30,7 @@ private lemma flagMat_mulVec_eq_sum_fvec (z : Fin (2 * r + k + 1) → ℂ) (c : 
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WigSh.omg`. Rewrite using `[← mulVec_mulVec _ (_root_.Formalism.QuantumDeterminants.Hpk k r * gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r) (_root_.GlobalTheory.LeadingMinorInv.flagMat k r z), flagMat_mulVec_eq_sum_fvec]`. Simplify using `[mulVec_single_one, conjTranspose_apply]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma rW_mulVec_adjugate_zhat_single_last (z z' : Fin (2 * r + k + 1) → ℂ) (g : _root_.Formalism.FourierDecayAlt.Q.Mx k r) :
     _root_.GlobalTheory.WigSh.omg k r z z' g = _root_.Formalism.FourierDecayAlt.D.prW k r z'
@@ -43,7 +43,7 @@ private lemma rW_mulVec_adjugate_zhat_single_last (z z' : Fin (2 * r + k + 1) �
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-The claim follows from `_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.Hpk_conjTranspose`.
+A detailed English derivation is pending.
 -/
 private lemma conjTranspose_hpk : (_root_.Formalism.QuantumDeterminants.Hpk k r)ᴴ = _root_.Formalism.QuantumDeterminants.Hpk k r :=
   _root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.Hpk_conjTranspose
@@ -51,7 +51,7 @@ private lemma conjTranspose_hpk : (_root_.Formalism.QuantumDeterminants.Hpk k r)
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.LeadingMinorInv.zhat_eq]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_hpk, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (_root_.Formalism.QuantumDeterminants.Hpk k r) (_root_.Formalism.QuantumDeterminants.Hpk k r), _root_.GlobalTheory.CompanionTheory.ZuckCasSplit.hpk_sq, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma gram_eq_upper_bounds (z z' : Fin (2 * r + k + 1) → ℂ) (g : _root_.Formalism.FourierDecayAlt.Q.Mx k r) :
     _root_.Formalism.QuantumDeterminants.Zhat k r z z' g = (_root_.Formalism.QuantumDeterminants.Hpk k r * gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z)ᴴ *
@@ -64,7 +64,7 @@ private lemma gram_eq_upper_bounds (z z' : Fin (2 * r + k + 1) → ℂ) (g : _ro
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Rewrite using `[conjTranspose_mul, Matrix.mul_assoc Uᴴ, adjugate_mul_distrib, conjTranspose_mul, adjugate_conjTranspose, conjTranspose_conjTranspose, Matrix.mul_assoc X U, ← Matrix.mul_assoc U, mul_adjugate, hU, one_smul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma mul_adjugate_conjTranspose_eq_of_det_eq_one {m n : ℕ} (X : Matrix (Fin n) (Fin m) ℂ)
     (U : Matrix (Fin m) (Fin m) ℂ) (Y : Matrix (Fin n) (Fin m) ℂ) (hU : U.det = 1) :
@@ -76,7 +76,7 @@ private lemma mul_adjugate_conjTranspose_eq_of_det_eq_one {m n : ℕ} (X : Matri
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Rewrite using `[det_of_upperTriangular (fun i j h => hU.1 i j h)]`. Simplify using `[hU.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma det_eq_one_of_upUni {n : ℕ} {U : Matrix (Fin n) (Fin n) ℂ}
     (hU : _root_.GlobalTheory.LeadingMinorInv.UpUni U) : U.det = 1 := by
@@ -86,9 +86,9 @@ private lemma det_eq_one_of_upUni {n : ℕ} {U : Matrix (Fin n) (Fin n) ℂ}
 open Matrix in
 
 /- English proof (translation)
-Take `⟨U, hU, hnF⟩` from `_root_.GlobalTheory.LeadingMinorInv.exists_N k r z hz n hn`. Establish `hnU : nᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * n = _root_.Formalism.QuantumDeterminants.Hpk k r` using `((_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.mem_Nset_iff n).1 hn).1`. Establish `hQ : _root_.Formalism.QuantumDeterminants.Hpk k r * gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z = _root_.Formalism.QuantumDeterminants.Hpk k r * (n * g)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory …`. Establish `key : nᴴ * (_root_.Formalism.QuantumDeterminants.Hpk k r * (n * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z)) = _root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z`. Simplify using `only [← Matrix.mul_assoc, hnU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← hnF, key]`. Rewrite using `[rW_mulVec_adjugate_zhat_single_last, rW_mulVec_adjugate_zhat_single_last, gram_eq_upper_bounds, gram_eq_upper_bounds, mulVec_mulVec, mulVec_mulVec, hQ, mul_adjugate_conjTranspose_eq_of_det_eq_one _ _ _ (det_eq_one_of_upUni hU)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.WigSh.OmLeftN.omg_mul_left (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
     (g n : _root_.Formalism.FourierDecayAlt.Q.Mx k r) (hz : _root_.Formalism.QuantumDeterminants.inWb k r z)
@@ -108,7 +108,7 @@ theorem _root_.GlobalTheory.WigSh.OmLeftN.omg_mul_left (k r : ℕ) (z z' : Fin (
     mul_adjugate_conjTranspose_eq_of_det_eq_one _ _ _ (det_eq_one_of_upUni hU)]
 
 /- English proof (translation)
-Introduce `k r z z' g m hz _ _ hm` and use `omg_mul_left k r z z' g m⁻¹ hz ((unipotent_subgroup_holds k r).2.2 m hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem omg_left_N : ∀ (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ)) (g m : Mx k r), inWb k r z → inWb k r z' → g ∈ UH (Hpk k r) → m ∈ Formalism.QuantumDeterminants.Nset k r → GlobalTheory.WigSh.omg k r z z' (m⁻¹ * g) = GlobalTheory.WigSh.omg k r z z' g :=
   fun k r z z' g m hz _ _ hm => omg_mul_left k r z z' g m⁻¹ hz ((unipotent_subgroup_holds k r).2.2 m hm)

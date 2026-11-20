@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.L2.SG.Closed
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.NGCut.VanishingOrbitalPoints.stepNormOne_of_vanishLeaves AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formalism.L2.SG.Pf.roDiscreteC_hold …`.
+A detailed English derivation is pending.
 -/
 theorem StepNormOne_holds : Formalism.L2.SG.NGCut.StepNormOne :=
   Formalism.L2.SG.NGCut.VanishingOrbitalPoints.stepNormOne_of_vanishLeaves AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds
@@ -13,7 +13,7 @@ theorem StepNormOne_holds : Formalism.L2.SG.NGCut.StepNormOne :=
     Formalism.L2.SG.Pf.roDiscreteC_holds Formalism.L2.SG.TermOp.Vanish.rational_cocompact_holds Formalism.L2.SG.NonRelPf.nonRelCharC_holds
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.NGCut.VanishingOrbitalPoints.stepPoints_of_vanishLeaves AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formalism.L2.SG.Pf.roDiscreteC_holds …`.
+A detailed English derivation is pending.
 -/
 theorem StepPoints_holds : Formalism.L2.SG.NGCut.StepPoints :=
   Formalism.L2.SG.NGCut.VanishingOrbitalPoints.stepPoints_of_vanishLeaves AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds
@@ -21,7 +21,7 @@ theorem StepPoints_holds : Formalism.L2.SG.NGCut.StepPoints :=
     Formalism.L2.SG.Pf.roDiscreteC_holds Formalism.L2.SG.TermOp.Vanish.rational_cocompact_holds Formalism.L2.SG.NonRelPf.nonRelCharC_holds
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.RealObj.InfCut.ProductExactness.ProdExact_holds`.
+A detailed English derivation is pending.
 -/
 theorem ProdExact_holds : Formalism.L2.SG.Pf.NcReal.ProdExact := Formalism.L2.SG.RealObj.InfCut.ProductExactness.ProdExact_holds
 

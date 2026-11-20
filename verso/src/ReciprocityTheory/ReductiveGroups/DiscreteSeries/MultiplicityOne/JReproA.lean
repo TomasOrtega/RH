@@ -15,7 +15,7 @@ section frob
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 
 /- English proof (translation)
-Rewrite using `[frobenius_norm_def, gN, Real.sqrt_eq_rpow]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_norm_sq, Real.rpow_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gN_eq_frob {k r : ℕ} (g : Mat k r) : gN g = ‖g‖ := by
   rw [frobenius_norm_def, gN, Real.sqrt_eq_rpow]
@@ -24,20 +24,20 @@ theorem gN_eq_frob {k r : ℕ} (g : Mat k r) : gN g = ‖g‖ := by
   rw [Complex.normSq_eq_norm_sq, Real.rpow_two]
 
 /- English proof (translation)
-Rewrite using `[gN_eq_frob, gN_eq_frob, gN_eq_frob]`. Conclude with `frobenius_norm_mul A B`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gN_mul_le {k r : ℕ} (A B : Mat k r) : gN (A * B) ≤ gN A * gN B := by
   rw [gN_eq_frob, gN_eq_frob, gN_eq_frob]
   exact frobenius_norm_mul A B
 
 /- English proof (translation)
-Rewrite using `[gN_eq_frob, gN_eq_frob, frobenius_norm_conjTranspose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gN_conjTranspose {k r : ℕ} (A : Mat k r) : gN Aᴴ = gN A := by
   rw [gN_eq_frob, gN_eq_frob, frobenius_norm_conjTranspose]
 
 /- English proof (translation)
-Establish `: (fun g : Mat k r => gN g) = fun g => ‖g‖` using `funext gN_eq_frob`. Rewrite using `[this]`. Conclude with `continuous_norm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_gN {k r : ℕ} : Continuous (fun g : Mat k r => gN g) := by
   have : (fun g : Mat k r => gN g) = fun g => ‖g‖ := funext gN_eq_frob
@@ -46,7 +46,7 @@ theorem continuous_gN {k r : ℕ} : Continuous (fun g : Mat k r => gN g) := by
 end frob
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem gN_nonneg {k r : ℕ} (A : Mat k r) : 0 ≤ gN A := Real.sqrt_nonneg _
 
@@ -54,7 +54,7 @@ section hpk
 variable (k r : ℕ)
 
 /- English proof (translation)
-Break down `i with ⟨i, hi⟩` into its components or cases. Break down `j with ⟨j, hj⟩` into its components or cases. Simplify using `only [Hpk, Fin.mk.injEq] at h ⊢`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = 2 * r + k - i.val then 1 else 0 := by
@@ -63,7 +63,7 @@ theorem Hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Break down `i with ⟨i, hi⟩` into its components or cases. Break down `j with ⟨j, hj⟩` into its components or cases. Simplify using `only [Hpk, Fin.mk.injEq] at h ⊢`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = i.val then (if i.val = r + k then -1 else 1) else 0 := by
@@ -72,13 +72,13 @@ theorem Hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [mulVec, dotProduct]`. Distinguish the cases in `h1 : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h1]`. Simplify using `only [Hpk_out k r h1]`. Rewrite using `[Finset.sum_eq_single ⟨2 * r + k - i.val, by omega⟩]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg (fun h => hb (Fin.ext h))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h1]`. Simplify using `only [Hpk_mid k r h1]`. Rewrite using `[Finset.sum_eq_single i]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (fun h => hb (Fin.ext h))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) i = if i.val < r ∨ r + k < i.val then v ⟨2 * r + k - i.val, by omega⟩
@@ -99,11 +99,11 @@ theorem Hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     · simp
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[Hpk_mulVec]`. Distinguish the cases in `h1 : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h1, Hpk_mulVec]`. Establish `e1 : ((⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1)).val) = 2 * r + k - i.val` using `rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos (by rw [e1]; omega)]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Apply the tactic sequence `rw [if_neg h1, Hpk_mulVec, if_neg h1] split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk k r *ᵥ v) = v := by
   ext i
@@ -117,20 +117,20 @@ theorem Hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk 
     split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify `congrFun (h (Pi.single j 1)) i` using `[Matrix.mulVec_single_one]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mat_eq_of_mulVec' {A B : Mat k r} (h : ∀ v, A *ᵥ v = B *ᵥ v) : A = B := by
   ext i j
   simpa [Matrix.mulVec_single_one] using congrFun (h (Pi.single j 1)) i
 
 /- English proof (translation)
-The claim follows from `mat_eq_of_mulVec' k r fun v => by rw [← Matrix.mulVec_mulVec, Hpk_mulVec_mulVec, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem Hpk_sq : Hpk k r * Hpk k r = 1 :=
   mat_eq_of_mulVec' k r fun v => by rw [← Matrix.mulVec_mulVec, Hpk_mulVec_mulVec, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem UH_left_inv {g : Mat k r} (hg : g ∈ GV k r) : Hpk k r * gᴴ * Hpk k r * g = 1 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -142,19 +142,19 @@ end hpk
 def KH (k r : ℕ) : ℝ := gN (Hpk k r) ^ 2
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (UH_left_inv k r hg)`.
+A detailed English derivation is pending.
 -/
 theorem GV_inv_eq {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r :=
   Matrix.inv_eq_left_inv (UH_left_inv k r hg)
 
 /- English proof (translation)
-Rewrite using `[GV_inv_eq hg]`. Conclude with `mul_eq_one_comm.mp (UH_left_inv k r hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GV_mul_inv {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) : g * g⁻¹ = 1 := by
   rw [GV_inv_eq hg]; exact mul_eq_one_comm.mp (UH_left_inv k r hg)
 
 /- English proof (translation)
-Rewrite using `[GV_inv_eq hg]`. Establish `h0` using `gN_nonneg (Hpk k r)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem gN_inv_le {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) : gN g⁻¹ ≤ KH k r * gN g := by
   rw [GV_inv_eq hg]
@@ -164,19 +164,19 @@ theorem gN_inv_le {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) : gN g⁻¹ ≤ 
     _ = KH k r * gN g := by rw [gN_conjTranspose, KH]; ring
 
 /- English proof (translation)
-The claim follows from `hCG.inv_mem g hg`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_G {k r : ℕ} (hCG : IsClosedSubgroup (GV k r)) {g : Mat k r} (hg : g ∈ GV k r) :
     g⁻¹ ∈ GV k r := hCG.inv_mem g hg
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_nonsing_inv g (hCG.unit g hg)`.
+A detailed English derivation is pending.
 -/
 theorem inv_inv_G {k r : ℕ} (hCG : IsClosedSubgroup (GV k r)) {g : Mat k r} (hg : g ∈ GV k r) :
     g⁻¹⁻¹ = g := Matrix.nonsing_inv_nonsing_inv g (hCG.unit g hg)
 
 /- English proof (translation)
-Use `gN_inv_le (inv_mem_G hCG hg)` as an intermediate fact. Rewrite `this` using `[inv_inv_G hCG hg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gN_le_inv {k r : ℕ} (hCG : IsClosedSubgroup (GV k r)) {g : Mat k r} (hg : g ∈ GV k r) :
     gN g ≤ KH k r * gN g⁻¹ := by
@@ -184,9 +184,9 @@ theorem gN_le_inv {k r : ℕ} (hCG : IsClosedSubgroup (GV k r)) {g : Mat k r} (h
   rwa [inv_inv_G hCG hg] at this
 
 /- English proof (translation)
-Establish `h1` using `hL 1 hCG.one_mem`. Establish `h2` using `gN_le_inv hCG hCG.one_mem`. Establish `h3` using `gN_nonneg ((1 : Mat k r)⁻¹)`. Assume the negation of the conclusion as `hK'`. Establish `hK` using `not_lt.mp hK'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: KH k r * gN (1 : Mat k r)⁻¹ ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hK h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem KH_pos {k r : ℕ} (hCG : IsClosedSubgroup (GV k r)) (hL : ∀ g ∈ GV k r, 1 ≤ gN g) : 0 < KH k r := by
   have h1 := hL 1 hCG.one_mem
@@ -198,13 +198,13 @@ theorem KH_pos {k r : ℕ} (hCG : IsClosedSubgroup (GV k r)) (hL : ∀ g ∈ GV 
   linarith
 
 /- English proof (translation)
-Establish `hA0 : 0 < A` using `by linarith`. Establish `hB0 : 0 < B` using `by linarith`. Establish `hX0 : 0 < X` using `by linarith`. Establish `eA : A ^ (-a) = A ^ (-(a / 2)) * A ^ (-(a / 2))` using `by rw [← Real.rpow_add hA0]; ring_nf`. Establish `eB : B ^ (-a) = B ^ (-(a / 2)) * B ^ (-(a / 2))` using `by rw [← Real.rpow_add hB0]; ring_nf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eAB : (A * B) ^ (-(a / 2)) = A ^ (-(a / 2)) * B ^ (-(a / 2))` using `Real.mul_rpow hA0.le hB0.le`. Establish `h1 : B ^ (-(a / 2)) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hB (by linarith)`. Establish `h2 : (A * B) ^ (-(a / 2)) ≤ (X / K) ^ (-(a / 2))` using `Real.rpow_le_rpow_of_nonpos (div_pos hX0 hK) (by rw [div_le_iff₀ hK]; linarith) (by linarith)`. Establish `h3 : (X / K) ^ (-(a / 2)) = K ^ (a / 2) * X ^ (-(a / 2))`. Rewrite using `[Real.div_rpow hX0.le hK.le, Real.rpow_neg hK.le, div_inv_eq_mul, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpA : 0 ≤ A ^ (-(a / 2))` using `Real.rpow_nonneg hA0.le _`. Establish `hpB : 0 ≤ B ^ (-(a / 2))` using `Real.rpow_nonneg hB0.le _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eA, eB, eAB]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ ≤ A ^ (-(a / 2)) * (A * B) ^ (-(a / 2)) * 1 := by gcongr`. Use `_ ≤ A ^ (-(a / 2)) * (X / K) ^ (-(a / 2)) := by rw [mul_one]; gcongr`. Use `_ = K ^ (a / 2) * (A ^ (-(a / 2)) * X ^ (-(a / 2))) := by rw [h3]; ring`.
+A detailed English derivation is pending.
 -/
 theorem key_bound {A B X K a : ℝ} (hA : 1 ≤ A) (hB : 1 ≤ B) (hX : 1 ≤ X) (hK : 0 < K) (ha : 0 ≤ a)
     (h : X ≤ K * (A * B)) :
@@ -230,13 +230,13 @@ theorem key_bound {A B X K a : ℝ} (hA : 1 ≤ A) (hB : 1 ≤ B) (hX : 1 ≤ X)
     _ = K ^ (a / 2) * (A ^ (-(a / 2)) * X ^ (-(a / 2))) := by rw [h3]; ring
 
 /- English proof (translation)
-Establish `hn : (1 : ℝ) ≤ nR k r`. Simplify using `only [nR]`. Conclude with `Nat.succ_le_succ (Nat.zero_le _)` after adjusting the coercions. Establish `e : nR k r = 2 * (r : ℝ) + k + 1` using `by simp [nR]`. Establish `h1 : AB k r ≤ 2 * nR k r ^ 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AB]`. Rewrite using `[e]`. Establish `: (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `: (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h2 : 2 * nR k r ^ 2 ≤ 2 * nR k r ^ 3`. Establish `: nR k r ^ 2 ≤ nR k r ^ 3`. Rewrite using `[pow_succ]`. Use polynomial arithmetic with `[sq_nonneg (nR k r)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [aM] at ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem AB_le_half (k r : ℕ) {a : ℝ} (ha : aM k r ≤ a) : AB k r ≤ a / 2 := by
   have hn : (1 : ℝ) ≤ nR k r := by
@@ -263,9 +263,9 @@ section rep
 variable {m : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Establish `h1 : ContinuousLinearMap.adjoint (ρ a) ∘L ρ a = 1` using `(ContinuousLinearMap.norm_map_iff_adjoint_comp_self _).1 (hiso a ha)`. Establish `h2 : ρ a ∘L ρ a⁻¹ = 1` using `by rw [← hrep.2 a ha _ hai, hmul, hrep.1]`. Use extensionality with `v`. Establish `e1` using `congrArg (fun T => T (ρ a⁻¹ v)) h1`. Establish `e2` using `congrArg (fun T => T v) h2`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply] at e1 e2`. Rewrite using `[← e1, e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_inv_eq_adjoint {U : Set (Matrix (Fin m) (Fin m) ℂ)} {ρ : Matrix (Fin m) (Fin m) ℂ → (H →L[ℂ] H)}
     (hrep : IsCRepOn U ρ) (hiso : ∀ g ∈ U, ∀ v, ‖ρ g v‖ = ‖v‖) {a : Matrix (Fin m) (Fin m) ℂ}
@@ -281,7 +281,7 @@ theorem rep_inv_eq_adjoint {U : Set (Matrix (Fin m) (Fin m) ℂ)} {ρ : Matrix (
   rw [← e1, e2]
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by rw [h, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem opNorm_le_one_of_iso {T : H →L[ℂ] H} (h : ∀ v, ‖T v‖ = ‖v‖) : ‖T‖ ≤ 1 :=
   ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by rw [h, one_mul]
@@ -291,14 +291,14 @@ end rep
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `rep_inv_eq_adjoint X.rep.1 X.rep.2.1 hx (inv_mem_G hCG hx) (GV_mul_inv hx)`.
+A detailed English derivation is pending.
 -/
 theorem sig_inv (X : SigData k r) (hCG : IsClosedSubgroup (GV k r)) {x : Mat k r} (hx : x ∈ GV k r) :
     X.σ x⁻¹ = ContinuousLinearMap.adjoint (X.σ x) :=
   rep_inv_eq_adjoint X.rep.1 X.rep.2.1 hx (inv_mem_G hCG hx) (GV_mul_inv hx)
 
 /- English proof (translation)
-Establish `hAK : 0 < A / K` using `div_pos hA hK`. Establish `h1 : B ^ (-a) ≤ (A / K) ^ (-a)` using `Real.rpow_le_rpow_of_nonpos hAK (by rw [div_le_iff₀ hK]; linarith) (by linarith)`. Rewrite `h1` using `[Real.div_rpow hA.le hK.le, Real.rpow_neg hK.le, div_inv_eq_mul, mul_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rpow_inv_le {A B K a : ℝ} (hA : 0 < A) (hK : 0 < K) (ha : 0 ≤ a) (h : A ≤ K * B) :
     B ^ (-a) ≤ K ^ a * A ^ (-a) := by
@@ -308,11 +308,11 @@ theorem rpow_inv_le {A B K a : ℝ} (hA : 0 < A) (hK : 0 < K) (ha : 0 ≤ a) (h 
   rwa [Real.div_rpow hA.le hK.le, Real.rpow_neg hK.le, div_inv_eq_mul, mul_comm] at h1
 
 /- English proof (translation)
-Take `⟨Cu, hCu⟩` from `hu`. Establish `hK` using `KH_pos hCG hL`. Use `⟨max Cu 0 * KH k r ^ X.a, mul_nonneg (le_max_right _ _) (Real.rpow_nonneg hK.le _), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxi` using `inv_mem_G hCG hx`. Establish `e : ⟪u, X.σ x X.w⟫_ℂ = conj (mc X u X.w x⁻¹)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mc, sig_inv X hCG hx, ContinuousLinearMap.adjoint_inner_right, inner_conj_symm]`. Rewrite using `[e, RCLike.norm_conj]`. Establish `h1` using `hCu x⁻¹ hxi`. Establish `h2 : gN x⁻¹ ^ (-X.a) ≤ KH k r ^ X.a * gN x ^ (-X.a)` using `rpow_inv_le (by linarith [hL x hx]) hK ha (gN_le_inv hCG hx)`. Establish `h3 : 0 ≤ gN x⁻¹ ^ (-X.a)` using `Real.rpow_nonneg (gN_nonneg _) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem dec_adj (X : SigData k r) (hCG : IsClosedSubgroup (GV k r)) (hL : ∀ g ∈ GV k r, 1 ≤ gN g)
     (ha : 0 ≤ X.a) {u : X.Hs} (hu : u ∈ Vfl X) :
@@ -334,11 +334,11 @@ theorem dec_adj (X : SigData k r) (hCG : IsClosedSubgroup (GV k r)) (hL : ∀ g 
     _ = max Cu 0 * KH k r ^ X.a * gN x ^ (-X.a) := by ring
 
 /- English proof (translation)
-Establish `h` using `(hd.2 X.w x X.w u).2`. Establish `hw : ⟪X.w, X.w⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, X.w_norm]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hw, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [mc]`. Rewrite using `[mul_comm]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(inner_conj_symm _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem schur_pt {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     (D : RealPlaceData k r Wp Wp) (X : SigData k r) {d : ℝ} (hd : IsFdegG D X d) (x u : X.Hs) :
@@ -355,9 +355,7 @@ theorem schur_pt {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   exact (inner_conj_symm _ _).symm
 
 /- English proof (translation)
-Unfold `psi ell`. Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul ?_))))` and prove the remaining obligations. Use `continuous_finsetSum _ fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `(continuous_apply _).comp (continuous_apply _)`.
-
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) : Continuous (psi k r z c) := by
   unfold psi ell
@@ -369,7 +367,7 @@ theorem psi_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) : Continuous (psi k
   · simp only [Matrix.mulVec, dotProduct]; fun_prop
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_psi_le (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mat k r) : ‖psi k r z c g‖ ≤ 1 := by
   unfold psi
@@ -377,7 +375,7 @@ theorem norm_psi_le (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mat k r) : 
   simp
 
 /- English proof (translation)
-Repeatedly rewrite using `[← integral_smul]`. Conclude with `integral_integral_swap hint`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap_smul {Y P E : Type*} [MeasurableSpace Y] [MeasurableSpace P] [NormedAddCommGroup E]
     [NormedSpace ℂ E] [CompleteSpace E] (μ : Measure Y) (ν : Measure P) [SFinite μ] [SFinite ν]

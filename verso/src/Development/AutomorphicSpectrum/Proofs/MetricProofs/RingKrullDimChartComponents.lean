@@ -21,7 +21,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.Companio
 open ReciprocityTheory.AnForm.R (conePts)
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Q e m σ i hQ J hJ`. Establish `hmin : J ∈ (setSegChartIdeal (conePts Q) σ i).minimalPrimes` using `mem_chartComponents.mp hJ`. Establish `hhom : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal Q` using `hQ.2.1.2.1`. Conclude with `segChart_dim hQ.2.1.1 hhom hQ.2.2 σ i hmin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chartComponents_dim : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e m : ℕ) (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k),

@@ -6,7 +6,7 @@ open NumberField Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTh
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.Xgf.exists_real_different_generator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FSesquilinearFractions%2FDifferentIdealEqTopOfUnramified.lean&line=23#L23)
 -/

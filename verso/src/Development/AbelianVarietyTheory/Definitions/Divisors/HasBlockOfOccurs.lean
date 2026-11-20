@@ -164,9 +164,9 @@ def Reads.HasBlock {w : HeightOneSpectrum (𝓞 K)} (R : Reads F lam B w) (θ : 
   ∃ x : B.Pl × ℕ → K, (∀ P, x (P, 0) = 1) ∧ Formalism.L2.Col.HasBlocks B.n B.q B.t B.bl x ∧ ∀ i, θ i = R.e0 (x (R.ix i))
 
 /- English proof (translation)
-Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hx`. Establish `h` using `Formalism.L2.Col.eigAt_le op x j hv`. Rewrite `h` using `[Module.End.mem_maxGenEigenspace, hj]`. Take `⟨k, hk⟩` from `h`. Establish `e : (1 : Module.End L V) - x j • 1 = (1 - x j) • 1` using `by rw [sub_smul, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hk` using `[e, smul_pow, one_pow, LinearMap.smul_apply, Module.End.one_apply, smul_eq_zero]`. Conclude with `(sub_eq_zero.1 (eq_zero_of_pow_eq_zero (hk.resolve_right hv0))).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_occurs {L V J : Type} [Field L] [AddCommGroup V] [Module L V] {op : J → Module.End L V} {x : J → L}
     (hx : Formalism.L2.Col.Occurs op x) {j : J} (hj : op j = 1) : x j = 1 := by
@@ -179,7 +179,7 @@ theorem eq_one_of_occurs {L V J : Type} [Field L] [AddCommGroup V] [Module L V] 
   exact (sub_eq_zero.1 (eq_zero_of_pow_eq_zero (hk.resolve_right hv0))).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, fun P => eq_one_of_occurs hx (h0 P), hb, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Reads.hasBlock_of_occurs {w : HeightOneSpectrum (𝓞 K)} (R : Reads F lam B w) (h0 : ∀ P, B.op (P, 0) = 1) {x : B.Pl × ℕ → K}
     (hx : Formalism.L2.Col.Occurs B.op x) (hb : Formalism.L2.Col.HasBlocks B.n B.q B.t B.bl x) : R.HasBlock fun i => R.e0 (x (R.ix i)) :=
@@ -269,13 +269,13 @@ section Link
 open Formalism.L2.DIV Formalism.L2.Col
 
 /- English proof (translation)
-Simplify using `[sysOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sysOf_zero {l : ℕ} [Fact l.Prime] {Pl I : Type} (n : ℕ) (pt : Pl → Fin n → I) (θ : I → Qbar l) (P : Pl) :
     sysOf n pt θ P 0 = 1 := by simp [sysOf]
 
 /- English proof (translation)
-Establish `h : 1 ≤ (k : ℕ) + 1 ∧ (k : ℕ) + 1 ≤ n` using `⟨by omega, k.2⟩`. Simplify using `[sysOf, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sysOf_succ {l : ℕ} [Fact l.Prime] {Pl I : Type} (n : ℕ) (pt : Pl → Fin n → I) (θ : I → Qbar l) (P : Pl) (k : Fin n) :
     sysOf n pt θ P (k + 1) = θ (pt P k) := by
@@ -283,13 +283,13 @@ theorem sysOf_succ {l : ℕ} [Fact l.Prime] {Pl I : Type} (n : ℕ) (pt : Pl →
   simp [sysOf, h]
 
 /- English proof (translation)
-Take `⟨x, h0, hb, hθ⟩` from `h`. Establish `h1` using `Polynomial.map_dvd R.e0 (hb Q)`. Establish `e1 : ((B.bl.map fun ν => blockPoly (ν Q) (B.q Q) B.t).prod).map R.e0 = (B.bl.map fun ν => blockPoly (R.e0 (ν Q)) (B.q Q) B.t).prod`. Rewrite using `[Polynomial.map_list_prod, List.map_map]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `List.map_congr_left fun ν _ => ?_` and prove the remaining obligations. Simplify using `[blockPoly, Polynomial.map_prod]`. Establish `e2 : (heckePoly B.n B.q x Q).map R.e0 = heckePolyOf B.n (B.q Q) (sysOf B.n pt θ P)`. Rewrite using `[heckePoly, heckePolyOf, heckePolyOf, Polynomial.map_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: R.e0 (x (Q, k)) = sysOf B.n pt θ P k`. Break down `k with _ | k` into its components or cases. Rewrite using `[h0, map_one, sysOf_zero]`. Establish `hk' : k < B.n` using `by have := Finset.mem_range.1 hk; omega`. Rewrite using `[sysOf_succ B.n pt θ P ⟨k, hk'⟩, hθ, hQ]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.map_mul, Polynomial.map_C, Polynomial.map_pow, Polynomial.map_X, map_mul, map_mul, this]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[e1, e2]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Reads.HasBlock.dvd {l : ℕ} [Fact l.Prime] {ι : Type} [DecidableEq ι] {N : ℕ} {F : Frame l ι N} {lam : ι → ℕ → ℕ}
     {K : Type} [Field K] [NumberField K] [StarRing K] {G0 : Type} [Group G0] [Fintype G0] {Pl0 : Type} {B : BlockDat K G0 Pl0}

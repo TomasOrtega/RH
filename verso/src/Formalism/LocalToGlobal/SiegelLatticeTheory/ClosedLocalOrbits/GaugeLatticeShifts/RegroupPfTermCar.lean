@@ -42,14 +42,14 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
   {γ : S.V ≃ₗ[E] S.V} {T' : E} {x F₂ : LFlag S r T'}
 
 /- English proof (translation)
-The claim follows from `PI.TCS.Tr.inf hΛ (PI.TCS.trE_Xsp he).toO`.
+A detailed English derivation is pending.
 -/
 theorem transport_x_lattice (Λ₂ Λ : Submodule (𝓞 E) S.V) (hΛ : PI.TCS.Tr γ Λ₂ Λ) (he : ∀ k, F₂.fl.e k = γ (x.fl.e k)) :
     PI.TCS.Tr γ (XLam Λ₂ F₂) (XLam Λ x) :=
   PI.TCS.Tr.inf hΛ (PI.TCS.trE_Xsp he).toO
 
 /- English proof (translation)
-The claim follows from `PI.TCS.Tr.inf (PI.TCS.Tr.sup (PI.TCS.Tr.inf hΛ ((PI.TCS.trE_Xsp he).perp hiso).toO) (PI.TCS.trE_Xsp he).toO) ((PI.TCS.trE_Xsp he).perp hiso).toO`.
+A detailed English derivation is pending.
 -/
 theorem transport_lattice_sub (Λ₂ Λ : Submodule (𝓞 E) S.V) (hΛ : PI.TCS.Tr γ Λ₂ Λ) (he : ∀ k, F₂.fl.e k = γ (x.fl.e k))
     (hiso : ∀ a b, S.hT (γ a) (γ b) = S.hT a b) : PI.TCS.Tr γ (Lsub Λ₂ F₂) (Lsub Λ x) :=
@@ -57,11 +57,11 @@ theorem transport_lattice_sub (Λ₂ Λ : Submodule (𝓞 E) S.V) (hΛ : PI.TCS.
     ((PI.TCS.trE_Xsp he).perp hiso).toO
 
 /- English proof (translation)
-Use `⟨fun P => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨c, hc0, hc1, heq⟩` from `hx.1 P`. Use `⟨c, hc0, hc1, ?_⟩` and prove the remaining obligations. Use `P.isPrime` as an intermediate fact. Use `PI.TCS.Tr.eq (transport_x_lattice Λ₂ Λ hΛ he).localization₂ (PI.TCS.Tr.span ?_).localization₂ heq` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `[he a, map_smul]`. Apply `hx.2 c` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `((transport_lattice_sub Λ₂ Λ hΛ he hiso) _).mp hc` as an intermediate fact. Simplify `this` using `[hz, map_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fixed_conv_transport (Λ₂ Λ : Submodule (𝓞 E) S.V) (g : ℕ) (hΛ : PI.TCS.Tr γ Λ₂ Λ)
     (he : ∀ k, F₂.fl.e k = γ (x.fl.e k)) (hz : F₂.fl.z = γ x.fl.z) (hiso : ∀ a b, S.hT (γ a) (γ b) = S.hT a b)
@@ -86,7 +86,7 @@ section Main
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fixed_conv_transport Λ₂ Λ (gS D) hΛ he hz hiso hx.1, PI.TCS.Tr.eq (transport_x_lattice Λ₂ Λ hΛ he) (PI.TCS.tr_XS D he) hx.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem frame_ok_transport {T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     {x F₂ : LFlag (VS D) D.R.rS T'} (Λ₂ Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : PI.TCS.Tr γ Λ₂ Λ)
@@ -95,13 +95,11 @@ theorem frame_ok_transport {T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D
   ⟨fixed_conv_transport Λ₂ Λ (gS D) hΛ he hz hiso hx.1, PI.TCS.Tr.eq (transport_x_lattice Λ₂ Λ hΛ he) (PI.TCS.tr_XS D he) hx.2⟩
 
 /- English proof (translation)
-Establish `hmap : mapLF σ F' = ⟨mapFlag σ hiso F'.fl, σ F'.zt⟩`. Unfold `mapLF`. Rewrite using `[dif_pos hiso]`. Establish `hisoT : ∀ a b, (VS D).hT (σ a) (σ b) = (VS D).hT a b` using `fun a b => hiso a b`. Establish `hfr : ∀ b, frame (mapLF σ F') b = σ (frame F' b)` using `Formalism.L2.SG.NormCut.frame_mapLF hiso F'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap]`. Use `⟨(hTr _).mpr ?_, ?_⟩` and prove the remaining obligations. Use `show σ.symm (σ F'.fl.z) ∈ Λ'`. Simplify using `using hL.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `show σ F'.zt = σ F'.fl.z`. Rewrite using `[hL.2]`. Take `⟨ξ, hl, hd, hc⟩` from `hA`. Use `⟨ξ, hl, hd, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[hfr b]`.
-
-Conclude with `hc b`. Rewrite using `[hmap]`. Conclude with `frame_ok_transport Λ Λ' hTr (fun j => rfl) rfl hisoT hOK`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pd_of_tr {T : D.host.E} (u' : D.what₂.Word) (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V)
     (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
@@ -130,19 +128,19 @@ theorem pd_of_tr {T : D.host.E} (u' : D.what₂.Word) (Λ Λ' : Submodule (𝓞 
     exact frame_ok_transport Λ Λ' hTr (fun j => rfl) rfl hisoT hOK
 
 /- English proof (translation)
-Introduce `D X Y u u' hH ρ ρ' γ hγ`. Take `⟨hγr, hk⟩` from `hγ`. Take `⟨σ, hRL, hiso⟩` from `h1 D X γ hγr`. Establish `hK` using `Y.hK`. Use `set k := kOf X u u' ((Y.cs u).h ρ : X.B.I.Gf) ((Y.cs u').h ρ' : X.B.I.Gf) γ with hkdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkK : k ∈ X.B.I.Kset` using `hk.1`. Establish `hkK' : k⁻¹ ∈ X.B.I.Kset` using `(hK.2.2.1 k hk).1`. Establish `hTr : PI.TCS.Tr σ ((Y.cs u).lamOf ρ) ((Y.cs u').lamOf ρ')`. Introduce `v`. Rewrite using `[(Y.cs u).lat_eq ρ v, (Y.cs u').lat_eq ρ' (σ.symm v), ← LatDictK.ratLink_incl_inv X hRL v, mulVec_mulVec, ← LatDictK.fmatK_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (((Y.cs u').h ρ' : X.B.I.Gf) * X.xu u')⁻¹ * γ.2⁻¹ = k⁻¹ * (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)⁻¹`. Rewrite using `[hkdef]`. Unfold `kOf`. Use `group`. Rewrite using `[e, LatDictK.fmatK_mul, ← mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Conclude with `unitaryCongruence.K_mv X.B.I hkK' hw`. Introduce `hw`. Use `unitaryCongruence.K_mv X.B.I hkK hw` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mulVec_mulVec, ← LatDictK.fmatK_mul, mul_inv_cancel, show X.B.I.fmat 1 = 1 by` and apply the resulting hypothesis. Simplify using `[AutInst.fmat], one_mulVec] at this`. Establish `hgm : Formalism.HermitianLatticesTheory.gmap σ ((Y.cs u').lamOf ρ') = (Y.cs u).lamOf ρ`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(hTr _).mpr (by simpa using hy)`. Introduce `hv`. Conclude with `⟨σ.symm v, (hTr v).mp hv, by simp⟩`. Take `⟨-, ⟨-, -, hLift, hFC⟩, hXL⟩` from `(Y.rowsOK u').1 _ ((Y.cs u').lam_mem ρ')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨⟨(γ, σ), hRL, hiso, hgm, ?_⟩, rfl⟩` and prove the remaining obligations. Use `pd_of_tr u' _ _ (lf D (X.Fu u)) (lf D (X.Fu u')) σ hiso hTr hLift ⟨hFC, hXL⟩ ?_` and prove the remaining obligations. Take `⟨ξ, hl, hd, hc⟩` from `h3 D X Y u u' ρ ρ' γ σ hRL hk`. Conclude with `⟨ξ, hl, hd, fun b => h2 D X (aC (Y.cs u) ρ) _ ((Y.cs u).lat_eq ρ) _ (hc b)⟩`.
+A detailed English derivation is pending.
 -/
 theorem termCarC_of (h1 : RatIsoC) (h2 : ModGOfAtC) (h3 : FrameCongC) : TermCarC := by
   intro D X Y u u' hH ρ ρ' γ hγ

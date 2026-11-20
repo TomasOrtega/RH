@@ -13,7 +13,7 @@ open Matrix
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[GlobalTheory.TypeTame.invTranspose, Matrix.GeneralLinearGroup.det, Matrix.det_transpose]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_invTranspose (n : ℕ) (g : GL (Fin n) k) :
     Matrix.GeneralLinearGroup.det (GlobalTheory.TypeTame.invTranspose n g) = (Matrix.GeneralLinearGroup.det g)⁻¹ := by
@@ -21,13 +21,13 @@ theorem det_invTranspose (n : ℕ) (g : GL (Fin n) k) :
   simp [GlobalTheory.TypeTame.invTranspose, Matrix.GeneralLinearGroup.det, Matrix.det_transpose]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SplitWeil.nabs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nabs_inv (x : kˣ) : GlobalTheory.SplitWeil.nabs k x⁻¹ = (GlobalTheory.SplitWeil.nabs k x)⁻¹ := by
   simp [GlobalTheory.SplitWeil.nabs]
 
 /- English proof (translation)
-Use `ext`. Establish `hp` using `GlobalTheory.SplitWeil.nabs_pos k (Matrix.GeneralLinearGroup.det g)`. Simplify using `only [detChar, absPow, MonoidHom.comp_apply, det_invTranspose]`. Simplify using `[nabs_inv, Complex.cpow_neg]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem absPow_det_invTranspose (n : ℕ) (s : ℂ) (g : GL (Fin n) k) :
     detChar (Fin n) (absPow k s) (GlobalTheory.TypeTame.invTranspose n g) =
@@ -38,7 +38,7 @@ theorem absPow_det_invTranspose (n : ℕ) (s : ℂ) (g : GL (Fin n) k) :
   simp [nabs_inv, Complex.cpow_neg]
 
 /- English proof (translation)
-Use extensionality with `g v`. Simplify using `only [MonoidHom.comp_apply, twist, MonoidHom.coe_mk, OneHom.coe_mk, absPow_det_invTranspose]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem twist_comp_invTranspose (n : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V) (s : ℂ) :
@@ -50,7 +50,7 @@ theorem twist_comp_invTranspose (n : ℕ) {V : Type} [AddCommGroup V] [Module �
 end GlobalTheory.InvTransposeTwist
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π s`. Rewrite using `[GlobalTheory.InvTransposeTwist.twist_comp_invTranspose]`. Conclude with `⟨Representation.Equiv.mk (LinearEquiv.refl ℂ V) (fun g => rfl)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.InvTransposeTwist.main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (s : ℂ), Nonempty (Representation.Equiv ((twist π (detChar (Fin n) (absPow k s))).comp (GlobalTheory.TypeTame.invTranspose n)) (twist (π.comp (GlobalTheory.TypeTame.invTranspose n)) (detChar (Fin n) (absPow k (-s))))) := by
   intro k _ _ _ _ n V _ _ π s

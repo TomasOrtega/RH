@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.BZPhiPG.Conj
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `show (1 + colMat k n v) _ _ = _`. Simplify using `[colMat, Matrix.one_apply, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_cc (n : ℕ) (v : Fin n → k) (r c : Fin n) :
     (unip k n (Multiplicative.ofAdd v)).val (Fin.castSucc r) (Fin.castSucc c) = (1 : Matrix (Fin n) (Fin n) k) r c := by
@@ -20,7 +20,7 @@ theorem unip_cc (n : ℕ) (v : Fin n → k) (r c : Fin n) :
   simp [colMat, Matrix.one_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Use `show (1 + colMat k n v) _ _ = _`. Simplify using `[colMat, Matrix.one_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_lc (n : ℕ) (v : Fin n → k) (c : Fin n) :
     (unip k n (Multiplicative.ofAdd v)).val (Fin.last n) (Fin.castSucc c) = 0 := by
@@ -28,7 +28,7 @@ theorem unip_lc (n : ℕ) (v : Fin n → k) (c : Fin n) :
   simp [colMat, Matrix.one_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]
 
 /- English proof (translation)
-Use `show (1 + colMat k n v) _ _ = _`. Simplify using `[colMat]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_ll (n : ℕ) (v : Fin n → k) :
     (unip k n (Multiplicative.ofAdd v)).val (Fin.last n) (Fin.last n) = 1 := by
@@ -36,7 +36,7 @@ theorem unip_ll (n : ℕ) (v : Fin n → k) :
   simp [colMat]
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, ← map_mul, ← ofAdd_add, ← h, glEmb_mul_unip']`. Simplify using `only [toAdd_ofAdd]`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unip_mul_glEmb (n : ℕ) (g : GL (Fin n) k) (a b c : Fin n → k)
     (h : ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec a = b + c) :
@@ -47,7 +47,7 @@ theorem unip_mul_glEmb (n : ℕ) (g : GL (Fin n) k) (a b c : Fin n → k)
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castM_val {a b : ℕ} (h : a = b) (m : Mir k a) (x y : Fin (b + 1)) :
     ((castM k h m : Mir k b) : GL (Fin (b + 1)) k).val x y =
@@ -59,20 +59,20 @@ def eps (i t : ℕ) : (Σ x, Two (Fin (i + 1)) (Fin (t + 1)) x) ≃ Fin ((i + 1)
   (ePG i (t + 1)).trans (finCongr (by omega))
 
 /- English proof (translation)
-Simplify using `[piPerm, eps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piPerm_eps (i t : ℕ) (s : Σ x, Two (Fin (i + 1)) (Fin (t + 1)) x) :
     piPerm i t (eps i t s) = eGP (i + 1) t s := by
   simp [piPerm, eps]
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [eGP, two, stdSum])`.
+A detailed English derivation is pending.
 -/
 theorem blockIndex_true (i t : ℕ) (y : Fin (t + 1)) : eGP (i + 1) t ⟨true, y⟩ = Fin.natAdd (i + 1) y :=
   Fin.ext (by simp [eGP, two, stdSum])
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [eGP, two, stdSum])`.
+A detailed English derivation is pending.
 -/
 theorem blockIndex_false (i t : ℕ) (a : Fin (i + 1)) : eGP (i + 1) t ⟨false, a⟩ = Fin.castAdd (t + 1) a :=
   Fin.ext (by simp [eGP, two, stdSum])
@@ -81,13 +81,13 @@ def gEl (i t : ℕ) (m : Mir k (i + (t + 1))) : GL (Fin ((i + 1) + t + 1)) k :=
   wGL k i t * ((castM k (by omega) m : Mir k ((i + 1) + t)) : GL (Fin ((i + 1) + t + 1)) k) * (wGL k i t)⁻¹
 
 /- English proof (translation)
-Simplify using `[gEl, mul_assoc, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gEl_inv (i t : ℕ) (m : Mir k (i + (t + 1))) : (gEl i t m)⁻¹ = gEl i t m⁻¹ := by
   simp [gEl, mul_assoc, map_inv]
 
 /- English proof (translation)
-Use `show ((Equiv.Perm.permMatrix k (piPerm i t)⁻¹ * M.val * Equiv.Perm.permMatrix k (piPerm i t)).mulVec u) (piPerm i t a) = _`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.permMatrix_mulVec, Matrix.permMatrix_mulVec]`. Simplify using `[Function.comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wGL_conj_mulVec (i t : ℕ) (M : GL (Fin ((i + 1) + t + 1)) k) (u : Fin ((i + 1) + t + 1) → k)
     (a : Fin ((i + 1) + t + 1)) :
@@ -98,9 +98,7 @@ theorem wGL_conj_mulVec (i t : ℕ) (M : GL (Fin ((i + 1) + t + 1)) k) (u : Fin 
   simp [Function.comp]
 
 /- English proof (translation)
-Rewrite using `[← piPerm_eps, gEl, wGL_conj_mulVec]`. Use `show (∑ b : Fin ((i + 1) + t + 1), (_ : k)) = _`. Rewrite using `[← Equiv.sum_comp (eps i t), Fintype.sum_sigma, Fintype.sum_bool, add_comm]`. Simplify using `only [Function.comp, piPerm_eps]`. Use `congr 1`.
-
-Apply the tactic sequence `all_goals exact Finset.sum_congr rfl fun x _ => by rw [castM_val]; rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gEl_mulVec (i t : ℕ) (m : Mir k (i + (t + 1))) (u : Fin ((i + 1) + t + 1) → k)
     (s : Σ x, Two (Fin (i + 1)) (Fin (t + 1)) x) :
@@ -117,9 +115,9 @@ theorem gEl_mulVec (i t : ℕ) (m : Mir k (i + (t + 1))) (u : Fin ((i + 1) + t +
   all_goals exact Finset.sum_congr rfl fun x _ => by rw [castM_val]; rfl
 
 /- English proof (translation)
-Introduce `e`. Establish `h1` using `congrArg Fin.val e`. Rewrite `h1` using `[Cells.ePG_true_val]`. Use `y.2` as an intermediate fact. Simplify using `only [Fin.val_last] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `y.1 < t + 1 at this`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ePG_true_ne_last (i t : ℕ) (y : Fin (t + 1)) : ePG i (t + 1) ⟨true, y⟩ ≠ Fin.last (i + (t + 1)) := by
   intro e
@@ -131,14 +129,14 @@ theorem ePG_true_ne_last (i t : ℕ) (y : Fin (t + 1)) : ePG i (t + 1) ⟨true, 
   omega
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simpa using Cells.ePG_false_val (i + 1) (t + 1) y)`.
+A detailed English derivation is pending.
 -/
 theorem ePG_false_castSucc' (i t : ℕ) (y : Fin (i + 1)) :
     ePG (i + 1) (t + 1) ⟨false, Fin.castSucc y⟩ = Fin.castSucc (Fin.castAdd (t + 1) y) :=
   Fin.ext (by simpa using Cells.ePG_false_val (i + 1) (t + 1) y)
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simpa using Cells.ePG_true_val (i + 1) (t + 1) y)`.
+A detailed English derivation is pending.
 -/
 theorem ePG_true' (i t : ℕ) (y : Fin (t + 1)) :
     ePG (i + 1) (t + 1) ⟨true, y⟩ = Fin.castSucc (Fin.natAdd (i + 1) y) :=
@@ -147,9 +145,9 @@ theorem ePG_true' (i t : ℕ) (y : Fin (t + 1)) :
 abbrev uD (i t : ℕ) (d : Fin (t + 1) → k) : Fin ((i + 1) + t + 1) → k := @Fin.append (i + 1) (t + 1) k 0 d
 
 /- English proof (translation)
-Rewrite using `[gEl_mulVec, Finset.sum_eq_zero, zero_add]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[blockIndex_true]`. Use `congr 1`. Conclude with `Fin.append_right _ _ y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Rewrite using `[blockIndex_false]`. Establish `: uD i t d (Fin.castAdd (t + 1) x) = 0` using `Fin.append_left _ _ x`. Rewrite using `[this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gEl_uD (i t : ℕ) (m : Mir k (i + (t + 1))) (d : Fin (t + 1) → k)
     (s : Σ x, Two (Fin (i + 1)) (Fin (t + 1)) x) :
@@ -166,9 +164,9 @@ theorem gEl_uD (i t : ℕ) (m : Mir k (i + (t + 1))) (d : Fin (t + 1) → k)
     rw [this, mul_zero]
 
 /- English proof (translation)
-Establish `h` using `gEl_uD i t m d ⟨false, Fin.last i⟩`. Rewrite `h` using `[blockIndex_false, ePG_false_last]`. Use `h.trans (Finset.sum_eq_zero fun y _ => ?_)` and prove the remaining obligations. Establish `hm` using `(mem_Mir_iff k (m : GL (Fin (i + (t + 1) + 1)) k)).1 m.2`. Rewrite using `[hm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eLast, Pi.single_apply, ePG_true_ne_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vec_last (i t : ℕ) (m : Mir k (i + (t + 1))) (d : Fin (t + 1) → k) :
     ((gEl i t m).val.mulVec (uD i t d)) (Fin.castAdd (t + 1) (Fin.last i)) = 0 := by
@@ -180,9 +178,9 @@ theorem vec_last (i t : ℕ) (m : Mir k (i + (t + 1))) (d : Fin (t + 1) → k) :
   simp [eLast, Pi.single_apply, ePG_true_ne_last]
 
 /- English proof (translation)
-Establish `h1` using `gEl_uD i t (h : Mir k (i + (t + 1)))⁻¹ d ⟨true, y⟩`. Rewrite `h1` using `[blockIndex_true]`. Use `h1.trans ?_` and prove the remaining obligations. Establish `e : ((pgProj k i (t + 1) h).2)⁻¹ = (pgProj k i (t + 1) h⁻¹).2`. Rewrite using `[map_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vec_true (i t : ℕ) (h : HPG k i (t + 1)) (d : Fin (t + 1) → k) (y : Fin (t + 1)) :
     ((gEl i t (h : Mir k (i + (t + 1)))⁻¹).val.mulVec (uD i t d)) (Fin.natAdd (i + 1) y) =
@@ -199,11 +197,11 @@ def cEl (i t : ℕ) (x : Fin (i + 1) → k) : Mir k ((i + 1) + (t + 1)) :=
   ⟨unip k ((i + 1) + (t + 1)) (Multiplicative.ofAdd (Fin.append x (0 : Fin (t + 1) → k))), MirU_le_Mir k _ ⟨_, rfl⟩⟩
 
 /- English proof (translation)
-Use `Cells.mem_HPG_of (I := i + 1) (T := t + 1) (cEl i t x) ?_ ?_` and prove the remaining obligations. Introduce `a b`. Use `Cells.unip_castSucc_castSucc _ _ _ _ ?_` and prove the remaining obligations. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Introduce `a`. Use `(unip_apply_castSucc_last k _ _ _).trans ?_` and prove the remaining obligations. Use `show Fin.append x (0 : Fin (t + 1) → k) (Fin.natAdd (i + 1) a) = 0`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem cEl_mem (i t : ℕ) (x : Fin (i + 1) → k) : cEl i t x ∈ HPG k (i + 1) (t + 1) := by
   refine Cells.mem_HPG_of (I := i + 1) (T := t + 1) (cEl i t x) ?_ ?_
@@ -222,15 +220,15 @@ def uEl (i : ℕ) (x : Fin (i + 1) → k) : MirUin k (i + 1) :=
   ⟨⟨unip k (i + 1) (Multiplicative.ofAdd x), MirU_le_Mir k _ ⟨_, rfl⟩⟩, ⟨_, rfl⟩⟩
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (unip k ((i + 1) + (t + 1)) (Multiplicative.ofAdd (Fin.append x (0 : Fin (t + 1) → k)))).val (ePG (i + 1) (t + 1) ⟨false, a⟩) (ePG (i + 1) (t + 1) ⟨false, b⟩) = (unip k (i + 1) (Multiplicative.ofAdd x)).val a b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Proceed by induction.
 
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[ePG_false_last]`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [ePG_false_last, unip_ll, unip_ll]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast b => rw [ePG_false_castSucc', unip_lc, unip_lc]`. Consider the case `cast a`. Rewrite using `[ePG_false_castSucc']`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ePG_false_last, unip_apply_castSucc_last, unip_apply_castSucc_last]`. Simplify using the standard rewrite rules. Consider the case `cast b`. Rewrite using `[ePG_false_castSucc', unip_cc, unip_cc]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (unip k ((i + 1) + (t + 1)) (Multiplicative.ofAdd (Fin.append x (0 : Fin (t + 1) → k)))).val (ePG (i + 1) (t + 1) ⟨true, a⟩) (ePG (i + 1) (t + 1) ⟨true, b⟩) = (1 : Matrix (Fin (t + 1)) (Fin (t + 1)) k) a b`. Rewrite using `[ePG_true', ePG_true', unip_cc]`. Simplify using `[Matrix.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pgProj_cEl (i t : ℕ) (x : Fin (i + 1) → k) :
     pgProj k (i + 1) (t + 1) ⟨cEl i t x, cEl_mem i t x⟩ = ((uEl i x : Mir k (i + 1)), 1) := by
@@ -264,7 +262,7 @@ theorem pgProj_cEl (i t : ℕ) (x : Fin (i + 1) → k) :
     simp [Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[gEl, map_mul, map_mul, map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_eq_levi (i t : ℕ) (m : Mir k (i + (t + 1))) :
     wEl k i t * sEmb k ((i + 1) + t) (castM k (by omega) m) * (wEl k i t)⁻¹ = levi k _ (gEl i t m) := by
@@ -272,13 +270,13 @@ theorem conj_eq_levi (i t : ℕ) (m : Mir k (i + (t + 1))) :
   rfl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ i t h d`. Set `v : Fin ((i + 1) + t + 1) → k` to `(gEl i t (h : Mir k (i + (t + 1)))⁻¹).val.mulVec (uD i t d)`. Set `x : Fin (i + 1) → k` to `fun a => v (Fin.castAdd (t + 1) a)`. Use `⟨⟨cEl i t x, cEl_mem i t x⟩, uEl i x, pgProj_cEl i t x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mirChar_eq k ψ i (uEl i x) (Multiplicative.ofAdd x) rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : x (Fin.last i) = 0` using `vec_last i t _ d`. Simplify using `[hx]`. Rewrite using `[conj_eq_levi]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `unip_mul_glEmb ((i + 1) + t + 1) (gEl i t (h : Mir k (i + (t + 1)))) _ _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gEl_inv]`. Establish `key : ∀ z : Fin ((i + 1) + (t + 1)), v z = @Fin.append (i + 1) (t + 1) k x 0 z + @Fin.append (i + 1) (t + 1) k 0 ((((pgProj k i (t + 1) h).2)⁻¹ : GL (Fin (t + 1)) k).1.mulVec d) z`. Introduce `z`. Proceed by induction on `z using Fin.addCases with`. Consider the case `left a => rw [Fin.append_left, Fin.append_left, Pi.zero_apply, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `right y`. Rewrite using `[Fin.append_right, Fin.append_right, Pi.zero_apply, zero_add]`. Conclude with `vec_true i t h d y`. Conclude with `funext key`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dEmb_conj :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (i t : ℕ) (h : HPG k i (t + 1)) (d : Fin (t + 1) → k),

@@ -10,7 +10,7 @@ section FrameOfGens
 variable {K : Type} [Field K] {N : ℕ}
 
 /- English proof (translation)
-Set `A' : Matrix (Fin N) (Fin N) R` to `fun i j => ⟨A i j, h i j⟩`. Establish `e : A = R.subtype.mapMatrix A'` using `by ext i j; rfl`. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `(A'.det).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_of_mem_matrix {R : Subring K} {A : Matrix (Fin N) (Fin N) K} (h : A ∈ R.matrix) : A.det ∈ R := by
   let A' : Matrix (Fin N) (Fin N) R := fun i j => ⟨A i j, h i j⟩
@@ -19,7 +19,7 @@ theorem det_mem_of_mem_matrix {R : Subring K} {A : Matrix (Fin N) (Fin N) K} (h 
   exact (A'.det).2
 
 /- English proof (translation)
-Set `A' : Matrix (Fin N) (Fin N) R` to `fun i j => ⟨A i j, h i j⟩`. Establish `e : A = R.subtype.mapMatrix A'` using `by ext i j; rfl`. Rewrite using `[e, ← RingHom.map_adjugate]`. Introduce `i j`. Conclude with `(A'.adjugate i j).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adjugate_mem_of_mem_matrix {R : Subring K} {A : Matrix (Fin N) (Fin N) K} (h : A ∈ R.matrix) :
     A.adjugate ∈ R.matrix := by
@@ -30,7 +30,7 @@ theorem adjugate_mem_of_mem_matrix {R : Subring K} {A : Matrix (Fin N) (Fin N) K
   exact (A'.adjugate i j).2
 
 /- English proof (translation)
-The claim follows from `| 0, f, hf => by simp [div_self (hf 0)] | n + 1, f, hf => by have ih := prod_castSucc_div_succ_eq n (fun i => f i.castSucc) (fun i => hf _) rw [Fin.prod_univ_castSucc] simp only [Fin.succ_castSucc] at ih ⊢ rw [ih, Fin.castSucc_zero, Fin.succ_last] have h1 := hf (Fin.last n).castS …`.
+A detailed English derivation is pending.
 -/
 theorem prod_castSucc_div_succ_eq : ∀ (n : ℕ) (f : Fin (n + 1) → K), (∀ i, f i ≠ 0) →
     ∏ i : Fin n, f i.castSucc / f i.succ = f 0 / f (Fin.last n)
@@ -45,67 +45,61 @@ theorem prod_castSucc_div_succ_eq : ∀ (n : ℕ) (f : Fin (n + 1) → K), (∀ 
     field_simp
 
 /- English proof (translation)
-Introduce `K _ N R M j γ η hM hγ hγ0 hG`. Use `set y : Fin N → K := fun l => M⁻¹ l j with hy`. Establish `hdetU : IsUnit M.det` using `isUnit_iff_ne_zero.2 hM.1`. Establish `hyR : ∀ l, y l ∈ R` using `fun l => hM.2.2 l j`. Establish `hη0 : ∀ i, η i ≠ 0` using `fun i => (hG i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : ∀ i s, gens γ y i s / η i ∈ R` using `fun i s => (hG i).2.1 s`. Establish `hgR : ∀ i s, gens γ y i s ∈ R`. Introduce `i s`. Consider the cases of `s with`. Consider the case `none => exact hγ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `some k`. Simplify using `only [gens, Option.elim]`. Use `split_ifs`. Conclude with `hyR k`. Conclude with `R.zero_mem`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hηR : ∀ i, η i ∈ R`. Introduce `i`. Take `⟨α, hα, he⟩` from `(hG i).2.2`. Rewrite using `[he]`. Conclude with `R.sum_mem fun s _ => R.mul_mem (hα s) (hgR i s)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hγη : ∀ i, γ / η i ∈ R` using `fun i => hdiv i none`. Establish `hyη : ∀ (i : Fin (N + 1)) (k : Fin N), (i : ℕ) ≤ k → y k / η i ∈ R`. Introduce `i k hk`. Use `hdiv i (some k)` as an intermediate fact. Simplify `this` using `[gens, hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hinv0 : (η 0)⁻¹ ∈ R`. Establish `h1 : ∑ l, M j l * y l = 1`. Use `congrFun (congrFun (Matrix.mul_nonsing_inv M hdetU) j) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Establish `e : (η 0)⁻¹ = ∑ l, M j l * (y l / η 0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[inv_eq_one_div, ← h1, Finset.sum_div]`. Simplify using `only [mul_div_assoc]`. Rewrite using `[e]`. Conclude with `R.sum_mem fun l _ => R.mul_mem (hM.2.1 j l) (hyη 0 l (Nat.zero_le _))`. Establish `hlast : η (Fin.last N) / γ ∈ R`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨α, hα, he⟩` from `(hG (Fin.last N)).2.2`. Establish `hk : ∀ k : Fin N, ¬ (N ≤ (k : ℕ))` using `fun k => not_le.2 k.2`. Establish `e : η (Fin.last N) = α none * γ`. Rewrite using `[he, Fintype.sum_option]`. Simplify using `[gens, hk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[e, mul_div_assoc, div_self hγ0, mul_one]`. Conclude with `hα none`. Establish `hsplit : ∀ (i : Fin N) s, gens γ y i.castSucc s = gens γ y i.succ s + (if s = some i then y i else 0)`. Introduce `i s`. Consider the cases of `s with`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `none => simp [gens]`. Consider the case `some k`. Simplify using `only [gens, Option.elim, Fin.coe_castSucc, Fin.val_succ, Option.some.injEq]`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `: (k : ℕ) ≠ i` using `fun e => h (Fin.ext e)`. Distinguish the cases in `h2 : (i : ℕ) ≤ k`. Rewrite using `[if_pos h2, if_pos (by omega), if_neg h, add_zero]`. Rewrite using `[if_neg h2, if_neg (by omega), if_neg h, add_zero]`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hstep : ∀ i : Fin N, η i.succ / η i.castSucc ∈ R ∧ ∃ α ∈ R, ∃ β ∈ R, η i.castSucc = α * y i + β * η i.succ`. Introduce `i`. Prove the components needed by the constructor for the conclusion. Take `⟨α, hα, he⟩` from `(hG i.succ).2.2`. Rewrite using `[he, Finset.sum_div]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `R.sum_mem fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`. Use `R.mul_mem (hα s) ?_` and prove the remaining obligations. Distinguish the cases in `hs : s = some i`. Substitute `hs` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `[gens]`. Use `hdiv i.castSucc s` as an intermediate fact. Rewrite `this` using `[hsplit i s, if_neg hs, add_zero]`. Then use the resulting hypothesis. Take `⟨α, hα, he⟩` from `(hG i.castSucc).2.2`. Use `⟨α (some i), hα _, ∑ s, α s * (gens γ y i.succ s / η i.succ), R.sum_mem fun s _ => R.mul_mem (hα s) (hdiv _ s), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[he, Finset.sum_mul]`. Repeatedly rewrite using `[hsplit i, mul_add]`. Rewrite using `[Finset.sum_add_distrib]`. Establish `h2 : ∑ s, α s * (if s = some i then y i else 0) = α (some i) * y i`. Simplify using `[mul_ite]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[h2, add_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, div_mul_cancel₀ _ (hη0 _)]`. Use `choose hq α hα β hβ heq using hstep`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, hinv0, hlast, fun i => ⟨hηR i, hγη i⟩, fun i => ⟨hq i, α i, hα i, β i, hβ i, heq i⟩⟩` and prove the remaining obligations. Set `w : Fin N → Fin N → K` to `fun i k => if i < k then y k / η i.succ else 0`. Establish `hwR : ∀ i k, w i k ∈ R`. Introduce `i k`. Simplify using `only [w]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Conclude with `hyη _ _ (by rw [Fin.lt_def] at h; simp only [Fin.val_succ]; omega)`. Conclude with `R.zero_mem`. Set `B : Matrix (Fin N) (Fin N) K` to `fun k i => α i * (if k ≤ i then y k / η i.succ else 0) + (if k = i then β i else 0)`. Establish `hBt : B.BlockTriangular id`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k i hik`. Simplify using `only [id] at hik`. Simplify using `[B, not_le.2 hik, ne_of_gt hik]`. Establish `hBd : ∀ i, B i i = η i.castSucc / η i.succ`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [B, le_refl, if_true]`. Rewrite using `[heq i, add_div, mul_div_assoc, mul_div_cancel_right₀ _ (hη0 _)]`. Establish `hMB : ∀ r i, (M * B) r i = α i * ((1 : Matrix (Fin N) (Fin N) K) r j / η i.succ - ∑ k, M r k * w i k) + β i * M r i`. Introduce `r i`. Establish `h1 : ∑ k, M r k * y k = (1 : Matrix (Fin N) (Fin N) K) r j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_nonsing_inv M hdetU, Matrix.mul_apply]`. Establish `hv : ∀ k, (if k ≤ i then y k / η i.succ else 0) = y k / η i.succ - w i k`. Introduce `k`. Simplify using `only [w]`. Distinguish the cases in `h : k ≤ i`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[if_pos h, if_neg (not_lt.2 h), sub_zero]`. Rewrite using `[if_neg h, if_pos (not_le.1 h), sub_self]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [B, hv]`. Simplify using `only [mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, Finset.sum_div, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hdR : ∀ r, Function.update (1 : Fin N → K) j γ r ∈ R`. Introduce `r`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify using `using hγ`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h, R.one_mem]`. Establish `hAR : dg j γ * M * B ∈ R.matrix`. Introduce `r i`. Simplify using `only [dg, Matrix.mul_assoc, Matrix.diagonal_mul, hMB]`. Establish `e : Function.update (1 : Fin N → K) j γ r * ((1 : Matrix (Fin N) (Fin N) K) r j / η i.succ) ∈ R`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify `hγη i.succ` using `[div_eq_mul_inv]`. Simplify using `[Matrix.one_apply_ne h]`. Establish `e2 : ∀ d a s m : K, d * (α i * (a / η i.succ - s) + β i * m) = α i * (d * (a / η i.succ)) - d * α i * s + d * β i * m` using `by intros; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `R.add_mem (R.sub_mem (R.mul_mem (hα i) e) (R.mul_mem (R.mul_mem (hdR r) (hα i)) (R.sum_mem fun k _ => R.mul_mem (hM.2.1 r k) (hwR i k)))) (R.mul_mem (R.mul_mem (hdR r) (hβ i)) (hM.2.1 r i))`. Establish `htel` using `prod_castSucc_div_succ_eq N η hη0`. Establish `hdetA : (dg j γ * M * B).det = γ * M.det * (η 0 / η (Fin.last N))`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_of_upperTriangular hBt, dg, Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ j)]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hBd, htel]`. Establish `hdetA0 : (dg j γ * M * B).det ≠ 0`. Rewrite using `[hdetA]`. Conclude with `mul_ne_zero (mul_ne_zero hγ0 hM.1) (div_ne_zero (hη0 0) (hη0 _))`. Establish `hdetinv : ((dg j γ * M * B).det)⁻¹ ∈ R`.
-
-Establish `e : ((dg j γ * M * B).det)⁻¹ = (η (Fin.last N) / γ) * (M⁻¹).det * (η 0)⁻¹`. Rewrite using `[hdetA, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Use `hη0 0` as an intermediate fact. Use `hη0 (Fin.last N)` as an intermediate fact. Use `hM.1` as an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `R.mul_mem (R.mul_mem hlast (det_mem_of_mem_matrix hM.2.2)) hinv0`. Use `⟨B, hBt, ⟨hdetA0, hAR, ?_⟩, hBd⟩` and prove the remaining obligations. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
-
-Introduce `r i`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Conclude with `R.mul_mem hdetinv (adjugate_mem_of_mem_matrix hAR r i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_of_content_gens : ∀ (K : Type) [Field K] (N : ℕ) (R : Subring K) (M : Matrix (Fin N) (Fin N) K) (j : Fin N) (γ : K) (η : Fin (N + 1) → K), Fr R M → γ ∈ R → γ ≠ 0 → (∀ i, Gen R (gens γ (fun l => M⁻¹ l j) i) (η i)) → (∃ B : Matrix (Fin N) (Fin N) K, B.BlockTriangular id ∧ Fr R (dg j γ * M * B) ∧ ∀ i, B i i = η i.castSucc / η i.succ) ∧ (η 0)⁻¹ ∈ R ∧ η (Fin.last N) / γ ∈ R ∧ (∀ i, η i ∈ R ∧ γ / η i ∈ R) ∧ ∀ i : Fin N, η i.succ / η i.castSucc ∈ R ∧ ∃ α ∈ R, ∃ β ∈ R, η i.castSucc = α * M⁻¹ i j + β * η i.succ := by
   intro K _ N R M j γ η hM hγ hγ0 hG

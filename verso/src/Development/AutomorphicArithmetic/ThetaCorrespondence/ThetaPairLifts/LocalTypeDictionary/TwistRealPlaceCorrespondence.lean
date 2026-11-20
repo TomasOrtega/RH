@@ -22,9 +22,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 noncomputable section
 namespace GlobalTheory.RealDict
 /- English proof (translation)
-Introduce `hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE`. Take `⟨Xs, Ws, Mo, ψ', χX, χW, om, τ, hH, hR⟩` from `_root_.GlobalTheory.T.exists_darboux_basis_of_symplectic_pair hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE`. Take `⟨Φ, hi, hr, hF⟩` from `_root_.GlobalTheory.T.exists_fock_model_intertwiner hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE Xs Ws Mo ψ' χX χW om τ hH hR`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩` from `hH`. Establish `hH : PublishedHyps D Xs Ws Mo ψ' χX χW om τ` using `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨Xs, Ws, Mo, ψ', χX, χW, om, τ, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, Φ, hi, hr, _root_.GlobalTheory.T.fock_image_line_stable hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE Xs Ws Mo ψ' χX χW om τ hH hR Φ hi hr hF, _root_.GlobalTheory.T.theta_subspace_stable_maxima …`.
+Supply the required witnesses or components.
 -/
 theorem real_place_correspondence : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -84,7 +84,7 @@ open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealDict.real_place_correspondence | exact _root_.GlobalTheory.RealDict.real_place_correspondence | (intros; apply _root_.GlobalTheory.RealDict.real_place_correspondence <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twist_real_place_correspondence : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

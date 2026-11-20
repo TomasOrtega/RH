@@ -9,17 +9,17 @@ namespace Formalism.HermitianLattices.Ext.L3.QuadAdj
 variable {F : Type*} [Field F] (c : F)
 
 /- English proof (translation)
-The claim follows from `monic_X_pow_sub_C c two_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem monic_pol : (X ^ 2 - C c : F[X]).Monic := monic_X_pow_sub_C c two_ne_zero
 
 /- English proof (translation)
-The claim follows from `natDegree_X_pow_sub_C`.
+A detailed English derivation is pending.
 -/
 theorem natDegree_pol : (X ^ 2 - C c : F[X]).natDegree = 2 := natDegree_X_pow_sub_C
 
 /- English proof (translation)
-Establish `h` using `AdjoinRoot.eval₂_root (X ^ 2 - C c)`. Rewrite `h` using `[eval₂_sub, eval₂_pow, eval₂_X, eval₂_C]`. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem root_mul_root :
     AdjoinRoot.root (X ^ 2 - C c) * AdjoinRoot.root (X ^ 2 - C c) = AdjoinRoot.of (X ^ 2 - C c) c := by
@@ -28,11 +28,11 @@ theorem root_mul_root :
   linear_combination h
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `AdjoinRoot.mk_surjective y`. Establish `h1 : AdjoinRoot.mk (X ^ 2 - C c) f = AdjoinRoot.mk (X ^ 2 - C c) (f %ₘ (X ^ 2 - C c))`. Rewrite using `[AdjoinRoot.mk_eq_mk, modByMonic_eq_sub_mul_div]`. Conclude with `⟨f /ₘ (X ^ 2 - C c), by ring⟩`. Establish `h2 : (f %ₘ (X ^ 2 - C c)).natDegree ≤ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `natDegree_modByMonic_lt f (monic_pol c) (by` as an intermediate fact. Introduce `h`. Use `natDegree_pol c` as an intermediate fact. Rewrite `this` using `[h, natDegree_one]`. Use the proof step `omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[natDegree_pol]`. Use linear arithmetic over natural numbers and integers. Take `⟨b, a, hab⟩` from `exists_eq_X_add_C_of_natDegree_le_one h2`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hab, map_add, map_mul, AdjoinRoot.mk_C, AdjoinRoot.mk_C, AdjoinRoot.mk_X, add_comm]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep (y : AdjoinRoot (X ^ 2 - C c)) :
     ∃ a b : F, y = AdjoinRoot.of _ a + AdjoinRoot.of _ b * AdjoinRoot.root _ := by
@@ -53,11 +53,11 @@ theorem exists_rep (y : AdjoinRoot (X ^ 2 - C c)) :
   rw [h1, hab, map_add, map_mul, AdjoinRoot.mk_C, AdjoinRoot.mk_C, AdjoinRoot.mk_X, add_comm]
 
 /- English proof (translation)
-Establish `h1 : AdjoinRoot.mk (X ^ 2 - C c) (C b * X + C a) = 0`. Rewrite using `[map_add, map_mul, AdjoinRoot.mk_C, AdjoinRoot.mk_C, AdjoinRoot.mk_X, add_comm]`. Conclude with `h`. Assume the negation of the conclusion as `hne`. Establish `h0 : (C b * X + C a : F[X]) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `ha` using `congrArg (fun p => coeff p 0) h0`. Establish `hb` using `congrArg (fun p => coeff p 1) h0`. Simplify using `at ha hb`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨ha, hb⟩`. Use `AdjoinRoot.mk_ne_zero_of_natDegree_lt (monic_pol c) h0 ?_ h1` and prove the remaining obligations. Rewrite using `[natDegree_pol]`. Conclude with `lt_of_le_of_lt natDegree_linear_le one_lt_two`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_eq_zero {a b : F}
     (h : AdjoinRoot.of (X ^ 2 - C c) a + AdjoinRoot.of _ b * AdjoinRoot.root _ = 0) :
@@ -78,7 +78,7 @@ theorem rep_eq_zero {a b : F}
   exact lt_of_le_of_lt natDegree_linear_le one_lt_two
 
 /- English proof (translation)
-Use `rep_eq_zero c (a := a - a') (b := b - b') (by` as an intermediate fact. Rewrite using `[map_sub, map_sub]`. Take the linear combination `h)`. Conclude with `⟨sub_eq_zero.1 this.1, sub_eq_zero.1 this.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem rep_inj {a b a' b' : F}
     (h : AdjoinRoot.of (X ^ 2 - C c) a + AdjoinRoot.of _ b * AdjoinRoot.root _ =
@@ -90,7 +90,7 @@ theorem rep_inj {a b a' b' : F}
 instance finite_adj : Module.Finite F (AdjoinRoot (X ^ 2 - C c)) := (monic_pol c).finite_adjoinRoot
 
 /- English proof (translation)
-Rewrite using `[(AdjoinRoot.powerBasis' (monic_pol c)).finrank, AdjoinRoot.powerBasis'_dim, natDegree_pol]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_adj : finrank F (AdjoinRoot (X ^ 2 - C c)) = 2 := by
   rw [(AdjoinRoot.powerBasis' (monic_pol c)).finrank, AdjoinRoot.powerBasis'_dim, natDegree_pol]
@@ -103,7 +103,7 @@ def conjHom : AdjoinRoot (X ^ 2 - C c) →ₐ[F] AdjoinRoot (X ^ 2 - C c) :=
     linear_combination h)
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.liftAlgHom_root _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem conjHom_root : conjHom c (AdjoinRoot.root _) = -AdjoinRoot.root _ :=
   AdjoinRoot.liftAlgHom_root _ _ _ _
@@ -116,7 +116,7 @@ def conj : AdjoinRoot (X ^ 2 - C c) ≃ₐ[F] AdjoinRoot (X ^ 2 - C c) :=
       rw [AlgHom.comp_apply, conjHom_root, map_neg, conjHom_root, neg_neg, AlgHom.id_apply]))
 
 /- English proof (translation)
-The claim follows from `conjHom_root c`.
+A detailed English derivation is pending.
 -/
 theorem conj_root : conj c (AdjoinRoot.root _) = -AdjoinRoot.root _ := conjHom_root c
 
@@ -125,9 +125,9 @@ section
 variable [Fact (Irreducible (X ^ 2 - C c : F[X]))]
 
 /- English proof (translation)
-Establish `h` using `congrArg τ (root_mul_root c)`. Establish `hc : τ (AdjoinRoot.of _ c) = AdjoinRoot.of _ c` using `τ.commutes c`. Rewrite `h` using `[map_mul, hc, ← root_mul_root c]`. Establish `h2 : (τ (AdjoinRoot.root _) - AdjoinRoot.root (X ^ 2 - C c)) * (τ (AdjoinRoot.root _) + AdjoinRoot.root _) = 0` using `by linear_combination h`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl (sub_eq_zero.1 h3)`. Conclude with `Or.inr (eq_neg_of_add_eq_zero_left h3)`.
+Prove the first alternative. Prove the second alternative.
 -/
 theorem gal_root (τ : AdjoinRoot (X ^ 2 - C c) ≃ₐ[F] AdjoinRoot (X ^ 2 - C c)) :
     τ (AdjoinRoot.root _) = AdjoinRoot.root _ ∨ τ (AdjoinRoot.root _) = -AdjoinRoot.root _ := by
@@ -141,9 +141,7 @@ theorem gal_root (τ : AdjoinRoot (X ^ 2 - C c) ≃ₐ[F] AdjoinRoot (X ^ 2 - C 
   · exact Or.inr (eq_neg_of_add_eq_zero_left h3)
 
 /- English proof (translation)
-Break down `gal_root c τ with h | h` into its components or cases. Use `left`. Apply `AlgEquiv.coe_toAlgHom_injective` to reduce the goal to its premises. Conclude with `AdjoinRoot.algHom_ext h`. Use `right`.
-
-Apply `AlgEquiv.coe_toAlgHom_injective` to reduce the goal to its premises. Conclude with `AdjoinRoot.algHom_ext (h.trans (conj_root c).symm)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gal_cases (τ : AdjoinRoot (X ^ 2 - C c) ≃ₐ[F] AdjoinRoot (X ^ 2 - C c)) :
     τ = 1 ∨ τ = conj c := by

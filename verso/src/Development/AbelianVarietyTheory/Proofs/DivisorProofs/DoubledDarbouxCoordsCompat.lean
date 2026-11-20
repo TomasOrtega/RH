@@ -26,21 +26,19 @@ open GlobalTheory.DiagForm GlobalTheory.StdCharFromIsStd
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Set `e` to `InfiniteAdeleRing.ringEquiv_mixedSpace F`. Establish `h1 : b.1 = 0`. Use `e.injective ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `GlobalTheory.ArchUniq.Coord.eq_zero_of_trace _ fun s => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hT`. Use `set T := Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (e b.1 * s) with hTdef`. Establish `h2` using `h (pairA F (e.symm ((1 / (2 * T)) • s)) 0)`. Establish `e1 : b * pairA F (e.symm ((1 / (2 * T)) • s)) 0 = pairA F (b.1 * e.symm ((1 / (2 * T)) • s)) 0` using `by show ((b.1 * _, b.2 * 0) : Ainf F × Af F) = (_, 0)`. Rewrite using `[mul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (e (b.1 * e.symm ((1 / (2 * T)) • s))) = 1 / 2`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, mul_smul_comm, map_smul, ← hTdef, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[e1, psi_pairA hψ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Complex.exp (_ * ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (e (b.1 * e.symm ((1 / (2 * T)) • s))) : ℝ) : ℂ)) = 1 at h2`. Establish `e3 : -(2 * (Real.pi : ℂ) * Complex.I) * ((1 / 2 : ℝ) : ℂ) = -(Real.pi * Complex.I)` using `by push_cast; ring`. Rewrite `h2` using `[e2, e3, Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at h2`. Establish `h2 : b.2 = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `af_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Assume the negation of the conclusion as `hv`. Apply `GlobalTheory.PsiNontriv.psiV_ne_one ψ hψ v` to reduce the goal to its premises. Use extensionality with `t`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.VacAny.psiV_apply, AddChar.one_apply, ← h (pairA F 0 (singleFin v ((evalV F v b.2)⁻¹ * t)))]`. Use `congr 1`. Use `show ((0, singleFin v t) : Ainf F × Af F) = (b.1 * 0, b.2 * singleFin v ((evalV F v b.2)⁻¹ * t))`. Rewrite using `[mul_zero]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `af_ext fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[map_mul, evalV_singleFin_self, evalV_singleFin_self, ← mul_assoc, mul_inv_cancel₀ hv, one_mul]`. Rewrite using `[map_mul, evalV_singleFin_ne hu, evalV_singleFin_ne hu, mul_zero]`.
-
-Conclude with `Prod.ext h1 h2`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_psi_mul {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (b : AF F) (h : ∀ y : AF F, ψ (b * y) = 1) :
     b = 0 := by
@@ -84,9 +82,7 @@ theorem eq_zero_of_psi_mul {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (b : AF F)
   exact Prod.ext h1 h2
 
 /- English proof (translation)
-Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_symm : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
   refine continuous_pi fun v => ?_
@@ -99,7 +95,7 @@ theorem continuous_symm : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).
       (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => (continuous_symm.comp ((continuous_apply i).comp ((eI F κ).continuous.comp continuous_fst))).prodMk ((continuous_apply i).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_glue : Continuous (glue : Vi F κ × Vf F κ → κ → AdeleRing (𝓞 F) F) :=
   continuous_pi fun i =>
@@ -107,7 +103,7 @@ theorem continuous_glue : Continuous (glue : Vi F κ × Vf F κ → κ → Adele
       ((continuous_apply i).comp continuous_snd)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F κ (p.1 + q.1) i) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F κ p.1 i) + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F κ q.1 i)`. Rewrite using `[map_add, Pi.add_apply, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_add (p q : Vi F κ × Vf F κ) : glue (p + q) = glue p + glue q := by
   funext i
@@ -118,7 +114,7 @@ theorem glue_add (p q : Vi F κ × Vf F κ) : glue (p + q) = glue p + glue q := 
   rw [map_add, Pi.add_apply, map_add]
 
 /- English proof (translation)
-Establish `h` using `glue_add (0 : Vi F κ × Vf F κ) 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_add.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_zero : glue (0 : Vi F κ × Vf F κ) = 0 := by
   have h := glue_add (0 : Vi F κ × Vf F κ) 0
@@ -126,9 +122,9 @@ theorem glue_zero : glue (0 : Vi F κ × Vf F κ) = 0 := by
   exact left_eq_add.1 h
 
 /- English proof (translation)
-Use `Prod.ext ?_ (funext fun i => congrArg Prod.snd (congrFun h i))` and prove the remaining obligations. Use `(eI F κ).injective ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_zero, map_zero]`. Use function extensionality and compare the values at `i`. Use `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm.injective ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.zero_apply, map_zero]`. Conclude with `congrArg Prod.fst (congrFun h i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_glue {p : Vi F κ × Vf F κ} (h : glue p = 0) : p = 0 := by
   refine Prod.ext ?_ (funext fun i => congrArg Prod.snd (congrFun h i))
@@ -140,11 +136,9 @@ theorem eq_zero_of_glue {p : Vi F κ × Vf F κ} (h : glue p = 0) : p = 0 := by
   exact congrArg Prod.fst (congrFun h i)
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Apply the tactic sequence `have hd : Continuous fun v : Vf F κ => (Sum.elim v v : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) := continuous_pi fun i => by cases i <;> exact continuous_apply _`. Rewrite using `[show resD F κ (pureA F f g) = fun p => compD F κ f p.1 * g (Sum.elim p.2 p.2) from funext (resD_pureA f g)]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `((compD F κ f).continuous.comp continuous_fst).mul ((hg.1.continuous.comp hd).comp continuous_snd)`. Consider the case `zero => rw [map_zero]`. Conclude with `continuous_zero`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `hx.add hy`.
-
-Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `hx.const_smul c`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_resD {φ : (κ ⊕ κ → AdeleRing (𝓞 F) F) → ℂ} (hφ : φ ∈ schA F (κ ⊕ κ)) :
     Continuous (resD F κ φ) := by
@@ -162,25 +156,25 @@ theorem continuous_resD {φ : (κ ⊕ κ → AdeleRing (𝓞 F) F) → ℂ} (hφ
 instance mu_haar : (mu F κ).IsAddHaarMeasure := by unfold mu; infer_instance
 
 /- English proof (translation)
-Simplify using `[dotProduct, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_left (a c : κ → AF F) : Sum.elim a a ⬝ᵥ Sum.elim c (0 : κ → AF F) = a ⬝ᵥ c := by
   simp [dotProduct, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `Function.ne_iff.1 hf0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hmem` using `fun w => GlobalTheory.HeisSchA.schr_mem_schA ψ hψ w f hf`. Set `N : Vi F κ × Vf F κ → ℂ` to `resD F κ (schr ψ (p, 0) f)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hN : ∀ q, N q = f (Sum.elim (glue q) (glue q) + p)` using `fun q => by show ψ (_ ⬝ᵥ 0 + _ * (p ⬝ᵥ 0)) * _ = _`. Rewrite using `[dotProduct_zero, dotProduct_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul]`. Set `χ : (κ → AF F) → Vi F κ × Vf F κ → ℂ` to `fun c q => ψ (glue q ⬝ᵥ c)`. Establish `key : N = 0`. Use `GlobalTheory.CharFourierInj.eq_zero χ (fun c => hψ.1.comp (continuous_glue.dotProduct continuous_const)) (fun c q q' => ?_) (fun c c' q => ?_) (fun q => ?_) (fun c q => norm_psi hψ _) (fun q hq => ?_) (mu F κ) N (continuous_resD (hmem _)) (integrable_resD (hmem _)) fun c => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [χ, glue_add, add_dotProduct, AddChar.map_add_eq_mul]`. Simplify using `only [χ, dotProduct_add, AddChar.map_add_eq_mul]`. Simplify using `only [χ, dotProduct_zero, AddChar.map_zero_eq_one]`. Use `eq_zero_of_glue (funext fun i => eq_zero_of_psi_mul hψ _ fun y => ?_)` and prove the remaining obligations. Use `hq (Pi.single i y)` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [χ] at this`. Rewrite `this` using `[dotProduct_single]`. Then use the resulting hypothesis. Establish `h1` using `hcon (p, Sum.elim c 0)`. Rewrite `h1` using `[lDiag, LinearMap.comp_apply, Lext_apply _ (integrable_resD (hmem _))]`. Establish `e : ∀ q, resD F κ (schr ψ (p, Sum.elim c 0) f) q = ψ (⅟(2 : AF F) * (p ⬝ᵥ Sum.elim c 0)) * (χ c q * N q)` using `fun q => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN]`. Use `show ψ (Sum.elim (glue q) (glue q) ⬝ᵥ Sum.elim c 0 + ⅟(2 : AF F) * (p ⬝ᵥ Sum.elim c 0)) * f (Sum.elim (glue q) (glue q) + p) = _`. Rewrite using `[dot_left, AddChar.map_add_eq_mul]`. Simplify using `only [χ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [e] at h1`. Rewrite `h1` using `[integral_const_mul]`. Use `(mul_eq_zero.1 h1).resolve_left fun h0 => ?_` and prove the remaining obligations. Use `norm_psi hψ (⅟(2 : AF F) * (p ⬝ᵥ Sum.elim c 0))` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Establish `h0` using `hN 0`. Rewrite `h0` using `[key, glue_zero, Sum.elim_zero_zero, zero_add]`. Conclude with `hp h0.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_lDiag_schr_ne {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {f : (κ ⊕ κ → AF F) → ℂ}
     (hf : f ∈ schA F (κ ⊕ κ)) (hf0 : f ≠ 0) : ∃ w, lDiag F κ (schr ψ w f) ≠ 0 := by
@@ -225,9 +219,9 @@ theorem exists_lDiag_schr_ne {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {f : (κ
   exact hp h0.symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ ψ JA JB d dd hψ hdd f hf hf0`. Use `⟨lDiag F κ, lDiag_adm, fun z φ hφ => ?_, ?_⟩` and prove the remaining obligations. Establish `hz : z * (diagCols β : Matrix (β ⊕ β) β (AE F E))ᵀ = Matrix.fromCols z z`. Rewrite using `[diagCols, Matrix.transpose_fromRows, Matrix.transpose_one, Matrix.mul_fromCols, Matrix.mul_one]`. Rewrite using `[hz, Darboux.rho, hdd z z, lDiag_schr ψ _ _ hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `exists_lDiag_schr_ne hψ hf hf0`. Conclude with `⟨dd.e.symm w, by rwa [Darboux.rho, LinearEquiv.apply_symm_apply]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_invForm_rho_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (α β κ : Type) [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (ψ : AddChar (AF F) ℂ)

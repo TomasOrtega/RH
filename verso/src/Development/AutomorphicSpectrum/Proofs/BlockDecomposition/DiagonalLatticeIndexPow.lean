@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.CtS.LatDiag
 variable {E : Type} [Field E] [NumberField E] {w : Pl E}
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Unfold `IsUnifV at h`. Rewrite `h` using `[map_zero]`. Conclude with `WithZero.zero_ne_coe h`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_ne_zero {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) : ϖ ≠ 0 := by
   rintro rfl
@@ -26,7 +26,7 @@ theorem unif_ne_zero {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) : ϖ ≠ 0 :
   exact WithZero.zero_ne_coe h
 
 /- English proof (translation)
-Unfold `IsUnifV at h`. Rewrite using `[h]`. Conclude with `(by decide : (Multiplicative.ofAdd (-1 : ℤ)) < 1)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_lt_one {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) : Valued.v ϖ < 1 := by
   unfold IsUnifV at h
@@ -34,11 +34,11 @@ theorem unif_lt_one {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) : Valued.v ϖ
   exact_mod_cast (by decide : (Multiplicative.ofAdd (-1 : ℤ)) < 1)
 
 /- English proof (translation)
-Unfold `IsUnifV at h`. Rewrite `hx` using `[map_mul, h]`. Break down `eq_or_ne (Valued.v x) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_le`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `WithZero.ne_zero_iff_exists.mp h0`. Rewrite `hx`, the goal using `[← hm]`. Establish `h1 : Multiplicative.ofAdd (-1 : ℤ) * m < 1` using `by exact_mod_cast hx`. Establish `h2 : (-1 : ℤ) + Multiplicative.toAdd m < 0` using `h1`. Establish `h3 : m ≤ 1` using `by show Multiplicative.toAdd m ≤ 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h3` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem le_one_of_unif_mul {ϖ x : w.adicCompletion E} (h : IsUnifV E w ϖ)
     (hx : Valued.v (ϖ * x) < 1) : Valued.v x ≤ 1 := by
@@ -56,13 +56,13 @@ theorem le_one_of_unif_mul {ϖ x : w.adicCompletion E} (h : IsUnifV E w ϖ)
   exact_mod_cast h3
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `lt_of_le_of_ne x.2 fun h1 => hx ?_` and prove the remaining obligations. Establish `hx0 : (x : w.adicCompletion E) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `zero_ne_one h1`. Establish `hinv : (x : w.adicCompletion E)⁻¹ ∈ w.adicCompletionIntegers E` using `by show Valued.v (x : w.adicCompletion E)⁻¹ ≤ 1`. Rewrite using `[map_inv₀, h1, inv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext (mul_inv_cancel₀ hx0))`. Introduce `hx hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `h1 : Valued.v (x : w.adicCompletion E) * Valued.v (y : w.adicCompletion E) = 1`. Rewrite using `[← map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (x : w.adicCompletion E) * (y : w.adicCompletion E) = 1` using `congrArg Subtype.val hy`. Rewrite using `[this, map_one]`. Establish `h2 : Valued.v (y : w.adicCompletion E) ≤ 1` using `y.2`. Establish `h3` using `lt_of_le_of_lt (mul_le_of_le_one_right' h2) hx`. Conclude with `absurd h1 (ne_of_lt h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_max_iff (x : w.adicCompletionIntegers E) :
     x ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers E) ↔
@@ -94,7 +94,7 @@ def posR {a i : ℕ} (hi : i ≤ a) (r : Fin i) : Fin a := Fin.castLE hi r
 def posS {b j : ℕ} (s : Fin (b - j)) : Fin b := ⟨j + s, by have := s.2; omega⟩
 
 /- English proof (translation)
-Establish `h` using `W.2 (posR hi p.1) (posS p.2)`. Establish `hc : ((posR hi p.1 : Fin a) : ℕ) < i ∧ j ≤ ((posS p.2 : Fin b) : ℕ)` using `⟨p.1.2, Nat.le_add_right _ _⟩`. Rewrite `h` using `[if_pos hc]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corner_mem {ϖ : w.adicCompletion E} {a b i j : ℕ} (hi : i ≤ a)
     (W : latD ϖ a b i j) (p : Fin i × Fin (b - j)) :
@@ -129,15 +129,13 @@ theorem cornerMap_apply (ϖ : w.adicCompletion E) (a b i j : ℕ) (hi : i ≤ a)
     cornerMap ϖ a b i j hi W p = IsLocalRing.residue _ ⟨_, corner_mem hi W p⟩ := rfl
 
 /- English proof (translation)
-Use extensionality with `W`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce `hW r s`. Establish `hWp : ∀ p : Fin i × Fin (b - j), Valued.v (ϖ * W.1 (posR hi p.1) (posS p.2)) < 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p`. Use `congrFun hW p` as an intermediate fact. Rewrite `this` using `[cornerMap_apply, Pi.zero_apply, IsLocalRing.residue_eq_zero_iff, mem_max_iff]`. Conclude with `this`. Distinguish the cases in `hc : (r : ℕ) < i ∧ j ≤ (s : ℕ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `hWp (⟨r, hc.1⟩, ⟨s - j, by have := s.2; omega⟩)` as an intermediate fact. Establish `hr : posR hi ⟨(r : ℕ), hc.1⟩ = r` using `Fin.ext rfl`. Establish `hs : posS (j` using `j) (⟨(s : ℕ) - j, by have := s.2; omega⟩ : Fin (b - j)) = s := Fin.ext (by simp [posS]; omega)`. Simplify using `only [hr, hs] at this`. Conclude with `le_one_of_unif_mul h this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `W.2 r s` as an intermediate fact. Rewrite `this` using `[if_neg hc]`. Conclude with `this`. Introduce `hW`. Use function extensionality and compare the values at `p`.
-
-Rewrite using `[cornerMap_apply, Pi.zero_apply, IsLocalRing.residue_eq_zero_iff, mem_max_iff]`. Use `show Valued.v (ϖ * W.1 (posR hi p.1) (posS p.2)) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hW _ _)) (unif_lt_one h)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_cornerMap {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) (a b i j : ℕ) (hi : i ≤ a)
     (hj : j ≤ b) :
@@ -169,17 +167,15 @@ theorem ker_cornerMap {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) (a b i j : 
     exact lt_of_le_of_lt (mul_le_of_le_one_right' (hW _ _)) (unif_lt_one h)
 
 /- English proof (translation)
-Introduce `c`. Use `choose x hx using fun p => IsLocalRing.residue_surjective (c p)`. Establish `h0` using `unif_ne_zero h`. Set `M : Matrix (Fin a) (Fin b) (w.adicCompletion E)` to `fun r s => if hc : (r : ℕ) < i ∧ j ≤ (s : ℕ) then ϖ⁻¹ * (x (⟨r, hc.1⟩, ⟨s - j, by have := s.2; omega⟩) : w.adicCompletion E) else 0`. Establish `hM : M ∈ latD ϖ a b i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r s`. Distinguish the cases in `hc : (r : ℕ) < i ∧ j ≤ (s : ℕ)`. Rewrite using `[if_pos hc]`. Simplify using `only [M, dif_pos hc]`. Rewrite using `[mul_inv_cancel_left₀ h0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(x _).2`. Rewrite using `[if_neg hc]`. Simplify using `only [M, dif_neg hc]`. Conclude with `(Ov E w).zero_mem`. Use `⟨⟨M, hM⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[cornerMap_apply, ← hx p]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hc : ((posR hi p.1 : Fin a) : ℕ) < i ∧ j ≤ ((posS p.2 : Fin b) : ℕ)` using `⟨p.1.2, Nat.le_add_right _ _⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show ϖ * M (posR hi p.1) (posS p.2) = _`. Simplify using `only [M, dif_pos hc]`. Rewrite using `[mul_inv_cancel_left₀ h0]`. Use `congr 2`. Use `Prod.ext (Fin.ext rfl) (Fin.ext ?_)` and prove the remaining obligations.
-
-Simplify using `[posS]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cornerMap_surjective {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) (a b i j : ℕ)
     (hi : i ≤ a) (hj : j ≤ b) : Function.Surjective (cornerMap ϖ a b i j hi) := by
@@ -214,7 +210,7 @@ theorem cornerMap_surjective {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) (a b
   simp [posS]
 
 /- English proof (translation)
-Establish `hcard : Nat.card (IsLocalRing.ResidueField (w.adicCompletionIntegers E)) = qV E w`. Rewrite using `[ReciprocityTheory.Bridge.ResidueFieldCardinality.card_residue w]`. Both sides reduce to the same expression. Rewrite using `[AddSubgroup.relIndex, ← ker_cornerMap h a b i j hi hj, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.mpr (cornerMap_surjective h a b i j hi hj), AddSubgroup.card_top, Nat.card_fun, hcard, Nat.card_prod, Nat.card_fin, Nat.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_intSub_latD (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E)
     (ϖ : w.adicCompletion E) (h : IsUnifV E w ϖ) (i j : ℕ) (hi : i ≤ a) (hj : j ≤ b) :

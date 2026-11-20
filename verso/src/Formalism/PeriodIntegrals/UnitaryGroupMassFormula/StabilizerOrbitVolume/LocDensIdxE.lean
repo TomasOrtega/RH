@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   (b : Module.Basis (Fin 2) F E) (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (a : ℕ)
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Establish `hx' : Valued.v x ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hx`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hx') hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_mul_lt {x y : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) (hy : Valued.v y < 1) :
     Valued.v (x * y) < 1 := by
@@ -26,33 +26,27 @@ theorem val_mul_lt {x y : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) (hy : 
   exact lt_of_le_of_lt (mul_le_of_le_one_left' hx') hy
 
 /- English proof (translation)
-Rewrite using `[← ker_redH]`. Use extensionality with `S`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_comap, AddSubgroup.mem_pi]`. Establish `key : redH b v σ a S = 0 ↔ ∀ i j k, Valued.v (crdS b v σ a S i j k) < 1`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h i j k`. Establish `h1 : residue _ (⟨crdS b v σ a S i j k, (mem_hermO_iff b v σ a S).1 S.2 i j k⟩ : v.adicCompletionIntegers F) = 0` using `congrFun (congrFun (congrFun h i) j) k`. Establish `h2` using `(ReciprocityTheory.Aut.mem_maxIdeal_iff v _).1 ((residue_eq_zero_iff _).1 h1)`. Conclude with `h2`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j k`. Establish `h3` using `res_of_val v ⟨crdS b v σ a S i j k, (mem_hermO_iff b v σ a S).1 S.2 i j k⟩ (h i j k)`. Conclude with `h3`. Rewrite using `[key]`. Use `set Sm : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := ((S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) with hSm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hps : ∀ q, psi b v σ a k0 S q ∈ (maximalIdeal (v.adicCompletionIntegers F)).toAddSubgroup ↔ Valued.v ((psi b v σ a k0 S q : v.adicCompletionIntegers F) : Fv F v) < 1` using `fun q => ReciprocityTheory.Aut.mem_maxIdeal_iff v _`. Prove the components needed by the constructor for the conclusion. Introduce `h q _`. Rewrite using `[hps]`. Take `⟨i, j⟩` from `q`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_pos hij]`. Conclude with `h i j 0`. Substitute `hij` using the available equality. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, lt_irrefl, if_false]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h i i k0`. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_neg (not_lt.2 hij.le), if_pos hij]`. Conclude with `h j i 1`. Introduce `h`. Establish `h' : ∀ q, Valued.v ((psi b v σ a k0 S q : v.adicCompletionIntegers F) : Fv F v) < 1` using `fun q => (hps q).1 (h q (Set.mem_univ q))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hup : ∀ i j, i < j → ∀ k, Valued.v (crdS b v σ a S i j k) < 1`. Introduce `i j hij k`. Use `fin_cases k`. Use `h' (i, j)` as an intermediate fact. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_pos hij] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Use `h' (j, i)` as an intermediate fact. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_neg (not_lt.2 hij.le), if_pos hij] at this`. Conclude with `this`. Introduce `i j k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Conclude with `hup i j hij k`. Substitute `hij` using the available equality. Establish `hd : Valued.v (crdS b v σ a S i i k0) < 1`. Use `h' (i, i)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, lt_irrefl, if_false] at this`. Conclude with `this`. Establish `hfx` using `hfix (fun l => crdS b v σ a S i i l) (by`. Use function extensionality and compare the values at `m`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : sigR (Fv F v) σ (Sm i i) = Sm i i` using `S.1.2 i i`. Use `cr_sig b v σ (Sm i i) m` as an intermediate fact. Rewrite `this` using `[hs]`. Simplify using `only [crdS_eq]`. Conclude with `this.symm)`.
-
-Apply the tactic sequence `have hkk : k = k0 ∨ k = k1 := by fin_cases k <;> fin_cases k0 <;> fin_cases k1 <;> simp_all`. Break down `hkk with rfl | rfl` into its components or cases. Conclude with `hd`. Establish `e : crdS b v σ a S i i k = algebraMap F (Fv F v) ρ * crdS b v σ a S i i k0` using `hfx`. Rewrite using `[e]`.
-
-Conclude with `val_mul_lt v hρ hd`. Establish `hs : Sm i j = sigR (Fv F v) σ (Sm j i)` using `(S.1.2 i j).symm`. Rewrite using `[crdS_eq, show ((S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = Sm i j from rfl, hs, cr_sig, Fin.sum_univ_two]`. Use `Valuation.map_add_lt _ (val_mul_lt v (hC _ _) ?_) (val_mul_lt v (hC _ _) ?_)` and prove the remaining obligations. Conclude with `hup j i hij 0`.
-
-Conclude with `hup j i hij 1`.
+A detailed English derivation is pending.
 -/
 theorem comap_eq (k0 k1 : Fin 2) (hk : k0 ≠ k1) (ρ : F)
     (hC : ∀ k l, algebraMap F (Fv F v) (Cmat b σ k l) ∈ v.adicCompletionIntegers F)
@@ -141,7 +135,7 @@ theorem comap_eq (k0 k1 : Fin 2) (hk : k0 ≠ k1) (ρ : F)
 end Comap
 
 /- English proof (translation)
-Rewrite using `[← ReciprocityTheory.Bridge.ResidueFieldCardinality.card_residue v]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem index_max {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     (maximalIdeal (v.adicCompletionIntegers F)).toAddSubgroup.index = Nat.card (𝓞 F ⧸ v.asIdeal) := by

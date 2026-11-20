@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.AcrisNZD
 
 /- English proof (translation)
-Use `(Module.Free.chooseBasis R M).repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Establish `h1` using `congrArg (fun y => (Module.Free.chooseBasis R M).repr y i) h`. Simplify using `only [map_smul, map_zero, Finsupp.smul_apply, smul_eq_mul, Finsupp.zero_apply] at h1 ⊢`. Conclude with `(mul_eq_zero.1 h1).resolve_left ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_smul_free {R M : Type*} [CommRing R] [IsDomain R] [AddCommGroup M] [Module R M]
     [Module.Free R M] {a : R} (ha : a ≠ 0) {x : M} (h : a • x = 0) : x = 0 := by
@@ -26,9 +26,7 @@ theorem eq_zero_of_smul_free {R M : Type*} [CommRing R] [IsDomain R] [AddCommGro
   exact (mul_eq_zero.1 h1).resolve_left ha
 
 /- English proof (translation)
-Take `⟨C⟩` from `GlobalTheory.MemLoc.nonempty_core l`. Use `haveI : IsDomain (Per.BdRp l) := (GlobalTheory.MemLoc.BdRField.bdR_isField l).1`. Use `⟨(GlobalTheory.MemLoc.crisP_injective l C.j C.j_cris).isDomain C.j, fun a b h => ?_⟩` and prove the remaining obligations. Establish `h1 : C.j (algebraMap (Per.Ainf l) (Per.Acris l) a) = C.j (algebraMap (Per.Ainf l) (Per.Acris l) b)` using `congrArg C.j h`. Rewrite `h1` using `[C.j_cris.on_ainf, C.j_cris.on_ainf]`.
-
-Conclude with `(GlobalTheory.MemLoc.ainf_isDomain_and_injective l).2.2 (GlobalTheory.T.algebraMap_ainfInvPrime_bdRPlus_injective l h1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acris_dom (l : ℕ) [Fact l.Prime] : IsDomain (Per.Acris l) ∧ Function.Injective (aC l) := by
   obtain ⟨C⟩ := GlobalTheory.MemLoc.nonempty_core l
@@ -42,7 +40,7 @@ theorem acris_dom (l : ℕ) [Fact l.Prime] : IsDomain (Per.Acris l) ∧ Function
 variable {l : ℕ} [Fact l.Prime] (K : FinExt l)
 
 /- English proof (translation)
-Use `haveI := (acris_dom l).1`. Establish `ha' : aC l a ≠ 0` using `fun h0 => ha ((acris_dom l).2 (h0.trans (map_zero _).symm))`. Rewrite `h` using `[← Algebra.smul_def]`. Conclude with `eq_zero_of_smul_free ha' h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_inC_mul {a : Ainf l} (ha : a ≠ 0) {z : CK K} (h : inC K (aC l a) * z = 0) : z = 0 := by
   haveI := (acris_dom l).1
@@ -51,7 +49,7 @@ theorem eq_zero_of_inC_mul {a : Ainf l} (ha : a ≠ 0) {z : CK K} (h : inC K (aC
   exact eq_zero_of_smul_free ha' h
 
 /- English proof (translation)
-Take `⟨r, hr, w, hw⟩` from `(IsIntegral.of_finite (Ainf l) x).isAlgebraic.exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hx)`. Conclude with `⟨r, hr, w, hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_dvd_inA {x : AK K} (hx : x ≠ 0) : ∃ N : Ainf l, N ≠ 0 ∧ ∃ w : AK K, inA K N = x * w := by
   obtain ⟨r, hr, w, hw⟩ := (IsIntegral.of_finite (Ainf l) x).isAlgebraic.exists_nonzero_dvd
@@ -59,11 +57,11 @@ theorem exists_dvd_inA {x : AK K} (hx : x ≠ 0) : ∃ N : Ainf l, N ≠ 0 ∧ �
   exact ⟨r, hr, w, hw⟩
 
 /- English proof (translation)
-Introduce `l _ K x hx y hy`. Take `⟨N, hN, w, hw⟩` from `exists_dvd_inA K hx`. Take `⟨D, z, hz⟩` from `exists_pow_mul y`. Establish `h1 : toB K (ofA K x * z) = 0`. Rewrite using `[map_mul, ← hz, mul_left_comm, hy, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ofA K x * z = 0` using `toB_injective K (h1.trans (map_zero _).symm)`. Establish `h3 : inC K (aC l N) * z = 0`. Rewrite using `[← ofA_inA, hw, map_mul, mul_right_comm, h2, zero_mul]`. Establish `h4 : z = 0` using `eq_zero_of_inC_mul K hN h3`. Rewrite `hz` using `[h4, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((isUnit_l K).pow D).mul_right_eq_zero.1 hz`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (x : AK K), x ≠ 0 → ∀ y : GlobalTheory.AcrisK.BK K,
     toB K (ofA K x) * y = 0 → y = 0 := by

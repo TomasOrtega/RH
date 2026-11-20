@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.BcCov
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `H`. Set `E : B ≃ₗ[R] A` to `LinearEquiv.ofBijective e he`. Set `TE : N ⊗[R] B ≃ₗ[R] N ⊗[R] A` to `TensorProduct.congr (LinearEquiv.refl R N) E`. Set `P : (∀ _ : Unit, N ⊗[R] B) ≃+ (∀ _ : Unit, N ⊗[R] A)` to `AddEquiv.piCongrRight fun _ => TE.toAddEquiv`. Set `E' : B' ≃+ A'` to `(LinearEquiv.ofBijective e' he').toAddEquiv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨(P.trans g).trans E'.symm, fun i n x => ?_⟩` and prove the remaining obligations. Apply `E'.injective` to reduce the goal to its premises. Establish `hP : P (Pi.single i (n ⊗ₜ x)) = Pi.single i (n ⊗ₜ e x)`. Use function extensionality and compare the values at `k`. Take `rfl : k = i` from `Subsingleton.elim _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Simplify using `[P, TE, E]`. Simplify using `only [AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`. Rewrite using `[hP, hg]`. Conclude with `(comm i n x).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_transport {R : Type} [CommRing R] {N : Type} [AddCommGroup N] [Module R N]
     {A B : Type 1} [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
@@ -50,7 +50,7 @@ theorem pt_obj (m : NMor γ q κ γ' q κ' (algebraMap R R')) (T : Thick (nlFun 
     pt ((m.mor p).functor.obj T) = pt T ≫ m.u := rfl
 
 /- English proof (translation)
-Unfold `InU at h ⊢`. Rewrite using `[pt_obj, hu, Category.comp_id]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inU_obj (m : NMor γ q κ γ' q κ' (algebraMap R R')) (hu : m.u = 𝟙 X) (V : X.Opens)
     (T : Thick (nlFun γ' p X q κ')) (h : InU V T) : InU V ((m.mor p).functor.obj T) := by
@@ -74,21 +74,21 @@ abbrev aT {b : Base} (L : b.Fun) : IdF (thA L) := (thFil L 0).sup (IdF.span _ 0)
 abbrev aB {b : Base} (L : b.Fun) : IdF (thA L) := (IdF.bot _).sup (IdF.span _ 0)
 
 /- English proof (translation)
-Establish `h : (thFil L 0).S T = ⊤` using `T.pdPow_zero`. Conclude with `top_le_iff.1 (h ▸ le_sup_left)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aT_top {b : Base} (L : b.Fun) (T : Thick L) : (aT L).S T = ⊤ := by
   have h : (thFil L 0).S T = ⊤ := T.pdPow_zero
   exact top_le_iff.1 (h ▸ le_sup_left)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(⊥ : Ideal _) ⊔ Ideal.span {algebraMap b.R _ 0} = ⊥`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem aB_bot {b : Base} (L : b.Fun) (T : Thick L) : (aB L).S T = ⊥ := by
   change (⊥ : Ideal _) ⊔ Ideal.span {algebraMap b.R _ 0} = ⊥
   simp
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Conclude with `congrArg (Submodule.Quotient.mk (p := _)) (Subtype.ext (h z.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mapH_square {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K L : Cx.{1} R} {L' P : Cx.{1} R'}
     (φ : Cx.Hom K L' σ) (ψ : Cx.Hom L' P (RingHom.id R')) (φ' : Cx.Hom K L (RingHom.id R)) (ψ' : Cx.Hom L P σ) (n : ℕ)
@@ -101,13 +101,13 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {C C' : Type 1} [Category.{0} 
   {Φ : PDF R C} {Φ' : PDF R' C'} {σ : R →+* R'}
 
 /- English proof (translation)
-Introduce `T _ _` and use `by rw [h]; trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leC_top (f : SMor Φ Φ' σ) (c : R') (a : IdF Φ.A) (a' : IdF Φ'.A) (h : ∀ T, a'.S T = ⊤) : f.LeC c a a' :=
   fun T _ _ => by rw [h]; trivial
 
 /- English proof (translation)
-Introduce `T x hx`. Rewrite `hx` using `[h, Ideal.mem_bot]`. Substitute `hx` using the available equality. Rewrite using `[map_zero, mul_zero]`. Conclude with `Ideal.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leC_bot (f : SMor Φ Φ' σ) (c : R') (b : IdF Φ.A) (b' : IdF Φ'.A) (h : ∀ T, b.S (f.G.obj T) = ⊥) : f.LeC c b b' := by
   intro T x hx
@@ -117,7 +117,7 @@ theorem leC_bot (f : SMor Φ Φ' σ) (c : R') (b : IdF Φ.A) (b' : IdF Φ'.A) (h
   exact Ideal.zero_mem _
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (algebraMap R' _ (c + c') * f.ρ T y) = Ideal.Quotient.mk _ (algebraMap R' _ c * f.ρ T y) + Ideal.Quotient.mk _ (algebraMap R' _ c' * f.ρ T y)`. Rewrite using `[map_add, add_mul, map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqC_add (f : SMor Φ Φ' σ) {a b : IdF Φ.A} {a' b' : IdF Φ'.A} (c c' : R') (ha : f.LeC c a a') (hb : f.LeC c b b')
     (ha' : f.LeC c' a a') (hb' : f.LeC c' b b') (ha'' : f.LeC (c + c') a a') (hb'' : f.LeC (c + c') b b') (T : C')
@@ -146,9 +146,9 @@ theorem sqC_val (f : SMor Φ Φ' σ) {a b : IdF Φ.A} {a' b' : IdF Φ'.A} (c : R
 end Gen
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (algebraMap R' _ (r • c) * f.ρ T y) = Ideal.Quotient.mk _ (algebraMap R R' r • (algebraMap R' _ c * f.ρ T y))`. Use `congrArg (Ideal.Quotient.mk _) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def r c, map_mul, mul_assoc, Algebra.smul_def (algebraMap R R' r)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqC_smul {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     {Φ : PDF R C} {Φ' : PDF R' C'} (f : SMor Φ Φ' (algebraMap R R')) {a b : IdF Φ.A} {a' b' : IdF Φ'.A} (r : R) (c : R')
@@ -169,7 +169,7 @@ variable {O R R' : Type} [CommRing O] [CommRing R] [CommRing R'] [Algebra R R'] 
   {κ : O →+* R ⧸ I} {κ' : O →+* R' ⧸ I'}
 
 /- English proof (translation)
-Take `⟨-, W, hW, hi⟩` from `h`. Conclude with `⟨trivial, W, hW, inU_obj m hu W T hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem st_obj (m : NMor γ q κ γ' q κ' (algebraMap R R')) (hu : m.u = 𝟙 X) (𝒱 : Set X.Opens)
     (T : Thick (nlFun γ' p X q κ')) (h : St ⊤ 𝒱 T) : St ⊤ 𝒱 ((m.mor p).functor.obj T) := by
@@ -177,11 +177,11 @@ theorem st_obj (m : NMor γ q κ γ' q κ' (algebraMap R R')) (hu : m.u = 𝟙 X
   exact ⟨trivial, W, hW, inU_obj m hu W T hi⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `w`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `(sq_val (incl h') _ _ T _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (sqC_val (m.smor Q₂ Q₂' k₂) a ha₂ hb₂ T _).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sqC_val, sq_val]`. Simplify using `only`. Use `(congrArg (Ideal.quotientMap _ _ _) (SMor.qC_mk (m.smor Q₁ Q₁' k₁) a hb₁ ((incl h').G.obj T) y)).trans ?_` and prove the remaining obligations. Use `(Ideal.quotientMap_mk).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg ((m.smor Q₂ Q₂' k₂).qC a hb₂ T) Ideal.quotientMap_mk).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (SMor.qC_mk (m.smor Q₂ Q₂' k₂) a hb₂ T _).symm` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem square_tau (m : NMor γ q κ γ' q κ' (algebraMap R R')) {Q₁ Q₂ : ObjectProperty (Thick (nlFun γ p X q κ))}
     {Q₁' Q₂' : ObjectProperty (Thick (nlFun γ' p X q κ'))} (h : Q₂ ≤ Q₁) (h' : Q₂' ≤ Q₁')
@@ -205,7 +205,7 @@ theorem square_tau (m : NMor γ q κ γ' q κ' (algebraMap R R')) {Q₁ Q₂ : O
   rfl
 
 /- English proof (translation)
-The claim follows from `mapH_square _ _ _ _ j (fun z => funext fun s => square_tau m h h' k₁ k₂ a ha₁ hb₁ ha₂ hb₂ _ _) x`.
+A detailed English derivation is pending.
 -/
 theorem pull_square (m : NMor γ q κ γ' q κ' (algebraMap R R')) {Q₁ Q₂ : ObjectProperty (Thick (nlFun γ p X q κ))}
     {Q₁' Q₂' : ObjectProperty (Thick (nlFun γ' p X q κ'))} (h : Q₂ ≤ Q₁) (h' : Q₂' ≤ Q₁')
@@ -220,13 +220,13 @@ theorem pull_square (m : NMor γ q κ γ' q κ' (algebraMap R R')) {Q₁ Q₂ : 
 end Sq
 
 /- English proof (translation)
-Introduce `O R R' _ _ _ _ _ I I' γ γ' p hp hn X q κ κ' m hu hg U Q Q' hQ hQ' h ha hb j`. Substitute `hQ hQ'` using the available equality. Establish `hA : ∀ a : R', (tmor m p).LeC a (aT _) (aT _)` using `fun a => leC_top _ a _ _ (aT_top _)`. Establish `hB : ∀ a : R', (tmor m p).LeC a (aB _) (aB _)` using `fun a => leC_bot _ a _ _ fun T => aB_bot _ _`. Establish `A : ∀ (𝒱 : Set X.Opens) (k : ∀ T, St (γ` using `γ') (p := p) (q := q) (κ := κ') ⊤ 𝒱 T → St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ 𝒱 ((m.mor p).functor.obj T)) (a : R'), (m.smor _ _ k).LeC a (oT _) (oT _) := fun 𝒱 k a => leC_top _ a _ _ fun T => aT_top _ T.obj`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `B : ∀ (𝒱 : Set X.Opens) (k : ∀ T, St (γ` using `γ') (p := p) (q := q) (κ := κ') ⊤ 𝒱 T → St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ 𝒱 ((m.mor p).functor.obj T)) (a : R'), (m.smor _ _ k).LeC a (oB _) (oB _) := fun 𝒱 k a => leC_bot _ a _ _ fun T => aB_bot _ _`. Establish `Hg : Tens R (N` using `fun _ : Unit => R') (M := fun _ => CH.H (sq (oT (St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ (Set.range U.U))) (oB (St ⊤ (Set.range U.U)))) j) (M' := CH.H (sq (oT (St (γ := γ') (p := p) (q := q) (κ := κ') ⊤ (Set.range U.U))) (oB (St ⊤ (Set.range U.U)))) j) fun _ a x => ((m.smor _ _ …`. Use `GlobalTheory.T.stable_cover_cech_vanishing.2.2 (m.mor p).functor (fun _ : Unit => R') (fun _ => sq (aT _) (aB _)) (sq (aT _) (aB _)) (fun _ a T => ((tmor m p).sqC a (hA a) (hB a)).τ T) (fun _ a _ _ φ x => ((tmor m p).sqC a (hA a) (hB a)).nat φ x) (fun _ a a' T x => sqC_add (tmor …` and prove the remaining obligations. Introduce `S hS j`. Take `⟨α, hα⟩` from `id hS`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c', -⟩` from `coord_res (U.c α) (iInf₂_le α hα) (U.inter S hS)`. Conclude with `GlobalTheory.CompanionTheory.ChartLocBc.local_bc hp hn m hu hg c' _ _ rfl rfl (st_obj m hu _) (A _ _) (B _ _) j`. Establish `h₁ : St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ (Set.range U.U) ≤ St ⊤ {⊤} := fun T _ => ⟨trivial, ⊤, rfl, fun _ _ => trivial⟩`. Establish `h₂ : St (γ` using `γ') (p := p) (q := q) (κ := κ') ⊤ (Set.range U.U) ≤ St ⊤ {⊤} := fun T _ => ⟨trivial, ⊤, rfl, fun _ _ => trivial⟩`. Establish `hc : ∀ W ∈ ({⊤} : Set X.Opens), W ≤ sSup (Set.range U.U)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `W rfl`. Rewrite using `[sSup_range, U.cover]`. Establish `b₁` using `(zar (γ := γ) (p := p) (q := q) (κ := κ) ⊤ (Or.inr ⟨hp, Or.inl rfl⟩) _ _ h₁ hc j).2.1 (some 0) none 0 0`. Establish `b₂` using `(zar (γ := γ') (p := p) (q := q) (κ := κ') ⊤ (Or.inr ⟨hp, Or.inl rfl⟩) _ _ h₂ hc j).2.1 (some 0) none 0 0`. Conclude with `tens_transport _ _ _ b₁ _ b₂ (fun _ a x => pull_square m h₁ h₂ h (st_obj m hu _) a (ha a) (hb a) (A _ _ a) (B _ _ a) j x) Hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bc_cover : ∀ {O R R' : Type} [CommRing O] [CommRing R] [CommRing R'] [Algebra R R'] [Module.Flat R R'] {I : Ideal R}
     {I' : Ideal R'} {γ : DividedPowers I} {γ' : DividedPowers I'} {p : ℕ} (hp : p ≠ 0) (hn : IsNilpotent (p : R))

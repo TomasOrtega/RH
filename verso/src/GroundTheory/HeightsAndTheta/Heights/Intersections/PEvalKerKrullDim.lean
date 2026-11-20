@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo IntermediateField.algebraAdjoinAdjoin
 
 /- English proof (translation)
-Introduce `K _ ι _ F L _ _ _ y`. Set `f : MRingOver F ι →ₐ[F] Algebra.adjoin F (Set.range y)` to `(Subalgebra.equivOfEq _ _ (MvPolynomial.aeval_range y)).toAlgHom.comp (aeval y).rangeRestrict`. Establish `hf : Function.Surjective f` using `(Subalgebra.equivOfEq _ _ (MvPolynomial.aeval_range y)).surjective.comp (AlgHom.rangeRestrict_surjective _)`. Establish `hker : RingHom.ker (aeval y : MRingOver F ι →ₐ[F] L) = RingHom.ker f`. Use extensionality with `p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[f, RingHom.mem_ker, Subtype.ext_iff]`. Set `e : (MRingOver F ι ⧸ RingHom.ker (aeval y : MRingOver F ι →ₐ[F] L)) ≃ₐ[F] Algebra.adjoin F (Set.range y)` to `(Ideal.quotientEquivAlgOfEq F hker).trans (Ideal.quotientKerAlgEquivOfSurjective hf)`. Rewrite using `[ringKrullDim_eq_of_ringEquiv e.toRingEquiv]`. Establish `_ : Algebra.FiniteType F (Algebra.adjoin F (Set.range y))` using `Algebra.FiniteType.of_surjective f hf`. Conclude with `GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg_fractionRing F (IntermediateField.adjoin F (Set.range y))`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem EvalKerKrullDim.proof : EvalKerKrullDim.Statement := by
   intro K _ ι _ F L _ _ _ y

@@ -12,7 +12,7 @@ noncomputable section
 namespace MainStatements.WeightKernel.Dec
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J _ f hf k γ hγ g`. Conclude with `(GlobalTheory.Orb.isSmoothRealFam_prod (fun i => (GlobalTheory.ThK.CuspTransfer.Smooth.line_fam h (hγ i)).1.comp (contDiff_apply ℝ ℝ i))).contDiff hf g`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smOf : SmOf := by
   intro F E _ _ _ _ _ σ h n J _ f hf k γ hγ g

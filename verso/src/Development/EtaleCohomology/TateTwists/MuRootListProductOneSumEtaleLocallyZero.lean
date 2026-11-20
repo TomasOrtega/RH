@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.EtaleFoundations.MuListPf
 
 /- English proof (translation)
-Apply `ULift.ext` to reduce the goal to its premises. Use `show ((a.val : ℕ) : ULift.{1} (ZMod q)).down = a`. Rewrite using `[ULift.down_natCast]`. Conclude with `ZMod.natCast_zmod_val a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ulift_natCast (q : ℕ) [NeZero q] (a : ZMod q) :
     ((a.val : ℕ) : ULift.{1} (ZMod q)) = ULift.up a := by
@@ -18,9 +18,9 @@ theorem ulift_natCast (q : ℕ) [NeZero q] (a : ZMod q) :
   exact ZMod.natCast_zmod_val a
 
 /- English proof (translation)
-Establish `hm : Finsupp.single ξ (1 : ULift.{1} (ZMod q)) - Finsupp.single ζ (ULift.up ((a ^ (1 : ℤ) : (ZMod q)ˣ) : ZMod q)) ∈ twRel q 1 B` using `Submodule.subset_span ⟨ζ, ξ, a, h, rfl⟩`. Establish `h2` using `(Submodule.Quotient.eq (twRel q 1 B)).2 hm`. Simplify using `only [zpow_one] at h2`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)), ulift_natCast]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h2]`. Express the relevant statement in the definitionally equal form `_ = (ULift.up (a : ZMod q) : ULift.{1} (ZMod q)) • (Submodule.Quotient.mk (Finsupp.single ζ 1) : (Prim q B →₀ ULift.{1} (ZMod q)) ⧸ twRel q 1 B)`. Rewrite using `[← Submodule.Quotient.mk_smul, Finsupp.smul_single]`. Use `congr 2`. Conclude with `(mul_one _).symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem twGen_rel (q : ℕ) [NeZero q] (B : CommRingCat.{0}) (ζ ξ : Prim q B) (a : (ZMod q)ˣ)
     (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) :
@@ -40,7 +40,7 @@ theorem twGen_rel (q : ℕ) [NeZero q] (B : CommRingCat.{0}) (ζ ξ : Prim q B) 
   exact (mul_one _).symm
 
 /- English proof (translation)
-Take `⟨-, -, h3, -, -, -⟩` from `LateralTheory.Fin.PrimitiveRootsOfUnityBasicIdentities.intersectionNumber_baseChange q B`. Assume the negation of the conclusion as `hn`. Use `h3 ζ n 0 (by rwa [Nat.modEq_zero_iff_dvd])` as an intermediate fact. Rewrite `this` using `[h, pow_zero, sub_self]`. Conclude with `not_isUnit_zero this`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_pow (q : ℕ) [NeZero q] (B : Type) [CommRing B] [Nontrivial B] (ζ : Prim q B) (n : ℕ)
     (h : ζ.1 ^ n = 1) : q ∣ n := by
@@ -51,7 +51,7 @@ theorem dvd_of_pow (q : ℕ) [NeZero q] (B : Type) [CommRing B] [Nontrivial B] (
   exact not_isUnit_zero this
 
 /- English proof (translation)
-The claim follows from `| [], _ => ⟨0, by simp, by simp⟩ | ξ :: l, h => by obtain ⟨n, h1, h2⟩ := sum_eq q B ζ l (fun x hx => h x (List.mem_cons_of_mem _ hx)) obtain ⟨a, ha⟩ := h ξ List.mem_cons_self refine ⟨(a : ZMod q).val + n, ?_, ?_⟩ · simp only [List.map_cons, List.prod_cons, h1, ha, pow_add] · simp …`.
+A detailed English derivation is pending.
 -/
 theorem sum_eq (q : ℕ) [NeZero q] (B : CommRingCat.{0}) (ζ : Prim q B) : ∀ (l : List (Prim q B)),
     (∀ ξ ∈ l, ∃ a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val) →
@@ -65,15 +65,15 @@ theorem sum_eq (q : ℕ) [NeZero q] (B : CommRingCat.{0}) (ζ : Prim q B) : ∀ 
     · simp only [List.map_cons, List.sum_cons, h2, twGen_rel q B ζ ξ a ha, add_smul]
 
 /- English proof (translation)
-The claim follows from `(V.presheaf.germ ⊤ x trivial).hom.domain_nontrivial`.
+A detailed English derivation is pending.
 -/
 theorem nontriv (V : Scheme.{0}) (x : V) : Nontrivial Γ(V, ⊤) :=
   (V.presheaf.germ ⊤ x trivial).hom.domain_nontrivial
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Establish `: ((n : ℕ) : ULift.{1} (ZMod q)) = 0`. Apply `ULift.ext` to reduce the goal to its premises. Rewrite using `[ULift.down_natCast]`. Conclude with `(ZMod.natCast_eq_zero_iff n q).2 hn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem zero_of_dvd (q : ℕ) [NeZero q] (M : Type*) [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M]
     (n : ℕ) (hn : q ∣ n) (x : M) : n • x = 0 := by
@@ -90,21 +90,19 @@ namespace LateralTheory.EtaleFoundations
 open MuListPf
 
 /- English proof (translation)
-Introduce `q _ U l hl`. Take `⟨hL1, hL2, -, -, hL5, hL6, hL7⟩` from `LateralTheory.Fin.EtaleLocalPropertyBasicClosure.intersectionNumber_baseChange`. Establish `stab : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V), ((twF q 1).map g.appTop).hom (l.map fun ζ => twGenR Γ(U, ⊤) ζ).sum = 0 → ((twF q 1).map (k ≫ g).appTop).hom (l.map fun ζ => twGenR Γ(U, ⊤) ζ).sum = 0`. Introduce `V W g k h`. Rewrite using `[Scheme.Hom.comp_appTop, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply, h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `l with`. Consider the case `nil => exact hL1 _ _ fun V g => by simp`. Consider the case `cons ζ l'`. Establish `hloc : Loc U fun V g => ∀ ξ ∈ ζ :: l', ∃ a : (ZMod q)ˣ, g.appTop.hom ξ.1 = g.appTop.hom ζ.1 ^ (a : ZMod q).val`. Use `hL6 U (Fin (ζ :: l').length) (fun i V g => ∃ a : (ZMod q)ˣ, g.appTop.hom ((ζ :: l').get i).1 = g.appTop.hom ζ.1 ^ (a : ZMod q).val) (fun i => ((LateralTheory.Fin.EtalePrimitiveRootsExistLocally.intersectionNumber_baseChange q U).2.1 ζ ((ζ :: l').get i)))` as an intermediate fact.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hL2 _ _ _ this fun V g h ξ hξ => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.get_of_mem hξ`. Conclude with `h i`. Use `hL5 U _ (hL2 _ _ _ hloc fun V g h => ?_)` and prove the remaining obligations. Distinguish the cases in `hV : IsEmpty V`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hL7 V _`. Rewrite `hV` using `[not_isEmpty_iff]`. Take `⟨x⟩` from `hV`. Use `nontriv V x` as an intermediate fact. Establish `key : ((twF q 1).map g.appTop).hom ((ζ :: l').map fun ζ => twGenR Γ(U, ⊤) ζ).sum = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_list_sum, List.map_map]`. Establish `e : ((fun y => ((twF q 1).map g.appTop).hom y) ∘ fun ζ => twGenR Γ(U, ⊤) ζ) = (fun ξ => twGenR Γ(V, ⊤) ξ) ∘ Prim.map g.appTop.hom`. Use function extensionality and compare the values at `ξ`. Conclude with `muK_gen_map q g.appTop ξ`. Rewrite using `[e, ← List.map_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, h1, h2⟩` from `sum_eq q Γ(V, ⊤) (ζ.map g.appTop.hom) ((ζ :: l').map (Prim.map g.appTop.hom)) (by`. Introduce `ξ' hξ'`. Take `⟨ξ, hξ, rfl⟩` from `List.mem_map.1 hξ'`. Conclude with `h ξ hξ)`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `zero_of_dvd q` to reduce the goal to its premises. Apply `dvd_of_pow q Γ(V, ⊤) (ζ.map g.appTop.hom) n` to reduce the goal to its premises. Rewrite using `[← h1]`. Use `Eq.trans ?_ ((congrArg g.appTop.hom hl).trans (map_one _))` and prove the remaining obligations. Rewrite using `[map_list_prod, List.map_map, List.map_map]`.
-
-Both sides reduce to the same expression. Conclude with `hL1 _ _ fun W k => stab V W g k key`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mu_root_list_product_one_sum_etale_locally_zero : MuRootListProductOneSumEtaleLocallyZero := by
   intro q _ U l hl

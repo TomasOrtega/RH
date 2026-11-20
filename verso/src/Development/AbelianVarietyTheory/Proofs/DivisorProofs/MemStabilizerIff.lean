@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 @[simp] theorem smul_pt (δ : H) (p : ConjPair H X) : (δ • p).pt = δ • p.pt := rfl
 
 /- English proof (translation)
-Introduce `δ hδ`. Rewrite `hδ`, the goal using `[MulAction.mem_stabilizer_iff]`. Rewrite using `[← smul_pt, hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem stabilizer_le_pt (p : ConjPair H X) :
     MulAction.stabilizer H p ≤ MulAction.stabilizer H p.pt := by
@@ -43,9 +43,9 @@ theorem stabilizer_le_pt (p : ConjPair H X) :
   rw [← smul_pt, hδ]
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff, ConjPair.ext_iff, smul_elt, smul_pt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[h1]`. Use `group`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stabilizer_iff (δ : H) (p : ConjPair H X) :
     δ ∈ MulAction.stabilizer H p ↔ δ * p.elt = p.elt * δ ∧ δ • p.pt = p.pt := by

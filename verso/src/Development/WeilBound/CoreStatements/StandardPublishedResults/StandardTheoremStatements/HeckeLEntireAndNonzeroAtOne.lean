@@ -7,31 +7,31 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BranchesAlongOfI
 namespace PositivityTheory.Stage1.PM
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.glHoweDuality_holds`.
+A detailed English derivation is pending.
 -/
 theorem gLHoweDuality : GlobalTheory.Published.GLHoweDuality :=
   GlobalTheory.Published.glHoweDuality_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.BorelCasselman_holds`.
+A detailed English derivation is pending.
 -/
 theorem borelCasselman : GlobalTheory.Published.BorelCasselman :=
   GlobalTheory.Published.BorelCasselman_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.quadraticClassFieldTheory_holds`.
+A detailed English derivation is pending.
 -/
 theorem quadraticClassFieldTheory : GlobalTheory.Published.QuadraticClassFieldTheory :=
   GlobalTheory.Published.quadraticClassFieldTheory_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne_holds`.
+A detailed English derivation is pending.
 -/
 theorem heckeLEntireAndNonzeroAtOne : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne :=
   GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.weylBranching_holds`.
+A detailed English derivation is pending.
 -/
 theorem weylBranching : GlobalTheory.Published.WeylBranching :=
   GlobalTheory.Published.weylBranching_holds

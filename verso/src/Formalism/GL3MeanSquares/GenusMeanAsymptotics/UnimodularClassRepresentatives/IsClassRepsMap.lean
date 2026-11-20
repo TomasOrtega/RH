@@ -14,7 +14,7 @@ variable {K V V' : Type} [Field K] [NumberField K] [StarRing K]
   [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V']
 
 /- English proof (translation)
-Establish `hex : ∃ s, IsClassReps h L s` using `⟨s, hs⟩`. Rewrite using `[massBasic_mass_eq h L hex]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[massBasic_sum_cast, massBasic_sum_cast]`. Conclude with `latLiftIndep K V h L _ _ (fun _ _ _ => rfl) (fun _ _ _ => rfl) _ _ hex.choose_spec hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_eq_sum (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V)
     (s : Finset (Submodule (𝓞 K) V)) (hs : IsClassReps h L s) :
@@ -37,11 +37,11 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K
 include hτ hg hloc hlat
 
 /- English proof (translation)
-Unfold `genus SameGenus`. Simplify using `only [Set.mem_ofPred_eq, hlat]`. Use `and_congr_right fun _ => forall₂_congr fun p hp => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', hg', e⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨g, rfl⟩` from `τ.surjective g'`. Use `⟨g, (hτ g).1 hg', Φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hloc p hp, hloc p hp, e]`. Introduce and unpack `⟨g, hg₁, e⟩`. Use `⟨τ g, (hτ g).2 hg₁, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hloc p hp, ← hg, e, hloc p hp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_genus_iff (L M : Submodule (𝓞 K) V) : Φ M ∈ genus h' (Φ L) ↔ M ∈ genus h L := by
   unfold genus SameGenus
@@ -57,11 +57,11 @@ theorem mem_genus_iff (L M : Submodule (𝓞 K) V) : Φ M ∈ genus h' (Φ L) �
     rw [← hloc p hp, ← hg, e, hloc p hp]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `N hN`. Take `⟨M, hM, rfl⟩` from `Finset.mem_map.1 hN`. Conclude with `(mem_genus_iff Φ τ hτ hg hloc hlat L M).2 (hs.1 M hM)`. Introduce `N hN`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨M, rfl⟩` from `Φ.surjective N`. Take `⟨M₀, ⟨hM₀, g, hg₀, e⟩, huniq⟩` from `hs.2 M ((mem_genus_iff Φ τ hτ hg hloc hlat L M).1 hN)`. Use `⟨Φ M₀, ⟨Finset.mem_map.2 ⟨M₀, hM₀, rfl⟩, τ g, (hτ g).2 hg₀, by rw [← hg, e]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `N₁ ⟨hN₁, g', hg', e'⟩`. Take `⟨M₁, hM₁, rfl⟩` from `Finset.mem_map.1 hN₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, rfl⟩` from `τ.surjective g'`. Establish `: M₁ = M₀` using `huniq M₁ ⟨hM₁, g₁, (hτ g₁).1 hg', Φ.injective (by rw [hg]; exact e')⟩`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isClassReps_map {L : Submodule (𝓞 K) V} {s : Finset (Submodule (𝓞 K) V)}
     (hs : IsClassReps h L s) : IsClassReps h' (Φ L) (s.map Φ.toEmbedding) := by
@@ -80,7 +80,7 @@ theorem isClassReps_map {L : Submodule (𝓞 K) V} {s : Finset (Submodule (𝓞 
     rw [this]; rfl
 
 /- English proof (translation)
-Use `(Nat.card_congr (τ.subtypeEquiv fun g => ?_)).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g ∈ isom h ∧ gmap g M = M) ↔ (τ g ∈ isom h' ∧ gmap (τ g) (Φ M) = Φ M)`. Rewrite using `[hτ, ← hg, Φ.injective.eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_autL_eq (M : Submodule (𝓞 K) V) :
     Nat.card (autL h' (Φ M)) = Nat.card (autL h M) := by
@@ -89,9 +89,9 @@ theorem card_autL_eq (M : Submodule (𝓞 K) V) :
   rw [hτ, ← hg, Φ.injective.eq_iff]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hex`. Establish `hs'` using `isClassReps_map Φ τ hτ hg hloc hlat hs`. Use `⟨⟨_, hs'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mass_eq_sum h L s hs, mass_eq_sum h' _ _ hs', Finset.sum_map]`. Use `Finset.sum_congr rfl fun M _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Equiv.coe_toEmbedding, card_autL_eq Φ τ hτ hg hloc hlat M]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mass_transfer {L : Submodule (𝓞 K) V} (hex : ∃ s, IsClassReps h L s) :
     (∃ s', IsClassReps h' (Φ L) s') ∧ mass h' (Φ L) = mass h L := by
@@ -108,7 +108,7 @@ def mapE (φ : V ≃ₗ[K] V') : Submodule (𝓞 K) V ≃ Submodule (𝓞 K) V' 
   (Submodule.orderIsoMapComap (φ.restrictScalars (𝓞 K))).toEquiv
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `y ∈ M.map ((φ.restrictScalars (𝓞 K)) : V →ₗ[𝓞 K] V') ↔ _`. Rewrite using `[Submodule.mem_map_equiv]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_mapE (φ : V ≃ₗ[K] V') (M : Submodule (𝓞 K) V) (y : V') :
     y ∈ mapE φ M ↔ φ.symm y ∈ M := by
@@ -128,7 +128,7 @@ theorem conjE_apply (φ : V ≃ₗ[K] V') (g : V ≃ₗ[K] V) (y : V') :
     conjE φ g y = φ (g (φ.symm y)) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `y ∈ M.map ((g.restrictScalars (𝓞 K)) : V →ₗ[𝓞 K] V) ↔ _`. Rewrite using `[Submodule.mem_map_equiv]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_gmap (g : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) (y : V) :
     y ∈ gmap g M ↔ g.symm y ∈ M := by
@@ -136,7 +136,7 @@ theorem mem_gmap (g : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) (y : V) :
   rw [Submodule.mem_map_equiv]; rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `hM.fg.map _`. Establish `e : ((mapE φ M : Submodule (𝓞 K) V') : Set V') = (φ : V →ₗ[K] V') '' (M : Set V)` using `rfl`. Rewrite using `[e, Submodule.span_image, hM.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_mapE (φ : V ≃ₗ[K] V') {M : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M) :
     Submodule.IsLattice K (mapE φ M) := by
@@ -146,23 +146,23 @@ theorem isLattice_mapE (φ : V ≃ₗ[K] V') {M : Submodule (𝓞 K) V} (hM : Su
     rw [e, Submodule.span_image, hM.span_eq_top, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[mem_mapE]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapE_symm_mapE (φ : V ≃ₗ[K] V') (M : Submodule (𝓞 K) V) : mapE φ.symm (mapE φ M) = M := by
   ext x; simp [mem_mapE]
 
 /- English proof (translation)
-Use `mass_transfer (mapE φ) (conjE φ) ?_ ?_ ?_ ?_ hex` and prove the remaining obligations. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `H x y`. Use `H (φ x) (φ y)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[conjE_apply, hφ]`. Introduce `H x y`. Take `⟨x, rfl⟩` from `φ.surjective x`. Take `⟨y, rfl⟩` from `φ.surjective y`. Simplify using `only [conjE_apply, LinearEquiv.symm_apply_apply, hφ]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `H x y`. Introduce `g M`. Use extensionality with `y`. Rewrite using `[mem_mapE, mem_gmap, mem_gmap, mem_mapE]`. Establish `e : (conjE φ g).symm y = φ (g.symm (φ.symm y))` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, LinearEquiv.symm_apply_apply]`. Introduce `p _ M`. Use extensionality with `y`. Rewrite using `[mem_mapE]`. Express the relevant statement in the definitionally equal form `(∃ s ∈ hcompl (K := K) p, s • φ.symm y ∈ M) ↔ (∃ s ∈ hcompl (K := K) p, s • y ∈ mapE φ M)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_congr fun s => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[mem_mapE]`. Establish `: φ.symm (s • y) = s • φ.symm y` using `(φ.symm.restrictScalars (𝓞 K)).map_smul s y`. Rewrite using `[this]`. Introduce `M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun H => ?_, isLattice_mapE φ⟩` and prove the remaining obligations. Use `isLattice_mapE φ.symm H` as an intermediate fact. Rewrite `this` using `[mapE_symm_mapE]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mass_mapE (φ : V ≃ₗ[K] V') {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
     (hφ : ∀ x y, h' (φ x) (φ y) = h x y) {L : Submodule (𝓞 K) V}

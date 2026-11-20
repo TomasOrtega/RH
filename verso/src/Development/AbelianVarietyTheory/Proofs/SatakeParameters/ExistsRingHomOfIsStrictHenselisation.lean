@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.NCyc.StrictLocLift
 
 /- English proof (translation)
-Use `letI : Algebra R Q := tQ.toAlgebra`. Use `letI : Algebra R T := b.toAlgebra`. Use `haveI : Algebra.Etale R Q := htQ`. Set `G₁ : Q →ₐ[R] T` to `{ g₁ with commutes' := fun r => DFunLike.congr_fun h₁ r }`. Set `G₂ : Q →ₐ[R] T` to `{ g₂ with commutes' := fun r => DFunLike.congr_fun h₂ r }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(GlobalTheory.EtaleHensel.bijective_residue_comp R Q T).1 (a₁ := G₁) (a₂ := G₂) (by` as an intermediate fact. Use extensionality with `q`. Conclude with `DFunLike.congr_fun h q)`. Use extensionality with `q`. Conclude with `DFunLike.congr_fun this q`.
+By extensionality, compare the relevant components. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem lift_unique {R Q T : Type} [CommRing R] [CommRing Q] [CommRing T] [HenselianLocalRing T]
     (tQ : R →+* Q) (htQ : tQ.Etale) (b : R →+* T) (g₁ g₂ : Q →+* T)
@@ -26,9 +26,9 @@ theorem lift_unique {R Q T : Type} [CommRing R] [CommRing Q] [CommRing T] [Hense
   ext q; exact DFunLike.congr_fun this q
 
 /- English proof (translation)
-Use `letI : Algebra R Q := tQ.toAlgebra`. Use `letI : Algebra R T := b.toAlgebra`. Use `haveI : Algebra.Etale R Q := htQ`. Set `Ψ : Q →ₐ[R] ResidueField T` to `{ ψ with commutes' := fun r => DFunLike.congr_fun hψ r }`. Take `⟨G, hG⟩` from `(GlobalTheory.EtaleHensel.bijective_residue_comp R Q T).2 Ψ`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨G.toRingHom, RingHom.ext fun r => G.commutes r, RingHom.ext fun q => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun hG q`.
+A detailed English derivation is pending.
 -/
 theorem lift_exists {R Q T : Type} [CommRing R] [CommRing Q] [CommRing T] [HenselianLocalRing T]
     (tQ : R →+* Q) (htQ : tQ.Etale) (b : R →+* T) (ψ : Q →+* ResidueField T)
@@ -47,19 +47,17 @@ end GlobalTheory.NCyc.StrictLocLift
 namespace GlobalTheory.NCyc.StrictLocLift
 
 /- English proof (translation)
-Take `⟨J, _, _, D, t, s, hs, hts⟩` from `ha`. Establish `hts' : ∀ j, (s.app j).hom.comp (t.app j).hom = a` using `fun j => by`. Use `congrArg CommRingCat.Hom.hom (hts j).2` as an intermediate fact. Simplify using `using this`. Establish `hψj : ∀ j, (ψ.comp (s.app j).hom).comp (t.app j).hom = (residue T).comp b` using `fun j => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_assoc, hts' j, hψ]`. Use `choose g hg using fun j => lift_exists (t.app j).hom (hts j).1 b (ψ.comp (s.app j).hom) (hψj j)`. Establish `nat : ∀ {j k : J} (u : j ⟶ k), (g k).comp (D.map u).hom = g j`. Introduce `j k u`. Establish `ht : (D.map u).hom.comp (t.app j).hom = (t.app k).hom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg CommRingCat.Hom.hom (t.naturality u)` as an intermediate fact. Simplify using `using this.symm`. Establish `hs' : (s.app k).hom.comp (D.map u).hom = (s.app j).hom`. Establish `e : D.map u ≫ s.app k = s.app j`. Use `s.naturality u` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map, Category.comp_id] at this`. Conclude with `this`. Use `congrArg CommRingCat.Hom.hom e` as an intermediate fact. Rewrite `this` using `[CommRingCat.hom_comp]`. Then use the resulting hypothesis. Apply `lift_unique (t.app j).hom (hts j).1 b` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_assoc, ht, (hg k).1]`. Conclude with `(hg j).1`. Rewrite using `[← RingHom.comp_assoc, (hg k).2, RingHom.comp_assoc, hs', (hg j).2]`. Set `c : Cocone D` to `{ pt := CommRingCat.of T ι := { app := fun j => CommRingCat.ofHom (g j) naturality := fun j k u => by`. Use extensionality with `q`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `using DFunLike.congr_fun (nat u) q } }`. Use `⟨(hs.desc c).hom, ?_⟩` and prove the remaining obligations. Take `⟨j⟩ : Nonempty J` from `IsFiltered.nonempty`. Establish `hf : (hs.desc c).hom.comp (s.app j).hom = g j`. Use `congrArg CommRingCat.Hom.hom (hs.fac c j)` as an intermediate fact.
-
-Simplify `this` using `[c]`. Rewrite using `[← hts' j, ← RingHom.comp_assoc, hf, (hg j).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_of_isIndEtale {R S T : Type} [CommRing R] [CommRing S] [CommRing T] [HenselianLocalRing T]
     (a : R →+* S) (b : R →+* T) (ha : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale a) (ψ : S →+* ResidueField T)
@@ -105,9 +103,9 @@ end GlobalTheory.NCyc.StrictLocLift
 namespace GlobalTheory.NCyc.StrictLocLift
 
 /- English proof (translation)
-Use `letI : Algebra R S := a.toAlgebra`. Use `haveI : IsLocalHom (algebraMap R S) := ha.2.2.1`. Take `⟨-, -, hsep⟩` from `GlobalTheory.IndEtaleLocal.flat_map_maximalIdeal_isSeparable R S ha.2.2.2`. Use `letI : Algebra (ResidueField R) (ResidueField T) := (ResidueField.map b).toAlgebra`. Set `ι : ResidueField S →ₐ[ResidueField R] ResidueField T` to `IsSepClosed.lift`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_ringHom_of_isIndEtale a b ha.2.2.2 (ι.toRingHom.comp (residue S)) (RingHom.ext fun r => ?_)` and prove the remaining obligations. Establish `h1 : residue S (a r) = algebraMap (ResidueField R) (ResidueField S) (residue R r)` using `rfl`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[h1, ι.commutes]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_of_isStrictHenselisation {R S T : Type} [CommRing R] [IsLocalRing R] [CommRing S]
     [IsLocalRing S] [CommRing T] [HenselianLocalRing T] [IsSepClosed (ResidueField T)]
@@ -125,11 +123,9 @@ theorem exists_ringHom_of_isStrictHenselisation {R S T : Type} [CommRing R] [IsL
   rfl
 
 /- English proof (translation)
-Introduce `X Y f x L M`. Use `haveI : IsLocalHom L.φ := L.isStrictHenselisation.2.2.1`. Use `haveI : HenselianLocalRing L.A := L.henselian`. Use `haveI : IsSepClosed (ResidueField L.A) := L.isSepClosed`. Use `haveI : IsLocalHom (L.φ.comp (f.stalkMap x).hom) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨g, hg⟩` from `exists_ringHom_of_isStrictHenselisation M.φ M.isStrictHenselisation (L.φ.comp (f.stalkMap x).hom)`. Use `⟨Spec.map (CommRingCat.ofHom g), ?_⟩` and prove the remaining obligations. Establish `e : CommRingCat.ofHom M.φ ≫ CommRingCat.ofHom g = f.stalkMap x ≫ CommRingCat.ofHom L.φ`. Use extensionality with `r`. Conclude with `DFunLike.congr_fun hg r`.
-
-Simplify using `only [GlobalTheory.NCyc.StrictLoc.toX, Category.assoc]`. Rewrite using `[← Category.assoc (Spec.map _), ← Spec.map_comp, e]`. Establish `key : Spec.map (f.stalkMap x ≫ CommRingCat.ofHom L.φ) = Spec.map (CommRingCat.ofHom L.φ) ≫ Spec.map (f.stalkMap x)` using `Spec.map_comp _ _`. Rewrite using `[key, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) {x : X} (L : GlobalTheory.NCyc.StrictLoc X x)
     (M : GlobalTheory.NCyc.StrictLoc Y (f x)), ∃ h : L.scheme ⟶ M.scheme, h ≫ M.toX = L.toX ≫ f := by

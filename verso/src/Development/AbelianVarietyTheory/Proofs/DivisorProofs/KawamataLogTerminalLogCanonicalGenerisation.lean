@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨η, m, g, h₁, h₂, h₃, h₄⟩ => ⟨η, m, g, h₁, h₂, fun w hw E hE => h₃ w (hw.trans hzx) E hE, fun E hE => h₄ E (hE.of_specializes hzx)⟩, fun ⟨η, m, g, h₁, h₂, h₃, h₄⟩ => ⟨η, m, g, h₁, h₂, fun w hw E hE => h₃ w (hw.trans hzx) E hE, fun E hE => h₄ E (hE.of_specializes hzx)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem kltAt_lcAt_of_specializes (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     (p : X ⟶ Sp ℂ) (n : ℕ) (Γ : X → ℚ) (x z : X) (hzx : z ⤳ x) :
@@ -23,7 +23,7 @@ theorem kltAt_lcAt_of_specializes (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoet
         fun E hE => h₄ E (hE.of_specializes hzx)⟩⟩
 
 /- English proof (translation)
-Introduce `X _ _ p n Γ x z h` and use `kltAt_lcAt_of_specializes X p n Γ x z h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kltAt_lcAt_generisation :
     ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) (n : ℕ),

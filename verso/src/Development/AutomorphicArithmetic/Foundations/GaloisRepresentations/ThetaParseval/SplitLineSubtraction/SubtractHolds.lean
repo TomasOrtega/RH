@@ -37,39 +37,39 @@ import Development.WeilBound.CoreStatements.StandardPublishedResults.StandardThe
 namespace UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-The claim follows from `pstOfDR_holds GlobalTheory.deRham_potentiallySemistable`.
+A detailed English derivation is pending.
 -/
 theorem pstOfDR : PstOfDR := pstOfDR_holds GlobalTheory.deRham_potentiallySemistable
 
 /- English proof (translation)
-The claim follows from `frobSub_holds cpFacts_holds`.
+A detailed English derivation is pending.
 -/
 theorem frobSub : FrobSub := frobSub_holds cpFacts_holds
 
 /- English proof (translation)
-The claim follows from `clConj_holds cpFacts_holds contLeft_holds pstOfDR`.
+A detailed English derivation is pending.
 -/
 theorem clConj : ClConj := clConj_holds cpFacts_holds contLeft_holds pstOfDR
 
 /- English proof (translation)
-The claim follows from `clSub_holds frobSub sumDR_holds pstOfDR wDFacts_holds`.
+A detailed English derivation is pending.
 -/
 theorem clSub : ClSub := clSub_holds frobSub sumDR_holds pstOfDR wDFacts_holds
 
 /- English proof (translation)
-The claim follows from `clTw_holds frobSub twLoc_holds twJumps_holds pstOfDR wDFacts_holds contLeft_holds`.
+A detailed English derivation is pending.
 -/
 theorem clTw : ClTw := clTw_holds frobSub twLoc_holds twJumps_holds pstOfDR wDFacts_holds contLeft_holds
 
 /- English proof (translation)
-The claim follows from `peelAll_holds (peelOne_holds dgFacts_holds cpFacts_holds eigTransfer_holds eigSum_holds splitLine_holds sSLeft_holds) contLeft_holds clConj clSub`.
+A detailed English derivation is pending.
 -/
 theorem peelAll : PeelAll :=
   peelAll_holds (peelOne_holds dgFacts_holds cpFacts_holds eigTransfer_holds eigSum_holds splitLine_holds sSLeft_holds)
     contLeft_holds clConj clSub
 
 /- English proof (translation)
-The claim follows from `charEx_holds PositivityTheory.Stage1.PM.heckeLAdicCharacter charFrob_holds (charAbove_holds PositivityTheory.Stage1.PM.heckeLAdicCharacter HodgeLocalDeRhamField.HLdR.field_outright (UpperTheory.Lit.CharWD.algebraicCharacterWD GlobalTheory.globalArtinReciprocity_holds HodgeLocalDe …`.
+A detailed English derivation is pending.
 -/
 theorem charEx : CharEx :=
   charEx_holds PositivityTheory.Stage1.PM.heckeLAdicCharacter charFrob_holds
@@ -78,19 +78,19 @@ theorem charEx : CharEx :=
       contLeft_holds) charInj_holds
 
 /- English proof (translation)
-The claim follows from `weakIso_holds satAE_holds`.
+A detailed English derivation is pending.
 -/
 theorem weakIso : WeakIso := weakIso_holds satAE_holds
 
 /- English proof (translation)
-The claim follows from `atPlace_holds charEx satAE_holds (frobId_holds (denseId_holds cpFacts_holds dgFacts_holds) cpFacts_holds) peelAll clTw clAway_holds contLeft_holds sSLeft_holds`.
+A detailed English derivation is pending.
 -/
 theorem atPlace : AtPlace :=
   atPlace_holds charEx satAE_holds (frobId_holds (denseId_holds cpFacts_holds dgFacts_holds) cpFacts_holds) peelAll clTw
     clAway_holds contLeft_holds sSLeft_holds
 
 /- English proof (translation)
-The claim follows from `subtract_of atPlace splitEx_holds weakIso clConj`.
+A detailed English derivation is pending.
 -/
 theorem subtract_holds : Subtract := subtract_of atPlace splitEx_holds weakIso clConj
 

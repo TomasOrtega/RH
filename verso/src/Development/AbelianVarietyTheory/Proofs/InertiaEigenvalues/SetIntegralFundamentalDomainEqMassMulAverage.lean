@@ -5,19 +5,19 @@ open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.CuspRep Glob
 namespace GlobalTheory.CuspGeneric
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ Γ hΓ mG hB μ 𝓕 hμ h𝓕 Φ hΦ`. Take `⟨hd, K, hK, hcov⟩` from `hΓ`. Establish `e` using `hB.measurable_eq`. Substitute `e` using the available equality. Use `letI : MeasurableSpace G := borel G`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Equip the data with the indicated structure.
 
-Use `haveI : Countable Γ := countable_of_discrete_addSubgroup Γ`. Establish `hne : μ 𝓕 ≠ 0` using `h𝓕.measure_ne_zero (NeZero.ne μ)`. Establish `hfin : μ 𝓕 ≠ ⊤` using `(GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact Γ hK hcov μ h𝓕).ne`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hΦ.1.continuousOn`. Establish `hb : ∀ x, ‖Φ x‖ ≤ C` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hk⟩` from `hcov x`. Use `hC _ hk` as an intermediate fact. Rewrite `this` using `[hΦ.2 γ hγ]`. Then use the resulting hypothesis. Establish `hint : IntegrableOn Φ 𝓕 μ` using `Measure.integrableOn_of_bounded hfin hΦ.1.aestronglyMeasurable (M := C) (Filter.Eventually.of_forall hb)`. Use `⟨hne, hfin, hint, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hex` using `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact G Γ K hK hcov).1`. Establish `hex' : ∃ p : Measure G × Set G, p.1.IsAddHaarMeasure ∧ IsAddFundamentalDomain Γ p.2 p.1 ∧ p.1 p.2 = 1`. Take `⟨μ₀, F₀, h⟩` from `hex`. Conclude with `⟨(μ₀, F₀), h⟩`. Establish `hav : avg Γ Φ = ∫ x in hex'.choose.2, Φ x ∂hex'.choose.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [avg]`. Rewrite using `[dif_pos hex']`. Rewrite using `[hav]`. Take `⟨hμ₀, hF₀, h1⟩` from `hex'.choose_spec`. Generalize the expression as in `hex'.choose = p at hμ₀ hF₀ h1 ⊢`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨μ₀, F₀⟩` from `p`. Simplify using `only at hμ₀ hF₀ h1 ⊢`. Take `⟨c, hc⟩ : ∃ c : NNReal, μ = c • μ₀` from `⟨_, Measure.isAddLeftInvariant_eq_smul μ μ₀⟩`. Establish `hac : μ ≪ μ₀` using `hc ▸ Measure.smul_absolutelyContinuous`. Establish `hF₀' : IsAddFundamentalDomain Γ F₀ μ` using `hF₀.mono hac`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : μ 𝓕 = μ F₀` using `h𝓕.measure_eq hF₀'`. Establish `e2 : ∫ x in 𝓕, Φ x ∂μ = ∫ x in F₀, Φ x ∂μ` using `h𝓕.setIntegral_eq hF₀' fun g x => hΦ.2 g g.2 x`. Rewrite using `[e1, e2, hc, Measure.restrict_smul, integral_smul_nnreal_measure, Measure.smul_apply, h1]`. Simplify using `[ENNReal.smul_def, NNReal.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setIntegral_eq_mass_mul_avg : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] (Γ : AddSubgroup G), IsCoLat Γ → ∀ [MeasurableSpace G] [BorelSpace G] (μ : Measure G) (𝓕 : Set G), μ.IsAddHaarMeasure → IsAddFundamentalDomain Γ 𝓕 μ → ∀ Φ : G → ℂ, Per Γ Φ → μ 𝓕 ≠ 0 ∧ μ 𝓕 ≠ ⊤ ∧ IntegrableOn Φ 𝓕 μ ∧ ∫ x in 𝓕, Φ x ∂μ = ((μ 𝓕).toReal : ℂ) * avg Γ Φ := by
   intro G _ _ _ _ _ _ Γ hΓ mG hB μ 𝓕 hμ h𝓕 Φ hΦ

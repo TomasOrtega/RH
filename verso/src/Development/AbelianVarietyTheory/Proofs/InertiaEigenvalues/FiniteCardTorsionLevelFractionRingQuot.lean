@@ -33,9 +33,9 @@ theorem divPowQ_apply (ϖ : O) (n : ℕ) (a : O) :
       ((algebraMap O (FractionRing O) ϖ ^ n)⁻¹ * algebraMap O (FractionRing O) a) := rfl
 
 /- English proof (translation)
-Establish `hπ : (algebraMap O (FractionRing O) ϖ) ^ n ≠ 0` using `pow_ne_zero _ ((map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).2 hϖ)`. Use extensionality with `a`. Rewrite using `[LinearMap.mem_ker, divPowQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_one, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨b, IsFractionRing.injective O (FractionRing O) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hb, mul_comm, ← mul_assoc, mul_inv_cancel₀ hπ, one_mul]`. Introduce and unpack `⟨b, rfl⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, mul_comm (algebraMap O (FractionRing O) b), ← mul_assoc, inv_mul_cancel₀ hπ, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_divPowQ {ϖ : O} (hϖ : ϖ ≠ 0) (n : ℕ) :
     LinearMap.ker (divPowQ ϖ n) = Ideal.span {ϖ ^ n} := by
@@ -54,11 +54,11 @@ theorem ker_divPowQ {ϖ : O} (hϖ : ϖ ≠ 0) (n : ℕ) :
       inv_mul_cancel₀ hπ, one_mul]
 
 /- English proof (translation)
-Establish `hπ : (algebraMap O (FractionRing O) ϖ) ^ n ≠ 0` using `pow_ne_zero _ ((map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).2 hϖ)`. Use extensionality with `y`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[divPowQ_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_one, Algebra.smul_def, map_pow, ← mul_assoc, mul_inv_cancel₀ hπ, one_mul]`. Conclude with `⟨a, rfl⟩`. Introduce `hy`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hy` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_one, Algebra.smul_def, map_pow]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb⟩` from `hy`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[divPowQ_apply, hb, ← mul_assoc, inv_mul_cancel₀ hπ, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_divPowQ {ϖ : O} (hϖ : ϖ ≠ 0) (n : ℕ) :
     LinearMap.range (divPowQ ϖ n) = LinearMap.ker ((ϖ ^ n) • LinearMap.id : Formalism.NG.KO O →ₗ[O] Formalism.NG.KO O) := by
@@ -80,7 +80,7 @@ theorem range_divPowQ {ϖ : O} (hϖ : ϖ ≠ 0) (n : ℕ) :
     rw [divPowQ_apply, hb, ← mul_assoc, inv_mul_cancel₀ hπ, one_mul]
 
 /- English proof (translation)
-Establish `h1 : Nat.card (Lev (Formalism.NG.KO O) (ϖ ^ n)) = Nat.card (LinearMap.range (divPowQ ϖ n))`. Rewrite using `[range_divPowQ hϖ n]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Nat.card_congr (LinearMap.quotKerEquivRange (divPowQ ϖ n)).toEquiv, ker_divPowQ hϖ n]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_lev_KO {ϖ : O} (hϖ : ϖ ≠ 0) (n : ℕ) :
     Nat.card (Lev (Formalism.NG.KO O) (ϖ ^ n)) = Nat.card (O ⧸ Ideal.span {ϖ ^ n}) := by
@@ -89,7 +89,7 @@ theorem natCard_lev_KO {ϖ : O} (hϖ : ϖ ≠ 0) (n : ℕ) :
   rw [h1, ← Nat.card_congr (LinearMap.quotKerEquivRange (divPowQ ϖ n)).toEquiv, ker_divPowQ hϖ n]
 
 /- English proof (translation)
-Establish `hp : (Ideal.span {ϖ}).IsPrime` using `hϖ.maximalIdeal_eq ▸ inferInstance`. Establish `hq` using `cardQuot_pow_of_prime (P := Ideal.span {ϖ}) (fun h => hϖ.ne_zero (Ideal.span_singleton_eq_bot.1 h)) (i := n)`. Rewrite `hq` using `[Ideal.span_singleton_pow, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Rewrite using `[hq, ← hϖ.maximalIdeal_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natCard_quot_pow {ϖ : O} (hϖ : Irreducible ϖ) (n : ℕ) :
     Nat.card (O ⧸ Ideal.span {ϖ ^ n}) = Nat.card (IsLocalRing.ResidueField O) ^ n := by
@@ -101,7 +101,7 @@ theorem natCard_quot_pow {ϖ : O} (hϖ : Irreducible ϖ) (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Establish `hc : Nat.card (Lev M (ϖ ^ n)) = Nat.card (IsLocalRing.ResidueField O) ^ n`. Rewrite using `[Nat.card_congr (levCongr e (ϖ ^ n)), natCard_lev_KO hϖ.ne_zero, natCard_quot_pow hϖ]`. Use `⟨Nat.finite_of_card_ne_zero ?_, hc⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `pow_ne_zero _ Nat.card_pos.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_pow_card {ϖ : O} (hϖ : Irreducible ϖ) {M : Type} [AddCommGroup M] [Module O M]
     (e : M ≃ₗ[O] Formalism.NG.KO O) (n : ℕ) [Finite (IsLocalRing.ResidueField O)] :
@@ -116,7 +116,7 @@ theorem lev_pow_card {ϖ : O} (hϖ : Irreducible ϖ) {M : Type} [AddCommGroup M]
 end DVR
 
 /- English proof (translation)
-Introduce `hϖ _ _ _ e n` and use `lev_pow_card hϖ e n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levKO_card : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)]

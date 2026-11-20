@@ -12,15 +12,15 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompRat
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ g ty F _ _ hty _ c j f S hS hval i P P' hP hP' x x' hx1 hx2 hx1' hx2'`. Establish `hty' : IsTypeFn H (F.Di i).p (F.Di i).q ty`. Rewrite using `[(F.sig i).1, (F.sig i).2]`. Conclude with `hty`. Take `⟨B, Q, hBo, hBc, hQ, huniq⟩` from `GlobalTheory.exists_period_domain_param E H (F.Di i) g ty hty'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcond : spMap σ = spMap j ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[← F.over_σ i P hP, ← hx1, ← hx2, Category.assoc, Category.assoc, pullback.condition]`. Set `y : (Fin (F.Di i).dim → ℂ) → (Sp ℂ ⟶ Xo.XF c)` to `fun b => if hb : b ∈ B then pullback.lift (F.u i (Q b)) (spMap j) ((F.over_σ i _ (hQ.1 b hb)).trans hcond) else x`. Establish `hy1 : ∀ b ∈ B, y b ≫ pullback.fst _ _ = F.u i (Q b)` using `fun b hb => by`. Simplify using `only [y, dif_pos hb, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy2 : ∀ b ∈ B, y b ≫ pullback.snd _ _ = spMap j` using `fun b hb => by`. Simplify using `only [y, dif_pos hb, pullback.lift_snd]`. Establish `hhol : IsHolTo B y` using `GlobalTheory.HolFibre.isHolTo_of_isPullback (IsPullback.of_hasPullback _ _) (GlobalTheory.LocLift.isHolTo_congr (F.hol i _ B Q hBo hQ).1 hy1) (GlobalTheory.LocLift.isHolTo_congr (GlobalTheory.HolFibre.isHolTo_const hBo (spMap j)) hy2)`. Establish `hcont : ContinuousOn (fun b => valAt' (y b) ⊤ f) B` using `((hhol ⊤ f).2.mono fun b hb => ⟨hb, le_of_eq rfl⟩).continuousOn`. Establish `hfind : ∀ R, IsPeriod (F.Di i) ty R → ∀ z : Sp ℂ ⟶ Xo.XF c, z ≫ pullback.fst _ _ = F.u i R → z ≫ pullback.snd _ _ = spMap j → ∃ b ∈ B, y b = z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `R hR z hz1 hz2`. Take `⟨b, ⟨hb, h, hh⟩, -⟩` from `huniq R hR`. Use `⟨b, hb, pullback.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hy1 b hb, hz1]`. Conclude with `(F.fibre i _ _ (hQ.1 b hb) hR).2 ⟨LinearEquiv.refl _ _, h, fun _ _ => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, hh⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hy2 b hb, hz2]`. Take `⟨b, hb, e⟩` from `hfind P hP x hx1 hx2`. Take `⟨b', hb', e'⟩` from `hfind P' hP' x' hx1' hx2'`. Rewrite using `[← e, ← e']`. Conclude with `hBc.isPreconnected.constant_of_mapsTo hS.isDiscrete hcont (fun a ha => hval _ (hy2 a ha)) hb hb'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_eq_of_finite_values :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ ty), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → l.A = 1 → ∀ (c : Coeff l) (j : c.F →+* ℂ) (f : Γ(Xo.XF c, ⊤)) (S : Set ℂ), S.Finite → (∀ x : Sp ℂ ⟶ Xo.XF c, x ≫ pullback.snd _ _ = spMap j → valAt' x ⊤ f ∈ S) → ∀ i P P', IsPeriod (F.Di i) ty P → IsPeriod (F.Di i) ty P' → ∀ x x' : Sp ℂ ⟶ Xo.XF c, x ≫ pullback.fst _ _ = F.u i P → x ≫ pullback.snd _ _ = spMap j → x' ≫ pullback.fst _ _ = F.u i P' → x' ≫ pullback.snd _ _ = spMap j → valAt' x ⊤ f = valAt' x' ⊤ f := by

@@ -20,23 +20,23 @@ open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model GlobalTheory.StdUnn.LeftInvSe
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Establish `h : absA D z * absA D z⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `pos_iff_ne_zero.2 fun h0 => by rw [h0, zero_mul] at h; exact zero_ne_one h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absA_pos (z : (AE D)ˣ) : 0 < absA D z := by
   have h : absA D z * absA D z⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   exact pos_iff_ne_zero.2 fun h0 => by rw [h0, zero_mul] at h; exact zero_ne_one h
 
 /- English proof (translation)
-Establish `h0 : ((r : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Simplify using `[npow, Complex.cpow_neg, Complex.cpow_natCast]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem npow_neg_nat {r : ℝ≥0} (hr : 0 < r) (m : ℕ) : ((((r ^ m)⁻¹ : ℝ≥0) : ℝ) : ℂ) = npow r (-(m : ℂ)) := by
   have h0 : ((r : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hr.ne'
   simp [npow, Complex.cpow_neg, Complex.cpow_natCast]
 
 /- English proof (translation)
-Establish `hmap : μ.map φ = (addEquivAddHaarChar φ)⁻¹ • μ`. Establish `key` using `addEquivAddHaarChar_smul_map μ φ`. Establish `hne : addEquivAddHaarChar φ ≠ 0` using `(addEquivAddHaarChar_pos φ).ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ hne, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (addEquivAddHaarChar φ)⁻¹ • μ := by rw [mul_smul, key]`. Establish `hint : ∫ u, f u ∂(μ.map φ) = ∫ y, f (φ y) ∂μ` using `integral_map_equiv (μ := μ) φ.toHomeomorph.toMeasurableEquiv f`. Rewrite using `[← hint, hmap, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_comp_char {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A]
     [LocallyCompactSpace A] [SecondCountableTopology A] [T2Space A] [MeasurableSpace A] [BorelSpace A]
@@ -53,7 +53,7 @@ theorem integral_comp_char {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsT
   rw [← hint, hmap, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-The claim follows from `mat_inj (by rw [mat_mul, h, h, h, submatrix_fromBlocks_mul] simp [add_comm])`.
+A detailed English derivation is pending.
 -/
 theorem nb_add {nb : hermA D n → G D n} (h : IsNMap nb) (x y : hermA D n) : nb (x + y) = nb x * nb y :=
   mat_inj (by
@@ -67,13 +67,13 @@ def cg (a : GL (Fin n) (AE D)) (c : hermA D n) : hermA D n :=
     rw [adj_mul, adj_mul, adj_adj, hc, Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-Rewrite using `[← adj_mul]`. Simplify using `[adj_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adj_mul_adj_inv (a : GL (Fin n) (AE D)) : (adj a.1 : Mx D n n) * adj (a⁻¹).1 = 1 := by
   rw [← adj_mul]; simp [adj_one]
 
 /- English proof (translation)
-Rewrite using `[← adj_mul]`. Simplify using `[adj_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adj_inv_mul_adj (a : GL (Fin n) (AE D)) : (adj (a⁻¹).1 : Mx D n n) * adj a.1 = 1 := by
   rw [← adj_mul]; simp [adj_one]
@@ -82,7 +82,7 @@ def ad (a : GL (Fin n) (AE D)) : GL (Fin n) (AE D) :=
   ⟨adj (a⁻¹).1, adj a.1, adj_inv_mul_adj a, adj_mul_adj_inv a⟩
 
 /- English proof (translation)
-The claim follows from `mat_inj (by rw [mat_mul, mat_mul, hm, h, h, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul] have e : a.1 * c.1 * adj a.1 * adj (a⁻¹).1 = a.1 * c.1 := by rw [Matrix.mul_assoc, adj_mul_adj_inv, Matrix.mul_one] simp [cg, e, -Matrix.coe_units_inv])`.
+A detailed English derivation is pending.
 -/
 theorem nb_cg_mul {nb : hermA D n → G D n} (h : IsNMap nb) (a : GL (Fin n) (AE D)) {m : G D n}
     (hm : mat m = blk4 a.1 0 0 (adj (a⁻¹).1)) (c : hermA D n) : nb (cg a c) * m = m * nb c :=
@@ -93,7 +93,7 @@ theorem nb_cg_mul {nb : hermA D n → G D n} (h : IsNMap nb) (a : GL (Fin n) (AE
     simp [cg, e, -Matrix.coe_units_inv])
 
 /- English proof (translation)
-The claim follows from `mat_inj (by rw [mat_mul, mat_mul, hm, hw, hm', submatrix_fromBlocks_mul, submatrix_fromBlocks_mul] simp)`.
+A detailed English derivation is pending.
 -/
 theorem weyl_mul {w m m' : G D n} (hw : mat w = blk4 0 1 (-1) 0) (a : GL (Fin n) (AE D))
     (hm : mat m = blk4 a.1 0 0 (adj (a⁻¹).1)) (hm' : mat m' = blk4 (adj (a⁻¹).1) 0 0 a.1) : w * m = m' * w :=
@@ -102,7 +102,7 @@ theorem weyl_mul {w m m' : G D n} (hw : mat w = blk4 0 1 (-1) 0) (a : GL (Fin n)
     simp)
 
 /- English proof (translation)
-Establish `hv' : ∀ i : Fin n, v (finSumFinEquiv (Sum.inr i : Fin n ⊕ Fin n)) = 0` using `fun i => congrFun hv i`. Use `LinearMap.mem_ker.2 (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.funLeft_apply, Pi.zero_apply, hg, Matrix.mulVec, dotProduct]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, hv', mul_zero, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, add_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_mem_upper {g : G D n} {x y : Mx D n n} (hg : mat g = blk4 x 0 0 y) {v : Fin (n + n) → AE D}
     (hv : v ∈ upperHalf D n) : (mat g).mulVec v ∈ upperHalf D n := by
@@ -114,7 +114,7 @@ theorem mulVec_mem_upper {g : G D n} {x y : Mx D n n} (hg : mat g = blk4 x 0 0 y
     hv', mul_zero, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Establish `hinv : g⁻¹ = g'` using `inv_eq_of_mul_eq_one_left h1`. Introduce `v`. Use `⟨fun hv => mulVec_mem_upper hg hv, fun hv => ?_⟩` and prove the remaining obligations. Establish `h2` using `mulVec_mem_upper hg' (v := (mat g).mulVec v) hv`. Rewrite `h2` using `[Matrix.mulVec_mulVec, ← mat_mul, h1, mat_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem levi_mem_P {g g' : G D n} {x y x' y' : Mx D n n} (hg : mat g = blk4 x 0 0 y) (hg' : mat g' = blk4 x' 0 0 y')
     (h1 : g' * g = 1) : g ∈ P D n := by
@@ -125,7 +125,7 @@ theorem levi_mem_P {g g' : G D n} {x y x' y' : Mx D n n} (hg : mat g = blk4 x 0 
   rwa [Matrix.mulVec_mulVec, ← mat_mul, h1, mat_one, Matrix.one_mulVec] at h2
 
 /- English proof (translation)
-Take `⟨q, hq, k, hk, rfl⟩` from `GlobalTheory.StdUnn.Iwasawa.exists_mul D n x`. Take `⟨c, hc⟩` from `exists_blkA hq`. Establish `e : blkA (mat (p * q)) = (a * c).1` using `by rw [blkA_mul hq, ha, hc, Units.val_mul]`. Rewrite using `[← mul_assoc, hH _ ((P D n).mul_mem hp hq) (a * c) e k hk, hH q hq c hc k hk, map_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem height_mul {H : G D n → ℝ≥0} (hH : IsHeight H) {p : G D n} (hp : p ∈ P D n) (a : GL (Fin n) (AE D))
     (ha : blkA (mat p) = a.1) (x : G D n) :

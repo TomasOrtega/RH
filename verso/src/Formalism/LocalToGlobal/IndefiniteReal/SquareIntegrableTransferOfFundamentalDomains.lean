@@ -12,21 +12,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use `Formalism.IndefR.PeterssonHilbertSpace.countable_GQ (D.sp.Y 0)` as an intermediate fact. Use `Formalism.IndefR.PeterssonHilbertSpace.measurableMul_GA (D.sp.Y 0)` as an intermediate fact. Use `Formalism.IndefR.PeterssonHilbertSpace.borel_GA (D.sp.Y 0)` as an intermediate fact. Establish `hR : μ.IsMulRightInvariant` using `Formalism.IndefR.Eqv.unimodGA_holds (D.sp.Y 0) μ hH`. Set `e : X.B.I.GA ≃ᵐ GA D (D.sp.Y 0)` to `{ toEquiv := ι.symm.toEquiv, measurable_toFun := hιs, measurable_invFun := hι }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he : (e : X.B.I.GA → GA D (D.sp.Y 0)) = ι.symm` using `rfl`. Use `set 𝓕' : Set (GA D (D.sp.Y 0)) := ι.symm '' X.B.fund with h𝓕'def`. Establish `hpre : e ⁻¹' 𝓕' = X.B.fund`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, h𝓕'def, Set.mem_image]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Establish `: y = x` using `ι.symm.injective (by rw [hxy]; rfl)`. Conclude with `this ▸ hy`. Introduce `hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨x, hx, rfl⟩`. Establish `h1 : ∫⁻ x, f (ι.symm x * t) ∂(muX X) = ENNReal.ofReal c * ∫⁻ y in 𝓕', f (y * t) ∂μ`. Establish `hm : Measure.map e (muX X) = (ENNReal.ofReal c • μ).restrict 𝓕'`. Rewrite using `[← hmap, ← he, MeasurableEquiv.restrict_map, hpre]`. Rewrite using `[show (∫⁻ x, f (ι.symm x * t) ∂(muX X)) = ∫⁻ y, f (y * t) ∂(Measure.map e (muX X)) from (lintegral_map_equiv (fun y => f (y * t)) e).symm, hm, Measure.restrict_smul, lintegral_smul_measure]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hmp : MeasurePreserving (fun y : GA D (D.sp.Y 0) => y * t) μ μ` using `measurePreserving_mul_right μ t`. Establish `hemb : MeasurableEmbedding (fun y : GA D (D.sp.Y 0) => y * t)` using `(MeasurableEquiv.mulRight t).measurableEmbedding`. Establish `h2 : ∫⁻ y in 𝓕', f (y * t) ∂μ = ∫⁻ y in (fun y => y * t) '' 𝓕', f y ∂μ` using `hmp.setLIntegral_comp_emb hemb f 𝓕'`. Establish `himg : (fun y : GA D (D.sp.Y 0) => y * t) '' 𝓕' = (fun y => y * t⁻¹) ⁻¹' 𝓕'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `z`. Simplify using `only [Set.mem_image, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hz`. Conclude with `⟨z * t⁻¹, hz, by simp⟩`. Establish `hFD : IsFundamentalDomain (GQ (D.sp.Y 0)) ((fun y => y * t) '' 𝓕') μ`. Rewrite using `[himg]`. Use `h𝓕'.preimage_of_equiv (measurePreserving_mul_right μ t⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ y`. Use `show (γ : GA D (D.sp.Y 0)) * y * t⁻¹ = (γ : GA D (D.sp.Y 0)) * (y * t⁻¹)`. Rewrite using `[mul_assoc]`. Establish `h3 : ∫⁻ y in (fun y => y * t) '' 𝓕', f y ∂μ = ∫⁻ y in 𝓕, f y ∂μ` using `hFD.setLIntegral_eq h𝓕 f (fun γ x => hf γ γ.2 x)`. Rewrite using `[h1, h2, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_comp_symm_mul_eq_ofReal_mul_setLIntegral (μ : Measure (GA D (D.sp.Y 0))) (𝓕 : Set (GA D (D.sp.Y 0)))
     (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (ι : GA D (D.sp.Y 0) ≃* X.B.I.GA) (t : GA D (D.sp.Y 0)) (c : ℝ)
@@ -87,11 +87,11 @@ theorem lintegral_comp_symm_mul_eq_ofReal_mul_setLIntegral (μ : Measure (GA D (
   rw [h1, h2, h3]
 
 /- English proof (translation)
-Introduce `F hFc hinv hF`. Use `Formalism.IndefR.PeterssonHilbertSpace.borel_GA (D.sp.Y 0)` as an intermediate fact. Use `Formalism.IndefR.PeterssonHilbertSpace.measurableMul_GA (D.sp.Y 0)` as an intermediate fact. Establish `hmeasG : Measurable (fun x => F (ι.symm x * t))` using `hFc.measurable.comp ((measurable_mul_const t).comp hιs)`. Establish `hL` using `lintegral_comp_symm_mul_eq_ofReal_mul_setLIntegral μ 𝓕 X ι t c hι hιs hmap hH h𝓕 h𝓕' (fun y => ENNReal.ofReal (‖F y‖ ^ 2)) (fun γ hγ x => by simp only [hinv γ hγ x])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : Integrable (fun y => ‖F y‖ ^ 2) (μ.restrict 𝓕)` using `(memLp_two_iff_integrable_sq_norm hF.1).1 hF`. Establish `hfin : ∫⁻ y in 𝓕, ENNReal.ofReal (‖F y‖ ^ 2) ∂μ < ⊤` using `hint.lintegral_lt_top`. Establish `hasm : AEStronglyMeasurable (fun x => F (ι.symm x * t)) (muX X)` using `hmeasG.aestronglyMeasurable`. Establish `hint2 : Integrable (fun x => ‖F (ι.symm x * t)‖ ^ 2) (muX X)`. Use `⟨(continuous_pow 2).comp_aestronglyMeasurable hasm.norm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ fun x => by positivity), hL]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin`. Use `⟨(memLp_two_iff_integrable_sq_norm hasm).2 hint2, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun x => by positivity) hint2.aestronglyMeasurable, hL, ENNReal.toReal_mul, ENNReal.toReal_ofReal hc, ← integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun x => by positivity) hint.aestronglyMeasurable]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem squareIntegrableTransfer_of_fundamentalDomains (μ : Measure (GA D (D.sp.Y 0))) (𝓕 : Set (GA D (D.sp.Y 0)))
     (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (ι : GA D (D.sp.Y 0) ≃* X.B.I.GA) (t : GA D (D.sp.Y 0)) (c : ℝ)
@@ -122,25 +122,23 @@ theorem squareIntegrableTransfer_of_fundamentalDomains (μ : Measure (GA D (D.sp
     ← integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun x => by positivity) hint.aestronglyMeasurable]
 
 /- English proof (translation)
-Use `Formalism.IndefR.PeterssonHilbertSpace.measurableMul_GA (D.sp.Y 0)` as an intermediate fact. Take `⟨hmf, hcov, hdis⟩` from `X.B.fund_spec`. Set `e : X.B.I.GA ≃ᵐ GA D (D.sp.Y 0)` to `{ toEquiv := ι.symm.toEquiv, measurable_toFun := hιs, measurable_invFun := hι }`. Establish `hset : ι.symm '' X.B.fund = ι ⁻¹' X.B.fund`. Use extensionality with `y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_image, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Introduce `hy`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨ι y, hy, by simp⟩`. Establish `hnull : ∀ A : Set X.B.I.GA, X.B.I.muA X.B.μf A = 0 → μ (ι ⁻¹' A) = 0`. Introduce `A hA`. Establish `h1 : Measure.map e (X.B.I.muA X.B.μf) (ι ⁻¹' A) = X.B.I.muA X.B.μf A`. Rewrite using `[MeasurableEquiv.map_apply]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `[e]`. Establish `h2 : (ENNReal.ofReal c • μ) (ι ⁻¹' A) = 0`. Rewrite using `[← hmap]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans hA`. Rewrite `h2` using `[Measure.smul_apply, smul_eq_mul, mul_eq_zero]`. Break down `h2 with h | h` into its components or cases. Conclude with `absurd h (by simpa using hc)`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hset]`. Use `IsFundamentalDomain.mk'' (hι hmf).nullMeasurableSet (ae_of_all _ ?_) ?_ ?_` and prove the remaining obligations. Introduce `y`. Take `⟨γ', hγ', hmem⟩` from `hcov (ι y)`. Use `⟨⟨ι.symm γ', (hrat _).2 (by simpa using hγ')⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show ι (ι.symm γ' * y) ∈ X.B.fund`. Simplify using `using hmem`. Introduce `γ hγ`. Establish `hγ1 : ι γ ≠ 1`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `hγ` to reduce the goal to its premises. Use `ext`. Simplify using `using congrArg ι.symm h`. Establish `h0` using `hdis (ι γ) ((hrat γ).1 γ.2) hγ1`. Use `(measure_mono_null ?_ (hnull _ h0) : μ _ = 0)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Take `⟨⟨z, hz, rfl⟩, hy2⟩` from `hy`. Use `⟨⟨ι z, hz, ?_⟩, hy2⟩` and prove the remaining obligations. Use `show ι γ * ι z = ι ((γ : GA D (D.sp.Y 0)) * z)`. Rewrite using `[map_mul]`.
-
-Introduce `γ`. Conclude with `(measurePreserving_mul_left μ (γ : GA D (D.sp.Y 0))).quasiMeasurePreserving`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fund_image_of (μ : Measure (GA D (D.sp.Y 0)))
     (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (ι : GA D (D.sp.Y 0) ≃* X.B.I.GA) (c : ℝ)
@@ -200,7 +198,7 @@ theorem fund_image_of (μ : Measure (GA D (D.sp.Y 0)))
     exact (measurePreserving_mul_left μ (γ : GA D (D.sp.Y 0))).quasiMeasurePreserving
 
 /- English proof (translation)
-The claim follows from `squareIntegrableTransfer_of_fundamentalDomains μ 𝓕 X ι t c hι hιs hc.le hmap hH h𝓕 (fund_image_of μ X ι c hι hιs hc hmap hH hrat)`.
+A detailed English derivation is pending.
 -/
 theorem squareIntegrableTransfer_of_rational_points (μ : Measure (GA D (D.sp.Y 0))) (𝓕 : Set (GA D (D.sp.Y 0)))
     (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (ι : GA D (D.sp.Y 0) ≃* X.B.I.GA) (t : GA D (D.sp.Y 0)) (c : ℝ)
@@ -213,7 +211,7 @@ theorem squareIntegrableTransfer_of_rational_points (μ : Measure (GA D (D.sp.Y 
   squareIntegrableTransfer_of_fundamentalDomains μ 𝓕 X ι t c hι hιs hc.le hmap hH h𝓕 (fund_image_of μ X ι c hι hιs hc hmap hH hrat)
 
 /- English proof (translation)
-Use `Formalism.IndefR.PeterssonHilbertSpace.borel_GA (D.sp.Y 0)` as an intermediate fact. Conclude with `⟨ι.continuous.measurable, ι.symm.continuous.measurable⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem measurable_of_borel (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (ι : GA D (D.sp.Y 0) ≃ₜ* X.B.I.GA)
     (hB : BorelSpace X.B.I.GA) :

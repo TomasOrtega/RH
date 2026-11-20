@@ -21,7 +21,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k}
 
 /- English proof (translation)
-Introduce `z` and use `by have hz : (selfIso.inv ≫ spOver z ≫ tw.y n) ^ p ^ n = 1 := by rw [← MonObj.comp_pow, (tw.exists_iff n _).1 ⟨z, rfl⟩, MonObj.comp_one] obtain ⟨x, hx⟩ := (I.onto (p ^ n) (pow_pos (Fact.out : p.Prime).pos n) _).1 hz refine ⟨x, tw.inj n k _ _ ?_⟩ rw [latPt_y, hx, Iso.hom_inv_id_as …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latPt_surjective_base (tw : GG.TorsionTower t.G) (I : GeomTate Dw t) (n : ℕ) :
     Function.Surjective (latPt tw I n) := fun z => by
@@ -32,7 +32,7 @@ theorem latPt_surjective_base (tw : GG.TorsionTower t.G) (I : GeomTate Dw t) (n 
   rw [latPt_y, hx, Iso.hom_inv_id_assoc]
 
 /- English proof (translation)
-The claim follows from `TateFree.eq_of_forall_pts k k (GG.A n) fun z => by obtain ⟨x, rfl⟩ := latPt_surjective_base tw I n z exact h x`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_forall_latPt [IsAlgClosed k] [CharZero k] (tw : GG.TorsionTower t.G) (I : GeomTate Dw t) (n : ℕ)
     {a b : GG.A n} (h : ∀ x, latPt tw I n x a = latPt tw I n x b) : a = b :=
@@ -41,9 +41,9 @@ theorem eq_of_forall_latPt [IsAlgClosed k] [CharZero k] (tw : GG.TorsionTower t.
     exact h x
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw k _ _ _ t p _ GG tw I φ ψ h`. Use `PDivGroup.hom_ext fun n => BialgHom.ext fun f => eq_of_forall_latPt tw I n fun y => ?_` and prove the remaining obligations. Establish `hc : charElem (tateMap GG GG.dual k φ (tau tw I y)) n = charElem (tateMap GG GG.dual k ψ (tau tw I y)) n` using `eq_of_forall_latPt tw I n fun x => by`. Use `h x y n` as an intermediate fact. Rewrite `this` using `[muRoot_pairing, muRoot_pairing]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `apply_charElem (tateMap GG GG.dual k φ (tau tw I y)) n f`. Establish `h2` using `apply_charElem (tateMap GG GG.dual k ψ (tau tw I y)) n f`. Rewrite `h1` using `[hc, h2]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_dual_ext_of_pairing : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k} (tw : GG.TorsionTower t.G) (I : GeomTate Dw t), ∀ φ ψ : GG ⟶ GG.dual, (∀ (x y : Dw.La) (n : ℕ), muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k φ (tau tw I y))) n = muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k ψ (tau tw I y))) n) → φ = ψ := by
   intro E _ _ _ H Dw k _ _ _ t p _ GG tw I φ ψ h

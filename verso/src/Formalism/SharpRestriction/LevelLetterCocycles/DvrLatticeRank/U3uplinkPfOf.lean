@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.MainNotions.N.Ln34
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA hMF`. Conclude with `u3upPf_ofR D HW hMF (hW D HW F Cm CA CB CK hA) (ninlam_pf D HW F Cm CA CB CK hA) (gamPiCondition D HW F Cm CA CB CK hA)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem u3uplink_pf_of (hW : WStep) : UpSlotOfModels := by
   intro D HW F Cm CA CB CK hA hMF

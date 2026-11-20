@@ -8,7 +8,7 @@ open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM_subset_nhds | exact GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM_subset_nhds | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM_subset_nhds <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.congruence_subgroups_basis_nhds : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (O : Set (Mir k n)) (hO : O ∈ nhds (1 : Mir k n)),
   ∃ s₀ : kˣ, ∀ (s : kˣ) (hs : ValuativeRel.valuation k (s : k) ≤ 1), ValuativeRel.valuation k (s : k) ≤ ValuativeRel.valuation k (s₀ : k) →

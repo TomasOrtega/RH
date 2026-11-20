@@ -16,17 +16,15 @@ def AllStartSelfSt : Prop :=
     ∃ L ∈ X.AllSet V g, ∀ c, L 1 (Sum.inl c) = w c
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I0 _ p g a w hw _`. Take `⟨L0, hL0, hL01⟩` from `hS C V O dd Y d I0 p g w hw`. Use `set X := Y.rawSelf p with hX`. Set `M : Set (ℕ → I0 ⊕ I0 → C)` to `{m | ∀ L ∈ X.AllSet V g, m * L ∈ X.AllSet V g}`. Establish `hAdd` using `addCvSelf_holds C V O dd Y d I0 p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℕ → I0 ⊕ I0 → C) ∈ M` using `fun L hL => by rwa [one_mul]`. Establish `hadd : ∀ m m', m ∈ M → m' ∈ M → m + m' ∈ M` using `fun m m' hm hm' L hL => by`. Rewrite using `[add_mul]`. Conclude with `X.allSet_add V g hAdd (fun g c x => Y.rawSelf_u_integral p g c x) (hm L hL) (hm' L hL)`. Establish `hmul : ∀ m m', m ∈ M → m' ∈ M → m * m' ∈ M` using `fun m m' hm hm' L hL => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Conclude with `hm _ (hm' L hL)`. Establish `hteich : ∀ c : C, V.Ge 0 c → (fun n (_ : I0 ⊕ I0) => c ^ n) ∈ M` using `fun c hc L hL => X.allSet_teich V g c hc hL`. Establish `hlim : ∀ (m : ℕ → ℕ → I0 ⊕ I0 → C) (m' : ℕ → I0 ⊕ I0 → C), (∀ k, m k ∈ M) → VLim V m m' → m' ∈ M` using `fun m m' hm hmm' L hL => X.allSet_lim (Y.self_chart_log_constantCoeff p) (Y.self_chart_exp_constantCoeff p) (Y.rawSelf_lgex p) (Y.rawSelf_exlg p) (fun k => hm k L hL) (hmm'.mul_right L)`. Establish `hroot : ∀ q : ℕ, q.Prime → q ≠ V.l → ∃ ζ : C, IsPrimitiveRoot ζ q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q hq _`. Use `Y.algClosed` as an intermediate fact. Establish `: NeZero (q : C)` using `⟨Nat.cast_ne_zero.mpr hq.ne_zero⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot C q`. Establish `hind` using `TypAr.typ_gen M hroot h1 hadd hmul hteich hlim`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hL` using `hind L0 hL0`. Use `⟨_, X.typ_link V g hL ?_, ?_⟩` and prove the remaining obligations. Introduce `n k hn`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[if_neg hn, zero_mul]`.
-
-Introduce `c`. Simplify using `only [Pi.mul_apply, pow_zero]`. Rewrite using `[if_pos ⟨0, pow_zero _⟩, one_mul, hL01 c]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptExSelf_of_start (hS : AllStartSelfSt) : PTExSelfSt := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p g a w hw _
@@ -60,7 +58,7 @@ theorem ptExSelf_of_start (hS : AllStartSelfSt) : PTExSelfSt := by
     rw [if_pos ⟨0, pow_zero _⟩, one_mul, hL01 c]
 
 /- English proof (translation)
-The claim follows from `ptSelf_of_act (ptExSelf_of_start hS) hAct limSelf_holds hStab`.
+A detailed English derivation is pending.
 -/
 theorem ptSelf_of_start (hS : AllStartSelfSt) (hAct : OActSelfSt) (hStab : HStabSelfSt) : PTSelfSt :=
   ptSelf_of_act (ptExSelf_of_start hS) hAct limSelf_holds hStab

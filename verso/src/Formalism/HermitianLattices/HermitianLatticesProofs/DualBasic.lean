@@ -11,7 +11,7 @@ variable {R K V : Type*} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
 /- English proof (translation)
-Simplify using `only [dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualBasic_mem_dual (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule R V) (x : V) :
     x ∈ dual h L ↔ ∀ y ∈ L, h y x ∈ (1 : Submodule R K) := by
@@ -21,21 +21,21 @@ theorem dualBasic_mem_dual (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule R V
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `R K V _ _ _ _ _ _ _ _ h hs hst`. Establish `anti : ∀ L M : Submodule R V, L ≤ M → dual h M ≤ dual h L`. Introduce `L M hLM x hx`. Rewrite `hx`, the goal using `[dualBasic_mem_dual]`. Conclude with `fun y hy => hx y (hLM hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `starOne : ∀ z : K, z ∈ (1 : Submodule R K) → star z ∈ (1 : Submodule R K)`. Introduce `z hz`. Take `⟨r, rfl⟩` from `Submodule.mem_one.1 hz`. Take `⟨t, ht⟩` from `hst r`. Conclude with `Submodule.mem_one.2 ⟨t, ht⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `integ : ∀ L : Submodule R V, IsIntegralLat h L ↔ L ≤ dual h L`. Introduce `L`. Prove the components needed by the constructor for the conclusion. Introduce `hL x hx`. Rewrite using `[dualBasic_mem_dual]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun y hy => hL y hy x hx`. Introduce `hL x hx y hy`. Conclude with `(dualBasic_mem_dual h L y).1 (hL hy) x hx`. Use `⟨anti, ?_, ?_, integ, ?_⟩` and prove the remaining obligations. Introduce `L x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dualBasic_mem_dual]`. Introduce `y hy`. Establish `h1 : h x y ∈ (1 : Submodule R K)` using `(dualBasic_mem_dual h L y).1 hy x hx`. Establish `h2` using `starOne _ h1`. Establish `h3` using `hs.eq x y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [starRingEnd_apply] at h3`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Introduce `L M`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_inf (anti _ _ le_sup_left) (anti _ _ le_sup_right)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨hxL, hxM⟩` from `Submodule.mem_inf.1 hx`. Rewrite `hxL`, `hxM`, the goal using `[dualBasic_mem_dual]`. Introduce `y hy`. Take `⟨l, hl, m, hm, rfl⟩` from `Submodule.mem_sup.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `add_mem (hxL l hl) (hxM m hm)`. Introduce `L`. Rewrite using `[IsUnimodular, integ, le_antisymm_iff]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨h2, h1⟩, fun ⟨h1, h2⟩ => ⟨h2, h1⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dualBasic : DualBasic := by
   intro R K V _ _ _ _ _ _ _ _ h hs hst

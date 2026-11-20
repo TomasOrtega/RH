@@ -20,7 +20,7 @@ def adj (x : HomE E a b) : HomE E b a where
   map_smul' c w := by funext α; simp [Finset.mul_sum, mul_left_comm]
 
 /- English proof (translation)
-Simplify using `[adj, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adj_single (x : HomE E a b) (β : Fin b) (α : Fin a) :
     adj x (Pi.single β 1) α = star (x (Pi.single α 1) β) := by

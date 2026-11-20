@@ -16,11 +16,9 @@ open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.FlagTri
 
 /- English proof (translation)
-Establish `hc : Continuous fun x : ℂ => l (Q.eval (algebraMap ℂ A x))` using `by clear h`. Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [Polynomial.eval_add, map_add]`. Conclude with `hp.add hq`. Consider the case `monomial k a`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (fun x : ℂ => l ((Polynomial.monomial k a).eval (algebraMap ℂ A x))) = fun x => x ^ k * l a`. Use function extensionality and compare the values at `x`. Rewrite using `[Polynomial.eval_monomial, ← map_pow, mul_comm, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Rewrite using `[this]`. Use `fun_prop`.
-
-Use `Continuous.ext_on (dense_compl_singleton (0 : ℂ)) hc (continuous_const (y := c)) (fun x hx => h x hx)` as an intermediate fact. Conclude with `congrFun this 0`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eval_zero_of_const {A : Type} [CommRing A] [Algebra ℂ A] (l : A →ₗ[ℂ] ℂ) (Q : Polynomial A) (c : ℂ)
     (h : ∀ x : ℂ, x ≠ 0 → l (Q.eval (algebraMap ℂ A x)) = c) : l (Q.eval (algebraMap ℂ A 0)) = c := by
@@ -43,7 +41,7 @@ def scale (c : Fin n → ℂ) : Alt n →ₐ[ℂ] Alt n :=
   ExteriorAlgebra.map (Matrix.toLin' (Matrix.diagonal (Sum.elim c c)))
 
 /- English proof (translation)
-Simplify using `only [dens, scale, bas]`. Rewrite using `[exterior_repr_univ_map, LinearMap.det_toLin', Matrix.det_diagonal, Fintype.prod_sum_type, mul_div_assoc, sq]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dens_scale (c : Fin n → ℂ) (β : Alt n) : dens (scale c β) = (∏ a, c a) ^ 2 * dens β := by
   simp only [dens, scale, bas]
@@ -51,7 +49,7 @@ theorem dens_scale (c : Fin n → ℂ) (β : Alt n) : dens (scale c β) = (∏ a
   rfl
 
 /- English proof (translation)
-Simplify using `only [dz, dzb, ← map_smul]`. Apply the tactic sequence `constructor <;> refine (ExteriorAlgebra.map_apply_ι _ _).trans (congrArg _ (funext ?_)) <;> rintro (b | b) <;>`. Apply the tactic sequence `by_cases h : b = a <;> simp [Matrix.mulVec_diagonal, Pi.single_apply, h]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scale_dz (c : Fin n → ℂ) (a : Fin n) : scale c (dz a) = c a • dz a ∧ scale c (dzb a) = c a • dzb a := by
   simp only [dz, dzb, ← map_smul]
@@ -59,7 +57,7 @@ theorem scale_dz (c : Fin n → ℂ) (a : Fin n) : scale c (dz a) = c a • dz a
     by_cases h : b = a <;> simp [Matrix.mulVec_diagonal, Pi.single_apply, h]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `scale c (dz a * dzb b) = (c a * c b) • (dz a * dzb b)`. Rewrite using `[map_mul, (scale_dz c a).1, (scale_dz c b).2, smul_mul_smul_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_sym (c : Fin n → ℂ) (a b : Fin n) :
     scale c (sym (a, b) : Ev n) = (c a * c b) • ((sym (a, b) : Ev n) : Alt n) := by
@@ -67,9 +65,9 @@ theorem scale_sym (c : Fin n → ℂ) (a b : Fin n) :
   rw [map_mul, (scale_dz c a).1, (scale_dz c b).2, smul_mul_smul_comm]
 
 /- English proof (translation)
-Establish `key (a : Fin d) (b : Fin n) : c b * bsL ε (coordVec b) a = bsL ε (coordVec b) a ∧ c b * (starRingEnd ℂ) (bsL ε (coordVec b) a) = (starRingEnd ℂ) (bsL ε (coordVec b) a)`. Rewrite using `[bsL_apply]`. Distinguish the cases in `h : ε.symm (.inl a) = b`. Substitute `h` using the available equality. Simplify using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[coordVec, h]`. Rewrite using `[scale, pull, ← AlgHom.comp_apply, ExteriorAlgebra.map_comp_map, ← Matrix.toLin'_mul]`. Use `congr 3`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.diagonal_mul, key]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scale_pull {d : ℕ} {J : Type} (ε : Fin n ≃ Fin d ⊕ J) (c : Fin n → ℂ) (hc : ∀ a, c (ε.symm (.inl a)) = 1)
     (α : Alt d) : scale c (pull (bsL ε) α) = pull (bsL ε) α := by
@@ -85,7 +83,7 @@ theorem scale_pull {d : ℕ} {J : Type} (ε : Fin n ≃ Fin d ⊕ J) (c : Fin n 
   ext (i | i) (j | j) <;> simp [Matrix.diagonal_mul, key]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Subalgebra.coe_mul, Subalgebra.coe_mul, map_mul, ih, Subalgebra.coe_pow, Subalgebra.coe_pow, map_pow, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_prod_pow {T : Type} (φ : Alt n →ₐ[ℂ] Alt n) (x y : T → Ev n) (r : T → ℕ)
     (h : ∀ t, φ (x t) = y t) (s : Finset T) :
@@ -97,37 +95,35 @@ theorem map_prod_pow {T : Type} (φ : Alt n →ₐ[ℂ] Alt n) (x y : T → Ev n
       Subalgebra.coe_pow, Subalgebra.coe_pow, map_pow, h]
 
 /- English proof (translation)
-Introduce `n d J T _ _ ε lev ρ K r hr hK α`. Set `wt : Fin n → ℕ` to `fun a => (ε a).elim (fun _ => 0) fun j => ρ (lev j) + 1`. Establish `w0 (a) : wt (ε.symm (.inl a)) = 0` using `by simp [wt]`. Establish `w1 (j) : wt (ε.symm (.inr j)) = ρ (lev j) + 1` using `by simp [wt]`. Establish `hw (t : T) (a : Fin n) (h : ∃ b, K t a b ≠ 0 ∨ K t b a ≠ 0) : wt a < ρ t + 1 ∨ ∃ j : {j // lev j = t}, ε.symm (.inr j.1) = a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a | j, rfl⟩` from `ε.symm.surjective a`. Use `left`. Rewrite using `[w0]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `e : lev j = t`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `.inr ⟨⟨j, e⟩, rfl⟩`. Use `left`. Rewrite using `[w1]`. Assume the negation of the conclusion as `hn`. Take `⟨b, hb⟩` from `h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. The claim follows by propositional logic. Establish an intermediate fact.
 
-Use `hK t j e (by omega) b` as an intermediate fact. The claim follows by propositional logic. Establish `hw' (t : T) (a : Fin n) (h : ∃ b, K t a b ≠ 0 ∨ K t b a ≠ 0) : wt a ≤ ρ t + 1`. Break down `hw t a h with h | ⟨j, rfl⟩` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[w1, j.2]`. Set `l : Ev n →ₗ[ℂ] ℂ` to `{ toFun := fun x => dens (pull (bsL ε) α * (x : Alt n)) map_add' := fun x y => by simp [dens, mul_add, add_div] map_smul' := fun c x => by simp [dens, mul_div_assoc] }`. Establish `hl (x : Ev n) : l x = dens (pull (bsL ε) α * (x : Alt n))` using `rfl`. Set `e : T → Fin n → Fin n → ℕ` to `fun t a b => (ρ t + 1 - wt a) + (ρ t + 1 - wt b)`. Set `Q : Polynomial (Ev n)` to `∏ t, (∑ a, ∑ b, Polynomial.monomial (e t a b) (K t a b • sym (a, b))) ^ r t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ (x : ℂ) : Q.eval (algebraMap ℂ (Ev n) x) = ∏ t, (∑ a, ∑ b, (x ^ e t a b * K t a b) • (sym (a, b) : Ev n)) ^ r t`. Simplify using `only [Q, Polynomial.eval_prod, Polynomial.eval_pow, Polynomial.eval_finset_sum, Polynomial.eval_monomial]`. Use `Finset.prod_congr rfl fun t _ => congrArg (· ^ r t) ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, mul_comm, ← Algebra.smul_def, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hl, ← hl, ← eval_zero_of_const l Q (l (∏ t, (∑ a, ∑ b, K t a b • sym (a, b)) ^ r t : Ev n)) ?_]`. Rewrite using `[hQ]`. Use `congrArg l (Finset.prod_congr rfl fun t _ => congrArg (· ^ r t) ?_)` and prove the remaining obligations. Establish `inj : Function.Injective fun j : {j // lev j = t} => ε.symm (.inr j.1)` using `fun i j h => Subtype.ext (Sum.inr_injective (ε.symm.injective h))`. Use `symm`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `Fintype.sum_of_injective _ inj _ _ (fun a ha => Finset.sum_eq_zero fun b _ => ?_) fun a => ?_` and prove the remaining obligations. Distinguish the cases in `h : K t a b = 0`. Simplify using `[h]`. Break down `hw t a ⟨b, .inl h⟩ with h' | h'` into its components or cases. Rewrite using `[zero_pow (by simp only [e]; omega), zero_mul, zero_smul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `absurd h' ha`. Use `Fintype.sum_of_injective _ inj _ _ (fun b hb => ?_) fun b => ?_` and prove the remaining obligations. Distinguish the cases in `h : K t (ε.symm (.inr a.1)) b = 0`. Simplify using `[h]`. Break down `hw t b ⟨_, .inr h⟩ with h' | h'` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[zero_pow (by simp only [e]; omega), zero_mul, zero_smul]`. Conclude with `absurd h' hb`. Simplify using `[e, w1, a.2, b.2]`. Introduce `x hx`. Establish `h1` using `dens_scale (fun a => x⁻¹ ^ wt a) (pull (bsL ε) α * ((∏ t, (∑ a, ∑ b, K t a b • sym (a, b)) ^ r t : Ev n) : Alt n))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[map_mul, scale_pull ε _ (fun a => by simp [w0]), map_prod_pow _ _ (fun t => (x⁻¹ ^ (ρ t + 1)) ^ 2 • ∑ a, ∑ b, (x ^ e t a b * K t a b) • (sym (a, b) : Ev n)) r ?_, ← hl, ← hl]`. Establish `h2 : ∏ a, x⁻¹ ^ wt a = ∏ t, (x⁻¹ ^ (ρ t + 1)) ^ r t`. Rewrite using `[← ε.symm.prod_comp, Fintype.prod_sum_type]`. Simplify using `only [w0, w1, pow_zero, Finset.prod_const_one, one_mul]`. Rewrite using `[← Fintype.prod_fiberwise lev]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (g := fun _ => x⁻¹ ^ (ρ t + 1)) fun j _ => by rw [j.2], Finset.prod_const, hr]`. Simplify using the standard rewrite rules. Simplify using `only [smul_pow, Finset.prod_smul] at h1`. Rewrite `h1` using `[map_smul, ← hQ, h2, ← Finset.prod_pow, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [← pow_mul, mul_right_comm _ (r _) 2] at h1`. Use `mul_left_cancel₀ (Finset.prod_ne_zero_iff.2 fun t _ => pow_ne_zero _ (inv_ne_zero hx)) h1` and prove the remaining obligations. Introduce `t`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, map_sum, map_smul, scale_sym, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Distinguish the cases in `h : K t a b = 0`. Simplify using `[h]`. Take `⟨p, hp⟩` from `Nat.exists_eq_add_of_le (hw' t a ⟨b, .inl h⟩)`. Take `⟨q, hq⟩` from `Nat.exists_eq_add_of_le (hw' t b ⟨a, .inr h⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `: e t a b = p + q` using `by simp only [e]; omega`. Rewrite using `[this, sq]`. Use `nth_rw 1 [hp]`. Rewrite using `[hq]`. Simplify using `only [inv_pow]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dens_blockTri : ∀ (n d : ℕ) (J T : Type) [Fintype J] [Fintype T] (ε : Fin n ≃ Fin d ⊕ J) (lev : J → T) (ρ : T → ℕ) (K : T → Fin n → Fin n → ℂ) (r : T → ℕ), (∀ t, r t = Fintype.card {j // lev j = t}) → (∀ t j, lev j ≠ t → ρ t ≤ ρ (lev j) → ∀ b, K t (ε.symm (.inr j)) b = 0 ∧ K t b (ε.symm (.inr j)) = 0) → ∀ α : Alt d, dens (pull (bsL ε) α * ((∏ t, (∑ a, ∑ b, K t a b • sym (a, b)) ^ r t : Ev n) : Alt n)) = dens (pull (bsL ε) α * ((∏ t, (∑ a : {j // lev j = t}, ∑ b : {j // lev j = t}, K t (ε.symm (.inr a.1)) (ε.symm (.inr b.1)) • sym (ε.symm (.inr a.1), ε.symm (.inr b.1))) ^ r t : Ev n) : Alt n)) := by
   intro n d J T _ _ ε lev ρ K r hr hK α

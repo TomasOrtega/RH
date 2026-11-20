@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ClassNumberMass
 
 /- English proof (translation)
-Introduce `D`. Use `⟨fun W hW hsig => ?_, fun W hW hsig n g hcov hdisj => ?_⟩` and prove the remaining obligations. Take `⟨n, g, hcov, hdisj, _⟩` from `GlobalTheory.T.lattice_stabilizer_doubleCosets_classRest_mass D W hW hsig`. Conclude with `⟨n, g, hcov, hdisj⟩`. Take `⟨m, g', hcov', hdisj', hsum⟩` from `GlobalTheory.T.lattice_stabilizer_doubleCosets_classRest_mass D W hW hsig`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hsum]`. Conclude with `GlobalTheory.WeightedDoubleCoset.sum_inv_card_stab_eq _ _ _ n m g g' hcov hdisj hcov' hdisj'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classFin_and_classMass : ∀ D : D7, ClassFin D ∧ ClassMass D := by
   intro D

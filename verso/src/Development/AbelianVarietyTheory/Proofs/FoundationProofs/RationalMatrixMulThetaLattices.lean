@@ -18,16 +18,16 @@ namespace GlobalTheory.ThetaStab
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ}
 
 /- English proof (translation)
-Take `⟨Lt, h1, h2, -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D N`. Conclude with `h2 ▸ (h1 1).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem moves_one (D : D7) (N : ℕ) : Moves D ((1 : GA D N) : GL (Fin N) (AE D)) (stdL D N) := by
   obtain ⟨Lt, h1, h2, -⟩ := GlobalTheory.NormSum.exists_lattice_of_adelic_point D N
   exact h2 ▸ (h1 1).1
 
 /- English proof (translation)
-Establish `hG` using `(GlobalTheory.InducedType.induced_type D).1`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨z, hz, h⟩` from `GlobalTheory.NormSum.exists_pt_of_mem_La_moved D hG cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N') x hx`. Conclude with `⟨z, hz, fun i j => by simpa using h i j⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, rfl, h⟩`. Conclude with `GlobalTheory.NormSum.pt_mem_La_of_adelic D hG cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N') z (fun i j => by simpa using h i j)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_standardThetaLattice_iff_adelicIdeal (hcc : cc ≠ ⊥) (x : VC D N N') : x ∈ La0 D (tor0 D cc δ) N N' ↔
     ∃ z : Matrix (Fin N') (Fin N) D.host.E, x = pt D (tor0 D cc δ) δ z ∧ ∀ i j, inc D (z i j) ∈ IhE D cc := by
@@ -42,15 +42,15 @@ theorem mem_standardThetaLattice_iff_adelicIdeal (hcc : cc ≠ ⊥) (x : VC D N 
       (moves_one D N) (moves_one D N') z (fun i j => by simpa using h i j)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.NormSum.MovedTheta.inc_int (⟨e, he⟩ : 𝓞 D.host.E)`.
+A detailed English derivation is pending.
 -/
 theorem inc_mem_of_isIntegral {e : D.host.E} (he : IsIntegral ℤ e) : inc D e ∈ OhE D :=
   GlobalTheory.NormSum.MovedTheta.inc_int (⟨e, he⟩ : 𝓞 D.host.E)
 
 /- English proof (translation)
-Take `⟨z, rfl, hz⟩` from `(mem_standardThetaLattice_iff_adelicIdeal hcc x).1 hx`. Use `(mem_standardThetaLattice_iff_adelicIdeal hcc _).2 ⟨_, mulV_pt D cc δ M' M z, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, map_sum, map_mul]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `MovedTheta.mul_mem_IhE (inc_mem_of_isIntegral (h k j)) (sum_mem fun l _ => ?_)` and prove the remaining obligations. Conclude with `MovedTheta.mul_mem_IhE (inc_mem_of_isIntegral (h' i l)) (hz l k)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mulV_mem (hcc : cc ≠ ⊥) (M' : Matrix (Fin N') (Fin N') D.host.E) (M : Matrix (Fin N) (Fin N) D.host.E)
     (h' : ∀ i j, IsIntegral ℤ (M' i j)) (h : ∀ i j, IsIntegral ℤ (M i j)) (x : VC D N N')
@@ -64,9 +64,9 @@ theorem mulV_mem (hcc : cc ≠ ⊥) (M' : Matrix (Fin N') (Fin N') D.host.E) (M 
   exact MovedTheta.mul_mem_IhE (inc_mem_of_isIntegral (h' i l)) (hz l k)
 
 /- English proof (translation)
-Take `⟨y, hy, h⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image fun p : Fin n × Fin n => M p.1 p.2)`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `h (M i j) (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩)`. Rewrite using `[Matrix.smul_apply, ← natCast_zsmul]`. Break down `Int.natAbs_eq y with e | e` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← e]`. Conclude with `h1`. Establish `e' : ((y.natAbs : ℕ) : ℤ) = -y` using `by omega`. Rewrite using `[e', neg_smul]`. Conclude with `h1.neg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_denom {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) :
     ∃ m : ℕ, 0 < m ∧ ∀ i j, IsIntegral ℤ ((m • M) i j) := by
@@ -81,9 +81,9 @@ theorem exists_denom {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) :
     rw [e', neg_smul]; exact h1.neg
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `e : ∀ {n : ℕ} (k : ℕ) (A : Matrix (Fin n) (Fin n) D.host.E), (k • A).map (embT D τ) = k • A.map (embT D τ)`. Introduce `n k A`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, map_nsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(m' • M').map (embT D τ) * Matrix.of (x τ) * (m • M).map (embT D τ) = (m' * m) • (M'.map (embT D τ) * Matrix.of (x τ) * M.map (embT D τ))`. Rewrite using `[e, e, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, mul_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulV_nsmul (m' m : ℕ) (M' : Matrix (Fin N') (Fin N') D.host.E) (M : Matrix (Fin N) (Fin N) D.host.E)
     (x : VC D N N') : mulV D (m' • M') (m • M) x = (m' * m) • mulV D M' M x := by
@@ -98,7 +98,7 @@ theorem mulV_nsmul (m' m : ℕ) (M' : Matrix (Fin N') (Fin N') D.host.E) (M : Ma
   rw [e, e, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, mul_smul]
 
 /- English proof (translation)
-Establish `h1 : γ * adj D γ = 1` using `(GlobalTheory.NormSum.mem_ratG_intG D n).2.2.2.1 g γ h`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Unfold `IsRat at h`. Rewrite using `[h, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_eq_adj {n : ℕ} {g : GA D n} {γ : Matrix (Fin n) (Fin n) D.host.E}
     (h : IsRat D (g : GL (Fin n) (AE D)) γ) :
@@ -109,15 +109,15 @@ theorem inv_eq_adj {n : ℕ} {g : GA D n} {γ : Matrix (Fin n) (Fin n) D.host.E}
   rw [h, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `hG` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `h1 : adj D γ * γ = 1` using `mul_eq_one_comm.1 ((GlobalTheory.NormSum.mem_ratG_intG D N).2.2.2.1 γA γ h)`. Establish `h1' : adj D γ' * γ' = 1` using `mul_eq_one_comm.1 ((GlobalTheory.NormSum.mem_ratG_intG D N').2.2.2.1 γA' γ' h')`. Establish `key : ∀ z : Matrix (Fin N') (Fin N) D.host.E, (((γA' : GL (Fin N') (AE D))⁻¹ : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D)) * z.map (inc D) * ((γA : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) = (adj D γ' * z * γ).map (inc D)`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `h`. Unfold `IsRat at h2`. Rewrite using `[inv_eq_adj h', h2, Matrix.map_mul, Matrix.map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, rfl, hz⟩` from `(mem_standardThetaLattice_iff_adelicIdeal hcc x).1 hx`. Rewrite using `[mulV_pt]`. Use `GlobalTheory.NormSum.pt_mem_La_of_adelic D hG cc δ hcc N N' γA γA' _ _ hL hL' _ fun i j => ?_` and prove the remaining obligations. Establish `e : adj D γ' * (γ' * z * adj D γ) * γ = z`. Rewrite using `[Matrix.mul_assoc γ', ← Matrix.mul_assoc (adj D γ'), h1', Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, e]`. Conclude with `hz i j`. Introduce `hx`. Take `⟨w, hw, hz⟩` from `GlobalTheory.NormSum.exists_pt_of_mem_La_moved D hG cc δ hcc N N' γA γA' _ _ hL hL' _ hx`. Use `(mem_standardThetaLattice_iff_adelicIdeal hcc x).2 ⟨adj D γ' * w * γ, ?_, fun i j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mulV_pt, ← hw, mulV_mulV, h1, h1', mulV_one]`. Use `hz i j` as an intermediate fact. Rewrite `this` using `[key]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_moved (hcc : cc ≠ ⊥) (γA : GA D N) (γA' : GA D N') (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
@@ -158,9 +158,9 @@ end GlobalTheory.ThetaStab
 open GlobalTheory.ThetaStab in
 
 /- English proof (translation)
-Introduce `D cc δ hc N N'`. Establish `hcc : cc ≠ ⊥` using `hc.1.1`. Use `⟨fun M' M h' h x hx => mulV_mem hcc M' M h' h x hx, fun M' M => ?_, fun γA γA' γ γ' L₁ L₁' h h' hL hL' x => mem_iff_moved hcc γA γA' γ γ' L₁ L₁' h h' hL hL' x⟩` and prove the remaining obligations. Take `⟨m', hm', h'⟩` from `exists_denom M'`. Take `⟨m, hm, h⟩` from `exists_denom M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m' * m, Nat.mul_pos hm' hm, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← mulV_nsmul]`. Conclude with `mulV_mem hcc _ _ h' h x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThetaStab.mulV_theta_lattices : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ), (∀ (M' : Matrix (Fin N') (Fin N') D.host.E) (M : Matrix (Fin N) (Fin N) D.host.E), (∀ i j, IsIntegral ℤ (M' i j)) → (∀ i j, IsIntegral ℤ (M i j)) → ∀ x ∈ La0 D (tor0 D cc δ) N N', mulV D M' M x ∈ La0 D (tor0 D cc δ) N N') ∧ (∀ (M' : Matrix (Fin N') (Fin N') D.host.E) (M : Matrix (Fin N) (Fin N) D.host.E), ∃ m : ℕ, 0 < m ∧ ∀ x ∈ La0 D (tor0 D cc δ) N N', m • mulV D M' M x ∈ La0 D (tor0 D cc δ) N N') ∧ ∀ (γA : GA D N) (γA' : GA D N') (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E) (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), IsRat D (γA : GL (Fin N) (AE D)) γ → IsRat D (γA' : GL (Fin N') (AE D)) γ' → Moves D (γA : GL (Fin N) (AE D)) L₁ → Moves D (γA' : GL (Fin N') (AE D)) L₁' → ∀ x, x ∈ La0 D (tor0 D cc δ) N N' ↔ mulV D γ' (adj D γ) x ∈ La D (tor0 D cc δ) L₁ L₁' := by
   intro D cc δ hc N N'

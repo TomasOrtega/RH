@@ -17,7 +17,7 @@ namespace GlobalTheory.CechPoset
 variable {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Take `rfl : s = s'` from `Subtype.ext h`. Rewrite using `[Subsingleton.elim φ φ']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_cochain_congr {p : ℕ} (c : CC F p) {s s' : {s : Finset κ // s.card = p + 1}} (h : s.1 = s'.1)
     {b : (NE κ)ᵒᵖ} (φ : ne s.1 (card_nonempty s) ⟶ b) (φ' : ne s'.1 (card_nonempty s') ⟶ b) :
@@ -26,19 +26,17 @@ theorem mp_cochain_congr {p : ℕ} (c : CC F p) {s s' : {s : Finset κ // s.card
   rw [Subsingleton.elim φ φ']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b f`. Rewrite using `[amitsur_d0_apply]`. Simplify using `only [e0, e1, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[← mp_comp]`. Use `split_ifs with h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.neg_apply, LinearMap.comp_apply, LinearMap.proj_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[δ_apply, map_sum]`. Establish `hb : mn b ∈ ({mn b, mn a} : Finset κ)` using `by simp`. Establish `ha : mn a ∈ ({mn b, mn a} : Finset κ)` using `by simp`. Establish `s1 : GlobalTheory.cubeSign ({mn b, mn a} : Finset κ) (mn b) = 1` using `GlobalTheory.cubeSign_eq_one_of_forall_le (by simp [h.le])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : GlobalTheory.cubeSign ({mn b, mn a} : Finset κ) (mn a) = -1`. Use `GlobalTheory.cubeSign_erase_of_lt (t := {mn b, mn a}) hb h` as an intermediate fact. Rewrite `this` using `[Finset.erase_insert (by simp [h.ne]), GlobalTheory.cubeSign_singleton]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fintype.sum_eq_add (⟨mn b, hb⟩ : ({mn b, mn a} : Finset κ)) ⟨mn a, ha⟩ (fun e => h.ne (congrArg Subtype.val e)) (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx⟩ ⟨h1, h2⟩`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `(h1 rfl).elim`. Conclude with `(h2 rfl).elim)]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [s1, s2, one_smul, neg_smul, map_neg, ← mp_comp]`. Rewrite using `[neg_add, neg_neg, neg_add_eq_sub]`. Use `congrArg₂ (· - ·) ?_ ?_` and prove the remaining obligations. Use `mp_cochain_congr F c (s := ⟨{mn b}, Finset.card_singleton _⟩) (s' := GlobalTheory.Cube.eraseIdx ⟨{mn b, mn a}, Finset.card_pair h.ne⟩ ⟨mn a, ha⟩) ?_ _ _ show {mn b} = Finset.erase {mn b, mn a} (mn a)` and prove the remaining obligations. Rewrite using `[Finset.pair_comm, Finset.erase_insert (by simp [h.ne'])]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mp_cochain_congr F c (s := ⟨{mn a}, Finset.card_singleton _⟩) (s' := GlobalTheory.Cube.eraseIdx ⟨{mn b, mn a}, Finset.card_pair h.ne⟩ ⟨mn b, hb⟩) ?_ _ _ show {mn a} = Finset.erase {mn b, mn a} (mn b)` and prove the remaining obligations. Rewrite using `[Finset.erase_insert (by simp [h.ne])]`. Establish `e : mn b = mn a` using `le_antisymm (mn_le_of_hom f) (not_lt.1 h)`. Rewrite using `[LinearMap.zero_apply, sub_eq_zero]`. Use `mp_cochain_congr F c (s := ⟨{mn b}, Finset.card_singleton _⟩) (s' := ⟨{mn a}, Finset.card_singleton _⟩) ?_ _ _` and prove the remaining obligations.
-
-Use `show ({mn b} : Finset κ) = {mn a}`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderedCech_cochainsZero_coboundary_comm {κ : Type} [LinearOrder κ] {R : Type} [CommRing R]
     (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (c : CC F 0) : d0 F (e0 F c) = e1 F (δ F 0 c) := by

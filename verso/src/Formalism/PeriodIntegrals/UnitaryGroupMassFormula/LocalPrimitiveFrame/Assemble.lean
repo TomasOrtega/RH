@@ -17,7 +17,7 @@ def Assemble_bc (ψ : (Fin n → E) →ₗ[E] E) :
   ∑ i, inclR (F := F) (Fv F v) (ψ fun j => if i = j then 1 else 0) • LinearMap.proj i
 
 /- English proof (translation)
-Use `conv_rhs => rw [LinearMap.pi_apply_eq_sum_univ ψ y]`. Simplify using `only [Assemble_bc, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.coe_proj, Function.eval, ratV, smul_eq_mul, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Assemble_bc_ratV (ψ : (Fin n → E) →ₗ[E] E) (y : Fin n → E) :
     Assemble_bc v ψ (ratV (F := F) (Fv F v) y) = inclR (F := F) (Fv F v) (ψ y) := by
@@ -27,7 +27,7 @@ theorem Assemble_bc_ratV (ψ : (Fin n → E) →ₗ[E] E) (y : Fin n → E) :
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(t : Fv F v) • x i = sc (E := E) v (t : Fv F v) * x i`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Assemble_smul_eq (t : v.adicCompletionIntegers F) (x : Fin n → Fv F v ⊗[F] E) :
     t • x = sc (E := E) v (t : Fv F v) • x := by
@@ -37,7 +37,7 @@ theorem Assemble_smul_eq (t : v.adicCompletionIntegers F) (x : Fin n → Fv F v 
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(t : Fv F v) • y = _`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Assemble_smul_eq' (t : v.adicCompletionIntegers F) (y : Fv F v ⊗[F] E) :
     t • y = sc (E := E) v (t : Fv F v) * y := by
@@ -46,11 +46,9 @@ theorem Assemble_smul_eq' (t : v.adicCompletionIntegers F) (y : Fv F v ⊗[F] E)
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Rewrite using `[Assemble_bc_ratV]`. Conclude with `Submodule.subset_span ⟨_, hS l hl, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul t x _ hx`.
-
-Rewrite using `[Assemble_smul_eq, map_smul, smul_eq_mul, ← Assemble_smul_eq']`. Conclude with `Submodule.smul_mem _ t hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Assemble_bc_span (ψ : (Fin n → E) →ₗ[E] E) (Λ : Set (Fin n → E)) (S : Set E)
     (hS : ∀ l ∈ Λ, ψ l ∈ S) (x : Fin n → Fv F v ⊗[F] E) (hx : x ∈ latLoc (E := E) v Λ) :
@@ -67,7 +65,7 @@ theorem Assemble_bc_span (ψ : (Fin n → E) →ₗ[E] E) (Λ : Set (Fin n → E
     exact Submodule.smul_mem _ t hx
 
 /- English proof (translation)
-Unfold `dV`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Assemble_dV_ne_zero : dV v ≠ 0 := by
   unfold dV
@@ -76,14 +74,14 @@ theorem Assemble_dV_ne_zero : dV v ≠ 0 := by
   · exact one_ne_zero
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨1, Set.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `[inclR, Algebra.TensorProduct.one_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Assemble_one_mem : (1 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
   refine Submodule.subset_span ⟨1, Set.mem_univ _, ?_⟩
   simp [inclR, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Establish `h : inclR (F` using `F) (Fv F v) '' Set.range ((↑) : 𝓞 E → E) = (fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ := by`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite `hy` using `[h]`. Conclude with `hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Assemble_OEv_of_mem (y : Fv F v ⊗[F] E)
     (hy : y ∈ Submodule.span (v.adicCompletionIntegers F)
@@ -95,7 +93,7 @@ theorem Assemble_OEv_of_mem (y : Fv F v ⊗[F] E)
   exact hy
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratTup, ratV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Assemble_ratTup_castSucc {r : ℕ} (e : Fin r → Fin n → E) (z : Fin n → E) (a : Fin r) :
     ratTup (F := F) (Fv F v) (Fin.snoc e z : Fin (r + 1) → Fin n → E) (Fin.castSucc a) =
@@ -103,7 +101,7 @@ theorem Assemble_ratTup_castSucc {r : ℕ} (e : Fin r → Fin n → E) (z : Fin 
   funext i; simp [ratTup, ratV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratTup, ratV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Assemble_ratTup_last {r : ℕ} (e : Fin r → Fin n → E) (z : Fin n → E) :
     ratTup (F := F) (Fv F v) (Fin.snoc e z : Fin (r + 1) → Fin n → E) (Fin.last r) =
@@ -111,14 +109,14 @@ theorem Assemble_ratTup_last {r : ℕ} (e : Fin r → Fin n → E) (z : Fin n �
   funext i; simp [ratTup, ratV]
 
 /- English proof (translation)
-Simplify using `[alp, a.isLt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Assemble_alp_castSucc {r : ℕ} (a : Fin r) :
     alp v r (Fin.castSucc a) = (dV v)⁻¹ ^ (r - (a : ℕ)) := by
   simp [alp, a.isLt]
 
 /- English proof (translation)
-Simplify using `[alp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Assemble_alp_last (r : ℕ) : alp v r (Fin.last r) = 1 := by
   simp [alp]
@@ -129,59 +127,53 @@ Both sides reduce to the same expression.
 theorem Assemble_sc_one : sc (E := E) v 1 = 1 := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Assemble_ratV_smul (x : E) (y : Fin n → E) :
     inclR (F := F) (Fv F v) x • ratV (F := F) (Fv F v) y = ratV (F := F) (Fv F v) (x • y) := by
   funext i; simp [ratV, map_mul]
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_sub a.isLt.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Assemble_exp {r : ℕ} (a : Fin r) :
     (-((r : ℤ) - ((a : ℕ) : ℤ))) = -(((r - (a : ℕ) : ℕ)) : ℤ) := by
   rw [Nat.cast_sub a.isLt.le]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v n r Λ Lb e f z hD hΛ hz φ φz p1 p2 p3 p4 p5 p6 p7`. Establish `hLbΛ : Lb ≤ Λ` using `by rw [hΛ]; exact le_sup_right.trans le_sup_left`. Establish `hAΛ : latSpan (fun a : Fin r => ddE F ^ (-((r : ℤ) - (a : ℕ)))) e ≤ Λ`. Rewrite using `[hΛ]`. Conclude with `le_sup_left.trans le_sup_left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBΛ : latSpan (fun a : Fin r => (ddE F ^ (-((r : ℤ) - (a : ℕ))))⁻¹) f ≤ Λ`. Rewrite using `[hΛ]`. Conclude with `le_sup_right`. Use `set X := ratTup (F := F) (Fv F v) (Fin.snoc e z : Fin (r + 1) → Fin n → E) with hX`. Establish `hφΛ : ∀ a : Fin r, ∀ l ∈ Λ, φ a l ∈ ((ddE F ^ (-((r : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a`. Set `I : Submodule (𝓞 E) E` to `((ddE F ^ (-((r : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E)`. Establish `hle : Λ ≤ I.comap ((φ a).restrictScalars (𝓞 E))`. Rewrite using `[hΛ]`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[latSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨b, x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, map_smul, p1, smul_eq_mul]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos rfl, mul_one]`. Conclude with `hx`. Simplify using `[hab]`. Introduce `l hl`. Rewrite using `[Submodule.mem_comap, LinearMap.restrictScalars_apply, p3 a l hl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `zero_mem _`. Rewrite using `[latSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨b, x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, map_smul, p2, smul_zero]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun l hl => hle hl`. Establish `hφzΛ : ∀ l ∈ Λ, φz l ∈ Set.range ((↑) : 𝓞 E → E)`. Establish `hle : Λ ≤ (1 : Submodule (𝓞 E) E).comap (φz.restrictScalars (𝓞 E))`. Rewrite using `[hΛ]`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[latSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨b, x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, map_smul, p4, smul_zero]`. Conclude with `zero_mem _`. Introduce `l hl`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Take `⟨o, ho⟩` from `p7 l hl`. Conclude with `⟨o, ho.symm⟩`. Rewrite using `[latSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨b, x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, map_smul, p5, smul_zero]`. Conclude with `zero_mem _`. Introduce `l hl`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 (hle hl)`. Conclude with `⟨o, ho⟩`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : ∀ k : ℕ, IsUnit (sc (E` using `E) v ((dV v)⁻¹ ^ k)) := fun k => (IsUnit.mk0 _ (pow_ne_zero k (inv_ne_zero (Assemble_dV_ne_zero v)))).map (algebraMap (Fv F v) (Fv F v ⊗[F] E))`. Establish `hlocF : ∀ i, locF v X i = sc (E` using `E) v (alp v r i) • X i := fun i => rfl`. Use `⟨fun i => ?_, fun c hc i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hlocF, Assemble_alp_last, Assemble_sc_one, one_smul, hX, Assemble_ratTup_last]`. Conclude with `Submodule.subset_span ⟨z, hLbΛ hz, rfl⟩`. Consider the case `cast a`. Rewrite using `[hlocF, Assemble_alp_castSucc, hX, Assemble_ratTup_castSucc]`. Establish `hy` using `(hD (r - (a : ℕ)) (sc (E := E) v ((dV v)⁻¹ ^ (r - (a : ℕ))))).2 ⟨1, Assemble_one_mem v, (mul_one _).symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `key : ∀ y ∈ Submodule.span (v.adicCompletionIntegers F) (inclR (F` using `F) (Fv F v) '' ((ddE F ^ (-(((r - (a : ℕ) : ℕ)) : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E)), y • ratV (F := F) (Fv F v) (e a) ∈ latLoc (E := E) v (Λ : Set (Fin n → E)) := by`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Assemble_ratV_smul]`. Use `Submodule.subset_span ⟨x • e a, hAΛ (Submodule.subset_span ⟨a, x, ?_, rfl⟩), rfl⟩` and prove the remaining obligations. Use `show x ∈ ddE F ^ (-((r : ℤ) - ((a : ℕ) : ℤ)))`. Rewrite using `[Assemble_exp]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_smul]`. Conclude with `add_mem hx hy`. Consider the case `smul t y _ hy`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Assemble_smul_eq', mul_smul, ← Assemble_smul_eq]`. Conclude with `Submodule.smul_mem _ t hy`. Conclude with `key _ hy`. Establish `hsum : ∀ ψ : (Fin n → E) →ₗ[E] E, Assemble_bc v ψ (∑ i, c i • locF v X i) = (∑ a : Fin r, c (Fin.castSucc a) * sc (E` using `E) v ((dV v)⁻¹ ^ (r - (a : ℕ))) * inclR (F := F) (Fv F v) (ψ (e a))) + c (Fin.last r) * inclR (F := F) (Fv F v) (ψ z) := by`. Introduce `ψ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Fin.sum_univ_castSucc]`. Simplify using `only [map_smul, locF, smul_eq_mul, hX, Assemble_ratTup_castSucc, Assemble_ratTup_last, Assemble_alp_castSucc, Assemble_alp_last, Assemble_sc_one, one_mul, Assemble_bc_ratV, mul_assoc]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Establish `h` using `Assemble_bc_span v φz (Λ : Set (Fin n → E)) _ hφzΛ _ hc`.
-
-Rewrite `h` using `[hsum]`. Simplify using `only [p4, p6, map_zero, mul_zero, Finset.sum_const_zero, zero_add, map_one, mul_one] at h`. Conclude with `Assemble_OEv_of_mem v _ h`. Consider the case `cast a`. Establish `h` using `Assemble_bc_span v (φ a) (Λ : Set (Fin n → E)) _ (hφΛ a) _ hc`.
-
-Rewrite `h` using `[hsum]`. Simplify using `only [p1, p3 a z hz, map_zero, mul_zero, add_zero, apply_ite (inclR (F := F) (Fv F v)), map_one, mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Rewrite `h` using `[Assemble_exp]`. Take `⟨p, hp, hcp⟩` from `(hD (r - (a : ℕ)) _).1 h`. Rewrite `hcp` using `[mul_comm]`.
-
-Rewrite using `[(hunit _).mul_left_cancel hcp]`. Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem primitiveOfDualFunctionals : Assemble := by
   intro F E _ _ _ _ _ v n r Λ Lb e f z hD hΛ hz φ φz p1 p2 p3 p4 p5 p6 p7

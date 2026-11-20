@@ -13,9 +13,9 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt PositivityTheory.Rg.Sw.
 variable {m n : ℕ}
 
 /- English proof (translation)
-Establish `hR : HasDerivAt (fun σ => evX R (mulR (aE H σ) y)) (evX (eulH H R) (mulR (aE H s) y)) s`. Rewrite using `[evX_eulH]`. Conclude with `hasDerivAt_eval_curve R (fun σ => ept (mulR (aE H σ) y)) _ s (fun k => hasDerivAt_ept H y s k)`. Use `(hR.mul (hasDerivAt_gsE c ε hH y s)).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [DMp, trHQ, evX_eq, map_sub, map_mul, MvPolynomial.eval_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_phiE (c : ℝ) (ε : Fin m → Bool) {H : Matrix (Fin n) (Fin n) ℂ} (hH : H.IsHermitian) (R : PX m n)
     (y : Fin m → Fin n → ℂ) (s : ℝ) :
@@ -30,9 +30,7 @@ theorem hasDerivAt_phiE (c : ℝ) (ε : Fin m → Bool) {H : Matrix (Fin n) (Fin
   ring
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).mpr fun a => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).mpr fun j => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Use `gcongr`.
-
-Conclude with `(norm_le_pi_norm (y a) i).trans (norm_le_pi_norm y a)`. Use `_ = ‖y‖ * ∑ i, ‖A i j‖ := by rw [Finset.mul_sum]`. Use `_ ≤ ‖y‖ * ∑ i, ∑ j, ‖A i j‖ := by gcongr with i`. Conclude with `Finset.single_le_sum (f := fun j => ‖A i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)`. Use `_ = _ := mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mulR_le (A : Matrix (Fin n) (Fin n) ℂ) (y : Fin m → Fin n → ℂ) :
     ‖mulR A y‖ ≤ (∑ i, ∑ j, ‖A i j‖) * ‖y‖ := by
@@ -53,27 +51,25 @@ theorem norm_mulR_le (A : Matrix (Fin n) (Fin n) ℂ) (y : Fin m → Fin n → �
     _ = _ := mul_comm _ _
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun s => (hasDerivAt_aE_entry H s i j).continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem continuous_aE_entry (H : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : Continuous fun σ : ℝ => aE H σ i j :=
   continuous_iff_continuousAt.2 fun s => (hasDerivAt_aE_entry H s i j).continuousAt
 
 /- English proof (translation)
-Use `set r : ℝ := (Module.finrank ℝ (Fin m → Fin n → ℂ) : ℝ) + 1 with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Take `⟨Cp, k, hCp, hP⟩` from `PositivityTheory.Rg.Sw.AbsSt.DF.poly_bound P`. Take `⟨Cd, hCd, hdec⟩` from `PositivityTheory.Rg.Sw.AbsSt.DF.decay k c hc r`. Apply the tactic sequence `obtain ⟨L, hL⟩ := (isCompact_Icc (a := s - 1) (b := s + 1)).exists_bound_of_continuousOn (f := fun σ : ℝ => ∑ i, ∑ j, ‖aE H (-σ) i j‖) (Continuous.continuousOn (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ((continuous_aE_entry H i j).comp continuous_neg) …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set L' := max L 1 with hL'`. Establish `hL'1 : 1 ≤ L'` using `le_max_right _ _`. Establish `hL'0 : 0 ≤ L'` using `by linarith`. Use `⟨Cp * Cd * L' ^ r, mul_nonneg (mul_nonneg hCp hCd) (Real.rpow_nonneg hL'0 r), fun σ hσ y => ?_⟩` and prove the remaining obligations. Use `set z := mulR (aE H σ) y with hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hσI : σ ∈ Icc (s - 1) (s + 1)`. Rewrite `hσ` using `[abs_lt]`. Apply the tactic sequence `constructor <;> linarith [hσ.1, hσ.2]`. Establish `hsum : ∑ i, ∑ j, ‖aE H (-σ) i j‖ ≤ L'`. Use `hL σ hσI` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.norm_of_nonneg (by positivity)]`. Conclude with `this.trans (le_max_left _ _)`. Establish `hy : ‖y‖ ≤ L' * ‖z‖`. Establish `hyz : y = mulR (aE H (-σ)) z` using `by rw [hz, mulR_mul, aE_mul_neg', mulR_one]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg : ‖gs c z‖ ≤ Real.exp (-(c * ‖z‖ ^ 2))`. Rewrite using `[gs, Complex.norm_exp]`. Simplify using `only [Complex.neg_re, Complex.ofReal_re]`. Conclude with `Real.exp_le_exp.mpr (neg_le_neg (mul_le_mul_of_nonneg_left (PositivityTheory.Rg.Sw.AbsSt.DF.sq_norm_le_sum z) hc.le))`. Establish `hz0 : 0 ≤ ‖z‖` using `norm_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmain : ‖evX P z * gs c z‖ ≤ Cp * Cd * (1 + ‖z‖) ^ (-r)`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcmp : (1 + ‖z‖) ^ (-r) ≤ L' ^ r * (1 + ‖y‖) ^ (-r)`. Establish `h1 : 1 + ‖y‖ ≤ L' * (1 + ‖z‖)` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : (L' * (1 + ‖z‖)) ^ (-r) ≤ (1 + ‖y‖) ^ (-r)` using `Real.rpow_le_rpow_of_nonpos (by positivity) h1 (by linarith)`. Rewrite `h2` using `[Real.mul_rpow hL'0 (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← Real.rpow_add (by linarith), add_neg_cancel, Real.rpow_zero, one_mul]`. Use `_ ≤ L' ^ r * (1 + ‖y‖) ^ (-r) := mul_le_mul_of_nonneg_left h2 (Real.rpow_nonneg hL'0 r)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem dom_boundE (c : ℝ) (hc : 0 < c) (H : Matrix (Fin n) (Fin n) ℂ) (P : PX m n) (s : ℝ) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ σ : ℝ, |σ - s| < 1 → ∀ y : Fin m → Fin n → ℂ,

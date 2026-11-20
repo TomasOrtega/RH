@@ -7,11 +7,11 @@ open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 namespace GlobalTheory.FlagMod.FieldFlag
 
 /- English proof (translation)
-Establish `hs : ∀ b, (U.submatrix id e).mulVec b = U.mulVec (b ∘ e.symm)` using `fun b => by`. Use `Matrix.submatrix_mulVec_equiv U b (Equiv.refl m) e` as an intermediate fact. Simplify using `using this`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(C.mulVec a) ∘ e.symm, by rw [← Matrix.mulVec_mulVec, hs]⟩`. Introduce and unpack `⟨a, rfl⟩`. Establish `hC' : ∀ x, C.mulVec (C⁻¹.mulVec x) = x` using `fun x => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hC, Matrix.one_mulVec]`. Use `⟨C⁻¹.mulVec (a ∘ e), ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hC', hs]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem exists_mulVec_submatrix_mul_iff {R : Type} [CommRing R] {m n : Type} [Fintype m] [Fintype n] [DecidableEq n]
     (U : Matrix m n R) (e : Equiv.Perm n) (C : Matrix n n R) (hC : IsUnit C.det) (cv : m → R) :
@@ -38,17 +38,15 @@ namespace GlobalTheory.FlagMod.FieldFlag
 open MonoidalCategory CartesianMonoidalCategory MonObj
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y p A Z π g κ _ hZ ht`. Introduce `S _ _ y hy z hx k hz σ`. Take `⟨φ, hφ⟩ : ∃ φ, φ = (ev z _ hz).comp (cellθ κ k).toRingHom` from `⟨_, rfl⟩`. Establish `hzφ : spMap φ ≫ κ k.1 k.2 = z` using `hφ ▸ eq_spMap_ev k z hz`. Establish `hxφ : y ≫ Y.j = spMap (φ.comp (cC A k.1)) ≫ tau (A.V k.1).2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx, ← hzφ, Category.assoc, hZ.plk.base, cbase, ← Category.assoc, spMap_comp']`. Both sides reduce to the same expression. Establish `hV : ⊤ ≤ (y ≫ Y.j) ⁻¹ᵁ (A.k k.1).V` using `hxφ ▸ le_preimage_comp _ (tau_le (A.V k.1).2 le_rfl)`. Establish `hev : ev (y ≫ Y.j) (A.k k.1).V hV = φ.comp (cC A k.1)`. Rewrite using `[ev_congr hxφ _ hV (hxφ ▸ hV)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ev_spMap_tau (A.V k.1).2 _ _`. Establish `hM : ⊤ ≤ (y ≫ Y.j) ⁻¹ᵁ (A.k k.1).M.U` using `(cellFrames hZ ht).inM hz hx`. Establish `huAt : (cellFrames hZ ht).uAt k z hz σ = ((((A.k k.1).u σ).map (ev (y ≫ Y.j) _ hV)).submatrix id (k.2 σ)) * (cellMat (A.V k.1) σ).map φ`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show (ev z _ hz) ((cellθ κ k) (uC A k.1 k.2 σ i j)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ x, (ev z _ hz) ((cellθ κ k) x) = φ x` using `fun x => by rw [hφ]; rfl`. Rewrite using `[hev, e2, uC]`. Conclude with `RingHom.map_matrix_mul _ _ i j φ`. Establish `hdet : IsUnit ((cellMat (A.V k.1) σ).map φ).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, det_cellMat, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isUnit_one`. Use `SetLike.ext fun v => ?_` and prove the remaining obligations. Take `⟨cv, rfl⟩` from `(vec (A.k k.1).M.toMChart _ hM).surjective v`. Use `Iff.trans ?_ ((vec_mem_eigLie _ _ hM σ cv).trans (((LowRank.pm_gen p (A.k k.1).M.toMChart σ hy hM).1 cv).trans ((A.k k.1).fix_iff σ _ hV hM cv))).symm` and prove the remaining obligations. Rewrite using `[mem_initSpan, ← exists_mulVec_submatrix_mul_iff _ (k.2 σ) _ hdet, ← huAt]`.
-
-Conclude with `⟨fun ⟨a, _, e⟩ => ⟨a, (vec (A.k k.1).M.toMChart _ hM).injective (((cellFrames hZ ht).sum_vecAt k _ hz hx σ a).symm.trans e)⟩, fun ⟨a, e⟩ => ⟨a, fun j hj => absurd j.2 (not_lt.2 hj), ((cellFrames hZ ht).sum_vecAt k _ hz hx σ a).trans (congrArg (vec (A.k k.1).M.toMChart _ hM) e)⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cellFrames_topEigen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F)) (A : Atlas Y p) (Z : Scheme.{0}) (π : Z ⟶ Y.X) (g : ∀ en : En Dw.mult, Z ⟶ PSpace c.F (plN A.N en.1)) (κ : ∀ b, Pm Dw.mult → (Sp (CR Dw.mult (A.V b)) ⟶ Z)) [∀ b w, IsOpenImmersion (κ b w)] (hZ : Cells A π g κ) (ht : FlagCellFrameChangeTriangular hZ), (cellFrames hZ ht).TopEigen := by
   intro E _ _ _ H Dw l Xo c Y p A Z π g κ _ hZ ht

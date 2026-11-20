@@ -20,7 +20,7 @@ def cmComplex : Subfield ℂ :=
     (algebraicClosure ℚ ℂ).val.toRingHom
 
 /- English proof (translation)
-Unfold `cmComplex`. Rewrite using `[Subfield.mem_map]`. Use `exists_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Subfield.mem_iInf, and_comm]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_cmComplex {z : ℂ} : z ∈ cmComplex ↔ ∃ x : algebraicClosure ℚ ℂ, (x : ℂ) = z ∧
     ∀ τ : algebraicClosure ℚ ℂ →+* ℂ, τ (conjAlg x) = starRingEnd ℂ (τ x) := by
@@ -31,15 +31,15 @@ theorem mem_cmComplex {z : ℂ} : z ∈ cmComplex ↔ ∃ x : algebraicClosure �
   rfl
 
 /- English proof (translation)
-The claim follows from `(Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one hz hn.ne')).symm`.
+A detailed English derivation is pending.
 -/
 theorem conj_eq_inv_of_pow {z : ℂ} {n : ℕ} (hn : 0 < n) (hz : z ^ n = 1) : starRingEnd ℂ z = z⁻¹ :=
   (Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one hz hn.ne')).symm
 
 /- English proof (translation)
-Establish `ha : IsAlgebraic ℚ z` using `IsAlgebraic.of_pow hn (by rw [hz]; exact isAlgebraic_one)`. Use `mem_cmComplex.2 ⟨⟨z, mem_algebraicClosure_iff.2 ha⟩, rfl, fun τ => ?_⟩` and prove the remaining obligations. Use `set x : algebraicClosure ℚ ℂ := ⟨z, mem_algebraicClosure_iff.2 ha⟩`. Establish `hx : x ^ n = 1` using `Subtype.ext hz`. Establish `h1 : conjAlg x = x⁻¹` using `Subtype.ext (conj_eq_inv_of_pow hn hz)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_inv₀, conj_eq_inv_of_pow hn (by rw [← map_pow, hx, map_one])]`.
+A detailed English derivation is pending.
 -/
 theorem mem_cmComplex_of_pow {z : ℂ} {n : ℕ} (hn : 0 < n) (hz : z ^ n = 1) : z ∈ cmComplex := by
   have ha : IsAlgebraic ℚ z := IsAlgebraic.of_pow hn (by rw [hz]; exact isAlgebraic_one)
@@ -50,13 +50,13 @@ theorem mem_cmComplex_of_pow {z : ℂ} {n : ℕ} (hn : 0 < n) (hz : z ^ n = 1) :
   rw [h1, map_inv₀, conj_eq_inv_of_pow hn (by rw [← map_pow, hx, map_one])]
 
 /- English proof (translation)
-Set `s : K →+* algebraicClosure ℚ ℂ` to `σ.codRestrict (algebraicClosure ℚ ℂ) fun x => mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom σ.toRatAlgHom)`. Establish `hs : conjAlg (s a) = s (star a)` using `Subtype.ext (hσ a).symm`. Rewrite using `[mem_cmComplex]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, h⟩ φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hx' : x = s a` using `Subtype.ext hx`. Set `_ : Algebra K (algebraicClosure ℚ ℂ)` to `s.toAlgebra`. Establish `: Algebra.IsAlgebraic ℚ (algebraicClosure ℚ ℂ)`. Use `algebraicClosure.isAlgebraic ℚ ℂ` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 
-Conclude with `Subsingleton.elim _ _`. Establish `: Algebra.IsAlgebraic K (algebraicClosure ℚ ℂ)` using `Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Establish `h1` using `h (ComplexEmbedding.lift (algebraicClosure ℚ ℂ) φ)`. Rewrite `h1` using `[hx', hs]`. Establish `e : ∀ b, ComplexEmbedding.lift (algebraicClosure ℚ ℂ) φ (s b) = φ b` using `fun b => ComplexEmbedding.lift_algebraMap_apply _ φ b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e, e]`. Conclude with `h1`. Introduce `h`. Conclude with `⟨s a, rfl, fun τ => by rw [hs]; exact h (τ.comp s)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_cmComplex_iff {K : Type} [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ)
     (hσ : ∀ a : K, σ (star a) = starRingEnd ℂ (σ a)) (a : K) : σ a ∈ cmComplex ↔ a ∈ cmMax K := by
@@ -88,11 +88,11 @@ variable {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerPro
   {J : Subgroup G} {χ : J →* ℂˣ} (P : ClassPres ι S σ ρ J χ)
 
 /- English proof (translation)
-Take `⟨n, hn, hk⟩` from `hχ k`. Establish `h1 : (χ k : ℂ) ∈ cmComplex` using `mem_cmComplex_of_pow hn (by rw [← Units.val_pow_eq_pow_val, hk, Units.val_one])`. Establish `h2 : P.coef x = ∑ j, σ (S.bV.repr x j) • P.coef (S.bV j)` using `by conv_lhs => rw [← S.bV.sum_repr x]`. Rewrite using `[map_sum]`. Simplify using `only [map_smulₛₗ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, h2]`. Use `cmComplex.mul_mem h1 ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Use `cmComplex.sum_mem fun j _ => cmComplex.mul_mem ((mem_cmComplex_iff σ hσ _).2 (hx j)) ?_` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `hρ γ j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Simplify using `only [← PresBasic.bW_apply]`. Rewrite using `[Module.Basis.repr_sum_self]`. Conclude with `(mem_cmComplex_iff σ hσ _).2 (hc i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mem (hσ : ∀ a : K, σ (star a) = starRingEnd ℂ (σ a)) (hχ : ∀ k, ∃ n : ℕ, 0 < n ∧ χ k ^ n = 1)
     (hρ : ∀ γ j, ∃ c : S.ιV → K, (∀ i, c i ∈ cmMax K) ∧ ρ γ (P.coef (S.bV j)) = ∑ i, σ (c i) • P.coef (S.bV i))
@@ -120,11 +120,11 @@ end GlobalTheory.PresRat
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G Γ W K _ _ _ _ _ _ _ ι S σ ρ J χ P A T hσ hχ hρ hT`. Establish `hb : S.HasRatBasis`. Use `(forms_rat S).1 fun c γ i j => ?_` and prove the remaining obligations. Rewrite using `[← PresRat.mem_cmComplex_iff σ hσ, ← PresBasic.repr_coef P, P.coef_act]`. Use `PresRat.act_mem P hσ hχ hρ _ _ _ (fun l => ?_) i` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Use `⟨hb, (forms_rat S).2 T hb fun f hf c i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PresRat.mem_cmComplex_iff σ hσ, ← PresBasic.repr_coef P, ← PresBasic.ext_y P, hT]`. Unfold `dcOp`. Rewrite using `[map_sum, Finsupp.coe_finsetSum, Finset.sum_apply]`. Conclude with `PresRat.cmComplex.sum_mem fun a _ => PresRat.act_mem P hσ hχ hρ _ _ _ (hf _) i`.
+A detailed English derivation is pending.
 -/
 theorem classPres_dcOp_rat : ∀ {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [Field K] [NumberField K] [StarRing K] (ι : Γ →* G) (S : CSD K) (σ : K →+* ℂ) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (P : ClassPres ι S σ ρ J χ) (A : Finset G) (T : Module.End K S.Forms), (∀ a : K, σ (star a) = starRingEnd ℂ (σ a)) → (∀ k, ∃ n : ℕ, 0 < n ∧ χ k ^ n = 1) → (∀ γ j, ∃ c : S.ιV → K, (∀ i, c i ∈ cmMax K) ∧ ρ γ (P.coef (S.bV j)) = ∑ i, σ (c i) • P.coef (S.bV i)) → (∀ f : S.Forms, P.ext ((T f : S.Forms) : S.Cl → S.V) = dcOp A (P.ext (f : S.Cl → S.V))) → S.HasRatBasis ∧ ∀ a b, LinearMap.toMatrix S.basis S.basis T a b ∈ cmMax K := by
   intro G Γ W K _ _ _ _ _ _ _ ι S σ ρ J χ P A T hσ hχ hρ hT

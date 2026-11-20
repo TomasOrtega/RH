@@ -13,7 +13,7 @@ namespace GlobalTheory.Ord2.ImZ
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Conclude with `PadicInt.norm_def.symm.trans (PadicInt.isUnit_iff.mp u.isUnit)`.
+A detailed English derivation is pending.
 -/
 theorem norm_coe_unit (u : ℤ_[l]ˣ) : ‖((u : ℤ_[l]) : ℚ_[l])‖ = 1 := by
   exact PadicInt.norm_def.symm.trans (PadicInt.isUnit_iff.mp u.isUnit)
@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 theorem coe_logU (u : ℤ_[l]ˣ) : ((logU u : ℤ_[l]) : ℚ_[l]) = Formalism.MainNotions.LocalSituation.logZl l ((u : ℤ_[l]) : ℚ_[l]) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Formalism.MainNotions.LocalSituation.logZl l (((u * w : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = Formalism.MainNotions.LocalSituation.logZl l ((u : ℤ_[l]) : ℚ_[l]) + Formalism.MainNotions.LocalSituation.logZl l ((w : ℤ_[l]) : ℚ_[l])`. Rewrite using `[Units.val_mul, PadicInt.coe_mul]`. Conclude with `(GlobalTheory.PadicLogUnits.logZl_hom l).1 _ _ (norm_coe_unit u) (norm_coe_unit w)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logU_mul (u w : ℤ_[l]ˣ) : logU (u * w) = logU u + logU w := by
   apply Subtype.ext
@@ -36,7 +36,7 @@ theorem logU_mul (u w : ℤ_[l]ˣ) : logU (u * w) = logU u + logU w := by
   exact (GlobalTheory.PadicLogUnits.logZl_hom l).1 _ _ (norm_coe_unit u) (norm_coe_unit w)
 
 /- English proof (translation)
-Establish `h` using `logU_mul (l := l) 1 1`. Rewrite `h` using `[mul_one]`. Take the linear combination `-h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem logU_one : logU (1 : ℤ_[l]ˣ) = 0 := by
   have h := logU_mul (l := l) 1 1
@@ -49,7 +49,7 @@ def logHom : ℤ_[l]ˣ →* Multiplicative ℤ_[l] where
   map_mul' u w := by rw [logU_mul]; rfl
 
 /- English proof (translation)
-Establish `h1 : Continuous fun u : ℤ_[l]ˣ => ((u : ℤ_[l]) : ℚ_[l])` using `(continuous_subtype_val : Continuous (fun x : ℤ_[l] => (x : ℚ_[l]))).comp (Units.continuous_val (M := ℤ_[l]))`. Establish `h2 : Continuous fun u : ℤ_[l]ˣ => Formalism.MainNotions.LocalSituation.logZl l ((u : ℤ_[l]) : ℚ_[l])` using `(GlobalTheory.PadicLogUnits.logZl_hom l).2.1.comp_continuous h1 (fun u => norm_coe_unit u)`. Conclude with `continuous_ofAdd.comp (h2.subtype_mk _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_logHom : Continuous (logHom (l := l)) := by
   have h1 : Continuous fun u : ℤ_[l]ˣ => ((u : ℤ_[l]) : ℚ_[l]) :=
@@ -59,9 +59,7 @@ theorem continuous_logHom : Continuous (logHom (l := l)) := by
   exact continuous_ofAdd.comp (h2.subtype_mk _)
 
 /- English proof (translation)
-Establish `h' : ((cycZ ℚ Ω l z : ℤ_[l]) : ℚ_[l]) = 1`. Establish `h2` using `h`. Simplify using `[eps, cycBar] at h2`. Conclude with `h2`. Apply `Units.ext` to reduce the goal to its premises.
-
-Conclude with `PadicInt.ext (h'.trans PadicInt.coe_one.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem cycZ_eq_one_of_eps {Ω : Type} [Field Ω] [Algebra ℚ Ω] {z : G ℚ Ω} (h : eps l z = 1) :
     cycZ ℚ Ω l z = 1 := by
@@ -73,7 +71,7 @@ theorem cycZ_eq_one_of_eps {Ω : Type} [Field Ω] [Algebra ℚ Ω] {z : G ℚ Ω
   exact PadicInt.ext (h'.trans PadicInt.coe_one.symm)
 
 /- English proof (translation)
-Take `⟨h1, _, h3⟩` from `h`. Conclude with `⟨h1, fun _ _ _ => Submodule.mem_top, fun W' hW' hinv => h3 W' hW' fun g v hv => hinv g v hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isIrr_of_comp {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (H : Subgroup Γ)
     (h : IsIrr (r.comp H.subtype)) : IsIrr r := by
@@ -81,15 +79,13 @@ theorem isIrr_of_comp {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* 
   exact ⟨h1, fun _ _ _ => Submodule.mem_top, fun W' hW' hinv => h3 W' hW' fun g v hv => hinv g v hv⟩
 
 /- English proof (translation)
-Use `haveI : (Ideal.span {((2 : ℕ) : ℤ)}).IsMaximal := Int.ideal_span_isMaximal_of_prime 2`. Take `⟨M, hM, hc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 ℚ) (Ideal.span {((2 : ℕ) : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (algebraMap ℤ (𝓞 ℚ)).injective_int]; exact bot_le)`. Set `v : HeightOneSpectrum (𝓞 ℚ)` to `⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField ℚ)⟩`. Establish `hlv : ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal`. Introduce `h`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ((l : ℕ) : ℤ) ∈ M.comap (algebraMap ℤ (𝓞 ℚ))`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `h`. Rewrite `h2` using `[hc, Ideal.mem_span_singleton]`. Establish `h3 : (2 : ℕ) ∣ l` using `by exact_mod_cast h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hl ((Nat.prime_dvd_prime_iff_eq Nat.prime_two (Fact.out)).mp h3).symm`. Establish `hσ` using `cycZ_of_isFrob (l := l) hlv (isPlaceOver_placeOf Ω v) (isFrob_frobOf Ω v)`. Use `⟨frobOf Ω v, normV v, ?_, hσ⟩` and prove the remaining obligations. Establish `h0 : normV v ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hσ` using `[h0, Nat.cast_zero]`. Conclude with `(cycZ ℚ Ω l (frobOf Ω v)).ne_zero hσ`. Establish `h1 : normV v ≠ 1`. Introduce `h1`. Establish `: Nat.card (𝓞 ℚ ⧸ v.asIdeal) = 1` using `h1`.
-
-Take `⟨hs, _⟩` from `Nat.card_eq_one_iff_unique.mp this`. Use `haveI : v.asIdeal.IsMaximal := hM`. Use `haveI : Nontrivial (𝓞 ℚ ⧸ v.asIdeal) := inferInstance`. Conclude with `not_subsingleton _ hs`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_cycZ_nat (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (hl : l ≠ 2) :
     ∃ (σ : G ℚ Ω) (n : ℕ), 2 ≤ n ∧ ((cycZ ℚ Ω l σ : ℤ_[l]) = n) := by
@@ -121,23 +117,23 @@ theorem exists_cycZ_nat (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   omega
 
 /- English proof (translation)
-Take `⟨σ, n, hn, hσ⟩` from `exists_cycZ_nat (l := l) Ω hl`. Use `⟨σ ^ (l - 1), fun h => ?_⟩` and prove the remaining obligations. Establish `hl1 : 1 ≤ l - 1` using `by have := (Fact.out : l.Prime).two_le; omega`. Establish `hval : ((cycZ ℚ Ω l (σ ^ (l - 1)) : ℤ_[l]) : ℚ_[l]) = ((n ^ (l - 1) : ℕ) : ℚ_[l])`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, hσ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `h0 : logU (cycZ ℚ Ω l (σ ^ (l - 1))) = 0`. Use `congrArg Multiplicative.toAdd h` as an intermediate fact. Simplify `this` using `[logHom]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0' : Formalism.MainNotions.LocalSituation.logZl l ((n ^ (l - 1) : ℕ) : ℚ_[l]) = 0`. Rewrite using `[← hval, ← coe_logU, h0]`. Both sides reduce to the same expression. Establish `hnd : ¬ l ∣ n`. Introduce and unpack `⟨k, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hu : IsUnit ((l * k : ℕ) : ℤ_[l])` using `by rw [← hσ]; exact Units.isUnit _`. Rewrite `hu` using `[Nat.cast_mul]`. Establish `hlu` using `PadicInt.isUnit_iff.mp (isUnit_of_mul_isUnit_left hu)`. Rewrite `hlu` using `[PadicInt.norm_p]`. Establish `: (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdvd : ((l : ℤ)) ^ 1 ∣ ((n : ℤ) ^ (l - 1) - 1)`. Rewrite using `[pow_one, ← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `hz : ((n : ℤ) : ZMod l) ≠ 0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Int.cast_natCast, ne_eq, ZMod.natCast_eq_zero_iff]`. Conclude with `hnd`. Use `push_cast`. Rewrite using `[ZMod.pow_card_sub_one_eq_one (by simpa using hz), sub_self]`. Establish `hnorm` using `(Padic.norm_int_le_pow_iff_dvd (p := l) _ 1).mpr hdvd`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ‖((n ^ (l - 1) : ℕ) : ℚ_[l]) - 1‖ ≤ (l : ℝ) ^ (-((1 : ℕ) : ℤ))`. Establish `: ((((n : ℤ) ^ (l - 1) - 1 : ℤ)) : ℚ_[l]) = ((n ^ (l - 1) : ℕ) : ℚ_[l]) - 1` using `by push_cast; ring`. Rewrite using `[← this]`. Conclude with `hnorm`. Establish `heq` using `(GlobalTheory.PadicLogUnits.logZl_hom l).2.2.2 1 le_rfl (fun h2 => absurd h2 hl) _ hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `heq` using `[h0', norm_zero]`. Establish `hne : ((n ^ (l - 1) : ℕ) : ℚ_[l]) - 1 ≠ 0`. Rewrite using `[sub_ne_zero]`. Establish `: 2 ≤ n ^ (l - 1)` using `le_trans hn (Nat.le_self_pow (by omega) n)`. Introduce `he`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: n ^ (l - 1) = 1` using `by exact_mod_cast he`. Use linear arithmetic over natural numbers and integers. Conclude with `hne (norm_eq_zero.mp heq.symm)`.
+A detailed English derivation is pending.
 -/
 theorem logHom_ne_one (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (hl : l ≠ 2) :
     ∃ σ : G ℚ Ω, logHom (cycZ ℚ Ω l σ) ≠ 1 := by
@@ -189,13 +185,13 @@ namespace GlobalTheory.Ord2
 open GlobalTheory.Ord2.ImZ in
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ e S A W h`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨c, hc⟩` from `h.int`. Set `lam : G ℚ Ω →* Multiplicative ℤ_[l]` to `logHom.comp (cycZ ℚ Ω l)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hlamc : Continuous lam` using `continuous_logHom.comp (continuous_cycZ ℚ Ω l)`. Establish `hdet : ∀ g, ((W g : Matrix (Fin 2) (Fin 2) (Qbar l))).det ^ 2 = 1`. Introduce `g`. Use `congrArg (fun u : (Qbar l)ˣ => (u : Qbar l)) (DFunLike.congr_fun h.det2 g)` as an intermediate fact. Simplify `this` using `[dt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hker : W.ker ≤ lam.ker`. Introduce `z hz`. Rewrite using `[MonoidHom.mem_ker]`. Use `show logHom (cycZ ℚ Ω l z) = 1`. Rewrite using `[cycZ_eq_one_of_eps (hne z hz), map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlam` using `GlobalTheory.T.hom_padicInt_trivial_of_irreducible_compact_rep l c (G ℚ Ω) W lam h.cont hc hdet (isIrr_of_comp W _ h.irr) hlamc hker`. Take `⟨σ, hσ⟩` from `logHom_ne_one (l := l) Ω h.l_odd`. Conclude with `hσ (DFunLike.congr_fun hlam σ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_ker_eps_ne_one : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ)
     (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∃ z ∈ W.ker, eps l z ≠ 1 := by

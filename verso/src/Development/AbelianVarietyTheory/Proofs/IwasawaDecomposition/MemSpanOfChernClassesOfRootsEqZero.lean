@@ -18,9 +18,9 @@ def blockEsymm : MvPolynomial (Root m) R →ₐ[R] MvPolynomial (Root m) R :=
   aeval fun x : Root m => rename (Sigma.mk x.1) (esymm (Fin (m x.1)) R (x.2 + 1))
 
 /- English proof (translation)
-Use extensionality with `⟨τ, i⟩ : 1`. Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, blockEsymm, aeval_X, GlobalTheory.BlockSymm.splitEquiv_X_self, mapAlgHom_apply, map_X, AlgHom.restrictScalars_apply]`. Establish `hc : rename (Sigma.mk τ) (esymm (Fin (m τ)) R ((i : ℕ) + 1)) = GlobalTheory.BlockSymm.chernRootsOver R m (X (τ, (i : ℕ) + 1))`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[GlobalTheory.BlockSymm.chernRootsOver]`. Rewrite using `[hc, ← GlobalTheory.BlockSymm.splitEquiv_symm_esymm, AlgEquiv.apply_symm_apply]`. Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, blockEsymm, aeval_X, GlobalTheory.BlockSymm.splitEquiv_X_ne R τ₀ h, mapAlgHom_apply, map_C, AlgHom.restrictScalars_apply, aeval_C]`. Simplify using `[esymm, map_sum, map_prod, GlobalTheory.BlockSymm.splitEquiv_X_ne R τ₀ h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem split_blockEsymm [DecidableEq ι] (τ₀ : ι) :
     (GlobalTheory.BlockSymm.splitEquiv R τ₀).toAlgHom.comp (blockEsymm R m) =
@@ -44,19 +44,17 @@ theorem split_blockEsymm [DecidableEq ι] (τ₀ : ι) :
 end Esymm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `ι _ hc R _ m`. Use `haveI : IsEmpty ι := Fintype.card_eq_zero_iff.mp hc`. Use `haveI : IsEmpty (Root m) := ⟨fun x => IsEmpty.false x.1⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `p q hpq`. Rewrite `hpq`, the goal using `[eq_C_of_isEmpty p, eq_C_of_isEmpty q]`. Simplify using `only [blockEsymm, aeval_C, algebraMap_eq] at hpq`. Rewrite using `[hpq]`. Consider the case `succ n ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `ι _ hc R _ m`. Take `⟨τ₀⟩ : Nonempty ι` from `Fintype.card_pos_iff.mp (by omega)`. Establish `hc' : Fintype.card {τ // τ ≠ τ₀} = n`. Simplify using `[Fintype.card_subtype_compl, hc]`. Set `R'` to `MvPolynomial (Root (fun τ : {τ // τ ≠ τ₀} => m τ.1)) R`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Function.Injective (aeval (R` using `R') fun i : Fin (m τ₀) => esymm (Fin (m τ₀)) R' (i + 1)) := by`. Introduce `p q hpq`. Apply `esymmAlgHom_fin_injective R' (m := m τ₀) (n := m τ₀) le_rfl` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[esymmAlgHom_apply, esymmAlgHom_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpq`. Establish `h2 : Function.Injective (mapAlgHom (R` using `R) (σ := Fin (m τ₀)) (blockEsymm R (fun τ : {τ // τ ≠ τ₀} => m τ.1))) := by`. Introduce `p q hpq`. Conclude with `map_injective _ (ih _ hc' R _) hpq`. Establish `key` using `split_blockEsymm R m τ₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p q hpq`. Apply `(GlobalTheory.BlockSymm.splitEquiv R τ₀).injective` to reduce the goal to its premises. Apply `h2` to reduce the goal to its premises. Apply `h1` to reduce the goal to its premises. Use `congrArg (fun F => F p) key` as an intermediate fact.
-
-Establish `h'` using `congrArg (fun F => F q) key`. Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, AlgHom.restrictScalars_apply] at this h'`. Rewrite using `[← this, ← h', hpq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockEsymm_injective (n : ℕ) : ∀ (ι : Type) [Fintype ι], Fintype.card ι = n →
     ∀ (R : Type) [CommRing R] (m : ι → ℕ), Function.Injective (blockEsymm R m) := by
@@ -106,9 +104,9 @@ def liftChern : MvPolynomial (Root m) ℝ →ₐ[ℝ] MvPolynomial (ι × ℕ) �
   aeval fun x : Root m => X (x.1, (x.2 : ℕ) + 1)
 
 /- English proof (translation)
-Use extensionality with `⟨τ, k⟩ : 1`. Simplify using `only [AlgHom.comp_apply, truncChern, aeval_X]`. Break down `k with _ | j` into its components or cases. Simplify using `[chernRoots, esymm_zero]`. Distinguish the cases in `h : j < m τ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[chernRoots, h, blockEsymm]`. Establish `hc : (Finset.univ : Finset (Fin (m τ))).card < j + 1` using `by simp; omega`. Simplify using `[chernRoots, h, esymm, Finset.powersetCard_eq_empty.mpr hc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chernRoots_eq_comp : chernRoots m = (blockEsymm ℝ m).comp (truncChern m) := by
   ext ⟨τ, k⟩ : 1
@@ -125,11 +123,11 @@ def rankIdeal : Ideal (MvPolynomial (ι × ℕ) ℝ) :=
     {P | ∃ (τ : ι) (k : ℕ), m τ < k ∧ P = X (τ, k)})
 
 /- English proof (translation)
-Use extensionality with `⟨τ, k⟩ : 1`. Simplify using `only [AlgHom.comp_apply, truncChern, aeval_X, Ideal.Quotient.mkₐ_eq_mk]`. Break down `k with _ | j` into its components or cases. Simplify using `only [if_true, map_one]`. Rewrite using `[← map_one (Ideal.Quotient.mk (rankIdeal m)), Ideal.Quotient.eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← neg_mem_iff, neg_sub]`. Conclude with `Ideal.subset_span (Or.inl ⟨τ, rfl⟩)`. Distinguish the cases in `h : j < m τ`. Simplify using `[h, liftChern]`. Simplify using `only [Nat.add_one_ne_zero, if_false, Nat.add_sub_cancel, h, dif_neg, not_false_eq_true, map_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_comm, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span (Or.inr ⟨τ, j + 1, by omega, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mk_liftChern_truncChern :
     (Ideal.Quotient.mkₐ ℝ (rankIdeal m)).comp ((liftChern m).comp (truncChern m)) =
@@ -148,9 +146,9 @@ theorem mk_liftChern_truncChern :
       exact Ideal.subset_span (Or.inr ⟨τ, j + 1, by omega, rfl⟩)
 
 /- English proof (translation)
-Introduce `ι _ m Q hQ`. Establish `h0 : truncChern m Q = 0`. Apply `blockEsymm_injective _ ι rfl ℝ m` to reduce the goal to its premises. Rewrite using `[map_zero, ← AlgHom.comp_apply, ← chernRoots_eq_comp, hQ]`. Establish `h1` using `congrArg (fun F => F Q) (mk_liftChern_truncChern m)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply, h0, map_zero, Ideal.Quotient.mkₐ_eq_mk] at h1`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem).mp h1.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_span_of_chernRoots_eq_zero : ∀ {ι : Type} [Fintype ι] (m : ι → ℕ) (Q : MvPolynomial (ι × ℕ) ℝ),
     chernRoots m Q = 0 → Q ∈ Ideal.span ((Set.range fun τ : ι => (X (τ, 0) - 1 : MvPolynomial (ι × ℕ) ℝ)) ∪

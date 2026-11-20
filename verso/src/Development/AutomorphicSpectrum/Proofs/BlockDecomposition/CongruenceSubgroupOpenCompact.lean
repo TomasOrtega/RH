@@ -19,14 +19,14 @@ def nearSet (s : kˣ) (m : ℕ) : Set (Matrix (Fin m) (Fin m) k) := {A | NearOne
 def ballMat (s : kˣ) (m : ℕ) : Set (Matrix (Fin m) (Fin m) k) := {B | ∀ a b, B a b ∈ cball s}
 
 /- English proof (translation)
-The claim follows from `Set.ext fun x => ⟨fun hx i _ j _ => hx i j, fun hx i j => hx i trivial j trivial⟩`.
+A detailed English derivation is pending.
 -/
 theorem ballMat_eq (s : kˣ) (m : ℕ) : ballMat (k := k) s m =
     (Set.pi Set.univ fun _ : Fin m => Set.pi Set.univ fun _ : Fin m => cball s : Set (Fin m → Fin m → k)) :=
   Set.ext fun x => ⟨fun hx i _ j _ => hx i j, fun hx i j => hx i trivial j trivial⟩
 
 /- English proof (translation)
-Simplify using `only [ballMat, Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Conclude with `(isOpen_cball s).preimage (f := fun A : Matrix (Fin m) (Fin m) k => A i j) (by fun_prop)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_ballMat (s : kˣ) (m : ℕ) : IsOpen (ballMat (k := k) s m) := by
   simp only [ballMat, Set.setOf_forall]
@@ -34,7 +34,7 @@ theorem isOpen_ballMat (s : kˣ) (m : ℕ) : IsOpen (ballMat (k := k) s m) := by
   exact (isOpen_cball s).preimage (f := fun A : Matrix (Fin m) (Fin m) k => A i j) (by fun_prop)
 
 /- English proof (translation)
-Establish `h : IsCompact (Set.pi Set.univ fun _ : Fin m => Set.pi Set.univ fun _ : Fin m => cball s : Set (Fin m → Fin m → k))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_cball s`. Rewrite using `[ballMat_eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_ballMat (s : kˣ) (m : ℕ) : IsCompact (ballMat (k := k) s m) := by
   have h : IsCompact (Set.pi Set.univ fun _ : Fin m => Set.pi Set.univ fun _ : Fin m => cball s :
@@ -43,7 +43,7 @@ theorem isCompact_ballMat (s : kˣ) (m : ℕ) : IsCompact (ballMat (k := k) s m)
   rw [ballMat_eq]; exact h
 
 /- English proof (translation)
-Use extensionality with `A`. Simplify using `only [nearSet, NearOne, ballMat, Set.mem_setOf_eq, Set.mem_preimage, Homeomorph.subRight_apply, Matrix.sub_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem nearSet_eq (s : kˣ) (m : ℕ) : nearSet (k := k) s m =
     (Homeomorph.subRight (1 : Matrix (Fin m) (Fin m) k)) ⁻¹' ballMat s m := by
@@ -52,14 +52,14 @@ theorem nearSet_eq (s : kˣ) (m : ℕ) : nearSet (k := k) s m =
     Matrix.sub_apply]
 
 /- English proof (translation)
-Rewrite using `[nearSet_eq]`. Conclude with `(isOpen_ballMat s m).preimage (Homeomorph.continuous _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_nearSet (s : kˣ) (m : ℕ) : IsOpen (nearSet (k := k) s m) := by
   rw [nearSet_eq]
   exact (isOpen_ballMat s m).preimage (Homeomorph.continuous _)
 
 /- English proof (translation)
-Rewrite using `[nearSet_eq]`. Conclude with `(Homeomorph.subRight (1 : Matrix (Fin m) (Fin m) k)).isCompact_preimage.2 (isCompact_ballMat s m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_nearSet (s : kˣ) (m : ℕ) : IsCompact (nearSet (k := k) s m) := by
   rw [nearSet_eq]
@@ -75,7 +75,7 @@ theorem congGL_eq (s : kˣ) (hs : ValuativeRel.valuation k (s : k) ≤ 1) (m : �
   rfl
 
 /- English proof (translation)
-Rewrite using `[congGL_eq]`. Conclude with `((isOpen_nearSet s m).preimage Units.continuous_val).inter ((isOpen_nearSet s m).preimage Units.continuous_coe_inv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_congGL (s : kˣ) (hs : ValuativeRel.valuation k (s : k) ≤ 1) (m : ℕ) :
     IsOpen (congGL k s hs m : Set (GL (Fin m) k)) := by
@@ -84,9 +84,9 @@ theorem isOpen_congGL (s : kˣ) (hs : ValuativeRel.valuation k (s : k) ≤ 1) (m
     ((isOpen_nearSet s m).preimage Units.continuous_coe_inv)
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hK` using `isCompact_nearSet (k := k) s m`. Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin m) (Fin m) k)).isCompact_preimage (hK.prod (hK.image MulOpposite.continuous_op))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [congGL_eq, Set.mem_inter_iff, Set.mem_preimage, Units.embedProduct_apply, Set.mem_prod, (MulOpposite.op_injective).mem_set_image]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isCompact_congGL (s : kˣ) (hs : ValuativeRel.valuation k (s : k) ≤ 1) (m : ℕ) :
     IsCompact (congGL k s hs m : Set (GL (Fin m) k)) := by
@@ -104,7 +104,7 @@ end GlobalTheory.CompanionTheory.BZPhiPG.Onto.Topo
 namespace GlobalTheory.CompanionTheory.BZPhiPG.Onto
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n s hs`. Establish `e : (congM k s hs n : Set (Mir k n)) = (Subtype.val : Mir k n → GL (Fin (n + 1)) k) ⁻¹' (congGL k s hs (n + 1) : Set (GL (Fin (n + 1)) k))` using `rfl`. Rewrite using `[e]`. Conclude with `⟨(Topo.isOpen_congGL s hs (n + 1)).preimage continuous_subtype_val, (GlobalTheory.CompanionTheory.BZMirOnto.isClosed_Mir k n).isClosedEmbedding_subtypeVal.isCompact_preimage (Topo.isCompact_congGL s hs (n + 1))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem congM_isOpen_isCompact : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (s : kˣ) (hs : ValuativeRel.valuation k (s : k) ≤ 1),
   IsOpen (GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM k s hs n : Set (Mir k n)) ∧ IsCompact (GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM k s hs n : Set (Mir k n)) := by

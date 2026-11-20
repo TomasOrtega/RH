@@ -46,28 +46,28 @@ theorem Iop_ofRec (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (La₁ La
     Cd.TaylorLogMetric.Iop (Car.ofRec D) (Cd.TaylorLogMetric.tor0 (Car.ofRec D) cc δ) La₁ La₂ G = TaylorLogMetric.Iop D (TaylorLogMetric.tor0 D cc δ) La₁ La₂ G := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isCurveIdeal_ofRec (cc : Ideal (𝓞 D.host.K)) : Cd.TaylorLogMetric.IsCurveIdeal (Car.ofRec D) cc ↔ TaylorLogMetric.IsCurveIdeal D cc := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isTwelfthRootDisc_ofData_iff (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice (Car.ofRec D) cc δ ↔ TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isChi_ofRec (χ : TaylorLogMetric.IdE D → ℂ) : Cd.TaylorLogMetric.IsChi (Car.ofRec D) χ ↔ TaylorLogMetric.IsChi D χ := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem admissible_ofData_iff {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) :
     Cd.TaylorLogMetric.admitted (Car.ofRec D) N N' L L' ↔ TaylorLogMetric.admitted D N N' L L' := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isDgen_ofRec (cD : D.what₂.Tau → ℂ) : Cd.IsDgen (Car.ofRec D) cD ↔ IsDgen D cD := Iff.rfl
 
@@ -131,7 +131,7 @@ Both sides reduce to the same expression.
 theorem Base.kappa_toCar (B : Base D cc δ) : B.toCar.kappa = B.kappa := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Base.stdOK_toCar (B : Base D cc δ) : B.toCar.StdOK ↔ B.StdOK := Iff.rfl
 
@@ -159,7 +159,7 @@ Both sides reduce to the same expression.
 theorem Base.eNat_toCar (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) : B.toCar.eNat χ = B.eNat χ := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Base.eqP_toCar (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) : B.toCar.EqP χ ↔ B.EqP χ := Iff.rfl
 
@@ -170,7 +170,7 @@ def Seam.toCar (s : Seam D X) : Cd.Seam (Car.ofRec D) X := ⟨s.iE, s.iT, s.σ�
 def Seam.ofCar (s : Cd.Seam (Car.ofRec D) X) : Seam D X := ⟨s.iE, s.iT, s.σ₀⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Seam.ok_toCar (s : Seam D X) : s.toCar.Ok ↔ s.Ok := Iff.rfl
 
@@ -193,7 +193,7 @@ section OverColDat
 variable (d : ColDat)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `K.delta_pow_twelve_eq_discr`. Rewrite `h1` using `[h, zero_pow (by norm_num)]`. Conclude with `Cd.IntegralLatticeDensity.discrNe (carD d) d.host.ccK d.host.ccK_ne_bot h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curve_delta_ne (K : CurveDat d.host d.what₂.embLL d.eTau) : K.δ ≠ 0 := by
   intro h
@@ -202,7 +202,7 @@ theorem curve_delta_ne (K : CurveDat d.host d.what₂.embLL d.eTau) : K.δ ≠ 0
   exact Cd.IntegralLatticeDensity.discrNe (carD d) d.host.ccK d.host.ccK_ne_bot h1.symm
 
 /- English proof (translation)
-Take `⟨B⟩` from `Cd.baseExists (carD d) d.host.ccK (Cd.isCurveIdeal_ccK (carD d)) K.δ (curve_delta_ne d K)`. Conclude with `⟨⟨K, B, χ⟩, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ambIn_nonempty (K : CurveDat d.host d.what₂.embLL d.eTau) (χ : Cd.TaylorLogMetric.IdE (carD d) → ℂ) :
     ∃ I : AmbIn d, I.K = K ∧ I.χ = χ := by
@@ -212,19 +212,19 @@ theorem ambIn_nonempty (K : CurveDat d.host d.what₂.embLL d.eTau) (χ : Cd.Tay
 variable {d}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨I.B.stdOK (Cd.isCurveIdeal_ccK (carD d)) I.ambient_isTwelfthRootDisc, hχ⟩`.
+Supply the required witnesses or components.
 -/
 theorem AmbIn.ok_of (I : AmbIn d) (hχ : Cd.TaylorLogMetric.IsChi (carD d) I.χ) : I.Ok :=
   ⟨I.B.stdOK (Cd.isCurveIdeal_ccK (carD d)) I.ambient_isTwelfthRootDisc, hχ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨I.K.M, I.K.nf, hM, fun τ => ⟨I.K.fr τ, rfl, I.K.gen τ⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem AmbIn.isDgen (I : AmbIn d) (hM : ∀ τ x, Cd.TaylorLogMetric.embT (carD d) τ x ∈ I.K.M) : Cd.IsDgen (carD d) I.cD :=
   ⟨I.K.M, I.K.nf, hM, fun τ => ⟨I.K.fr τ, rfl, I.K.gen τ⟩⟩
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `Cd.IntegralLatticeDensity.exists_chi (carD d)`. Take `⟨I, hK, hI⟩` from `ambIn_nonempty d K χ`. Conclude with `⟨I, hK, I.ok_of (hI ▸ hχ)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ambIn_ok_nonempty (d : ColDat) (K : CurveDat d.host d.what₂.embLL d.eTau) : ∃ I : AmbIn d, I.K = K ∧ I.Ok := by
   obtain ⟨χ, hχ⟩ := Cd.IntegralLatticeDensity.exists_chi (carD d)
@@ -232,13 +232,13 @@ theorem ambIn_ok_nonempty (d : ColDat) (K : CurveDat d.host d.what₂.embLL d.eT
   exact ⟨I, hK, I.ok_of (hI ▸ hχ)⟩
 
 /- English proof (translation)
-The claim follows from `Cd.PairingIndexBounds.Eq.SqG.eqP_car I.B (Cd.isCurveIdeal_ccK (carD d)) I.ambient_isTwelfthRootDisc I.χ hχ`.
+A detailed English derivation is pending.
 -/
 theorem AmbIn.eqP (I : AmbIn d) (hχ : Cd.TaylorLogMetric.IsChi (carD d) I.χ) : I.B.EqP I.χ :=
   Cd.PairingIndexBounds.Eq.SqG.eqP_car I.B (Cd.isCurveIdeal_ccK (carD d)) I.ambient_isTwelfthRootDisc I.χ hχ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.rep c).2.lat, ((stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.rep c).2.uni⟩`.
+Supply the required witnesses or components.
 -/
 theorem repN_sd (u : d.Pr.Word) (i : ℕ) (c : StCl (Pr := d.Pr) d.W d.lev u i) : IsSdLat (repN (Pr := d.Pr) d.W d.lev u i c) :=
   ⟨((stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.rep c).2.lat, ((stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.rep c).2.uni⟩
@@ -246,7 +246,7 @@ theorem repN_sd (u : d.Pr.Word) (i : ℕ) (c : StCl (Pr := d.Pr) d.W d.lev u i) 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `xiHypD d S m0 hm G I.amb rfl (fun i _ => I.eSmooth h i (i + 1)) rat (fun u i _ c c' => I.chiF_ne h hχ i (i + 1) (repN_sd u i c) (repN_sd u (i + 1) c')) rho u`.
+A detailed English derivation is pending.
 -/
 theorem AmbIn.xiHyp (I : AmbIn d) (h : d.what₂.embLL.comp d.embE = d.host.φ₀) (hχ : Cd.TaylorLogMetric.IsChi (carD d) I.χ) (S : Set ℕ)
     (m0 : Fin d.R.m → Formalism.L2.Host.HChar d.X.E) {n m2 : ℕ} (hm : d.R.m = m2 + 2) (G : ChainGlob (Pr := d.Pr) d.W d.σ₀)
@@ -259,7 +259,7 @@ theorem AmbIn.xiHyp (I : AmbIn d) (h : d.what₂.embLL.comp d.embE = d.host.φ�
     (fun u i _ c c' => I.chiF_ne h hχ i (i + 1) (repN_sd u i c) (repN_sd u (i + 1) c')) rho u
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Cd.Seam.mem_lat]`. Conclude with `⟨fun ⟨x, hx, e⟩ => e ▸ hx, fun h => ⟨y, h, rfl⟩⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem seamD_lat {n : ℕ} (N : Submodule (𝓞 d.X.E) (Sp d.X.E n)) : (seamD d).lat N = N := by
   ext y
@@ -267,7 +267,7 @@ theorem seamD_lat {n : ℕ} (N : Submodule (𝓞 d.X.E) (Sp d.X.E n)) : (seamD d
   exact ⟨fun ⟨x, hx, e⟩ => e ▸ hx, fun h => ⟨y, h, rfl⟩⟩
 
 /- English proof (translation)
-Establish `h : I.amb.e a b N N' = I.B.eNat I.χ a b ((seamD d).lat N) ((seamD d).lat N')` using `rfl`. Rewrite using `[h, seamD_lat, seamD_lat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem AmbIn.amb_e (I : AmbIn d) (a b : ℕ) (N : Submodule (𝓞 d.X.E) (Sp d.X.E a)) (N' : Submodule (𝓞 d.X.E) (Sp d.X.E b)) :
     I.amb.e a b N N' = I.B.eNat I.χ a b N N' := by
@@ -287,7 +287,7 @@ theorem AmbIn.amb_cD (I : AmbIn d) : I.amb.cD = I.cD := rfl
 def Car.ofColRec (c : ColRec) : Car := ⟨c.R, c.host, ⟨c.what₂.Tau, c.what₂.card_Tau⟩, c.eTau⟩
 
 /- English proof (translation)
-The claim follows from `congrArg Car.ofColRec h`.
+A detailed English derivation is pending.
 -/
 theorem car_of_colRec (D : D7) (d : ColDat) (a : ColArgs d) (h : D.colRec = d.colRec a) : Car.ofRec D = carD d :=
   congrArg Car.ofColRec h
@@ -295,7 +295,7 @@ theorem car_of_colRec (D : D7) (d : ColDat) (a : ColArgs d) (h : D.colRec = d.co
 end OverColDat
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `IsAlgClosed.exists_pow_nat_eq (TaylorLogMetric.discr (Cd.TaylorLogMetric.lamOf D D.host.ccK 1)) (by norm_num : 0 < 12)`. Establish `h0` using `Cd.twelfth_root_disc_ne_zero D D.host.ccK D.host.ccK_ne_bot hδ`. Take `⟨B⟩` from `Cd.baseExists D D.host.ccK (Cd.isCurveIdeal_ccK D) δ h0`. Establish `hS` using `B.stdOK (Cd.isCurveIdeal_ccK D) hδ`. Conclude with `⟨δ, B, hδ, hS, fun N N' L L' hA => B.thMoved_ne_zero hS (B.latAll (Cd.isCurveIdeal_ccK D) hδ h0) (B.thZeroMem hS N N') hA⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Cd.exists_base_ne (D : Car) : ∃ (δ : ℂ) (B : Cd.Base D D.host.ccK δ), Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK δ ∧ B.StdOK ∧
     ∀ N N' L L', Cd.TaylorLogMetric.admitted D N N' L L' → B.thMoved N N' L L' ≠ 0 := by
@@ -313,7 +313,7 @@ open Formalism.BasicNotions.Examples₂ Formalism.FrobeniusOrbits
 def exampleCMData : Car := ⟨R0, H0, ⟨R0.Psi, by rw [card_Psi]; rfl⟩, Equiv.refl _⟩
 
 /- English proof (translation)
-Take `⟨δ, B, -, -, h⟩` from `Cd.exists_base_ne exampleCMData`. Conclude with `⟨δ, B, h 2 4 _ _ (Cd.Inhab.Adm_std exampleCMData 2 4 (by decide) (by decide))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem moved_vacuum_ne_zero_example : ∃ (δ : ℂ) (B : Cd.Base exampleCMData exampleCMData.host.ccK δ),
     B.thMoved 2 4 (Cd.StandardLatticesGL3.stdL exampleCMData 2) (Cd.StandardLatticesGL3.stdL exampleCMData 4) ≠ 0 := by

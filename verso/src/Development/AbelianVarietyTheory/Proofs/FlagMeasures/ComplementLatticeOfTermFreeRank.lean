@@ -16,9 +16,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Use `L.free` as an intermediate fact. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Establish `h1 : IsAlgebraic 𝒪[F] e` using `(IsFractionRing.isAlgebraic_iff 𝒪[F] F E).2 (Algebra.IsAlgebraic.isAlgebraic e)`. Take `⟨c, hc, hi⟩` from `h1.exists_integral_multiple`. Use `⟨c, by simpa using hc, (L.O_def _).2 (isIntegral_algebraMap (R := 𝒪[F]) (x := c)), (L.O_def _).2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hi` using `[Algebra.smul_def]`. Conclude with `hi`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem (L : LocE F E) (e : E) :
     ∃ c : F, c ≠ 0 ∧ algebraMap F E c ∈ L.O ∧ algebraMap F E c * e ∈ L.O := by
@@ -65,15 +65,15 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 variable {L : _root_.Formalism.MainNotions.S.Loc.LocE F E} {r k : ℕ} (S : _root_.GlobalTheory.HL.Frames L r k) in
 variable [IsNonarchimedeanLocalField F] [CharZero F] in
 /- English proof (translation)
-Establish `hw : w ∈ Submodule.span E (Λ : Set S.V)` using `hU ▸ Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, Subring.one_mem _, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, Subring.one_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc, hcO, hcx⟩` from `hx`. Take `⟨c', hc', hc'O, hcy⟩` from `hy`. Establish `h1` using `(_root_.GlobalTheory.UnramOrder.algebraMap_mem_iff L c).2 hcO`. Establish `h2` using `(_root_.GlobalTheory.UnramOrder.algebraMap_mem_iff L c').2 hc'O`. Use `⟨c * c', mul_ne_zero hc hc', Subring.mul_mem _ hcO hc'O, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Λ.add_mem (Λ.smul_mem (⟨_, h2⟩ : L.O) hcx) (Λ.smul_mem (⟨_, h1⟩ : L.O) hcy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `algebraMap F E (c * c') • (x + y) = algebraMap F E c' • algebraMap F E c • x + algebraMap F E c • algebraMap F E c' • y`. Rewrite using `[map_mul]`. Use `module`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul e x _ hx`. Take `⟨c, hc, hcO, hcx⟩` from `hx`. Take `⟨c', hc', hc'O, he⟩` from `_root_.GlobalTheory.HL.StdLat.exists_mul_mem L {e}`. Establish `he'` using `he e (Finset.mem_singleton_self e)`. Use `⟨c' * c, mul_ne_zero hc' hc, Subring.mul_mem _ hc'O hcO, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Λ.smul_mem (⟨_, he'⟩ : L.O) hcx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `algebraMap F E (c' * c) • e • x = (algebraMap F E c' * e) • algebraMap F E c • x`. Rewrite using `[map_mul]`. Use `module`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_integral_smul_mem_of_span_eq_whole (Λ : Submodule L.O S.V)
     (hU : Submodule.span E (Λ : Set S.V) = ⊤) (w : S.V) :
@@ -112,11 +112,11 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 variable {L : _root_.Formalism.MainNotions.S.Loc.LocE F E} {r k : ℕ} (S : _root_.GlobalTheory.HL.Frames L r k) in
 variable [IsNonarchimedeanLocalField F] [CharZero F] in
 /- English proof (translation)
-Take `⟨⟨n, n'⟩, hA, hA', hn, hn', hΛn, hΛn', -, hgr⟩` from `hT`. Establish `hME : ∀ x ∈ S.ME, S.h w x = 0` using `hw`. Establish `hXo : w ∈ _root_.GlobalTheory.HL.perp L S.Hm S.X` using `fun x hx => hME x (le_sup_of_le_left (_root_.GlobalTheory.HL.TermBasic.spanTo_mono S S.f (Nat.le_succ r)) hx)`. Establish `hXo' : w ∈ _root_.GlobalTheory.HL.perp L S.Hm S.X'` using `fun x hx => hME x (le_sup_of_le_right (_root_.GlobalTheory.HL.TermBasic.spanTo_mono S S.f' (Nat.le_succ r)) hx)`. Use `⟨⟨hw, ?_, ?_, ?_⟩, ⟨0, Submodule.zero_mem _, 0, Submodule.zero_mem _, by simpa using hΛ, by simpa using hΛ, ⟨0, Λ.zero_mem, by simp⟩, by simpa using Submodule.zero_mem _⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((_root_.GlobalTheory.HL.StdLat.stdLat_spec L r k S S.f S.es (Or.inl ⟨rfl, rfl⟩) _ hA).2.2 w).2 ?_` and prove the remaining obligations. Use `(_root_.GlobalTheory.HL.TermBasic.inner_smul S hn w).2 ⟨w, ?_, hXo, by simpa using Submodule.zero_mem _⟩` and prove the remaining obligations. Rewrite using `[← hΛn]`. Conclude with `hΛ`. Use `((_root_.GlobalTheory.HL.StdLat.stdLat_spec L r k S S.f' S.es' (Or.inr ⟨rfl, rfl⟩) _ hA').2.2 w).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(_root_.GlobalTheory.HL.TermBasic.inner_smul S hn' w).2 ⟨w, ?_, hXo', by simpa using Submodule.zero_mem _⟩` and prove the remaining obligations. Rewrite using `[← hΛn']`. Conclude with `hΛ`. Rewrite using `[hgr]`. Conclude with `⟨w, hΛ, w, hΛ, hXo', hXo, by simpa using Submodule.zero_mem _, by simpa using Submodule.zero_mem _, 0, Λ.zero_mem, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mem_complementLattice_and_tauRel_of_isTerm (d : S.Datum)
     (Λ : Submodule L.O S.V) (hT : S.IsTerm d Λ) (w : S.V)
@@ -147,13 +147,11 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 variable {L : _root_.Formalism.MainNotions.S.Loc.LocE F E} {r k : ℕ} (S : _root_.GlobalTheory.HL.Frames L r k) in
 variable [IsNonarchimedeanLocalField F] [CharZero F] in
 /- English proof (translation)
-Take `⟨ω, hω, e, he, hωe⟩` from `_root_.GlobalTheory.UnramOrder.exists_sub_cj_mul_eq_one L`. Set `φ : (ValuativeRel.valuation F).integer →+* L.O` to `((algebraMap F E).comp (ValuativeRel.valuation F).integer.subtype).codRestrict L.O (fun c => (_root_.GlobalTheory.UnramOrder.algebraMap_mem_iff L c).2 c.2)`. Use `letI : Algebra (ValuativeRel.valuation F).integer L.O := φ.toAlgebra`. Set `σ : L.O →+* L.O` to `((L.cj : E →+* E).comp L.O.subtype).codRestrict L.O (fun x => _root_.GlobalTheory.UnramOrder.cj_mem L x.2)`. Establish `key` using `_root_.GlobalTheory.UnramOrder.exists_eq_add_mul (R₀ := (ValuativeRel.valuation F).integer) σ (fun x => Subtype.ext (L.cj_cj x)) (fun c => Subtype.ext (L.cj.commutes _)) (fun x hx => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `_root_.GlobalTheory.UnramOrder.exists_int_of_fixed L x.2 (congrArg Subtype.val hx)`. Conclude with `⟨c, Subtype.ext hc.symm⟩)`. Use the proof step `(ω := ⟨ω, hω⟩) (isUnit_iff_exists_inv.2 ⟨⟨e, he⟩, Subtype.ext hωe⟩)`. Use `haveI : Module.Finite (ValuativeRel.valuation F).integer L.O := by`. Use `⟨⟨{1, ⟨ω, hω⟩}, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨a, b, rfl⟩` from `key x`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Conclude with `IsNoetherianRing.of_finite (ValuativeRel.valuation F).integer L.O`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isNoetherianRing_locE_O (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) : IsNoetherianRing L.O := by
   obtain ⟨ω, hω, e, he, hωe⟩ := _root_.GlobalTheory.UnramOrder.exists_sub_cj_mul_eq_one L
@@ -189,25 +187,23 @@ variable {L : _root_.Formalism.MainNotions.S.Loc.LocE F E} {r k : ℕ} (S : _roo
 variable [IsNonarchimedeanLocalField F] [CharZero F] in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S d Λ hT`. Take `⟨-, -, -, -, -, -, -, b, hb, hW⟩` from `_root_.GlobalTheory.FrameBasic.main L r k S`. Establish `hsd` using `(_root_.GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT).1`. Establish `hgr : d.2.2 = S.graphOf Λ`. Take `⟨_, -, -, -, -, -, -, -, h⟩` from `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Set `Q : Submodule L.O S.V` to `S.W0.restrictScalars L.O ⊓ d.1 ⊓ d.2.1 ⊓ _root_.GlobalTheory.HL.CompLat.diagGraph S Λ`. Establish `hQ : (Q : Set S.V) = S.complementLatticeOfDatum d`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩`. Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[hgr]`. Conclude with `h4`. Introduce and unpack `⟨h1, h2, h3, h4⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h4` using `[hgr]`. Conclude with `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩`. Establish `hspan : Submodule.span E (Q : Set S.V) = Submodule.span E (Set.range b)`. Rewrite using `[← hW]`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `w ⟨⟨⟨h1, -⟩, -⟩, -⟩`. Conclude with `h1`. Introduce `w hw`. Take `⟨c, hc, -, hcw⟩` from `exists_integral_smul_mem_of_span_eq_whole S Λ hsd.1.2 w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : algebraMap F E c • w ∈ (Q : Set S.V)`. Rewrite using `[hQ]`. Conclude with `(mem_complementLattice_and_tauRel_of_isTerm S d Λ hT _ (S.W0.smul_mem _ hw) hcw).1`. Establish `h1 : w = algebraMap F E c⁻¹ • algebraMap F E c • w`. Rewrite using `[smul_smul, ← map_mul, inv_mul_cancel₀ hc, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hq)`. Establish `hFG : Q.FG` using `by haveI := isNoetherianRing_locE_O L`. Take `⟨-, hcompl, -⟩` from `_root_.GlobalTheory.FrameBasic.main L r k S`. Set `π : S.V →ₗ[L.O] S.V` to `(S.W0.subtype.comp (Submodule.linearProjOfIsCompl S.W0 S.ME hcompl.symm)).restrictScalars L.O`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.FG.of_le (hsd.1.1.map π) ?_` and prove the remaining obligations. Introduce and unpack `w ⟨⟨⟨h1, -⟩, -⟩, h4⟩`. Take `⟨-, -, y, hy, -, -, -, hx, -⟩` from `h4`. Establish `hXME : y - w ∈ S.ME` using `le_sup_of_le_left (_root_.GlobalTheory.HL.TermBasic.spanTo_mono S S.f (Nat.le_succ r)) hx`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : y = w + (y - w)` using `by abel`. Express the relevant statement in the definitionally equal form `((Submodule.linearProjOfIsCompl S.W0 S.ME hcompl.symm y : S.V)) = w`. Establish `e1` using `Submodule.linearProjOfIsCompl_apply_left hcompl.symm ⟨w, h1⟩`. Establish `e2` using `Submodule.linearProjOfIsCompl_apply_right hcompl.symm ⟨y - w, hXME⟩`. Rewrite using `[hy', map_add]`.
-
-Use `erw [e1, e2]`. Simplify using the standard rewrite rules. Take `⟨b', hb', hQb⟩` from `_root_.GlobalTheory.OrderBasis.order_basis L b hb Q hFG hspan`. Conclude with `⟨b', hb', by rw [← hQ, hQb]⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.CompLat.main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E), ∀ (r k : ℕ) (S : _root_.GlobalTheory.HL.Frames L r k), ∀ (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → ∃ b : Fin (k - 1) → S.V, LinearIndependent E b ∧ S.complementLatticeOfDatum d = (Submodule.span L.O (Set.range b) : Set S.V) := by
   intro F _ _ _ _ _ E _ _ _ L r k S d Λ hT

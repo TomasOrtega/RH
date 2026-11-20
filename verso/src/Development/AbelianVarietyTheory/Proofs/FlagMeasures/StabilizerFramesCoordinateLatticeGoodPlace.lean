@@ -32,13 +32,13 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
 /- English proof (translation)
-Simplify using `[Frames.th, hG.gg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem th_eq_one (hG : Good S) : S.th = 1 := by
   simp [Frames.th, hG.gg]
 
 /- English proof (translation)
-Rewrite using `[show {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.univ from Set.eq_univ_of_forall fun i => i.is_lt, Set.image_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem image_all (g : Fin (r + 1) → S.V) :
     g '' {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.range g := by
@@ -46,7 +46,7 @@ theorem image_all (g : Fin (r + 1) → S.V) :
     Set.eq_univ_of_forall fun i => i.is_lt, Set.image_univ]
 
 /- English proof (translation)
-Rewrite using `[← image_all S g]`. Conclude with `((GlobalTheory.HL.StdLat.stdLat_spec L r k S g gs hg A hA).2.1 (r + 1) le_rfl x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_iff (g : Fin (r + 1) → S.V) (gs : Fin r → S.V)
     (hg : (g = S.f ∧ gs = S.es) ∨ (g = S.f' ∧ gs = S.es')) (A : Submodule L.O S.V)
@@ -56,7 +56,7 @@ theorem mem_span_iff (g : Fin (r + 1) → S.V) (gs : Fin r → S.V)
   exact ((GlobalTheory.HL.StdLat.stdLat_spec L r k S g gs hg A hA).2.1 (r + 1) le_rfl x).symm
 
 /- English proof (translation)
-The claim follows from `h.symm_apply_apply x`.
+A detailed English derivation is pending.
 -/
 theorem inv_apply_apply (h : S.GLV) (x : S.V) : h⁻¹ (h x) = x :=
   h.symm_apply_apply x
@@ -64,43 +64,37 @@ theorem inv_apply_apply (h : S.GLV) (x : S.V) : h⁻¹ (h x) = x :=
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hG ha d₀ hT`. Establish `hTerm : S.IsTerm d₀ (coordLat S)` using `⟨(1, 1), hT⟩`. Establish `hMeq` using `(GlobalTheory.HL.WitIndep.witness_independence L r k S d₀ (coordLat S) 1 1 hT).2.1`. Take `⟨hA, hA', -, -, hC1, hC2, -, -⟩` from `hT`. Rewrite `hC1`, `hC2` using `[one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hf : ∀ x, x ∈ Submodule.span L.O (Set.range S.f) ↔ x ∈ coordLat S ∧ x ∈ S.spanTo S.f (r + 1)`. Introduce `x`. Rewrite using `[hC1]`. Conclude with `mem_span_iff S S.f S.es (Or.inl ⟨rfl, rfl⟩) _ hA x`. Establish `hf' : ∀ x, x ∈ Submodule.span L.O (Set.range S.f') ↔ x ∈ coordLat S ∧ x ∈ S.spanTo S.f' (r + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[hC2]`. Conclude with `mem_span_iff S S.f' S.es' (Or.inr ⟨rfl, rfl⟩) _ hA' x`. Establish `th1` using `th_eq_one S hG`. Establish `key1 : ∀ h ∈ S.St, h • coordLat S = coordLat S → ∀ x, (x ∈ Submodule.span L.O (Set.range S.f) → h x ∈ Submodule.span L.O (Set.range S.f)) ∧ (x ∈ Submodule.span L.O (Set.range S.f') → h x ∈ Submodule.span L.O (Set.range S.f'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h hh hC x`. Use `⟨fun hx => ?_, fun hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[hf]`. Use `⟨?_, (GlobalTheory.FrameAct.spanTo_iff S h hh _ x).2 hx.2⟩` and prove the remaining obligations. Rewrite using `[← hC]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.FrameAct.mem_smul_iff S h _ x).2 hx.1`. Rewrite `hx`, the goal using `[hf']`. Use `⟨?_, (GlobalTheory.FrameAct.spanTo_iff' S h hh _ x).2 hx.2⟩` and prove the remaining obligations. Rewrite using `[← hC]`. Conclude with `(GlobalTheory.FrameAct.mem_smul_iff S h _ x).2 hx.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key2 : ∀ g ∈ S.K0, ∀ x ∈ coordLat S, g x ∈ coordLat S`. Introduce `g hg`. Take `⟨⟨hgSt, hgf⟩, hgf'⟩` from `hg`. Use `replace hgf : g • Submodule.span L.O (Set.range S.f) = Submodule.span L.O (Set.range S.f) := hgf`. Use `replace hgf' : g • Submodule.span L.O (Set.range S.f') = Submodule.span L.O (Set.range S.f') := hgf'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `replace hgSt : g ∈ S.St := hgSt`. Establish `gf : ∀ (g : S.GLV), g • Submodule.span L.O (Set.range S.f) = Submodule.span L.O (Set.range S.f) → ∀ b, g (S.f b) ∈ coordLat S`. Introduce `g hg b`. Establish `h1 : g (S.f b) ∈ Submodule.span L.O (Set.range S.f)`. Rewrite using `[← hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `(GlobalTheory.FrameAct.mem_smul_iff S g _ _).2 (Submodule.subset_span ⟨b, rfl⟩)`. Conclude with `((hf _).1 h1).1`. Establish `gf' : ∀ (g : S.GLV), g • Submodule.span L.O (Set.range S.f') = Submodule.span L.O (Set.range S.f') → ∀ b, g (S.f' b) ∈ coordLat S`. Introduce `g hg b`. Establish `h1 : g (S.f' b) ∈ Submodule.span L.O (Set.range S.f')`.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← hg]`. Conclude with `(GlobalTheory.FrameAct.mem_smul_iff S g _ _).2 (Submodule.subset_span ⟨b, rfl⟩)`. Conclude with `((hf' _).1 h1).1`. Establish `hM : ∀ (g : S.GLV), g • Submodule.span L.O (Set.range S.f) = Submodule.span L.O (Set.range S.f) → g • Submodule.span L.O (Set.range S.f') = Submodule.span L.O (Set.range S.f') → ∀ m ∈ S.Mof S.f S.f', g m ∈ coordLat S`. Introduce `g h1 h2 m hm`.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem y hy`. Break down `hy with ⟨b, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Conclude with `gf g h1 b`. Simplify using `only [th1, inv_one, map_one, one_smul, map_sub]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(coordLat S).sub_mem (gf' g h2 b) (gf g h1 b)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `(coordLat S).add_mem hx hy`. Consider the case `smul c x _ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : g (c • x) = c • g x` using `by first`. Consider the case `exact LinearEquiv.map_smul_of_tower g c x`. Consider the case `exact g.toLinearMap.map_smul_of_tower c x`. Consider the case `(rw [Subring.smul_def, map_smul, ← Subring.smul_def])`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `(coordLat S).smul_mem c hx`. Introduce `x hx`. Take `⟨-, hcompl, -⟩` from `GlobalTheory.FrameBasic.main L r k S`. Establish `hx' : x ∈ S.ME ⊔ S.W0` using `by rw [hcompl.sup_eq_top]; trivial`. Take `⟨m, hm, w, hw, rfl⟩` from `Submodule.mem_sup.1 hx'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmM : m ∈ S.Mof S.f S.f'`. Use `GlobalTheory.HL.UnimodTerm.proj_mem S hTerm ha hx hm (by simpa using hw)` as an intermediate fact. Rewrite `this` using `[hMeq]`. Conclude with `this`. Establish `hw' : w ∈ coordLat S`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hM 1 (one_smul _ _) (one_smul _ _) m hmM`. Establish `: w = (m + w) - m` using `by abel`. Rewrite using `[this]`. Conclude with `(coordLat S).sub_mem hx h1`. Rewrite using `[map_add, (GlobalTheory.HL.FrameStab.stab_eq L r k S).1 g hgSt w hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(coordLat S).add_mem (hM g hgf hgf' m hmM) hw'`. Use extensionality with `h`. Simplify using `only [Subgroup.mem_inf, MulAction.mem_stabilizer_iff, Frames.K0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hh, hC⟩`.
-
-Establish `hC' : h⁻¹ • coordLat S = coordLat S` using `by rw [inv_smul_eq_iff]; exact hC.symm`. Establish `hhi : h⁻¹ ∈ S.St` using `inv_mem hh`. Use `⟨⟨hh, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.FrameAct.eq_smul_of S h _ _ fun x => ⟨fun hx => ?_, (key1 h hh hC x).1⟩).symm` and prove the remaining obligations. Use `(key1 h⁻¹ hhi hC' (h x)).1 hx` as an intermediate fact.
-
-Rewrite `this` using `[inv_apply_apply]`. Then use the resulting hypothesis. Use `(GlobalTheory.FrameAct.eq_smul_of S h _ _ fun x => ⟨fun hx => ?_, (key1 h hh hC x).2⟩).symm` and prove the remaining obligations. Use `(key1 h⁻¹ hhi hC' (h x)).2 hx` as an intermediate fact. Rewrite `this` using `[inv_apply_apply]`. Then use the resulting hypothesis. Introduce and unpack `⟨⟨hh, h1⟩, h2⟩`.
-
-Establish `hK : h ∈ S.K0` using `⟨⟨hh, h1⟩, h2⟩`. Use `⟨hh, (GlobalTheory.FrameAct.eq_smul_of S h _ _ fun x => ⟨fun hx => ?_, key2 h hK x⟩).symm⟩` and prove the remaining obligations. Use `key2 h⁻¹ (inv_mem hK) _ hx` as an intermediate fact. Rewrite `this` using `[inv_apply_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stab_coordLat : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), Good S → S.a = 0 → ∀ d₀, S.IsTermW d₀ (coordLat S) 1 1 → S.St ⊓ MulAction.stabilizer S.GLV (coordLat S) = S.K0 := by
   intro F _ _ _ _ _ E _ _ _ L r k S hG ha d₀ hT

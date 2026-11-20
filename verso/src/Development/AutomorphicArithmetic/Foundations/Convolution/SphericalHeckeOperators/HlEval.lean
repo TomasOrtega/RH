@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeO
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
 
 /- English proof (translation)
-Apply the tactic sequence `rw [monomialChar_apply, Finset.prod_eq_single i] <;> simp +contextual [Pi.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem he_single {n : ℕ} (i : Fin n) (m : ℤ) (w : Fin n → ℂˣ) : monomialChar (Pi.single i m : Fin n → ℤ) w = (w i : ℂ) ^ m := by
   rw [monomialChar_apply, Finset.prod_eq_single i] <;> simp +contextual [Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[dPol, map_prod]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, one_smul, evalAt_single, evalAt_single, he_single, he_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem he_d {n : ℕ} (w : Fin n → ℂˣ) : evalAt w (dPol n 1) = ∏ p ∈ pairs n, ((w p.1 : ℂ) - w p.2) := by
   rw [dPol, map_prod]
@@ -18,7 +18,7 @@ private theorem he_d {n : ℕ} (w : Fin n → ℂˣ) : evalAt w (dPol n 1) = ∏
   simp
 
 /- English proof (translation)
-Rewrite using `[he_d, Matrix.det_projVandermonde, Finset.prod_sigma', pairs]`. Apply the tactic sequence `refine Finset.prod_nbij' (fun p => ⟨p.1, p.2⟩) (fun p => (p.1, p.2)) ?_ ?_ ?_ ?_ ?_ <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem he_det {n : ℕ} (w : Fin n → ℂˣ) :
     evalAt w (dPol n 1) = (Matrix.projVandermonde (fun _ => (1 : ℂ)) fun i => (w i : ℂ)).det := by
@@ -26,9 +26,9 @@ private theorem he_det {n : ℕ} (w : Fin n → ℂˣ) :
   refine Finset.prod_nbij' (fun p => ⟨p.1, p.2⟩) (fun p => (p.1, p.2)) ?_ ?_ ?_ ?_ ?_ <;> simp
 
 /- English proof (translation)
-Rewrite using `[he_det, alternant_eq_det, AlgHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, monomial, evalAt_single, he_single, one_mul, Matrix.projVandermonde_apply, one_pow]`. Rewrite using `[← zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `b.2` as an intermediate fact. Simplify using `only [staircase, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem he_alt {n : ℕ} (w : Fin n → ℂˣ) : evalAt w (alternant (staircase n)) = evalAt w (dPol n 1) := by
   rw [he_det, alternant_eq_det, AlgHom.map_det]
@@ -43,7 +43,7 @@ private theorem he_alt {n : ℕ} (w : Fin n → ℂˣ) : evalAt w (alternant (st
   omega
 
 /- English proof (translation)
-Rewrite using `[he_det, he_det, ← Matrix.det_permute]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem he_sgn {n : ℕ} (w : Fin n → ℂˣ) (σ : Equiv.Perm (Fin n)) :
     evalAt (w ∘ σ) (dPol n 1) = ((Equiv.Perm.sign σ : ℤ) : ℂ) * evalAt w (dPol n 1) := by
@@ -51,15 +51,15 @@ private theorem he_sgn {n : ℕ} (w : Fin n → ℂˣ) (σ : Equiv.Perm (Fin n))
   rfl
 
 /- English proof (translation)
-Introduce `n t z hz a`. Establish `hne : ∀ σ : Equiv.Perm (Fin n), evalAt (z ∘ σ) (dPol n 1) ≠ 0` using `fun σ => by`. Rewrite using `[he_d]`. Use `Finset.prod_ne_zero_iff.2 fun p hp => sub_ne_zero.2 fun h => ?_` and prove the remaining obligations. Establish `h1 : p.1 < p.2` using `by simpa [pairs] using hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1.ne (σ.injective (hz (Units.ext h)))`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (evalAt z) (alternant_mul_altQuot (monomial a * hlFactor n t))`. Rewrite `h1` using `[map_mul, he_alt, antisymm_apply, map_sum]`. Establish `h0 : evalAt z (dPol n 1) ≠ 0` using `hne 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_left_cancel₀ h0 (h1.trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `h2` using `he_sgn z σ`. Establish `h3` using `hne σ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.smul_def, map_zsmul, evalAt_permAct, map_mul, monomial, evalAt_single, one_mul, zsmul_eq_mul]`. Establish `h4 : ((Equiv.Perm.sign σ : ℤ) : ℂ) * ((Equiv.Perm.sign σ : ℤ) : ℂ) = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Establish `h5 : evalAt z (dPol n 1) = ((Equiv.Perm.sign σ : ℤ) : ℂ) * evalAt (z ∘ σ) (dPol n 1)`. Rewrite using `[h2, ← mul_assoc, h4, one_mul]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h5]`. Express the relevant statement in the definitionally equal form `_ * (_ * evalAt (z ∘ σ) (dPol n t)) = _`. Clear the denominators using the available nonvanishing facts.
+Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.H.hlEval :
     ∀ (n : ℕ) (t : ℂ) (z : Fin n → ℂˣ), Function.Injective z → ∀ a : Fin n → ℤ,

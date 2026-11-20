@@ -8,7 +8,7 @@ noncomputable section
 namespace PI.WGB
 
 /- English proof (translation)
-The claim follows from `gTBranch_of_steps h (extremalFacts_of h) fixed_line_exists stable_complement_exists highest_weight_vector_exists (realize_of h (extremalFacts_of h) fixed_line_exists stable_complement_exists highest_weight_vector_exists)`.
+A detailed English derivation is pending.
 -/
 theorem gTBranch_of (h : PI.HwIrred) : PI.GTBranch :=
   gTBranch_of_steps h (extremalFacts_of h) fixed_line_exists stable_complement_exists highest_weight_vector_exists

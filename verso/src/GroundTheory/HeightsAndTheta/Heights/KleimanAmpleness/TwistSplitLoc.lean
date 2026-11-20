@@ -16,9 +16,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω} {r : ℕ} (η : Fin (r + 1) → Ω)
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Rewrite using `[map_X]`. Conclude with `X_mem_monos hi`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_C_mem_monos {I : Finset (Fin (N + 1))} {s : Poly S N} (hs : s ∈ monos I) :
     MvPolynomial.map (C : S →+* MvPolynomial (Fin (r + 1)) S) s ∈ monos (S := MvPolynomial (Fin (r + 1)) S) I := by
@@ -30,9 +30,9 @@ theorem map_C_mem_monos {I : Finset (Fin (N + 1))} {s : Poly S N} (hs : s ∈ mo
   | mul a b _ _ ha hb => rw [map_mul]; exact mul_mem ha hb
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Rewrite using `[aeval_X]`. Conclude with `(mem_support x).mp (hI hi)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `one => simp`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_ne_zero ha hb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eval_ne_zero_of_subset {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) {s : Poly S N}
     (hs : s ∈ monos I) : aeval x s ≠ 0 := by
@@ -45,11 +45,11 @@ theorem eval_ne_zero_of_subset {I : Finset (Fin (N + 1))} (hI : I ⊆ support x)
   | mul a b _ _ ha hb => rw [map_mul]; exact mul_ne_zero ha hb
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Conclude with `⟨X i, X_mem_monos hi, 1, isHomogeneous_X S i, (map_X _ _).symm, by rw [xyHom_X, aeval_X, Nat.cast_one]⟩`. Consider the case `one`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨1, one_mem _, 0, isHomogeneous_one _ _, (map_one _).symm, by rw [map_one, map_one, AddMonoidAlgebra.one_def]; rfl⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨a₀, ha₀, ea, hae, rfl, hxa⟩` from `ha`. Take `⟨b₀, hb₀, eb, hbe, rfl, hxb⟩` from `hb`. Use `⟨a₀ * b₀, mul_mem ha₀ hb₀, ea + eb, hae.mul hbe, (map_mul _ _ _).symm, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hxa, hxb, single_mul_single, map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem xyHom_of_mem_monos {I : Finset (Fin (N + 1))} {s : Poly (MvPolynomial (Fin (r + 1)) S) N}
     (hs : s ∈ monos I) : ∃ s₀ ∈ monos (S := S) I, ∃ e : ℕ, s₀.IsHomogeneous e ∧
@@ -71,9 +71,9 @@ theorem xyHom_of_mem_monos {I : Finset (Fin (N + 1))} {s : Poly (MvPolynomial (F
     congr 1
 
 /- English proof (translation)
-Take `⟨s₀, hs₀, e, -, -, h⟩` from `xyHom_of_mem_monos η hs`. Rewrite using `[h]`. Establish `hv` using `eval_ne_zero_of_subset hI hs₀`. Use `isUnit_iff_exists_inv.mpr ⟨single ((0 : ℤ), -(e : ℤ)) (aeval x s₀)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[single_mul_single, mul_inv_cancel₀ hv, AddMonoidAlgebra.one_def]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUnit_xyHom {I : Finset (Fin (N + 1))} (hI : I ⊆ support x)
     {s : Poly (MvPolynomial (Fin (r + 1)) S) N} (hs : s ∈ monos I) : IsUnit (xyHom S x η s) := by
@@ -88,9 +88,9 @@ theorem isUnit_xyHom {I : Finset (Fin (N + 1))} (hI : I ⊆ support x)
 variable (M₀ : FinGradedSub (S := S) (x := x) Ω)
 
 /- English proof (translation)
-Rewrite using `[Module.End.isUnit_iff]`. Establish `hu : IsUnit (UT.ofL (x` using `x) (η := η) (xyHom S x η s)) := isUnit_xyHom η hI s.2`. Establish `: ⇑(algebraMap (Poly (MvPolynomial (Fin (r + 1)) S) N) (Module.End (Poly (MvPolynomial (Fin (r + 1)) S) N) (UT x η)) (s : Poly _ N)) = fun v => UT.ofL (x` using `x) (η := η) (xyHom S x η s) * v := by`. Use function extensionality and compare the values at `v`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `hu.unit.mulLeft_bijective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locEmb_isUnit {I : Finset (Fin (N + 1))} (hI : I ⊆ support x)
     (s : monos (S := MvPolynomial (Fin (r + 1)) S) I) :
@@ -110,7 +110,7 @@ def locEmb (I : Finset (Fin (N + 1))) (hI : I ⊆ support x) :
   LocalizedModule.lift (monos I) (twSub η M₀).subtype (locEmb_isUnit η hI)
 
 /- English proof (translation)
-Establish `h0 : locEmb η M₀ I hI (LocalizedModule.mk m s) = (locEmb_isUnit η hI s).unit⁻¹.1 ((twSub η M₀).subtype m)` using `LocalizedModule.lift_mk _ _ _ _ _`. Rewrite using `[h0]`. Establish `key` using `congrArg (fun f : Module.End (Poly (MvPolynomial (Fin (r + 1)) S) N) (UT x η) => f ((twSub η M₀).subtype m)) (IsUnit.mul_val_inv (locEmb_isUnit η hI s))`. Simplify using `only [Module.End.mul_apply, Module.End.one_apply] at key`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xyHom_mul_locEmb_mk {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) (m : TwM η M₀)
     (s : monos (S := MvPolynomial (Fin (r + 1)) S) I) :
@@ -125,9 +125,9 @@ theorem xyHom_mul_locEmb_mk {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) (m
   exact key
 
 /- English proof (translation)
-Establish `key` using `xyHom_mul_locEmb_mk η M₀ hI m s`. Rewrite `key` using `[h]`. Rewrite using `[← key, ← mul_assoc, single_mul_single, inv_mul_cancel₀ hv]`. Establish `: single (((0 : ℤ), -(e : ℤ)) + ((0 : ℤ), (e : ℤ))) (1 : Ω) = 1`. Apply the tactic sequence `rw [AddMonoidAlgebra.one_def]; congr 1; ext <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locEmb_mk {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) (m : TwM η M₀)
     (s : monos (S := MvPolynomial (Fin (r + 1)) S) I) {e : ℕ} {v : Ω}
@@ -141,7 +141,7 @@ theorem locEmb_mk {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) (m : TwM η 
   rw [this, one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `UT.toL (locEmb η M₀ I hI ((algebraMap _ (Poly (MvPolynomial (Fin (r + 1)) S) N) c) • w)) = _`. Rewrite using `[LinearMap.map_smul, UT.smul_def, MvPolynomial.algebraMap_eq, xyHom_C]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem locEmb_smul' {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) (c : MvPolynomial (Fin (r + 1)) S)
     (w : LocMod (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀) I) :
@@ -150,9 +150,9 @@ theorem locEmb_smul' {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) (c : MvPo
   rw [LinearMap.map_smul, UT.smul_def, MvPolynomial.algebraMap_eq, xyHom_C]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Proceed by induction on `w using LocalizedModule.induction_on with`. Consider the case `h m s`. Establish `key` using `xyHom_mul_locEmb_mk η M₀ hI m s`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `key` using `[hw]`. Establish `hm : m = 0` using `TwM.val_injective (by rw [← key, TwM.val_zero]; exact mul_zero _)`. Rewrite using `[hm, LocalizedModule.zero_mk]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locEmb_injective {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) :
     Function.Injective (locEmb η M₀ I hI) := by
@@ -167,9 +167,9 @@ theorem locEmb_injective {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `w using LocalizedModule.induction_on with`. Consider the case `h m s`. Rewrite using `[locRes_mk]`. Establish `hu` using `isUnit_xyHom η hJ (monos_mono h s.2)`. Establish `k1` using `xyHom_mul_locEmb_mk η M₀ hJ m ⟨(s : Poly _ N), monos_mono h s.2⟩`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `xyHom_mul_locEmb_mk η M₀ hI m s`. Conclude with `hu.mul_left_cancel (k1.trans k2.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locEmb_locRes {I J : Finset (Fin (N + 1))} (hI : I ⊆ support x) (hJ : J ⊆ support x) (h : I ⊆ J)
     (w : LocMod (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀) I) :
@@ -183,11 +183,11 @@ theorem locEmb_locRes {I J : Finset (Fin (N + 1))} (hI : I ⊆ support x) (hJ : 
     exact hu.mul_left_cancel (k1.trans k2.symm)
 
 /- English proof (translation)
-Take `⟨i, hiJ, hi⟩` from `Finset.not_subset.mp hJ`. Establish `hxi : x i = 0`. Assume the negation of the conclusion as `h`. Conclude with `hi ((mem_support x).mpr h)`. Establish `hX : ∀ m : TwM η M₀, (X i : Poly (MvPolynomial (Fin (r + 1)) S) N) • m = 0` using `fun m => TwM.val_injective (by rw [TwM.val_smul, xyHom_X, hxi, single_zero, zero_mul, TwM.val_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ w : LocMod (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀) J, w = 0`. Introduce `w`. Proceed by induction on `w using LocalizedModule.induction_on with`. Consider the case `h m s`. Express the relevant statement in the definitionally equal form `(LocalizedModule.mk m s : LocalizedModule (monos J) (TwM η M₀)) = (0 : LocalizedModule (monos J) (TwM η M₀))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LocalizedModule.zero_mk s, LocalizedModule.mk_eq]`. Use `⟨⟨X i, X_mem_monos hiJ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero, smul_zero]`. Conclude with `hX _`. Conclude with `⟨fun w w' => by rw [hz w, hz w']⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twLocMod_subsingleton {J : Finset (Fin (N + 1))} (hJ : ¬ J ⊆ support x) :
     Subsingleton (LocMod (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀) J) := by
@@ -212,13 +212,13 @@ def LocGood (c : ℤ) (I : Finset (Fin (N + 1))) (W : LaurUT Ω) : Prop :=
   ∀ b : ℤ, W.coeff (b, c) ∈ twLocPart η M₀ b c I
 
 /- English proof (translation)
-Proceed by induction on `c' using MvPolynomial.induction_on generalizing W with`. Consider the case `C a`. Introduce `b`. Rewrite using `[yHom_C, coeff_single_mul_sub, sub_zero]`. Use `Submodule.smul_mem _ a (hW b)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Consider the case `add p q hp hq`. Introduce `b`. Rewrite using `[map_add, add_mul, AddMonoidAlgebra.coeff_add, Finsupp.add_apply]`. Conclude with `add_mem (hp hW b) (hq hW b)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X p j hp`. Rewrite using `[map_mul, mul_assoc]`. Apply `hp` to reduce the goal to its premises. Introduce `b`. Rewrite using `[yHom_X, coeff_single_mul_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `twLocPart_eta_mul η M₀ j (hW (b - 1))` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem locGood_yHom_mul {c : ℤ} {I : Finset (Fin (N + 1))} (c' : MvPolynomial (Fin (r + 1)) S)
     {W : LaurUT Ω} (hW : LocGood η M₀ c I W) : LocGood η M₀ c I (yHom S η c' * W) := by
@@ -241,17 +241,15 @@ theorem locGood_yHom_mul {c : ℤ} {I : Finset (Fin (N + 1))} (c' : MvPolynomial
     simpa using this
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun w _ => LocGood η M₀ c I.1 (UT.toL (locEmb η M₀ I.1 hI w))) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, -, hse, -, rfl⟩`. Take `⟨s₀, hs₀, e', hs₀e, hss, hxs⟩` from `xyHom_of_mem_monos η s.2`. Establish `hv` using `eval_ne_zero_of_subset hI hs₀`. Establish `hne : (s : Poly (MvPolynomial (Fin (r + 1)) S) N) ≠ 0` using `fun h0 => hv (by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hxs` using `[h0, map_zero]`. Use `congrArg (fun W : LaurUT Ω => W.coeff ((0 : ℤ), (e' : ℤ))) hxs` as an intermediate fact. Simplify using `using this.symm)`. Establish `h1 : (s : Poly (MvPolynomial (Fin (r + 1)) S) N).IsHomogeneous e'` using `hss ▸ hs₀e.map C`. Take `rfl : e' = e` from `h1.inj_right hse hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `b`. Rewrite using `[locEmb_mk η M₀ hI m s hxs hv, coeff_single_mul_sub]`. Apply the tactic sequence `have hidx : ((b, c) : ℤ × ℤ) - ((0 : ℤ), -(e' : ℤ)) = (b, c + e') := by ext <;> simp`. Rewrite using `[hidx]`. Conclude with `Submodule.subset_span ⟨m.val.coeff (b, c + e'), s₀, c + e', e', hs₀, hs₀e, m.isTw (b, c + e'), by ring, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `u v _ _ hu hv b`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(UT.toL _ + UT.toL _).coeff _ ∈ _`. Rewrite using `[AddMonoidAlgebra.coeff_add, Finsupp.add_apply]`. Conclude with `add_mem (hu b) (hv b)`. Introduce `c' u _ hu`. Rewrite using `[locEmb_smul']`.
-
-Conclude with `locGood_yHom_mul η M₀ c' hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locGood_locEmb (I : StdCell N) (hI : I.1 ⊆ support x) {c : ℤ}
     {w : LocMod (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀) I.1} (hw : w ∈ degLoc (twGraded η M₀) c I) :
@@ -284,15 +282,15 @@ theorem locGood_locEmb (I : StdCell N) (hI : I.1 ⊆ support x) {c : ℤ}
     exact locGood_yHom_mul η M₀ c' hu
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun y _ => ∃ w ∈ degLoc (twGraded η M₀) c I, UT.toL (locEmb η M₀ I.1 hI w) = single (b, c) y) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨z, s₀, a, e, hs₀, hse, hz, hae, rfl⟩`. Set `m : TwM η M₀` to `TwM.mk (single (b, a) z) (isTw_single η M₀ hz)`. Set `s : monos (S` to `MvPolynomial (Fin (r + 1)) S) I.1 := ⟨MvPolynomial.map (C : S →+* MvPolynomial (Fin (r + 1)) S) s₀, map_C_mem_monos hs₀⟩`. Use `⟨LocalizedModule.mk m s, Submodule.subset_span ⟨m, s, a, e, ?_, hse.map C, hae, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `single_mem_tDeg (b, a) z`. Establish `hv` using `eval_ne_zero_of_subset hI hs₀`. Rewrite using `[locEmb_mk η M₀ hI m s (xyHom_map_C x η hse) hv, TwM.val_mk, single_mul_single]`. Use `congr 1`. Use `ext`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Conclude with `⟨0, Submodule.zero_mem _, by rw [map_zero, single_zero]; rfl⟩`. Introduce and unpack `u v _ _ ⟨w, hw, hwu⟩ ⟨w', hw', hwv⟩`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w + w', Submodule.add_mem _ hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Express the relevant statement in the definitionally equal form `UT.toL _ + UT.toL _ = _`. Rewrite using `[hwu, hwv, single_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `r' u _ ⟨w, hw, hwu⟩`. Use `⟨(C r' : MvPolynomial (Fin (r + 1)) S) • w, Submodule.smul_mem _ _ hw, ?_⟩` and prove the remaining obligations. Rewrite using `[locEmb_smul', hwu, yHom_C, single_mul_single, zero_add, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locEmb_eq (I : StdCell N) (hI : I.1 ⊆ support x) {b c : ℤ} {y : Ω}
     (hy : y ∈ twLocPart η M₀ b c I.1) :

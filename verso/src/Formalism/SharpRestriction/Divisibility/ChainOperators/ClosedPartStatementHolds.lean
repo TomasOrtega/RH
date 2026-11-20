@@ -18,7 +18,7 @@ import Formalism.LocalRingCardinality.FactDelDualNabla
 namespace Formalism.MainNotions.DIV
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `division_transfer_indices`. Conclude with `⟨ChkDv.c2a projection_sandwich g_lattice_projection, ChkDv.c2b projection_degree_bound g_lattice_projection, ChkDv.c2c projection_kernel_index g_lattice_projection, ChkDv.c2d projection_gram_det g_lattice_projection g_lattice_hermitian, ChkDv.c2E' projection_sandwich projection_d …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem closed_statements_hold : Formalism.MainNotions.PrimeDegreeVariant.ConclusionC := by
   obtain ⟨C, hC⟩ := division_transfer_indices
@@ -30,7 +30,7 @@ theorem closed_statements_hold : Formalism.MainNotions.PrimeDegreeVariant.Conclu
     ChkDv.c8 rational_kernel_division, ChkDv.c8b division_form_eq⟩
 
 /- English proof (translation)
-Introduce `_` and use `closed_statements_hold`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem closed_part_statement_holds : Formalism.MainNotions.PrimeDegreeVariant.PropositionCStatement := fun _ => closed_statements_hold
 

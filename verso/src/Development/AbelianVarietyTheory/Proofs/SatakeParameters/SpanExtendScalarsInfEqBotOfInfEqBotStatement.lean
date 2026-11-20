@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanExtendScalar
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.span_map_inf_eq_bot_of_inf_eq_bot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FSpanExtendScalarsInfEqBotOfInfEqBot.lean&line=5#L5)
 -/

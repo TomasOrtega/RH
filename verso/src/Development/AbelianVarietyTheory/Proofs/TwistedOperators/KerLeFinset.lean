@@ -14,7 +14,7 @@ namespace GlobalTheory.Chain.IoLift.Factor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `e` using `s.equivFin.symm`. Rewrite `h0`, the goal using `[← Finset.sum_coe_sort s, ← e.sum_comp]`. Conclude with `h _ (fun k => a (e k)) (fun k => b (e k)) h0`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerLe_finset {A B Z₁ Z₂ σ : Type} [AddCommMonoid Z₁] [AddCommMonoid Z₂] {q₁ : A → B → Z₁} {q₂ : A → B → Z₂}
     (h : KerLe q₁ q₂) (s : Finset σ) (a : σ → A) (b : σ → B) (h0 : ∑ r ∈ s, q₁ (a r) (b r) = 0) :
@@ -24,11 +24,11 @@ theorem kerLe_finset {A B Z₁ Z₂ σ : Type} [AddCommMonoid Z₁] [AddCommMono
   exact h _ (fun k => a (e k)) (fun k => b (e k)) h0
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset ι, M (S.piecewise (fun i => s i (α i (n i))) n) = M n`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j S hj ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.piecewise_insert, ← ih]`. Establish `h1` using `hM (S.piecewise (fun i => s i (α i (n i))) n) j (s j (α j (n j)) - n j) (by simp [hs])`. Rewrite `h1` using `[MultilinearMap.map_update_sub, sub_eq_zero]`. Rewrite using `[h1]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Function.update_eq_self_iff, Finset.piecewise_eq_of_notMem _ _ _ hj]`. Simplify using `using key Finset.univ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem section_eq {ι : Type} [Fintype ι] {N K : ι → Type} [∀ i, AddCommGroup (K i)] [∀ i, Module ℂ (K i)]
     [∀ i, AddCommGroup (N i)] [∀ i, Module ℂ (N i)] {Z : Type} [AddCommGroup Z] [Module ℂ Z]
@@ -49,35 +49,35 @@ theorem section_eq {ι : Type} [Fintype ι] {N K : ι → Type} [∀ i, AddCommG
   simpa using key Finset.univ
 
 /- English proof (translation)
-Introduce `ι _ K _ _ P Y _ _ _ _ A hA`. Set `α : ∀ i, (P i × Y i →₀ ℂ) →ₗ[ℂ] K i` to `fun i => Finsupp.linearCombination ℂ fun r => A i r.1 r.2`. Establish `hα : ∀ i, LinearMap.range (α i) = ⊤`. Introduce `i`. Rewrite using `[Finsupp.range_linearCombination, ← hA i]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use `choose s hs using fun i => (α i).exists_rightInverse_of_surjective (hα i)`. Establish `hs' : ∀ i x, α i (s i x) = x` using `fun i x => LinearMap.congr_fun (hs i) x`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b0 : ∀ i, Module.Basis (P i × Y i) ℂ (P i × Y i →₀ ℂ)` to `fun i => Finsupp.basisSingleOne`. Establish `hb0 : ∀ i r, α i (b0 i r) = A i r.1 r.2`. Introduce `i r`. Simplify using `[α, b0]`. Set `b` to `Basis.piTensorProduct b0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hsurj : LinearMap.range (PiTensorProduct.map α) = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce `t`. Use `⟨PiTensorProduct.map s t, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.comp_apply, ← PiTensorProduct.map_comp]`. Simplify using `[hs]`. Rewrite `hsurj` using `[LinearMap.range_eq_map, ← b.span_eq, Submodule.map_span]`. Rewrite using `[eq_top_iff, ← hsurj]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨_, ⟨q, rfl⟩, rfl⟩`. Use `⟨fun i => (q i).1, fun i => (q i).2, ?_⟩` and prove the remaining obligations. Simplify using `[b, hb0]`. Introduce `Z _ _ B hB`. Set `M : MultilinearMap ℂ (fun i => P i × Y i →₀ ℂ) Z` to `(b.constr ℂ fun q => B (fun i => (q i).1) (fun i => (q i).2)).compMultilinearMap (PiTensorProduct.tprod ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hMb : ∀ q : ∀ i, P i × Y i, M (fun i => b0 i (q i)) = B (fun i => (q i).1) (fun i => (q i).2)`. Introduce `q`. Simplify using `only [M, LinearMap.compMultilinearMap_apply]`. Rewrite using `[← Basis.piTensorProduct_apply b0 q]`. Conclude with `b.constr_basis ℂ _ q`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM0 : ∀ (q : ∀ i, P i × Y i) i z, α i z = 0 → M (Function.update (fun i => b0 i (q i)) i z) = 0`. Introduce `q i z hz`. Establish `h1 : ∀ r, M (Function.update (fun i => b0 i (q i)) i (b0 i r)) = B (Function.update (fun i => (q i).1) i r.1) (Function.update (fun i => (q i).2) i r.2)`. Introduce `r`. Use `hMb (Function.update q i r)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `convert this using 2 <;> [skip; congr 1; skip] <;> funext j <;> by_cases h : j = i <;> first | (subst h; simp) | simp [h]`. Establish `h2 : M (Function.update (fun i => b0 i (q i)) i z) = ∑ r ∈ z.support, B (Function.update (fun i => (q i).1) i (z r • r.1)) (Function.update (fun i => (q i).2) i r.2)`. Establish `hz' : z = ∑ r ∈ z.support, z r • b0 i r` using `by conv_lhs => rw [← Finsupp.sum_single z]`. Simplify using `[Finsupp.sum, b0]`. Use `conv_lhs => rw [hz']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MultilinearMap.map_update_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_update_smul, MultilinearMap.map_update_smul, h1]`. Both sides reduce to the same expression. Rewrite using `[h2]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `kerLe_finset (hB i (fun i => (q i).1) (fun i => (q i).2)) z.support (fun r => z r • r.1) (fun r => r.2) ?_` and prove the remaining obligations. Simplify `hz` using `[α, Finsupp.linearCombination_apply, Finsupp.sum]`. Establish `hM : ∀ n i z, α i z = 0 → M (Function.update n i z) = 0`. Introduce `n i z hz`. Set `φ : (P i × Y i →₀ ℂ) →ₗ[ℂ] (P i × Y i →₀ ℂ)` to `Finsupp.linearCombination ℂ fun _ => z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hφ : ∀ r, φ (b0 i r) = z`. Introduce `r`. Simplify using `[φ, b0]`. Set `f : ∀ j, (P j × Y j →₀ ℂ) →ₗ[ℂ] (P j × Y j →₀ ℂ)` to `Function.update (fun j => LinearMap.id) i φ`. Establish `hf : ∀ m : ∀ j, (P j × Y j →₀ ℂ), (fun j => f j (m j)) = Function.update m i (φ (m i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Introduce `m`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[f]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[f, h]`. Establish `h0 : M.compLinearMap f = 0`. Use `Module.Basis.ext_multilinear b0 fun q => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.compLinearMap_apply, hf, hφ]`. Conclude with `hM0 q i z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun F => F (Function.update n i (b0 i 0))) h0` as an intermediate fact. Simplify `this` using `[hf, hφ]`. Use `⟨PiTensorProduct.lift (M.compLinearMap s), fun p y => ?_⟩` and prove the remaining obligations. Rewrite using `[PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, ← hMb fun i => (p i, y i), ← section_eq α s hs' M hM fun i => b0 i (p i, y i)]`. Simplify using `only [hb0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem factor :
     ∀ (ι : Type) [Fintype ι] (K : ι → Type) [∀ i, AddCommGroup (K i)] [∀ i, Module ℂ (K i)] (P Y : ι → Type) [∀ i, AddCommGroup (P i)] [∀ i, Module ℂ (P i)] [∀ i, AddCommGroup (Y i)] [∀ i, Module ℂ (Y i)] (A : ∀ i, P i →ₗ[ℂ] Y i →ₗ[ℂ] K i), (∀ i, Submodule.span ℂ {x | ∃ p y, A i p y = x} = ⊤) → Submodule.span ℂ {x : ⨂[ℂ] i, K i | ∃ (p : ∀ i, P i) (y : ∀ i, Y i), PiTensorProduct.tprod ℂ (fun i => A i (p i) (y i)) = x} = ⊤ ∧ ∀ (Z : Type) [AddCommGroup Z] [Module ℂ Z] (B : MultilinearMap ℂ P (MultilinearMap ℂ Y Z)), (∀ i p y, KerLe (fun x z => A i x z) fun x z => B (Function.update p i x) (Function.update y i z)) → ∃ T : (⨂[ℂ] i, K i) →ₗ[ℂ] Z, ∀ p y, T (PiTensorProduct.tprod ℂ fun i => A i (p i) (y i)) = B p y := by

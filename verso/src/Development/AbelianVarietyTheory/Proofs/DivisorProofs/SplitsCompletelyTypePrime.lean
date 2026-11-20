@@ -17,11 +17,11 @@ namespace GlobalTheory.ShareOn
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `⟨D.host.g_prime k, ?_⟩` and prove the remaining obligations. Establish `hg0 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (D.host.g_prime k).ne_zero`. Establish `h` using `D.nd.g_split k`. Rewrite using `[← h]`. Establish `: {P : Ideal (𝓞 D.host.E) | P.IsPrime ∧ ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P} = (fun v : HeightOneSpectrum (𝓞 D.host.E) => v.asIdeal) '' {v : HeightOneSpectrum (𝓞 D.host.E) | ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hg⟩`. Establish `hne : P ≠ ⊥` using `fun h0 => hg0 (by rw [h0] at hg; simpa using hg)`. Conclude with `⟨⟨P, hP, hne⟩, hg, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨v.isPrime, hv⟩`. Rewrite using `[this, Set.ncard_image_of_injective _ (fun a b h => HeightOneSpectrum.ext h)]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem splitsCompletely_typePrime (D : D7) (k : Fin 2) : SplitsCompletely D.host.E (D.host.g k) := by
   refine ⟨D.host.g_prime k, ?_⟩
@@ -44,9 +44,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Rewrite using `[h.half]`. Take `⟨plg, -, hplg, -, -, -⟩` from `p.grpRecPin`. Establish `hmem : D.naut.plGw k v ∈ (R2 p).Pg`. Rewrite using `[← hplg ⟨k, v⟩]`. Conclude with `(plg ⟨k, v⟩).2`.
-
-Conclude with `(Ideal.prod_le_inf).trans (Finset.inf_le hmem)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_le_plGw (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r) (k : Fin 2) (v : D.nd.PlG k) :
     p.T.Q.l.Mb ≤ (D.naut.plGw k v).asIdeal := by
@@ -58,15 +56,15 @@ theorem half_le_plGw (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2
   exact (Ideal.prod_le_inf).trans (Finset.inf_le hmem)
 
 /- English proof (translation)
-Introduce `H hH`. Take `⟨k, hk⟩` from `hH`. Take `⟨v0, e, -, -, -, hd1, φ, hd2⟩` from `hM`. Use `⟨D.host.g k, splitsCompletely_typePrime D k, hg k, ?_⟩` and prove the remaining obligations. Introduce `c β hβ P hP hgP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, huc, γ, hγ, rfl⟩` from `hβ`. Establish `huc' : (u : p.P.Gp) • c = c` using `huc`. Establish `hγL : ∀ w, w ∈ (M.comp c).L' ↔ Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) w ∈ (M.comp c).L'` using `M.Γ_L' c γ hγ`. Establish `htL : ∀ w, w ∈ (M.comp c).L' ↔ Matrix.mulVec (M.tr u c : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) w ∈ (M.comp c).L'`. Introduce `w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `M.tr_L' u c w` as an intermediate fact. Rewrite `this` using `[huc']`. Then use the resulting hypothesis. Establish `half : ∀ v : D.nd.PlG k, ∀ w ∈ (M.comp c).L', Matrix.mulVec ((((γ * M.tr u c : GL (Fin D.R.r) D.host.E) : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) - 1) ^ D.R.r) w ∈ (D.naut.plGw k v).asIdeal • (M.comp c).L'`. Introduce `v w hw`. Take `⟨n, hn⟩` from `hd2 c u huc'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Units.val_mul]`. Conclude with `GlobalTheory.T.unipotent_mod_ideal_of_trivial_mod_half _ _ _ (half_le_plGw p r h k v) (φ c) (r.lev i u) n (GlobalTheory.T.levelChange_unitriangular_unipotent_modPlace p r h i u k v (hk u u.2 v)) _ _ (fun w hw => (hγL w).1 hw) (hd1 c γ hγ) hn w hw`. Take `⟨v, rfl | rfl⟩` from `GlobalTheory.T.prime_over_typePrime_fixedPlace_or_conj D k P hP hgP`. Conclude with `half v`. Use `GlobalTheory.T.unitary_unipotent_mod_ideal_mod_conjIdeal (M.comp c) (γ * M.tr u c) ?_ ?_ _ (half v)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ((M.comp c).Γ_stab γ hγ).1, M.comp_Gm c, M.tr_herm]`. Introduce `a`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `(htL a).trans (hγL _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelCondition_restrict_of_halfUnipotent (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r) (i : Fin D.R.m) {C : Type} [Finite C]
     [MulAction p.P.Gp C] (M : TwoLevels D.host.E D.R.r p.P.Gp C) (ka : Wt M.Ψ D.R.r) (hg : ∀ k : Fin 2, 3 * D.R.r < D.host.g k)

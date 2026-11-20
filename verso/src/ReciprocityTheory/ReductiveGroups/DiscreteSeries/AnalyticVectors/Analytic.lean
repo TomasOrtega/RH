@@ -19,17 +19,15 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Establish `hE` using `hD.glRep`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Take `⟨R, hR0, hR⟩` from `exists_sum_nc_norm_sq_le ε hE hU hVf hVK hc`. Use `set d : ℝ := nsq (rhoC ε) + c`. Establish `hR' : ∀ k : ℕ, ∀ x ∈ layer ε E V k, ∑ a, ∑ b ∈ univ.filter (fun b => ε a ≠ ε b), ‖E a b x‖ ^ 2 ≤ ((R + √2 * k) ^ 2 - d) * ‖x‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k x hx`. Use `hR k x hx` as an intermediate fact. Simplify `this` using `only [d, sub_sub]`. Rewrite `hv` using `[genSub_eq_iSup_layer hE hVK, Submodule.mem_iSup_of_directed _ (show Monotone (layer ε E V) from fun _ _ h => layer_mono h).directed_le]`. Take `⟨k, hk⟩` from `hv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set S : ℝ := √(∑ a, ∑ b, ‖X a b‖ ^ 2)`. Use `set A : ℝ := R + √(max 0 (-d))`. Establish `hA : 0 ≤ A` using `add_nonneg hR0 (Real.sqrt_nonneg _)`. Establish `hS : 0 ≤ S` using `Real.sqrt_nonneg _`. Use `⟨fun m => S ^ m * (∏ l ∈ range m, (A + √2 * ((k : ℝ) + l))) * ‖v‖, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `m`. Use `norm_actM_pow_le hE hVK hR0 hR' hX k hk m` as an intermediate fact. Simplify `this` using `only [Submodule.coe_norm]`. Introduce `m`. Use `mul_nonneg (mul_nonneg (pow_nonneg hS _) ?_) (norm_nonneg _)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `prod_nonneg fun l _ => add_nonneg hA (mul_nonneg (Real.sqrt_nonneg _) (by positivity))`. Introduce `r hr hrS`. Establish `h1` using `summable_prod_mul_pow_div_factorial hA (Real.sqrt_nonneg 2) (mul_nonneg hr hS) (by nlinarith) k`. Establish `h2` using `h1.mul_left ‖v‖`. Use `h2.congr fun m => ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_orbit_bound (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {V : Submodule ℂ D} (hVf : FiniteDimensional ℂ V) (hVK : IsKStableSub ε E V) {c : ℝ}
@@ -69,7 +67,7 @@ theorem exists_orbit_bound (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε �
     ring
 
 /- English proof (translation)
-Take `⟨a, ha, -, hs⟩` from `exists_orbit_bound hσ hD hVf hVK hc hX hv`. Conclude with `hasSum_orbit_of_bound hσ hD hX.1 v a ha t₀ t (hs _ (abs_nonneg _) ht)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem orbit_hasSum_taylor (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {V : Submodule ℂ D} (hVf : FiniteDimensional ℂ V) (hVK : IsKStableSub ε E V) {c : ℝ}

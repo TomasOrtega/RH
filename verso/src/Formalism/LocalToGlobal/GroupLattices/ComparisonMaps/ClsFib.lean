@@ -18,7 +18,7 @@ variable {G Gp : Type} [Group G] [Group Gp] {K K' : Subgroup G} {Kp : Subgroup G
 def mkC (S : Subgroup G) (a : G) : ClassSet H S := DoubleCoset.mk H S a
 
 /- English proof (translation)
-Unfold `mkC`. Conclude with `DoubleCoset.eq _ _ a b`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mk_eq_iff (S : Subgroup G) (a b : G) :
     (mkC H S a = mkC H S b) ↔ ∃ h ∈ H, ∃ κ ∈ S, b = h * a * κ := by
@@ -26,7 +26,7 @@ theorem mk_eq_iff (S : Subgroup G) (a b : G) :
   exact DoubleCoset.eq _ _ a b
 
 /- English proof (translation)
-Rewrite using `[X.K_iff]`. Use `⟨K'.mul_mem (K'.inv_mem (X.j_mem _)) hx, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, X.pr_j, inv_mul_cancel]`. Conclude with `Kp.one_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem K'_split (x : G) (hx : x ∈ K') : (X.j (X.pr x))⁻¹ * x ∈ K := by
   rw [X.K_iff]
@@ -39,17 +39,15 @@ variable (y : ClassSet H K' → G) (hy : ∀ i, mkC H K' (y i) = i) (hp : ∀ i,
 include hy hp in
 
 /- English proof (translation)
-Rewrite using `[mk_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, κ, hκ, he⟩`. Establish `hκ'` using `(X.K_iff κ).1 hκ`. Establish `hi : i = i'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hy i, ← hy i', mk_eq_iff]`. Use `⟨h, hh, X.j g * κ * (X.j g')⁻¹, K'.mul_mem (K'.mul_mem (X.j_mem g) hκ'.1) (K'.inv_mem (X.j_mem g')), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Substitute `hi` using the available equality. Establish `hh' : h = (y i * X.j g') * κ⁻¹ * (y i * X.j g)⁻¹` using `by rw [he]; group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hz : (y i)⁻¹ * h * y i = X.j g' * κ⁻¹ * (X.j g)⁻¹` using `by rw [hh']; group`. Use `⟨rfl, h, hh, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `K'.mul_mem (K'.mul_mem (X.j_mem _) (K'.inv_mem hκ'.1)) (K'.inv_mem (X.j_mem _))`. Rewrite using `[hh']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv, X.pr_j, hp]`. Use `Kp.inv_mem hκ'.2 using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce and unpack `⟨rfl, γ, hγ, hz, hg⟩`. Use `⟨γ, hγ, (y i * X.j g)⁻¹ * γ⁻¹ * (y i * X.j g'), ?_, by group⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[X.K_iff]`. Establish `e : (y i * X.j g)⁻¹ * γ⁻¹ * (y i * X.j g') = (X.j g)⁻¹ * ((y i)⁻¹ * γ * y i)⁻¹ * X.j g'` using `by group`. Rewrite using `[e]`. Use `⟨K'.mul_mem (K'.mul_mem (K'.inv_mem (X.j_mem _)) (K'.inv_mem hz)) (X.j_mem _), ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, X.pr_j, hp]`.
-
-Use `Kp.inv_mem hg using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem cls_iff (i i' : ClassSet H K') (g g' : Gp) :
     mkC H K (y i * X.j g) = mkC H K (y i' * X.j g') ↔
@@ -89,7 +87,7 @@ theorem cls_iff (i i' : ClassSet H K') (g g' : Gp) :
 include hy in
 
 /- English proof (translation)
-Take `⟨h, hh, κ, hκ, he⟩` from `(mk_eq_iff H K' (y (mkC H K' x)) x).1 (hy _)`. Use `⟨mkC H K' x, X.pr κ, (mk_eq_iff H K _ _).2 ⟨h, hh, (X.j (X.pr κ))⁻¹ * κ, X.K'_split κ hκ, ?_⟩⟩` and prove the remaining obligations. Use `conv_lhs => rw [he]`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cls_surj (x : G) : ∃ i g, mkC H K (y i * X.j g) = mkC H K x := by
   obtain ⟨h, hh, κ, hκ, he⟩ := (mk_eq_iff H K' (y (mkC H K' x)) x).1 (hy _)
@@ -101,11 +99,11 @@ theorem cls_surj (x : G) : ∃ i g, mkC H K (y i * X.j g) = mkC H K x := by
 include hp in
 
 /- English proof (translation)
-Establish `hz : (y i * X.j g)⁻¹ * γ * (y i * X.j g) = (X.j g)⁻¹ * ((y i)⁻¹ * γ * y i) * X.j g` using `by group`. Rewrite using `[hz, X.K_iff]`. Establish `hjg` using `X.j_mem g`. Establish `h1 : (X.j g)⁻¹ * ((y i)⁻¹ * γ * y i) * X.j g ∈ K' ↔ (y i)⁻¹ * γ * y i ∈ K'`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h2` using `K'.mul_mem (K'.mul_mem hjg h) (K'.inv_mem hjg)`. Establish `e : X.j g * ((X.j g)⁻¹ * ((y i)⁻¹ * γ * y i) * X.j g) * (X.j g)⁻¹ = (y i)⁻¹ * γ * y i` using `by group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `K'.mul_mem (K'.mul_mem (K'.inv_mem hjg) h) hjg`. Rewrite using `[h1]`. Simplify using `only [map_mul, map_inv, X.pr_j, hp, inv_one, one_mul, mul_one, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stab_iff (i : ClassSet H K') (g : Gp) (γ : G) :
     (y i * X.j g)⁻¹ * γ * (y i * X.j g) ∈ K ↔ (y i)⁻¹ * γ * y i ∈ K' ∧ g⁻¹ * (X.pr γ * g) ∈ Kp := by

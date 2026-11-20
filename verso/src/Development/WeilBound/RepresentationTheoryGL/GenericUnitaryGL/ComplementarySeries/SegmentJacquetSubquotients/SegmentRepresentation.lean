@@ -7,7 +7,7 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BernsteinZelevinskyFi
 namespace PositivityTheory.RgGu
 
 /- English proof (translation)
-The claim follows from `have hG : GlobalTheory.Published.GeometricLemma := GlobalTheory.geometricLemma_of_filtration GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness PositivityTheory.Geo.geometricLemmaFiltration SRC.segRep_of SRC.stageP hG (SRC.segTwo_of hG NR.rhoNuRhoReducibleC)`.
+A detailed English derivation is pending.
 -/
 theorem segmentRepresentation : GlobalTheory.Published.SegmentRepresentation :=
   have hG : GlobalTheory.Published.GeometricLemma :=

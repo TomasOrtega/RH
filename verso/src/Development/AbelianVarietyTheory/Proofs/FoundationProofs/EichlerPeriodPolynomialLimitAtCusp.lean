@@ -10,7 +10,7 @@ open scoped Manifold
 namespace GlobalTheory.EichlerLimit
 
 /- English proof (translation)
-Use `Submodule.sum_mem _ fun j hj => ?_` and prove the remaining obligations. Rewrite using `[mem_degreeLT]`. Use `(degree_C_mul_X_pow_le _ _).trans_lt ?_` and prove the remaining obligations. Conclude with `Finset.mem_range.1 hj` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trunc_mem (w : ℕ) (R : ℂ[X]) :
     (∑ j ∈ Finset.range (w + 1), C (R.coeff j) * X ^ j) ∈ degreeLT ℂ (w + 1) := by
@@ -20,7 +20,7 @@ theorem trunc_mem (w : ℕ) (R : ℂ[X]) :
   exact_mod_cast Finset.mem_range.1 hj
 
 /- English proof (translation)
-Rewrite using `[finset_sum_coeff]`. Simplify using `only [coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[Finset.mem_range, Nat.lt_succ_of_le hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trunc_coeff (w : ℕ) (R : ℂ[X]) {j : ℕ} (hj : j ≤ w) :
     (∑ i ∈ Finset.range (w + 1), C (R.coeff i) * X ^ i).coeff j = R.coeff j := by
@@ -30,7 +30,7 @@ theorem trunc_coeff (w : ℕ) (R : ℂ[X]) {j : ℕ} (hj : j ≤ w) :
   simp [Finset.mem_range, Nat.lt_succ_of_le hj]
 
 /- English proof (translation)
-Unfold `eichler`. Use `Submodule.sum_mem _ fun j hj => ?_` and prove the remaining obligations. Rewrite using `[mem_degreeLT]`. Use `(degree_C_mul_X_pow_le _ _).trans_lt ?_` and prove the remaining obligations. Conclude with `Finset.mem_range.1 hj` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eichler_mem (w : ℕ) (f : ℍ → ℂ) (τ : ℍ) : eichler w f τ ∈ degreeLT ℂ (w + 1) := by
   unfold eichler
@@ -40,7 +40,7 @@ theorem eichler_mem (w : ℕ) (f : ℍ → ℂ) (τ : ℍ) : eichler w f τ ∈ 
   exact_mod_cast Finset.mem_range.1 hj
 
 /- English proof (translation)
-Introduce `τ hτ`. Use `(hF τ hτ).trans ?_` and prove the remaining obligations. Establish `h1 : Real.exp (-c * τ.im) ≤ Real.exp (-c' * τ.im)` using `Real.exp_le_exp.2 (by nlinarith [mul_nonneg (sub_nonneg.2 hc) (τ.im_pos.le)])`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem bound_rate {F : ℍ → ℂ} {C c c' : ℝ} (hc : c' ≤ c)
     (hF : ∀ τ : ℍ, 1 ≤ τ.im → ‖F τ‖ ≤ C * Real.exp (-c * τ.im)) :
@@ -54,15 +54,13 @@ theorem bound_rate {F : ℍ → ℂ} {C c c' : ℝ} (hc : c' ≤ c)
     _ ≤ max C 0 * Real.exp (-c' * τ.im) := mul_le_mul_of_nonneg_left h1 (le_max_right _ _)
 
 /- English proof (translation)
-Introduce `k f h p σ Cf cf Ch ch hk hcf hch hf hh hfs hhs bf bh _hp`. Take `⟨C1, hC1⟩` from `GlobalTheory.T.eichlerIntegralFromI_slash_change_of_variables k hk f hf σ`. Take `⟨C2, hC2⟩` from `GlobalTheory.T.eichlerIntegralFromI_slash_change_of_variables k hk h hh σ`. Establish `hc : 0 < min cf ch` using `lt_min hcf hch`. Take `⟨Lf, Kf, hLf⟩` from `GlobalTheory.T.eichlerIntegralFromI_tail_exponential_decay (k - 2) (f ∣[(k : ℤ)] σ) (max Cf 0) (min cf ch) hfs hc (bound_rate (min_le_left _ _) bf)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Lh, Kh, hLh⟩` from `GlobalTheory.T.eichlerIntegralFromI_tail_exponential_decay (k - 2) (h ∣[(k : ℤ)] σ) (max Ch 0) (min cf ch) hhs hc (bound_rate (min_le_right _ _) bh)`. Use `set R : ℂ[X] := Lf + C1 - (Lh + C2).map (starRingEnd ℂ) - slP (k - 2) (mat σ) p with hR`. Use `⟨∑ j ∈ Finset.range (k - 2 + 1), C (R.coeff j) * X ^ j, Kf + Kh, min cf ch, trunc_mem _ _, hc, ?_⟩` and prove the remaining obligations. Introduce `τ hτ j hj`. Establish `key : slP (k - 2) (mat σ) (eichler (k - 2) f (σ • τ) - (eichler (k - 2) h (σ • τ)).map (starRingEnd ℂ) - p) = eichler (k - 2) (f ∣[(k : ℤ)] σ) τ + C1 - (eichler (k - 2) (h ∣[(k : ℤ)] σ) τ + C2).map (starRingEnd ℂ) - slP (k - 2) (mat σ) p`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_sub, hC1, ← (GlobalTheory.T.polyDegreeSlashAction_right_action_properties (k - 2) (mat σ) 1 _ (eichler_mem _ _ _)).2.2.2, hC2]`. Establish `e1` using `hLf τ hτ j hj`. Establish `e2` using `hLh τ hτ j hj`. Rewrite `e1`, `e2` using `[coeff_sub]`. Rewrite using `[coeff_sub, key, trunc_coeff _ _ hj, hR]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [coeff_sub, coeff_add, coeff_map, map_add]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ _ := norm_sub_le _ _`. Use `_ = ‖(eichler (k - 2) (f ∣[(k : ℤ)] σ) τ).coeff j - Lf.coeff j‖ + ‖(eichler (k - 2) (h ∣[(k : ℤ)] σ) τ).coeff j - Lh.coeff j‖ := by rw [Complex.norm_conj]`. Use `_ ≤ _ := by rw [add_mul, add_mul]; exact add_le_add e1 e2`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem polySlash_eichler_limit : ∀ (k : ℕ) (f h : ℍ → ℂ) (p : ℂ[X]) (σ : SL(2, ℤ)) (Cf cf Ch ch : ℝ), 2 ≤ k → 0 < cf → 0 < ch → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) h → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (f ∣[(k : ℤ)] σ) → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (h ∣[(k : ℤ)] σ) → (∀ τ : ℍ, 1 ≤ τ.im → ‖(f ∣[(k : ℤ)] σ) τ‖ ≤ Cf * Real.exp (-cf * τ.im)) → (∀ τ : ℍ, 1 ≤ τ.im → ‖(h ∣[(k : ℤ)] σ) τ‖ ≤ Ch * Real.exp (-ch * τ.im)) → p ∈ degreeLT ℂ (k - 1) → ∃ (Q : ℂ[X]) (C' c : ℝ), Q ∈ degreeLT ℂ (k - 2 + 1) ∧ 0 < c ∧ ∀ τ : ℍ, 1 ≤ τ.im → ∀ j ≤ k - 2, ‖(slP (k - 2) (mat σ) (eichler (k - 2) f (σ • τ) - (eichler (k - 2) h (σ • τ)).map (starRingEnd ℂ) - p) - Q).coeff j‖ ≤ C' * Real.exp (-c * τ.im) * (1 + ‖(τ : ℂ)‖) ^ (k - 2) := by
   intro k f h p σ Cf cf Ch ch hk hcf hch hf hh hfs hhs bf bh _hp

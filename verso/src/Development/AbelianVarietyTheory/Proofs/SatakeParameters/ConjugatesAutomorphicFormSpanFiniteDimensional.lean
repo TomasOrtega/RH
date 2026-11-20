@@ -30,13 +30,13 @@ def polys (N : ℕ) : Submodule ℂ (infU E n → ℂ) :=
   Submodule.span ℂ (mono '' {l | l.length ≤ N})
 
 /- English proof (translation)
-The claim follows from `FiniteDimensional.span_of_finite ℂ ((List.finite_length_le _ N).image _)`.
+A detailed English derivation is pending.
 -/
 theorem polys_fd (N : ℕ) : FiniteDimensional ℂ (polys E n N) :=
   FiniteDimensional.span_of_finite ℂ ((List.finite_length_le _ N).image _)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun _ hl => le_trans hl h)`.
+A detailed English derivation is pending.
 -/
 theorem polys_mono {N N' : ℕ} (h : N ≤ N') : polys E n N ≤ polys E n N' :=
   Submodule.span_mono (Set.image_mono fun _ hl => le_trans hl h)
@@ -46,9 +46,9 @@ variable (E n) in
 abbrev gens : Set (infU E n → ℂ) := {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}
 
 /- English proof (translation)
-Proceed by induction on `hf using Submonoid.closure_induction with`. Consider the case `mem f hf`. Take `⟨τ, i, j, rfl⟩` from `hf`. Conclude with `⟨[(τ, i, j)], by funext x; simp [mono, gen]⟩`. Consider the case `one => exact ⟨[], by simp [mono]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul f g _ _ hf hg`. Take `⟨l, rfl⟩` from `hf`. Take `⟨l', rfl⟩` from `hg`. Conclude with `⟨l ++ l', by simp [mono]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mono_of_mem_closure {f : infU E n → ℂ} (hf : f ∈ Submonoid.closure (gens E n)) :
     ∃ l, f = mono l := by
@@ -63,11 +63,11 @@ theorem exists_mono_of_mem_closure {f : infU E n → ℂ} (hf : f ∈ Submonoid.
     exact ⟨l ++ l', by simp [mono]⟩
 
 /- English proof (translation)
-Establish `h : p ∈ Subalgebra.toSubmodule (Algebra.adjoin ℂ (gens E n))` using `hp`. Rewrite `h` using `[Algebra.adjoin_eq_span]`. Use `clear hp`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem f hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨l, rfl⟩` from `exists_mono_of_mem_closure hf`. Conclude with `⟨l.length, Submodule.subset_span ⟨l, (le_refl l.length : l.length ≤ l.length), rfl⟩⟩`. Consider the case `zero => exact ⟨0, zero_mem _⟩`. Consider the case `add f g _ _ hf hg`. Take `⟨N, hN⟩` from `hf`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N', hN'⟩` from `hg`. Conclude with `⟨max N N', add_mem (polys_mono (le_max_left _ _) hN) (polys_mono (le_max_right _ _) hN')⟩`. Consider the case `smul c f _ hf`. Take `⟨N, hN⟩` from `hf`. Conclude with `⟨N, Submodule.smul_mem _ c hN⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_polys_of_mem_adjoin {p : infU E n → ℂ} (hp : p ∈ Algebra.adjoin ℂ (gens E n)) :
     ∃ N, p ∈ polys E n N := by
@@ -88,9 +88,9 @@ theorem exists_polys_of_mem_adjoin {p : infU E n → ℂ} (hp : p ∈ Algebra.ad
     exact ⟨N, Submodule.smul_mem _ c hN⟩
 
 /- English proof (translation)
-Unfold `mono`. Proceed by induction on `l with`. Consider the case `nil => simpa using one_mem (Algebra.adjoin ℂ (gens E n))`. Consider the case `cons t l ih`. Rewrite using `[List.map_cons, List.prod_cons]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (Algebra.subset_adjoin ⟨t.1, t.2.1, t.2.2, rfl⟩) ih`.
+A detailed English derivation is pending.
 -/
 theorem mono_mem_adjoin (l : List ((E →+* ℂ) × Fin n × Fin n)) : mono l ∈ Algebra.adjoin ℂ (gens E n) := by
   unfold mono
@@ -101,7 +101,7 @@ theorem mono_mem_adjoin (l : List ((E →+* ℂ) × Fin n × Fin n)) : mono l �
     exact mul_mem (Algebra.subset_adjoin ⟨t.1, t.2.1, t.2.2, rfl⟩) ih
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨l, -, rfl⟩; exact mono_mem_adjoin l)`.
+A detailed English derivation is pending.
 -/
 theorem polys_le_adjoin (N : ℕ) : polys E n N ≤ Subalgebra.toSubmodule (Algebra.adjoin ℂ (gens E n)) :=
   Submodule.span_le.2 (by rintro _ ⟨l, -, rfl⟩; exact mono_mem_adjoin l)
@@ -110,9 +110,9 @@ def conjIdx (σ : ℂ ≃+* ℂ) (t : (E →+* ℂ) × Fin n × Fin n) : (E →+
   (σ.toRingHom.comp t.1, t.2)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [mono]`. Consider the case `cons t l ih`. Simplify using `only [mono, List.map_cons, List.prod_cons, Pi.mul_apply] at ih ⊢`. Rewrite using `[ih, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Take `⟨x, hx⟩` from `exists_cEmb_entry_eq hγ hk t.2.1 t.2.2`. Simplify using `only [gen, conjIdx, hx]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mono_conj (σ : ℂ ≃+* ℂ) (l : List ((E →+* ℂ) × Fin n × Fin n)) {γ : UA E n} (hγ : γ ∈ ratU E n)
     (k : infU E n) (hk : cInf k.1 = cInf γ) : mono (l.map (conjIdx σ)) k = σ (mono l k) := by
@@ -127,11 +127,11 @@ theorem mono_conj (σ : ℂ ≃+* ℂ) (l : List ((E →+* ℂ) × Fin n × Fin 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨l, hl, rfl⟩` from `hf`. Conclude with `⟨mono (l.map (conjIdx σ)), Submodule.subset_span ⟨_, by simpa using hl, rfl⟩, fun γ hγ k hk => mono_conj σ l hγ k hk⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun _ _ _ _ => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add f g _ _ hf hg`. Take `⟨f', hf', hf⟩` from `hf`. Take `⟨g', hg', hg⟩` from `hg`. Conclude with `⟨f' + g', add_mem hf' hg', fun γ hγ k hk => by`. Rewrite using `[Pi.add_apply, Pi.add_apply, map_add, hf γ hγ k hk, hg γ hγ k hk]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c f _ hf`. Take `⟨f', hf', hf⟩` from `hf`. Conclude with `⟨σ c • f', Submodule.smul_mem _ _ hf', fun γ hγ k hk => by`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, hf γ hγ k hk]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_conj_polys (σ : ℂ ≃+* ℂ) {N : ℕ} {p : infU E n → ℂ} (hp : p ∈ polys E n N) :
     ∃ p' ∈ polys E n N, ∀ γ ∈ ratU E n, ∀ k : infU E n, cInf k.1 = cInf γ → p' k = σ (p k) := by
@@ -152,27 +152,23 @@ theorem exists_conj_polys (σ : ℂ ≃+* ℂ) {N : ℕ} {p : infU E n → ℂ} 
       rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, hf γ hγ k hk]⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n φ hφ`. Take `⟨hdense, hdk, -, a, b, -, -, hab, -⟩` from `GlobalTheory.UnitarySplit.dense_and_split E n`. Take `⟨m, p, e, hpe, hdec⟩` from `GlobalTheory.UnitaryDecomp.exists_poly_mul_autForm E n φ hφ`. Establish `hcont` using `(GlobalTheory.PolyRealU.poly_infU E n).1`. Use `choose D hD using fun i => exists_polys_of_mem_adjoin (hpe i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N := Finset.univ.sup D with hN`. Establish `hpN : ∀ i, p i ∈ polys E n N` using `fun i => polys_mono (Finset.le_sup (Finset.mem_univ i)) (hD i)`. Use `set K := GlobalTheory.UnitaryDecomp.finStab φ with hK`. Take `⟨S, hS⟩` from `GlobalTheory.DefU.ClassFin.classSet_finite E n K hφ.level`. Use `set S' : Finset (UA E n) := S.image fun s => ((a s : finU E n) : UA E n) with hS'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `M : Submodule ℂ (UA E n → ℂ)` to `{ carrier := {ψ | (∀ γ ∈ ratU E n, ∀ g, ψ (γ * g) = ψ g) ∧ (∀ k ∈ K, ∀ g, ψ (g * (k : UA E n)) = ψ g) ∧ ∀ s ∈ S', (fun x : infU E n => ψ (s * x)) ∈ polys E n N} add_mem' := fun {ψ χ} hψ hχ => ⟨fun γ hγ g => by simp only [Pi.add_apply, hψ.1 γ hγ g, hχ.1 γ hγ g], fun k hk g => by s …`. Establish `hred : ∀ g : UA E n, ∃ s ∈ S', ∃ y : infU E n, ∀ ψ ∈ M, ψ g = ψ (s * y)`. Introduce `g`. Take `⟨γ, hγ, s, hs, x, hx, k, hk, rfl⟩` from `hS g`. Use `⟨((a s : finU E n) : UA E n), by rw [hS']; exact Finset.mem_image_of_mem _ hs, ⟨(b s).1 * x, mul_mem (b s).2 hx⟩, fun ψ hψ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hψ.2.1 k hk, mul_assoc, hψ.1 γ hγ]`. Use `conv_lhs => rw [hab s]`. Simplify using `only [mul_assoc]`. Use `haveI := polys_fd (E := E) (n := n) N`. Set `f : M →ₗ[ℂ] ((s : S') → polys E n N)` to `{ toFun := fun ψ s => ⟨fun x => ψ.1 (s.1 * x), ψ.2.2.2 s.1 s.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective f`. Introduce `ψ χ h`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Take `⟨s, hs, y, hy⟩` from `hred g`. Rewrite using `[hy ψ.1 ψ.2, hy χ.1 χ.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (congrArg Subtype.val (congrFun h ⟨s, hs⟩)) y`. Use `⟨M, Module.Finite.of_injective f hinj, fun σ φ' hφ' hagree => ?_⟩` and prove the remaining obligations. Establish `hrat : ∀ s ∈ finU E n, ∀ k : infU E n, ∀ γ ∈ ratU E n, cInf k.1 = cInf γ → φ' (s * (k : UA E n)) = σ (φ (s * (k : UA E n)))`. Introduce `s hs k γ hγ hk`. Establish `hy : γ⁻¹ * (s * (k : UA E n)) ∈ finU E n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs1 : cInf s = 1` using `hs`. Use `show cInf (γ⁻¹ * (s * (k : UA E n))) = 1`. Rewrite using `[map_mul, map_mul, map_inv, hs1, hk, one_mul, inv_mul_cancel]`. Establish `e1 : s * (k : UA E n) = γ * (γ⁻¹ * (s * (k : UA E n)))` using `by group`. Rewrite using `[e1, hφ'.left γ hγ, hφ.left γ hγ, hagree _ hy]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨hφ'.left, fun k hk => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hkφ : ∀ x, φ (x * (k : UA E n)) = φ x` using `fun x => congrFun hk x`. Use `congrFun (Continuous.ext_on hdense (hφ'.cont.comp (continuous_mul_const _)) hφ'.cont ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, hγ, x, hx, rfl⟩`. Establish `hxk : x * (k : UA E n) ∈ finU E n` using `mul_mem hx k.2`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[mul_assoc, hφ'.left γ hγ, hφ'.left γ hγ, hagree _ hxk, hagree _ hx, hkφ]`. Take `⟨s₀, hs₀, rfl⟩` from `Finset.mem_image.1 hs`. Establish `hsf : ((a s₀ : finU E n) : UA E n) ∈ finU E n` using `(a s₀).2`. Use `choose p' hp'm hp' using fun i => exists_conj_polys σ (hpN i)`.
-
-Establish `hq : (∑ i, σ (e i (a s₀)) • p' i) ∈ polys E n N` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hp'm i)`. Use `hq using 1` and compare the differences between its conclusion and the goal. Use `Continuous.ext_on hdk (hφ'.cont.comp (continuous_const.mul continuous_subtype_val)) (hcont _ (polys_le_adjoin N hq)) ?_` and prove the remaining obligations. Introduce and unpack `k ⟨γ, hγ, hk⟩`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
-
-Rewrite using `[hrat _ hsf k γ hγ hk, hdec k, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hp' i γ hγ k hk, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_span_finite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (φ : UA E n → ℂ),
     IsAutFormU φ → ∃ M : Submodule ℂ (UA E n → ℂ), FiniteDimensional ℂ M ∧ ∀ (σ : ℂ ≃+* ℂ) (φ' : UA E n → ℂ),

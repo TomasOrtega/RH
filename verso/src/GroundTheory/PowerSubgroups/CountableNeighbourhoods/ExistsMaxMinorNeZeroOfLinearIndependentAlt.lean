@@ -12,29 +12,25 @@ def maxMinor {R : Type*} [CommRing R] {n k : ℕ} (B : Matrix (Fin n) (Fin k) R)
   (B.submatrix (⇑s.emb) id).det
 
 /- English proof (translation)
-Use `set K := FractionRing R`. Use `set B' : Matrix (Fin n) (Fin k) K := B.map (algebraMap R K) with hB'`. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `h1 : LinearIndependent R B'.col`. Establish `hker : LinearMap.ker ((Algebra.linearMap R K).compLeft (Fin n)) = ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `x y hxy`. Use function extensionality and compare the values at `i`. Conclude with `hinj (congr_fun hxy i)`. Use `hB.map' ((Algebra.linearMap R K).compLeft (Fin n)) hker` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Establish `heq : B'.col = ((Algebra.linearMap R K).compLeft (Fin n)) ∘ B.col`. Use function extensionality and compare the values at `j i`. Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : LinearIndependent K B'.col` using `(LinearIndependent.iff_fractionRing R K).mp h1`. Establish `hrank : B'.rank = k`. Rewrite using `[Matrix.rank_eq_finrank_span_cols, finrank_span_eq_card h2, Fintype.card_fin]`. Rewrite `hrank` using `[Matrix.rank_eq_finrank_span_row]`. Take `⟨κ, a, ha, hspan, hli⟩` from `exists_linearIndependent' K B'.row`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Finite κ` using `Finite.of_injective a ha`. Set `: Fintype κ` to `Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = k`. Rewrite using `[← hrank, ← hspan, finrank_span_eq_card hli]`. Set `t : Finset (Fin n)` to `Finset.univ.map ⟨a, ha⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ht : t.card = k` using `by simp [t, hcard]`. Set `s : KSubset n k` to `⟨t, ht⟩`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ i : Fin k, ∃ c : κ, a c = s.emb i`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h : s.emb i ∈ t` using `Finset.orderEmbOfFin_mem t ht i`. Simplify using `only [t, Finset.mem_map, Finset.mem_univ, true_and] at h`. Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, hc⟩`. Use `choose e he using hmem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he_inj : Function.Injective e`. Introduce `i j hij`. Apply `s.emb.injective` to reduce the goal to its premises. Rewrite using `[← he i, ← he j, hij]`. Establish `hrows : LinearIndependent K (B'.submatrix s.emb id).row`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfam : (B'.submatrix s.emb id).row = (B'.row ∘ a) ∘ e`. Use function extensionality and compare the values at `i j`. Use `show B' (s.emb i) j = B' (a (e i)) j`. Rewrite using `[he i]`. Rewrite using `[hfam]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hli.comp e he_inj`. Establish `hdet : (B'.submatrix s.emb id).det ≠ 0`. Establish `hu` using `Matrix.linearIndependent_rows_iff_isUnit.mp hrows`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`. Introduce `h`.
-
-Apply `hdet` to reduce the goal to its premises. Establish `hmap : B'.submatrix s.emb id = (B.submatrix s.emb id).map (algebraMap R K)` using `rfl`. Rewrite using `[hmap]`. Use `show ((algebraMap R K).mapMatrix (B.submatrix s.emb id)).det = 0`. Rewrite using `[← RingHom.map_det]`.
-
-Unfold `maxMinor at h`. Rewrite using `[h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_maxMinor_ne_zero_of_linearIndependent_alt {R : Type*} [CommRing R] {n k : ℕ}
     [IsDomain R] (B : Matrix (Fin n) (Fin k) R) (hB : LinearIndependent R B.col) :

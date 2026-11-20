@@ -33,18 +33,18 @@ def scaledInt (a : F) : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F) where
 variable {F κ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_scaledInt {a : F} {z : κ → FiniteAdeleRing (𝓞 F) F} :
     z ∈ scaledInt F κ a ↔ ∀ i (v : HeightOneSpectrum (𝓞 F)),
       (algebraMap F (v.adicCompletion F) a)⁻¹ * (z i) v ∈ v.adicCompletionIntegers F := Iff.rfl
 
 /- English proof (translation)
-Establish `hO : IsOpen {x : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ v.adicCompletionIntegers F}` using `RestrictedProduct.isOpen_forall_mem fun v => Valued.isOpen_valuationSubring _`. Establish `e : (scaledInt F κ a : Set (κ → FiniteAdeleRing (𝓞 F) F)) = ⋂ i, (fun z : κ → FiniteAdeleRing (𝓞 F) F => algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹ * z i) ⁻¹' {x : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ v.adicCompletionIntegers F}`. Use extensionality with `z`. Simplify using `only [SetLike.mem_coe, mem_scaledInt, Set.mem_iInter, Set.mem_preimage, Set.mem_setOf_eq]`. Use `forall_congr' fun i => forall_congr' fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : (algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹ * z i) v = (algebraMap F (v.adicCompletion F) a)⁻¹ * (z i) v`. Establish `h1` using `map_mul (evalV F v) (algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹) (z i)`. Rewrite `h1` using `[AlgHom.commutes, map_inv₀ (algebraMap F (v.adicCompletion F))]`. Conclude with `h1`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => hO.preimage (continuous_const.mul (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_scaledInt [Finite κ] (a : F) : IsOpen (scaledInt F κ a : Set (κ → FiniteAdeleRing (𝓞 F) F)) := by
   have hO : IsOpen {x : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ v.adicCompletionIntegers F} :=

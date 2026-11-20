@@ -16,11 +16,11 @@ namespace UpperTheory.V.Af.Smo.DenseAwayFromPlace
 open GlobalTheory.CuspRep (cornerGL matN map_cornerGL_of_hom map_cornerGL_of_zero pFin_finGL)
 
 /- English proof (translation)
-Establish `ho : Topology.IsOpenEmbedding (Units.val : GL (Fin n) R → Matrix (Fin n) (Fin n) R)`. Establish `h : ∀ (M : Type) [NormedRing M], CompleteSpace M → Topology.IsOpenEmbedding (Units.val : Mˣ → M)` using `fun _ _ _ => Units.isOpenEmbedding_val`. Conclude with `@h _ Matrix.linftyOpNormedRing (inferInstanceAs (CompleteSpace (Fin n → Fin n → R)))`. Establish `hd : DenseRange fun x : Matrix (Fin n) (Fin n) K => x.map q` using `DenseRange.piMap fun _ : Fin n => DenseRange.piMap fun _ : Fin n => hq`. Use `dense_iff_inter_open.2 fun U hU hne => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, u, hu, e⟩` from `hd.exists_mem_open (ho.isOpenMap U hU) (hne.image _)`. Establish `h1 : IsUnit (q x.det)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← e]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 u.isUnit`. Establish `h2 : x.det ≠ 0` using `fun h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h1` using `[h, map_zero]`. Conclude with `not_isUnit_zero h1`. Conclude with `⟨u, hu, GeneralLinearGroup.mkOfDetNeZero x h2, Units.ext e.symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem dense_gl {K R : Type} [Field K] [NormedCommRing R] [CompleteSpace R] [Nontrivial R] (n : ℕ)
     (q : K →+* R) (hq : DenseRange q) : DenseRange (GeneralLinearGroup.map (n := Fin n) q) := by
@@ -41,11 +41,11 @@ private theorem dense_gl {K R : Type} [Field K] [NormedCommRing R] [CompleteSpac
   exact ⟨u, hu, GeneralLinearGroup.mkOfDetNeZero x h2, Units.ext e.symm⟩
 
 /- English proof (translation)
-Establish `hc : Continuous (cornerGL n s)`. Use `Continuous.units_map _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun x : Matrix (Fin n) (Fin n) R => 1 - matN n s 1 + matN n s x`. Conclude with `continuous_const.add (continuous_id.matrix_map hs)`. Establish `hps : ∀ y, GeneralLinearGroup.map p (cornerGL n s y) = y` using `fun y => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_cornerGL_of_hom s p (RingHom.id _) hp]`. Both sides reduce to the same expression. Use `dense_iff_inter_open.2 fun U hU ⟨g, hg⟩ => ?_` and prove the remaining obligations. Set `Φ : GL (Fin n) R → GL (Fin n) A` to `fun y => cornerGL n s y * ((cornerGL n s (GeneralLinearGroup.map p g))⁻¹ * g)`. Establish `hΦ : Continuous Φ` using `hc.mul continuous_const`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `(dense_gl n _ hq).exists_mem_open (hU.preimage hΦ) ⟨GeneralLinearGroup.map p g, by simpa [Φ] using hg⟩`. Use `⟨_, hγ, γ, (GeneralLinearGroup.map a γ)⁻¹ * Φ (GeneralLinearGroup.map (p.comp a) γ), ?_, by simp⟩` and prove the remaining obligations. Establish `e : GeneralLinearGroup.map p (GeneralLinearGroup.map a γ) = GeneralLinearGroup.map (p.comp a) γ` using `rfl`. Simplify using `only [Φ, map_mul, map_inv, hps, e, inv_mul_cancel, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dense_abs {K R A : Type} [Field K] [NormedCommRing R] [CompleteSpace R] [Nontrivial R] [CommRing A]
     [TopologicalSpace A] [IsTopologicalRing A] (n : ℕ) (a : K →+* A) (p : A →+* R) (s : R →ₙ+* A) (hs : Continuous s)
@@ -70,9 +70,7 @@ private theorem dense_abs {K R A : Type} [Field K] [NormedCommRing R] [CompleteS
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hle : (Filter.cofinite : Filter (HeightOneSpectrum (𝓞 E))) ≤ Filter.principal {w}ᶜ` using `Filter.le_principal_iff.2 (Set.finite_singleton w).compl_mem_cofinite`. Set `f : w.adicCompletion E → RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) (Filter.principal {w}ᶜ)` to `fun x => ⟨Pi.single w x, Filter.eventually_principal.2 fun v hv => by`. Rewrite using `[Pi.single_eq_of_ne hv]`. Conclude with `zero_mem _⟩`. Establish `hf : Continuous f` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_single (A := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) w)`.
-
-Conclude with `(RestrictedProduct.continuous_inclusion hle).comp hf`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_sLoc (w : HeightOneSpectrum (𝓞 E)) : Continuous (sLoc E w) := by
   classical
@@ -90,7 +88,7 @@ private theorem cont_sLoc (w : HeightOneSpectrum (𝓞 E)) : Continuous (sLoc E 
 variable (S : Finset (HeightOneSpectrum (𝓞 E)))
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_eq_single w]`. Conclude with `Pi.single_eq_same (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) w.1 _`. Conclude with `fun v _ h => Pi.single_eq_of_ne (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (fun e => h (Subtype.ext e.symm)) _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_mem (x : ∀ v : S, v.1.adicCompletion E) (w : S) : pLoc E w.1 (∑ v : S, sLoc E v.1 (x v)) = x w := by
   classical
@@ -101,7 +99,7 @@ private theorem sum_mem (x : ∀ v : S, v.1.adicCompletion E) (w : S) : pLoc E w
   · simp
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun v _ => Pi.single_eq_of_ne (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (fun e : w = v.1 => hw (e ▸ v.2)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_notMem (x : ∀ v : S, v.1.adicCompletion E) {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ S) :
     pLoc E w (∑ v : S, sLoc E v.1 (x v)) = 0 := by
@@ -132,14 +130,14 @@ private def sS : RS S →ₙ+* Ad E where
   map_add' x y := Prod.ext rfl ((Finset.sum_congr rfl fun v _ => map_add _ _ _).trans Finset.sum_add_distrib)
 
 /- English proof (translation)
-The claim follows from `Continuous.prodMk (continuous_pi fun w => (continuous_apply _).comp continuous_snd) (continuous_finset_sum _ fun v _ => (cont_sLoc v.1).comp ((continuous_apply v).comp continuous_fst))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_sS : Continuous (sS S) :=
   Continuous.prodMk (continuous_pi fun w => (continuous_apply _).comp continuous_snd)
     (continuous_finset_sum _ fun v _ => (cont_sLoc v.1).comp ((continuous_apply v).comp continuous_fst))
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun v => sum_mem S x.1 v) rfl`.
+A detailed English derivation is pending.
 -/
 private theorem pS_sS (x : RS S) : pS S (sS S x) = x :=
   Prod.ext (funext fun v => sum_mem S x.1 v) rfl
@@ -150,13 +148,11 @@ end
 
 open UpperTheory.V.Af.Smo.DenseAwayFromPlace in
 /- English proof (translation)
-Introduce `E _ _ n S`. Use `haveI : Inhabited (Finset.univ : Finset (InfinitePlace E)) := ⟨⟨Classical.arbitrary _, Finset.mem_univ _⟩⟩`. Use `haveI : Nontrivial (∀ w : (Finset.univ : Finset (InfinitePlace E)), w.1.Completion) := Pi.nontrivial`. Use `haveI : Nontrivial (RS S) := nontrivial_prod_right`. Use `(dense_abs n (algebraMap E (Ad E)) (pS S) (sS S) (cont_sS S) (pS_sS S) (GroundTheory.Global.denseRange_algebraMap_prod_pi S Finset.univ)).mono ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨γ, k, hk, rfl⟩`. Establish `h : ∀ i j, pS S (k i j) = (1 : Matrix (Fin n) (Fin n) (RS S)) i j` using `fun i j => congrArg (fun x : GL (Fin n) (RS S) => x i j) hk`. Use `⟨γ, GeneralLinearGroup.map (pFin E) k, fun w hw => ?_, congrArg _ ?_⟩` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `(congrFun (congrArg Prod.fst (h i j)) ⟨w, hw⟩).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`. Use `Units.ext (Matrix.ext fun i j => Prod.ext (funext fun w => ?_) ?_)` and prove the remaining obligations. Use `(congrFun (congrArg Prod.snd (h i j)) ⟨w, Finset.mem_univ w⟩).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (((1 : Matrix (Fin n) (Fin n) (Ad E)) i j).1 - 0 + 0) w`. Rewrite using `[add_zero, sub_zero]`.
-
-Apply the tactic sequence `by_cases e : i = j <;> simp only [Matrix.one_apply, e, if_true, if_false] <;> rfl`. Conclude with `(congrArg (fun x : GL (Fin n) (Af E) => x i j) (GlobalTheory.CuspRep.pFin_finGL (GeneralLinearGroup.map (pFin E) k))).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.denseAway :
     UpperTheory.V.Af.Smo.DenseAway := by

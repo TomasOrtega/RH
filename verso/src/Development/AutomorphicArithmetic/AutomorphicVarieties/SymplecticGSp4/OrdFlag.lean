@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Ordered
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.OrderedFlagDiagonal.ordFlag_diag c hc X h`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.GradeZeroInterpolatingElement.ordFlag_diag {K : Type} [Field K] (c : Fin 4 → K) (hc : Function.Injective c) (X : M4 K)
     (h : X.charpoly = ∏ j, (Polynomial.X - Polynomial.C (c j))) :
@@ -11,9 +11,9 @@ private theorem UpperTheory.V.GradeZeroInterpolatingElement.ordFlag_diag {K : Ty
   _root_.UpperTheory.Reformulated.B.OrderedFlagDiagonal.ordFlag_diag c hc X h
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a`. Use extensionality with `i j`. Simplify using `[Matrix.mul_diagonal, Algebra.algebraMap_eq_smul_one, mul_comm]`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[map_add, add_mul, hp, hq, ← mul_add, Matrix.diagonal_add]`. Simplify using the standard rewrite rules. Consider the case `monomial n a hn`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, mul_assoc, h, ← mul_assoc, hn, mul_assoc, Matrix.diagonal_mul_diagonal]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.V.GradeZeroInterpolatingElement.ordFlag_aeval {K : Type} [Field K] (c : Fin 4 → K) (X P : M4 K)
     (h : X * P = P * Matrix.diagonal c) (p : Polynomial K) :
@@ -31,27 +31,25 @@ private theorem UpperTheory.V.GradeZeroInterpolatingElement.ordFlag_aeval {K : T
     simp
 
 /- English proof (translation)
-Introduce `H _ I K _ ps s₀ r hc ho`. Take `⟨P, hP⟩` from `ordFlag_diag _ hc (r s₀) ho.charpoly`. Use `set d : Fin 4 → K := fun i => ∏ j ∈ Finset.univ.erase i, (ps i s₀ - ps j s₀) with hd`. Establish `hd0 : ∀ i, d i ≠ 0` using `fun i => Finset.prod_ne_zero_iff.mpr fun j hj => sub_ne_zero.mpr fun e => (Finset.mem_erase.mp hj).1 (hc e).symm`. Establish `hprj : ∀ i, prj (fun a => ps a s₀) (r s₀) i = (P : M4 K) * Matrix.diagonal (Pi.single i (d i)) * ((P⁻¹ : (M4 K)ˣ) : M4 K)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[Units.eq_mul_inv_iff_mul_eq, prj, ordFlag_aeval _ _ _ hP]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Rewrite using `[Polynomial.eval_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hd]`. Rewrite using `[Pi.single_eq_of_ne hk]`. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hk, Finset.mem_univ k⟩) (by simp)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (Y : M4 K) i j, prj (fun a => ps a s₀) (r s₀) i * Y * prj (fun a => ps a s₀) (r s₀) j = 0 → (((P⁻¹ : (M4 K)ˣ) : M4 K) * Y * (P : M4 K)) i j = 0`. Introduce `Y i j h`. Establish `h2 : Matrix.diagonal (Pi.single i (d i)) * (((P⁻¹ : (M4 K)ˣ) : M4 K) * Y * (P : M4 K)) * Matrix.diagonal (Pi.single j (d j)) = 0`. Use `congrArg (fun Z : M4 K => ((P⁻¹ : (M4 K)ˣ) : M4 K) * Z * (P : M4 K)) h` as an intermediate fact. Simplify `this` using `[hprj, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrFun (congrFun h2 i) j`. Rewrite `h3` using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify `h3` using `[hd0]`. Use `set M : H → M4 K := fun g => ((P⁻¹ : (M4 K)ˣ) : M4 K) * r g * (P : M4 K) with hM`. Establish `htri : ∀ g i j, j < i → M g i j = 0` using `fun g i j hij => key _ i j (ho.stable g j i hij)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hmul : ∀ g h, M (g * h) = M g * M h`. Introduce `g h`. Simplify using `[hM, mul_assoc]`. Set `κ₀ : Fin 4 → H →* K` to `fun i => { toFun := fun g => M g i i map_one' := by simp [hM] map_mul' := by`. Introduce `g h`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hmul, Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with hk | hk` into its components or cases. Rewrite using `[htri g i k hk, zero_mul]`. Rewrite using `[htri h k i hk, mul_zero] }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨P⁻¹, fun i => (κ₀ i).toHomUnits, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g i j hij`. Rewrite using `[inv_inv]`. Conclude with `htri g i j hij`. Introduce `g i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[inv_inv]`. Both sides reduce to the same expression. Introduce `i s hs`. Establish `h1` using `key _ i i (ho.inert s hs i)`. Rewrite `h1` using `[mul_sub, sub_mul, Matrix.mul_smul, Matrix.smul_mul, mul_one, Units.inv_mul, Matrix.sub_apply, sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show M s i i = _`. Rewrite `h1` using `[Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Conclude with `h1`. Introduce `i g show d i * M g i i = _`. Rewrite using `[hprj, mul_assoc, mul_assoc, Matrix.trace_mul_comm, mul_assoc]`.
-
-Use `show _ = (Matrix.diagonal (Pi.single i (d i)) * M g).trace`. Simplify using `[Matrix.trace, Matrix.diagonal_mul, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.ordFlag :
     ∀ {H : Type} [Group H] (I : Subgroup H) (K : Type) [Field K] (ps : Fin 4 → H → K) (s₀ : H) (r : H →* M4 K), Function.Injective (fun i => ps i s₀) → Ord I ps s₀ r → ∃ (u : (M4 K)ˣ) (κ : Fin 4 → H →* Kˣ), (∀ g i j, j < i → ((u : M4 K) * r g * (u⁻¹ : (M4 K)ˣ)) i j = 0) ∧ (∀ g i, ((u : M4 K) * r g * (u⁻¹ : (M4 K)ˣ)) i i = κ i g) ∧ (∀ i, ∀ s ∈ I, (κ i s : K) = ps i s) ∧ ∀ i g, (∏ j ∈ Finset.univ.erase i, (ps i s₀ - ps j s₀)) * (κ i g : K) = (prj (fun a => ps a s₀) (r s₀) i * r g).trace := by

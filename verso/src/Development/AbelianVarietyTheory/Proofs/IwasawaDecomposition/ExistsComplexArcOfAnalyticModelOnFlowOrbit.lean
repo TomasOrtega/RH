@@ -20,23 +20,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D D' :
   {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
 
 /- English proof (translation)
-Establish `h1 : ∀ n : ℕ, ∃ f : D.La →ₗ[𝓞 E] D'.La, 0 < n → ∀ a, I.ev n a = I'.ev n (f a)`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Conclude with `⟨0, fun h' => absurd h h'.ne'⟩`. Take `⟨f, hf⟩` from `tateIso_exists_lift_of_two_data I I' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, fun _ => hf⟩`. Establish `h2 : ∀ n : ℕ, ∃ ν : ℕ, 0 < n → I.ζ n = I'.ζ n ^ ν`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with h | hn` into its components or cases. Conclude with `⟨1, fun h' => absurd h h'.ne'⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use `haveI : NeZero n := ⟨hn.ne'⟩`. Take `⟨i, -, hi⟩` from `(I'.ζ_prim n hn).eq_pow_of_mem_rootsOfUnity ((mem_rootsOfUnity _ _).2 (I.ζ_prim n hn).pow_eq_one)`. Conclude with `⟨i, fun _ => hi.symm⟩`. Use `choose f hf using h1`. Use `choose ν hν using h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨f, fun n => ν n, ?_, ?_, ?_, ?_, ?_, hf, fun n hn => ?_⟩` and prove the remaining obligations. Introduce `n m hn hm a`. Rewrite using `[← tateIso_ev_eq_iff_add I' hn, ← hf n hn, ← I'.tower n m hn hm, ← hf (n * m) (Nat.mul_pos hn hm), I.tower n m hn hm]`. Introduce `n hn`. Use `⟨fun a => ?_, fun a' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← I'.ker n hn, ← I.ker n hn, hf n hn]`. Take `⟨a, ha⟩` from `(I.onto n hn _).1 (tateIso_ev_pow I' hn a')`. Rewrite `ha` using `[hf n hn]`. Conclude with `⟨a, (tateIso_ev_eq_iff_add I' hn _ _).1 ha.symm⟩`. Introduce `n hn`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `I.ζ_prim n hn`. Rewrite `h` using `[hν n hn]`. Conclude with `Nat.isCoprime_iff_coprime.2 (((I'.ζ_prim n hn).pow_iff_coprime hn _).1 h)`. Introduce `n m hn hm`. Establish `h : I'.ζ n ^ ν (n * m) = I'.ζ n ^ ν n`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hν n hn, ← I.ζ_pow n m hn hm, hν (n * m) (Nat.mul_pos hn hm), ← I'.ζ_pow n m hn hm, ← pow_mul, ← pow_mul, mul_comm m]`. Rewrite using `[← (I'.ζ_prim n hn).zpow_eq_one_iff_dvd, zpow_sub, zpow_natCast, zpow_natCast, h, mul_inv_cancel]`. Introduce `n hn a b`. Establish `e1` using `I'.isom n hn (f n a) (f n b)`. Establish `e2` using `I.isom n hn a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[hf n hn a, hf n hn b]`. Establish `h` using `he n _ _ _ _ e1 e2`. Rewrite `h` using `[hν n hn, ← zpow_natCast, ← zpow_mul]`. Rewrite using `[← (I'.ζ_prim n hn).zpow_eq_one_iff_dvd, zpow_sub, h, mul_inv_cancel]`. Rewrite using `[zpow_natCast]`.
-
-Conclude with `hν n hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateIso_similar_zeta
     (he : ∀ n x y c c', e n x y c → e n x y c' → c = c') (I : TateIso D k Q act e) (I' : TateIso D' k Q act e) :
@@ -96,9 +94,9 @@ theorem tateIso_similar_zeta
 end
 
 /- English proof (translation)
-Take `⟨-, I, hζ, hA, hM⟩` from `Xo.univ.geom ℂ (U.u i P) σ (U.over_σ i P hP)`. Take `⟨f, ν, h1, h2, -, -, h5, h6, h7⟩` from `tateIso_similar_zeta (fun n x y c c' => weilIs_unique_fieldPoint _ _ _ Xo.univ.t.PP.isLB ℂ _ n x y c c') I (familyUnifTateIso U hP)`. Establish `hM0 : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Use `⟨f, ν, h1, h2, h5, fun a ha => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← tateIso_ev_eq_iff_add (familyUnifTateIso U hP) hM0, ← h6 _ hM0, ← hM a ha]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `U.ex_eta i P hP a ha`. Rewrite using `[← tateIso_ev_eq_iff_add (familyUnifTateIso U hP) l.A_pos, ← h6 _ l.A_pos, ← hA a]`. Conclude with `U.ex_etaA i P hP a`. Rewrite using `[← hζ, h7 _ l.A_pos]`. Conclude with `expNegUnit_zpow_val _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem familyUnif_lattice_similar_zeta (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (U : FamilyUnif Xo σ ty)
@@ -123,27 +121,25 @@ theorem familyUnif_lattice_similar_zeta (E : Type) [Field E] [NumberField E] [Is
     exact expNegUnit_zpow_val _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ _ σ r U Uw k ξ' x B hσ _`. Set `_` to `H.starRing`. Introduce `A gam ξ DB tyB eB ex ⟨hgam, _, T₀, hT₀⟩ hrk hbe ⟨hχ, hψ⟩ ⟨hF, hty, _, hEF, _⟩ hp hq hp1 hq1 ⟨_, hol, add, onto, ker, lin, weil⟩`. Establish `hK` using `GlobalTheory.ArcCM.known_holds`. Take `⟨T, m, hg⟩` from `GlobalTheory.CM.PAT.exists_pullback E H _ _ (spMap (RingHom.id ℂ)) B`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hiso⟩` from `GlobalTheory.CM.PAT.exists_of_sabMap E H _ _ _ B _ m`. Take `⟨w₀, hw₀, -⟩` from `m.lin`. Take `⟨sym, hsym, hsym'⟩` from `(GlobalTheory.isSymmetric_iff_exists_gen _ _ T.t.PP).1 T.t.sym`. Use `T.t.act.hom H.w0` as an intermediate fact. Take `⟨w, hw, hw'⟩` from `CxFibre.exists_primGen T.t.PP (T.t.act.act H.w0) T.t.prim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `oa : T.pol.OAct (𝓞 E)` to `⟨T.t.act.toRingAct, fun a => (GlobalTheory.RosLam.rosatiAdj_iff_lamEq hK.laws.globalFns _ T.pol _ _ (T.t.act.hom a) (T.t.act.hom _)).2 (by`. Express the relevant statement in the definitionally equal form `GlobalTheory.CM.LamEq _ _ _ _ _ (T.t.act.act (H.bar a))`. Simplify `T.t.adj a)⟩` using `[GlobalTheory.CM.LamEq]`. Take `⟨u, χ, hgP, lam, hAH, hrig, hθ, hex⟩` from `CxFibre.exists_holUnif_of_exp hK.theta B.t.PP.isLB (spMap (RingHom.id ℂ)) T.pol T.t.PP.rig T.t.PP.rigGen m.φ m.cart ⟨w₀, hw₀⟩ A.abelian₂ A.discrete A.full A.Hm A.Hm_herm A.Hm_pos (fun a b => A.Ef a b) A.Ef_eq ex hol add onto (fun z => (ker z).trans ⟨fun ⟨a, ha⟩ => ha ▸ (eB a).2, …`. Take `⟨a, rfl⟩` from `eB.surjective a`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `eB.surjective b`. Conclude with `weil n a b c hn (by rw [hEF]; exact hc))`. Establish `hact : ∀ (a : 𝓞 E) z, u.ex (fun i => tyB i (a : E) * z i) = u.ex z ≫ T.t.act.act a` using `fun a z => Over.OverMorphism.ext (m.cart.1.hom_ext (by`. Rewrite using `[hex, lin, Over.comp_left, Over.comp_left, Category.assoc, m.act, ← Category.assoc, hex])`. Use the proof step `(by rw [Over.w, Over.w]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hact' : ∀ (a : 𝓞 E) z, u.ex (A.F a z) = u.ex z ≫ T.t.act.act a` using `fun a z => by`. Rewrite using `[← hact]`. Conclude with `congrArg u.ex (funext (hF a z))`. Take `rfl : χ = fun b : u.Λ => A.chi ⟨b, lam.le b.2⟩` from `funext fun a => by`. Rewrite using `[CxFibre.chi_eq T.t.PP.isLB _ w hw u A.Hm χ hAH (A.F H.w0) (hact' _) a ⟨_, lam.ge (A.F_mem H.w0 a (lam.le a.2))⟩ rfl, hχ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₁` using `A.Ef_eq_im (A.FLam H.w0 ⟨a, lam.le a.2⟩) ⟨a, lam.le a.2⟩`. Rewrite `h₁` using `[← A.H_conj, Complex.conj_im]`. Establish `h₂ : (hermForm A.Hm a (A.F H.w0 a)).im = -(A.Ef (A.FLam H.w0 ⟨a, lam.le a.2⟩) ⟨a, lam.le a.2⟩ : ℤ)`. Rewrite using `[h₁, neg_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Generalize the expression as in `A.Ef (A.FLam H.w0 ⟨a, lam.le a.2⟩) ⟨a, lam.le a.2⟩ = n at h₂`. Rewrite using `[h₂, ← Complex.exp_neg_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `hT₀ ((T₀ + 1 : ℝ) * Complex.I) (by simp)`. Take `⟨f, ν, f₁, f₂, f₃, f₄, f₅, f₆⟩` from `familyUnif_lattice_similar_zeta E H Dw l Xo _ _ _ Uw.F (Uw.ik k) _ (Uw.period k ⟨_, hs⟩)`. Take `⟨a, Λ, hA, -, -, -, -, -, -, heta, hetaA⟩` from `GlobalTheory.ArcOfModel.exists_arcIn hK.laws hK.laws2 Dw l (RingHom.id c.F) σ T.pol T.t.PP.rig T.t.PP.rigGen T.t.cub sym hsym hsym' oa ⟨w, hw, hw'⟩ A u lam hAH hrig (fun j _ => hθ j) hact' hψ (Module.nontrivial_of_finrank_pos (R := 𝓞 E) (hrk ▸ one_pos)) hbe _ gam hgam (Uw.F.t (Uw …`. Take `⟨τ₀, rfl⟩` from `GlobalTheory.PeriodPoint.exists_embedding (RingHom.id ℂ) τ`. Establish `hρ' : σ ρ = H.rt0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hσ]`. Conclude with `congrArg σ (Subtype.ext hρ)`. Use `⟨_, CxFibre.lieMult_card hK.theta T.pol hgP u _ tyB hact τ₀, ?_⟩` and prove the remaining obligations. Rewrite using `[hrk, hρ']`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hty τ₀).1 h]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[(hty τ₀).2 h]`. Use the proof step `omega)`. Use `⟨a, Λ.toGtAn₀, hA, fun v q hq => ?_, fun v q hq => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[(TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ) (RingHom.comp_id _) _).unique hq (heta v)]`. Conclude with `qk_equiv_refl a.bimult _`. Rewrite using `[(TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ) (RingHom.comp_id _) _).unique hq (hetaA v)]`. Conclude with `qk_equiv_refl a.bimult _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_arcIn_input : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (ξ' : Fin r → E) (x : Frame (U.X k).Ψ r) (B : GlobalTheory.CM.PAT H (Sp ℂ)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → letI := H.starRing; ∀ (A : AnArc (𝓞 E)) (gam : (Uw.F.Di (Uw.ik k)).La ≃ₗ[𝓞 E] A.La) (ξ : Module.Dual ℤ A.X) (DB : Datum H) (tyB : Fin A.gB → (E →+* ℂ)) (eB : DB.La ≃+ A.abelian₂) (ex : (Fin A.gB → ℂ) → (Over.mk (spMap (RingHom.id ℂ)) ⟶ B.t.G)), OnOrbit Uw k ξ' x A gam ξ → Module.finrank (𝓞 E) A.X = 1 → (∀ y y', (2 * l.M' : ℤ) ∣ A.be y y') → PrimAn H A → AbDat H A DB tyB eB → DB.p = Dw.p - 1 → DB.q = Dw.q - 1 → 1 ≤ Dw.p → 1 ≤ Dw.q → GlobalTheory.CM.IsExp B (RingHom.id ℂ) DB tyB (A.abelian₂.subtype.toAddMonoidHom.comp eB.toAddMonoidHom) ex → ∃ (aC : ArcIn Dw l (RingHom.id c.F) ℂ σ) (Λ : GtAn₀ aC) (hA : Λ.A = A), (∀ v, Λ.Lifts (aC.eta v) (cast (congrArg AnArc.La hA.symm) (gam (Uw.F.t (Uw.ik k) v)))) ∧ ∀ v, Λ.Lifts (aC.etaA v) (cast (congrArg AnArc.La hA.symm) (gam (Uw.F.t (Uw.ik k) v))) := by
   intro E _ _ _ H Dw l Xo c _ _ σ r U Uw k ξ' x B hσ _

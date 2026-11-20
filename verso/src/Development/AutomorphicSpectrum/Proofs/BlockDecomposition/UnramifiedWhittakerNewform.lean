@@ -24,11 +24,9 @@ def lowT {F : Type} [Field F] (a d : Fˣ) (z : F) : GL (Fin 2) F :=
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `e1 : (lowT a d z : Matrix (Fin 2) (Fin 2) F) = !![(a : F), 0; z, (d : F)]` using `rfl`. Establish `e2 : ((lowT a d z)⁻¹ : GL (Fin 2) F).val = !![((a⁻¹ : Fˣ) : F), 0; -z * ((a⁻¹ : Fˣ) : F) * ((d⁻¹ : Fˣ) : F), ((d⁻¹ : Fˣ) : F)]` using `rfl`. Rewrite using `[mem_integralGL_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [e1] fin_cases i <;> fin_cases j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `ha`. Conclude with `zero_mem _`. Conclude with `hz`. Conclude with `hd`. Apply the tactic sequence `rw [e2] fin_cases i <;> fin_cases j`.
-
-Conclude with `ha'`. Conclude with `zero_mem _`. Conclude with `mul_mem (mul_mem (neg_mem hz) ha') hd'`. Conclude with `hd'`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lowT_mem {a d : Fˣ} {z : F} (ha : (a : F) ∈ 𝒪[F]) (ha' : ((a⁻¹ : Fˣ) : F) ∈ 𝒪[F])
     (hd : (d : F) ∈ 𝒪[F]) (hd' : ((d⁻¹ : Fˣ) : F) ∈ 𝒪[F]) (hz : z ∈ 𝒪[F]) :
@@ -52,7 +50,7 @@ theorem lowT_mem {a d : Fˣ} {z : F} (ha : (a : F) ∈ 𝒪[F]) (ha' : ((a⁻¹ 
     · exact hd'
 
 /- English proof (translation)
-Rewrite using `[← normalizedValuation_le_one_iff, normalizedValuation_eq_exp_ord hx, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem mem_integers_iff_ord_nonneg' {x : F} (hx : x ≠ 0) : x ∈ 𝒪[F] ↔ 0 ≤ ord x := by
   rw [← normalizedValuation_le_one_iff, normalizedValuation_eq_exp_ord hx, ← WithZero.exp_zero,
@@ -60,17 +58,17 @@ private theorem mem_integers_iff_ord_nonneg' {x : F} (hx : x ≠ 0) : x ∈ 𝒪
   omega
 
 /- English proof (translation)
-Take `⟨v, hv, rfl⟩` from `Subgroup.mem_map.mp hu`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Take `⟨a, ha⟩` from `exists_sub_one_eq_mul hϖ (⟨v, hv⟩ : unitFiltration F (n - 1))`. Establish `hF : ((unitsIncl F v : Fˣ) : F) - 1 = (ϖ : F) ^ (n - 1) * (a : F)`. Rewrite using `[coe_unitsIncl]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val ha` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hϖ0 : (ϖ : F) ≠ 0`. Introduce `h`. Apply `hϖ.ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `Subtype.ext h`. Establish `ha0 : (a : F) ≠ 0`. Introduce `h`. Apply `h1` to reduce the goal to its premises. Rewrite using `[hF, h, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ k : ℕ, ord ((ϖ : F) ^ k) = k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [GroundTheory.LocalField.ord]`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[pow_succ, ord_mul (pow_ne_zero _ hϖ0) hϖ0, ih, ord_uniformizer hϖ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ha' : 0 ≤ ord (a : F)` using `(mem_integers_iff_ord_nonneg' ha0).mp a.2`. Rewrite using `[hF, ord_mul (pow_ne_zero _ hϖ0) ha0, hpow]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `[Nat.cast_sub hn]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem le_ord_sub_one {n : ℕ} (hn : 1 ≤ n) {u : Fˣ} (hu : u ∈ unitFiltrationUnits F (n - 1))
     (h1 : (u : F) - 1 ≠ 0) : (n : ℤ) - 1 ≤ ord ((u : F) - 1) := by
@@ -103,26 +101,26 @@ theorem le_ord_sub_one {n : ℕ} (hn : 1 ≤ n) {u : Fˣ} (hu : u ∈ unitFiltra
   linarith
 
 /- English proof (translation)
-Conclude with `(mem_integers_iff_ord_nonneg' u.ne_zero).mpr hu.ge`.
+A detailed English derivation is pending.
 -/
 theorem unit_mem_integers {u : Fˣ} (hu : ord (u : F) = 0) : (u : F) ∈ 𝒪[F] := by
   exact (mem_integers_iff_ord_nonneg' u.ne_zero).mpr hu.ge
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `[GroundTheory.LocalField.ord] at hy`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_ord {y : F} (hy : ord y = -1) : y ≠ 0 := by
   rintro rfl
   simp [GroundTheory.LocalField.ord] at hy
 
 /- English proof (translation)
-Establish `hy0` using `ne_zero_of_ord hy`. Establish `h0 : ((u : F) - 1) * y⁻¹ ≠ 0` using `mul_ne_zero h1 (inv_ne_zero hy0)`. Establish `hyi : ord y⁻¹ = 1`. Use `ord_units_inv (Units.mk0 y hy0)` as an intermediate fact. Simplify `this` using `[hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hz : (n : ℤ) ≤ ord (((u : F) - 1) * y⁻¹)`. Rewrite using `[ord_mul h1 (inv_ne_zero hy0), hyi]`. Combine the linear relations using `[le_ord_sub_one hn hu h1]`. Establish `hpi : ord (((unifUnit F)⁻¹ ^ n : Fˣ) : F) = -n`. Rewrite using `[← zpow_natCast, ord_units_zpow, ord_units_inv, ord_unifUnit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hn0 : (0 : ℤ) ≤ n` using `by positivity`. Prove the components needed by the constructor for the conclusion. Rewrite using `[mem_integers_iff_ord_nonneg' (mul_ne_zero (Units.ne_zero _) h0), ord_mul (Units.ne_zero _) h0, hpi]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[mem_integers_iff_ord_nonneg' h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem entry_mem {n : ℕ} (hn : 1 ≤ n) {u : Fˣ} (hu : u ∈ unitFiltrationUnits F (n - 1))
     (h1 : (u : F) - 1 ≠ 0) {y : F} (hy : ord y = -1) :
@@ -146,7 +144,7 @@ theorem entry_mem {n : ℕ} (hn : 1 ≤ n) {u : Fˣ} (hu : u ∈ unitFiltrationU
     linarith
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [lowT, Ad3.uni2, Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lower_torus_conjugate_unipotent {u : Fˣ} {y : F} (hy : y ≠ 0) :
     lowT u 1 (((u : F) - 1) * y⁻¹) * uni2 y = uni2 y * lowT 1 u (((u : F) - 1) * y⁻¹) := by
@@ -155,19 +153,19 @@ theorem lower_torus_conjugate_unipotent {u : Fˣ} {y : F} (hy : y ≠ 0) :
     simp [lowT, Ad3.uni2, Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring
 
 /- English proof (translation)
-Unfold `Ad3.R.U2 Ad3.R.ForF`. Introduce `F _ _ _ _ _ _ ψ _ ω _ hc y hy`. Use `set n := quasiCharConductor ω with hn_def`. Establish `hn : 1 ≤ n` using `hc`. Establish `hnot : ¬ (unitFiltrationUnits F (n - 1) ≤ ω.ker)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hle`. Establish `: n ≤ n - 1` using `Nat.sInf_le hle`. Use linear arithmetic over natural numbers and integers. Take `⟨u, hu, hωu⟩` from `SetLike.not_le_iff_exists.mp hnot`. Rewrite `hωu` using `[MonoidHom.mem_ker]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (u : F) - 1 ≠ 0`. Introduce `h`. Apply `hωu` to reduce the goal to its premises. Establish `: u = 1` using `Units.ext (sub_eq_zero.mp h)`. Rewrite using `[this, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hord : ord (u : F) = 0`. Take `⟨v, -, hv⟩` from `Subgroup.mem_map.mp hu`. Rewrite using `[← hv, coe_unitsIncl]`. Conclude with `ord_unit v`. Establish `hu1 : (u : F) ∈ 𝒪[F]` using `unit_mem_integers hord`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2 : ((u⁻¹ : Fˣ) : F) ∈ 𝒪[F]` using `unit_mem_integers (by rw [ord_units_inv, hord, neg_zero])`. Establish `h11 : ((1 : Fˣ) : F) ∈ 𝒪[F]`. Rewrite using `[Units.val_one]`. Conclude with `one_mem _`. Establish `h12 : (((1 : Fˣ)⁻¹ : Fˣ) : F) ∈ 𝒪[F]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_one, Units.val_one]`. Conclude with `one_mem _`. Establish `he` using `entry_mem hn hu h1 hy`. Use `⟨lowT u 1 (((u : F) - 1) * y⁻¹), 1, lowT 1 u (((u : F) - 1) * y⁻¹), u, ?_, ?_, lower_torus_conjugate_unipotent (ne_zero_of_ord hy), ?_⟩` and prove the remaining obligations. Unfold `Ad3.R.GammaZeroLevelMembership`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Replace the relevant objects with their definitions. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨lowT_mem hu1 hu2 h11 h12 he.2, he.1, rfl⟩`. Unfold `Ad3.R.GammaZeroLevelMembership`. Conclude with `⟨lowT_mem h11 h12 hu1 hu2 he.2, he.1, rfl⟩`. Rewrite using `[map_one]`. Conclude with `fun h => hωu h.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem unipotent_conj_moves_char : Ad3.R.U2 := by
   unfold Ad3.R.U2 Ad3.R.ForF

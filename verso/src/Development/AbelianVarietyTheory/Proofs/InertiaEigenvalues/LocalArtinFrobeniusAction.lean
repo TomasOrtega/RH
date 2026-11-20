@@ -11,9 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ArtinCompareApply
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha ι hι σ τ hτ z hz`. Establish `H` using `GlobalTheory.ArtinCompare.restrict_eq_inv_localArtinMap E Ω A w h ι hι a ha σ τ hτ`. Use `set M := maximalAbelianExtension (w.adicCompletion E) (Kbar w)`. Use `set g := localArtinMap (w.adicCompletion E) (Kbar w) (a σ)`. Establish `e : AlgEquiv.restrictNormalHom M τ (g ⟨z, hz⟩) = ⟨z, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[H, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Establish `e2` using `congrArg (fun y : M => (y : Kbar w)) e`. Simplify using `only [AlgEquiv.restrictNormalHom_apply] at e2`. Conclude with `e2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_localArtinMap_apply : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w)

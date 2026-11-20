@@ -20,7 +20,7 @@ section Poly
 variable (c : Coeff l) {n : ℕ}
 
 /- English proof (translation)
-Unfold `Datum.mult`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mult_le (hn : Dw.p + Dw.q ≤ n) (σ : E →+* ℂ) : Dw.mult σ ≤ n := by
   unfold Datum.mult
@@ -40,14 +40,14 @@ section Adelic
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `show adConj E (1 ⊗ₜ x) = 1 ⊗ₜ _`. Simplify using `[adConj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem star_diagE (x : E) : star (diagE E x) = diagE E (IsCMField.complexConj E x) := by
   show adConj E (1 ⊗ₜ x) = 1 ⊗ₜ _
   simp [adConj]
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `(star_diagE _).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_conjTranspose (g : Matrix (Fin n) (Fin n) E) :
     g.conjTranspose.map (diagE E) = star (g.map (diagE E)) := by
@@ -69,7 +69,7 @@ section Conj
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `show IsCMField.complexConj E ((o : E) * x) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conj_smul (o : 𝓞 E) (x : E) :
     IsCMField.complexConj E (o • x) = IsCMField.ringOfIntegersComplexConj E o • IsCMField.complexConj E x := by
@@ -87,20 +87,20 @@ def conjMod (M : Submodule (𝓞 E) E) : Submodule (𝓞 E) E where
     rw [conj_smul]; exact M.smul_mem _ hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_conjMod {M : Submodule (𝓞 E) E} {x : E} : x ∈ conjMod M ↔ IsCMField.complexConj E x ∈ M := Iff.rfl
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem bar_bar (H : Host E) (o : 𝓞 E) : H.bar (H.bar o) = o := by
   ext; rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[conjId, Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[bar_bar]`. Introduce `h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, bar_bar H o⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_conjId (I : Ideal (𝓞 E)) (o : 𝓞 E) : o ∈ conjId H I ↔ H.bar o ∈ I := by
   rw [conjId, Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective]
@@ -109,9 +109,9 @@ theorem mem_conjId (I : Ideal (𝓞 E)) (o : 𝓞 E) : o ∈ conjId H I ↔ H.ba
   · intro h; exact ⟨_, h, bar_bar H o⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_conjMod]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho, h⟩`. Use `⟨H.bar o, (mem_conjId I _).2 (by rwa [bar_bar]), ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : (o : E) = IsCMField.complexConj E x` using `h`. Use `show ((H.bar o : 𝓞 E) : E) = x`. Rewrite using `[H.bar_eq, h', IsCMField.complexConj_apply_apply]`. Introduce and unpack `⟨o, ho, rfl⟩`. Conclude with `⟨H.bar o, (mem_conjId I _).1 ho, H.bar_eq o⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conjMod_idlE (H : Host E) (I : Ideal (𝓞 E)) : conjMod (idlE I) = idlE (conjId H I) := by
   ext x
@@ -126,7 +126,7 @@ theorem conjMod_idlE (H : Host E) (I : Ideal (𝓞 E)) : conjMod (idlE I) = idlE
     exact ⟨H.bar o, (mem_conjId I _).1 ho, H.bar_eq o⟩
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.smul_le.2 fun a ha x hx => ?_) (Submodule.mul_le.2 ?_)` and prove the remaining obligations. Conclude with `Submodule.mul_mem_mul (⟨a, ha, rfl⟩ : (a : E) ∈ idlE I) hx`. Introduce and unpack `_ ⟨a, ha, rfl⟩ x hx`. Conclude with `Submodule.smul_mem_smul ha hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem smul_eq_idlE_mul (I : Ideal (𝓞 E)) (M : Submodule (𝓞 E) E) : I • M = idlE I * M := by
   refine le_antisymm (Submodule.smul_le.2 fun a ha x hx => ?_) (Submodule.mul_le.2 ?_)
@@ -148,26 +148,26 @@ def conjLat (L : Submodule (𝓞 E) (Fin n → E)) : GenLat E n where
       simp only [conj_smul]; exact L.smul_mem _ hx }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_conjLat {L : Submodule (𝓞 E) (Fin n → E)} {v : Fin n → E} :
     v ∈ (conjLat L).La ↔ (fun j => IsCMField.complexConj E (v j)) ∈ L := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[mem_conjLat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjLat_conjLat (L : Submodule (𝓞 E) (Fin n → E)) : (conjLat (conjLat L).La).La = L := by
   ext v; simp [mem_conjLat]
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun k => ⟨fun h => congrArg GenLat.mk (Submodule.ext h), fun h v => by rw [h, mem_conjLat]⟩`.
+A detailed English derivation is pending.
 -/
 theorem latPin_iff_conjLat {Cl : Type} (Lh : Cl → Submodule (𝓞 E) (Fin n → E)) (La : Cl → GenLat E n) :
     LatPin Lh La ↔ ∀ k, La k = conjLat (Lh k) :=
   forall_congr' fun k => ⟨fun h => congrArg GenLat.mk (Submodule.ext h), fun h v => by rw [h, mem_conjLat]⟩
 
 /- English proof (translation)
-Establish `hc (x : E) (hx : IsIntegral ℤ x) : IsIntegral ℤ (IsCMField.complexConj E x)` using `hx.map_of_comp_eq (RingHom.id ℤ) (IsCMField.complexConj E : E →+* E) (RingHom.ext_int _ _)`. Use `congrArg GenLat.mk (Submodule.ext fun v => ?_)` and prove the remaining obligations. Use `show _ ∈ stdLat E n ↔ _`. Simplify using `only [GlobalTheory.StdHarm.mem_std]`. Conclude with `forall_congr' fun j => ⟨fun h => by simpa using hc _ h, hc _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjLat_std : conjLat (stdLat E n) = ⟨stdLat E n⟩ := by
   have hc (x : E) (hx : IsIntegral ℤ x) : IsIntegral ℤ (IsCMField.complexConj E x) :=
@@ -180,13 +180,11 @@ theorem conjLat_std : conjLat (stdLat E n) = ⟨stdLat E n⟩ := by
 def stdIndex (Λ : GenLat E n) : ℕ := (Λ.Ln.toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index
 
 /- English proof (translation)
-Set `f : (Fin n → E) →+ (Fin n → E)` to `(IsCMField.complexConj E : E →+ E).compLeft (Fin n)`. Establish `h1 : (conjLat L).Ln.toAddSubgroup = (L ⊓ stdLat E n).toAddSubgroup.comap f`. Use extensionality with `v`. Establish `: v ∈ stdLat E n ↔ v ∈ (conjLat (stdLat E n)).La` using `by rw [conjLat_std]`. Conclude with `and_congr_right fun _ => this`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (conjLat L).La.toAddSubgroup.map f = L.toAddSubgroup`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `hw`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hv`. Use `⟨f v, ?_, funext fun j => IsCMField.complexConj_apply_apply E (v j)⟩` and prove the remaining obligations. Rewrite `hv` using `[← conjLat_conjLat L]`. Conclude with `hv`. Use `show AddSubgroup.relIndex _ _ = AddSubgroup.relIndex _ _`.
-
-Rewrite using `[h1, AddSubgroup.relIndex_comap, h2]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stdIndex_conjLat (L : Submodule (𝓞 E) (Fin n → E)) : stdIndex (conjLat L) = stdIndex ⟨L⟩ := by
   let f : (Fin n → E) →+ (Fin n → E) := (IsCMField.complexConj E : E →+ E).compLeft (Fin n)
@@ -213,7 +211,7 @@ section Scalar
 variable (c : Coeff l) {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Introduce and unpack `rfl`. Simplify using `[conjId] at h1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem absNorm_ne_zero {cc : Ideal (𝓞 E)} (h1 : cc ⊔ conjId H cc = ⊤) : Ideal.absNorm cc ≠ 0 := by
   rw [Ne, Ideal.absNorm_eq_zero_iff]
@@ -246,9 +244,9 @@ section Indep
 variable (Xo : Moduli Dw l) (c : Coeff l) {n : ℕ}
 
 /- English proof (translation)
-Rewrite `hM`, the goal using `[Submodule.ideal_span_singleton_smul]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `hM ⟨_, hv, rfl⟩` as an intermediate fact. Rewrite using `[mem_conjLat]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `j`. Use `show IsCMField.complexConj E ((m' : E) * v j) = (m : E) * _`. Rewrite using `[map_mul, e, IsCMField.complexConj_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_conjLat_le {m m' : 𝓞 E} (e : (m' : E) = IsCMField.complexConj E (m : E))
     {M M' : Submodule (𝓞 E) (Fin n → E)} (hM : Ideal.span {m} • M ≤ M') :
@@ -263,13 +261,11 @@ theorem smul_conjLat_le {m m' : 𝓞 E} (e : (m' : E) = IsCMField.complexConj E 
   rw [map_mul, e, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Take `⟨g1, ⟨k, k0, k1, k2⟩, m, m0, m1, m2, m3⟩` from `g`. Establish `hs : (conjLat (stdLat E n)).La = stdLat E n` using `by rw [conjLat_std]`. Establish `hc : ∀ x : E, IsCMField.complexConj E x ∈ (algebraMap (𝓞 E) E).range ↔ x ∈ (algebraMap (𝓞 E) E).range`. Establish `: ∀ x : E, x ∈ (algebraMap (𝓞 E) E).range → IsCMField.complexConj E x ∈ (algebraMap (𝓞 E) E).range`. Introduce and unpack `_ ⟨o, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨H.bar o, H.bar_eq o⟩`. Conclude with `fun x => ⟨fun h => by simpa using this _ h, this x⟩`. Use `⟨fun v => ?_, ⟨k, k0, ?_, ?_⟩, H.bar m, by simpa using m0, ?_, ?_, fun P hP hm hfix => ?_⟩` and prove the remaining obligations. Use `(g1 fun j => IsCMField.complexConj E (v j)).trans ⟨fun h w hw => ?_, fun h w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`.
+Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h _ hw`. Rewrite using `[← hc]`. Simplify `hw)` using `using h (fun j => IsCMField.complexConj E (w j)) (by simpa [mem_conjLat]`. Conclude with `hs ▸ smul_conjLat_le (by simp) k1`. Conclude with `hs ▸ smul_conjLat_le (by simp) k2`.
-
-Conclude with `hs ▸ smul_conjLat_le (H.bar_eq m) m1`. Conclude with `hs ▸ smul_conjLat_le (H.bar_eq m) m2`. Conclude with `m3 P hP (hfix ▸ (mem_conjId P m).2 hm) hfix`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem guard_conjLat {bad : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} (g : Guard H bad L) :
     Guard H bad (conjLat L).La := by

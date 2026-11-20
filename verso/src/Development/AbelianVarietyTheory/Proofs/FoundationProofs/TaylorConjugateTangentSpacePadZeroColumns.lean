@@ -9,9 +9,9 @@ open scoped BigOperators
 namespace GlobalTheory.ConjRestrict
 
 /- English proof (translation)
-Establish `h1 : ((α.toMultiset.toList : List σ) : Multiset σ) = Finsupp.toMultiset α` using `by simp`. Establish `h2 : ((α.toMultiset.toList.map e : List σ') : Multiset σ') = Finsupp.toMultiset (Finsupp.embDomain e α)`. Rewrite using `[← Multiset.map_coe, h1, Finsupp.toMultiset_map, Finsupp.embDomain_eq_mapDomain]`. Establish `h3 : ∏ i, ((Finsupp.embDomain e α) i).factorial = ∏ i, (α i).factorial`. Rewrite using `[← Finsupp.prod_fintype (Finsupp.embDomain e α) (fun _ n => n.factorial) (by simp), Finsupp.prod_embDomain, Finsupp.prod_fintype _ _ (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_taylorDir_eq_lineDerivList _ hf h1, coeff_taylorDir_eq_lineDerivList _ hf h2, h3, List.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coeff_taylorDir_embDomain {σ σ' W : Type*} [Fintype σ] [Fintype σ'] [NormedAddCommGroup W]
     [NormedSpace ℂ W] (e : σ ↪ σ') (u : σ' → W) {f : W → ℂ} (hf : AnalyticAt ℂ f 0) (α : σ →₀ ℕ) :
@@ -42,11 +42,11 @@ theorem colEmb_apply (D : D7) (N N' m : ℕ) (k : D.what₂.Tau × Fin N' × Fin
     colEmb D N N' m k = (k.1, k.2.1, Fin.castAdd m k.2.2) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[pad_left]`. Simplify using `[coordV, colEmb_apply]`. Rewrite using `[pad_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: Fin.natAdd N i ≠ Fin.castAdd m k.2.2`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Use `k.2.2.2` as an intermediate fact. Simplify using `at *`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[coordV, colEmb_apply, this]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem pad_coordV (D : D7) {N N' : ℕ} (m : ℕ) (k : D.what₂.Tau × Fin N' × Fin N) :
     pad D m (coordV D k) = coordV D (colEmb D N N' m k) := by
@@ -63,7 +63,7 @@ theorem pad_coordV (D : D7) {N N' : ℕ} (m : ℕ) (k : D.what₂.Tau × Fin N' 
     simp [coordV, colEmb_apply, this]
 
 /- English proof (translation)
-Establish `han : AnalyticAt ℂ G 0` using `SCV.analyticAt_iff_eventually_differentiableAt.2 (Filter.Eventually.of_forall hG)`. Rewrite using `[ConjSeries.taylor_eq_coeff, ConjSeries.taylor_eq_coeff, ← coeff_taylorDir_embDomain _ _ han]`. Establish `h` using `taylorDir_comp_clm (LinearMap.toContinuousLinearMap (padL D m (N := N) (N' := N'))) (coordV D) han`. Simplify using `only [LinearMap.coe_toContinuousLinearMap', padL_apply, pad_coordV] at h`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem taylor_pad (D : D7) {N N' : ℕ} (m : ℕ) {G : VC D (N + m) N' → ℂ} (hG : Differentiable ℂ G)
     (α : Mono D N N') :
@@ -78,7 +78,7 @@ theorem taylor_pad (D : D7) {N N' : ℕ} (m : ℕ) {G : VC D (N + m) N' → ℂ}
   rw [h]
 
 /- English proof (translation)
-Rewrite using `[mono, Finsupp.prod_embDomain]`. Simplify using `[mono, colEmb_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mono_pad (D : D7) {N N' : ℕ} (m : ℕ) (α : Mono D N N') (z : VC D N N') :
     mono D (Finsupp.embDomain (colEmb D N N' m) α) (pad D m z) = mono D α z := by
@@ -86,9 +86,9 @@ theorem mono_pad (D : D7) {N N' : ℕ} (m : ℕ) (α : Mono D N N') (z : VC D N 
   simp [mono, colEmb_apply]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.mem_range_embDomain_iff]`. Introduce and unpack `⟨τ, a, i⟩ hk`. Use `revert hk`. Use `Fin.addCases (fun i _ => ⟨(τ, a, i), rfl⟩) (fun i hk => ?_) i` and prove the remaining obligations. Use `absurd (Finset.prod_eq_zero hk ?_) h` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: β (τ, a, Fin.natAdd N i) ≠ 0` using `Finsupp.mem_support_iff.1 hk`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_range_of_mono_pad (D : D7) {N N' : ℕ} (m : ℕ) (β : Mono D (N + m) N') (z : VC D N N')
     (h : mono D β (pad D m z) ≠ 0) : β ∈ Set.range (Finsupp.embDomain (colEmb D N N' m)) := by
@@ -101,7 +101,7 @@ theorem mem_range_of_mono_pad (D : D7) {N N' : ℕ} (m : ℕ) (β : Mono D (N + 
   simp [this]
 
 /- English proof (translation)
-Introduce `D N N' m M ρ G hG`. Use function extensionality and compare the values at `z`. Simplify using `only [fnConj]`. Rewrite using `[← (Finsupp.embDomain_injective (colEmb D N N' m)).tsum_eq (f := fun β => ρ (TaylorLogMetric.liftM M (Formalism.MainNotions.TaylorLogMetric.taylor D G β)) * mono D β (pad D m z)) (fun β hβ => mem_range_of_mono_pad D m β z (right_ne_zero_of_mul hβ))]`. Simplify using `only [taylor_pad D m hG, mono_pad]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fnConj_pad : ∀ (D : D7) (N N' m : ℕ) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (G : VC D (N + m) N' → ℂ), Differentiable ℂ G → fnConj D M ρ (fun z : VC D N N' => G (pad D m z)) = fun z => fnConj D M ρ G (pad D m z) := by
   intro D N N' m M ρ G hG

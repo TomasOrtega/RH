@@ -14,7 +14,7 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `inUJ_kexp (1 : KG ε) (pmat_inP z)`. Establish `e : toMK (1 : KG ε) = 1` using `rfl`. Rewrite `h` using `[e, Matrix.one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exp_pmat_inUJ {ε : Fin n → Bool} (z : PCoord ε → ℂ) : inUJ ε (NormedSpace.exp (pmat z)) := by
   have h := inUJ_kexp (1 : KG ε) (pmat_inP z)
@@ -22,13 +22,13 @@ theorem exp_pmat_inUJ {ε : Fin n → Bool} (z : PCoord ε → ℂ) : inUJ ε (N
   rwa [e, Matrix.one_mul] at h
 
 /- English proof (translation)
-The claim follows from `inUJ_kexp kz.1 (pmat_inP kz.2)`.
+A detailed English derivation is pending.
 -/
 theorem polarM_inUJ {ε : Fin n → Bool} (kz : KG ε × (PCoord ε → ℂ)) : inUJ ε (polarM kz) :=
   inUJ_kexp kz.1 (pmat_inP kz.2)
 
 /- English proof (translation)
-Introduce `z z' h`. Use function extensionality and compare the values at `ab`. Use `congrFun (congrFun h ab.1.1) ab.1.2` as an intermediate fact. Simplify `this` using `[pmat, dif_pos ab.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pmat_injective (ε : Fin n → Bool) : Function.Injective (pmat (ε := ε)) := by
   intro z z' h
@@ -37,7 +37,7 @@ theorem pmat_injective (ε : Fin n → Bool) : Function.Injective (pmat (ε := �
   simpa [pmat, dif_pos ab.2] using this
 
 /- English proof (translation)
-Introduce and unpack `⟨k, z⟩ ⟨k', z'⟩ h`. Take `⟨hk, hX⟩` from `polar_unique (pmat_inP z) (pmat_inP z') (show toMK k * NormedSpace.exp (pmat z) = toMK k' * NormedSpace.exp (pmat z') from h)`. Rewrite using `[hk, pmat_injective ε hX]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem polarM_injective (ε : Fin n → Bool) : Function.Injective (polarM (ε := ε)) := by
   rintro ⟨k, z⟩ ⟨k', z'⟩ h
@@ -46,7 +46,7 @@ theorem polarM_injective (ε : Fin n → Bool) : Function.Injective (polarM (ε 
   rw [hk, pmat_injective ε hX]
 
 /- English proof (translation)
-Take `⟨k, X, hX, rfl⟩` from `polar_exists hg`. Use `⟨(k, fun ab => X ab.1.1 ab.1.2), ?_⟩` and prove the remaining obligations. Use `show toMK k * NormedSpace.exp (pmat fun ab : PCoord ε => X ab.1.1 ab.1.2) = _`. Rewrite using `[pmat_coords X hX]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarM_surj {ε : Fin n → Bool} (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
     ∃ kz : KG ε × (PCoord ε → ℂ), polarM kz = g := by
@@ -57,9 +57,9 @@ theorem polarM_surj {ε : Fin n → Bool} (g : Matrix (Fin n) (Fin n) ℂ) (hg :
 
 open scoped Matrix.Norms.L2Operator in
 /- English proof (translation)
-Establish `h : ContinuousOn (fun g : Matrix (Fin n) (Fin n) ℂ => CFC.log (gᴴ * g)) {g | inUJ ε g}`. Use `CFC.continuousOn_log.comp (by fun_prop) ?_` and prove the remaining obligations. Introduce `g hg`. Take `⟨hsa, hu, -⟩` from `PolarDecomposition.polar_isSelfAdjoint_isUnit_spectrum_pos hg`. Conclude with `⟨hsa, hu⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `h.const_smul (1 / 2 : ℝ)`.
+A detailed English derivation is pending.
 -/
 theorem polarL_continuousOn (ε : Fin n → Bool) :
     ContinuousOn (PolarDecomposition.polar_L (n := n)) {g | inUJ ε g} := by
@@ -75,7 +75,7 @@ section Emb
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Unfold `polarM`. Conclude with `((continuous_toM ε).comp (continuous_subtype_val.comp continuous_fst)).mul (NormedSpace.exp_continuous.comp ((pmat_continuous ε).comp continuous_snd))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem polarM_continuous (ε : Fin n → Bool) : Continuous (polarM (ε := ε)) := by
   unfold polarM
@@ -86,7 +86,7 @@ def polarInvK (ε : Fin n → Bool) (g : UJset ε) : KG ε :=
   Classical.choose (exists_toMK (PolarDecomposition.polar_k_mem (ε := ε) (g := g.1) g.2))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_toMK (PolarDecomposition.polar_k_mem (ε := ε) (g := g.1) g.2))`.
+A detailed English derivation is pending.
 -/
 theorem toMK_polarInvK (ε : Fin n → Bool) (g : UJset ε) :
     toMK (polarInvK ε g) = g.1 * NormedSpace.exp (-PolarDecomposition.polar_L g.1) :=
@@ -96,7 +96,7 @@ def polarInv (ε : Fin n → Bool) (g : UJset ε) : KG ε × (PCoord ε → ℂ)
   (polarInvK ε g, fun ab => PolarDecomposition.polar_L g.1 ab.1.1 ab.1.2)
 
 /- English proof (translation)
-Use `show toMK (polarInvK ε g) * NormedSpace.exp (pmat fun ab : PCoord ε => PolarDecomposition.polar_L g.1 ab.1.1 ab.1.2) = g.1`. Rewrite using `[pmat_coords _ (PolarDecomposition.polar_L_inP (ε := ε) (g := g.1) g.2), toMK_polarInvK]`. Conclude with `PolarDecomposition.eq_mul_exp_neg_polar_L_mul_exp_polar_L.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarM_polarInv (ε : Fin n → Bool) (g : UJset ε) : polarM (polarInv ε g) = g.1 := by
   show toMK (polarInvK ε g) * NormedSpace.exp (pmat fun ab : PCoord ε => PolarDecomposition.polar_L g.1 ab.1.1 ab.1.2) = g.1
@@ -104,9 +104,9 @@ theorem polarM_polarInv (ε : Fin n → Bool) (g : UJset ε) : polarM (polarInv 
   exact PolarDecomposition.eq_mul_exp_neg_polar_L_mul_exp_polar_L.symm
 
 /- English proof (translation)
-Establish `hL : Continuous fun g : UJset ε => PolarDecomposition.polar_L g.1` using `(polarL_continuousOn ε).comp_continuous continuous_subtype_val (fun g => g.2)`. Establish `hind : Topology.IsInducing (fun k : KG ε => toMK k)` using `(isClosedEmbedding_toM ε).isInducing.comp Topology.IsInducing.subtypeVal`. Establish `hK : Continuous (polarInvK ε)`. Rewrite using `[hind.continuous_iff]`. Establish `: (fun k : KG ε => toMK k) ∘ polarInvK ε = fun g : UJset ε => g.1 * NormedSpace.exp (-PolarDecomposition.polar_L g.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Conclude with `toMK_polarInvK ε g`. Rewrite using `[this]`. Conclude with `continuous_subtype_val.mul (NormedSpace.exp_continuous.comp hL.neg)`. Conclude with `hK.prodMk (continuous_pi fun ab => hL.matrix_elem ab.1.1 ab.1.2)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarInv_continuous (ε : Fin n → Bool) : Continuous (polarInv ε) := by
   have hL : Continuous fun g : UJset ε => PolarDecomposition.polar_L g.1 :=
@@ -131,7 +131,7 @@ def polarHomeo (ε : Fin n → Bool) : KG ε × (PCoord ε → ℂ) ≃ₜ UJset
   continuous_invFun := polarInv_continuous ε
 
 /- English proof (translation)
-Establish `h : Topology.IsClosedEmbedding ((Subtype.val : UJset ε → Matrix (Fin n) (Fin n) ℂ) ∘ polarHomeo ε)` using `(isClosed_inUJ ε).isClosedEmbedding_subtypeVal.comp (polarHomeo ε).isClosedEmbedding`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polarM_isClosedEmbedding (ε : Fin n → Bool) : Topology.IsClosedEmbedding (polarM (ε := ε)) := by
   have h : Topology.IsClosedEmbedding ((Subtype.val : UJset ε → Matrix (Fin n) (Fin n) ℂ) ∘ polarHomeo ε) :=
@@ -141,7 +141,7 @@ theorem polarM_isClosedEmbedding (ε : Fin n → Bool) : Topology.IsClosedEmbedd
 end Emb
 
 /- English proof (translation)
-The claim follows from `pb_jac_continuous ε`.
+A detailed English derivation is pending.
 -/
 theorem jac_continuous (ε : Fin n → Bool) : Continuous (fun z : PCoord ε → ℂ => Jac z) :=
   pb_jac_continuous ε

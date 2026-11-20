@@ -28,7 +28,7 @@ abbrev movPt (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : Fi
       WO (G.pS (.chi (j + 1) D.R.m : Pair T)) (G.pT (.chi (j + 1) D.R.m : Pair T)))
 
 /- English proof (translation)
-The claim follows from `Function.update_self _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem movPt_two (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (z : ∀ a, WO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a))) :
@@ -37,7 +37,7 @@ theorem movPt_two (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k
   Function.update_self _ _ _
 
 /- English proof (translation)
-The claim follows from `(Function.update_of_ne (by simp) _ _).trans (Function.update_self _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem movPt_one (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (z : ∀ a, WO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a))) :
@@ -46,7 +46,7 @@ theorem movPt_one (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k
   (Function.update_of_ne (by simp) _ _).trans (Function.update_self _ _ _)
 
 /- English proof (translation)
-The claim follows from `(Function.update_of_ne h2 _ _).trans (Function.update_of_ne h1 _ _)`.
+A detailed English derivation is pending.
 -/
 theorem movPt_other (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (z : ∀ a, WO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a))) (a : Fin D.R.m ⊕ Fin D.R.m)
@@ -54,7 +54,7 @@ theorem movPt_other (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) 
   (Function.update_of_ne h2 _ _).trans (Function.update_of_ne h1 _ _)
 
 /- English proof (translation)
-Unfold `movFn`. Rewrite using `[Function.update_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem movFn_two (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (v : ∀ a, FactorFn G t a) (x : WO (G.pS (.chi (j + 1) D.R.m : Pair T)) (G.pT (.chi (j + 1) D.R.m : Pair T))) :
@@ -63,7 +63,7 @@ theorem movFn_two (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k
   unfold movFn; rw [Function.update_self]
 
 /- English proof (translation)
-Unfold `movFn; rw [Function.update_of_ne (by simp), Function.update_self]`.
+Replace the relevant objects with their definitions.
 -/
 theorem movFn_one (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (v : ∀ a, FactorFn G t a) (x : WO (G.pS (.chi j D.R.m : Pair T)) (G.pT (.chi j D.R.m : Pair T))) :
@@ -72,7 +72,7 @@ theorem movFn_one (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k
   unfold movFn; rw [Function.update_of_ne (by simp), Function.update_self]
 
 /- English proof (translation)
-Unfold `movFn`. Rewrite using `[Function.update_of_ne h2, Function.update_of_ne h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem movFn_other (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (v : ∀ a, FactorFn G t a) (a : Fin D.R.m ⊕ Fin D.R.m)
@@ -80,11 +80,11 @@ theorem movFn_other (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) 
   unfold movFn; rw [Function.update_of_ne h2, Function.update_of_ne h1]
 
 /- English proof (translation)
-Establish `hne : (.inr ⟨j, by omega⟩ : Fin D.R.m ⊕ Fin D.R.m) ≠ .inr ⟨j + 1, hj⟩` using `by simp`. Distinguish the cases in `h2' : a = .inr ⟨j + 1, hj⟩`. Substitute `h2'` using the available equality. Establish `e1 : movFn S j hj k v (.inr ⟨j + 1, hj⟩) (z (.inr ⟨j + 1, hj⟩)) = v (.inr ⟨j + 1, hj⟩) (movPt S j hj k z (.inr ⟨j + 1, hj⟩))` using `(movFn_two S j hj k v (z (.inr ⟨j + 1, hj⟩))).trans (congrArg (v _) (movPt_two S j hj k z).symm)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, e1]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[scaleAt, Pi.mulSingle_apply, hne.symm]`. Distinguish the cases in `h1' : a = .inr ⟨j, by omega⟩`. Substitute `h1'` using the available equality. Establish `e1 : movFn S j hj k v (.inr ⟨j, by omega⟩) (z (.inr ⟨j, by omega⟩)) = v (.inr ⟨j, by omega⟩) (movPt S j hj k z (.inr ⟨j, by omega⟩))` using `(movFn_one S j hj k v (z (.inr ⟨j, by omega⟩))).trans (congrArg (v _) (movPt_one S j hj k z).symm)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, e1]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[scaleAt, Pi.mulSingle_apply, hne, Function.update_of_ne hne]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, movFn_other S j hj k v a h1' h2', movPt_other S j hj k z a h1' h2']`. Simplify using `[scaleAt, Pi.mulSingle_apply, h1', h2', Function.update_of_ne h1', Function.update_of_ne h2']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scale_movFn_apply (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (c₁ c₂ : ℂ) (v : ∀ a, FactorFn G t a) (z : ∀ a, WO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a)))
@@ -119,7 +119,7 @@ open GlobalTheory.SplitFlip
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_congr rfl fun a _ => scale_movFn_apply S j hj k c₁ c₂ v z a, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Fintype.prod_pi_mulSingle', Fintype.prod_pi_mulSingle']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_scale_movFn (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (c₁ c₂ : ℂ) (v : ∀ a, FactorFn G t a) (z : ∀ a, WO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a))) :
@@ -128,9 +128,9 @@ theorem prod_scale_movFn (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.
     Finset.prod_mul_distrib, Fintype.prod_pi_mulSingle', Fintype.prod_pi_mulSingle']
 
 /- English proof (translation)
-Distinguish the cases in `h2' : a = .inr ⟨j + 1, hj⟩`. Substitute `h2'` using the available equality. Rewrite using `[movPt_two]`. Conclude with `GlobalTheory.SchrMove.isHalf_actO_iff _ _ _`. Distinguish the cases in `h1' : a = .inr ⟨j, by omega⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h1'` using the available equality. Rewrite using `[movPt_one]`. Conclude with `GlobalTheory.SchrMove.isHalf_actO_iff _ _ _`. Rewrite using `[movPt_other S j hj k z a h1' h2']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHalf_movPt (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (z : ∀ a, WO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a))) (e : AE D) (a : Fin D.R.m ⊕ Fin D.R.m) :
@@ -146,11 +146,11 @@ theorem isHalf_movPt (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m)
     · rw [movPt_other S j hj k z a h1' h2']
 
 /- English proof (translation)
-Unfold `Finsupp.sum`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ a), mul_zero]`. Break down `a with j | i` into its components or cases.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `h` using `(d.1 j).sb.1 _ hne`. Rewrite `h` using `[((hsupp d hd).1 j).2.1]`. Conclude with `ha h`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(d.2 i).sb.1 _ hne`. Rewrite `h` using `[((hsupp d hd).2 i).2.1]`. Conclude with `ha h`.
+A detailed English derivation is pending.
 -/
 theorem sum_fn_eq_zero {t : T} (τ : PureDat G t →₀ ℂ) (e : AE D)
     (hsupp : ∀ d ∈ τ.support, (∀ j, (d.1 j).P = locPl G t ∧ (d.1 j).e = e ∧ (d.1 j).z = 1) ∧
@@ -172,7 +172,7 @@ theorem sum_fn_eq_zero {t : T} (τ : PureDat G t →₀ ℂ) (e : AE D)
     exact ha h
 
 /- English proof (translation)
-Rewrite using `[← hexp (fun j => z (.inl j)) (fun i => z (.inr i)) (fun j => h _) (fun i => h _)]`. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_fn_of_half (S : GridChoice W U) {t : T} {Φ : G.Datum} {β : CosFam G t} (τ : PureDat G t →₀ ℂ) (e : AE D)
     (hexp : ∀ (x : ∀ j : Fin D.R.m, WO (G.V (.top j)) (G.V (.top (j + 1))))
@@ -195,7 +195,7 @@ open GlobalTheory.SplitFlip
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-The claim follows from `funext fun i => movPt_other S j hj k z _ (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem inl_movPt (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (z : ∀ a, WO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a))) :
@@ -203,11 +203,11 @@ theorem inl_movPt (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k
   funext fun i => movPt_other S j hj k z _ (by simp) (by simp)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Set `B : Fin D.R.m → Type` to `fun i => WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T))`. Establish `hne : (⟨j, by omega⟩ : Fin D.R.m) ≠ ⟨j + 1, hj⟩` using `by simp`. Distinguish the cases in `h2' : i = ⟨j + 1, hj⟩`. Substitute `h2'` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `(movPt_two S j hj k z).trans (Function.update_self (β := B) (⟨j + 1, hj⟩ : Fin D.R.m) _ _).symm`. Distinguish the cases in `h1' : i = ⟨j, by omega⟩`. Substitute `h1'` using the available equality. Conclude with `(movPt_one S j hj k z).trans ((Function.update_of_ne (β := B) hne _ _).trans (Function.update_self (β := B) _ _ _)).symm`. Use `(movPt_other S j hj k z _ (fun h => h1' (Sum.inr_injective h)) (fun h => h2' (Sum.inr_injective h))).trans ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Use `(Function.update_of_ne (β := B) (a := i) h2' _ _).trans ?_` and prove the remaining obligations. Conclude with `Function.update_of_ne (β := B) (a := i) h1' _ _`.
+A detailed English derivation is pending.
 -/
 theorem inr_movPt (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (z : ∀ a, WO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a))) :
@@ -232,7 +232,7 @@ theorem inr_movPt (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k
       exact Function.update_of_ne (β := B) (a := i) h1' _ _
 
 /- English proof (translation)
-Establish `hκ : ∀ w : locPl G t, inBasis (rank_vertex G t w.1 (X` using `(j + 1, D.R.m)) ⟨hj.le, le_rfl⟩) (S.B.β (j + 1) D.R.m) w.1 (finG (G.V (.grid (j + 1) D.R.m)) k) ∈ givenLevel G t w.1 (j + 1, D.R.m) := fun w => Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hk).1 w`. Rewrite using `[GlobalTheory.T.vacuum_scalars_eq_product_edge_factors_row S hμ hU j hj k hk c₁ c₂ h1 h2, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RowMoveAt.rowAt_move S hU j hj k w.1 w.2 y]`. Conclude with `GlobalTheory.T.termDatum_rowMove_level_edgeFactors S β hμ hq hc hU w j hj _ (hκ w) _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_prod (S : GridChoice W U) {t : T} {Φ : G.Datum} (β : CosFam G t) {μ₀ : T} (hμ : L.Is μ₀)
     (hq : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q))
@@ -263,11 +263,11 @@ end GlobalTheory.RowVertexInv
 namespace GlobalTheory.RowVertexInv
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t Φ β τ μ₀ hμ hq hc hU hβ hE hv j hj k hk c₁ c₂ h1 h2 z`. Take `⟨e, -, hsupp, hexp⟩` from `hE`. Establish `hL : (τ.sum fun d c => c * ∏ a, (scaleAt j hj c₁ c₂ a • movFn S j hj k (fnOf d) a) (z a)) = c₁ * c₂ * τ.sum fun d c => c * ∏ a, fnOf d a (movPt S j hj k z a)`. Rewrite using `[Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[prod_scale_movFn]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL]`. Distinguish the cases in `hall : ∀ a, IsHalf e (z a)`. Rewrite using `[sum_fn_of_half S τ e hexp z hall, sum_fn_of_half S τ e hexp _ fun a => (isHalf_movPt S j hj k z e a).2 (hall a), inl_movPt, inr_movPt]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `local_prod S β hμ hq hc hU j hj k hk c₁ c₂ h1 h2 (fun i => z (.inl i)) (fun i => z (.inr i))`. Use `push_neg at hall`. Take `⟨a, ha⟩` from `hall`. Rewrite using `[sum_fn_eq_zero τ e hsupp z a ha, sum_fn_eq_zero τ e hsupp _ a (fun h => ha ((isHalf_movPt S j hj k z e a).1 h)), mul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_prod_scale_movFn_eq : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T} {Φ : G.Datum} {β : CosFam G t} {τ : PureDat G t →₀ ℂ} {μ₀ : T},
     L.Is μ₀ → (Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q)) → (∀ P ∈ L.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) → t ∈ U → β ∈ S.supp t Φ → S.IsExpansion t Φ β τ → (∀ d ∈ τ.support, (∀ j, S.Z.HasVec (d.1 j)) ∧ ∀ i, S.Z.HasVec (d.2 i)) → ∀ (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m)), finG (G.V (.grid (j + 1) D.R.m)) k ∈ S.levRow t (j + 1) hj.le → ∀ c₁ c₂ : ℂ, W.om (.chi j D.R.m) (G.toPair (.chi j D.R.m) 1 (moved S j k)) (S.Z.vac (.chi j D.R.m)) = c₁ • S.Z.vac (.chi j D.R.m) → W.om (.chi (j + 1) D.R.m) (G.toPair (.chi (j + 1) D.R.m) (moved S j k) 1) (S.Z.vac (.chi (j + 1) D.R.m)) = c₂ • S.Z.vac (.chi (j + 1) D.R.m) → ∀ z : ∀ a, WO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a)), (τ.sum fun d c => c * ∏ a, (scaleAt j hj c₁ c₂ a • movFn S j hj k (fnOf d) a) (z a)) = τ.sum fun d c => c * ∏ a, fnOf d a (z a) := by

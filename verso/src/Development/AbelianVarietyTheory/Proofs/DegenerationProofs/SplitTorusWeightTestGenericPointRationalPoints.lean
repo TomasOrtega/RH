@@ -16,9 +16,9 @@ def wtDefect {P G T : Scheme.{0}} (a b : P ⟶ G) (c : P ⟶ T) (V : G.Opens) (u
   (a.appLE V _ inf_le_left).hom u - (c.appLE ⊤ _ le_top).hom e * (b.appLE V _ inf_le_right).hom u
 
 /- English proof (translation)
-Substitute `ha hb hc` using the available equality. Establish `e₁` using `congrArg (fun q => CommRingCat.Hom.hom q u) (Scheme.Hom.appLE_comp_appLE p a V _ ⊤ inf_le_left h)`. Establish `e₂` using `congrArg (fun q => CommRingCat.Hom.hom q u) (Scheme.Hom.appLE_comp_appLE p b V _ ⊤ inf_le_right h)`. Establish `e₃` using `congrArg (fun q => CommRingCat.Hom.hom q e) ((Scheme.Hom.appLE_comp_appLE p c ⊤ _ ⊤ le_top h).trans (Scheme.Hom.appLE_eq_app (p ≫ c)))`. Rewrite using `[wtDefect, map_sub, map_mul]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (· - ·) e₁ (congrArg₂ (· * ·) e₃ e₂)`.
+A detailed English derivation is pending.
 -/
 theorem appLE_wtDefect {Z P G T : Scheme.{0}} (a b : P ⟶ G) (c : P ⟶ T) (V : G.Opens)
     (u : Γ(G, V)) (e : Γ(T, ⊤)) (p : Z ⟶ P) {a' b' : Z ⟶ G} {c' : Z ⟶ T} (ha : p ≫ a = a')
@@ -37,11 +37,11 @@ theorem appLE_wtDefect {Z P G T : Scheme.{0}} (a b : P ⟶ G) (c : P ⟶ T) (V :
   exact congrArg₂ (· - ·) e₁ (congrArg₂ (· * ·) e₃ e₂)
 
 /- English proof (translation)
-Establish `: IsReduced P.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced (S := Spec (.of k)) P.hom`. Establish `: JacobsonSpace P.left` using `LocallyOfFiniteType.jacobsonSpace (Y := Spec (.of k)) P.hom`. Use `eq_zero_of_basicOpen_eq_bot d ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hne' : ((P.left.basicOpen d : P.left.Opens) : Set P.left).Nonempty`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[Set.nonempty_iff_ne_empty]`. Conclude with `fun h' => hne (TopologicalSpace.Opens.ext h')`. Take `⟨x, hxd, hx⟩` from `nonempty_inter_closedPoints hne' (P.left.basicOpen d).isOpen.isLocallyClosed`. Use `h (Over.homMk (pointOfClosedPoint (K := k) P.hom x hx) (pointOfClosedPoint_comp (K := k) P.hom x hx)) (IsLocalRing.closedPoint k) ?_` and prove the remaining obligations. Establish `e` using `pointOfClosedPoint_apply (K := k) P.hom x hx (IsLocalRing.closedPoint k)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `e.symm ▸ hxd`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_rationalPoints {k : Type} [Field k] [IsAlgClosed k] {P : Over (Sp k)}
     [Smooth P.hom] {W : P.left.Opens} (d : Γ(P.left, W))
@@ -61,29 +61,27 @@ theorem eq_zero_of_rationalPoints {k : Type} [Field k] [IsAlgClosed k] {P : Over
   exact e.symm ▸ hxd
 
 /- English proof (translation)
-Introduce `k _ _ G _ hG X _ _ _ i F _ s g hg V u χ H`. Take `⟨-, -, -, -, h1, -⟩` from `(splitTorus_properties (Sp k)).1 X`. Establish `: Smooth (splitTorus (Sp k) X).hom` using `SmoothOfRelativeDimension.smooth (Module.finrank ℤ X) _`. Establish `: Smooth (splitTorus (Sp k) X ⊗ G).hom` using `inferInstanceAs (Smooth (pullback.fst (splitTorus (Sp k) X).hom G.hom ≫ (splitTorus (Sp k) X).hom))`. Establish `hact : ∀ {Z : Over (Sp k)} (t : Z ⟶ splitTorus (Sp k) X) (y : Z ⟶ G), (lift t y).left ≫ ((fst (splitTorus (Sp k) X) G ≫ i) * snd _ G).left = ((t ≫ i) * y).left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Z t y`. Rewrite using `[← Over.comp_left, MonObj.comp_mul, lift_fst_assoc, lift_snd]`. Establish `hsnd : ∀ {Z : Over (Sp k)} (t : Z ⟶ splitTorus (Sp k) X) (y : Z ⟶ G), (lift t y).left ≫ (snd (splitTorus (Sp k) X) G).left = y.left`. Introduce `Z t y`. Rewrite using `[← Over.comp_left, lift_snd]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfst : ∀ {Z : Over (Sp k)} (t : Z ⟶ splitTorus (Sp k) X) (y : Z ⟶ G), (lift t y).left ≫ (fst (splitTorus (Sp k) X) G).left = t.left`. Introduce `Z t y`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `hd : wtDefect ((fst (splitTorus (Sp k) X) G ≫ i) * snd _ G).left (snd _ G).left (fst (splitTorus (Sp k) X) G).left V u (charUnit (Sp k) X χ).val = 0`. Use `eq_zero_of_rationalPoints _ fun z x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set d := wtDefect ((fst (splitTorus (Sp k) X) G ≫ i) * snd _ G).left (snd _ G).left (fst (splitTorus (Sp k) X) G).left V u (charUnit (Sp k) X χ).val with hdd`. Set `t` to `z ≫ fst _ _`. Set `m : G ⟶ splitTorus (Sp k) X ⊗ G` to `lift (toUnit G ≫ t) (𝟙 G)`. Establish `hz : (z ≫ snd _ _) ≫ m = z`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [m, t, Category.assoc, lift_fst]`. Rewrite using `[← Category.assoc (snd _ _), ← Category.assoc z, toUnit_unique (z ≫ _) (𝟙 _), Category.id_comp]`. Simplify using `[m]`. Establish `hgm : g ≫ m = lift (toUnit (Over.mk s) ≫ t) g`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [m, Category.assoc, lift_fst]`. Rewrite using `[← Category.assoc, toUnit_unique (g ≫ _) (toUnit _)]`. Simplify using `[m]`. Establish `h0` using `hg (m.left ⁻¹ᵁ (splitTorus (Sp k) X ⊗ G).left.basicOpen d) ⟨(z ≫ snd _ _).left x, by`. Establish `: m.left ((z ≫ snd _ _).left x) = z.left x` using `congrArg (fun q => q.left x) hz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show m.left ((z ≫ snd _ _).left x) ∈ (splitTorus (Sp k) X ⊗ G).left.basicOpen d`. Rewrite using `[this]`. Conclude with `hx⟩`. Establish `h1 : ⊤ ≤ (lift (toUnit (Over.mk s) ≫ t) g).left ⁻¹ᵁ (splitTorus (Sp k) X ⊗ G).left.basicOpen d`. Rewrite using `[← hgm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Establish `h2` using `h1.trans ((lift (toUnit (Over.mk s) ≫ t) g).left.preimage_mono ((splitTorus (Sp k) X ⊗ G).left.basicOpen_le d))`. Establish `h₁ : ⊤ ≤ (((toUnit (Over.mk s) ≫ t) ≫ i) * g).left ⁻¹ᵁ V`. Rewrite using `[← hact]`. Conclude with `fun y hy => (h2 hy).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `h₂ : ⊤ ≤ g.left ⁻¹ᵁ V`. Rewrite using `[← hsnd (toUnit (Over.mk s) ≫ t)]`. Conclude with `fun y hy => (h2 hy).2`. Establish `hu` using `isUnit_ev (R := F) _ _ h2 d h1`. Establish `hv` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom (appLE_wtDefect _ _ _ V u (charUnit (Sp k) X χ).val _ (hact _ _) (hsnd _ _) (hfst _ _) h2 h₁ h₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hH` using `(H t h₁ h₂).trans (congrArg (· * ev (R := F) g.left V h₂ u) (ev_top (R := F) (toUnit (Over.mk s) ≫ t).left le_top (charUnit (Sp k) X χ).val))`. Use `hu.ne_zero (hv.trans ?_)` and prove the remaining obligations. Conclude with `(map_sub _ _ _).trans (sub_eq_zero.2 (hH.trans (map_mul _ _ _).symm))`. Introduce `Z t y h₁ h₂`. Establish `h : ⊤ ≤ (lift t y).left ⁻¹ᵁ (((fst (splitTorus (Sp k) X) G ≫ i) * snd _ G).left ⁻¹ᵁ V ⊓ (snd (splitTorus (Sp k) X) G).left ⁻¹ᵁ V)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁` using `[← hact]`. Rewrite `h₂` using `[← hsnd t]`. Conclude with `fun w hw => ⟨h₁ hw, h₂ hw⟩`. Establish `hv` using `appLE_wtDefect _ _ _ V u (charUnit (Sp k) X χ).val _ (hact t y) (hsnd t y) (hfst t y) h h₁ h₂`. Rewrite `hv` using `[hd, map_zero]`.
-
-Conclude with `sub_eq_zero.1 hv.symm`.
+A detailed English derivation is pending.
 -/
 theorem wt_of_genericPoint :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], Smooth G.hom → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (i : splitTorus (Sp k) X ⟶ G) (F : Type) [Field F] (s : Sp F ⟶ Sp k) (g : Over.mk s ⟶ G), (∀ V : G.left.Opens, (V : Set G.left).Nonempty → ⊤ ≤ g.left ⁻¹ᵁ V) → ∀ (V : G.left.Opens) (u : Γ(G.left, V)) (χ : X), (∀ (t : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X) (h₁ : ⊤ ≤ (((toUnit (Over.mk s) ≫ t) ≫ i) * g).left ⁻¹ᵁ V) (h₂ : ⊤ ≤ g.left ⁻¹ᵁ V), WtRat.ev (R := F) (((toUnit (Over.mk s) ≫ t) ≫ i) * g).left V h₁ u = WtRat.ev (R := F) (toUnit (Over.mk s) ≫ t).left ⊤ le_top (charUnit (Sp k) X χ).val * WtRat.ev (R := F) g.left V h₂ u) → Wt i V u χ := by

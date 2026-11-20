@@ -16,19 +16,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (TR : TypedRed X)
 
 /- English proof (translation)
-Rewrite using `[← leviM_mul_par TR hx.1 hx.2 v, mul_inv_cancel, leviM_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem leviM_mul_inv {x : X.B.I.Gf} (hx : Good X x) (v : TR.Pl) : leviM TR x v * leviM TR x⁻¹ v = 1 := by
   rw [← leviM_mul_par TR hx.1 hx.2 v, mul_inv_cancel, leviM_one]
 
 /- English proof (translation)
-Conclude with `Matrix.isUnit_det_of_right_inverse (leviM_mul_inv TR hx v)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_leviM {x : X.B.I.Gf} (hx : Good X x) (v : TR.Pl) : IsUnit (leviM TR x v).det := by
   exact Matrix.isUnit_det_of_right_inverse (leviM_mul_inv TR hx v)
 
 /- English proof (translation)
-Unfold `levi`. Rewrite using `[dif_pos (isUnit_det_leviM TR hx v)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levi_coe {x : X.B.I.Gf} (hx : Good X x) (v : TR.Pl) :
     ((levi TR x v : GL (Fin D.R.k) (TR.Fq v)) : Matrix (Fin D.R.k) (Fin D.R.k) (TR.Fq v)) = leviM TR x v := by
@@ -37,7 +37,7 @@ theorem levi_coe {x : X.B.I.Gf} (hx : Good X x) (v : TR.Pl) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Pi.mul_apply, Units.val_mul, levi_coe TR (good_mul _ hx hy), levi_coe TR hx, levi_coe TR hy]`. Conclude with `leviM_mul_par TR hx.1 hy.1 v`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_mul {x y : X.B.I.Gf} (hx : Good X x) (hy : Good X y) : levi TR (x * y) = levi TR x * levi TR y := by
   funext v
@@ -46,7 +46,7 @@ theorem levi_mul {x y : X.B.I.Gf} (hx : Good X x) (hy : Good X y) : levi TR (x *
   exact leviM_mul_par TR hx.1 hy.1 v
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[levi_coe TR (good_one _) v, leviM_one]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levi_one : levi TR (1 : X.B.I.Gf) = 1 := by
   funext v
@@ -55,7 +55,7 @@ theorem levi_one : levi TR (1 : X.B.I.Gf) = 1 := by
   rfl
 
 /- English proof (translation)
-Establish `h1` using `levi_mul TR (good_inv _ hx) hx`. Rewrite `h1` using `[inv_mul_cancel, levi_one]`. Conclude with `eq_inv_of_mul_eq_one_left h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_inv {x : X.B.I.Gf} (hx : Good X x) : levi TR x⁻¹ = (levi TR x)⁻¹ := by
   have h1 := levi_mul TR (good_inv _ hx) hx
@@ -71,7 +71,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Rewrite using `[hA_symm]`. Conclude with `Z_sig X.B.I X.B.g (mL_Qs X.B.I X.B.g hw hd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Z_hA_mL {d w : VA X.B.I} (hd : d ∈ mL X.B.I X.B.g) (hw : w ∈ X.B.I.Lf) :
     ZMod' X.B.I X.B.g (hA X.B.I d w) := by
@@ -79,19 +79,17 @@ theorem Z_hA_mL {d w : VA X.B.I} (hd : d ∈ mL X.B.I X.B.g) (hw : w ∈ X.B.I.L
   exact Z_sig X.B.I X.B.g (mL_Qs X.B.I X.B.g hw hd)
 
 /- English proof (translation)
-Use `set k := ((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u) with hkdef`. Take `⟨hE0, hF0, hZ0, -, -⟩` from `frame_Lf X`. Establish `hk' : k = (X.xu u)⁻¹ * ((h : X.B.I.Gf)⁻¹ * ((h' : X.B.I.Gf) * X.xu u))` using `by rw [hkdef]; group`. Establish `hfix : ∀ y ∈ Formalism.L2.SG.PoincareInHH.PoincareSetting.fixSet X u, X.B.I.fmat (X.xu u) *ᵥ incl X.B.I y = incl X.B.I y → X.B.I.fmat k *ᵥ incl X.B.I y = incl X.B.I y`. Introduce `y hy hxu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk']`. Establish `h1 : X.B.I.fmat (h' : X.B.I.Gf) *ᵥ incl X.B.I y = incl X.B.I y` using `h'.2 y hy`. Establish `h2 : X.B.I.fmat (h : X.B.I.Gf)⁻¹ *ᵥ incl X.B.I y = incl X.B.I y` using `fixes_inv X (h.2 y hy)`. Conclude with `fixes_mul X (fixes_inv X hxu) (fixes_mul X h2 (fixes_mul X h1 hxu))`. Establish `hE : ∀ a, X.B.I.fmat k *ᵥ incl X.B.I (X.crd (X.eX a)) = incl X.B.I (X.crd (X.eX a))` using `fun a => hfix _ (Or.inl (Or.inl ⟨a, rfl⟩)) ((X.xu_fix u a).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ : X.B.I.fmat k *ᵥ (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (X.zu u))) = X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (X.zu u))`. Rewrite using `[Matrix.mulVec_mulVec, ← fmat_mul]`. Establish `e : k * (X.xu u)⁻¹ = (X.xu u)⁻¹ * ((h : X.B.I.Gf)⁻¹ * (h' : X.B.I.Gf))` using `by rw [hkdef]; group`. Rewrite using `[e, fmat_mul, ← Matrix.mulVec_mulVec]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : X.crd (X.zu u) ∈ Formalism.L2.SG.PoincareInHH.PoincareSetting.fixSet X u` using `Or.inr rfl`. Conclude with `fixes_mul X (fixes_inv X (h.2 _ hy)) (h'.2 _ hy)`. Establish `key : ∀ (w v : VA X.B.I), v ∈ X.B.I.Lf → X.B.I.fmat k *ᵥ w = w → InAt X.B.I X.B.g X.B.g (v - w) → X.B.I.fmat k *ᵥ v - v ∈ mL X.B.I X.B.g`. Introduce `w v hv hw hvw`. Use `mem_mL_of_InAt X (sub_mem (K_mv X.B.I hk hv) hv) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congG_of_Kset X hk hvw` as an intermediate fact. Establish `e : X.B.I.fmat k *ᵥ v - v = X.B.I.fmat k *ᵥ (v - w) - (v - w)`. Rewrite using `[Matrix.mulVec_sub, hw]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Use `⟨fun a => key _ _ (hE0 a) (hE a) (X.basisApprox a).1, key _ _ hZ0 hZ ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hcm⟩` from `X.xu_z u`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[show X.z0 - X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (X.zu u)) = -(X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (X.zu u)) - X.z0) by abel, smul_neg]`.
-
-Conclude with `Submodule.neg_mem _ hcm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colStab (u : D.what₂.Word) (h h' : Formalism.L2.SG.PoincareInHH.PoincareSetting.Hfin X u)
     (hk : ((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset) :
@@ -134,11 +132,11 @@ theorem colStab (u : D.what₂.Word) (h h' : Formalism.L2.SG.PoincareInHH.Poinca
   exact Submodule.neg_mem _ hcm
 
 /- English proof (translation)
-Take `⟨hE0, hF0, hZ0, hB, hBd⟩` from `frame_Lf X`. Use `⟨hk, fun a => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[show X.B.I.fmat k *ᵥ X.e0 a = X.e0 a + (X.B.I.fmat k *ᵥ X.e0 a - X.e0 a) by abel]`. Conclude with `add_mem (sub_Mo X.B.I ⟨a, rfl⟩) (mL_Mo X.B.I (he a))`. Use `mem_Mo_eb X (K_mv X.B.I hk (hB j)) (fun a => ?_) ?_ (fun l => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hA_adj, show X.B.I.fmat k⁻¹ *ᵥ X.e0 a = X.e0 a + (X.B.I.fmat k⁻¹ *ᵥ X.e0 a - X.e0 a) by abel, hA_add_left]`. Conclude with `Z_add X.B.I X.B.g ((X.weightVectorsIntegral j).2.2 a).1 (Z_hA_mL X (hie a) (hB j))`. Rewrite using `[hA_adj, show X.B.I.fmat k⁻¹ *ᵥ X.z0 = X.z0 + (X.B.I.fmat k⁻¹ *ᵥ X.z0 - X.z0) by abel, hA_add_left]`. Conclude with `Z_add X.B.I X.B.g (X.weightVectorsIntegral j).1 (Z_hA_mL X hiz (hB j))`. Establish `e : hA X.B.I (X.bw l) (X.B.I.fmat k *ᵥ X.bw j) = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[X.bw_w l, X.bw_w j, Matrix.mulVec_smul, hA_smul_left, hA_smul_right]`. Use `X.ew_orth` as an intermediate fact. Take the linear combination `(hA X.B.I (X.bw l) (X.B.I.fmat k *ᵥ X.bw j)) * this`. Rewrite using `[e]`. Conclude with `Z_zero X.B.I X.B.g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_of_stab {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kset)
     (he : ∀ a, X.B.I.fmat k *ᵥ X.e0 a - X.e0 a ∈ mL X.B.I X.B.g)
@@ -161,9 +159,9 @@ theorem par_of_stab {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kset)
       rw [e]; exact Z_zero X.B.I X.B.g
 
 /- English proof (translation)
-Establish `e1 : (((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u))⁻¹ = ((h' : X.B.I.Gf) * X.xu u)⁻¹ * ((h : X.B.I.Gf) * X.xu u)`. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Establish `e2 : (((h' : X.B.I.Gf) * X.xu u)⁻¹ * ((h : X.B.I.Gf) * X.xu u))⁻¹ = ((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u)`. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Take `⟨he, hz⟩` from `colStab X u h h' hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨he', hz'⟩` from `colStab X u h' h hki`. Use `⟨par_of_stab X hk he (by rw [e1]; exact he') (by rw [e1]; exact hz'), ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `par_of_stab X hki he' (by rw [e2]; exact he) (by rw [e2]; exact hz)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colGood (u : D.what₂.Word) (h h' : Formalism.L2.SG.PoincareInHH.PoincareSetting.Hfin X u)
     (hk : ((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset)
@@ -198,13 +196,11 @@ def AdmPar : Prop :=
     Good X (kOf X u u' (cs.h (cs.base t.lam) : X.B.I.Gf) (cs'.h (cs'.base t.lam') : X.B.I.Gf) t.pt)
 
 /- English proof (translation)
-Unfold `LeviCols`. Introduce `t ρ ρ' h1 h2`. Establish `hK : Good X (kOf X u u' (cs.h (cs.base t.lam) : X.B.I.Gf) (cs'.h (cs'.base t.lam') : X.B.I.Gf) t.pt)` using `hA t`. Unfold `iotaOf scOf`. Rewrite using `[h1, h2]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `kOf at hK ⊢`. Establish `lb : cs.lamOf (cs.base t.lam) = cs.lamOf ρ`. Rewrite using `[h1]`. Conclude with `cs.base_lam _ (h1 ▸ cs.lam_mem ρ)`. Establish `lb' : cs'.lamOf (cs'.base t.lam') = cs'.lamOf ρ'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `cs'.base_lam _ (h2 ▸ cs'.lam_mem ρ')`. Establish `gA` using `colGood X u _ _ (hL _ _ lb) (hL _ _ lb.symm)`. Establish `gB` using `colGood X u' _ _ (hL' _ _ lb') (hL' _ _ lb'.symm)`. Establish `e : ((cs.h ρ : X.B.I.Gf) * X.xu u)⁻¹ * t.pt.2 * ((cs'.h ρ' : X.B.I.Gf) * X.xu u') = (((cs.h (cs.base t.lam) : X.B.I.Gf) * X.xu u)⁻¹ * ((cs.h ρ : X.B.I.Gf) * X.xu u))⁻¹ * (((cs.h (cs.base t.lam) : X.B.I.Gf) * X.xu u)⁻¹ * t.pt.2 * ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u')) * …` using `by group`.
-
-Rewrite using `[e, levi_mul TR (good_mul _ (good_inv _ gA) hK) gB, levi_mul TR (good_inv _ gA) hK, levi_inv TR gA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviCols_of (hL : ColLatK cs) (hL' : ColLatK cs') (hA : AdmPar F0 F0' cs cs') :
     LeviCols TR F0 F0' cs cs' := by

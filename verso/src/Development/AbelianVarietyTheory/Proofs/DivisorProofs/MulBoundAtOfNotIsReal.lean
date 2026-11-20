@@ -11,9 +11,9 @@ open NumberField ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.ChowHt G
 namespace GlobalTheory.HilbertSamuel
 
 /- English proof (translation)
-Break down `Complex.subfield_eq_of_closed (Subfield.isClosed_topologicalClosure σ.fieldRange) with h | h` into its components or cases. Use `absurd (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_)) hσ` and prove the remaining obligations. Take `⟨r, hr⟩` from `h.le (Subfield.le_topologicalClosure _ ⟨x, rfl⟩)`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hr]`. Conclude with `Complex.conj_ofReal r`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[denseRange_iff_closure_range, ← RingHom.coe_fieldRange]`. Conclude with `congrArg (fun s : Subfield ℂ => (s : Set ℂ)) h`.
+A detailed English derivation is pending.
 -/
 theorem denseRange_of_not_isReal {K : Type*} [Field K] {σ : K →+* ℂ} (hσ : ¬ComplexEmbedding.IsReal σ) :
     DenseRange σ := by
@@ -26,7 +26,7 @@ theorem denseRange_of_not_isReal {K : Type*} [Field K] {σ : K →+* ℂ} (hσ :
     exact congrArg (fun s : Subfield ℂ => (s : Set ℂ)) h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `frameNorm A (c • x) = _`. Simplify using `only [frameNorm, Matrix.mulVec_smul, Pi.smul_apply, norm_smul, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frameNorm_mul {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (c : ℂ) (x : Fin N → ℂ) :
     frameNorm A (fun j => c * x j) = ‖c‖ * frameNorm A x := by
@@ -35,14 +35,14 @@ theorem frameNorm_mul {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (c : ℂ) (x : 
   rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Unfold `frameNorm Matrix.mulVec dotProduct`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_frameNorm {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) : Continuous (frameNorm A) := by
   unfold frameNorm Matrix.mulVec dotProduct
   fun_prop
 
 /- English proof (translation)
-Unfold `cnrm csq`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_cnrm {K V ι : Type*} [Field K] [AddCommGroup V] [Module K V] [Fintype ι] (h : HermFam K V)
     (σ : K →+* ℂ) (v : ι → V) : Continuous fun c => cnrm h σ c v := by
@@ -52,7 +52,7 @@ theorem continuous_cnrm {K V ι : Type*} [Field K] [AddCommGroup V] [Module K V]
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 F)) F S x (hS.ge trivial)`. Use `⟨algebraMap (𝓞 F) F t, ?_, by rwa [algebraMap_smul]⟩` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).2 (nonZeroDivisors.coe_ne_zero t)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_span {V : Type*} [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V]
     {S : Set V} (hS : Submodule.span F S = ⊤) (x : V) : ∃ a : F, a ≠ 0 ∧ a • x ∈ Submodule.span (𝓞 F) S := by
@@ -65,9 +65,9 @@ namespace Data
 variable {X : Data F} {β : (F →+* ℂ) → ℝ}
 
 /- English proof (translation)
-Take `⟨a, ha, hu⟩` from `exists_smul_mem_span X.geom.alg.spans u`. Take `⟨b, hb, hf⟩` from `exists_smul_mem_span (X.full j).span f`. Rewrite `hf` using `[Submodule.span_eq]`. Establish `key : (X.nm (j + 1)).nrm σ (a • b • g) ≤ Real.sqrt (β σ) * frameNorm (X.A σ) (fun k => σ (a * u k)) * (X.nm j).nrm σ (b • f)` using `h j hj σ _ hu _ hf (a • b • g) (by`. Rewrite using `[Submodule.coe_smul, Submodule.coe_smul, Submodule.coe_smul, e, map_smul, map_smul, LinearMap.smul_apply, smul_comm])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, frameNorm_mul, HermFam.nrm_smul_up] at key`. Establish `ha' : 0 < ‖σ a‖` using `norm_pos_iff.2 ((map_ne_zero σ).2 ha)`. Establish `hb' : 0 < ‖σ b‖` using `norm_pos_iff.2 ((map_ne_zero σ).2 hb)`. Conclude with `le_of_mul_le_mul_left (by linarith) (mul_pos ha' hb')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem MulBound.of_field (h : X.MulBound β) {j : ℕ} (hj : j < X.T) (σ : F →+* ℂ) (u : Fin X.N → F) (f : X.V j)
     (g : X.V (j + 1)) (e : (g : X.Sec (j + 1)) = X.mulW j u f) :
@@ -86,7 +86,7 @@ theorem MulBound.of_field (h : X.MulBound β) {j : ℕ} (hj : j < X.T) (σ : F �
   exact le_of_mul_le_mul_left (by linarith) (mul_pos ha' hb')
 
 /- English proof (translation)
-Introduce `j hj u m c f g hg` and use `by have hd := denseRange_of_not_isReal hσ refine ((DenseRange.piMap fun _ : Fin X.N => hd).prodMap (DenseRange.piMap fun _ : Fin m => hd)).induction_on (p := fun z => cnrm (X.nm (j + 1)) σ (fun t => z.1 t.1 * z.2 t.2) g ≤ Real.sqrt (β σ) * frameNorm (X.A σ) z.1 * cnrm (X.nm j) σ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MulBound.mulBoundAt_of_not_isReal (h : X.MulBound β) {σ : F →+* ℂ} (hσ : ¬ComplexEmbedding.IsReal σ) :
     X.MulBoundAt σ (β σ) := fun j hj u m c f g hg => by
@@ -107,7 +107,7 @@ theorem MulBound.mulBoundAt_of_not_isReal (h : X.MulBound β) {σ : F →+* ℂ}
     exact this
 
 /- English proof (translation)
-The claim follows from `h.mulBoundAt_of_not_isReal (IsTotallyComplex.complexEmbedding_not_isReal σ)`.
+A detailed English derivation is pending.
 -/
 theorem MulBound.mulBoundAt [IsTotallyComplex F] (h : X.MulBound β) (σ : F →+* ℂ) : X.MulBoundAt σ (β σ) :=
   h.mulBoundAt_of_not_isReal (IsTotallyComplex.complexEmbedding_not_isReal σ)

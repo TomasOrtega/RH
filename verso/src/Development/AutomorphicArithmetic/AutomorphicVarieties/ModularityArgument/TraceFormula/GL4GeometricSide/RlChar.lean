@@ -8,9 +8,9 @@ namespace UpperTheory.V.Z.GSp4Splitting
 open NumberField Finset
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b u`. Apply the tactic sequence `by_cases hab : a = b <;> simp [PositivityTheory.RgBcC.RealD.epow, Formalism.REAL.epow, hab]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Introduce `a b u`. Rewrite using `[PositivityTheory.RgBcC.Bridge.epow_succ']`. Simplify using `only [PositivityTheory.RgBcC.RealD.epow, LinearMap.sum_apply, map_sum, Module.End.mul_apply, h, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem map_epow {n : ℕ} {U W : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U]
     [AddCommGroup W] [Module ℂ W] (j : U →ₗ[ℂ] W) (M : Fin n → Fin n → Module.End ℂ U)
@@ -26,7 +26,7 @@ private theorem map_epow {n : ℕ} {U W : Type} [NormedAddCommGroup U] [InnerPro
     simp only [PositivityTheory.RgBcC.RealD.epow, LinearMap.sum_apply, map_sum, Module.End.mul_apply, h, ih]
 
 /- English proof (translation)
-Simplify using `only [gelA, Formalism.REAL.etr, LinearMap.sum_apply, map_sum, map_epow j M N h m]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem map_gelA {n : ℕ} {U W : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U]
     [AddCommGroup W] [Module ℂ W] (j : U →ₗ[ℂ] W) (M : Fin n → Fin n → Module.End ℂ U)
@@ -37,13 +37,13 @@ private theorem map_gelA {n : ℕ} {U W : Type} [NormedAddCommGroup U] [InnerPro
 end UpperTheory.V.Z.GSp4Splitting
 
 /- English proof (translation)
-Introduce `E _ _ _ n _ π _ K _ _ _ _ _ μf _ D w lam hch`. Establish `hin : Function.Injective ((π.V.subtype).comp D.i)` using `Subtype.val_injective.comp D.inj`. Establish `h1` using `(PositivityTheory.RgBcC.Bridge.hasInfCharGL_iff π.V _ _).1 hch.1`. Establish `h2` using `(PositivityTheory.RgBcC.Bridge.hasInfCharGL_iff π.V _ _).1 hch.2`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `m x`. Apply `hin` to reduce the goal to its premises. Establish `e` using `map_gelA ((π.V.subtype).comp D.i) (D.E1 w) (PositivityTheory.RgBcC.Bridge.eopW w true) (fun a b u => D.hE1 w a b u) m x`. Rewrite using `[e, map_smul]`. Simplify `h1 _ (D.i x).2 m` using `[PositivityTheory.RgBcC.Bridge.eopW]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `m x`. Apply `hin` to reduce the goal to its premises. Establish `e` using `map_gelA ((π.V.subtype).comp D.i) (barF (D.E2 w)) (PositivityTheory.RgBcC.Bridge.eopW w false) (fun a b u => by`. Use `D.hE2 w b a u` as an intermediate fact. Simplify using `only [barF, LinearMap.neg_apply, map_neg, LinearMap.comp_apply, Submodule.subtype_apply, Submodule.coe_neg, this, neg_neg]) m x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, map_smul]`. Simplify `h2 _ (D.i x).2 m` using `[PositivityTheory.RgBcC.Bridge.eopW]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.Z.GSp4Splitting.rlChar :
     RlChar := by

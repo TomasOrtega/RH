@@ -7,7 +7,7 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.SiuKodaira
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.HtPt.Siua.siu_kodaira` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHodgeTatePoints%2FSiuKodaira.lean&line=8#L8)
 -/

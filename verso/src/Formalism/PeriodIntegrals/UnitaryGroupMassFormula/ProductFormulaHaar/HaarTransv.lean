@@ -12,7 +12,7 @@ variable {E : Type} [AddCommGroup E] [Module K E] [TopologicalSpace E] [IsModule
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h` using `LinearMap.toMatrix_mulVec_repr b b (Matrix.toLin b b A) x`. Rewrite `h` using `[LinearMap.toMatrix_toLin]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_toLin (b : Basis ι K E) (A : Matrix ι ι K) (x : E) :
     b.repr (Matrix.toLin b b A x) = A *ᵥ b.repr x := by
@@ -21,9 +21,9 @@ theorem repr_toLin (b : Basis ι K E) (A : Matrix ι ι K) (x : E) :
   exact h.symm
 
 /- English proof (translation)
-Simplify using `only [Matrix.TransvectionStruct.toMatrix, Matrix.transvection, Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply, add_right_inj]`. Distinguish the cases in `hk : k = t.i`. Rewrite using `[if_pos hk, hk]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, ite_mul]`. Rewrite using `[if_neg hk]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mulVec, dotProduct, Ne.symm hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transvection_mulVec (t : Matrix.TransvectionStruct ι K) (v : ι → K) (k : ι) :
     (t.toMatrix *ᵥ v) k = v k + if k = t.i then t.c * v t.j else 0 := by
@@ -39,37 +39,35 @@ def tγ (t : Matrix.TransvectionStruct ι K) : ι → ValueGroupWithZero K :=
   Function.update 1 t.i (max (valuation K t.c) 1)
 
 /- English proof (translation)
-Simplify using `[tγ, Matrix.TransvectionStruct.inv, Valuation.map_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tγ_inv (t : Matrix.TransvectionStruct ι K) : tγ t.inv = tγ t := by
   simp [tγ, Matrix.TransvectionStruct.inv, Valuation.map_neg]
 
 /- English proof (translation)
-Simplify using `[tγ, hk]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tGamma_apply_of_ne (t : Matrix.TransvectionStruct ι K) {k : ι}
     (hk : k ≠ t.i) : tγ t k = 1 := by
   simp [tγ, hk]
 
 /- English proof (translation)
-Simplify using `[tγ]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tGamma_apply_self (t : Matrix.TransvectionStruct ι K) :
     tγ t t.i = max (valuation K t.c) 1 := by
   simp [tγ]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∀ k, valuation K (b.repr x k) ≤ tγ t k at hx`. Express the relevant statement in the definitionally equal form `∀ k, valuation K (b.repr (Matrix.toLin b b t.toMatrix x) k) ≤ tγ t k`. Introduce `k`. Establish `e : b.repr (Matrix.toLin b b t.toMatrix x) k = b.repr x k + if k = t.i then t.c * b.repr x t.j else 0`. Rewrite using `[congrFun (repr_toLin b t.toMatrix x) k, transvection_mulVec]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Distinguish the cases in `hk : k = t.i`. Rewrite using `[if_pos hk]`. Establish `hj : valuation K (b.repr x t.j) ≤ 1`. Establish `h` using `hx t.j`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[tGamma_apply_of_ne t t.hij.symm]`. Then use the resulting hypothesis. Establish `hR : tγ t k = max (valuation K t.c) 1`. Rewrite using `[hk]`. Conclude with `tGamma_apply_self t`. Establish `hxi : valuation K (b.repr x k) ≤ max (valuation K t.c) 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hR]`. Conclude with `hx k`. Rewrite using `[hR]`. Use `(Valuation.map_add _ _ _).trans (max_le hxi ?_)` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Consider the case `exact mul_le_mul_left' hj _`. Consider the case `gcongr`. Use `_ = valuation K t.c := mul_one _`. Use `_ ≤ max (valuation K t.c) 1 := le_max_left _ _`.
-
-Rewrite using `[if_neg hk, add_zero]`. Conclude with `hx k`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toLin_mem_box (b : Basis ι K E) (t : Matrix.TransvectionStruct ι K) (x : E)
     (hx : x ∈ box b (tγ t)) : Matrix.toLin b b t.toMatrix x ∈ box b (tγ t) := by
@@ -102,13 +100,11 @@ theorem toLin_mem_box (b : Basis ι K E) (t : Matrix.TransvectionStruct ι K) (x
     exact hx k
 
 /- English proof (translation)
-Use `⟨tγ t, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `h1 : (1 : ValueGroupWithZero K) ≤ tγ t i`. Distinguish the cases in `hi : i = t.i`. Rewrite using `[hi, tGamma_apply_self]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_max_right _ _`. Rewrite using `[tGamma_apply_of_ne t hi]`. Conclude with `(lt_of_lt_of_le zero_lt_one h1).ne'`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `toLin_mem_box b t x hx`. Introduce `y hy`. Use `⟨Matrix.toLin b b t.inv.toMatrix y, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `toLin_mem_box b t.inv y (by rwa [tγ_inv])`. Rewrite `h` using `[tγ_inv]`. Then use the resulting hypothesis.
-
-Use `show ((Matrix.toLin b b t.toMatrix).comp (Matrix.toLin b b t.inv.toMatrix)) y = y`. Rewrite using `[← Matrix.toLin_mul, Matrix.TransvectionStruct.mul_inv, Matrix.toLin_one, LinearMap.id_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transvection_box (b : Basis ι K E) (t : Matrix.TransvectionStruct ι K) :
     ∃ γ : ι → ValueGroupWithZero K, (∀ i, γ i ≠ 0) ∧

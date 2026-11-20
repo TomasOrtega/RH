@@ -24,7 +24,7 @@ theorem ev_ind (A : PAlg l) (m : ℕ) (c : ZMod (l ^ m)) (z : ℤ_[l]) :
     Hom.f (A.evCont z) (ind A m c) = if PadicInt.toZModPow m z = c then 1 else 0 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem cont_ext {A : PAlg l} {f g : (A.cont ℤ_[l]).A}
     (h : ∀ z, Hom.f (A.evCont z) f = Hom.f (A.evCont z) g) : f = g :=
@@ -37,16 +37,16 @@ theorem ev_toCont (A : PAlg l) (z : ℤ_[l]) (a : A.A) :
     Hom.f (A.evCont z) (Hom.f (A.toCont ℤ_[l]) a) = a := rfl
 
 /- English proof (translation)
-The claim follows from `(RL.cont_ex A ℤ_[l]).2.2.2 k f`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_pi_pow (A : PAlg l) (k : ℕ) (f : (A.cont ℤ_[l]).A) :
     f ∈ Ideal.span {(A.cont ℤ_[l]).pi ^ k} ↔ ∀ z, Hom.f (A.evCont z) f ∈ Ideal.span {A.pi ^ k} :=
   (RL.cont_ex A ℤ_[l]).2.2.2 k f
 
 /- English proof (translation)
-Establish `h : WittVector.teichmuller l (0 : A.A) = 0`. Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => simp [WittVector.teichmuller_coeff_zero]`. Consider the case `succ n => simp [WittVector.teichmuller_coeff_pos]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `A.th (WittVector.teichmuller l (0 : A.A)) = 0`. Rewrite using `[h, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sharp_zero (A : PAlg l) : A.sharp 0 = 0 := by
   have h : WittVector.teichmuller l (0 : A.A) = 0 := by
@@ -58,13 +58,13 @@ theorem sharp_zero (A : PAlg l) : A.sharp 0 = 0 := by
   rw [h, map_zero]
 
 /- English proof (translation)
-Establish `hs : IsIdempotentElem (e + f)`. Establish `h' : f * e = 0` using `by rw [mul_comm, h]`. Simplify using `only [IsIdempotentElem, add_mul, mul_add, h, h', he.eq, hf.eq, add_zero, zero_add]`. Establish `h1` using `(RL.sharp_cong A).2.2 _ hs`. Establish `h2` using `(RL.sharp_cong A).2.2 _ he`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(RL.sharp_cong A).2.2 _ hf`. Establish `h4 : (1 - (e + f)) = (1 - e) * (1 - f)`. Establish `: (1 - e) * (1 - f) = 1 - e - f + e * f` using `by ring`. Rewrite using `[this, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h5 : A.sharp e * A.sharp f = 0` using `by rw [← map_mul, h, sharp_zero]`. Rewrite `h1` using `[h4, map_mul, h2, h3]`. Establish `: (1 - A.sharp e) * (1 - A.sharp f) = 1 - A.sharp e - A.sharp f + A.sharp e * A.sharp f` using `by ring`. Rewrite `h1` using `[this, h5]`. Establish `h6 : A.sharp (e + f) = 1 - (1 - A.sharp e - A.sharp f + 0)` using `by rw [h1]; ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h6]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sharp_add (A : PAlg l) {e f : A.A} (he : IsIdempotentElem e) (hf : IsIdempotentElem f)
     (h : e * f = 0) : A.sharp (e + f) = A.sharp e + A.sharp f := by
@@ -85,11 +85,11 @@ theorem sharp_add (A : PAlg l) {e f : A.A} (he : IsIdempotentElem e) (hf : IsIde
   rw [h6]; ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨by simpa using sharp_zero A, by simp [IsIdempotentElem]⟩`. Consider the case `insert a s ha ih`. Take `⟨h1, h2⟩` from `ih (fun i h => hi i (Finset.mem_insert_of_mem h)) (fun i h j h' => ho i (Finset.mem_insert_of_mem h) j (Finset.mem_insert_of_mem h'))`. Establish `h3 : e a * ∑ i ∈ s, e i = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun i h => ho a (Finset.mem_insert_self _ _) i (Finset.mem_insert_of_mem h) (fun e' => ha (e' ▸ h))`. Establish `h4` using `hi a (Finset.mem_insert_self _ _)`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Use `⟨by rw [sharp_add A h4 h2 h3, h1], ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5 : (∑ i ∈ s, e i) * e a = 0` using `by rw [mul_comm, h3]`. Simplify using `only [IsIdempotentElem, add_mul, mul_add, h3, h5, h4.eq, h2.eq, add_zero, zero_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sharp_sum (A : PAlg l) {I : Type} (s : Finset I) (e : I → A.A)
     (hi : ∀ i ∈ s, IsIdempotentElem (e i))
@@ -112,7 +112,7 @@ theorem sharp_sum (A : PAlg l) {I : Type} (s : Finset I) (e : I → A.A)
     simp only [IsIdempotentElem, add_mul, mul_add, h3, h5, h4.eq, h2.eq, add_zero, zero_add]
 
 /- English proof (translation)
-Use `(sharp_sum A Finset.univ e (fun i _ => h.idem i) (fun i _ j _ hij => h.ortho hij)).1` as an intermediate fact. Rewrite using `[← this, h.complete]`. Conclude with `(map_one A.sharp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sharp_eq_one (A : PAlg l) {I : Type} [Fintype I] {e : I → A.A}
     (h : CompleteOrthogonalIdempotents e) : ∑ i, A.sharp (e i) = 1 := by
@@ -121,7 +121,7 @@ theorem sum_sharp_eq_one (A : PAlg l) {I : Type} [Fintype I] {e : I → A.A}
   exact (map_one A.sharp)
 
 /- English proof (translation)
-Use `cont_ext fun z => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ev_ind]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ind_mul_ind (A : PAlg l) (m : ℕ) (c : ZMod (l ^ m)) :
     ind A m c * ind A m c = ind A m c := by
@@ -130,7 +130,7 @@ theorem ind_mul_ind (A : PAlg l) (m : ℕ) (c : ZMod (l ^ m)) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `cont_ext fun z => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ev_ind, ev_ind, map_zero]`. Use `split_ifs with h1 h2`. Conclude with `absurd (h1.symm.trans h2) h`. Apply the tactic sequence `all_goals simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_orth (A : PAlg l) (m : ℕ) {c c' : ZMod (l ^ m)} (h : c ≠ c') :
     ind A m c * ind A m c' = 0 := by
@@ -141,7 +141,7 @@ theorem ind_orth (A : PAlg l) (m : ℕ) {c c' : ZMod (l ^ m)} (h : c ≠ c') :
   all_goals simp
 
 /- English proof (translation)
-Use `cont_ext fun z => ?_` and prove the remaining obligations. Rewrite using `[map_sum, map_one]`. Simplify using `only [ev_ind]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_ind (A : PAlg l) (m : ℕ) : ∑ c, ind A m c = 1 := by
   refine cont_ext fun z => ?_
@@ -151,20 +151,20 @@ theorem sum_ind (A : PAlg l) (m : ℕ) : ∑ c, ind A m c = 1 := by
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨ind_mul_ind A m, fun _ _ h => ind_orth A m h⟩, sum_ind A m⟩`.
+Supply the required witnesses or components.
 -/
 theorem coi_ind (A : PAlg l) (m : ℕ) : CompleteOrthogonalIdempotents (ind A m) :=
   ⟨⟨ind_mul_ind A m, fun _ _ h => ind_orth A m h⟩, sum_ind A m⟩
 
 /- English proof (translation)
-The claim follows from `(coi_ind A m).map (Hom.f ψ)`.
+A detailed English derivation is pending.
 -/
 theorem coi_map {A t : PAlg l} (ψ : A.cont ℤ_[l] ⟶ t) (m : ℕ) :
     CompleteOrthogonalIdempotents fun c => Hom.f ψ (ind A m c) :=
   (coi_ind A m).map (Hom.f ψ)
 
 /- English proof (translation)
-Use `cont_ext fun z => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Hom.f φ (Hom.f (A.evCont z) (ind A m c)) = _`. Rewrite using `[ev_ind, ev_ind]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem contMap_ind {A A' : PAlg l} (φ : A ⟶ A') (m : ℕ) (c : ZMod (l ^ m)) :
     Hom.f (contMap φ ℤ_[l]) (ind A m c) = ind A' m c := by
@@ -174,7 +174,7 @@ theorem contMap_ind {A A' : PAlg l} (φ : A ⟶ A') (m : ℕ) (c : ZMod (l ^ m))
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `choose g hg using A.frob_bijective.2`. Use `⟨fun m => g^[m] a, rfl, fun m => ?_⟩` and prove the remaining obligations. Use `show (g^[m + 1] a) ^ l = g^[m] a`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hg _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_roots (A : PAlg l) (a : A.A) :
     ∃ ρ : ℕ → A.A, ρ 0 = a ∧ ∀ m, ρ (m + 1) ^ l = ρ m := by
@@ -185,7 +185,7 @@ theorem exists_roots (A : PAlg l) (a : A.A) :
   exact hg _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Proceed by induction on `m with`. Consider the case `zero => exact h0`. Consider the case `succ m ih => exact A.frob_bijective.1 ((ha m).trans (ih.trans (hb m).symm))`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem roots_unique (A : PAlg l) {a b : ℕ → A.A} (h0 : a 0 = b 0)
     (ha : ∀ m, a (m + 1) ^ l = a m) (hb : ∀ m, b (m + 1) ^ l = b m) : a = b := by
@@ -195,7 +195,7 @@ theorem roots_unique (A : PAlg l) {a b : ℕ → A.A} (h0 : a 0 = b 0)
   | succ m ih => exact A.frob_bijective.1 ((ha m).trans (ih.trans (hb m).symm))
 
 /- English proof (translation)
-Rewrite using `[hx, mul_sub, Finset.mul_sum, Finset.sum_eq_single i, ← mul_assoc, hi, sub_self]`. Introduce `j _ hj`. Rewrite using `[← mul_assoc, ho i j hj.symm, zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_sub_eq_zero_of_sum {R I : Type} [CommRing R] [Fintype I] [DecidableEq I] {a b : I → R}
     (hi : ∀ i, a i * a i = a i) (ho : ∀ i j, i ≠ j → a i * a j = 0) {x : R}
@@ -206,7 +206,7 @@ theorem mul_sub_eq_zero_of_sum {R I : Type} [CommRing R] [Fintype I] [DecidableE
   · simp
 
 /- English proof (translation)
-Establish `: ∑ i, a i * x = ∑ i, a i * b i` using `Finset.sum_congr rfl fun i _ => by have := hx i; rw [mul_sub, sub_eq_zero] at this; exact this`. Rewrite using `[← this, ← Finset.sum_mul, h1, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_sum_of_mul_sub {R I : Type} [CommRing R] [Fintype I] {a b : I → R}
     (h1 : ∑ i, a i = 1) {x : R} (hx : ∀ i, a i * (x - b i) = 0) : x = ∑ i, a i * b i := by

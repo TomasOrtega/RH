@@ -14,23 +14,23 @@ namespace GlobalTheory.RSThetaLow
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_invT {R : Type} [CommRing R] [TopologicalSpace R] : Continuous (invT a R) :=
   Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext (transpose_transpose _)`.
+A detailed English derivation is pending.
 -/
 theorem invT_invT {R : Type} [CommRing R] (g : GL (Fin a) R) : invT a R (invT a R g) = g :=
   Units.ext (transpose_transpose _)
 
 /- English proof (translation)
-Introduce `L hL C₀ hC₀ N`. Establish `hK : IsCompact ((fun y : GL (Fin a) (Cinf E) => toL y.val) ⁻¹' tsupport f)` using `isOpenEmbedding_val.isInducing.isCompact_preimage' hf.2.1 fun x hx => hf.2.2 hx`. Take `⟨C, h⟩` from `hF L hL _ (hC₀.mul ((hK.image continuous_infGL).image continuous_invT)) N`. Establish `hi : Integrable f` using `hf.1.continuous.integrable_of_hasCompactSupport hf.2.1`. Use `⟨(∫ x, ‖f x‖) * C, fun g c hcC ξ hξ hm => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, ← integral_mul_const]`. Use `norm_integral_le_of_norm_le (hi.norm.mul_const _) (.of_forall fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport f`. Take `⟨u, hu⟩` from `hf.2.2 hx`. Take `rfl : x = toL u.val` from `hu.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[norm_mul, chart_val]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `h1` using `h g _ (Set.mul_mem_mul hcC ⟨_, ⟨u, hx, rfl⟩, rfl⟩) ξ hξ hm`. Simplify `h1` using `only [map_mul, invT_invT, mul_assoc]`. Simplify using `[image_eq_zero_of_notMem_tsupport hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem decays_invT_smoothInf {F : GA E a → ℂ} (hF : Decays fun g => F (invT a (Ad E) g)) {f : Lie E a → ℂ}
     (hf : IsTest (invSet E a) f) : Decays fun g => GlobalTheory.JSW.smoothInf f F (invT a (Ad E) g) := by
@@ -52,9 +52,9 @@ theorem decays_invT_smoothInf {F : GA E a → ℂ} (hF : Decays fun g => F (invT
   · simp [image_eq_zero_of_notMem_tsupport hx]
 
 /- English proof (translation)
-Set `D : Submodule ℂ (Sm E a)` to `{ carrier := {φ | Decays fun g => φ.1 (invT a (Ad E) g)} add_mem' := fun {φ ψ} h h' => Decays.add (F := fun g => φ.1 (invT a (Ad E) g)) (G := fun g => ψ.1 (invT a (Ad E) g)) h h' zero_mem' := Decays.zero smul_mem' := fun z φ h => Decays.smul (F := fun g => φ.1 (invT a (Ad E) g)) …`. Establish `h0 : π.V ≤ D` using `fun ψ hψ => decays_of_mem (CuspSub.IsUnitary.contra hπ) (φ := UpperTheory.V.TC.dualFn E a ψ) ⟨ψ, hψ, rfl⟩`. Use `(sup_le h0 (Submodule.span_le.2 ?_) : withSmoothings π ≤ D) hφ` and prove the remaining obligations. Introduce and unpack `F ⟨f, ψ, hf, hψ, e⟩`. Express the relevant statement in the definitionally equal form `Decays fun g => F.1 (invT a (Ad E) g)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `decays_invT_smoothInf (h0 hψ) hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decays_invT {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a} (hφ : φ ∈ withSmoothings π) :
     Decays fun g => φ.1 (invT a (Ad E) g) := by
@@ -72,7 +72,7 @@ theorem decays_invT {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a} (hφ :
   exact decays_invT_smoothInf (h0 hψ) hf
 
 /- English proof (translation)
-Take `⟨χ, hω, h⟩` from `hπ`. Use `mem_bddForms_of_withSmoothings (GlobalTheory.CuspBoundSiegel.cuspFormsBounded_of_rapidDecay (GlobalTheory.cuspRapidDecaySiegelGL_of_finite GlobalTheory.automorphicFormsFiniteGL)) hω (CuspSub.hasCentral_iff.1 h) hφ` as an intermediate fact. Conclude with `⟨this.1, this.2.2.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem continuous_bounded {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a} (hφ : φ ∈ withSmoothings π) :
     Continuous φ.1 ∧ ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C := by
@@ -87,9 +87,9 @@ def rowInv (ℓ : Fin a) (y : Fin a → Cinf E) : Lie E a := invL (toL (rowMat �
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = ℓ`. Substitute `h` using the available equality. Establish `: (fun y : Fin a → Cinf E => toL (rowMat i y) i) = id` using `funext fun y => updateRow_self`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `contDiff_id`. Establish `: (fun y : Fin a → Cinf E => toL (rowMat ℓ y) i) = fun _ => (1 : Matrix (Fin a) (Fin a) (Cinf E)) i`. Use function extensionality and compare the values at `fun y => updateRow_ne h`. Rewrite using `[this]`. Conclude with `contDiff_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_rowMat (ℓ : Fin a) : ContDiff ℝ ∞ fun y : Fin a → Cinf E => toL (rowMat ℓ y) := by
   refine contDiff_pi.2 fun i => ?_
@@ -103,27 +103,27 @@ theorem contDiff_rowMat (ℓ : Fin a) : ContDiff ℝ ∞ fun y : Fin a → Cinf 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `(contDiffAt_invL (isUnit_rowMat_iff.2 (isUnit_of_mem_rowSet hy))).comp y (contDiff_rowMat ℓ).contDiffAt`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_rowInv {ℓ : Fin a} {y : Fin a → Cinf E} (hy : y ∈ rowSet E ℓ) : ContDiffAt ℝ ∞ (rowInv ℓ) y :=
   (contDiffAt_invL (isUnit_rowMat_iff.2 (isUnit_of_mem_rowSet hy))).comp y (contDiff_rowMat ℓ).contDiffAt
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Rewrite using `[rowInv, ← val_rowGL (isUnit_of_mem_rowSet hy), invL_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowInv_eq {ℓ : Fin a} {y : Fin a → Cinf E} (hy : y ∈ rowSet E ℓ) : rowInv ℓ y = toL ((rowGL ℓ y)⁻¹).val := by
   rw [rowInv, ← val_rowGL (isUnit_of_mem_rowSet hy), invL_val]
 
 /- English proof (translation)
-Rewrite using `[rowInv_eq hy, chart_val, map_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_rowInv (F : GA E a → ℂ) (g : GA E a) {ℓ : Fin a} {y : Fin a → Cinf E} (hy : y ∈ rowSet E ℓ) :
     F (g * (infGL E a (rowGL ℓ y))⁻¹) = chart F g (rowInv ℓ y) := by
   rw [rowInv_eq hy, chart_val, map_inv]
 
 /- English proof (translation)
-The claim follows from `((contDiffAt_chart F.2 g (rowInv_eq hy ▸ val_mem_invSet _)).comp y (contDiffAt_rowInv hy)).congr_of_eventuallyEq (Filter.eventually_of_mem ((isOpen_rowSet ℓ).mem_nhds hy) fun _ hz => chart_rowInv _ g hz)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_translate (F : Sm E a) (g : GA E a) {ℓ : Fin a} {y : Fin a → Cinf E} (hy : y ∈ rowSet E ℓ) :
     ContDiffAt ℝ ∞ (fun y => F.1 (g * (infGL E a (rowGL ℓ y))⁻¹)) y :=
@@ -137,7 +137,7 @@ def rowCoef (ℓ : Fin a) (v : Fin a → Cinf E) (β : Fin (Module.finrank ℝ (
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Introduce `y hy` and use `by refine ContDiffAt.contDiffWithinAt (Complex.ofRealCLM.contDiff.contDiffAt.comp y ((LinearMap.toContinuousLinearMap ((Module.finBasis ℝ (Lie E a)).coord β)).contDiff.contDiffAt.comp y ?_)) have h1 : ContDiffAt ℝ ∞ (fun y => fderiv ℝ (rowInv ℓ) y v) y := ((contDiffAt_rowInv hy). …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiffOn_rowCoef (ℓ : Fin a) (v : Fin a → Cinf E) (β : Fin (Module.finrank ℝ (Lie E a))) :
     ContDiffOn ℝ ∞ (rowCoef ℓ v β) (rowSet E ℓ) := fun y hy => by
@@ -152,11 +152,9 @@ theorem contDiffOn_rowCoef (ℓ : Fin a) (v : Fin a → Cinf E) (β : Fin (Modul
     (contDiffAt_pi.1 (contDiffAt_pi.1 h1 k) j)
 
 /- English proof (translation)
-Establish `hm : rowInv ℓ y ∈ invSet E a` using `rowInv_eq hy ▸ val_mem_invSet _`. Establish `e : (fun y => F.1 (g * (infGL E a (rowGL ℓ y))⁻¹)) =ᶠ[𝓝 y] chart F.1 g ∘ rowInv ℓ` using `Filter.eventually_of_mem ((isOpen_rowSet ℓ).mem_nhds hy) fun _ hz => chart_rowInv _ g hz`. Use `set X : Lie E a := toL (rowMat ℓ y * Matrix.of (fderiv ℝ (rowInv ℓ) y v)) with hX`. Establish `h1 : rmul X (rowInv ℓ y) = fderiv ℝ (rowInv ℓ) y v`. Rewrite using `[rowInv_eq hy, hX, ← val_rowGL (isUnit_of_mem_rowSet hy)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.inv_mul_cancel_left (rowGL ℓ y) (Matrix.of (fderiv ℝ (rowInv ℓ) y v))`. Rewrite using `[e.fderiv_eq, fderiv_comp _ ((contDiffAt_chart F.2 g hm).differentiableAt (by simp)) ((contDiffAt_rowInv hy).differentiableAt (by simp)), ContinuousLinearMap.comp_apply, ← h1, ← chart_lieD F.2 X g hm, ← chart_rowInv _ g hy]`. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart F.1 _) (oneL E a) X = _`. Use `conv_lhs => rw [← (Module.finBasis ℝ (Lie E a)).sum_repr X, map_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, Complex.real_smul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fderiv_translate (F : Sm E a) (g : GA E a) {ℓ : Fin a} {y : Fin a → Cinf E} (hy : y ∈ rowSet E ℓ)
     (v : Fin a → Cinf E) : fderiv ℝ (fun y => F.1 (g * (infGL E a (rowGL ℓ y))⁻¹)) y v =
@@ -178,7 +176,7 @@ theorem fderiv_translate (F : Sm E a) (g : GA E a) {ℓ : Fin a} {y : Fin a → 
   rfl
 
 /- English proof (translation)
-Establish `hs : tsupport (rsInf ℓ F.1 F'.1 Φ g) ⊆ tsupport Φ` using `tsupport_mul_subset_right`. Use `⟨contDiff_iff_contDiffAt.2 fun y => ?_, hΦ.2.1.mul_left, hs.trans hΦ.2.2⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ tsupport Φ`. Conclude with `((contDiffAt_translate F g (hΦ.2.2 hy)).mul (Complex.conjCLE.contDiff.contDiffAt.comp y (contDiffAt_translate F' g (hΦ.2.2 hy)))).mul hΦ.1.contDiffAt`. Conclude with `contDiffAt_const.congr_of_eventuallyEq (notMem_tsupport_iff_eventuallyEq.1 fun h => hy (hs h))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem isTest_rsInf {ℓ : Fin a} (F F' : Sm E a) {Φ : (Fin a → Cinf E) → ℂ} (hΦ : IsTest (rowSet E ℓ) Φ) (g : GA E a) :
     IsTest (rowSet E ℓ) (rsInf ℓ F.1 F'.1 Φ g) := by
@@ -190,13 +188,13 @@ theorem isTest_rsInf {ℓ : Fin a} (F F' : Sm E a) {Φ : (Fin a → Cinf E) → 
   · exact contDiffAt_const.congr_of_eventuallyEq (notMem_tsupport_iff_eventuallyEq.1 fun h => hy (hs h))
 
 /- English proof (translation)
-Distinguish the cases in `hy : y ∈ tsupport Φ`. Establish `h1` using `((contDiffAt_translate F g (hΦ.2.2 hy)).differentiableAt (by simp)).hasFDerivAt`. Establish `h2` using `((contDiffAt_translate F' g (hΦ.2.2 hy)).differentiableAt (by simp)).hasFDerivAt`. Establish `h3` using `(hΦ.1.differentiable (by simp) y).hasFDerivAt`. Establish `h4` using `((h1.mul (Complex.conjCLE.hasFDerivAt.comp y h2)).mul h3).fderiv`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(congrArg (· v) h4).trans ?_` and prove the remaining obligations. Establish `hc : ∀ β, conj (rowCoef ℓ v β y) = rowCoef ℓ v β y` using `fun β => Complex.conj_ofReal _`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, fderiv_translate _ g (hΦ.2.2 hy), rsInf, smul_eq_mul, Pi.mul_apply, Function.comp_apply, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_sum, map_mul, hc, Finset.mul_sum …`. Rewrite using `[add_comm, add_comm (∑ _, _)]`. Apply the tactic sequence `congr 2 <;> exact Finset.sum_congr rfl fun _ _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h0 : Φ y = 0` using `image_eq_zero_of_notMem_tsupport hy`. Establish `h1 : fderiv ℝ Φ y = 0`. Rewrite using `[(notMem_tsupport_iff_eventuallyEq.1 hy).fderiv_eq]`. Simplify using the standard rewrite rules. Establish `h2 : fderiv ℝ (rsInf ℓ F.1 F'.1 Φ g) y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : tsupport (rsInf ℓ F.1 F'.1 Φ g) ⊆ tsupport Φ` using `tsupport_mul_subset_right`. Rewrite using `[(notMem_tsupport_iff_eventuallyEq.1 fun h => hy (hs h)).fderiv_eq]`. Simplify using the standard rewrite rules. Rewrite using `[h2]`. Simplify using `[rsInf, h0, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_rsInf {ℓ : Fin a} (F F' : Sm E a) {Φ : (Fin a → Cinf E) → ℂ} (hΦ : IsTest (rowSet E ℓ) Φ) (g : GA E a)
     (y v : Fin a → Cinf E) : fderiv ℝ (rsInf ℓ F.1 F'.1 Φ g) y v =
@@ -227,7 +225,7 @@ theorem fderiv_rsInf {ℓ : Fin a} (F F' : Sm E a) {Φ : (Fin a → Cinf E) → 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `hs : tsupport (fun y => rowCoef ℓ v β y * Φ y) ⊆ tsupport Φ` using `tsupport_mul_subset_right`. Use `⟨contDiff_iff_contDiffAt.2 fun y => ?_, hΦ.2.1.mul_left, hs.trans hΦ.2.2⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ tsupport Φ`. Conclude with `((contDiffOn_rowCoef ℓ v β).contDiffAt ((isOpen_rowSet ℓ).mem_nhds (hΦ.2.2 hy))).mul hΦ.1.contDiffAt`. Conclude with `contDiffAt_const.congr_of_eventuallyEq (notMem_tsupport_iff_eventuallyEq.1 fun h => hy (hs h))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem isTest_rowCoef_mul {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (hΦ : IsTest (rowSet E ℓ) Φ) (v : Fin a → Cinf E)
     (β : Fin (Module.finrank ℝ (Lie E a))) : IsTest (rowSet E ℓ) fun y => rowCoef ℓ v β y * Φ y := by
@@ -239,7 +237,7 @@ theorem isTest_rowCoef_mul {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (hΦ 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `(h.integrable_of_hasCompactSupport hc).smul_measure (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_infMeasure {f : (Fin a → Cinf E) → ℂ} (h : Continuous f) (hc : HasCompactSupport f) :
     Integrable f (infMeasure E a) :=
@@ -250,19 +248,17 @@ def famSpan {ι : Type} (ℓ : Fin a) (S S' : Submodule ℂ (Sm E a)) (g : ι �
   Submodule.span ℂ {f | ∃ F ∈ S, ∃ F' ∈ S', ∃ Φ, IsTest (rowSet E ℓ) Φ ∧ f = fun i => rsInf ℓ F.1 F'.1 Φ (g i)}
 
 /- English proof (translation)
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨F, hF, F', hF', Φ, hΦ, rfl⟩` from `hf`. Use `⟨fun i => ⟨(isTest_rsInf F F' hΦ _).1, (isTest_rsInf F F' hΦ _).2.1⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩` from `hS F hF _ (hΦ.2.1.isCompact.image_of_continuousOn ((continuousOn_inv_rowGL ℓ).mono hΦ.2.2))`. Take `⟨D, hD⟩` from `hS' F' hF'`. Use `⟨(∫ y, ‖Φ y‖ ∂(infMeasure E a)) * (D * C), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← integral_mul_const]`. Use `integral_mono_of_nonneg (.of_forall fun _ => norm_nonneg _) ((integrable_infMeasure hΦ.1.continuous hΦ.2.1).norm.mul_const _) (.of_forall fun y => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hy : y ∈ tsupport Φ`. Establish `h1` using `hC i _ ⟨y, hy, rfl⟩`. Simplify using `only [rsInf, norm_mul, Complex.norm_conj]`. Rewrite using `[mul_comm, mul_assoc D, mul_comm D]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul h1 (hD _) (norm_nonneg _) ((norm_nonneg _).trans h1)) (norm_nonneg _)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[rsInf, image_eq_zero_of_notMem_tsupport hy]`. Consider the case `zero => exact ⟨fun i => ⟨contDiff_const, HasCompactSupport.zero⟩, 0, fun i => by simp⟩`. Consider the case `add f f' _ _ h h'`. Take `⟨h1, C, h2⟩` from `h`. Take `⟨h1', C', h2'⟩` from `h'`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => ⟨(h1 i).1.add (h1' i).1, (h1 i).2.add (h1' i).2⟩, C + C', fun i => ?_⟩` and prove the remaining obligations. Establish `k` using `(integrable_infMeasure (h1 i).1.continuous (h1 i).2).norm`. Establish `k'` using `(integrable_infMeasure (h1' i).1.continuous (h1' i).2).norm`. Rewrite using `[add_mul]`. Use `le_trans ?_ (add_le_add (h2 i) (h2' i))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_add k k']`. Conclude with `integral_mono_of_nonneg (.of_forall fun _ => norm_nonneg _) (k.add k') (.of_forall fun y => norm_add_le _ _)`. Consider the case `smul z f _ h`. Take `⟨h1, C, h2⟩` from `h`. Use `⟨fun i => ⟨(h1 i).1.const_smul z, (h1 i).2.smul_left (f := fun _ => z)⟩, ‖z‖ * C, fun i => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Pi.smul_apply, norm_smul, integral_const_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h2 i) (norm_nonneg _)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem famSpan_bound {ι : Type} {ℓ : Fin a} {S S' : Submodule ℂ (Sm E a)} {g : ι → GA E a} {w : ι → ℝ}
     (hS : ∀ F ∈ S, ∀ C₀ : Set (GA E a), IsCompact C₀ → ∃ C : ℝ, ∀ i, ∀ c ∈ C₀, ‖F.1 (g i * c)‖ ≤ C * w i)
@@ -303,17 +299,17 @@ theorem famSpan_bound {ι : Type} {ℓ : Fin a} {S S' : Submodule ℂ (Sm E a)} 
     exact mul_le_mul_of_nonneg_left (h2 i) (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨F, hF, F', hF', Φ, hΦ, rfl⟩` from `hf`. Use `⟨fun i => (isTest_rsInf F F' hΦ _).1.differentiable (by simp), fun v => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun i y => fderiv ℝ (rsInf ℓ F.1 F'.1 Φ (g i)) y v) = ∑ β, (fun i => rsInf ℓ (lie E a (Module.finBasis ℝ (Lie E a) β) F).1 F'.1 (fun y => rowCoef ℓ v β y * Φ y) (g i)) + ∑ β, (fun i => rsInf ℓ F.1 (lie E a (Module.finBasis ℝ (Lie E a) β) F').1 (fun y => rowCoef ℓ v β y * Φ y …`. Use function extensionality and compare the values at `i y`. Simplify using `only [Pi.add_apply, Finset.sum_apply]`. Conclude with `fderiv_rsInf F F' hΦ _ y v`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `add_mem (add_mem (Submodule.sum_mem _ fun β _ => Submodule.subset_span ⟨_, hS _ F hF, F', hF', _, isTest_rowCoef_mul hΦ v β, rfl⟩) (Submodule.sum_mem _ fun β _ => Submodule.subset_span ⟨F, hF, _, hS' _ F' hF', _, isTest_rowCoef_mul hΦ v β, rfl⟩)) (Submodule.subset_span ⟨F, hF, F' …`. Consider the case `zero`. Use `⟨fun i => differentiable_const _, fun v => ?_⟩` and prove the remaining obligations. Use `zero_mem (famSpan ℓ S S' g) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i y`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `add f f' _ _ h h'`. Use `⟨fun i => (h.1 i).add (h'.1 i), fun v => ?_⟩` and prove the remaining obligations. Use `add_mem (h.2 v) (h'.2 v) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i y`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Pi.add_apply, fderiv_add (h.1 i y) (h'.1 i y)]`. Both sides reduce to the same expression. Consider the case `smul z f _ h`. Use `⟨fun i => (h.1 i).const_smul z, fun v => ?_⟩` and prove the remaining obligations. Use `Submodule.smul_mem _ z (h.2 v) using 1` and compare the differences between its conclusion and the goal.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i y`. Rewrite using `[Pi.smul_apply, fderiv_const_smul (h.1 i y)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem famSpan_fderiv {ι : Type} {ℓ : Fin a} {S S' : Submodule ℂ (Sm E a)} {g : ι → GA E a}
     (hS : ∀ X, ∀ F ∈ S, lie E a X F ∈ S) (hS' : ∀ X, ∀ F ∈ S', lie E a X F ∈ S') : ∀ f ∈ famSpan ℓ S S' g,

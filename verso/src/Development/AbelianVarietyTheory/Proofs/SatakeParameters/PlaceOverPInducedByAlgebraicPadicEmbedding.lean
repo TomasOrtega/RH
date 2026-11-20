@@ -11,7 +11,7 @@ namespace GlobalTheory.DatumJets.Place
 variable {K : Type} [Field K] [NumberField K] {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.MomPlace.norm_le_one_of_isIntegral_int (by convert map_isIntegral_int ι (RingOfIntegers.isIntegral_coe y) exact Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_int_le (ι : K →+* ℂ_[p]) (y : 𝓞 K) : ‖ι (y : K)‖ ≤ 1 :=
   GlobalTheory.MomPlace.norm_le_one_of_isIntegral_int (by
@@ -36,16 +36,16 @@ def smallIdeal (ι : K →+* ℂ_[p]) : Ideal (𝓞 K) where
     nlinarith [norm_nonneg (ι (c : K)), norm_nonneg (ι (a : K))]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smallIdeal (ι : K →+* ℂ_[p]) (y : 𝓞 K) : y ∈ smallIdeal ι ↔ ‖ι (y : K)‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_smallIdeal]`. Simplify using the standard rewrite rules. Introduce `a b hab`. Rewrite `hab` using `[mem_smallIdeal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_smallIdeal, mem_smallIdeal]`. Establish `: ι ((a * b : 𝓞 K) : K) = ι (a : K) * ι (b : K)` using `by simp`. Rewrite `hab` using `[this, norm_mul]`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hcon.1, hcon.2]`.
+A detailed English derivation is pending.
 -/
 theorem smallIdeal_isPrime (ι : K →+* ℂ_[p]) : (smallIdeal ι).IsPrime := by
   refine ⟨?_, ?_⟩
@@ -61,7 +61,7 @@ theorem smallIdeal_isPrime (ι : K →+* ℂ_[p]) : (smallIdeal ι).IsPrime := b
     nlinarith [hcon.1, hcon.2]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hnd`. Establish `hc : Nat.Coprime q M` using `(Nat.Prime.coprime_iff_not_dvd hq).2 hnd`. Take `⟨u, v, huv⟩ : IsCoprime (q : R) (M : R)` from `Nat.Coprime.cast hc`. Conclude with `hI ((Ideal.eq_top_iff_one _).2 (huv ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dvd_of_natCast_mem {R : Type*} [CommRing R] (I : Ideal R) (hI : I ≠ ⊤) {q M : ℕ} (hq : q.Prime)
     (h1 : (q : R) ∈ I) (h2 : (M : R) ∈ I) : q ∣ M := by
@@ -72,7 +72,7 @@ theorem dvd_of_natCast_mem {R : Type*} [CommRing R] (I : Ideal R) (hI : I ≠ �
     (huv ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' p (p : ℚ_[p])`. Establish `h2 : ‖(p : ℚ_[p])‖ < 1` using `Padic.norm_p_lt_one`. Rewrite `h2` using `[← h]`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   have h := PadicComplex.norm_extends' p (p : ℚ_[p])
@@ -81,19 +81,17 @@ theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   simpa using h2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hnle : ∀ σ : K →ₐ[ℚ] ℂ_[p], ¬ w.asIdeal ≤ smallIdeal (σ : K →+* ℂ_[p])`. Introduce `σ hle`. Conclude with `hcon (σ : K →+* ℂ_[p]) (w.isMaximal.eq_of_le (smallIdeal_isPrime _).ne_top hle)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `σ0 : K →ₐ[ℚ] ℂ_[p]` using `IsAlgClosed.lift`. Establish `hav : ¬ ((w.asIdeal : Set (𝓞 K)) ⊆ ⋃ σ ∈ ((Finset.univ : Finset (K →ₐ[ℚ] ℂ_[p])) : Set (K →ₐ[ℚ] ℂ_[p])), (smallIdeal (σ : K →+* ℂ_[p]) : Set (𝓞 K)))`. Rewrite using `[Ideal.subset_union_prime σ0 σ0 (fun σ _ _ _ => smallIdeal_isPrime _)]`. Introduce and unpack `⟨σ, -, hle⟩`. Conclude with `hnle σ hle`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hxw, hx⟩` from `Set.not_subset.1 hav`. Establish `hxσ : ∀ σ : K →ₐ[ℚ] ℂ_[p], 1 ≤ ‖σ (x : K)‖`. Introduce `σ`. Assume the negation of the conclusion as `hlt`. Conclude with `hx (Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_univ σ)) (not_le.1 hlt))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : ((Algebra.norm ℤ x).natAbs : 𝓞 K) ∈ w.asIdeal`. Establish `h1` using `Ideal.absNorm_mem (Ideal.span {x})`. Rewrite `h1` using `[Ideal.absNorm_span_singleton]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hxw h1`. Establish `hpN : p ∣ (Algebra.norm ℤ x).natAbs` using `dvd_of_natCast_mem w.asIdeal w.isPrime.ne_top Fact.out hw hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨m, hm⟩ : (p : ℤ) ∣ Algebra.norm ℤ x` from `Int.natCast_dvd.2 hpN`. Establish `hprod : ((Algebra.norm ℤ x : ℤ) : ℂ_[p]) = ∏ σ : K →ₐ[ℚ] ℂ_[p], σ (x : K)`. Rewrite using `[← Algebra.norm_eq_prod_embeddings ℚ ℂ_[p] (x : K), ← Algebra.coe_norm_int x]`. Simplify using the standard rewrite rules. Establish `h1 : 1 ≤ ‖((Algebra.norm ℤ x : ℤ) : ℂ_[p])‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hprod, norm_prod]`. Conclude with `Finset.prod_induction _ (fun t : ℝ => 1 ≤ t) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl fun σ _ => hxσ σ`. Establish `h2 : ((Algebra.norm ℤ x : ℤ) : ℂ_[p]) = (p : ℂ_[p]) * ((m : ℤ) : ℂ_[p])`. Rewrite using `[hm]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ‖((m : ℤ) : ℂ_[p])‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one _ m`. Rewrite `h1` using `[h2, norm_mul]`. Establish `h4` using `norm_p_lt_one (p := p)`. Use polynomial arithmetic with `[norm_nonneg (p : ℂ_[p]), norm_nonneg ((m : ℤ) : ℂ_[p])]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_embedding (w : HeightOneSpectrum (𝓞 K)) (hw : (p : 𝓞 K) ∈ w.asIdeal) :
     ∃ ι : K →+* ℂ_[p], w.asIdeal = smallIdeal ι := by
@@ -136,15 +134,15 @@ theorem exists_embedding (w : HeightOneSpectrum (𝓞 K)) (hw : (p : 𝓞 K) ∈
   nlinarith [norm_nonneg (p : ℂ_[p]), norm_nonneg ((m : ℤ) : ℂ_[p])]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Establish `hgt : 1 < w.valuation K x` using `not_le.1 hcon`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hgt`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hinv : w.valuation K x⁻¹ < 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ hgt`. Take `⟨n, d, h⟩` from `w.exists_primeCompl_mul_eq_of_integer x⁻¹ hinv.le`. Establish `hd : 1 ≤ ‖ι ((d : 𝓞 K) : K)‖` using `not_lt.1 fun hlt => d.2 ((hw _).2 hlt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : n ∈ w.asIdeal`. Rewrite using `[← w.valuation_lt_one_iff_mem (K := K)]`. Express the relevant statement in the definitionally equal form `w.valuation K (algebraMap (𝓞 K) K n) < 1`. Rewrite using `[← h, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hn'` using `(hw n).1 hn`. Establish `h2 : ((d : 𝓞 K) : K) = x * (n : K)`. Establish `h' : x⁻¹ * ((d : 𝓞 K) : K) = (n : K)` using `h`. Rewrite using `[← h', ← mul_assoc, mul_inv_cancel₀ hx0, one_mul]`. Rewrite `hd` using `[h2, map_mul, norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg (ι x), norm_nonneg (ι (n : K))]`.
+A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_norm (ι : K →+* ℂ_[p]) (w : HeightOneSpectrum (𝓞 K))
     (hw : ∀ y : 𝓞 K, y ∈ w.asIdeal ↔ ‖ι (y : K)‖ < 1) (x : K) (hx : ‖ι x‖ ≤ 1) :
@@ -174,9 +172,9 @@ theorem valuation_le_one_of_norm (ι : K →+* ℂ_[p]) (w : HeightOneSpectrum (
   nlinarith [norm_nonneg (ι x), norm_nonneg (ι (n : K))]
 
 /- English proof (translation)
-Introduce `K _ _ σ p _ w hw`. Take `⟨ι, hι⟩` from `exists_embedding w hw`. Establish `hw' : ∀ y : 𝓞 K, y ∈ w.asIdeal ↔ ‖ι (y : K)‖ < 1` using `fun y => by rw [hι]; rfl`. Take `⟨lam, hlam⟩` from `GlobalTheory.MomPlace.exists_extension K p σ ι`. Use `⟨lam, fun k => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.IntegralityWeylConditions.IntAt`. Rewrite using `[(hlam k).2]`. Conclude with `⟨fun h => valuation_le_one_of_norm ι w hw' k h.2, fun h => ⟨(hlam k).1, GlobalTheory.MomPlace.norm_le_one_of_valuation K p ι w hw' k h⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem placeAbove : GlobalTheory.DatumJets.PlaceAbove := by
   intro K _ _ σ p _ w hw

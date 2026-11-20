@@ -6,24 +6,24 @@ open MvPolynomial GlobalTheory.PsCo.Pc1 GlobalTheory.PsCo.Pc1.A
 namespace GlobalTheory.PsCo.Pc1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sg; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sg_sq' {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : sg ε a * sg ε a = 1 := by
   unfold sg; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sg; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem conj_sg' {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     (starRingEnd ℂ) (sg ε a) = sg ε a := by
   unfold sg; split_ifs <;> simp
 
 /- English proof (translation)
-Use `⟨Matrix.of fun a b => (Z a b + (starRingEnd ℂ) (barM ε Z a b)) / 2, Matrix.of fun a b => -Complex.I * (Z a b - (starRingEnd ℂ) (barM ε Z a b)) / 2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Establish `ha` using `sg_sq' ε a`. Establish `hb` using `sg_sq' ε b`. Simplify using `only [barM, Matrix.of_apply, map_div₀, map_add, map_neg, map_mul, conj_sg', Complex.conj_conj, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(starRingEnd ℂ) (Z a b) / 2 * (sg ε b * sg ε b)) * ha + (-(starRingEnd ℂ) (Z a b) / 2) * hb`. Introduce `a b`. Establish `ha` using `sg_sq' ε a`. Establish `hb` using `sg_sq' ε b`. Simplify using `only [barM, Matrix.of_apply, map_div₀, map_sub, map_neg, map_mul, conj_sg', Complex.conj_conj, map_ofNat, Complex.conj_I]`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-Complex.I * (starRingEnd ℂ) (Z a b) / 2 * (sg ε b * sg ε b)) * ha + (-Complex.I * (starRingEnd ℂ) (Z a b) / 2) * hb`. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Take the linear combination `((Z a b - (starRingEnd ℂ) (barM ε Z a b)) / 2) * Complex.I_mul_I`.
+Take a linear combination of the given relations to obtain the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem lieU_decomposition {n : ℕ} (ε : Fin n → Bool) (Z : Mat n) :
     ∃ A B : Mat n, LieU ε A ∧ LieU ε B ∧ Z = A + Complex.I • B := by
@@ -48,9 +48,7 @@ private theorem lieU_decomposition {n : ℕ} (ε : Fin n → Bool) (Z : Mat n) :
     linear_combination ((Z a b - (starRingEnd ℂ) (barM ε Z a b)) / 2) * Complex.I_mul_I
 
 /- English proof (translation)
-Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `(x | x)`. Simplify using `only [dZ, Derivation.add_apply, Derivation.smul_apply, mkDerivation_X, Sum.elim_inl, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, smul_eq_C_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Simplify using `only [dZ, Derivation.add_apply, Derivation.smul_apply, mkDerivation_X, Sum.elim_inr, barM, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_neg, smul_eq_C_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dZ_add_smul {n : ℕ} (ε : Fin n → Bool) (A B : Mat n) (c : ℂ) :
     dZ ε (A + c • B) = dZ ε A + c • dZ ε B := by
@@ -66,7 +64,7 @@ theorem dZ_add_smul {n : ℕ} (ε : Fin n → Bool) (A B : Mat n) (c : ℂ) :
     exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hC : ev g (C c) = c` using `by simp [ev]`. Simplify using `only [adBas, bas, dZ_add_smul, Derivation.add_apply, Derivation.smul_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, smul_eq_C_mul, map_add, map_mul, hC]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adBas_add_smul {n : ℕ} (ε : Fin n → Bool) (A B : Mat n) (c : ℂ) (H : ℝ → ℝ)
     (P : GlobalTheory.PsCo.Pc1.Poly n) :
@@ -78,7 +76,7 @@ theorem adBas_add_smul {n : ℕ} (ε : Fin n → Bool) (A B : Mat n) (c : ℂ) (
   ring
 
 /- English proof (translation)
-Introduce `n ε Z H P hH`. Take `⟨A, B, hA, hB, rfl⟩` from `lieU_decomposition ε Z`. Rewrite using `[adBas_add_smul]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨A, H, P, hA, hH, rfl⟩) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨B, H, P, hB, hH, rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adBas_mem_adSpanM  : ∀ {n : ℕ} (ε : Fin n → Bool) (Z : GlobalTheory.PsCo.Pc1.Mat n) (H : ℝ → ℝ)
     (P : GlobalTheory.PsCo.Pc1.Poly n), GlobalTheory.PsCo.Pc1.IsCutFn H →

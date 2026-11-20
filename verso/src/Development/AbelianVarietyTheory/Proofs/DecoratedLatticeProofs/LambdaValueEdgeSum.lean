@@ -14,29 +14,27 @@ open ValuativeRel
 namespace GlobalTheory.ChainChar
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use `set X := (x : GL (Fin κ ⊕ Fin (s + 1)) k).val with hX`. Set `e : Fin κ ⊕ Fin (s + 1) ≃ Fin (κ + (s + 1))` to `finSumFinEquiv`. Establish `he : ∀ a, (e a).val = GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos _ _ a`. Apply the tactic sequence `rintro (a | a) <;> simp [e, GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos]`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `choose l hl using fun a b => Ideal.Quotient.mk_surjective (I := I) (g.val (e a) (e b))`. Establish `h1 : ∀ a b, valuation k (X a b - π (l a b)) < 1` using `fun a b => hx a b _ _ (he a) (he b) _ (hl a b)`. Establish `hI : ∀ p ∈ I, valuation k (π p) < 1`. Introduce `p hp`. Establish `h2` using `hx (.inr 0) (.inr 0) _ _ (he _) (he _) (l (.inr 0) (.inr 0) + p) (by rw [map_add, hl, Ideal.Quotient.eq_zero_iff_mem.2 hp, add_zero])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `(valuation k).map_sub_lt (h1 (.inr 0) (.inr 0)) h2`. Rewrite `h3` using `[map_add, sub_sub_sub_cancel_left, add_sub_cancel_left]`. Then use the resulting hypothesis. Set `w : O` to `∑ a, ∑ b, if GlobalTheory.chainEdge κ (e a) (e b) then l a b else 0`. Set `t : k` to `∑ a, ∑ b, if GlobalTheory.chainEdge κ (e a) (e b) then X a b else 0`. Establish `hw : w - z ∈ I`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Ideal.Quotient.eq, hz, edgeSum, ← e.sum_comp]`. Simplify using `only [w, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← e.sum_comp]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `hl a b`. Conclude with `map_zero _`. Establish `htw : valuation k (t - π w) < 1`. Simplify using `only [t, w, map_sum, ← Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(valuation k).map_sum_lt one_ne_zero fun a _ => (valuation k).map_sum_lt one_ne_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `h1 a b`. Simplify using the standard rewrite rules. Establish `htz : valuation k (t - π z) < 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h4` using `(valuation k).map_add_lt htw (hI _ hw)`. Rewrite `h4` using `[map_sub, sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `ht : t = GlobalTheory.RootEx.simpleSum (x : GL (Fin κ ⊕ Fin (s + 1)) k) + GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum Fin.val X.toBlocks₁₁`. Simplify using `only [t, Fintype.sum_sum_type, Finset.sum_add_distrib, GlobalTheory.RootEx.simpleSum, GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum, GlobalTheory.chainEdge, he, GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos, Sum.elim_inl, Sum.elim_inr]`. Establish `e1 : ∀ (a : Fin κ) (b : Fin (s + 1)), ¬ (κ + b.val = a.val + 1 ∧ a.val + 1 ≠ κ)` using `fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e2 : ∀ (a : Fin (s + 1)) (b : Fin κ), ¬ (b.val = κ + a.val + 1 ∧ κ + a.val + 1 ≠ κ)` using `fun a b => by`. Use `b.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ∀ (a b : Fin κ), (b.val = a.val + 1 ∧ a.val + 1 ≠ κ) ↔ b.val = a.val + 1` using `fun a b => by`. Use `b.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e4 : ∀ (a b : Fin (s + 1)), (κ + b.val = κ + a.val + 1 ∧ κ + a.val + 1 ≠ κ) ↔ b.val = a.val + 1` using `fun a b => by`. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e1, e2, e3, e4, if_false, Finset.sum_const_zero, add_zero, zero_add]`. Rewrite using `[add_comm]`. Both sides reduce to the same expression. Establish `hone : S.ψ (((S.ϖ⁻¹ : kˣ) : k) * (t - π z)) = 1`. Use `(S.cond _).2 ?_ _ le_rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h5` using `(S.unif _).1 htz`. Establish `h6 : valuation k (((S.ϖ⁻¹ : kˣ) : k) * (S.ϖ : k)) = valuation k ((1 : kˣ) : k)`. Rewrite using `[Units.inv_mul, Units.val_one]`. Rewrite using `[← h6, map_mul, map_mul]`. Conclude with `mul_le_mul_right h5 _`.
-
-Rewrite using `[S.sym.2 x, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, ← mul_add, ← ht]`. Use `congr 1`. Rewrite using `[← mul_one (S.ψ (_ * π z)), ← hone, ← AddChar.map_add_eq_mul, ← mul_add, add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem char_of_red {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {O : Type} [CommRing O] (I : Ideal O) (π : O →+ k) {s κ r : ℕ} (hr : r = κ + (s + 1))
@@ -105,9 +103,9 @@ theorem char_of_red {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [
   rw [← mul_one (S.ψ (_ * π z)), ← hone, ← AddChar.map_add_eq_mul, ← mul_add, add_sub_cancel]
 
 /- English proof (translation)
-Introduce `D u d τ PP G x g hx z hz`. Establish `hadd : ∀ a b : D.host.E, (GlobalTheory.LocMod.ofSplit G.q).pr (a + b) = (GlobalTheory.LocMod.ofSplit G.q).pr a + (GlobalTheory.LocMod.ofSplit G.q).pr b`. Introduce `a b`. Simplify using `only [GlobalTheory.LocMod.Place.pr, map_add]`. Establish `hr : D.R.r = D.R.k + (G.s + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `G.hs` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `char_of_red PP.asIdeal (AddMonoidHom.mk' (fun y : 𝓞 D.host.E => (GlobalTheory.LocMod.ofSplit G.q).pr (y : D.host.E)) fun a b => by rw [← hadd]; rfl) hr G.S x g hx z hz`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lam_eq_of_red : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP) (x : G.S.P.J) (g : GL (Fin D.R.r) (kP PP)), G.Red x g → ∀ z : 𝓞 D.host.E, Ideal.Quotient.mk PP.asIdeal z = edgeSum (GlobalTheory.chainEdge D.R.k) g → ((G.S.P.lam x : ℂˣ) : ℂ) = (G.S.ψ (((G.S.ϖ⁻¹ : G.kˣ) : G.k) * (GlobalTheory.LocMod.ofSplit G.q).pr (z : D.host.E)) : ℂ) := by
   intro D u d τ PP G x g hx z hz

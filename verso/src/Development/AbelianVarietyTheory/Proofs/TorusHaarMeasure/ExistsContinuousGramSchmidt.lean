@@ -10,7 +10,7 @@ namespace GlobalTheory.GramSchmidtCont
 open ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData
 
 /- English proof (translation)
-Establish `hdet : Continuous fun t => (M t).det` using `hM.matrix_det`. Establish `hadj : Continuous fun t => (M t).adjugate i j` using `hM.matrix_adjugate.matrix_elem i j`. Repeatedly rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Conclude with `(hdet.continuousOn.inv₀ hd).mul hadj.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_inv_apply {T : Type} [TopologicalSpace T] {n : ℕ} {s : Set T}
     {M : T → Matrix (Fin n) (Fin n) ℂ} (hM : Continuous M) (hd : ∀ t ∈ s, (M t).det ≠ 0)
@@ -21,11 +21,9 @@ theorem continuousOn_inv_apply {T : Type} [TopologicalSpace T] {n : ℕ} {s : Se
   exact (hdet.continuousOn.inv₀ hd).mul hadj.continuousOn
 
 /- English proof (translation)
-Distinguish the cases in `hjc : j = c`. Simplify using `only [uMat, Matrix.of_apply, if_pos hjc]`. Conclude with `continuousOn_const`. Distinguish the cases in `h : j < c`. Establish `hB : Continuous fun t => blk (M t) c`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `blk`. Conclude with `hM.matrix_submatrix _ _`. Establish `hinv` using `fun m k => continuousOn_inv_apply hB (fun t ht => hd t ht c) m k`. Simplify using `only [uMat, Matrix.of_apply, if_neg hjc, dif_pos h, Matrix.vecMul, dotProduct, rowc]`. Use `ContinuousOn.neg (continuousOn_finsetSum _ fun m _ => ContinuousOn.mul ?_ (hinv m _))` and prove the remaining obligations.
-
-Conclude with `(hM.matrix_elem c _).continuousOn`. Simplify using `only [uMat, Matrix.of_apply, if_neg hjc, dif_neg h]`. Conclude with `continuousOn_const`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_uMat_apply {T : Type} [TopologicalSpace T] {n : ℕ} {s : Set T}
     {M : T → Matrix (Fin n) (Fin n) ℂ} (hM : Continuous M)
@@ -50,7 +48,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [gram, hermC, col, Matrix.of_apply]`. Conclude with `continuous_finsetSum _ fun k _ => continuous_finsetSum _ fun l _ => ((continuous_id.matrix_elem k a).mul continuous_const).mul (Complex.continuous_conj.comp (continuous_id.matrix_elem l b))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_gram {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) :
     Continuous (gram τ G) := by
@@ -61,7 +59,7 @@ theorem continuous_gram {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r)
       (Complex.continuous_conj.comp (continuous_id.matrix_elem l b))
 
 /- English proof (translation)
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [mat, Matrix.of_apply]`. Conclude with `(continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_mat {r : ℕ} (X : Data E r) (τ : X.Ψ) :
     Continuous (fun x : Frame X.Ψ r => mat x τ) := by
@@ -70,7 +68,7 @@ theorem continuous_mat {r : ℕ} (X : Data E r) (τ : X.Ψ) :
   exact (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))
 
 /- English proof (translation)
-Use `continuousOn_pi.2 fun j => continuousOn_pi.2 fun c => ?_` and prove the remaining obligations. Conclude with `continuousOn_uMat_apply ((continuous_gram τ.1 X.Gm).comp (continuous_mat X τ)) (fun x hx c => blk_det X hx τ c) j c`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_uOf {r : ℕ} (X : Data E r) (τ : X.Ψ) :
     ContinuousOn (fun x : Frame X.Ψ r => uOf X x τ) X.dom := by
@@ -79,7 +77,7 @@ theorem continuousOn_uOf {r : ℕ} (X : Data E r) (τ : X.Ψ) :
     (fun x hx c => blk_det X hx τ c) j c
 
 /- English proof (translation)
-Use `show ContinuousOn (fun x => gram τ.1 X.Gm (mat x τ * uOf X x τ) k k) X.dom`. Conclude with `((continuous_id.matrix_elem k k).comp (continuous_gram τ.1 X.Gm)).comp_continuousOn ((continuous_mat X τ).continuousOn.mul (continuousOn_uOf X τ))`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_dOf {r : ℕ} (X : Data E r) (τ : X.Ψ) (k : Fin r) :
     ContinuousOn (fun x : Frame X.Ψ r => dOf X x τ k) X.dom := by
@@ -88,7 +86,7 @@ theorem continuousOn_dOf {r : ℕ} (X : Data E r) (τ : X.Ψ) (k : Fin r) :
     ((continuous_mat X τ).continuousOn.mul (continuousOn_uOf X τ))
 
 /- English proof (translation)
-Use `show ContinuousOn (fun x => (((Real.sqrt |(dOf X x τ k).re|)⁻¹ : ℝ) : ℂ)) X.dom`. Use `Complex.continuous_ofReal.comp_continuousOn (ContinuousOn.inv₀ ?_ ?_)` and prove the remaining obligations. Conclude with `Real.continuous_sqrt.comp_continuousOn (continuous_abs.comp_continuousOn (Complex.continuous_re.comp_continuousOn (continuousOn_dOf X τ k)))`. Introduce `x hx`. Conclude with `(Real.sqrt_pos.2 (abs_re_pos X hx τ k)).ne'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuousOn_sOf {r : ℕ} (X : Data E r) (τ : X.Ψ) (k : Fin r) :
     ContinuousOn (fun x : Frame X.Ψ r => sOf X x τ k) X.dom := by
@@ -100,7 +98,7 @@ theorem continuousOn_sOf {r : ℕ} (X : Data E r) (τ : X.Ψ) (k : Fin r) :
     exact (Real.sqrt_pos.2 (abs_re_pos X hx τ k)).ne'
 
 /- English proof (translation)
-Use `continuousOn_pi.2 fun τ => ?_` and prove the remaining obligations. Use `show ContinuousOn (fun x => (uOf X x τ * Matrix.diagonal (sOf X x τ) : Matrix (Fin r) (Fin r) ℂ)) X.dom`. Conclude with `(continuousOn_uOf X τ).mul (continuous_id.matrix_diagonal.comp_continuousOn (continuousOn_pi.2 fun k => continuousOn_sOf X τ k))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_bOf {r : ℕ} (X : Data E r) : ContinuousOn (bOf X) X.dom := by
   refine continuousOn_pi.2 fun τ => ?_
@@ -109,7 +107,7 @@ theorem continuousOn_bOf {r : ℕ} (X : Data E r) : ContinuousOn (bOf X) X.dom :
     (continuousOn_pi.2 fun k => continuousOn_sOf X τ k))
 
 /- English proof (translation)
-Introduce `r X`. Conclude with `⟨bOf X, continuousOn_bOf X, fun x hx => ⟨bOf_mem X hx, ortho_bOf X hx⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_continuous_gramSchmidt :
     (∀ (r : ℕ) (X : Data E r), ∃ β : Frame X.Ψ r → Frame X.Ψ r, ContinuousOn β X.dom ∧

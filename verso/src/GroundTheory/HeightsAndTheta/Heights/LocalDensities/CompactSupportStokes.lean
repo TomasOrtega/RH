@@ -12,7 +12,7 @@ open scoped ContDiff Manifold
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Use `(χ.smooth k j).continuousOn` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem chi_contOn (A : FinHolAtlas e X) (χ : ChartPartition A) (k j : Fin A.n) :
     ContinuousOn (fun y => χ.χ k ((A.chart j).symm y)) (A.chart j).target := by
@@ -20,9 +20,9 @@ theorem chi_contOn (A : FinHolAtlas e X) (χ : ChartPartition A) (k j : Fin A.n)
   simpa [Function.comp_def] using this
 
 /- English proof (translation)
-Establish `hC : IsCompact ((A.chart k) '' S)` using `hS.image_of_continuousOn ((A.chart k).continuousOn.mono hSk)`. Establish `hCt : (A.chart k) '' S ⊆ (A.chart k).target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(A.chart k).map_source (hSk hx)`. Use `((hF.mono hCt).integrableOn_compact hC).of_forall_sdiff_eq_zero (A.chart k).open_target.measurableSet ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ⟨hy, hyC⟩`. Conclude with `hz y hy fun h => hyC ⟨_, h, (A.chart k).right_inv hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_target (A : FinHolAtlas e X) (k : Fin A.n) {F : (Fin e → ℂ) → ℝ}
     (hF : ContinuousOn F (A.chart k).target) {S : Set X} (hS : IsCompact S)
@@ -39,7 +39,7 @@ theorem integrableOn_target (A : FinHolAtlas e X) (k : Fin A.n) {F : (Fin e → 
   exact hz y hy fun h => hyC ⟨_, h, (A.chart k).right_inv hy⟩
 
 /- English proof (translation)
-Rewrite using `[locDens_cons, locDens_cons, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locDens_cons_congr (A : FinHolAtlas (e + 1) X) {P Q : LocPot X} (Φ : Fin e → LocPot X)
     (h : P.φ = Q.φ) (k : Fin A.n) (y : Fin (e + 1) → ℂ) :
@@ -47,19 +47,17 @@ theorem locDens_cons_congr (A : FinHolAtlas (e + 1) X) {P Q : LocPot X} (Φ : Fi
   rw [locDens_cons, locDens_cons, h]
 
 /- English proof (translation)
-Establish `hU : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart j).source)` using `(A.chart k).continuousOn_symm.isOpen_inter_preimage (A.chart k).open_target (A.chart j).open_source`. Establish `hτ : AnalyticOnNhd ℂ (A.chart j ∘ (A.chart k).symm) ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart j).source)` using `A.holo k j`. Establish `hinj : Set.InjOn (A.chart j ∘ (A.chart k).symm) ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart j).source)`. Introduce `a ha b hb hab`. Conclude with `(A.chart k).symm.injOn ha.1 hb.1 ((A.chart j).injOn ha.2 hb.2 hab)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `himg : (A.chart j ∘ (A.chart k).symm) '' ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart j).source) ⊆ (A.chart j).target`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(A.chart j).map_source hz.2`. Establish `hin : ∀ w ∈ (A.chart j).target, (A.chart j).symm w ∈ (A.chart k).source → w ∈ (A.chart j ∘ (A.chart k).symm) '' ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart j).source)`. Introduce `w hw h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨A.chart k ((A.chart j).symm w), ⟨(A.chart k).map_source h2, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (A.chart k).symm (A.chart k ((A.chart j).symm w)) ∈ (A.chart j).source`. Rewrite using `[(A.chart k).left_inv h2]`. Conclude with `(A.chart j).map_target hw`. Use `show A.chart j ((A.chart k).symm (A.chart k ((A.chart j).symm w))) = w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[(A.chart k).left_inv h2, (A.chart j).right_inv hw]`. Rewrite using `[setIntegral_eq_of_subset_of_forall_sdiff_eq_zero (A.chart k).open_target.measurableSet Set.inter_subset_left ?z1, setIntegral_eq_of_subset_of_forall_sdiff_eq_zero (A.chart j).open_target.measurableSet himg ?z2, ReciprocityTheory.AnForm.A.integral_image_eq_integral_normSq_det_smu …`. Use `setIntegral_congr_fun hU.measurableSet (fun z hz => ?_)` and prove the remaining obligations. Establish `hz2 : (A.chart k).symm z ∈ (A.chart j).source` using `hz.2`. Simplify using `only [Function.comp_apply, smul_eq_mul, (A.chart j).left_inv hz2]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[ReciprocityTheory.AnForm.A.det_jacC, Complex.normSq_eq_norm_sq, locDensChart A Φ hΦ k j z hz.1 hz2]`. Expand and normalize the polynomial expressions, which then agree. Use `case z1 =>`. Introduce and unpack `y ⟨hy, hyU⟩`. Establish `h1 : (A.chart k).symm y ∉ (A.chart j).source` using `fun h => hyU ⟨hy, h⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, hs y hy h1, mul_zero]`. Use `case z2 =>`. Introduce and unpack `w ⟨hw, hwU⟩`. Establish `h1 : (A.chart j).symm w ∉ (A.chart k).source` using `fun h => hwU (hin w hw h)`. Establish `h2 : (A.chart j).symm w ∉ tsupport (χ.χ k)` using `fun h => h1 (χ.tsupport_subset k h)`.
-
-Simplify using `only [image_eq_zero_of_notMem_tsupport h2, zero_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartMove (A : FinHolAtlas e X) (χ : ChartPartition A) (Φ : Fin e → LocPot X)
     (hΦ : ∀ i, IsPotential A (Φ i)) (j k : Fin A.n) (g : X → ℝ)
@@ -112,7 +110,7 @@ theorem chartMove (A : FinHolAtlas e X) (χ : ChartPartition A) (Φ : Fin e → 
     simp only [image_eq_zero_of_notMem_tsupport h2, zero_mul]
 
 /- English proof (translation)
-Unfold `integralWith`. Rewrite using `[Finset.sum_congr rfl (fun k _ => chartMove A χ Φ hΦ j k g (hs k)), ← integral_finsetSum _ (fun k _ => hint k)]`. Use `setIntegral_congr_fun (A.chart j).open_target.measurableSet (fun y _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← Finset.sum_mul, χ.sum_eq_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem localize (A : FinHolAtlas e X) (χ : ChartPartition A) (Φ : Fin e → LocPot X)
     (hΦ : ∀ i, IsPotential A (Φ i)) (j : Fin A.n) (g : X → ℝ)
@@ -129,11 +127,11 @@ theorem localize (A : FinHolAtlas e X) (χ : ChartPartition A) (Φ : Fin e → L
   rw [← Finset.sum_mul, ← Finset.sum_mul, χ.sum_eq_one, one_mul]
 
 /- English proof (translation)
-Establish `hF : ContinuousOn (fun y => χ.χ k ((A.chart j).symm y) * 1 * locDens A (Fin.cons (LocPot.ofFun w) Φ) j y) (A.chart j).target` using `((chi_contOn A χ k j).mul continuousOn_const).mul (locDensCont A _ (st_isPotential_cons A hw hΦ) j)`. Break down `hLj with rfl | hLj` into its components or cases. Use `integrableOn_target A k hF (hL.inter_left (isClosed_tsupport (χ.χ k))) (inter_subset_left.trans (χ.tsupport_subset k)) ?_` and prove the remaining obligations. Introduce `y hy hyS`. Distinguish the cases in `h1 : (A.chart k).symm y ∈ tsupport (χ.χ k)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : (A.chart k).symm y ∉ tsupport w` using `fun h => hyS ⟨h1, hwL h⟩`. Rewrite using `[st_locDens_cons_eq_zero A k w Φ hy h2, mul_zero]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, zero_mul, zero_mul]`. Use `integrableOn_target A j hF hL hLj ?_` and prove the remaining obligations. Introduce `y hy hyL`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[st_locDens_cons_eq_zero A j w Φ hy (fun h => hyL (hwL h)), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integrableOn_term (A : FinHolAtlas (e + 1) X) (χ : ChartPartition A)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (k j : Fin A.n) (w : X → ℝ)
@@ -158,19 +156,19 @@ theorem integrableOn_term (A : FinHolAtlas (e + 1) X) (χ : ChartPartition A)
     rw [st_locDens_cons_eq_zero A j w Φ hy (fun h => hyL (hwL h)), mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty]`. Unfold `integralWith`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `setIntegral_eq_zero_of_forall_eq_zero fun y hy => ?_` and prove the remaining obligations. Establish `h0 : (A.chart k).symm y ∉ tsupport (fun x => ∑ m ∈ (∅ : Finset ι), f m x)`. Simplify using the standard rewrite rules. Rewrite using `[st_locDens_cons_eq_zero A k _ Φ hy h0, mul_zero]`. Consider the case `insert a s ha ih`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hS : A.Smooth (fun x => ∑ m ∈ s, f m x)` using `st_smooth_sum A s hf`. Establish `hSL : tsupport (fun x => ∑ m ∈ s, f m x) ⊆ L`. Use `closure_minimal ?_ hL.isClosed` and prove the remaining obligations. Introduce `x hx`. Take `⟨m, -, hm⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hfL m (subset_tsupport _ hm)`. Establish `hd : ∀ k, ∀ y ∈ (A.chart k).target, locDens A (Fin.cons (LocPot.ofFun fun x => ∑ m ∈ insert a s, f m x) Φ) k y = locDens A (Fin.cons (LocPot.ofFun (f a)) Φ) k y + locDens A (Fin.cons (LocPot.ofFun fun x => ∑ m ∈ s, f m x) Φ) k y`. Introduce `k y hy`. Rewrite using `[← locDens_cons_add A _ _ Φ (isPotential_ofFun A _ (hf a)) (isPotential_ofFun A _ hS) k hy]`. Use `locDens_cons_congr A Φ ?_ k y` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x z`. Simplify using `[Finset.sum_insert ha, LocPot.ofFun]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_insert ha, ← ih]`. Unfold `integralWith`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_add (integrableOn_term A χ Φ hΦ k k _ (hf a) hL (hfL a) (Or.inl rfl)) (integrableOn_term A χ Φ hΦ k k _ hS hL hSL (Or.inl rfl))]`. Use `setIntegral_congr_fun (A.chart k).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd k y hy]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integralWith_cons_sum [T2Space X] (A : FinHolAtlas (e + 1) X) (χ : ChartPartition A)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) {ι : Type*} (s : Finset ι)
@@ -217,27 +215,23 @@ theorem integralWith_cons_sum [T2Space X] (A : FinHolAtlas (e + 1) X) (χ : Char
     ring
 
 /- English proof (translation)
-Establish `hpot` using `st_isPotential_cons A hw hΦ`. Rewrite using `[localize A χ _ hpot j (fun _ => 1) ?hs ?hint]`. Use `case hs =>`. Introduce `k y hy hyj`. Rewrite using `[st_locDens_cons_eq_zero A k w Φ hy (fun h => hyj (hG (hwG h))), mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `case hint =>`. Introduce `k`. Conclude with `integrableOn_term A χ Φ hΦ k j w hw hwc subset_rfl (Or.inr (hwG.trans hG))`. Use `set T := (A.chart j).target with hT`. Use `set s := (A.chart j).symm with hs`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `set V := T ∩ s ⁻¹' G with hVdef`. Establish `hVo : IsOpen V` using `(A.chart j).isOpen_inter_preimage_symm hGo`. Rewrite using `[setIntegral_eq_of_subset_of_forall_sdiff_eq_zero (A.chart j).open_target.measurableSet (inter_subset_left : V ⊆ T) ?hz]`. Use `case hz =>`. Introduce and unpack `y ⟨hy, hyV⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: s y ∉ tsupport w` using `fun h => hyV ⟨hy, hwG h⟩`. Rewrite using `[st_locDens_cons_eq_zero A j w Φ hy this, mul_zero]`. Use `set φh : Fin e → (Fin (e + 1) → ℂ) → ℝ := fun i => (Φ i).φ (x0 i) ∘ s with hφh`. Use `set v : (Fin (e + 1) → ℂ) → ℝ := T.indicator (w ∘ s) with hv`. Establish `hloc : ∀ y ∈ V, (fun _ : X => (1 : ℝ)) (s y) * locDens A (Fin.cons (LocPot.ofFun w) Φ) j y = maDens (Fin.cons v φh) y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y hy`. Establish `hb` using `locDensBase A (Fin.cons (LocPot.ofFun w) Φ) hpot j y hy.1 (Fin.cons (s y) x0) (by`. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[LocPot.ofFun]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using hGU i hy.2)`. Rewrite using `[one_mul, hb]`. Establish `hev : w ∘ s =ᶠ[𝓝 y] v` using `by filter_upwards [(A.chart j).open_target.mem_nhds hy.1] with z hz`. Conclude with `(indicator_of_mem (s := T) hz _).symm`. Rewrite using `[← st_maDens_cons_congr φh hev]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i y'`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[LocPot.ofFun, hs]`. Simplify using `[hφh, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[setIntegral_congr_fun hVo.measurableSet hloc]`. Establish `hVT : V ⊆ T ∩ s ⁻¹' univ` using `fun y hy => ⟨hy.1, mem_univ _⟩`. Establish `hCc : IsCompact ((A.chart j) '' tsupport w)` using `hwc.image_of_continuousOn ((A.chart j).continuousOn.mono (hwG.trans hG))`. Establish `hCV : (A.chart j) '' tsupport w ⊆ V`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨(A.chart j).map_source (hG (hwG hx)), ?_⟩` and prove the remaining obligations. Use `show s (A.chart j x) ∈ G`. Rewrite using `[hs, (A.chart j).left_inv (hG (hwG hx))]`. Conclude with `hwG hx`. Establish `hsupp : tsupport v ⊆ (A.chart j) '' tsupport w`.
-
-Use `closure_minimal ?_ hCc.isClosed` and prove the remaining obligations. Introduce `y hy`. Establish `hyT : y ∈ T`. Assume the negation of the conclusion as `h`. Conclude with `hy (indicator_of_notMem h _)`.
-
-Rewrite `hy` using `[Function.mem_support, hv, indicator_of_mem hyT]`. Conclude with `⟨s y, subset_tsupport _ hy, (A.chart j).right_inv hyT⟩`. Establish `h3 : ∀ {f : X → ℝ}, A.Smooth f → ContDiffOn ℝ 3 (f ∘ s) V` using `fun hf => ((hf j).of_le (by norm_cast)).mono hVT`. Conclude with `ReciprocityTheory.AnForm.A.massZero_thm e φh v V ⟨hVo, (h3 hw).congr fun y hy => indicator_of_mem hy.1 _, HasCompactSupport.intro' hCc hCc.isClosed (fun y hy => image_eq_zero_of_notMem_tsupport fun h => hy (hsupp h)), hsupp.trans hCV, contDiffOn_const, fun i => (((hΦ i).1 (x0 i) …`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem piece_eq_zero [T2Space X] (A : FinHolAtlas (e + 1) X) (χ : ChartPartition A)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (j : Fin A.n) (G : Set X)
@@ -311,33 +305,31 @@ theorem piece_eq_zero [T2Space X] (A : FinHolAtlas (e + 1) X) (χ : ChartPartiti
       fun y hy => ⟨hy.1, hGU i hy.2⟩⟩
 
 /- English proof (translation)
-Establish `hCc : IsCompact ((A.chart j) '' tsupport w)` using `hwc.image_of_continuousOn ((A.chart j).continuousOn.mono hwj)`. Establish `hCt : (A.chart j) '' tsupport w ⊆ (A.chart j).target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(A.chart j).map_source (hwj hx)`. Take `⟨O, hO⟩ : ∃ O : (Fin (e + 1) → ℂ) → Set (Fin (e + 1) → ℂ), ∀ p, O p = (A.chart j).target ∩ (A.chart j).symm ⁻¹' ⋂ i, (Φ i).U ((A.chart j).symm p)` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hOo : ∀ p, IsOpen (O p)` using `fun p => by`. Rewrite using `[hO]`. Conclude with `(A.chart j).isOpen_inter_preimage_symm (isOpen_iInter_of_finite fun i => (Φ i).isOpen_U _)`. Establish `hpO : ∀ p ∈ (A.chart j) '' tsupport w, O p ∈ 𝓝 p` using `fun p hp => by`. Use `(hOo p).mem_nhds ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hO]`. Conclude with `⟨hCt hp, mem_iInter.2 fun i => (Φ i).mem_U _⟩`. Take `⟨t, -, hcov⟩` from `hCc.elim_nhds_subcover O hpO`. Take `⟨β, hβ⟩` from `SmoothPartitionOfUnity.exists_isSubordinate 𝓘(ℝ, Fin (e + 1) → ℂ) hCc.isClosed (fun p : t => O p.1) (fun p => hOo p.1) (by`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp, hyp⟩` from `mem_iUnion₂.1 (hcov hy)`. Conclude with `mem_iUnion.2 ⟨⟨p, hp⟩, hyp⟩)`. Establish `hβs : ∀ p, ContDiff ℝ ∞ (β p)` using `fun p => contMDiff_iff_contDiff.1 (β p).contMDiff`. Take `⟨wp, hwp⟩ : ∃ wp : t → X → ℝ, ∀ p x, wp p x = β p (A.chart j x) * w x` from `⟨_, fun _ _ => rfl⟩`. Establish `hsum : (fun x => ∑ p, wp p x) = w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [hwp]`. Rewrite using `[← Finset.sum_mul]`. Distinguish the cases in `hx : x ∈ tsupport w`. Establish `h1 : ∑ p, β p (A.chart j x) = 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← finsum_eq_sum_of_fintype]`. Conclude with `β.sum_eq_one ⟨x, hx, rfl⟩`. Rewrite using `[h1, one_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, mul_zero]`. Establish `hwps : ∀ p, A.Smooth (wp p)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Introduce `p k`. Apply `contDiffOn_of_locally_contDiffOn` to reduce the goal to its premises. Introduce and unpack `y ⟨hy, -⟩`. Distinguish the cases in `hyj : (A.chart k).symm y ∈ (A.chart j).source`. Use `⟨(A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart j).source, (A.chart k).isOpen_inter_preimage_symm (A.chart j).open_source, ⟨hy, hyj⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1 : ContDiffOn ℝ ∞ ((β p) ∘ (A.chart j ∘ (A.chart k).symm)) ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart j).source)` using `(hβs p).comp_contDiffOn (st_trans_smooth A k j)`. Use `((h1.mono fun z hz => hz.2).mul ((hw k).mono fun z hz => hz.1)).congr ?_` and prove the remaining obligations. Introduce `z _`. Simplify using `only [Function.comp_apply, hwp]`. Establish `hyw : (A.chart k).symm y ∉ tsupport w` using `fun h => hyj (hwj h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨(A.chart k).target ∩ (A.chart k).symm ⁻¹' (tsupport w)ᶜ, (A.chart k).isOpen_inter_preimage_symm (isClosed_tsupport w).isOpen_compl, ⟨hy, hyw⟩, ?_⟩` and prove the remaining obligations. Use `(contDiffOn_const (c := (0 : ℝ))).congr ?_` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Function.comp_apply, hwp]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz.2.2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwpw : ∀ p, tsupport (wp p) ⊆ tsupport w` using `fun p => by`. Use `closure_minimal ?_ (isClosed_tsupport w)` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Function.mem_support, hwp]`. Conclude with `subset_tsupport _ (right_ne_zero_of_mul hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwpG : ∀ p : t, tsupport (wp p) ⊆ (A.chart j).source ∩ (A.chart j) ⁻¹' O p.1`. Introduce `p`. Establish `hcl : IsClosed (tsupport w ∩ (A.chart j) ⁻¹' tsupport (β p))` using `((A.chart j).continuousOn.mono hwj).preimage_isClosed_of_isClosed (isClosed_tsupport w) (isClosed_tsupport _)`. Use `(closure_minimal ?_ hcl).trans ?_` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `hx` using `[Function.mem_support, hwp]`. Conclude with `⟨subset_tsupport _ (right_ne_zero_of_mul hx), subset_tsupport _ (left_ne_zero_of_mul hx)⟩`. Introduce and unpack `x ⟨hx1, hx2⟩`. Conclude with `⟨hwj hx1, hβ p hx2⟩`. Establish `hL` using `integralWith_cons_sum A χ Φ hΦ Finset.univ wp hwps hwc hwpw`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hL` using `[hsum]`. Rewrite using `[hL]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Use `piece_eq_zero A χ Φ hΦ j _ ((A.chart j).isOpen_inter_preimage (hOo p.1)) inter_subset_left (fun _ => (A.chart j).symm p.1) ?_ (wp p) (hwps p) (hwc.of_isClosed_subset (isClosed_tsupport _) (hwpw p)) (hwpG p)` and prove the remaining obligations. Introduce `i x hx`.
-
-Establish `h1` using `hx.2`. Rewrite `h1` using `[mem_preimage, hO]`. Establish `h2` using `mem_iInter.1 h1.2 i`. Rewrite `h2` using `[(A.chart j).left_inv hx.1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stokes_chart [T2Space X] (A : FinHolAtlas (e + 1) X) (χ : ChartPartition A)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (j : Fin A.n) (w : X → ℝ)
@@ -429,9 +421,9 @@ theorem stokes_chart [T2Space X] (A : FinHolAtlas (e + 1) X) (χ : ChartPartitio
   rwa [(A.chart j).left_inv hx.1] at h2
 
 /- English proof (translation)
-Establish `hsum : (fun x => ∑ j, χ.χ j x * w x) = w`. Use function extensionality and compare the values at `x`. Rewrite using `[← Finset.sum_mul, χ.sum_eq_one, one_mul]`. Establish `hL` using `integralWith_cons_sum A χ Φ hΦ Finset.univ (fun j x => χ.χ j x * w x) (fun j => st_smooth_mul A (χ.smooth j) hw) hwc.isCompact (fun j => tsupport_mul_subset_right)`. Rewrite `hL` using `[hsum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hL]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Conclude with `stokes_chart A χ Φ hΦ j _ (st_smooth_mul A (χ.smooth j) hw) (hwc.isCompact.of_isClosed_subset (isClosed_tsupport _) tsupport_mul_subset_right) (tsupport_mul_subset_left.trans (χ.tsupport_subset j))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stokes_compact_support [T2Space X] (A : FinHolAtlas (e + 1) X) (χ : ChartPartition A)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (w : X → ℝ) (hw : A.Smooth w)

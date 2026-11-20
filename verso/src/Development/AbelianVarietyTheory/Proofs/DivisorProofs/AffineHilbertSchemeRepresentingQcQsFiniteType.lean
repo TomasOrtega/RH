@@ -8,39 +8,31 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 namespace GlobalTheory.HilbAff
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ r H R`. Set `e : Module.Basis (Fin (Fintype.card (Module.Free.ChooseBasisIndex A B))) A B` to `(Module.Free.chooseBasis A B).reindex (Fintype.equivFin _)`. Use `set N := Fintype.card (Module.Free.ChooseBasisIndex A B)`. Use `set ξ := R.homEquiv (𝟙 H) with hξ`. Establish `hR : ∀ {Z : Scheme.{0}} (b : Z ⟶ H), R.homEquiv b = (functor A B r).map b.op ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Z b`. Use `R.homEquiv_comp b (𝟙 H)` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis. Establish `hmap : ∀ {Z Z' : Scheme.{0}} (a : Z' ⟶ Z) (b : Z ⟶ H), (functor A B r).map a.op ((functor A B r).map b.op ξ) = (functor A B r).map (a ≫ b).op ξ`. Introduce `Z Z' a b`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hR b, ← hR (a ≫ b), R.homEquiv_comp]`. Establish `hrc : ∀ {X Y Z : Scheme.{0}} (a : X ⟶ Y) (b : Y ⟶ Z), Set.range (a ≫ b) = b '' Set.range a`. Introduce `X Y Z a b`. Use extensionality with `p`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose W hW hWc using fun σ : Fin r ↪ Fin N => GlobalTheory.T.exists_open_affineHilbertChartBasic_locus A B N r e σ H ξ`. Use `choose X x hXa hXl hXb hXu using fun σ : Fin r ↪ Fin N => GlobalTheory.T.affineHilbertChart_representable A B N r e σ`. Establish `hcov : ⨆ σ, W σ = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `h _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨σ, U, hU, hb⟩` from `GlobalTheory.T.exists_affineHilbertChartBasic_neighbourhood A B N r e H ξ h`. Use `(hW σ _ U.ι).2 hb` as an intermediate fact. Rewrite `this` using `[Scheme.Opens.range_ι]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨σ, this hU⟩`. Establish `hiso : ∀ σ, ∃ g : (W σ).toScheme ⟶ X σ, IsIso g ∧ (W σ).ι ≫ ξ.1 = g ≫ (x σ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `σ`. Establish `hb : Basic A B e σ ((functor A B r).map (W σ).ι.op ξ)` using `(hW σ _ _).1 (by rw [Scheme.Opens.range_ι])`. Take `⟨g, hg, -⟩` from `hXu σ _ _ hb`. Take `⟨f, hf⟩ : ∃ f, R.homEquiv f = x σ` from `⟨_, Equiv.apply_symm_apply _ _⟩`. Establish `hfr : Set.range f ⊆ Set.range (W σ).ι`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(hW σ _ f).2 (by rw [← hR, hf]; exact hXb σ)`. Set `f'` to `IsOpenImmersion.lift (W σ).ι f hfr`. Establish `hf' : f' ≫ (W σ).ι = f` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hgf : g ≫ f = (W σ).ι` using `R.homEquiv.injective (by rw [R.homEquiv_comp, hf, hg, hR])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : g ≫ f' = 𝟙 _`. Rewrite using `[← cancel_mono (W σ).ι, Category.assoc, hf', hgf, Category.id_comp]`. Establish `h2 : f' ≫ g = 𝟙 _`. Take `⟨g0, -, hu⟩` from `hXu σ (X σ) (x σ) (hXb σ)`. Establish `e1 : (functor A B r).map (f' ≫ g).op (x σ) = x σ`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hf, ← R.homEquiv_comp, Category.assoc, hgf, hf']`. Establish `e2 : (functor A B r).map (𝟙 (X σ)).op (x σ) = x σ` using `by simp`. Conclude with `(hu _ e1).trans (hu _ e2).symm`. Conclude with `⟨g, ⟨f', h1, h2⟩, (congrArg Sigma.fst hg).symm⟩`. Use `choose g hg hgx using hiso`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hWa : ∀ σ, IsAffineOpen (W σ)` using `fun σ => by haveI := hg σ; haveI := hXa σ; exact IsAffine.of_isIso (g σ)`. Establish `hint : ∀ (U : H.Opens), CompactSpace U.toScheme → ∀ τ, IsCompact ((U : Set H) ∩ W τ)`. Introduce `U hU τ`. Take `⟨V, hV, hVc⟩` from `GlobalTheory.T.exists_open_affineHilbertChartBasic_locus A B N r e τ U.toScheme ((functor A B r).map U.ι.op ξ)`. Establish `key : ∀ (Z' : Scheme.{0}) (a : Z' ⟶ U.toScheme), Set.range a ⊆ V ↔ U.ι '' Set.range a ⊆ W τ` using `fun Z' a => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hV, hmap, ← hW, hrc]`. Establish `hVeq : (V : Set U.toScheme) = U.ι ⁻¹' (W τ)`. Apply `subset_antisymm` to reduce the goal to its premises. Use `(key _ V.ι).1 (by rw [Scheme.Opens.range_ι])` as an intermediate fact. Rewrite `this` using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.image_subset_iff.1 this`. Use `(key _ (U.ι ⁻¹ᵁ W τ).ι).2 (by` as an intermediate fact. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `Set.image_preimage_subset _ _)`. Rewrite `this` using `[Scheme.Opens.range_ι]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `this`. Establish `: (U : Set H) ∩ W τ = U.ι '' V`. Rewrite using `[hVeq, Set.image_preimage_eq_inter_range, Scheme.Opens.range_ι, Set.inter_comm]`. Rewrite using `[this]`. Conclude with `(hVc hU).image U.ι.continuous`.
-
-Establish `hWc' : ∀ σ, CompactSpace (W σ).toScheme` using `fun σ => by haveI : IsAffine (W σ).toScheme := hWa σ infer_instance`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[quasiCompact_iff_compactSpace] show CompactSpace H`. Rewrite using `[← isCompact_univ_iff]`. Establish `: (Set.univ : Set H) = ⋃ σ, (W σ : Set H)`.
-
-Rewrite using `[← TopologicalSpace.Opens.coe_iSup, hcov]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isCompact_iUnion fun σ => (hWa σ).isCompact`. Rewrite using `[quasiSeparated_iff_quasiSeparatedSpace]`.
-
-Conclude with `Scheme.quasiSeparatedSpace_of_isOpenCover W hcov hWa (fun σ τ => hint (W σ) (hWc' σ) τ)`. Use `haveI : IsZariskiLocalAtSource @LocallyOfFiniteType := HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @LocallyOfFiniteType) W hcov fun σ => ?_` and prove the remaining obligations. Rewrite using `[hgx σ]`. Use `haveI := hg σ`.
-
-Use `haveI := hXl σ`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem representing_qc_qs_loft : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
     [Module.Free A B] [Module.Finite A B] (r : ℕ) (H : Scheme.{0})

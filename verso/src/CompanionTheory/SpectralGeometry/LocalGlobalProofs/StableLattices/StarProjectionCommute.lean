@@ -9,7 +9,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.CyclicScalar
 
 /- English proof (translation)
-The claim follows from `(LinearIsometry.mk (σ g).toLinearMap (hσ g)).inner_map_map x y`.
+A detailed English derivation is pending.
 -/
 theorem inner_map_map {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g v, ‖σ g v‖ = ‖v‖) (g : G) (x y : H) :
@@ -17,7 +17,7 @@ theorem inner_map_map {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProduc
   (LinearIsometry.mk (σ g).toLinearMap (hσ g)).inner_map_map x y
 
 /- English proof (translation)
-Establish `h : σ g * σ g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `DFunLike.congr_fun h x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_inv_map {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : G →* (H →L[ℂ] H)) (g : G) (x : H) : σ g (σ g⁻¹ x) = x := by
@@ -25,7 +25,7 @@ theorem map_inv_map {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductS
   exact DFunLike.congr_fun h x
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[← map_inv_map σ g u, inner_map_map σ hσ]`. Conclude with `hv _ (hU _ _ hu)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthogonal_stable {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g v, ‖σ g v‖ = ‖v‖) (U : Submodule ℂ H)
@@ -36,9 +36,9 @@ theorem orthogonal_stable {G H : Type} [Group G] [NormedAddCommGroup H] [InnerPr
   exact hv _ (hU _ _ hu)
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.mul_apply]`. Establish `h1 : U.starProjection v ∈ U` using `Submodule.starProjection_apply_mem U v`. Establish `h2 : v - U.starProjection v ∈ Uᗮ` using `Submodule.sub_starProjection_mem_orthogonal v`. Establish `h3 : σ g v = σ g (U.starProjection v) + σ g (v - U.starProjection v)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_add]`. Simplify using the standard rewrite rules. Rewrite using `[h3, map_add, Submodule.starProjection_eq_self_iff.2 (hU g _ h1), (Submodule.starProjection_apply_eq_zero_iff U).2 (orthogonal_stable σ hσ U hU g _ h2), add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem starProjection_commute {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g v, ‖σ g v‖ = ‖v‖) (U : Submodule ℂ H)
@@ -54,31 +54,25 @@ theorem starProjection_commute {G H : Type} [Group G] [NormedAddCommGroup H] [In
     (Submodule.starProjection_apply_eq_zero_iff U).2 (orthogonal_stable σ hσ U hU g _ h2), add_zero]
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ σ hσ Q ξ hQ hξQ hξ hcomm hscal`. Use `haveI : CompleteSpace Q := hQ.completeSpace_coe`. Set `S : Submodule ℂ H` to `Submodule.span ℂ (Set.range fun g => σ g ξ)`. Establish `hSstable : ∀ g, ∀ v ∈ S, σ g v ∈ S`. Introduce `g v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: S ≤ S.comap (σ g : H →ₗ[ℂ] H)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Use `Submodule.subset_span ⟨g * h, ?_⟩` and prove the remaining obligations. Simplify using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this hv`. Establish `hW : IsSubrep σ S.topologicalClosure` using `isSubrep_topologicalClosure hSstable`. Establish `horbit : ∀ g, σ g ξ ∈ S.topologicalClosure` using `fun g => S.le_topologicalClosure (Submodule.subset_span ⟨g, rfl⟩)`. Establish `hξW : ξ ∈ S.topologicalClosure` using `by simpa using horbit 1`. Establish `hmin : ∀ A : Submodule ℂ H, IsClosed (A : Set H) → (∀ g, σ g ξ ∈ A) → S.topologicalClosure ≤ A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `A hA h`. Use `Submodule.topologicalClosure_minimal _ (Submodule.span_le.2 ?_) hA` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `h g`. Establish `hline : ∀ w ∈ S.topologicalClosure, Q.starProjection w ∈ (ℂ ∙ ξ)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hclosed : IsClosed (((ℂ ∙ ξ).comap (Q.starProjection : H →ₗ[ℂ] H) : Submodule ℂ H) : Set H)` using `(Submodule.closed_of_finiteDimensional (ℂ ∙ ξ)).preimage Q.starProjection.continuous`. Use `fun w hw => hmin _ hclosed (fun g => ?_) hw` and prove the remaining obligations. Take `⟨c, hc⟩` from `hscal g`. Establish `e : σ g ξ = c • ξ + (σ g ξ - c • ξ)` using `by abel`. Express the relevant statement in the definitionally equal form `Q.starProjection (σ g ξ) ∈ (ℂ ∙ ξ)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, map_add, (Submodule.starProjection_apply_eq_zero_iff Q).2 hc, add_zero, map_smul, Submodule.starProjection_eq_self_iff.2 hξQ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self ξ)`. Use `⟨S.topologicalClosure, hW, fun h => hξ (by simpa [h] using hξW), fun U hUW hU => ?_⟩` and prove the remaining obligations. Use `haveI : CompleteSpace U := hU.1.completeSpace_coe`. Establish `hPc` using `starProjection_commute σ hσ U hU.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPQ : U.starProjection ξ ∈ Q` using `hcomm _ hPc ξ hξQ`. Establish `hPU : U.starProjection ξ ∈ U` using `Submodule.starProjection_apply_mem U ξ`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℂ, c • ξ = U.starProjection ξ := by`. Use `hline _ (hUW hPU)` as an intermediate fact. Rewrite `this` using `[Submodule.starProjection_eq_self_iff.2 hPQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_span_singleton.1 this`. Establish `hcc : c * c = c`. Establish `h1 : U.starProjection (c • ξ) = c • ξ`. Rewrite using `[hc]`. Conclude with `Submodule.starProjection_eq_self_iff.2 hPU`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_smul, ← hc, smul_smul]`. Establish `h2 : (c * c - c) • ξ = 0` using `by rw [sub_smul, h1, sub_self]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_right hξ)`. Establish `hc01 : c = 0 ∨ c = 1`. Establish `: c * (c - 1) = 0` using `by rw [mul_sub, hcc]; ring`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_eq_zero.1 this).imp id sub_eq_zero.1`. Break down `hc01 with rfl | rfl` into its components or cases. Use `left`. Establish `hP0 : U.starProjection ξ = 0` using `by rw [← hc, zero_smul]`. Establish `hle : S.topologicalClosure ≤ Uᗮ`.
-
-Use `hmin _ (Submodule.isClosed_orthogonal U) fun g => ?_` and prove the remaining obligations. Use `(Submodule.starProjection_apply_eq_zero_iff U).1 ?_` and prove the remaining obligations. Use `DFunLike.congr_fun (hPc g) ξ` as an intermediate fact. Simplify `this` using `[hP0]`. Use `(Submodule.eq_bot_iff U).2 fun x hx => ?_` and prove the remaining obligations.
-
-Conclude with `inner_self_eq_zero.1 ((Submodule.mem_orthogonal U x).1 (hle (hUW hx)) x hx)`. Use `right`. Establish `hξU : ξ ∈ U`. Rewrite `hc` using `[one_smul]`. Rewrite using `[hc]`.
-
-Conclude with `hPU`. Conclude with `le_antisymm hUW (hmin _ hU.1 fun g => hU.2 g ξ hξU)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isIrredSubrep : ∀ (G H : Type) [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : G →* (H →L[ℂ] H)),
     (∀ g v, ‖σ g v‖ = ‖v‖) → ∀ (Q : Submodule ℂ H) (ξ : H), IsClosed (Q : Set H) → ξ ∈ Q → ξ ≠ 0 →

@@ -11,13 +11,13 @@ variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpac
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸}
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `zero`. Introduce `Ψ hΨ s`. Simplify using `only [iteratedDeriv_zero]`. Conclude with `hΨ.comp (contDiff_id.prodMk contDiff_const)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ p ih`. Introduce `Ψ hΨ s`. Establish `hd : ∀ Y : E, deriv (fun t : ℝ => Ψ (Y, t)) = fun t => fderiv ℝ Ψ (Y, t) (0, 1)`. Introduce `Y`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1 : HasFDerivAt Ψ (fderiv ℝ Ψ (Y, t)) (Y, t)` using `(hΨ.differentiable (by simp)).differentiableAt.hasFDerivAt`. Establish `h2 : HasDerivAt (fun t : ℝ => ((Y, t) : E × ℝ)) (0, 1) t` using `(hasDerivAt_const t Y).prodMk (hasDerivAt_id t)`. Conclude with `(h1.comp_hasDerivAt t h2).deriv`. Establish `hΨ' : ContDiff ℝ ∞ (fun q : E × ℝ => fderiv ℝ Ψ q (0, 1))` using `(hΨ.fderiv_right (m := ∞) le_rfl).clm_apply contDiff_const`. Establish `e : (fun Y : E => iteratedDeriv (p + 1) (fun t : ℝ => Ψ (Y, t)) s) = fun Y => iteratedDeriv p (fun t : ℝ => fderiv ℝ Ψ (Y, t) (0, 1)) s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `Y`. Rewrite using `[iteratedDeriv_succ', hd Y]`. Rewrite using `[e]`. Conclude with `ih hΨ' s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_iteratedDeriv_snd {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (p : ℕ) :
@@ -52,9 +52,9 @@ noncomputable def dirDeriv (X : 𝔤) (p : ℕ) (f : G → ℂ) (x : G) : ℂ :=
   iteratedDeriv p (fun t : ℝ => f (h.expG (t • X) * x)) 0
 
 /- English proof (translation)
-Establish `e` using `congrFun (iteratedDeriv_comp_add_const p (fun t : ℝ => f (h.expG (t • X) * x)) s) 0`. Simplify using `only [zero_add] at e`. Rewrite using `[← e, dirDeriv]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h.expG_add_smul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iteratedDeriv_comp_expG_mul (X : 𝔤) (p : ℕ) (f : G → ℂ) (x : G) (s : ℝ) :
     iteratedDeriv p (fun t : ℝ => f (h.expG (t • X) * x)) s =
@@ -67,7 +67,7 @@ theorem iteratedDeriv_comp_expG_mul (X : 𝔤) (p : ℕ) (f : G → ℂ) (x : G)
   rw [h.expG_add_smul, mul_assoc]
 
 /- English proof (translation)
-Set `` to `h.chartedSpace`. Use `h.lieGroup ∞` as an intermediate fact. Conclude with `(h.contMDiff_expG_comp (contDiff_id.smul contDiff_const)).mul contMDiff_const`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contMDiff_expG_smul_mul (X : 𝔤) (x : G) :
     letI := h.chartedSpace; ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, 𝔤) ∞ (fun t : ℝ => h.expG (t • X) * x) := by
@@ -76,7 +76,7 @@ theorem contMDiff_expG_smul_mul (X : 𝔤) (x : G) :
   exact (h.contMDiff_expG_comp (contDiff_id.smul contDiff_const)).mul contMDiff_const
 
 /- English proof (translation)
-Set `` to `h.chartedSpace`. Conclude with `(hf.comp (h.contMDiff_expG_smul_mul X x)).contDiff`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem contDiff_comp_expG_smul_mul {f : G → ℂ} (hf : letI := h.chartedSpace;
     ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ f) (X : 𝔤) (x : G) :
@@ -85,7 +85,7 @@ theorem contDiff_comp_expG_smul_mul {f : G → ℂ} (hf : letI := h.chartedSpace
   exact (hf.comp (h.contMDiff_expG_smul_mul X x)).contDiff
 
 /- English proof (translation)
-Set `` to `h.chartedSpace`. Use `h.lieGroup ∞` as an intermediate fact. Establish `hm : ContMDiff 𝓘(ℝ, 𝔤 × ℝ) 𝓘(ℝ, 𝔤) ∞ (fun q : 𝔤 × ℝ => h.expG (q.2 • X) * (g * h.expG q.1))` using `(h.contMDiff_expG_comp (contDiff_snd.smul contDiff_const)).mul (contMDiff_const.mul (h.contMDiff_expG_comp contDiff_fst))`. Conclude with `(hf.comp hm).contDiff`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_comp_expG_smul_mul_mul_expG {f : G → ℂ} (hf : letI := h.chartedSpace;
     ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ f) (X : 𝔤) (g : G) :
@@ -99,11 +99,11 @@ theorem contDiff_comp_expG_smul_mul_mul_expG {f : G → ℂ} (hf : letI := h.cha
   exact (hf.comp hm).contDiff
 
 /- English proof (translation)
-Establish `hc : Continuous (fun t : ℝ => h.expG (t • X) * x)` using `(h.continuous_expG.comp (continuous_id.smul continuous_const)).mul continuous_const`. Establish `h0 : h.expG ((0 : ℝ) • X) * x = x`. Simplify using `only [zero_smul]`. Rewrite using `[h.expG_zero, one_mul]`. Establish `hev : (fun t : ℝ => f (h.expG (t • X) * x)) =ᶠ[𝓝 0] fun _ => (0 : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hc.continuousAt (x := 0)` as an intermediate fact. Rewrite `this` using `[ContinuousAt]`. Simplify using `only [h0] at this`. Conclude with `this.eventually (notMem_tsupport_iff_eventuallyEq.1 hx)`. Rewrite using `[dirDeriv, hev.iteratedDeriv_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem dirDeriv_eq_zero_of_notMem {f : G → ℂ} (X : 𝔤) (p : ℕ) {x : G}
     (hx : x ∉ tsupport f) : h.dirDeriv X p f x = 0 := by
@@ -120,7 +120,7 @@ theorem dirDeriv_eq_zero_of_notMem {f : G → ℂ} (X : 𝔤) (p : ℕ) {x : G}
   simp
 
 /- English proof (translation)
-The claim follows from `contDiff_iteratedDeriv_snd p (h.contDiff_comp_expG_smul_mul_mul_expG hf X g) 0`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_dirDeriv_mul_expG {f : G → ℂ} (hf : letI := h.chartedSpace;
     ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ f) (X : 𝔤) (p : ℕ) (g : G) :
@@ -128,47 +128,43 @@ theorem contDiff_dirDeriv_mul_expG {f : G → ℂ} (hf : letI := h.chartedSpace;
   contDiff_iteratedDeriv_snd p (h.contDiff_comp_expG_smul_mul_mul_expG hf X g) 0
 
 /- English proof (translation)
-Set `` to `h.chartedSpace`. Conclude with `mem_chart_source 𝔤 g`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem mem_chart_source_self (g : G) : g ∈ (h.chart g).source := by
   let := h.chartedSpace
   exact mem_chart_source 𝔤 g
 
 /- English proof (translation)
-The claim follows from `(h.chart g).left_inv hx`.
+A detailed English derivation is pending.
 -/
 theorem chart_symm_chart {g x : G} (hx : x ∈ (h.chart g).source) :
     g * h.expG (h.chart g x) = x :=
   (h.chart g).left_inv hx
 
 /- English proof (translation)
-Set `` to `h.chartedSpace`. Use `h.lieGroup ∞` as an intermediate fact. Use `set K := tsupport f with hKdef`. Establish `hK : IsCompact K` using `hfc`. Set `U : G → Set G` to `fun g => (h.chart g).source ∩ (h.chart g) ⁻¹' Metric.ball 0 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hU : ∀ g, IsOpen (U g)` using `fun g => (h.chart g).isOpen_inter_preimage Metric.isOpen_ball`. Establish `hgU : ∀ g, g ∈ U g` using `fun g => ⟨h.mem_chart_source_self g, by show h.chart g g ∈ Metric.ball 0 1`. Rewrite using `[h.chart_self]`. Conclude with `Metric.mem_ball_self one_pos⟩`. Take `⟨t, -, htK⟩` from `hK.elim_nhds_subcover U (fun g _ => (hU g).mem_nhds (hgU g))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `β : ContDiffBump (0 : 𝔤)` to `⟨1, 2, one_pos, one_lt_two⟩`. Set `Φ : G → ℕ → 𝔤 → ℂ` to `fun g p Y => (β Y : ℂ) * h.dirDeriv X p f (g * h.expG Y)`. Establish `hΦ : ∀ g p, ContDiff ℝ ∞ (Φ g p)` using `fun g p => (Complex.ofRealCLM.contDiff.comp β.contDiff).mul (h.contDiff_dirDeriv_mul_expG hf X p g)`. Establish `hΦc : ∀ g p, HasCompactSupport (Φ g p)` using `fun g p => (β.hasCompactSupport.comp_left Complex.ofReal_zero).mul_right`. Establish `hS : ∀ g k p, ∃ C, ∀ Y, ‖iteratedFDeriv ℝ k (Φ g p) Y‖ ≤ C` using `fun g k p => ((hΦ g p).continuous_iteratedFDeriv (by exact_mod_cast le_top)).bounded_above_of_compact_support ((hΦc g p).iteratedFDeriv k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose S hS using hS`. Establish `hS0 : ∀ g k p, 0 ≤ S g k p` using `fun g k p => (norm_nonneg _).trans (hS g k p 0)`. Set `M : ℕ → ℝ` to `fun p => ∑ g ∈ t, ∑ k ∈ Finset.range (p + 1), S g k p`. Establish `hM0 : ∀ p, 0 ≤ M p` using `fun p => Finset.sum_nonneg fun g _ => Finset.sum_nonneg fun k _ => hS0 g k p`. Establish `hSM : ∀ p, ∀ g ∈ t, ∀ k ≤ p, S g k p ≤ M p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `p g hg k hk`. Combine the equalities or inequalities in the displayed calculation. Establish `hloc : ∀ g p x, x ∈ U g → h.dirDeriv X p f x = Φ g p (h.chart g x)`. Introduce `g p x hx`. Establish `hb : β (h.chart g x) = 1` using `β.one_of_mem_closedBall (Metric.ball_subset_closedBall hx.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Φ, hb, Complex.ofReal_one, one_mul, h.chart_symm_chart hx.1]`. Establish `hzero : ∀ p x, x ∉ K → h.dirDeriv X p f x = 0` using `fun p x hx => h.dirDeriv_eq_zero_of_notMem X p hx`. Use `⟨M, ?_, ?_⟩` and prove the remaining obligations. Introduce `p x`. Distinguish the cases in `hx : x ∈ K`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Take `⟨g, hg, hxg⟩` from `Set.mem_iUnion₂.1 (htK hx)`. Rewrite using `[hloc g p x hxg]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_iteratedFDeriv_zero]`. Use `_ ≤ S g 0 p := hS g 0 p _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `_ ≤ M p := hSM p g hg 0 (Nat.zero_le p)`. Rewrite using `[hzero p x hx, norm_zero]`. Conclude with `hM0 p`. Introduce `c hc`. Set `F : G → 𝔤 → ℂ` to `fun g Y => ∑' p, (c p) • Φ g p Y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : ∀ g ∈ t, ContDiff ℝ ∞ (F g)`. Introduce `g hg`. Use `contDiff_tsum (N := ⊤) (v := fun k p => |c p| * S g k p) (fun p => (hΦ g p).const_smul (c p)) ?_ ?_` and prove the remaining obligations. Introduce `k _`. Rewrite using `[← summable_nat_add_iff k]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Summable.of_nonneg_of_le (fun p => mul_nonneg (abs_nonneg _) (hS0 g k _)) (fun p => mul_le_mul_of_nonneg_left (hSM (p + k) g hg k (Nat.le_add_left k p)) (abs_nonneg _)) ?_` and prove the remaining obligations. Conclude with `(summable_nat_add_iff k).2 hc`. Introduce `k p Y _`. Rewrite using `[iteratedFDeriv_const_smul_apply' ((hΦ g p).contDiffAt.of_le (by exact_mod_cast le_top)), norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_left (hS g k p Y) (abs_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsupp : ∀ x, x ∉ K → ∑' p, (c p : ℂ) * h.dirDeriv X p f x = 0`. Introduce `x hx`. Simplify using `[hzero _ x hx]`. Use `⟨?_, HasCompactSupport.intro hK hsupp⟩` and prove the remaining obligations. Introduce `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Distinguish the cases in `hx : x ∈ K`. Take `⟨g, hg, hxg⟩` from `Set.mem_iUnion₂.1 (htK hx)`. Establish `hev : (fun x => ∑' p, (c p : ℂ) * h.dirDeriv X p f x) =ᶠ[𝓝 x] fun x => F g (chartAt 𝔤 g x)` using `by filter_upwards [(hU g).mem_nhds hxg] with x' hx' show _ = F g (h.chart g x')`. Simplify using `only [F, hloc g _ x' hx', Complex.real_smul]`. Establish `hch : ContMDiffAt 𝓘(ℝ, 𝔤) 𝓘(ℝ, 𝔤) ∞ (chartAt 𝔤 g) x`.
-
-Use `contMDiffAt_extChartAt' (I := 𝓘(ℝ, 𝔤)) (n := ∞) (x := g) hxg.1` as an intermediate fact. Simplify `this` using `[extChartAt]`. Conclude with `(((hF g hg).contMDiff.contMDiffAt).comp x hch).congr_of_eventuallyEq hev`. Establish `hev : (fun x => ∑' p, (c p : ℂ) * h.dirDeriv X p f x) =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [(isClosed_tsupport f).isOpen_compl.mem_nhds hx] with x' hx'`. Conclude with `hsupp x' hx'`.
-
-Conclude with `contMDiffAt_const.congr_of_eventuallyEq hev`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound_dirDeriv {f : G → ℂ}
     (hf : letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ f)

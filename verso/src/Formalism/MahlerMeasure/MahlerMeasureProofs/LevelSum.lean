@@ -5,19 +5,19 @@ namespace Formalism.GM
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `B with`. Consider the case `zero`. Introduce `z l`. Rewrite using `[Finset.sum_eq_single 0 (fun j _ hj => by simp [Nat.choose_eq_zero_of_lt (Nat.pos_of_ne_zero hj)]) (by simp)]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ B ih`. Introduce `z l`. Consider the cases of `l with`. Consider the case `zero => simp`. Consider the case `succ m`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `ih (z + 1) (m + 1)`. Establish `h2` using `ih (z + 1) m`. Rewrite `h1`, the goal using `[Finset.sum_range_succ']`. Establish `key : ∀ j ∈ range (m + 1), (-1 : ℚ) ^ (j + 1) * ((B + 1).choose (j + 1) : ℚ) * ((z + (B + 1) + (m + 1 - (j + 1))).choose (m + 1 - (j + 1)) : ℚ) = (-1 : ℚ) ^ (j + 1) * (B.choose (j + 1) : ℚ) * ((z + 1 + B + (m + 1 - (j + 1))).choose (m + 1 - (j + 1)) : ℚ) - (-1 : ℚ) ^ j * (B.choos …`. Introduce `j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjm : j ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Establish `e1 : z + (B + 1) + (m + 1 - (j + 1)) = z + 1 + B + (m - j)` using `by omega`. Establish `e2 : m + 1 - (j + 1) = m - j` using `by omega`. Establish `e3 : z + 1 + B + (m + 1 - (j + 1)) = z + 1 + B + (m - j)` using `by omega`. Rewrite using `[e1, e3, e2, Nat.choose_succ_succ', Nat.cast_add, pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl key, Finset.sum_sub_distrib, h2]`. Simplify using `only [pow_zero, one_mul, Nat.choose_zero_right, Nat.cast_one, Nat.sub_zero] at h1 ⊢`. Rewrite using `[show z + (B + 1) + (m + 1) = z + 1 + B + (m + 1) by omega]`. Establish `hp : ((z + 1 + (m + 1)).choose (m + 1) : ℚ) = ((z + 1 + m).choose m : ℚ) + ((z + (m + 1)).choose (m + 1) : ℚ)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (z + 1 + (m + 1)).choose (m + 1) = (z + 1 + m + 1).choose (m + 1)`. Rewrite using `[show z + 1 + (m + 1) = z + 1 + m + 1 by omega]`. Establish `e2 : (z + (m + 1)).choose (m + 1) = (z + 1 + m).choose (m + 1)`. Rewrite using `[show z + (m + 1) = z + 1 + m by omega]`. Rewrite using `[e1, e2, Nat.choose_succ_succ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `h1 + hp`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem altVand (B : ℕ) : ∀ z l : ℕ,
     ∑ j ∈ range (l + 1), (-1 : ℚ) ^ j * (B.choose j : ℚ) * ((z + B + (l - j)).choose (l - j) : ℚ)
@@ -64,11 +64,11 @@ theorem altVand (B : ℕ) : ∀ z l : ℕ,
       linear_combination h1 + hp
 
 /- English proof (translation)
-Introduce `A z l hzl`. Unfold `qch`. Establish `hAl : (A.choose l : ℚ) ≠ 0` using `by exact_mod_cast (Nat.choose_pos (by omega)).ne'`. Rewrite using `[← altVand (A - z - l) z l, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hjl : j ≤ l` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Establish `hAj : (A.choose j : ℚ) ≠ 0` using `by exact_mod_cast (Nat.choose_pos (by omega)).ne'`. Establish `hcm : (A.choose l : ℚ) * (l.choose j : ℚ) = (A.choose j : ℚ) * ((A - j).choose (l - j) : ℚ)`. Conclude with `Nat.choose_mul (n := A) (k := l) (s := j) (by omega)` after adjusting the coercions. Establish `he : z + (A - z - l) + (l - j) = A - j` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, div_eq_div_iff hAj hAl]`. Take the linear combination `((-1 : ℚ) ^ j * ((A - z - l).choose j : ℚ)) * hcm`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alternatingChooseSum : LevelSum := by
   intro A z l hzl

@@ -5,17 +5,15 @@ namespace PositivityTheory.RgUd.Form.U.Lift2.KerOpen
 open Filter Topology
 
 /- English proof (translation)
-Set `K : AddSubgroup k` to `{ carrier := {x | φ x = 1} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq] at ha hb ⊢`. Rewrite using `[AddChar.map_add_eq_mul, ha, hb, one_mul]`. Use the proof step `zero_mem' := AddChar.map_zero_eq_one φ`. Use the proof step `neg_mem' := fun {a} ha => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_ofPred_eq] at ha ⊢`. Rewrite using `[AddChar.map_neg_eq_inv, ha, inv_one] }`. Establish `h1 : (1 : Circle) ∈ Circle.centeredArc (Real.pi / 2)`. Rewrite using `[Circle.mem_centeredArc (by linarith [Real.pi_pos])]`. Simplify using `[Real.pi_pos]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hU : φ ⁻¹' Circle.centeredArc (Real.pi / 2) ∈ 𝓝 (0 : k)`. Apply `hφ.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[AddChar.map_zero_eq_one]`. Conclude with `(Circle.isOpen_centeredArc _).mem_nhds h1`. Take `⟨γ, hγ, hsub⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.mp hU`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `B : AddSubgroup k` to `(ValuativeRel.valuation k).ltAddSubgroup (Units.mk0 γ hγ)`. Establish `hB : (B : Set k) = {x | ValuativeRel.valuation k x < γ}` using `rfl`. Establish `hBK : (B : Set k) ⊆ K`. Introduce `x hx`. Apply `Circle.eq_one_of_forall_pow_mem_centeredArc_pi_div_two` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `n _`. Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Apply `hsub` to reduce the goal to its premises. Rewrite using `[← hB]`. Conclude with `B.nsmul_mem hx n`.
-
-Establish `hBn : (B : Set k) ∈ 𝓝 (0 : k)`. Rewrite using `[hB]`. Conclude with `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem hγ`. Conclude with `AddSubgroup.isOpen_of_mem_nhds K (Filter.mem_of_superset hBn hBK)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ker {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (φ : AddChar k Circle) (hφ : Continuous φ) :

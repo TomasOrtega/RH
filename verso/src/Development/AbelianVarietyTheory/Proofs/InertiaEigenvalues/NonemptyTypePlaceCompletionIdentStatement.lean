@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TypeIdent.nonempty_ident | exact GlobalTheory.TypeIdent.nonempty_ident | (intros; apply GlobalTheory.TypeIdent.nonempty_ident <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.nonempty_typePlaceCompletionIdent : ∀ D : D7, Nonempty (Ident D) := by
   first | exact @GlobalTheory.TypeIdent.nonempty_ident | exact GlobalTheory.TypeIdent.nonempty_ident | (intros; apply GlobalTheory.TypeIdent.nonempty_ident <;> assumption)

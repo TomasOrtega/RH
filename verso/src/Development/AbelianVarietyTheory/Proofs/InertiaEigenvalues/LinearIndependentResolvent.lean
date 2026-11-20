@@ -7,17 +7,17 @@ open Polynomial
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `p hp hp0`. Establish `hc : p.coeff 0 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hp0` to reduce the goal to its premises. Rewrite using `[Polynomial.eq_C_of_natDegree_eq_zero hp, h0, map_zero]`. Rewrite using `[Polynomial.eq_C_of_natDegree_eq_zero hp, Polynomial.aeval_C]`. Conclude with `(isUnit_iff_ne_zero.2 hc).map (algebraMap ℂ (Module.End ℂ V))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `p hp hp0`. Establish `hdeg : 0 < p.degree`. Rewrite using `[Polynomial.degree_eq_natDegree hp0, hp]`. Conclude with `Nat.succ_pos n` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `IsAlgClosed.exists_root p hdeg.ne'`. Take `⟨q, hq⟩` from `Polynomial.dvd_iff_isRoot.2 hr`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Rewrite `hq` using `[mul_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hp0 hq`. Establish `hqdeg : q.natDegree = n`. Establish `h2` using `congrArg Polynomial.natDegree hq`. Rewrite `h2` using `[Polynomial.natDegree_mul (Polynomial.X_sub_C_ne_zero r) hq0, Polynomial.natDegree_X_sub_C, hp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hq, map_mul]`. Use `IsUnit.mul ?_ (ih q hqdeg hq0)` and prove the remaining obligations. Simplify `h r` using `[map_sub]`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_aeval (T : Module.End ℂ V)
     (h : ∀ c : ℂ, IsUnit (T - algebraMap ℂ (Module.End ℂ V) c)) :
@@ -52,17 +52,15 @@ theorem isUnit_aeval (T : Module.End ℂ V)
     simpa [map_sub] using h r
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hs i hi`. Use `set q : ℂ[X] := ∑ j ∈ s, C (g j) * ∏ k ∈ s.erase j, (X - C k) with hq`. Establish `key : aeval T q v = 0`. Establish `h1 : aeval T (∏ k ∈ s, (X - C k)) (∑ j ∈ s, g j • w j) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, map_zero]`. Rewrite using `[← h1, hq, map_sum, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul s _ hj, map_mul, map_mul, aeval_C, map_sub, aeval_X, aeval_C, map_smul, Module.End.mul_apply, Module.End.mul_apply, hw, Module.algebraMap_end_apply]`. Establish `hq0 : q = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `hu` using `isUnit_aeval T h _ q rfl hne`. Establish `hinj` using `((Module.End.isUnit_iff _).1 hu).1`. Conclude with `hv (hinj (by rw [key, map_zero]))`. Establish `h2 : eval i q = g i * ∏ k ∈ s.erase i, (i - k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hq, eval_finsetSum, Finset.sum_eq_single i]`. Simplify using `[eval_prod]`. Introduce `j _ hji`. Rewrite using `[eval_mul, eval_prod, Finset.prod_eq_zero (i := i) (Finset.mem_erase.2 ⟨hji.symm, hi⟩) (by simp), mul_zero]`. Introduce `h3`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd hi h3`. Rewrite `h2` using `[hq0, eval_zero]`. Break down `mul_eq_zero.1 h2.symm with h3 | h3` into its components or cases. Conclude with `h3`. Take `⟨k, hk, hk0⟩` from `Finset.prod_eq_zero_iff.1 h3`.
-
-Conclude with `absurd (sub_eq_zero.1 hk0).symm (Finset.mem_erase.1 hk).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem linearIndependent_resolvent (T : Module.End ℂ V)
     (h : ∀ c : ℂ, IsUnit (T - algebraMap ℂ (Module.End ℂ V) c)) (v : V) (hv : v ≠ 0)
@@ -99,11 +97,11 @@ theorem linearIndependent_resolvent (T : Module.End ℂ V)
     exact absurd (sub_eq_zero.1 hk0).symm (Finset.mem_erase.1 hk).1
 
 /- English proof (translation)
-Introduce `V _ _ _ hrank T`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Set `w : ℂ → V` to `fun c => (((hcon c).unit⁻¹ : (Module.End ℂ V)ˣ) : Module.End ℂ V) v`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : ∀ c, (T - algebraMap ℂ (Module.End ℂ V) c) (w c) = v` using `fun c => by`. Establish `h1 : ((hcon c).unit : Module.End ℂ V) * (((hcon c).unit⁻¹ : (Module.End ℂ V)ˣ) : Module.End ℂ V) = 1` using `(hcon c).unit.mul_inv`. Rewrite `h1` using `[IsUnit.unit_spec]`. Establish `h2` using `congrArg (fun f : Module.End ℂ V => f v) h1`. Simplify using `only [Module.End.mul_apply, Module.End.one_apply] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hli` using `linearIndependent_resolvent T hcon v hv w hw`. Establish `h1 : Cardinal.mk ℂ ≤ Cardinal.aleph0` using `hli.cardinal_le_rank.trans hrank`. Rewrite `h1` using `[Cardinal.mk_complex]`. Conclude with `absurd h1 (not_le.2 Cardinal.aleph0_lt_continuum)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_not_isUnit_sub : ∀ {V : Type} [inst : AddCommGroup V] [inst_1 : Module ℂ V] [Nontrivial V], Module.rank ℂ V ≤ Cardinal.aleph0 → ∀ (T : Module.End ℂ V), ∃ (c : ℂ), ¬IsUnit (T - (Algebra.algebraMap ℂ (Module.End ℂ V) : ℂ → Module.End ℂ V) c) := by
   intro V _ _ _ hrank T

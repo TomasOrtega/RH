@@ -42,16 +42,16 @@ open ReciprocityTheory.ChartRestriction.G.T0 (meanK PT)
 namespace GlobalTheory.HeightTop
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 K)`. Conclude with `⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_place (K : Type) [Field K] [NumberField K] : Nonempty (HeightOneSpectrum (𝓞 K)) := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal (𝓞 K)
   exact ⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)⟩⟩
 
 /- English proof (translation)
-Unfold `meanK`. Establish `hn : (0 : ℝ) < Fintype.card (K →+* ℂ)`. Rewrite using `[NumberField.Embeddings.card]`. Conclude with `Module.finrank_pos` after adjusting the coercions. Rewrite using `[div_le_iff₀ hn]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem meanK_le_const {K : Type} [Field K] [NumberField K] {F : (K →+* ℂ) → ℝ} {b : ℝ} (h : ∀ sg, F sg ≤ b) :
     meanK F ≤ b := by
@@ -67,7 +67,7 @@ section Weights
 variable {D : D7} {j : ℕ}
 
 /- English proof (translation)
-Unfold `ext0`. Use `split_ifs`. Conclude with `h _`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extendByZero_add_eq_mul_of_forall {p : ℕ} {f g k : Fin p → ℕ} {m : ℕ} (h : ∀ i, f i + g i = m * k i) (i : ℕ) :
     ext0 f i + ext0 g i = m * ext0 k i := by
@@ -76,7 +76,7 @@ theorem extendByZero_add_eq_mul_of_forall {p : ℕ} {f g k : Fin p → ℕ} {m :
   · simp
 
 /- English proof (translation)
-Simplify using `only [wtA, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `h1` using `extendByZero_add_eq_mul_of_forall (hP t) x.2`. Establish `h2` using `extendByZero_add_eq_mul_of_forall (hM t) x.2`. Apply the tactic sequence `split_ifs <;> simp only [mul_add, mul_zero, add_zero, zero_add] <;> omega`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtA_add_eq {a b w : WeightFamilies.Wt D j} {m : ℕ} (hP : ∀ τ i, a.aP τ i + b.aP τ i = m * w.aP τ i)
     (hM : ∀ τ i, a.aM τ i + b.aM τ i = m * w.aM τ i) (x : (D.host.E →+* ℂ) × ℕ) :
@@ -88,15 +88,15 @@ theorem wtA_add_eq {a b w : WeightFamilies.Wt D j} {m : ℕ} (hP : ∀ τ i, a.a
   split_ifs <;> simp only [mul_add, mul_zero, add_zero, zero_add] <;> omega
 
 /- English proof (translation)
-Simplify using `[wtA, wscalar, ext0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wtA_wscalar (n : ℕ) (hn : Even n) (x : (D.host.E →+* ℂ) × ℕ) : wtA (wscalar D j n hn) x = 0 := by
   simp [wtA, wscalar, ext0]
 
 /- English proof (translation)
-Use `Prod.ext (funext fun x => ?_) ?_` and prove the remaining obligations. Simplify using `[wtZ, wEt, wtA_wscalar]`. Use `show ((WeightAlgebra.g0 D * i : ℕ) : ℤ) = (i * WeightAlgebra.g0 D) • ((1 : ℕ) : ℤ)`. Rewrite using `[nsmul_eq_mul]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem wtZ_wEt (i : ℕ) :
     wtZ (wtA (wEt D j i)) (wEt D j i).n = (i * WeightAlgebra.g0 D) • wtZ (E := D.host.E) 0 1 := by
@@ -106,11 +106,11 @@ theorem wtZ_wEt (i : ℕ) :
     rw [nsmul_eq_mul]; push_cast; ring
 
 /- English proof (translation)
-Use `Prod.ext (funext fun x => ?_) ?_` and prove the remaining obligations. Use `wtA_add_eq (a := w1) (b := wscalar D j 0 ⟨0, rfl⟩) (w := wL) (m := 2) (fun τ i => by simpa [wscalar] using h.2.1 τ i) (fun τ i => by simpa [wscalar] using h.2.2 τ i) x` as an intermediate fact. Rewrite `this` using `[wtA_wscalar 0 ⟨0, rfl⟩ x, add_zero]`. Use `show (wtA w1 x : ℤ) = (2 : ℕ) • ((wtA wL x : ℤ) - ((0 : ℕ) : ℤ))`. Rewrite using `[this, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `h.1 show (w1.n : ℤ) = (2 : ℕ) • ((wL.n : ℤ) - ((1 : ℕ) : ℤ))` as an intermediate fact. Rewrite using `[nsmul_eq_mul]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem weightSumVector_firstGeneratorWeight {wL w1 : WeightFamilies.Wt D j} (h : IsDoubledWeightWithShift wL w1 wL.n) :
     wtZ (wtA w1) w1.n = (2 : ℕ) • (wtZ (wtA wL) wL.n - wtZ (E := D.host.E) 0 1) := by
@@ -125,9 +125,9 @@ theorem weightSumVector_firstGeneratorWeight {wL w1 : WeightFamilies.Wt D j} (h 
     rw [nsmul_eq_mul]; push_cast; omega
 
 /- English proof (translation)
-Use `Prod.ext (funext fun x => ?_) ?_` and prove the remaining obligations. Use `wtA_add_eq h.2.1 h.2.2 x show (wtA w2 x : ℤ) = (WeightFamilies.dimY D j + 4 : ℕ) • (wtA wL x : ℤ) - (wtA wF x : ℤ)` as an intermediate fact. Rewrite using `[nsmul_eq_mul, eq_sub_iff_add_eq]`. Conclude with `this` after adjusting the coercions. Use `h.1 show (w2.n : ℤ) = (WeightFamilies.dimY D j + 4 : ℕ) • (wL.n : ℤ) - (wF.n : ℤ)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nsmul_eq_mul, eq_sub_iff_add_eq]`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem weightSumVector_secondGeneratorWeight_definite {wL wF w2 : WeightFamilies.Wt D j} (h : IsG2 wL wF w2) :
     wtZ (wtA w2) w2.n = (WeightFamilies.dimY D j + 4 : ℕ) • wtZ (wtA wL) wL.n - wtZ (wtA wF) wF.n := by
@@ -146,13 +146,13 @@ section Rec
 variable {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
 
 /- English proof (translation)
-Establish `hT : GenFromTest (T.Q.Xo j) T.Q.c hG` using `fun Z => h.allTest j hj (Om Z) (genFr hG Z)`. Introduce `Z h0`. Take `⟨k, hk, -⟩` from `hB.2 Z`. Take `⟨g, e1, e2⟩` from `hC Z wL (G.w k)`. Take `⟨H, hH⟩` from `(recPlus h j hj).inc_mul u wL F g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hH0 : H = 0`. Use `hV _ H fun Z' => ?_` and prove the remaining obligations. Establish `e` using `congrArg (formsEvR j hG hT Z') hH`. Use `erw [map_mul, formsEvR_inc h j hj hG hT Z' u F, formsEvR_inc h j hj hG hT Z' wL g, formsEvR_inc h j hj hG hT Z' _ H] at e`. Rewrite using `[← e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hZ : Z' = Z`. Substitute `hZ` using the available equality. Rewrite using `[h0, zero_mul]`. Rewrite using `[e2 Z' hZ, mul_zero]`. Rewrite `hH` using `[hH0, map_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg` using `hF wL g hH`. Apply `hk` to reduce the goal to its premises. Rewrite using `[← e1, hg]`. Conclude with `evC_zero hG Z`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzAt_of_nonZeroComp (hV : GenValInjSt h j hG) (hC : CompSplitSt h j hG) {ka wL wF : WeightFamilies.Wt D j}
     (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (hB : BigAt h j hj hG G) {u : WeightFamilies.Wt D j}
@@ -179,11 +179,11 @@ theorem nzAt_of_nonZeroComp (hV : GenValInjSt h j hG) (hC : CompSplitSt h j hG) 
   exact evC_zero hG Z
 
 /- English proof (translation)
-Distinguish the cases in `hN : NZSome hG F.1`. Rewrite using `[← hB.2 σ]`. Conclude with `log_supN_le hfn hPT hcx (cusp_le_sec _ _ (T.U j) _ _ (cutR_le T.C j w F.2)) hB.1 hN σ`. Establish `hz : ∀ Z, evC hG Z F.1 = 0` using `fun Z => by`. Assume the negation of the conclusion as `h0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hN ⟨Z, h0⟩`. Establish `hF : F = 0` using `hV w F hz`. Establish `e1 : (recB h.toLawsCore).supN j w σ F = 0` using `((recB h.toLawsCore).supN_eq_zero _ _ _ _).2 hF`. Establish `e2 : ∀ p : (Σ Z : Comp (T.Q.Xo j) T.Q.c, PT (Ω` using `Om Z) σ), nrmC fn (yP p.1) (wtZ (wtA w) w.n) (valC hG (wtA w) w.n F.1 p.1) p.2 = 0 := fun p => by`. Unfold `valC`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nrmC_single, hz, map_zero, norm_zero, zero_mul]`. Rewrite using `[e1]`. Simplify using `only [e2, Real.iSup_const_zero, le_refl]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem log_iSup_le [Fintype (Comp (T.Q.Xo j) T.Q.c)] (hV : GenValInjSt h j hG)
     {fn : ∀ σ : T.Q.c.F →+* ℂ, FrPt (T.Q.Xo j) T.Q.c (CAt σ) → Ix (T.Q.Dw j) → ℝ}
@@ -218,11 +218,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hFs` using `cusp_le_sec Xo c U a n hFC`. Establish `key : (0 : EReal) ≤ (((ordC (δ Z v) v (wtZ a n) (valC h a n F Z) : ℤ) : ℝ) : EReal)`. Take `⟨hd, ⟨la, ho, -⟩ | ⟨ht, -⟩⟩` from `hA`. Take `⟨y, hy⟩` from `hT Z v la hd ho`. Rewrite using `[hy a n F hFs hne]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg (by exact_mod_cast ramIdx_nonneg ho) (hreg.int hdom hFC hF la _ (vAtV_mem_valSet (fun _ _ _ h => h) y))`. Take `⟨q, hq⟩` from `hTQ Z v hd ht`. Rewrite using `[hq a n F hFs hne]`. Establish `hqT : (fun f => ordQ Xo c q f) ∈ trivSet Xo c`. Use `⟨q.T, q.ι, q.y, fun a ha => ?_, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `q.triv a ha`. Rewrite using `[← hu]`. Conclude with `extVal_unit_zero q.T u`. Conclude with `(hreg.1.1 ⟨(a, n), hdom⟩ ⟨F, hFC⟩ fun la y => hF la y.1 y.2).2 ⟨_, hqT⟩`. Conclude with `key` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_nonneg_of_regP {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hreg : regular₂ Xo c U) {h : GenFrEx Xo c}
     {δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ}
@@ -252,77 +252,63 @@ theorem ord_nonneg_of_regP {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r}
 end Integral
 
 /- English proof (translation)
-Introduce `D T h j hj hG _ ka wL wF G S g0 hH hV hC hB y hw hcur htie hjm hac hD3 hn0 hIB large₂ Gc PH Prw Pet PN' PP0' PI4' tableLineDegreeFive tableLineDegreeTwo POb CL AL nus w2 t2 hTW hTT hthM hG2 ht2M ht2N ht2S hH1 hPN hLAM hLC hsz hDF hrw hnK hrd p1 p2 p3 p4 p5 p6 p7 p8 p9 hPH c th w1 …`. Use `haveI : Nonempty (HeightOneSpectrum (𝓞 T.Q.c.F)) := nonempty_place _`. Establish `hgt : GenFromTest (T.Q.Xo j) T.Q.c hG` using `fun Z => h.allTest j hj (Om Z) (genFr hG Z)`. Establish `hx : 0 < xiR D` using `(GlobalTheory.PinNum.xiR_pos_le_one D T.Q h.pins.1).1`. Establish `hU : ∀ σ, Formalism.L2.PjFree.GoodEmb T.Q.c σ → Formalism.L2.PjFree.IsUnf (Formalism.L2.PjFree.Unf.ofPj (T.U j σ))` using `fun σ hσ => h.unf j hj σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hkfg, ⟨d0, hd0, hd0'⟩, htr, hne, δ, hTQ, hTQZ, hTOn, hT, hFr⟩` from `Ties.ordTies_of_pins D T.Q h.pins j hj hG`. Establish `hreg` using `h.reg j hj`. Take `⟨fn, hpin, hfn⟩` from `GlobalTheory.FrameNorm.Existence.exists_pinned _ _ _ _ (T.Q.Xo j) T.Q.c D.R.r _ hU (xiR D) hx`. Take `⟨yP, hyP, hcx, -⟩` from `GlobalTheory.Reg.exists_cBase_valAtCx _ _ _ _ (T.Q.Xo j) T.Q.c (GlobalTheory.Reg.evLaws_genFr_atlas _ _ _ _ (T.Q.Xo j) T.Q.c).1 hG`. Establish `hconj` using `(GlobalTheory.FrameNorm.fnConj_valAtCx_nrmC_eq_ptNorm _ _ _ _ (T.Q.Xo j) T.Q.c D.R.r _ hU (xiR D) fn hx hpin hG yP hyP).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsup` using `(GlobalTheory.FrameNorm.RecSup.supBdd_and_supR_eq_supN D T h j hj fn hpin).2.1`. Establish `hfg` using `fnFG_of _ _ hkfg`. Establish `hPT` using `ptNe_of_fnFG hfg`. Establish `hdim : WeightFamilies.dimY D j = (T.Q.Dw j).dim + Nat.card (FlagVar (T.Q.Dw j))`. Take `⟨Z⟩` from `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `(hd0 Z).symm.trans ((GlobalTheory.Reg.kap_fg_trdeg _ _ _ _ (T.Q.Xo j) T.Q.c).2 Z)`. Establish `e' : d0 = (T.Q.Dw j).dim` using `by exact_mod_cast e`. Rewrite using `[← hd0', e']`. Use `choose k0 hk0 hk0' using hH.2.1.2`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N, N + 1 = G.N := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Z⟩` from `hne`. Conclude with `⟨G.N - 1, by have := (k0 Z).2; omega⟩`. Set `eN : Fin (N + 1) ≃ Fin G.N` to `finCongr hN`. Set `wR : Fin (N + 1) → T.R j` to `fun k => (G.w (eN k)).1`. Set `jc : Comp (T.Q.Xo j) T.Q.c → Fin (N + 1)` to `fun Z => eN.symm (k0 Z)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `wsize : WTZ D.host.E → ℝ` to `fun g => if g = wtZ (wtA wL) wL.n then wL.size else wF.size`. Establish `hsL : wsize (wtZ (wtA wL) wL.n) = wL.size` using `if_pos rfl`. Establish `hsF : wsize (wtZ (wtA wF) wF.n) = wF.size`. Distinguish the cases in `e : wtZ (wtA wF) wF.n = wtZ (wtA wL) wL.n`. Establish `e1 : wF = wL`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.LowerBoundCompare.wt_ext T.Q h.pins.1 (funext fun x => ?_) ?_` and prove the remaining obligations. Establish `: (wtA wF x : ℤ) = wtA wL x` using `congrFun (congrArg Prod.fst e) x`. Conclude with `this` after adjusting the coercions. Establish `: (wF.n : ℤ) = wL.n` using `congrArg Prod.snd e`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, hsL, e1]`. Conclude with `if_neg e`. Establish `hwb : ∀ Z, evC hG Z (wR (jc Z)) ≠ 0` using `fun Z => by`. Simplify using `only [wR, jc, Equiv.apply_symm_apply]`. Conclude with `hk0 Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu : ∀ (w : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j w), F.1 ∈ T.cuspA j (wtA w) w.n` using `fun w F => cutR_le T.C j w F.2`. Establish `hse : ∀ (w : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j w), F.1 ∈ sec (T.Q.Xo j) T.Q.c (wtA w) w.n` using `fun w F => cusp_le_sec _ _ (T.U j) _ _ (hcu w F)`. Establish `hin : ∀ (w : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j w), F ∈ (recB h.toLawsCore).Mlat j w → IntAlg F.1` using `fun w F hF => hF`. Establish `hetZ` using `nzAt_of_nonZeroComp h j hj hG hV hC G hH.2.1 _ hetN`. Establish `h1Z` using `nzAt_of_nonZeroComp h j hj hG hV hC G hH.2.1 _ ht1N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2Z` using `nzAt_of_nonZeroComp h j hj hG hV hC G hH.2.1 _ ht2N`. Establish `huet` using `wtZ_wEt (D := D) (j := j) G.iet`. Establish `hu1` using `weightSumVector_firstGeneratorWeight hG1`. Establish `hu2` using `weightSumVector_secondGeneratorWeight_definite hG2`. Establish `hnz : NoCommonZero (T.Q.Xo j) T.Q.c wR`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k _ _ _ z`. Take `⟨i, hi⟩` from `hH.2.1.1 k z`. Conclude with `⟨eN.symm i, by simpa only [wR, Equiv.apply_symm_apply] using hi⟩`. Establish `hcomb' : CombAlg (T.Q.Xo j) T.Q.c wR G.et.1 nus (c / (2 * (G.iet : ℝ)))`. Introduce `la v hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e : (⨅ k, v (wR k)) = ⨅ k, v (G.w k).1` using `eN.iInf_comp (g := fun k => v (G.w k).1)`. Rewrite using `[e]`. Conclude with `hcomb la v hv`. Take `⟨hnu, hnu'⟩` from `GlobalTheory.numerical_h_one_of_weighted_bound D T h j hj large₂ wL nus hH1`. Establish `hg0 : 1 ≤ WeightAlgebra.g0 D`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(ReciprocityTheory.ChartRestriction.G.PullbackSections.PfTies1.dimPos_fr D).2` as an intermediate fact. Unfold `WeightAlgebra.g0`. Use linear arithmetic over natural numbers and integers. Set `d` to `dataOf hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 Fin.elim0 ∅ G.et …`. Establish `hwe : ∀ k, d.w (eN.symm k) = valC hG (wtA wL) wL.n (G.w k).1` using `fun k => by show valC hG (wtA wL) wL.n (G.w (eN (eN.symm k))).1 = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Equiv.apply_symm_apply]`. Establish `ha1 : A1Bigness d` using `GlobalTheory.BigRec.independent_differentials_ratios_cusp_forms_trdeg D T h j hj hG ka wL wF G d eN.symm rfl hwe (fun Z => valC_ne_zero (hwb Z)) (fun Z => ⟨k0 Z, hk0 Z, hk0' Z⟩)`. Take `⟨eD, heD⟩` from `GlobalTheory.SectionBasis.chosenForms_restrict_basis_functionField D T h j hj hG ka wL wF G S g0 (Classical.arbitrary _) d eN.symm rfl hwe (fun Z => valC_ne_zero (hwb Z)) hH (hIB _)`. Establish `ha4 : A4Selection d eD` using `heD eD (fun _ => rfl) rfl`. Establish `hdel : d.del = G.del` using `by simpa using Fintype.card_congr eD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdel1 : 1 ≤ d.del`. Take `⟨e, -, -, h3⟩` from `ha4`. Take `⟨q, hq, p, hp⟩` from `h3 (fun _ => 1)`. Take `⟨Z⟩` from `hne`. Assume the negation of the conclusion as `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: IsEmpty (Fin d.del)` using `⟨fun i => by have := i.2; omega⟩`. Establish `h4` using `hp Z`. Rewrite `h4` using `[mul_one, Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `hq Z h4`. Establish `hn96 : d.n96 = 8 * ((WeightFamilies.dimY D j + 2) * G.N) ^ 2 * (WeightFamilies.dimY D j + 1) * G.del * (1 + ⌈POb⌉₊)`.
+Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hdel, ← hN]`. Both sides reduce to the same expression. Establish `hn1 : 1 ≤ d.n96`. Establish `: 0 < d.del` using `hdel1`. Use `show 0 < 8 * ((d.D + 2) * (d.N + 1)) ^ 2 * (d.D + 1) * d.del * (1 + ⌈d.PO⌉₊)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Rewrite `hLAM`, `hLC` using `[← hn96]`. Take `⟨-, -, hDF', hST⟩` from `GlobalTheory.Reg.kap_divFin_stLoc_dataOf _ _ _ _ (T.Q.Xo j) T.Q.c hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => …`. Establish `hbdd : LawBdd d` using `GlobalTheory.Reg.LawBddPf.lawBdd_dataOf _ _ _ _ (T.Q.Xo j) T.Q.c hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => …`. Establish `ha2 : A2RegularityOrders d`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun Z v hA x hx hx0 => ?_, fun Z v hA x hx hx0 => ?_, fun Z v hA => ?_, fun Z v hA => ?_, fun Z v hA => ?_⟩` and prove the remaining obligations. Take `⟨F, hF, rfl⟩` from `exists_of_mem_span_valG hG hx`. Conclude with `ord_nonneg_of_regP hreg hT hTQ (dom_wtA wL) (mem_of_mem_span_int _ (Set.range_subset_iff.2 fun k => hcu _ (G.w (eN k))) hF) (intAlg_span (Set.forall_mem_range.2 fun k => hin _ _ (hTW.2.1 (eN k))) hF) hA (evC_ne_zero_of_valC hx0)`. Take `⟨F, hF, rfl⟩` from `exists_of_mem_span_valG hG hx`. Conclude with `ord_nonneg_of_regP hreg hT hTQ (dom_wtA wF) (mem_of_mem_span_int _ (Set.range_subset_iff.2 fun k => hcu _ (G.th' k)) hF) (intAlg_span (Set.forall_mem_range.2 fun k => hin _ _ (hthM k)) hF) hA (evC_ne_zero_of_valC hx0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `ord_nonneg_of_regP hreg hT hTQ (dom_wtA (wEt D j G.iet)) (hcu _ G.et) (hin _ _ hetM) hA (hetZ Z)`. Rewrite `h0` using `[huet]`. Conclude with `h0`. Establish `h0` using `ord_nonneg_of_regP hreg hT hTQ (dom_wtA w1) (hcu _ t1) (hin _ _ ht1M) hA (h1Z Z)`. Rewrite `h0` using `[hu1]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `h0` using `ord_nonneg_of_regP hreg hT hTQ (dom_wtA w2) (hcu _ t2) (hin _ _ ht2M) hA (h2Z Z)`. Rewrite `h0` using `[hu2]`. Conclude with `h0`. Establish `ha3 : LawA3' d` using `lawA3'_dataOf hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 Fin.elim0 …`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha13 : A13Measurable d` using `lawA13_of_data hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 Fin.elim …`. Establish `hnum : NumOK d`. Establish `hg0' : (1 : ℝ) ≤ WeightAlgebra.g0 D` using `by exact_mod_cast hg0`. Use `⟨hD3, hi, hg0, hc0, ?_, hcg, ?_, ?_, ?_, hnK, hrd, p1, le_rfl, le_rfl, p2, le_rfl, p3, p4, p5, p6, p7, p8, p9⟩` and prove the remaining obligations. Use `show c ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `show 1 ≤ wsize (wtZ (wtA wL) wL.n)`. Rewrite using `[hsL]`. Conclude with `hsz`. Use `show (WeightAlgebra.DF wL : ℝ) ≤ wsize (wtZ (wtA wL) wL.n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hsL]`. Conclude with `hDF`. Use `show Real.log (N + 1 : ℕ) + 1 / 2 ≤ Prw * (wsize (wtZ (wtA wL) wL.n) - 1)`. Rewrite using `[hsL, hN]`. Conclude with `hrw`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `iH1 : d.FinitePlaceHyp` using `height_H1_of_data hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 Fin.e …`. Rewrite using `[hsL]`. Conclude with `⟨hnu.1, hnu.2.1, hnu.2.2.trans (mul_le_mul_of_nonneg_right hPN (by linarith))⟩)`. Establish `iF1d : d.TrivialPlaceHyp` using `height_F1_of_data hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 Fin.e …`. Establish `hkaZ : wtZ (wtA (wsmul d.n96 wL)) (wsmul d.n96 wL).n = d.n96 • wtZ (wtA wL) wL.n` using `(GlobalTheory.LowerBoundCompare.eq_wsmul_iff h.toLawsCore _ wL _).2 rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `iLAM : d.HtLAM` using `htLAM_of h.toLawsCore j hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 …`. Rewrite using `[hsL]`. Conclude with `hLC)`. Establish `hlog` using `fun (w : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j w) (σ : T.Q.c.F →+* ℂ) => log_iSup_le h j hG hV hfn hPT hcx F (hsup w F) σ`. Establish `iSup' : d.HtSup`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, fun k => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show _ ≤ Gc * wsize (wtZ (wtA wL) wL.n)`. Rewrite using `[hsL]`. Use `(meanK_mono' fun σ => ?_).trans hTW.2.2.2.2` and prove the remaining obligations. Conclude with `ciSup_le fun k => (hlog _ (G.w (eN k)) σ).trans (hTW.2.2.2.1 σ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Use `show _ ≤ Gc * wsize (wtZ (wtA wF) wF.n)`. Rewrite using `[hsF]`. Conclude with `(meanK_mono' fun σ => hlog _ (G.th' k) σ).trans (hTT k).2`. Use `show _ ≤ 2 * PI4' * (WeightFamilies.dimY D j : ℝ) * wsize (wtZ (wtA wL) wL.n)`. Rewrite using `[hsL]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `meanK_le_const fun σ => le_trans ?_ (ht1S σ)` and prove the remaining obligations. Establish `h1` using `hlog _ t1 σ`. Rewrite `h1` using `[hu1]`. Conclude with `h1`. Use `show _ ≤ PI4' * (WeightFamilies.dimY D j : ℝ) * wsize (wtZ (wtA wL) wL.n)`.
-
-Rewrite using `[hsL]`. Use `meanK_le_const fun σ => le_trans ?_ (ht2S σ)` and prove the remaining obligations. Establish `h1` using `hlog _ t2 σ`. Rewrite `h1` using `[hu2]`. Conclude with `h1`.
-
-Establish `iet : d.HeightIntegralEstimateTrivialPlace`. Use `htI2et_of_pt d fun σ => le_trans ?_ (hetS σ)` and prove the remaining obligations. Establish `h1` using `hlog (wEt D j G.iet) G.et σ`. Rewrite `h1` using `[huet]`. Conclude with `div_le_div_of_nonneg_right h1 (Nat.cast_nonneg _)`.
-
-Establish `ibe : d.HeightIntegralBoundEstimate`. Establish `h3` using `Generic.nrmTieU_of_fnPin D T.toCore h.toLawsCore j hj fn hpin hG yP hyP`. Use `htI2be_of hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 Fin.elim0 ∅ G …` and prove the remaining obligations. Introduce `σ hσ k x hx`. Establish `e : ∑ k', recNrm (T.U j σ) (xiR D) (wtA wL) wL.n (wR k') k x ^ 2 = ∑ k', recNrm (T.U j σ) (xiR D) (wtA wL) wL.n (G.w k').1 k x ^ 2` using `eN.sum_comp (fun k' => recNrm (T.U j σ) (xiR D) (wtA wL) wL.n (G.w k').1 k x ^ 2)`.
-
-Establish `h1` using `hI2 σ hσ k x hx`. Rewrite `h1` using `[← e]`. Conclude with `h1`. Set `hd : d.AxH (fun Z => AG Z)` to `axHOf hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 Fin.elim0 ∅ G.et. …`. Establish `hsel : hd.sel = eD`.
-
-Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12⟩` from `hnum`. Both sides reduce to the same expression. Establish `hs` using `d.genericSection_of_axioms hd`. Establish `hcon` using `d.heights hd hs iH1 iF1d iLAM iSup' iet ibe`. Use `Formalism.MainNotions.Gaps.HeightData.heights_of_htConcl G _ Gc PH Prw Pet (htConcl_toHtData_of (B := recB h.toLawsCore) d hd hs G _ Gc PH Prw Pet rfl hdel rfl rfl hsL rfl hPH.symm rfl rfl ?_ ?_ ?_ hcon)` and prove the remaining obligations.
-
-Rewrite using `[← eD.sum_comp]`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Use `show meanK (fun sg => Real.log (d.supN sg d.wF (d.thp (hd.sel k)))) ≤ _`. Rewrite using `[hsel]`. Conclude with `meanK_mono' fun σ => hlog _ (G.th' (eD k)) σ`.
-
-Conclude with `GlobalTheory.T.lengths_at_primes_le_functionField_data_of_curve D T h j hj hG ka wL wF G S g0 hH hV hC hB y hw hcur htie δ hT d hd hs eN rfl (fun _ _ => rfl) rfl rfl (fun _ => rfl) eD (fun k => by rw [hsel]; rfl) Gc PH Prw Pet`. Conclude with `GlobalTheory.T.orders_auxiliary_form_at_primes_eq_functionField D T h j hj hG ka wL wF G S g0 hH hV hC hB y hw hcur htie hjm δ hT d hd hs eN rfl (fun _ _ => rfl) rfl rfl (fun _ => rfl) rfl huet.symm Gc PH Prw Pet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heights_indefinite :
     ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) [Fintype (Comp (T.Q.Xo j) T.Q.c)] (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF), CurveHyp h j hj hG ka wL wF G S g0 → GenValInjSt h j hG → CompSplitSt h j hG → BIRSt h j hj hG G → ∀ (y : ∀ la, PtsG G la → (extAll h j hj).Pt' la) (hw : ∀ la ζ, FromW (E := extAll h j hj) (hM := intAtExt_extAll h j hj) ζ (y la ζ)), (∀ la, (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0).InCurve) → (∀ la, (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0).InTie S) → j < D.R.m → FnAlgClosed (T.Q.Xo j) T.Q.c → 3 ≤ WeightFamilies.dimY D j → 0 < wL.n → (∀ la, InBasis G la) → ∀ (large₂ : SizeData₂ D) (Gc PH Prw Pet PN' PP0' PI4' tableLineDegreeFive tableLineDegreeTwo POb CL AL : ℝ) (nus : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO) → ℝ) (w2 : WeightFamilies.Wt D j) (t2 : (recB h.toLawsCore).Cusp j w2), G.TiedW S Gc Prw → G.TiedTh S Gc → (∀ i, G.th' i ∈ (recB h.toLawsCore).Mlat j wF) → IsG2 wL wF w2 → t2 ∈ (recB h.toLawsCore).Mlat j w2 → (recPlus h j hj).NonZeroComp w2 t2 → (∀ σ, Real.log ((recB h.toLawsCore).supN j w2 σ t2) ≤ PI4' * (WeightFamilies.dimY D j : ℝ) * wL.size) → WeightedPrimeSumBoundAlt large₂ (recPJ h j hj) wL nus → WeightAlgebra.PN D large₂ ≤ PN' → LAMwAt large₂ (recB h.toLawsCore) j (wsmul (8 * ((WeightFamilies.dimY D j + 2) * G.N) ^ 2 * (WeightFamilies.dimY D j + 1) * G.del * (1 + ⌈POb⌉₊)) wL) CL AL → LamConst j large₂ CL AL (wsmul (8 * ((WeightFamilies.dimY D j + 2) * G.N) ^ 2 * (WeightFamilies.dimY D j + 1) * G.del * (1 + ⌈POb⌉₊)) wL) PP0' (8 * ((WeightFamilies.dimY D j + 2) * G.N) ^ 2 * (WeightFamilies.dimY D j + 1) * G.del * (1 + ⌈POb⌉₊)) wL.size → 1 ≤ wL.size → (WeightAlgebra.DF wL : ℝ) ≤ wL.size → Real.log G.N + 1 / 2 ≤ Prw * (wL.size - 1) → Real.log (Module.finrank ℚ T.Q.c.F) ≤ POb → Real.log (|(NumberField.discr T.Q.c.F : ℝ)| ^ (1 / (Module.finrank ℚ T.Q.c.F : ℝ))) ≤ POb → 1 ≤ PN' → 1 ≤ PP0' → 1 ≤ Gc → 1 ≤ PI4' → 1 ≤ Pet → 1 ≤ tableLineDegreeFive → 1 ≤ tableLineDegreeTwo → 1 ≤ Prw → 1 ≤ POb → PH = 2 * (PP0' + PN' + tableLineDegreeFive + tableLineDegreeTwo + PI4' + Prw) + Gc → ∀ (c th : ℝ) (w1 : WeightFamilies.Wt D j) (t1 : (recB h.toLawsCore).Cusp j w1), IsDoubledWeightWithShift wL w1 wL.n → t1 ∈ (recB h.toLawsCore).Mlat j w1 → (recPlus h j hj).NonZeroComp w1 t1 → (∀ σ, Real.log ((recB h.toLawsCore).supN j w1 σ t1) ≤ 2 * PI4' * (WeightFamilies.dimY D j : ℝ) * wL.size) → 0 < G.iet → G.et ∈ (recB h.toLawsCore).Mlat j _ → (recPlus h j hj).NonZeroComp _ G.et → (∀ σ, Real.log ((recB h.toLawsCore).supN j _ σ G.et) / G.iet ≤ Pet) → 0 ≤ c → c * (WeightAlgebra.g0 D : ℝ) ≤ 1 / 2 → CombAlg (T.Q.Xo j) T.Q.c (fun k => (G.w k).1) G.et.1 nus (c / (2 * (G.iet : ℝ))) → (∀ σ, GoodEmb T.Q.c σ → ∀ (k : (T.U j σ).Comp) (x : ReciprocityTheory.ChartRestriction.G.FD.Frame ((T.U j σ).X k).Ψ D.R.r), x ∈ ((T.U j σ).X k).dom → -Real.log (Real.sqrt (∑ k', recNrm (T.U j σ) (xiR D) (wtA wL) wL.n (G.w k').1 k x ^ 2)) ≤ tableLineDegreeFive * (WeightAlgebra.DF wL : ℝ) + c * ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j σ).X k) th x) → EtArch h th tableLineDegreeTwo j G.iet G.et → Heights (fun la => (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0)) Gc PH Prw Pet := by

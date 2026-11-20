@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hC hI Z S p _ z`. Establish `hmem : p z ∈ (⊤ : S.Opens)` using `trivial`. Take `⟨U, hU0, hzU, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp S.isBasis_affineOpens) hmem`. Establish `hU : IsAffineOpen U` using `hU0`. Set `u0 : Spec (CommRingCat.of Γ(S, U)) ⟶ S` to `hU.isoSpec.inv ≫ Scheme.Opens.ι U`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨B, iB, iAB, v0, hfin, hpb⟩` from `hC p Γ(S, U) u0`. Use `haveI := hfin`. Take `⟨y, hy⟩ : ∃ y : (U : Scheme), Scheme.Opens.ι U y = p z` from `⟨⟨p z, hzU⟩, rfl⟩`. Establish `ha : u0 (hU.isoSpec.hom y) = p z` using `by show (hU.isoSpec.hom ≫ hU.isoSpec.inv ≫ Scheme.Opens.ι U) y = p z`. Rewrite using `[Iso.hom_inv_id_assoc, hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w0, hw1, hw2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := p) (g := u0) z _ ha.symm`. Establish `hw : v0 (hpb.isoPullback.inv w0) = z`. Rewrite using `[← Scheme.Hom.comp_apply, hpb.isoPullback_inv_fst, hw1]`. Take `⟨A', W, v, hEt, hW, hvW, hvv, hiso⟩` from `hI Γ(S, U) B (hpb.isoPullback.inv w0)`. Use `haveI := hEt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨A'.U, A'.V, A'.u ≫ u0, A'.v ≫ v0, A'.r, A'.pb.paste_horiz hpb⟩, W, v, ?_, hW, hvW, ?_, hiso⟩` and prove the remaining obligations. Use `show Etale (A'.u ≫ u0) infer_instance`. Use `show (A'.v ≫ v0) v = z`. Rewrite using `[Scheme.Hom.comp_apply, hvv, hw]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.isolate_of :
     Chart → IsolateSpec → Isolate := by

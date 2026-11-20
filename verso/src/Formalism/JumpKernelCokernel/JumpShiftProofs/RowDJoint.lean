@@ -5,9 +5,9 @@ import Formalism.JumpKernelCokernel.JumpShiftProofs.ExpRowD
 namespace Formalism.KernelCokernelLengths.RowDegreeJointLemmas
 
 /- English proof (translation)
-Unfold `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.lam`. Establish `hl : (1:ℝ) < ℓ` using `by exact_mod_cast (by omega : 1 < ℓ)`. Establish `t1 : 0 ≤ (H : ℝ) * (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 2` using `div_nonneg (mul_nonneg (Nat.cast_nonneg _) (by linarith)) (sq_nonneg _)`. Establish `t2 : 0 ≤ Real.logb (ℓ : ℝ) (2 * (H : ℝ))`. Break down `Nat.eq_zero_or_pos H with h0 | h0` into its components or cases.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[h0]`. Establish `: (1:ℝ) ≤ H` using `by exact_mod_cast h0`. Conclude with `Real.logb_nonneg hl (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma aR_nonneg (ℓ : ℕ) (hℓ : 11 ≤ ℓ) (H : ℕ) : 0 ≤ Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR ℓ H := by
   unfold Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.lam
@@ -24,31 +24,29 @@ lemma aR_nonneg (ℓ : ℕ) (hℓ : 11 ≤ ℓ) (H : ℕ) : 0 ≤ Formalism.Trun
 end Formalism.KernelCokernelLengths.RowDegreeJointLemmas
 
 /- English proof (translation)
-Use `⟨1 / 100, by norm_num, 1000, ?_⟩` and prove the remaining obligations. Introduce `ℓ hℓ b η S t bi h s₁ E e₂ hb hη hS ht h1 h2 h3`. Introduce `η' a hs₁ hE he₂`. Establish `hℓR : (11:ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`. Establish `hbR : (1000:ℝ) ≤ b` using `by exact_mod_cast hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1R : (b:ℝ) ≤ bi + t + 1` using `by exact_mod_cast h1`. Establish `h2R : (bi:ℝ) + S ≤ h` using `by exact_mod_cast h2`. Establish `h3R : (h:ℝ) ≤ b + η + t + S + 1` using `by exact_mod_cast h3`. Establish `hη' : (η' : ℝ) = η + t + 1` using `by show ((η + t + 1 : ℕ) : ℝ) = _`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hη0 : (0:ℝ) ≤ η` using `Nat.cast_nonneg _`. Establish `ht0 : (0:ℝ) ≤ t` using `Nat.cast_nonneg _`. Establish `hS0 : (0:ℝ) ≤ S` using `Nat.cast_nonneg _`. Establish `hA : 2 * η' ≤ h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 * (η' : ℝ)) ≤ h` using `by rw [hη']; linarith`. Conclude with `this` after adjusting the coercions. Establish `hB : h ≤ 2 * bi`. Establish `: (h : ℝ) ≤ 2 * bi` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haR` using `Formalism.KernelCokernelLengths.RowDegreeJointLemmas.aR_nonneg ℓ hℓ (h + η')`. Establish `ha : (a : ℝ) ≤ Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR ℓ (h + η') + 1` using `(Nat.ceil_lt_add_one haR).le`. Establish `hC : 2 * a + η' + 1 ≤ bi`. Establish `hHR : ((h + η' : ℕ) : ℝ) ≤ 1.05 * b + 2` using `by push_cast; rw [hη']; linarith`. Establish `hH1 : (1:ℝ) ≤ ((h + η' : ℕ) : ℝ)` using `by push_cast; rw [hη']; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfrac : (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 2 ≤ 21 / 100`. Rewrite using `[div_le_iff₀ (by nlinarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `he5 : (100:ℝ) ≤ Real.exp 5`. Establish `e1` using `Real.exp_one_gt_d9`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (2.7:ℝ) ^ 5 < Real.exp 1 ^ 5` using `pow_lt_pow_left₀ (by linarith) (by norm_num) (by norm_num)`. Rewrite `e2` using `[← Real.exp_nat_mul]`. Evaluate the numerical expressions using `at e2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : ∀ y : ℝ, 0 < y → Real.log y ≤ y / 100 + 4`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `h5` using `Real.log_le_sub_one_of_pos (div_pos hy (Real.exp_pos 5))`. Rewrite `h5` using `[Real.log_div hy.ne' (Real.exp_pos 5).ne', Real.log_exp]`. Establish `: y / Real.exp 5 ≤ y / 100` using `div_le_div_of_nonneg_left hy.le (by norm_num) he5`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl11 : (2:ℝ) < Real.log ℓ`. Rewrite using `[Real.lt_log_iff_exp_lt (by linarith)]`. Establish `e1` using `Real.exp_one_lt_d9`. Establish `: Real.exp 2 = Real.exp 1 ^ 2` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[Real.exp_pos 1]`. Establish `hlam : Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.lam ℓ (h + η') ≤ ((h + η' : ℕ) : ℝ) / 100 + 3`. Unfold `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.lam`. Establish `hy : (0:ℝ) < 2 * ((h + η' : ℕ) : ℝ)` using `by linarith`. Establish `hlg` using `hlog _ hy`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlg0 : 0 ≤ Real.log (2 * ((h + η' : ℕ) : ℝ))` using `Real.log_nonneg (by linarith)`. Rewrite using `[Real.logb]`. Establish `hdd : Real.log (2 * ((h + η' : ℕ) : ℝ)) / Real.log ℓ ≤ Real.log (2 * ((h + η' : ℕ) : ℝ)) / 2` using `div_le_div_of_nonneg_left hlg0 (by norm_num) hl11.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `haR2 : Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR ℓ (h + η') ≤ 0.22 * ((h + η' : ℕ) : ℝ) + 6`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR`. Establish `: ((h + η' : ℕ) : ℝ) * (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 2 ≤ ((h + η' : ℕ) : ℝ) * (21 / 100)`. Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hfrac (Nat.cast_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `: (2 * (a : ℝ) + η' + 1) ≤ bi` using `by rw [hη'] at *; linarith`. Conclude with `this` after adjusting the coercions. Use `⟨⟨hA, hB, hC⟩, ?_⟩` and prove the remaining obligations. Conclude with `Formalism.KernelCokernelLengths.row_degree_exponent ℓ hℓ h η' S bi a s₁ E e₂ hA (by omega) ha hs₁ hE he₂`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Formalism.KernelCokernelLengths.row_degree_joint_form : Formalism.KernelCokernelLengths.RowDJoint := by
   refine ⟨1 / 100, by norm_num, 1000, ?_⟩

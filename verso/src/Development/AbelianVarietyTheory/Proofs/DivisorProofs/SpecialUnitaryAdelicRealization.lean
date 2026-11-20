@@ -13,9 +13,9 @@ open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat 
 namespace GlobalTheory.TamUnf
 
 /- English proof (translation)
-Introduce `E _ _ _ r G Ψ θ hG hdet hΨ hθ`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.archimedean_cm_type_homeomorph E Ψ θ hΨ hθ`. Take `⟨f, hf⟩` from `GlobalTheory.T.archimedean_special_unitary_iso E r G Ψ θ hθ Φ hΦ`. Take `⟨e, he⟩` from `GlobalTheory.T.special_unitary_adelic_splitting (maximalRealSubfield E) E (IsCMField.complexConj E).toAlgHom r Gᵀ`. Set `p : SUAdelic (IsCMField.complexConj E).toAlgHom Gᵀ ≃ₜ* realSU Ψ G × finSU (IsCMField.complexConj E).toAlgHom Gᵀ` to `{ e.toMulEquiv.trans (f.toMulEquiv.prodCongr (MulEquiv.refl _)) with continuous_toFun := ((f.continuous.comp continuous_fst).prodMk continuous_snd).comp e.continuous continuous_invFun := e.symm.continuous.comp ((f.symm.continuous.comp continuous_fst).prodMk continuous_snd) }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨p, fun h => ⟨fun ρ => ?_, (he h).2⟩⟩` and prove the remaining obligations. Use `show (((f (e h).1 : Ψ → GL (Fin r) ℂ) ρ : Matrix (Fin r) (Fin r) ℂ)) = _`. Rewrite using `[hf, (he h).1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_SUAdelic_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E)
     (Ψ : Finset (E →+* ℂ)) (θ : Ψ → (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* ℂ)),

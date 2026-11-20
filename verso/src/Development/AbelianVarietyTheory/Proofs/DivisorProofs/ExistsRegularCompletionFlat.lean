@@ -7,17 +7,17 @@ open IsLocalRing
 namespace GlobalTheory.RegularCompletionPackage
 
 /- English proof (translation)
-Introduce `R₁ Ω _ _ _ u hu`. Use `set C := AdicCompletion (maximalIdeal R₁) R₁`. Use `haveI : IsRegularLocalRing C := GlobalTheory.RegularCompletion.isRegularLocalRing_adicCompletion R₁`. Establish `hbij` using `AdicCompletion.residueField_map_bijective_of_fg (R := R₁) (maximalIdeal R₁).fg_of_isNoetherianRing`. Set `e : ResidueField R₁ ≃+* ResidueField C` to `RingEquiv.ofBijective (ResidueField.map (algebraMap R₁ C)) hbij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ub : ResidueField R₁ →+* Ω` to `Ideal.Quotient.lift (maximalIdeal R₁) u (fun a ha => by rw [← RingHom.mem_ker, hu]; exact ha)`. Set `uC : C →+* Ω` to `(ub.comp e.symm.toRingHom).comp (residue C)`. Establish `hcomp : uC.comp (algebraMap R₁ C) = u`. Use extensionality with `r`. Simplify using `only [uC, RingHom.comp_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: residue C (algebraMap R₁ C r) = e (residue R₁ r)`. Simplify using `[e, ResidueField.map_residue]`. Rewrite using `[this]`. Simplify using `[ub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨C, inferInstance, inferInstance, algebraMap R₁ C, uC, RingHom.flat_algebraMap_iff.2 (AdicCompletion.flat_of_isNoetherian _), (AdicCompletion.maximalIdeal_eq_map).symm, inferInstance, ?_, hcomp⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[RingHom.mem_ker]`. Simplify using `only [uC, RingHom.comp_apply]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1 : e.symm (residue C x) = 0` using `(injective_iff_map_eq_zero ub).1 ub.injective _ h`. Establish `h2 : residue C x = 0` using `by simpa using h1`. Simplify `h2` using `[residue_eq_zero_iff]`. Introduce `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(residue_eq_zero_iff x).2 h]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_regular_completion :
     ∀ (R₁ Ω : Type) [CommRing R₁] [IsRegularLocalRing R₁] [Field Ω] (u : R₁ →+* Ω),

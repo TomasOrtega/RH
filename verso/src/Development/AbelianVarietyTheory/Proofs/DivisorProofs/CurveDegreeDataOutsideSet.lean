@@ -14,7 +14,7 @@ open scoped ENNReal Classical
 open Limits
 
 /- English proof (translation)
-Introduce `hX hP2 hPH D O hO A T H h B hB c q _ hq Z i _ _ _ hZ`. Take `⟨μ, hμ, hcd⟩` from `GlobalTheory.T.mod_q_curve_height_lower_bound hX hP2 hPH D O hO A T H h B hB c q hq Z i hZ`. Establish `h1` using `(GlobalTheory.CurveSemiAbelianConjecture.degData_of_curveData GlobalTheory.SlopeEigen.slopeAndEigenDegrees q O.j _ hcd).smul (inv_nonneg.2 hμ.le)`. Use `h1 using 3` and compare the differences between its conclusion and the goal. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hμ.ne', one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.DegreeRootData.degData : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H),
   ∀ (B : ℝ), 2 ≤ B → ∀ (c : O.s.Comp) (q : ℕ) [Fact q.Prime], q ∉ FlagAr.setB O.Y B →

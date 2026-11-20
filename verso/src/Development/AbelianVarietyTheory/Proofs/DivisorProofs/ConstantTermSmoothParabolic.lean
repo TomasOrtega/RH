@@ -12,9 +12,9 @@ open scoped TensorProduct ContDiff Topology
 namespace GlobalTheory.ConstTermSmooth
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r C d hC H K φ c hH hφ hc`. Use `haveI := locallyCompact_unipFlag hJ (sigma_sigma h) hC d`. Establish `hl : GlobalTheory.AutomorphicL2Unitary.LeftInv (ratPts σ J ⊓ parFlag σ J C d) φ` using `fun γ hγ => hφ.left γ (hH hγ)`. Take `⟨hco, e⟩` from `hc.eq_constTermOn_par h hJ hC hl`. Take `⟨dd, δ, hδ, hW⟩` from `GlobalTheory.T.exists_realOneParamProduct_chart_adelicUnitary F E σ h n J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k γ hγ g`. Use `GlobalTheory.T.contDiff_constantTermCocompact_smoothParameterFamily hco (fun x t => φ (x * (List.ofFn fun i => γ i (t i)).prod)) (fun γ' hγ' x t => by simp only [mul_assoc]; exact hl γ' hγ' _) (fun x => hφ.smooth k γ hγ x) (GlobalTheory.T.continuous_iteratedFDeriv_realOneParamPro …` as an intermediate fact. Simplify `this` using `[e, GlobalTheory.Cusp.constTermOn_mul_right]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSm_of_isConstTermOn : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ)

@@ -10,11 +10,11 @@ namespace GlobalTheory.TrueCx.PointWell
 open Formalism.L2.PjFree ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Use `set A := h.toBlocks₁₁ * z + h.toBlocks₁₂ with hA`. Use `set C := h.toBlocks₂₁ * z + h.toBlocks₂₂ with hC`. Establish `e1 : (g * h).toBlocks₁₁ * z + (g * h).toBlocks₁₂ = (g.toBlocks₁₁ * (A * C⁻¹) + g.toBlocks₁₂) * C`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one, hA, hC]`. Use `conv_lhs => rw [← fromBlocks_toBlocks g, ← fromBlocks_toBlocks h, fromBlocks_multiply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `e2 : (g * h).toBlocks₂₁ * z + (g * h).toBlocks₂₂ = (g.toBlocks₂₁ * (A * C⁻¹) + g.toBlocks₂₂) * C`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one, hA, hC]`. Use `conv_lhs => rw [← fromBlocks_toBlocks g, ← fromBlocks_toBlocks h, fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `show _ = ((g * h).toBlocks₁₁ * z + (g * h).toBlocks₁₂) * ((g * h).toBlocks₂₁ * z + (g * h).toBlocks₂₂)⁻¹`. Rewrite using `[e1, e2, Matrix.mul_inv_rev, ← Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hu]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem moeb_mul {p q : ℕ} (g h : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (z : Matrix (Fin p) (Fin q) ℂ)
     (hu : IsUnit (h.toBlocks₂₁ * z + h.toBlocks₂₂).det) : moeb g (moeb h z) = moeb (g * h) z := by
@@ -35,7 +35,7 @@ theorem moeb_mul {p q : ℕ} (g h : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) �
   rfl
 
 /- English proof (translation)
-Rewrite using `[← fromBlocks_one, moeb, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem moeb_one {p q : ℕ} (z : Matrix (Fin p) (Fin q) ℂ) : moeb 1 z = z := by
   rw [← fromBlocks_one, moeb, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁,
@@ -43,9 +43,9 @@ theorem moeb_one {p q : ℕ} (z : Matrix (Fin p) (Fin q) ℂ) : moeb 1 z = z := 
   simp
 
 /- English proof (translation)
-Take `⟨γ, hγ, e⟩` from `h`. Use `⟨γ⁻¹, Γ.inv_mem hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[← e]`. Use function extensionality and compare the values at `t`. Establish `hu` using `kapQ_isUnit (hΓ hγ t trivial) (z.2 t)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show moeb (γ t)⁻¹.1 (moeb (γ t).1 (z.1 t)) = _`. Rewrite using `[moeb_mul _ _ _ hu, Units.inv_mul, moeb_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbR_symm {ι : Type} [Fintype ι] {p q : ℕ} {Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)} (hΓ : Γ ≤ UpqI ι p q)
     {z z' : DomI ι p q} (h : orbR Γ z z') : orbR Γ z' z := by
@@ -60,17 +60,17 @@ theorem orbR_symm {ι : Type} [Fintype ι] {p q : ℕ} {Γ : Subgroup (ι → GL
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `hu` using `frameCo_isUnit₂₂ X hj hp hx τ`. Establish `hu'` using `frameCo_isUnit₂₂ X hj hp hx' τ`. Establish `hd : IsUnit (mat x τ).det` using `(hx τ).1.isUnit`. Establish `hd0 : IsUnit (mat (x0F X) τ).det` using `(det_x0F X τ).isUnit`. Establish `hN : (frameCo X hj x τ)⁻¹ * frameCo X hj x' τ = reindex (idx hj) (idx hj) ((mat x τ)⁻¹ * mat x' τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [frameCo, inv_reindex]`. Simplify using `only [reindex_apply, submatrix_mul_equiv]`. Rewrite using `[Matrix.mul_inv_rev, nonsing_inv_nonsing_inv _ hd0, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hd0]`. Establish `hf : IsUnit (frameCo X hj x τ).det`. Rewrite using `[frameCo, det_reindex_self, det_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isUnit_nonsing_inv_det _ hd0).mul hd`. Rewrite `h` using `[moeb_zero, moeb_zero]`. Generalize the expression as in `frameCo X hj x τ = f at *`. Generalize the expression as in `frameCo X hj x' τ = f' at *`. Establish `h1 : f'.toCols₂ = f * fromRows (0 : Matrix (Fin j) (Fin (r - j)) ℂ) (f.toBlocks₂₂⁻¹ * f'.toBlocks₂₂)`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `fromBlocks_mul_fromRows (0 : Matrix (Fin j) (Fin (r - j)) ℂ) (f.toBlocks₂₂⁻¹ * f'.toBlocks₂₂) f.toBlocks₁₁ f.toBlocks₁₂ f.toBlocks₂₁ f.toBlocks₂₂`. Rewrite `h0` using `[fromBlocks_toBlocks]`. Use `Eq.trans ?_ h0.symm` and prove the remaining obligations. Simplify using `only [Matrix.mul_zero, zero_add]`. Rewrite using `[mul_nonsing_inv_cancel_left _ _ hu, ← Matrix.mul_assoc, h, nonsing_inv_mul_cancel_right _ _ hu']`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext (a | a) b <;> rfl`. Establish `h2 : (f⁻¹ * f').toCols₂ = fromRows (0 : Matrix (Fin j) (Fin (r - j)) ℂ) (f.toBlocks₂₂⁻¹ * f'.toBlocks₂₂)` using `(congrArg (f⁻¹ * ·) h1).trans (nonsing_inv_mul_cancel_left f _ hf)`. Establish `hb' : (b : ℕ) < r - j` using `hp ▸ hb`. Establish `ha' : (a : ℕ) - (r - j) < j` using `by have := a.2; omega`. Establish `h3` using `congrFun (congrFun h2 (Sum.inl ⟨_, ha'⟩)) ⟨_, hb'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hN]`. Establish `ea : (idx hj).symm (Sum.inl ⟨_, ha'⟩) = a` using `Fin.ext (by rw [idx_symm_inl]; simp only; omega)`. Establish `eb : (idx hj).symm (Sum.inr ⟨_, hb'⟩) = b` using `Fin.ext (by rw [idx_symm_inr])`. Simplify `h3` using `[toCols₂, ea, eb]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem block_of_moeb_eq {j : ℕ} (hj : j ≤ r) (hp : X.p0 = r - j) {x x' : Frame X.Ψ r} (hx : x ∈ X.dom)
     (hx' : x' ∈ X.dom) (τ : X.Ψ) (h : moeb (frameCo X hj x τ) 0 = moeb (frameCo X hj x' τ) 0) (a b : Fin r)
@@ -108,25 +108,23 @@ theorem block_of_moeb_eq {j : ℕ} (hj : j ≤ r) (hp : X.p0 = r - j) {x x' : Fr
   simpa [toCols₂, ea, eb] using h3
 
 /- English proof (translation)
-Establish `hp` using `X.p0_le`. Distinguish the cases in `h : τ ∈ X.Ψ`. Establish `hm` using `hm h`. Establish `hd : IsUnit (mat x ⟨τ, h⟩).det` using `(hx _).1.isUnit`. Establish `hi' : X.p0 + i < r` using `by omega`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (∑ b : Fin r, ((mat x' ⟨τ, h⟩)⁻¹ * mat x ⟨τ, h⟩) ⟨_, hi'⟩ b • fun a => ((mat x ⟨τ, h⟩)⁻¹.mulVec (Data.emb τ (w a))) b) ∈ S`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : (b : ℕ) < X.p0`. Rewrite using `[h2 _ _ _ (Nat.le_add_right _ _) hb, zero_smul]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hbr` using `b.2`. Use `hS (b - X.p0) (by omega) using 2 with a` and compare the differences between its conclusion and the goal. Unfold `perFr`. Rewrite using `[dif_pos h, dif_pos (by omega)]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Fin.ext (by simp; omega)`. Use `key using 2 with a` and compare the differences between its conclusion and the goal. Unfold `perFr`. Rewrite using `[dif_pos h, dif_pos hi']`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `conv_lhs => rw [← mul_nonsing_inv_cancel_right (mat x ⟨τ, h⟩) (mat x' ⟨τ, h⟩)⁻¹ hd, ← mulVec_mulVec]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression. Establish `hm` using `hm' h`. Establish `h' : conjEmb τ ∈ X.Ψ` using `by_contra fun h' => h ((X.cmType τ).2 h')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : IsUnit (mat x ⟨_, h'⟩).det` using `(hx _).1.isUnit`. Establish `hi' : X.p0 - 1 - i < r` using `by omega`. Establish `key : (∑ b : Fin r, ((mat x ⟨_, h'⟩)⁻¹ * mat x' ⟨_, h'⟩) b ⟨_, hi'⟩ • fun a => hermC (conjEmb τ) X.Gm (ReciprocityTheory.ChartRestriction.G.FD.col (mat x ⟨_, h'⟩) b) (Data.emb (conjEmb τ) (w a))) ∈ S`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : (b : ℕ) < X.p0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `hS (X.p0 - 1 - b) (by omega) using 2 with a` and compare the differences between its conclusion and the goal. Unfold `perFr`. Rewrite using `[dif_neg h, dif_pos h', dif_pos (by omega)]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions.
 
-Conclude with `Fin.ext (by simp; omega)`. Rewrite using `[h1 _ _ _ (not_lt.1 hb) (by simp only; omega), zero_smul]; exact zero_mem _`. Use `key using 2 with a` and compare the differences between its conclusion and the goal. Unfold `perFr`. Rewrite using `[dif_neg h, dif_pos h', dif_pos hi']`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [← mul_nonsing_inv_cancel_left (mat x ⟨_, h'⟩) (mat x' ⟨_, h'⟩) hd]`. Generalize the expression as in `(mat x ⟨_, h'⟩)⁻¹ * mat x' ⟨_, h'⟩ = n`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (s := Finset.univ) (f := fun b c => ∑ d, n b _ * _)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun d _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perFr_mem {A : Type} (S : Submodule ℂ (A → ℂ)) (w : A → Fin r → E) {x x' : Frame X.Ψ r} (hx : x ∈ X.dom)
     (h1 : ∀ τ (a b : Fin r), X.p0 ≤ a → (b : ℕ) < X.p0 → ((mat x τ)⁻¹ * mat x' τ) a b = 0)
@@ -188,17 +186,15 @@ variable {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff
   {U : Unf Xo c σ r}
 
 /- English proof (translation)
-Take `⟨hr, hty, -, -, -, g, e, F, ik, φ, -, hF⟩` from `hU`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hty⟩` from `hty k`. Take `⟨P, hP, hper, hx, -⟩` from `hF k x`. Take `⟨P', hP', hper', hx', -⟩` from `hF k x'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ j, (fun a => P' a j) ∈ Submodule.span ℂ (Set.range fun (j : Fin g) a => P a j)`. Introduce `j`. Simplify using `only [hP']`. Use `perFr_mem (U.X k) _ (fun a => (φ k a : Fin r → E)) x.2 h1 h2 _ (Dw.mult (e j).1) (fun h => ?_) (fun h => ?_) (fun i hi => ?_) _ (e j).2.2` and prove the remaining obligations. Conclude with `(if_pos ((hrt _).1 ((hty _).1 h))).trans (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(if_neg (fun h' => h ((hty _).2 ((hrt _).2 h')))).trans hp0.symm`. Use `Submodule.subset_span ⟨e.symm ⟨(e j).1, ⟨i, hi⟩⟩, funext fun a => ?_⟩ dsimp only` and prove the remaining obligations. Rewrite using `[hP, Equiv.apply_symm_apply]`. Use `choose μ hμ using fun j => (Submodule.mem_span_range_iff_exists_fun ℂ).1 (hmem j)`. Establish `hL : ∀ a, P' a = mulVecLin (of μ) (P a)` using `fun a => funext fun j => by`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun (hμ j) a` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective (mulVecLin (of μ))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Establish `hy : y ∈ Submodule.span ℝ (Set.range P')` using `by rw [hper'.2.2.2.1]; trivial`. Use `(Submodule.span_le (p := (LinearMap.range (mulVecLin (of μ))).restrictScalars ℝ)).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨P a, (hL a).symm⟩`.
-
-Rewrite using `[hx, hx']`. Conclude with `(F.fibre _ P P' hper hper').2 ⟨LinearEquiv.refl _ _, LinearEquiv.ofBijective _ ⟨LinearMap.injective_iff_surjective.2 hsurj, hsurj⟩, fun _ _ => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, hL⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_eq_of_block (hU : IsUnf U) (hσ : GoodEmb c σ) (k : U.Comp) (x x' : (U.X k).dom)
     (h1 : ∀ τ (a b : Fin r), (U.X k).p0 ≤ a → (b : ℕ) < (U.X k).p0 → ((mat x.1 τ)⁻¹ * mat x'.1 τ) a b = 0)
@@ -237,7 +233,7 @@ theorem pt_eq_of_block (hU : IsUnf U) (hσ : GoodEmb c σ) (k : U.Comp) (x x' : 
     fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, hL⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `(hU.2.2.2.1 k k x ⟨lact γ x.1, KU.lact_dom _ hγ x.2⟩).2 ⟨γ, hγ, fun _ => (1 : Matrix (Fin r) (Fin r) ℂ), fun τ => ⟨by show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0 simp, fun a b h => one_apply_ne h.ne'⟩, by`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_one (mat (lact γ x.1) τ)).symm⟩`. Conclude with `ht.1`.
+Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pt_lact (hU : IsUnf U) (k : U.Comp) (x : (U.X k).dom) {γ : GL (Fin r) E} (hγ : γ ∈ (U.X k).Γ) :
     (U.un k ⟨lact γ x.1, KU.lact_dom _ hγ x.2⟩).x = (U.un k x).x := by
@@ -251,13 +247,13 @@ theorem pt_lact (hU : IsUnf U) (k : U.Comp) (x : (U.X k).dom) {γ : GL (Fin r) E
   exact ht.1
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r j U hU e Tau _ hr T B s hσ k k' x x' h`. Take `⟨rfl, h2⟩` from `Sigma.mk.inj h`. Establish `h3` using `eq_of_heq h2`. Establish `hj` using `le_of_isUnf U hU e`. Establish `hp` using `first_index_eq_of_unfolded U hU e k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S : DomI Tau j (r - j) → Set _` to `fun z => {y | ∃ w : (U.X k).dom, domPt (U.X k) hj (cmEquiv U hU T k) w = z ∧ (U.un k w).x = y}`. Establish `hle : ∀ z z', orbR (gammaU (U.X k) hj (cmEquiv U hU T k)) z z' → S z ⊆ S z'`. Introduce and unpack `z z' ⟨_, ⟨γ, hγ, rfl⟩, hz⟩ _ ⟨w, hw, rfl⟩`. Conclude with `⟨_, by rw [← hz, ← hw]; exact domPt_lact _ _ _ hp γ w.2, pt_lact hU k w hγ⟩`. Establish `h4` using `congrArg (Quot.lift S fun z z' hz => (hle z z' hz).antisymm (hle z' z (orbR_symm (gammaU_le _ _ _ hp) hz))) h3`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw, hy⟩ : (U.un k x).x ∈ S ⟨_, domPt_mem (U.X k) hj (cmEquiv U hU T k) hp x'.2⟩ := by`. Establish `: (U.un k x).x ∈ S ⟨_, domPt_mem (U.X k) hj (cmEquiv U hU T k) hp x.2⟩` using `⟨x, rfl, rfl⟩`. Conclude with `(Set.ext_iff.1 h4 _).1 this`. Establish `h5 : ∀ τ, moeb (frameCo (U.X k) hj w.1 τ) 0 = moeb (frameCo (U.X k) hj x'.1 τ) 0` using `fun τ => by`. Take `⟨t, rfl⟩` from `(cmEquiv U hU T k).surjective τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun hw t`. Rewrite using `[← hy]`. Conclude with `pt_eq_of_block hU hσ k w x' (fun τ => block_of_moeb_eq _ hj hp w.2 x'.2 τ (h5 τ)) fun τ => block_of_moeb_eq _ hj hp x'.2 w.2 τ (h5 τ).symm`.
+A detailed English derivation is pending.
 -/
 theorem pt_eq_of_ptOfFrame_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (σ : c.F →+* ℂ) (r j : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r) (hU : Formalism.L2.PjFree.IsUnf U) (e : Dw.p = j) (Tau : Type) [Fintype Tau] (hr : 0 < r) (T : Tau ≃ {τ : E →+* ℂ // τ (H.rt : E) = H.rt0}) (B : ∀ k, BdData Tau j (r - j) (gammaU (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k))) (s : U.Comp → Tau → ℂˣ), Formalism.L2.PjFree.GoodEmb c σ → ∀ (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom), ptOfFrame (le_of_isUnf U hU e) U.X hr (first_index_eq_of_unfolded U hU e) (cmEquiv U hU T) B s k x = ptOfFrame (le_of_isUnf U hU e) U.X hr (first_index_eq_of_unfolded U hU e) (cmEquiv U hU T) B s k' x' → (U.un k x).x = (U.un k' x').x := by
   intro E _ _ _ H Dw l Xo c σ r j U hU e Tau _ hr T B s hσ k k' x x' h

@@ -21,7 +21,7 @@ section Gen
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K]
 
 /- English proof (translation)
-Establish `h1` using `redGL_of_prinCong hc hk`. Apply the tactic sequence `refine twLamQB_red_one P ξ le_rfl k.1 fun s t _ _ _ _ => ⟨glint_entry k s t, ?_⟩`. Establish `h2` using `congrArg (fun M : GL (Fin N) (𝓞 E ⧸ P.asIdeal) => (M : Matrix (Fin N) (Fin N) (𝓞 E ⧸ P.asIdeal)) s t) h1`. Simplify using `only [redGL_val, Units.val_one, Matrix.one_apply] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lamQB_prinCong (P : HeightOneSpectrum (𝓞 E)) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {N : ℕ} (r c : ℕ) (hc : 0 < c)
     (k : GLint E N P) (hk : k ∈ prinCong N P c) : LocE.lamQB ξ r N k.1.toLinearMap = 1 := by
@@ -32,7 +32,7 @@ theorem lamQB_prinCong (P : HeightOneSpectrum (𝓞 E)) (ξ : (𝓞 E ⧸ P.asId
   exact h2
 
 /- English proof (translation)
-Take `⟨H, lam⟩` from `A`. Take `⟨H', lam'⟩` from `B`. Take `rfl : H = H'` from `e`. Take `rfl : lam = lam'` from `MonoidHom.ext fun a => e' a.1 a.2 a.2`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem levI_ext {N : ℕ} {P : HeightOneSpectrum (𝓞 E)} {A B : LevI E K N P} (e : A.H = B.H)
     (e' : ∀ k (h1 : k ∈ A.H) (h2 : k ∈ B.H), A.lam ⟨k, h1⟩ = B.lam ⟨k, h2⟩) : A = B := by
@@ -43,13 +43,11 @@ theorem levI_ext {N : ℕ} {P : HeightOneSpectrum (𝓞 E)} {A B : LevI E K N P}
   rfl
 
 /- English proof (translation)
-Use `set l : Lev (𝓞 E ⧸ P.asIdeal) K n := ⟨HQ (𝓞 E ⧸ P.asIdeal) n r b, (lamQ ξ n r b)⁻¹⟩`. Establish `hH : (levCong hN P c l).H = twK1H P N r (c + 1)`. Use `le_antisymm (sup_le ?_ (GlobalTheory.T.principal_congruence_le_twisted_k1 P r (c + 1) c.succ_pos)) fun g hg => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `GlobalTheory.T.block_ext_mem_twisted_k1 P hu hN r b (c + 1) hn j hj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, hj, hb⟩` from `GlobalTheory.T.twisted_k1_block_decomposition P hN r b c hn g hg`. Conclude with `(mem_levCong hN c l g).2 ⟨j, hj, hb⟩`. Use `levI_ext hH fun k h1 h2 => ?_` and prove the remaining obligations. Take `⟨j, hj, hb⟩` from `(mem_levCong hN c l k).1 h1`. Rewrite using `[levCong_lam hN c l h1 hj hb]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `hjK : extI hN P j ∈ twK1H P N r (c + 1)` using `GlobalTheory.T.block_ext_mem_twisted_k1 P hu hN r b (c + 1) hn j hj`. Establish `hbK : (extI hN P j)⁻¹ * k ∈ twK1H P N r (c + 1)` using `GlobalTheory.T.principal_congruence_le_twisted_k1 P r (c + 1) c.succ_pos hb`. Establish `hk : (⟨k, h2⟩ : twK1H P N r (c + 1)) = ⟨_, hjK⟩ * ⟨_, hbK⟩` using `Subtype.ext (mul_inv_cancel_left _ _).symm`. Use `show _ = ((kOneCharacter P N r (c + 1) ξ).toHomUnits ⟨k, h2⟩ : K)`.
-
-Rewrite using `[MonoidHom.coe_toHomUnits, hk, map_mul]`. Use `show _ = LocE.lamQB ξ r N (extI hN P j).1.toLinearMap * LocE.lamQB ξ r N ((extI hN P j)⁻¹ * k).1.toLinearMap`. Rewrite using `[lamQB_prinCong P ξ r (c + 1) c.succ_pos _ hb, mul_one, extI_val, GlobalTheory.T.rowTypeCharacter_blockSumOne_eq P ξ hN r (by omega) j.1, GlobalTheory.TopLaw.lamQB_eq_red ξ hn j hj]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem level_congruence_eq_twisted_k1 (P : HeightOneSpectrum (𝓞 E)) (hu : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     {N n : ℕ} (hN : N = n + 1) (r b c : ℕ) (hn : n = r + b) :
@@ -80,7 +78,7 @@ end Gen
 section Top
 
 /- English proof (translation)
-Introduce `X Pr R _ sel S mu hX hPr hsel _ _`. Use function extensionality and compare the values at `Q`. Establish `hu : ((qOf Q.1 : ℕ) : 𝓞 X.E) ∉ Q.1.asIdeal ^ 2` using `(GlobalTheory.ColPeriod.levelPrimes X Pr sel S mu hX hPr hsel ⟨Q.1, by classical exact Finset.mem_union_right _ Q.2⟩).1.2`. Conclude with `level_congruence_eq_twisted_k1 Q.1 hu _ (N_m_succ R) R.r (R.m * R.t) (4 * R.m) (rank_X'_eq R)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levQTop_eq_twTt : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S), X.Ok → Pr.Ok → IsSel X sel → (∀ i, Pr.g i ∈ S) → (∀ v, Pr.T v ∈ S) → levQTop R sel mu (4 * R.m) = twTt (R := R) sel mu R.m := by
   intro X Pr R _ sel S mu hX hPr hsel _ _

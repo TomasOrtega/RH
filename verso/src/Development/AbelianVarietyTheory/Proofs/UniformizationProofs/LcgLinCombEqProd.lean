@@ -12,9 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ c : K → (LB.LinComb L F (fun _ => 1)).ι, LB.wchart (LB.LinComb L F (fun _ => 1)) φ c ≤ LB.wchart (L.pull (F i)) φ (fun k _ => c k i)`. Introduce `c y hy`. Simplify using `only [LB.wchart, LB.pull, LB.LinComb, TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe] at hy ⊢`. Introduce `k _`. Conclude with `hy k i`.
-
-Conclude with `inf_le_inf (key a) (key b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma boxGen_overlap_le {X X' Y : Scheme.{0}} (L : LB X) {J K : Type} [Fintype J] [Fintype K]
     (F : J → (X' ⟶ X)) (φ : K → (Y ⟶ X')) (a b : K → (LB.LinComb L F (fun _ => 1)).ι) (i : J) :
@@ -31,9 +29,7 @@ lemma boxGen_overlap_le {X X' Y : Scheme.{0}} (L : LB X) {J K : Type} [Fintype J
   exact inf_le_inf (key a) (key b)
 
 /- English proof (translation)
-Use `show (∏ k, (res _ (pullU (φ k) (LB.wchart L F (a k) ⊓ LB.wchart L F (b k)) (LB.lcg L F (fun _ => 1) (a k) (b k)))) ^ ε k) = ∏ i, res _ (∏ k, (res _ (pullU (φ k) (LB.wchart L (fun _ : PUnit => F i) (fun _ => a k i) ⊓ LB.wchart L (fun _ : PUnit => F i) (fun _ => b k i)) (LB.lcg L ( …`. Simplify using `only [LB.lcg, map_prod, map_zpow, zpow_one, Finset.univ_unique, Finset.prod_singleton, ReciprocityTheory.ChartRestriction.G.DVR.pullU_res, ← Finset.prod_zpow]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`.
-
-Repeat the step `erw [ReciprocityTheory.ChartRestriction.G.DVR.res_res']` while it applies.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma lcg_linComb_eq_prod {X X' Y : Scheme.{0}} (L : LB X) {J K : Type} [Fintype J] [Fintype K]
     (F : J → (X' ⟶ X)) (φ : K → (Y ⟶ X')) (ε : K → ℤ)
@@ -54,16 +50,16 @@ lemma lcg_linComb_eq_prod {X X' Y : Scheme.{0}} (L : LB X) {J K : Type} [Fintype
   repeat erw [ReciprocityTheory.ChartRestriction.G.DVR.res_res']
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.res_res', ReciprocityTheory.ChartRestriction.G.DVR.res_res']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma res_res_eq {Z : Scheme.{0}} {U V V' W : Z.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (h₃ : V' ≤ U)
     (h₄ : W ≤ V') (x : Γ(Z, U)ˣ) : res h₂ (res h₁ x) = res h₄ (res h₃ x) := by
   rw [ReciprocityTheory.ChartRestriction.G.DVR.res_res', ReciprocityTheory.ChartRestriction.G.DVR.res_res']
 
 /- English proof (translation)
-Introduce `a b`. Establish `hg : ((LB.LinComb L F (fun _ => 1)).LinComb φ ε).g a b = _` using `lcg_linComb_eq_prod L F φ ε a b`. Rewrite using `[hg]`. Use `show res (U := LB.wchart (LB.LinComb L F (fun _ => 1)) φ a) (V := LB.wchart (LB.LinComb L F (fun _ => 1)) φ a ⊓ LB.wchart (LB.LinComb L F (fun _ => 1)) φ b) _ (∏ i, res (V := LB.wchart (LB.LinComb L F (fun _ => 1)) φ a) _ ((t i).s fun k _ => a k i)) = (∏ i, res (boxGen_overlap_le …`. Simplify using `only [map_prod, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e` using `(congrArg (res (boxGen_overlap_le L F φ a b i)) ((ht i) (fun k _ => a k i) (fun k _ => b k i))).trans (map_mul _ _ _)`. Use `(res_res_eq _ _ _ _ _).trans (e.trans ?_)` and prove the remaining obligations. Use `congr 1`. Conclude with `res_res_eq _ _ _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isGen_boxGen {X X' Y : Scheme.{0}} (L : LB X) {J K : Type} [Fintype J] [Fintype K]
     (F : J → (X' ⟶ X)) (φ : K → (Y ⟶ X')) (ε : K → ℤ)
@@ -89,14 +85,14 @@ theorem isGen_boxGen {X X' Y : Scheme.{0}} (L : LB X) {J K : Type} [Fintype J] [
   exact res_res_eq _ _ _ _ _
 
 /- English proof (translation)
-Introduce `G' G _ _ j p L hL`. Conclude with `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB L hL _ _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem boxIsLB (S : Scheme.{0}) : BoxIsLBSt (S := S) := by
   intro G' G _ _ j p L hL
   exact ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB L hL _ _
 
 /- English proof (translation)
-Introduce `G' G _ _ _ _ j p L r hL hr`. Use `isGen_boxGen _ _ _ _ _ (fun i => ?_)` and prove the remaining obligations. Use `p.hom i` as an intermediate fact. Conclude with `LBxP.isGen_pullAlong L (p.pr i).left (𝟙 _) (fun _ : PUnit => eSec G) (fun _ => 1) (fun _ => eSec G') (fun _ => (CubeMap.ofHom (p.pr i)).e_comm) r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem boxRigIsGen (S : Scheme.{0}) : BoxRigIsGenSt (S := S) := by
   intro G' G _ _ _ _ j p L r hL hr

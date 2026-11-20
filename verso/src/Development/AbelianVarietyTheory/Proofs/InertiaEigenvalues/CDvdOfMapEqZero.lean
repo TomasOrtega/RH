@@ -11,9 +11,9 @@ open PowerSeries GlobalTheory.Cyc
 namespace GlobalTheory.PrismS
 
 /- English proof (translation)
-Establish `hp : f.comp Polynomial.coeToPowerSeries.ringHom = g.comp Polynomial.coeToPowerSeries.ringHom` using `Polynomial.ringHom_ext (fun a => by simpa using hC a) (by simpa using hX)`. Use extensionality with `x n`. Establish `hx` using `eq_X_pow_mul_shift_add_trunc (n + 1) x`. Establish `h1 : f (trunc (n + 1) x : A⟦X⟧) = g (trunc (n + 1) x : A⟦X⟧)` using `RingHom.congr_fun hp (trunc (n + 1) x)`. Establish `h2 : X ^ (n + 1) ∣ f x - g x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx, map_add, map_add, h1, add_sub_add_right_eq_sub, map_mul, map_mul, map_pow, map_pow, ← hX, ← mul_sub]`. Conclude with `(pow_dvd_pow_of_dvd hd _).mul_right _`. Establish `h3` using `X_pow_dvd_iff.1 h2 n (Nat.lt_succ_self n)`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem series_hom_ext {A B : Type} [CommRing A] [CommRing B] {f g : A⟦X⟧ →+* B⟦X⟧}
     (hC : ∀ a, f (C a) = g (C a)) (hX : f X = g X) (hd : X ∣ f X) : f = g := by
@@ -30,9 +30,7 @@ theorem series_hom_ext {A B : Type} [CommRing A] [CommRing B] {f g : A⟦X⟧ �
   rwa [map_sub, sub_eq_zero] at h3
 
 /- English proof (translation)
-Establish `h1 : ∀ n, ∃ c, coeff n y = p * c` using `fun n => by`. Use `congrArg (coeff n) h` as an intermediate fact. Rewrite `this` using `[coeff_map, map_zero, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `this`. Use `choose c hc using h1`.
-
-Conclude with `⟨PowerSeries.mk c, PowerSeries.ext fun n => by rw [coeff_C_mul, coeff_mk, hc]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem C_dvd_of_map_eq_zero {A : Type} [CommRing A] (p : A) (y : A⟦X⟧)
     (h : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {p})) y = 0) : ∃ b, y = C p * b := by
@@ -49,22 +47,22 @@ variable {l : ℕ} [hl : Fact l.Prime] {A B : Type} [CommRing A] [CommRing B] [A
   [Algebra ℤ_[l] B]
 
 /- English proof (translation)
-The claim follows from `(act l A c).commutes a`.
+A detailed English derivation is pending.
 -/
 theorem act_C (c : ℤ_[l]) (a : A) : act l A c (C a) = C a := (act l A c).commutes a
 
 /- English proof (translation)
-The claim follows from `(act_laws l A).1 c`.
+A detailed English derivation is pending.
 -/
 theorem act_X (c : ℤ_[l]) : act l A c X = cyc l A c := (act_laws l A).1 c
 
 /- English proof (translation)
-The claim follows from `(act_X _).trans ((act_laws l A).2.2.2.1 l)`.
+A detailed English derivation is pending.
 -/
 theorem phi_X : phi l A X = (1 + X) ^ l - 1 := (act_X _).trans ((act_laws l A).2.2.2.1 l)
 
 /- English proof (translation)
-Rewrite using `[cyc, cyc, map_sub, map_one, ← RingHom.comp_apply, ← PowerSeries.map_comp]`. Use `congr 3`. Conclude with `RingHom.ext fun z => e.commutes z`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_cyc (e : A →ₐ[ℤ_[l]] B) (c : ℤ_[l]) : PowerSeries.map e.toRingHom (cyc l A c) = cyc l B c := by
   rw [cyc, cyc, map_sub, map_one, ← RingHom.comp_apply, ← PowerSeries.map_comp]
@@ -72,9 +70,9 @@ theorem map_cyc (e : A →ₐ[ℤ_[l]] B) (c : ℤ_[l]) : PowerSeries.map e.toRi
   exact RingHom.ext fun z => e.commutes z
 
 /- English proof (translation)
-Establish `hX : PowerSeries.map e.toRingHom (act l A c X) = cyc l B c` using `by rw [act_X, map_cyc]`. Use `RingHom.congr_fun (series_hom_ext (f := (PowerSeries.map e.toRingHom).comp (act l A c).toRingHom) (g := (act l B c).toRingHom.comp (PowerSeries.map e.toRingHom)) (fun a => ?_) ?_ ?_) x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PowerSeries.map e.toRingHom (act l A c (C a)) = act l B c (PowerSeries.map e.toRingHom (C a))`. Rewrite using `[act_C, map_C, act_C]`. Express the relevant statement in the definitionally equal form `PowerSeries.map e.toRingHom (act l A c X) = act l B c (PowerSeries.map e.toRingHom X)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hX, map_X, act_X]`. Express the relevant statement in the definitionally equal form `X ∣ PowerSeries.map e.toRingHom (act l A c X)`. Rewrite using `[hX, X_dvd_iff, cyc_const]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_act (e : A →ₐ[ℤ_[l]] B) (c : ℤ_[l]) (x : A⟦X⟧) :
     PowerSeries.map e.toRingHom (act l A c x) = act l B c (PowerSeries.map e.toRingHom x) := by
@@ -89,7 +87,7 @@ theorem map_act (e : A →ₐ[ℤ_[l]] B) (c : ℤ_[l]) (x : A⟦X⟧) :
     rw [hX, X_dvd_iff, cyc_const]
 
 /- English proof (translation)
-Take `⟨y, hy⟩ : X ∣ x - C (constantCoeff x)` from `by rw [X_dvd_iff]; simp`. Establish `h : x = C (constantCoeff x) + X * y` using `by rw [← hy]; ring`. Use `conv_lhs => rw [h, map_add, map_mul, act_C, act_X, map_add, map_mul, cyc_const]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_act (c : ℤ_[l]) (x : A⟦X⟧) : constantCoeff (act l A c x) = constantCoeff x := by
   obtain ⟨y, hy⟩ : X ∣ x - C (constantCoeff x) := by rw [X_dvd_iff]; simp
@@ -100,7 +98,7 @@ theorem constantCoeff_act (c : ℤ_[l]) (x : A⟦X⟧) : constantCoeff (act l A 
 omit hl [Algebra ℤ_[l] A] [Algebra ℤ_[l] B] in
 
 /- English proof (translation)
-Simplify using `[QQ, XX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_QQ (e : A →+* B) (s : ℕ) : PowerSeries.map e (QQ l A s) = QQ l B s := by
   simp [QQ, XX]
@@ -113,15 +111,13 @@ Both sides reduce to the same expression.
 theorem phiS_apply (σ : A →ₐ[ℤ_[l]] A) (x : A⟦X⟧) : phiS σ x = PowerSeries.map σ.toRingHom (phi l A x) := rfl
 
 /- English proof (translation)
-Use `set q := Ideal.Quotient.mk (Ideal.span {(l : A)}) with hq`. Establish `: CharP (A ⧸ Ideal.span {(l : A)}) l` using `CharP.quotient A l hu`. Establish `: CharP (A ⧸ Ideal.span {(l : A)})⟦X⟧ l` using `charP_of_injective_ringHom (f := C) C_injective l`. Establish `hX : PowerSeries.map q (phiS σ X) = X ^ l`. Rewrite using `[phiS_apply, phi_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[add_pow_char]`. Establish `key : (PowerSeries.map q).comp (phiS σ) = (frobenius _ l).comp (PowerSeries.map q)`. Use `series_hom_ext (fun a => ?_) ?_ ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `h a`. Establish `h1 : phi l A (C a) = C a` using `act_C _ a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, phiS_apply, h1, map_C, map_C, map_C, frobenius_def, ← map_pow]`. Express the relevant statement in the definitionally equal form `C (q (σ a)) = _`. Rewrite using `[hb, map_add, map_mul, map_natCast, CharP.cast_eq_zero (A ⧸ Ideal.span {(l : A)}) l, zero_mul, add_zero, map_pow]`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, hX, map_X, frobenius_def]`. Rewrite using `[RingHom.comp_apply, hX]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `dvd_pow_self _ hl.out.ne_zero`. Take `⟨b, hb⟩` from `C_dvd_of_map_eq_zero (l : A) (phiS σ x - x ^ l) (by`. Establish `h2` using `RingHom.congr_fun key x`. Rewrite `h2` using `[RingHom.comp_apply, RingHom.comp_apply, frobenius_def]`. Rewrite using `[map_sub, map_pow, ← hq, h2, sub_self])`.
-
-Conclude with `⟨b, by rw [map_natCast] at hb; rw [← hb]; ring⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem phiS_lift (σ : A →ₐ[ℤ_[l]] A) (hu : ¬ IsUnit (l : A)) (h : ∀ a, ∃ b, σ a = a ^ l + (l : A) * b)
     (x : A⟦X⟧) : ∃ b, phiS σ x = x ^ l + (l : A⟦X⟧) * b := by
@@ -151,13 +147,13 @@ theorem phiS_lift (σ : A →ₐ[ℤ_[l]] A) (hu : ¬ IsUnit (l : A)) (h : ∀ a
 end Act
 
 /- English proof (translation)
-Use `le_antisymm (fun x hx => ?_) ((Ideal.span_singleton_le_iff_mem _).2 h0)` and prove the remaining obligations. Establish `h1 : Q.map (IsLocalRing.residue A) = X ^ d`. Rewrite using `[hQ, map_add, map_mul, map_C, (IsLocalRing.residue_eq_zero_iff p).2 hp]`. Simplify using the standard rewrite rules. Take `⟨q, r, hr⟩` from `exists_isWeierstrassDivision x (g := Q) (by rw [h1]; exact pow_ne_zero _ X_ne_zero)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h2 : r.degree < d`. Use `hr.degree_lt` as an intermediate fact. Express the relevant statement in the definitionally equal form `r.degree < ((Q.map (IsLocalRing.residue A)).order.toNat : ℕ) at this`. Rewrite `this` using `[h1, order_X_pow, ENat.toNat_natCast]`. Then use the resulting hypothesis. Establish `h3 : r = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `hne (h r ((Polynomial.natDegree_lt_iff_degree_lt hne).2 h2) ?_)` and prove the remaining obligations. Use `congrArg f hr.eq_mul_add` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, h0, zero_mul, zero_add]`. Conclude with `this.symm.trans hx`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr.eq_mul_add, h3]`. Simplify using `using Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self Q)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ker_eq_span {A B : Type} [CommRing A] [IsLocalRing A] [IsAdicComplete (IsLocalRing.maximalIdeal A) A]
     [CommRing B] (f : A⟦X⟧ →+* B) (Q b : A⟦X⟧) (d : ℕ) (p : A) (hp : ¬ IsUnit p) (hQ : Q = X ^ d + C p * b)
@@ -182,17 +178,17 @@ theorem ker_eq_span {A B : Type} [CommRing A] [IsLocalRing A] [IsAdicComplete (I
   simpa using Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self Q)
 
 /- English proof (translation)
-Establish `hJ : (Ideal.span {p}).comap (constantCoeff (R` using `A)) = Ideal.span {C p} ⊔ Ideal.span {X} := by`. Use `le_antisymm (fun x hx => ?_) (sup_le ?_ ?_)` and prove the remaining obligations. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hx`. Take `⟨y, hy⟩ : X ∣ x - C (constantCoeff x)` from `by rw [X_dvd_iff]; simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h : x = C p * C c + X * y` using `by rw [← hy, ← map_mul, ← hc]; ring`. Rewrite using `[h]`. Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)) (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`. Simplify using the standard rewrite rules. Establish `hc` using `ReciprocityTheory.P1.isAdicComplete_comap_constantCoeff (Ideal.span {p})`. Rewrite `hc` using `[hJ]`. Use `GlobalTheory.isAdicComplete_of_pow_le_of_pow_le _ _ _ d 1 ?_ ?_ hc` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ∀ (I J : Ideal A⟦X⟧) (n : ℕ), (I ⊔ J) ^ n ≤ I ⊔ J ^ n` using `fun I J n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Ideal.mul_mono_left ih).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.sup_mul, Ideal.mul_sup (J ^ n)]`. Conclude with `sup_le (le_sup_of_le_left Ideal.mul_le_left) (sup_le (le_sup_of_le_left Ideal.mul_le_right) le_sup_right)`. Use `(h1 _ _ _).trans (sup_le le_sup_left ?_)` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, Ideal.span_singleton_le_iff_mem, show (X : A⟦X⟧) ^ d = -(C p * b) + Q by rw [hQ]; ring]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.add_mem_sup (neg_mem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))) (Ideal.mem_span_singleton_self _)`. Rewrite using `[pow_one]`. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, hQ, add_comm]`. Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)) (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ hd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_span {A : Type} [CommRing A] (p : A) [IsAdicComplete (Ideal.span {p}) A] (Q b : A⟦X⟧)
     (d : ℕ) (hd : 0 < d) (hQ : Q = X ^ d + C p * b) :
@@ -232,9 +228,9 @@ theorem isAdicComplete_span {A : Type} [CommRing A] (p : A) [IsAdicComplete (Ide
       (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ hd)
 
 /- English proof (translation)
-Use `choose c hc hu using fun n => h fun k => coeff n (x k)`. Use `⟨fun i => PowerSeries.mk fun n => c n i, fun k => PowerSeries.ext fun n => ?_, fun c' hc' => ?_⟩` and prove the remaining obligations. Simplify `hc n k` using `[coeff_C_mul]`. Use function extensionality and compare the values at `i`. Use extensionality with `n`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_mk, ← hu n (fun i => coeff n (c' i)) fun k => by simp [hc' k, coeff_C_mul]]`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_series {A B κ : Type} [CommRing A] [CommRing B] {d : ℕ} (e : κ → (A →+* B)) (o : Fin d → B)
     (h : ∀ y : κ → B, ∃! c : Fin d → A, ∀ k, y k = ∑ i, o i * e k (c i)) (x : κ → B⟦X⟧) :

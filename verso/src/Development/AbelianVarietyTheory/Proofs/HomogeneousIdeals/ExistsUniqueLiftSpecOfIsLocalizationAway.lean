@@ -13,13 +13,13 @@ section Abstract
 variable {U T Z Y : Scheme.{u}}
 
 /- English proof (translation)
-Establish `hfac : j = pullback.lift a j h ≫ pullback.snd p b` using `(pullback.lift_snd _ _ _).symm`. Use `set d := j.normalizationDesc (pullback.lift a j h) (pullback.snd p b) hfac with hd`. Establish `e1 : j ≫ inv j.fromNormalization = j.toNormalization`. Rewrite using `[IsIso.comp_inv_eq, Scheme.Hom.toNormalization_fromNormalization]`. Use `⟨inv j.fromNormalization ≫ d ≫ pullback.fst p b, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, e1, hd, Scheme.Hom.toNormalization_normalizationDesc_assoc]`. Conclude with `pullback.lift_fst _ _ _`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, hd, Scheme.Hom.normalizationDesc_comp_assoc, IsIso.inv_hom_id_assoc]`. Introduce and unpack `c ⟨hc₁, hc₂⟩`. Establish `hl : c ≫ p = 𝟙 T ≫ b` using `by rw [hc₂, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : j.fromNormalization ≫ pullback.lift c (𝟙 T) hl = d`. Apply `Scheme.Hom.normalization.hom_ext j _ _ (pullback.snd p b)` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.toNormalization_fromNormalization_assoc, hd, Scheme.Hom.toNormalization_normalizationDesc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst, hc₁]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd, Category.comp_id]`. Rewrite using `[Category.assoc, pullback.lift_snd, Category.comp_id]`. Rewrite using `[hd, Scheme.Hom.normalizationDesc_comp]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem existsUnique_lift_of_isIso_fromNormalization (j : U ⟶ T) [QuasiCompact j]
     [QuasiSeparated j] [IsIso j.fromNormalization] (p : Z ⟶ Y) [IsIntegralHom p]
@@ -51,15 +51,15 @@ theorem existsUnique_lift_of_isIso_fromNormalization (j : U ⟶ T) [QuasiCompact
       _ = _ := by rw [key]
 
 /- English proof (translation)
-The claim follows from `ext_of_isDominant_of_isSeparated p h₂ j h₁`.
+A detailed English derivation is pending.
 -/
 theorem lift_unique_of_isDominant (j : U ⟶ T) [IsDominant j] [IsReduced T] (p : Z ⟶ Y)
     [IsSeparated p] {c c' : T ⟶ Z} (h₁ : j ≫ c = j ≫ c') (h₂ : c ≫ p = c' ≫ p) : c = c' := ext_of_isDominant_of_isSeparated p h₂ j h₁
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `h1 : genericPoint U ∈ Set.range (U.fromSpecStalk (genericPoint U))`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `specializes_rfl`. Use `Dense.mono (Set.singleton_subset_iff.mpr h1) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dense_iff_closure_eq]`. Conclude with `genericPoint_spec U`.
+A detailed English derivation is pending.
 -/
 theorem isDominant_fromSpecStalk_genericPoint (U : Scheme.{u}) [IsIntegral U] :
     IsDominant (U.fromSpecStalk (genericPoint U)) := by
@@ -71,9 +71,9 @@ theorem isDominant_fromSpecStalk_genericPoint (U : Scheme.{u}) [IsIntegral U] :
   exact genericPoint_spec U
 
 /- English proof (translation)
-Set `_ : Field (U.presheaf.stalk (genericPoint U))` to `inferInstanceAs (Field U.functionField)`. Establish `hsub : ∀ p q : Spec (U.presheaf.stalk (genericPoint U)), p = q`. Introduce `p q`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Rewrite using `[(Ideal.eq_bot_or_top p.asIdeal).resolve_right p.isPrime.ne_top, (Ideal.eq_bot_or_top q.asIdeal).resolve_right q.isPrime.ne_top]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsub (genericPoint _) (IsLocalRing.closedPoint _)]`. Establish `e : (U.fromSpecStalk (genericPoint U)).stalkMap (IsLocalRing.closedPoint _) = Scheme.stalkClosedPointTo (U.fromSpecStalk (genericPoint U)) ≫ (stalkClosedPointIso _).inv`. Simplify using `[Scheme.stalkClosedPointTo]`. Rewrite using `[e, Scheme.stalkClosedPointTo_fromSpecStalk]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_stalkMap_fromSpecStalk_genericPoint (U : Scheme.{u}) [IsIntegral U] :
     IsIso ((U.fromSpecStalk (genericPoint U)).stalkMap (genericPoint _)) := by
@@ -92,15 +92,15 @@ theorem isIso_stalkMap_fromSpecStalk_genericPoint (U : Scheme.{u}) [IsIntegral U
   infer_instance
 
 /- English proof (translation)
-Establish `hT : ∀ t : T, IsIntegrallyClosed (T.presheaf.stalk t)` using `fun t => inferInstance`. Set `_ : Field (U.presheaf.stalk (genericPoint U))` to `inferInstanceAs (Field U.functionField)`. Establish `hsub : ∀ x y : Spec (U.presheaf.stalk (genericPoint U)), x = y`. Introduce `x y`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[(Ideal.eq_bot_or_top x.asIdeal).resolve_right x.isPrime.ne_top, (Ideal.eq_bot_or_top y.asIdeal).resolve_right y.isPrime.ne_top]`. Establish `: Subsingleton (Spec (U.presheaf.stalk (genericPoint U)))` using `⟨hsub⟩`. Use `set η := U.fromSpecStalk (genericPoint U) with hη`. Use `isDominant_fromSpecStalk_genericPoint U` as an intermediate fact. Use `isIso_stalkMap_fromSpecStalk_genericPoint U` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : η (genericPoint _) = genericPoint U` using `apply_genericPoint_of_isDominant η`. Establish `: IsIso ((η ≫ j).stalkMap (genericPoint _))`. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Establish `hj : ∀ y (_ : y = genericPoint U), IsIso (j.stalkMap y)`. Introduce and unpack `_ rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `infer_instance`. Conclude with `IsIso.comp_isIso' (hj _ hgen) (isIso_stalkMap_fromSpecStalk_genericPoint U)`. Establish `: QuasiCompact (η ≫ j)` using `⟨fun _ _ _ => (Set.toFinite _).isCompact⟩`. Establish `: QuasiSeparated (η ≫ j)` using `⟨⟨fun _ _ _ => (Set.toFinite _).isCompact⟩⟩`. Use `isIso_fromNormalization_of_birational (η ≫ j) hT` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨c, ⟨hc₁, hc₂⟩, hcu⟩` from `existsUnique_lift_of_isIso_fromNormalization (η ≫ j) p (η ≫ a) b (by rw [Category.assoc, h, Category.assoc])`. Establish `hjc : j ≫ c = a` using `lift_unique_of_isDominant η p (by rw [← Category.assoc, hc₁]) (by rw [Category.assoc, hc₂, h])`. Conclude with `⟨c, ⟨hjc, hc₂⟩, fun c' hc' => hcu c' ⟨by rw [Category.assoc, hc'.1], hc'.2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_lift_of_birational (j : U ⟶ T) [IsIntegral U] [IsIntegral T]
     [IsNormalScheme T] [IsDominant j] [IsIso (j.stalkMap (genericPoint U))]
@@ -134,29 +134,25 @@ theorem existsUnique_lift_of_birational (j : U ⟶ T) [IsIntegral U] [IsIntegral
   exact ⟨c, ⟨hjc, hc₂⟩, fun c' hc' => hcu c' ⟨by rw [Category.assoc, hc'.1], hc'.2⟩⟩
 
 /- English proof (translation)
-Establish `hloc : ∀ t : T, ∃ W : T.Opens, t ∈ W ∧ IsIrreducible (W : Set T)`. Introduce `t`. Establish `ht : t ∈ (⨆ V : T.affineOpens, (V : T.Opens))`. Rewrite using `[iSup_affineOpens_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Take `⟨V, htV⟩` from `TopologicalSpace.Opens.mem_iSup.mp ht`. Establish `: IsNoetherianRing Γ(T, V)` using `IsLocallyNoetherian.component_noetherian V`. Establish `: NoetherianSpace (V : T.Opens)` using `noetherianSpace_of_isAffineOpen V.1 V.2`. Use `set V' : T.Opens := V.1`. Set `x0 : V'` to `⟨t, htV⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hGT : IsIrreducible {y : T | y ⤳ t}`. Rewrite using `[← Scheme.range_fromSpecStalk, ← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ _).image _ (T.fromSpecStalk t).continuous.continuousOn`. Establish `hG : IsIrreducible {v : V' | v ⤳ x0}`. Use `⟨⟨x0, specializes_rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `heq : {v : V' | v ⤳ x0} = Subtype.val ⁻¹' {y : T | y ⤳ t}`. Use extensionality with `v`. Conclude with `(Topology.IsInducing.subtypeVal.specializes_iff).symm`. Rewrite using `[heq]`. Conclude with `hGT.2.preimage V'.2.isOpenEmbedding_subtypeVal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `huniq : ∀ Z ∈ irreducibleComponents V', x0 ∈ Z → Z = closure {v | v ⤳ x0}`. Introduce `Z hZ hx0`. Take `⟨ζ, hζ⟩` from `QuasiSober.sober hZ.1 (isClosed_of_mem_irreducibleComponents Z hZ)`. Establish `hsub : Z ⊆ closure {v | v ⤳ x0}`. Rewrite using `[← (hζ : closure {ζ} = Z)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `closure_mono (Set.singleton_subset_iff.mpr (hζ.specializes hx0))`. Conclude with `le_antisymm hsub (hZ.2 hG.closure hsub)`. Establish `hS : irreducibleComponent x0 ∈ irreducibleComponents V'` using `irreducibleComponent_mem_irreducibleComponents x0`. Establish `hα` using `NoetherianSpace.finite_irreducibleComponents (α := V')`. Set `O` to `(⋃₀ (irreducibleComponents V' \ {irreducibleComponent x0}))ᶜ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hOo : IsOpen O` using `by show IsOpen (⋃₀ (irreducibleComponents V' \ {irreducibleComponent x0}))ᶜ`. Rewrite using `[Set.sUnion_eq_biUnion, isOpen_compl_iff]`. Conclude with `hα.sdiff.isClosed_biUnion fun W hW ↦ isClosed_of_mem_irreducibleComponents W hW.1`. Establish `hOS : O ⊆ irreducibleComponent x0` using `subset_closure.trans (closure_sUnion_irreducibleComponents_sdiff_singleton hα _ hS).le`. Establish `hx0O : x0 ∈ O`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hmem`. Take `⟨Z, ⟨hZ, hZS⟩, hx0Z⟩` from `hmem`. Conclude with `hZS ((huniq Z hZ hx0Z).trans (huniq _ hS mem_irreducibleComponent).symm)`. Establish `hOirr : IsIrreducible O` using `⟨⟨x0, hx0O⟩, isIrreducible_irreducibleComponent.2.open_subset hOo hOS⟩`. Conclude with `⟨⟨Subtype.val '' O, V'.2.isOpenMap_subtype_val O hOo⟩, ⟨x0, hx0O, rfl⟩, hOirr.image _ continuous_subtype_val.continuousOn⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-It suffices to establish `IsIso j.fromNormalization from existsUnique_lift_of_isIso_fromNormalization j p a b h`. Apply `IsZariskiLocalAtTarget.of_forall_exists_morphismRestrict (P := MorphismProperty.isomorphisms Scheme)` to reduce the goal to its premises. Introduce `t`. Take `⟨W, htW, hW⟩` from `hloc t`. Use `⟨W, htW, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IrreducibleSpace W` using `Subtype.irreducibleSpace hW`. Establish `: IsIntegral W.toScheme` using `isIntegral_of_irreducibleSpace_of_isReduced _`. Take `⟨u, hu⟩ : ∃ u : U, j u ∈ W` from `j.denseRange.exists_mem_open W.2 ⟨t, htW⟩`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := j) (g := W.ι) u ⟨j u, hu⟩ rfl`. Establish `: Nonempty ↥(pullback j W.ι)` using `⟨z⟩`.
-
-Establish `: IsIntegral (pullback j W.ι)` using `isIntegral_of_isOpenImmersion (pullback.snd j W.ι)`. Establish `: IsDominant (pullback.snd j W.ι)` using `⟨(pullback.snd j W.ι).isOpenEmbedding.isOpen_range.dense (Set.range_nonempty _)⟩`. Establish `hY : ∀ w : W.toScheme, IsIntegrallyClosed (W.toScheme.presheaf.stalk w)` using `fun w => inferInstance`. Use `isIso_fromNormalization_of_birational (pullback.snd j W.ι) hY` as an intermediate fact. Establish `e' : pullback.snd j.fromNormalization W.ι = inv (j.normalizationPullback W.ι) ≫ (pullback.snd j W.ι).fromNormalization` using `(IsIso.eq_inv_comp _).mpr (Scheme.Hom.normalizationPullback_snd j W.ι)`.
-
-Establish `: IsIso (pullback.snd j.fromNormalization W.ι)` using `by rw [e']; infer_instance`. Use `show IsIso ((pullbackRestrictIsoRestrict _ _).inv ≫ pullback.snd _ _)`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_lift_of_isOpenImmersion_of_isDominant (j : U ⟶ T) [IsOpenImmersion j]
     [IsDominant j] [IsNormalScheme T] [IsLocallyNoetherian T]
@@ -235,19 +231,17 @@ end Abstract
 section Affine
 
 /- English proof (translation)
-Use `set f := Spec.map (CommRingCat.ofHom (algebraMap R R')) with hf`. Establish `: IsAffine f.normalization` using `isAffine_of_isAffineHom f.fromNormalization`. Rewrite using `[← MorphismProperty.isomorphisms.iff, (MorphismProperty.isomorphisms _).arrow_mk_iso_iff (arrowIsoSpecΓOfIsAffine _), MorphismProperty.isomorphisms.iff]`. It suffices to establish `h : IsIso (f.fromNormalization.app ⊤) by`. Establish `: IsIso f.fromNormalization.appTop` using `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Rewrite using `[f.fromNormalization_app (isAffineOpen_top (Spec (.of R)))]`. Set `_` to `(f.app ⊤).hom.toAlgebra`. Set `eR` to `Scheme.ΓSpecIso (.of R)`. Set `eR' : Γ(Spec (.of R'), f ⁻¹ᵁ ⊤) ≅ CommRingCat.of R'` to `Scheme.ΓSpecIso (.of R')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnat : ∀ x, eR'.hom (algebraMap Γ(Spec (.of R), ⊤) Γ(Spec (.of R'), f ⁻¹ᵁ ⊤) x) = algebraMap R R' (eR.hom x)` using `fun x => congrArg (fun g => g.hom x) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap R R')))`. Establish `hinj : ∀ y, eR'.inv (eR'.hom y) = y` using `fun y => eR'.hom_inv_id_apply y`. Establish `hic : IsIntegrallyClosedIn Γ(Spec (.of R), ⊤) Γ(Spec (.of R'), f ⁻¹ᵁ ⊤)`. Rewrite using `[isIntegrallyClosedIn_iff]`. Use `⟨fun x y hxy => ?_, fun {x} hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg eR'.hom hxy`. Rewrite `h1` using `[hnat, hnat]`. Establish `h2` using `IsIntegralClosure.algebraMap_injective R R R' h1`. Simplify using `using congrArg eR.inv h2`. Establish `hx' : IsIntegral R (eR'.hom.hom x)` using `IsIntegral.map_of_comp_eq eR.hom.hom eR'.hom.hom (RingHom.ext fun z => (hnat z).symm) hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `(IsIntegralClosure.isIntegral_iff (A := R)).mp hx'`. Use `⟨eR.inv y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinj (algebraMap _ _ (eR.inv y)), ← hinj x, hnat, Iso.inv_hom_id_apply]`. Conclude with `congrArg (fun z => eR'.inv z) hy`. Establish `hbij : Function.Bijective (algebraMap Γ(Spec (.of R), ⊤) (integralClosure Γ(Spec (.of R), ⊤) Γ(Spec (.of R'), f ⁻¹ᵁ ⊤)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨fun x y hxy => IsIntegralClosure.algebraMap_injective _ Γ(Spec (.of R), ⊤) _ (congrArg Subtype.val hxy), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨z, hz⟩`. Take `⟨y, rfl⟩` from `(IsIntegralClosure.isIntegral_iff (A := Γ(Spec (.of R), ⊤))).mp hz`. Conclude with `⟨y, rfl⟩`. Establish `: IsIso (CommRingCat.ofHom (algebraMap Γ(Spec (.of R), ⊤) (integralClosure Γ(Spec (.of R), ⊤) Γ(Spec (.of R'), f ⁻¹ᵁ ⊤))))` using `(ConcreteCategory.isIso_iff_bijective _).mpr hbij`.
-
-Use `infer_instance`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_fromNormalization_spec_of_isIntegrallyClosedIn (R R' : Type u) [CommRing R]
     [CommRing R'] [Algebra R R'] [IsIntegrallyClosedIn R R'] :
@@ -294,7 +288,7 @@ theorem isIso_fromNormalization_spec_of_isIntegrallyClosedIn (R R' : Type u) [Co
   infer_instance
 
 /- English proof (translation)
-Establish `hKR : IsIntegrallyClosedIn R K` using `(isIntegrallyClosed_iff_isIntegrallyClosedIn K).mp ‹_›`. Conclude with `(IsScalarTower.toAlgHom R R' K).isIntegrallyClosedIn hK hKR`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosedIn_of_injective_fractionRing (R R' K : Type*) [CommRing R] [CommRing R']
     [CommRing K] [Algebra R R'] [Algebra R K] [Algebra R' K] [IsScalarTower R R' K]
@@ -304,11 +298,11 @@ theorem isIntegrallyClosedIn_of_injective_fractionRing (R R' K : Type*) [CommRin
   exact (IsScalarTower.toAlgHom R R' K).isIntegrallyClosedIn hK hKR
 
 /- English proof (translation)
-Set `K` to `FractionRing R`. Set `_ : Algebra R' K` to `IsLocalization.localizationAlgebraOfSubmonoidLe R' K M (nonZeroDivisors R) hM`. Establish `: IsScalarTower R R' K` using `IsLocalization.localization_isScalarTower_of_submonoid_le R' K M (nonZeroDivisors R) hM`. Use `isIntegrallyClosedIn_of_injective_fractionRing R R' K ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨⟨r, m⟩, rfl⟩` from `IsLocalization.mk'_surjective M x`. Establish `h0 : algebraMap R K r = 0`. Establish `h2` using `congrArg (algebraMap R' K) (IsLocalization.mk'_spec R' r m)`. Rewrite `h2` using `[map_mul, hx, zero_mul, ← IsScalarTower.algebraMap_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`. Establish `hr : r = 0` using `IsFractionRing.injective R K (by rw [h0, map_zero])`. Simplify using `[hr]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosedIn_of_isLocalization {R : Type*} [CommRing R] [IsIntegrallyClosed R]
     (M : Submonoid R) (hM : M ≤ nonZeroDivisors R) (R' : Type*) [CommRing R'] [Algebra R R']
@@ -332,7 +326,7 @@ theorem isIntegrallyClosedIn_of_isLocalization {R : Type*} [CommRing R] [IsInteg
 variable {R R' : Type u} [CommRing R] [CommRing R'] [Algebra R R'] {Z Y : Scheme.{u}}
 
 /- English proof (translation)
-Use `isIso_fromNormalization_spec_of_isIntegrallyClosedIn R R'` as an intermediate fact. Conclude with `existsUnique_lift_of_isIso_fromNormalization _ p a b h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_lift_spec_of_isIntegrallyClosedIn [IsIntegrallyClosedIn R R']
     (p : Z ⟶ Y) [IsIntegralHom p] (a : Spec (.of R') ⟶ Z) (b : Spec (.of R) ⟶ Y)
@@ -343,7 +337,7 @@ theorem existsUnique_lift_spec_of_isIntegrallyClosedIn [IsIntegrallyClosedIn R R
   exact existsUnique_lift_of_isIso_fromNormalization _ p a b h
 
 /- English proof (translation)
-Use `isIntegrallyClosedIn_of_isLocalization M hM R'` as an intermediate fact. Conclude with `existsUnique_lift_spec_of_isIntegrallyClosedIn p a b h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_lift_spec_of_isLocalization [IsIntegrallyClosed R] (M : Submonoid R)
     (hM : M ≤ nonZeroDivisors R) [IsLocalization M R']
@@ -363,7 +357,7 @@ variable {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f] [QuasiSeparated f]
 variable {R R' : Type u} [CommRing R] [CommRing R'] [Algebra R R']
 
 /- English proof (translation)
-The claim follows from `existsUnique_lift_spec_of_isLocalization M hM f.fromNormalization (χ₁ ≫ f.toNormalization) χ₀ (by rw [Category.assoc, Scheme.Hom.toNormalization_fromNormalization, h])`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_lift_normalization_spec_of_isLocalization [IsIntegrallyClosed R]
     (M : Submonoid R) (hM : M ≤ nonZeroDivisors R) [IsLocalization M R']

@@ -9,11 +9,11 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Cycl
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Establish `hall : ∀ M : Matrix (Fin n) (Fin n) K, (M * X).trace = 0`. Introduce `M`. Establish `hM : M ∈ Submodule.span K (Set.range ρ)` using `by rw [h]; trivial`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨t, rfl⟩ := hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `hX t`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mul, Matrix.trace_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [Matrix.smul_mul, Matrix.trace_smul, hx, smul_zero]`. Use extensionality with `i j`.
+Treat this case separately. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hall (Matrix.single j i 1)` using `[Matrix.trace_single_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem zero_of_trace {G K : Type} [Monoid G] [Field K] {n : ℕ} (ρ : G →* Matrix (Fin n) (Fin n) K)
     (h : Submodule.span K (Set.range ρ) = ⊤) (X : Matrix (Fin n) (Fin n) K) (hX : ∀ g, (ρ g * X).trace = 0) :
@@ -30,9 +30,9 @@ private theorem zero_of_trace {G K : Type} [Monoid G] [Field K] {n : ℕ} (ρ : 
   simpa [Matrix.trace_single_mul] using hall (Matrix.single j i 1)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(UpperTheory.V.AlgebraTools.Det.gramIff ρ').mp hs`. Use `(UpperTheory.V.AlgebraTools.Det.gramIff ρ).mpr ⟨g, fun h0 => hg ?_⟩` and prove the remaining obligations. Establish `e : (Matrix.of fun a b => (ρ (g a * g b)).trace) = f.mapMatrix (Matrix.of fun a b => t (g a * g b))`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply, h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e' : (Matrix.of fun a b => (ρ' (g a * g b)).trace) = φ.mapMatrix (Matrix.of fun a b => t (g a * g b))`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply, h']`. Rewrite `h0` using `[e, ← RingHom.map_det, map_eq_zero_iff f hf]`. Rewrite using `[e', ← RingHom.map_det, h0, map_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem span_of_trace {G C K K' : Type} [Monoid G] [CommRing C] [Field K] [Field K'] {n : ℕ}
     (f : C →+* K) (hf : Function.Injective f) (φ : C →+* K') (t : G → C)
@@ -51,7 +51,7 @@ private theorem span_of_trace {G C K K' : Type} [Monoid G] [CommRing C] [Field K
   rw [e', ← RingHom.map_det, h0, map_zero]
 
 /- English proof (translation)
-Establish `: LinearMap.range (MonoidAlgebra.lift K (Matrix (Fin n) (Fin n) K) G ρ).toLinearMap = ⊤`. Rewrite using `[eq_top_iff, ← h, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨MonoidAlgebra.of K G g, by simp⟩`. Conclude with `LinearMap.range_eq_top.1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem lift_surj {G K : Type} [Group G] [Field K] {n : ℕ} (ρ : G →* Matrix (Fin n) (Fin n) K)
     (h : Submodule.span K (Set.range ρ) = ⊤) :
@@ -63,17 +63,15 @@ private theorem lift_surj {G K : Type} [Group G] [Field K] {n : ℕ} (ρ : G →
   exact LinearMap.range_eq_top.1 this
 
 /- English proof (translation)
-Establish `h₁` using `span_of_trace (RingHom.id K) Function.injective_id (RingHom.id K) (fun g => (ρ₁ g).trace) ρ₁ ρ₂ (fun _ => rfl) hf h₂`. Use `set R₁ := MonoidAlgebra.lift K (Matrix (Fin n) (Fin n) K) G ρ₁ with hR₁`. Use `set R₂ := MonoidAlgebra.lift K (Matrix (Fin n) (Fin n) K) G ρ₂ with hR₂`. Establish `s₂ : Function.Surjective R₂` using `lift_surj ρ₂ h₂`. Establish `e1 : ∀ g, R₁ (MonoidAlgebra.of K G g) = ρ₁ g` using `fun g => by simp [hR₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∀ g, R₂ (MonoidAlgebra.of K G g) = ρ₂ g` using `fun g => by simp [hR₂]`. Establish `hf' : ∀ a, (R₁ a).trace = (R₂ a).trace`. Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of g => rw [e1, e2, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, Matrix.trace_add, ha, hb]`. Consider the case `smul c a ha => simp only [map_smul, Matrix.trace_smul, ha]`. Establish `hker : ∀ a, R₂ a = 0 → R₁ a = 0`. Introduce `a ha`. Use `zero_of_trace ρ₁ h₁ _ fun g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← e1, ← map_mul, hf', map_mul, ha, mul_zero, Matrix.trace_zero]`. Set `φ₀` to `RingHom.liftOfSurjective R₂.toRingHom s₂ ⟨R₁.toRingHom, fun a ha => hker a ha⟩`. Establish `hφ₀ : ∀ a, φ₀ (R₂ a) = R₁ a` using `fun a => RingHom.liftOfSurjective_comp_apply R₂.toRingHom s₂ _ a`. Set `φ : Matrix (Fin n) (Fin n) K →ₐ[K] Matrix (Fin n) (Fin n) K` to `⟨φ₀, fun c => by`. Use `hφ₀ (algebraMap K _ c)` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[AlgHom.commutes, AlgHom.commutes] at this⟩` and apply the resulting hypothesis. Take `⟨J, hJ⟩` from `KStar.Tree.exists_conj_of_algHom φ`. Use `⟨J, J.isUnit, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `hJ (R₂ (MonoidAlgebra.of K G g))`. Establish `e : φ (R₂ (MonoidAlgebra.of K G g)) = R₁ (MonoidAlgebra.of K G g)` using `hφ₀ _`.
-
-Rewrite `h1` using `[e, e1, e2]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem conj_of_trace {G K : Type} [Group G] [Field K] {n : ℕ} (ρ₁ ρ₂ : G →* Matrix (Fin n) (Fin n) K)
     (h₂ : Submodule.span K (Set.range ρ₂) = ⊤) (hf : ∀ g, (ρ₁ g).trace = (ρ₂ g).trace) :
@@ -108,15 +106,15 @@ private theorem conj_of_trace {G K : Type} [Group G] [Field K] {n : ℕ} (ρ₁ 
   rwa [e, e1, e2] at h1
 
 /- English proof (translation)
-Establish `d : ∀ i, P i i = 0` using `fun i => by`. Use `congrFun (congrFun hs i) i` as an intermediate fact. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply] at this`. Conclude with `(mul_eq_zero.1 (by linear_combination this : 2 * P i i = 0)).resolve_left h2`. Establish `o : P 1 0 = -P 0 1` using `congrFun (congrFun hs 0) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u : P 0 1 ≠ 0`. Use `((Matrix.isUnit_iff_isUnit_det _).1 hP).ne_zero` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two, d, d, o]`. Introduce `h0`. Simplify using `[h0] at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `k` using `fun i j => congrFun (congrFun h i) j`. Establish `k00` using `k 0 0`. Establish `k01` using `k 0 1`. Establish `k10` using `k 1 0`. Establish `k11` using `k 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply, d, o] at k00 k01 k10 k11`. Use extensionality with `i j`. Apply `mul_left_cancel₀ u` to reduce the goal to its premises. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.trace_fin_two, -mul_eq_mul_left_iff, -mul_eq_zero]`. Take the linear combination `k01`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `k11`. Take the linear combination `-k00`. Take the linear combination `-k10`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem alt_two {K : Type} [Field K] (h2 : (2 : K) ≠ 0) (P A B : Matrix (Fin 2) (Fin 2) K) (hP : IsUnit P)
     (hs : Pᵀ = -P) (h : Bᵀ * P = P * A) : A + B = A.trace • (1 : Matrix (Fin 2) (Fin 2) K) := by
@@ -145,9 +143,9 @@ private theorem alt_two {K : Type} [Field K] (h2 : (2 : K) ≠ 0) (P A B : Matri
   · linear_combination -k10
 
 /- English proof (translation)
-Establish `h1 : ∀ g, ρ g 0 1 = 0` using `fun g => by`. Use `zero_of_trace ρ hs (ρ g + Jmat K 2 * (ρ g)ᵀ * Jmat K 2 - (ρ g).trace • 1) fun x => by` as an intermediate fact. Rewrite using `[Matrix.mul_sub, Matrix.mul_add, Matrix.trace_sub, Matrix.trace_add, h, Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul, sub_self]`. Establish `e` using `congrFun (congrFun this 0) 1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Jmat, Fin.rev] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(mul_eq_zero.1 (by linear_combination e : 2 * ρ g 0 1 = 0)).resolve_left h2`. Use `zero_of_trace ρ hs (Matrix.single 1 0 1) fun g => by simp [Matrix.trace_mul_single, h1]` as an intermediate fact. Simplify using `using congrFun (congrFun this 1) 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem not_alt {G K : Type} [Group G] [Field K] (h2 : (2 : K) ≠ 0) (ρ : G →* Matrix (Fin 2) (Fin 2) K)
     (hs : Submodule.span K (Set.range ρ) = ⊤)
@@ -164,23 +162,21 @@ private theorem not_alt {G K : Type} [Group G] [Field K] (h2 : (2 : K) ≠ 0) (�
   simpa using congrFun (congrFun this 1) 0
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n hF hn C _ _ _ K _ _ _ hinj r t χ ht htr hst hχ hord K' _ _ φ ρ' hirr hφ`. Take `⟨ss, sm, -, -, -⟩` from `UpperTheory.V.Fr.star hF`. Establish `h2C : IsUnit (2 : C)`. Assume the negation of the conclusion as `hn2`. Establish `h0` using `(res_eq_zero_iff O C 2).2 hn2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_ofNat]`. Use `(CharP.cast_eq_zero_iff (ResidueField O) l 2).1 (by exact_mod_cast h0)` as an intermediate fact. Conclude with `hF.l_odd ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 this)`. Establish `h2K : (2 : K) ≠ 0` using `by simpa [map_ofNat] using (h2C.map (algebraMap C K)).ne_zero`. Establish `h2K' : (2 : K') ≠ 0` using `by simpa [map_ofNat] using (h2C.map φ).ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : Submodule.span K' (Set.range ρ'.r) = ⊤` using `(UpperTheory.V.AlgebraTools.Det.irrIffSpan ρ'.r).1 fun N hN => hirr N fun g _ => hN g`. Establish `hs` using `span_of_trace (algebraMap C K) hinj φ t r ρ'.r htr hφ hs'`. Establish `s1 : F.star 1 = 1` using `by simp [Frame.star]`. Set `r' : F.G0 →* Matrix (Fin n) (Fin n) K` to `{ toFun := fun g => (r (F.star g))ᵀ map_one' := by rw [s1, map_one, Matrix.transpose_one] map_mul' := fun g h => by rw [sm, map_mul, Matrix.transpose_mul] }`. Take `⟨P, hP, hPr⟩` from `conj_of_trace r' r hs fun g => by show (r (F.star g))ᵀ.trace = _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.trace_transpose, ← htr, ← htr, hst]`. Use `replace hPr : ∀ g, (r (F.star g))ᵀ * P = P * r g := hPr`. Establish `sc : ∀ g, F.star g * F.conj g = 1` using `fun g => by rw [Frame.star, ← map_mul, inv_mul_cancel, map_one]`. Establish `hform : ∀ g, (r g)ᵀ * P * r (F.conj g) = P` using `fun g => by`. Use `hPr (F.star g)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[ss]`. Rewrite using `[this, Matrix.mul_assoc, ← map_mul, sc, map_one, Matrix.mul_one]`. Establish `cc : ∀ g, F.conj (F.conj g) = g` using `fun g => by`. Use `ss g` as an intermediate fact. Simplify `this` using `only [Frame.star, map_inv, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsym : Pᵀ = P`. Use `(UpperTheory.V.AlgebraTools.Det.signLemma r F.conj (fun _ => 1) P hs cc (fun _ => rfl) hP fun g => by rw [hform, one_smul]).resolve_right fun ha => ?_` and prove the remaining obligations. Break down `hn with rfl | rfl` into its components or cases. Use `not_alt h2K' ρ'.r hs' fun g x => ?_` and prove the remaining obligations. Rewrite using `[← ρ'.pol, ← map_mul, ← map_mul, ← hφ, ← hφ, ← hφ, ← hφ, ← map_add, ← map_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, htr, htr, htr, htr, map_mul, map_mul, ← Matrix.trace_add, ← Matrix.mul_add, alt_two h2K P _ _ hP ha (hPr g), Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul]`. Establish `hd` using `congrArg Matrix.det ha`. Rewrite `hd` using `[Matrix.det_transpose, Matrix.det_neg, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero h2K ((Matrix.isUnit_iff_isUnit_det _).1 hP).ne_zero (by linear_combination hd)`. Take `⟨ρ, h, h1, h2, h3⟩` from `UpperTheory.V.Fr.of_form hF hn C K hinj r P t χ hP hsym hform ht htr hχ fun v g => zero_of_trace r hs _ (hord v g)`. Use `⟨ρ, h, h1, h2, h3, fun N hN => ?_⟩` and prove the remaining obligations. Use `(UpperTheory.V.AlgebraTools.Det.irrIffSpan ρ.r).2 ?_ N fun g => hN g trivial` and prove the remaining obligations. Use `span_of_trace (algebraMap C K) hinj φ t ρ.r ρ'.r (fun g => ?_) hφ hs'` and prove the remaining obligations.
-
-Rewrite using `[h1, htr, Matrix.trace_mul_cycle, Units.inv_mul, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.of_trace :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (K : Type) [Field K] [IsAlgClosed K] [Algebra C K], Function.Injective (algebraMap C K) → ∀ (r : F.G0 →* Matrix (Fin n) (Fin n) K) (t : F.G0 → C) (χ : ∀ v, Fin n → F.Gv v →* Cˣ), IsTr O F n t → (∀ g, algebraMap C K (t g) = (r g).trace) → (∀ g, t (F.star g) = t g) → IsPsi O F n (fun v i g => (χ v i g : C)) → (∀ v g h, (r h * ordProd (fun s => r (F.loc0 v s)) (fun i s => algebraMap C K (χ v i s)) g).trace = 0) → ∀ (K' : Type) [Field K'] [IsAlgClosed K'] (φ : C →+* K') (ρ' : NRep F n K'), MatIrr ⊤ ρ'.r → (∀ g, φ (t g) = (ρ'.r g).trace) → ∃ (ρ : NRep F n K) (h : GL (Fin n) K), (∀ g, ρ.r g = h * r g * h⁻¹) ∧ (∀ v i g, (ρ.ψ v i g : K) = algebraMap C K (χ v i g)) ∧ Integral O C ρ ∧ MatIrr ⊤ ρ.r := by

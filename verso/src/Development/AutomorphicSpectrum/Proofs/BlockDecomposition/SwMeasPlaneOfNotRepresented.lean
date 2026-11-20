@@ -18,7 +18,7 @@ namespace GlobalTheory.CompanionTheory.SW.Plane
 open Matrix GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Hasse
 
 /- English proof (translation)
-Take `⟨Q, hQ, e⟩` from `GlobalTheory.HermAdelicNorm.congr_of_hasSignature hA hD`. Use `⟨Complex.normSq Q.det, Complex.normSq_pos.2 hQ, ?_⟩` and prove the remaining obligations. Establish `h1 : (Q.map (starRingEnd ℂ)).det = starRingEnd ℂ Q.det` using `(RingHom.map_det (starRingEnd ℂ) Q).symm`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h1, Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_eq_of_sig {A D : Matrix (Fin 2) (Fin 2) ℂ} {p q : ℕ} (hA : Formalism.UG.HasSignature A p q)
     (hD : Formalism.UG.HasSignature D p q) : ∃ r : ℝ, 0 < r ∧ D.det = r * A.det := by
@@ -29,7 +29,7 @@ theorem det_eq_of_sig {A D : Matrix (Fin 2) (Fin 2) ℂ} {p q : ℕ} (hA : Forma
   ring
 
 /- English proof (translation)
-Take `⟨r, hr, e⟩` from `det_eq_of_sig h hs`. Rewrite `e` using `[Matrix.det_diagonal, Fin.prod_univ_two, hdet]`. Establish `e' : s 0 * s 1 = r * δ` using `by exact_mod_cast e`. Rewrite `hpos` using `[e']`. Conclude with `(pos_iff_pos_of_mul_pos hpos).1 hr`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sign_det {A : Matrix (Fin 2) (Fin 2) ℂ} {p q : ℕ} (h : Formalism.UG.HasSignature A p q) {δ : ℝ}
     (hdet : A.det = δ) (s : Fin 2 → ℝ)
@@ -41,9 +41,9 @@ theorem sign_det {A : Matrix (Fin 2) (Fin 2) ℂ} {p q : ℕ} (h : Formalism.UG.
   exact (pos_iff_pos_of_mul_pos hpos).1 hr
 
 /- English proof (translation)
-Take `⟨r, hr, e⟩` from `det_eq_of_sig h hs`. Rewrite `e` using `[Matrix.det_diagonal, Fin.prod_univ_two, hdet]`. Establish `e' : s 0 * s 1 = r * δ` using `by exact_mod_cast e`. Rewrite `hneg` using `[e']`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd hneg (not_lt.2 (mul_nonneg hr.le (not_lt.1 hc)))`.
+A detailed English derivation is pending.
 -/
 theorem neg_det {A : Matrix (Fin 2) (Fin 2) ℂ} {p q : ℕ} (h : Formalism.UG.HasSignature A p q) {δ : ℝ}
     (hdet : A.det = δ) (s : Fin 2 → ℝ)
@@ -56,15 +56,15 @@ theorem neg_det {A : Matrix (Fin 2) (Fin 2) ℂ} {p q : ℕ} (h : Formalism.UG.H
   exact absurd hneg (not_lt.2 (mul_nonneg hr.le (not_lt.1 hc)))
 
 /- English proof (translation)
-Establish `hpq : p + q = 2` using `by simpa using (Formalism.UG.P.sig_data _ _ _ h).1.symm`. Take `⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ : (p = 2 ∧ q = 0) ∨ (p = 1 ∧ q = 1) ∨ (p = 0 ∧ q = 2)` from `by omega`. Apply the tactic sequence `have hd : 0 < δ := sign_det h hdet ![1, 1] (hasSignature_diagonal _ rfl (fun i => by fin_cases i <;> simp)) (by simp)`. Establish `hc'` using `h1 rfl`. Conclude with `hasSignature_diagonal _ rfl (fun i => by fin_cases i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hc'`. Simplify using `using mul_pos hc' hd)`. Apply the tactic sequence `have hd : δ < 0 := neg_det h hdet ![1, -1] (hasSignature_diagonal _ rfl (fun i => by fin_cases i <;> simp)) (by simp)`. Break down `lt_or_gt_of_ne hc with hneg | hpos` into its components or cases. Use `hasSignature_diagonal (P := 1) (N := 1) ![-c, -(c * δ)] rfl (fun i => by fin_cases i` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hneg`. Simplify using `using mul_pos_of_neg_of_neg hneg hd)`. Use `hasSig_neg this` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Conclude with `hasSignature_diagonal _ rfl (fun i => by fin_cases i`. Simplify using `using hpos`. Simplify using `using mul_neg_of_pos_of_neg hpos hd)`. Apply the tactic sequence `have hd : 0 < δ := sign_det h hdet ![-1, -1] (hasSignature_diagonal _ rfl (fun i => by fin_cases i <;> simp)) (by simp)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc'` using `h2 rfl`. Conclude with `hasSignature_diagonal _ rfl (fun i => by fin_cases i`. Simplify using `using hc'`. Simplify using `using mul_neg_of_neg_of_pos hc' hd)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem plane_sig {A : Matrix (Fin 2) (Fin 2) ℂ} {p q : ℕ} (h : Formalism.UG.HasSignature A p q) {c δ : ℝ}
     (hdet : A.det = δ) (hc : c ≠ 0) (h1 : p = 2 → 0 < c) (h2 : q = 2 → c < 0) :
@@ -102,13 +102,13 @@ theorem plane_sig {A : Matrix (Fin 2) (Fin 2) ℂ} {p q : ℕ} (h : Formalism.UG
       · simpa using mul_neg_of_neg_of_pos hc' hd)
 
 /- English proof (translation)
-Apply the tactic sequence `have hD : Formalism.UG.HasSignature (Matrix.diagonal fun _ : Fin 2 => ((1 : ℝ) : ℂ)) 2 0 := hasSignature_diagonal _ rfl (fun i => by fin_cases i <;> simp)`. Take `⟨Q, -, e⟩` from `GlobalTheory.HermAdelicNorm.congr_of_hasSignature hD h`. Establish `hone : (Matrix.diagonal fun _ : Fin 2 => ((1 : ℝ) : ℂ)) = 1`. Simplify using the standard rewrite rules. Rewrite `e` using `[hone, Matrix.mul_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : star w ⬝ᵥ (A *ᵥ w) = star ((Q.map (starRingEnd ℂ)) *ᵥ w) ⬝ᵥ ((Q.map (starRingEnd ℂ)) *ᵥ w)`. Rewrite using `[e, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, Matrix.dotProduct_mulVec]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, dotProduct, Complex.re_sum]`. Use `Finset.sum_nonneg fun i _ => ?_` and prove the remaining obligations. Establish `hc : ∀ z : ℂ, star z * z = ((Complex.normSq z : ℝ) : ℂ)` using `fun z => by`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [Pi.star_apply]`. Rewrite using `[hc, Complex.ofReal_re]`. Conclude with `Complex.normSq_nonneg _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quad_nonneg {A : Matrix (Fin 2) (Fin 2) ℂ} (h : Formalism.UG.HasSignature A 2 0) (w : Fin 2 → ℂ) :
     0 ≤ (star w ⬝ᵥ (A *ᵥ w)).re := by
@@ -140,7 +140,7 @@ open Matrix GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Hasse
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h` using `hCM.2.2.2 τ x`. Rewrite `h` using `[hx]`. Conclude with `(Complex.conj_eq_iff_real.1 h.symm).choose_spec ▸ by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_of_fixed {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : E →+* ℂ) {x : E} (hx : σ x = x) :
     τ x = (((τ x).re : ℝ) : ℂ) := by
@@ -149,9 +149,7 @@ theorem real_of_fixed {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : E →+* 
   exact (Complex.conj_eq_iff_real.1 h.symm).choose_spec ▸ by simp
 
 /- English proof (translation)
-Establish `h1 : (J.map (σ : E →+* E)) = Jᵀ`. Use extensionality with `i j`. Conclude with `hJ.1 j i`. Establish `h2 : (σ : E →+* E) J.det = (J.map (σ : E →+* E)).det` using `RingHom.map_det _ _`. Rewrite `h2` using `[h1, Matrix.det_transpose]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_fixed {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) :
     σ J.det = J.det := by
@@ -163,37 +161,31 @@ theorem det_fixed {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} 
   exact h2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `haveI : IsTotallyReal F := hCM.1`. Use `haveI : IsTotallyComplex E := hCM.2.1`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨hCM.2.2.1⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsCMField E := IsCMField.ofCMExtension F E`. Establish `hcc : ∀ x : E, ReciprocityTheory.ChartRestriction.G.FD.cc x = σ x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective ((GlobalTheory.Published.embedding_cc τ x).trans (hCM.2.2.2 τ x).symm)`. Use `set a : E := algebraMap F E t with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set D : E := J.det with hD`. Establish `hσa : σ a = a` using `σ.commutes t`. Establish `hσD : σ D = D` using `det_fixed hJ`. Establish `ha0 : a ≠ 0` using `(map_ne_zero _).2 ht`. Establish `hD0 : D ≠ 0` using `hJ.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `G' : Matrix (Fin 2) (Fin 2) E` to `Matrix.diagonal ![a, a * D]`. Establish `hG'd : G'.det = a * (a * D)`. Simplify using `[G', Matrix.det_diagonal, Fin.prod_univ_two]`. Establish `hG'c : ∀ i j, ReciprocityTheory.ChartRestriction.G.FD.cc (G' i j) = G' j i` using `fun i j => by`. Rewrite using `[hcc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [G', hσa, hσD]`. Establish `hsig : ∀ τ : E →+* ℂ, ∃ Q : Matrix (Fin 2) (Fin 2) ℂ, Q.det ≠ 0 ∧ G'.map τ = Qᵀ * J.map τ * Q.map (starRingEnd ℂ)` using `fun τ => by`. Establish `hc` using `real_of_fixed hCM τ hσa`. Establish `hδ` using `real_of_fixed hCM τ hσD`. Use `set c : ℝ := (τ a).re with hcdef`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set δ : ℝ := (τ D).re with hδdef`. Establish `hc0 : c ≠ 0` using `fun h => by`. Rewrite `hc` using `[h]`. Conclude with `ha0 (τ.injective (by simpa using hc))`. Establish `hH : Formalism.UG.IsHerm (starRingEnd ℂ) (J.map τ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.UG.IsHerm`. Rewrite using `[Formalism.UG.P.cT_conj_eq]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply]`. Rewrite using `[← hJ.1 i j, hCM.2.2.2 τ]`.
+Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, q, hs⟩` from `Formalism.UG.P.signature_exists _ (J.map τ) hH (map_isUnit_det J hJ.2 τ)`. Establish `hdet : (J.map τ).det = δ`. Rewrite using `[← hδ]`. Conclude with `(RingHom.map_det τ J).symm`. Establish `hpq : p + q = 2` using `by simpa using (Formalism.UG.P.sig_data _ _ _ hs).1.symm`.
+Establish an intermediate fact. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : p = 2 → 0 < c` using `fun hp => by`. Establish `hq : q = 0` using `by omega`. Substitute `hp hq` using the available equality. Assume the negation of the conclusion as `hneg`. Establish `hneg' : c < 0` using `lt_of_le_of_ne (not_lt.1 hneg) hc0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Take `⟨w, hw⟩` from `hcon τ c hc0 hc`. Conclude with `absurd hw (not_lt.2 (mul_nonpos_of_nonpos_of_nonneg hneg'.le (quad_nonneg hs w)))`. Establish `h2 : q = 2 → c < 0` using `fun hq => by`. Establish `hp : p = 0` using `by omega`. Substitute `hp hq` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Assume the negation of the conclusion as `hpos`. Establish `hpos' : 0 < c` using `lt_of_le_of_ne (not_lt.1 hpos) hc0.symm`. Take `⟨w, hw⟩` from `hcon τ c hc0 hc`. Establish `h3` using `quad_nonneg (hasSig_neg hs) w`. Establish `h4 : ((star w ⬝ᵥ ((-(J.map τ)) *ᵥ w))).re = -(star w ⬝ᵥ (J.map τ *ᵥ w)).re`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Matrix.neg_mulVec, dotProduct_neg, Complex.neg_re]`. Rewrite `h3` using `[h4]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨Q, hQ, e⟩` from `GlobalTheory.HermAdelicNorm.congr_of_hasSignature hs (plane_sig hs hdet hc0 h1 h2)`. Use `⟨Q, hQ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [G', Matrix.diagonal_apply, ← hc, ← hδ]`. Take `⟨P, -, hP⟩` from `GlobalTheory.QNorm.landherr_and_landherrSt.1 E 2 J G' (fun i j => by rw [hcc]; exact hJ.1 j i) hG'c hJ.2 (by rw [hG'd]; exact mul_ne_zero ha0 (mul_ne_zero ha0 hD0)) hsig ⟨a⁻¹, by`. Rewrite using `[hcc, hG'd, map_inv₀, hσa]`.
-
-Clear the denominators using the available nonvanishing facts. Use the proof step `rfl⟩`. Use `hne (fun i => σ (P i 0)) ?_` and prove the remaining obligations. Establish `e` using `congrFun (congrFun hP 0) 0`. Establish `hσσ : ∀ x : E, σ (σ x) = x` using `fun x => by`.
-
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hCM.2.2.2, hCM.2.2.2]; simp)`. Simplify using `only [G', Matrix.diagonal_apply_eq, Matrix.cons_val_zero] at e`. Rewrite using `[e]`. Simplify using `only [hE, hform, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hcc, Finset.sum_mul]`.
-
-Rewrite using `[Finset.sum_comm]`. Simplify using `[hσσ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_place {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (J : Matrix (Fin 2) (Fin 2) E)
     (hJ : IsHermND σ J) (t : F) (ht : t ≠ 0) (hne : ∀ x : Fin 2 → E, hE σ J x x ≠ algebraMap F E t) :
@@ -282,13 +274,13 @@ theorem exists_place {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (J : Matrix (Fi
   simp [hσσ]
 
 /- English proof (translation)
-Use `haveI : IsTotallyReal F := hCM.1`. Set `φ : F →+* ℂ` to `τ.comp (algebraMap F E)`. Set `v : InfinitePlace F` to `InfinitePlace.mk φ`. Establish `hv : v.IsReal` using `IsTotallyReal.isReal v`. Establish `hφ : ComplexEmbedding.IsReal φ` using `InfinitePlace.isReal_mk_iff.1 hv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : Ainf F →+* ℝ` to `(InfinitePlace.Completion.extensionEmbeddingOfIsReal hv).comp (Pi.evalRingHom (fun w : InfinitePlace F => w.Completion) v)`. Establish `hψ : ∀ x : F, ((ψ (algebraMap F (Ainf F) x) : ℝ) : ℂ) = φ x` using `fun x => by`. Establish `h1 : ψ (algebraMap F (Ainf F) x) = InfinitePlace.embedding_of_isReal hv x` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hv ((WithAbs.equiv v.1).symm x)`. Rewrite using `[h1, InfinitePlace.embedding_of_isReal_apply, InfinitePlace.embedding_mk_eq_of_isReal hφ]`. Use `letI : Algebra F ℂ := φ.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `f : Ainf F →ₐ[F] ℂ` to `{ Complex.ofRealHom.comp ψ with commutes' := hψ }`. Set `g : E →ₐ[F] ℂ` to `{ τ with commutes' := fun _ => rfl }`. Use `⟨(Algebra.TensorProduct.productMap f g).toRingHom, fun e => ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `[inclR, f, g]`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a e`. Simplify using `[sigR, f, g, hCM.2.2.2 τ]`. Consider the case `add x y hx hy => simp only [map_add, star_add, hx, hy]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_hom {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : E →+* ℂ) :
     ∃ Φ : Ainf F ⊗[F] E →+* ℂ, (∀ e, Φ (inclR (Ainf F) e) = τ e) ∧

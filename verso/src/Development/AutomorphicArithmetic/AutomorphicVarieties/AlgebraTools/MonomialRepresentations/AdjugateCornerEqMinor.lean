@@ -19,7 +19,7 @@ private def tm {R : Type} [CommRing R] (b c d e : R) (k : ℤ) (i j l m : ℕ) :
   (k : R) * b ^ i * c ^ j * d ^ l * e ^ m
 
 /- English proof (translation)
-Establish `h1 : WithZero.exp ((i:ℤ) * β + j * γ + l * δ + m * ε) = 1 * WithZero.exp β ^ i * WithZero.exp γ ^ j * WithZero.exp δ ^ l * WithZero.exp ε ^ m`. Simplify using `only [WithZero.exp_add, ← WithZero.exp_nsmul, one_mul, nsmul_eq_mul]`. Rewrite using `[h1, tm, map_mul, map_mul, map_mul, map_mul, map_pow, map_pow, map_pow, map_pow]`. Use `gcongr`. Conclude with `hk k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_tm_le_exp {F : Type} [Field F] (v : Valuation F (WithZero (Multiplicative ℤ)))
     (hk : ∀ k : ℤ, v (k : F) ≤ 1) {b c d e : F} {β γ δ ε : ℤ}
@@ -34,13 +34,11 @@ private theorem valuation_tm_le_exp {F : Type} [Field F] (v : Valuation F (WithZ
   exact hk k
 
 /- English proof (translation)
-Introduce `h0`. Establish `key : dsc b c d e = b ^ 2 * c ^ 2 * d ^ 2 + (tm b c d e 256 0 0 0 3 + tm b c d e (-192) 1 0 1 2 + tm b c d e (-128) 0 2 0 2 + tm b c d e 144 0 1 2 1 + tm b c d e (-27) 0 0 4 0 + tm b c d e 144 2 1 0 2 + tm b c d e (-6) 2 0 2 1 + tm b c d e (-80) 1 2 1 1 + tm b c d e 18 1 1 3 0 + …`. Simplify using `only [dsc, tm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hL : v (b ^ 2 * c ^ 2 * d ^ 2) = WithZero.exp (2 * w0 + 2 * (w0 + w1) + 2 * (w0 + w1 + w2))`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_pow, hb, hc, hd]`. Simplify using `only [← WithZero.exp_nsmul, ← WithZero.exp_add, nsmul_eq_mul]`. Apply the tactic sequence `congr 1 <;> ring`. Rewrite `h0` using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR : v (tm b c d e 256 0 0 0 3 + tm b c d e (-192) 1 0 1 2 + tm b c d e (-128) 0 2 0 2 + tm b c d e 144 0 1 2 1 + tm b c d e (-27) 0 0 4 0 + tm b c d e 144 2 1 0 2 + tm b c d e (-6) 2 0 2 1 + tm b c d e (-80) 1 2 1 1 + tm b c d e 18 1 1 3 0 + tm b c d e 16 0 4 0 1 + tm b c d e (- …`. Rewrite using `[hL]`. Use the proof step `repeat' apply Valuation.map_add_lt`. Use `all_goals`. Conclude with `lt_of_le_of_lt (valuation_tm_le_exp v hk hb.le hc.le hd.le he _ _ _ _ _) (WithZero.exp_lt_exp.2 (by push_cast; linarith))`.
-
-Use `Valuation.map_add_eq_of_lt_left v hR` as an intermediate fact. Rewrite `this` using `[h0, map_zero, hL]`. Conclude with `WithZero.exp_ne_zero this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dsc_ne_zero_of_valuation_strict_chain {F : Type} [Field F] (v : Valuation F (WithZero (Multiplicative ℤ)))
     (hk : ∀ k : ℤ, v (k : F) ≤ 1) {b c d e : F} {w0 w1 w2 w3 : ℤ}
@@ -79,13 +77,11 @@ private theorem dsc_ne_zero_of_valuation_strict_chain {F : Type} [Field F] (v : 
   exact WithZero.exp_ne_zero this.symm
 
 /- English proof (translation)
-Introduce `h0`. Establish `key : dsc b c d e = -(4 * (b ^ 3 * d ^ 3)) + (tm b c d e 256 0 0 0 3 + tm b c d e (-192) 1 0 1 2 + tm b c d e (-128) 0 2 0 2 + tm b c d e 144 0 1 2 1 + tm b c d e (-27) 0 0 4 0 + tm b c d e 144 2 1 0 2 + tm b c d e (-6) 2 0 2 1 + tm b c d e (-80) 1 2 1 1 + tm b c d e 18 1 1 3 0 + …`. Simplify using `only [dsc, tm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hL : v (-(4 * (b ^ 3 * d ^ 3))) = WithZero.exp (3 * w0 + 3 * (w0 + w1 + w2))`. Rewrite using `[Valuation.map_neg, map_mul, map_mul, map_pow, map_pow, h4, hb, hd, one_mul]`. Simplify using `only [← WithZero.exp_nsmul, ← WithZero.exp_add, nsmul_eq_mul]`. Apply the tactic sequence `congr 1 <;> ring`. Rewrite `h0` using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR : v (tm b c d e 256 0 0 0 3 + tm b c d e (-192) 1 0 1 2 + tm b c d e (-128) 0 2 0 2 + tm b c d e 144 0 1 2 1 + tm b c d e (-27) 0 0 4 0 + tm b c d e 144 2 1 0 2 + tm b c d e (-6) 2 0 2 1 + tm b c d e (-80) 1 2 1 1 + tm b c d e 18 1 1 3 0 + tm b c d e 16 0 4 0 1 + tm b c d e (- …`. Rewrite using `[hL]`. Use the proof step `repeat' apply Valuation.map_add_lt`. Use `all_goals`. Conclude with `lt_of_le_of_lt (valuation_tm_le_exp v hk hb.le hc hd.le he _ _ _ _ _) (WithZero.exp_lt_exp.2 (by push_cast; linarith))`.
-
-Use `Valuation.map_add_eq_of_lt_left v hR` as an intermediate fact. Rewrite `this` using `[h0, map_zero, hL]`. Conclude with `WithZero.exp_ne_zero this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dsc_ne_zero_of_valuation_c_le {F : Type} [Field F] (v : Valuation F (WithZero (Multiplicative ℤ)))
     (hk : ∀ k : ℤ, v (k : F) ≤ 1) (h4 : v (4 : F) = 1) {b c d e : F} {w0 w1 w2 w3 : ℤ}
@@ -124,19 +120,17 @@ private theorem dsc_ne_zero_of_valuation_c_le {F : Type} [Field F] (v : Valuatio
   exact WithZero.exp_ne_zero this.symm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hns`. Use `set f : F[X] := X ^ 4 + C b * X ^ 3 + C c * X ^ 2 + C d * X + C e with hf`. Establish `hdeg : f.natDegree = 4`. Rewrite using `[hf]`. Use `compute_degree!`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf0 : f ≠ 0`. Introduce `h0`. Rewrite `hdeg` using `[h0]`. Simplify using `at hdeg`. Establish `hsplit : (f.map (algebraMap F (AlgebraicClosure F))).Splits` using `IsAlgClosed.splits _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnd : ¬ (f.map (algebraMap F (AlgebraicClosure F))).roots.Nodup`. Rewrite using `[nodup_roots_iff_of_splits (Polynomial.map_ne_zero hf0) hsplit, separable_map]`. Conclude with `hns`. Rewrite `hnd` using `[Multiset.nodup_iff_count_le_one]`. Use `push_neg at hnd`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨r, hr⟩` from `hnd`. Rewrite `hr` using `[count_roots]`. Take `⟨h0, h1⟩` from `(one_lt_rootMultiplicity_iff_isRoot (Polynomial.map_ne_zero hf0)).1 hr`. Apply `h` to reduce the goal to its premises. Apply `(algebraMap F (AlgebraicClosure F)).injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Establish `hm : algebraMap F (AlgebraicClosure F) (dsc b c d e) = dsc (algebraMap F (AlgebraicClosure F) b) (algebraMap F (AlgebraicClosure F) c) (algebraMap F (AlgebraicClosure F) d) (algebraMap F (AlgebraicClosure F) e)`. Simplify using `only [dsc, map_sub, map_add, map_mul, map_pow, map_ofNat]`. Rewrite using `[hm]`. Simplify using `[hf, IsRoot] at h0 h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hd : algebraMap F (AlgebraicClosure F) d = -(4 * r ^ 3 + 3 * (algebraMap F (AlgebraicClosure F) b) * r ^ 2 + 2 * (algebraMap F (AlgebraicClosure F) c) * r)`. Take the linear combination `h1`. Establish `he : algebraMap F (AlgebraicClosure F) e = -(r ^ 4 + (algebraMap F (AlgebraicClosure F) b) * r ^ 3 + (algebraMap F (AlgebraicClosure F) c) * r ^ 2 + (algebraMap F (AlgebraicClosure F) d) * r)`. Take the linear combination `h0`. Rewrite using `[he, hd]`.
-
-Unfold `dsc`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem separable_quartic_of_dsc_ne_zero {F : Type} [Field F] (b c d e : F) (h : dsc b c d e ≠ 0) :
     (X ^ 4 + C b * X ^ 3 + C c * X ^ 2 + C d * X + C e : F[X]).Separable := by
@@ -179,7 +173,7 @@ private theorem separable_quartic_of_dsc_ne_zero {F : Type} [Field F] (b c d e :
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.charpoly, Matrix.det_succ_row_zero, Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.det_fin_zero, charmatrix_apply, Matrix.submatrix_apply, m2, m3]`. Simplify using `[Fin.succAbove, Fin.lt_def, Matrix.one_apply, Matrix.diagonal_apply, Fin.ext_iff]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem charpoly_fin_four_eq {R : Type} [CommRing R] (A : Matrix (Fin 4) (Fin 4) R) :
     A.charpoly = X ^ 4 + C (-(A 0 0 + A 1 1 + A 2 2 + A 3 3)) * X ^ 3
@@ -191,7 +185,7 @@ private theorem charpoly_fin_four_eq {R : Type} [CommRing R] (A : Matrix (Fin 4)
   ring
 
 /- English proof (translation)
-Rewrite using `[Valuation.map_add_eq_of_lt_left v (ha ▸ hr), ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem valuation_add_eq_of_valuation_lt {F : Type} [Field F] (v : Valuation F (WithZero (Multiplicative ℤ)))
     {a r : F} {n : ℤ} (ha : v a = WithZero.exp n) (hr : v r < WithZero.exp n) :
@@ -200,41 +194,33 @@ private theorem valuation_add_eq_of_valuation_lt {F : Type} [Field F] (v : Valua
 
 open WithZero in
 /- English proof (translation)
-Introduce `K _ h2 x w hw hx0 hadj`. Use `set v := RatFunc.inftyValuation K with hv`. Use `set φ := algebraMap K (RatFunc K) with hφdef`. Establish `hφ1 : ∀ a : K, a ≠ 0 → v (φ a) = 1` using `fun a ha => Valuation.IsTrivialOn.eq_one a ha`. Establish `hφ : ∀ a : K, v (φ a) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `a`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Rewrite using `[hφ1 a ha]`. Establish `ht : ∀ n : ℤ, v ((RatFunc.X : RatFunc K) ^ n) = WithZero.exp n` using `fun n => RatFunc.inftyValuation.X_zpow K n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : ∀ k : ℤ, v (k : RatFunc K) ≤ 1`. Introduce `k`. Rewrite using `[← map_intCast φ k]`. Conclude with `hφ _`. Establish `h4 : v (4 : RatFunc K) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_ofNat φ 4]`. Apply `hφ1` to reduce the goal to its premises. Introduce `h`. Apply `h2` to reduce the goal to its premises. Establish `h22 : (4 : K) = 2 * 2` using `by norm_num`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[h22]`. Conclude with `mul_self_eq_zero.1 h`. Establish `hT : ∀ (a : K) (n : ℤ), v (φ a * RatFunc.X ^ n) ≤ WithZero.exp n`. Introduce `a n`. Rewrite using `[map_mul, ht]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hφ a`. Use `_ = WithZero.exp n := one_mul _`. Establish `hT1 : ∀ (a : K) (n : ℤ), a ≠ 0 → v (φ a * RatFunc.X ^ n) = WithZero.exp n`. Introduce `a n ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, ht, hφ1 a ha, one_mul]`. Establish `h01 : w 1 < w 0` using `hw (by decide)`. Establish `h12 : w 2 < w 1` using `hw (by decide)`. Establish `h23 : w 3 < w 2` using `hw (by decide)`. Establish `hX0 : (RatFunc.X : RatFunc K) ≠ 0` using `RatFunc.X_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set A := x.map φ * diagonal (fun i => (RatFunc.X : RatFunc K) ^ w i) with hAdef`. Establish `hA : ∀ i j, A i j = φ (x i j) * RatFunc.X ^ w j`. Introduce `i j`. Simplify using `[hAdef, Matrix.mul_diagonal]`. Establish `hm2 : ∀ i j, m2 A i j = φ (m2 x i j) * RatFunc.X ^ (w i + w j)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `i j`. Simplify using `only [m2, hA, map_sub, map_mul, zpow_add₀ hX0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm3 : ∀ i j k, m3 A i j k = φ (m3 x i j k) * RatFunc.X ^ (w i + w j + w k)`. Introduce `i j k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [m3, hA, map_sub, map_add, map_mul, zpow_add₀ hX0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdm : (x.map φ).det = φ x.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdet : A.det = φ x.det * RatFunc.X ^ (w 0 + w 1 + w 2 + w 3)`. Rewrite using `[hAdef, Matrix.det_mul, hdm, Matrix.det_diagonal, Fin.prod_univ_four]`. Simplify using `only [zpow_add₀ hX0]`. Apply the tactic sequence `all_goals ring`. Establish `hadj' : m3 x 0 1 2 ≠ 0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hh : x.adjugate 3 3 = m3 x 0 1 2`. Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix, Matrix.det_fin_three]`. Simplify using `[m3, Fin.succAbove, Fin.lt_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hadj` using `[hh]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[charpoly_fin_four_eq A]`. Apply `separable_quartic_of_dsc_ne_zero` to reduce the goal to its premises. Establish `hb : v (-(A 0 0 + A 1 1 + A 2 2 + A 3 3)) = WithZero.exp (w 0)`. Rewrite using `[Valuation.map_neg, hA, hA, hA, hA, add_assoc, add_assoc]`. Apply `valuation_add_eq_of_valuation_lt v (hT1 _ _ hx0)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `repeat' apply Valuation.map_add_lt`. Apply the tactic sequence `all_goals exact lt_of_le_of_lt (hT _ _) (WithZero.exp_lt_exp.2 (by linarith))`. Establish `hd : v (-(m3 A 0 1 2 + m3 A 0 1 3 + m3 A 0 2 3 + m3 A 1 2 3)) = WithZero.exp (w 0 + w 1 + w 2)`. Rewrite using `[Valuation.map_neg, hm3, hm3, hm3, hm3, add_assoc, add_assoc]`. Apply `valuation_add_eq_of_valuation_lt v (hT1 _ _ hadj')` to reduce the goal to its premises.
-
-Use the proof step `repeat' apply Valuation.map_add_lt`. Apply the tactic sequence `all_goals exact lt_of_le_of_lt (hT _ _) (WithZero.exp_lt_exp.2 (by linarith))`. Establish `he : v A.det ≤ WithZero.exp (w 0 + w 1 + w 2 + w 3)`. Rewrite using `[hdet]`. Conclude with `hT _ _`.
-
-Distinguish the cases in `hz : m2 x 0 1 = 0`. Establish `hc : v (m2 A 0 1 + m2 A 0 2 + m2 A 0 3 + m2 A 1 2 + m2 A 1 3 + m2 A 2 3) ≤ WithZero.exp (w 0 + w 2)`. Rewrite using `[hm2, hm2, hm2, hm2, hm2, hm2, hz, map_zero, zero_mul, zero_add]`. Use the proof step `repeat' apply Valuation.map_add_le`. Apply the tactic sequence `all_goals exact le_trans (hT _ _) (WithZero.exp_le_exp.2 (by linarith))`.
-
-Conclude with `dsc_ne_zero_of_valuation_c_le v hk h4 h01 h12 h23 hb hc hd he`. Establish `hc : v (m2 A 0 1 + m2 A 0 2 + m2 A 0 3 + m2 A 1 2 + m2 A 1 3 + m2 A 2 3) = WithZero.exp (w 0 + w 1)`. Rewrite using `[hm2, hm2, hm2, hm2, hm2, hm2, add_assoc, add_assoc, add_assoc, add_assoc]`. Apply `valuation_add_eq_of_valuation_lt v (hT1 _ _ hz)` to reduce the goal to its premises. Use the proof step `repeat' apply Valuation.map_add_lt`.
-
-Apply the tactic sequence `all_goals exact lt_of_le_of_lt (hT _ _) (WithZero.exp_lt_exp.2 (by linarith))`. Conclude with `dsc_ne_zero_of_valuation_strict_chain v hk h01 h12 h23 hb hc hd he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.disc4 :
     ∀ (K : Type) [Field K], (2 : K) ≠ 0 → ∀ (x : Matrix (Fin 4) (Fin 4) K) (w : Fin 4 → ℤ), StrictAnti w → x 0 0 ≠ 0 → x.adjugate 3 3 ≠ 0 →

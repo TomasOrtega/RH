@@ -88,16 +88,16 @@ def CechLevels : Prop := ∀ (A A' : Type) [CommRing A] [CommRing A'] (φ : A �
       Arrow.mk (yoneda.map (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (I.map φ))))))
 
 /- English proof (translation)
-Introduce `n` and use `Function.bijective_iff_has_inverse.2 ⟨pull R (inv f) F n, fun x => by rw [← pull_comp, IsIso.inv_hom_id, pull_id], fun x => by rw [← pull_comp, IsIso.hom_inv_id, pull_id]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eqv_iso (R : Type) [CommRing R] {E E' : Spc} (f : E ⟶ E') [IsIso f] (F : Shv R) : Eqv R f F := fun n =>
   Function.bijective_iff_has_inverse.2 ⟨pull R (inv f) F n,
     fun x => by rw [← pull_comp, IsIso.inv_hom_id, pull_id], fun x => by rw [← pull_comp, IsIso.hom_inv_id, pull_id]⟩
 
 /- English proof (translation)
-Establish `h : pull R f F n ∘ pull R b F n = pull R a F n ∘ pull R g F n`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp]`. Rewrite using `[← pull_comp, ← pull_comp, w]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← Function.Bijective.of_comp_iff _ (hb n), h, Function.Bijective.of_comp_iff' (ha n)]`. Rewrite using `[← Function.Injective.of_comp_iff' _ (hb n), h, Function.Injective.of_comp_iff (ha n).1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sq (R : Type) [CommRing R] {E E' G G' : Spc} {f : E ⟶ E'} {g : G ⟶ G'} {a : E ⟶ G} {b : E' ⟶ G'} (w : f ≫ b = a ≫ g)
     {F : Shv R} (ha : Eqv R a F) (hb : Eqv R b F) (n : ℤ) :
@@ -110,14 +110,14 @@ theorem sq (R : Type) [CommRing R] {E E' G G' : Spc} {f : E ⟶ E'} {g : G ⟶ G
   · rw [← Function.Injective.of_comp_iff' _ (hb n), h, Function.Injective.of_comp_iff (ha n).1]
 
 /- English proof (translation)
-The claim follows from `and_congr (forall_congr' fun j => imp_congr_right fun _ => (sq R w ha hb j).1) (sq R w ha hb n).2`.
+A detailed English derivation is pending.
 -/
 theorem conn_sq (R : Type) [CommRing R] {E E' G G' : Spc} {f : E ⟶ E'} {g : G ⟶ G'} {a : E ⟶ G} {b : E' ⟶ G'} (w : f ≫ b = a ≫ g)
     {F : Shv R} (ha : Eqv R a F) (hb : Eqv R b F) (n : ℤ) : Conn R f F n ↔ Conn R g F n :=
   and_congr (forall_congr' fun j => imp_congr_right fun _ => (sq R w ha hb j).1) (sq R w ha hb n).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e.hom.left, e.hom.right, inferInstanceAs (IsIso e.hom.left), inferInstanceAs (IsIso e.hom.right), by rw [← Functor.map_comp, ← Functor.map_comp]; exact congrArg _ (Arrow.w e.hom).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem arr_w {P P' Q Q' : PSh} {f : P ⟶ P'} {g : Q ⟶ Q'} (e : Arrow.mk f ≅ Arrow.mk g) :
     ∃ (a : P ⟶ Q) (b : P' ⟶ Q'), IsIso a ∧ IsIso b ∧ disc.map f ≫ disc.map b = disc.map a ≫ disc.map g :=
@@ -125,27 +125,25 @@ theorem arr_w {P P' Q Q' : PSh} {f : P ⟶ P'} {g : Q ⟶ Q'} (e : Arrow.mk f �
     rw [← Functor.map_comp, ← Functor.map_comp]; exact congrArg _ (Arrow.w e.hom).symm⟩
 
 /- English proof (translation)
-Simplify using `using h.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_spec {A : Type} [CommRing A] {q : ℕ} (h : IsUnit (q : A)) : IsUnit (q : Γ(Spec (CommRingCat.of A), ⊤)) := by
   simpa using h.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom
 
 /- English proof (translation)
-Introduce `a1 _ _ _ _ _ _ a9 _ _ b1 b2 _ b4 _ _ _ _ _ _ _ _ _ _ q A _ I _ hq i`. Break down `Nat.eq_zero_or_pos q with rfl | hpos` into its components or cases. Establish `: Subsingleton A` using `subsingleton_of_zero_eq_one (isUnit_zero_iff.1 (by simpa using hq))`. Establish `hb : Function.Bijective (Ideal.Quotient.mk I)` using `⟨fun _ _ _ => Subsingleton.elim _ _, Ideal.Quotient.mk_surjective⟩`. Establish `: IsIso (CommRingCat.ofHom (Ideal.Quotient.mk I))` using `(RingEquiv.ofBijective _ hb).toCommRingCatIso.isIso_hom`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `eqv_iso _ _ _`. Establish `: NeZero q` using `⟨hpos.ne'⟩`. Establish `key : ∀ (m : ℕ) (B : Type) [CommRing B] (J : Ideal B), (∀ (C : Type) [CommRing C] (φ : B →+* C), φ.IsIntegral → Good C (J.map φ)) → IsUnit (q : B) → Conn _ (spMap (Ideal.Quotient.mk J)) (tw q i) ((m : ℤ) - 1)`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Introduce `B _ J _ _`. Establish `hs` using `(a9 _ (tw q i)).1`. Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Use `hs (sp B) j (by omega)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hs (sp (B ⧸ J)) j (by omega)` as an intermediate fact. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`. Use `hs (sp B) (((0 : ℕ) : ℤ) - 1) (by omega)` as an intermediate fact. Conclude with `Function.injective_of_subsingleton _`. Consider the case `succ m ih`.
+Supply the required witnesses or components. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `B _ J hG hu`. Take `⟨B', _, φ, hi, hs, hqa⟩` from `hC B`. Take `⟨⟨i1, i2, i3, i4⟩, ψ, w, hp, ⟨e0⟩⟩` from `hL B B' φ J hi hs`. Establish `d1` using `b4 q (Spec.map (CommRingCat.ofHom φ)) (unit_spec hu) i`. Establish `d2` using `b4 q (Spec.map (CommRingCat.ofHom (Ideal.quotientMap (J.map φ) φ Ideal.le_comap_map))) (unit_spec (by simpa using hu.map (Ideal.Quotient.mk J))) i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show ((m + 1 : ℕ) : ℤ) - 1 = (m : ℤ) - 1 + 1 by push_cast; ring]`. Use `(conn_sq _ w d2 d1 _).1 (hD a1 _ _ ψ _ (fun p => ?_) ?_)` and prove the remaining obligations. Take `⟨C, _, χ, hχ, ⟨e⟩⟩` from `hp p`. Take `⟨a, b, _, _, w'⟩` from `arr_w e`. Use `(conn_sq _ w' (eqv_iso _ _ _) (eqv_iso _ _ _) _).2 (ih C (J.map χ) (fun D _ θ hθ => ?_) (by simpa using hu.map χ))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.map_map]`. Conclude with `hG D _ (hχ.trans _ _ hθ)`. Take `⟨a, b, _, _, w'⟩` from `arr_w e0`. Introduce `n`. Conclude with `(sq _ w' (eqv_iso _ _ _) (eqv_iso _ _ _) n).1.2 (hE a1 a9 b1 b2 q B' (J.map φ) hqa (hG B' φ hi) (by simpa using hu.map φ) i n)`.
-
-Introduce `n`. Conclude with `(key (n.toNat + 2) A I (fun C _ φ h => hH A I C φ h) hq).1 n (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goal_of (hC : Cover) (hH : HensIdem) (hE : EqvQA) (hD : DescStep) (hL : CechLevels) : LateralTheory.E.EtaleChapterEOne := by
   intro a1 _ _ _ _ _ _ a9 _ _ b1 b2 _ b4 _ _ _ _ _ _ _ _ _ _ q A _ I _ hq i

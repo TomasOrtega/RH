@@ -18,11 +18,11 @@ namespace GlobalTheory.EisBig
 open GlobalTheory.EisCT
 
 /- English proof (translation)
-Establish `hmp : ∀ γ : Γ, MeasurePreserving (fun u : N => γ.1 * u) μ μ` using `fun γ => measurePreserving_smul γ μ`. Establish `hi : ∀ γ : Γ, Integrable (fun u => Φ (γ.1 * u)) μ` using `fun γ => (hmp γ).integrable_comp_of_integrable hΦ`. Establish `hl : ∑' γ : Γ, ∫⁻ u in 𝓕, ‖Φ (γ.1 * u)‖ₑ ∂μ = ∫⁻ u, ‖Φ u‖ₑ ∂μ` using `(h𝓕.lintegral_eq_tsum'' (fun u => ‖Φ u‖ₑ)).symm`. Establish `hfin : ∑' γ : Γ, ∫⁻ u in 𝓕, ‖Φ (γ.1 * u)‖ₑ ∂μ ≠ ⊤`. Rewrite using `[hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hΦ.2.ne`. Use `⟨⟨(AEMeasurable.tsum fun γ => (hi γ).aemeasurable.restrict).aestronglyMeasurable, ?_⟩, ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun u => enorm_tsum_le_tsum_enorm) ?_` and prove the remaining obligations. Rewrite using `[lintegral_tsum fun γ => (hi γ).aemeasurable.restrict.enorm]`. Conclude with `lt_top_iff_ne_top.2 hfin`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[integral_tsum (fun γ => (hi γ).aestronglyMeasurable.restrict) hfin, h𝓕.integral_eq_tsum'' Φ hΦ]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem unfold_fd {N : Type} [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [MeasurableSpace N] [BorelSpace N]
     [SecondCountableTopology N] (Γ : Subgroup N) [Countable Γ] (μ : Measure N) [μ.IsHaarMeasure] (𝓕 : Set N)
@@ -43,7 +43,7 @@ theorem unfold_fd {N : Type} [Group N] [TopologicalSpace N] [IsTopologicalGroup 
     rfl
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `hp`. Take `⟨m, hm⟩` from `hq`. Use `⟨l * m, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, hm, Matrix.mul_smul, hl, smul_smul, Units.val_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem stabL_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Matrix (Fin n) (Fin 1) E) {p q : GAd σ J}
@@ -54,9 +54,9 @@ theorem stabL_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   rw [map_mul, Units.val_mul, Matrix.mul_assoc, hm, Matrix.mul_smul, hl, smul_smul, Units.val_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `hp`. Use `⟨l⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : (matHom _ σ J p⁻¹).1 * (matHom _ σ J p).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.mul_smul, smul_smul, Units.inv_mul, one_smul]`. Use `_ = (l⁻¹ : (AF F ⊗[F] E)ˣ).1 • adMat F x := by`. Rewrite using `[← hl, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabL_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Matrix (Fin n) (Fin 1) E) {p : GAd σ J}
@@ -72,21 +72,19 @@ theorem stabL_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
         rw [← hl, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h Eis c hS hP T hT μ 𝓕 hμ h𝓕 h1 s hs g`. Take `⟨hCM, hS2, hJ, hS4, hW, hS6, hS7⟩` from `hS`. Take `⟨w, hw, hwy⟩` from `GlobalTheory.T.exists_rational_point_swapping_first_columns F E σ n J r X Y hCM hJ hW`. Establish `huq : ∀ (γ : GAd σ J) (ν ν' : (ratPts σ J).subgroupOf (unipRad σ J (col0 X))), StabL σ J (col0 X) (w * ν.1.1 * γ⁻¹) → StabL σ J (col0 X) (w * ν'.1.1 * γ⁻¹) → ν = ν'`. Introduce `γ ν ν' h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `stabL_mul σ J (col0 X) h1 (stabL_inv σ J (col0 X) h2)`. Establish `h4 : w * ν.1.1 * γ⁻¹ * (w * ν'.1.1 * γ⁻¹)⁻¹ = w * (ν.1.1 * ν'.1.1⁻¹) * w⁻¹` using `by group`. Rewrite `h3` using `[h4]`. Use `GlobalTheory.T.unipotent_stabilizer_trivial F E σ n J r X Y hCM hJ hW w hw hwy _ (mul_mem ν.1.2 (inv_mem ν'.1.2)) h3` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext (mul_inv_eq_one.1 this))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ t : bigSet σ J (col0 X) T, ∃ ν : (ratPts σ J).subgroupOf (unipRad σ J (col0 X)), StabL σ J (col0 X) (w * ν.1.1 * t.1.1⁻¹)` using `fun t => GlobalTheory.T.bruhat_cell_rational_decomposition F E σ n J r X Y hCM hJ hW w hw hwy t.1.1 t.1.2 t.2.2`. Establish `hwν : ∀ ν : (ratPts σ J).subgroupOf (unipRad σ J (col0 X)), w * ν.1.1 ∈ ratPts σ J` using `fun ν => mul_mem hw (Subgroup.mem_subgroupOf.1 ν.2)`. Establish `hrep : ∀ ν : (ratPts σ J).subgroupOf (unipRad σ J (col0 X)), ∃ t : ratPts σ J, t ∈ T ∧ StabL σ J (col0 X) (w * ν.1.1 * t.1⁻¹)` using `fun ν => (hT ⟨_, hwν ν⟩).exists`. Set `e : bigSet σ J (col0 X) T ≃ (ratPts σ J).subgroupOf (unipRad σ J (col0 X))` to `{ toFun := fun t => (hex t).choose invFun := fun ν => ⟨(hrep ν).choose, (hrep ν).choose_spec.1, GlobalTheory.T.unipotent_stabilizer_double_coset F E σ n J r X Y hCM hJ hW w hw hwy _ ν.1.2 _ (hrep ν).choose_spec.2⟩ left_inv := fun t => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(hT ⟨_, hwν _⟩).unique (hrep _).choose_spec ⟨t.2.1, (hex t).choose_spec⟩`. Use `right_inv := fun ν => huq _ _ _ (hex _).choose_spec (hrep ν).choose_spec.2 }`. Establish `he : ∀ (t : bigSet σ J (col0 X) T) (v : GAd σ J), h (t.1.1 * v) = h (w * (e t).1.1 * v)`. Introduce `t v`. Establish `hp : w * (e t).1.1 * t.1.1⁻¹ ∈ ratPts σ J` using `mul_mem (hwν _) (inv_mem t.1.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `GlobalTheory.T.height_invariant_under_stabilizer F E σ n J r X Y L a h ⟨hCM, hS2, hJ, hS4, hW, hS6, hS7⟩ _ hp (hex t).choose_spec (t.1.1 * v)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `group`. Take `⟨hint, heq⟩` from `hP.2.1 w hw hwy μ 𝓕 hμ h𝓕 h1 s hs g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `set Φ : unipRad σ J (col0 X) → ℂ := fun u => (h (w * u.1 * g) : ℂ) ^ (s + ((n : ℂ) - 1) / 2) with hΦ`. Establish `key : ∀ u : unipRad σ J (col0 X), bigSum σ J (col0 X) T h s (u.1 * g) = ∑' ν : (ratPts σ J).subgroupOf (unipRad σ J (col0 X)), Φ (ν.1 * u)`. Introduce `u`. Unfold `bigSum`. Rewrite using `[← e.symm.tsum_eq]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `tsum_congr fun ν => ?_` and prove the remaining obligations. Unfold `fs`. Rewrite using `[hΦ, he (e.symm ν) (u.1 * g), e.apply_symm_apply]`. Use `show (h (w * ν.1.1 * (u.1 * g)) : ℂ) ^ _ = (h (w * (ν.1.1 * u.1) * g) : ℂ) ^ _`. Rewrite using `[mul_assoc, mul_assoc, mul_assoc]`.
-
-Establish `hkey : (fun u : unipRad σ J (col0 X) => bigSum σ J (col0 X) T h s (u.1 * g)) = fun u => ∑' ν : (ratPts σ J).subgroupOf (unipRad σ J (col0 X)), Φ (ν.1 * u)` using `funext key`. Take `⟨i1, i2⟩` from `unfold_fd _ μ 𝓕 h𝓕 Φ hint`. Rewrite using `[hkey]`. Conclude with `⟨i1, i2.trans heq⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bigCell_constTerm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

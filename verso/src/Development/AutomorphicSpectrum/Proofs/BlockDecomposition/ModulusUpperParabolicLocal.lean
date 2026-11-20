@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.Jp.UpTri
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [GlobalTheory.StdUnn.blk4, Matrix.transpose_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transpose_block_matrix {A : Type} {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) A) :
     (GlobalTheory.StdUnn.blk4 a b c d)ᵀ = GlobalTheory.StdUnn.blk4 aᵀ cᵀ bᵀ dᵀ := by
@@ -27,9 +27,9 @@ theorem transpose_block_matrix {A : Type} {n : ℕ} (a b c d : Matrix (Fin n) (F
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl
 
 /- English proof (translation)
-Rewrite `h` using `[transpose_block_matrix, GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul, GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]`. Take `⟨h1, h2, -, -⟩` from `GlobalTheory.StdUnn.Model.blockMatrixTwoByTwoFin_injective h`. Establish `e1 : c'ᵀ * a.1 = 0` using `by simpa using h1`. Establish `e2 : c'ᵀ = 0`. Use `congrArg (· * (a⁻¹).1) e1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_assoc, -Matrix.coe_units_inv]`. Establish `e3 : c' = 0` using `by simpa using congrArg Matrix.transpose e2`. Substitute `e3` using the available equality. Conclude with `⟨rfl, by simpa using h2⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem blocks_of_unitary {K : Type} [CommRing K] {n : ℕ} (a : GL (Fin n) K) (b d a' b' c' d' : Matrix (Fin n) (Fin n) K)
     (h : (GlobalTheory.StdUnn.blk4 a' b' c' d')ᵀ * GlobalTheory.StdUnn.blk4 0 1 (-1) 0 * GlobalTheory.StdUnn.blk4 a.1 b 0 d =
@@ -50,17 +50,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Take `⟨A, B, C, D', e⟩` from `GlobalTheory.LocIntw.exists_blockMatrixTwoByTwoFin_eq (GlobalTheory.LocIntw.matR (Fv F v) σ y)`. Establish `key : ∀ ρ : E →ₐ[F] Fv F v, (splitHom σ Q ρ y).1 = GlobalTheory.StdUnn.blk4 (A.map (splitProj ρ)) (B.map (splitProj ρ)) (C.map (splitProj ρ)) (D'.map (splitProj ρ))`. Introduce `ρ`. Rewrite using `[splitHom_val]`. Express the relevant statement in the definitionally equal form `(GlobalTheory.LocIntw.matR (Fv F v) σ y).map (splitProj ρ : Fv F v ⊗[F] E →+* Fv F v) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.LocIntw.blockMatrix_map _ _ _ _ _`. Take `⟨ha, -, hc, -⟩` from `GlobalTheory.StdUnn.Model.blockMatrixTwoByTwoFin_injective ((key τ).symm.trans hy)`. Establish `hQτ : Q.map τ = GlobalTheory.StdUnn.blk4 0 1 (-1) 0`. Substitute `hQ` using the available equality.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `GlobalTheory.LocIntw.blockMatrix_map (τ : E →+* Fv F v) (0 : Matrix (Fin n) (Fin n) E) 1 (-1) 0` as an intermediate fact. Rewrite `this` using `[Matrix.map_zero _ (map_zero _), Matrix.map_neg _ (map_neg _), Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `this`. Establish `u` using `splitHom_unitary τ y`. Rewrite `u` using `[key (τ.comp σ), hQτ, hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hc', hd'⟩` from `blocks_of_unitary a b d.1 _ _ _ _ u`. Establish `hC : C = 0` using `splitMat_ext h τ (by rw [hc]; exact (Matrix.map_zero _ (map_zero _)).symm) (by rw [hc']; exact (Matrix.map_zero _ (map_zero _)).symm)`. Establish `hm : y ∈ GlobalTheory.LocIntw.upperParabolic (Fv F v) σ Q` using `(GlobalTheory.LocIntw.mem_siegelParabolic_iff_lowerLeft_eq_zero hQ).2 fun i j => by`. Rewrite using `[e, hC, GlobalTheory.StdUnn.blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `hA : GlobalTheory.StdUnn.blkA (GlobalTheory.LocIntw.matR (Fv F v) σ y) = A` using `by rw [e, GlobalTheory.LocIntw.upperLeft_blockMatrix]`. Establish `d1 : splitProj τ A.det = a.1.det`. Rewrite using `[← ha]`. Conclude with `RingHom.map_det (splitProj τ : Fv F v ⊗[F] E →+* Fv F v) A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `d2 : splitProj (τ.comp σ) A.det * d.1.det = 1`. Establish `: splitProj (τ.comp σ) A.det = (A.map (splitProj (τ.comp σ))).det` using `RingHom.map_det (splitProj (τ.comp σ) : Fv F v ⊗[F] E →+* Fv F v) A`. Rewrite using `[this, ← Matrix.det_transpose, ← Matrix.det_mul, hd', Matrix.det_one]`. Rewrite using `[absEv_apply, GlobalTheory.LocIntw.coe_aUp, hA, GlobalTheory.SplitInterDet.norm_eq_split h τ, nnnorm_mul, d1, eq_inv_of_mul_eq_one_left d2, nnnorm_inv, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperParabolic_height_of_split (h : IsCMExt F E σ) (hQ : Q = GlobalTheory.StdUnn.blk4 0 1 (-1) 0) (τ : E →ₐ[F] Fv F v)
     (y : GLoc σ Q v) (a d : GL (Fin n) (Fv F v)) (b : Matrix (Fin n) (Fin n) (Fv F v))
@@ -105,9 +105,9 @@ theorem upperParabolic_height_of_split (h : IsCMExt F E σ) (hQ : Q = GlobalTheo
 end General
 
 /- English proof (translation)
-Establish `hy : (splitHom D.sp.cm.sig (Jst D n) τ y).1 = GlobalTheory.StdUnn.blk4 a.1 b 0 d.1`. Establish `e : ((splitHom D.sp.cm.sig (Jst D n) τ y).1).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks a.1 b 0 d.1` using `congrArg Units.val H`. Rewrite using `[GlobalTheory.StdUnn.blk4, ← e]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `upperParabolic_height_of_split (isCMExt_host D) (GlobalTheory.LocIntw.Jst_eq D n) τ y a d b hy`.
+A detailed English derivation is pending.
 -/
 theorem upperParabolic_height (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (y : GLoc D.sp.cm.sig (Jst D n) v) (a d : GL (Fin n) (Fv D.host.F v))

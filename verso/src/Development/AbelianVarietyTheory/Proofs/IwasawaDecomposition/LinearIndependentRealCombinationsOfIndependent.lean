@@ -9,13 +9,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite `hx`, `he`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hreal : ∀ i, (∑ m, (e i m : ℂ) • x m) = ∑ m, e i m • x m`. Introduce `i`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `k`. Simplify using `[Pi.smul_apply, Complex.real_smul]`. Establish `h1 : ∑ m, (∑ i, c i * e i m) • x m = 0`. Establish `h0 : ∑ i, c i • ∑ m, e i m • x m = 0`. Simplify `hc` using `only [hreal]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← h0]`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `h2` using `hx _ h1`. Use `he c ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Simplify `h2 m` using `[Finset.sum_apply, Pi.smul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem linearIndependent_real_combination (g r d : ℕ) (x : Fin r → Fin g → ℂ)
     (e : Fin d → Fin r → ℝ) (hx : LinearIndependent ℝ x) (he : LinearIndependent ℝ e) :

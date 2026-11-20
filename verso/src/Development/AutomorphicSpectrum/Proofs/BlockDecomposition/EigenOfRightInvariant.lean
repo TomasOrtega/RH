@@ -19,7 +19,7 @@ namespace GlobalTheory.CompanionTheory.Jp.B3
 variable {D : D7} {n : ℕ} {v : Pl D}
 
 /- English proof (translation)
-Take `⟨p₁, k₁, hk₁, e₁⟩` from `GlobalTheory.LocIntw.exists_mul_fin (GlobalTheory.LocIntw.exists_mul_adele D n) v (k₀ * proj D.sp.cm.sig (Jst D n) v (k * nb x))`. Establish `hu : k * nb x ∈ atPts D.sp.cm.sig (Jst D n) {v}` using `mul_mem hk.2 (nb_mem_atPts hnb C hx)`. Rewrite using `[shift hf hK g p₀ p₁ hk₀ hk₁ e₀ hu e₁, lawV, chi_one hχ hnb hk₀ hk₁ hk x p₁ e₁, e₁, Circle.coe_one, one_mul]`. Use `congr 1`. Conclude with `(congrArg (fun r => npow r (z + (n : ℂ) / 2)) (GlobalTheory.LocIntw.hgtUp_mul (GlobalTheory.LocIntw.isIwasawaUp_fin D n v) p₁ hk₁)).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem term_eq {χ : (AE D)ˣ →* Circle} {τ : D.host.E →ₐ[D.host.F] Fv D.host.F v} (hχ : GoodChi D χ v τ) {z : ℂ}
     {f : G D n → ℂ} (hf : IsLaw χ z f) (hK : ∀ k ∈ KAt D n v, ∀ g, f (g * k) = f g) {nb : hermA D n → G D n}
@@ -36,11 +36,11 @@ theorem term_eq {χ : (AE D)ˣ →* Circle} {τ : D.host.E →ₐ[D.host.F] Fv D
     (GlobalTheory.LocIntw.hgtUp_mul (GlobalTheory.LocIntw.isIwasawaUp_fin D n v) p₁ hk₁)).symm
 
 /- English proof (translation)
-Introduce `D n χ nb hnb v τ hχ C νv hν z c hc f hf hK g`. Take `⟨p₀, k₀, hk₀, e₀⟩` from `GlobalTheory.LocIntw.exists_mul_fin (GlobalTheory.LocIntw.exists_mul_adele D n) v (proj D.sp.cm.sig (Jst D n) v g)`. Establish `hκ : emb D.sp.cm.sig (Jst D n) v k₀ ∈ KAt D n v` using `⟨GlobalTheory.LocIntw.emb_mem_KUpAd hk₀, by rw [← range_emb]; exact ⟨_, rfl⟩⟩`. Establish `key : ∀ k : KAt D n v, cutR nb C f (g * k) = f g * (fun k : KAt D n v => ∑ x ∈ C.s, C.co x * sphV D n v z (proj D.sp.cm.sig (Jst D n) v ((k : G D n) * nb x))) (⟨_, hκ⟩ * k)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [PositivityTheory.Rg.Rsw.L.cutR, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc g, term_eq hχ hf hK hnb C g p₀ hk₀ e₀ k.2 hx]`. Establish `e : proj D.sp.cm.sig (Jst D n) v ((((⟨_, hκ⟩ : KAt D n v) * k : KAt D n v) : G D n) * nb x) = k₀ * proj D.sp.cm.sig (Jst D n) v ((k : G D n) * nb x)`. Rewrite using `[Subgroup.coe_mul, mul_assoc, map_mul, proj_emb_self]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [key]`. Rewrite using `[integral_const_mul, integral_mul_left_eq_self (fun k : KAt D n v => ∑ x ∈ C.s, C.co x * sphV D n v z (proj D.sp.cm.sig (Jst D n) v ((k : G D n) * nb x))) ⟨_, hκ⟩, hc, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem eigen_of_rightInvariant : SectionEigenfunctionMaximalCompact := by
   intro D n χ nb hnb v τ hχ C νv hν z c hc f hf hK g

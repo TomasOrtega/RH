@@ -14,13 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TraceIncl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Set `b : Fin (Module.finrank K N) → V` to `fun k => (Module.finBasis K N k : V)`. Establish `hb : LinearIndependent K b` using `(Module.finBasis K N).linearIndependent.map' N.subtype N.ker_subtype`. Establish `hs : Submodule.span K (Set.range b) ≤ N` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact (Module.finBasis K N k).2)`. Establish `h1` using `hj _ (Fin.cons z b) (linearIndependent_finCons.2 ⟨hb, fun h => hn (hs h)⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (fun k => j ((Fin.cons z b : Fin (Module.finrank K N + 1) → V) k)) = (Fin.cons (j z) (fun k => j (b k)) : Fin (Module.finrank K N + 1) → H)`. Use function extensionality and compare the values at `k`. Use `Fin.cases rfl (fun _ => rfl) k` and prove the remaining obligations. Rewrite `h1` using `[h2, linearIndependent_finCons]`. Use `h1.2 (Submodule.span_le.2 ?_ hz)` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h3` using `congrArg (fun z : N => (z : V)) ((Module.finBasis K N).sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h3`. Rewrite using `[← h3, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_span_image {K V H : Type} [Field K] [AddCommGroup V] [Module K V] [Module.Finite K V] [AddCommGroup H]
     [Module ℂ H] {σ : K →+* ℂ} (j : V →ₛₗ[σ] H)
@@ -46,9 +46,9 @@ theorem mem_of_mem_span_image {K V H : Type} [Field K] [AddCommGroup V] [Module 
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(image_idempotent_spec K _ (S.gaMat r (goodAt X P ψ))).2.le ⟨y, rfl⟩`. Establish `h : S.gaMat r (goodAt X P ψ) = S.gaMat r (lvlIdem P ψ) * S.gaMat r (idemOf X)`. Rewrite using `[← (group_action_matrix_hom K S G r).2, (idempotent_central K G X hX).2]`. Both sides reduce to the same expression. Use `(image_idempotent_spec K _ (S.gaMat r (lvlIdem P ψ))).2.ge ⟨(S.gaMat r (idemOf X)).mulVec u, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ hu` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lvlE_eq {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) {G : Type} [Group G] [Fintype G]
     (r : Representation K G S.Forms) (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (P : Subgroup G) (ψ : P →* Kˣ)
@@ -62,7 +62,7 @@ theorem exists_lvlE_eq {K : Type} [Field K] [NumberField K] [StarRing K] (S : CS
   rw [Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h]
 
 /- English proof (translation)
-Use `show X.eW b j (∑ k, c k • X.bW b j Bs.v0 k) = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => map_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodFormsCoordinateMap_apply {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : Formalism.L2.Indef.DefBase K} {Am : Formalism.L2.Indef.DefAmb Bs}
     (X : CxData Am) (b : Bool) (j : Bs.J) (c : Fin (X.dW b j) → ℂ) :
@@ -72,7 +72,7 @@ theorem goodFormsCoordinateMap_apply {K : Type} [Field K] [NumberField K] [StarR
   exact Finset.sum_congr rfl fun k _ => map_smul _ _ _
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `(h5 j t).2.ge ⟨c, rfl⟩`. Rewrite using `[← hd]`. Use `show ∑ k, d k • X.θ' j t (X.jL j t (cr.toL X.zs b j t (Pi.single k 1))) ∈ N`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (h _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodFormsCoordinateMap_mem_of_lifts_mem {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : Formalism.L2.Indef.DefBase K} {Am : Formalism.L2.Indef.DefAmb Bs}
     (X : CxData Am) {fc : Formalism.L2.Indef.DefSub Am → Formalism.L2.Indef.DefFace Bs} (cr : Crd Am fc) (b : Bool) (h5 : X.H5 cr b)
@@ -87,9 +87,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
 
 /- English proof (translation)
-Establish `htw : ∀ g, (R.HW i σ).e ((R.FW i).j σ (GlobalTheory.LevelForms.twRep (R.FW i) g y)) = postOn _ (actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g)) ((R.HW i σ).e ((R.FW i).j σ y))`. Introduce `g`. Rewrite using `[GlobalTheory.LevelForms.twRep_apply, map_smulₛₗ, map_smul, (hU i σ).2.2, smul_smul, ← map_mul, Units.inv_mul, map_one, one_smul]`. Rewrite using `[GlobalTheory.LevelForms.eOp_eq_sum, map_sum, map_sum]`. Simplify using `only [map_smulₛₗ, map_smul, htw]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [RealDat.eWf, gaL, RealDat.eC, LinearMap.sum_apply, LinearMap.smul_apply, MultilinearMap.sum_apply, MultilinearMap.smul_apply, postOn_apply, RingHom.id_apply]`. Apply the tactic sequence `all_goals rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem e_j_eOp (hU : R.LUnif) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (y : Fin (R.nW i) → D.what₂.LL) :
     (R.HW i σ).e ((R.FW i).j σ ((R.FW i).eOp (fun g => (idemOf A.X).coeff g) y)) =
@@ -107,9 +107,9 @@ theorem e_j_eOp (hU : R.LUnif) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (y 
   all_goals rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 h1`. Establish `hs : ((Real.sqrt (RealDat.nP F false) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.2 (RealDat.nP_pos (F := F) false)).ne'` after adjusting the coercions. Set `c' : Fin ((R.toCx F).dW false i) → ℂ` to `fun k => cj (twAt D.what₂.embLL A.v0) (c k * ((Real.sqrt (RealDat.nP F false) : ℝ) : ℂ)⁻¹)`. Establish `e1` using `goodFormsCoordinateMap_apply (R.toCx F) false i c'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c', (congrArg (Tw.out (s := twAt D.what₂.embLL A.v0)) e1).trans (Eq.trans ?_ hc)⟩` and prove the remaining obligations. Use `show ∑ k, cj (twAt D.what₂.embLL A.v0) (c' k) • (((Real.sqrt (RealDat.nP F false) : ℝ) : ℂ) • R.bC F false i (sg0 D A) k) = _`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[cj_cj, smul_smul, inv_mul_cancel_right₀ hs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_w0C_eq (i : Fin D.R.m) {w : (R.HW i (sg0 D A)).H} (h1 : w ∈ R.WS F false i (sg0 D A)) :
     ∃ c, Tw.out (s := twAt D.what₂.embLL A.v0) ((R.toCx F).w0C false i c) = w := by
@@ -126,7 +126,7 @@ theorem exists_w0C_eq (i : Fin D.R.m) {w : (R.HW i (sg0 D A)).H} (h1 : w ∈ R.W
   rw [cj_cj, smul_smul, inv_mul_cancel_right₀ hs]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_lvlE_eq (A.MtCSD i t) (A.leftGroupActionLift i t) A.X hX F.P0 F.ψ0⁻¹ (((A.fam.L i t).zE (A.fam.lvlA F.P0 F.ψ0) Z).mulVecLin y)`. Conclude with `⟨x, congrArg (fun u => (A.MtCSD i t).basis.equivFun.symm u) hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_srcForm_eq (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (i : Fin D.R.m) (t : T0)
     (Z : Submodule D.what₂.LL (A.fam.L i t).S.Forms) (y : Fin ((A.fam.L i t).dZ (A.fam.lvlA F.P0 F.ψ0) Z) → D.what₂.LL) :
@@ -145,7 +145,7 @@ theorem out_lift_toL (i : Fin D.R.m) (t : T0)
         ((A.fam.L i t).toF (A.fam.lvlA F.P0 F.ψ0) ((R.toCx F).zs.Zl i t) y))) := rfl
 
 /- English proof (translation)
-Establish `h1` using `e_j_eOp R hU i (sg0 D A) y`. Unfold `adForm at h0`. Rewrite `h1` using `[h0, LinearMap.map_smul, ← hG i t u, ← LinearMap.map_smul]`. Conclude with `(hW i _).1 h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem j_eOp_of_adForm (hW : R.models_HW) (hG : R.thP_thG) (hU : R.LUnif) (i : Fin D.R.m) (t : T0) (ph : ℂ)
     (y : Fin (R.nW i) → D.what₂.LL) (u : (R.HV i t).H) (h0 : adForm R i y = ph • R.thF i t u) :

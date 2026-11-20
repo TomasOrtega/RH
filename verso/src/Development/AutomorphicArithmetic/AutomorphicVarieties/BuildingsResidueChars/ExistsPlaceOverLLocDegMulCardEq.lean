@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[← hw x, valuation_lt_one_iff', valuation_lt_one_iff']`. Establish `hy : g (algebraMap F Ω x) = algebraMap F Ω x` using `g.commutes _`. Establish `hyi : g (algebraMap F Ω x)⁻¹ = (algebraMap F Ω x)⁻¹` using `by rw [map_inv₀, hy]`. Rewrite using `[← hg (algebraMap F Ω x), hy, ← hg (algebraMap F Ω x)⁻¹, hyi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem td_move {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A B : ValuationSubring Ω}
     (g : G F Ω) (hg : ∀ x, g x ∈ A ↔ x ∈ B) {w : HeightOneSpectrum (𝓞 F)} (hw : IsPlaceOver A w) :
@@ -18,21 +18,19 @@ private theorem td_move {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
   rw [← hg (algebraMap F Ω x), hy, ← hg (algebraMap F Ω x)⁻¹, hyi]
 
 /- English proof (translation)
-Set `p : Ideal ℤ` to `Ideal.span {((l : ℕ) : ℤ)}`. Establish `hpp : p.IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hl.out.ne_zero)).2 (Nat.prime_iff_prime_int.1 hl.out)`. Use `haveI hpmax : p.IsMaximal := hpp.isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact_mod_cast hl.out.ne_zero)`. Establish `hlo : ∀ P : Ideal (𝓞 F), P.IsPrime → ((l : ℕ) : 𝓞 F) ∈ P → P.LiesOver p`. Introduce `P hP hlP`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Apply `hpmax.eq_of_le (Ideal.comap_ne_top _ hP.ne_top)` to reduce the goal to its premises. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 F) ((l : ℕ) : ℤ) ∈ P`. Rewrite using `[map_natCast]` and apply the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : V → p.primesOver (𝓞 F)` to `fun u => ⟨(pl u).asIdeal, (pl u).isPrime, hlo _ (pl u).isPrime (hm u)⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Apply `hi` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `HeightOneSpectrum.ext (congrArg Subtype.val h)`. Introduce and unpack `⟨P, hP, hPl⟩`. Establish `hlP : ((l : ℕ) : 𝓞 F) ∈ P`. Establish `hm' : ((l : ℕ) : ℤ) ∈ p` using `Ideal.subset_span (Set.mem_singleton _)`. Rewrite `hm'` using `[hPl.over]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hm''` using `Ideal.mem_comap.1 hm'`. Rewrite `hm''` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hne : P ≠ ⊥`. Introduce `h`. Rewrite `hlP` using `[h, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hl.out.ne_zero (by exact_mod_cast hlP)`. Take `⟨u, hu⟩` from `hs ⟨P, hP, hne⟩ hlP`. Conclude with `⟨u, Subtype.ext (congrArg HeightOneSpectrum.asIdeal hu)⟩`. Establish `key : (p.primesOver (𝓞 F)).ncard = Nat.card V`. Rewrite using `[← Nat.card_coe_set_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(Nat.card_eq_of_bijective f hf).symm`. Establish `hG` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn p (𝓞 F) (F ≃ₐ[ℚ] F)`. Use `haveI := hlo _ (pl v).isPrime (hm v)`. Rewrite `hG` using `[Ideal.ramificationIdxIn_eq_ramificationIdx p (pl v).asIdeal (F ≃ₐ[ℚ] F), Ideal.inertiaDegIn_eq_inertiaDeg p (pl v).asIdeal (F ≃ₐ[ℚ] F), key, IsGalois.card_aut_eq_finrank]`. Rewrite using `[← hG, mul_comm]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem td_count (l : ℕ) [hl : Fact l.Prime] (F : Type) [Field F] [NumberField F] [IsGalois ℚ F] {V : Type}
     (pl : V → HeightOneSpectrum (𝓞 F)) (hi : Function.Injective pl) (hm : ∀ v, ((l : ℕ) : 𝓞 F) ∈ (pl v).asIdeal)
@@ -82,15 +80,13 @@ private theorem td_count (l : ℕ) [hl : Fact l.Prime] (F : Type) [Field F] [Num
   rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T v`. Use `haveI := T.nF`. Use `haveI := T.abF`. Use `haveI hac : IsAlgClosure T.F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Establish `hlt : ∀ (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 T.F)), IsPlaceOver A w → (A.valuation (l : Ω) < 1 ↔ ((l : ℕ) : 𝓞 T.F) ∈ w.asIdeal)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `A w hA`. Rewrite using `[← hA]`. Simplify using the standard rewrite rules. Use `choose P hPS hP using fun u => GlobalTheory.DecLocal.exists_place_below (p := l) (F := T.F) (T.pl u) (T.ovl u)`. Establish `hPl : ∀ u, ((l : ℕ) : 𝓞 T.F) ∈ (P u).asIdeal` using `fun u => hPS u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨P v, hP v, hPl v, td_count l T.F P ?_ hPl ?_ v⟩` and prove the remaining obligations. Introduce `u u' h`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (hP u) (by rw [h]; exact hP u')`. Take `⟨v0, -, huniq⟩` from `T.cover (T.pl u) (T.ovl u)`. Establish `e1` using `huniq u ⟨1, fun x => by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e2` using `huniq u' ⟨σ⁻¹, fun x => by`. Rewrite using `[← hσ, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]⟩`. Conclude with `e1.trans e2.symm`. Introduce `w hw`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`.
-
-Take `⟨u, ⟨g, hg⟩, -⟩` from `T.cover A ((hlt A w hA).2 hw)`. Conclude with `⟨u, eq_of_isPlaceOver (hP u) (td_move g hg hA)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_place_over_l_locDeg_mul_card_eq :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D) (v : T.ι), ∃ w : HeightOneSpectrum (𝓞 T.F), IsPlaceOver (T.pl v) w ∧ ((l : ℕ) : 𝓞 T.F) ∈ w.asIdeal ∧ locDeg w * Nat.card T.ι = T.d := by

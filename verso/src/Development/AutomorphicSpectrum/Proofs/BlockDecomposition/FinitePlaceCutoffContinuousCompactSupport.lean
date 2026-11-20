@@ -8,15 +8,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.BasePsi.Test
 
 /- English proof (translation)
-Introduce `F _ _ S g a hg v`. Establish `hu : (a : AF F).2 v * ((a⁻¹ : (AF F)ˣ) : AF F).2 v = 1`. Establish `h : ((a : AF F) * ((a⁻¹ : (AF F)ˣ) : AF F)).2 v = (1 : AF F).2 v` using `by rw [a.mul_inv]`. Conclude with `h`. Establish `ha : (a : AF F).2 v ≠ 0` using `left_ne_zero_of_mul_eq_one hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : (Unit → Fv F v) ≃ₜ Fv F v` to `(Homeomorph.funUnique Unit (Fv F v)).trans (Homeomorph.mulLeft₀ ((a : AF F).2 v) ha)`. Establish `he : ∀ y, e y = (a : AF F).2 v * y ()` using `fun y => rfl`. Establish `hO : IsClopen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isClopen_integer _`. Establish `hOc : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Establish `key : ∀ h : Fv F v → ℝ, Continuous h → HasCompactSupport h → Continuous (h ∘ e) ∧ HasCompactSupport (h ∘ e)` using `fun h h1 h2 => ⟨h1.comp e.continuous, h2.comp_isClosedEmbedding e.isClosedEmbedding⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : v ∈ S`. Establish `hfun : psiA S g a v = g v ∘ e`. Use function extensionality and compare the values at `y`. Simplify using `[psiA, hv, he]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key _ (hg v hv).1 (hg v hv).2`. Establish `hfun : psiA S g a v = (Set.indicator (v.adicCompletionIntegers F : Set (Fv F v)) (fun _ => (1 : ℝ))) ∘ e`. Use function extensionality and compare the values at `y`. Simplify using `[psiA, hv, he, Set.indicator_apply]`. Rewrite using `[hfun]`.
-
-Use `key _ (hO.continuous_indicator continuous_const) ?_` and prove the remaining obligations. Conclude with `HasCompactSupport.intro hOc fun x hx => Set.indicator_of_notMem hx _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiA_isTest : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (a : (AF F)ˣ), (∀ v ∈ S, Continuous (g v) ∧ HasCompactSupport (g v)) →

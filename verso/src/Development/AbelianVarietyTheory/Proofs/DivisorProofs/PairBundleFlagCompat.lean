@@ -21,7 +21,7 @@ section Sub
 variable {X : Scheme.{0}} {A B E : X.Modules} {a b r : ℕ}
 
 /- English proof (translation)
-Introduce `x` and use `by have : Nonempty X := ⟨x⟩ obtain ⟨_, s, hs⟩ := hu obtain rfl : r = a + s := hE.rank_unique (VBExt.isVB_and_cls_det_of_shortExact X (.mk u (cokernel.π _) (cokernel.condition _)) a s { exact := ShortComplex.exact_cokernel _ } hA hs).1 rw [Nat.add_sub_cancel_left] exact hs x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem rank_cokernel {u : A ⟶ E} (hu : IsSubbundle u) (hA : IsVB A a) (hE : IsVB E r) :
     IsVB (cokernel u) (r - a) := fun x => by
@@ -33,7 +33,7 @@ private theorem rank_cokernel {u : A ⟶ E} (hu : IsSubbundle u) (hA : IsVB A a)
   exact hs x
 
 /- English proof (translation)
-Use `hu.mono` as an intermediate fact. Use `hg.mono` as an intermediate fact. Take `⟨s, hs⟩` from `hu.isVB_cokernel`. Take `⟨t, ht⟩` from `hg.isVB_cokernel`. Conclude with `⟨inferInstance, _, (VBExt.isVB_and_cls_det_of_shortExact X _ _ _ (Vert.shortExact_cokernel_comp u g) hs ht).1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem sub_comp {u : A ⟶ B} {g : B ⟶ E} (hu : IsSubbundle u) (hg : IsSubbundle g) :
     IsSubbundle (u ≫ g) := by
@@ -45,9 +45,9 @@ private theorem sub_comp {u : A ⟶ B} {g : B ⟶ E} (hu : IsSubbundle u) (hg : 
     (Vert.shortExact_cokernel_comp u g) hs ht).1⟩
 
 /- English proof (translation)
-Substitute `w` using the available equality. Use `hg.mono` as an intermediate fact. Use `hf.mono` as an intermediate fact. Use `⟨mono_of_mono u g, b - a, VB.isVB_X₁_of_shortExact X _ _ _ (Vert.shortExact_cokernel_comp u g) ?_ (rank_cokernel hg hB hE)⟩` and prove the remaining obligations. Establish `h` using `rank_cokernel hf hA hE`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[show r - a = b - a + (r - b) by omega]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem sub_of_comp {u : A ⟶ B} {g : B ⟶ E} {f : A ⟶ E} (w : u ≫ g = f) (hf : IsSubbundle f)
     (hg : IsSubbundle g) (hA : IsVB A a) (hB : IsVB B b) (hE : IsVB E r) (h₁ : a ≤ b) (h₂ : b ≤ r) :
@@ -61,18 +61,18 @@ private theorem sub_of_comp {u : A ⟶ B} {g : B ⟶ E} {f : A ⟶ E} (w : u ≫
   rwa [show r - a = b - a + (r - b) by omega] at h
 
 /- English proof (translation)
-The claim follows from `have ⟨_, s, hs⟩ := hu ⟨inferInstance, s, hs.of_iso (cokernelCompIsIso u e).symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem sub_comp_iso {u : A ⟶ B} (hu : IsSubbundle u) (e : B ⟶ E) [IsIso e] : IsSubbundle (u ≫ e) :=
   have ⟨_, s, hs⟩ := hu
   ⟨inferInstance, s, hs.of_iso (cokernelCompIsIso u e).symm⟩
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l using Fin.induction with`. Consider the case `zero`. Introduce `h`. Take `rfl : i = 0` from `le_antisymm h (Fin.zero_le _)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Consider the case `succ l ih`. Introduce `h`. Break down `h.eq_or_lt with rfl | h` into its components or cases. Conclude with `⟨𝟙 _, Category.id_comp _⟩`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨t, ht⟩` from `ih (Fin.le_castSucc_iff.2 h)`. Conclude with `⟨t ≫ fl.step l, by rw [Category.assoc, fl.step_ι, ht]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_le (fl : Vert.Flag E r) (i : Fin (r + 1)) :
     ∀ l : Fin (r + 1), i ≤ l → ∃ t : fl.F i ⟶ fl.F l, t ≫ fl.ι l = fl.ι i := by
@@ -95,9 +95,9 @@ variable {B G T Y : Scheme.{0}} {γ : G ⟶ B} {E : B.Modules} {n m₁ m₂ : �
   {j : P ⟶ (Scheme.Modules.pullback γ).obj E}
 
 /- English proof (translation)
-Take `⟨eS, heS⟩` from `h₁`. Take `⟨eP, heP⟩` from `h₂`. Establish `hj'` using `sub_comp_iso (SubPull.isSubbundle_pullback _ _ g₂ _ _ j m₂ hP hj) ((cmp g₂ γ w₂).hom.app E)`. Use `hj'.mono` as an intermediate fact. Use `(hG T g _ _ ((Scheme.Modules.pullback g₂).map s) _ (SubPull.isSubbundle_pullback _ _ g₂ _ _ s m₁ hS hs) hj' (hS.pullback g₂) (hP.pullback g₂)).unique ⟨w₁, eS, eP, heP, ?_⟩ ⟨w₂, Iso.refl _, Iso.refl _, Category.id_comp _, by simp⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← cancel_mono ((Scheme.Modules.pullback g₂).map j ≫ (cmp g₂ γ w₂).hom.app E), Category.assoc, Category.assoc, heP]`. Simplify `heS` using `only [Functor.map_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pair_ext (hS : IsVB S m₁) (hP : IsVB P m₂) (hs : IsSubbundle s) (hj : IsSubbundle j)
     (hG : OmitFlag.IsPairBundle γ E m₁ m₂ s j) (g₁ g₂ : T ⟶ G) {g : T ⟶ B} (w₁ : g₁ ≫ γ = g) (w₂ : g₂ ≫ γ = g)
@@ -119,7 +119,7 @@ private theorem pair_ext (hS : IsVB S m₁) (hP : IsVB P m₂) (hs : IsSubbundle
   simpa only [Functor.map_comp, Category.assoc] using heS
 
 /- English proof (translation)
-Use `⟨((cmp σ ρ rfl).app A).symm ≪≫ (Scheme.Modules.pullback σ).mapIso a ≪≫ b ≪≫ c.symm, ?_⟩` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Iso.symm_hom, Functor.mapIso_hom, Category.assoc]`. Rewrite using `[← hc, Category.assoc, Iso.inv_hom_id_assoc, hb, ← Functor.map_comp_assoc, ha, Functor.map_comp_assoc, cmp_assoc σ ρ γ wρ wσ rfl w, Iso.inv_comp_eq, Iso.app_hom, cmp_naturality_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_iso_comp {π : Y ⟶ B} (ρ : Y ⟶ G) (wρ : ρ ≫ γ = π) (σ : T ⟶ Y) (υ : T ⟶ G) {g : T ⟶ B}
     (wσ : σ ≫ π = g) (wυ : υ ≫ γ = g) (w : (σ ≫ ρ) ≫ γ = g) {A : G.Modules}
@@ -139,11 +139,11 @@ private theorem exists_iso_comp {π : Y ⟶ B} (ρ : Y ⟶ G) (wρ : ρ ≫ γ =
     cmp_assoc σ ρ γ wρ wσ rfl w, Iso.inv_comp_eq, Iso.app_hom, cmp_naturality_assoc]
 
 /- English proof (translation)
-Set `i₁ : Fin (n + 1)` to `⟨m₁, by omega⟩`. Set `i₂ : Fin (n + 1)` to `⟨m₂, by omega⟩`. Take `⟨t, ht⟩` from `exists_le (fl ()) i₁ i₂ h₁₂`. Take `⟨ρ, ⟨wρ, aS, aP, haP, haS⟩, -⟩` from `hG Y π _ _ t ((fl ()).ι i₂) (sub_of_comp ht ((fl ()).isSubbundle _) ((fl ()).isSubbundle _) ((fl ()).isVB i₁) ((fl ()).isVB i₂) (hE.pullback π) h₁₂ h₂) ((fl ()).isSubbundle _) ((fl ()).isVB i₁) ((fl ()).isVB i₂)`. Rewrite `haP` using `[← cmp_hom_app]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `haS' : aS.hom ≫ (fl ()).ι i₁ = (Scheme.Modules.pullback ρ).map (s ≫ j) ≫ (cmp ρ γ wρ).hom.app E`. Rewrite using `[← ht, reassoc_of% haS, haP, Functor.map_comp_assoc]`. Use `⟨ρ, wρ, fun x => ?_⟩` and prove the remaining obligations. Take `⟨U, hx, flU, cS, cP, hcS, hcP⟩` from `FlagTwoSteps.exists_flag_two_steps G _ S P n m₁ m₂ h₁₂ h₂ s j (hE.pullback γ) hS hP hs hj x`. Take `⟨σ, ⟨wσ, hσ⟩, -⟩` from `hY U.toScheme (U.ι ≫ γ) fun _ => flU.ofIso ((cmp U.ι γ rfl).app E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₁, hb₁⟩` from `hσ () i₁`. Take `⟨b₂, hb₂⟩` from `hσ () i₂`. Establish `w : (σ ≫ ρ) ≫ γ = U.ι ≫ γ` using `by rw [Category.assoc, wρ, wσ]`. Conclude with `⟨U, σ, hx, pair_ext hS hP hs hj hG _ _ w rfl (exists_iso_comp ρ wρ σ U.ι wσ rfl w _ _ (flU.ι i₁) aS haS' b₁ hb₁ cS hcS) (exists_iso_comp ρ wρ σ U.ι wσ rfl w _ _ (flU.ι i₂) aP haP b₂ hb₂ cP hcP)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem exists_sections (hE : IsVB E n) (h₁₂ : m₁ ≤ m₂) (h₂ : m₂ ≤ n) (hS : IsVB S m₁) (hP : IsVB P m₂)
     (hs : IsSubbundle s) (hj : IsSubbundle j) (hG : OmitFlag.IsPairBundle γ E m₁ m₂ s j) (π : Y ⟶ B)
@@ -171,9 +171,9 @@ private theorem exists_sections (hE : IsVB E n) (h₁₂ : m₁ ≤ m₂) (h₂ 
     (exists_iso_comp ρ wρ σ U.ι wσ rfl w _ _ (flU.ι i₂) aP haP b₂ hb₂ cP hcP)⟩
 
 /- English proof (translation)
-Use `choose U σ hx hσ using h`. Establish `: Surjective ρ` using `⟨fun x => ⟨σ x ⟨x, hx x⟩, (Scheme.Hom.comp_apply (σ x) ρ _).symm.trans (by rw [hσ]; rfl)⟩⟩`. Use `⟨UniversallyClosed.of_comp_surjective ρ f, ?_⟩` and prove the remaining obligations. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @LocallyOfFiniteType)` as an intermediate fact. Use `(IsZariskiLocalAtSource.iff_of_iSup_eq_top (P := @LocallyOfFiniteType) U (eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hx x⟩)).2 fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType (σ x ≫ ρ)` using `by rw [hσ]; infer_instance`. Use `locallyOfFiniteType_of_comp (σ x) ρ` as an intermediate fact. Rewrite using `[← hσ, Category.assoc]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem closed_of_sections {Z : Scheme.{0}} (ρ : Y ⟶ G) (f : G ⟶ Z) [IsProper (ρ ≫ f)]
     (h : ∀ x : G, ∃ (U : G.Opens) (σ : U.toScheme ⟶ Y), x ∈ U ∧ σ ≫ ρ = U.ι) :
@@ -194,19 +194,17 @@ end GlobalTheory.PairProj
 
 open CategoryTheory.Limits GlobalTheory.PairProj in
 /- English proof (translation)
-Introduce `k _ _ B q hq E n m₁ m₂ hE h₁₂ h₂ G γ S P s j hS hP hs hj hG`. Take `⟨Y, π, fl, hY, hYp⟩` from `GlobalTheory.T.exists_flag_bundle_proj_vector_bundle k B q E n hq hE`. Take `⟨ρ, wρ, hρ⟩` from `exists_sections hE h₁₂ h₂ hS hP hs hj hG π fl hY`. Establish `: IsProper (ρ ≫ γ ≫ q)`. Rewrite using `[← Category.assoc, wρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isProper_and_exists_isAmpleLB_of_isProjOver hYp).1`. Take `⟨_, _⟩` from `closed_of_sections ρ (γ ≫ q) hρ`. Take `⟨N₁, φ₁, hφ₁, H₁⟩` from `PluckerMap.exists_toPSpace_of_isSubbundle k B q hq E n m₁ hE (h₁₂.trans h₂) G γ S (s ≫ j) hS (sub_comp hs hj)`. Take `⟨N₂, φ₂, hφ₂, H₂⟩` from `PluckerMap.exists_toPSpace_of_isSubbundle k B q hq E n m₂ hE h₂ G γ P j hP hj`. Establish `hPN (N : ℕ) : IsProjOver (PSpace.str k N)` using `⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ` using `ProjSpace.isProjOver_pullback (ProjSpace.isProjOver_pullback hq (hPN N₁)) (hPN N₂)`. Set `ψ₁ : G ⟶ pullback q (PSpace.str k N₁)` to `pullback.lift γ φ₁ hφ₁.symm`. Set `ψ : G ⟶ pullback (pullback.fst q (PSpace.str k N₁) ≫ q) (PSpace.str k N₂)` to `pullback.lift ψ₁ φ₂ (by rw [hφ₂, pullback.lift_fst_assoc])`. Establish `hψ : ψ ≫ pullback.fst _ _ ≫ pullback.fst q (PSpace.str k N₁) ≫ q = γ ≫ q`. Rewrite using `[pullback.lift_fst_assoc, pullback.lift_fst_assoc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Mono ψ` using `⟨fun {T} g₁ g₂ h => by`. Establish `e₀ : g₁ ≫ ψ₁ = g₂ ≫ ψ₁`. Simplify `h =≫ pullback.fst _ _` using `only [ψ, Category.assoc, pullback.lift_fst]`. Establish `e₂ : g₁ ≫ φ₂ = g₂ ≫ φ₂`. Simplify `h =≫ pullback.snd _ _` using `only [ψ, Category.assoc, pullback.lift_snd]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e₁ : g₁ ≫ φ₁ = g₂ ≫ φ₁`. Simplify `e₀ =≫ pullback.snd _ _` using `only [ψ₁, Category.assoc, pullback.lift_snd]`. Establish `w : g₁ ≫ γ = g₂ ≫ γ`. Simplify `e₀ =≫ pullback.fst _ _` using `only [ψ₁, Category.assoc, pullback.lift_fst]`. Conclude with `pair_ext hS hP hs hj hG g₁ g₂ w rfl (H₁ T g₁ g₂ _ w rfl e₁) (H₂ T g₁ g₂ _ w rfl e₂)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(isProper_and_exists_isAmpleLB_of_isProjOver hZ).1` as an intermediate fact. Establish `: IsSeparated (γ ≫ q)` using `by rw [← hψ]; infer_instance`. Establish `: IsProper (ψ ≫ pullback.fst _ _ ≫ pullback.fst q (PSpace.str k N₁) ≫ q)` using `by rw [hψ]; exact {}`. Establish `: IsClosedImmersion ψ` using `(IsClosedImmersion.iff_isProper_and_mono ψ).2 ⟨IsProper.of_comp ψ (pullback.fst _ _ ≫ pullback.fst q (PSpace.str k N₁) ≫ q), inferInstance⟩`. Rewrite using `[← hψ]`.
-
-Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion ψ hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.pair_bundle_flag_compat : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (B : Scheme.{0}) (q : B ⟶ Sp k), IsProjOver q →
     ∀ (E : B.Modules) (n m₁ m₂ : ℕ), GlobalTheory.VB.IsVB E n → m₁ ≤ m₂ → m₂ ≤ n →

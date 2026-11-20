@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `e' : gp ⁻¹ᵁ W = gp ⁻¹ᵁ V` using `le_antisymm (gp.preimage_mono h) e`. Establish `hh : homOfLE (gp.preimage_mono h) = eqToHom e'` using `Subsingleton.elim _ _`. Use `show Function.Bijective ((Sp K).presheaf.map (homOfLE (gp.preimage_mono h)).op).hom`. Rewrite using `[hh]`. Conclude with `ConcreteCategory.bijective_of_isIso ((Sp K).presheaf.map (eqToHom e').op)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resK_bijective {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {V W : S.Opens} (h : W ≤ V)
     (e : gp ⁻¹ᵁ V ≤ gp ⁻¹ᵁ W) : Function.Bijective (resK gp h) := by
@@ -21,7 +21,7 @@ theorem resK_bijective {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {
   exact ConcreteCategory.bijective_of_isIso ((Sp K).presheaf.map (eqToHom e').op)
 
 /- English proof (translation)
-Take `⟨p, hp, hy⟩` from `h`. Use `⟨p, hp, hg ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.hom_eval₂, hy, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIntegralElem_of_comp_injective {R A B : Type*} [CommRing R] [CommRing A] [CommRing B]
     (f : R →+* A) (g : A →+* B) (hg : Function.Injective g) {y : A}
@@ -35,9 +35,9 @@ end GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Distinguish the cases in `h : O = ⊥`. Conclude with `Or.inl h`. Use `right`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty O).mp h`. Use `top_unique fun z _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Rewrite using `[Subsingleton.elim z x]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_bot_or_eq_top_of_sp (K : Type) [Field K] (O : (Sp K).Opens) : O = ⊥ ∨ O = ⊤ := by
   by_cases h : O = ⊥
@@ -52,35 +52,31 @@ end GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `S K _ gp V W hWV hV hW b hb`. Set `C : Finset Γ(Sp K, gp ⁻¹ᵁ V) → Subring Γ(Sp K, gp ⁻¹ᵁ W)` to `fun s => Subring.closure (Set.range (gp.app W).hom ∪ resK gp hWV '' (s : Set _))`. Establish `Cmono : ∀ s t : Finset Γ(Sp K, gp ⁻¹ᵁ V), s ⊆ t → C s ≤ C t`. Introduce `s t hst`. Use `Subring.closure_mono (Set.union_subset_union_right _ (Set.image_mono ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hst` after adjusting the coercions. Set `J : Ideal Γ(S, W)` to `{ carrier := {c | ∃ s : Finset Γ(Sp K, gp ⁻¹ᵁ V), (∀ y ∈ s, (gp.app V).hom.IsIntegralElem y) ∧ (gp.app W).hom c * b ∈ C s} zero_mem' := ⟨∅, by simp, by rw [map_zero, zero_mul]; exact zero_mem _⟩ add_mem' := by`. Introduce and unpack `c d ⟨s, hs, hc⟩ ⟨t, ht, hd⟩`. Use `⟨s ∪ t, fun y hy => (Finset.mem_union.mp hy).elim (hs y) (ht y), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, add_mul]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `add_mem (Cmono _ _ Finset.subset_union_left hc) (Cmono _ _ Finset.subset_union_right hd)`. Use the proof step `smul_mem' := by`. Introduce and unpack `c d ⟨s, hs, hd⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨c, rfl⟩)) hd }`. Set `T : Set Γ(S, W)` to `{c | ∃ g : Γ(S, V), S.basicOpen g ≤ W ∧ (S.presheaf.map (homOfLE hWV).op).hom g = c}`. Establish `hspan : Ideal.span T = ⊤`. Use `hW.self_le_iSup_basicOpen_iff.mp ?_` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg, hxg⟩` from `hV.exists_basicOpen_le (V := W) ⟨x, hx⟩ (hWV hx)`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Use `⟨⟨_, g, hg, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show x ∈ S.basicOpen ((S.presheaf.map (homOfLE hWV).op).hom g)`. Rewrite using `[Scheme.basicOpen_res]`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `⟨hx, hxg⟩`. Establish `hT : T ⊆ J.radical`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `set D := S.basicOpen g with hD`. Break down `eq_bot_or_eq_top_of_sp K (gp ⁻¹ᵁ D) with h0 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : (gp.app V).hom g = 0`. Rewrite using `[← AlgebraicGeometry.basicOpen_eq_bot_iff, ← Scheme.preimage_basicOpen]`. Conclude with `h0`. Use `⟨1, ∅, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, ← resK_app, hz, map_zero, zero_mul]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `zero_mem _`. Establish `hDW : D ≤ W` using `hg`. Establish `hDV : D ≤ V` using `hDW.trans hWV`. Use `hV.isLocalization_basicOpen g` as an intermediate fact. Use `letI : Algebra Γ(S, D) Γ(Sp K, gp ⁻¹ᵁ D) := (gp.app D).hom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI : Algebra Γ(S, V) Γ(Sp K, gp ⁻¹ᵁ D) := ((gp.app D).hom.comp (algebraMap Γ(S, V) Γ(S, D))).toAlgebra`. Use `haveI : IsScalarTower Γ(S, V) Γ(S, D) Γ(Sp K, gp ⁻¹ᵁ D) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `sq : (resK gp hDW).comp (gp.app W).hom = (gp.app D).hom.comp (S.presheaf.map (homOfLE hDW).op).hom`. Use extensionality with `a`. Conclude with `resK_app gp hDW a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hb' : IsIntegral Γ(S, D) (resK gp hDW b)`. Use `hb.map (resK gp hDW)` as an intermediate fact. Rewrite `this` using `[sq]`. Conclude with `RingHom.isIntegralElem.of_comp _ _ this`. Take `⟨⟨_, N, rfl⟩, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (Submonoid.powers g) (Rₘ := Γ(S, D)) _ hb'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `top : ∀ U : S.Opens, gp ⁻¹ᵁ U ≤ gp ⁻¹ᵁ D` using `fun _ => h1 ▸ le_top`. Take `⟨y, hy⟩` from `(resK_bijective gp hDV (top V)).2 ((g ^ N) • resK gp hDW b)`. Establish `alg : ∀ a : Γ(S, V), algebraMap Γ(S, V) Γ(Sp K, gp ⁻¹ᵁ D) a = resK gp hDV ((gp.app V).hom a)`. Introduce `a`. Rewrite using `[resK_app]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hyi : (gp.app V).hom.IsIntegralElem y`. Use `isIntegralElem_of_comp_injective _ (resK gp hDV) (resK_bijective gp hDV (top V)).1 ?_` and prove the remaining obligations. Establish `e : (resK gp hDV).comp (gp.app V).hom = algebraMap Γ(S, V) Γ(Sp K, gp ⁻¹ᵁ D)`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(alg a).symm`. Rewrite using `[e, hy]`. Conclude with `hm`. Use `⟨N, {y}, by simpa using hyi, ?_⟩` and prove the remaining obligations. Establish `key : resK gp hWV y = (gp.app W).hom ((S.presheaf.map (homOfLE hWV).op).hom g ^ N) * b`.
-
-Apply `(resK_bijective gp hDW (top W)).1` to reduce the goal to its premises. Rewrite using `[resK_resK, hy, Algebra.smul_def, alg, map_mul]`. Simplify using `only [map_pow]`. Rewrite using `[← resK_app gp hWV g, resK_resK]`. Rewrite using `[← key]`.
-
-Conclude with `Subring.subset_closure (Or.inr ⟨y, by simp, rfl⟩)`. Establish `hJ : J = ⊤` using `Ideal.radical_eq_top.mp (top_unique (hspan ▸ Ideal.span_le.mpr hT))`. Take `⟨s, hs, h⟩ : (1 : Γ(S, W)) ∈ J` from `hJ ▸ Submodule.mem_top`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_closure_of_isIntegralElem_affine_le : ∀ {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) (V W : S.Opens) (hWV : W ≤ V),
     IsAffineOpen V → IsAffineOpen W → ∀ b : Γ(Sp K, gp ⁻¹ᵁ W), (gp.app W).hom.IsIntegralElem b →

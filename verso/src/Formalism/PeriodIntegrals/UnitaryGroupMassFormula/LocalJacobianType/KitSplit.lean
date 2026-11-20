@@ -34,42 +34,42 @@ variable {σ v} (D : SD σ v)
 def p (i : Fin 2) : (Fv F v ⊗[F] E) →ₐ[Fv F v] Fv F v := PI.LocDualGen.EpS.pr D.hr D.e D.he D.h0 D.h1 i
 
 /- English proof (translation)
-The claim follows from `PI.LocDualGen.EpS.decomp D.hr D.e D.he D.h0 D.h1 z`.
+A detailed English derivation is pending.
 -/
 theorem decomp (z : Fv F v ⊗[F] E) : z = D.p 0 z • D.e + D.p 1 z • (1 - D.e) :=
   PI.LocDualGen.EpS.decomp D.hr D.e D.he D.h0 D.h1 z
 
 /- English proof (translation)
-The claim follows from `PI.LocDualGen.EpS.repr_pair D.hr D.e D.he D.h0 D.h1 s t`.
+A detailed English derivation is pending.
 -/
 theorem p_pair (s t : Fv F v) : D.p 0 (s • D.e + t • (1 - D.e)) = s ∧ D.p 1 (s • D.e + t • (1 - D.e)) = t :=
   PI.LocDualGen.EpS.repr_pair D.hr D.e D.he D.h0 D.h1 s t
 
 /- English proof (translation)
-Rewrite using `[D.decomp z, D.decomp w, h0, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ext {z w : Fv F v ⊗[F] E} (h0 : D.p 0 z = D.p 0 w) (h1 : D.p 1 z = D.p 1 w) : z = w := by
   rw [D.decomp z, D.decomp w, h0, h1]
 
 /- English proof (translation)
-The claim follows from `PI.LocDualGen.EpS.pr_e D.hr D.e D.he D.h0 D.h1`.
+A detailed English derivation is pending.
 -/
 theorem p_e : D.p 0 D.e = 1 ∧ D.p 1 D.e = 0 := PI.LocDualGen.EpS.pr_e D.hr D.e D.he D.h0 D.h1
 
 /- English proof (translation)
-The claim follows from `PI.LocDualGen.EpS.pr_f D.hr D.e D.he D.h0 D.h1`.
+A detailed English derivation is pending.
 -/
 theorem p_f : D.p 0 (1 - D.e) = 0 ∧ D.p 1 (1 - D.e) = 1 := PI.LocDualGen.EpS.pr_f D.hr D.e D.he D.h0 D.h1
 
 /- English proof (translation)
-Establish `: sc (E` using `E) v t = algebraMap (Fv F v) (Fv F v ⊗[F] E) t := rfl`. Rewrite using `[this, AlgHom.commutes]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem p_sc (i : Fin 2) (t : Fv F v) : D.p i (sc (E := E) v t) = t := by
   have : sc (E := E) v t = algebraMap (Fv F v) (Fv F v ⊗[F] E) t := rfl
   rw [this, AlgHom.commutes]; rfl
 
 /- English proof (translation)
-Establish `h : sigR (Fv F v) σ z = D.p 1 z • D.e + D.p 0 z • (1 - D.e)` using `by conv_lhs => rw [D.decomp z]`. Rewrite using `[map_add, sigR_smul, sigR_smul, map_sub, map_one, D.hσ, sub_sub_cancel, add_comm]`. Rewrite using `[h]`. Conclude with `D.p_pair _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_sig (z : Fv F v ⊗[F] E) :
     D.p 0 (sigR (Fv F v) σ z) = D.p 1 z ∧ D.p 1 (sigR (Fv F v) σ z) = D.p 0 z := by
@@ -80,11 +80,11 @@ theorem p_sig (z : Fv F v ⊗[F] E) :
   exact D.p_pair _ _
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_eq_matrix_det (PI.LocDualGen.EpS.bas D.hr D.e D.he D.h0 D.h1) z, Matrix.det_fin_two, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, PI.LocDualGen.EpS.bas0, PI.LocDualGen.EpS …`. Establish `h0` using `congrArg (fun w => (PI.LocDualGen.EpS.bas D.hr D.e D.he D.h0 D.h1).repr w 0) (PI.LocDualGen.EpS.mul_decomp D.hr D.e D.he D.h0 D.h1 z D.e)`. Establish `h1` using `congrArg (fun w => (PI.LocDualGen.EpS.bas D.hr D.e D.he D.h0 D.h1).repr w 1) (PI.LocDualGen.EpS.mul_decomp D.hr D.e D.he D.h0 D.h1 z D.e)`. Establish `h2` using `congrArg (fun w => (PI.LocDualGen.EpS.bas D.hr D.e D.he D.h0 D.h1).repr w 0) (PI.LocDualGen.EpS.mul_decomp D.hr D.e D.he D.h0 D.h1 z (1 - D.e))`. Establish `h3` using `congrArg (fun w => (PI.LocDualGen.EpS.bas D.hr D.e D.he D.h0 D.h1).repr w 1) (PI.LocDualGen.EpS.mul_decomp D.hr D.e D.he D.h0 D.h1 z (1 - D.e))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, h1, h2, h3]`. Simplify using `only [(PI.LocDualGen.EpS.repr_pair D.hr D.e D.he D.h0 D.h1 _ _).1, (PI.LocDualGen.EpS.repr_pair D.hr D.e D.he D.h0 D.h1 _ _).2]`. Establish `pe` using `D.p_e`. Establish `pf` using `D.p_f`. Simplify using `only [p, PI.LocDualGen.EpS.pr_apply] at pe pf`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[pe.1, pe.2, pf.1, pf.2]`. Simplify using `only [p, PI.LocDualGen.EpS.pr_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_eq (z : Fv F v ⊗[F] E) : Algebra.norm (Fv F v) z = D.p 0 z * D.p 1 z := by
   rw [Algebra.norm_eq_matrix_det (PI.LocDualGen.EpS.bas D.hr D.e D.he D.h0 D.h1) z, Matrix.det_fin_two,
@@ -118,21 +118,19 @@ def oevSub : Subring (Fv F v ⊗[F] E) where
   neg_mem' := fun hx => Sd.oev_neg v hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hle : PI.SplitIntLoc.tensInt (F` using `F) (Fv F v) (PI.SplitIntLoc.intOE E) (v.adicCompletionIntegers F).toSubring ≤ (oevSub v).comap (Algebra.TensorProduct.comm F E (Fv F v)).toRingEquiv.toRingHom := by`. Apply `Subring.closure_le.2` to reduce the goal to its premises. Introduce and unpack `y (⟨⟨a, ha⟩, rfl⟩ | ⟨⟨t, ht⟩, rfl⟩)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Take `⟨b, rfl⟩` from `ha show Algebra.TensorProduct.comm F E (Fv F v) (((algebraMap (𝓞 E) E) b) ⊗ₜ[F] (1 : Fv F v)) ∈ OEv (E := E) v`. Simplify using `only [Algebra.TensorProduct.comm_tmul]`. Conclude with `Sd.inclR_mem (F := F) v b`. Use `show Algebra.TensorProduct.comm F E (Fv F v) ((1 : E) ⊗ₜ[F] t) ∈ OEv (E := E) v`. Establish `h1 : Algebra.TensorProduct.comm F E (Fv F v) ((1 : E) ⊗ₜ[F] t) = t • (1 : Fv F v ⊗[F] E)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul']`. Rewrite using `[h1]`. Conclude with `Sd.oev_smul v ht (oev_one v)`. Establish `h2` using `Subring.mem_comap.1 (hle h)`. Establish `h3 : (Algebra.TensorProduct.comm F E (Fv F v)).toRingEquiv.toRingHom ((Algebra.TensorProduct.comm F E (Fv F v)).symm x) = x` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h2` using `[h3]`. Conclude with `h2`. Introduce `hx`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span _ _ at hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Consider the case `mem y hy`. Take `⟨a, -, rfl⟩` from `hy`. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `left`. Conclude with `⟨⟨(a : E), ⟨a, rfl⟩⟩, by simp [inclR]⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simpa using zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul t y _ hy`. Establish `h1 : t • y = ((t : Fv F v) ⊗ₜ[F] (1 : E)) * y`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Rewrite using `[show t • y = (t : Fv F v) • y from rfl, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[h1, map_mul]`. Use `mul_mem ?_ hy` and prove the remaining obligations. Apply `Subring.subset_closure` to reduce the goal to its premises.
-
-Use `right`. Conclude with `⟨⟨t, t.2⟩, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem tens_iff (x : Fv F v ⊗[F] E) :
     (Algebra.TensorProduct.comm F E (Fv F v)).symm x ∈
@@ -187,11 +185,11 @@ namespace SD
 variable (D : SD σ v)
 
 /- English proof (translation)
-Set `f : (Fv F v ⊗[F] E) →ₐ[Fv F v] Fv F v × Fv F v` to `(D.p 0).prod (D.p 1)`. Establish `hinj : Function.Injective f` using `fun z w h => D.ext (congrArg Prod.fst h) (congrArg Prod.snd h)`. Establish `hsurj : Function.Surjective f` using `fun ab => ⟨ab.1 • D.e + ab.2 • (1 - D.e), Prod.ext (D.p_pair _ _).1 (D.p_pair _ _).2⟩`. Set `spl : E ⊗[F] Fv F v ≃+* Fv F v × Fv F v` to `(Algebra.TensorProduct.comm F E (Fv F v)).toRingEquiv.trans (RingEquiv.ofBijective f ⟨hinj, hsurj⟩)`. Establish `hspl : ∀ a : Fv F v, spl ((1 : E) ⊗ₜ[F] a) = (a, a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a`. Establish `h1 : spl ((1 : E) ⊗ₜ[F] a) = f (Algebra.TensorProduct.comm F E (Fv F v) ((1 : E) ⊗ₜ[F] a))` using `rfl`. Rewrite using `[h1, Algebra.TensorProduct.comm_tmul, show (a ⊗ₜ[F] (1 : E) : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) a from rfl, AlgHom.commutes]`. Both sides reduce to the same expression. Establish `key` using `split_integral_local F E v spl hspl ((Algebra.TensorProduct.comm F E (Fv F v)).symm x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hx : spl ((Algebra.TensorProduct.comm F E (Fv F v)).symm x) = f x` using `by show f (Algebra.TensorProduct.comm F E (Fv F v) ((Algebra.TensorProduct.comm F E (Fv F v)).symm x)) = f x`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Rewrite `key` using `[hx, tens_iff]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff (x : Fv F v ⊗[F] E) :
     x ∈ OEv (E := E) v ↔ D.p 0 x ∈ v.adicCompletionIntegers F ∧ D.p 1 x ∈ v.adicCompletionIntegers F := by
@@ -218,7 +216,7 @@ theorem mem_iff (x : Fv F v ⊗[F] E) :
 end SD
 
 /- English proof (translation)
-Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by omega)`. Use `⟨AlgEquiv.ofBijective σ (AlgHom.bijective σ), fun z => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sigR_eq_congr (hfin : Module.finrank F E = 2) :
     ∃ τ : E ≃ₐ[F] E, ∀ z, sigR (Fv F v) σ z =
@@ -227,25 +225,25 @@ theorem sigR_eq_congr (hfin : Module.finrank F E = 2) :
   refine ⟨AlgEquiv.ofBijective σ (AlgHom.bijective σ), fun z => rfl⟩
 
 /- English proof (translation)
-Take `⟨hfin, hσ, e, hee, he0, he1⟩` from `hS`. Establish `hr : Module.finrank (Fv F v) (Fv F v ⊗[F] E) = 2`. Rewrite using `[Module.finrank_baseChange]`. Conclude with `hfin`. Establish `he : IsIdempotentElem e` using `hee`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `P` to `PI.LocDualGen.EpS.pr hr e he he0 he1`. Establish `dec` using `PI.LocDualGen.EpS.decomp hr e he he0 he1`. Establish `pair` using `PI.LocDualGen.EpS.repr_pair hr e he he0 he1`. Take `⟨τ, hτ⟩` from `sigR_eq_congr (σ := σ) (v := v) hfin`. Establish `hinj : Function.Injective (sigR (Fv F v) σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z w h`. Rewrite `h` using `[hτ, hτ]`. Conclude with `(Algebra.TensorProduct.congr (AlgEquiv.refl : Fv F v ≃ₐ[F] Fv F v) τ).injective h`. Use `set f := sigR (Fv F v) σ e with hfdef`. Establish `hfi : f * f = f` using `by rw [hfdef, ← map_mul, hee]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h01 : ∀ i, P i f = 0 ∨ P i f = 1`. Introduce `i`. Establish `: P i f * P i f = P i f` using `by rw [← map_mul, hfi]`. Establish `h2 : P i f * (P i f - 1) = 0` using `by rw [mul_sub, this, mul_one, sub_self]`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr (sub_eq_zero.1 h)`. Establish `hfdec : f = P 0 f • e + P 1 f • (1 - e)` using `dec f`. Use `⟨⟨e, he, he0, he1, hr, ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `rcases h01 0 with a0 | a1 <;> rcases h01 1 with b0 | b1`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `he0` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← hfdef, hfdec, a0, b0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Rewrite using `[← hfdef, hfdec, a0, b1]`. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Apply `hσ` to reduce the goal to its premises. Establish `hfe : f = e` using `by rw [hfdec, a1, b0]; simp`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ z, sigR (Fv F v) σ z = z`. Introduce `z`. Use `conv_lhs => rw [dec z]`. Rewrite using `[(sigR (Fv F v) σ).map_add, sigR_smul, sigR_smul, (sigR (Fv F v) σ).map_sub, (sigR (Fv F v) σ).map_one, ← hfdef, hfe, ← dec z]`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hfix ((1 : Fv F v) ⊗ₜ[F] x)`. Establish `h2 : sigR (Fv F v) σ ((1 : Fv F v) ⊗ₜ[F] x) = (1 : Fv F v) ⊗ₜ[F] (σ x)`. Simplify using `[sigR]`. Rewrite `h1` using `[h2]`. Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap F (Fv F v)).injective h1`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-It suffices to derive a contradiction. Apply `he1` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_one, ← hfdef, hfdec, a1, b1]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_SD (hS : SplitHyp σ v) : Nonempty (SD σ v) := by
   obtain ⟨hfin, hσ, e, hee, he0, he1⟩ := hS

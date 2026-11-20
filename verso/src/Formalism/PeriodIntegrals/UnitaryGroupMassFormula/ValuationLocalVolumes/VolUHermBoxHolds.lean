@@ -12,25 +12,23 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hψ hs v hv`. Take `⟨hg, -, hd⟩` from `VolUT.typ_arith X v hv`. Establish `hann` using `VolUTr.annX_of X ψ Formalism.L2.SG.Pf.conductor_inverse_different hψ hs v`. Establish `hfin` using `X.B.I.cm.deg2`. Take `⟨hH, -, hO⟩` from `VolUL.sd_facts ψ v hψ hfin hann hd (Fin (D.R.rS + 1) × Fin (D.R.rS + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hH`. Establish `hmax : v.asIdeal.IsMaximal` using `v.isMaximal`. Take `⟨P, hPmax, hPv⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 X.B.I.E) v.asIdeal (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).mp (FaithfulSMul.algebraMap_injective (𝓞 X.B.I.F) (𝓞 X.B.I.E))]`. Conclude with `bot_le)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨θ, t, htθ, hnot⟩` from `X.B.I.cm.cmUnram.2.2 P hPmax`. Use `set σ := X.B.I.cm.sig with hσ`. Establish `hσx : ∀ x, σ x = star x` using `fun x => rfl`. Establish `hinv : ∀ y, σ (σ y) = y` using `fun y => by rw [hσx, hσx, star_star]`. Establish `ht : σ (θ : X.B.I.E) = (t : X.B.I.E)` using `by rw [hσx]; exact htθ.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : (θ : X.B.I.E) ≠ t`. Introduce `h`. Apply `hnot` to reduce the goal to its premises. Establish `: θ - t = 0` using `by ext; simp [h]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `P.zero_mem`. Establish `hnt : ∃ x, σ x ≠ x` using `⟨θ, by rw [ht]; exact fun h => hne h.symm⟩`. Establish `hfix : star (((θ : X.B.I.E) - t) ^ 2) = ((θ : X.B.I.E) - t) ^ 2`. Establish `htθ' : (t : X.B.I.E) = star (θ : X.B.I.E)` using `htθ`. Establish `h1 : star (t : X.B.I.E) = θ` using `by rw [htθ', star_star]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[star_pow, star_sub, h1, ← htθ']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨f, hf⟩` from `(X.B.I.cm.fixed _).1 hfix`. Establish `hint : IsIntegral ℤ (algebraMap X.B.I.F X.B.I.E f)`. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (((θ - t) ^ 2 : 𝓞 X.B.I.E) : X.B.I.E) = ((θ : X.B.I.E) - t) ^ 2` using `by push_cast; ring`. Rewrite using `[← h1]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Establish `hfint : IsIntegral ℤ f` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ X.B.I.F X.B.I.E) (algebraMap X.B.I.F X.B.I.E).injective).mp hint`. Use `set e : 𝓞 X.B.I.F := ⟨f, hfint⟩ with he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he2 : ((θ : X.B.I.E) - t) ^ 2 = algebraMap X.B.I.F X.B.I.E (e : X.B.I.F)` using `hf.symm`. Establish `hev : e ∉ v.asIdeal`. Introduce `hm`. Rewrite `hm` using `[← hPv]`. Establish `hm' : algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) e ∈ P` using `hm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `heq : algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) e = (θ - t) ^ 2`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 X.B.I.F) (𝓞 X.B.I.E) X.B.I.E, IsScalarTower.algebraMap_apply (𝓞 X.B.I.F) X.B.I.F X.B.I.E, map_pow, map_sub]`. Conclude with `he2.symm`. Rewrite `hm'` using `[heq]`.
-
-Conclude with `hnot (hPmax.isPrime.mem_of_pow_mem 2 hm')`. Take `⟨θ0, Δ, hθO, hθ, hΔ, hΔ0⟩` from `VolV.theta_exists σ v hinv hnt hfin θ t ht e he2 hev`. Establish `htr` using `VolUTr.TrW.trace_v v σ hinv hnt hfin`. Introduce `c hc`. Conclude with `VolV.hermBox_meas σ v _ hfin htr (gAt_prime X v).ne_zero hg hθO hθ hΔ hΔ0 _ hO c hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem volUHermBox_holds {D : D7} (X : HidaSetting D) (ψ : AddChar (AF X.B.I.F) ℂ) : VolUHermBox X ψ := by
   intro hψ hs v hv

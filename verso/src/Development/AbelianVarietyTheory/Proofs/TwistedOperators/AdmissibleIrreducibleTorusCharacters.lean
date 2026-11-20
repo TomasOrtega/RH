@@ -22,11 +22,11 @@ section General
 variable {G W : Type} [Group G] [MeasurableSpace G] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `GlobalTheory.OpTrace.mem_fixed.2 fun k hk => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, sub_eq_zero]`. Establish `h1` using `(hA v (l ∘ₗ π k)).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(hA v l).2`. Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite using `[h1, h2]`. Use `Eq.trans ?_ (integral_mul_left_eq_self (fun g => f g * l (π g v)) k)` and prove the remaining obligations. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hf k hk, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isIntegralOp_mem_fixed [MeasurableMul G] {μ : Measure G} [μ.IsMulLeftInvariant] {π : Representation ℂ G W}
     {f : G → ℂ} {A : W →ₗ[ℂ] W} (hA : IsIntegralOp μ π f A) {K : Subgroup G} (hf : ∀ k ∈ K, ∀ g, f (k * g) = f g)
@@ -44,9 +44,9 @@ theorem isIntegralOp_mem_fixed [MeasurableMul G] {μ : Measure G} [μ.IsMulLeftI
   simp only [hf k hk, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Take `⟨A, hA, -, rfl⟩` from `h`. Establish `h0 : A = 0` using `LinearMap.ext fun v => by`. Use `isIntegralOp_mem_fixed hA hf v` as an intermediate fact. Rewrite `this` using `[hK]`. Conclude with `(Submodule.mem_bot ℂ).1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Establish `e : ((0 : W →ₗ[ℂ] W).restrict (p` using `LinearMap.range (0 : W →ₗ[ℂ] W)) (q := LinearMap.range (0 : W →ₗ[ℂ] W)) fun v _ => LinearMap.mem_range_self (0 : W →ₗ[ℂ] W) v) = 0 := LinearMap.ext fun x => Subtype.ext (by simp)`. Rewrite using `[e, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTrace_eq_zero [MeasurableMul G] {μ : Measure G} [μ.IsMulLeftInvariant] {π : Representation ℂ G W}
     {f : G → ℂ} {K : Subgroup G} (hf : ∀ k ∈ K, ∀ g, f (k * g) = f g) (hK : fixed π K = ⊥) {c : ℂ}
@@ -62,13 +62,13 @@ theorem hasTrace_eq_zero [MeasurableMul G] {μ : Measure G} [μ.IsMulLeftInvaria
   rw [e, map_zero]
 
 /- English proof (translation)
-Take `⟨A, hA, hfd, rfl⟩` from `h`. Take `⟨A', hA', -, rfl⟩` from `h'`. Set `E` to `e.toLinearEquiv`. Establish `he : ∀ g w, E (π g w) = π' g (E w)` using `fun g w => LinearMap.congr_fun (e.toIntertwiningMap.isIntertwining' g) w`. Set `T : W' →ₗ[ℂ] W'` to `(E : W →ₗ[ℂ] W') ∘ₗ A ∘ₗ (E.symm : W' →ₗ[ℂ] W)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hT : IsIntegralOp μ π' f T`. Introduce `v l`. Establish `h1` using `hA (E.symm v) (l ∘ₗ (E : W →ₗ[ℂ] W'))`. Establish `h2 : ∀ g, f g * (l ∘ₗ (E : W →ₗ[ℂ] W')) (π g (E.symm v)) = f g * l (π' g v)` using `fun g => by`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, he, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [h2] at h1`. Conclude with `⟨h1.1, h1.2⟩`. Take `rfl` from `hA'.unique hT`. Use `haveI := hfd.1`. Establish `key` using `GlobalTheory.OpTrace.finRankTrace_eq_of_equiv E (T := A) (T' := T) fun v => by`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[T]`. Conclude with `key.2.symm`.
+A detailed English derivation is pending.
 -/
 theorem hasTrace_eq_of_equiv {W' : Type} [AddCommGroup W'] [Module ℂ W'] {μ : Measure G} {π : Representation ℂ G W}
     {π' : Representation ℂ G W'} (e : π.Equiv π') {f : G → ℂ} {c c' : ℂ} (h : HasTrace μ π f c)
@@ -99,11 +99,11 @@ variable {G H W : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpa
   [MeasurableSpace G] [BorelSpace G] [MeasurableSpace H] [BorelSpace H] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Set `e` to `φ.toHomeomorph.toMeasurableEquiv`. Establish `hm : μ.map φ = μ.map e` using `rfl`. Establish `key : ∀ A : W →ₗ[ℂ] W, IsIntegralOp (μ.map φ) (π.comp φ.symm.toMulEquiv.toMonoidHom) (f ∘ φ.symm) A ↔ IsIntegralOp μ π f A`. Introduce `A`. Use `forall_congr' fun v => forall_congr' fun l => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : (fun x => (f ∘ φ.symm) x * l ((π.comp φ.symm.toMulEquiv.toMonoidHom) x v)) ∘ e = fun g => f g * l (π g v)`. Use function extensionality and compare the values at `g`. Use `show f (φ.symm (φ g)) * l (π (φ.symm (φ g)) v) = f g * l (π g v)`. Rewrite using `[φ.symm_apply_apply]`. Rewrite using `[hm, integrable_map_equiv e, integral_map_equiv e, hc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Rewrite using `[← hc]`. Conclude with `Iff.rfl`. Conclude with `exists_congr fun A => and_congr_left fun _ => key A`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem hasTrace_map_iff (φ : G ≃ₜ* H) (μ : Measure G) (π : Representation ℂ G W) (f : G → ℂ) (c : ℂ) :
     HasTrace (μ.map φ) (π.comp φ.symm.toMulEquiv.toMonoidHom) (f ∘ φ.symm) c ↔ HasTrace μ π f c := by
@@ -133,11 +133,11 @@ open GlobalTheory.SmGL GlobalTheory.IndefiniteRowSideFullHecke.ExponentSeparatio
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {r : ℕ}
 
 /- English proof (translation)
-Establish `key : x * g ∈ GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.iwahoriCoset t ↔ g ∈ GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.iwahoriCoset t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨x⁻¹ * a, mul_mem (inv_mem hx) ha, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[show g = x⁻¹ * (x * g) by group, e]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨x * a, mul_mem hx ha, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.cosetInd`. Distinguish the cases in `h : g ∈ GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.iwahoriCoset t`. Rewrite using `[indicator_of_mem h, indicator_of_mem (key.2 h)]`. Rewrite using `[indicator_of_notMem h, indicator_of_notMem fun h' => h (key.1 h')]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetInd_mul (t : Fin r → kˣ) {x : GL (Fin r) k} (hx : x ∈ iwahori k (Fin r)) (g : GL (Fin r) k) :
     GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.cosetInd t (x * g) = GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.cosetInd t g := by
@@ -159,31 +159,27 @@ theorem cosetInd_mul (t : Fin r → kˣ) {x : GL (Fin r) k} (hx : x ∈ iwahori 
 variable (k r) in
 
 /- English proof (translation)
-Take `⟨hDom, hTF⟩` from `hI k r`. Establish `hex` using `fun i => hTF μ (N i) (π i) (hadm i)`. Use `choose hfd htr E hEx hEtr using hex`. Set `P : Finset (Fin n)` to `Finset.univ.filter fun i => fixed (π i) (iwahori k (Fin r)) ≠ ⊥`. Set `iso : Fin n → Fin n → Prop` to `fun i j => Nonempty ((π i).Equiv (π j))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `iso_symm : ∀ {i j}, iso i j → iso j i` using `fun ⟨e⟩ => ⟨e.symm⟩`. Establish `iso_trans : ∀ {i j l}, iso i j → iso j l → iso i l` using `fun ⟨e⟩ ⟨e'⟩ => ⟨e.trans e'⟩`. Establish `hne : ∀ i ∈ P, (P.filter fun j => iso j i).Nonempty` using `fun i hi => ⟨i, Finset.mem_filter.2 ⟨hi, ⟨Representation.Equiv.refl _⟩⟩⟩`. Set `rep : Fin n → Fin n` to `fun i => if hi : i ∈ P then (P.filter fun j => iso j i).min' (hne i hi) else i`. Establish `rep_spec : ∀ i ∈ P, rep i ∈ P ∧ iso (rep i) i` using `fun i hi => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.min'_mem _ (hne i hi)` as an intermediate fact. Simplify using `only [rep, dif_pos hi]`. Conclude with `Finset.mem_filter.1 this`. Establish `rep_eq : ∀ i ∈ P, ∀ j ∈ P, iso i j → rep i = rep j` using `fun i hi j hj h => by`. Establish `e : (P.filter fun l => iso l i) = P.filter fun l => iso l j` using `Finset.filter_congr fun l _ => ⟨fun h' => iso_trans h' h, fun h' => iso_trans h' (iso_symm h)⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [rep, dif_pos hi, dif_pos hj]`. Use `congr 1`. Set `R : Finset (Fin n)` to `P.image rep`. Establish `hRP : ∀ j ∈ R, j ∈ P ∧ rep j = j` using `fun j hj => by`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h1, h2⟩` from `rep_spec i hi`. Conclude with `⟨h1, rep_eq _ h1 _ hi h2⟩`. Set `D : Fin n → ℂ` to `fun j => ∑ i ∈ P with rep i = j, d i`. Establish `hsum : ∀ w : Fin n → ℂ, (∀ i ∉ P, w i = 0) → (∀ i ∈ P, w i = w (rep i)) → ∑ i, d i * w i = ∑ j ∈ R, D j * w j`. Introduce `w h0 h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_subset (Finset.subset_univ P) (fun i _ hi => by rw [h0 i hi, mul_zero]), Finset.sum_congr rfl (g := fun i => d i * w (rep i)) fun i hi => by rw [h1 i hi], ← Finset.sum_fiberwise_of_maps_to (g := rep) (t := R) (fun i hi => Finset.mem_image_of_mem rep hi)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [D, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hi).2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hcontr : ∀ t ∈ strictCone ϖ r, Contracts t`. Introduce and unpack `t ⟨a, ha, rfl⟩`. Conclude with `hDom ϖ hϖ a ha.antitone`. Establish `hvol : (μ.real (iwahori k (Fin r) : Set (GL (Fin r) k)) : ℂ) ≠ 0`. Establish `h1` using `(GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori k (Fin r)).measure_pos μ ⟨1, one_mem _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `(GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori k (Fin r)).measure_ne_top (μ := μ)`. Conclude with `(ENNReal.toReal_pos h1.ne' h2).ne'` after adjusting the coercions. Establish `hrel : ∀ t ∈ strictCone ϖ r, ∑ j ∈ R, D j * charSum (E j) t = 0`. Introduce `t ht`. Establish `hc0 : (μ.real (iwahori k (Fin r) : Set (GL (Fin r) k)) : ℂ) * ((deltaB t : ℂ))⁻¹ ≠ 0` using `mul_ne_zero hvol (inv_ne_zero (by exact_mod_cast (deltaB_pos t).ne'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `htr' : ∀ i, HasTrace μ (π i) (GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.cosetInd t) ((μ.real (iwahori k (Fin r) : Set (GL (Fin r) k)) : ℂ) * ((deltaB t : ℂ))⁻¹ * charSum (E i) t)` using `fun i => hEtr i t (hcontr t ht)`. Establish `h0` using `hd t ht _ htr'`. Rewrite `h0` using `[hsum _ (fun i hi => hasTrace_eq_zero (fun x hx g => cosetInd_mul t hx g) (by simpa [P] using hi) (htr' i)) (fun i hi => hasTrace_eq_of_equiv (rep_spec i hi).2.some.symm (htr' i) (htr' (rep i)))]`. Rewrite using `[← mul_right_inj' hc0, mul_zero, ← h0, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : ∀ j ∈ R, D j = 0`. Set `σ : Fin R.card → Fin n` to `fun l => (R.equivFin.symm l).1`. Establish `hσR : ∀ l, σ l ∈ R` using `fun l => (R.equivFin.symm l).2`. Establish `hσinj : Function.Injective σ` using `fun l l' h => R.equivFin.symm.injective (Subtype.ext h)`. Establish `key` using `hE k ϖ hϖ r R.card (fun l => N (σ l)) (fun l => π (σ l)) (fun l => hirr _) (fun l => hadm _) (fun l l' hll' => ⟨fun e => hll' (hσinj (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← (hRP _ (hσR l)).2, ← (hRP _ (hσR l')).2]`. Conclude with `rep_eq _ (hRP _ (hσR l)).1 _ (hRP _ (hσR l')).1 ⟨e⟩))⟩)`. Use the proof step `(fun l => by simpa [P] using (hRP _ (hσR l)).1)`. Use the proof step `(fun l => E (σ l)) (fun l χ => ((hEx (σ l)).2 χ).symm) (fun l => D (σ l)) (fun t ht => by`. Use `hrel t ht` as an intermediate fact.
-
-Rewrite `this` using `[← Finset.sum_coe_sort R, ← Equiv.sum_comp R.equivFin.symm]`. Conclude with `this)`. Introduce `j hj`. Use `key (R.equivFin ⟨j, hj⟩)` as an intermediate fact. Simplify `this` using `[σ]`.
-
-Rewrite using `[hsum b (fun i hi => hasTrace_eq_zero hf (by simpa [P] using hi) (hb i)) (fun i hi => hasTrace_eq_of_equiv (rep_spec i hi).2.some.symm (hb i) (hb (rep i)))]`. Conclude with `Finset.sum_eq_zero fun j hj => by rw [hD j hj, zero_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relation_gl (hI : IwahoriTrace) (hE : ExponentsSeparate) (ϖ : kˣ)
     (hϖ : valuation k (ϖ : k) = uniformizer k)
@@ -283,15 +279,13 @@ namespace GlobalTheory.IwahoriRel
 open GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep
 
 /- English proof (translation)
-Introduce `hI hE D V U μ hμ n N _ _ π hirr hadm d hd f hf hfI b hb`. Use `letI := GlobalTheory.LocalData.complRel U.u`. Use `haveI := GlobalTheory.LocalData.isLocalField U.u`. Use `letI : MeasurableSpace (GL (Fin V.rank) (Fv D.host.F U.u)) := borel _`. Use `haveI : BorelSpace (GL (Fin V.rank) (Fv D.host.F U.u)) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : (μ.map U.frame.equiv).IsHaarMeasure := U.frame.equiv.toMulEquiv.isHaarMeasure_map μ U.frame.equiv.continuous U.frame.equiv.symm.continuous`. Establish `hcos : ∀ t, U.frame.cosetFn t ∘ U.frame.equiv.symm = GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.cosetInd t` using `fun t => funext fun x => by`. Establish `key : U.frame.equiv.symm x ∈ U.frame.iwahoriCoset t ↔ x ∈ GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.iwahoriCoset t`. Rewrite using `[U.frame.mem_iwahoriCoset, ContinuousMulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply, GlobalTheory.Orb.SplitAt.cosetFn, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.cosetInd]`. Distinguish the cases in `h : x ∈ GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.iwahoriCoset t`. Rewrite using `[indicator_of_mem (key.2 h), indicator_of_mem h]`. Both sides reduce to the same expression. Rewrite using `[indicator_of_notMem (fun h' => h (key.1 h')), indicator_of_notMem h]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `relation_gl (Fv D.host.F U.u) V.rank hI hE U.ϖ U.unif.valuation_eq (μ.map U.frame.equiv) n N (fun i => (π i).comp U.frame.equiv.symm.toMulEquiv.toMonoidHom) (fun i => GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv _ _ (hirr i)) (fun i => GlobalTheory.CuspMult.isAdmissible_comp …` and prove the remaining obligations. Introduce `t ht b' hb'`. Conclude with `hd t ht b' fun i => (hasTrace_map_iff U.frame.equiv μ (π i) _ (b' i)).1 (by rw [hcos]; exact hb' i)`. Introduce `x hx g`. Simplify using `only [Function.comp_apply, map_mul]`.
-
-Use `hfI _ (Subgroup.mem_comap.2 ?_) _` and prove the remaining obligations. Use `show U.frame.equiv (U.frame.equiv.symm x) ∈ GlobalTheory.SmGL.iwahori (Fv D.host.F U.u) (Fin V.rank)`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `hx`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relation_of_iwahoriTrace : GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IwahoriTrace → GlobalTheory.IndefiniteRowSideFullHecke.ExponentSeparationTwistedDiscreteSeries.ExponentsSeparate → ∀ (D : D7) (V : HSp D) (U : AuxiliaryPlaceHermitianSpace V) (μ : Measure (Gv V U.u)), μ.IsHaarMeasure → ∀ (n : ℕ) (N : Fin n → Type) [∀ i, AddCommGroup (N i)] [∀ i, Module ℂ (N i)] (π : ∀ i, Representation ℂ (Gv V U.u) (N i)), (∀ i, (π i).IsIrreducible) → (∀ i, IsAdmissible (π i)) → ∀ d : Fin n → ℂ, (∀ t ∈ strictTorus V.rank U.ϖ, ∀ b : Fin n → ℂ, (∀ i, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace μ (π i) (U.frame.cosetFn t) (b i)) → ∑ i, d i * b i = 0) → ∀ f ∈ CcLoc D.sp.cm.sig V.gram U.u, (∀ k ∈ U.frame.iwahori, ∀ g, f (k * g) = f g) → ∀ b : Fin n → ℂ, (∀ i, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace μ (π i) f (b i)) → ∑ i, d i * b i = 0 := by
   intro hI hE D V U μ hμ n N _ _ π hirr hadm d hd f hf hfI b hb

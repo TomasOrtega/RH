@@ -9,12 +9,12 @@ variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k}
 private noncomputable def ee (F : Frame l k) (u : ℤˣ) : F.Γ := if u = 1 then 1 else F.c
 
 /- English proof (translation)
-The claim follows from `if_pos rfl`.
+A detailed English derivation is pending.
 -/
 private theorem ee_one : ee F 1 = 1 := if_pos rfl
 
 /- English proof (translation)
-The claim follows from `if_neg (by decide)`.
+A detailed English derivation is pending.
 -/
 private theorem ee_neg : ee F (-1) = F.c := if_neg (by decide)
 
@@ -31,7 +31,7 @@ Both sides reduce to the same expression.
 private theorem pr_val (hc : F.del F.c = -1) (s : F.Γ) : (pr hc s : F.Γ) = s * ee F (F.del s) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h : F.del s = 1` using `s.2`. Rewrite using `[pr_val, h, ee_one, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pr_coe (hc : F.del F.c = -1) (s : F.G0) : pr hc s = s := by
   apply Subtype.ext
@@ -44,9 +44,9 @@ Both sides reduce to the same expression.
 private theorem conj_val (s : F.G0) : (F.conj s : F.Γ) = F.c * s * F.c⁻¹ := rfl
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `h1 : IsOpen ((fun y => x⁻¹ * y) ⁻¹' (F.del.ker : Set F.Γ))` using `ho.preimage (by fun_prop)`. Use `filter_upwards [h1.mem_nhds (show x⁻¹ * x ∈ F.del.ker by simp)] with y hy`. Establish `h2 : F.del (x⁻¹ * y) = 1` using `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 private theorem del_lc (ho : IsOpen (F.del.ker : Set F.Γ)) : IsLocallyConstant F.del := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -58,13 +58,13 @@ private theorem del_lc (ho : IsOpen (F.del.ker : Set F.Γ)) : IsLocallyConstant 
   exact h2.symm
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (continuous_id.mul ((del_lc ho).comp (ee F)).continuous) _`.
+A detailed English derivation is pending.
 -/
 private theorem pr_cont (hc : F.del F.c = -1) (ho : IsOpen (F.del.ker : Set F.Γ)) : Continuous (pr hc) :=
   Continuous.subtype_mk (continuous_id.mul ((del_lc ho).comp (ee F)).continuous) _
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[theta_val, ← map_inv, MonoidHom.coe_toHomUnits, MonoidHom.coe_toHomUnits, ← ρ.pol, Frame.star, inv_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem theta_r {n : ℕ} {C : Type} [CommRing C] (ρ : NRep F n C) (g : F.G0) :
     theta (ρ.r.toHomUnits g) = ρ.r.toHomUnits (F.conj g) := by
@@ -104,13 +104,11 @@ private noncomputable def rp (hc : F.del F.c = -1) (hs : F.c * F.c = 1) {n : ℕ
 end UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ n hF C _ I ρ hc hf`. Use `choose g hg using hf`. Establish `hm : ∀ s, (rp hF.del_c hF.c_sq ρ s).mat = ρ.r (pr hF.del_c s)` using `fun s => rfl`. Use `⟨⟨rp hF.del_c hF.c_sq ρ, fun s => rfl, g, fun v s i j h => ?_⟩, ⟨?_, fun s => ?_, fun v i s => ?_⟩, fun i j N => ?_⟩` and prove the remaining obligations. Establish `e : pr hF.del_c (F.loc v s) = F.loc0 v s` using `pr_coe hF.del_c (F.loc0 v s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, e]`. Conclude with `(hg v s).1 i j h`. Establish `e : pr hF.del_c F.c = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[pr_val, hF.del_c, ee_neg, hF.c_sq]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show (rp hF.del_c hF.c_sq ρ F.c).mat = 1`. Rewrite using `[hm, e, map_one]`. Use `show (rp hF.del_c hF.c_sq ρ s).mat = _`. Rewrite using `[hm, pr_coe]`.
-
-Conclude with `(hg v s).2 i`. Conclude with `(hc.1 i j N).comp_continuous (pr_cont hF.del_c hF.del_open)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.pr_box :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (C : Type) [CommRing C] (I : Ideal C) (ρ : NRep F n C), ρ.Cont I → (∀ v, UpperTheory.V.W.HasFlag (ρ.r.comp (F.loc0 v)).toHomUnits (ρ.ψ v)) → ∃ B : Box F n C, B.Of ρ ∧ B.Cont I := by

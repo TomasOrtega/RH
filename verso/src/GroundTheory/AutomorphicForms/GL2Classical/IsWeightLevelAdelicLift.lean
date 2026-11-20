@@ -19,21 +19,21 @@ set_option linter.unusedSectionVars false
 variable {N : ℕ} (k : ℤ)
 
 /- English proof (translation)
-Rewrite using `[σ, if_pos hpos]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem σ_of_det_pos {h : GL (Fin 2) ℝ} (hpos : 0 < h.det.val) (z : ℂ) : σ h z = z := by
   rw [σ, if_pos hpos]
   rfl
 
 /- English proof (translation)
-Rewrite using `[denom_cocycle_σ, σ_of_det_pos hpos]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem denom_mul_of_det_pos (g : GL (Fin 2) ℝ) {h : GL (Fin 2) ℝ} (hpos : 0 < h.det.val) (z : ℍ) :
     denom (g * h) z = denom g ((h • z : ℍ) : ℂ) * denom h z := by
   rw [denom_cocycle_σ, σ_of_det_pos hpos]
 
 /- English proof (translation)
-Rewrite using `[Real.sqrt_div' _ (Complex.normSq_nonneg w), Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg w)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrt_div_normSq {a : ℝ} (w : ℂ) :
     Real.sqrt (a / Complex.normSq w) = Real.sqrt a / ‖w‖ := by
@@ -41,7 +41,7 @@ theorem sqrt_div_normSq {a : ℝ} (w : ℂ) :
     Real.sqrt_sq (norm_nonneg w)]
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv, mul_zpow, _root_.inv_zpow', neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem div_norm_zpow_neg (w : ℂ) : (w / (‖w‖ : ℂ)) ^ (-k) = w ^ (-k) * (‖w‖ : ℂ) ^ k := by
   rw [div_eq_mul_inv, mul_zpow, _root_.inv_zpow', neg_neg]
@@ -50,7 +50,7 @@ def archLift (f : ℍ → ℂ) (h : GL (Fin 2) ℝ) : ℂ :=
   (Real.sqrt h.det.val : ℂ) ^ k * f (h • I) * denom h (I : ℂ) ^ (-k)
 
 /- English proof (translation)
-The claim follows from `SlashInvariantForm.slash_action_eqn'' (SlashInvariantForm.mk f hf) (Subgroup.mem_map_of_mem _ hs) z`.
+A detailed English derivation is pending.
 -/
 theorem apply_mapGL_smul {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) {s : SL(2, ℤ)}
@@ -60,9 +60,9 @@ theorem apply_mapGL_smul {f : ℍ → ℂ}
   SlashInvariantForm.slash_action_eqn'' (SlashInvariantForm.mk f hf) (Subgroup.mem_map_of_mem _ hs) z
 
 /- English proof (translation)
-Establish `hdet : (Matrix.SpecialLinearGroup.mapGL ℝ s * h).det.val = h.det.val`. Rewrite using `[map_mul, Matrix.SpecialLinearGroup.det_mapGL, one_mul]`. Establish `hne : denom (Matrix.SpecialLinearGroup.mapGL ℝ s) ((h • I : ℍ) : ℂ) ≠ 0` using `denom_ne_zero _ _`. Establish `hA : denom (Matrix.SpecialLinearGroup.mapGL ℝ s) ((h • I : ℍ) : ℂ) ^ k * denom (Matrix.SpecialLinearGroup.mapGL ℝ s) ((h • I : ℍ) : ℂ) ^ (-k) = 1`. Rewrite using `[← zpow_add₀ hne, add_neg_cancel, zpow_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[archLift, archLift, hdet, mul_smul, apply_mapGL_smul k hf hs, denom_mul_of_det_pos _ hpos, mul_zpow]`. Take the linear combination `((Real.sqrt h.det.val : ℂ) ^ k * f (h • I) * denom h (I : ℂ) ^ (-k)) * hA`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem archLift_mapGL_mul {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) {s : SL(2, ℤ)}
@@ -79,7 +79,7 @@ theorem archLift_mapGL_mul {f : ℍ → ℂ}
   linear_combination ((Real.sqrt h.det.val : ℂ) ^ k * f (h • I) * denom h (I : ℂ) ^ (-k)) * hA
 
 /- English proof (translation)
-Establish `hdet : (h * kGL w hw).det.val = h.det.val * Complex.normSq w`. Rewrite using `[map_mul, Units.val_mul, det_kGL]`. Establish `hsq : Real.sqrt (h.det.val * Complex.normSq w) = Real.sqrt h.det.val * ‖w‖`. Rewrite using `[Real.sqrt_mul hpos.le, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg w)]`. Rewrite using `[archLift, archLift, hdet, hsq, mul_smul, kGL_smul_I, denom_mul_of_det_pos _ (det_kGL_pos w hw), kGL_smul_I, denom_kGL, div_norm_zpow_neg, Complex.ofReal_mul, mul_zpow, mul_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -95,7 +95,7 @@ theorem archLift_mul_kGL (f : ℍ → ℂ) {h : GL (Fin 2) ℝ} (hpos : 0 < h.de
   ring
 
 /- English proof (translation)
-Simplify using `only [archLift, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem archLift_add (f f' : ℍ → ℂ) (h : GL (Fin 2) ℝ) :
     archLift k (f + f') h = archLift k f h + archLift k f' h := by
@@ -103,7 +103,7 @@ theorem archLift_add (f f' : ℍ → ℂ) (h : GL (Fin 2) ℝ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [archLift, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem archLift_smul (c : ℂ) (f : ℍ → ℂ) (h : GL (Fin 2) ℝ) :
     archLift k (c • f) h = c * archLift k f h := by
@@ -111,7 +111,7 @@ theorem archLift_smul (c : ℂ) (f : ℍ → ℂ) (h : GL (Fin 2) ℝ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[archLift, det_borelGL, borelGL_smul_I, denom_borelGL, _root_.one_zpow, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archLift_borelGL (f : ℍ → ℂ) (z : ℍ) :
     archLift k f (borelGL z) = (Real.sqrt z.im : ℂ) ^ k * f z := by
@@ -123,7 +123,7 @@ def decompGL (g : AdelicGL ℚ 2) : GL (Fin 2) ℝ :=
   Classical.choose (Classical.choose_spec (exists_decomposition N g))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Classical.choose_spec (Classical.choose_spec (exists_decomposition N g))).1, Classical.choose (exists_decomposition N g), (Classical.choose_spec (Classical.choose_spec (exists_decomposition N g))).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem decompGL_spec (g : AdelicGL ℚ 2) :
     0 < (decompGL N g).det.val ∧ ∃ γ : GL (Fin 2) ℚ, ∃ u ∈ Gamma0Level N,
@@ -138,15 +138,13 @@ def adelicLift (f : ℍ → ℂ) (g : AdelicGL ℚ 2) : ℂ :=
 variable {N k}
 
 /- English proof (translation)
-Establish `hc` using `congrArg (prodEquiv ℚ 2) heq`. Simplify using `only [map_mul, diagonal_eq, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul, Prod.mk.injEq] at hc`. Take `⟨δ, hδdef⟩ : ∃ δ, δ = γ₂⁻¹ * γ₁` from `⟨_, rfl⟩`. Establish `hreal : toReal δ * h₁ = h₂` using `realInf_injective (by`. Simplify using `only [hδdef, map_mul, map_inv, mul_assoc, hc.1, inv_mul_cancel_left])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hfin : finiteDiagonal ℚ 2 δ = u₂ * u₁⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq]`. Simplify using `only [hδdef, map_mul, map_inv, mul_assoc, hc.2, inv_mul_cancel_left]`. Establish `hδ : finiteDiagonal ℚ 2 δ ∈ Gamma0Level N` using `hfin ▸ mul_mem hu₂ (inv_mem hu₁)`. Establish `hdetδ : 0 < (δ.det.val : ℚ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : (toReal δ).det.val * h₁.det.val = h₂.det.val`. Rewrite using `[← hreal, MonoidHom.map_mul Matrix.GeneralLinearGroup.det, Units.val_mul]`. Rewrite `hprod` using `[det_toReal]`. Establish `hb : 0 < ((δ.det.val : ℚ) : ℝ) * h₁.det.val` using `hprod ▸ hpos₂`. Establish `: (0 : ℝ) < ((δ.det.val : ℚ) : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `this` after adjusting the coercions. Take `⟨s, hs, hsδ⟩` from `exists_mem_Gamma0_of_mem N hδ hdetδ`.
-
-Rewrite using `[← hreal, ← hsδ, toReal_mapGL]`. Conclude with `(archLift_mapGL_mul k hf hs hpos₁).symm`.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archLift_eq_of_decomp {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f)
@@ -181,7 +179,7 @@ theorem archLift_eq_of_decomp {f : ℍ → ℂ}
   exact (archLift_mapGL_mul k hf hs hpos₁).symm
 
 /- English proof (translation)
-Take `⟨hpos', γ', u', hu', heq⟩` from `decompGL_spec N (diagonal ℚ 2 γ * realEmb h * finEmb ℚ 2 u)`. Conclude with `archLift_eq_of_decomp hf hpos' hpos hu' hu heq.symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adelicLift_apply {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (γ : GL (Fin 2) ℚ)
@@ -191,7 +189,7 @@ theorem adelicLift_apply {f : ℍ → ℂ}
   exact archLift_eq_of_decomp hf hpos' hpos hu' hu heq.symm
 
 /- English proof (translation)
-Use `adelicLift_apply hf 1 hpos (one_mem (Gamma0Level N))` as an intermediate fact. Rewrite `this` using `[map_one, map_one, one_mul, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem adelicLift_realEmb {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f)
@@ -201,7 +199,7 @@ theorem adelicLift_realEmb {f : ℍ → ℂ}
   rwa [map_one, map_one, one_mul, mul_one] at this
 
 /- English proof (translation)
-Rewrite using `[adelicLift_realEmb hf (det_borelGL_pos z), archLift_borelGL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicLift_borelGL {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (z : ℍ) :
@@ -228,7 +226,7 @@ def weightLevelSpace : Submodule ℂ (AdelicGL ℚ 2 → ℂ) where
 variable {N k}
 
 /- English proof (translation)
-Rewrite using `[hφ.right_level _ u hu]`. Conclude with `hφ.isLeftInvariant γ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsWeightLevel.apply_decomp {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ)
     (γ : GL (Fin 2) ℚ) (h : GL (Fin 2) ℝ) {u : FiniteAdelicGL ℚ 2} (hu : u ∈ Gamma0Level N) :
@@ -237,7 +235,7 @@ theorem IsWeightLevel.apply_decomp {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeight
   exact hφ.isLeftInvariant γ _
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_borelGL_mul_kGL hpos, map_mul]`. Conclude with `hφ.right_kGL _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem IsWeightLevel.apply_realEmb {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ)
     {h : GL (Fin 2) ℝ} (hpos : 0 < h.det.val) :
@@ -247,13 +245,13 @@ theorem IsWeightLevel.apply_realEmb {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeigh
   exact hφ.right_kGL _ _ _
 
 /- English proof (translation)
-Take `⟨hpos, γ, u, hu, hg⟩` from `decompGL_spec N g`. Use `conv_lhs => rw [hg, ← mul_assoc, ← mul_assoc, ← map_mul]`. Rewrite using `[adelicLift_apply hf _ hpos hu]`. Both sides reduce to the same expression. Use `right_level g v hv := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hpos, γ, u, hu, hg⟩` from `decompGL_spec N g`. Use `conv_lhs => rw [hg, mul_assoc, ← map_mul]`. Rewrite using `[adelicLift_apply hf _ hpos (mul_mem hu hv)]`. Both sides reduce to the same expression. Use `right_kGL g w hw := by`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hpos, γ, u, hu, hg⟩` from `decompGL_spec N g`. Establish `key : ∀ h : GL (Fin 2) ℝ, g = diagonal ℚ 2 γ * realEmb h * finEmb ℚ 2 u → g * realEmb (kGL w hw) = diagonal ℚ 2 γ * realEmb (h * kGL w hw) * finEmb ℚ 2 u`. Introduce `h hgh`. Rewrite using `[hgh, map_mul, mul_assoc _ (finEmb ℚ 2 u), ← realEmb_mul_finEmb_comm, ← mul_assoc, mul_assoc (diagonal ℚ 2 γ)]`. Use `key _ hg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hpos' : 0 < (decompGL N g * kGL w hw).det.val`. Rewrite using `[map_mul, Units.val_mul]`. Conclude with `mul_pos hpos (det_kGL_pos w hw)`. Rewrite using `[this, adelicLift_apply hf _ hpos' hu, archLift_mul_kGL k f hpos]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isWeightLevel_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) :
@@ -290,15 +288,15 @@ def descend (φ : AdelicGL ℚ 2 → ℂ) (z : ℍ) : ℂ :=
 variable {k}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Use `set g := Matrix.SpecialLinearGroup.mapGL ℝ s`. Establish `hg1 : g.det.val = 1` using `by rw [Matrix.SpecialLinearGroup.det_mapGL]; rfl`. Establish `hgpos : 0 < g.det.val` using `by rw [hg1]; exact one_pos`. Use `set j := denom g z`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : j ≠ 0` using `denom_ne_zero g z`. Establish `hA : φ (realEmb (g * borelGL z)) = φ (realEmb (borelGL z))`. Establish `h1` using `hφ.isLeftInvariant (Matrix.SpecialLinearGroup.mapGL ℚ s) (realEmb (borelGL z))`. Rewrite `h1` using `[diagonal_eq, toReal_mapGL, mul_assoc, ← realEmb_mul_finEmb_comm, ← mul_assoc, ← map_mul, hφ.right_level _ _ (finiteDiagonal_mapGL_mem_Gamma0Level N hs)]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < (g * borelGL z).det.val`. Rewrite using `[map_mul, Units.val_mul]`. Conclude with `mul_pos hgpos (det_borelGL_pos z)`. Establish `hsmul : (g * borelGL z) • I = g • z` using `by rw [mul_smul, borelGL_smul_I]`. Establish `hden : denom (g * borelGL z) (I : ℂ) = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[denom_mul_of_det_pos _ (det_borelGL_pos z), borelGL_smul_I, denom_borelGL, mul_one]`. Establish `hB : φ (realEmb (borelGL z)) = (j / (‖j‖ : ℂ)) ^ (-k) * φ (realEmb (borelGL (g • z)))`. Rewrite using `[← hA, hφ.apply_realEmb hpos, hsmul, hden]`. Establish `him : (g • z).im = z.im / Complex.normSq j`. Rewrite using `[im_smul_eq_div_normSq, hg1, abs_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (‖j‖ : ℂ) ≠ 0` using `by exact_mod_cast (norm_ne_zero_iff.2 hj)`. Establish `hnk : (‖j‖ : ℂ) ^ (-k) * (‖j‖ : ℂ) ^ k = 1`. Rewrite using `[← zpow_add₀ hn, neg_add_cancel, zpow_zero]`. Rewrite using `[slash_apply, σ_of_det_pos hgpos, hg1, abs_one, Complex.ofReal_one, _root_.one_zpow, mul_one, descend, descend, him, sqrt_div_normSq, Complex.ofReal_div, div_zpow, hB, div_norm_zpow_neg, div_eq_mul_inv, inv_eq_of_mul_eq_one_right hnk]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem descend_slash {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ) {s : SL(2, ℤ)}
     (hs : s ∈ Gamma0 N) : descend k φ ∣[k] Matrix.SpecialLinearGroup.mapGL ℝ s = descend k φ := by
@@ -336,7 +334,7 @@ theorem descend_slash {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ)
   ring
 
 /- English proof (translation)
-Introduce `γ hγ`. Take `⟨s, hs, rfl⟩` from `Subgroup.mem_map.1 hγ`. Conclude with `descend_slash hφ hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem descend_slash_eq {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ) :
     ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), descend k φ ∣[k] γ = descend k φ := by
@@ -345,7 +343,7 @@ theorem descend_slash_eq {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k 
   exact descend_slash hφ hs
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `hy : (Real.sqrt z.im : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.2 z.im_pos).ne'` after adjusting the coercions. Rewrite using `[descend, adelicLift_borelGL hf, ← mul_assoc, ← zpow_add₀ hy, neg_add_cancel, zpow_zero, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem descend_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) :
@@ -357,13 +355,11 @@ theorem descend_adelicLift {f : ℍ → ℂ}
     one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Take `⟨hpos, γ, u, hu, hg⟩` from `decompGL_spec N g`. Use `set h := decompGL N g`. Use `set j := denom h (I : ℂ)`. Establish `hj : j ≠ 0` using `denom_ne_zero h I`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : (‖j‖ : ℂ) ≠ 0` using `by exact_mod_cast (norm_ne_zero_iff.2 hj)`. Establish `hnk : (‖j‖ : ℂ) ^ (-k) * (‖j‖ : ℂ) ^ k = 1`. Rewrite using `[← zpow_add₀ hn, neg_add_cancel, zpow_zero]`. Establish `hd : (Real.sqrt h.det.val : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.2 hpos).ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdk : (Real.sqrt h.det.val : ℂ) ^ k * (Real.sqrt h.det.val : ℂ) ^ (-k) = 1`. Rewrite using `[← zpow_add₀ hd, add_neg_cancel, zpow_zero]`. Establish `hφg : φ g = φ (realEmb h)` using `by conv_lhs => rw [hg]`. Conclude with `hφ.apply_decomp γ h hu`. Express the relevant statement in the definitionally equal form `archLift k (descend k φ) h = φ g`.
-
-Rewrite using `[hφg, hφ.apply_realEmb hpos, archLift, descend, im_smul_I hpos, sqrt_div_normSq, Complex.ofReal_div, div_zpow, div_norm_zpow_neg, div_eq_mul_inv, inv_eq_of_mul_eq_one_right hnk]`. Take the linear combination `((‖j‖ : ℂ) ^ k * φ (realEmb (borelGL (h • I))) * j ^ (-k)) * hdk`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem adelicLift_descend {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ) :
     adelicLift N k (descend k φ) = φ := by
@@ -411,7 +407,7 @@ variable {N k}
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem liftEquiv_apply (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (liftEquiv N k f : AdelicGL ℚ 2 → ℂ) = adelicLift N k f :=

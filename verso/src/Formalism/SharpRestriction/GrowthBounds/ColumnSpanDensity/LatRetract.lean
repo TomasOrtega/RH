@@ -13,13 +13,13 @@ variable {O K V V' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 omit [IsDiscreteValuationRing O] in
 /- English proof (translation)
-The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 ha`.
+A detailed English derivation is pending.
 -/
 private theorem lrt_am_ne {a : O} (ha : a ≠ 0) : algebraMap O K a ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective O K)).2 ha
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun r hr x y hxy => by have hr0 : r ≠ 0 := hr.ne_zero have h1 : algebraMap O K r • x = algebraMap O K r • y := by rw [algebraMap_smul, algebraMap_smul]; exact hxy exact smul_right_injective V (lrt_am_ne (K := K) hr0) h1⟩`.
+Supply the required witnesses or components.
 -/
 private theorem lrt_tf (O K V : Type) [CommRing O] [IsDomain O] [Field K] [Algebra O K]
     [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V] :
@@ -33,11 +33,11 @@ private theorem lrt_tf (O K V : Type) [CommRing O] [IsDomain O] [Field K] [Algeb
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] [Fintype ι] in
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Distinguish the cases in `hji : j = i`. Substitute `hji; exact ⟨1, by simp⟩` using the available equality.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `⟨0, by simp [hji]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨u, hu⟩` from `hx`. Take `⟨v, hv⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u + v, by simp [hu, hv]⟩`. Consider the case `smul a x _ hx`. Take `⟨u, hu⟩` from `hx`. Conclude with `⟨a * u, by`. Rewrite using `[← algebraMap_smul K a x, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, hu]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lrt_coord (b : Module.Basis ι K V) {y : V}
     (hy : y ∈ span O (Set.range b)) (i : ι) : b.repr y i ∈ Set.range (algebraMap O K) := by
@@ -61,9 +61,9 @@ private theorem lrt_coord (b : Module.Basis ι K V) {y : V}
 omit [IsDiscreteValuationRing O] in
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) (fun i => b.repr F i)`. Use `⟨a, nonZeroDivisors.ne_zero a.2, ?_⟩` and prove the remaining obligations. Establish `hF : (a : O) • F = ∑ i, (a : O) • (b.repr F i • b i)`. Rewrite using `[← Finset.smul_sum, b.sum_repr F]`. Rewrite using `[hF]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `ha i`. Rewrite using `[← smul_assoc, ← hz, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lrt_den (b : Module.Basis ι K V) (F : V) :
     ∃ a : O, a ≠ 0 ∧ a • F ∈ span O (Set.range b) := by
@@ -79,13 +79,13 @@ private theorem lrt_den (b : Module.Basis ι K V) (F : V) :
   exact Submodule.smul_mem _ _ (subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`. Assume the negation of the conclusion as `hne`. Establish `h0 : b.repr F ≠ 0` using `by simpa using hne`. Take `⟨i, hi⟩` from `DFunLike.ne_iff.1 h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hmem : ((b.repr F i * algebraMap O K ϖ)⁻¹) • F ∈ span O (Set.range b)`. Rewrite using `[← h, map_smul, hF, smul_zero]`. Conclude with `zero_mem _`. Take `⟨z, hz⟩` from `lrt_coord b hmem i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hϖ0 : algebraMap O K ϖ ≠ 0` using `lrt_am_ne hϖ.ne_zero`. Establish `hi' : b.repr F i ≠ 0` using `by simpa using hi`. Establish `h1 : algebraMap O K (ϖ * z) = algebraMap O K 1`. Rewrite using `[map_mul, hz, map_one, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `h2` using `IsFractionRing.injective O K h1`. Conclude with `hϖ.not_isUnit (IsUnit.of_mul_eq_one _ h2)`.
+A detailed English derivation is pending.
 -/
 private theorem lrt_inj (b : Module.Basis ι K V) (b' : Module.Basis ι' K V') (io : V →ₗ[K] V')
     (h : ∀ F, io F ∈ Submodule.span O (Set.range b') ↔ F ∈ Submodule.span O (Set.range b)) :
@@ -108,33 +108,29 @@ private theorem lrt_inj (b : Module.Basis ι K V) (b' : Module.Basis ι' K V') (
   exact hϖ.not_isUnit (IsUnit.of_mul_eq_one _ h2)
 
 /- English proof (translation)
-Establish `: Module.IsTorsionFree O V` using `lrt_tf O K V`. Establish `: Module.IsTorsionFree O V'` using `lrt_tf O K V'`. Set `R : Submodule O V` to `span O (Set.range b)`. Set `R' : Submodule O V'` to `span O (Set.range b')`. Establish `: Module.Finite O R` using `Module.Finite.span_of_finite O (Set.finite_range b)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Module.Finite O R'` using `Module.Finite.span_of_finite O (Set.finite_range b')`. Set `ioR : R →ₗ[O] R'` to `(io.restrictScalars O).restrict (fun F hF => (h F).2 hF)`. Establish `hinj : Function.Injective ioR` using `fun x y hxy => Subtype.ext (lrt_inj b b' io h (congrArg Subtype.val hxy))`. Set `N : Submodule O R'` to `LinearMap.range ioR`. Establish `: Module.IsTorsionFree O (R' ⧸ N)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨fun r hr x y hxy => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `N.mkQ_surjective x`. Take `⟨y, rfl⟩` from `N.mkQ_surjective y`. Establish `h1 : N.mkQ (r • (x - y)) = 0`. Rewrite using `[smul_sub, map_sub, map_smul, map_smul, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxy`. Rewrite `h1` using `[mkQ_apply, Quotient.mk_eq_zero]`. Take `⟨F, hF⟩` from `h1`. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Rewrite using `[← sub_eq_zero, ← map_sub, mkQ_apply, Quotient.mk_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFv : io (F : V) = r • ((x - y : R') : V')` using `congrArg Subtype.val hF`. Establish `hcalc : io ((algebraMap O K r)⁻¹ • (F : V)) = ((x - y : R') : V')`. Rewrite using `[map_smul, hFv, ← algebraMap_smul K r, smul_smul, inv_mul_cancel₀ (lrt_am_ne hr0), one_smul]`. Establish `hmem : (algebraMap O K r)⁻¹ • (F : V) ∈ R`. Rewrite using `[← h, hcalc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(x - y).2`. Conclude with `⟨⟨_, hmem⟩, Subtype.ext hcalc⟩`. Take `⟨s, hs⟩` from `N.mkQ.exists_rightInverse_of_surjective N.range_mkQ`. Set `e` to `LinearEquiv.ofInjective ioR hinj`. Set `p : R' →ₗ[O] N` to `(LinearMap.id - s ∘ₗ N.mkQ).codRestrict N (fun y => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Quotient.mk_eq_zero, ← mkQ_apply, LinearMap.sub_apply, map_sub, sub_eq_zero]`. Conclude with `(LinearMap.congr_fun hs (N.mkQ y)).symm)`. Set `retO : R' →ₗ[O] R` to `e.symm.toLinearMap ∘ₗ p`. Establish `hretO : ∀ x : R, retO (ioR x) = x`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show e.symm (p (ioR x)) = x`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h0 : N.mkQ (ioR x) = 0`. Rewrite using `[mkQ_apply, Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨x, rfl⟩`. Use `show (LinearMap.id - s ∘ₗ N.mkQ : R' →ₗ[O] R') (ioR x) = ioR x`. Simplify using `[h0]`. Set `ret : V' →ₗ[K] V` to `b'.constr K (fun j => ((retO ⟨b' j, subset_span ⟨j, rfl⟩⟩ : R) : V))`. Establish `hret : ∀ G (hG : G ∈ R'), ret G = retO ⟨G, hG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Introduce `G hG`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Conclude with `b'.constr_basis K _ j`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `(congrArg Subtype.val (map_zero retO)).symm`. Consider the case `add x y hx hy ihx ihy`. Rewrite using `[map_add, ihx, ihy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(congrArg Subtype.val (map_add retO ⟨x, hx⟩ ⟨y, hy⟩)).symm`. Consider the case `smul a x hx ih`. Establish `h1 : ret (a • x) = a • ret x`. Rewrite using `[← algebraMap_smul K a x, map_smul, algebraMap_smul]`. Rewrite using `[h1, ih]`.
-
-Conclude with `(congrArg Subtype.val (map_smul retO a ⟨x, hx⟩)).symm`. Use `⟨ret, fun F => ?_, fun G hG => by rw [hret G hG]; exact (retO _).2⟩` and prove the remaining obligations. Take `⟨a, ha, haF⟩` from `lrt_den (O := O) b F`. Establish `h1 : ret (io (a • F)) = a • F`. Rewrite using `[hret _ ((h _).2 haF)]`.
-
-Conclude with `congrArg Subtype.val (hretO ⟨a • F, haF⟩)`. Establish `h2 : a • ret (io F) = a • F`. Rewrite using `[← h1, ← algebraMap_smul K a F, map_smul, map_smul, algebraMap_smul]`. Conclude with `smul_right_injective V ha h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latRetract {O K V V' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V] [AddCommGroup V'] [Module K V'] [Module O V'] [IsScalarTower O K V'] {ι ι' : Type} [Fintype ι] [Fintype ι'] (b : Module.Basis ι K V) (b' : Module.Basis ι' K V') (io : V →ₗ[K] V') (h : ∀ F, io F ∈ Submodule.span O (Set.range b') ↔ F ∈ Submodule.span O (Set.range b)) : ∃ ret : V' →ₗ[K] V, (∀ F, ret (io F) = F) ∧ ∀ G ∈ Submodule.span O (Set.range b'), ret G ∈ Submodule.span O (Set.range b) := by
   classical

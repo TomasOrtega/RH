@@ -57,15 +57,15 @@ def smulHomeo {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional 
     exact continuous_const.matrix_mulVec (continuous_apply x)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ g d b Φ Φinf Φf Φv hcΦ hcs hpure hprod`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Take `⟨hInf, hv, h1, h2, h3⟩` from `hC F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet g`. Set `eI` to `smulHomeo (Ainf F) σ (a := a) J hInf`. Set `eV` to `fun v => smulHomeo (Fv F v) σ (a := a) J (hv v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨fun Y => Φinf (hInf • Y), fun Y => ∏ᶠ v, Φv v (hv v • projV v Y), fun v Y => Φv v (hv v • Y), hcΦ.comp eI.continuous, hcs.comp_homeomorph eI, ⟨?_, ?_, fun _ => rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Conclude with `⟨(hpure.1 v).1.comp_continuous (eV v).continuous, (hpure.1 v).2.comp_homeomorph (eV v)⟩`. Use `filter_upwards [hpure.2.1, h3 d b] with v hv1 hv2`. Use function extensionality and compare the values at `Y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hv1, Set.indicator, Pi.one_apply]`. Distinguish the cases in `hY : Y ∈ latV b v`. Rewrite using `[if_pos ((hv2 Y).2 hY), if_pos hY]`. Rewrite using `[if_neg (fun h => hY ((hv2 Y).1 h)), if_neg hY]`. Introduce `X show Φ (g • X) = Φinf (hInf • projInf X) * ∏ᶠ v, Φv v (hv v • projV v (projFin X))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod (g • X), h1 X, hpure.2.2]`. Use `congr 1`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[h2 v X]`. Conclude with `fun μinf hμinf νinf hνinf fibInf hfi => hI F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμinf νinf hνinf fibInf hfi hInf Φinf hcΦ hcs`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun v μv hμv νv hνv fibV hfv => hV F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ v μv hμv νv hνv fibV hfv (hv v) (Φv v) (hpure.1 v)`.
+A detailed English derivation is pending.
 -/
 theorem pullLoc_of (hC : CompG) (hI : FibInvInf) (hV : FibInvV) : PullLoc := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ g d b Φ Φinf Φf Φv hcΦ hcs

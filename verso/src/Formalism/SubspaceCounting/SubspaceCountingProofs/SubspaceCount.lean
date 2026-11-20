@@ -10,7 +10,7 @@ namespace Formalism.G0
 namespace SubspaceCountP
 
 /- English proof (translation)
-Apply the tactic sequence `cases n <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gb_zero_right (q n : ℕ) : gaussBinom q n 0 = 1 := by
   cases n <;> rfl
@@ -23,7 +23,7 @@ theorem gb_succ_succ (q n k : ℕ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `| 0, 0, h => absurd h (lt_irrefl 0) | 0, _ + 1, _ => rfl | _ + 1, 0, h => absurd h (Nat.not_lt_zero _) | n + 1, k + 1, h => by rw [gb_succ_succ, gb_eq_zero q n k (by omega), gb_eq_zero q n (k + 1) (by omega)] simp`.
+A detailed English derivation is pending.
 -/
 theorem gb_eq_zero (q : ℕ) : ∀ n k : ℕ, n < k → gaussBinom q n k = 0
   | 0, 0, h => absurd h (lt_irrefl 0)
@@ -36,13 +36,13 @@ theorem gb_eq_zero (q : ℕ) : ∀ n k : ℕ, n < k → gaussBinom q n k = 0
 def P (q : ℤ) (m k : ℕ) : ℤ := ∏ i ∈ Finset.range k, (q ^ m - q ^ i)
 
 /- English proof (translation)
-Unfold `P`. Rewrite using `[Finset.prod_range_succ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem P_succ_right (q : ℤ) (m k : ℕ) : P q m (k + 1) = P q m k * (q ^ m - q ^ k) := by
   unfold P; rw [Finset.prod_range_succ]
 
 /- English proof (translation)
-Unfold `P`. Rewrite using `[Finset.prod_range_succ', pow_zero, mul_comm]`. Use `congr 1`. Rewrite using `[← Finset.card_range k, ← Finset.prod_const, Finset.card_range, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -56,15 +56,15 @@ theorem P_succ_succ (q : ℤ) (m k : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `k`. Consider the cases of `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp [P, gb_zero_right]`. Consider the case `succ k`. Establish `: P q 0 (k + 1) = 0`. Unfold `P`. Conclude with `Finset.prod_eq_zero (Finset.mem_range.mpr (Nat.succ_pos k)) (by simp)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using `[gaussBinom]`. Consider the case `succ n ih`. Introduce `k`. Consider the cases of `k with`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero => simp [P, gb_zero_right]`. Consider the case `succ k`. Rewrite using `[gb_succ_succ]`. Use `push_cast`. Rewrite using `[hq]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `ih k`. Establish `h2` using `ih (k + 1)`. Rewrite using `[P_succ_succ q k k, P_succ_succ q n k]`. Rewrite `h2` using `[P_succ_succ q k k, P_succ_right]`. Take the linear combination `(q ^ (k + 1) - 1) * q ^ k * h1 + q ^ (k + 1) * h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gb_mul_P (q : ℤ) (qn : ℕ) (hq : (qn : ℤ) = q) :
     ∀ n k : ℕ, (gaussBinom qn n k : ℤ) * P q k k = P q n k := by
@@ -136,9 +136,9 @@ namespace SubspaceCountP
 variable {F W : Type} [Field F] [Fintype F] [AddCommGroup W] [Module F W] [Finite W]
 
 /- English proof (translation)
-Set `_` to `Fintype.ofFinite (Gr F W k)`. Rewrite using `[← Nat.card_congr (Equiv.sigmaFiberEquiv (spanMap (F := F) (W := W) k)), Nat.card_sigma]`. Establish `h : ∀ U : Gr F W k, Nat.card {s // spanMap k s = U} = ∏ i : Fin k, (Fintype.card F ^ k - Fintype.card F ^ i.val)`. Introduce `U`. Rewrite using `[Nat.card_congr (fiberEquiv k U), card_linearIndependent (by rw [U.2]), U.2]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h, Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_LI_eq (k : ℕ) :
     Nat.card (LI F W k) =
@@ -153,7 +153,7 @@ theorem card_LI_eq (k : ℕ) :
   simp only [h, Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_prod, P, ← Fin.prod_univ_eq_prod_range]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right hq (by omega))]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem cast_prod_eq_P (q m k : ℕ) (hq : 1 ≤ q) (hm : k ≤ m) :
     ((∏ i : Fin k, (q ^ m - q ^ i.val) : ℕ) : ℤ) = P (q : ℤ) m k := by
@@ -167,15 +167,15 @@ end SubspaceCountP
 
 open SubspaceCountP in
 /- English proof (translation)
-Introduce `F W _ _ _ _ _ k`. Establish `hcount : countBelow (⊤ : Submodule F W) k = Nat.card (Gr F W k)` using `Nat.card_congr (Equiv.subtypeEquivRight (fun U => by simp))`. Rewrite using `[hcount]`. Break down `lt_or_ge (finrank F W) k with hnk | hkn` into its components or cases. Rewrite using `[gb_eq_zero _ _ _ hnk, Nat.card_eq_zero] left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨U, hU⟩`. Use `Submodule.finrank_le U` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hq : 1 < Fintype.card F` using `Fintype.one_lt_card`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1` using `card_LI_eq (F := F) (W := W) k`. Rewrite `h1` using `[card_linearIndependent hkn]`. Establish `h2` using `congrArg (Nat.cast : ℕ → ℤ) h1`. Rewrite `h2` using `[Nat.cast_mul, cast_prod_eq_P _ _ _ hq.le hkn, cast_prod_eq_P _ _ _ hq.le le_rfl]`. Establish `h3` using `gb_mul_P (Fintype.card F : ℤ) (Fintype.card F) rfl (finrank F W) k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : P (Fintype.card F : ℤ) k k ≠ 0`. Unfold `P`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Establish `: (Fintype.card F : ℤ) ^ i < (Fintype.card F : ℤ) ^ k` using `pow_lt_pow_right₀ (by exact_mod_cast hq) (Finset.mem_range.mp hi)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `: (Nat.card (Gr F W k) : ℤ) = gaussBinom (Fintype.card F) (finrank F W) k` using `mul_right_cancel₀ hP (h2.symm.trans h3.symm)`. Conclude with `this` after adjusting the coercions.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countSubspacesEq : SubspaceCount := by
   intro F W _ _ _ _ _ k

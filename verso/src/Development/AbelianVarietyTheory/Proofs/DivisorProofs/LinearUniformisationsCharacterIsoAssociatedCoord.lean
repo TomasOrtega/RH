@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.PelUnifUniqCoord
 
 /- English proof (translation)
-Introduce `E _ _ _ H W _ _ _ hW t P P'`. Use `haveI : CharZero W := hW.2`. Take `⟨m, -⟩` from `GlobalTheory.ObjMaps.exists_sab_id t`. Take `⟨e, he⟩` from `GlobalTheory.SameCoord.exists_equiv_psiCoord E H W t t m P P' hW.1.1 hW.1.2.2.1 hW.1.2.2.2`. Use `⟨e, fun y r r' hr hr' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `he y r hr`. Establish `h1 : Associated (u * r) r'` using `GlobalTheory.TorRef.psiCoord_associated hu hr'`. Establish `h2 : Associated r r'` using `(associated_unit_mul_left r u u.isUnit).symm.trans h1`. Conclude with `h2.pow_pow`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (W : Type) [CommRing W] [IsDomain W]
     [IsLocalRing W], GlobalTheory.Mum.Base W → ∀ (t : SAB H (Sp W)) (P P' : PELUnif (maximalIdeal W) t),

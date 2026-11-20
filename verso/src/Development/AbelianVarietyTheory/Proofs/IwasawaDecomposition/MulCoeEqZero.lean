@@ -21,7 +21,7 @@ section Alg
 variable {S A : Type} [CommRing S] [CommRing A] [Algebra S A] (J : Ideal A) [Module Sᵐᵒᵖ J] [IsCentralScalar S J]
 
 /- English proof (translation)
-Establish `h : (a : A) * b ∈ J ^ 2` using `by rw [pow_two]; exact Ideal.mul_mem_mul a.2 b.2`. Rewrite `h` using `[hJ]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_coe_eq_zero (hJ : J ^ 2 = ⊥) (a b : J) : (a : A) * (b : A) = 0 := by
   have h : (a : A) * b ∈ J ^ 2 := by rw [pow_two]; exact Ideal.mul_mem_mul a.2 b.2

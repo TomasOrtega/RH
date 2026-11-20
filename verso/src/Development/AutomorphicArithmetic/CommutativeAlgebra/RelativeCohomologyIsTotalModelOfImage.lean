@@ -14,14 +14,14 @@ private noncomputable abbrev pb {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ}
   (Cochain.ofHom ((chains R).map f)).comp α (zero_add n)
 
 /- English proof (translation)
-The claim follows from `Cochain.comp_sub _ _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem pb_sub {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E') K n) :
     pb f (α - β) = pb f α - pb f β :=
   Cochain.comp_sub _ _ _ _
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.2.1 f α p s h U x`.
+A detailed English derivation is pending.
 -/
 private theorem ev_pb {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E') K n)
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
@@ -29,14 +29,14 @@ private theorem ev_pb {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α : Coc
   (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.2.1 f α p s h U x
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 0 0 p s h U x).2.2.1`.
+A detailed English derivation is pending.
 -/
 private theorem ev_zero {E : Spc} {K : Cx R} {n : ℤ} (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0})
     (x : Sx E p U) : ev (0 : Cochain ((chains R).obj E) K n) p s h U x = 0 :=
   ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 0 0 p s h U x).2.2.1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.1 _ _ fun p s h' U x => by rw [ev_pb, h, ev_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem pb_eq_zero {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E') K n)
     (h : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U), ev α p s h U (x.map f) = 0) :
@@ -44,7 +44,7 @@ private theorem pb_eq_zero {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α 
   (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.1 _ _ fun p s h' U x => by rw [ev_pb, h, ev_zero]
 
 /- English proof (translation)
-Distinguish the cases in `h : n + 1 = n'`. Rewrite using `[δ_comp _ _ (zero_add n) 1 n' n' h (zero_add 1) h]`. Simplify using the standard rewrite rules. Simplify using `[δ_shape _ _ h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem δ_pb {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E') K n) (n' : ℤ) :
     δ n n' (pb f α) = pb f (δ n n' α) := by
@@ -53,7 +53,7 @@ private theorem δ_pb {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α : Coc
   · simp [δ_shape _ _ h]
 
 /- English proof (translation)
-Rewrite using `[← ev_pb, ← δ_pb, pb_eq_zero f α h, δ_zero, ev_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem δ_van {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E') K n) (n' : ℤ)
     (h : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U), ev α p s h U (x.map f) = 0)
@@ -62,7 +62,7 @@ private theorem δ_van {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α : Co
   rw [← ev_pb, ← δ_pb, pb_eq_zero f α h, δ_zero, ev_zero]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.1 α β fun p s h U w => by rcases (UpperTheory.doubleMappingCylinder_cochain_extension R P).1 p U w with ⟨z, rfl⟩ | ⟨z, rfl⟩ · exact hl p s h U z · exact hr p s h U z`.
+A detailed English derivation is pending.
 -/
 private theorem dbl_ext (P : Arrow Spc) {K : Cx R} {N : ℤ} (α β : Cochain ((chains R).obj (dbl P)) K N)
     (hl : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + N = s) (U : Scheme.{0}) (z : Sx P.right p U),
@@ -86,9 +86,7 @@ Both sides reduce to the same expression.
 private theorem map_id {E : Spc} {p : ℕ} {U : Scheme.{0}} (x : Sx E p U) : x.map (𝟙 E) = x := rfl
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hz`. Establish `e : (y.map P.hom).map (dbl.inl P) = (y.map P.hom).map (dbl.inr P)`. Rewrite using `[map_map, map_map]`. Conclude with `congrArg (fun f => Sx.map f y) (pushout.condition : P.hom ≫ pushout.inl P.hom P.hom = P.hom ≫ pushout.inr P.hom P.hom)`. Rewrite using `[e]`.
-
-Conclude with `h p s h' U _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem van_img (P : Arrow Spc) {K : Cx R} {n : ℤ} (α : Cochain ((chains R).obj (dbl P)) K n)
     (h : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (z : Sx P.right p U),
@@ -103,7 +101,7 @@ private theorem van_img (P : Arrow Spc) {K : Cx R} {n : ℤ} (α : Cochain ((cha
   exact h p s h' U _
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.1 _ _ fun p s h U x => by rw [ev_pb, ev_pb, map_map, dbl.inr_fold, map_id]`.
+A detailed English derivation is pending.
 -/
 private theorem pb_fold (P : Arrow Spc) {K : Cx R} {n : ℤ} (α : Cochain ((chains R).obj P.right) K n) :
     pb (dbl.inr P) (pb (dbl.fold P) α) = α :=
@@ -111,7 +109,7 @@ private theorem pb_fold (P : Arrow Spc) {K : Cx R} {n : ℤ} (α : Cochain ((cha
     rw [ev_pb, ev_pb, map_map, dbl.inr_fold, map_id]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, s = t + m` from `⟨s - m, by omega⟩`. Conclude with `(h p t hs U z).symm.trans (h' p t hs U z)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem comp_eq {E E' : Spc} {j : E ⟶ E'} {Z : Sub E} {K : Cx R} {m N : ℤ}
     {γ γ' : Cochain ((chains R).obj E') K N} {x : (famDC Z K m).Tot} (h : Comp j γ x) (h' : Comp j γ' x)
@@ -121,7 +119,7 @@ private theorem comp_eq {E E' : Spc} {j : E ⟶ E'} {Z : Sub E} {K : Cx R} {m N 
   exact (h p t hs U z).symm.trans (h' p t hs U z)
 
 /- English proof (translation)
-Introduce `p s h U z`. Conclude with `(ev_zero p _ h U (z.map j)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem comp_zero {E E' : Spc} (j : E ⟶ E') (Z : Sub E) (K : Cx R) (m N : ℤ) :
     Comp j (0 : Cochain ((chains R).obj E') K N) (0 : (famDC Z K m).Tot) := by
@@ -129,7 +127,7 @@ private theorem comp_zero {E E' : Spc} (j : E ⟶ E') (Z : Sub E) (K : Cx R) (m 
   exact (ev_zero p _ h U (z.map j)).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains (ZMod q)).map (dbl.inr P))) g (zero_add N)) = 0`. Establish `e : zcomp (Cocycle.ofHom ((chains (ZMod q)).map (dbl.inr P))) g (zero_add N) = 0` using `Cocycle.ext (pb_eq_zero _ _ h)`. Rewrite using `[e, CohomologyClass.mk_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pull_inr (q : ℕ) (P : Arrow Spc) (i N : ℤ) (g : Cocycle ((chains (ZMod q)).obj (dbl P)) (res _ (tw q i)) N)
     (h : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + N = s) (U : Scheme.{0}) (z : Sx P.right p U),
@@ -144,35 +142,35 @@ end UpperTheory.VanishingEvaluation
 
 open UpperTheory.VanishingEvaluation in
 /- English proof (translation)
-Introduce `q P i m n N hN`. Establish `C` using `fun n N h => UpperTheory.supportDoubleComplex_total_represents_vanishing_cochain (ZMod q) (dbl.inl P) (Sub.img P.hom) (res _ (tw q i)) m n N h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx hD`. Take `⟨γ, hγ, hv⟩` from `(UpperTheory.doubleMappingCylinder_cochain_extension (ZMod q) P).2 (res _ (tw q i)) m N x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0 : δ N (N + 1) γ = 0`. Establish `hc` using `(C n N hN).2.2.1 γ x hγ`. Rewrite `hc` using `[hD]`. Use `dbl_ext P _ _ (comp_eq hc (comp_zero _ _ _ _ _)) fun p s h U z => ?_` and prove the remaining obligations. Rewrite using `[δ_van _ _ _ hv, ev_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨CohomologyClass.mk (Cocycle.mk γ (N + 1) rfl h0), ?_⟩, Cocycle.mk γ (N + 1) rfl h0, rfl, hγ, hv⟩` and prove the remaining obligations. Conclude with `pull_inr q P i N _ hv`. Introduce and unpack `⟨c, hc⟩`. Take `⟨g₀, rfl⟩` from `CohomologyClass.mk_surjective c`. Establish `hc' : CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains (ZMod q)).map (dbl.inr P))) g₀ (zero_add N)) = 0` using `hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc'` using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨N', hN', β, hβ⟩` from `hc'`. Establish `hβ' : δ N' N β = pb (dbl.inr P) g₀.1` using `hβ`. Set `e : Cocycle ((chains (ZMod q)).obj (dbl P)) (res _ (tw q i)) N` to `Cocycle.mk (δ N' N (pb (dbl.fold P) β)) (N + 1) rfl (δ_δ _ _ _ _)`. Establish `he : CohomologyClass.mk e = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CohomologyClass.mk_eq_zero_iff]`. Conclude with `⟨N', hN', _, rfl⟩`. Establish `hm : CohomologyClass.mk (g₀ - e) = CohomologyClass.mk g₀`. Rewrite using `[CohomologyClass.mk_sub, he, sub_zero]`. Establish `hp : pb (dbl.inr P) (g₀ - e).1 = 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `pb (dbl.inr P) (g₀.1 - δ N' N (pb (dbl.fold P) β)) = 0`. Rewrite using `[pb_sub, ← δ_pb, pb_fold, hβ', sub_self]`. Establish `hv : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + N = s) (U : Scheme.{0}) (z : Sx P.right p U), ev (g₀ - e).1 p s h U (z.map (dbl.inr P)) = 0` using `fun p s h U z => by`. Rewrite using `[← ev_pb, hp, ev_zero]`. Take `⟨x, hd, hx⟩` from `(C n N hN).1 (g₀ - e).1 (van_img P _ hv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, hd, ?_, g₀ - e, hm, hx, hv⟩` and prove the remaining obligations. Use `(C (n + 1) (N + 1) (by omega)).2.1 (δ N (N + 1) (g₀ - e).1) _ 0 ((C n N hN).2.2.2.2 x hd) (fun _ _ _ => rfl) ((C n N hN).2.2.1 _ x hx) ?_` and prove the remaining obligations. Rewrite using `[(g₀ - e).δ_eq_zero]`. Conclude with `comp_zero _ _ _ _ _`. Introduce and unpack `x c x' c' ⟨g, hg, hc, hv⟩ ⟨g', hg', hc', hv'⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g - g', ?_, (C n N hN).2.2.2.1 _ _ _ _ hc hc', fun p s h U z => ?_⟩` and prove the remaining obligations. Rewrite using `[CohomologyClass.mk_sub, hg, hg']`. Both sides reduce to the same expression. Use `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).1 g.1 g'.1 p s h U (z.map (dbl.inr P))).2.1` as an intermediate fact. Rewrite `this` using `[hv, hv', sub_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Introduce and unpack `x c hd ⟨g, hg, hc, hv⟩`. Take `⟨n', rfl⟩ : ∃ n', n = n' + 1` from `⟨n - 1, by omega⟩`. Take `⟨N', rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by omega⟩`. Establish `hN' : n' + m = N'` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [add_sub_cancel_right]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hz : CohomologyClass.mk g = 0` using `by rw [hg, h0]; rfl`. Rewrite `hz` using `[CohomologyClass.mk_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM, β, hβ⟩` from `hz`. Take `rfl : M = N'` from `by omega`. Establish `hβ' : δ M (M + 1) β = g.1` using `hβ`. Establish `hp : pb (dbl.inr P) g.1 = 0` using `pb_eq_zero _ _ hv`. Establish `hb : δ M (M + 1) (β - pb (dbl.fold P) (pb (dbl.inr P) β)) = g.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[δ_sub, δ_pb, δ_pb, hβ', hp]`. Simplify using the standard rewrite rules. Establish `hp' : pb (dbl.inr P) (β - pb (dbl.fold P) (pb (dbl.inr P) β)) = 0`. Rewrite using `[pb_sub, pb_fold, sub_self]`. Establish `hv' : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + M = s) (U : Scheme.{0}) (z : Sx P.right p U), ev (β - pb (dbl.fold P) (pb (dbl.inr P) β)) p s h U (z.map (dbl.inr P)) = 0` using `fun p s h U z => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ev_pb, hp', ev_zero]`. Take `⟨y, hy, hcy⟩` from `(C n' M hN').1 _ (van_img P _ hv')`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `h1` using `(C n' M hN').2.2.1 _ y hcy`. Rewrite `h1` using `[hb]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(C (n' + 1) (M + 1) (by omega)).2.1 g.1 _ x ((C n' M hN').2.2.2.2 y hy) hd h1 hc`. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨β, hβ, hvβ⟩` from `(UpperTheory.doubleMappingCylinder_cochain_extension (ZMod q) P).2 (res _ (tw q i)) m N' y`. Establish `e : g.1 = δ N' (N' + 1) β` using `dbl_ext P _ _ (comp_eq hc ((C n' N' hN').2.2.1 β y hβ)) fun p s h U z => by`. Rewrite using `[hv, δ_van _ _ _ hvβ]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `c.1 = 0`. Rewrite using `[← hg, CohomologyClass.mk_eq_zero_iff]`. Conclude with `⟨N', rfl, β, e.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.relativeCohomology_isTotalModel_of_image :
     ∀ (q : ℕ) (P : Arrow Spc) (i m n N : ℤ), n + m = N → TModel (famDC (Sub.img P.hom) (res _ (tw q i)) m) n (fun x (c : Hs q P N i) => SRel (N := N) x c.1) := by

@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Use `⟨fun α β => ?_, fun α α' β γ γ' h h' => CupSpec.isAW_add_left μ hk h h', fun α β β' γ γ' h h' => CupSpec.isAW_add_right μ hk h h'⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `CupSpec.isAW_exists μ hk α β`. Conclude with `⟨γ, hγ, fun γ' h' => CupSpec.isAW_unique μ hk h' hγ⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAW_existsUnique_biadditive (R : Type) [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E : Spc}
     {n m k : ℤ} (hk : n + m = k) :

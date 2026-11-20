@@ -14,7 +14,7 @@ variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {K : T
   [IsFractionRing O K]
 
 /- English proof (translation)
-Establish `hx' : (IsDiscreteValuationRing.maximalIdeal O).valuation K x ≠ 0` using `by simpa using hx`. Establish `hy' : (IsDiscreteValuationRing.maximalIdeal O).valuation K y ≠ 0` using `by simpa using hy`. Unfold `ord_vw`. Rewrite using `[map_mul, WithZero.log_mul hx' hy']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ord_mul {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) : ord_vw O (x * y) = ord_vw O x + ord_vw O y := by
   have hx' : (IsDiscreteValuationRing.maximalIdeal O).valuation K x ≠ 0 := by simpa using hx
@@ -24,7 +24,7 @@ theorem ord_mul {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) : ord_vw O (x * y) = ord
   ring
 
 /- English proof (translation)
-Establish `h1 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (algebraMap O K x) = 1` using `le_antisymm ((IsDiscreteValuationRing.maximalIdeal O).valuation_le_one x) (not_lt.1 fun h => hx (((IsDiscreteValuationRing.maximalIdeal O).valuation_lt_one_iff_mem x).1 h))`. Unfold `ord_vw`. Rewrite using `[h1, WithZero.log_one, neg_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_of_not_mem (x : O) (hx : x ∉ IsLocalRing.maximalIdeal O) : ord_vw O (algebraMap O K x) = 0 := by
   have h1 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (algebraMap O K x) = 1 :=
@@ -34,11 +34,9 @@ theorem ord_of_not_mem (x : O) (hx : x ∉ IsLocalRing.maximalIdeal O) : ord_vw 
   rw [h1, WithZero.log_one, neg_zero]
 
 /- English proof (translation)
-Establish `h0 : (l : K) ≠ 0`. Rewrite using `[← map_natCast (algebraMap O K)]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 (Nat.cast_ne_zero.2 hl)`. Establish `h1 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (l : K) < 1`. Rewrite using `[← map_natCast (algebraMap O K), HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (l : K) ≠ 0` using `by simpa using h0`. Unfold `ord_vw`. Introduce `h4`. Use `WithZero.exp_log h2` as an intermediate fact.
-
-Rewrite `this` using `[neg_eq_zero.1 h4, WithZero.exp_zero]`. Conclude with `h1.ne this.symm`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_natCast_ne [CharZero O] (l : ℕ) (hl : l ≠ 0) (h : (l : O) ∈ IsLocalRing.maximalIdeal O) : ord_vw O (l : K) ≠ 0 := by
   have h0 : (l : K) ≠ 0 := by
@@ -55,14 +53,14 @@ theorem ord_natCast_ne [CharZero O] (l : ℕ) (hl : l ≠ 0) (h : (l : O) ∈ Is
   exact h1.ne this.symm
 
 /- English proof (translation)
-Rewrite using `[val_vp, if_neg hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_of_ne (l : ℕ) {x : K} (hx : x ≠ 0) :
     val_vp O l x = (((ord_vw O x : ℚ) / (ord_vw O (l : K) : ℚ) : ℚ) : WithTop ℚ) := by
   rw [val_vp, if_neg hx]
 
 /- English proof (translation)
-Rewrite using `[val_of_ne O l hx, val_of_ne O l hy, val_of_ne O l (mul_ne_zero hx hy), ord_mul O hx hy, ← WithTop.coe_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_mul (l : ℕ) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     val_vp O l (x * y) = val_vp O l x + val_vp O l y := by
@@ -75,13 +73,13 @@ theorem val_mul (l : ℕ) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
 end Val
 
 /- English proof (translation)
-Establish `h1 : (IsCMField.complexConj E r) ^ 2 = r ^ 2`. Rewrite using `[← map_pow, hr, map_neg, map_natCast]`. Establish `hne : IsCMField.complexConj E r ≠ r`. Introduce `h`. Set `ψ : E →+* ℂ` to `Classical.choice inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `h2 : conj (ψ r) = ψ r` using `by rw [← IsCMField.complexEmbedding_complexConj, h]`. Establish `h3 : (ψ r) ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hr, map_neg, map_natCast]`. Take `⟨x, hx⟩ : ∃ x : ℝ, (x : ℂ) = ψ r` from `⟨(ψ r).re, Complex.conj_eq_iff_re.1 h2⟩`. Rewrite `h3` using `[← hx]`. Establish `h4 : x ^ 2 = -(d : ℝ)` using `by exact_mod_cast h3`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : (0 : ℝ) < d` using `by exact_mod_cast hd.pos`. Use polynomial arithmetic with `[sq_nonneg x]`. Establish `h6 : (IsCMField.complexConj E r - r) * (IsCMField.complexConj E r + r) = 0`. Take the linear combination `h1`. Break down `mul_eq_zero.1 h6 with h | h` into its components or cases.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (sub_eq_zero.1 h) hne`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+A detailed English derivation is pending.
 -/
 theorem conj_sqrt (E : Type) [Field E] [NumberField E] [IsCMField E] (d : ℕ) (hd : d.Prime) (r : E)
     (hr : r ^ 2 = -(d : E)) : IsCMField.complexConj E r = -r := by
@@ -104,19 +102,17 @@ theorem conj_sqrt (E : Type) [Field E] [NumberField E] [IsCMField E] (d : ℕ) (
   · exact eq_neg_of_add_eq_zero_left h
 
 /- English proof (translation)
-Establish `hS : ∀ b ∈ orderC c, ρE b v = σ b • v`. Introduce `b hb`. Use `Module.End.mem_eigenspace_iff.1 (Submodule.mem_iInf _ |>.1 hv ⟨b, hb⟩)` as an intermediate fact. Rewrite using `[show b = ((⟨b, hb⟩ : orderC c) : E) from rfl, hρE]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, hy, hxy⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) a`. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hc`. Use `set N := algebraMap (OF E) (𝓞 E) n with hN`. Establish `hmem : ∀ z : 𝓞 E, algebraMap (𝓞 E) E (N * z) ∈ orderC c` using `fun z => Subring.subset_closure (Or.inr ⟨N * z, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hn), rfl⟩)`. Establish `hy0 : algebraMap (𝓞 E) E y ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using nonZeroDivisors.ne_zero hy`. Establish `hN0 : algebraMap (𝓞 E) E N ≠ 0`. Rewrite using `[hN, ← IsScalarTower.algebraMap_apply]`. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (OF E) E)).2 hn0`. Use `set b := algebraMap (𝓞 E) E (N * y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `hb0 : b ≠ 0` using `by simp only [b, map_mul]; exact mul_ne_zero hN0 hy0`. Establish `hab : a * b = algebraMap (𝓞 E) E (N * x)`. Simplify using `only [b, map_mul, ← hxy]`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `hS b (hmem y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hS (a * b) (hab ▸ hmem x)`. Establish `h3 : ρE b⁻¹ v = (σ b)⁻¹ • v`. Establish `h4 : v = σ b • ρE b⁻¹ v`. Rewrite using `[← map_smul, ← h1, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel₀ hb0, map_one, Module.End.one_apply]`. Establish `hσb : σ b ≠ 0` using `(map_ne_zero σ).2 hb0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Use `conv_rhs => rw [h4, smul_smul, inv_mul_cancel₀ hσb, one_smul]`. Establish `h5 : ρE a = ρE b⁻¹ * ρE (a * b)`. Rewrite using `[← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[h5, Module.End.mul_apply, h2, map_smul, h3, smul_smul, map_mul, mul_assoc, mul_inv_cancel₀ ((map_ne_zero σ).2 hb0), mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_ext {E : Type} [Field E] [NumberField E] [IsCMField E] {c : Ideal (OF E)} (hc : c ≠ ⊥)
     {O : Type} [CommRing O] {K : Type} [Field K] [Algebra O K] {H : Type} [AddCommGroup H] [Module O H]
@@ -160,47 +156,43 @@ end GlobalTheory.CMFormBound
 namespace GlobalTheory.CMFormBound
 
 /- English proof (translation)
-Introduce `E _ _ _ c hc l hl O _ _ _ _ K _ _ _ hlm hcard D hD hCl I _ φ hφ H _ _ ρ Fil B hLat hEig e f hgens hB hρE`. Use `⟨hρE, ?_⟩` and prove the remaining obligations. Introduce `ρE hρE' d r ξ hd hr hξ hξ0 hval`. Establish `hconjr` using `conj_sqrt E d hd r hr`. Establish `ha_real : IsCMField.complexConj E (ξ * r) = ξ * r`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hξ, hconjr, neg_mul_neg]`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : (d : E) = 0`. Rewrite `hr` using `[zero_pow two_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `neg_eq_zero.1 hr.symm`. Conclude with `hd.ne_zero (by exact_mod_cast h0)`. Establish `ha0 : ξ * r ≠ 0` using `mul_ne_zero hξ0 hr0`. Establish `hinv : ρE (ξ * r) * ρE (ξ * r)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ ha0, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv' : ρE (ξ * r)⁻¹ * ρE (ξ * r) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ ha0, map_one]`. Use `⟨⟨(IsCMField.complexConj_eq_self_iff E (ξ * r)).1 ha_real, ha0⟩, ?_, ?_⟩` and prove the remaining obligations. Use `⟨(B.baseChange K).compl₂ (ρE (ξ * r)), ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.compl₂_apply, ← Module.End.mul_apply, hinv, Module.End.one_apply]`. Introduce `BF' hBF'`. Use `LinearMap.ext₂ fun x y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.compl₂_apply, hBF' x (ρE (ξ * r) y), ← Module.End.mul_apply, hinv', Module.End.one_apply]`. Introduce `BF hBF i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBFxy : ∀ x y, BF x y = B.baseChange K x (ρE (ξ * r) y)`. Introduce `x y`. Rewrite using `[hBF x (ρE (ξ * r) y), ← Module.End.mul_apply, hinv', Module.End.one_apply]`. Establish `hfmem : inK K H (f i) ∈ eigK ρ (bar (φ i))`. Establish `: f i ∈ eigLat ρ (bar (φ i))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hgens i).2]`. Conclude with `Submodule.mem_span_singleton_self _`. Conclude with `this`. Establish `heig` using `eig_ext hc ρ ρE hρE' (bar (φ i)) _ hfmem (ξ * r)`. Establish `hbar : bar (φ i) (ξ * r) = φ i (ξ * r)` using `by show φ i (IsCMField.complexConj E (ξ * r)) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[ha_real]`. Establish `hK : B.baseChange K (inK K H (e i)) (inK K H (f i)) = algebraMap O K (B (e i) (f i))`. Simplify using `[inK, LinearMap.BilinForm.baseChange_tmul, Algebra.smul_def]`. Establish `hval1 : BF (inK K H (e i)) (inK K H (f i)) = φ i (ξ * r) * algebraMap O K (B (e i) (f i))`. Rewrite using `[hBFxy, heig, hbar, LinearMap.map_smul, smul_eq_mul, hK]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD0 : algebraMap O K D ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hD`. Establish `hB0 : algebraMap O K (B (e i) (f i)) ≠ 0`. Introduce `h0`. Establish `h1` using `(hB i).2`. Rewrite `h1` using `[h0, val_vp, if_pos rfl, val_of_ne O l hD0, top_le_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `WithTop.coe_ne_top h1`. Establish `hφξ : φ i ξ ≠ 0` using `(map_ne_zero _).2 hξ0`. Establish `hφr : φ i r ≠ 0` using `(map_ne_zero _).2 hr0`. Establish `hF0 : BF (inK K H (e i)) (inK K H (f i)) ≠ 0`. Rewrite using `[hval1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `mul_ne_zero ((map_ne_zero _).2 ha0) hB0`. Establish `hlne : ord_vw O (l : K) ≠ 0` using `ord_natCast_ne O l hl.ne_zero hlm`. Establish `hvr : val_vp O l (φ i r) = (((if l = d then 1 / 2 else 0 : ℚ)) : WithTop ℚ)`. Establish `hsq : φ i r * φ i r = -1 * (d : K)`. Rewrite using `[← map_mul, ← sq, hr, map_neg, map_natCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdK : (d : K) ≠ 0`. Introduce `h0`. Rewrite `hsq` using `[h0, mul_zero]`. Conclude with `hφr (mul_self_eq_zero.1 hsq)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hm1 : ord_vw O ((-1 : K)) = 0`. Use `ord_of_not_mem O (K := K) (-1 : O) (by` as an intermediate fact. Introduce `h; exact (IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using (IsLocalRing.maximalIdeal O).neg_mem h)))`. Simplify using `using this`. Establish `hord` using `congrArg (ord_vw O) hsq`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite `hord` using `[ord_mul O hφr hφr, ord_mul O (by norm_num) hdK, hm1, zero_add]`. Rewrite using `[val_of_ne O l hφr]`. Distinguish the cases in `hld : l = d`. Substitute `hld` using the available equality. Rewrite using `[if_pos rfl]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Establish `: (ord_vw O (φ i r) : ℚ) * 2 = ord_vw O ((l : ℕ) : K)` using `by exact_mod_cast (by linarith : ord_vw O (φ i r) * 2 = ord_vw O ((l : ℕ) : K))`. Establish `hq : (ord_vw O ((l : ℕ) : K) : ℚ) ≠ 0` using `by exact_mod_cast hlne`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg hld]`. Establish `hdu : (d : O) ∉ IsLocalRing.maximalIdeal O`. Introduce `hdm`. Establish `hcop : IsCoprime (d : ℤ) (l : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hd hl).2 (Ne.symm hld))`. Take `⟨u, w, huw⟩` from `hcop`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Use `congrArg (Int.cast : ℤ → O) huw` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[← this]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hdm) (Ideal.mul_mem_left _ _ hlm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `hd0 : ord_vw O ((d : ℕ) : K) = 0`. Use `ord_of_not_mem O (K := K) (d : O) hdu` as an intermediate fact. Simplify using `using this`. Rewrite `hord` using `[hd0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `: ord_vw O (φ i r) = 0` using `by linarith`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hvF : val_vp O l (BF (inK K H (e i)) (inK K H (f i))) = val_vp O l (algebraMap O K (B (e i) (f i))) + val_vp O l (φ i ξ) + val_vp O l (φ i r)`. Rewrite using `[hval1, map_mul, val_mul O l (mul_ne_zero hφξ hφr) hB0, val_mul O l hφξ hφr]`.
-
-Rewrite using `[add_comm, add_assoc]`. Use `⟨hval1, hF0, hvF, hvr, ?_⟩` and prove the remaining obligations. Rewrite using `[hvF, hvr]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(hB i).2`.
-
-Conclude with `hval (φ i)`. Use `_ = _ := by rw [add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem formClaims : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ (l : ℕ), l.Prime → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → Nat.card (E →+* K) = Module.finrank ℚ E → ∀ (D : O), D ≠ 0 → ClearsIdem K c D → ∀ (I : Type) [Fintype I] (φ : I → E →+* K), IsCMTypeIn φ → ∀ (H : Type) [AddCommGroup H] [Module O H] (ρ : orderC c →+* Module.End O H) (Fil : Submodule O H) (B : LinearMap.BilinForm O H), IsCMLattice φ ρ Fil B → EigenClaims φ ρ Fil B D → ∀ e f : I → H, IsGens φ ρ e f → (∀ i, 0 ≤ val_vp O l (algebraMap O K (B (e i) (f i))) ∧ val_vp O l (algebraMap O K (B (e i) (f i))) ≤ val_vp O l (algebraMap O K D)) → (∃! ρE : E →+* Module.End K (K ⊗[O] H), ∀ a : orderC c, ρE a = (ρ a).baseChange K) → FormClaims l φ ρ B D e f := by
   intro E _ _ _ c hc l hl O _ _ _ _ K _ _ _ hlm hcard D hD hCl I _ φ hφ H _ _ ρ Fil B hLat hEig e f hgens hB hρE

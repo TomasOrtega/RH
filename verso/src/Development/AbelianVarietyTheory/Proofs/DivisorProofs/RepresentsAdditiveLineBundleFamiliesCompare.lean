@@ -16,9 +16,9 @@ namespace GlobalTheory.Pinch
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Use `⟨⟨by simp⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => lift s.fst (s.snd ≫ snd _ _)) (fun s => by simp) (fun s => ?_) fun s l h1 h2 => ?_⟩⟩` and prove the remaining obligations. Use `ext1`. Simplify using `[s.condition]`. Simplify using the standard rewrite rules. Use `ext1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[← h1]`. Simplify using `[← h2]`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_fst_whiskerRight {X Y : Over S} (f : X ⟶ Y) (W : Over S) :
     IsPullback (fst X W) (f ▷ W) f (fst Y W) := by
@@ -32,9 +32,9 @@ theorem isPullback_fst_whiskerRight {X Y : Over S} (f : X ⟶ Y) (W : Over S) :
     · simp [← h2]
 
 /- English proof (translation)
-Use `⟨⟨by simp⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => lift (s.snd ≫ fst _ _) s.fst) (fun s => by simp) (fun s => ?_) fun s l h1 h2 => ?_⟩⟩` and prove the remaining obligations. Use `ext1`. Simplify using the standard rewrite rules. Simplify using `[s.condition]`. Use `ext1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[← h2]`. Simplify using `[← h1]`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_snd_whiskerLeft (W : Over S) {X Y : Over S} (f : X ⟶ Y) :
     IsPullback (snd W X) (W ◁ f) f (snd W Y) := by
@@ -48,11 +48,11 @@ theorem isPullback_snd_whiskerLeft (W : Over S) {X Y : Over S} (f : X ⟶ Y) :
     · simp [← h1]
 
 /- English proof (translation)
-Establish `r₁` using `Rep.baseChange S A B' S' (S' ⊗ Z) (B' ⊗ Z) b' P' (fst S' Z) (fst B' Z) (b' ▷ Z) h₁ (isPullback_fst_whiskerRight b' Z)`. Establish `r₂` using `Rep.baseChange S A C Z (S' ⊗ Z) (S' ⊗ C) e Q (snd S' Z) (snd S' C) (S' ◁ e) h₂ (isPullback_snd_whiskerLeft S' e)`. Take `⟨ε, hε, hs⟩` from `rep_unique S A (B' ⊗ Z) (S' ⊗ C) (S' ⊗ Z) (b' ▷ Z) _ (S' ◁ e) _ r₁ r₂`. Establish `hf : ε.hom.left ≫ (fst S' C).left = (fst B' Z ≫ b').left`. Rewrite using `[← Over.comp_left, ← whiskerLeft_fst S' e, reassoc_of% hε, whiskerRight_fst]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ε.hom ≫ snd S' C, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← whiskerLeft_snd, reassoc_of% hε, whiskerRight_snd]`. Establish `hpb : IsPullback (snd S' C).left (fst S' C).left C.hom S'.hom` using `(IsPullback.of_hasPullback S'.hom C.hom).flip`. Establish `: IsIso ε.hom.left` using `⟨⟨ε.inv.left, by rw [← Over.comp_left, ε.hom_inv_id, Over.id_left], by rw [← Over.comp_left, ε.inv_hom_id, Over.id_left]⟩⟩`. Establish `hiso : IsPullback ε.hom.left (fst B' Z ≫ b').left (fst S' C).left (𝟙 S'.left)` using `IsPullback.of_horiz_isIso ⟨by rw [hf, Category.comp_id]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hiso.paste_horiz hpb` as an intermediate fact. Rewrite `this` using `[Category.id_comp, ← Over.comp_left]`. Then use the resulting hypothesis. Rewrite using `[same_iff h₁.fam.isLB h₂.fam.isLB]`. Rewrite `hs` using `[same_iff r₁.fam.isLB r₂.fam.isLB, evc_ev h₁.fam.isLB, evc_ev h₂.fam.isLB]`. Simplify `hs` using `[lift_fst, lift_snd_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rep_cmp (S : Scheme.{0}) (A B' S' C Z : Over S) [GrpObj A] (b' : B' ⟶ S') (P' : LB (A ⊗ B').left)
     (e : C ⟶ Z) (Q : LB (A ⊗ C).left) (h₁ : Rep A b' P') (h₂ : Rep A e Q) :

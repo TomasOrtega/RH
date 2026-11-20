@@ -13,19 +13,17 @@ namespace GlobalTheory.CovTest
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr
 
 /- English proof (translation)
-Introduce `r D Y Φ hh hf hlim hprop hhh hlat h4 h1 hread hdr`. Establish `hι : 0 < Fintype.card D.what₂.Tau`. Rewrite using `[D.what₂.card_Tau]`. Conclude with `Nat.pos_of_ne_zero fun h => by simp [h] at hf`. Take `⟨m, hm, hQ⟩` from `GlobalTheory.Mean4.WholeShift.curveCl_isHomogeneous (N := Y.N) hι Y.j Y.j_pos Y.j_lt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ' : (curveCl D.what₂.Tau Y.N Y.j).IsHomogeneous (dimFl D.what₂.Tau Y.N - 1)`. Establish `: m = dimFl D.what₂.Tau Y.N - 1` using `by omega`. Rewrite using `[← this]`. Conclude with `hQ`. Establish `hch : Y.chern (chLieA D _ Y.j 1 * curveCl D.what₂.Tau Y.N Y.j) = 2 * Y.vol * testI Y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[GlobalTheory.Mean4.WholeShift.chLieA_one, hprop, GlobalTheory.Mean4.WholeShift.degFl_neg_lamA_mul]`. Unfold `testI`. Expand and normalize the polynomial expressions, which then agree. Use `GlobalTheory.Mean4.testVal_of_parts D Y Φ hh (fun T R => sieg Y T (max R 2) - Y.vol * bcFl Y) (bcFl Y) r hlim ?_ hhh ?_ ?_` and prove the remaining obligations. Introduce `B hB filter_upwards [eventually_ge_atTop (2 : ℝ)] with R hR`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[max_eq_left hR, add_sub_cancel]`. Conclude with `hlat B hB R hR`. Use `(hdr.comp (tendsto_atTop_mono (fun R => le_max_left R 2) tendsto_id)).sub_const (Y.vol * bcFl Y)` as an intermediate fact. Rewrite `this` using `[show Y.vol * bcFl Y - 2 * r * Y.vol * testI Y - Y.vol * bcFl Y = -2 * r * Y.vol * testI Y by ring]`. Then use the resulting hypothesis. Introduce `T p R hp hpT hT`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR : (2 : ℝ) ≤ max R 2` using `le_max_right R 2`. Take `⟨e1, e2⟩` from `hread T (max R 2) p hp hpT hT`. Establish `k1` using `h1 T (max R 2) hR p hp (curveCl D.what₂.Tau Y.N Y.j)`. Establish `k4` using `h4 T (max R 2) hR p hp (curveCl D.what₂.Tau Y.N Y.j) hQ'`. Use `show sieg Y (insert p T) (max R 2) - Y.vol * bcFl Y - (sieg Y T (max R 2) - Y.vol * bcFl Y) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_sub_sub_cancel_right, e1, e2]`. Rewrite `k1` using `[mul_sub, map_sub, sub_eq_zero]`. Rewrite using `[← k1, ← map_sub, ← sub_mul, ← neg_sub, neg_mul, map_neg, k4, hch]`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Establish `h2 : (p : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem testVal_of_hhTest : ∀ r : ℝ, ∀ (D : D7) (Y : DV.ShimX D.what₂.Tau) (Φ : ℝ → Fn Y) (hh : Fn Y), 2 < D.R.f * (Y.N - 1) → LimFam Φ → Propor Y → HhTest Y hh → LatAt Y → PrimeLocalCondition Y → PrimeLocalSplitCondition Y → SiegRead Y → DRAt Y r → TestVal Φ hh r := by
   intro r D Y Φ hh hf hlim hprop hhh hlat h4 h1 hread hdr

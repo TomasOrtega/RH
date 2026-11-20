@@ -11,11 +11,11 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory.OTY
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A la Ω h hΩ hs h0`. Use `⟨?_, fun L s hs' => ?_⟩` and prove the remaining obligations. Establish `hc` using `api_nsq_contOn A hΩ hs`. Establish `hm` using `ContinuousOn.measurable_piecewise hc (continuousOn_const (c := (0 : ℝ)) (s := Ωᶜ)) hΩ.measurableSet`. Use `hm using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ Ω`. Simplify using `[hy]`. Simplify using `[hy, WeightedAtlas.nsq, h0 _ y hy]`. Establish `hk : ∀ k, Measurable (A.nsq L (s k))` using `fun k => (continuousOn_univ.mp (api_nsq_contOn A isOpen_univ (hs' k))).measurable`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hq : Measurable (A.sqn L s)`. Unfold `WeightedAtlas.sqn`. Conclude with `Finset.measurable_sum _ fun k _ => hk k`. Unfold `psi`. Apply the tactic sequence `first | exact hq.log | fun_prop | measurability`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_nsq_extend_and_psi : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (la : La) (Ω : Set Y) (h : ι → Y → ℂ), IsOpen Ω → A.IsSecOn la Ω h → (∀ i y, y ∉ Ω → h i y = 0) → Measurable (A.nsq la h) ∧ ∀ (L : La) (s : Fin n → ι → Y → ℂ), (∀ k, A.IsSec L (s k)) → Measurable (psi A L s) := by
   intro n Y _ _ _ _ _ ι La _ A la Ω h hΩ hs h0

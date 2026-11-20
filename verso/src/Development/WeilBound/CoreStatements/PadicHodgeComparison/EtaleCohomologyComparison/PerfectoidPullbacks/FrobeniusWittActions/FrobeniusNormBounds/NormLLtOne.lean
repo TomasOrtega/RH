@@ -14,27 +14,25 @@ namespace CrystallineSemistableComparison.Pb.G3
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Conclude with `IsPerfectoidField.norm_natCast_lt_one`.
+A detailed English derivation is pending.
 -/
 theorem norm_l_lt_one : ‖((l : ℕ) : ℂ_[l])‖ < 1 := by
   exact IsPerfectoidField.norm_natCast_lt_one
 
 /- English proof (translation)
-Use `set τ := preTiltMap l (galCp σ : ℂ_[l] →+* ℂ_[l]) (AInf.norm_galCp_toRingHom σ) with hτ`. Take `⟨x, rfl⟩` from `r.surj c`. Use `set a := r.s (r.ρ x) with ha`. Establish `hd : (τ a - a) ^ (l ^ f) = τ a - a`. Rewrite using `[sub_pow_char_pow, ← map_pow, ha, ← map_pow, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖((PreTilt.untilt (τ a) : OC l) : ℂ_[l]) - ((PreTilt.untilt a : OC l) : ℂ_[l])‖ < 1`. Establish `hx` using `r.hs x`. Rewrite `hx` using `[← ha]`. Move the coercions through the operations in `at hx`. Establish `e1 : ((PreTilt.untilt (τ a) : OC l) : ℂ_[l]) = galCp σ ((PreTilt.untilt a : OC l) : ℂ_[l])` using `coe_untilt_preTiltMap _ _ a`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : galCp σ ((okToOC l K x : OC l) : ℂ_[l]) = ((okToOC l K x : OC l) : ℂ_[l])` using `congrArg Subtype.val (galOC_okToOC σ x)`. Establish `h2 : ‖((PreTilt.untilt (τ a) : OC l) : ℂ_[l]) - ((okToOC l K x : OC l) : ℂ_[l])‖ < 1`. Rewrite using `[e1, ← e2, ← map_sub]`. Conclude with `(AInf.norm_galCp_toRingHom σ _).trans_lt hx`. Establish `e3 : ((PreTilt.untilt (τ a) : OC l) : ℂ_[l]) - ((PreTilt.untilt a : OC l) : ℂ_[l]) = (((PreTilt.untilt (τ a) : OC l) : ℂ_[l]) - ((okToOC l K x : OC l) : ℂ_[l])) + -(((PreTilt.untilt a : OC l) : ℂ_[l]) - ((okToOC l K x : OC l) : ℂ_[l]))` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e3]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h2 (by rw [norm_neg]; exact hx))`. Establish `h3 : ‖((PreTilt.untilt (τ a - a) : OC l) : ℂ_[l])‖ < 1`. Establish `hm : Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (PreTilt.untilt (τ a - a)) = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (PreTilt.untilt (τ a) - PreTilt.untilt a)`. Simplify using `only [IsPerfectoidField.mk_untilt, map_sub]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 hm)`. Establish `e4 : ((PreTilt.untilt (τ a - a) : OC l) : ℂ_[l]) = (((z * (l : OC l) : OC l)) : ℂ_[l]) + (((PreTilt.untilt (τ a) : OC l) : ℂ_[l]) - ((PreTilt.untilt a : OC l) : ℂ_[l]))`. Rewrite using `[hz]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e4]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ h1)` and prove the remaining obligations. Use `push_cast`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h4 : ‖((PreTilt.untilt (τ a - a) : OC l) : ℂ_[l])‖ ^ (l ^ f) = ‖((PreTilt.untilt (τ a - a) : OC l) : ℂ_[l])‖` using `by conv_rhs => rw [← hd]`. Rewrite using `[map_pow, SubmonoidClass.coe_pow, norm_pow]`. Establish `h5 : ‖((PreTilt.untilt (τ a - a) : OC l) : ℂ_[l])‖ = 0`. Assume the negation of the conclusion as `hne`. Establish `hpos` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm hne)`.
-
-Establish `hl : 1 < l ^ f` using `Nat.one_lt_pow hf.ne' (Fact.out : l.Prime).one_lt`. Conclude with `(pow_lt_self_of_lt_one₀ hpos h3 hl).ne h4`. Establish `h6 : PreTilt.untilt (τ a - a) = 0` using `Subtype.ext (by rw [norm_eq_zero.1 h5]; rfl)`. Conclude with `sub_eq_zero.1 ((IsPerfectoidField.untilt_eq_zero_iff l).1 h6)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tilt_fix (r : Res l K) (σ : Gal(PadicAlgCl l/K)) (c : r.k) (f : ℕ) (hf : 0 < f) (hc : c ^ (l ^ f) = c) :
     preTiltMap l (galCp σ : ℂ_[l] →+* ℂ_[l]) (AInf.norm_galCp_toRingHom σ) (r.s c) = r.s c := by
@@ -86,9 +84,9 @@ theorem tilt_fix (r : Res l K) (σ : Gal(PadicAlgCl l/K)) (c : r.k) (f : ℕ) (h
   exact sub_eq_zero.1 ((IsPerfectoidField.untilt_eq_zero_iff l).1 h6)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ACris.galCris (IntermediateField.fixingSubgroupEquiv K g) ((algebraMap (Ainf l) (Acris l)) (WittVector.map r.s w)) = (algebraMap (Ainf l) (Acris l)) (WittVector.map r.s w)`. Rewrite using `[← ACris.gal_smul_def, ACris.gal_smul_algebraMap, AInf.gal_smul_def]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `WittVector.map _ (WittVector.map r.s w) = _`. Use extensionality with `n`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components.
 
-Rewrite using `[WittVector.map_coeff, WittVector.map_coeff]`. Take `⟨f, hf, hc⟩` from `alg_pow r (w.coeff n)`. Conclude with `tilt_fix r _ _ f hf hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem w_fix (r : Res l K) [FiniteDimensional ℚ_[l] K] (g : K.fixingSubgroup) (w : WittVector l r.k) :
     (per l K).σA g (r.w w) = r.w w := by

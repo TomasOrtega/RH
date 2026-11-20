@@ -13,7 +13,7 @@ namespace GlobalTheory.IndJacBlock
 def sz3 (d : ℕ) (j : Fin 3) : ℕ := if (j : ℕ) = 1 then d - 2 else 1
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_three, sz3]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem three_block_size_sum {d : ℕ} (h : 2 ≤ d) : ∑ j, sz3 d j = d := by
   simp [Fin.sum_univ_three, sz3]; omega
@@ -23,7 +23,7 @@ def place3 {d : ℕ} (h : 2 ≤ d) : (Σ j : Fin 3, Fin (sz3 d j)) ≃ Fin d := 
 def b2 (n d : ℕ) (j : Fin 2) : ℕ := if (j : ℕ) = 0 then d - n else n
 
 /- English proof (translation)
-Simplify using `[b2]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem block_size_pair_sum {n d : ℕ} (h : n ≤ d) : b2 n d 0 + b2 n d 1 = d := by
   simp [b2]; omega

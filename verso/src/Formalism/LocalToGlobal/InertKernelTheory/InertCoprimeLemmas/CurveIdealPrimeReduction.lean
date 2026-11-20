@@ -15,17 +15,15 @@ namespace Formalism.L2.KerInert.CcGen
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hsup : I ⊔ Ideal.span {(p : 𝓞 K)} = ⊤`. Assume the negation of the conclusion as `h`. Conclude with `hI (le_sup_left.trans (hP.eq_of_le h le_sup_right).ge)`. Establish `h1 : (1 : 𝓞 K) ∈ I ⊔ Ideal.span {(p : 𝓞 K)}` using `hsup ▸ Submodule.mem_top`. Take `⟨i, hi, z, hz, hiz⟩` from `Submodule.mem_sup.mp h1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`. Establish `hunit : Ideal.Quotient.mk I y * (p : 𝓞 K ⧸ I) = 1`. Use `congrArg (Ideal.Quotient.mk I) hiz` as an intermediate fact. Rewrite `this` using `[map_add, Ideal.Quotient.eq_zero_iff_mem.mpr hi, zero_add, map_mul, map_one, map_natCast]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI0 : I ≠ ⊥` using `fun h => hI (h ▸ bot_le)`. Establish `hc : Nat.card (𝓞 K ⧸ I) = Ideal.absNorm I`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 K ⧸ I) := Nat.finite_of_card_ne_zero (by rw [hc]; exact Ideal.absNorm_eq_zero_iff.not.mpr hI0)`. Use `haveI : Fact p.Prime := ⟨hp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `hdvd`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' (G := 𝓞 K ⧸ I) p (hc ▸ hdvd)`. Establish `hpx : (p : 𝓞 K ⧸ I) * x = 0`. Rewrite using `[← nsmul_eq_mul, ← hx, addOrderOf_nsmul_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hx0 : x ≠ 0`. Introduce `h`. Rewrite `hx` using `[h, addOrderOf_zero]`. Conclude with `hp.one_lt.ne hx`. Apply `hx0` to reduce the goal to its premises.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coprime_absNorm_of_not_le {p : ℕ} (hp : p.Prime) (hP : (Ideal.span {(p : 𝓞 K)}).IsMaximal)
     {I : Ideal (𝓞 K)} (hI : ¬ I ≤ Ideal.span {(p : 𝓞 K)}) : Nat.Coprime (Ideal.absNorm I) p := by
@@ -60,7 +58,7 @@ theorem coprime_absNorm_of_not_le {p : ℕ} (hp : p.Prime) (hP : (Ideal.span {(p
     _ = 0 := by rw [hpx, mul_zero]
 
 /- English proof (translation)
-Establish `hpr : Prime (Ideal.span {(p : 𝓞 K)})` using `Ideal.prime_of_isPrime hP0 hP`. Take `⟨k, cc', hnd, heq⟩` from `WfDvdMonoid.max_power_factor (by rwa [Ideal.zero_eq_bot]) hpr.irreducible (a₀ := cc)`. Use `⟨k, cc', by rw [heq, Ideal.span_singleton_pow], ?_⟩` and prove the remaining obligations. Conclude with `coprime_absNorm_of_not_le hp (hP.isMaximal hP0) (fun h => hnd (Ideal.dvd_iff_le.mpr h))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem factor_inert {p : ℕ} (hp : p.Prime) (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime)
     (hP0 : Ideal.span {(p : 𝓞 K)} ≠ ⊥) {cc : Ideal (𝓞 K)} (hcc : cc ≠ ⊥) :
@@ -79,9 +77,9 @@ namespace Formalism.L2.KerInert
 open Formalism.MainNotions
 
 /- English proof (translation)
-Unfold `TaylorLogMetric.lamOf`. Use `congr 1`. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, Ideal.mem_span_singleton_mul]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨z, hz, by simp only [map_mul, MulMemClass.coe_mul]; ring⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨a * z, ⟨z, hz, rfl⟩, by simp only [map_mul, MulMemClass.coe_mul]; ring⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem lamOf_span_mul (D : D7) (cc : Ideal (𝓞 D.host.K)) (a : 𝓞 D.host.K) (δ : ℂ) :
     TaylorLogMetric.lamOf D (Ideal.span {a} * cc) δ = TaylorLogMetric.lamOf D cc (δ * D.host.φ₀ ((a : D.host.K) : D.host.E)) := by
@@ -96,11 +94,11 @@ theorem lamOf_span_mul (D : D7) (cc : Ideal (𝓞 D.host.K)) (a : 𝓞 D.host.K)
     exact ⟨a * z, ⟨z, hz, rfl⟩, by simp only [map_mul, MulMemClass.coe_mul]; ring⟩
 
 /- English proof (translation)
-Unfold `TaylorLogMetric.lamOf`. Express the relevant statement in the definitionally equal form `_ = AddSubgroup.map (DistribSMul.toAddMonoidHom ℂ δ) _`. Rewrite using `[AddMonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `w`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_image, one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨_, ⟨c, hc, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨c, hc, rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨c, hc, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem lamOf_smul (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     TaylorLogMetric.lamOf D cc δ = δ • TaylorLogMetric.lamOf D cc 1 := by
@@ -115,22 +113,22 @@ theorem lamOf_smul (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
   · rintro ⟨_, ⟨c, hc, rfl⟩, rfl⟩; exact ⟨c, hc, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.discr_smul Λ c hc`.
+A detailed English derivation is pending.
 -/
 theorem discr_smul_eq_inv_pow_twelve_mul (Λ : AddSubgroup ℂ) (c : ℂ) (hc : c ≠ 0) :
     TaylorLogMetric.discr (c • Λ) = (c ^ 12)⁻¹ * TaylorLogMetric.discr Λ :=
   Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.discr_smul Λ c hc
 
 /- English proof (translation)
-Introduce `D cc δ hcc hδ p hpF hj`. Establish `hp` using `hpF.out`. Establish `hq` using `quadK D.host`. Establish `hK2` using `PI.UnitaryGroupMassFormula.ClassNumImQInv.finrank_two hq`. Establish `hP : (Ideal.span {(p : 𝓞 D.host.K)}).IsPrime` using `isPrime_span_of_jacobi_neg_one _ hK2 _ D.host.d p hq.2.2.2.1 hp hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : Ideal.span {(p : 𝓞 D.host.K)} ≠ ⊥` using `PI.ClassNumImQ.ZetaNonvanishing₂.ne_bot_of_absNorm (PI.ClassNumImQ.ZetaNonvanishing₂.absNorm_span_two hK2 p) (pow_ne_zero 2 hp.ne_zero)`. Take `⟨k, cc', heq, hcop⟩` from `CcGen.factor_inert hp hP hP0 hcc.1`. Establish `hpk : D.host.φ₀ ((((p : 𝓞 D.host.K) ^ k : 𝓞 D.host.K) : D.host.K) : D.host.E) = (p : ℂ) ^ k`. Simplify using the standard rewrite rules. Establish `hlam : ∀ e : ℂ, TaylorLogMetric.lamOf D cc e = TaylorLogMetric.lamOf D cc' (e * (p : ℂ) ^ k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `e`. Rewrite using `[heq, lamOf_span_mul, hpk]`. Establish `hne : cc' ≠ ⊥`. Introduce and unpack `rfl`. Apply `hcc.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[heq, Ideal.mul_bot]`. Establish `hnorm : Ideal.absNorm cc' ∣ Ideal.absNorm cc`. Rewrite using `[heq, map_mul]`. Conclude with `dvd_mul_left _ _`. Use `⟨cc', δ * (p : ℂ) ^ k, ⟨hne, Nat.Coprime.coprime_dvd_left hnorm hcc.2⟩, ?_, hcop, hlam δ⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp0 : ((p : ℂ) ^ k) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr hp.ne_zero)`. Unfold `TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice at hδ ⊢`. Rewrite `hδ` using `[hlam 1, one_mul, lamOf_smul D cc' ((p : ℂ) ^ k), discr_smul_eq_inv_pow_twelve_mul _ _ hp0]`. Rewrite using `[mul_pow, hδ]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem curve_ideal_prime : CcPrime := by
   intro D cc δ hcc hδ p hpF hj

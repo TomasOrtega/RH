@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.Mem.GroupLoc.Crt
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Submodule.mem_sup_right hy`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi]`. Establish `h1` using `h i (Finset.mem_insert_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `ih fun j hj => h j (Finset.mem_insert_of_mem hj)`. Establish `hc : IsCoprime (I i) (∏ j ∈ s, I j)` using `IsCoprime.prod_right fun j hj => hI i j (fun e => hi (e ▸ hj))`. Take `⟨a, ha, b, hb, hab⟩` from `Ideal.isCoprime_iff_exists.1 hc`. Establish `key : ∀ (A B : Ideal R) (c : R), c ∈ A → y ∈ T ⊔ B • N → c • y ∈ T ⊔ (A * B) • N`. Introduce `A B c hc hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, ht, z, hz, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[smul_add]`. Use `Submodule.add_mem_sup (T.smul_mem c ht) ?_` and prove the remaining obligations. Rewrite using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hc hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : y = a • y + b • y` using `by rw [← add_smul, hab, one_smul]`. Rewrite using `[e]`. Use `Submodule.add_mem _ (key _ _ a ha h2) ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `key _ _ b hb h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sup_prod_smul {R M ι : Type*} [CommRing R] [AddCommGroup M] [Module R M] (T N : Submodule R M)
     (I : ι → Ideal R) (hI : ∀ i j, i ≠ j → IsCoprime (I i) (I j)) {y : M} (hy : y ∈ N) (s : Finset ι)
@@ -45,22 +45,20 @@ theorem mem_sup_prod_smul {R M ι : Type*} [CommRing R] [AddCommGroup M] [Module
     exact key _ _ b hb h1
 
 /- English proof (translation)
-The claim follows from `(sup_le_sup_left (Submodule.smul_mono_left h) T : T ⊔ I • N ≤ T ⊔ J • N) hy`.
+A detailed English derivation is pending.
 -/
 theorem mem_sup_smul_mono {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] {T N : Submodule R M}
     {I J : Ideal R} (h : I ≤ J) {y : M} (hy : y ∈ T ⊔ I • N) : y ∈ T ⊔ J • N :=
   (sup_le_sup_left (Submodule.smul_mono_left h) T : T ⊔ I • N ≤ T ⊔ J • N) hy
 
 /- English proof (translation)
-Establish `h0 : (Ideal.span {g} : Ideal O) ≠ ⊥` using `fun e => hg (Ideal.span_singleton_eq_bot.1 e)`. Establish `hsf : Squarefree (Ideal.span {g} : Ideal O)`. Use `(squarefree_iff_no_irreducibles (x := (Ideal.span {g} : Ideal O)) h0).2 ?_` and prove the remaining obligations. Introduce `x hx hd`. Establish `hp : Prime x` using `UniqueFactorizationMonoid.irreducible_iff_prime.1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hsq ⟨x, Ideal.isPrime_of_prime hp, hp.ne_zero⟩ ?_` and prove the remaining obligations. Rewrite `hd` using `[Ideal.dvd_span_singleton, ← pow_two]`. Conclude with `hd`. Establish `hrad : (Ideal.span {g}).radical ≤ Ideal.span {g}`. Introduce and unpack `x ⟨n, hn⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hn`, the goal using `[← Ideal.dvd_span_singleton]`. Rewrite `hn` using `[← Ideal.span_singleton_pow]`. Conclude with `hsf.isRadical n _ hn`. Use `le_trans ?_ hrad` and prove the remaining obligations. Rewrite using `[Ideal.radical_eq_sInf]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hP1, hP2⟩`. Establish `hP0 : P ≠ ⊥` using `fun e => h0 (le_bot_iff.1 (hP1.trans e.le))`. Establish `hm` using `hs ⟨P, hP2, hP0⟩ ((Ideal.span_singleton_le_iff_mem _).1 hP1)`. Establish `hle : ∏ w ∈ s, w.asIdeal ≤ (⟨P, hP2, hP0⟩ : HeightOneSpectrum O).asIdeal` using `(Ideal.prod_le_inf (s := s) (f := fun w : HeightOneSpectrum O => w.asIdeal)).trans (Finset.inf_le hm)`.
-
-Conclude with `hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prod_le_span {O : Type*} [CommRing O] [IsDedekindDomain O] {g : O} (hg : g ≠ 0)
     (hsq : ∀ w : HeightOneSpectrum O, g ∉ w.asIdeal ^ 2) (s : Finset (HeightOneSpectrum O))
@@ -92,11 +90,11 @@ theorem prod_le_span {O : Type*} [CommRing O] [IsDedekindDomain O] {g : O} (hg :
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `hm`. Establish `hc : IsCoprime ((D.host.g 0 : ℕ) : 𝓞 D.host.E) ((D.host.g 1 : ℕ) : 𝓞 D.host.E)` using `Nat.Coprime.cast ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)`. Establish `key : ∀ k (b : 𝓞 D.host.E), IsCoprime ((D.host.g k : ℕ) : 𝓞 D.host.E) b → ((D.host.g k : ℕ) : 𝓞 D.host.E) * b ∈ w.asIdeal ^ 2 → ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal`. Introduce and unpack `k b ⟨u, v, huv⟩ h hk`. Use `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) w hk).2.1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((D.host.g k : ℕ) : 𝓞 D.host.E) = u * ((D.host.g k : ℕ) : 𝓞 D.host.E) ^ 2 + v * (((D.host.g k : ℕ) : 𝓞 D.host.E) * b)`. Take the linear combination `(-((D.host.g k : ℕ) : 𝓞 D.host.E)) * huv`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hk 2)) (Ideal.mul_mem_left _ _ h)`. Rewrite `hm` using `[Nat.cast_mul]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `w.isPrime.mem_or_mem (Ideal.pow_le_self two_ne_zero hm) with h | h` into its components or cases. Conclude with `key 0 _ hc hm h`. Conclude with `key 1 _ hc.symm (mul_comm (G := 𝓞 D.host.E) _ _ ▸ hm) h`.
+A detailed English derivation is pending.
 -/
 theorem g_not_mem_sq (w : HeightOneSpectrum (𝓞 D.host.E)) :
     ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal ^ 2 := by
@@ -122,7 +120,7 @@ def toInt (I : Formalism.MainNotions.S.AutInst) : 𝓞 I.E →+* Formalism.MainN
     Subring.subset_closure (Or.inl ⟨⟨algebraMap (𝓞 I.E) I.E t, ⟨t, rfl⟩⟩, rfl⟩)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (a : I.E) * Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (y i) = Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) ((a : I.E) * y i)`. Rewrite using `[map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toInt_smul (I : Formalism.MainNotions.S.AutInst) (a : 𝓞 I.E) (y : Fin I.n → I.E) :
     toInt I a • incl I y = incl I ((a : I.E) • y) := by
@@ -135,19 +133,17 @@ def hostInt (X : HidaSetting D) : 𝓞 D.host.E →+* Formalism.MainNotions.S.In
   (toInt X.B.I).comp (RingOfIntegers.mapRingEquiv X.ιE.symm).toRingHom
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨x, hx⟩, rfl⟩`. Use `show incl X.B.I x ∈ (w.asIdeal.map (hostInt X)) • X.B.I.Lf`. Proceed by induction on `hx using Submodule.span_induction with`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `mem z hz`. Take `⟨a, ⟨b, hb, hab⟩, y, hy, rfl⟩` from `hz`. Rewrite using `[← toInt_smul]`. Establish `: toInt X.B.I a = hostInt X b`. Use `congrArg (toInt X.B.I) (RingOfIntegers.ext ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (a : X.B.I.E) = X.ιE.symm (b : D.host.E)`. Rewrite using `[← hab, RingEquiv.symm_apply_apply]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hb) (Submodule.subset_span ⟨⟨y, hy⟩, rfl⟩)`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `: incl X.B.I 0 = 0` using `funext fun i => map_zero _`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: incl X.B.I (x + y) = incl X.B.I x + incl X.B.I y` using `funext fun i => map_add _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `: incl X.B.I (a • x) = toInt X.B.I a • incl X.B.I x` using `(toInt_smul _ a x).symm`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Unfold `Ideal.map`. Rewrite using `[show X.B.I.Lf = Submodule.span _ (Set.range fun x : X.B.I.L => incl X.B.I x) from rfl]`. Rewrite using `[Submodule.span_smul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨b, hb, rfl⟩, _, ⟨⟨y, hy⟩, rfl⟩, rfl⟩`.
-
-Use `show toInt X.B.I (RingOfIntegers.mapRingEquiv X.ιE.symm b) • incl X.B.I y ∈ wLf X w`. Rewrite using `[toInt_smul]`. Use `Submodule.subset_span ⟨⟨_, Submodule.subset_span ⟨_, ⟨b, hb, ?_⟩, y, hy, rfl⟩⟩, rfl⟩` and prove the remaining obligations. Conclude with `X.ιE.apply_symm_apply _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wLf_eq (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     wLf X w = (w.asIdeal.map (hostInt X)) • X.B.I.Lf := by
@@ -184,9 +180,9 @@ theorem wLf_eq (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     exact X.ιE.apply_symm_apply _
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.smul_mem_smul (r := (m : Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E)) (Ideal.mem_span_singleton_self _) hx`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_le.2 fun r hr x hx => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, hx, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mL_eq (X : HidaSetting D) (m : ℕ) :
     mL X.B.I m = ((Ideal.span {(m : 𝓞 D.host.E)}).map (hostInt X)) • X.B.I.Lf := by
@@ -201,13 +197,13 @@ theorem mL_eq (X : HidaSetting D) (m : ℕ) :
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, hx, rfl⟩)
 
 /- English proof (translation)
-Introduce `D X _ _ S _ y hy`. Unfold `InMod ModW`. Simplify using `only [mL_eq, wLf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mem_sup_smul_mono (Ideal.map_mono ((Ideal.span_singleton_le_iff_mem _).2 hw)) h`. Introduce `h`. Establish `hg : ((X.B.g : ℕ) : 𝓞 D.host.E) ≠ 0`. Rewrite using `[X.g_eq]`. Conclude with `Nat.cast_ne_zero.2 (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : {w : HeightOneSpectrum (𝓞 D.host.E) | ((X.B.g : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal}.Finite`. Use `Ideal.finite_factors (I := Ideal.span {((X.B.g : ℕ) : 𝓞 D.host.E)}) (by simpa using hg)` as an intermediate fact. Simplify `this` using `only [Ideal.dvd_span_singleton]`. Establish `h1` using `mem_sup_prod_smul _ _ (fun w : HeightOneSpectrum (𝓞 D.host.E) => w.asIdeal.map (hostInt X)) (fun i j hij => by`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, ← Ideal.map_sup, i.isMaximal.coprime_of_ne j.isMaximal (fun e => hij (HeightOneSpectrum.ext e)), Ideal.map_top])`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hy hfin.toFinset (fun w hw => h w (hfin.mem_toFinset.1 hw))`. Use `mem_sup_smul_mono ?_ h1` and prove the remaining obligations. Establish `h2` using `prod_le_span hg (fun w => by rw [X.g_eq]; exact g_not_mem_sq w) hfin.toFinset (fun w hw => hfin.mem_toFinset.2 hw)`. Use `le_trans (le_of_eq ?_) (Ideal.map_mono h2)` and prove the remaining obligations. Conclude with `(map_prod (Ideal.mapHom (hostInt X)) _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inMod_iff_forall_modW : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (S : Set (VA X.B.I)), S ⊆ X.B.I.Lf → ∀ y ∈ X.B.I.Lf, (InMod X.B.I X.B.g S y ↔ ∀ w : HeightOneSpectrum (𝓞 D.host.E), ((X.B.g : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal → GlobalTheory.Mem.GroupLoc.ModW X w S y) := by
   intro D X _ _ S _ y hy

@@ -24,20 +24,20 @@ def gkfSpan (φ : cuspForms ℚ 2) : Submodule ℂ (cuspForms ℚ 2) :=
   sInf {W | IsGKFStable W ∧ φ ∈ W}
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun _ hW => hW.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_gkfSpan_self (φ : cuspForms ℚ 2) : φ ∈ gkfSpan φ :=
   Submodule.mem_sInf.2 fun _ hW => hW.2
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨hW, hφ⟩`.
+A detailed English derivation is pending.
 -/
 theorem gkfSpan_le {φ : cuspForms ℚ 2} {W : Submodule ℂ (cuspForms ℚ 2)} (hW : IsGKFStable W) (hφ : φ ∈ W) :
     gkfSpan φ ≤ W :=
   sInf_le ⟨hW, hφ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun X v hv => Submodule.mem_sInf.2 fun W hW => hW.1.1 X v (Submodule.mem_sInf.1 hv W hW), fun x v hv => Submodule.mem_sInf.2 fun W hW => hW.1.2.1 x v (Submodule.mem_sInf.1 hv W hW), fun g v hv => Submodule.mem_sInf.2 fun W hW => hW.1.2.2 g v (Submodule.mem_sInf.1 hv W hW)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGKFStable_gkfSpan (φ : cuspForms ℚ 2) : IsGKFStable (gkfSpan φ) :=
   ⟨fun X v hv => Submodule.mem_sInf.2 fun W hW => hW.1.1 X v (Submodule.mem_sInf.1 hv W hW),
@@ -45,7 +45,7 @@ theorem isGKFStable_gkfSpan (φ : cuspForms ℚ 2) : IsGKFStable (gkfSpan φ) :=
     fun g v hv => Submodule.mem_sInf.2 fun W hW => hW.1.2.2 g v (Submodule.mem_sInf.1 hv W hW)⟩
 
 /- English proof (translation)
-The claim follows from `add_mem (hW.1 _ v hv) (Submodule.smul_mem _ _ (hW.1 _ v hv))`.
+A detailed English derivation is pending.
 -/
 theorem IsGKFStable.cuspOp_mem {W : Submodule ℂ (cuspForms ℚ 2)} (hW : IsGKFStable W) (B : Matrix (Fin 2) (Fin 2) ℂ)
     {v : cuspForms ℚ 2} (hv : v ∈ W) : cuspOp B v ∈ W :=
@@ -58,7 +58,7 @@ def IsRefl (x : archCompact ℚ 2) : Prop :=
   ∃ (w : ℂ) (hw : w ≠ 0), ‖w‖ = 1 ∧ kMat x = toReal epsilon * kGL w hw
 
 /- English proof (translation)
-Take `⟨w, hw, h1, h | h⟩` from `exists_kGL_of_mem_archCompact x`. Conclude with `Or.inl ⟨w, hw, h1, h⟩`. Conclude with `Or.inr ⟨w, hw, h1, h⟩`.
+Extract witnesses or component facts from the available result. Prove the first alternative. Prove the second alternative.
 -/
 theorem isRot_or_isRefl (x : archCompact ℚ 2) : IsRot x ∨ IsRefl x := by
   obtain ⟨w, hw, h1, h | h⟩ := exists_kGL_of_mem_archCompact x
@@ -66,7 +66,7 @@ theorem isRot_or_isRefl (x : archCompact ℚ 2) : IsRot x ∨ IsRefl x := by
   · exact Or.inr ⟨w, hw, h1, h⟩
 
 /- English proof (translation)
-Take `⟨w, hw, -, h⟩` from `hx`. Rewrite using `[h]`. Conclude with `det_kGL_pos w hw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRot.det_pos {x : archCompact ℚ 2} (hx : IsRot x) : 0 < (kMat x).det.val := by
   obtain ⟨w, hw, -, h⟩ := hx
@@ -74,7 +74,7 @@ theorem IsRot.det_pos {x : archCompact ℚ 2} (hx : IsRot x) : 0 < (kMat x).det.
   exact det_kGL_pos w hw
 
 /- English proof (translation)
-Take `⟨w, hw, -, h⟩` from `hx`. Rewrite using `[h, map_mul, Units.val_mul, det_toReal_epsilon]`. Use `det_kGL_pos w hw` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem IsRefl.det_neg {x : archCompact ℚ 2} (hx : IsRefl x) : (kMat x).det.val < 0 := by
   obtain ⟨w, hw, -, h⟩ := hx
@@ -83,25 +83,25 @@ theorem IsRefl.det_neg {x : archCompact ℚ 2} (hx : IsRefl x) : (kMat x).det.va
   linarith
 
 /- English proof (translation)
-The claim follows from `archToReal_mul _ _`.
+A detailed English derivation is pending.
 -/
 theorem kMat_mul (x y : archCompact ℚ 2) : kMat (x * y) = kMat x * kMat y :=
   archToReal_mul _ _
 
 /- English proof (translation)
-The claim follows from `(isRot_or_isRefl x).resolve_right fun hr => absurd hr.det_neg (not_lt.2 h.le)`.
+A detailed English derivation is pending.
 -/
 theorem isRot_of_det_pos {x : archCompact ℚ 2} (h : 0 < (kMat x).det.val) : IsRot x :=
   (isRot_or_isRefl x).resolve_right fun hr => absurd hr.det_neg (not_lt.2 h.le)
 
 /- English proof (translation)
-The claim follows from `(isRot_or_isRefl x).resolve_left fun hr => absurd hr.det_pos (not_lt.2 h.le)`.
+A detailed English derivation is pending.
 -/
 theorem isRefl_of_det_neg {x : archCompact ℚ 2} (h : (kMat x).det.val < 0) : IsRefl x :=
   (isRot_or_isRefl x).resolve_left fun hr => absurd hr.det_pos (not_lt.2 h.le)
 
 /- English proof (translation)
-Apply `isRefl_of_det_neg` to reduce the goal to its premises. Rewrite using `[kMat_mul, map_mul, Units.val_mul]`. Conclude with `mul_neg_of_pos_of_neg hx.det_pos hy.det_neg`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRefl.mul_isRot {x y : archCompact ℚ 2} (hx : IsRot x) (hy : IsRefl y) : IsRefl (x * y) := by
   apply isRefl_of_det_neg
@@ -109,7 +109,7 @@ theorem IsRefl.mul_isRot {x y : archCompact ℚ 2} (hx : IsRot x) (hy : IsRefl y
   exact mul_neg_of_pos_of_neg hx.det_pos hy.det_neg
 
 /- English proof (translation)
-Apply `isRot_of_det_pos` to reduce the goal to its premises. Rewrite using `[kMat_mul, map_mul, Units.val_mul]`. Conclude with `mul_pos_of_neg_of_neg hx.det_neg hy.det_neg`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRefl.mul_isRefl {x y : archCompact ℚ 2} (hx : IsRefl x) (hy : IsRefl y) : IsRot (x * y) := by
   apply isRot_of_det_pos
@@ -125,26 +125,26 @@ abbrev Jop : Module.End ℂ (cuspForms ℚ 2) := cuspOp rotMat
 abbrev Zop : Module.End ℂ (cuspForms ℚ 2) := cuspOp 1
 
 /- English proof (translation)
-Use `cuspOp_smul 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cuspOp_zero : cuspOp 0 = 0 := by
   have := cuspOp_smul 0 0
   rwa [zero_smul, zero_smul] at this
 
 /- English proof (translation)
-Rewrite using `[← cuspOp_lie, rot_raise, cuspOp_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Jop_Rop : Jop * Rop - Rop * Jop = (2 * I) • Rop := by
   rw [← cuspOp_lie, rot_raise, cuspOp_smul]
 
 /- English proof (translation)
-Rewrite using `[← cuspOp_lie, lower_raise, cuspOp_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Lop_Rop : Lop * Rop - Rop * Lop = (4 * I) • Jop := by
   rw [← cuspOp_lie, lower_raise, cuspOp_smul]
 
 /- English proof (translation)
-Use `congrArg (fun F : Module.End ℂ (cuspForms ℚ 2) => F ψ) (cuspOp_lie rotMat lowerMat)` as an intermediate fact. Rewrite `this` using `[rot_lower, cuspOp_smul]`. Simplify using `using this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Jop_Lop_apply (ψ : cuspForms ℚ 2) : Jop (Lop ψ) - Lop (Jop ψ) = -((2 * I) • Lop ψ) := by
   have := congrArg (fun F : Module.End ℂ (cuspForms ℚ 2) => F ψ) (cuspOp_lie rotMat lowerMat)
@@ -152,14 +152,14 @@ theorem Jop_Lop_apply (ψ : cuspForms ℚ 2) : Jop (Lop ψ) - Lop (Jop ψ) = -((
   simpa using this.symm
 
 /- English proof (translation)
-Use `congrArg (fun F : Module.End ℂ (cuspForms ℚ 2) => F ψ) Lop_Rop` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Lop_Rop_apply (ψ : cuspForms ℚ 2) : Lop (Rop ψ) - Rop (Lop ψ) = (4 * I) • Jop ψ := by
   have := congrArg (fun F : Module.End ℂ (cuspForms ℚ 2) => F ψ) Lop_Rop
   simpa using this
 
 /- English proof (translation)
-Use extensionality with `ψ : 1`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.neg_apply, map_neg, LinearMap.smul_apply]`. Rewrite using `[show -(Jop (Lop ψ)) - -(Lop (Jop ψ)) = -(Jop (Lop ψ) - Lop (Jop ψ)) by abel, Jop_Lop_apply, neg_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem negJop_Lop : -Jop * Lop - Lop * -Jop = (2 * I) • Lop := by
   ext ψ : 1
@@ -167,7 +167,7 @@ theorem negJop_Lop : -Jop * Lop - Lop * -Jop = (2 * I) • Lop := by
   rw [show -(Jop (Lop ψ)) - -(Lop (Jop ψ)) = -(Jop (Lop ψ) - Lop (Jop ψ)) by abel, Jop_Lop_apply, neg_neg]
 
 /- English proof (translation)
-Use extensionality with `ψ : 1`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.neg_apply, LinearMap.smul_apply]`. Rewrite using `[show Rop (Lop ψ) - Lop (Rop ψ) = -(Lop (Rop ψ) - Rop (Lop ψ)) by abel, Lop_Rop_apply, smul_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rop_Lop : Rop * Lop - Lop * Rop = (4 * I) • -Jop := by
   ext ψ : 1
@@ -175,7 +175,7 @@ theorem Rop_Lop : Rop * Lop - Lop * Rop = (4 * I) • -Jop := by
   rw [show Rop (Lop ψ) - Lop (Rop ψ) = -(Lop (Rop ψ) - Rop (Lop ψ)) by abel, Lop_Rop_apply, smul_neg]
 
 /- English proof (translation)
-Use `cuspOp_lie 1 B` as an intermediate fact. Rewrite `this` using `[Matrix.one_mul, Matrix.mul_one, sub_self, cuspOp_zero]`. Conclude with `sub_eq_zero.1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zop_commute (B : Matrix (Fin 2) (Fin 2) ℂ) : Commute Zop (cuspOp B) := by
   have := cuspOp_lie 1 B
@@ -185,7 +185,7 @@ theorem Zop_commute (B : Matrix (Fin 2) (Fin 2) ℂ) : Commute Zop (cuspOp B) :=
 abbrev σc (x : archCompact ℚ 2) : Module.End ℂ (cuspForms ℚ 2) := archCompactRepCusp ℚ 2 x
 
 /- English proof (translation)
-Rewrite using `[archCompactRepCusp_cuspOp x (B' := (starRingEnd ℂ w / w) • raiseMat) (by rw [kMatC_of_plus hK]; exact plus_raiseMat w hw), cuspOp_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σc_Rop_rot {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat x = kGL w hw) (ψ : cuspForms ℚ 2) :
     σc x (Rop ψ) = (starRingEnd ℂ w / w) • Rop (σc x ψ) := by
@@ -193,7 +193,7 @@ theorem σc_Rop_rot {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat 
     (by rw [kMatC_of_plus hK]; exact plus_raiseMat w hw), cuspOp_smul, LinearMap.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[archCompactRepCusp_cuspOp x (B' := (w / starRingEnd ℂ w) • lowerMat) (by rw [kMatC_of_plus hK]; exact plus_lowerMat w hw), cuspOp_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σc_Lop_rot {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat x = kGL w hw) (ψ : cuspForms ℚ 2) :
     σc x (Lop ψ) = (w / starRingEnd ℂ w) • Lop (σc x ψ) := by
@@ -201,7 +201,7 @@ theorem σc_Lop_rot {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat 
     (by rw [kMatC_of_plus hK]; exact plus_lowerMat w hw), cuspOp_smul, LinearMap.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[archCompactRepCusp_cuspOp x (B' := (-(starRingEnd ℂ w / w)) • lowerMat) (by rw [kMatC_of_minus hK]; exact minus_raiseMat w hw), cuspOp_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σc_Rop_refl {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat x = toReal epsilon * kGL w hw)
     (ψ : cuspForms ℚ 2) : σc x (Rop ψ) = (-(starRingEnd ℂ w / w)) • Lop (σc x ψ) := by
@@ -209,7 +209,7 @@ theorem σc_Rop_refl {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat
     (by rw [kMatC_of_minus hK]; exact minus_raiseMat w hw), cuspOp_smul, LinearMap.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[archCompactRepCusp_cuspOp x (B' := (-(w / starRingEnd ℂ w)) • raiseMat) (by rw [kMatC_of_minus hK]; exact minus_lowerMat w hw), cuspOp_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σc_Lop_refl {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat x = toReal epsilon * kGL w hw)
     (ψ : cuspForms ℚ 2) : σc x (Lop ψ) = (-(w / starRingEnd ℂ w)) • Rop (σc x ψ) := by
@@ -217,7 +217,7 @@ theorem σc_Lop_refl {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat
     (by rw [kMatC_of_minus hK]; exact minus_lowerMat w hw), cuspOp_smul, LinearMap.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[archCompactRepCusp_cuspOp x (B' := (-1 : ℂ) • rotMat) (by rw [kMatC_of_minus hK]; exact minus_rotMat w hw), cuspOp_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σc_Jop_refl {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat x = toReal epsilon * kGL w hw)
     (ψ : cuspForms ℚ 2) : σc x (Jop ψ) = (-1 : ℂ) • Jop (σc x ψ) := by
@@ -225,7 +225,7 @@ theorem σc_Jop_refl {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat
     (by rw [kMatC_of_minus hK]; exact minus_rotMat w hw), cuspOp_smul, LinearMap.smul_apply]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ' B j, Module.End.mul_apply, h, ih, map_smul, smul_smul, pow_succ' B' j, Module.End.mul_apply, pow_succ' c j]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem σc_pow {x : archCompact ℚ 2} {B B' : Module.End ℂ (cuspForms ℚ 2)} {c : ℂ}
     (h : ∀ ψ, σc x (B ψ) = c • B' (σc x ψ)) (j : ℕ) (ψ : cuspForms ℚ 2) :
@@ -237,7 +237,7 @@ theorem σc_pow {x : archCompact ℚ 2} {B B' : Module.End ℂ (cuspForms ℚ 2)
       pow_succ' c j]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [raiseMat, lowerMat, rotMat] <;> ring_nf <;> simp only [I_sq] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem matrix_eq_combo (B : Matrix (Fin 2) (Fin 2) ℂ) :
     B = (((B 0 1 + B 1 0) / 2 + I * (B 0 0 - B 1 1) / 2) / 2) • raiseMat +
@@ -247,7 +247,7 @@ theorem matrix_eq_combo (B : Matrix (Fin 2) (Fin 2) ℂ) :
   fin_cases i <;> fin_cases j <;> simp [raiseMat, lowerMat, rotMat] <;> ring_nf <;> simp only [I_sq] <;> ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [matrix_eq_combo B]`. Simplify using `only [cuspOp_add, cuspOp_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cuspOp_eq_combo (B : Matrix (Fin 2) (Fin 2) ℂ) :
     cuspOp B = (((B 0 1 + B 1 0) / 2 + I * (B 0 0 - B 1 1) / 2) / 2) • Rop +
@@ -257,7 +257,7 @@ theorem cuspOp_eq_combo (B : Matrix (Fin 2) (Fin 2) ℂ) :
   simp only [cuspOp_add, cuspOp_smul]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply, ih, cuspOp_finRepCusp, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cuspOp_pow_finRepCusp (B : Matrix (Fin 2) (Fin 2) ℂ) (j : ℕ) (g : FiniteAdelicGL ℚ 2)
     (ψ : cuspForms ℚ 2) : (cuspOp B ^ j) (finRepCusp ℚ 2 g ψ) = finRepCusp ℚ 2 g ((cuspOp B ^ j) ψ) := by
@@ -266,14 +266,14 @@ theorem cuspOp_pow_finRepCusp (B : Matrix (Fin 2) (Fin 2) ℂ) (j : ℕ) (g : Fi
   | succ j ih => rw [pow_succ', Module.End.mul_apply, ih, cuspOp_finRepCusp, Module.End.mul_apply]
 
 /- English proof (translation)
-The claim follows from `gkModuleCusp_σ_finRepCusp x g ψ`.
+A detailed English derivation is pending.
 -/
 theorem σc_finRepCusp (x : archCompact ℚ 2) (g : FiniteAdelicGL ℚ 2) (ψ : cuspForms ℚ 2) :
     σc x (finRepCusp ℚ 2 g ψ) = finRepCusp ℚ 2 g (σc x ψ) :=
   gkModuleCusp_σ_finRepCusp x g ψ
 
 /- English proof (translation)
-Rewrite using `[σc, σc, σc, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σc_mul_apply (x y : archCompact ℚ 2) (ψ : cuspForms ℚ 2) : σc x (σc y ψ) = σc (x * y) ψ := by
   rw [σc, σc, σc, map_mul, Module.End.mul_apply]
@@ -283,19 +283,19 @@ section Span
 variable {N : ℕ} [NeZero N] {k : ℤ} (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
 
 /- English proof (translation)
-Rewrite using `[cuspOp_translateSpanCusp f holCoeff_lowerMat ht, weightChar_lowerMat, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Lop_T {t : cuspForms ℚ 2} (ht : t ∈ translateSpanCusp f) : Lop t = 0 := by
   rw [cuspOp_translateSpanCusp f holCoeff_lowerMat ht, weightChar_lowerMat, zero_smul]
 
 /- English proof (translation)
-Rewrite using `[cuspOp_translateSpanCusp f holCoeff_rotMat ht, weightChar_rotMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Jop_T {t : cuspForms ℚ 2} (ht : t ∈ translateSpanCusp f) : Jop t = (I * k) • t := by
   rw [cuspOp_translateSpanCusp f holCoeff_rotMat ht, weightChar_rotMat]
 
 /- English proof (translation)
-Rewrite using `[cuspOp_translateSpanCusp f holCoeff_one ht, weightChar_one, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Zop_T {t : cuspForms ℚ 2} (ht : t ∈ translateSpanCusp f) : Zop t = 0 := by
   rw [cuspOp_translateSpanCusp f holCoeff_one ht, weightChar_one, zero_smul]
@@ -304,9 +304,9 @@ def reflSpan : Submodule ℂ (cuspForms ℚ 2) :=
   Submodule.span ℂ {v | ∃ x, IsRefl x ∧ ∃ t ∈ translateSpanCusp f, v = σc x t}
 
 /- English proof (translation)
-Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨x, hx, t, ht, rfl⟩` from `hv`. Conclude with `hgen x hx t ht`. Consider the case `zero => exact h0`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => exact hadd a b ha hb`. Consider the case `smul c a _ ha => exact hsmul c a ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem reflSpan_induction {P : cuspForms ℚ 2 → Prop} (h0 : P 0) (hadd : ∀ a b, P a → P b → P (a + b))
     (hsmul : ∀ (c : ℂ) a, P a → P (c • a))
@@ -321,9 +321,9 @@ theorem reflSpan_induction {P : cuspForms ℚ 2 → Prop} (h0 : P 0) (hadd : ∀
   | smul c a _ ha => exact hsmul c a ha
 
 /- English proof (translation)
-Use `reflSpan_induction f (P := fun s => Rop s = 0) (map_zero _) (fun a b ha hb => by rw [map_add, ha, hb, add_zero]) (fun c a ha => by rw [map_smul, ha, smul_zero]) (fun x hx t ht => ?_) hs` and prove the remaining obligations. Take `⟨w, hw, -, hK⟩` from `hx`. Establish `h` using `σc_Lop_refl hK t`. Rewrite `h` using `[Lop_T f ht, map_zero]`. Establish `hc : (-(w / starRingEnd ℂ w)) ≠ 0` using `neg_ne_zero.2 (div_ne_zero hw (conj_ne_zero' hw))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(smul_eq_zero.1 h.symm).resolve_left hc`.
+A detailed English derivation is pending.
 -/
 theorem Rop_reflSpan {s : cuspForms ℚ 2} (hs : s ∈ reflSpan f) : Rop s = 0 := by
   refine reflSpan_induction f (P := fun s => Rop s = 0) (map_zero _) (fun a b ha hb => by rw [map_add, ha, hb, add_zero])
@@ -335,9 +335,9 @@ theorem Rop_reflSpan {s : cuspForms ℚ 2} (hs : s ∈ reflSpan f) : Rop s = 0 :
   exact (smul_eq_zero.1 h.symm).resolve_left hc
 
 /- English proof (translation)
-Use `reflSpan_induction f (P := fun s => (-Jop) s = (I * k) • s) (by simp) (fun a b ha hb => by rw [map_add, ha, hb, smul_add]) (fun c a ha => by rw [map_smul, ha, smul_comm]) (fun x hx t ht => ?_) hs` and prove the remaining obligations. Take `⟨w, hw, -, hK⟩` from `hx`. Establish `h` using `σc_Jop_refl hK t`. Rewrite `h` using `[Jop_T f ht, map_smul]`. Rewrite using `[LinearMap.neg_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(neg_one_smul ℂ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem negJop_reflSpan {s : cuspForms ℚ 2} (hs : s ∈ reflSpan f) : (-Jop) s = (I * k) • s := by
   refine reflSpan_induction f (P := fun s => (-Jop) s = (I * k) • s) (by simp) (fun a b ha hb => by rw [map_add, ha, hb, smul_add])
@@ -349,7 +349,7 @@ theorem negJop_reflSpan {s : cuspForms ℚ 2} (hs : s ∈ reflSpan f) : (-Jop) s
   exact (neg_one_smul ℂ _).symm
 
 /- English proof (translation)
-Use `reflSpan_induction f (P := fun s => Zop s = 0) (map_zero _) (fun a b ha hb => by rw [map_add, ha, hb, add_zero]) (fun c a ha => by rw [map_smul, ha, smul_zero]) (fun x _ t ht => ?_) hs` and prove the remaining obligations. Rewrite using `[← archCompactRepCusp_cuspOp_one, Zop_T f ht, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Zop_reflSpan {s : cuspForms ℚ 2} (hs : s ∈ reflSpan f) : Zop s = 0 := by
   refine reflSpan_induction f (P := fun s => Zop s = 0) (map_zero _) (fun a b ha hb => by rw [map_add, ha, hb, add_zero])
@@ -369,9 +369,9 @@ def weightEig : ℕ ⊕ ℕ → ℂ
   | Sum.inr j => -(I * k + 2 * I * j)
 
 /- English proof (translation)
-Break down `i with j | j` into its components or cases. Take `⟨t, ht, rfl⟩` from `hv`. Conclude with `J_pow_apply Jop_Rop (Jop_T f ht) j`. Take `⟨s, hs, rfl⟩` from `hv`. Use `J_pow_apply negJop_Lop (negJop_reflSpan f hs) j` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[LinearMap.neg_apply, neg_eq_iff_eq_neg, ← _root_.neg_smul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem Jop_weightPiece {i : ℕ ⊕ ℕ} {v : cuspForms ℚ 2} (hv : v ∈ weightPiece f i) :
     Jop v = weightEig k i • v := by
@@ -384,11 +384,9 @@ theorem Jop_weightPiece {i : ℕ ⊕ ℕ} {v : cuspForms ℚ 2} (hv : v ∈ weig
     exact this
 
 /- English proof (translation)
-Establish `hk' : (0 : ℝ) < k` using `by exact_mod_cast hk`. Apply the tactic sequence `rintro (j | j) (j' | j') h <;> simp only [weightEig, Complex.ext_iff] at h <;>`. Simplify using `at h`. Conclude with `congrArg Sum.inl h`. Establish `: (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ j'` using `Nat.cast_nonneg j'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `: (0 : ℝ) ≤ j'` using `Nat.cast_nonneg j'`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `congrArg Sum.inr h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem weightEig_injective (hk : 0 < k) : Function.Injective (weightEig k) := by
   have hk' : (0 : ℝ) < k := by exact_mod_cast hk
@@ -410,13 +408,13 @@ section Stable
 variable {N : ℕ} [NeZero N] {k : ℤ} (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
 
 /- English proof (translation)
-The claim follows from `(le_iSup (weightPiece f) i) hv`.
+A detailed English derivation is pending.
 -/
 theorem mem_weightSpan_of_mem {i : ℕ ⊕ ℕ} {v : cuspForms ℚ 2} (hv : v ∈ weightPiece f i) : v ∈ weightSpan f :=
   (le_iSup (weightPiece f) i) hv
 
 /- English proof (translation)
-Introduce `v hv`. Establish `: weightSpan f ≤ (weightSpan f).comap op` using `iSup_le fun i w hw => h i w hw`. Conclude with `this hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weightSpan_map_mem (op : Module.End ℂ (cuspForms ℚ 2))
     (h : ∀ i, ∀ v ∈ weightPiece f i, op v ∈ weightSpan f) : ∀ v ∈ weightSpan f, op v ∈ weightSpan f := by
@@ -425,23 +423,23 @@ theorem weightSpan_map_mem (op : Module.End ℂ (cuspForms ℚ 2))
   exact this hv
 
 /- English proof (translation)
-The claim follows from `mem_weightSpan_of_mem f (i := Sum.inl j) ⟨t, ht, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem Rop_pow_mem (j : ℕ) {t : cuspForms ℚ 2} (ht : t ∈ translateSpanCusp f) : (Rop ^ j) t ∈ weightSpan f :=
   mem_weightSpan_of_mem f (i := Sum.inl j) ⟨t, ht, rfl⟩
 
 /- English proof (translation)
-The claim follows from `mem_weightSpan_of_mem f (i := Sum.inr j) ⟨s, hs, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem Lop_pow_mem (j : ℕ) {s : cuspForms ℚ 2} (hs : s ∈ reflSpan f) : (Lop ^ j) s ∈ weightSpan f :=
   mem_weightSpan_of_mem f (i := Sum.inr j) ⟨s, hs, rfl⟩
 
 /- English proof (translation)
-Use `weightSpan_map_mem f Rop fun i v hv => ?_` and prove the remaining obligations. Break down `i with j | j` into its components or cases. Take `⟨t, ht, rfl⟩` from `hv`. Rewrite using `[← Module.End.mul_apply, ← pow_succ']`. Conclude with `Rop_pow_mem f _ ht`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, rfl⟩` from `hv`. Consider the cases of `j with`. Consider the case `zero`. Rewrite using `[pow_zero, Module.End.one_apply, Rop_reflSpan f hs]`. Conclude with `zero_mem _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ m`. Rewrite using `[L_pow_succ_apply negJop_Lop Rop_Lop (negJop_reflSpan f hs) (Rop_reflSpan f hs) m]`. Conclude with `Submodule.smul_mem _ _ (Lop_pow_mem f m hs)`.
+A detailed English derivation is pending.
 -/
 theorem Rop_weightSpan : ∀ v ∈ weightSpan f, Rop v ∈ weightSpan f := by
   refine weightSpan_map_mem f Rop fun i v hv => ?_
@@ -459,11 +457,11 @@ theorem Rop_weightSpan : ∀ v ∈ weightSpan f, Rop v ∈ weightSpan f := by
       exact Submodule.smul_mem _ _ (Lop_pow_mem f m hs)
 
 /- English proof (translation)
-Use `weightSpan_map_mem f Lop fun i v hv => ?_` and prove the remaining obligations. Break down `i with j | j` into its components or cases. Take `⟨t, ht, rfl⟩` from `hv`. Consider the cases of `j with`. Consider the case `zero`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[pow_zero, Module.End.one_apply, Lop_T f ht]`. Conclude with `zero_mem _`. Consider the case `succ m`. Rewrite using `[L_pow_succ_apply Jop_Rop Lop_Rop (Jop_T f ht) (Lop_T f ht) m]`. Conclude with `Submodule.smul_mem _ _ (Rop_pow_mem f m ht)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, rfl⟩` from `hv`. Rewrite using `[← Module.End.mul_apply, ← pow_succ']`. Conclude with `Lop_pow_mem f _ hs`.
+A detailed English derivation is pending.
 -/
 theorem Lop_weightSpan : ∀ v ∈ weightSpan f, Lop v ∈ weightSpan f := by
   refine weightSpan_map_mem f Lop fun i v hv => ?_
@@ -481,7 +479,7 @@ theorem Lop_weightSpan : ∀ v ∈ weightSpan f, Lop v ∈ weightSpan f := by
     exact Lop_pow_mem f _ hs
 
 /- English proof (translation)
-Use `weightSpan_map_mem f Jop fun i v hv => ?_` and prove the remaining obligations. Rewrite using `[Jop_weightPiece f hv]`. Conclude with `Submodule.smul_mem _ _ (mem_weightSpan_of_mem f hv)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jop_weightSpan : ∀ v ∈ weightSpan f, Jop v ∈ weightSpan f := by
   refine weightSpan_map_mem f Jop fun i v hv => ?_
@@ -489,9 +487,9 @@ theorem Jop_weightSpan : ∀ v ∈ weightSpan f, Jop v ∈ weightSpan f := by
   exact Submodule.smul_mem _ _ (mem_weightSpan_of_mem f hv)
 
 /- English proof (translation)
-Use `weightSpan_map_mem f Zop fun i v hv => ?_` and prove the remaining obligations. Break down `i with j | j` into its components or cases. Take `⟨t, ht, rfl⟩` from `hv`. Establish `hc` using `((Zop_commute raiseMat).pow_right j).eq`. Rewrite using `[← Module.End.mul_apply, hc, Module.End.mul_apply, Zop_T f ht, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Take `⟨s, hs, rfl⟩` from `hv`. Establish `hc` using `((Zop_commute lowerMat).pow_right j).eq`. Rewrite using `[← Module.End.mul_apply, hc, Module.End.mul_apply, Zop_reflSpan f hs, map_zero]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zop_weightSpan : ∀ v ∈ weightSpan f, Zop v ∈ weightSpan f := by
   refine weightSpan_map_mem f Zop fun i v hv => ?_
@@ -506,9 +504,7 @@ theorem Zop_weightSpan : ∀ v ∈ weightSpan f, Zop v ∈ weightSpan f := by
     exact zero_mem _
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite using `[cuspOp_eq_combo]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply]`. Apply the tactic sequence `refine add_mem (add_mem (add_mem ?_ ?_) ?_) ?_ <;> refine Submodule.smul_mem _ _ ?_`. Conclude with `Rop_weightSpan f v hv`.
-
-Conclude with `Lop_weightSpan f v hv`. Conclude with `Jop_weightSpan f v hv`. Conclude with `Zop_weightSpan f v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cuspOp_weightSpan (B : Matrix (Fin 2) (Fin 2) ℂ) :
     ∀ v ∈ weightSpan f, cuspOp B v ∈ weightSpan f := by
@@ -522,13 +518,11 @@ theorem cuspOp_weightSpan (B : Matrix (Fin 2) (Fin 2) ℂ) :
   · exact Zop_weightSpan f v hv
 
 /- English proof (translation)
-Use `weightSpan_map_mem f (σc x) fun i v hv => ?_` and prove the remaining obligations. Break down `i with j | j` into its components or cases. Take `⟨t, ht, rfl⟩` from `hv`. Break down `isRot_or_isRefl x with ⟨w, hw, h1, hK⟩ | ⟨w, hw, h1, hK⟩` into its components or cases. Rewrite using `[σc_pow (σc_Rop_rot hK) j t, archCompactRepCusp_translateSpanCusp f x hw h1 hK ht, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Rop_pow_mem f j ht))`. Rewrite using `[σc_pow (σc_Rop_refl hK) j t]`. Conclude with `Submodule.smul_mem _ _ (Lop_pow_mem f j (Submodule.subset_span ⟨x, ⟨w, hw, h1, hK⟩, t, ht, rfl⟩))`. Take `⟨s, hs, rfl⟩` from `hv`. Use `reflSpan_induction f (P := fun s => σc x ((Lop ^ j) s) ∈ weightSpan f) (by rw [map_zero, map_zero]; exact zero_mem _) (fun a b ha hb => by rw [map_add, map_add]; exact add_mem ha hb) (fun c a ha => by rw [map_smul, map_smul]; exact Submodule.smul_mem _ _ ha) (fun y hy t ht => ?_) …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `isRot_or_isRefl x with ⟨w, hw, h1, hK⟩ | ⟨w, hw, h1, hK⟩` into its components or cases. Rewrite using `[σc_pow (σc_Lop_rot hK) j, σc_mul_apply]`. Establish `hxy : IsRefl (x * y)` using `IsRefl.mul_isRot ⟨w, hw, h1, hK⟩ hy`. Conclude with `Submodule.smul_mem _ _ (Lop_pow_mem f j (Submodule.subset_span ⟨x * y, hxy, t, ht, rfl⟩))`. Rewrite using `[σc_pow (σc_Lop_refl hK) j, σc_mul_apply]`.
-
-Take `⟨w', hw', h1', hK'⟩` from `IsRefl.mul_isRefl ⟨w, hw, h1, hK⟩ hy`. Rewrite using `[archCompactRepCusp_translateSpanCusp f (x * y) hw' h1' hK' ht, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Rop_pow_mem f j ht))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem σc_weightSpan (x : archCompact ℚ 2) : ∀ v ∈ weightSpan f, σc x v ∈ weightSpan f := by
   refine weightSpan_map_mem f (σc x) fun i v hv => ?_
@@ -554,7 +548,7 @@ theorem σc_weightSpan (x : archCompact ℚ 2) : ∀ v ∈ weightSpan f, σc x v
       exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Rop_pow_mem f j ht))
 
 /- English proof (translation)
-Use `reflSpan_induction f (P := fun s => finRepCusp ℚ 2 g s ∈ reflSpan f) (by rw [map_zero]; exact zero_mem _) (fun a b ha hb => by rw [map_add]; exact add_mem ha hb) (fun c a ha => by rw [map_smul]; exact Submodule.smul_mem _ _ ha) (fun y hy t ht => ?_) hs` and prove the remaining obligations. Rewrite using `[← σc_finRepCusp]`. Conclude with `Submodule.subset_span ⟨y, hy, _, finRepCusp_mem_translateSpanCusp f g ht, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finRepCusp_reflSpan (g : FiniteAdelicGL ℚ 2) {s : cuspForms ℚ 2} (hs : s ∈ reflSpan f) :
     finRepCusp ℚ 2 g s ∈ reflSpan f := by
@@ -565,9 +559,9 @@ theorem finRepCusp_reflSpan (g : FiniteAdelicGL ℚ 2) {s : cuspForms ℚ 2} (hs
   exact Submodule.subset_span ⟨y, hy, _, finRepCusp_mem_translateSpanCusp f g ht, rfl⟩
 
 /- English proof (translation)
-Use `weightSpan_map_mem f (finRepCusp ℚ 2 g) fun i v hv => ?_` and prove the remaining obligations. Break down `i with j | j` into its components or cases. Take `⟨t, ht, rfl⟩` from `hv`. Rewrite using `[← cuspOp_pow_finRepCusp]`. Conclude with `Rop_pow_mem f j (finRepCusp_mem_translateSpanCusp f g ht)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, rfl⟩` from `hv`. Rewrite using `[← cuspOp_pow_finRepCusp]`. Conclude with `Lop_pow_mem f j (finRepCusp_reflSpan f g hs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finRepCusp_weightSpan (g : FiniteAdelicGL ℚ 2) :
     ∀ v ∈ weightSpan f, finRepCusp ℚ 2 g v ∈ weightSpan f := by
@@ -581,27 +575,27 @@ theorem finRepCusp_weightSpan (g : FiniteAdelicGL ℚ 2) :
     exact Lop_pow_mem f j (finRepCusp_reflSpan f g hs)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun X v hv => by rw [gkModuleCusp_ρ_eq_cuspOp]; exact cuspOp_weightSpan f _ v hv, fun x v hv => σc_weightSpan f x v hv, fun g v hv => finRepCusp_weightSpan f g v hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGKFStable_weightSpan : IsGKFStable (weightSpan f) :=
   ⟨fun X v hv => by rw [gkModuleCusp_ρ_eq_cuspOp]; exact cuspOp_weightSpan f _ v hv,
     fun x v hv => σc_weightSpan f x v hv, fun g v hv => finRepCusp_weightSpan f g v hv⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, by show finRepCusp ℚ 2 1 (liftCusp f) = _; rw [map_one, Module.End.one_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem liftCusp_mem_translateSpanCusp : liftCusp f ∈ translateSpanCusp f :=
   Submodule.subset_span ⟨1, by show finRepCusp ℚ 2 1 (liftCusp f) = _; rw [map_one, Module.End.one_apply]⟩
 
 /- English proof (translation)
-Use `Rop_pow_mem f 0 (liftCusp_mem_translateSpanCusp f)` as an intermediate fact. Rewrite `this` using `[pow_zero, Module.End.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem liftCusp_mem_weightSpan : liftCusp f ∈ weightSpan f := by
   have := Rop_pow_mem f 0 (liftCusp_mem_translateSpanCusp f)
   rwa [pow_zero, Module.End.one_apply] at this
 
 /- English proof (translation)
-The claim follows from `gkfSpan_le (isGKFStable_weightSpan f) (liftCusp_mem_weightSpan f)`.
+A detailed English derivation is pending.
 -/
 theorem gkfSpan_le_weightSpan : gkfSpan (liftCusp f) ≤ weightSpan f :=
   gkfSpan_le (isGKFStable_weightSpan f) (liftCusp_mem_weightSpan f)
@@ -613,13 +607,13 @@ section Extract
 variable {N : ℕ} [NeZero N] {k : ℤ} (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
 
 /- English proof (translation)
-Rewrite using `[σc_mul_apply, inv_mul_cancel, σc, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σc_inv_apply (y : archCompact ℚ 2) (ψ : cuspForms ℚ 2) : σc y⁻¹ (σc y ψ) = ψ := by
   rw [σc_mul_apply, inv_mul_cancel, σc, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Use `reflSpan_induction f (P := fun s => σc y s ∈ translateSpanCusp f) (by rw [map_zero]; exact zero_mem _) (fun a b ha hb => by rw [map_add]; exact add_mem ha hb) (fun c a ha => by rw [map_smul]; exact Submodule.smul_mem _ _ ha) (fun x hx t ht => ?_) hs` and prove the remaining obligations. Rewrite using `[σc_mul_apply]`. Take `⟨w, hw, h1, hK⟩` from `IsRefl.mul_isRefl hy hx`. Rewrite using `[archCompactRepCusp_translateSpanCusp f (y * x) hw h1 hK ht]`. Conclude with `Submodule.smul_mem _ _ ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem σc_refl_reflSpan {y : archCompact ℚ 2} (hy : IsRefl y) {s : cuspForms ℚ 2} (hs : s ∈ reflSpan f) :
     σc y s ∈ translateSpanCusp f := by
@@ -632,9 +626,9 @@ theorem σc_refl_reflSpan {y : archCompact ℚ 2} (hy : IsRefl y) {s : cuspForms
   exact Submodule.smul_mem _ _ ht
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h' : ∀ y, ¬ IsRefl y` using `fun y hy => h ⟨y, hy⟩`. Establish `hbot : reflSpan f = ⊥`. Rewrite using `[reflSpan, Submodule.span_eq_bot]`. Introduce and unpack `v ⟨x, hx, -⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd hx (h' x)`. Rewrite `hs` using `[hbot]`. Conclude with `hs0 ((Submodule.mem_bot ℂ).1 hs)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRefl_of_mem_reflSpan {s : cuspForms ℚ 2} (hs : s ∈ reflSpan f) (hs0 : s ≠ 0) :
     ∃ y, IsRefl y := by
@@ -648,7 +642,7 @@ theorem exists_isRefl_of_mem_reflSpan {s : cuspForms ℚ 2} (hs : s ∈ reflSpan
   exact hs0 ((Submodule.mem_bot ℂ).1 hs)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using hv`. Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply]`. Conclude with `hW.cuspOp_mem B ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsGKFStable.cuspOp_pow_mem {W : Submodule ℂ (cuspForms ℚ 2)} (hW : IsGKFStable W)
     (B : Matrix (Fin 2) (Fin 2) ℂ) (j : ℕ) {v : cuspForms ℚ 2} (hv : v ∈ W) :
@@ -658,21 +652,21 @@ theorem IsGKFStable.cuspOp_pow_mem {W : Submodule ℂ (cuspForms ℚ 2)} (hW : I
   | succ j ih => rw [pow_succ', Module.End.mul_apply]; exact hW.cuspOp_mem B ih
 
 /- English proof (translation)
-Take `⟨w, hwW, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`. Take `⟨F, hF, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp (weightPiece f) w).1 (hWV hwW)`. Establish `hJW : ∀ v ∈ W, Jop v ∈ W` using `fun v hv => hW.cuspOp_mem rotMat hv`. Establish `hcomp` using `mem_of_sum_mem_of_eigen hJW F.support F (weightEig k) (fun i _ => Jop_weightPiece f (hF i)) ((weightEig_injective hk).injOn) (by rw [← hsum] at hwW; exact hwW)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : F.support.Nonempty := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `he`. Apply `hw0` to reduce the goal to its premises. Rewrite using `[← hsum, Finsupp.sum, he, Finset.sum_empty]`. Establish `hFiW` using `hcomp i hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFi0 : F i ≠ 0` using `Finsupp.mem_support_iff.1 hi`. Break down `i with j | j` into its components or cases. Establish `hFj : F (Sum.inl j) ∈ (translateSpanCusp f).map (Rop ^ j)` using `hF (Sum.inl j)`. Take `⟨t, ht, hte⟩` from `hFj`. Rewrite `hFiW`, `hFi0` using `[← hte]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `L_pow_R_pow_apply Jop_Rop Lop_Rop (Jop_T f ht) (Lop_T f ht) j`. Establish `hc` using `prod_ne_zero_of_pos hk j`. Establish `ht0 : t ≠ 0` using `fun h => hFi0 (by rw [h, map_zero])`. Use `⟨t, ht, ht0, ?_⟩` and prove the remaining obligations. Establish `h2` using `hW.cuspOp_pow_mem lowerMat j hFiW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Establish `h3` using `Submodule.smul_mem W (∏ m ∈ Finset.range j, (4 * I * (m + 1) * (I * k + I * m)))⁻¹ h2`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis. Establish `hFj : F (Sum.inr j) ∈ (reflSpan f).map (Lop ^ j)` using `hF (Sum.inr j)`. Take `⟨s, hs, hse⟩` from `hFj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hFiW`, `hFi0` using `[← hse]`. Establish `h1` using `L_pow_R_pow_apply negJop_Lop Rop_Lop (negJop_reflSpan f hs) (Rop_reflSpan f hs) j`. Establish `hc` using `prod_ne_zero_of_pos hk j`. Establish `hs0 : s ≠ 0` using `fun h => hFi0 (by rw [h, map_zero])`. Establish `h2` using `hW.cuspOp_pow_mem raiseMat j hFiW`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Establish `h3` using `Submodule.smul_mem W (∏ m ∈ Finset.range j, (4 * I * (m + 1) * (I * k + I * m)))⁻¹ h2`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Take `⟨y, hy⟩` from `exists_isRefl_of_mem_reflSpan f hs hs0`. Use `⟨σc y s, σc_refl_reflSpan f hy hs, fun h => hs0 ?_, hW.2.1 y s h3⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← σc_inv_apply y s, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ne_zero_mem_translateSpanCusp (hk : 0 < k) {W : Submodule ℂ (cuspForms ℚ 2)}
     (hW : IsGKFStable W) (hWV : W ≤ weightSpan f) (hW0 : W ≠ ⊥) :

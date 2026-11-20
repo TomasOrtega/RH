@@ -26,9 +26,9 @@ open GlobalTheory.LiftLevel
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hb : βS.val * (βS⁻¹).val = 1`. Rewrite using `[← Matrix.GeneralLinearGroup.coe_mul, mul_inv_cancel, Matrix.GeneralLinearGroup.coe_one]`. Establish `hg : (S.gram⁻¹).map (incA D) = 1` using `by rw [hS, inv_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Unfold `adjA frMapAdj rowAdj`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hb, Matrix.one_mul, hg, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, partAt, finW, smul_eq_mul, Fin.sum_univ_one, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem row_mat {S T : HSp D} (hS : S.gram = 1) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
     (a e : AE D) (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
@@ -43,9 +43,9 @@ theorem row_mat {S T : HSp D} (hS : S.gram = 1) (βS : GL (Fin S.rank) (EAf D)) 
     partAt, finW, smul_eq_mul, Fin.sum_univ_one, map_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `h0 : rowAdj T βT a e 0 = 0`. Unfold `rowAdj`. Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, Matrix.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∀ h, Formalism.L2.DIV.resS D.host.F PP (⟨0, h⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = 0` using `fun _ => map_zero _`. Simplify using `[rowRed, redM, h0, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem rowRed_zero (T : HSp D) (βT : GL (Fin T.rank) (EAf D)) (a e : AE D) (PP : Formalism.L2.DIV.Pl D.host.E) :
     rowRed T βT a e PP 0 = 0 := by
@@ -57,7 +57,7 @@ theorem rowRed_zero (T : HSp D) (βT : GL (Fin T.rank) (EAf D)) (a e : AE D) (PP
   simp [rowRed, redM, h0, h1]
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← (Pi.basisFun D.host.E (Fin n)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.subset_span ⟨a, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem full_std (n : ℕ) : (stdL D.host.E n).FG ∧
     Submodule.span D.host.E (stdL D.host.E n : Set (Fin n → D.host.E)) = ⊤ := by
@@ -68,9 +68,9 @@ theorem full_std (n : ℕ) : (stdL D.host.E n).FG ∧
   exact Submodule.subset_span ⟨a, by simp⟩
 
 /- English proof (translation)
-Use `⟨hL.smul (IsNoetherian.noetherian I), ?_⟩` and prove the remaining obligations. Take `⟨t, ht, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Establish `htE : (t : D.host.E) ≠ 0` using `fun h => ht0 (RingOfIntegers.ext (h.trans rfl))`. Rewrite using `[eq_top_iff, ← hLs, Submodule.span_le]`. Introduce `u hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu' : (t : D.host.E) • u ∈ Submodule.span D.host.E ((I • L : Lt D.host.E r) : Set (Fin r → D.host.E))` using `Submodule.subset_span (Submodule.smul_mem_smul ht hu)`. Use `Submodule.smul_mem _ ((t : D.host.E)⁻¹) hu'` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ htE, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem full_smul {r : ℕ} (I : Ideal (𝓞 D.host.E)) (hI : I ≠ ⊥) (L : Lt D.host.E r) (hL : L.FG)
     (hLs : Submodule.span D.host.E (L : Set (Fin r → D.host.E)) = ⊤) :
@@ -92,51 +92,45 @@ namespace GlobalTheory.LiftDat.RowKer
 open GlobalTheory.LiftLevel
 
 /- English proof (translation)
-Introduce `D S T C hn ΛT _ _ βS βT _ _ Pg Q ξ _ _ e he a k₀ _ _ hgen h1 h2 h3 _ v hv`. Break down `Nat.eq_zero_or_pos T.rank with h0 | hpos` into its components or cases. Use `haveI : IsEmpty (Fin T.rank) := by rw [h0]; infer_instance`. Establish `hv0 : v = 0` using `funext fun j => isEmptyElim j`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_`. Rewrite using `[hv0]`. Conclude with `zero_mem _`. Introduce `_ PP _`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `isEmptyElim j`. Set `i0 : Fin S.rank` to `⟨0, lt_of_lt_of_le hpos hn⟩`. Set `y : Matrix (Fin S.rank) (Fin T.rank) D.host.E` to `Matrix.of fun i => if i = i0 then v else 0`. Establish `hyrow : ∀ i, y i = if i = i0 then v else 0` using `fun i => rfl`. Establish `hy0 : y i0 = v` using `by rw [hyrow, if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : ∀ L : Lt D.host.E T.rank, v ∈ L → y ∈ tens (stdL D.host.E S.rank) L` using `fun L hvL => (GlobalTheory.SW.TensLat.mem_tens_stdL L y).2 fun k => by`. Rewrite using `[hyrow]`. Use `split_ifs`. Conclude with `hvL`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAo : ∀ L : Lt D.host.E T.rank, ∀ o : 𝓞 D.host.E, ∀ z ∈ tens (stdL D.host.E S.rank) L, (o : D.host.E) • z ∈ tens (stdL D.host.E S.rank) L` using `fun L o z hz => smul_mem_tens o (fun u hu => Submodule.smul_mem _ o hu) hz`. Establish `hee : e * e = e` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `hce : finPart D (cA D e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by`. Rewrite using `[← map_mul, ← map_mul, hee])`. Establish `hfinW : ∀ (L : Lt D.host.E T.rank) (z : Matrix (Fin S.rank) (Fin T.rank) D.host.E), z ∈ tens (stdL D.host.E S.rank) L → finW S T z ∈ hatA S T (tens (stdL D.host.E S.rank) L)` using `fun L z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.Ker.SignVac.finW_eq]`. Conclude with `GlobalTheory.Ker.SignVac.finTens_mem (GlobalTheory.LatVac.one_mem_intAf _) hz`. Establish `hxL : ∀ L : Lt D.host.E T.rank, v ∈ L → partAt (cA D e) (finW S T y) ∈ hatA S T (tens (stdL D.host.E S.rank) L)` using `fun L hvL => by`. Establish `: partAt (cA D e) (finW S T y) = cA D e • finW S T y` using `by ext i j; rfl`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `smul_mem_hatA_of_int (hAo L) hce (hfinW L y (hy L hvL))`. Establish `hhalf : IsHalf (cA D e) (partAt (cA D e) (finW S T y))` using `fun i j => by`. Simplify using `only [partAt, Matrix.map_apply, ← mul_assoc, ← map_mul, hee]`. Take `⟨hc1, hc2⟩` from `hgen _ hhalf`. Establish `hred : ∀ PP, redM PP (adjA S T βS βT a (partAt (cA D e) (finW S T y))) = fun i j => rowRed T βT a e PP (y i) j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `PP`. Rewrite using `[row_mat C.m.gS βS βT a e y]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `hR`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint` using `hc1.2 (hxL _ hv)`. Establish `hall : ∀ PP ∈ Pg ∪ Q, redM PP (adjA S T βS βT a (partAt (cA D e) (finW S T y))) = 0`. Introduce `PP hPP`. Rewrite using `[hred]`. Use function extensionality and compare the values at `i j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hyrow]`. Use `split_ifs`. Conclude with `congrFun (hR PP hPP) j`. Conclude with `congrFun (rowRed_zero T βT a e PP) j`. Establish `hxI` using `hc2.1 ⟨hint, hall⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hm : liftI Pg Q ⊔ conjI (liftI Pg Q) = ⊤` using `Ideal.isCoprime_iff_sup_eq.1 h3`. Establish `h1' : (1 : 𝓞 D.host.E) ∈ liftI Pg Q ⊔ conjI (liftI Pg Q)` using `by rw [hm]; exact Submodule.mem_top`. Take `⟨t, ht, c, hc, htc⟩` from `Submodule.mem_sup.1 h1'`. Establish `hcP : ∀ PP ∈ Pg ∪ Q, conjI (liftI Pg Q) ≤ PP.asIdeal`. Introduce `PP hPP x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2'` using `mem_of_mem_conjI hx`. Rewrite `h2'` using `[liftI]`. Establish `h3' : stO x ∈ conjI PP.asIdeal` using `Finset.inf_le (f := fun PP : Formalism.L2.DIV.Pl D.host.E => conjI PP.asIdeal) hPP (Ideal.prod_le_inf h2')`. Establish `h4'` using `mem_of_mem_conjI h3'`. Establish `h5' : stO (stO x) = x` using `RingOfIntegers.ext (star_star _)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h4'` using `[h5']`. Then use the resulting hypothesis. Establish `htP : ∀ PP ∈ Pg ∪ Q, t ∉ PP.asIdeal`. Introduce `PP hPP htm`. Establish `h6 : (1 : 𝓞 D.host.E) ∈ PP.asIdeal` using `htc ▸ add_mem htm (hcP PP hPP hc)`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h6)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPQ : (Pg ∪ Q).Nonempty`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Finset.not_nonempty_iff_eq_empty]`. Apply `h1` to reduce the goal to its premises. Rewrite using `[liftI, hne, Finset.prod_empty, Ideal.one_eq_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht0 : (t : D.host.E) ≠ 0`. Take `⟨PP, hPP⟩` from `hPQ`. Introduce `h`. Apply `htP PP hPP` to reduce the goal to its premises. Establish `: t = 0` using `RingOfIntegers.ext (h.trans rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `htL : ∀ u ∈ C.X.Λ, t • u ∈ liftI Pg Q • C.X.Λ` using `fun u hu => Submodule.smul_mem_smul ht hu`. Establish `hty : (t : D.host.E) • y ∈ tens (stdL D.host.E S.rank) (liftI Pg Q • C.X.Λ)` using `smul_mem_tens t htL (hy _ hv)`. Establish `hz1 : finPart D (e * incA D ((t : D.host.E))⁻¹) ∈ intAE D` using `GlobalTheory.IdemSumInt.finPart_idemSum_mul_inv_mem D e (Pg ∪ Q) he t htP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e1 : partAt e (finW S T y) = (e * incA D ((t : D.host.E))⁻¹) • finW S T ((t : D.host.E) • y)`. Establish `e2 : finW S T ((t : D.host.E) • y) = (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (t : D.host.E) : AE D) • finW S T y`. Rewrite using `[GlobalTheory.Ker.SignVac.finW_eq, GlobalTheory.Ker.SignVac.finW_eq, GlobalTheory.LatVac.tmul_smul_finTens, one_mul, Matrix.transpose_smul]`. Establish `e3 : finW S T y = (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E) : AE D) • finW S T y`. Rewrite using `[GlobalTheory.Ker.SignVac.finW_eq, GlobalTheory.LatVac.tmul_smul_finTens, one_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, smul_smul, mul_assoc]`. Establish `e4 : incA D ((t : D.host.E))⁻¹ * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (t : D.host.E) : AE D) = pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)`. Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] ((t : D.host.E))⁻¹) * _ = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, inv_mul_cancel₀ ht0]`. Rewrite using `[e4, mul_smul, ← e3]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hpe : partAt e (finW S T y) ∈ hatA S T (tens (stdL D.host.E S.rank) (liftI Pg Q • C.X.Λ))`. Rewrite using `[e1]`. Conclude with `smul_mem_hatA_of_int (hAo _) hz1 (hfinW _ _ hty)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hpo` using `GlobalTheory.T.offIdempotent_finitePoint_mem_completedTensorLattice D S T Pg Q e he C.X.Λ y (hy _ hv)`. Establish `hsum : finW S T y = partAt (cA D e) (finW S T y) + partAt e (finW S T y) + partAt (1 - e - cA D e) (finW S T y)`. Use extensionality with `i j`. Simplify using `only [partAt, Matrix.add_apply, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hfI : finW S T y ∈ hatA S T (tens (stdL D.host.E S.rank) (liftI Pg Q • C.X.Λ))`. Rewrite using `[hsum]`. Conclude with `add_mem (add_mem hxI hpe) hpo`. Establish `hyI` using `((GlobalTheory.Ker.HatLat.hatA_tens D S T C (stdL D.host.E S.rank) (liftI Pg Q • C.X.Λ) (full_std _) (full_smul _ h2 C.X.Λ C.X.Λ_fg C.X.Λ_span)).2.1 y).1 hfI`. Use `(GlobalTheory.SW.TensLat.mem_tens_stdL _ y).1 hyI i0` as an intermediate fact.
-
-Rewrite `this` using `[hy0]`. Then use the resulting hypothesis. Introduce `hvI PP hPP`. Establish `h6` using `(hc2.2 (hxL _ hvI)).2 PP hPP`. Rewrite `h6` using `[hred]`. Use function extensionality and compare the values at `j`.
-
-Establish `h7` using `congrFun (congrFun h6 i0) j`. Rewrite `h7` using `[hy0]`. Conclude with `h7`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowRed_eq_zero_iff : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ e : AE D, IsIdemSum e (Pg ∪ Q) → ∀ (a : AE D) (k₀ : GA D S), (∃ b : AE D, a * b = e) → GlobalTheory.LiftLevel.IsMover S T βS βT e a k₀ → GlobalTheory.LiftLevel.IsGen C βS βT Pg Q e a → GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊤ → GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊥ → IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (conjI (GlobalTheory.LiftLevel.liftI Pg Q)) → IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (Ideal.span {2}) → ∀ v ∈ C.X.Λ, ((∀ PP ∈ Pg ∪ Q, GlobalTheory.LiftDat.rowRed T βT a e PP v = 0) ↔ v ∈ GlobalTheory.LiftLevel.liftI Pg Q • C.X.Λ) := by
   intro D S T C hn ΛT _ _ βS βT _ _ Pg Q ξ _ _ e he a k₀ _ _ hgen h1 h2 h3 _ v hv

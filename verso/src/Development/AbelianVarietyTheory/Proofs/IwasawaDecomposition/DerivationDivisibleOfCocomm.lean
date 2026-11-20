@@ -17,7 +17,7 @@ variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
   {M : Type} [AddCommGroup M] [Module ↥(intO C) M]
 
 /- English proof (translation)
-Establish `ho : ‖(o : C)‖ ≤ 1` using `o.2`. Express the relevant statement in the definitionally equal form `‖(o : C) * x‖ ≤ _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) ho`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_smul_le (o : ↥(intO C)) (x : C) : ‖o • x‖ ≤ ‖x‖ := by
   have ho : ‖(o : C)‖ ≤ 1 := o.2
@@ -26,9 +26,9 @@ theorem norm_smul_le (o : ↥(intO C)) (x : C) : ‖o • x‖ ≤ ‖x‖ := by
   exact mul_le_of_le_one_left (norm_nonneg _) ho
 
 /- English proof (translation)
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simpa using hr`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `smul o x _ hx => rw [map_smul]`. Conclude with `(norm_smul_le _ _).trans hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_le_of_mem_span (f : M →ₗ[↥(intO C)] C) {s : Set M} {r : ℝ} (hr : 0 ≤ r)
     (h : ∀ m ∈ s, ‖f m‖ ≤ r) {m : M} (hm : m ∈ Submodule.span ↥(intO C) s) : ‖f m‖ ≤ r := by
@@ -40,9 +40,9 @@ theorem norm_le_of_mem_span (f : M →ₗ[↥(intO C)] C) {s : Set M} {r : ℝ} 
   | smul o x _ hx => rw [map_smul]; exact (norm_smul_le _ _).trans hx
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ↥(intO C)) (M := M)`. Use `⟨∑ m ∈ s, ‖f m‖, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`. Use `norm_le_of_mem_span f (s := s) (Finset.sum_nonneg fun _ _ => norm_nonneg _) (fun m hm => Finset.single_le_sum (f := fun m => ‖f m‖) (fun _ _ => norm_nonneg _) hm) ?_` and prove the remaining obligations. Rewrite using `[hs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`.
+Check the elementary cases of the proposition.
 -/
 theorem bddAbove_norm [Module.Finite ↥(intO C) M] (f : M →ₗ[↥(intO C)] C) :
     BddAbove (Set.range fun m => ‖f m‖) := by
@@ -56,25 +56,25 @@ theorem bddAbove_norm [Module.Finite ↥(intO C) M] (f : M →ₗ[↥(intO C)] C
 def supNorm (f : WithConv (M →ₗ[↥(intO C)] C)) : ℝ := ⨆ m, ‖f.ofConv m‖
 
 /- English proof (translation)
-The claim follows from `le_ciSup (bddAbove_norm f.ofConv) m`.
+A detailed English derivation is pending.
 -/
 theorem le_supNorm [Module.Finite ↥(intO C) M] (f : WithConv (M →ₗ[↥(intO C)] C)) (m : M) :
     ‖f.ofConv m‖ ≤ supNorm f := le_ciSup (bddAbove_norm f.ofConv) m
 
 /- English proof (translation)
-The claim follows from `ciSup_le h`.
+A detailed English derivation is pending.
 -/
 theorem supNorm_le {f : WithConv (M →ₗ[↥(intO C)] C)} {r : ℝ} (h : ∀ m, ‖f.ofConv m‖ ≤ r) :
     supNorm f ≤ r := ciSup_le h
 
 /- English proof (translation)
-The claim follows from `Real.iSup_nonneg fun _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem supNorm_nonneg (f : WithConv (M →ₗ[↥(intO C)] C)) : 0 ≤ supNorm f :=
   Real.iSup_nonneg fun _ => norm_nonneg _
 
 /- English proof (translation)
-Rewrite using `[supNorm, supNorm, Real.mul_iSup_of_nonneg (norm_nonneg c)]`. Use `congr 1`. Use extensionality with `m`. Rewrite using `[← norm_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem supNorm_smul (c : C) (f : WithConv (M →ₗ[↥(intO C)] C)) :
     supNorm (c • f) = ‖c‖ * supNorm f := by
@@ -85,7 +85,7 @@ theorem supNorm_smul (c : C) (f : WithConv (M →ₗ[↥(intO C)] C)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `supNorm_le fun m => (IsUltrametricDist.norm_add_le_max (f.ofConv m) (g.ofConv m)).trans (max_le_max (le_supNorm f m) (le_supNorm g m))`.
+A detailed English derivation is pending.
 -/
 theorem supNorm_add_le [Module.Finite ↥(intO C) M] (f g : WithConv (M →ₗ[↥(intO C)] C)) :
     supNorm (f + g) ≤ max (supNorm f) (supNorm g) :=
@@ -93,9 +93,9 @@ theorem supNorm_add_le [Module.Finite ↥(intO C) M] (f g : WithConv (M →ₗ[�
     (max_le_max (le_supNorm f m) (le_supNorm g m))
 
 /- English proof (translation)
-Use `supNorm_le fun m => ?_` and prove the remaining obligations. Establish `h` using `(Coalgebra.Repr.arbitrary ↥(intO C) m).convMul_apply f g`. Rewrite using `[h]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg (supNorm_nonneg _) (supNorm_nonneg _)) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (le_supNorm f _) (le_supNorm g _) (norm_nonneg _) (supNorm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem supNorm_mul_le [Module.Finite ↥(intO C) M] [Coalgebra ↥(intO C) M]
     (f g : WithConv (M →ₗ[↥(intO C)] C)) : supNorm (f * g) ≤ supNorm f * supNorm g := by
@@ -108,9 +108,9 @@ theorem supNorm_mul_le [Module.Finite ↥(intO C) M] [Coalgebra ↥(intO C) M]
   exact mul_le_mul (le_supNorm f _) (le_supNorm g _) (norm_nonneg _) (supNorm_nonneg _)
 
 /- English proof (translation)
-Use `supNorm_le fun t => ?_` and prove the remaining obligations. Proceed by induction on `t with`. Consider the case `zero => simpa using hr`. Consider the case `tmul a b => exact h a b`. Consider the case `add x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supNorm_le_of_tmul {f : WithConv (M ⊗[↥(intO C)] M →ₗ[↥(intO C)] C)} {r : ℝ}
     (hr : 0 ≤ r) (h : ∀ a b, ‖f.ofConv (a ⊗ₜ b)‖ ≤ r) : supNorm f ≤ r := by
@@ -122,9 +122,9 @@ theorem supNorm_le_of_tmul {f : WithConv (M ⊗[↥(intO C)] M →ₗ[↥(intO C
     rw [map_add]; exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `supNorm_le_of_tmul (mul_nonneg (supNorm_nonneg _) (supNorm_nonneg _)) fun a b => ?_` and prove the remaining obligations. Rewrite using `[hh, norm_mul]`. Conclude with `mul_le_mul (le_supNorm f _) (le_supNorm g _) (norm_nonneg _) (supNorm_nonneg _)`. Rewrite using `[supNorm.eq_1 f, Real.iSup_mul_of_nonneg (supNorm_nonneg g)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ciSup_le fun a => ?_` and prove the remaining obligations. Rewrite using `[supNorm.eq_1 g, Real.mul_iSup_of_nonneg (norm_nonneg _)]`. Use `ciSup_le fun b => ?_` and prove the remaining obligations. Rewrite using `[← norm_mul, ← hh]`. Conclude with `le_supNorm h _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supNorm_eq_mul [Module.Finite ↥(intO C) M] (f g : WithConv (M →ₗ[↥(intO C)] C))
     (h : WithConv (M ⊗[↥(intO C)] M →ₗ[↥(intO C)] C))
@@ -142,9 +142,9 @@ theorem supNorm_eq_mul [Module.Finite ↥(intO C) M] (f g : WithConv (M →ₗ[�
     exact le_supNorm h _
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hy.fg_adjoin_singleton`. Use `⟨∑ f ∈ s, supNorm f, fun k => supNorm_le fun m => ?_⟩` and prove the remaining obligations. Establish `hk : y ^ k ∈ Submodule.span ↥(intO C) (s : Set (WithConv (M →ₗ[↥(intO C)] C)))`. Rewrite using `[hs]`. Conclude with `pow_mem (Algebra.self_mem_adjoin_singleton _ y) k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ev : WithConv (M →ₗ[↥(intO C)] C) →ₗ[↥(intO C)] C` to `{ toFun := fun f => f.ofConv m map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `norm_le_of_mem_span ev (Finset.sum_nonneg fun _ _ => supNorm_nonneg _) (fun f hf => (le_supNorm f m).trans (Finset.single_le_sum (f := fun f => supNorm f) (fun _ _ => supNorm_nonneg _) hf)) hk`.
+A detailed English derivation is pending.
 -/
 theorem exists_supNorm_pow_le [Module.Finite ↥(intO C) M] [Coalgebra ↥(intO C) M]
     [IsCocomm ↥(intO C) M] {y : WithConv (M →ₗ[↥(intO C)] C)} (hy : IsIntegral ↥(intO C) y) :
@@ -172,14 +172,14 @@ def extProd (f g : WithConv (A →ₗ[R] C)) : WithConv (A ⊗[R] A →ₗ[R] C)
   toConv ((Algebra.TensorProduct.lmul' R (S := C)).toLinearMap ∘ₗ TensorProduct.map f.ofConv g.ofConv)
 
 /- English proof (translation)
-Simplify using `[extProd]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extProd_tmul (f g : WithConv (A →ₗ[R] C)) (a b : A) :
     (extProd f g).ofConv (a ⊗ₜ b) = f.ofConv a * g.ofConv b := by
   simp [extProd]
 
 /- English proof (translation)
-Establish `h1` using `TensorProduct.map_convMul_map (f := f) (h := h) (g := g) (k := k)`. Establish `h2` using `LinearMap.algHom_comp_convMul_distrib (Algebra.TensorProduct.lmul' R (S := C)) (toConv (TensorProduct.map f.ofConv g.ofConv)) (toConv (TensorProduct.map h.ofConv k.ofConv))`. Rewrite `h2` using `[h1]`. Conclude with `(congrArg toConv h2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extProd_mul (f g h k : WithConv (A →ₗ[R] C)) :
     extProd f g * extProd h k = extProd (f * h) (g * k) := by
@@ -190,14 +190,14 @@ theorem extProd_mul (f g h k : WithConv (A →ₗ[R] C)) :
   exact (congrArg toConv h2).symm
 
 /- English proof (translation)
-The claim follows from `WithConv.ext (TensorProduct.ext' h)`.
+A detailed English derivation is pending.
 -/
 theorem tensor_ext {f g : WithConv (A ⊗[R] A →ₗ[R] C)}
     (h : ∀ a b, f.ofConv (a ⊗ₜ b) = g.ofConv (a ⊗ₜ b)) : f = g :=
   WithConv.ext (TensorProduct.ext' h)
 
 /- English proof (translation)
-The claim follows from `tensor_ext fun a b => by simp [mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem extProd_one : extProd (1 : WithConv (A →ₗ[R] C)) 1 = 1 :=
   tensor_ext fun a b => by simp [mul_comm]
@@ -242,7 +242,7 @@ def extendHom : WithConv (A →ₗ[R] R) →ₐ[R] WithConv (A →ₗ[R] C) :=
     fun f g => congrArg toConv (LinearMap.algHom_comp_convMul_distrib _ f g)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `extProd f 1 * extProd 1 g = _`. Rewrite using `[extProd_mul, mul_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem inlHom_mul_inrHom (f g : WithConv (A →ₗ[R] C)) :
     inlHom R C A f * inrHom R C A g = extProd f g := by
@@ -252,9 +252,7 @@ theorem inlHom_mul_inrHom (f g : WithConv (A →ₗ[R] C)) :
 end Conv
 
 /- English proof (translation)
-Establish `h : ∀ φ : CartierDual R A, φ.ofConv ((CartierDual.bidual R A).symm (toConv χ.toLinearMap)) = χ φ` using `fun φ => CartierDual.apply_bidual_symm _ φ`. Use `⟨_, (CartierDual.isGroupLikeElem_iff_mul _).2 ⟨?_, fun φ ψ => ?_⟩, h⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `map_one χ`. Rewrite using `[h, h, h]`.
-
-Conclude with `map_mul χ φ ψ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isGroupLikeElem {R A : Type} [CommRing R] [CommRing A] [Bialgebra R A]
     [Module.Finite R A] [Module.Projective R A] (χ : CartierDual R A →ₐ[R] R) :
@@ -267,9 +265,9 @@ theorem exists_isGroupLikeElem {R A : Type} [CommRing R] [CommRing A] [Bialgebra
   · rw [h, h, h]; exact map_mul χ φ ψ
 
 /- English proof (translation)
-Establish `hq' : (q : C) ≠ 0` using `fun h => hq (Subtype.ext h)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[Subring.coe_mul, inv_mul_cancel_left₀ hq']`. Conclude with `z.2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.coe_mul]`. Conclude with `(mul_inv_cancel_left₀ hq' _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_iff_norm {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     {q : ↥(intO C)} (hq : q ≠ 0) (x : ↥(intO C)) : q ∣ x ↔ ‖(q : C)⁻¹ * (x : C)‖ ≤ 1 := by
@@ -284,15 +282,13 @@ theorem dvd_iff_norm {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C
     exact (mul_inv_cancel_left₀ hq' _).symm
 
 /- English proof (translation)
-Use `set y : WithConv (A →ₗ[↥(intO C)] C) := (q : C)⁻¹ • extendHom ↥(intO C) C A (toConv D) with hy`. Establish `hya : ∀ a, y.ofConv a = (q : C)⁻¹ * (D a : C)` using `fun _ => rfl`. Establish `hint : IsIntegral ↥(intO C) y` using `GlobalTheory.T.isIntegral_of_divisible_characters C (CartierDual ↥(intO C) A) _ (extendHom ↥(intO C) C A) (toConv D) q hq fun χ => by`. Take `⟨u, h1, h2⟩` from `exists_isGroupLikeElem χ`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hu u h1`. Establish `key` using `GlobalTheory.T.norm_smul_le_one_of_primitive_bounded_powers C p hp _ _ supNorm supNorm (mulHom ↥(intO C) C A) (inlHom ↥(intO C) C A) (inrHom ↥(intO C) C A) supNorm_smul supNorm_smul supNorm_nonneg supNorm_nonneg supNorm_add_le supNorm_mul_le (fun f => supNorm_le fun t => le_supNo …`. Establish `h` using `(dvd_iff_norm hq _).1 (hD a b)`. Use `h using 2` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `y.ofConv (a * b) - (extProd y 1).ofConv (a ⊗ₜ b) - (extProd 1 y).ofConv (a ⊗ₜ b) = _`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[extProd_tmul, extProd_tmul, hya, hya, hya, LinearMap.convOne_apply, LinearMap.convOne_apply]`. Express the relevant statement in the definitionally equal form `_ - _ * ((counit (R := ↥(intO C)) b : ↥(intO C)) : C) - ((counit (R := ↥(intO C)) a : ↥(intO C)) : C) * _ = _`. Use `push_cast`. Use the proof step `ring)`. Use `c hc`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dvd_iff_norm hq]`. Establish `h : (q : C)⁻¹ * ((c * D a : ↥(intO C)) : C) = ((c : C) • y).ofConv a`. Express the relevant statement in the definitionally equal form `_ = (c : C) * y.ofConv a`. Rewrite using `[hya]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `(le_supNorm _ a).trans key`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_mul_of_groupLike (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C]
     [IsAlgClosed C] [CharZero C] (p : ℕ) [Fact p.Prime] (hp : ‖(p : C)‖ = (p : ℝ)⁻¹)

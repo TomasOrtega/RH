@@ -17,7 +17,7 @@ namespace GlobalTheory.SiegelRingChange
 variable {h k : ℕ} {B B' : Type} [CommRing B] [CommRing B'] {ζ : B} {ζ' : B'} {S : Scheme.{0}}
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₃] (a : R₁ →+* R₂) (b : R₂ →+* R₃) :
     spMap (b.comp a) = spMap b ≫ spMap a := by
@@ -25,7 +25,7 @@ theorem spMap_comp' {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [Com
   rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Spec.map_surjective x`. Conclude with `⟨a.hom, ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_spMap {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] (x : Sp R₂ ⟶ Sp R₁) :
     ∃ a : R₁ →+* R₂, spMap a = x := by
@@ -33,7 +33,7 @@ theorem exists_spMap {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] (x : Sp 
   exact ⟨a.hom, ha⟩
 
 /- English proof (translation)
-Use `Spec.map_injective e` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spMap_inj {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] {a b : R₁ →+* R₂} (e : spMap a = spMap b) : a = b := by
   have := Spec.map_injective e
@@ -59,9 +59,9 @@ def up (j : B →+* B') (hj : j ζ = ζ') {s' : S ⟶ Sp B'} (c : SiegPre h k ζ
       · rw [hz, ← hj]; rfl }
 
 /- English proof (translation)
-Introduce `h k B B' _ _ ζ ζ' j S S' s s' f hj hf`. Use `⟨fun c => ?_, fun c c' hc hp => ?_, fun c' => ?_⟩` and prove the remaining obligations. Take `⟨c₀, h₀⟩` from `(GlobalTheory.T.siegelObject_pullback_exists_and_principal h k B ζ S S' s _ f c hf).1`. Conclude with `⟨up j hj c₀, h₀⟩`. Conclude with `(GlobalTheory.T.siegelObject_pullback_exists_and_principal h k B ζ S S' s _ f c hf).2 (down j hj c') hc hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e` using `(GlobalTheory.T.siegelPullback_id_comp_cancel h k B' B' B' ζ' ζ' ζ' S' S' S' s' s' s' c' c' c' (𝟙 _) (𝟙 _)).1`. Conclude with `⟨down j hj c', e, e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem siegPre_pull_ringChange : ∀ (h k : ℕ) (B B' : Type) [CommRing B] [CommRing B'] (ζ : B) (ζ' : B') (j : B →+* B') (S S' : Scheme.{0}) (s : S ⟶ Sp B) (s' : S' ⟶ Sp B') (f : S' ⟶ S), j ζ = ζ' → f ≫ s = s' ≫ spMap j → (∀ c : SiegPre h k ζ s, ∃ c' : SiegPre h k ζ' s', SiegPB c' c f) ∧ (∀ (c : SiegPre h k ζ s) (c' : SiegPre h k ζ' s'), SiegPB c' c f → c.Principal → c'.Principal) ∧ ∀ c' : SiegPre h k ζ' s', ∃ c₀ : SiegPre h k ζ (s' ≫ spMap j), SiegPB c' c₀ (𝟙 _) ∧ SiegPB c₀ c' (𝟙 _) := by
   intro h k B B' _ _ ζ ζ' j S S' s s' f hj hf

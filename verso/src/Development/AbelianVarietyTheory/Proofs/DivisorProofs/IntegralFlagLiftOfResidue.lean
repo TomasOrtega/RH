@@ -4,39 +4,37 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ _ n a t r ρ ψ ϖ hϖ hat hcong hfield`. Set `k` to `IsLocalRing.ResidueField O`. Set `f : O →+* k` to `IsLocalRing.residue O`. Set `rk : Γ →* GL (Fin n) k` to `(Matrix.GeneralLinearGroup.map f).comp r`. Set `ρk : Γ →* GL (Fin a) k` to `(Matrix.GeneralLinearGroup.map f).comp ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψk : Fin t → Γ →* kˣ` to `fun s => (Units.map f.toMonoidHom).comp (ψ s)`. Establish `hrk : ∀ g, (rk g : Matrix (Fin n) (Fin n) k) = (r g : Matrix (Fin n) (Fin n) O).map f` using `fun g => Matrix.GeneralLinearGroup.val_map_apply f (r g)`. Establish `hρk : ∀ g, (ρk g : Matrix (Fin a) (Fin a) k) = (ρ g : Matrix (Fin a) (Fin a) O).map f` using `fun g => Matrix.GeneralLinearGroup.val_map_apply f (ρ g)`. Establish `hψk : ∀ s g, ((ψk s g : kˣ) : k) = f ((ψ s g : Oˣ) : O)` using `fun s g => rfl`. Establish `hchar : ∀ g, (rk g : Matrix (Fin n) (Fin n) k).charpoly = (ρk g : Matrix (Fin a) (Fin a) k).charpoly * ∏ s, (X - C ((ψk s g : kˣ) : k))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[hrk, hρk, Matrix.charpoly_map, Matrix.charpoly_map]`. Repeatedly rewrite using `[hψk]`. Establish `hp : ∏ s, (X - C (f ((ψ s g : Oˣ) : O))) = (∏ s, (X - C ((ψ s g : Oˣ) : O))).map f`. Simplify using `[Polynomial.map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hp, ← Polynomial.map_mul, ← sub_eq_zero, ← Polynomial.map_sub]`. Use extensionality with `m`. Rewrite using `[coeff_map, coeff_zero]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).mpr (hcong g m)`. Take `⟨R, V, rs, hV0, hVtop, hVmono, hVstab, hrs, hstep⟩` from `hfield k Γ n a t rk ρk ψk hat hchar`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `π : (Fin n → O) →ₗ[O] (Fin n → k)` to `(Algebra.linearMap O k).compLeft (Fin n)`. Establish `hπ : ∀ x i, π x i = f (x i)` using `fun x i => rfl`. Establish `hπsurj : ∀ y : Fin n → k, ∃ x, π x = y`. Introduce `y`. Use `choose x hx using fun i => IsLocalRing.residue_surjective (y i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨x, funext hx⟩`. Establish `hπmul : ∀ g x, π ((r g : Matrix (Fin n) (Fin n) O).mulVec x) = (rk g : Matrix (Fin n) (Fin n) k).mulVec (π x)`. Introduce `g x`. Use function extensionality and compare the values at `i`. Rewrite using `[hπ, RingHom.map_mulVec, hrk]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `M : Fin (R + 1) → Submodule O (Fin n → O)` to `fun j => ((V j).restrictScalars O).comap π`. Establish `hM : ∀ j x, x ∈ M j ↔ π x ∈ V j` using `fun j x => Iff.rfl`. Establish `hMmono : Monotone M` using `fun i j hij x hx => hVmono hij hx`. Establish `hmax : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨R, M, rs, ?_, ?_, hMmono, ?_, hrs, ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[hM, hV0, Submodule.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∀ i, ∃ y, x i = ϖ * y`. Introduce `i`. Establish `h1 : x i ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`. Conclude with `congr_fun hx i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h1` using `[hmax, Ideal.mem_span_singleton]`. Take `⟨y, hy⟩` from `h1`. Conclude with `⟨y, hy⟩`. Use `choose y hy using this`. Conclude with `⟨y, funext hy⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce and unpack `⟨y, rfl⟩`. Use function extensionality and compare the values at `i`. Use `show f (ϖ * y i) = 0`. Rewrite using `[map_mul, (IsLocalRing.residue_eq_zero_iff ϖ).mpr (by rw [hmax]; exact Ideal.mem_span_singleton_self ϖ), zero_mul]`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hM, hVtop, Submodule.mem_top]`. Introduce `g j x hx`. Rewrite using `[hM, hπmul]`. Conclude with `hVstab g j _ hx`. Introduce `s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨xb, hxb, hxbn, hsup, hchi⟩` from `hstep s`. Take `⟨x, rfl⟩` from `hπsurj xb`. Use `⟨x, hxb, hxbn, ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy` using `[hM, hsup, Submodule.mem_sup]`. Take `⟨v, hv, w, hw, hvw⟩` from `hy`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hw`. Take `⟨c', rfl⟩` from `IsLocalRing.residue_surjective c`. Rewrite using `[Submodule.mem_sup]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨y - c' • x, ?_, c' • x, Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x), sub_add_cancel _ _⟩` and prove the remaining obligations. Rewrite using `[hM, map_sub, map_smul, ← hvw]`. Use `hv using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[k, f]`. Use `sup_le (hMmono (Fin.castSucc_le_succ _)) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `hxb`. Introduce `g`.
-
-Rewrite using `[hM, map_sub, hπmul]`. Use `hchi g using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hπ, map_mul, hψk]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_flag_lift_of_residue : ∀ (O Γ : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Group Γ] (n a t : ℕ) (r : Γ →* GL (Fin n) O) (ρ : Γ →* GL (Fin a) O) (ψ : Fin t → Γ →* Oˣ) (ϖ : O), Irreducible ϖ → a + t = n → (∀ g m, ((r g : Matrix (Fin n) (Fin n) O).charpoly - (ρ g : Matrix (Fin a) (Fin a) O).charpoly * ∏ s, (Polynomial.X - Polynomial.C ((ψ s g : Oˣ) : O))).coeff m ∈ IsLocalRing.maximalIdeal O) → (∀ (k Γ : Type) [Field k] [Group Γ] (n a t : ℕ) (r : Γ →* GL (Fin n) k) (ρ : Γ →* GL (Fin a) k) (ψ : Fin t → Γ →* kˣ), a + t = n → (∀ g, (r g : Matrix (Fin n) (Fin n) k).charpoly = (ρ g : Matrix (Fin a) (Fin a) k).charpoly * ∏ s, (Polynomial.X - Polynomial.C ((ψ s g : kˣ) : k))) → ∃ (R : ℕ) (V : Fin (R + 1) → Submodule k (Fin n → k)) (rs : Fin t → Fin R), V 0 = ⊥ ∧ V (Fin.last R) = ⊤ ∧ Monotone V ∧ (∀ g j x, x ∈ V j → (r g : Matrix (Fin n) (Fin n) k).mulVec x ∈ V j) ∧ Function.Injective rs ∧ ∀ s, ∃ x ∈ V (rs s).succ, x ∉ V (rs s).castSucc ∧ V (rs s).succ = V (rs s).castSucc ⊔ Submodule.span k {x} ∧ ∀ g, (r g : Matrix (Fin n) (Fin n) k).mulVec x - ((ψ s g : kˣ) : k) • x ∈ V (rs s).castSucc) → ∃ (R : ℕ) (M : Fin (R + 1) → Submodule O (Fin n → O)) (rs : Fin t → Fin R), (∀ x, x ∈ M 0 ↔ ∃ y : Fin n → O, x = fun i => ϖ * y i) ∧ M (Fin.last R) = ⊤ ∧ Monotone M ∧ (∀ g j x, x ∈ M j → (r g : Matrix (Fin n) (Fin n) O).mulVec x ∈ M j) ∧ Function.Injective rs ∧ ∀ s, ∃ x ∈ M (rs s).succ, x ∉ M (rs s).castSucc ∧ M (rs s).succ = M (rs s).castSucc ⊔ Submodule.span O {x} ∧ ∀ g, (r g : Matrix (Fin n) (Fin n) O).mulVec x - (fun i => ((ψ s g : Oˣ) : O) * x i) ∈ M (rs s).castSucc := by
   intro O Γ _ _ _ _ n a t r ρ ψ ϖ hϖ hat hcong hfield

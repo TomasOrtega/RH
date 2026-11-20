@@ -5,7 +5,7 @@ open IsLocalRing Matrix UpperTheory.V.Alg
 namespace UpperTheory.V.Fr.PF
 
 /- English proof (translation)
-Establish `h` using `Submodule.mul_mem_mul ha hb`. Rewrite `h` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, _, ⟨h, rfl⟩, rfl⟩`. Conclude with `⟨g * h, map_mul r g h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem span_mul {G C A : Type} [Monoid G] [CommRing C] [Ring A] [Algebra C A] (r : G →* A) {a b : A}
     (ha : a ∈ Submodule.span C (Set.range r)) (hb : b ∈ Submodule.span C (Set.range r)) :
@@ -22,9 +22,9 @@ variable {G C K : Type} [Monoid G] [CommRing C] [CommRing K] [Algebra C K] {n : 
   (r : G →* Matrix (Fin n) (Fin n) K)
 
 /- English proof (translation)
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨g, rfl⟩ := hx`. Conclude with `Submodule.subset_span ⟨g, rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => exact Submodule.smul_mem _ c hx`.
+A detailed English derivation is pending.
 -/
 theorem entry_mem {a : Matrix (Fin n) (Fin n) K} (ha : a ∈ Submodule.span C (Set.range r)) (i j : Fin n) :
     a i j ∈ Submodule.span C (Set.range fun g => r g i j) := by
@@ -37,11 +37,9 @@ theorem entry_mem {a : Matrix (Fin n) (Fin n) K} (ha : a ∈ Submodule.span C (S
 variable {r}
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Establish `h` using `span_mul r (span_mul r (hE i) (Submodule.subset_span ⟨g, rfl⟩)) (hE j)`. Rewrite `h` using `[Matrix.single_mul_mul_single, one_mul, mul_one]`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `zero => rw [Matrix.single_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.single_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [← Matrix.smul_single]`.
-
-Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem single_mem (hE : ∀ i, Matrix.single i i (1 : K) ∈ Submodule.span C (Set.range r)) {i j : Fin n} {x : K}
     (hx : x ∈ Submodule.span C (Set.range fun g => r g i j)) :
@@ -56,7 +54,7 @@ theorem single_mem (hE : ∀ i, Matrix.single i i (1 : K) ∈ Submodule.span C (
   | smul c x _ hx => rw [← Matrix.smul_single]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Establish `h` using `entry_mem r (span_mul r (single_mem hE hx) (single_mem hE hy)) i k`. Rewrite `h` using `[Matrix.single_mul_single_same, Matrix.single_apply_same]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ent_mul (hE : ∀ i, Matrix.single i i (1 : K) ∈ Submodule.span C (Set.range r)) {i j k : Fin n} {x y : K}
     (hx : x ∈ Submodule.span C (Set.range fun g => r g i j))
@@ -66,13 +64,13 @@ theorem ent_mul (hE : ∀ i, Matrix.single i i (1 : K) ∈ Submodule.span C (Set
   rwa [Matrix.single_mul_single_same, Matrix.single_apply_same] at h
 
 /- English proof (translation)
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Conclude with `⟨fun g => t (h * g), fun N => (hc N).comp_continuous (continuous_const_mul h), fun g => by`. Rewrite using `[ht, map_mul]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact ⟨fun _ => 0, fun N => IsLocallyConstant.const _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, h1, h2⟩` from `hx`. Take `⟨d, h3, h4⟩` from `hy`. Use `⟨fun g => c g + d g, fun N => ?_, fun g => by rw [map_add, h2, h4, add_mul, trace_add]⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add]`. Conclude with `(h1 N).add (h3 N)`. Consider the case `smul a x _ hx`. Take `⟨c, h1, h2⟩` from `hx`. Use `⟨fun g => a * c g, fun N => ?_, fun g => by` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, h2, Matrix.smul_mul, trace_smul, Algebra.smul_def]⟩`. Simplify using `only [map_mul]`. Conclude with `(IsLocallyConstant.const _).mul (h1 N)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_cont [TopologicalSpace G] [ContinuousMul G] (I : Ideal C) (t : G → C) (hc : AdicCont I t)
     (ht : ∀ g, algebraMap C K (t g) = (r g).trace) {m : Matrix (Fin n) (Fin n) K}
@@ -98,37 +96,35 @@ theorem trace_cont [TopologicalSpace G] [ContinuousMul G] (I : Ideal C) (t : G �
     exact (IsLocallyConstant.const _).mul (h1 N)
 
 /- English proof (translation)
-Set `R : G →* Matrix (Fin n) (Fin n) K × (Fin n → k)` to `r.prod (MonoidHom.pi χ)`. Set `S` to `Submodule.span C (Set.range R)`. Establish `hR : ∀ g, (r g, fun j => χ j g) ∈ S` using `fun g => Submodule.subset_span ⟨g, rfl⟩`. Establish `htr : ∀ p ∈ S, ∃ c, algebraMap C K c = p.1.trace ∧ algebraMap C k c = ∑ j, p.2 j`. Introduce `p hp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨g, rfl⟩ := hx`. Conclude with `ht g`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, h1, h2⟩` from `hx`. Take `⟨d, h3, h4⟩` from `hy`. Conclude with `⟨c + d, by simp [h1, h3], by simp [h2, h4, Finset.sum_add_distrib]⟩`. Consider the case `smul a x _ hx`. Take `⟨c, h1, h2⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a * c, by rw [map_mul, h1, Prod.smul_fst, trace_smul, Algebra.smul_def], by`. Rewrite using `[map_mul, h2, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Prod.smul_snd, Pi.smul_apply, Algebra.smul_def]⟩`. Establish `hex : ∀ m ∈ Submodule.span C (Set.range r), ∃ a, (m, a) ∈ S`. Introduce `m hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨g, rfl⟩ := hx`. Conclude with `⟨_, hR g⟩`. Consider the case `zero => exact ⟨0, zero_mem S⟩`. Consider the case `add x y _ _ hx hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨c • a, S.smul_mem c ha⟩`. Establish `hχ : Function.Injective χ` using `fun i j h => hδ (by simp only [← hd, h])`. Establish `huniq : ∀ a, ((0 : Matrix (Fin n) (Fin n) K), a) ∈ S → a = 0`. Introduce `a ha`. Establish `hli` using `(linearIndependent_monoidHom G k).comp χ hχ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j`. Use `Fintype.linearIndependent_iff.1 hli a ?_ j` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Take `⟨c, h1, h2⟩` from `htr _ (span_mul R ha (hR g))`. Establish `hc : c = 0` using `hinj (by simpa using h1)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h2.symm` using `[hc]`. Establish `hES : ∀ i, (Matrix.single i i (1 : K), (Pi.single i 1 : Fin n → k)) ∈ S`. Introduce `i`. Take `⟨a, ha⟩` from `hex _ (hE i)`. Establish `h1` using `sub_mem (span_mul R (sub_mem (hR g₀) (hR g₁)) ha) (S.smul_mem (δ i) ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (r g₀ - r g₁) * Matrix.single i i (1 : K) - δ i • Matrix.single i i (1 : K) = 0`. Rewrite using `[hD]`. Use extensionality with `a b`. Rewrite using `[Matrix.sub_apply, Matrix.diagonal_mul, Matrix.smul_apply, Algebra.smul_def, Matrix.single_apply, Matrix.zero_apply]`. Use `split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h.1, sub_self]`. Simplify using the standard rewrite rules. Simplify using `only [Prod.mk_sub_mk, Prod.mk_mul_mk, Prod.smul_mk, h2] at h1`. Establish `h3` using `huniq _ h1`. Establish `h4 : ∀ j, j ≠ i → a j = 0` using `fun j hj => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h5` using `congrFun h3 j`. Simplify using `only [Pi.sub_apply, Pi.mul_apply, Pi.smul_apply, hd, Algebra.smul_def, Pi.zero_apply, ← sub_mul] at h5`. Conclude with `(mul_eq_zero.1 h5).resolve_left fun h => hj (hδ (sub_eq_zero.1 h))`. Take `⟨c, h5, h6⟩` from `htr _ ha`. Establish `hc : c = 1` using `hinj (by simpa using h5)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite `h6` using `[hc, map_one, Finset.sum_eq_single i (fun j _ hj => h4 j hj) (by simp)]`. Establish `h7 : a = Pi.single i 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Rewrite using `[hj, Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h6.symm`. Rewrite using `[h4 j hj, Pi.single_eq_of_ne hj]`. Rewrite `ha` using `[h7]`. Then use the resulting hypothesis. Use `⟨fun g i => ?_, fun i j hij x hx y hy => ?_⟩` and prove the remaining obligations. Take `⟨c, h1, h2⟩` from `htr _ (span_mul R (hES i) (hR g))`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[Matrix.trace_single_mul]`. Simplify `h2` using `[Pi.single_apply]`. Take `⟨a, ha⟩` from `hex _ (single_mem hE hx)`. Take `⟨b, hb⟩` from `hex _ (single_mem hE hy)`.
-
-Take `⟨c, h1, h2⟩` from `htr _ (span_mul R (span_mul R (span_mul R (hES i) ha) (hES j)) hb)`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[Matrix.single_mul_single_same]`. Simplify `h2` using `[Pi.single_apply, hij, hij.symm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem residues {k : Type} [Field k] [Algebra C k] (hinj : Function.Injective (algebraMap C K))
     (hE : ∀ i, Matrix.single i i (1 : K) ∈ Submodule.span C (Set.range r)) (χ : Fin n → G →* k)
@@ -219,13 +215,13 @@ theorem residues {k : Type} [Field k] [Algebra C k] (hinj : Function.Injective (
 end Gen
 
 /- English proof (translation)
-Set `θ : C →ₗ[C] K` to `(LinearMap.mulLeft C y⁻¹).comp (Algebra.linearMap C K)`. Establish `hθ : ∀ a x, algebraMap C K a = y * x → θ a = x` using `fun a x h => by show y⁻¹ * algebraMap C K a = x`. Rewrite using `[h, inv_mul_cancel_left₀ hy]`. Set `J : Submodule C C` to `N.comap θ`. Establish `hJ : J.map θ = N` using `Submodule.map_comap_eq_self fun x hx => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hN x hx`. Conclude with `⟨a, hθ a x ha⟩`. Use `⟨hJ ▸ (IsNoetherian.noetherian J).map θ, fun m => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Ideal.exists_pow_inf_eq_pow_smul I J`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).1 (hc (m + k)) g] with h hh`. Establish `h1 : c h - c g ∈ I ^ (m + k)` using `Ideal.Quotient.eq.1 hh`. Establish `h2 : θ (c h - c g) = f h - f g` using `by rw [map_sub, hθ _ _ (hcf h), hθ _ _ (hcf g)]`. Establish `h3 : c h - c g ∈ (I ^ (m + k) • ⊤ : Submodule C C) ⊓ J` using `⟨by simpa using h1, show θ _ ∈ N from h2 ▸ sub_mem (hf h) (hf g)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hk _ (Nat.le_add_left k m), Nat.add_sub_cancel]`. Establish `h4` using `Submodule.mem_map_of_mem (f := θ) (Submodule.smul_mono (le_refl (I ^ m)) inf_le_right h3)`. Rewrite `h4` using `[Submodule.map_smul'', hJ, h2]`. Conclude with `(Submodule.Quotient.eq _).2 h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artin_rees {G C K : Type} [TopologicalSpace G] [CommRing C] [IsNoetherianRing C] [Field K] [Algebra C K]
     (I : Ideal C) (N : Submodule C K) {y : K} (hy : y ≠ 0)
@@ -255,21 +251,19 @@ theorem artin_rees {G C K : Type} [TopologicalSpace G] [CommRing C] [IsNoetheria
   exact (Submodule.Quotient.eq _).2 h4
 
 /- English proof (translation)
-Proceed by induction on `hn : L.card using Nat.strong_induction_on generalizing L with`. Consider the case `_ m ih`. Distinguish the cases in `hz : ∃ p ∈ L, p.1 ≠ 0`. Take `⟨u, hu, hu0⟩` from `hz`. Establish `hp : ∃ p ∈ L, 0 < p.1`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `Multiset.sum_lt_sum (s := L) (f := Prod.fst) (g := fun _ => (0 : ℤ)) h ⟨u, hu, (h u hu).lt_of_ne hu0⟩` as an intermediate fact. Simplify using `[hs] at this`. Establish `hq : ∃ p ∈ L, p.1 < 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `Multiset.sum_lt_sum (s := L) (g := Prod.fst) (f := fun _ => (0 : ℤ)) h ⟨u, hu, (h u hu).lt_of_ne hu0.symm⟩` as an intermediate fact. Simplify using `[hs] at this`. Take `⟨p, hpL, hp⟩` from `hp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hqL, hq⟩` from `hq`. Take `⟨L₁, rfl⟩` from `Multiset.exists_cons_of_mem hpL`. Establish `hq1 : q ∈ L₁` using `(Multiset.mem_cons.1 hqL).resolve_left fun h => by rw [h] at hq; omega`. Take `⟨L₂, rfl⟩` from `Multiset.exists_cons_of_mem hq1`. Take `⟨h1, h2⟩` from `hm _ _ hp hq _ (hL p hpL) _ (hL q hqL)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hL₂ : ∀ s ∈ L₂, s.2 ∈ N s.1` using `fun s h => hL s (by simp [h])`. Simplify using `only [Multiset.map_cons, Multiset.sum_cons, Multiset.prod_cons, Multiset.card_cons] at hs hn ⊢`. Distinguish the cases in `h : p.1 + q.1 = 0`. Take `⟨c, hc, h3⟩` from `h2 h`. Take `⟨d, h4, -⟩` from `ih _ (by omega) L₂ hL₂ (by omega) rfl`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c * d, by rw [map_mul, h3, h4, mul_assoc], fun _ => I.mul_mem_right _ hc⟩`. Take `⟨d, h4, h5⟩` from `ih (L₂.card + 1) (by omega) ((p.1 + q.1, p.2 * q.2) ::ₘ L₂) (fun s hs => by`. Break down `Multiset.mem_cons.1 hs with rfl | hs` into its components or cases. Use `exacts [h1, hL₂ s hs]) (by simp only [Multiset.map_cons, Multiset.sum_cons]; omega) (by simp)`. Conclude with `⟨d, by simp [h4, mul_assoc], fun _ => h5 ⟨_, Multiset.mem_cons_self _ _, h⟩⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h : (L.map Prod.snd).prod ∈ (algebraMap C K).range`. Use `Subring.multiset_prod_mem _ _ fun x hx => ?_` and prove the remaining obligations. Take `⟨p, hp, rfl⟩` from `Multiset.mem_map.1 hx`. Establish `h1 : p.1 = 0`. Assume the negation of the conclusion as `h1`.
-
-Conclude with `hz ⟨p, hp, h1⟩`. Conclude with `h0 _ (h1 ▸ hL p hp)`. Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, hc, fun h => absurd h hz⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cycles {C K : Type} [CommRing C] [CommRing K] [Algebra C K] (I : Ideal C) (N : ℤ → Set K)
     (h0 : ∀ x ∈ N 0, ∃ c, algebraMap C K c = x)

@@ -11,9 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.Published GlobalTheory.AboveL
 
 /- English proof (translation)
-Introduce `E _ _ _ a w hw`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Establish `hf : ((cLoc w).comp (locU a w).subtype : locU a w → GL (Fin a) (w.adicCompletion E)) = e`. Use function extensionality and compare the values at `x`. Conclude with `(he x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Conclude with `⟨e.bijective, e.toHomeomorph.isOpenMap, e.continuous⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Cong.cLoc_locU_bijective_open_continuous : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (w : HeightOneSpectrum (𝓞 E)), IsSplitAt w → Function.Bijective ((cLoc w).comp (locU a w).subtype) ∧ IsOpenMap ((cLoc w).comp (locU a w).subtype) ∧ Continuous ((cLoc w).comp (locU a w).subtype) := by
   intro E _ _ _ a w hw

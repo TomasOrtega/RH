@@ -12,7 +12,7 @@ namespace GlobalTheory.NormEq
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Valued.v (σ x) ≤ 1`. Rewrite using `[hσ]`. Conclude with `hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intL_of {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {x : L} (hx : x ∈ intL L) :
     σ x ∈ intL L := by
@@ -53,7 +53,7 @@ def unitFil {R : Type} [CommRing R] (I : Ideal R) : Subgroup Rˣ where
     rw [e]; exact I.mul_mem_left _ ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unitFil {R : Type} [CommRing R] {I : Ideal R} {u : Rˣ} : u ∈ unitFil I ↔ (u : R) - 1 ∈ I := Iff.rfl
 
@@ -66,13 +66,13 @@ def filt {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (P : Globa
   unitFil (piPow h P m)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_filt {ϖ : L} {σ : L →+* L} {q : ℕ} {h : IsUnramInv ϖ σ q} {P : GlobalTheory.UTr.Csr (sigO σ h.2.1)} {m : ℕ}
     {u : (GlobalTheory.UTr.Alg P)ˣ} : u ∈ filt h P m ↔ (u : GlobalTheory.UTr.Alg P) - 1 ∈ piPow h P m := Iff.rfl
 
 /- English proof (translation)
-Introduce `a b hab` and use `by unfold piPow rw [Ideal.span_singleton_le_span_singleton] exact pow_dvd_pow _ hab`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem piPow_antitone {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (P : GlobalTheory.UTr.Csr (sigO σ h.2.1)) :
     Antitone (piPow h P) := fun a b hab => by
@@ -81,13 +81,13 @@ theorem piPow_antitone {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ
   exact pow_dvd_pow _ hab
 
 /- English proof (translation)
-Introduce `a b hab _ hu` and use `piPow_antitone h P hab hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem filt_antitone {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (P : GlobalTheory.UTr.Csr (sigO σ h.2.1)) :
     Antitone (filt h P) := fun a b hab _ hu => piPow_antitone h P hab hu
 
 /- English proof (translation)
-Use extensionality with `u`. Simplify using `[filt, mem_unitFil, piPow]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem filt_zero {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (P : GlobalTheory.UTr.Csr (sigO σ h.2.1)) :
     filt h P 0 = ⊤ := by
@@ -100,15 +100,13 @@ namespace GlobalTheory.NormEq
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hϖ`. Take `⟨y, i, hi, e⟩` from `hM.exists_inv hϖ`. Establish `hlt : Valued.v ((y : L) * ϖ) < 1`. Rewrite using `[map_mul, h.2.2.2.1]`. Establish `hy : Valued.v (y : L) ≤ 1` using `y.2`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Conclude with `(WithZero.coe_lt_coe.2 (by decide : (Multiplicative.ofAdd (-1 : ℤ)) < 1))` after adjusting the coercions. Establish `hi1 : (i : L) = 1 - (y : L) * ϖ`. Use `congrArg Subtype.val e` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subring.coe_add, Subring.coe_mul, coe_piO, OneMemClass.coe_one] at this`. Take the linear combination `this`. Establish `hv : Valued.v (i : L) = 1` using `by rw [hi1]; exact Valuation.map_one_sub_of_lt _ hlt`. Establish `hi0 : (i : L) ≠ 0`. Introduce `h0`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[h0, map_zero]`. Conclude with `zero_ne_one hv`. Establish `hinv : (i : L)⁻¹ ∈ intL L`. Express the relevant statement in the definitionally equal form `Valued.v ((i : L)⁻¹) ≤ 1`. Rewrite using `[map_inv₀, hv, inv_one]`.
-
-Establish `hu : IsUnit i` using `isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (by simp [hi0])⟩`. Conclude with `hM.ne_top (M.eq_top_of_isUnit_mem hi hu)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem piO_mem_of_isMaximal {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) {M : Ideal (intL L)}
     (hM : M.IsMaximal) : piO h ∈ M := by
@@ -137,9 +135,9 @@ theorem piO_mem_of_isMaximal {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv
   exact hM.ne_top (M.eq_top_of_isUnit_mem hi hu)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Take `⟨M, hM, hxM⟩` from `Ideal.exists_le_maximal (Ideal.span {1 + algebraMap (intL L) (GlobalTheory.UTr.Alg P) (piO h) * a}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hmax` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := intL L) M`. Establish `hϖ : algebraMap (intL L) (GlobalTheory.UTr.Alg P) (piO h) ∈ M` using `piO_mem_of_isMaximal h hmax`. Establish `h1 : 1 + algebraMap (intL L) (GlobalTheory.UTr.Alg P) (piO h) * a ∈ M` using `hxM (Ideal.mem_span_singleton_self _)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : GlobalTheory.UTr.Alg P) ∈ M`. Use `M.sub_mem h1 (M.mul_mem_right a hϖ)` as an intermediate fact. Simplify using `using this`. Conclude with `hM.ne_top ((Ideal.eq_top_iff_one M).2 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isUnit_one_add_piO_mul {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q)
     (P : GlobalTheory.UTr.Csr (sigO σ h.2.1)) (a : GlobalTheory.UTr.Alg P) :
@@ -156,9 +154,9 @@ theorem isUnit_one_add_piO_mul {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramI
   exact hM.ne_top ((Ideal.eq_top_iff_one M).2 this)
 
 /- English proof (translation)
-Establish `hx1 : x - 1 ∈ piPow h P 1` using `piPow_antitone h P hm hx`. Unfold `piPow at hx1`. Rewrite `hx1` using `[pow_one, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hx1`. Use `isUnit_one_add_piO_mul h P a` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_comm, ha, add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_of_sub_one_mem {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q)
     (P : GlobalTheory.UTr.Csr (sigO σ h.2.1)) {m : ℕ} (hm : 1 ≤ m) {x : GlobalTheory.UTr.Alg P} (hx : x - 1 ∈ piPow h P m) :

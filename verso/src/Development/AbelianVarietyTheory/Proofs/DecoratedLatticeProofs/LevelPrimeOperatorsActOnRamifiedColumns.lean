@@ -22,7 +22,7 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   {p : ι → SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Take `⟨φ, ⟨heq, -, -⟩, rfl⟩` from `h`. Use `heq g P` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramAt_fixed {p₀ : SplitPt D k} {β : Frame p₀ S n} {P : Pair k n} {φ₀ : GA D S → ℂ} (h : GlobalTheory.FinPl.RamAt β P φ₀) {g : GL n k}
     (hg : g • P = P) : rTrans (β.gl g) φ₀ = φ₀ := by
@@ -32,11 +32,11 @@ theorem ramAt_fixed {p₀ : SplitPt D k} {β : Frame p₀ S n} {P : Pair k n} {�
   exact this.symm
 
 /- English proof (translation)
-Establish `hsub : ∀ i, grpAt S (· = (p i).v) ≤ grpAt S fun v => ∃ i, v = (p i).v` using `fun i => AllBij.congGrp_mono S (AllBij.idAt_mono fun v hv => ⟨i, hv⟩)`. Proceed by induction on `J with`. Consider the case `nil`. Use `⟨Finsupp.single 1 1, fun g hg => ?_, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hg)]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.one_mem _`. Conclude with `(AllBij.act_single_one φ).symm`. Consider the case `cons i l ih`. Take `⟨c, hc, hl⟩` from `ih`. Take `⟨-, -, C, -, hC, -⟩` from `ramBijective_holds D k (p i) n q (χ i) (hχ i) _ rfl (η i) S (β i) (Q i)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨AllBij.cmul (Finsupp.mapDomain (β i).gl C) c, fun g hg => ?_, fun φ => ?_⟩` and prove the remaining obligations. Conclude with `AllBij.cmul_mem (S := grpAt S fun v => ∃ i, v = (p i).v) (fun g h => hsub i (AllBij.mapDomain_mem _ (AllBij.gl_mem (β i)) C g h)) (fun g h => hc g (Finsupp.mem_support_iff.2 h)) g (Finsupp.mem_support_iff.1 hg)`. Use `show sOp (β i) (Q i) q (resChar (χ i) (hχ i) q) (η i) (l.foldr _ φ) = _`. Rewrite using `[hl, hC, AllBij.sum_rep_eq]`. Conclude with `(AllBij.act_cmul _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem comb_foldr (β : ∀ i, Frame (p i) S n) (Q : ι → Pair k n) (q : Unif k) (χ : ι → AddChar k Circle)
     (hχ : ∀ i, HasConductor (χ i) 1) (η : ι → 𝓀[k]ˣ) (J : List ι) :
@@ -61,9 +61,9 @@ theorem comb_foldr (β : ∀ i, Frame (p i) S n) (Q : ι → Pair k n) (q : Unif
       exact (AllBij.act_cmul _ _ _).symm
 
 /- English proof (translation)
-Take `⟨hbij, -, c, -, hc, -⟩` from `ramBijective_holds D k (p i) n q (χ i) (hχ i) _ rfl ε S (β i) (Q i)`. Establish `hT : ∀ φ, sOp (β i) (Q i) q (resChar (χ i) (hχ i) q) ε φ = AllBij.act (Finsupp.mapDomain (β i).gl c) φ` using `fun φ => (hc φ).trans (AllBij.sum_rep_eq _ _ _)`. Establish `hC` using `AllBij.mapDomain_mem _ (AllBij.gl_mem (β i)) c`. Use `⟨by rw [hT]; exact AllBij.isContAut_act _ hφ.1, fun i' => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne i' i with rfl | hne` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hbij.mapsTo (hφ.2 i')`. Rewrite using `[hT]`. Conclude with `AllBij.ramAt_act _ _ _ (fun x hx g => AllBij.grpAt_comm S (fun e => hne (hinj e)) (hC x hx) (AllBij.gl_mem _ g)) (hφ.2 i')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sOp_keeps (hinj : Function.Injective fun i => (p i).v) (β : ∀ i, Frame (p i) S n) (Q : ι → Pair k n) (q : Unif k)
     (χ : ι → AddChar k Circle) (hχ : ∀ i, HasConductor (χ i) 1) (ε : 𝓀[k]ˣ) (i : ι) {φ : GA D S → ℂ}
@@ -82,7 +82,7 @@ theorem sOp_keeps (hinj : Function.Injective fun i => (p i).v) (β : ∀ i, Fram
       (AllBij.gl_mem _ g)) (hφ.2 i')
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hφ`. Consider the case `cons i l ih => exact sOp_keeps hinj β Q q χ hχ (ε i) i ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_keeps (hinj : Function.Injective fun i => (p i).v) (β : ∀ i, Frame (p i) S n) (Q : ι → Pair k n) (q : Unif k)
     (χ : ι → AddChar k Circle) (hχ : ∀ i, HasConductor (χ i) 1) (ε : ι → 𝓀[k]ˣ) (l : List ι) {φ : GA D S → ℂ}
@@ -96,15 +96,13 @@ theorem foldr_keeps (hinj : Function.Injective fun i => (p i).v) (β : ∀ i, Fr
 end Local
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hStd J q χ hχ`. Establish `hinj : Function.Injective fun i => (p i).v` using `GlobalTheory.T.splitPoints_lie_over_distinct_places I hOk hPins l Z u p β Q L hStd`. Establish `key : ∀ j (hj : j ≤ B.R.m) φ, RamT (I` using `I) (l := l) (u := u) (a := a) j φ → ∀ η : ι → 𝓀[k]ˣ, ∃ φ', RamT (I := I) (l := l) (u := u) (a := a) j φ' ∧ ∀ b y, A.rd θ j hj b φ' y = J.foldr (fun i f => sOp (β j i) (Q j i) q (resChar (χ i) (hχ i) q) (η i) f) (A.rd θ j hj b φ y) := by`. Introduce `j hj φ hφ η`. Take `⟨c, hc, hfold⟩` from `comb_foldr (β j) (Q j) q χ hχ η J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hram` using `GlobalTheory.T.twistRamified_iff_scalarFormsRamified I hOk hPins l Z u a Ch A hA θ hθ k ι p β Q L hStd j hj φ hφ.1`. Establish `hR : ∀ b y, IsContAut _ (trc c (A.rd θ j hj b φ y)) ∧ ∀ i, GlobalTheory.FinPl.RamAt (β j i) (Q j i) (trc c (A.rd θ j hj b φ y))`. Introduce `b y`. Rewrite using `[← hfold]`. Conclude with `foldr_keeps hinj (β j) (Q j) q χ hχ η J ⟨hram.1 b y, fun i => hram.2.1 hφ b y i⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨φ', hφ'F, hφ'⟩` from `GlobalTheory.T.twistTranslationsActAtLevelPrime_proof I hOk hPins l Z u a Ch A hA θ hθ k ι p β Q L hStd j hj c hc φ hφ.1 (fun b y i g hg => ramAt_fixed ((hR b y).2 i) hg)`. Use `⟨φ', ?_, fun b y => (hφ' b y).trans (hfold _).symm⟩` and prove the remaining obligations. Establish `hram'` using `GlobalTheory.T.twistRamified_iff_scalarFormsRamified I hOk hPins l Z u a Ch A hA θ hθ k ι p β Q L hStd j hj φ' hφ'F`. Conclude with `hram'.2.2 fun b y i => by rw [hφ' b y]; exact (hR b y).2 i`. Use `⟨fun j η φ => if h : j ≤ B.R.m ∧ RamT (I := I) (l := l) (u := u) (a := a) j φ then (key j h.1 φ h.2 η).choose else φ, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj φ hφ`. Establish `hram` using `GlobalTheory.T.twistRamified_iff_scalarFormsRamified I hOk hPins l Z u a Ch A hA θ hθ k ι p β Q L hStd j hj φ hφ.1`. Use `⟨fun b y => ⟨hram.1 b y, fun i => hram.2.1 hφ b y i⟩, fun η => ?_⟩` and prove the remaining obligations. Establish `h : j ≤ B.R.m ∧ RamT (I` using `I) (l := l) (u := u) (a := a) j φ := ⟨hj, hφ⟩`. Simplify using `only [dif_pos h]`.
-
-Conclude with `(key j hj φ hφ η).choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twS : TwS' := by
   intro B X I hOk hPins l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hStd J q χ hχ

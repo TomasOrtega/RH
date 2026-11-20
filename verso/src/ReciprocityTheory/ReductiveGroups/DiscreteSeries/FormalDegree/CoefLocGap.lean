@@ -8,11 +8,11 @@ namespace ReciprocityTheory.ChartRestriction.DS
 open Formalism.MainNotions.CayleySignature
 
 /- English proof (translation)
-Introduce `i j hij`. Take `⟨i, hi⟩` from `i`. Take `⟨j, hj⟩` from `j`. Establish `hij' : i < j` using `hij`. Use `clear hij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `j with`. Consider the case `zero => omega`. Consider the case `succ j ih`. Establish `h1 : G < b ⟨j + 1, hj⟩ - b ⟨j, by omega⟩` using `h ⟨j, by omega⟩ hj`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hij' with hlt | heq` into its components or cases.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2` using `ih (by omega) hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Substitute `heq` using the available equality. Conclude with `h1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem lt_sub_of_increments {m : ℕ} (b : Fin m → ℝ) (G : ℝ) (hG : 0 < G)
     (h : ∀ (j : Fin m) (hj : j.val + 1 < m), G < b ⟨j.val + 1, hj⟩ - b j) :
@@ -33,7 +33,7 @@ theorem lt_sub_of_increments {m : ℕ} (b : Fin m → ℝ) (G : ℝ) (hG : 0 < G
       exact h1
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne hij with hlt | hlt` into its components or cases. Use `lt_sub_of_increments b G hG h i j hlt` as an intermediate fact. Conclude with `lt_abs.mpr (Or.inr (by linarith))`. Use `lt_sub_of_increments b G hG h j i hlt` as an intermediate fact. Conclude with `lt_abs.mpr (Or.inl (by linarith))`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lt_abs_sub_of_increments {m : ℕ} (b : Fin m → ℝ) (G : ℝ) (hG : 0 < G)
     (h : ∀ (j : Fin m) (hj : j.val + 1 < m), G < b ⟨j.val + 1, hj⟩ - b j)
@@ -45,7 +45,7 @@ theorem lt_abs_sub_of_increments {m : ℕ} (b : Fin m → ℝ) (G : ℝ) (hG : 0
     exact lt_abs.mpr (Or.inl (by linarith))
 
 /- English proof (translation)
-Unfold `lam48`. Conclude with `dif_neg hi`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cayley_weight_high_index (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ)
     (i : Fin (2 * r + k + 1)) (hi : ¬ i.val < k - 1) :
@@ -54,21 +54,21 @@ theorem cayley_weight_high_index (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fin 
   exact dif_neg hi
 
 /- English proof (translation)
-Establish `key : ∀ a c : Fin (2 * r + k + 1), a.val < k - 1 → ¬ c.val < k - 1 → (c.val - (k - 1)) % 2 = 1 → G ≤ |lam48 k r v b a - lam48 k r v b c|`. Introduce `a c ha hc hpar`. Establish `hk : k - 1 < 2 * r + k + 1` using `by omega`. Establish `h1` using `hanti (show a < ⟨k - 1, hk⟩ by rw [Fin.lt_def]; exact ha)`. Rewrite `h1` using `[cayley_weight_high_index k r v b ⟨k - 1, hk⟩ (by simp)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Nat.sub_self] at h1`. Rewrite using `[cayley_weight_high_index k r v b c hc]`. Establish `h2` using `lt_sub_of_increments b G hG hb ⟨0, by omega⟩ ⟨c.val - (k - 1), by have := c.isLt; omega⟩ (by rw [Fin.lt_def]; simp only; omega)`. Use `le_trans ?_ (le_abs_self _)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `a c hac`. Apply the tactic sequence `by_cases ha : a.val < k - 1 <;> by_cases hc : c.val < k - 1`. It suffices to derive a contradiction. Apply `hac` to reduce the goal to its premises. Simplify using `only [eps48, if_pos ha, if_pos hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hp : (c.val - (k - 1)) % 2 = 1`. Assume the negation of the conclusion as `hne`. Apply `hac` to reduce the goal to its premises. Simplify using `only [eps48, if_pos ha, if_neg hc]`. Simplify using `[show (c.val - (k - 1)) % 2 = 0 by omega]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `key a c ha hc hp`. Establish `hp : (a.val - (k - 1)) % 2 = 1`. Assume the negation of the conclusion as `hne`. Apply `hac` to reduce the goal to its premises. Simplify using `only [eps48, if_pos hc, if_neg ha]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[show (a.val - (k - 1)) % 2 = 0 by omega]`. Rewrite using `[abs_sub_comm]`. Conclude with `key c a hc ha hp`. Rewrite using `[cayley_weight_high_index k r v b a ha, cayley_weight_high_index k r v b c hc]`. Establish `hne : (⟨c.val - (k - 1), by have` using `c.isLt; omega⟩ : Fin (2 * r + 2)) ≠ ⟨a.val - (k - 1), by have := a.isLt; omega⟩ := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `heq`. Apply `hac` to reduce the goal to its premises. Establish `hv : c.val - (k - 1) = a.val - (k - 1)` using `congrArg Fin.val heq`. Simplify using `only [eps48, if_neg ha, if_neg hc]`. Rewrite using `[hv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lt_abs_sub_of_increments b G hG hb _ _ hne` as an intermediate fact. Rewrite using `[show -b ⟨a.val - (k - 1), by have := a.isLt; omega⟩ - -b ⟨c.val - (k - 1), by have := c.isLt; omega⟩ = b ⟨c.val - (k - 1), by have := c.isLt; omega⟩ - b ⟨a.val - (k - 1), by have := a.isLt; omega⟩ by ring]`. Conclude with `this.le`.
+A detailed English derivation is pending.
 -/
 theorem gapAtLeast_of_increments (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ) (G : ℝ) (hG : 0 < G)
     (hanti : StrictAnti (lam48 k r v b))
@@ -115,15 +115,15 @@ theorem gapAtLeast_of_increments (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fin 
     exact this.le
 
 /- English proof (translation)
-Establish `hodd : ∀ x : Fin (2 * r + k + 1), eps48 k r x = false → ¬ x.val < k - 1 ∧ (x.val - (k - 1)) % 2 = 1`. Introduce `x hx`. Unfold `eps48 at hx`. Distinguish the cases in `h1 : x.val < k - 1`. Rewrite `hx` using `[if_pos h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hx (by decide)`. Rewrite `hx` using `[if_neg h1]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2 : ¬ ((x.val - (k - 1)) % 2 = 0)` using `by simpa using hx`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Unfold `qOf`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card_of_injOn (fun a : Fin (2 * r + k + 1) => (a.val - (k - 1)) / 2)` to reduce the goal to its premises. Introduce `a _`. Simplify using `only [Finset.mem_coe, Finset.mem_range]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `a ha c hc hac`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at ha hc`. Establish `h1` using `hodd a ha`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hodd c hc`. Simplify using `only at hac`. Apply `Fin.ext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Use `_ = r + 1 := Finset.card_range _`.
+Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem q_le_of_cayley_signature (k r : ℕ) : qOf (eps48 k r) ≤ r + 1 := by
   have hodd : ∀ x : Fin (2 * r + k + 1), eps48 k r x = false →
@@ -155,11 +155,9 @@ theorem q_le_of_cayley_signature (k r : ℕ) : qOf (eps48 k r) ≤ r + 1 := by
     _ = r + 1 := Finset.card_range _
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Establish `ht2 : 2 * t ≤ (2 * r + 2) * t` using `Nat.mul_le_mul (by omega) le_rfl`. Establish `hr : 10 * (r + 1) ≤ (2 * r + 2) * t`. Combine the equalities or inequalities in the displayed calculation. Use `set X := (2 * r + 2) * t with hX`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : 3 * n ≤ n + X` using `by omega`. Establish `h10 : 10 * (r + 1) ≤ n + X` using `by omega`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[Nat.zero_le (n ^ 2 * r), Nat.zero_le (n ^ 2)]`. Use `_ ≤ 2 * ((n + X) * (n + X) * (n + X)) := by gcongr`.
-
-Use `_ = 2 * (n + X) ^ 3 := by ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cubic_bound_of_gap_nat (n r t M : ℕ) (hM : M = n + (2 * r + 2) * t) (ht : n + 5 ≤ t) :
     96 * n ^ 2 * (r + 1) ≤ 2 * M ^ 3 := by
@@ -177,23 +175,23 @@ theorem cubic_bound_of_gap_nat (n r t M : ℕ) (hM : M = n + (2 * r + 2) * t) (h
     _ = 2 * (n + X) ^ 3 := by ring
 
 /- English proof (translation)
-Take `⟨t, -, ht1, -, ht⟩` from `hgap`. Establish `ht1' : 2 * r + k + 1 + 5 ≤ t` using `ht1`. Take `⟨M, hM⟩ : ∃ M : ℕ, M = 2 * r + k + 1 + (2 * r + 2) * t` from `⟨_, rfl⟩`. Establish `hb : ∀ (j : Fin (2 * r + 2)) (hj : j.val + 1 < 2 * r + 2), 2 * (M : ℝ) ^ 3 + (t : ℝ) + 3 < b ⟨j.val + 1, hj⟩ - b j`. Rewrite using `[hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht`. Establish `hMpos : (0 : ℝ) ≤ (M : ℝ)` using `Nat.cast_nonneg _`. Establish `htpos : (0 : ℝ) ≤ (t : ℝ)` using `Nat.cast_nonneg _`. Use `⟨2 * (M : ℝ) ^ 3 + (t : ℝ) + 3, ?_, ?_⟩` and prove the remaining obligations. Conclude with `gapAtLeast_of_increments k r v b _ (by positivity) hlam.1 hb`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `_`. Establish `hq : qOf (eps48 k r) ≤ r + 1` using `q_le_of_cayley_signature k r`. Establish `hpn : pOf (eps48 k r) ≤ 2 * r + k + 1`. Unfold `pOf; exact (Finset.card_filter_le _ _).trans (by simp)`. Establish `hqn : qOf (eps48 k r) ≤ 2 * r + k + 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `qOf; exact (Finset.card_filter_le _ _).trans (by simp)`. Establish `hq0 : S7.q0 (eps48 k r) ≤ r + 1` using `(min_le_right _ _).trans hq`. Establish `hnM : 2 * r + k + 1 ≤ M` using `by rw [hM]; omega`. Establish `hnat1 : (2 * r + k + 1) * pOf (eps48 k r) * qOf (eps48 k r) ≤ M ^ 3`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnat2` using `cubic_bound_of_gap_nat (2 * r + k + 1) r t M hM ht1'`. Establish `c1 : ((2 * r + k + 1 : ℕ) : ℝ) * (pOf (eps48 k r) : ℝ) * (qOf (eps48 k r) : ℝ) ≤ (M : ℝ) ^ 3`. Conclude with `hnat1` after adjusting the coercions. Establish `c2 : (96 : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 * ((r + 1 : ℕ) : ℝ) ≤ 2 * (M : ℝ) ^ 3`. Conclude with `hnat2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM3 : (0 : ℝ) ≤ (M : ℝ) ^ 3` using `by positivity`. Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Establish `hN0 : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hQ0 : (0 : ℝ) ≤ (S7.q0 (eps48 k r) : ℝ)` using `Nat.cast_nonneg _`. Establish `hR1 : (1 : ℝ) ≤ ((r + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ r + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRN : ((r + 1 : ℕ) : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : r + 1 ≤ 2 * r + k + 1)`. Establish `hQR : (S7.q0 (eps48 k r) : ℝ) ≤ ((r + 1 : ℕ) : ℝ)` using `by exact_mod_cast hq0`. Establish `hs0` using `Real.sqrt_nonneg (2 * (S7.q0 (eps48 k r) : ℝ))`. Establish `hu0` using `Real.sqrt_nonneg (2 * ((r + 1 : ℕ) : ℝ))`. Establish `hu2 : Real.sqrt (2 * ((r + 1 : ℕ) : ℝ)) ^ 2 = 2 * ((r + 1 : ℕ) : ℝ)` using `Real.sq_sqrt (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsu : Real.sqrt (2 * (S7.q0 (eps48 k r) : ℝ)) ≤ Real.sqrt (2 * ((r + 1 : ℕ) : ℝ))` using `Real.sqrt_le_sqrt (by linarith)`. Establish `hu1' : 1 ≤ Real.sqrt (2 * ((r + 1 : ℕ) : ℝ))` using `by nlinarith`. Establish `hu1 : Real.sqrt (2 * ((r + 1 : ℕ) : ℝ)) ≤ 2 * ((r + 1 : ℕ) : ℝ)` using `by nlinarith`. Establish `hsu' : Real.sqrt (2 * (S7.q0 (eps48 k r) : ℝ)) * Real.sqrt (2 * ((r + 1 : ℕ) : ℝ)) ≤ 2 * ((r + 1 : ℕ) : ℝ)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hsu hu0]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQs : (S7.q0 (eps48 k r) : ℝ) * Real.sqrt (2 * (S7.q0 (eps48 k r) : ℝ)) ≤ ((r + 1 : ℕ) : ℝ) * (2 * ((r + 1 : ℕ) : ℝ))` using `mul_le_mul hQR (hsu.trans hu1) hs0 (by linarith)`. Establish `p1` using `mul_le_mul_of_nonneg_left hsu' (sq_nonneg ((2 * r + k + 1 : ℕ) : ℝ))`. Establish `p2` using `mul_le_mul_of_nonneg_left hQs hN0`. Establish `p3` using `mul_le_mul_of_nonneg_left hRN (mul_nonneg hN0 (by linarith : (0 : ℝ) ≤ ((r + 1 : ℕ) : ℝ)))`. Use polynomial arithmetic with `[p1, p2, p3, c2]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cayley_weight_gap (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ)
     (hlam : Formalism.QuantumDeterminants.IsHCParam (Formalism.MainNotions.CayleySignature.lam48 k r v b)) (hgap : Formalism.MainNotions.CayleySignature.GapBig k r b) :

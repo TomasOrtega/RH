@@ -9,12 +9,12 @@ def LabFixed (D : D7) : Prop :=
   GlobalTheory.SerSys.LabTie D fun k => @GlobalTheory.Mem.TypePl.labDat (D.host.g k) ⟨D.host.g_prime k⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem labFixed_withLoc {D : D7} (L : LocAll (lay0 D)) : LabFixed (withLoc L) ↔ LabFixed D := Iff.rfl
 
 /- English proof (translation)
-Establish `e : ∀ D', D' = withLoc a.nt.L → (LabFixed D' ↔ LabFixed a.nt.D)`. Introduce and unpack `_ rfl`. Conclude with `labFixed_withLoc _`. Conclude with `e D a.nt.eq`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem labFixed_iff {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (a : NAt hL D cf nch tp) : LabFixed D ↔ LabFixed a.nt.D := by
@@ -24,7 +24,7 @@ theorem labFixed_iff {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf
   exact e D a.nt.eq
 
 /- English proof (translation)
-Introduce `k` and use `⟨(h.teich k).symm, h.ser k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem labFixed_of_typesTrue {D : D7} {P : PiBar D.host} {W : Omg D.host} (h : TypesTrue D.ntypes P W) : LabFixed D :=
   fun k => ⟨(h.teich k).symm, h.ser k⟩
@@ -32,14 +32,14 @@ theorem labFixed_of_typesTrue {D : D7} {P : PiBar D.host} {W : Omg D.host} (h : 
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
 
 /- English proof (translation)
-The claim follows from `(labFixed_iff c.a).1 fun k => ⟨(t.grp.teich k).symm, t.grp.ser k⟩`.
+A detailed English derivation is pending.
 -/
 theorem lab_of_rows {hL : GlobalTheory.Published.LocalLanglandsGL} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)}
     (t : RowsT K w Z Wt p0) {nch : NChoice (w.D Z)} {n : NchT w Z Wt nch} (c : NCore hL t n) : LabFixed c.a.nt.D :=
   (labFixed_iff c.a).1 fun k => ⟨(t.grp.teich k).symm, t.grp.ser k⟩
 
 /- English proof (translation)
-Introduce `d hd`. Use `⟨L.gen_order d hd, ?_⟩` and prove the remaining obligations. Introduce and unpack `d' ⟨e, rfl⟩ h`. Conclude with `L.gen_norm d e hd (Nat.pos_of_mul_pos_left h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isGenSys_gen (g : ℕ) [Fact g.Prime] (L : GlobalTheory.GLq.LabelDatum g) : Formalism.L2.NT.IsGenSys L.gen := by
   intro d hd
@@ -48,7 +48,7 @@ theorem isGenSys_gen (g : ℕ) [Fact g.Prime] (L : GlobalTheory.GLq.LabelDatum g
   exact L.gen_norm d e hd (Nat.pos_of_mul_pos_left h)
 
 /- English proof (translation)
-Rewrite using `[← h.gen k]`. Conclude with `a.nt.A.grp.tg_tame k v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_of_pin {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     {a : NAt hL D cf nch tp} (h : OPin a) (k : Fin 2) (v : a.nt.D.nd.PlG k) :
@@ -59,7 +59,7 @@ theorem tame_of_pin {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf 
   exact a.nt.A.grp.tg_tame k v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.large.1, h.large.2.2⟩, h.inner, h.gen⟩, fun h => ⟨⟨h.1.1, c.a.split, h.1.2⟩, h.2.1, lab_of_rows t c, h.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem opin_iff {hL : GlobalTheory.Published.LocalLanglandsGL} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)}
     (t : RowsT K w Z Wt p0) {nch : NChoice (w.D Z)} {n : NchT w Z Wt nch} (c : NCore hL t n) :
@@ -70,7 +70,7 @@ theorem opin_iff {hL : GlobalTheory.Published.LocalLanglandsGL} {w : ColW B f T}
     fun h => ⟨⟨h.1.1, c.a.split, h.1.2⟩, h.2.1, lab_of_rows t c, h.2.2⟩⟩
 
 /- English proof (translation)
-The claim follows from `NX hL (OExt hL)`.
+A detailed English derivation is pending.
 -/
 example (hL : GlobalTheory.Published.LocalLanglandsGL) : NCondition := NX hL (OExt hL)
 end GlobalTheory.CoefDuty.OPinModel

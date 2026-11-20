@@ -11,11 +11,11 @@ open Formalism.BasicNotions Formalism.L2.SG.RealObj
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-Establish `hC : 0 ≤ DisintegrationConstant X u u' sc`. Unfold `DisintegrationConstant`. Use `split_ifs with h`. Conclude with `h.choose_spec.1.le`. Conclude with `le_rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hO : ∀ c, 0 ≤ hilbertSchmidtSqGram X u u' sc c` using `fun c => by`. Unfold `hilbertSchmidtSqGram hs2`. Conclude with `Finset.sum_nonneg fun i _ => sq_nonneg _`. Establish `hm : Measurable (fun c => ENNReal.ofReal (DisintegrationConstant X u u' sc * wt X u u' c))` using `ENNReal.measurable_ofReal.comp (measurable_const.mul (InfCut.wt_cont X u u').measurable)`. Unfold `InNuX intOOe intCe nuM`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MeasureTheory.lintegral_withDensity_eq_lintegral_mul_non_measurable _ hm (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top), ← MeasureTheory.lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `MeasureTheory.lintegral_congr fun c => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Rewrite using `[← ENNReal.ofReal_mul' (hO c), ← ENNReal.ofReal_mul hC, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem realObj_inNuX {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (sc : ℝ) : InNuX X u u' sc := by
   have hC : 0 ≤ DisintegrationConstant X u u' sc := by

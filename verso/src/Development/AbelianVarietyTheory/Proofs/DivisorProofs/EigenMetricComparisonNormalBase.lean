@@ -37,13 +37,13 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W jB πB ρ hc M r g t hF ch V hV f hf A hA K C R _ _ _ _ φ io j ψ hψ xg xt h₁ h₂ h₃ hx hxg hG`. Establish `hx' : ⊤ ≤ (spMap io ≫ xg) ⁻¹ᵁ (jB ⁻¹ᵁ V)` using `fun p _ => hx (x := spMap io p) trivial`. Establish `hx'' : ⊤ ≤ ((spMap io ≫ xg) ≫ jB) ⁻¹ᵁ V` using `hx'`. Establish `hO : spMap (intO C).subtype ≫ spMap ψ ≫ xt ≫ ρ = (spMap io ≫ xg) ≫ πB ≫ genι Z`. Rewrite using `[← hc, Category.assoc, reassoc_of% h₂.symm, ← Category.assoc, ← Category.assoc (spMap io), ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hOU : ⊤ ≤ (spMap ψ ≫ xt ≫ ρ) ⁻¹ᵁ ch.U` using `fun p _ => hV (h₃ (x := spMap ψ p) trivial)`. Establish `hU : ⊤ ≤ ((spMap io ≫ xg) ≫ πB ≫ genι Z) ⁻¹ᵁ ch.U`. Rewrite using `[← hO]`. Conclude with `fun p _ => hOU (x := spMap (intO C).subtype p) trivial`. Establish `hb` using `fun τ => (hF τ).1 V (f τ) (hf τ) _ (spMap io ≫ xg) hx'' (io.comp φ) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, h₁, ← Spec.map_comp, ← CommRingCat.ofHom_comp])`. Establish `hP : IsTanMat Z ((spMap io ≫ xg) ≫ πB ≫ genι Z) ch (fun s : Σ τ, Fin (r τ) => t s.1 V (f s.1) (hf s.1) _ (spMap io ≫ xg) hx'' s.2) ((Matrix.of fun b (s : Σ τ, Fin (r τ)) => A s.1 b s.2).map (io.comp (TangentOrigin.evalPt xg (jB ⁻¹ᵁ V) hx)))` using `fun s hv hV' b => (TangentOrigin.evalPt_spMap_comp io xg _ hx hx' _).symm.trans (hA s.1 _ _ hx'' hx' s.2 hv hV' b)`. Use `GlobalTheory.T.integral_adapted_of_graded _ _ (GlobalTheory.T.bijective_mulVec_of_isTanMat_of_isEigBasis Z _ _ ch hU _ hb _ hP) (GlobalTheory.T.toroidal_nonarchimedean_point Z _ _ _ hO ch hOU _ hb (fun τ w hw => ?_) _ hP)` and prove the remaining obligations. Rewrite using `[funext fun i => (hF τ).2.2 V (f τ) (hf τ) _ _ io xg hxg hx'' i]`. Rewrite `hw`, the goal using `[Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hG τ w hw`.
+A detailed English derivation is pending.
 -/
 theorem intAdapted_of_inGr : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -92,7 +92,7 @@ theorem intAdapted_of_inGr : ∀ {E : Type} [Field E] [NumberField E] [IsCMField
   exact hG τ w hw
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hp⟩ IntAdapted (fun s : Σ τ, Fin (r τ) => (Fintype.equivFin (E →+* ℂ) s.1 : ℕ)) ((Matrix.of fun b (s : Σ τ, Fin (r τ)) => A s.1 b s.2).map ((ioOf (resP v) ε).comp (TangentOrigin.evalPt xg (jB ⁻¹ᵁ V) hx))) := by intro E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W jB πB ρ hc M r g t hF …`.
+Supply the required witnesses or components.
 -/
 theorem intAdapted_of_isGrLat : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -129,7 +129,7 @@ open GlobalTheory.TwoLat GlobalTheory.OrthFilt GlobalTheory.VdmRec GlobalTheory.
 open scoped Classical
 
 /- English proof (translation)
-Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`. Consider the case `empty => trivial`. Consider the case `insert a s _ ih => rw [Finset.inf_insert]`. Conclude with `⟨h a, ih⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem mem_inf_opens {X : Scheme.{0}} {ι : Type} [Fintype ι] {U : ι → X.Opens} {x : X} (h : ∀ i, x ∈ U i) :
     x ∈ (Finset.univ.inf U : X.Opens) := by
@@ -139,19 +139,17 @@ theorem mem_inf_opens {X : Scheme.{0}} {ι : Type} [Fintype ι] {U : ι → X.Op
   | insert a s _ ih => rw [Finset.inf_insert]; exact ⟨h a, ih⟩
 
 /- English proof (translation)
-Introduce `D O _ R _ c M B _ q E E' h h' H H' u hq hn _ Bg jB πB t t' hP β w hc _ h₀ hS`. Take `⟨pb, -, -, hF, hF', hMt, hLat, hGr, -, hMet, -⟩` from `hP`. Establish `hω : IsVB (GlobalTheory.LieVB.omega O.s.T.Z.t.G) (D.R.f * O.N)` using `(M.h R).isVB`. Take `⟨ℓ, hℓ, hdual, hG⟩` from `GlobalTheory.T.metric_pullback_dual_frames (intEquiv O) (M.h R) M.b h₀ hS β w`. Establish `hT : ∀ σ, ∃ T : E σ ⟶ _, TanCoord O.s.T.Z jB πB (t σ) (β ≫ M.b) hℓ T` using `fun σ => GlobalTheory.T.toroidal_model_height_lower O.s.T.Z O.κ.e (β ≫ M.b) hq pb hc hℓ hω hdual σ (t σ) (h σ).isVB (hF σ) fun ch V hV hA f hf => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨A, hAc⟩` from `GlobalTheory.T.toroidal_model_height_comparison O.s.T.Z O.κ.e (β ≫ M.b) pb hc σ (t σ) (hF σ) ch V hV hA f hf`. Take `⟨A₀, rfl⟩` from `GlobalTheory.T.toroidal_model_hodge_height O.s.T.Z O.κ.e (β ≫ M.b) hq hn pb hc σ (t σ) (hF σ) (hLat σ) ch V hV hA f hf A hAc`. Conclude with `⟨A₀, hAc⟩`. Use `choose T hT using hT`. Use `GlobalTheory.T.graded_of_local_adapted _ _ h T u (fun σ => GlobalTheory.T.toroidal_model_height_integral O.s.T.Z O.κ.e hq pb σ (t σ) (t' σ) (u σ) (h σ).isVB (h' σ).isVB (hF σ) (hF' σ) (hMt σ)) (fun x => ?_) (GlobalTheory.T.toroidal_model_height_sum O.s.T.Z O.κ.e (β ≫ M.b) pb hc h …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U, m, hxU, hm⟩` from `hω ((β ≫ M.b) x)`. Set `ch : VB.Chart (GlobalTheory.LieVB.omega O.s.T.Z.t.G) (D.R.f * O.N)` to `⟨U, m, hm⟩`. Use `choose U₁ f₁ hx₁ hf₁ using fun σ => (h σ).isVB x`. Use `choose U₂ f₂ hx₂ hf₂ using fun σ => (h' σ).isVB x`. Establish `hx : x ∈ ((β ≫ M.b) ⁻¹ᵁ U ⊓ (Finset.univ.inf U₁ ⊓ Finset.univ.inf U₂) : B.Opens)` using `⟨hxU, mem_inf_opens hx₁, mem_inf_opens hx₂⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, hA, hxV, hle⟩` from `exists_isAffineOpen_mem_and_subset hx`. Establish `hle' : V ≤ (β ≫ M.b) ⁻¹ᵁ U ⊓ (Finset.univ.inf U₁ ⊓ Finset.univ.inf U₂)` using `hle`. Establish `hV : V ≤ (β ≫ M.b) ⁻¹ᵁ ch.U` using `hle'.trans inf_le_left`. Establish `h₁ (σ) : V ≤ U₁ σ` using `hle'.trans (inf_le_right.trans (inf_le_left.trans (Finset.inf_le (Finset.mem_univ σ))))`. Establish `h₂ (σ) : V ≤ U₂ σ` using `hle'.trans (inf_le_right.trans (inf_le_right.trans (Finset.inf_le (Finset.mem_univ σ))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf` using `fun σ => (hf₁ σ).res (h₁ σ)`. Establish `hf'` using `fun σ => (hf₂ σ).res (h₂ σ)`. Use `choose A hAc using fun σ => GlobalTheory.T.toroidal_model_height_comparison O.s.T.Z O.κ.e (β ≫ M.b) pb hc σ (t' σ) (hF' σ) ch V hV hA _ (hf' σ)`. Take `⟨V', hV', hx', hinj, C, C', Q, e₁, e₂, hQ, e₃⟩` from `GlobalTheory.T.matrix_regular_adapted_local hq hn pb _ V hA x hxV _ (intAdapted_of_isGrLat O.s.T.Z O.κ.e (β ≫ M.b) hc t' hF' hGr ch V hV _ hf' A hAc)`. Conclude with `⟨V', hx', GlobalTheory.T.frame_matrix_restriction jB _ T u hV hV' (ℓ ch) (hℓ ch) _ hf _ hf' (Matrix.of fun b s => A s.1 b s.2) (fun σ b i => GlobalTheory.T.toroidal_model_height_upper O.s.T.Z O.κ.e (β ≫ M.b) pb hc σ (t σ) (t' σ) (u σ) (hF σ) (hF' σ) (hMt σ) ch V hV hA _ (hf σ) _ …`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `σ z yc hz ch hch uu P hPm`. Set `y : CxPts O.s.T.Z.s ((σ.comp O.κ.e.symm.toRingHom).comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))` to `⟨yc.1 ≫ genι O.s.T.Z, by`. Rewrite using `[Category.assoc, Limits.pullback.condition, ← Category.assoc, yc.2, ← Spec.map_comp]`. Use the proof step `rfl⟩`. Establish `hy : y ∈ CxPts.ptsIn _ _ ch.U` using `hch`.
-
-Rewrite using `[hG _ _ (RingHom.ext fun a => rfl) z y (by simpa using hz.symm) ch hy]`. Conclude with `GlobalTheory.T.dual_eigen_hodge_metric O.s.T.Z _ (M.h R) (M.dual R) _ yc y rfl ch hy uu P hPm (GlobalTheory.T.bijective_mulVec_of_isTanMat_of_isEigBasis O.s.T.Z _ _ ch hch uu.v (fun τ => ⟨fun i => ⟨uu.tan τ i, uu.eig τ i⟩, fun v hv => uu.basis τ v hv.1 hv.2⟩) P hPm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGraded_lie : ∀ (D : D7) (O : Setup D), O.Core → ∀ R : ℝ, 2 ≤ R → ∀ (c : O.s.Comp) (M : DRBase O c) (B : Scheme.{0}) [IsIntegral B] (q : B ⟶ Sp (𝓞 D.what₂.LL)) (E E' : (D.host.E →+* ℂ) → B.Modules) (h : ∀ σ, VMetric q (E σ) (O.S.Dw.mult σ)) (h' : ∀ σ, VMetric q (E' σ) (O.S.Dw.mult σ)) (H : ∀ σ, (h σ).IsCInf) (H' : ∀ σ, (h' σ).IsCInf) (u : ∀ σ, E σ ⟶ E' σ), IsArithVar q (dimGr D.what₂.Tau O.N O.j) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme B → (∀ σ, IsoHom (h σ) (h' σ) (u σ)) → ∀ (Bg : Scheme.{0}) (jB : Bg ⟶ B) (πB : Bg ⟶ gen O.s.T.Z) (t : ∀ σ, FrAssign O.s.T.Z (E σ) (O.S.Dw.mult σ) jB) (t' : ∀ σ, FrAssign O.s.T.Z (E' σ) (O.S.Dw.mult σ) jB), PairAt O R c q E E' h h' u jB πB t t' (fun σ' => M.x.eigMetAt σ' (some R)) → ∀ (β : B ⟶ M.B) (w : β ≫ strL M = q), jB ≫ β ≫ M.b = πB ≫ genι O.s.T.Z → β (genericPoint B) = genericPoint M.B → ∀ h₀ : VMetric (strL M) ((Scheme.Modules.pullback M.b).obj (GlobalTheory.LieVB.omega O.s.T.Z.t.G)) (D.R.f * O.N), SameMet (intEquiv O) ((M.h R).pull M.b rfl) h₀ → IsGraded (h₀.dual.pull β w) (Fintype.equivFin (D.host.E →+* ℂ)) h u := by
   intro D O _ R _ c M B _ q E E' h h' H H' u hq hn _ Bg jB πB t t' hP β w hc _ h₀ hS

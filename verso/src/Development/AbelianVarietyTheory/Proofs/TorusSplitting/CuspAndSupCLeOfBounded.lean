@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.BoundedCusp
 
 /- English proof (translation)
-Use `⟨hP, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Establish `hiso : X.IsIsoV (X.embV ξ)` using `fun τ => ⟨by rw [show X.embV ξ τ = Data.emb τ.1 ξ from rfl, hermC_emb, hξ.2.1, map_zero], emb_ne_zero τ.1 hξ.2.2⟩`. Establish `hmpos` using `PositiveMinorUnits.mN_pos (MajorantFamilyNorms.hG_of X τ0) X.p0 X.p0_le (mat x τ0) (hx τ0).1 (MajorantFamilyNorms.hsg_of X hx τ0) (X.embV ξ τ0) (hiso τ0).1 (hiso τ0).2`. Establish `htop` using `PositiveMinorUnits.mN_top (MajorantFamilyNorms.hG_of X τ0) X.p0 (mat x τ0) (hx τ0).1 (MajorantFamilyNorms.hsg_of X hx τ0) (X.embV ξ τ0) (hiso τ0).1`.
+Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `h with h | h` into its components or cases. Rewrite `hmpos` using `[h, PositiveMinorUnits.mN_zero]`. Conclude with `lt_irrefl _ hmpos`. Rewrite `hmpos` using `[h, htop]`. Conclude with `lt_irrefl _ hmpos`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_SS_of_definite {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (la : FD.Wt X.Ψ r) (τ0 : X.Ψ) (h : X.p0 = 0 ∨ X.p0 = r) (P : Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P) :
@@ -43,19 +43,19 @@ end GlobalTheory.BoundedCusp
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U n f C hn hev hU hf hb hC`. Use `⟨?_, fun σ xi hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_cusp]`. Use `⟨hf, fun σ hσ => holCusp_mem_holSub _ _ fun j => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, hsec, -⟩` from `hU σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hD : Dom (0 : (E →+* ℂ) × ℕ → ℕ) n` using `⟨fun τ i i' _ => le_rfl, hev⟩`. Choose the witnesses or unpack the hypotheses as in `⟨τ0⟩ : Nonempty ((U σ).X j).Ψ := by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ ∈ ((U σ).X j).Ψ`. Conclude with `⟨⟨τ, h⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, not_not.mp (fun h' => h ((((U σ).X j).cmType τ).mpr h'))⟩⟩`. Establish `hbd : ((U σ).X j).IsBddSec (laU (U σ) 0 n j) (rdU (U σ) f j)` using `⟨hsec _ _ hD f hf j, C, hb σ hσ j⟩`. Establish `hle` using `((U σ).X j).p0_le`. Distinguish the cases in `h0 : ((U σ).X j).p0 = 0 ∨ ((U σ).X j).p0 = r`. Conclude with `BoundedCusp.mem_SS_of_definite _ _ τ0 h0 _ hbd`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `AR.Up.cuspStatement_holds r _ _ τ0 (by omega) (by omega) ?_ ?_ _ hbd` and prove the remaining obligations. Introduce `i i' h1 h2`. Unfold `laU`. Distinguish the cases in `h3 : ((U σ).X j).p0 ≤ (i : ℕ)`. Rewrite using `[if_pos h3, if_pos (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h3, if_neg (by omega)]`. Simplify using the standard rewrite rules. Introduce `i i' h1 h2`. Unfold `laU`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega), if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : lieFac Dw xi (0 : (E →+* ℂ) × ℕ → ℕ) = 1` using `by simp [lieFac]`. Unfold `supC supN`. Rewrite using `[h1, _root_.one_mul]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.toReal_le_of_le_ofReal hC ?_` and prove the remaining obligations. Conclude with `iSup_le fun p => ENNReal.ofReal_le_ofReal (hb σ hσ p.1 p.2 p.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem cusp_and_supC_le_of_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (n : ℕ) (f : Rul Xo c) (C : ℝ), 2 ≤ n → Even n → (∀ σ, GoodEmb c σ → IsUnf (U σ)) → f ∈ sec Xo c 0 n → (∀ σ, GoodEmb c σ → ∀ k, ∀ x ∈ ((U σ).X k).dom, ((U σ).X k).pnorm (laU (U σ) 0 n k) (rdU (U σ) f k) x ≤ C) → 0 ≤ C → f ∈ cusp Xo c U 0 n ∧ ∀ σ (xi : ℝ), GoodEmb c σ → supC Xo c U xi σ 0 n f ≤ C := by
   intro E _ _ _ H Dw l Xo c r U n f C hn hev hU hf hb hC
